@@ -5,26 +5,26 @@
 + (id)configurationForPeopleSuggestions;
 + (id)storeConfigurationForAppSuggestions;
 + (id)storeConfigurationForPeopleSuggestions;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMMLSEShareSheetInferenceLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AppSuggestions"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AppSuggestions"])
   {
-    v5 = [a1 AppSuggestions];
+    appSuggestions = [self AppSuggestions];
 LABEL_5:
-    v6 = v5;
+    v6 = appSuggestions;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"PeopleSuggestions"])
+  if ([nameCopy isEqualToString:@"PeopleSuggestions"])
   {
-    v5 = [a1 PeopleSuggestions];
+    appSuggestions = [self PeopleSuggestions];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForPeopleSuggestions
 {
-  v3 = [a1 storeConfigurationForPeopleSuggestions];
-  v4 = [a1 syncPolicyForPeopleSuggestions];
+  storeConfigurationForPeopleSuggestions = [self storeConfigurationForPeopleSuggestions];
+  syncPolicyForPeopleSuggestions = [self syncPolicyForPeopleSuggestions];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"77F2C2B4-16EE-4209-AEC3-E5AC291106AE"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Inference.PeopleSuggestions" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Inference.PeopleSuggestions" eventClass:objc_opt_class() storeConfig:storeConfigurationForPeopleSuggestions syncPolicy:syncPolicyForPeopleSuggestions legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForAppSuggestions
 {
-  v3 = [a1 storeConfigurationForAppSuggestions];
-  v4 = [a1 syncPolicyForAppSuggestions];
+  storeConfigurationForAppSuggestions = [self storeConfigurationForAppSuggestions];
+  syncPolicyForAppSuggestions = [self syncPolicyForAppSuggestions];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"EE433BE4-CA8F-4797-A820-C381AF699C7C"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Inference.AppSuggestions" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"MLSE.ShareSheet.Inference.AppSuggestions" eventClass:objc_opt_class() storeConfig:storeConfigurationForAppSuggestions syncPolicy:syncPolicyForAppSuggestions legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)PeopleSuggestions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPeopleSuggestions];
+  configurationForPeopleSuggestions = [self configurationForPeopleSuggestions];
   v3 = +[BMMLSEShareSheetInferencePeopleSuggestions columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.Inference.PeopleSuggestions" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Inference.PeopleSuggestions" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Inference.PeopleSuggestions" schema:v9 configuration:configurationForPeopleSuggestions];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)AppSuggestions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAppSuggestions];
+  configurationForAppSuggestions = [self configurationForAppSuggestions];
   v3 = +[BMMLSEShareSheetInferenceAppSuggestions columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"MLSE.ShareSheet.Inference.AppSuggestions" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Inference.AppSuggestions" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"MLSE.ShareSheet.Inference.AppSuggestions" schema:v9 configuration:configurationForAppSuggestions];
 
   v11 = *MEMORY[0x1E69E9840];
 

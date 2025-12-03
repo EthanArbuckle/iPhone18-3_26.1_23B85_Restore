@@ -1,15 +1,15 @@
 @interface PGGraphLocationStateEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toStateNode:(id)a4;
+- (id)initFromLocationNode:(id)node toStateNode:(id)stateNode;
 @end
 
 @implementation PGGraphLocationStateEdge
 
-- (id)initFromLocationNode:(id)a3 toStateNode:(id)a4
+- (id)initFromLocationNode:(id)node toStateNode:(id)stateNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationStateEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:stateNode];
 }
 
 + (id)filter

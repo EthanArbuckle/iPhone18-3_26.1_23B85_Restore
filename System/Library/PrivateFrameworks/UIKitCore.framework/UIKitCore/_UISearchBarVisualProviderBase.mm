@@ -1,23 +1,23 @@
 @interface _UISearchBarVisualProviderBase
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)effectiveContentInset;
 - (UIEdgeInsets)minimumContentInset;
 - (UIEdgeInsets)scopeBarInsets;
 - (UIOffset)searchFieldBackgroundPositionAdjustment;
-- (_UISearchBarVisualProviderBase)initWithDelegate:(id)a3;
+- (_UISearchBarVisualProviderBase)initWithDelegate:(id)delegate;
 - (id)_borrowSearchTextField;
 @end
 
 @implementation _UISearchBarVisualProviderBase
 
-- (_UISearchBarVisualProviderBase)initWithDelegate:(id)a3
+- (_UISearchBarVisualProviderBase)initWithDelegate:(id)delegate
 {
-  v5 = a3;
-  if (!v5)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderBase.m" lineNumber:15 description:@"visual provider requires a search bar as a delegate"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderBase.m" lineNumber:15 description:@"visual provider requires a search bar as a delegate"];
   }
 
   v10.receiver = self;
@@ -26,7 +26,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_searchBar = v5;
+    v6->_searchBar = delegateCopy;
   }
 
   return v7;
@@ -34,8 +34,8 @@
 
 - (id)_borrowSearchTextField
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderBase.m" lineNumber:174 description:@"Borrowing search field not supported by visual provider."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchBarVisualProviderBase.m" lineNumber:174 description:@"Borrowing search field not supported by visual provider."];
 
   return 0;
 }
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *MEMORY[0x1E695F060];
   v4 = *(MEMORY[0x1E695F060] + 8);

@@ -1,22 +1,22 @@
 @interface NTKGalleonHandsView
 - (id)hourHandConfiguration;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)minuteHandConfiguration;
 - (id)secondHandConfiguration;
 - (void)_applyPalette;
-- (void)applyTransitionFractionToCompassMode:(unint64_t)a3 fraction:(double)a4;
-- (void)setCompassMode:(unint64_t)a3;
-- (void)setPalette:(id)a3;
+- (void)applyTransitionFractionToCompassMode:(unint64_t)mode fraction:(double)fraction;
+- (void)setCompassMode:(unint64_t)mode;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKGalleonHandsView
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   self->_compassModeFraction = 0.0;
   v22.receiver = self;
   v22.super_class = NTKGalleonHandsView;
-  v3 = [(NTKAnalogHandsView *)&v22 initForDevice:a3];
+  v3 = [(NTKAnalogHandsView *)&v22 initForDevice:device];
   v7 = v3;
   if (v3)
   {
@@ -34,9 +34,9 @@
   return v7;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
 
   MEMORY[0x2821F9670](self, sel__applyPalette, v4, v5);
 }
@@ -139,7 +139,7 @@
   return v13;
 }
 
-- (void)applyTransitionFractionToCompassMode:(unint64_t)a3 fraction:(double)a4
+- (void)applyTransitionFractionToCompassMode:(unint64_t)mode fraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsClipped();
   CLKInterpolateBetweenFloatsClipped();
@@ -151,9 +151,9 @@
   objc_msgSend__setAltHandsAlpha_(self, v12, v13, v14, v8);
 }
 
-- (void)setCompassMode:(unint64_t)a3
+- (void)setCompassMode:(unint64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v5 = 0.0;
   }
@@ -163,7 +163,7 @@
     v5 = 1.0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v6 = 1.0;
   }
@@ -173,7 +173,7 @@
     v6 = 0.0;
   }
 
-  objc_msgSend__setHandsAlpha_(self, a2, a3, v3, v5);
+  objc_msgSend__setHandsAlpha_(self, a2, mode, v3, v5);
 
   objc_msgSend__setAltHandsAlpha_(self, v7, v8, v9, v6);
 }

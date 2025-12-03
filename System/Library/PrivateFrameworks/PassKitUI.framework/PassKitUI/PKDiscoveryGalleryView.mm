@@ -1,53 +1,53 @@
 @interface PKDiscoveryGalleryView
-+ ($7D24B5AD5894795FD85A0EE1D817D743)_welcomeStateForState:(id *)a3;
-+ (BOOL)isVisibleForSectionsState:(id *)a3 dataSource:(id)a4;
-+ (BOOL)isWelcomeCardVisibleForSectionsState:(id *)a3;
++ ($7D24B5AD5894795FD85A0EE1D817D743)_welcomeStateForState:(id *)state;
++ (BOOL)isVisibleForSectionsState:(id *)state dataSource:(id)source;
++ (BOOL)isWelcomeCardVisibleForSectionsState:(id *)state;
 + (id)passWelcomeCardMessageAttributedString;
 - (BOOL)_requestDismissalIfNecessaryAfterLayoutStateUpdate;
 - (BOOL)needsRemoval;
 - (CGSize)_cardSize;
 - (CGSize)_contentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)frontmostItemIdentifier;
-- (PKDiscoveryGalleryView)initWithCardSizeType:(int64_t)a3;
+- (PKDiscoveryGalleryView)initWithCardSizeType:(int64_t)type;
 - (id)_createPassWelcomeCardView;
 - (id)_createPaymentWelcomeCardView;
-- (id)cardViewForCardWithItemIdentifier:(id)a3;
-- (unint64_t)_indexForCardViewWithIdentifier:(id)a3;
+- (id)cardViewForCardWithItemIdentifier:(id)identifier;
+- (unint64_t)_indexForCardViewWithIdentifier:(id)identifier;
 - (unint64_t)displayIndex;
 - (void)_appStorePressed;
-- (void)_pageControlChanged:(id)a3;
-- (void)_removeCardView:(id)a3 animated:(BOOL)a4;
+- (void)_pageControlChanged:(id)changed;
+- (void)_removeCardView:(id)view animated:(BOOL)animated;
 - (void)_reportCurrentDiscoveryCardToDiscoveryService;
 - (void)_scanCodePressed;
 - (void)_updateCardSizeIfNecessary;
 - (void)_updateCardViews;
-- (void)_updateCardViewsAnimated:(BOOL)a3 overrideFrontmostCardToIdentifier:(id)a4;
-- (void)_updateDiscoveryCardViewsForUpdatedArticleLayouts:(id)a3 overrideFrontmostCardToIdentifier:(id)a4 animated:(BOOL)a5;
-- (void)_updatePageControlVisibilityWithDelay:(double)a3;
+- (void)_updateCardViewsAnimated:(BOOL)animated overrideFrontmostCardToIdentifier:(id)identifier;
+- (void)_updateDiscoveryCardViewsForUpdatedArticleLayouts:(id)layouts overrideFrontmostCardToIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)_updatePageControlVisibilityWithDelay:(double)delay;
 - (void)_updatePageControlWithDisplayIndex;
-- (void)_updateScrollViewToCardIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_updateScrollViewToCardIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)dealloc;
-- (void)discoveryCardViewCTATapped:(id)a3 callToAction:(id)a4 itemIdentifier:(id)a5;
-- (void)discoveryCardViewRemoveTapped:(id)a3;
-- (void)discoveryCardViewTapped:(id)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)discoveryCardViewCTATapped:(id)tapped callToAction:(id)action itemIdentifier:(id)identifier;
+- (void)discoveryCardViewRemoveTapped:(id)tapped;
+- (void)discoveryCardViewTapped:(id)tapped;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setSectionsState:(id *)a3;
-- (void)updateArticleLayouts:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setSectionsState:(id *)state;
+- (void)updateArticleLayouts:(id)layouts;
 - (void)updatePageControlFrame;
 @end
 
 @implementation PKDiscoveryGalleryView
 
-+ ($7D24B5AD5894795FD85A0EE1D817D743)_welcomeStateForState:(id *)a3
++ ($7D24B5AD5894795FD85A0EE1D817D743)_welcomeStateForState:(id *)state
 {
-  v3 = *(&a3->var0 + 16);
-  if ((*(a3 + 24) & 2) != 0)
+  v3 = *(&state->var0 + 16);
+  if ((*(state + 24) & 2) != 0)
   {
     v4 = (v3 & 2) == 0;
     if ((v3 & 4) != 0)
@@ -75,27 +75,27 @@
   return (v5 | v4);
 }
 
-+ (BOOL)isWelcomeCardVisibleForSectionsState:(id *)a3
++ (BOOL)isWelcomeCardVisibleForSectionsState:(id *)state
 {
-  v3 = *(&a3->var0 + 1);
-  v7[0] = *&a3->var0.var0;
+  v3 = *(&state->var0 + 1);
+  v7[0] = *&state->var0.var0;
   v7[1] = v3;
-  v4 = [a1 _welcomeStateForState:v7];
+  v4 = [self _welcomeStateForState:v7];
   return (v4 | (v4 >> 1)) & 1;
 }
 
-+ (BOOL)isVisibleForSectionsState:(id *)a3 dataSource:(id)a4
++ (BOOL)isVisibleForSectionsState:(id *)state dataSource:(id)source
 {
-  if (a4)
+  if (source)
   {
-    v5 = *(&a3->var0 + 1);
-    v10 = *&a3->var0.var0;
+    v5 = *(&state->var0 + 1);
+    v10 = *&state->var0.var0;
     v11 = v5;
-    v6 = a4;
-    LOBYTE(a1) = [a1 _welcomeStateForState:&v10];
-    v7 = [v6 articleLayouts];
+    sourceCopy = source;
+    LOBYTE(self) = [self _welcomeStateForState:&v10];
+    articleLayouts = [sourceCopy articleLayouts];
 
-    v8 = ((a1 & 2 | (([v7 count] != 0) << 8)) != 0) | a1;
+    v8 = ((self & 2 | (([articleLayouts count] != 0) << 8)) != 0) | self;
   }
 
   else
@@ -106,7 +106,7 @@
   return v8 & 1;
 }
 
-- (PKDiscoveryGalleryView)initWithCardSizeType:(int64_t)a3
+- (PKDiscoveryGalleryView)initWithCardSizeType:(int64_t)type
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
@@ -134,9 +134,9 @@
     v16 = *&v8->_articleLayoutsUpdatedAfterEnteringForegroundActive;
     *&v8->_articleLayoutsUpdatedAfterEnteringForegroundActive = v15;
 
-    v8->_welcomeCardTemplateInformation = a3;
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKDiscoveryGalleryView *)v8 setBackgroundColor:v17];
+    v8->_welcomeCardTemplateInformation = type;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKDiscoveryGalleryView *)v8 setBackgroundColor:clearColor];
 
     v18 = [objc_alloc(MEMORY[0x1E69DCEF8]) initWithFrame:{v4, v5, v6, v7}];
     horizontalScrollView = v8->_horizontalScrollView;
@@ -155,10 +155,10 @@
 
     [(UIPageControl *)v8->_pageControl addTarget:v8 action:sel__pageControlChanged_ forControlEvents:4096];
     [(UIPageControl *)v8->_pageControl setHidden:1];
-    v22 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIPageControl *)v8->_pageControl setCurrentPageIndicatorTintColor:v22];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIPageControl *)v8->_pageControl setCurrentPageIndicatorTintColor:labelColor];
     v23 = v8->_pageControl;
-    v24 = [v22 colorWithAlphaComponent:0.3];
+    v24 = [labelColor colorWithAlphaComponent:0.3];
     [(UIPageControl *)v23 setPageIndicatorTintColor:v24];
 
     [(PKDiscoveryGalleryView *)v8 _updatePageControlVisibilityWithDelay:0.0];
@@ -215,9 +215,9 @@ void __47__PKDiscoveryGalleryView_initWithCardSizeType___block_invoke(uint64_t a
   [(PKDiscoveryGalleryView *)&v4 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDiscoveryGalleryView *)self _cardSize:a3.width];
+  [(PKDiscoveryGalleryView *)self _cardSize:fits.width];
   v5 = v4;
   v7 = v6 + 6.0 + 6.0;
   v8 = [(NSMutableArray *)self->_allActiveDiscoveryCards count];
@@ -267,8 +267,8 @@ void __47__PKDiscoveryGalleryView_initWithCardSizeType___block_invoke(uint64_t a
     [(PKDiscoveryGalleryView *)self _contentSize];
     v21 = v20;
     v23 = v22;
-    v24 = [(UIScrollView *)self->_horizontalScrollView isScrollAnimating];
-    if (v24)
+    isScrollAnimating = [(UIScrollView *)self->_horizontalScrollView isScrollAnimating];
+    if (isScrollAnimating)
     {
       v25 = v17;
     }
@@ -278,7 +278,7 @@ void __47__PKDiscoveryGalleryView_initWithCardSizeType___block_invoke(uint64_t a
       v25 = v21;
     }
 
-    if (v24)
+    if (isScrollAnimating)
     {
       v23 = v19;
     }
@@ -331,15 +331,15 @@ void __40__PKDiscoveryGalleryView_layoutSubviews__block_invoke(double *a1, void 
   [v8 setFrame:{v5, 0.0, v6, v7}];
 }
 
-- (void)updateArticleLayouts:(id)a3
+- (void)updateArticleLayouts:(id)layouts
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  layoutsCopy = layouts;
+  v5 = layoutsCopy;
   if (!self->_pendingDeletes)
   {
     v6 = *(&self->_layoutState.cards.welcome + 1);
-    if ([v4 count])
+    if ([layoutsCopy count])
     {
       v7 = (*(&self->_layoutState.cards.welcome + 1) & 0xFE) + 1;
     }
@@ -355,7 +355,7 @@ void __40__PKDiscoveryGalleryView_layoutSubviews__block_invoke(double *a1, void 
     {
       if (LOBYTE(self->_lastTimeForegroundActive))
       {
-        v8 = 0;
+        itemIdentifier = 0;
       }
 
       else
@@ -365,13 +365,13 @@ void __40__PKDiscoveryGalleryView_layoutSubviews__block_invoke(double *a1, void 
         v13 = 0u;
         v14 = 0u;
         v9 = v5;
-        v8 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
-        if (v8)
+        itemIdentifier = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        if (itemIdentifier)
         {
           v10 = *v14;
           while (2)
           {
-            for (i = 0; i != v8; i = i + 1)
+            for (i = 0; i != itemIdentifier; i = i + 1)
             {
               if (*v14 != v10)
               {
@@ -381,13 +381,13 @@ void __40__PKDiscoveryGalleryView_layoutSubviews__block_invoke(double *a1, void 
               v12 = *(*(&v13 + 1) + 8 * i);
               if ([v12 hasRequestedBadge])
               {
-                v8 = [v12 itemIdentifier];
+                itemIdentifier = [v12 itemIdentifier];
                 goto LABEL_20;
               }
             }
 
-            v8 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
-            if (v8)
+            itemIdentifier = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+            if (itemIdentifier)
             {
               continue;
             }
@@ -399,17 +399,17 @@ void __40__PKDiscoveryGalleryView_layoutSubviews__block_invoke(double *a1, void 
 LABEL_20:
       }
 
-      [(PKDiscoveryGalleryView *)self _updateDiscoveryCardViewsForUpdatedArticleLayouts:v5 overrideFrontmostCardToIdentifier:v8 animated:1, v13];
+      [(PKDiscoveryGalleryView *)self _updateDiscoveryCardViewsForUpdatedArticleLayouts:v5 overrideFrontmostCardToIdentifier:itemIdentifier animated:1, v13];
     }
 
     LOBYTE(self->_lastTimeForegroundActive) = 1;
   }
 }
 
-- (id)cardViewForCardWithItemIdentifier:(id)a3
+- (id)cardViewForCardWithItemIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -435,28 +435,28 @@ LABEL_20:
       }
 
       v10 = *(*(&v18 + 1) + 8 * i);
-      v11 = [v10 articleLayout];
-      v12 = [v11 itemIdentifier];
-      v13 = v4;
+      articleLayout = [v10 articleLayout];
+      itemIdentifier = [articleLayout itemIdentifier];
+      v13 = identifierCopy;
       v14 = v13;
-      if (v12 == v13)
+      if (itemIdentifier == v13)
       {
 
 LABEL_12:
-        v11 = v7;
+        articleLayout = v7;
         v7 = v10;
 LABEL_14:
 
         continue;
       }
 
-      if (!v4 || !v12)
+      if (!identifierCopy || !itemIdentifier)
       {
 
         goto LABEL_14;
       }
 
-      v15 = [v12 isEqualToString:v13];
+      v15 = [itemIdentifier isEqualToString:v13];
 
       if (v15)
       {
@@ -473,14 +473,14 @@ LABEL_19:
   return v7;
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v6 = a3;
+  arbiterCopy = arbiter;
   v7 = BYTE1(self->_lastReportedDiscoveryItemIdentifier);
-  LOWORD(self->_lastReportedDiscoveryItemIdentifier) = a4;
+  LOWORD(self->_lastReportedDiscoveryItemIdentifier) = state;
   if (v7)
   {
-    if ((*&a4 & 0x100) == 0)
+    if ((*&state & 0x100) == 0)
     {
       LOBYTE(self->_cardSize) = 3;
     }
@@ -488,8 +488,8 @@ LABEL_19:
 
   else
   {
-    v11 = v6;
-    if ((*&a4 & 0x100) != 0)
+    v11 = arbiterCopy;
+    if ((*&state & 0x100) != 0)
     {
       Current = CFAbsoluteTimeGetCurrent();
       v9 = Current;
@@ -501,11 +501,11 @@ LABEL_19:
 
       *&self->_foregroundState.foreground = v9;
       LOBYTE(self->_lastTimeForegroundActive) = 0;
-      v6 = v11;
+      arbiterCopy = v11;
       if (!LOBYTE(self->_cardSize))
       {
         [(PKDiscoveryGalleryView *)self _updateCardSizeIfNecessary];
-        v6 = v11;
+        arbiterCopy = v11;
       }
 
       LOBYTE(self->_cardSize) = 2;
@@ -515,7 +515,7 @@ LABEL_19:
     {
       LOBYTE(self->_cardSize) = 0;
       [(PKDiscoveryGalleryView *)self _updateCardSizeIfNecessary];
-      v6 = v11;
+      arbiterCopy = v11;
     }
   }
 }
@@ -531,8 +531,8 @@ LABEL_19:
       return;
     }
 
-    v3 = [*&self->_visibilityState articleLayouts];
-    v4 = [v3 pk_containsObjectPassingTest:&__block_literal_global_48];
+    articleLayouts = [*&self->_visibilityState articleLayouts];
+    v4 = [articleLayouts pk_containsObjectPassingTest:&__block_literal_global_48];
 
     welcomeCardTemplateInformation = self->_welcomeCardTemplateInformation;
     if ((v4 & 1) != 0 || self->_paymentWelcomeView)
@@ -645,20 +645,20 @@ LABEL_14:
   }
 }
 
-- (void)_updateDiscoveryCardViewsForUpdatedArticleLayouts:(id)a3 overrideFrontmostCardToIdentifier:(id)a4 animated:(BOOL)a5
+- (void)_updateDiscoveryCardViewsForUpdatedArticleLayouts:(id)layouts overrideFrontmostCardToIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v30 = a5;
+  animatedCopy = animated;
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v31 = a4;
-  v8 = [v7 count];
+  layoutsCopy = layouts;
+  identifierCopy = identifier;
+  v8 = [layoutsCopy count];
   v9 = v8 != [(NSMutableArray *)self->_activeDiscoveryCards count];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v7;
+  obj = layoutsCopy;
   v11 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v11)
   {
@@ -674,8 +674,8 @@ LABEL_14:
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 itemIdentifier];
-        v17 = [(PKDiscoveryGalleryView *)self _indexForCardViewWithIdentifier:v16];
+        itemIdentifier = [v15 itemIdentifier];
+        v17 = [(PKDiscoveryGalleryView *)self _indexForCardViewWithIdentifier:itemIdentifier];
 
         if (v17 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -688,7 +688,7 @@ LABEL_14:
         else
         {
           v18 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndex:v17];
-          v19 = [(PKDiscoveryCardView *)v18 articleLayout];
+          articleLayout = [(PKDiscoveryCardView *)v18 articleLayout];
           [(PKDiscoveryCardView *)v18 setArticleLayout:v15];
           if (v9)
           {
@@ -697,15 +697,15 @@ LABEL_14:
 
           else
           {
-            v9 = [v19 isEqualForUI:v15] ^ 1;
+            v9 = [articleLayout isEqualForUI:v15] ^ 1;
           }
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v15 actionOnDismiss];
-          [(PKDiscoveryCardView *)v18 setDismissAction:v20];
+          actionOnDismiss = [v15 actionOnDismiss];
+          [(PKDiscoveryCardView *)v18 setDismissAction:actionOnDismiss];
         }
 
         [(NSMutableArray *)v10 addObject:v18];
@@ -756,20 +756,20 @@ LABEL_14:
 
   if (v9)
   {
-    v28 = v31;
-    [(PKDiscoveryGalleryView *)self _updateCardViewsAnimated:v30 overrideFrontmostCardToIdentifier:v31];
+    v28 = identifierCopy;
+    [(PKDiscoveryGalleryView *)self _updateCardViewsAnimated:animatedCopy overrideFrontmostCardToIdentifier:identifierCopy];
 LABEL_30:
     [(PKDiscoveryGalleryView *)self _reportCurrentDiscoveryCardToDiscoveryService];
     goto LABEL_31;
   }
 
-  v28 = v31;
-  if (v31)
+  v28 = identifierCopy;
+  if (identifierCopy)
   {
-    v29 = [(PKDiscoveryGalleryView *)self _indexForCardViewWithIdentifier:v31];
+    v29 = [(PKDiscoveryGalleryView *)self _indexForCardViewWithIdentifier:identifierCopy];
     if (v29 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(PKDiscoveryGalleryView *)self _updateScrollViewToCardIndex:v29 animated:v30];
+      [(PKDiscoveryGalleryView *)self _updateScrollViewToCardIndex:v29 animated:animatedCopy];
       goto LABEL_30;
     }
   }
@@ -777,22 +777,22 @@ LABEL_30:
 LABEL_31:
 }
 
-- (void)_updateCardViewsAnimated:(BOOL)a3 overrideFrontmostCardToIdentifier:(id)a4
+- (void)_updateCardViewsAnimated:(BOOL)animated overrideFrontmostCardToIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PKDiscoveryGalleryView *)self displayIndex];
+  animatedCopy = animated;
+  identifierCopy = identifier;
+  displayIndex = [(PKDiscoveryGalleryView *)self displayIndex];
   v8 = [(NSMutableArray *)self->_allActiveDiscoveryCards count];
-  if (v6)
+  if (identifierCopy)
   {
-    v9 = v6;
+    itemIdentifier = identifierCopy;
   }
 
   else
   {
     if (v8)
     {
-      v10 = v7 >= v8;
+      v10 = displayIndex >= v8;
     }
 
     else
@@ -802,14 +802,14 @@ LABEL_31:
 
     if (v10)
     {
-      v9 = 0;
+      itemIdentifier = 0;
     }
 
     else
     {
-      v11 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndexedSubscript:v7];
-      v12 = [v11 articleLayout];
-      v9 = [v12 itemIdentifier];
+      v11 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndexedSubscript:displayIndex];
+      articleLayout = [v11 articleLayout];
+      itemIdentifier = [articleLayout itemIdentifier];
     }
   }
 
@@ -818,12 +818,12 @@ LABEL_31:
   aBlock[2] = __85__PKDiscoveryGalleryView__updateCardViewsAnimated_overrideFrontmostCardToIdentifier___block_invoke;
   aBlock[3] = &unk_1E8012C50;
   aBlock[4] = self;
-  v22 = v7;
-  v13 = v9;
+  v22 = displayIndex;
+  v13 = itemIdentifier;
   v21 = v13;
   v14 = _Block_copy(aBlock);
   v15 = v14;
-  if (v4)
+  if (animatedCopy)
   {
     v16 = MEMORY[0x1E69DD250];
     v19[0] = MEMORY[0x1E69E9820];
@@ -897,9 +897,9 @@ uint64_t __85__PKDiscoveryGalleryView__updateCardViewsAnimated_overrideFrontmost
   welcome = self->_layoutState.cards.welcome;
   if ((welcome & 1) != 0 && !self->_paymentWelcomeView)
   {
-    v9 = [(PKDiscoveryGalleryView *)self _createPaymentWelcomeCardView];
+    _createPaymentWelcomeCardView = [(PKDiscoveryGalleryView *)self _createPaymentWelcomeCardView];
     paymentWelcomeView = self->_paymentWelcomeView;
-    self->_paymentWelcomeView = v9;
+    self->_paymentWelcomeView = _createPaymentWelcomeCardView;
 
     [(UIScrollView *)self->_horizontalScrollView addSubview:self->_paymentWelcomeView];
     v5 = self->_layoutState.cards.welcome;
@@ -942,9 +942,9 @@ uint64_t __85__PKDiscoveryGalleryView__updateCardViewsAnimated_overrideFrontmost
 
     else
     {
-      v11 = [(PKDiscoveryGalleryView *)self _createPassWelcomeCardView];
+      _createPassWelcomeCardView = [(PKDiscoveryGalleryView *)self _createPassWelcomeCardView];
       v12 = self->_passWelcomeView;
-      self->_passWelcomeView = v11;
+      self->_passWelcomeView = _createPassWelcomeCardView;
 
       [(UIScrollView *)self->_horizontalScrollView addSubview:self->_passWelcomeView];
       v4 = 1;
@@ -977,13 +977,13 @@ uint64_t __85__PKDiscoveryGalleryView__updateCardViewsAnimated_overrideFrontmost
         }
 
         v18 = *(*(&v27 + 1) + 8 * i);
-        v19 = [v18 priority];
+        priority = [v18 priority];
         if ((welcome & 1) == 0)
         {
           goto LABEL_23;
         }
 
-        if ([(PKDiscoveryCardView *)self->_paymentWelcomeView priority]>= v19)
+        if ([(PKDiscoveryCardView *)self->_paymentWelcomeView priority]>= priority)
         {
           [(NSMutableArray *)self->_allActiveDiscoveryCards addObject:self->_paymentWelcomeView];
 LABEL_23:
@@ -1003,7 +1003,7 @@ LABEL_23:
         }
 
 LABEL_24:
-        if ([(PKDiscoveryCardView *)self->_passWelcomeView priority]< v19)
+        if ([(PKDiscoveryCardView *)self->_passWelcomeView priority]< priority)
         {
           v6 = 1;
           goto LABEL_28;
@@ -1051,20 +1051,20 @@ LABEL_36:
     [(PKDiscoveryGalleryView *)self _updateCardSizeIfNecessary];
   }
 
-  v20 = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
   allActiveDiscoveryCards = self->_allActiveDiscoveryCards;
-  if (v20)
+  if (_shouldReverseLayoutDirection)
   {
-    v22 = [(NSMutableArray *)allActiveDiscoveryCards reverseObjectEnumerator];
-    v23 = [v22 allObjects];
+    reverseObjectEnumerator = [(NSMutableArray *)allActiveDiscoveryCards reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
     displayedCardViews = self->_displayedCardViews;
-    self->_displayedCardViews = v23;
+    self->_displayedCardViews = allObjects;
   }
 
   else
   {
     v25 = [(NSMutableArray *)allActiveDiscoveryCards copy];
-    v22 = self->_displayedCardViews;
+    reverseObjectEnumerator = self->_displayedCardViews;
     self->_displayedCardViews = v25;
   }
 
@@ -1116,9 +1116,9 @@ void __42__PKDiscoveryGalleryView__updateCardViews__block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (unint64_t)_indexForCardViewWithIdentifier:(id)a3
+- (unint64_t)_indexForCardViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1128,7 +1128,7 @@ void __42__PKDiscoveryGalleryView__updateCardViews__block_invoke(uint64_t a1, vo
   v9[1] = 3221225472;
   v9[2] = __58__PKDiscoveryGalleryView__indexForCardViewWithIdentifier___block_invoke;
   v9[3] = &unk_1E801D550;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)allActiveDiscoveryCards enumerateObjectsUsingBlock:v9];
@@ -1151,28 +1151,28 @@ void __58__PKDiscoveryGalleryView__indexForCardViewWithIdentifier___block_invoke
   }
 }
 
-- (void)_removeCardView:(id)a3 animated:(BOOL)a4
+- (void)_removeCardView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke;
   aBlock[3] = &unk_1E8013D60;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = viewCopy;
   v13 = v7;
-  v14 = v4;
+  v14 = animatedCopy;
   v8 = _Block_copy(aBlock);
-  if (v4)
+  if (animatedCopy)
   {
-    v9 = [v7 superview];
+    superview = [v7 superview];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6;
     v10[3] = &unk_1E8010AD8;
     v11 = v8;
-    [PKPassDeleteAnimationController performPassbookDeleteWithView:v7 inSuperview:v9 completion:v10];
+    [PKPassDeleteAnimationController performPassbookDeleteWithView:v7 inSuperview:superview completion:v10];
   }
 
   else
@@ -1418,8 +1418,8 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
 
 - (BOOL)_requestDismissalIfNecessaryAfterLayoutStateUpdate
 {
-  v3 = [(PKDiscoveryGalleryView *)self needsRemoval];
-  if (v3)
+  needsRemoval = [(PKDiscoveryGalleryView *)self needsRemoval];
+  if (needsRemoval)
   {
     WeakRetained = objc_loadWeakRetained(&self->_subheaderDelegate);
     v5 = WeakRetained;
@@ -1429,19 +1429,19 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
     }
   }
 
-  return v3;
+  return needsRemoval;
 }
 
-- (void)_updateScrollViewToCardIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_updateScrollViewToCardIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
+  animatedCopy = animated;
+  _shouldReverseLayoutDirection = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
   v8 = [(NSArray *)self->_displayedCardViews count];
-  v9 = v8 - 1;
-  v10 = v8 - 1 - a3;
-  if (v8 - 1 >= a3)
+  indexCopy = v8 - 1;
+  v10 = v8 - 1 - index;
+  if (v8 - 1 >= index)
   {
-    v9 = a3;
+    indexCopy = index;
   }
 
   if (!v8)
@@ -1449,26 +1449,26 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
     v10 = 0;
   }
 
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
-    v9 = v10;
+    indexCopy = v10;
   }
 
-  v11 = v9;
+  v11 = indexCopy;
   [(UIScrollView *)self->_horizontalScrollView bounds];
   v12 = CGRectGetWidth(v15) * v11;
   horizontalScrollView = self->_horizontalScrollView;
 
-  [(UIScrollView *)horizontalScrollView setContentOffset:v4 animated:v12, 0.0];
+  [(UIScrollView *)horizontalScrollView setContentOffset:animatedCopy animated:v12, 0.0];
 }
 
-- (void)_pageControlChanged:(id)a3
+- (void)_pageControlChanged:(id)changed
 {
-  v4 = [(PKDiscoveryGalleryView *)self displayIndex];
-  v5 = [(UIPageControl *)self->_pageControl currentPage];
-  if (v4 != v5)
+  displayIndex = [(PKDiscoveryGalleryView *)self displayIndex];
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
+  if (displayIndex != currentPage)
   {
-    [(PKDiscoveryGalleryView *)self _updateScrollViewToCardIndex:v5 animated:1];
+    [(PKDiscoveryGalleryView *)self _updateScrollViewToCardIndex:currentPage animated:1];
 
     [(PKDiscoveryGalleryView *)self _reportCurrentDiscoveryCardToDiscoveryService];
   }
@@ -1495,16 +1495,16 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
 
 - (void)_updatePageControlWithDisplayIndex
 {
-  v3 = [(PKDiscoveryGalleryView *)self displayIndex];
-  if (v3 != [(UIPageControl *)self->_pageControl currentPage])
+  displayIndex = [(PKDiscoveryGalleryView *)self displayIndex];
+  if (displayIndex != [(UIPageControl *)self->_pageControl currentPage])
   {
-    [(UIPageControl *)self->_pageControl setCurrentPage:v3];
+    [(UIPageControl *)self->_pageControl setCurrentPage:displayIndex];
 
     [(PKDiscoveryGalleryView *)self _reportCurrentDiscoveryCardToDiscoveryService];
   }
 }
 
-- (void)_updatePageControlVisibilityWithDelay:(double)a3
+- (void)_updatePageControlVisibilityWithDelay:(double)delay
 {
   v5 = [(NSMutableArray *)self->_allActiveDiscoveryCards count];
   [(UIPageControl *)self->_pageControl setHidden:v5 < 2];
@@ -1524,8 +1524,8 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
   }
 
   [(PKDiscoveryGalleryView *)self updatePageControlFrame];
-  v13 = [(UIPageControl *)self->_pageControl layer];
-  [v13 opacity];
+  layer = [(UIPageControl *)self->_pageControl layer];
+  [layer opacity];
   v6 = v5 > 1;
   v7 = *&v8;
   HIDWORD(v8) = 0;
@@ -1542,19 +1542,19 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
   if (v7 == v9)
   {
     *&v8 = v6;
-    [v13 setOpacity:v8];
+    [layer setOpacity:v8];
   }
 
   else
   {
     v10 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
     [v10 pkui_updateForAdditiveAnimationFromScalar:v7 toScalar:v9];
-    [v10 setBeginTime:a3];
+    [v10 setBeginTime:delay];
     *&v11 = v6;
-    [v13 setOpacity:v11];
+    [layer setOpacity:v11];
     if (v10)
     {
-      v12 = [v13 pkui_addAdditiveAnimation:v10];
+      v12 = [layer pkui_addAdditiveAnimation:v10];
     }
   }
 }
@@ -1567,43 +1567,43 @@ uint64_t __51__PKDiscoveryGalleryView__removeCardView_animated___block_invoke_6(
   }
 
   v3 = [(NSMutableArray *)self->_allActiveDiscoveryCards count];
-  v4 = [(PKDiscoveryGalleryView *)self displayIndex];
+  displayIndex = [(PKDiscoveryGalleryView *)self displayIndex];
   if (v3 < 1)
   {
     return;
   }
 
-  v5 = v4;
-  if (v4 < 0 || v4 >= v3)
+  v5 = displayIndex;
+  if (displayIndex < 0 || displayIndex >= v3)
   {
     return;
   }
 
-  v17 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndex:v4];
-  v6 = [(PKDiscoveryCardView *)v17 articleLayout];
-  v7 = [v6 card];
-  v8 = [v7 callToAction];
-  v9 = [v8 action];
+  v17 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndex:displayIndex];
+  articleLayout = [(PKDiscoveryCardView *)v17 articleLayout];
+  card = [articleLayout card];
+  callToAction = [card callToAction];
+  action = [callToAction action];
 
-  v10 = [v6 itemIdentifier];
+  itemIdentifier = [articleLayout itemIdentifier];
   if (v17 == self->_paymentWelcomeView || v17 == self->_passWelcomeView)
   {
     v15 = *&self->_visibilityState;
-    v16 = [v6 item];
-    [v15 displayedDiscoveryItem:v16 isWelcomeCard:1 afterSwipingToCard:v5 != 0 multipleStoryCardsAvailable:v3 > 1 callToAction:v9 cardSize:self->_welcomeCardTemplateInformation];
+    item = [articleLayout item];
+    [v15 displayedDiscoveryItem:item isWelcomeCard:1 afterSwipingToCard:v5 != 0 multipleStoryCardsAvailable:v3 > 1 callToAction:action cardSize:self->_welcomeCardTemplateInformation];
 
     v14 = *(&self->_layoutState + 1);
     *(&self->_layoutState + 1) = 0;
     goto LABEL_11;
   }
 
-  if (([v10 isEqualToString:*(&self->_layoutState + 1)] & 1) == 0)
+  if (([itemIdentifier isEqualToString:*(&self->_layoutState + 1)] & 1) == 0)
   {
     v11 = *&self->_visibilityState;
-    v12 = [v6 item];
-    [v11 displayedDiscoveryItem:v12 isWelcomeCard:0 afterSwipingToCard:v5 != 0 multipleStoryCardsAvailable:v3 > 1 callToAction:v9 cardSize:self->_welcomeCardTemplateInformation];
+    item2 = [articleLayout item];
+    [v11 displayedDiscoveryItem:item2 isWelcomeCard:0 afterSwipingToCard:v5 != 0 multipleStoryCardsAvailable:v3 > 1 callToAction:action cardSize:self->_welcomeCardTemplateInformation];
 
-    v13 = v10;
+    v13 = itemIdentifier;
     v14 = *(&self->_layoutState + 1);
     *(&self->_layoutState + 1) = v13;
 LABEL_11:
@@ -1612,7 +1612,7 @@ LABEL_11:
 
 - (unint64_t)displayIndex
 {
-  v3 = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKDiscoveryGalleryView *)self _shouldReverseLayoutDirection];
   [(UIScrollView *)self->_horizontalScrollView bounds];
   v5 = v4;
   v7 = v6;
@@ -1624,7 +1624,7 @@ LABEL_11:
   v16.size.width = v9;
   v16.size.height = v11;
   v13 = fmax(fmin(CGRectGetMidX(v16) / v9, (v12 - 1)), 0.0);
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v14 = [(NSArray *)self->_displayedCardViews count];
     if (v14)
@@ -1646,23 +1646,23 @@ LABEL_11:
   if ([(NSMutableArray *)self->_allActiveDiscoveryCards count])
   {
     v3 = [(NSMutableArray *)self->_allActiveDiscoveryCards objectAtIndexedSubscript:[(PKDiscoveryGalleryView *)self displayIndex]];
-    v4 = [v3 articleLayout];
-    v5 = [v4 itemIdentifier];
+    articleLayout = [v3 articleLayout];
+    itemIdentifier = [articleLayout itemIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    itemIdentifier = 0;
   }
 
-  return v5;
+  return itemIdentifier;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  if (self->_horizontalScrollView == a3)
+  if (self->_horizontalScrollView == scroll)
   {
-    if (([a3 isScrollAnimating] & 1) == 0)
+    if (([scroll isScrollAnimating] & 1) == 0)
     {
       [(PKDiscoveryGalleryView *)self _updatePageControlWithDisplayIndex];
     }
@@ -1671,9 +1671,9 @@ LABEL_11:
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (self->_horizontalScrollView == a3 && !a4)
+  if (self->_horizontalScrollView == dragging && !decelerate)
   {
     [(PKDiscoveryGalleryView *)self _updatePageControlWithDisplayIndex];
 
@@ -1681,9 +1681,9 @@ LABEL_11:
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (self->_horizontalScrollView == a3)
+  if (self->_horizontalScrollView == decelerating)
   {
     [(PKDiscoveryGalleryView *)self _updatePageControlWithDisplayIndex];
 
@@ -1691,9 +1691,9 @@ LABEL_11:
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  if (self->_horizontalScrollView == a3)
+  if (self->_horizontalScrollView == animation)
   {
     [(PKDiscoveryGalleryView *)self _contentSize];
     v5 = v4;
@@ -1710,22 +1710,22 @@ LABEL_11:
   }
 }
 
-- (void)discoveryCardViewTapped:(id)a3
+- (void)discoveryCardViewTapped:(id)tapped
 {
-  v20 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_subheaderDelegate);
   if (WeakRetained)
   {
-    v5 = [v20 articleLayout];
-    v6 = [[PKDiscoveryArticleViewController alloc] initWithArticleLayout:v5 referrerIdentifier:0 cardSize:self->_welcomeCardTemplateInformation];
+    articleLayout = [tappedCopy articleLayout];
+    v6 = [[PKDiscoveryArticleViewController alloc] initWithArticleLayout:articleLayout referrerIdentifier:0 cardSize:self->_welcomeCardTemplateInformation];
     v7 = [[PKNavigationController alloc] initWithRootViewController:v6];
     [(PKDiscoveryArticleViewController *)v6 setDelegate:self];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v20;
-      v9 = [v8 callToActionTappedOverride];
-      [(PKDiscoveryArticleViewController *)v6 setCallToActionTappedOverride:v9];
+      v8 = tappedCopy;
+      callToActionTappedOverride = [v8 callToActionTappedOverride];
+      [(PKDiscoveryArticleViewController *)v6 setCallToActionTappedOverride:callToActionTappedOverride];
 
       v10 = [(PKDiscoveryArticleViewController *)v6 defaultZoomTransitionForDiscoveryCardView:v8];
 
@@ -1733,7 +1733,7 @@ LABEL_11:
     }
 
     [WeakRetained groupStackViewSectionSubheaderView:self transitionToViewController:v7];
-    v11 = [(NSMutableArray *)self->_allActiveDiscoveryCards indexOfObject:v20]!= 0;
+    v11 = [(NSMutableArray *)self->_allActiveDiscoveryCards indexOfObject:tappedCopy]!= 0;
     v12 = [(NSMutableArray *)self->_activeDiscoveryCards count];
     if (self->_passWelcomeView)
     {
@@ -1755,26 +1755,26 @@ LABEL_11:
       v14 = v13;
     }
 
-    v15 = [v5 card];
-    v16 = [v15 callToAction];
-    v17 = [v16 action];
+    card = [articleLayout card];
+    callToAction = [card callToAction];
+    action = [callToAction action];
 
-    v18 = [MEMORY[0x1E69B87F0] sharedInstance];
-    v19 = [v5 itemIdentifier];
-    [v18 expandedDiscoveryItemWithIdentifier:v19 callToAction:v17 afterSwipingToCard:v11 multipleStoryCardsAvailable:v14 > 1 cardSize:self->_welcomeCardTemplateInformation];
+    mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+    itemIdentifier = [articleLayout itemIdentifier];
+    [mEMORY[0x1E69B87F0] expandedDiscoveryItemWithIdentifier:itemIdentifier callToAction:action afterSwipingToCard:v11 multipleStoryCardsAvailable:v14 > 1 cardSize:self->_welcomeCardTemplateInformation];
   }
 }
 
-- (void)discoveryCardViewRemoveTapped:(id)a3
+- (void)discoveryCardViewRemoveTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tappedCopy = tapped;
+  v5 = tappedCopy;
+  if (tappedCopy)
   {
-    v7 = v4;
-    v6 = [v4 isRemoving];
+    v7 = tappedCopy;
+    isRemoving = [tappedCopy isRemoving];
     v5 = v7;
-    if ((v6 & 1) == 0)
+    if ((isRemoving & 1) == 0)
     {
       [v7 setRemoving:1];
       [(PKDiscoveryGalleryView *)self _removeCardView:v7 animated:1];
@@ -1783,32 +1783,32 @@ LABEL_11:
   }
 }
 
-- (void)discoveryCardViewCTATapped:(id)a3 callToAction:(id)a4 itemIdentifier:(id)a5
+- (void)discoveryCardViewCTATapped:(id)tapped callToAction:(id)action itemIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 action];
+  tappedCopy = tapped;
+  actionCopy = action;
+  identifierCopy = identifier;
+  action = [actionCopy action];
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v33 = v11;
+    v33 = action;
     _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Gallery view CTA (action=%ld) tapped", buf, 0xCu);
   }
 
-  v13 = [(PKDiscoveryGalleryView *)self cardViewForCardWithItemIdentifier:v10];
+  v13 = [(PKDiscoveryGalleryView *)self cardViewForCardWithItemIdentifier:identifierCopy];
 
-  v14 = [v13 articleLayout];
-  v15 = [v14 item];
+  articleLayout = [v13 articleLayout];
+  item = [articleLayout item];
 
-  [*&self->_visibilityState tappedDiscoveryItem:v15 callToAction:v9 cardSize:self->_welcomeCardTemplateInformation];
-  v16 = [(UIView *)self pkui_viewControllerFromResponderChain];
+  [*&self->_visibilityState tappedDiscoveryItem:item callToAction:actionCopy cardSize:self->_welcomeCardTemplateInformation];
+  pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v16;
+    v17 = pkui_viewControllerFromResponderChain;
   }
 
   else
@@ -1817,19 +1817,19 @@ LABEL_11:
   }
 
   v18 = v17;
-  if (v11 <= 5)
+  if (action <= 5)
   {
-    if (v11 >= 4)
+    if (action >= 4)
     {
-      if (v11 != 4)
+      if (action != 4)
       {
-        if (v11 != 5)
+        if (action != 5)
         {
           goto LABEL_17;
         }
 
-        v28 = [MEMORY[0x1E69B87F0] sharedInstance];
-        [v28 completedDiscoveryItemCTAWithCompletion:0];
+        mEMORY[0x1E69B87F0] = [MEMORY[0x1E69B87F0] sharedInstance];
+        [mEMORY[0x1E69B87F0] completedDiscoveryItemCTAWithCompletion:0];
       }
 
       goto LABEL_9;
@@ -1838,61 +1838,61 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v11 <= 0xC)
+  if (action <= 0xC)
   {
-    if (((1 << v11) & 0x16C0) != 0)
+    if (((1 << action) & 0x16C0) != 0)
     {
 LABEL_9:
-      v19 = [v9 actionURL];
-      v20 = v19;
-      if (v19)
+      actionURL = [actionCopy actionURL];
+      appStoreAppIdentifier = actionURL;
+      if (actionURL)
       {
-        v12 = [v19 url];
-        [v20 isSensitive];
+        v12 = [actionURL url];
+        [appStoreAppIdentifier isSensitive];
         PKOpenURL();
       }
 
       else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v33 = v11;
+        v33 = action;
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "Failed to perform actionType %ld as no URL exists", buf, 0xCu);
       }
 
       goto LABEL_16;
     }
 
-    if (v11 == 8)
+    if (action == 8)
     {
-      v20 = [v9 appStoreAppIdentifier];
-      [v18 presentAppStorePageForItemWithIdentifier:v20];
+      appStoreAppIdentifier = [actionCopy appStoreAppIdentifier];
+      [v18 presentAppStorePageForItemWithIdentifier:appStoreAppIdentifier];
       goto LABEL_16;
     }
 
-    if (v11 != 11)
+    if (action != 11)
     {
       goto LABEL_17;
     }
 
 LABEL_12:
-    v30 = [v9 paymentSetupMode];
-    v20 = [v9 referrerIdentifier];
+    paymentSetupMode = [actionCopy paymentSetupMode];
+    appStoreAppIdentifier = [actionCopy referrerIdentifier];
     v29 = *MEMORY[0x1E69BB0D8];
-    [v9 paymentNetworks];
-    v31 = v15;
-    v22 = v21 = v8;
-    v23 = [v9 transitNetworkIdentifiers];
-    [v9 allowedFeatureIdentifiers];
+    [actionCopy paymentNetworks];
+    v31 = item;
+    v22 = v21 = tappedCopy;
+    transitNetworkIdentifiers = [actionCopy transitNetworkIdentifiers];
+    [actionCopy allowedFeatureIdentifiers];
     v25 = v24 = v13;
-    [v9 productIdentifiers];
+    [actionCopy productIdentifiers];
     v27 = v26 = v18;
-    [v26 startPaymentPreflight:v21 withPaymentSetupMode:v30 referrerIdentifier:v20 referralSource:v29 campaignIdentifier:0 paymentNetworks:v22 transitNetworkIdentifiers:v23 allowedFeatureIdentifiers:v25 productIdentifiers:v27 sectionIdentifier:0];
+    [v26 startPaymentPreflight:v21 withPaymentSetupMode:paymentSetupMode referrerIdentifier:appStoreAppIdentifier referralSource:v29 campaignIdentifier:0 paymentNetworks:v22 transitNetworkIdentifiers:transitNetworkIdentifiers allowedFeatureIdentifiers:v25 productIdentifiers:v27 sectionIdentifier:0];
 
     v18 = v26;
     v13 = v24;
 
-    v8 = v21;
-    v15 = v31;
+    tappedCopy = v21;
+    item = v31;
 LABEL_16:
   }
 
@@ -1912,11 +1912,11 @@ LABEL_17:
   }
 }
 
-- (void)setSectionsState:(id *)a3
+- (void)setSectionsState:(id *)state
 {
   v5 = objc_opt_class();
-  v6 = *(&a3->var0 + 1);
-  v13[0] = *&a3->var0.var0;
+  v6 = *(&state->var0 + 1);
+  v13[0] = *&state->var0.var0;
   v13[1] = v6;
   v7 = [v5 _welcomeStateForState:v13];
   welcome = self->_layoutState.cards.welcome;
@@ -1925,7 +1925,7 @@ LABEL_17:
     v9 = v7;
     v10 = *(&self->_layoutState.cards.welcome + 1);
     *&self->_layoutState.cards.welcome = v7;
-    *(&self->_layoutState.cards.welcome + 2) = *(&self->_layoutState.cards.welcome + 2) & 0xFE | ((*(a3 + 24) & 2) != 0);
+    *(&self->_layoutState.cards.welcome + 2) = *(&self->_layoutState.cards.welcome + 2) & 0xFE | ((*(state + 24) & 2) != 0);
     if ((welcome & 1) != 0 && (v7 & 1) == 0)
     {
       [(PKDiscoveryCardView *)self->_paymentWelcomeView removeFromSuperview];
@@ -1965,8 +1965,8 @@ LABEL_17:
     v4 = 2.0;
   }
 
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695D9B0]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v6 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
 
   if (v6 && (([v6 isEqualToString:@"zh"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"ja") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"ko")))
   {
@@ -1995,12 +1995,12 @@ LABEL_17:
   v10 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0];
   v19[0] = v10;
   v18[1] = *MEMORY[0x1E69DB650];
-  v11 = [MEMORY[0x1E69DC888] blackColor];
-  v19[1] = v11;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v19[1] = blackColor;
   v18[2] = *MEMORY[0x1E69DB600];
-  v12 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   v13 = *MEMORY[0x1E69DB688];
-  v19[2] = v12;
+  v19[2] = clearColor;
   v19[3] = v8;
   v14 = *MEMORY[0x1E69DB6A8];
   v18[3] = v13;
@@ -2035,19 +2035,19 @@ LABEL_17:
   v31 = v6;
   v8 = [objc_alloc(MEMORY[0x1E69B87D8]) initWithDictionary:v6];
   [v8 setItem:v7];
-  v9 = [v7 identifier];
-  [v8 setItemIdentifier:v9];
+  identifier = [v7 identifier];
+  [v8 setItemIdentifier:identifier];
 
   [v8 setPriority:*MEMORY[0x1E69BB830]];
   v10 = PKPassKitBundle();
   [v8 localizeWithBundle:v10 table:*MEMORY[0x1E69BB838]];
 
-  v11 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   v12 = PKDeviceSupportsTransitWithWebService();
-  v13 = [(PKDiscoveryGalleryView *)self traitCollection];
-  v14 = [v13 userInterfaceIdiom];
+  traitCollection = [(PKDiscoveryGalleryView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (PKDeviceSupportsFelicaDebitWithWebService() || (v14 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+  if (PKDeviceSupportsFelicaDebitWithWebService() || (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 0)
   {
     v17 = PKWebServiceFeaturesCredential();
     if (!v12 || v17)
@@ -2080,8 +2080,8 @@ LABEL_17:
 
   if (v15)
   {
-    v19 = [v8 shelves];
-    v20 = [v19 objectAtIndexedSubscript:1];
+    shelves = [v8 shelves];
+    v20 = [shelves objectAtIndexedSubscript:1];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2097,8 +2097,8 @@ LABEL_17:
     if (!v21 || (v23 = [(__CFString *)v21 isEqualToString:@"US"], v22, v22, (v23 & 1) == 0))
     {
       v24 = PKLocalizedDiscoveryString(&cfstr_WelcomeCardPay_4.isa);
-      v25 = [v8 shelves];
-      v26 = [v25 objectAtIndexedSubscript:3];
+      shelves2 = [v8 shelves];
+      v26 = [shelves2 objectAtIndexedSubscript:3];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -2110,10 +2110,10 @@ LABEL_17:
 
   if (v16)
   {
-    v27 = [v8 card];
-    v28 = [v27 callToAction];
+    card = [v8 card];
+    callToAction = [card callToAction];
 
-    [v28 setLocalizedSubtitle:v16];
+    [callToAction setLocalizedSubtitle:v16];
   }
 
   v29 = [[PKDiscoveryCardView alloc] initWithArticleLayout:v8 cardTemplateInformation:*&self->_articleLayoutsUpdatedAfterEnteringForegroundActive isWelcomeCard:1];
@@ -2156,7 +2156,7 @@ LABEL_17:
   v20 = @"passWelcomeCard";
   v10 = v8;
   v21 = v10;
-  v22 = self;
+  selfCopy = self;
   v11 = _Block_copy(aBlock);
   v12 = [[PKDiscoveryCardView alloc] initWithArticleLayout:v10 cardTemplateInformation:*&self->_articleLayoutsUpdatedAfterEnteringForegroundActive isWelcomeCard:1];
   if (*(&self->_layoutState.cards.welcome + 2))
@@ -2260,17 +2260,17 @@ void __52__PKDiscoveryGalleryView__createPassWelcomeCardView__block_invoke_4(uin
 - (void)_scanCodePressed
 {
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9F00], 0);
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69BBC30]];
-  [v3 openSensitiveURL:v2 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0];
 }
 
 - (void)_appStorePressed
 {
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9F08], 0);
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69BBB68]];
-  [v3 openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  [mEMORY[0x1E69DC668] openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
 @end

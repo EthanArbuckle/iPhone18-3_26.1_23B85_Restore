@@ -1,109 +1,109 @@
 @interface NSSLocalesInfoRespMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDefaultCalendars:(id)a3;
-- (void)addLocaleIdentifiers:(id)a3;
-- (void)addNumberingSystems:(id)a3;
-- (void)addSupportedCalendars:(id)a3;
-- (void)addSystemLanguages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDefaultCalendars:(id)calendars;
+- (void)addLocaleIdentifiers:(id)identifiers;
+- (void)addNumberingSystems:(id)systems;
+- (void)addSupportedCalendars:(id)calendars;
+- (void)addSystemLanguages:(id)languages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSLocalesInfoRespMsg
 
-- (void)addSystemLanguages:(id)a3
+- (void)addSystemLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   systemLanguages = self->_systemLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!systemLanguages)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_systemLanguages;
     self->_systemLanguages = v6;
 
-    v4 = v8;
+    languagesCopy = v8;
     systemLanguages = self->_systemLanguages;
   }
 
-  [(NSMutableArray *)systemLanguages addObject:v4];
+  [(NSMutableArray *)systemLanguages addObject:languagesCopy];
 }
 
-- (void)addLocaleIdentifiers:(id)a3
+- (void)addLocaleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   localeIdentifiers = self->_localeIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!localeIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_localeIdentifiers;
     self->_localeIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     localeIdentifiers = self->_localeIdentifiers;
   }
 
-  [(NSMutableArray *)localeIdentifiers addObject:v4];
+  [(NSMutableArray *)localeIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addSupportedCalendars:(id)a3
+- (void)addSupportedCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   supportedCalendars = self->_supportedCalendars;
-  v8 = v4;
+  v8 = calendarsCopy;
   if (!supportedCalendars)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_supportedCalendars;
     self->_supportedCalendars = v6;
 
-    v4 = v8;
+    calendarsCopy = v8;
     supportedCalendars = self->_supportedCalendars;
   }
 
-  [(NSMutableArray *)supportedCalendars addObject:v4];
+  [(NSMutableArray *)supportedCalendars addObject:calendarsCopy];
 }
 
-- (void)addDefaultCalendars:(id)a3
+- (void)addDefaultCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   defaultCalendars = self->_defaultCalendars;
-  v8 = v4;
+  v8 = calendarsCopy;
   if (!defaultCalendars)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_defaultCalendars;
     self->_defaultCalendars = v6;
 
-    v4 = v8;
+    calendarsCopy = v8;
     defaultCalendars = self->_defaultCalendars;
   }
 
-  [(NSMutableArray *)defaultCalendars addObject:v4];
+  [(NSMutableArray *)defaultCalendars addObject:calendarsCopy];
 }
 
-- (void)addNumberingSystems:(id)a3
+- (void)addNumberingSystems:(id)systems
 {
-  v4 = a3;
+  systemsCopy = systems;
   numberingSystems = self->_numberingSystems;
-  v8 = v4;
+  v8 = systemsCopy;
   if (!numberingSystems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_numberingSystems;
     self->_numberingSystems = v6;
 
-    v4 = v8;
+    systemsCopy = v8;
     numberingSystems = self->_numberingSystems;
   }
 
-  [(NSMutableArray *)numberingSystems addObject:v4];
+  [(NSMutableArray *)numberingSystems addObject:systemsCopy];
 }
 
 - (id)description
@@ -112,8 +112,8 @@
   v8.receiver = self;
   v8.super_class = NSSLocalesInfoRespMsg;
   v4 = [(NSSLocalesInfoRespMsg *)&v8 description];
-  v5 = [(NSSLocalesInfoRespMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSLocalesInfoRespMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -121,12 +121,12 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   systemLanguages = self->_systemLanguages;
   if (systemLanguages)
   {
-    [v3 setObject:systemLanguages forKey:@"systemLanguages"];
+    [dictionary setObject:systemLanguages forKey:@"systemLanguages"];
   }
 
   localeIdentifiers = self->_localeIdentifiers;
@@ -169,8 +169,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -204,8 +204,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -222,10 +222,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -394,94 +394,94 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v24 = a3;
+  toCopy = to;
   if ([(NSSLocalesInfoRespMsg *)self systemLanguagesCount])
   {
-    [v24 clearSystemLanguages];
-    v4 = [(NSSLocalesInfoRespMsg *)self systemLanguagesCount];
-    if (v4)
+    [toCopy clearSystemLanguages];
+    systemLanguagesCount = [(NSSLocalesInfoRespMsg *)self systemLanguagesCount];
+    if (systemLanguagesCount)
     {
-      v5 = v4;
+      v5 = systemLanguagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSSLocalesInfoRespMsg *)self systemLanguagesAtIndex:i];
-        [v24 addSystemLanguages:v7];
+        [toCopy addSystemLanguages:v7];
       }
     }
   }
 
   if ([(NSSLocalesInfoRespMsg *)self localeIdentifiersCount])
   {
-    [v24 clearLocaleIdentifiers];
-    v8 = [(NSSLocalesInfoRespMsg *)self localeIdentifiersCount];
-    if (v8)
+    [toCopy clearLocaleIdentifiers];
+    localeIdentifiersCount = [(NSSLocalesInfoRespMsg *)self localeIdentifiersCount];
+    if (localeIdentifiersCount)
     {
-      v9 = v8;
+      v9 = localeIdentifiersCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NSSLocalesInfoRespMsg *)self localeIdentifiersAtIndex:j];
-        [v24 addLocaleIdentifiers:v11];
+        [toCopy addLocaleIdentifiers:v11];
       }
     }
   }
 
   if (self->_buildVersion)
   {
-    [v24 setBuildVersion:?];
+    [toCopy setBuildVersion:?];
   }
 
   if ([(NSSLocalesInfoRespMsg *)self supportedCalendarsCount])
   {
-    [v24 clearSupportedCalendars];
-    v12 = [(NSSLocalesInfoRespMsg *)self supportedCalendarsCount];
-    if (v12)
+    [toCopy clearSupportedCalendars];
+    supportedCalendarsCount = [(NSSLocalesInfoRespMsg *)self supportedCalendarsCount];
+    if (supportedCalendarsCount)
     {
-      v13 = v12;
+      v13 = supportedCalendarsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NSSLocalesInfoRespMsg *)self supportedCalendarsAtIndex:k];
-        [v24 addSupportedCalendars:v15];
+        [toCopy addSupportedCalendars:v15];
       }
     }
   }
 
   if ([(NSSLocalesInfoRespMsg *)self defaultCalendarsCount])
   {
-    [v24 clearDefaultCalendars];
-    v16 = [(NSSLocalesInfoRespMsg *)self defaultCalendarsCount];
-    if (v16)
+    [toCopy clearDefaultCalendars];
+    defaultCalendarsCount = [(NSSLocalesInfoRespMsg *)self defaultCalendarsCount];
+    if (defaultCalendarsCount)
     {
-      v17 = v16;
+      v17 = defaultCalendarsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(NSSLocalesInfoRespMsg *)self defaultCalendarsAtIndex:m];
-        [v24 addDefaultCalendars:v19];
+        [toCopy addDefaultCalendars:v19];
       }
     }
   }
 
   if ([(NSSLocalesInfoRespMsg *)self numberingSystemsCount])
   {
-    [v24 clearNumberingSystems];
-    v20 = [(NSSLocalesInfoRespMsg *)self numberingSystemsCount];
-    if (v20)
+    [toCopy clearNumberingSystems];
+    numberingSystemsCount = [(NSSLocalesInfoRespMsg *)self numberingSystemsCount];
+    if (numberingSystemsCount)
     {
-      v21 = v20;
+      v21 = numberingSystemsCount;
       for (n = 0; n != v21; ++n)
       {
         v23 = [(NSSLocalesInfoRespMsg *)self numberingSystemsAtIndex:n];
-        [v24 addNumberingSystems:v23];
+        [toCopy addNumberingSystems:v23];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
@@ -502,7 +502,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v56 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v56 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addSystemLanguages:v11];
 
         ++v10;
@@ -535,7 +535,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v52 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v52 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addLocaleIdentifiers:v17];
 
         ++v16;
@@ -548,7 +548,7 @@
     while (v14);
   }
 
-  v18 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v18 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v19 = v5[1];
   v5[1] = v18;
 
@@ -572,7 +572,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v48 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v48 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addSupportedCalendars:v25];
 
         ++v24;
@@ -605,7 +605,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v44 + 1) + 8 * v30) copyWithZone:a3];
+        v31 = [*(*(&v44 + 1) + 8 * v30) copyWithZone:zone];
         [v5 addDefaultCalendars:v31];
 
         ++v30;
@@ -638,7 +638,7 @@
           objc_enumerationMutation(v32);
         }
 
-        v37 = [*(*(&v40 + 1) + 8 * v36) copyWithZone:{a3, v40}];
+        v37 = [*(*(&v40 + 1) + 8 * v36) copyWithZone:{zone, v40}];
         [v5 addNumberingSystems:v37];
 
         ++v36;
@@ -655,13 +655,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((systemLanguages = self->_systemLanguages, !(systemLanguages | v4[6])) || -[NSMutableArray isEqual:](systemLanguages, "isEqual:")) && ((localeIdentifiers = self->_localeIdentifiers, !(localeIdentifiers | v4[3])) || -[NSMutableArray isEqual:](localeIdentifiers, "isEqual:")) && ((buildVersion = self->_buildVersion, !(buildVersion | v4[1])) || -[NSString isEqual:](buildVersion, "isEqual:")) && ((supportedCalendars = self->_supportedCalendars, !(supportedCalendars | v4[5])) || -[NSMutableArray isEqual:](supportedCalendars, "isEqual:")) && ((defaultCalendars = self->_defaultCalendars, !(defaultCalendars | v4[2])) || -[NSMutableArray isEqual:](defaultCalendars, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((systemLanguages = self->_systemLanguages, !(systemLanguages | equalCopy[6])) || -[NSMutableArray isEqual:](systemLanguages, "isEqual:")) && ((localeIdentifiers = self->_localeIdentifiers, !(localeIdentifiers | equalCopy[3])) || -[NSMutableArray isEqual:](localeIdentifiers, "isEqual:")) && ((buildVersion = self->_buildVersion, !(buildVersion | equalCopy[1])) || -[NSString isEqual:](buildVersion, "isEqual:")) && ((supportedCalendars = self->_supportedCalendars, !(supportedCalendars | equalCopy[5])) || -[NSMutableArray isEqual:](supportedCalendars, "isEqual:")) && ((defaultCalendars = self->_defaultCalendars, !(defaultCalendars | equalCopy[2])) || -[NSMutableArray isEqual:](defaultCalendars, "isEqual:")))
   {
     numberingSystems = self->_numberingSystems;
-    if (numberingSystems | v4[4])
+    if (numberingSystems | equalCopy[4])
     {
       v11 = [(NSMutableArray *)numberingSystems isEqual:?];
     }
@@ -690,15 +690,15 @@
   return v6 ^ v7 ^ [(NSMutableArray *)self->_numberingSystems hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v5 = v4[6];
+  v5 = fromCopy[6];
   v6 = [v5 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v6)
   {
@@ -726,7 +726,7 @@
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v4[3];
+  v10 = fromCopy[3];
   v11 = [v10 countByEnumeratingWithState:&v43 objects:v54 count:16];
   if (v11)
   {
@@ -750,7 +750,7 @@
     while (v12);
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NSSLocalesInfoRespMsg *)self setBuildVersion:?];
   }
@@ -759,7 +759,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v15 = v4[5];
+  v15 = fromCopy[5];
   v16 = [v15 countByEnumeratingWithState:&v39 objects:v53 count:16];
   if (v16)
   {
@@ -787,7 +787,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = v4[2];
+  v20 = fromCopy[2];
   v21 = [v20 countByEnumeratingWithState:&v35 objects:v52 count:16];
   if (v21)
   {
@@ -815,7 +815,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v25 = v4[4];
+  v25 = fromCopy[4];
   v26 = [v25 countByEnumeratingWithState:&v31 objects:v51 count:16];
   if (v26)
   {

@@ -1,24 +1,24 @@
 @interface SBSRemoteContentDefinition
-- (SBSRemoteContentDefinition)initWithServiceName:(id)a3 viewControllerClassName:(id)a4 xpcEndpoint:(id)a5 userInfo:(id)a6;
-- (SBSRemoteContentDefinition)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSRemoteContentDefinition)initWithServiceName:(id)name viewControllerClassName:(id)className xpcEndpoint:(id)endpoint userInfo:(id)info;
+- (SBSRemoteContentDefinition)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSRemoteContentDefinition
 
-- (SBSRemoteContentDefinition)initWithServiceName:(id)a3 viewControllerClassName:(id)a4 xpcEndpoint:(id)a5 userInfo:(id)a6
+- (SBSRemoteContentDefinition)initWithServiceName:(id)name viewControllerClassName:(id)className xpcEndpoint:(id)endpoint userInfo:(id)info
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  nameCopy = name;
+  classNameCopy = className;
+  endpointCopy = endpoint;
+  infoCopy = info;
+  if (nameCopy)
   {
-    if (v12)
+    if (classNameCopy)
     {
       goto LABEL_3;
     }
@@ -27,7 +27,7 @@
   else
   {
     [SBSRemoteContentDefinition initWithServiceName:a2 viewControllerClassName:self xpcEndpoint:? userInfo:?];
-    if (v12)
+    if (classNameCopy)
     {
       goto LABEL_3;
     }
@@ -40,27 +40,27 @@ LABEL_3:
   v15 = [(SBSRemoteContentDefinition *)&v21 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [nameCopy copy];
     serviceName = v15->_serviceName;
     v15->_serviceName = v16;
 
-    v18 = [v12 copy];
+    v18 = [classNameCopy copy];
     viewControllerClassName = v15->_viewControllerClassName;
     v15->_viewControllerClassName = v18;
 
-    objc_storeStrong(&v15->_xpcEndpoint, a5);
-    objc_storeStrong(&v15->_userInfo, a6);
+    objc_storeStrong(&v15->_xpcEndpoint, endpoint);
+    objc_storeStrong(&v15->_userInfo, info);
   }
 
   return v15;
 }
 
-- (SBSRemoteContentDefinition)initWithXPCDictionary:(id)a3
+- (SBSRemoteContentDefinition)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
   v6 = BSDeserializeStringFromXPCDictionaryWithKey();
-  v7 = xpc_dictionary_get_value(v4, "endpoint");
+  v7 = xpc_dictionary_get_value(dictionaryCopy, "endpoint");
   v8 = BSDeserializeCFValueFromXPCDictionaryWithKey();
 
   if (v5)
@@ -88,11 +88,11 @@ LABEL_3:
   return v11;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    xdict = a3;
+    xdict = dictionary;
     BSSerializeStringToXPCDictionaryWithKey();
     BSSerializeStringToXPCDictionaryWithKey();
     xpc_dictionary_set_value(xdict, "endpoint", self->_xpcEndpoint);
@@ -102,32 +102,32 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(SBSRemoteContentDefinition *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSRemoteContentDefinition *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSRemoteContentDefinition *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSRemoteContentDefinition *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSRemoteContentDefinition *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSRemoteContentDefinition *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__SBSRemoteContentDefinition_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E735F7F0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -141,7 +141,7 @@ id __68__SBSRemoteContentDefinition_descriptionBuilderWithMultilinePrefix___bloc
   return [*(a1 + 32) appendObject:*(*(a1 + 40) + 32) withName:@"userInfo" skipIfNil:1];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithServiceName:self->_serviceName viewControllerClassName:self->_viewControllerClassName];
   if (v4)

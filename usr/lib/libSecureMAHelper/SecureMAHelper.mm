@@ -1,49 +1,49 @@
 @interface SecureMAHelper
 - (BOOL)graftSecureAssetsFromLastBootSession;
-- (SecureMAHelper)initWithLogger:(void *)a3;
-- (id)copyBootTaskPlist:(id *)a3;
+- (SecureMAHelper)initWithLogger:(void *)logger;
+- (id)copyBootTaskPlist:(id *)plist;
 - (void)clearBootTaskPlist;
-- (void)log:(id)a3;
+- (void)log:(id)log;
 @end
 
 @implementation SecureMAHelper
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   if ([(SecureMAHelper *)self logger])
   {
-    ([(SecureMAHelper *)self logger])(v4);
+    ([(SecureMAHelper *)self logger])(logCopy);
   }
 
   else
   {
-    NSLog(&stru_2A1EA42F8.isa, v4);
+    NSLog(&stru_2A1EA42F8.isa, logCopy);
   }
 }
 
-- (SecureMAHelper)initWithLogger:(void *)a3
+- (SecureMAHelper)initWithLogger:(void *)logger
 {
   v5.receiver = self;
   v5.super_class = SecureMAHelper;
   result = [(SecureMAHelper *)&v5 init];
   if (result)
   {
-    result->_logger = a3;
+    result->_logger = logger;
   }
 
   return result;
 }
 
-- (id)copyBootTaskPlist:(id *)a3
+- (id)copyBootTaskPlist:(id *)plist
 {
   v7 = 0;
   v4 = [SecureMobileAssetBundle readBootTaskPlist:&v7];
   v5 = v7;
-  if (a3 && v5)
+  if (plist && v5)
   {
     v5 = v5;
-    *a3 = v5;
+    *plist = v5;
   }
 
   return v4;

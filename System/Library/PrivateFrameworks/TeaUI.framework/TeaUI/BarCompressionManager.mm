@@ -1,13 +1,13 @@
 @interface BarCompressionManager
-- (BOOL)dynamicBarAnimator:(id)a3 canHideBarsByDraggingWithOffset:(double)a4;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (void)dynamicBarAnimatorOutputsDidChange:(id)a3;
-- (void)dynamicBarAnimatorWillEnterSteadyState:(id)a3;
-- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (BOOL)dynamicBarAnimator:(id)animator canHideBarsByDraggingWithOffset:(double)offset;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (void)dynamicBarAnimatorOutputsDidChange:(id)change;
+- (void)dynamicBarAnimatorWillEnterSteadyState:(id)state;
+- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)state;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)voiceOverStatusDidChange;
 @end
 
@@ -15,76 +15,76 @@
 
 - (void)voiceOverStatusDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7FA7398();
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.scrollViewWillBeginDragging(_:)(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  BarCompressionManager.scrollViewWillBeginDragging(_:)(draggingCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  BarCompressionManager.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  v7 = a3;
-  v9 = self;
+  y = velocity.y;
+  draggingCopy = dragging;
+  selfCopy = self;
   BarCompressionManager.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v8, y);
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.scrollViewDidScrollToTop(_:)(v5);
+  topCopy = top;
+  selfCopy = self;
+  BarCompressionManager.scrollViewDidScrollToTop(_:)(selfCopy);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = BarCompressionManager.scrollViewShouldScrollToTop(_:)(v4);
+  topCopy = top;
+  selfCopy = self;
+  LOBYTE(self) = BarCompressionManager.scrollViewShouldScrollToTop(_:)(topCopy);
 
   return self & 1;
 }
 
-- (void)dynamicBarAnimatorOutputsDidChange:(id)a3
+- (void)dynamicBarAnimatorOutputsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.dynamicBarAnimatorOutputsDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  BarCompressionManager.dynamicBarAnimatorOutputsDidChange(_:)(changeCopy);
 }
 
-- (BOOL)dynamicBarAnimator:(id)a3 canHideBarsByDraggingWithOffset:(double)a4
+- (BOOL)dynamicBarAnimator:(id)animator canHideBarsByDraggingWithOffset:(double)offset
 {
-  v5 = a3;
-  v6 = self;
-  LOBYTE(self) = BarCompressionManager.dynamicBarAnimator(_:canHideBarsByDraggingWithOffset:)(v5);
+  animatorCopy = animator;
+  selfCopy = self;
+  LOBYTE(self) = BarCompressionManager.dynamicBarAnimator(_:canHideBarsByDraggingWithOffset:)(animatorCopy);
 
   return self & 1;
 }
 
-- (void)dynamicBarAnimatorWillEnterSteadyState:(id)a3
+- (void)dynamicBarAnimatorWillEnterSteadyState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.dynamicBarAnimatorWillEnterSteadyState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  BarCompressionManager.dynamicBarAnimatorWillEnterSteadyState(_:)(stateCopy);
 }
 
-- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)a3
+- (void)dynamicBarAnimatorWillLeaveSteadyState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  BarCompressionManager.dynamicBarAnimatorWillLeaveSteadyState(_:)(v5);
+  stateCopy = state;
+  selfCopy = self;
+  BarCompressionManager.dynamicBarAnimatorWillLeaveSteadyState(_:)(selfCopy);
 }
 
 @end

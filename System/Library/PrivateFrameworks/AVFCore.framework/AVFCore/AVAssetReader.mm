@@ -1,27 +1,27 @@
 @interface AVAssetReader
 + (AVAssetReader)assetReaderWithAsset:(AVAsset *)asset error:(NSError *)outError;
-+ (id)_errorForOSStatus:(int)a3;
++ (id)_errorForOSStatus:(int)status;
 + (void)initialize;
 - (AVAssetReader)initWithAsset:(AVAsset *)asset error:(NSError *)outError;
-- (AVAssetReader)initWithAsset:(id)a3 options:(id)a4 error:(id *)a5;
+- (AVAssetReader)initWithAsset:(id)asset options:(id)options error:(id *)error;
 - (AVAssetReaderStatus)status;
-- (BOOL)_canAddOutput:(id)a3 exceptionReason:(id *)a4;
+- (BOOL)_canAddOutput:(id)output exceptionReason:(id *)reason;
 - (BOOL)canAddOutput:(AVAssetReaderOutput *)output;
 - (BOOL)isDefunct;
 - (BOOL)startReading;
 - (CMTimeRange)timeRange;
 - (NSError)error;
 - (NSString)description;
-- (id)_commonInitWithAsset:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)_commonInitWithAsset:(id)asset options:(id)options error:(id *)error;
 - (void)_handleServerDiedNotification;
-- (void)_outputDidFinish:(id)a3;
-- (void)_setReadSingleSample:(BOOL)a3;
+- (void)_outputDidFinish:(id)finish;
+- (void)_setReadSingleSample:(BOOL)sample;
 - (void)_tearDownFigAssetReader;
-- (void)_transitionToStatus:(int64_t)a3 failureError:(id)a4;
+- (void)_transitionToStatus:(int64_t)status failureError:(id)error;
 - (void)addOutput:(AVAssetReaderOutput *)output;
 - (void)cancelReading;
 - (void)dealloc;
-- (void)setPreparesMediaDataForRealTimeConsumption:(BOOL)a3;
+- (void)setPreparesMediaDataForRealTimeConsumption:(BOOL)consumption;
 - (void)setTimeRange:(CMTimeRange *)timeRange;
 @end
 
@@ -29,7 +29,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x1EEDBE8E8]();
@@ -56,61 +56,61 @@
   return result;
 }
 
-- (AVAssetReader)initWithAsset:(id)a3 options:(id)a4 error:(id *)a5
+- (AVAssetReader)initWithAsset:(id)asset options:(id)options error:(id *)error
 {
   v9.receiver = self;
   v9.super_class = AVAssetReader;
   result = [(AVAssetReader *)&v9 init];
   if (result)
   {
-    return [(AVAssetReader *)result _commonInitWithAsset:a3 options:a4 error:a5];
+    return [(AVAssetReader *)result _commonInitWithAsset:asset options:options error:error];
   }
 
   return result;
 }
 
-- (id)_commonInitWithAsset:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_commonInitWithAsset:(id)asset options:(id)options error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   v41[1] = *MEMORY[0x1E69E9840];
   v39 = 0;
-  if (!a3)
+  if (!asset)
   {
-    v28 = self;
-    v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(v5 userInfo:{a2, @"invalid parameter not satisfying: %s", v29, v30, v31, v32, v33, "asset != nil"), 0}];
+    selfCopy2 = self;
+    v34 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(selfCopy userInfo:{a2, @"invalid parameter not satisfying: %s", v29, v30, v31, v32, v33, "asset != nil"), 0}];
     objc_exception_throw(v34);
   }
 
   if (!self)
   {
 LABEL_20:
-    v19 = 0;
-    if (!a5)
+    _copyFormatReader = 0;
+    if (!error)
     {
       goto LABEL_28;
     }
 
 LABEL_27:
-    *a5 = v39;
+    *error = v39;
     goto LABEL_28;
   }
 
   v9 = objc_alloc_init(AVAssetReaderInternal);
-  v5->_priv = v9;
+  selfCopy->_priv = v9;
   if (!v9)
   {
 LABEL_19:
 
-    v5 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
   CFRetain(v9);
-  v5->_priv->weakReference = [[AVWeakReference alloc] initWithReferencedObject:v5];
-  v5->_priv->outputFinishedCallbackInvokers = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5->_priv->asset = a3;
-  v5->_priv->outputs = objc_alloc_init(MEMORY[0x1E695DF70]);
-  priv = v5->_priv;
+  selfCopy->_priv->weakReference = [[AVWeakReference alloc] initWithReferencedObject:selfCopy];
+  selfCopy->_priv->outputFinishedCallbackInvokers = objc_alloc_init(MEMORY[0x1E695DFA8]);
+  selfCopy->_priv->asset = asset;
+  selfCopy->_priv->outputs = objc_alloc_init(MEMORY[0x1E695DF70]);
+  priv = selfCopy->_priv;
   start = **&MEMORY[0x1E6960CC0];
   duration = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&v38, &start, &duration);
@@ -119,16 +119,16 @@ LABEL_19:
   *&priv->timeRange.start.value = *&v38.start.value;
   *&priv->timeRange.start.epoch = v12;
   *&priv->timeRange.duration.timescale = v11;
-  v5->_priv->status = 0;
-  v35.receiver = v5;
+  selfCopy->_priv->status = 0;
+  v35.receiver = selfCopy;
   v35.super_class = AVAssetReader;
   v13 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@ status read/write queue", -[AVAssetReader description](&v35, sel_description)), "UTF8String"];
-  v5->_priv->statusReadWriteQueue = av_readwrite_dispatch_queue_create(v13);
-  v5->_priv->realTime = 0;
-  v14 = [a3 _absoluteURL];
-  v15 = [(AVAsset *)v5->_priv->asset _requiresInProcessOperation];
+  selfCopy->_priv->statusReadWriteQueue = av_readwrite_dispatch_queue_create(v13);
+  selfCopy->_priv->realTime = 0;
+  _absoluteURL = [asset _absoluteURL];
+  _requiresInProcessOperation = [(AVAsset *)selfCopy->_priv->asset _requiresInProcessOperation];
   v16 = *MEMORY[0x1E695E4D0];
-  if (v15)
+  if (_requiresInProcessOperation)
   {
     v17 = *MEMORY[0x1E695E4D0];
   }
@@ -139,25 +139,25 @@ LABEL_19:
   }
 
   v18 = [MEMORY[0x1E695DF90] dictionaryWithObject:v17 forKey:*MEMORY[0x1E6971338]];
-  if (([a3 _hasResourceLoaderDelegate] & 1) != 0 || objc_msgSend(objc_msgSend(a4, "valueForKey:", @"AssetReaderOption_PermitNonLocalURL"), "BOOLValue"))
+  if (([asset _hasResourceLoaderDelegate] & 1) != 0 || objc_msgSend(objc_msgSend(options, "valueForKey:", @"AssetReaderOption_PermitNonLocalURL"), "BOOLValue"))
   {
     [v18 setObject:v16 forKey:*MEMORY[0x1E6971328]];
     goto LABEL_10;
   }
 
-  if (v14 && !FigCFURLIsLocalResource())
+  if (_absoluteURL && !FigCFURLIsLocalResource())
   {
     v40 = *MEMORY[0x1E695E618];
     v22 = MEMORY[0x1E696AEC0];
     v23 = objc_opt_class();
-    v41[0] = [v22 stringWithFormat:@"Cannot initialize an instance of %@ with an asset at non-local URL '%@'", NSStringFromClass(v23), v14];
+    v41[0] = [v22 stringWithFormat:@"Cannot initialize an instance of %@ with an asset at non-local URL '%@'", NSStringFromClass(v23), _absoluteURL];
     v39 = AVLocalizedError(@"AVFoundationErrorDomain", -11838, [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1]);
     goto LABEL_19;
   }
 
 LABEL_10:
-  v19 = [a3 _copyFormatReader];
-  if ([a3 statusOfValueForKey:@"formatReader" error:&v39] == 3 || !v19)
+  _copyFormatReader = [asset _copyFormatReader];
+  if ([asset statusOfValueForKey:@"formatReader" error:&v39] == 3 || !_copyFormatReader)
   {
     if (v39)
     {
@@ -169,8 +169,8 @@ LABEL_25:
     v39 = v21;
 LABEL_26:
 
-    v5 = 0;
-    if (!a5)
+    selfCopy = 0;
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -179,7 +179,7 @@ LABEL_26:
   }
 
   CFRunLoopGetCurrent();
-  if (v15)
+  if (_requiresInProcessOperation)
   {
     v20 = FigAssetReaderCreateWithURLAndFormatReader();
   }
@@ -189,7 +189,7 @@ LABEL_26:
     v20 = FigAssetReaderRemoteCreateWithURLAndFormatReader();
   }
 
-  if (v20 || (v25 = v5->_priv, !v25->figAssetReader))
+  if (v20 || (v25 = selfCopy->_priv, !v25->figAssetReader))
   {
     v21 = [AVAssetReader _errorForOSStatus:v20];
     goto LABEL_25;
@@ -197,20 +197,20 @@ LABEL_26:
 
   CFRetain(v25->weakReference);
   v26 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v26 addListenerWithWeakReference:v5->_priv->weakReference callback:AVAssetReaderHandleServerDiedNotification name:*MEMORY[0x1E69713C8] object:v5->_priv->figAssetReader flags:0];
-  [v26 addListenerWithWeakReference:v5->_priv->weakReference callback:AVAssetReaderHandleServerDiedNotification name:*MEMORY[0x1E69628A8] object:v5->_priv->figAssetReader flags:0];
-  if (a5)
+  [v26 addListenerWithWeakReference:selfCopy->_priv->weakReference callback:AVAssetReaderHandleServerDiedNotification name:*MEMORY[0x1E69713C8] object:selfCopy->_priv->figAssetReader flags:0];
+  [v26 addListenerWithWeakReference:selfCopy->_priv->weakReference callback:AVAssetReaderHandleServerDiedNotification name:*MEMORY[0x1E69628A8] object:selfCopy->_priv->figAssetReader flags:0];
+  if (error)
   {
     goto LABEL_27;
   }
 
 LABEL_28:
-  if (v19)
+  if (_copyFormatReader)
   {
-    CFRelease(v19);
+    CFRelease(_copyFormatReader);
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -286,22 +286,22 @@ LABEL_28:
   return v3;
 }
 
-+ (id)_errorForOSStatus:(int)a3
++ (id)_errorForOSStatus:(int)status
 {
-  if (!a3)
+  if (!status)
   {
     return 0;
   }
 
-  if (a3 == -12785)
+  if (status == -12785)
   {
     return AVLocalizedError(@"AVFoundationErrorDomain", -11847, 0);
   }
 
-  return AVLocalizedErrorWithUnderlyingOSStatus(a3, 0);
+  return AVLocalizedErrorWithUnderlyingOSStatus(status, 0);
 }
 
-- (void)_transitionToStatus:(int64_t)a3 failureError:(id)a4
+- (void)_transitionToStatus:(int64_t)status failureError:(id)error
 {
   v13 = 0;
   v14 = &v13;
@@ -319,10 +319,10 @@ LABEL_28:
   v8[2] = __50__AVAssetReader__transitionToStatus_failureError___block_invoke;
   v8[3] = &unk_1E7463540;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = error;
   v8[6] = &v13;
   v8[7] = &v9;
-  v8[8] = a3;
+  v8[8] = status;
   av_readwrite_dispatch_queue_write(statusReadWriteQueue, v8);
   [(AVAssetReader *)self didChangeValueForKey:@"error"];
   [(AVAssetReader *)self didChangeValueForKey:@"status"];
@@ -441,7 +441,7 @@ id __22__AVAssetReader_error__block_invoke(uint64_t a1)
   *&priv->timeRange.start.value = v12;
 }
 
-- (void)_setReadSingleSample:(BOOL)a3
+- (void)_setReadSingleSample:(BOOL)sample
 {
   if ([(AVAssetReader *)self status]>= AVAssetReaderStatusReading)
   {
@@ -449,15 +449,15 @@ id __22__AVAssetReader_error__block_invoke(uint64_t a1)
     objc_exception_throw(v11);
   }
 
-  self->_priv->readSingleSample = a3;
+  self->_priv->readSingleSample = sample;
 }
 
-- (BOOL)_canAddOutput:(id)a3 exceptionReason:(id *)a4
+- (BOOL)_canAddOutput:(id)output exceptionReason:(id *)reason
 {
-  v7 = [(NSArray *)[(AVAssetReader *)self outputs] containsObject:a3];
-  v8 = [(AVAssetReader *)self status];
-  v9 = -[AVAsset isEqual:](-[AVAssetReader asset](self, "asset"), "isEqual:", [a3 _asset]);
-  if (a4)
+  v7 = [(NSArray *)[(AVAssetReader *)self outputs] containsObject:output];
+  status = [(AVAssetReader *)self status];
+  v9 = -[AVAsset isEqual:](-[AVAssetReader asset](self, "asset"), "isEqual:", [output _asset]);
+  if (reason)
   {
     v10 = @"cannot add an output that has already been added to the receiver";
     if (!v7)
@@ -465,7 +465,7 @@ id __22__AVAssetReader_error__block_invoke(uint64_t a1)
       v10 = 0;
     }
 
-    if (v8 >= AVAssetReaderStatusReading)
+    if (status >= AVAssetReaderStatusReading)
     {
       v10 = @"cannot add an output after reading has started";
     }
@@ -475,10 +475,10 @@ id __22__AVAssetReader_error__block_invoke(uint64_t a1)
       v10 = @"cannot add an output that has already been added to another AVAssetReader";
     }
 
-    *a4 = v10;
+    *reason = v10;
   }
 
-  v11 = v8 < AVAssetReaderStatusReading && v9;
+  v11 = status < AVAssetReaderStatusReading && v9;
   return v11 && !v7;
 }
 
@@ -524,14 +524,14 @@ LABEL_6:
   -[NSMutableSet addObject:](self->_priv->outputFinishedCallbackInvokers, "addObject:", [v16 startObservingValueAtKeyPath:@"finished" ofObject:output options:0 usingBlock:{+[AVObservationBlockFactory observationBlockForWeakObserver:passedToBlock:](AVObservationBlockFactory, "observationBlockForWeakObserver:passedToBlock:", self, v21)}]);
 }
 
-- (void)_outputDidFinish:(id)a3
+- (void)_outputDidFinish:(id)finish
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(AVAssetReader *)self outputs:a3];
+  v4 = [(AVAssetReader *)self outputs:finish];
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v5)
   {
@@ -580,8 +580,8 @@ LABEL_9:
     [(AVAssetReader *)self timeRange];
   }
 
-  v9 = [(AVAssetReader *)self outputs];
-  if (![(NSArray *)v9 count])
+  outputs = [(AVAssetReader *)self outputs];
+  if (![(NSArray *)outputs count])
   {
     [(AVAssetReader *)self _transitionToStatus:2 failureError:0];
     return 1;
@@ -592,7 +592,7 @@ LABEL_9:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v26 objects:v33 count:16];
+  v10 = [(NSArray *)outputs countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v10)
   {
     v11 = v10;
@@ -603,7 +603,7 @@ LABEL_9:
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(outputs);
         }
 
         if (![*(*(&v26 + 1) + 8 * i) _prepareForReadingReturningError:&v31])
@@ -613,7 +613,7 @@ LABEL_9:
         }
       }
 
-      v11 = [(NSArray *)v9 countByEnumeratingWithState:&v26 objects:v33 count:16];
+      v11 = [(NSArray *)outputs countByEnumeratingWithState:&v26 objects:v33 count:16];
       if (v11)
       {
         continue;
@@ -623,9 +623,9 @@ LABEL_9:
     }
   }
 
-  v14 = [(AVAssetReader *)self _readSingleSample];
+  _readSingleSample = [(AVAssetReader *)self _readSingleSample];
   figAssetReader = self->_priv->figAssetReader;
-  if (v14)
+  if (_readSingleSample)
   {
     start = v30.start;
     v16 = *(*(CMBaseObjectGetVTable() + 16) + 144);
@@ -675,8 +675,8 @@ LABEL_22:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(AVAssetReader *)self outputs];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  outputs = [(AVAssetReader *)self outputs];
+  v4 = [(NSArray *)outputs countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -688,14 +688,14 @@ LABEL_22:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outputs);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _cancelReading];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [(NSArray *)outputs countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -711,7 +711,7 @@ LABEL_22:
   [(AVAssetReader *)self _transitionToStatus:3 failureError:v3];
 }
 
-- (void)setPreparesMediaDataForRealTimeConsumption:(BOOL)a3
+- (void)setPreparesMediaDataForRealTimeConsumption:(BOOL)consumption
 {
   if ([(AVAssetReader *)self status]>= AVAssetReaderStatusReading)
   {
@@ -719,7 +719,7 @@ LABEL_22:
     objc_exception_throw(v16);
   }
 
-  self->_priv->realTime = a3;
+  self->_priv->realTime = consumption;
   if (self->_priv->realTime)
   {
     v11 = MEMORY[0x1E695E4D0];
@@ -744,7 +744,7 @@ LABEL_22:
 - (BOOL)isDefunct
 {
   v8 = 0;
-  v2 = [(AVAssetReader *)self _figAssetReader];
+  _figAssetReader = [(AVAssetReader *)self _figAssetReader];
   v3 = *(CMBaseObjectGetVTable() + 8);
   if (*v3 < 5uLL)
   {
@@ -757,7 +757,7 @@ LABEL_22:
     v4 = v3[11];
     if (v4)
     {
-      LOBYTE(v4) = v4(v2, &v8) == 0;
+      LOBYTE(v4) = v4(_figAssetReader, &v8) == 0;
       v5 = v8;
     }
 

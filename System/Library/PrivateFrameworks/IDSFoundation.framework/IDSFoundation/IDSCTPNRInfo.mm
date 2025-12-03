@@ -1,25 +1,25 @@
 @interface IDSCTPNRInfo
-- (IDSCTPNRInfo)initWithIMSI:(id)a3 PLMN:(id)a4 PNRPhoneNumber:(id)a5 phoneBookNumber:(id)a6;
+- (IDSCTPNRInfo)initWithIMSI:(id)i PLMN:(id)n PNRPhoneNumber:(id)number phoneBookNumber:(id)bookNumber;
 @end
 
 @implementation IDSCTPNRInfo
 
-- (IDSCTPNRInfo)initWithIMSI:(id)a3 PLMN:(id)a4 PNRPhoneNumber:(id)a5 phoneBookNumber:(id)a6
+- (IDSCTPNRInfo)initWithIMSI:(id)i PLMN:(id)n PNRPhoneNumber:(id)number phoneBookNumber:(id)bookNumber
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  iCopy = i;
+  nCopy = n;
+  numberCopy = number;
+  bookNumberCopy = bookNumber;
   v18.receiver = self;
   v18.super_class = IDSCTPNRInfo;
   v15 = [(IDSCTPNRInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_IMSI, a3);
-    objc_storeStrong(&v16->_PLMN, a4);
-    objc_storeStrong(&v16->_PNRPhoneNumber, a5);
-    objc_storeStrong(&v16->_phoneBookNumber, a6);
+    objc_storeStrong(&v15->_IMSI, i);
+    objc_storeStrong(&v16->_PLMN, n);
+    objc_storeStrong(&v16->_PNRPhoneNumber, number);
+    objc_storeStrong(&v16->_phoneBookNumber, bookNumber);
   }
 
   return v16;

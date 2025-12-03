@@ -8,18 +8,18 @@
 {
   v43 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 groupOperations];
-  if ([v5 count])
+  groupOperations = [v4 groupOperations];
+  if ([groupOperations count])
   {
 
 LABEL_4:
-    [a1 beginUpdates];
+    [self beginUpdates];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [v4 groupOperations];
-    v9 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    groupOperations2 = [v4 groupOperations];
+    v9 = [groupOperations2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (!v9)
     {
       goto LABEL_21;
@@ -33,58 +33,58 @@ LABEL_4:
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(groupOperations2);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 type];
-        if (v14 > 1)
+        type = [v13 type];
+        if (type > 1)
         {
-          if (v14 == 3)
+          if (type == 3)
           {
-            v16 = [v13 fromIndex];
-            v20 = [v16 unsignedIntegerValue];
-            v17 = [v13 toIndex];
-            [a1 moveSection:v20 toSection:{objc_msgSend(v17, "unsignedIntegerValue")}];
+            fromIndex = [v13 fromIndex];
+            unsignedIntegerValue = [fromIndex unsignedIntegerValue];
+            toIndex = [v13 toIndex];
+            [self moveSection:unsignedIntegerValue toSection:{objc_msgSend(toIndex, "unsignedIntegerValue")}];
           }
 
           else
           {
-            if (v14 != 2)
+            if (type != 2)
             {
               continue;
             }
 
             v18 = MEMORY[0x277CCAA78];
-            v16 = [v13 fromIndex];
-            v17 = [v18 indexSetWithIndex:{objc_msgSend(v16, "unsignedIntegerValue")}];
-            [a1 deleteSections:v17 withRowAnimation:100];
+            fromIndex = [v13 fromIndex];
+            toIndex = [v18 indexSetWithIndex:{objc_msgSend(fromIndex, "unsignedIntegerValue")}];
+            [self deleteSections:toIndex withRowAnimation:100];
           }
         }
 
-        else if (v14)
+        else if (type)
         {
-          if (v14 != 1)
+          if (type != 1)
           {
             continue;
           }
 
           v15 = MEMORY[0x277CCAA78];
-          v16 = [v13 toIndex];
-          v17 = [v15 indexSetWithIndex:{objc_msgSend(v16, "unsignedIntegerValue")}];
-          [a1 insertSections:v17 withRowAnimation:100];
+          fromIndex = [v13 toIndex];
+          toIndex = [v15 indexSetWithIndex:{objc_msgSend(fromIndex, "unsignedIntegerValue")}];
+          [self insertSections:toIndex withRowAnimation:100];
         }
 
         else
         {
           v19 = MEMORY[0x277CCAA78];
-          v16 = [v13 fromIndex];
-          v17 = [v19 indexSetWithIndex:{objc_msgSend(v16, "unsignedIntegerValue")}];
-          [a1 reloadSections:v17 withRowAnimation:100];
+          fromIndex = [v13 fromIndex];
+          toIndex = [v19 indexSetWithIndex:{objc_msgSend(fromIndex, "unsignedIntegerValue")}];
+          [self reloadSections:toIndex withRowAnimation:100];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v10 = [groupOperations2 countByEnumeratingWithState:&v34 objects:v42 count:16];
       if (!v10)
       {
 LABEL_21:
@@ -93,8 +93,8 @@ LABEL_21:
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v21 = [v4 itemOperations];
-        v22 = [v21 countByEnumeratingWithState:&v30 objects:v41 count:16];
+        itemOperations = [v4 itemOperations];
+        v22 = [itemOperations countByEnumeratingWithState:&v30 objects:v41 count:16];
         if (!v22)
         {
           goto LABEL_38;
@@ -108,62 +108,62 @@ LABEL_21:
           {
             if (*v31 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(itemOperations);
             }
 
             v26 = *(*(&v30 + 1) + 8 * j);
-            v27 = [v26 type];
-            if (v27 > 1)
+            type2 = [v26 type];
+            if (type2 > 1)
             {
-              if (v27 == 2)
+              if (type2 == 2)
               {
-                v28 = [v26 fromIndexPath];
-                v39 = v28;
-                v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
-                [a1 deleteRowsAtIndexPaths:v29 withRowAnimation:100];
+                fromIndexPath = [v26 fromIndexPath];
+                v39 = fromIndexPath;
+                toIndexPath = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
+                [self deleteRowsAtIndexPaths:toIndexPath withRowAnimation:100];
               }
 
               else
               {
-                if (v27 != 3)
+                if (type2 != 3)
                 {
                   continue;
                 }
 
-                v28 = [v26 fromIndexPath];
-                v29 = [v26 toIndexPath];
-                [a1 moveRowAtIndexPath:v28 toIndexPath:v29];
+                fromIndexPath = [v26 fromIndexPath];
+                toIndexPath = [v26 toIndexPath];
+                [self moveRowAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
               }
             }
 
-            else if (v27)
+            else if (type2)
             {
-              if (v27 != 1)
+              if (type2 != 1)
               {
                 continue;
               }
 
-              v28 = [v26 toIndexPath];
-              v40 = v28;
-              v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-              [a1 insertRowsAtIndexPaths:v29 withRowAnimation:100];
+              fromIndexPath = [v26 toIndexPath];
+              v40 = fromIndexPath;
+              toIndexPath = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
+              [self insertRowsAtIndexPaths:toIndexPath withRowAnimation:100];
             }
 
             else
             {
-              v28 = [v26 toIndexPath];
-              v38 = v28;
-              v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-              [a1 reloadRowsAtIndexPaths:v29 withRowAnimation:100];
+              fromIndexPath = [v26 toIndexPath];
+              v38 = fromIndexPath;
+              toIndexPath = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
+              [self reloadRowsAtIndexPaths:toIndexPath withRowAnimation:100];
             }
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v30 objects:v41 count:16];
+          v23 = [itemOperations countByEnumeratingWithState:&v30 objects:v41 count:16];
           if (!v23)
           {
 LABEL_38:
 
-            [a1 endUpdates];
+            [self endUpdates];
             goto LABEL_39;
           }
         }
@@ -171,8 +171,8 @@ LABEL_38:
     }
   }
 
-  v6 = [v4 itemOperations];
-  v7 = [v6 count];
+  itemOperations2 = [v4 itemOperations];
+  v7 = [itemOperations2 count];
 
   if (v7)
   {

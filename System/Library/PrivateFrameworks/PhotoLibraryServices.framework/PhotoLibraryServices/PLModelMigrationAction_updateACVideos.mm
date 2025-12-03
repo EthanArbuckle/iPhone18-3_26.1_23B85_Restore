@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_updateACVideos
 - (id)buildFetchRequest;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_updateACVideos
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v67 = 0;
   v68 = &v67;
   v69 = 0x2020000000;
@@ -19,10 +19,10 @@
   v64 = __Block_byref_object_copy__1060;
   v65 = __Block_byref_object_dispose__1061;
   v66 = 0;
-  v7 = [(PLModelMigrationAction_updateACVideos *)self buildFetchRequest];
+  buildFetchRequest = [(PLModelMigrationAction_updateACVideos *)self buildFetchRequest];
   v8 = (v62 + 5);
   obj = v62[5];
-  v9 = [v6 executeFetchRequest:v7 error:&obj];
+  v9 = [contextCopy executeFetchRequest:buildFetchRequest error:&obj];
   objc_storeStrong(v8, obj);
   if (v9)
   {
@@ -36,7 +36,7 @@
     v59 = &v61;
     v11 = v10;
     v57 = v11;
-    v12 = [v6 enumerateWithIncrementalSaveUsingObjects:v9 withBlock:v56];
+    v12 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v9 withBlock:v56];
     if (v12 && (v13 = (v62 + 5), !v62[5]))
     {
       v68[3] = 3;
@@ -46,12 +46,12 @@
 
       if (v33)
       {
-        v34 = [(PLModelMigrationActionBackground *)self logger];
-        v35 = v34 == 0;
+        logger = [(PLModelMigrationActionBackground *)self logger];
+        v35 = logger == 0;
 
         if (!v35)
         {
-          v55 = a4;
+          errorCopy = error;
           v104 = 0u;
           v105 = 0u;
           v102 = 0u;
@@ -95,7 +95,7 @@
           LODWORD(v54) = 22;
           v20 = _os_log_send_and_compose_impl();
 
-          a4 = v55;
+          error = errorCopy;
           v40 = [(PLModelMigrationActionBackground *)self logger:&v71];
           [v40 logWithMessage:v20 fromCodeLocation:"PLModelMigrationActionBackground.m" type:{443, 16}];
 
@@ -132,8 +132,8 @@ LABEL_14:
 
       if (v15)
       {
-        v16 = [(PLModelMigrationActionBackground *)self logger];
-        v17 = v16 == 0;
+        logger2 = [(PLModelMigrationActionBackground *)self logger];
+        v17 = logger2 == 0;
 
         if (!v17)
         {
@@ -170,9 +170,9 @@ LABEL_14:
           memset(buf, 0, sizeof(buf));
           v18 = PLMigrationGetLog();
           os_log_type_enabled(v18, OS_LOG_TYPE_INFO);
-          v19 = [v11 completedUnitCount];
+          completedUnitCount = [v11 completedUnitCount];
           v71 = 134217984;
-          v72 = v19;
+          v72 = completedUnitCount;
           LODWORD(v54) = 12;
           v20 = _os_log_send_and_compose_impl();
 
@@ -185,9 +185,9 @@ LABEL_14:
         v41 = PLMigrationGetLog();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v42 = [v11 completedUnitCount];
+          completedUnitCount2 = [v11 completedUnitCount];
           *buf = 134217984;
-          *&buf[4] = v42;
+          *&buf[4] = completedUnitCount2;
           _os_log_impl(&dword_19BF1F000, v41, OS_LOG_TYPE_INFO, "Completed update on %lu assets", buf, 0xCu);
         }
 
@@ -206,8 +206,8 @@ LABEL_25:
 
   if (v23)
   {
-    v24 = [(PLModelMigrationActionBackground *)self logger];
-    v25 = v24 == 0;
+    logger3 = [(PLModelMigrationActionBackground *)self logger];
+    v25 = logger3 == 0;
 
     if (v25)
     {
@@ -289,10 +289,10 @@ LABEL_26:
   [(PLModelMigrationActionBackground *)self finalizeProgress];
   v50 = v68[3];
   v51 = v62[5];
-  if (v50 != 1 && a4)
+  if (v50 != 1 && error)
   {
     v51 = v51;
-    *a4 = v51;
+    *error = v51;
   }
 
   v52 = v68[3];
@@ -305,14 +305,14 @@ LABEL_26:
 - (id)buildFetchRequest
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v4 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v4 setYear:2022];
   [v4 setMonth:8];
   [v4 setDay:1];
-  v20 = v3;
-  v5 = [v3 dateFromComponents:v4];
-  v6 = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v20 = currentCalendar;
+  v5 = [currentCalendar dateFromComponents:v4];
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -322,9 +322,9 @@ LABEL_26:
   v23[0] = v11;
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"kindSubtype", 0];
   v23[1] = v12;
-  if (v6)
+  if (resumeMarker)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", v6];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"addedDate", resumeMarker];
   }
 
   else

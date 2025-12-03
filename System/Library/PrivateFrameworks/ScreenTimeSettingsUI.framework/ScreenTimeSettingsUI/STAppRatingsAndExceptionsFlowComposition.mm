@@ -1,22 +1,22 @@
 @interface STAppRatingsAndExceptionsFlowComposition
-+ (id)composeContentViewControllerWithAppExceptionsController:(id)a3 alertPresentingController:(id)a4 specifier:(id)a5 forManagedUser:(BOOL)a6 areRestrictionsEditable:(BOOL)a7 runAfterPinAuthentication:(id)a8;
++ (id)composeContentViewControllerWithAppExceptionsController:(id)controller alertPresentingController:(id)presentingController specifier:(id)specifier forManagedUser:(BOOL)user areRestrictionsEditable:(BOOL)editable runAfterPinAuthentication:(id)authentication;
 - (STAppRatingsAndExceptionsFlowComposition)init;
 @end
 
 @implementation STAppRatingsAndExceptionsFlowComposition
 
-+ (id)composeContentViewControllerWithAppExceptionsController:(id)a3 alertPresentingController:(id)a4 specifier:(id)a5 forManagedUser:(BOOL)a6 areRestrictionsEditable:(BOOL)a7 runAfterPinAuthentication:(id)a8
++ (id)composeContentViewControllerWithAppExceptionsController:(id)controller alertPresentingController:(id)presentingController specifier:(id)specifier forManagedUser:(BOOL)user areRestrictionsEditable:(BOOL)editable runAfterPinAuthentication:(id)authentication
 {
-  v8 = a7;
-  v9 = a6;
-  v13 = _Block_copy(a8);
+  editableCopy = editable;
+  userCopy = user;
+  v13 = _Block_copy(authentication);
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
   swift_getObjCClassMetadata();
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = static STAppRatingsAndExceptionsFlowComposition.composeContentViewController(with:alertPresenting:specifier:forManagedUser:areRestrictionsEditable:runAfterPinAuthentication:)(v15, v16, v17, v9, v8, sub_264CB0200, v14);
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  specifierCopy = specifier;
+  v18 = static STAppRatingsAndExceptionsFlowComposition.composeContentViewController(with:alertPresenting:specifier:forManagedUser:areRestrictionsEditable:runAfterPinAuthentication:)(controllerCopy, presentingControllerCopy, specifierCopy, userCopy, editableCopy, sub_264CB0200, v14);
 
   return v18;
 }

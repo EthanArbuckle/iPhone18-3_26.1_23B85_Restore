@@ -24,15 +24,15 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = [MEMORY[0x1E695DF58] currentLocale];
-  v16 = [v15 languageCode];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  if (([v16 isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"hi"))
+  if (([languageCode isEqualToString:@"ar"] & 1) != 0 || objc_msgSend(languageCode, "isEqualToString:", @"hi"))
   {
-    v17 = [MEMORY[0x1E695DF58] currentLocale];
-    v18 = [v17 numberingSystem];
+    currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+    numberingSystem = [currentLocale2 numberingSystem];
 
-    if ([v18 isEqualToString:@"latn"])
+    if ([numberingSystem isEqualToString:@"latn"])
     {
       v19 = [v14 stringByAppendingFormat:@".rtl.westernarabic"];
     }

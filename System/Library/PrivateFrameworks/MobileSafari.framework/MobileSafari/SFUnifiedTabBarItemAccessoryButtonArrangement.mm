@@ -1,26 +1,26 @@
 @interface SFUnifiedTabBarItemAccessoryButtonArrangement
-- (BOOL)containsButtonType:(int64_t)a3;
-- (BOOL)isEqualToArrangement:(id)a3;
-- (SFUnifiedTabBarItemAccessoryButtonArrangement)initWithLeadingButtonTypes:(id)a3 trailingButtonTypes:(id)a4;
-- (id)initUsingButtonLayout:(int64_t)a3 filteringButtonsUsingBlock:(id)a4;
+- (BOOL)containsButtonType:(int64_t)type;
+- (BOOL)isEqualToArrangement:(id)arrangement;
+- (SFUnifiedTabBarItemAccessoryButtonArrangement)initWithLeadingButtonTypes:(id)types trailingButtonTypes:(id)buttonTypes;
+- (id)initUsingButtonLayout:(int64_t)layout filteringButtonsUsingBlock:(id)block;
 @end
 
 @implementation SFUnifiedTabBarItemAccessoryButtonArrangement
 
-- (SFUnifiedTabBarItemAccessoryButtonArrangement)initWithLeadingButtonTypes:(id)a3 trailingButtonTypes:(id)a4
+- (SFUnifiedTabBarItemAccessoryButtonArrangement)initWithLeadingButtonTypes:(id)types trailingButtonTypes:(id)buttonTypes
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  buttonTypesCopy = buttonTypes;
   v15.receiver = self;
   v15.super_class = SFUnifiedTabBarItemAccessoryButtonArrangement;
   v8 = [(SFUnifiedTabBarItemAccessoryButtonArrangement *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typesCopy copy];
     leadingButtonTypes = v8->_leadingButtonTypes;
     v8->_leadingButtonTypes = v9;
 
-    v11 = [v7 copy];
+    v11 = [buttonTypesCopy copy];
     trailingButtonTypes = v8->_trailingButtonTypes;
     v8->_trailingButtonTypes = v11;
 
@@ -30,16 +30,16 @@
   return v8;
 }
 
-- (id)initUsingButtonLayout:(int64_t)a3 filteringButtonsUsingBlock:(id)a4
+- (id)initUsingButtonLayout:(int64_t)layout filteringButtonsUsingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = &unk_1EFF74508;
-  if (a3 == 1)
+  if (layout == 1)
   {
     v7 = &unk_1EFF74520;
   }
 
-  if (a3 == 2)
+  if (layout == 2)
   {
     v8 = &unk_1EFF74538;
   }
@@ -53,15 +53,15 @@
   v23[1] = 3221225472;
   v23[2] = __98__SFUnifiedTabBarItemAccessoryButtonArrangement_initUsingButtonLayout_filteringButtonsUsingBlock___block_invoke;
   v23[3] = &unk_1E721E780;
-  v9 = v6;
+  v9 = blockCopy;
   v24 = v9;
   v10 = [v8 safari_filterObjectsUsingBlock:v23];
-  if (a3 == 2)
+  if (layout == 2)
   {
     v13 = &unk_1EFF74598;
   }
 
-  else if (a3)
+  else if (layout)
   {
     v13 = &unk_1EFF74580;
   }
@@ -69,9 +69,9 @@
   else
   {
     v11 = +[SFFeatureManager sharedFeatureManager];
-    v12 = [v11 usesFormatMenuInUnifiedTabBar];
+    usesFormatMenuInUnifiedTabBar = [v11 usesFormatMenuInUnifiedTabBar];
 
-    if (v12)
+    if (usesFormatMenuInUnifiedTabBar)
     {
       v13 = &unk_1EFF74550;
     }
@@ -112,12 +112,12 @@ uint64_t __98__SFUnifiedTabBarItemAccessoryButtonArrangement_initUsingButtonLayo
   return v4(v2, v3);
 }
 
-- (BOOL)isEqualToArrangement:(id)a3
+- (BOOL)isEqualToArrangement:(id)arrangement
 {
-  v4 = a3;
-  if ([(NSArray *)self->_leadingButtonTypes isEqualToArray:v4[1]])
+  arrangementCopy = arrangement;
+  if ([(NSArray *)self->_leadingButtonTypes isEqualToArray:arrangementCopy[1]])
   {
-    v5 = [(NSArray *)self->_trailingButtonTypes isEqualToArray:v4[2]];
+    v5 = [(NSArray *)self->_trailingButtonTypes isEqualToArray:arrangementCopy[2]];
   }
 
   else
@@ -128,9 +128,9 @@ uint64_t __98__SFUnifiedTabBarItemAccessoryButtonArrangement_initUsingButtonLayo
   return v5;
 }
 
-- (BOOL)containsButtonType:(int64_t)a3
+- (BOOL)containsButtonType:(int64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSArray *)self->_leadingButtonTypes containsObject:v4]|| [(NSArray *)self->_trailingButtonTypes containsObject:v4];
 
   return v5;

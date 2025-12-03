@@ -1,26 +1,26 @@
 @interface APUISetupViewController
 + (id)_localizedSystemWiFiString;
-- (void)_connectToAirPlayReceiverWithDeviceID:(id)a3 andSetupPayload:(id)a4;
-- (void)_getSupportedNetworks:(id)a3 withSetupPayload:(id)a4 completion:(id)a5;
-- (void)_initializeAirPlayConnectionProxCardManagerWithSetupPayload:(id)a3 andCompletion:(id)a4;
-- (void)_joinWiFiAndConnectToReceiverWithSetupPayload:(id)a3;
-- (void)_performBrokerAuthenticationWithSetupPayload:(id)a3 switchWiFiIfFailed:(BOOL)a4;
-- (void)_presentAirPlayConnectionProxCardWithSetupPayload:(id)a3;
-- (void)_presentInvalidCodeAlertWithSetupPayload:(id)a3;
-- (void)_presentProxCardFlowForLaunchType:(int64_t)a3 andSetupPayload:(id)a4;
-- (void)_presentSetupCompletedProxCard:(id)a3 isAirPlaySetUp:(BOOL)a4;
-- (void)_presentUnableToConnectToDeviceAlertWithSetupPayload:(id)a3;
-- (void)_presentUnableToConnectToWiFiAlertWithSetupPayload:(id)a3;
-- (void)_setUpByURL:(id)a3;
-- (void)_setupAirPlayConnectingProxCardManagerWithSetupPayload:(id)a3 withTitle:(id)a4 withSubTitle:(id)a5 withImageName:(id)a6 andCompletion:(id)a7;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_connectToAirPlayReceiverWithDeviceID:(id)d andSetupPayload:(id)payload;
+- (void)_getSupportedNetworks:(id)networks withSetupPayload:(id)payload completion:(id)completion;
+- (void)_initializeAirPlayConnectionProxCardManagerWithSetupPayload:(id)payload andCompletion:(id)completion;
+- (void)_joinWiFiAndConnectToReceiverWithSetupPayload:(id)payload;
+- (void)_performBrokerAuthenticationWithSetupPayload:(id)payload switchWiFiIfFailed:(BOOL)failed;
+- (void)_presentAirPlayConnectionProxCardWithSetupPayload:(id)payload;
+- (void)_presentInvalidCodeAlertWithSetupPayload:(id)payload;
+- (void)_presentProxCardFlowForLaunchType:(int64_t)type andSetupPayload:(id)payload;
+- (void)_presentSetupCompletedProxCard:(id)card isAirPlaySetUp:(BOOL)up;
+- (void)_presentUnableToConnectToDeviceAlertWithSetupPayload:(id)payload;
+- (void)_presentUnableToConnectToWiFiAlertWithSetupPayload:(id)payload;
+- (void)_setUpByURL:(id)l;
+- (void)_setupAirPlayConnectingProxCardManagerWithSetupPayload:(id)payload withTitle:(id)title withSubTitle:(id)subTitle withImageName:(id)name andCompletion:(id)completion;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)invalidate;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)proxCardFlowDidDismiss;
 - (void)proxCardFlowWillPresent;
-- (void)updateBrokerRTCDictionaryBrokerConnectionSuccess:(BOOL)a3 error:(id)a4;
-- (void)updateReceiverRTCDictionaryReceiverConnectionSuccess:(BOOL)a3 error:(id)a4;
-- (void)updateWiFiRTCDictionaryAlreadyAssociated:(BOOL)a3 associationSucessful:(BOOL)a4 error:(id)a5;
+- (void)updateBrokerRTCDictionaryBrokerConnectionSuccess:(BOOL)success error:(id)error;
+- (void)updateReceiverRTCDictionaryReceiverConnectionSuccess:(BOOL)success error:(id)error;
+- (void)updateWiFiRTCDictionaryAlreadyAssociated:(BOOL)associated associationSucessful:(BOOL)sucessful error:(id)error;
 - (void)viewDidLoad;
 @end
 
@@ -40,11 +40,11 @@
     {
       v17 = v4;
       v18 = v5;
-      v16 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
-    [v5 setDiscoveryMode:{3, v16, v17, v18}];
+    [v5 setDiscoveryMode:{3, selfCopy, v17, v18}];
     objc_initWeak(&location, self);
     v6 = dispatch_time(0, 1000000000 * v4);
     block[0] = _NSConcreteStackBlock;
@@ -94,14 +94,14 @@
     {
       if (dword_1000226F0 != -1 || (v4 = _LogCategory_Initialize(), discoverySession = self->_discoverySession, v4))
       {
-        v17 = self;
+        selfCopy = self;
         v18 = discoverySession;
         LogPrintF();
         discoverySession = self->_discoverySession;
       }
     }
 
-    [(AVOutputDeviceDiscoverySession *)discoverySession setDiscoveryMode:0, v17, v18];
+    [(AVOutputDeviceDiscoverySession *)discoverySession setDiscoveryMode:0, selfCopy, v18];
     v5 = self->_discoverySession;
     self->_discoverySession = 0;
   }
@@ -109,8 +109,8 @@
   v6 = +[APUIConnectivityManager sharedInstance];
   [v6 stopMonitoringWiFiInterfaceChange];
 
-  v7 = [(APUISetupViewController *)self _remoteViewControllerProxy];
-  [v7 invalidate];
+  _remoteViewControllerProxy = [(APUISetupViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy invalidate];
   v8 = +[APUIConnectivityManager sharedInstance];
   [v8 enableCaptiveWebsheet:1];
 
@@ -147,33 +147,33 @@
   }
 }
 
-- (void)_setupAirPlayConnectingProxCardManagerWithSetupPayload:(id)a3 withTitle:(id)a4 withSubTitle:(id)a5 withImageName:(id)a6 andCompletion:(id)a7
+- (void)_setupAirPlayConnectingProxCardManagerWithSetupPayload:(id)payload withTitle:(id)title withSubTitle:(id)subTitle withImageName:(id)name andCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  nameCopy = name;
+  subTitleCopy = subTitle;
+  titleCopy = title;
   v13 = [AirPlayProxCardViewController alloc];
   v14 = +[UIColor systemGrayColor];
-  v15 = [(AirPlayProxCardViewController *)v13 initWithTitle:v12 subTitle:v11 imageName:v10 tintColor:v14 shouldAnimate:0 actionTitle:0 bottomSubtitle:0 completion:&stru_10001C900];
+  v15 = [(AirPlayProxCardViewController *)v13 initWithTitle:titleCopy subTitle:subTitleCopy imageName:nameCopy tintColor:v14 shouldAnimate:0 actionTitle:0 bottomSubtitle:0 completion:&stru_10001C900];
 
   [(APUISetupViewController *)self setConnectingProxCardController:v15];
-  v18 = [(APUISetupViewController *)self connectingProxCardController];
+  connectingProxCardController = [(APUISetupViewController *)self connectingProxCardController];
   v16 = +[NSBundle mainBundle];
   v17 = [v16 localizedStringForKey:@"AirPlaySenderUI_Action_Connecting" value:&stru_10001CEA8 table:0];
-  [v18 showActivityIndicatorWithStatus:v17];
+  [connectingProxCardController showActivityIndicatorWithStatus:v17];
 }
 
-- (void)_initializeAirPlayConnectionProxCardManagerWithSetupPayload:(id)a3 andCompletion:(id)a4
+- (void)_initializeAirPlayConnectionProxCardManagerWithSetupPayload:(id)payload andCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"AirPlaySenderUI_AirPlayConnect_Title" value:&stru_10001CEA8 table:0];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"AirPlaySenderUI_AirPlayConnect_Subtitle" value:&stru_10001CEA8 table:0];
-  v11 = [v5 wifiSSID];
-  v12 = [NSString stringWithFormat:v10, v11];
+  wifiSSID = [payloadCopy wifiSSID];
+  v12 = [NSString stringWithFormat:v10, wifiSSID];
 
   v20 = [AirPlayProxCardViewController alloc];
   v13 = +[UIColor systemGrayColor];
@@ -184,15 +184,15 @@
   v23[2] = sub_100007A80;
   v23[3] = &unk_10001C928;
   v23[4] = self;
-  v24 = v5;
+  v24 = payloadCopy;
   v25 = v8;
   v26 = v12;
   v27 = @"tv.badge.wifi";
-  v28 = v6;
-  v21 = v6;
+  v28 = completionCopy;
+  v21 = completionCopy;
   v16 = v12;
   v17 = v8;
-  v18 = v5;
+  v18 = payloadCopy;
   v19 = [(AirPlayProxCardViewController *)v20 initWithTitle:v17 subTitle:v16 imageName:@"tv.badge.wifi" tintColor:v13 shouldAnimate:0 actionTitle:v15 bottomSubtitle:0 completion:v23];
   [(APUISetupViewController *)self setSetupProxCardController:v19];
 }
@@ -206,20 +206,20 @@
   return v4;
 }
 
-- (void)_presentUnableToConnectToWiFiAlertWithSetupPayload:(id)a3
+- (void)_presentUnableToConnectToWiFiAlertWithSetupPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"AirPlaySenderUI_UnableToConnect_WiFi_Title" value:&stru_10001CEA8 table:0];
-  v6 = [v3 wifiSSID];
-  v7 = [NSString stringWithFormat:v5, v6];
+  wifiSSID = [payloadCopy wifiSSID];
+  v7 = [NSString stringWithFormat:v5, wifiSSID];
 
   v8 = +[APUISetupViewController _localizedSystemWiFiString];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"AirPlaySenderUI_UnableToConnect_WiFi_Subtitle" value:&stru_10001CEA8 table:0];
-  v11 = [v3 wifiSSID];
+  wifiSSID2 = [payloadCopy wifiSSID];
 
-  v12 = [NSString stringWithFormat:v10, v8, v11];
+  v12 = [NSString stringWithFormat:v10, v8, wifiSSID2];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"AirPlaySenderUI_UnableToConnect_WiFi_Action" value:&stru_10001CEA8 table:0];
@@ -246,7 +246,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_presentUnableToConnectToDeviceAlertWithSetupPayload:(id)a3
+- (void)_presentUnableToConnectToDeviceAlertWithSetupPayload:(id)payload
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"AirPlaySenderUI_UnableToConnect_Title" value:&stru_10001CEA8 table:0];
@@ -276,7 +276,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_presentInvalidCodeAlertWithSetupPayload:(id)a3
+- (void)_presentInvalidCodeAlertWithSetupPayload:(id)payload
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"AirPlaySenderUI_UnableToConnect_Title" value:&stru_10001CEA8 table:0];
@@ -302,58 +302,58 @@
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)_presentProxCardFlowForLaunchType:(int64_t)a3 andSetupPayload:(id)a4
+- (void)_presentProxCardFlowForLaunchType:(int64_t)type andSetupPayload:(id)payload
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
+  payloadCopy = payload;
+  v7 = payloadCopy;
+  v8 = payloadCopy;
   if (dword_1000226F0 <= 50)
   {
-    if (dword_1000226F0 != -1 || (v6 = _LogCategory_Initialize(), v7 = v8, v6))
+    if (dword_1000226F0 != -1 || (payloadCopy = _LogCategory_Initialize(), v7 = v8, payloadCopy))
     {
-      v6 = LogPrintF();
+      payloadCopy = LogPrintF();
       v7 = v8;
     }
   }
 
   if (!v7 && dword_1000226F0 <= 90)
   {
-    if (dword_1000226F0 != -1 || (v6 = _LogCategory_Initialize(), v6))
+    if (dword_1000226F0 != -1 || (payloadCopy = _LogCategory_Initialize(), payloadCopy))
     {
-      v6 = sub_10000CB04();
+      payloadCopy = sub_10000CB04();
     }
   }
 
-  if ((a3 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
-    if (a3)
+    if (type)
     {
       if (dword_1000226F0 <= 50)
       {
-        if (dword_1000226F0 != -1 || (v6 = _LogCategory_Initialize(), v6))
+        if (dword_1000226F0 != -1 || (payloadCopy = _LogCategory_Initialize(), payloadCopy))
         {
-          v6 = LogPrintF();
+          payloadCopy = LogPrintF();
         }
       }
     }
 
     else
     {
-      v6 = [(APUISetupViewController *)self _setUpByURL:v8];
+      payloadCopy = [(APUISetupViewController *)self _setUpByURL:v8];
     }
   }
 
-  _objc_release_x2(v6);
+  _objc_release_x2(payloadCopy);
 }
 
-- (void)_setUpByURL:(id)a3
+- (void)_setUpByURL:(id)l
 {
-  v8 = a3;
-  v4 = [v8 wifiSSID];
-  if (v4 && (v5 = v4, [v8 wifiSSID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v5, v7))
+  lCopy = l;
+  wifiSSID = [lCopy wifiSSID];
+  if (wifiSSID && (v5 = wifiSSID, [lCopy wifiSSID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v5, v7))
   {
     [(NSMutableDictionary *)self->_rtcReportingDictionary setValue:@"brokerMethodURL" forKey:@"brokerMethod"];
-    [(APUISetupViewController *)self _presentAirPlayConnectionProxCardWithSetupPayload:v8];
+    [(APUISetupViewController *)self _presentAirPlayConnectionProxCardWithSetupPayload:lCopy];
   }
 
   else if (dword_1000226F0 <= 50 && (dword_1000226F0 != -1 || _LogCategory_Initialize()))
@@ -362,39 +362,39 @@
   }
 }
 
-- (void)_joinWiFiAndConnectToReceiverWithSetupPayload:(id)a3
+- (void)_joinWiFiAndConnectToReceiverWithSetupPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (dword_1000226F0 <= 50 && (dword_1000226F0 != -1 || _LogCategory_Initialize()))
   {
     sub_10000CB7C();
   }
 
   v5 = +[APUIConnectivityManager sharedInstance];
-  v6 = [v4 wifiSSID];
-  v7 = [v4 isNetworkHidden];
-  v8 = [v4 wifiPassphrase];
-  v9 = [v4 captivePortalAuthToken];
+  wifiSSID = [payloadCopy wifiSSID];
+  isNetworkHidden = [payloadCopy isNetworkHidden];
+  wifiPassphrase = [payloadCopy wifiPassphrase];
+  captivePortalAuthToken = [payloadCopy captivePortalAuthToken];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100009004;
   v11[3] = &unk_10001CA18;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v5 joinWiFiNetworkWithSSID:v6 isNetworkHidden:v7 passPhrase:v8 captivePortalAuthToken:v9 completion:v11];
+  v12 = payloadCopy;
+  v10 = payloadCopy;
+  [v5 joinWiFiNetworkWithSSID:wifiSSID isNetworkHidden:isNetworkHidden passPhrase:wifiPassphrase captivePortalAuthToken:captivePortalAuthToken completion:v11];
 }
 
-- (void)_getSupportedNetworks:(id)a3 withSetupPayload:(id)a4 completion:(id)a5
+- (void)_getSupportedNetworks:(id)networks withSetupPayload:(id)payload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  networksCopy = networks;
+  payloadCopy = payload;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (networksCopy)
   {
-    v12 = [v9 wifiSSID];
-    v13 = [v12 isEqualToString:v8];
+    wifiSSID = [payloadCopy wifiSSID];
+    v13 = [wifiSSID isEqualToString:networksCopy];
 
     if (v13)
     {
@@ -413,53 +413,53 @@
       v15[3] = &unk_10001CA40;
       v15[4] = self;
       v17 = v11;
-      v16 = v8;
+      v16 = networksCopy;
       [v14 getBrokerGroupInfo:0 completion:v15];
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_performBrokerAuthenticationWithSetupPayload:(id)a3 switchWiFiIfFailed:(BOOL)a4
+- (void)_performBrokerAuthenticationWithSetupPayload:(id)payload switchWiFiIfFailed:(BOOL)failed
 {
-  v6 = a3;
+  payloadCopy = payload;
   v7 = +[APUIBrokerHelper sharedInstance];
-  v8 = [v6 brokerToken];
+  brokerToken = [payloadCopy brokerToken];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100009534;
   v10[3] = &unk_10001CA68;
-  v12 = a4;
+  failedCopy = failed;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 performBrokerAuthenticationForBrokerGroup:0 withBrokerAuth:v8 completion:v10];
+  v11 = payloadCopy;
+  v9 = payloadCopy;
+  [v7 performBrokerAuthenticationForBrokerGroup:0 withBrokerAuth:brokerToken completion:v10];
 }
 
-- (void)_connectToAirPlayReceiverWithDeviceID:(id)a3 andSetupPayload:(id)a4
+- (void)_connectToAirPlayReceiverWithDeviceID:(id)d andSetupPayload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   routeManager = self->_routeManager;
-  v8 = a3;
-  v9 = [v6 receiverToken];
-  v10 = [v6 routeToReceiver];
+  dCopy = d;
+  receiverToken = [payloadCopy receiverToken];
+  routeToReceiver = [payloadCopy routeToReceiver];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000980C;
   v12[3] = &unk_10001CA18;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
-  [(APUIRouteManager *)routeManager pickRouteWithRouteID:v8 authString:v9 useRemoteControl:v10 ^ 1 completion:v12];
+  v13 = payloadCopy;
+  v11 = payloadCopy;
+  [(APUIRouteManager *)routeManager pickRouteWithRouteID:dCopy authString:receiverToken useRemoteControl:routeToReceiver ^ 1 completion:v12];
 }
 
-- (void)_presentAirPlayConnectionProxCardWithSetupPayload:(id)a3
+- (void)_presentAirPlayConnectionProxCardWithSetupPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   if (dword_1000226F0 <= 50 && (dword_1000226F0 != -1 || _LogCategory_Initialize()))
   {
     sub_10000D114();
@@ -469,24 +469,24 @@
   v11 = 3221225472;
   v12 = sub_100009AD0;
   v13 = &unk_10001CAB8;
-  v5 = v4;
+  v5 = payloadCopy;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   [(APUISetupViewController *)self _initializeAirPlayConnectionProxCardManagerWithSetupPayload:v5 andCompletion:&v10];
   v6 = [(APUISetupViewController *)self setupProxCardController:v10];
 
   if (v6)
   {
-    v7 = [(APUISetupViewController *)self setupProxCardController];
+    setupProxCardController = [(APUISetupViewController *)self setupProxCardController];
     v8 = +[PRXFlowConfiguration defaultConfiguration];
-    v9 = [(APUISetupViewController *)self presentProxCardFlowWithDelegate:self initialViewController:v7 configuration:v8];
+    v9 = [(APUISetupViewController *)self presentProxCardFlowWithDelegate:self initialViewController:setupProxCardController configuration:v8];
     [(APUISetupViewController *)self setProxCardNavigationController:v9];
   }
 }
 
-- (void)_presentSetupCompletedProxCard:(id)a3 isAirPlaySetUp:(BOOL)a4
+- (void)_presentSetupCompletedProxCard:(id)card isAirPlaySetUp:(BOOL)up
 {
-  v6 = a3;
+  cardCopy = card;
   if (dword_1000226F0 <= 50 && (dword_1000226F0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -497,9 +497,9 @@
   block[2] = sub_100009EE0;
   block[3] = &unk_10001CB08;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = cardCopy;
+  upCopy = up;
+  v7 = cardCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -524,9 +524,9 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000A264;
@@ -540,25 +540,25 @@
   [v6 setAllowsControlCenter:1];
   [v6 setAllowsSiri:1];
   [v6 setAllowsMenuButtonDismissal:1];
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000A560;
   v18[3] = &unk_10001CAE0;
   v18[4] = self;
-  v7 = a3;
+  contextCopy = context;
   v8 = [(APUISetupViewController *)self _remoteViewControllerProxyWithErrorHandler:v18];
-  v9 = [v7 userInfo];
+  userInfo = [contextCopy userInfo];
 
-  v10 = [v9 objectForKey:@"setupPayload"];
+  v10 = [userInfo objectForKey:@"setupPayload"];
 
   v11 = objc_opt_class();
   v17 = 0;
@@ -567,9 +567,9 @@
   if (v12)
   {
     [v8 setStatusBarHidden:1 withDuration:0.4];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
 
     if (dword_1000226F0 <= 50 && (dword_1000226F0 != -1 || _LogCategory_Initialize()))
@@ -609,18 +609,18 @@
 LABEL_16:
 }
 
-- (void)updateWiFiRTCDictionaryAlreadyAssociated:(BOOL)a3 associationSucessful:(BOOL)a4 error:(id)a5
+- (void)updateWiFiRTCDictionaryAlreadyAssociated:(BOOL)associated associationSucessful:(BOOL)sucessful error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v12 = a5;
+  sucessfulCopy = sucessful;
+  associatedCopy = associated;
+  errorCopy = error;
   v8 = @"wifiAssociationFail";
-  if (v5)
+  if (sucessfulCopy)
   {
     v8 = @"wifiAssociationSuccess";
   }
 
-  if (v6)
+  if (associatedCopy)
   {
     v9 = @"wifiAssociationAlready";
   }
@@ -632,9 +632,9 @@ LABEL_16:
 
   [(NSMutableDictionary *)self->_rtcReportingDictionary setValue:v9 forKey:@"wifiAssociationStatus"];
   rtcReportingDictionary = self->_rtcReportingDictionary;
-  if (v12)
+  if (errorCopy)
   {
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 code]);
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [(NSMutableDictionary *)rtcReportingDictionary setValue:v11 forKey:@"wifiAssociationErrorCode"];
   }
 
@@ -644,11 +644,11 @@ LABEL_16:
   }
 }
 
-- (void)updateBrokerRTCDictionaryBrokerConnectionSuccess:(BOOL)a3 error:(id)a4
+- (void)updateBrokerRTCDictionaryBrokerConnectionSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v9 = a4;
-  if (v4)
+  successCopy = success;
+  errorCopy = error;
+  if (successCopy)
   {
     v6 = @"brokerSuccess";
   }
@@ -660,9 +660,9 @@ LABEL_16:
 
   [(NSMutableDictionary *)self->_rtcReportingDictionary setValue:v6 forKey:@"brokerStatus"];
   rtcReportingDictionary = self->_rtcReportingDictionary;
-  if (v9)
+  if (errorCopy)
   {
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [(NSMutableDictionary *)rtcReportingDictionary setValue:v8 forKey:@"brokerErrorCode"];
   }
 
@@ -672,11 +672,11 @@ LABEL_16:
   }
 }
 
-- (void)updateReceiverRTCDictionaryReceiverConnectionSuccess:(BOOL)a3 error:(id)a4
+- (void)updateReceiverRTCDictionaryReceiverConnectionSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v9 = a4;
-  if (v4)
+  successCopy = success;
+  errorCopy = error;
+  if (successCopy)
   {
     v6 = @"receiverSuccess";
   }
@@ -688,9 +688,9 @@ LABEL_16:
 
   [(NSMutableDictionary *)self->_rtcReportingDictionary setValue:v6 forKey:@"receiverStatus"];
   rtcReportingDictionary = self->_rtcReportingDictionary;
-  if (v9)
+  if (errorCopy)
   {
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [(NSMutableDictionary *)rtcReportingDictionary setValue:v8 forKey:@"receiverErrorCode"];
   }
 

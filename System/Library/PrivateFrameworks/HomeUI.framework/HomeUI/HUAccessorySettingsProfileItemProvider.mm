@@ -1,6 +1,6 @@
 @interface HUAccessorySettingsProfileItemProvider
-- (HUAccessorySettingsProfileItemProvider)initWithAdapter:(id)a3 settingGroup:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUAccessorySettingsProfileItemProvider)initWithAdapter:(id)adapter settingGroup:(id)group;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)items;
 - (id)reloadItems;
@@ -8,13 +8,13 @@
 
 @implementation HUAccessorySettingsProfileItemProvider
 
-- (HUAccessorySettingsProfileItemProvider)initWithAdapter:(id)a3 settingGroup:(id)a4
+- (HUAccessorySettingsProfileItemProvider)initWithAdapter:(id)adapter settingGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  adapterCopy = adapter;
+  groupCopy = group;
+  if (groupCopy)
   {
-    if (v8)
+    if (adapterCopy)
     {
       goto LABEL_3;
     }
@@ -22,17 +22,17 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileItemProvider.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"settingGroup"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileItemProvider.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"settingGroup"}];
 
-    if (v8)
+    if (adapterCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileItemProvider.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"adapter"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUAccessorySettingsProfileItemProvider.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"adapter"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -41,23 +41,23 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_settingGroup, a4);
+    objc_storeStrong(&v10->_settingGroup, group);
     v12 = objc_opt_new();
     accessorySettingsProfileItems = v11->_accessorySettingsProfileItems;
     v11->_accessorySettingsProfileItems = v12;
 
-    objc_storeStrong(&v11->_adapter, a3);
+    objc_storeStrong(&v11->_adapter, adapter);
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HUAccessorySettingsProfileItemProvider *)self adapter];
-  v6 = [(HUAccessorySettingsProfileItemProvider *)self settingGroup];
-  v7 = [v4 initWithAdapter:v5 settingGroup:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  adapter = [(HUAccessorySettingsProfileItemProvider *)self adapter];
+  settingGroup = [(HUAccessorySettingsProfileItemProvider *)self settingGroup];
+  v7 = [v4 initWithAdapter:adapter settingGroup:settingGroup];
 
   return v7;
 }
@@ -65,17 +65,17 @@ LABEL_3:
 - (id)reloadItems
 {
   objc_initWeak(&location, self);
-  v3 = [(HUAccessorySettingsProfileItemProvider *)self adapter];
-  v4 = [v3 profilesSettingFuture];
+  adapter = [(HUAccessorySettingsProfileItemProvider *)self adapter];
+  profilesSettingFuture = [adapter profilesSettingFuture];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__HUAccessorySettingsProfileItemProvider_reloadItems__block_invoke;
   v8[3] = &unk_277DBD428;
-  v5 = v3;
+  v5 = adapter;
   v9 = v5;
   objc_copyWeak(&v11, &location);
-  v10 = self;
-  v6 = [v4 flatMap:v8];
+  selfCopy = self;
+  v6 = [profilesSettingFuture flatMap:v8];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
@@ -239,8 +239,8 @@ id __53__HUAccessorySettingsProfileItemProvider_reloadItems__block_invoke_6(uint
 
 - (id)items
 {
-  v2 = [(HUAccessorySettingsProfileItemProvider *)self accessorySettingsProfileItems];
-  v3 = [v2 copy];
+  accessorySettingsProfileItems = [(HUAccessorySettingsProfileItemProvider *)self accessorySettingsProfileItems];
+  v3 = [accessorySettingsProfileItems copy];
 
   return v3;
 }
@@ -249,8 +249,8 @@ id __53__HUAccessorySettingsProfileItemProvider_reloadItems__block_invoke_6(uint
 {
   v5.receiver = self;
   v5.super_class = HUAccessorySettingsProfileItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B28]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B28]];
 
   return v3;
 }

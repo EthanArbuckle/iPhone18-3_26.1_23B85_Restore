@@ -1,34 +1,34 @@
 @interface TSAuthFlow
-- (TSAuthFlow)initWithExternalizedContext:(id)a3 descriptors:(id)a4 isLocalConvertFlow:(BOOL)a5 isSecureIntentRequired:(BOOL)a6 isDtoEvaluationRequired:(BOOL)a7;
-- (void)firstViewController:(id)a3;
+- (TSAuthFlow)initWithExternalizedContext:(id)context descriptors:(id)descriptors isLocalConvertFlow:(BOOL)flow isSecureIntentRequired:(BOOL)required isDtoEvaluationRequired:(BOOL)evaluationRequired;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSAuthFlow
 
-- (TSAuthFlow)initWithExternalizedContext:(id)a3 descriptors:(id)a4 isLocalConvertFlow:(BOOL)a5 isSecureIntentRequired:(BOOL)a6 isDtoEvaluationRequired:(BOOL)a7
+- (TSAuthFlow)initWithExternalizedContext:(id)context descriptors:(id)descriptors isLocalConvertFlow:(BOOL)flow isSecureIntentRequired:(BOOL)required isDtoEvaluationRequired:(BOOL)evaluationRequired
 {
-  v13 = a3;
-  v14 = a4;
+  contextCopy = context;
+  descriptorsCopy = descriptors;
   v18.receiver = self;
   v18.super_class = TSAuthFlow;
   v15 = [(TSSIMSetupFlow *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_externalizedContext, a3);
-    objc_storeStrong(&v16->_descriptors, a4);
-    v16->_isLocalConvertFlow = a5;
-    v16->_isSecureIntentRequired = a6;
-    v16->_isDtoEvaluationRequired = a7;
+    objc_storeStrong(&v15->_externalizedContext, context);
+    objc_storeStrong(&v16->_descriptors, descriptors);
+    v16->_isLocalConvertFlow = flow;
+    v16->_isSecureIntentRequired = required;
+    v16->_isDtoEvaluationRequired = evaluationRequired;
   }
 
   return v16;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if (![TSUtilities isSecureIntentUIRequired:self->_externalizedContext])
   {
     v5 = _TSLogDomain();
@@ -51,7 +51,7 @@
   objc_copyWeak(&v13, buf);
   v7 = v6;
   v11 = v7;
-  v8 = v4;
+  v8 = controllerCopy;
   v12 = v8;
   [(TSSecureIntentGestureViewController *)v7 prepare:v10];
 

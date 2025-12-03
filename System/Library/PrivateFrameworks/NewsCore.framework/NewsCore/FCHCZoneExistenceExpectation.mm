@@ -32,8 +32,8 @@
     if (!v14[5] || v8[5])
     {
       v3 = MEMORY[0x1E695DF30];
-      v4 = [(FCHCZoneExistenceExpectation *)self zoneID];
-      [v3 raise:*MEMORY[0x1E695D920] format:{@"zone should exist in database: %@", v4}];
+      zoneID = [(FCHCZoneExistenceExpectation *)self zoneID];
+      [v3 raise:*MEMORY[0x1E695D920] format:{@"zone should exist in database: %@", zoneID}];
 LABEL_8:
     }
   }
@@ -44,8 +44,8 @@ LABEL_8:
     if (v14[5] || ([v8[5] fc_isMissingZoneError] & 1) == 0)
     {
       v5 = MEMORY[0x1E695DF30];
-      v4 = [(FCHCZoneExistenceExpectation *)self zoneID];
-      [v5 raise:*MEMORY[0x1E695D920] format:{@"zone should not exist in database: %@", v4}];
+      zoneID = [(FCHCZoneExistenceExpectation *)self zoneID];
+      [v5 raise:*MEMORY[0x1E695D920] format:{@"zone should not exist in database: %@", zoneID}];
       goto LABEL_8;
     }
   }

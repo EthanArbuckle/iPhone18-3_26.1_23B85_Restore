@@ -1,22 +1,22 @@
 @interface EMWorkbookMapper
 - (BOOL)hasMultipleSheets;
 - (CGSize)pageSizeForDevice;
-- (EMWorkbookMapper)initWithDocument:(id)a3 archiver:(id)a4;
-- (id)_copyStringForSheet:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 andMapper:(id)a6;
+- (EMWorkbookMapper)initWithDocument:(id)document archiver:(id)archiver;
+- (id)_copyStringForSheet:(id)sheet atIndex:(unint64_t)index withState:(id)state andMapper:(id)mapper;
 - (id)_frontPageByCopyingMainPage;
 - (id)_mainPageBack;
-- (id)blipAtIndex:(unsigned int)a3;
-- (id)copySheetMapperWithEdSheet:(id)a3;
+- (id)blipAtIndex:(unsigned int)index;
+- (id)copySheetMapperWithEdSheet:(id)sheet;
 - (id)documentTitle;
 - (id)headElementForFrontPage;
 - (id)styleMatrix;
 - (id)tabTitleDrawingAttributes;
-- (void)_pushTabForSheet:(id)a3 atIndex:(unint64_t)a4;
-- (void)finishMappingWithState:(id)a3;
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6;
-- (void)mapStylesheetData:(id)a3 name:(id)a4 atElement:(id)a5;
-- (void)mapStylesheetNamed:(id)a3 atElement:(id)a4;
-- (void)startMappingWithState:(id)a3;
+- (void)_pushTabForSheet:(id)sheet atIndex:(unint64_t)index;
+- (void)finishMappingWithState:(id)state;
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement;
+- (void)mapStylesheetData:(id)data name:(id)name atElement:(id)element;
+- (void)mapStylesheetNamed:(id)named atElement:(id)element;
+- (void)startMappingWithState:(id)state;
 @end
 
 @implementation EMWorkbookMapper
@@ -36,15 +36,15 @@
 
 - (id)documentTitle
 {
-  v3 = [(CMMapper *)self document];
-  v4 = [v3 summary];
+  document = [(CMMapper *)self document];
+  summary = [document summary];
 
-  if (v4)
+  if (summary)
   {
-    v5 = [v3 summary];
-    v6 = [v5 title];
+    summary2 = [document summary];
+    title = [summary2 title];
 
-    if (v6 && [v6 length])
+    if (title && [title length])
     {
       goto LABEL_9;
     }
@@ -52,23 +52,23 @@
 
   else
   {
-    v6 = 0;
+    title = 0;
   }
 
-  v7 = [v3 workbookName];
+  workbookName = [document workbookName];
 
-  if (v7 && [v7 length])
+  if (workbookName && [workbookName length])
   {
-    v6 = v7;
+    title = workbookName;
 LABEL_9:
-    v8 = v6;
-    v7 = v8;
+    fileName = title;
+    workbookName = fileName;
     goto LABEL_11;
   }
 
-  v8 = [(EMWorkbookMapper *)self fileName];
+  fileName = [(EMWorkbookMapper *)self fileName];
 LABEL_11:
-  v9 = v8;
+  v9 = fileName;
 
   return v9;
 }
@@ -80,9 +80,9 @@ LABEL_11:
   mXhtmlDoc = self->mXhtmlDoc;
   self->mXhtmlDoc = v3;
 
-  v35 = [(EMWorkbookMapper *)self headElementForFrontPage];
-  v5 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  [v5 addChild:v35];
+  headElementForFrontPage = [(EMWorkbookMapper *)self headElementForFrontPage];
+  rootElement = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  [rootElement addChild:headElementForFrontPage];
 
   v6 = [OIXMLElement elementWithType:1];
   mBodyElement = self->mBodyElement;
@@ -95,8 +95,8 @@ LABEL_11:
   v12 = [OIXMLAttribute attributeWithName:@"onload" stringValue:v11];
   [(OIXMLElement *)v8 addAttribute:v12];
 
-  v13 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  [v13 addChild:self->mBodyElement];
+  rootElement2 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  [rootElement2 addChild:self->mBodyElement];
 
   v37 = [OIXMLElement elementWithType:3];
   v14 = [OIXMLAttribute attributeWithName:@"id" stringValue:@"wrapper"];
@@ -128,8 +128,8 @@ LABEL_3:
       }
 
       v21 = *(*(&v38 + 1) + 8 * v20);
-      v22 = [MEMORY[0x277CBEB68] null];
-      v23 = v21 == v22;
+      null = [MEMORY[0x277CBEB68] null];
+      v23 = v21 == null;
 
       if (!v23)
       {
@@ -172,47 +172,47 @@ LABEL_12:
 
   [v37 addChild:v36];
   [(OIXMLElement *)self->mBodyElement addChild:v37];
-  v28 = [MEMORY[0x277CCAB68] string];
-  v29 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  v30 = [v29 openingTagString];
-  [v28 appendString:v30];
+  string = [MEMORY[0x277CCAB68] string];
+  rootElement3 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  openingTagString = [rootElement3 openingTagString];
+  [string appendString:openingTagString];
 
-  v31 = [v35 XMLString];
-  [v28 appendString:v31];
+  xMLString = [headElementForFrontPage XMLString];
+  [string appendString:xMLString];
 
-  v32 = [(OIXMLElement *)self->mBodyElement openingTagString];
-  [v28 appendString:v32];
+  openingTagString2 = [(OIXMLElement *)self->mBodyElement openingTagString];
+  [string appendString:openingTagString2];
 
-  v33 = [v37 XMLString];
-  [v28 appendString:v33];
+  xMLString2 = [v37 XMLString];
+  [string appendString:xMLString2];
 
-  return v28;
+  return string;
 }
 
 - (id)_mainPageBack
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(OIXMLElement *)self->mBodyElement closingTagString];
-  [v3 appendString:v4];
+  string = [MEMORY[0x277CCAB68] string];
+  closingTagString = [(OIXMLElement *)self->mBodyElement closingTagString];
+  [string appendString:closingTagString];
 
-  v5 = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
-  v6 = [v5 closingTagString];
-  [v3 appendString:v6];
+  rootElement = [(OIXMLDocument *)self->mXhtmlDoc rootElement];
+  closingTagString2 = [rootElement closingTagString];
+  [string appendString:closingTagString2];
 
-  return v3;
+  return string;
 }
 
-- (EMWorkbookMapper)initWithDocument:(id)a3 archiver:(id)a4
+- (EMWorkbookMapper)initWithDocument:(id)document archiver:(id)archiver
 {
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  archiverCopy = archiver;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = documentCopy;
     v26.receiver = self;
     v26.super_class = EMWorkbookMapper;
-    v9 = [(CMDocumentMapper *)&v26 initWithDocument:v8 archiver:v7];
+    v9 = [(CMDocumentMapper *)&v26 initWithDocument:v8 archiver:archiverCopy];
     v10 = v9;
     if (v9)
     {
@@ -241,10 +241,10 @@ LABEL_12:
       v10->mStyleSheetGuid = &stru_286EE1130;
 
       v10->mRealSheetCount = 0;
-      v21 = [v8 sheetCount];
-      if (v21 >= 1)
+      sheetCount = [v8 sheetCount];
+      if (sheetCount >= 1)
       {
-        for (i = 0; i != v21; ++i)
+        for (i = 0; i != sheetCount; ++i)
         {
           v23 = [v8 sheetAtIndex:i loadIfNeeded:0];
           if (([v23 isHidden] & 1) == 0)
@@ -261,44 +261,44 @@ LABEL_12:
 
     self = v10;
 
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [(CMMapper *)self document];
-  v5 = [v4 blips];
-  v6 = [v5 blipAtIndex:v3];
+  v3 = *&index;
+  document = [(CMMapper *)self document];
+  blips = [document blips];
+  v6 = [blips blipAtIndex:v3];
 
   return v6;
 }
 
 - (id)styleMatrix
 {
-  v2 = [(CMMapper *)self document];
-  v3 = [v2 theme];
-  v4 = [v3 baseStyles];
+  document = [(CMMapper *)self document];
+  theme = [document theme];
+  baseStyles = [theme baseStyles];
 
-  if (v4)
+  if (baseStyles)
   {
-    v5 = [v4 styleMatrix];
+    styleMatrix = [baseStyles styleMatrix];
   }
 
   else
   {
-    v5 = 0;
+    styleMatrix = 0;
   }
 
-  return v5;
+  return styleMatrix;
 }
 
 - (CGSize)pageSizeForDevice
@@ -321,10 +321,10 @@ LABEL_12:
   return result;
 }
 
-- (void)mapStylesheetData:(id)a3 name:(id)a4 atElement:(id)a5
+- (void)mapStylesheetData:(id)data name:(id)name atElement:(id)element
 {
-  v14 = a5;
-  v8 = [(CMArchiveManager *)self->super.super.mArchiver addResource:a3 withName:a4 type:8];
+  elementCopy = element;
+  v8 = [(CMArchiveManager *)self->super.super.mArchiver addResource:data withName:name type:8];
   v9 = [OIXMLElement elementWithType:10];
   v10 = [OIXMLAttribute attributeWithName:@"href" stringValue:v8];
   [v9 addAttribute:v10];
@@ -338,24 +338,24 @@ LABEL_12:
   v13 = [OIXMLAttribute attributeWithName:@"charset" stringValue:@"utf-8"];
   [v9 addAttribute:v13];
 
-  [v14 addChild:v9];
+  [elementCopy addChild:v9];
 }
 
-- (void)mapStylesheetNamed:(id)a3 atElement:(id)a4
+- (void)mapStylesheetNamed:(id)named atElement:(id)element
 {
-  v11 = a3;
-  v6 = a4;
+  namedCopy = named;
+  elementCopy = element;
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 URLForResource:v11 withExtension:@"css"];
+  v8 = [v7 URLForResource:namedCopy withExtension:@"css"];
   v9 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8];
-  v10 = [v11 stringByAppendingPathExtension:@"css"];
-  [(EMWorkbookMapper *)self mapStylesheetData:v9 name:v10 atElement:v6];
+  v10 = [namedCopy stringByAppendingPathExtension:@"css"];
+  [(EMWorkbookMapper *)self mapStylesheetData:v9 name:v10 atElement:elementCopy];
 }
 
 - (id)headElementForFrontPage
 {
-  v3 = [(EMWorkbookMapper *)self documentTitle];
-  v4 = [CMXmlUtils copyHeadElementWithTitle:v3];
+  documentTitle = [(EMWorkbookMapper *)self documentTitle];
+  v4 = [CMXmlUtils copyHeadElementWithTitle:documentTitle];
 
   v5 = [OIXMLElement elementWithType:12];
   v6 = [OIXMLAttribute attributeWithName:@"http-equiv" stringValue:@"Content-Type"];
@@ -411,25 +411,25 @@ LABEL_12:
   return v6;
 }
 
-- (void)_pushTabForSheet:(id)a3 atIndex:(unint64_t)a4
+- (void)_pushTabForSheet:(id)sheet atIndex:(unint64_t)index
 {
-  v25 = a3;
-  v6 = [v25 name];
-  v7 = [v6 string];
+  sheetCopy = sheet;
+  name = [sheetCopy name];
+  string = [name string];
 
-  v8 = [OIXMLElement elementWithType:3 stringValue:v7];
+  v8 = [OIXMLElement elementWithType:3 stringValue:string];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [(NSMutableArray *)self->mSheetURLs objectAtIndex:a4];
-  v11 = [v9 stringWithFormat:@"javascript:SelectSheet(%lu, '%@')", a4, v10];
+  v10 = [(NSMutableArray *)self->mSheetURLs objectAtIndex:index];
+  v11 = [v9 stringWithFormat:@"javascript:SelectSheet(%lu, '%@')", index, v10];
   v12 = [OIXMLAttribute attributeWithName:@"onclick" stringValue:v11];
   [v8 addAttribute:v12];
 
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Tab%lu", a4];
-  v14 = [OIXMLAttribute attributeWithName:@"id" stringValue:v13];
+  index = [MEMORY[0x277CCACA8] stringWithFormat:@"Tab%lu", index];
+  v14 = [OIXMLAttribute attributeWithName:@"id" stringValue:index];
   [v8 addAttribute:v14];
 
   v15 = &stru_286EE1130;
-  if (!a4)
+  if (!index)
   {
     v15 = @" selected";
   }
@@ -438,8 +438,8 @@ LABEL_12:
   v17 = [OIXMLAttribute attributeWithName:@"class" stringValue:v16];
   [v8 addAttribute:v17];
 
-  v18 = [(EMWorkbookMapper *)self tabTitleDrawingAttributes];
-  [v7 sizeWithAttributes:v18];
+  tabTitleDrawingAttributes = [(EMWorkbookMapper *)self tabTitleDrawingAttributes];
+  [string sizeWithAttributes:tabTitleDrawingAttributes];
   v20 = v19 + 40.0;
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"position:absolute overflow:hidden;  top:0; left:%d; width:%d; height:38;", self->mTabPosition, (v19 + 40.0)];;
   v22 = [OIXMLAttribute attributeWithName:@"style" stringValue:v21];
@@ -447,13 +447,13 @@ LABEL_12:
 
   self->mTabPosition = v20 + self->mTabPosition;
   mArchiver = self->super.super.mArchiver;
-  v24 = [v8 XMLString];
-  [(CMArchiveManager *)mArchiver pushText:v24 toPath:0];
+  xMLString = [v8 XMLString];
+  [(CMArchiveManager *)mArchiver pushText:xMLString toPath:0];
 }
 
-- (void)startMappingWithState:(id)a3
+- (void)startMappingWithState:(id)state
 {
-  v9 = a3;
+  stateCopy = state;
   self->mHasPushedHeader = 0;
   self->mIsFirstMappedSheet = 1;
   if ([(EMWorkbookMapper *)self hasMultipleSheets])
@@ -461,62 +461,62 @@ LABEL_12:
     self->mTabPosition = 0.0;
   }
 
-  v4 = [(CMMapper *)self document];
-  v5 = [v4 theme];
-  v6 = [v5 baseStyles];
-  v7 = [v6 colorScheme];
-  [v9 setColorScheme:v7];
+  document = [(CMMapper *)self document];
+  theme = [document theme];
+  baseStyles = [theme baseStyles];
+  colorScheme = [baseStyles colorScheme];
+  [stateCopy setColorScheme:colorScheme];
 
-  v8 = [v4 resources];
-  [v9 setResources:v8];
+  resources = [document resources];
+  [stateCopy setResources:resources];
 }
 
-- (id)_copyStringForSheet:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 andMapper:(id)a6
+- (id)_copyStringForSheet:(id)sheet atIndex:(unint64_t)index withState:(id)state andMapper:(id)mapper
 {
-  v8 = a5;
-  v9 = a6;
+  stateCopy = state;
+  mapperCopy = mapper;
   v10 = +[CMXmlUtils copyXhtmlDocument];
   v11 = [OIXMLElement elementWithType:1];
-  [v9 mapAt:v11 withState:v8];
-  v12 = [v9 width];
-  if (v12 > self->mWidth)
+  [mapperCopy mapAt:v11 withState:stateCopy];
+  width = [mapperCopy width];
+  if (width > self->mWidth)
   {
-    self->mWidth = v12;
+    self->mWidth = width;
   }
 
-  v13 = [v9 height];
-  if (v13 > self->mHeight)
+  height = [mapperCopy height];
+  if (height > self->mHeight)
   {
-    self->mHeight = v13;
+    self->mHeight = height;
   }
 
-  v14 = [(EMWorkbookMapper *)self archiver];
-  v15 = [v14 cssStylesheetString];
+  archiver = [(EMWorkbookMapper *)self archiver];
+  cssStylesheetString = [archiver cssStylesheetString];
 
-  v16 = [(EMWorkbookMapper *)self documentTitle];
-  v17 = [CMXmlUtils copyHeadElementWithTitle:v16];
+  documentTitle = [(EMWorkbookMapper *)self documentTitle];
+  v17 = [CMXmlUtils copyHeadElementWithTitle:documentTitle];
 
   [(EMWorkbookMapper *)self mapStylesheetNamed:@"spreadsheet" atElement:v17];
   [(EMWorkbookMapper *)self mapStylesheetNamed:@"spreadsheet-ios" atElement:v17];
   v22.receiver = self;
   v22.super_class = EMWorkbookMapper;
-  [(CMMapper *)&v22 mapStylesheetAt:v17 stylesheet:v15];
-  v18 = [v10 rootElement];
-  [v18 addChild:v17];
+  [(CMMapper *)&v22 mapStylesheetAt:v17 stylesheet:cssStylesheetString];
+  rootElement = [v10 rootElement];
+  [rootElement addChild:v17];
 
-  v19 = [v10 rootElement];
-  [v19 addChild:v11];
+  rootElement2 = [v10 rootElement];
+  [rootElement2 addChild:v11];
 
-  v20 = [v10 XMLString];
+  xMLString = [v10 XMLString];
 
-  return v20;
+  return xMLString;
 }
 
-- (void)mapElement:(id)a3 atIndex:(unint64_t)a4 withState:(id)a5 isLastElement:(BOOL)a6
+- (void)mapElement:(id)element atIndex:(unint64_t)index withState:(id)state isLastElement:(BOOL)lastElement
 {
-  v31 = a3;
-  v10 = a5;
-  if (([v31 isHidden] & 1) == 0)
+  elementCopy = element;
+  stateCopy = state;
+  if (([elementCopy isHidden] & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 && ![(CMArchiveManager *)self->super.super.mArchiver isCancelled])
@@ -525,19 +525,19 @@ LABEL_12:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v29 = [MEMORY[0x277CCA890] currentHandler];
-        [v29 handleFailureInMethod:a2 object:self file:@"EMWorkbookMapper.mm" lineNumber:436 description:@"Expected a EMState"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EMWorkbookMapper.mm" lineNumber:436 description:@"Expected a EMState"];
       }
 
-      v12 = v10;
-      [v12 setCurrentSheet:v31];
-      v13 = [(EMWorkbookMapper *)self copySheetMapperWithEdSheet:v31];
+      v12 = stateCopy;
+      [v12 setCurrentSheet:elementCopy];
+      v13 = [(EMWorkbookMapper *)self copySheetMapperWithEdSheet:elementCopy];
       if (v13)
       {
-        v14 = [v31 name];
-        v15 = [v14 string];
+        name = [elementCopy name];
+        string = [name string];
 
-        [(NSMutableArray *)self->mWorksheetNames addObject:v15];
+        [(NSMutableArray *)self->mWorksheetNames addObject:string];
         if (self->mIsFirstMappedSheet)
         {
           [(CMArchiveManager *)self->super.super.mArchiver pushText:&stru_286EE1130 toPath:0];
@@ -547,16 +547,16 @@ LABEL_12:
 
         if ([(EMWorkbookMapper *)self hasMultipleSheets])
         {
-          while ([(NSMutableArray *)self->mSheetURLs count]< a4)
+          while ([(NSMutableArray *)self->mSheetURLs count]< index)
           {
             mSheetURLs = self->mSheetURLs;
-            v17 = [MEMORY[0x277CBEB68] null];
-            [(NSMutableArray *)mSheetURLs addObject:v17];
+            null = [MEMORY[0x277CBEB68] null];
+            [(NSMutableArray *)mSheetURLs addObject:null];
           }
 
           mArchiver = self->super.super.mArchiver;
-          v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sheet%lu.html", a4];
-          v20 = [(CMArchiveManager *)mArchiver copyResourceWithName:v19 type:10];
+          index = [MEMORY[0x277CCACA8] stringWithFormat:@"Sheet%lu.html", index];
+          v20 = [(CMArchiveManager *)mArchiver copyResourceWithName:index type:10];
 
           if (v20)
           {
@@ -565,11 +565,11 @@ LABEL_12:
 
           else
           {
-            NSLog(@"Could not create URL for sheet %lu", a4);
+            NSLog(@"Could not create URL for sheet %lu", index);
           }
         }
 
-        v21 = [(EMWorkbookMapper *)self _copyStringForSheet:v31 atIndex:a4 withState:v12 andMapper:v13];
+        v21 = [(EMWorkbookMapper *)self _copyStringForSheet:elementCopy atIndex:index withState:v12 andMapper:v13];
         if ([(CMArchiveManager *)self->super.super.mArchiver isThumbnail])
         {
           [v13 adjustedSize];
@@ -582,18 +582,18 @@ LABEL_12:
         {
           if ([(EMWorkbookMapper *)self hasMultipleSheets])
           {
-            v25 = [(NSMutableArray *)self->mSheetURLs objectAtIndex:a4];
+            v25 = [(NSMutableArray *)self->mSheetURLs objectAtIndex:index];
             if (!self->mHasPushedHeader)
             {
-              v30 = v15;
+              v30 = string;
               self->mHasPushedHeader = 1;
-              v26 = [(EMWorkbookMapper *)self _frontPageByCopyingMainPage];
-              [(CMArchiveManager *)self->super.super.mArchiver pushText:v26 toPath:0];
+              _frontPageByCopyingMainPage = [(EMWorkbookMapper *)self _frontPageByCopyingMainPage];
+              [(CMArchiveManager *)self->super.super.mArchiver pushText:_frontPageByCopyingMainPage toPath:0];
 
-              v15 = v30;
+              string = v30;
             }
 
-            [(EMWorkbookMapper *)self _pushTabForSheet:v31 atIndex:a4];
+            [(EMWorkbookMapper *)self _pushTabForSheet:elementCopy atIndex:index];
             [(CMArchiveManager *)self->super.super.mArchiver pushText:v21 toPath:v25];
             [(CMArchiveManager *)self->super.super.mArchiver commitDataAtPath:v25];
             [(CMArchiveManager *)self->super.super.mArchiver closeResourceAtPath:v25];
@@ -601,10 +601,10 @@ LABEL_12:
             if (!self->mHasPushedFirstSheet)
             {
               self->mHasPushedFirstSheet = 1;
-              v27 = [MEMORY[0x277CCAC38] processInfo];
-              v28 = [v27 activeProcessorCount];
+              processInfo = [MEMORY[0x277CCAC38] processInfo];
+              activeProcessorCount = [processInfo activeProcessorCount];
 
-              if (v28 == 1)
+              if (activeProcessorCount == 1)
               {
                 sleep(2u);
               }
@@ -630,31 +630,31 @@ LABEL_12:
   }
 }
 
-- (void)finishMappingWithState:(id)a3
+- (void)finishMappingWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"EMWorkbookMapper.mm" lineNumber:536 description:@"Expected a EMState"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMWorkbookMapper.mm" lineNumber:536 description:@"Expected a EMState"];
   }
 
-  v8 = v5;
+  v8 = stateCopy;
   [v8 setCurrentSheet:0];
   if ([(EMWorkbookMapper *)self hasMultipleSheets])
   {
-    v6 = [(EMWorkbookMapper *)self _mainPageBack];
-    [(CMArchiveManager *)self->super.super.mArchiver pushText:v6 toPath:0];
+    _mainPageBack = [(EMWorkbookMapper *)self _mainPageBack];
+    [(CMArchiveManager *)self->super.super.mArchiver pushText:_mainPageBack toPath:0];
     [(CMArchiveManager *)self->super.super.mArchiver commitDataAtPath:0];
     [(CMArchiveManager *)self->super.super.mArchiver closeResourceAtPath:0];
   }
 }
 
-- (id)copySheetMapperWithEdSheet:(id)a3
+- (id)copySheetMapperWithEdSheet:(id)sheet
 {
-  v4 = a3;
-  if ([v4 isHidden])
+  sheetCopy = sheet;
+  if ([sheetCopy isHidden])
   {
     goto LABEL_2;
   }
@@ -662,7 +662,7 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[EMChartsheetMapper alloc] initWithChartSheet:v4 parent:self];
+    v6 = [[EMChartsheetMapper alloc] initWithChartSheet:sheetCopy parent:self];
 LABEL_7:
     v5 = v6;
     goto LABEL_8;
@@ -671,7 +671,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[EMWorksheetMapper alloc] initWithEDWorksheet:v4 parent:self];
+    v6 = [[EMWorksheetMapper alloc] initWithEDWorksheet:sheetCopy parent:self];
     goto LABEL_7;
   }
 

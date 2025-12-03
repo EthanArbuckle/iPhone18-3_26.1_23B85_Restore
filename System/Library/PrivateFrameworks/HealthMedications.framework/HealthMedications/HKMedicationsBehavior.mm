@@ -2,12 +2,12 @@
 + (BOOL)_medicationFutureMigrationsEnabled;
 + (BOOL)hasSupportedAppleWatchPaired;
 + (id)_getActivePairedDevice;
-+ (id)_unitTesting_behaviorWithMockPairedDevice:(id)a3;
++ (id)_unitTesting_behaviorWithMockPairedDevice:(id)device;
 + (id)sharedBehavior;
 + (void)resetSharedBehavior;
-+ (void)setSharedBehavior:(id)a3;
++ (void)setSharedBehavior:(id)behavior;
 - (HKMedicationsBehavior)init;
-- (id)_initWithFutureMigrationsEnabled:(BOOL)a3 asyncMedicationReschedulesEnabled:(BOOL)a4 mockPairedDevice:(id)a5;
+- (id)_initWithFutureMigrationsEnabled:(BOOL)enabled asyncMedicationReschedulesEnabled:(BOOL)reschedulesEnabled mockPairedDevice:(id)device;
 @end
 
 @implementation HKMedicationsBehavior
@@ -19,18 +19,18 @@
   return [(HKMedicationsBehavior *)self _initWithFutureMigrationsEnabled:v3 asyncMedicationReschedulesEnabled:1 mockPairedDevice:0];
 }
 
-- (id)_initWithFutureMigrationsEnabled:(BOOL)a3 asyncMedicationReschedulesEnabled:(BOOL)a4 mockPairedDevice:(id)a5
+- (id)_initWithFutureMigrationsEnabled:(BOOL)enabled asyncMedicationReschedulesEnabled:(BOOL)reschedulesEnabled mockPairedDevice:(id)device
 {
-  v9 = a5;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = HKMedicationsBehavior;
   v10 = [(HKMedicationsBehavior *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_medicationsFutureMigrationsEnabled = a3;
-    v10->_asyncMedicationReschedulesEnabled = a4;
-    objc_storeStrong(&v10->_mockPairedDevice, a5);
+    v10->_medicationsFutureMigrationsEnabled = enabled;
+    v10->_asyncMedicationReschedulesEnabled = reschedulesEnabled;
+    objc_storeStrong(&v10->_mockPairedDevice, device);
   }
 
   return v11;
@@ -63,12 +63,12 @@
   return v5;
 }
 
-+ (void)setSharedBehavior:(id)a3
++ (void)setSharedBehavior:(id)behavior
 {
-  v3 = a3;
+  behaviorCopy = behavior;
   os_unfair_lock_lock(&_sharedMedicationsBehaviorLock);
   v4 = _sharedMedicationsBehaviorOverride;
-  _sharedMedicationsBehaviorOverride = v3;
+  _sharedMedicationsBehaviorOverride = behaviorCopy;
 
   os_unfair_lock_unlock(&_sharedMedicationsBehaviorLock);
 }
@@ -84,65 +84,65 @@
 
 + (BOOL)_medicationFutureMigrationsEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:*MEMORY[0x277CCE2F0]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:*MEMORY[0x277CCE2F0]];
 
   v4 = [v3 objectForKey:@"EnableMedicationsDatabaseFutureMigrations"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)hasSupportedAppleWatchPaired
 {
-  v2 = [objc_opt_class() _getActivePairedDevice];
-  v3 = v2;
-  if (v2)
+  _getActivePairedDevice = [objc_opt_class() _getActivePairedDevice];
+  v3 = _getActivePairedDevice;
+  if (_getActivePairedDevice)
   {
-    if ([v2 supportsMedicationsCapability])
+    if ([_getActivePairedDevice supportsMedicationsCapability])
     {
-      v4 = 1;
+      supportsMeadowCapability = 1;
     }
 
     else
     {
-      v4 = [v3 supportsMeadowCapability];
+      supportsMeadowCapability = [v3 supportsMeadowCapability];
     }
   }
 
   else
   {
-    v4 = 0;
+    supportsMeadowCapability = 0;
   }
 
-  return v4;
+  return supportsMeadowCapability;
 }
 
 + (id)_getActivePairedDevice
 {
   v2 = +[HKMedicationsBehavior sharedBehavior];
-  v3 = [v2 mockPairedDevice];
+  mockPairedDevice = [v2 mockPairedDevice];
 
-  if (v3)
+  if (mockPairedDevice)
   {
-    v4 = v3;
+    getActivePairedDevice = mockPairedDevice;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v4 = [v5 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
   }
 
-  return v4;
+  return getActivePairedDevice;
 }
 
-+ (id)_unitTesting_behaviorWithMockPairedDevice:(id)a3
++ (id)_unitTesting_behaviorWithMockPairedDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[HKMedicationsBehavior alloc] _initWithFutureMigrationsEnabled:+[HKMedicationsBehavior asyncMedicationReschedulesEnabled:"_medicationFutureMigrationsEnabled"]mockPairedDevice:1, v3];
+  deviceCopy = device;
+  deviceCopy = [[HKMedicationsBehavior alloc] _initWithFutureMigrationsEnabled:+[HKMedicationsBehavior asyncMedicationReschedulesEnabled:"_medicationFutureMigrationsEnabled"]mockPairedDevice:1, deviceCopy];
 
-  return v4;
+  return deviceCopy;
 }
 
 @end

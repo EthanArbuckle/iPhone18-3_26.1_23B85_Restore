@@ -1,23 +1,23 @@
 @interface OTPairingMessage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTPairingMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   epoch = self->_epoch;
-  v6 = v4[2];
-  v15 = v4;
+  v6 = fromCopy[2];
+  v15 = fromCopy;
   if (epoch)
   {
     if (!v6)
@@ -38,10 +38,10 @@
     [(OTPairingMessage *)self setEpoch:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_7:
   prepare = self->_prepare;
-  v8 = v4[3];
+  v8 = fromCopy[3];
   if (prepare)
   {
     if (!v8)
@@ -62,10 +62,10 @@ LABEL_7:
     [(OTPairingMessage *)self setPrepare:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_13:
   voucher = self->_voucher;
-  v10 = v4[6];
+  v10 = fromCopy[6];
   if (voucher)
   {
     if (!v10)
@@ -86,10 +86,10 @@ LABEL_13:
     [(OTPairingMessage *)self setVoucher:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_19:
   supportsOctagon = self->_supportsOctagon;
-  v12 = v4[4];
+  v12 = fromCopy[4];
   if (supportsOctagon)
   {
     if (!v12)
@@ -110,10 +110,10 @@ LABEL_19:
     [(OTPairingMessage *)self setSupportsOctagon:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_25:
   supportsSOS = self->_supportsSOS;
-  v14 = v4[5];
+  v14 = fromCopy[5];
   if (supportsSOS)
   {
     if (!v14)
@@ -134,11 +134,11 @@ LABEL_25:
     [(OTPairingMessage *)self setSupportsSOS:?];
   }
 
-  v4 = v15;
+  fromCopy = v15;
 LABEL_31:
-  if (v4[7])
+  if (fromCopy[7])
   {
-    self->_version = v4[1];
+    self->_version = fromCopy[1];
     *&self->_has |= 1u;
   }
 
@@ -165,16 +165,16 @@ LABEL_31:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   epoch = self->_epoch;
-  if (epoch | *(v4 + 2))
+  if (epoch | *(equalCopy + 2))
   {
     if (![(OTSponsorToApplicantRound1M2 *)epoch isEqual:?])
     {
@@ -183,7 +183,7 @@ LABEL_31:
   }
 
   prepare = self->_prepare;
-  if (prepare | *(v4 + 3))
+  if (prepare | *(equalCopy + 3))
   {
     if (![(OTApplicantToSponsorRound2M1 *)prepare isEqual:?])
     {
@@ -192,7 +192,7 @@ LABEL_31:
   }
 
   voucher = self->_voucher;
-  if (voucher | *(v4 + 6))
+  if (voucher | *(equalCopy + 6))
   {
     if (![(OTSponsorToApplicantRound2M2 *)voucher isEqual:?])
     {
@@ -201,7 +201,7 @@ LABEL_31:
   }
 
   supportsOctagon = self->_supportsOctagon;
-  if (supportsOctagon | *(v4 + 4))
+  if (supportsOctagon | *(equalCopy + 4))
   {
     if (![(OTSupportOctagonMessage *)supportsOctagon isEqual:?])
     {
@@ -210,7 +210,7 @@ LABEL_31:
   }
 
   supportsSOS = self->_supportsSOS;
-  if (supportsSOS | *(v4 + 5))
+  if (supportsSOS | *(equalCopy + 5))
   {
     if (![(OTSupportSOSMessage *)supportsSOS isEqual:?])
     {
@@ -218,10 +218,10 @@ LABEL_31:
     }
   }
 
-  v10 = (*(v4 + 56) & 1) == 0;
+  v10 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) != 0 && self->_version == *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) != 0 && self->_version == *(equalCopy + 1))
     {
       v10 = 1;
       goto LABEL_17;
@@ -236,26 +236,26 @@ LABEL_17:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OTSponsorToApplicantRound1M2 *)self->_epoch copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OTSponsorToApplicantRound1M2 *)self->_epoch copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(OTApplicantToSponsorRound2M1 *)self->_prepare copyWithZone:a3];
+  v8 = [(OTApplicantToSponsorRound2M1 *)self->_prepare copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(OTSponsorToApplicantRound2M2 *)self->_voucher copyWithZone:a3];
+  v10 = [(OTSponsorToApplicantRound2M2 *)self->_voucher copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
-  v12 = [(OTSupportOctagonMessage *)self->_supportsOctagon copyWithZone:a3];
+  v12 = [(OTSupportOctagonMessage *)self->_supportsOctagon copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(OTSupportSOSMessage *)self->_supportsSOS copyWithZone:a3];
+  v14 = [(OTSupportSOSMessage *)self->_supportsSOS copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
@@ -268,99 +268,99 @@ LABEL_17:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_epoch)
   {
-    [v4 setEpoch:?];
-    v4 = v5;
+    [toCopy setEpoch:?];
+    toCopy = v5;
   }
 
   if (self->_prepare)
   {
     [v5 setPrepare:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_voucher)
   {
     [v5 setVoucher:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_supportsOctagon)
   {
     [v5 setSupportsOctagon:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_supportsSOS)
   {
     [v5 setSupportsSOS:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_version;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = self->_version;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_epoch)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_prepare)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_voucher)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_supportsOctagon)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_supportsSOS)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     version = self->_version;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -369,18 +369,18 @@ LABEL_17:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -398,11 +398,11 @@ LABEL_17:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -415,7 +415,7 @@ LABEL_15:
             objc_storeStrong(&self->_supportsOctagon, v15);
             v25 = 0xAAAAAAAAAAAAAAAALL;
             v26 = 0xAAAAAAAAAAAAAAAALL;
-            if (!PBReaderPlaceMark() || !OTSupportOctagonMessageReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !OTSupportOctagonMessageReadFrom(v15, from))
             {
 LABEL_57:
 
@@ -428,7 +428,7 @@ LABEL_57:
             objc_storeStrong(&self->_supportsSOS, v15);
             v25 = 0xAAAAAAAAAAAAAAAALL;
             v26 = 0xAAAAAAAAAAAAAAAALL;
-            if (!PBReaderPlaceMark() || !OTSupportSOSMessageReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !OTSupportSOSMessageReadFrom(v15, from))
             {
               goto LABEL_57;
             }
@@ -442,18 +442,18 @@ LABEL_57:
             while (1)
             {
               LOBYTE(v25) = 0;
-              v19 = [a3 position] + 1;
-              if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+              v19 = [from position] + 1;
+              if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
               {
-                v21 = [a3 data];
-                [v21 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v18 |= (v25 & 0x7F) << v16;
@@ -471,7 +471,7 @@ LABEL_57:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v22 = 0;
             }
@@ -496,7 +496,7 @@ LABEL_55:
             objc_storeStrong(&self->_epoch, v15);
             v25 = 0xAAAAAAAAAAAAAAAALL;
             v26 = 0xAAAAAAAAAAAAAAAALL;
-            if (!PBReaderPlaceMark() || !OTSponsorToApplicantRound1M2ReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !OTSponsorToApplicantRound1M2ReadFrom(v15, from))
             {
               goto LABEL_57;
             }
@@ -507,7 +507,7 @@ LABEL_55:
             objc_storeStrong(&self->_prepare, v15);
             v25 = 0xAAAAAAAAAAAAAAAALL;
             v26 = 0xAAAAAAAAAAAAAAAALL;
-            if (!PBReaderPlaceMark() || !OTApplicantToSponsorRound2M1ReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !OTApplicantToSponsorRound2M1ReadFrom(v15, from))
             {
               goto LABEL_57;
             }
@@ -518,7 +518,7 @@ LABEL_55:
             objc_storeStrong(&self->_voucher, v15);
             v25 = 0xAAAAAAAAAAAAAAAALL;
             v26 = 0xAAAAAAAAAAAAAAAALL;
-            if (!PBReaderPlaceMark() || !OTSponsorToApplicantRound2M2ReadFrom(v15, a3))
+            if (!PBReaderPlaceMark() || !OTSponsorToApplicantRound2M2ReadFrom(v15, from))
             {
               goto LABEL_57;
             }
@@ -536,60 +536,60 @@ LABEL_49:
       }
 
 LABEL_50:
-      v23 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v23 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   epoch = self->_epoch;
   if (epoch)
   {
-    v5 = [(OTSponsorToApplicantRound1M2 *)epoch dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"epoch"];
+    dictionaryRepresentation = [(OTSponsorToApplicantRound1M2 *)epoch dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"epoch"];
   }
 
   prepare = self->_prepare;
   if (prepare)
   {
-    v7 = [(OTApplicantToSponsorRound2M1 *)prepare dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"prepare"];
+    dictionaryRepresentation2 = [(OTApplicantToSponsorRound2M1 *)prepare dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"prepare"];
   }
 
   voucher = self->_voucher;
   if (voucher)
   {
-    v9 = [(OTSponsorToApplicantRound2M2 *)voucher dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"voucher"];
+    dictionaryRepresentation3 = [(OTSponsorToApplicantRound2M2 *)voucher dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"voucher"];
   }
 
   supportsOctagon = self->_supportsOctagon;
   if (supportsOctagon)
   {
-    v11 = [(OTSupportOctagonMessage *)supportsOctagon dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"supportsOctagon"];
+    dictionaryRepresentation4 = [(OTSupportOctagonMessage *)supportsOctagon dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"supportsOctagon"];
   }
 
   supportsSOS = self->_supportsSOS;
   if (supportsSOS)
   {
-    v13 = [(OTSupportSOSMessage *)supportsSOS dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"supportsSOS"];
+    dictionaryRepresentation5 = [(OTSupportSOSMessage *)supportsSOS dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"supportsSOS"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v14 forKey:@"version"];
+    [dictionary setObject:v14 forKey:@"version"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -598,8 +598,8 @@ LABEL_50:
   v8.receiver = self;
   v8.super_class = OTPairingMessage;
   v4 = [(OTPairingMessage *)&v8 description];
-  v5 = [(OTPairingMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(OTPairingMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

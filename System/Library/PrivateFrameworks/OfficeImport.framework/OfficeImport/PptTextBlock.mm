@@ -1,16 +1,16 @@
 @interface PptTextBlock
-- (PptCharRun)characterRunAtIndex:(int)a3;
+- (PptCharRun)characterRunAtIndex:(int)index;
 - (PptTextBlock)init;
 - (int)characterRunCount;
 - (int)paragraphRunCount;
 - (int)specialInfoRunCount;
-- (void)paragraphRunAtIndex:(int)a3;
-- (void)readMetaCharacterFieldsBookmarksAndHyperlinks:(id)a3;
-- (void)readSpecialInfo:(id)a3;
-- (void)readString:(id)a3;
-- (void)readStyles:(id)a3;
-- (void)readTextBlock:(id)a3;
-- (void)specialInfoRunAtIndex:(int)a3;
+- (void)paragraphRunAtIndex:(int)index;
+- (void)readMetaCharacterFieldsBookmarksAndHyperlinks:(id)hyperlinks;
+- (void)readSpecialInfo:(id)info;
+- (void)readString:(id)string;
+- (void)readStyles:(id)styles;
+- (void)readTextBlock:(id)block;
+- (void)specialInfoRunAtIndex:(int)index;
 @end
 
 @implementation PptTextBlock
@@ -79,10 +79,10 @@
   return v3;
 }
 
-- (void)readTextBlock:(id)a3
+- (void)readTextBlock:(id)block
 {
-  v14 = a3;
-  v4 = [v14 firstChildOfType:3999];
+  blockCopy = block;
+  v4 = [blockCopy firstChildOfType:3999];
   v5 = v4;
   if (!v4)
   {
@@ -91,8 +91,8 @@ LABEL_11:
     *exception = 1000;
   }
 
-  v6 = [v4 eshObject];
-  if (!v6)
+  eshObject = [v4 eshObject];
+  if (!eshObject)
   {
     self->mTextHeader = 0;
     goto LABEL_11;
@@ -104,19 +104,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [(PptTextBlock *)self readString:v14];
-  [(PptTextBlock *)self readStyles:v14];
-  [(PptTextBlock *)self readSpecialInfo:v14];
-  [(PptTextBlock *)self readMetaCharacterFieldsBookmarksAndHyperlinks:v14];
-  v8 = [v14 firstChildOfType:4006];
+  [(PptTextBlock *)self readString:blockCopy];
+  [(PptTextBlock *)self readStyles:blockCopy];
+  [(PptTextBlock *)self readSpecialInfo:blockCopy];
+  [(PptTextBlock *)self readMetaCharacterFieldsBookmarksAndHyperlinks:blockCopy];
+  v8 = [blockCopy firstChildOfType:4006];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_7;
   }
 
-  v10 = [v8 eshObject];
-  if (!v10)
+  eshObject2 = [v8 eshObject];
+  if (!eshObject2)
   {
     self->mTextRuler = 0;
 LABEL_13:
@@ -133,7 +133,7 @@ LABEL_13:
 LABEL_7:
 }
 
-- (void)paragraphRunAtIndex:(int)a3
+- (void)paragraphRunAtIndex:(int)index
 {
   mStyleText = self->mStyleText;
   if (!mStyleText)
@@ -144,20 +144,20 @@ LABEL_7:
   v5 = (mStyleText + 6);
   v4 = mStyleText[6];
   v6 = (*(v5 + 1) - v4) >> 3;
-  if (v6 < a3)
+  if (v6 < index)
   {
     return 0;
   }
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     std::vector<TSU::UUIDData<TSP::UUIDData>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  return *(v4 + 8 * a3);
+  return *(v4 + 8 * index);
 }
 
-- (PptCharRun)characterRunAtIndex:(int)a3
+- (PptCharRun)characterRunAtIndex:(int)index
 {
   mStyleText = self->mStyleText;
   if (!mStyleText)
@@ -168,17 +168,17 @@ LABEL_7:
   v5 = (mStyleText + 9);
   v4 = mStyleText[9];
   v6 = (*(v5 + 1) - v4) >> 3;
-  if (v6 < a3)
+  if (v6 < index)
   {
     return 0;
   }
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     std::vector<TSU::UUIDData<TSP::UUIDData>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  return *(v4 + 8 * a3);
+  return *(v4 + 8 * index);
 }
 
 - (int)specialInfoRunCount
@@ -197,12 +197,12 @@ LABEL_7:
   return v3;
 }
 
-- (void)specialInfoRunAtIndex:(int)a3
+- (void)specialInfoRunAtIndex:(int)index
 {
   mSpecialInfo = self->mSpecialInfo;
-  if (mSpecialInfo && (v5 = (mSpecialInfo + 6), v4 = mSpecialInfo[6], ((*(v5 + 1) - v4) >> 3) >= a3))
+  if (mSpecialInfo && (v5 = (mSpecialInfo + 6), v4 = mSpecialInfo[6], ((*(v5 + 1) - v4) >> 3) >= index))
   {
-    return *(v4 + 8 * a3);
+    return *(v4 + 8 * index);
   }
 
   else
@@ -211,14 +211,14 @@ LABEL_7:
   }
 }
 
-- (void)readString:(id)a3
+- (void)readString:(id)string
 {
-  v16 = a3;
-  v4 = [v16 firstChildOfType:4000];
+  stringCopy = string;
+  v4 = [stringCopy firstChildOfType:4000];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 eshObject];
+    eshObject = [v4 eshObject];
     {
       exception = __cxa_allocate_exception(4uLL);
       *exception = 1000;
@@ -231,11 +231,11 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v16 firstChildOfType:4008];
+  v9 = [stringCopy firstChildOfType:4008];
   v5 = v9;
   if (v9)
   {
-    v10 = [v9 eshObject];
+    eshObject2 = [v9 eshObject];
     {
       v15 = __cxa_allocate_exception(4uLL);
       *v15 = 1000;
@@ -259,14 +259,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)readStyles:(id)a3
+- (void)readStyles:(id)styles
 {
-  v8 = a3;
-  v4 = [v8 firstChildOfType:4002];
-  if (v4 || ([v8 firstChildOfType:4001], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  stylesCopy = styles;
+  v4 = [stylesCopy firstChildOfType:4002];
+  if (v4 || ([stylesCopy firstChildOfType:4001], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [v4 eshObject];
-    if (v5)
+    eshObject = [v4 eshObject];
+    if (eshObject)
     {
       self->mStyleText = v6;
       if (v6)
@@ -287,15 +287,15 @@ LABEL_6:
 LABEL_5:
 }
 
-- (void)readSpecialInfo:(id)a3
+- (void)readSpecialInfo:(id)info
 {
-  v9 = a3;
-  v4 = [v9 firstChildOfType:4010];
+  infoCopy = info;
+  v4 = [infoCopy firstChildOfType:4010];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 eshObject];
-    if (v6)
+    eshObject = [v4 eshObject];
+    if (eshObject)
     {
       self->mSpecialInfo = v7;
       if (v7)
@@ -316,17 +316,17 @@ LABEL_5:
 LABEL_4:
 }
 
-- (void)readMetaCharacterFieldsBookmarksAndHyperlinks:(id)a3
+- (void)readMetaCharacterFieldsBookmarksAndHyperlinks:(id)hyperlinks
 {
-  v20 = a3;
-  v4 = [v20 childCount];
-  if (v4)
+  hyperlinksCopy = hyperlinks;
+  childCount = [hyperlinksCopy childCount];
+  if (childCount)
   {
-    for (i = 0; v4 != i; ++i)
+    for (i = 0; childCount != i; ++i)
     {
-      v6 = [v20 childAt:i];
-      v7 = [v6 eshObject];
-      v8 = (*(*v7 + 16))(v7);
+      v6 = [hyperlinksCopy childAt:i];
+      eshObject = [v6 eshObject];
+      v8 = (*(*eshObject + 16))(eshObject);
       v9 = 0;
       if (v8 <= 4086)
       {
@@ -352,9 +352,9 @@ LABEL_25:
 
             goto LABEL_27;
           case 4082:
-            v12 = [v20 childAt:i + 1];
-            v13 = [v12 eshObject];
-            if (!v13 || (*(*v13 + 16))(v13) != 4063)
+            v12 = [hyperlinksCopy childAt:i + 1];
+            eshObject2 = [v12 eshObject];
+            if (!eshObject2 || (*(*eshObject2 + 16))(eshObject2) != 4063)
             {
               exception = __cxa_allocate_exception(4uLL);
               *exception = 1000;

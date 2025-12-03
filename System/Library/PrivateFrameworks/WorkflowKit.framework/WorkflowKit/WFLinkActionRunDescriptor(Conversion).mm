@@ -9,25 +9,25 @@
   v63 = *MEMORY[0x1E69E9840];
   v55 = a4;
   v8 = a5;
-  v9 = [a1 action];
-  v10 = [a1 identifier];
-  v51 = a1;
-  v11 = [a1 metadata];
-  v12 = [v10 compositeIdentifier];
+  action = [self action];
+  identifier = [self identifier];
+  selfCopy = self;
+  metadata = [self metadata];
+  compositeIdentifier = [identifier compositeIdentifier];
   v13 = objc_opt_new();
-  v14 = [v11 shortcutsActionMetadata];
-  v15 = [v14 dictionaryRepresentation];
+  shortcutsActionMetadata = [metadata shortcutsActionMetadata];
+  dictionaryRepresentation = [shortcutsActionMetadata dictionaryRepresentation];
 
-  v52 = v15;
-  v53 = v9;
-  if (v15)
+  v52 = dictionaryRepresentation;
+  v53 = action;
+  if (dictionaryRepresentation)
   {
-    v16 = [v15 objectForKeyedSubscript:@"IdentifierOverrideKey"];
+    v16 = [dictionaryRepresentation objectForKeyedSubscript:@"IdentifierOverrideKey"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v46 = a3;
-      v48 = v11;
-      v49 = v10;
+      v48 = metadata;
+      v49 = identifier;
       v50 = v8;
       v47 = v16;
 
@@ -35,27 +35,27 @@
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v17 = [v9 parameters];
-      v18 = [v17 countByEnumeratingWithState:&v58 objects:v62 count:16];
+      parameters = [action parameters];
+      v18 = [parameters countByEnumeratingWithState:&v58 objects:v62 count:16];
       if (v18)
       {
         v19 = v18;
         v20 = *v59;
         v21 = 0x1E69AC000uLL;
-        v54 = v17;
+        v54 = parameters;
         while (2)
         {
           for (i = 0; i != v19; ++i)
           {
             if (*v59 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(parameters);
             }
 
-            v23 = [*(*(&v58 + 1) + 8 * i) value];
-            v24 = [v23 value];
+            value = [*(*(&v58 + 1) + 8 * i) value];
+            v23Value = [value value];
 
-            if (v24)
+            if (v23Value)
             {
               v25 = *(v21 + 2000);
               objc_opt_class();
@@ -63,10 +63,10 @@
               {
                 v26 = v21;
                 v27 = v13;
-                v28 = [(WFWorkflow *)v24 identifier];
-                v29 = [v28 instanceIdentifier];
+                identifier2 = [(WFWorkflow *)v23Value identifier];
+                instanceIdentifier = [identifier2 instanceIdentifier];
                 v57 = 0;
-                v30 = [v55 serializedParametersForAppEntityIdentifier:v29 error:&v57];
+                v30 = [v55 serializedParametersForAppEntityIdentifier:instanceIdentifier error:&v57];
                 v31 = v57;
 
                 if (v31)
@@ -75,11 +75,11 @@
                   (v50)[2](v50, 0, v31);
 
                   v42 = v47;
-                  v11 = v48;
-                  v12 = v47;
+                  metadata = v48;
+                  compositeIdentifier = v47;
                   v44 = v53;
                   v41 = v54;
-                  v10 = v49;
+                  identifier = v49;
                   v13 = v27;
                   goto LABEL_27;
                 }
@@ -92,12 +92,12 @@
                 }
 
                 v21 = v26;
-                v17 = v54;
+                parameters = v54;
               }
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v58 objects:v62 count:16];
+          v19 = [parameters countByEnumeratingWithState:&v58 objects:v62 count:16];
           if (v19)
           {
             continue;
@@ -107,11 +107,11 @@
         }
       }
 
-      v12 = v47;
-      v10 = v49;
+      compositeIdentifier = v47;
+      identifier = v49;
       v8 = v50;
-      v9 = v53;
-      v11 = v48;
+      action = v53;
+      metadata = v48;
       a3 = v46;
     }
 
@@ -121,12 +121,12 @@
   }
 
   v33 = +[WFActionRegistry sharedRegistry];
-  v34 = [v33 createActionWithIdentifier:v12 serializedParameters:0 forceLocalActionsOnly:1];
+  v34 = [v33 createActionWithIdentifier:compositeIdentifier serializedParameters:0 forceLocalActionsOnly:1];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v35 = WFLinkActionSerializedParametersForWFAction(v34, v9, v11);
+    v35 = WFLinkActionSerializedParametersForWFAction(v34, action, metadata);
     v36 = a3;
     v37 = [v35 mutableCopy];
 
@@ -139,22 +139,22 @@
   v39 = [WFWorkflow alloc];
   v40 = objc_opt_new();
   v56 = 0;
-  v24 = [(WFWorkflow *)v39 initWithRecord:v40 reference:0 storageProvider:0 migrateIfNecessary:0 environment:a3 error:&v56];
+  v23Value = [(WFWorkflow *)v39 initWithRecord:v40 reference:0 storageProvider:0 migrateIfNecessary:0 environment:a3 error:&v56];
   v41 = v56;
 
-  if (v24)
+  if (v23Value)
   {
     v42 = v38;
-    [(WFWorkflow *)v24 addAction:v38];
-    if ([v51 isAutoShortcut])
+    [(WFWorkflow *)v23Value addAction:v38];
+    if ([selfCopy isAutoShortcut])
     {
-      [(WFWorkflow *)v24 setSource:@"ShortcutSourceAppShortcut"];
+      [(WFWorkflow *)v23Value setSource:@"ShortcutSourceAppShortcut"];
     }
 
-    v43 = [v51 name];
-    [(WFWorkflow *)v24 setName:v43];
+    name = [selfCopy name];
+    [(WFWorkflow *)v23Value setName:name];
 
-    v8[2](v8, v24, 0);
+    v8[2](v8, v23Value, 0);
   }
 
   else

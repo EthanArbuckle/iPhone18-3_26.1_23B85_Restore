@@ -1,25 +1,25 @@
 @interface HKSourceIngestSettingsViewController
-- (HKSourceIngestSettingsViewController)initWithHealthStore:(id)a3 displayTypeController:(id)a4 source:(id)a5 useInsetStyling:(BOOL)a6;
+- (HKSourceIngestSettingsViewController)initWithHealthStore:(id)store displayTypeController:(id)controller source:(id)source useInsetStyling:(BOOL)styling;
 - (void)viewDidLoad;
 @end
 
 @implementation HKSourceIngestSettingsViewController
 
-- (HKSourceIngestSettingsViewController)initWithHealthStore:(id)a3 displayTypeController:(id)a4 source:(id)a5 useInsetStyling:(BOOL)a6
+- (HKSourceIngestSettingsViewController)initWithHealthStore:(id)store displayTypeController:(id)controller source:(id)source useInsetStyling:(BOOL)styling
 {
-  v6 = a6;
-  v11 = a5;
-  v12 = [(_HKIngestSettingsViewController *)self _initWithHealthStore:a3 displayTypeController:a4 useInsetStyling:v6];
+  stylingCopy = styling;
+  sourceCopy = source;
+  v12 = [(_HKIngestSettingsViewController *)self _initWithHealthStore:store displayTypeController:controller useInsetStyling:stylingCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 137, a5);
-    v14 = [(HKSource *)v13->_source name];
-    [(HKSourceIngestSettingsViewController *)v13 setTitle:v14];
+    objc_storeStrong(v12 + 137, source);
+    name = [(HKSource *)v13->_source name];
+    [(HKSourceIngestSettingsViewController *)v13 setTitle:name];
 
     v15 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v16 = [(HKSource *)v13->_source bundleIdentifier];
-    v17 = [v15 initWithUUIDString:v16];
+    bundleIdentifier = [(HKSource *)v13->_source bundleIdentifier];
+    v17 = [v15 initWithUUIDString:bundleIdentifier];
     [(_HKIngestSettingsViewController *)v13 setDeviceIdentifier:v17];
   }
 
@@ -39,8 +39,8 @@
   v7[3] = &unk_1E81B8468;
   v7[4] = self;
   v5 = [v4 initWithPredicate:v3 resultsHandler:v7];
-  v6 = [(_HKIngestSettingsViewController *)self healthStore];
-  [v6 executeQuery:v5];
+  healthStore = [(_HKIngestSettingsViewController *)self healthStore];
+  [healthStore executeQuery:v5];
 }
 
 void __51__HKSourceIngestSettingsViewController_viewDidLoad__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)

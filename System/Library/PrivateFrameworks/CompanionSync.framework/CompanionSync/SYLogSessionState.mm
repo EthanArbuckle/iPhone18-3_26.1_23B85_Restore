@@ -1,75 +1,75 @@
 @interface SYLogSessionState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)cocoaTransportOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
+- (int)StringAsState:(id)state;
 - (unint64_t)hash;
-- (void)addPeer:(id)a3;
-- (void)addTransportOptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCocoaTransportOptions:(id)a3;
-- (void)setHasCanRestart:(BOOL)a3;
-- (void)setHasCanRollback:(BOOL)a3;
-- (void)setHasCanceled:(BOOL)a3;
-- (void)setHasIsReset:(BOOL)a3;
-- (void)setHasPerMessageTimeout:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPeer:(id)peer;
+- (void)addTransportOptions:(id)options;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCocoaTransportOptions:(id)options;
+- (void)setHasCanRestart:(BOOL)restart;
+- (void)setHasCanRollback:(BOOL)rollback;
+- (void)setHasCanceled:(BOOL)canceled;
+- (void)setHasIsReset:(BOOL)reset;
+- (void)setHasPerMessageTimeout:(BOOL)timeout;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYLogSessionState
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotStarted"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"NotStarted"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Continue"])
+  else if ([stateCopy isEqualToString:@"Continue"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SendComplete"])
+  else if ([stateCopy isEqualToString:@"SendComplete"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Cancel"])
+  else if ([stateCopy isEqualToString:@"Cancel"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Restart"])
+  else if ([stateCopy isEqualToString:@"Restart"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([stateCopy isEqualToString:@"Error"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"WaitingForStartConfirmation"])
+  else if ([stateCopy isEqualToString:@"WaitingForStartConfirmation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"WaitingForCompletionConfirmation"])
+  else if ([stateCopy isEqualToString:@"WaitingForCompletionConfirmation"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"WaitingForBatchEnqueue"])
+  else if ([stateCopy isEqualToString:@"WaitingForBatchEnqueue"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SyncComplete"])
+  else if ([stateCopy isEqualToString:@"SyncComplete"])
   {
     v4 = 9;
   }
@@ -82,9 +82,9 @@
   return v4;
 }
 
-- (void)setHasIsReset:(BOOL)a3
+- (void)setHasIsReset:(BOOL)reset
 {
-  if (a3)
+  if (reset)
   {
     v3 = 32;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPerMessageTimeout:(BOOL)a3
+- (void)setHasPerMessageTimeout:(BOOL)timeout
 {
-  if (a3)
+  if (timeout)
   {
     v3 = 2;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCanRestart:(BOOL)a3
+- (void)setHasCanRestart:(BOOL)restart
 {
-  if (a3)
+  if (restart)
   {
     v3 = 4;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCanRollback:(BOOL)a3
+- (void)setHasCanRollback:(BOOL)rollback
 {
-  if (a3)
+  if (rollback)
   {
     v3 = 8;
   }
@@ -142,9 +142,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCanceled:(BOOL)a3
+- (void)setHasCanceled:(BOOL)canceled
 {
-  if (a3)
+  if (canceled)
   {
     v3 = 16;
   }
@@ -157,40 +157,40 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addTransportOptions:(id)a3
+- (void)addTransportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   transportOptions = self->_transportOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!transportOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_transportOptions;
     self->_transportOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     transportOptions = self->_transportOptions;
   }
 
-  [(NSMutableArray *)transportOptions addObject:v4];
+  [(NSMutableArray *)transportOptions addObject:optionsCopy];
 }
 
-- (void)addPeer:(id)a3
+- (void)addPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   peers = self->_peers;
-  v8 = v4;
+  v8 = peerCopy;
   if (!peers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_peers;
     self->_peers = v6;
 
-    v4 = v8;
+    peerCopy = v8;
     peers = self->_peers;
   }
 
-  [(NSMutableArray *)peers addObject:v4];
+  [(NSMutableArray *)peers addObject:peerCopy];
 }
 
 - (id)description
@@ -199,8 +199,8 @@
   v8.receiver = self;
   v8.super_class = SYLogSessionState;
   v4 = [(SYLogSessionState *)&v8 description];
-  v5 = [(SYLogSessionState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYLogSessionState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -208,12 +208,12 @@
 - (id)dictionaryRepresentation
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   state = self->_state;
@@ -273,8 +273,8 @@ LABEL_10:
   error = self->_error;
   if (error)
   {
-    v13 = [(SYLogErrorInfo *)error dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"error"];
+    dictionaryRepresentation = [(SYLogErrorInfo *)error dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"error"];
   }
 
   v14 = self->_has;
@@ -334,8 +334,8 @@ LABEL_16:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v16 addObject:v22];
+          dictionaryRepresentation2 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v16 addObject:dictionaryRepresentation2];
         }
 
         v19 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -369,8 +369,8 @@ LABEL_16:
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v23 addObject:v29];
+          dictionaryRepresentation3 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v23 addObject:dictionaryRepresentation3];
         }
 
         v26 = [(NSMutableArray *)v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
@@ -393,16 +393,16 @@ LABEL_16:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     [SYLogSessionState writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   state = self->_state;
   PBDataWriterWriteInt32Field();
@@ -547,18 +547,18 @@ LABEL_12:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v15 = a3;
-  [v15 setIdentifier:self->_identifier];
-  v4 = v15;
-  *(v15 + 16) = self->_state;
-  *(v15 + 84) = self->_isSending;
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  v4 = toCopy;
+  *(toCopy + 16) = self->_state;
+  *(toCopy + 84) = self->_isSending;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    *(v15 + 83) = self->_isReset;
-    *(v15 + 88) |= 0x20u;
+    *(toCopy + 83) = self->_isReset;
+    *(toCopy + 88) |= 0x20u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -577,21 +577,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v15 + 3) = *&self->_perMessageTimeout;
-  *(v15 + 88) |= 2u;
+  *(toCopy + 3) = *&self->_perMessageTimeout;
+  *(toCopy + 88) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v15 + 1) = *&self->_fullSessionTimeout;
-    *(v15 + 88) |= 1u;
+    *(toCopy + 1) = *&self->_fullSessionTimeout;
+    *(toCopy + 88) |= 1u;
   }
 
 LABEL_5:
-  *(v15 + 2) = self->_maxConcurrentMessages;
+  *(toCopy + 2) = self->_maxConcurrentMessages;
   if (self->_error)
   {
-    [v15 setError:?];
-    v4 = v15;
+    [toCopy setError:?];
+    v4 = toCopy;
   }
 
   v6 = self->_has;
@@ -632,45 +632,45 @@ LABEL_10:
 LABEL_11:
   if ([(SYLogSessionState *)self transportOptionsCount])
   {
-    [v15 clearTransportOptions];
-    v7 = [(SYLogSessionState *)self transportOptionsCount];
-    if (v7)
+    [toCopy clearTransportOptions];
+    transportOptionsCount = [(SYLogSessionState *)self transportOptionsCount];
+    if (transportOptionsCount)
     {
-      v8 = v7;
+      v8 = transportOptionsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(SYLogSessionState *)self transportOptionsAtIndex:i];
-        [v15 addTransportOptions:v10];
+        [toCopy addTransportOptions:v10];
       }
     }
   }
 
   if ([(SYLogSessionState *)self peersCount])
   {
-    [v15 clearPeers];
-    v11 = [(SYLogSessionState *)self peersCount];
-    if (v11)
+    [toCopy clearPeers];
+    peersCount = [(SYLogSessionState *)self peersCount];
+    if (peersCount)
     {
-      v12 = v11;
+      v12 = peersCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(SYLogSessionState *)self peerAtIndex:j];
-        [v15 addPeer:v14];
+        [toCopy addPeer:v14];
       }
     }
   }
 
   if (self->_reason)
   {
-    [v15 setReason:?];
+    [toCopy setReason:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -710,7 +710,7 @@ LABEL_4:
 
 LABEL_5:
   *(v5 + 16) = self->_maxConcurrentMessages;
-  v9 = [(SYLogErrorInfo *)self->_error copyWithZone:a3];
+  v9 = [(SYLogErrorInfo *)self->_error copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
@@ -766,7 +766,7 @@ LABEL_9:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * i) copyWithZone:a3];
+        v17 = [*(*(&v32 + 1) + 8 * i) copyWithZone:zone];
         [v5 addTransportOptions:v17];
       }
 
@@ -795,7 +795,7 @@ LABEL_9:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * j) copyWithZone:{a3, v28}];
+        v23 = [*(*(&v28 + 1) + 8 * j) copyWithZone:{zone, v28}];
         [v5 addPeer:v23];
       }
 
@@ -805,7 +805,7 @@ LABEL_9:
     while (v20);
   }
 
-  v24 = [(NSString *)self->_reason copyWithZone:a3];
+  v24 = [(NSString *)self->_reason copyWithZone:zone];
   v25 = *(v5 + 56);
   *(v5 + 56) = v24;
 
@@ -813,16 +813,16 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -830,81 +830,81 @@ LABEL_9:
     }
   }
 
-  if (self->_state != *(v4 + 16))
+  if (self->_state != *(equalCopy + 16))
   {
     goto LABEL_60;
   }
 
-  v6 = *(v4 + 84);
+  v6 = *(equalCopy + 84);
   if (self->_isSending)
   {
-    if ((*(v4 + 84) & 1) == 0)
+    if ((*(equalCopy + 84) & 1) == 0)
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_60;
   }
 
   has = self->_has;
-  v8 = *(v4 + 88);
+  v8 = *(equalCopy + 88);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 88) & 0x20) == 0)
+    if ((*(equalCopy + 88) & 0x20) == 0)
     {
       goto LABEL_60;
     }
 
-    v9 = *(v4 + 83);
+    v9 = *(equalCopy + 83);
     if (self->_isReset)
     {
-      if ((*(v4 + 83) & 1) == 0)
+      if ((*(equalCopy + 83) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 83))
+    else if (*(equalCopy + 83))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 88) & 0x20) != 0)
+  else if ((*(equalCopy + 88) & 0x20) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_perMessageTimeout != *(v4 + 3))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_perMessageTimeout != *(equalCopy + 3))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_60;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_fullSessionTimeout != *(v4 + 1))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_fullSessionTimeout != *(equalCopy + 1))
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_60;
   }
 
-  if (self->_maxConcurrentMessages != *(v4 + 2))
+  if (self->_maxConcurrentMessages != *(equalCopy + 2))
   {
 LABEL_60:
     v15 = 0;
@@ -912,7 +912,7 @@ LABEL_60:
   }
 
   error = self->_error;
-  if (error | *(v4 + 4))
+  if (error | *(equalCopy + 4))
   {
     if (![(SYLogErrorInfo *)error isEqual:?])
     {
@@ -922,64 +922,64 @@ LABEL_60:
     has = self->_has;
   }
 
-  v11 = *(v4 + 88);
+  v11 = *(equalCopy + 88);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 88) & 4) == 0)
+    if ((*(equalCopy + 88) & 4) == 0)
     {
       goto LABEL_60;
     }
 
-    v16 = *(v4 + 80);
+    v16 = *(equalCopy + 80);
     if (self->_canRestart)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 88) & 4) != 0)
+  else if ((*(equalCopy + 88) & 4) != 0)
   {
     goto LABEL_60;
   }
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 88) & 8) == 0)
+    if ((*(equalCopy + 88) & 8) == 0)
     {
       goto LABEL_60;
     }
 
-    v17 = *(v4 + 81);
+    v17 = *(equalCopy + 81);
     if (self->_canRollback)
     {
-      if ((*(v4 + 81) & 1) == 0)
+      if ((*(equalCopy + 81) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 81))
+    else if (*(equalCopy + 81))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 88) & 8) != 0)
+  else if ((*(equalCopy + 88) & 8) != 0)
   {
     goto LABEL_60;
   }
 
   if ((has & 0x10) == 0)
   {
-    if ((*(v4 + 88) & 0x10) == 0)
+    if ((*(equalCopy + 88) & 0x10) == 0)
     {
       goto LABEL_37;
     }
@@ -987,34 +987,34 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((*(v4 + 88) & 0x10) == 0)
+  if ((*(equalCopy + 88) & 0x10) == 0)
   {
     goto LABEL_60;
   }
 
-  v18 = *(v4 + 82);
+  v18 = *(equalCopy + 82);
   if (self->_canceled)
   {
-    if ((*(v4 + 82) & 1) == 0)
+    if ((*(equalCopy + 82) & 1) == 0)
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 82))
+  else if (*(equalCopy + 82))
   {
     goto LABEL_60;
   }
 
 LABEL_37:
   transportOptions = self->_transportOptions;
-  if (transportOptions | *(v4 + 9) && ![(NSMutableArray *)transportOptions isEqual:?])
+  if (transportOptions | *(equalCopy + 9) && ![(NSMutableArray *)transportOptions isEqual:?])
   {
     goto LABEL_60;
   }
 
   peers = self->_peers;
-  if (peers | *(v4 + 6))
+  if (peers | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)peers isEqual:?])
     {
@@ -1023,7 +1023,7 @@ LABEL_37:
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 7))
+  if (reason | *(equalCopy + 7))
   {
     v15 = [(NSString *)reason isEqual:?];
   }
@@ -1163,23 +1163,23 @@ LABEL_27:
   return (2654435761 * state) ^ v3 ^ (2654435761 * isSending) ^ v6 ^ v7 ^ v11 ^ (2654435761u * maxConcurrentMessages) ^ v23 ^ [(NSString *)self->_reason hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(SYLogSessionState *)self setIdentifier:?];
   }
 
-  self->_state = *(v4 + 16);
-  self->_isSending = *(v4 + 84);
-  v5 = *(v4 + 88);
+  self->_state = *(fromCopy + 16);
+  self->_isSending = *(fromCopy + 84);
+  v5 = *(fromCopy + 88);
   if ((v5 & 0x20) != 0)
   {
-    self->_isReset = *(v4 + 83);
+    self->_isReset = *(fromCopy + 83);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 88);
+    v5 = *(fromCopy + 88);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -1192,24 +1192,24 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 88) & 2) == 0)
+  else if ((*(fromCopy + 88) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_perMessageTimeout = *(v4 + 3);
+  self->_perMessageTimeout = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
 LABEL_6:
-    self->_fullSessionTimeout = *(v4 + 1);
+    self->_fullSessionTimeout = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  self->_maxConcurrentMessages = *(v4 + 2);
+  self->_maxConcurrentMessages = *(fromCopy + 2);
   error = self->_error;
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (error)
   {
     if (v7)
@@ -1223,12 +1223,12 @@ LABEL_7:
     [(SYLogSessionState *)self setError:?];
   }
 
-  v8 = *(v4 + 88);
+  v8 = *(fromCopy + 88);
   if ((v8 & 4) != 0)
   {
-    self->_canRestart = *(v4 + 80);
+    self->_canRestart = *(fromCopy + 80);
     *&self->_has |= 4u;
-    v8 = *(v4 + 88);
+    v8 = *(fromCopy + 88);
     if ((v8 & 8) == 0)
     {
 LABEL_17:
@@ -1241,17 +1241,17 @@ LABEL_17:
     }
   }
 
-  else if ((*(v4 + 88) & 8) == 0)
+  else if ((*(fromCopy + 88) & 8) == 0)
   {
     goto LABEL_17;
   }
 
-  self->_canRollback = *(v4 + 81);
+  self->_canRollback = *(fromCopy + 81);
   *&self->_has |= 8u;
-  if ((*(v4 + 88) & 0x10) != 0)
+  if ((*(fromCopy + 88) & 0x10) != 0)
   {
 LABEL_18:
-    self->_canceled = *(v4 + 82);
+    self->_canceled = *(fromCopy + 82);
     *&self->_has |= 0x10u;
   }
 
@@ -1260,7 +1260,7 @@ LABEL_19:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = *(v4 + 9);
+  v9 = *(fromCopy + 9);
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v10)
   {
@@ -1288,7 +1288,7 @@ LABEL_19:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v14 = *(v4 + 6);
+  v14 = *(fromCopy + 6);
   v15 = [v14 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v15)
   {
@@ -1312,7 +1312,7 @@ LABEL_19:
     while (v16);
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SYLogSessionState *)self setReason:?];
   }
@@ -1320,16 +1320,16 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCocoaTransportOptions:(id)a3
+- (void)setCocoaTransportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(SYLogSessionState *)self clearTransportOptions];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__SYLogSessionState_Convenience__setCocoaTransportOptions___block_invoke;
   v5[3] = &unk_1E86CB270;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [optionsCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __59__SYLogSessionState_Convenience__setCocoaTransportOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1349,15 +1349,15 @@ void __59__SYLogSessionState_Convenience__setCocoaTransportOptions___block_invok
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v4 = [(SYLogSessionState *)self transportOptions];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  transportOptions = [(SYLogSessionState *)self transportOptions];
+  v5 = [v3 initWithCapacity:{objc_msgSend(transportOptions, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SYLogSessionState *)self transportOptions];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  transportOptions2 = [(SYLogSessionState *)self transportOptions];
+  v7 = [transportOptions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1368,16 +1368,16 @@ void __59__SYLogSessionState_Convenience__setCocoaTransportOptions___block_invok
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transportOptions2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 value];
+        value = [v11 value];
         v13 = [v11 key];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        [v5 setObject:value forKeyedSubscript:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [transportOptions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

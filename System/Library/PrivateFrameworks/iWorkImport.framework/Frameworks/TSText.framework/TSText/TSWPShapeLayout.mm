@@ -5,55 +5,55 @@
 - (BOOL)shouldShowInstructionalText;
 - (BOOL)shouldValidate;
 - (BOOL)shrinkTextToFit;
-- (BOOL)textLayoutShouldLayoutVertically:(id)a3;
-- (BOOL)textLayoutShouldWrapAroundExternalDrawables:(id)a3;
+- (BOOL)textLayoutShouldLayoutVertically:(id)vertically;
+- (BOOL)textLayoutShouldWrapAroundExternalDrawables:(id)drawables;
 - (CGAffineTransform)autosizedTransform;
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3;
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry;
 - (CGAffineTransform)computeLayoutTransform;
 - (CGPoint)autosizePositionOffset;
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (TSWPShapeLayout)initWithInfo:(id)a3;
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (TSWPShapeLayout)initWithInfo:(id)info;
 - (TSWPShapeLayoutDelegate)delegate;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
 - (id)bidirectionalSizeDependentLayouts;
 - (id)childInfosForChildLayouts;
 - (id)dependentLayouts;
-- (id)dependentsOfTextLayout:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
 - (id)interiorClippingPath;
 - (id)interiorWrapPath;
 - (id)interiorWrapSegments;
 - (id)layoutsForProvidingGuidesForChildLayouts;
 - (id)pathSource;
-- (id)styleProviderForTextLayout:(id)a3;
+- (id)styleProviderForTextLayout:(id)layout;
 - (id)textWrapper;
-- (int)verticalAlignmentForTextLayout:(id)a3;
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3;
+- (int)verticalAlignmentForTextLayout:(id)layout;
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout;
 - (unint64_t)columnCount;
 - (void)createContainedLayoutForEditing;
 - (void)createContainedLayoutForInstructionalText;
 - (void)dealloc;
 - (void)invalidatePath;
 - (void)invalidateSize;
-- (void)processChangedProperty:(int)a3;
-- (void)processChanges:(id)a3 forChangeSource:(id)a4;
-- (void)setGeometry:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(int)property;
+- (void)processChanges:(id)changes forChangeSource:(id)source;
+- (void)setGeometry:(id)geometry;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 - (void)validate;
-- (void)willBeAddedToLayoutController:(id)a3;
-- (void)willBeRemovedFromLayoutController:(id)a3;
+- (void)willBeAddedToLayoutController:(id)controller;
+- (void)willBeRemovedFromLayoutController:(id)controller;
 @end
 
 @implementation TSWPShapeLayout
 
-- (TSWPShapeLayout)initWithInfo:(id)a3
+- (TSWPShapeLayout)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -67,7 +67,7 @@
 
   v30.receiver = self;
   v30.super_class = TSWPShapeLayout;
-  v13 = [(TSWPShapeLayout *)&v30 initWithInfo:v4];
+  v13 = [(TSWPShapeLayout *)&v30 initWithInfo:infoCopy];
   v16 = v13;
   if (v13)
   {
@@ -105,11 +105,11 @@
   [(TSWPShapeLayout *)&v18 dealloc];
 }
 
-- (void)willBeAddedToLayoutController:(id)a3
+- (void)willBeAddedToLayoutController:(id)controller
 {
   v41.receiver = self;
   v41.super_class = TSWPShapeLayout;
-  [(TSWPShapeLayout *)&v41 willBeAddedToLayoutController:a3];
+  [(TSWPShapeLayout *)&v41 willBeAddedToLayoutController:controller];
   if (self->_observingStorage)
   {
     v6 = MEMORY[0x277D81150];
@@ -142,11 +142,11 @@
   objc_msgSend_addObserver_forChangeSource_(v36, v40, self, v39);
 }
 
-- (void)willBeRemovedFromLayoutController:(id)a3
+- (void)willBeRemovedFromLayoutController:(id)controller
 {
   v19.receiver = self;
   v19.super_class = TSWPShapeLayout;
-  [(TSWPShapeLayout *)&v19 willBeRemovedFromLayoutController:a3];
+  [(TSWPShapeLayout *)&v19 willBeRemovedFromLayoutController:controller];
   if (self->_observingStorage)
   {
     WeakRetained = objc_loadWeakRetained(&self->_observedStorage);
@@ -168,17 +168,17 @@
   v16[1] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = TSWPShapeLayout;
-  v3 = [(TSWPShapeLayout *)&v14 bidirectionalSizeDependentLayouts];
+  bidirectionalSizeDependentLayouts = [(TSWPShapeLayout *)&v14 bidirectionalSizeDependentLayouts];
   v5 = objc_msgSend_autosizeFlagsForTextLayout_(self, v4, self->_containedLayout);
   if ((~v5 & 0xF) != 0 && v5 && self->_containedLayout != 0)
   {
-    if (objc_msgSend_count(v3, v6, v7))
+    if (objc_msgSend_count(bidirectionalSizeDependentLayouts, v6, v7))
     {
       containedLayout = self->_containedLayout;
       v10 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v9, &containedLayout, 1);
-      v12 = objc_msgSend_arrayByAddingObjectsFromArray_(v10, v11, v3);
+      v12 = objc_msgSend_arrayByAddingObjectsFromArray_(v10, v11, bidirectionalSizeDependentLayouts);
 
-      v3 = v10;
+      bidirectionalSizeDependentLayouts = v10;
     }
 
     else
@@ -187,10 +187,10 @@
       v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v9, v16, 1);
     }
 
-    v3 = v12;
+    bidirectionalSizeDependentLayouts = v12;
   }
 
-  return v3;
+  return bidirectionalSizeDependentLayouts;
 }
 
 - (void)validate
@@ -388,22 +388,22 @@ LABEL_8:
   return result;
 }
 
-- (void)processChanges:(id)a3 forChangeSource:(id)a4
+- (void)processChanges:(id)changes forChangeSource:(id)source
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  sourceCopy = source;
   v10 = objc_msgSend_info(self, v8, v9);
 
-  if (v10 == v7)
+  if (v10 == sourceCopy)
   {
-    v38 = v7;
-    v39 = v6;
+    v38 = sourceCopy;
+    v39 = changesCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    obj = v6;
+    obj = changesCopy;
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v42, v46, 16);
     if (v12)
     {
@@ -454,8 +454,8 @@ LABEL_8:
       while (v15);
     }
 
-    v7 = v38;
-    v6 = v39;
+    sourceCopy = v38;
+    changesCopy = v39;
   }
 }
 
@@ -491,8 +491,8 @@ LABEL_5:
 {
   v13.receiver = self;
   v13.super_class = TSWPShapeLayout;
-  v3 = [(TSWPShapeLayout *)&v13 childInfosForChildLayouts];
-  v6 = objc_msgSend_mutableCopy(v3, v4, v5);
+  childInfosForChildLayouts = [(TSWPShapeLayout *)&v13 childInfosForChildLayouts];
+  v6 = objc_msgSend_mutableCopy(childInfosForChildLayouts, v4, v5);
 
   containedLayout = self->_containedLayout;
   if (containedLayout)
@@ -609,14 +609,14 @@ LABEL_6:
   return v19;
 }
 
-- (id)styleProviderForTextLayout:(id)a3
+- (id)styleProviderForTextLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v7 = objc_msgSend_parent(self, v5, v6);
   do
   {
     v8 = TSUProtocolCast();
-    if ((objc_msgSend_wantsToProvideStylesForTextLayout_(v8, v9, v4, &unk_288638918) & 1) == 0)
+    if ((objc_msgSend_wantsToProvideStylesForTextLayout_(v8, v9, layoutCopy, &unk_288638918) & 1) == 0)
     {
 
       v8 = 0;
@@ -635,7 +635,7 @@ LABEL_6:
   while (v12);
   if (v8)
   {
-    v14 = objc_msgSend_styleProviderForTextLayout_(v8, v13, v4);
+    v14 = objc_msgSend_styleProviderForTextLayout_(v8, v13, layoutCopy);
   }
 
   else
@@ -646,9 +646,9 @@ LABEL_6:
   return v14;
 }
 
-- (unint64_t)autosizeFlagsForTextLayout:(id)a3
+- (unint64_t)autosizeFlagsForTextLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v7 = objc_msgSend_parent(self, v5, v6);
   v8 = TSUProtocolCast();
 
@@ -660,14 +660,14 @@ LABEL_6:
   {
     if ((objc_msgSend_isTransferringLayoutGeometryToInfo(self, v13, v14) & 1) == 0)
     {
-      v17 = objc_msgSend_autosizeFlagsForTextLayout_inShapeLayout_(v12, v15, v4, self);
+      v17 = objc_msgSend_autosizeFlagsForTextLayout_inShapeLayout_(v12, v15, layoutCopy, self);
       goto LABEL_8;
     }
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_forceParentAutosizeFlagsForTextLayout_(v8, v15, v4) && v8)
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_forceParentAutosizeFlagsForTextLayout_(v8, v15, layoutCopy) && v8)
   {
-    v17 = objc_msgSend_autosizeFlagsForTextLayout_(v8, v15, v4);
+    v17 = objc_msgSend_autosizeFlagsForTextLayout_(v8, v15, layoutCopy);
 LABEL_8:
     v18 = v17;
     if (v17 != 96)
@@ -727,7 +727,7 @@ LABEL_22:
   return v18;
 }
 
-- (int)verticalAlignmentForTextLayout:(id)a3
+- (int)verticalAlignmentForTextLayout:(id)layout
 {
   objc_opt_class();
   v6 = objc_msgSend_shapeInfo(self, v4, v5);
@@ -747,9 +747,9 @@ LABEL_22:
   return v12;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
-  v4 = objc_msgSend_shapeInfo(self, a2, a3);
+  v4 = objc_msgSend_shapeInfo(self, a2, layout);
   v7 = objc_msgSend_stroke(v4, v5, v6);
 
   if ((objc_msgSend_shouldRender(v7, v8, v9) & 1) == 0)
@@ -811,11 +811,11 @@ LABEL_22:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
   if ((objc_msgSend_autosizes(self, v8, v9) & 1) == 0)
   {
     v12 = MEMORY[0x277D81150];
@@ -833,11 +833,11 @@ LABEL_22:
   v57 = &unk_2886495E0;
   v23 = TSUProtocolCast();
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_forceParentAutosizedFrameForTextLayout_(v23, v24, v7, &unk_2886495E0))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend_forceParentAutosizedFrameForTextLayout_(v23, v24, layoutCopy, &unk_2886495E0))
   {
     if (v23)
     {
-      objc_msgSend_autosizedFrameForTextLayout_textSize_(v23, v24, v7, width, height);
+      objc_msgSend_autosizedFrameForTextLayout_textSize_(v23, v24, layoutCopy, width, height);
       v21 = v28;
       v20 = v29;
     }
@@ -892,11 +892,11 @@ LABEL_22:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_containedLayout == v6 && objc_msgSend_autosizes(self, v4, v5))
+  layoutCopy = layout;
+  if (self->_containedLayout == layoutCopy && objc_msgSend_autosizes(self, v4, v5))
   {
     v10[0] = self;
     v8 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v7, v10, 1);
@@ -910,17 +910,17 @@ LABEL_22:
   return v8;
 }
 
-- (BOOL)textLayoutShouldWrapAroundExternalDrawables:(id)a3
+- (BOOL)textLayoutShouldWrapAroundExternalDrawables:(id)drawables
 {
-  v3 = objc_msgSend_info(self, a2, a3);
+  v3 = objc_msgSend_info(self, a2, drawables);
   isInlineWithText = objc_msgSend_isInlineWithText(v3, v4, v5);
 
   return isInlineWithText ^ 1;
 }
 
-- (BOOL)textLayoutShouldLayoutVertically:(id)a3
+- (BOOL)textLayoutShouldLayoutVertically:(id)vertically
 {
-  v3 = objc_msgSend_info(self, a2, a3);
+  v3 = objc_msgSend_info(self, a2, vertically);
   IsVertical = objc_msgSend_textIsVertical(v3, v4, v5);
 
   return IsVertical;
@@ -930,12 +930,12 @@ LABEL_22:
 {
   v12.receiver = self;
   v12.super_class = TSWPShapeLayout;
-  v5 = [(TSWPShapeLayout *)&v12 dependentLayouts];
+  dependentLayouts = [(TSWPShapeLayout *)&v12 dependentLayouts];
   if (self->_containedLayout && (objc_msgSend_autosizes(self, v3, v4) & 1) == 0)
   {
-    if (v5)
+    if (dependentLayouts)
     {
-      v8 = objc_msgSend_mutableCopy(v5, v6, v7);
+      v8 = objc_msgSend_mutableCopy(dependentLayouts, v6, v7);
     }
 
     else
@@ -946,34 +946,34 @@ LABEL_22:
     v10 = v8;
     objc_msgSend_addObject_(v8, v9, self->_containedLayout);
 
-    v5 = v10;
+    dependentLayouts = v10;
   }
 
-  return v5;
+  return dependentLayouts;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
+  documentCopy = document;
+  infoCopy = info;
   objc_msgSend_setIsTransferringLayoutGeometryToInfo_(self, v9, 1);
   v27.receiver = self;
   v27.super_class = TSWPShapeLayout;
-  v10 = *&a4->c;
-  v26[0] = *&a4->a;
+  v10 = *&transform->c;
+  v26[0] = *&transform->a;
   v26[1] = v10;
-  v26[2] = *&a4->tx;
-  [(TSWPShapeLayout *)&v27 transferLayoutGeometryToInfo:v8 withAdditionalTransform:v26 assertIfInDocument:v5];
+  v26[2] = *&transform->tx;
+  [(TSWPShapeLayout *)&v27 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:v26 assertIfInDocument:documentCopy];
   if (objc_msgSend_autosizes(self, v11, v12))
   {
     objc_msgSend_autosizePositionOffset(self, v13, v14);
-    v17 = objc_msgSend_geometry(v8, v15, v16);
+    v17 = objc_msgSend_geometry(infoCopy, v15, v16);
     v20 = objc_msgSend_mutableCopy(v17, v18, v19);
 
     objc_msgSend_position(v20, v21, v22);
     TSUSubtractPoints();
     objc_msgSend_setPosition_(v20, v23, v24);
-    objc_msgSend_setGeometry_(v8, v25, v20);
+    objc_msgSend_setGeometry_(infoCopy, v25, v20);
   }
 
   objc_msgSend_setIsTransferringLayoutGeometryToInfo_(self, v13, 0);
@@ -1018,7 +1018,7 @@ LABEL_22:
   return result;
 }
 
-- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)a3
+- (CGAffineTransform)autosizedTransformForInfoGeometry:(SEL)geometry
 {
   v15 = a4;
   v8 = objc_msgSend_info(self, v6, v7);
@@ -1046,11 +1046,11 @@ LABEL_22:
   return result;
 }
 
-- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)a3 height:(BOOL)a4
+- (CGPoint)autosizePositionOffsetForFixedWidth:(BOOL)width height:(BOOL)height
 {
-  v4 = a4;
-  v5 = a3;
-  objc_msgSend_autosizedTransform(self, a2, a3);
+  heightCopy = height;
+  widthCopy = width;
+  objc_msgSend_autosizedTransform(self, a2, width);
   objc_msgSend_pathBoundsWithoutStroke(self, v7, v8);
   v10 = v9;
   v12 = v11;
@@ -1060,13 +1060,13 @@ LABEL_22:
   objc_msgSend_size(v18, v19, v20);
   v22 = v21;
   v24 = v23;
-  if ((objc_msgSend_widthValid(v18, v25, v26) & 1) == 0 && v5)
+  if ((objc_msgSend_widthValid(v18, v25, v26) & 1) == 0 && widthCopy)
   {
     objc_msgSend_setWidthValid_(v18, v27, 1);
     v22 = v10;
   }
 
-  if ((objc_msgSend_heightValid(v18, v27, v28) & 1) == 0 && v4)
+  if ((objc_msgSend_heightValid(v18, v27, v28) & 1) == 0 && heightCopy)
   {
     objc_msgSend_setHeightValid_(v18, v29, 1);
     v24 = v12;
@@ -1096,7 +1096,7 @@ LABEL_22:
     if (v9 && objc_msgSend_autosizeFlagsForTextLayout_inShapeLayout_(v9, v10, self->_containedLayout, self) == 3)
     {
       v13 = objc_msgSend_shapeInfo(self, v11, v12);
-      v16 = objc_msgSend_pathSource(v13, v14, v15);
+      pathSource = objc_msgSend_pathSource(v13, v14, v15);
 
 LABEL_12:
       goto LABEL_14;
@@ -1123,26 +1123,26 @@ LABEL_12:
 
     v37 = objc_msgSend_shapeInfo(self, v31, v32);
     v40 = objc_msgSend_pathSource(v37, v38, v39);
-    v16 = objc_msgSend_copy(v40, v41, v42);
+    pathSource = objc_msgSend_copy(v40, v41, v42);
 
-    objc_msgSend_setNaturalSize_(v16, v43, v44, v23, v25);
+    objc_msgSend_setNaturalSize_(pathSource, v43, v44, v23, v25);
     goto LABEL_12;
   }
 
   v46.receiver = self;
   v46.super_class = TSWPShapeLayout;
-  v16 = [(TSWPShapeLayout *)&v46 pathSource];
+  pathSource = [(TSWPShapeLayout *)&v46 pathSource];
 LABEL_14:
 
-  return v16;
+  return pathSource;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v16.receiver = self;
   v16.super_class = TSWPShapeLayout;
   [(TSWPShapeLayout *)&v16 processChangedProperty:?];
-  if (a3 == 517)
+  if (property == 517)
   {
 LABEL_4:
     cachedInteriorWrapSegments = self->_cachedInteriorWrapSegments;
@@ -1152,9 +1152,9 @@ LABEL_4:
     return;
   }
 
-  if (a3 != 153)
+  if (property != 153)
   {
-    if (a3 != 146)
+    if (property != 146)
     {
       return;
     }
@@ -1170,11 +1170,11 @@ LABEL_4:
   self->_cachedInteriorWrapSegments = 0;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v40.receiver = self;
   v40.super_class = TSWPShapeLayout;
-  [(TSWPShapeLayout *)&v40 setGeometry:a3];
+  [(TSWPShapeLayout *)&v40 setGeometry:geometry];
   if (self->_containedLayout && objc_msgSend_autosizes(self, v4, v5))
   {
     v8 = objc_msgSend_geometry(self->_containedLayout, v6, v7);
@@ -1227,9 +1227,9 @@ LABEL_4:
   return v9;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
-  v3 = objc_msgSend_info(self, a2, a3);
+  v3 = objc_msgSend_info(self, a2, target);
   v6 = objc_msgSend_padding(v3, v4, v5);
 
   if (v6)
@@ -1278,14 +1278,14 @@ LABEL_4:
   return v9;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v6 = objc_msgSend_info(self, a2, a3);
+  v6 = objc_msgSend_info(self, a2, index);
   v9 = objc_msgSend_columns(v6, v7, v8);
 
   if (v9)
   {
-    objc_msgSend_widthForColumnIndex_bodyWidth_(v9, v10, a3, a4);
+    objc_msgSend_widthForColumnIndex_bodyWidth_(v9, v10, index, width);
     v12 = v11;
   }
 
@@ -1297,14 +1297,14 @@ LABEL_4:
   return v12;
 }
 
-- (double)gapForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)gapForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v6 = objc_msgSend_info(self, a2, a3);
+  v6 = objc_msgSend_info(self, a2, index);
   v9 = objc_msgSend_columns(v6, v7, v8);
 
   if (v9)
   {
-    objc_msgSend_gapForColumnIndex_bodyWidth_(v9, v10, a3, a4);
+    objc_msgSend_gapForColumnIndex_bodyWidth_(v9, v10, index, width);
     v12 = v11;
   }
 
@@ -1316,9 +1316,9 @@ LABEL_4:
   return v12;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  v12 = objc_msgSend_info(self, a2, a3, a5);
+  v12 = objc_msgSend_info(self, a2, index, target);
   v15 = objc_msgSend_columns(v12, v13, v14);
 
   v18 = objc_msgSend_info(self, v16, v17);
@@ -1331,7 +1331,7 @@ LABEL_4:
     if (v15)
     {
 LABEL_3:
-      objc_msgSend_positionForColumnIndex_bodyWidth_outWidth_outGap_(v15, v22, a3, a6, a7, fmax(a4 + v25 * -2.0, 0.0));
+      objc_msgSend_positionForColumnIndex_bodyWidth_outWidth_outGap_(v15, v22, index, outWidth, gap, fmax(width + v25 * -2.0, 0.0));
       v25 = v25 + v26;
       goto LABEL_9;
     }
@@ -1346,14 +1346,14 @@ LABEL_3:
     }
   }
 
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4 + v25 * -2.0;
+    *outWidth = width + v25 * -2.0;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
 LABEL_9:

@@ -1,7 +1,7 @@
 @interface FCFeedTransformationComposite
 - (FCFeedTransformationComposite)init;
-- (FCFeedTransformationComposite)initWithFeedTransformations:(id)a3;
-- (id)transformFeedItems:(id)a3;
+- (FCFeedTransformationComposite)initWithFeedTransformations:(id)transformations;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationComposite
@@ -32,11 +32,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCFeedTransformationComposite)initWithFeedTransformations:(id)a3
+- (FCFeedTransformationComposite)initWithFeedTransformations:(id)transformations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  transformationsCopy = transformations;
+  if (!transformationsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "feedTransformations"];
     *buf = 136315906;
@@ -55,7 +55,7 @@
   v5 = [(FCFeedTransformationComposite *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [transformationsCopy copy];
     feedTransformations = v5->_feedTransformations;
     v5->_feedTransformations = v6;
   }
@@ -64,19 +64,19 @@
   return v5;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(FCFeedTransformationComposite *)self shouldLogTransformationResults];
-  v6 = [(FCFeedTransformationComposite *)self feedTransformations];
-  if (v5)
+  itemsCopy = items;
+  shouldLogTransformationResults = [(FCFeedTransformationComposite *)self shouldLogTransformationResults];
+  feedTransformations = [(FCFeedTransformationComposite *)self feedTransformations];
+  if (shouldLogTransformationResults)
   {
-    FCApplyFeedTransformationsAndLog(v4, v6);
+    FCApplyFeedTransformationsAndLog(itemsCopy, feedTransformations);
   }
 
   else
   {
-    FCApplyFeedTransformations(v4, v6);
+    FCApplyFeedTransformations(itemsCopy, feedTransformations);
   }
   v7 = ;
 

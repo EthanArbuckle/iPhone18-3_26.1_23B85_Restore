@@ -1,10 +1,10 @@
 @interface SubscriptionLockupView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)layoutMargins;
-- (_TtC8AppStore22SubscriptionLockupView)initWithCoder:(id)a3;
+- (_TtC8AppStore22SubscriptionLockupView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation SubscriptionLockupView
@@ -21,30 +21,30 @@
   return result;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   ObjectType = swift_getObjectType();
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(SubscriptionLockupView *)&v14 setLayoutMargins:top, left, bottom, right];
-  v10 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC8AppStore22SubscriptionLockupView_iapLockupView);
-  v13.receiver = v9;
+  v10 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8AppStore22SubscriptionLockupView_iapLockupView);
+  v13.receiver = selfCopy;
   v13.super_class = ObjectType;
   [(SubscriptionLockupView *)&v13 layoutMargins];
   [v10 setLayoutMargins:?];
-  v11 = *(&v9->super.super.super.isa + OBJC_IVAR____TtC8AppStore22SubscriptionLockupView_appLockupView);
-  v12.receiver = v9;
+  v11 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8AppStore22SubscriptionLockupView_appLockupView);
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
   [(SubscriptionLockupView *)&v12 layoutMargins];
   [v11 setLayoutMargins:?];
 }
 
-- (_TtC8AppStore22SubscriptionLockupView)initWithCoder:(id)a3
+- (_TtC8AppStore22SubscriptionLockupView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore22SubscriptionLockupView_lockupTapBlock);
   *v3 = 0;
@@ -55,11 +55,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   ObjectType = swift_getObjectType();
   v5 = qword_10096E700;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
@@ -67,10 +67,10 @@
 
   v7 = type metadata accessor for SmallLockupLayout.Metrics();
   v8 = sub_1000056A8(v7, qword_1009D25C0);
-  v14.receiver = v6;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   [(SubscriptionLockupView *)&v14 layoutMargins];
-  v9 = sub_100508144(v8, v6);
+  v9 = sub_100508144(v8, selfCopy);
   v11 = v10;
 
   v12 = v9;

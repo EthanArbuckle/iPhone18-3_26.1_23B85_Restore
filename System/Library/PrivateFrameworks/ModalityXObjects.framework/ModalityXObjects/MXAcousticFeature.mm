@@ -1,14 +1,14 @@
 @interface MXAcousticFeature
-- (BOOL)isEqual:(id)a3;
-- (float)acousticFeaturePerFrameAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)acousticFeaturePerFrameAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MXAcousticFeature
@@ -21,20 +21,20 @@
   [(MXAcousticFeature *)&v3 dealloc];
 }
 
-- (float)acousticFeaturePerFrameAtIndex:(unint64_t)a3
+- (float)acousticFeaturePerFrameAtIndex:(unint64_t)index
 {
   p_acousticFeaturePerFrames = &self->_acousticFeaturePerFrames;
   count = self->_acousticFeaturePerFrames.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_acousticFeaturePerFrames->list[a3];
+  return p_acousticFeaturePerFrames->list[index];
 }
 
 - (id)description
@@ -43,32 +43,32 @@
   v8.receiver = self;
   v8.super_class = MXAcousticFeature;
   v4 = [(MXAcousticFeature *)&v8 description];
-  v5 = [(MXAcousticFeature *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MXAcousticFeature *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = PBRepeatedFloatNSArray();
-  [v3 setObject:v4 forKey:@"acoustic_feature_per_frame"];
+  [dictionary setObject:v4 forKey:@"acoustic_feature_per_frame"];
 
   if (*&self->_has)
   {
     *&v5 = self->_frameDuration;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-    [v3 setObject:v6 forKey:@"frame_duration"];
+    [dictionary setObject:v6 forKey:@"frame_duration"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_acousticFeaturePerFrames.count)
   {
     v5 = 0;
@@ -76,7 +76,7 @@
     {
       v6 = self->_acousticFeaturePerFrames.list[v5];
       PBDataWriterWriteFloatField();
-      v4 = v8;
+      toCopy = v8;
       ++v5;
     }
 
@@ -87,38 +87,38 @@
   {
     frameDuration = self->_frameDuration;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(MXAcousticFeature *)self acousticFeaturePerFramesCount])
   {
-    [v7 clearAcousticFeaturePerFrames];
-    v4 = [(MXAcousticFeature *)self acousticFeaturePerFramesCount];
-    if (v4)
+    [toCopy clearAcousticFeaturePerFrames];
+    acousticFeaturePerFramesCount = [(MXAcousticFeature *)self acousticFeaturePerFramesCount];
+    if (acousticFeaturePerFramesCount)
     {
-      v5 = v4;
+      v5 = acousticFeaturePerFramesCount;
       for (i = 0; i != v5; ++i)
       {
         [(MXAcousticFeature *)self acousticFeaturePerFrameAtIndex:i];
-        [v7 addAcousticFeaturePerFrame:?];
+        [toCopy addAcousticFeaturePerFrame:?];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v7 + 8) = LODWORD(self->_frameDuration);
-    *(v7 + 36) |= 1u;
+    *(toCopy + 8) = LODWORD(self->_frameDuration);
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedFloatCopy();
   if (*&self->_has)
   {
@@ -129,18 +129,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || !PBRepeatedFloatIsEqual())
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || !PBRepeatedFloatIsEqual())
   {
     goto LABEL_7;
   }
 
-  v5 = (*(v4 + 36) & 1) == 0;
+  v5 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_frameDuration == *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_frameDuration == *(equalCopy + 8))
     {
       v5 = 1;
       goto LABEL_8;
@@ -194,23 +194,23 @@ LABEL_8:
   return v6 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 acousticFeaturePerFramesCount];
-  if (v4)
+  fromCopy = from;
+  acousticFeaturePerFramesCount = [fromCopy acousticFeaturePerFramesCount];
+  if (acousticFeaturePerFramesCount)
   {
-    v5 = v4;
+    v5 = acousticFeaturePerFramesCount;
     for (i = 0; i != v5; ++i)
     {
-      [v7 acousticFeaturePerFrameAtIndex:i];
+      [fromCopy acousticFeaturePerFrameAtIndex:i];
       [(MXAcousticFeature *)self addAcousticFeaturePerFrame:?];
     }
   }
 
-  if (v7[9])
+  if (fromCopy[9])
   {
-    self->_frameDuration = v7[8];
+    self->_frameDuration = fromCopy[8];
     *&self->_has |= 1u;
   }
 }

@@ -1,23 +1,23 @@
 @interface MTUICollectionCellAnalogClockView
-+ (CGPoint)handRotationalCenterForHand:(int64_t)a3;
-+ (id)makeClockFaceForDaytime:(BOOL)a3;
++ (CGPoint)handRotationalCenterForHand:(int64_t)hand;
++ (id)makeClockFaceForDaytime:(BOOL)daytime;
 @end
 
 @implementation MTUICollectionCellAnalogClockView
 
-+ (CGPoint)handRotationalCenterForHand:(int64_t)a3
++ (CGPoint)handRotationalCenterForHand:(int64_t)hand
 {
   v3 = 1.0;
   v4 = 0.5;
-  if (a3 >= 2)
+  if (hand >= 2)
   {
-    if (a3 == 2)
+    if (hand == 2)
     {
-      [a1 secondHandOverhangLength];
+      [self secondHandOverhangLength];
       v7 = v6;
-      [a1 secondHandOverhangLength];
+      [self secondHandOverhangLength];
       v9 = v8;
-      [a1 secondHandMainLength];
+      [self secondHandMainLength];
       v3 = 1.0 - v7 / (v9 + v10);
     }
 
@@ -34,9 +34,9 @@
   return result;
 }
 
-+ (id)makeClockFaceForDaytime:(BOOL)a3
++ (id)makeClockFaceForDaytime:(BOOL)daytime
 {
-  if (a3)
+  if (daytime)
   {
     v4 = @"White";
   }
@@ -48,9 +48,9 @@
 
   v5 = [@"MTAnalogClockCollectionCell" stringByAppendingString:v4];
   v6 = MEMORY[0x277D218D0];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v7 localeIdentifier];
-  v9 = [v6 numberingSystemForLocaleID:v8];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v9 = [v6 numberingSystemForLocaleID:localeIdentifier];
 
   if ([v9 isEqualToString:@"arab"])
   {
@@ -71,7 +71,7 @@
 
   v5 = v11;
 LABEL_9:
-  v12 = [a1 imageInBundleForName:v5];
+  v12 = [self imageInBundleForName:v5];
 
   return v12;
 }

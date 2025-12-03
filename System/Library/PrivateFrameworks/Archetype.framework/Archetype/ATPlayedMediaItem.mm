@@ -1,13 +1,13 @@
 @interface ATPlayedMediaItem
 - (_TtC9Archetype17ATPlayedMediaItem)init;
-- (_TtC9Archetype17ATPlayedMediaItem)initWithTitle:(id)a3 artist:(id)a4 album:(id)a5 link:(id)a6 bundleID:(id)a7 mediaType:(id)a8 playTime:(double)a9;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9Archetype17ATPlayedMediaItem)initWithTitle:(id)title artist:(id)artist album:(id)album link:(id)link bundleID:(id)d mediaType:(id)type playTime:(double)time;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATPlayedMediaItem
 
-- (_TtC9Archetype17ATPlayedMediaItem)initWithTitle:(id)a3 artist:(id)a4 album:(id)a5 link:(id)a6 bundleID:(id)a7 mediaType:(id)a8 playTime:(double)a9
+- (_TtC9Archetype17ATPlayedMediaItem)initWithTitle:(id)title artist:(id)artist album:(id)album link:(id)link bundleID:(id)d mediaType:(id)type playTime:(double)time
 {
   v34 = sub_240FAE990();
   v12 = v11;
@@ -38,15 +38,15 @@
   v31 = (self + OBJC_IVAR____TtC9Archetype17ATPlayedMediaItem_mediaType);
   *v31 = v25;
   v31[1] = v32;
-  *(&self->super.isa + OBJC_IVAR____TtC9Archetype17ATPlayedMediaItem_playTime) = a9;
+  *(&self->super.isa + OBJC_IVAR____TtC9Archetype17ATPlayedMediaItem_playTime) = time;
   v35.receiver = self;
   v35.super_class = type metadata accessor for ATPlayedMediaItem();
   return [(ATPlayedMediaItem *)&v35 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_240FA9638(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -55,11 +55,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_240FA9830(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_240FA9830(coderCopy);
 }
 
 - (_TtC9Archetype17ATPlayedMediaItem)init

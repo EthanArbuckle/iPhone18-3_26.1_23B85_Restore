@@ -1,15 +1,15 @@
 @interface PKPaymentOfferWebServiceRewardsBalancesResponse
-- (PKPaymentOfferWebServiceRewardsBalancesResponse)initWithData:(id)a3;
+- (PKPaymentOfferWebServiceRewardsBalancesResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentOfferWebServiceRewardsBalancesResponse
 
-- (PKPaymentOfferWebServiceRewardsBalancesResponse)initWithData:(id)a3
+- (PKPaymentOfferWebServiceRewardsBalancesResponse)initWithData:(id)data
 {
   v35 = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = PKPaymentOfferWebServiceRewardsBalancesResponse;
-  v3 = [(PKWebServiceResponse *)&v29 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v29 initWithData:data];
   p_isa = &v3->super.super.super.super.isa;
   if (!v3)
   {
@@ -18,11 +18,11 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"rewardsBalances"];
+    v6 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"rewardsBalances"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v25 = 0u;
     v26 = 0u;

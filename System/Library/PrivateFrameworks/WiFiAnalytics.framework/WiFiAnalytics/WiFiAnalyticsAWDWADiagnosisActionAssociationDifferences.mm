@@ -1,28 +1,28 @@
 @interface WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdditionalInfo:(BOOL)a3;
-- (void)setHasChangedChannel:(BOOL)a3;
-- (void)setHasChangedDNSPrimary:(BOOL)a3;
-- (void)setHasChangedDNSSecondary:(BOOL)a3;
-- (void)setHasChangedMAC:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasNewBSSID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdditionalInfo:(BOOL)info;
+- (void)setHasChangedChannel:(BOOL)channel;
+- (void)setHasChangedDNSPrimary:(BOOL)primary;
+- (void)setHasChangedDNSSecondary:(BOOL)secondary;
+- (void)setHasChangedMAC:(BOOL)c;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasNewBSSID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences
 
-- (void)setHasNewBSSID:(BOOL)a3
+- (void)setHasNewBSSID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 0x80;
   }
@@ -35,9 +35,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasChangedChannel:(BOOL)a3
+- (void)setHasChangedChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 8;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasChangedDNSPrimary:(BOOL)a3
+- (void)setHasChangedDNSPrimary:(BOOL)primary
 {
-  if (a3)
+  if (primary)
   {
     v3 = 16;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasChangedDNSSecondary:(BOOL)a3
+- (void)setHasChangedDNSSecondary:(BOOL)secondary
 {
-  if (a3)
+  if (secondary)
   {
     v3 = 32;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasChangedMAC:(BOOL)a3
+- (void)setHasChangedMAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 64;
   }
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -123,40 +123,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"kDiagnosisEventTypeMainDpsNotification"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"kDiagnosisEventTypeMainDpsNotification"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypePowerToggled"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypePowerToggled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypeControlCenterToggled"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypeControlCenterToggled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypeLinkUp"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypeLinkUp"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypeRoamed"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypeRoamed"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypeIPConfigured"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypeIPConfigured"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"kDiagnosisEventTypeLinkDown"])
+  else if ([typeCopy isEqualToString:@"kDiagnosisEventTypeLinkDown"])
   {
     v4 = 6;
   }
@@ -169,9 +169,9 @@
   return v4;
 }
 
-- (void)setHasAdditionalInfo:(BOOL)a3
+- (void)setHasAdditionalInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -190,20 +190,20 @@
   v8.receiver = self;
   v8.super_class = WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences;
   v4 = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)&v8 description];
-  v5 = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WiFiAnalyticsAWDWADiagnosisActionAssociationDifferences *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has < 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_newBSSID];
-    [v3 setObject:v7 forKey:@"newBSSID"];
+    [dictionary setObject:v7 forKey:@"newBSSID"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -224,7 +224,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_changedChannel];
-  [v3 setObject:v8 forKey:@"changedChannel"];
+  [dictionary setObject:v8 forKey:@"changedChannel"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -240,7 +240,7 @@ LABEL_4:
 
 LABEL_15:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_changedDNSPrimary];
-  [v3 setObject:v9 forKey:@"changedDNSPrimary"];
+  [dictionary setObject:v9 forKey:@"changedDNSPrimary"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -256,7 +256,7 @@ LABEL_5:
 
 LABEL_16:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_changedDNSSecondary];
-  [v3 setObject:v10 forKey:@"changedDNSSecondary"];
+  [dictionary setObject:v10 forKey:@"changedDNSSecondary"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -272,7 +272,7 @@ LABEL_6:
 
 LABEL_17:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_changedMAC];
-  [v3 setObject:v11 forKey:@"changedMAC"];
+  [dictionary setObject:v11 forKey:@"changedMAC"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -288,7 +288,7 @@ LABEL_7:
 
 LABEL_18:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timestamp];
-  [v3 setObject:v12 forKey:@"timestamp"];
+  [dictionary setObject:v12 forKey:@"timestamp"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -314,7 +314,7 @@ LABEL_19:
     v14 = off_1E830F4C8[eventType];
   }
 
-  [v3 setObject:v14 forKey:@"eventType"];
+  [dictionary setObject:v14 forKey:@"eventType"];
 
   if ((*&self->_has & 2) == 0)
   {
@@ -323,16 +323,16 @@ LABEL_19:
 
 LABEL_9:
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_additionalInfo];
-  [v3 setObject:v5 forKey:@"additionalInfo"];
+  [dictionary setObject:v5 forKey:@"additionalInfo"];
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if (has < 0)
   {
@@ -443,14 +443,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has < 0)
   {
-    v4[28] = self->_newBSSID;
-    v4[32] |= 0x80u;
+    toCopy[28] = self->_newBSSID;
+    toCopy[32] |= 0x80u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -469,8 +469,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[24] = self->_changedChannel;
-  v4[32] |= 8u;
+  toCopy[24] = self->_changedChannel;
+  toCopy[32] |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -484,8 +484,8 @@ LABEL_4:
   }
 
 LABEL_15:
-  v4[25] = self->_changedDNSPrimary;
-  v4[32] |= 0x10u;
+  toCopy[25] = self->_changedDNSPrimary;
+  toCopy[32] |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -499,8 +499,8 @@ LABEL_5:
   }
 
 LABEL_16:
-  v4[26] = self->_changedDNSSecondary;
-  v4[32] |= 0x20u;
+  toCopy[26] = self->_changedDNSSecondary;
+  toCopy[32] |= 0x20u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -514,8 +514,8 @@ LABEL_6:
   }
 
 LABEL_17:
-  v4[27] = self->_changedMAC;
-  v4[32] |= 0x40u;
+  toCopy[27] = self->_changedMAC;
+  toCopy[32] |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -529,8 +529,8 @@ LABEL_7:
   }
 
 LABEL_18:
-  *(v4 + 1) = self->_timestamp;
-  v4[32] |= 1u;
+  *(toCopy + 1) = self->_timestamp;
+  toCopy[32] |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -544,21 +544,21 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 5) = self->_eventType;
-  v4[32] |= 4u;
+  *(toCopy + 5) = self->_eventType;
+  toCopy[32] |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_9:
-    *(v4 + 4) = self->_additionalInfo;
-    v4[32] |= 2u;
+    *(toCopy + 4) = self->_additionalInfo;
+    toCopy[32] |= 2u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has < 0)
   {
@@ -670,10 +670,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_56;
   }
@@ -681,115 +681,115 @@ LABEL_9:
   has = self->_has;
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(v4 + 32) & 0x80) == 0)
+    if ((*(equalCopy + 32) & 0x80) == 0)
     {
       goto LABEL_56;
     }
 
-    v6 = *(v4 + 28);
+    v6 = *(equalCopy + 28);
     if (self->_newBSSID)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 32) & 0x80) != 0)
+  else if ((*(equalCopy + 32) & 0x80) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0)
+    if ((*(equalCopy + 32) & 8) == 0)
     {
       goto LABEL_56;
     }
 
-    v7 = *(v4 + 24);
+    v7 = *(equalCopy + 24);
     if (self->_changedChannel)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0)
+    if ((*(equalCopy + 32) & 0x10) == 0)
     {
       goto LABEL_56;
     }
 
-    v8 = *(v4 + 25);
+    v8 = *(equalCopy + 25);
     if (self->_changedDNSPrimary)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x20) != 0)
   {
-    if ((*(v4 + 32) & 0x20) == 0)
+    if ((*(equalCopy + 32) & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = *(v4 + 26);
+    v9 = *(equalCopy + 26);
     if (self->_changedDNSSecondary)
     {
-      if ((*(v4 + 26) & 1) == 0)
+      if ((*(equalCopy + 26) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(v4 + 26))
+    else if (*(equalCopy + 26))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 32) & 0x20) != 0)
+  else if ((*(equalCopy + 32) & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x40) == 0)
   {
-    if ((*(v4 + 32) & 0x40) == 0)
+    if ((*(equalCopy + 32) & 0x40) == 0)
     {
       goto LABEL_12;
     }
@@ -799,21 +799,21 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if ((*(v4 + 32) & 0x40) == 0)
+  if ((*(equalCopy + 32) & 0x40) == 0)
   {
     goto LABEL_56;
   }
 
-  v10 = *(v4 + 27);
+  v10 = *(equalCopy + 27);
   if (self->_changedMAC)
   {
-    if ((*(v4 + 27) & 1) == 0)
+    if ((*(equalCopy + 27) & 1) == 0)
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 27))
+  else if (*(equalCopy + 27))
   {
     goto LABEL_56;
   }
@@ -821,34 +821,34 @@ LABEL_56:
 LABEL_12:
   if (*&has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_56;
   }
 
   if ((*&has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_eventType != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_eventType != *(equalCopy + 5))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_56;
   }
 
-  v11 = (*(v4 + 32) & 2) == 0;
+  v11 = (*(equalCopy + 32) & 2) == 0;
   if ((*&has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_additionalInfo != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_additionalInfo != *(equalCopy + 4))
     {
       goto LABEL_56;
     }
@@ -971,15 +971,15 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5 < 0)
   {
-    self->_newBSSID = *(v4 + 28);
+    self->_newBSSID = *(fromCopy + 28);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -992,14 +992,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 8) == 0)
+  else if ((*(fromCopy + 32) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_changedChannel = *(v4 + 24);
+  self->_changedChannel = *(fromCopy + 24);
   *&self->_has |= 8u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1012,9 +1012,9 @@ LABEL_4:
   }
 
 LABEL_15:
-  self->_changedDNSPrimary = *(v4 + 25);
+  self->_changedDNSPrimary = *(fromCopy + 25);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1027,9 +1027,9 @@ LABEL_5:
   }
 
 LABEL_16:
-  self->_changedDNSSecondary = *(v4 + 26);
+  self->_changedDNSSecondary = *(fromCopy + 26);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -1042,9 +1042,9 @@ LABEL_6:
   }
 
 LABEL_17:
-  self->_changedMAC = *(v4 + 27);
+  self->_changedMAC = *(fromCopy + 27);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 1) == 0)
   {
 LABEL_7:
@@ -1057,9 +1057,9 @@ LABEL_7:
   }
 
 LABEL_18:
-  self->_timestamp = *(v4 + 1);
+  self->_timestamp = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -1072,12 +1072,12 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_eventType = *(v4 + 5);
+  self->_eventType = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
 LABEL_9:
-    self->_additionalInfo = *(v4 + 4);
+    self->_additionalInfo = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 

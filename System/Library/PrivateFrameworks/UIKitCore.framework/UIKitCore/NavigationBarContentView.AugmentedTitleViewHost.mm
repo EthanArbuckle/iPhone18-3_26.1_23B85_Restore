@@ -1,7 +1,7 @@
 @interface NavigationBarContentView.AugmentedTitleViewHost
-- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithCoder:(id)a3;
-- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithCoder:(id)coder;
+- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
@@ -22,15 +22,15 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = swift_getObjectType();
   v7 = v14.receiver;
-  v8 = a4;
-  v9 = [(UIView *)&v14 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(UIView *)&v14 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -54,12 +54,12 @@ LABEL_7:
   return v11;
 }
 
-- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_augmentedTitleView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_glassGroupBackgroundEnabled) = 0;
@@ -68,15 +68,15 @@ LABEL_7:
   return [(UIView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithCoder:(id)a3
+- (_TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_augmentedTitleView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit24NavigationBarContentView22AugmentedTitleViewHost_glassGroupBackgroundEnabled) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(UIView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(UIView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

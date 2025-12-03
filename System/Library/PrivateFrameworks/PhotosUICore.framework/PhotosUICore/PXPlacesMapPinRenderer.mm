@@ -1,8 +1,8 @@
 @interface PXPlacesMapPinRenderer
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
 - (UIEdgeInsets)minimumEdgeInsets;
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4;
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4;
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view;
 @end
 
 @implementation PXPlacesMapPinRenderer
@@ -14,43 +14,43 @@
   return WeakRetained;
 }
 
-- (id)viewForAnnotation:(id)a3 andMapView:(id)a4
+- (id)viewForAnnotation:(id)annotation andMapView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  annotationCopy = annotation;
+  viewCopy = view;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 dequeueReusableAnnotationViewWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableAnnotationViewWithIdentifier:v8];
 
   if (v9)
   {
-    [v9 setAnnotation:v5];
+    [v9 setAnnotation:annotationCopy];
   }
 
   else
   {
-    v9 = [objc_alloc(MEMORY[0x1E696F2F0]) initWithAnnotation:v5 reuseIdentifier:v8];
+    v9 = [objc_alloc(MEMORY[0x1E696F2F0]) initWithAnnotation:annotationCopy reuseIdentifier:v8];
   }
 
   return v9;
 }
 
-- (id)annotationForGeotaggables:(id)a3 initialCoordinate:(CLLocationCoordinate2D)a4
+- (id)annotationForGeotaggables:(id)geotaggables initialCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  geotaggablesCopy = geotaggables;
   v8 = objc_alloc_init(PXPlacesMapPointAnnotation);
   [(PXPlacesMapPointAnnotation *)v8 setCoordinate:latitude, longitude];
-  v9 = [(PXPlacesMapPinRenderer *)self pipelineComponentProvider];
-  v10 = [v9 renderer];
-  [(PXPlacesMapPointAnnotation *)v8 setRenderer:v10];
+  pipelineComponentProvider = [(PXPlacesMapPinRenderer *)self pipelineComponentProvider];
+  renderer = [pipelineComponentProvider renderer];
+  [(PXPlacesMapPointAnnotation *)v8 setRenderer:renderer];
 
-  v11 = [(PXPlacesMapPinRenderer *)self pipelineComponentProvider];
-  v12 = [v11 selectionHandler];
-  [(PXPlacesMapPointAnnotation *)v8 setSelectionHandler:v12];
+  pipelineComponentProvider2 = [(PXPlacesMapPinRenderer *)self pipelineComponentProvider];
+  selectionHandler = [pipelineComponentProvider2 selectionHandler];
+  [(PXPlacesMapPointAnnotation *)v8 setSelectionHandler:selectionHandler];
 
-  [(PXPlacesMapPointAnnotation *)v8 setGeotaggables:v7];
+  [(PXPlacesMapPointAnnotation *)v8 setGeotaggables:geotaggablesCopy];
 
   return v8;
 }

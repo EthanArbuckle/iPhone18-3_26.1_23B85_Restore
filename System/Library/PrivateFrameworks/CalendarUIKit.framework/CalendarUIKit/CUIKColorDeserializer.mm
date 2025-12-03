@@ -1,54 +1,54 @@
 @interface CUIKColorDeserializer
-+ (id)_deserializeReminderColor:(id)a3;
-+ (id)deserializeColor:(id)a3 providerIdentifier:(id)a4;
++ (id)_deserializeReminderColor:(id)color;
++ (id)deserializeColor:(id)color providerIdentifier:(id)identifier;
 @end
 
 @implementation CUIKColorDeserializer
 
-+ (id)_deserializeReminderColor:(id)a3
++ (id)_deserializeReminderColor:(id)color
 {
   v3 = CUIKReminderColorDeserializer_onceToken;
-  v4 = a3;
+  colorCopy = color;
   if (v3 != -1)
   {
     +[CUIKColorDeserializer _deserializeReminderColor:];
   }
 
-  v5 = [CUIKReminderColorDeserializer_deserializer deserializeColor:v4];
+  v5 = [CUIKReminderColorDeserializer_deserializer deserializeColor:colorCopy];
 
   return v5;
 }
 
-+ (id)deserializeColor:(id)a3 providerIdentifier:(id)a4
++ (id)deserializeColor:(id)color providerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_getAssociatedObject(v6, &deserializedColorKeyUniqueAddress);
+  colorCopy = color;
+  identifierCopy = identifier;
+  v8 = objc_getAssociatedObject(colorCopy, &deserializedColorKeyUniqueAddress);
   if (!v8)
   {
     v9 = +[CUIKCalendarColor providerIdentifier];
-    v10 = [v9 isEqualToString:v7];
+    v10 = [v9 isEqualToString:identifierCopy];
 
     if (v10)
     {
-      v11 = [a1 _deserializeCUIKCalendarColor:v6];
+      v11 = [self _deserializeCUIKCalendarColor:colorCopy];
     }
 
     else
     {
-      if (![*MEMORY[0x1E6993178] isEqualToString:v7])
+      if (![*MEMORY[0x1E6993178] isEqualToString:identifierCopy])
       {
         v8 = 0;
         goto LABEL_9;
       }
 
-      v11 = [a1 _deserializeReminderColor:v6];
+      v11 = [self _deserializeReminderColor:colorCopy];
     }
 
     v8 = v11;
     if (v11)
     {
-      objc_setAssociatedObject(v6, &deserializedColorKeyUniqueAddress, v11, 1);
+      objc_setAssociatedObject(colorCopy, &deserializedColorKeyUniqueAddress, v11, 1);
     }
   }
 

@@ -2,14 +2,14 @@
 - (CATransform3D)slideProjectionMatrix;
 - (CGRect)slideRect;
 - (CGRect)unscaledSlideRect;
-- (KNAnimationContext)initWithShowSize:(CGSize)a3 viewScale:(double)a4 baseLayer:(id)a5 isBaseLayerVisible:(BOOL)a6;
+- (KNAnimationContext)initWithShowSize:(CGSize)size viewScale:(double)scale baseLayer:(id)layer isBaseLayerVisible:(BOOL)visible;
 - (double)showScale;
 - (void)dealloc;
 @end
 
 @implementation KNAnimationContext
 
-- (KNAnimationContext)initWithShowSize:(CGSize)a3 viewScale:(double)a4 baseLayer:(id)a5 isBaseLayerVisible:(BOOL)a6
+- (KNAnimationContext)initWithShowSize:(CGSize)size viewScale:(double)scale baseLayer:(id)layer isBaseLayerVisible:(BOOL)visible
 {
   v32.receiver = self;
   v32.super_class = KNAnimationContext;
@@ -21,18 +21,18 @@
     v9->mUnscaledSlideRect.origin.y = v11;
     v9->mUnscaledSlideRect.size.width = v12;
     v9->mUnscaledSlideRect.size.height = v13;
-    v9->mViewScale = a4;
-    [a5 bounds];
+    v9->mViewScale = scale;
+    [layer bounds];
     v9->mSlideRect.origin.x = v14;
     v9->mSlideRect.origin.y = v15;
     v9->mSlideRect.size.width = v16;
     v9->mSlideRect.size.height = v17;
-    v9->mBaseLayer = [[CALayer alloc] initWithLayer:a5];
-    [a5 bounds];
+    v9->mBaseLayer = [[CALayer alloc] initWithLayer:layer];
+    [layer bounds];
     [(CALayer *)v9->mBaseLayer setBounds:?];
-    [a5 position];
+    [layer position];
     [(CALayer *)v9->mBaseLayer setPosition:?];
-    v9->mBaseLayerVisible = a6;
+    v9->mBaseLayerVisible = visible;
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(CALayer *)v9->mBaseLayer setSublayers:0];
@@ -81,14 +81,14 @@
 
 - (double)showScale
 {
-  v2 = [(KNAnimationContext *)self baseLayer];
-  if (!v2)
+  baseLayer = [(KNAnimationContext *)self baseLayer];
+  if (!baseLayer)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v3 = [(CALayer *)v2 valueForKeyPath:@"transform.scale.x"];
-  v4 = [(CALayer *)v2 valueForKeyPath:@"transform.scale.y"];
+  v3 = [(CALayer *)baseLayer valueForKeyPath:@"transform.scale.x"];
+  v4 = [(CALayer *)baseLayer valueForKeyPath:@"transform.scale.y"];
   v5 = v4;
   if (v3)
   {

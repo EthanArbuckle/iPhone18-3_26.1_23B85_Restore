@@ -1,19 +1,19 @@
 @interface GESSAlgVertexClusterSimplifyExtended
-- (BOOL)run:(id)a3;
+- (BOOL)run:(id)run;
 @end
 
 @implementation GESSAlgVertexClusterSimplifyExtended
 
-- (BOOL)run:(id)a3
+- (BOOL)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   objc_msgSend_setAlgStatus_(self, v5, 1, v6);
-  if ((objc_msgSend_valid(v4, v7, v8, v9) & 1) != 0 && objc_msgSend_meshType(v4, v10, v11, v12) == 1)
+  if ((objc_msgSend_valid(runCopy, v7, v8, v9) & 1) != 0 && objc_msgSend_meshType(runCopy, v10, v11, v12) == 1)
   {
     v32[1] = 0;
     objc_msgSend_voxelSize(self->_options, v10, v13, v12);
     v32[0] = v14;
-    v18 = objc_msgSend_meshImpl(v4, v15, v16, v17);
+    v18 = objc_msgSend_meshImpl(runCopy, v15, v16, v17);
     memset(v31, 0, sizeof(v31));
     v21 = sub_24BD46258(v18, v31, v32);
     if (v21)

@@ -1,16 +1,16 @@
 @interface JavaUtilCollections_CheckedCollection
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
 - (NSString)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)clear;
 - (void)dealloc;
@@ -40,7 +40,7 @@
   return [(JavaUtilCollection *)c isEmpty];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   c = self->c_;
   if (!c)
@@ -48,7 +48,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c containsWithId:a3];
+  return [(JavaUtilCollection *)c containsWithId:id];
 }
 
 - (id)iterator
@@ -59,19 +59,19 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilCollection *)c iterator];
-  if (![JavaUtilListIterator_class_() isInstance:v4])
+  iterator = [(JavaUtilCollection *)c iterator];
+  if (![JavaUtilListIterator_class_() isInstance:iterator])
   {
-    return v4;
+    return iterator;
   }
 
   v5 = JavaUtilListIterator_class_();
-  if (v4 && ([v5 isInstance:v4] & 1) == 0)
+  if (iterator && ([v5 isInstance:iterator] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  v6 = sub_1001C7E30(v4, self->type_);
+  v6 = sub_1001C7E30(iterator, self->type_);
 
   return v6;
 }
@@ -87,7 +87,7 @@
   return [(JavaUtilCollection *)c toArray];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   c = self->c_;
   if (!c)
@@ -95,10 +95,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c toArrayWithNSObjectArray:a3];
+  return [(JavaUtilCollection *)c toArrayWithNSObjectArray:array];
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   c = self->c_;
   if (!c)
@@ -106,12 +106,12 @@
     JreThrowNullPointerException();
   }
 
-  JavaUtilCollections_checkTypeWithId_withIOSClass_(a3, self->type_);
+  JavaUtilCollections_checkTypeWithId_withIOSClass_(id, self->type_);
 
-  return [(JavaUtilCollection *)c addWithId:a3];
+  return [(JavaUtilCollection *)c addWithId:id];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   c = self->c_;
   if (!c)
@@ -119,10 +119,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c removeWithId:a3];
+  return [(JavaUtilCollection *)c removeWithId:id];
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   c = self->c_;
   if (!c)
@@ -130,25 +130,25 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:a3];
+  return [(JavaUtilCollection *)c containsAllWithJavaUtilCollection:collection];
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     goto LABEL_12;
   }
 
-  v4 = [a3 toArray];
-  if (!v4)
+  toArray = [collection toArray];
+  if (!toArray)
   {
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = v4 + 3;
-  v7 = &v4[*(v4 + 2) + 3];
+  v5 = toArray;
+  v6 = toArray + 3;
+  v7 = &toArray[*(toArray + 2) + 3];
   while (v6 < v7)
   {
     v8 = *v6++;
@@ -172,7 +172,7 @@ LABEL_12:
   return [(JavaUtilCollection *)c addAllWithJavaUtilCollection:v10];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   c = self->c_;
   if (!c)
@@ -180,10 +180,10 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c removeAllWithJavaUtilCollection:a3];
+  return [(JavaUtilCollection *)c removeAllWithJavaUtilCollection:collection];
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   c = self->c_;
   if (!c)
@@ -191,7 +191,7 @@ LABEL_12:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilCollection *)c retainAllWithJavaUtilCollection:a3];
+  return [(JavaUtilCollection *)c retainAllWithJavaUtilCollection:collection];
 }
 
 - (void)clear

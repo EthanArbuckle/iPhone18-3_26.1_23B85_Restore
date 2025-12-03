@@ -1,36 +1,36 @@
 @interface NTKChronoRichFaceView
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_startButtonLayoutConstants;
-- (NTKChronoRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (NTKChronoRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 @end
 
 @implementation NTKChronoRichFaceView
 
-- (NTKChronoRichFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKChronoRichFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKChronoRichFaceView;
-  v5 = [(NTKChronoFaceView *)&v9 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKChronoFaceView *)&v9 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NTKChronoRichFaceView *)v5 complicationFactory];
-    [v7 setGraphicCornerComplications:1];
+    complicationFactory = [(NTKChronoRichFaceView *)v5 complicationFactory];
+    [complicationFactory setGraphicCornerComplications:1];
   }
 
   return v6;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = NTKChronoRichFaceView;
-  [(NTKChronoFaceView *)&v9 _configureComplicationView:v6 forSlot:a4];
+  [(NTKChronoFaceView *)&v9 _configureComplicationView:viewCopy forSlot:slot];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = viewCopy;
     v8 = [UIColor colorWithRed:0.701960784 green:0.701960784 blue:0.701960784 alpha:1.0];
     [(NTKChronoRichFaceView *)self setComplicationColor:v8];
     [(NTKChronoRichFaceView *)self setInterpolatedComplicationColor:v8];
@@ -41,8 +41,8 @@
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_startButtonLayoutConstants
 {
-  v2 = [(NTKChronoRichFaceView *)self device];
-  sub_F908(v2, v2);
+  device = [(NTKChronoRichFaceView *)self device];
+  sub_F908(device, device);
   v4 = v3;
   v6 = v5;
 

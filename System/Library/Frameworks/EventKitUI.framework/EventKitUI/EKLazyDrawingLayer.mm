@@ -1,20 +1,20 @@
 @interface EKLazyDrawingLayer
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 @end
 
 @implementation EKLazyDrawingLayer
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"hidden"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"hidden"])
   {
     [(EKLazyDrawingLayer *)self setNeedsDisplay];
   }
 
   v5.receiver = self;
   v5.super_class = EKLazyDrawingLayer;
-  [(EKLazyDrawingLayer *)&v5 didChangeValueForKey:v4];
+  [(EKLazyDrawingLayer *)&v5 didChangeValueForKey:keyCopy];
 }
 
 @end

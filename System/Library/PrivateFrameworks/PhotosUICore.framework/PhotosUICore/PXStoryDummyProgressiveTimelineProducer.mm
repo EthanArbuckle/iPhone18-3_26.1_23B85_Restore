@@ -1,27 +1,27 @@
 @interface PXStoryDummyProgressiveTimelineProducer
 - (PXStoryDummyProgressiveTimelineProducer)init;
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryDummyProgressiveTimelineProducer
 
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __98__PXStoryDummyProgressiveTimelineProducer_requestTimelineWithConfiguration_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E772E708;
   aBlock[4] = self;
-  aBlock[5] = v8;
+  aBlock[5] = configurationCopy;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if ((v6 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    v15 = [(PXStoryDummyProgressiveTimelineProducer *)self workQueue];
-    v16 = 1;
+    workQueue = [(PXStoryDummyProgressiveTimelineProducer *)self workQueue];
+    numberOfIterations = 1;
   }
 
   else
@@ -29,18 +29,18 @@
     v12 = (*(v10 + 2))(v10, 0.0);
     v13 = [[PXStoryProducerResult alloc] initWithObject:v12];
     v14 = [(PXStoryProducerResult *)v13 flags:1];
-    v9[2](v9, v14);
+    handlerCopy[2](handlerCopy, v14);
 
-    v15 = [(PXStoryDummyProgressiveTimelineProducer *)self workQueue];
-    v16 = [(PXStoryDummyProgressiveTimelineProducer *)self numberOfIterations];
+    workQueue = [(PXStoryDummyProgressiveTimelineProducer *)self workQueue];
+    numberOfIterations = [(PXStoryDummyProgressiveTimelineProducer *)self numberOfIterations];
   }
 
   [(PXStoryDummyProgressiveTimelineProducer *)self delayBetweenIterations];
-  [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:v16];
+  [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:numberOfIterations];
   objc_claimAutoreleasedReturnValue();
-  v17 = v9;
+  v17 = handlerCopy;
   v18 = v11;
-  v19 = v15;
+  v19 = workQueue;
   PXIterateAsynchronously();
 }
 
@@ -109,10 +109,10 @@ void __98__PXStoryDummyProgressiveTimelineProducer_requestTimelineWithConfigurat
     v2->_delayBetweenIterations = 1.0;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_USER_INITIATED, 0);
-    v10 = dispatch_queue_create(v7, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     workQueue = v2->_workQueue;
     v2->_workQueue = v10;
   }

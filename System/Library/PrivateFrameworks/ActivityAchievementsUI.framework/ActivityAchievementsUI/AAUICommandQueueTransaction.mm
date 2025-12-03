@@ -10,9 +10,9 @@
 + (id)sharedDevice
 {
   v2 = +[AAUICommandQueueRegistry sharedRegistry];
-  v3 = [v2 sharedDevice];
+  sharedDevice = [v2 sharedDevice];
 
-  return v3;
+  return sharedDevice;
 }
 
 - (AAUICommandQueueTransaction)init
@@ -42,9 +42,9 @@
 - (id)commandQueue
 {
   v2 = +[AAUICommandQueueRegistry sharedRegistry];
-  v3 = [v2 commandQueue];
+  commandQueue = [v2 commandQueue];
 
-  return v3;
+  return commandQueue;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)init;
-- (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
+- (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
 - (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams);
-  v5 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self action];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setAction:v5];
+  action = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self action];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setAction:action];
 
-  v6 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self delayedActionTime];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setDelayedActionTime:v6];
+  delayedActionTime = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self delayedActionTime];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setDelayedActionTime:delayedActionTime];
 
-  v7 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self timedInvokeTimeoutMs];
-  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self timedInvokeTimeoutMs];
+  [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -100,7 +100,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams;
@@ -108,7 +108,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -124,12 +124,12 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self setAction:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3[4].var0];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&struct[4].var0];
   [(MTROTASoftwareUpdateProviderClusterApplyUpdateResponseParams *)self setDelayedActionTime:v6];
 
   v7 = 0;

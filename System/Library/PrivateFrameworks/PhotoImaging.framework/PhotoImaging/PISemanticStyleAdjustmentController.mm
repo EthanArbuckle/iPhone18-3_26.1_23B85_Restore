@@ -1,11 +1,11 @@
 @interface PISemanticStyleAdjustmentController
-+ (id)allCastsWithStandard:(BOOL)a3;
++ (id)allCastsWithStandard:(BOOL)standard;
 + (id)allCreativeCasts;
 + (id)allSystemCasts;
-+ (id)defaultValuesForCast:(id)a3;
-- (BOOL)_areValuesEquivalentBetween:(id)a3 and:(id)a4 nilEquivalentDefaultValue:(id)a5;
++ (id)defaultValuesForCast:(id)cast;
+- (BOOL)_areValuesEquivalentBetween:(id)between and:(id)and nilEquivalentDefaultValue:(id)value;
 - (BOOL)hasDefaultStyleParameters;
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4;
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key;
 - (NSDictionary)statistics;
 - (NSString)cast;
 - (double)color;
@@ -13,27 +13,27 @@
 - (double)tone;
 - (int64_t)version;
 - (void)resetToUnstyledOriginal;
-- (void)setCast:(id)a3;
-- (void)setColor:(double)a3;
-- (void)setIntensity:(double)a3;
-- (void)setStatistics:(id)a3;
-- (void)setTone:(double)a3;
-- (void)setVersion:(int64_t)a3;
-- (void)updateWithSemStyleInfo:(id)a3;
+- (void)setCast:(id)cast;
+- (void)setColor:(double)color;
+- (void)setIntensity:(double)intensity;
+- (void)setStatistics:(id)statistics;
+- (void)setTone:(double)tone;
+- (void)setVersion:(int64_t)version;
+- (void)updateWithSemStyleInfo:(id)info;
 @end
 
 @implementation PISemanticStyleAdjustmentController
 
-- (BOOL)_areValuesEquivalentBetween:(id)a3 and:(id)a4 nilEquivalentDefaultValue:(id)a5
+- (BOOL)_areValuesEquivalentBetween:(id)between and:(id)and nilEquivalentDefaultValue:(id)value
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 || !v8)
+  betweenCopy = between;
+  andCopy = and;
+  valueCopy = value;
+  if (betweenCopy || !andCopy)
   {
-    if (!v7 || v8)
+    if (!betweenCopy || andCopy)
     {
-      if (!v8 || !v7 || [v7 isEqual:v8])
+      if (!andCopy || !betweenCopy || [betweenCopy isEqual:andCopy])
       {
         goto LABEL_8;
       }
@@ -43,15 +43,15 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = v7;
+    v10 = betweenCopy;
   }
 
   else
   {
-    v10 = v8;
+    v10 = andCopy;
   }
 
-  if (([v10 isEqual:v9] & 1) == 0)
+  if (([v10 isEqual:valueCopy] & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -63,22 +63,22 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isSettingEqual:(id)a3 forKey:(id)a4
+- (BOOL)isSettingEqual:(id)equal forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  equalCopy = equal;
+  keyCopy = key;
   v8 = +[PISemanticStyleAdjustmentController intensityKey];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [keyCopy isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [v6 schema];
-    v11 = [v10 settings];
-    v12 = [v11 objectForKeyedSubscript:v7];
+    schema = [equalCopy schema];
+    settings = [schema settings];
+    v12 = [settings objectForKeyedSubscript:keyCopy];
 
-    v13 = [(PIAdjustmentController *)self adjustment];
-    v14 = [v13 objectForKeyedSubscript:v7];
-    v15 = [v6 objectForKeyedSubscript:v7];
+    adjustment = [(PIAdjustmentController *)self adjustment];
+    v14 = [adjustment objectForKeyedSubscript:keyCopy];
+    v15 = [equalCopy objectForKeyedSubscript:keyCopy];
     v16 = [(PISemanticStyleAdjustmentController *)self _areValuesEquivalentBetween:v14 and:v15 nilEquivalentDefaultValue:v12];
   }
 
@@ -86,7 +86,7 @@ LABEL_13:
   {
     v18.receiver = self;
     v18.super_class = PISemanticStyleAdjustmentController;
-    v16 = [(PIAdjustmentController *)&v18 isSettingEqual:v6 forKey:v7];
+    v16 = [(PIAdjustmentController *)&v18 isSettingEqual:equalCopy forKey:keyCopy];
   }
 
   return v16;
@@ -96,8 +96,8 @@ LABEL_13:
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
-  v4 = [(PISemanticStyleAdjustmentController *)self cast];
-  v5 = [v3 defaultValuesForCast:v4];
+  cast = [(PISemanticStyleAdjustmentController *)self cast];
+  v5 = [v3 defaultValuesForCast:cast];
 
   if ([v5 count] != 3)
   {
@@ -121,8 +121,8 @@ LABEL_13:
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         v33 = 138543618;
         v34 = v28;
         v35 = 2114;
@@ -133,8 +133,8 @@ LABEL_13:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       v33 = 138543362;
       v34 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v33, 0xCu);
@@ -176,13 +176,13 @@ LABEL_13:
   return v10;
 }
 
-- (void)updateWithSemStyleInfo:(id)a3
+- (void)updateWithSemStyleInfo:(id)info
 {
-  v18 = a3;
-  if ([v18 count])
+  infoCopy = info;
+  if ([infoCopy count])
   {
     [(PIAdjustmentController *)self setEnabled:1];
-    v4 = [v18 objectForKey:@"cast"];
+    v4 = [infoCopy objectForKey:@"cast"];
     v5 = v4;
     if (v4 && ([v4 isEqualToString:&stru_1F46EAF88] & 1) == 0)
     {
@@ -195,25 +195,25 @@ LABEL_13:
       [(PISemanticStyleAdjustmentController *)self setCast:@"Standard"];
     }
 
-    v7 = [v18 objectForKey:@"tone"];
+    v7 = [infoCopy objectForKey:@"tone"];
     [v7 floatValue];
     v9 = v8;
 
     [(PISemanticStyleAdjustmentController *)self setTone:v9];
-    v10 = [v18 objectForKey:@"color"];
+    v10 = [infoCopy objectForKey:@"color"];
     [v10 floatValue];
     v12 = v11;
 
     [(PISemanticStyleAdjustmentController *)self setColor:v12];
-    v13 = [v18 objectForKey:@"intensity"];
+    v13 = [infoCopy objectForKey:@"intensity"];
     [v13 floatValue];
     v15 = v14;
 
     [(PISemanticStyleAdjustmentController *)self setIntensity:v15];
-    v16 = [v18 objectForKey:@"version"];
-    v17 = [v16 integerValue];
+    v16 = [infoCopy objectForKey:@"version"];
+    integerValue = [v16 integerValue];
 
-    [(PISemanticStyleAdjustmentController *)self setVersion:v17];
+    [(PISemanticStyleAdjustmentController *)self setVersion:integerValue];
   }
 }
 
@@ -228,54 +228,54 @@ LABEL_13:
 
 - (int64_t)version
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() versionKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  versionKey = [objc_opt_class() versionKey];
+  v4 = [adjustment objectForKeyedSubscript:versionKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)setVersion:(int64_t)a3
+- (void)setVersion:(int64_t)version
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() versionKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:version];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  versionKey = [objc_opt_class() versionKey];
+  [adjustment setObject:v6 forKeyedSubscript:versionKey];
 }
 
-- (void)setStatistics:(id)a3
+- (void)setStatistics:(id)statistics
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() statisticsKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [statistics copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  statisticsKey = [objc_opt_class() statisticsKey];
+  [adjustment setObject:v6 forKeyedSubscript:statisticsKey];
 }
 
 - (NSDictionary)statistics
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() statisticsKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  statisticsKey = [objc_opt_class() statisticsKey];
+  v4 = [adjustment objectForKeyedSubscript:statisticsKey];
 
   return v4;
 }
 
 - (double)intensity
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() intensityKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  intensityKey = [objc_opt_class() intensityKey];
+  v4 = [adjustment objectForKeyedSubscript:intensityKey];
 
   objc_opt_class();
   v5 = 1.0;
@@ -288,73 +288,73 @@ LABEL_13:
   return v5;
 }
 
-- (void)setIntensity:(double)a3
+- (void)setIntensity:(double)intensity
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() intensityKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:intensity];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  intensityKey = [objc_opt_class() intensityKey];
+  [adjustment setObject:v6 forKeyedSubscript:intensityKey];
 }
 
 - (NSString)cast
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() castKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  castKey = [objc_opt_class() castKey];
+  v4 = [adjustment objectForKeyedSubscript:castKey];
 
   return v4;
 }
 
-- (void)setCast:(id)a3
+- (void)setCast:(id)cast
 {
-  v6 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() castKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [cast copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  castKey = [objc_opt_class() castKey];
+  [adjustment setObject:v6 forKeyedSubscript:castKey];
 }
 
-- (void)setColor:(double)a3
+- (void)setColor:(double)color
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() colorKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:color];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  colorKey = [objc_opt_class() colorKey];
+  [adjustment setObject:v6 forKeyedSubscript:colorKey];
 }
 
 - (double)color
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() colorKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  colorKey = [objc_opt_class() colorKey];
+  v4 = [adjustment objectForKeyedSubscript:colorKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setTone:(double)a3
+- (void)setTone:(double)tone
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  v5 = [objc_opt_class() toneKey];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:tone];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  toneKey = [objc_opt_class() toneKey];
+  [adjustment setObject:v6 forKeyedSubscript:toneKey];
 }
 
 - (double)tone
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [objc_opt_class() toneKey];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  toneKey = [objc_opt_class() toneKey];
+  v4 = [adjustment objectForKeyedSubscript:toneKey];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-+ (id)defaultValuesForCast:(id)a3
++ (id)defaultValuesForCast:(id)cast
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v3 = PISemanticStyleCastToMakerNoteString(a3);
+  v3 = PISemanticStyleCastToMakerNoteString(cast);
   v4 = [MEMORY[0x1E6991718] defaultStyleForCastType:v3];
   v5 = v4;
   if (v4)
@@ -415,15 +415,15 @@ LABEL_13:
   return v2;
 }
 
-+ (id)allCastsWithStandard:(BOOL)a3
++ (id)allCastsWithStandard:(BOOL)standard
 {
-  v3 = a3;
-  v5 = [a1 allSystemCasts];
-  v6 = [a1 allCreativeCasts];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  standardCopy = standard;
+  allSystemCasts = [self allSystemCasts];
+  allCreativeCasts = [self allCreativeCasts];
+  v7 = [allSystemCasts arrayByAddingObjectsFromArray:allCreativeCasts];
   v8 = [v7 mutableCopy];
 
-  if (v3)
+  if (standardCopy)
   {
     [v8 addObject:@"Standard"];
   }

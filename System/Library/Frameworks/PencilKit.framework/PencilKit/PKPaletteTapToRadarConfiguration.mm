@@ -6,10 +6,10 @@
 
 - (BOOL)hasContent
 {
-  v2 = [(PKPaletteTapToRadarConfiguration *)self debugSharpenerLog];
-  v3 = [v2 hasContent];
+  debugSharpenerLog = [(PKPaletteTapToRadarConfiguration *)self debugSharpenerLog];
+  hasContent = [debugSharpenerLog hasContent];
 
-  return v3;
+  return hasContent;
 }
 
 @end

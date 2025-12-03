@@ -1,151 +1,151 @@
 @interface STStatusDomainDataChangeRecordDataEntry
-- (BOOL)isEqual:(id)a3;
-- (STStatusDomainDataChangeRecordDataEntry)initWithCoder:(id)a3;
-- (STStatusDomainDataChangeRecordDataEntry)initWithData:(id)a3 clientKey:(id)a4;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (STStatusDomainDataChangeRecordDataEntry)initWithCoder:(id)coder;
+- (STStatusDomainDataChangeRecordDataEntry)initWithData:(id)data clientKey:(id)key;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusDomainDataChangeRecordDataEntry
 
-- (STStatusDomainDataChangeRecordDataEntry)initWithData:(id)a3 clientKey:(id)a4
+- (STStatusDomainDataChangeRecordDataEntry)initWithData:(id)data clientKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = STStatusDomainDataChangeRecordDataEntry;
   v8 = [(STStatusDomainDataChangeRecordDataEntry *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copyWithZone:0];
+    v9 = [dataCopy copyWithZone:0];
     data = v8->_data;
     v8->_data = v9;
 
-    objc_storeStrong(&v8->_clientKey, a4);
+    objc_storeStrong(&v8->_clientKey, key);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STStatusDomainDataChangeRecordDataEntry *)self data];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  data = [(STStatusDomainDataChangeRecordDataEntry *)self data];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__STStatusDomainDataChangeRecordDataEntry_isEqual___block_invoke;
   v18[3] = &unk_1E85DF560;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
-  v8 = [v5 appendObject:v6 counterpart:v18];
+  v8 = [v5 appendObject:data counterpart:v18];
 
-  v9 = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
+  clientKey = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __51__STStatusDomainDataChangeRecordDataEntry_isEqual___block_invoke_2;
   v16 = &unk_1E85DE0B0;
   v17 = v7;
   v10 = v7;
-  v11 = [v5 appendObject:v9 counterpart:&v13];
+  v11 = [v5 appendObject:clientKey counterpart:&v13];
 
-  LOBYTE(v9) = [v5 isEqual];
-  return v9;
+  LOBYTE(clientKey) = [v5 isEqual];
+  return clientKey;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STStatusDomainDataChangeRecordDataEntry *)self data];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  data = [(STStatusDomainDataChangeRecordDataEntry *)self data];
+  v5 = [builder appendObject:data];
 
-  v6 = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
-  v7 = [v3 appendObject:v6];
+  clientKey = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
+  v7 = [builder appendObject:clientKey];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusDomainDataChangeRecordDataEntry *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusDomainDataChangeRecordDataEntry *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusDomainDataChangeRecordDataEntry *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusDomainDataChangeRecordDataEntry *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusDomainDataChangeRecordDataEntry *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusDomainDataChangeRecordDataEntry *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = [v6 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __91__STStatusDomainDataChangeRecordDataEntry__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v8 = v6;
+    v8 = succinctDescriptionBuilder;
     v11 = v8;
-    v12 = v3;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v7 block:v10];
+    v12 = selfCopy;
+    [v8 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v10];
 
-    v3 = v8;
+    selfCopy = v8;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STStatusDomainDataChangeRecordDataEntry *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(STStatusDomainDataChangeRecordDataEntry *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
-  [v4 encodeObject:v6 forKey:@"clientKey"];
+  clientKey = [(STStatusDomainDataChangeRecordDataEntry *)self clientKey];
+  [coderCopy encodeObject:clientKey forKey:@"clientKey"];
 }
 
-- (STStatusDomainDataChangeRecordDataEntry)initWithCoder:(id)a3
+- (STStatusDomainDataChangeRecordDataEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = STValidStatusDomainDataTypes();
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"data"];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientKey"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientKey"];
 
-  v8 = 0;
+  selfCopy = 0;
   if (v6 && v7)
   {
     self = [(STStatusDomainDataChangeRecordDataEntry *)self initWithData:v6 clientKey:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

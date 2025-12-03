@@ -1,31 +1,31 @@
 @interface SHCustomCatalogMatcher
 - (MRE)mre;
-- (SHCustomCatalogMatcher)initWithCustomCatalog:(id)a3;
+- (SHCustomCatalogMatcher)initWithCustomCatalog:(id)catalog;
 - (SHMatcherDelegate)delegate;
-- (id)MRESignaturesFromMatches:(id)a3;
-- (id)matchFromMREResults:(id)a3 signature:(id)a4;
-- (id)matchSignature:(id)a3;
-- (id)matcherResponseFrom:(id)a3 querySignature:(id)a4 error:(id)a5;
-- (int64_t)storeDensityToMREDensity:(int64_t)a3;
-- (void)startRecognitionForRequest:(id)a3;
+- (id)MRESignaturesFromMatches:(id)matches;
+- (id)matchFromMREResults:(id)results signature:(id)signature;
+- (id)matchSignature:(id)signature;
+- (id)matcherResponseFrom:(id)from querySignature:(id)signature error:(id)error;
+- (int64_t)storeDensityToMREDensity:(int64_t)density;
+- (void)startRecognitionForRequest:(id)request;
 @end
 
 @implementation SHCustomCatalogMatcher
 
-- (SHCustomCatalogMatcher)initWithCustomCatalog:(id)a3
+- (SHCustomCatalogMatcher)initWithCustomCatalog:(id)catalog
 {
-  v5 = a3;
+  catalogCopy = catalog;
   v14.receiver = self;
   v14.super_class = SHCustomCatalogMatcher;
   v6 = [(SHCustomCatalogMatcher *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customCatalog, a3);
-    v8 = [(SHCustomCatalogMatcher *)v7 customCatalog];
-    v9 = [v8 customCatalogContainer];
-    v10 = [v9 referenceSignatures];
-    v11 = [v10 count];
+    objc_storeStrong(&v6->_customCatalog, catalog);
+    customCatalog = [(SHCustomCatalogMatcher *)v7 customCatalog];
+    customCatalogContainer = [customCatalog customCatalogContainer];
+    referenceSignatures = [customCatalogContainer referenceSignatures];
+    v11 = [referenceSignatures count];
 
     if (!v11)
     {
@@ -37,16 +37,16 @@
   return v7;
 }
 
-- (int64_t)storeDensityToMREDensity:(int64_t)a3
+- (int64_t)storeDensityToMREDensity:(int64_t)density
 {
-  if ((a3 - 1) > 5)
+  if ((density - 1) > 5)
   {
     return 3;
   }
 
   else
   {
-    return qword_230FE1970[a3 - 1];
+    return qword_230FE1970[density - 1];
   }
 }
 
@@ -56,19 +56,19 @@
   mre = self->_mre;
   if (!mre)
   {
-    v4 = [(SHCustomCatalogMatcher *)self customCatalog];
-    v5 = [v4 customCatalogContainer];
-    v6 = [v5 referenceSignatures];
-    v7 = [(SHCustomCatalogMatcher *)self MRESignaturesFromMatches:v6];
+    customCatalog = [(SHCustomCatalogMatcher *)self customCatalog];
+    customCatalogContainer = [customCatalog customCatalogContainer];
+    referenceSignatures = [customCatalogContainer referenceSignatures];
+    v7 = [(SHCustomCatalogMatcher *)self MRESignaturesFromMatches:referenceSignatures];
 
     v8 = [MRE alloc];
-    v9 = [(SHCustomCatalogMatcher *)self customCatalog];
-    v10 = [v9 _configuration];
-    v11 = -[SHCustomCatalogMatcher storeDensityToMREDensity:](self, "storeDensityToMREDensity:", [v10 density]);
-    v12 = [(SHCustomCatalogMatcher *)self customCatalog];
-    v13 = [v12 _configuration];
+    customCatalog2 = [(SHCustomCatalogMatcher *)self customCatalog];
+    _configuration = [customCatalog2 _configuration];
+    v11 = -[SHCustomCatalogMatcher storeDensityToMREDensity:](self, "storeDensityToMREDensity:", [_configuration density]);
+    customCatalog3 = [(SHCustomCatalogMatcher *)self customCatalog];
+    _configuration2 = [customCatalog3 _configuration];
     v21 = 0;
-    v14 = -[MRE initWithSignatures:density:algorithm:error:](v8, "initWithSignatures:density:algorithm:error:", v7, v11, -[SHCustomCatalogMatcher algorithmToMREAlgorithm:](self, "algorithmToMREAlgorithm:", [v13 algorithm]), &v21);
+    v14 = -[MRE initWithSignatures:density:algorithm:error:](v8, "initWithSignatures:density:algorithm:error:", v7, v11, -[SHCustomCatalogMatcher algorithmToMREAlgorithm:](self, "algorithmToMREAlgorithm:", [_configuration2 algorithm]), &v21);
     v15 = v21;
     v16 = self->_mre;
     self->_mre = v14;
@@ -98,35 +98,35 @@
   return mre;
 }
 
-- (id)MRESignaturesFromMatches:(id)a3
+- (id)MRESignaturesFromMatches:(id)matches
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  matchesCopy = matches;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(matchesCopy, "count")}];
   v5 = sh_log_object();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v15 = 134217984;
-    v16 = [v3 count];
+    v16 = [matchesCopy count];
     _os_log_impl(&dword_230F52000, v5, OS_LOG_TYPE_DEBUG, "Initialising MRE with %lu tracks", &v15, 0xCu);
   }
 
-  if ([v3 count])
+  if ([matchesCopy count])
   {
     v6 = 0;
     do
     {
       v7 = [MRESignature alloc];
-      v8 = [v3 objectAtIndexedSubscript:v6];
-      v9 = [v8 signature];
-      v10 = [v9 spectralPeaksData];
-      v11 = [(MRESignature *)v7 initWithSignatureData:v10 trackID:v6];
+      v8 = [matchesCopy objectAtIndexedSubscript:v6];
+      signature = [v8 signature];
+      spectralPeaksData = [signature spectralPeaksData];
+      v11 = [(MRESignature *)v7 initWithSignatureData:spectralPeaksData trackID:v6];
 
       [v4 addObject:v11];
       ++v6;
     }
 
-    while ([v3 count] > v6);
+    while ([matchesCopy count] > v6);
   }
 
   v12 = [v4 copy];
@@ -136,58 +136,58 @@
   return v12;
 }
 
-- (void)startRecognitionForRequest:(id)a3
+- (void)startRecognitionForRequest:(id)request
 {
-  v4 = a3;
-  v7 = [(SHCustomCatalogMatcher *)self delegate];
-  v5 = [v4 signature];
+  requestCopy = request;
+  delegate = [(SHCustomCatalogMatcher *)self delegate];
+  signature = [requestCopy signature];
 
-  v6 = [(SHCustomCatalogMatcher *)self matchSignature:v5];
-  [v7 matcher:self didProduceResponse:v6];
+  v6 = [(SHCustomCatalogMatcher *)self matchSignature:signature];
+  [delegate matcher:self didProduceResponse:v6];
 }
 
-- (id)matchSignature:(id)a3
+- (id)matchSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   v5 = [(SHCustomCatalogMatcher *)self mre];
-  v6 = [v4 spectralPeaksData];
+  spectralPeaksData = [signatureCopy spectralPeaksData];
   v11 = 0;
-  v7 = [v5 search:v6 error:&v11];
+  v7 = [v5 search:spectralPeaksData error:&v11];
   v8 = v11;
 
-  v9 = [(SHCustomCatalogMatcher *)self matcherResponseFrom:v7 querySignature:v4 error:v8];
+  v9 = [(SHCustomCatalogMatcher *)self matcherResponseFrom:v7 querySignature:signatureCopy error:v8];
 
   return v9;
 }
 
-- (id)matcherResponseFrom:(id)a3 querySignature:(id)a4 error:(id)a5
+- (id)matcherResponseFrom:(id)from querySignature:(id)signature error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  fromCopy = from;
+  signatureCopy = signature;
+  errorCopy = error;
+  if ([fromCopy count])
   {
-    v11 = [(SHCustomCatalogMatcher *)self matchFromMREResults:v8 signature:v9];
+    v11 = [(SHCustomCatalogMatcher *)self matchFromMREResults:fromCopy signature:signatureCopy];
     v12 = [SHMatcherResponse matchWithRecordingIntermission:v11 recordingSignatureOffset:0.0 retrySeconds:0.0 match:0.0];
   }
 
   else
   {
-    if (v10)
+    if (errorCopy)
     {
-      v13 = [SHMatcherResponse errorResponseForSignature:v9 error:v10];
+      v13 = [SHMatcherResponse errorResponseForSignature:signatureCopy error:errorCopy];
     }
 
     else
     {
-      [v9 duration];
+      [signatureCopy duration];
       v15 = v14;
-      v16 = [(SHCustomCatalogMatcher *)self customCatalog];
-      [v16 minimumQuerySignatureDuration];
+      customCatalog = [(SHCustomCatalogMatcher *)self customCatalog];
+      [customCatalog minimumQuerySignatureDuration];
       v18 = v15 + v17;
 
-      v19 = [(SHCustomCatalogMatcher *)self customCatalog];
-      [v19 maximumQuerySignatureDuration];
+      customCatalog2 = [(SHCustomCatalogMatcher *)self customCatalog];
+      [customCatalog2 maximumQuerySignatureDuration];
       v21 = v20;
 
       if (v18 >= v21)
@@ -195,10 +195,10 @@
         v18 = v21;
       }
 
-      [v9 duration];
+      [signatureCopy duration];
       v23 = v22;
-      v24 = [(SHCustomCatalogMatcher *)self customCatalog];
-      [v24 maximumQuerySignatureDuration];
+      customCatalog3 = [(SHCustomCatalogMatcher *)self customCatalog];
+      [customCatalog3 maximumQuerySignatureDuration];
       if (v23 >= v25)
       {
         v26 = 0.0;
@@ -209,7 +209,7 @@
         v26 = v18;
       }
 
-      v13 = [SHMatcherResponse noMatchWithRecordingIntermission:v9 recordingSignatureOffset:0.0 retrySeconds:0.0 signature:v26];
+      v13 = [SHMatcherResponse noMatchWithRecordingIntermission:signatureCopy recordingSignatureOffset:0.0 retrySeconds:0.0 signature:v26];
     }
 
     v12 = v13;
@@ -218,18 +218,18 @@
   return v12;
 }
 
-- (id)matchFromMREResults:(id)a3 signature:(id)a4
+- (id)matchFromMREResults:(id)results signature:(id)signature
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v32 = a4;
-  v31 = [MEMORY[0x277CBEB18] array];
-  v34 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
+  resultsCopy = results;
+  signatureCopy = signature;
+  array = [MEMORY[0x277CBEB18] array];
+  v34 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = resultsCopy;
   v7 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
@@ -245,30 +245,30 @@
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        v12 = [(SHCustomCatalogMatcher *)self customCatalog];
-        v13 = [v12 customCatalogContainer];
-        v14 = [v13 matchReferenceForTrackID:{objc_msgSend(v11, "trackID")}];
+        customCatalog = [(SHCustomCatalogMatcher *)self customCatalog];
+        customCatalogContainer = [customCatalog customCatalogContainer];
+        v14 = [customCatalogContainer matchReferenceForTrackID:{objc_msgSend(v11, "trackID")}];
 
         if (v14)
         {
-          v15 = [v14 signature];
-          v16 = [v15 _ID];
-          v17 = [v16 UUIDString];
-          v18 = [v34 containsObject:v17];
+          signature = [v14 signature];
+          v16 = [signature _ID];
+          uUIDString = [v16 UUIDString];
+          v18 = [v34 containsObject:uUIDString];
 
           if ((v18 & 1) == 0)
           {
-            v19 = [v14 signature];
-            v20 = [v19 _ID];
-            v21 = [v20 UUIDString];
-            [v34 addObject:v21];
+            signature2 = [v14 signature];
+            v20 = [signature2 _ID];
+            uUIDString2 = [v20 UUIDString];
+            [v34 addObject:uUIDString2];
 
             v22 = [SHMREMatch alloc];
-            v23 = [v14 mediaItems];
-            v24 = [(SHMREMatch *)v22 initWithResult:v11 mediaItems:v23 signatureAlignments:MEMORY[0x277CBEBF8] querySignature:v32];
+            mediaItems = [v14 mediaItems];
+            v24 = [(SHMREMatch *)v22 initWithResult:v11 mediaItems:mediaItems signatureAlignments:MEMORY[0x277CBEBF8] querySignature:signatureCopy];
 
-            v25 = [(SHMREMatch *)v24 toMatchedMediaItems];
-            [v31 addObjectsFromArray:v25];
+            toMatchedMediaItems = [(SHMREMatch *)v24 toMatchedMediaItems];
+            [array addObjectsFromArray:toMatchedMediaItems];
           }
         }
       }
@@ -280,8 +280,8 @@
   }
 
   v26 = [SHMatch alloc];
-  v27 = [v31 copy];
-  v28 = [(SHMatch *)v26 initWithMediaItems:v27 forSignature:v32];
+  v27 = [array copy];
+  v28 = [(SHMatch *)v26 initWithMediaItems:v27 forSignature:signatureCopy];
 
   v29 = *MEMORY[0x277D85DE8];
 

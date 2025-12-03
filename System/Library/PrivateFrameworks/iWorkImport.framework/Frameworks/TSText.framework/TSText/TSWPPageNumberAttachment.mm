@@ -1,14 +1,14 @@
 @interface TSWPPageNumberAttachment
-- (void)saveToArchiver:(id)a3;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPPageNumberAttachment
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DD0A2C, off_2812DC408[134]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DD0A2C, off_2812DC408[134]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -26,7 +26,7 @@
 
   v9.receiver = self;
   v9.super_class = TSWPPageNumberAttachment;
-  [(TSWPNumberAttachment *)&v9 saveToArchiver:v4];
+  [(TSWPNumberAttachment *)&v9 saveToArchiver:archiverCopy];
   *(v7 + 16) |= 2u;
   *(v7 + 32) = 0;
 }

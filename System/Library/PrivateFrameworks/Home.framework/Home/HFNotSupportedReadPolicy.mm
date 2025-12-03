@@ -1,22 +1,22 @@
 @interface HFNotSupportedReadPolicy
-- (BOOL)_requiresNotificationsForCharacteristic:(id)a3;
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4;
+- (BOOL)_requiresNotificationsForCharacteristic:(id)characteristic;
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits;
 @end
 
 @implementation HFNotSupportedReadPolicy
 
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits
 {
-  v6 = a3;
+  characteristicCopy = characteristic;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v6 properties];
-  if ([v8 containsObject:*MEMORY[0x277CCF738]])
+  properties = [characteristicCopy properties];
+  if ([properties containsObject:*MEMORY[0x277CCF738]])
   {
   }
 
   else
   {
-    v9 = [(HFNotSupportedReadPolicy *)self _requiresNotificationsForCharacteristic:v6];
+    v9 = [(HFNotSupportedReadPolicy *)self _requiresNotificationsForCharacteristic:characteristicCopy];
 
     if (v9)
     {
@@ -28,12 +28,12 @@
 
   v10 = 1;
 LABEL_6:
-  v11 = [v6 properties];
-  if ([v11 containsObject:*MEMORY[0x277CCF730]])
+  properties2 = [characteristicCopy properties];
+  if ([properties2 containsObject:*MEMORY[0x277CCF730]])
   {
-    v12 = [v6 hasAuthorizationData];
+    hasAuthorizationData = [characteristicCopy hasAuthorizationData];
 
-    if ((v12 & 1) == 0)
+    if ((hasAuthorizationData & 1) == 0)
     {
       [v7 addObject:@"InvalidOrMissingAuthorizationData"];
       v10 = 0;
@@ -44,31 +44,31 @@ LABEL_6:
   {
   }
 
-  v13 = [v6 service];
-  v14 = [v13 accessory];
-  v15 = [v14 isAdditionalSetupRequired];
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  isAdditionalSetupRequired = [accessory isAdditionalSetupRequired];
 
-  if (v15)
+  if (isAdditionalSetupRequired)
   {
     [v7 addObject:@"AdditionalSetupRequired"];
     v10 = 0;
   }
 
-  if (a4)
+  if (traits)
   {
-    *a4 = [v7 copy];
+    *traits = [v7 copy];
   }
 
   return v10;
 }
 
-- (BOOL)_requiresNotificationsForCharacteristic:(id)a3
+- (BOOL)_requiresNotificationsForCharacteristic:(id)characteristic
 {
   v18[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [v4 serviceType];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CD0DD0]];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  serviceType = [service serviceType];
+  v6 = [serviceType isEqualToString:*MEMORY[0x277CD0DD0]];
 
   if (v6)
   {
@@ -85,8 +85,8 @@ LABEL_6:
   v18[4] = *MEMORY[0x277CCFAD0];
   v18[5] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:6];
-  v11 = [v3 characteristicType];
-  v12 = [v10 containsObject:v11];
+  characteristicType = [characteristicCopy characteristicType];
+  v12 = [v10 containsObject:characteristicType];
 
   if (v12)
   {
@@ -97,8 +97,8 @@ LABEL_3:
   else
   {
     v14 = *MEMORY[0x277CCF8E8];
-    v15 = [v3 characteristicType];
-    LOBYTE(v14) = [v14 isEqualToString:v15];
+    characteristicType2 = [characteristicCopy characteristicType];
+    LOBYTE(v14) = [v14 isEqualToString:characteristicType2];
 
     v13 = v14 ^ 1;
   }

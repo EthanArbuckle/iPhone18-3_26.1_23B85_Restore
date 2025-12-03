@@ -1,42 +1,42 @@
 @interface CKSnapshotCacheKey
-+ (id)keyWithIdentifier:(id)a3 interfaceStyle:(int64_t)a4 bounds:(CGRect)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)keyWithIdentifier:(id)identifier interfaceStyle:(int64_t)style bounds:(CGRect)bounds;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)bounds;
-- (CKSnapshotCacheKey)initWithIdentifier:(id)a3 interfaceStyle:(int64_t)a4 bounds:(CGRect)a5;
+- (CKSnapshotCacheKey)initWithIdentifier:(id)identifier interfaceStyle:(int64_t)style bounds:(CGRect)bounds;
 - (CKSnapshotCacheKey)keyWithOppositeInterfaceStyle;
 - (NSString)stringValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKSnapshotCacheKey
 
-+ (id)keyWithIdentifier:(id)a3 interfaceStyle:(int64_t)a4 bounds:(CGRect)a5
++ (id)keyWithIdentifier:(id)identifier interfaceStyle:(int64_t)style bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
-  v11 = [[CKSnapshotCacheKey alloc] initWithIdentifier:v10 interfaceStyle:a4 bounds:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifierCopy = identifier;
+  height = [[CKSnapshotCacheKey alloc] initWithIdentifier:identifierCopy interfaceStyle:style bounds:x, y, width, height];
 
-  return v11;
+  return height;
 }
 
-- (CKSnapshotCacheKey)initWithIdentifier:(id)a3 interfaceStyle:(int64_t)a4 bounds:(CGRect)a5
+- (CKSnapshotCacheKey)initWithIdentifier:(id)identifier interfaceStyle:(int64_t)style bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CKSnapshotCacheKey;
   v13 = [(CKSnapshotCacheKey *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    v14->_interfaceStyle = a4;
+    objc_storeStrong(&v13->_identifier, identifier);
+    v14->_interfaceStyle = style;
     v14->_bounds.origin.x = x;
     v14->_bounds.origin.y = y;
     v14->_bounds.size.width = width;
@@ -64,28 +64,28 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(CKSnapshotCacheKey *)self identifier];
-  v5 = [(CKSnapshotCacheKey *)self interfaceStyle];
+  identifier = [(CKSnapshotCacheKey *)self identifier];
+  interfaceStyle = [(CKSnapshotCacheKey *)self interfaceStyle];
   [(CKSnapshotCacheKey *)self bounds];
-  v6 = [CKSnapshotCacheKey keyWithIdentifier:v4 interfaceStyle:v5 bounds:?];
+  v6 = [CKSnapshotCacheKey keyWithIdentifier:identifier interfaceStyle:interfaceStyle bounds:?];
 
   return v6;
 }
 
 - (NSString)stringValue
 {
-  v3 = [(CKSnapshotCacheKey *)self interfaceStyle];
+  interfaceStyle = [(CKSnapshotCacheKey *)self interfaceStyle];
   v4 = @"light";
-  if (v3 == 2)
+  if (interfaceStyle == 2)
   {
     v4 = @"dark";
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = v4;
-  v7 = [(CKSnapshotCacheKey *)self identifier];
+  identifier = [(CKSnapshotCacheKey *)self identifier];
   [(CKSnapshotCacheKey *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -103,15 +103,15 @@
   v17.width = round(v9 * v12) / v12;
   v17.height = round(v11 * v12) / v12;
   v13 = NSStringFromCGSize(v17);
-  v14 = [v5 stringWithFormat:@"%@-%@-<%@>", v7, v6, v13];
+  v14 = [v5 stringWithFormat:@"%@-%@-<%@>", identifier, v6, v13];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -121,9 +121,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CKSnapshotCacheKey *)self stringValue];
-      v6 = [(CKSnapshotCacheKey *)v4 stringValue];
-      v7 = [v5 isEqualToString:v6];
+      stringValue = [(CKSnapshotCacheKey *)self stringValue];
+      stringValue2 = [(CKSnapshotCacheKey *)equalCopy stringValue];
+      v7 = [stringValue isEqualToString:stringValue2];
     }
 
     else

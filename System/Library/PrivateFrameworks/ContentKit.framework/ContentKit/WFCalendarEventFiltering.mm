@@ -1,14 +1,14 @@
 @interface WFCalendarEventFiltering
-+ (id)itemsToQueryForPredicate:(id)a3;
++ (id)itemsToQueryForPredicate:(id)predicate;
 @end
 
 @implementation WFCalendarEventFiltering
 
-+ (id)itemsToQueryForPredicate:(id)a3
++ (id)itemsToQueryForPredicate:(id)predicate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = WFRequiredContentComparisonPredicatesFromPredicate(v3);
+  predicateCopy = predicate;
+  v4 = WFRequiredContentComparisonPredicatesFromPredicate(predicateCopy);
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"property.propertyClasses CONTAINS %@ AND value != nil", objc_opt_class()];
   v6 = [v4 filteredArrayUsingPredicate:v5];
 
@@ -36,7 +36,7 @@
       *buf = 136315394;
       v27 = "+[WFCalendarEventFiltering itemsToQueryForPredicate:]";
       v28 = 2112;
-      v29 = v3;
+      v29 = predicateCopy;
       _os_log_impl(&dword_21E1BD000, v12, OS_LOG_TYPE_ERROR, "%s Failed to parse calendar predicate %@", buf, 0x16u);
     }
 
@@ -58,7 +58,7 @@
     v24[1] = 3221225472;
     v24[2] = __53__WFCalendarEventFiltering_itemsToQueryForPredicate___block_invoke_3;
     v24[3] = &unk_278348658;
-    v25 = v3;
+    v25 = predicateCopy;
     v18 = [v17 if_objectsPassingTest:v24];
 
     v19 = [v16 predicateForEventsWithStartDate:v8 endDate:v10 calendars:v18];

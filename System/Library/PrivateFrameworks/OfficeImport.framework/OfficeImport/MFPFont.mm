@@ -1,12 +1,12 @@
 @interface MFPFont
-- (__CTFont)createCTFontWithGraphics:(id)a3;
+- (__CTFont)createCTFontWithGraphics:(id)graphics;
 @end
 
 @implementation MFPFont
 
-- (__CTFont)createCTFontWithGraphics:(id)a3
+- (__CTFont)createCTFontWithGraphics:(id)graphics
 {
-  v4 = a3;
+  graphicsCopy = graphics;
   v5 = self->mName;
   if ([(NSString *)v5 isEqualToString:@"ZAPFDINGBATS"])
   {
@@ -14,7 +14,7 @@
     v5 = @"ZAPF DINGBATS";
   }
 
-  v6 = [v4 fontNameForUppercaseFontName:v5];
+  v6 = [graphicsCopy fontNameForUppercaseFontName:v5];
   if (![(NSString *)v6 length])
   {
 

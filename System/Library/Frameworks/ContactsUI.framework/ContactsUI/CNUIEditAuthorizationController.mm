@@ -5,9 +5,9 @@
 - (void)dealloc;
 - (void)didAuthorize;
 - (void)didNotAuthorize;
-- (void)lockoutRestrictionsPINControllerDidFinish:(id)a3;
+- (void)lockoutRestrictionsPINControllerDidFinish:(id)finish;
 - (void)presentAuthorizationUI;
-- (void)userDidEnterPasswordCorrectly:(BOOL)a3;
+- (void)userDidEnterPasswordCorrectly:(BOOL)correctly;
 @end
 
 @implementation CNUIEditAuthorizationController
@@ -35,29 +35,29 @@
 
 - (void)didNotAuthorize
 {
-  v3 = [(CNUIEditAuthorizationController *)self delegate];
-  [v3 editAuthorizationController:self authorizationDidFinishWithResult:1];
+  delegate = [(CNUIEditAuthorizationController *)self delegate];
+  [delegate editAuthorizationController:self authorizationDidFinishWithResult:1];
 }
 
 - (void)didAuthorize
 {
-  v3 = [(CNUIEditAuthorizationController *)self delegate];
-  [v3 editAuthorizationController:self authorizationDidFinishWithResult:2];
+  delegate = [(CNUIEditAuthorizationController *)self delegate];
+  [delegate editAuthorizationController:self authorizationDidFinishWithResult:2];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNUIEditAuthorizationController;
   [(CNUIEditAuthorizationController *)&v4 dealloc];
 }
 
-- (void)userDidEnterPasswordCorrectly:(BOOL)a3
+- (void)userDidEnterPasswordCorrectly:(BOOL)correctly
 {
-  if (a3)
+  if (correctly)
   {
     [(CNUIEditAuthorizationController *)self didAuthorize];
   }
@@ -68,10 +68,10 @@
   }
 }
 
-- (void)lockoutRestrictionsPINControllerDidFinish:(id)a3
+- (void)lockoutRestrictionsPINControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
+  finishCopy = finish;
+  userInfo = [finishCopy userInfo];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -88,16 +88,16 @@
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v8 = [v5 objectForKeyedSubscript:*v6];
+    v8 = [userInfo objectForKeyedSubscript:*v6];
 
     -[CNUIEditAuthorizationController userDidEnterPasswordCorrectly:](self, "userDidEnterPasswordCorrectly:", [v8 BOOLValue]);
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSTNotificationKeyPINSuccess(void)"];
-    [v9 handleFailureInFunction:v10 file:@"CNUIEditAuthorizationController.m" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"CNUIEditAuthorizationController.m" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -124,7 +124,7 @@
   v4 = v3;
   _Block_object_dispose(&v16, 8);
   [v3 activateRemotePINUI];
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -147,14 +147,14 @@
   _Block_object_dispose(&v16, 8);
   if (v6)
   {
-    [v5 addObserver:self selector:sel_lockoutRestrictionsPINControllerDidFinish_ name:*v6 object:0];
+    [defaultCenter addObserver:self selector:sel_lockoutRestrictionsPINControllerDidFinish_ name:*v6 object:0];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSTRestrictionsPINControllerDidFinishNotification(void)"];
-    [v9 handleFailureInFunction:v10 file:@"CNUIEditAuthorizationController.m" lineNumber:22 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v10 file:@"CNUIEditAuthorizationController.m" lineNumber:22 description:{@"%s", dlerror()}];
 
     __break(1u);
   }

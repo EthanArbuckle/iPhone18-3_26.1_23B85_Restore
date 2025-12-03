@@ -1,15 +1,15 @@
 @interface DVTProcessorTraceRecorderConfiguration
 - (DVTProcessorTraceRecorderConfiguration)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DVTProcessorTraceRecorderConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ProcessorTraceRecorderConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ProcessorTraceRecorderConfiguration.encode(with:)(coderCopy);
 }
 
 - (DVTProcessorTraceRecorderConfiguration)init

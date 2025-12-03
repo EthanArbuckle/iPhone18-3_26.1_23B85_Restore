@@ -1,7 +1,7 @@
 @interface PTPrecomputeRandom
 + (PTUnitDisk)computeUnitDiskPoints:numberOfPatternCircles:;
-+ (id)computeGaussian:(id)a3 sideLength:(int)a4;
-+ (id)computeRandomUChars:(id)a3 rayCount:(int)a4;
++ (id)computeGaussian:(id)gaussian sideLength:(int)length;
++ (id)computeRandomUChars:(id)chars rayCount:(int)count;
 @end
 
 @implementation PTPrecomputeRandom
@@ -70,8 +70,8 @@
     while (!_ZF);
   }
 
-  v22 = [v3 device];
-  v23 = [v22 newBufferWithBytes:v27 length:4 * v5 options:0];
+  device = [v3 device];
+  v23 = [device newBufferWithBytes:v27 length:4 * v5 options:0];
 
   _D0 = 0.5 / v2;
   __asm { FCVT            H0, D0 }
@@ -83,10 +83,10 @@
   return result;
 }
 
-+ (id)computeRandomUChars:(id)a3 rayCount:(int)a4
++ (id)computeRandomUChars:(id)chars rayCount:(int)count
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  charsCopy = chars;
   v6 = 0;
   v7 = xmmword_2244C5EC0;
   v8 = xmmword_2244C5ED0;
@@ -98,7 +98,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = vdupq_n_s32(a4);
+  v11 = vdupq_n_s32(count);
   v26 = 0u;
   v27 = 0u;
   v12.i64[0] = 0x1000000010;
@@ -134,20 +134,20 @@
   }
 
   while (v19-- > 1);
-  v23 = [v5 device];
-  v24 = [v23 newBufferWithBytes:&v26 length:128 options:0];
+  device = [charsCopy device];
+  v24 = [device newBufferWithBytes:&v26 length:128 options:0];
 
   return v24;
 }
 
-+ (id)computeGaussian:(id)a3 sideLength:(int)a4
++ (id)computeGaussian:(id)gaussian sideLength:(int)length
 {
-  v5 = a3;
-  LODWORD(v6) = a4 * a4;
-  v7 = [MEMORY[0x277CBEB28] dataWithLength:(2 * a4 * a4)];
-  v8 = [v7 bytes];
+  gaussianCopy = gaussian;
+  LODWORD(v6) = length * length;
+  v7 = [MEMORY[0x277CBEB28] dataWithLength:(2 * length * length)];
+  bytes = [v7 bytes];
   v9 = [[PTRandom alloc] initWithSeed:2354123123];
-  if (a4)
+  if (length)
   {
     if (v6 <= 1)
     {
@@ -159,7 +159,7 @@
       v6 = v6;
     }
 
-    v10 = v8;
+    v10 = bytes;
     do
     {
       [(PTRandom *)v9 nextGauss];
@@ -172,16 +172,16 @@
     while (v6);
   }
 
-  v16 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:a4 height:a4 mipmapped:0];
+  v16 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:length height:length mipmapped:0];
   [v16 setUsage:1];
-  v17 = [v5 device];
-  v18 = [v17 newTextureWithDescriptor:v16];
+  device = [gaussianCopy device];
+  v18 = [device newTextureWithDescriptor:v16];
 
   memset(v20, 0, 24);
-  v20[3] = a4;
-  v20[4] = a4;
+  v20[3] = length;
+  v20[4] = length;
   v20[5] = 1;
-  [v18 replaceRegion:v20 mipmapLevel:0 withBytes:v8 bytesPerRow:2 * a4];
+  [v18 replaceRegion:v20 mipmapLevel:0 withBytes:bytes bytesPerRow:2 * length];
 
   return v18;
 }

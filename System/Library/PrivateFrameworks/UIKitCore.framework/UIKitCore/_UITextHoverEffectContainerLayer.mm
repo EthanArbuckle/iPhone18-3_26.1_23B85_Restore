@@ -1,7 +1,7 @@
 @interface _UITextHoverEffectContainerLayer
-+ (id)_hoverEffectRectsInTextContainer:(void *)a3 usingRangeProviderBlock:;
-+ (id)hoverEffectRectsForCharacterRanges:(id)a3 inTextContainer:(id)a4;
-+ (id)hoverEffectRectsForRanges:(id)a3 inTextContainer:(id)a4;
++ (id)_hoverEffectRectsInTextContainer:(void *)container usingRangeProviderBlock:;
++ (id)hoverEffectRectsForCharacterRanges:(id)ranges inTextContainer:(id)container;
++ (id)hoverEffectRectsForRanges:(id)ranges inTextContainer:(id)container;
 - (_UITextHoverEffectContainerLayer)init;
 @end
 
@@ -14,24 +14,24 @@
   return [(_UITextHoverEffectContainerLayer *)&v3 init];
 }
 
-+ (id)hoverEffectRectsForRanges:(id)a3 inTextContainer:(id)a4
++ (id)hoverEffectRectsForRanges:(id)ranges inTextContainer:(id)container
 {
-  v6 = a3;
+  rangesCopy = ranges;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __78___UITextHoverEffectContainerLayer_hoverEffectRectsForRanges_inTextContainer___block_invoke;
   v10[3] = &unk_1E711AF68;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(_UITextHoverEffectContainerLayer *)a1 _hoverEffectRectsInTextContainer:a4 usingRangeProviderBlock:v10];
+  v11 = rangesCopy;
+  v7 = rangesCopy;
+  v8 = [(_UITextHoverEffectContainerLayer *)self _hoverEffectRectsInTextContainer:container usingRangeProviderBlock:v10];
 
   return v8;
 }
 
-+ (id)_hoverEffectRectsInTextContainer:(void *)a3 usingRangeProviderBlock:
++ (id)_hoverEffectRectsInTextContainer:(void *)container usingRangeProviderBlock:
 {
   v4 = a2;
-  v5 = a3;
+  containerCopy = container;
   objc_opt_self();
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13[0] = MEMORY[0x1E69E9820];
@@ -41,9 +41,9 @@
   v14 = v4;
   v7 = v6;
   v15 = v7;
-  v8 = v5[2];
+  v8 = containerCopy[2];
   v9 = v4;
-  v8(v5, v13);
+  v8(containerCopy, v13);
 
   v10 = v15;
   v11 = v7;
@@ -51,25 +51,25 @@
   return v7;
 }
 
-+ (id)hoverEffectRectsForCharacterRanges:(id)a3 inTextContainer:(id)a4
++ (id)hoverEffectRectsForCharacterRanges:(id)ranges inTextContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 textLayoutManager];
-  v9 = [v8 textContentManager];
+  rangesCopy = ranges;
+  containerCopy = container;
+  textLayoutManager = [containerCopy textLayoutManager];
+  textContentManager = [textLayoutManager textContentManager];
 
-  v10 = [v9 documentRange];
+  documentRange = [textContentManager documentRange];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87___UITextHoverEffectContainerLayer_hoverEffectRectsForCharacterRanges_inTextContainer___block_invoke;
   v16[3] = &unk_1E711AFB8;
-  v17 = v6;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v6;
-  v14 = [(_UITextHoverEffectContainerLayer *)a1 _hoverEffectRectsInTextContainer:v7 usingRangeProviderBlock:v16];
+  v17 = rangesCopy;
+  v18 = textContentManager;
+  v19 = documentRange;
+  v11 = documentRange;
+  v12 = textContentManager;
+  v13 = rangesCopy;
+  v14 = [(_UITextHoverEffectContainerLayer *)self _hoverEffectRectsInTextContainer:containerCopy usingRangeProviderBlock:v16];
 
   return v14;
 }

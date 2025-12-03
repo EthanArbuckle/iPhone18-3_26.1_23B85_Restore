@@ -1,22 +1,22 @@
 @interface WLKChannelUtilities
-+ (BOOL)isItunesBundleID:(id)a3;
++ (BOOL)isItunesBundleID:(id)d;
 + (id)_validiTunesBundles;
 + (id)sharedInstance;
 + (id)sharedInstanceFiltered;
-- (BOOL)isItunesOrFirstPartyBundleID:(id)a3;
+- (BOOL)isItunesOrFirstPartyBundleID:(id)d;
 - (BOOL)loaded;
 - (NSArray)orderedChannels;
 - (NSDictionary)channelsByID;
 - (WLKChannelUtilities)init;
 - (id)_configuration;
-- (id)channelForBundleID:(id)a3;
-- (id)channelForID:(id)a3;
-- (id)channelIDForBundleID:(id)a3;
-- (id)initFiltered:(BOOL)a3;
-- (void)_loadConfigIfNeededWithCompletion:(id)a3;
+- (id)channelForBundleID:(id)d;
+- (id)channelForID:(id)d;
+- (id)channelIDForBundleID:(id)d;
+- (id)initFiltered:(BOOL)filtered;
+- (void)_loadConfigIfNeededWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidateCache;
-- (void)loadIfNeededWithCompletion:(id)a3;
+- (void)loadIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation WLKChannelUtilities
@@ -59,7 +59,7 @@ uint64_t __37__WLKChannelUtilities_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)initFiltered:(BOOL)a3
+- (id)initFiltered:(BOOL)filtered
 {
   v11.receiver = self;
   v11.super_class = WLKChannelUtilities;
@@ -67,7 +67,7 @@ uint64_t __37__WLKChannelUtilities_sharedInstance__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_filtered = a3;
+    v4->_filtered = filtered;
     *&v4->_shouldRefresh = 0;
     inFlightcompletionList = v4->_inFlightcompletionList;
     v4->_inFlightcompletionList = 0;
@@ -120,16 +120,16 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)loadIfNeededWithCompletion:(id)a3
+- (void)loadIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [WLKChannelUtilities loadIfNeededWithCompletion:];
   }
 
-  v5 = v4;
-  [(WLKChannelUtilities *)self _loadConfigIfNeededWithCompletion:v4];
+  v5 = completionCopy;
+  [(WLKChannelUtilities *)self _loadConfigIfNeededWithCompletion:completionCopy];
 }
 
 - (void)dealloc
@@ -155,20 +155,20 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
 
 - (NSDictionary)channelsByID
 {
-  v2 = [(WLKChannelUtilities *)self _configuration];
-  v3 = [v2 channels];
+  _configuration = [(WLKChannelUtilities *)self _configuration];
+  channels = [_configuration channels];
 
-  return v3;
+  return channels;
 }
 
-- (id)channelForID:(id)a3
+- (id)channelForID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(WLKChannelUtilities *)self _configuration];
-    v6 = [v5 channels];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    dCopy = d;
+    _configuration = [(WLKChannelUtilities *)self _configuration];
+    channels = [_configuration channels];
+    v7 = [channels objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -179,14 +179,14 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)channelForBundleID:(id)a3
+- (id)channelForBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [objc_opt_class() _validiTunesBundles];
-    v6 = [v5 containsObject:v4];
+    _validiTunesBundles = [objc_opt_class() _validiTunesBundles];
+    v6 = [_validiTunesBundles containsObject:dCopy];
 
     if (v6)
     {
@@ -199,10 +199,10 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [(WLKChannelUtilities *)self _configuration];
-      v9 = [v8 orderedChannels];
+      _configuration = [(WLKChannelUtilities *)self _configuration];
+      orderedChannels = [_configuration orderedChannels];
 
-      v7 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [orderedChannels countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         v10 = *v18;
@@ -212,12 +212,12 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(orderedChannels);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
-            v13 = [v12 appBundleIDs];
-            v14 = [v13 containsObject:v4];
+            appBundleIDs = [v12 appBundleIDs];
+            v14 = [appBundleIDs containsObject:dCopy];
 
             if (v14)
             {
@@ -226,7 +226,7 @@ void __36__WLKChannelUtilities_initFiltered___block_invoke(uint64_t a1)
             }
           }
 
-          v7 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v7 = [orderedChannels countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v7)
           {
             continue;
@@ -250,27 +250,27 @@ LABEL_15:
   return v7;
 }
 
-- (id)channelIDForBundleID:(id)a3
+- (id)channelIDForBundleID:(id)d
 {
-  v3 = [(WLKChannelUtilities *)self channelForBundleID:a3];
-  v4 = [v3 channelID];
+  v3 = [(WLKChannelUtilities *)self channelForBundleID:d];
+  channelID = [v3 channelID];
 
-  return v4;
+  return channelID;
 }
 
 - (NSArray)orderedChannels
 {
-  v2 = [(WLKChannelUtilities *)self _configuration];
-  v3 = [v2 orderedChannels];
+  _configuration = [(WLKChannelUtilities *)self _configuration];
+  orderedChannels = [_configuration orderedChannels];
 
-  return v3;
+  return orderedChannels;
 }
 
-+ (BOOL)isItunesBundleID:(id)a3
++ (BOOL)isItunesBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 _validiTunesBundles];
-  v6 = [v5 containsObject:v4];
+  dCopy = d;
+  _validiTunesBundles = [self _validiTunesBundles];
+  v6 = [_validiTunesBundles containsObject:dCopy];
 
   return v6;
 }
@@ -293,21 +293,21 @@ void __42__WLKChannelUtilities__validiTunesBundles__block_invoke()
   _validiTunesBundles___validItunesIDs = &unk_288222F48;
 }
 
-- (BOOL)isItunesOrFirstPartyBundleID:(id)a3
+- (BOOL)isItunesOrFirstPartyBundleID:(id)d
 {
-  v4 = a3;
-  if ([objc_opt_class() isItunesBundleID:v4])
+  dCopy = d;
+  if ([objc_opt_class() isItunesBundleID:dCopy])
   {
-    v5 = 1;
+    isFirstParty = 1;
   }
 
   else
   {
-    v6 = [(WLKChannelUtilities *)self channelForBundleID:v4];
-    v5 = [v6 isFirstParty];
+    v6 = [(WLKChannelUtilities *)self channelForBundleID:dCopy];
+    isFirstParty = [v6 isFirstParty];
   }
 
-  return v5;
+  return isFirstParty;
 }
 
 - (id)_configuration
@@ -329,15 +329,15 @@ void __42__WLKChannelUtilities__validiTunesBundles__block_invoke()
   return v6;
 }
 
-- (void)_loadConfigIfNeededWithCompletion:(id)a3
+- (void)_loadConfigIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [WLKChannelUtilities _loadConfigIfNeededWithCompletion:];
   }
 
-  v5 = v4;
+  v5 = completionCopy;
   os_unfair_lock_lock(&self->_lock);
   if (self->_shouldRefresh || ![(WLKChannelsResponse *)self->_cachedResponse isValidForFiltered:self->_filtered])
   {
@@ -387,7 +387,7 @@ void __42__WLKChannelUtilities__validiTunesBundles__block_invoke()
       v20 = &unk_279E60238;
       objc_copyWeak(&v22, buf);
       objc_copyWeak(&v23, &location);
-      v21 = self;
+      selfCopy = self;
       [(WLKChannelsRequestOperation *)v15 setCompletionBlock:&v17];
       [v16 addOperation:{v15, v17, v18, v19, v20}];
       objc_destroyWeak(&v23);

@@ -1,30 +1,30 @@
 @interface APSigningClientValidator
-+ (BOOL)_validateAllowListingForPoolCreation:(id)a3;
-+ (BOOL)hasEntitlement:(id)a3;
++ (BOOL)_validateAllowListingForPoolCreation:(id)creation;
++ (BOOL)hasEntitlement:(id)entitlement;
 + (BOOL)isAllowedClient;
 + (id)mockXPCObject;
-+ (void)setMockXPCObject:(id)a3;
++ (void)setMockXPCObject:(id)object;
 @end
 
 @implementation APSigningClientValidator
 
 + (id)mockXPCObject
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = qword_1EBC37088;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-+ (void)setMockXPCObject:(id)a3
++ (void)setMockXPCObject:(id)object
 {
-  v4 = a3;
-  obj = a1;
+  objectCopy = object;
+  obj = self;
   objc_sync_enter(obj);
   v5 = qword_1EBC37088;
-  qword_1EBC37088 = v4;
+  qword_1EBC37088 = objectCopy;
 
   objc_sync_exit(obj);
 }
@@ -59,10 +59,10 @@
   return v11;
 }
 
-+ (BOOL)hasEntitlement:(id)a3
++ (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = a3;
-  v4 = v3;
+  entitlementCopy = entitlement;
+  v4 = entitlementCopy;
   objc_msgSend_UTF8String(v4, v5, v6, v7);
   v11 = xpc_copy_entitlement_for_self();
   if (v11)
@@ -73,7 +73,7 @@
   v12 = objc_msgSend_mockXPCObject(APSigningClientValidator, v8, v9, v10);
   if (v12)
   {
-    v13 = v3;
+    v13 = entitlementCopy;
     v17 = objc_msgSend_UTF8String(v13, v14, v15, v16);
     v11 = xpc_dictionary_get_value(v12, v17);
 
@@ -84,15 +84,15 @@ LABEL_4:
   return v12;
 }
 
-+ (BOOL)_validateAllowListingForPoolCreation:(id)a3
++ (BOOL)_validateAllowListingForPoolCreation:(id)creation
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  creationCopy = creation;
   v7 = objc_msgSend_sha256hash(@"com.apple.ap.promotedcontentd", v4, v5, v6);
   v18[0] = v7;
   v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v8, v18, 1);
 
-  v13 = objc_msgSend_sha256hash(v3, v10, v11, v12);
+  v13 = objc_msgSend_sha256hash(creationCopy, v10, v11, v12);
 
   LOBYTE(v7) = objc_msgSend_containsObject_(v9, v14, v13, v15);
   v16 = *MEMORY[0x1E69E9840];

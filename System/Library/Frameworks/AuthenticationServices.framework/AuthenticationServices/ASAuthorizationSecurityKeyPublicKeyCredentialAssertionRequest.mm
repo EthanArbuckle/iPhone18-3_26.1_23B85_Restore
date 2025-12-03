@@ -1,44 +1,44 @@
 @interface ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest
 - (ASCPublicKeyCredentialAssertionOptions)coreCredentialAssertionOptions;
 - (ASPublicKeyCredentialClientData)clientData;
-- (BOOL)supportsStyle:(int64_t)a3;
+- (BOOL)supportsStyle:(int64_t)style;
 - (NSArray)allowedCredentials;
 - (NSData)challenge;
 - (NSString)appID;
 - (NSString)relyingPartyIdentifier;
 - (NSString)userVerificationPreference;
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 clientData:(id)a6;
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge clientData:(id)data;
 - (void)setAllowedCredentials:(NSArray *)allowedCredentials;
-- (void)setAppID:(id)a3;
-- (void)setChallenge:(id)a3;
-- (void)setClientData:(id)a3;
-- (void)setRelyingPartyIdentifier:(id)a3;
-- (void)setUserVerificationPreference:(id)a3;
+- (void)setAppID:(id)d;
+- (void)setChallenge:(id)challenge;
+- (void)setClientData:(id)data;
+- (void)setRelyingPartyIdentifier:(id)identifier;
+- (void)setUserVerificationPreference:(id)preference;
 @end
 
 @implementation ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest
 
-- (id)_initWithProvider:(id)a3 relyingPartyIdentifier:(id)a4 challenge:(id)a5 clientData:(id)a6
+- (id)_initWithProvider:(id)provider relyingPartyIdentifier:(id)identifier challenge:(id)challenge clientData:(id)data
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  dataCopy = data;
   v20.receiver = self;
   v20.super_class = ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest;
-  v13 = [(ASAuthorizationRequest *)&v20 initWithProvider:a3];
+  v13 = [(ASAuthorizationRequest *)&v20 initWithProvider:provider];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     relyingPartyIdentifier = v13->_relyingPartyIdentifier;
     v13->_relyingPartyIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [challengeCopy copy];
     challenge = v13->_challenge;
     v13->_challenge = v16;
 
     objc_storeStrong(&v13->_userVerificationPreference, @"preferred");
     v13->_internalLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v13->_clientData, a6);
+    objc_storeStrong(&v13->_clientData, data);
     v18 = v13;
   }
 
@@ -47,41 +47,41 @@
 
 - (ASCPublicKeyCredentialAssertionOptions)coreCredentialAssertionOptions
 {
-  v3 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self allowedCredentials];
-  v4 = [v3 safari_mapObjectsUsingBlock:&__block_literal_global_18];
+  allowedCredentials = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self allowedCredentials];
+  v4 = [allowedCredentials safari_mapObjectsUsingBlock:&__block_literal_global_18];
 
-  v5 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
+  clientData = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
 
   v6 = objc_alloc(MEMORY[0x1E698DFF0]);
-  v7 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
-  if (v5)
+  relyingPartyIdentifier = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self relyingPartyIdentifier];
+  if (clientData)
   {
-    v8 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
-    v9 = [v8 jsonForOperationType:1];
-    v10 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
-    v11 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
-    v12 = [v11 origin];
-    v13 = [v6 initWithKind:2 relyingPartyIdentifier:v7 clientDataJSON:v9 userVerificationPreference:v10 allowedCredentials:v4 origin:v12];
+    clientData2 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
+    userVerificationPreference2 = [clientData2 jsonForOperationType:1];
+    userVerificationPreference = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
+    clientData3 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self clientData];
+    origin = [clientData3 origin];
+    v13 = [v6 initWithKind:2 relyingPartyIdentifier:relyingPartyIdentifier clientDataJSON:userVerificationPreference2 userVerificationPreference:userVerificationPreference allowedCredentials:v4 origin:origin];
   }
 
   else
   {
-    v8 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self challenge];
-    v9 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
-    v13 = [v6 initWithKind:2 relyingPartyIdentifier:v7 challenge:v8 userVerificationPreference:v9 allowedCredentials:v4];
+    clientData2 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self challenge];
+    userVerificationPreference2 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self userVerificationPreference];
+    v13 = [v6 initWithKind:2 relyingPartyIdentifier:relyingPartyIdentifier challenge:clientData2 userVerificationPreference:userVerificationPreference2 allowedCredentials:v4];
   }
 
-  v14 = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self appID];
-  [v13 setAppIDForSecurityKeys:v14];
+  appID = [(ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest *)self appID];
+  [v13 setAppIDForSecurityKeys:appID];
 
   return v13;
 }
 
-- (BOOL)supportsStyle:(int64_t)a3
+- (BOOL)supportsStyle:(int64_t)style
 {
-  if (a3 < 3)
+  if (style < 3)
   {
-    return 1u >> (a3 & 7);
+    return 1u >> (style & 7);
   }
 
   else
@@ -99,12 +99,12 @@
   return v3;
 }
 
-- (void)setChallenge:(id)a3
+- (void)setChallenge:(id)challenge
 {
-  v4 = a3;
+  challengeCopy = challenge;
   os_unfair_lock_lock(&self->_internalLock);
   challenge = self->_challenge;
-  self->_challenge = v4;
+  self->_challenge = challengeCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -118,12 +118,12 @@
   return v3;
 }
 
-- (void)setRelyingPartyIdentifier:(id)a3
+- (void)setRelyingPartyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_internalLock);
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
-  self->_relyingPartyIdentifier = v4;
+  self->_relyingPartyIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -156,12 +156,12 @@
   return v3;
 }
 
-- (void)setUserVerificationPreference:(id)a3
+- (void)setUserVerificationPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   os_unfair_lock_lock(&self->_internalLock);
   userVerificationPreference = self->_userVerificationPreference;
-  self->_userVerificationPreference = v4;
+  self->_userVerificationPreference = preferenceCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -175,12 +175,12 @@
   return v3;
 }
 
-- (void)setAppID:(id)a3
+- (void)setAppID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_internalLock);
   appID = self->_appID;
-  self->_appID = v4;
+  self->_appID = dCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }
@@ -194,12 +194,12 @@
   return v3;
 }
 
-- (void)setClientData:(id)a3
+- (void)setClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_internalLock);
   clientData = self->_clientData;
-  self->_clientData = v4;
+  self->_clientData = dataCopy;
 
   os_unfair_lock_unlock(&self->_internalLock);
 }

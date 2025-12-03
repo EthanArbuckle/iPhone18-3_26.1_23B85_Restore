@@ -1,28 +1,28 @@
 @interface MTSettingsGroup
-+ (MTSettingsGroup)groupWithTitle:(id)a3 footerText:(id)a4 settings:(id)a5;
-+ (MTSettingsGroup)groupWithTitle:(id)a3 footerText:(id)a4 settingsHandler:(id)a5;
-+ (id)footerAttributedString:(id)a3;
-+ (id)footerAttributedString:(id)a3 additionalAttributeName:(id)a4 additionalAttributeValue:(id)a5 additionalAttributeRange:(_NSRange)a6;
++ (MTSettingsGroup)groupWithTitle:(id)title footerText:(id)text settings:(id)settings;
++ (MTSettingsGroup)groupWithTitle:(id)title footerText:(id)text settingsHandler:(id)handler;
++ (id)footerAttributedString:(id)string;
++ (id)footerAttributedString:(id)string additionalAttributeName:(id)name additionalAttributeValue:(id)value additionalAttributeRange:(_NSRange)range;
 - (NSArray)groupSettings;
 @end
 
 @implementation MTSettingsGroup
 
-+ (MTSettingsGroup)groupWithTitle:(id)a3 footerText:(id)a4 settings:(id)a5
++ (MTSettingsGroup)groupWithTitle:(id)title footerText:(id)text settings:(id)settings
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  textCopy = text;
+  settingsCopy = settings;
   v10 = objc_alloc_init(MTSettingsGroup);
-  [(MTSettingsGroup *)v10 setGroupTitle:v7];
-  [(MTSettingsGroup *)v10 setGroupFooter:v8];
-  [(MTSettingsGroup *)v10 setGroupSettings:v9];
+  [(MTSettingsGroup *)v10 setGroupTitle:titleCopy];
+  [(MTSettingsGroup *)v10 setGroupFooter:textCopy];
+  [(MTSettingsGroup *)v10 setGroupSettings:settingsCopy];
   [(MTSettingsGroup *)v10 setCustomHeaderHeight:0.0];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v11 = v9;
+  v11 = settingsCopy;
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -49,31 +49,31 @@
   return v10;
 }
 
-+ (MTSettingsGroup)groupWithTitle:(id)a3 footerText:(id)a4 settingsHandler:(id)a5
++ (MTSettingsGroup)groupWithTitle:(id)title footerText:(id)text settingsHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  textCopy = text;
+  titleCopy = title;
   v10 = objc_alloc_init(MTSettingsGroup);
-  [(MTSettingsGroup *)v10 setGroupTitle:v9];
+  [(MTSettingsGroup *)v10 setGroupTitle:titleCopy];
 
-  [(MTSettingsGroup *)v10 setGroupFooter:v8];
-  [(MTSettingsGroup *)v10 setSettingsHandler:v7];
+  [(MTSettingsGroup *)v10 setGroupFooter:textCopy];
+  [(MTSettingsGroup *)v10 setSettingsHandler:handlerCopy];
 
   [(MTSettingsGroup *)v10 setCustomHeaderHeight:0.0];
 
   return v10;
 }
 
-+ (id)footerAttributedString:(id)a3
++ (id)footerAttributedString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSMutableAttributedString alloc] initWithString:v3 attributes:0];
+  stringCopy = string;
+  v4 = [[NSMutableAttributedString alloc] initWithString:stringCopy attributes:0];
 
   v5 = +[UIListContentConfiguration groupedFooterConfiguration];
-  v6 = [v5 textProperties];
-  v7 = [v6 resolvedColor];
-  [v4 addAttribute:NSForegroundColorAttributeName value:v7 range:{0, objc_msgSend(v4, "length")}];
+  textProperties = [v5 textProperties];
+  resolvedColor = [textProperties resolvedColor];
+  [v4 addAttribute:NSForegroundColorAttributeName value:resolvedColor range:{0, objc_msgSend(v4, "length")}];
 
   v8 = +[UIFont sectionFooterFont];
   [v4 addAttribute:NSFontAttributeName value:v8 range:{0, objc_msgSend(v4, "length")}];
@@ -81,18 +81,18 @@
   return v4;
 }
 
-+ (id)footerAttributedString:(id)a3 additionalAttributeName:(id)a4 additionalAttributeValue:(id)a5 additionalAttributeRange:(_NSRange)a6
++ (id)footerAttributedString:(id)string additionalAttributeName:(id)name additionalAttributeValue:(id)value additionalAttributeRange:(_NSRange)range
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  length = range.length;
+  location = range.location;
+  valueCopy = value;
+  nameCopy = name;
+  stringCopy = string;
   v13 = [NSMutableAttributedString alloc];
-  v14 = [MTSettingsGroup footerAttributedString:v12];
+  v14 = [MTSettingsGroup footerAttributedString:stringCopy];
 
   v15 = [v13 initWithAttributedString:v14];
-  [v15 addAttribute:v11 value:v10 range:{location, length}];
+  [v15 addAttribute:nameCopy value:valueCopy range:{location, length}];
 
   return v15;
 }

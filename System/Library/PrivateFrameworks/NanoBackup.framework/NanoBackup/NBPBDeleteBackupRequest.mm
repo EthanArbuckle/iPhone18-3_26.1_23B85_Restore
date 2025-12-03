@@ -1,11 +1,11 @@
 @interface NBPBDeleteBackupRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NBPBDeleteBackupRequest
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = NBPBDeleteBackupRequest;
   v3 = [(NBPBDeleteBackupRequest *)&v7 description];
-  v4 = [(NBPBDeleteBackupRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NBPBDeleteBackupRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,7 +34,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_backupID)
   {
@@ -42,32 +42,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   backupID = self->_backupID;
   if (backupID)
   {
-    [a3 setBackupID:backupID];
+    [to setBackupID:backupID];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_backupID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_backupID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     backupID = self->_backupID;
-    if (backupID | v4[1])
+    if (backupID | equalCopy[1])
     {
       v6 = [(NSData *)backupID isEqual:?];
     }
@@ -86,9 +86,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(NBPBDeleteBackupRequest *)self setBackupID:?];
   }

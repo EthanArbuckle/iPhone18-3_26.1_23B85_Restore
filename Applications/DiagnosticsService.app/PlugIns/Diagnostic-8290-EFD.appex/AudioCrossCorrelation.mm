@@ -1,30 +1,30 @@
 @interface AudioCrossCorrelation
-+ (BOOL)convertNSDataToWAV:(id)a3 atURL:(id)a4 error:(id)a5;
-+ (id)calculatePeakDBValueWithSourceSignalData:(id)a3 resultSignalData:(id)a4 error:(id *)a5;
-+ (id)convertWAVtoNSDataWithFileStringURL:(id)a3 withSampleRate:(id)a4 error:(id *)a5;
++ (BOOL)convertNSDataToWAV:(id)v atURL:(id)l error:(id)error;
++ (id)calculatePeakDBValueWithSourceSignalData:(id)data resultSignalData:(id)signalData error:(id *)error;
++ (id)convertWAVtoNSDataWithFileStringURL:(id)l withSampleRate:(id)rate error:(id *)error;
 @end
 
 @implementation AudioCrossCorrelation
 
-+ (id)calculatePeakDBValueWithSourceSignalData:(id)a3 resultSignalData:(id)a4 error:(id *)a5
++ (id)calculatePeakDBValueWithSourceSignalData:(id)data resultSignalData:(id)signalData error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 length] >> 2;
-  v10 = v9 + ([v8 length] >> 2) - 1;
+  signalDataCopy = signalData;
+  dataCopy = data;
+  v9 = [signalDataCopy length] >> 2;
+  v10 = v9 + ([dataCopy length] >> 2) - 1;
   v11 = malloc_type_malloc(4 * v10, 0x100004052888210uLL);
   bzero(v11, 4 * v10);
   v12 = malloc_type_malloc(4 * v10, 0x100004052888210uLL);
   bzero(v12, v10);
-  v13 = [v7 bytes];
-  v14 = [v7 length];
+  bytes = [signalDataCopy bytes];
+  v14 = [signalDataCopy length];
 
-  memcpy(v12, v13, v14);
-  v15 = [v8 bytes];
-  v16 = [v8 length] >> 2;
-  v17 = [v8 length];
+  memcpy(v12, bytes, v14);
+  bytes2 = [dataCopy bytes];
+  v16 = [dataCopy length] >> 2;
+  v17 = [dataCopy length];
 
-  vDSP_conv(v12, 1, v15, 1, v11, 1, v16, v17 >> 2);
+  vDSP_conv(v12, 1, bytes2, 1, v11, 1, v16, v17 >> 2);
   __C = 0.0;
   v20 = 0;
   vDSP_maxvi(v11, 1, &__C, &v20, v10);
@@ -36,76 +36,76 @@
     v18 = [NSNumber numberWithFloat:?];
   }
 
-  if (a5 && !v18)
+  if (error && !v18)
   {
-    *a5 = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:-62 userInfo:0];
+    *error = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:-62 userInfo:0];
   }
 
   return v18;
 }
 
-+ (id)convertWAVtoNSDataWithFileStringURL:(id)a3 withSampleRate:(id)a4 error:(id *)a5
++ (id)convertWAVtoNSDataWithFileStringURL:(id)l withSampleRate:(id)rate error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[NSURL alloc] initWithString:v8];
+  rateCopy = rate;
+  lCopy = l;
+  v9 = [[NSURL alloc] initWithString:lCopy];
 
-  v10 = [[AVAudioFile alloc] initForReading:v9 error:a5];
+  v10 = [[AVAudioFile alloc] initForReading:v9 error:error];
   v11 = [AVAudioPCMBuffer alloc];
-  v12 = [v10 processingFormat];
-  v13 = [v11 initWithPCMFormat:v12 frameCapacity:objc_msgSend(v10, "length")];
+  processingFormat = [v10 processingFormat];
+  v13 = [v11 initWithPCMFormat:processingFormat frameCapacity:objc_msgSend(v10, "length")];
 
-  [v10 readIntoBuffer:v13 error:a5];
-  v14 = *a5;
+  [v10 readIntoBuffer:v13 error:error];
+  v14 = *error;
   v15 = DiagnosticLogHandleForCategory();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
   if (v14)
   {
     if (v16)
     {
-      v17 = [*a5 localizedDescription];
+      localizedDescription = [*error localizedDescription];
       v33 = 138412290;
-      v34 = v17;
+      v34 = localizedDescription;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "WAV Audio could not be loaded into PCM buffer. Error : %@", &v33, 0xCu);
     }
 
     v18 = -66;
 LABEL_14:
     [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:v18 userInfo:0];
-    *a5 = v26 = 0;
+    *error = v26 = 0;
     goto LABEL_15;
   }
 
   if (v16)
   {
-    v19 = [v13 format];
-    [v19 sampleRate];
+    format = [v13 format];
+    [format sampleRate];
     v33 = 134218242;
     v34 = v20;
     v35 = 2112;
-    v36 = v7;
+    v36 = rateCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Source WAV file sample rate: %f. Desired sample rate: %@", &v33, 0x16u);
   }
 
-  v21 = [v13 format];
-  [v21 sampleRate];
+  format2 = [v13 format];
+  [format2 sampleRate];
   v22 = [NSNumber numberWithDouble:?];
-  v23 = [v7 isEqualToNumber:v22];
+  v23 = [rateCopy isEqualToNumber:v22];
 
   if ((v23 & 1) == 0)
   {
     v27 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v9 lastPathComponent];
-      v29 = [v13 format];
-      [v29 sampleRate];
+      lastPathComponent = [v9 lastPathComponent];
+      format3 = [v13 format];
+      [format3 sampleRate];
       v33 = 138412802;
-      v34 = v28;
+      v34 = lastPathComponent;
       v35 = 2048;
       v36 = v30;
       v37 = 2112;
-      v38 = v7;
+      v38 = rateCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "The WAV file %@ has sample rate %f, which does not match the required sample rate %@.", &v33, 0x20u);
     }
 
@@ -130,7 +130,7 @@ LABEL_14:
     }
 
     [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:-66 userInfo:0];
-    *a5 = v26 = 0;
+    *error = v26 = 0;
   }
 
 LABEL_15:
@@ -138,24 +138,24 @@ LABEL_15:
   return v26;
 }
 
-+ (BOOL)convertNSDataToWAV:(id)a3 atURL:(id)a4 error:(id)a5
++ (BOOL)convertNSDataToWAV:(id)v atURL:(id)l error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  errorCopy = error;
+  lCopy = l;
+  vCopy = v;
   v10 = [[AVAudioFormat alloc] initWithCommonFormat:1 sampleRate:1 channels:0 interleaved:48000.0];
-  v11 = [v9 length] >> 2;
+  v11 = [vCopy length] >> 2;
   v12 = [[AVAudioPCMBuffer alloc] initWithPCMFormat:v10 frameCapacity:v11];
   [v12 setFrameLength:v11];
   v13 = *([v12 mutableAudioBufferList] + 2);
-  v14 = [v9 bytes];
-  v15 = [v9 length];
+  bytes = [vCopy bytes];
+  v15 = [vCopy length];
 
-  memcpy(v13, v14, v15);
+  memcpy(v13, bytes, v15);
   v16 = [AVAudioFile alloc];
-  v17 = [v10 settings];
-  v22 = v7;
-  v18 = [v16 initForWriting:v8 settings:v17 error:&v22];
+  settings = [v10 settings];
+  v22 = errorCopy;
+  v18 = [v16 initForWriting:lCopy settings:settings error:&v22];
 
   v19 = v22;
   if (!v19)

@@ -1,7 +1,7 @@
 @interface HSBook
-- (HSBook)initWithCoder:(id)a3;
+- (HSBook)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HSBook
@@ -10,76 +10,76 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HSBook *)self title];
-  v6 = [v3 stringWithFormat:@"<%@: %p title='%@'>", v4, self, v5];
+  title = [(HSBook *)self title];
+  v6 = [v3 stringWithFormat:@"<%@: %p title='%@'>", v4, self, title];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[HSBook purchaseHistoryID](self forKey:{"purchaseHistoryID"), @"HSPurchasedBookPurchaseHistoryID"}];
-  [v4 encodeInt64:-[HSBook storeID](self forKey:{"storeID"), @"HSPurchasedBookStoreID"}];
-  v5 = [(HSBook *)self title];
-  [v4 encodeObject:v5 forKey:@"HSPurchasedBookTitle"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[HSBook purchaseHistoryID](self forKey:{"purchaseHistoryID"), @"HSPurchasedBookPurchaseHistoryID"}];
+  [coderCopy encodeInt64:-[HSBook storeID](self forKey:{"storeID"), @"HSPurchasedBookStoreID"}];
+  title = [(HSBook *)self title];
+  [coderCopy encodeObject:title forKey:@"HSPurchasedBookTitle"];
 
-  v6 = [(HSBook *)self author];
-  [v4 encodeObject:v6 forKey:@"HSPurchasedBookAuthor"];
+  author = [(HSBook *)self author];
+  [coderCopy encodeObject:author forKey:@"HSPurchasedBookAuthor"];
 
-  v7 = [(HSBook *)self genre];
-  [v4 encodeObject:v7 forKey:@"HSPurchasedBookGenre"];
+  genre = [(HSBook *)self genre];
+  [coderCopy encodeObject:genre forKey:@"HSPurchasedBookGenre"];
 
-  v8 = [(HSBook *)self datePurchased];
-  [v4 encodeObject:v8 forKey:@"HSPurchasedBookDatePurchased"];
+  datePurchased = [(HSBook *)self datePurchased];
+  [coderCopy encodeObject:datePurchased forKey:@"HSPurchasedBookDatePurchased"];
 
-  v9 = [(HSBook *)self artworkURL];
-  [v4 encodeObject:v9 forKey:@"HSPurchasedBookArtworkURL"];
+  artworkURL = [(HSBook *)self artworkURL];
+  [coderCopy encodeObject:artworkURL forKey:@"HSPurchasedBookArtworkURL"];
 
-  v10 = [(HSBook *)self redownloadParameters];
-  [v4 encodeObject:v10 forKey:@"HSPurchasedBookRedownloadParameters"];
+  redownloadParameters = [(HSBook *)self redownloadParameters];
+  [coderCopy encodeObject:redownloadParameters forKey:@"HSPurchasedBookRedownloadParameters"];
 
-  [v4 encodeBool:-[HSBook isVPPLicensed](self forKey:{"isVPPLicensed"), @"HSPurchasedBookVPPLicensed"}];
-  v11 = [(HSBook *)self vppOrganizationID];
-  [v4 encodeObject:v11 forKey:@"HSPurchasedBookVPPOrganizationID"];
+  [coderCopy encodeBool:-[HSBook isVPPLicensed](self forKey:{"isVPPLicensed"), @"HSPurchasedBookVPPLicensed"}];
+  vppOrganizationID = [(HSBook *)self vppOrganizationID];
+  [coderCopy encodeObject:vppOrganizationID forKey:@"HSPurchasedBookVPPOrganizationID"];
 
-  v12 = [(HSBook *)self vppOrganizationDisplayName];
-  [v4 encodeObject:v12 forKey:@"HSPurchasedBookVPPOrganizationDisplayName"];
+  vppOrganizationDisplayName = [(HSBook *)self vppOrganizationDisplayName];
+  [coderCopy encodeObject:vppOrganizationDisplayName forKey:@"HSPurchasedBookVPPOrganizationDisplayName"];
 }
 
-- (HSBook)initWithCoder:(id)a3
+- (HSBook)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HSBook;
   v5 = [(HSBook *)&v15 init];
   if (v5)
   {
-    -[HSBook setPurchaseHistoryID:](v5, "setPurchaseHistoryID:", [v4 decodeInt64ForKey:@"HSPurchasedBookPurchaseHistoryID"]);
-    -[HSBook setStoreID:](v5, "setStoreID:", [v4 decodeInt64ForKey:@"HSPurchasedBookStoreID"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookTitle"];
+    -[HSBook setPurchaseHistoryID:](v5, "setPurchaseHistoryID:", [coderCopy decodeInt64ForKey:@"HSPurchasedBookPurchaseHistoryID"]);
+    -[HSBook setStoreID:](v5, "setStoreID:", [coderCopy decodeInt64ForKey:@"HSPurchasedBookStoreID"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookTitle"];
     [(HSBook *)v5 setTitle:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookAuthor"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookAuthor"];
     [(HSBook *)v5 setAuthor:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookGenre"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookGenre"];
     [(HSBook *)v5 setGenre:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookDatePurchased"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookDatePurchased"];
     [(HSBook *)v5 setDatePurchased:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookArtworkURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookArtworkURL"];
     [(HSBook *)v5 setArtworkURL:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookRedownloadParameters"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookRedownloadParameters"];
     [(HSBook *)v5 setRedownloadParameters:v11];
 
-    -[HSBook setVppLicensed:](v5, "setVppLicensed:", [v4 decodeBoolForKey:@"HSPurchasedBookVPPLicensed"]);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookVPPOrganizationID"];
+    -[HSBook setVppLicensed:](v5, "setVppLicensed:", [coderCopy decodeBoolForKey:@"HSPurchasedBookVPPLicensed"]);
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookVPPOrganizationID"];
     [(HSBook *)v5 setVppOrganizationID:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookVPPOrganizationDisplayName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HSPurchasedBookVPPOrganizationDisplayName"];
     [(HSBook *)v5 setVppOrganizationDisplayName:v13];
   }
 

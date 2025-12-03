@@ -1,6 +1,6 @@
 @interface AVSAutomationSupport
 - (_TtC22AdaptiveVoiceShortcuts20AVSAutomationSupport)init;
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4;
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier;
 @end
 
 @implementation AVSAutomationSupport
@@ -13,11 +13,11 @@
   return [(AVSAutomationSupport *)&v3 init];
 }
 
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  v4 = [objc_opt_self() mainAccessQueue];
+  mainAccessQueue = [objc_opt_self() mainAccessQueue];
 
-  return v4;
+  return mainAccessQueue;
 }
 
 @end

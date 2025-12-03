@@ -1,25 +1,25 @@
 @interface AAUIProfilePhotoView
-- (AAUIProfilePhotoView)initWithPhoto:(id)a3 target:(id)a4 action:(SEL)a5;
+- (AAUIProfilePhotoView)initWithPhoto:(id)photo target:(id)target action:(SEL)action;
 - (double)desiredHeightForWidth:(double)result;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation AAUIProfilePhotoView
 
-- (AAUIProfilePhotoView)initWithPhoto:(id)a3 target:(id)a4 action:(SEL)a5
+- (AAUIProfilePhotoView)initWithPhoto:(id)photo target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  photoCopy = photo;
+  targetCopy = target;
   v22.receiver = self;
   v22.super_class = AAUIProfilePhotoView;
   v10 = [(AAUIProfilePhotoView *)&v22 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v10)
   {
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(AAUIProfilePhotoView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(AAUIProfilePhotoView *)v10 setBackgroundColor:clearColor];
 
-    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
+    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:photoCopy];
     photoView = v10->_photoView;
     v10->_photoView = v12;
 
@@ -33,10 +33,10 @@
     v18 = [v17 localizedStringForKey:@"EDIT_PROFILE_PHOTO_BUTTON" value:&stru_1F447F790 table:@"Localizable"];
     [(UIButton *)v16 setTitle:v18 forState:0];
 
-    [(UIButton *)v10->_editButton addTarget:v9 action:a5 forControlEvents:64];
+    [(UIButton *)v10->_editButton addTarget:targetCopy action:action forControlEvents:64];
     v19 = v10->_editButton;
-    v20 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIButton *)v19 setTitleColor:v20 forState:0];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIButton *)v19 setTitleColor:systemBlueColor forState:0];
 
     if (v10->_isEditing)
     {
@@ -47,12 +47,12 @@
   return v10;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_isEditing != a3)
+  if (self->_isEditing != editing)
   {
-    self->_isEditing = a3;
-    if (a3)
+    self->_isEditing = editing;
+    if (editing)
     {
       [(AAUIProfilePhotoView *)self addSubview:self->_editButton];
     }

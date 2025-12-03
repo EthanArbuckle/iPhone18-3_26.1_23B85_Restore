@@ -1,11 +1,11 @@
 @interface MSCupidStateMachine
-- (MSCupidStateMachine)initWithPersonID:(id)a3;
+- (MSCupidStateMachine)initWithPersonID:(id)d;
 - (id)_latestNextActivityDate;
 - (void)_backoffMMCSBackoffTimer;
 - (void)_backoffStreamsBackoffTimer;
 - (void)_commitUserManifest;
-- (void)_didReceiveMMCSRetryAfterDate:(id)a3;
-- (void)_didReceiveStreamsRetryAfterDate:(id)a3;
+- (void)_didReceiveMMCSRetryAfterDate:(id)date;
+- (void)_didReceiveStreamsRetryAfterDate:(id)date;
 - (void)_resetMMCSBackoffTimer;
 - (void)_resetStreamsBackoffTimer;
 - (void)deactivate;
@@ -17,42 +17,42 @@
 
 - (id)_latestNextActivityDate
 {
-  v3 = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
-  v4 = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
-  if ([v4 compare:v3] == 1)
+  nextExpiryDate = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
+  nextExpiryDate2 = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
+  if ([nextExpiryDate2 compare:nextExpiryDate] == 1)
   {
-    v5 = v4;
+    v5 = nextExpiryDate2;
 
-    v3 = v5;
+    nextExpiryDate = v5;
   }
 
-  return v3;
+  return nextExpiryDate;
 }
 
-- (void)_didReceiveMMCSRetryAfterDate:(id)a3
+- (void)_didReceiveMMCSRetryAfterDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v11 = 138543874;
     v12 = v5;
     v13 = 2112;
-    v14 = v7;
+    v14 = personID;
     v15 = 2114;
-    v16 = v4;
+    v16 = dateCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Received an MMCS server retry-after date of: %{public}@", &v11, 0x20u);
   }
 
-  [(MSBackoffManager *)self->_MMCSBackoffManager didReceiveRetryAfterDate:v4];
-  v8 = [(MSBackoffManager *)self->_MMCSBackoffManager retryAfterDate];
+  [(MSBackoffManager *)self->_MMCSBackoffManager didReceiveRetryAfterDate:dateCopy];
+  retryAfterDate = [(MSBackoffManager *)self->_MMCSBackoffManager retryAfterDate];
   userManifest = self->_userManifest;
-  if (v8)
+  if (retryAfterDate)
   {
-    [(NSMutableDictionary *)userManifest setObject:v8 forKey:@"MMCSRetryAfterDate"];
+    [(NSMutableDictionary *)userManifest setObject:retryAfterDate forKey:@"MMCSRetryAfterDate"];
   }
 
   else
@@ -76,26 +76,26 @@
   [(NSMutableDictionary *)userManifest setObject:v5 forKey:@"MMCSBackoffInterval"];
 
   v6 = self->_userManifest;
-  v7 = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
-  [(NSMutableDictionary *)v6 setObject:v7 forKey:@"MMCSBackoffDate"];
+  nextExpiryDate = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
+  [(NSMutableDictionary *)v6 setObject:nextExpiryDate forKey:@"MMCSBackoffDate"];
 
   [(MSCupidStateMachine *)self _commitUserManifest];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     [(MSBackoffManager *)self->_MMCSBackoffManager currentInterval];
     v12 = v11;
-    v13 = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
+    nextExpiryDate2 = [(MSBackoffManager *)self->_MMCSBackoffManager nextExpiryDate];
     v15 = 138544130;
     v16 = v8;
     v17 = 2112;
-    v18 = v10;
+    v18 = personID;
     v19 = 2048;
     v20 = v12;
     v21 = 2114;
-    v22 = v13;
+    v22 = nextExpiryDate2;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Backing off the MMCS server. Interval: %lf, next fire date: %{public}@", &v15, 0x2Au);
   }
 
@@ -112,11 +112,11 @@
     {
       v4 = objc_opt_class();
       v5 = v4;
-      v6 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v8 = 138543618;
       v9 = v4;
       v10 = 2112;
-      v11 = v6;
+      v11 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Resetting MMCS backoff timer.", &v8, 0x16u);
     }
 
@@ -129,30 +129,30 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didReceiveStreamsRetryAfterDate:(id)a3
+- (void)_didReceiveStreamsRetryAfterDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     v11 = 138543874;
     v12 = v5;
     v13 = 2112;
-    v14 = v7;
+    v14 = personID;
     v15 = 2114;
-    v16 = v4;
+    v16 = dateCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Received a metadata server retry-after date of: %{public}@", &v11, 0x20u);
   }
 
-  [(MSBackoffManager *)self->_streamsBackoffManager didReceiveRetryAfterDate:v4];
-  v8 = [(MSBackoffManager *)self->_streamsBackoffManager retryAfterDate];
+  [(MSBackoffManager *)self->_streamsBackoffManager didReceiveRetryAfterDate:dateCopy];
+  retryAfterDate = [(MSBackoffManager *)self->_streamsBackoffManager retryAfterDate];
   userManifest = self->_userManifest;
-  if (v8)
+  if (retryAfterDate)
   {
-    [(NSMutableDictionary *)userManifest setObject:v8 forKey:@"streamsRetryAfterDate"];
+    [(NSMutableDictionary *)userManifest setObject:retryAfterDate forKey:@"streamsRetryAfterDate"];
   }
 
   else
@@ -176,26 +176,26 @@
   [(NSMutableDictionary *)userManifest setObject:v5 forKey:@"streamsBackoffInterval"];
 
   v6 = self->_userManifest;
-  v7 = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
-  [(NSMutableDictionary *)v6 setObject:v7 forKey:@"streamsBackoffDate"];
+  nextExpiryDate = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
+  [(NSMutableDictionary *)v6 setObject:nextExpiryDate forKey:@"streamsBackoffDate"];
 
   [(MSCupidStateMachine *)self _commitUserManifest];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     [(MSBackoffManager *)self->_streamsBackoffManager currentInterval];
     v12 = v11;
-    v13 = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
+    nextExpiryDate2 = [(MSBackoffManager *)self->_streamsBackoffManager nextExpiryDate];
     v15 = 138544130;
     v16 = v8;
     v17 = 2112;
-    v18 = v10;
+    v18 = personID;
     v19 = 2048;
     v20 = v12;
     v21 = 2114;
-    v22 = v13;
+    v22 = nextExpiryDate2;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Backing off the metadata server. Interval: %lf, next fire date: %{public}@", &v15, 0x2Au);
   }
 
@@ -212,11 +212,11 @@
     {
       v4 = objc_opt_class();
       v5 = v4;
-      v6 = [(MSCupidStateMachine *)self personID];
+      personID = [(MSCupidStateMachine *)self personID];
       v8 = 138543618;
       v9 = v4;
       v10 = 2112;
-      v11 = v6;
+      v11 = personID;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@ - %@ Resetting metadata stream backoff timer.", &v8, 0x16u);
     }
 
@@ -247,11 +247,11 @@
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(MSCupidStateMachine *)self personID];
+    personID = [(MSCupidStateMachine *)self personID];
     *buf = 138543618;
     v12 = v7;
     v13 = 2112;
-    v14 = v9;
+    v14 = personID;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Cannot save user manifest.", buf, 0x16u);
   }
 
@@ -296,16 +296,16 @@
   [(MSCupidStateMachine *)&v3 dealloc];
 }
 
-- (MSCupidStateMachine)initWithPersonID:(id)a3
+- (MSCupidStateMachine)initWithPersonID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v30.receiver = self;
   v30.super_class = MSCupidStateMachine;
   v6 = [(MSCupidStateMachine *)&v30 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personID, a3);
+    objc_storeStrong(&v6->_personID, d);
     v8 = [[MSBackoffManager alloc] initWithInitialInterval:0 backoffFactor:5.0 randomizeFactor:2.0 maxBackoffInterval:0.15 retryAfterDate:1200.0];
     streamsBackoffManager = v7->_streamsBackoffManager;
     v7->_streamsBackoffManager = v8;
@@ -314,12 +314,12 @@
     MMCSBackoffManager = v7->_MMCSBackoffManager;
     v7->_MMCSBackoffManager = v10;
 
-    v12 = MSPathSubscriberManifestForPersonID(v5);
+    v12 = MSPathSubscriberManifestForPersonID(dCopy);
     manifestPath = v7->_manifestPath;
     v7->_manifestPath = v12;
 
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    v15 = [v14 fileExistsAtPath:v7->_manifestPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v15 = [defaultManager fileExistsAtPath:v7->_manifestPath];
 
     if (v15)
     {

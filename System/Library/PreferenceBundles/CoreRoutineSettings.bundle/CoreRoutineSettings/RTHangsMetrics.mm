@@ -1,6 +1,6 @@
 @interface RTHangsMetrics
 - (RTHangsMetrics)init;
-- (void)submitToCoreAnalytics:(id)a3 type:(int64_t)a4 duration:(double)a5;
+- (void)submitToCoreAnalytics:(id)analytics type:(int64_t)type duration:(double)duration;
 @end
 
 @implementation RTHangsMetrics
@@ -12,22 +12,22 @@
   return [(RTHangsMetrics *)&v3 init];
 }
 
-- (void)submitToCoreAnalytics:(id)a3 type:(int64_t)a4 duration:(double)a5
+- (void)submitToCoreAnalytics:(id)analytics type:(int64_t)type duration:(double)duration
 {
   label = dispatch_queue_get_label(0);
-  v9 = a3;
+  analyticsCopy = analytics;
   v10 = [NSString stringWithCString:label encoding:4];
   v11 = [NSCharacterSet characterSetWithCharactersInString:@"- "];
   v12 = [v10 componentsSeparatedByCharactersInSet:v11];
   v19 = [v12 objectAtIndexedSubscript:0];
 
   v13 = objc_opt_new();
-  [v13 setObject:v9 forKeyedSubscript:@"hungObject"];
+  [v13 setObject:analyticsCopy forKeyedSubscript:@"hungObject"];
 
-  v14 = [NSNumber numberWithInteger:a4];
+  v14 = [NSNumber numberWithInteger:type];
   [v13 setObject:v14 forKeyedSubscript:@"hangType"];
 
-  v15 = [NSNumber numberWithDouble:a5];
+  v15 = [NSNumber numberWithDouble:duration];
   [v13 setObject:v15 forKeyedSubscript:@"hangDuration"];
 
   [v13 setObject:v19 forKeyedSubscript:@"hungQueue"];

@@ -1,17 +1,17 @@
 @interface BKLibraryBookshelfInfoCell
-- (BKLibraryBookshelfInfoCell)initWithFrame:(CGRect)a3;
+- (BKLibraryBookshelfInfoCell)initWithFrame:(CGRect)frame;
 - (BKLibraryBookshelfInfoCellDelegate)delegate;
 - (BKLibraryBookshelfSupplementaryDataSource)dataSource;
 - (BOOL)_shouldRemovePriceBadge;
 - (BOOL)isAssetDownloading;
 - (CGSize)audiobookBadgeSize;
 - (id)cellMetrics;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_bookshelfCloudState;
-- (void)_downloadStatusNotification:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_downloadStatusNotification:(id)notification;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)createOrUpdateAudiobookBadge;
-- (void)createOrUpdateBadgeWithBadgeBackgroundColor:(id)a3 badgeFrameColor:(id)a4 textConfigurationBlock:(id)a5;
+- (void)createOrUpdateBadgeWithBadgeBackgroundColor:(id)color badgeFrameColor:(id)frameColor textConfigurationBlock:(id)block;
 - (void)createOrUpdateCloudButton;
 - (void)createOrUpdateDateBadge;
 - (void)createOrUpdateDownloadProgressButton;
@@ -19,28 +19,28 @@
 - (void)createOrUpdateMoreButton;
 - (void)createOrUpdatePriceBadge;
 - (void)dealloc;
-- (void)layoutAudioViews:(CGRect *)a3 bounds:(CGRect)a4 isRTL:(BOOL)a5;
+- (void)layoutAudioViews:(CGRect *)views bounds:(CGRect)bounds isRTL:(BOOL)l;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reachabilityChanged:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setAudiobookStatus:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setLibraryAsset:(id)a3;
-- (void)setLibraryDownloadStatus:(id)a3;
-- (void)setMetrics:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reachabilityChanged:(id)changed;
+- (void)setAsset:(id)asset;
+- (void)setAudiobookStatus:(id)status;
+- (void)setDataSource:(id)source;
+- (void)setLibraryAsset:(id)asset;
+- (void)setLibraryDownloadStatus:(id)status;
+- (void)setMetrics:(id)metrics;
 - (void)setupMenu;
-- (void)updateConfiguration:(BOOL)a3;
+- (void)updateConfiguration:(BOOL)configuration;
 - (void)updateInfoKind;
 @end
 
 @implementation BKLibraryBookshelfInfoCell
 
-- (BKLibraryBookshelfInfoCell)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfInfoCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = BKLibraryBookshelfInfoCell;
-  v3 = [(BKLibraryBookshelfInfoCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfInfoCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,8 +50,8 @@
     [v5 addObserver:v4 selector:"reachabilityChanged:" name:@"kNetworkReachabilityChangedNotification" object:v6];
 
     [v5 addObserver:v4 selector:"_downloadStatusNotification:" name:BKLibraryDownloadStatusNotification object:0];
-    v7 = [(BKLibraryBookshelfInfoCell *)v4 traitCollection];
-    v4->_currentUserInterfaceStyle = [v7 userInterfaceStyle];
+    traitCollection = [(BKLibraryBookshelfInfoCell *)v4 traitCollection];
+    v4->_currentUserInterfaceStyle = [traitCollection userInterfaceStyle];
 
     v8 = +[BURestrictionsProvider sharedInstance];
     [v8 addObserver:v4];
@@ -116,13 +116,13 @@
   [(BKLibraryBookshelfInfoCell *)&v11 dealloc];
 }
 
-- (void)_downloadStatusNotification:(id)a3
+- (void)_downloadStatusNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
-  v16 = v4;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:BKLibraryDownloadStatusKey];
+  v16 = notificationCopy;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:BKLibraryDownloadStatusKey];
   v7 = BUDynamicCast();
 
   v23 = 0u;
@@ -145,13 +145,13 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * v12) assetID];
+        assetID = [*(*(&v21 + 1) + 8 * v12) assetID];
         v19[0] = _NSConcreteStackBlock;
         v19[1] = 3221225472;
         v19[2] = sub_10013B0C0;
         v19[3] = &unk_100A03440;
         v19[4] = self;
-        v14 = v13;
+        v14 = assetID;
         v20 = v14;
         v15 = objc_retainBlock(v19);
         if (v15)
@@ -183,11 +183,11 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (([(BKLibraryBookshelfInfoCell *)self isHiddenOrHasHiddenAncestor]& 1) == 0)
   {
     [(BKLibraryBookshelfInfoCell *)self alpha];
@@ -197,8 +197,8 @@
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v9 = [(BKLibraryBookshelfInfoCell *)self subviews];
-      v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      subviews = [(BKLibraryBookshelfInfoCell *)self subviews];
+      v10 = [subviews countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v10)
       {
         v11 = v10;
@@ -209,22 +209,22 @@
           {
             if (*v23 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(subviews);
             }
 
             v14 = *(*(&v22 + 1) + 8 * i);
             [v14 convertPoint:self fromView:{x, y}];
             v16 = v15;
             v18 = v17;
-            if ([v14 pointInside:v7 withEvent:?])
+            if ([v14 pointInside:eventCopy withEvent:?])
             {
-              v19 = [v14 hitTest:v7 withEvent:{v16, v18}];
+              v19 = [v14 hitTest:eventCopy withEvent:{v16, v18}];
 
               goto LABEL_13;
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v11 = [subviews countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v11)
           {
             continue;
@@ -238,7 +238,7 @@
 
   v21.receiver = self;
   v21.super_class = BKLibraryBookshelfInfoCell;
-  v19 = [(BKLibraryBookshelfInfoCell *)&v21 hitTest:v7 withEvent:x, y];
+  v19 = [(BKLibraryBookshelfInfoCell *)&v21 hitTest:eventCopy withEvent:x, y];
 LABEL_13:
 
   return v19;
@@ -247,19 +247,19 @@ LABEL_13:
 - (id)cellMetrics
 {
   objc_opt_class();
-  v3 = [(BKLibraryBookshelfInfoCell *)self metrics];
+  metrics = [(BKLibraryBookshelfInfoCell *)self metrics];
   v4 = BUDynamicCast();
 
   return v4;
 }
 
-- (void)setLibraryAsset:(id)a3
+- (void)setLibraryAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   libraryAsset = self->_libraryAsset;
-  if (libraryAsset != v5)
+  if (libraryAsset != assetCopy)
   {
-    v33 = v5;
+    v33 = assetCopy;
     [(BKLibraryAsset *)libraryAsset removeObserver:self forKeyPath:@"combinedState" context:off_100ACEE70];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"isNew" context:off_100ACEE78];
     [(BKLibraryAsset *)self->_libraryAsset removeObserver:self forKeyPath:@"readingProgress" context:off_100ACEE80];
@@ -294,15 +294,15 @@ LABEL_13:
       while (v9);
     }
 
-    objc_storeStrong(&self->_libraryAsset, a3);
+    objc_storeStrong(&self->_libraryAsset, asset);
     v12 = self->_libraryAsset;
     if (v12)
     {
       [(BKLibraryAsset *)v12 addObserver:self forKeyPath:@"combinedState" options:0 context:off_100ACEE70];
       [(BKLibraryAsset *)self->_libraryAsset addObserver:self forKeyPath:@"isNew" options:0 context:off_100ACEE78];
       [(BKLibraryAsset *)self->_libraryAsset addObserver:self forKeyPath:@"readingProgress" options:0 context:off_100ACEE80];
-      v13 = [(BKLibraryAsset *)self->_libraryAsset seriesBooks];
-      v14 = [v13 copy];
+      seriesBooks = [(BKLibraryAsset *)self->_libraryAsset seriesBooks];
+      v14 = [seriesBooks copy];
       seriesBooks = self->_seriesBooks;
       self->_seriesBooks = v14;
 
@@ -312,7 +312,7 @@ LABEL_13:
       v38 = 0u;
       v16 = self->_seriesBooks;
       v17 = [(NSSet *)v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
-      v5 = v33;
+      assetCopy = v33;
       if (v17)
       {
         v18 = v17;
@@ -341,8 +341,8 @@ LABEL_13:
       if (self->_libraryAsset)
       {
         v21 = +[BKLibraryAssetStatusController sharedController];
-        v22 = [(BKLibraryAsset *)self->_libraryAsset permanentOrTemporaryAssetID];
-        v23 = [v21 statusForAssetID:v22];
+        permanentOrTemporaryAssetID = [(BKLibraryAsset *)self->_libraryAsset permanentOrTemporaryAssetID];
+        v23 = [v21 statusForAssetID:permanentOrTemporaryAssetID];
         [(BKLibraryBookshelfInfoCell *)self setLibraryDownloadStatus:v23];
       }
 
@@ -355,8 +355,8 @@ LABEL_13:
       if (asset)
       {
         v27 = [(BFMAsset *)asset id];
-        v28 = [(BKLibraryAsset *)self->_libraryAsset assetID];
-        v29 = [v27 isEqualToString:v28];
+        assetID = [(BKLibraryAsset *)self->_libraryAsset assetID];
+        v29 = [v27 isEqualToString:assetID];
 
         if ((v29 & 1) == 0)
         {
@@ -404,30 +404,30 @@ LABEL_13:
       v25 = self->_seriesBooks;
       self->_seriesBooks = 0;
 
-      v5 = v33;
+      assetCopy = v33;
     }
   }
 }
 
 - (void)setupMenu
 {
-  v3 = [(BKLibraryBookshelfInfoCell *)self moreButton];
-  sub_100790A34(self, v3);
+  moreButton = [(BKLibraryBookshelfInfoCell *)self moreButton];
+  sub_100790A34(self, moreButton);
 
-  v4 = [(BKLibraryBookshelfInfoCell *)self cloudButton];
-  sub_100790A34(self, v4);
+  cloudButton = [(BKLibraryBookshelfInfoCell *)self cloudButton];
+  sub_100790A34(self, cloudButton);
 
-  v5 = [(BKLibraryBookshelfInfoCell *)self downloadProgressButton];
-  sub_100790A34(self, v5);
+  downloadProgressButton = [(BKLibraryBookshelfInfoCell *)self downloadProgressButton];
+  sub_100790A34(self, downloadProgressButton);
 }
 
-- (void)setLibraryDownloadStatus:(id)a3
+- (void)setLibraryDownloadStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   libraryDownloadStatus = self->_libraryDownloadStatus;
-  if (libraryDownloadStatus != v5)
+  if (libraryDownloadStatus != statusCopy)
   {
-    if (!v5)
+    if (!statusCopy)
     {
       [(BCInsetsFittingButton *)self->_cloudButton removeFromSuperview];
       cloudButton = self->_cloudButton;
@@ -438,7 +438,7 @@ LABEL_13:
 
     [(BKLibraryDownloadStatus *)libraryDownloadStatus removeObserver:self forKeyPath:@"combinedState" context:off_100ACEE60];
     [(BKLibraryDownloadStatus *)self->_libraryDownloadStatus removeObserver:self forKeyPath:@"progressValue" context:off_100ACEE68];
-    objc_storeStrong(&self->_libraryDownloadStatus, a3);
+    objc_storeStrong(&self->_libraryDownloadStatus, status);
     v8 = self->_libraryDownloadStatus;
     if (v8)
     {
@@ -477,9 +477,9 @@ LABEL_13:
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -495,12 +495,12 @@ LABEL_13:
   }
 }
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
-  v5 = a3;
-  if (self->_metrics != v5)
+  metricsCopy = metrics;
+  if (self->_metrics != metricsCopy)
   {
-    v35 = v5;
+    v35 = metricsCopy;
     objc_opt_class();
     v6 = BUDynamicCast();
     objc_opt_class();
@@ -510,18 +510,18 @@ LABEL_13:
     [v7 infoBarHeight];
     if (v9 == v10 && ([v6 dotsSpacing], v12 = v11, objc_msgSend(v7, "dotsSpacing"), v12 == v13) && (objc_msgSend(v6, "cloudSpacing"), v15 = v14, objc_msgSend(v7, "cloudSpacing"), v15 == v16) && (objc_msgSend(v6, "infoBarDateSpacing"), v18 = v17, objc_msgSend(v7, "infoBarDateSpacing"), v18 == v19))
     {
-      v22 = [v6 priceColor];
-      v23 = [v7 priceColor];
-      if ([v22 isEqual:v23])
+      priceColor = [v6 priceColor];
+      priceColor2 = [v7 priceColor];
+      if ([priceColor isEqual:priceColor2])
       {
-        v24 = [v6 infoBadgeFontAttributes];
-        v25 = [v7 infoBadgeFontAttributes];
-        if ([v24 isEqual:v25])
+        infoBadgeFontAttributes = [v6 infoBadgeFontAttributes];
+        infoBadgeFontAttributes2 = [v7 infoBadgeFontAttributes];
+        if ([infoBadgeFontAttributes isEqual:infoBadgeFontAttributes2])
         {
-          v26 = [v6 expectedDateFontAttributes];
-          v33 = [v7 expectedDateFontAttributes];
-          v34 = v26;
-          if ([v26 isEqual:?] && (objc_msgSend(v6, "audioBadgeSpacing"), v28 = v27, objc_msgSend(v7, "audioBadgeSpacing"), v28 == v29))
+          expectedDateFontAttributes = [v6 expectedDateFontAttributes];
+          expectedDateFontAttributes2 = [v7 expectedDateFontAttributes];
+          v34 = expectedDateFontAttributes;
+          if ([expectedDateFontAttributes isEqual:?] && (objc_msgSend(v6, "audioBadgeSpacing"), v28 = v27, objc_msgSend(v7, "audioBadgeSpacing"), v28 == v29))
           {
             [v6 badgeEndCapWidth];
             v31 = v30;
@@ -552,7 +552,7 @@ LABEL_13:
       v20 = 1;
     }
 
-    objc_storeStrong(&self->_metrics, a3);
+    objc_storeStrong(&self->_metrics, metrics);
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
     if (WeakRetained && v20)
@@ -560,27 +560,27 @@ LABEL_13:
       [(BKLibraryBookshelfInfoCell *)self updateConfiguration:1];
     }
 
-    v5 = v35;
+    metricsCopy = v35;
   }
 }
 
-- (void)layoutAudioViews:(CGRect *)a3 bounds:(CGRect)a4 isRTL:(BOOL)a5
+- (void)layoutAudioViews:(CGRect *)views bounds:(CGRect)bounds isRTL:(BOOL)l
 {
   nowPlayingIndicator = self->_nowPlayingIndicator;
   memset(&v18, 0, sizeof(v18));
   if (nowPlayingIndicator)
   {
-    [(MPUNowPlayingIndicatorView *)nowPlayingIndicator bk_width:a3];
-    CGRectDivide(*a3, &v18, a3, v8, CGRectMinXEdge);
+    [(MPUNowPlayingIndicatorView *)nowPlayingIndicator bk_width:views];
+    CGRectDivide(*views, &v18, views, v8, CGRectMinXEdge);
     [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator maximumLevelHeight];
     v10 = v9;
     v18.origin.y = v18.origin.y + (CGRectGetHeight(v18) - v9) * 0.5;
     v18.size.height = v10;
     IMRectFlippedForRTL();
     [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setFrame:?];
-    v11 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-    [v11 audioBadgeSpacing];
-    CGRectDivide(*a3, &v18, a3, v12, CGRectMinXEdge);
+    cellMetrics = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+    [cellMetrics audioBadgeSpacing];
+    CGRectDivide(*views, &v18, views, v12, CGRectMinXEdge);
 
     audiobookBadge = self->_audiobookBadge;
     v14 = 1;
@@ -588,15 +588,15 @@ LABEL_13:
 
   else
   {
-    CGRectDivide(*a3, &v18, a3, self->_audiobookBadgeSize.width, CGRectMinXEdge);
+    CGRectDivide(*views, &v18, views, self->_audiobookBadgeSize.width, CGRectMinXEdge);
     height = self->_audiobookBadgeSize.height;
     v18.origin.y = v18.origin.y + (CGRectGetHeight(v18) - height) * 0.5;
     v18.size.height = height;
     IMRectFlippedForRTL();
     [(CALayer *)self->_audiobookBadge setFrame:?];
-    v16 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-    [v16 audioBadgeSpacing];
-    CGRectDivide(*a3, &v18, a3, v17, CGRectMinXEdge);
+    cellMetrics2 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+    [cellMetrics2 audioBadgeSpacing];
+    CGRectDivide(*views, &v18, views, v17, CGRectMinXEdge);
 
     audiobookBadge = self->_audiobookBadge;
     v14 = 0;
@@ -605,9 +605,9 @@ LABEL_13:
   [(CALayer *)audiobookBadge setHidden:v14];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(BKLibraryBookshelfInfoCell *)self traitCollection:a3];
+  v5 = [(BKLibraryBookshelfInfoCell *)self traitCollection:change];
   -[BKLibraryBookshelfInfoCell setCurrentUserInterfaceStyle:](self, "setCurrentUserInterfaceStyle:", [v5 userInterfaceStyle]);
 }
 
@@ -624,19 +624,19 @@ LABEL_13:
     v9 = v5;
     v10 = v6;
     v11 = +[UIApplication sharedApplication];
-    v12 = [v11 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [v11 userInterfaceLayoutDirection];
 
     remainder.origin.x = v7;
     remainder.origin.y = v8;
     remainder.size.width = v9;
     remainder.size.height = v10;
     memset(&slice, 0, sizeof(slice));
-    v13 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-    [v13 infoBarExpectedDateHeight];
+    cellMetrics = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+    [cellMetrics infoBarExpectedDateHeight];
     v15 = v14;
 
-    v16 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-    [v16 infoBarDateSpacing];
+    cellMetrics2 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+    [cellMetrics2 infoBarDateSpacing];
     v18 = v17;
 
     v63.origin.x = v7;
@@ -645,9 +645,9 @@ LABEL_13:
     v63.size.height = v10;
     CGRectDivide(v63, &slice, &remainder, v15, CGRectMaxYEdge);
     remainder.size.height = remainder.size.height - v18;
-    v19 = [(BCInsetsFittingButton *)self->_moreButton superview];
+    superview = [(BCInsetsFittingButton *)self->_moreButton superview];
 
-    if (v19)
+    if (superview)
     {
       memset(&v59, 0, sizeof(v59));
       [(BCInsetsFittingButton *)self->_moreButton bounds];
@@ -655,25 +655,25 @@ LABEL_13:
       CGRectDivide(remainder, &v59, &remainder, Width, CGRectMaxXEdge);
       IMRectFlippedForRTL();
       [(BCInsetsFittingButton *)self->_moreButton setFrame:?];
-      v21 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-      [v21 dotsSpacing];
+      cellMetrics3 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+      [cellMetrics3 dotsSpacing];
       CGRectDivide(remainder, &v59, &remainder, v22, CGRectMaxXEdge);
     }
 
-    v23 = [(BKLibraryBookshelfInfoCell *)self dataSource];
-    v24 = [v23 collection];
+    dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
+    collection = [dataSource collection];
 
-    v25 = [v24 collectionID];
-    v26 = [v25 isEqualToString:kBKCollectionDefaultIDFinished];
+    collectionID = [collection collectionID];
+    v26 = [collectionID isEqualToString:kBKCollectionDefaultIDFinished];
 
     if (self->_audiobookBadge && ([(BKLibraryBookshelfInfoCell *)self infoKind]== 10) | v26 & 1)
     {
-      [(BKLibraryBookshelfInfoCell *)self layoutAudioViews:&remainder bounds:v12 == 1 isRTL:v7, v8, v9, v10];
+      [(BKLibraryBookshelfInfoCell *)self layoutAudioViews:&remainder bounds:userInterfaceLayoutDirection == 1 isRTL:v7, v8, v9, v10];
     }
 
-    v27 = [(BCInsetsFittingButton *)self->_cloudButton superview];
+    superview2 = [(BCInsetsFittingButton *)self->_cloudButton superview];
 
-    if (v27)
+    if (superview2)
     {
       memset(&v59, 0, sizeof(v59));
       [(BCInsetsFittingButton *)self->_cloudButton bounds];
@@ -681,16 +681,16 @@ LABEL_13:
       CGRectDivide(remainder, &v59, &remainder, v28, CGRectMaxXEdge);
       IMRectFlippedForRTL();
       [(BCInsetsFittingButton *)self->_cloudButton setFrame:?];
-      v29 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-      [v29 cloudSpacing];
+      cellMetrics4 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+      [cellMetrics4 cloudSpacing];
       CGRectDivide(remainder, &v59, &remainder, v30, CGRectMaxXEdge);
     }
 
     if (self->_downloadProgressButton)
     {
       memset(&v59, 0, sizeof(v59));
-      v31 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-      [v31 infoBarHeight];
+      cellMetrics5 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+      [cellMetrics5 infoBarHeight];
       CGRectDivide(remainder, &v59, &remainder, v32, CGRectMaxXEdge);
 
       +[CATransaction begin];
@@ -698,15 +698,15 @@ LABEL_13:
       IMRectFlippedForRTL();
       [(IMRadialProgressButton *)self->_downloadProgressButton setFrame:?];
       +[CATransaction commit];
-      v33 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-      [v33 cloudSpacing];
+      cellMetrics6 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+      [cellMetrics6 cloudSpacing];
       CGRectDivide(remainder, &v59, &remainder, v34, CGRectMaxXEdge);
     }
 
     badge = self->_badge;
     if (badge)
     {
-      v58 = v24;
+      v58 = collection;
       size = CGRectZero.size;
       v59.origin = CGRectZero.origin;
       v59.size = size;
@@ -715,8 +715,8 @@ LABEL_13:
       {
         [(BKLibraryBookshelfInfoBadge *)badge sizeThatFits:CGSizeZero.width, CGSizeZero.height];
         v39 = v38;
-        v40 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v40 badgeEndCapWidth];
+        cellMetrics7 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics7 badgeEndCapWidth];
         v42 = v39 + v41 * 2.0;
 
         CGRectDivide(remainder, &v59, &remainder, v42, CGRectMinXEdge);
@@ -730,33 +730,33 @@ LABEL_13:
       IMRectFlippedForRTL();
       [(BKLibraryBookshelfInfoBadge *)self->_badge setFrame:?];
       v43 = CGRectGetHeight(v59) * 0.5;
-      v44 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-      [v44 setCornerRadius:v43];
+      layer = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+      [layer setCornerRadius:v43];
 
-      v45 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-      [v45 cloudSpacing];
+      cellMetrics8 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+      [cellMetrics8 cloudSpacing];
       CGRectDivide(remainder, &v59, &remainder, v46, CGRectMinXEdge);
 
       v47 = [UITraitCollection traitCollectionWithUserInterfaceStyle:[(BKLibraryBookshelfInfoCell *)self currentUserInterfaceStyle]];
-      v48 = [(BKLibraryBookshelfInfoCell *)self badgeFrameColor];
-      v49 = [v48 resolvedColorWithTraitCollection:v47];
-      v50 = [v49 CGColor];
-      v51 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-      [v51 setBorderColor:v50];
+      badgeFrameColor = [(BKLibraryBookshelfInfoCell *)self badgeFrameColor];
+      v49 = [badgeFrameColor resolvedColorWithTraitCollection:v47];
+      cGColor = [v49 CGColor];
+      layer2 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+      [layer2 setBorderColor:cGColor];
 
-      v52 = [(BKLibraryBookshelfInfoCell *)self badgeBackgroundColor];
-      v53 = [v52 resolvedColorWithTraitCollection:v47];
-      v54 = [v53 CGColor];
-      v55 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-      [v55 setBackgroundColor:v54];
+      badgeBackgroundColor = [(BKLibraryBookshelfInfoCell *)self badgeBackgroundColor];
+      v53 = [badgeBackgroundColor resolvedColorWithTraitCollection:v47];
+      cGColor2 = [v53 CGColor];
+      layer3 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+      [layer3 setBackgroundColor:cGColor2];
 
       v26 = v37;
-      v24 = v58;
+      collection = v58;
     }
 
     if (self->_audiobookBadge && !(([(BKLibraryBookshelfInfoCell *)self infoKind]== 10) | v26 & 1))
     {
-      [(BKLibraryBookshelfInfoCell *)self layoutAudioViews:&remainder bounds:v12 == 1 isRTL:v7, v8, v9, v10];
+      [(BKLibraryBookshelfInfoCell *)self layoutAudioViews:&remainder bounds:userInterfaceLayoutDirection == 1 isRTL:v7, v8, v9, v10];
     }
 
     dateBadge = self->_dateBadge;
@@ -772,15 +772,15 @@ LABEL_13:
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(BKLibraryBookshelfInfoCell *)self updateConfiguration:1];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
@@ -823,9 +823,9 @@ LABEL_13:
 
   else
   {
-    v4 = [(BKLibraryAsset *)self->_libraryAsset isAudiobook];
+    isAudiobook = [(BKLibraryAsset *)self->_libraryAsset isAudiobook];
     libraryAsset = self->_libraryAsset;
-    if (v4)
+    if (isAudiobook)
     {
       if ([(BKLibraryAsset *)libraryAsset isOwned])
       {
@@ -849,12 +849,12 @@ LABEL_13:
     }
   }
 
-  v6 = [(BKLibraryBookshelfInfoCell *)self infoKind];
-  if (v3 == 2 || v6 != v3)
+  infoKind = [(BKLibraryBookshelfInfoCell *)self infoKind];
+  if (v3 == 2 || infoKind != v3)
   {
     [(BKLibraryBookshelfInfoCell *)self setInfoKind:v3];
-    v7 = [(BKLibraryBookshelfInfoCell *)self badge];
-    [v7 removeFromSuperview];
+    badge = [(BKLibraryBookshelfInfoCell *)self badge];
+    [badge removeFromSuperview];
 
     [(BKLibraryBookshelfInfoCell *)self setBadge:0];
   }
@@ -867,45 +867,45 @@ LABEL_13:
     return 0;
   }
 
-  v3 = [(BKLibraryBookshelfInfoCell *)self libraryDownloadStatus];
-  v4 = [v3 combinedState] == 4;
+  libraryDownloadStatus = [(BKLibraryBookshelfInfoCell *)self libraryDownloadStatus];
+  v4 = [libraryDownloadStatus combinedState] == 4;
 
   return v4;
 }
 
-- (void)updateConfiguration:(BOOL)a3
+- (void)updateConfiguration:(BOOL)configuration
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10013CAA4;
   v3[3] = &unk_100A044C8;
   v3[4] = self;
-  v4 = a3;
+  configurationCopy = configuration;
   [UIView performWithoutAnimation:v3];
 }
 
 - (BOOL)_shouldRemovePriceBadge
 {
-  v2 = [(BKLibraryBookshelfInfoCell *)self dataSource];
-  v3 = [v2 collection];
+  dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
+  collection = [dataSource collection];
 
-  v4 = [v3 collectionID];
-  v5 = [v4 isEqualToString:kBKCollectionDefaultIDFinished];
+  collectionID = [collection collectionID];
+  v5 = [collectionID isEqualToString:kBKCollectionDefaultIDFinished];
 
-  LOBYTE(v4) = +[BKReachability isOffline];
+  LOBYTE(collectionID) = +[BKReachability isOffline];
   v6 = +[BURestrictionsProvider sharedInstance];
-  v7 = [v6 isBookStoreAllowed];
+  isBookStoreAllowed = [v6 isBookStoreAllowed];
 
-  return v4 & 1 | ((v7 & 1) == 0) | v5 & 1;
+  return collectionID & 1 | ((isBookStoreAllowed & 1) == 0) | v5 & 1;
 }
 
 - (void)createOrUpdateFinishedLabelIfNeeded
 {
-  v3 = [(BKLibraryBookshelfInfoCell *)self dataSource];
-  v4 = [v3 collection];
+  dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
+  collection = [dataSource collection];
 
-  v5 = [v4 collectionID];
-  v6 = [v5 isEqualToString:kBKCollectionDefaultIDFinished];
+  collectionID = [collection collectionID];
+  v6 = [collectionID isEqualToString:kBKCollectionDefaultIDFinished];
 
   if ([(BKLibraryAsset *)self->_libraryAsset isFinished])
   {
@@ -945,38 +945,38 @@ LABEL_13:
     [(BKLibraryBookshelfInfoCell *)self addSubview:self->_dateBadge];
   }
 
-  v5 = [(BKLibraryBookshelfInfoCell *)self libraryAsset];
-  v20 = [v5 expectedDate];
+  libraryAsset = [(BKLibraryBookshelfInfoCell *)self libraryAsset];
+  expectedDate = [libraryAsset expectedDate];
 
-  v6 = v20;
-  if (!v20)
+  v6 = expectedDate;
+  if (!expectedDate)
   {
-    v7 = [(BKLibraryBookshelfInfoCell *)self asset];
-    v8 = [v7 expectedReleaseDate];
-    v9 = v8;
-    if (v8)
+    asset = [(BKLibraryBookshelfInfoCell *)self asset];
+    expectedReleaseDate = [asset expectedReleaseDate];
+    v9 = expectedReleaseDate;
+    if (expectedReleaseDate)
     {
-      v21 = v8;
+      releaseDate = expectedReleaseDate;
     }
 
     else
     {
-      v10 = [(BKLibraryBookshelfInfoCell *)self asset];
-      v21 = [v10 releaseDate];
+      asset2 = [(BKLibraryBookshelfInfoCell *)self asset];
+      releaseDate = [asset2 releaseDate];
     }
 
-    v6 = v21;
+    v6 = releaseDate;
   }
 
   v22 = v6;
   v11 = [JSADateFormatter stringFromDate:v6 dateStyle:1 timeStyle:0];
-  v12 = [(BKLibraryBookshelfInfoCell *)self dataSource];
-  v13 = [v12 infoExpectedDateString];
-  v14 = [NSString stringWithFormat:v13, v11];
+  dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
+  infoExpectedDateString = [dataSource infoExpectedDateString];
+  v14 = [NSString stringWithFormat:infoExpectedDateString, v11];
 
-  v15 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-  v16 = [v15 expectedDateFontAttributes];
-  v17 = [TUIFontSpec attributedStringWith:v14 attributes:v16];
+  cellMetrics = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+  expectedDateFontAttributes = [cellMetrics expectedDateFontAttributes];
+  v17 = [TUIFontSpec attributedStringWith:v14 attributes:expectedDateFontAttributes];
   [(UILabel *)self->_dateBadge setAttributedText:v17];
 
   [(UILabel *)self->_dateBadge setTextAlignment:4];
@@ -996,13 +996,13 @@ LABEL_13:
       audiobookBadge = self->_audiobookBadge;
       self->_audiobookBadge = v7;
 
-      v9 = [(BKLibraryBookshelfInfoCell *)self layer];
-      [v9 addSublayer:self->_audiobookBadge];
+      layer = [(BKLibraryBookshelfInfoCell *)self layer];
+      [layer addSublayer:self->_audiobookBadge];
     }
 
-    v10 = [(BKLibraryBookshelfInfoCell *)self dataSource];
+    dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
     v11 = +[UIColor bc_booksGray];
-    v30 = [v10 infoBarAudiobookImageWithTintColor:v11];
+    v30 = [dataSource infoBarAudiobookImageWithTintColor:v11];
 
     [v30 size];
     self->_audiobookBadgeSize.width = v12;
@@ -1022,36 +1022,36 @@ LABEL_13:
         v18 = +[UIColor bc_booksGray];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setLevelGuttersColor:v18];
 
-        v19 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v19 nowPlayingInterLevelSpacing];
+        cellMetrics = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics nowPlayingInterLevelSpacing];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setInterLevelSpacing:?];
 
-        v20 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v20 nowPlayingLevelCornerRadius];
+        cellMetrics2 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics2 nowPlayingLevelCornerRadius];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setLevelCornerRadius:?];
 
-        v21 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v21 nowPlayingLevelWidth];
+        cellMetrics3 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics3 nowPlayingLevelWidth];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setLevelWidth:?];
 
-        v22 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v22 nowPlayingMaximumLevelHeight];
+        cellMetrics4 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics4 nowPlayingMaximumLevelHeight];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setMaximumLevelHeight:?];
 
-        v23 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        [v23 nowPlayingMinimumLevelHeight];
+        cellMetrics5 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        [cellMetrics5 nowPlayingMinimumLevelHeight];
         [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator setMinimumLevelHeight:?];
 
-        v24 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-        -[MPUNowPlayingIndicatorView setNumberOfLevels:](self->_nowPlayingIndicator, "setNumberOfLevels:", [v24 nowPlayingNumberOfLevels]);
+        cellMetrics6 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+        -[MPUNowPlayingIndicatorView setNumberOfLevels:](self->_nowPlayingIndicator, "setNumberOfLevels:", [cellMetrics6 nowPlayingNumberOfLevels]);
 
         [(BKLibraryBookshelfInfoCell *)self addSubview:self->_nowPlayingIndicator];
         audiobookStatus = self->_audiobookStatus;
       }
 
-      v25 = [(AEAssetAudiobookStatus *)audiobookStatus assetAudiobookStatusIsPlaying];
+      assetAudiobookStatusIsPlaying = [(AEAssetAudiobookStatus *)audiobookStatus assetAudiobookStatusIsPlaying];
       v26 = self->_nowPlayingIndicator;
-      if (v25)
+      if (assetAudiobookStatusIsPlaying)
       {
         [(MPUNowPlayingIndicatorView *)v26 setAlpha:1.0];
         v27 = self->_nowPlayingIndicator;
@@ -1080,9 +1080,9 @@ LABEL_13:
 
   else
   {
-    v3 = [(BKLibraryBookshelfInfoCell *)self audiobookBadge];
+    audiobookBadge = [(BKLibraryBookshelfInfoCell *)self audiobookBadge];
 
-    if (v3)
+    if (audiobookBadge)
     {
       [(CALayer *)self->_audiobookBadge removeFromSuperlayer];
       v4 = self->_audiobookBadge;
@@ -1091,9 +1091,9 @@ LABEL_13:
       [(BKLibraryBookshelfInfoCell *)self setNeedsLayout];
     }
 
-    v5 = [(BKLibraryBookshelfInfoCell *)self nowPlayingIndicator];
+    nowPlayingIndicator = [(BKLibraryBookshelfInfoCell *)self nowPlayingIndicator];
 
-    if (v5)
+    if (nowPlayingIndicator)
     {
       [(MPUNowPlayingIndicatorView *)self->_nowPlayingIndicator removeFromSuperview];
       v6 = self->_nowPlayingIndicator;
@@ -1109,9 +1109,9 @@ LABEL_13:
   moreButton = self->_moreButton;
   if (!moreButton)
   {
-    v4 = [(BKLibraryBookshelfInfoCell *)self dataSource];
+    dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
     v5 = +[UIColor bc_booksGray];
-    v6 = [v4 actionMenuImageWithTintColor:v5];
+    v6 = [dataSource actionMenuImageWithTintColor:v5];
 
     v7 = [BCInsetsFittingButton buttonWithType:0];
     v8 = self->_moreButton;
@@ -1143,9 +1143,9 @@ LABEL_13:
     moreButton = self->_moreButton;
   }
 
-  v18 = [(BCInsetsFittingButton *)moreButton superview];
+  superview = [(BCInsetsFittingButton *)moreButton superview];
 
-  if (!v18)
+  if (!superview)
   {
     v19 = self->_moreButton;
 
@@ -1155,8 +1155,8 @@ LABEL_13:
 
 - (void)createOrUpdateCloudButton
 {
-  v3 = [(BKLibraryBookshelfInfoCell *)self _bookshelfCloudState];
-  if (v3 && (v4 = v3, [(BKLibraryAsset *)self->_libraryAsset contentType]!= 5))
+  _bookshelfCloudState = [(BKLibraryBookshelfInfoCell *)self _bookshelfCloudState];
+  if (_bookshelfCloudState && (v4 = _bookshelfCloudState, [(BKLibraryAsset *)self->_libraryAsset contentType]!= 5))
   {
     if (!self->_cloudButton)
     {
@@ -1164,15 +1164,15 @@ LABEL_13:
       cloudButton = self->_cloudButton;
       self->_cloudButton = v6;
 
-      v8 = [(BCInsetsFittingButton *)self->_cloudButton layer];
-      [v8 setMasksToBounds:1];
+      layer = [(BCInsetsFittingButton *)self->_cloudButton layer];
+      [layer setMasksToBounds:1];
 
       v9 = +[UIColor bc_booksGray];
       [(BCInsetsFittingButton *)self->_cloudButton setTintColor:v9];
     }
 
-    v10 = [(BKLibraryBookshelfInfoCell *)self dataSource];
-    v21 = [v10 templateCloudImageForCloudState:v4];
+    dataSource = [(BKLibraryBookshelfInfoCell *)self dataSource];
+    v21 = [dataSource templateCloudImageForCloudState:v4];
 
     [v21 size];
     v12 = v11;
@@ -1196,9 +1196,9 @@ LABEL_13:
 
     [(BCInsetsFittingButton *)self->_cloudButton setTouchInsets:-v13, -v16, -v13, -v16];
     [(BCInsetsFittingButton *)self->_cloudButton setImage:v21 forState:0];
-    v20 = [(BCInsetsFittingButton *)self->_cloudButton superview];
+    superview = [(BCInsetsFittingButton *)self->_cloudButton superview];
 
-    if (!v20)
+    if (!superview)
     {
       [(BKLibraryBookshelfInfoCell *)self addSubview:self->_cloudButton];
       [(BKLibraryBookshelfInfoCell *)self setNeedsLayout];
@@ -1207,9 +1207,9 @@ LABEL_13:
 
   else
   {
-    v5 = [(BCInsetsFittingButton *)self->_cloudButton superview];
+    superview2 = [(BCInsetsFittingButton *)self->_cloudButton superview];
 
-    if (v5)
+    if (superview2)
     {
       [(BCInsetsFittingButton *)self->_cloudButton removeFromSuperview];
 
@@ -1237,9 +1237,9 @@ LABEL_13:
 
   else
   {
-    v3 = [(IMRadialProgressButton *)self->_downloadProgressButton superview];
+    superview = [(IMRadialProgressButton *)self->_downloadProgressButton superview];
 
-    if (v3)
+    if (superview)
     {
       [(IMRadialProgressButton *)self->_downloadProgressButton removeFromSuperview];
       downloadProgressButton = self->_downloadProgressButton;
@@ -1255,10 +1255,10 @@ LABEL_13:
   if ([(BKLibraryBookshelfInfoCell *)self infoKind]!= 5 && [(BKLibraryBookshelfInfoCell *)self infoKind]!= 6)
   {
     v3 = +[BKLibraryManager defaultManager];
-    v4 = [v3 priceManager];
+    priceManager = [v3 priceManager];
 
-    v5 = [(BKLibraryBookshelfInfoCell *)self libraryAsset];
-    v6 = [v5 storeID];
+    libraryAsset = [(BKLibraryBookshelfInfoCell *)self libraryAsset];
+    storeID = [libraryAsset storeID];
 
     objc_initWeak(&location, self);
     v8[0] = _NSConcreteStackBlock;
@@ -1266,20 +1266,20 @@ LABEL_13:
     v8[2] = sub_10013ED28;
     v8[3] = &unk_100A082E8;
     objc_copyWeak(&v10, &location);
-    v7 = v6;
+    v7 = storeID;
     v9 = v7;
-    [v4 fetchPriceForAssetID:v7 completion:v8];
+    [priceManager fetchPriceForAssetID:v7 completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)createOrUpdateBadgeWithBadgeBackgroundColor:(id)a3 badgeFrameColor:(id)a4 textConfigurationBlock:(id)a5
+- (void)createOrUpdateBadgeWithBadgeBackgroundColor:(id)color badgeFrameColor:(id)frameColor textConfigurationBlock:(id)block
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
+  colorCopy = color;
+  frameColorCopy = frameColor;
+  blockCopy = block;
   if (!self->_badge)
   {
     v10 = objc_alloc_init(BKLibraryBookshelfInfoBadge);
@@ -1290,29 +1290,29 @@ LABEL_13:
     [(BKLibraryBookshelfInfoCell *)self addSubview:self->_badge];
   }
 
-  v12 = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
-  [v12 infoBarHeight];
+  cellMetrics = [(BKLibraryBookshelfInfoCell *)self cellMetrics];
+  [cellMetrics infoBarHeight];
   v14 = v13;
 
-  v9[2](v9, self->_badge);
-  v15 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-  [v15 setBorderWidth:0.0];
+  blockCopy[2](blockCopy, self->_badge);
+  layer = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+  [layer setBorderWidth:0.0];
 
-  if (v22)
+  if (colorCopy)
   {
     [(BKLibraryBookshelfInfoBadge *)self->_badge setTextAlignment:1];
-    v16 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-    [v16 setCornerRadius:v14 * 0.5];
+    layer2 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+    [layer2 setCornerRadius:v14 * 0.5];
 
-    [(BKLibraryBookshelfInfoCell *)self setBadgeBackgroundColor:v22];
+    [(BKLibraryBookshelfInfoCell *)self setBadgeBackgroundColor:colorCopy];
     v17 = +[UIColor clearColor];
-    v18 = [v22 isEqual:v17];
+    v18 = [colorCopy isEqual:v17];
 
     if (v18)
     {
-      [(BKLibraryBookshelfInfoCell *)self setBadgeFrameColor:v8];
-      v19 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
-      [v19 setBorderWidth:1.0];
+      [(BKLibraryBookshelfInfoCell *)self setBadgeFrameColor:frameColorCopy];
+      layer3 = [(BKLibraryBookshelfInfoBadge *)self->_badge layer];
+      [layer3 setBorderWidth:1.0];
     }
 
     else
@@ -1341,31 +1341,31 @@ LABEL_13:
     return 0;
   }
 
-  v5 = [(BKLibraryBookshelfInfoCell *)self libraryDownloadStatus];
-  v6 = v5;
-  if (v5)
+  libraryDownloadStatus = [(BKLibraryBookshelfInfoCell *)self libraryDownloadStatus];
+  v6 = libraryDownloadStatus;
+  if (libraryDownloadStatus)
   {
-    v7 = [v5 state];
+    state = [libraryDownloadStatus state];
   }
 
   else
   {
-    v7 = 0;
+    state = 0;
   }
 
-  v8 = [(BKLibraryAsset *)self->_libraryAsset isCloud];
+  isCloud = [(BKLibraryAsset *)self->_libraryAsset isCloud];
   v9 = 3;
-  if (v7 != 10)
+  if (state != 10)
   {
     v9 = 0;
   }
 
-  if (v7 == 9)
+  if (state == 9)
   {
     v9 = 2;
   }
 
-  if ((v8 & (v7 != 5)) != 0)
+  if ((isCloud & (state != 5)) != 0)
   {
     v3 = 1;
   }
@@ -1378,12 +1378,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_100ACEE78 == a6 || off_100ACEE80 == a6 || off_100ACEE88 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_100ACEE78 == context || off_100ACEE80 == context || off_100ACEE88 == context)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
@@ -1396,7 +1396,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (off_100ACEE60 == a6)
+  if (off_100ACEE60 == context)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -1407,7 +1407,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (off_100ACEE68 == a6)
+  if (off_100ACEE68 == context)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -1418,7 +1418,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (off_100ACEE70 == a6)
+  if (off_100ACEE70 == context)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
@@ -1429,7 +1429,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (off_100ACEE90 == a6)
+  if (off_100ACEE90 == context)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
@@ -1440,7 +1440,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (off_100ACEE98 == a6)
+  if (off_100ACEE98 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -1453,11 +1453,11 @@ LABEL_21:
 
   v16.receiver = self;
   v16.super_class = BKLibraryBookshelfInfoCell;
-  [(BKLibraryBookshelfInfoCell *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(BKLibraryBookshelfInfoCell *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_22:
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1467,15 +1467,15 @@ LABEL_22:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setAudiobookStatus:(id)a3
+- (void)setAudiobookStatus:(id)status
 {
-  v5 = a3;
-  if (self->_audiobookStatus != v5)
+  statusCopy = status;
+  if (self->_audiobookStatus != statusCopy)
   {
-    v9 = v5;
-    v6 = [(BKLibraryBookshelfInfoCell *)self infoKind];
-    v5 = v9;
-    if (!v9 || v6 == 10)
+    v9 = statusCopy;
+    infoKind = [(BKLibraryBookshelfInfoCell *)self infoKind];
+    statusCopy = v9;
+    if (!v9 || infoKind == 10)
     {
       audiobookStatus = self->_audiobookStatus;
       if (audiobookStatus)
@@ -1484,7 +1484,7 @@ LABEL_22:
         [(AEAssetAudiobookStatus *)self->_audiobookStatus removeObserver:self forKeyPath:@"assetAudiobookStatusTrackTimeRemaining" context:off_100ACEE98];
       }
 
-      objc_storeStrong(&self->_audiobookStatus, a3);
+      objc_storeStrong(&self->_audiobookStatus, status);
       v8 = self->_audiobookStatus;
       if (v8)
       {
@@ -1493,7 +1493,7 @@ LABEL_22:
       }
 
       [(BKLibraryBookshelfInfoCell *)self updateConfiguration:1];
-      v5 = v9;
+      statusCopy = v9;
     }
   }
 }

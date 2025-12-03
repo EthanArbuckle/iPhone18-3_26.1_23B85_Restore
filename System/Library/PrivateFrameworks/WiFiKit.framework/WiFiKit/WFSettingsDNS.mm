@@ -1,8 +1,8 @@
 @interface WFSettingsDNS
 + (id)automaticConfig;
 - (NSString)description;
-- (WFSettingsDNS)initWithDictionary:(id)a3;
-- (WFSettingsDNS)initWithServerAddresses:(id)a3 searchDomains:(id)a4;
+- (WFSettingsDNS)initWithDictionary:(id)dictionary;
+- (WFSettingsDNS)initWithServerAddresses:(id)addresses searchDomains:(id)domains;
 @end
 
 @implementation WFSettingsDNS
@@ -16,20 +16,20 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"%@- ", v5];
+  [string appendFormat:@"%@- ", v5];
 
-  v6 = [(WFSettingsDNS *)self serverAddresses];
-  if ([v6 count])
+  serverAddresses = [(WFSettingsDNS *)self serverAddresses];
+  if ([serverAddresses count])
   {
   }
 
   else
   {
-    v7 = [(WFSettingsDNS *)self searchDomains];
-    v8 = [v7 count];
+    searchDomains = [(WFSettingsDNS *)self searchDomains];
+    v8 = [searchDomains count];
 
     if (!v8)
     {
@@ -38,51 +38,51 @@
     }
   }
 
-  [v3 appendString:@"Sever Addresses: "];
+  [string appendString:@"Sever Addresses: "];
   if (self->_serverAddresses)
   {
-    v9 = [(WFSettingsDNS *)self serverAddresses];
-    v10 = [v9 description];
-    [v3 appendFormat:@"%@ ", v10];
+    serverAddresses2 = [(WFSettingsDNS *)self serverAddresses];
+    v10 = [serverAddresses2 description];
+    [string appendFormat:@"%@ ", v10];
   }
 
   else
   {
-    [v3 appendString:@"(None) "];
+    [string appendString:@"(None) "];
   }
 
-  [v3 appendString:@"| Search Domains: "];
-  v11 = [(WFSettingsDNS *)self searchDomains];
+  [string appendString:@"| Search Domains: "];
+  searchDomains2 = [(WFSettingsDNS *)self searchDomains];
 
-  if (v11)
+  if (searchDomains2)
   {
-    v12 = [(WFSettingsDNS *)self searchDomains];
-    v13 = [v12 description];
-    [v3 appendFormat:@"%@ ", v13];
+    searchDomains3 = [(WFSettingsDNS *)self searchDomains];
+    v13 = [searchDomains3 description];
+    [string appendFormat:@"%@ ", v13];
 
     goto LABEL_12;
   }
 
   v14 = @"(None) ";
 LABEL_11:
-  [v3 appendString:v14];
+  [string appendString:v14];
 LABEL_12:
 
-  return v3;
+  return string;
 }
 
-- (WFSettingsDNS)initWithDictionary:(id)a3
+- (WFSettingsDNS)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = WFSettingsDNS;
   v6 = [(WFSettingsDNS *)&v13 init];
   v7 = v6;
-  if (v5)
+  if (dictionaryCopy)
   {
     if (v6)
     {
-      objc_storeStrong(&v6->_items, a3);
+      objc_storeStrong(&v6->_items, dictionary);
       v8 = [(NSDictionary *)v7->_items objectForKey:*MEMORY[0x277CE1710]];
       serverAddresses = v7->_serverAddresses;
       v7->_serverAddresses = v8;
@@ -107,31 +107,31 @@ LABEL_12:
   return v7;
 }
 
-- (WFSettingsDNS)initWithServerAddresses:(id)a3 searchDomains:(id)a4
+- (WFSettingsDNS)initWithServerAddresses:(id)addresses searchDomains:(id)domains
 {
-  v7 = a3;
-  v8 = a4;
+  addressesCopy = addresses;
+  domainsCopy = domains;
   v14.receiver = self;
   v14.super_class = WFSettingsDNS;
   v9 = [(WFSettingsDNS *)&v14 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    objc_storeStrong(&v9->_serverAddresses, a3);
-    if (v7)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v9->_serverAddresses, addresses);
+    if (addressesCopy)
     {
-      [(NSDictionary *)v10 setObject:v7 forKey:*MEMORY[0x277CE1710]];
+      [(NSDictionary *)dictionary setObject:addressesCopy forKey:*MEMORY[0x277CE1710]];
     }
 
-    objc_storeStrong(&v9->_searchDomains, a4);
-    if (v8)
+    objc_storeStrong(&v9->_searchDomains, domains);
+    if (domainsCopy)
     {
-      [(NSDictionary *)v10 setObject:v8 forKey:*MEMORY[0x277CE1708]];
+      [(NSDictionary *)dictionary setObject:domainsCopy forKey:*MEMORY[0x277CE1708]];
     }
 
     items = v9->_items;
-    v9->_items = v10;
-    v12 = v10;
+    v9->_items = dictionary;
+    v12 = dictionary;
   }
 
   return v9;

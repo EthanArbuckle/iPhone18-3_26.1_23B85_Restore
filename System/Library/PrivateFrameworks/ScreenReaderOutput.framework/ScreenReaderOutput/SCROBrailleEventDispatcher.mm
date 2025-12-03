@@ -1,18 +1,18 @@
 @interface SCROBrailleEventDispatcher
 - (BOOL)isValid;
-- (SCROBrailleEventDispatcher)initWithTarget:(id)a3;
+- (SCROBrailleEventDispatcher)initWithTarget:(id)target;
 - (void)_processQueue;
 - (void)dealloc;
-- (void)enqueueEvent:(id)a3;
+- (void)enqueueEvent:(id)event;
 - (void)invalidate;
 - (void)start;
 @end
 
 @implementation SCROBrailleEventDispatcher
 
-- (SCROBrailleEventDispatcher)initWithTarget:(id)a3
+- (SCROBrailleEventDispatcher)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = SCROBrailleEventDispatcher;
   v5 = [(SCROBrailleEventDispatcher *)&v13 init];
@@ -24,7 +24,7 @@
 
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v5->_target, v4);
+      objc_storeWeak(&v5->_target, targetCopy);
     }
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -106,14 +106,14 @@
   return isValid;
 }
 
-- (void)enqueueEvent:(id)a3
+- (void)enqueueEvent:(id)event
 {
-  v6 = a3;
-  v4 = [v6 type];
+  eventCopy = event;
+  type = [eventCopy type];
   [(NSLock *)self->_queueLock lock];
   if (self->_queueSource && self->_runLoop)
   {
-    if (v4)
+    if (type)
     {
       p_queue = &self->_queue;
       if ([(NSMutableArray *)self->_queue count]>= 51)
@@ -127,7 +127,7 @@
       p_queue = &self->_brailleEventQueue;
     }
 
-    [(NSMutableArray *)*p_queue addObject:v6];
+    [(NSMutableArray *)*p_queue addObject:eventCopy];
     CFRunLoopSourceSignal(self->_queueSource);
     CFRunLoopWakeUp(self->_runLoop);
   }
@@ -145,7 +145,7 @@
   [(NSMutableArray *)self->_queue removeAllObjects];
   WeakRetained = objc_loadWeakRetained(&self->_target);
   [(NSLock *)self->_queueLock unlock];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -155,7 +155,7 @@
   v20[2] = __43__SCROBrailleEventDispatcher__processQueue__block_invoke;
   v20[3] = &unk_279B74528;
   v22 = v23;
-  v7 = v6;
+  v7 = array;
   v21 = v7;
   [v4 enumerateObjectsWithOptions:2 usingBlock:v20];
   v18[0] = MEMORY[0x277D85DD0];
@@ -169,8 +169,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [v7 reverseObjectEnumerator];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v25 count:16];
+  reverseObjectEnumerator = [v7 reverseObjectEnumerator];
+  v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v25 count:16];
   if (v10)
   {
     v11 = *v15;
@@ -181,14 +181,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v8 handleEvent:*(*(&v14 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v14 objects:v25 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v25 count:16];
     }
 
     while (v10);

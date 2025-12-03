@@ -2,11 +2,11 @@
 + (id)currentProcess;
 - (FBSProcess)init;
 - (id)_initForCurrentProcess;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)versionedPID;
-- (void)_terminateWithRequest:(id)a3 forWatchdog:(id)a4;
+- (void)_terminateWithRequest:(id)request forWatchdog:(id)watchdog;
 - (void)dealloc;
 @end
 
@@ -40,13 +40,13 @@ uint64_t __28__FBSProcess_currentProcess__block_invoke()
   v2 = [(FBSProcess *)&v10 init];
   if (v2)
   {
-    v3 = [off_1E76BCA18 processHandle];
+    processHandle = [off_1E76BCA18 processHandle];
     handle = v2->_handle;
-    v2->_handle = v3;
+    v2->_handle = processHandle;
 
-    v5 = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
+    identityOfCurrentProcess = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
     identity = v2->_identity;
-    v2->_identity = v5;
+    v2->_identity = identityOfCurrentProcess;
 
     v7 = [off_1E76BC9D8 taskNameForPID:{-[BSProcessHandle pid](v2->_handle, "pid")}];
     taskNameRight = v2->_taskNameRight;
@@ -69,7 +69,7 @@ uint64_t __28__FBSProcess_currentProcess__block_invoke()
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSProcess.m";
     v16 = 1024;
@@ -93,47 +93,47 @@ uint64_t __28__FBSProcess_currentProcess__block_invoke()
 
 - (int64_t)versionedPID
 {
-  v2 = [(BSProcessHandle *)self->_handle auditToken];
-  v3 = [v2 versionedPID];
+  auditToken = [(BSProcessHandle *)self->_handle auditToken];
+  versionedPID = [auditToken versionedPID];
 
-  return v3;
+  return versionedPID;
 }
 
-- (void)_terminateWithRequest:(id)a3 forWatchdog:(id)a4
+- (void)_terminateWithRequest:(id)request forWatchdog:(id)watchdog
 {
-  [(BSProcessHandle *)self->_handle pid:a3];
+  [(BSProcessHandle *)self->_handle pid:request];
 
   getpid();
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcess *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcess *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = FBSProcessPrettyDescription(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = FBSProcessPrettyDescription(selfCopy);
   [v3 appendString:v5 withName:0];
 
-  v6 = [v3 appendBool:-[FBSProcess isRunning](v4 withName:{"isRunning"), @"running"}];
-  objc_sync_exit(v4);
+  v6 = [v3 appendBool:-[FBSProcess isRunning](selfCopy withName:{"isRunning"), @"running"}];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcess *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcess *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

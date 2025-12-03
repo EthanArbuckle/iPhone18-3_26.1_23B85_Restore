@@ -1,47 +1,47 @@
 @interface STConcreteReactorToolService
 - (STReactorToolServiceDelegate)delegate;
-- (void)currentMessageTransportReachabilityMap:(id)a3;
-- (void)scheduleFailStuckMessagesActivity:(id)a3;
-- (void)scheduleMessageRetryActivity:(id)a3;
-- (void)scheduleStoreCleanupActivity:(id)a3;
-- (void)shutdownReactorWithCompletion:(id)a3;
+- (void)currentMessageTransportReachabilityMap:(id)map;
+- (void)scheduleFailStuckMessagesActivity:(id)activity;
+- (void)scheduleMessageRetryActivity:(id)activity;
+- (void)scheduleStoreCleanupActivity:(id)activity;
+- (void)shutdownReactorWithCompletion:(id)completion;
 @end
 
 @implementation STConcreteReactorToolService
 
-- (void)shutdownReactorWithCompletion:(id)a3
+- (void)shutdownReactorWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STConcreteReactorToolService *)self delegate];
-  [v5 shutdownReactorWithCompletion:v4];
+  completionCopy = completion;
+  delegate = [(STConcreteReactorToolService *)self delegate];
+  [delegate shutdownReactorWithCompletion:completionCopy];
 }
 
-- (void)scheduleMessageRetryActivity:(id)a3
+- (void)scheduleMessageRetryActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(STConcreteReactorToolService *)self delegate];
-  [v5 scheduleMessageRetryActivity:v4];
+  activityCopy = activity;
+  delegate = [(STConcreteReactorToolService *)self delegate];
+  [delegate scheduleMessageRetryActivity:activityCopy];
 }
 
-- (void)scheduleStoreCleanupActivity:(id)a3
+- (void)scheduleStoreCleanupActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(STConcreteReactorToolService *)self delegate];
-  [v5 scheduleStoreCleanupActivity:v4];
+  activityCopy = activity;
+  delegate = [(STConcreteReactorToolService *)self delegate];
+  [delegate scheduleStoreCleanupActivity:activityCopy];
 }
 
-- (void)scheduleFailStuckMessagesActivity:(id)a3
+- (void)scheduleFailStuckMessagesActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(STConcreteReactorToolService *)self delegate];
-  [v5 scheduleFailStuckMessagesActivity:v4];
+  activityCopy = activity;
+  delegate = [(STConcreteReactorToolService *)self delegate];
+  [delegate scheduleFailStuckMessagesActivity:activityCopy];
 }
 
-- (void)currentMessageTransportReachabilityMap:(id)a3
+- (void)currentMessageTransportReachabilityMap:(id)map
 {
-  v4 = a3;
-  v5 = [(STConcreteReactorToolService *)self delegate];
-  [v5 currentMessageTransportReachabilityMap:v4];
+  mapCopy = map;
+  delegate = [(STConcreteReactorToolService *)self delegate];
+  [delegate currentMessageTransportReachabilityMap:mapCopy];
 }
 
 - (STReactorToolServiceDelegate)delegate

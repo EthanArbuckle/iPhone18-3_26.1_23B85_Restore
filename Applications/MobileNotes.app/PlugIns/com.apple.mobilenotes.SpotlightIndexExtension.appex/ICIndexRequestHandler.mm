@@ -1,18 +1,18 @@
 @interface ICIndexRequestHandler
 + (BOOL)canIndexInExtension;
 + (void)initialize;
-- (BOOL)isValidItemIdentifier:(id)a3 typeIdentifier:(id)a4;
-- (id)dataForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 error:(id *)a6;
-- (id)fileURLForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 inPlace:(BOOL)a6 error:(id *)a7;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+- (BOOL)isValidItemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier;
+- (id)dataForSearchableIndex:(id)index itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier error:(id *)error;
+- (id)fileURLForSearchableIndex:(id)index itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier inPlace:(BOOL)place error:(id *)error;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation ICIndexRequestHandler
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && qword_10000C5E0 != -1)
+  if (objc_opt_class() == self && qword_10000C5E0 != -1)
   {
     sub_100004450();
   }
@@ -28,9 +28,9 @@
   return byte_10000C5E8;
 }
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   [ICIndexerStateHandler logMethodCall:1];
   v5 = +[ICIndexRequestHandler canIndexInExtension];
   v6 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -48,8 +48,8 @@
     v14[2] = sub_100001B0C;
     v14[3] = &unk_100008400;
     v9 = &v15;
-    v15 = v4;
-    v10 = v4;
+    v15 = handlerCopy;
+    v10 = handlerCopy;
     [v8 reindexAllSearchableItemsWithCompletionHandler:v14];
   }
 
@@ -68,21 +68,21 @@
     v12[2] = sub_100001BA4;
     v12[3] = &unk_100008400;
     v9 = &v13;
-    v13 = v4;
-    v11 = v4;
+    v13 = handlerCopy;
+    v11 = handlerCopy;
     [v8 deleteAllSearchableItemsWithCompletionHandler:v12];
   }
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   [ICIndexerStateHandler logMethodCall:2];
   v8 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_100004630(v6, v8);
+    sub_100004630(identifiersCopy, v8);
   }
 
   v9 = +[ICReindexer reindexer];
@@ -90,38 +90,38 @@
   v12[1] = 3221225472;
   v12[2] = sub_100001D8C;
   v12[3] = &unk_100008428;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = identifiersCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identifiersCopy;
   [v9 reindexSearchableItemsWithObjectIDURIs:v11 completionHandler:v12];
 }
 
-- (id)dataForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 error:(id *)a6
+- (id)dataForSearchableIndex:(id)index itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
   v11 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v18 = NSStringFromSelector(a2);
     v20 = 138412802;
-    v21 = v9;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = typeIdentifierCopy;
     v24 = 2112;
     v25 = v18;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Asked for data for %@ with type %@ in %@", &v20, 0x20u);
   }
 
-  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:v9 typeIdentifier:v10])
+  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:identifierCopy typeIdentifier:typeIdentifierCopy])
   {
     v12 = +[ICSearchIndexer sharedIndexer];
-    v13 = [v12 newContextsForAllDataSources];
-    v14 = [v12 objectForManagedObjectIDURI:v9 inContexts:v13];
+    newContextsForAllDataSources = [v12 newContextsForAllDataSources];
+    v14 = [v12 objectForManagedObjectIDURI:identifierCopy inContexts:newContextsForAllDataSources];
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v14 dataForTypeIdentifier:v10];
+      v15 = [v14 dataForTypeIdentifier:typeIdentifierCopy];
     }
 
     else
@@ -136,9 +136,9 @@
       v20 = 134218498;
       v21 = v19;
       v22 = 2112;
-      v23 = v9;
+      v23 = identifierCopy;
       v24 = 2112;
-      v25 = v10;
+      v25 = typeIdentifierCopy;
       _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Returning %ld bytes for %@ with type %@", &v20, 0x20u);
     }
   }
@@ -151,31 +151,31 @@
   return v15;
 }
 
-- (id)fileURLForSearchableIndex:(id)a3 itemIdentifier:(id)a4 typeIdentifier:(id)a5 inPlace:(BOOL)a6 error:(id *)a7
+- (id)fileURLForSearchableIndex:(id)index itemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier inPlace:(BOOL)place error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
   v12 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v24 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v31 = v10;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = typeIdentifierCopy;
     v34 = 2112;
     v35 = v24;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Asked for file URL for %@ with type %@ in %@", buf, 0x20u);
   }
 
-  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:v10 typeIdentifier:v11])
+  if ([(ICIndexRequestHandler *)self isValidItemIdentifier:identifierCopy typeIdentifier:typeIdentifierCopy])
   {
     v13 = +[ICSearchIndexer sharedIndexer];
-    v14 = [v13 newContextsForAllDataSources];
-    v15 = [v13 objectForManagedObjectIDURI:v10 inContexts:v14];
+    newContextsForAllDataSources = [v13 newContextsForAllDataSources];
+    v15 = [v13 objectForManagedObjectIDURI:identifierCopy inContexts:newContextsForAllDataSources];
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v15 fileURLForTypeIdentifier:v11];
+      v16 = [v15 fileURLForTypeIdentifier:typeIdentifierCopy];
     }
 
     else
@@ -187,7 +187,7 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = v14;
+    v17 = newContextsForAllDataSources;
     v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v18)
     {
@@ -217,9 +217,9 @@
       *buf = 138412802;
       v31 = v16;
       v32 = 2112;
-      v33 = v10;
+      v33 = identifierCopy;
       v34 = 2112;
-      v35 = v11;
+      v35 = typeIdentifierCopy;
       _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "Returning %@ for %@ with type %@", buf, 0x20u);
     }
   }
@@ -232,14 +232,14 @@
   return v16;
 }
 
-- (BOOL)isValidItemIdentifier:(id)a3 typeIdentifier:(id)a4
+- (BOOL)isValidItemIdentifier:(id)identifier typeIdentifier:(id)typeIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  if (identifierCopy && [identifierCopy length])
   {
     v7 = 1;
-    if (v6)
+    if (typeIdentifierCopy)
     {
       goto LABEL_11;
     }
@@ -254,7 +254,7 @@
   }
 
   v7 = 0;
-  if (!v6)
+  if (!typeIdentifierCopy)
   {
 LABEL_8:
     v9 = os_log_create("com.apple.notes", "SearchIndexer");

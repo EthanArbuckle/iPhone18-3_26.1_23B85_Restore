@@ -1,22 +1,22 @@
 @interface BMSystemSettingsMultitasking
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSystemSettingsMultitasking)initWithChildAccount:(id)a3 firstUpdate:(id)a4 buddySetup:(id)a5 buddySetupMultitaskingOff:(id)a6 multitaskingOption:(id)a7 source:(id)a8;
-- (BMSystemSettingsMultitasking)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSystemSettingsMultitasking)initWithChildAccount:(id)account firstUpdate:(id)update buddySetup:(id)setup buddySetupMultitaskingOff:(id)off multitaskingOption:(id)option source:(id)source;
+- (BMSystemSettingsMultitasking)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSystemSettingsMultitasking
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -24,7 +24,7 @@
     goto LABEL_27;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (-[BMSystemSettingsMultitasking hasChildAccount](self, "hasChildAccount") || [v5 hasChildAccount])
   {
     if (![(BMSystemSettingsMultitasking *)self hasChildAccount])
@@ -37,8 +37,8 @@
       goto LABEL_24;
     }
 
-    v6 = [(BMSystemSettingsMultitasking *)self childAccount];
-    if (v6 != [v5 childAccount])
+    childAccount = [(BMSystemSettingsMultitasking *)self childAccount];
+    if (childAccount != [v5 childAccount])
     {
       goto LABEL_24;
     }
@@ -56,8 +56,8 @@
       goto LABEL_24;
     }
 
-    v7 = [(BMSystemSettingsMultitasking *)self firstUpdate];
-    if (v7 != [v5 firstUpdate])
+    firstUpdate = [(BMSystemSettingsMultitasking *)self firstUpdate];
+    if (firstUpdate != [v5 firstUpdate])
     {
       goto LABEL_24;
     }
@@ -75,8 +75,8 @@
       goto LABEL_24;
     }
 
-    v8 = [(BMSystemSettingsMultitasking *)self buddySetup];
-    if (v8 != [v5 buddySetup])
+    buddySetup = [(BMSystemSettingsMultitasking *)self buddySetup];
+    if (buddySetup != [v5 buddySetup])
     {
       goto LABEL_24;
     }
@@ -94,41 +94,41 @@
       goto LABEL_24;
     }
 
-    v9 = [(BMSystemSettingsMultitasking *)self buddySetupMultitaskingOff];
-    if (v9 != [v5 buddySetupMultitaskingOff])
+    buddySetupMultitaskingOff = [(BMSystemSettingsMultitasking *)self buddySetupMultitaskingOff];
+    if (buddySetupMultitaskingOff != [v5 buddySetupMultitaskingOff])
     {
       goto LABEL_24;
     }
   }
 
-  v10 = [(BMSystemSettingsMultitasking *)self multitaskingOption];
-  v11 = [v5 multitaskingOption];
-  v12 = v11;
-  if (v10 == v11)
+  multitaskingOption = [(BMSystemSettingsMultitasking *)self multitaskingOption];
+  multitaskingOption2 = [v5 multitaskingOption];
+  v12 = multitaskingOption2;
+  if (multitaskingOption == multitaskingOption2)
   {
 
     goto LABEL_29;
   }
 
-  v13 = [(BMSystemSettingsMultitasking *)self multitaskingOption];
-  v14 = [v5 multitaskingOption];
-  v15 = [v13 isEqual:v14];
+  multitaskingOption3 = [(BMSystemSettingsMultitasking *)self multitaskingOption];
+  multitaskingOption4 = [v5 multitaskingOption];
+  v15 = [multitaskingOption3 isEqual:multitaskingOption4];
 
   if (v15)
   {
 LABEL_29:
-    v18 = [(BMSystemSettingsMultitasking *)self source];
-    v19 = [v5 source];
-    if (v18 == v19)
+    source = [(BMSystemSettingsMultitasking *)self source];
+    source2 = [v5 source];
+    if (source == source2)
     {
       v16 = 1;
     }
 
     else
     {
-      v20 = [(BMSystemSettingsMultitasking *)self source];
-      v21 = [v5 source];
-      v16 = [v20 isEqual:v21];
+      source3 = [(BMSystemSettingsMultitasking *)self source];
+      source4 = [v5 source];
+      v16 = [source3 isEqual:source4];
     }
 
     goto LABEL_25;
@@ -185,63 +185,63 @@ LABEL_27:
     v6 = 0;
   }
 
-  v7 = [(BMSystemSettingsMultitasking *)self multitaskingOption];
-  v8 = [(BMSystemSettingsMultitasking *)self source];
+  multitaskingOption = [(BMSystemSettingsMultitasking *)self multitaskingOption];
+  source = [(BMSystemSettingsMultitasking *)self source];
   v22[0] = @"childAccount";
-  v9 = v3;
+  null = v3;
   if (!v3)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v23[0] = v9;
+  v20 = null;
+  v23[0] = null;
   v22[1] = @"firstUpdate";
-  v10 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"buddySetup";
-  v11 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v3;
-  v23[2] = v11;
+  v23[2] = null3;
   v22[3] = @"buddySetupMultitaskingOff";
-  v12 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"multitaskingOption";
-  v13 = v7;
-  if (!v7)
+  null5 = multitaskingOption;
+  if (!multitaskingOption)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"source";
-  v14 = v8;
-  if (!v8)
+  null6 = source;
+  if (!source)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (source)
   {
-    if (v7)
+    if (multitaskingOption)
     {
       goto LABEL_27;
     }
@@ -256,7 +256,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!v7)
+  if (!multitaskingOption)
   {
     goto LABEL_35;
   }
@@ -306,22 +306,22 @@ LABEL_31:
   return v15;
 }
 
-- (BMSystemSettingsMultitasking)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSystemSettingsMultitasking)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"childAccount"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"childAccount"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"firstUpdate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"firstUpdate"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
           v17 = 0;
@@ -330,7 +330,7 @@ LABEL_4:
 
         v22 = v8;
         v23 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v48 = a4;
+        errorCopy = error;
         v24 = *MEMORY[0x1E698F240];
         v66 = *MEMORY[0x1E696A578];
         v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"firstUpdate"];
@@ -339,10 +339,10 @@ LABEL_4:
         v26 = v23;
         v8 = v22;
         v27 = v24;
-        a4 = v25;
+        error = v25;
         v10 = 0;
         v17 = 0;
-        *v48 = [v26 initWithDomain:v27 code:2 userInfo:v11];
+        *errorCopy = [v26 initWithDomain:v27 code:2 userInfo:v11];
         goto LABEL_49;
       }
 
@@ -354,14 +354,14 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"buddySetup"];
-    v57 = self;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"buddySetup"];
+    selfCopy = self;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v17 = 0;
           goto LABEL_49;
@@ -369,7 +369,7 @@ LABEL_4:
 
         v28 = v8;
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v49 = a4;
+        errorCopy2 = error;
         v30 = *MEMORY[0x1E698F240];
         v64 = *MEMORY[0x1E696A578];
         v31 = v10;
@@ -383,12 +383,12 @@ LABEL_4:
         v34 = v29;
         v8 = v28;
         v35 = [v34 initWithDomain:v30 code:2 userInfo:v12];
-        a4 = 0;
+        error = 0;
         v17 = 0;
-        *v49 = v35;
+        *errorCopy2 = v35;
 LABEL_48:
 
-        self = v57;
+        self = selfCopy;
 LABEL_49:
 
         goto LABEL_50;
@@ -402,7 +402,7 @@ LABEL_49:
       v53 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"buddySetupMultitaskingOff"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"buddySetupMultitaskingOff"];
     v54 = v10;
     v55 = v8;
     v52 = v7;
@@ -411,11 +411,11 @@ LABEL_49:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v56 = 0;
           v17 = 0;
-          a4 = v53;
+          error = v53;
           goto LABEL_48;
         }
 
@@ -428,7 +428,7 @@ LABEL_49:
         v38 = [v36 initWithDomain:v37 code:2 userInfo:v13];
         v56 = 0;
         v17 = 0;
-        *a4 = v38;
+        *error = v38;
         goto LABEL_57;
       }
 
@@ -440,7 +440,7 @@ LABEL_49:
       v56 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"multitaskingOption"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"multitaskingOption"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v14 = 0;
@@ -452,14 +452,14 @@ LABEL_49:
     {
       v14 = v13;
 LABEL_16:
-      v15 = [v6 objectForKeyedSubscript:@"source"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"source"];
       if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v16 = 0;
 LABEL_19:
-        a4 = v53;
-        v17 = [(BMSystemSettingsMultitasking *)v57 initWithChildAccount:v55 firstUpdate:v54 buddySetup:v53 buddySetupMultitaskingOff:v56 multitaskingOption:v14 source:v16];
-        v57 = v17;
+        error = v53;
+        v17 = [(BMSystemSettingsMultitasking *)selfCopy initWithChildAccount:v55 firstUpdate:v54 buddySetup:v53 buddySetupMultitaskingOff:v56 multitaskingOption:v14 source:v16];
+        selfCopy = v17;
 LABEL_46:
 
 LABEL_47:
@@ -476,7 +476,7 @@ LABEL_47:
         goto LABEL_19;
       }
 
-      if (a4)
+      if (error)
       {
         v51 = objc_alloc(MEMORY[0x1E696ABC0]);
         v47 = *MEMORY[0x1E698F240];
@@ -484,19 +484,19 @@ LABEL_47:
         v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"source"];
         v59 = v42;
         v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-        *a4 = [v51 initWithDomain:v47 code:2 userInfo:v43];
+        *error = [v51 initWithDomain:v47 code:2 userInfo:v43];
       }
 
       v16 = 0;
       v17 = 0;
 LABEL_45:
-      a4 = v53;
+      error = v53;
       goto LABEL_46;
     }
 
-    if (a4)
+    if (error)
     {
-      v50 = a4;
+      errorCopy3 = error;
       v39 = objc_alloc(MEMORY[0x1E696ABC0]);
       v40 = *MEMORY[0x1E698F240];
       v60 = *MEMORY[0x1E696A578];
@@ -506,14 +506,14 @@ LABEL_45:
       v41 = [v39 initWithDomain:v40 code:2 userInfo:v15];
       v14 = 0;
       v17 = 0;
-      *v50 = v41;
+      *errorCopy3 = v41;
       goto LABEL_45;
     }
 
     v14 = 0;
     v17 = 0;
 LABEL_57:
-    a4 = v53;
+    error = v53;
     goto LABEL_47;
   }
 
@@ -524,7 +524,7 @@ LABEL_57:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v17 = 0;
@@ -532,7 +532,7 @@ LABEL_57:
   }
 
   v18 = objc_alloc(MEMORY[0x1E696ABC0]);
-  v19 = a4;
+  errorCopy4 = error;
   v20 = *MEMORY[0x1E698F240];
   v68 = *MEMORY[0x1E696A578];
   v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"childAccount"];
@@ -541,7 +541,7 @@ LABEL_57:
   v21 = [v18 initWithDomain:v20 code:2 userInfo:v9];
   v8 = 0;
   v17 = 0;
-  *v19 = v21;
+  *errorCopy4 = v21;
 LABEL_50:
 
 LABEL_51:
@@ -553,59 +553,59 @@ LABEL_51:
 {
   v3 = objc_opt_new();
   [(BMSystemSettingsMultitasking *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_hasChildAccount)
   {
     childAccount = self->_childAccount;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasFirstUpdate)
   {
     firstUpdate = self->_firstUpdate;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasBuddySetup)
   {
     buddySetup = self->_buddySetup;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasBuddySetupMultitaskingOff)
   {
     buddySetupMultitaskingOff = self->_buddySetupMultitaskingOff;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_multitaskingOption)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_source)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v48.receiver = self;
   v48.super_class = BMSystemSettingsMultitasking;
   v5 = [(BMEventBase *)&v48 init];
@@ -614,12 +614,12 @@ LABEL_51:
     goto LABEL_78;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_76;
       }
@@ -630,18 +630,18 @@ LABEL_51:
       while (1)
       {
         v49 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v49 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v49 & 0x7F) << v7;
@@ -659,9 +659,9 @@ LABEL_51:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_76;
       }
@@ -682,18 +682,18 @@ LABEL_16:
           while (1)
           {
             v49 = 0;
-            v34 = [v4 position] + 1;
-            if (v34 >= [v4 position] && (v35 = objc_msgSend(v4, "position") + 1, v35 <= objc_msgSend(v4, "length")))
+            v34 = [fromCopy position] + 1;
+            if (v34 >= [fromCopy position] && (v35 = objc_msgSend(fromCopy, "position") + 1, v35 <= objc_msgSend(fromCopy, "length")))
             {
-              v36 = [v4 data];
-              [v36 getBytes:&v49 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v33 |= (v49 & 0x7F) << v31;
@@ -711,7 +711,7 @@ LABEL_16:
             }
           }
 
-          v22 = (v33 != 0) & ~[v4 hasError];
+          v22 = (v33 != 0) & ~[fromCopy hasError];
 LABEL_69:
           v44 = 22;
 LABEL_74:
@@ -739,8 +739,8 @@ LABEL_53:
       *(&v5->super.super.isa + v24) = v23;
 
 LABEL_75:
-      v45 = [v4 position];
-      if (v45 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_76;
       }
@@ -756,18 +756,18 @@ LABEL_75:
         while (1)
         {
           v49 = 0;
-          v28 = [v4 position] + 1;
-          if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+          v28 = [fromCopy position] + 1;
+          if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v49 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v27 |= (v49 & 0x7F) << v25;
@@ -785,7 +785,7 @@ LABEL_75:
           }
         }
 
-        v22 = (v27 != 0) & ~[v4 hasError];
+        v22 = (v27 != 0) & ~[fromCopy hasError];
 LABEL_67:
         v44 = 16;
         break;
@@ -797,18 +797,18 @@ LABEL_67:
         while (1)
         {
           v49 = 0;
-          v40 = [v4 position] + 1;
-          if (v40 >= [v4 position] && (v41 = objc_msgSend(v4, "position") + 1, v41 <= objc_msgSend(v4, "length")))
+          v40 = [fromCopy position] + 1;
+          if (v40 >= [fromCopy position] && (v41 = objc_msgSend(fromCopy, "position") + 1, v41 <= objc_msgSend(fromCopy, "length")))
           {
-            v42 = [v4 data];
-            [v42 getBytes:&v49 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v39 |= (v49 & 0x7F) << v37;
@@ -826,7 +826,7 @@ LABEL_67:
           }
         }
 
-        v22 = (v39 != 0) & ~[v4 hasError];
+        v22 = (v39 != 0) & ~[fromCopy hasError];
 LABEL_73:
         v44 = 18;
         break;
@@ -838,18 +838,18 @@ LABEL_73:
         while (1)
         {
           v49 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v49 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v49 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v49 & 0x7F) << v16;
@@ -867,7 +867,7 @@ LABEL_73:
           }
         }
 
-        v22 = (v18 != 0) & ~[v4 hasError];
+        v22 = (v18 != 0) & ~[fromCopy hasError];
 LABEL_71:
         v44 = 20;
         break;
@@ -879,7 +879,7 @@ LABEL_71:
   }
 
 LABEL_76:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_77:
     v46 = 0;
@@ -901,31 +901,31 @@ LABEL_78:
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsMultitasking firstUpdate](self, "firstUpdate")}];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsMultitasking buddySetup](self, "buddySetup")}];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSystemSettingsMultitasking buddySetupMultitaskingOff](self, "buddySetupMultitaskingOff")}];
-  v8 = [(BMSystemSettingsMultitasking *)self multitaskingOption];
-  v9 = [(BMSystemSettingsMultitasking *)self source];
-  v10 = [v3 initWithFormat:@"BMSystemSettingsMultitasking with childAccount: %@, firstUpdate: %@, buddySetup: %@, buddySetupMultitaskingOff: %@, multitaskingOption: %@, source: %@", v4, v5, v6, v7, v8, v9];
+  multitaskingOption = [(BMSystemSettingsMultitasking *)self multitaskingOption];
+  source = [(BMSystemSettingsMultitasking *)self source];
+  v10 = [v3 initWithFormat:@"BMSystemSettingsMultitasking with childAccount: %@, firstUpdate: %@, buddySetup: %@, buddySetupMultitaskingOff: %@, multitaskingOption: %@, source: %@", v4, v5, v6, v7, multitaskingOption, source];
 
   return v10;
 }
 
-- (BMSystemSettingsMultitasking)initWithChildAccount:(id)a3 firstUpdate:(id)a4 buddySetup:(id)a5 buddySetupMultitaskingOff:(id)a6 multitaskingOption:(id)a7 source:(id)a8
+- (BMSystemSettingsMultitasking)initWithChildAccount:(id)account firstUpdate:(id)update buddySetup:(id)setup buddySetupMultitaskingOff:(id)off multitaskingOption:(id)option source:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  accountCopy = account;
+  updateCopy = update;
+  setupCopy = setup;
+  offCopy = off;
+  optionCopy = option;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = BMSystemSettingsMultitasking;
   v20 = [(BMEventBase *)&v22 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (accountCopy)
     {
       v20->_hasChildAccount = 1;
-      v20->_childAccount = [v14 BOOLValue];
+      v20->_childAccount = [accountCopy BOOLValue];
     }
 
     else
@@ -934,10 +934,10 @@ LABEL_78:
       v20->_childAccount = 0;
     }
 
-    if (v15)
+    if (updateCopy)
     {
       v20->_hasFirstUpdate = 1;
-      v20->_firstUpdate = [v15 BOOLValue];
+      v20->_firstUpdate = [updateCopy BOOLValue];
     }
 
     else
@@ -946,10 +946,10 @@ LABEL_78:
       v20->_firstUpdate = 0;
     }
 
-    if (v16)
+    if (setupCopy)
     {
       v20->_hasBuddySetup = 1;
-      v20->_buddySetup = [v16 BOOLValue];
+      v20->_buddySetup = [setupCopy BOOLValue];
     }
 
     else
@@ -958,10 +958,10 @@ LABEL_78:
       v20->_buddySetup = 0;
     }
 
-    if (v17)
+    if (offCopy)
     {
       v20->_hasBuddySetupMultitaskingOff = 1;
-      v20->_buddySetupMultitaskingOff = [v17 BOOLValue];
+      v20->_buddySetupMultitaskingOff = [offCopy BOOLValue];
     }
 
     else
@@ -970,8 +970,8 @@ LABEL_78:
       v20->_buddySetupMultitaskingOff = 0;
     }
 
-    objc_storeStrong(&v20->_multitaskingOption, a7);
-    objc_storeStrong(&v20->_source, a8);
+    objc_storeStrong(&v20->_multitaskingOption, option);
+    objc_storeStrong(&v20->_source, source);
   }
 
   return v20;
@@ -1021,9 +1021,9 @@ LABEL_78:
   return v8;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1031,8 +1031,8 @@ LABEL_78:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSystemSettingsMultitasking alloc] initByReadFrom:v7];
     v4 = v8;

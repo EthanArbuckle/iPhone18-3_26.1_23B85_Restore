@@ -1,41 +1,41 @@
 @interface UpgradeFlowManagerAction
 - (_TtC21CloudRecommendationUI24UpgradeFlowManagerAction)init;
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4;
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error;
 @end
 
 @implementation UpgradeFlowManagerAction
 
-- (void)upgradeFlowManager:(id)a3 didPresentViewController:(id)a4
+- (void)upgradeFlowManager:(id)manager didPresentViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_243A23600();
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   sub_243A2380C();
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_243A238E0();
 }
 
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_243A239B0(a4);
+  failCopy = fail;
+  selfCopy = self;
+  errorCopy = error;
+  sub_243A239B0(error);
 }
 
 - (_TtC21CloudRecommendationUI24UpgradeFlowManagerAction)init

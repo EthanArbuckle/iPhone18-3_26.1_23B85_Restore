@@ -1,22 +1,22 @@
 @interface DefaultsObserver
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DefaultsObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](path);
   swift_unknownObjectRetain();
-  MEMORY[0x1E69E5928](a5);
+  MEMORY[0x1E69E5928](change);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (path)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](path);
   }
 
-  if (a4)
+  if (object)
   {
     _bridgeAnyObjectToAny(_:)();
     outlined init with take of Any(v10, v11);
@@ -28,12 +28,12 @@
     memset(v11, 0, sizeof(v11));
   }
 
-  if (a5)
+  if (change)
   {
     type metadata accessor for NSKeyValueChangeKey();
     lazy protocol witness table accessor for type NSKeyValueChangeKey and conformance NSKeyValueChangeKey();
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    MEMORY[0x1E69E5920](a5);
+    MEMORY[0x1E69E5920](change);
   }
 
   DefaultsObserver.observeValue(forKeyPath:of:change:context:)();

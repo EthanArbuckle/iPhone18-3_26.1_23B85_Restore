@@ -1,28 +1,28 @@
 @interface STHistoricalPickupsCell
-- (STHistoricalPickupsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STHistoricalPickupsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)value;
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4 numberOfLines:(unint64_t)a5;
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4;
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4;
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout numberOfLines:(unint64_t)lines;
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to;
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setValue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setValue:(id)value;
 @end
 
 @implementation STHistoricalPickupsCell
 
-- (STHistoricalPickupsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STHistoricalPickupsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v41.receiver = self;
   v41.super_class = STHistoricalPickupsCell;
-  v5 = [(STTableCell *)&v41 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STTableCell *)&v41 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = [STHistoricalUsageViewController historicalUsageViewControllerOfType:6 graphHeight:62.0];
   historicalUsageViewController = v5->_historicalUsageViewController;
   v5->_historicalUsageViewController = v6;
 
-  v8 = [(STTableCell *)v5 childViewControllers];
-  [v8 addObject:v5->_historicalUsageViewController];
+  childViewControllers = [(STTableCell *)v5 childViewControllers];
+  [childViewControllers addObject:v5->_historicalUsageViewController];
 
   v9 = objc_opt_new();
   pickupMetricsView = v5->_pickupMetricsView;
@@ -50,39 +50,39 @@
   [(UILabel *)v5->_firstUsedAfterPickupLabel setContentHuggingPriority:1 forAxis:v17];
   LODWORD(v18) = 1144766464;
   [(UILabel *)v5->_firstUsedAfterPickupLabel setContentCompressionResistancePriority:1 forAxis:v18];
-  v19 = [(STHistoricalPickupsCell *)v5 contentView];
-  v20 = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v19 addSubview:v20];
-  [v19 addSubview:v5->_pickupMetricsView];
-  v40 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag_0.isa, v20, v5->_pickupMetricsView, 0);
+  contentView = [(STHistoricalPickupsCell *)v5 contentView];
+  view = [(STHistoricalUsageViewController *)v5->_historicalUsageViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [contentView addSubview:view];
+  [contentView addSubview:v5->_pickupMetricsView];
+  v40 = _NSDictionaryOfVariableBindings(&cfstr_Historicalusag_0.isa, view, v5->_pickupMetricsView, 0);
   v21 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[historicalUsageView][_pickupMetricsView]" options:0 metrics:0 views:v40];
   v22 = [v21 mutableCopy];
 
-  v23 = [(STTableCell *)v5 contentLayoutGuide];
-  v24 = [v23 leadingAnchor];
-  v25 = [v20 leadingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  contentLayoutGuide = [(STTableCell *)v5 contentLayoutGuide];
+  leadingAnchor = [contentLayoutGuide leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v22 addObject:v26];
 
-  v27 = [v23 trailingAnchor];
-  v28 = [v20 trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  trailingAnchor = [contentLayoutGuide trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v22 addObject:v29];
 
-  v30 = [v23 leadingAnchor];
-  v31 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView leadingAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  leadingAnchor3 = [contentLayoutGuide leadingAnchor];
+  leadingAnchor4 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView leadingAnchor];
+  v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v22 addObject:v32];
 
-  v33 = [v23 trailingAnchor];
-  v34 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView trailingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  trailingAnchor3 = [contentLayoutGuide trailingAnchor];
+  trailingAnchor4 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView trailingAnchor];
+  v35 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v22 addObject:v35];
 
-  v36 = [v19 bottomAnchor];
-  v37 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:11.0];
+  bottomAnchor = [contentView bottomAnchor];
+  bottomAnchor2 = [(STHorizontallySegmentedView *)v5->_pickupMetricsView bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:11.0];
 
   [(STHistoricalPickupsCell *)v5 setBottomConstraint:v38];
   [v22 addObject:v38];
@@ -104,29 +104,29 @@
   [(PSTableCell *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextHistoricalPickupsCell")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextHistoricalPickupsCell")
   {
     [(STHistoricalPickupsCell *)self historicalUsageViewController];
 
-    if ([v10 isEqualToString:@"currentViewMode"])
+    if ([pathCopy isEqualToString:@"currentViewMode"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
       }
 
-      v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null2)
       {
 
         v14 = 0;
@@ -139,21 +139,21 @@
     {
       [(STHistoricalPickupsCell *)self historicalUsageViewController];
 
-      if ([v10 isEqualToString:@"titleView.hasMultilineLayout"])
+      if ([pathCopy isEqualToString:@"titleView.hasMultilineLayout"])
       {
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v16 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null3 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v16)
+        if (v12 == null3)
         {
 
           v12 = 0;
         }
 
-        v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v17 = [MEMORY[0x277CBEB68] null];
+        v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null4 = [MEMORY[0x277CBEB68] null];
 
-        if (v14 == v17)
+        if (v14 == null4)
         {
 
           v14 = 0;
@@ -166,24 +166,24 @@
       {
         [(STHistoricalPickupsCell *)self pickupMetricsView];
 
-        if (![v10 isEqualToString:@"numberOfLines"])
+        if (![pathCopy isEqualToString:@"numberOfLines"])
         {
           goto LABEL_22;
         }
 
-        v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v18 = [MEMORY[0x277CBEB68] null];
+        v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        null5 = [MEMORY[0x277CBEB68] null];
 
-        if (v12 == v18)
+        if (v12 == null5)
         {
 
           v12 = 0;
         }
 
-        v14 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-        v19 = [MEMORY[0x277CBEB68] null];
+        v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+        null6 = [MEMORY[0x277CBEB68] null];
 
-        if (v14 == v19)
+        if (v14 == null6)
         {
 
           v14 = 0;
@@ -198,85 +198,85 @@
 
   v20.receiver = self;
   v20.super_class = STHistoricalPickupsCell;
-  [(STHistoricalPickupsCell *)&v20 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STHistoricalPickupsCell *)&v20 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_22:
 }
 
-- (void)_currentViewModeDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_currentViewModeDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v7 = [(STHistoricalPickupsCell *)self historicalUsageViewController];
-    v8 = [v7 titleView];
-    v9 = [v8 hasMultilineLayout];
+    historicalUsageViewController = [(STHistoricalPickupsCell *)self historicalUsageViewController];
+    titleView = [historicalUsageViewController titleView];
+    hasMultilineLayout = [titleView hasMultilineLayout];
 
-    v10 = [(STHistoricalPickupsCell *)self pickupMetricsView];
-    v11 = [v10 numberOfLines];
-    v12 = [v11 unsignedIntegerValue];
+    pickupMetricsView = [(STHistoricalPickupsCell *)self pickupMetricsView];
+    numberOfLines = [pickupMetricsView numberOfLines];
+    unsignedIntegerValue = [numberOfLines unsignedIntegerValue];
 
-    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:a4 hasMultilineLayout:v9 numberOfLines:v12];
+    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:to hasMultilineLayout:hasMultilineLayout numberOfLines:unsignedIntegerValue];
   }
 }
 
-- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)a3 to:(BOOL)a4
+- (void)_hasMulitlineLayoutDidChangeFrom:(BOOL)from to:(BOOL)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v5 = a4;
-    v7 = [(STHistoricalPickupsCell *)self historicalUsageViewController];
-    v8 = [v7 currentViewMode];
+    toCopy = to;
+    historicalUsageViewController = [(STHistoricalPickupsCell *)self historicalUsageViewController];
+    currentViewMode = [historicalUsageViewController currentViewMode];
 
-    v9 = [(STHistoricalPickupsCell *)self pickupMetricsView];
-    v10 = [v9 numberOfLines];
-    v11 = [v10 unsignedIntegerValue];
+    pickupMetricsView = [(STHistoricalPickupsCell *)self pickupMetricsView];
+    numberOfLines = [pickupMetricsView numberOfLines];
+    unsignedIntegerValue = [numberOfLines unsignedIntegerValue];
 
-    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:v8 hasMultilineLayout:v5 numberOfLines:v11];
+    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:currentViewMode hasMultilineLayout:toCopy numberOfLines:unsignedIntegerValue];
   }
 }
 
-- (void)_numberOfLinesDidChangeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)_numberOfLinesDidChangeFrom:(unint64_t)from to:(unint64_t)to
 {
-  if (a3 != a4)
+  if (from != to)
   {
-    v10 = [(STHistoricalPickupsCell *)self historicalUsageViewController];
-    v7 = [v10 currentViewMode];
-    v8 = [v10 titleView];
-    v9 = [v8 hasMultilineLayout];
+    historicalUsageViewController = [(STHistoricalPickupsCell *)self historicalUsageViewController];
+    currentViewMode = [historicalUsageViewController currentViewMode];
+    titleView = [historicalUsageViewController titleView];
+    hasMultilineLayout = [titleView hasMultilineLayout];
 
-    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:v7 hasMultilineLayout:v9 numberOfLines:a4];
+    [(STHistoricalPickupsCell *)self _handleEffectiveChangeForViewMode:currentViewMode hasMultilineLayout:hasMultilineLayout numberOfLines:to];
   }
 }
 
-- (void)_handleEffectiveChangeForViewMode:(int64_t)a3 hasMultilineLayout:(BOOL)a4 numberOfLines:(unint64_t)a5
+- (void)_handleEffectiveChangeForViewMode:(int64_t)mode hasMultilineLayout:(BOOL)layout numberOfLines:(unint64_t)lines
 {
-  v6 = a4;
+  layoutCopy = layout;
   v13[1] = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalPickupsCell-%lu-%d-%lu", a3, v6, a5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  lines = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SpecifierIdentifierHistoricalPickupsCell-%lu-%d-%lu", mode, layoutCopy, lines];
   v12 = @"HistoricalPickupsSpecifierIdentifier";
-  v13[0] = v10;
+  v13[0] = lines;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v9 postNotificationName:@"HistoricalPickupsSpecifierIdentifierDidChange" object:self userInfo:v11];
+  [defaultCenter postNotificationName:@"HistoricalPickupsSpecifierIdentifierDidChange" object:self userInfo:v11];
 
   [(STHistoricalPickupsCell *)self setNeedsUpdateConstraints];
-  [v9 postNotificationName:0x2876773C8 object:self];
+  [defaultCenter postNotificationName:0x2876773C8 object:self];
 }
 
 - (id)value
 {
   v4.receiver = self;
   v4.super_class = STHistoricalPickupsCell;
-  v2 = [(PSTableCell *)&v4 value];
+  value = [(PSTableCell *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v82[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 conformsToProtocol:&unk_2876DCA10])
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy && ![valueCopy conformsToProtocol:&unk_2876DCA10])
   {
     goto LABEL_21;
   }
@@ -284,28 +284,28 @@ LABEL_22:
   v81.receiver = self;
   v81.super_class = STHistoricalPickupsCell;
   [(PSTableCell *)&v81 setValue:v5];
-  v6 = [(STHistoricalPickupsCell *)self historicalUsageViewController];
-  [v6 setCoordinator:v5];
+  historicalUsageViewController = [(STHistoricalPickupsCell *)self historicalUsageViewController];
+  [historicalUsageViewController setCoordinator:v5];
 
-  v7 = [v5 viewModel];
-  v8 = [v7 selectedUsageReport];
+  viewModel = [v5 viewModel];
+  selectedUsageReport = [viewModel selectedUsageReport];
 
-  v9 = [v8 type];
+  type = [selectedUsageReport type];
   v79 = v5;
-  if (v9 == 1)
+  if (type == 1)
   {
-    v17 = v8;
-    v18 = [v17 firstPickup];
+    v17 = selectedUsageReport;
+    firstPickup = [v17 firstPickup];
     v19 = +[STScreenTimeSettingsUIBundle bundle];
-    v77 = v8;
-    v75 = v18;
-    if (v18)
+    v77 = selectedUsageReport;
+    v75 = firstPickup;
+    if (firstPickup)
     {
       v20 = objc_opt_new();
       [v20 setTimeStyle:1];
       [v20 setDateStyle:0];
       [v20 setFormattingContext:1];
-      v21 = [v20 stringFromDate:v18];
+      v21 = [v20 stringFromDate:firstPickup];
     }
 
     else
@@ -315,45 +315,45 @@ LABEL_22:
 
     v35 = [v19 localizedStringForKey:@"FirstPickupTime" value:&stru_28766E5A8 table:0];
     v36 = objc_alloc(MEMORY[0x277CCACA8]);
-    v37 = [MEMORY[0x277CBEAF8] currentLocale];
-    v38 = [v17 totalPickups];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    totalPickups = [v17 totalPickups];
 
-    v76 = v35;
-    v24 = [v36 initWithFormat:v35 locale:v37, v38, v21];
+    standaloneWeekdaySymbols = v35;
+    v24 = [v36 initWithFormat:v35 locale:currentLocale, totalPickups, v21];
 
     v34 = v19;
     v25 = [v19 localizedStringForKey:@"FirstPickupTitle" value:&stru_28766E5A8 table:0];
     v26 = [MEMORY[0x277D755B8] imageNamed:@"PickupArrowBig" inBundle:v19];
     v39 = [STSegmentItem alloc];
-    v29 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
     v22 = 0x277D75000uLL;
-    v30 = [MEMORY[0x277D75348] systemGrayColor];
-    v80 = [(STSegmentItem *)v39 initWithTitleText:v25 detailText:v24 titleColor:v29 detailImage:v26 detailImageTintColor:v30];
+    systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+    v80 = [(STSegmentItem *)v39 initWithTitleText:v25 detailText:v24 titleColor:systemGrayColor detailImage:v26 detailImageTintColor:systemGrayColor2];
     v33 = v21;
     v10 = v75;
   }
 
   else
   {
-    if (v9)
+    if (type)
     {
       v22 = 0x277D75000;
       v80 = 0;
       goto LABEL_15;
     }
 
-    v77 = v8;
-    v10 = v8;
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = [v11 firstWeekday];
-    v13 = [v10 dateIntervals];
-    v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v10, "maxPickupDateIntervalIndex")}];
-    v15 = [v14 startDate];
+    v77 = selectedUsageReport;
+    v10 = selectedUsageReport;
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    firstWeekday = [currentCalendar firstWeekday];
+    dateIntervals = [v10 dateIntervals];
+    v14 = [dateIntervals objectAtIndexedSubscript:{objc_msgSend(v10, "maxPickupDateIntervalIndex")}];
+    startDate = [v14 startDate];
 
-    v74 = v15;
+    v74 = startDate;
     if (v10)
     {
-      v16 = [v11 component:512 fromDate:v15] - 1;
+      v16 = [currentCalendar component:512 fromDate:startDate] - 1;
     }
 
     else
@@ -361,96 +361,96 @@ LABEL_22:
       v16 = 0;
     }
 
-    v23 = v12 + v16;
-    v76 = [v11 standaloneWeekdaySymbols];
-    [v76 objectAtIndexedSubscript:{(v23 - 1) % objc_msgSend(v76, "count")}];
-    v24 = v73 = v11;
+    v23 = firstWeekday + v16;
+    standaloneWeekdaySymbols = [currentCalendar standaloneWeekdaySymbols];
+    [standaloneWeekdaySymbols objectAtIndexedSubscript:{(v23 - 1) % objc_msgSend(standaloneWeekdaySymbols, "count")}];
+    v24 = v73 = currentCalendar;
     v25 = +[STScreenTimeSettingsUIBundle bundle];
     v26 = [v25 localizedStringForKey:@"MostPickupsDetailText" value:&stru_28766E5A8 table:0];
     v27 = objc_alloc(MEMORY[0x277CCACA8]);
-    v28 = [MEMORY[0x277CBEAF8] currentLocale];
-    v29 = [v27 initWithFormat:v26 locale:v28, v24, objc_msgSend(v10, "maxPickups")];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
+    systemGrayColor = [v27 initWithFormat:v26 locale:currentLocale2, v24, objc_msgSend(v10, "maxPickups")];
 
-    v30 = [v25 localizedStringForKey:@"MostPickupsTitle" value:&stru_28766E5A8 table:0];
+    systemGrayColor2 = [v25 localizedStringForKey:@"MostPickupsTitle" value:&stru_28766E5A8 table:0];
     v31 = [STSegmentItem alloc];
     v22 = 0x277D75000uLL;
-    v32 = [MEMORY[0x277D75348] systemGrayColor];
-    v80 = [(STSegmentItem *)v31 initWithTitleText:v30 detailText:v29 titleColor:v32 detailImage:0 detailImageTintColor:0];
+    systemGrayColor3 = [MEMORY[0x277D75348] systemGrayColor];
+    v80 = [(STSegmentItem *)v31 initWithTitleText:systemGrayColor2 detailText:systemGrayColor titleColor:systemGrayColor3 detailImage:0 detailImageTintColor:0];
 
     v34 = v73;
     v33 = v74;
   }
 
-  v8 = v77;
+  selectedUsageReport = v77;
 LABEL_15:
-  v40 = v8;
+  v40 = selectedUsageReport;
   v41 = +[STScreenTimeSettingsUIBundle bundle];
   v42 = [v41 localizedStringForKey:@"PickupsCount" value:&stru_28766E5A8 table:0];
   v43 = objc_alloc(MEMORY[0x277CCACA8]);
-  v44 = [MEMORY[0x277CBEAF8] currentLocale];
-  v45 = [v40 totalPickups];
+  currentLocale3 = [MEMORY[0x277CBEAF8] currentLocale];
+  totalPickups2 = [v40 totalPickups];
 
-  v46 = [v43 initWithFormat:v42 locale:v44, v45];
+  v46 = [v43 initWithFormat:v42 locale:currentLocale3, totalPickups2];
   v47 = [v41 localizedStringForKey:@"TotalPickups" value:&stru_28766E5A8 table:0];
   v48 = [STSegmentItem alloc];
-  v49 = [*(v22 + 840) systemGrayColor];
-  v50 = [(STSegmentItem *)v48 initWithTitleText:v47 detailText:v46 titleColor:v49 detailImage:0 detailImageTintColor:0];
+  systemGrayColor4 = [*(v22 + 840) systemGrayColor];
+  v50 = [(STSegmentItem *)v48 initWithTitleText:v47 detailText:v46 titleColor:systemGrayColor4 detailImage:0 detailImageTintColor:0];
 
-  v51 = [(STHistoricalPickupsCell *)self pickupMetricsView];
+  pickupMetricsView = [(STHistoricalPickupsCell *)self pickupMetricsView];
   v52 = v80;
   v82[0] = v80;
   v82[1] = v50;
   v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:2];
-  [v51 setSegmentItems:v53];
+  [pickupMetricsView setSegmentItems:v53];
 
-  v54 = [(STHistoricalPickupsCell *)self contentView];
-  v55 = [(STHistoricalPickupsCell *)self firstUsedAfterPickupLabel];
-  v56 = [v40 pickupsByTrustIdentifier];
-  v57 = [v56 count];
+  contentView = [(STHistoricalPickupsCell *)self contentView];
+  firstUsedAfterPickupLabel = [(STHistoricalPickupsCell *)self firstUsedAfterPickupLabel];
+  pickupsByTrustIdentifier = [v40 pickupsByTrustIdentifier];
+  v57 = [pickupsByTrustIdentifier count];
 
-  v58 = [v54 subviews];
-  v59 = [v58 containsObject:v55];
+  subviews = [contentView subviews];
+  v59 = [subviews containsObject:firstUsedAfterPickupLabel];
 
   if (!v57 || (v59 & 1) != 0)
   {
     if (((v57 == 0) & v59) == 1)
     {
-      [v55 removeFromSuperview];
+      [firstUsedAfterPickupLabel removeFromSuperview];
       [(STHistoricalPickupsCell *)self bottomConstraint];
       v72 = v71 = v50;
       [v72 setActive:1];
 
       v50 = v71;
-      [v54 setNeedsUpdateConstraints];
+      [contentView setNeedsUpdateConstraints];
     }
   }
 
   else
   {
-    [v54 addSubview:v55];
-    v60 = [(STHistoricalPickupsCell *)self bottomConstraint];
-    [v60 setActive:0];
+    [contentView addSubview:firstUsedAfterPickupLabel];
+    bottomConstraint = [(STHistoricalPickupsCell *)self bottomConstraint];
+    [bottomConstraint setActive:0];
 
-    v78 = _NSDictionaryOfVariableBindings(&cfstr_Pickupmetricsv.isa, v51, v55, 0);
+    v78 = _NSDictionaryOfVariableBindings(&cfstr_Pickupmetricsv.isa, pickupMetricsView, firstUsedAfterPickupLabel, 0);
     v61 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[pickupMetricsView]-14.0-[firstUsedAfterPickupLabel]-2.0-|" options:0 metrics:0 views:v78];
     v62 = [v61 mutableCopy];
 
-    v63 = [(STTableCell *)self contentLayoutGuide];
-    v64 = [v63 leadingAnchor];
-    [v55 leadingAnchor];
+    contentLayoutGuide = [(STTableCell *)self contentLayoutGuide];
+    leadingAnchor = [contentLayoutGuide leadingAnchor];
+    [firstUsedAfterPickupLabel leadingAnchor];
     v66 = v65 = v50;
-    v67 = [v64 constraintEqualToAnchor:v66];
+    v67 = [leadingAnchor constraintEqualToAnchor:v66];
     [v62 addObject:v67];
 
-    v68 = [v63 trailingAnchor];
-    v69 = [v55 trailingAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69];
+    trailingAnchor = [contentLayoutGuide trailingAnchor];
+    trailingAnchor2 = [firstUsedAfterPickupLabel trailingAnchor];
+    v70 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v62 addObject:v70];
 
     v52 = v80;
     v50 = v65;
     [MEMORY[0x277CCAAD0] activateConstraints:v62];
-    [v54 setNeedsUpdateConstraints];
+    [contentView setNeedsUpdateConstraints];
   }
 
   v5 = v79;

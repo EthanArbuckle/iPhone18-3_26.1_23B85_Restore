@@ -1,28 +1,28 @@
 @interface UnselectableLinkEnabledTextView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithCoder:(id)a3;
-- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithCoder:(id)coder;
+- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation UnselectableLinkEnabledTextView
 
-- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for UnselectableLinkEnabledTextView();
-  return [(UnselectableLinkEnabledTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(UnselectableLinkEnabledTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithCoder:(id)a3
+- (_TtC16NewsSubscription31UnselectableLinkEnabledTextView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UnselectableLinkEnabledTextView();
-  v4 = a3;
-  v5 = [(UnselectableLinkEnabledTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UnselectableLinkEnabledTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -31,31 +31,31 @@
   return v5;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   objc_opt_self();
   if (swift_dynamicCastObjCClass())
   {
-    v5 = a3;
-    v6 = self;
+    beginCopy = begin;
+    selfCopy = self;
 LABEL_3:
-    [a3 setEnabled_];
+    [begin setEnabled_];
 
     return 0;
   }
 
   objc_opt_self();
   v8 = swift_dynamicCastObjCClass();
-  v9 = a3;
-  v10 = self;
+  beginCopy2 = begin;
+  selfCopy2 = self;
   if (v8 && [v8 numberOfTapsRequired] > 1)
   {
     goto LABEL_3;
   }
 
-  v12.receiver = v10;
+  v12.receiver = selfCopy2;
   v12.super_class = type metadata accessor for UnselectableLinkEnabledTextView();
-  v11 = [(UnselectableLinkEnabledTextView *)&v12 gestureRecognizerShouldBegin:v9];
+  v11 = [(UnselectableLinkEnabledTextView *)&v12 gestureRecognizerShouldBegin:beginCopy2];
 
   return v11;
 }

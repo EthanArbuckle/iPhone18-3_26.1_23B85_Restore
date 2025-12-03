@@ -1,17 +1,17 @@
 @interface MDLocationManager
 - (MDLocationManager)init;
-- (void)_notifyClients:(id)a3 error:(id)a4;
+- (void)_notifyClients:(id)clients error:(id)error;
 - (void)_setupLocationManager;
-- (void)_shiftLocationIfNeeded:(id)a3 withCompletionHandler:(id)a4;
+- (void)_shiftLocationIfNeeded:(id)needed withCompletionHandler:(id)handler;
 - (void)_timeoutOccurred;
 - (void)dealloc;
-- (void)fetchSingleLocationWithAccuracy:(double)a3 timeout:(double)a4 completionHandler:(id)a5;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)mapsInstallStateDidChange:(BOOL)a3;
-- (void)registerLocationObserver:(id)a3;
-- (void)unregisterLocationObserver:(id)a3;
+- (void)fetchSingleLocationWithAccuracy:(double)accuracy timeout:(double)timeout completionHandler:(id)handler;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)mapsInstallStateDidChange:(BOOL)change;
+- (void)registerLocationObserver:(id)observer;
+- (void)unregisterLocationObserver:(id)observer;
 @end
 
 @implementation MDLocationManager
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)registerLocationObserver:(id)a3
+- (void)registerLocationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
     locationQueue = self->_locationQueue;
@@ -79,14 +79,14 @@
     v6[2] = sub_10000EFA8;
     v6[3] = &unk_10003C9D8;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     dispatch_async(locationQueue, v6);
   }
 }
 
-- (void)unregisterLocationObserver:(id)a3
+- (void)unregisterLocationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
     locationQueue = self->_locationQueue;
@@ -95,14 +95,14 @@
     v6[2] = sub_10000F118;
     v6[3] = &unk_10003C9D8;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     dispatch_async(locationQueue, v6);
   }
 }
 
-- (void)fetchSingleLocationWithAccuracy:(double)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)fetchSingleLocationWithAccuracy:(double)accuracy timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
     locationQueue = self->_locationQueue;
@@ -111,11 +111,11 @@
     block[2] = sub_10000F2E4;
     block[3] = &unk_10003CEF8;
     block[4] = self;
-    v16 = v8;
-    v17 = a3;
+    v16 = handlerCopy;
+    accuracyCopy = accuracy;
     dispatch_async(locationQueue, block);
     objc_initWeak(&location, self);
-    v10 = dispatch_time(0, (a4 * 1000000000.0));
+    v10 = dispatch_time(0, (timeout * 1000000000.0));
     v11 = self->_locationQueue;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
@@ -137,25 +137,25 @@
   }
 }
 
-- (void)_shiftLocationIfNeeded:(id)a3 withCompletionHandler:(id)a4
+- (void)_shiftLocationIfNeeded:(id)needed withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 coordinate];
+  neededCopy = needed;
+  handlerCopy = handler;
+  [neededCopy coordinate];
   v10 = [[GEOLatLng alloc] initWithLatitude:v8 longitude:v9];
   [v10 setGtLog:1];
   [v10 coordinate];
   if (([GEOLocationShifter isLocationShiftRequiredForCoordinate:?]& 1) != 0)
   {
     v11 = objc_alloc_init(GEOLocationShifter);
-    [v6 horizontalAccuracy];
+    [neededCopy horizontalAccuracy];
     v13 = v12;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10000F620;
     v16[3] = &unk_10003CF20;
-    v17 = v6;
-    v18 = v7;
+    v17 = neededCopy;
+    v18 = handlerCopy;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10000F6FC;
@@ -166,19 +166,19 @@
 
   else
   {
-    (*(v7 + 2))(v7, v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, neededCopy, 0);
   }
 }
 
-- (void)_notifyClients:(id)a3 error:(id)a4
+- (void)_notifyClients:(id)clients error:(id)error
 {
-  v10 = a3;
-  v6 = a4;
+  clientsCopy = clients;
+  errorCopy = error;
   v7 = objc_retainBlock(self->_completionHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, v10, v6);
+    (*(v7 + 2))(v7, clientsCopy, errorCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
 
@@ -187,7 +187,7 @@
 
   if (([(GEOObserverHashTable *)self->_locationObservers hasObservers]& 1) != 0)
   {
-    [(GEOObserverHashTable *)self->_locationObservers locationDidUpdate:v10 error:v6];
+    [(GEOObserverHashTable *)self->_locationObservers locationDidUpdate:clientsCopy error:errorCopy];
   }
 
   else
@@ -196,10 +196,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = a4;
-  if ([v5 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
     objc_initWeak(&location, self);
     locationQueue = self->_locationQueue;
@@ -208,7 +208,7 @@
     block[2] = sub_10000F8AC;
     block[3] = &unk_10003C920;
     objc_copyWeak(&v9, &location);
-    v8 = v5;
+    v8 = locationsCopy;
     dispatch_async(locationQueue, block);
 
     objc_destroyWeak(&v9);
@@ -216,19 +216,19 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v4 = a4;
+  errorCopy = error;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to get location: %@", &v6, 0xCu);
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   objc_initWeak(&location, self);
   locationQueue = self->_locationQueue;
@@ -243,10 +243,10 @@
   objc_destroyWeak(&location);
 }
 
-- (void)mapsInstallStateDidChange:(BOOL)a3
+- (void)mapsInstallStateDidChange:(BOOL)change
 {
   locationManager = self->_locationManager;
-  if (!a3 || locationManager)
+  if (!change || locationManager)
   {
     [(CLLocationManager *)locationManager stopUpdatingLocation];
     [(CLLocationManager *)self->_locationManager setDelegate:0];

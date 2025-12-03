@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = MTPodcastDatabaseWalDebugProvider;
-  v2 = [(MTPodcastDatabaseDebugProvider *)&v5 debugDataFileName];
-  v3 = [v2 stringByAppendingString:@"-wal"];
+  debugDataFileName = [(MTPodcastDatabaseDebugProvider *)&v5 debugDataFileName];
+  v3 = [debugDataFileName stringByAppendingString:@"-wal"];
 
   return v3;
 }

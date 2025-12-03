@@ -1,43 +1,43 @@
 @interface SleepScheduleClockHandAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axIsValidSleepDurationIncrement:(BOOL)a3 clock:(id)a4 isAdjustingBedtime:(BOOL)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axIsValidSleepDurationIncrement:(BOOL)increment clock:(id)clock isAdjustingBedtime:(BOOL)bedtime;
 - (id)_axEditCell;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (id)decrementComponents:(id)a3;
-- (id)incrementComponents:(id)a3;
+- (id)decrementComponents:(id)components;
+- (id)incrementComponents:(id)components;
 - (void)_axSpeakClockAlertIfNeeded;
 @end
 
 @implementation SleepScheduleClockHandAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClockHand" hasInstanceMethod:@"accessibilityHandIsBedtime" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SleepHealthUI.ScheduleOccurrenceComponentsEditTableViewCell" hasInstanceMethod:@"accessibilityComponentsEditView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityBedtimeTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityWakeUpTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClock" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityRoundedBedtimeComponents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityRoundedWakeUpComponents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilitySetModel:wakeUpComponents:timeInBedGoal:alarmEnabled:isForSingleDayOverride:" withFullSignature:{"v", "@", "@", "d", "B", "B", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityAlarmEnabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"clockDidChange:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClockCaption" hasInstanceMethod:@"accessibilityClockCaptionMessage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityTimeInBed" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityTimeInBedGoal" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"UITableViewCellAccessibilityElement"];
-  [v3 validateClass:@"UITableViewCellAccessibilityElement" hasInstanceMethod:@"realTableViewCell" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClockHand" hasInstanceMethod:@"accessibilityHandIsBedtime" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.ScheduleOccurrenceComponentsEditTableViewCell" hasInstanceMethod:@"accessibilityComponentsEditView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityBedtimeTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityWakeUpTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClock" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityRoundedBedtimeComponents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityRoundedWakeUpComponents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilitySetModel:wakeUpComponents:timeInBedGoal:alarmEnabled:isForSingleDayOverride:" withFullSignature:{"v", "@", "@", "d", "B", "B", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityAlarmEnabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"clockDidChange:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClockCaption" hasInstanceMethod:@"accessibilityClockCaptionMessage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityTimeInBed" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityTimeInBedGoal" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"UITableViewCellAccessibilityElement"];
+  [validationsCopy validateClass:@"UITableViewCellAccessibilityElement" hasInstanceMethod:@"realTableViewCell" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SleepScheduleClockHandAccessibility *)self safeBoolForKey:@"accessibilityHandIsBedtime"];
-  v4 = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
-  v5 = [v4 safeValueForKey:@"accessibilityComponentsEditView"];
+  _axEditCell = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
+  v5 = [_axEditCell safeValueForKey:@"accessibilityComponentsEditView"];
   v6 = [v5 safeValueForKey:@"accessibilityClock"];
   v7 = [v6 safeBoolForKey:@"accessibilityAlarmEnabled"];
 
@@ -62,14 +62,14 @@
 
 - (id)accessibilityValue
 {
-  v2 = self;
-  v3 = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
-  v4 = [v3 safeValueForKey:@"accessibilityComponentsEditView"];
+  selfCopy = self;
+  _axEditCell = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
+  v4 = [_axEditCell safeValueForKey:@"accessibilityComponentsEditView"];
   v5 = [v4 safeValueForKey:@"accessibilityComponentsHeader"];
 
-  LODWORD(v2) = [(SleepScheduleClockHandAccessibility *)v2 safeBoolForKey:@"accessibilityHandIsBedtime"];
+  LODWORD(selfCopy) = [(SleepScheduleClockHandAccessibility *)selfCopy safeBoolForKey:@"accessibilityHandIsBedtime"];
   objc_opt_class();
-  if (v2)
+  if (selfCopy)
   {
     v6 = @"accessibilityBedtimeTimeLabel";
   }
@@ -82,9 +82,9 @@
   v7 = [v5 safeValueForKey:v6];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 text];
+  text = [v8 text];
 
-  return v9;
+  return text;
 }
 
 void __64__SleepScheduleClockHandAccessibility_adjustClockHandIncrement___block_invoke(uint64_t a1)
@@ -127,16 +127,16 @@ void __64__SleepScheduleClockHandAccessibility_adjustClockHandIncrement___block_
   [v13 clockDidChange:*(a1 + 40)];
 }
 
-- (BOOL)_axIsValidSleepDurationIncrement:(BOOL)a3 clock:(id)a4 isAdjustingBedtime:(BOOL)a5
+- (BOOL)_axIsValidSleepDurationIncrement:(BOOL)increment clock:(id)clock isAdjustingBedtime:(BOOL)bedtime
 {
-  v5 = a5;
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v5 || v6)
+  bedtimeCopy = bedtime;
+  incrementCopy = increment;
+  clockCopy = clock;
+  v8 = clockCopy;
+  if (!bedtimeCopy || incrementCopy)
   {
-    [v7 safeDoubleForKey:@"accessibilityTimeInBed"];
-    if (v5 || !v6)
+    [clockCopy safeDoubleForKey:@"accessibilityTimeInBed"];
+    if (bedtimeCopy || !incrementCopy)
     {
       if (v9 > 3600.0)
       {
@@ -151,7 +151,7 @@ LABEL_8:
 
   else
   {
-    [v7 safeDoubleForKey:@"accessibilityTimeInBed"];
+    [clockCopy safeDoubleForKey:@"accessibilityTimeInBed"];
   }
 
   if (v9 >= 72000.0)
@@ -166,57 +166,57 @@ LABEL_9:
   return v10;
 }
 
-- (id)incrementComponents:(id)a3
+- (id)incrementComponents:(id)components
 {
-  v3 = a3;
-  v4 = [v3 minute];
-  v5 = [v3 hour];
-  if (v4 < 55)
+  componentsCopy = components;
+  minute = [componentsCopy minute];
+  hour = [componentsCopy hour];
+  if (minute < 55)
   {
-    [v3 setMinute:v4 + 5];
+    [componentsCopy setMinute:minute + 5];
   }
 
   else
   {
-    v6 = v5;
-    [v3 setMinute:0];
+    v6 = hour;
+    [componentsCopy setMinute:0];
     if (v6 < 23)
     {
       v8 = v6 + 1;
-      v7 = v3;
+      v7 = componentsCopy;
     }
 
     else
     {
-      v7 = v3;
+      v7 = componentsCopy;
       v8 = 0;
     }
 
     [v7 setHour:v8];
   }
 
-  return v3;
+  return componentsCopy;
 }
 
-- (id)decrementComponents:(id)a3
+- (id)decrementComponents:(id)components
 {
-  v3 = a3;
-  v4 = [v3 minute];
-  v5 = [v3 hour];
-  if (v4 <= 0)
+  componentsCopy = components;
+  minute = [componentsCopy minute];
+  hour = [componentsCopy hour];
+  if (minute <= 0)
   {
-    v6 = v5;
-    [v3 setMinute:55];
+    v6 = hour;
+    [componentsCopy setMinute:55];
     if (v6 <= 0)
     {
-      v8 = v3;
+      v8 = componentsCopy;
       v7 = 23;
     }
 
     else
     {
       v7 = v6 - 1;
-      v8 = v3;
+      v8 = componentsCopy;
     }
 
     [v8 setHour:v7];
@@ -224,21 +224,21 @@ LABEL_9:
 
   else
   {
-    [v3 setMinute:v4 - 5];
+    [componentsCopy setMinute:minute - 5];
   }
 
-  return v3;
+  return componentsCopy;
 }
 
 - (void)_axSpeakClockAlertIfNeeded
 {
-  v3 = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
-  v4 = [v3 safeValueForKey:@"accessibilityComponentsEditView"];
+  _axEditCell = [(SleepScheduleClockHandAccessibility *)self _axEditCell];
+  v4 = [_axEditCell safeValueForKey:@"accessibilityComponentsEditView"];
   v5 = [v4 safeValueForKey:@"accessibilityClockCaption"];
   v7 = [v5 safeStringForKey:@"accessibilityClockCaptionMessage"];
 
-  v6 = [(SleepScheduleClockHandAccessibility *)self _axLastSpokenMessage];
-  LOBYTE(v4) = [v7 isEqualToString:v6];
+  _axLastSpokenMessage = [(SleepScheduleClockHandAccessibility *)self _axLastSpokenMessage];
+  LOBYTE(v4) = [v7 isEqualToString:_axLastSpokenMessage];
 
   if ((v4 & 1) == 0)
   {
@@ -249,11 +249,11 @@ LABEL_9:
 
 - (id)_axEditCell
 {
-  v2 = [(SleepScheduleClockHandAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(SleepScheduleClockHandAccessibility *)self accessibilityContainer];
   MEMORY[0x29ED364A0](@"SleepHealthUI.ScheduleOccurrenceComponentsEditTableViewCell");
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessibilityContainer;
 LABEL_5:
     v4 = v3;
     goto LABEL_7;
@@ -262,7 +262,7 @@ LABEL_5:
   MEMORY[0x29ED364A0](@"UITableViewCellAccessibilityElement");
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 safeValueForKey:@"realTableViewCell"];
+    v3 = [accessibilityContainer safeValueForKey:@"realTableViewCell"];
     goto LABEL_5;
   }
 

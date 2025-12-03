@@ -1,26 +1,26 @@
 @interface SB_UIScenePresentationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CGRect)_accessibilityCompareFrameForScrollParent:(id)a3 frame:(CGRect)a4 fromOrientation:(int64_t)a5 toOrientation:(int64_t)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CGRect)_accessibilityCompareFrameForScrollParent:(id)parent frame:(CGRect)frame fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation;
 - (CGRect)_accessibilityFrameForSorting;
 @end
 
 @implementation SB_UIScenePresentationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconView"];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityFrameForSorting" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityCompareFrameForScrollParent:frame:fromOrientation:toOrientation:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconView"];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityFrameForSorting" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityCompareFrameForScrollParent:frame:fromOrientation:toOrientation:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "q", 0}];
 }
 
 - (CGRect)_accessibilityFrameForSorting
 {
-  v3 = [(SB_UIScenePresentationViewAccessibility *)self _accessibilitySpringBoardIconView];
-  v4 = v3;
-  if (v3)
+  _accessibilitySpringBoardIconView = [(SB_UIScenePresentationViewAccessibility *)self _accessibilitySpringBoardIconView];
+  v4 = _accessibilitySpringBoardIconView;
+  if (_accessibilitySpringBoardIconView)
   {
-    [v3 _accessibilityFrameForSorting];
+    [_accessibilitySpringBoardIconView _accessibilityFrameForSorting];
   }
 
   else
@@ -46,25 +46,25 @@
   return result;
 }
 
-- (CGRect)_accessibilityCompareFrameForScrollParent:(id)a3 frame:(CGRect)a4 fromOrientation:(int64_t)a5 toOrientation:(int64_t)a6
+- (CGRect)_accessibilityCompareFrameForScrollParent:(id)parent frame:(CGRect)frame fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = [(SB_UIScenePresentationViewAccessibility *)self _accessibilitySpringBoardIconView];
-  v15 = v14;
-  if (v14)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  parentCopy = parent;
+  _accessibilitySpringBoardIconView = [(SB_UIScenePresentationViewAccessibility *)self _accessibilitySpringBoardIconView];
+  v15 = _accessibilitySpringBoardIconView;
+  if (_accessibilitySpringBoardIconView)
   {
-    [v14 _accessibilityCompareFrameForScrollParent:v13 frame:a5 fromOrientation:a6 toOrientation:{x, y, width, height}];
+    [_accessibilitySpringBoardIconView _accessibilityCompareFrameForScrollParent:parentCopy frame:orientation fromOrientation:toOrientation toOrientation:{x, y, width, height}];
   }
 
   else
   {
     v28.receiver = self;
     v28.super_class = SB_UIScenePresentationViewAccessibility;
-    [(SB_UIScenePresentationViewAccessibility *)&v28 _accessibilityCompareFrameForScrollParent:v13 frame:a5 fromOrientation:a6 toOrientation:x, y, width, height];
+    [(SB_UIScenePresentationViewAccessibility *)&v28 _accessibilityCompareFrameForScrollParent:parentCopy frame:orientation fromOrientation:toOrientation toOrientation:x, y, width, height];
   }
 
   v20 = v16;

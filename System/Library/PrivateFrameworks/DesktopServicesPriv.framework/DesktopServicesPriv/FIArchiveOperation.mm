@@ -1,33 +1,33 @@
 @interface FIArchiveOperation
-- (FIArchiveOperation)initWithSourceItems:(id)a3 destinationItem:(id)a4;
-- (FIArchiveOperation)initWithSourceNodes:(id)a3 destinationFolder:(id)a4;
+- (FIArchiveOperation)initWithSourceItems:(id)items destinationItem:(id)item;
+- (FIArchiveOperation)initWithSourceNodes:(id)nodes destinationFolder:(id)folder;
 - (id)createFPOperation;
 - (id)makeProgress;
 @end
 
 @implementation FIArchiveOperation
 
-- (FIArchiveOperation)initWithSourceNodes:(id)a3 destinationFolder:(id)a4
+- (FIArchiveOperation)initWithSourceNodes:(id)nodes destinationFolder:(id)folder
 {
   v5.receiver = self;
   v5.super_class = FIArchiveOperation;
-  return [(FIOperation *)&v5 init:a3];
+  return [(FIOperation *)&v5 init:nodes];
 }
 
-- (FIArchiveOperation)initWithSourceItems:(id)a3 destinationItem:(id)a4
+- (FIArchiveOperation)initWithSourceItems:(id)items destinationItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = FIArchiveOperation;
-  return [(FIOperation *)&v5 init:a3];
+  return [(FIOperation *)&v5 init:items];
 }
 
 - (id)createFPOperation
 {
   [(FIOperation *)self setExecutedAsFPAction:1];
   v3 = objc_alloc(MEMORY[0x1E69672C0]);
-  v4 = [(FIOperation *)self sourceFPItems];
-  v5 = [(FIOperation *)self destinationFPItem];
-  v6 = [v3 initWithItems:v4 destinationFolder:v5];
+  sourceFPItems = [(FIOperation *)self sourceFPItems];
+  destinationFPItem = [(FIOperation *)self destinationFPItem];
+  v6 = [v3 initWithItems:sourceFPItems destinationFolder:destinationFPItem];
 
   return v6;
 }
@@ -36,14 +36,14 @@
 {
   v7.receiver = self;
   v7.super_class = FIArchiveOperation;
-  v3 = [(FIOperation *)&v7 makeProgress];
-  [v3 setKind:*MEMORY[0x1E696A888]];
-  [v3 setFileOperationKind:*MEMORY[0x1E696A838]];
-  v4 = [(FIOperation *)self destinationNode];
-  v5 = [v4 fileURL];
-  [v3 setFileURL:v5];
+  makeProgress = [(FIOperation *)&v7 makeProgress];
+  [makeProgress setKind:*MEMORY[0x1E696A888]];
+  [makeProgress setFileOperationKind:*MEMORY[0x1E696A838]];
+  destinationNode = [(FIOperation *)self destinationNode];
+  fileURL = [destinationNode fileURL];
+  [makeProgress setFileURL:fileURL];
 
-  return v3;
+  return makeProgress;
 }
 
 @end

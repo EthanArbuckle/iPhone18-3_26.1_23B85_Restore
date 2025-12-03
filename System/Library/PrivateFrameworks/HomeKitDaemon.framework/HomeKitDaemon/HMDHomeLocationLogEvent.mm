@@ -1,6 +1,6 @@
 @interface HMDHomeLocationLogEvent
-+ (id)updateWithHomeDistance:(double)a3;
-- (HMDHomeLocationLogEvent)initWithDistance:(double)a3;
++ (id)updateWithHomeDistance:(double)distance;
+- (HMDHomeLocationLogEvent)initWithDistance:(double)distance;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -24,23 +24,23 @@
   return v6;
 }
 
-- (HMDHomeLocationLogEvent)initWithDistance:(double)a3
+- (HMDHomeLocationLogEvent)initWithDistance:(double)distance
 {
   v5.receiver = self;
   v5.super_class = HMDHomeLocationLogEvent;
   result = [(HMMLogEvent *)&v5 init];
   if (result)
   {
-    result->_isGreatDistance = a3 > 500.0;
-    result->_homeLocationDistance = a3;
+    result->_isGreatDistance = distance > 500.0;
+    result->_homeLocationDistance = distance;
   }
 
   return result;
 }
 
-+ (id)updateWithHomeDistance:(double)a3
++ (id)updateWithHomeDistance:(double)distance
 {
-  v3 = [[HMDHomeLocationLogEvent alloc] initWithDistance:a3];
+  v3 = [[HMDHomeLocationLogEvent alloc] initWithDistance:distance];
 
   return v3;
 }

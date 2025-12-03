@@ -1,23 +1,23 @@
 @interface VKCTextHighlightDot
 - (CALayer)textHighlightLayer;
-- (CGRect)_rectForViewSpace:(CGRect)a3;
+- (CGRect)_rectForViewSpace:(CGRect)space;
 - (CGRect)rectForIndicatorDot;
-- (VKCTextHighlightDot)initWithColor:(id)a3;
+- (VKCTextHighlightDot)initWithColor:(id)color;
 - (VKQuadSideLength)quadSideLength;
 - (double)opacityForCurrentQuadSize;
 - (void)_updateLayout;
-- (void)configureForPulsing:(BOOL)a3;
+- (void)configureForPulsing:(BOOL)pulsing;
 - (void)layoutSubviews;
-- (void)setPulsing:(BOOL)a3;
+- (void)setPulsing:(BOOL)pulsing;
 - (void)updateIndicatorDotForState;
 @end
 
 @implementation VKCTextHighlightDot
 
-- (VKCTextHighlightDot)initWithColor:(id)a3
+- (VKCTextHighlightDot)initWithColor:(id)color
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = VKCTextHighlightDot;
   v6 = [(VKCTextHighlightDot *)&v16 init];
@@ -36,12 +36,12 @@
     circleLayer = v6->_circleLayer;
     v6->_circleLayer = v11;
 
-    objc_storeStrong(&v6->_highlightColor, a3);
-    v13 = [(VKCTextHighlightDot *)v6 layer];
-    [v13 addSublayer:v6->_pulsingLayer];
+    objc_storeStrong(&v6->_highlightColor, color);
+    layer = [(VKCTextHighlightDot *)v6 layer];
+    [layer addSublayer:v6->_pulsingLayer];
 
-    v14 = [(VKCTextHighlightDot *)v6 layer];
-    [v14 addSublayer:v6->_circleLayer];
+    layer2 = [(VKCTextHighlightDot *)v6 layer];
+    [layer2 addSublayer:v6->_circleLayer];
   }
 
   return v6;
@@ -63,10 +63,10 @@
   [(VKCTextHighlightDot *)self opacityForCurrentQuadSize];
   v4 = v3;
   [(UIView *)self setVk_alpha:?];
-  v6 = [(VKCTextHighlightDot *)self textHighlightLayer];
+  textHighlightLayer = [(VKCTextHighlightDot *)self textHighlightLayer];
   v5 = 1.0 - v4;
   *&v7 = v5;
-  [v6 setOpacity:v7];
+  [textHighlightLayer setOpacity:v7];
 
   [(VKCTextHighlightDot *)self setHidden:v4 <= 0.0];
   [(VKCTextHighlightDot *)self setPulsing:0];
@@ -158,37 +158,37 @@
 
 - (void)updateIndicatorDotForState
 {
-  v8 = [(VKCTextHighlightDot *)self circleLayer];
+  circleLayer = [(VKCTextHighlightDot *)self circleLayer];
   [(VKCTextHighlightDot *)self rectForIndicatorDot];
   v4 = v3;
-  [v8 setFrame:?];
-  [v8 setCornerRadius:v4 * 0.5];
-  [v8 setBorderWidth:0.0];
-  [v8 setContents:0];
-  v5 = [(VKCTextHighlightDot *)self highlightColor];
-  [v8 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  [circleLayer setFrame:?];
+  [circleLayer setCornerRadius:v4 * 0.5];
+  [circleLayer setBorderWidth:0.0];
+  [circleLayer setContents:0];
+  highlightColor = [(VKCTextHighlightDot *)self highlightColor];
+  [circleLayer setBackgroundColor:{objc_msgSend(highlightColor, "CGColor")}];
 
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  [v8 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [circleLayer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
   LODWORD(v7) = 1045220557;
-  [v8 setShadowOpacity:v7];
-  [v8 setShadowRadius:8.0];
-  [v8 setMasksToBounds:0];
+  [circleLayer setShadowOpacity:v7];
+  [circleLayer setShadowRadius:8.0];
+  [circleLayer setMasksToBounds:0];
   [(VKCTextHighlightDot *)self setPulsing:1];
 }
 
-- (CGRect)_rectForViewSpace:(CGRect)a3
+- (CGRect)_rectForViewSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VKCTextHighlightDot *)self window];
-  v9 = [v8 screen];
-  v10 = [v9 fixedCoordinateSpace];
-  v11 = [(VKCTextHighlightDot *)self coordinateSpace];
-  [v10 convertRect:v11 toCoordinateSpace:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  window = [(VKCTextHighlightDot *)self window];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
+  coordinateSpace = [(VKCTextHighlightDot *)self coordinateSpace];
+  [fixedCoordinateSpace convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -205,21 +205,21 @@
   return result;
 }
 
-- (void)setPulsing:(BOOL)a3
+- (void)setPulsing:(BOOL)pulsing
 {
-  if (self->_pulsing != a3)
+  if (self->_pulsing != pulsing)
   {
-    self->_pulsing = a3;
+    self->_pulsing = pulsing;
     [(VKCTextHighlightDot *)self configureForPulsing:?];
   }
 }
 
-- (void)configureForPulsing:(BOOL)a3
+- (void)configureForPulsing:(BOOL)pulsing
 {
   v60[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (pulsing)
   {
-    v4 = [(VKCTextHighlightDot *)self pulsingLayer];
+    pulsingLayer = [(VKCTextHighlightDot *)self pulsingLayer];
     v5 = VKMRectWithSize();
     v52 = v6;
     v53 = v5;
@@ -229,8 +229,8 @@
     v12 = v11;
     v54 = v11;
     v55 = v11 * 0.0625;
-    v13 = [(VKCTextHighlightDot *)self layer];
-    [v13 bounds];
+    layer = [(VKCTextHighlightDot *)self layer];
+    [layer bounds];
     v18 = VKMCenterOfRect(v14, v15, v16, v17);
     v20 = v19;
 
@@ -246,65 +246,65 @@
     v59 = v31;
     v56 = v34;
     v57 = v33;
-    [v4 setFrame:{v53, v8, v52, v10}];
-    [v4 setFrame:{v21, v23, v25, v27}];
+    [pulsingLayer setFrame:{v53, v8, v52, v10}];
+    [pulsingLayer setFrame:{v21, v23, v25, v27}];
     v35 = [MEMORY[0x1E69DC888] colorWithRed:0.91796875 green:0.91796875 blue:0.91796875 alpha:0.5];
-    [v4 setBackgroundColor:{objc_msgSend(v35, "CGColor")}];
+    [pulsingLayer setBackgroundColor:{objc_msgSend(v35, "CGColor")}];
 
-    [v4 setCornerRadius:v54 * 0.5];
-    [v4 setBorderWidth:v55];
+    [pulsingLayer setCornerRadius:v54 * 0.5];
+    [pulsingLayer setBorderWidth:v55];
     v36 = [MEMORY[0x1E69DC888] colorWithRed:0.78125 green:0.78125 blue:0.78125 alpha:0.5];
-    [v4 setBorderColor:{objc_msgSend(v36, "CGColor")}];
+    [pulsingLayer setBorderColor:{objc_msgSend(v36, "CGColor")}];
 
-    v37 = [MEMORY[0x1E6979318] animation];
-    [v37 setKeyPath:@"bounds"];
-    [v37 setDuration:1.5];
+    animation = [MEMORY[0x1E6979318] animation];
+    [animation setKeyPath:@"bounds"];
+    [animation setDuration:1.5];
     v38 = [MEMORY[0x1E696B098] vk_valueWithRect:{v21, v23, v25, v27}];
-    [v37 setFromValue:v38];
+    [animation setFromValue:v38];
 
     v39 = [MEMORY[0x1E696B098] vk_valueWithRect:{v59, v58, v57, v56}];
-    [v37 setToValue:v39];
+    [animation setToValue:v39];
 
     v40 = *MEMORY[0x1E6979EB8];
     v41 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    [v37 setTimingFunction:v41];
+    [animation setTimingFunction:v41];
 
     v42 = *MEMORY[0x1E69797E8];
-    [v37 setFillMode:*MEMORY[0x1E69797E8]];
-    [v37 setRemovedOnCompletion:0];
-    v43 = [MEMORY[0x1E6979318] animation];
-    [v43 setKeyPath:@"cornerRadius"];
-    [v43 setDuration:1.5];
+    [animation setFillMode:*MEMORY[0x1E69797E8]];
+    [animation setRemovedOnCompletion:0];
+    animation2 = [MEMORY[0x1E6979318] animation];
+    [animation2 setKeyPath:@"cornerRadius"];
+    [animation2 setDuration:1.5];
     v44 = [MEMORY[0x1E696AD98] numberWithDouble:v54 * 0.5];
-    [v43 setFromValue:v44];
+    [animation2 setFromValue:v44];
 
     v45 = [MEMORY[0x1E696AD98] numberWithDouble:v30 * 0.5];
-    [v43 setToValue:v45];
+    [animation2 setToValue:v45];
 
     v46 = [MEMORY[0x1E69793D0] functionWithName:v40];
-    [v43 setTimingFunction:v46];
+    [animation2 setTimingFunction:v46];
 
-    [v43 setFillMode:v42];
-    [v43 setRemovedOnCompletion:0];
-    v47 = [MEMORY[0x1E6979318] animation];
-    [v47 setDuration:1.5];
-    [v47 setKeyPath:@"opacity"];
-    [v47 setFromValue:&unk_1F2C39138];
-    [v47 setToValue:&unk_1F2C39148];
-    [v47 setFillMode:*MEMORY[0x1E69797E0]];
-    [v47 setRemovedOnCompletion:0];
-    v48 = [MEMORY[0x1E6979308] animation];
-    [v48 setDuration:1.8];
+    [animation2 setFillMode:v42];
+    [animation2 setRemovedOnCompletion:0];
+    animation3 = [MEMORY[0x1E6979318] animation];
+    [animation3 setDuration:1.5];
+    [animation3 setKeyPath:@"opacity"];
+    [animation3 setFromValue:&unk_1F2C39138];
+    [animation3 setToValue:&unk_1F2C39148];
+    [animation3 setFillMode:*MEMORY[0x1E69797E0]];
+    [animation3 setRemovedOnCompletion:0];
+    animation4 = [MEMORY[0x1E6979308] animation];
+    [animation4 setDuration:1.8];
     LODWORD(v49) = 2139095040;
-    [v48 setRepeatCount:v49];
-    [v48 setAutoreverses:1];
-    v60[0] = v37;
-    v60[1] = v43;
-    v60[2] = v47;
+    [animation4 setRepeatCount:v49];
+    [animation4 setAutoreverses:1];
+    v60[0] = animation;
+    v60[1] = animation2;
+    v60[2] = animation3;
     v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:3];
-    [v48 setAnimations:v50];
+    [animation4 setAnimations:v50];
 
-    [(CALayer *)self->_pulsingLayer addAnimation:v48 forKey:@"basic"];
+    [(CALayer *)self->_pulsingLayer addAnimation:animation4 forKey:@"basic"];
   }
 
   else

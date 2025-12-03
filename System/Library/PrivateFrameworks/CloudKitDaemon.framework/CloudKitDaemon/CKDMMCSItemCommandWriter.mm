@@ -1,23 +1,23 @@
 @interface CKDMMCSItemCommandWriter
 - (BOOL)isContiguous;
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7;
-- (CKDMMCSItemCommandWriter)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4;
-- (id)getFileMetadataWithError:(id *)a3;
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error;
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error;
+- (CKDMMCSItemCommandWriter)initWithMMCSItem:(id)item MMCSRequest:(id)request;
+- (id)getFileMetadataWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CKDMMCSItemCommandWriter
 
-- (CKDMMCSItemCommandWriter)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4
+- (CKDMMCSItemCommandWriter)initWithMMCSItem:(id)item MMCSRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v12 = v9;
-  if (v8)
+  itemCopy = item;
+  requestCopy = request;
+  v12 = requestCopy;
+  if (itemCopy)
   {
-    if (v9)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
@@ -35,7 +35,7 @@
   }
 
   v24 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v10, v11);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v24, v25, a2, self, @"CKDMMCSItemCommandWriter.m", 28, @"Expected non-nil MMCS request for %@", v8);
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v24, v25, a2, self, @"CKDMMCSItemCommandWriter.m", 28, @"Expected non-nil MMCS request for %@", itemCopy);
 
 LABEL_3:
   v26.receiver = self;
@@ -44,8 +44,8 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_MMCSItem, a3);
-    objc_storeStrong(&v14->_MMCSRequest, a4);
+    objc_storeStrong(&v13->_MMCSItem, item);
+    objc_storeStrong(&v14->_MMCSRequest, request);
     v17 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v15, v16);
     byteRanges = v14->_byteRanges;
     v14->_byteRanges = v17;
@@ -80,7 +80,7 @@ LABEL_3:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "dealloc, reader:%p", buf, 0xCu);
   }
 
@@ -90,21 +90,21 @@ LABEL_3:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getFileMetadataWithError:(id *)a3
+- (id)getFileMetadataWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1, @"getFileMetadataWithError not implemented");
+    *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1, @"getFileMetadataWithError not implemented");
   }
 
   return 0;
 }
 
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1, @"readBytesAtOffset not implemented", a6);
+    *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], a2, *MEMORY[0x277CBC120], 1, @"readBytesAtOffset not implemented", read);
   }
 
   return 0;
@@ -124,10 +124,10 @@ LABEL_3:
   return (v4 & 1) == 0;
 }
 
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (objc_msgSend_containsIndexesInRange_(self->_byteRanges, a2, a3, a5))
+  if (objc_msgSend_containsIndexesInRange_(self->_byteRanges, a2, offset, length))
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -138,8 +138,8 @@ LABEL_3:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
       v30 = v14;
-      v37.location = a3;
-      v37.length = a5;
+      v37.location = offset;
+      v37.length = length;
       v31 = NSStringFromRange(v37);
       *buf = 138543362;
       v35 = v31;
@@ -147,14 +147,14 @@ LABEL_3:
     }
   }
 
-  objc_msgSend_addIndexesInRange_(self->_byteRanges, v13, a3, a5);
-  if (self->_maximumLength < a5 + a3)
+  objc_msgSend_addIndexesInRange_(self->_byteRanges, v13, offset, length);
+  if (self->_maximumLength < length + offset)
   {
-    self->_maximumLength = a5 + a3;
+    self->_maximumLength = length + offset;
   }
 
-  v16 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v15, a4, a5);
-  v18 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v17, a3);
+  v16 = objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v15, bytes, length);
+  v18 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v17, offset);
   v32[0] = @"Data";
   v32[1] = @"Offset";
   v33[0] = v16;
@@ -164,14 +164,14 @@ LABEL_3:
   v26 = objc_msgSend_MMCSItem(self, v24, v25);
   objc_msgSend_handleCommand_forItem_(v23, v27, v20, v26);
 
-  if (a6)
+  if (written)
   {
-    *a6 = a5;
+    *written = length;
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];

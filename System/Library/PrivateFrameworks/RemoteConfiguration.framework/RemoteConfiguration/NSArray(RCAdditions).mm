@@ -11,13 +11,13 @@
 - (id)rc_description
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = *v18;
@@ -27,7 +27,7 @@
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
@@ -39,8 +39,8 @@
 
         else
         {
-          v9 = [MEMORY[0x277CBEB68] null];
-          v10 = [v7 isEqual:v9];
+          null = [MEMORY[0x277CBEB68] null];
+          v10 = [v7 isEqual:null];
 
           v8 = @"<null>";
           if ((v10 & 1) == 0)
@@ -68,7 +68,7 @@
         [v2 addObject:v8];
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);
@@ -89,15 +89,15 @@
     [NSArray(RCAdditions) rc_firstObjectPassingTest:];
   }
 
-  v5 = [a1 objectEnumerator];
-  v6 = [v5 rc_firstObjectPassingTest:v4];
+  objectEnumerator = [self objectEnumerator];
+  v6 = [objectEnumerator rc_firstObjectPassingTest:v4];
 
   return v6;
 }
 
 - (BOOL)rc_containsObjectPassingTest:()RCAdditions
 {
-  v1 = [a1 rc_firstObjectPassingTest:?];
+  v1 = [self rc_firstObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -106,7 +106,7 @@
 - (id)rc_arrayByTransformingWithBlockWithIndex:()RCAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__NSArray_RCAdditions__rc_arrayByTransformingWithBlockWithIndex___block_invoke;
@@ -115,7 +115,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 
@@ -131,7 +131,7 @@
   v8[3] = &unk_27822F3F0;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 rc_arrayByTransformingWithBlockWithIndex:v8];
+  v6 = [self rc_arrayByTransformingWithBlockWithIndex:v8];
 
   return v6;
 }

@@ -1,15 +1,15 @@
 @interface BSUIDailyReadingMetrics
 + (id)attributesKindMapping;
 + (id)supportedAttributes;
-+ (unint64_t)defaultKindForAttribute:(unsigned __int16)a3;
++ (unint64_t)defaultKindForAttribute:(unsigned __int16)attribute;
 + (void)registerAttributes;
 - (BOOL)isAX;
-- (BSUIDailyReadingMetrics)initWithNode:(id)a3 attributes:(id)a4 context:(id)a5;
+- (BSUIDailyReadingMetrics)initWithNode:(id)node attributes:(id)attributes context:(id)context;
 - (id)description;
-- (void)configureIconMode:(BOOL)a3;
+- (void)configureIconMode:(BOOL)mode;
 - (void)defaultsMissingMetrics;
-- (void)parseDailyReadingData:(id)a3;
-- (void)updateWithConfiguration:(id)a3 context:(id)a4;
+- (void)parseDailyReadingData:(id)data;
+- (void)updateWithConfiguration:(id)configuration context:(id)context;
 @end
 
 @implementation BSUIDailyReadingMetrics
@@ -54,54 +54,54 @@
   return v3;
 }
 
-+ (unint64_t)defaultKindForAttribute:(unsigned __int16)a3
++ (unint64_t)defaultKindForAttribute:(unsigned __int16)attribute
 {
-  v3 = a3;
-  v4 = [a1 attributesKindMapping];
-  if (v3)
+  attributeCopy = attribute;
+  attributesKindMapping = [self attributesKindMapping];
+  if (attributeCopy)
   {
-    v5 = [TUIAttributeRegistry nameForAttribute:v3];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 unsignedIntegerValue];
+    v5 = [TUIAttributeRegistry nameForAttribute:attributeCopy];
+    v6 = [attributesKindMapping objectForKeyedSubscript:v5];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (BSUIDailyReadingMetrics)initWithNode:(id)a3 attributes:(id)a4 context:(id)a5
+- (BSUIDailyReadingMetrics)initWithNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  contextCopy = context;
   v86.receiver = self;
   v86.super_class = BSUIDailyReadingMetrics;
   v10 = [(BSUIDailyReadingMetrics *)&v86 init];
   if (v10)
   {
     objc_opt_class();
-    var0 = a3.var0;
-    v12 = [v8 stringForAttribute:137 node:a3.var0];
+    var0 = node.var0;
+    v12 = [attributesCopy stringForAttribute:137 node:node.var0];
     v83 = BUDynamicCast();
 
-    [v8 floatForAttribute:BSUIAttributeReadingGoal node:var0];
+    [attributesCopy floatForAttribute:BSUIAttributeReadingGoal node:var0];
     v70 = fmax(v13, 0.0);
-    [v8 floatForAttribute:BSUIAttributeReadingTime node:var0];
+    [attributesCopy floatForAttribute:BSUIAttributeReadingTime node:var0];
     v75 = fmax(v14, 0.0);
-    [v8 floatForAttribute:BSUIAttributeProgressToday node:var0];
+    [attributesCopy floatForAttribute:BSUIAttributeProgressToday node:var0];
     v16 = fmax(v15, 0.0);
-    v17 = [v8 BOOLForAttribute:BSUIAttributeIconMode node:var0];
-    v18 = [v8 stringForAttribute:206 node:var0];
-    v19 = [v8 stringForAttribute:BSUIAttributeDetailText node:var0];
-    v64 = [v8 stringForAttribute:BSUIAttributeTimeDisplayedText node:var0];
-    v66 = [v8 colorForAttribute:BSUIAttributeControlColor node:var0];
-    v68 = [v8 colorForAttribute:BSUIAttributeProgressColor node:var0];
-    v73 = [v8 colorForAttribute:30 node:var0];
-    v77 = [v8 colorForAttribute:BSUIAttributeTextColor node:var0];
-    v20 = [v8 fontSpecForNode:var0];
+    v17 = [attributesCopy BOOLForAttribute:BSUIAttributeIconMode node:var0];
+    v18 = [attributesCopy stringForAttribute:206 node:var0];
+    v19 = [attributesCopy stringForAttribute:BSUIAttributeDetailText node:var0];
+    v64 = [attributesCopy stringForAttribute:BSUIAttributeTimeDisplayedText node:var0];
+    v66 = [attributesCopy colorForAttribute:BSUIAttributeControlColor node:var0];
+    v68 = [attributesCopy colorForAttribute:BSUIAttributeProgressColor node:var0];
+    v73 = [attributesCopy colorForAttribute:30 node:var0];
+    v77 = [attributesCopy colorForAttribute:BSUIAttributeTextColor node:var0];
+    v20 = [attributesCopy fontSpecForNode:var0];
     v21 = 8;
     if (v17)
     {
@@ -110,27 +110,27 @@
 
     v81 = v20;
     v82 = v21;
-    v22 = [v9 environment];
-    v80 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 contentSizeCategory]);
+    environment = [contextCopy environment];
+    v80 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [environment contentSizeCategory]);
 
-    v23 = [v9 environment];
-    v78 = [v23 style] == &dword_0 + 2;
+    environment2 = [contextCopy environment];
+    v78 = [environment2 style] == &dword_0 + 2;
 
-    v24 = [v9 environment];
-    v74 = [v24 layoutDirection] == &dword_0 + 2;
+    environment3 = [contextCopy environment];
+    v74 = [environment3 layoutDirection] == &dword_0 + 2;
 
-    v25 = [v9 environment];
-    [v25 contentsScale];
+    environment4 = [contextCopy environment];
+    [environment4 contentsScale];
     v27 = v26;
 
-    v72 = [v8 stringForAttribute:142 node:var0];
-    [v8 floatForAttribute:143 node:var0];
+    v72 = [attributesCopy stringForAttribute:142 node:var0];
+    [attributesCopy floatForAttribute:143 node:var0];
     v29 = v28;
-    v30 = [v8 stringForAttribute:144 node:var0];
+    v30 = [attributesCopy stringForAttribute:144 node:var0];
     v79 = [TUIBox triggerStateFromString:v30];
 
-    v31 = [v9 environment];
-    v85 = [v31 useFontFallback];
+    environment5 = [contextCopy environment];
+    useFontFallback = [environment5 useFontFallback];
 
     name = v10->_name;
     v10->_name = v83;
@@ -211,52 +211,52 @@
     v10->_targetTriggerState = v79;
     v10->_timeSeparator = 0;
 
-    v10->_useFontFallback = v85;
+    v10->_useFontFallback = useFontFallback;
     [(BSUIDailyReadingMetrics *)v10 defaultsMissingMetrics];
   }
 
   return v10;
 }
 
-- (void)updateWithConfiguration:(id)a3 context:(id)a4
+- (void)updateWithConfiguration:(id)configuration context:(id)context
 {
-  v5 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
-  v6 = [v5 dataForKey:@"daily-reading-data"];
+  v6 = [configurationCopy dataForKey:@"daily-reading-data"];
   v35 = BUDynamicCast();
 
-  v7 = [v5 dataForKey:@"current-reading-time"];
+  v7 = [configurationCopy dataForKey:@"current-reading-time"];
   objc_opt_class();
   objc_opt_class();
   v8 = BUDynamicCast();
-  v9 = [v8 value];
+  value = [v8 value];
   v30 = v7;
   v10 = BUDynamicCast();
 
   objc_opt_class();
-  v11 = [v5 dataForKey:@"goal-reading-time"];
+  v11 = [configurationCopy dataForKey:@"goal-reading-time"];
   v29 = BUDynamicCast();
 
   v12 = v10;
   objc_opt_class();
-  v13 = [v5 dataForKey:@"progress-today"];
+  v13 = [configurationCopy dataForKey:@"progress-today"];
   v34 = BUDynamicCast();
 
-  v28 = [v5 BOOLForKey:@"icon-mode"];
-  v33 = [v5 colorForKey:@"control-color"];
-  v32 = [v5 colorForKey:@"progress-color"];
-  v14 = [v5 colorForKey:@"background-color"];
-  v15 = [v5 colorForKey:@"text-color"];
+  v28 = [configurationCopy BOOLForKey:@"icon-mode"];
+  v33 = [configurationCopy colorForKey:@"control-color"];
+  v32 = [configurationCopy colorForKey:@"progress-color"];
+  v14 = [configurationCopy colorForKey:@"background-color"];
+  v15 = [configurationCopy colorForKey:@"text-color"];
   objc_opt_class();
-  v16 = [v5 dataForKey:@"arc-width"];
+  v16 = [configurationCopy dataForKey:@"arc-width"];
   v31 = BUDynamicCast();
 
   objc_opt_class();
-  v17 = [v5 dataForKey:@"progress-bar-width"];
+  v17 = [configurationCopy dataForKey:@"progress-bar-width"];
   v18 = BUDynamicCast();
 
   objc_opt_class();
-  v19 = [v5 dataForKey:@"opacity"];
+  v19 = [configurationCopy dataForKey:@"opacity"];
   v20 = BUDynamicCast();
   v21 = v20;
   v22 = &off_39B530;
@@ -267,9 +267,9 @@
 
   v23 = v22;
 
-  v24 = [v5 fontSpecForKey:@"time-text-style"];
-  v25 = [v5 BOOLForKey:@"clock-ticks"];
-  v26 = [v5 stringForKey:@"time-separator"];
+  v24 = [configurationCopy fontSpecForKey:@"time-text-style"];
+  v25 = [configurationCopy BOOLForKey:@"clock-ticks"];
+  v26 = [configurationCopy stringForKey:@"time-separator"];
 
   if (v35)
   {
@@ -404,17 +404,17 @@
 
 - (BOOL)isAX
 {
-  v2 = [(BSUIDailyReadingMetrics *)self axValue];
-  v3 = [v2 integerValue] > 7;
+  axValue = [(BSUIDailyReadingMetrics *)self axValue];
+  v3 = [axValue integerValue] > 7;
 
   return v3;
 }
 
-- (void)parseDailyReadingData:(id)a3
+- (void)parseDailyReadingData:(id)data
 {
-  v12 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v4 = [v12 objectForKeyedSubscript:@"dynamicProgressToday"];
+  v4 = [dataCopy objectForKeyedSubscript:@"dynamicProgressToday"];
   v5 = BUDynamicCast();
 
   if (v5)
@@ -423,7 +423,7 @@
   }
 
   objc_opt_class();
-  v6 = [v12 objectForKeyedSubscript:@"streakDayGoal"];
+  v6 = [dataCopy objectForKeyedSubscript:@"streakDayGoal"];
   v7 = BUDynamicCast();
 
   if (v7)
@@ -432,7 +432,7 @@
   }
 
   objc_opt_class();
-  v8 = [v12 objectForKeyedSubscript:@"timeReadToday"];
+  v8 = [dataCopy objectForKeyedSubscript:@"timeReadToday"];
   v9 = BUDynamicCast();
 
   if (v9)
@@ -441,7 +441,7 @@
   }
 
   objc_opt_class();
-  v10 = [v12 objectForKeyedSubscript:@"completedReadingGoal"];
+  v10 = [dataCopy objectForKeyedSubscript:@"completedReadingGoal"];
   v11 = BUDynamicCast();
 
   if (v11)
@@ -450,10 +450,10 @@
   }
 }
 
-- (void)configureIconMode:(BOOL)a3
+- (void)configureIconMode:(BOOL)mode
 {
-  self->_iconMode = a3;
-  if (a3)
+  self->_iconMode = mode;
+  if (mode)
   {
     v4 = 3;
   }
@@ -472,42 +472,42 @@
 {
   v3 = objc_opt_class();
   v40 = NSStringFromClass(v3);
-  v41 = [(BSUIDailyReadingMetrics *)self name];
+  name = [(BSUIDailyReadingMetrics *)self name];
   v38 = [NSNumber numberWithBool:[(BSUIDailyReadingMetrics *)self iconMode]];
-  v39 = [(BSUIDailyReadingMetrics *)self readingGoalSeconds];
-  v18 = [(BSUIDailyReadingMetrics *)self actualReadingTimeSeconds];
+  readingGoalSeconds = [(BSUIDailyReadingMetrics *)self readingGoalSeconds];
+  actualReadingTimeSeconds = [(BSUIDailyReadingMetrics *)self actualReadingTimeSeconds];
   [(BSUIDailyReadingMetrics *)self progressToday];
   v5 = v4;
-  v37 = [(BSUIDailyReadingMetrics *)self lastVisibleProgressToday];
-  v23 = [(BSUIDailyReadingMetrics *)self lastVisibleProgressToday];
-  v36 = [v23 value];
-  v35 = [(BSUIDailyReadingMetrics *)self dynamicStreakDayGoal];
-  v22 = [(BSUIDailyReadingMetrics *)self dynamicStreakDayGoal];
-  v32 = [v22 value];
-  v34 = [(BSUIDailyReadingMetrics *)self dynamicTimeReadToday];
-  v21 = [(BSUIDailyReadingMetrics *)self dynamicTimeReadToday];
-  v17 = [v21 value];
-  v33 = [(BSUIDailyReadingMetrics *)self dynamicCompletedReadingGoal];
-  v19 = [(BSUIDailyReadingMetrics *)self dynamicCompletedReadingGoal];
-  v31 = [v19 value];
-  v16 = [(BSUIDailyReadingMetrics *)self title];
-  v30 = [(BSUIDailyReadingMetrics *)self detailText];
-  v29 = [(BSUIDailyReadingMetrics *)self timeDisplayedText];
-  v28 = [(BSUIDailyReadingMetrics *)self controlColor];
-  v27 = [(BSUIDailyReadingMetrics *)self progressColor];
-  v26 = [(BSUIDailyReadingMetrics *)self backgroundColor];
-  v25 = [(BSUIDailyReadingMetrics *)self textColor];
-  v24 = [(BSUIDailyReadingMetrics *)self timeFontSpec];
-  v15 = [(BSUIDailyReadingMetrics *)self arcWidth];
-  v14 = [(BSUIDailyReadingMetrics *)self progressBarWidth];
-  v6 = [(BSUIDailyReadingMetrics *)self axValue];
-  v7 = [(BSUIDailyReadingMetrics *)self nightMode];
-  v8 = [(BSUIDailyReadingMetrics *)self rightToLeft];
-  v9 = [(BSUIDailyReadingMetrics *)self triggerName];
-  v10 = [(BSUIDailyReadingMetrics *)self triggerDelay];
+  lastVisibleProgressToday = [(BSUIDailyReadingMetrics *)self lastVisibleProgressToday];
+  lastVisibleProgressToday2 = [(BSUIDailyReadingMetrics *)self lastVisibleProgressToday];
+  value = [lastVisibleProgressToday2 value];
+  dynamicStreakDayGoal = [(BSUIDailyReadingMetrics *)self dynamicStreakDayGoal];
+  dynamicStreakDayGoal2 = [(BSUIDailyReadingMetrics *)self dynamicStreakDayGoal];
+  value2 = [dynamicStreakDayGoal2 value];
+  dynamicTimeReadToday = [(BSUIDailyReadingMetrics *)self dynamicTimeReadToday];
+  dynamicTimeReadToday2 = [(BSUIDailyReadingMetrics *)self dynamicTimeReadToday];
+  value3 = [dynamicTimeReadToday2 value];
+  dynamicCompletedReadingGoal = [(BSUIDailyReadingMetrics *)self dynamicCompletedReadingGoal];
+  dynamicCompletedReadingGoal2 = [(BSUIDailyReadingMetrics *)self dynamicCompletedReadingGoal];
+  value4 = [dynamicCompletedReadingGoal2 value];
+  title = [(BSUIDailyReadingMetrics *)self title];
+  detailText = [(BSUIDailyReadingMetrics *)self detailText];
+  timeDisplayedText = [(BSUIDailyReadingMetrics *)self timeDisplayedText];
+  controlColor = [(BSUIDailyReadingMetrics *)self controlColor];
+  progressColor = [(BSUIDailyReadingMetrics *)self progressColor];
+  backgroundColor = [(BSUIDailyReadingMetrics *)self backgroundColor];
+  textColor = [(BSUIDailyReadingMetrics *)self textColor];
+  timeFontSpec = [(BSUIDailyReadingMetrics *)self timeFontSpec];
+  arcWidth = [(BSUIDailyReadingMetrics *)self arcWidth];
+  progressBarWidth = [(BSUIDailyReadingMetrics *)self progressBarWidth];
+  axValue = [(BSUIDailyReadingMetrics *)self axValue];
+  nightMode = [(BSUIDailyReadingMetrics *)self nightMode];
+  rightToLeft = [(BSUIDailyReadingMetrics *)self rightToLeft];
+  triggerName = [(BSUIDailyReadingMetrics *)self triggerName];
+  triggerDelay = [(BSUIDailyReadingMetrics *)self triggerDelay];
   v11 = [NSNumber numberWithUnsignedInteger:[(BSUIDailyReadingMetrics *)self targetTriggerState]];
-  v12 = [(BSUIDailyReadingMetrics *)self opacity];
-  v20 = [NSString stringWithFormat:@"<%@(%p) n=%@ iconMode=%@ readingGoalSeconds=%@ actualReadingTimeSeconds=%@ progressToday=%.1f lastVisibleProgressToday=%@ [%@] dynamicStreakDayGoal=%@ [%@] dynamicTimeReadToday=%@ [%@] dynamicCompletedReadingGoal=%@ [%@] title=%@ detailText=%@ timeDisplayedText=%@ controlColor=%@ progressColor=%@ backgroundColor=%@ textColor=%@ timeFontSpec=%@ arcWidth=%@ progressBarWidth=%@ axValue=%@ nightMode=%@ rightToLeft=%@ triggerName:%@ triggerDelay:%@ triggerState: %@ opacity: %@>", v40, self, v41, v38, v39, v18, v5, v37, v36, v35, v32, v34, v17, v33, v31, v16, v30, v29, v28, v27, v26, v25, v24, v15, v14, v6, v7, v8, v9, v10, v11, v12];
+  opacity = [(BSUIDailyReadingMetrics *)self opacity];
+  v20 = [NSString stringWithFormat:@"<%@(%p) n=%@ iconMode=%@ readingGoalSeconds=%@ actualReadingTimeSeconds=%@ progressToday=%.1f lastVisibleProgressToday=%@ [%@] dynamicStreakDayGoal=%@ [%@] dynamicTimeReadToday=%@ [%@] dynamicCompletedReadingGoal=%@ [%@] title=%@ detailText=%@ timeDisplayedText=%@ controlColor=%@ progressColor=%@ backgroundColor=%@ textColor=%@ timeFontSpec=%@ arcWidth=%@ progressBarWidth=%@ axValue=%@ nightMode=%@ rightToLeft=%@ triggerName:%@ triggerDelay:%@ triggerState: %@ opacity: %@>", v40, self, name, v38, readingGoalSeconds, actualReadingTimeSeconds, v5, lastVisibleProgressToday, value, dynamicStreakDayGoal, value2, dynamicTimeReadToday, value3, dynamicCompletedReadingGoal, value4, title, detailText, timeDisplayedText, controlColor, progressColor, backgroundColor, textColor, timeFontSpec, arcWidth, progressBarWidth, axValue, nightMode, rightToLeft, triggerName, triggerDelay, v11, opacity];
 
   return v20;
 }

@@ -2,7 +2,7 @@
 - (BOOL)unnotifiedIsDataAvailableForClassC;
 - (_DASDataProtectionStateMonitor)init;
 - (void)dealloc;
-- (void)setChangeHandler:(id)a3;
+- (void)setChangeHandler:(id)handler;
 @end
 
 @implementation _DASDataProtectionStateMonitor
@@ -41,26 +41,26 @@
   [(_DASDataProtectionStateMonitor *)&v5 dealloc];
 }
 
-- (void)setChangeHandler:(id)a3
+- (void)setChangeHandler:(id)handler
 {
-  v4 = a3;
-  v9 = v4;
+  handlerCopy = handler;
+  v9 = handlerCopy;
   if (self->_handlerUUID)
   {
     [(_DASDataProtectionMaster *)self->_master deregisterStateChangeHandler:?];
-    v4 = v9;
+    handlerCopy = v9;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v5 = [(_DASDataProtectionMaster *)self->_master registerStateChangeHandler:v4];
+    v5 = [(_DASDataProtectionMaster *)self->_master registerStateChangeHandler:handlerCopy];
     handlerUUID = self->_handlerUUID;
     self->_handlerUUID = v5;
 
-    v4 = v9;
+    handlerCopy = v9;
   }
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(handlerCopy);
   changeHandler = self->_changeHandler;
   self->_changeHandler = v7;
 }

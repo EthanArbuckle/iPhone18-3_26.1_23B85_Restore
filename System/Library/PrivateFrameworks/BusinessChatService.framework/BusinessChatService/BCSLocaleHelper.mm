@@ -7,13 +7,13 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(BCSLocaleHelper *)self currentLocale];
-  v5 = [v4 localeIdentifier];
-  v6 = [v3 appendObject:v5 withName:@"currentLocaleIdentifier"];
+  currentLocale = [(BCSLocaleHelper *)self currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v6 = [v3 appendObject:localeIdentifier withName:@"currentLocaleIdentifier"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

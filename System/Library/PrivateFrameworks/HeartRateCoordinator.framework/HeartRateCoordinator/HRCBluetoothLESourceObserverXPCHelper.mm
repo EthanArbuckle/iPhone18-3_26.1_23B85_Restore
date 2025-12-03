@@ -3,9 +3,9 @@
 - (NSXPCConnection)connection;
 - (void)connect;
 - (void)disconnect;
-- (void)handleSourceListUpdate:(id)a3;
-- (void)setupWithDelegate:(id)a3 onQueue:(id)a4;
-- (void)updateProcessName:(id)a3;
+- (void)handleSourceListUpdate:(id)update;
+- (void)setupWithDelegate:(id)delegate onQueue:(id)queue;
+- (void)updateProcessName:(id)name;
 @end
 
 @implementation HRCBluetoothLESourceObserverXPCHelper
@@ -33,8 +33,8 @@
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
   v9 = [v7 setWithArray:v8];
 
-  v10 = [v4 exportedInterface];
-  [v10 setClasses:v9 forSelector:sel_handleSourceListUpdate_ argumentIndex:0 ofReply:0];
+  exportedInterface = [v4 exportedInterface];
+  [exportedInterface setClasses:v9 forSelector:sel_handleSourceListUpdate_ argumentIndex:0 ofReply:0];
 
   [v4 setExportedObject:self];
   objc_initWeak(&buf, self);
@@ -73,12 +73,12 @@
   return WeakRetained;
 }
 
-- (void)setupWithDelegate:(id)a3 onQueue:(id)a4
+- (void)setupWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegate, a3);
+  queueCopy = queue;
+  objc_storeWeak(&self->_delegate, delegate);
   primaryQueue = self->_primaryQueue;
-  self->_primaryQueue = v6;
+  self->_primaryQueue = queueCopy;
 }
 
 void __48__HRCBluetoothLESourceObserverXPCHelper_connect__block_invoke(uint64_t a1)
@@ -129,33 +129,33 @@ void __48__HRCBluetoothLESourceObserverXPCHelper_connect__block_invoke_54(uint64
   [WeakRetained setConnection:0];
 }
 
-- (void)updateProcessName:(id)a3
+- (void)updateProcessName:(id)name
 {
-  v4 = a3;
-  v5 = [(HRCBluetoothLESourceObserverXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  primaryQueue = [(HRCBluetoothLESourceObserverXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v7 = [(HRCBluetoothLESourceObserverXPCHelper *)self connection];
-  v6 = [v7 remoteObjectProxy];
-  [v6 updateProcessName:v4];
+  connection = [(HRCBluetoothLESourceObserverXPCHelper *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy updateProcessName:nameCopy];
 }
 
 - (void)disconnect
 {
-  v3 = [(HRCBluetoothLESourceObserverXPCHelper *)self primaryQueue];
-  dispatch_assert_queue_V2(v3);
+  primaryQueue = [(HRCBluetoothLESourceObserverXPCHelper *)self primaryQueue];
+  dispatch_assert_queue_V2(primaryQueue);
 
-  v4 = [(HRCBluetoothLESourceObserverXPCHelper *)self connection];
-  [v4 invalidate];
+  connection = [(HRCBluetoothLESourceObserverXPCHelper *)self connection];
+  [connection invalidate];
 
   [(HRCBluetoothLESourceObserverXPCHelper *)self setConnection:0];
 }
 
-- (void)handleSourceListUpdate:(id)a3
+- (void)handleSourceListUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(HRCBluetoothLESourceObserverXPCHelper *)self delegate];
-  [v5 handleUpdatedSourceList:v4];
+  updateCopy = update;
+  delegate = [(HRCBluetoothLESourceObserverXPCHelper *)self delegate];
+  [delegate handleUpdatedSourceList:updateCopy];
 }
 
 @end

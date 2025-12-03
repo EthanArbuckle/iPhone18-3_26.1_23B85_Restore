@@ -4,16 +4,16 @@
 + (PFTScheduler)inlineScheduler;
 + (PFTScheduler)mainThreadScheduler;
 + (PFTScheduler)offMainThreadScheduler;
-+ (PFTScheduler)schedulerWithDispatchQueue:(id)a3;
-+ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)a3;
-+ (id)operationQueueScheduleWithQualityOfService:(unint64_t)a3;
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4;
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4 name:(id)a5;
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 underlyingQueue:(id)a4 qualityOfService:(unint64_t)a5;
-+ (id)operationQueueSchedulerWithOperationQueue:(id)a3 qualityOfService:(unint64_t)a4;
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3;
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3 qualityOfService:(unsigned int)a4;
-+ (id)synchronousSerialDispatchQueueWithName:(id)a3;
++ (PFTScheduler)schedulerWithDispatchQueue:(id)queue;
++ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)scheduler;
++ (id)operationQueueScheduleWithQualityOfService:(unint64_t)service;
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service;
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service name:(id)name;
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count underlyingQueue:(id)queue qualityOfService:(unint64_t)service;
++ (id)operationQueueSchedulerWithOperationQueue:(id)queue qualityOfService:(unint64_t)service;
++ (id)serialDispatchQueueSchedulerWithName:(id)name;
++ (id)serialDispatchQueueSchedulerWithName:(id)name qualityOfService:(unsigned int)service;
++ (id)synchronousSerialDispatchQueueWithName:(id)name;
 @end
 
 @implementation PFTScheduler
@@ -94,10 +94,10 @@ uint64_t __38__PFTScheduler_offMainThreadScheduler__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)a3
++ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)scheduler
 {
-  v3 = a3;
-  v4 = [[_PFTOffMainThreadScheduler alloc] initWithBackgroundScheduler:v3];
+  schedulerCopy = scheduler;
+  v4 = [[_PFTOffMainThreadScheduler alloc] initWithBackgroundScheduler:schedulerCopy];
 
   return v4;
 }
@@ -121,7 +121,7 @@ uint64_t __31__PFTScheduler_inlineScheduler__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3
++ (id)serialDispatchQueueSchedulerWithName:(id)name
 {
   Serial = BSDispatchQueueCreateSerial();
   v4 = [[_PFTQueueScheduler alloc] initWithQueue:Serial];
@@ -129,7 +129,7 @@ uint64_t __31__PFTScheduler_inlineScheduler__block_invoke()
   return v4;
 }
 
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3 qualityOfService:(unsigned int)a4
++ (id)serialDispatchQueueSchedulerWithName:(id)name qualityOfService:(unsigned int)service
 {
   SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
   v5 = [[_PFTQueueScheduler alloc] initWithQueue:SerialWithQoS];
@@ -137,60 +137,60 @@ uint64_t __31__PFTScheduler_inlineScheduler__block_invoke()
   return v5;
 }
 
-+ (id)operationQueueScheduleWithQualityOfService:(unint64_t)a3
++ (id)operationQueueScheduleWithQualityOfService:(unint64_t)service
 {
-  v3 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:-1 qualityOfService:a3 name:0];
+  v3 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:-1 qualityOfService:service name:0];
 
   return v3;
 }
 
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 underlyingQueue:(id)a4 qualityOfService:(unint64_t)a5
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count underlyingQueue:(id)queue qualityOfService:(unint64_t)service
 {
-  v7 = a4;
-  v8 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:a3 underlyingDispatchQueue:v7 qualityOfService:a5];
+  queueCopy = queue;
+  v8 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:count underlyingDispatchQueue:queueCopy qualityOfService:service];
 
   return v8;
 }
 
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service
 {
-  v4 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:a3 qualityOfService:a4 name:0];
+  v4 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:count qualityOfService:service name:0];
 
   return v4;
 }
 
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4 name:(id)a5
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service name:(id)name
 {
-  v7 = a5;
-  v8 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:a3 qualityOfService:a4 name:v7];
+  nameCopy = name;
+  v8 = [[_PFTOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:count qualityOfService:service name:nameCopy];
 
   return v8;
 }
 
-+ (id)operationQueueSchedulerWithOperationQueue:(id)a3 qualityOfService:(unint64_t)a4
++ (id)operationQueueSchedulerWithOperationQueue:(id)queue qualityOfService:(unint64_t)service
 {
-  v5 = a3;
-  v6 = [[_PFTOperationQueueScheduler alloc] initWithOperationQueue:v5 qualityOfService:a4];
+  queueCopy = queue;
+  v6 = [[_PFTOperationQueueScheduler alloc] initWithOperationQueue:queueCopy qualityOfService:service];
 
   return v6;
 }
 
-+ (id)synchronousSerialDispatchQueueWithName:(id)a3
++ (id)synchronousSerialDispatchQueueWithName:(id)name
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = dispatch_queue_attr_make_with_qos_class(v4, QOS_CLASS_DEFAULT, 0);
-  v6 = dispatch_queue_create(v3, v5);
+  v6 = dispatch_queue_create(uTF8String, v5);
 
   v7 = [[_PFTSynchronousQueueScheduler alloc] initWithQueue:v6];
 
   return v7;
 }
 
-+ (PFTScheduler)schedulerWithDispatchQueue:(id)a3
++ (PFTScheduler)schedulerWithDispatchQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[_PFTQueueScheduler alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[_PFTQueueScheduler alloc] initWithQueue:queueCopy];
 
   return v4;
 }

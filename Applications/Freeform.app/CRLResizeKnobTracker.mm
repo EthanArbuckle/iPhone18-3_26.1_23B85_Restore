@@ -9,61 +9,61 @@
 - (BOOL)traceIfDesiredForBeginOperation;
 - (BOOL)traceIfDesiredForEndOperation;
 - (CGAffineTransform)p_repTransformInRootForTransforming;
-- (CGAffineTransform)p_resizeTransformHandlingFlipping:(SEL)a3;
-- (CGAffineTransform)p_transformForLayout:(SEL)a3 flippedIfNecessary:(id)a4;
+- (CGAffineTransform)p_resizeTransformHandlingFlipping:(SEL)flipping;
+- (CGAffineTransform)p_transformForLayout:(SEL)layout flippedIfNecessary:(id)necessary;
 - (CGAffineTransform)transformInRootForStandardKnobs;
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3;
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3;
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas;
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas;
 - (CGPoint)secondaryHUDPoint;
 - (CGRect)currentBoundsForStandardKnobs;
 - (CGRect)currentResizedBounds;
 - (CGRect)i_baseBounds;
 - (CGRect)i_lastNewBounds;
 - (CGRect)originalBounds;
-- (CGRect)simpleResizedRectByMovingKnobTo:(CGPoint)a3;
-- (CGSize)currentSizeForLayout:(id)a3;
+- (CGRect)simpleResizedRectByMovingKnobTo:(CGPoint)to;
+- (CGSize)currentSizeForLayout:(id)layout;
 - (CGSize)maximumSize;
 - (CGSize)minimumSize;
-- (CRLResizeKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (CRLResizeKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (NSArray)decoratorOverlayRenderables;
-- (id)currentGeometryForLayout:(id)a3;
-- (id)p_getHudLabelTextForAccessibility:(BOOL)a3;
+- (id)currentGeometryForLayout:(id)layout;
+- (id)p_getHudLabelTextForAccessibility:(BOOL)accessibility;
 - (id)repsToTransform;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)applyNewBoundsToPrimaryRep;
-- (void)applyNewBoundsToRep:(id)a3;
+- (void)applyNewBoundsToRep:(id)rep;
 - (void)beginMovingKnob;
-- (void)changeDynamicLayoutsForReps:(id)a3;
-- (void)constrainAndSnapByMovingKnobTo:(CGPoint)a3 snappingToGuides:(BOOL)a4;
+- (void)changeDynamicLayoutsForReps:(id)reps;
+- (void)constrainAndSnapByMovingKnobTo:(CGPoint)to snappingToGuides:(BOOL)guides;
 - (void)constrainBetweenMaxAndMinSize;
 - (void)dealloc;
 - (void)endMovingKnob;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)moveKnobToRepPosition:(CGPoint)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)moveKnobToRepPosition:(CGPoint)position;
 - (void)p_beginDynamicResize;
 - (void)p_flipMagnetNormalizedPositionsIfNeeded;
 - (void)p_hideGuideRenderable;
 - (void)p_hideHUD;
-- (void)p_revertToOriginalMagnetTypeForMagnet:(BOOL)a3 forClineLayout:(id)a4;
-- (void)p_setNormalizedPositionForMagnet:(BOOL)a3 withNewNormalizedPosition:(CGPoint)a4 forClineLayout:(id)a5 onLayout:(id)a6;
+- (void)p_revertToOriginalMagnetTypeForMagnet:(BOOL)magnet forClineLayout:(id)layout;
+- (void)p_setNormalizedPositionForMagnet:(BOOL)magnet withNewNormalizedPosition:(CGPoint)position forClineLayout:(id)layout onLayout:(id)onLayout;
 - (void)p_showHUDAndGuides;
 - (void)p_updateGuideRenderable;
 - (void)p_updateHUD;
-- (void)p_updateMagnetTypeForMagnet:(BOOL)a3 forClineLayout:(id)a4;
+- (void)p_updateMagnetTypeForMagnet:(BOOL)magnet forClineLayout:(id)layout;
 - (void)p_validateLayout;
-- (void)resizeRepForInspectors:(id)a3 value:(double)a4 changingWidth:(BOOL)a5;
-- (void)willBeginDynamicOperationForReps:(id)a3;
+- (void)resizeRepForInspectors:(id)inspectors value:(double)value changingWidth:(BOOL)width;
+- (void)willBeginDynamicOperationForReps:(id)reps;
 @end
 
 @implementation CRLResizeKnobTracker
 
-- (CRLResizeKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (CRLResizeKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v6 = a3;
-  v7 = a4;
+  repCopy = rep;
+  knobCopy = knob;
   v32.receiver = self;
   v32.super_class = CRLResizeKnobTracker;
-  v8 = [(CRLCanvasKnobTracker *)&v32 initWithRep:v6 knob:v7];
+  v8 = [(CRLCanvasKnobTracker *)&v32 initWithRep:repCopy knob:knobCopy];
   v9 = v8;
   if (v8)
   {
@@ -83,28 +83,28 @@
     v9->mBaseBounds.size = size;
 
     v16 = [(CRLCanvasKnobTracker *)v9 rep];
-    v17 = [v16 infoForTransforming];
+    infoForTransforming = [v16 infoForTransforming];
 
-    if (v17)
+    if (infoForTransforming)
     {
       v18 = [(CRLCanvasKnobTracker *)v9 rep];
-      v19 = [v18 interactiveCanvasController];
-      v20 = [v19 layoutForInfo:v17];
+      interactiveCanvasController = [v18 interactiveCanvasController];
+      v20 = [interactiveCanvasController layoutForInfo:infoForTransforming];
 
-      [v20 minimumSizeForResizingKnob:v7];
+      [v20 minimumSizeForResizingKnob:knobCopy];
       [(CRLResizeKnobTracker *)v9 setMinimumSize:?];
     }
 
     v21 = [(CRLCanvasKnobTracker *)v9 rep];
-    v22 = [v21 layout];
+    layout = [v21 layout];
 
     v23 = objc_opt_class();
-    v24 = [v22 parent];
-    v25 = sub_100014370(v23, v24);
+    parent = [layout parent];
+    v25 = sub_100014370(v23, parent);
 
     if (v25)
     {
-      [v25 maximumFrameSizeForChild:v22];
+      [v25 maximumFrameSizeForChild:layout];
     }
 
     else
@@ -114,7 +114,7 @@
     }
 
     [(CRLResizeKnobTracker *)v9 setMaximumSize:v26, v27];
-    -[CRLResizeKnobTracker setCanMoveKnobAcrossOpposite:](v9, "setCanMoveKnobAcrossOpposite:", [v6 canFlipDuringResize]);
+    -[CRLResizeKnobTracker setCanMoveKnobAcrossOpposite:](v9, "setCanMoveKnobAcrossOpposite:", [repCopy canFlipDuringResize]);
     [(CRLResizeKnobTracker *)v9 setSnapToGuides:1];
     v9->mAdjustedMagnetsForHorizontalFlip = 0;
     v9->mAdjustedMagnetsForVerticalFlip = 0;
@@ -169,19 +169,19 @@
   return self;
 }
 
-- (CGSize)currentSizeForLayout:(id)a3
+- (CGSize)currentSizeForLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 infoForTransforming];
-  v7 = [v6 geometry];
+  infoForTransforming = [v5 infoForTransforming];
+  geometry = [infoForTransforming geometry];
 
-  if ([v7 widthValid] && (objc_msgSend(v7, "heightValid") & 1) != 0)
+  if ([geometry widthValid] && (objc_msgSend(geometry, "heightValid") & 1) != 0)
   {
     v8 = [(CRLCanvasKnobTracker *)self rep];
-    v9 = [v8 layout];
+    layout = [v8 layout];
 
-    if (v9 == v4)
+    if (layout == layoutCopy)
     {
       v26.f64[0] = fabs(self->mLastNewBounds.size.width);
       v20 = fabs(self->mLastNewBounds.size.height);
@@ -195,7 +195,7 @@
       __asm { FMOV            V1.2D, #1.0 }
 
       v25 = vbslq_s8(v11, _Q1, v12);
-      [v4 initialBoundsForStandardKnobs];
+      [layoutCopy initialBoundsForStandardKnobs];
       v19.f64[1] = v18;
       v26 = vabsq_f64(vmulq_f64(v25, v19));
       v20 = v26.f64[1];
@@ -204,7 +204,7 @@
 
   else
   {
-    [v4 boundsForStandardKnobs];
+    [layoutCopy boundsForStandardKnobs];
     v26.f64[0] = v21;
     v20 = v22;
   }
@@ -241,22 +241,22 @@
   v4 = [NSMutableSet setWithObject:v3];
 
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 additionalRepsToResize];
+  additionalRepsToResize = [v5 additionalRepsToResize];
 
-  if ([v6 count])
+  if ([additionalRepsToResize count])
   {
-    [v4 unionSet:v6];
+    [v4 unionSet:additionalRepsToResize];
   }
 
   return v4;
 }
 
-- (CGAffineTransform)p_resizeTransformHandlingFlipping:(SEL)a3
+- (CGAffineTransform)p_resizeTransformHandlingFlipping:(SEL)flipping
 {
   v4 = a4;
   v7 = [(CRLCanvasKnobTracker *)self rep];
-  v8 = [(CRLCanvasKnobTracker *)self knob];
-  v9 = [v7 adjustedKnobForComputingResizeGeometry:{objc_msgSend(v8, "tag")}];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v9 = [v7 adjustedKnobForComputingResizeGeometry:{objc_msgSend(knob, "tag")}];
 
   if ([(CRLResizeKnobTracker *)self p_isResizingWidthFromCenter])
   {
@@ -270,8 +270,8 @@
 
   v10 = dbl_101466930[(v9 - 1) % 3];
   v11 = dbl_101466930[(v9 - 1) / 3];
-  v12 = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
-  v13 = [(CRLResizeKnobTracker *)self hasVerticalFlip];
+  hasHorizontalFlip = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
+  hasVerticalFlip = [(CRLResizeKnobTracker *)self hasVerticalFlip];
   width = self->mBaseBounds.size.width;
   v15 = 1.0;
   v16 = 1.0;
@@ -296,7 +296,7 @@
   CGAffineTransformConcat(retstr, &v32, &t1);
   if (v4)
   {
-    if (v12)
+    if (hasHorizontalFlip)
     {
       t1 = *byte_1014668D0;
       v18 = *&retstr->c;
@@ -310,7 +310,7 @@
       *&retstr->tx = *&v32.tx;
     }
 
-    if (v13)
+    if (hasVerticalFlip)
     {
       t1 = *byte_101466900;
       v20 = *&retstr->c;
@@ -327,12 +327,12 @@
 
   memset(&v32, 0, sizeof(v32));
   v22 = [(CRLCanvasKnobTracker *)self rep];
-  v23 = [v22 layout];
-  v24 = [v23 originalPureGeometry];
-  v25 = v24;
-  if (v24)
+  layout = [v22 layout];
+  originalPureGeometry = [layout originalPureGeometry];
+  v25 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v24 fullTransform];
+    [originalPureGeometry fullTransform];
   }
 
   else
@@ -356,15 +356,15 @@
   return result;
 }
 
-- (CGAffineTransform)p_transformForLayout:(SEL)a3 flippedIfNecessary:(id)a4
+- (CGAffineTransform)p_transformForLayout:(SEL)layout flippedIfNecessary:(id)necessary
 {
   v5 = a5;
-  v8 = a4;
-  if ([v8 wantsParentResizeTransform])
+  necessaryCopy = necessary;
+  if ([necessaryCopy wantsParentResizeTransform])
   {
     v9 = objc_opt_class();
-    v10 = [v8 parent];
-    v11 = sub_100014370(v9, v10);
+    parent = [necessaryCopy parent];
+    v11 = sub_100014370(v9, parent);
 
     if (v11)
     {
@@ -412,9 +412,9 @@
   }
 
   v15 = [(CRLCanvasKnobTracker *)self rep];
-  v16 = [v15 layout];
+  layout = [v15 layout];
 
-  if (v16 == v8)
+  if (layout == necessaryCopy)
   {
     v27 = *&v32.c;
     *&retstr->a = *&v32.a;
@@ -429,8 +429,8 @@
     *&v31.c = v17;
     *&v31.tx = *&CGAffineTransformIdentity.tx;
     v18 = objc_opt_class();
-    v19 = [v8 parent];
-    v20 = sub_100014370(v18, v19);
+    parent2 = [necessaryCopy parent];
+    v20 = sub_100014370(v18, parent2);
 
     if (v20 && [v20 isBeingManipulated])
     {
@@ -441,11 +441,11 @@
           break;
         }
 
-        v21 = [v20 originalPureGeometry];
-        v22 = v21;
-        if (v21)
+        originalPureGeometry = [v20 originalPureGeometry];
+        v22 = originalPureGeometry;
+        if (originalPureGeometry)
         {
-          [v21 transform];
+          [originalPureGeometry transform];
         }
 
         else
@@ -457,8 +457,8 @@
         CGAffineTransformConcat(&v31, &t1, &t2);
 
         v23 = objc_opt_class();
-        v24 = [v20 parent];
-        v25 = sub_100014370(v23, v24);
+        parent3 = [v20 parent];
+        v25 = sub_100014370(v23, parent3);
 
         v20 = v25;
       }
@@ -488,24 +488,24 @@ LABEL_28:
   return result;
 }
 
-- (id)currentGeometryForLayout:(id)a3
+- (id)currentGeometryForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 computeInfoGeometryDuringResize];
-  v6 = v5;
-  if (v5)
+  layoutCopy = layout;
+  computeInfoGeometryDuringResize = [layoutCopy computeInfoGeometryDuringResize];
+  v6 = computeInfoGeometryDuringResize;
+  if (computeInfoGeometryDuringResize)
   {
-    v7 = v5;
+    v7 = computeInfoGeometryDuringResize;
     goto LABEL_23;
   }
 
   memset(&v35, 0, sizeof(v35));
   v8 = [(CRLCanvasKnobTracker *)self rep];
-  v9 = [v8 layout];
+  layout = [v8 layout];
   [(CRLResizeKnobTracker *)self resizeTransform];
-  if (v9)
+  if (layout)
   {
-    [v9 layoutTransformInInfoSpace:v34];
+    [layout layoutTransformInInfoSpace:v34];
   }
 
   else
@@ -514,9 +514,9 @@ LABEL_28:
   }
 
   v10 = [(CRLCanvasKnobTracker *)self rep];
-  v11 = [v10 layout];
+  layout2 = [v10 layout];
 
-  if (v11 == v4)
+  if (layout2 == layoutCopy)
   {
     v15 = [(CRLCanvasKnobTracker *)self rep];
     v33 = v35;
@@ -531,8 +531,8 @@ LABEL_21:
   *&v33.c = v12;
   *&v33.tx = *&CGAffineTransformIdentity.tx;
   v13 = objc_opt_class();
-  v14 = [v4 parent];
-  v15 = sub_100014370(v13, v14);
+  parent = [layoutCopy parent];
+  v15 = sub_100014370(v13, parent);
 
   if (v15 && [v15 isBeingManipulated])
   {
@@ -543,11 +543,11 @@ LABEL_21:
         break;
       }
 
-      v16 = [v15 originalPureGeometry];
-      v17 = v16;
-      if (v16)
+      originalPureGeometry = [v15 originalPureGeometry];
+      v17 = originalPureGeometry;
+      if (originalPureGeometry)
       {
-        [v16 transform];
+        [originalPureGeometry transform];
       }
 
       else
@@ -559,8 +559,8 @@ LABEL_21:
       CGAffineTransformConcat(&v33, &t1, &t2);
 
       v18 = objc_opt_class();
-      v19 = [v15 parent];
-      v20 = sub_100014370(v18, v19);
+      parent2 = [v15 parent];
+      v20 = sub_100014370(v18, parent2);
 
       v15 = v20;
     }
@@ -572,25 +572,25 @@ LABEL_21:
     sub_100139E2C(&t1, &v30, &t2);
     t2.tx = 0.0;
     t2.ty = 0.0;
-    v21 = [v4 infoGeometryBeforeDynamicOperation];
-    if (v21)
+    infoGeometryBeforeDynamicOperation = [layoutCopy infoGeometryBeforeDynamicOperation];
+    if (infoGeometryBeforeDynamicOperation)
     {
-      v22 = v21;
+      geometry = infoGeometryBeforeDynamicOperation;
     }
 
     else
     {
-      v27 = [v4 info];
-      v22 = [v27 geometry];
+      info = [layoutCopy info];
+      geometry = [info geometry];
 
-      if (!v22)
+      if (!geometry)
       {
         memset(&v30, 0, sizeof(v30));
         goto LABEL_20;
       }
     }
 
-    [v22 fullTransform];
+    [geometry fullTransform];
 
 LABEL_20:
     v29 = t2;
@@ -600,10 +600,10 @@ LABEL_20:
   }
 
   v23 = [(CRLCanvasKnobTracker *)self rep];
-  v24 = [v23 interactiveCanvasController];
-  v25 = [v24 repForLayout:v4];
+  interactiveCanvasController = [v23 interactiveCanvasController];
+  v25 = [interactiveCanvasController repForLayout:layoutCopy];
 
-  [(CRLResizeKnobTracker *)self transformForLayout:v4];
+  [(CRLResizeKnobTracker *)self transformForLayout:layoutCopy];
   v35 = t2;
   v7 = [v25 resizedGeometryForTransform:&t2];
 
@@ -629,27 +629,27 @@ LABEL_23:
   return v2;
 }
 
-- (void)applyNewBoundsToRep:(id)a3
+- (void)applyNewBoundsToRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 interactiveCanvasController];
+  interactiveCanvasController = [v5 interactiveCanvasController];
 
-  v7 = [v6 commandController];
-  v8 = [v4 layout];
-  v9 = [v8 finalInfoGeometryForResize];
+  commandController = [interactiveCanvasController commandController];
+  layout = [repCopy layout];
+  finalInfoGeometryForResize = [layout finalInfoGeometryForResize];
 
-  if (!v9)
+  if (!finalInfoGeometryForResize)
   {
-    v10 = [v4 layout];
-    v9 = [(CRLResizeKnobTracker *)self currentGeometryForLayout:v10];
+    layout2 = [repCopy layout];
+    finalInfoGeometryForResize = [(CRLResizeKnobTracker *)self currentGeometryForLayout:layout2];
   }
 
-  v11 = [v4 infoForTransforming];
-  v12 = v11;
-  if (!self->mIsEnqueueingCommandsInRealTime && v11 && -[CRLCanvasKnobTracker didDrag](self, "didDrag") && ([v12 conformsToProtocol:&OBJC_PROTOCOL___CRLResizingAwareInfo] & 1) == 0)
+  infoForTransforming = [repCopy infoForTransforming];
+  v12 = infoForTransforming;
+  if (!self->mIsEnqueueingCommandsInRealTime && infoForTransforming && -[CRLCanvasKnobTracker didDrag](self, "didDrag") && ([v12 conformsToProtocol:&OBJC_PROTOCOL___CRLResizingAwareInfo] & 1) == 0)
   {
-    v13 = [v4 newCommandToApplyGeometry:v9 toInfo:v12];
+    v13 = [repCopy newCommandToApplyGeometry:finalInfoGeometryForResize toInfo:v12];
     if (!v13)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -682,27 +682,27 @@ LABEL_23:
     }
 
     v21 = [CRLCanvasCommandSelectionBehavior alloc];
-    v20 = [v6 canvasEditor];
-    v17 = [v6 editorController];
-    v18 = [v17 selectionPath];
-    v19 = [(CRLCanvasCommandSelectionBehavior *)v21 initWithCanvasEditor:v20 type:2 selectionPath:v18 selectionFlags:4];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    editorController = [interactiveCanvasController editorController];
+    selectionPath = [editorController selectionPath];
+    v19 = [(CRLCanvasCommandSelectionBehavior *)v21 initWithCanvasEditor:canvasEditor type:2 selectionPath:selectionPath selectionFlags:4];
 
-    [v7 enqueueCommand:v13 withSelectionBehavior:v19];
+    [commandController enqueueCommand:v13 withSelectionBehavior:v19];
   }
 
-  [v4 dynamicResizeDidEndWithTracker:self];
-  [v4 invalidateKnobs];
+  [repCopy dynamicResizeDidEndWithTracker:self];
+  [repCopy invalidateKnobs];
 }
 
 - (void)applyNewBoundsToPrimaryRep
 {
   v3 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v3 interactiveCanvasController];
+  interactiveCanvasController = [v3 interactiveCanvasController];
 
-  v5 = [v4 commandController];
+  commandController = [interactiveCanvasController commandController];
   if ([(CRLCanvasKnobTracker *)self didDrag]&& ![(CRLResizeKnobTracker *)self isInspectorDrivenTracking])
   {
-    [v5 openGroup];
+    [commandController openGroup];
     v6 = 1;
   }
 
@@ -711,13 +711,13 @@ LABEL_23:
     v6 = 0;
   }
 
-  v7 = [(CRLCanvasKnobTracker *)self didDrag];
+  didDrag = [(CRLCanvasKnobTracker *)self didDrag];
   v8 = [(CRLCanvasKnobTracker *)self rep];
   v9 = v8;
-  if (v7)
+  if (didDrag)
   {
-    v10 = [v8 actionStringForResize];
-    [v5 setCurrentGroupActionString:v10];
+    actionStringForResize = [v8 actionStringForResize];
+    [commandController setCurrentGroupActionString:actionStringForResize];
 
     v11 = [(CRLCanvasKnobTracker *)self rep];
     [(CRLResizeKnobTracker *)self applyNewBoundsToRep:v11];
@@ -732,14 +732,14 @@ LABEL_23:
   }
 
   v12 = [(CRLCanvasKnobTracker *)self rep];
-  v13 = [v12 layout];
-  v14 = [v13 commandsForAdjustingMagnetsFromClineLayouts];
+  layout = [v12 layout];
+  commandsForAdjustingMagnetsFromClineLayouts = [layout commandsForAdjustingMagnetsFromClineLayouts];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v14;
+  v15 = commandsForAdjustingMagnetsFromClineLayouts;
   v16 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v16)
   {
@@ -754,7 +754,7 @@ LABEL_23:
           objc_enumerationMutation(v15);
         }
 
-        [v5 enqueueCommand:*(*(&v32 + 1) + 8 * i)];
+        [commandController enqueueCommand:*(*(&v32 + 1) + 8 * i)];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -768,10 +768,10 @@ LABEL_23:
   v28 = 0u;
   v29 = 0u;
   v20 = [(CRLCanvasKnobTracker *)self rep];
-  v21 = [v20 layout];
-  v22 = [v21 connectedLayouts];
+  layout2 = [v20 layout];
+  connectedLayouts = [layout2 connectedLayouts];
 
-  v23 = [v22 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v23 = [connectedLayouts countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v23)
   {
     v24 = v23;
@@ -782,7 +782,7 @@ LABEL_23:
       {
         if (*v29 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(connectedLayouts);
         }
 
         v27 = *(*(&v28 + 1) + 8 * j);
@@ -792,7 +792,7 @@ LABEL_23:
         [v27 setTailHasVerticalFlip:0];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v24 = [connectedLayouts countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v24);
@@ -802,30 +802,30 @@ LABEL_23:
   self->mAdjustedMagnetsForVerticalFlip = 0;
   if (v6)
   {
-    [v5 closeGroup];
+    [commandController closeGroup];
   }
 
   if (self->mIsEnqueueingCommandsInRealTime)
   {
-    [v5 closeGroup];
+    [commandController closeGroup];
   }
 }
 
-- (id)p_getHudLabelTextForAccessibility:(BOOL)a3
+- (id)p_getHudLabelTextForAccessibility:(BOOL)accessibility
 {
-  v3 = a3;
+  accessibilityCopy = accessibility;
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 layout];
-  [(CRLResizeKnobTracker *)self currentSizeForLayout:v6];
+  layout = [v5 layout];
+  [(CRLResizeKnobTracker *)self currentSizeForLayout:layout];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(CRLCanvasKnobTracker *)self rep];
-  v12 = [v11 interactiveCanvasController];
-  v13 = [v12 unitStringForNumber:v8];
+  pathSource = [(CRLCanvasKnobTracker *)self rep];
+  interactiveCanvasController = [pathSource interactiveCanvasController];
+  v13 = [interactiveCanvasController unitStringForNumber:v8];
   v14 = [(CRLCanvasKnobTracker *)self rep];
-  v15 = [v14 interactiveCanvasController];
-  v16 = [v15 unitStringForNumber:v10];
+  interactiveCanvasController2 = [v14 interactiveCanvasController];
+  v16 = [interactiveCanvasController2 unitStringForNumber:v10];
   if (![v13 isEqualToString:v16])
   {
 
@@ -840,19 +840,19 @@ LABEL_6:
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_7:
-    v11 = [(CRLCanvasKnobTracker *)self rep];
-    v22 = [v11 interactiveCanvasController];
-    v23 = [v22 unitStringForSize:v3 forAccessibility:{v8, v10}];
+    pathSource = [(CRLCanvasKnobTracker *)self rep];
+    interactiveCanvasController3 = [pathSource interactiveCanvasController];
+    v23 = [interactiveCanvasController3 unitStringForSize:accessibilityCopy forAccessibility:{v8, v10}];
     goto LABEL_8;
   }
 
   v19 = [(CRLCanvasKnobTracker *)self rep];
-  v20 = [v19 shapeInfo];
-  v11 = [v20 pathSource];
+  shapeInfo = [v19 shapeInfo];
+  pathSource = [shapeInfo pathSource];
 
-  if (([v11 isRectangular] & 1) == 0)
+  if (([pathSource isRectangular] & 1) == 0)
   {
-    if ([v11 isCircular])
+    if ([pathSource isCircular])
     {
       v21 = @"Circle: %@";
       goto LABEL_13;
@@ -863,11 +863,11 @@ LABEL_7:
 
   v21 = @"Square: %@";
 LABEL_13:
-  v22 = +[NSBundle mainBundle];
-  v25 = [v22 localizedStringForKey:v21 value:0 table:0];
+  interactiveCanvasController3 = +[NSBundle mainBundle];
+  v25 = [interactiveCanvasController3 localizedStringForKey:v21 value:0 table:0];
   v26 = [(CRLCanvasKnobTracker *)self rep];
-  v27 = [v26 interactiveCanvasController];
-  v28 = [v27 unitStringForNumber:v8];
+  interactiveCanvasController4 = [v26 interactiveCanvasController];
+  v28 = [interactiveCanvasController4 unitStringForNumber:v8];
   v23 = [NSString stringWithFormat:v25, v28];
 
 LABEL_8:
@@ -875,15 +875,15 @@ LABEL_8:
   return v23;
 }
 
-- (void)willBeginDynamicOperationForReps:(id)a3
+- (void)willBeginDynamicOperationForReps:(id)reps
 {
   v6 = [(CRLCanvasKnobTracker *)self icc];
   if ([v6 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime])
   {
     v4 = [(CRLCanvasKnobTracker *)self rep];
-    v5 = [v4 allowsSupportedDynamicOperationsToBeRealTime];
+    allowsSupportedDynamicOperationsToBeRealTime = [v4 allowsSupportedDynamicOperationsToBeRealTime];
 
-    if (v5)
+    if (allowsSupportedDynamicOperationsToBeRealTime)
     {
       self->mIsEnqueueingCommandsInRealTime = 1;
     }
@@ -894,24 +894,24 @@ LABEL_8:
   }
 }
 
-- (void)changeDynamicLayoutsForReps:(id)a3
+- (void)changeDynamicLayoutsForReps:(id)reps
 {
-  v4 = a3;
+  repsCopy = reps;
   [(CRLCanvasKnobTracker *)self i_resetCurrentPositionToKnobPositionIfAppropriate];
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 isBeingResized];
+  isBeingResized = [v5 isBeingResized];
 
-  if ((v6 & 1) == 0)
+  if ((isBeingResized & 1) == 0)
   {
     [(CRLResizeKnobTracker *)self p_beginDynamicResize];
   }
 
   v7 = [(CRLCanvasKnobTracker *)self icc];
-  v8 = [v7 commandController];
+  commandController = [v7 commandController];
 
   if (self->mIsEnqueueingCommandsInRealTime)
   {
-    [v8 openGroup];
+    [commandController openGroup];
   }
 
   if ([(CRLCanvasKnobTracker *)self didDrag])
@@ -922,10 +922,10 @@ LABEL_8:
 
   v10.receiver = self;
   v10.super_class = CRLResizeKnobTracker;
-  [(CRLCanvasKnobTracker *)&v10 changeDynamicLayoutsForReps:v4];
+  [(CRLCanvasKnobTracker *)&v10 changeDynamicLayoutsForReps:repsCopy];
   if (self->mIsEnqueueingCommandsInRealTime)
   {
-    [v8 closeGroup];
+    [commandController closeGroup];
   }
 }
 
@@ -969,24 +969,24 @@ LABEL_8:
   v66.super_class = CRLResizeKnobTracker;
   [(CRLCanvasKnobTracker *)&v66 beginMovingKnob];
   v3 = [(CRLCanvasKnobTracker *)self icc];
-  v4 = [v3 layerHost];
-  v5 = [v4 asiOSCVC];
-  [v5 hideEditMenu];
+  layerHost = [v3 layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  [asiOSCVC hideEditMenu];
 
   v6 = [(CRLCanvasKnobTracker *)self rep];
-  LOBYTE(v5) = [v6 isBeingResized];
+  LOBYTE(asiOSCVC) = [v6 isBeingResized];
 
-  if ((v5 & 1) == 0)
+  if ((asiOSCVC & 1) == 0)
   {
     [(CRLResizeKnobTracker *)self p_beginDynamicResize];
   }
 
   if (![(CRLResizeKnobTracker *)self isInspectorDrivenTracking])
   {
-    v7 = [v3 selectionModelTranslator];
-    v8 = [v3 editorController];
-    v9 = [v8 selectionPath];
-    v10 = [v7 boardItemsForSelectionPath:v9];
+    selectionModelTranslator = [v3 selectionModelTranslator];
+    editorController = [v3 editorController];
+    selectionPath = [editorController selectionPath];
+    v10 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
     v64 = 0u;
     v65 = 0u;
@@ -1047,10 +1047,10 @@ LABEL_8:
   v57 = 0u;
   v58 = 0u;
   v21 = [(CRLCanvasKnobTracker *)self rep];
-  v22 = [v21 layout];
-  v23 = [v22 connectedLayouts];
+  layout = [v21 layout];
+  connectedLayouts = [layout connectedLayouts];
 
-  v24 = [v23 countByEnumeratingWithState:&v57 objects:v67 count:16];
+  v24 = [connectedLayouts countByEnumeratingWithState:&v57 objects:v67 count:16];
   if (v24)
   {
     v25 = v24;
@@ -1061,24 +1061,24 @@ LABEL_8:
       {
         if (*v58 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(connectedLayouts);
         }
 
         v28 = *(*(&v57 + 1) + 8 * j);
         if ([v28 headMagnetType] == 6)
         {
-          v29 = [v28 connectedTo];
+          connectedTo = [v28 connectedTo];
 
-          if (v29)
+          if (connectedTo)
           {
             [v28 headMagnetCanvasPosition];
             v49 = v31;
             v51 = v30;
-            v32 = [v28 connectedTo];
-            v33 = v32;
-            if (v32)
+            connectedTo2 = [v28 connectedTo];
+            v33 = connectedTo2;
+            if (connectedTo2)
             {
-              [v32 transformInRoot];
+              [connectedTo2 transformInRoot];
             }
 
             else
@@ -1089,9 +1089,9 @@ LABEL_8:
             CGAffineTransformInvert(&v56, &v55);
             v52 = vaddq_f64(*&v56.tx, vmlaq_n_f64(vmulq_n_f64(*&v56.c, v49), *&v56.a, v51));
 
-            v34 = [v28 connectedTo];
-            v35 = [v34 geometry];
-            [v35 size];
+            connectedTo3 = [v28 connectedTo];
+            geometry = [connectedTo3 geometry];
+            [geometry size];
             v36 = sub_10011ECB4();
             [v28 overrideHeadMagnetNormalizedPosition:{sub_100121720(v52.f64[0], v52.f64[1], v36, v37, v38)}];
 
@@ -1101,18 +1101,18 @@ LABEL_8:
 
         if ([v28 tailMagnetType] == 6)
         {
-          v39 = [v28 connectedFrom];
+          connectedFrom = [v28 connectedFrom];
 
-          if (v39)
+          if (connectedFrom)
           {
             [v28 tailMagnetCanvasPosition];
             v50 = v41;
             v53 = v40;
-            v42 = [v28 connectedFrom];
-            v43 = v42;
-            if (v42)
+            connectedFrom2 = [v28 connectedFrom];
+            v43 = connectedFrom2;
+            if (connectedFrom2)
             {
-              [v42 transformInRoot];
+              [connectedFrom2 transformInRoot];
             }
 
             else
@@ -1123,9 +1123,9 @@ LABEL_8:
             CGAffineTransformInvert(&v56, &v55);
             v54 = vaddq_f64(*&v56.tx, vmlaq_n_f64(vmulq_n_f64(*&v56.c, v50), *&v56.a, v53));
 
-            v44 = [v28 connectedFrom];
-            v45 = [v44 geometry];
-            [v45 size];
+            connectedFrom3 = [v28 connectedFrom];
+            geometry2 = [connectedFrom3 geometry];
+            [geometry2 size];
             v46 = sub_10011ECB4();
             [v28 overrideTailMagnetNormalizedPosition:{sub_100121720(v54.f64[0], v54.f64[1], v46, v47, v48)}];
 
@@ -1134,30 +1134,30 @@ LABEL_8:
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v57 objects:v67 count:16];
+      v25 = [connectedLayouts countByEnumeratingWithState:&v57 objects:v67 count:16];
     }
 
     while (v25);
   }
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  [(CRLResizeKnobTracker *)self convertKnobPositionFromUnscaledCanvas:a3.x, a3.y];
+  [(CRLResizeKnobTracker *)self convertKnobPositionFromUnscaledCanvas:position.x, position.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(CRLCanvasKnobTracker *)self knob];
-  [v8 offset];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  [knob offset];
   v10 = sub_10011F31C(v5, v7, v9);
   v12 = v11;
 
   [(CRLResizeKnobTracker *)self moveKnobToRepPosition:v10, v12];
 }
 
-- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionToUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   [(CRLResizeKnobTracker *)self transformInRootForStandardKnobs];
   v3 = vaddq_f64(v9, vmlaq_n_f64(vmulq_n_f64(v8, y), v7, x));
   v4 = v3.f64[1];
@@ -1166,10 +1166,10 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)a3
+- (CGPoint)convertKnobPositionFromUnscaledCanvas:(CGPoint)canvas
 {
-  y = a3.y;
-  x = a3.x;
+  y = canvas.y;
+  x = canvas.x;
   [(CRLResizeKnobTracker *)self transformInRootForStandardKnobs];
   CGAffineTransformInvert(&v8, &v7);
   v3 = vaddq_f64(*&v8.tx, vmlaq_n_f64(vmulq_n_f64(*&v8.c, y), *&v8.a, x));
@@ -1179,24 +1179,24 @@ LABEL_8:
   return result;
 }
 
-- (void)moveKnobToRepPosition:(CGPoint)a3
+- (void)moveKnobToRepPosition:(CGPoint)position
 {
   if (self->mResizingLayout)
   {
-    y = a3.y;
-    x = a3.x;
+    y = position.y;
+    x = position.x;
     v6 = [(CRLCanvasKnobTracker *)self rep];
     if ([v6 wantsGuidesWhileResizing] && !self->mBeganAlignmentOperation)
     {
-      v37 = [(CRLResizeKnobTracker *)self isInspectorDrivenTracking];
+      isInspectorDrivenTracking = [(CRLResizeKnobTracker *)self isInspectorDrivenTracking];
 
-      if ((v37 & 1) == 0)
+      if ((isInspectorDrivenTracking & 1) == 0)
       {
         v38 = [(CRLCanvasKnobTracker *)self rep];
-        v39 = [v38 interactiveCanvasController];
-        v40 = [v39 guideController];
+        interactiveCanvasController = [v38 interactiveCanvasController];
+        guideController = [interactiveCanvasController guideController];
         v41 = [(CRLCanvasKnobTracker *)self rep];
-        [v40 beginAlignmentOperationForRep:v41];
+        [guideController beginAlignmentOperationForRep:v41];
 
         self->mBeganAlignmentOperation = 1;
       }
@@ -1207,10 +1207,10 @@ LABEL_8:
     }
 
     v7 = [(CRLCanvasKnobTracker *)self rep];
-    v8 = [v7 layout];
-    v9 = [v8 shouldFlipMagnetsDuringResize];
+    layout = [v7 layout];
+    shouldFlipMagnetsDuringResize = [layout shouldFlipMagnetsDuringResize];
 
-    if (v9)
+    if (shouldFlipMagnetsDuringResize)
     {
       [(CRLResizeKnobTracker *)self p_flipMagnetNormalizedPositionsIfNeeded];
     }
@@ -1222,17 +1222,17 @@ LABEL_8:
     self->mLastNewBounds.size.height = v13;
     if ([(CRLResizeKnobTracker *)self p_isMatchingSize])
     {
-      v14 = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
-      v15 = [(CRLResizeKnobTracker *)self hasVerticalFlip];
-      v16 = [(CRLResizeKnobTracker *)self repToMatch];
-      [v16 boundsForStandardKnobs];
+      hasHorizontalFlip = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
+      hasVerticalFlip = [(CRLResizeKnobTracker *)self hasVerticalFlip];
+      repToMatch = [(CRLResizeKnobTracker *)self repToMatch];
+      [repToMatch boundsForStandardKnobs];
       v18 = v17;
       v20 = v19;
 
       width = self->mBaseBounds.size.width;
       height = self->mBaseBounds.size.height;
-      v23 = [(CRLCanvasKnobTracker *)self knob];
-      v24 = [v23 tag];
+      knob = [(CRLCanvasKnobTracker *)self knob];
+      v24 = [knob tag];
 
       if (sub_10034601C(v24))
       {
@@ -1307,13 +1307,13 @@ LABEL_8:
       self->mLastNewBounds.size.width = v50;
       self->mLastNewBounds.size.height = v51;
 
-      if (v14)
+      if (hasHorizontalFlip)
       {
         self->mLastNewBounds.size.width = -self->mLastNewBounds.size.width;
       }
 
       mSnapToGuides = 0;
-      if (v15)
+      if (hasVerticalFlip)
       {
         self->mLastNewBounds.size.height = -self->mLastNewBounds.size.height;
       }
@@ -1327,10 +1327,10 @@ LABEL_8:
     }
 
     v52 = [(CRLCanvasKnobTracker *)self rep];
-    v59 = [v52 interactiveCanvasController];
+    interactiveCanvasController2 = [v52 interactiveCanvasController];
 
-    v53 = [v59 guideController];
-    [v53 hideSizingGuides];
+    guideController2 = [interactiveCanvasController2 guideController];
+    [guideController2 hideSizingGuides];
 
     [(CRLResizeKnobTracker *)self constrainBetweenMaxAndMinSize];
     if (![(CRLResizeKnobTracker *)self isInspectorDrivenTracking])
@@ -1350,12 +1350,12 @@ LABEL_8:
       [(CRLResizeKnobTracker *)self p_validateLayout];
       if ((v34 | v35) == 1)
       {
-        v56 = [v59 guideController];
+        guideController3 = [interactiveCanvasController2 guideController];
         v57 = [(CRLCanvasKnobTracker *)self rep];
-        [v56 showSizingGuideUIForRep:v57 matchingWidth:v34 matchingHeight:v35];
+        [guideController3 showSizingGuideUIForRep:v57 matchingWidth:v34 matchingHeight:v35];
 
-        v58 = [v59 guideController];
-        [v58 showSizingGuideUIForRep:self->mRepToMatch matchingWidth:v34 matchingHeight:v35];
+        guideController4 = [interactiveCanvasController2 guideController];
+        [guideController4 showSizingGuideUIForRep:self->mRepToMatch matchingWidth:v34 matchingHeight:v35];
       }
 
       [(CRLResizeKnobTracker *)self p_cancelDelayedHUDAndGuides];
@@ -1373,12 +1373,12 @@ LABEL_8:
     if (![(CRLResizeKnobTracker *)self isInspectorDrivenTracking])
     {
       v3 = [(CRLCanvasKnobTracker *)self rep];
-      v4 = [v3 interactiveCanvasController];
+      interactiveCanvasController = [v3 interactiveCanvasController];
 
-      v5 = [v4 selectionModelTranslator];
-      v6 = [v4 editorController];
-      v7 = [v6 selectionPath];
-      v8 = [v5 boardItemsForSelectionPath:v7];
+      selectionModelTranslator = [interactiveCanvasController selectionModelTranslator];
+      editorController = [interactiveCanvasController editorController];
+      selectionPath = [editorController selectionPath];
+      v8 = [selectionModelTranslator boardItemsForSelectionPath:selectionPath];
 
       v21 = 0u;
       v22 = 0u;
@@ -1400,7 +1400,7 @@ LABEL_8:
               objc_enumerationMutation(v9);
             }
 
-            v14 = [v4 repForInfo:*(*(&v19 + 1) + 8 * v13)];
+            v14 = [interactiveCanvasController repForInfo:*(*(&v19 + 1) + 8 * v13)];
             if (v14)
             {
               v15 = [(CRLCanvasKnobTracker *)self rep];
@@ -1421,8 +1421,8 @@ LABEL_8:
         while (v11);
       }
 
-      v16 = [v4 guideController];
-      [v16 endAlignmentOperation];
+      guideController = [interactiveCanvasController guideController];
+      [guideController endAlignmentOperation];
 
       [(CRLResizeKnobTracker *)self p_cancelDelayedHUDAndGuides];
       [(CRLResizeKnobTracker *)self p_hideHUD];
@@ -1438,9 +1438,9 @@ LABEL_8:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [a3 valueForKey:{@"icc", a4}];
+  v5 = [stop valueForKey:{@"icc", finished}];
   [v5 removeDecorator:self];
 }
 
@@ -1500,10 +1500,10 @@ LABEL_8:
       sub_10130DA10(v7);
     }
 
-    v8 = [NSString stringWithUTF8String:"[CRLResizeKnobTracker p_beginDynamicResize]"];
+    commandController = [NSString stringWithUTF8String:"[CRLResizeKnobTracker p_beginDynamicResize]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLResizeKnobTracker.m"];
     v10 = "Rep should not already be being resized when calling -p_beginDynamicResize";
-    v11 = v8;
+    v11 = commandController;
     v12 = v9;
     v13 = 973;
 LABEL_33:
@@ -1512,9 +1512,9 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v14 = [v3 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [v3 dynamicResizeDidBegin];
   mResizingLayout = self->mResizingLayout;
-  self->mResizingLayout = v14;
+  self->mResizingLayout = dynamicResizeDidBegin;
 
   if (!self->mResizingLayout)
   {
@@ -1540,10 +1540,10 @@ LABEL_33:
       sub_10130DA10(v17);
     }
 
-    v8 = [NSString stringWithUTF8String:"[CRLResizeKnobTracker p_beginDynamicResize]"];
+    commandController = [NSString stringWithUTF8String:"[CRLResizeKnobTracker p_beginDynamicResize]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLResizeKnobTracker.m"];
     v10 = "Unable to get resizing layout for beginning dynamic drag.";
-    v11 = v8;
+    v11 = commandController;
     v12 = v9;
     v13 = 979;
     goto LABEL_33;
@@ -1552,10 +1552,10 @@ LABEL_33:
   if (self->mIsEnqueueingCommandsInRealTime)
   {
     v16 = [(CRLCanvasKnobTracker *)self icc];
-    v8 = [v16 commandController];
+    commandController = [v16 commandController];
 
-    [v8 openGroup];
-    [v8 enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
+    [commandController openGroup];
+    [commandController enableRealTimeSyncProgressiveEnqueuingInCurrentGroup];
 LABEL_34:
   }
 }
@@ -1566,12 +1566,12 @@ LABEL_34:
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 layout];
-  v7 = [v6 geometryForTransforming];
-  v8 = v7;
-  if (v7)
+  layout = [v5 layout];
+  geometryForTransforming = [layout geometryForTransforming];
+  v8 = geometryForTransforming;
+  if (geometryForTransforming)
   {
-    [v7 transform];
+    [geometryForTransforming transform];
   }
 
   else
@@ -1582,22 +1582,22 @@ LABEL_34:
   }
 
   v9 = [(CRLCanvasKnobTracker *)self rep];
-  v10 = [v9 layout];
-  v11 = [v10 parent];
+  layout2 = [v9 layout];
+  parent = [layout2 parent];
 
-  if (v11)
+  if (parent)
   {
     do
     {
-      v13 = [v11 geometry];
-      v14 = v13;
-      if (v13)
+      geometry = [parent geometry];
+      v14 = geometry;
+      if (geometry)
       {
         v15 = *&retstr->c;
         v18[0] = *&retstr->a;
         v18[1] = v15;
         v18[2] = *&retstr->tx;
-        [v13 transformByConcatenatingTransformTo:v18];
+        [geometry transformByConcatenatingTransformTo:v18];
       }
 
       else
@@ -1612,27 +1612,27 @@ LABEL_34:
       *&retstr->c = v16;
       *&retstr->tx = v21;
 
-      v17 = [v11 parent];
+      v11Parent = [parent parent];
 
-      v11 = v17;
+      parent = v11Parent;
     }
 
-    while (v17);
+    while (v11Parent);
   }
 
   return result;
 }
 
-- (CGRect)simpleResizedRectByMovingKnobTo:(CGPoint)a3
+- (CGRect)simpleResizedRectByMovingKnobTo:(CGPoint)to
 {
-  y = a3.y;
+  y = to.y;
   p_mBaseBounds = &self->mBaseBounds;
   CGRectGetMinX(self->mBaseBounds);
   CGRectGetMaxX(*p_mBaseBounds);
   MinY = CGRectGetMinY(*p_mBaseBounds);
   CGRectGetMaxY(*p_mBaseBounds);
-  v7 = [(CRLCanvasKnobTracker *)self knob];
-  v8 = [v7 tag];
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v8 = [knob tag];
 
   v9 = (v8 - 1) / 3;
   v10 = (v8 - 1) % 3;
@@ -1669,7 +1669,7 @@ LABEL_34:
   return result;
 }
 
-- (void)constrainAndSnapByMovingKnobTo:(CGPoint)a3 snappingToGuides:(BOOL)a4
+- (void)constrainAndSnapByMovingKnobTo:(CGPoint)to snappingToGuides:(BOOL)guides
 {
   self->mSnappedToAspectRatio = 0;
   if (self->mSnapEnabled)
@@ -1684,33 +1684,33 @@ LABEL_34:
     v167 = v6;
     v168 = v4;
     v169 = v5;
-    v14 = a4;
+    guidesCopy = guides;
     p_mLastNewBounds = &self->mLastNewBounds;
-    a3.x = self->mLastNewBounds.size.width;
+    to.x = self->mLastNewBounds.size.width;
     height = self->mLastNewBounds.size.height;
-    rect_24 = a3;
-    v18 = [(CRLCanvasKnobTracker *)self knob];
-    v19 = [v18 tag];
+    rect_24 = to;
+    knob = [(CRLCanvasKnobTracker *)self knob];
+    v19 = [knob tag];
 
     v20 = [(CRLCanvasKnobTracker *)self rep];
-    v21 = [v20 interactiveCanvasController];
-    v22 = [v21 guideController];
+    interactiveCanvasController = [v20 interactiveCanvasController];
+    guideController = [interactiveCanvasController guideController];
 
-    v23 = [(CRLResizeKnobTracker *)self currentlyPreservingAspectRatio];
+    currentlyPreservingAspectRatio = [(CRLResizeKnobTracker *)self currentlyPreservingAspectRatio];
     v24 = sub_10034601C(v19);
     v25 = v24;
     rect_8 = v24;
-    if ((v23 & 1) == 0 && !v24)
+    if ((currentlyPreservingAspectRatio & 1) == 0 && !v24)
     {
-      if (!v14)
+      if (!guidesCopy)
       {
 LABEL_27:
         v67 = [(CRLCanvasKnobTracker *)self rep];
-        v68 = [v67 wantsGuidesWhileResizing];
+        wantsGuidesWhileResizing = [v67 wantsGuidesWhileResizing];
 
-        if (v68)
+        if (wantsGuidesWhileResizing)
         {
-          [v22 hideAlignmentGuides];
+          [guideController hideAlignmentGuides];
         }
 
 LABEL_119:
@@ -1729,7 +1729,7 @@ LABEL_24:
         goto LABEL_27;
       }
 
-      v149 = v23;
+      v149 = currentlyPreservingAspectRatio;
       sub_10059B8EC(v19, self->mBaseBounds.origin.x, self->mBaseBounds.origin.y, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
       p_mLastNewBounds->origin.x = v52;
       p_mLastNewBounds->origin.y = v53;
@@ -1744,11 +1744,11 @@ LABEL_24:
       v60 = v59;
       v62 = v61;
       v64 = v63;
-      v65 = [(CRLCanvasAbstractLayout *)self->mResizingLayout parent];
-      v66 = v65;
-      if (v65)
+      parent = [(CRLCanvasAbstractLayout *)self->mResizingLayout parent];
+      v66 = parent;
+      if (parent)
       {
-        [v65 transformInRoot];
+        [parent transformInRoot];
       }
 
       else
@@ -1780,8 +1780,8 @@ LABEL_24:
       v73 = v173.origin.y;
       v74 = v173.size.width;
       v75 = v173.size.height;
-      v76 = [(CRLCanvasKnobTracker *)self knob];
-      v77 = [v76 tag];
+      knob2 = [(CRLCanvasKnobTracker *)self knob];
+      v77 = [knob2 tag];
 
       v78 = self->mResizingLayout;
       if (v78)
@@ -1799,13 +1799,13 @@ LABEL_24:
       v145 = v19;
       if (v80 == 90.0 || fabs(v80 + -90.0) < 0.00999999978)
       {
-        v81 = v22;
+        v81 = guideController;
         v82 = sub_100345B30(v77);
       }
 
       else if (v80 == 180.0 || fabs(v80 + -180.0) < 0.00999999978)
       {
-        v81 = v22;
+        v81 = guideController;
         v82 = sub_100345B08(v77);
       }
 
@@ -1814,11 +1814,11 @@ LABEL_24:
         if (v80 != 270.0 && fabs(v80 + -270.0) >= 0.00999999978)
         {
           v148 = v77;
-          v81 = v22;
+          v81 = guideController;
           goto LABEL_47;
         }
 
-        v81 = v22;
+        v81 = guideController;
         v82 = sub_100345934(v77);
       }
 
@@ -1826,12 +1826,12 @@ LABEL_24:
 LABEL_47:
       v150 = v73;
       recta = v72;
-      v83 = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
-      v84 = [(CRLResizeKnobTracker *)self hasVerticalFlip];
+      hasHorizontalFlip = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
+      hasVerticalFlip = [(CRLResizeKnobTracker *)self hasVerticalFlip];
       v85 = objc_opt_class();
       v86 = [(CRLCanvasKnobTracker *)self rep];
-      v87 = [v86 parentRep];
-      v88 = sub_100014370(v85, v87);
+      parentRep = [v86 parentRep];
+      v88 = sub_100014370(v85, parentRep);
 
       v89 = [(CRLCanvasKnobTracker *)self rep];
       LODWORD(v86) = [v89 wantsGuidesWhileResizing];
@@ -1841,7 +1841,7 @@ LABEL_47:
       if (v86)
       {
         LOBYTE(v141) = v88 == 0;
-        [v81 snapRectToGuides:v148 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:v83 startPoint:v84 endPoint:x hasHorizontalFlip:y hasVerticalFlip:width snapWithGuides:{v70, CGPointZero.x, v90, CGPointZero.x, v90, v141}];
+        [v81 snapRectToGuides:v148 forKnobTag:1 snapSize:1 snapWithBackgroundAlignmentProvider:0 isLine:hasHorizontalFlip startPoint:hasVerticalFlip endPoint:x hasHorizontalFlip:y hasVerticalFlip:width snapWithGuides:{v70, CGPointZero.x, v90, CGPointZero.x, v90, v141}];
         v92 = v91;
         v94 = v93;
       }
@@ -1855,24 +1855,24 @@ LABEL_47:
       v144 = v88;
       v95 = v94 == v90 && v92 == CGPointZero.x;
       v96 = [(CRLCanvasKnobTracker *)self rep];
-      v97 = [v96 interactiveCanvasController];
-      v98 = [v97 canvasBackground];
+      interactiveCanvasController2 = [v96 interactiveCanvasController];
+      canvasBackground = [interactiveCanvasController2 canvasBackground];
 
-      v142 = v98;
-      v99 = [v98 alignmentProvider];
-      if (v99)
+      v142 = canvasBackground;
+      alignmentProvider = [canvasBackground alignmentProvider];
+      if (alignmentProvider)
       {
         v100 = [(CRLCanvasKnobTracker *)self rep];
-        v101 = [v100 interactiveCanvasController];
-        v102 = [v101 isCanvasBackgroundAlignmentSnappingEnabled];
+        interactiveCanvasController3 = [v100 interactiveCanvasController];
+        isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController3 isCanvasBackgroundAlignmentSnappingEnabled];
       }
 
       else
       {
-        v102 = 0;
+        isCanvasBackgroundAlignmentSnappingEnabled = 0;
       }
 
-      v22 = v81;
+      guideController = v81;
       if (v95)
       {
         v103 = v148;
@@ -1925,7 +1925,7 @@ LABEL_47:
 LABEL_97:
         if (fabs(v92) <= 7)
         {
-          if ((fabs(v94) <= 7) | v102 & 1)
+          if ((fabs(v94) <= 7) | isCanvasBackgroundAlignmentSnappingEnabled & 1)
           {
 LABEL_102:
             v157 = v159;
@@ -2015,9 +2015,9 @@ LABEL_102:
 
                 [(CRLResizeKnobTracker *)self p_validateLayout];
                 v135 = [(CRLCanvasKnobTracker *)self rep];
-                v136 = [v135 wantsGuidesWhileResizing];
+                wantsGuidesWhileResizing2 = [v135 wantsGuidesWhileResizing];
 
-                if (v136)
+                if (wantsGuidesWhileResizing2)
                 {
                   [v81 showGuidesAlignedWithRect:v103 forKnobTag:{v122, v124, rect_16, rect_8a}];
                 }
@@ -2028,7 +2028,7 @@ LABEL_102:
           }
         }
 
-        else if (v102)
+        else if (isCanvasBackgroundAlignmentSnappingEnabled)
         {
           goto LABEL_102;
         }
@@ -2059,7 +2059,7 @@ LABEL_102:
         v106 = fabs(v92) < fabs(v94);
       }
 
-      if (((v106 | v102) & 1) == 0)
+      if (((v106 | isCanvasBackgroundAlignmentSnappingEnabled) & 1) == 0)
       {
         v106 = 0;
         v114 = v94;
@@ -2086,7 +2086,7 @@ LABEL_87:
         }
 
 LABEL_92:
-        if (v102)
+        if (isCanvasBackgroundAlignmentSnappingEnabled)
         {
           v106 = fabs(v92) + fabs(v114) <= fabs(v94) + fabs(v115);
         }
@@ -2120,7 +2120,7 @@ LABEL_80:
       }
 
       v115 = v92;
-      if (!(v102 & 1 | !v106))
+      if (!(isCanvasBackgroundAlignmentSnappingEnabled & 1 | !v106))
       {
         goto LABEL_92;
       }
@@ -2128,16 +2128,16 @@ LABEL_80:
       goto LABEL_87;
     }
 
-    rect = v22;
+    rect = guideController;
     v26 = fabs(rect_24.x);
     v27 = fabs(height);
     v28 = [(CRLCanvasKnobTracker *)self rep];
-    v29 = [v28 interactiveCanvasController];
-    v30 = [v29 canvasBackground];
+    interactiveCanvasController4 = [v28 interactiveCanvasController];
+    canvasBackground2 = [interactiveCanvasController4 canvasBackground];
 
-    v31 = [v30 alignmentProvider];
-    v33 = v31;
-    if (v23)
+    alignmentProvider2 = [canvasBackground2 alignmentProvider];
+    v33 = alignmentProvider2;
+    if (currentlyPreservingAspectRatio)
     {
       *v32.i64 = sub_100121BA4(v25, v26, v27, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
       v26 = *v32.i64;
@@ -2147,14 +2147,14 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if ((v25 & v14) != 1)
+    if ((v25 & guidesCopy) != 1)
     {
 LABEL_22:
       v49 = rect_24;
       goto LABEL_23;
     }
 
-    if (!v31 || (-[CRLCanvasKnobTracker rep](self, "rep"), v35 = objc_claimAutoreleasedReturnValue(), [v35 interactiveCanvasController], v36 = v19, v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isCanvasBackgroundAlignmentSnappingEnabled"), v37, v19 = v36, v35, (v38 & 1) == 0))
+    if (!alignmentProvider2 || (-[CRLCanvasKnobTracker rep](self, "rep"), v35 = objc_claimAutoreleasedReturnValue(), [v35 interactiveCanvasController], v36 = v19, v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "isCanvasBackgroundAlignmentSnappingEnabled"), v37, v19 = v36, v35, (v38 & 1) == 0))
     {
       v39 = self->mBaseBounds.size.height;
       v40 = 1.0;
@@ -2183,7 +2183,7 @@ LABEL_20:
         *v32.i64 = sub_100121BA4(1, v45, v46, v44, v47);
         v26 = *v32.i64;
         v27 = v48;
-        LOBYTE(v23) = 0;
+        LOBYTE(currentlyPreservingAspectRatio) = 0;
         goto LABEL_21;
       }
 
@@ -2198,7 +2198,7 @@ LABEL_20:
     }
 
     v49 = rect_24;
-    LOBYTE(v23) = 0;
+    LOBYTE(currentlyPreservingAspectRatio) = 0;
 LABEL_23:
     *v32.i32 = v26;
     *v49.i32 = *v49.i64;
@@ -2211,8 +2211,8 @@ LABEL_23:
     *v49.i32 = height;
     height = *vbslq_s8(v50, v51, v49).i32;
 
-    v22 = rect;
-    if (!v14)
+    guideController = rect;
+    if (!guidesCopy)
     {
       goto LABEL_27;
     }
@@ -2231,15 +2231,15 @@ LABEL_23:
     sub_100121C3C(width, height, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
   }
 
-  v6 = [(CRLCanvasKnobTracker *)self knob];
-  sub_10059B8EC([v6 tag], self->mBaseBounds.origin.x, self->mBaseBounds.origin.y, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  sub_10059B8EC([knob tag], self->mBaseBounds.origin.x, self->mBaseBounds.origin.y, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
   p_mLastNewBounds->origin.x = v7;
   p_mLastNewBounds->origin.y = v8;
   p_mLastNewBounds->size.width = v9;
   p_mLastNewBounds->size.height = v10;
 
-  v15 = [(CRLCanvasKnobTracker *)self knob];
-  sub_10059B8EC([v15 tag], self->mBaseBounds.origin.x, self->mBaseBounds.origin.y, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
+  knob2 = [(CRLCanvasKnobTracker *)self knob];
+  sub_10059B8EC([knob2 tag], self->mBaseBounds.origin.x, self->mBaseBounds.origin.y, self->mBaseBounds.size.width, self->mBaseBounds.size.height);
   p_mLastNewBounds->origin.x = v11;
   p_mLastNewBounds->origin.y = v12;
   p_mLastNewBounds->size.width = v13;
@@ -2249,31 +2249,31 @@ LABEL_23:
 - (void)p_validateLayout
 {
   v2 = [(CRLCanvasKnobTracker *)self rep];
-  v4 = [v2 layout];
+  layout = [v2 layout];
 
-  v3 = [v4 layoutController];
-  [v3 validateLayoutWithDependencies:v4];
+  layoutController = [layout layoutController];
+  [layoutController validateLayoutWithDependencies:layout];
 }
 
 - (void)p_updateGuideRenderable
 {
-  v3 = [(CRLCanvasKnobTracker *)self knob];
-  v4 = sub_10034601C([v3 tag]);
+  knob = [(CRLCanvasKnobTracker *)self knob];
+  v4 = sub_10034601C([knob tag]);
 
   if (v4)
   {
     v5 = [(CRLCanvasKnobTracker *)self rep];
-    v6 = [v5 interactiveCanvasController];
+    interactiveCanvasController = [v5 interactiveCanvasController];
 
-    v7 = [v6 canvas];
-    [v7 contentsScale];
+    canvas = [interactiveCanvasController canvas];
+    [canvas contentsScale];
     v9 = v8;
 
     if (!self->mBeganAlignmentOperation)
     {
-      v10 = [v6 guideController];
+      guideController = [interactiveCanvasController guideController];
       v11 = [(CRLCanvasKnobTracker *)self rep];
-      [v10 beginAlignmentOperationForRep:v11];
+      [guideController beginAlignmentOperationForRep:v11];
 
       self->mBeganAlignmentOperation = 1;
     }
@@ -2294,7 +2294,7 @@ LABEL_23:
         [(CRLCanvasRenderable *)self->mGuideRenderable setZPosition:-1.0];
         [(CRLCanvasRenderable *)self->mGuideRenderable setDelegate:self];
         [(CRLCanvasRenderable *)self->mGuideRenderable setContentsScale:v9];
-        [v6 invalidateLayersForDecorator:self];
+        [interactiveCanvasController invalidateLayersForDecorator:self];
         if (qword_101AD5D18)
         {
           v17 = 1;
@@ -2426,12 +2426,12 @@ LABEL_23:
 
       v111 = v9 * 10.0;
       [(CRLCanvasRenderable *)mGuideRenderable setHidden:0, v9 * 3.0];
-      v41 = [(CRLCanvasKnobTracker *)self knob];
-      v42 = sub_100345F44([v41 tag], self->mLastNewBounds.origin.x, self->mLastNewBounds.origin.y, self->mLastNewBounds.size.width, self->mLastNewBounds.size.height);
+      knob2 = [(CRLCanvasKnobTracker *)self knob];
+      v42 = sub_100345F44([knob2 tag], self->mLastNewBounds.origin.x, self->mLastNewBounds.origin.y, self->mLastNewBounds.size.width, self->mLastNewBounds.size.height);
       v44 = v43;
 
-      v45 = [(CRLCanvasKnobTracker *)self knob];
-      v46 = sub_100345B0C([v45 tag]);
+      knob3 = [(CRLCanvasKnobTracker *)self knob];
+      v46 = sub_100345B0C([knob3 tag]);
       v47 = sub_100345F44(v46, self->mLastNewBounds.origin.x, self->mLastNewBounds.origin.y, self->mLastNewBounds.size.width, self->mLastNewBounds.size.height);
       v49 = v48;
 
@@ -2466,13 +2466,13 @@ LABEL_23:
       }
 
       v71 = [(CRLCanvasKnobTracker *)self rep];
-      v72 = [v71 layout];
-      v73 = [v72 geometryForTransforming];
+      layout = [v71 layout];
+      geometryForTransforming = [layout geometryForTransforming];
 
       memset(&components, 0, sizeof(components));
-      if (v73)
+      if (geometryForTransforming)
       {
-        [v73 transform];
+        [geometryForTransforming transform];
       }
 
       else
@@ -2481,12 +2481,12 @@ LABEL_23:
       }
 
       v74 = [(CRLCanvasKnobTracker *)self rep];
-      v75 = [v74 layout];
-      v76 = [v75 geometry];
-      v77 = v76;
-      if (v76)
+      layout2 = [v74 layout];
+      geometry = [layout2 geometry];
+      v77 = geometry;
+      if (geometry)
       {
-        [v76 transform];
+        [geometry transform];
       }
 
       else
@@ -2503,27 +2503,27 @@ LABEL_23:
       v81 = components.ty + v65 * components.d + components.b * v63;
       v82 = [(CRLCanvasKnobTracker *)self rep];
       [v82 convertNaturalPointToUnscaledCanvas:{v78, v79}];
-      [v6 convertUnscaledToBoundsPoint:?];
+      [interactiveCanvasController convertUnscaledToBoundsPoint:?];
       v84 = v83;
       v86 = v85;
 
       v87 = [(CRLCanvasKnobTracker *)self rep];
       [v87 convertNaturalPointToUnscaledCanvas:{v80, v81}];
-      [v6 convertUnscaledToBoundsPoint:?];
+      [interactiveCanvasController convertUnscaledToBoundsPoint:?];
       v89 = v88;
       v91 = v90;
 
       v92 = sub_100120090(v89, v91, v84, v86);
       v93 = v92 / v111;
       v94 = vcvtps_u32_f32(v93);
-      v95 = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
-      v96 = [v95 objectAtIndexedSubscript:0];
+      subrenderables = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
+      v96 = [subrenderables objectAtIndexedSubscript:0];
 
-      v97 = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
-      v98 = [v97 objectAtIndexedSubscript:1];
+      subrenderables2 = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
+      v98 = [subrenderables2 objectAtIndexedSubscript:1];
 
-      v99 = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
-      v100 = [v99 lastObject];
+      subrenderables3 = [(CRLCanvasRenderable *)self->mGuideRenderable subrenderables];
+      lastObject = [subrenderables3 lastObject];
 
       v101 = v111 * v94;
       [v98 setBounds:{v110 * -0.5, 0.0, v110, v101}];
@@ -2542,7 +2542,7 @@ LABEL_23:
         [v98 setPosition:{0.0, 0.0}];
       }
 
-      [v100 setPosition:{0.0, v101}];
+      [lastObject setPosition:{0.0, v101}];
       [(CRLCanvasRenderable *)self->mGuideRenderable position];
       if (v105 != v89 || v104 != v91)
       {
@@ -2587,8 +2587,8 @@ LABEL_23:
   if ([(CRLCanvasRenderable *)self->mGuideRenderable isHidden])
   {
     v9 = [(CRLCanvasKnobTracker *)self rep];
-    v3 = [v9 interactiveCanvasController];
-    [v3 removeDecorator:self];
+    interactiveCanvasController = [v9 interactiveCanvasController];
+    [interactiveCanvasController removeDecorator:self];
   }
 
   else
@@ -2604,8 +2604,8 @@ LABEL_23:
 
     [v9 setDelegate:self];
     v7 = [(CRLCanvasKnobTracker *)self rep];
-    v8 = [v7 interactiveCanvasController];
-    [v9 setValue:v8 forKey:@"icc"];
+    interactiveCanvasController2 = [v7 interactiveCanvasController];
+    [v9 setValue:interactiveCanvasController2 forKey:@"icc"];
 
     [(CRLCanvasRenderable *)self->mGuideRenderable addAnimation:v9 forKey:@"fade out"];
     [(CRLCanvasRenderable *)self->mGuideRenderable setOpacity:0.0];
@@ -2622,24 +2622,24 @@ LABEL_23:
   if (!v37 || (v6 = [v37 BOOLValue], v7 = v37, v6))
   {
     v8 = [(CRLCanvasKnobTracker *)self rep];
-    v9 = [v8 interactiveCanvasController];
+    interactiveCanvasController = [v8 interactiveCanvasController];
 
     v10 = +[CRLCanvasHUDController sharedHUDController];
-    v11 = [(CRLResizeKnobTracker *)self hudLabelText];
-    [v10 setLabelText:v11];
+    hudLabelText = [(CRLResizeKnobTracker *)self hudLabelText];
+    [v10 setLabelText:hudLabelText];
 
-    v12 = [v9 layerHost];
-    v13 = [v12 canvasView];
+    layerHost = [interactiveCanvasController layerHost];
+    canvasView = [layerHost canvasView];
 
     [(CRLCanvasKnobTracker *)self currentPosition];
-    [v9 convertUnscaledToBoundsPoint:?];
+    [interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v15 = v14;
     v17 = v16;
-    v18 = [v10 view];
-    [v18 frame];
+    view = [v10 view];
+    [view frame];
     v20 = (v19 + v19) / 5.0;
 
-    [v10 showHUDForKey:self forTouchPoint:v13 inCanvasView:0 withNudge:v15 size:{v17, v20, -75.0}];
+    [v10 showHUDForKey:self forTouchPoint:canvasView inCanvasView:0 withNudge:v15 size:{v17, v20, -75.0}];
     if (![(CRLResizeKnobTracker *)self suppressSecondaryHUD])
     {
       if ([(CRLResizeKnobTracker *)self p_isResizingWidthFromCenter]&& [(CRLResizeKnobTracker *)self p_isResizingHeightFromCenter])
@@ -2651,8 +2651,8 @@ LABEL_9:
         v24 = [v23 localizedStringForKey:v21 value:0 table:0];
         [(CRLCanvasHUDController *)mSecondHUDController setLabelText:v24];
 
-        v25 = [(CRLCanvasHUDController *)self->mSecondHUDController view];
-        [v25 frame];
+        view2 = [(CRLCanvasHUDController *)self->mSecondHUDController view];
+        [view2 frame];
         v27 = (v26 + v26) / 5.0;
 
         v28 = self->mSecondHUDController;
@@ -2660,9 +2660,9 @@ LABEL_9:
         v31 = sub_100122154(v29, v30);
         v33 = v32;
         v34 = [(CRLCanvasKnobTracker *)self icc];
-        v35 = [v34 layerHost];
-        v36 = [v35 canvasView];
-        [(CRLCanvasHUDController *)v28 showHUDForKey:self forTouchPoint:v36 inCanvasView:0 withNudge:v31 size:v33, v27, -75.0];
+        layerHost2 = [v34 layerHost];
+        canvasView2 = [layerHost2 canvasView];
+        [(CRLCanvasHUDController *)v28 showHUDForKey:self forTouchPoint:canvasView2 inCanvasView:0 withNudge:v31 size:v33, v27, -75.0];
 
 LABEL_11:
         v7 = v37;
@@ -2702,20 +2702,20 @@ LABEL_12:
 
 - (BOOL)p_isMatchingSize
 {
-  v3 = [(CRLResizeKnobTracker *)self repToMatch];
-  if (v3 && (v4 = v3, -[CRLResizeKnobTracker repToMatch](self, "repToMatch"), v5 = objc_claimAutoreleasedReturnValue(), [v5 layout], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "reliedOnLayouts"), v7 = objc_claimAutoreleasedReturnValue(), -[CRLCanvasKnobTracker rep](self, "rep"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "layout"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "containsObject:", v9), v9, v8, v7, v6, v5, v4, (v10 & 1) != 0))
+  repToMatch = [(CRLResizeKnobTracker *)self repToMatch];
+  if (repToMatch && (v4 = repToMatch, -[CRLResizeKnobTracker repToMatch](self, "repToMatch"), v5 = objc_claimAutoreleasedReturnValue(), [v5 layout], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "reliedOnLayouts"), v7 = objc_claimAutoreleasedReturnValue(), -[CRLCanvasKnobTracker rep](self, "rep"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "layout"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v7, "containsObject:", v9), v9, v8, v7, v6, v5, v4, (v10 & 1) != 0))
   {
     LOBYTE(v11) = 0;
   }
 
   else
   {
-    v12 = [(CRLResizeKnobTracker *)self repToMatch];
-    if (v12)
+    repToMatch2 = [(CRLResizeKnobTracker *)self repToMatch];
+    if (repToMatch2)
     {
-      v13 = [(CRLResizeKnobTracker *)self repToMatch];
+      repToMatch3 = [(CRLResizeKnobTracker *)self repToMatch];
       v14 = [(CRLCanvasKnobTracker *)self rep];
-      if (v13 == v14 || [(CRLResizeKnobTracker *)self p_isResizingWidthFromCenter])
+      if (repToMatch3 == v14 || [(CRLResizeKnobTracker *)self p_isResizingWidthFromCenter])
       {
         LOBYTE(v11) = 0;
       }
@@ -2737,46 +2737,46 @@ LABEL_12:
 
 - (BOOL)p_isResizingWidthFromCenter
 {
-  v3 = [(CRLResizeKnobTracker *)self canCenterResize];
-  if (v3)
+  canCenterResize = [(CRLResizeKnobTracker *)self canCenterResize];
+  if (canCenterResize)
   {
 
-    LOBYTE(v3) = [(CRLResizeKnobTracker *)self shouldResizeFromCenter];
+    LOBYTE(canCenterResize) = [(CRLResizeKnobTracker *)self shouldResizeFromCenter];
   }
 
-  return v3;
+  return canCenterResize;
 }
 
 - (BOOL)p_isResizingHeightFromCenter
 {
-  v3 = [(CRLResizeKnobTracker *)self canCenterResize];
-  if (v3)
+  canCenterResize = [(CRLResizeKnobTracker *)self canCenterResize];
+  if (canCenterResize)
   {
 
-    LOBYTE(v3) = [(CRLResizeKnobTracker *)self shouldResizeFromCenter];
+    LOBYTE(canCenterResize) = [(CRLResizeKnobTracker *)self shouldResizeFromCenter];
   }
 
-  return v3;
+  return canCenterResize;
 }
 
 - (BOOL)currentlyPreservingAspectRatio
 {
   v3 = objc_opt_class();
   v4 = [(CRLCanvasKnobTracker *)self rep];
-  v5 = [v4 layout];
-  v6 = sub_100014370(v3, v5);
+  layout = [v4 layout];
+  v6 = sub_100014370(v3, layout);
 
   if (v6 && [v6 autosizes])
   {
-    v7 = [(CRLCanvasKnobTracker *)self knob];
-    mPreserveAspectRatio = sub_10034601C([v7 tag]);
+    knob = [(CRLCanvasKnobTracker *)self knob];
+    mPreserveAspectRatio = sub_10034601C([knob tag]);
   }
 
   else
   {
-    v7 = [(CRLCanvasKnobTracker *)self rep];
-    v9 = [v7 layout];
-    if ([v9 resizeMayChangeAspectRatio])
+    knob = [(CRLCanvasKnobTracker *)self rep];
+    layout2 = [knob layout];
+    if ([layout2 resizeMayChangeAspectRatio])
     {
       mPreserveAspectRatio = self->mPreserveAspectRatio;
     }
@@ -2790,14 +2790,14 @@ LABEL_12:
   return mPreserveAspectRatio;
 }
 
-- (void)resizeRepForInspectors:(id)a3 value:(double)a4 changingWidth:(BOOL)a5
+- (void)resizeRepForInspectors:(id)inspectors value:(double)value changingWidth:(BOOL)width
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = self;
-  [(CRLResizeKnobTracker *)v9 i_lastNewBounds];
+  widthCopy = width;
+  inspectorsCopy = inspectors;
+  selfCopy = self;
+  [(CRLResizeKnobTracker *)selfCopy i_lastNewBounds];
   v12 = v10;
-  v13 = v11;
+  valueCopy = v11;
   if (vabdd_f64(0.0, v11) < 0.00999999978 || v11 == 0.0)
   {
     v15 = 0.0;
@@ -2808,8 +2808,8 @@ LABEL_12:
     v15 = v10 / v11;
   }
 
-  v16 = [v8 layout];
-  v17 = [v16 resizeMayChangeAspectRatio];
+  layout = [inspectorsCopy layout];
+  resizeMayChangeAspectRatio = [layout resizeMayChangeAspectRatio];
   if (v15 == 0.0)
   {
     v18 = 1;
@@ -2817,64 +2817,64 @@ LABEL_12:
 
   else
   {
-    v18 = v17;
+    v18 = resizeMayChangeAspectRatio;
   }
 
-  if (v5)
+  if (widthCopy)
   {
     if (!v18)
     {
-      v13 = a4 / v15;
+      valueCopy = value / v15;
     }
   }
 
   else
   {
-    v13 = a4;
+    valueCopy = value;
     if (v18)
     {
-      a4 = v12;
+      value = v12;
     }
 
     else
     {
-      a4 = v15 * a4;
+      value = v15 * value;
     }
   }
 
-  v19 = [(CRLCanvasKnobTracker *)v9 knob];
-  v20 = sub_100345928([v19 tag]) & 0x92;
+  knob = [(CRLCanvasKnobTracker *)selfCopy knob];
+  v20 = sub_100345928([knob tag]) & 0x92;
 
-  v21 = [(CRLCanvasKnobTracker *)v9 knob];
-  v22 = sub_100345928([v21 tag]) & 0xE;
+  knob2 = [(CRLCanvasKnobTracker *)selfCopy knob];
+  v22 = sub_100345928([knob2 tag]) & 0xE;
 
   v23 = 0.0;
   v24 = 0.0;
   if (v20)
   {
-    [(CRLResizeKnobTracker *)v9 i_baseBounds];
-    v24 = v25 - a4;
+    [(CRLResizeKnobTracker *)selfCopy i_baseBounds];
+    v24 = v25 - value;
   }
 
   if (v22)
   {
-    [(CRLResizeKnobTracker *)v9 i_baseBounds];
-    v23 = v26 - v13;
+    [(CRLResizeKnobTracker *)selfCopy i_baseBounds];
+    v23 = v26 - valueCopy;
   }
 
-  v27 = [(CRLCanvasKnobTracker *)v9 knob];
-  v28 = sub_100345F44([v27 tag], v24, v23, a4, v13);
+  knob3 = [(CRLCanvasKnobTracker *)selfCopy knob];
+  v28 = sub_100345F44([knob3 tag], v24, v23, value, valueCopy);
   v53 = v29;
   v54 = v28;
 
-  v52 = v13;
-  if (v8)
+  v52 = valueCopy;
+  if (inspectorsCopy)
   {
-    [v8 knobPositionTransformForInspectorResize];
+    [inspectorsCopy knobPositionTransformForInspectorResize];
     v30 = v55;
     v31 = v57;
     v32 = v59;
-    v33 = [(CRLResizeKnobTracker *)v9 shouldResizeFromCenter:v58];
+    v33 = [(CRLResizeKnobTracker *)selfCopy shouldResizeFromCenter:v58];
   }
 
   else
@@ -2882,20 +2882,20 @@ LABEL_12:
     v32 = 0.0;
     v31 = 0.0;
     v30 = 0.0;
-    v33 = [(CRLResizeKnobTracker *)v9 shouldResizeFromCenter:0];
+    v33 = [(CRLResizeKnobTracker *)selfCopy shouldResizeFromCenter:0];
   }
 
   v34 = v33;
-  v35 = [(CRLResizeKnobTracker *)v9 shouldResizeFromCenter];
-  [(CRLResizeKnobTracker *)v9 i_baseBounds];
+  shouldResizeFromCenter = [(CRLResizeKnobTracker *)selfCopy shouldResizeFromCenter];
+  [(CRLResizeKnobTracker *)selfCopy i_baseBounds];
   v40 = v36;
   v41 = v37;
   v42 = v38;
   v43 = v39;
   if (v34)
   {
-    v44 = CGRectGetMidX(*&v36) + a4 * 0.5;
-    if (!v35)
+    v44 = CGRectGetMidX(*&v36) + value * 0.5;
+    if (!shouldResizeFromCenter)
     {
 LABEL_26:
       v45 = v51 + v53 * v49 + v50 * v54;
@@ -2906,7 +2906,7 @@ LABEL_26:
   else
   {
     v44 = v32 + v53 * v31 + v30 * v54;
-    if (!v35)
+    if (!shouldResizeFromCenter)
     {
       goto LABEL_26;
     }
@@ -2918,10 +2918,10 @@ LABEL_26:
   v61.size.height = v43;
   v45 = CGRectGetMidY(v61) + v52 * 0.5;
 LABEL_29:
-  v46 = [(CRLCanvasKnobTracker *)v9 knob];
-  if ([v46 offsetValid])
+  knob4 = [(CRLCanvasKnobTracker *)selfCopy knob];
+  if ([knob4 offsetValid])
   {
-    [v46 offset];
+    [knob4 offset];
     x = v47;
   }
 
@@ -2930,27 +2930,27 @@ LABEL_29:
     x = CGPointZero.x;
   }
 
-  [(CRLResizeKnobTracker *)v9 convertKnobPositionToUnscaledCanvas:sub_10011F334(v44, v45, x)];
-  [(CRLCanvasKnobTracker *)v9 setCurrentPosition:?];
+  [(CRLResizeKnobTracker *)selfCopy convertKnobPositionToUnscaledCanvas:sub_10011F334(v44, v45, x)];
+  [(CRLCanvasKnobTracker *)selfCopy setCurrentPosition:?];
 }
 
 - (void)p_flipMagnetNormalizedPositionsIfNeeded
 {
-  v3 = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
-  v4 = [(CRLResizeKnobTracker *)self hasVerticalFlip];
+  hasHorizontalFlip = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
+  hasVerticalFlip = [(CRLResizeKnobTracker *)self hasVerticalFlip];
   v5 = [(CRLCanvasKnobTracker *)self rep];
-  v6 = [v5 layout];
+  layout = [v5 layout];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = [v6 connectedLayouts];
+  obj = [layout connectedLayouts];
   v32 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v32)
   {
     v31 = *v34;
-    v30 = v3;
+    v30 = hasHorizontalFlip;
     do
     {
       for (i = 0; i != v32; i = i + 1)
@@ -2961,16 +2961,16 @@ LABEL_29:
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
-        v9 = [v8 connectedTo];
+        connectedTo = [v8 connectedTo];
 
-        if (v6 == v9)
+        if (layout == connectedTo)
         {
           [v8 headMagnetNormalizedPosition];
           v11 = v14;
           v13 = v15;
-          if ((v3 & 1) == 0)
+          if ((hasHorizontalFlip & 1) == 0)
           {
-            if ((v4 & 1) == 0)
+            if ((hasVerticalFlip & 1) == 0)
             {
               goto LABEL_22;
             }
@@ -2983,8 +2983,8 @@ LABEL_20:
 
 LABEL_21:
             v13 = 1.0 - v13;
-            [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:v6 == v9 withNewNormalizedPosition:v8 forClineLayout:v6 onLayout:v11, v13];
-            [(CRLResizeKnobTracker *)self p_updateMagnetTypeForMagnet:v6 == v9 forClineLayout:v8];
+            [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:layout == connectedTo withNewNormalizedPosition:v8 forClineLayout:layout onLayout:v11, v13];
+            [(CRLResizeKnobTracker *)self p_updateMagnetTypeForMagnet:layout == connectedTo forClineLayout:v8];
             self->mAdjustedMagnetsForVerticalFlip = 1;
             [v8 setMagnetsAdjusted:1];
             goto LABEL_22;
@@ -2992,7 +2992,7 @@ LABEL_21:
 
           if ([v8 headHasHorizontalFlip])
           {
-            if ((v4 & 1) == 0)
+            if ((hasVerticalFlip & 1) == 0)
             {
               goto LABEL_27;
             }
@@ -3006,9 +3006,9 @@ LABEL_21:
           [v8 tailMagnetNormalizedPosition];
           v11 = v10;
           v13 = v12;
-          if (v3 & 1) == 0 || ([v8 tailHasHorizontalFlip])
+          if (hasHorizontalFlip & 1) == 0 || ([v8 tailHasHorizontalFlip])
           {
-            if ((v4 & 1) == 0)
+            if ((hasVerticalFlip & 1) == 0)
             {
               goto LABEL_22;
             }
@@ -3018,17 +3018,17 @@ LABEL_21:
         }
 
         v11 = 1.0 - v11;
-        [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:v6 == v9 withNewNormalizedPosition:v8 forClineLayout:v6 onLayout:v11, v13];
-        [(CRLResizeKnobTracker *)self p_updateMagnetTypeForMagnet:v6 == v9 forClineLayout:v8];
+        [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:layout == connectedTo withNewNormalizedPosition:v8 forClineLayout:layout onLayout:v11, v13];
+        [(CRLResizeKnobTracker *)self p_updateMagnetTypeForMagnet:layout == connectedTo forClineLayout:v8];
         self->mAdjustedMagnetsForHorizontalFlip = 1;
         [v8 setMagnetsAdjusted:1];
-        if ((v4 & 1) == 0)
+        if ((hasVerticalFlip & 1) == 0)
         {
           goto LABEL_22;
         }
 
 LABEL_16:
-        if (v6 == v9)
+        if (layout == connectedTo)
         {
           goto LABEL_20;
         }
@@ -3039,68 +3039,68 @@ LABEL_16:
         }
 
 LABEL_22:
-        if (!(v3 & 1 | !self->mAdjustedMagnetsForHorizontalFlip))
+        if (!(hasHorizontalFlip & 1 | !self->mAdjustedMagnetsForHorizontalFlip))
         {
-          v16 = [v8 connectionLineInfo];
-          v17 = [v16 connectionLinePathSource];
+          connectionLineInfo = [v8 connectionLineInfo];
+          connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
 
-          if (v6 == v9)
+          if (layout == connectedTo)
           {
-            [v17 headMagnet];
+            [connectionLinePathSource headMagnet];
           }
 
           else
           {
-            [v17 tailMagnet];
+            [connectionLinePathSource tailMagnet];
           }
           v18 = ;
           [v18 magnetNormalizedPosition];
           v11 = v19;
 
-          [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:v6 == v9 withNewNormalizedPosition:v8 forClineLayout:v6 onLayout:v11, v13];
-          [(CRLResizeKnobTracker *)self p_revertToOriginalMagnetTypeForMagnet:v6 == v9 forClineLayout:v8];
+          [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:layout == connectedTo withNewNormalizedPosition:v8 forClineLayout:layout onLayout:v11, v13];
+          [(CRLResizeKnobTracker *)self p_revertToOriginalMagnetTypeForMagnet:layout == connectedTo forClineLayout:v8];
           self->mAdjustedMagnetsForHorizontalFlip = 0;
 
-          v3 = v30;
+          hasHorizontalFlip = v30;
         }
 
 LABEL_27:
-        if (!(v4 & 1 | !self->mAdjustedMagnetsForVerticalFlip))
+        if (!(hasVerticalFlip & 1 | !self->mAdjustedMagnetsForVerticalFlip))
         {
-          v20 = [v8 connectionLineInfo];
-          v21 = [v20 connectionLinePathSource];
+          connectionLineInfo2 = [v8 connectionLineInfo];
+          connectionLinePathSource2 = [connectionLineInfo2 connectionLinePathSource];
 
-          if (v6 == v9)
+          if (layout == connectedTo)
           {
-            [v21 headMagnet];
+            [connectionLinePathSource2 headMagnet];
           }
 
           else
           {
-            [v21 tailMagnet];
+            [connectionLinePathSource2 tailMagnet];
           }
           v22 = ;
           [v22 magnetNormalizedPosition];
           v24 = v23;
 
-          [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:v6 == v9 withNewNormalizedPosition:v8 forClineLayout:v6 onLayout:v11, v24];
-          [(CRLResizeKnobTracker *)self p_revertToOriginalMagnetTypeForMagnet:v6 == v9 forClineLayout:v8];
+          [(CRLResizeKnobTracker *)self p_setNormalizedPositionForMagnet:layout == connectedTo withNewNormalizedPosition:v8 forClineLayout:layout onLayout:v11, v24];
+          [(CRLResizeKnobTracker *)self p_revertToOriginalMagnetTypeForMagnet:layout == connectedTo forClineLayout:v8];
           self->mAdjustedMagnetsForVerticalFlip = 0;
 
-          v3 = v30;
+          hasHorizontalFlip = v30;
         }
 
-        v25 = [v8 connectedTo];
-        [v8 setHeadHasHorizontalFlip:(v25 == v6) & v3];
+        connectedTo2 = [v8 connectedTo];
+        [v8 setHeadHasHorizontalFlip:(connectedTo2 == layout) & hasHorizontalFlip];
 
-        v26 = [v8 connectedTo];
-        [v8 setHeadHasVerticalFlip:(v26 == v6) & v4];
+        connectedTo3 = [v8 connectedTo];
+        [v8 setHeadHasVerticalFlip:(connectedTo3 == layout) & hasVerticalFlip];
 
-        v27 = [v8 connectedFrom];
-        [v8 setTailHasHorizontalFlip:(v27 == v6) & v3];
+        connectedFrom = [v8 connectedFrom];
+        [v8 setTailHasHorizontalFlip:(connectedFrom == layout) & hasHorizontalFlip];
 
-        v28 = [v8 connectedFrom];
-        [v8 setTailHasVerticalFlip:(v28 == v6) & v4];
+        connectedFrom2 = [v8 connectedFrom];
+        [v8 setTailHasVerticalFlip:(connectedFrom2 == layout) & hasVerticalFlip];
       }
 
       v32 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -3110,18 +3110,18 @@ LABEL_27:
   }
 }
 
-- (void)p_setNormalizedPositionForMagnet:(BOOL)a3 withNewNormalizedPosition:(CGPoint)a4 forClineLayout:(id)a5 onLayout:(id)a6
+- (void)p_setNormalizedPositionForMagnet:(BOOL)magnet withNewNormalizedPosition:(CGPoint)position forClineLayout:(id)layout onLayout:(id)onLayout
 {
-  v18 = *&a4.y;
-  v7 = a3;
-  v8 = a5;
-  v9 = a6;
+  v18 = *&position.y;
+  magnetCopy = magnet;
+  layoutCopy = layout;
+  onLayoutCopy = onLayout;
   memset(&v24, 0, sizeof(v24));
-  v10 = [v9 pureGeometry];
-  v11 = v10;
-  if (v10)
+  pureGeometry = [onLayoutCopy pureGeometry];
+  v11 = pureGeometry;
+  if (pureGeometry)
   {
-    [v10 fullTransform];
+    [pureGeometry fullTransform];
   }
 
   else
@@ -3129,15 +3129,15 @@ LABEL_27:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v12 = [v9 parent];
-  if (v12)
+  parent = [onLayoutCopy parent];
+  if (parent)
   {
-    v13 = [v9 parent];
-    v14 = [v13 geometryInRoot];
-    v15 = v14;
-    if (v14)
+    parent2 = [onLayoutCopy parent];
+    geometryInRoot = [parent2 geometryInRoot];
+    v15 = geometryInRoot;
+    if (geometryInRoot)
     {
-      [v14 transform];
+      [geometryInRoot transform];
     }
 
     else
@@ -3158,83 +3158,83 @@ LABEL_27:
   }
 
   v17 = vaddq_f64(*&v24.tx, vmlaq_n_f64(vmulq_n_f64(*&v24.c, v19), *&v24.a, v21));
-  if (v7)
+  if (magnetCopy)
   {
-    [v8 setHeadMagnetPosition:*&v17];
+    [layoutCopy setHeadMagnetPosition:*&v17];
   }
 
   else
   {
-    [v8 setTailMagnetPosition:*&v17];
+    [layoutCopy setTailMagnetPosition:*&v17];
   }
 }
 
-- (void)p_updateMagnetTypeForMagnet:(BOOL)a3 forClineLayout:(id)a4
+- (void)p_updateMagnetTypeForMagnet:(BOOL)magnet forClineLayout:(id)layout
 {
-  v4 = a3;
-  v17 = a4;
-  v6 = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
-  v7 = [(CRLResizeKnobTracker *)self hasVerticalFlip];
-  v8 = [v17 connectionLineInfo];
-  v9 = [v8 connectionLinePathSource];
+  magnetCopy = magnet;
+  layoutCopy = layout;
+  hasHorizontalFlip = [(CRLResizeKnobTracker *)self hasHorizontalFlip];
+  hasVerticalFlip = [(CRLResizeKnobTracker *)self hasVerticalFlip];
+  connectionLineInfo = [layoutCopy connectionLineInfo];
+  connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
 
-  if (v4)
+  if (magnetCopy)
   {
-    [v9 headMagnet];
+    [connectionLinePathSource headMagnet];
   }
 
   else
   {
-    [v9 tailMagnet];
+    [connectionLinePathSource tailMagnet];
   }
   v10 = ;
-  v11 = [v10 magnetType];
+  magnetType = [v10 magnetType];
 
   v12 = 4;
-  if (v7)
+  if (hasVerticalFlip)
   {
     v12 = 2;
   }
 
   v13 = 5;
-  if (v6)
+  if (hasHorizontalFlip)
   {
     v13 = 3;
   }
 
-  if (v11 != 5)
+  if (magnetType != 5)
   {
-    v13 = v11;
+    v13 = magnetType;
   }
 
-  if (v11 != 4)
+  if (magnetType != 4)
   {
     v12 = v13;
   }
 
   v14 = 2;
-  if (v7)
+  if (hasVerticalFlip)
   {
     v14 = 4;
   }
 
   v15 = 3;
-  if (v6)
+  if (hasHorizontalFlip)
   {
     v15 = 5;
   }
 
-  if (v11 != 3)
+  if (magnetType != 3)
   {
-    v15 = v11;
+    v15 = magnetType;
   }
 
-  if (v11 != 2)
+  if (magnetType != 2)
   {
     v14 = v15;
   }
 
-  if (v11 <= 3)
+  if (magnetType <= 3)
   {
     v16 = v14;
   }
@@ -3244,41 +3244,41 @@ LABEL_27:
     v16 = v12;
   }
 
-  if (v4)
+  if (magnetCopy)
   {
-    [v17 setHeadMagnetType:v16];
+    [layoutCopy setHeadMagnetType:v16];
   }
 
   else
   {
-    [v17 setTailMagnetType:v16];
+    [layoutCopy setTailMagnetType:v16];
   }
 }
 
-- (void)p_revertToOriginalMagnetTypeForMagnet:(BOOL)a3 forClineLayout:(id)a4
+- (void)p_revertToOriginalMagnetTypeForMagnet:(BOOL)magnet forClineLayout:(id)layout
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [v5 connectionLineInfo];
-  v8 = [v6 connectionLinePathSource];
+  magnetCopy = magnet;
+  layoutCopy = layout;
+  connectionLineInfo = [layoutCopy connectionLineInfo];
+  connectionLinePathSource = [connectionLineInfo connectionLinePathSource];
 
-  if (v4)
+  if (magnetCopy)
   {
-    v7 = [v8 headMagnet];
-    [v5 setHeadMagnetType:{objc_msgSend(v7, "magnetType")}];
+    headMagnet = [connectionLinePathSource headMagnet];
+    [layoutCopy setHeadMagnetType:{objc_msgSend(headMagnet, "magnetType")}];
   }
 
   else
   {
-    v7 = [v8 tailMagnet];
-    [v5 setTailMagnetType:{objc_msgSend(v7, "magnetType")}];
+    headMagnet = [connectionLinePathSource tailMagnet];
+    [layoutCopy setTailMagnetType:{objc_msgSend(headMagnet, "magnetType")}];
   }
 }
 
 - (BOOL)i_shouldForceDrag
 {
-  v2 = [(CRLResizeKnobTracker *)self repToMatch];
-  v3 = v2 != 0;
+  repToMatch = [(CRLResizeKnobTracker *)self repToMatch];
+  v3 = repToMatch != 0;
 
   return v3;
 }

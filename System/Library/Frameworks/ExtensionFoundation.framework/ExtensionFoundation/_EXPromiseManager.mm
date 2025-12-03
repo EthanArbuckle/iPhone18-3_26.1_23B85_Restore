@@ -1,12 +1,12 @@
 @interface _EXPromiseManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_EXPromiseManager)init;
-- (id)resolveObjectOfClasses:(id)a3 forIdentifier:(id)a4 endpoint:(id)a5 error:(id *)a6;
-- (void)registerPromise:(id)a3;
-- (void)resolveObjectOfClasses:(id)a3 forIdentifier:(id)a4 endpoint:(id)a5 completion:(id)a6;
-- (void)resolvePromiseWithIdentifier:(id)a3 reply:(id)a4;
-- (void)unregisterPromise:(id)a3;
+- (id)resolveObjectOfClasses:(id)classes forIdentifier:(id)identifier endpoint:(id)endpoint error:(id *)error;
+- (void)registerPromise:(id)promise;
+- (void)resolveObjectOfClasses:(id)classes forIdentifier:(id)identifier endpoint:(id)endpoint completion:(id)completion;
+- (void)resolvePromiseWithIdentifier:(id)identifier reply:(id)reply;
+- (void)unregisterPromise:(id)promise;
 @end
 
 @implementation _EXPromiseManager
@@ -30,13 +30,13 @@
   v2 = [(_EXPromiseManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     promises = v2->_promises;
-    v2->_promises = v3;
+    v2->_promises = weakToWeakObjectsMapTable;
 
-    v5 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v2->_listener;
-    v2->_listener = v5;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
@@ -45,11 +45,11 @@
   return v2;
 }
 
-- (id)resolveObjectOfClasses:(id)a3 forIdentifier:(id)a4 endpoint:(id)a5 error:(id *)a6
+- (id)resolveObjectOfClasses:(id)classes forIdentifier:(id)identifier endpoint:(id)endpoint error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  classesCopy = classes;
+  identifierCopy = identifier;
+  endpointCopy = endpoint;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -62,7 +62,7 @@
   v28 = __Block_byref_object_copy__2;
   v29 = __Block_byref_object_dispose__2;
   v30 = 0;
-  if (!v11)
+  if (!endpointCopy)
   {
     v22 = _EXDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -73,7 +73,7 @@
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v22 = _EXDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -84,8 +84,8 @@
     goto LABEL_19;
   }
 
-  v12 = v11;
-  if ([v9 containsObject:objc_opt_class()])
+  v12 = endpointCopy;
+  if ([classesCopy containsObject:objc_opt_class()])
   {
     v22 = _EXDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
@@ -101,7 +101,7 @@ LABEL_19:
 
   v13 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v12];
   v14 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF2A1C00];
-  [v14 setClasses:v9 forSelector:sel_resolvePromiseWithIdentifier_reply_ argumentIndex:0 ofReply:1];
+  [v14 setClasses:classesCopy forSelector:sel_resolvePromiseWithIdentifier_reply_ argumentIndex:0 ofReply:1];
   [v13 setRemoteObjectInterface:v14];
   [v13 resume];
   v24[0] = MEMORY[0x1E69E9820];
@@ -115,7 +115,7 @@ LABEL_19:
   v23[2] = __73___EXPromiseManager_resolveObjectOfClasses_forIdentifier_endpoint_error___block_invoke_2;
   v23[3] = &unk_1E6E4E348;
   v23[4] = &v25;
-  [v15 resolvePromiseWithIdentifier:v10 reply:v23];
+  [v15 resolvePromiseWithIdentifier:identifierCopy reply:v23];
   v16 = v32;
   if (!v26[5] && !v32[5])
   {
@@ -126,12 +126,12 @@ LABEL_19:
     v16 = v32;
   }
 
-  if (a6)
+  if (error)
   {
     v19 = v16[5];
     if (v19)
     {
-      *a6 = v19;
+      *error = v19;
     }
   }
 
@@ -143,22 +143,22 @@ LABEL_19:
   return v20;
 }
 
-- (void)resolveObjectOfClasses:(id)a3 forIdentifier:(id)a4 endpoint:(id)a5 completion:(id)a6
+- (void)resolveObjectOfClasses:(id)classes forIdentifier:(id)identifier endpoint:(id)endpoint completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v11)
+  classesCopy = classes;
+  identifierCopy = identifier;
+  endpointCopy = endpoint;
+  completionCopy = completion;
+  if (endpointCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      v13 = v12;
-      if ([v9 containsObject:objc_opt_class()])
+      v13 = completionCopy;
+      if ([classesCopy containsObject:objc_opt_class()])
       {
-        v14 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v11];
+        v14 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
         v15 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1EF2A1C00];
-        [v15 setClasses:v9 forSelector:sel_resolvePromiseWithIdentifier_reply_ argumentIndex:0 ofReply:1];
+        [v15 setClasses:classesCopy forSelector:sel_resolvePromiseWithIdentifier_reply_ argumentIndex:0 ofReply:1];
         [v14 setRemoteObjectInterface:v15];
         [v14 resume];
         v22[0] = MEMORY[0x1E69E9820];
@@ -174,7 +174,7 @@ LABEL_19:
         v20[3] = &unk_1E6E4E370;
         v21 = v16;
         v18 = v16;
-        [v17 resolvePromiseWithIdentifier:v10 reply:v20];
+        [v17 resolvePromiseWithIdentifier:identifierCopy reply:v20];
 
         return;
       }
@@ -208,24 +208,24 @@ LABEL_19:
   __break(1u);
 }
 
-- (void)registerPromise:(id)a3
+- (void)registerPromise:(id)promise
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  promiseCopy = promise;
+  identifier = [promiseCopy identifier];
   v6 = _EXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [_EXPromiseManager registerPromise:];
   }
 
-  v7 = [v4 promiseBlock];
-  v8 = [v7 copy];
+  promiseBlock = [promiseCopy promiseBlock];
+  v8 = [promiseBlock copy];
 
-  if (v5)
+  if (identifier)
   {
     if (v8)
     {
-      [(NSMapTable *)self->_promises setObject:v4 forKey:v5];
+      [(NSMapTable *)self->_promises setObject:promiseCopy forKey:identifier];
 
       return;
     }
@@ -249,20 +249,20 @@ LABEL_19:
   __break(1u);
 }
 
-- (void)unregisterPromise:(id)a3
+- (void)unregisterPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v5 = _EXDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_EXPromiseManager *)v4 unregisterPromise:v5];
+    [(_EXPromiseManager *)promiseCopy unregisterPromise:v5];
   }
 
-  v6 = [v4 identifier];
-  if (v6)
+  identifier = [promiseCopy identifier];
+  if (identifier)
   {
-    v7 = v6;
-    [(NSMapTable *)self->_promises removeObjectForKey:v6];
+    v7 = identifier;
+    [(NSMapTable *)self->_promises removeObjectForKey:identifier];
   }
 
   else
@@ -277,24 +277,24 @@ LABEL_19:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = [v5 interfaceWithProtocol:&unk_1EF2A1C00];
-  [v6 setExportedInterface:v7];
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)resolvePromiseWithIdentifier:(id)a3 reply:(id)a4
+- (void)resolvePromiseWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
+  identifierCopy = identifier;
   promises = self->_promises;
-  v8 = a4;
-  v9 = [(NSMapTable *)promises objectForKey:v6];
+  replyCopy = reply;
+  v9 = [(NSMapTable *)promises objectForKey:identifierCopy];
   if (v9)
   {
     v10 = [MEMORY[0x1E695DFD8] set];
@@ -323,7 +323,7 @@ LABEL_19:
     v11 = 0;
   }
 
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
 - (void)resolveObjectOfClasses:forIdentifier:endpoint:error:.cold.1()

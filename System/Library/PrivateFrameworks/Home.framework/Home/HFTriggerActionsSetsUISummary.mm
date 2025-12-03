@@ -1,37 +1,37 @@
 @interface HFTriggerActionsSetsUISummary
 - (BOOL)hasUniqueServiceGroup;
 - (HFTriggerActionsSetsUISummary)init;
-- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)a3 summaryIconDescriptors:(id)a4;
-- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)a3 summaryIconNames:(id)a4;
+- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)text summaryIconDescriptors:(id)descriptors;
+- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)text summaryIconNames:(id)names;
 - (id)_descriptionForZeroAccessories;
 - (id)_descriptionForZeroScenes;
 - (id)summaryIconDescriptors;
 - (id)summaryIcons;
-- (id)summaryText:(BOOL)a3;
+- (id)summaryText:(BOOL)text;
 - (unint64_t)numberOfIcons;
-- (void)_incrementIconCounter:(id)a3;
+- (void)_incrementIconCounter:(id)counter;
 - (void)_sortIconDescriptors;
-- (void)addIconDescriptor:(id)a3;
-- (void)addMatterRepresentableNamed:(id)a3;
-- (void)addMediaAccessoryNamed:(id)a3;
-- (void)addSceneNamed:(id)a3;
-- (void)addServiceNamed:(id)a3;
+- (void)addIconDescriptor:(id)descriptor;
+- (void)addMatterRepresentableNamed:(id)named;
+- (void)addMediaAccessoryNamed:(id)named;
+- (void)addSceneNamed:(id)named;
+- (void)addServiceNamed:(id)named;
 @end
 
 @implementation HFTriggerActionsSetsUISummary
 
-- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)a3 summaryIconDescriptors:(id)a4
+- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)text summaryIconDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  descriptorsCopy = descriptors;
   v8 = [(HFTriggerActionsSetsUISummary *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     summaryDescription = v8->_summaryDescription;
     v8->_summaryDescription = v9;
 
-    v11 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
+    v11 = [MEMORY[0x277CBEA60] arrayWithArray:descriptorsCopy];
     summaryDescriptors = v8->_summaryDescriptors;
     v8->_summaryDescriptors = v11;
 
@@ -41,24 +41,24 @@
   return v8;
 }
 
-- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)a3 summaryIconNames:(id)a4
+- (HFTriggerActionsSetsUISummary)initWithSummaryText:(id)text summaryIconNames:(id)names
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  namesCopy = names;
   v8 = [(HFTriggerActionsSetsUISummary *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [textCopy copy];
     summaryDescription = v8->_summaryDescription;
     v8->_summaryDescription = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = v7;
+    v12 = namesCopy;
     v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v13)
     {
@@ -77,7 +77,7 @@
           v17 = *(*(&v24 + 1) + 8 * v16);
           v18 = [HFImageIconDescriptor alloc];
           v19 = [(HFImageIconDescriptor *)v18 initWithImageIdentifier:v17, v24];
-          [v11 addObject:v19];
+          [array addObject:v19];
 
           ++v16;
         }
@@ -89,7 +89,7 @@
       while (v14);
     }
 
-    v20 = [MEMORY[0x277CBEA60] arrayWithArray:v11];
+    v20 = [MEMORY[0x277CBEA60] arrayWithArray:array];
     summaryDescriptors = v8->_summaryDescriptors;
     v8->_summaryDescriptors = v20;
 
@@ -117,17 +117,17 @@
     mediaAccessoryName = v3->_mediaAccessoryName;
     v3->_mediaAccessoryName = &stru_2824B1A78;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     icons = v3->_icons;
-    v3->_icons = v7;
+    v3->_icons = array;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     iconDescriptors = v3->_iconDescriptors;
-    v3->_iconDescriptors = v9;
+    v3->_iconDescriptors = array2;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     iconCounter = v3->_iconCounter;
-    v3->_iconCounter = v11;
+    v3->_iconCounter = dictionary;
 
     v3->_needsIconSort = 0;
   }
@@ -137,22 +137,22 @@
 
 - (BOOL)hasUniqueServiceGroup
 {
-  v2 = [(HFTriggerActionsSetsUISummary *)self uniqueServiceGroupName];
-  v3 = v2 != 0;
+  uniqueServiceGroupName = [(HFTriggerActionsSetsUISummary *)self uniqueServiceGroupName];
+  v3 = uniqueServiceGroupName != 0;
 
   return v3;
 }
 
-- (id)summaryText:(BOOL)a3
+- (id)summaryText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
-    v4 = [(HFTriggerActionsSetsUISummary *)self summaryDescription];
+    summaryDescription = [(HFTriggerActionsSetsUISummary *)self summaryDescription];
 
-    if (v4)
+    if (summaryDescription)
     {
-      v5 = [(HFTriggerActionsSetsUISummary *)self summaryDescription];
-      v6 = [v5 copy];
+      summaryDescription2 = [(HFTriggerActionsSetsUISummary *)self summaryDescription];
+      v6 = [summaryDescription2 copy];
 
       goto LABEL_7;
     }
@@ -163,21 +163,21 @@
       {
         if ([(HFTriggerActionsSetsUISummary *)self numberOfScenes])
         {
-          v10 = [(HFTriggerActionsSetsUISummary *)self totalStandaloneAndMediaAccessoriesCount];
+          totalStandaloneAndMediaAccessoriesCount = [(HFTriggerActionsSetsUISummary *)self totalStandaloneAndMediaAccessoriesCount];
           [(HFTriggerActionsSetsUISummary *)self numberOfScenes];
-          HFLocalizedStringWithFormat(@"HFTriggerDescriptionManyScenesManyServices", @"%lu%lu", v11, v12, v13, v14, v15, v16, v10);
+          HFLocalizedStringWithFormat(@"HFTriggerDescriptionManyScenesManyServices", @"%lu%lu", v11, v12, v13, v14, v15, v16, totalStandaloneAndMediaAccessoriesCount);
         }
 
         else
         {
           [(HFTriggerActionsSetsUISummary *)self _descriptionForZeroScenes];
         }
-        v8 = ;
+        _descriptionForZeroAccessories = ;
       }
 
       else
       {
-        v8 = [(HFTriggerActionsSetsUISummary *)self _descriptionForZeroAccessories];
+        _descriptionForZeroAccessories = [(HFTriggerActionsSetsUISummary *)self _descriptionForZeroAccessories];
       }
 
       goto LABEL_6;
@@ -191,9 +191,9 @@
     v7 = @"HFTriggerDescriptionDisabled";
   }
 
-  v8 = _HFLocalizedStringWithDefaultValue(v7, v7, 1);
+  _descriptionForZeroAccessories = _HFLocalizedStringWithDefaultValue(v7, v7, 1);
 LABEL_6:
-  v6 = v8;
+  v6 = _descriptionForZeroAccessories;
 LABEL_7:
 
   return v6;
@@ -208,8 +208,8 @@ LABEL_7:
 
   else
   {
-    v4 = [(HFTriggerActionsSetsUISummary *)self numberOfScenes];
-    HFLocalizedStringWithFormat(@"HFTriggerDescriptionManyScenesZeroServices", @"%lu", v5, v6, v7, v8, v9, v10, v4);
+    numberOfScenes = [(HFTriggerActionsSetsUISummary *)self numberOfScenes];
+    HFLocalizedStringWithFormat(@"HFTriggerDescriptionManyScenesZeroServices", @"%lu", v5, v6, v7, v8, v9, v10, numberOfScenes);
   }
   v3 = ;
 
@@ -220,41 +220,41 @@ LABEL_7:
 {
   if ([(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices]== 1 && ![(HFTriggerActionsSetsUISummary *)self numberOfMediaAccessories])
   {
-    v3 = [(HFTriggerActionsSetsUISummary *)self firstServiceName];
+    firstServiceName = [(HFTriggerActionsSetsUISummary *)self firstServiceName];
   }
 
   else if ([(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices]|| [(HFTriggerActionsSetsUISummary *)self numberOfMediaAccessories]!= 1)
   {
     if ([(HFTriggerActionsSetsUISummary *)self hasUniqueServiceGroup]&& ![(HFTriggerActionsSetsUISummary *)self numberOfMediaAccessories])
     {
-      v3 = [(HFTriggerActionsSetsUISummary *)self uniqueServiceGroupName];
+      firstServiceName = [(HFTriggerActionsSetsUISummary *)self uniqueServiceGroupName];
     }
 
     else
     {
-      v4 = [(HFTriggerActionsSetsUISummary *)self totalStandaloneAndMediaAccessoriesCount];
-      v3 = HFLocalizedStringWithFormat(@"HFTriggerDescriptionZeroScenesManyServices", @"%lu", v5, v6, v7, v8, v9, v10, v4);
+      totalStandaloneAndMediaAccessoriesCount = [(HFTriggerActionsSetsUISummary *)self totalStandaloneAndMediaAccessoriesCount];
+      firstServiceName = HFLocalizedStringWithFormat(@"HFTriggerDescriptionZeroScenesManyServices", @"%lu", v5, v6, v7, v8, v9, v10, totalStandaloneAndMediaAccessoriesCount);
     }
   }
 
   else
   {
-    v3 = [(HFTriggerActionsSetsUISummary *)self mediaAccessoryName];
+    firstServiceName = [(HFTriggerActionsSetsUISummary *)self mediaAccessoryName];
   }
 
-  return v3;
+  return firstServiceName;
 }
 
 - (id)summaryIcons
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(HFTriggerActionsSetsUISummary *)self summaryIconDescriptors];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  summaryIconDescriptors = [(HFTriggerActionsSetsUISummary *)self summaryIconDescriptors];
+  v5 = [summaryIconDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -265,14 +265,14 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(summaryIconDescriptors);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        [array addObject:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [summaryIconDescriptors countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -280,16 +280,16 @@ LABEL_7:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (id)summaryIconDescriptors
 {
-  v3 = [(HFTriggerActionsSetsUISummary *)self summaryDescriptors];
+  summaryDescriptors = [(HFTriggerActionsSetsUISummary *)self summaryDescriptors];
 
-  if (v3)
+  if (summaryDescriptors)
   {
-    v4 = [(HFTriggerActionsSetsUISummary *)self summaryDescriptors];
+    summaryDescriptors2 = [(HFTriggerActionsSetsUISummary *)self summaryDescriptors];
   }
 
   else
@@ -299,80 +299,80 @@ LABEL_7:
       [(HFTriggerActionsSetsUISummary *)self _sortIconDescriptors];
     }
 
-    v4 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
+    summaryDescriptors2 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
   }
 
-  v5 = v4;
-  v6 = [v4 copy];
+  v5 = summaryDescriptors2;
+  v6 = [summaryDescriptors2 copy];
 
   return v6;
 }
 
 - (unint64_t)numberOfIcons
 {
-  v2 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
-  v3 = [v2 count];
+  iconDescriptors = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
+  v3 = [iconDescriptors count];
 
   return v3;
 }
 
-- (void)addSceneNamed:(id)a3
+- (void)addSceneNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   if (![(HFTriggerActionsSetsUISummary *)self numberOfScenes])
   {
-    v4 = [v5 copy];
+    v4 = [namedCopy copy];
     [(HFTriggerActionsSetsUISummary *)self setFirstSceneName:v4];
   }
 
   [(HFTriggerActionsSetsUISummary *)self setNumberOfScenes:[(HFTriggerActionsSetsUISummary *)self numberOfScenes]+ 1];
 }
 
-- (void)addServiceNamed:(id)a3
+- (void)addServiceNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   if (![(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices])
   {
-    v4 = [v5 copy];
+    v4 = [namedCopy copy];
     [(HFTriggerActionsSetsUISummary *)self setFirstServiceName:v4];
   }
 
   [(HFTriggerActionsSetsUISummary *)self setNumberOfStandaloneServices:[(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices]+ 1];
 }
 
-- (void)addMatterRepresentableNamed:(id)a3
+- (void)addMatterRepresentableNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   if (![(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices])
   {
-    v4 = [v5 copy];
+    v4 = [namedCopy copy];
     [(HFTriggerActionsSetsUISummary *)self setFirstServiceName:v4];
   }
 
   [(HFTriggerActionsSetsUISummary *)self setNumberOfStandaloneServices:[(HFTriggerActionsSetsUISummary *)self numberOfStandaloneServices]+ 1];
 }
 
-- (void)addIconDescriptor:(id)a3
+- (void)addIconDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v4 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
-  v5 = [v4 containsObject:v7];
+  descriptorCopy = descriptor;
+  iconDescriptors = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
+  v5 = [iconDescriptors containsObject:descriptorCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
-    [v6 addObject:v7];
+    iconDescriptors2 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
+    [iconDescriptors2 addObject:descriptorCopy];
   }
 
-  [(HFTriggerActionsSetsUISummary *)self _incrementIconCounter:v7];
+  [(HFTriggerActionsSetsUISummary *)self _incrementIconCounter:descriptorCopy];
   [(HFTriggerActionsSetsUISummary *)self setNeedsIconSort:1];
 }
 
-- (void)_incrementIconCounter:(id)a3
+- (void)_incrementIconCounter:(id)counter
 {
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a3, "hash")}];
-  v4 = [(HFTriggerActionsSetsUISummary *)self iconCounter];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(counter, "hash")}];
+  iconCounter = [(HFTriggerActionsSetsUISummary *)self iconCounter];
+  v5 = [iconCounter objectForKeyedSubscript:v9];
 
   if (v5)
   {
@@ -385,21 +385,21 @@ LABEL_7:
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
-  v8 = [(HFTriggerActionsSetsUISummary *)self iconCounter];
-  [v8 setObject:v7 forKeyedSubscript:v9];
+  iconCounter2 = [(HFTriggerActionsSetsUISummary *)self iconCounter];
+  [iconCounter2 setObject:v7 forKeyedSubscript:v9];
 }
 
 - (void)_sortIconDescriptors
 {
   if ([(HFTriggerActionsSetsUISummary *)self needsIconSort])
   {
-    v3 = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
+    iconDescriptors = [(HFTriggerActionsSetsUISummary *)self iconDescriptors];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __53__HFTriggerActionsSetsUISummary__sortIconDescriptors__block_invoke;
     v4[3] = &unk_277E001E0;
     v4[4] = self;
-    [v3 sortUsingComparator:v4];
+    [iconDescriptors sortUsingComparator:v4];
 
     [(HFTriggerActionsSetsUISummary *)self setNeedsIconSort:0];
   }
@@ -428,12 +428,12 @@ uint64_t __53__HFTriggerActionsSetsUISummary__sortIconDescriptors__block_invoke(
   return v17;
 }
 
-- (void)addMediaAccessoryNamed:(id)a3
+- (void)addMediaAccessoryNamed:(id)named
 {
-  v5 = a3;
+  namedCopy = named;
   if (![(HFTriggerActionsSetsUISummary *)self numberOfMediaAccessories])
   {
-    v4 = [v5 copy];
+    v4 = [namedCopy copy];
     [(HFTriggerActionsSetsUISummary *)self setMediaAccessoryName:v4];
   }
 

@@ -1,36 +1,36 @@
 @interface HKDataCollectorTaskServerConfiguration
-- (HKDataCollectorTaskServerConfiguration)initWithCoder:(id)a3;
-- (HKDataCollectorTaskServerConfiguration)initWithQuantityType:(id)a3 bundleIdentifier:(id)a4 canResumeFromLastDatum:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKDataCollectorTaskServerConfiguration)initWithCoder:(id)coder;
+- (HKDataCollectorTaskServerConfiguration)initWithQuantityType:(id)type bundleIdentifier:(id)identifier canResumeFromLastDatum:(BOOL)datum;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDataCollectorTaskServerConfiguration
 
-- (HKDataCollectorTaskServerConfiguration)initWithQuantityType:(id)a3 bundleIdentifier:(id)a4 canResumeFromLastDatum:(BOOL)a5
+- (HKDataCollectorTaskServerConfiguration)initWithQuantityType:(id)type bundleIdentifier:(id)identifier canResumeFromLastDatum:(BOOL)datum
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = HKDataCollectorTaskServerConfiguration;
   v10 = [(HKDataCollectorTaskServerConfiguration *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [typeCopy copy];
     quantityType = v10->_quantityType;
     v10->_quantityType = v11;
 
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v13;
 
-    v10->_canResumeFromLastDatum = a5;
+    v10->_canResumeFromLastDatum = datum;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HKDataCollectorTaskServerConfiguration alloc];
   quantityType = self->_quantityType;
@@ -40,26 +40,26 @@
   return [(HKDataCollectorTaskServerConfiguration *)v4 initWithQuantityType:quantityType bundleIdentifier:bundleIdentifier canResumeFromLastDatum:canResumeFromLastDatum];
 }
 
-- (HKDataCollectorTaskServerConfiguration)initWithCoder:(id)a3
+- (HKDataCollectorTaskServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKDataCollectorTaskServerConfiguration;
-  v5 = [(HKTaskConfiguration *)&v12 initWithCoder:v4];
+  v5 = [(HKTaskConfiguration *)&v12 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"quantity_type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"quantity_type"];
   quantityType = v5->_quantityType;
   v5->_quantityType = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundle_identifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundle_identifier"];
   bundleIdentifier = v5->_bundleIdentifier;
   v5->_bundleIdentifier = v8;
 
-  v5->_canResumeFromLastDatum = [v4 decodeBoolForKey:@"can_resume"];
+  v5->_canResumeFromLastDatum = [coderCopy decodeBoolForKey:@"can_resume"];
   if (!v5->_quantityType)
   {
     goto LABEL_5;
@@ -80,15 +80,15 @@ LABEL_5:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKDataCollectorTaskServerConfiguration;
-  v4 = a3;
-  [(HKTaskConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_quantityType forKey:{@"quantity_type", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundle_identifier"];
-  [v4 encodeBool:self->_canResumeFromLastDatum forKey:@"can_resume"];
+  coderCopy = coder;
+  [(HKTaskConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_quantityType forKey:{@"quantity_type", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundle_identifier"];
+  [coderCopy encodeBool:self->_canResumeFromLastDatum forKey:@"can_resume"];
 }
 
 @end

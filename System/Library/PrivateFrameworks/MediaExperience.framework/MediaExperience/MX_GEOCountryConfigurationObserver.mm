@@ -1,8 +1,8 @@
 @interface MX_GEOCountryConfigurationObserver
 - (MX_GEOCountryConfigurationObserver)init;
 - (id)getCurrentCountryCode;
-- (void)_updateCountryCodeFromCurrentGeoCountryConfiguration:(id)a3;
-- (void)countryConfigurationDidChange:(id)a3;
+- (void)_updateCountryCodeFromCurrentGeoCountryConfiguration:(id)configuration;
+- (void)countryConfigurationDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -66,7 +66,7 @@
   return v3;
 }
 
-- (void)_updateCountryCodeFromCurrentGeoCountryConfiguration:(id)a3
+- (void)_updateCountryCodeFromCurrentGeoCountryConfiguration:(id)configuration
 {
   mAccessQueue = self->mAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -74,13 +74,13 @@
   v4[2] = __91__MX_GEOCountryConfigurationObserver__updateCountryCodeFromCurrentGeoCountryConfiguration___block_invoke;
   v4[3] = &unk_1E7AEA340;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = configuration;
   dispatch_async(mAccessQueue, v4);
 }
 
-- (void)countryConfigurationDidChange:(id)a3
+- (void)countryConfigurationDidChange:(id)change
 {
-  v4 = [a3 userInfo];
+  userInfo = [change userInfo];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -102,7 +102,7 @@
     _Unwind_Resume(v7);
   }
 
-  -[MX_GEOCountryConfigurationObserver _updateCountryCodeFromCurrentGeoCountryConfiguration:](self, "_updateCountryCodeFromCurrentGeoCountryConfiguration:", [v4 objectForKey:*v5]);
+  -[MX_GEOCountryConfigurationObserver _updateCountryCodeFromCurrentGeoCountryConfiguration:](self, "_updateCountryCodeFromCurrentGeoCountryConfiguration:", [userInfo objectForKey:*v5]);
 }
 
 @end

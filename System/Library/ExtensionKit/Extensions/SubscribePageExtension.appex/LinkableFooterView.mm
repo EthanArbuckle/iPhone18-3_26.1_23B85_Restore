@@ -1,15 +1,15 @@
 @interface LinkableFooterView
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithReuseIdentifier:(id)a3;
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LinkableFooterView
 
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithReuseIdentifier:(id)a3
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_100753094();
   }
@@ -23,7 +23,7 @@
   return sub_1004D042C(v3, v4);
 }
 
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D718LinkableFooterView)initWithCoder:(id)coder
 {
   v4 = sub_100750534();
   v5 = *(v4 - 8);
@@ -46,15 +46,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004D08B4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1004D0B4C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1004D0B4C(change);
 }
 
 @end

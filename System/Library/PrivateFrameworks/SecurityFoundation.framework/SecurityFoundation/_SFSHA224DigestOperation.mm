@@ -1,22 +1,22 @@
 @interface _SFSHA224DigestOperation
-+ (id)digest:(id)a3;
++ (id)digest:(id)digest;
 - (NSData)hashValue;
 - (_SFSHA224DigestOperation)init;
-- (_SFSHA224DigestOperation)initWithCoder:(id)a3;
-- (void)addData:(id)a3;
+- (_SFSHA224DigestOperation)initWithCoder:(id)coder;
+- (void)addData:(id)data;
 @end
 
 @implementation _SFSHA224DigestOperation
 
-+ (id)digest:(id)a3
++ (id)digest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v4 = objc_alloc_init(_SFSHA224DigestOperation);
-  [(_SFSHA224DigestOperation *)v4 addData:v3];
+  [(_SFSHA224DigestOperation *)v4 addData:digestCopy];
 
-  v5 = [(_SFSHA224DigestOperation *)v4 hashValue];
+  hashValue = [(_SFSHA224DigestOperation *)v4 hashValue];
 
-  return v5;
+  return hashValue;
 }
 
 - (_SFSHA224DigestOperation)init
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (_SFSHA224DigestOperation)initWithCoder:(id)a3
+- (_SFSHA224DigestOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _SFSHA224DigestOperation;
@@ -66,15 +66,15 @@
   return v8;
 }
 
-- (void)addData:(id)a3
+- (void)addData:(id)data
 {
   sha224DigestOperationInternal = self->_sha224DigestOperationInternal;
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  CC_SHA224_Update((sha224DigestOperationInternal + 8), v7, v8);
+  CC_SHA224_Update((sha224DigestOperationInternal + 8), bytes, v8);
 }
 
 @end

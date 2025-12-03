@@ -1,36 +1,36 @@
 @interface BSUIVibrancyShadowView
 + (CGPoint)defaultShadowEndPoint;
 + (CGPoint)defaultShadowStartPoint;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BSUIVibrancyShadowView)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BSUIVibrancyShadowView)initWithFrame:(CGRect)frame;
 - (CGPoint)shadowEndPoint;
 - (CGPoint)shadowStartPoint;
 - (id)_defaultGradientColors;
-- (void)setShadowEndPoint:(CGPoint)a3;
-- (void)setShadowStartPoint:(CGPoint)a3;
+- (void)setShadowEndPoint:(CGPoint)point;
+- (void)setShadowStartPoint:(CGPoint)point;
 - (void)updateFilters;
 @end
 
 @implementation BSUIVibrancyShadowView
 
-- (BSUIVibrancyShadowView)initWithFrame:(CGRect)a3
+- (BSUIVibrancyShadowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = BSUIVibrancyShadowView;
-  v3 = [(BSUIVibrancyView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIVibrancyView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(BSUIVibrancyShadowView *)v3 gradientLayer];
-    [v5 setType:*MEMORY[0x1E6979DA0]];
+    gradientLayer = [(BSUIVibrancyShadowView *)v3 gradientLayer];
+    [gradientLayer setType:*MEMORY[0x1E6979DA0]];
     [objc_opt_class() defaultShadowStartPoint];
-    [v5 setStartPoint:?];
+    [gradientLayer setStartPoint:?];
     [objc_opt_class() defaultShadowEndPoint];
-    [v5 setEndPoint:?];
-    v6 = [(BSUIVibrancyShadowView *)v4 _defaultGradientColors];
-    [v5 setColors:v6];
+    [gradientLayer setEndPoint:?];
+    _defaultGradientColors = [(BSUIVibrancyShadowView *)v4 _defaultGradientColors];
+    [gradientLayer setColors:_defaultGradientColors];
 
-    [v5 setNoiseScale:25.0];
+    [gradientLayer setNoiseScale:25.0];
   }
 
   return v4;
@@ -38,8 +38,8 @@
 
 - (CGPoint)shadowStartPoint
 {
-  v2 = [(BSUIVibrancyShadowView *)self gradientLayer];
-  [v2 startPoint];
+  gradientLayer = [(BSUIVibrancyShadowView *)self gradientLayer];
+  [gradientLayer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -52,8 +52,8 @@
 
 - (CGPoint)shadowEndPoint
 {
-  v2 = [(BSUIVibrancyShadowView *)self gradientLayer];
-  [v2 endPoint];
+  gradientLayer = [(BSUIVibrancyShadowView *)self gradientLayer];
+  [gradientLayer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -64,20 +64,20 @@
   return result;
 }
 
-- (void)setShadowStartPoint:(CGPoint)a3
+- (void)setShadowStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(BSUIVibrancyShadowView *)self gradientLayer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(BSUIVibrancyShadowView *)self gradientLayer];
+  [gradientLayer setStartPoint:{x, y}];
 }
 
-- (void)setShadowEndPoint:(CGPoint)a3
+- (void)setShadowEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(BSUIVibrancyShadowView *)self gradientLayer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(BSUIVibrancyShadowView *)self gradientLayer];
+  [gradientLayer setEndPoint:{x, y}];
 }
 
 + (CGPoint)defaultShadowStartPoint
@@ -98,10 +98,10 @@
   return result;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 hasPrefix:@"filters"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"filters"])
   {
     v5 = 1;
   }
@@ -110,7 +110,7 @@
   {
     v7.receiver = self;
     v7.super_class = BSUIVibrancyShadowView;
-    v5 = [(BSUIVibrancyShadowView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(BSUIVibrancyShadowView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -119,18 +119,18 @@
 - (void)updateFilters
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = [(BSUIVibrancyView *)self configuration];
-  if ([v3 effectType] == 3 || +[BSUIVibrancyView isDisabled](BSUIVibrancyEffectView, "isDisabled"))
+  configuration = [(BSUIVibrancyView *)self configuration];
+  if ([configuration effectType] == 3 || +[BSUIVibrancyView isDisabled](BSUIVibrancyEffectView, "isDisabled"))
   {
-    v4 = 0;
+    _defaultGradientColors = 0;
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 shadowValues];
+    shadowValues = [configuration shadowValues];
     values = self->_values;
-    self->_values = v6;
+    self->_values = shadowValues;
 
     v8 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D78]];
     [v8 setName:@"vibrantColor"];
@@ -155,21 +155,21 @@
 
     v18[0] = v8;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    v4 = [(BSUIVibrancyShadowView *)self _defaultGradientColors];
+    _defaultGradientColors = [(BSUIVibrancyShadowView *)self _defaultGradientColors];
   }
 
-  v11 = [(BSUIVibrancyShadowView *)self gradientLayer];
-  [v11 setColors:v4];
-  _setLayerFilters(v11, v5);
+  gradientLayer = [(BSUIVibrancyShadowView *)self gradientLayer];
+  [gradientLayer setColors:_defaultGradientColors];
+  _setLayerFilters(gradientLayer, v5);
 }
 
 - (id)_defaultGradientColors
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC888] redColor];
-  v3 = [v2 colorWithAlphaComponent:0.0];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  v3 = [redColor colorWithAlphaComponent:0.0];
   v6[0] = [v3 CGColor];
-  v6[1] = [v2 CGColor];
+  v6[1] = [redColor CGColor];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
 
   return v4;

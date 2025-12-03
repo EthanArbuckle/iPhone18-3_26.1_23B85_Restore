@@ -1,7 +1,7 @@
 @interface DABehaviorOptions
 + (BOOL)CFNetworkLogging;
-+ (BOOL)_shouldForceCookies:(BOOL *)a3;
-+ (BOOL)addDAManagedDefaults:(id)a3;
++ (BOOL)_shouldForceCookies:(BOOL *)cookies;
++ (BOOL)addDAManagedDefaults:(id)defaults;
 + (BOOL)allIMAPServersSupportNotesSearch;
 + (BOOL)alwaysUseCalendarHomeSync;
 + (BOOL)babysitterEnabled;
@@ -25,10 +25,10 @@
 + (BOOL)useThunderhillBetaServers;
 + (BOOL)writeOutBrokenCancelationRequests;
 + (double)defaultDAVProbeTimeout;
-+ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)a3;
++ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)found;
 + (double)holidayCalendarRefreshInterval;
 + (id)APSEnv;
-+ (id)DAManagedDefaultForKey:(id)a3;
++ (id)DAManagedDefaultForKey:(id)key;
 + (id)DAManagedDefaults;
 + (id)_daManagedDefaultsPath;
 + (id)allowlistedEASProtocols;
@@ -37,7 +37,7 @@
 + (int)refreshThrottleTime;
 + (int64_t)rem_changeTrackingBehaviors;
 + (void)_startListeningForNotifications;
-+ (void)removeDAManagedDefaults:(id)a3;
++ (void)removeDAManagedDefaults:(id)defaults;
 @end
 
 @implementation DABehaviorOptions
@@ -105,15 +105,15 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
     v5 = [v4 objectForKeyedSubscript:@"RefreshThrottleTime"];
     if (v5 && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)) && ([v5 intValue] & 0x80000000) == 0)
     {
-      v6 = [v5 intValue];
+      intValue = [v5 intValue];
     }
 
     else
     {
-      v6 = 300;
+      intValue = 300;
     }
 
-    refreshThrottleTime___sThrottleTime = v6;
+    refreshThrottleTime___sThrottleTime = intValue;
 
     return refreshThrottleTime___sThrottleTime;
   }
@@ -139,7 +139,7 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
   return ignoreBadLDAPCerts___ignoreBadLDAPCerts;
 }
 
-+ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)a3
++ (double)defaultEASTaskTimeoutOutWasFound:(BOOL *)found
 {
   if (defaultEASTaskTimeoutOutWasFound____haveCheckedDefaultEASTaskTimeout != 1 || defaultEASTaskTimeoutOutWasFound____lastToken != sDABehaviorToken)
   {
@@ -160,9 +160,9 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
     }
   }
 
-  if (a3)
+  if (found)
   {
-    *a3 = defaultEASTaskTimeoutOutWasFound____defaultWasFound;
+    *found = defaultEASTaskTimeoutOutWasFound____defaultWasFound;
   }
 
   return *&defaultEASTaskTimeoutOutWasFound____defaultEASTaskTimeout;
@@ -215,7 +215,7 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
   return v7;
 }
 
-+ (BOOL)_shouldForceCookies:(BOOL *)a3
++ (BOOL)_shouldForceCookies:(BOOL *)cookies
 {
   if (_shouldForceCookies____haveCheckedEnableCookies != 1 || _shouldForceCookies____lastToken != sDABehaviorToken)
   {
@@ -233,9 +233,9 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
     }
   }
 
-  if (a3)
+  if (cookies)
   {
-    *a3 = _shouldForceCookies____isSet;
+    *cookies = _shouldForceCookies____isSet;
   }
 
   return _shouldForceCookies____enableCookies;
@@ -550,8 +550,8 @@ void __52__DABehaviorOptions__startListeningForNotifications__block_invoke_6(uin
   {
     isInHoldingPattern___lastToken = sDABehaviorToken;
     isInHoldingPattern___haveCheckedIsInHoldingPattern = 1;
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    isInHoldingPattern___isInHoldingPattern = [v3 BOOLForKey:@"DAInHoldingPattern"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    isInHoldingPattern___isInHoldingPattern = [standardUserDefaults BOOLForKey:@"DAInHoldingPattern"];
 
     if (isInHoldingPattern___isInHoldingPattern == 1)
     {
@@ -856,46 +856,46 @@ void __43__DABehaviorOptions__daManagedDefaultsPath__block_invoke()
 + (id)DAManagedDefaults
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [objc_opt_class() _daManagedDefaultsPath];
-  v4 = [v2 dictionaryWithContentsOfFile:v3];
+  _daManagedDefaultsPath = [objc_opt_class() _daManagedDefaultsPath];
+  v4 = [v2 dictionaryWithContentsOfFile:_daManagedDefaultsPath];
 
   return v4;
 }
 
-+ (id)DAManagedDefaultForKey:(id)a3
++ (id)DAManagedDefaultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 DAManagedDefaults];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  dAManagedDefaults = [self DAManagedDefaults];
+  v6 = [dAManagedDefaults objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-+ (BOOL)addDAManagedDefaults:(id)a3
++ (BOOL)addDAManagedDefaults:(id)defaults
 {
-  v3 = a3;
-  v4 = [objc_opt_class() DAManagedDefaults];
-  v5 = [v4 mutableCopy];
+  defaultsCopy = defaults;
+  dAManagedDefaults = [objc_opt_class() DAManagedDefaults];
+  v5 = [dAManagedDefaults mutableCopy];
 
   if (v5)
   {
-    [v5 addEntriesFromDictionary:v3];
+    [v5 addEntriesFromDictionary:defaultsCopy];
     v6 = v5;
 
-    v3 = v6;
+    defaultsCopy = v6;
   }
 
-  v7 = [objc_opt_class() setDAManagedDefaults:v3];
+  v7 = [objc_opt_class() setDAManagedDefaults:defaultsCopy];
 
   return v7;
 }
 
-+ (void)removeDAManagedDefaults:(id)a3
++ (void)removeDAManagedDefaults:(id)defaults
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() DAManagedDefaults];
-  v5 = [v4 mutableCopy];
+  defaultsCopy = defaults;
+  dAManagedDefaults = [objc_opt_class() DAManagedDefaults];
+  v5 = [dAManagedDefaults mutableCopy];
 
   if (v5)
   {
@@ -903,7 +903,7 @@ void __43__DABehaviorOptions__daManagedDefaultsPath__block_invoke()
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v3;
+    v6 = defaultsCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {

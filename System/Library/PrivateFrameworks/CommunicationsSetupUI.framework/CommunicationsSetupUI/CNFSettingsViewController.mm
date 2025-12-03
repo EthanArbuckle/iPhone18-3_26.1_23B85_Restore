@@ -7,9 +7,9 @@
 - (void)_invokePendingDeepLink;
 - (void)_loadChildViewController;
 - (void)applicationDidResume;
-- (void)containerViewControllerShouldUpdate:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)set_currentChildViewController:(id)a3;
+- (void)containerViewControllerShouldUpdate:(id)update;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)set_currentChildViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -23,12 +23,12 @@
   v2 = [(CNFSettingsViewController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D18D68] sharedInstance];
-    v4 = [(CNFSettingsViewController *)v2 name];
-    [v3 addListenerID:v4 capabilities:*MEMORY[0x277D19338]];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    name = [(CNFSettingsViewController *)v2 name];
+    [mEMORY[0x277D18D68] addListenerID:name capabilities:*MEMORY[0x277D19338]];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_containerViewControllerShouldUpdate_ name:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_containerViewControllerShouldUpdate_ name:@"CNFSettingsViewControllerNeedsContainerUpdate" object:0];
   }
 
   return v2;
@@ -51,19 +51,19 @@
     IMLogString();
   }
 
-  v4 = [MEMORY[0x277D18D68] sharedInstance];
-  v5 = [v4 isConnected];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  isConnected = [mEMORY[0x277D18D68] isConnected];
 
-  if ((v5 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
-    v6 = [MEMORY[0x277D18D68] sharedInstance];
-    [v6 blockUntilConnected];
+    mEMORY[0x277D18D68]2 = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68]2 blockUntilConnected];
   }
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 == 1)
+  if (userInterfaceIdiom == 1)
   {
     CNFRegSetGlobalAppearanceStyle(2);
     CNFRegSetSupportsAutoRotation(1);
@@ -75,20 +75,20 @@
 - (void)_loadChildViewController
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFSettingsViewController *)self serviceType];
-  CNFRegSetStringTableForServiceType(v3);
-  switch(v3)
+  serviceType = [(CNFSettingsViewController *)self serviceType];
+  CNFRegSetStringTableForServiceType(serviceType);
+  switch(serviceType)
   {
     case 2:
       goto LABEL_4;
     case 1:
-      v4 = [MEMORY[0x277D18DE0] iMessageService];
+      iMessageService = [MEMORY[0x277D18DE0] iMessageService];
       goto LABEL_6;
     case 0:
 LABEL_4:
-      v4 = [MEMORY[0x277D18DE0] facetimeService];
+      iMessageService = [MEMORY[0x277D18DE0] facetimeService];
 LABEL_6:
-      v5 = v4;
+      v5 = iMessageService;
       goto LABEL_8;
   }
 
@@ -101,8 +101,8 @@ LABEL_8:
 
   else
   {
-    v7 = [(CNFSettingsViewController *)self settingsClassName];
-    v6 = NSClassFromString(v7);
+    settingsClassName = [(CNFSettingsViewController *)self settingsClassName];
+    v6 = NSClassFromString(settingsClassName);
   }
 
   v8 = OSLogHandleForIDSCategory();
@@ -121,19 +121,19 @@ LABEL_8:
   }
 
   v10 = MEMORY[0x277D3FAD8];
-  v11 = [(CNFSettingsViewController *)self specifierTitle];
-  v12 = [v10 preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:2 edit:0];
+  specifierTitle = [(CNFSettingsViewController *)self specifierTitle];
+  v12 = [v10 preferenceSpecifierNamed:specifierTitle target:self set:0 get:0 detail:0 cell:2 edit:0];
 
-  v13 = [(CNFSettingsViewController *)self settingsClassName];
-  [v12 setProperty:v13 forKey:@"cnf-completionclass"];
+  settingsClassName2 = [(CNFSettingsViewController *)self settingsClassName];
+  [v12 setProperty:settingsClassName2 forKey:@"cnf-completionclass"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:v3];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:serviceType];
   [v12 setProperty:v14 forKey:@"ft-serviceType"];
 
   [v12 setProperty:MEMORY[0x277CBEC38] forKey:@"cnf-hideLearnMoreButton"];
-  v15 = [(CNFSettingsViewController *)self specifier];
+  specifier = [(CNFSettingsViewController *)self specifier];
   v16 = *MEMORY[0x277D40038];
-  v17 = [v15 propertyForKey:*MEMORY[0x277D40038]];
+  v17 = [specifier propertyForKey:*MEMORY[0x277D40038]];
   [v12 setProperty:v17 forKey:v16];
 
   v18 = CreateDetailControllerInstanceWithClass();
@@ -157,47 +157,47 @@ LABEL_8:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)set_currentChildViewController:(id)a3
+- (void)set_currentChildViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   currentChildViewController = self->__currentChildViewController;
-  if (currentChildViewController != v5)
+  if (currentChildViewController != controllerCopy)
   {
-    v24 = v5;
+    v24 = controllerCopy;
     if (currentChildViewController)
     {
       [(PSController *)currentChildViewController willMoveToParentViewController:0];
-      v7 = [(PSController *)self->__currentChildViewController view];
-      [v7 removeFromSuperview];
+      view = [(PSController *)self->__currentChildViewController view];
+      [view removeFromSuperview];
 
       [(PSController *)self->__currentChildViewController removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->__currentChildViewController, a3);
+    objc_storeStrong(&self->__currentChildViewController, controller);
     v8 = self->__currentChildViewController;
-    v9 = [(CNFSettingsViewController *)self rootController];
-    [(PSController *)v8 setRootController:v9];
+    rootController = [(CNFSettingsViewController *)self rootController];
+    [(PSController *)v8 setRootController:rootController];
 
     if (v24)
     {
       [(CNFSettingsViewController *)self addChildViewController:v24];
-      v10 = [(CNFSettingsViewController *)self view];
-      [v10 bounds];
+      view2 = [(CNFSettingsViewController *)self view];
+      [view2 bounds];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [(PSController *)v24 view];
-      [v19 setFrame:{v12, v14, v16, v18}];
+      view3 = [(PSController *)v24 view];
+      [view3 setFrame:{v12, v14, v16, v18}];
 
-      v20 = [(CNFSettingsViewController *)self view];
-      v21 = [(PSController *)v24 view];
-      [v20 addSubview:v21];
+      view4 = [(CNFSettingsViewController *)self view];
+      view5 = [(PSController *)v24 view];
+      [view4 addSubview:view5];
 
       [(PSController *)v24 didMoveToParentViewController:self];
-      v22 = [(PSController *)v24 specifier];
-      v23 = [v22 name];
-      [(CNFSettingsViewController *)self setTitle:v23];
+      specifier = [(PSController *)v24 specifier];
+      name = [specifier name];
+      [(CNFSettingsViewController *)self setTitle:name];
     }
   }
 
@@ -209,15 +209,15 @@ LABEL_8:
   v30.receiver = self;
   v30.super_class = CNFSettingsViewController;
   [(CNFSettingsViewController *)&v30 viewDidLayoutSubviews];
-  v3 = [(CNFSettingsViewController *)self _currentChildViewController];
-  v4 = [v3 view];
-  [v4 frame];
+  _currentChildViewController = [(CNFSettingsViewController *)self _currentChildViewController];
+  view = [_currentChildViewController view];
+  [view frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CNFSettingsViewController *)self view];
-  [v13 bounds];
+  view2 = [(CNFSettingsViewController *)self view];
+  [view2 bounds];
   v32.origin.x = v14;
   v32.origin.y = v15;
   v32.size.width = v16;
@@ -230,15 +230,15 @@ LABEL_8:
 
   if (!v18)
   {
-    v19 = [(CNFSettingsViewController *)self view];
-    [v19 bounds];
+    view3 = [(CNFSettingsViewController *)self view];
+    [view3 bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(CNFSettingsViewController *)self _currentChildViewController];
-    v29 = [v28 view];
-    [v29 setFrame:{v21, v23, v25, v27}];
+    _currentChildViewController2 = [(CNFSettingsViewController *)self _currentChildViewController];
+    view4 = [_currentChildViewController2 view];
+    [view4 setFrame:{v21, v23, v25, v27}];
   }
 }
 
@@ -247,14 +247,14 @@ LABEL_8:
   v3.receiver = self;
   v3.super_class = CNFSettingsViewController;
   [(CNFSettingsViewController *)&v3 applicationDidResume];
-  v2 = [MEMORY[0x277D1A908] sharedInstance];
-  [v2 resetCacheSubscriptionInfo];
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  [mEMORY[0x277D1A908] resetCacheSubscriptionInfo];
 }
 
-- (void)containerViewControllerShouldUpdate:(id)a3
+- (void)containerViewControllerShouldUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -268,23 +268,23 @@ LABEL_8:
   }
 
   [(CNFSettingsViewController *)self _loadChildViewController];
-  v6 = [(CNFSettingsViewController *)self navigationController];
-  v7 = [v6 viewControllers];
+  navigationController = [(CNFSettingsViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v8 = [(CNFSettingsViewController *)self parentViewController];
-  if (v8 && (-[CNFSettingsViewController parentViewController](self, "parentViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v7 containsObject:v9], v9, v8, (v10 & 1) != 0))
+  parentViewController = [(CNFSettingsViewController *)self parentViewController];
+  if (parentViewController && (-[CNFSettingsViewController parentViewController](self, "parentViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [viewControllers containsObject:v9], v9, parentViewController, (v10 & 1) != 0))
   {
-    v11 = [(CNFSettingsViewController *)self parentViewController];
+    selfCopy = [(CNFSettingsViewController *)self parentViewController];
   }
 
   else
   {
-    v11 = self;
+    selfCopy = self;
   }
 
-  v12 = v11;
-  v13 = [(CNFSettingsViewController *)self navigationController];
-  v14 = [v13 popToViewController:v12 animated:0];
+  v12 = selfCopy;
+  navigationController2 = [(CNFSettingsViewController *)self navigationController];
+  v14 = [navigationController2 popToViewController:v12 animated:0];
 
   v15 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -302,17 +302,17 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = objc_alloc_init(CNFPendingDeepLinkRepresentation);
-  [(CNFPendingDeepLinkRepresentation *)v8 setResourceDictionary:v6];
-  [(CNFPendingDeepLinkRepresentation *)v8 setCompletion:v7];
+  [(CNFPendingDeepLinkRepresentation *)v8 setResourceDictionary:lCopy];
+  [(CNFPendingDeepLinkRepresentation *)v8 setCompletion:completionCopy];
   [(CNFSettingsViewController *)self setPendingDeepLinkRepresentation:v8];
-  v9 = [(CNFSettingsViewController *)self _currentChildViewController];
+  _currentChildViewController = [(CNFSettingsViewController *)self _currentChildViewController];
 
-  if (v9)
+  if (_currentChildViewController)
   {
     [(CNFSettingsViewController *)self _invokePendingDeepLink];
   }
@@ -352,48 +352,48 @@ LABEL_8:
       }
     }
 
-    v4 = [(CNFPendingDeepLinkRepresentation *)self->_pendingDeepLinkRepresentation resourceDictionary];
-    v5 = [(CNFPendingDeepLinkRepresentation *)self->_pendingDeepLinkRepresentation completion];
+    resourceDictionary = [(CNFPendingDeepLinkRepresentation *)self->_pendingDeepLinkRepresentation resourceDictionary];
+    completion = [(CNFPendingDeepLinkRepresentation *)self->_pendingDeepLinkRepresentation completion];
     pendingDeepLinkRepresentation = self->_pendingDeepLinkRepresentation;
     self->_pendingDeepLinkRepresentation = 0;
 
-    v7 = [(CNFSettingsViewController *)self _currentChildViewController];
-    [v7 handleURL:v4 withCompletion:v5];
+    _currentChildViewController = [(CNFSettingsViewController *)self _currentChildViewController];
+    [_currentChildViewController handleURL:resourceDictionary withCompletion:completion];
   }
 }
 
 - (id)specifierTitle
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:255 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:255 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }
 
 - (int64_t)serviceType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:260 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:260 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }
 
 - (id)settingsClassName
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:265 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:265 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }
 
 - (id)name
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:270 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CNFSettingsViewController.m" lineNumber:270 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }

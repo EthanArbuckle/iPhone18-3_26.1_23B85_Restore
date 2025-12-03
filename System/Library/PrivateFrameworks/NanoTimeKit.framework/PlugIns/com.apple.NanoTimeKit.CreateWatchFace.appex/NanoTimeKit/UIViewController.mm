@@ -14,9 +14,9 @@
 
 - (void)_ntke_cancelExtension
 {
-  v3 = [(UIViewController *)self extensionContext];
+  extensionContext = [(UIViewController *)self extensionContext];
   v2 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:0];
-  [v3 cancelRequestWithError:v2];
+  [extensionContext cancelRequestWithError:v2];
 }
 
 @end

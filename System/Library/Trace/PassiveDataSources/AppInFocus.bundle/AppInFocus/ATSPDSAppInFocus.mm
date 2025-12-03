@@ -1,23 +1,23 @@
 @interface ATSPDSAppInFocus
-- (BOOL)collectToFile:(ktrace_file *)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (BOOL)configureWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 dataCategories:(id)a6 error:(id *)a7;
+- (BOOL)collectToFile:(ktrace_file *)file startDate:(id)date endDate:(id)endDate error:(id *)error;
+- (BOOL)configureWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options dataCategories:(id)categories error:(id *)error;
 @end
 
 @implementation ATSPDSAppInFocus
 
-- (BOOL)collectToFile:(ktrace_file *)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6
+- (BOOL)collectToFile:(ktrace_file *)file startDate:(id)date endDate:(id)endDate error:(id *)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v7;
-  v10 = v8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = dateCopy;
+  v10 = endDateCopy;
   if (objc_opt_class())
   {
     v11 = objc_alloc_init(NSMutableArray);
     v12 = BiomeLibrary();
     v13 = [v12 App];
-    v14 = [v13 InFocus];
-    v15 = [v14 publisher];
+    inFocus = [v13 InFocus];
+    publisher = [inFocus publisher];
 
     v56 = 0;
     v57 = &v56;
@@ -43,7 +43,7 @@
     v47 = v10;
     v16 = v11;
     v48 = v16;
-    v17 = [v15 sinkWithCompletion:v49 receiveInput:v45];
+    v17 = [publisher sinkWithCompletion:v49 receiveInput:v45];
     if (v57[3])
     {
       v18 = sub_16D0();
@@ -99,10 +99,10 @@
             objc_enumerationMutation(v26);
           }
 
-          v30 = [*(*(&v41 + 1) + 8 * i) jsonDictST];
-          if (v30)
+          jsonDictST = [*(*(&v41 + 1) + 8 * i) jsonDictST];
+          if (jsonDictST)
           {
-            [v25 addObject:v30];
+            [v25 addObject:jsonDictST];
           }
         }
 
@@ -125,18 +125,18 @@
       ktrace_file_append_chunk();
     }
 
-    else if (a6)
+    else if (error)
     {
       v37 = v32;
-      *a6 = v33;
+      *error = v33;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v36 = v23;
     v34 = 0;
-    *a6 = v24;
+    *error = v24;
   }
 
   else
@@ -147,32 +147,32 @@
   return v34;
 }
 
-- (BOOL)configureWithLogger:(id)a3 machine:(ktrace_machine *)a4 options:(id)a5 dataCategories:(id)a6 error:(id *)a7
+- (BOOL)configureWithLogger:(id)logger machine:(ktrace_machine *)machine options:(id)options dataCategories:(id)categories error:(id *)error
 {
-  v9 = a6;
-  if ([a5 count])
+  categoriesCopy = categories;
+  if ([options count])
   {
-    if (a7)
+    if (error)
     {
       v10 = @"AppInFocus passive data source takes no options at this time";
       v11 = 1;
 LABEL_7:
       v12 = [NSString stringWithFormat:v10];
-      *a7 = [NSError errorWithCode:v11 description:v12];
+      *error = [NSError errorWithCode:v11 description:v12];
 
-      LOBYTE(a7) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    if (![v9 count])
+    if (![categoriesCopy count])
     {
-      LOBYTE(a7) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_9;
     }
 
-    if (a7)
+    if (error)
     {
       v11 = 0;
       v10 = @"AppInFocus passive data source  has no data categories at this time";
@@ -182,7 +182,7 @@ LABEL_7:
 
 LABEL_9:
 
-  return a7;
+  return error;
 }
 
 @end

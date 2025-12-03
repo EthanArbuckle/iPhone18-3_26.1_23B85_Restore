@@ -19,7 +19,7 @@
     [NSDate(BacklightServices) bls_loggingString];
   }
 
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   if (v2 <= *&bls_loggingString_distantPastCache)
   {
     v11 = @"<Distant Past>";
@@ -33,10 +33,10 @@
   else
   {
     v3 = [MEMORY[0x277CBEAA8] now];
-    [a1 timeIntervalSinceDate:v3];
+    [self timeIntervalSinceDate:v3];
     v5 = v4;
     v6 = MEMORY[0x277CCACA8];
-    v7 = [bls_loggingString_dateFormatter stringFromDate:a1];
+    v7 = [bls_loggingString_dateFormatter stringFromDate:self];
     v8 = -v5;
     if (v5 < 0.0)
     {
@@ -63,7 +63,7 @@
     [NSDate(BacklightServices) bls_shortLoggingString];
   }
 
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   if (v2 <= *&bls_shortLoggingString_distantPastCache)
   {
     v3 = @"<Distant Past>";
@@ -76,7 +76,7 @@
 
   else
   {
-    v3 = [bls_shortLoggingString_dateFormatter stringFromDate:a1];
+    v3 = [bls_shortLoggingString_dateFormatter stringFromDate:self];
   }
 
   return v3;
@@ -85,7 +85,7 @@
 - (uint64_t)bls_machContinuousTime
 {
   v2 = mach_continuous_time();
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   v4 = v3;
   if (BLSMachTimeFromNSTimeInterval_onceToken != -1)
   {
@@ -114,16 +114,16 @@
 {
   mach_continuous_time();
   BSTimeDifferenceFromMachTimeToMachTime();
-  v3 = [a1 initWithTimeIntervalSinceNow:v2];
+  v3 = [self initWithTimeIntervalSinceNow:v2];
 
   return v3;
 }
 
 - (id)bls_initWithBSContinuousMachTime:()BacklightServices
 {
-  v3 = a1;
+  selfCopy = self;
   BSContinuousMachTimeNow();
-  v5 = [v3 initWithTimeIntervalSinceNow:v4 - a2];
+  v5 = [selfCopy initWithTimeIntervalSinceNow:v4 - a2];
 
   return v5;
 }
@@ -137,16 +137,16 @@
 
   v2 = bls_fileNameString_dateFormatter;
 
-  return [v2 stringFromDate:a1];
+  return [v2 stringFromDate:self];
 }
 
 - (uint64_t)bls_compare:()BacklightServices withEpsilon:
 {
   v6 = a4;
-  [a1 timeIntervalSinceDate:v6];
+  [self timeIntervalSinceDate:v6];
   if (fabs(v7) >= a2)
   {
-    v8 = [a1 compare:v6];
+    v8 = [self compare:v6];
   }
 
   else
@@ -160,7 +160,7 @@
 - (BOOL)bls_isOnOrAfter:()BacklightServices andOnOrBefore:
 {
   v6 = a4;
-  v7 = [a3 compare:a1] != 1 && objc_msgSend(v6, "compare:", a1) != -1;
+  v7 = [a3 compare:self] != 1 && objc_msgSend(v6, "compare:", self) != -1;
 
   return v7;
 }
@@ -168,7 +168,7 @@
 - (BOOL)bls_isOnOrAfter:()BacklightServices andOnOrBefore:withEpsilon:
 {
   v8 = a5;
-  v9 = [a4 bls_compare:a1 withEpsilon:a2] != 1 && objc_msgSend(v8, "bls_compare:withEpsilon:", a1, a2) != -1;
+  v9 = [a4 bls_compare:self withEpsilon:a2] != 1 && objc_msgSend(v8, "bls_compare:withEpsilon:", self, a2) != -1;
 
   return v9;
 }

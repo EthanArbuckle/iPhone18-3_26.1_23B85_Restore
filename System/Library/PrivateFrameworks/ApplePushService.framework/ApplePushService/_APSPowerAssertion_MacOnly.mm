@@ -1,8 +1,8 @@
 @interface _APSPowerAssertion_MacOnly
 + (void)_lingerAfterLastPowerAssertionIsReleased;
 + (void)prepareForWake;
-+ (void)setUseInteractivePowerAssertion:(BOOL)a3;
-- (_APSPowerAssertion_MacOnly)initWithName:(id)a3 category:(int)a4 holdDuration:(double)a5;
++ (void)setUseInteractivePowerAssertion:(BOOL)assertion;
+- (_APSPowerAssertion_MacOnly)initWithName:(id)name category:(int)category holdDuration:(double)duration;
 - (void)_clear;
 - (void)_hold;
 - (void)clear;
@@ -12,24 +12,24 @@
 
 @implementation _APSPowerAssertion_MacOnly
 
-- (_APSPowerAssertion_MacOnly)initWithName:(id)a3 category:(int)a4 holdDuration:(double)a5
+- (_APSPowerAssertion_MacOnly)initWithName:(id)name category:(int)category holdDuration:(double)duration
 {
-  v9 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = _APSPowerAssertion_MacOnly;
   v10 = [(_APSPowerAssertion_MacOnly *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v11->_timeout = a5;
+    objc_storeStrong(&v10->_name, name);
+    v11->_timeout = duration;
     v11->_powerAssertion = 0;
-    v12 = dispatch_queue_create([v9 UTF8String], 0);
+    v12 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v11->_category = a4;
-    if (a5 > 0.0)
+    v11->_category = category;
+    if (duration > 0.0)
     {
       v14 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
       timer = v11->_timer;
@@ -130,7 +130,7 @@
       {
         v20 = self->_name;
         v21 = 138412802;
-        v22 = self;
+        selfCopy = self;
         v23 = 2112;
         v24 = v20;
         v25 = 1024;
@@ -167,9 +167,9 @@
   if (off_1001BBFE0 == @"InteractivePushServiceTask")
   {
     v17 = +[APSWakeStateManager wakeStateManager];
-    v18 = [v17 isGoingToSleep];
+    isGoingToSleep = [v17 isGoingToSleep];
 
-    if (v18)
+    if (isGoingToSleep)
     {
       v19 = +[APSLog power];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -222,10 +222,10 @@
   }
 }
 
-+ (void)setUseInteractivePowerAssertion:(BOOL)a3
++ (void)setUseInteractivePowerAssertion:(BOOL)assertion
 {
-  v3 = a3;
-  if (a3)
+  assertionCopy = assertion;
+  if (assertion)
   {
     v5 = @"InteractivePushServiceTask";
   }
@@ -246,12 +246,12 @@
     v7 = qword_1001BF768;
     v8 = +[APSLog power];
     v9 = v8;
-    if (v7 >= 0xB && v3)
+    if (v7 >= 0xB && assertionCopy)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = a1;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Sleep reverted too often, ignoring request to change power assertion type", &v10, 0xCu);
       }
     }

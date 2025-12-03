@@ -1,37 +1,37 @@
 @interface ICTextContainer
 - (BOOL)isSimpleRectangularTextContainer;
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(unint64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6;
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(unint64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect;
 @end
 
 @implementation ICTextContainer
 
-- (CGRect)lineFragmentRectForProposedRect:(CGRect)a3 atIndex:(unint64_t)a4 writingDirection:(int64_t)a5 remainingRect:(CGRect *)a6
+- (CGRect)lineFragmentRectForProposedRect:(CGRect)rect atIndex:(unint64_t)index writingDirection:(int64_t)direction remainingRect:(CGRect *)remainingRect
 {
   v35.receiver = self;
   v35.super_class = ICTextContainer;
-  [(ICTextContainer *)&v35 lineFragmentRectForProposedRect:a4 atIndex:a5 writingDirection:a6 remainingRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICTextContainer *)&v35 lineFragmentRectForProposedRect:index atIndex:direction writingDirection:remainingRect remainingRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   objc_opt_class();
-  v16 = [(ICTextContainer *)self layoutManager];
+  layoutManager = [(ICTextContainer *)self layoutManager];
   v17 = ICDynamicCast();
 
   if (v17)
   {
-    v18 = [v17 textStorage];
-    v19 = [v18 length];
+    textStorage = [v17 textStorage];
+    v19 = [textStorage length];
 
-    if (v19 >= a4)
+    if (v19 >= index)
     {
-      v20 = [v17 textView];
-      v21 = [v17 textStorage];
-      v22 = [v21 length];
+      textView = [v17 textView];
+      textStorage2 = [v17 textStorage];
+      v22 = [textStorage2 length];
 
-      if (v22 == a4)
+      if (v22 == index)
       {
-        if (!v20)
+        if (!textView)
         {
           v25 = 0;
 LABEL_16:
@@ -39,32 +39,32 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v23 = [v20 typingAttributes];
-        v24 = [v23 objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
+        typingAttributes = [textView typingAttributes];
+        v24 = [typingAttributes objectForKeyedSubscript:*MEMORY[0x1E69B7600]];
       }
 
       else
       {
-        v23 = [v17 textStorage];
-        v24 = [v23 attribute:*MEMORY[0x1E69B7600] atIndex:a4 effectiveRange:0];
+        typingAttributes = [v17 textStorage];
+        v24 = [typingAttributes attribute:*MEMORY[0x1E69B7600] atIndex:index effectiveRange:0];
       }
 
       v25 = v24;
 
       if (v25 && [v25 isList])
       {
-        v26 = [v25 layoutWritingDirection];
-        if (v26 == -1)
+        layoutWritingDirection = [v25 layoutWritingDirection];
+        if (layoutWritingDirection == -1)
         {
-          v26 = [MEMORY[0x1E69DB7D0] defaultWritingDirectionForLanguage:0];
+          layoutWritingDirection = [MEMORY[0x1E69DB7D0] defaultWritingDirectionForLanguage:0];
         }
 
-        v27 = [(ICTextContainer *)self layoutManager];
-        v28 = [v27 textStorage];
-        [ICTextController indentForStyle:v25 range:a4 attributedString:0 textView:v28, v20];
+        layoutManager2 = [(ICTextContainer *)self layoutManager];
+        textStorage3 = [layoutManager2 textStorage];
+        [ICTextController indentForStyle:v25 range:index attributedString:0 textView:textStorage3, textView];
         v30 = v29;
 
-        if (v26)
+        if (layoutWritingDirection)
         {
           v13 = v13 - v30;
         }
@@ -100,8 +100,8 @@ LABEL_17:
 
 - (BOOL)isSimpleRectangularTextContainer
 {
-  v3 = [(ICTextContainer *)self exclusionPaths];
-  if ([v3 count] || -[ICTextContainer maximumNumberOfLines](self, "maximumNumberOfLines"))
+  exclusionPaths = [(ICTextContainer *)self exclusionPaths];
+  if ([exclusionPaths count] || -[ICTextContainer maximumNumberOfLines](self, "maximumNumberOfLines"))
   {
     LOBYTE(v4) = 0;
   }

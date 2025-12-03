@@ -1,57 +1,57 @@
 @interface UITextInputUIResponderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHandlesTabKey;
-- (BOOL)_accessibilityInsertTextWithAlternatives:(id)a3;
+- (BOOL)_accessibilityInsertTextWithAlternatives:(id)alternatives;
 - (BOOL)_accessibilityIsFKARunningForFocusItem;
 - (BOOL)becomeFirstResponder;
 - (BOOL)isAccessibilityElement;
 - (BOOL)resignFirstResponder;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
-- (_NSRange)_accessibilityRawRangeForUITextRange:(id)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
+- (_NSRange)_accessibilityRawRangeForUITextRange:(id)range;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (_NSRange)_accessibilityVisibleTextRange;
-- (id)_accessibilityAlternativesForTextAtPosition:(unint64_t)a3;
+- (id)_accessibilityAlternativesForTextAtPosition:(unint64_t)position;
 - (id)_accessibilityBeginningOfDocument;
 - (id)_accessibilityEndOfDocument;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
-- (id)_accessibilityPositionFromPosition:(id)a3 offset:(int64_t)a4;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
+- (id)_accessibilityPositionFromPosition:(id)position offset:(int64_t)offset;
 - (id)_accessibilitySpeakThisString;
-- (id)_accessibilityTextRangeFromNSRange:(_NSRange)a3;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5;
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 wantsSentences:(BOOL)a4;
+- (id)_accessibilityTextRangeFromNSRange:(_NSRange)range;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences;
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range wantsSentences:(BOOL)sentences;
 - (id)_accessibilityTextResponder;
 - (id)_accessibilityTextViewTextOperationResponder;
 - (id)_axTextInputView;
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4;
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4;
+- (id)_moveLeft:(BOOL)left withHistory:(id)history;
+- (id)_moveRight:(BOOL)right withHistory:(id)history;
 - (id)accessibilityValue;
 - (int64_t)_accessibilityLineEndPosition;
 - (int64_t)_accessibilityLineStartPosition;
-- (int64_t)_accessibilityOffsetFromPosition:(id)a3 toPosition:(id)a4;
-- (int64_t)_accessibilityTextInputLinePosition:(BOOL)a3;
-- (unint64_t)_accessibilityPositionInDirection:(int64_t)a3 offset:(unint64_t)a4 forPosition:(unint64_t)a5;
+- (int64_t)_accessibilityOffsetFromPosition:(id)position toPosition:(id)toPosition;
+- (int64_t)_accessibilityTextInputLinePosition:(BOOL)position;
+- (unint64_t)_accessibilityPositionInDirection:(int64_t)direction offset:(unint64_t)offset forPosition:(unint64_t)position;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityCheckBorderHit:(char)a3 left:;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
-- (void)_axDrawFocusRingAroundFirstResponderAndMoveFocus:(void *)a1;
+- (void)_accessibilityCheckBorderHit:(char)hit left:;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
+- (void)_axDrawFocusRingAroundFirstResponderAndMoveFocus:(void *)focus;
 - (void)_axResetFKAFocusToFirstResponder;
-- (void)_updateSelectionWithTextRange:(id)a3 withAffinityDownstream:(BOOL)a4;
+- (void)_updateSelectionWithTextRange:(id)range withAffinityDownstream:(BOOL)downstream;
 @end
 
 @implementation UITextInputUIResponderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = "@";
   [location[0] validateClass:@"UIKeyboardCandidateController" hasInstanceMethod:@"firstNonEmptyActiveCandidateView" withFullSignature:0];
   v3 = @"UIKeyboardImpl";
@@ -68,29 +68,29 @@
   objc_storeStrong(v9, v8);
 }
 
-- (void)_updateSelectionWithTextRange:(id)a3 withAffinityDownstream:(BOOL)a4
+- (void)_updateSelectionWithTextRange:(id)range withAffinityDownstream:(BOOL)downstream
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
+  objc_storeStrong(location, range);
+  downstreamCopy = downstream;
   v6 = MEMORY[0x29EDC74D0];
   _UIAccessibilityBlockPostingOfNotification();
-  v7.receiver = v10;
+  v7.receiver = selfCopy;
   v7.super_class = UITextInputUIResponderAccessibility;
-  [(UITextInputUIResponderAccessibility *)&v7 _updateSelectionWithTextRange:location[0] withAffinityDownstream:a4];
+  [(UITextInputUIResponderAccessibility *)&v7 _updateSelectionWithTextRange:location[0] withAffinityDownstream:downstream];
   _UIAccessibilityUnblockPostingOfNotification();
-  v5 = [*MEMORY[0x29EDC8008] _accessibilityResponderElementForFocus];
+  _accessibilityResponderElementForFocus = [*MEMORY[0x29EDC8008] _accessibilityResponderElementForFocus];
   _UIAccessibilitySetAssociatedElementContextForNextNotification();
-  MEMORY[0x29EDC9740](v5);
+  MEMORY[0x29EDC9740](_accessibilityResponderElementForFocus);
   UIAccessibilityPostNotification(*v6, 0);
   objc_storeStrong(location, 0);
 }
 
 - (id)_accessibilityTextResponder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITextInputUIResponderAccessibility *)self accessibilityTextInputResponder];
   if (location[0])
@@ -100,7 +100,7 @@
 
   else
   {
-    v2 = MEMORY[0x29EDC9748](v6);
+    v2 = MEMORY[0x29EDC9748](selfCopy);
   }
 
   v4 = v2;
@@ -109,23 +109,23 @@
   return v4;
 }
 
-- (void)_accessibilityCheckBorderHit:(char)a3 left:
+- (void)_accessibilityCheckBorderHit:(char)hit left:
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  if (a1)
+  hitCopy = hit;
+  if (self)
   {
-    v11 = [v14 safeValueForKey:@"_selectableText"];
-    v7 = [v11 selectedTextRange];
-    *&v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-    if (v7)
+    v11 = [selfCopy safeValueForKey:@"_selectableText"];
+    selectedTextRange = [v11 selectedTextRange];
+    *&v3 = MEMORY[0x29EDC9740](selectedTextRange).n128_u64[0];
+    if (selectedTextRange)
     {
-      v9 = [v11 selectedTextRange];
-      location = [v9 start];
-      if ([v9 isEmpty] & 1) != 0 || (v13)
+      selectedTextRange2 = [v11 selectedTextRange];
+      location = [selectedTextRange2 start];
+      if ([selectedTextRange2 isEmpty] & 1) != 0 || (v13)
       {
-        if (v12)
+        if (hitCopy)
         {
           v4 = 3;
         }
@@ -147,7 +147,7 @@
       }
 
       objc_storeStrong(&location, 0);
-      objc_storeStrong(&v9, 0);
+      objc_storeStrong(&selectedTextRange2, 0);
       v10 = 0;
     }
 
@@ -160,33 +160,33 @@
   }
 }
 
-- (id)_moveLeft:(BOOL)a3 withHistory:(id)a4
+- (id)_moveLeft:(BOOL)left withHistory:(id)history
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  leftCopy = left;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(UITextInputUIResponderAccessibility *)v10 _accessibilityCheckBorderHit:v8 left:1];
-  v6.receiver = v10;
+  objc_storeStrong(&location, history);
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityCheckBorderHit:leftCopy left:1];
+  v6.receiver = selfCopy;
   v6.super_class = UITextInputUIResponderAccessibility;
-  v5 = [(UITextInputUIResponderAccessibility *)&v6 _moveLeft:v8 withHistory:location];
+  v5 = [(UITextInputUIResponderAccessibility *)&v6 _moveLeft:leftCopy withHistory:location];
   objc_storeStrong(&location, 0);
 
   return v5;
 }
 
-- (id)_moveRight:(BOOL)a3 withHistory:(id)a4
+- (id)_moveRight:(BOOL)right withHistory:(id)history
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  rightCopy = right;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(UITextInputUIResponderAccessibility *)v10 _accessibilityCheckBorderHit:v8 left:0];
-  v6.receiver = v10;
+  objc_storeStrong(&location, history);
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityCheckBorderHit:rightCopy left:0];
+  v6.receiver = selfCopy;
   v6.super_class = UITextInputUIResponderAccessibility;
-  v5 = [(UITextInputUIResponderAccessibility *)&v6 _moveRight:v8 withHistory:location];
+  v5 = [(UITextInputUIResponderAccessibility *)&v6 _moveRight:rightCopy withHistory:location];
   objc_storeStrong(&location, 0);
 
   return v5;
@@ -194,24 +194,24 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v7 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v8 = [v7 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if (v8)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v5 = [(UITextInputUIResponderAccessibility *)v12 _accessibilityTextResponder];
-    v6 = [v5 __accessibilityRespondsToTextInput];
-    *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-    if (v6)
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    __accessibilityRespondsToTextInput2 = [_accessibilityTextResponder2 __accessibilityRespondsToTextInput];
+    *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
+    if (__accessibilityRespondsToTextInput2)
     {
       return 1;
     }
 
     else
     {
-      v9.receiver = v12;
+      v9.receiver = selfCopy;
       v9.super_class = UITextInputUIResponderAccessibility;
       return [(UITextInputUIResponderAccessibility *)&v9 isAccessibilityElement];
     }
@@ -219,36 +219,36 @@
 
   else
   {
-    v10.receiver = v12;
+    v10.receiver = selfCopy;
     v10.super_class = UITextInputUIResponderAccessibility;
     return [(UITextInputUIResponderAccessibility *)&v10 isAccessibilityElement];
   }
 }
 
-- (int64_t)_accessibilityTextInputLinePosition:(BOOL)a3
+- (int64_t)_accessibilityTextInputLinePosition:(BOOL)position
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v21 = [v22 safeValueForKey:@"selectedTextRange"];
-  v20 = [v22 tokenizer];
+  positionCopy = position;
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  v21 = [_accessibilityTextResponder safeValueForKey:@"selectedTextRange"];
+  tokenizer = [_accessibilityTextResponder tokenizer];
   v19 = 0;
-  v18 = [v21 start];
+  start = [v21 start];
   v17 = [v21 end];
-  v15 = [(UITextInputUIResponderAccessibility *)v25 _accessibilityTextResponder];
-  location = [v15 _accessibilityBeginningOfDocument];
-  *&v3 = MEMORY[0x29EDC9740](v15).n128_u64[0];
-  if (v23 && ([v18 isEqual:{location, v3}] & 1) != 0)
+  _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  location = [_accessibilityTextResponder2 _accessibilityBeginningOfDocument];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
+  if (positionCopy && ([start isEqual:{location, v3}] & 1) != 0)
   {
     v26 = 0;
   }
 
   else
   {
-    if (v23)
+    if (positionCopy)
     {
-      v4 = [v20 positionFromPosition:v17 toBoundary:4 inDirection:{1, v3}];
+      v4 = [tokenizer positionFromPosition:v17 toBoundary:4 inDirection:{1, v3}];
       v5 = v17;
       v17 = v4;
       *&v6 = MEMORY[0x29EDC9740](v5).n128_u64[0];
@@ -258,7 +258,7 @@
         goto LABEL_16;
       }
 
-      v7 = [v22 textRangeFromPosition:v18 toPosition:{v17, v6}];
+      v7 = [_accessibilityTextResponder textRangeFromPosition:start toPosition:{v17, v6}];
       v8 = v19;
       v19 = v7;
       v9 = MEMORY[0x29EDC9740](v8).n128_u64[0];
@@ -266,11 +266,11 @@
 
     else
     {
-      if ([v20 isPosition:v17 atBoundary:4 inDirection:{0, v3}])
+      if ([tokenizer isPosition:v17 atBoundary:4 inDirection:{0, v3}])
       {
-        v14 = [(UITextInputUIResponderAccessibility *)v25 _accessibilityTextResponder];
-        v26 = [v14 _accessibilityOffsetFromPosition:location toPosition:v17];
-        MEMORY[0x29EDC9740](v14);
+        _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+        v26 = [_accessibilityTextResponder3 _accessibilityOffsetFromPosition:location toPosition:v17];
+        MEMORY[0x29EDC9740](_accessibilityTextResponder3);
         goto LABEL_16;
       }
 
@@ -280,7 +280,7 @@
         goto LABEL_16;
       }
 
-      v10 = [v20 rangeEnclosingPosition:v17 withGranularity:4 inDirection:0];
+      v10 = [tokenizer rangeEnclosingPosition:v17 withGranularity:4 inDirection:0];
       v11 = v19;
       v19 = v10;
       v9 = MEMORY[0x29EDC9740](v11).n128_u64[0];
@@ -288,9 +288,9 @@
 
     if (v19)
     {
-      v13 = [(UITextInputUIResponderAccessibility *)v25 _accessibilityTextResponder];
-      v26 = [v13 _accessibilityOffsetFromPosition:location toPosition:v17];
-      MEMORY[0x29EDC9740](v13);
+      _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v26 = [_accessibilityTextResponder4 _accessibilityOffsetFromPosition:location toPosition:v17];
+      MEMORY[0x29EDC9740](_accessibilityTextResponder4);
     }
 
     else
@@ -302,31 +302,31 @@
 LABEL_16:
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v17, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&start, 0);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&tokenizer, 0);
   objc_storeStrong(&v21, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&_accessibilityTextResponder, 0);
   return v26;
 }
 
 - (int64_t)_accessibilityLineEndPosition
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v5 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v6 = [v5 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (v6)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v4 = [(UITextInputUIResponderAccessibility *)v9 _accessibilityTextResponder];
-    v10 = [v4 _accessibilityTextInputLinePosition:0];
-    MEMORY[0x29EDC9740](v4);
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v10 = [_accessibilityTextResponder2 _accessibilityTextInputLinePosition:0];
+    MEMORY[0x29EDC9740](_accessibilityTextResponder2);
   }
 
   else
   {
-    v7.receiver = v9;
+    v7.receiver = selfCopy;
     v7.super_class = UITextInputUIResponderAccessibility;
     return [(UITextInputUIResponderAccessibility *)&v7 _accessibilityLineEndPosition];
   }
@@ -336,21 +336,21 @@ LABEL_16:
 
 - (int64_t)_accessibilityLineStartPosition
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v5 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v6 = [v5 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (v6)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v4 = [(UITextInputUIResponderAccessibility *)v9 _accessibilityTextResponder];
-    v10 = [v4 _accessibilityTextInputLinePosition:1];
-    MEMORY[0x29EDC9740](v4);
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v10 = [_accessibilityTextResponder2 _accessibilityTextInputLinePosition:1];
+    MEMORY[0x29EDC9740](_accessibilityTextResponder2);
   }
 
   else
   {
-    v7.receiver = v9;
+    v7.receiver = selfCopy;
     v7.super_class = UITextInputUIResponderAccessibility;
     return [(UITextInputUIResponderAccessibility *)&v7 _accessibilityLineStartPosition];
   }
@@ -358,17 +358,17 @@ LABEL_16:
   return v10;
 }
 
-- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityCharacterRangeForPosition:(unint64_t)position
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v15 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v16 = [v15 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v15).n128_u64[0];
-  if (v16)
+  positionCopy = position;
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    if (v24 == 0x7FFFFFFF || v24 == 0x7FFFFFFFFFFFFFFFLL)
+    if (positionCopy == 0x7FFFFFFF || positionCopy == 0x7FFFFFFFFFFFFFFFLL)
     {
       v27 = 0x7FFFFFFFLL;
       v28 = 0;
@@ -376,26 +376,26 @@ LABEL_16:
 
     else
     {
-      v22 = [(UITextInputUIResponderAccessibility *)v26 _accessibilityTextResponder];
-      v14 = [(UITextInputUIResponderAccessibility *)v26 _accessibilityTextResponder];
-      v21 = [v14 _accessibilityBeginningOfDocument];
-      *&v5 = MEMORY[0x29EDC9740](v14).n128_u64[0];
-      if (v21)
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+      *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+      if (_accessibilityBeginningOfDocument)
       {
-        v13 = [(UITextInputUIResponderAccessibility *)v26 _accessibilityTextResponder];
-        v19 = [v13 _accessibilityPositionFromPosition:v21 offset:v24];
-        *&v6 = MEMORY[0x29EDC9740](v13).n128_u64[0];
+        _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+        v19 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:positionCopy];
+        *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
         if (v19)
         {
-          v18 = [v22 tokenizer];
-          location = [v18 positionFromPosition:v19 toBoundary:0 inDirection:?];
+          tokenizer = [_accessibilityTextResponder2 tokenizer];
+          location = [tokenizer positionFromPosition:v19 toBoundary:0 inDirection:?];
           if (location)
           {
-            v9 = [(UITextInputUIResponderAccessibility *)v26 _accessibilityTextResponder];
-            v10 = [v9 _accessibilityOffsetFromPosition:v21 toPosition:v19];
-            v11 = [(UITextInputUIResponderAccessibility *)v26 _accessibilityTextResponder];
-            v12 = [v11 _accessibilityOffsetFromPosition:v21 toPosition:location];
-            MEMORY[0x29EDC9740](v11);
+            _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+            v10 = [_accessibilityTextResponder5 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:v19];
+            _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+            v12 = [_accessibilityTextResponder6 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:location];
+            MEMORY[0x29EDC9740](_accessibilityTextResponder6);
             v30 = v10;
             v29 = v12 - v10;
             v31 = v10;
@@ -416,7 +416,7 @@ LABEL_16:
 
           v20 = 1;
           objc_storeStrong(&location, 0);
-          objc_storeStrong(&v18, 0);
+          objc_storeStrong(&tokenizer, 0);
         }
 
         else
@@ -444,16 +444,16 @@ LABEL_16:
         v20 = 1;
       }
 
-      objc_storeStrong(&v21, 0);
-      objc_storeStrong(&v22, 0);
+      objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+      objc_storeStrong(&_accessibilityTextResponder2, 0);
     }
   }
 
   else
   {
-    v23.receiver = v26;
+    v23.receiver = selfCopy;
     v23.super_class = UITextInputUIResponderAccessibility;
-    v27 = [(UITextInputUIResponderAccessibility *)&v23 _accessibilityLineRangeForPosition:v24, v3];
+    v27 = [(UITextInputUIResponderAccessibility *)&v23 _accessibilityLineRangeForPosition:positionCopy, v3];
     v28 = v4;
   }
 
@@ -464,17 +464,17 @@ LABEL_16:
   return result;
 }
 
-- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)a3
+- (_NSRange)_accessibilityLineRangeForPosition:(unint64_t)position
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
-  v17 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v18 = [v17 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v17).n128_u64[0];
-  if (v18)
+  positionCopy = position;
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    if (v26 == 0x7FFFFFFF || v26 == 0x7FFFFFFFFFFFFFFFLL)
+    if (positionCopy == 0x7FFFFFFF || positionCopy == 0x7FFFFFFFFFFFFFFFLL)
     {
       v29 = 0x7FFFFFFFLL;
       v30 = 0;
@@ -482,30 +482,30 @@ LABEL_16:
 
     else
     {
-      v24 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-      v16 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-      v23 = [v16 _accessibilityBeginningOfDocument];
-      *&v5 = MEMORY[0x29EDC9740](v16).n128_u64[0];
-      if (v23)
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+      *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+      if (_accessibilityBeginningOfDocument)
       {
-        v15 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-        v21 = [v15 _accessibilityPositionFromPosition:v23 offset:v26];
-        *&v6 = MEMORY[0x29EDC9740](v15).n128_u64[0];
+        _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+        v21 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:positionCopy];
+        *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
         if (v21)
         {
-          v20 = [v24 tokenizer];
-          location = [v20 rangeEnclosingPosition:v21 withGranularity:4 inDirection:0];
-          if (location || (location = [v20 rangeEnclosingPosition:v21 withGranularity:4 inDirection:1], MEMORY[0x29EDC9740](0), location))
+          tokenizer = [_accessibilityTextResponder2 tokenizer];
+          location = [tokenizer rangeEnclosingPosition:v21 withGranularity:4 inDirection:0];
+          if (location || (location = [tokenizer rangeEnclosingPosition:v21 withGranularity:4 inDirection:1], MEMORY[0x29EDC9740](0), location))
           {
-            v10 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-            v9 = [location start];
-            v11 = [v10 _accessibilityOffsetFromPosition:v23 toPosition:?];
-            MEMORY[0x29EDC9740](v9);
-            v13 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
+            _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+            start = [location start];
+            v11 = [_accessibilityTextResponder5 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:?];
+            MEMORY[0x29EDC9740](start);
+            _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
             v12 = [location end];
-            v14 = [v13 _accessibilityOffsetFromPosition:v23 toPosition:?];
+            v14 = [_accessibilityTextResponder6 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:?];
             MEMORY[0x29EDC9740](v12);
-            MEMORY[0x29EDC9740](v13);
+            MEMORY[0x29EDC9740](_accessibilityTextResponder6);
             v32 = v11;
             v31 = v14 - v11;
             v33 = v11;
@@ -527,7 +527,7 @@ LABEL_16:
           }
 
           objc_storeStrong(&location, 0);
-          objc_storeStrong(&v20, 0);
+          objc_storeStrong(&tokenizer, 0);
         }
 
         else
@@ -555,16 +555,16 @@ LABEL_16:
         v22 = 1;
       }
 
-      objc_storeStrong(&v23, 0);
-      objc_storeStrong(&v24, 0);
+      objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+      objc_storeStrong(&_accessibilityTextResponder2, 0);
     }
   }
 
   else
   {
-    v25.receiver = v28;
+    v25.receiver = selfCopy;
     v25.super_class = UITextInputUIResponderAccessibility;
-    v29 = [(UITextInputUIResponderAccessibility *)&v25 _accessibilityLineRangeForPosition:v26, v3];
+    v29 = [(UITextInputUIResponderAccessibility *)&v25 _accessibilityLineRangeForPosition:positionCopy, v3];
     v30 = v4;
   }
 
@@ -577,15 +577,15 @@ LABEL_16:
 
 - (_NSRange)_accessibilityVisibleTextRange
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v4 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
   objc_opt_class();
   v15 = 0;
   isKindOfClass = 1;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [(UITextInputUIResponderAccessibility *)v18 _accessibilityTextResponder];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
     v15 = 1;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -593,10 +593,10 @@ LABEL_16:
 
   if (v15)
   {
-    MEMORY[0x29EDC9740](v16);
+    MEMORY[0x29EDC9740](_accessibilityTextResponder2);
   }
 
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
   if (isKindOfClass)
   {
     v14 = 0uLL;
@@ -608,7 +608,7 @@ LABEL_16:
     v12 = 0;
     v13 = 0;
     v6[1] = &v7;
-    v6[0] = MEMORY[0x29EDC9748](v18);
+    v6[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     v14 = *(v8 + 2);
     objc_storeStrong(v6, 0);
@@ -654,42 +654,42 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
   return result;
 }
 
-- (unint64_t)_accessibilityPositionInDirection:(int64_t)a3 offset:(unint64_t)a4 forPosition:(unint64_t)a5
+- (unint64_t)_accessibilityPositionInDirection:(int64_t)direction offset:(unint64_t)offset forPosition:(unint64_t)position
 {
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
-  v21 = a4;
-  v20 = a5;
-  v12 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v13 = [v12 __accessibilityRespondsToTextInput];
-  *&v5 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-  if (v13)
+  directionCopy = direction;
+  offsetCopy = offset;
+  positionCopy = position;
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    if (v20 == 0x7FFFFFFF || v20 == 0x7FFFFFFFFFFFFFFFLL)
+    if (positionCopy == 0x7FFFFFFF || positionCopy == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0x7FFFFFFFLL;
     }
 
     else
     {
-      v18 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-      v11 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-      v17 = [v11 _accessibilityBeginningOfDocument];
-      *&v6 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-      if (v17)
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+      *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+      if (_accessibilityBeginningOfDocument)
       {
-        v10 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-        v15 = [v10 _accessibilityPositionFromPosition:v17 offset:v20];
-        *&v7 = MEMORY[0x29EDC9740](v10).n128_u64[0];
+        _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+        v15 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:positionCopy];
+        *&v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
         if (v15)
         {
-          location = [v18 positionFromPosition:v15 inDirection:v22 offset:{v21, v7}];
+          location = [_accessibilityTextResponder2 positionFromPosition:v15 inDirection:directionCopy offset:{offsetCopy, v7}];
           if (location)
           {
-            v9 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-            v25 = [v9 _accessibilityOffsetFromPosition:v17 toPosition:location];
-            MEMORY[0x29EDC9740](v9);
+            _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+            v25 = [_accessibilityTextResponder5 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:location];
+            MEMORY[0x29EDC9740](_accessibilityTextResponder5);
           }
 
           else
@@ -716,16 +716,16 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
         v16 = 1;
       }
 
-      objc_storeStrong(&v17, 0);
-      objc_storeStrong(&v18, 0);
+      objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+      objc_storeStrong(&_accessibilityTextResponder2, 0);
     }
   }
 
   else
   {
-    v19.receiver = v24;
+    v19.receiver = selfCopy;
     v19.super_class = UITextInputUIResponderAccessibility;
-    return [(UITextInputUIResponderAccessibility *)&v19 _accessibilityPositionInDirection:v22 offset:v21 forPosition:v20, v5];
+    return [(UITextInputUIResponderAccessibility *)&v19 _accessibilityPositionInDirection:directionCopy offset:offsetCopy forPosition:positionCopy, v5];
   }
 
   return v25;
@@ -733,86 +733,86 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
 
 - (id)accessibilityValue
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v9 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v10 = [v9 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v10)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v14 = [(UITextInputUIResponderAccessibility *)v17 _accessibilityTextResponder];
-    v7 = [(UITextInputUIResponderAccessibility *)v17 _accessibilityTextResponder];
-    v13 = [v7 _accessibilityBeginningOfDocument];
-    *&v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-    v8 = [(UITextInputUIResponderAccessibility *)v17 _accessibilityTextResponder];
-    v12 = [v8 _accessibilityEndOfDocument];
-    *&v4 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-    v11 = [v14 textRangeFromPosition:v13 toPosition:{v12, v4}];
-    v18 = [v14 textInRange:v11];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+    *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+    _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityEndOfDocument = [_accessibilityTextResponder4 _accessibilityEndOfDocument];
+    *&v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
+    v11 = [_accessibilityTextResponder2 textRangeFromPosition:_accessibilityBeginningOfDocument toPosition:{_accessibilityEndOfDocument, v4}];
+    accessibilityValue = [_accessibilityTextResponder2 textInRange:v11];
     objc_storeStrong(&v11, 0);
-    objc_storeStrong(&v12, 0);
-    objc_storeStrong(&v13, 0);
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&_accessibilityEndOfDocument, 0);
+    objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+    objc_storeStrong(&_accessibilityTextResponder2, 0);
   }
 
   else
   {
-    v15.receiver = v17;
+    v15.receiver = selfCopy;
     v15.super_class = UITextInputUIResponderAccessibility;
-    v18 = [(UITextInputUIResponderAccessibility *)&v15 accessibilityValue];
+    accessibilityValue = [(UITextInputUIResponderAccessibility *)&v15 accessibilityValue];
   }
 
-  v5 = v18;
+  v5 = accessibilityValue;
 
   return v5;
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  v75 = a3;
-  v74 = self;
+  pointCopy = point;
+  selfCopy = self;
   v73[1] = a2;
   v73[0] = 0;
-  v72 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v46 = [(UITextInputUIResponderAccessibility *)v74 _accessibilityTextResponder];
-  v47 = [v46 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v46).n128_u64[0];
-  if (v47)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder2 __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v45 = [(UITextInputUIResponderAccessibility *)v74 _accessibilityTextResponder];
-    v69 = [v45 _axTextInputView];
-    v4 = MEMORY[0x29EDC9740](v45).n128_u64[0];
-    if (!v69)
+    _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _axTextInputView = [_accessibilityTextResponder3 _axTextInputView];
+    v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+    if (!_axTextInputView)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v72 inputView];
-        v6 = v69;
-        v69 = v5;
+        inputView = [_accessibilityTextResponder inputView];
+        v6 = _axTextInputView;
+        _axTextInputView = inputView;
         v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
       }
     }
 
-    v44 = [v69 window];
-    [v44 convertPoint:v69 toView:v75];
+    window = [_axTextInputView window];
+    [window convertPoint:_axTextInputView toView:pointCopy];
     v68.x = v7;
     v68.y = v8;
-    v75 = v68;
-    MEMORY[0x29EDC9740](v44);
-    v67 = [v72 characterRangeAtPoint:{v68.x, v68.y}];
-    v66 = [v72 textInRange:v67];
+    pointCopy = v68;
+    MEMORY[0x29EDC9740](window);
+    v67 = [_accessibilityTextResponder characterRangeAtPoint:{v68.x, v68.y}];
+    v66 = [_accessibilityTextResponder textInRange:v67];
     if ([v66 isEqualToString:@"\n"])
     {
-      v40 = v72;
-      v41 = [v67 start];
+      v40 = _accessibilityTextResponder;
+      start = [v67 start];
       v65 = [v40 positionFromPosition:? inDirection:? offset:?];
-      *&v9 = MEMORY[0x29EDC9740](v41).n128_u64[0];
-      v42 = v72;
+      *&v9 = MEMORY[0x29EDC9740](start).n128_u64[0];
+      v42 = _accessibilityTextResponder;
       v43 = [v67 end];
       v64 = [v42 positionFromPosition:? inDirection:? offset:?];
       *&v10 = MEMORY[0x29EDC9740](v43).n128_u64[0];
-      v11 = [v72 textRangeFromPosition:v65 toPosition:{v64, v10}];
+      v11 = [_accessibilityTextResponder textRangeFromPosition:v65 toPosition:{v64, v10}];
       v12 = v67;
       v67 = v11;
       MEMORY[0x29EDC9740](v12);
@@ -820,18 +820,18 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
       objc_storeStrong(&v65, 0);
     }
 
-    v63 = [v72 tokenizer];
-    v37 = [v67 start];
-    v62 = [v63 positionFromPosition:? toBoundary:? inDirection:?];
-    *&v13 = MEMORY[0x29EDC9740](v37).n128_u64[0];
+    tokenizer = [_accessibilityTextResponder tokenizer];
+    start2 = [v67 start];
+    v62 = [tokenizer positionFromPosition:? toBoundary:? inDirection:?];
+    *&v13 = MEMORY[0x29EDC9740](start2).n128_u64[0];
     v38 = [v67 end];
-    v61 = [v63 positionFromPosition:? toBoundary:? inDirection:?];
+    v61 = [tokenizer positionFromPosition:? toBoundary:? inDirection:?];
     v14 = MEMORY[0x29EDC9740](v38).n128_u64[0];
     v59 = 0;
     v39 = 1;
     if (v61)
     {
-      v36 = v72;
+      v36 = _accessibilityTextResponder;
       v60 = [v67 end];
       v59 = 1;
       v39 = [v36 comparePosition:? toPosition:?] == 1;
@@ -854,76 +854,76 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
     v35 = 1;
     if (v62)
     {
-      v34 = v72;
-      v58 = [v67 start];
+      v34 = _accessibilityTextResponder;
+      start3 = [v67 start];
       v57 = 1;
       v35 = [v34 comparePosition:? toPosition:?] == -1;
     }
 
     if (v57)
     {
-      v14 = MEMORY[0x29EDC9740](v58).n128_u64[0];
+      v14 = MEMORY[0x29EDC9740](start3).n128_u64[0];
     }
 
     if (v35)
     {
-      v17 = [v67 start];
+      start4 = [v67 start];
       v18 = v62;
-      v62 = v17;
+      v62 = start4;
       v14 = MEMORY[0x29EDC9740](v18).n128_u64[0];
     }
 
-    v56 = [v72 textRangeFromPosition:v62 toPosition:{v61, *&v14}];
+    v56 = [_accessibilityTextResponder textRangeFromPosition:v62 toPosition:{v61, *&v14}];
     if (!v56)
     {
-      v33 = [v67 start];
-      v56 = [v63 rangeEnclosingPosition:? withGranularity:? inDirection:?];
+      start5 = [v67 start];
+      v56 = [tokenizer rangeEnclosingPosition:? withGranularity:? inDirection:?];
       MEMORY[0x29EDC9740](0);
-      MEMORY[0x29EDC9740](v33);
+      MEMORY[0x29EDC9740](start5);
     }
 
-    v31 = [(UITextInputUIResponderAccessibility *)v74 _accessibilityTextResponder];
-    v55 = [v31 _accessibilityBeginningOfDocument];
-    v32 = [v56 start];
+    _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument = [_accessibilityTextResponder4 _accessibilityBeginningOfDocument];
+    start6 = [v56 start];
     v52 = 0;
     v50 = 0;
     v48 = 0;
-    if (v32)
+    if (start6)
     {
-      v53 = [v56 start];
+      start7 = [v56 start];
       v52 = 1;
-      v30 = v53;
+      v30 = start7;
     }
 
     else
     {
-      v51 = [(UITextInputUIResponderAccessibility *)v74 _accessibilityTextResponder];
+      _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       v50 = 1;
-      v49 = [v51 _accessibilityEndOfDocument];
+      _accessibilityEndOfDocument = [_accessibilityTextResponder5 _accessibilityEndOfDocument];
       v48 = 1;
-      v30 = v49;
+      v30 = _accessibilityEndOfDocument;
     }
 
     v54 = MEMORY[0x29EDC9748](v30);
     if (v48)
     {
-      MEMORY[0x29EDC9740](v49);
+      MEMORY[0x29EDC9740](_accessibilityEndOfDocument);
     }
 
     if (v50)
     {
-      MEMORY[0x29EDC9740](v51);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder5);
     }
 
     if (v52)
     {
-      MEMORY[0x29EDC9740](v53);
+      MEMORY[0x29EDC9740](start7);
     }
 
-    *&v19 = MEMORY[0x29EDC9740](v32).n128_u64[0];
-    v25 = [(UITextInputUIResponderAccessibility *)v74 _accessibilityTextResponder];
-    v26 = [v25 _accessibilityOffsetFromPosition:v55 toPosition:v54];
-    *&v20 = MEMORY[0x29EDC9740](v25).n128_u64[0];
+    *&v19 = MEMORY[0x29EDC9740](start6).n128_u64[0];
+    _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v26 = [_accessibilityTextResponder6 _accessibilityOffsetFromPosition:_accessibilityBeginningOfDocument toPosition:v54];
+    *&v20 = MEMORY[0x29EDC9740](_accessibilityTextResponder6).n128_u64[0];
     v27 = MEMORY[0x29EDB8DC0];
     v29 = [MEMORY[0x29EDBA070] numberWithInteger:{v26, v20}];
     v28 = [MEMORY[0x29EDBA070] numberWithInteger:0];
@@ -936,37 +936,37 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
     v76 = MEMORY[0x29EDC9748](v73[0]);
     v70 = 1;
     objc_storeStrong(&v54, 0);
-    objc_storeStrong(&v55, 0);
+    objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
     objc_storeStrong(&v56, 0);
     objc_storeStrong(&v61, 0);
     objc_storeStrong(&v62, 0);
-    objc_storeStrong(&v63, 0);
+    objc_storeStrong(&tokenizer, 0);
     objc_storeStrong(&v66, 0);
     objc_storeStrong(&v67, 0);
-    objc_storeStrong(&v69, 0);
+    objc_storeStrong(&_axTextInputView, 0);
   }
 
   else
   {
-    v71.receiver = v74;
+    v71.receiver = selfCopy;
     v71.super_class = UITextInputUIResponderAccessibility;
-    v76 = [(UITextInputUIResponderAccessibility *)&v71 _accessibilityLineNumberAndColumnForPoint:v75.x, v75.y];
+    v76 = [(UITextInputUIResponderAccessibility *)&v71 _accessibilityLineNumberAndColumnForPoint:pointCopy.x, pointCopy.y];
     v70 = 1;
   }
 
-  objc_storeStrong(&v72, 0);
+  objc_storeStrong(&_accessibilityTextResponder, 0);
   objc_storeStrong(v73, 0);
   v23 = v76;
 
   return v23;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, column);
   v44 = 0x7FFFFFFFLL;
   v43 = 0;
   v45 = 0x7FFFFFFFLL;
@@ -974,30 +974,30 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
   v41 = 0x7FFFFFFFLL;
   v42 = 0;
   v27 = [location[0] objectForKey:@"lineColumn"];
-  v28 = [v27 integerValue];
+  integerValue = [v27 integerValue];
   *&v3 = MEMORY[0x29EDC9740](v27).n128_u64[0];
-  if (v28)
+  if (integerValue)
   {
     goto LABEL_26;
   }
 
-  v25 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
-  v26 = [v25 conformsToProtocol:&unk_2A23BD4B8];
-  *&v4 = MEMORY[0x29EDC9740](v25).n128_u64[0];
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v26 = [_accessibilityTextResponder conformsToProtocol:&unk_2A23BD4B8];
+  *&v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
   if ((v26 & 1) == 0)
   {
     v38 = 1;
     goto LABEL_27;
   }
 
-  v37 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
+  _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
   v22 = [location[0] objectForKey:@"lineNumber"];
-  v23 = [v22 integerValue];
+  integerValue2 = [v22 integerValue];
   *&v5 = MEMORY[0x29EDC9740](v22).n128_u64[0];
-  v36[1] = v23;
-  v24 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
-  v36[0] = [v24 _accessibilityBeginningOfDocument];
-  v35 = [v37 positionFromPosition:v36[0] inDirection:2 offset:{v23, MEMORY[0x29EDC9740](v24).n128_f64[0]}];
+  v36[1] = integerValue2;
+  _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v36[0] = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+  v35 = [_accessibilityTextResponder2 positionFromPosition:v36[0] inDirection:2 offset:{integerValue2, MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_f64[0]}];
   if (!v35)
   {
     objc_storeStrong(&v35, v36[0]);
@@ -1005,16 +1005,16 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
 
   if (v35)
   {
-    v34 = [v37 tokenizer];
-    v33 = [v34 positionFromPosition:v35 toBoundary:4 inDirection:0];
+    tokenizer = [_accessibilityTextResponder2 tokenizer];
+    v33 = [tokenizer positionFromPosition:v35 toBoundary:4 inDirection:0];
     if (!v33)
     {
       objc_storeStrong(&v33, v36[0]);
     }
 
-    if (([v34 isPosition:v33 withinTextUnit:0 inDirection:1] & 1) == 0)
+    if (([tokenizer isPosition:v33 withinTextUnit:0 inDirection:1] & 1) == 0)
     {
-      v32 = [v34 positionFromPosition:v33 toBoundary:0 inDirection:?];
+      v32 = [tokenizer positionFromPosition:v33 toBoundary:0 inDirection:?];
       if (v32)
       {
         objc_storeStrong(&v33, v32);
@@ -1042,7 +1042,7 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v37 textRangeFromPosition:v35 toPosition:v33];
+        v6 = [_accessibilityTextResponder2 textRangeFromPosition:v35 toPosition:v33];
         v7 = v31;
         v31 = v6;
         MEMORY[0x29EDC9740](v7);
@@ -1051,38 +1051,38 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
 
     if (v31)
     {
-      v18 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
+      _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       v16 = v36[0];
-      v17 = [v31 start];
-      v30 = [v18 _accessibilityOffsetFromPosition:v16 toPosition:?];
-      MEMORY[0x29EDC9740](v17);
-      *&v8 = MEMORY[0x29EDC9740](v18).n128_u64[0];
-      v21 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
+      start = [v31 start];
+      v30 = [_accessibilityTextResponder4 _accessibilityOffsetFromPosition:v16 toPosition:?];
+      MEMORY[0x29EDC9740](start);
+      *&v8 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
+      _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       v19 = v36[0];
       v20 = [v31 end];
-      v29 = [v21 _accessibilityOffsetFromPosition:v19 toPosition:?];
+      v29 = [_accessibilityTextResponder5 _accessibilityOffsetFromPosition:v19 toPosition:?];
       MEMORY[0x29EDC9740](v20);
-      MEMORY[0x29EDC9740](v21);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder5);
     }
 
     else
     {
-      v12 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
-      v30 = [v12 _accessibilityOffsetFromPosition:v36[0] toPosition:v36[0]];
-      *&v9 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-      v15 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityTextResponder];
+      _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v30 = [_accessibilityTextResponder6 _accessibilityOffsetFromPosition:v36[0] toPosition:v36[0]];
+      *&v9 = MEMORY[0x29EDC9740](_accessibilityTextResponder6).n128_u64[0];
+      _accessibilityTextResponder7 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       v13 = v36[0];
-      v14 = [(UITextInputUIResponderAccessibility *)v40 _accessibilityEndOfDocument];
-      v29 = [v15 _accessibilityOffsetFromPosition:v13 toPosition:?];
-      MEMORY[0x29EDC9740](v14);
-      MEMORY[0x29EDC9740](v15);
+      _accessibilityEndOfDocument = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityEndOfDocument];
+      v29 = [_accessibilityTextResponder7 _accessibilityOffsetFromPosition:v13 toPosition:?];
+      MEMORY[0x29EDC9740](_accessibilityEndOfDocument);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder7);
     }
 
     v41 = v30;
     v42 = v29 - v30;
     objc_storeStrong(&v31, 0);
     objc_storeStrong(&v33, 0);
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&tokenizer, 0);
     v38 = 0;
   }
 
@@ -1093,7 +1093,7 @@ double __69__UITextInputUIResponderAccessibility__accessibilityVisibleTextRange_
 
   objc_storeStrong(&v35, 0);
   objc_storeStrong(v36, 0);
-  objc_storeStrong(&v37, 0);
+  objc_storeStrong(&_accessibilityTextResponder2, 0);
   if (!v38)
   {
 LABEL_26:
@@ -1109,18 +1109,18 @@ LABEL_27:
   return result;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
   v58 = *MEMORY[0x29EDCA608];
-  v54 = a3;
-  v53 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v52 = a2;
-  v36 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v37 = [v36 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v36).n128_u64[0];
-  if (v37)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    if (v54.location == 0x7FFFFFFF || v54.location == 0x7FFFFFFFFFFFFFFFLL)
+    if (rangeCopy.location == 0x7FFFFFFF || rangeCopy.location == 0x7FFFFFFFFFFFFFFFLL)
     {
       v55 = *MEMORY[0x29EDB90E0];
       v56 = *(MEMORY[0x29EDB90E0] + 16);
@@ -1128,19 +1128,19 @@ LABEL_27:
 
     else
     {
-      v50 = [(UITextInputUIResponderAccessibility *)v53 _accessibilityTextResponder];
-      v33 = [(UITextInputUIResponderAccessibility *)v53 _accessibilityTextResponder];
-      v49 = [v33 _accessibilityBeginningOfDocument];
-      v34 = [(UITextInputUIResponderAccessibility *)v53 _accessibilityTextResponder];
-      v48 = [v34 _accessibilityPositionFromPosition:v49 offset:v54.location];
-      v35 = [(UITextInputUIResponderAccessibility *)v53 _accessibilityTextResponder];
-      v47 = [v35 _accessibilityPositionFromPosition:v48 offset:v54.length];
-      v46 = [v50 textRangeFromPosition:v48 toPosition:{v47, MEMORY[0x29EDC9740](v35).n128_f64[0]}];
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+      _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v48 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:rangeCopy.location];
+      _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v47 = [_accessibilityTextResponder5 _accessibilityPositionFromPosition:v48 offset:rangeCopy.length];
+      v46 = [_accessibilityTextResponder2 textRangeFromPosition:v48 toPosition:{v47, MEMORY[0x29EDC9740](_accessibilityTextResponder5).n128_f64[0]}];
       memset(&rect2, 0, sizeof(rect2));
       rect2 = **&MEMORY[0x29EDB90E0];
       if (objc_opt_respondsToSelector())
       {
-        location = [v50 selectionRectsForRange:v46];
+        location = [_accessibilityTextResponder2 selectionRectsForRange:v46];
         memset(__b, 0, sizeof(__b));
         obj = MEMORY[0x29EDC9748](location);
         v32 = [obj countByEnumeratingWithState:__b objects:v57 count:16];
@@ -1196,17 +1196,17 @@ LABEL_27:
         objc_storeStrong(&location, 0);
       }
 
-      v26 = [(UITextInputUIResponderAccessibility *)v53 _accessibilityTextResponder];
-      v38 = [v26 _axTextInputView];
-      MEMORY[0x29EDC9740](v26);
-      if (!v38)
+      _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _axTextInputView = [_accessibilityTextResponder6 _axTextInputView];
+      MEMORY[0x29EDC9740](_accessibilityTextResponder6);
+      if (!_axTextInputView)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v50 inputView];
-          v17 = v38;
-          v38 = v16;
+          inputView = [_accessibilityTextResponder2 inputView];
+          v17 = _axTextInputView;
+          _axTextInputView = inputView;
           MEMORY[0x29EDC9740](v17);
         }
       }
@@ -1216,20 +1216,20 @@ LABEL_27:
       *(&v55 + 1) = v19;
       *&v56 = v20;
       *(&v56 + 1) = v21;
-      objc_storeStrong(&v38, 0);
+      objc_storeStrong(&_axTextInputView, 0);
       objc_storeStrong(&v46, 0);
       objc_storeStrong(&v47, 0);
       objc_storeStrong(&v48, 0);
-      objc_storeStrong(&v49, 0);
-      objc_storeStrong(&v50, 0);
+      objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+      objc_storeStrong(&_accessibilityTextResponder2, 0);
     }
   }
 
   else
   {
-    v51.receiver = v53;
+    v51.receiver = selfCopy;
     v51.super_class = UITextInputUIResponderAccessibility;
-    [(UITextInputUIResponderAccessibility *)&v51 _accessibilityBoundsForRange:v54.location, v54.length, v3];
+    [(UITextInputUIResponderAccessibility *)&v51 _accessibilityBoundsForRange:rangeCopy.location, rangeCopy.length, v3];
     *&v55 = v4;
     *(&v55 + 1) = v5;
     *&v56 = v6;
@@ -1247,17 +1247,17 @@ LABEL_27:
   return result;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  v20 = a3;
-  v19 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v18 = a2;
-  v9 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v10 = [v9 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v10)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    if (v20.location != 0x7FFFFFFF)
+    if (rangeCopy.location != 0x7FFFFFFF)
     {
       v16 = 0;
       if (AXIsDictationListening())
@@ -1266,21 +1266,21 @@ LABEL_27:
         v16 = 1;
       }
 
-      v15 = [(UITextInputUIResponderAccessibility *)v19 _accessibilityTextResponder];
-      v4 = [(UITextInputUIResponderAccessibility *)v19 _accessibilityTextResponder];
-      v14 = [v4 _accessibilityBeginningOfDocument];
-      v5 = [(UITextInputUIResponderAccessibility *)v19 _accessibilityTextResponder];
-      v13 = [v5 _accessibilityPositionFromPosition:v14 offset:v20.location];
-      v6 = [(UITextInputUIResponderAccessibility *)v19 _accessibilityTextResponder];
-      v12 = [v6 _accessibilityPositionFromPosition:v13 offset:v20.length];
-      location = [v15 textRangeFromPosition:v13 toPosition:{v12, MEMORY[0x29EDC9740](v6).n128_f64[0]}];
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilityBeginningOfDocument = [_accessibilityTextResponder3 _accessibilityBeginningOfDocument];
+      _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v13 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:rangeCopy.location];
+      _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v12 = [_accessibilityTextResponder5 _accessibilityPositionFromPosition:v13 offset:rangeCopy.length];
+      location = [_accessibilityTextResponder2 textRangeFromPosition:v13 toPosition:{v12, MEMORY[0x29EDC9740](_accessibilityTextResponder5).n128_f64[0]}];
       v8 = MEMORY[0x29EDC74D0];
       MEMORY[0x29ED3DFA0](*MEMORY[0x29EDC74D0]);
-      [v15 setSelectedTextRange:location];
+      [_accessibilityTextResponder2 setSelectedTextRange:location];
       MEMORY[0x29ED3DFA0](0);
-      v7 = [*MEMORY[0x29EDC8008] _accessibilityResponderElementForFocus];
+      _accessibilityResponderElementForFocus = [*MEMORY[0x29EDC8008] _accessibilityResponderElementForFocus];
       _UIAccessibilitySetAssociatedElementContextForNextNotification();
-      MEMORY[0x29EDC9740](v7);
+      MEMORY[0x29EDC9740](_accessibilityResponderElementForFocus);
       UIAccessibilityPostNotification(*v8, 0);
       if (v16)
       {
@@ -1290,29 +1290,29 @@ LABEL_27:
       objc_storeStrong(&location, 0);
       objc_storeStrong(&v12, 0);
       objc_storeStrong(&v13, 0);
-      objc_storeStrong(&v14, 0);
-      objc_storeStrong(&v15, 0);
+      objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
+      objc_storeStrong(&_accessibilityTextResponder2, 0);
     }
   }
 
   else
   {
-    v17.receiver = v19;
+    v17.receiver = selfCopy;
     v17.super_class = UITextInputUIResponderAccessibility;
-    [(UITextInputUIResponderAccessibility *)&v17 _accessibilitySetSelectedTextRange:v20.location, v20.length, v3];
+    [(UITextInputUIResponderAccessibility *)&v17 _accessibilitySetSelectedTextRange:rangeCopy.location, rangeCopy.length, v3];
   }
 }
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v5 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v6 = [v5 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (v6)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v10 = [(UITextInputUIResponderAccessibility *)v9 _accessibilityTextResponder];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
   }
 
   else
@@ -1320,39 +1320,39 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = MEMORY[0x29EDC9748](v9);
+      _accessibilityTextResponder2 = MEMORY[0x29EDC9748](selfCopy);
     }
 
     else
     {
-      v7.receiver = v9;
+      v7.receiver = selfCopy;
       v7.super_class = UITextInputUIResponderAccessibility;
-      v10 = [(UITextInputUIResponderAccessibility *)&v7 _accessibilityTextViewTextOperationResponder];
+      _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)&v7 _accessibilityTextViewTextOperationResponder];
     }
   }
 
-  v3 = v10;
+  v3 = _accessibilityTextResponder2;
 
   return v3;
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v8 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v9 = [v8 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  if (v9)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v11 = [(UITextInputUIResponderAccessibility *)v14 _accessibilityTextResponder];
-    location = [v11 safeValueForKey:@"selectedTextRange"];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    location = [_accessibilityTextResponder2 safeValueForKey:@"selectedTextRange"];
     if (location)
     {
-      v7 = [(UITextInputUIResponderAccessibility *)v14 _accessibilityTextResponder];
-      v15 = [v7 _accessibilityRawRangeForUITextRange:location];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      _accessibilitySelectedTextRange = [_accessibilityTextResponder3 _accessibilityRawRangeForUITextRange:location];
       v16 = v4;
-      MEMORY[0x29EDC9740](v7);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder3);
     }
 
     else
@@ -1361,55 +1361,55 @@ LABEL_27:
       v17 = 0;
       v19 = 0x7FFFFFFFLL;
       v20 = 0;
-      v15 = 0x7FFFFFFFLL;
+      _accessibilitySelectedTextRange = 0x7FFFFFFFLL;
       v16 = 0;
     }
 
     objc_storeStrong(&location, 0);
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&_accessibilityTextResponder2, 0);
   }
 
   else
   {
-    v12.receiver = v14;
+    v12.receiver = selfCopy;
     v12.super_class = UITextInputUIResponderAccessibility;
-    v15 = [(UITextInputUIResponderAccessibility *)&v12 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [(UITextInputUIResponderAccessibility *)&v12 _accessibilitySelectedTextRange];
     v16 = v3;
   }
 
-  v5 = v15;
+  v5 = _accessibilitySelectedTextRange;
   v6 = v16;
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-- (id)_accessibilityTextRangeFromNSRange:(_NSRange)a3
+- (id)_accessibilityTextRangeFromNSRange:(_NSRange)range
 {
-  v15 = a3;
-  v14 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v13 = a2;
-  v6 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v7 = [v6 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v7)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v11 = [(UITextInputUIResponderAccessibility *)v14 _accessibilityTextResponder];
-    v10 = [v11 beginningOfDocument];
-    v9 = [v11 positionFromPosition:v10 offset:v15.location];
-    v8 = [v11 positionFromPosition:v9 offset:v15.length];
-    v16 = [v11 textRangeFromPosition:v9 toPosition:v8];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    beginningOfDocument = [_accessibilityTextResponder2 beginningOfDocument];
+    v9 = [_accessibilityTextResponder2 positionFromPosition:beginningOfDocument offset:rangeCopy.location];
+    v8 = [_accessibilityTextResponder2 positionFromPosition:v9 offset:rangeCopy.length];
+    v16 = [_accessibilityTextResponder2 textRangeFromPosition:v9 toPosition:v8];
     objc_storeStrong(&v8, 0);
     objc_storeStrong(&v9, 0);
-    objc_storeStrong(&v10, 0);
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&beginningOfDocument, 0);
+    objc_storeStrong(&_accessibilityTextResponder2, 0);
   }
 
   else
   {
-    v12.receiver = v14;
+    v12.receiver = selfCopy;
     v12.super_class = UITextInputUIResponderAccessibility;
-    v16 = [(UITextInputUIResponderAccessibility *)&v12 _accessibilityTextRangeFromNSRange:v15.location, v15.length, v3];
+    v16 = [(UITextInputUIResponderAccessibility *)&v12 _accessibilityTextRangeFromNSRange:rangeCopy.location, rangeCopy.length, v3];
   }
 
   v4 = v16;
@@ -1417,32 +1417,32 @@ LABEL_27:
   return v4;
 }
 
-- (_NSRange)_accessibilityRawRangeForUITextRange:(id)a3
+- (_NSRange)_accessibilityRawRangeForUITextRange:(id)range
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-  v19 = [v18 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v18).n128_u64[0];
-  if (v19)
+  objc_storeStrong(location, range);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v9 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-    v20 = [v9 _accessibilityBeginningOfDocument];
-    *&v5 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-    v12 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-    v10 = v20;
-    v11 = [location[0] start];
-    v13 = [v12 _accessibilityOffsetFromPosition:v10 toPosition:?];
-    MEMORY[0x29EDC9740](v11);
-    *&v6 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-    v16 = [(UITextInputUIResponderAccessibility *)v24 _accessibilityTextResponder];
-    v14 = v20;
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument = [_accessibilityTextResponder2 _accessibilityBeginningOfDocument];
+    *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
+    _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v10 = _accessibilityBeginningOfDocument;
+    start = [location[0] start];
+    v13 = [_accessibilityTextResponder3 _accessibilityOffsetFromPosition:v10 toPosition:?];
+    MEMORY[0x29EDC9740](start);
+    *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
+    _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v14 = _accessibilityBeginningOfDocument;
     v15 = [location[0] end];
-    v17 = [v16 _accessibilityOffsetFromPosition:v14 toPosition:?];
+    v17 = [_accessibilityTextResponder4 _accessibilityOffsetFromPosition:v14 toPosition:?];
     MEMORY[0x29EDC9740](v15);
-    MEMORY[0x29EDC9740](v16);
+    MEMORY[0x29EDC9740](_accessibilityTextResponder4);
     v28 = v13;
     v27 = v17 - v13;
     v29 = v13;
@@ -1450,12 +1450,12 @@ LABEL_27:
     v25 = v13;
     v26 = v17 - v13;
     v21 = 1;
-    objc_storeStrong(&v20, 0);
+    objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
   }
 
   else
   {
-    v22.receiver = v24;
+    v22.receiver = selfCopy;
     v22.super_class = UITextInputUIResponderAccessibility;
     v25 = [(UITextInputUIResponderAccessibility *)&v22 _accessibilityRawRangeForUITextRange:location[0], v3];
     v26 = v4;
@@ -1472,58 +1472,58 @@ LABEL_27:
 
 - (unint64_t)accessibilityTraits
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v9.receiver = self;
   v9.super_class = UITextInputUIResponderAccessibility;
-  v10 = [(UITextInputUIResponderAccessibility *)&v9 accessibilityTraits];
-  v7 = [(UITextInputUIResponderAccessibility *)v12 _accessibilityTextResponder];
-  v8 = [v7 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if ((v8 & 1) == 0)
+  accessibilityTraits = [(UITextInputUIResponderAccessibility *)&v9 accessibilityTraits];
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if ((__accessibilityRespondsToTextInput & 1) == 0)
   {
-    return v10;
+    return accessibilityTraits;
   }
 
-  v10 |= *MEMORY[0x29EDC7598] | *MEMORY[0x29EDC75A0] | *MEMORY[0x29EDBDC00];
-  v5 = [(UITextInputUIResponderAccessibility *)v12 _accessibilityTextResponder];
-  v4 = [v5 safeValueForKey:@"isFirstResponder"];
-  v6 = [v4 BOOLValue];
+  accessibilityTraits |= *MEMORY[0x29EDC7598] | *MEMORY[0x29EDC75A0] | *MEMORY[0x29EDBDC00];
+  _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v4 = [_accessibilityTextResponder2 safeValueForKey:@"isFirstResponder"];
+  bOOLValue = [v4 BOOLValue];
   MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
-  if (v6)
+  MEMORY[0x29EDC9740](_accessibilityTextResponder2);
+  if (bOOLValue)
   {
-    v10 |= *MEMORY[0x29EDC7528];
+    accessibilityTraits |= *MEMORY[0x29EDC7528];
   }
 
-  return v10;
+  return accessibilityTraits;
 }
 
 - (id)_accessibilitySpeakThisString
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = 0;
-  v10 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v11 = [v10 __accessibilityRespondsToTextInput];
-  *&v2 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-  if (v11)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v9 = [(UITextInputUIResponderAccessibility *)v14 _accessibilityTextResponder];
-    v3 = [v9 _accessibilityAXAttributedValue];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityAXAttributedValue = [_accessibilityTextResponder2 _accessibilityAXAttributedValue];
     v4 = v13[0];
-    v13[0] = v3;
+    v13[0] = _accessibilityAXAttributedValue;
     MEMORY[0x29EDC9740](v4);
-    MEMORY[0x29EDC9740](v9);
+    MEMORY[0x29EDC9740](_accessibilityTextResponder2);
   }
 
   else
   {
-    v12.receiver = v14;
+    v12.receiver = selfCopy;
     v12.super_class = UITextInputUIResponderAccessibility;
-    v5 = [(UITextInputUIResponderAccessibility *)&v12 _accessibilitySpeakThisString];
+    _accessibilitySpeakThisString = [(UITextInputUIResponderAccessibility *)&v12 _accessibilitySpeakThisString];
     v6 = v13[0];
-    v13[0] = v5;
+    v13[0] = _accessibilitySpeakThisString;
     MEMORY[0x29EDC9740](v6);
   }
 
@@ -1533,52 +1533,52 @@ LABEL_27:
   return v8;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 string:(id)a4 wantsSentences:(BOOL)a5
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range string:(id)string wantsSentences:(BOOL)sentences
 {
-  v11 = a3;
-  v10 = self;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v7 = [(UITextInputUIResponderAccessibility *)v10 _accessibilityTextResponder];
-  v8 = [v7 _accessibilityTextRectsForSpeakThisStringRange:v11.location wantsSentences:{v11.length, a5}];
-  MEMORY[0x29EDC9740](v7);
+  objc_storeStrong(location, string);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v8 = [_accessibilityTextResponder _accessibilityTextRectsForSpeakThisStringRange:rangeCopy.location wantsSentences:{rangeCopy.length, sentences}];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
   objc_storeStrong(location, 0);
 
   return v8;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range
 {
-  v4 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v5 = [v4 _accessibilityTextRectsForSpeakThisStringRange:a3.location wantsSentences:{a3.length, 0}];
-  MEMORY[0x29EDC9740](v4);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  v5 = [_accessibilityTextResponder _accessibilityTextRectsForSpeakThisStringRange:range.location wantsSentences:{range.length, 0}];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
 
   return v5;
 }
 
-- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)a3 wantsSentences:(BOOL)a4
+- (id)_accessibilityTextRectsForSpeakThisStringRange:(_NSRange)range wantsSentences:(BOOL)sentences
 {
   v87 = *MEMORY[0x29EDCA608];
-  v83 = a3;
-  v82 = self;
+  rangeCopy = range;
+  selfCopy = self;
   v81 = a2;
-  v80 = a4;
+  sentencesCopy = sentences;
   v79 = 0;
-  v57 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v58 = [v57 __accessibilityRespondsToTextInput];
-  *&v4 = MEMORY[0x29EDC9740](v57).n128_u64[0];
-  if (v58)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
     location = 0;
     v77 = 0;
-    v55 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    *&v5 = MEMORY[0x29EDC9740](v55).n128_u64[0];
+    *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
     if (isKindOfClass)
     {
-      objc_storeStrong(&location, v82);
+      objc_storeStrong(&location, selfCopy);
       if (![location isSelectable])
       {
         [location setSelectable:1];
@@ -1586,68 +1586,68 @@ LABEL_27:
       }
     }
 
-    v76 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v50 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v49 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v48 = [v49 _accessibilityBeginningOfDocument];
-    v75 = [v50 _accessibilityPositionFromPosition:? offset:?];
-    MEMORY[0x29EDC9740](v48);
-    MEMORY[0x29EDC9740](v49);
-    *&v6 = MEMORY[0x29EDC9740](v50).n128_u64[0];
-    v53 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v52 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v51 = [v52 _accessibilityBeginningOfDocument];
-    v84 = v83;
-    v74 = [v53 _accessibilityPositionFromPosition:? offset:?];
-    MEMORY[0x29EDC9740](v51);
-    MEMORY[0x29EDC9740](v52);
-    v73 = [v76 textRangeFromPosition:v75 toPosition:{v74, MEMORY[0x29EDC9740](v53).n128_f64[0]}];
-    v54 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v72 = [v54 _axTextInputView];
-    v7 = MEMORY[0x29EDC9740](v54).n128_u64[0];
-    if (!v72)
+    _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument = [_accessibilityTextResponder5 _accessibilityBeginningOfDocument];
+    v75 = [_accessibilityTextResponder4 _accessibilityPositionFromPosition:? offset:?];
+    MEMORY[0x29EDC9740](_accessibilityBeginningOfDocument);
+    MEMORY[0x29EDC9740](_accessibilityTextResponder5);
+    *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
+    _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityTextResponder7 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument2 = [_accessibilityTextResponder7 _accessibilityBeginningOfDocument];
+    v84 = rangeCopy;
+    v74 = [_accessibilityTextResponder6 _accessibilityPositionFromPosition:? offset:?];
+    MEMORY[0x29EDC9740](_accessibilityBeginningOfDocument2);
+    MEMORY[0x29EDC9740](_accessibilityTextResponder7);
+    v73 = [_accessibilityTextResponder3 textRangeFromPosition:v75 toPosition:{v74, MEMORY[0x29EDC9740](_accessibilityTextResponder6).n128_f64[0]}];
+    _accessibilityTextResponder8 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _axTextInputView = [_accessibilityTextResponder8 _axTextInputView];
+    v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder8).n128_u64[0];
+    if (!_axTextInputView)
     {
-      v46 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
+      _accessibilityTextResponder9 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       objc_opt_class();
       v47 = objc_opt_isKindOfClass();
-      v7 = MEMORY[0x29EDC9740](v46).n128_u64[0];
+      v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder9).n128_u64[0];
       if (v47)
       {
-        v45 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-        v8 = [v45 inputView];
-        v9 = v72;
-        v72 = v8;
+        _accessibilityTextResponder10 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+        inputView = [_accessibilityTextResponder10 inputView];
+        v9 = _axTextInputView;
+        _axTextInputView = inputView;
         MEMORY[0x29EDC9740](v9);
-        v7 = MEMORY[0x29EDC9740](v45).n128_u64[0];
+        v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder10).n128_u64[0];
       }
     }
 
     v71 = 0;
-    if (v80)
+    if (sentencesCopy)
     {
-      v44 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-      v10 = [v44 _accessibilitySentenceRectsForRange:v73];
+      _accessibilityTextResponder11 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v10 = [_accessibilityTextResponder11 _accessibilitySentenceRectsForRange:v73];
       v11 = v71;
       v71 = v10;
       MEMORY[0x29EDC9740](v11);
-      MEMORY[0x29EDC9740](v44);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder11);
     }
 
     else
     {
-      v43 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-      v12 = [v43 _accessibilityTextRectsForRange:v73 singleTextRect:0];
+      _accessibilityTextResponder12 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v12 = [_accessibilityTextResponder12 _accessibilityTextRectsForRange:v73 singleTextRect:0];
       v13 = v71;
       v71 = v12;
       MEMORY[0x29EDC9740](v13);
-      MEMORY[0x29EDC9740](v43);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder12);
     }
 
     oslog = AXLogSpeakScreen();
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_66_8_66_8_66(v86, v73, v72, v71);
+      __os_log_helper_16_2_3_8_66_8_66_8_66(v86, v73, _axTextInputView, v71);
       _os_log_impl(&dword_29C4D6000, oslog, type, "Was text input, got range %{public}@ and view %{public}@, rects in view space %{public}@", v86, 0x20u);
     }
 
@@ -1677,9 +1677,9 @@ LABEL_27:
         *(&v65 + 1) = v17;
         v62 = v64;
         v63 = v65;
-        if (v72)
+        if (_axTextInputView)
         {
-          [v72 convertRect:0 toView:{v64, v65}];
+          [_axTextInputView convertRect:0 toView:{v64, v65}];
           *&v60 = v18;
           *(&v60 + 1) = v19;
           *&v61 = v20;
@@ -1714,24 +1714,24 @@ LABEL_27:
 
     objc_storeStrong(&v68, 0);
     objc_storeStrong(&v71, 0);
-    objc_storeStrong(&v72, 0);
+    objc_storeStrong(&_axTextInputView, 0);
     objc_storeStrong(&v73, 0);
     objc_storeStrong(&v74, 0);
     objc_storeStrong(&v75, 0);
-    objc_storeStrong(&v76, 0);
+    objc_storeStrong(&_accessibilityTextResponder3, 0);
     objc_storeStrong(&location, 0);
   }
 
   else
   {
-    v33 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-    v34 = [v33 _accessibilityBoolValueForKey:@"AXInSpeakThisTextRectsOverride"];
-    *&v23 = MEMORY[0x29EDC9740](v33).n128_u64[0];
+    _accessibilityTextResponder13 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    v34 = [_accessibilityTextResponder13 _accessibilityBoolValueForKey:@"AXInSpeakThisTextRectsOverride"];
+    *&v23 = MEMORY[0x29EDC9740](_accessibilityTextResponder13).n128_u64[0];
     if (v34)
     {
-      v59.receiver = v82;
+      v59.receiver = selfCopy;
       v59.super_class = UITextInputUIResponderAccessibility;
-      v24 = [(UITextInputUIResponderAccessibility *)&v59 _accessibilityTextRectsForSpeakThisStringRange:v83.location, v83.length, v23];
+      v24 = [(UITextInputUIResponderAccessibility *)&v59 _accessibilityTextRectsForSpeakThisStringRange:rangeCopy.location, rangeCopy.length, v23];
       v25 = v79;
       v79 = v24;
       MEMORY[0x29EDC9740](v25);
@@ -1739,16 +1739,16 @@ LABEL_27:
 
     else
     {
-      v30 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-      [v30 _accessibilitySetBoolValue:1 forKey:?];
-      v31 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-      v26 = [v31 _accessibilityTextRectsForSpeakThisStringRange:{v83.location, v83.length}];
+      _accessibilityTextResponder14 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      [_accessibilityTextResponder14 _accessibilitySetBoolValue:1 forKey:?];
+      _accessibilityTextResponder15 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v26 = [_accessibilityTextResponder15 _accessibilityTextRectsForSpeakThisStringRange:{rangeCopy.location, rangeCopy.length}];
       v27 = v79;
       v79 = v26;
       MEMORY[0x29EDC9740](v27);
-      v32 = [(UITextInputUIResponderAccessibility *)v82 _accessibilityTextResponder];
-      [v32 _accessibilitySetBoolValue:0 forKey:@"AXInSpeakThisTextRectsOverride"];
-      MEMORY[0x29EDC9740](v32);
+      _accessibilityTextResponder16 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      [_accessibilityTextResponder16 _accessibilitySetBoolValue:0 forKey:@"AXInSpeakThisTextRectsOverride"];
+      MEMORY[0x29EDC9740](_accessibilityTextResponder16);
     }
   }
 
@@ -1758,24 +1758,24 @@ LABEL_27:
   return v29;
 }
 
-- (BOOL)_accessibilityInsertTextWithAlternatives:(id)a3
+- (BOOL)_accessibilityInsertTextWithAlternatives:(id)alternatives
 {
-  v67 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alternatives);
   v65 = 0;
-  v26 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
-  v27 = [v26 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v26).n128_u64[0];
-  if (v27)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
-    v24 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
     v25 = objc_opt_respondsToSelector();
-    *&v4 = MEMORY[0x29EDC9740](v24).n128_u64[0];
+    *&v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
     if (v25)
     {
-      v64 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
       v59 = 0;
       v60 = &v59;
       v61 = 0x20000000;
@@ -1788,13 +1788,13 @@ LABEL_27:
       v55 = __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlternatives___block_invoke;
       v56 = &unk_29F30DEB8;
       v58[1] = &v59;
-      v57 = MEMORY[0x29EDC9748](v64);
+      v57 = MEMORY[0x29EDC9748](array);
       v58[0] = MEMORY[0x29EDC9748](location[0]);
       [v23 enumerateAttributesUsingBlock:&v52];
       v22 = v60[3];
       if (v22 < [location[0] length])
       {
-        v21 = v64;
+        v21 = array;
         v45 = 0;
         v46 = &v45;
         v47 = 838860800;
@@ -1819,43 +1819,43 @@ LABEL_27:
         *&v5 = MEMORY[0x29EDC9740](v38).n128_u64[0];
       }
 
-      v20 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
-      [v20 insertDictationResult:v64];
-      MEMORY[0x29EDC9740](v20);
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      [_accessibilityTextResponder3 insertDictationResult:array];
+      MEMORY[0x29EDC9740](_accessibilityTextResponder3);
       v65 = 1;
       objc_storeStrong(v58, 0);
       objc_storeStrong(&v57, 0);
       _Block_object_dispose(&v59, 8);
-      objc_storeStrong(&v64, 0);
+      objc_storeStrong(&array, 0);
     }
 
     else
     {
-      v18 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
+      _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
       v19 = objc_opt_respondsToSelector();
-      *&v6 = MEMORY[0x29EDC9740](v18).n128_u64[0];
+      *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
       if (v19)
       {
-        v37 = [location[0] string];
+        string = [location[0] string];
         v36 = 1;
-        v16 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
+        _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
         v17 = objc_opt_respondsToSelector();
-        *&v7 = MEMORY[0x29EDC9740](v16).n128_u64[0];
+        *&v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder5).n128_u64[0];
         if (v17)
         {
-          v14 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
-          v13 = [MEMORY[0x29EDC7B08] sharedInstance];
-          v12 = [v13 delegate];
-          v15 = [v14 keyboardInput:? shouldInsertText:? isMarkedText:?];
-          MEMORY[0x29EDC9740](v12);
-          MEMORY[0x29EDC9740](v13);
-          MEMORY[0x29EDC9740](v14);
+          _accessibilityTextResponder6 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+          mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+          delegate = [mEMORY[0x29EDC7B08] delegate];
+          v15 = [_accessibilityTextResponder6 keyboardInput:? shouldInsertText:? isMarkedText:?];
+          MEMORY[0x29EDC9740](delegate);
+          MEMORY[0x29EDC9740](mEMORY[0x29EDC7B08]);
+          MEMORY[0x29EDC9740](_accessibilityTextResponder6);
           v36 = (v15 & 1) != 0;
         }
 
         if (v36)
         {
-          v35 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:v37];
+          v35 = [objc_alloc(MEMORY[0x29EDBA038]) initWithString:string];
           v10 = location[0];
           v28 = MEMORY[0x29EDCA5F8];
           v29 = -1073741824;
@@ -1865,16 +1865,16 @@ LABEL_27:
           v33 = MEMORY[0x29EDC9748](location[0]);
           v34 = MEMORY[0x29EDC9748](v35);
           [v10 enumerateAttributesUsingBlock:&v28];
-          v11 = [(UITextInputUIResponderAccessibility *)v67 _accessibilityTextResponder];
-          [v11 _insertAttributedTextWithoutClosingTyping:v35];
-          MEMORY[0x29EDC9740](v11);
+          _accessibilityTextResponder7 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+          [_accessibilityTextResponder7 _insertAttributedTextWithoutClosingTyping:v35];
+          MEMORY[0x29EDC9740](_accessibilityTextResponder7);
           objc_storeStrong(&v34, 0);
           objc_storeStrong(&v33, 0);
           objc_storeStrong(&v35, 0);
         }
 
         v65 = 1;
-        objc_storeStrong(&v37, 0);
+        objc_storeStrong(&string, 0);
       }
     }
   }
@@ -2023,44 +2023,44 @@ void __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlter
   objc_storeStrong(location, 0);
 }
 
-- (id)_accessibilityAlternativesForTextAtPosition:(unint64_t)a3
+- (id)_accessibilityAlternativesForTextAtPosition:(unint64_t)position
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  positionCopy = position;
   v25 = 0;
-  v18 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v19 = [v18 __accessibilityRespondsToTextInput];
-  *&v3 = MEMORY[0x29EDC9740](v18).n128_u64[0];
-  if (v19)
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  __accessibilityRespondsToTextInput = [_accessibilityTextResponder __accessibilityRespondsToTextInput];
+  *&v3 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+  if (__accessibilityRespondsToTextInput)
   {
     v24 = 0;
-    v17 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-    v23 = [v17 _accessibilityBeginningOfDocument];
-    *&v4 = MEMORY[0x29EDC9740](v17).n128_u64[0];
-    if (v23)
+    _accessibilityTextResponder2 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+    _accessibilityBeginningOfDocument = [_accessibilityTextResponder2 _accessibilityBeginningOfDocument];
+    *&v4 = MEMORY[0x29EDC9740](_accessibilityTextResponder2).n128_u64[0];
+    if (_accessibilityBeginningOfDocument)
     {
-      v16 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
-      v22 = [v16 _accessibilityPositionFromPosition:v23 offset:v26];
-      *&v5 = MEMORY[0x29EDC9740](v16).n128_u64[0];
+      _accessibilityTextResponder3 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+      v22 = [_accessibilityTextResponder3 _accessibilityPositionFromPosition:_accessibilityBeginningOfDocument offset:positionCopy];
+      *&v5 = MEMORY[0x29EDC9740](_accessibilityTextResponder3).n128_u64[0];
       if (v22)
       {
-        v14 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
+        _accessibilityTextResponder4 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
         v15 = objc_opt_respondsToSelector();
-        *&v6 = MEMORY[0x29EDC9740](v14).n128_u64[0];
+        *&v6 = MEMORY[0x29EDC9740](_accessibilityTextResponder4).n128_u64[0];
         if (v15)
         {
-          v13 = [(UITextInputUIResponderAccessibility *)v28 _accessibilityTextResponder];
+          _accessibilityTextResponder5 = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
           v20 = v24;
-          v12 = [v13 rangeWithTextAlternatives:&v20 atPosition:v22];
+          v12 = [_accessibilityTextResponder5 rangeWithTextAlternatives:&v20 atPosition:v22];
           objc_storeStrong(&v24, v20);
           v21 = v12;
-          *&v7 = MEMORY[0x29EDC9740](v13).n128_u64[0];
+          *&v7 = MEMORY[0x29EDC9740](_accessibilityTextResponder5).n128_u64[0];
           if (v21)
           {
-            v8 = [v24 alternativeStrings];
+            alternativeStrings = [v24 alternativeStrings];
             v9 = v25;
-            v25 = v8;
+            v25 = alternativeStrings;
             MEMORY[0x29EDC9740](v9);
           }
 
@@ -2071,7 +2071,7 @@ void __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlter
       objc_storeStrong(&v22, 0);
     }
 
-    objc_storeStrong(&v23, 0);
+    objc_storeStrong(&_accessibilityBeginningOfDocument, 0);
     objc_storeStrong(&v24, 0);
   }
 
@@ -2083,20 +2083,20 @@ void __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlter
 
 - (BOOL)_accessibilityHandlesTabKey
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
   v35.receiver = self;
   v35.super_class = UITextInputUIResponderAccessibility;
-  v36 = [(UITextInputUIResponderAccessibility *)&v35 _accessibilityHandlesTabKey];
-  if (v36)
+  _accessibilityHandlesTabKey = [(UITextInputUIResponderAccessibility *)&v35 _accessibilityHandlesTabKey];
+  if (_accessibilityHandlesTabKey)
   {
-    v34 = [MEMORY[0x29EDC7B08] sharedInstance];
-    v10 = [v34 textInputTraits];
-    v11 = [v10 isSingleLineDocument];
-    *&v2 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-    if (v11)
+    mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+    textInputTraits = [mEMORY[0x29EDC7B08] textInputTraits];
+    isSingleLineDocument = [textInputTraits isSingleLineDocument];
+    *&v2 = MEMORY[0x29EDC9740](textInputTraits).n128_u64[0];
+    if (isSingleLineDocument)
     {
-      v9 = [v34 safeValueForKey:{@"keyboardStateManager", v2}];
+      v9 = [mEMORY[0x29EDC7B08] safeValueForKey:{@"keyboardStateManager", v2}];
       v33 = [v9 safeValueForKey:@"m_candidateList"];
       v32 = [v33 safeValueForKey:{@"firstNonEmptyActiveCandidateView", MEMORY[0x29EDC9740](v9).n128_f64[0]}];
       v27 = 0;
@@ -2119,28 +2119,28 @@ void __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlter
       {
         v18 = 0;
         objc_opt_class();
-        v8 = [v34 safeValueForKey:@"inputManagerState"];
+        v8 = [mEMORY[0x29EDC7B08] safeValueForKey:@"inputManagerState"];
         v17 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v8);
         v16 = MEMORY[0x29EDC9748](v17);
         objc_storeStrong(&v17, 0);
         v5 = v16;
-        v6 = [v16 keyboardBehaviors];
+        keyboardBehaviors = [v16 keyboardBehaviors];
         v15 = 0;
         objc_opt_class();
-        v7 = [v34 safeValueForKey:@"_keyboardBehaviorState"];
+        v7 = [mEMORY[0x29EDC7B08] safeValueForKey:@"_keyboardBehaviorState"];
         v14 = __UIAccessibilityCastAsClass();
         MEMORY[0x29EDC9740](v7);
         v13 = MEMORY[0x29EDC9748](v14);
         objc_storeStrong(&v14, 0);
-        v19 = [v6 keyBehaviorsForState:?];
+        v19 = [keyboardBehaviors keyBehaviorsForState:?];
         MEMORY[0x29EDC9740](v13);
-        MEMORY[0x29EDC9740](v6);
+        MEMORY[0x29EDC9740](keyboardBehaviors);
         *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-        v12 = [v19 tabKeyBehavior];
-        if (v12 != 4 && v12 != 3)
+        tabKeyBehavior = [v19 tabKeyBehavior];
+        if (tabKeyBehavior != 4 && tabKeyBehavior != 3)
         {
-          v36 = 0;
+          _accessibilityHandlesTabKey = 0;
         }
 
         objc_storeStrong(&v19, 0);
@@ -2150,10 +2150,10 @@ void __80__UITextInputUIResponderAccessibility__accessibilityInsertTextWithAlter
       objc_storeStrong(&v33, 0);
     }
 
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&mEMORY[0x29EDC7B08], 0);
   }
 
-  return v36 & 1;
+  return _accessibilityHandlesTabKey & 1;
 }
 
 uint64_t __66__UITextInputUIResponderAccessibility__accessibilityHandlesTabKey__block_invoke(uint64_t a1)
@@ -2163,36 +2163,36 @@ uint64_t __66__UITextInputUIResponderAccessibility__accessibilityHandlesTabKey__
   return result;
 }
 
-- (int64_t)_accessibilityOffsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)_accessibilityOffsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, position);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v6 = [(UITextInputUIResponderAccessibility *)v10 _accessibilityTextResponder];
-  v7 = [v6 offsetFromPosition:location[0] toPosition:v8];
-  MEMORY[0x29EDC9740](v6);
+  objc_storeStrong(&v8, toPosition);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v7 = [_accessibilityTextResponder offsetFromPosition:location[0] toPosition:v8];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (id)_accessibilityPositionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)_accessibilityPositionFromPosition:(id)position offset:(int64_t)offset
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4 < 0)
+  objc_storeStrong(location, position);
+  if (offset < 0)
   {
     _AXAssert();
   }
 
-  v5 = [(UITextInputUIResponderAccessibility *)v9 _accessibilityTextResponder];
-  v6 = [v5 positionFromPosition:location[0] offset:a4];
-  MEMORY[0x29EDC9740](v5);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
+  v6 = [_accessibilityTextResponder positionFromPosition:location[0] offset:offset];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
   objc_storeStrong(location, 0);
 
   return v6;
@@ -2200,25 +2200,25 @@ uint64_t __66__UITextInputUIResponderAccessibility__accessibilityHandlesTabKey__
 
 - (id)_accessibilityBeginningOfDocument
 {
-  v3 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v4 = [v3 beginningOfDocument];
-  MEMORY[0x29EDC9740](v3);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  beginningOfDocument = [_accessibilityTextResponder beginningOfDocument];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
 
-  return v4;
+  return beginningOfDocument;
 }
 
 - (id)_accessibilityEndOfDocument
 {
-  v3 = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
-  v4 = [v3 endOfDocument];
-  MEMORY[0x29EDC9740](v3);
+  _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)self _accessibilityTextResponder];
+  endOfDocument = [_accessibilityTextResponder endOfDocument];
+  MEMORY[0x29EDC9740](_accessibilityTextResponder);
 
-  return v4;
+  return endOfDocument;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5 = [(UITextInputUIResponderAccessibility *)self _accessibilityBoolValueForKey:@"_AX_becomeFirstResponder"];
   if (v5)
@@ -2226,30 +2226,30 @@ uint64_t __66__UITextInputUIResponderAccessibility__accessibilityHandlesTabKey__
     return 0;
   }
 
-  [(UITextInputUIResponderAccessibility *)v7 _accessibilitySetBoolValue:1 forKey:?];
-  v3.receiver = v7;
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+  v3.receiver = selfCopy;
   v3.super_class = UITextInputUIResponderAccessibility;
-  v4 = [(UITextInputUIResponderAccessibility *)&v3 becomeFirstResponder];
-  [(UITextInputUIResponderAccessibility *)v7 _accessibilitySetBoolValue:0 forKey:@"_AX_becomeFirstResponder"];
-  if ((v4 & 1) != 0 && [v7 __accessibilityRespondsToTextInput])
+  becomeFirstResponder = [(UITextInputUIResponderAccessibility *)&v3 becomeFirstResponder];
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"_AX_becomeFirstResponder"];
+  if ((becomeFirstResponder & 1) != 0 && [selfCopy __accessibilityRespondsToTextInput])
   {
-    [(UITextInputUIResponderAccessibility *)v7 _axResetFKAFocusToFirstResponder];
+    [(UITextInputUIResponderAccessibility *)selfCopy _axResetFKAFocusToFirstResponder];
   }
 
-  return v4 & 1;
+  return becomeFirstResponder & 1;
 }
 
 - (void)_axResetFKAFocusToFirstResponder
 {
-  if (a1)
+  if (self)
   {
-    [(UITextInputUIResponderAccessibility *)a1 _axDrawFocusRingAroundFirstResponderAndMoveFocus:?];
+    [(UITextInputUIResponderAccessibility *)self _axDrawFocusRingAroundFirstResponderAndMoveFocus:?];
   }
 }
 
 - (BOOL)resignFirstResponder
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5 = [(UITextInputUIResponderAccessibility *)self _accessibilityBoolValueForKey:@"_AX_resignFirstResponder"];
   if (v5)
@@ -2257,54 +2257,54 @@ uint64_t __66__UITextInputUIResponderAccessibility__accessibilityHandlesTabKey__
     return 0;
   }
 
-  [(UITextInputUIResponderAccessibility *)v7 _accessibilitySetBoolValue:1 forKey:?];
-  v3.receiver = v7;
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+  v3.receiver = selfCopy;
   v3.super_class = UITextInputUIResponderAccessibility;
-  v4 = [(UITextInputUIResponderAccessibility *)&v3 resignFirstResponder];
-  [(UITextInputUIResponderAccessibility *)v7 _accessibilitySetBoolValue:0 forKey:@"_AX_resignFirstResponder"];
-  if ((v4 & 1) != 0 && [v7 __accessibilityRespondsToTextInput]&& [(UITextInputUIResponderAccessibility *)v7 _accessibilityIsFKARunningForFocusItem])
+  resignFirstResponder = [(UITextInputUIResponderAccessibility *)&v3 resignFirstResponder];
+  [(UITextInputUIResponderAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"_AX_resignFirstResponder"];
+  if ((resignFirstResponder & 1) != 0 && [selfCopy __accessibilityRespondsToTextInput]&& [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem])
   {
     AXPerformBlockAsynchronouslyOnMainThread();
   }
 
-  return v4 & 1;
+  return resignFirstResponder & 1;
 }
 
-- (void)_axDrawFocusRingAroundFirstResponderAndMoveFocus:(void *)a1
+- (void)_axDrawFocusRingAroundFirstResponderAndMoveFocus:(void *)focus
 {
-  v11 = a1;
+  focusCopy = focus;
   v10 = a2;
-  if (a1)
+  if (focus)
   {
     v8 = 0;
     LOBYTE(v3) = 1;
     if ((AXProcessIsFullKeyboardAccess() & 1) == 0)
     {
-      v9 = [v11 _accessibilityTextResponder];
+      _accessibilityTextResponder = [focusCopy _accessibilityTextResponder];
       v8 = 1;
-      v3 = [v9 __accessibilityRespondsToTextInput] ^ 1;
+      v3 = [_accessibilityTextResponder __accessibilityRespondsToTextInput] ^ 1;
     }
 
     if (v8)
     {
-      MEMORY[0x29EDC9740](v9);
+      MEMORY[0x29EDC9740](_accessibilityTextResponder);
     }
 
     if ((v3 & 1) == 0)
     {
-      v2 = [v11 _accessibilityTextResponder];
-      v7 = [v2 _accessibilityFocusItemForResponder];
-      if ([v11 _accessibilityIsFKARunningForFocusItem] & 1) != 0 && (objc_msgSend(v7, "conformsToProtocol:", &unk_2A2390730))
+      _accessibilityTextResponder2 = [focusCopy _accessibilityTextResponder];
+      _accessibilityFocusItemForResponder = [_accessibilityTextResponder2 _accessibilityFocusItemForResponder];
+      if ([focusCopy _accessibilityIsFKARunningForFocusItem] & 1) != 0 && (objc_msgSend(_accessibilityFocusItemForResponder, "conformsToProtocol:", &unk_2A2390730))
       {
         v6 = v10 & 1;
-        v4 = MEMORY[0x29EDC9748](v7);
-        v5 = MEMORY[0x29EDC9748](v11);
+        v4 = MEMORY[0x29EDC9748](_accessibilityFocusItemForResponder);
+        v5 = MEMORY[0x29EDC9748](focusCopy);
         AXPerformBlockAsynchronouslyOnMainThread();
         objc_storeStrong(&v5, 0);
         objc_storeStrong(&v4, 0);
       }
 
-      objc_storeStrong(&v7, 0);
+      objc_storeStrong(&_accessibilityFocusItemForResponder, 0);
     }
   }
 }
@@ -2355,9 +2355,9 @@ uint64_t __88__UITextInputUIResponderAccessibility__axDrawFocusRingAroundFirstRe
   v6 = 0;
   if (objc_opt_respondsToSelector())
   {
-    v2 = [v7[0] textInputView];
+    textInputView = [v7[0] textInputView];
     v3 = v6;
-    v6 = v2;
+    v6 = textInputView;
     MEMORY[0x29EDC9740](v3);
   }
 
@@ -2370,7 +2370,7 @@ uint64_t __88__UITextInputUIResponderAccessibility__axDrawFocusRingAroundFirstRe
 
 - (BOOL)_accessibilityIsFKARunningForFocusItem
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12.receiver = self;
   v12.super_class = UITextInputUIResponderAccessibility;
@@ -2381,11 +2381,11 @@ uint64_t __88__UITextInputUIResponderAccessibility__axDrawFocusRingAroundFirstRe
 
   else
   {
-    v8 = [(UITextInputUIResponderAccessibility *)v14 _accessibilityTextResponder];
+    _accessibilityTextResponder = [(UITextInputUIResponderAccessibility *)selfCopy _accessibilityTextResponder];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-    if ((isKindOfClass & 1) == 0 || ((v6 = -[UITextInputUIResponderAccessibility _accessibilityTextResponder](v14, "_accessibilityTextResponder", v2), location = [v6 nextResponder], *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0], v7 = -[UITextInputUIResponderAccessibility _accessibilityTextResponder](v14, "_accessibilityTextResponder", v3), *&v4 = MEMORY[0x29EDC9740](v7).n128_u64[0], location == v7) ? (v10 = 0) : (v15 = objc_msgSend(location, "_accessibilityIsFKARunningForFocusItem", v4) & 1, v10 = 1), objc_storeStrong(&location, 0), !v10))
+    *&v2 = MEMORY[0x29EDC9740](_accessibilityTextResponder).n128_u64[0];
+    if ((isKindOfClass & 1) == 0 || ((v6 = -[UITextInputUIResponderAccessibility _accessibilityTextResponder](selfCopy, "_accessibilityTextResponder", v2), location = [v6 nextResponder], *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0], v7 = -[UITextInputUIResponderAccessibility _accessibilityTextResponder](selfCopy, "_accessibilityTextResponder", v3), *&v4 = MEMORY[0x29EDC9740](v7).n128_u64[0], location == v7) ? (v10 = 0) : (v15 = objc_msgSend(location, "_accessibilityIsFKARunningForFocusItem", v4) & 1, v10 = 1), objc_storeStrong(&location, 0), !v10))
     {
       v15 = 0;
     }

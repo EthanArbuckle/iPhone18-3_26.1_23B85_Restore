@@ -2,20 +2,20 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)hasText;
 - (NSString)stringValue;
-- (OBPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3;
+- (OBPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields;
 - (OBPasscodeFieldDelegate)delegate;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (int64_t)keyboardType;
 - (void)_updateDots;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)insertText:(id)text;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation OBPasscodeField
 
-- (OBPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3
+- (OBPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields
 {
   v13.receiver = self;
   v13.super_class = OBPasscodeField;
@@ -26,9 +26,9 @@
     value = v4->_value;
     v4->_value = v5;
 
-    v4->_numberOfEntryFields = a3;
+    v4->_numberOfEntryFields = fields;
     v4->_enabled = 1;
-    for (i = objc_alloc_init(MEMORY[0x1E695DF70]); a3; --a3)
+    for (i = objc_alloc_init(MEMORY[0x1E695DF70]); fields; --fields)
     {
       v8 = objc_alloc_init(OBPasscodeFieldDot);
       [(OBPasscodeFieldDot *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -52,29 +52,29 @@
 
 - (NSString)stringValue
 {
-  v2 = [(OBPasscodeField *)self value];
-  v3 = [v2 copy];
+  value = [(OBPasscodeField *)self value];
+  v3 = [value copy];
 
   return v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = a3;
-  v5 = [(OBPasscodeField *)self value];
-  [v5 setString:v4];
+  valueCopy = value;
+  value = [(OBPasscodeField *)self value];
+  [value setString:valueCopy];
 
   [(OBPasscodeField *)self _updateDots];
-  v6 = [(OBPasscodeField *)self value];
-  v7 = [v6 length];
-  v8 = [(OBPasscodeField *)self numberOfEntryFields];
+  value2 = [(OBPasscodeField *)self value];
+  v7 = [value2 length];
+  numberOfEntryFields = [(OBPasscodeField *)self numberOfEntryFields];
 
-  if (v7 == v8)
+  if (v7 == numberOfEntryFields)
   {
-    v11 = [(OBPasscodeField *)self delegate];
-    v9 = [(OBPasscodeField *)self value];
-    v10 = [v9 copy];
-    [v11 passcodeField:self enteredPasscode:v10];
+    delegate = [(OBPasscodeField *)self delegate];
+    value3 = [(OBPasscodeField *)self value];
+    v10 = [value3 copy];
+    [delegate passcodeField:self enteredPasscode:v10];
   }
 }
 
@@ -91,8 +91,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"PASSCODE_VALUES" value:&stru_1F2CE9518 table:@"Localizable"];
-  v6 = [(OBPasscodeField *)self value];
-  v7 = [v3 localizedStringWithFormat:v5, objc_msgSend(v6, "length"), -[OBPasscodeField numberOfEntryFields](self, "numberOfEntryFields")];
+  value = [(OBPasscodeField *)self value];
+  v7 = [v3 localizedStringWithFormat:v5, objc_msgSend(value, "length"), -[OBPasscodeField numberOfEntryFields](self, "numberOfEntryFields")];
 
   return v7;
 }
@@ -104,11 +104,11 @@
     v3 = 0;
     do
     {
-      v4 = [(OBPasscodeField *)self dotViews];
-      v5 = [v4 objectAtIndex:v3];
+      dotViews = [(OBPasscodeField *)self dotViews];
+      v5 = [dotViews objectAtIndex:v3];
 
-      v6 = [(OBPasscodeField *)self stringValue];
-      [v5 setFilled:{v3 < objc_msgSend(v6, "length")}];
+      stringValue = [(OBPasscodeField *)self stringValue];
+      [v5 setFilled:{v3 < objc_msgSend(stringValue, "length")}];
 
       ++v3;
     }
@@ -121,22 +121,22 @@
 {
   v5.receiver = self;
   v5.super_class = OBPasscodeField;
-  v2 = [(OBPasscodeField *)&v5 becomeFirstResponder];
-  if (v2)
+  becomeFirstResponder = [(OBPasscodeField *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
-    v3 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v3 setReturnKeyEnabled:0];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:0];
   }
 
-  return v2;
+  return becomeFirstResponder;
 }
 
 - (int64_t)keyboardType
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 11;
   }
@@ -149,39 +149,39 @@
 
 - (BOOL)hasText
 {
-  v2 = [(OBPasscodeField *)self stringValue];
-  v3 = [v2 length] != 0;
+  stringValue = [(OBPasscodeField *)self stringValue];
+  v3 = [stringValue length] != 0;
 
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v14 = a3;
+  textCopy = text;
   if ([(OBPasscodeField *)self isEnabled])
   {
-    v4 = [(OBPasscodeField *)self stringValue];
-    v5 = [v4 length];
-    v6 = [(OBPasscodeField *)self numberOfEntryFields];
+    stringValue = [(OBPasscodeField *)self stringValue];
+    v5 = [stringValue length];
+    numberOfEntryFields = [(OBPasscodeField *)self numberOfEntryFields];
 
-    if (v5 != v6 && ([v14 isEqualToString:@"\n"] & 1) == 0)
+    if (v5 != numberOfEntryFields && ([textCopy isEqualToString:@"\n"] & 1) == 0)
     {
-      if ([v14 length])
+      if ([textCopy length])
       {
-        v7 = [(OBPasscodeField *)self value];
-        [v7 appendString:v14];
+        value = [(OBPasscodeField *)self value];
+        [value appendString:textCopy];
 
         [(OBPasscodeField *)self _updateDots];
-        v8 = [(OBPasscodeField *)self stringValue];
-        v9 = [v8 length];
-        v10 = [(OBPasscodeField *)self numberOfEntryFields];
+        stringValue2 = [(OBPasscodeField *)self stringValue];
+        v9 = [stringValue2 length];
+        numberOfEntryFields2 = [(OBPasscodeField *)self numberOfEntryFields];
 
-        if (v9 == v10)
+        if (v9 == numberOfEntryFields2)
         {
-          v11 = [(OBPasscodeField *)self delegate];
-          v12 = [(OBPasscodeField *)self value];
-          v13 = [v12 copy];
-          [v11 passcodeField:self enteredPasscode:v13];
+          delegate = [(OBPasscodeField *)self delegate];
+          value2 = [(OBPasscodeField *)self value];
+          v13 = [value2 copy];
+          [delegate passcodeField:self enteredPasscode:v13];
         }
       }
     }
@@ -190,14 +190,14 @@
 
 - (void)deleteBackward
 {
-  v3 = [(OBPasscodeField *)self stringValue];
-  v4 = [v3 length];
+  stringValue = [(OBPasscodeField *)self stringValue];
+  v4 = [stringValue length];
 
   if (v4)
   {
-    v5 = [(OBPasscodeField *)self value];
-    v6 = [(OBPasscodeField *)self stringValue];
-    [v5 deleteCharactersInRange:{objc_msgSend(v6, "length") - 1, 1}];
+    value = [(OBPasscodeField *)self value];
+    stringValue2 = [(OBPasscodeField *)self stringValue];
+    [value deleteCharactersInRange:{objc_msgSend(stringValue2, "length") - 1, 1}];
 
     [(OBPasscodeField *)self _updateDots];
   }

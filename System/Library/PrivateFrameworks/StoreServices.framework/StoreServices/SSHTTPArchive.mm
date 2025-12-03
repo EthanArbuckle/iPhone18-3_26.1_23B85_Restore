@@ -1,37 +1,37 @@
 @interface SSHTTPArchive
-+ (double)_timeIntervalFromFilename:(id)a3;
-+ (id)_JSONObjectForEntries:(id)a3;
-+ (id)_JSONObjectForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-+ (id)_contentDictionaryForResponse:(id)a3 responseData:(id)a4;
++ (double)_timeIntervalFromFilename:(id)filename;
++ (id)_JSONObjectForEntries:(id)entries;
++ (id)_JSONObjectForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
++ (id)_contentDictionaryForResponse:(id)response responseData:(id)data;
 + (id)_creatorDictionary;
-+ (id)_dateFormatterForTimeZone:(id)a3;
-+ (id)_entriesArrayForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-+ (id)_entryDictionaryForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
-+ (id)_generateCommentsForTaskMetrics:(id)a3;
-+ (id)_headersArrayForHTTPHeaders:(id)a3;
++ (id)_dateFormatterForTimeZone:(id)zone;
++ (id)_entriesArrayForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
++ (id)_entryDictionaryForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
++ (id)_generateCommentsForTaskMetrics:(id)metrics;
++ (id)_headersArrayForHTTPHeaders:(id)headers;
 + (id)_localIPAddress;
-+ (id)_requestDictionaryForTaskTransactionMetrics:(id)a3 requestData:(id)a4;
-+ (id)_responseDictionaryForTaskMetrics:(id)a3 responseData:(id)a4;
-+ (id)_stringFromDate:(id)a3;
-+ (id)merge:(id)a3;
-+ (id)merge:(id)a3 withEstimatedFileSizeLimit:(unint64_t)a4;
-+ (id)outputDirectoryForLogConfig:(id)a3;
-+ (void)removeLogsWithLogConfig:(id)a3 olderThanDate:(id)a4;
++ (id)_requestDictionaryForTaskTransactionMetrics:(id)metrics requestData:(id)data;
++ (id)_responseDictionaryForTaskMetrics:(id)metrics responseData:(id)data;
++ (id)_stringFromDate:(id)date;
++ (id)merge:(id)merge;
++ (id)merge:(id)merge withEstimatedFileSizeLimit:(unint64_t)limit;
++ (id)outputDirectoryForLogConfig:(id)config;
++ (void)removeLogsWithLogConfig:(id)config olderThanDate:(id)date;
 + (void)sendWriteAllLogsToDiskDecompressedNotification;
 + (void)sendWriteAllLogsToDiskNotification;
-- (BOOL)writeToDiskWithLogConfig:(id)a3 compressed:(BOOL)a4 error:(id *)a5;
+- (BOOL)writeToDiskWithLogConfig:(id)config compressed:(BOOL)compressed error:(id *)error;
 - (NSData)JSONData;
 - (NSDictionary)JSONObject;
 - (NSString)JSONString;
-- (SSHTTPArchive)initWithJSONObject:(id)a3;
-- (SSHTTPArchive)initWithTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5;
+- (SSHTTPArchive)initWithJSONObject:(id)object;
+- (SSHTTPArchive)initWithTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData;
 @end
 
 @implementation SSHTTPArchive
 
-- (SSHTTPArchive)initWithJSONObject:(id)a3
+- (SSHTTPArchive)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = SSHTTPArchive;
   v5 = [(SSHTTPArchive *)&v14 init];
@@ -39,9 +39,9 @@
   {
     v6 = SSViTunesStoreFramework();
     v7 = SSVWeakLinkedSymbolForString("ISCopyGzippedDataForData", v6);
-    if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
+    if ([MEMORY[0x1E696ACB0] isValidJSONObject:objectCopy])
     {
-      v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:0];
+      v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:objectCopy options:0 error:0];
     }
 
     else
@@ -69,12 +69,12 @@
   return v5;
 }
 
-- (SSHTTPArchive)initWithTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
+- (SSHTTPArchive)initWithTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() _JSONObjectForTaskMetrics:v10 requestData:v9 responseData:v8];
+  responseDataCopy = responseData;
+  dataCopy = data;
+  metricsCopy = metrics;
+  v11 = [objc_opt_class() _JSONObjectForTaskMetrics:metricsCopy requestData:dataCopy responseData:responseDataCopy];
 
   v12 = [(SSHTTPArchive *)self initWithJSONObject:v11];
   return v12;
@@ -86,23 +86,23 @@
   {
     v3 = SSViTunesStoreFramework();
     v4 = SSVWeakLinkedSymbolForString("ISCopyDecompressedGZipDataForData", v3);
-    v5 = [(SSHTTPArchive *)self backingJSONData];
-    v6 = v4();
+    backingJSONData = [(SSHTTPArchive *)self backingJSONData];
+    backingJSONData2 = v4();
   }
 
   else
   {
-    v6 = [(SSHTTPArchive *)self backingJSONData];
+    backingJSONData2 = [(SSHTTPArchive *)self backingJSONData];
   }
 
-  return v6;
+  return backingJSONData2;
 }
 
 - (NSDictionary)JSONObject
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(SSHTTPArchive *)self JSONData];
-  v4 = [v2 JSONObjectWithData:v3 options:0 error:0];
+  jSONData = [(SSHTTPArchive *)self JSONData];
+  v4 = [v2 JSONObjectWithData:jSONData options:0 error:0];
 
   return v4;
 }
@@ -110,22 +110,22 @@
 - (NSString)JSONString
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SSHTTPArchive *)self JSONData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  jSONData = [(SSHTTPArchive *)self JSONData];
+  v5 = [v3 initWithData:jSONData encoding:4];
 
   return v5;
 }
 
-+ (id)merge:(id)a3
++ (id)merge:(id)merge
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mergeCopy = merge;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = mergeCopy;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -142,8 +142,8 @@
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 JSONObject];
-        v12 = [v11 objectForKeyedSubscript:@"log"];
+        jSONObject = [v9 JSONObject];
+        v12 = [jSONObject objectForKeyedSubscript:@"log"];
         v13 = [v12 objectForKeyedSubscript:@"entries"];
 
         if (v13)
@@ -166,24 +166,24 @@
   return v15;
 }
 
-+ (id)merge:(id)a3 withEstimatedFileSizeLimit:(unint64_t)a4
++ (id)merge:(id)merge withEstimatedFileSizeLimit:(unint64_t)limit
 {
-  v23 = a1;
+  selfCopy = self;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mergeCopy = merge;
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = mergeCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    v26 = 1000 * a4;
+    v26 = 1000 * limit;
     v10 = *v28;
     do
     {
@@ -196,8 +196,8 @@
 
         v12 = *(*(&v27 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 JSONObject];
-        v15 = [v14 objectForKeyedSubscript:@"log"];
+        jSONObject = [v12 JSONObject];
+        v15 = [jSONObject objectForKeyedSubscript:@"log"];
         v16 = [v15 objectForKeyedSubscript:@"entries"];
 
         if (v16)
@@ -205,8 +205,8 @@
           [v6 addObjectsFromArray:v16];
         }
 
-        v17 = [v12 JSONData];
-        v9 += [v17 length];
+        jSONData = [v12 JSONData];
+        v9 += [jSONData length];
 
         if (v9 > v26)
         {
@@ -236,55 +236,55 @@
   return v24;
 }
 
-+ (id)outputDirectoryForLogConfig:(id)a3
++ (id)outputDirectoryForLogConfig:(id)config
 {
-  v3 = a3;
-  if (!v3)
+  configCopy = config;
+  if (!configCopy)
   {
-    v3 = +[SSLogConfig sharedConfig];
+    configCopy = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 outputDirectory];
-  v5 = [v4 stringByAppendingPathComponent:@"HTTPArchives"];
+  outputDirectory = [configCopy outputDirectory];
+  v5 = [outputDirectory stringByAppendingPathComponent:@"HTTPArchives"];
 
   return v5;
 }
 
-+ (void)removeLogsWithLogConfig:(id)a3 olderThanDate:(id)a4
++ (void)removeLogsWithLogConfig:(id)config olderThanDate:(id)date
 {
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  configCopy = config;
+  dateCopy = date;
+  if (!configCopy)
   {
-    v6 = +[SSLogConfig sharedConfig];
+    configCopy = +[SSLogConfig sharedConfig];
   }
 
-  v8 = [objc_opt_class() outputDirectoryForLogConfig:v6];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  v8 = [objc_opt_class() outputDirectoryForLogConfig:configCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v8];
 
   if ((v10 & 1) == 0)
   {
-    v15 = v6;
+    v15 = configCopy;
     if (!v15)
     {
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v55 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v56 = v55 | 2;
+      v56 = shouldLog | 2;
     }
 
     else
     {
-      v56 = v55;
+      v56 = shouldLog;
     }
 
-    v57 = [v15 OSLogObject];
-    if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
+    oSLogObject = [v15 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v58 = v56;
     }
@@ -306,19 +306,19 @@
         goto LABEL_53;
       }
 
-      v57 = [MEMORY[0x1E696AEC0] stringWithCString:v59 encoding:{4, &v76, v67}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v59 encoding:{4, &v76, v67}];
       free(v59);
-      SSFileLog(v15, @"%@", v60, v61, v62, v63, v64, v65, v57);
+      SSFileLog(v15, @"%@", v60, v61, v62, v63, v64, v65, oSLogObject);
     }
 
     goto LABEL_53;
   }
 
-  v68 = v7;
-  [v7 timeIntervalSinceReferenceDate];
+  v68 = dateCopy;
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v14 = [v13 enumeratorAtPath:v8];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v14 = [defaultManager2 enumeratorAtPath:v8];
 
   v74 = 0u;
   v75 = 0u;
@@ -346,36 +346,36 @@
       }
 
       v20 = *(*(&v72 + 1) + 8 * v19);
-      [a1 _timeIntervalFromFilename:{v20, v66}];
+      [self _timeIntervalFromFilename:{v20, v66}];
       if (v21 != 1.79769313e308 && v21 <= v12)
       {
-        v23 = a1;
+        selfCopy = self;
         v24 = v15;
         v25 = v8;
         v26 = [v8 stringByAppendingPathComponent:v20];
-        v27 = v6;
+        v27 = configCopy;
         v28 = v27;
-        v29 = v6;
-        if (!v6)
+        v29 = configCopy;
+        if (!configCopy)
         {
           v28 = +[SSLogConfig sharedConfig];
         }
 
-        v30 = [v28 shouldLog];
+        shouldLog2 = [v28 shouldLog];
         if ([v28 shouldLogToDisk])
         {
-          v30 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        v31 = [v28 OSLogObject];
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
+        oSLogObject2 = [v28 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
         {
-          v32 = v30;
+          v32 = shouldLog2;
         }
 
         else
         {
-          v32 = v30 & 2;
+          v32 = shouldLog2 & 2;
         }
 
         if (v32)
@@ -388,9 +388,9 @@
 
           if (v33)
           {
-            v31 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v76, v67}];
+            oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v33 encoding:{4, &v76, v67}];
             free(v33);
-            SSFileLog(v28, @"%@", v34, v35, v36, v37, v38, v39, v31);
+            SSFileLog(v28, @"%@", v34, v35, v36, v37, v38, v39, oSLogObject2);
             goto LABEL_23;
           }
         }
@@ -400,9 +400,9 @@
 LABEL_23:
         }
 
-        v40 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
         v71 = 0;
-        v41 = [v40 removeItemAtPath:v26 error:&v71];
+        v41 = [defaultManager3 removeItemAtPath:v26 error:&v71];
         v42 = v71;
 
         if ((v41 & 1) == 0)
@@ -414,21 +414,21 @@ LABEL_23:
           }
 
           v44 = v43;
-          v45 = [v43 shouldLog];
+          shouldLog3 = [v43 shouldLog];
           if ([v44 shouldLogToDisk])
           {
-            v45 |= 2u;
+            shouldLog3 |= 2u;
           }
 
-          v46 = [v44 OSLogObject];
-          if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+          oSLogObject3 = [v44 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
           {
-            v47 = v45;
+            v47 = shouldLog3;
           }
 
           else
           {
-            v47 = v45 & 2;
+            v47 = shouldLog3 & 2;
           }
 
           if (v47)
@@ -443,9 +443,9 @@ LABEL_23:
 
             if (v48)
             {
-              v46 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v76, v67}];
+              oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v48 encoding:{4, &v76, v67}];
               free(v48);
-              SSFileLog(v44, @"%@", v49, v50, v51, v52, v53, v54, v46);
+              SSFileLog(v44, @"%@", v49, v50, v51, v52, v53, v54, oSLogObject3);
               goto LABEL_35;
             }
           }
@@ -457,9 +457,9 @@ LABEL_35:
         }
 
         v8 = v25;
-        v6 = v29;
+        configCopy = v29;
         v15 = v24;
-        a1 = v23;
+        self = selfCopy;
         v18 = v69;
         v17 = v70;
       }
@@ -474,7 +474,7 @@ LABEL_35:
   while (v17);
 LABEL_40:
 
-  v7 = v68;
+  dateCopy = v68;
 LABEL_53:
 }
 
@@ -541,19 +541,19 @@ intptr_t __63__SSHTTPArchive_sendWriteAllLogsToDiskDecompressedNotification__blo
   return dispatch_semaphore_signal(v6);
 }
 
-- (BOOL)writeToDiskWithLogConfig:(id)a3 compressed:(BOOL)a4 error:(id *)a5
+- (BOOL)writeToDiskWithLogConfig:(id)config compressed:(BOOL)compressed error:(id *)error
 {
-  v6 = a4;
+  compressedCopy = compressed;
   v66 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  configCopy = config;
+  if (!configCopy)
   {
-    v8 = +[SSLogConfig sharedConfig];
+    configCopy = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [objc_opt_class() outputDirectoryForLogConfig:v8];
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = [v10 fileExistsAtPath:v9];
+  v9 = [objc_opt_class() outputDirectoryForLogConfig:configCopy];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = [defaultManager fileExistsAtPath:v9];
 
   if (v11)
   {
@@ -561,34 +561,34 @@ intptr_t __63__SSHTTPArchive_sendWriteAllLogsToDiskDecompressedNotification__blo
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v61 = 0;
-  v14 = [v13 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v61];
+  v14 = [defaultManager2 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:&v61];
   v12 = v61;
 
   if ((v14 & 1) == 0)
   {
-    v24 = v8;
+    v24 = configCopy;
     if (!v24)
     {
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v25 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v26 = [v24 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v27 = v25;
+      v27 = shouldLog;
     }
 
     else
     {
-      v27 = v25 & 2;
+      v27 = shouldLog & 2;
     }
 
     if (v27)
@@ -605,16 +605,16 @@ intptr_t __63__SSHTTPArchive_sendWriteAllLogsToDiskDecompressedNotification__blo
         goto LABEL_23;
       }
 
-      v26 = [MEMORY[0x1E696AEC0] stringWithCString:v28 encoding:{4, &v62, v55}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v28 encoding:{4, &v62, v55}];
       free(v28);
-      SSFileLog(v24, @"%@", v29, v30, v31, v32, v33, v34, v26);
+      SSFileLog(v24, @"%@", v29, v30, v31, v32, v33, v34, oSLogObject);
     }
 
 LABEL_23:
     if (SSFileIsLocalWritable(v9))
     {
       v35 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_53;
       }
@@ -636,25 +636,25 @@ LABEL_26:
   }
 
   v15 = @".har";
-  v59 = a5;
-  if ([(SSHTTPArchive *)self compressed]&& v6)
+  errorCopy = error;
+  if ([(SSHTTPArchive *)self compressed]&& compressedCopy)
   {
     v15 = [@".har" stringByAppendingString:@".compressed"];
   }
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [MEMORY[0x1E696AAE8] mainBundle];
-  v18 = [v17 bundleIdentifier];
-  v19 = [MEMORY[0x1E695DF00] date];
-  [v19 timeIntervalSinceReferenceDate];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v57 = v15;
-  v21 = [v16 stringWithFormat:@"%@_%f%@", v18, v20, v15];
+  v21 = [v16 stringWithFormat:@"%@_%f%@", bundleIdentifier, v20, v15];
 
   v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
   v58 = v21;
   v23 = [v22 URLByAppendingPathComponent:v21];
 
-  if (v6)
+  if (compressedCopy)
   {
     [(SSHTTPArchive *)self backingJSONData];
   }
@@ -668,7 +668,7 @@ LABEL_26:
   v35 = [v38 writeToURL:v23 options:1 error:&v60];
   v36 = v60;
 
-  v39 = v8;
+  v39 = configCopy;
   v40 = v39;
   v37 = v57;
   if (v35)
@@ -678,21 +678,21 @@ LABEL_26:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v41 = [v40 shouldLog];
+    shouldLog2 = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v41 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v42 = [v40 OSLogObject];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v40 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
-      v43 = v41;
+      v43 = shouldLog2;
     }
 
     else
     {
-      v43 = v41 & 2;
+      v43 = shouldLog2 & 2;
     }
 
     if (!v43)
@@ -712,21 +712,21 @@ LABEL_26:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v44 = [v40 shouldLog];
+    shouldLog3 = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v44 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    v42 = [v40 OSLogObject];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v40 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v45 = v44;
+      v45 = shouldLog3;
     }
 
     else
     {
-      v45 = v44 & 2;
+      v45 = shouldLog3 & 2;
     }
 
     if (!v45)
@@ -743,21 +743,21 @@ LABEL_26:
 
   if (v46)
   {
-    v42 = [MEMORY[0x1E696AEC0] stringWithCString:v46 encoding:{4, &v62, v56}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v46 encoding:{4, &v62, v56}];
     free(v46);
-    SSFileLog(v40, @"%@", v47, v48, v49, v50, v51, v52, v42);
+    SSFileLog(v40, @"%@", v47, v48, v49, v50, v51, v52, oSLogObject2);
 LABEL_49:
   }
 
-  a5 = v59;
+  error = errorCopy;
 LABEL_51:
 
   v12 = v36;
-  if (a5)
+  if (error)
   {
 LABEL_52:
     v53 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_53:
@@ -765,34 +765,34 @@ LABEL_53:
   return v35;
 }
 
-+ (id)_contentDictionaryForResponse:(id)a3 responseData:(id)a4
++ (id)_contentDictionaryForResponse:(id)response responseData:(id)data
 {
-  v5 = a4;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     v6 = MEMORY[0x1E695DF90];
-    v7 = a3;
+    responseCopy = response;
     v8 = objc_alloc_init(v6);
-    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v7, "expectedContentLength")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(responseCopy, "expectedContentLength")}];
     [v8 setObject:v9 forKeyedSubscript:@"bodySize"];
 
-    v10 = [v7 MIMEType];
+    mIMEType = [responseCopy MIMEType];
 
-    if ([v10 length])
+    if ([mIMEType length])
     {
-      [v8 setObject:v10 forKeyedSubscript:@"mimeType"];
+      [v8 setObject:mIMEType forKeyedSubscript:@"mimeType"];
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v5 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     v12 = [v11 length];
     if (v12)
     {
       v13 = v12;
       ShouldIncludeFullResponseBodiesInNetworkLogs = SSDebugShouldIncludeFullResponseBodiesInNetworkLogs();
-      v15 = [v5 length];
+      v15 = [dataCopy length];
       if ((ShouldIncludeFullResponseBodiesInNetworkLogs & 1) == 0 && v15 >= 0x9C41)
       {
-        if (v13 <= (v13 / [v5 length] * 40000.0))
+        if (v13 <= (v13 / [dataCopy length] * 40000.0))
         {
           v16 = 0;
         }
@@ -824,33 +824,33 @@ LABEL_53:
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v2 = +[SSDevice currentDevice];
-  v3 = [v2 userAgent];
+  userAgent = [v2 userAgent];
 
   v4 = +[SSDevice currentDevice];
-  v5 = [v4 clientVersion];
+  clientVersion = [v4 clientVersion];
 
-  if (!v3)
+  if (!userAgent)
   {
-    v3 = @"UNKNOWN";
+    userAgent = @"UNKNOWN";
   }
 
-  if (!v5)
+  if (!clientVersion)
   {
-    v5 = @"UNKNOWN";
+    clientVersion = @"UNKNOWN";
   }
 
   v8[0] = @"name";
   v8[1] = @"version";
-  v9[0] = v3;
-  v9[1] = v5;
+  v9[0] = userAgent;
+  v9[1] = clientVersion;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   return v6;
 }
 
-+ (id)_dateFormatterForTimeZone:(id)a3
++ (id)_dateFormatterForTimeZone:(id)zone
 {
-  v3 = a3;
+  zoneCopy = zone;
   if (_dateFormatterForTimeZone__onceToken != -1)
   {
     +[SSHTTPArchive _dateFormatterForTimeZone:];
@@ -868,7 +868,7 @@ LABEL_53:
   block[2] = __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_76;
   block[3] = &unk_1E84ABF40;
   v15 = &v16;
-  v5 = v3;
+  v5 = zoneCopy;
   v14 = v5;
   dispatch_sync(v4, block);
   v6 = v17[5];
@@ -932,19 +932,19 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   return [v9 setObject:v8 forKeyedSubscript:v7];
 }
 
-+ (id)_entriesArrayForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
++ (id)_entriesArrayForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metricsCopy = metrics;
+  dataCopy = data;
+  responseDataCopy = responseData;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [v8 transactionMetrics];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  transactionMetrics = [metricsCopy transactionMetrics];
+  v13 = [transactionMetrics countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -955,14 +955,14 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(transactionMetrics);
         }
 
-        v17 = [a1 _entryDictionaryForTaskMetrics:*(*(&v19 + 1) + 8 * i) requestData:v9 responseData:v10];
+        v17 = [self _entryDictionaryForTaskMetrics:*(*(&v19 + 1) + 8 * i) requestData:dataCopy responseData:responseDataCopy];
         [v11 addObject:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [transactionMetrics countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v14);
@@ -971,48 +971,48 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   return v11;
 }
 
-+ (id)_entryDictionaryForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
++ (id)_entryDictionaryForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
   v8 = MEMORY[0x1E695DF90];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  responseDataCopy = responseData;
+  dataCopy = data;
+  metricsCopy = metrics;
   v12 = objc_alloc_init(v8);
-  v13 = [v11 fetchStartDate];
-  v14 = [a1 _stringFromDate:v13];
+  fetchStartDate = [metricsCopy fetchStartDate];
+  v14 = [self _stringFromDate:fetchStartDate];
   [v12 setObject:v14 forKeyedSubscript:@"startedDateTime"];
 
-  v15 = [v11 responseEndDate];
-  v16 = [v11 requestStartDate];
-  [v15 timeIntervalSinceDate:v16];
+  responseEndDate = [metricsCopy responseEndDate];
+  requestStartDate = [metricsCopy requestStartDate];
+  [responseEndDate timeIntervalSinceDate:requestStartDate];
   v18 = v17 * 1000.0;
 
   v19 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
   [v12 setObject:v19 forKeyedSubscript:@"time"];
 
-  v20 = [a1 _requestDictionaryForTaskTransactionMetrics:v11 requestData:v10];
+  v20 = [self _requestDictionaryForTaskTransactionMetrics:metricsCopy requestData:dataCopy];
 
   [v12 setObject:v20 forKeyedSubscript:@"request"];
-  v21 = [a1 _responseDictionaryForTaskMetrics:v11 responseData:v9];
+  v21 = [self _responseDictionaryForTaskMetrics:metricsCopy responseData:responseDataCopy];
 
   [v12 setObject:v21 forKeyedSubscript:@"response"];
-  v22 = [a1 _generateCommentsForTaskMetrics:v11];
+  v22 = [self _generateCommentsForTaskMetrics:metricsCopy];
 
   [v12 setObject:v22 forKeyedSubscript:@"comment"];
 
   return v12;
 }
 
-+ (id)_headersArrayForHTTPHeaders:(id)a3
++ (id)_headersArrayForHTTPHeaders:(id)headers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  headersCopy = headers;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = [v3 allKeys];
+  obj = [headersCopy allKeys];
   v5 = [obj countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v5)
   {
@@ -1031,7 +1031,7 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
         v18[1] = @"value";
         v19[0] = v9;
         v18[0] = @"name";
-        v10 = [v3 objectForKeyedSubscript:?];
+        v10 = [headersCopy objectForKeyedSubscript:?];
         v19[1] = v10;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:2];
         [v4 addObject:v11];
@@ -1046,17 +1046,17 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   return v4;
 }
 
-+ (id)_JSONObjectForEntries:(id)a3
++ (id)_JSONObjectForEntries:(id)entries
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  entriesCopy = entries;
   v6 = objc_alloc_init(v4);
   [v6 setObject:@"1.2" forKeyedSubscript:@"version"];
-  v7 = [a1 _creatorDictionary];
-  [v6 setObject:v7 forKeyedSubscript:@"creator"];
+  _creatorDictionary = [self _creatorDictionary];
+  [v6 setObject:_creatorDictionary forKeyedSubscript:@"creator"];
 
-  [v6 setObject:v5 forKeyedSubscript:@"entries"];
+  [v6 setObject:entriesCopy forKeyedSubscript:@"entries"];
   v10 = @"log";
   v11[0] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
@@ -1064,30 +1064,30 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   return v8;
 }
 
-+ (id)_JSONObjectForTaskMetrics:(id)a3 requestData:(id)a4 responseData:(id)a5
++ (id)_JSONObjectForTaskMetrics:(id)metrics requestData:(id)data responseData:(id)responseData
 {
-  v6 = [a1 _entriesArrayForTaskMetrics:a3 requestData:a4 responseData:a5];
-  v7 = [a1 _JSONObjectForEntries:v6];
+  v6 = [self _entriesArrayForTaskMetrics:metrics requestData:data responseData:responseData];
+  v7 = [self _JSONObjectForEntries:v6];
 
   return v7;
 }
 
-+ (id)_generateCommentsForTaskMetrics:(id)a3
++ (id)_generateCommentsForTaskMetrics:(id)metrics
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  metricsCopy = metrics;
   v6 = objc_alloc_init(v4);
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "_apsRelayAttempted")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(metricsCopy, "_apsRelayAttempted")}];
   [v6 setObject:v7 forKeyedSubscript:@"APS-Attempted"];
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [v5 _apsRelaySucceeded];
+  _apsRelaySucceeded = [metricsCopy _apsRelaySucceeded];
 
-  v10 = [v8 numberWithBool:v9];
+  v10 = [v8 numberWithBool:_apsRelaySucceeded];
   [v6 setObject:v10 forKeyedSubscript:@"APS-Succeeded"];
 
-  v11 = [a1 _localIPAddress];
-  [v6 setObject:v11 forKeyedSubscript:@"clientIPAddress"];
+  _localIPAddress = [self _localIPAddress];
+  [v6 setObject:_localIPAddress forKeyedSubscript:@"clientIPAddress"];
 
   v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:1 error:0];
   if (v12)
@@ -1151,39 +1151,39 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   return v4;
 }
 
-+ (id)_requestDictionaryForTaskTransactionMetrics:(id)a3 requestData:(id)a4
++ (id)_requestDictionaryForTaskTransactionMetrics:(id)metrics requestData:(id)data
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 request];
+  dataCopy = data;
+  request = [metrics request];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   [v8 setObject:v9 forKeyedSubscript:@"bodySize"];
 
-  v10 = [v7 allHTTPHeaderFields];
-  v11 = [a1 _headersArrayForHTTPHeaders:v10];
+  allHTTPHeaderFields = [request allHTTPHeaderFields];
+  v11 = [self _headersArrayForHTTPHeaders:allHTTPHeaderFields];
   [v8 setObject:v11 forKeyedSubscript:@"headers"];
 
   [v8 setObject:&unk_1F507A240 forKeyedSubscript:@"headersSize"];
   [v8 setObject:@"HTTP/1.1" forKeyedSubscript:@"httpVersion"];
-  v12 = [v7 HTTPMethod];
-  if ([v12 length])
+  hTTPMethod = [request HTTPMethod];
+  if ([hTTPMethod length])
   {
-    [v8 setObject:v12 forKeyedSubscript:@"method"];
+    [v8 setObject:hTTPMethod forKeyedSubscript:@"method"];
   }
 
-  v13 = [v7 URL];
-  v14 = [v13 absoluteString];
+  v13 = [request URL];
+  absoluteString = [v13 absoluteString];
 
-  if ([v14 length])
+  if ([absoluteString length])
   {
-    [v8 setObject:v14 forKeyedSubscript:@"url"];
+    [v8 setObject:absoluteString forKeyedSubscript:@"url"];
   }
 
   if (SSDebugShouldLogFullMetricsRequest())
   {
-    v15 = [v14 containsString:@"xp.apple.com"];
-    if (!v6)
+    v15 = [absoluteString containsString:@"xp.apple.com"];
+    if (!dataCopy)
     {
       goto LABEL_12;
     }
@@ -1192,7 +1192,7 @@ uint64_t __43__SSHTTPArchive__dateFormatterForTimeZone___block_invoke_2(uint64_t
   else
   {
     v15 = 0;
-    if (!v6)
+    if (!dataCopy)
     {
 LABEL_12:
       v18 = 0;
@@ -1200,21 +1200,21 @@ LABEL_12:
     }
   }
 
-  if (!(([v6 length] < 0x9C41) | v15 & 1))
+  if (!(([dataCopy length] < 0x9C41) | v15 & 1))
   {
     goto LABEL_12;
   }
 
   v16 = SSViTunesStoreFramework();
   v17 = SSVWeakLinkedSymbolForString("ISCopyDecompressedGZipDataForData", v16);
-  v18 = v17(v6);
+  v18 = v17(dataCopy);
   if (!v18)
   {
-    v18 = v6;
+    v18 = dataCopy;
   }
 
 LABEL_13:
-  if ([v14 containsString:@"/WebObjects/MZFinance.woa/wa/authenticate"])
+  if ([absoluteString containsString:@"/WebObjects/MZFinance.woa/wa/authenticate"])
   {
     v19 = [MEMORY[0x1E696AE40] propertyListWithData:v18 options:1 format:0 error:0];
     objc_opt_class();
@@ -1245,16 +1245,16 @@ LABEL_13:
   return v8;
 }
 
-+ (id)_responseDictionaryForTaskMetrics:(id)a3 responseData:(id)a4
++ (id)_responseDictionaryForTaskMetrics:(id)metrics responseData:(id)data
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 response];
+  metricsCopy = metrics;
+  dataCopy = data;
+  response = [metricsCopy response];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = response;
   }
 
   else
@@ -1266,19 +1266,19 @@ LABEL_13:
   if (v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v12 = [a1 _contentDictionaryForResponse:v10 responseData:v7];
+    v12 = [self _contentDictionaryForResponse:v10 responseData:dataCopy];
     [v11 setObject:v12 forKeyedSubscript:@"content"];
 
     v13 = MEMORY[0x1E695DF70];
-    v14 = [v10 allHeaderFields];
-    v15 = [a1 _headersArrayForHTTPHeaders:v14];
+    allHeaderFields = [v10 allHeaderFields];
+    v15 = [self _headersArrayForHTTPHeaders:allHeaderFields];
     v16 = [v13 arrayWithArray:v15];
 
-    v17 = [v6 resourceFetchType];
+    resourceFetchType = [metricsCopy resourceFetchType];
     v28[0] = @"name";
     v28[1] = @"value";
     v18 = @"false";
-    if (v17 == 3)
+    if (resourceFetchType == 3)
     {
       v18 = @"true";
     }
@@ -1300,8 +1300,8 @@ LABEL_13:
       [v11 setObject:v21 forKeyedSubscript:@"statusText"];
     }
 
-    v22 = [v10 allHeaderFields];
-    v23 = [v22 objectForKeyedSubscript:@"Content-Length"];
+    allHeaderFields2 = [v10 allHeaderFields];
+    v23 = [allHeaderFields2 objectForKeyedSubscript:@"Content-Length"];
 
     v24 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v23, "integerValue")}];
     v25 = v24;
@@ -1326,28 +1326,28 @@ LABEL_13:
   return v11;
 }
 
-+ (id)_stringFromDate:(id)a3
++ (id)_stringFromDate:(id)date
 {
   v4 = MEMORY[0x1E695DFE8];
-  v5 = a3;
-  v6 = [v4 systemTimeZone];
-  v7 = [a1 _dateFormatterForTimeZone:v6];
-  v8 = [v7 stringFromDate:v5];
+  dateCopy = date;
+  systemTimeZone = [v4 systemTimeZone];
+  v7 = [self _dateFormatterForTimeZone:systemTimeZone];
+  v8 = [v7 stringFromDate:dateCopy];
 
   return v8;
 }
 
-+ (double)_timeIntervalFromFilename:(id)a3
++ (double)_timeIntervalFromFilename:(id)filename
 {
-  v3 = a3;
-  if ([v3 containsString:@".har"])
+  filenameCopy = filename;
+  if ([filenameCopy containsString:@".har"])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [v3 stringByReplacingOccurrencesOfString:@".har" withString:&stru_1F503F418];
+    v5 = [filenameCopy stringByReplacingOccurrencesOfString:@".har" withString:&stru_1F503F418];
 
-    v3 = [v5 stringByReplacingOccurrencesOfString:@".compressed" withString:&stru_1F503F418];
+    filenameCopy = [v5 stringByReplacingOccurrencesOfString:@".compressed" withString:&stru_1F503F418];
 
-    v6 = [v3 componentsSeparatedByString:@"_"];
+    v6 = [filenameCopy componentsSeparatedByString:@"_"];
     if ([v6 count] == 2)
     {
       v7 = [v6 objectAtIndexedSubscript:1];

@@ -1,30 +1,30 @@
 @interface SKUIEditorTemplateView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
 - (NSString)text;
-- (SKUIEditorTemplateView)initWithFrame:(CGRect)a3;
+- (SKUIEditorTemplateView)initWithFrame:(CGRect)frame;
 - (SKUIEditorTemplateViewDelegate)delegate;
-- (id)_textFromViewElement:(id)a3;
-- (id)viewForElementIdentifier:(id)a3;
+- (id)_textFromViewElement:(id)element;
+- (id)viewForElementIdentifier:(id)identifier;
 - (void)_reloadSubviews;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBottomInset:(double)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBottomInset:(double)inset;
+- (void)setDisabled:(BOOL)disabled;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation SKUIEditorTemplateView
 
-- (SKUIEditorTemplateView)initWithFrame:(CGRect)a3
+- (SKUIEditorTemplateView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SKUIEditorTemplateView;
-  v3 = [(SKUIViewReuseView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SKUIViewReuseView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,7 +34,7 @@
   return v4;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -51,7 +51,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -72,7 +72,7 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -84,7 +84,7 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -105,9 +105,9 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v6 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -121,11 +121,11 @@
   }
 
   textView = self->_textView;
-  v16 = [(SKUIEditorTemplateView *)self _textFromViewElement:v6];
+  v16 = [(SKUIEditorTemplateView *)self _textFromViewElement:elementCopy];
   [(UITextView *)textView setText:v16];
 
-  v17 = [v6 style];
-  v18 = SKUIViewElementFontWithStyle(v17);
+  style = [elementCopy style];
+  v18 = SKUIViewElementFontWithStyle(style);
   v19 = self->_textView;
   if (v18)
   {
@@ -138,23 +138,23 @@
     [(UITextView *)v19 setFont:v20];
   }
 
-  v21 = [v17 ikColor];
-  v22 = [v21 color];
-  v23 = v22;
-  if (!v22)
+  ikColor = [style ikColor];
+  color = [ikColor color];
+  blackColor = color;
+  if (!color)
   {
-    v23 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  objc_storeStrong(&self->_textColor, v23);
-  if (!v22)
+  objc_storeStrong(&self->_textColor, blackColor);
+  if (!color)
   {
   }
 
   [(UITextView *)self->_textView setTextColor:self->_textColor];
   v36 = 0;
-  v24 = [v6 style];
-  v25 = SKUIViewElementPaddingForStyle(v24, &v36);
+  style2 = [elementCopy style];
+  v25 = SKUIViewElementPaddingForStyle(style2, &v36);
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -191,7 +191,7 @@
   [(UITextView *)self->_textView setContentOffset:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -208,7 +208,7 @@
   return 0;
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
   if (os_variant_has_internal_content())
   {
@@ -225,7 +225,7 @@
   return 0;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   if (os_variant_has_internal_content())
   {
@@ -242,7 +242,7 @@
   return 0;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   if (os_variant_has_internal_content())
   {
@@ -300,7 +300,7 @@
   }
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
   if (os_variant_has_internal_content())
   {
@@ -319,14 +319,14 @@
   v16 = v15;
   v18 = v17;
   [(UITextView *)self->_textView setContentInset:?];
-  [(UITextView *)self->_textView setScrollIndicatorInsets:v14, v16, a3, v18];
+  [(UITextView *)self->_textView setScrollIndicatorInsets:v14, v16, inset, v18];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(SKUIEditorTemplateView *)self setNeedsLayout];
   }
 }
@@ -345,9 +345,9 @@
     }
   }
 
-  v11 = [(UITextView *)self->_textView text];
+  text = [(UITextView *)self->_textView text];
 
-  return v11;
+  return text;
 }
 
 - (void)_reloadSubviews
@@ -362,8 +362,8 @@
     [(UITextView *)self->_textView setDelegate:self];
     [(UITextView *)self->_textView setKeyboardDismissMode:2];
     [(UITextView *)self->_textView setAlwaysBounceVertical:1];
-    v6 = [(UITextView *)self->_textView layoutManager];
-    [v6 setAllowsNonContiguousLayout:0];
+    layoutManager = [(UITextView *)self->_textView layoutManager];
+    [layoutManager setAllowsNonContiguousLayout:0];
 
     v7 = self->_textView;
 
@@ -371,10 +371,10 @@
   }
 }
 
-- (id)_textFromViewElement:(id)a3
+- (id)_textFromViewElement:(id)element
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
+  elementCopy = element;
   v5 = objc_alloc_init(v3);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -382,7 +382,7 @@
   v9[3] = &unk_2781F9640;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateChildrenUsingBlock:v9];
+  [elementCopy enumerateChildrenUsingBlock:v9];
 
   v7 = [v6 componentsJoinedByString:@"\n"];
 

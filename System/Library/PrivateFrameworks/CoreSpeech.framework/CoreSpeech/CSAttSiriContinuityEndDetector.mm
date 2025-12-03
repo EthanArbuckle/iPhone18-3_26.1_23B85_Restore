@@ -1,61 +1,61 @@
 @interface CSAttSiriContinuityEndDetector
 - (CSAttSiriContinuityEndDetector)init;
-- (void)_deliverRecognitionCompletionWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6;
+- (void)_deliverRecognitionCompletionWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error;
 - (void)_handleContinuityDetectorTimeout;
 - (void)_notifyContinuityEnd;
 - (void)_setupContinuityDetectorTimer;
-- (void)addContinuityDetectionReceiver:(id)a3;
-- (void)addRecognitionTaskCompletionReceiver:(id)a3;
-- (void)configureTimeout:(float)a3;
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6;
-- (void)didGenerateTRPDetector:(id)a3;
-- (void)setUpWithContinuityEndUsage:(BOOL)a3;
+- (void)addContinuityDetectionReceiver:(id)receiver;
+- (void)addRecognitionTaskCompletionReceiver:(id)receiver;
+- (void)configureTimeout:(float)timeout;
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error;
+- (void)didGenerateTRPDetector:(id)detector;
+- (void)setUpWithContinuityEndUsage:(BOOL)usage;
 - (void)start;
 @end
 
 @implementation CSAttSiriContinuityEndDetector
 
-- (void)didCompleteRecognitionTaskWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6
+- (void)didCompleteRecognitionTaskWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  statisticsCopy = statistics;
+  idCopy = id;
+  errorCopy = error;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100162390;
   block[3] = &unk_100253558;
   block[4] = self;
-  v18 = v12;
-  v19 = v10;
-  v20 = v11;
-  v21 = a5;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v18 = errorCopy;
+  v19 = statisticsCopy;
+  v20 = idCopy;
+  modeCopy = mode;
+  v14 = idCopy;
+  v15 = statisticsCopy;
+  v16 = errorCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didGenerateTRPDetector:(id)a3
+- (void)didGenerateTRPDetector:(id)detector
 {
-  v4 = a3;
+  detectorCopy = detector;
   queue = self->_queue;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100162690;
   v10 = &unk_100253C48;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = detectorCopy;
+  v6 = detectorCopy;
   dispatch_async(queue, &v7);
   [(CSAttSiriContinuityEndDetector *)self start:v7];
 }
 
-- (void)_deliverRecognitionCompletionWithStatistics:(id)a3 requestId:(id)a4 endpointMode:(int64_t)a5 error:(id)a6
+- (void)_deliverRecognitionCompletionWithStatistics:(id)statistics requestId:(id)id endpointMode:(int64_t)mode error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  statisticsCopy = statistics;
+  idCopy = id;
+  errorCopy = error;
   v13 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,8 +68,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(CSAttSiriContinuityEndDetector *)self recognitionTaskCompletionReceivers];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  recognitionTaskCompletionReceivers = [(CSAttSiriContinuityEndDetector *)self recognitionTaskCompletionReceivers];
+  v15 = [recognitionTaskCompletionReceivers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -81,7 +81,7 @@
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(recognitionTaskCompletionReceivers);
         }
 
         v19 = *(*(&v21 + 1) + 8 * v18);
@@ -90,7 +90,7 @@
           v20 = *(*(&v21 + 1) + 8 * v18);
           if (objc_opt_respondsToSelector())
           {
-            [v19 didCompleteRecognitionTaskWithStatistics:v10 requestId:v11 endpointMode:a5 error:v12];
+            [v19 didCompleteRecognitionTaskWithStatistics:statisticsCopy requestId:idCopy endpointMode:mode error:errorCopy];
           }
         }
 
@@ -98,7 +98,7 @@
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [recognitionTaskCompletionReceivers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -127,15 +127,15 @@
   _Block_object_dispose(&v24, 8);
   v5 = [v3 alloc];
   v6 = mach_continuous_time();
-  v7 = [(CSAttSiriContinuityEndDetector *)self cachedTRPId];
-  v8 = [v5 initWithGeneratedHostTime:v6 lastTRPCandidateId:v7 requestId:self->_requestId];
+  cachedTRPId = [(CSAttSiriContinuityEndDetector *)self cachedTRPId];
+  v8 = [v5 initWithGeneratedHostTime:v6 lastTRPCandidateId:cachedTRPId requestId:self->_requestId];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(CSAttSiriContinuityEndDetector *)self continuityDetectionReceivers];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v28 count:16];
+  continuityDetectionReceivers = [(CSAttSiriContinuityEndDetector *)self continuityDetectionReceivers];
+  v10 = [continuityDetectionReceivers countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v10)
   {
     v11 = *v20;
@@ -145,7 +145,7 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(continuityDetectionReceivers);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -155,7 +155,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v28 count:16];
+      v10 = [continuityDetectionReceivers countByEnumeratingWithState:&v19 objects:v28 count:16];
     }
 
     while (v10);
@@ -165,18 +165,18 @@
   cachedRecognitionCompletionInfo = self->_cachedRecognitionCompletionInfo;
   if (cachedRecognitionCompletionInfo)
   {
-    v15 = [(CSAttSiriRecognitionCompletionCachedInfo *)cachedRecognitionCompletionInfo statistics];
-    v16 = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo requestId];
-    v17 = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo endpointMode];
-    v18 = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo completionError];
-    [(CSAttSiriContinuityEndDetector *)self _deliverRecognitionCompletionWithStatistics:v15 requestId:v16 endpointMode:v17 error:v18];
+    statistics = [(CSAttSiriRecognitionCompletionCachedInfo *)cachedRecognitionCompletionInfo statistics];
+    requestId = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo requestId];
+    endpointMode = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo endpointMode];
+    completionError = [(CSAttSiriRecognitionCompletionCachedInfo *)self->_cachedRecognitionCompletionInfo completionError];
+    [(CSAttSiriContinuityEndDetector *)self _deliverRecognitionCompletionWithStatistics:statistics requestId:requestId endpointMode:endpointMode error:completionError];
   }
 }
 
 - (void)_handleContinuityDetectorTimeout
 {
-  v3 = [(CSAttSiriContinuityEndDetector *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSAttSiriContinuityEndDetector *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSAttSiriContinuityEndDetector *)self _notifyContinuityEnd];
 }
@@ -215,42 +215,42 @@
   objc_destroyWeak(&location);
 }
 
-- (void)addRecognitionTaskCompletionReceiver:(id)a3
+- (void)addRecognitionTaskCompletionReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = [(CSAttSiriContinuityEndDetector *)self queue];
+  receiverCopy = receiver;
+  queue = [(CSAttSiriContinuityEndDetector *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100163064;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receiverCopy;
+  selfCopy = self;
+  v6 = receiverCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)addContinuityDetectionReceiver:(id)a3
+- (void)addContinuityDetectionReceiver:(id)receiver
 {
-  v4 = a3;
-  v5 = [(CSAttSiriContinuityEndDetector *)self queue];
+  receiverCopy = receiver;
+  queue = [(CSAttSiriContinuityEndDetector *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001631B4;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = receiverCopy;
+  selfCopy = self;
+  v6 = receiverCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setUpWithContinuityEndUsage:(BOOL)a3
+- (void)setUpWithContinuityEndUsage:(BOOL)usage
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001632C8;
   v4[3] = &unk_100253BF8;
-  v5 = a3;
+  usageCopy = usage;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -266,14 +266,14 @@
   dispatch_async(queue, block);
 }
 
-- (void)configureTimeout:(float)a3
+- (void)configureTimeout:(float)timeout
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001635B0;
   v4[3] = &unk_1002534E8;
-  v5 = a3;
+  timeoutCopy = timeout;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -322,7 +322,7 @@
     }
 
     self = v3;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -335,10 +335,10 @@
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s Medoc feature flag is disabled!", buf, 0xCu);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

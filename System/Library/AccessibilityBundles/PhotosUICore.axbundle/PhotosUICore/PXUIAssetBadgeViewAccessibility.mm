@@ -1,5 +1,5 @@
 @interface PXUIAssetBadgeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,13 +8,13 @@
 
 @implementation PXUIAssetBadgeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXUIAssetBadgeView" hasInstanceMethod:@"badgeInfo" withFullSignature:{"{PXAssetBadgeInfo=Qdqq}", 0}];
-  [v3 validateClass:@"PXUIAssetBadgeView" hasInstanceMethod:@"style" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXUIAssetBadgeView" hasInstanceVariable:@"_topLeftPrimaryGroup" withType:"_PXUIAssetBadgeTopGroup"];
-  [v3 validateClass:@"_PXUIAssetBadgeTopGroup" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXUIAssetBadgeView" hasInstanceMethod:@"badgeInfo" withFullSignature:{"{PXAssetBadgeInfo=Qdqq}", 0}];
+  [validationsCopy validateClass:@"PXUIAssetBadgeView" hasInstanceMethod:@"style" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXUIAssetBadgeView" hasInstanceVariable:@"_topLeftPrimaryGroup" withType:"_PXUIAssetBadgeTopGroup"];
+  [validationsCopy validateClass:@"_PXUIAssetBadgeTopGroup" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -51,17 +51,17 @@ uint64_t __57__PXUIAssetBadgeViewAccessibility_isAccessibilityElement__block_inv
     v4 = [v3 safeValueForKey:@"label"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 accessibilityLabel];
+    accessibilityLabel = [v5 accessibilityLabel];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PXUIAssetBadgeViewAccessibility;
-    v6 = [(PXUIAssetBadgeViewAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(PXUIAssetBadgeViewAccessibility *)&v8 accessibilityLabel];
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -92,17 +92,17 @@ void __53__PXUIAssetBadgeViewAccessibility_accessibilityValue__block_invoke(uint
 {
   v8.receiver = self;
   v8.super_class = PXUIAssetBadgeViewAccessibility;
-  v3 = [(PXUIAssetBadgeViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(PXUIAssetBadgeViewAccessibility *)&v8 accessibilityTraits];
   v4 = [(PXUIAssetBadgeViewAccessibility *)self safeValueForKey:@"style"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   v6 = *MEMORY[0x29EDC7F70];
-  if (v5 != 4)
+  if (integerValue != 4)
   {
     v6 = 0;
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 @end

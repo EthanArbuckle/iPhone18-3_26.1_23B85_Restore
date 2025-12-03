@@ -1,5 +1,5 @@
 @interface JSMediaTokensObject.CacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtCC27AppStoreComponentsDaemonKit19JSMediaTokensObjectP33_638155E9B66C7584798509A6FE06B4498CacheKey)init;
 - (int64_t)hash;
 @end
@@ -13,7 +13,7 @@
   v5 = *&self->client[OBJC_IVAR____TtCC27AppStoreComponentsDaemonKit19JSMediaTokensObjectP33_638155E9B66C7584798509A6FE06B4498CacheKey_client + 8];
   v6 = *&self->client[OBJC_IVAR____TtCC27AppStoreComponentsDaemonKit19JSMediaTokensObjectP33_638155E9B66C7584798509A6FE06B4498CacheKey_client + 16];
   sub_222739C5C();
-  v7 = self;
+  selfCopy = self;
   sub_22273924C();
   sub_22273924C();
   v8 = sub_222739C8C();
@@ -21,11 +21,11 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_22273977C();
     swift_unknownObjectRelease();
@@ -34,7 +34,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_2226FBFE0(v8);

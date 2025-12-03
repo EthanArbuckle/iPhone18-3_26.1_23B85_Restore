@@ -1,41 +1,41 @@
 @interface MTEntityUpdaterCache
-- (MTEntityUpdaterCache)initWithPredicate:(id)a3 entityName:(id)a4 ctx:(id)a5 properties:(id)a6 fetchProperties:(id)a7;
-- (id)propertyDictionaryForSearchItem:(id)a3;
-- (void)_addDictionary:(id)a3;
+- (MTEntityUpdaterCache)initWithPredicate:(id)predicate entityName:(id)name ctx:(id)ctx properties:(id)properties fetchProperties:(id)fetchProperties;
+- (id)propertyDictionaryForSearchItem:(id)item;
+- (void)_addDictionary:(id)dictionary;
 - (void)_buildMap;
-- (void)addEntityToCache:(id)a3;
-- (void)enumerateUnvisitedItemUuids:(id)a3;
+- (void)addEntityToCache:(id)cache;
+- (void)enumerateUnvisitedItemUuids:(id)uuids;
 @end
 
 @implementation MTEntityUpdaterCache
 
-- (MTEntityUpdaterCache)initWithPredicate:(id)a3 entityName:(id)a4 ctx:(id)a5 properties:(id)a6 fetchProperties:(id)a7
+- (MTEntityUpdaterCache)initWithPredicate:(id)predicate entityName:(id)name ctx:(id)ctx properties:(id)properties fetchProperties:(id)fetchProperties
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  predicateCopy = predicate;
+  nameCopy = name;
+  ctxCopy = ctx;
+  propertiesCopy = properties;
+  fetchPropertiesCopy = fetchProperties;
   v22.receiver = self;
   v22.super_class = MTEntityUpdaterCache;
   v17 = [(MTEntityUpdaterCache *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_properties, a6);
-    objc_storeStrong(&v18->_propertiesToFetch, a7);
-    objc_storeStrong(&v18->_ctx, a5);
-    objc_storeStrong(&v18->_predicate, a3);
-    objc_storeStrong(&v18->_entityName, a4);
+    objc_storeStrong(&v17->_properties, properties);
+    objc_storeStrong(&v18->_propertiesToFetch, fetchProperties);
+    objc_storeStrong(&v18->_ctx, ctx);
+    objc_storeStrong(&v18->_predicate, predicate);
+    objc_storeStrong(&v18->_entityName, name);
     v19 = v18;
   }
 
   return v18;
 }
 
-- (id)propertyDictionaryForSearchItem:(id)a3
+- (id)propertyDictionaryForSearchItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (!self->_objectsByProperty)
   {
     [(MTEntityUpdaterCache *)self _buildMap];
@@ -54,7 +54,7 @@ LABEL_12:
   while (1)
   {
     v8 = [(NSArray *)self->_properties objectAtIndexedSubscript:v7];
-    v9 = [v4 objectForKeyedSubscript:v8];
+    v9 = [itemCopy objectForKeyedSubscript:v8];
     allowKeyForValue = self->_allowKeyForValue;
     if (allowKeyForValue && !allowKeyForValue[2](allowKeyForValue, v8, v9))
     {
@@ -108,8 +108,8 @@ LABEL_13:
   entityName = self->_entityName;
   ctx = self->_ctx;
   predicate = self->_predicate;
-  v8 = [v3 allObjects];
-  v9 = [(NSManagedObjectContext *)ctx objectsInEntity:entityName predicate:predicate propertiesToFetch:v8 limit:0];
+  allObjects = [v3 allObjects];
+  v9 = [(NSManagedObjectContext *)ctx objectsInEntity:entityName predicate:predicate propertiesToFetch:allObjects limit:0];
 
   v10 = [v9 valueForKey:@"uuid"];
   v11 = [NSMutableSet setWithArray:v10];
@@ -143,38 +143,38 @@ LABEL_13:
   [v9 enumerateObjectsUsingBlock:v18];
 }
 
-- (void)addEntityToCache:(id)a3
+- (void)addEntityToCache:(id)cache
 {
-  v9 = a3;
-  v4 = [v9 dictionaryRepresentation];
-  v5 = [(MTEntityUpdaterCache *)self indexingBlock];
+  cacheCopy = cache;
+  dictionaryRepresentation = [cacheCopy dictionaryRepresentation];
+  indexingBlock = [(MTEntityUpdaterCache *)self indexingBlock];
 
-  if (v5)
+  if (indexingBlock)
   {
-    v6 = [(MTEntityUpdaterCache *)self indexingBlock];
-    v7 = (v6)[2](v6, v9);
-    v8 = [v4 ams_dictionaryByAddingEntriesFromDictionary:v7];
+    indexingBlock2 = [(MTEntityUpdaterCache *)self indexingBlock];
+    v7 = (indexingBlock2)[2](indexingBlock2, cacheCopy);
+    v8 = [dictionaryRepresentation ams_dictionaryByAddingEntriesFromDictionary:v7];
 
-    v4 = v8;
+    dictionaryRepresentation = v8;
   }
 
-  [(MTEntityUpdaterCache *)self _addDictionary:v4];
+  [(MTEntityUpdaterCache *)self _addDictionary:dictionaryRepresentation];
 }
 
-- (void)_addDictionary:(id)a3
+- (void)_addDictionary:(id)dictionary
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   if ([(NSArray *)self->_properties count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSArray *)self->_properties objectAtIndexedSubscript:v4];
-      v6 = [v8 objectForKeyedSubscript:v5];
+      v6 = [dictionaryCopy objectForKeyedSubscript:v5];
       if (v6)
       {
         v7 = [(NSMutableArray *)self->_objectsByProperty objectAtIndexedSubscript:v4];
-        [v7 setObject:v8 forKey:v6];
+        [v7 setObject:dictionaryCopy forKey:v6];
       }
 
       ++v4;
@@ -184,9 +184,9 @@ LABEL_13:
   }
 }
 
-- (void)enumerateUnvisitedItemUuids:(id)a3
+- (void)enumerateUnvisitedItemUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   unvisited = self->_unvisited;
   if (!unvisited)
   {
@@ -215,7 +215,7 @@ LABEL_5:
 
       v11 = *(*(&v13 + 1) + 8 * v10);
       v12 = 0;
-      v4[2](v4, v11, &v12);
+      uuidsCopy[2](uuidsCopy, v11, &v12);
       if (v12)
       {
         break;

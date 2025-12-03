@@ -1,25 +1,25 @@
 @interface _IDSSessionConnection
-- (BOOL)startConnectionAsInitiator:(BOOL)a3 peerProtocolVersion:(unsigned int)a4 errorHandler:(id)a5;
-- (BOOL)stopConnection:(id *)a3;
-- (_IDSSessionConnection)initWithQueue:(id)a3;
+- (BOOL)startConnectionAsInitiator:(BOOL)initiator peerProtocolVersion:(unsigned int)version errorHandler:(id)handler;
+- (BOOL)stopConnection:(id *)connection;
+- (_IDSSessionConnection)initWithQueue:(id)queue;
 - (_IDSSessionConnectionDelegate)delegate;
-- (id)connectionInfoForCallID:(int64_t)a3;
-- (id)connectionInfoWithState:(int64_t)a3;
+- (id)connectionInfoForCallID:(int64_t)d;
+- (id)connectionInfoWithState:(int64_t)state;
 - (int64_t)bestCallID;
-- (void)conference:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5;
-- (void)conference:(id)a3 didStartSession:(BOOL)a4 withUserInfo:(id)a5;
-- (void)conference:(id)a3 didStopWithCallID:(int64_t)a4 error:(id)a5;
-- (void)createConnectionData:(BOOL)a3 handler:(id)a4;
+- (void)conference:(id)conference didReceiveData:(id)data forCallID:(int64_t)d;
+- (void)conference:(id)conference didStartSession:(BOOL)session withUserInfo:(id)info;
+- (void)conference:(id)conference didStopWithCallID:(int64_t)d error:(id)error;
+- (void)createConnectionData:(BOOL)data handler:(id)handler;
 - (void)dealloc;
-- (void)receivedRemoteConnectionData:(id)a3;
-- (void)sendData:(id)a3;
+- (void)receivedRemoteConnectionData:(id)data;
+- (void)sendData:(id)data;
 @end
 
 @implementation _IDSSessionConnection
 
-- (_IDSSessionConnection)initWithQueue:(id)a3
+- (_IDSSessionConnection)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = _IDSSessionConnection;
   v5 = [(_IDSSessionConnection *)&v13 init];
@@ -27,10 +27,10 @@
   {
     if (qword_100CBF278 == -1)
     {
-      if (v4)
+      if (queueCopy)
       {
 LABEL_4:
-        v6 = v4;
+        v6 = queueCopy;
         v7 = *(v5 + 3);
         *(v5 + 3) = v6;
 LABEL_7:
@@ -48,7 +48,7 @@ LABEL_7:
     else
     {
       sub_10092BDD8();
-      if (v4)
+      if (queueCopy)
       {
         goto LABEL_4;
       }
@@ -102,17 +102,17 @@ LABEL_8:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Cleaning up: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v10 = self;
+    selfCopy2 = self;
     _IDSLogV();
   }
 
-  [(AVConference *)self->_connection setDelegate:0, v10];
+  [(AVConference *)self->_connection setDelegate:0, selfCopy2];
   connectionQueue = self->_connectionQueue;
   self->_connectionQueue = 0;
 
@@ -121,7 +121,7 @@ LABEL_8:
   [(_IDSSessionConnection *)&v11 dealloc];
 }
 
-- (id)connectionInfoWithState:(int64_t)a3
+- (id)connectionInfoWithState:(int64_t)state
 {
   v12 = 0u;
   v13 = 0u;
@@ -143,7 +143,7 @@ LABEL_8:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 state] == a3)
+        if ([v9 state] == state)
         {
           v10 = v9;
           goto LABEL_11;
@@ -166,7 +166,7 @@ LABEL_11:
   return v10;
 }
 
-- (id)connectionInfoForCallID:(int64_t)a3
+- (id)connectionInfoForCallID:(int64_t)d
 {
   v12 = 0u;
   v13 = 0u;
@@ -188,7 +188,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 callID] == a3)
+        if ([v9 callID] == d)
         {
           v10 = v9;
           goto LABEL_11;
@@ -221,7 +221,7 @@ LABEL_11:
   v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v3)
   {
-    v15 = 0;
+    callID2 = 0;
     goto LABEL_22;
   }
 
@@ -261,10 +261,10 @@ LABEL_11:
         v6 = v13;
       }
 
-      v14 = [v10 callID];
+      callID = [v10 callID];
     }
 
-    v15 = v14;
+    callID2 = callID;
     v4 = [(NSMutableArray *)v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   }
 
@@ -272,17 +272,17 @@ LABEL_11:
 
   if (v5)
   {
-    v15 = [(NSMutableArray *)v5 callID];
+    callID2 = [(NSMutableArray *)v5 callID];
 
     v2 = v5;
 LABEL_22:
 
-    return v15;
+    return callID2;
   }
 
   if (v6)
   {
-    v15 = [(NSMutableArray *)v6 callID];
+    callID2 = [(NSMutableArray *)v6 callID];
 
     v2 = v6;
     goto LABEL_22;
@@ -290,39 +290,39 @@ LABEL_22:
 
   if (v7)
   {
-    v15 = [(NSMutableArray *)v7 callID];
+    callID2 = [(NSMutableArray *)v7 callID];
     v2 = v7;
     goto LABEL_22;
   }
 
-  return v15;
+  return callID2;
 }
 
-- (void)receivedRemoteConnectionData:(id)a3
+- (void)receivedRemoteConnectionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   connectionQueue = self->_connectionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005C6A3C;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(connectionQueue, v7);
 }
 
-- (void)createConnectionData:(BOOL)a3 handler:(id)a4
+- (void)createConnectionData:(BOOL)data handler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v7 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(handlerCopy);
     connectionQueue = self->_connectionQueue;
     *buf = 67109632;
-    v19 = v4;
+    v19 = dataCopy;
     v20 = 2048;
     v21 = v8;
     v22 = 2048;
@@ -332,46 +332,46 @@ LABEL_22:
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v13 = objc_retainBlock(v6);
+    v13 = objc_retainBlock(handlerCopy);
     _IDSLogV();
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v10 = [v6 copy];
+    v10 = [handlerCopy copy];
     v11 = self->_connectionQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1005C6FC0;
     block[3] = &unk_100BE1208;
-    v17 = v4;
+    v17 = dataCopy;
     block[4] = self;
-    v15 = v6;
+    v15 = handlerCopy;
     v16 = v10;
     v12 = v10;
     dispatch_async(v11, block);
   }
 }
 
-- (BOOL)startConnectionAsInitiator:(BOOL)a3 peerProtocolVersion:(unsigned int)a4 errorHandler:(id)a5
+- (BOOL)startConnectionAsInitiator:(BOOL)initiator peerProtocolVersion:(unsigned int)version errorHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   connectionQueue = self->_connectionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005C7F50;
   block[3] = &unk_100BE1230;
-  v14 = a4;
-  v15 = a3;
+  versionCopy = version;
+  initiatorCopy = initiator;
   block[4] = self;
-  v13 = v8;
-  v10 = v8;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   dispatch_async(connectionQueue, block);
 
   return 1;
 }
 
-- (BOOL)stopConnection:(id *)a3
+- (BOOL)stopConnection:(id *)connection
 {
   connectionQueue = self->_connectionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -383,17 +383,17 @@ LABEL_22:
   return 1;
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   connectionQueue = self->_connectionQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1005C8474;
   v7[3] = &unk_100BD6E40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(connectionQueue, v7);
 }
 
@@ -404,47 +404,47 @@ LABEL_22:
   return WeakRetained;
 }
 
-- (void)conference:(id)a3 didReceiveData:(id)a4 forCallID:(int64_t)a5
+- (void)conference:(id)conference didReceiveData:(id)data forCallID:(int64_t)d
 {
-  v6 = a4;
+  dataCopy = data;
   connectionQueue = self->_connectionQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1005C8784;
   v9[3] = &unk_100BD6E40;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_async(connectionQueue, v9);
 }
 
-- (void)conference:(id)a3 didStartSession:(BOOL)a4 withUserInfo:(id)a5
+- (void)conference:(id)conference didStartSession:(BOOL)session withUserInfo:(id)info
 {
-  v7 = a5;
+  infoCopy = info;
   connectionQueue = self->_connectionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005C8954;
   block[3] = &unk_100BD8FC0;
-  v11 = v7;
-  v12 = self;
-  v13 = a4;
-  v9 = v7;
+  v11 = infoCopy;
+  selfCopy = self;
+  sessionCopy = session;
+  v9 = infoCopy;
   dispatch_async(connectionQueue, block);
 }
 
-- (void)conference:(id)a3 didStopWithCallID:(int64_t)a4 error:(id)a5
+- (void)conference:(id)conference didStopWithCallID:(int64_t)d error:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   connectionQueue = self->_connectionQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005C8F08;
   block[3] = &unk_100BE04B0;
-  v11 = v7;
-  v12 = a4;
+  v11 = errorCopy;
+  dCopy = d;
   block[4] = self;
-  v9 = v7;
+  v9 = errorCopy;
   dispatch_async(connectionQueue, block);
 }
 

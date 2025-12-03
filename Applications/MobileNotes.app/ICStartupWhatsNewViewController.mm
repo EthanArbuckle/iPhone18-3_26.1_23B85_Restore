@@ -3,7 +3,7 @@
 - (unint64_t)callSummarySupport;
 - (unint64_t)callTranscriptionSupport;
 - (void)addButtons;
-- (void)addCallItemWithTranscription:(BOOL)a3 summarization:(BOOL)a4;
+- (void)addCallItemWithTranscription:(BOOL)transcription summarization:(BOOL)summarization;
 - (void)addItems;
 - (void)addItemsForiPad;
 - (void)addItemsForiPhone;
@@ -11,7 +11,7 @@
 - (void)addMoreItem;
 - (void)addToolbarItem;
 - (void)addWatchItem;
-- (void)didTapContinueButton:(id)a3;
+- (void)didTapContinueButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -24,38 +24,38 @@
   [(ICStartupWhatsNewViewController *)&v4 viewDidLoad];
   [(ICStartupWhatsNewViewController *)self addItems];
   [(ICStartupWhatsNewViewController *)self addButtons];
-  v3 = [(ICStartupWhatsNewViewController *)self view];
-  [v3 setAccessibilityViewIsModal:1];
+  view = [(ICStartupWhatsNewViewController *)self view];
+  [view setAccessibilityViewIsModal:1];
 }
 
 - (unint64_t)callTranscriptionSupport
 {
-  v2 = [(ICStartupWhatsNewViewController *)self modelAvailabilityManager];
-  v3 = [v2 supportsCallTranscription];
+  modelAvailabilityManager = [(ICStartupWhatsNewViewController *)self modelAvailabilityManager];
+  supportsCallTranscription = [modelAvailabilityManager supportsCallTranscription];
 
-  return v3;
+  return supportsCallTranscription;
 }
 
 - (unint64_t)callSummarySupport
 {
-  v2 = [(ICStartupWhatsNewViewController *)self modelAvailabilityManager];
-  v3 = [v2 supportsPrivateCloudComputeSummary];
+  modelAvailabilityManager = [(ICStartupWhatsNewViewController *)self modelAvailabilityManager];
+  supportsPrivateCloudComputeSummary = [modelAvailabilityManager supportsPrivateCloudComputeSummary];
 
-  return v3;
+  return supportsPrivateCloudComputeSummary;
 }
 
 - (void)addButtons
 {
   v7 = +[OBBoldTrayButton boldButton];
-  v3 = [v7 configuration];
+  configuration = [v7 configuration];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Continue" value:&stru_100661CF0 table:0];
-  [v3 setTitle:v5];
+  [configuration setTitle:v5];
 
-  [v7 setConfiguration:v3];
+  [v7 setConfiguration:configuration];
   [v7 addTarget:self action:"didTapContinueButton:" forControlEvents:0x2000];
-  v6 = [(ICStartupWhatsNewViewController *)self buttonTray];
-  [v6 addButton:v7];
+  buttonTray = [(ICStartupWhatsNewViewController *)self buttonTray];
+  [buttonTray addButton:v7];
 }
 
 - (void)addItems
@@ -81,12 +81,12 @@
 
 - (void)addItemsForiPad
 {
-  v3 = [(ICStartupWhatsNewViewController *)self callTranscriptionSupport];
-  v4 = [(ICStartupWhatsNewViewController *)self callSummarySupport];
+  callTranscriptionSupport = [(ICStartupWhatsNewViewController *)self callTranscriptionSupport];
+  callSummarySupport = [(ICStartupWhatsNewViewController *)self callSummarySupport];
   [(ICStartupWhatsNewViewController *)self addWatchItem];
-  if (v4 | v3)
+  if (callSummarySupport | callTranscriptionSupport)
   {
-    [(ICStartupWhatsNewViewController *)self addCallItemWithTranscription:1 summarization:v4 != 0];
+    [(ICStartupWhatsNewViewController *)self addCallItemWithTranscription:1 summarization:callSummarySupport != 0];
   }
 
   [(ICStartupWhatsNewViewController *)self addMarkdownItem];
@@ -126,15 +126,15 @@
   [(ICStartupWhatsNewViewController *)self addBulletedListItemWithTitle:v7 description:v5 image:v6];
 }
 
-- (void)addCallItemWithTranscription:(BOOL)a3 summarization:(BOOL)a4
+- (void)addCallItemWithTranscription:(BOOL)transcription summarization:(BOOL)summarization
 {
-  v4 = a4;
+  summarizationCopy = summarization;
   v6 = +[NSBundle mainBundle];
   v12 = [v6 localizedStringForKey:@"Call Transcripts" value:&stru_100661CF0 table:0];
 
   v7 = +[NSBundle mainBundle];
   v8 = v7;
-  if (v4)
+  if (summarizationCopy)
   {
     v9 = @"Capture a FaceTime audio or phone conversation as text and audio, then view a summary of the call.";
   }
@@ -177,17 +177,17 @@
 - (id)startupNavigationController
 {
   objc_opt_class();
-  v3 = [(ICStartupWhatsNewViewController *)self navigationController];
+  navigationController = [(ICStartupWhatsNewViewController *)self navigationController];
   v4 = ICCheckedDynamicCast();
 
   return v4;
 }
 
-- (void)didTapContinueButton:(id)a3
+- (void)didTapContinueButton:(id)button
 {
   +[ICStartupController setLastShownStartupWelcomeScreenVersionToCurrentVersion];
-  v4 = [(ICStartupWhatsNewViewController *)self startupNavigationController];
-  [v4 dismiss];
+  startupNavigationController = [(ICStartupWhatsNewViewController *)self startupNavigationController];
+  [startupNavigationController dismiss];
 }
 
 @end

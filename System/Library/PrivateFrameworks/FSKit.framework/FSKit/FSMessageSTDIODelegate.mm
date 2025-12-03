@@ -1,20 +1,20 @@
 @interface FSMessageSTDIODelegate
-+ (id)delegateWithCompletionHandler:(id)a3;
-- (void)completed:(id)a3 replyHandler:(id)a4;
-- (void)logMessage:(id)a3;
-- (void)prompt:(id)a3 replyHandler:(id)a4;
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4;
++ (id)delegateWithCompletionHandler:(id)handler;
+- (void)completed:(id)completed replyHandler:(id)handler;
+- (void)logMessage:(id)message;
+- (void)prompt:(id)prompt replyHandler:(id)handler;
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler;
 @end
 
 @implementation FSMessageSTDIODelegate
 
-+ (id)delegateWithCompletionHandler:(id)a3
++ (id)delegateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  handlerCopy = handler;
+  v5 = objc_alloc_init(self);
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     v7 = v5[1];
     v5[1] = v6;
   }
@@ -22,48 +22,48 @@
   return v5;
 }
 
-- (void)completed:(id)a3 replyHandler:(id)a4
+- (void)completed:(id)completed replyHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   delegate = self->_delegate;
   if (delegate)
   {
-    delegate[2](delegate, a3);
+    delegate[2](delegate, completed);
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [message UTF8String];
 
-  puts(v3);
+  puts(uTF8String);
 }
 
-- (void)prompt:(id)a3 replyHandler:(id)a4
+- (void)prompt:(id)prompt replyHandler:(id)handler
 {
-  v14 = a3;
-  v5 = a4;
+  promptCopy = prompt;
+  handlerCopy = handler;
   v6 = malloc_type_malloc(0x400uLL, 0x83ED5871uLL);
   if (!v6)
   {
     v10 = __error();
     v11 = fs_errorForPOSIXError(*v10);
-    v5[2](v5, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
 LABEL_5:
 
     goto LABEL_8;
   }
 
   v7 = v6;
-  fprintf(*MEMORY[0x277D85DF8], "%s\n", [v14 UTF8String]);
+  fprintf(*MEMORY[0x277D85DF8], "%s\n", [promptCopy UTF8String]);
   v8 = MEMORY[0x277D85E00];
   if (fgets(v7, 1024, *MEMORY[0x277D85E00]))
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
     free(v7);
-    (v5)[2](v5, v9, 0);
+    (handlerCopy)[2](handlerCopy, v9, 0);
 
     goto LABEL_8;
   }
@@ -75,24 +75,24 @@ LABEL_5:
   if (!v13)
   {
     v11 = fs_errorForPOSIXError(v12);
-    v5[2](v5, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
     goto LABEL_5;
   }
 
-  (v5)[2](v5, &stru_285DEFA28, 0);
+  (handlerCopy)[2](handlerCopy, &stru_285DEFA28, 0);
 LABEL_8:
 }
 
-- (void)promptTrueFalse:(id)a3 replyHandler:(id)a4
+- (void)promptTrueFalse:(id)false replyHandler:(id)handler
 {
-  v19 = a3;
-  v5 = a4;
+  falseCopy = false;
+  handlerCopy = handler;
   v6 = malloc_type_malloc(0x400uLL, 0xB049E91BuLL);
   if (!v6)
   {
     v16 = __error();
     v17 = fs_errorForPOSIXError(*v16);
-    v5[2](v5, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 LABEL_14:
 
     goto LABEL_15;
@@ -100,7 +100,7 @@ LABEL_14:
 
   v7 = v6;
   v8 = MEMORY[0x277D85DF8];
-  fprintf(*MEMORY[0x277D85DF8], "%s\nY/N\n", [v19 UTF8String]);
+  fprintf(*MEMORY[0x277D85DF8], "%s\nY/N\n", [falseCopy UTF8String]);
   v9 = MEMORY[0x277D85E00];
   v10 = fgets(v7, 1024, *MEMORY[0x277D85E00]);
   if (!v10)
@@ -121,7 +121,7 @@ LABEL_9:
     }
 
     v17 = fs_errorForPOSIXError(v15);
-    v5[2](v5, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
     goto LABEL_14;
   }
 
@@ -143,7 +143,7 @@ LABEL_9:
 
   v18 = (v11 & 0xFFFFFFDF) == 89;
   free(v7);
-  v5[2](v5, v18, 0);
+  handlerCopy[2](handlerCopy, v18, 0);
 LABEL_15:
 }
 

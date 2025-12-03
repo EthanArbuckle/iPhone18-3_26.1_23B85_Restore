@@ -1,9 +1,9 @@
 @interface MNStartNavigationDetails
 - (MNStartNavigationDetails)init;
-- (MNStartNavigationDetails)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MNStartNavigationDetails)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNStartNavigationDetails
@@ -11,7 +11,7 @@
 - (id)description
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   selectedRouteIndex = self->_selectedRouteIndex;
   if (selectedRouteIndex >= [(NSArray *)self->_routes count])
   {
@@ -24,14 +24,14 @@
   }
 
   v56 = v5;
-  v6 = [v5 destination];
+  destination = [v5 destination];
   v7 = MEMORY[0x1E696AEC0];
-  v55 = v6;
-  v8 = [v6 humanDescriptionWithAddressAndLatLng];
-  v9 = [v7 stringWithFormat:@"destination: %@", v8];
-  [v3 addObject:v9];
+  v55 = destination;
+  humanDescriptionWithAddressAndLatLng = [destination humanDescriptionWithAddressAndLatLng];
+  v9 = [v7 stringWithFormat:@"destination: %@", humanDescriptionWithAddressAndLatLng];
+  [array addObject:v9];
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
@@ -51,11 +51,11 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v57 + 1) + 8 * i) name];
-        v17 = v16;
-        if (v16)
+        name = [*(*(&v57 + 1) + 8 * i) name];
+        v17 = name;
+        if (name)
         {
-          v18 = v16;
+          v18 = name;
         }
 
         else
@@ -65,7 +65,7 @@
 
         v19 = v18;
 
-        [v10 addObject:v19];
+        [array2 addObject:v19];
       }
 
       v13 = [(NSArray *)v11 countByEnumeratingWithState:&v57 objects:v61 count:16];
@@ -75,12 +75,12 @@
   }
 
   v20 = MEMORY[0x1E696AEC0];
-  v21 = [v10 componentsJoinedByString:{@", "}];
+  v21 = [array2 componentsJoinedByString:{@", "}];
   v22 = [v20 stringWithFormat:@"routes: %@", v21];
-  [v3 addObject:v22];
+  [array addObject:v22];
 
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"selectedRouteIndex: %d", self->_selectedRouteIndex];
-  [v3 addObject:v23];
+  [array addObject:v23];
 
   v24 = self->_navigationType - 1;
   if (v24 > 3)
@@ -94,7 +94,7 @@
   }
 
   v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"navigationType: %@", v25];
-  [v3 addObject:v26];
+  [array addObject:v26];
 
   guidanceType = self->_guidanceType;
   v28 = @"Full";
@@ -114,22 +114,22 @@
   }
 
   v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"guidanceType: %@", v29];
-  [v3 addObject:v30];
+  [array addObject:v30];
 
   v31 = MEMORY[0x1E696AEC0];
-  v32 = [v56 transportType];
-  if (v32 >= 7)
+  transportType = [v56 transportType];
+  if (transportType >= 7)
   {
-    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v32];
+    v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", transportType];
   }
 
   else
   {
-    v33 = off_1E842A5B0[v32];
+    v33 = off_1E842A5B0[transportType];
   }
 
   v34 = [v31 stringWithFormat:@"transportType: %@", v33];
-  [v3 addObject:v34];
+  [array addObject:v34];
 
   initialUserLocation = self->_initialUserLocation;
   if (initialUserLocation)
@@ -139,12 +139,12 @@
     v38 = v37;
     [(MNLocation *)self->_initialUserLocation coordinate];
     v40 = [v36 stringWithFormat:@"initialUserLocation: %f, %f", v38, v39];
-    [v3 addObject:v40];
+    [array addObject:v40];
   }
 
   else
   {
-    [v3 addObject:@"initialUserLocation: (none)"];
+    [array addObject:@"initialUserLocation: (none)"];
   }
 
   v41 = MEMORY[0x1E696AEC0];
@@ -160,19 +160,19 @@
   }
 
   v44 = [v41 stringWithFormat:@"guidanceLevelOverride: %@", v43];
-  [v3 addObject:v44];
+  [array addObject:v44];
 
   v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@"isResumingMultipointRoute: %d", self->_isResumingMultipointRoute];
-  [v3 addObject:v45];
+  [array addObject:v45];
 
   v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"tracePlaybackPath: %@", self->_tracePlaybackPath];
-  [v3 addObject:v46];
+  [array addObject:v46];
 
   v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"traceRecordingData: %p", self->_traceRecordingData];
-  [v3 addObject:v47];
+  [array addObject:v47];
 
   v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"traceRecordingNameOverride: %@", self->_traceRecordingNameOverride];
-  [v3 addObject:v48];
+  [array addObject:v48];
 
   v49 = self->_simulationType + 1;
   if (v49 > 5)
@@ -186,18 +186,18 @@
   }
 
   v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"simulationType: %@", v50];
-  [v3 addObject:v51];
+  [array addObject:v51];
 
-  v52 = [v3 componentsJoinedByString:@"\n\t"];
+  v52 = [array componentsJoinedByString:@"\n\t"];
 
   v53 = *MEMORY[0x1E69E9840];
 
   return v52;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MNGetMNNavigationDetailsLog();
   v6 = os_signpost_id_generate(v5);
   v7 = v5;
@@ -208,28 +208,28 @@
     _os_signpost_emit_with_name_impl(&dword_1D311E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "StartNavigationDetailsEncoding", "", buf, 2u);
   }
 
-  [v4 encodeInteger:self->_navigationType forKey:@"_navigationType"];
-  [v4 encodeInteger:self->_guidanceType forKey:@"_guidanceType"];
-  [v4 encodeObject:self->_routeAttributes forKey:@"_routeAttributes"];
-  [v4 encodeObject:self->_directionsRequest forKey:@"_directionsRequest"];
-  [v4 encodeObject:self->_directionsResponse forKey:@"_directionsResponse"];
-  [v4 encodeObject:self->_requestingAppIdentifier forKey:@"_requestingAppIdentifier"];
+  [coderCopy encodeInteger:self->_navigationType forKey:@"_navigationType"];
+  [coderCopy encodeInteger:self->_guidanceType forKey:@"_guidanceType"];
+  [coderCopy encodeObject:self->_routeAttributes forKey:@"_routeAttributes"];
+  [coderCopy encodeObject:self->_directionsRequest forKey:@"_directionsRequest"];
+  [coderCopy encodeObject:self->_directionsResponse forKey:@"_directionsResponse"];
+  [coderCopy encodeObject:self->_requestingAppIdentifier forKey:@"_requestingAppIdentifier"];
   if ([(NSArray *)self->_routes count])
   {
-    [v4 encodeObject:self->_routes forKey:@"_routes"];
-    [v4 encodeObject:self->_traffic forKey:@"_traffic"];
+    [coderCopy encodeObject:self->_routes forKey:@"_routes"];
+    [coderCopy encodeObject:self->_traffic forKey:@"_traffic"];
   }
 
-  [v4 encodeInteger:self->_selectedRouteIndex forKey:@"_selectedRouteIndex"];
-  [v4 encodeObject:self->_initialUserLocation forKey:@"_initialUserLocation"];
-  [v4 encodeInteger:self->_guidanceLevelOverride forKey:@"_guidanceLevelOverride"];
-  [v4 encodeBool:self->_isResumingMultipointRoute forKey:@"_isResumingMultipointRoute"];
-  [v4 encodeObject:self->_traits forKey:@"_traits"];
-  [v4 encodeObject:self->_tracePlaybackPath forKey:@"_tracePlaybackPath"];
-  [v4 encodeObject:self->_traceRecordingData forKey:@"_traceRecordingData"];
-  [v4 encodeInteger:self->_simulationType forKey:@"_simulationType"];
-  [v4 encodeObject:self->_traceRecordingNameOverride forKey:@"_traceRecordingNameOverride"];
-  [v4 encodeObject:self->_reconnectionDetails forKey:@"_reconnectionDetails"];
+  [coderCopy encodeInteger:self->_selectedRouteIndex forKey:@"_selectedRouteIndex"];
+  [coderCopy encodeObject:self->_initialUserLocation forKey:@"_initialUserLocation"];
+  [coderCopy encodeInteger:self->_guidanceLevelOverride forKey:@"_guidanceLevelOverride"];
+  [coderCopy encodeBool:self->_isResumingMultipointRoute forKey:@"_isResumingMultipointRoute"];
+  [coderCopy encodeObject:self->_traits forKey:@"_traits"];
+  [coderCopy encodeObject:self->_tracePlaybackPath forKey:@"_tracePlaybackPath"];
+  [coderCopy encodeObject:self->_traceRecordingData forKey:@"_traceRecordingData"];
+  [coderCopy encodeInteger:self->_simulationType forKey:@"_simulationType"];
+  [coderCopy encodeObject:self->_traceRecordingNameOverride forKey:@"_traceRecordingNameOverride"];
+  [coderCopy encodeObject:self->_reconnectionDetails forKey:@"_reconnectionDetails"];
   v9 = v8;
   v10 = v9;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
@@ -239,9 +239,9 @@
   }
 }
 
-- (MNStartNavigationDetails)initWithCoder:(id)a3
+- (MNStartNavigationDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v46.receiver = self;
   v46.super_class = MNStartNavigationDetails;
   v5 = [(MNStartNavigationDetails *)&v46 init];
@@ -257,28 +257,28 @@
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "StartNavigationDetailsDecoding", "", buf, 2u);
     }
 
-    v5->_navigationType = [v4 decodeIntegerForKey:@"_navigationType"];
-    v5->_guidanceType = [v4 decodeIntegerForKey:@"_guidanceType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeAttributes"];
+    v5->_navigationType = [coderCopy decodeIntegerForKey:@"_navigationType"];
+    v5->_guidanceType = [coderCopy decodeIntegerForKey:@"_guidanceType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeAttributes"];
     routeAttributes = v5->_routeAttributes;
     v5->_routeAttributes = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_directionsRequest"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_directionsRequest"];
     directionsRequest = v5->_directionsRequest;
     v5->_directionsRequest = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponse"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_directionsResponse"];
     directionsResponse = v5->_directionsResponse;
     v5->_directionsResponse = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_requestingAppIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_requestingAppIdentifier"];
     requestingAppIdentifier = v5->_requestingAppIdentifier;
     v5->_requestingAppIdentifier = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"_routes"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"_routes"];
     routes = v5->_routes;
     v5->_routes = v21;
 
@@ -286,35 +286,35 @@
     v24 = objc_opt_class();
     v25 = objc_opt_class();
     v26 = [v23 setWithObjects:{v24, v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"_traffic"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"_traffic"];
     traffic = v5->_traffic;
     v5->_traffic = v27;
 
-    v5->_selectedRouteIndex = [v4 decodeIntegerForKey:@"_selectedRouteIndex"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_initialUserLocation"];
+    v5->_selectedRouteIndex = [coderCopy decodeIntegerForKey:@"_selectedRouteIndex"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_initialUserLocation"];
     initialUserLocation = v5->_initialUserLocation;
     v5->_initialUserLocation = v29;
 
-    v5->_guidanceLevelOverride = [v4 decodeIntegerForKey:@"_guidanceLevelOverride"];
-    v5->_isResumingMultipointRoute = [v4 decodeBoolForKey:@"_isResumingMultipointRoute"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_traits"];
+    v5->_guidanceLevelOverride = [coderCopy decodeIntegerForKey:@"_guidanceLevelOverride"];
+    v5->_isResumingMultipointRoute = [coderCopy decodeBoolForKey:@"_isResumingMultipointRoute"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_traits"];
     traits = v5->_traits;
     v5->_traits = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_tracePlaybackPath"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_tracePlaybackPath"];
     tracePlaybackPath = v5->_tracePlaybackPath;
     v5->_tracePlaybackPath = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingData"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingData"];
     traceRecordingData = v5->_traceRecordingData;
     v5->_traceRecordingData = v35;
 
-    v5->_simulationType = [v4 decodeIntegerForKey:@"_simulationType"];
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingNameOverride"];
+    v5->_simulationType = [coderCopy decodeIntegerForKey:@"_simulationType"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_traceRecordingNameOverride"];
     traceRecordingNameOverride = v5->_traceRecordingNameOverride;
     v5->_traceRecordingNameOverride = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_reconnectionDetails"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_reconnectionDetails"];
     reconnectionDetails = v5->_reconnectionDetails;
     v5->_reconnectionDetails = v39;
 
@@ -332,7 +332,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MNStartNavigationDetails allocWithZone:?]];
   v5 = v4;

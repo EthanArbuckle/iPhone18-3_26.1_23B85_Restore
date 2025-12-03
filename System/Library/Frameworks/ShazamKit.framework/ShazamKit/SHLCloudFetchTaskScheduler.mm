@@ -1,27 +1,27 @@
 @interface SHLCloudFetchTaskScheduler
-- (BOOL)cloudBackedZones:(id)a3 containsZone:(id)a4;
+- (BOOL)cloudBackedZones:(id)zones containsZone:(id)zone;
 - (NSArray)preconditions;
-- (SHLCloudFetchTaskScheduler)initWithConfiguration:(id)a3;
-- (void)cacheTask:(id)a3;
-- (void)scheduleFetchTask:(id)a3;
-- (void)schedulePendingBatchChangesFetchTask:(id)a3 withContainer:(id)a4;
+- (SHLCloudFetchTaskScheduler)initWithConfiguration:(id)configuration;
+- (void)cacheTask:(id)task;
+- (void)scheduleFetchTask:(id)task;
+- (void)schedulePendingBatchChangesFetchTask:(id)task withContainer:(id)container;
 @end
 
 @implementation SHLCloudFetchTaskScheduler
 
-- (SHLCloudFetchTaskScheduler)initWithConfiguration:(id)a3
+- (SHLCloudFetchTaskScheduler)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = SHLCloudFetchTaskScheduler;
-  v5 = [(SHLCloudTaskScheduler *)&v11 initWithConfiguration:v4];
+  v5 = [(SHLCloudTaskScheduler *)&v11 initWithConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [[SHLCloudFetchTaskTransformer alloc] initWithConfiguration:v4];
+    v6 = [[SHLCloudFetchTaskTransformer alloc] initWithConfiguration:configurationCopy];
     fetchTaskTransformer = v5->_fetchTaskTransformer;
     v5->_fetchTaskTransformer = v6;
 
-    v8 = [[SHLCloudSubscriptionTransformer alloc] initWithConfiguration:v4];
+    v8 = [[SHLCloudSubscriptionTransformer alloc] initWithConfiguration:configurationCopy];
     subscriptionTaskTransformer = v5->_subscriptionTaskTransformer;
     v5->_subscriptionTaskTransformer = v8;
   }
@@ -33,20 +33,20 @@
 {
   v3 = +[NSMutableArray array];
   v4 = [SHLCloudAccountStatusPrecondition alloc];
-  v5 = [(SHLCloudTaskScheduler *)self containerTransformer];
-  v6 = [v5 cloudBackedContainer];
-  v7 = [(SHLCloudAccountStatusPrecondition *)v4 initWithContainer:v6];
+  containerTransformer = [(SHLCloudTaskScheduler *)self containerTransformer];
+  cloudBackedContainer = [containerTransformer cloudBackedContainer];
+  v7 = [(SHLCloudAccountStatusPrecondition *)v4 initWithContainer:cloudBackedContainer];
 
   [v3 addObject:v7];
-  v8 = [(SHLCloudTaskScheduler *)self configuration];
-  v9 = [v8 sessionScope];
+  configuration = [(SHLCloudTaskScheduler *)self configuration];
+  sessionScope = [configuration sessionScope];
 
-  if (v9 == 1)
+  if (sessionScope == 1)
   {
     v10 = [SHLCloudEncryptionPrecondition alloc];
-    v11 = [(SHLCloudTaskScheduler *)self containerTransformer];
-    v12 = [v11 cloudBackedContainer];
-    v13 = [(SHLCloudEncryptionPrecondition *)v10 initWithContainer:v12];
+    containerTransformer2 = [(SHLCloudTaskScheduler *)self containerTransformer];
+    cloudBackedContainer2 = [containerTransformer2 cloudBackedContainer];
+    v13 = [(SHLCloudEncryptionPrecondition *)v10 initWithContainer:cloudBackedContainer2];
 
     [v3 addObject:v13];
   }
@@ -56,48 +56,48 @@
   return v14;
 }
 
-- (void)scheduleFetchTask:(id)a3
+- (void)scheduleFetchTask:(id)task
 {
-  v4 = a3;
-  v5 = [(SHLCloudTaskScheduler *)self containerTransformer];
-  v6 = [v5 cloudBackedContainer];
+  taskCopy = task;
+  containerTransformer = [(SHLCloudTaskScheduler *)self containerTransformer];
+  cloudBackedContainer = [containerTransformer cloudBackedContainer];
 
-  v7 = [v4 syncStartCondition];
+  syncStartCondition = [taskCopy syncStartCondition];
 
-  if (v7 == @"BatchFetchContinuation")
+  if (syncStartCondition == @"BatchFetchContinuation")
   {
-    [(SHLCloudFetchTaskScheduler *)self schedulePendingBatchChangesFetchTask:v4 withContainer:v6];
+    [(SHLCloudFetchTaskScheduler *)self schedulePendingBatchChangesFetchTask:taskCopy withContainer:cloudBackedContainer];
   }
 
   else
   {
-    v8 = [(SHLCloudFetchTaskScheduler *)self fetchTaskTransformer];
+    fetchTaskTransformer = [(SHLCloudFetchTaskScheduler *)self fetchTaskTransformer];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10002A2A0;
     v13[3] = &unk_10007D9C8;
     v13[4] = self;
-    v9 = v4;
+    v9 = taskCopy;
     v14 = v9;
-    v15 = v6;
-    v10 = [v8 cloudBackedDatabaseChangesOperationFromFetchTask:v9 container:v15 completion:v13];
+    v15 = cloudBackedContainer;
+    v10 = [fetchTaskTransformer cloudBackedDatabaseChangesOperationFromFetchTask:v9 container:v15 completion:v13];
 
     [(SHLCloudFetchTaskScheduler *)self cacheTask:v9];
     v11 = +[SHLOperationQueue defaultQueue];
-    v12 = [v10 operation];
-    [v11 addOperation:v12 waitUntilFinished:1];
+    operation = [v10 operation];
+    [v11 addOperation:operation waitUntilFinished:1];
   }
 }
 
-- (BOOL)cloudBackedZones:(id)a3 containsZone:(id)a4
+- (BOOL)cloudBackedZones:(id)zones containsZone:(id)zone
 {
-  v5 = a3;
-  v6 = a4;
+  zonesCopy = zones;
+  zoneCopy = zone;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v5;
+  obj = zonesCopy;
   v7 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -112,11 +112,11 @@
         }
 
         v10 = [*(*(&v18 + 1) + 8 * i) zone];
-        v11 = [v10 zoneID];
-        v12 = [v11 zoneName];
-        v13 = [v6 zoneID];
-        v14 = [v13 zoneName];
-        v15 = [v12 isEqual:v14];
+        zoneID = [v10 zoneID];
+        zoneName = [zoneID zoneName];
+        zoneID2 = [zoneCopy zoneID];
+        zoneName2 = [zoneID2 zoneName];
+        v15 = [zoneName isEqual:zoneName2];
 
         if (v15)
         {
@@ -140,19 +140,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)schedulePendingBatchChangesFetchTask:(id)a3 withContainer:(id)a4
+- (void)schedulePendingBatchChangesFetchTask:(id)task withContainer:(id)container
 {
-  v31 = a3;
-  v30 = a4;
-  v6 = [(SHLCloudTaskScheduler *)self cache];
-  v7 = [v6 storedZoneIdentifiers];
+  taskCopy = task;
+  containerCopy = container;
+  cache = [(SHLCloudTaskScheduler *)self cache];
+  storedZoneIdentifiers = [cache storedZoneIdentifiers];
 
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [storedZoneIdentifiers count]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v7;
+  v9 = storedZoneIdentifiers;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v10)
   {
@@ -168,8 +168,8 @@ LABEL_11:
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [(SHLCloudTaskScheduler *)self cache];
-        v16 = [v15 hasPendingBatchChangesForZoneID:v14];
+        cache2 = [(SHLCloudTaskScheduler *)self cache];
+        v16 = [cache2 hasPendingBatchChangesForZoneID:v14];
 
         if (v16)
         {
@@ -207,15 +207,15 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Fetching pending batch changes for %lu zone(s)", buf, 0xCu);
     }
 
-    v25 = [(SHLCloudFetchTaskScheduler *)self fetchTaskTransformer];
-    v27 = v30;
-    v26 = v31;
-    v22 = [v25 cloudBackedZoneChangesOperationFromFetchTask:v31 forChangedZones:v8 container:v30];
+    fetchTaskTransformer = [(SHLCloudFetchTaskScheduler *)self fetchTaskTransformer];
+    v27 = containerCopy;
+    v26 = taskCopy;
+    v22 = [fetchTaskTransformer cloudBackedZoneChangesOperationFromFetchTask:taskCopy forChangedZones:v8 container:containerCopy];
 
-    [(SHLCloudFetchTaskScheduler *)self cacheTask:v31];
+    [(SHLCloudFetchTaskScheduler *)self cacheTask:taskCopy];
     v28 = +[SHLOperationQueue defaultQueue];
-    v29 = [v22 operation];
-    [v28 addOperation:v29];
+    operation = [v22 operation];
+    [v28 addOperation:operation];
   }
 
   else
@@ -226,17 +226,17 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Not scheduling a batch fetch task as there are no batch changes to be fetched for any zone.", buf, 2u);
     }
 
-    v27 = v30;
-    v26 = v31;
+    v27 = containerCopy;
+    v26 = taskCopy;
   }
 }
 
-- (void)cacheTask:(id)a3
+- (void)cacheTask:(id)task
 {
-  v4 = a3;
-  v5 = [(SHLCloudTaskScheduler *)self cache];
+  taskCopy = task;
+  cache = [(SHLCloudTaskScheduler *)self cache];
   v13 = 0;
-  v6 = [v5 storeTask:v4 ofType:0 error:&v13];
+  v6 = [cache storeTask:taskCopy ofType:0 error:&v13];
   v7 = v13;
 
   if ((v6 & 1) == 0)
@@ -255,11 +255,11 @@ LABEL_11:
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v4 identifier];
+    identifier = [taskCopy identifier];
     *buf = 138543618;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = identifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "<task: %{public}@ %@> is scheduled", buf, 0x16u);
   }
 }

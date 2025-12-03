@@ -1,15 +1,15 @@
 @interface IOS_SmallLockupViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityUserInputLabels;
 @end
 
 @implementation IOS_SmallLockupViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.BaseLockupView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AppStore.SmallLockupView" isKindOfClass:@"AppStore.BaseLockupView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.BaseLockupView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AppStore.SmallLockupView" isKindOfClass:@"AppStore.BaseLockupView"];
 }
 
 - (id)accessibilityUserInputLabels
@@ -19,20 +19,20 @@
   v3 = [(IOS_SmallLockupViewAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
-  if ([v5 length])
+  accessibilityLabel = [v4 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v6 = MEMORY[0x29C2C8BE0](v5);
+    accessibilityUserInputLabels = MEMORY[0x29C2C8BE0](accessibilityLabel);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = IOS_SmallLockupViewAccessibility;
-    v6 = [(IOS_SmallLockupViewAccessibility *)&v9 accessibilityUserInputLabels];
+    accessibilityUserInputLabels = [(IOS_SmallLockupViewAccessibility *)&v9 accessibilityUserInputLabels];
   }
 
-  v7 = v6;
+  v7 = accessibilityUserInputLabels;
 
   return v7;
 }

@@ -9,8 +9,8 @@
 
 - (void)aggregatesByFeatureKey
 {
-  v1 = [a1 aggregates];
-  v2 = [v1 fc_dictionaryWithKeyBlock:&__block_literal_global_116];
+  aggregates = [self aggregates];
+  v2 = [aggregates fc_dictionaryWithKeyBlock:&__block_literal_global_116];
   v3 = v2;
   if (v2)
   {
@@ -29,8 +29,8 @@
 
 - (void)historiesByInstanceIdentifier
 {
-  v1 = [a1 histories];
-  v2 = [v1 fc_dictionaryWithKeyBlock:&__block_literal_global_3_0];
+  histories = [self histories];
+  v2 = [histories fc_dictionaryWithKeyBlock:&__block_literal_global_3_0];
   v3 = v2;
   if (v2)
   {
@@ -55,8 +55,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 histories];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  histories = [self histories];
+  v6 = [histories countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -66,12 +66,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(histories);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 instanceIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        instanceIdentifier = [v9 instanceIdentifier];
+        v11 = [instanceIdentifier isEqualToString:v4];
 
         if (v11)
         {
@@ -80,7 +80,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [histories countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -99,10 +99,10 @@ LABEL_11:
 
 - (uint64_t)lastChangeNumberForInstanceIdentifier:()FCAdditions
 {
-  v1 = [a1 historyForInstanceIdentifier:?];
-  v2 = [v1 lastChangeNumber];
+  v1 = [self historyForInstanceIdentifier:?];
+  lastChangeNumber = [v1 lastChangeNumber];
 
-  return v2;
+  return lastChangeNumber;
 }
 
 @end

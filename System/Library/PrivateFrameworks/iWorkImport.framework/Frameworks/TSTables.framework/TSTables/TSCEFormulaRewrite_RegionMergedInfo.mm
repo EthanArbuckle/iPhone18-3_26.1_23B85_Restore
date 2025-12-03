@@ -1,21 +1,21 @@
 @interface TSCEFormulaRewrite_RegionMergedInfo
-- (TSCEFormulaRewrite_RegionMergedInfo)initWithMergeRegion:(id)a3 mergeSource:(TSUCellCoord)a4;
+- (TSCEFormulaRewrite_RegionMergedInfo)initWithMergeRegion:(id)region mergeSource:(TSUCellCoord)source;
 - (id)description;
 @end
 
 @implementation TSCEFormulaRewrite_RegionMergedInfo
 
-- (TSCEFormulaRewrite_RegionMergedInfo)initWithMergeRegion:(id)a3 mergeSource:(TSUCellCoord)a4
+- (TSCEFormulaRewrite_RegionMergedInfo)initWithMergeRegion:(id)region mergeSource:(TSUCellCoord)source
 {
-  v7 = a3;
+  regionCopy = region;
   v11.receiver = self;
   v11.super_class = TSCEFormulaRewrite_RegionMergedInfo;
   v8 = [(TSCEFormulaRewrite_RegionMergedInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mergeRegion, a3);
-    v9->_mergeSource = a4;
+    objc_storeStrong(&v8->_mergeRegion, region);
+    v9->_mergeSource = source;
   }
 
   return v9;

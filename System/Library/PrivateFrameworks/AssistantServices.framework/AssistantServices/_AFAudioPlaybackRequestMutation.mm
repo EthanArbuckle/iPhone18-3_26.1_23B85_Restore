@@ -1,5 +1,5 @@
 @interface _AFAudioPlaybackRequestMutation
-- (_AFAudioPlaybackRequestMutation)initWithBase:(id)a3;
+- (_AFAudioPlaybackRequestMutation)initWithBase:(id)base;
 - (double)getFadeInDuration;
 - (double)getFadeOutDuration;
 - (float)getVolume;
@@ -17,45 +17,45 @@
 {
   if ((*&self->_mutationFlags & 0x200) != 0)
   {
-    v2 = self->_UUID;
+    uUID = self->_UUID;
   }
 
   else
   {
-    v2 = [(AFAudioPlaybackRequest *)self->_base UUID];
+    uUID = [(AFAudioPlaybackRequest *)self->_base UUID];
   }
 
-  return v2;
+  return uUID;
 }
 
 - (id)getHapticLibraryKey
 {
   if ((*&self->_mutationFlags & 0x100) != 0)
   {
-    v2 = self->_hapticLibraryKey;
+    hapticLibraryKey = self->_hapticLibraryKey;
   }
 
   else
   {
-    v2 = [(AFAudioPlaybackRequest *)self->_base hapticLibraryKey];
+    hapticLibraryKey = [(AFAudioPlaybackRequest *)self->_base hapticLibraryKey];
   }
 
-  return v2;
+  return hapticLibraryKey;
 }
 
 - (id)getUserInfo
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_userInfo;
+    userInfo = self->_userInfo;
   }
 
   else
   {
-    v2 = [(AFAudioPlaybackRequest *)self->_base userInfo];
+    userInfo = [(AFAudioPlaybackRequest *)self->_base userInfo];
   }
 
-  return v2;
+  return userInfo;
 }
 
 - (double)getFadeOutDuration
@@ -108,42 +108,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_itemData;
+    itemData = self->_itemData;
   }
 
   else
   {
-    v2 = [(AFAudioPlaybackRequest *)self->_base itemData];
+    itemData = [(AFAudioPlaybackRequest *)self->_base itemData];
   }
 
-  return v2;
+  return itemData;
 }
 
 - (id)getItemURL
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_itemURL;
+    itemURL = self->_itemURL;
   }
 
   else
   {
-    v2 = [(AFAudioPlaybackRequest *)self->_base itemURL];
+    itemURL = [(AFAudioPlaybackRequest *)self->_base itemURL];
   }
 
-  return v2;
+  return itemURL;
 }
 
-- (_AFAudioPlaybackRequestMutation)initWithBase:(id)a3
+- (_AFAudioPlaybackRequestMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFAudioPlaybackRequestMutation;
   v6 = [(_AFAudioPlaybackRequestMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

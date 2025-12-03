@@ -3,7 +3,7 @@
 - (BOOL)validForStorage;
 - (id)dependentUUIDs;
 - (id)validate;
-- (void)loadModelWithActionInformation:(id)a3;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDMediaPlaybackActionModel
@@ -13,23 +13,23 @@
   v32 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = HMDMediaPlaybackActionModel;
-  v3 = [(HMDBackingStoreModelObject *)&v29 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v29 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v5)
+  if (parentUUID)
   {
-    v6 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v4 addObject:v6];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v4 addObject:parentUUID2];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(HMDMediaPlaybackActionModel *)self accessories];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  accessories = [(HMDMediaPlaybackActionModel *)self accessories];
+  v8 = [accessories countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -40,14 +40,14 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(accessories);
         }
 
         v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v25 + 1) + 8 * i)];
         [v4 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v9 = [accessories countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v9);
@@ -57,8 +57,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [(HMDMediaPlaybackActionModel *)self services];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  services = [(HMDMediaPlaybackActionModel *)self services];
+  v14 = [services countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -69,14 +69,14 @@
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(services);
         }
 
         v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v21 + 1) + 8 * j)];
         [v4 addObject:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v15 = [services countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v15);
@@ -89,11 +89,11 @@
 
 - (id)validate
 {
-  v3 = [(HMDMediaPlaybackActionModel *)self profiles];
-  v4 = [(HMDMediaPlaybackActionModel *)self state];
-  v5 = [v4 integerValue];
-  v6 = [(HMDMediaPlaybackActionModel *)self volume];
-  v7 = [HMDMediaPlaybackAction isPlaybackActionValidWithProfiles:v3 state:v5 volume:v6];
+  profiles = [(HMDMediaPlaybackActionModel *)self profiles];
+  state = [(HMDMediaPlaybackActionModel *)self state];
+  integerValue = [state integerValue];
+  volume = [(HMDMediaPlaybackActionModel *)self volume];
+  v7 = [HMDMediaPlaybackAction isPlaybackActionValidWithProfiles:profiles state:integerValue volume:volume];
 
   if (v7)
   {
@@ -110,30 +110,30 @@
 
 - (BOOL)validForStorage
 {
-  v3 = [(HMDMediaPlaybackActionModel *)self profiles];
-  if ([v3 count])
+  profiles = [(HMDMediaPlaybackActionModel *)self profiles];
+  if ([profiles count])
   {
-    v4 = [(HMDMediaPlaybackActionModel *)self accessories];
-    if ([v4 count])
+    accessories = [(HMDMediaPlaybackActionModel *)self accessories];
+    if ([accessories count])
     {
-      v5 = [(HMDMediaPlaybackActionModel *)self state];
-      if ([v5 integerValue])
+      state = [(HMDMediaPlaybackActionModel *)self state];
+      if ([state integerValue])
       {
         v6 = 1;
       }
 
       else
       {
-        v7 = [(HMDMediaPlaybackActionModel *)self volume];
-        if (v7)
+        volume = [(HMDMediaPlaybackActionModel *)self volume];
+        if (volume)
         {
           v6 = 1;
         }
 
         else
         {
-          v8 = [(HMDMediaPlaybackActionModel *)self encodedPlaybackArchive];
-          v6 = v8 != 0;
+          encodedPlaybackArchive = [(HMDMediaPlaybackActionModel *)self encodedPlaybackArchive];
+          v6 = encodedPlaybackArchive != 0;
         }
       }
     }
@@ -152,26 +152,26 @@
   return v6;
 }
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   v11.receiver = self;
   v11.super_class = HMDMediaPlaybackActionModel;
-  [(HMDActionModel *)&v11 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_numberForKey:*MEMORY[0x277CD08B0]];
+  [(HMDActionModel *)&v11 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD08B0]];
   [(HMDMediaPlaybackActionModel *)self setState:v5];
 
-  v6 = [v4 hmf_numberForKey:*MEMORY[0x277CD08C0]];
+  v6 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD08C0]];
   [(HMDMediaPlaybackActionModel *)self setVolume:v6];
 
-  v7 = [v4 hmf_arrayForKey:*MEMORY[0x277CD08A0]];
+  v7 = [informationCopy hmf_arrayForKey:*MEMORY[0x277CD08A0]];
   if (v7)
   {
     v8 = [MEMORY[0x277CBEB98] setWithArray:v7];
     [(HMDMediaPlaybackActionModel *)self setProfiles:v8];
   }
 
-  v9 = [v4 hmf_dataForKey:*MEMORY[0x277CD0890]];
+  v9 = [informationCopy hmf_dataForKey:*MEMORY[0x277CD0890]];
   if (v9)
   {
     v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:0];
@@ -188,7 +188,7 @@
   block[1] = 3221225472;
   block[2] = __41__HMDMediaPlaybackActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_177518 != -1)
   {
     dispatch_once(&properties_onceToken_177518, block);

@@ -1,5 +1,5 @@
 @interface MapsSuggestionsLimitingLocationManager
-- (MapsSuggestionsLimitingLocationManager)initWithEffectiveBundlePath:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6;
+- (MapsSuggestionsLimitingLocationManager)initWithEffectiveBundlePath:(id)path limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue;
 - (double)desiredAccuracy;
 - (double)distanceFilter;
 - (void)_startMonitoringSignificantLocationChanges;
@@ -8,12 +8,12 @@
 - (void)_stopMonitoringSignificantLocationChanges;
 - (void)_stopMonitoringVisits;
 - (void)_stopUpdatingLocation;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDesiredAccuracy:(double)a3;
-- (void)setDistanceFilter:(double)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)setDelegate:(id)delegate;
+- (void)setDesiredAccuracy:(double)accuracy;
+- (void)setDistanceFilter:(double)filter;
 - (void)startMonitoringSignificantLocationChanges;
 - (void)startMonitoringVisits;
 - (void)startUpdatingLocation;
@@ -24,13 +24,13 @@
 
 @implementation MapsSuggestionsLimitingLocationManager
 
-- (MapsSuggestionsLimitingLocationManager)initWithEffectiveBundlePath:(id)a3 limitingBundleIdentifier:(id)a4 delegate:(id)a5 onQueue:(id)a6
+- (MapsSuggestionsLimitingLocationManager)initWithEffectiveBundlePath:(id)path limitingBundleIdentifier:(id)identifier delegate:(id)delegate onQueue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v28.receiver = self;
   v28.super_class = MapsSuggestionsLimitingLocationManager;
   v14 = [(MapsSuggestionsLimitingLocationManager *)&v28 init];
@@ -39,13 +39,13 @@
     goto LABEL_5;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundlePath:v10 delegate:v14 onQueue:v13];
+  v15 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundlePath:pathCopy delegate:v14 onQueue:queueCopy];
   effectiveLocationManager = v14->_effectiveLocationManager;
   v14->_effectiveLocationManager = v15;
 
-  if (!v11 || (v17 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundleIdentifier:v11 delegate:v14 onQueue:v13], limitingLocationManager = v14->_limitingLocationManager, v14->_limitingLocationManager = v17, limitingLocationManager, v14->_limitingLocationManager))
+  if (!identifierCopy || (v17 = [objc_alloc(MEMORY[0x1E695FBE8]) initWithEffectiveBundleIdentifier:identifierCopy delegate:v14 onQueue:queueCopy], limitingLocationManager = v14->_limitingLocationManager, v14->_limitingLocationManager = v17, limitingLocationManager, v14->_limitingLocationManager))
   {
-    objc_storeStrong(&v14->_delegate, a5);
+    objc_storeStrong(&v14->_delegate, delegate);
     v19 = objc_alloc_init(_MonitorState);
     locationUpdateState = v14->_locationUpdateState;
     v14->_locationUpdateState = v19;
@@ -83,52 +83,52 @@ LABEL_6:
   return v25;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   obj = self;
   objc_sync_enter(obj);
   delegate = obj->_delegate;
-  obj->_delegate = v4;
+  obj->_delegate = delegateCopy;
 
   objc_sync_exit(obj);
 }
 
 - (double)distanceFilter
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(CLLocationManager *)v2->_effectiveLocationManager distanceFilter];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CLLocationManager *)selfCopy->_effectiveLocationManager distanceFilter];
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setDistanceFilter:(double)a3
+- (void)setDistanceFilter:(double)filter
 {
   obj = self;
   objc_sync_enter(obj);
-  [(CLLocationManager *)obj->_effectiveLocationManager setDistanceFilter:a3];
+  [(CLLocationManager *)obj->_effectiveLocationManager setDistanceFilter:filter];
   objc_sync_exit(obj);
 }
 
 - (double)desiredAccuracy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(CLLocationManager *)v2->_effectiveLocationManager desiredAccuracy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(CLLocationManager *)selfCopy->_effectiveLocationManager desiredAccuracy];
   v4 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
   obj = self;
   objc_sync_enter(obj);
-  [(CLLocationManager *)obj->_effectiveLocationManager setDesiredAccuracy:a3];
+  [(CLLocationManager *)obj->_effectiveLocationManager setDesiredAccuracy:accuracy];
   objc_sync_exit(obj);
 }
 
@@ -435,15 +435,15 @@ LABEL_10:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   if ([(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedWhenInUse || [(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedAlways)
   {
-    if (self->_effectiveLocationManager == v6)
+    if (self->_effectiveLocationManager == managerCopy)
     {
-      [(CLLocationManagerDelegate *)self->_delegate locationManager:v6 didUpdateLocations:v7];
+      [(CLLocationManagerDelegate *)self->_delegate locationManager:managerCopy didUpdateLocations:locationsCopy];
     }
   }
 
@@ -458,13 +458,13 @@ LABEL_10:
   }
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  visitCopy = visit;
   if ([(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedWhenInUse || [(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedAlways)
   {
-    [(CLLocationManagerDelegate *)self->_delegate locationManager:v6 didVisit:v7];
+    [(CLLocationManagerDelegate *)self->_delegate locationManager:managerCopy didVisit:visitCopy];
   }
 
   else
@@ -478,9 +478,9 @@ LABEL_10:
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   if (([(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedAlways || [(CLLocationManager *)self->_limitingLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedWhenInUse) && ([(CLLocationManager *)self->_effectiveLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedAlways || [(CLLocationManager *)self->_effectiveLocationManager authorizationStatus]== kCLAuthorizationStatusAuthorizedWhenInUse))
   {
     v5 = GEOFindOrCreateLog();
@@ -510,7 +510,7 @@ LABEL_10:
     MapsSuggestionsResetCurrentLocation();
   }
 
-  [(CLLocationManagerDelegate *)self->_delegate locationManagerDidChangeAuthorization:v4];
+  [(CLLocationManagerDelegate *)self->_delegate locationManagerDidChangeAuthorization:authorizationCopy];
 }
 
 @end

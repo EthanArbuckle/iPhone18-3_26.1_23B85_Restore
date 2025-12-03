@@ -6,25 +6,25 @@
 - (vector<double,)loggableConcatCosts;
 - (vector<std::vector<quasar::Token>,)loggableConcatResult;
 - (vector<std::vector<quasar::Token>,)partialResults;
-- (void)addPartialResultToContext:(const void *)a3;
+- (void)addPartialResultToContext:(const void *)context;
 - (void)resetPartialResultContext;
-- (void)setContinuousListeningResultHelper:(shared_ptr<EARContinuousListeningResultHelper>)a3;
+- (void)setContinuousListeningResultHelper:(shared_ptr<EARContinuousListeningResultHelper>)helper;
 - (void)setLoggableConcatCosts:()vector<double;
-- (void)setLoggableConcatResult:()vector<std:(std::allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token>;
-- (void)updateLoggableResultWithCurrentResult:(const void *)a3 currentCosts:(const void *)a4 startMilliseconds:(unsigned int)a5;
+- (void)setLoggableConcatResult:()vector<std:(std::allocator<std::vector<quasar::Token>>> *)std :vector<quasar::Token>;
+- (void)updateLoggableResultWithCurrentResult:(const void *)result currentCosts:(const void *)costs startMilliseconds:(unsigned int)milliseconds;
 @end
 
 @implementation _EARResultContext
 
-- (void)addPartialResultToContext:(const void *)a3
+- (void)addPartialResultToContext:(const void *)context
 {
-  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](&self->_partialResults, a3);
+  std::vector<std::vector<quasar::Token>>::push_back[abi:ne200100](&self->_partialResults, context);
   if (quasar::gLogLevel >= 6)
   {
     memset(v8, 0, sizeof(v8));
     kaldi::KaldiWarnMessage::KaldiWarnMessage(v8);
     v4 = std::__put_character_sequence[abi:ne200100]<char,std::char_traits<char>>(v8, "[TTAW] partialResult: ", 22);
-    quasar::tokens2Str(a3, &__p);
+    quasar::tokens2Str(context, &__p);
     if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
       p_p = &__p;
@@ -82,21 +82,21 @@
     p_prevBestRecogText = p_prevBestRecogText->__rep_.__l.__data_;
   }
 
-  v8 = [v3 stringWithFormat:@"anyResults=%@, countOfIsFinalFalseAlreadyWritten=%@, prevBestRecogText=%s", v4, v5, p_prevBestRecogText];
+  p_prevBestRecogText = [v3 stringWithFormat:@"anyResults=%@, countOfIsFinalFalseAlreadyWritten=%@, prevBestRecogText=%s", v4, v5, p_prevBestRecogText];
 
-  return v8;
+  return p_prevBestRecogText;
 }
 
-- (void)updateLoggableResultWithCurrentResult:(const void *)a3 currentCosts:(const void *)a4 startMilliseconds:(unsigned int)a5
+- (void)updateLoggableResultWithCurrentResult:(const void *)result currentCosts:(const void *)costs startMilliseconds:(unsigned int)milliseconds
 {
-  if (a5 <= 0xEA60)
+  if (milliseconds <= 0xEA60)
   {
     v17 = 0;
     v18 = 0;
     v19 = 0;
-    v5 = *a3;
-    v6 = *(a3 + 1);
-    if (*a3 != v6)
+    v5 = *result;
+    v6 = *(result + 1);
+    if (*result != v6)
     {
       v10 = 0;
       do
@@ -106,7 +106,7 @@
         v12 = v5[1];
         while (v11 != v12)
         {
-          if (*(v11 + 9) + a5 <= 0xEA60)
+          if (*(v11 + 9) + milliseconds <= 0xEA60)
           {
             std::vector<quasar::Token>::push_back[abi:ne200100](v16, v11);
             v10 = 1;
@@ -124,9 +124,9 @@
       while (v5 != v6);
       if (v10)
       {
-        if (0xAAAAAAAAAAAAAAABLL * ((v18 - v17) >> 3) == (*(a4 + 1) - *a4) >> 3)
+        if (0xAAAAAAAAAAAAAAABLL * ((v18 - v17) >> 3) == (*(costs + 1) - *costs) >> 3)
         {
-          quasar::concatNbest(&self->_loggableConcatResult, &self->_loggableConcatCosts.__begin_, &v17, a4, a5, 0xAu, v14);
+          quasar::concatNbest(&self->_loggableConcatResult, &self->_loggableConcatCosts.__begin_, &v17, costs, milliseconds, 0xAu, v14);
         }
 
         else
@@ -175,10 +175,10 @@
   return result;
 }
 
-- (void)setContinuousListeningResultHelper:(shared_ptr<EARContinuousListeningResultHelper>)a3
+- (void)setContinuousListeningResultHelper:(shared_ptr<EARContinuousListeningResultHelper>)helper
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *helper.__ptr_;
+  v3 = *(helper.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -209,12 +209,12 @@
   return std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(retstr, self->_loggableConcatResult.__begin_, self->_loggableConcatResult.__end_, 0xAAAAAAAAAAAAAAABLL * ((self->_loggableConcatResult.__end_ - self->_loggableConcatResult.__begin_) >> 3));
 }
 
-- (void)setLoggableConcatResult:()vector<std:(std::allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token>
+- (void)setLoggableConcatResult:()vector<std:(std::allocator<std::vector<quasar::Token>>> *)std :vector<quasar::Token>
 {
   p_loggableConcatResult = &self->_loggableConcatResult;
-  if (p_loggableConcatResult != a3)
+  if (p_loggableConcatResult != std)
   {
-    std::vector<std::vector<quasar::Token>>::__assign_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(p_loggableConcatResult, a3->__begin_, a3->__end_, 0xAAAAAAAAAAAAAAABLL * ((a3->__end_ - a3->__begin_) >> 3));
+    std::vector<std::vector<quasar::Token>>::__assign_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(p_loggableConcatResult, std->__begin_, std->__end_, 0xAAAAAAAAAAAAAAABLL * ((std->__end_ - std->__begin_) >> 3));
   }
 }
 

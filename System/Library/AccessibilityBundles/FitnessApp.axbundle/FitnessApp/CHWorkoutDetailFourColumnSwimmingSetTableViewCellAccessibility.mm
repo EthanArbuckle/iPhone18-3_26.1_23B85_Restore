@@ -1,19 +1,19 @@
 @interface CHWorkoutDetailFourColumnSwimmingSetTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation CHWorkoutDetailFourColumnSwimmingSetTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSwimmingSetTableViewCell" hasInstanceMethod:@"configureWithSwimmingSet:index:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "B", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSwimmingSetTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSwimmingSetTableViewCell" hasInstanceMethod:@"configureWithSwimmingSet:index:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "B", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSwimmingSetTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 @end

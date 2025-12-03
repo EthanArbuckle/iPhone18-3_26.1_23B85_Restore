@@ -1,12 +1,12 @@
 @interface TPSWidgetContent
 - (BOOL)hasAssets;
-- (TPSWidgetContent)initWithCoder:(id)a3;
-- (TPSWidgetContent)initWithDictionary:(id)a3 metadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSWidgetContent)initWithCoder:(id)coder;
+- (TPSWidgetContent)initWithDictionary:(id)dictionary metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)titleContent;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSWidgetContent
@@ -16,7 +16,7 @@
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = TPSWidgetContent;
-  v2 = [(TPSContent *)&v17 titleContent];
+  titleContent = [(TPSContent *)&v17 titleContent];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -29,7 +29,7 @@ LABEL_10:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = v2;
+  v3 = titleContent;
   v4 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v4)
   {
@@ -73,14 +73,14 @@ LABEL_13:
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 priority];
-  if (v5 <= [(TPSWidgetContent *)self priority])
+  compareCopy = compare;
+  priority = [compareCopy priority];
+  if (priority <= [(TPSWidgetContent *)self priority])
   {
-    v7 = [v4 priority];
-    v6 = v7 != [(TPSWidgetContent *)self priority];
+    priority2 = [compareCopy priority];
+    v6 = priority2 != [(TPSWidgetContent *)self priority];
   }
 
   else
@@ -91,13 +91,13 @@ LABEL_13:
   return v6;
 }
 
-- (TPSWidgetContent)initWithDictionary:(id)a3 metadata:(id)a4
+- (TPSWidgetContent)initWithDictionary:(id)dictionary metadata:(id)metadata
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = TPSWidgetContent;
-  v7 = [(TPSContent *)&v12 initWithDictionary:v6 metadata:a4];
-  if (v7 && ([v6 TPSSafeDictionaryForKey:@"attrs"], v8 = objc_claimAutoreleasedReturnValue(), attributes = v7->_attributes, v7->_attributes = v8, attributes, !-[TPSWidgetContent hasAssets](v7, "hasAssets")))
+  v7 = [(TPSContent *)&v12 initWithDictionary:dictionaryCopy metadata:metadata];
+  if (v7 && ([dictionaryCopy TPSSafeDictionaryForKey:@"attrs"], v8 = objc_claimAutoreleasedReturnValue(), attributes = v7->_attributes, v7->_attributes = v8, attributes, !-[TPSWidgetContent hasAssets](v7, "hasAssets")))
   {
     v10 = 0;
   }
@@ -110,24 +110,24 @@ LABEL_13:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = TPSWidgetContent;
-  v4 = [(TPSContent *)&v7 copyWithZone:a3];
-  v5 = [(TPSWidgetContent *)self attributes];
-  [v4 setAttributes:v5];
+  v4 = [(TPSContent *)&v7 copyWithZone:zone];
+  attributes = [(TPSWidgetContent *)self attributes];
+  [v4 setAttributes:attributes];
 
   [v4 setPriority:{-[TPSWidgetContent priority](self, "priority")}];
   return v4;
 }
 
-- (TPSWidgetContent)initWithCoder:(id)a3
+- (TPSWidgetContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = TPSWidgetContent;
-  v5 = [(TPSContent *)&v15 initWithCoder:v4];
+  v5 = [(TPSContent *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -136,32 +136,32 @@ LABEL_13:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"attrs"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"attrs"];
     attributes = v5->_attributes;
     v5->_attributes = v12;
 
-    v5->_priority = [v4 decodeIntegerForKey:@"priority"];
+    v5->_priority = [coderCopy decodeIntegerForKey:@"priority"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TPSWidgetContent;
-  v4 = a3;
-  [(TPSContent *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSContent *)&v6 encodeWithCoder:coderCopy];
   v5 = [(TPSWidgetContent *)self attributes:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"attrs"];
+  [coderCopy encodeObject:v5 forKey:@"attrs"];
 
-  [v4 encodeInteger:-[TPSWidgetContent priority](self forKey:{"priority"), @"priority"}];
+  [coderCopy encodeInteger:-[TPSWidgetContent priority](self forKey:{"priority"), @"priority"}];
 }
 
 - (BOOL)hasAssets
 {
-  v2 = [(TPSContent *)self assets];
-  v3 = v2 != 0;
+  assets = [(TPSContent *)self assets];
+  v3 = assets != 0;
 
   return v3;
 }
@@ -175,8 +175,8 @@ LABEL_13:
   v5 = [v3 initWithString:v4];
 
   [v5 appendFormat:@"WIDGET PRIORITY: %ld", -[TPSWidgetContent priority](self, "priority")];
-  v6 = [(TPSWidgetContent *)self attributes];
-  [v5 appendFormat:@"\n  %@ = %@\n", @"attrs", v6];
+  attributes = [(TPSWidgetContent *)self attributes];
+  [v5 appendFormat:@"\n  %@ = %@\n", @"attrs", attributes];
 
   return v5;
 }

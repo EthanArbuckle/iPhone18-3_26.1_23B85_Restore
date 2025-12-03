@@ -1,6 +1,6 @@
 @interface PXGHostingControllerNextFrameObserver
 - (OS_dispatch_queue)hostingControllerObservationQueue;
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4;
+- (void)hostingController:(id)controller didRenderFrame:(id)frame;
 @end
 
 @implementation PXGHostingControllerNextFrameObserver
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (void)hostingController:(id)a3 didRenderFrame:(id)a4
+- (void)hostingController:(id)controller didRenderFrame:(id)frame
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
 
-  sub_1A4059AA8(v5);
+  sub_1A4059AA8(controllerCopy);
 }
 
 @end

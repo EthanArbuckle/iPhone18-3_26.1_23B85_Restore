@@ -1,8 +1,8 @@
 @interface NetworkQualityXPC
 - (NetworkQualityXPC)init;
-- (void)findLocalMeasurementEndpoints:(id)a3;
-- (void)performMeasurementWithConfiguration:(id)a3 reply:(id)a4;
-- (void)progress:(id)a3;
+- (void)findLocalMeasurementEndpoints:(id)endpoints;
+- (void)performMeasurementWithConfiguration:(id)configuration reply:(id)reply;
+- (void)progress:(id)progress;
 @end
 
 @implementation NetworkQualityXPC
@@ -25,24 +25,24 @@
   return v2;
 }
 
-- (void)performMeasurementWithConfiguration:(id)a3 reply:(id)a4
+- (void)performMeasurementWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  replyCopy = reply;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000103C;
   block[3] = &unk_1000042B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = configurationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
   progress = self->_progress;
   v4 = [(NSProgress *)progress completedUnitCount]+ 1;
@@ -50,16 +50,16 @@
   [(NSProgress *)progress setCompletedUnitCount:v4];
 }
 
-- (void)findLocalMeasurementEndpoints:(id)a3
+- (void)findLocalMeasurementEndpoints:(id)endpoints
 {
-  v4 = a3;
+  endpointsCopy = endpoints;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000012F8;
   block[3] = &unk_100004308;
-  v8 = v4;
-  v6 = v4;
+  v8 = endpointsCopy;
+  v6 = endpointsCopy;
   dispatch_async(queue, block);
 }
 

@@ -1,26 +1,26 @@
 @interface BCSCalendarEventParser
-+ (id)_validatedICSString:(id)a3;
-+ (id)parseString:(id)a3;
++ (id)_validatedICSString:(id)string;
++ (id)parseString:(id)string;
 @end
 
 @implementation BCSCalendarEventParser
 
-+ (id)parseString:(id)a3
++ (id)parseString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
   if (v5)
   {
     [(BCSCalendarEventParser *)v5 parseString:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = v4;
+  v13 = stringCopy;
   if ([v13 _bcs_hasCaseInsensitivePrefix:@"BEGIN:VEVENT"])
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"BEGIN:VCALENDAR\r\n%@\r\nEND:VCALENDAR", v13];
 
 LABEL_6:
-    v15 = [a1 _validatedICSString:v14];
+    v15 = [self _validatedICSString:v14];
     if ([v15 length])
     {
       v16 = [[BCSCalendarEventData alloc] initWithICSString:v15];
@@ -55,24 +55,24 @@ LABEL_13:
   return v17;
 }
 
-+ (id)_validatedICSString:(id)a3
++ (id)_validatedICSString:(id)string
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(getICSDocumentClass()) initWithICSString:v3 options:0 error:0];
+  stringCopy = string;
+  v4 = [objc_alloc(getICSDocumentClass()) initWithICSString:stringCopy options:0 error:0];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 calendar];
-    v7 = v6;
-    if (v6)
+    calendar = [v4 calendar];
+    v7 = calendar;
+    if (calendar)
     {
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v8 = [v6 components];
-      v9 = [v8 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      components = [calendar components];
+      v9 = [components countByEnumeratingWithState:&v55 objects:v59 count:16];
       if (v9)
       {
         v10 = v9;
@@ -83,7 +83,7 @@ LABEL_5:
         {
           if (*v56 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(components);
           }
 
           v13 = *(*(&v55 + 1) + 8 * v12);
@@ -95,7 +95,7 @@ LABEL_5:
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v55 objects:v59 count:16];
+            v10 = [components countByEnumeratingWithState:&v55 objects:v59 count:16];
             if (v10)
             {
               goto LABEL_5;
@@ -115,21 +115,21 @@ LABEL_5:
 
         if (v31)
         {
-          v32 = [v7 components];
-          v33 = [v32 count];
+          components2 = [v7 components];
+          v33 = [components2 count];
 
           if (v33 == 1)
           {
-            v34 = v3;
+            v34 = stringCopy;
           }
 
           else
           {
-            v51 = [v7 components];
-            [v51 removeAllObjects];
+            components3 = [v7 components];
+            [components3 removeAllObjects];
 
-            v52 = [v7 components];
-            [v52 addObject:v31];
+            components4 = [v7 components];
+            [components4 addObject:v31];
 
             v34 = [v7 ICSStringWithOptions:0];
           }

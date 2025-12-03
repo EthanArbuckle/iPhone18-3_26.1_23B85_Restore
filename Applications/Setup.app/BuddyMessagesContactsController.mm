@@ -1,7 +1,7 @@
 @interface BuddyMessagesContactsController
 - (BOOL)controllerNeedsToRun;
 - (BuddyMessagesContactsController)init;
-- (void)continueTapped:(id)a3;
+- (void)continueTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
@@ -34,43 +34,43 @@
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = BuddyMessagesContactsController;
   [(BuddyDataUsageController *)&v4 viewDidLoad];
-  v2 = [(BuddyMessagesContactsController *)v6 buttonTray];
+  buttonTray = [(BuddyMessagesContactsController *)selfCopy buttonTray];
   v7 = BYPrivacyMessagesIdentifier;
   v3 = [NSArray arrayWithObjects:&v7 count:1];
-  [v2 setPrivacyLinkForBundles:v3];
+  [buttonTray setPrivacyLinkForBundles:v3];
 }
 
-- (void)continueTapped:(id)a3
+- (void)continueTapped:(id)tapped
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, tapped);
   v3 = +[BYPreferencesController buddyPreferences];
   [v3 setObject:&__kCFBooleanTrue forKey:@"MessagesContactsPresented"];
 
-  v4.receiver = v6;
+  v4.receiver = selfCopy;
   v4.super_class = BuddyMessagesContactsController;
-  [(BuddyDataUsageController *)&v4 continueTapped:v6];
+  [(BuddyDataUsageController *)&v4 continueTapped:selfCopy];
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyMessagesContactsController;
   if ([(BuddyDataUsageController *)&v5 controllerNeedsToRun])
   {
-    v2 = [(BuddyDataUsageController *)v7 existingSettings];
-    v3 = [(BuddyExistingSettings *)v2 backupMetadata];
-    v8 = ([v3 messagesContactsPresented] ^ 1) & 1;
+    existingSettings = [(BuddyDataUsageController *)selfCopy existingSettings];
+    backupMetadata = [(BuddyExistingSettings *)existingSettings backupMetadata];
+    v8 = ([backupMetadata messagesContactsPresented] ^ 1) & 1;
   }
 
   else

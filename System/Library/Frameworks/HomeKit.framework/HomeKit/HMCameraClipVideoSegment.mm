@@ -1,11 +1,11 @@
 @interface HMCameraClipVideoSegment
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCameraClipVideoSegment)initWithByteLength:(unint64_t)a3 byteOffset:(unint64_t)a4;
-- (HMCameraClipVideoSegment)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMCameraClipVideoSegment)initWithByteLength:(unint64_t)length byteOffset:(unint64_t)offset;
+- (HMCameraClipVideoSegment)initWithCoder:(id)coder;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCameraClipVideoSegment
@@ -35,29 +35,29 @@
   return [v2 shortDescription];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HMCameraClipVideoSegment byteLength](self forKey:{"byteLength"), @"HMCCVS.bl"}];
-  [v4 encodeInteger:-[HMCameraClipVideoSegment byteOffset](self forKey:{"byteOffset"), @"HMCCVS.bo"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HMCameraClipVideoSegment byteLength](self forKey:{"byteLength"), @"HMCCVS.bl"}];
+  [coderCopy encodeInteger:-[HMCameraClipVideoSegment byteOffset](self forKey:{"byteOffset"), @"HMCCVS.bo"}];
 }
 
-- (HMCameraClipVideoSegment)initWithCoder:(id)a3
+- (HMCameraClipVideoSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"HMCCVS.bl"];
-  v6 = [v4 decodeIntegerForKey:@"HMCCVS.bo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"HMCCVS.bl"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMCCVS.bo"];
 
   return [(HMCameraClipVideoSegment *)self initWithByteLength:v5 byteOffset:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -68,8 +68,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMCameraClipVideoSegment byteLength](self, "byteLength"), v7 == [v6 byteLength]))
   {
-    v8 = [(HMCameraClipVideoSegment *)self byteOffset];
-    v9 = v8 == [v6 byteOffset];
+    byteOffset = [(HMCameraClipVideoSegment *)self byteOffset];
+    v9 = byteOffset == [v6 byteOffset];
   }
 
   else
@@ -80,15 +80,15 @@
   return v9;
 }
 
-- (HMCameraClipVideoSegment)initWithByteLength:(unint64_t)a3 byteOffset:(unint64_t)a4
+- (HMCameraClipVideoSegment)initWithByteLength:(unint64_t)length byteOffset:(unint64_t)offset
 {
   v7.receiver = self;
   v7.super_class = HMCameraClipVideoSegment;
   result = [(HMCameraClipVideoSegment *)&v7 init];
   if (result)
   {
-    result->_byteLength = a3;
-    result->_byteOffset = a4;
+    result->_byteLength = length;
+    result->_byteOffset = offset;
   }
 
   return result;

@@ -2,12 +2,12 @@
 + (id)logCategory;
 + (id)shortDescription;
 - (HMCameraSnapshot)init;
-- (HMCameraSnapshot)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5 captureDate:(id)a6;
+- (HMCameraSnapshot)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio captureDate:(id)date;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (void)_releaseSlotIdentifier;
 - (void)dealloc;
-- (void)fillSlotWithCompletionHandler:(id)a3;
+- (void)fillSlotWithCompletionHandler:(id)handler;
 @end
 
 @implementation HMCameraSnapshot
@@ -16,8 +16,8 @@
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMCameraSource *)self slotIdentifier];
-  v5 = [v3 initWithName:@"Slot Identifier" value:v4];
+  slotIdentifier = [(HMCameraSource *)self slotIdentifier];
+  v5 = [v3 initWithName:@"Slot Identifier" value:slotIdentifier];
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
   v7 = MEMORY[0x1E696AD98];
   [(HMCameraSource *)self aspectRatio];
@@ -25,8 +25,8 @@
   v9 = [v6 initWithName:@"Aspect Ratio" value:v8];
   v16[1] = v9;
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMCameraSnapshot *)self captureDate];
-  v12 = [v10 initWithName:@"Capture Date" value:v11];
+  captureDate = [(HMCameraSnapshot *)self captureDate];
+  v12 = [v10 initWithName:@"Capture Date" value:captureDate];
   v16[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
 
@@ -46,76 +46,76 @@
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMCameraSource *)v4 slotIdentifier];
+    slotIdentifier = [(HMCameraSource *)selfCopy slotIdentifier];
     *buf = 138543618;
     v21 = v6;
     v22 = 2112;
-    v23 = v7;
+    v23 = slotIdentifier;
     _os_log_impl(&dword_19BB39000, v5, OS_LOG_TYPE_INFO, "%{public}@Releasing snapshot slot identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMCameraSource *)v4 context];
-  if (!v8)
+  context = [(HMCameraSource *)selfCopy context];
+  if (!context)
   {
     _HMFPreconditionFailure();
   }
 
-  v9 = v8;
+  v9 = context;
   v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v11 = [(HMCameraSource *)v4 profileUniqueIdentifier];
-  v12 = [v10 initWithTarget:v11];
+  profileUniqueIdentifier = [(HMCameraSource *)selfCopy profileUniqueIdentifier];
+  v12 = [v10 initWithTarget:profileUniqueIdentifier];
 
-  v13 = [(HMCameraSource *)v4 slotIdentifier];
-  v19 = v13;
+  slotIdentifier2 = [(HMCameraSource *)selfCopy slotIdentifier];
+  v19 = slotIdentifier2;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
   v15 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMCameraSnapshotReleaseSnapshotMessage" destination:v12 payload:v14];
-  v16 = [v9 messageDispatcher];
-  [v16 sendMessage:v15];
+  messageDispatcher = [v9 messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fillSlotWithCompletionHandler:(id)a3
+- (void)fillSlotWithCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMCameraSource *)v6 slotIdentifier];
+    slotIdentifier = [(HMCameraSource *)selfCopy slotIdentifier];
     *buf = 138543618;
     v28 = v8;
     v29 = 2112;
-    v30 = v9;
+    v30 = slotIdentifier;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Filling snapshot slot identifier: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMCameraSnapshot *)v6 setDidFillSlot:1];
-  v10 = [(HMCameraSource *)v6 context];
-  if (!v10)
+  [(HMCameraSnapshot *)selfCopy setDidFillSlot:1];
+  context = [(HMCameraSource *)selfCopy context];
+  if (!context)
   {
     _HMFPreconditionFailure();
   }
 
-  v11 = v10;
+  v11 = context;
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMCameraSource *)v6 profileUniqueIdentifier];
-  v14 = [v12 initWithTarget:v13];
+  profileUniqueIdentifier = [(HMCameraSource *)selfCopy profileUniqueIdentifier];
+  v14 = [v12 initWithTarget:profileUniqueIdentifier];
 
   v25 = @"kSlotIdentifierKey";
-  v15 = [(HMCameraSource *)v6 slotIdentifier];
-  v26 = v15;
+  slotIdentifier2 = [(HMCameraSource *)selfCopy slotIdentifier];
+  v26 = slotIdentifier2;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
 
   v17 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMCameraSnapshotFillSnapshotSlotMessage" destination:v14 payload:v16];
@@ -123,14 +123,14 @@
   v22[1] = 3221225472;
   v22[2] = __50__HMCameraSnapshot_fillSlotWithCompletionHandler___block_invoke;
   v22[3] = &unk_1E754E480;
-  v22[4] = v6;
+  v22[4] = selfCopy;
   v23 = v11;
-  v24 = v4;
-  v18 = v4;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v11;
   [v17 setResponseHandler:v22];
-  v20 = [v19 messageDispatcher];
-  [v20 sendMessage:v17];
+  messageDispatcher = [v19 messageDispatcher];
+  [messageDispatcher sendMessage:v17];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -193,33 +193,33 @@ LABEL_6:
   [(HMCameraSnapshot *)&v3 dealloc];
 }
 
-- (HMCameraSnapshot)initWithProfileUniqueIdentifier:(id)a3 slotIdentifier:(id)a4 aspectRatio:(double)a5 captureDate:(id)a6
+- (HMCameraSnapshot)initWithProfileUniqueIdentifier:(id)identifier slotIdentifier:(id)slotIdentifier aspectRatio:(double)ratio captureDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  identifierCopy = identifier;
+  slotIdentifierCopy = slotIdentifier;
+  dateCopy = date;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!slotIdentifierCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (a5 == 0.0)
+  if (ratio == 0.0)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = dateCopy;
+  if (!dateCopy)
   {
 LABEL_11:
     v18 = _HMFPreconditionFailure();
@@ -228,7 +228,7 @@ LABEL_11:
 
   v20.receiver = self;
   v20.super_class = HMCameraSnapshot;
-  v14 = [(HMCameraSource *)&v20 initWithProfileUniqueIdentifier:v10 slotIdentifier:v11 aspectRatio:a5];
+  v14 = [(HMCameraSource *)&v20 initWithProfileUniqueIdentifier:identifierCopy slotIdentifier:slotIdentifierCopy aspectRatio:ratio];
   if (v14)
   {
     v15 = [v13 copy];

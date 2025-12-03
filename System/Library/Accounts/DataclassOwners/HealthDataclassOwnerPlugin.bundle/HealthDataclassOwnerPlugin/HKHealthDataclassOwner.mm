@@ -1,8 +1,8 @@
 @interface HKHealthDataclassOwner
 + (id)dataclasses;
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7;
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4;
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error;
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass;
 @end
 
 @implementation HKHealthDataclassOwner
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (id)actionsForEnablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForEnablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v4 = [_HKBehavior sharedBehavior:a3];
-  v5 = [v4 isDeviceSupported];
+  v4 = [_HKBehavior sharedBehavior:account];
+  isDeviceSupported = [v4 isDeviceSupported];
 
-  if (v5)
+  if (isDeviceSupported)
   {
     v6 = [ACDataclassAction actionWithType:6];
     v10[0] = v6;
@@ -37,12 +37,12 @@
   return v8;
 }
 
-- (id)actionsForDisablingDataclassOnAccount:(id)a3 forDataclass:(id)a4
+- (id)actionsForDisablingDataclassOnAccount:(id)account forDataclass:(id)dataclass
 {
-  v4 = [_HKBehavior sharedBehavior:a3];
-  v5 = [v4 isDeviceSupported];
+  v4 = [_HKBehavior sharedBehavior:account];
+  isDeviceSupported = [v4 isDeviceSupported];
 
-  if (v5)
+  if (isDeviceSupported)
   {
     v6 = [ACDataclassAction actionWithType:2];
     v7 = [ACDataclassAction destructiveActionWithType:3, v6];
@@ -60,12 +60,12 @@
   return v9;
 }
 
-- (BOOL)performAction:(id)a3 forAccount:(id)a4 withChildren:(id)a5 forDataclass:(id)a6 withError:(id *)a7
+- (BOOL)performAction:(id)action forAccount:(id)account withChildren:(id)children forDataclass:(id)dataclass withError:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v35 = a5;
-  v36 = a6;
+  actionCopy = action;
+  accountCopy = account;
+  childrenCopy = children;
+  dataclassCopy = dataclass;
   _HKInitializeLogging();
   v14 = HKLogSync;
   if (os_log_type_enabled(HKLogSync, OS_LOG_TYPE_DEFAULT))
@@ -73,14 +73,14 @@
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v12;
+    *&buf[14] = actionCopy;
     *&buf[22] = 2112;
-    v52 = v13;
+    v52 = accountCopy;
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing dataclass action %{public}@ for account %@", buf, 0x20u);
   }
 
-  v15 = [v12 type];
-  if (v15 == &dword_4 + 2 || v15 == &dword_0 + 3)
+  type = [actionCopy type];
+  if (type == &dword_4 + 2 || type == &dword_0 + 3)
   {
     v41 = 0;
     v42 = &v41;
@@ -112,18 +112,18 @@
       v22 = HKLogSync;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v21 localizedDescription];
-        sub_26C8(self, v23, v45, v22);
+        localizedDescription = [v21 localizedDescription];
+        sub_26C8(self, localizedDescription, v45, v22);
       }
 
       v24 = v21;
       v25 = v24;
       if (v24)
       {
-        if (a7)
+        if (error)
         {
           v26 = v24;
-          *a7 = v25;
+          *error = v25;
         }
 
         else
@@ -153,7 +153,7 @@
 
         v30 = *(*&buf[8] + 40);
         *v45 = 138543874;
-        v46 = self;
+        selfCopy = self;
         v47 = 2114;
         v48 = v29;
         v49 = 2114;
@@ -165,10 +165,10 @@
       v32 = v31;
       if (v31)
       {
-        if (a7)
+        if (error)
         {
           v33 = v31;
-          *a7 = v32;
+          *error = v32;
         }
 
         else

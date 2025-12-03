@@ -1,47 +1,47 @@
 @interface MBFileScanner
-+ (id)_stringValueForStats:(_MBFileScannerDomainStats *)a3;
-+ (id)treeWithPaths:(id)a3;
-- (BOOL)_shouldNotBackupFile:(id)a3 domain:(id)a4;
-- (MBFileScanner)initWithDelegate:(id)a3 mode:(unint64_t)a4 enginePolicy:(unint64_t)a5 debugContext:(id)a6;
++ (id)_stringValueForStats:(_MBFileScannerDomainStats *)stats;
++ (id)treeWithPaths:(id)paths;
+- (BOOL)_shouldNotBackupFile:(id)file domain:(id)domain;
+- (MBFileScanner)initWithDelegate:(id)delegate mode:(unint64_t)mode enginePolicy:(unint64_t)policy debugContext:(id)context;
 - (MBFileScannerDelegate)delegate;
-- (id)_foundFile:(id)a3 snapshotPath:(id)a4 stats:(_MBFileScannerDomainStats *)a5;
-- (id)_performTwoPassEnumerationForDomain:(id)a3 snapshotPath:(id)a4 relativePath:(id)a5 buffer:(id)a6 dirFd:(int)a7 direntCount:(unsigned int)a8 directoryPathStack:(id)a9 directoryCountStack:(id)a10 stats:(_MBFileScannerDomainStats *)a11;
-- (id)_scanDirectory:(id)a3 domain:(id)a4 fds:(id)a5 domainDirFd:(int)a6 snapshotPath:(id)a7 relativePath:(id)a8 depth:(int)a9 stats:(_MBFileScannerDomainStats *)a10;
-- (id)_scanDomain:(id)a3 snapshotPath:(id)a4 stats:(_MBFileScannerDomainStats *)a5;
-- (id)_scanFilesForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 stats:(_MBFileScannerDomainStats *)a7;
-- (id)_scanFilesUsingGetattrlistbulkForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 stats:(_MBFileScannerDomainStats *)a7;
-- (id)_scanFilesUsingReaddirForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 depth:(int)a7 stats:(_MBFileScannerDomainStats *)a8;
-- (id)_scanTree:(id)a3 forDomain:(id)a4 fds:(id)a5 snapshotPath:(id)a6 relativePath:(id)a7 stats:(_MBFileScannerDomainStats *)a8;
+- (id)_foundFile:(id)file snapshotPath:(id)path stats:(_MBFileScannerDomainStats *)stats;
+- (id)_performTwoPassEnumerationForDomain:(id)domain snapshotPath:(id)path relativePath:(id)relativePath buffer:(id)buffer dirFd:(int)fd direntCount:(unsigned int)count directoryPathStack:(id)stack directoryCountStack:(id)self0 stats:(_MBFileScannerDomainStats *)self1;
+- (id)_scanDirectory:(id)directory domain:(id)domain fds:(id)fds domainDirFd:(int)fd snapshotPath:(id)path relativePath:(id)relativePath depth:(int)depth stats:(_MBFileScannerDomainStats *)self0;
+- (id)_scanDomain:(id)domain snapshotPath:(id)path stats:(_MBFileScannerDomainStats *)stats;
+- (id)_scanFilesForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats;
+- (id)_scanFilesUsingGetattrlistbulkForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats;
+- (id)_scanFilesUsingReaddirForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath depth:(int)depth stats:(_MBFileScannerDomainStats *)stats;
+- (id)_scanTree:(id)tree forDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats;
 - (id)loggableStats;
-- (id)scanDomain:(id)a3 snapshotMountPoint:(id)a4;
-- (void)_detectModifiedDomain:(id)a3 relativePath:(id)a4 lastModified:(int64_t)a5;
-- (void)_updateStats:(_MBFileScannerDomainStats *)a3 file:(id)a4;
+- (id)scanDomain:(id)domain snapshotMountPoint:(id)point;
+- (void)_detectModifiedDomain:(id)domain relativePath:(id)path lastModified:(int64_t)modified;
+- (void)_updateStats:(_MBFileScannerDomainStats *)stats file:(id)file;
 - (void)cancel;
 - (void)reset;
 @end
 
 @implementation MBFileScanner
 
-- (MBFileScanner)initWithDelegate:(id)a3 mode:(unint64_t)a4 enginePolicy:(unint64_t)a5 debugContext:(id)a6
+- (MBFileScanner)initWithDelegate:(id)delegate mode:(unint64_t)mode enginePolicy:(unint64_t)policy debugContext:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  if (!a4)
+  delegateCopy = delegate;
+  contextCopy = context;
+  if (!mode)
   {
     __assert_rtn("[MBFileScanner initWithDelegate:mode:enginePolicy:debugContext:]", "MBFileScanner.m", 70, "mode != MBFileScannerModeUnspecified");
   }
 
-  v12 = v11;
+  v12 = contextCopy;
   v21.receiver = self;
   v21.super_class = MBFileScanner;
   v13 = [(MBFileScanner *)&v21 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v10);
-    v14->_mode = a4;
-    v14->_policy = a5;
-    objc_storeStrong(&v14->_debugContext, a6);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_mode = mode;
+    v14->_policy = policy;
+    objc_storeStrong(&v14->_debugContext, context);
     v15 = objc_alloc_init(NSMutableSet);
     modifiedDomains = v14->_modifiedDomains;
     v14->_modifiedDomains = v15;
@@ -58,10 +58,10 @@
   return v14;
 }
 
-- (id)scanDomain:(id)a3 snapshotMountPoint:(id)a4
+- (id)scanDomain:(id)domain snapshotMountPoint:(id)point
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  pointCopy = point;
   if ((atomic_exchange(&self->_started, 1u) & 1) == 0)
   {
     *&self->_totalStats.totalFileSize = 0u;
@@ -74,16 +74,16 @@
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [v6 name];
-  v10 = [v6 rootPath];
-  v11 = [v6 volumeMountPoint];
-  if (![v10 length])
+  name = [domainCopy name];
+  rootPath = [domainCopy rootPath];
+  volumeMountPoint = [domainCopy volumeMountPoint];
+  if (![rootPath length])
   {
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       buf[0].i32[0] = 138412290;
-      *(buf[0].i64 + 4) = v10;
+      *(buf[0].i64 + 4) = rootPath;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "=scanning= Skipping domain %@ with nil or empty root path", buf, 0xCu);
       _MBLog();
     }
@@ -98,13 +98,13 @@
     mode = self->_mode;
     policy = self->_policy;
     *v25 = 138544642;
-    v26 = v9;
+    v26 = name;
     v27 = 2112;
-    v28 = v10;
+    v28 = rootPath;
     v29 = 2112;
-    v30 = v11;
+    v30 = volumeMountPoint;
     v31 = 2112;
-    v32 = v7;
+    v32 = pointCopy;
     v33 = 2048;
     v34 = mode;
     v35 = 2048;
@@ -115,13 +115,13 @@
     _MBLog();
   }
 
-  v16 = [(MBFileScanner *)self _scanDomain:v6 snapshotPath:v7 stats:buf];
+  v16 = [(MBFileScanner *)self _scanDomain:domainCopy snapshotPath:pointCopy stats:buf];
   v17 = MBGetDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = [objc_opt_class() _stringValueForStats:buf];
     *v25 = 138543874;
-    v26 = v9;
+    v26 = name;
     v27 = 2112;
     v28 = v18;
     v29 = 2112;
@@ -156,23 +156,23 @@
   return v16;
 }
 
-+ (id)_stringValueForStats:(_MBFileScannerDomainStats *)a3
++ (id)_stringValueForStats:(_MBFileScannerDomainStats *)stats
 {
-  v4 = [NSByteCountFormatter stringFromByteCount:a3->totalFileSize countStyle:0];
-  minFileSize = a3->minFileSize;
+  v4 = [NSByteCountFormatter stringFromByteCount:stats->totalFileSize countStyle:0];
+  minFileSize = stats->minFileSize;
   if (minFileSize == 0x7FFFFFFFFFFFFFFFLL)
   {
     minFileSize = -1;
   }
 
-  maxFileSize = a3->maxFileSize;
+  maxFileSize = stats->maxFileSize;
   if (maxFileSize == 0x8000000000000000)
   {
     maxFileSize = -1;
   }
 
-  v7 = *&a3->fileCount;
-  v8 = [NSString stringWithFormat:@"size:%lld (%@)/%lld/%lld, files:%llu, dirs:%llu, clones:%llu/%llu, hardlinks:%llu, symlinks:%llu", a3->totalFileSize, v4, minFileSize, maxFileSize, a3->fileCount, a3->dirCount, a3->fullCloneCount, a3->rootCloneCount, a3->hardLinkCount, a3->symLinkCount];
+  v7 = *&stats->fileCount;
+  v8 = [NSString stringWithFormat:@"size:%lld (%@)/%lld/%lld, files:%llu, dirs:%llu, clones:%llu/%llu, hardlinks:%llu, symlinks:%llu", stats->totalFileSize, v4, minFileSize, maxFileSize, stats->fileCount, stats->dirCount, stats->fullCloneCount, stats->rootCloneCount, stats->hardLinkCount, stats->symLinkCount];
 
   return v8;
 }
@@ -192,7 +192,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "=scanning= Canceling %@", buf, 0xCu);
       _MBLog();
     }
@@ -219,32 +219,32 @@
   atomic_store(0, &self->_started);
 }
 
-- (void)_updateStats:(_MBFileScannerDomainStats *)a3 file:(id)a4
+- (void)_updateStats:(_MBFileScannerDomainStats *)stats file:(id)file
 {
-  v5 = a4;
-  v6 = [v5 type];
-  switch(v6)
+  fileCopy = file;
+  type = [fileCopy type];
+  switch(type)
   {
     case 0x4000u:
-      v14 = a3->dirCount + 1;
-      a3->dirCount = v14;
+      v14 = stats->dirCount + 1;
+      stats->dirCount = v14;
       if (__ROR8__(0xD288CE703AFB7E91 * v14, 4) <= 0x68DB8BAC710CBuLL)
       {
         v15 = MBGetDefaultLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          dirCount = a3->dirCount;
-          v17 = [v5 domain];
-          v18 = [v17 name];
+          dirCount = stats->dirCount;
+          domain = [fileCopy domain];
+          name = [domain name];
           *buf = 134218242;
           v34 = dirCount;
           v35 = 2114;
-          v36 = v18;
+          v36 = name;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "=scanning= Found %llu dirs (%{public}@)", buf, 0x16u);
 
-          v19 = a3->dirCount;
-          v20 = [v5 domain];
-          v21 = [v20 name];
+          v19 = stats->dirCount;
+          domain2 = [fileCopy domain];
+          name2 = [domain2 name];
 LABEL_27:
           _MBLog();
         }
@@ -254,44 +254,44 @@ LABEL_28:
 
       break;
     case 0xA000u:
-      ++a3->symLinkCount;
+      ++stats->symLinkCount;
       break;
     case 0x8000u:
-      v7 = [v5 size];
+      v7 = [fileCopy size];
       v8 = v7;
-      minFileSize = a3->minFileSize;
+      minFileSize = stats->minFileSize;
       if (minFileSize >= v7)
       {
         minFileSize = v7;
       }
 
-      a3->totalFileSize += v7;
-      a3->minFileSize = minFileSize;
-      maxFileSize = a3->maxFileSize;
-      v11 = a3->fileCount + 1;
+      stats->totalFileSize += v7;
+      stats->minFileSize = minFileSize;
+      maxFileSize = stats->maxFileSize;
+      v11 = stats->fileCount + 1;
       if (maxFileSize <= v7)
       {
         maxFileSize = v7;
       }
 
-      a3->maxFileSize = maxFileSize;
-      a3->fileCount = v11;
-      if ([v5 isHardLink])
+      stats->maxFileSize = maxFileSize;
+      stats->fileCount = v11;
+      if ([fileCopy isHardLink])
       {
-        ++a3->hardLinkCount;
+        ++stats->hardLinkCount;
       }
 
-      if ([v5 isFullClone])
+      if ([fileCopy isFullClone])
       {
-        v12 = [v5 inodeNumber];
-        if (v12 == [v5 cloneID])
+        inodeNumber = [fileCopy inodeNumber];
+        if (inodeNumber == [fileCopy cloneID])
         {
           v13 = 48;
         }
 
         else
         {
-          if (![v5 isFullClone])
+          if (![fileCopy isFullClone])
           {
             goto LABEL_20;
           }
@@ -299,7 +299,7 @@ LABEL_28:
           v13 = 40;
         }
 
-        ++*(&a3->totalFileSize + v13);
+        ++*(&stats->totalFileSize + v13);
       }
 
 LABEL_20:
@@ -308,41 +308,41 @@ LABEL_20:
         v22 = MBGetDefaultLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v5 absolutePath];
-          v24 = [v5 domain];
-          v25 = [v24 name];
+          absolutePath = [fileCopy absolutePath];
+          domain3 = [fileCopy domain];
+          name3 = [domain3 name];
           *buf = 134218498;
           v34 = v8;
           v35 = 2114;
-          v36 = v23;
+          v36 = absolutePath;
           v37 = 2114;
-          v38 = v25;
+          v38 = name3;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "=scanning= Found large file (%lld) at %{public}@ (%{public}@)", buf, 0x20u);
 
-          v26 = [v5 absolutePath];
-          v27 = [v5 domain];
-          v32 = [v27 name];
+          absolutePath2 = [fileCopy absolutePath];
+          domain4 = [fileCopy domain];
+          name4 = [domain4 name];
           _MBLog();
         }
       }
 
-      if (__ROR8__(0xD288CE703AFB7E91 * a3->fileCount, 4) <= 0x68DB8BAC710CBuLL)
+      if (__ROR8__(0xD288CE703AFB7E91 * stats->fileCount, 4) <= 0x68DB8BAC710CBuLL)
       {
         v15 = MBGetDefaultLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          fileCount = a3->fileCount;
-          v29 = [v5 domain];
-          v30 = [v29 name];
+          fileCount = stats->fileCount;
+          domain5 = [fileCopy domain];
+          name5 = [domain5 name];
           *buf = 134218242;
           v34 = fileCount;
           v35 = 2114;
-          v36 = v30;
+          v36 = name5;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "=scanning= Found %llu files (%{public}@)", buf, 0x16u);
 
-          v31 = a3->fileCount;
-          v20 = [v5 domain];
-          v21 = [v20 name];
+          v31 = stats->fileCount;
+          domain2 = [fileCopy domain];
+          name2 = [domain2 name];
           goto LABEL_27;
         }
 
@@ -353,18 +353,18 @@ LABEL_20:
   }
 }
 
-- (id)_scanDomain:(id)a3 snapshotPath:(id)a4 stats:(_MBFileScannerDomainStats *)a5
+- (id)_scanDomain:(id)domain snapshotPath:(id)path stats:(_MBFileScannerDomainStats *)stats
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 name];
-  if ([v8 isUninstalledAppDomain])
+  domainCopy = domain;
+  pathCopy = path;
+  name = [domainCopy name];
+  if ([domainCopy isUninstalledAppDomain])
   {
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = v10;
+      v32 = name;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "=scanning= Not scanning uninstalled app domain %{public}@", buf, 0xCu);
       _MBLog();
     }
@@ -374,22 +374,22 @@ LABEL_20:
 
   else
   {
-    [(MBDebugContext *)self->_debugContext setValue:v10 forName:@"DomainName"];
+    [(MBDebugContext *)self->_debugContext setValue:name forName:@"DomainName"];
     v11 = objc_opt_new();
-    v13 = [v8 relativePathsToBackup];
-    v14 = [v13 containsObject:&stru_1003C3430];
+    relativePathsToBackup = [domainCopy relativePathsToBackup];
+    v14 = [relativePathsToBackup containsObject:&stru_1003C3430];
 
     if (v14)
     {
-      v12 = [(MBFileScanner *)self _scanFilesForDomain:v8 fds:v11 snapshotPath:v9 relativePath:&stru_1003C3430 stats:a5];
+      v12 = [(MBFileScanner *)self _scanFilesForDomain:domainCopy fds:v11 snapshotPath:pathCopy relativePath:&stru_1003C3430 stats:stats];
     }
 
     else
     {
-      v15 = [v8 relativePathsToBackup];
-      v16 = [MBFileScanner treeWithPaths:v15];
+      relativePathsToBackup2 = [domainCopy relativePathsToBackup];
+      v16 = [MBFileScanner treeWithPaths:relativePathsToBackup2];
 
-      v17 = [(MBFileScanner *)self _scanTree:v16 forDomain:v8 fds:v11 snapshotPath:v9 relativePath:&stru_1003C3430 stats:a5];
+      v17 = [(MBFileScanner *)self _scanTree:v16 forDomain:domainCopy fds:v11 snapshotPath:pathCopy relativePath:&stru_1003C3430 stats:stats];
       if (v17)
       {
         v12 = v17;
@@ -397,7 +397,7 @@ LABEL_20:
 
       else
       {
-        [v8 relativePathsToBackupLive];
+        [domainCopy relativePathsToBackupLive];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
@@ -417,7 +417,7 @@ LABEL_20:
                 objc_enumerationMutation(v18);
               }
 
-              v23 = [(MBFileScanner *)self _scanFilesForDomain:v8 fds:v11 snapshotPath:0 relativePath:*(*(&v26 + 1) + 8 * i) stats:a5];
+              v23 = [(MBFileScanner *)self _scanFilesForDomain:domainCopy fds:v11 snapshotPath:0 relativePath:*(*(&v26 + 1) + 8 * i) stats:stats];
               if (v23)
               {
                 v12 = v23;
@@ -450,16 +450,16 @@ LABEL_19:
   return v12;
 }
 
-+ (id)treeWithPaths:(id)a3
++ (id)treeWithPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v26 = objc_opt_new();
   v22 = objc_autoreleasePoolPush();
   v21 = [[NSSortDescriptor alloc] initWithKey:0 ascending:1];
   v41 = v21;
   v4 = [NSArray arrayWithObjects:&v41 count:1];
-  v23 = v3;
-  v5 = [v3 sortedArrayUsingDescriptors:v4];
+  v23 = pathsCopy;
+  v5 = [pathsCopy sortedArrayUsingDescriptors:v4];
 
   v35 = 0u;
   v36 = 0u;
@@ -486,8 +486,8 @@ LABEL_19:
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v9 = [v7 pathComponents];
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        pathComponents = [v7 pathComponents];
+        v10 = [pathComponents countByEnumeratingWithState:&v29 objects:v39 count:16];
         if (v10)
         {
           v11 = v10;
@@ -500,7 +500,7 @@ LABEL_19:
             {
               if (*v30 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(pathComponents);
               }
 
               v15 = *(*(&v29 + 1) + 8 * v13);
@@ -536,7 +536,7 @@ LABEL_19:
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v29 objects:v39 count:16];
+            v11 = [pathComponents countByEnumeratingWithState:&v29 objects:v39 count:16];
             if (v11)
             {
               continue;
@@ -562,13 +562,13 @@ LABEL_21:
   return v26;
 }
 
-- (BOOL)_shouldNotBackupFile:(id)a3 domain:(id)a4
+- (BOOL)_shouldNotBackupFile:(id)file domain:(id)domain
 {
-  v6 = a3;
-  v108 = a4;
+  fileCopy = file;
+  domainCopy = domain;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
-  if (!self->_delegateRespondsToFileScannerShouldExcludeFile || ([WeakRetained fileScanner:self shouldExcludeFile:v6] & 1) == 0)
+  if (!self->_delegateRespondsToFileScannerShouldExcludeFile || ([WeakRetained fileScanner:self shouldExcludeFile:fileCopy] & 1) == 0)
   {
     policy = self->_policy;
     if ((policy & 0x21) == 0x20)
@@ -577,18 +577,18 @@ LABEL_21:
     }
 
     context = (policy & 0x22);
-    v9 = context != 0;
+    domain2 = context != 0;
     v11 = (policy & 0x2A);
-    v12 = [v6 relativePath];
+    relativePath = [fileCopy relativePath];
     v13 = _os_feature_enabled_impl();
-    if (v11 == 8 && (v13 & 1) == 0 && [v6 isDataless])
+    if (v11 == 8 && (v13 & 1) == 0 && [fileCopy isDataless])
     {
-      v9 = MBGetDefaultLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      domain2 = MBGetDefaultLog();
+      if (os_log_type_enabled(domain2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v120 = v6;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (SF_DATALESS): %@", buf, 0xCu);
+        *v120 = fileCopy;
+        _os_log_impl(&_mh_execute_header, domain2, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (SF_DATALESS): %@", buf, 0xCu);
 LABEL_57:
         _MBLog();
         goto LABEL_58;
@@ -598,39 +598,39 @@ LABEL_57:
     }
 
     v102 = (policy & 0x22) != 0;
-    if ([v6 isCompressed])
+    if ([fileCopy isCompressed])
     {
-      if ([v6 isRegularFile])
+      if ([fileCopy isRegularFile])
       {
-        [v6 absolutePath];
+        [fileCopy absolutePath];
         policy = v14 = policy;
-        v9 = open([policy fileSystemRepresentation], 256);
+        domain2 = open([policy fileSystemRepresentation], 256);
 
         LOBYTE(policy) = v14;
-        if ((v9 & 0x80000000) == 0)
+        if ((domain2 & 0x80000000) == 0)
         {
-          v15 = pread(v9, &__buf, 1uLL, 0);
+          v15 = pread(domain2, &__buf, 1uLL, 0);
           v16 = *__error();
-          close(v9);
+          close(domain2);
           if (v15 < 0)
           {
             v17 = MBGetDefaultLog();
-            v9 = v17;
+            domain2 = v17;
             if ((v16 & 0xFFFFFFFD) == 9)
             {
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                *v120 = v6;
+                *v120 = fileCopy;
                 *&v120[8] = 1024;
                 *&v120[10] = v16;
-                _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (UF_COMPRESSED): %@ (%{errno}d)", buf, 0x12u);
+                _os_log_impl(&_mh_execute_header, domain2, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (UF_COMPRESSED): %@ (%{errno}d)", buf, 0x12u);
                 goto LABEL_57;
               }
 
 LABEL_58:
 
-              LOBYTE(v9) = 1;
+              LOBYTE(domain2) = 1;
 LABEL_59:
 
               goto LABEL_60;
@@ -638,17 +638,17 @@ LABEL_59:
 
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              v18 = v9;
+              v18 = domain2;
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                *v120 = v12;
+                *v120 = relativePath;
                 *&v120[8] = 1024;
                 *&v120[10] = v16;
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "=scanning= pread failed for %@: %{errno}d", buf, 0x12u);
               }
 
-              v84 = v12;
+              v84 = relativePath;
               v86 = v16;
               _MBLog();
             }
@@ -659,36 +659,36 @@ LABEL_59:
       }
     }
 
-    v19 = [v6 domain];
-    v20 = [v19 relativePathsNotToBackup];
-    if ([v20 containsObject:v12])
+    domain = [fileCopy domain];
+    relativePathsNotToBackup = [domain relativePathsNotToBackup];
+    if ([relativePathsNotToBackup containsObject:relativePath])
     {
       goto LABEL_27;
     }
 
     if (context)
     {
-      v96 = v11;
-      v9 = [v6 domain];
-      v21 = [v9 relativePathsNotToBackupToDrive];
-      if ([v21 containsObject:v12])
+      domain3 = v11;
+      domain2 = [fileCopy domain];
+      relativePathsNotToBackupToDrive = [domain2 relativePathsNotToBackupToDrive];
+      if ([relativePathsNotToBackupToDrive containsObject:relativePath])
       {
 
 LABEL_27:
         goto LABEL_55;
       }
 
-      v97 = v21;
+      v97 = relativePathsNotToBackupToDrive;
     }
 
-    v99 = v9;
+    v99 = domain2;
     v101 = v8;
-    v107 = v12;
+    v107 = relativePath;
     if (v11 == 8)
     {
-      v96 = [v6 domain];
-      v95 = [v96 relativePathsNotToBackupToService];
-      if ([v95 containsObject:v12])
+      domain3 = [fileCopy domain];
+      relativePathsNotToBackupToService = [domain3 relativePathsNotToBackupToService];
+      if ([relativePathsNotToBackupToService containsObject:relativePath])
       {
         v22 = 1;
         goto LABEL_52;
@@ -698,16 +698,16 @@ LABEL_27:
     v23 = policy & 6;
     if (v23 == 2)
     {
-      v94 = [v6 domain];
-      v93 = [v94 relativePathsNotToBackupToLocal];
-      if ([v93 containsObject:v107])
+      domain4 = [fileCopy domain];
+      relativePathsNotToBackupToLocal = [domain4 relativePathsNotToBackupToLocal];
+      if ([relativePathsNotToBackupToLocal containsObject:v107])
       {
         v22 = 1;
 LABEL_48:
 
 LABEL_49:
         v8 = v101;
-        v12 = v107;
+        relativePath = v107;
         if (v11 != 8)
         {
           v29 = v97;
@@ -718,27 +718,27 @@ LABEL_54:
             if (v22)
             {
 LABEL_55:
-              v9 = MBGetDefaultLog();
-              if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+              domain2 = MBGetDefaultLog();
+              if (os_log_type_enabled(domain2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                *v120 = v6;
-                _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (explicit): %@", buf, 0xCu);
+                *v120 = fileCopy;
+                _os_log_impl(&_mh_execute_header, domain2, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (explicit): %@", buf, 0xCu);
                 goto LABEL_57;
               }
 
               goto LABEL_58;
             }
 
-            v92 = self;
-            v31 = [v6 absolutePath];
-            if (strlen([v31 fileSystemRepresentation]) >= 0x3E6)
+            selfCopy = self;
+            absolutePath = [fileCopy absolutePath];
+            if (strlen([absolutePath fileSystemRepresentation]) >= 0x3E6)
             {
               v32 = MBGetDefaultLog();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                *v120 = v31;
+                *v120 = absolutePath;
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "=scanning= WARNING: File name too long - excluding file and continuing with backup. Please contact the developer and include this log message. Path: %@", buf, 0xCu);
 LABEL_64:
                 _MBLog();
@@ -746,24 +746,24 @@ LABEL_64:
 
 LABEL_65:
 
-              LOBYTE(v9) = 1;
+              LOBYTE(domain2) = 1;
 LABEL_66:
 
               goto LABEL_59;
             }
 
-            v33 = [v6 hasXattrs];
+            hasXattrs = [fileCopy hasXattrs];
             v91 = policy;
             if (context)
             {
-              v98 = v33;
-              v100 = v31;
-              v34 = [v108 relativePathsToIgnoreExclusionsForDrive];
+              v98 = hasXattrs;
+              v100 = absolutePath;
+              relativePathsToIgnoreExclusionsForDrive = [domainCopy relativePathsToIgnoreExclusionsForDrive];
               v115 = 0u;
               v116 = 0u;
               v117 = 0u;
               v118 = 0u;
-              v35 = v34;
+              v35 = relativePathsToIgnoreExclusionsForDrive;
               v36 = [v35 countByEnumeratingWithState:&v115 objects:v123 count:16];
               if (v36)
               {
@@ -781,7 +781,7 @@ LABEL_66:
                     }
 
                     v40 = *(*(&v115 + 1) + 8 * v39);
-                    if ([(__CFError *)v40 hasSuffix:@"/", v85, v87])
+                    if ([(__CFError *)v40 hasSuffix:@"/", name2, v87])
                     {
                       v41 = MBGetDefaultLog();
                       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -789,15 +789,15 @@ LABEL_66:
                         v42 = v41;
                         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
                         {
-                          v43 = [v108 name];
+                          name = [domainCopy name];
                           *buf = 138412546;
-                          *v120 = v43;
+                          *v120 = name;
                           *&v120[8] = 2112;
                           *&v120[10] = v40;
                           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_ERROR, "=scanning= Found an invalid path in relativePathsToIgnoreExclusionsForDrive for %@: %@", buf, 0x16u);
                         }
 
-                        v85 = [v108 name];
+                        name2 = [domainCopy name];
                         v87 = v40;
                         _MBLog();
 
@@ -834,26 +834,26 @@ LABEL_66:
               {
 LABEL_99:
                 v49 = MBGetDefaultLog();
-                v31 = v100;
+                absolutePath = v100;
                 LOBYTE(policy) = v91;
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  *v120 = v6;
+                  *v120 = fileCopy;
                   _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEBUG, "=scanning= Skipping exclusion check for %@", buf, 0xCu);
-                  v85 = v6;
+                  name2 = fileCopy;
                   _MBLog();
                 }
 
                 goto LABEL_134;
               }
 
-              v31 = v100;
+              absolutePath = v100;
             }
 
-            else if (!v33)
+            else if (!hasXattrs)
             {
-              if (![v6 isRegularFile])
+              if (![fileCopy isRegularFile])
               {
                 goto LABEL_166;
               }
@@ -861,21 +861,21 @@ LABEL_99:
 LABEL_135:
               if ((policy & 8) != 0)
               {
-                v67 = [v6 protectionClass];
-                if (v67)
+                protectionClass = [fileCopy protectionClass];
+                if (protectionClass)
                 {
-                  v68 = v67;
+                  v68 = protectionClass;
                   v32 = 0;
                 }
 
                 else
                 {
                   v109 = 0;
-                  v68 = [MBProtectionClassUtils getWithPath:v31 error:&v109];
+                  v68 = [MBProtectionClassUtils getWithPath:absolutePath error:&v109];
                   v32 = v109;
                 }
 
-                if ((v68 - 1 < 2 || v68 == 255 && +[MBError isError:withCode:](MBError, "isError:withCode:", v32, 24)) && [v6 isCompressed])
+                if ((v68 - 1 < 2 || v68 == 255 && +[MBError isError:withCode:](MBError, "isError:withCode:", v32, 24)) && [fileCopy isCompressed])
                 {
                   v69 = MBGetDefaultLog();
                   if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
@@ -883,7 +883,7 @@ LABEL_135:
                     *buf = 67109378;
                     *v120 = v68;
                     *&v120[4] = 2112;
-                    *&v120[6] = v6;
+                    *&v120[6] = fileCopy;
                     _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (compressed, pc:%d): %@", buf, 0x12u);
                     _MBLog();
                   }
@@ -892,10 +892,10 @@ LABEL_135:
                 }
               }
 
-              v70 = [v31 length];
+              v70 = [absolutePath length];
               if (v70 - [@".plist.1234567" length] >= 1)
               {
-                v71 = [v31 substringFromIndex:?];
+                v71 = [absolutePath substringFromIndex:?];
                 v72 = [v71 hasPrefix:@".plist."];
 
                 if (v72)
@@ -910,7 +910,7 @@ LABEL_135:
                   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
-                    *v120 = v31;
+                    *v120 = absolutePath;
                     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "=scanning= Not backing up failed plist safe save: %@", buf, 0xCu);
                   }
 
@@ -918,10 +918,10 @@ LABEL_135:
                 }
               }
 
-              v73 = [v31 pathExtension];
-              if ([v73 isEqualToString:@"dat"])
+              pathExtension = [absolutePath pathExtension];
+              if ([pathExtension isEqualToString:@"dat"])
               {
-                v74 = [v31 containsString:@"binarycookies_tmp"];
+                v74 = [absolutePath containsString:@"binarycookies_tmp"];
 
                 if (v74)
                 {
@@ -935,7 +935,7 @@ LABEL_135:
                   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
-                    *v120 = v31;
+                    *v120 = absolutePath;
                     _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "=scanning= Not backing up temporary cookie: %@", buf, 0xCu);
                   }
 
@@ -947,8 +947,8 @@ LABEL_135:
               {
               }
 
-              v75 = [v31 lastPathComponent];
-              v76 = [v75 hasPrefix:@".dat.nosync"];
+              lastPathComponent = [absolutePath lastPathComponent];
+              v76 = [lastPathComponent hasPrefix:@".dat.nosync"];
 
               if (v76)
               {
@@ -962,7 +962,7 @@ LABEL_135:
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = 138412290;
-                  *v120 = v31;
+                  *v120 = absolutePath;
                   _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEBUG, "=scanning= Not backing up .dat.nosync file: %@", buf, 0xCu);
                 }
               }
@@ -970,18 +970,18 @@ LABEL_135:
               else
               {
 LABEL_166:
-                v9 = [v6 snapshotPath];
-                if (!v9)
+                domain2 = [fileCopy snapshotPath];
+                if (!domain2)
                 {
                   goto LABEL_66;
                 }
 
-                v77 = [v6 relativePath];
-                v78 = [v108 shouldBackupRelativePathFromLiveFileSystem:v77];
+                relativePath2 = [fileCopy relativePath];
+                v78 = [domainCopy shouldBackupRelativePathFromLiveFileSystem:relativePath2];
 
                 if (!v78)
                 {
-                  LOBYTE(v9) = 0;
+                  LOBYTE(domain2) = 0;
                   goto LABEL_66;
                 }
 
@@ -995,7 +995,7 @@ LABEL_166:
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  *v120 = v6;
+                  *v120 = fileCopy;
                   _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "=scanning= Not backing up %@ from the APFS snapshot because it needs to be backed up from the live filesystem", buf, 0xCu);
                 }
               }
@@ -1005,8 +1005,8 @@ LABEL_171:
               goto LABEL_64;
             }
 
-            v46 = [v6 isDirectory];
-            v47 = [NSURL fileURLWithPath:v31 isDirectory:v46];
+            isDirectory = [fileCopy isDirectory];
+            v47 = [NSURL fileURLWithPath:absolutePath isDirectory:isDirectory];
             v114 = 0;
             v113 = 0;
             v48 = [v47 getResourceValue:&v114 forKey:NSURLIsExcludedFromBackupKey error:&v113];
@@ -1016,16 +1016,16 @@ LABEL_171:
             {
               if ([v49 BOOLValue])
               {
-                if (v46 && [v31 hasSuffix:@"/Preferences"])
+                if (isDirectory && [absolutePath hasSuffix:@"/Preferences"])
                 {
                   v51 = objc_autoreleasePoolPush();
-                  v52 = [v6 livePath];
-                  if (([(__CFError *)v52 isEqualToString:@"/var/mobile/Library/Preferences"]& 1) != 0)
+                  livePath = [fileCopy livePath];
+                  if (([(__CFError *)livePath isEqualToString:@"/var/mobile/Library/Preferences"]& 1) != 0)
                   {
                     contextb = v51;
                     v53 = v47;
-                    v54 = v31;
-                    v55 = [NSURL fileURLWithPath:v52];
+                    v54 = absolutePath;
+                    v55 = [NSURL fileURLWithPath:livePath];
 
                     v112 = v50;
                     v103 = v55;
@@ -1044,12 +1044,12 @@ LABEL_171:
                           *buf = 138412546;
                           *v120 = NSURLIsExcludedFromBackupKey;
                           *&v120[8] = 2112;
-                          *&v120[10] = v52;
+                          *&v120[10] = livePath;
                           _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_DEFAULT, "=scanning= Removed %@ at %@", buf, 0x16u);
                         }
 
-                        v85 = NSURLIsExcludedFromBackupKey;
-                        v87 = v52;
+                        name2 = NSURLIsExcludedFromBackupKey;
+                        v87 = livePath;
 LABEL_182:
                         _MBLog();
                       }
@@ -1063,19 +1063,19 @@ LABEL_182:
                         *buf = 138412802;
                         *v120 = NSURLIsExcludedFromBackupKey;
                         *&v120[8] = 2112;
-                        *&v120[10] = v52;
+                        *&v120[10] = livePath;
                         v121 = 2112;
                         v122 = v56;
                         _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_ERROR, "=scanning= Failed to remove %@ at %@: %@", buf, 0x20u);
                       }
 
-                      v87 = v52;
+                      v87 = livePath;
                       v88 = v56;
-                      v85 = NSURLIsExcludedFromBackupKey;
+                      name2 = NSURLIsExcludedFromBackupKey;
                       goto LABEL_182;
                     }
 
-                    v81 = v52;
+                    v81 = livePath;
 
                     v82 = MBGetDefaultLog();
                     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
@@ -1090,7 +1090,7 @@ LABEL_182:
                         _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "=scanning= Found %@ at %@ - ignoring", buf, 0x16u);
                       }
 
-                      v85 = NSURLIsExcludedFromBackupKey;
+                      name2 = NSURLIsExcludedFromBackupKey;
                       v87 = v54;
                       _MBLog();
                     }
@@ -1117,7 +1117,7 @@ LABEL_109:
                             if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                             {
                               *buf = 138412290;
-                              *v120 = v6;
+                              *v120 = fileCopy;
                               _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up to unencrypted iTunes (attribute): %@", buf, 0xCu);
 LABEL_122:
                               _MBLog();
@@ -1146,16 +1146,16 @@ LABEL_122:
 
                     else
                     {
-                      if ((v91 & 0x20) != 0 || (v92->_policy & 1) == 0)
+                      if ((v91 & 0x20) != 0 || (selfCopy->_policy & 1) == 0)
                       {
 LABEL_133:
 
-                        v31 = v54;
+                        absolutePath = v54;
                         v35 = v32;
 LABEL_134:
 
                         v8 = v101;
-                        v12 = v107;
+                        relativePath = v107;
                         goto LABEL_135;
                       }
 
@@ -1175,7 +1175,7 @@ LABEL_134:
                             if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                             {
                               *buf = 138412290;
-                              *v120 = v6;
+                              *v120 = fileCopy;
                               _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up to iCloud (attribute): %@", buf, 0xCu);
                               goto LABEL_122;
                             }
@@ -1183,11 +1183,11 @@ LABEL_134:
 LABEL_123:
 
                             v50 = v56;
-                            v31 = v54;
+                            absolutePath = v54;
 LABEL_177:
 
                             v8 = v101;
-                            v12 = v107;
+                            relativePath = v107;
                             goto LABEL_65;
                           }
                         }
@@ -1214,7 +1214,7 @@ LABEL_131:
                       {
 LABEL_130:
 
-                        v85 = v62;
+                        name2 = v62;
                         v87 = error;
                         _MBLog();
                         goto LABEL_131;
@@ -1237,7 +1237,7 @@ LABEL_130:
                 if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  *v120 = v6;
+                  *v120 = fileCopy;
                   _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "=scanning= Not backed up (attribute): %@", buf, 0xCu);
                   _MBLog();
                 }
@@ -1255,25 +1255,25 @@ LABEL_130:
                 if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  *v120 = v6;
+                  *v120 = fileCopy;
                   *&v120[8] = 2112;
                   *&v120[10] = v50;
                   _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "=scanning= Error getting NSURLIsExcludedFromBackupKey resource: %@: %@", buf, 0x16u);
                 }
 
-                v85 = v6;
+                name2 = fileCopy;
                 v87 = v50;
                 _MBLog();
               }
 
               v32 = v47;
-              v54 = v31;
+              v54 = absolutePath;
 
               goto LABEL_108;
             }
 
             v32 = v47;
-            v54 = v31;
+            v54 = absolutePath;
 LABEL_108:
             v56 = v50;
             goto LABEL_109;
@@ -1298,9 +1298,9 @@ LABEL_52:
 
     if ((policy & 0x20) != 0)
     {
-      v24 = [v6 domain];
-      v25 = [v24 relativePathsNotToBackupInMegaBackup];
-      if ([v25 containsObject:v107])
+      domain5 = [fileCopy domain];
+      relativePathsNotToBackupInMegaBackup = [domain5 relativePathsNotToBackupInMegaBackup];
+      if ([relativePathsNotToBackupInMegaBackup containsObject:v107])
       {
 
         v22 = 1;
@@ -1308,8 +1308,8 @@ LABEL_52:
         goto LABEL_47;
       }
 
-      v89 = v25;
-      v90 = v24;
+      v89 = relativePathsNotToBackupInMegaBackup;
+      v90 = domain5;
       if ((policy & 4) == 0)
       {
         v22 = 0;
@@ -1323,16 +1323,16 @@ LABEL_52:
       goto LABEL_47;
     }
 
-    v26 = self;
-    v27 = [v6 domain];
-    [v27 relativePathsNotToTransferDeviceToDevice];
+    selfCopy2 = self;
+    domain6 = [fileCopy domain];
+    [domain6 relativePathsNotToTransferDeviceToDevice];
     policy = v28 = policy;
     v22 = [policy containsObject:v107];
 
     LOBYTE(policy) = v28;
     if ((v28 & 0x20) == 0)
     {
-      self = v26;
+      self = selfCopy2;
 LABEL_47:
       if (v23 != 2)
       {
@@ -1343,25 +1343,25 @@ LABEL_47:
     }
 
     v102 = 1;
-    self = v26;
+    self = selfCopy2;
 LABEL_45:
 
     goto LABEL_47;
   }
 
-  LOBYTE(v9) = 1;
+  LOBYTE(domain2) = 1;
 LABEL_60:
 
-  return v9;
+  return domain2;
 }
 
-- (id)_scanTree:(id)a3 forDomain:(id)a4 fds:(id)a5 snapshotPath:(id)a6 relativePath:(id)a7 stats:(_MBFileScannerDomainStats *)a8
+- (id)_scanTree:(id)tree forDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
+  treeCopy = tree;
+  domainCopy = domain;
+  fdsCopy = fds;
+  pathCopy = path;
+  relativePathCopy = relativePath;
   v20 = objc_autoreleasePoolPush();
   v21 = v20;
   v22 = atomic_load(&self->_canceled);
@@ -1375,15 +1375,15 @@ LABEL_3:
 
   v55 = a2;
   context = v20;
-  v57 = a8;
+  statsCopy = stats;
   v24 = [(MBDebugContext *)self->_debugContext performSelectorForName:@"Scanning" withObject:self->_debugContext];
-  [(MBDebugContext *)self->_debugContext setValue:v19 forName:@"RelativePath"];
-  v25 = [MBFile fileWithDomain:v16 snapshotPath:v18 relativePath:v19];
+  [(MBDebugContext *)self->_debugContext setValue:relativePathCopy forName:@"RelativePath"];
+  v25 = [MBFile fileWithDomain:domainCopy snapshotPath:pathCopy relativePath:relativePathCopy];
   v64 = 0;
   memset(v63, 0, sizeof(v63));
-  v26 = [v25 absolutePath];
+  absolutePath = [v25 absolutePath];
   v62 = 0;
-  v27 = MBNodeForPath(v26, v63, &v62);
+  v27 = MBNodeForPath(absolutePath, v63, &v62);
   v28 = v62;
 
   if ((v27 & 1) == 0)
@@ -1393,12 +1393,12 @@ LABEL_3:
       v30 = MBGetDefaultLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        v31 = [v25 absolutePath];
+        absolutePath2 = [v25 absolutePath];
         *buf = 138412290;
-        v67 = v31;
+        v67 = absolutePath2;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "=scanning= Doesn't exist: %@", buf, 0xCu);
 
-        v32 = [v25 absolutePath];
+        absolutePath3 = [v25 absolutePath];
 LABEL_18:
         _MBLog();
       }
@@ -1422,28 +1422,28 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v35 = [v25 absolutePath];
+        absolutePath4 = [v25 absolutePath];
         *buf = 138412546;
-        v67 = v35;
+        v67 = absolutePath4;
         v68 = 2112;
         v69 = v28;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "=scanning= Skipping due to unsupported mbNode type: %@ %@", buf, 0x16u);
 
-        v32 = [v25 absolutePath];
+        absolutePath3 = [v25 absolutePath];
         goto LABEL_18;
       }
 
       v30 = MBGetDefaultLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v25 absolutePath];
+        absolutePath5 = [v25 absolutePath];
         *buf = 138412546;
-        v67 = v34;
+        v67 = absolutePath5;
         v68 = 2112;
         v69 = v28;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "=scanning= Skipping due to unsupported protection class: %@ %@", buf, 0x16u);
 
-        v32 = [v25 absolutePath];
+        absolutePath3 = [v25 absolutePath];
         goto LABEL_18;
       }
     }
@@ -1456,7 +1456,7 @@ LABEL_19:
   }
 
   [v25 setNode:v63];
-  if ([(MBFileScanner *)self _shouldNotBackupFile:v25 domain:v16])
+  if ([(MBFileScanner *)self _shouldNotBackupFile:v25 domain:domainCopy])
   {
     v29 = v25;
     v23 = 0;
@@ -1464,7 +1464,7 @@ LABEL_19:
 
   else
   {
-    v33 = [(MBFileScanner *)self _foundFile:v25 snapshotPath:v18 stats:v57];
+    v33 = [(MBFileScanner *)self _foundFile:v25 snapshotPath:pathCopy stats:statsCopy];
 
     if (!v33)
     {
@@ -1475,15 +1475,15 @@ LABEL_19:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v37 = [v15 allKeys];
-        v38 = [v37 sortedArrayUsingComparator:&stru_1003C0B00];
+        allKeys = [treeCopy allKeys];
+        v38 = [allKeys sortedArrayUsingComparator:&stru_1003C0B00];
 
         obj = v38;
         v52 = [v38 countByEnumeratingWithState:&v58 objects:v65 count:16];
         if (v52)
         {
-          v53 = v18;
-          v54 = v17;
+          v53 = pathCopy;
+          v54 = fdsCopy;
           v51 = *v59;
           while (2)
           {
@@ -1496,29 +1496,29 @@ LABEL_19:
 
               v40 = *(*(&v58 + 1) + 8 * i);
               v41 = objc_autoreleasePoolPush();
-              v42 = v15;
-              v43 = [v15 objectForKeyedSubscript:v40];
-              v44 = [v19 stringByAppendingPathComponent:v40];
-              v45 = [v16 relativePathsNotToBackup];
-              v46 = [v45 containsObject:v44];
+              v42 = treeCopy;
+              v43 = [treeCopy objectForKeyedSubscript:v40];
+              v44 = [relativePathCopy stringByAppendingPathComponent:v40];
+              relativePathsNotToBackup = [domainCopy relativePathsNotToBackup];
+              v46 = [relativePathsNotToBackup containsObject:v44];
 
               if (v46)
               {
                 v48 = +[NSAssertionHandler currentHandler];
-                [v48 handleFailureInMethod:v55 object:self file:@"MBFileScanner.m" lineNumber:529 description:{@"Relative path to backup in domain is in set not to backup also: %@-%@", v16, v44}];
+                [v48 handleFailureInMethod:v55 object:self file:@"MBFileScanner.m" lineNumber:529 description:{@"Relative path to backup in domain is in set not to backup also: %@-%@", domainCopy, v44}];
               }
 
               if ([v43 count])
               {
-                [(MBFileScanner *)self _scanTree:v43 forDomain:v16 fds:v54 snapshotPath:v53 relativePath:v44 stats:v57];
+                [(MBFileScanner *)self _scanTree:v43 forDomain:domainCopy fds:v54 snapshotPath:v53 relativePath:v44 stats:statsCopy];
               }
 
               else
               {
-                [(MBFileScanner *)self _scanFilesForDomain:v16 fds:v54 snapshotPath:v53 relativePath:v44 stats:v57];
+                [(MBFileScanner *)self _scanFilesForDomain:domainCopy fds:v54 snapshotPath:v53 relativePath:v44 stats:statsCopy];
               }
               v47 = ;
-              v15 = v42;
+              treeCopy = v42;
               if (v47)
               {
                 v23 = v47;
@@ -1541,8 +1541,8 @@ LABEL_19:
 
           v23 = 0;
 LABEL_42:
-          v18 = v53;
-          v17 = v54;
+          pathCopy = v53;
+          fdsCopy = v54;
         }
 
         else
@@ -1574,16 +1574,16 @@ LABEL_21:
   return v23;
 }
 
-- (id)_scanFilesForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 stats:(_MBFileScannerDomainStats *)a7
+- (id)_scanFilesForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  domainCopy = domain;
+  fdsCopy = fds;
+  pathCopy = path;
+  relativePathCopy = relativePath;
   mode = self->_mode;
   if (mode)
   {
-    v17 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:v12 fds:v13 snapshotPath:v14 relativePath:v15 depth:0 stats:a7];
+    v17 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:domainCopy fds:fdsCopy snapshotPath:pathCopy relativePath:relativePathCopy depth:0 stats:stats];
     if (v17)
     {
       goto LABEL_7;
@@ -1594,7 +1594,7 @@ LABEL_21:
 
   if ((mode & 2) != 0)
   {
-    v17 = [(MBFileScanner *)self _scanFilesUsingGetattrlistbulkForDomain:v12 fds:v13 snapshotPath:v14 relativePath:v15 stats:a7];
+    v17 = [(MBFileScanner *)self _scanFilesUsingGetattrlistbulkForDomain:domainCopy fds:fdsCopy snapshotPath:pathCopy relativePath:relativePathCopy stats:stats];
   }
 
   else
@@ -1607,12 +1607,12 @@ LABEL_7:
   return v17;
 }
 
-- (id)_scanFilesUsingReaddirForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 depth:(int)a7 stats:(_MBFileScannerDomainStats *)a8
+- (id)_scanFilesUsingReaddirForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath depth:(int)depth stats:(_MBFileScannerDomainStats *)stats
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  domainCopy = domain;
+  fdsCopy = fds;
+  pathCopy = path;
+  relativePathCopy = relativePath;
   v18 = atomic_load(&self->_canceled);
   if (v18)
   {
@@ -1622,15 +1622,15 @@ LABEL_7:
 
   v20 = objc_autoreleasePoolPush();
   v21 = v20;
-  if (a7 >= 239)
+  if (depth >= 239)
   {
     v22 = MBGetDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
       *buf = 67109378;
-      *&buf[4] = a7;
+      *&buf[4] = depth;
       *&buf[8] = 2114;
-      *&buf[10] = v17;
+      *&buf[10] = relativePathCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_FAULT, "=scanning= Reached max directory depth (%d) under %{public}@", buf, 0x12u);
       _MBLog();
     }
@@ -1641,23 +1641,23 @@ LABEL_7:
 
   v73 = v20;
   v75 = 0;
-  v23 = [v15 cachedFDForDomain:v14 withSnapshotPath:v16 error:&v75];
+  v23 = [fdsCopy cachedFDForDomain:domainCopy withSnapshotPath:pathCopy error:&v75];
   v22 = v75;
   if (v23 == -1)
   {
     v28 = MBGetDefaultLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v14 rootPath];
+      rootPath = [domainCopy rootPath];
       *buf = 138412802;
-      *&buf[4] = v14;
+      *&buf[4] = domainCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v29;
+      *&buf[14] = rootPath;
       *&buf[22] = 2112;
       *&buf[24] = v22;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "=scanning= Unable to open domain directory at %@:%@: %@", buf, 0x20u);
 
-      v62 = [v14 rootPath];
+      rootPath2 = [domainCopy rootPath];
       _MBLog();
     }
 
@@ -1667,22 +1667,22 @@ LABEL_7:
   }
 
   v24 = [(MBDebugContext *)self->_debugContext performSelectorForName:@"Scanning" withObject:self->_debugContext];
-  [(MBDebugContext *)self->_debugContext setValue:v17 forName:@"RelativePath"];
-  v72 = [MBFile fileWithDomain:v14 snapshotPath:v16 relativePath:v17];
-  if (!v16)
+  [(MBDebugContext *)self->_debugContext setValue:relativePathCopy forName:@"RelativePath"];
+  v72 = [MBFile fileWithDomain:domainCopy snapshotPath:pathCopy relativePath:relativePathCopy];
+  if (!pathCopy)
   {
     goto LABEL_38;
   }
 
-  v25 = [v14 name];
-  if (![v25 isEqualToString:@"HomeDomain"])
+  name = [domainCopy name];
+  if (![name isEqualToString:@"HomeDomain"])
   {
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  v26 = v25;
+  v26 = name;
   policy = self->_policy;
   if ((policy & 0x22) != 0)
   {
@@ -1697,16 +1697,16 @@ LABEL_37:
     }
   }
 
-  if (([v17 isEqualToString:@"Library/Application Support/CloudDocs/backup"]& 1) == 0 && ([v17 hasPrefix:@"Library/Application Support/CloudDocs/backup/"]& 1) == 0 && ([v17 isEqualToString:@"Library/Application Support/FileProvider/backup"]& 1) == 0 && ([v17 hasPrefix:@"Library/Application Support/FileProvider/backup/"]& 1) == 0)
+  if (([relativePathCopy isEqualToString:@"Library/Application Support/CloudDocs/backup"]& 1) == 0 && ([relativePathCopy hasPrefix:@"Library/Application Support/CloudDocs/backup/"]& 1) == 0 && ([relativePathCopy isEqualToString:@"Library/Application Support/FileProvider/backup"]& 1) == 0 && ([relativePathCopy hasPrefix:@"Library/Application Support/FileProvider/backup/"]& 1) == 0)
   {
-    if (([v17 isEqualToString:@"Library/Application Support/CloudDocs"]& 1) != 0 || [v17 isEqualToString:@"Library/Application Support/FileProvider"])
+    if (([relativePathCopy isEqualToString:@"Library/Application Support/CloudDocs"]& 1) != 0 || [relativePathCopy isEqualToString:@"Library/Application Support/FileProvider"])
     {
-      v67 = [v17 stringByAppendingPathComponent:@"backup"];
-      v65 = [MBFile fileWithDomain:v14 snapshotPath:0 relativePath:?];
-      v69 = [v65 absolutePath];
+      v67 = [relativePathCopy stringByAppendingPathComponent:@"backup"];
+      v65 = [MBFile fileWithDomain:domainCopy snapshotPath:0 relativePath:?];
+      absolutePath = [v65 absolutePath];
       v76[0] = 0;
       v30 = +[NSFileManager defaultManager];
-      v31 = [v30 fileExistsAtPath:v69 isDirectory:v76];
+      v31 = [v30 fileExistsAtPath:absolutePath isDirectory:v76];
       v63 = v76[0];
       v64 = v31;
 
@@ -1717,13 +1717,13 @@ LABEL_37:
         if (v33)
         {
           *buf = 138412290;
-          *&buf[4] = v69;
+          *&buf[4] = absolutePath;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "=scanning= Scanning the live path at %@", buf, 0xCu);
-          v60 = v69;
+          v60 = absolutePath;
           _MBLog();
         }
 
-        v34 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:v14 fds:v15 snapshotPath:0 relativePath:v67 depth:(a7 + 1) stats:a8];
+        v34 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:domainCopy fds:fdsCopy snapshotPath:0 relativePath:v67 depth:(depth + 1) stats:stats];
         if (v34)
         {
           v19 = v34;
@@ -1736,7 +1736,7 @@ LABEL_37:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *&buf[4] = v69;
+          *&buf[4] = absolutePath;
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "=scanning= Finished scanning the live path at %@", buf, 0xCu);
           goto LABEL_34;
         }
@@ -1748,11 +1748,11 @@ LABEL_37:
         if (v33)
         {
           *buf = 138412290;
-          *&buf[4] = v69;
+          *&buf[4] = absolutePath;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "=scanning= No directory found at live path %@", buf, 0xCu);
 LABEL_34:
-          v25 = v67;
-          v60 = v69;
+          name = v67;
+          v60 = absolutePath;
           _MBLog();
 LABEL_36:
 
@@ -1760,41 +1760,41 @@ LABEL_36:
         }
       }
 
-      v25 = v67;
+      name = v67;
       goto LABEL_36;
     }
 
 LABEL_38:
     v36 = v23;
-    v37 = a8;
+    statsCopy = stats;
     v85 = 0;
     v83 = 0u;
     v84 = 0u;
     memset(buf, 0, sizeof(buf));
     v74 = v22;
     v70 = v36;
-    v38 = MBNodeForRelativePathAt(v36, v17, buf, &v74);
+    v38 = MBNodeForRelativePathAt(v36, relativePathCopy, buf, &v74);
     v39 = v74;
 
     if (v38)
     {
       [v72 setNode:buf];
-      if ([(MBFileScanner *)self _shouldNotBackupFile:v72 domain:v14])
+      if ([(MBFileScanner *)self _shouldNotBackupFile:v72 domain:domainCopy])
       {
         v19 = 0;
       }
 
       else
       {
-        v44 = [(MBFileScanner *)self _foundFile:v72 snapshotPath:v16 stats:v37];
+        v44 = [(MBFileScanner *)self _foundFile:v72 snapshotPath:pathCopy stats:statsCopy];
 
         if (!v44)
         {
           if ([v72 isDirectory])
           {
             v50 = objc_autoreleasePoolPush();
-            LODWORD(v60) = a7;
-            v51 = [(MBFileScanner *)self _scanDirectory:v72 domain:v14 fds:v15 domainDirFd:v70 snapshotPath:v16 relativePath:v17 depth:v60 stats:v37];
+            LODWORD(v60) = depth;
+            v51 = [(MBFileScanner *)self _scanDirectory:v72 domain:domainCopy fds:fdsCopy domainDirFd:v70 snapshotPath:pathCopy relativePath:relativePathCopy depth:v60 stats:statsCopy];
             objc_autoreleasePoolPop(v50);
           }
 
@@ -1822,42 +1822,42 @@ LABEL_61:
     }
 
     v40 = [MBError errnoForError:v39];
-    v71 = [(MBFileScanner *)self delegate];
+    delegate = [(MBFileScanner *)self delegate];
     if (v40 == 2)
     {
       v41 = MBGetDefaultLog();
       v42 = v41;
       v21 = v73;
-      if (a7)
+      if (depth)
       {
         v28 = v72;
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v72 absolutePath];
+          absolutePath2 = [v72 absolutePath];
           *v76 = 138412290;
-          v77 = v43;
+          v77 = absolutePath2;
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "=scanning= Deleted while scanning: %@", v76, 0xCu);
 
-          v61 = [v72 absolutePath];
+          absolutePath3 = [v72 absolutePath];
           _MBLog();
 
           v21 = v73;
         }
 
         [(MBDebugContext *)self->_debugContext setFlag:@"FileDeletedWhileScanning"];
-        [(NSMutableSet *)self->_modifiedDomains addObject:v14];
+        [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
         goto LABEL_59;
       }
 
       v28 = v72;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
       {
-        v48 = [v72 absolutePath];
+        absolutePath4 = [v72 absolutePath];
         *v76 = 138412290;
-        v77 = v48;
+        v77 = absolutePath4;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "=scanning= Doesn't exist: %@", v76, 0xCu);
 
-        v46 = [v72 absolutePath];
+        absolutePath5 = [v72 absolutePath];
         goto LABEL_57;
       }
     }
@@ -1871,51 +1871,51 @@ LABEL_61:
         v68 = v39;
         if (![MBError isError:v39 withCode:242])
         {
-          if ((objc_opt_respondsToSelector() & 1) != 0 && [v71 fileScanner:self failedToStatFile:v72 withErrno:v40])
+          if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate fileScanner:self failedToStatFile:v72 withErrno:v40])
           {
-            v52 = [v72 absolutePath];
-            v53 = [v72 domain];
-            v54 = [v53 volumeMountPoint];
+            absolutePath6 = [v72 absolutePath];
+            domain = [v72 domain];
+            volumeMountPoint = [domain volumeMountPoint];
 
             v55 = MBGetDefaultLog();
             if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
             {
               *v76 = 138412802;
-              v77 = v52;
+              v77 = absolutePath6;
               v78 = 2112;
-              v79 = v17;
+              v79 = relativePathCopy;
               v80 = 1024;
               v81 = v40;
               _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "=scanning= Skipping file with MBNodeForRelativePathAt() failure %@ (%@): %{errno}d", v76, 0x1Cu);
               _MBLog();
             }
 
-            MBDiagnoseUnavailableFile(v52, v16, v54, v40, "MBNodeForRelativePathAt");
+            MBDiagnoseUnavailableFile(absolutePath6, pathCopy, volumeMountPoint, v40, "MBNodeForRelativePathAt");
             v19 = 0;
             v21 = v73;
           }
 
           else
           {
-            v56 = [v72 absolutePath];
-            v57 = [v72 domain];
-            v58 = [v57 volumeMountPoint];
+            absolutePath7 = [v72 absolutePath];
+            domain2 = [v72 domain];
+            volumeMountPoint2 = [domain2 volumeMountPoint];
 
             v59 = MBGetDefaultLog();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
             {
               *v76 = 138412802;
-              v77 = v56;
+              v77 = absolutePath7;
               v78 = 2112;
-              v79 = v17;
+              v79 = relativePathCopy;
               v80 = 1024;
               v81 = v40;
               _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_ERROR, "=scanning= MBNodeForRelativePathAt() failed at %@ (%@): %{errno}d", v76, 0x1Cu);
               _MBLog();
             }
 
-            MBDiagnoseUnavailableFile(v56, v16, v58, v40, "MBNodeForRelativePathAt");
-            v19 = [MBError errorWithErrno:v40 code:101 path:v56 format:@"MBNodeForRelativePathAt() error"];
+            MBDiagnoseUnavailableFile(absolutePath7, pathCopy, volumeMountPoint2, v40, "MBNodeForRelativePathAt");
+            v19 = [MBError errorWithErrno:v40 code:101 path:absolutePath7 format:@"MBNodeForRelativePathAt() error"];
 
             v28 = v72;
             v21 = v73;
@@ -1931,28 +1931,28 @@ LABEL_61:
           goto LABEL_58;
         }
 
-        v47 = [v72 absolutePath];
+        absolutePath8 = [v72 absolutePath];
         *v76 = 138412546;
-        v77 = v47;
+        v77 = absolutePath8;
         v78 = 2112;
         v79 = v39;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEBUG, "=scanning= Skipping unsupported mbNode type: %@ %@", v76, 0x16u);
 
-        v46 = [v72 absolutePath];
+        absolutePath5 = [v72 absolutePath];
         goto LABEL_57;
       }
 
       v42 = MBGetDefaultLog();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v72 absolutePath];
+        absolutePath9 = [v72 absolutePath];
         *v76 = 138412546;
-        v77 = v45;
+        v77 = absolutePath9;
         v78 = 2112;
         v79 = v39;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "=scanning= Skipping due to unsupported protection class: %@ %@", v76, 0x16u);
 
-        v46 = [v72 absolutePath];
+        absolutePath5 = [v72 absolutePath];
 LABEL_57:
         _MBLog();
 
@@ -1982,70 +1982,70 @@ LABEL_64:
   return v19;
 }
 
-- (id)_scanDirectory:(id)a3 domain:(id)a4 fds:(id)a5 domainDirFd:(int)a6 snapshotPath:(id)a7 relativePath:(id)a8 depth:(int)a9 stats:(_MBFileScannerDomainStats *)a10
+- (id)_scanDirectory:(id)directory domain:(id)domain fds:(id)fds domainDirFd:(int)fd snapshotPath:(id)path relativePath:(id)relativePath depth:(int)depth stats:(_MBFileScannerDomainStats *)self0
 {
-  v15 = a3;
-  v121 = a4;
-  v119 = a5;
-  v122 = a7;
-  v16 = a8;
-  if ([v16 length])
+  directoryCopy = directory;
+  domainCopy = domain;
+  fdsCopy = fds;
+  pathCopy = path;
+  relativePathCopy = relativePath;
+  if ([relativePathCopy length])
   {
-    v17 = [v16 fileSystemRepresentation];
+    fileSystemRepresentation = [relativePathCopy fileSystemRepresentation];
   }
 
   else
   {
-    v17 = ".";
+    fileSystemRepresentation = ".";
   }
 
-  v18 = openat(a6, v17, 256, 0);
+  v18 = openat(fd, fileSystemRepresentation, 256, 0);
   if (v18 < 0)
   {
     v26 = *__error();
-    v27 = [(MBFileScanner *)self delegate];
+    delegate = [(MBFileScanner *)self delegate];
     if (v26 == 2)
     {
       v28 = MBGetDefaultLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v15 absolutePath];
+        absolutePath = [directoryCopy absolutePath];
         LODWORD(v129.d_ino) = 138412290;
-        *(&v129.d_ino + 4) = v29;
+        *(&v129.d_ino + 4) = absolutePath;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "=scanning= Modification error when opening directory %@ while scanning", &v129, 0xCu);
 
-        v97 = [v15 absolutePath];
+        absolutePath2 = [directoryCopy absolutePath];
         _MBLog();
       }
 
-      [(NSMutableSet *)self->_modifiedDomains addObject:v121];
+      [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
     }
 
     else
     {
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ![v27 fileScanner:self failedToOpenFile:v15 withErrno:v26])
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ![delegate fileScanner:self failedToOpenFile:directoryCopy withErrno:v26])
       {
         v43 = MBGetDefaultLog();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
         {
-          v44 = [v15 absolutePath];
+          absolutePath3 = [directoryCopy absolutePath];
           LODWORD(v129.d_ino) = 138412802;
-          *(&v129.d_ino + 4) = v44;
+          *(&v129.d_ino + 4) = absolutePath3;
           WORD2(v129.d_seekoff) = 2080;
-          *(&v129.d_seekoff + 6) = v17;
+          *(&v129.d_seekoff + 6) = fileSystemRepresentation;
           *&v129.d_name[1] = 1024;
           *&v129.d_name[3] = v26;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "=scanning= openat failed at %@ (%s): %{errno}d", &v129, 0x1Cu);
 
-          v101 = [v15 absolutePath];
+          absolutePath4 = [directoryCopy absolutePath];
           _MBLog();
         }
 
-        v45 = [v15 absolutePath];
-        v30 = [MBError errorWithErrno:v26 code:101 path:v45 format:@"open error"];
+        absolutePath5 = [directoryCopy absolutePath];
+        v30 = [MBError errorWithErrno:v26 code:101 path:absolutePath5 format:@"open error"];
 
-        v46 = [v15 absolutePath];
-        MBDiagnoseFile(v46, v26, "openat");
+        absolutePath6 = [directoryCopy absolutePath];
+        MBDiagnoseFile(absolutePath6, v26, "openat");
 
         goto LABEL_32;
       }
@@ -2053,16 +2053,16 @@ LABEL_64:
       v36 = MBGetDefaultLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [v15 absolutePath];
+        absolutePath7 = [directoryCopy absolutePath];
         LODWORD(v129.d_ino) = 138412802;
-        *(&v129.d_ino + 4) = v37;
+        *(&v129.d_ino + 4) = absolutePath7;
         WORD2(v129.d_seekoff) = 2080;
-        *(&v129.d_seekoff + 6) = v17;
+        *(&v129.d_seekoff + 6) = fileSystemRepresentation;
         *&v129.d_name[1] = 1024;
         *&v129.d_name[3] = v26;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "=scanning= Skipping file with openat failure %@ (%s): %{errno}d", &v129, 0x1Cu);
 
-        v99 = [v15 absolutePath];
+        absolutePath8 = [directoryCopy absolutePath];
         _MBLog();
       }
     }
@@ -2074,77 +2074,77 @@ LABEL_32:
   }
 
   v19 = v18;
-  if (!v122)
+  if (!pathCopy)
   {
     memset(&v129, 0, 144);
     if (!fstat(v18, &v129))
     {
-      v58 = v17;
+      v58 = fileSystemRepresentation;
       d_seekoff = v129.d_seekoff;
-      if (d_seekoff != [v15 inodeNumber])
+      if (d_seekoff != [directoryCopy inodeNumber])
       {
         v86 = MBGetDefaultLog();
         if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
         {
-          v87 = [v15 absolutePath];
+          absolutePath9 = [directoryCopy absolutePath];
           *buf = 138412290;
-          *v131 = v87;
+          *v131 = absolutePath9;
           _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "=scanning= Modification error when opening directory %@ while scanning", buf, 0xCu);
 
-          v106 = [v15 absolutePath];
+          absolutePath10 = [directoryCopy absolutePath];
           _MBLog();
         }
 
-        [(NSMutableSet *)self->_modifiedDomains addObject:v121];
+        [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
         close(v19);
         goto LABEL_106;
       }
 
-      v17 = v58;
+      fileSystemRepresentation = v58;
       goto LABEL_6;
     }
 
     v31 = *__error();
-    v32 = [(MBFileScanner *)self delegate];
+    delegate2 = [(MBFileScanner *)self delegate];
     if (v31 == 2)
     {
       v33 = MBGetDefaultLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v15 absolutePath];
+        absolutePath11 = [directoryCopy absolutePath];
         *buf = 138412290;
-        *v131 = v34;
+        *v131 = absolutePath11;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "=scanning= Modification error when stating directory %@ while scanning", buf, 0xCu);
 
-        v98 = [v15 absolutePath];
+        absolutePath12 = [directoryCopy absolutePath];
         _MBLog();
       }
 
-      [(NSMutableSet *)self->_modifiedDomains addObject:v121];
+      [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
     }
 
     else
     {
-      if ((objc_opt_respondsToSelector() & 1) == 0 || ![v32 fileScanner:self failedToStatFile:v15 withErrno:v31])
+      if ((objc_opt_respondsToSelector() & 1) == 0 || ![delegate2 fileScanner:self failedToStatFile:directoryCopy withErrno:v31])
       {
         v64 = MBGetDefaultLog();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v65 = [v15 absolutePath];
+          absolutePath13 = [directoryCopy absolutePath];
           *buf = 138412802;
-          *v131 = v65;
+          *v131 = absolutePath13;
           *&v131[8] = 2080;
-          *&v131[10] = v17;
+          *&v131[10] = fileSystemRepresentation;
           *&v131[18] = 1024;
           *&v131[20] = v31;
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "=scanning= fstat failed at %@ (%s): %{errno}d", buf, 0x1Cu);
 
-          v104 = [v15 absolutePath];
+          absolutePath14 = [directoryCopy absolutePath];
           _MBLog();
         }
 
-        v66 = [v15 absolutePath];
-        v35 = [MBError errorWithErrno:v31 code:101 path:v66 format:@"stat error"];
+        absolutePath15 = [directoryCopy absolutePath];
+        v35 = [MBError errorWithErrno:v31 code:101 path:absolutePath15 format:@"stat error"];
 
         goto LABEL_76;
       }
@@ -2152,16 +2152,16 @@ LABEL_32:
       v62 = MBGetDefaultLog();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
       {
-        v63 = [v15 absolutePath];
+        absolutePath16 = [directoryCopy absolutePath];
         *buf = 138412802;
-        *v131 = v63;
+        *v131 = absolutePath16;
         *&v131[8] = 2080;
-        *&v131[10] = v17;
+        *&v131[10] = fileSystemRepresentation;
         *&v131[18] = 1024;
         *&v131[20] = v31;
         _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "=scanning= Skipping file with fstat failure %@ (%s): %{errno}d", buf, 0x1Cu);
 
-        v103 = [v15 absolutePath];
+        absolutePath17 = [directoryCopy absolutePath];
         _MBLog();
       }
     }
@@ -2176,7 +2176,7 @@ LABEL_87:
   }
 
 LABEL_6:
-  v118 = v15;
+  v118 = directoryCopy;
   v20 = +[NSMutableArray array];
   v21 = fdopendir(v19);
   if (!v21)
@@ -2188,16 +2188,16 @@ LABEL_6:
     {
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [v15 absolutePath];
+        absolutePath18 = [directoryCopy absolutePath];
         LODWORD(v129.d_ino) = 138412290;
-        *(&v129.d_ino + 4) = v41;
+        *(&v129.d_ino + 4) = absolutePath18;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "=scanning= Modification error when opening directory %@ while scanning", &v129, 0xCu);
 
-        v100 = [v15 absolutePath];
+        absolutePath19 = [directoryCopy absolutePath];
         _MBLog();
       }
 
-      [(NSMutableSet *)self->_modifiedDomains addObject:v121];
+      [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
       v42 = 0;
     }
 
@@ -2205,21 +2205,21 @@ LABEL_6:
     {
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        v60 = [v15 absolutePath];
+        absolutePath20 = [directoryCopy absolutePath];
         LODWORD(v129.d_ino) = 138412802;
-        *(&v129.d_ino + 4) = v60;
+        *(&v129.d_ino + 4) = absolutePath20;
         WORD2(v129.d_seekoff) = 2080;
-        *(&v129.d_seekoff + 6) = v17;
+        *(&v129.d_seekoff + 6) = fileSystemRepresentation;
         *&v129.d_name[1] = 1024;
         *&v129.d_name[3] = v38;
         _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_ERROR, "=scanning= fdopendir failed at %@ (%s): %{errno}d", &v129, 0x1Cu);
 
-        v102 = [v15 absolutePath];
+        absolutePath21 = [directoryCopy absolutePath];
         _MBLog();
       }
 
-      v61 = [v15 absolutePath];
-      v42 = [MBError errorWithErrno:v38 code:101 path:v61 format:@"fdopendir error"];
+      absolutePath22 = [directoryCopy absolutePath];
+      v42 = [MBError errorWithErrno:v38 code:101 path:absolutePath22 format:@"fdopendir error"];
     }
 
     close(v19);
@@ -2230,8 +2230,8 @@ LABEL_86:
   }
 
   v22 = v21;
-  v116 = v16;
-  v115 = a6;
+  v116 = relativePathCopy;
+  fdCopy = fd;
   v23 = objc_autoreleasePoolPush();
   memset(&v129, 0, 512);
   v127 = 0;
@@ -2241,7 +2241,7 @@ LABEL_86:
     v117 = 0;
     while (2)
     {
-      v16 = v116;
+      relativePathCopy = v116;
       while (1)
       {
         if (!v127)
@@ -2275,10 +2275,10 @@ LABEL_86:
         {
           v49 = v48;
           [v116 stringByAppendingPathComponent:v48];
-          v50 = v111 = v17;
-          v42 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:v121 fds:v119 snapshotPath:v122 relativePath:v50 depth:(a9 + 1) stats:a10];
+          v50 = v111 = fileSystemRepresentation;
+          v42 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:domainCopy fds:fdsCopy snapshotPath:pathCopy relativePath:v50 depth:(depth + 1) stats:stats];
 
-          v17 = v111;
+          fileSystemRepresentation = v111;
           if (v42)
           {
 
@@ -2321,9 +2321,9 @@ LABEL_57:
         }
 
         v112 = v49;
-        [v121 name];
+        [domainCopy name];
         v55 = v20;
-        v57 = v56 = v17;
+        v57 = v56 = fileSystemRepresentation;
         *buf = 67109634;
         *v131 = v117;
         *&v131[4] = 2082;
@@ -2332,9 +2332,9 @@ LABEL_57:
         *&v131[16] = v57;
         _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "=scanning= Found %u items under %{public}s (%{public}@)", buf, 0x1Cu);
 
-        v17 = v56;
+        fileSystemRepresentation = v56;
         v20 = v55;
-        v53 = [v121 name];
+        name = [domainCopy name];
       }
 
       else
@@ -2352,8 +2352,8 @@ LABEL_57:
         if (MBIsInternalInstall())
         {
           v112 = 0;
-          v53 = MBGetDefaultLog();
-          if (!os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
+          name = MBGetDefaultLog();
+          if (!os_log_type_enabled(name, OS_LOG_TYPE_FAULT))
           {
 LABEL_54:
 
@@ -2363,7 +2363,7 @@ LABEL_54:
 
           *buf = 138412290;
           *v131 = v51;
-          _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_FAULT, "=scanning= Unexpected file name: %@", buf, 0xCu);
+          _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_FAULT, "=scanning= Unexpected file name: %@", buf, 0xCu);
         }
 
         else
@@ -2374,14 +2374,14 @@ LABEL_54:
           }
 
           v112 = 0;
-          v53 = MBGetDefaultLog();
-          if (!os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
+          name = MBGetDefaultLog();
+          if (!os_log_type_enabled(name, OS_LOG_TYPE_FAULT))
           {
             goto LABEL_54;
           }
 
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_FAULT, "=scanning= =scanning= Unexpected file name", buf, 2u);
+          _os_log_impl(&_mh_execute_header, name, OS_LOG_TYPE_FAULT, "=scanning= =scanning= Unexpected file name", buf, 2u);
         }
       }
 
@@ -2396,28 +2396,28 @@ LABEL_54:
   v117 = 0;
 LABEL_78:
   v67 = v20;
-  v68 = v17;
+  v68 = fileSystemRepresentation;
   v69 = MBGetDefaultLog();
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
-    v70 = [v118 absolutePath];
+    absolutePath23 = [v118 absolutePath];
     *buf = 138412546;
-    *v131 = v70;
+    *v131 = absolutePath23;
     *&v131[8] = 1024;
     *&v131[10] = v25;
     _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_ERROR, "=scanning= readdir_r failed at %@: %d", buf, 0x12u);
 
-    v105 = [v118 absolutePath];
+    absolutePath24 = [v118 absolutePath];
     _MBLog();
   }
 
   v71 = *__error();
-  v72 = [v118 absolutePath];
-  v42 = [MBError errorWithErrno:v71 code:101 path:v72 format:@"readdir error"];
+  absolutePath25 = [v118 absolutePath];
+  v42 = [MBError errorWithErrno:v71 code:101 path:absolutePath25 format:@"readdir error"];
 
-  v17 = v68;
+  fileSystemRepresentation = v68;
   v20 = v67;
-  v16 = v116;
+  relativePathCopy = v116;
 LABEL_81:
   objc_autoreleasePoolPop(v23);
   if (v117 >> 4 >= 0x271)
@@ -2425,9 +2425,9 @@ LABEL_81:
     v73 = MBGetDefaultLog();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
     {
-      [v121 name];
+      [domainCopy name];
       v113 = v20;
-      v75 = v74 = v17;
+      v75 = v74 = fileSystemRepresentation;
       LODWORD(v129.d_ino) = 67109634;
       HIDWORD(v129.d_ino) = v117;
       LOWORD(v129.d_seekoff) = 2082;
@@ -2436,23 +2436,23 @@ LABEL_81:
       *&v129.d_type = v75;
       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "=scanning= Found a total of %u items under %{public}s (%{public}@)", &v129, 0x1Cu);
 
-      v110 = [v121 name];
+      name2 = [domainCopy name];
       _MBLog();
 
-      v17 = v74;
+      fileSystemRepresentation = v74;
       v20 = v113;
-      v16 = v116;
+      relativePathCopy = v116;
     }
   }
 
   closedir(v22);
-  v15 = v118;
+  directoryCopy = v118;
   if (v42)
   {
     goto LABEL_86;
   }
 
-  v114 = v17;
+  v114 = fileSystemRepresentation;
   [v20 sortUsingComparator:&stru_1003C0B20];
   v125 = 0u;
   v126 = 0u;
@@ -2475,8 +2475,8 @@ LABEL_81:
 
         v82 = *(*(&v123 + 1) + 8 * i);
         v83 = objc_autoreleasePoolPush();
-        v84 = [v16 stringByAppendingPathComponent:v82];
-        v85 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:v121 fds:v119 snapshotPath:v122 relativePath:v84 depth:(a9 + 1) stats:a10];
+        v84 = [relativePathCopy stringByAppendingPathComponent:v82];
+        v85 = [(MBFileScanner *)self _scanFilesUsingReaddirForDomain:domainCopy fds:fdsCopy snapshotPath:pathCopy relativePath:v84 depth:(depth + 1) stats:stats];
         if (v85)
         {
           v30 = v85;
@@ -2498,16 +2498,16 @@ LABEL_81:
     }
   }
 
-  if (!v122)
+  if (!pathCopy)
   {
     memset(&v129, 0, 144);
-    v15 = v118;
-    if (!fstatat(v115, v114, &v129, 32))
+    directoryCopy = v118;
+    if (!fstatat(fdCopy, v114, &v129, 32))
     {
       v90 = v129.d_seekoff;
       if (v90 == [v118 inodeNumber])
       {
-        [(MBFileScanner *)self _detectModifiedDomain:v121 relativePath:v16 lastModified:*&v129.d_name[27]];
+        [(MBFileScanner *)self _detectModifiedDomain:domainCopy relativePath:relativePathCopy lastModified:*&v129.d_name[27]];
 LABEL_106:
         v30 = 0;
         goto LABEL_88;
@@ -2517,44 +2517,44 @@ LABEL_112:
       v91 = MBGetDefaultLog();
       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
       {
-        v92 = [v118 absolutePath];
+        absolutePath26 = [v118 absolutePath];
         *buf = 138412290;
-        *v131 = v92;
+        *v131 = absolutePath26;
         _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "=scanning= Deleted/modified while scanning: %@", buf, 0xCu);
 
-        v107 = [v118 absolutePath];
+        absolutePath27 = [v118 absolutePath];
         _MBLog();
       }
 
       [(MBDebugContext *)self->_debugContext setFlag:@"FileDeletedWhileScanning"];
-      [(NSMutableSet *)self->_modifiedDomains addObject:v121];
+      [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
       goto LABEL_106;
     }
 
     v88 = *__error();
-    v89 = [(MBFileScanner *)self delegate];
-    v27 = v89;
+    delegate3 = [(MBFileScanner *)self delegate];
+    delegate = delegate3;
     if (v88 == 2)
     {
 
       goto LABEL_112;
     }
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v27 fileScanner:self failedToStatFile:v118 withErrno:v88])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate fileScanner:self failedToStatFile:v118 withErrno:v88])
     {
-      v93 = MBGetDefaultLog();
-      if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
+      absolutePath32 = MBGetDefaultLog();
+      if (os_log_type_enabled(absolutePath32, OS_LOG_TYPE_INFO))
       {
-        v94 = [v118 absolutePath];
+        absolutePath28 = [v118 absolutePath];
         *buf = 138412802;
-        *v131 = v94;
+        *v131 = absolutePath28;
         *&v131[8] = 2080;
         *&v131[10] = v114;
         *&v131[18] = 1024;
         *&v131[20] = v88;
-        _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_INFO, "=scanning= Skipping file with fstat failure %@ (%s): %{errno}d", buf, 0x1Cu);
+        _os_log_impl(&_mh_execute_header, absolutePath32, OS_LOG_TYPE_INFO, "=scanning= Skipping file with fstat failure %@ (%s): %{errno}d", buf, 0x1Cu);
 
-        v108 = [v118 absolutePath];
+        absolutePath29 = [v118 absolutePath];
         _MBLog();
       }
 
@@ -2566,21 +2566,21 @@ LABEL_112:
       v95 = MBGetDefaultLog();
       if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
       {
-        v96 = [v118 absolutePath];
+        absolutePath30 = [v118 absolutePath];
         *buf = 138412802;
-        *v131 = v96;
+        *v131 = absolutePath30;
         *&v131[8] = 2080;
         *&v131[10] = v114;
         *&v131[18] = 1024;
         *&v131[20] = v88;
         _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_ERROR, "=scanning= fstatat failed at %@ (%s): %{errno}d", buf, 0x1Cu);
 
-        v109 = [v118 absolutePath];
+        absolutePath31 = [v118 absolutePath];
         _MBLog();
       }
 
-      v93 = [v118 absolutePath];
-      v30 = [MBError errorWithErrno:v88 code:101 path:v93 format:@"stat error"];
+      absolutePath32 = [v118 absolutePath];
+      v30 = [MBError errorWithErrno:v88 code:101 path:absolutePath32 format:@"stat error"];
     }
 
     goto LABEL_32;
@@ -2588,18 +2588,18 @@ LABEL_112:
 
   v30 = 0;
 LABEL_102:
-  v15 = v118;
+  directoryCopy = v118;
 LABEL_88:
 
   return v30;
 }
 
-- (id)_scanFilesUsingGetattrlistbulkForDomain:(id)a3 fds:(id)a4 snapshotPath:(id)a5 relativePath:(id)a6 stats:(_MBFileScannerDomainStats *)a7
+- (id)_scanFilesUsingGetattrlistbulkForDomain:(id)domain fds:(id)fds snapshotPath:(id)path relativePath:(id)relativePath stats:(_MBFileScannerDomainStats *)stats
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  domainCopy = domain;
+  fdsCopy = fds;
+  pathCopy = path;
+  relativePathCopy = relativePath;
   v16 = atomic_load(&self->_canceled);
   if (v16)
   {
@@ -2608,7 +2608,7 @@ LABEL_88:
   }
 
   v86 = 0;
-  v18 = [v13 cachedFDForDomain:v12 withSnapshotPath:v14 error:&v86];
+  v18 = [fdsCopy cachedFDForDomain:domainCopy withSnapshotPath:pathCopy error:&v86];
   v19 = v86;
   v20 = v19;
   if (v18 < 0)
@@ -2620,18 +2620,18 @@ LABEL_88:
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v27 = [v12 name];
-        v28 = [v12 rootPath];
+        name = [domainCopy name];
+        rootPath = [domainCopy rootPath];
         *buf = 138412802;
-        *&buf[4] = v27;
+        *&buf[4] = name;
         *&buf[12] = 2112;
-        *&buf[14] = v28;
+        *&buf[14] = rootPath;
         *&buf[22] = 2112;
-        *&buf[24] = v14;
+        *&buf[24] = pathCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "=scanning= No domain root present for %@ found at %@ under %@", buf, 0x20u);
 
-        v29 = [v12 name];
-        v68 = [v12 rootPath];
+        name2 = [domainCopy name];
+        rootPath2 = [domainCopy rootPath];
         _MBLog();
       }
 
@@ -2642,14 +2642,14 @@ LABEL_88:
     {
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v30 = [v12 name];
+        name3 = [domainCopy name];
         *buf = 138412546;
-        *&buf[4] = v30;
+        *&buf[4] = name3;
         *&buf[12] = 2112;
         *&buf[14] = v20;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "=scanning= Failed to fetch cached file descriptor for domain %@: %@", buf, 0x16u);
 
-        v64 = [v12 name];
+        name4 = [domainCopy name];
         _MBLog();
       }
 
@@ -2665,7 +2665,7 @@ LABEL_88:
   v91 = 0u;
   memset(buf, 0, sizeof(buf));
   v85 = v19;
-  v21 = MBNodeForRelativePathAt(v18, v15, buf, &v85);
+  v21 = MBNodeForRelativePathAt(v18, relativePathCopy, buf, &v85);
   v22 = v85;
 
   if ((v21 & 1) == 0)
@@ -2684,16 +2684,16 @@ LABEL_88:
     goto LABEL_59;
   }
 
-  v23 = [MBFile fileWithDomain:v12 snapshotPath:v14 relativePath:v15];
+  v23 = [MBFile fileWithDomain:domainCopy snapshotPath:pathCopy relativePath:relativePathCopy];
   [v23 setNode:buf];
-  if ([(MBFileScanner *)self _shouldNotBackupFile:v23 domain:v12])
+  if ([(MBFileScanner *)self _shouldNotBackupFile:v23 domain:domainCopy])
   {
 LABEL_6:
     v17 = 0;
     goto LABEL_58;
   }
 
-  v31 = [(MBFileScanner *)self _foundFile:v23 snapshotPath:v14 stats:a7];
+  v31 = [(MBFileScanner *)self _foundFile:v23 snapshotPath:pathCopy stats:stats];
 
   if (v31)
   {
@@ -2710,7 +2710,7 @@ LABEL_6:
 
   v71 = v23;
   v32 = objc_opt_new();
-  [v32 addObject:v15];
+  [v32 addObject:relativePathCopy];
   v33 = objc_opt_new();
   v34 = [NSNumber numberWithUnsignedInt:*buf];
   v76 = v33;
@@ -2738,30 +2738,30 @@ LABEL_6:
     }
 
     v77 = v37;
-    v40 = [v35 lastObject];
+    lastObject = [v35 lastObject];
     [v35 removeLastObject];
-    v41 = [v76 lastObject];
-    v80 = [v41 unsignedIntValue];
+    lastObject2 = [v76 lastObject];
+    unsignedIntValue = [lastObject2 unsignedIntValue];
 
     [v76 removeLastObject];
     v84 = v36;
-    v42 = [v13 cachedFDForDomain:v12 withSnapshotPath:v14 error:&v84];
+    v42 = [fdsCopy cachedFDForDomain:domainCopy withSnapshotPath:pathCopy error:&v84];
     v43 = v84;
 
-    v83 = v40;
+    v83 = lastObject;
     if (v42 < 0)
     {
       v61 = MBGetDefaultLog();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
       {
-        v62 = [v12 name];
+        name5 = [domainCopy name];
         *v87 = 138412546;
-        *v88 = v62;
+        *v88 = name5;
         *&v88[8] = 2112;
         *&v88[10] = v43;
         _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "=scanning= Failed to fetch cached file descriptor for domain %@: %@", v87, 0x16u);
 
-        [v12 name];
+        [domainCopy name];
         v66 = v56 = v43;
         _MBLog();
       }
@@ -2777,9 +2777,9 @@ LABEL_6:
     }
 
     v82 = v43;
-    v44 = [v40 length] ? objc_msgSend(v40, "fileSystemRepresentation") : ".";
+    v44 = [lastObject length] ? objc_msgSend(lastObject, "fileSystemRepresentation") : ".";
     v38 = v77;
-    v45 = v80;
+    v45 = unsignedIntValue;
     v46 = openat(v42, v44, 256, 0);
     if ((v46 & 0x80000000) == 0)
     {
@@ -2787,24 +2787,24 @@ LABEL_6:
     }
 
     v49 = *__error();
-    v50 = [(MBFileScanner *)self delegate];
-    v51 = [MBFile fileWithDomain:v12 snapshotPath:v14 relativePath:v83];
+    delegate = [(MBFileScanner *)self delegate];
+    v51 = [MBFile fileWithDomain:domainCopy snapshotPath:pathCopy relativePath:v83];
     v78 = v49;
     v81 = v51;
-    v73 = v50;
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v50 fileScanner:self failedToOpenFile:v51 withErrno:v49])
+    v73 = delegate;
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate fileScanner:self failedToOpenFile:v51 withErrno:v49])
     {
-      v52 = MBGetDefaultLog();
-      if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
+      absolutePath4 = MBGetDefaultLog();
+      if (os_log_type_enabled(absolutePath4, OS_LOG_TYPE_INFO))
       {
-        v53 = [v51 absolutePath];
+        absolutePath = [v51 absolutePath];
         *v87 = 138412802;
-        *v88 = v53;
+        *v88 = absolutePath;
         *&v88[8] = 2112;
         *&v88[10] = v83;
         *&v88[18] = 1024;
         *&v88[20] = v78;
-        _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "=scanning= Skipping file with openat failure %@ (%@): %{errno}d", v87, 0x1Cu);
+        _os_log_impl(&_mh_execute_header, absolutePath4, OS_LOG_TYPE_INFO, "=scanning= Skipping file with openat failure %@ (%@): %{errno}d", v87, 0x1Cu);
 
         [v51 absolutePath];
         v67 = v83;
@@ -2820,9 +2820,9 @@ LABEL_6:
       v58 = MBGetDefaultLog();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
       {
-        v59 = [v51 absolutePath];
+        absolutePath2 = [v51 absolutePath];
         *v87 = 138412802;
-        *v88 = v59;
+        *v88 = absolutePath2;
         *&v88[8] = 2112;
         *&v88[10] = v83;
         *&v88[18] = 1024;
@@ -2835,11 +2835,11 @@ LABEL_6:
         _MBLog();
       }
 
-      v60 = [v51 absolutePath];
-      v72 = [MBError errorWithErrno:v78 code:101 path:v60 format:@"open error"];
+      absolutePath3 = [v51 absolutePath];
+      v72 = [MBError errorWithErrno:v78 code:101 path:absolutePath3 format:@"open error"];
 
-      v52 = [v51 absolutePath];
-      MBDiagnoseFile(v52, v78, "openat");
+      absolutePath4 = [v51 absolutePath];
+      MBDiagnoseFile(absolutePath4, v78, "openat");
       v54 = 1;
       v82 = v72;
     }
@@ -2862,33 +2862,33 @@ LABEL_44:
   }
 
   v47 = v46;
-  if (v80 > 0x61A8)
+  if (unsignedIntValue > 0x61A8)
   {
     v55 = MBGetDefaultLog();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
     {
-      v79 = [v12 name];
+      name6 = [domainCopy name];
       *v87 = 67109634;
-      *v88 = v80;
+      *v88 = unsignedIntValue;
       *&v88[4] = 2114;
-      *&v88[6] = v79;
+      *&v88[6] = name6;
       *&v88[14] = 2114;
       *&v88[16] = v83;
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "=scanning= Found a direntcount of %u under %{public}@ (%{public}@)", v87, 0x1Cu);
 
-      v69 = [v12 name];
-      v45 = v80;
+      name7 = [domainCopy name];
+      v45 = unsignedIntValue;
       _MBLog();
     }
 
     v35 = v75;
-    v48 = [(MBFileScanner *)self _performTwoPassEnumerationForDomain:v12 snapshotPath:v14 relativePath:v83 buffer:v74 dirFd:v47 direntCount:v45 directoryPathStack:v75 directoryCountStack:v76 stats:a7];
+    v48 = [(MBFileScanner *)self _performTwoPassEnumerationForDomain:domainCopy snapshotPath:pathCopy relativePath:v83 buffer:v74 dirFd:v47 direntCount:v45 directoryPathStack:v75 directoryCountStack:v76 stats:stats];
   }
 
   else
   {
     v35 = v75;
-    v48 = [(MBFileScanner *)self _performSinglePassEnumerationForDomain:v12 snapshotPath:v14 relativePath:v83 buffer:v74 dirFd:v46 direntCount:v80 directoryPathStack:v75 directoryCountStack:v76 stats:a7];
+    v48 = [(MBFileScanner *)self _performSinglePassEnumerationForDomain:domainCopy snapshotPath:pathCopy relativePath:v83 buffer:v74 dirFd:v46 direntCount:unsignedIntValue directoryPathStack:v75 directoryCountStack:v76 stats:stats];
   }
 
   v56 = v48;
@@ -2934,14 +2934,14 @@ LABEL_61:
   return v17;
 }
 
-- (id)_performTwoPassEnumerationForDomain:(id)a3 snapshotPath:(id)a4 relativePath:(id)a5 buffer:(id)a6 dirFd:(int)a7 direntCount:(unsigned int)a8 directoryPathStack:(id)a9 directoryCountStack:(id)a10 stats:(_MBFileScannerDomainStats *)a11
+- (id)_performTwoPassEnumerationForDomain:(id)domain snapshotPath:(id)path relativePath:(id)relativePath buffer:(id)buffer dirFd:(int)fd direntCount:(unsigned int)count directoryPathStack:(id)stack directoryCountStack:(id)self0 stats:(_MBFileScannerDomainStats *)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v48 = a9;
-  v49 = a10;
+  domainCopy = domain;
+  pathCopy = path;
+  relativePathCopy = relativePath;
+  bufferCopy = buffer;
+  stackCopy = stack;
+  countStackCopy = countStack;
   v80 = 0;
   v81 = &v80;
   v82 = 0x2020000000;
@@ -2956,21 +2956,21 @@ LABEL_61:
   v65[1] = 3221225472;
   v65[2] = sub_1001AA908;
   v65[3] = &unk_1003C0B70;
-  v20 = v16;
+  v20 = domainCopy;
   v66 = v20;
-  v21 = v18;
+  v21 = relativePathCopy;
   v67 = v21;
-  v68 = self;
-  v45 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v70 = &v74;
   v71 = &v80;
-  v22 = v19;
-  v23 = a8;
-  v73 = a8;
-  v24 = v17;
+  v22 = bufferCopy;
+  countCopy = count;
+  countCopy2 = count;
+  v24 = pathCopy;
   v69 = v24;
-  v72 = a11;
-  MBEnumerateDirectoryNodes(a7, v22, v65);
+  statsCopy = stats;
+  MBEnumerateDirectoryNodes(fd, v22, v65);
   if (v81[3] >> 4 >= 0x271)
   {
     v25 = MBGetDefaultLog();
@@ -2981,22 +2981,22 @@ LABEL_61:
       {
         v44 = v22;
         v27 = v81[3];
-        v28 = [v20 name];
+        name = [v20 name];
         *buf = 134218754;
         v85 = v27;
         v86 = 1024;
-        v87 = a8;
+        countCopy3 = count;
         v88 = 2114;
         v89 = v21;
         v90 = 2114;
-        v91 = v28;
+        v91 = name;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "=scanning= Found a total of %llu/%u items under %{public}@ (%{public}@), first pass", buf, 0x26u);
 
         v22 = v44;
       }
 
       v29 = v81[3];
-      v42 = [v20 name];
+      name2 = [v20 name];
       _MBLog();
     }
   }
@@ -3010,7 +3010,7 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  if (lseek(a7, 0, 0) < 0)
+  if (lseek(fd, 0, 0) < 0)
   {
     v31 = [MBError errorWithErrno:*__error() path:v21 format:@"lseek error"];
     goto LABEL_9;
@@ -3029,15 +3029,15 @@ LABEL_9:
   v51 = v34;
   v35 = v21;
   v52 = v35;
-  v53 = v45;
+  v53 = selfCopy2;
   v57 = &v74;
   v58 = &v61;
-  v60 = a8;
+  countCopy4 = count;
   v54 = v24;
-  v59 = a11;
-  v55 = v48;
-  v56 = v49;
-  MBEnumerateDirectoryNodes(a7, v22, v50);
+  statsCopy2 = stats;
+  v55 = stackCopy;
+  v56 = countStackCopy;
+  MBEnumerateDirectoryNodes(fd, v22, v50);
   if (v62[3] >> 4 >= 0x271)
   {
     v36 = MBGetDefaultLog();
@@ -3048,22 +3048,22 @@ LABEL_9:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         v38 = v62[3];
-        v39 = [v34 name];
+        name3 = [v34 name];
         *buf = 134218754;
         v85 = v38;
         v86 = 1024;
-        v87 = v23;
+        countCopy3 = countCopy;
         v88 = 2114;
         v89 = v47;
         v90 = 2114;
-        v91 = v39;
+        v91 = name3;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "=scanning= Found a total of %llu/%u items under %{public}@ (%{public}@), second pass", buf, 0x26u);
 
         v22 = v33;
       }
 
       v40 = v62[3];
-      v43 = [v34 name];
+      name4 = [v34 name];
       _MBLog();
     }
   }
@@ -3079,20 +3079,20 @@ LABEL_18:
   return v32;
 }
 
-- (id)_foundFile:(id)a3 snapshotPath:(id)a4 stats:(_MBFileScannerDomainStats *)a5
+- (id)_foundFile:(id)file snapshotPath:(id)path stats:(_MBFileScannerDomainStats *)stats
 {
-  v8 = a3;
-  v9 = a4;
+  fileCopy = file;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [(MBFileScanner *)self _updateStats:a5 file:v8];
-  if (!v9)
+  [(MBFileScanner *)self _updateStats:stats file:fileCopy];
+  if (!pathCopy)
   {
-    v11 = [v8 domain];
-    v12 = [v8 relativePath];
-    -[MBFileScanner _detectModifiedDomain:relativePath:lastModified:](self, "_detectModifiedDomain:relativePath:lastModified:", v11, v12, [v8 lastModified]);
+    domain = [fileCopy domain];
+    relativePath = [fileCopy relativePath];
+    -[MBFileScanner _detectModifiedDomain:relativePath:lastModified:](self, "_detectModifiedDomain:relativePath:lastModified:", domain, relativePath, [fileCopy lastModified]);
   }
 
-  if (![v8 isRegularFile])
+  if (![fileCopy isRegularFile])
   {
     v21 = 0;
     goto LABEL_70;
@@ -3123,26 +3123,26 @@ LABEL_18:
       }
 
       v18 = *(*(&v111 + 1) + 8 * i);
-      v19 = [v8 relativePath];
-      v20 = [v19 hasSuffix:v18];
+      relativePath2 = [fileCopy relativePath];
+      v20 = [relativePath2 hasSuffix:v18];
 
       if (v20)
       {
-        v22 = [v8 relativePath];
-        v23 = [v8 relativePath];
-        v24 = [v22 substringToIndex:{objc_msgSend(v23, "length") - objc_msgSend(v18, "length")}];
+        relativePath3 = [fileCopy relativePath];
+        relativePath4 = [fileCopy relativePath];
+        v24 = [relativePath3 substringToIndex:{objc_msgSend(relativePath4, "length") - objc_msgSend(v18, "length")}];
 
-        v25 = [v8 domain];
-        v26 = [v25 rootPath];
-        v27 = [v26 stringByAppendingPathComponent:v24];
+        domain2 = [fileCopy domain];
+        rootPath = [domain2 rootPath];
+        v27 = [rootPath stringByAppendingPathComponent:v24];
 
-        v28 = [v8 domain];
-        v29 = [v28 volumeMountPoint];
+        domain3 = [fileCopy domain];
+        volumeMountPoint = [domain3 volumeMountPoint];
         v101 = v27;
-        v30 = MBSnapshotPathFromLivePath(v27, v9, v29);
+        v30 = MBSnapshotPathFromLivePath(v27, pathCopy, volumeMountPoint);
 
-        v31 = [v8 domain];
-        v32 = [MBFileID fileIDWithDomain:v31 relativePath:v24];
+        domain4 = [fileCopy domain];
+        v32 = [MBFileID fileIDWithDomain:domain4 relativePath:v24];
 
         if ([v18 hasSuffix:@"-wal"])
         {
@@ -3165,14 +3165,14 @@ LABEL_46:
             goto LABEL_77;
           }
 
-          v45 = MBGetDefaultLog();
+          absolutePath8 = MBGetDefaultLog();
           v46 = v101;
-          if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(absolutePath8, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
             *&buf[4] = v30;
-            _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database not found: %@", buf, 0xCu);
-            v88 = v30;
+            _os_log_impl(&_mh_execute_header, absolutePath8, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database not found: %@", buf, 0xCu);
+            absolutePath4 = v30;
             _MBLog();
           }
 
@@ -3200,19 +3200,19 @@ LABEL_22:
                   v37 = MBGetDefaultLog();
                   if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
                   {
-                    v38 = [v8 absolutePath];
+                    absolutePath = [fileCopy absolutePath];
                     *buf = 138412290;
-                    *&buf[4] = v38;
+                    *&buf[4] = absolutePath;
                     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "=scanning= Not backing up SQLite file: %@", buf, 0xCu);
 
-                    v89 = [v8 absolutePath];
+                    absolutePath2 = [fileCopy absolutePath];
                     _MBLog();
                   }
 
                   if ([v18 hasSuffix:@"-wal"])
                   {
-                    v39 = [v8 lastModifiedDate];
-                    [v39 timeIntervalSince1970];
+                    lastModifiedDate = [fileCopy lastModifiedDate];
+                    [lastModifiedDate timeIntervalSince1970];
                     v41 = v40;
 
                     v42 = MBGetDefaultLog();
@@ -3228,16 +3228,16 @@ LABEL_22:
                       _MBLog();
                     }
 
-                    v43 = [v8 lastModifiedDate];
-                    [(NSMutableDictionary *)self->_lastModifiedDateBySQLiteFileID setObject:v43 forKeyedSubscript:v102];
+                    lastModifiedDate2 = [fileCopy lastModifiedDate];
+                    [(NSMutableDictionary *)self->_lastModifiedDateBySQLiteFileID setObject:lastModifiedDate2 forKeyedSubscript:v102];
                   }
 
                   v44 = 0;
                   goto LABEL_45;
                 }
 
-                v51 = [v8 domain];
-                v52 = [MBFile fileWithDomain:v51 snapshotPath:v9 relativePath:v100];
+                domain5 = [fileCopy domain];
+                v52 = [MBFile fileWithDomain:domain5 snapshotPath:pathCopy relativePath:v100];
 
                 v122 = 0;
                 v120 = 0u;
@@ -3270,12 +3270,12 @@ LABEL_22:
                       v55 = MBGetDefaultLog();
                       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
                       {
-                        v56 = [v8 absolutePath];
+                        absolutePath3 = [fileCopy absolutePath];
                         *v115 = 138412290;
-                        *v116 = v56;
+                        *v116 = absolutePath3;
                         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_INFO, "=scanning= Backing up SQLite file: %@", v115, 0xCu);
 
-                        v88 = [v8 absolutePath];
+                        absolutePath4 = [fileCopy absolutePath];
                         _MBLog();
                       }
 
@@ -3294,7 +3294,7 @@ LABEL_22:
                           *v115 = 138412290;
                           *v116 = v30;
                           _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database not found: %@", v115, 0xCu);
-                          v88 = v30;
+                          absolutePath4 = v30;
                           _MBLog();
                         }
 
@@ -3322,17 +3322,17 @@ LABEL_98:
                     goto LABEL_77;
                   }
 
-                  v78 = MBGetDefaultLog();
-                  if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
+                  delegate = MBGetDefaultLog();
+                  if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
                   {
-                    v80 = [v8 mode];
+                    mode = [fileCopy mode];
                     *v115 = 67109378;
-                    *v116 = v80;
+                    *v116 = mode;
                     *&v116[4] = 2112;
                     *&v116[6] = v30;
-                    _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database is not a regular file (0%o): %@", v115, 0x12u);
-                    v88 = [v8 mode];
-                    v92 = v30;
+                    _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database is not a regular file (0%o): %@", v115, 0x12u);
+                    absolutePath4 = [fileCopy mode];
+                    relativePath6 = v30;
                     _MBLog();
                   }
 
@@ -3344,7 +3344,7 @@ LABEL_97:
                 }
 
                 v77 = [MBError errnoForError:v21];
-                v78 = [(MBFileScanner *)self delegate];
+                delegate = [(MBFileScanner *)self delegate];
                 if (v77 == 2)
                 {
                   v79 = MBGetDefaultLog();
@@ -3353,14 +3353,14 @@ LABEL_97:
                     *v115 = 138412290;
                     *v116 = v30;
                     _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database not found: %@", v115, 0xCu);
-                    v88 = v30;
+                    absolutePath4 = v30;
                     _MBLog();
                   }
                 }
 
                 else
                 {
-                  if ((objc_opt_respondsToSelector() & 1) == 0 || ![v78 fileScanner:self failedToStatFile:v52 withErrno:v77])
+                  if ((objc_opt_respondsToSelector() & 1) == 0 || ![delegate fileScanner:self failedToStatFile:v52 withErrno:v77])
                   {
                     v84 = MBGetDefaultLog();
                     if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
@@ -3370,8 +3370,8 @@ LABEL_97:
                       *&v116[8] = 2114;
                       *&v116[10] = v21;
                       _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_ERROR, "=scanning= MBNodeForPath() failed at %@: %{public}@", v115, 0x16u);
-                      v88 = v30;
-                      v92 = v21;
+                      absolutePath4 = v30;
+                      relativePath6 = v21;
                       _MBLog();
                     }
 
@@ -3383,21 +3383,21 @@ LABEL_97:
                   v81 = MBGetDefaultLog();
                   if (os_log_type_enabled(v81, OS_LOG_TYPE_INFO))
                   {
-                    v97 = [v99 absolutePath];
-                    v82 = [v99 relativePath];
+                    absolutePath5 = [v99 absolutePath];
+                    relativePath5 = [v99 relativePath];
                     *v115 = 138412802;
-                    *v116 = v97;
+                    *v116 = absolutePath5;
                     *&v116[8] = 2112;
-                    *&v116[10] = v82;
-                    v83 = v82;
+                    *&v116[10] = relativePath5;
+                    v83 = relativePath5;
                     v117 = 1024;
                     v118 = v77;
                     _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_INFO, "=scanning= Skipping SQLite file with lstat failure %@ (%@): %{errno}d", v115, 0x1Cu);
 
-                    v98 = [v99 absolutePath];
-                    v92 = [v99 relativePath];
+                    absolutePath6 = [v99 absolutePath];
+                    relativePath6 = [v99 relativePath];
                     v94 = v77;
-                    v88 = v98;
+                    absolutePath4 = absolutePath6;
                     _MBLog();
                   }
                 }
@@ -3444,7 +3444,7 @@ LABEL_45:
                 _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "=scanning= Potential SQLite database not found: %@", buf, 0xCu);
 LABEL_43:
                 v46 = v101;
-                v88 = v49;
+                absolutePath4 = v49;
                 _MBLog();
 LABEL_58:
 
@@ -3463,13 +3463,13 @@ LABEL_58:
             goto LABEL_48;
           }
 
-          v50 = [v8 absolutePath];
+          absolutePath7 = [fileCopy absolutePath];
           *buf = 138412290;
-          *&buf[4] = v50;
+          *&buf[4] = absolutePath7;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "=scanning= Backing up protected SQLite journal: %@", buf, 0xCu);
 
-          v45 = [v8 absolutePath];
-          v88 = v45;
+          absolutePath8 = [fileCopy absolutePath];
+          absolutePath4 = absolutePath8;
           _MBLog();
           v46 = v101;
         }
@@ -3499,8 +3499,8 @@ LABEL_60:
 
 LABEL_61:
   lastModifiedDateBySQLiteFileID = self->_lastModifiedDateBySQLiteFileID;
-  v59 = [v8 fileID];
-  v60 = [(NSMutableDictionary *)lastModifiedDateBySQLiteFileID objectForKeyedSubscript:v59];
+  fileID = [fileCopy fileID];
+  v60 = [(NSMutableDictionary *)lastModifiedDateBySQLiteFileID objectForKeyedSubscript:fileID];
 
   if (v60)
   {
@@ -3509,31 +3509,31 @@ LABEL_61:
     v63 = MBGetDefaultLog();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
     {
-      v64 = [v8 lastModified];
+      lastModified = [fileCopy lastModified];
       *buf = 134218498;
-      *&buf[4] = v64;
+      *&buf[4] = lastModified;
       *&buf[12] = 2048;
       *&buf[14] = v62;
       *&buf[22] = 2112;
-      *&buf[24] = v8;
+      *&buf[24] = fileCopy;
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "=scanning= Overriding last modified date of SQLite file (%lu) with WAL's (%lu): %@", buf, 0x20u);
       v93 = v62;
-      v95 = v8;
-      v90 = [v8 lastModified];
+      v95 = fileCopy;
+      lastModified2 = [fileCopy lastModified];
       _MBLog();
     }
 
-    [v8 setLastModified:v62];
+    [fileCopy setLastModified:v62];
   }
 
-  v65 = [MBFileSystemManager fileSystemCapacity:v90];
-  if ([v8 size] > v65)
+  v65 = [MBFileSystemManager fileSystemCapacity:lastModified2];
+  if ([fileCopy size] > v65)
   {
     v66 = MBGetDefaultLog();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_FAULT))
     {
-      v67 = [v8 size];
-      [v8 absolutePath];
+      v67 = [fileCopy size];
+      [fileCopy absolutePath];
       v68 = v104 = WeakRetained;
       *buf = 134218498;
       *&buf[4] = v67;
@@ -3543,21 +3543,21 @@ LABEL_61:
       *&buf[24] = v68;
       _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_FAULT, "=scanning= Found a file with unexpected size (%llu/%llu) at %{public}@", buf, 0x20u);
 
-      [v8 size];
-      v96 = [v8 absolutePath];
+      [fileCopy size];
+      absolutePath9 = [fileCopy absolutePath];
       _MBLog();
 
       WeakRetained = v104;
     }
 
-    v69 = [v8 absolutePath];
-    MBDiagnoseFile(v69, 28, "[MBFileScanner _foundFile:snapshotPath:stats:]");
+    absolutePath10 = [fileCopy absolutePath];
+    MBDiagnoseFile(absolutePath10, 28, "[MBFileScanner _foundFile:snapshotPath:stats:]");
   }
 
 LABEL_70:
   v70 = v21;
   v71 = objc_autoreleasePoolPush();
-  v21 = (self->_delegateImpOfFileScannerDidFindFile)(WeakRetained, "fileScanner:didFindFile:", self, v8);
+  v21 = (self->_delegateImpOfFileScannerDidFindFile)(WeakRetained, "fileScanner:didFindFile:", self, fileCopy);
 
   objc_autoreleasePoolPop(v71);
   if (v21)
@@ -3567,19 +3567,19 @@ LABEL_70:
       v72 = MBGetDefaultLog();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
       {
-        v73 = [v8 absolutePath];
+        absolutePath11 = [fileCopy absolutePath];
         *buf = 138412290;
-        *&buf[4] = v73;
+        *&buf[4] = absolutePath11;
         _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "=scanning= Deleted while scanning: %@", buf, 0xCu);
 
-        v91 = [v8 absolutePath];
+        absolutePath12 = [fileCopy absolutePath];
         _MBLog();
       }
 
       [(MBDebugContext *)self->_debugContext setFlag:@"FileDeletedWhileScanning"];
       modifiedDomains = self->_modifiedDomains;
-      v75 = [v8 domain];
-      [(NSMutableSet *)modifiedDomains addObject:v75];
+      domain6 = [fileCopy domain];
+      [(NSMutableSet *)modifiedDomains addObject:domain6];
 
       goto LABEL_75;
     }
@@ -3599,29 +3599,29 @@ LABEL_77:
   return v44;
 }
 
-- (void)_detectModifiedDomain:(id)a3 relativePath:(id)a4 lastModified:(int64_t)a5
+- (void)_detectModifiedDomain:(id)domain relativePath:(id)path lastModified:(int64_t)modified
 {
-  v8 = a3;
-  v9 = a4;
-  if (self->_startTime <= a5 && [(MBDebugContext *)self->_debugContext time]>= a5)
+  domainCopy = domain;
+  pathCopy = path;
+  if (self->_startTime <= modified && [(MBDebugContext *)self->_debugContext time]>= modified)
   {
-    v10 = [v8 relativePathsNotToCheckIfModifiedDuringBackup];
-    v11 = [v10 count];
+    relativePathsNotToCheckIfModifiedDuringBackup = [domainCopy relativePathsNotToCheckIfModifiedDuringBackup];
+    v11 = [relativePathsNotToCheckIfModifiedDuringBackup count];
 
     if (v11)
     {
-      v26 = v9;
-      v12 = [v9 pathComponents];
-      v13 = [v12 count];
+      v26 = pathCopy;
+      pathComponents = [pathCopy pathComponents];
+      v13 = [pathComponents count];
       v14 = 0;
       while (1)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = [v12 subarrayWithRange:{0, v14}];
+        v16 = [pathComponents subarrayWithRange:{0, v14}];
         v17 = [NSString pathWithComponents:v16];
 
-        v18 = [v8 relativePathsNotToCheckIfModifiedDuringBackup];
-        v19 = [v18 containsObject:v17];
+        relativePathsNotToCheckIfModifiedDuringBackup2 = [domainCopy relativePathsNotToCheckIfModifiedDuringBackup];
+        v19 = [relativePathsNotToCheckIfModifiedDuringBackup2 containsObject:v17];
 
         if (v19)
         {
@@ -3632,7 +3632,7 @@ LABEL_77:
         if (++v14 > v13)
         {
           v20 = MBGetDefaultLog();
-          v9 = v26;
+          pathCopy = v26;
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
             startTime = self->_startTime;
@@ -3641,20 +3641,20 @@ LABEL_77:
             v29 = 2048;
             v30 = startTime;
             v31 = 2048;
-            v32 = a5;
+            modifiedCopy2 = modified;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "=scanning= Modified while scanning: %@ (startTime:%ld, lastModified:%ld)", buf, 0x20u);
             v24 = self->_startTime;
             _MBLog();
           }
 
           [(MBDebugContext *)self->_debugContext setFlag:@"FileModifiedWhileScanning"];
-          [(NSMutableSet *)self->_modifiedDomains addObject:v8];
+          [(NSMutableSet *)self->_modifiedDomains addObject:domainCopy];
           goto LABEL_13;
         }
       }
 
       v22 = MBGetDefaultLog();
-      v9 = v26;
+      pathCopy = v26;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v23 = self->_startTime;
@@ -3663,7 +3663,7 @@ LABEL_77:
         v29 = 2048;
         v30 = v23;
         v31 = 2048;
-        v32 = a5;
+        modifiedCopy2 = modified;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "=scanning= Ignoring path modified while scanning: %@ (startTime:%ld, lastModified:%ld)", buf, 0x20u);
         v25 = self->_startTime;
         _MBLog();

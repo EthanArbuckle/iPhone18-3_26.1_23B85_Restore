@@ -2,9 +2,9 @@
 - (BOOL)requiresRemoteExecution;
 - (id)filenamePlaceholderText;
 - (id)minimumSupportedClientVersion;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
-- (void)getContentDestinationWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
+- (void)getContentDestinationWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service;
 @end
 
 @implementation WFCreateFolderAction
@@ -13,39 +13,39 @@
 {
   v5.receiver = self;
   v5.super_class = WFCreateFolderAction;
-  v2 = [(WFCreateFolderAction *)&v5 minimumSupportedClientVersion];
+  minimumSupportedClientVersion = [(WFCreateFolderAction *)&v5 minimumSupportedClientVersion];
   v3 = WFMaximumBundleVersion();
 
   return v3;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  nameCopy = name;
+  destinationCopy = destination;
+  descriptionCopy = description;
   v11 = WFLocalizedString(@"Allow “%1$@” to use %2$@ in a folder name in %3$@?");
-  v12 = [v7 localizedStringWithFormat:v11, v8, v10, v9];
+  destinationCopy = [v7 localizedStringWithFormat:v11, nameCopy, descriptionCopy, destinationCopy];
 
-  return v12;
+  return destinationCopy;
 }
 
-- (void)getContentDestinationWithCompletionHandler:(id)a3
+- (void)getContentDestinationWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(WFCreateFolderAction *)self input];
+  handlerCopy = handler;
+  input = [(WFCreateFolderAction *)self input];
 
-  if (v4)
+  if (input)
   {
     v5 = MEMORY[0x277CFC318];
-    v6 = [(WFCreateFolderAction *)self input];
-    [v5 getContentLocationFromFile:v6 completionHandler:v7];
+    input2 = [(WFCreateFolderAction *)self input];
+    [v5 getContentLocationFromFile:input2 completionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -58,9 +58,9 @@
 
 - (id)filenamePlaceholderText
 {
-  v2 = [(WFStorageServiceAction *)self storageService];
-  v3 = [v2 storageLocationPrefix];
-  v4 = [v3 hasSuffix:@"/"];
+  storageService = [(WFStorageServiceAction *)self storageService];
+  storageLocationPrefix = [storageService storageLocationPrefix];
+  v4 = [storageLocationPrefix hasSuffix:@"/"];
 
   if (v4)
   {
@@ -77,12 +77,12 @@
   return v6;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 storageService:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input storageService:(id)service
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(WFStorageServiceAction *)self filePathKey];
-  v7 = [(WFCreateFolderAction *)self parameterValueForKey:v6 ofClass:objc_opt_class()];
+  serviceCopy = service;
+  filePathKey = [(WFStorageServiceAction *)self filePathKey];
+  v7 = [(WFCreateFolderAction *)self parameterValueForKey:filePathKey ofClass:objc_opt_class()];
 
   if (![v7 length])
   {
@@ -92,8 +92,8 @@
     v10 = WFLocalizedString(@"No path specified");
     v32[0] = v10;
     v31[1] = *MEMORY[0x277CCA450];
-    v14 = WFLocalizedString(@"Please make sure to specify a path for the new folder in the Create Folder action.");
-    v32[1] = v14;
+    wf_fileProviderItem = WFLocalizedString(@"Please make sure to specify a path for the new folder in the Create Folder action.");
+    v32[1] = wf_fileProviderItem;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
     v24 = [v22 errorWithDomain:v23 code:4 userInfo:v19];
     [(WFCreateFolderAction *)self finishRunningWithError:v24];
@@ -115,8 +115,8 @@
     v17 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CCA050];
     v29[0] = *MEMORY[0x277CCA470];
-    v14 = WFLocalizedString(@"No folder specified!");
-    v30[0] = v14;
+    wf_fileProviderItem = WFLocalizedString(@"No folder specified!");
+    v30[0] = wf_fileProviderItem;
     v29[1] = *MEMORY[0x277CCA450];
     v19 = WFLocalizedString(@"You must specify where the folder should be created.");
     v30[1] = v19;
@@ -128,22 +128,22 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [v10 fileURL];
-  v14 = [v13 wf_fileProviderItem];
+  fileURL = [v10 fileURL];
+  wf_fileProviderItem = [fileURL wf_fileProviderItem];
 
-  v15 = [(WFCreateFolderAction *)self workflow];
-  v16 = [v15 workflowID];
+  workflow = [(WFCreateFolderAction *)self workflow];
+  workflowID = [workflow workflowID];
 
-  if (v16)
+  if (workflowID)
   {
-    if (v14)
+    if (wf_fileProviderItem)
     {
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __66__WFCreateFolderAction_runAsynchronouslyWithInput_storageService___block_invoke;
       v28[3] = &unk_278C209C0;
       v28[4] = self;
-      [v5 createFolderAtPath:v7 parentDirectoryItem:v14 completionHandler:v28];
+      [serviceCopy createFolderAtPath:v7 parentDirectoryItem:wf_fileProviderItem completionHandler:v28];
     }
 
     else
@@ -153,7 +153,7 @@ LABEL_11:
       v27[2] = __66__WFCreateFolderAction_runAsynchronouslyWithInput_storageService___block_invoke_2;
       v27[3] = &unk_278C209C0;
       v27[4] = self;
-      [v5 createFolderAtPath:v7 inDirectory:v10 completionHandler:v27];
+      [serviceCopy createFolderAtPath:v7 inDirectory:v10 completionHandler:v27];
     }
   }
 

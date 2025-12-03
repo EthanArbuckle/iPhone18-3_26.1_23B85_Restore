@@ -7,7 +7,7 @@
 - (BOOL)supportsBasebandAPTimeSync;
 - (NSString)NTPServerAddress;
 - (TMPreferences)init;
-- (TMPreferences)initWithDefaults:(id)a3;
+- (TMPreferences)initWithDefaults:(id)defaults;
 - (id)description;
 - (void)dealloc;
 @end
@@ -38,7 +38,7 @@
 
 - (BOOL)shouldClamp
 {
-  v3 = [(TMPreferences *)self NTPServerAddress];
+  nTPServerAddress = [(TMPreferences *)self NTPServerAddress];
   if (self)
   {
     v4 = @"time.apple.com";
@@ -49,7 +49,7 @@
     v4 = 0;
   }
 
-  return [(NSString *)v3 isEqualToString:v4];
+  return [(NSString *)nTPServerAddress isEqualToString:v4];
 }
 
 - (NSString)NTPServerAddress
@@ -77,7 +77,7 @@
   [(TMPreferences *)&v3 dealloc];
 }
 
-- (TMPreferences)initWithDefaults:(id)a3
+- (TMPreferences)initWithDefaults:(id)defaults
 {
   v6.receiver = self;
   v6.super_class = TMPreferences;
@@ -85,7 +85,7 @@
   if (v4)
   {
     _CFPreferencesSetFileProtectionClass();
-    v4->_defaults = a3;
+    v4->_defaults = defaults;
     sub_10001864C(&v4->super.isa);
   }
 
@@ -134,9 +134,9 @@
 
 - (id)description
 {
-  v2 = [(NSUserDefaults *)self->_defaults dictionaryRepresentation];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_defaults dictionaryRepresentation];
 
-  return [(NSDictionary *)v2 description];
+  return [(NSDictionary *)dictionaryRepresentation description];
 }
 
 @end

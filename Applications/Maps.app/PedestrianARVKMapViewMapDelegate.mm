@@ -2,17 +2,17 @@
 - ($1AB5FA073B851C12C2339EC22442E995)currentFeaturePosition;
 - (BOOL)hasActiveFeatureSet;
 - (NSArray)currentFeatureMapping;
-- (PedestrianARVKMapViewMapDelegate)initWithMapView:(id)a3;
+- (PedestrianARVKMapViewMapDelegate)initWithMapView:(id)view;
 - (VKARWalkingFeatureSet)currentFeatureSet;
-- (id)guidanceInfoForFeature:(id)a3;
+- (id)guidanceInfoForFeature:(id)feature;
 - (void)dealloc;
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4;
-- (void)mapLayer:(id)a3 arWalkingElevationRequestFailure:(id)a4;
-- (void)mapLayer:(id)a3 arWalkingFeatureSetStateDidUpdate:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateFeatureMapping:(id)a3;
-- (void)updateGuidanceInfo:(id)a3 forFeature:(id)a4;
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update;
+- (void)mapLayer:(id)layer arWalkingElevationRequestFailure:(id)failure;
+- (void)mapLayer:(id)layer arWalkingFeatureSetStateDidUpdate:(id)update;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)updateFeatureMapping:(id)mapping;
+- (void)updateGuidanceInfo:(id)info forFeature:(id)feature;
 @end
 
 @implementation PedestrianARVKMapViewMapDelegate
@@ -28,98 +28,98 @@
   return result;
 }
 
-- (void)mapLayer:(id)a3 arWalkingElevationRequestFailure:(id)a4
+- (void)mapLayer:(id)layer arWalkingElevationRequestFailure:(id)failure
 {
-  v6 = a4;
-  v7 = a3;
+  failureCopy = failure;
+  layerCopy = layer;
   v8 = sub_100C9F624();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v10 = 134349312;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = [v6 reason];
+    reason = [failureCopy reason];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] Detected elevation request failure: %ld", &v10, 0x16u);
   }
 
-  v9 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-  [v9 mapLayer:v7 failedElevationRequestWithReason:{objc_msgSend(v6, "reason")}];
+  observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+  [observers mapLayer:layerCopy failedElevationRequestWithReason:{objc_msgSend(failureCopy, "reason")}];
 }
 
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
+  updateCopy = update;
+  layerCopy = layer;
   v8 = sub_100C9F624();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v15 = 134349314;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
-    v18 = v6;
+    v18 = updateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] VK updated active AR walking feature: %@", &v15, 0x16u);
   }
 
-  v9 = [v6 feature];
+  feature = [updateCopy feature];
   currentFeature = self->_currentFeature;
-  self->_currentFeature = v9;
+  self->_currentFeature = feature;
 
-  self->_currentIdentifier = [v6 featureLabelIdentifier];
-  [v6 labelPosition];
+  self->_currentIdentifier = [updateCopy featureLabelIdentifier];
+  [updateCopy labelPosition];
   self->_currentFeaturePosition.latitude = v11;
   self->_currentFeaturePosition.longitude = v12;
   self->_currentFeaturePosition.altitude = v13;
-  v14 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-  [v14 mapLayer:v7 activeARWalkingFeatureDidUpdate:v6];
+  observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+  [observers mapLayer:layerCopy activeARWalkingFeatureDidUpdate:updateCopy];
 }
 
-- (void)mapLayer:(id)a3 arWalkingFeatureSetStateDidUpdate:(id)a4
+- (void)mapLayer:(id)layer arWalkingFeatureSetStateDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v6 = sub_100C9F624();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v18 = 134349314;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2112;
-    v21 = v5;
+    v21 = updateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] VK updated AR walking feature set: %@", &v18, 0x16u);
   }
 
-  v7 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-  v8 = [v7 featureSet];
-  v9 = [v8 state] - 3;
+  latestFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+  featureSet = [latestFeatureSetMapEntry featureSet];
+  v9 = [featureSet state] - 3;
 
   if (v9 <= 1)
   {
     v10 = sub_100C9F624();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+      latestFeatureSetMapEntry2 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
       v18 = 134349314;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v11;
+      v21 = latestFeatureSetMapEntry2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Latest feature set is now active; switching it to the active set: %@", &v18, 0x16u);
     }
 
-    v12 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-    [(PedestrianARVKMapViewMapDelegate *)self setActiveFeatureSetMapEntry:v12];
+    latestFeatureSetMapEntry3 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+    [(PedestrianARVKMapViewMapDelegate *)self setActiveFeatureSetMapEntry:latestFeatureSetMapEntry3];
 
-    v13 = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
-    v14 = [v13 featureEntries];
-    v15 = sub_100021DB0(v14, &stru_101650000);
+    activeFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
+    featureEntries = [activeFeatureSetMapEntry featureEntries];
+    v15 = sub_100021DB0(featureEntries, &stru_101650000);
 
-    v16 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-    v17 = [(PedestrianARVKMapViewMapDelegate *)self mapView];
-    [v16 mapLayer:v17 updatedFeatures:v15];
+    observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+    mapView = [(PedestrianARVKMapViewMapDelegate *)self mapView];
+    [observers mapLayer:mapView updatedFeatures:v15];
   }
 }
 
-- (id)guidanceInfoForFeature:(id)a3
+- (id)guidanceInfoForFeature:(id)feature
 {
-  v4 = a3;
-  if (!v4)
+  featureCopy = feature;
+  if (!featureCopy)
   {
     v10 = sub_10006D178();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -148,31 +148,31 @@
     }
   }
 
-  v5 = [(PedestrianARVKMapViewMapDelegate *)self currentFeatureMapping];
+  currentFeatureMapping = [(PedestrianARVKMapViewMapDelegate *)self currentFeatureMapping];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100C9FC04;
   v13[3] = &unk_10164FFE0;
-  v14 = v4;
-  v6 = v4;
-  v7 = sub_100030774(v5, v13);
+  v14 = featureCopy;
+  v6 = featureCopy;
+  v7 = sub_100030774(currentFeatureMapping, v13);
 
-  v8 = [v7 guidanceInfo];
+  guidanceInfo = [v7 guidanceInfo];
 
-  return v8;
+  return guidanceInfo;
 }
 
-- (void)updateGuidanceInfo:(id)a3 forFeature:(id)a4
+- (void)updateGuidanceInfo:(id)info forFeature:(id)feature
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  featureCopy = feature;
+  if (!infoCopy)
   {
     v33 = sub_10006D178();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v42 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
+      selfCopy4 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
       v43 = 2080;
       v44 = "PedestrianARVKMapViewMapDelegate.m";
       v45 = 1024;
@@ -189,19 +189,19 @@
       {
         v35 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v42 = v35;
+        selfCopy4 = v35;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
   }
 
-  if (!v7)
+  if (!featureCopy)
   {
     v36 = sub_10006D178();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v42 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
+      selfCopy4 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
       v43 = 2080;
       v44 = "PedestrianARVKMapViewMapDelegate.m";
       v45 = 1024;
@@ -218,7 +218,7 @@
       {
         v38 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v42 = v38;
+        selfCopy4 = v38;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -227,25 +227,25 @@
   v8 = sub_100C9F624();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 mapsShortDescription];
+    mapsShortDescription = [infoCopy mapsShortDescription];
     *buf = 134349570;
-    v42 = self;
+    selfCopy4 = self;
     v43 = 2112;
-    v44 = v9;
+    v44 = mapsShortDescription;
     v45 = 2112;
-    v46[0] = v7;
+    v46[0] = featureCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Updating guidance info: %@ for feature: %@", buf, 0x20u);
   }
 
-  v10 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-  v11 = [v10 featureEntries];
-  v12 = [v11 mutableCopy];
+  latestFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+  featureEntries = [latestFeatureSetMapEntry featureEntries];
+  v12 = [featureEntries mutableCopy];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100CA0348;
   v39[3] = &unk_10164FFE0;
-  v13 = v7;
+  v13 = featureCopy;
   v40 = v13;
   v14 = sub_100030774(v12, v39);
   if (v14)
@@ -254,46 +254,46 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v42 = self;
+      selfCopy4 = self;
       v43 = 2112;
       v44 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Found current entry: %@", buf, 0x16u);
     }
 
     [v12 removeObject:v14];
-    v16 = [[PedestrianARVKFeatureMapEntry alloc] initWithFeature:v13 guidanceInfo:v6];
+    v16 = [[PedestrianARVKFeatureMapEntry alloc] initWithFeature:v13 guidanceInfo:infoCopy];
     [v12 addObject:v16];
     v17 = [PedestrianARFeatureSetMapEntry alloc];
-    v18 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-    v19 = [v18 featureSet];
+    latestFeatureSetMapEntry2 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+    featureSet = [latestFeatureSetMapEntry2 featureSet];
     v20 = [v12 copy];
-    v21 = [(PedestrianARFeatureSetMapEntry *)v17 initWithFeatureSet:v19 featureEntries:v20];
+    v21 = [(PedestrianARFeatureSetMapEntry *)v17 initWithFeatureSet:featureSet featureEntries:v20];
     [(PedestrianARVKMapViewMapDelegate *)self setLatestFeatureSetMapEntry:v21];
 
-    v22 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-    v23 = [v22 featureSet];
-    v24 = [v23 state] - 3;
+    latestFeatureSetMapEntry3 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+    featureSet2 = [latestFeatureSetMapEntry3 featureSet];
+    v24 = [featureSet2 state] - 3;
 
     if (v24 <= 1)
     {
       v25 = sub_100C9F624();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+        latestFeatureSetMapEntry4 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
         *buf = 134349314;
-        v42 = self;
+        selfCopy4 = self;
         v43 = 2112;
-        v44 = v26;
+        v44 = latestFeatureSetMapEntry4;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[%{public}p] Latest feature set is already active; switching it to the active set: %@", buf, 0x16u);
       }
 
-      v27 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-      [(PedestrianARVKMapViewMapDelegate *)self setActiveFeatureSetMapEntry:v27];
+      latestFeatureSetMapEntry5 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+      [(PedestrianARVKMapViewMapDelegate *)self setActiveFeatureSetMapEntry:latestFeatureSetMapEntry5];
     }
 
-    v28 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-    v29 = [(PedestrianARVKMapViewMapDelegate *)self mapView];
-    [v28 mapLayer:v29 guidanceInfoDidUpdate:v6 forFeature:v13];
+    observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+    mapView = [(PedestrianARVKMapViewMapDelegate *)self mapView];
+    [observers mapLayer:mapView guidanceInfoDidUpdate:infoCopy forFeature:v13];
   }
 
   else
@@ -302,7 +302,7 @@
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v42 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
+      selfCopy4 = "[PedestrianARVKMapViewMapDelegate updateGuidanceInfo:forFeature:]";
       v43 = 2080;
       v44 = "PedestrianARVKMapViewMapDelegate.m";
       v45 = 1024;
@@ -317,7 +317,7 @@
       {
         v32 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v42 = v32;
+        selfCopy4 = v32;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -326,72 +326,72 @@
     if (os_log_type_enabled(&v16->super, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v42 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, &v16->super, OS_LOG_TYPE_ERROR, "[%{public}p] Cannot update guidance info for feature which does not exist in the mapping", buf, 0xCu);
     }
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_100C9F624();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Removing observer: %@", &v7, 0x16u);
     }
 
-    v6 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-    [v6 unregisterObserver:v4];
+    observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+    [observers unregisterObserver:observerCopy];
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     v5 = sub_100C9F624();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = observerCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Adding observer: %@", &v7, 0x16u);
     }
 
-    v6 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-    [v6 registerObserver:v4];
+    observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+    [observers registerObserver:observerCopy];
   }
 }
 
-- (void)updateFeatureMapping:(id)a3
+- (void)updateFeatureMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v5 = sub_100C9F624();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v14 = 134349314;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v4;
+    v17 = mappingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updated feature mapping: %@", &v14, 0x16u);
   }
 
-  v6 = sub_100021DB0(v4, &stru_10164FFB8);
-  v7 = [(PedestrianARVKMapViewMapDelegate *)self mapView];
-  v8 = [v7 setARWalkingFeatureSet:v6];
+  v6 = sub_100021DB0(mappingCopy, &stru_10164FFB8);
+  mapView = [(PedestrianARVKMapViewMapDelegate *)self mapView];
+  v8 = [mapView setARWalkingFeatureSet:v6];
 
   if ([v6 count])
   {
-    v9 = [[PedestrianARFeatureSetMapEntry alloc] initWithFeatureSet:v8 featureEntries:v4];
+    v9 = [[PedestrianARFeatureSetMapEntry alloc] initWithFeatureSet:v8 featureEntries:mappingCopy];
     [(PedestrianARVKMapViewMapDelegate *)self setLatestFeatureSetMapEntry:v9];
   }
 
@@ -407,60 +407,60 @@
     self->_currentFeaturePosition.altitude = 1.79769313e308;
   }
 
-  v11 = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
+  activeFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
 
-  if (!v11)
+  if (!activeFeatureSetMapEntry)
   {
-    v12 = [(PedestrianARVKMapViewMapDelegate *)self observers];
-    v13 = [(PedestrianARVKMapViewMapDelegate *)self mapView];
-    [v12 mapLayer:v13 updatedFeatures:v6];
+    observers = [(PedestrianARVKMapViewMapDelegate *)self observers];
+    mapView2 = [(PedestrianARVKMapViewMapDelegate *)self mapView];
+    [observers mapLayer:mapView2 updatedFeatures:v6];
   }
 }
 
 - (BOOL)hasActiveFeatureSet
 {
-  v2 = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
-  v3 = v2 != 0;
+  activeFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
+  v3 = activeFeatureSetMapEntry != 0;
 
   return v3;
 }
 
 - (VKARWalkingFeatureSet)currentFeatureSet
 {
-  v3 = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
-  v4 = [v3 featureSet];
-  v5 = v4;
-  if (v4)
+  activeFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
+  featureSet = [activeFeatureSetMapEntry featureSet];
+  v5 = featureSet;
+  if (featureSet)
   {
-    v6 = v4;
+    featureSet2 = featureSet;
   }
 
   else
   {
-    v7 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-    v6 = [v7 featureSet];
+    latestFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+    featureSet2 = [latestFeatureSetMapEntry featureSet];
   }
 
-  return v6;
+  return featureSet2;
 }
 
 - (NSArray)currentFeatureMapping
 {
-  v3 = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
-  v4 = [v3 featureEntries];
-  v5 = v4;
-  if (v4)
+  activeFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self activeFeatureSetMapEntry];
+  featureEntries = [activeFeatureSetMapEntry featureEntries];
+  v5 = featureEntries;
+  if (featureEntries)
   {
-    v6 = v4;
+    featureEntries2 = featureEntries;
   }
 
   else
   {
-    v7 = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
-    v6 = [v7 featureEntries];
+    latestFeatureSetMapEntry = [(PedestrianARVKMapViewMapDelegate *)self latestFeatureSetMapEntry];
+    featureEntries2 = [latestFeatureSetMapEntry featureEntries];
   }
 
-  return v6;
+  return featureEntries2;
 }
 
 - (void)dealloc
@@ -469,7 +469,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -479,10 +479,10 @@
   [(PedestrianARVKMapViewMapDelegate *)&v4 dealloc];
 }
 
-- (PedestrianARVKMapViewMapDelegate)initWithMapView:(id)a3
+- (PedestrianARVKMapViewMapDelegate)initWithMapView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -524,7 +524,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, view);
     [*(v6 + 1) setMapDelegate:v6];
     *(v6 + 3) = 0;
     *(v6 + 56) = xmmword_101215858;

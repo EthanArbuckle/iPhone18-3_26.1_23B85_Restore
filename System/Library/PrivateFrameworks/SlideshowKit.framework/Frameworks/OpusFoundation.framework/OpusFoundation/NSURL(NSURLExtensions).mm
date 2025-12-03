@@ -37,7 +37,7 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = [a3 componentsSeparatedByString:@"&"];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -59,7 +59,7 @@
 
         v9 = [*(*(&v12 + 1) + 8 * v8) componentsSeparatedByString:@"="];
         v10 = [v9 objectAtIndex:1];
-        [v4 setObject:objc_msgSend(v10 forKey:{"stringByAddingPercentEncodingWithAllowedCharacters:", objc_msgSend(MEMORY[0x277CCA900], "URLPathAllowedCharacterSet")), objc_msgSend(v9, "objectAtIndex:", 0)}];
+        [dictionary setObject:objc_msgSend(v10 forKey:{"stringByAddingPercentEncodingWithAllowedCharacters:", objc_msgSend(MEMORY[0x277CCA900], "URLPathAllowedCharacterSet")), objc_msgSend(v9, "objectAtIndex:", 0)}];
         ++v8;
       }
 
@@ -70,7 +70,7 @@
     while (v6);
   }
 
-  return v4;
+  return dictionary;
 }
 
 + (uint64_t)_displayName:()NSURLExtensions
@@ -94,7 +94,7 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _displayName:a1];
+  return [v2 _displayName:self];
 }
 
 + (uint64_t)_contentModificationDate:()NSURLExtensions
@@ -118,7 +118,7 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _contentModificationDate:a1];
+  return [v2 _contentModificationDate:self];
 }
 
 + (uint64_t)_isInCloud:()NSURLExtensions
@@ -142,12 +142,12 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _isInCloud:a1];
+  return [v2 _isInCloud:self];
 }
 
 + (uint64_t)_isDownloading:()NSURLExtensions
 {
-  result = [a1 _isInCloud:?];
+  result = [self _isInCloud:?];
   if (result)
   {
     v5 = 0;
@@ -175,12 +175,12 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _isDownloading:a1];
+  return [v2 _isDownloading:self];
 }
 
 + (uint64_t)_isDownloaded:()NSURLExtensions
 {
-  if (![a1 _isInCloud:?])
+  if (![self _isInCloud:?])
   {
     return 1;
   }
@@ -204,12 +204,12 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _isDownloaded:a1];
+  return [v2 _isDownloaded:self];
 }
 
 + (uint64_t)_isUploading:()NSURLExtensions
 {
-  result = [a1 _isInCloud:?];
+  result = [self _isInCloud:?];
   if (result)
   {
     v5 = 0;
@@ -237,12 +237,12 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _isUploading:a1];
+  return [v2 _isUploading:self];
 }
 
 + (uint64_t)_isUploaded:()NSURLExtensions
 {
-  result = [a1 _isInCloud:?];
+  result = [self _isInCloud:?];
   if (result)
   {
     v5 = 0;
@@ -270,12 +270,12 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _isUploaded:a1];
+  return [v2 _isUploaded:self];
 }
 
 + (uint64_t)_hasUnresolvedConflict:()NSURLExtensions
 {
-  result = [a1 _isInCloud:?];
+  result = [self _isInCloud:?];
   if (result)
   {
     v5 = 0;
@@ -303,7 +303,7 @@
 {
   v2 = objc_opt_class();
 
-  return [v2 _hasUnresolvedConflict:a1];
+  return [v2 _hasUnresolvedConflict:self];
 }
 
 @end

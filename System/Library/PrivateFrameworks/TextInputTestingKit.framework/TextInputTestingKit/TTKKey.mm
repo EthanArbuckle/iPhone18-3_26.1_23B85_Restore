@@ -2,7 +2,7 @@
 - (CGPoint)center;
 - (CGRect)frame;
 - (NSString)string;
-- (TTKKey)initWithUIKBTree:(id)a3 layoutUtils:(id)a4;
+- (TTKKey)initWithUIKBTree:(id)tree layoutUtils:(id)utils;
 - (id)description;
 @end
 
@@ -36,7 +36,7 @@
 
 - (NSString)string
 {
-  v3 = [(UIKBTree *)self->_key representedString];
+  representedString = [(UIKBTree *)self->_key representedString];
   layoutUtils = self->_layoutUtils;
   if (layoutUtils)
   {
@@ -45,7 +45,7 @@
 
   else
   {
-    v5 = v3;
+    v5 = representedString;
   }
 
   v6 = v5;
@@ -57,7 +57,7 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TTKKey *)self string];
+  string = [(TTKKey *)self string];
   [(UIKBTree *)self->_key frame];
   v7 = v6;
   [(UIKBTree *)self->_key frame];
@@ -65,21 +65,21 @@
   [(UIKBTree *)self->_key frame];
   v11 = v10;
   [(UIKBTree *)self->_key frame];
-  v13 = [v3 stringWithFormat:@"<%@: %p '%@' @ {{%g, %g}, {%g, %g}}>", v4, self, v5, v7, v9, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@: %p '%@' @ {{%g, %g}, {%g, %g}}>", v4, self, string, v7, v9, v11, v12];
 
   return v13;
 }
 
-- (TTKKey)initWithUIKBTree:(id)a3 layoutUtils:(id)a4
+- (TTKKey)initWithUIKBTree:(id)tree layoutUtils:(id)utils
 {
-  v6 = a3;
+  treeCopy = tree;
   v10.receiver = self;
   v10.super_class = TTKKey;
   v7 = [(TTKKey *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_key, a3);
+    objc_storeStrong(&v7->_key, tree);
   }
 
   return v8;

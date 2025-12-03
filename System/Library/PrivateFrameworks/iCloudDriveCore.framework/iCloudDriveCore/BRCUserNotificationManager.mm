@@ -1,18 +1,18 @@
 @interface BRCUserNotificationManager
 + (id)sharedManager;
-- (BOOL)hasPendingNotificationsForIdentifier:(id)a3;
+- (BOOL)hasPendingNotificationsForIdentifier:(id)identifier;
 - (BRCUserNotificationManager)init;
-- (id)_buildNotificationWithMetadata:(id)a3 requestID:(id)a4;
-- (id)_getSessionContextForAccountID:(id)a3;
+- (id)_buildNotificationWithMetadata:(id)metadata requestID:(id)d;
+- (id)_getSessionContextForAccountID:(id)d;
 - (id)_notificationCategories;
 - (void)_configureUserNotificationCenter;
-- (void)addPendingNotificationWithMetadata:(id)a3 requestID:(id)a4 forKey:(id)a5;
-- (void)registerSessionContext:(id)a3 forAccountID:(id)a4;
-- (void)removeDeliveredNotificationsMatchingPredicate:(id)a3;
-- (void)scheduleNotificationWithMetadata:(id)a3 requestID:(id)a4;
-- (void)schedulePendingNotificationWithIdentifier:(id)a3;
-- (void)unRegisterSessionContextForAccountID:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)addPendingNotificationWithMetadata:(id)metadata requestID:(id)d forKey:(id)key;
+- (void)registerSessionContext:(id)context forAccountID:(id)d;
+- (void)removeDeliveredNotificationsMatchingPredicate:(id)predicate;
+- (void)scheduleNotificationWithMetadata:(id)metadata requestID:(id)d;
+- (void)schedulePendingNotificationWithIdentifier:(id)identifier;
+- (void)unRegisterSessionContextForAccountID:(id)d;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation BRCUserNotificationManager
@@ -47,25 +47,25 @@
   return v7;
 }
 
-- (id)_getSessionContextForAccountID:(id)a3
+- (id)_getSessionContextForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__34;
   v16 = __Block_byref_object_dispose__34;
   v17 = 0;
-  v5 = [(BRCUserNotificationManager *)self _getQueue];
+  _getQueue = [(BRCUserNotificationManager *)self _getQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BRCUserNotificationManager__getSessionContextForAccountID___block_invoke;
   block[3] = &unk_278500D08;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(_getQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -101,8 +101,8 @@ void __61__BRCUserNotificationManager__getSessionContextForAccountID___block_inv
   [(UNUserNotificationCenter *)self->_birdNotificationCenter setDelegate:self];
   [(UNUserNotificationCenter *)self->_birdNotificationCenter setWantsNotificationResponsesDelivered];
   v5 = self->_birdNotificationCenter;
-  v6 = [(BRCUserNotificationManager *)self _notificationCategories];
-  [(UNUserNotificationCenter *)v5 setNotificationCategories:v6];
+  _notificationCategories = [(BRCUserNotificationManager *)self _notificationCategories];
+  [(UNUserNotificationCenter *)v5 setNotificationCategories:_notificationCategories];
 }
 
 - (BRCUserNotificationManager)init
@@ -140,21 +140,21 @@ uint64_t __43__BRCUserNotificationManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)registerSessionContext:(id)a3 forAccountID:(id)a4
+- (void)registerSessionContext:(id)context forAccountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = [(BRCUserNotificationManager *)self _getQueue];
+    _getQueue = [(BRCUserNotificationManager *)self _getQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__BRCUserNotificationManager_registerSessionContext_forAccountID___block_invoke;
     block[3] = &unk_2784FF4A0;
     block[4] = self;
-    v12 = v7;
-    v13 = v6;
-    dispatch_sync(v8, block);
+    v12 = dCopy;
+    v13 = contextCopy;
+    dispatch_sync(_getQueue, block);
   }
 
   else
@@ -168,19 +168,19 @@ uint64_t __43__BRCUserNotificationManager_sharedManager__block_invoke()
   }
 }
 
-- (void)unRegisterSessionContextForAccountID:(id)a3
+- (void)unRegisterSessionContextForAccountID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(BRCUserNotificationManager *)self _getQueue];
+    _getQueue = [(BRCUserNotificationManager *)self _getQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__BRCUserNotificationManager_unRegisterSessionContextForAccountID___block_invoke;
     v8[3] = &unk_2784FF478;
     v8[4] = self;
-    v9 = v4;
-    dispatch_async(v5, v8);
+    v9 = dCopy;
+    dispatch_async(_getQueue, v8);
   }
 
   else
@@ -269,17 +269,17 @@ void __67__BRCUserNotificationManager_unRegisterSessionContextForAccountID___blo
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDeliveredNotificationsMatchingPredicate:(id)a3
+- (void)removeDeliveredNotificationsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   birdNotificationCenter = self->_birdNotificationCenter;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredicate___block_invoke;
   v7[3] = &unk_278504DB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = predicateCopy;
+  v6 = predicateCopy;
   [(UNUserNotificationCenter *)birdNotificationCenter getDeliveredNotificationsWithCompletionHandler:v7];
 }
 
@@ -340,38 +340,38 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_buildNotificationWithMetadata:(id)a3 requestID:(id)a4
+- (id)_buildNotificationWithMetadata:(id)metadata requestID:(id)d
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  dCopy = d;
   v7 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  v8 = [MEMORY[0x277CE1FE0] defaultSound];
-  [v7 setSound:v8];
+  defaultSound = [MEMORY[0x277CE1FE0] defaultSound];
+  [v7 setSound:defaultSound];
 
-  v9 = [v5 title];
-  [v7 setTitle:v9];
+  title = [metadataCopy title];
+  [v7 setTitle:title];
 
-  v10 = [v5 body];
-  [v7 setBody:v10];
+  body = [metadataCopy body];
+  [v7 setBody:body];
 
-  v11 = [v5 subtitle];
-  [v7 setSubtitle:v11];
+  subtitle = [metadataCopy subtitle];
+  [v7 setSubtitle:subtitle];
 
-  v12 = [v6 requestCategory];
-  [v7 setCategoryIdentifier:v12];
+  requestCategory = [dCopy requestCategory];
+  [v7 setCategoryIdentifier:requestCategory];
 
   [v7 setShouldBackgroundDefaultAction:1];
-  v13 = [v5 thumbnailURL];
+  thumbnailURL = [metadataCopy thumbnailURL];
 
-  if (v13)
+  if (thumbnailURL)
   {
     v14 = MEMORY[0x277CE1F90];
-    v15 = [MEMORY[0x277CCAD78] UUID];
-    v16 = [v15 UUIDString];
-    v17 = [v5 thumbnailURL];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    thumbnailURL2 = [metadataCopy thumbnailURL];
     v33 = 0;
-    v18 = [v14 attachmentWithIdentifier:v16 URL:v17 options:0 error:&v33];
+    v18 = [v14 attachmentWithIdentifier:uUIDString URL:thumbnailURL2 options:0 error:&v33];
     v19 = v33;
 
     if (v19 || !v18)
@@ -392,45 +392,45 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
     }
   }
 
-  v22 = [v6 iconAppIdentifier];
+  iconAppIdentifier = [dCopy iconAppIdentifier];
 
   v23 = MEMORY[0x277CE1FB0];
-  if (v22)
+  if (iconAppIdentifier)
   {
-    v24 = [v6 iconAppIdentifier];
-    v25 = [v23 iconForApplicationIdentifier:v24];
+    iconAppIdentifier2 = [dCopy iconAppIdentifier];
+    v25 = [v23 iconForApplicationIdentifier:iconAppIdentifier2];
     [v7 setIcon:v25];
   }
 
   else
   {
-    v24 = [MEMORY[0x277CE1FB0] iconWithUTI:*MEMORY[0x277CFADE0]];
-    [v7 setIcon:v24];
+    iconAppIdentifier2 = [MEMORY[0x277CE1FB0] iconWithUTI:*MEMORY[0x277CFADE0]];
+    [v7 setIcon:iconAppIdentifier2];
   }
 
-  v26 = [v5 userInfo];
+  userInfo = [metadataCopy userInfo];
 
-  if (v26)
+  if (userInfo)
   {
-    v27 = [v5 userInfo];
-    [v7 setUserInfo:v27];
+    userInfo2 = [metadataCopy userInfo];
+    [v7 setUserInfo:userInfo2];
   }
 
   v28 = MEMORY[0x277CE1FC0];
-  v29 = [v6 encode];
-  v30 = [v28 requestWithIdentifier:v29 content:v7 trigger:0];
+  encode = [dCopy encode];
+  v30 = [v28 requestWithIdentifier:encode content:v7 trigger:0];
 
   v31 = *MEMORY[0x277D85DE8];
 
   return v30;
 }
 
-- (void)addPendingNotificationWithMetadata:(id)a3 requestID:(id)a4 forKey:(id)a5
+- (void)addPendingNotificationWithMetadata:(id)metadata requestID:(id)d forKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRCUserNotificationManager *)self _buildNotificationWithMetadata:v8 requestID:v9];
+  metadataCopy = metadata;
+  dCopy = d;
+  keyCopy = key;
+  v11 = [(BRCUserNotificationManager *)self _buildNotificationWithMetadata:metadataCopy requestID:dCopy];
   if (v11)
   {
     v12 = brc_bread_crumbs();
@@ -440,10 +440,10 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
       [BRCUserNotificationManager addPendingNotificationWithMetadata:v11 requestID:? forKey:?];
     }
 
-    v14 = self;
-    objc_sync_enter(v14);
-    [(NSMutableDictionary *)v14->_pendingNotification setObject:v11 forKeyedSubscript:v10];
-    objc_sync_exit(v14);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_pendingNotification setObject:v11 forKeyedSubscript:keyCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -455,7 +455,7 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
       [BRCUserNotificationManager addPendingNotificationWithMetadata:requestID:forKey:];
     }
 
-    v14 = brc_bread_crumbs();
+    selfCopy = brc_bread_crumbs();
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, 0x90u))
     {
@@ -464,35 +464,35 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
   }
 }
 
-- (BOOL)hasPendingNotificationsForIdentifier:(id)a3
+- (BOOL)hasPendingNotificationsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_pendingNotification objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_pendingNotification objectForKeyedSubscript:identifierCopy];
   v7 = v6 != 0;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)schedulePendingNotificationWithIdentifier:(id)a3
+- (void)schedulePendingNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [BRCUserNotificationManager schedulePendingNotificationWithIdentifier:];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_pendingNotification objectForKeyedSubscript:v4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_pendingNotification objectForKeyedSubscript:identifierCopy];
   if (v6)
   {
-    [(NSMutableDictionary *)v5->_pendingNotification removeObjectForKey:v4];
-    objc_sync_exit(v5);
+    [(NSMutableDictionary *)selfCopy->_pendingNotification removeObjectForKey:identifierCopy];
+    objc_sync_exit(selfCopy);
 
-    birdNotificationCenter = v5->_birdNotificationCenter;
+    birdNotificationCenter = selfCopy->_birdNotificationCenter;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __72__BRCUserNotificationManager_schedulePendingNotificationWithIdentifier___block_invoke;
@@ -504,7 +504,7 @@ void __76__BRCUserNotificationManager_removeDeliveredNotificationsMatchingPredic
 
   else
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v8 = brc_bread_crumbs();
     v9 = brc_default_log();
@@ -539,17 +539,17 @@ void __72__BRCUserNotificationManager_schedulePendingNotificationWithIdentifier_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleNotificationWithMetadata:(id)a3 requestID:(id)a4
+- (void)scheduleNotificationWithMetadata:(id)metadata requestID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   birdNotificationCenter = self->_birdNotificationCenter;
-  v8 = [(BRCUserNotificationManager *)self _buildNotificationWithMetadata:a3 requestID:v6];
+  v8 = [(BRCUserNotificationManager *)self _buildNotificationWithMetadata:metadata requestID:dCopy];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__BRCUserNotificationManager_scheduleNotificationWithMetadata_requestID___block_invoke;
   v10[3] = &unk_2784FF540;
-  v11 = v6;
-  v9 = v6;
+  v11 = dCopy;
+  v9 = dCopy;
   [(UNUserNotificationCenter *)birdNotificationCenter addNotificationRequest:v8 withCompletionHandler:v10];
 }
 
@@ -577,48 +577,48 @@ void __73__BRCUserNotificationManager_scheduleNotificationWithMetadata_requestID
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 notification];
-  v10 = [v9 request];
-  v11 = [v10 identifier];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
 
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v7 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     v25 = 138412802;
-    v26 = v24;
+    v26 = actionIdentifier;
     v27 = 2112;
-    v28 = v11;
+    v28 = identifier;
     v29 = 2112;
     v30 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] Received notification response %@ for request %@%@", &v25, 0x20u);
   }
 
-  v14 = [BRCUserNotificationRequestAccessRequestID decodeWithRequestIDString:v11];
+  v14 = [BRCUserNotificationRequestAccessRequestID decodeWithRequestIDString:identifier];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 accountID];
-    v17 = [(BRCUserNotificationManager *)self _getSessionContextForAccountID:v16];
+    accountID = [v14 accountID];
+    v17 = [(BRCUserNotificationManager *)self _getSessionContextForAccountID:accountID];
 
     if (v17)
     {
-      [v15 performOnActionWithNotificationResponse:v7 sessionContext:v17 completionHandler:v8];
+      [v15 performOnActionWithNotificationResponse:responseCopy sessionContext:v17 completionHandler:handlerCopy];
       goto LABEL_15;
     }
 
 LABEL_12:
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
     goto LABEL_15;
   }
 
-  v18 = [BRCUserNotificationRequestAccessApprovedRequestID decodeWithRequestIDString:v11];
+  v18 = [BRCUserNotificationRequestAccessApprovedRequestID decodeWithRequestIDString:identifier];
   v17 = v18;
   if (!v18)
   {
@@ -632,17 +632,17 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v19 = [v18 accountID];
-  v20 = [(BRCUserNotificationManager *)self _getSessionContextForAccountID:v19];
+  accountID2 = [v18 accountID];
+  v20 = [(BRCUserNotificationManager *)self _getSessionContextForAccountID:accountID2];
 
   if (v20)
   {
-    [v17 performOnActionWithNotificationResponse:v7 sessionContext:v20 completionHandler:v8];
+    [v17 performOnActionWithNotificationResponse:responseCopy sessionContext:v20 completionHandler:handlerCopy];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_15:

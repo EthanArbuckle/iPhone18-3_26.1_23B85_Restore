@@ -1,14 +1,14 @@
 @interface _NSBPlistMappedString
-+ (id)createStringWithOffset:(int64_t)a3 intoMappingData:(id)a4;
++ (id)createStringWithOffset:(int64_t)offset intoMappingData:(id)data;
 + (void)initialize;
-- (CFIndex)getBPlistPtr:(CFIndex *)a3 bplistSize:(void *)a4 stringPtr:(_BYTE *)a5 isUTF16BE:;
-- (const)_fastCStringContents:(BOOL)a3;
+- (CFIndex)getBPlistPtr:(CFIndex *)ptr bplistSize:(void *)size stringPtr:(_BYTE *)stringPtr isUTF16BE:;
+- (const)_fastCStringContents:(BOOL)contents;
 - (uint64_t)isUTF16BE;
 - (unint64_t)fastestEncoding;
 - (unint64_t)length;
 - (unint64_t)smallestEncoding;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation _NSBPlistMappedString
@@ -51,7 +51,7 @@
 
 + (void)initialize
 {
-  if (_NSBPlistMappedString == a1)
+  if (_NSBPlistMappedString == self)
   {
     if (*MEMORY[0x1E69E5908] && dyld_program_sdk_at_least())
     {
@@ -112,7 +112,7 @@
   return result;
 }
 
-+ (id)createStringWithOffset:(int64_t)a3 intoMappingData:(id)a4
++ (id)createStringWithOffset:(int64_t)offset intoMappingData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() != _NSBPlistMappedData)
@@ -120,13 +120,13 @@
     return 0;
   }
 
-  v7 = [a4 mappingIndex];
+  mappingIndex = [data mappingIndex];
   result = 0;
-  if (a3 <= 0xFFFFFFF && v7 != -1 && v7 <= 1023)
+  if (offset <= 0xFFFFFFF && mappingIndex != -1 && mappingIndex <= 1023)
   {
-    v8 = *([a4 bytes] + a3) & 0xF0;
-    [a4 bytes];
-    [a4 _bplistObjectsRangeEnd];
+    v8 = *([data bytes] + offset) & 0xF0;
+    [data bytes];
+    [data _bplistObjectsRangeEnd];
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
@@ -160,12 +160,12 @@
 
     if (v8 == 96)
     {
-      v11 = ((a3 << 24) | (v7 << 14) | (2 * v10)) + 1;
+      v11 = ((offset << 24) | (mappingIndex << 14) | (2 * v10)) + 1;
     }
 
     else
     {
-      v11 = (a3 << 24) | (v7 << 14) | (2 * v10);
+      v11 = (offset << 24) | (mappingIndex << 14) | (2 * v10);
     }
 
     if (enableTaggedPointerBPlistMappedStrings)
@@ -191,15 +191,15 @@
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   v5 = *MEMORY[0x1E69E9840];
   v4 = 0;
-  [(_NSBPlistMappedString *)self getCharacters:&v4 range:a3, 1];
+  [(_NSBPlistMappedString *)self getCharacters:&v4 range:index, 1];
   return v4;
 }
 
-- (CFIndex)getBPlistPtr:(CFIndex *)a3 bplistSize:(void *)a4 stringPtr:(_BYTE *)a5 isUTF16BE:
+- (CFIndex)getBPlistPtr:(CFIndex *)ptr bplistSize:(void *)size stringPtr:(_BYTE *)stringPtr isUTF16BE:
 {
   if (result)
   {
@@ -226,7 +226,7 @@
       v11 = v10 & (v9 >> 3);
     }
 
-    *a5 = v11 & 1;
+    *stringPtr = v11 & 1;
     MappedStringsFile = _CFBundleGetMappedStringsFile();
     if (!MappedStringsFile)
     {
@@ -236,17 +236,17 @@
     v13 = MappedStringsFile;
     *a2 = CFDataGetBytePtr(MappedStringsFile);
     result = CFDataGetLength(v13);
-    *a3 = result;
-    *a4 = &(*a2)[(v11 >> 24) & 0xFFFFFFF];
+    *ptr = result;
+    *size = &(*a2)[(v11 >> 24) & 0xFFFFFFF];
   }
 
   return result;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v19 = 0;
@@ -291,7 +291,7 @@ LABEL_8:
   _Block_object_dispose(&v14, 8);
 }
 
-- (const)_fastCStringContents:(BOOL)a3
+- (const)_fastCStringContents:(BOOL)contents
 {
   v3 = 0;
   v14 = *MEMORY[0x1E69E9840];
@@ -299,7 +299,7 @@ LABEL_8:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if (!a3)
+  if (!contents)
   {
     v9 = 0;
     v7 = 0;

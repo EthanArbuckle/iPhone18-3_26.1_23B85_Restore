@@ -1,22 +1,22 @@
 @interface CAFSymbolImageWithColor
-- (CAFSymbolImageWithColor)initWithColor:(unsigned __int8)a3 name:(id)a4;
-- (CAFSymbolImageWithColor)initWithDictionary:(id)a3;
+- (CAFSymbolImageWithColor)initWithColor:(unsigned __int8)color name:(id)name;
+- (CAFSymbolImageWithColor)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFSymbolImageWithColor
 
-- (CAFSymbolImageWithColor)initWithDictionary:(id)a3
+- (CAFSymbolImageWithColor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CAFSymbolImageWithColor;
   v5 = [(CAFSymbolImageWithColor *)&v12 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"color"];
+    v6 = [dictionaryCopy objectForKey:@"color"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -29,7 +29,7 @@
 
     v5->_color = [v7 unsignedCharValue];
     objc_opt_class();
-    v8 = [v4 objectForKey:@"name"];
+    v8 = [dictionaryCopy objectForKey:@"name"];
     if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = v8;
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (CAFSymbolImageWithColor)initWithColor:(unsigned __int8)a3 name:(id)a4
+- (CAFSymbolImageWithColor)initWithColor:(unsigned __int8)color name:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CAFSymbolImageWithColor;
   v8 = [(CAFSymbolImageWithColor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_color = a3;
-    objc_storeStrong(&v8->_name, a4);
+    v8->_color = color;
+    objc_storeStrong(&v8->_name, name);
   }
 
   return v9;
@@ -70,16 +70,16 @@
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[CAFSymbolImageWithColor color](self, "color")}];
   v9[1] = @"name";
   v10[0] = v3;
-  v4 = [(CAFSymbolImageWithColor *)self name];
-  v5 = v4;
-  if (!v4)
+  name = [(CAFSymbolImageWithColor *)self name];
+  null = name;
+  if (!name)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v10[1] = v5;
+  v10[1] = null;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
-  if (!v4)
+  if (!name)
   {
   }
 
@@ -92,9 +92,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFSymbolImageWithColor *)self color];
-  v6 = [(CAFSymbolImageWithColor *)self name];
-  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %hhu, %@: %@ }>", v4, self, @"color", v5, @"name", v6];
+  color = [(CAFSymbolImageWithColor *)self color];
+  name = [(CAFSymbolImageWithColor *)self name];
+  v7 = [v3 stringWithFormat:@"<%@: %p { %@: %hhu, %@: %@ }>", v4, self, @"color", color, @"name", name];
 
   return v7;
 }

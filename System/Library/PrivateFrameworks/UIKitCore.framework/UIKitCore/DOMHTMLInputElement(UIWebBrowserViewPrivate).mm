@@ -8,10 +8,10 @@
 
 - (uint64_t)_startAssistingDocumentView:()UIWebBrowserViewPrivate
 {
-  if ([a1 isAssistedDateType])
+  if ([self isAssistedDateType])
   {
 
-    return [a3 _startAssistingNode:a1];
+    return [a3 _startAssistingNode:self];
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (uint64_t)_stopAssistingDocumentView:()UIWebBrowserViewPrivate
 {
-  if ([a1 isAssistedDateType])
+  if ([self isAssistedDateType])
   {
 
-    return [a3 _stopAssistingNode:a1];
+    return [a3 _stopAssistingNode:self];
   }
 
   else
@@ -43,7 +43,7 @@
     return 0;
   }
 
-  return [a1 isAssistedDateType];
+  return [self isAssistedDateType];
 }
 
 @end

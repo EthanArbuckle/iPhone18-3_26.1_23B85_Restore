@@ -1,91 +1,91 @@
 @interface DNDSModernAssertionSyncMetadataStore
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithLastReceivedStoreDate:(id)a3 lastSentStoreDate:(id)a4 pendingLastSentStoreDate:(id)a5;
-- (id)_initWithStore:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
+- (id)_initWithLastReceivedStoreDate:(id)date lastSentStoreDate:(id)storeDate pendingLastSentStoreDate:(id)sentStoreDate;
+- (id)_initWithStore:(id)store;
+- (id)dictionaryRepresentationWithContext:(id)context;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSModernAssertionSyncMetadataStore
 
-- (id)_initWithStore:(id)a3
+- (id)_initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = DNDSModernAssertionSyncMetadataStore;
   v5 = [(DNDSModernAssertionSyncMetadataStore *)&v19 init];
   if (v5)
   {
-    v6 = [v4 lastReceivedStoreDate];
-    v7 = v6;
-    if (v6)
+    lastReceivedStoreDate = [storeCopy lastReceivedStoreDate];
+    v7 = lastReceivedStoreDate;
+    if (lastReceivedStoreDate)
     {
-      v8 = v6;
+      dictionary = lastReceivedStoreDate;
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     lastReceivedStoreDate = v5->_lastReceivedStoreDate;
-    v5->_lastReceivedStoreDate = v8;
+    v5->_lastReceivedStoreDate = dictionary;
 
-    v10 = [v4 lastSentStoreDate];
-    v11 = v10;
-    if (v10)
+    lastSentStoreDate = [storeCopy lastSentStoreDate];
+    v11 = lastSentStoreDate;
+    if (lastSentStoreDate)
     {
-      v12 = v10;
+      dictionary2 = lastSentStoreDate;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     }
 
     lastSentStoreDate = v5->_lastSentStoreDate;
-    v5->_lastSentStoreDate = v12;
+    v5->_lastSentStoreDate = dictionary2;
 
-    v14 = [v4 pendingLastSentStoreDate];
-    v15 = v14;
-    if (v14)
+    pendingLastSentStoreDate = [storeCopy pendingLastSentStoreDate];
+    v15 = pendingLastSentStoreDate;
+    if (pendingLastSentStoreDate)
     {
-      v16 = v14;
+      dictionary3 = pendingLastSentStoreDate;
     }
 
     else
     {
-      v16 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     }
 
     pendingLastSentStoreDate = v5->_pendingLastSentStoreDate;
-    v5->_pendingLastSentStoreDate = v16;
+    v5->_pendingLastSentStoreDate = dictionary3;
   }
 
   return v5;
 }
 
-- (id)_initWithLastReceivedStoreDate:(id)a3 lastSentStoreDate:(id)a4 pendingLastSentStoreDate:(id)a5
+- (id)_initWithLastReceivedStoreDate:(id)date lastSentStoreDate:(id)storeDate pendingLastSentStoreDate:(id)sentStoreDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  storeDateCopy = storeDate;
+  sentStoreDateCopy = sentStoreDate;
   v19.receiver = self;
   v19.super_class = DNDSModernAssertionSyncMetadataStore;
   v11 = [(DNDSModernAssertionSyncMetadataStore *)&v19 init];
   if (v11)
   {
-    v12 = [v8 mutableCopy];
+    v12 = [dateCopy mutableCopy];
     lastReceivedStoreDate = v11->_lastReceivedStoreDate;
     v11->_lastReceivedStoreDate = v12;
 
-    v14 = [v9 mutableCopy];
+    v14 = [storeDateCopy mutableCopy];
     lastSentStoreDate = v11->_lastSentStoreDate;
     v11->_lastSentStoreDate = v14;
 
-    v16 = [v10 mutableCopy];
+    v16 = [sentStoreDateCopy mutableCopy];
     pendingLastSentStoreDate = v11->_pendingLastSentStoreDate;
     v11->_pendingLastSentStoreDate = v16;
   }
@@ -95,20 +95,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
-  v4 = [v3 hash];
-  v5 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
-  v8 = [v7 hash];
+  lastReceivedStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
+  v4 = [lastReceivedStoreDate hash];
+  lastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
+  v6 = [lastSentStoreDate hash] ^ v4;
+  pendingLastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
+  v8 = [pendingLastSentStoreDate hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -118,21 +118,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
-      v8 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
-      if (v7 != v8)
+      v6 = equalCopy;
+      lastReceivedStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
+      lastReceivedStoreDate2 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
+      if (lastReceivedStoreDate != lastReceivedStoreDate2)
       {
-        v9 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
-        if (!v9)
+        lastReceivedStoreDate3 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
+        if (!lastReceivedStoreDate3)
         {
           v13 = 0;
           goto LABEL_37;
         }
 
-        v10 = v9;
-        v11 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
-        if (!v11)
+        v10 = lastReceivedStoreDate3;
+        lastReceivedStoreDate4 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
+        if (!lastReceivedStoreDate4)
         {
           v13 = 0;
 LABEL_36:
@@ -140,9 +140,9 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v12 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
-        v3 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
-        if (![v12 isEqual:v3])
+        lastReceivedStoreDate5 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
+        lastReceivedStoreDate6 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastReceivedStoreDate];
+        if (![lastReceivedStoreDate5 isEqual:lastReceivedStoreDate6])
         {
           v13 = 0;
 LABEL_35:
@@ -150,36 +150,36 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v36 = v3;
-        v37 = v12;
-        v38 = v11;
+        v36 = lastReceivedStoreDate6;
+        v37 = lastReceivedStoreDate5;
+        v38 = lastReceivedStoreDate4;
         v39 = v10;
       }
 
-      v14 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
-      v15 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
-      if (v14 != v15)
+      lastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
+      lastSentStoreDate2 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
+      if (lastSentStoreDate != lastSentStoreDate2)
       {
-        v16 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
-        if (v16)
+        lastSentStoreDate3 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
+        if (lastSentStoreDate3)
         {
-          v17 = v16;
-          v18 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
-          if (v18)
+          v17 = lastSentStoreDate3;
+          lastSentStoreDate4 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
+          if (lastSentStoreDate4)
           {
-            v35 = v14;
-            v19 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
-            v3 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
-            if ([v19 isEqual:v3])
+            v35 = lastSentStoreDate;
+            lastSentStoreDate5 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
+            lastReceivedStoreDate6 = [(DNDSModernAssertionSyncMetadataStore *)v6 lastSentStoreDate];
+            if ([lastSentStoreDate5 isEqual:lastReceivedStoreDate6])
             {
-              v31 = v19;
-              v32 = v18;
+              v31 = lastSentStoreDate5;
+              v32 = lastSentStoreDate4;
               v33 = v17;
 LABEL_17:
-              v20 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
-              v21 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
-              v22 = v21;
-              if (v20 == v21)
+              pendingLastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
+              pendingLastSentStoreDate2 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
+              v22 = pendingLastSentStoreDate2;
+              if (pendingLastSentStoreDate == pendingLastSentStoreDate2)
               {
 
                 v13 = 1;
@@ -188,20 +188,20 @@ LABEL_17:
 
               else
               {
-                v34 = v3;
-                v23 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
-                if (v23)
+                v34 = lastReceivedStoreDate6;
+                pendingLastSentStoreDate3 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
+                if (pendingLastSentStoreDate3)
                 {
-                  v24 = v23;
-                  v25 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
-                  if (v25)
+                  v24 = pendingLastSentStoreDate3;
+                  pendingLastSentStoreDate4 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
+                  if (pendingLastSentStoreDate4)
                   {
-                    v30 = v25;
-                    v29 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
-                    v26 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
-                    v13 = [v29 isEqual:v26];
+                    v30 = pendingLastSentStoreDate4;
+                    pendingLastSentStoreDate5 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
+                    pendingLastSentStoreDate6 = [(DNDSModernAssertionSyncMetadataStore *)v6 pendingLastSentStoreDate];
+                    v13 = [pendingLastSentStoreDate5 isEqual:pendingLastSentStoreDate6];
 
-                    v25 = v30;
+                    pendingLastSentStoreDate4 = v30;
                   }
 
                   else
@@ -216,20 +216,20 @@ LABEL_17:
                   v13 = 0;
                 }
 
-                v3 = v34;
+                lastReceivedStoreDate6 = v34;
                 v27 = v35;
               }
 
-              if (v27 != v15)
+              if (v27 != lastSentStoreDate2)
               {
               }
 
 LABEL_34:
-              v11 = v38;
+              lastReceivedStoreDate4 = v38;
               v10 = v39;
-              v3 = v36;
-              v12 = v37;
-              if (v7 != v8)
+              lastReceivedStoreDate6 = v36;
+              lastReceivedStoreDate5 = v37;
+              if (lastReceivedStoreDate != lastReceivedStoreDate2)
               {
                 goto LABEL_35;
               }
@@ -239,7 +239,7 @@ LABEL_37:
               goto LABEL_38;
             }
 
-            v14 = v35;
+            lastSentStoreDate = v35;
           }
         }
 
@@ -247,7 +247,7 @@ LABEL_37:
         goto LABEL_34;
       }
 
-      v35 = v14;
+      v35 = lastSentStoreDate;
       goto LABEL_17;
     }
 
@@ -263,19 +263,19 @@ LABEL_38:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
-  v6 = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
-  v7 = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
-  v8 = [v3 stringWithFormat:@"<%@: %p lastReceivedStoreDate: %@; lastSentStoreDate: %@; pendingLastSentStoreDate: %@>", v4, self, v5, v6, v7];;
+  lastReceivedStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastReceivedStoreDate];
+  lastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self lastSentStoreDate];
+  pendingLastSentStoreDate = [(DNDSModernAssertionSyncMetadataStore *)self pendingLastSentStoreDate];
+  v8 = [v3 stringWithFormat:@"<%@: %p lastReceivedStoreDate: %@; lastSentStoreDate: %@; pendingLastSentStoreDate: %@>", v4, self, lastReceivedStoreDate, lastSentStoreDate, pendingLastSentStoreDate];;
 
   return v8;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bs_safeObjectForKey:@"lastReceivedStoreDate" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v5 = [representationCopy bs_safeObjectForKey:@"lastReceivedStoreDate" ofType:objc_opt_class()];
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
   v58 = 0u;
   v59 = 0u;
@@ -312,7 +312,7 @@ LABEL_38:
 
   v45 = v6;
 
-  v15 = [v4 bs_safeObjectForKey:@"lastSentStoreDate" ofType:objc_opt_class()];
+  v15 = [representationCopy bs_safeObjectForKey:@"lastSentStoreDate" ofType:objc_opt_class()];
   v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
   v54 = 0u;
   v55 = 0u;
@@ -349,8 +349,8 @@ LABEL_38:
 
   v44 = v16;
 
-  v47 = v4;
-  v25 = [v4 bs_safeObjectForKey:@"pendingLastSentStoreDate" ofType:objc_opt_class()];
+  v47 = representationCopy;
+  v25 = [representationCopy bs_safeObjectForKey:@"pendingLastSentStoreDate" ofType:objc_opt_class()];
   v26 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v25, "count")}];
   v50 = 0u;
   v51 = 0u;
@@ -392,21 +392,21 @@ LABEL_38:
     while (v29);
   }
 
-  v41 = [[a1 alloc] _initWithLastReceivedStoreDate:v45 lastSentStoreDate:v44 pendingLastSentStoreDate:v26];
+  v41 = [[self alloc] _initWithLastReceivedStoreDate:v45 lastSentStoreDate:v44 pendingLastSentStoreDate:v26];
   v42 = *MEMORY[0x277D85DE8];
   return v41;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_lastReceivedStoreDate, "count")}];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v47 = self;
+  selfCopy = self;
   v6 = self->_lastReceivedStoreDate;
   v7 = [(NSMutableDictionary *)v6 countByEnumeratingWithState:&v56 objects:v64 count:16];
   if (v7)
@@ -424,7 +424,7 @@ LABEL_38:
 
         v11 = *(*(&v56 + 1) + 8 * i);
         v12 = MEMORY[0x277CCABB0];
-        v13 = [(NSMutableDictionary *)v47->_lastReceivedStoreDate objectForKeyedSubscript:v11];
+        v13 = [(NSMutableDictionary *)selfCopy->_lastReceivedStoreDate objectForKeyedSubscript:v11];
         [v13 timeIntervalSinceReferenceDate];
         v14 = [v12 numberWithDouble:?];
         [v5 setObject:v14 forKeyedSubscript:v11];
@@ -438,14 +438,14 @@ LABEL_38:
 
   v43 = v5;
   v15 = [v5 copy];
-  [v4 setObject:v15 forKeyedSubscript:@"lastReceivedStoreDate"];
+  [dictionary setObject:v15 forKeyedSubscript:@"lastReceivedStoreDate"];
 
-  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](v47->_lastSentStoreDate, "count")}];
+  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](selfCopy->_lastSentStoreDate, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v17 = v47->_lastSentStoreDate;
+  v17 = selfCopy->_lastSentStoreDate;
   v18 = [(NSMutableDictionary *)v17 countByEnumeratingWithState:&v52 objects:v63 count:16];
   if (v18)
   {
@@ -462,7 +462,7 @@ LABEL_38:
 
         v22 = *(*(&v52 + 1) + 8 * j);
         v23 = MEMORY[0x277CCABB0];
-        v24 = [(NSMutableDictionary *)v47->_lastSentStoreDate objectForKeyedSubscript:v22];
+        v24 = [(NSMutableDictionary *)selfCopy->_lastSentStoreDate objectForKeyedSubscript:v22];
         [v24 timeIntervalSinceReferenceDate];
         v25 = [v23 numberWithDouble:?];
         [v16 setObject:v25 forKeyedSubscript:v22];
@@ -476,15 +476,15 @@ LABEL_38:
 
   v42 = v16;
   v26 = [v16 copy];
-  v44 = v4;
-  [v4 setObject:v26 forKeyedSubscript:@"lastSentStoreDate"];
+  v44 = dictionary;
+  [dictionary setObject:v26 forKeyedSubscript:@"lastSentStoreDate"];
 
-  v46 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](v47->_pendingLastSentStoreDate, "count")}];
+  v46 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](selfCopy->_pendingLastSentStoreDate, "count")}];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v47->_pendingLastSentStoreDate;
+  obj = selfCopy->_pendingLastSentStoreDate;
   v27 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v48 objects:v62 count:16];
   if (v27)
   {
@@ -500,17 +500,17 @@ LABEL_38:
         }
 
         v31 = *(*(&v48 + 1) + 8 * k);
-        v32 = [(NSMutableDictionary *)v47->_pendingLastSentStoreDate objectForKeyedSubscript:v31];
+        v32 = [(NSMutableDictionary *)selfCopy->_pendingLastSentStoreDate objectForKeyedSubscript:v31];
         v60[0] = @"lastUpdateDate";
         v33 = MEMORY[0x277CCABB0];
-        v34 = [v32 lastUpdateDate];
-        [v34 timeIntervalSinceReferenceDate];
+        lastUpdateDate = [v32 lastUpdateDate];
+        [lastUpdateDate timeIntervalSinceReferenceDate];
         v35 = [v33 numberWithDouble:?];
         v60[1] = @"deviceIdentifiers";
         v61[0] = v35;
-        v36 = [v32 deviceIdentifiers];
-        v37 = [v36 allObjects];
-        v61[1] = v37;
+        deviceIdentifiers = [v32 deviceIdentifiers];
+        allObjects = [deviceIdentifiers allObjects];
+        v61[1] = allObjects;
         v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:2];
         [v46 setObject:v38 forKeyedSubscript:v31];
       }

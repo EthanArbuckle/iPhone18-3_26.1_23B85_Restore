@@ -1,51 +1,51 @@
 @interface NTKAlaskanDiverStyleView
 - (CGSize)previousBoundsSize;
 - (CLKUIColoringLabel)countUpLabel;
-- (NTKAlaskanDiverStyleView)initWithFrame:(CGRect)a3;
+- (NTKAlaskanDiverStyleView)initWithFrame:(CGRect)frame;
 - (NTKAlaskanDiverStyleViewDelegate)delegate;
 - (UIImageView)markerFillIcon;
 - (UIImageView)markerOutlineIcon;
-- (double)angleOffsetForDate:(id)a3;
+- (double)angleOffsetForDate:(id)date;
 - (double)countUpLabelAlpha;
-- (double)targetAngleOffsetForOffset:(double)a3;
-- (double)timeIntervalBetweenStartDate:(id)a3 date:(id)a4;
+- (double)targetAngleOffsetForOffset:(double)offset;
+- (double)timeIntervalBetweenStartDate:(id)date date:(id)a4;
 - (id)_countUpLabelTextColor;
-- (id)_timelapsedTextProviderWithStartDate:(id)a3 forcePaused:(BOOL)a4;
+- (id)_timelapsedTextProviderWithStartDate:(id)date forcePaused:(BOOL)paused;
 - (id)countUpLabelColor;
 - (id)currentDate;
 - (id)innerDialViewBackgroundColor;
-- (void)_setAngleOffset:(unint64_t)a3;
+- (void)_setAngleOffset:(unint64_t)offset;
 - (void)layoutSubviews;
-- (void)setAngleOffset:(double)a3 animated:(BOOL)a4 progressCallback:(id)a5 completionBlock:(id)a6;
-- (void)setAngleOffset:(unint64_t)a3;
-- (void)setCurrentMode:(unint64_t)a3;
-- (void)setDisableMarkerTracking:(BOOL)a3;
-- (void)setForceInactiveMode:(BOOL)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setPalette:(id)a3;
-- (void)setStartDate:(id)a3 animated:(BOOL)a4 setAngleOffset:(double)a5;
-- (void)updateColor:(id)a3 object:(id)a4;
+- (void)setAngleOffset:(double)offset animated:(BOOL)animated progressCallback:(id)callback completionBlock:(id)block;
+- (void)setAngleOffset:(unint64_t)offset;
+- (void)setCurrentMode:(unint64_t)mode;
+- (void)setDisableMarkerTracking:(BOOL)tracking;
+- (void)setForceInactiveMode:(BOOL)mode;
+- (void)setOverrideDate:(id)date;
+- (void)setPalette:(id)palette;
+- (void)setStartDate:(id)date animated:(BOOL)animated setAngleOffset:(double)offset;
+- (void)updateColor:(id)color object:(id)object;
 - (void)updateCountUp;
 - (void)updateFrameForCountUpLabel;
 - (void)updateStartDate;
 - (void)updateTicksForCurrentTime;
 - (void)updateTrackingTicks;
-- (void)updateViewStateAnimated:(BOOL)a3;
+- (void)updateViewStateAnimated:(BOOL)animated;
 @end
 
 @implementation NTKAlaskanDiverStyleView
 
-- (NTKAlaskanDiverStyleView)initWithFrame:(CGRect)a3
+- (NTKAlaskanDiverStyleView)initWithFrame:(CGRect)frame
 {
   v125.receiver = self;
   v125.super_class = NTKAlaskanDiverStyleView;
-  v3 = [(NTKAlaskanDiverStyleView *)&v125 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKAlaskanDiverStyleView *)&v125 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v5 = [v4 device];
+    device = [v4 device];
     device = v3->_device;
-    v3->_device = v5;
+    v3->_device = device;
 
     v7 = +[UIColor blackColor];
     [(NTKAlaskanDiverStyleView *)v3 setBackgroundColor:v7];
@@ -65,8 +65,8 @@
     v112 = 0u;
     v111 = 0u;
     v110 = 0u;
-    v8 = [(NTKAlaskanDiverStyleView *)v3 device];
-    sub_20354(v8, &v110);
+    device2 = [(NTKAlaskanDiverStyleView *)v3 device];
+    sub_20354(device2, &v110);
 
     v9 = +[NSNull null];
     v126[0] = @"contents";
@@ -112,8 +112,8 @@
     innerDialView = v3->_innerDialView;
     v3->_innerDialView = v13;
 
-    v15 = [(NTKAlaskanDiverStyleView *)v3 innerDialViewBackgroundColor];
-    [(NTKAlaskanDialView *)v3->_innerDialView setBackgroundColor:v15];
+    innerDialViewBackgroundColor = [(NTKAlaskanDiverStyleView *)v3 innerDialViewBackgroundColor];
+    [(NTKAlaskanDialView *)v3->_innerDialView setBackgroundColor:innerDialViewBackgroundColor];
 
     [(NTKAlaskanDialView *)v3->_innerDialView setContentDiameter:*(&v111 + 1)];
     v16 = +[NSMutableIndexSet indexSet];
@@ -155,8 +155,8 @@
     [(NTKAlaskanDialView *)v3->_minutesMarkerView setShouldPixelAlignCenterPoints:0];
     [(NTKAlaskanDialView *)v3->_minutesMarkerView setShouldRotateMarkers:0];
     [(NTKAlaskanDialView *)v3->_minutesMarkerView setMarkersToRotateIndexSet:v16];
-    v21 = [(NTKAlaskanDiversColorPalette *)v3->_palette ring];
-    [(NTKAlaskanDialView *)v3->_minutesMarkerView setBackgroundColor:v21];
+    ring = [(NTKAlaskanDiversColorPalette *)v3->_palette ring];
+    [(NTKAlaskanDialView *)v3->_minutesMarkerView setBackgroundColor:ring];
 
     v22 = +[NSMutableIndexSet indexSet];
     [v22 addIndex:0];
@@ -242,17 +242,17 @@
   return v3;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v5 = a3;
-  objc_storeStrong(&self->_palette, a3);
+  paletteCopy = palette;
+  objc_storeStrong(&self->_palette, palette);
   innerDialView = self->_innerDialView;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1E2D4;
   v32[3] = &unk_39230;
   v32[4] = self;
-  v7 = v5;
+  v7 = paletteCopy;
   v33 = v7;
   [(NTKAlaskanDialView *)innerDialView enumerateMarkers:v32];
   minutesMarkerView = self->_minutesMarkerView;
@@ -273,55 +273,55 @@
   v11 = v9;
   v29 = v11;
   [(NTKAlaskanDialView *)trackingTicksView enumerateMarkers:v28];
-  v12 = [(NTKAlaskanDiversColorPalette *)self->_palette ring];
-  [(NTKAlaskanDialView *)self->_minutesMarkerView setBackgroundColor:v12];
+  ring = [(NTKAlaskanDiversColorPalette *)self->_palette ring];
+  [(NTKAlaskanDialView *)self->_minutesMarkerView setBackgroundColor:ring];
 
   ticksView = self->_ticksView;
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_1E424;
   v25 = &unk_39230;
-  v26 = self;
+  selfCopy = self;
   v27 = v11;
   v14 = v11;
   [(NTKAlaskanDialView *)ticksView enumerateMarkers:&v22];
   v15 = [(NTKAlaskanDiverStyleView *)self innerDialViewBackgroundColor:v22];
   [(NTKAlaskanDialView *)self->_innerDialView setBackgroundColor:v15];
 
-  v16 = [(NTKAlaskanDiverStyleView *)self palette];
-  v17 = [v16 markerFillColor];
+  palette = [(NTKAlaskanDiverStyleView *)self palette];
+  markerFillColor = [palette markerFillColor];
   WeakRetained = objc_loadWeakRetained(&self->_markerFillIcon);
-  [WeakRetained setTintColor:v17];
+  [WeakRetained setTintColor:markerFillColor];
 
-  v19 = [(NTKAlaskanDiverStyleView *)self palette];
-  v20 = [v19 markerOutlineColor];
+  palette2 = [(NTKAlaskanDiverStyleView *)self palette];
+  markerOutlineColor = [palette2 markerOutlineColor];
   v21 = objc_loadWeakRetained(&self->_markerOutlineIcon);
-  [v21 setTintColor:v20];
+  [v21 setTintColor:markerOutlineColor];
 }
 
-- (void)updateColor:(id)a3 object:(id)a4
+- (void)updateColor:(id)color object:(id)object
 {
-  v8 = a3;
-  v5 = a4;
+  colorCopy = color;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setTextColor:v8];
+    [objectCopy setTextColor:colorCopy];
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setTintColor:v8];
+    [objectCopy setTintColor:colorCopy];
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = v8;
+    v6 = objectCopy;
+    cGColor = colorCopy;
   }
 
   else
@@ -332,46 +332,46 @@
       goto LABEL_10;
     }
 
-    v7 = [v8 CGColor];
-    v6 = v5;
+    cGColor = [colorCopy CGColor];
+    v6 = objectCopy;
   }
 
-  [v6 setBackgroundColor:v7];
+  [v6 setBackgroundColor:cGColor];
 LABEL_10:
 }
 
-- (void)setCurrentMode:(unint64_t)a3
+- (void)setCurrentMode:(unint64_t)mode
 {
-  self->_currentMode = a3;
-  if (!a3)
+  self->_currentMode = mode;
+  if (!mode)
   {
-    v6 = [(NTKAlaskanDiversColorPalette *)self->_palette markerFillColor];
+    markerFillColor = [(NTKAlaskanDiversColorPalette *)self->_palette markerFillColor];
     WeakRetained = objc_loadWeakRetained(&self->_markerFillIcon);
-    [WeakRetained setTintColor:v6];
+    [WeakRetained setTintColor:markerFillColor];
   }
 }
 
-- (void)setDisableMarkerTracking:(BOOL)a3
+- (void)setDisableMarkerTracking:(BOOL)tracking
 {
-  self->_syncMarkerWithMinuteHand = a3;
-  if (!a3)
+  self->_syncMarkerWithMinuteHand = tracking;
+  if (!tracking)
   {
-    v5 = [(NTKAlaskanDiverStyleView *)self currentDate];
-    [(NTKAlaskanDiverStyleView *)self setDate:v5];
+    currentDate = [(NTKAlaskanDiverStyleView *)self currentDate];
+    [(NTKAlaskanDiverStyleView *)self setDate:currentDate];
   }
 }
 
 - (void)updateTicksForCurrentTime
 {
-  v3 = [(NTKAlaskanDiverStyleView *)self currentDate];
-  v4 = [(NTKAlaskanDiverStyleView *)self currentDate];
-  [v3 timeIntervalSinceDate:v4];
+  currentDate = [(NTKAlaskanDiverStyleView *)self currentDate];
+  currentDate2 = [(NTKAlaskanDiverStyleView *)self currentDate];
+  [currentDate timeIntervalSinceDate:currentDate2];
   v6 = v5;
 
   if (self->_currentMode == 1)
   {
-    v8 = [(NTKAlaskanDiverStyleView *)self startDate];
-    v7 = [v8 dateByAddingTimeInterval:v6];
+    startDate = [(NTKAlaskanDiverStyleView *)self startDate];
+    v7 = [startDate dateByAddingTimeInterval:v6];
     [(NTKAlaskanDiverStyleView *)self setStartDate:v7];
   }
 
@@ -382,12 +382,12 @@ LABEL_10:
   }
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     [(NTKAlaskanDiverStyleView *)self updateTicksForCurrentTime];
   }
 }
@@ -408,27 +408,27 @@ LABEL_10:
   return v3;
 }
 
-- (void)setStartDate:(id)a3 animated:(BOOL)a4 setAngleOffset:(double)a5
+- (void)setStartDate:(id)date animated:(BOOL)animated setAngleOffset:(double)offset
 {
-  v6 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   if (![(NSDate *)self->_startDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_startDate, a3);
+    objc_storeStrong(&self->_startDate, date);
     [(NTKAlaskanDiverStyleView *)self updateCountUp];
     [(NTKAlaskanDiverStyleView *)self angleOffsetForDate:self->_startDate];
-    if (a5 != 0.0)
+    if (offset != 0.0)
     {
-      [(NTKAlaskanDiverStyleView *)self setAngleOffset:v6 animated:0 progressCallback:0 completionBlock:?];
+      [(NTKAlaskanDiverStyleView *)self setAngleOffset:animatedCopy animated:0 progressCallback:0 completionBlock:?];
     }
 
-    [(NTKAlaskanDiverStyleView *)self updateViewStateAnimated:v6];
+    [(NTKAlaskanDiverStyleView *)self updateViewStateAnimated:animatedCopy];
   }
 }
 
-- (void)updateViewStateAnimated:(BOOL)a3
+- (void)updateViewStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -437,12 +437,12 @@ LABEL_10:
   objc_copyWeak(&v11, &location);
   v5 = objc_retainBlock(v10);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
     v9 = 0;
     memset(v8, 0, sizeof(v8));
-    v7 = [(NTKAlaskanDiverStyleView *)self device];
-    sub_20354(v7, v8);
+    device = [(NTKAlaskanDiverStyleView *)self device];
+    sub_20354(device, v8);
 
     [UIView animateWithDuration:v6 animations:*(v8 + 1)];
   }
@@ -458,14 +458,14 @@ LABEL_10:
 
 - (void)updateCountUp
 {
-  v3 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
-  [v3 setTextProvider:0];
+  countUpLabel = [(NTKAlaskanDiverStyleView *)self countUpLabel];
+  [countUpLabel setTextProvider:0];
 
   if (self->_currentMode == 1)
   {
-    v4 = [(NTKAlaskanDiverStyleView *)self startDate];
-    v5 = [(NTKAlaskanDiverStyleView *)self currentDate];
-    [(NTKAlaskanDiverStyleView *)self timeIntervalBetweenStartDate:v4 date:v5];
+    startDate = [(NTKAlaskanDiverStyleView *)self startDate];
+    currentDate = [(NTKAlaskanDiverStyleView *)self currentDate];
+    [(NTKAlaskanDiverStyleView *)self timeIntervalBetweenStartDate:startDate date:currentDate];
     v7 = v6;
 
     if (self->_currentCountUp == v7)
@@ -475,23 +475,23 @@ LABEL_10:
 
     self->_currentCountUp = v7;
     v8 = [NTKTroutFaceBundle localizedStringForKey:@"ALASKAN_COUNT_UP_ALERT_ACTION_START" comment:@"Start"];
-    v9 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
-    [v9 setText:v8];
+    countUpLabel2 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
+    [countUpLabel2 setText:v8];
   }
 
   else if (self->_startDate)
   {
     v8 = [(NTKAlaskanDiverStyleView *)self _timelapsedTextProviderWithStartDate:?];
-    v9 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
-    [v9 setTextProvider:v8];
+    countUpLabel2 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
+    [countUpLabel2 setTextProvider:v8];
   }
 
   else
   {
     v8 = +[NSDate date];
-    v9 = [(NTKAlaskanDiverStyleView *)self _timelapsedTextProviderWithStartDate:v8 forcePaused:1];
-    v10 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
-    [v10 setTextProvider:v9];
+    countUpLabel2 = [(NTKAlaskanDiverStyleView *)self _timelapsedTextProviderWithStartDate:v8 forcePaused:1];
+    countUpLabel3 = [(NTKAlaskanDiverStyleView *)self countUpLabel];
+    [countUpLabel3 setTextProvider:countUpLabel2];
   }
 
 LABEL_8:
@@ -500,15 +500,15 @@ LABEL_8:
   [(NTKAlaskanDiverStyleView *)self updateFrameForCountUpLabel];
 }
 
-- (double)timeIntervalBetweenStartDate:(id)a3 date:(id)a4
+- (double)timeIntervalBetweenStartDate:(id)date date:(id)a4
 {
   result = 0.0;
-  if (a3 && a4)
+  if (date && a4)
   {
-    v6 = a3;
+    dateCopy = date;
     [a4 timeIntervalSinceReferenceDate];
     v8 = v7;
-    [v6 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v10 = v9;
 
     v11 = v8 - v10;
@@ -542,21 +542,21 @@ LABEL_8:
     v26 = 0u;
     v25 = 0u;
     memset(v24, 0, sizeof(v24));
-    v4 = [(NTKAlaskanDiverStyleView *)self device];
-    sub_20354(v4, v24);
+    device = [(NTKAlaskanDiverStyleView *)self device];
+    sub_20354(device, v24);
 
     v5 = [CLKUIColoringLabel labelWithOptions:0];
     v6 = self->_countUpLabel;
     self->_countUpLabel = v5;
 
-    v7 = [(NTKAlaskanDiverStyleView *)self _countUpLabelTextColor];
-    [(CLKUIColoringLabel *)self->_countUpLabel setTextColor:v7];
+    _countUpLabelTextColor = [(NTKAlaskanDiverStyleView *)self _countUpLabelTextColor];
+    [(CLKUIColoringLabel *)self->_countUpLabel setTextColor:_countUpLabelTextColor];
 
     v8 = [CLKFont compactSoftFontOfSize:*(&v25 + 1) weight:UIFontWeightSemibold];
     [(CLKUIColoringLabel *)self->_countUpLabel setFont:v8];
 
-    v9 = [(CLKUIColoringLabel *)self->_countUpLabel layer];
-    [v9 setMasksToBounds:1];
+    layer = [(CLKUIColoringLabel *)self->_countUpLabel layer];
+    [layer setMasksToBounds:1];
 
     [(CLKUIColoringLabel *)self->_countUpLabel setTextAlignment:1];
     [(CLKUIColoringLabel *)self->_countUpLabel setBaselineAdjustment:1];
@@ -591,8 +591,8 @@ LABEL_8:
     v16 = v15;
     -[CALayer setBackgroundColor:](self->_countUpBackgroundLayer, "setBackgroundColor:", [v15 CGColor]);
 
-    v17 = [(NTKAlaskanDiverStyleView *)self layer];
-    [v17 addSublayer:self->_countUpBackgroundLayer];
+    layer2 = [(NTKAlaskanDiverStyleView *)self layer];
+    [layer2 addSublayer:self->_countUpBackgroundLayer];
 
     [(NTKAlaskanDiverStyleView *)self addSubview:self->_countUpLabel];
     objc_destroyWeak(&v20);
@@ -604,20 +604,20 @@ LABEL_8:
   return countUpLabel;
 }
 
-- (double)targetAngleOffsetForOffset:(double)a3
+- (double)targetAngleOffsetForOffset:(double)offset
 {
-  v5 = [(NTKAlaskanDiverStyleView *)self currentDate];
-  [(NTKAlaskanDiverStyleView *)self angleOffsetForDate:v5];
+  currentDate = [(NTKAlaskanDiverStyleView *)self currentDate];
+  [(NTKAlaskanDiverStyleView *)self angleOffsetForDate:currentDate];
 
-  v6 = [(NTKAlaskanDiverStyleView *)self startDate];
-  v7 = [(NTKAlaskanDiverStyleView *)self currentDate];
-  [(NTKAlaskanDiverStyleView *)self timeIntervalBetweenStartDate:v6 date:v7];
+  startDate = [(NTKAlaskanDiverStyleView *)self startDate];
+  currentDate2 = [(NTKAlaskanDiverStyleView *)self currentDate];
+  [(NTKAlaskanDiverStyleView *)self timeIntervalBetweenStartDate:startDate date:currentDate2];
 
   NTKNormalizeAngle();
   v9 = v8;
   if (CLKFloatEqualsFloat())
   {
-    return a3;
+    return offset;
   }
 
   else
@@ -626,50 +626,50 @@ LABEL_8:
   }
 }
 
-- (double)angleOffsetForDate:(id)a3
+- (double)angleOffsetForDate:(id)date
 {
-  v3 = [a3 dateByAddingTimeInterval:self->_timeOffset];
+  v3 = [date dateByAddingTimeInterval:self->_timeOffset];
   [NTKAnalogHandsView minuteHandAngleForDate:v3];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setAngleOffset:(unint64_t)a3
+- (void)setAngleOffset:(unint64_t)offset
 {
-  [(NTKAlaskanDiverStyleView *)self _setAngleOffset:a3];
+  [(NTKAlaskanDiverStyleView *)self _setAngleOffset:offset];
 
   [(NTKAlaskanDiverStyleView *)self updateStartDate];
 }
 
-- (void)setAngleOffset:(double)a3 animated:(BOOL)a4 progressCallback:(id)a5 completionBlock:(id)a6
+- (void)setAngleOffset:(double)offset animated:(BOOL)animated progressCallback:(id)callback completionBlock:(id)block
 {
-  v7 = a4;
+  animatedCopy = animated;
   v14 = 0;
   memset(v13, 0, sizeof(v13));
-  v10 = a6;
-  v12 = a5;
-  v11 = [(NTKAlaskanDiverStyleView *)self device];
-  sub_20354(v11, v13);
+  blockCopy = block;
+  callbackCopy = callback;
+  device = [(NTKAlaskanDiverStyleView *)self device];
+  sub_20354(device, v13);
 
-  [(NTKAlaskanDiverStyleView *)self setAngleOffset:v7 animated:v12 progressCallback:v10 completionBlock:1 animationDuration:a3 shouldSetDate:*v13];
+  [(NTKAlaskanDiverStyleView *)self setAngleOffset:animatedCopy animated:callbackCopy progressCallback:blockCopy completionBlock:1 animationDuration:offset shouldSetDate:*v13];
 }
 
-- (void)setForceInactiveMode:(BOOL)a3
+- (void)setForceInactiveMode:(BOOL)mode
 {
-  self->_forceInactiveMode = a3;
-  if (!a3)
+  self->_forceInactiveMode = mode;
+  if (!mode)
   {
     [(NTKAlaskanDiverStyleView *)self updateViewStateAnimated:1];
   }
 }
 
-- (void)_setAngleOffset:(unint64_t)a3
+- (void)_setAngleOffset:(unint64_t)offset
 {
-  if (self->_angleOffset != a3)
+  if (self->_angleOffset != offset)
   {
-    self->_angleOffset = a3;
-    [(NTKAlaskanDialView *)self->_minutesMarkerView setAngleOffset:a3];
+    self->_angleOffset = offset;
+    [(NTKAlaskanDialView *)self->_minutesMarkerView setAngleOffset:offset];
     [(NTKAlaskanDialView *)self->_trackingTicksView setAngleOffset:self->_angleOffset];
 
     [(NTKAlaskanDiverStyleView *)self updateTrackingTicks];
@@ -678,9 +678,9 @@ LABEL_8:
 
 - (void)updateTrackingTicks
 {
-  v3 = [(NTKAlaskanDiverStyleView *)self startDate];
+  startDate = [(NTKAlaskanDiverStyleView *)self startDate];
   v4 = 0.0;
-  if (v3)
+  if (startDate)
   {
     if ([(NTKAlaskanDiverStyleView *)self currentMode])
     {
@@ -700,17 +700,17 @@ LABEL_8:
     }
   }
 
-  v5 = [(NTKAlaskanDiverStyleView *)self trackingTicksView];
-  [v5 setAlpha:v4];
+  trackingTicksView = [(NTKAlaskanDiverStyleView *)self trackingTicksView];
+  [trackingTicksView setAlpha:v4];
 
-  v11 = [(NTKAlaskanDiverStyleView *)self currentDate];
-  [(NTKAlaskanDiverStyleView *)self angleOffsetForDate:v11];
+  currentDate = [(NTKAlaskanDiverStyleView *)self currentDate];
+  [(NTKAlaskanDiverStyleView *)self angleOffsetForDate:currentDate];
   v7 = v6;
   [(NTKAlaskanDiverStyleView *)self angleOffset];
   NTKNormalizeAngle();
   v9 = [NSNumber numberWithDouble:v7 - v8];
-  v10 = [(NTKAlaskanDiverStyleView *)self trackingTicksView];
-  [v10 setHidingMaskStartAngle:v9];
+  trackingTicksView2 = [(NTKAlaskanDiverStyleView *)self trackingTicksView];
+  [trackingTicksView2 setHidingMaskStartAngle:v9];
 }
 
 - (void)layoutSubviews
@@ -747,23 +747,23 @@ LABEL_8:
     [(NTKAlaskanDialView *)self->_innerDialView setFrame:v32.origin.x, v32.origin.y, v32.size.width, v32.size.height];
     [(NTKAlaskanDialView *)self->_minutesMarkerView bounds];
     [(NTKAlaskanDialView *)self->_innerDialView bounds];
-    v10 = [(NTKAlaskanDiverStyleView *)self device];
+    device = [(NTKAlaskanDiverStyleView *)self device];
     CLKRoundForDevice();
     [(NTKAlaskanDialView *)self->_minutesMarkerView setContentInset:?];
 
     [(NTKAlaskanDialView *)self->_minutesMarkerView bounds];
-    v11 = [(NTKAlaskanDiverStyleView *)self device];
+    device2 = [(NTKAlaskanDiverStyleView *)self device];
     CLKRoundForDevice();
     v13 = v12;
-    v14 = [(NTKAlaskanDialView *)self->_minutesMarkerView layer];
-    [v14 setCornerRadius:v13];
+    layer = [(NTKAlaskanDialView *)self->_minutesMarkerView layer];
+    [layer setCornerRadius:v13];
 
     [(NTKAlaskanDialView *)self->_innerDialView bounds];
-    v15 = [(NTKAlaskanDiverStyleView *)self device];
+    device3 = [(NTKAlaskanDiverStyleView *)self device];
     CLKRoundForDevice();
     v17 = v16;
-    v18 = [(NTKAlaskanDialView *)self->_innerDialView layer];
-    [v18 setCornerRadius:v17];
+    layer2 = [(NTKAlaskanDialView *)self->_innerDialView layer];
+    [layer2 setCornerRadius:v17];
 
     [(NTKAlaskanDialView *)self->_innerDialView frame];
     v34 = CGRectInset(v33, v26[1], v26[1]);
@@ -790,8 +790,8 @@ LABEL_8:
   v23 = 0u;
   v21 = 0u;
   memset(v20, 0, sizeof(v20));
-  v3 = [(NTKAlaskanDiverStyleView *)self device];
-  sub_20354(v3, v20);
+  device = [(NTKAlaskanDiverStyleView *)self device];
+  sub_20354(device, v20);
 
   [(NTKAlaskanDialView *)self->_innerDialView bounds];
   [(CLKUIColoringLabel *)self->_countUpLabel setMaxWidth:*(&v28 + 1) * v4];
@@ -803,14 +803,14 @@ LABEL_8:
   [(CLKUIColoringLabel *)self->_countUpLabel setFrame:0.0, 0.0, v9 + *(&v21 + 1), v10];
   [(NTKAlaskanDiverStyleView *)self bounds];
   CGRectGetMidX(v32);
-  v11 = [(NTKAlaskanDiverStyleView *)self device];
+  device2 = [(NTKAlaskanDiverStyleView *)self device];
   CLKRoundForDevice();
   v13 = v12;
   [(NTKAlaskanDiverStyleView *)self bounds];
   CGRectGetMidY(v33);
   [(CLKUIColoringLabel *)self->_countUpLabel bounds];
   CGRectGetMidY(v34);
-  v14 = [(NTKAlaskanDiverStyleView *)self device];
+  device3 = [(NTKAlaskanDiverStyleView *)self device];
   CLKRoundForDevice();
   [(CLKUIColoringLabel *)self->_countUpLabel setCenter:v13, v15];
 
@@ -822,7 +822,7 @@ LABEL_8:
   [(CALayer *)self->_countUpBackgroundLayer position];
   [(CALayer *)self->_countUpBackgroundLayer setPosition:v17, v18 + *&v23];
   [(CALayer *)self->_countUpBackgroundLayer frame];
-  v19 = [(NTKAlaskanDiverStyleView *)self device];
+  device4 = [(NTKAlaskanDiverStyleView *)self device];
   CLKRoundForDevice();
   [(CALayer *)self->_countUpBackgroundLayer setCornerRadius:?];
 }
@@ -882,26 +882,26 @@ LABEL_8:
 {
   if ([(NTKAlaskanDiverStyleView *)self hasCountUpStarted]&& !self->_forceInactiveMode)
   {
-    v4 = [(NTKAlaskanDiverStyleView *)self palette];
-    v3 = [v4 activeBackground];
+    palette = [(NTKAlaskanDiverStyleView *)self palette];
+    activeBackground = [palette activeBackground];
   }
 
   else
   {
-    v3 = +[UIColor blackColor];
+    activeBackground = +[UIColor blackColor];
   }
 
-  return v3;
+  return activeBackground;
 }
 
-- (id)_timelapsedTextProviderWithStartDate:(id)a3 forcePaused:(BOOL)a4
+- (id)_timelapsedTextProviderWithStartDate:(id)date forcePaused:(BOOL)paused
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [CLKRelativeDateTextProvider textProviderWithDate:v6 style:2 units:224];
+  pausedCopy = paused;
+  dateCopy = date;
+  v7 = [CLKRelativeDateTextProvider textProviderWithDate:dateCopy style:2 units:224];
   [v7 setTritiumDateStyle:0];
   [v7 setWantsSubseconds:1];
-  if (self->_currentMode != 1 && !v4)
+  if (self->_currentMode != 1 && !pausedCopy)
   {
     v10 = 0;
   }
@@ -910,7 +910,7 @@ LABEL_8:
   {
     v9 = +[NSDate date];
     [v7 setDate:v9];
-    [v7 setRelativeToDate:v6];
+    [v7 setRelativeToDate:dateCopy];
 
     v10 = self->_currentMode == 1;
   }

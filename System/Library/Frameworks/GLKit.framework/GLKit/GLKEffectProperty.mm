@@ -1,11 +1,11 @@
 @interface GLKEffectProperty
-+ (void)logSetMasksWithLabel:(id)a3 obj:(id)a4 typeStr:(id)a5;
++ (void)logSetMasksWithLabel:(id)label obj:(id)obj typeStr:(id)str;
 - (GLKEffectProperty)init;
 - (void)dealloc;
-- (void)setFSHSource:(char *)a3;
-- (void)setNameString:(char *)a3;
+- (void)setFSHSource:(char *)source;
+- (void)setNameString:(char *)string;
 - (void)setShaderBindings;
-- (void)setVSHSource:(char *)a3;
+- (void)setVSHSource:(char *)source;
 @end
 
 @implementation GLKEffectProperty
@@ -44,7 +44,7 @@
   return v3;
 }
 
-- (void)setNameString:(char *)a3
+- (void)setNameString:(char *)string
 {
   nameString = self->_nameString;
   if (nameString)
@@ -53,13 +53,13 @@
     self->_nameString = 0;
   }
 
-  if (a3)
+  if (string)
   {
-    self->_nameString = strdup(a3);
+    self->_nameString = strdup(string);
   }
 }
 
-- (void)setVSHSource:(char *)a3
+- (void)setVSHSource:(char *)source
 {
   vshSource = self->_vshSource;
   if (vshSource)
@@ -68,13 +68,13 @@
     self->_vshSource = 0;
   }
 
-  if (a3)
+  if (source)
   {
-    self->_vshSource = strdup(a3);
+    self->_vshSource = strdup(source);
   }
 }
 
-- (void)setFSHSource:(char *)a3
+- (void)setFSHSource:(char *)source
 {
   fshSource = self->_fshSource;
   if (fshSource)
@@ -83,9 +83,9 @@
     self->_fshSource = 0;
   }
 
-  if (a3)
+  if (source)
   {
-    self->_fshSource = strdup(a3);
+    self->_fshSource = strdup(source);
   }
 }
 
@@ -96,18 +96,18 @@
   [(GLKEffectProperty *)self dirtyAllUniforms];
 }
 
-+ (void)logSetMasksWithLabel:(id)a3 obj:(id)a4 typeStr:(id)a5
++ (void)logSetMasksWithLabel:(id)label obj:(id)obj typeStr:(id)str
 {
-  v8 = [a5 isEqualToString:@"vsh"];
+  v8 = [str isEqualToString:@"vsh"];
   if ((v8 & 1) == 0)
   {
-    if ([a5 isEqualToString:@"fsh"])
+    if ([str isEqualToString:@"fsh"])
     {
 LABEL_12:
-      v16 = [a4 fshMasks];
-      LODWORD(v17) = [a4 fshMaskCt];
-      v18 = [a4 fshMaskStr];
-      NSLog(&cfstr_MasksSet.isa, a3);
+      fshMasks = [obj fshMasks];
+      LODWORD(v17) = [obj fshMaskCt];
+      fshMaskStr = [obj fshMaskStr];
+      NSLog(&cfstr_MasksSet.isa, label);
       if (v17 < 1)
       {
 LABEL_19:
@@ -116,24 +116,24 @@ LABEL_19:
       }
 
       v17 = v17;
-      v19 = (v16 + 8);
+      v19 = (fshMasks + 8);
       while (1)
       {
-        v20 = [a4 fshMask];
+        fshMask = [obj fshMask];
         v21 = *(v19 - 1);
-        if ((v21 & *v20) != 0)
+        if ((v21 & *fshMask) != 0)
         {
           break;
         }
 
         v22 = *v19;
-        if ((*v19 & v20[1]) != 0)
+        if ((*v19 & fshMask[1]) != 0)
         {
           goto LABEL_17;
         }
 
 LABEL_18:
-        ++v18;
+        ++fshMaskStr;
         v19 += 2;
         if (!--v17)
         {
@@ -143,41 +143,41 @@ LABEL_18:
 
       v22 = *v19;
 LABEL_17:
-      NSLog(&cfstr_S08llx08llx.isa, *v18, v22, v21);
+      NSLog(&cfstr_S08llx08llx.isa, *fshMaskStr, v22, v21);
       goto LABEL_18;
     }
 
-    if (![a5 isEqualToString:@"both"])
+    if (![str isEqualToString:@"both"])
     {
       return;
     }
   }
 
-  v9 = [a4 vshMasks];
-  LODWORD(v10) = [a4 vshMaskCt];
-  v11 = [a4 vshMaskStr];
-  NSLog(&cfstr_MasksSet.isa, a3);
+  vshMasks = [obj vshMasks];
+  LODWORD(v10) = [obj vshMaskCt];
+  vshMaskStr = [obj vshMaskStr];
+  NSLog(&cfstr_MasksSet.isa, label);
   if (v10 >= 1)
   {
     v10 = v10;
-    v12 = (v9 + 8);
+    v12 = (vshMasks + 8);
     while (1)
     {
-      v13 = [a4 vshMask];
+      vshMask = [obj vshMask];
       v14 = *(v12 - 1);
-      if ((v14 & *v13) != 0)
+      if ((v14 & *vshMask) != 0)
       {
         break;
       }
 
       v15 = *v12;
-      if ((*v12 & v13[1]) != 0)
+      if ((*v12 & vshMask[1]) != 0)
       {
         goto LABEL_7;
       }
 
 LABEL_8:
-      ++v11;
+      ++vshMaskStr;
       v12 += 2;
       if (!--v10)
       {
@@ -187,7 +187,7 @@ LABEL_8:
 
     v15 = *v12;
 LABEL_7:
-    NSLog(&cfstr_S08llx08llx.isa, *v11, v15, v14);
+    NSLog(&cfstr_S08llx08llx.isa, *vshMaskStr, v15, v14);
     goto LABEL_8;
   }
 

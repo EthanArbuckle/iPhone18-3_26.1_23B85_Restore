@@ -1,35 +1,35 @@
 @interface CALNEventCanceledNotificationEKDataSource
-- (CALNEventCanceledNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 remoteMutator:(id)a6 dataSourceEventRepresentationProvider:(id)a7 preferences:(id)a8;
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4;
-- (id)fetchEventCanceledNotificationSourceClientIdentifiers:(id)a3;
-- (id)fetchEventCanceledNotificationWithSourceClientIdentifier:(id)a3;
+- (CALNEventCanceledNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider remoteMutator:(id)mutator dataSourceEventRepresentationProvider:(id)representationProvider preferences:(id)preferences;
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store;
+- (id)fetchEventCanceledNotificationSourceClientIdentifiers:(id)identifiers;
+- (id)fetchEventCanceledNotificationWithSourceClientIdentifier:(id)identifier;
 - (id)fetchEventCanceledNotifications;
-- (void)clearCanceledEventNotificationWithSourceClientIdentifier:(id)a3;
-- (void)deleteCanceledEventWithSourceClientIdentifier:(id)a3;
+- (void)clearCanceledEventNotificationWithSourceClientIdentifier:(id)identifier;
+- (void)deleteCanceledEventWithSourceClientIdentifier:(id)identifier;
 @end
 
 @implementation CALNEventCanceledNotificationEKDataSource
 
-- (CALNEventCanceledNotificationEKDataSource)initWithEventStoreProvider:(id)a3 inboxNotificationProvider:(id)a4 notificationReferenceProvider:(id)a5 remoteMutator:(id)a6 dataSourceEventRepresentationProvider:(id)a7 preferences:(id)a8
+- (CALNEventCanceledNotificationEKDataSource)initWithEventStoreProvider:(id)provider inboxNotificationProvider:(id)notificationProvider notificationReferenceProvider:(id)referenceProvider remoteMutator:(id)mutator dataSourceEventRepresentationProvider:(id)representationProvider preferences:(id)preferences
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  providerCopy = provider;
+  notificationProviderCopy = notificationProvider;
+  referenceProviderCopy = referenceProvider;
+  mutatorCopy = mutator;
+  representationProviderCopy = representationProvider;
+  preferencesCopy = preferences;
   v24.receiver = self;
   v24.super_class = CALNEventCanceledNotificationEKDataSource;
   v18 = [(CALNEventCanceledNotificationEKDataSource *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_eventStoreProvider, a3);
-    objc_storeStrong(&v19->_inboxNotificationProvider, a4);
-    objc_storeStrong(&v19->_notificationReferenceProvider, a5);
-    objc_storeStrong(&v19->_remoteMutator, a6);
-    objc_storeStrong(&v19->_dataSourceEventRepresentationProvider, a7);
-    objc_storeStrong(&v19->_preferences, a8);
+    objc_storeStrong(&v18->_eventStoreProvider, provider);
+    objc_storeStrong(&v19->_inboxNotificationProvider, notificationProvider);
+    objc_storeStrong(&v19->_notificationReferenceProvider, referenceProvider);
+    objc_storeStrong(&v19->_remoteMutator, mutator);
+    objc_storeStrong(&v19->_dataSourceEventRepresentationProvider, representationProvider);
+    objc_storeStrong(&v19->_preferences, preferences);
   }
 
   return v19;
@@ -87,28 +87,28 @@
   return v13;
 }
 
-- (id)fetchEventCanceledNotificationSourceClientIdentifiers:(id)a3
+- (id)fetchEventCanceledNotificationSourceClientIdentifiers:(id)identifiers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNEventCanceledNotificationEKDataSource *)self preferences];
-  v6 = [v5 invitationNotificationsDisabled];
+  identifiersCopy = identifiers;
+  preferences = [(CALNEventCanceledNotificationEKDataSource *)self preferences];
+  invitationNotificationsDisabled = [preferences invitationNotificationsDisabled];
 
-  if (v6)
+  if (invitationNotificationsDisabled)
   {
     v7 = objc_opt_new();
     goto LABEL_20;
   }
 
-  v8 = [(CALNEventCanceledNotificationEKDataSource *)self inboxNotificationProvider];
-  v9 = [v8 eventNotificationReferences];
+  inboxNotificationProvider = [(CALNEventCanceledNotificationEKDataSource *)self inboxNotificationProvider];
+  eventNotificationReferences = [inboxNotificationProvider eventNotificationReferences];
 
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventNotificationReferences, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v9;
+  v10 = eventNotificationReferences;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v11)
   {
@@ -129,22 +129,22 @@
       v15 = *(*(&v24 + 1) + 8 * i);
       if (![v15 type])
       {
-        if (!v4 || ([v15 objectID], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringRepresentation"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v4, "containsObject:", v17), v17, v16, v18))
+        if (!identifiersCopy || ([v15 objectID], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "stringRepresentation"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(identifiersCopy, "containsObject:", v17), v17, v16, v18))
         {
-          v19 = [v15 notification];
-          v20 = [v19 URL];
-          if (!v20 || ([v19 hiddenFromNotificationCenter] & 1) != 0)
+          notification = [v15 notification];
+          v20 = [notification URL];
+          if (!v20 || ([notification hiddenFromNotificationCenter] & 1) != 0)
           {
 LABEL_15:
           }
 
           else
           {
-            v21 = [v19 type];
+            type = [notification type];
 
-            if (v21 == 2)
+            if (type == 2)
             {
-              v20 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v19];
+              v20 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notification];
               [v7 addObject:v20];
               goto LABEL_15;
             }
@@ -167,27 +167,27 @@ LABEL_20:
   return v7;
 }
 
-- (id)fetchEventCanceledNotificationWithSourceClientIdentifier:(id)a3
+- (id)fetchEventCanceledNotificationWithSourceClientIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:0 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNNotificationDataSourceUtils notificationReferenceOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
-    v9 = [v8 notification];
-    if (v9)
+    notification = [v8 notification];
+    if (notification)
     {
-      v10 = [(CALNEventCanceledNotificationEKDataSource *)self _notificationInfoFromNotification:v9 inEventStore:v6];
+      v10 = [(CALNEventCanceledNotificationEKDataSource *)self _notificationInfoFromNotification:notification inEventStore:eventStore];
       v11 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543618;
-        v15 = v4;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v10;
         _os_log_impl(&dword_242909000, v11, OS_LOG_TYPE_DEFAULT, "Fetched event canceled notification info with sourceClientIdentifier: %{public}@ info: %@", &v14, 0x16u);
@@ -208,8 +208,8 @@ LABEL_20:
 
   else
   {
-    v9 = +[CALNLogSubsystem calendar];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    notification = +[CALNLogSubsystem calendar];
+    if (os_log_type_enabled(notification, OS_LOG_TYPE_ERROR))
     {
       [CALNEventCanceledNotificationEKDataSource fetchEventCanceledNotificationWithSourceClientIdentifier:];
     }
@@ -222,29 +222,29 @@ LABEL_20:
   return v10;
 }
 
-- (void)clearCanceledEventNotificationWithSourceClientIdentifier:(id)a3
+- (void)clearCanceledEventNotificationWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
-  v5 = [v7 eventStore];
-  v6 = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
-  [CALNEventInvitationNotificationDataSourceUtils clearEventInvitationOfType:0 withSourceClientIdentifier:v4 inEventStore:v5 withNotificationReferenceProvider:v6];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
+  notificationReferenceProvider = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
+  [CALNEventInvitationNotificationDataSourceUtils clearEventInvitationOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 }
 
-- (void)deleteCanceledEventWithSourceClientIdentifier:(id)a3
+- (void)deleteCanceledEventWithSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
-  v6 = [v5 eventStore];
+  identifierCopy = identifier;
+  eventStoreProvider = [(CALNEventCanceledNotificationEKDataSource *)self eventStoreProvider];
+  eventStore = [eventStoreProvider eventStore];
 
-  v7 = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
-  v8 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:v4 inEventStore:v6 withNotificationReferenceProvider:v7];
+  notificationReferenceProvider = [(CALNEventCanceledNotificationEKDataSource *)self notificationReferenceProvider];
+  v8 = [CALNEventInvitationNotificationDataSourceUtils eventForNotificationOfType:0 withSourceClientIdentifier:identifierCopy inEventStore:eventStore withNotificationReferenceProvider:notificationReferenceProvider];
 
   if (v8)
   {
-    v9 = [(CALNEventCanceledNotificationEKDataSource *)self remoteMutator];
+    remoteMutator = [(CALNEventCanceledNotificationEKDataSource *)self remoteMutator];
     v13 = 0;
-    v10 = [CALNRemoteMutatorShared deleteEvent:v8 inEventStore:v6 withSpan:2 usingRemoteMutator:v9 error:&v13];
+    v10 = [CALNRemoteMutatorShared deleteEvent:v8 inEventStore:eventStore withSpan:2 usingRemoteMutator:remoteMutator error:&v13];
     v11 = v13;
 
     if (!v10)
@@ -267,34 +267,34 @@ LABEL_20:
   }
 }
 
-- (id)_notificationInfoFromNotification:(id)a3 inEventStore:(id)a4
+- (id)_notificationInfoFromNotification:(id)notification inEventStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:v6];
-  v9 = [CALNEventInvitationNotificationDataSourceUtils expirationDateForEventInvitation:v6];
-  v10 = [CALNEventInvitationNotificationDataSourceUtils eventForEventInvitation:v6 inEventStore:v7];
+  notificationCopy = notification;
+  storeCopy = store;
+  v8 = [CALNNotificationDataSourceUtils sourceClientIdentifierForNotification:notificationCopy];
+  v9 = [CALNEventInvitationNotificationDataSourceUtils expirationDateForEventInvitation:notificationCopy];
+  v10 = [CALNEventInvitationNotificationDataSourceUtils eventForEventInvitation:notificationCopy inEventStore:storeCopy];
   if (v10)
   {
-    v11 = [v6 source];
-    v24 = [v11 isDelegate];
-    v23 = [v11 title];
-    v22 = [v11 uniqueIdentifier];
+    source = [notificationCopy source];
+    isDelegate = [source isDelegate];
+    title = [source title];
+    uniqueIdentifier = [source uniqueIdentifier];
     v21 = CUIKLaunchURLForEventInvitation();
-    v12 = [(CALNEventCanceledNotificationEKDataSource *)self dataSourceEventRepresentationProvider];
-    v13 = [v10 startDate];
+    dataSourceEventRepresentationProvider = [(CALNEventCanceledNotificationEKDataSource *)self dataSourceEventRepresentationProvider];
+    startDate = [v10 startDate];
     [v10 endDate];
     v15 = v14 = v9;
-    [v7 timeZone];
+    [storeCopy timeZone];
     v17 = v16 = v8;
-    [v12 eventRepresentationDictionaryForInvitationNotification:v6 event:v10 date:v13 endDate:v15 timeZone:v17];
-    v18 = v25 = v7;
+    [dataSourceEventRepresentationProvider eventRepresentationDictionaryForInvitationNotification:notificationCopy event:v10 date:startDate endDate:v15 timeZone:v17];
+    v18 = v25 = storeCopy;
 
     v8 = v16;
     v9 = v14;
 
-    v19 = [[CALNEventCanceledNotificationInfo alloc] initWithSourceClientIdentifier:v16 launchURL:v21 expirationDate:v14 eventInvitationNotification:v6 eventRepresentationDictionary:v18 isDelegate:v24 sourceTitle:v23 sourceIdentifier:v22];
-    v7 = v25;
+    v19 = [[CALNEventCanceledNotificationInfo alloc] initWithSourceClientIdentifier:v16 launchURL:v21 expirationDate:v14 eventInvitationNotification:notificationCopy eventRepresentationDictionary:v18 isDelegate:isDelegate sourceTitle:title sourceIdentifier:uniqueIdentifier];
+    storeCopy = v25;
   }
 
   else

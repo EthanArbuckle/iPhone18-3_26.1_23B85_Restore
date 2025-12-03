@@ -1,10 +1,10 @@
 @interface MSAuthenticationManager
 + (id)sharedManager;
-- (MSAuthenticationManager)initWithAlertManager:(id)a3;
+- (MSAuthenticationManager)initWithAlertManager:(id)manager;
 - (void)_didReceiveAccountConfigChangedNotification;
-- (void)_renewCredentialsForAccount:(id)a3;
+- (void)_renewCredentialsForAccount:(id)account;
 - (void)dealloc;
-- (void)didEncounterAuthenticationFailureForPersonID:(id)a3;
+- (void)didEncounterAuthenticationFailureForPersonID:(id)d;
 - (void)rearmAuthenticationAlert;
 - (void)waitForDeviceUnlock;
 @end
@@ -35,10 +35,10 @@
 
 - (void)_didReceiveAccountConfigChangedNotification
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [MEMORY[0x277CCACC8] mainThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
 
-  if (v3 == v4)
+  if (currentThread == mainThread)
   {
     if ((self->_state - 1) > 1)
     {
@@ -58,8 +58,8 @@
         _os_log_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Received account change notification. Retrying activities.", buf, 2u);
       }
 
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 postNotificationName:@"MSAuthenticationManagerDidReceiveAuthenticationChangeNotification" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"MSAuthenticationManagerDidReceiveAuthenticationChangeNotification" object:self];
     }
   }
 
@@ -70,35 +70,35 @@
   }
 }
 
-- (void)didEncounterAuthenticationFailureForPersonID:(id)a3
+- (void)didEncounterAuthenticationFailureForPersonID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = dCopy;
     _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Encountered authentication error for personID %@.", buf, 0xCu);
   }
 
   if (!self->_state)
   {
-    v5 = [(ACAccountStore *)self->_acAccountStore aa_primaryAppleAccount];
-    v6 = [v5 aa_personID];
-    v7 = v6;
-    if (!v5 || ![v6 isEqualToString:v4])
+    aa_primaryAppleAccount = [(ACAccountStore *)self->_acAccountStore aa_primaryAppleAccount];
+    aa_personID = [aa_primaryAppleAccount aa_personID];
+    v7 = aa_personID;
+    if (!aa_primaryAppleAccount || ![aa_personID isEqualToString:dCopy])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = dCopy;
         _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot find primary account for personID %@. Ignoring authentication error.", buf, 0xCu);
       }
 
       goto LABEL_20;
     }
 
-    if ([v5 aa_isPrimaryEmailVerified])
+    if ([aa_primaryAppleAccount aa_isPrimaryEmailVerified])
     {
       if (MKBDeviceUnlockedSinceBoot() == 1)
       {
@@ -112,7 +112,7 @@
             _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "We've refetched the bag too many times. Prompting user to change password.", buf, 2u);
           }
 
-          [(MSAuthenticationManager *)self _renewCredentialsForAccount:v5];
+          [(MSAuthenticationManager *)self _renewCredentialsForAccount:aa_primaryAppleAccount];
         }
 
         else
@@ -123,9 +123,9 @@
           v11[1] = 3221225472;
           v11[2] = __72__MSAuthenticationManager_didEncounterAuthenticationFailureForPersonID___block_invoke;
           v11[3] = &unk_2798A4BD8;
-          v12 = v4;
-          v13 = self;
-          v14 = v5;
+          v12 = dCopy;
+          selfCopy = self;
+          v14 = aa_primaryAppleAccount;
           [(ACAccountStore *)acAccountStore aa_updatePropertiesForAppleAccount:v14 completion:v11];
         }
 
@@ -144,7 +144,7 @@
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "The account for personID %@ is not yet vetted. Waiting for account change.", buf, 0xCu);
     }
 
@@ -303,14 +303,14 @@ uint64_t __46__MSAuthenticationManager_waitForDeviceUnlock__block_invoke(uint64_
   return result;
 }
 
-- (void)_renewCredentialsForAccount:(id)a3
+- (void)_renewCredentialsForAccount:(id)account
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accountCopy = account;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = accountCopy;
     _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Renewing credential for %@", buf, 0xCu);
   }
 
@@ -320,9 +320,9 @@ uint64_t __46__MSAuthenticationManager_waitForDeviceUnlock__block_invoke(uint64_
   v8[1] = 3221225472;
   v8[2] = __55__MSAuthenticationManager__renewCredentialsForAccount___block_invoke;
   v8[3] = &unk_2798A4B60;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = accountCopy;
+  selfCopy = self;
+  v6 = accountCopy;
   [(ACAccountStore *)acAccountStore renewCredentialsForAccount:v6 force:0 reason:@"Photo Stream" completion:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -363,8 +363,8 @@ void __55__MSAuthenticationManager__renewCredentialsForAccount___block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8B78] object:self->_acAccountStore];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8B78] object:self->_acAccountStore];
 
   if ([(MSAuthenticationManager *)self isListeningToKeybagChanges])
   {
@@ -376,22 +376,22 @@ void __55__MSAuthenticationManager__renewCredentialsForAccount___block_invoke(ui
   [(MSAuthenticationManager *)&v4 dealloc];
 }
 
-- (MSAuthenticationManager)initWithAlertManager:(id)a3
+- (MSAuthenticationManager)initWithAlertManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = MSAuthenticationManager;
   v6 = [(MSAuthenticationManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alertManager, a3);
+    objc_storeStrong(&v6->_alertManager, manager);
     v8 = objc_alloc_init(MEMORY[0x277CB8F48]);
     acAccountStore = v7->_acAccountStore;
     v7->_acAccountStore = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel__didReceiveAccountConfigChangedNotification name:*MEMORY[0x277CB8B78] object:v7->_acAccountStore];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__didReceiveAccountConfigChangedNotification name:*MEMORY[0x277CB8B78] object:v7->_acAccountStore];
   }
 
   return v7;

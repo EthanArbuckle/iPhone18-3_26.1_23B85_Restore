@@ -1,30 +1,30 @@
 @interface QLPreviewParts
-+ (id)registeredPreviewForURL:(id)a3;
-+ (id)relativeStringForSafeURL:(id)a3;
-+ (void)registerPreview:(id)a3;
-+ (void)unregisterPreview:(id)a3;
-- (BOOL)isRegisteredURL:(id)a3;
++ (id)registeredPreviewForURL:(id)l;
++ (id)relativeStringForSafeURL:(id)l;
++ (void)registerPreview:(id)preview;
++ (void)unregisterPreview:(id)preview;
+- (BOOL)isRegisteredURL:(id)l;
 - (NSURLRequest)previewRequest;
-- (id)newAttachmentURLWithID:(id)a3 mimeType:(id)a4 textEncoding:(id)a5;
-- (id)newSafeAttachmentURLWithID:(id)a3 mimeType:(id)a4 textEncoding:(id)a5;
-- (id)requestForURL:(id)a3;
+- (id)newAttachmentURLWithID:(id)d mimeType:(id)type textEncoding:(id)encoding;
+- (id)newSafeAttachmentURLWithID:(id)d mimeType:(id)type textEncoding:(id)encoding;
+- (id)requestForURL:(id)l;
 - (id)voidRequest;
-- (unsigned)cfEncodingForAttachmentURL:(id)a3;
-- (void)appendData:(id)a3 forURL:(id)a4 lastChunk:(BOOL)a5;
+- (unsigned)cfEncodingForAttachmentURL:(id)l;
+- (void)appendData:(id)data forURL:(id)l lastChunk:(BOOL)chunk;
 - (void)computePreviewInThread;
 - (void)dealloc;
-- (void)registerURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5;
-- (void)startAttachmentWithURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5;
+- (void)registerURL:(id)l mimeType:(id)type textEncoding:(id)encoding;
+- (void)startAttachmentWithURL:(id)l mimeType:(id)type textEncoding:(id)encoding;
 - (void)startComputingPreview;
-- (void)startDataRepresentationWithMimeType:(id)a3 textEncoding:(id)a4;
+- (void)startDataRepresentationWithMimeType:(id)type textEncoding:(id)encoding;
 @end
 
 @implementation QLPreviewParts
 
-+ (void)registerPreview:(id)a3
++ (void)registerPreview:(id)preview
 {
-  v4 = a3;
-  objc_sync_enter(v4);
+  previewCopy = preview;
+  objc_sync_enter(previewCopy);
   v5 = _log_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -32,43 +32,43 @@
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  [v4 setRegisteredURLs:v6];
+  [previewCopy setRegisteredURLs:v6];
 
-  v7 = [objc_msgSend(a1 "urlProtocolClass")];
-  [v4 setPreviewURL:v7];
+  v7 = [objc_msgSend(self "urlProtocolClass")];
+  [previewCopy setPreviewURL:v7];
 
-  v8 = [a1 urlProtocolClass];
-  v9 = [v4 previewURL];
-  [v8 registerPreview:v4 forPreviewURL:v9];
+  urlProtocolClass = [self urlProtocolClass];
+  previewURL = [previewCopy previewURL];
+  [urlProtocolClass registerPreview:previewCopy forPreviewURL:previewURL];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(previewCopy);
 }
 
-+ (void)unregisterPreview:(id)a3
++ (void)unregisterPreview:(id)preview
 {
-  v4 = a3;
-  objc_sync_enter(v4);
+  previewCopy = preview;
+  objc_sync_enter(previewCopy);
   v5 = _log_2();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     +[QLPreviewParts unregisterPreview:];
   }
 
-  v6 = [a1 urlProtocolClass];
-  v7 = [v4 registeredURLs];
-  v8 = [v4 previewURL];
-  [v6 unregisterURLs:v7 andPreviewURL:v8];
+  urlProtocolClass = [self urlProtocolClass];
+  registeredURLs = [previewCopy registeredURLs];
+  previewURL = [previewCopy previewURL];
+  [urlProtocolClass unregisterURLs:registeredURLs andPreviewURL:previewURL];
 
-  [v4 setRegisteredURLs:0];
-  [v4 setPreviewURL:0];
-  [v4 setOutstandingURLs:0];
-  [v4 setEncodingsForURLs:0];
-  objc_sync_exit(v4);
+  [previewCopy setRegisteredURLs:0];
+  [previewCopy setPreviewURL:0];
+  [previewCopy setOutstandingURLs:0];
+  [previewCopy setEncodingsForURLs:0];
+  objc_sync_exit(previewCopy);
 }
 
-+ (id)registeredPreviewForURL:(id)a3
++ (id)registeredPreviewForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -80,9 +80,9 @@
   v8[1] = 3221225472;
   v8[2] = __42__QLPreviewParts_registeredPreviewForURL___block_invoke;
   v8[3] = &unk_279ADB5A0;
-  v9 = v3;
+  v9 = lCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = lCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -98,23 +98,23 @@ uint64_t __42__QLPreviewParts_registeredPreviewForURL___block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)relativeStringForSafeURL:(id)a3
++ (id)relativeStringForSafeURL:(id)l
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v4 host];
-  v7 = [v3 stringWithFormat:@"%@://%@", v5, v6];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  host = [lCopy host];
+  v7 = [v3 stringWithFormat:@"%@://%@", scheme, host];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/", v7, @"x-apple-ql-magic"];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/", v7, @"x-apple-ql-attachment"];
-  v10 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v11 = [v10 hasPrefix:v8];
+  v11 = [absoluteString hasPrefix:v8];
   v12 = v8;
-  if ((v11 & 1) != 0 || ([v10 hasPrefix:v9] & 1) == 0 && (v14 = objc_msgSend(v10, "hasPrefix:", v7), v12 = v7, v14))
+  if ((v11 & 1) != 0 || ([absoluteString hasPrefix:v9] & 1) == 0 && (v14 = objc_msgSend(absoluteString, "hasPrefix:", v7), v12 = v7, v14))
   {
-    v13 = [v10 substringFromIndex:{objc_msgSend(v12, "length")}];
+    v13 = [absoluteString substringFromIndex:{objc_msgSend(v12, "length")}];
   }
 
   else
@@ -218,30 +218,30 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
   [WeakRetained setEncodingsForURLs:0];
 }
 
-- (void)registerURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5
+- (void)registerURL:(id)l mimeType:(id)type textEncoding:(id)encoding
 {
   registeredURLs = self->_registeredURLs;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(NSMutableSet *)registeredURLs addObject:v10];
+  encodingCopy = encoding;
+  typeCopy = type;
+  lCopy = l;
+  [(NSMutableSet *)registeredURLs addObject:lCopy];
   [objc_msgSend(objc_opt_class() "urlProtocolClass")];
 }
 
-- (void)startDataRepresentationWithMimeType:(id)a3 textEncoding:(id)a4
+- (void)startDataRepresentationWithMimeType:(id)type textEncoding:(id)encoding
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(QLPreviewParts *)v7 previewURL];
+  typeCopy = type;
+  encodingCopy = encoding;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v8)
+  if (previewURL)
   {
     v9 = 134217984;
-    if (v6)
+    if (encodingCopy)
     {
-      v10 = CFStringConvertIANACharSetNameToEncoding(v6);
+      v10 = CFStringConvertIANACharSetNameToEncoding(encodingCopy);
       if (v10 == -1)
       {
         v9 = 134217984;
@@ -253,32 +253,32 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
       }
     }
 
-    encodingsForURLs = v7->_encodingsForURLs;
+    encodingsForURLs = selfCopy->_encodingsForURLs;
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v9];
-    [(NSMutableDictionary *)encodingsForURLs setObject:v12 forKey:v7->_previewURL];
+    [(NSMutableDictionary *)encodingsForURLs setObject:v12 forKey:selfCopy->_previewURL];
 
-    v13 = [(QLPreviewParts *)v7 previewURL];
-    [(QLPreviewParts *)v7 registerURL:v13 mimeType:v14 textEncoding:v6];
+    previewURL2 = [(QLPreviewParts *)selfCopy previewURL];
+    [(QLPreviewParts *)selfCopy registerURL:previewURL2 mimeType:typeCopy textEncoding:encodingCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)startAttachmentWithURL:(id)a3 mimeType:(id)a4 textEncoding:(id)a5
+- (void)startAttachmentWithURL:(id)l mimeType:(id)type textEncoding:(id)encoding
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(QLPreviewParts *)v10 previewURL];
+  lCopy = l;
+  typeCopy = type;
+  encodingCopy = encoding;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v11)
+  if (previewURL)
   {
     v12 = 134217984;
-    if (v9)
+    if (encodingCopy)
     {
-      v13 = CFStringConvertIANACharSetNameToEncoding(v9);
+      v13 = CFStringConvertIANACharSetNameToEncoding(encodingCopy);
       if (v13 == -1)
       {
         v12 = 134217984;
@@ -290,44 +290,44 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
       }
     }
 
-    encodingsForURLs = v10->_encodingsForURLs;
+    encodingsForURLs = selfCopy->_encodingsForURLs;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v12];
-    [(NSMutableDictionary *)encodingsForURLs setObject:v15 forKey:v16];
+    [(NSMutableDictionary *)encodingsForURLs setObject:v15 forKey:lCopy];
 
-    [(NSMutableSet *)v10->_outstandingURLs addObject:v16];
-    [(QLPreviewParts *)v10 registerURL:v16 mimeType:v8 textEncoding:v9];
+    [(NSMutableSet *)selfCopy->_outstandingURLs addObject:lCopy];
+    [(QLPreviewParts *)selfCopy registerURL:lCopy mimeType:typeCopy textEncoding:encodingCopy];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isRegisteredURL:(id)a3
+- (BOOL)isRegisteredURL:(id)l
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableSet *)v5->_registeredURLs containsObject:v4];
-  objc_sync_exit(v5);
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableSet *)selfCopy->_registeredURLs containsObject:lCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)newAttachmentURLWithID:(id)a3 mimeType:(id)a4 textEncoding:(id)a5
+- (id)newAttachmentURLWithID:(id)d mimeType:(id)type textEncoding:(id)encoding
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  typeCopy = type;
+  encodingCopy = encoding;
   v11 = [objc_msgSend(objc_opt_class() "urlProtocolClass")];
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(QLPreviewParts *)v12 previewURL];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v13)
+  if (previewURL)
   {
     v14 = 134217984;
-    if (v10)
+    if (encodingCopy)
     {
-      v15 = CFStringConvertIANACharSetNameToEncoding(v10);
+      v15 = CFStringConvertIANACharSetNameToEncoding(encodingCopy);
       if (v15 == -1)
       {
         v14 = 134217984;
@@ -339,38 +339,38 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
       }
     }
 
-    encodingsForURLs = v12->_encodingsForURLs;
+    encodingsForURLs = selfCopy->_encodingsForURLs;
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v14];
     [(NSMutableDictionary *)encodingsForURLs setObject:v17 forKey:v11];
 
-    [(NSMutableSet *)v12->_outstandingURLs addObject:v11];
-    [(QLPreviewParts *)v12 registerURL:v11 mimeType:v9 textEncoding:v10];
+    [(NSMutableSet *)selfCopy->_outstandingURLs addObject:v11];
+    [(QLPreviewParts *)selfCopy registerURL:v11 mimeType:typeCopy textEncoding:encodingCopy];
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (id)newSafeAttachmentURLWithID:(id)a3 mimeType:(id)a4 textEncoding:(id)a5
+- (id)newSafeAttachmentURLWithID:(id)d mimeType:(id)type textEncoding:(id)encoding
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  v12 = [(QLPreviewParts *)v11 previewURL];
+  dCopy = d;
+  typeCopy = type;
+  encodingCopy = encoding;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v12)
+  if (previewURL)
   {
-    v13 = [objc_opt_class() urlProtocolClass];
-    v14 = [(QLPreviewParts *)v11 previewURL];
-    v15 = [v13 newURLWithContentID:v8 baseURL:v14];
+    urlProtocolClass = [objc_opt_class() urlProtocolClass];
+    previewURL2 = [(QLPreviewParts *)selfCopy previewURL];
+    v15 = [urlProtocolClass newURLWithContentID:dCopy baseURL:previewURL2];
     v16 = 134217984;
 
-    if (v10)
+    if (encodingCopy)
     {
-      v17 = CFStringConvertIANACharSetNameToEncoding(v10);
+      v17 = CFStringConvertIANACharSetNameToEncoding(encodingCopy);
       if (v17 == -1)
       {
         v16 = 134217984;
@@ -382,18 +382,18 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
       }
     }
 
-    encodingsForURLs = v11->_encodingsForURLs;
+    encodingsForURLs = selfCopy->_encodingsForURLs;
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v16];
     [(NSMutableDictionary *)encodingsForURLs setObject:v19 forKey:v15];
 
-    [(NSMutableSet *)v11->_outstandingURLs addObject:v15];
-    [(QLPreviewParts *)v11 registerURL:v15 mimeType:v9 textEncoding:v10];
-    objc_sync_exit(v11);
+    [(NSMutableSet *)selfCopy->_outstandingURLs addObject:v15];
+    [(QLPreviewParts *)selfCopy registerURL:v15 mimeType:typeCopy textEncoding:encodingCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v11);
+    objc_sync_exit(selfCopy);
 
     v15 = [objc_msgSend(objc_opt_class() "urlProtocolClass")];
   }
@@ -401,37 +401,37 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)appendData:(id)a3 forURL:(id)a4 lastChunk:(BOOL)a5
+- (void)appendData:(id)data forURL:(id)l lastChunk:(BOOL)chunk
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(QLPreviewParts *)v9 previewURL];
+  chunkCopy = chunk;
+  dataCopy = data;
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v10)
+  if (previewURL)
   {
-    if (!v8)
+    if (!lCopy)
     {
-      v8 = [(QLPreviewParts *)v9 previewURL];
+      lCopy = [(QLPreviewParts *)selfCopy previewURL];
     }
 
     [objc_msgSend(objc_opt_class() "urlProtocolClass")];
-    if (v5)
+    if (chunkCopy)
     {
-      [(NSMutableSet *)v9->_outstandingURLs removeObject:v8];
+      [(NSMutableSet *)selfCopy->_outstandingURLs removeObject:lCopy];
     }
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSURLRequest)previewRequest
 {
   v3 = objc_alloc(MEMORY[0x277CCAD20]);
-  v4 = [(QLPreviewParts *)self previewURL];
-  v5 = [v3 initWithURL:v4 cachePolicy:1 timeoutInterval:20.0];
+  previewURL = [(QLPreviewParts *)self previewURL];
+  v5 = [v3 initWithURL:previewURL cachePolicy:1 timeoutInterval:20.0];
 
   return v5;
 }
@@ -445,57 +445,57 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)requestForURL:(id)a3
+- (id)requestForURL:(id)l
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(QLPreviewParts *)v6 previewURL];
-    if (v7)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    previewURL = [(QLPreviewParts *)selfCopy previewURL];
+    if (previewURL)
     {
-      v8 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v5];
+      v8 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy];
       [v8 setHTTPShouldHandleCookies:0];
-      [v8 setMainDocumentURL:v7];
+      [v8 setMainDocumentURL:previewURL];
     }
 
     else
     {
-      v3 = [(QLPreviewParts *)v6 voidRequest];
+      voidRequest = [(QLPreviewParts *)selfCopy voidRequest];
       v8 = 0;
     }
 
-    objc_sync_exit(v6);
-    if (v7)
+    objc_sync_exit(selfCopy);
+    if (previewURL)
     {
-      v3 = v8;
+      voidRequest = v8;
     }
   }
 
   else
   {
-    v3 = [(QLPreviewParts *)self voidRequest];
+    voidRequest = [(QLPreviewParts *)self voidRequest];
   }
 
-  return v3;
+  return voidRequest;
 }
 
-- (unsigned)cfEncodingForAttachmentURL:(id)a3
+- (unsigned)cfEncodingForAttachmentURL:(id)l
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(QLPreviewParts *)v5 previewURL];
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previewURL = [(QLPreviewParts *)selfCopy previewURL];
 
-  if (v6)
+  if (previewURL)
   {
-    if (!v4)
+    if (!lCopy)
     {
-      v4 = [(QLPreviewParts *)v5 previewURL];
+      lCopy = [(QLPreviewParts *)selfCopy previewURL];
     }
 
-    v7 = [(NSMutableDictionary *)v5->_encodingsForURLs objectForKey:v4];
+    v7 = [(NSMutableDictionary *)selfCopy->_encodingsForURLs objectForKey:lCopy];
   }
 
   else
@@ -503,15 +503,15 @@ void __40__QLPreviewParts_computePreviewInThread__block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v8 = 134217984;
-  if (v6 && v7)
+  unsignedIntValue = 134217984;
+  if (previewURL && v7)
   {
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
-  return v8;
+  return unsignedIntValue;
 }
 
 @end

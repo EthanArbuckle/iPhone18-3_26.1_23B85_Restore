@@ -6,10 +6,10 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FSEventStreamMultiplexerClient *)self clientID];
-  v3 = [v2 unsignedIntValue];
+  clientID = [(FSEventStreamMultiplexerClient *)self clientID];
+  unsignedIntValue = [clientID unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 @end

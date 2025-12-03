@@ -20,8 +20,8 @@
   v4.receiver = self;
   v4.super_class = EKUIAvailabilityTitleContainerView;
   [(EKUIAvailabilityTitleContainerView *)&v4 layoutSubviews];
-  v3 = [(EKUIAvailabilityTitleContainerView *)self controller];
-  [v3 configureNavBarAndToolBar];
+  controller = [(EKUIAvailabilityTitleContainerView *)self controller];
+  [controller configureNavBarAndToolBar];
 }
 
 - (EKUIAvailabilityViewController)controller

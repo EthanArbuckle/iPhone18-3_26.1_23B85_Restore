@@ -1,22 +1,22 @@
 @interface _PASLPWriterV1
-+ (dispatch_data_t)_mappedDataWithPlist:(int)a3 fd:(unint64_t)a4 ofs:(id *)a5 error:;
-+ (id)dataWithPropertyList:(id)a3 error:(id *)a4;
-+ (id)fileBackedDataWithPropertyList:(id)a3 appendedToFd:(int)a4 startOfs:(int64_t *)a5 error:(id *)a6;
-+ (id)fileBackedDataWithPropertyList:(id)a3 writtenToPath:(id)a4 error:(id *)a5;
-+ (uint64_t)_scanPlist:(unint64_t)a3 recursionDepth:(uint64_t *)a4 sizeUpperBound:(void *)a5 allDictionaryKeys:(id *)a6 error:;
-+ (uint64_t)_valueWordForObjectGraph:(uint64_t)a3 allocContext:(unint64_t)a4 recursionDepth:;
-+ (uint64_t)_visitObject:(uint64_t)a3 context:(void *)a4 handleBoolean:(void *)a5 handleInt64:(void *)a6 handleFloat64:(void *)a7 handleTimeInterval:(void *)a8 handleData:(void *)a9 handleString:(void *)a10 handleDict:(void *)a11 handleArray:(void *)a12 handleOther:;
++ (dispatch_data_t)_mappedDataWithPlist:(int)plist fd:(unint64_t)fd ofs:(id *)ofs error:;
++ (id)dataWithPropertyList:(id)list error:(id *)error;
++ (id)fileBackedDataWithPropertyList:(id)list appendedToFd:(int)fd startOfs:(int64_t *)ofs error:(id *)error;
++ (id)fileBackedDataWithPropertyList:(id)list writtenToPath:(id)path error:(id *)error;
++ (uint64_t)_scanPlist:(unint64_t)plist recursionDepth:(uint64_t *)depth sizeUpperBound:(void *)bound allDictionaryKeys:(id *)keys error:;
++ (uint64_t)_valueWordForObjectGraph:(uint64_t)graph allocContext:(unint64_t)context recursionDepth:;
++ (uint64_t)_visitObject:(uint64_t)object context:(void *)context handleBoolean:(void *)boolean handleInt64:(void *)int64 handleFloat64:(void *)float64 handleTimeInterval:(void *)interval handleData:(void *)data handleString:(void *)self0 handleDict:(void *)self1 handleArray:(void *)self2 handleOther:;
 @end
 
 @implementation _PASLPWriterV1
 
-+ (id)fileBackedDataWithPropertyList:(id)a3 appendedToFd:(int)a4 startOfs:(int64_t *)a5 error:(id *)a6
++ (id)fileBackedDataWithPropertyList:(id)list appendedToFd:(int)fd startOfs:(int64_t *)ofs error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (v11)
+  listCopy = list;
+  if (listCopy)
   {
-    if ((a4 & 0x80000000) == 0)
+    if ((fd & 0x80000000) == 0)
     {
       goto LABEL_3;
     }
@@ -24,23 +24,23 @@
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"_PASLPWriterV1.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPWriterV1.m" lineNumber:233 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
 
-    if ((a4 & 0x80000000) == 0)
+    if ((fd & 0x80000000) == 0)
     {
       goto LABEL_3;
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:a1 file:@"_PASLPWriterV1.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"fd >= 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPWriterV1.m" lineNumber:234 description:{@"Invalid parameter not satisfying: %@", @"fd >= 0"}];
 
 LABEL_3:
   v28 = 0;
   v12 = objc_autoreleasePoolPush();
   memset(&v27, 0, sizeof(v27));
-  if (fstat(a4, &v27))
+  if (fstat(fd, &v27))
   {
     v13 = objc_alloc(MEMORY[0x1E696ABC0]);
     v14 = *MEMORY[0x1E696A798];
@@ -67,18 +67,18 @@ LABEL_3:
     }
 
     v22 = v27.st_size;
-    if (a5)
+    if (ofs)
     {
-      *a5 = v27.st_size;
+      *ofs = v27.st_size;
     }
 
-    v21 = [(_PASLPWriterV1 *)a1 _mappedDataWithPlist:v11 fd:a4 ofs:v22 error:&v28];
+    v21 = [(_PASLPWriterV1 *)self _mappedDataWithPlist:listCopy fd:fd ofs:v22 error:&v28];
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a6 && !v21)
+  if (error && !v21)
   {
-    *a6 = v28;
+    *error = v28;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -86,44 +86,44 @@ LABEL_3:
   return v21;
 }
 
-+ (dispatch_data_t)_mappedDataWithPlist:(int)a3 fd:(unint64_t)a4 ofs:(id *)a5 error:
++ (dispatch_data_t)_mappedDataWithPlist:(int)plist fd:(unint64_t)fd ofs:(id *)ofs error:
 {
   v153 = *MEMORY[0x1E69E9840];
   v8 = a2;
   v9 = objc_opt_self();
   if (!v8)
   {
-    v77 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v77 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:939 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:939 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
   }
 
-  v115 = a3;
-  if (a3 <= -2)
+  plistCopy = plist;
+  if (plist <= -2)
   {
-    v78 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v78 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:940 description:{@"Invalid parameter not satisfying: %@", @"fd >= -1"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:940 description:{@"Invalid parameter not satisfying: %@", @"fd >= -1"}];
 
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((fd & 0x8000000000000000) == 0)
     {
       goto LABEL_5;
     }
   }
 
-  else if ((a4 & 0x8000000000000000) == 0)
+  else if ((fd & 0x8000000000000000) == 0)
   {
     goto LABEL_5;
   }
 
-  v79 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v79 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"ofs >= 0"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:941 description:{@"Invalid parameter not satisfying: %@", @"ofs >= 0"}];
 
 LABEL_5:
   v119 = 0;
   v114 = v9;
   v117 = objc_opt_new();
   v118 = v8;
-  v116 = a5;
-  if (([(_PASLPWriterV1 *)v9 _scanPlist:v8 recursionDepth:0 sizeUpperBound:&v119 allDictionaryKeys:v117 error:a5]& 1) == 0)
+  ofsCopy = ofs;
+  if (([(_PASLPWriterV1 *)v9 _scanPlist:v8 recursionDepth:0 sizeUpperBound:&v119 allDictionaryKeys:v117 error:ofs]& 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -131,7 +131,7 @@ LABEL_5:
     }
 
 LABEL_81:
-    v76 = *v116;
+    v76 = *ofsCopy;
     *buf = 138412290;
     *&buf[4] = v76;
     _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "_PASLazyPlist: %@", buf, 0xCu);
@@ -156,8 +156,8 @@ LABEL_81:
     v14 = [v12 copy];
     v15 = [v13 initWithDomain:@"_PASLazyPlistErrorDomain" code:7 userInfo:v14];
 
-    v16 = *v116;
-    *v116 = v15;
+    v16 = *ofsCopy;
+    *ofsCopy = v15;
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -169,16 +169,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v20 = a4 / *MEMORY[0x1E69E9AC8] * *MEMORY[0x1E69E9AC8];
-  v110 = a4 % *MEMORY[0x1E69E9AC8];
+  v20 = fd / *MEMORY[0x1E69E9AC8] * *MEMORY[0x1E69E9AC8];
+  v110 = fd % *MEMORY[0x1E69E9AC8];
   v111 = v11;
   v113 = v110 + v11;
-  if (v115 == -1)
+  if (plistCopy == -1)
   {
-    if (a4)
+    if (fd)
     {
-      v102 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v102 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:969 description:{@"Invalid parameter not satisfying: %@", @"ofs == 0"}];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v9 file:@"_PASLPWriterV1.m" lineNumber:969 description:{@"Invalid parameter not satisfying: %@", @"ofs == 0"}];
     }
 
     v112 = mmap(0, v113, 3, 4098, -1, v20);
@@ -186,8 +186,8 @@ LABEL_12:
 
   else
   {
-    v21 = v11 + a4;
-    if (ftruncate(v115, v11 + a4))
+    v21 = v11 + fd;
+    if (ftruncate(plistCopy, v11 + fd))
     {
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
       v23 = *__error();
@@ -199,8 +199,8 @@ LABEL_12:
       v137 = v27;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v137 forKeys:&v136 count:1];
       v29 = [v22 initWithDomain:*MEMORY[0x1E696A798] code:v23 userInfo:v28];
-      v30 = *a5;
-      *a5 = v29;
+      v30 = *ofs;
+      *ofs = v29;
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -210,7 +210,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v112 = mmap(0, v113, 3, 1, v115, v20);
+    v112 = mmap(0, v113, 3, 1, plistCopy, v20);
   }
 
   if (v112 == -1)
@@ -225,8 +225,8 @@ LABEL_12:
     v135 = v72;
     v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v135 forKeys:&v134 count:1];
     v74 = [v67 initWithDomain:*MEMORY[0x1E696A798] code:v68 userInfo:v73];
-    v75 = *a5;
-    *a5 = v74;
+    v75 = *ofs;
+    *ofs = v74;
 
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -242,8 +242,8 @@ LABEL_12:
   Mutable = CFSetCreateMutable(0, 0, &bufferDescrCallbacks);
   if (!Mutable)
   {
-    v80 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v80 handleFailureInMethod:sel__writePlist_allDictionaryKeys_toBuffer_size_actSize_ object:v107 file:@"_PASLPWriterV1.m" lineNumber:857 description:@"Failed to allocate buffer set"];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:sel__writePlist_allDictionaryKeys_toBuffer_size_actSize_ object:v107 file:@"_PASLPWriterV1.m" lineNumber:857 description:@"Failed to allocate buffer set"];
   }
 
   v129[0] = MEMORY[0x1E69E9820];
@@ -304,14 +304,14 @@ LABEL_12:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v120 + 1) + 8 * i) UTF8String];
-        if (!v41)
+        uTF8String = [*(*(&v120 + 1) + 8 * i) UTF8String];
+        if (!uTF8String)
         {
-          v42 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v42 handleFailureInMethod:sel__writePlist_allDictionaryKeys_toBuffer_size_actSize_ object:v107 file:@"_PASLPWriterV1.m" lineNumber:886 description:@"dictionary key is not Unicode"];
+          currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler6 handleFailureInMethod:sel__writePlist_allDictionaryKeys_toBuffer_size_actSize_ object:v107 file:@"_PASLPWriterV1.m" lineNumber:886 description:@"dictionary key is not Unicode"];
         }
 
-        v35[v38++] = v41;
+        v35[v38++] = uTF8String;
       }
 
       v37 = [v36 countByEnumeratingWithState:&v120 objects:v145 count:16];
@@ -485,26 +485,26 @@ LABEL_12:
   }
 
   v56 = v111;
-  v57 = v115;
+  v57 = plistCopy;
   if (v50 > v111)
   {
-    v81 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v81 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v114 file:@"_PASLPWriterV1.m" lineNumber:1009 description:{@"Invalid parameter not satisfying: %@", @"actSize <= sizeUpperBound"}];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler7 handleFailureInMethod:sel__mappedDataWithPlist_fd_ofs_error_ object:v114 file:@"_PASLPWriterV1.m" lineNumber:1009 description:{@"Invalid parameter not satisfying: %@", @"actSize <= sizeUpperBound"}];
 
-    v57 = v115;
+    v57 = plistCopy;
     v56 = v111;
-    if (v115 < 0)
+    if (plistCopy < 0)
     {
       goto LABEL_85;
     }
   }
 
-  else if (v115 < 0)
+  else if (plistCopy < 0)
   {
     goto LABEL_85;
   }
 
-  v57 = v115;
+  v57 = plistCopy;
   if (msync(v112, v113, 16))
   {
     v58 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -517,8 +517,8 @@ LABEL_12:
     v133 = v63;
     v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
     v65 = [v58 initWithDomain:*MEMORY[0x1E696A798] code:v59 userInfo:v64];
-    v66 = *v116;
-    *v116 = v65;
+    v66 = *ofsCopy;
+    *ofsCopy = v65;
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -532,7 +532,7 @@ LABEL_85:
   v82 = &buffer[v50 - 1 + *MEMORY[0x1E69E9AC8]] / *MEMORY[0x1E69E9AC8] * *MEMORY[0x1E69E9AC8];
   if (&buffer[v56] > v82)
   {
-    v57 = v115;
+    v57 = plistCopy;
     if (munmap(v82, &buffer[v56 - v82]))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -545,13 +545,13 @@ LABEL_85:
         *&buf[12] = 1024;
         *&buf[14] = v85;
         _os_log_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "_PASLazyPlist: Warning: failed to unmap unused tail: %s (%d)", buf, 0x12u);
-        v57 = v115;
+        v57 = plistCopy;
       }
     }
   }
 
   v113 = v50 + v110;
-  if ((v57 & 0x80000000) == 0 && ftruncate(v57, v50 + a4))
+  if ((v57 & 0x80000000) == 0 && ftruncate(v57, v50 + fd))
   {
     v86 = objc_alloc(MEMORY[0x1E696ABC0]);
     v87 = *__error();
@@ -563,13 +563,13 @@ LABEL_85:
     v131 = v91;
     v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v131 forKeys:&v130 count:1];
     v93 = [v86 initWithDomain:*MEMORY[0x1E696A798] code:v87 userInfo:v92];
-    v94 = *v116;
-    *v116 = v93;
+    v94 = *ofsCopy;
+    *ofsCopy = v93;
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
 LABEL_99:
-      v101 = *v116;
+      v101 = *ofsCopy;
       *buf = 138412290;
       *&buf[4] = v101;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "_PASLazyPlist: %@", buf, 0xCu);
@@ -611,30 +611,30 @@ LABEL_13:
   return v17;
 }
 
-+ (uint64_t)_scanPlist:(unint64_t)a3 recursionDepth:(uint64_t *)a4 sizeUpperBound:(void *)a5 allDictionaryKeys:(id *)a6 error:
++ (uint64_t)_scanPlist:(unint64_t)plist recursionDepth:(uint64_t *)depth sizeUpperBound:(void *)bound allDictionaryKeys:(id *)keys error:
 {
   v10 = a2;
-  v11 = a5;
+  boundCopy = bound;
   v12 = objc_opt_self();
-  if (!a6)
+  if (!keys)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:sel__scanPlist_recursionDepth_sizeUpperBound_allDictionaryKeys_error_ object:v12 file:@"_PASLPWriterV1.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__scanPlist_recursionDepth_sizeUpperBound_allDictionaryKeys_error_ object:v12 file:@"_PASLPWriterV1.m" lineNumber:359 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  if (a3 < 0x65)
+  if (plist < 0x65)
   {
-    v17 = *a4;
-    v28 = a3;
+    v17 = *depth;
+    plistCopy = plist;
     v29 = v17;
-    v30 = v11;
-    obj = *a6;
-    v18 = [(_PASLPWriterV1 *)v12 _visitObject:v10 context:&v28 handleBoolean:&__block_literal_global_4037 handleInt64:&__block_literal_global_46 handleFloat64:&__block_literal_global_49_4038 handleTimeInterval:&__block_literal_global_51 handleData:&__block_literal_global_54 handleString:&__block_literal_global_57_4039 handleDict:&__block_literal_global_63 handleArray:&__block_literal_global_74 handleOther:&__block_literal_global_78];
+    v30 = boundCopy;
+    obj = *keys;
+    v18 = [(_PASLPWriterV1 *)v12 _visitObject:v10 context:&plistCopy handleBoolean:&__block_literal_global_4037 handleInt64:&__block_literal_global_46 handleFloat64:&__block_literal_global_49_4038 handleTimeInterval:&__block_literal_global_51 handleData:&__block_literal_global_54 handleString:&__block_literal_global_57_4039 handleDict:&__block_literal_global_63 handleArray:&__block_literal_global_74 handleOther:&__block_literal_global_78];
     if (v18)
     {
       v19 = obj;
-      *a4 = v29 + 19;
-      objc_storeStrong(a6, v19);
+      *depth = v29 + 19;
+      objc_storeStrong(keys, v19);
       v20 = v30;
       v30 = 0;
 
@@ -665,8 +665,8 @@ LABEL_13:
     v23 = [v15 copy];
     v24 = [v22 initWithDomain:@"_PASLazyPlistErrorDomain" code:7 userInfo:v23];
 
-    v25 = *a6;
-    *a6 = v24;
+    v25 = *keys;
+    *keys = v24;
 
     v18 = 0;
   }
@@ -674,51 +674,51 @@ LABEL_13:
   return v18;
 }
 
-+ (uint64_t)_valueWordForObjectGraph:(uint64_t)a3 allocContext:(unint64_t)a4 recursionDepth:
++ (uint64_t)_valueWordForObjectGraph:(uint64_t)graph allocContext:(unint64_t)context recursionDepth:
 {
   v6 = a2;
   v7 = objc_opt_self();
   v8 = v7;
-  v9 = *(a3 + 32);
-  v10 = *(v9 + 112);
-  if (v10 <= a4)
+  v9 = *(graph + 32);
+  contextCopy = *(v9 + 112);
+  if (contextCopy <= context)
   {
-    v10 = a4;
+    contextCopy = context;
   }
 
-  *(v9 + 112) = v10;
-  v15 = a3;
+  *(v9 + 112) = contextCopy;
+  graphCopy = graph;
   v16 = 0;
-  v17 = a4;
-  v11 = [(_PASLPWriterV1 *)v7 _visitObject:v6 context:&v15 handleBoolean:&__block_literal_global_88 handleInt64:&__block_literal_global_90 handleFloat64:&__block_literal_global_92 handleTimeInterval:&__block_literal_global_97 handleData:&__block_literal_global_99 handleString:&__block_literal_global_105 handleDict:&__block_literal_global_111 handleArray:&__block_literal_global_126 handleOther:0];
+  contextCopy2 = context;
+  v11 = [(_PASLPWriterV1 *)v7 _visitObject:v6 context:&graphCopy handleBoolean:&__block_literal_global_88 handleInt64:&__block_literal_global_90 handleFloat64:&__block_literal_global_92 handleTimeInterval:&__block_literal_global_97 handleData:&__block_literal_global_99 handleString:&__block_literal_global_105 handleDict:&__block_literal_global_111 handleArray:&__block_literal_global_126 handleOther:0];
 
   if ((v11 & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:sel__valueWordForObjectGraph_allocContext_recursionDepth_ object:v8 file:@"_PASLPWriterV1.m" lineNumber:841 description:{@"Invalid parameter not satisfying: %@", @"ok"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__valueWordForObjectGraph_allocContext_recursionDepth_ object:v8 file:@"_PASLPWriterV1.m" lineNumber:841 description:{@"Invalid parameter not satisfying: %@", @"ok"}];
   }
 
   if ((v16 & 0x100000000) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:sel__valueWordForObjectGraph_allocContext_recursionDepth_ object:v8 file:@"_PASLPWriterV1.m" lineNumber:842 description:{@"Invalid parameter not satisfying: %@", @"valueWordContext.hasValueWord"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__valueWordForObjectGraph_allocContext_recursionDepth_ object:v8 file:@"_PASLPWriterV1.m" lineNumber:842 description:{@"Invalid parameter not satisfying: %@", @"valueWordContext.hasValueWord"}];
   }
 
   return v16;
 }
 
-+ (uint64_t)_visitObject:(uint64_t)a3 context:(void *)a4 handleBoolean:(void *)a5 handleInt64:(void *)a6 handleFloat64:(void *)a7 handleTimeInterval:(void *)a8 handleData:(void *)a9 handleString:(void *)a10 handleDict:(void *)a11 handleArray:(void *)a12 handleOther:
++ (uint64_t)_visitObject:(uint64_t)object context:(void *)context handleBoolean:(void *)boolean handleInt64:(void *)int64 handleFloat64:(void *)float64 handleTimeInterval:(void *)interval handleData:(void *)data handleString:(void *)self0 handleDict:(void *)self1 handleArray:(void *)self2 handleOther:
 {
   v17 = a2;
-  v39 = a4;
-  v18 = a5;
-  v40 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
+  contextCopy = context;
+  booleanCopy = boolean;
+  int64Copy = int64;
+  float64Copy = float64;
+  intervalCopy = interval;
+  dataCopy = data;
+  stringCopy = string;
+  dictCopy = dict;
+  arrayCopy = array;
   v25 = objc_opt_self();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -726,12 +726,12 @@ LABEL_13:
     v26 = CFGetTypeID(v17);
     if (v26 == CFBooleanGetTypeID())
     {
-      v27 = v18;
-      v28 = v39;
-      if (v39)
+      v27 = booleanCopy;
+      v28 = contextCopy;
+      if (contextCopy)
       {
         v29 = CFBooleanGetValue(v17) != 0;
-        v30 = (*(v39 + 2))(v39, a3, v29);
+        v30 = (*(contextCopy + 2))(contextCopy, object, v29);
 LABEL_34:
         v34 = v30;
         goto LABEL_36;
@@ -740,38 +740,38 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v27 = v18;
+    v27 = booleanCopy;
     if (CFNumberIsFloatType(v17))
     {
-      if (v40)
+      if (int64Copy)
       {
         valuePtr = 0;
         if (!CFNumberGetValue(v17, kCFNumberDoubleType, &valuePtr))
         {
-          v36 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v36 handleFailureInMethod:sel__visitObject_context_handleBoolean_handleInt64_handleFloat64_handleTimeInterval_handleData_handleString_handleDict_handleArray_handleOther_ object:v25 file:@"_PASLPWriterV1.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"convOk"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__visitObject_context_handleBoolean_handleInt64_handleFloat64_handleTimeInterval_handleData_handleString_handleDict_handleArray_handleOther_ object:v25 file:@"_PASLPWriterV1.m" lineNumber:307 description:{@"Invalid parameter not satisfying: %@", @"convOk"}];
 
-          v27 = v18;
+          v27 = booleanCopy;
         }
 
         v33.n128_u64[0] = valuePtr;
-        v32 = v40[2](v40, a3, v33);
+        v32 = int64Copy[2](int64Copy, object, v33);
         goto LABEL_13;
       }
     }
 
-    else if (v18)
+    else if (booleanCopy)
     {
       valuePtr = 0;
       if (!CFNumberGetValue(v17, kCFNumberSInt64Type, &valuePtr))
       {
-        v37 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v37 handleFailureInMethod:sel__visitObject_context_handleBoolean_handleInt64_handleFloat64_handleTimeInterval_handleData_handleString_handleDict_handleArray_handleOther_ object:v25 file:@"_PASLPWriterV1.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"convOk"}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__visitObject_context_handleBoolean_handleInt64_handleFloat64_handleTimeInterval_handleData_handleString_handleDict_handleArray_handleOther_ object:v25 file:@"_PASLPWriterV1.m" lineNumber:314 description:{@"Invalid parameter not satisfying: %@", @"convOk"}];
 
-        v27 = v18;
+        v27 = booleanCopy;
       }
 
-      v32 = v27[2](v27, a3, valuePtr);
+      v32 = v27[2](v27, object, valuePtr);
       goto LABEL_13;
     }
 
@@ -784,13 +784,13 @@ LABEL_24:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
-    v27 = v18;
+    v27 = booleanCopy;
     if (objc_opt_isKindOfClass())
     {
-      v28 = v39;
-      if (v20)
+      v28 = contextCopy;
+      if (intervalCopy)
       {
-        v30 = v20[2](v20, a3, v17);
+        v30 = intervalCopy[2](intervalCopy, object, v17);
         goto LABEL_34;
       }
     }
@@ -798,12 +798,12 @@ LABEL_24:
     else
     {
       objc_opt_class();
-      v28 = v39;
+      v28 = contextCopy;
       if (objc_opt_isKindOfClass())
       {
-        if (v21)
+        if (dataCopy)
         {
-          v30 = v21[2](v21, a3, v17);
+          v30 = dataCopy[2](dataCopy, object, v17);
           goto LABEL_34;
         }
       }
@@ -813,9 +813,9 @@ LABEL_24:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (v22)
+          if (stringCopy)
           {
-            v30 = v22[2](v22, a3, v17);
+            v30 = stringCopy[2](stringCopy, object, v17);
             goto LABEL_34;
           }
         }
@@ -825,16 +825,16 @@ LABEL_24:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if (v23)
+            if (dictCopy)
             {
-              v30 = v23[2](v23, a3, v17);
+              v30 = dictCopy[2](dictCopy, object, v17);
               goto LABEL_34;
             }
           }
 
-          else if (v24)
+          else if (arrayCopy)
           {
-            v30 = v24[2](v24, a3, v17);
+            v30 = arrayCopy[2](arrayCopy, object, v17);
             goto LABEL_34;
           }
         }
@@ -846,31 +846,31 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v27 = v18;
-  if (!v19)
+  v27 = booleanCopy;
+  if (!float64Copy)
   {
     goto LABEL_24;
   }
 
   [v17 timeIntervalSinceReferenceDate];
-  v32 = v19[2](v19, a3, v31);
+  v32 = float64Copy[2](float64Copy, object, v31);
 LABEL_13:
   v34 = v32;
 LABEL_25:
-  v28 = v39;
+  v28 = contextCopy;
 LABEL_36:
 
   return v34;
 }
 
-+ (id)fileBackedDataWithPropertyList:(id)a3 writtenToPath:(id)a4 error:(id *)a5
++ (id)fileBackedDataWithPropertyList:(id)list writtenToPath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  listCopy = list;
+  pathCopy = path;
+  v11 = pathCopy;
+  if (listCopy)
   {
-    if (v10)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -878,8 +878,8 @@ LABEL_36:
 
   else
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"_PASLPWriterV1.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPWriterV1.m" lineNumber:200 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
 
     if (v11)
     {
@@ -887,8 +887,8 @@ LABEL_36:
     }
   }
 
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:a1 file:@"_PASLPWriterV1.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASLPWriterV1.m" lineNumber:201 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
 LABEL_3:
   v30 = 0;
@@ -928,46 +928,46 @@ LABEL_3:
   else
   {
     v14 = v13;
-    v15 = [(_PASLPWriterV1 *)a1 _mappedDataWithPlist:v9 fd:v13 ofs:0 error:&v30];
+    v15 = [(_PASLPWriterV1 *)self _mappedDataWithPlist:listCopy fd:v13 ofs:0 error:&v30];
     close(v14);
   }
 
   objc_autoreleasePoolPop(v12);
-  if (a5 && !v15)
+  if (error && !v15)
   {
-    *a5 = v30;
+    *error = v30;
   }
 
   return v15;
 }
 
-+ (id)dataWithPropertyList:(id)a3 error:(id *)a4
++ (id)dataWithPropertyList:(id)list error:(id *)error
 {
-  v7 = a3;
-  if (v7)
+  listCopy = list;
+  if (listCopy)
   {
     v14 = 0;
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
-    v10 = v7;
+    selfCopy2 = self;
+    v10 = listCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"_PASLPWriterV1.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASLPWriterV1.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"plist"}];
 
     v14 = 0;
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  v11 = [(_PASLPWriterV1 *)v9 _mappedDataWithPlist:v10 fd:-1 ofs:0 error:&v14];
+  v11 = [(_PASLPWriterV1 *)selfCopy2 _mappedDataWithPlist:v10 fd:-1 ofs:0 error:&v14];
   objc_autoreleasePoolPop(v8);
-  if (a4 && !v11)
+  if (error && !v11)
   {
-    *a4 = v14;
+    *error = v14;
   }
 
   return v11;

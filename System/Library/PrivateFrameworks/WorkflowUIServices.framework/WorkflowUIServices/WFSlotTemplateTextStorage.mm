@@ -1,5 +1,5 @@
 @interface WFSlotTemplateTextStorage
-- (BOOL)slotContainsStrongRTL:(id)a3;
+- (BOOL)slotContainsStrongRTL:(id)l;
 - (NSParagraphStyle)paragraphStyle;
 - (NSSet)highlightedSlots;
 - (NSSet)selectedSlots;
@@ -12,61 +12,61 @@
 - (UIFont)font;
 - (UIFont)suffixFont;
 - (UIFont)unpopulatedFont;
-- (WFSlotTemplateTextStorage)initWithUseCase:(unint64_t)a3;
-- (_NSRange)characterRangeForSlot:(id)a3 includingInsideSpacingOpportunities:(BOOL)a4;
-- (id)attributedStringForSlot:(id)a3 isRTL:(BOOL)a4;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)slotAtCharacterIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 effectiveContentRange:(_NSRange *)a5;
+- (WFSlotTemplateTextStorage)initWithUseCase:(unint64_t)case;
+- (_NSRange)characterRangeForSlot:(id)slot includingInsideSpacingOpportunities:(BOOL)opportunities;
+- (id)attributedStringForSlot:(id)slot isRTL:(BOOL)l;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)slotAtCharacterIndex:(unint64_t)index effectiveRange:(_NSRange *)range effectiveContentRange:(_NSRange *)contentRange;
 - (id)string;
-- (id)stringForSlotSpacingOpportunity:(unint64_t)a3;
-- (unint64_t)slotSpacingOpportunityAtCharacterIndex:(unint64_t)a3;
-- (void)_updateColorsForSlot:(id)a3 inRange:(_NSRange)a4;
+- (id)stringForSlotSpacingOpportunity:(unint64_t)opportunity;
+- (unint64_t)slotSpacingOpportunityAtCharacterIndex:(unint64_t)index;
+- (void)_updateColorsForSlot:(id)slot inRange:(_NSRange)range;
 - (void)beginEditing;
-- (void)didBeginTypingInSlot:(id)a3;
-- (void)didDeselectSlot:(id)a3;
-- (void)didEndTypingInSlot:(id)a3;
-- (void)didHighlightSlot:(id)a3;
-- (void)didSelectSlot:(id)a3;
-- (void)didUnhighlightSlot:(id)a3;
+- (void)didBeginTypingInSlot:(id)slot;
+- (void)didDeselectSlot:(id)slot;
+- (void)didEndTypingInSlot:(id)slot;
+- (void)didHighlightSlot:(id)slot;
+- (void)didSelectSlot:(id)slot;
+- (void)didUnhighlightSlot:(id)slot;
 - (void)endEditing;
-- (void)enumerateContentInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)getColorsForSlot:(id)a3 titleColor:(id *)a4 backgroundColor:(id *)a5;
+- (void)enumerateContentInRange:(_NSRange)range usingBlock:(id)block;
+- (void)getColorsForSlot:(id)slot titleColor:(id *)color backgroundColor:(id *)backgroundColor;
 - (void)regenerateEntireAttributedString;
-- (void)replaceAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5;
-- (void)replaceAttributeInInanimateText:(id)a3 value:(id)a4;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
-- (void)setContents:(id)a3;
-- (void)setDisabledSlotTitleColor:(id)a3 backgroundColor:(id)a4;
-- (void)setDisclosureAttachment:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setOutputButtonAttachment:(id)a3;
-- (void)setParagraphStyle:(id)a3;
-- (void)setSuffixColor:(id)a3;
-- (void)setSuffixFont:(id)a3;
-- (void)setSuffixString:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTintColor:(id)a3;
-- (void)setUnpopulatedFont:(id)a3;
+- (void)replaceAttribute:(id)attribute value:(id)value range:(_NSRange)range;
+- (void)replaceAttributeInInanimateText:(id)text value:(id)value;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
+- (void)setContents:(id)contents;
+- (void)setDisabledSlotTitleColor:(id)color backgroundColor:(id)backgroundColor;
+- (void)setDisclosureAttachment:(id)attachment;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setOutputButtonAttachment:(id)attachment;
+- (void)setParagraphStyle:(id)style;
+- (void)setSuffixColor:(id)color;
+- (void)setSuffixFont:(id)font;
+- (void)setSuffixString:(id)string;
+- (void)setTextColor:(id)color;
+- (void)setTintColor:(id)color;
+- (void)setUnpopulatedFont:(id)font;
 - (void)updateColorsForAllSlots;
-- (void)updateColorsForSlot:(id)a3;
+- (void)updateColorsForSlot:(id)slot;
 @end
 
 @implementation WFSlotTemplateTextStorage
 
-- (void)enumerateContentInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateContentInRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__WFSlotTemplateTextStorage_enumerateContentInRange_usingBlock___block_invoke;
   v9[3] = &unk_1E8307A58;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [(WFSlotTemplateTextStorage *)self enumerateAttribute:@"WFSlot" inRange:location options:length usingBlock:0, v9];
 }
 
@@ -100,25 +100,25 @@ void __64__WFSlotTemplateTextStorage_enumerateContentInRange_usingBlock___block_
   }
 }
 
-- (id)slotAtCharacterIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 effectiveContentRange:(_NSRange *)a5
+- (id)slotAtCharacterIndex:(unint64_t)index effectiveRange:(_NSRange *)range effectiveContentRange:(_NSRange *)contentRange
 {
   v9 = [(WFSlotTemplateTextStorage *)self length];
   if (v9)
   {
-    if ([(WFSlotTemplateTextStorage *)self length]- 1 >= a3)
+    if ([(WFSlotTemplateTextStorage *)self length]- 1 >= index)
     {
       v11 = xmmword_1C841E450;
-      v9 = [(WFSlotTemplateTextStorage *)self attribute:@"WFSlot" atIndex:a3 longestEffectiveRange:&v11 inRange:0, [(WFSlotTemplateTextStorage *)self length]];
+      v9 = [(WFSlotTemplateTextStorage *)self attribute:@"WFSlot" atIndex:index longestEffectiveRange:&v11 inRange:0, [(WFSlotTemplateTextStorage *)self length]];
       if (v9)
       {
-        if (a4)
+        if (range)
         {
-          *a4 = v11;
+          *range = v11;
         }
 
-        if (a5)
+        if (contentRange)
         {
-          *a5 = vaddq_s64(v11, xmmword_1C841E360);
+          *contentRange = vaddq_s64(v11, xmmword_1C841E360);
         }
       }
     }
@@ -132,14 +132,14 @@ void __64__WFSlotTemplateTextStorage_enumerateContentInRange_usingBlock___block_
   return v9;
 }
 
-- (_NSRange)characterRangeForSlot:(id)a3 includingInsideSpacingOpportunities:(BOOL)a4
+- (_NSRange)characterRangeForSlot:(id)slot includingInsideSpacingOpportunities:(BOOL)opportunities
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  opportunitiesCopy = opportunities;
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"slotToFind"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"slotToFind"}];
   }
 
   v19 = 0;
@@ -152,13 +152,13 @@ void __64__WFSlotTemplateTextStorage_enumerateContentInRange_usingBlock___block_
   v16[1] = 3221225472;
   v16[2] = __87__WFSlotTemplateTextStorage_characterRangeForSlot_includingInsideSpacingOpportunities___block_invoke;
   v16[3] = &unk_1E8307A30;
-  v9 = v7;
+  v9 = slotCopy;
   v17 = v9;
   v18 = &v19;
   [(WFSlotTemplateTextStorage *)self enumerateAttribute:@"WFSlot" inRange:0 options:v8 usingBlock:0, v16];
   v10 = v20;
   v11 = v20[4];
-  if (v4)
+  if (opportunitiesCopy)
   {
     v12 = v20[5];
   }
@@ -193,11 +193,11 @@ uint64_t __87__WFSlotTemplateTextStorage_characterRangeForSlot_includingInsideSp
   return result;
 }
 
-- (unint64_t)slotSpacingOpportunityAtCharacterIndex:(unint64_t)a3
+- (unint64_t)slotSpacingOpportunityAtCharacterIndex:(unint64_t)index
 {
-  v5 = [(WFSlotTemplateTextStorage *)self string];
+  string = [(WFSlotTemplateTextStorage *)self string];
   v6 = 1;
-  v7 = [v5 substringWithRange:{a3, 1}];
+  v7 = [string substringWithRange:{index, 1}];
 
   v8 = [(WFSlotTemplateTextStorage *)self stringForSlotSpacingOpportunity:1];
   v9 = [v7 isEqualToString:v8];
@@ -221,9 +221,9 @@ uint64_t __87__WFSlotTemplateTextStorage_characterRangeForSlot_includingInsideSp
   return v6;
 }
 
-- (id)stringForSlotSpacingOpportunity:(unint64_t)a3
+- (id)stringForSlotSpacingOpportunity:(unint64_t)opportunity
 {
-  if (a3 == 1)
+  if (opportunity == 1)
   {
     v4 = 145;
 LABEL_5:
@@ -232,7 +232,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (opportunity == 2)
   {
     v4 = 146;
     goto LABEL_5;
@@ -243,13 +243,13 @@ LABEL_5:
   return v5;
 }
 
-- (void)_updateColorsForSlot:(id)a3 inRange:(_NSRange)a4
+- (void)_updateColorsForSlot:(id)slot inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v10 = 0;
   v11 = 0;
-  [(WFSlotTemplateTextStorage *)self getColorsForSlot:a3 titleColor:&v11 backgroundColor:&v10];
+  [(WFSlotTemplateTextStorage *)self getColorsForSlot:slot titleColor:&v11 backgroundColor:&v10];
   v7 = v11;
   v8 = v10;
   v9 = v7;
@@ -283,163 +283,163 @@ uint64_t __52__WFSlotTemplateTextStorage_updateColorsForAllSlots__block_invoke(u
   return result;
 }
 
-- (void)updateColorsForSlot:(id)a3
+- (void)updateColorsForSlot:(id)slot
 {
-  v9 = a3;
+  slotCopy = slot;
   v5 = [WFSlotTemplateTextStorage characterRangeForSlot:"characterRangeForSlot:includingInsideSpacingOpportunities:" includingInsideSpacingOpportunities:?];
   v7 = v6;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:582 description:@"Tried to update colors for a slot that doesn't exist"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:582 description:@"Tried to update colors for a slot that doesn't exist"];
   }
 
-  [(WFSlotTemplateTextStorage *)self _updateColorsForSlot:v9 inRange:v5, v7];
+  [(WFSlotTemplateTextStorage *)self _updateColorsForSlot:slotCopy inRange:v5, v7];
 }
 
-- (void)getColorsForSlot:(id)a3 titleColor:(id *)a4 backgroundColor:(id *)a5
+- (void)getColorsForSlot:(id)slot titleColor:(id *)color backgroundColor:(id *)backgroundColor
 {
-  v29 = a3;
-  v8 = [(WFSlotTemplateTextStorage *)self highlightedSlots];
-  v9 = [v8 containsObject:v29];
+  slotCopy = slot;
+  highlightedSlots = [(WFSlotTemplateTextStorage *)self highlightedSlots];
+  v9 = [highlightedSlots containsObject:slotCopy];
 
-  v10 = [(WFSlotTemplateTextStorage *)self selectedSlots];
-  v11 = [v10 containsObject:v29];
+  selectedSlots = [(WFSlotTemplateTextStorage *)self selectedSlots];
+  v11 = [selectedSlots containsObject:slotCopy];
 
-  v12 = [(WFSlotTemplateTextStorage *)self typingSlots];
-  v13 = [v12 containsObject:v29];
+  typingSlots = [(WFSlotTemplateTextStorage *)self typingSlots];
+  v13 = [typingSlots containsObject:slotCopy];
 
   if ([(WFSlotTemplateTextStorage *)self isEnabled])
   {
-    v14 = [v29 isEnabled];
+    isEnabled = [slotCopy isEnabled];
   }
 
   else
   {
-    v14 = 0;
+    isEnabled = 0;
   }
 
-  v15 = [v29 isInvalid];
-  v16 = [v29 isPopulated];
-  v17 = [(WFSlotTemplateTextStorage *)self tintColor];
+  isInvalid = [slotCopy isInvalid];
+  isPopulated = [slotCopy isPopulated];
+  tintColor = [(WFSlotTemplateTextStorage *)self tintColor];
   if (v13)
   {
-    v18 = [(WFSlotTemplateTextStorage *)self prefersTypingForSlotFilling];
+    prefersTypingForSlotFilling = [(WFSlotTemplateTextStorage *)self prefersTypingForSlotFilling];
     v19 = MEMORY[0x1E69DC888];
-    if (v18 && (v15 & 1) != 0)
+    if (prefersTypingForSlotFilling && (isInvalid & 1) != 0)
     {
       goto LABEL_7;
     }
 
-    v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTypingTitleColor];
-    v21 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTypingBackgroundColorForUseCase:{-[WFSlotTemplateTextStorage useCase](self, "useCase")}];
+    wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTypingTitleColor];
+    disabledSlotBackgroundColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTypingBackgroundColorForUseCase:{-[WFSlotTemplateTextStorage useCase](self, "useCase")}];
     goto LABEL_19;
   }
 
   if (v11)
   {
-    if (v15)
+    if (isInvalid)
     {
-      v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorSelectedTitleColor];
+      wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorSelectedTitleColor];
       [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorSelectedBackgroundColor];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotSelectedTitleColorWithTintColor:v17];
-      [MEMORY[0x1E69DC888] wf_slotTemplateSlotSelectedBackgroundColorWithTintColor:v17];
+      wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotSelectedTitleColorWithTintColor:tintColor];
+      [MEMORY[0x1E69DC888] wf_slotTemplateSlotSelectedBackgroundColorWithTintColor:tintColor];
     }
 
-    v21 = LABEL_11:;
+    disabledSlotBackgroundColor = LABEL_11:;
     goto LABEL_19;
   }
 
-  if ((v14 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v20 = [(WFSlotTemplateTextStorage *)self disabledSlotTitleColor];
-    v21 = [(WFSlotTemplateTextStorage *)self disabledSlotBackgroundColor];
+    wf_slotTemplateSlotTypingTitleColor = [(WFSlotTemplateTextStorage *)self disabledSlotTitleColor];
+    disabledSlotBackgroundColor = [(WFSlotTemplateTextStorage *)self disabledSlotBackgroundColor];
     goto LABEL_19;
   }
 
   v19 = MEMORY[0x1E69DC888];
   if (!v9)
   {
-    if (v15)
+    if (isInvalid)
     {
-      v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorTitleColor];
+      wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorTitleColor];
       [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorBackgroundColor];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTitleColorWithTintColor:v17];
-      [MEMORY[0x1E69DC888] wf_slotTemplateSlotBackgroundColorWithTintColor:v17];
+      wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotTitleColorWithTintColor:tintColor];
+      [MEMORY[0x1E69DC888] wf_slotTemplateSlotBackgroundColorWithTintColor:tintColor];
     }
 
     goto LABEL_11;
   }
 
-  if (v15)
+  if (isInvalid)
   {
 LABEL_7:
-    v20 = [v19 wf_slotTemplateSlotErrorHighlightedTitleColor];
-    v21 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorHighlightedBackgroundColor];
+    wf_slotTemplateSlotTypingTitleColor = [v19 wf_slotTemplateSlotErrorHighlightedTitleColor];
+    disabledSlotBackgroundColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotErrorHighlightedBackgroundColor];
     goto LABEL_19;
   }
 
-  v20 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotHighlightedTitleColorWithTintColor:v17];
-  v21 = [MEMORY[0x1E69DC888] wf_slotTemplateSlotHighlightedBackgroundColorWithTintColor:v17];
+  wf_slotTemplateSlotTypingTitleColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotHighlightedTitleColorWithTintColor:tintColor];
+  disabledSlotBackgroundColor = [MEMORY[0x1E69DC888] wf_slotTemplateSlotHighlightedBackgroundColorWithTintColor:tintColor];
 LABEL_19:
-  v22 = v21;
-  if (v16)
+  v22 = disabledSlotBackgroundColor;
+  if (isPopulated)
   {
     if (!v13)
     {
       goto LABEL_28;
     }
 
-    v23 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v24 = [(WFSlotTemplateTextStorage *)self useCase];
+    useCase = [(WFSlotTemplateTextStorage *)self useCase];
     v25 = 0.0;
-    if (v24 == 1)
+    if (useCase == 1)
     {
       v25 = 0.5;
     }
 
-    if (!v24)
+    if (!useCase)
     {
       v25 = 0.4;
     }
 
-    v23 = [v20 colorWithAlphaComponent:v25];
+    clearColor = [wf_slotTemplateSlotTypingTitleColor colorWithAlphaComponent:v25];
   }
 
-  v26 = v23;
+  v26 = clearColor;
 
-  v20 = v26;
+  wf_slotTemplateSlotTypingTitleColor = v26;
 LABEL_28:
-  if (a4)
+  if (color)
   {
-    v27 = v20;
-    *a4 = v20;
+    v27 = wf_slotTemplateSlotTypingTitleColor;
+    *color = wf_slotTemplateSlotTypingTitleColor;
   }
 
-  if (a5)
+  if (backgroundColor)
   {
     v28 = v22;
-    *a5 = v22;
+    *backgroundColor = v22;
   }
 }
 
-- (id)attributedStringForSlot:(id)a3 isRTL:(BOOL)a4
+- (id)attributedStringForSlot:(id)slot isRTL:(BOOL)l
 {
-  v4 = a4;
+  lCopy = l;
   v44[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  slotCopy = slot;
   v7 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v8 = [(WFSlotTemplateTextStorage *)self stringForSlotSpacingOpportunity:1];
   v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8];
@@ -447,7 +447,7 @@ LABEL_28:
 
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
   v11 = 8295;
-  if (!v4)
+  if (!lCopy)
   {
     v11 = 8296;
   }
@@ -457,43 +457,43 @@ LABEL_28:
 
   v38 = v13;
   [v7 appendAttributedString:v13];
-  v14 = [v6 contentAttributedString];
-  if ([v14 length])
+  contentAttributedString = [slotCopy contentAttributedString];
+  if ([contentAttributedString length])
   {
     v15 = *MEMORY[0x1E69DB5F8];
-    v16 = [v14 length];
+    v16 = [contentAttributedString length];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __59__WFSlotTemplateTextStorage_attributedStringForSlot_isRTL___block_invoke;
     v42[3] = &unk_1E8307A08;
     v42[4] = self;
-    [v14 enumerateAttribute:v15 inRange:0 options:v16 usingBlock:{0, v42}];
+    [contentAttributedString enumerateAttribute:v15 inRange:0 options:v16 usingBlock:{0, v42}];
     goto LABEL_13;
   }
 
-  v17 = [v6 localizedAttributedPlaceholder];
-  v18 = [v17 length];
+  localizedAttributedPlaceholder = [slotCopy localizedAttributedPlaceholder];
+  v18 = [localizedAttributedPlaceholder length];
 
   if (v18)
   {
-    v19 = [v6 localizedAttributedPlaceholder];
+    localizedAttributedPlaceholder2 = [slotCopy localizedAttributedPlaceholder];
   }
 
   else
   {
-    v20 = [v6 localizedPlaceholder];
-    v21 = [v20 length];
+    localizedPlaceholder = [slotCopy localizedPlaceholder];
+    v21 = [localizedPlaceholder length];
 
     if (v21)
     {
       v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v23 = [v6 localizedPlaceholder];
+      localizedPlaceholder2 = [slotCopy localizedPlaceholder];
     }
 
     else
     {
-      v24 = [v6 localizedName];
-      v25 = [v24 length];
+      localizedName = [slotCopy localizedName];
+      v25 = [localizedName length];
 
       if (!v25)
       {
@@ -501,23 +501,23 @@ LABEL_28:
       }
 
       v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v23 = [v6 localizedName];
+      localizedPlaceholder2 = [slotCopy localizedName];
     }
 
-    v26 = v23;
-    v19 = [v22 initWithString:v23];
+    v26 = localizedPlaceholder2;
+    localizedAttributedPlaceholder2 = [v22 initWithString:localizedPlaceholder2];
   }
 
-  v14 = v19;
+  contentAttributedString = localizedAttributedPlaceholder2;
 LABEL_13:
-  if ([v14 length])
+  if ([contentAttributedString length])
   {
-    [v7 appendAttributedString:v14];
+    [v7 appendAttributedString:contentAttributedString];
   }
 
   v27 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 8297];
-  v29 = [v27 initWithString:v28];
+  8297 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 8297];
+  v29 = [v27 initWithString:8297];
 
   [v7 appendAttributedString:v29];
   v39 = v8;
@@ -526,11 +526,11 @@ LABEL_13:
 
   v40 = 0;
   v41 = 0;
-  [(WFSlotTemplateTextStorage *)self getColorsForSlot:v6 titleColor:&v41 backgroundColor:&v40];
+  [(WFSlotTemplateTextStorage *)self getColorsForSlot:slotCopy titleColor:&v41 backgroundColor:&v40];
   v31 = v41;
   v32 = v40;
   v43[0] = *MEMORY[0x1E69DB648];
-  if ([v6 isPopulated])
+  if ([slotCopy isPopulated])
   {
     [(WFSlotTemplateTextStorage *)self font];
   }
@@ -542,10 +542,10 @@ LABEL_13:
   v33 = ;
   v44[0] = v33;
   v43[1] = *MEMORY[0x1E69DB688];
-  v34 = [(WFSlotTemplateTextStorage *)self paragraphStyle];
+  paragraphStyle = [(WFSlotTemplateTextStorage *)self paragraphStyle];
   v43[2] = @"WFSlot";
-  v44[1] = v34;
-  v44[2] = v6;
+  v44[1] = paragraphStyle;
+  v44[2] = slotCopy;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:3];
   v36 = [v35 mutableCopy];
 
@@ -600,10 +600,10 @@ void __59__WFSlotTemplateTextStorage_attributedStringForSlot_isRTL___block_invok
   }
 }
 
-- (void)replaceAttributeInInanimateText:(id)a3 value:(id)a4
+- (void)replaceAttributeInInanimateText:(id)text value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  valueCopy = value;
   [(WFSlotTemplateTextStorage *)self beginEditing];
   v8 = [(WFSlotTemplateTextStorage *)self length];
   v11[0] = MEMORY[0x1E69E9820];
@@ -611,10 +611,10 @@ void __59__WFSlotTemplateTextStorage_attributedStringForSlot_isRTL___block_invok
   v11[2] = __67__WFSlotTemplateTextStorage_replaceAttributeInInanimateText_value___block_invoke;
   v11[3] = &unk_1E83079E0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = textCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = textCopy;
   [(WFSlotTemplateTextStorage *)self enumerateAttributesInRange:0 options:v8 usingBlock:0, v11];
   [(WFSlotTemplateTextStorage *)self endEditing];
 }
@@ -633,16 +633,16 @@ void __67__WFSlotTemplateTextStorage_replaceAttributeInInanimateText_value___blo
   }
 }
 
-- (void)replaceAttribute:(id)a3 value:(id)a4 range:(_NSRange)a5
+- (void)replaceAttribute:(id)attribute value:(id)value range:(_NSRange)range
 {
-  if (a4)
+  if (value)
   {
-    [(WFSlotTemplateTextStorage *)self addAttribute:a3 value:a4 range:a5.location, a5.length];
+    [(WFSlotTemplateTextStorage *)self addAttribute:attribute value:value range:range.location, range.length];
   }
 
   else
   {
-    [(WFSlotTemplateTextStorage *)self removeAttribute:a3 range:a5.location, a5.length];
+    [(WFSlotTemplateTextStorage *)self removeAttribute:attribute range:range.location, range.length];
   }
 }
 
@@ -652,18 +652,18 @@ void __67__WFSlotTemplateTextStorage_replaceAttributeInInanimateText_value___blo
   v3 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v42 = *MEMORY[0x1E69DB650];
   v47[0] = *MEMORY[0x1E69DB650];
-  v4 = [(WFSlotTemplateTextStorage *)self textColor];
-  v48[0] = v4;
+  textColor = [(WFSlotTemplateTextStorage *)self textColor];
+  v48[0] = textColor;
   v41 = *MEMORY[0x1E69DB648];
   v47[1] = *MEMORY[0x1E69DB648];
-  v5 = [(WFSlotTemplateTextStorage *)self font];
-  v48[1] = v5;
+  font = [(WFSlotTemplateTextStorage *)self font];
+  v48[1] = font;
   v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-  v6 = [(WFSlotTemplateTextStorage *)self contents];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
   v43 = [(WFSlotTemplateTextStorage *)self stringForSlotSpacingOpportunity:2];
   v7 = 0x1E696A000uLL;
-  if (![v6 count])
+  if (![contents count])
   {
     v17 = 0;
     goto LABEL_17;
@@ -673,7 +673,7 @@ void __67__WFSlotTemplateTextStorage_replaceAttributeInInanimateText_value___blo
   v9 = 0;
   do
   {
-    v10 = [v6 objectAtIndexedSubscript:v9];
+    v10 = [contents objectAtIndexedSubscript:v9];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -705,7 +705,7 @@ void __67__WFSlotTemplateTextStorage_replaceAttributeInInanimateText_value___blo
       v8 |= v13;
       v15 = [(WFSlotTemplateTextStorage *)self attributedStringForSlot:v12 isRTL:v8 & 1];
       [v3 appendAttributedString:v15];
-      if (v9 < [v6 count] - 1)
+      if (v9 < [contents count] - 1)
       {
         v16 = [objc_alloc(*(v7 + 2736)) initWithString:v43];
         [v3 appendAttributedString:v16];
@@ -718,7 +718,7 @@ LABEL_12:
     ++v9;
   }
 
-  while (v9 < [v6 count]);
+  while (v9 < [contents count]);
   if (v8)
   {
     v17 = 2;
@@ -730,59 +730,59 @@ LABEL_12:
   }
 
 LABEL_17:
-  v18 = [(WFSlotTemplateTextStorage *)self disclosureAttachment];
-  if (v18)
+  disclosureAttachment = [(WFSlotTemplateTextStorage *)self disclosureAttachment];
+  if (disclosureAttachment)
   {
     v19 = objc_alloc(*(v7 + 2736));
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 160];
     v21 = [v19 initWithString:v20];
 
     [v3 appendAttributedString:v21];
-    v22 = [*(v7 + 2736) attributedStringWithAttachment:v18];
+    v22 = [*(v7 + 2736) attributedStringWithAttachment:disclosureAttachment];
     [v3 appendAttributedString:v22];
   }
 
-  v23 = [(WFSlotTemplateTextStorage *)self outputButtonAttachment];
-  if (v23)
+  outputButtonAttachment = [(WFSlotTemplateTextStorage *)self outputButtonAttachment];
+  if (outputButtonAttachment)
   {
     v24 = objc_alloc(*(v7 + 2736));
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%C", 160];
     v26 = [v24 initWithString:v25];
 
     [v3 appendAttributedString:v26];
-    v27 = [*(v7 + 2736) attributedStringWithAttachment:v23];
+    v27 = [*(v7 + 2736) attributedStringWithAttachment:outputButtonAttachment];
     [v3 appendAttributedString:v27];
   }
 
-  v28 = [(WFSlotTemplateTextStorage *)self suffixString];
-  v29 = [v28 length];
+  suffixString = [(WFSlotTemplateTextStorage *)self suffixString];
+  v29 = [suffixString length];
 
   if (v29)
   {
     v45[0] = v42;
-    v30 = [(WFSlotTemplateTextStorage *)self suffixColor];
+    suffixColor = [(WFSlotTemplateTextStorage *)self suffixColor];
     v45[1] = v41;
-    v46[0] = v30;
-    v31 = [(WFSlotTemplateTextStorage *)self suffixFont];
-    v46[1] = v31;
+    v46[0] = suffixColor;
+    suffixFont = [(WFSlotTemplateTextStorage *)self suffixFont];
+    v46[1] = suffixFont;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
     v33 = v32 = v7;
 
     v34 = objc_alloc(*(v32 + 2736));
-    v35 = [(WFSlotTemplateTextStorage *)self suffixString];
-    v36 = [v34 initWithString:v35 attributes:v33];
+    suffixString2 = [(WFSlotTemplateTextStorage *)self suffixString];
+    v36 = [v34 initWithString:suffixString2 attributes:v33];
 
     [v3 appendAttributedString:v36];
   }
 
   self->_contentsTextAlignment = v17;
-  v37 = [(WFSlotTemplateTextStorage *)self paragraphStyle];
-  v38 = [v37 alignment];
+  paragraphStyle = [(WFSlotTemplateTextStorage *)self paragraphStyle];
+  alignment = [paragraphStyle alignment];
 
-  if (v38 == 4)
+  if (alignment == 4)
   {
-    v39 = [(WFSlotTemplateTextStorage *)self paragraphStyle];
-    v40 = [v39 mutableCopy];
+    paragraphStyle2 = [(WFSlotTemplateTextStorage *)self paragraphStyle];
+    v40 = [paragraphStyle2 mutableCopy];
 
     [v40 setAlignment:self->_contentsTextAlignment];
     [v3 addAttribute:*MEMORY[0x1E69DB688] value:v40 range:{0, objc_msgSend(v3, "length")}];
@@ -791,213 +791,213 @@ LABEL_17:
   [(WFSlotTemplateTextStorage *)self setAttributedString:v3];
 }
 
-- (BOOL)slotContainsStrongRTL:(id)a3
+- (BOOL)slotContainsStrongRTL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 contentAttributedString];
-  v5 = [v4 string];
+  lCopy = l;
+  contentAttributedString = [lCopy contentAttributedString];
+  string = [contentAttributedString string];
 
-  if (![v5 length])
+  if (![string length])
   {
-    v6 = [v3 localizedPlaceholder];
-    v7 = v6;
-    if (v6)
+    localizedPlaceholder = [lCopy localizedPlaceholder];
+    v7 = localizedPlaceholder;
+    if (localizedPlaceholder)
     {
-      v8 = v6;
+      localizedName = localizedPlaceholder;
     }
 
     else
     {
-      v8 = [v3 localizedName];
+      localizedName = [lCopy localizedName];
     }
 
-    v9 = v8;
+    v9 = localizedName;
 
-    v5 = v9;
+    string = v9;
   }
 
-  v10 = [v5 wf_hasStrongRTLCharacter];
+  wf_hasStrongRTLCharacter = [string wf_hasStrongRTLCharacter];
 
-  return v10;
+  return wf_hasStrongRTLCharacter;
 }
 
-- (void)didEndTypingInSlot:(id)a3
+- (void)didEndTypingInSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:333 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:333 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
-  [v7 removeObject:v10];
+  mutableTypingSlots = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
+  [mutableTypingSlots removeObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
-- (void)didBeginTypingInSlot:(id)a3
+- (void)didBeginTypingInSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:325 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:326 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:326 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
-  [v7 addObject:v10];
+  mutableTypingSlots = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
+  [mutableTypingSlots addObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
 - (NSSet)typingSlots
 {
-  v2 = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
-  v3 = [v2 copy];
+  mutableTypingSlots = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
+  v3 = [mutableTypingSlots copy];
 
   return v3;
 }
 
-- (void)didDeselectSlot:(id)a3
+- (void)didDeselectSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:313 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:313 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
-  [v7 removeObject:v10];
+  mutableSelectedSlots = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
+  [mutableSelectedSlots removeObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
-- (void)didSelectSlot:(id)a3
+- (void)didSelectSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:306 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:306 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
-  [v7 addObject:v10];
+  mutableSelectedSlots = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
+  [mutableSelectedSlots addObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
 - (NSSet)selectedSlots
 {
-  v2 = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
-  v3 = [v2 copy];
+  mutableSelectedSlots = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
+  v3 = [mutableSelectedSlots copy];
 
   return v3;
 }
 
-- (void)didUnhighlightSlot:(id)a3
+- (void)didUnhighlightSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:293 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:293 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
-  [v7 removeObject:v10];
+  mutableHighlightedSlots = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
+  [mutableHighlightedSlots removeObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
-- (void)didHighlightSlot:(id)a3
+- (void)didHighlightSlot:(id)slot
 {
-  v10 = a3;
-  if (!v10)
+  slotCopy = slot;
+  if (!slotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:285 description:{@"Invalid parameter not satisfying: %@", @"slot"}];
   }
 
-  v5 = [(WFSlotTemplateTextStorage *)self contents];
-  v6 = [v5 containsObject:v10];
+  contents = [(WFSlotTemplateTextStorage *)self contents];
+  v6 = [contents containsObject:slotCopy];
 
   if ((v6 & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:286 description:@"Slot must be a member of the contents array"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:286 description:@"Slot must be a member of the contents array"];
   }
 
-  v7 = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
-  [v7 addObject:v10];
+  mutableHighlightedSlots = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
+  [mutableHighlightedSlots addObject:slotCopy];
 
-  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:v10];
+  [(WFSlotTemplateTextStorage *)self updateColorsForSlot:slotCopy];
 }
 
 - (NSSet)highlightedSlots
 {
-  v2 = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
-  v3 = [v2 copy];
+  mutableHighlightedSlots = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
+  v3 = [mutableHighlightedSlots copy];
 
   return v3;
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contentsCopy = contents;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [contentsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1009,28 +1009,28 @@ LABEL_17:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentsCopy);
         }
 
         if (([*(*(&v15 + 1) + 8 * v9) conformsToProtocol:&unk_1F48556C0] & 1) == 0)
         {
-          v10 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v10 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:268 description:@"The contents array may only contain NSString and WFSlotTemplateSlot objects."];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateTextStorage.m" lineNumber:268 description:@"The contents array may only contain NSString and WFSlotTemplateSlot objects."];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [contentsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  if (v5)
+  if (contentsCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v5 copyItems:1];
+    v11 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:contentsCopy copyItems:1];
   }
 
   else
@@ -1039,37 +1039,37 @@ LABEL_17:
   }
 
   objc_storeStrong(&self->_contents, v11);
-  if (v5)
+  if (contentsCopy)
   {
   }
 
-  v12 = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
-  [v12 removeAllObjects];
+  mutableHighlightedSlots = [(WFSlotTemplateTextStorage *)self mutableHighlightedSlots];
+  [mutableHighlightedSlots removeAllObjects];
 
-  v13 = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
-  [v13 removeAllObjects];
+  mutableSelectedSlots = [(WFSlotTemplateTextStorage *)self mutableSelectedSlots];
+  [mutableSelectedSlots removeAllObjects];
 
-  v14 = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
-  [v14 removeAllObjects];
+  mutableTypingSlots = [(WFSlotTemplateTextStorage *)self mutableTypingSlots];
+  [mutableTypingSlots removeAllObjects];
 
   [(WFSlotTemplateTextStorage *)self regenerateEntireAttributedString];
 }
 
-- (void)setDisabledSlotTitleColor:(id)a3 backgroundColor:(id)a4
+- (void)setDisabledSlotTitleColor:(id)color backgroundColor:(id)backgroundColor
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_disabledSlotTitleColor, a3);
-  objc_storeStrong(&self->_disabledSlotBackgroundColor, a4);
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  objc_storeStrong(&self->_disabledSlotTitleColor, color);
+  objc_storeStrong(&self->_disabledSlotBackgroundColor, backgroundColor);
   if ([(WFSlotTemplateTextStorage *)self isEnabled])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(WFSlotTemplateTextStorage *)self contents];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    contents = [(WFSlotTemplateTextStorage *)self contents];
+    v10 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1081,7 +1081,7 @@ LABEL_17:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(contents);
           }
 
           v14 = *(*(&v16 + 1) + 8 * v13);
@@ -1099,7 +1099,7 @@ LABEL_17:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [contents countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v11);
@@ -1119,9 +1119,9 @@ LABEL_17:
   {
     v4 = [MEMORY[0x1E69E09E0] colorWithSystemColor:14];
     v5 = [v4 colorWithAlphaComponent:0.100000001];
-    v6 = [v5 platformColor];
+    platformColor = [v5 platformColor];
     v7 = self->_disabledSlotBackgroundColor;
-    self->_disabledSlotBackgroundColor = v6;
+    self->_disabledSlotBackgroundColor = platformColor;
 
     disabledSlotBackgroundColor = self->_disabledSlotBackgroundColor;
   }
@@ -1134,9 +1134,9 @@ LABEL_17:
   disabledSlotTitleColor = self->_disabledSlotTitleColor;
   if (!disabledSlotTitleColor)
   {
-    v4 = [MEMORY[0x1E69DC888] wf_labelColor];
+    wf_labelColor = [MEMORY[0x1E69DC888] wf_labelColor];
     v5 = self->_disabledSlotTitleColor;
-    self->_disabledSlotTitleColor = v4;
+    self->_disabledSlotTitleColor = wf_labelColor;
 
     disabledSlotTitleColor = self->_disabledSlotTitleColor;
   }
@@ -1144,56 +1144,56 @@ LABEL_17:
   return disabledSlotTitleColor;
 }
 
-- (void)setSuffixString:(id)a3
+- (void)setSuffixString:(id)string
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_suffixString] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToString:self->_suffixString] & 1) == 0)
   {
-    objc_storeStrong(&self->_suffixString, a3);
+    objc_storeStrong(&self->_suffixString, string);
     [(WFSlotTemplateTextStorage *)self regenerateEntireAttributedString];
   }
 }
 
-- (void)setOutputButtonAttachment:(id)a3
+- (void)setOutputButtonAttachment:(id)attachment
 {
-  v5 = a3;
-  if (self->_outputButtonAttachment != v5)
+  attachmentCopy = attachment;
+  if (self->_outputButtonAttachment != attachmentCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_outputButtonAttachment, a3);
+    v6 = attachmentCopy;
+    objc_storeStrong(&self->_outputButtonAttachment, attachment);
     [(WFSlotTemplateTextStorage *)self regenerateEntireAttributedString];
-    v5 = v6;
+    attachmentCopy = v6;
   }
 }
 
-- (void)setDisclosureAttachment:(id)a3
+- (void)setDisclosureAttachment:(id)attachment
 {
-  v5 = a3;
-  if (self->_disclosureAttachment != v5)
+  attachmentCopy = attachment;
+  if (self->_disclosureAttachment != attachmentCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disclosureAttachment, a3);
+    v6 = attachmentCopy;
+    objc_storeStrong(&self->_disclosureAttachment, attachment);
     [(WFSlotTemplateTextStorage *)self regenerateEntireAttributedString];
-    v5 = v6;
+    attachmentCopy = v6;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(WFSlotTemplateTextStorage *)self updateColorsForAllSlots];
   }
 }
 
-- (void)setParagraphStyle:(id)a3
+- (void)setParagraphStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self paragraphStyle];
-  v6 = [v4 isEqual:v5];
+  styleCopy = style;
+  paragraphStyle = [(WFSlotTemplateTextStorage *)self paragraphStyle];
+  v6 = [styleCopy isEqual:paragraphStyle];
 
-  v7 = [v4 copy];
+  v7 = [styleCopy copy];
   paragraphStyle = self->_paragraphStyle;
   self->_paragraphStyle = v7;
 
@@ -1204,14 +1204,14 @@ LABEL_17:
   }
 }
 
-- (void)setSuffixColor:(id)a3
+- (void)setSuffixColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self suffixColor];
-  v6 = [(UIColor *)v4 isEqual:v5];
+  colorCopy = color;
+  suffixColor = [(WFSlotTemplateTextStorage *)self suffixColor];
+  v6 = [(UIColor *)colorCopy isEqual:suffixColor];
 
   suffixColor = self->_suffixColor;
-  self->_suffixColor = v4;
+  self->_suffixColor = colorCopy;
 
   if ((v6 & 1) == 0)
   {
@@ -1220,14 +1220,14 @@ LABEL_17:
   }
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self tintColor];
-  v6 = [(UIColor *)v4 isEqual:v5];
+  colorCopy = color;
+  tintColor = [(WFSlotTemplateTextStorage *)self tintColor];
+  v6 = [(UIColor *)colorCopy isEqual:tintColor];
 
   tintColor = self->_tintColor;
-  self->_tintColor = v4;
+  self->_tintColor = colorCopy;
 
   if ((v6 & 1) == 0)
   {
@@ -1236,31 +1236,31 @@ LABEL_17:
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self textColor];
-  v6 = [(UIColor *)v4 isEqual:v5];
+  colorCopy = color;
+  textColor = [(WFSlotTemplateTextStorage *)self textColor];
+  v6 = [(UIColor *)colorCopy isEqual:textColor];
 
   textColor = self->_textColor;
-  self->_textColor = v4;
+  self->_textColor = colorCopy;
 
   if ((v6 & 1) == 0)
   {
     v8 = *MEMORY[0x1E69DB650];
-    v9 = [(WFSlotTemplateTextStorage *)self textColor];
-    [(WFSlotTemplateTextStorage *)self replaceAttributeInInanimateText:v8 value:v9];
+    textColor2 = [(WFSlotTemplateTextStorage *)self textColor];
+    [(WFSlotTemplateTextStorage *)self replaceAttributeInInanimateText:v8 value:textColor2];
   }
 }
 
-- (void)setSuffixFont:(id)a3
+- (void)setSuffixFont:(id)font
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self suffixFont];
-  v6 = [(UIFont *)v4 isEqual:v5];
+  fontCopy = font;
+  suffixFont = [(WFSlotTemplateTextStorage *)self suffixFont];
+  v6 = [(UIFont *)fontCopy isEqual:suffixFont];
 
   suffixFont = self->_suffixFont;
-  self->_suffixFont = v4;
+  self->_suffixFont = fontCopy;
 
   if ((v6 & 1) == 0)
   {
@@ -1269,13 +1269,13 @@ LABEL_17:
   }
 }
 
-- (void)setUnpopulatedFont:(id)a3
+- (void)setUnpopulatedFont:(id)font
 {
-  v5 = a3;
-  v6 = [(WFSlotTemplateTextStorage *)self unpopulatedFont];
-  v7 = [v5 isEqual:v6];
+  fontCopy = font;
+  unpopulatedFont = [(WFSlotTemplateTextStorage *)self unpopulatedFont];
+  v7 = [fontCopy isEqual:unpopulatedFont];
 
-  objc_storeStrong(&self->_unpopulatedFont, a3);
+  objc_storeStrong(&self->_unpopulatedFont, font);
   if ((v7 & 1) == 0)
   {
     v8 = [(WFSlotTemplateTextStorage *)self length];
@@ -1299,14 +1299,14 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(WFSlotTemplateTextStorage *)self font];
-  v6 = [(UIFont *)v4 isEqual:v5];
+  fontCopy = font;
+  font = [(WFSlotTemplateTextStorage *)self font];
+  v6 = [(UIFont *)fontCopy isEqual:font];
 
   font = self->_font;
-  self->_font = v4;
+  self->_font = fontCopy;
 
   if ((v6 & 1) == 0)
   {
@@ -1320,9 +1320,9 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   paragraphStyle = self->_paragraphStyle;
   if (!paragraphStyle)
   {
-    v4 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
     v5 = self->_paragraphStyle;
-    self->_paragraphStyle = v4;
+    self->_paragraphStyle = defaultParagraphStyle;
 
     paragraphStyle = self->_paragraphStyle;
   }
@@ -1335,15 +1335,15 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   suffixColor = self->_suffixColor;
   if (suffixColor)
   {
-    v3 = suffixColor;
+    textColor = suffixColor;
   }
 
   else
   {
-    v3 = [(WFSlotTemplateTextStorage *)self textColor];
+    textColor = [(WFSlotTemplateTextStorage *)self textColor];
   }
 
-  return v3;
+  return textColor;
 }
 
 - (UIColor)tintColor
@@ -1351,9 +1351,9 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   tintColor = self->_tintColor;
   if (!tintColor)
   {
-    v4 = [MEMORY[0x1E69DC888] wf_systemBlueColor];
+    wf_systemBlueColor = [MEMORY[0x1E69DC888] wf_systemBlueColor];
     v5 = self->_tintColor;
-    self->_tintColor = v4;
+    self->_tintColor = wf_systemBlueColor;
 
     tintColor = self->_tintColor;
   }
@@ -1366,9 +1366,9 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   textColor = self->_textColor;
   if (!textColor)
   {
-    v4 = [MEMORY[0x1E69DC888] wf_labelColor];
+    wf_labelColor = [MEMORY[0x1E69DC888] wf_labelColor];
     v5 = self->_textColor;
-    self->_textColor = v4;
+    self->_textColor = wf_labelColor;
 
     textColor = self->_textColor;
   }
@@ -1381,15 +1381,15 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   suffixFont = self->_suffixFont;
   if (suffixFont)
   {
-    v3 = suffixFont;
+    font = suffixFont;
   }
 
   else
   {
-    v3 = [(WFSlotTemplateTextStorage *)self font];
+    font = [(WFSlotTemplateTextStorage *)self font];
   }
 
-  return v3;
+  return font;
 }
 
 - (UIFont)unpopulatedFont
@@ -1397,15 +1397,15 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   unpopulatedFont = self->_unpopulatedFont;
   if (unpopulatedFont)
   {
-    v3 = unpopulatedFont;
+    font = unpopulatedFont;
   }
 
   else
   {
-    v3 = [(WFSlotTemplateTextStorage *)self font];
+    font = [(WFSlotTemplateTextStorage *)self font];
   }
 
-  return v3;
+  return font;
 }
 
 - (UIFont)font
@@ -1433,10 +1433,10 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
     [(WFSlotTemplateTextStorage *)self setEditingLevel:[(WFSlotTemplateTextStorage *)self editingLevel]- 1];
     if (![(WFSlotTemplateTextStorage *)self editingLevel])
     {
-      v3 = [(WFSlotTemplateTextStorage *)self delegate];
+      delegate = [(WFSlotTemplateTextStorage *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v3 slotTemplateStorageDidInvalidateDisplay:self];
+        [delegate slotTemplateStorageDidInvalidateDisplay:self];
       }
     }
   }
@@ -1450,47 +1450,47 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   [(WFSlotTemplateTextStorage *)&v3 beginEditing];
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(WFSlotTemplateTextStorage *)self textStorage];
-  [v8 setAttributes:v7 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
+  textStorage = [(WFSlotTemplateTextStorage *)self textStorage];
+  [textStorage setAttributes:attributesCopy range:{location, length}];
 
   [(WFSlotTemplateTextStorage *)self edited:1 range:location changeInLength:length, 0];
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(WFSlotTemplateTextStorage *)self textStorage];
-  [v8 replaceCharactersInRange:location withString:{length, v7}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  textStorage = [(WFSlotTemplateTextStorage *)self textStorage];
+  [textStorage replaceCharactersInRange:location withString:{length, stringCopy}];
 
-  v9 = [v7 length];
+  v9 = [stringCopy length];
 
   [(WFSlotTemplateTextStorage *)self edited:2 range:location changeInLength:length, v9 - length];
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(WFSlotTemplateTextStorage *)self textStorage];
-  v7 = [v6 attributesAtIndex:a3 effectiveRange:a4];
+  textStorage = [(WFSlotTemplateTextStorage *)self textStorage];
+  v7 = [textStorage attributesAtIndex:index effectiveRange:range];
 
   return v7;
 }
 
 - (id)string
 {
-  v2 = [(WFSlotTemplateTextStorage *)self textStorage];
-  v3 = [v2 string];
+  textStorage = [(WFSlotTemplateTextStorage *)self textStorage];
+  string = [textStorage string];
 
-  return v3;
+  return string;
 }
 
-- (WFSlotTemplateTextStorage)initWithUseCase:(unint64_t)a3
+- (WFSlotTemplateTextStorage)initWithUseCase:(unint64_t)case
 {
   v16.receiver = self;
   v16.super_class = WFSlotTemplateTextStorage;
@@ -1498,7 +1498,7 @@ void __48__WFSlotTemplateTextStorage_setUnpopulatedFont___block_invoke(uint64_t 
   v5 = v4;
   if (v4)
   {
-    v4->_useCase = a3;
+    v4->_useCase = case;
     v6 = objc_alloc_init(MEMORY[0x1E69DB850]);
     textStorage = v5->_textStorage;
     v5->_textStorage = v6;

@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityFlightReservation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityFlightReservation)initWithFlightDesignator:(id)a3 flightConfirmationNumber:(id)a4 flightCarrier:(id)a5 flightCarrierCode:(id)a6 provider:(id)a7 customerNames:(id)a8 flightDepartureDateTime:(id)a9 flightDepartureTimeZone:(id)a10 flightBoardingDateTime:(id)a11 flightDepartureAirportCode:(id)a12 flightDepartureAirportName:(id)a13 flightDepartureAirportAddress:(id)a14 flightDepartureAirportLocality:(id)a15 flightDepartureAirportRegion:(id)a16 flightDepartureAirportPostalCode:(id)a17 flightDepartureAirportCountry:(id)a18 flightDepartureTerminal:(id)a19 flightDepartureGate:(id)a20 seatNumbers:(id)a21 flightArrivalDateTime:(id)a22 flightArrivalTimeZone:(id)a23 flightArrivalAirportCode:(id)a24 flightArrivalAirportName:(id)a25 flightArrivalAirportAddress:(id)a26 flightArrivalAirportLocality:(id)a27 flightArrivalAirportRegion:(id)a28 flightArrivalAirportPostalCode:(id)a29 flightArrivalAirportCountry:(id)a30 flightArrivalTerminal:(id)a31 flightArrivalGate:(id)a32 duration:(id)a33 flightCheckInUrl:(id)a34 cost:(id)a35 costCurrencyCode:(id)a36 flightNumber:(id)a37 eventStatus:(id)a38 error:(id *)a39;
-- (CCAppIntentsExtractedEntityFlightReservation)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityFlightReservation)initWithFlightDesignator:(id)designator flightConfirmationNumber:(id)number flightCarrier:(id)carrier flightCarrierCode:(id)code provider:(id)provider customerNames:(id)names flightDepartureDateTime:(id)time flightDepartureTimeZone:(id)self0 flightBoardingDateTime:(id)self1 flightDepartureAirportCode:(id)self2 flightDepartureAirportName:(id)self3 flightDepartureAirportAddress:(id)self4 flightDepartureAirportLocality:(id)self5 flightDepartureAirportRegion:(id)self6 flightDepartureAirportPostalCode:(id)self7 flightDepartureAirportCountry:(id)self8 flightDepartureTerminal:(id)self9 flightDepartureGate:(id)gate seatNumbers:(id)numbers flightArrivalDateTime:(id)arrivalDateTime flightArrivalTimeZone:(id)timeZone flightArrivalAirportCode:(id)arrivalAirportCode flightArrivalAirportName:(id)airportName flightArrivalAirportAddress:(id)airportAddress flightArrivalAirportLocality:(id)airportLocality flightArrivalAirportRegion:(id)airportRegion flightArrivalAirportPostalCode:(id)airportPostalCode flightArrivalAirportCountry:(id)designator0 flightArrivalTerminal:(id)designator1 flightArrivalGate:(id)designator2 duration:(id)designator3 flightCheckInUrl:(id)designator4 cost:(id)designator5 costCurrencyCode:(id)designator6 flightNumber:(id)designator7 eventStatus:(id)designator8 error:(id *)designator9;
+- (CCAppIntentsExtractedEntityFlightReservation)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)customerNames;
 - (NSArray)seatNumbers;
 - (NSString)cost;
@@ -38,58 +38,58 @@
 - (NSString)flightNumber;
 - (NSString)provider;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityFlightReservation
 
-- (CCAppIntentsExtractedEntityFlightReservation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityFlightReservation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v50 = [v6 objectForKeyedSubscript:@"flightDesignator"];
-    v49 = [v6 objectForKeyedSubscript:@"flightConfirmationNumber"];
-    v48 = [v6 objectForKeyedSubscript:@"flightCarrier"];
-    v47 = [v6 objectForKeyedSubscript:@"flightCarrierCode"];
-    v46 = [v6 objectForKeyedSubscript:@"provider"];
-    v45 = [v6 objectForKeyedSubscript:@"customerNames"];
-    v44 = [v6 objectForKeyedSubscript:@"flightDepartureDateTime"];
-    v43 = [v6 objectForKeyedSubscript:@"flightDepartureTimeZone"];
-    v42 = [v6 objectForKeyedSubscript:@"flightBoardingDateTime"];
-    v41 = [v6 objectForKeyedSubscript:@"flightDepartureAirportCode"];
-    v37 = [v6 objectForKeyedSubscript:@"flightDepartureAirportName"];
-    v40 = [v6 objectForKeyedSubscript:@"flightDepartureAirportAddress"];
-    [v6 objectForKeyedSubscript:@"flightDepartureAirportLocality"];
-    v39 = v24 = a4;
-    v34 = [v6 objectForKeyedSubscript:@"flightDepartureAirportRegion"];
-    v38 = [v6 objectForKeyedSubscript:@"flightDepartureAirportPostalCode"];
-    v36 = [v6 objectForKeyedSubscript:@"flightDepartureAirportCountry"];
-    v35 = [v6 objectForKeyedSubscript:@"flightDepartureTerminal"];
-    v23 = [v6 objectForKeyedSubscript:@"flightDepartureGate"];
-    v33 = [v6 objectForKeyedSubscript:@"seatNumbers"];
-    v22 = [v6 objectForKeyedSubscript:@"flightArrivalDateTime"];
-    v32 = [v6 objectForKeyedSubscript:@"flightArrivalTimeZone"];
-    v21 = [v6 objectForKeyedSubscript:@"flightArrivalAirportCode"];
-    v31 = [v6 objectForKeyedSubscript:@"flightArrivalAirportName"];
-    v20 = [v6 objectForKeyedSubscript:@"flightArrivalAirportAddress"];
-    v30 = [v6 objectForKeyedSubscript:@"flightArrivalAirportLocality"];
-    v29 = [v6 objectForKeyedSubscript:@"flightArrivalAirportRegion"];
-    v28 = [v6 objectForKeyedSubscript:@"flightArrivalAirportPostalCode"];
-    v19 = [v6 objectForKeyedSubscript:@"flightArrivalAirportCountry"];
-    v18 = [v6 objectForKeyedSubscript:@"flightArrivalTerminal"];
-    [v6 objectForKeyedSubscript:@"flightArrivalGate"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"flightDesignator"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"flightConfirmationNumber"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"flightCarrier"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"flightCarrierCode"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"provider"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"customerNames"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureDateTime"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureTimeZone"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"flightBoardingDateTime"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportCode"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportName"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportAddress"];
+    [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportLocality"];
+    v39 = v24 = error;
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportRegion"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportPostalCode"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureAirportCountry"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureTerminal"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"flightDepartureGate"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"seatNumbers"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalDateTime"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalTimeZone"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportCode"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportName"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportAddress"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportLocality"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportRegion"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportPostalCode"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalAirportCountry"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"flightArrivalTerminal"];
+    [dictionaryCopy objectForKeyedSubscript:@"flightArrivalGate"];
     v17 = v27 = self;
-    [v6 objectForKeyedSubscript:@"duration"];
+    [dictionaryCopy objectForKeyedSubscript:@"duration"];
     v16 = v26 = v8;
-    v9 = [v6 objectForKeyedSubscript:@"flightCheckInUrl"];
-    v10 = [v6 objectForKeyedSubscript:@"cost"];
-    v11 = [v6 objectForKeyedSubscript:@"costCurrencyCode"];
-    v12 = [v6 objectForKeyedSubscript:@"flightNumber"];
-    v13 = [v6 objectForKeyedSubscript:@"eventStatus"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"flightCheckInUrl"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cost"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"costCurrencyCode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"flightNumber"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"eventStatus"];
     v25 = [[CCAppIntentsExtractedEntityFlightReservation alloc] initWithFlightDesignator:v50 flightConfirmationNumber:v49 flightCarrier:v48 flightCarrierCode:v47 provider:v46 customerNames:v45 flightDepartureDateTime:v44 flightDepartureTimeZone:v43 flightBoardingDateTime:v42 flightDepartureAirportCode:v41 flightDepartureAirportName:v37 flightDepartureAirportAddress:v40 flightDepartureAirportLocality:v39 flightDepartureAirportRegion:v34 flightDepartureAirportPostalCode:v38 flightDepartureAirportCountry:v36 flightDepartureTerminal:v35 flightDepartureGate:v23 seatNumbers:v33 flightArrivalDateTime:v22 flightArrivalTimeZone:v32 flightArrivalAirportCode:v21 flightArrivalAirportName:v31 flightArrivalAirportAddress:v20 flightArrivalAirportLocality:v30 flightArrivalAirportRegion:v29 flightArrivalAirportPostalCode:v28 flightArrivalAirportCountry:v19 flightArrivalTerminal:v18 flightArrivalGate:v17 duration:v16 flightCheckInUrl:v9 cost:v10 costCurrencyCode:v11 flightNumber:v12 eventStatus:v13 error:v24];
 
     v8 = v26;
@@ -112,182 +112,182 @@
   v3 = objc_opt_new();
   if (self->_flightDesignator)
   {
-    v4 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDesignator];
-    [v3 setObject:v4 forKeyedSubscript:@"flightDesignator"];
+    flightDesignator = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDesignator];
+    [v3 setObject:flightDesignator forKeyedSubscript:@"flightDesignator"];
   }
 
   if (self->_flightConfirmationNumber)
   {
-    v5 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightConfirmationNumber];
-    [v3 setObject:v5 forKeyedSubscript:@"flightConfirmationNumber"];
+    flightConfirmationNumber = [(CCAppIntentsExtractedEntityFlightReservation *)self flightConfirmationNumber];
+    [v3 setObject:flightConfirmationNumber forKeyedSubscript:@"flightConfirmationNumber"];
   }
 
   if (self->_flightCarrier)
   {
-    v6 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCarrier];
-    [v3 setObject:v6 forKeyedSubscript:@"flightCarrier"];
+    flightCarrier = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCarrier];
+    [v3 setObject:flightCarrier forKeyedSubscript:@"flightCarrier"];
   }
 
   if (self->_flightCarrierCode)
   {
-    v7 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCarrierCode];
-    [v3 setObject:v7 forKeyedSubscript:@"flightCarrierCode"];
+    flightCarrierCode = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCarrierCode];
+    [v3 setObject:flightCarrierCode forKeyedSubscript:@"flightCarrierCode"];
   }
 
   if (self->_provider)
   {
-    v8 = [(CCAppIntentsExtractedEntityFlightReservation *)self provider];
-    [v3 setObject:v8 forKeyedSubscript:@"provider"];
+    provider = [(CCAppIntentsExtractedEntityFlightReservation *)self provider];
+    [v3 setObject:provider forKeyedSubscript:@"provider"];
   }
 
   if (self->_customerNames)
   {
-    v9 = [(CCAppIntentsExtractedEntityFlightReservation *)self customerNames];
-    [v3 setObject:v9 forKeyedSubscript:@"customerNames"];
+    customerNames = [(CCAppIntentsExtractedEntityFlightReservation *)self customerNames];
+    [v3 setObject:customerNames forKeyedSubscript:@"customerNames"];
   }
 
   if (self->_flightDepartureDateTime)
   {
-    v10 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureDateTime];
-    [v3 setObject:v10 forKeyedSubscript:@"flightDepartureDateTime"];
+    flightDepartureDateTime = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureDateTime];
+    [v3 setObject:flightDepartureDateTime forKeyedSubscript:@"flightDepartureDateTime"];
   }
 
   if (self->_flightDepartureTimeZone)
   {
-    v11 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureTimeZone];
-    [v3 setObject:v11 forKeyedSubscript:@"flightDepartureTimeZone"];
+    flightDepartureTimeZone = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureTimeZone];
+    [v3 setObject:flightDepartureTimeZone forKeyedSubscript:@"flightDepartureTimeZone"];
   }
 
   if (self->_flightBoardingDateTime)
   {
-    v12 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightBoardingDateTime];
-    [v3 setObject:v12 forKeyedSubscript:@"flightBoardingDateTime"];
+    flightBoardingDateTime = [(CCAppIntentsExtractedEntityFlightReservation *)self flightBoardingDateTime];
+    [v3 setObject:flightBoardingDateTime forKeyedSubscript:@"flightBoardingDateTime"];
   }
 
   if (self->_flightDepartureAirportCode)
   {
-    v13 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportCode];
-    [v3 setObject:v13 forKeyedSubscript:@"flightDepartureAirportCode"];
+    flightDepartureAirportCode = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportCode];
+    [v3 setObject:flightDepartureAirportCode forKeyedSubscript:@"flightDepartureAirportCode"];
   }
 
   if (self->_flightDepartureAirportName)
   {
-    v14 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportName];
-    [v3 setObject:v14 forKeyedSubscript:@"flightDepartureAirportName"];
+    flightDepartureAirportName = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportName];
+    [v3 setObject:flightDepartureAirportName forKeyedSubscript:@"flightDepartureAirportName"];
   }
 
   if (self->_flightDepartureAirportAddress)
   {
-    v15 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportAddress];
-    [v3 setObject:v15 forKeyedSubscript:@"flightDepartureAirportAddress"];
+    flightDepartureAirportAddress = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportAddress];
+    [v3 setObject:flightDepartureAirportAddress forKeyedSubscript:@"flightDepartureAirportAddress"];
   }
 
   if (self->_flightDepartureAirportLocality)
   {
-    v16 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportLocality];
-    [v3 setObject:v16 forKeyedSubscript:@"flightDepartureAirportLocality"];
+    flightDepartureAirportLocality = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportLocality];
+    [v3 setObject:flightDepartureAirportLocality forKeyedSubscript:@"flightDepartureAirportLocality"];
   }
 
   if (self->_flightDepartureAirportRegion)
   {
-    v17 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportRegion];
-    [v3 setObject:v17 forKeyedSubscript:@"flightDepartureAirportRegion"];
+    flightDepartureAirportRegion = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportRegion];
+    [v3 setObject:flightDepartureAirportRegion forKeyedSubscript:@"flightDepartureAirportRegion"];
   }
 
   if (self->_flightDepartureAirportPostalCode)
   {
-    v18 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportPostalCode];
-    [v3 setObject:v18 forKeyedSubscript:@"flightDepartureAirportPostalCode"];
+    flightDepartureAirportPostalCode = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportPostalCode];
+    [v3 setObject:flightDepartureAirportPostalCode forKeyedSubscript:@"flightDepartureAirportPostalCode"];
   }
 
   if (self->_flightDepartureAirportCountry)
   {
-    v19 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportCountry];
-    [v3 setObject:v19 forKeyedSubscript:@"flightDepartureAirportCountry"];
+    flightDepartureAirportCountry = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureAirportCountry];
+    [v3 setObject:flightDepartureAirportCountry forKeyedSubscript:@"flightDepartureAirportCountry"];
   }
 
   if (self->_flightDepartureTerminal)
   {
-    v20 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureTerminal];
-    [v3 setObject:v20 forKeyedSubscript:@"flightDepartureTerminal"];
+    flightDepartureTerminal = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureTerminal];
+    [v3 setObject:flightDepartureTerminal forKeyedSubscript:@"flightDepartureTerminal"];
   }
 
   if (self->_flightDepartureGate)
   {
-    v21 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureGate];
-    [v3 setObject:v21 forKeyedSubscript:@"flightDepartureGate"];
+    flightDepartureGate = [(CCAppIntentsExtractedEntityFlightReservation *)self flightDepartureGate];
+    [v3 setObject:flightDepartureGate forKeyedSubscript:@"flightDepartureGate"];
   }
 
   if (self->_seatNumbers)
   {
-    v22 = [(CCAppIntentsExtractedEntityFlightReservation *)self seatNumbers];
-    [v3 setObject:v22 forKeyedSubscript:@"seatNumbers"];
+    seatNumbers = [(CCAppIntentsExtractedEntityFlightReservation *)self seatNumbers];
+    [v3 setObject:seatNumbers forKeyedSubscript:@"seatNumbers"];
   }
 
   if (self->_flightArrivalDateTime)
   {
-    v23 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalDateTime];
-    [v3 setObject:v23 forKeyedSubscript:@"flightArrivalDateTime"];
+    flightArrivalDateTime = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalDateTime];
+    [v3 setObject:flightArrivalDateTime forKeyedSubscript:@"flightArrivalDateTime"];
   }
 
   if (self->_flightArrivalTimeZone)
   {
-    v24 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalTimeZone];
-    [v3 setObject:v24 forKeyedSubscript:@"flightArrivalTimeZone"];
+    flightArrivalTimeZone = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalTimeZone];
+    [v3 setObject:flightArrivalTimeZone forKeyedSubscript:@"flightArrivalTimeZone"];
   }
 
   if (self->_flightArrivalAirportCode)
   {
-    v25 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportCode];
-    [v3 setObject:v25 forKeyedSubscript:@"flightArrivalAirportCode"];
+    flightArrivalAirportCode = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportCode];
+    [v3 setObject:flightArrivalAirportCode forKeyedSubscript:@"flightArrivalAirportCode"];
   }
 
   if (self->_flightArrivalAirportName)
   {
-    v26 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportName];
-    [v3 setObject:v26 forKeyedSubscript:@"flightArrivalAirportName"];
+    flightArrivalAirportName = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportName];
+    [v3 setObject:flightArrivalAirportName forKeyedSubscript:@"flightArrivalAirportName"];
   }
 
   if (self->_flightArrivalAirportAddress)
   {
-    v27 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportAddress];
-    [v3 setObject:v27 forKeyedSubscript:@"flightArrivalAirportAddress"];
+    flightArrivalAirportAddress = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportAddress];
+    [v3 setObject:flightArrivalAirportAddress forKeyedSubscript:@"flightArrivalAirportAddress"];
   }
 
   if (self->_flightArrivalAirportLocality)
   {
-    v28 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportLocality];
-    [v3 setObject:v28 forKeyedSubscript:@"flightArrivalAirportLocality"];
+    flightArrivalAirportLocality = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportLocality];
+    [v3 setObject:flightArrivalAirportLocality forKeyedSubscript:@"flightArrivalAirportLocality"];
   }
 
   if (self->_flightArrivalAirportRegion)
   {
-    v29 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportRegion];
-    [v3 setObject:v29 forKeyedSubscript:@"flightArrivalAirportRegion"];
+    flightArrivalAirportRegion = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportRegion];
+    [v3 setObject:flightArrivalAirportRegion forKeyedSubscript:@"flightArrivalAirportRegion"];
   }
 
   if (self->_flightArrivalAirportPostalCode)
   {
-    v30 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportPostalCode];
-    [v3 setObject:v30 forKeyedSubscript:@"flightArrivalAirportPostalCode"];
+    flightArrivalAirportPostalCode = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportPostalCode];
+    [v3 setObject:flightArrivalAirportPostalCode forKeyedSubscript:@"flightArrivalAirportPostalCode"];
   }
 
   if (self->_flightArrivalAirportCountry)
   {
-    v31 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportCountry];
-    [v3 setObject:v31 forKeyedSubscript:@"flightArrivalAirportCountry"];
+    flightArrivalAirportCountry = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalAirportCountry];
+    [v3 setObject:flightArrivalAirportCountry forKeyedSubscript:@"flightArrivalAirportCountry"];
   }
 
   if (self->_flightArrivalTerminal)
   {
-    v32 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalTerminal];
-    [v3 setObject:v32 forKeyedSubscript:@"flightArrivalTerminal"];
+    flightArrivalTerminal = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalTerminal];
+    [v3 setObject:flightArrivalTerminal forKeyedSubscript:@"flightArrivalTerminal"];
   }
 
   if (self->_flightArrivalGate)
   {
-    v33 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalGate];
-    [v3 setObject:v33 forKeyedSubscript:@"flightArrivalGate"];
+    flightArrivalGate = [(CCAppIntentsExtractedEntityFlightReservation *)self flightArrivalGate];
+    [v3 setObject:flightArrivalGate forKeyedSubscript:@"flightArrivalGate"];
   }
 
   if (self->_hasDuration)
@@ -300,32 +300,32 @@
 
   if (self->_flightCheckInUrl)
   {
-    v36 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCheckInUrl];
-    [v3 setObject:v36 forKeyedSubscript:@"flightCheckInUrl"];
+    flightCheckInUrl = [(CCAppIntentsExtractedEntityFlightReservation *)self flightCheckInUrl];
+    [v3 setObject:flightCheckInUrl forKeyedSubscript:@"flightCheckInUrl"];
   }
 
   if (self->_cost)
   {
-    v37 = [(CCAppIntentsExtractedEntityFlightReservation *)self cost];
-    [v3 setObject:v37 forKeyedSubscript:@"cost"];
+    cost = [(CCAppIntentsExtractedEntityFlightReservation *)self cost];
+    [v3 setObject:cost forKeyedSubscript:@"cost"];
   }
 
   if (self->_costCurrencyCode)
   {
-    v38 = [(CCAppIntentsExtractedEntityFlightReservation *)self costCurrencyCode];
-    [v3 setObject:v38 forKeyedSubscript:@"costCurrencyCode"];
+    costCurrencyCode = [(CCAppIntentsExtractedEntityFlightReservation *)self costCurrencyCode];
+    [v3 setObject:costCurrencyCode forKeyedSubscript:@"costCurrencyCode"];
   }
 
   if (self->_flightNumber)
   {
-    v39 = [(CCAppIntentsExtractedEntityFlightReservation *)self flightNumber];
-    [v3 setObject:v39 forKeyedSubscript:@"flightNumber"];
+    flightNumber = [(CCAppIntentsExtractedEntityFlightReservation *)self flightNumber];
+    [v3 setObject:flightNumber forKeyedSubscript:@"flightNumber"];
   }
 
   if (self->_eventStatus)
   {
-    v40 = [(CCAppIntentsExtractedEntityFlightReservation *)self eventStatus];
-    [v3 setObject:v40 forKeyedSubscript:@"eventStatus"];
+    eventStatus = [(CCAppIntentsExtractedEntityFlightReservation *)self eventStatus];
+    [v3 setObject:eventStatus forKeyedSubscript:@"eventStatus"];
   }
 
   v41 = [v3 copy];
@@ -333,226 +333,226 @@
   return v41;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v42 = a3;
+  blockCopy = block;
   if (self->_flightDesignator)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27327 stringValue:self->_flightDesignator];
-    v42[2](v42, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_flightConfirmationNumber)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27328 stringValue:self->_flightConfirmationNumber];
-    v42[2](v42, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_flightCarrier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27329 stringValue:self->_flightCarrier];
-    v42[2](v42, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_flightCarrierCode)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27330 stringValue:self->_flightCarrierCode];
-    v42[2](v42, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_provider)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27331 stringValue:self->_provider];
-    v42[2](v42, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_customerNames)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27332 repeatedStringValue:self->_customerNames];
-    v42[2](v42, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_flightDepartureDateTime)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27333 stringValue:self->_flightDepartureDateTime];
-    v42[2](v42, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_flightDepartureTimeZone)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27334 stringValue:self->_flightDepartureTimeZone];
-    v42[2](v42, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_flightBoardingDateTime)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27335 stringValue:self->_flightBoardingDateTime];
-    v42[2](v42, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_flightDepartureAirportCode)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27336 stringValue:self->_flightDepartureAirportCode];
-    v42[2](v42, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_flightDepartureAirportName)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27337 stringValue:self->_flightDepartureAirportName];
-    v42[2](v42, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_flightDepartureAirportAddress)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27338 stringValue:self->_flightDepartureAirportAddress];
-    v42[2](v42, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_flightDepartureAirportLocality)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27339 stringValue:self->_flightDepartureAirportLocality];
-    v42[2](v42, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_flightDepartureAirportRegion)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27340 stringValue:self->_flightDepartureAirportRegion];
-    v42[2](v42, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_flightDepartureAirportPostalCode)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27341 stringValue:self->_flightDepartureAirportPostalCode];
-    v42[2](v42, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_flightDepartureAirportCountry)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27342 stringValue:self->_flightDepartureAirportCountry];
-    v42[2](v42, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_flightDepartureTerminal)
   {
     v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27343 stringValue:self->_flightDepartureTerminal];
-    v42[2](v42, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
   if (self->_flightDepartureGate)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27344 stringValue:self->_flightDepartureGate];
-    v42[2](v42, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
   if (self->_seatNumbers)
   {
     v23 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27345 repeatedStringValue:self->_seatNumbers];
-    v42[2](v42, v23);
+    blockCopy[2](blockCopy, v23);
   }
 
   if (self->_flightArrivalDateTime)
   {
     v24 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27346 stringValue:self->_flightArrivalDateTime];
-    v42[2](v42, v24);
+    blockCopy[2](blockCopy, v24);
   }
 
   if (self->_flightArrivalTimeZone)
   {
     v25 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27347 stringValue:self->_flightArrivalTimeZone];
-    v42[2](v42, v25);
+    blockCopy[2](blockCopy, v25);
   }
 
   if (self->_flightArrivalAirportCode)
   {
     v26 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27348 stringValue:self->_flightArrivalAirportCode];
-    v42[2](v42, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
   if (self->_flightArrivalAirportName)
   {
     v27 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27349 stringValue:self->_flightArrivalAirportName];
-    v42[2](v42, v27);
+    blockCopy[2](blockCopy, v27);
   }
 
   if (self->_flightArrivalAirportAddress)
   {
     v28 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27350 stringValue:self->_flightArrivalAirportAddress];
-    v42[2](v42, v28);
+    blockCopy[2](blockCopy, v28);
   }
 
   if (self->_flightArrivalAirportLocality)
   {
     v29 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27351 stringValue:self->_flightArrivalAirportLocality];
-    v42[2](v42, v29);
+    blockCopy[2](blockCopy, v29);
   }
 
   if (self->_flightArrivalAirportRegion)
   {
     v30 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27352 stringValue:self->_flightArrivalAirportRegion];
-    v42[2](v42, v30);
+    blockCopy[2](blockCopy, v30);
   }
 
   if (self->_flightArrivalAirportPostalCode)
   {
     v31 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27353 stringValue:self->_flightArrivalAirportPostalCode];
-    v42[2](v42, v31);
+    blockCopy[2](blockCopy, v31);
   }
 
   if (self->_flightArrivalAirportCountry)
   {
     v32 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27354 stringValue:self->_flightArrivalAirportCountry];
-    v42[2](v42, v32);
+    blockCopy[2](blockCopy, v32);
   }
 
   if (self->_flightArrivalTerminal)
   {
     v33 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27355 stringValue:self->_flightArrivalTerminal];
-    v42[2](v42, v33);
+    blockCopy[2](blockCopy, v33);
   }
 
   if (self->_flightArrivalGate)
   {
     v34 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27356 stringValue:self->_flightArrivalGate];
-    v42[2](v42, v34);
+    blockCopy[2](blockCopy, v34);
   }
 
   if (self->_hasDuration)
   {
     v35 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27357 doubleValue:self->_duration];
-    v42[2](v42, v35);
+    blockCopy[2](blockCopy, v35);
   }
 
   if (self->_flightCheckInUrl)
   {
     v36 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27358 stringValue:self->_flightCheckInUrl];
-    v42[2](v42, v36);
+    blockCopy[2](blockCopy, v36);
   }
 
   if (self->_cost)
   {
     v37 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27359 stringValue:self->_cost];
-    v42[2](v42, v37);
+    blockCopy[2](blockCopy, v37);
   }
 
   if (self->_costCurrencyCode)
   {
     v38 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27360 stringValue:self->_costCurrencyCode];
-    v42[2](v42, v38);
+    blockCopy[2](blockCopy, v38);
   }
 
   if (self->_flightNumber)
   {
     v39 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27361 stringValue:self->_flightNumber];
-    v42[2](v42, v39);
+    blockCopy[2](blockCopy, v39);
   }
 
-  v40 = v42;
+  v40 = blockCopy;
   if (self->_eventStatus)
   {
     v41 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27362 stringValue:self->_eventStatus];
-    v42[2](v42, v41);
+    blockCopy[2](blockCopy, v41);
 
-    v40 = v42;
+    v40 = blockCopy;
   }
 }
 
@@ -801,10 +801,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   if (*&v7[*MEMORY[0x1E6993AB8]] >= *&v7[*MEMORY[0x1E6993AB0]])
@@ -1064,13 +1064,13 @@ LABEL_69:
             {
               v33 = objc_opt_class();
               NSStringFromClass(v33);
-              v49 = a4;
-              v35 = v34 = v6;
+              errorCopy = error;
+              v35 = v34 = dataCopy;
               v36 = *&v7[*v11];
               v10 = CCSkipFieldErrorForMessage();
 
-              v6 = v34;
-              a4 = v49;
+              dataCopy = v34;
+              error = errorCopy;
             }
 
 LABEL_70:
@@ -1134,10 +1134,10 @@ LABEL_78:
     v43 = NSStringFromClass(v42);
     v44 = *&v7[*v41];
     CCInvalidBufferErrorForMessage();
-    v46 = v45 = v6;
+    v46 = v45 = dataCopy;
     CCSetError();
 
-    v6 = v45;
+    dataCopy = v45;
   }
 
   v47 = 0;
@@ -1146,53 +1146,53 @@ LABEL_83:
   return v47;
 }
 
-- (CCAppIntentsExtractedEntityFlightReservation)initWithFlightDesignator:(id)a3 flightConfirmationNumber:(id)a4 flightCarrier:(id)a5 flightCarrierCode:(id)a6 provider:(id)a7 customerNames:(id)a8 flightDepartureDateTime:(id)a9 flightDepartureTimeZone:(id)a10 flightBoardingDateTime:(id)a11 flightDepartureAirportCode:(id)a12 flightDepartureAirportName:(id)a13 flightDepartureAirportAddress:(id)a14 flightDepartureAirportLocality:(id)a15 flightDepartureAirportRegion:(id)a16 flightDepartureAirportPostalCode:(id)a17 flightDepartureAirportCountry:(id)a18 flightDepartureTerminal:(id)a19 flightDepartureGate:(id)a20 seatNumbers:(id)a21 flightArrivalDateTime:(id)a22 flightArrivalTimeZone:(id)a23 flightArrivalAirportCode:(id)a24 flightArrivalAirportName:(id)a25 flightArrivalAirportAddress:(id)a26 flightArrivalAirportLocality:(id)a27 flightArrivalAirportRegion:(id)a28 flightArrivalAirportPostalCode:(id)a29 flightArrivalAirportCountry:(id)a30 flightArrivalTerminal:(id)a31 flightArrivalGate:(id)a32 duration:(id)a33 flightCheckInUrl:(id)a34 cost:(id)a35 costCurrencyCode:(id)a36 flightNumber:(id)a37 eventStatus:(id)a38 error:(id *)a39
+- (CCAppIntentsExtractedEntityFlightReservation)initWithFlightDesignator:(id)designator flightConfirmationNumber:(id)number flightCarrier:(id)carrier flightCarrierCode:(id)code provider:(id)provider customerNames:(id)names flightDepartureDateTime:(id)time flightDepartureTimeZone:(id)self0 flightBoardingDateTime:(id)self1 flightDepartureAirportCode:(id)self2 flightDepartureAirportName:(id)self3 flightDepartureAirportAddress:(id)self4 flightDepartureAirportLocality:(id)self5 flightDepartureAirportRegion:(id)self6 flightDepartureAirportPostalCode:(id)self7 flightDepartureAirportCountry:(id)self8 flightDepartureTerminal:(id)self9 flightDepartureGate:(id)gate seatNumbers:(id)numbers flightArrivalDateTime:(id)arrivalDateTime flightArrivalTimeZone:(id)timeZone flightArrivalAirportCode:(id)arrivalAirportCode flightArrivalAirportName:(id)airportName flightArrivalAirportAddress:(id)airportAddress flightArrivalAirportLocality:(id)airportLocality flightArrivalAirportRegion:(id)airportRegion flightArrivalAirportPostalCode:(id)airportPostalCode flightArrivalAirportCountry:(id)designator0 flightArrivalTerminal:(id)designator1 flightArrivalGate:(id)designator2 duration:(id)designator3 flightCheckInUrl:(id)designator4 cost:(id)designator5 costCurrencyCode:(id)designator6 flightNumber:(id)designator7 eventStatus:(id)designator8 error:(id *)designator9
 {
   v172 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v44 = a4;
-  v45 = a5;
-  v46 = a6;
-  v47 = a7;
-  v142 = a8;
-  v140 = a9;
-  v48 = a10;
-  v139 = a11;
-  v137 = a12;
-  v136 = a13;
-  v135 = a14;
-  v134 = a15;
-  v133 = a16;
-  v132 = a17;
-  v131 = a18;
-  v130 = a19;
-  v129 = a20;
-  v128 = a21;
-  v127 = a22;
-  v126 = a23;
-  v125 = a24;
-  v124 = a25;
-  v122 = a26;
-  v123 = a27;
-  v121 = a28;
-  v120 = a29;
-  v119 = a30;
-  v118 = a31;
-  v117 = a32;
-  v116 = a33;
-  v115 = a34;
-  v114 = a35;
-  v113 = a36;
-  v112 = a37;
-  v111 = a38;
+  designatorCopy = designator;
+  numberCopy = number;
+  carrierCopy = carrier;
+  codeCopy = code;
+  providerCopy = provider;
+  namesCopy = names;
+  timeCopy = time;
+  zoneCopy = zone;
+  dateTimeCopy = dateTime;
+  airportCodeCopy = airportCode;
+  nameCopy = name;
+  addressCopy = address;
+  localityCopy = locality;
+  regionCopy = region;
+  postalCodeCopy = postalCode;
+  countryCopy = country;
+  terminalCopy = terminal;
+  gateCopy = gate;
+  numbersCopy = numbers;
+  arrivalDateTimeCopy = arrivalDateTime;
+  timeZoneCopy = timeZone;
+  arrivalAirportCodeCopy = arrivalAirportCode;
+  airportNameCopy = airportName;
+  airportAddressCopy = airportAddress;
+  airportLocalityCopy = airportLocality;
+  airportRegionCopy = airportRegion;
+  airportPostalCodeCopy = airportPostalCode;
+  airportCountryCopy = airportCountry;
+  arrivalTerminalCopy = arrivalTerminal;
+  arrivalGateCopy = arrivalGate;
+  durationCopy = duration;
+  urlCopy = url;
+  costCopy = cost;
+  currencyCodeCopy = currencyCode;
+  flightNumberCopy = flightNumber;
+  statusCopy = status;
   v49 = objc_opt_new();
-  v138 = v48;
-  if (!v43)
+  v138 = zoneCopy;
+  if (!designatorCopy)
   {
     v51 = 0;
 LABEL_5:
-    v109 = v43;
-    if (v44)
+    v109 = designatorCopy;
+    if (numberCopy)
     {
       objc_opt_class();
       v168 = v51;
@@ -1205,11 +1205,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v45)
+      if (!carrierCopy)
       {
 LABEL_8:
         v51 = v53;
-        if (v46)
+        if (codeCopy)
         {
           goto LABEL_9;
         }
@@ -1221,7 +1221,7 @@ LABEL_8:
     else
     {
       v53 = v51;
-      if (!v45)
+      if (!carrierCopy)
       {
         goto LABEL_8;
       }
@@ -1238,7 +1238,7 @@ LABEL_8:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v46)
+    if (codeCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -1252,7 +1252,7 @@ LABEL_9:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v47)
+      if (!providerCopy)
       {
         goto LABEL_11;
       }
@@ -1262,11 +1262,11 @@ LABEL_9:
 
 LABEL_16:
     v53 = v51;
-    if (!v47)
+    if (!providerCopy)
     {
 LABEL_11:
-      v108 = v46;
-      v55 = v47;
+      v108 = codeCopy;
+      v55 = providerCopy;
       v51 = v53;
       goto LABEL_19;
     }
@@ -1282,11 +1282,11 @@ LABEL_17:
       goto LABEL_155;
     }
 
-    v108 = v46;
-    v55 = v47;
+    v108 = codeCopy;
+    v55 = providerCopy;
     CCPBDataWriterWriteStringField();
 LABEL_19:
-    if (v142)
+    if (namesCopy)
     {
       objc_opt_class();
       v164 = v51;
@@ -1302,7 +1302,7 @@ LABEL_19:
       v163 = 0u;
       v160 = 0u;
       v161 = 0u;
-      v62 = v142;
+      v62 = namesCopy;
       v63 = [v62 countByEnumeratingWithState:&v160 objects:v171 count:16];
       if (v63)
       {
@@ -1327,7 +1327,7 @@ LABEL_19:
         while (v64);
       }
 
-      v48 = v138;
+      zoneCopy = v138;
     }
 
     else
@@ -1335,7 +1335,7 @@ LABEL_19:
       v61 = v51;
     }
 
-    if (v140)
+    if (timeCopy)
     {
       objc_opt_class();
       v159 = v61;
@@ -1350,14 +1350,14 @@ LABEL_19:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v48)
+      if (!zoneCopy)
       {
 LABEL_33:
         v61 = v51;
 LABEL_37:
-        v47 = v55;
-        v46 = v108;
-        if (v139)
+        providerCopy = v55;
+        codeCopy = v108;
+        if (dateTimeCopy)
         {
           objc_opt_class();
           v157 = v61;
@@ -1377,7 +1377,7 @@ LABEL_37:
           v51 = v61;
         }
 
-        if (v137)
+        if (airportCodeCopy)
         {
           objc_opt_class();
           v156 = v51;
@@ -1397,7 +1397,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v136)
+        if (nameCopy)
         {
           objc_opt_class();
           v155 = v53;
@@ -1417,7 +1417,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v135)
+        if (addressCopy)
         {
           objc_opt_class();
           v154 = v51;
@@ -1437,7 +1437,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v134)
+        if (localityCopy)
         {
           objc_opt_class();
           v153 = v53;
@@ -1457,7 +1457,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v133)
+        if (regionCopy)
         {
           objc_opt_class();
           v152 = v51;
@@ -1477,7 +1477,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v132)
+        if (postalCodeCopy)
         {
           objc_opt_class();
           v151 = v53;
@@ -1497,7 +1497,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v131)
+        if (countryCopy)
         {
           objc_opt_class();
           v150 = v51;
@@ -1517,7 +1517,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v130)
+        if (terminalCopy)
         {
           objc_opt_class();
           v149 = v53;
@@ -1537,7 +1537,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v129)
+        if (gateCopy)
         {
           objc_opt_class();
           v148 = v51;
@@ -1557,7 +1557,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v128)
+        if (numbersCopy)
         {
           objc_opt_class();
           v147 = v53;
@@ -1573,7 +1573,7 @@ LABEL_37:
           v146 = 0u;
           v143 = 0u;
           v144 = 0u;
-          v81 = v128;
+          v81 = numbersCopy;
           v82 = [v81 countByEnumeratingWithState:&v143 objects:v170 count:16];
           if (v82)
           {
@@ -1604,7 +1604,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v127)
+        if (arrivalDateTimeCopy)
         {
           objc_opt_class();
           v87 = CCValidateIsInstanceOfExpectedClass();
@@ -1623,7 +1623,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v126)
+        if (timeZoneCopy)
         {
           objc_opt_class();
           v88 = CCValidateIsInstanceOfExpectedClass();
@@ -1642,7 +1642,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v125)
+        if (arrivalAirportCodeCopy)
         {
           objc_opt_class();
           v89 = CCValidateIsInstanceOfExpectedClass();
@@ -1661,7 +1661,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v124)
+        if (airportNameCopy)
         {
           objc_opt_class();
           v90 = CCValidateIsInstanceOfExpectedClass();
@@ -1680,7 +1680,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v122)
+        if (airportAddressCopy)
         {
           objc_opt_class();
           v91 = CCValidateIsInstanceOfExpectedClass();
@@ -1699,7 +1699,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v123)
+        if (airportLocalityCopy)
         {
           objc_opt_class();
           v92 = CCValidateIsInstanceOfExpectedClass();
@@ -1718,7 +1718,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v121)
+        if (airportRegionCopy)
         {
           objc_opt_class();
           v93 = CCValidateIsInstanceOfExpectedClass();
@@ -1737,7 +1737,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v120)
+        if (airportPostalCodeCopy)
         {
           objc_opt_class();
           v94 = CCValidateIsInstanceOfExpectedClass();
@@ -1756,7 +1756,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v119)
+        if (airportCountryCopy)
         {
           objc_opt_class();
           v95 = CCValidateIsInstanceOfExpectedClass();
@@ -1775,7 +1775,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v118)
+        if (arrivalTerminalCopy)
         {
           objc_opt_class();
           v96 = CCValidateIsInstanceOfExpectedClass();
@@ -1794,7 +1794,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v117)
+        if (arrivalGateCopy)
         {
           objc_opt_class();
           v97 = CCValidateIsInstanceOfExpectedClass();
@@ -1813,7 +1813,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v116)
+        if (durationCopy)
         {
           objc_opt_class();
           v98 = CCValidateIsInstanceOfExpectedClass();
@@ -1824,7 +1824,7 @@ LABEL_37:
             goto LABEL_155;
           }
 
-          [v116 doubleValue];
+          [durationCopy doubleValue];
           CCPBDataWriterWriteDoubleField();
         }
 
@@ -1833,7 +1833,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (v115)
+        if (urlCopy)
         {
           objc_opt_class();
           v99 = CCValidateIsInstanceOfExpectedClass();
@@ -1852,7 +1852,7 @@ LABEL_37:
           v53 = v51;
         }
 
-        if (v114)
+        if (costCopy)
         {
           objc_opt_class();
           v100 = CCValidateIsInstanceOfExpectedClass();
@@ -1871,7 +1871,7 @@ LABEL_37:
           v51 = v53;
         }
 
-        if (!v113)
+        if (!currencyCodeCopy)
         {
           v53 = v51;
           goto LABEL_152;
@@ -1885,7 +1885,7 @@ LABEL_37:
         {
           CCPBDataWriterWriteStringField();
 LABEL_152:
-          if (!v112)
+          if (!flightNumberCopy)
           {
             v51 = v53;
             goto LABEL_160;
@@ -1899,13 +1899,13 @@ LABEL_152:
           {
             CCPBDataWriterWriteStringField();
 LABEL_160:
-            if (!v111)
+            if (!statusCopy)
             {
 LABEL_163:
-              v107 = [v49 immutableData];
-              v57 = [(CCItemMessage *)self initWithData:v107 error:a39];
+              immutableData = [v49 immutableData];
+              selfCopy3 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-              v56 = v57;
+              v56 = selfCopy3;
               goto LABEL_157;
             }
 
@@ -1924,9 +1924,9 @@ LABEL_163:
             v56 = 0;
             v51 = v106;
 LABEL_156:
-            v57 = self;
+            selfCopy3 = self;
 LABEL_157:
-            v43 = v109;
+            designatorCopy = v109;
             goto LABEL_158;
           }
 
@@ -1947,7 +1947,7 @@ LABEL_150:
     else
     {
       v51 = v61;
-      if (!v48)
+      if (!zoneCopy)
       {
         goto LABEL_33;
       }
@@ -1969,10 +1969,10 @@ LABEL_40:
     v56 = 0;
     v51 = v61;
 LABEL_42:
-    v57 = self;
-    v47 = v55;
-    v46 = v108;
-    v43 = v109;
+    selfCopy3 = self;
+    providerCopy = v55;
+    codeCopy = v108;
+    designatorCopy = v109;
     goto LABEL_158;
   }
 
@@ -1988,7 +1988,7 @@ LABEL_42:
 
   CCSetError();
   v56 = 0;
-  v57 = self;
+  selfCopy3 = self;
 LABEL_158:
 
   v103 = *MEMORY[0x1E69E9840];

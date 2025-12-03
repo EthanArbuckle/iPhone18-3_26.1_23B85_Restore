@@ -1,16 +1,16 @@
 @interface BMMediaRouteOutputDevice
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaRouteOutputDevice)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMMediaRouteOutputDevice)initWithOutputDeviceID:(id)a3 type:(int)a4 subType:(int)a5 clusterType:(int)a6 flattenedClusterLeafMembers:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaRouteOutputDevice)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMMediaRouteOutputDevice)initWithOutputDeviceID:(id)d type:(int)type subType:(int)subType clusterType:(int)clusterType flattenedClusterLeafMembers:(id)members;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_flattenedClusterLeafMembersJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaRouteOutputDevice
@@ -18,35 +18,35 @@
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMediaRouteOutputDevice *)self outputDeviceID];
+  outputDeviceID = [(BMMediaRouteOutputDevice *)self outputDeviceID];
   v5 = BMMediaRouteOutputDeviceTypeAsString([(BMMediaRouteOutputDevice *)self type]);
   v6 = BMMediaRouteOutputDeviceSubTypeAsString([(BMMediaRouteOutputDevice *)self subType]);
   v7 = BMMediaRouteOutputDeviceClusterTypeAsString([(BMMediaRouteOutputDevice *)self clusterType]);
-  v8 = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
-  v9 = [v3 initWithFormat:@"BMMediaRouteOutputDevice with outputDeviceID: %@, type: %@, subType: %@, clusterType: %@, flattenedClusterLeafMembers: %@", v4, v5, v6, v7, v8];
+  flattenedClusterLeafMembers = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
+  v9 = [v3 initWithFormat:@"BMMediaRouteOutputDevice with outputDeviceID: %@, type: %@, subType: %@, clusterType: %@, flattenedClusterLeafMembers: %@", outputDeviceID, v5, v6, v7, flattenedClusterLeafMembers];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaRouteOutputDevice *)self outputDeviceID];
-    v7 = [v5 outputDeviceID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    outputDeviceID = [(BMMediaRouteOutputDevice *)self outputDeviceID];
+    outputDeviceID2 = [v5 outputDeviceID];
+    v8 = outputDeviceID2;
+    if (outputDeviceID == outputDeviceID2)
     {
     }
 
     else
     {
-      v9 = [(BMMediaRouteOutputDevice *)self outputDeviceID];
-      v10 = [v5 outputDeviceID];
-      v11 = [v9 isEqual:v10];
+      outputDeviceID3 = [(BMMediaRouteOutputDevice *)self outputDeviceID];
+      outputDeviceID4 = [v5 outputDeviceID];
+      v11 = [outputDeviceID3 isEqual:outputDeviceID4];
 
       if (!v11)
       {
@@ -54,27 +54,27 @@
       }
     }
 
-    v13 = [(BMMediaRouteOutputDevice *)self type];
-    if (v13 == [v5 type])
+    type = [(BMMediaRouteOutputDevice *)self type];
+    if (type == [v5 type])
     {
-      v14 = [(BMMediaRouteOutputDevice *)self subType];
-      if (v14 == [v5 subType])
+      subType = [(BMMediaRouteOutputDevice *)self subType];
+      if (subType == [v5 subType])
       {
-        v15 = [(BMMediaRouteOutputDevice *)self clusterType];
-        if (v15 == [v5 clusterType])
+        clusterType = [(BMMediaRouteOutputDevice *)self clusterType];
+        if (clusterType == [v5 clusterType])
         {
-          v16 = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
-          v17 = [v5 flattenedClusterLeafMembers];
-          if (v16 == v17)
+          flattenedClusterLeafMembers = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
+          flattenedClusterLeafMembers2 = [v5 flattenedClusterLeafMembers];
+          if (flattenedClusterLeafMembers == flattenedClusterLeafMembers2)
           {
             v12 = 1;
           }
 
           else
           {
-            v18 = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
-            v19 = [v5 flattenedClusterLeafMembers];
-            v12 = [v18 isEqual:v19];
+            flattenedClusterLeafMembers3 = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
+            flattenedClusterLeafMembers4 = [v5 flattenedClusterLeafMembers];
+            v12 = [flattenedClusterLeafMembers3 isEqual:flattenedClusterLeafMembers4];
           }
 
           goto LABEL_13;
@@ -98,54 +98,54 @@ LABEL_14:
 - (id)jsonDictionary
 {
   v23[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMediaRouteOutputDevice *)self outputDeviceID];
+  outputDeviceID = [(BMMediaRouteOutputDevice *)self outputDeviceID];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaRouteOutputDevice type](self, "type")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaRouteOutputDevice subType](self, "subType")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaRouteOutputDevice clusterType](self, "clusterType")}];
-  v7 = [(BMMediaRouteOutputDevice *)self _flattenedClusterLeafMembersJSONArray];
+  _flattenedClusterLeafMembersJSONArray = [(BMMediaRouteOutputDevice *)self _flattenedClusterLeafMembersJSONArray];
   v18 = @"outputDeviceID";
-  v8 = v3;
-  if (!v3)
+  null = outputDeviceID;
+  if (!outputDeviceID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"type";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"subType";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"clusterType";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"flattenedClusterLeafMembers";
-  v12 = v7;
-  if (!v7)
+  null5 = _flattenedClusterLeafMembersJSONArray;
+  if (!_flattenedClusterLeafMembersJSONArray)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
-  if (v7)
+  if (_flattenedClusterLeafMembersJSONArray)
   {
     if (v6)
     {
@@ -178,7 +178,7 @@ LABEL_14:
 
 LABEL_22:
 
-    if (v3)
+    if (outputDeviceID)
     {
       goto LABEL_16;
     }
@@ -194,7 +194,7 @@ LABEL_21:
   }
 
 LABEL_15:
-  if (v3)
+  if (outputDeviceID)
   {
     goto LABEL_16;
   }
@@ -215,8 +215,8 @@ LABEL_16:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  flattenedClusterLeafMembers = [(BMMediaRouteOutputDevice *)self flattenedClusterLeafMembers];
+  v5 = [flattenedClusterLeafMembers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -227,14 +227,14 @@ LABEL_16:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(flattenedClusterLeafMembers);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [flattenedClusterLeafMembers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -245,16 +245,16 @@ LABEL_16:
   return v3;
 }
 
-- (BMMediaRouteOutputDevice)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMMediaRouteOutputDevice)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v97[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"outputDeviceID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"outputDeviceID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"type"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -302,7 +302,7 @@ LABEL_4:
       v76 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"subType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subType"];
     v75 = v10;
     if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -357,7 +357,7 @@ LABEL_61:
       v77 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"clusterType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"clusterType"];
     v72 = v7;
     v73 = v9;
     v74 = v12;
@@ -404,15 +404,15 @@ LABEL_58:
       v71 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"flattenedClusterLeafMembers"];
-    v15 = [MEMORY[0x1E695DFB0] null];
-    v16 = [v14 isEqual:v15];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"flattenedClusterLeafMembers"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v16 = [v14 isEqual:null];
 
     if (v16)
     {
       v66 = p_isa;
-      v67 = self;
-      v68 = v6;
+      selfCopy2 = self;
+      v68 = dictionaryCopy;
 
       v14 = 0;
 LABEL_18:
@@ -450,7 +450,7 @@ LABEL_20:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v6 = v68;
+          dictionaryCopy = v68;
           v8 = v69;
           v36 = v66;
           if (!v66)
@@ -483,13 +483,13 @@ LABEL_20:
             *v66 = v42;
           }
 
-          v6 = v68;
+          dictionaryCopy = v68;
           v8 = v69;
 LABEL_53:
 
 LABEL_54:
           p_isa = 0;
-          self = v67;
+          self = selfCopy2;
           goto LABEL_55;
         }
 
@@ -507,9 +507,9 @@ LABEL_54:
 LABEL_28:
 
           v27 = v71;
-          self = -[BMMediaRouteOutputDevice initWithOutputDeviceID:type:subType:clusterType:flattenedClusterLeafMembers:](v67, "initWithOutputDeviceID:type:subType:clusterType:flattenedClusterLeafMembers:", v8, [v76 intValue], objc_msgSend(v77, "intValue"), objc_msgSend(v71, "intValue"), v17);
+          self = -[BMMediaRouteOutputDevice initWithOutputDeviceID:type:subType:clusterType:flattenedClusterLeafMembers:](selfCopy2, "initWithOutputDeviceID:type:subType:clusterType:flattenedClusterLeafMembers:", v8, [v76 intValue], objc_msgSend(v77, "intValue"), objc_msgSend(v71, "intValue"), v17);
           p_isa = &self->super.super.isa;
-          v6 = v68;
+          dictionaryCopy = v68;
 LABEL_56:
 
           v7 = v72;
@@ -518,7 +518,7 @@ LABEL_56:
         }
       }
 
-      v6 = v68;
+      dictionaryCopy = v68;
       v8 = v69;
       v36 = v66;
       if (!v66)
@@ -543,8 +543,8 @@ LABEL_47:
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v66 = p_isa;
-      v67 = self;
-      v68 = v6;
+      selfCopy2 = self;
+      v68 = dictionaryCopy;
       goto LABEL_18;
     }
 
@@ -609,15 +609,15 @@ LABEL_63:
 {
   v3 = objc_opt_new();
   [(BMMediaRouteOutputDevice *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_outputDeviceID)
   {
     PBDataWriterWriteStringField();
@@ -650,7 +650,7 @@ LABEL_63:
 
         v13 = *(*(&v15 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v13 writeTo:v4];
+        [v13 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -663,9 +663,9 @@ LABEL_63:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v45.receiver = self;
   v45.super_class = BMMediaRouteOutputDevice;
   v5 = [(BMEventBase *)&v45 init];
@@ -675,12 +675,12 @@ LABEL_63:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_71;
       }
@@ -691,18 +691,18 @@ LABEL_63:
       while (1)
       {
         LOBYTE(v46[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v46 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v46[0] & 0x7F) << v8;
@@ -719,9 +719,9 @@ LABEL_63:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_71;
       }
@@ -740,18 +740,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v46[0]) = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:v46 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v19 |= (v46[0] & 0x7F) << v29;
@@ -768,7 +768,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v19 > 0x15)
+        if (([fromCopy hasError] & 1) != 0 || v19 > 0x15)
         {
 LABEL_59:
           LODWORD(v19) = 0;
@@ -788,18 +788,18 @@ LABEL_59:
           while (1)
           {
             LOBYTE(v46[0]) = 0;
-            v20 = [v4 position] + 1;
-            if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 1, v21 <= objc_msgSend(v4, "length")))
+            v20 = [fromCopy position] + 1;
+            if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 1, v21 <= objc_msgSend(fromCopy, "length")))
             {
-              v22 = [v4 data];
-              [v22 getBytes:v46 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v19 |= (v46[0] & 0x7F) << v17;
@@ -816,7 +816,7 @@ LABEL_59:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v19 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v19 > 3)
           {
 LABEL_63:
             LODWORD(v19) = 0;
@@ -839,7 +839,7 @@ LABEL_55:
 
       v46[0] = 0;
       v46[1] = 0;
-      if (!PBReaderPlaceMark() || (v34 = [[BMMediaRouteOutputDeviceClusterMember alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v34 = [[BMMediaRouteOutputDeviceClusterMember alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_75:
 
@@ -851,8 +851,8 @@ LABEL_75:
       PBReaderRecallMark();
 
 LABEL_70:
-      v39 = [v4 position];
-      if (v39 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_71;
       }
@@ -875,18 +875,18 @@ LABEL_70:
       while (1)
       {
         LOBYTE(v46[0]) = 0;
-        v26 = [v4 position] + 1;
-        if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+        v26 = [fromCopy position] + 1;
+        if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
         {
-          v28 = [v4 data];
-          [v28 getBytes:v46 range:{objc_msgSend(v4, "position"), 1}];
+          data4 = [fromCopy data];
+          [data4 getBytes:v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v19 |= (v46[0] & 0x7F) << v24;
@@ -903,7 +903,7 @@ LABEL_70:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v19 > 5)
+      if (([fromCopy hasError] & 1) != 0 || v19 > 5)
       {
 LABEL_67:
         LODWORD(v19) = 0;
@@ -921,8 +921,8 @@ LABEL_71:
   flattenedClusterLeafMembers = v5->_flattenedClusterLeafMembers;
   v5->_flattenedClusterLeafMembers = v40;
 
-  v42 = [v4 hasError];
-  if (v42)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_72:
     v43 = 0;
@@ -937,21 +937,21 @@ LABEL_73:
   return v43;
 }
 
-- (BMMediaRouteOutputDevice)initWithOutputDeviceID:(id)a3 type:(int)a4 subType:(int)a5 clusterType:(int)a6 flattenedClusterLeafMembers:(id)a7
+- (BMMediaRouteOutputDevice)initWithOutputDeviceID:(id)d type:(int)type subType:(int)subType clusterType:(int)clusterType flattenedClusterLeafMembers:(id)members
 {
-  v13 = a3;
-  v14 = a7;
+  dCopy = d;
+  membersCopy = members;
   v17.receiver = self;
   v17.super_class = BMMediaRouteOutputDevice;
   v15 = [(BMEventBase *)&v17 init];
   if (v15)
   {
     v15->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v15->_outputDeviceID, a3);
-    v15->_type = a4;
-    v15->_subType = a5;
-    v15->_clusterType = a6;
-    objc_storeStrong(&v15->_flattenedClusterLeafMembers, a7);
+    objc_storeStrong(&v15->_outputDeviceID, d);
+    v15->_type = type;
+    v15->_subType = subType;
+    v15->_clusterType = clusterType;
+    objc_storeStrong(&v15->_flattenedClusterLeafMembers, members);
   }
 
   return v15;
@@ -1005,9 +1005,9 @@ id __35__BMMediaRouteOutputDevice_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1015,8 +1015,8 @@ id __35__BMMediaRouteOutputDevice_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMediaRouteOutputDevice alloc] initByReadFrom:v7];
     v4 = v8;

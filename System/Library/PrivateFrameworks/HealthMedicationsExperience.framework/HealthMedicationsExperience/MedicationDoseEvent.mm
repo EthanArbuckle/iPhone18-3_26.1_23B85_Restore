@@ -1,16 +1,16 @@
 @interface MedicationDoseEvent
-- (void)medicationDetailDidUpdate:(id)a3 for:(id)a4;
+- (void)medicationDetailDidUpdate:(id)update for:(id)for;
 @end
 
 @implementation MedicationDoseEvent
 
-- (void)medicationDetailDidUpdate:(id)a3 for:(id)a4
+- (void)medicationDetailDidUpdate:(id)update for:(id)for
 {
   v5 = sub_1D166FA04();
   v7 = v6;
-  v8 = a3;
+  updateCopy = update;
 
-  sub_1D1615174(v8, v5, v7);
+  sub_1D1615174(updateCopy, v5, v7);
 }
 
 @end

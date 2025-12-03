@@ -22,16 +22,16 @@
     v7 = 0;
   }
 
-  v8 = [a1 persistentStoreCoordinator];
-  v9 = [v8 persistentStores];
-  v10 = [v9 count];
+  persistentStoreCoordinator = [self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v10 = [persistentStores count];
 
   if (v10)
   {
-    if ([a1 hasChanges])
+    if ([self hasChanges])
     {
       v15 = 0;
-      v11 = [a1 save:&v15];
+      v11 = [self save:&v15];
       v12 = v15;
       if (v11)
       {
@@ -91,7 +91,7 @@
   v12 = v7;
   v8 = v7;
   v9 = v6;
-  [a1 performBlock:v10];
+  [self performBlock:v10];
 }
 
 - (void)ic_performBlockAndWait:()IC andPerformBlockAndWaitOnMainThread:
@@ -104,7 +104,7 @@
   v10 = v6;
   v7 = v6;
   v8 = a4;
-  [a1 performBlockAndWait:v9];
+  [self performBlockAndWait:v9];
   performBlockOnMainThreadAndWait(v8);
 }
 
@@ -132,7 +132,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 objectWithID:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self objectWithID:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -150,15 +150,15 @@
 - (void)ic_refreshObject:()IC mergeChanges:
 {
   v6 = a3;
-  v7 = [a1 persistentStoreCoordinator];
-  v8 = [v7 persistentStores];
-  v9 = [v6 objectID];
-  v10 = [v9 persistentStore];
-  v11 = [v8 containsObject:v10];
+  persistentStoreCoordinator = [self persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  objectID = [v6 objectID];
+  persistentStore = [objectID persistentStore];
+  v11 = [persistentStores containsObject:persistentStore];
 
   if (v11)
   {
-    [a1 refreshObject:v6 mergeChanges:a4];
+    [self refreshObject:v6 mergeChanges:a4];
   }
 
   else
@@ -174,8 +174,8 @@
 - (id)ic_objectIDFromURL:()IC
 {
   v4 = a3;
-  v5 = [a1 persistentStoreCoordinator];
-  v6 = [v5 ic_managedObjectIDForURIRepresentation:v4];
+  persistentStoreCoordinator = [self persistentStoreCoordinator];
+  v6 = [persistentStoreCoordinator ic_managedObjectIDForURIRepresentation:v4];
 
   return v6;
 }

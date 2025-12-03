@@ -1,9 +1,9 @@
 @interface WCRRemotePINEntryViewController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)getIsPINPresentWithCompletion:(id)a3;
-- (void)permitURLWithCompletion:(id)a3;
-- (void)setPageTitle:(id)a3;
-- (void)setURL:(id)a3;
+- (void)getIsPINPresentWithCompletion:(id)completion;
+- (void)permitURLWithCompletion:(id)completion;
+- (void)setPageTitle:(id)title;
+- (void)setURL:(id)l;
 - (void)viewDidLoad;
 @end
 
@@ -14,10 +14,10 @@
   v6.receiver = self;
   v6.super_class = WCRRemotePINEntryViewController;
   [(WCRRemotePINEntryViewController *)&v6 viewDidLoad];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v5 = 16;
   }
@@ -30,26 +30,26 @@
   [(WCRRemotePINEntryViewController *)self setModalPresentationStyle:v5];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 setURL:v4];
+  lCopy = l;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy setURL:lCopy];
 }
 
-- (void)setPageTitle:(id)a3
+- (void)setPageTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 setPageTitle:v4];
+  titleCopy = title;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy setPageTitle:titleCopy];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -60,18 +60,18 @@
   }
 }
 
-- (void)getIsPINPresentWithCompletion:(id)a3
+- (void)getIsPINPresentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 getIsPINPresentWithCompletion:v4];
+  completionCopy = completion;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy getIsPINPresentWithCompletion:completionCopy];
 }
 
-- (void)permitURLWithCompletion:(id)a3
+- (void)permitURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 permitURLWithCompletion:v4];
+  completionCopy = completion;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy permitURLWithCompletion:completionCopy];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface LCFFeatureImportance
-+ (id)_generateFeatureDictionaryForFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5;
-+ (id)analyzeFeatureImportanceWithFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5;
-+ (id)analyzeFeatureQuality:(id)a3 featureNames:(id)a4 labelName:(id)a5;
-+ (id)computeCorrelationBetweenVector:(id)a3 andOtherVector:(id)a4;
++ (id)_generateFeatureDictionaryForFeatureStore:(id)store featureNames:(id)names labelName:(id)name;
++ (id)analyzeFeatureImportanceWithFeatureStore:(id)store featureNames:(id)names labelName:(id)name;
++ (id)analyzeFeatureQuality:(id)quality featureNames:(id)names labelName:(id)name;
++ (id)computeCorrelationBetweenVector:(id)vector andOtherVector:(id)otherVector;
 @end
 
 @implementation LCFFeatureImportance
 
-+ (id)analyzeFeatureQuality:(id)a3 featureNames:(id)a4 labelName:(id)a5
++ (id)analyzeFeatureQuality:(id)quality featureNames:(id)names labelName:(id)name
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v27 = [a3 getMultiArrayFeatureVectors:v7 vectorName:@"vector" srcLabelName:v8 destLabelName:v8 option:4];
-  v28 = v8;
+  namesCopy = names;
+  nameCopy = name;
+  v27 = [quality getMultiArrayFeatureVectors:namesCopy vectorName:@"vector" srcLabelName:nameCopy destLabelName:nameCopy option:4];
+  v28 = nameCopy;
   v9 = [LCFFeatureImportance _generateFeatureDictionaryForFeatureStore:"_generateFeatureDictionaryForFeatureStore:featureNames:labelName:" featureNames:? labelName:?];
   v30 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = namesCopy;
   v10 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v10)
   {
@@ -92,23 +92,23 @@
   return v30;
 }
 
-+ (id)analyzeFeatureImportanceWithFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5
++ (id)analyzeFeatureImportanceWithFeatureStore:(id)store featureNames:(id)names labelName:(id)name
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v39 = [v7 getFeatureVectors:v8 option:4];
-  v40 = v7;
-  v38 = [v7 getMultiArrayFeatureVectors:v8 vectorName:@"vector" srcLabelName:v9 destLabelName:v9 option:4];
-  v45 = v9;
+  storeCopy = store;
+  namesCopy = names;
+  nameCopy = name;
+  v39 = [storeCopy getFeatureVectors:namesCopy option:4];
+  v40 = storeCopy;
+  v38 = [storeCopy getMultiArrayFeatureVectors:namesCopy vectorName:@"vector" srcLabelName:nameCopy destLabelName:nameCopy option:4];
+  v45 = nameCopy;
   v10 = [LCFFeatureImportance _generateFeatureDictionaryForFeatureStore:"_generateFeatureDictionaryForFeatureStore:featureNames:labelName:" featureNames:? labelName:?];
   v11 = objc_opt_new();
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v8;
+  obj = namesCopy;
   v12 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
   if (v12)
   {
@@ -142,8 +142,8 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v41 = [v11 allKeys];
-  v20 = [v41 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  allKeys = [v11 allKeys];
+  v20 = [allKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v20)
   {
     v21 = v20;
@@ -154,7 +154,7 @@
       {
         if (*v47 != v43)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v46 + 1) + 8 * j);
@@ -169,7 +169,7 @@
         [v44 addObject:v30];
       }
 
-      v21 = [v41 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v21);
@@ -187,22 +187,22 @@
   return v11;
 }
 
-+ (id)_generateFeatureDictionaryForFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5
++ (id)_generateFeatureDictionaryForFeatureStore:(id)store featureNames:(id)names labelName:(id)name
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  storeCopy = store;
+  namesCopy = names;
+  nameCopy = name;
+  if ([storeCopy count])
   {
-    v40 = v9;
+    v40 = nameCopy;
     v10 = objc_opt_new();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v38 = v8;
-    v11 = v8;
+    v38 = namesCopy;
+    v11 = namesCopy;
     v12 = [v11 countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v12)
     {
@@ -229,10 +229,10 @@
     }
 
     v18 = objc_opt_new();
-    v9 = v40;
+    nameCopy = v40;
     [v10 setObject:v18 forKeyedSubscript:v40];
 
-    if ([v7 count] < 1)
+    if ([storeCopy count] < 1)
     {
 LABEL_16:
       v35 = v10;
@@ -241,23 +241,23 @@ LABEL_16:
     else
     {
       v19 = 0;
-      v39 = v7;
+      v39 = storeCopy;
       while (1)
       {
-        v20 = [v7 featuresAtIndex:v19];
+        v20 = [storeCopy featuresAtIndex:v19];
         v21 = [v20 featureValueForName:@"vector"];
-        v22 = [v21 multiArrayValue];
+        multiArrayValue = [v21 multiArrayValue];
 
         v42 = v20;
-        v23 = [v20 featureValueForName:v9];
-        v41 = [v23 int64Value];
+        v23 = [v20 featureValueForName:nameCopy];
+        int64Value = [v23 int64Value];
 
-        v24 = [v22 dataPointer];
-        v25 = [v22 shape];
-        v26 = [v25 objectAtIndexedSubscript:0];
-        v27 = [v26 longLongValue];
+        dataPointer = [multiArrayValue dataPointer];
+        shape = [multiArrayValue shape];
+        v26 = [shape objectAtIndexedSubscript:0];
+        longLongValue = [v26 longLongValue];
 
-        if (v27 != [v11 count])
+        if (longLongValue != [v11 count])
         {
           break;
         }
@@ -268,7 +268,7 @@ LABEL_16:
           do
           {
             v29 = [v11 objectAtIndexedSubscript:v28];
-            v30 = *(v24 + 8 * v28);
+            v30 = *(dataPointer + 8 * v28);
             v31 = [v10 objectForKeyedSubscript:v29];
             v32 = [MEMORY[0x277CCABB0] numberWithDouble:v30];
             [v31 addObject:v32];
@@ -279,13 +279,13 @@ LABEL_16:
           while ([v11 count] > v28);
         }
 
-        v9 = v40;
+        nameCopy = v40;
         v33 = [v10 objectForKeyedSubscript:v40];
-        v34 = [MEMORY[0x277CCABB0] numberWithDouble:v41];
+        v34 = [MEMORY[0x277CCABB0] numberWithDouble:int64Value];
         [v33 addObject:v34];
 
         ++v19;
-        v7 = v39;
+        storeCopy = v39;
         if ([v39 count] <= v19)
         {
           goto LABEL_16;
@@ -293,10 +293,10 @@ LABEL_16:
       }
 
       v35 = 0;
-      v9 = v40;
+      nameCopy = v40;
     }
 
-    v8 = v38;
+    namesCopy = v38;
   }
 
   else
@@ -309,16 +309,16 @@ LABEL_16:
   return v35;
 }
 
-+ (id)computeCorrelationBetweenVector:(id)a3 andOtherVector:(id)a4
++ (id)computeCorrelationBetweenVector:(id)vector andOtherVector:(id)otherVector
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  vectorCopy = vector;
+  otherVectorCopy = otherVector;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v49 objects:v54 count:16];
+  v7 = [vectorCopy countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v7)
   {
     v8 = v7;
@@ -331,7 +331,7 @@ LABEL_16:
       {
         if (*v50 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(vectorCopy);
         }
 
         v13 = *(*(&v49 + 1) + 8 * i);
@@ -343,7 +343,7 @@ LABEL_16:
         v10 = v10 + v16 * v17;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v49 objects:v54 count:16];
+      v8 = [vectorCopy countByEnumeratingWithState:&v49 objects:v54 count:16];
     }
 
     while (v8);
@@ -355,10 +355,10 @@ LABEL_16:
     v11 = 0.0;
   }
 
-  if ([v5 count])
+  if ([vectorCopy count])
   {
-    v18 = v11 / [v5 count];
-    v19 = sqrt((v10 - v11 * v11 / [v5 count]) / (objc_msgSend(v5, "count") - 1));
+    v18 = v11 / [vectorCopy count];
+    v19 = sqrt((v10 - v11 * v11 / [vectorCopy count]) / (objc_msgSend(vectorCopy, "count") - 1));
   }
 
   else
@@ -371,7 +371,7 @@ LABEL_16:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v20 = v6;
+  v20 = otherVectorCopy;
   v21 = [v20 countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v21)
   {
@@ -421,13 +421,13 @@ LABEL_16:
     v33 = -1.0;
   }
 
-  if ([v5 count])
+  if ([vectorCopy count])
   {
     v34 = 0;
     v35 = 0.0;
     do
     {
-      v36 = [v5 objectAtIndexedSubscript:v34];
+      v36 = [vectorCopy objectAtIndexedSubscript:v34];
       v37 = [v20 objectAtIndexedSubscript:v34];
       [v36 doubleValue];
       v39 = (v38 - v18) / v19;
@@ -437,7 +437,7 @@ LABEL_16:
       ++v34;
     }
 
-    while ([v5 count] > v34);
+    while ([vectorCopy count] > v34);
   }
 
   else
@@ -445,7 +445,7 @@ LABEL_16:
     v35 = 0.0;
   }
 
-  v41 = [v5 count];
+  v41 = [vectorCopy count];
   v42 = [MEMORY[0x277CCABB0] numberWithDouble:v35 * (1.0 / (v41 + -1.0))];
 
   v43 = *MEMORY[0x277D85DE8];

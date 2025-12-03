@@ -1,37 +1,37 @@
 @interface PXCNRecipientSearchDataSourceManager
-- (PXCNRecipientSearchDataSourceManager)initWithVerificationType:(int64_t)a3;
+- (PXCNRecipientSearchDataSourceManager)initWithVerificationType:(int64_t)type;
 - (void)_createDataSource;
-- (void)_creationQueue_creatingRecipientSearchResultsForResults:(id)a3 forSearchTaskID:(id)a4 finished:(BOOL)a5;
-- (void)_handleAddressQueryResults:(id)a3 error:(id)a4;
-- (void)_processRecipientSearchResultsWithMoreComing:(BOOL)a3;
-- (void)_setSearchResults:(id)a3;
-- (void)_updateRecipientSearchResults:(id)a3 forSearchTaskID:(id)a4 finished:(BOOL)a5;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
+- (void)_creationQueue_creatingRecipientSearchResultsForResults:(id)results forSearchTaskID:(id)d finished:(BOOL)finished;
+- (void)_handleAddressQueryResults:(id)results error:(id)error;
+- (void)_processRecipientSearchResultsWithMoreComing:(BOOL)coming;
+- (void)_setSearchResults:(id)results;
+- (void)_updateRecipientSearchResults:(id)results forSearchTaskID:(id)d finished:(BOOL)finished;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
 - (void)finishedSearchingForAutocompleteResults;
 - (void)queryStringDidChange;
 @end
 
 @implementation PXCNRecipientSearchDataSourceManager
 
-- (void)_updateRecipientSearchResults:(id)a3 forSearchTaskID:(id)a4 finished:(BOOL)a5
+- (void)_updateRecipientSearchResults:(id)results forSearchTaskID:(id)d finished:(BOOL)finished
 {
-  v9 = a3;
-  v10 = a4;
+  resultsCopy = results;
+  dCopy = d;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:350 description:{@"%s must be called on the main thread", "-[PXCNRecipientSearchDataSourceManager _updateRecipientSearchResults:forSearchTaskID:finished:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:350 description:{@"%s must be called on the main thread", "-[PXCNRecipientSearchDataSourceManager _updateRecipientSearchResults:forSearchTaskID:finished:]"}];
   }
 
-  if ([(NSNumber *)self->_currentSearchTaskID isEqualToNumber:v10])
+  if ([(NSNumber *)self->_currentSearchTaskID isEqualToNumber:dCopy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __95__PXCNRecipientSearchDataSourceManager__updateRecipientSearchResults_forSearchTaskID_finished___block_invoke;
     v12[3] = &unk_1E7749D28;
-    v14 = a5;
+    finishedCopy = finished;
     v12[4] = self;
-    v13 = v9;
+    v13 = resultsCopy;
     [(PXCNRecipientSearchDataSourceManager *)self performChanges:v12];
   }
 }
@@ -49,30 +49,30 @@ uint64_t __95__PXCNRecipientSearchDataSourceManager__updateRecipientSearchResult
   return [v2 _setSearchResults:v3];
 }
 
-- (void)_creationQueue_creatingRecipientSearchResultsForResults:(id)a3 forSearchTaskID:(id)a4 finished:(BOOL)a5
+- (void)_creationQueue_creatingRecipientSearchResultsForResults:(id)results forSearchTaskID:(id)d finished:(BOOL)finished
 {
   v46 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  resultsCopy = results;
+  dCopy = d;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v11 = atomic_load(&self->_currentAtomicSearchTaskID);
-  if ([v9 unsignedIntegerValue] != v11)
+  if ([dCopy unsignedIntegerValue] != v11)
   {
     goto LABEL_25;
   }
 
   val = self;
-  v31 = a5;
+  finishedCopy = finished;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = v8;
+  v12 = resultsCopy;
   v13 = [v12 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (!v13)
   {
 
-    v28 = a5;
+    finishedCopy2 = finished;
     v29 = val;
 LABEL_24:
     objc_initWeak(buf, v29);
@@ -82,8 +82,8 @@ LABEL_24:
     block[3] = &unk_1E773FB40;
     objc_copyWeak(&v37, buf);
     v35 = v10;
-    v36 = v9;
-    v38 = v28;
+    v36 = dCopy;
+    v38 = finishedCopy2;
     dispatch_async(MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v37);
@@ -92,8 +92,8 @@ LABEL_24:
   }
 
   v14 = v13;
-  v33 = v9;
-  v30 = v8;
+  v33 = dCopy;
+  v30 = resultsCopy;
   v15 = 0;
   v16 = *v40;
   LOBYTE(v17) = 1;
@@ -109,23 +109,23 @@ LABEL_24:
       if (!v17)
       {
 
-        v8 = v30;
-        v9 = v33;
+        resultsCopy = v30;
+        dCopy = v33;
         goto LABEL_25;
       }
 
       v19 = [(PXCNComposeRecipient *)[PXCNRecipientSearchResult alloc] initWithRecipient:*(*(&v39 + 1) + 8 * i)];
-      v20 = [(PXRecipient *)v19 invalidAddressString];
+      invalidAddressString = [(PXRecipient *)v19 invalidAddressString];
 
       v21 = PLSharingGetLog();
       v22 = v21;
-      if (v20)
+      if (invalidAddressString)
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(PXRecipient *)v19 invalidAddressString];
+          invalidAddressString2 = [(PXRecipient *)v19 invalidAddressString];
           *buf = 138412290;
-          v44 = v23;
+          v44 = invalidAddressString2;
           _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_ERROR, "Invalid address %@. Recipient not added to search results.", buf, 0xCu);
         }
       }
@@ -134,10 +134,10 @@ LABEL_24:
       {
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(PXRecipient *)v19 suggestedTransport];
-          v25 = [v24 address];
+          suggestedTransport = [(PXRecipient *)v19 suggestedTransport];
+          address = [suggestedTransport address];
           *buf = 138412290;
-          v44 = v25;
+          v44 = address;
           _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_DEFAULT, "Added recipient %@ to search results.", buf, 0xCu);
         }
 
@@ -168,9 +168,9 @@ LABEL_24:
     break;
   }
 
-  v8 = v30;
-  v9 = v33;
-  v28 = v31;
+  resultsCopy = v30;
+  dCopy = v33;
+  finishedCopy2 = finishedCopy;
   v29 = val;
   if (v17)
   {
@@ -201,11 +201,11 @@ void __121__PXCNRecipientSearchDataSourceManager__creationQueue_creatingRecipien
   [(PXCNRecipientSearchDataSourceManager *)self _processRecipientSearchResultsWithMoreComing:0];
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  dCopy = d;
   v8 = PLSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -215,13 +215,13 @@ void __121__PXCNRecipientSearchDataSourceManager__creationQueue_creatingRecipien
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "[auto-complete task %{public}@] updating", buf, 0xCu);
   }
 
-  if (self->_currentSearchTaskID && [v7 isEqualToNumber:?])
+  if (self->_currentSearchTaskID && [dCopy isEqualToNumber:?])
   {
-    v10 = [(PXRecipientSearchDataSourceManager *)self usedAddresses];
-    v11 = v10;
-    if (v10)
+    usedAddresses = [(PXRecipientSearchDataSourceManager *)self usedAddresses];
+    v11 = usedAddresses;
+    if (usedAddresses)
     {
-      v12 = v10;
+      v12 = usedAddresses;
     }
 
     else
@@ -245,11 +245,11 @@ uint64_t __80__PXCNRecipientSearchDataSourceManager_consumeAutocompleteSearchRes
   return v2 ^ 1;
 }
 
-- (void)_processRecipientSearchResultsWithMoreComing:(BOOL)a3
+- (void)_processRecipientSearchResultsWithMoreComing:(BOOL)coming
 {
   if ([(NSMutableArray *)self->_autocompleteSearchResults count])
   {
-    v5 = !a3;
+    v5 = !coming;
     v6 = [(NSMutableArray *)self->_autocompleteSearchResults copy];
     v7 = self->_currentSearchTaskID;
     objc_initWeak(&location, self);
@@ -270,7 +270,7 @@ uint64_t __80__PXCNRecipientSearchDataSourceManager_consumeAutocompleteSearchRes
     objc_destroyWeak(&location);
   }
 
-  else if (!a3)
+  else if (!coming)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -296,11 +296,11 @@ uint64_t __85__PXCNRecipientSearchDataSourceManager__processRecipientSearchResul
   return [v2 _setSearchResults:v3];
 }
 
-- (void)_handleAddressQueryResults:(id)a3 error:(id)a4
+- (void)_handleAddressQueryResults:(id)results error:(id)error
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
+  resultsCopy = results;
   v7 = objc_alloc_init(v5);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -309,7 +309,7 @@ uint64_t __85__PXCNRecipientSearchDataSourceManager__processRecipientSearchResul
   v26[4] = self;
   v8 = v7;
   v27 = v8;
-  [v6 enumerateKeysAndObjectsUsingBlock:v26];
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:v26];
 
   if ([v8 count])
   {
@@ -320,23 +320,23 @@ uint64_t __85__PXCNRecipientSearchDataSourceManager__processRecipientSearchResul
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Update datasource with changed results", buf, 2u);
     }
 
-    v10 = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
     v11 = [PXCNRecipientSearchDataSource alloc];
-    v12 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
-    v13 = [(PXCNRecipientSearchDataSource *)v11 initWithSearchResults:v12];
+    _searchResults = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
+    v13 = [(PXCNRecipientSearchDataSource *)v11 initWithSearchResults:_searchResults];
 
-    v14 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
-    v15 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
-    v16 = [off_1E7721450 changeDetailsFromArray:v14 toArray:v15 changedObjects:v8];
+    _searchResults2 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
+    _searchResults3 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
+    v16 = [off_1E7721450 changeDetailsFromArray:_searchResults2 toArray:_searchResults3 changedObjects:v8];
 
     v17 = [off_1E77218B0 alloc];
-    v18 = [v10 identifier];
-    v19 = [(PXCNRecipientSearchDataSource *)v13 identifier];
-    v20 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXCNRecipientSearchDataSource *)v13 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v28 = &unk_1F190A210;
     v29[0] = v16;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
-    v22 = [v17 initWithFromDataSourceIdentifier:v18 toDataSourceIdentifier:v19 sectionChanges:v20 itemChangeDetailsBySection:v21 subitemChangeDetailsByItemBySection:0];
+    v22 = [v17 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v21 subitemChangeDetailsByItemBySection:0];
 
     v23 = v22;
     v24 = v13;
@@ -393,35 +393,35 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
   *(v3 + 40) = v2;
 }
 
-- (void)_setSearchResults:(id)a3
+- (void)_setSearchResults:(id)results
 {
   v61 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  if (self->__searchResults != v38)
+  resultsCopy = results;
+  if (self->__searchResults != resultsCopy)
   {
     v36 = a2;
     val = self;
-    v37 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
+    _searchResults = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
     v6 = PLSharingGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v58 = [v37 count];
+      v58 = [_searchResults count];
       v59 = 2048;
-      v60 = [(NSArray *)v38 count];
+      v60 = [(NSArray *)resultsCopy count];
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "[auto-complete results] set (old: %lu, new: %lu)", buf, 0x16u);
     }
 
-    objc_storeStrong(&val->__searchResults, a3);
+    objc_storeStrong(&val->__searchResults, results);
     v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSArray count](v38, "count")}];
-    v7 = [(PXCNRecipientSearchDataSourceManager *)val _verificationType];
+    v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSArray count](resultsCopy, "count")}];
+    _verificationType = [(PXCNRecipientSearchDataSourceManager *)val _verificationType];
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = v38;
+    obj = resultsCopy;
     v8 = [(NSArray *)obj countByEnumeratingWithState:&v50 objects:v56 count:16];
     if (v8)
     {
@@ -436,37 +436,37 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
           }
 
           v11 = *(*(&v50 + 1) + 8 * i);
-          v12 = [v11 recipient];
-          v13 = [[PXCNComposeRecipient alloc] initWithRecipient:v12];
-          v14 = [(PXRecipient *)v13 suggestedTransport];
-          v15 = [v14 address];
-          v16 = [v14 addressKind];
-          if (!v15)
+          recipient = [v11 recipient];
+          v13 = [[PXCNComposeRecipient alloc] initWithRecipient:recipient];
+          suggestedTransport = [(PXRecipient *)v13 suggestedTransport];
+          address = [suggestedTransport address];
+          addressKind = [suggestedTransport addressKind];
+          if (!address)
           {
-            v35 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v35 handleFailureInMethod:v36 object:val file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"suggestedAddress"}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:v36 object:val file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:180 description:{@"Invalid parameter not satisfying: %@", @"suggestedAddress"}];
           }
 
-          switch(v16)
+          switch(addressKind)
           {
             case 1:
-              if (v7)
+              if (_verificationType)
               {
-                v19 = v15;
+                v19 = address;
               }
 
               else
               {
-                v19 = MEMORY[0x1A590B2A0](v15);
+                v19 = MEMORY[0x1A590B2A0](address);
               }
 
               v17 = v19;
               [v41 addObject:v19];
               break;
             case 2:
-              if (v7)
+              if (_verificationType)
               {
-                v18 = v15;
+                v18 = address;
               }
 
               else
@@ -478,8 +478,8 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
               [v40 addObject:v18];
               break;
             case 0:
-              v34 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v34 handleFailureInMethod:v36 object:val file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:197 description:@"Code which should be unreachable has been reached"];
+              currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler2 handleFailureInMethod:v36 object:val file:@"PXCNRecipientSearchDataSourceManager.m" lineNumber:197 description:@"Code which should be unreachable has been reached"];
 
               abort();
             default:
@@ -499,7 +499,7 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
       while (v8);
     }
 
-    if (v7 == 1)
+    if (_verificationType == 1)
     {
       objc_initWeak(buf, val);
       cloudKitShareQueryController = val->_cloudKitShareQueryController;
@@ -513,7 +513,7 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
       objc_destroyWeak(buf);
     }
 
-    else if (!v7)
+    else if (!_verificationType)
     {
       v20 = [v41 arrayByAddingObjectsFromArray:v40];
       if ([v20 count])
@@ -540,17 +540,17 @@ void __73__PXCNRecipientSearchDataSourceManager__handleAddressQueryResults_error
     v45 = v43;
     v24 = v43;
     dispatch_sync(searchResultsQueue, block);
-    v25 = [(PXSectionedDataSourceManager *)val dataSource];
+    dataSource = [(PXSectionedDataSourceManager *)val dataSource];
     v26 = [[PXCNRecipientSearchDataSource alloc] initWithSearchResults:obj];
-    v27 = [off_1E7721450 changeDetailsFromArray:v37 toArray:obj changedObjects:MEMORY[0x1E695E0F0]];
+    v27 = [off_1E7721450 changeDetailsFromArray:_searchResults toArray:obj changedObjects:MEMORY[0x1E695E0F0]];
     v28 = [off_1E77218B0 alloc];
-    v29 = [v25 identifier];
-    v30 = [(PXCNRecipientSearchDataSource *)v26 identifier];
-    v31 = [off_1E7721450 changeDetailsWithNoChanges];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXCNRecipientSearchDataSource *)v26 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
     v54 = &unk_1F190A210;
     v55 = v27;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-    v33 = [v28 initWithFromDataSourceIdentifier:v29 toDataSourceIdentifier:v30 sectionChanges:v31 itemChangeDetailsBySection:v32 subitemChangeDetailsByItemBySection:0];
+    v33 = [v28 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v32 subitemChangeDetailsByItemBySection:0];
 
     [(PXSectionedDataSourceManager *)val setDataSource:v26 changeDetails:v33];
   }
@@ -592,12 +592,12 @@ void __58__PXCNRecipientSearchDataSourceManager__setSearchResults___block_invoke
     atomic_store([(NSNumber *)self->_currentSearchTaskID unsignedIntegerValue], &self->_currentAtomicSearchTaskID);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   autocompleteSearchResults = self->_autocompleteSearchResults;
-  self->_autocompleteSearchResults = v4;
+  self->_autocompleteSearchResults = array;
 
-  v6 = [(PXRecipientSearchDataSourceManager *)self queryString];
-  if ([v6 length])
+  queryString = [(PXRecipientSearchDataSourceManager *)self queryString];
+  if ([queryString length])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -605,7 +605,7 @@ void __58__PXCNRecipientSearchDataSourceManager__setSearchResults___block_invoke
     v12[3] = &unk_1E774C5F8;
     v12[4] = self;
     [(PXCNRecipientSearchDataSourceManager *)self performChanges:v12];
-    v7 = [(CNAutocompleteSearchManager *)self->_searchManager searchForText:v6 consumer:self];
+    v7 = [(CNAutocompleteSearchManager *)self->_searchManager searchForText:queryString consumer:self];
     v8 = self->_currentSearchTaskID;
     self->_currentSearchTaskID = v7;
 
@@ -642,13 +642,13 @@ uint64_t __60__PXCNRecipientSearchDataSourceManager_queryStringDidChange__block_
 - (void)_createDataSource
 {
   v3 = [PXCNRecipientSearchDataSource alloc];
-  v4 = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
-  v5 = [(PXCNRecipientSearchDataSource *)v3 initWithSearchResults:v4];
+  _searchResults = [(PXCNRecipientSearchDataSourceManager *)self _searchResults];
+  v5 = [(PXCNRecipientSearchDataSource *)v3 initWithSearchResults:_searchResults];
 
   [(PXSectionedDataSourceManager *)self setDataSource:v5 changeDetails:0];
 }
 
-- (PXCNRecipientSearchDataSourceManager)initWithVerificationType:(int64_t)a3
+- (PXCNRecipientSearchDataSourceManager)initWithVerificationType:(int64_t)type
 {
   v19.receiver = self;
   v19.super_class = PXCNRecipientSearchDataSourceManager;
@@ -667,10 +667,10 @@ uint64_t __60__PXCNRecipientSearchDataSourceManager_queryStringDidChange__block_
     v4->_searchManager = v9;
 
     [(CNAutocompleteSearchManager *)v4->_searchManager setShouldIncludeGroupResults:0];
-    v4->__verificationType = a3;
-    if (a3)
+    v4->__verificationType = type;
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
 LABEL_7:
         v16 = dispatch_queue_create("com.apple.PXCNRecipientSearchDataSourceManager.searchResultsQueue", v6);

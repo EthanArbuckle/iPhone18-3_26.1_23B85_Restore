@@ -1,37 +1,37 @@
 @interface SSSQLiteDatabase
-+ (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)a3;
-+ (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)a3;
-+ (void)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 didFinish:(BOOL *)a5 isCorrupt:(BOOL *)a6;
-- (BOOL)columnName:(id)a3 existsInTable:(id)a4;
-- (BOOL)executeSQL:(id)a3;
-- (BOOL)setUserVersion:(int64_t)a3 forDatabase:(id)a4;
-- (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)a3;
-- (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)a3;
++ (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)stepping;
++ (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)stepping;
++ (void)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row didFinish:(BOOL *)finish isCorrupt:(BOOL *)corrupt;
+- (BOOL)columnName:(id)name existsInTable:(id)table;
+- (BOOL)executeSQL:(id)l;
+- (BOOL)setUserVersion:(int64_t)version forDatabase:(id)database;
+- (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)stepping;
+- (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)stepping;
 - (BOOL)takesTaskCompletionAssertions;
-- (SSSQLiteDatabase)initWithDatabaseURL:(id)a3 readOnly:(BOOL)a4 protectionType:(id)a5;
+- (SSSQLiteDatabase)initWithDatabaseURL:(id)l readOnly:(BOOL)only protectionType:(id)type;
 - (id)_openDatabaseIfNotOpen;
 - (int)_closeDatabaseIfOpen;
 - (int)_openFlags;
-- (int)_resetAndReopenDatabaseWithPath:(id)a3;
+- (int)_resetAndReopenDatabaseWithPath:(id)path;
 - (int64_t)countChanges;
-- (int64_t)userVersionForDatabase:(id)a3;
-- (sqlite3_stmt)_statementForSQL:(id)a3 cache:(BOOL)a4;
-- (void)_accessDatabaseUsingBlock:(id)a3;
+- (int64_t)userVersionForDatabase:(id)database;
+- (sqlite3_stmt)_statementForSQL:(id)l cache:(BOOL)cache;
+- (void)_accessDatabaseUsingBlock:(id)block;
 - (void)_beginTaskCompletionAssertion;
 - (void)_endTaskCompletionAssertion;
 - (void)_expireBackgroundTask;
 - (void)_resetCorruptDatabase;
-- (void)_resetDatabaseWithPath:(id)a3;
-- (void)accessDatabaseUsingBlock:(id)a3;
+- (void)_resetDatabaseWithPath:(id)path;
+- (void)accessDatabaseUsingBlock:(id)block;
 - (void)beginTaskCompletionAssertion;
 - (void)dealloc;
-- (void)dispatchBlockAsync:(id)a3;
-- (void)dispatchBlockSync:(id)a3;
+- (void)dispatchBlockAsync:(id)async;
+- (void)dispatchBlockSync:(id)sync;
 - (void)endTaskCompletionAssertion;
 - (void)expireBackgroundTask;
-- (void)performTransactionWithBlock:(id)a3;
-- (void)prepareStatementForSQL:(id)a3 cache:(BOOL)a4 usingBlock:(id)a5;
-- (void)setTakesTaskCompletionAssertions:(BOOL)a3;
+- (void)performTransactionWithBlock:(id)block;
+- (void)prepareStatementForSQL:(id)l cache:(BOOL)cache usingBlock:(id)block;
+- (void)setTakesTaskCompletionAssertions:(BOOL)assertions;
 @end
 
 @implementation SSSQLiteDatabase
@@ -50,15 +50,15 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
       if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -138,20 +138,20 @@
           v21 = +[SSLogConfig sharedConfig];
         }
 
-        v22 = [v21 shouldLog];
+        shouldLog = [v21 shouldLog];
         if ([v21 shouldLogToDisk])
         {
-          v22 |= 2u;
+          shouldLog |= 2u;
         }
 
         if (os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
         {
-          v23 = v22;
+          v23 = shouldLog;
         }
 
         else
         {
-          v23 = v22 & 2;
+          v23 = shouldLog & 2;
         }
 
         v20 = 23;
@@ -191,15 +191,15 @@
           v54 = +[SSLogConfig sharedConfig];
         }
 
-        v55 = [v54 shouldLog];
+        shouldLog2 = [v54 shouldLog];
         if ([v54 shouldLogToDisk])
         {
-          v56 = v55 | 2;
+          v56 = shouldLog2 | 2;
         }
 
         else
         {
-          v56 = v55;
+          v56 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v54 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -237,15 +237,15 @@
         v54 = +[SSLogConfig sharedConfig];
       }
 
-      v68 = [v54 shouldLog];
+      shouldLog3 = [v54 shouldLog];
       if ([v54 shouldLogToDisk])
       {
-        v69 = v68 | 2;
+        v69 = shouldLog3 | 2;
       }
 
       else
       {
-        v69 = v68;
+        v69 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v54 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -288,15 +288,15 @@
           v39 = +[SSLogConfig sharedConfig];
         }
 
-        v40 = [v39 shouldLog];
+        shouldLog4 = [v39 shouldLog];
         if ([v39 shouldLogToDisk])
         {
-          v41 = v40 | 2;
+          v41 = shouldLog4 | 2;
         }
 
         else
         {
-          v41 = v40;
+          v41 = shouldLog4;
         }
 
         if (os_log_type_enabled([v39 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -357,15 +357,15 @@ LABEL_89:
           v83 = +[SSLogConfig sharedConfig];
         }
 
-        v84 = [v83 shouldLog];
+        shouldLog5 = [v83 shouldLog];
         if ([v83 shouldLogToDisk])
         {
-          v85 = v84 | 2;
+          v85 = shouldLog5 | 2;
         }
 
         else
         {
-          v85 = v84;
+          v85 = shouldLog5;
         }
 
         if (!os_log_type_enabled([v83 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -422,15 +422,15 @@ LABEL_89:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog6 = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog6 | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog6;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -476,9 +476,9 @@ LABEL_89:
   }
 }
 
-- (SSSQLiteDatabase)initWithDatabaseURL:(id)a3 readOnly:(BOOL)a4 protectionType:(id)a5
+- (SSSQLiteDatabase)initWithDatabaseURL:(id)l readOnly:(BOOL)only protectionType:(id)type
 {
-  v6 = a4;
+  onlyCopy = only;
   v37 = *MEMORY[0x1E69E9840];
   v9 = +[SSLogConfig sharedStoreServicesConfig];
   if (!v9)
@@ -486,15 +486,15 @@ LABEL_89:
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
   if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -507,11 +507,11 @@ LABEL_89:
     v29 = 138413058;
     v30 = objc_opt_class();
     v31 = 2114;
-    v32 = [a3 path];
+    path = [l path];
     v33 = 1024;
-    v34 = v6;
+    v34 = onlyCopy;
     v35 = 2112;
-    v36 = a5;
+    typeCopy = type;
     LODWORD(v27) = 38;
     v26 = &v29;
     v12 = _os_log_send_and_compose_impl();
@@ -524,7 +524,7 @@ LABEL_89:
     }
   }
 
-  if (([a3 isFileURL] & 1) == 0)
+  if (([l isFileURL] & 1) == 0)
   {
 
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid database URL"];
@@ -542,9 +542,9 @@ LABEL_89:
     v21->_dispatchQueue = v24;
     dispatch_queue_set_specific(v24, "_ISSQLiteDispatchQueueTag", 1, 0);
 
-    v21->_databasePath = [a3 path];
-    v21->_readOnly = v6;
-    v21->_protectionType = a5;
+    v21->_databasePath = [l path];
+    v21->_readOnly = onlyCopy;
+    v21->_protectionType = type;
     if (__TakesTaskCompletionAssertions == 1)
     {
       if (!v22)
@@ -570,25 +570,25 @@ LABEL_18:
 - (void)dealloc
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
-  if (v3)
+  _closeDatabaseIfOpen = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
+  if (_closeDatabaseIfOpen)
   {
-    v4 = v3;
+    v4 = _closeDatabaseIfOpen;
     v5 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v5)
     {
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -638,46 +638,46 @@ LABEL_18:
   [(SSSQLiteDatabase *)&v21 dealloc];
 }
 
-+ (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)a3
++ (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)stepping
 {
   v4 = 0;
-  [a1 _stepStatement:a3 hasRow:0 didFinish:&v4 isCorrupt:0];
+  [self _stepStatement:stepping hasRow:0 didFinish:&v4 isCorrupt:0];
   return v4;
 }
 
-+ (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)a3
++ (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)stepping
 {
   v4 = 0;
-  [a1 _stepStatement:a3 hasRow:&v4 didFinish:0 isCorrupt:0];
+  [self _stepStatement:stepping hasRow:&v4 didFinish:0 isCorrupt:0];
   return v4;
 }
 
-- (void)accessDatabaseUsingBlock:(id)a3
+- (void)accessDatabaseUsingBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__SSSQLiteDatabase_accessDatabaseUsingBlock___block_invoke;
   v3[3] = &unk_1E84AC738;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   [(SSSQLiteDatabase *)self _accessDatabaseUsingBlock:v3];
 }
 
-- (BOOL)columnName:(id)a3 existsInTable:(id)a4
+- (BOOL)columnName:(id)name existsInTable:(id)table
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info(%@);", a4];
+  table = [MEMORY[0x1E696AEC0] stringWithFormat:@"PRAGMA table_info(%@);", table];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__SSSQLiteDatabase_columnName_existsInTable___block_invoke;
   v8[3] = &unk_1E84B1E40;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = name;
   v8[6] = &v9;
-  [(SSSQLiteDatabase *)self prepareStatementForSQL:v6 cache:0 usingBlock:v8];
+  [(SSSQLiteDatabase *)self prepareStatementForSQL:table cache:0 usingBlock:v8];
   LOBYTE(self) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
   return self;
@@ -741,41 +741,41 @@ uint64_t __32__SSSQLiteDatabase_countChanges__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)dispatchBlockAsync:(id)a3
+- (void)dispatchBlockAsync:(id)async
 {
   if (dispatch_get_specific("_ISSQLiteDispatchQueueTag") == 1)
   {
-    v6 = *(a3 + 2);
+    v6 = *(async + 2);
 
-    v6(a3);
+    v6(async);
   }
 
   else
   {
     dispatchQueue = self->_dispatchQueue;
 
-    dispatch_async(dispatchQueue, a3);
+    dispatch_async(dispatchQueue, async);
   }
 }
 
-- (void)dispatchBlockSync:(id)a3
+- (void)dispatchBlockSync:(id)sync
 {
   if (dispatch_get_specific("_ISSQLiteDispatchQueueTag") == 1)
   {
-    v6 = *(a3 + 2);
+    v6 = *(sync + 2);
 
-    v6(a3);
+    v6(sync);
   }
 
   else
   {
     dispatchQueue = self->_dispatchQueue;
 
-    dispatch_sync(dispatchQueue, a3);
+    dispatch_sync(dispatchQueue, sync);
   }
 }
 
-- (BOOL)executeSQL:(id)a3
+- (BOOL)executeSQL:(id)l
 {
   v6 = 0;
   v7 = &v6;
@@ -785,7 +785,7 @@ uint64_t __32__SSSQLiteDatabase_countChanges__block_invoke(uint64_t a1)
   v5[1] = 3221225472;
   v5[2] = __31__SSSQLiteDatabase_executeSQL___block_invoke;
   v5[3] = &unk_1E84AC7B0;
-  v5[4] = a3;
+  v5[4] = l;
   v5[5] = self;
   v5[6] = &v6;
   [(SSSQLiteDatabase *)self _accessDatabaseUsingBlock:v5];
@@ -937,14 +937,14 @@ void __31__SSSQLiteDatabase_executeSQL___block_invoke(uint64_t a1)
   while ((v20 & 1) != 0);
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __48__SSSQLiteDatabase_performTransactionWithBlock___block_invoke;
   v3[3] = &unk_1E84AF318;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = block;
   [(SSSQLiteDatabase *)self _accessDatabaseUsingBlock:v3];
 }
 
@@ -990,16 +990,16 @@ _BYTE *__48__SSSQLiteDatabase_performTransactionWithBlock___block_invoke(uint64_
   return result;
 }
 
-- (void)prepareStatementForSQL:(id)a3 cache:(BOOL)a4 usingBlock:(id)a5
+- (void)prepareStatementForSQL:(id)l cache:(BOOL)cache usingBlock:(id)block
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__SSSQLiteDatabase_prepareStatementForSQL_cache_usingBlock___block_invoke;
   v5[3] = &unk_1E84B1E68;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
-  v5[6] = a5;
+  v5[5] = l;
+  cacheCopy = cache;
+  v5[6] = block;
   [(SSSQLiteDatabase *)self _accessDatabaseUsingBlock:v5];
 }
 
@@ -1022,28 +1022,28 @@ uint64_t __60__SSSQLiteDatabase_prepareStatementForSQL_cache_usingBlock___block_
   return result;
 }
 
-- (BOOL)setUserVersion:(int64_t)a3 forDatabase:(id)a4
+- (BOOL)setUserVersion:(int64_t)version forDatabase:(id)database
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.user_version=%ld;", a4, a3];
-  v6 = [(SSSQLiteDatabase *)self executeSQL:v5];
+  version = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.user_version=%ld;", database, version];
+  v6 = [(SSSQLiteDatabase *)self executeSQL:version];
 
   return v6;
 }
 
-- (int64_t)userVersionForDatabase:(id)a3
+- (int64_t)userVersionForDatabase:(id)database
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.user_version;", a3];
+  database = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.user_version;", database];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke;
   v7[3] = &unk_1E84B1E90;
   v7[4] = self;
   v7[5] = &v8;
-  [(SSSQLiteDatabase *)self prepareStatementForSQL:v4 cache:0 usingBlock:v7];
+  [(SSSQLiteDatabase *)self prepareStatementForSQL:database cache:0 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -1092,7 +1092,7 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)setTakesTaskCompletionAssertions:(BOOL)a3
+- (void)setTakesTaskCompletionAssertions:(BOOL)assertions
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1100,14 +1100,14 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
   v4[2] = __53__SSSQLiteDatabase_setTakesTaskCompletionAssertions___block_invoke;
   v4[3] = &unk_1E84AD498;
   v4[4] = self;
-  v5 = a3;
+  assertionsCopy = assertions;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)a3
+- (BOOL)statementDidFinishAfterStepping:(sqlite3_stmt *)stepping
 {
   v6 = 0;
-  [objc_opt_class() _stepStatement:a3 hasRow:0 didFinish:&v6 + 1 isCorrupt:&v6];
+  [objc_opt_class() _stepStatement:stepping hasRow:0 didFinish:&v6 + 1 isCorrupt:&v6];
   if (v6)
   {
     [(SSSQLiteDatabase *)self _resetCorruptDatabase];
@@ -1122,10 +1122,10 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
   return v4 & 1;
 }
 
-- (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)a3
+- (BOOL)statementHasRowAfterStepping:(sqlite3_stmt *)stepping
 {
   v6 = 0;
-  [objc_opt_class() _stepStatement:a3 hasRow:&v6 + 1 didFinish:0 isCorrupt:&v6];
+  [objc_opt_class() _stepStatement:stepping hasRow:&v6 + 1 didFinish:0 isCorrupt:&v6];
   if (v6)
   {
     [(SSSQLiteDatabase *)self _resetCorruptDatabase];
@@ -1159,14 +1159,14 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
   return v3;
 }
 
-+ (void)_stepStatement:(sqlite3_stmt *)a3 hasRow:(BOOL *)a4 didFinish:(BOOL *)a5 isCorrupt:(BOOL *)a6
++ (void)_stepStatement:(sqlite3_stmt *)statement hasRow:(BOOL *)row didFinish:(BOOL *)finish isCorrupt:(BOOL *)corrupt
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (statement)
   {
     while (1)
     {
-      v10 = sqlite3_step(a3);
+      v10 = sqlite3_step(statement);
       if (v10 == 9)
       {
         break;
@@ -1174,9 +1174,9 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
 
       if (v10 == 101)
       {
-        if (a5)
+        if (finish)
         {
-          *a5 = 1;
+          *finish = 1;
         }
 
         return;
@@ -1184,9 +1184,9 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
 
       if (v10 == 100)
       {
-        if (a4)
+        if (row)
         {
-          *a4 = 1;
+          *row = 1;
         }
 
         return;
@@ -1201,15 +1201,15 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
           v12 = +[SSLogConfig sharedConfig];
         }
 
-        v13 = [v12 shouldLog];
+        shouldLog = [v12 shouldLog];
         if ([v12 shouldLogToDisk])
         {
-          v14 = v13 | 2;
+          v14 = shouldLog | 2;
         }
 
         else
         {
-          v14 = v13;
+          v14 = shouldLog;
         }
 
         if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1220,8 +1220,8 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
         if (v14)
         {
           v15 = objc_opt_class();
-          v16 = sqlite3_sql(a3);
-          v17 = sqlite3_db_handle(a3);
+          v16 = sqlite3_sql(statement);
+          v17 = sqlite3_db_handle(statement);
           v30 = 138413058;
           v31 = v15;
           v32 = 2080;
@@ -1241,10 +1241,10 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
           }
         }
 
-        if (a6)
+        if (corrupt)
         {
           v28 = v11 == 11 || v11 == 26;
-          *a6 = v28;
+          *corrupt = v28;
         }
 
         return;
@@ -1252,20 +1252,20 @@ void __43__SSSQLiteDatabase_userVersionForDatabase___block_invoke(uint64_t a1, s
 
       if (v10 == 6)
       {
-        sqlite3_reset(a3);
+        sqlite3_reset(statement);
       }
     }
   }
 }
 
-- (void)_accessDatabaseUsingBlock:(id)a3
+- (void)_accessDatabaseUsingBlock:(id)block
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__SSSQLiteDatabase__accessDatabaseUsingBlock___block_invoke;
   v4[3] = &unk_1E84AF318;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   if (dispatch_get_specific("_ISSQLiteDispatchQueueTag") == 1)
   {
     __46__SSSQLiteDatabase__accessDatabaseUsingBlock___block_invoke(v4);
@@ -1400,15 +1400,15 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1485,28 +1485,28 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
   return v2;
 }
 
-- (int)_resetAndReopenDatabaseWithPath:(id)a3
+- (int)_resetAndReopenDatabaseWithPath:(id)path
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
-  if (v5)
+  _closeDatabaseIfOpen = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
+  if (_closeDatabaseIfOpen)
   {
-    v6 = v5;
+    v6 = _closeDatabaseIfOpen;
     v7 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v7)
     {
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1539,8 +1539,8 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
     return 1;
   }
 
-  [(SSSQLiteDatabase *)self _resetDatabaseWithPath:a3];
-  return sqlite3_open_v2([a3 fileSystemRepresentation], &self->_db, -[SSSQLiteDatabase _openFlags](self, "_openFlags"), 0);
+  [(SSSQLiteDatabase *)self _resetDatabaseWithPath:path];
+  return sqlite3_open_v2([path fileSystemRepresentation], &self->_db, -[SSSQLiteDatabase _openFlags](self, "_openFlags"), 0);
 }
 
 - (void)_resetCorruptDatabase
@@ -1554,15 +1554,15 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1600,15 +1600,15 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
         v17 = +[SSLogConfig sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
+      shouldLog2 = [v17 shouldLog];
       if ([v17 shouldLogToDisk])
       {
-        v19 = v18 | 2;
+        v19 = shouldLog2 | 2;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shouldLog2;
       }
 
       if (os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -1640,7 +1640,7 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
   }
 }
 
-- (void)_resetDatabaseWithPath:(id)a3
+- (void)_resetDatabaseWithPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
   if (!self->_db)
@@ -1649,25 +1649,25 @@ void __47__SSSQLiteDatabase__endTaskCompletionAssertion__block_invoke(uint64_t a
   }
 
   v5 = CPSqliteDatabaseDelete();
-  v6 = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
-  if (v6)
+  _closeDatabaseIfOpen = [(SSSQLiteDatabase *)self _closeDatabaseIfOpen];
+  if (_closeDatabaseIfOpen)
   {
-    v7 = v6;
+    v7 = _closeDatabaseIfOpen;
     v8 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v8)
     {
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
     if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1718,7 +1718,7 @@ LABEL_14:
             objc_enumerationMutation(&unk_1F507A300);
           }
 
-          [v20 removeItemAtPath:objc_msgSend(a3 error:{"stringByAppendingString:", *(*(&v27 + 1) + 8 * i), v25), 0}];
+          [v20 removeItemAtPath:objc_msgSend(path error:{"stringByAppendingString:", *(*(&v27 + 1) + 8 * i), v25), 0}];
         }
 
         v22 = [&unk_1F507A300 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -1729,16 +1729,16 @@ LABEL_14:
   }
 }
 
-- (sqlite3_stmt)_statementForSQL:(id)a3 cache:(BOOL)a4
+- (sqlite3_stmt)_statementForSQL:(id)l cache:(BOOL)cache
 {
-  v4 = a4;
+  cacheCopy = cache;
   v40 = *MEMORY[0x1E69E9840];
   ppStmt = 0;
-  if (!a4 || (v7 = self->_statementCache) == 0 || (ppStmt = CFDictionaryGetValue(v7, a3)) == 0)
+  if (!cache || (v7 = self->_statementCache) == 0 || (ppStmt = CFDictionaryGetValue(v7, l)) == 0)
   {
     do
     {
-      v8 = sqlite3_prepare_v2(self->_db, [a3 UTF8String], objc_msgSend(a3, "length"), &ppStmt, 0);
+      v8 = sqlite3_prepare_v2(self->_db, [l UTF8String], objc_msgSend(l, "length"), &ppStmt, 0);
     }
 
     while ((v8 - 5) < 2);
@@ -1751,15 +1751,15 @@ LABEL_14:
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (!os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -1775,7 +1775,7 @@ LABEL_14:
         v30 = 138413314;
         v31 = v13;
         v32 = 2112;
-        v33 = a3;
+        lCopy = l;
         v34 = 1024;
         v35 = v9;
         v36 = 2080;
@@ -1800,7 +1800,7 @@ LABEL_14:
       }
     }
 
-    else if (v4)
+    else if (cacheCopy)
     {
       statementCache = self->_statementCache;
       if (!statementCache)
@@ -1809,7 +1809,7 @@ LABEL_14:
         self->_statementCache = statementCache;
       }
 
-      CFDictionarySetValue(statementCache, a3, ppStmt);
+      CFDictionarySetValue(statementCache, l, ppStmt);
     }
   }
 

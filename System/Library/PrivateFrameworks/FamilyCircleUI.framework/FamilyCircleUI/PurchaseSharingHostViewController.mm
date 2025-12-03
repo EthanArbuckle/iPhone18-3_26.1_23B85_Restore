@@ -1,12 +1,12 @@
 @interface PurchaseSharingHostViewController
-- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithCoder:(id)a3;
-- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithCoder:(id)coder;
+- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation PurchaseSharingHostViewController
 
-- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithCoder:(id)a3
+- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithCoder:(id)coder
 {
   result = sub_21BE2978C();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21BC27B10();
 }
 
-- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14FamilyCircleUI33PurchaseSharingHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

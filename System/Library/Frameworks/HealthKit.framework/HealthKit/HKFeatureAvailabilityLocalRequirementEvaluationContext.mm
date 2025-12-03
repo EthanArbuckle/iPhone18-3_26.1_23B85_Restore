@@ -1,11 +1,11 @@
 @interface HKFeatureAvailabilityLocalRequirementEvaluationContext
 - (id)currentCountryCode;
-- (id)featureStatusForFeatureWithIdentifier:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 countryCode:(id)a4 error:(id *)a5;
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (id)onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4;
-- (id)regionAvailabilityForFeatureWithIdentifier:(id)a3 error:(id *)a4;
+- (id)featureStatusForFeatureWithIdentifier:(id)identifier context:(id)context error:(id *)error;
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error;
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier countryCode:(id)code error:(id *)error;
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (id)onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error;
+- (id)regionAvailabilityForFeatureWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation HKFeatureAvailabilityLocalRequirementEvaluationContext
@@ -21,11 +21,11 @@
   {
     v8.receiver = self;
     v8.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v3 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v8 currentCountryCode];
-    v4 = v3;
-    if (v3)
+    currentCountryCode = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v8 currentCountryCode];
+    v4 = currentCountryCode;
+    if (currentCountryCode)
     {
-      v5 = v3;
+      v5 = currentCountryCode;
     }
 
     else
@@ -49,50 +49,50 @@
   return v6;
 }
 
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   eligibilityByFeatureIdentifier = self->_eligibilityByFeatureIdentifier;
   if (!eligibilityByFeatureIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_eligibilityByFeatureIdentifier;
-    self->_eligibilityByFeatureIdentifier = v8;
+    self->_eligibilityByFeatureIdentifier = dictionary;
 
     eligibilityByFeatureIdentifier = self->_eligibilityByFeatureIdentifier;
   }
 
-  v10 = [(NSMutableDictionary *)eligibilityByFeatureIdentifier objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)eligibilityByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
     ++self->__unitTest_cacheHits;
-    v11 = [(NSMutableDictionary *)self->_eligibilityByFeatureIdentifier objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_eligibilityByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 onboardingEligibilityForFeatureWithIdentifier:v6 error:a4];
+    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 onboardingEligibilityForFeatureWithIdentifier:identifierCopy error:error];
     if (v11)
     {
-      [(NSMutableDictionary *)self->_eligibilityByFeatureIdentifier setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_eligibilityByFeatureIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
     }
   }
 
   return v11;
 }
 
-- (id)onboardingEligibilityForFeatureWithIdentifier:(id)a3 countryCode:(id)a4 error:(id *)a5
+- (id)onboardingEligibilityForFeatureWithIdentifier:(id)identifier countryCode:(id)code error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  identifierCopy = identifier;
+  codeCopy = code;
+  v10 = codeCopy;
   v11 = @"NIL";
-  if (v9)
+  if (codeCopy)
   {
-    v11 = v9;
+    v11 = codeCopy;
   }
 
   v12 = v11;
@@ -106,21 +106,21 @@
     eligibilityByCountryCodeByFeatureIdentifier = self->_eligibilityByCountryCodeByFeatureIdentifier;
   }
 
-  v16 = [(NSMutableDictionary *)eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:v8];
+  v16 = [(NSMutableDictionary *)eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (!v16)
   {
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier setObject:v17 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier setObject:v17 forKeyedSubscript:identifierCopy];
   }
 
-  v18 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:v8];
+  v18 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
   v19 = [v18 objectForKeyedSubscript:v12];
 
   if (v19)
   {
     ++self->__unitTest_cacheHits;
-    v20 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:v8];
+    v20 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
     v21 = [v20 objectForKeyedSubscript:v12];
   }
 
@@ -128,13 +128,13 @@
   {
     v23.receiver = self;
     v23.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v21 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v23 onboardingEligibilityForFeatureWithIdentifier:v8 countryCode:v10 error:a5];
+    v21 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v23 onboardingEligibilityForFeatureWithIdentifier:identifierCopy countryCode:v10 error:error];
     if (!v21)
     {
       goto LABEL_12;
     }
 
-    v20 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:v8];
+    v20 = [(NSMutableDictionary *)self->_eligibilityByCountryCodeByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
     [v20 setObject:v21 forKeyedSubscript:v12];
   }
 
@@ -143,123 +143,123 @@ LABEL_12:
   return v21;
 }
 
-- (id)onboardingRecordForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)onboardingRecordForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   onboardingRecordByFeatureIdentifier = self->_onboardingRecordByFeatureIdentifier;
   if (!onboardingRecordByFeatureIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_onboardingRecordByFeatureIdentifier;
-    self->_onboardingRecordByFeatureIdentifier = v8;
+    self->_onboardingRecordByFeatureIdentifier = dictionary;
 
     onboardingRecordByFeatureIdentifier = self->_onboardingRecordByFeatureIdentifier;
   }
 
-  v10 = [(NSMutableDictionary *)onboardingRecordByFeatureIdentifier objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)onboardingRecordByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
     ++self->__unitTest_cacheHits;
-    v11 = [(NSMutableDictionary *)self->_onboardingRecordByFeatureIdentifier objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_onboardingRecordByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 onboardingRecordForFeatureWithIdentifier:v6 error:a4];
+    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 onboardingRecordForFeatureWithIdentifier:identifierCopy error:error];
     if (v11)
     {
-      [(NSMutableDictionary *)self->_onboardingRecordByFeatureIdentifier setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_onboardingRecordByFeatureIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
     }
   }
 
   return v11;
 }
 
-- (id)regionAvailabilityForFeatureWithIdentifier:(id)a3 error:(id *)a4
+- (id)regionAvailabilityForFeatureWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   regionAvailabilityByFeatureIdentifier = self->_regionAvailabilityByFeatureIdentifier;
   if (!regionAvailabilityByFeatureIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_regionAvailabilityByFeatureIdentifier;
-    self->_regionAvailabilityByFeatureIdentifier = v8;
+    self->_regionAvailabilityByFeatureIdentifier = dictionary;
 
     regionAvailabilityByFeatureIdentifier = self->_regionAvailabilityByFeatureIdentifier;
   }
 
-  v10 = [(NSMutableDictionary *)regionAvailabilityByFeatureIdentifier objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)regionAvailabilityByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
     ++self->__unitTest_cacheHits;
-    v11 = [(NSMutableDictionary *)self->_regionAvailabilityByFeatureIdentifier objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_regionAvailabilityByFeatureIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 regionAvailabilityForFeatureWithIdentifier:v6 error:a4];
+    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 regionAvailabilityForFeatureWithIdentifier:identifierCopy error:error];
     if (v11)
     {
-      [(NSMutableDictionary *)self->_regionAvailabilityByFeatureIdentifier setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_regionAvailabilityByFeatureIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
     }
   }
 
   return v11;
 }
 
-- (id)isWatchAppInstalledWithBundleIdentifier:(id)a3 error:(id *)a4
+- (id)isWatchAppInstalledWithBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   watchAppInstallationStateByBundleIdentifier = self->_watchAppInstallationStateByBundleIdentifier;
   if (!watchAppInstallationStateByBundleIdentifier)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_watchAppInstallationStateByBundleIdentifier;
-    self->_watchAppInstallationStateByBundleIdentifier = v8;
+    self->_watchAppInstallationStateByBundleIdentifier = dictionary;
 
     watchAppInstallationStateByBundleIdentifier = self->_watchAppInstallationStateByBundleIdentifier;
   }
 
-  v10 = [(NSMutableDictionary *)watchAppInstallationStateByBundleIdentifier objectForKeyedSubscript:v6];
+  v10 = [(NSMutableDictionary *)watchAppInstallationStateByBundleIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v10)
   {
     ++self->__unitTest_cacheHits;
-    v11 = [(NSMutableDictionary *)self->_watchAppInstallationStateByBundleIdentifier objectForKeyedSubscript:v6];
+    v11 = [(NSMutableDictionary *)self->_watchAppInstallationStateByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 isWatchAppInstalledWithBundleIdentifier:v6 error:a4];
+    v11 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v13 isWatchAppInstalledWithBundleIdentifier:identifierCopy error:error];
     if (v11)
     {
-      [(NSMutableDictionary *)self->_watchAppInstallationStateByBundleIdentifier setObject:v11 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_watchAppInstallationStateByBundleIdentifier setObject:v11 forKeyedSubscript:identifierCopy];
     }
   }
 
   return v11;
 }
 
-- (id)featureStatusForFeatureWithIdentifier:(id)a3 context:(id)a4 error:(id *)a5
+- (id)featureStatusForFeatureWithIdentifier:(id)identifier context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   if (!self->_featureStatusByIdentifierAndContext)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     featureStatusByIdentifierAndContext = self->_featureStatusByIdentifierAndContext;
-    self->_featureStatusByIdentifierAndContext = v10;
+    self->_featureStatusByIdentifierAndContext = dictionary;
   }
 
-  v12 = [[HKFeatureIdentifierAndContext alloc] initWithFeatureIdentifier:v8 context:v9];
+  v12 = [[HKFeatureIdentifierAndContext alloc] initWithFeatureIdentifier:identifierCopy context:contextCopy];
   v13 = [(NSMutableDictionary *)self->_featureStatusByIdentifierAndContext objectForKeyedSubscript:v12];
 
   if (v13)
@@ -272,7 +272,7 @@ LABEL_12:
   {
     v16.receiver = self;
     v16.super_class = HKFeatureAvailabilityLocalRequirementEvaluationContext;
-    v14 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v16 featureStatusForFeatureWithIdentifier:v8 context:v9 error:a5];
+    v14 = [(HKFeatureAvailabilityRequirementEvaluationDataSource *)&v16 featureStatusForFeatureWithIdentifier:identifierCopy context:contextCopy error:error];
     if (v14)
     {
       [(NSMutableDictionary *)self->_featureStatusByIdentifierAndContext setObject:v14 forKeyedSubscript:v12];

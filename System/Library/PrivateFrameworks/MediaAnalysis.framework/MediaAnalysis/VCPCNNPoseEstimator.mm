@@ -1,6 +1,6 @@
 @interface VCPCNNPoseEstimator
 + (id)estimator;
-- (int)detectPoseForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 yaw:(int64_t *)a5;
+- (int)detectPoseForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer yaw:(int64_t *)yaw;
 @end
 
 @implementation VCPCNNPoseEstimator
@@ -33,15 +33,15 @@ uint64_t __32__VCPCNNPoseEstimator_estimator__block_invoke()
   return result;
 }
 
-- (int)detectPoseForFace:(CGRect)a3 inBuffer:(__CVBuffer *)a4 yaw:(int64_t *)a5
+- (int)detectPoseForFace:(CGRect)face inBuffer:(__CVBuffer *)buffer yaw:(int64_t *)yaw
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = face.size.height;
+  width = face.size.width;
+  y = face.origin.y;
+  x = face.origin.x;
   v44 = *MEMORY[0x1E69E9840];
-  v12 = CVPixelBufferGetWidth(a4);
-  v13 = CVPixelBufferGetHeight(a4);
+  v12 = CVPixelBufferGetWidth(buffer);
+  v13 = CVPixelBufferGetHeight(buffer);
   v14 = (v12 - 1);
   v15 = x;
   if (v15 < v14)
@@ -101,11 +101,11 @@ uint64_t __32__VCPCNNPoseEstimator_estimator__block_invoke()
   v42[0] = 0;
   v42[1] = 0;
   v43 = 0;
-  pixelBuffer = a4;
+  pixelBuffer = buffer;
   unlockFlags = 1;
-  if (a4)
+  if (buffer)
   {
-    v24 = CVPixelBufferLockBaseAddress(a4, 1uLL);
+    v24 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
     v39 = v24;
     if (v24)
     {
@@ -118,9 +118,9 @@ uint64_t __32__VCPCNNPoseEstimator_estimator__block_invoke()
 
     else
     {
-      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-      v28 = [(VCPCNNPoseEstimator *)self getInputBuffer];
+      BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+      getInputBuffer = [(VCPCNNPoseEstimator *)self getInputBuffer];
       v29 = 0;
       if (v20 <= 0.0)
       {
@@ -148,11 +148,11 @@ uint64_t __32__VCPCNNPoseEstimator_estimator__block_invoke()
         {
           *&v33 = v30 * i;
           LOBYTE(v33) = BaseAddressOfPlane[BytesPerRowOfPlane * v19 + v17 + BytesPerRowOfPlane * (v31 * v29) + *&v33];
-          v28[i] = v33;
+          getInputBuffer[i] = v33;
         }
 
         ++v29;
-        v28 += 40;
+        getInputBuffer += 40;
       }
 
       while (v29 != 40);
@@ -174,7 +174,7 @@ uint64_t __32__VCPCNNPoseEstimator_estimator__block_invoke()
           }
 
           v25 = 0;
-          *a5 = v34;
+          *yaw = v34;
         }
       }
     }

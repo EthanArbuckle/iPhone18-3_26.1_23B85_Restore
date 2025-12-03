@@ -1,6 +1,6 @@
 @interface WFDragFeedbackGenerator
 - (WFDragFeedbackGenerator)init;
-- (WFDragFeedbackGenerator)initWithCollectionView:(id)a3;
+- (WFDragFeedbackGenerator)initWithCollectionView:(id)view;
 - (void)draggedObjectLanded;
 - (void)draggedObjectLifted;
 - (void)draggingItemDropped;
@@ -8,7 +8,7 @@
 - (void)draggingStarted;
 - (void)dropTargetUpdated;
 - (void)objectSnapped;
-- (void)performFeedbackWithDelay:(double)a3 insideBlock:(id)a4;
+- (void)performFeedbackWithDelay:(double)delay insideBlock:(id)block;
 - (void)positionUpdated;
 - (void)userInteractionCancelled;
 - (void)userInteractionEnded;
@@ -103,12 +103,12 @@
   }
 }
 
-- (void)performFeedbackWithDelay:(double)a3 insideBlock:(id)a4
+- (void)performFeedbackWithDelay:(double)delay insideBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (objc_opt_respondsToSelector())
   {
-    [(_UIDragSnappingFeedbackGenerator *)self->_feedbackGenerator performFeedbackWithDelay:v6 insideBlock:a3];
+    [(_UIDragSnappingFeedbackGenerator *)self->_feedbackGenerator performFeedbackWithDelay:blockCopy insideBlock:delay];
   }
 }
 
@@ -176,13 +176,13 @@ uint64_t __46__WFDragFeedbackGenerator_draggingItemSnapped__block_invoke(uint64_
   return v2;
 }
 
-- (WFDragFeedbackGenerator)initWithCollectionView:(id)a3
+- (WFDragFeedbackGenerator)initWithCollectionView:(id)view
 {
-  v5 = a3;
-  if (!v5)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFDragFeedbackGenerator.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDragFeedbackGenerator.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"collectionView"}];
   }
 
   v12.receiver = self;
@@ -192,9 +192,9 @@ uint64_t __46__WFDragFeedbackGenerator_draggingItemSnapped__block_invoke(uint64_
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v5 _reorderFeedbackGenerator];
+      _reorderFeedbackGenerator = [viewCopy _reorderFeedbackGenerator];
       feedbackGenerator = v6->_feedbackGenerator;
-      v6->_feedbackGenerator = v7;
+      v6->_feedbackGenerator = _reorderFeedbackGenerator;
     }
 
     v9 = v6;

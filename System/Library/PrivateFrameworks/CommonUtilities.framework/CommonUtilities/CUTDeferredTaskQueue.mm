@@ -1,8 +1,8 @@
 @interface CUTDeferredTaskQueue
-- (CUTDeferredTaskQueue)initWithCapacity:(int64_t)a3 queue:(id)a4 block:(id)a5;
-- (CUTDeferredTaskQueue)initWithNumberCapacity:(id)a3 queue:(id)a4 block:(id)a5;
+- (CUTDeferredTaskQueue)initWithCapacity:(int64_t)capacity queue:(id)queue block:(id)block;
+- (CUTDeferredTaskQueue)initWithNumberCapacity:(id)capacity queue:(id)queue block:(id)block;
 - (void)cancelPendingExecutions;
-- (void)enqueueExecutionWithTarget:(id)a3 afterDelay:(double)a4;
+- (void)enqueueExecutionWithTarget:(id)target afterDelay:(double)delay;
 @end
 
 @implementation CUTDeferredTaskQueue
@@ -15,8 +15,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pendingDispatchBlocks = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+  v4 = [pendingDispatchBlocks countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,21 +28,21 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pendingDispatchBlocks);
         }
 
         dispatch_block_cancel(*(*(&v11 + 1) + 8 * v7++));
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [pendingDispatchBlocks countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-  [v8 removeAllObjects];
+  pendingDispatchBlocks2 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+  [pendingDispatchBlocks2 removeAllObjects];
 
   pendingDispatchBlocks = self->_pendingDispatchBlocks;
   self->_pendingDispatchBlocks = 0;
@@ -51,27 +51,27 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (CUTDeferredTaskQueue)initWithCapacity:(int64_t)a3 queue:(id)a4 block:(id)a5
+- (CUTDeferredTaskQueue)initWithCapacity:(int64_t)capacity queue:(id)queue block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 < 0)
+  queueCopy = queue;
+  blockCopy = block;
+  if (capacity < 0)
   {
     sub_1B2330D1C();
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v12 = [(CUTDeferredTaskQueue *)self initWithNumberCapacity:v11 queue:v8 block:v10];
+  v10 = blockCopy;
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:capacity];
+  v12 = [(CUTDeferredTaskQueue *)self initWithNumberCapacity:v11 queue:queueCopy block:v10];
 
   return v12;
 }
 
-- (CUTDeferredTaskQueue)initWithNumberCapacity:(id)a3 queue:(id)a4 block:(id)a5
+- (CUTDeferredTaskQueue)initWithNumberCapacity:(id)capacity queue:(id)queue block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  capacityCopy = capacity;
+  queueCopy = queue;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = CUTDeferredTaskQueue;
   v12 = [(CUTDeferredTaskQueue *)&v17 init];
@@ -79,9 +79,9 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_capacity, a3);
-    objc_storeStrong(&v13->_queue, a4);
-    v14 = MEMORY[0x1B2746240](v11);
+    objc_storeStrong(&v12->_capacity, capacity);
+    objc_storeStrong(&v13->_queue, queue);
+    v14 = MEMORY[0x1B2746240](blockCopy);
     originalBlock = v13->_originalBlock;
     v13->_originalBlock = v14;
   }
@@ -89,9 +89,9 @@
   return v13;
 }
 
-- (void)enqueueExecutionWithTarget:(id)a3 afterDelay:(double)a4
+- (void)enqueueExecutionWithTarget:(id)target afterDelay:(double)delay
 {
-  v6 = a3;
+  targetCopy = target;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3042000000;
@@ -104,39 +104,39 @@
   block[3] = &unk_1E7B20C10;
   block[4] = self;
   v30 = &v31;
-  v7 = v6;
+  v7 = targetCopy;
   v29 = v7;
   v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   objc_storeWeak(v32 + 5, v8);
   os_unfair_lock_lock(&self->_lock);
   while (1)
   {
-    v9 = [(CUTDeferredTaskQueue *)self capacity];
-    if (!v9)
+    capacity = [(CUTDeferredTaskQueue *)self capacity];
+    if (!capacity)
     {
       break;
     }
 
-    v10 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-    v11 = [v10 count];
-    v12 = [(CUTDeferredTaskQueue *)self capacity];
-    v13 = [v12 integerValue];
+    pendingDispatchBlocks = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+    v11 = [pendingDispatchBlocks count];
+    capacity2 = [(CUTDeferredTaskQueue *)self capacity];
+    integerValue = [capacity2 integerValue];
 
-    if (v11 < v13)
+    if (v11 < integerValue)
     {
       break;
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-    v16 = [v15 objectAtIndex:0];
+    pendingDispatchBlocks2 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+    v16 = [pendingDispatchBlocks2 objectAtIndex:0];
 
-    v17 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-    [v17 removeObjectAtIndex:0];
+    pendingDispatchBlocks3 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+    [pendingDispatchBlocks3 removeObjectAtIndex:0];
 
     dispatch_block_cancel(v16);
-    v18 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
-    v19 = [v18 count];
+    pendingDispatchBlocks4 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+    v19 = [pendingDispatchBlocks4 count];
 
     if (!v19)
     {
@@ -147,22 +147,22 @@
     objc_autoreleasePoolPop(v14);
   }
 
-  v21 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+  pendingDispatchBlocks5 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
 
-  if (!v21)
+  if (!pendingDispatchBlocks5)
   {
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23 = self->_pendingDispatchBlocks;
     self->_pendingDispatchBlocks = v22;
   }
 
-  v24 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
+  pendingDispatchBlocks6 = [(CUTDeferredTaskQueue *)self pendingDispatchBlocks];
   v25 = MEMORY[0x1B2746240](v8);
-  [v24 addObject:v25];
+  [pendingDispatchBlocks6 addObject:v25];
 
-  v26 = dispatch_time(0, (a4 * 1000000000.0));
-  v27 = [(CUTDeferredTaskQueue *)self queue];
-  dispatch_after(v26, v27, v8);
+  v26 = dispatch_time(0, (delay * 1000000000.0));
+  queue = [(CUTDeferredTaskQueue *)self queue];
+  dispatch_after(v26, queue, v8);
 
   os_unfair_lock_unlock(&self->_lock);
   _Block_object_dispose(&v31, 8);

@@ -3,13 +3,13 @@
 - (BOOL)eventsFoundInMailEnabled;
 - (CalSuggestionsProvider)init;
 - (id)fakeSGRecordID;
-- (id)senderForEventWithSuggestionID:(id)a3;
-- (id)sgEventFromUniqueID:(id)a3 error:(id *)a4;
-- (id)sgRecordIDForEventWithSuggestionID:(id)a3 error:(id *)a4;
+- (id)senderForEventWithSuggestionID:(id)d;
+- (id)sgEventFromUniqueID:(id)d error:(id *)error;
+- (id)sgRecordIDForEventWithSuggestionID:(id)d error:(id *)error;
 - (void)_loadSuggestionsFramework;
-- (void)confirmEventWithSuggestionID:(id)a3;
-- (void)confirmSGEventWithRecordID:(id)a3;
-- (void)rejectSGEventWithRecordID:(id)a3;
+- (void)confirmEventWithSuggestionID:(id)d;
+- (void)confirmSGEventWithRecordID:(id)d;
+- (void)rejectSGEventWithRecordID:(id)d;
 @end
 
 @implementation CalSuggestionsProvider
@@ -44,8 +44,8 @@ uint64_t __41__CalSuggestionsProvider_defaultProvider__block_invoke()
     [(CalSuggestionsProvider *)v2 _loadSuggestionsFramework];
     if ([(CalSuggestionsProvider *)v3 suggestionsFrameworkAvailable])
     {
-      v4 = [NSClassFromString(&cfstr_Sgsuggestionss.isa) serviceForEvents];
-      [(CalSuggestionsProvider *)v3 setService:v4];
+      serviceForEvents = [NSClassFromString(&cfstr_Sgsuggestionss.isa) serviceForEvents];
+      [(CalSuggestionsProvider *)v3 setService:serviceForEvents];
     }
   }
 
@@ -61,9 +61,9 @@ uint64_t __41__CalSuggestionsProvider_defaultProvider__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sgEventFromUniqueID:(id)a3 error:(id *)a4
+- (id)sgEventFromUniqueID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -73,16 +73,16 @@ uint64_t __41__CalSuggestionsProvider_defaultProvider__block_invoke()
   if ([(CalSuggestionsProvider *)self suggestionsFrameworkAvailable])
   {
     v7 = dispatch_semaphore_create(0);
-    v8 = [(CalSuggestionsProvider *)self service];
+    service = [(CalSuggestionsProvider *)self service];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__CalSuggestionsProvider_sgEventFromUniqueID_error___block_invoke;
     v14[3] = &unk_1E7EC6A80;
     v16 = &v18;
-    v17 = a4;
+    errorCopy = error;
     v9 = v7;
     v15 = v9;
-    [v8 eventFromUniqueId:v6 withCompletion:v14];
+    [service eventFromUniqueId:dCopy withCompletion:v14];
 
     v10 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v9, v10) >= 1)
@@ -116,19 +116,19 @@ void __52__CalSuggestionsProvider_sgEventFromUniqueID_error___block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)confirmEventWithSuggestionID:(id)a3
+- (void)confirmEventWithSuggestionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CalSuggestionsProvider *)self suggestionsFrameworkAvailable])
   {
-    v5 = [(CalSuggestionsProvider *)self service];
+    service = [(CalSuggestionsProvider *)self service];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__CalSuggestionsProvider_confirmEventWithSuggestionID___block_invoke;
     v6[3] = &unk_1E7EC6AA8;
     v6[4] = self;
-    v7 = v4;
-    [v5 eventFromUniqueId:v7 withCompletion:v6];
+    v7 = dCopy;
+    [service eventFromUniqueId:v7 withCompletion:v6];
   }
 }
 
@@ -158,22 +158,22 @@ void __55__CalSuggestionsProvider_confirmEventWithSuggestionID___block_invoke(ui
   }
 }
 
-- (id)senderForEventWithSuggestionID:(id)a3
+- (id)senderForEventWithSuggestionID:(id)d
 {
-  v3 = [(CalSuggestionsProvider *)self sgEventFromUniqueID:a3 error:0];
-  v4 = [v3 origin];
-  v5 = [v4 fromPerson];
-  v6 = [v5 displayName];
+  v3 = [(CalSuggestionsProvider *)self sgEventFromUniqueID:d error:0];
+  origin = [v3 origin];
+  fromPerson = [origin fromPerson];
+  displayName = [fromPerson displayName];
 
-  return v6;
+  return displayName;
 }
 
-- (id)sgRecordIDForEventWithSuggestionID:(id)a3 error:(id *)a4
+- (id)sgRecordIDForEventWithSuggestionID:(id)d error:(id *)error
 {
-  v4 = [(CalSuggestionsProvider *)self sgEventFromUniqueID:a3 error:a4];
-  v5 = [v4 recordId];
+  v4 = [(CalSuggestionsProvider *)self sgEventFromUniqueID:d error:error];
+  recordId = [v4 recordId];
 
-  return v5;
+  return recordId;
 }
 
 - (id)fakeSGRecordID
@@ -192,20 +192,20 @@ void __55__CalSuggestionsProvider_confirmEventWithSuggestionID___block_invoke(ui
   return v3;
 }
 
-- (void)confirmSGEventWithRecordID:(id)a3
+- (void)confirmSGEventWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CalSuggestionsProvider *)self suggestionsFrameworkAvailable])
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = [(CalSuggestionsProvider *)self service];
+    service = [(CalSuggestionsProvider *)self service];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__CalSuggestionsProvider_confirmSGEventWithRecordID___block_invoke;
     v10[3] = &unk_1E7EC6590;
     v7 = v5;
     v11 = v7;
-    [v6 confirmEventByRecordId:v4 withCompletion:v10];
+    [service confirmEventByRecordId:dCopy withCompletion:v10];
 
     v8 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v7, v8) >= 1)
@@ -219,20 +219,20 @@ void __55__CalSuggestionsProvider_confirmEventWithSuggestionID___block_invoke(ui
   }
 }
 
-- (void)rejectSGEventWithRecordID:(id)a3
+- (void)rejectSGEventWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CalSuggestionsProvider *)self suggestionsFrameworkAvailable])
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = [(CalSuggestionsProvider *)self service];
+    service = [(CalSuggestionsProvider *)self service];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __52__CalSuggestionsProvider_rejectSGEventWithRecordID___block_invoke;
     v10[3] = &unk_1E7EC6590;
     v7 = v5;
     v11 = v7;
-    [v6 rejectEventByRecordId:v4 withCompletion:v10];
+    [service rejectEventByRecordId:dCopy withCompletion:v10];
 
     v8 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v7, v8) >= 1)

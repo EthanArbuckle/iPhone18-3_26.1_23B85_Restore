@@ -1,19 +1,19 @@
 @interface PXSurveyQuestionPersonConfiguration
-- (BOOL)needsQuestionInvalidationForChange:(id)a3;
+- (BOOL)needsQuestionInvalidationForChange:(id)change;
 - (CGRect)contentRectForOneUp;
 - (PXSurveyQuestionPersonConfiguration)init;
-- (PXSurveyQuestionPersonConfiguration)initWithTitle:(id)a3 person:(id)a4;
+- (PXSurveyQuestionPersonConfiguration)initWithTitle:(id)title person:(id)person;
 - (UIView)contentView;
 @end
 
 @implementation PXSurveyQuestionPersonConfiguration
 
-- (BOOL)needsQuestionInvalidationForChange:(id)a3
+- (BOOL)needsQuestionInvalidationForChange:(id)change
 {
-  v3 = [a3 changeDetailsForObject:self->_person];
-  v4 = [v3 objectWasDeleted];
+  v3 = [change changeDetailsForObject:self->_person];
+  objectWasDeleted = [v3 objectWasDeleted];
 
-  return v4;
+  return objectWasDeleted;
 }
 
 - (CGRect)contentRectForOneUp
@@ -38,8 +38,8 @@
     v5 = self->_avatarView;
     self->_avatarView = v4;
 
-    v6 = [(PXSurveyQuestionPersonConfiguration *)self person];
-    [(PXPeopleScalableAvatarView *)self->_avatarView setPerson:v6];
+    person = [(PXSurveyQuestionPersonConfiguration *)self person];
+    [(PXPeopleScalableAvatarView *)self->_avatarView setPerson:person];
 
     avatarView = self->_avatarView;
   }
@@ -49,26 +49,26 @@
 
 - (PXSurveyQuestionPersonConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPersonConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionPersonConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPersonConfiguration.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXSurveyQuestionPersonConfiguration init]"}];
 
   abort();
 }
 
-- (PXSurveyQuestionPersonConfiguration)initWithTitle:(id)a3 person:(id)a4
+- (PXSurveyQuestionPersonConfiguration)initWithTitle:(id)title person:(id)person
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  personCopy = person;
   v12.receiver = self;
   v12.super_class = PXSurveyQuestionPersonConfiguration;
   v8 = [(PXSurveyQuestionPersonConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    objc_storeStrong(&v8->_person, a4);
+    objc_storeStrong(&v8->_person, person);
     v8->_isStale = 0;
   }
 

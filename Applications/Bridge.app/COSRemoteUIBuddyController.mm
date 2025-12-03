@@ -1,21 +1,21 @@
 @interface COSRemoteUIBuddyController
 - (COSBuddyControllerDelegate)delegate;
-- (COSRemoteUIBuddyController)initWithRUIViewController:(id)a3;
+- (COSRemoteUIBuddyController)initWithRUIViewController:(id)controller;
 - (NSString)description;
 @end
 
 @implementation COSRemoteUIBuddyController
 
-- (COSRemoteUIBuddyController)initWithRUIViewController:(id)a3
+- (COSRemoteUIBuddyController)initWithRUIViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = COSRemoteUIBuddyController;
   v6 = [(COSRemoteUIBuddyController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ruiViewController, a3);
+    objc_storeStrong(&v6->_ruiViewController, controller);
   }
 
   return v7;

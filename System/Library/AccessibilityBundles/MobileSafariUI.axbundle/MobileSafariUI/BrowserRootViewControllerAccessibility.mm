@@ -1,34 +1,34 @@
 @interface BrowserRootViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsTabOverviewVisible;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_accessibilitySpeakThisViews;
 - (id)_axGetResetRefreshTimer;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setUpFloatingSidebarButton;
-- (void)sidebarDimmingViewDismiss:(id)a3;
+- (void)sidebarDimmingViewDismiss:(id)dismiss;
 @end
 
 @implementation BrowserRootViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarButtonEmbeddedInSidebar" withType:"UIButton"];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarTrailingButton" withType:"UIButton"];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarContentDimmingView" withType:"SidebarContentDimmingView"];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"sidebarDimmingViewDismiss:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"setShowingSidebar:completion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"bottomToolbar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SFToolbar" hasInstanceVariable:@"_barRegistration" withType:"<_SFBarRegistrationToken>"];
-  [v3 validateClass:@"BrowserToolbar" isKindOfClass:@"_SFToolbar"];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"browserController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"capsuleViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserRootViewController" hasInstanceMethod:@"tabSwitcherViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabSwitcherViewController" hasInstanceMethod:@"tabOverviewIsVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CapsuleNavigationBarViewController" hasInstanceMethod:@"capsuleCollectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFCapsuleCollectionView" hasInstanceMethod:@"setSelectedItemState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarButtonEmbeddedInSidebar" withType:"UIButton"];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarTrailingButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceVariable:@"_sidebarContentDimmingView" withType:"SidebarContentDimmingView"];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"sidebarDimmingViewDismiss:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"setShowingSidebar:completion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"bottomToolbar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SFToolbar" hasInstanceVariable:@"_barRegistration" withType:"<_SFBarRegistrationToken>"];
+  [validationsCopy validateClass:@"BrowserToolbar" isKindOfClass:@"_SFToolbar"];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"browserController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"capsuleViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserRootViewController" hasInstanceMethod:@"tabSwitcherViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabSwitcherViewController" hasInstanceMethod:@"tabOverviewIsVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CapsuleNavigationBarViewController" hasInstanceMethod:@"capsuleCollectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFCapsuleCollectionView" hasInstanceMethod:@"setSelectedItemState:animated:" withFullSignature:{"v", "q", "B", 0}];
 }
 
 - (void)_setUpFloatingSidebarButton
@@ -56,58 +56,58 @@
 - (BOOL)accessibilityPerformEscape
 {
   v2 = [(BrowserRootViewControllerAccessibility *)self safeValueForKey:@"_sidebarContentDimmingView"];
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  if (v3)
+  if (_accessibilityViewIsVisible)
   {
     AXPerformSafeBlock();
   }
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
-- (void)sidebarDimmingViewDismiss:(id)a3
+- (void)sidebarDimmingViewDismiss:(id)dismiss
 {
   v3.receiver = self;
   v3.super_class = BrowserRootViewControllerAccessibility;
-  [(BrowserRootViewControllerAccessibility *)&v3 sidebarDimmingViewDismiss:a3];
+  [(BrowserRootViewControllerAccessibility *)&v3 sidebarDimmingViewDismiss:dismiss];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
 }
 
 - (id)_accessibilitySpeakThisViews
 {
   v3 = [(BrowserRootViewControllerAccessibility *)self safeValueForKey:@"browserController"];
-  v4 = [v3 _accessibilitySpeakThisViews];
+  _accessibilitySpeakThisViews = [v3 _accessibilitySpeakThisViews];
 
-  if (v4)
+  if (_accessibilitySpeakThisViews)
   {
-    v5 = v4;
+    _accessibilitySpeakThisViews2 = _accessibilitySpeakThisViews;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = BrowserRootViewControllerAccessibility;
-    v5 = [(BrowserRootViewControllerAccessibility *)&v8 _accessibilitySpeakThisViews];
+    _accessibilitySpeakThisViews2 = [(BrowserRootViewControllerAccessibility *)&v8 _accessibilitySpeakThisViews];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySpeakThisViews2;
 
   return v6;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   if ([(BrowserRootViewControllerAccessibility *)self _axIsTabOverviewVisible])
   {
     v17.receiver = self;
     v17.super_class = BrowserRootViewControllerAccessibility;
-    return [(BrowserRootViewControllerAccessibility *)&v17 accessibilityScroll:a3, v10.receiver, v10.super_class, v11, v12, v13, v14, v15];
+    return [(BrowserRootViewControllerAccessibility *)&v17 accessibilityScroll:scroll, v10.receiver, v10.super_class, v11, v12, v13, v14, selfCopy];
   }
 
   else
   {
-    if (a3 == 3)
+    if (scroll == 3)
     {
       if (![(BrowserRootViewControllerAccessibility *)self _axShouldRefresh])
       {
@@ -116,13 +116,13 @@
 
         v6 = 1;
         [(BrowserRootViewControllerAccessibility *)self _axSetShouldRefresh:1];
-        v9 = [(BrowserRootViewControllerAccessibility *)self _axGetResetRefreshTimer];
+        _axGetResetRefreshTimer = [(BrowserRootViewControllerAccessibility *)self _axGetResetRefreshTimer];
         v16[0] = MEMORY[0x29EDCA5F8];
         v16[1] = 3221225472;
         v16[2] = __62__BrowserRootViewControllerAccessibility_accessibilityScroll___block_invoke;
         v16[3] = &unk_29F2D7A98;
         v16[4] = self;
-        [v9 afterDelay:v16 processBlock:3.0];
+        [_axGetResetRefreshTimer afterDelay:v16 processBlock:3.0];
 
         return v6;
       }
@@ -131,7 +131,7 @@
       v12 = 3221225472;
       v13 = __62__BrowserRootViewControllerAccessibility_accessibilityScroll___block_invoke_2;
       v14 = &unk_29F2D7A98;
-      v15 = self;
+      selfCopy = self;
       AXPerformSafeBlock();
     }
 
@@ -140,7 +140,7 @@
       [(BrowserRootViewControllerAccessibility *)self _axSetShouldRefresh:0];
     }
 
-    return [(BrowserRootViewControllerAccessibility *)&v10 accessibilityScroll:a3, self, BrowserRootViewControllerAccessibility, v11, v12, v13, v14, v15];
+    return [(BrowserRootViewControllerAccessibility *)&v10 accessibilityScroll:scroll, self, BrowserRootViewControllerAccessibility, v11, v12, v13, v14, selfCopy];
   }
 }
 
@@ -156,15 +156,15 @@ uint64_t __62__BrowserRootViewControllerAccessibility_accessibilityScroll___bloc
 
 - (id)_axGetResetRefreshTimer
 {
-  v3 = [(BrowserRootViewControllerAccessibility *)self _axResetRefreshTimer];
-  if (!v3)
+  _axResetRefreshTimer = [(BrowserRootViewControllerAccessibility *)self _axResetRefreshTimer];
+  if (!_axResetRefreshTimer)
   {
     v4 = objc_alloc(MEMORY[0x29EDBD6A0]);
-    v3 = [v4 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-    [(BrowserRootViewControllerAccessibility *)self _axSetResetRefreshTimer:v3];
+    _axResetRefreshTimer = [v4 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+    [(BrowserRootViewControllerAccessibility *)self _axSetResetRefreshTimer:_axResetRefreshTimer];
   }
 
-  return v3;
+  return _axResetRefreshTimer;
 }
 
 - (BOOL)_axIsTabOverviewVisible

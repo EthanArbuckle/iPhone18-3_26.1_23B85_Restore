@@ -1,13 +1,13 @@
 @interface IMDMessageRecord
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)keyPathsToColumns;
 - (BOOL)isAssociatedMessage;
 - (BOOL)isReply;
 - (IMDChatRecord)chatRecord;
 - (IMDHandleRecord)handleRecord;
 - (IMDHandleRecord)otherHandleRecord;
-- (IMDMessageRecord)initWithItemType:(int64_t)a3 text:(id)a4 date:(int64_t)a5 dateRead:(int64_t)a6 dateDelivered:(int64_t)a7 datePlayed:(int64_t)a8 error:(int64_t)a9 type:(int64_t)a10 replaceID:(int64_t)a11 flags:(id)a12 guid:(id)a13 attributedBody:(id)a14 service:(id)a15 account:(id)a16 accountGUID:(id)a17 subject:(id)a18 handleID:(id)a19 countryCode:(id)a20 unformattedID:(id)a21 otherHandleID:(id)a22 groupTitle:(id)a23 groupActionType:(int64_t)a24 shareStatus:(int64_t)a25 shareDirection:(int64_t)a26 expireState:(int64_t)a27 messageActionType:(int64_t)a28 associatedMessageGUID:(id)a29 associatedMessageType:(int64_t)a30 associatedMessageRange:(_NSRange)a31 associatedMessageEmoji:(id)a32 balloonBundleID:(id)a33 payloadData:(id)a34 expressiveSendStyleID:(id)a35 timeExpressiveSendPlayed:(int64_t)a36 messageSummaryInfo:(id)a37 cloudKitSyncState:(int64_t)a38 cloudKitRecordID:(id)a39 cloudKitServerChangeTokenBlob:(id)a40 cloudKitRecordChangeTag:(id)a41 dataDetectorsInfo:(id)a42 destinationCallerID:(id)a43 replyToGUID:(id)a44 sortID:(int64_t)a45 threadOriginatorGUID:(id)a46 threadOriginatorPart:(id)a47 syndicationRanges:(id)a48 syncedSyndicationRanges:(id)a49 partCount:(int64_t)a50 dateEdited:(int64_t)a51 dateRecovered:(int64_t)a52 biaReferenceID:(id)a53 fallbackHash:(id)a54 scheduleType:(int64_t)a55 scheduleState:(int64_t)a56 cloudKitChatID:(id)a57;
-- (IMDMessageRecord)initWithRecordRef:(_IMDMessageRecordStruct *)a3;
+- (IMDMessageRecord)initWithItemType:(int64_t)type text:(id)text date:(int64_t)date dateRead:(int64_t)read dateDelivered:(int64_t)delivered datePlayed:(int64_t)played error:(int64_t)error type:(int64_t)self0 replaceID:(int64_t)self1 flags:(id)self2 guid:(id)self3 attributedBody:(id)self4 service:(id)self5 account:(id)self6 accountGUID:(id)self7 subject:(id)self8 handleID:(id)self9 countryCode:(id)code unformattedID:(id)unformattedID otherHandleID:(id)otherHandleID groupTitle:(id)title groupActionType:(int64_t)actionType shareStatus:(int64_t)status shareDirection:(int64_t)direction expireState:(int64_t)state messageActionType:(int64_t)messageActionType associatedMessageGUID:(id)uID associatedMessageType:(int64_t)type0 associatedMessageRange:(_NSRange)type1 associatedMessageEmoji:(id)type2 balloonBundleID:(id)type3 payloadData:(id)type4 expressiveSendStyleID:(id)type5 timeExpressiveSendPlayed:(int64_t)type6 messageSummaryInfo:(id)type7 cloudKitSyncState:(int64_t)type8 cloudKitRecordID:(id)type9 cloudKitServerChangeTokenBlob:(id)text0 cloudKitRecordChangeTag:(id)text1 dataDetectorsInfo:(id)text2 destinationCallerID:(id)text3 replyToGUID:(id)text4 sortID:(int64_t)text5 threadOriginatorGUID:(id)text6 threadOriginatorPart:(id)text7 syndicationRanges:(id)text8 syncedSyndicationRanges:(id)text9 partCount:(int64_t)date0 dateEdited:(int64_t)date1 dateRecovered:(int64_t)date2 biaReferenceID:(id)date3 fallbackHash:(id)date4 scheduleType:(int64_t)date5 scheduleState:(int64_t)date6 cloudKitChatID:(id)date7;
+- (IMDMessageRecord)initWithRecordRef:(_IMDMessageRecordStruct *)ref;
 - (NSArray)attachmentRecords;
 - (NSAttributedString)attributedBodyText;
 - (NSData)attributedBodyData;
@@ -38,7 +38,7 @@
   return v3;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = *MEMORY[0x1E695E480];
   IMDMessageRecordGetTypeID();
@@ -243,54 +243,54 @@
   return v3;
 }
 
-- (IMDMessageRecord)initWithItemType:(int64_t)a3 text:(id)a4 date:(int64_t)a5 dateRead:(int64_t)a6 dateDelivered:(int64_t)a7 datePlayed:(int64_t)a8 error:(int64_t)a9 type:(int64_t)a10 replaceID:(int64_t)a11 flags:(id)a12 guid:(id)a13 attributedBody:(id)a14 service:(id)a15 account:(id)a16 accountGUID:(id)a17 subject:(id)a18 handleID:(id)a19 countryCode:(id)a20 unformattedID:(id)a21 otherHandleID:(id)a22 groupTitle:(id)a23 groupActionType:(int64_t)a24 shareStatus:(int64_t)a25 shareDirection:(int64_t)a26 expireState:(int64_t)a27 messageActionType:(int64_t)a28 associatedMessageGUID:(id)a29 associatedMessageType:(int64_t)a30 associatedMessageRange:(_NSRange)a31 associatedMessageEmoji:(id)a32 balloonBundleID:(id)a33 payloadData:(id)a34 expressiveSendStyleID:(id)a35 timeExpressiveSendPlayed:(int64_t)a36 messageSummaryInfo:(id)a37 cloudKitSyncState:(int64_t)a38 cloudKitRecordID:(id)a39 cloudKitServerChangeTokenBlob:(id)a40 cloudKitRecordChangeTag:(id)a41 dataDetectorsInfo:(id)a42 destinationCallerID:(id)a43 replyToGUID:(id)a44 sortID:(int64_t)a45 threadOriginatorGUID:(id)a46 threadOriginatorPart:(id)a47 syndicationRanges:(id)a48 syncedSyndicationRanges:(id)a49 partCount:(int64_t)a50 dateEdited:(int64_t)a51 dateRecovered:(int64_t)a52 biaReferenceID:(id)a53 fallbackHash:(id)a54 scheduleType:(int64_t)a55 scheduleState:(int64_t)a56 cloudKitChatID:(id)a57
+- (IMDMessageRecord)initWithItemType:(int64_t)type text:(id)text date:(int64_t)date dateRead:(int64_t)read dateDelivered:(int64_t)delivered datePlayed:(int64_t)played error:(int64_t)error type:(int64_t)self0 replaceID:(int64_t)self1 flags:(id)self2 guid:(id)self3 attributedBody:(id)self4 service:(id)self5 account:(id)self6 accountGUID:(id)self7 subject:(id)self8 handleID:(id)self9 countryCode:(id)code unformattedID:(id)unformattedID otherHandleID:(id)otherHandleID groupTitle:(id)title groupActionType:(int64_t)actionType shareStatus:(int64_t)status shareDirection:(int64_t)direction expireState:(int64_t)state messageActionType:(int64_t)messageActionType associatedMessageGUID:(id)uID associatedMessageType:(int64_t)type0 associatedMessageRange:(_NSRange)type1 associatedMessageEmoji:(id)type2 balloonBundleID:(id)type3 payloadData:(id)type4 expressiveSendStyleID:(id)type5 timeExpressiveSendPlayed:(int64_t)type6 messageSummaryInfo:(id)type7 cloudKitSyncState:(int64_t)type8 cloudKitRecordID:(id)type9 cloudKitServerChangeTokenBlob:(id)text0 cloudKitRecordChangeTag:(id)text1 dataDetectorsInfo:(id)text2 destinationCallerID:(id)text3 replyToGUID:(id)text4 sortID:(int64_t)text5 threadOriginatorGUID:(id)text6 threadOriginatorPart:(id)text7 syndicationRanges:(id)text8 syncedSyndicationRanges:(id)text9 partCount:(int64_t)date0 dateEdited:(int64_t)date1 dateRecovered:(int64_t)date2 biaReferenceID:(id)date3 fallbackHash:(id)date4 scheduleType:(int64_t)date5 scheduleState:(int64_t)date6 cloudKitChatID:(id)date7
 {
   v101.receiver = self;
   v101.super_class = IMDMessageRecord;
-  v79 = a57;
-  v78 = a54;
-  v76 = a53;
-  v77 = a49;
-  v75 = a48;
-  v74 = a47;
-  v61 = a46;
-  v62 = a44;
-  v63 = a43;
-  v64 = a42;
-  v73 = a41;
-  v72 = a40;
-  v65 = a39;
-  v66 = a37;
-  v71 = a35;
-  v70 = a34;
-  v67 = a33;
-  v68 = a32;
-  v69 = a29;
-  v100 = a23;
-  v99 = a22;
-  v98 = a21;
-  v97 = a20;
-  v96 = a19;
-  v95 = a18;
-  v94 = a17;
-  v93 = a16;
-  v92 = a15;
-  v91 = a14;
-  v90 = a13;
-  v89 = a12;
-  v88 = a4;
+  chatIDCopy = chatID;
+  hashCopy = hash;
+  referenceIDCopy = referenceID;
+  syndicationRangesCopy = syndicationRanges;
+  rangesCopy = ranges;
+  partCopy = part;
+  originatorGUIDCopy = originatorGUID;
+  gUIDCopy = gUID;
+  callerIDCopy = callerID;
+  detectorsInfoCopy = detectorsInfo;
+  tagCopy = tag;
+  blobCopy = blob;
+  recordIDCopy = recordID;
+  infoCopy = info;
+  styleIDCopy = styleID;
+  dataCopy = data;
+  bundleIDCopy = bundleID;
+  emojiCopy = emoji;
+  uIDCopy = uID;
+  titleCopy = title;
+  otherHandleIDCopy = otherHandleID;
+  unformattedIDCopy = unformattedID;
+  codeCopy = code;
+  handleIDCopy = handleID;
+  subjectCopy = subject;
+  iDCopy = iD;
+  accountCopy = account;
+  serviceCopy = service;
+  bodyCopy = body;
+  guidCopy = guid;
+  flagsCopy = flags;
+  textCopy = text;
   v80 = [(IMDRecord *)&v101 init];
   v59 = objc_msgSend_cfMessageRecord(v80, v57, v58);
-  v86 = sub_1B7B34C14(v59, a3, v88, a5, a6, a7, a8, a9, a10, a11, v89, v90, v91, v92, v93, v94, v95, v96, v97, v98, v99, v100, a24, a25, a26, a27, a28, v69, a30, a31.location, a31.length, v67, v70, v71, a36, v66, a38, v65, v72, v73, v64, v63, v62, a45, v61, v74, v75, v77, a50, a51, a52, v76, v78, v68, a55, a56, v79);
+  v86 = sub_1B7B34C14(v59, type, textCopy, date, read, delivered, played, error, a10, d, flagsCopy, guidCopy, bodyCopy, serviceCopy, accountCopy, iDCopy, subjectCopy, handleIDCopy, codeCopy, unformattedIDCopy, otherHandleIDCopy, titleCopy, actionType, status, direction, state, messageActionType, uIDCopy, messageType, range.location, range.length, bundleIDCopy, dataCopy, styleIDCopy, sendPlayed, infoCopy, syncState, recordIDCopy, blobCopy, tagCopy, detectorsInfoCopy, callerIDCopy, gUIDCopy, sortID, originatorGUIDCopy, partCopy, rangesCopy, syndicationRangesCopy, count, edited, recovered, referenceIDCopy, hashCopy, emojiCopy, scheduleType, scheduleState, chatIDCopy);
 
   return v86;
 }
 
-- (IMDMessageRecord)initWithRecordRef:(_IMDMessageRecordStruct *)a3
+- (IMDMessageRecord)initWithRecordRef:(_IMDMessageRecordStruct *)ref
 {
-  v4 = a3;
+  refCopy = ref;
 
-  return v4;
+  return refCopy;
 }
 
 @end

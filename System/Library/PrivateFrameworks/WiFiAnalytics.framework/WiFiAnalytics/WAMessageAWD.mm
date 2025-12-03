@@ -1,13 +1,13 @@
 @interface WAMessageAWD
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WAMessageAWD)init;
-- (WAMessageAWD)initWithCoder:(id)a3;
-- (WAMessageAWD)initWithKey:(id)a3 andFields:(id)a4 isRootMessage:(BOOL)a5 originalClassName:(id)a6 uuid:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WAMessageAWD)initWithCoder:(id)coder;
+- (WAMessageAWD)initWithKey:(id)key andFields:(id)fields isRootMessage:(BOOL)message originalClassName:(id)name uuid:(id)uuid;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)fieldForKey:(id)a3;
-- (void)addField:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)fieldForKey:(id)key;
+- (void)addField:(id)field;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WAMessageAWD
@@ -19,10 +19,10 @@
   v2 = [(WAMessageAWD *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v2->_uuid;
-    v2->_uuid = v4;
+    v2->_uuid = uUIDString;
 
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     mutableFields = v2->_mutableFields;
@@ -32,13 +32,13 @@
   return v2;
 }
 
-- (WAMessageAWD)initWithKey:(id)a3 andFields:(id)a4 isRootMessage:(BOOL)a5 originalClassName:(id)a6 uuid:(id)a7
+- (WAMessageAWD)initWithKey:(id)key andFields:(id)fields isRootMessage:(BOOL)message originalClassName:(id)name uuid:(id)uuid
 {
   v60 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  keyCopy = key;
+  fieldsCopy = fields;
+  nameCopy = name;
+  uuidCopy = uuid;
   v53.receiver = self;
   v53.super_class = WAMessageAWD;
   v16 = [(WAMessageAWD *)&v53 init];
@@ -48,22 +48,22 @@
     goto LABEL_11;
   }
 
-  v16->_isRootMessage = a5;
-  v18 = [v14 mutableCopy];
+  v16->_isRootMessage = message;
+  v18 = [nameCopy mutableCopy];
   originalClassName = v17->_originalClassName;
   v17->_originalClassName = v18;
 
-  v20 = [v12 mutableCopy];
+  v20 = [keyCopy mutableCopy];
   key = v17->_key;
   v17->_key = v20;
 
-  v22 = [v15 mutableCopy];
+  v22 = [uuidCopy mutableCopy];
   uuid = v17->_uuid;
   v17->_uuid = v22;
 
   if (v17->_uuid)
   {
-    if (v13)
+    if (fieldsCopy)
     {
       goto LABEL_4;
     }
@@ -77,12 +77,12 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v39 = [MEMORY[0x1E696AFB0] UUID];
-  v40 = [v39 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v41 = v17->_uuid;
-  v17->_uuid = v40;
+  v17->_uuid = uUIDString;
 
-  if (!v13)
+  if (!fieldsCopy)
   {
     goto LABEL_9;
   }
@@ -93,19 +93,19 @@ LABEL_4:
   v46 = objc_opt_class();
   v24 = objc_opt_class();
   v25 = objc_opt_class();
-  v50 = v12;
+  v50 = keyCopy;
   v26 = objc_opt_class();
-  v49 = v15;
+  v49 = uuidCopy;
   v27 = objc_opt_class();
-  v28 = v13;
+  v28 = fieldsCopy;
   v29 = objc_opt_class();
   v30 = objc_opt_class();
   v31 = objc_opt_class();
   v45 = v29;
-  v13 = v28;
+  fieldsCopy = v28;
   v32 = [v47 setWithObjects:{v46, v24, v25, v26, v27, v45, v30, v31, objc_opt_class(), 0}];
   v52 = 0;
-  v33 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v52];
+  v33 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:fieldsCopy requiringSecureCoding:1 error:&v52];
   v34 = v52;
   v51 = v34;
   v35 = [v48 unarchivedObjectOfClasses:v32 fromData:v33 error:&v51];
@@ -113,9 +113,9 @@ LABEL_4:
 
   v37 = v17->_mutableFields;
   v17->_mutableFields = v35;
-  v15 = v49;
+  uuidCopy = v49;
 
-  v12 = v50;
+  keyCopy = v50;
   if (mutableFields)
   {
     v38 = WALogCategoryDefaultHandle();
@@ -139,22 +139,22 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WAMessageAWD *)self uuid];
-  v6 = [v4 uuid];
+  equalCopy = equal;
+  uuid = [(WAMessageAWD *)self uuid];
+  uuid2 = [equalCopy uuid];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(equalCopy) = [uuid isEqual:uuid2];
+  return equalCopy;
 }
 
-- (id)fieldForKey:(id)a3
+- (id)fieldForKey:(id)key
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WAMessageAWD *)self mutableFields];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  mutableFields = [(WAMessageAWD *)self mutableFields];
+  v6 = [mutableFields objectForKeyedSubscript:keyCopy];
 
   if (!v6)
   {
@@ -167,22 +167,22 @@ LABEL_11:
       v35 = 1024;
       *v36 = 85;
       *&v36[4] = 2112;
-      *&v36[6] = v4;
+      *&v36[6] = keyCopy;
       *&v36[14] = 2112;
       *&v36[16] = originalClassName;
       _os_log_impl(&dword_1C8460000, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempt to access field with key: %@ (message original classname: %@) but it doesn't exist. Most common reason is protobuf change without population logic update", buf, 0x26u);
     }
 
-    v27 = v4;
+    v27 = keyCopy;
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [(WAMessageAWD *)self mutableFields];
-    v10 = [v9 allKeys];
+    mutableFields2 = [(WAMessageAWD *)self mutableFields];
+    allKeys = [mutableFields2 allKeys];
 
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v11 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -193,38 +193,38 @@ LABEL_11:
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = [(WAMessageAWD *)self mutableFields];
-          v17 = [v16 objectForKeyedSubscript:v15];
+          mutableFields3 = [(WAMessageAWD *)self mutableFields];
+          v17 = [mutableFields3 objectForKeyedSubscript:v15];
 
           v18 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [v17 isRepeatable];
-            v20 = [v15 UTF8String];
+            isRepeatable = [v17 isRepeatable];
+            uTF8String = [v15 UTF8String];
             *buf = 136446978;
             v34 = "[WAMessageAWD fieldForKey:]";
             v35 = 1024;
             *v36 = 90;
             *&v36[4] = 1024;
-            *&v36[6] = v19;
+            *&v36[6] = isRepeatable;
             *&v36[10] = 2080;
-            *&v36[12] = v20;
+            *&v36[12] = uTF8String;
             _os_log_impl(&dword_1C8460000, v18, OS_LOG_TYPE_INFO, "%{public}s::%d:Found repeatable %d Key:: %s", buf, 0x22u);
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v12);
     }
 
     v21 = WALogCategoryDefaultHandle();
-    v4 = v27;
+    keyCopy = v27;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
       v26 = self->_originalClassName;
@@ -236,15 +236,15 @@ LABEL_11:
     }
   }
 
-  v22 = [(WAMessageAWD *)self mutableFields];
-  v23 = [v22 objectForKeyedSubscript:v4];
+  mutableFields4 = [(WAMessageAWD *)self mutableFields];
+  v23 = [mutableFields4 objectForKeyedSubscript:keyCopy];
 
   v24 = *MEMORY[0x1E69E9840];
 
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
   v21 = MEMORY[0x1E696ACD0];
@@ -287,21 +287,21 @@ LABEL_11:
 - (id)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = MEMORY[0x1E696AEC0];
   v5 = [(WAMessageAWD *)self key];
-  v6 = [(WAMessageAWD *)self originalClassName];
-  v7 = [v4 stringWithFormat:@"WAMessageAWD %@ (%@) (ID: 0x%02x) fields:\n", v5, v6, -[WAMessageAWD metricID](self, "metricID")];
-  [v3 appendString:v7];
+  originalClassName = [(WAMessageAWD *)self originalClassName];
+  v7 = [v4 stringWithFormat:@"WAMessageAWD %@ (%@) (ID: 0x%02x) fields:\n", v5, originalClassName, -[WAMessageAWD metricID](self, "metricID")];
+  [string appendString:v7];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(WAMessageAWD *)self mutableFields];
-  v9 = [v8 allKeys];
+  mutableFields = [(WAMessageAWD *)self mutableFields];
+  allKeys = [mutableFields allKeys];
 
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -312,17 +312,17 @@ LABEL_11:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [(WAMessageAWD *)self mutableFields];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        mutableFields2 = [(WAMessageAWD *)self mutableFields];
+        v16 = [mutableFields2 objectForKeyedSubscript:v14];
 
-        [v3 appendFormat:@"               %@ %@\n", v14, v16];
+        [string appendFormat:@"               %@ %@\n", v14, v16];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -330,24 +330,24 @@ LABEL_11:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return string;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mutableFields = self->_mutableFields;
-  v5 = a3;
-  [v5 encodeObject:mutableFields forKey:@"_mutableFields"];
-  [v5 encodeObject:self->_key forKey:@"_key"];
-  [v5 encodeBool:self->_isRootMessage forKey:@"_isRootMessage"];
-  [v5 encodeObject:self->_originalClassName forKey:@"_originalClassName"];
-  [v5 encodeObject:self->_uuid forKey:@"_uuid"];
-  [v5 encodeInteger:self->_metricID forKey:@"_metricID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mutableFields forKey:@"_mutableFields"];
+  [coderCopy encodeObject:self->_key forKey:@"_key"];
+  [coderCopy encodeBool:self->_isRootMessage forKey:@"_isRootMessage"];
+  [coderCopy encodeObject:self->_originalClassName forKey:@"_originalClassName"];
+  [coderCopy encodeObject:self->_uuid forKey:@"_uuid"];
+  [coderCopy encodeInteger:self->_metricID forKey:@"_metricID"];
 }
 
-- (WAMessageAWD)initWithCoder:(id)a3
+- (WAMessageAWD)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = WAMessageAWD;
   v5 = [(WAMessageAWD *)&v25 init];
@@ -363,35 +363,35 @@ LABEL_11:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v24 setWithObjects:{v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_mutableFields"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_mutableFields"];
     mutableFields = v5->_mutableFields;
     v5->_mutableFields = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
     key = v5->_key;
     v5->_key = v17;
 
-    v5->_isRootMessage = [v4 decodeBoolForKey:@"_isRootMessage"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originalClassName"];
+    v5->_isRootMessage = [coderCopy decodeBoolForKey:@"_isRootMessage"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originalClassName"];
     originalClassName = v5->_originalClassName;
     v5->_originalClassName = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v21;
 
-    v5->_metricID = [v4 decodeIntegerForKey:@"_metricID"];
+    v5->_metricID = [coderCopy decodeIntegerForKey:@"_metricID"];
   }
 
   return v5;
 }
 
-- (void)addField:(id)a3
+- (void)addField:(id)field
 {
-  v4 = a3;
-  v6 = [(WAMessageAWD *)self mutableFields];
-  v5 = [v4 key];
-  [v6 setObject:v4 forKeyedSubscript:v5];
+  fieldCopy = field;
+  mutableFields = [(WAMessageAWD *)self mutableFields];
+  v5 = [fieldCopy key];
+  [mutableFields setObject:fieldCopy forKeyedSubscript:v5];
 }
 
 @end

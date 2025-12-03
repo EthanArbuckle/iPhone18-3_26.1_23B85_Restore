@@ -1,6 +1,6 @@
 @interface VUITVApplicationControllerContext
 - (VUITVApplicationControllerContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VUITVApplicationControllerContext
@@ -12,22 +12,22 @@
   v2 = [(VUITVApplicationControllerContext *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     launchOptions = v2->_launchOptions;
-    v2->_launchOptions = v3;
+    v2->_launchOptions = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VUITVApplicationControllerContext allocWithZone:?]];
-  v5 = [(VUITVApplicationControllerContext *)self javaScriptApplicationURL];
-  [(VUITVApplicationControllerContext *)v4 setJavaScriptApplicationURL:v5];
+  javaScriptApplicationURL = [(VUITVApplicationControllerContext *)self javaScriptApplicationURL];
+  [(VUITVApplicationControllerContext *)v4 setJavaScriptApplicationURL:javaScriptApplicationURL];
 
-  v6 = [(VUITVApplicationControllerContext *)self launchOptions];
-  [(VUITVApplicationControllerContext *)v4 setLaunchOptions:v6];
+  launchOptions = [(VUITVApplicationControllerContext *)self launchOptions];
+  [(VUITVApplicationControllerContext *)v4 setLaunchOptions:launchOptions];
 
   return v4;
 }

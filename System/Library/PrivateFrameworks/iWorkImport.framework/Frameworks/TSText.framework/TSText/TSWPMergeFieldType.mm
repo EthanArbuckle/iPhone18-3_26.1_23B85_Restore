@@ -1,32 +1,32 @@
 @interface TSWPMergeFieldType
 + (id)skipMergeFieldType;
-- (BOOL)isEqual:(id)a3;
-- (TSWPMergeFieldType)initWithArchive:(const void *)a3;
-- (TSWPMergeFieldType)initWithContactsProperty:(id)a3 key:(id)a4 label:(id)a5 tableKey:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (TSWPMergeFieldType)initWithArchive:(const void *)archive;
+- (TSWPMergeFieldType)initWithContactsProperty:(id)property key:(id)key label:(id)label tableKey:(id)tableKey;
 - (unint64_t)hash;
-- (void)loadFromArchive:(const void *)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)loadFromArchive:(const void *)archive;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSWPMergeFieldType
 
-- (TSWPMergeFieldType)initWithContactsProperty:(id)a3 key:(id)a4 label:(id)a5 tableKey:(id)a6
+- (TSWPMergeFieldType)initWithContactsProperty:(id)property key:(id)key label:(id)label tableKey:(id)tableKey
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v15 = a6;
-  if (!(v11 | v15))
+  propertyCopy = property;
+  keyCopy = key;
+  labelCopy = label;
+  tableKeyCopy = tableKey;
+  if (!(propertyCopy | tableKeyCopy))
   {
     v16 = MEMORY[0x277D81150];
-    v26 = v13;
+    v26 = labelCopy;
     objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSWPMergeFieldType initWithContactsProperty:key:label:tableKey:]");
-    v17 = v27 = v12;
+    v17 = v27 = keyCopy;
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPMergeFieldType.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v20, v17, v19, 24, 0, "Invalid nil in TWSPMergeFieldType");
 
-    v13 = v26;
-    v12 = v27;
+    labelCopy = v26;
+    keyCopy = v27;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
   }
 
@@ -36,10 +36,10 @@
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_contactsProperty, a3);
-    objc_storeStrong(&v24->_contactsKey, a4);
-    objc_storeStrong(&v24->_contactsLabel, a5);
-    objc_storeStrong(&v24->_tableKey, a6);
+    objc_storeStrong(&v23->_contactsProperty, property);
+    objc_storeStrong(&v24->_contactsKey, key);
+    objc_storeStrong(&v24->_contactsLabel, label);
+    objc_storeStrong(&v24->_tableKey, tableKey);
   }
 
   return v24;
@@ -47,7 +47,7 @@
 
 + (id)skipMergeFieldType
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___TSWPMergeFieldType;
   v2 = objc_msgSendSuper2(&v7, sel_alloc);
   v5 = objc_msgSend_init(v2, v3, v4);
@@ -93,10 +93,10 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(isEqualToString) = 1;
   }
@@ -106,7 +106,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (objc_msgSend_isSkipType(self, v6, v7))
       {
         LOBYTE(isEqualToString) = objc_msgSend_isSkipType(v5, v8, v9);
@@ -234,7 +234,7 @@ LABEL_39:
   return isEqualToString;
 }
 
-- (TSWPMergeFieldType)initWithArchive:(const void *)a3
+- (TSWPMergeFieldType)initWithArchive:(const void *)archive
 {
   v8.receiver = self;
   v8.super_class = TSWPMergeFieldType;
@@ -242,60 +242,60 @@ LABEL_39:
   v6 = v4;
   if (v4)
   {
-    objc_msgSend_loadFromArchive_(v4, v5, a3);
+    objc_msgSend_loadFromArchive_(v4, v5, archive);
   }
 
   return v6;
 }
 
-- (void)loadFromArchive:(const void *)a3
+- (void)loadFromArchive:(const void *)archive
 {
-  v5 = *(a3 + 4);
+  v5 = *(archive + 4);
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v18 = objc_msgSend_tsp_initWithProtobufString_(v6, v7, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v18 = objc_msgSend_tsp_initWithProtobufString_(v6, v7, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setContactsProperty_(self, v8, v18);
 
-    v5 = *(a3 + 4);
+    v5 = *(archive + 4);
   }
 
   if ((v5 & 2) != 0)
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v19 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+    v19 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(archive + 4) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setContactsKey_(self, v11, v19);
 
-    v5 = *(a3 + 4);
+    v5 = *(archive + 4);
   }
 
   if ((v5 & 4) != 0)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v20 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
+    v20 = objc_msgSend_tsp_initWithProtobufString_(v12, v13, *(archive + 5) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setContactsLabel_(self, v14, v20);
 
-    v5 = *(a3 + 4);
+    v5 = *(archive + 4);
   }
 
   if ((v5 & 8) != 0)
   {
     v15 = objc_alloc(MEMORY[0x277CCACA8]);
-    v21 = objc_msgSend_tsp_initWithProtobufString_(v15, v16, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+    v21 = objc_msgSend_tsp_initWithProtobufString_(v15, v16, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setTableKey_(self, v17, v21);
   }
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  v5 = objc_msgSend_contactsProperty(self, a2, a3);
+  v5 = objc_msgSend_contactsProperty(self, a2, archive);
   if (objc_msgSend_length(v5, v6, v7))
   {
     v10 = v5;
     v8 = objc_msgSend_UTF8String(v10, v11, v12);
     if (v8)
     {
-      *(a3 + 4) |= 1u;
+      *(archive + 4) |= 1u;
       sub_276DA9454(__p, v8);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v37 < 0)
@@ -312,7 +312,7 @@ LABEL_39:
     v16 = objc_msgSend_UTF8String(v18, v19, v20);
     if (v16)
     {
-      *(a3 + 4) |= 2u;
+      *(archive + 4) |= 2u;
       sub_276DA9454(__p, v16);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v37 < 0)
@@ -329,7 +329,7 @@ LABEL_39:
     v24 = objc_msgSend_UTF8String(v26, v27, v28);
     if (v24)
     {
-      *(a3 + 4) |= 4u;
+      *(archive + 4) |= 4u;
       sub_276DA9454(__p, v24);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v37 < 0)
@@ -346,7 +346,7 @@ LABEL_39:
     v35 = objc_msgSend_UTF8String(v32, v33, v34);
     if (v35)
     {
-      *(a3 + 4) |= 8u;
+      *(archive + 4) |= 8u;
       sub_276DA9454(__p, v35);
       google::protobuf::internal::ArenaStringPtr::Set();
       if (v37 < 0)

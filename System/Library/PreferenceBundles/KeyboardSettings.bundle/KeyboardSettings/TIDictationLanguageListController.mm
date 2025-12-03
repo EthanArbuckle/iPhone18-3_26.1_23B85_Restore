@@ -1,35 +1,35 @@
 @interface TIDictationLanguageListController
 + (id)isSmartLanguageSelectionEnabled;
-+ (int64_t)numberOfEnabledEntries:(id)a3;
++ (int64_t)numberOfEnabledEntries:(id)entries;
 - (TIDictationLanguageListController)init;
 - (id)dictationFooterText;
 - (id)dictationLanguagesSpecifiers;
-- (id)isSLSEnabled:(id)a3;
+- (id)isSLSEnabled:(id)enabled;
 - (id)onDeviceDictationLanguagesSpecifiers;
 - (id)onDeviceNotCapableDictationLanguagesSpecifiers;
 - (id)slsDictationLanguagesSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 classicDictationCellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 enhancedDictationCellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view classicDictationCellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view enhancedDictationCellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)emitNavigationEventForDictationLanguageListController;
-- (void)handleSmartLanguageSelectionOnDictationLanguageToggle:(BOOL)a3 enabledDictationLanguages:(id)a4 specifier:(id)a5;
-- (void)offlineDictationStatusUpdated:(id)a3;
-- (void)presentPrivacySheet:(id)a3;
-- (void)setSLSEnabled:(id)a3 specifier:(id)a4;
-- (void)toggleDictationLanguage:(id)a3;
-- (void)toggleSLSEnabled:(id)a3;
-- (void)updateDownloadingProgressForAsset:(id)a3 stalled:(BOOL)a4;
-- (void)updateDownloadingStateForAsset:(id)a3 success:(BOOL)a4;
+- (void)handleSmartLanguageSelectionOnDictationLanguageToggle:(BOOL)toggle enabledDictationLanguages:(id)languages specifier:(id)specifier;
+- (void)offlineDictationStatusUpdated:(id)updated;
+- (void)presentPrivacySheet:(id)sheet;
+- (void)setSLSEnabled:(id)enabled specifier:(id)specifier;
+- (void)toggleDictationLanguage:(id)language;
+- (void)toggleSLSEnabled:(id)enabled;
+- (void)updateDownloadingProgressForAsset:(id)asset stalled:(BOOL)stalled;
+- (void)updateDownloadingStateForAsset:(id)asset success:(BOOL)success;
 - (void)viewDidLoad;
 @end
 
 @implementation TIDictationLanguageListController
 
-- (void)offlineDictationStatusUpdated:(id)a3
+- (void)offlineDictationStatusUpdated:(id)updated
 {
-  [(TIDictationLanguageListController *)self setOfflineStatusForLanguage:a3];
+  [(TIDictationLanguageListController *)self setOfflineStatusForLanguage:updated];
 
   [(TIDictationLanguageListController *)self reloadSpecifiers];
 }
@@ -79,14 +79,14 @@
   -[TIDictationLanguageListController pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:](self, "pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:title:localizedNavigationComponents:deepLink:", @"com.apple.graphic-icon.keyboard", [[_NSLocalizedStringResource alloc] initWithKey:@"KEYBOARDS_SHORT" table:@"Keyboard" locale:+[NSLocale currentLocale](NSLocale bundleURL:{"currentLocale"), -[NSBundle bundleURL](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "bundleURL")}], +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v4, 2), v3);
 }
 
-+ (int64_t)numberOfEnabledEntries:(id)a3
++ (int64_t)numberOfEnabledEntries:(id)entries
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [entries allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -101,13 +101,13 @@
     {
       if (*v12 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allKeys);
       }
 
-      v7 += [objc_msgSend(a3 objectForKeyedSubscript:{*(*(&v11 + 1) + 8 * i)), "BOOLValue"}];
+      v7 += [objc_msgSend(entries objectForKeyedSubscript:{*(*(&v11 + 1) + 8 * i)), "BOOLValue"}];
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   }
 
   while (v6);
@@ -228,14 +228,14 @@
   return v7;
 }
 
-- (void)setSLSEnabled:(id)a3 specifier:(id)a4
+- (void)setSLSEnabled:(id)enabled specifier:(id)specifier
 {
   [+[AFPreferences sharedPreferences](AFPreferences sharedPreferences];
 
   [(TIDictationLanguageListController *)self reloadSpecifiers];
 }
 
-- (id)isSLSEnabled:(id)a3
+- (id)isSLSEnabled:(id)enabled
 {
   v3 = objc_opt_class();
 
@@ -287,8 +287,8 @@
     }
 
     v12 = [PSSpecifier groupSpecifierWithID:@"DICTATION_LANGUAGES" name:0];
-    v13 = [(TIDictationLanguageListController *)self dictationFooterText];
-    [v12 setProperty:v13 forKey:PSFooterTextGroupKey];
+    dictationFooterText = [(TIDictationLanguageListController *)self dictationFooterText];
+    [v12 setProperty:dictationFooterText forKey:PSFooterTextGroupKey];
     [v17 insertObject:v12 atIndex:0];
     *&self->PSListController_opaque[v15] = v17;
   }
@@ -308,7 +308,7 @@
     v3 = [+[TUIPreferencesController sharedPreferencesController](TUIPreferencesController "sharedPreferencesController")];
     v4 = [objc_msgSend(objc_msgSend(+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController "sharedPreferencesController")];
     v5 = [objc_msgSend(+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
-    v30 = self;
+    selfCopy = self;
     v25 = [objc_opt_class() numberOfEnabledEntries:v4];
     if (![v5 count])
     {
@@ -337,12 +337,12 @@
           }
 
           v11 = *(*(&v32 + 1) + 8 * i);
-          v12 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v11 displayName], v30, 0, 0, 0, 3, 0);
+          v12 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v11 displayName], selfCopy, 0, 0, 0, 3, 0);
           [v12 setButtonAction:"toggleDictationLanguage:"];
           [v12 setProperty:objc_msgSend(v11 forKey:{"identifier"), v8}];
           [v12 setProperty:v4 forKey:@"enabledDictationLanguages"];
           [v31 addObject:v12];
-          v13 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v11 displayName], v30, 0, 0, 0, 3, 0);
+          v13 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v11 displayName], selfCopy, 0, 0, 0, 3, 0);
           [v13 setButtonAction:"toggleSLSEnabled:"];
           [v13 setProperty:objc_msgSend(v11 forKey:{"identifier"), v9}];
           [v29 addObject:v13];
@@ -361,7 +361,7 @@
       {
         v14 = [PSSpecifier groupSpecifierWithID:@"SLS_TOGGLE" name:0];
         [v31 addObject:v14];
-        v15 = [PSSpecifier preferenceSpecifierNamed:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Automatic-Language-Detection" target:&stru_49C80 set:@"Dictation"] get:v30 detail:"setSLSEnabled:specifier:" cell:"isSLSEnabled:" edit:0, 6, 0];
+        v15 = [PSSpecifier preferenceSpecifierNamed:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Automatic-Language-Detection" target:&stru_49C80 set:@"Dictation"] get:selfCopy detail:"setSLSEnabled:specifier:" cell:"isSLSEnabled:" edit:0, 6, 0];
         [v15 setProperty:@"SLS Toggle Switch" forKey:PSIDKey];
         v16 = [objc_msgSend(objc_opt_class() "isSmartLanguageSelectionEnabled")];
         v17 = [NSBundle bundleForClass:objc_opt_class()];
@@ -391,8 +391,8 @@
       }
 
       v21 = [PSSpecifier groupSpecifierWithID:@"DICTATION_LANGUAGES" name:v20];
-      v22 = [(TIDictationLanguageListController *)v30 dictationFooterText];
-      [v21 setProperty:v22 forKey:PSFooterTextGroupKey];
+      dictationFooterText = [(TIDictationLanguageListController *)selfCopy dictationFooterText];
+      [v21 setProperty:dictationFooterText forKey:PSFooterTextGroupKey];
       [v31 insertObject:v21 atIndex:0];
     }
 
@@ -404,39 +404,39 @@
       [v31 addObjectsFromArray:v29];
     }
 
-    *&v30->PSListController_opaque[v26] = v31;
+    *&selfCopy->PSListController_opaque[v26] = v31;
   }
 
   return v31;
 }
 
-- (void)updateDownloadingProgressForAsset:(id)a3 stalled:(BOOL)a4
+- (void)updateDownloadingProgressForAsset:(id)asset stalled:(BOOL)stalled
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_158DC;
   block[3] = &unk_49368;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = asset;
+  stalledCopy = stalled;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)updateDownloadingStateForAsset:(id)a3 success:(BOOL)a4
+- (void)updateDownloadingStateForAsset:(id)asset success:(BOOL)success
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_15AAC;
   block[3] = &unk_49368;
   block[4] = self;
-  block[5] = a3;
-  v5 = a4;
+  block[5] = asset;
+  successCopy = success;
   dispatch_async(&_dispatch_main_q, block);
 }
 
 - (id)onDeviceDictationLanguagesSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   result = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (result)
   {
@@ -444,7 +444,7 @@
   }
 
   v82 = OBJC_IVAR___PSListController__specifiers;
-  [(TIDictationLanguageListController *)v2 setTitle:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Dictation Languages", &stru_49C80, @"Dictation"]];
+  [(TIDictationLanguageListController *)selfCopy setTitle:[[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"Dictation Languages", &stru_49C80, @"Dictation"]];
   v4 = objc_alloc_init(NSMutableArray);
   v92 = +[NSCountedSet set];
   v5 = +[NSMutableArray array];
@@ -464,7 +464,7 @@
   obj = v6;
   v9 = [v6 countByEnumeratingWithState:&v110 objects:v117 count:16];
   v80 = @"DICTATION_ON_DEVICE_SERVER_SOMETIMES_NO_SEARCH";
-  v94 = v2;
+  v94 = selfCopy;
   v83 = v5;
   v84 = v4;
   v90 = v8;
@@ -490,7 +490,7 @@
       }
 
       v14 = *(*(&v110 + 1) + 8 * v13);
-      v15 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v14 displayName], v2, 0, 0, 0, 3, 0);
+      v15 = +[PSSpecifier preferenceSpecifierNamed:target:set:get:detail:cell:edit:](PSSpecifier, "preferenceSpecifierNamed:target:set:get:detail:cell:edit:", [v14 displayName], selfCopy, 0, 0, 0, 3, 0);
       [v15 setButtonAction:"toggleDictationLanguage:"];
       [v15 setProperty:objc_msgSend(v14 forKey:{"identifier"), v12}];
       [v15 setProperty:v7 forKey:@"enabledDictationLanguages"];
@@ -500,7 +500,7 @@
         [v14 identifier];
         UIKeyboardInputModeGetBaseLanguage();
         [v92 addObject:UIKeyboardInputModeGetBaseLanguage()];
-        if (!-[NSDictionary objectForKeyedSubscript:](-[TIDictationLanguageListController offlineStatusForLanguage](v2, "offlineStatusForLanguage"), "objectForKeyedSubscript:", [objc_msgSend(v14 "identifier")]))
+        if (!-[NSDictionary objectForKeyedSubscript:](-[TIDictationLanguageListController offlineStatusForLanguage](selfCopy, "offlineStatusForLanguage"), "objectForKeyedSubscript:", [objc_msgSend(v14 "identifier")]))
         {
           v16 = _AFPreferencesReplacementLanguageForLocalRecognizerLanguageCode();
           if (v16)
@@ -511,7 +511,7 @@
 
         if (!AFOfflineDictationStatusStringIsHighQualityModelSupported())
         {
-          v17 = [v14 identifier];
+          identifier = [v14 identifier];
           v18 = v89;
           goto LABEL_15;
         }
@@ -526,17 +526,17 @@
 
         if (!AFOfflineDictationStatusStringIsInstalling())
         {
-          v17 = [v14 identifier];
+          identifier = [v14 identifier];
           v18 = v86;
 LABEL_15:
-          [v18 addObject:v17];
+          [v18 addObject:identifier];
 LABEL_16:
-          v2 = v94;
+          selfCopy = v94;
           goto LABEL_17;
         }
 
         v19 = -[NSMutableSet containsObject:](-[TIDictationLanguageListController onDeviceLocalesDownloading](v94, "onDeviceLocalesDownloading"), "containsObject:", [v14 identifier]);
-        v20 = [v14 identifier];
+        identifier2 = [v14 identifier];
         if (v19)
         {
           v21 = v85;
@@ -547,7 +547,7 @@ LABEL_16:
           v21 = v86;
         }
 
-        [v21 addObject:v20];
+        [v21 addObject:identifier2];
         v22 = AFOfflineDictationStatusStringAssetId();
         if (v22)
         {
@@ -561,12 +561,12 @@ LABEL_16:
           }
 
           [v24 addObject:{objc_msgSend(v14, "identifier")}];
-          v2 = v94;
+          selfCopy = v94;
         }
 
         else
         {
-          v2 = v94;
+          selfCopy = v94;
         }
 
         v4 = v84;
@@ -595,15 +595,15 @@ LABEL_35:
   v27 = v92;
   if ([v8 count])
   {
-    [v8 minusSet:{-[TIDictationLanguageListController trackingDownloadStatusForAssetsIDs](v2, "trackingDownloadStatusForAssetsIDs")}];
+    [v8 minusSet:{-[TIDictationLanguageListController trackingDownloadStatusForAssetsIDs](selfCopy, "trackingDownloadStatusForAssetsIDs")}];
     if ([v8 count])
     {
       v108 = 0u;
       v109 = 0u;
       v106 = 0u;
       v107 = 0u;
-      v28 = [v8 allObjects];
-      v29 = [v28 countByEnumeratingWithState:&v106 objects:v116 count:16];
+      allObjects = [v8 allObjects];
+      v29 = [allObjects countByEnumeratingWithState:&v106 objects:v116 count:16];
       if (v29)
       {
         v30 = v29;
@@ -614,7 +614,7 @@ LABEL_35:
           {
             if (*v107 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(allObjects);
             }
 
             v33 = *(*(&v106 + 1) + 8 * i);
@@ -626,7 +626,7 @@ LABEL_35:
               v35 = v34;
               v36 = [TIWeakRefHolder weakRefHolderWithObject:v94];
               v37 = sub_16EE4();
-              v38 = [sub_16EE4() systemClientId];
+              systemClientId = [sub_16EE4() systemClientId];
               v104[5] = v33;
               v105[0] = _NSConcreteStackBlock;
               v105[1] = 3221225472;
@@ -641,11 +641,11 @@ LABEL_35:
               v104[4] = v36;
               v39 = v37;
               v8 = v90;
-              [v39 fetchAssetsForLanguage:v35 clientIdentifier:v38 urgent:0 forceUpgrade:0 detailedProgress:v105 completion:v104];
+              [v39 fetchAssetsForLanguage:v35 clientIdentifier:systemClientId urgent:0 forceUpgrade:0 detailedProgress:v105 completion:v104];
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v106 objects:v116 count:16];
+          v30 = [allObjects countByEnumeratingWithState:&v106 objects:v116 count:16];
         }
 
         while (v30);
@@ -656,7 +656,7 @@ LABEL_35:
       v100 = 0u;
       v101 = 0u;
       v40 = [v8 countByEnumeratingWithState:&v100 objects:v115 count:16];
-      v2 = v94;
+      selfCopy = v94;
       v5 = v83;
       v27 = v92;
       if (v40)
@@ -855,15 +855,15 @@ LABEL_97:
   [v81 setProperty:v76 forKey:PSFooterHyperlinkViewTitleKey];
   v118.location = [(NSString *)v76 rangeOfString:v49];
   [v81 setProperty:NSStringFromRange(v118) forKey:PSFooterHyperlinkViewLinkRangeKey];
-  v78 = [NSValue valueWithNonretainedObject:v2];
+  v78 = [NSValue valueWithNonretainedObject:selfCopy];
   [v81 setProperty:v78 forKey:PSFooterHyperlinkViewTargetKey];
   [v81 setProperty:NSStringFromSelector("presentPrivacySheet:") forKey:PSFooterHyperlinkViewActionKey];
   result = v84;
-  *&v2->PSListController_opaque[v82] = v84;
+  *&selfCopy->PSListController_opaque[v82] = v84;
   return result;
 }
 
-- (void)presentPrivacySheet:(id)a3
+- (void)presentPrivacySheet:(id)sheet
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.siri"];
   [v4 setPresentingViewController:self];
@@ -1010,27 +1010,27 @@ LABEL_19:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   if (_os_feature_enabled_impl())
   {
 
-    return [(TIDictationLanguageListController *)self tableView:a3 classicDictationCellForRowAtIndexPath:a4];
+    return [(TIDictationLanguageListController *)self tableView:view classicDictationCellForRowAtIndexPath:path];
   }
 
   else
   {
 
-    return [(TIDictationLanguageListController *)self tableView:a3 enhancedDictationCellForRowAtIndexPath:a4];
+    return [(TIDictationLanguageListController *)self tableView:view enhancedDictationCellForRowAtIndexPath:path];
   }
 }
 
-- (id)tableView:(id)a3 enhancedDictationCellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view enhancedDictationCellForRowAtIndexPath:(id)path
 {
   v15.receiver = self;
   v15.super_class = TIDictationLanguageListController;
-  v6 = [(TIDictationLanguageListController *)&v15 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(TIDictationLanguageListController *)self specifierAtIndex:[(TIDictationLanguageListController *)self indexForIndexPath:a4]];
+  v6 = [(TIDictationLanguageListController *)&v15 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(TIDictationLanguageListController *)self specifierAtIndex:[(TIDictationLanguageListController *)self indexForIndexPath:path]];
   v8 = [+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController "sharedPreferencesController")];
   v9 = [objc_opt_class() numberOfEnabledEntries:{objc_msgSend(v8, "valueForPreferenceKey:", UIDictationLanguagesEnabled)}];
   +[UIKeyboardInputModeController sharedInputModeController];
@@ -1075,22 +1075,22 @@ LABEL_19:
   return v6;
 }
 
-- (id)tableView:(id)a3 classicDictationCellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view classicDictationCellForRowAtIndexPath:(id)path
 {
   v43.receiver = self;
   v43.super_class = TIDictationLanguageListController;
-  v6 = [(TIDictationLanguageListController *)&v43 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(TIDictationLanguageListController *)self specifierAtIndex:[(TIDictationLanguageListController *)self indexForIndexPath:a4]];
+  v6 = [(TIDictationLanguageListController *)&v43 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(TIDictationLanguageListController *)self specifierAtIndex:[(TIDictationLanguageListController *)self indexForIndexPath:path]];
   v8 = [+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController "sharedPreferencesController")];
   v9 = [v8 valueForPreferenceKey:UIDictationLanguagesEnabled];
-  if (![a4 section])
+  if (![path section])
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v12 = [v9 allKeys];
-    v13 = [v12 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    allKeys = [v9 allKeys];
+    v13 = [allKeys countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v13)
     {
       v14 = v13;
@@ -1102,13 +1102,13 @@ LABEL_19:
         {
           if (*v40 != v16)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allKeys);
           }
 
           v15 += [objc_msgSend(v9 objectForKeyedSubscript:{*(*(&v39 + 1) + 8 * i)), "BOOLValue"}];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v14 = [allKeys countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v14);
@@ -1149,7 +1149,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([a4 section] == &dword_0 + 1)
+  if ([path section] == &dword_0 + 1)
   {
     [objc_msgSend(v6 "titleLabel")];
     v10 = v6;
@@ -1162,7 +1162,7 @@ LABEL_28:
     return v6;
   }
 
-  if ([a4 section] == &dword_0 + 2)
+  if ([path section] == &dword_0 + 2)
   {
     [v6 setSelectionStyle:3];
     v19 = [+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
@@ -1170,8 +1170,8 @@ LABEL_28:
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = [v19 allKeys];
-    v21 = [v20 countByEnumeratingWithState:&v35 objects:v44 count:16];
+    allKeys2 = [v19 allKeys];
+    v21 = [allKeys2 countByEnumeratingWithState:&v35 objects:v44 count:16];
     if (v21)
     {
       v22 = v21;
@@ -1183,13 +1183,13 @@ LABEL_28:
         {
           if (*v36 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allKeys2);
           }
 
           v23 += [objc_msgSend(v19 objectForKeyedSubscript:{*(*(&v35 + 1) + 8 * j)), "BOOLValue"}];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v35 objects:v44 count:16];
+        v22 = [allKeys2 countByEnumeratingWithState:&v35 objects:v44 count:16];
       }
 
       while (v22);
@@ -1225,18 +1225,18 @@ LABEL_28:
   return v6;
 }
 
-- (void)toggleSLSEnabled:(id)a3
+- (void)toggleSLSEnabled:(id)enabled
 {
-  v5 = [a3 propertyForKey:PSTableCellKey];
-  v6 = [v5 isChecked];
-  v7 = [a3 propertyForKey:PSTitleKey];
+  v5 = [enabled propertyForKey:PSTableCellKey];
+  isChecked = [v5 isChecked];
+  v7 = [enabled propertyForKey:PSTitleKey];
   v8 = [objc_msgSend(+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1248,13 +1248,13 @@ LABEL_28:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 += [objc_msgSend(v8 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i)), "BOOLValue"}];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -1266,7 +1266,7 @@ LABEL_28:
   }
 
   v15 = (v12 - 4) < 0xFFFFFFFD;
-  if (v6)
+  if (isChecked)
   {
     v15 = v12 == 2;
   }
@@ -1274,9 +1274,9 @@ LABEL_28:
   if (!v15)
   {
     v16 = [objc_msgSend(+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController "sharedPreferencesController")];
-    if (v6)
+    if (isChecked)
     {
-      [v5 setChecked:v6 ^ 1];
+      [v5 setChecked:isChecked ^ 1];
       v17 = +[UIColor grayColor];
     }
 
@@ -1287,24 +1287,24 @@ LABEL_28:
         return;
       }
 
-      [v5 setChecked:v6 ^ 1];
+      [v5 setChecked:isChecked ^ 1];
       v17 = +[UIColor blackColor];
     }
 
     [objc_msgSend(v5 "titleLabel")];
-    [v8 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v6 ^ 1), v7}];
+    [v8 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", isChecked ^ 1), v7}];
     [+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
     [*&self->PSListController_opaque[OBJC_IVAR___PSListController__table] reloadData];
   }
 }
 
-- (void)handleSmartLanguageSelectionOnDictationLanguageToggle:(BOOL)a3 enabledDictationLanguages:(id)a4 specifier:(id)a5
+- (void)handleSmartLanguageSelectionOnDictationLanguageToggle:(BOOL)toggle enabledDictationLanguages:(id)languages specifier:(id)specifier
 {
-  v7 = a3;
+  toggleCopy = toggle;
   v8 = [objc_msgSend(+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
-  v9 = [a5 propertyForKey:PSIDKey];
-  v10 = [objc_opt_class() numberOfEnabledEntries:a4];
-  if (v7)
+  v9 = [specifier propertyForKey:PSIDKey];
+  v10 = [objc_opt_class() numberOfEnabledEntries:languages];
+  if (toggleCopy)
   {
     if (![objc_msgSend(v8 objectForKeyedSubscript:{v9), "BOOLValue"}])
     {
@@ -1318,8 +1318,8 @@ LABEL_28:
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v11 = [v8 allKeys];
-      v12 = [v11 countByEnumeratingWithState:&v40 objects:v46 count:16];
+      allKeys = [v8 allKeys];
+      v12 = [allKeys countByEnumeratingWithState:&v40 objects:v46 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1330,13 +1330,13 @@ LABEL_28:
           {
             if (*v41 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             [v8 setObject:&__kCFBooleanFalse forKeyedSubscript:*(*(&v40 + 1) + 8 * i)];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v40 objects:v46 count:16];
+          v13 = [allKeys countByEnumeratingWithState:&v40 objects:v46 count:16];
         }
 
         while (v13);
@@ -1345,7 +1345,7 @@ LABEL_28:
 
     else if (v10 >= 3 && [objc_opt_class() numberOfEnabledEntries:v8] <= 1)
     {
-      v25 = [objc_msgSend(a4 keysOfEntriesPassingTest:{&stru_493F8), "mutableCopy"}];
+      v25 = [objc_msgSend(languages keysOfEntriesPassingTest:{&stru_493F8), "mutableCopy"}];
       [v25 intersectSet:{objc_msgSend(v8, "keysOfEntriesPassingTest:", &stru_49418)}];
       [v25 removeObject:v9];
       v26 = [+[TUIPreferencesController sharedPreferencesController](TUIPreferencesController "sharedPreferencesController")];
@@ -1370,7 +1370,7 @@ LABEL_28:
             v31 = *(*(&v36 + 1) + 8 * j);
             if ([v25 containsObject:{objc_msgSend(v31, "identifier")}])
             {
-              v24 = [v31 identifier];
+              identifier = [v31 identifier];
               v22 = &__kCFBooleanTrue;
               v23 = v8;
               goto LABEL_23;
@@ -1398,8 +1398,8 @@ LABEL_28:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = [a4 allKeys];
-    v18 = [v17 countByEnumeratingWithState:&v32 objects:v44 count:16];
+    allKeys2 = [languages allKeys];
+    v18 = [allKeys2 countByEnumeratingWithState:&v32 objects:v44 count:16];
     if (v18)
     {
       v19 = v18;
@@ -1410,13 +1410,13 @@ LABEL_28:
         {
           if (*v33 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys2);
           }
 
-          [v8 setObject:objc_msgSend(a4 forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v32 + 1) + 8 * k)), *(*(&v32 + 1) + 8 * k)}];
+          [v8 setObject:objc_msgSend(languages forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v32 + 1) + 8 * k)), *(*(&v32 + 1) + 8 * k)}];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v32 objects:v44 count:16];
+        v19 = [allKeys2 countByEnumeratingWithState:&v32 objects:v44 count:16];
       }
 
       while (v19);
@@ -1427,27 +1427,27 @@ LABEL_28:
   {
     v22 = [NSNumber numberWithBool:1];
     v23 = v8;
-    v24 = v9;
+    identifier = v9;
 LABEL_23:
-    [v23 setObject:v22 forKeyedSubscript:v24];
+    [v23 setObject:v22 forKeyedSubscript:identifier];
 LABEL_24:
     [+[AFPreferences sharedPreferences](AFPreferences "sharedPreferences")];
   }
 }
 
-- (void)toggleDictationLanguage:(id)a3
+- (void)toggleDictationLanguage:(id)language
 {
-  v5 = [a3 propertyForKey:PSTableCellKey];
-  v6 = [v5 isChecked];
-  v7 = [a3 propertyForKey:@"enabledDictationLanguages"];
+  v5 = [language propertyForKey:PSTableCellKey];
+  isChecked = [v5 isChecked];
+  v7 = [language propertyForKey:@"enabledDictationLanguages"];
   if (_os_feature_enabled_impl())
   {
-    [(TIDictationLanguageListController *)self handleSmartLanguageSelectionOnDictationLanguageToggle:v6 enabledDictationLanguages:v7 specifier:a3];
+    [(TIDictationLanguageListController *)self handleSmartLanguageSelectionOnDictationLanguageToggle:isChecked enabledDictationLanguages:v7 specifier:language];
   }
 
-  [v5 setChecked:v6 ^ 1];
-  v8 = [NSNumber numberWithInt:v6 ^ 1];
-  [v7 setObject:v8 forKey:{objc_msgSend(a3, "propertyForKey:", PSIDKey)}];
+  [v5 setChecked:isChecked ^ 1];
+  v8 = [NSNumber numberWithInt:isChecked ^ 1];
+  [v7 setObject:v8 forKey:{objc_msgSend(language, "propertyForKey:", PSIDKey)}];
   [+[UIKeyboardPreferencesController sharedPreferencesController](UIKeyboardPreferencesController "sharedPreferencesController")];
   if (objc_opt_respondsToSelector())
   {

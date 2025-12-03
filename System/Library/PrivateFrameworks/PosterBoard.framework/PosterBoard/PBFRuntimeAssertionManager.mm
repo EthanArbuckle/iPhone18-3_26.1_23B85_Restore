@@ -2,14 +2,14 @@
 - (NSString)debugDescription;
 - (NSString)description;
 - (PBFRuntimeAssertionManager)init;
-- (id)_buildRBSAssertionForTarget:(id)a3 assertionIdentifier:(id)a4 explanation:(id)a5 invalidationHandler:(id)a6;
+- (id)_buildRBSAssertionForTarget:(id)target assertionIdentifier:(id)identifier explanation:(id)explanation invalidationHandler:(id)handler;
 - (id)_stateQueue_debugDescription;
 - (id)_stateQueue_debugDescriptionForPosterBoardProcessAssertions;
 - (id)_stateQueue_debugDescriptionForPosterExtensionProcessAssertions;
-- (id)_stateQueue_debugDescriptionForTarget:(id)a3;
-- (id)acquireAssertion:(id)a3 reason:(id)a4 target:(id)a5 invalidationHandler:(id)a6;
-- (id)acquirePosterUpdateMemoryAssertionForReason:(id)a3 target:(id)a4 auditToken:(id)a5 posterProviderBundleIdentifier:(id)a6;
-- (void)_runningBoardAssertionStateDidUpdate:(id)a3 assertionIdentifier:(id)a4 error:(id)a5;
+- (id)_stateQueue_debugDescriptionForTarget:(id)target;
+- (id)acquireAssertion:(id)assertion reason:(id)reason target:(id)target invalidationHandler:(id)handler;
+- (id)acquirePosterUpdateMemoryAssertionForReason:(id)reason target:(id)target auditToken:(id)token posterProviderBundleIdentifier:(id)identifier;
+- (void)_runningBoardAssertionStateDidUpdate:(id)update assertionIdentifier:(id)identifier error:(id)error;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -31,13 +31,13 @@
     invalidationFlag = v2->_invalidationFlag;
     v2->_invalidationFlag = v5;
 
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     stateQueue_knownAssertions = v2->_stateQueue_knownAssertions;
-    v2->_stateQueue_knownAssertions = v7;
+    v2->_stateQueue_knownAssertions = weakObjectsHashTable;
 
-    v9 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     stateQueue_acquistionDateForAssertion = v2->_stateQueue_acquistionDateForAssertion;
-    v2->_stateQueue_acquistionDateForAssertion = v9;
+    v2->_stateQueue_acquistionDateForAssertion = weakToStrongObjectsMapTable;
 
     objc_initWeak(&location, v2);
     v11 = objc_opt_class();
@@ -70,12 +70,12 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
   [(PBFRuntimeAssertionManager *)&v3 dealloc];
 }
 
-- (id)acquirePosterUpdateMemoryAssertionForReason:(id)a3 target:(id)a4 auditToken:(id)a5 posterProviderBundleIdentifier:(id)a6
+- (id)acquirePosterUpdateMemoryAssertionForReason:(id)reason target:(id)target auditToken:(id)token posterProviderBundleIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([a5 hasEntitlement:@"com.apple.posterkit.enhanced-memory-limits"])
+  reasonCopy = reason;
+  targetCopy = target;
+  identifierCopy = identifier;
+  if ([token hasEntitlement:@"com.apple.posterkit.enhanced-memory-limits"])
   {
     v13 = PFBundleIdentifierRequiresMemoryHogAssertion();
     v14 = MEMORY[0x277D3EBD8];
@@ -84,7 +84,7 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
       v14 = MEMORY[0x277D3EBD0];
     }
 
-    v15 = [(PBFRuntimeAssertionManager *)self acquireAssertion:*v14 reason:v10 target:v11 invalidationHandler:0];
+    v15 = [(PBFRuntimeAssertionManager *)self acquireAssertion:*v14 reason:reasonCopy target:targetCopy invalidationHandler:0];
   }
 
   else
@@ -95,14 +95,14 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)acquireAssertion:(id)a3 reason:(id)a4 target:(id)a5 invalidationHandler:(id)a6
+- (id)acquireAssertion:(id)assertion reason:(id)reason target:(id)target invalidationHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v11;
+  assertionCopy = assertion;
+  reasonCopy = reason;
+  targetCopy = target;
+  handlerCopy = handler;
+  v15 = assertionCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v15)
   {
@@ -114,7 +114,7 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
     [PBFRuntimeAssertionManager acquireAssertion:a2 reason:? target:? invalidationHandler:?];
   }
 
-  v16 = v12;
+  v16 = reasonCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -126,7 +126,7 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
     [PBFRuntimeAssertionManager acquireAssertion:a2 reason:? target:? invalidationHandler:?];
   }
 
-  v17 = v13;
+  v17 = targetCopy;
   NSClassFromString(&cfstr_Rbstarget.isa);
   if (!v17)
   {
@@ -157,7 +157,7 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
       _os_log_impl(&dword_21B526000, v19, OS_LOG_TYPE_DEFAULT, "acquireAssertion:'%{public}@' reason:'%{public}@' target:'%{public}@'", buf, 0x20u);
     }
 
-    v20 = [(PBFRuntimeAssertionManager *)self _buildRBSAssertionForTarget:v17 assertionIdentifier:v15 explanation:v16 invalidationHandler:v14];
+    v20 = [(PBFRuntimeAssertionManager *)self _buildRBSAssertionForTarget:v17 assertionIdentifier:v15 explanation:v16 invalidationHandler:handlerCopy];
     v33 = 0;
     v21 = [v20 acquireWithError:&v33];
     v22 = v33;
@@ -204,14 +204,14 @@ id __34__PBFRuntimeAssertionManager_init__block_invoke(uint64_t a1)
         _os_log_error_impl(&dword_21B526000, v24, OS_LOG_TYPE_ERROR, "FAILED acquireAssertion:'%{public}@' reason:'%{public}@' target:'%{public}@': %{public}@", buf, 0x2Au);
       }
 
-      if (v14)
+      if (handlerCopy)
       {
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PBFRuntimeAssertionManager acquireAssertion:reason:target:invalidationHandler:]"];
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __81__PBFRuntimeAssertionManager_acquireAssertion_reason_target_invalidationHandler___block_invoke_33;
         v28[3] = &unk_2782C6310;
-        v30 = v14;
+        v30 = handlerCopy;
         v29 = v22;
         PBFDispatchAsyncWithString(v26, QOS_CLASS_USER_INTERACTIVE, v28);
       }
@@ -285,13 +285,13 @@ void __40__PBFRuntimeAssertionManager_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_buildRBSAssertionForTarget:(id)a3 assertionIdentifier:(id)a4 explanation:(id)a5 invalidationHandler:(id)a6
+- (id)_buildRBSAssertionForTarget:(id)target assertionIdentifier:(id)identifier explanation:(id)explanation invalidationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v11;
+  targetCopy = target;
+  identifierCopy = identifier;
+  explanationCopy = explanation;
+  handlerCopy = handler;
+  v15 = targetCopy;
   NSClassFromString(&cfstr_Rbstarget.isa);
   if (!v15)
   {
@@ -303,7 +303,7 @@ void __40__PBFRuntimeAssertionManager_invalidate__block_invoke(uint64_t a1)
     [PBFRuntimeAssertionManager _buildRBSAssertionForTarget:a2 assertionIdentifier:? explanation:? invalidationHandler:?];
   }
 
-  v16 = v12;
+  v16 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v16)
   {
@@ -316,7 +316,7 @@ void __40__PBFRuntimeAssertionManager_invalidate__block_invoke(uint64_t a1)
   }
 
   objc_initWeak(&location, self);
-  v17 = [MEMORY[0x277D46DB8] pf_assertionForTarget:v15 assertionIdentifier:v16 explanation:v13 invalidationHandler:0];
+  v17 = [MEMORY[0x277D46DB8] pf_assertionForTarget:v15 assertionIdentifier:v16 explanation:explanationCopy invalidationHandler:0];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __110__PBFRuntimeAssertionManager__buildRBSAssertionForTarget_assertionIdentifier_explanation_invalidationHandler___block_invoke;
@@ -324,7 +324,7 @@ void __40__PBFRuntimeAssertionManager_invalidate__block_invoke(uint64_t a1)
   objc_copyWeak(&v24, &location);
   v18 = v16;
   v22 = v18;
-  v19 = v14;
+  v19 = handlerCopy;
   v23 = v19;
   [v17 setInvalidationHandler:v21];
 
@@ -351,30 +351,30 @@ void __110__PBFRuntimeAssertionManager__buildRBSAssertionForTarget_assertionIden
   }
 }
 
-- (void)_runningBoardAssertionStateDidUpdate:(id)a3 assertionIdentifier:(id)a4 error:(id)a5
+- (void)_runningBoardAssertionStateDidUpdate:(id)update assertionIdentifier:(id)identifier error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  identifierCopy = identifier;
+  errorCopy = error;
   v11 = PBFLogRuntime();
   v12 = v11;
-  if (v10)
+  if (errorCopy)
   {
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_7;
     }
 
-    v13 = [v8 target];
+    target = [updateCopy target];
     *buf = 138544130;
-    v18 = v9;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v13;
+    v20 = target;
     v21 = 1024;
-    v22 = [v8 isValid];
+    isValid = [updateCopy isValid];
     v23 = 2114;
-    v24 = v10;
+    v24 = errorCopy;
     _os_log_error_impl(&dword_21B526000, v12, OS_LOG_TYPE_ERROR, "_runningBoardAssertionStateDidUpdate:'%{public}@' target:'%{public}@' isActive:%{BOOL}u error: %{public}@", buf, 0x26u);
   }
 
@@ -385,20 +385,20 @@ void __110__PBFRuntimeAssertionManager__buildRBSAssertionForTarget_assertionIden
       goto LABEL_7;
     }
 
-    v13 = [v8 target];
+    target = [updateCopy target];
     *buf = 138544130;
-    v18 = v9;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v13;
+    v20 = target;
     v21 = 1024;
-    v22 = [v8 isValid];
+    isValid = [updateCopy isValid];
     v23 = 2114;
     v24 = 0;
     _os_log_impl(&dword_21B526000, v12, OS_LOG_TYPE_DEFAULT, "_runningBoardAssertionStateDidUpdate:'%{public}@' target:'%{public}@' isActive:%{BOOL}u error: %{public}@", buf, 0x26u);
   }
 
 LABEL_7:
-  if (([v8 isValid] & 1) == 0)
+  if (([updateCopy isValid] & 1) == 0)
   {
     stateQueue = self->_stateQueue;
     v15[0] = MEMORY[0x277D85DD0];
@@ -406,7 +406,7 @@ LABEL_7:
     v15[2] = __93__PBFRuntimeAssertionManager__runningBoardAssertionStateDidUpdate_assertionIdentifier_error___block_invoke;
     v15[3] = &unk_2782C58B0;
     v15[4] = self;
-    v16 = v8;
+    v16 = updateCopy;
     dispatch_async(stateQueue, v15);
   }
 }
@@ -483,21 +483,21 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
 - (id)_stateQueue_debugDescription
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForPosterBoardProcessAssertions];
-  [v3 appendDictionarySection:v4 withName:@"PosterBoard Assertions" multilinePrefix:@"\n\t\t" skipIfEmpty:1];
+  _stateQueue_debugDescriptionForPosterBoardProcessAssertions = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForPosterBoardProcessAssertions];
+  [v3 appendDictionarySection:_stateQueue_debugDescriptionForPosterBoardProcessAssertions withName:@"PosterBoard Assertions" multilinePrefix:@"\n\t\t" skipIfEmpty:1];
 
-  v5 = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForPosterExtensionProcessAssertions];
-  [v3 appendDictionarySection:v5 withName:@"Poster Extension Assertions" multilinePrefix:@"\n\t\t" skipIfEmpty:1];
+  _stateQueue_debugDescriptionForPosterExtensionProcessAssertions = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForPosterExtensionProcessAssertions];
+  [v3 appendDictionarySection:_stateQueue_debugDescriptionForPosterExtensionProcessAssertions withName:@"Poster Extension Assertions" multilinePrefix:@"\n\t\t" skipIfEmpty:1];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (id)_stateQueue_debugDescriptionForPosterBoardProcessAssertions
 {
-  v3 = [MEMORY[0x277D47008] currentProcess];
-  v4 = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForTarget:v3];
+  currentProcess = [MEMORY[0x277D47008] currentProcess];
+  v4 = [(PBFRuntimeAssertionManager *)self _stateQueue_debugDescriptionForTarget:currentProcess];
 
   return v4;
 }
@@ -505,7 +505,7 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
 - (id)_stateQueue_debugDescriptionForPosterExtensionProcessAssertions
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D47008] currentProcess];
+  currentProcess = [MEMORY[0x277D47008] currentProcess];
   v4 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
@@ -526,8 +526,8 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v25 + 1) + 8 * i) target];
-        [v4 addObject:v10];
+        target = [*(*(&v25 + 1) + 8 * i) target];
+        [v4 addObject:target];
       }
 
       v7 = [(NSHashTable *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -536,7 +536,7 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
     while (v7);
   }
 
-  [v4 removeObject:v3];
+  [v4 removeObject:currentProcess];
   v11 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
@@ -572,10 +572,10 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
   return v11;
 }
 
-- (id)_stateQueue_debugDescriptionForTarget:(id)a3
+- (id)_stateQueue_debugDescriptionForTarget:(id)target
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   v5 = objc_opt_new();
   v31 = objc_opt_new();
   v32 = 0u;
@@ -598,8 +598,8 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 target];
-        v13 = [v12 isEqual:v4];
+        target = [v11 target];
+        v13 = [target isEqual:targetCopy];
 
         if (v13)
         {
@@ -607,11 +607,11 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
           if (v14)
           {
             [v5 addObject:v14];
-            v15 = [v11 explanation];
-            v16 = v15;
-            if (v15)
+            explanation = [v11 explanation];
+            v16 = explanation;
+            if (explanation)
             {
-              v17 = v15;
+              v17 = explanation;
             }
 
             else
@@ -632,40 +632,40 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
 
   if ([v5 count] == 1)
   {
-    v18 = [v5 anyObject];
+    anyObject = [v5 anyObject];
   }
 
   else
   {
-    v19 = [v5 allObjects];
-    v20 = [v19 sortedArrayUsingSelector:sel_compare_];
-    v18 = [v20 firstObject];
+    allObjects = [v5 allObjects];
+    v20 = [allObjects sortedArrayUsingSelector:sel_compare_];
+    anyObject = [v20 firstObject];
   }
 
-  if (v18)
+  if (anyObject)
   {
     if ([v31 count] == 1)
     {
-      v21 = [v31 anyObject];
+      anyObject2 = [v31 anyObject];
     }
 
     else if ([v31 count])
     {
-      v23 = [v31 allObjects];
-      v24 = [v23 sortedArrayUsingSelector:sel_compare_];
+      allObjects2 = [v31 allObjects];
+      v24 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
       v25 = [v24 componentsJoinedByString:{@"', '"}];
 
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", v25];
+      anyObject2 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@'", v25];
     }
 
     else
     {
-      v21 = @"(null)";
+      anyObject2 = @"(null)";
     }
 
-    if (v21)
+    if (anyObject2)
     {
-      v26 = v21;
+      v26 = anyObject2;
     }
 
     else
@@ -676,11 +676,11 @@ void __46__PBFRuntimeAssertionManager_debugDescription__block_invoke(uint64_t a1
     v36[0] = @"explanations";
     v36[1] = @"creationDate";
     v37[0] = v26;
-    v37[1] = v18;
+    v37[1] = anyObject;
     v36[2] = @"elapsedTimeInSeconds";
     v27 = MEMORY[0x277CCABB0];
-    v28 = [MEMORY[0x277CBEAA8] date];
-    [v28 timeIntervalSinceDate:v18];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:anyObject];
     v29 = [v27 numberWithDouble:?];
     v37[2] = v29;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:3];

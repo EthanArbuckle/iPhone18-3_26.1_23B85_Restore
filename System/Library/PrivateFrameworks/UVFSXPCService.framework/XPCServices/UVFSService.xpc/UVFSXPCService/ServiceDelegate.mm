@@ -1,26 +1,26 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [v4 valueForEntitlement:@"com.apple.private.userfsd.UVFSService"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"com.apple.private.userfsd.UVFSService"];
   v6 = v5;
   if (v5 && [v5 BOOLValue])
   {
     v7 = objc_opt_new();
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UVFSServiceProtocol];
-    [v4 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UVFSServiceCallbackProtocol];
-    [v4 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
-    [v4 setExportedObject:v7];
-    [UVFSServiceConnections addObject:v4];
-    [v4 resume];
+    [connectionCopy setExportedObject:v7];
+    [UVFSServiceConnections addObject:connectionCopy];
+    [connectionCopy resume];
     v10 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
     if (v10)
     {
@@ -37,7 +37,7 @@
       sub_10001DF7C();
     }
 
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v18 = 0;
   }
 

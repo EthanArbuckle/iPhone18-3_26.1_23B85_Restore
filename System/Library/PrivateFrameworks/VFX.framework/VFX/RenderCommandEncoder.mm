@@ -1,68 +1,68 @@
 @interface RenderCommandEncoder
 - (_TtC3VFX20RenderCommandEncoder)init;
-- (_TtC3VFX20RenderCommandEncoder)initWithEncoder:(id)a3;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (_TtC3VFX20RenderCommandEncoder)initWithEncoder:(id)encoder;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 @end
 
 @implementation RenderCommandEncoder
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
-  if (a5)
+  if (count)
   {
     v8.receiver = self;
     v8.super_class = swift_getObjectType();
-    [(RGCachedRenderCommandEncoder *)&v8 drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+    [(RGCachedRenderCommandEncoder *)&v8 drawPrimitives:primitives vertexStart:start vertexCount:count];
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
   ObjectType = swift_getObjectType();
-  if (a5)
+  if (count)
   {
-    if (a6 == 1)
+    if (instanceCount == 1)
     {
       v12.receiver = self;
       v12.super_class = ObjectType;
-      [(RGCachedRenderCommandEncoder *)&v12 drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+      [(RGCachedRenderCommandEncoder *)&v12 drawPrimitives:primitives vertexStart:start vertexCount:count];
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = ObjectType;
-      [(RGCachedRenderCommandEncoder *)&v13 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6];
+      [(RGCachedRenderCommandEncoder *)&v13 drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount];
     }
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   ObjectType = swift_getObjectType();
-  if (a5)
+  if (count)
   {
-    if (a6 != 1 || a7)
+    if (instanceCount != 1 || instance)
     {
-      if (a7)
+      if (instance)
       {
         v15.receiver = self;
         v15.super_class = ObjectType;
-        [(RGCachedRenderCommandEncoder *)&v15 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+        [(RGCachedRenderCommandEncoder *)&v15 drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
       }
 
       else
       {
         v16.receiver = self;
         v16.super_class = ObjectType;
-        [(RGCachedRenderCommandEncoder *)&v16 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6];
+        [(RGCachedRenderCommandEncoder *)&v16 drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount];
       }
     }
 
@@ -70,62 +70,62 @@
     {
       v14.receiver = self;
       v14.super_class = ObjectType;
-      [(RGCachedRenderCommandEncoder *)&v14 drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+      [(RGCachedRenderCommandEncoder *)&v14 drawPrimitives:primitives vertexStart:start vertexCount:count];
     }
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  [(RGCachedRenderCommandEncoder *)&v8 drawPrimitives:a3 indirectBuffer:a4 indirectBufferOffset:a5];
+  [(RGCachedRenderCommandEncoder *)&v8 drawPrimitives:primitives indirectBuffer:buffer indirectBufferOffset:offset];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
-  if (a4)
+  if (count)
   {
     v12.receiver = self;
     v12.super_class = swift_getObjectType();
-    [(RGCachedRenderCommandEncoder *)&v12 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7];
+    [(RGCachedRenderCommandEncoder *)&v12 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset];
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (count)
   {
-    if (a8 == 1)
+    if (instanceCount == 1)
     {
       v16.receiver = self;
       v16.super_class = ObjectType;
-      [(RGCachedRenderCommandEncoder *)&v16 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7];
+      [(RGCachedRenderCommandEncoder *)&v16 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset];
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = ObjectType;
-      [(RGCachedRenderCommandEncoder *)&v17 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7 instanceCount:a8];
+      [(RGCachedRenderCommandEncoder *)&v17 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset instanceCount:instanceCount];
     }
   }
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
   swift_unknownObjectRetain();
-  v17 = self;
-  sub_1AF6F6210(a3, a4, a5, a6, a7, a8, a9, a10);
+  selfCopy = self;
+  sub_1AF6F6210(primitives, count, type, buffer, offset, instanceCount, vertex, instance);
   swift_unknownObjectRelease();
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   v14.receiver = self;
   v14.super_class = swift_getObjectType();
-  [(RGCachedRenderCommandEncoder *)&v14 drawIndexedPrimitives:a3 indexType:a4 indexBuffer:a5 indexBufferOffset:a6 indirectBuffer:a7 indirectBufferOffset:a8];
+  [(RGCachedRenderCommandEncoder *)&v14 drawIndexedPrimitives:primitives indexType:type indexBuffer:buffer indexBufferOffset:offset indirectBuffer:indirectBuffer indirectBufferOffset:bufferOffset];
 }
 
 - (_TtC3VFX20RenderCommandEncoder)init
@@ -135,11 +135,11 @@
   return [(RGCachedRenderCommandEncoder *)&v3 init];
 }
 
-- (_TtC3VFX20RenderCommandEncoder)initWithEncoder:(id)a3
+- (_TtC3VFX20RenderCommandEncoder)initWithEncoder:(id)encoder
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(RGCachedRenderCommandEncoder *)&v5 initWithEncoder:a3];
+  return [(RGCachedRenderCommandEncoder *)&v5 initWithEncoder:encoder];
 }
 
 @end

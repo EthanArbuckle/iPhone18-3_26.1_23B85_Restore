@@ -1,24 +1,24 @@
 @interface UISpringLoadedGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (void)_draggingEndedWithEvent:(id)a3;
-- (void)_draggingExitedWithEvent:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (CGPoint)locationInView:(id)view;
+- (void)_draggingEndedWithEvent:(id)event;
+- (void)_draggingExitedWithEvent:(id)event;
 - (void)spring;
 @end
 
 @implementation UISpringLoadedGestureRecognizer
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = UISpringLoadedGestureRecognizer;
-    v5 = [(UIDragGestureRecognizer *)&v7 canPreventGestureRecognizer:v4];
+    v5 = [(UIDragGestureRecognizer *)&v7 canPreventGestureRecognizer:recognizerCopy];
   }
 
   else
@@ -29,15 +29,15 @@
   return v5;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = UISpringLoadedGestureRecognizer;
-    v5 = [(UIDragGestureRecognizer *)&v7 canBePreventedByGestureRecognizer:v4];
+    v5 = [(UIDragGestureRecognizer *)&v7 canBePreventedByGestureRecognizer:recognizerCopy];
   }
 
   else
@@ -48,22 +48,22 @@
   return v5;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIDragGestureRecognizer *)self _dragEvent];
-  v6 = v5;
-  if (v4)
+  viewCopy = view;
+  _dragEvent = [(UIDragGestureRecognizer *)self _dragEvent];
+  v6 = _dragEvent;
+  if (viewCopy)
   {
-    [v5 locationInView:v4];
+    [_dragEvent locationInView:viewCopy];
     v8 = v7;
     v10 = v9;
   }
 
   else
   {
-    v11 = [(UIGestureRecognizer *)self view];
-    [v6 locationInView:v11];
+    view = [(UIGestureRecognizer *)self view];
+    [v6 locationInView:view];
     v8 = v12;
     v10 = v13;
   }
@@ -75,14 +75,14 @@
   return result;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 9 && (objc_msgSend(v4, "isFromAccessibilitySession") & 1) == 0)
+  eventCopy = event;
+  if ([eventCopy type] == 9 && (objc_msgSend(eventCopy, "isFromAccessibilitySession") & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = UISpringLoadedGestureRecognizer;
-    v5 = [(UIDragGestureRecognizer *)&v7 shouldReceiveEvent:v4];
+    v5 = [(UIDragGestureRecognizer *)&v7 shouldReceiveEvent:eventCopy];
   }
 
   else
@@ -93,7 +93,7 @@
   return v5;
 }
 
-- (void)_draggingExitedWithEvent:(id)a3
+- (void)_draggingExitedWithEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]<= UIGestureRecognizerStateChanged)
   {
@@ -102,7 +102,7 @@
   }
 }
 
-- (void)_draggingEndedWithEvent:(id)a3
+- (void)_draggingEndedWithEvent:(id)event
 {
   if ([(UIGestureRecognizer *)self state]<= UIGestureRecognizerStateChanged)
   {

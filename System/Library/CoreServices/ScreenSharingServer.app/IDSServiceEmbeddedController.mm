@@ -1,29 +1,29 @@
 @interface IDSServiceEmbeddedController
 + (id)sharedIDServiceController;
-- (BOOL)inviteValidForThisOS:(id)a3;
-- (BOOL)inviterIsInActiveSession:(id)a3;
-- (BOOL)validInviteDictionary:(id)a3;
-- (BOOL)validateRedwoodRequestDictionary:(id)a3 account:(id)a4 fromID:(id)a5 error:(id *)a6;
+- (BOOL)inviteValidForThisOS:(id)s;
+- (BOOL)inviterIsInActiveSession:(id)session;
+- (BOOL)validInviteDictionary:(id)dictionary;
+- (BOOL)validateRedwoodRequestDictionary:(id)dictionary account:(id)account fromID:(id)d error:(id *)error;
 - (IDSServiceEmbeddedController)init;
 - (id)activeViewerStatusString;
-- (id)datagramConnectionFromIDS:(id)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)addActiveSession:(id)a3;
-- (void)askToOpenURLTimeout:(id)a3;
-- (void)askToResumeTimeout:(id)a3;
-- (void)askToToCopyToPasteboardTimeout:(id)a3;
+- (id)datagramConnectionFromIDS:(id)s;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)addActiveSession:(id)session;
+- (void)askToOpenURLTimeout:(id)timeout;
+- (void)askToResumeTimeout:(id)timeout;
+- (void)askToToCopyToPasteboardTimeout:(id)timeout;
 - (void)checkIfNoSessions;
 - (void)closeAllSessions;
 - (void)createLockScreenNotifier;
 - (void)createStatusBar;
 - (void)dealloc;
-- (void)exitTimerCallback:(id)a3;
+- (void)exitTimerCallback:(id)callback;
 - (void)initScreenSharingIDSService;
 - (void)initViewServiceHelper;
-- (void)inviteWasAccepted:(id)a3;
-- (void)pauseResumeResult:(id)a3;
-- (void)pidNotification:(id)a3;
+- (void)inviteWasAccepted:(id)accepted;
+- (void)pauseResumeResult:(id)result;
+- (void)pidNotification:(id)notification;
 - (void)postAskToCopyToPasteboardNotification;
 - (void)postAskToOpenURLNotification;
 - (void)postAskToResumeNotification;
@@ -31,45 +31,45 @@
 - (void)postViewerPausedMessageNotification;
 - (void)removeAskToCopyToPasteboardNotification;
 - (void)removeAskToOpenURLNotification;
-- (void)removeSession:(id)a3 andEndIDSSession:(BOOL)a4;
+- (void)removeSession:(id)session andEndIDSSession:(BOOL)sSession;
 - (void)removeShowUserMessageNotification;
 - (void)removeUserAskToResumeNotification;
 - (void)removeViewerPausedNotification;
 - (void)requestUserInfo;
-- (void)sendMessageInviteAccepted:(id)a3 sessionID:(id)a4 service:(id)a5;
-- (void)sendMessageInviteDisplayed:(id)a3 sessionID:(id)a4 service:(id)a5;
-- (void)sendMessageInviteIgnored:(id)a3 sessionID:(id)a4 service:(id)a5 error:(id)a6;
-- (void)sendMessageShareSettingsUserDecline:(id)a3;
-- (void)sendMessageShareStatusResult:(id)a3 systemInfo:(id)a4;
-- (void)sendMessageShareStatusResultInfo:(id)a3 sessionID:(id)a4 service:(id)a5 systemInfo:(id)a6;
-- (void)sendMessageShareStatusUserDeclined:(id)a3 sessionID:(id)a4 service:(id)a5;
-- (void)sendMessageStatusMessage:(id)a3 sessionID:(id)a4 service:(id)a5 status:(id)a6;
+- (void)sendMessageInviteAccepted:(id)accepted sessionID:(id)d service:(id)service;
+- (void)sendMessageInviteDisplayed:(id)displayed sessionID:(id)d service:(id)service;
+- (void)sendMessageInviteIgnored:(id)ignored sessionID:(id)d service:(id)service error:(id)error;
+- (void)sendMessageShareSettingsUserDecline:(id)decline;
+- (void)sendMessageShareStatusResult:(id)result systemInfo:(id)info;
+- (void)sendMessageShareStatusResultInfo:(id)info sessionID:(id)d service:(id)service systemInfo:(id)systemInfo;
+- (void)sendMessageShareStatusUserDeclined:(id)declined sessionID:(id)d service:(id)service;
+- (void)sendMessageStatusMessage:(id)message sessionID:(id)d service:(id)service status:(id)status;
 - (void)sendMessageTCAccepted;
-- (void)sendMessageTCAccepted:(id)a3 sessionID:(id)a4 service:(id)a5;
-- (void)sendServiceMessage:(id)a3 destination:(id)a4 service:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 sentBytes:(int64_t)a6 totalBytes:(int64_t)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingPendingMessageOfType:(int64_t)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 inviteReceivedForSession:(id)a5 fromID:(id)a6 withContext:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4;
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4;
-- (void)serviceAllowedTrafficClassifiersDidReset:(id)a3;
-- (void)serviceSpaceDidBecomeAvailable:(id)a3;
-- (void)sessionState:(id)a3;
-- (void)showMessageToUser:(id)a3;
-- (void)showUserMessageTimeout:(id)a3;
-- (void)showViewerPausedTimeout:(id)a3;
-- (void)termsAndConditionsResult:(id)a3;
+- (void)sendMessageTCAccepted:(id)accepted sessionID:(id)d service:(id)service;
+- (void)sendServiceMessage:(id)message destination:(id)destination service:(id)service;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier sentBytes:(int64_t)bytes totalBytes:(int64_t)totalBytes;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingPendingMessageOfType:(int64_t)type fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account inviteReceivedForSession:(id)session fromID:(id)d withContext:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service linkedDevicesChanged:(id)changed;
+- (void)service:(id)service nearbyDevicesChanged:(id)changed;
+- (void)serviceAllowedTrafficClassifiersDidReset:(id)reset;
+- (void)serviceSpaceDidBecomeAvailable:(id)available;
+- (void)sessionState:(id)state;
+- (void)showMessageToUser:(id)user;
+- (void)showUserMessageTimeout:(id)timeout;
+- (void)showViewerPausedTimeout:(id)timeout;
+- (void)termsAndConditionsResult:(id)result;
 @end
 
 @implementation IDSServiceEmbeddedController
@@ -129,46 +129,46 @@
 - (void)initScreenSharingIDSService
 {
   [(IDSServiceEmbeddedController *)self initViewServiceHelper];
-  v3 = [(IDSServiceEmbeddedController *)self idsService];
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
 
-  if (!v3)
+  if (!idsService)
   {
     xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, &stru_100068DC0);
     v4 = [[IDSService alloc] initWithService:@"com.apple.private.alloy.safeview"];
     [(IDSServiceEmbeddedController *)self setIdsService:v4];
 
-    v5 = [(IDSServiceEmbeddedController *)self idsService];
-    [v5 addDelegate:self queue:&_dispatch_main_q];
+    idsService2 = [(IDSServiceEmbeddedController *)self idsService];
+    [idsService2 addDelegate:self queue:&_dispatch_main_q];
 
     if (sub_1000423E0())
     {
       v6 = sub_100042E68();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(IDSServiceEmbeddedController *)self idsService];
+        idsService3 = [(IDSServiceEmbeddedController *)self idsService];
         *buf = 136315650;
         v10 = "[IDSServiceEmbeddedController initScreenSharingIDSService]";
         v11 = 1024;
         v12 = 239;
         v13 = 2048;
-        v14 = v7;
+        v14 = idsService3;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%s:%d] setup safeview service %p", buf, 0x1Cu);
       }
     }
 
-    v8 = [(IDSServiceEmbeddedController *)self idsService];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 239, "[IDSServiceEmbeddedController initScreenSharingIDSService]", 7, 0, "setup safeview service %p", v8);
+    idsService4 = [(IDSServiceEmbeddedController *)self idsService];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 239, "[IDSServiceEmbeddedController initScreenSharingIDSService]", 7, 0, "setup safeview service %p", idsService4);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v12 = COERCE_DOUBLE(a3);
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [a7 serverReceivedTime];
-  [v16 timeIntervalSinceNow];
+  v12 = COERCE_DOUBLE(service);
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  serverReceivedTime = [context serverReceivedTime];
+  [serverReceivedTime timeIntervalSinceNow];
   v18 = v17;
 
   if (sub_1000423E0())
@@ -217,7 +217,7 @@ LABEL_57:
     v22 = sub_100042E68();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(IDSServiceEmbeddedController *)self idsService];
+      idsService = [(IDSServiceEmbeddedController *)self idsService];
       *buf = 136315906;
       v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
       v151 = 1024;
@@ -225,22 +225,22 @@ LABEL_57:
       v153 = 2048;
       v154 = v12;
       v155 = 2048;
-      v156 = v23;
+      v156 = idsService;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%s:%d] service = %p  self.idsService %p", buf, 0x26u);
     }
   }
 
-  v24 = [(IDSServiceEmbeddedController *)self idsService];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 276, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "service = %p  self.idsService %p", *&v12, v24);
+  idsService2 = [(IDSServiceEmbeddedController *)self idsService];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 276, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "service = %p  self.idsService %p", *&v12, idsService2);
 
-  v25 = [(IDSServiceEmbeddedController *)self exitTimer];
-  [v25 invalidate];
+  exitTimer = [(IDSServiceEmbeddedController *)self exitTimer];
+  [exitTimer invalidate];
 
   [(IDSServiceEmbeddedController *)self setExitTimer:0];
   _os_nospin_lock_lock();
-  v26 = [(IDSServiceEmbeddedController *)self osTransaction];
+  osTransaction = [(IDSServiceEmbeddedController *)self osTransaction];
 
-  if (!v26)
+  if (!osTransaction)
   {
     v27 = os_transaction_create();
     [(IDSServiceEmbeddedController *)self setOsTransaction:v27];
@@ -262,8 +262,8 @@ LABEL_57:
       }
     }
 
-    v30 = [(IDSServiceEmbeddedController *)self osTransaction];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 285, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "transaction %p", v30);
+    osTransaction2 = [(IDSServiceEmbeddedController *)self osTransaction];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 285, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "transaction %p", osTransaction2);
   }
 
   _os_nospin_lock_unlock();
@@ -272,7 +272,7 @@ LABEL_57:
     v31 = sub_100042E68();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = COERCE_DOUBLE([v15 UTF8String]);
+      v32 = COERCE_DOUBLE([dCopy UTF8String]);
       *buf = 136315650;
       v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
       v151 = 1024;
@@ -283,8 +283,8 @@ LABEL_57:
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 289, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "service message received from %s", [v15 UTF8String]);
-  v33 = [(IDSServiceEmbeddedController *)self validInviteDictionary:v14];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 289, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "service message received from %s", [dCopy UTF8String]);
+  v33 = [(IDSServiceEmbeddedController *)self validInviteDictionary:messageCopy];
   v34 = sub_1000423E0();
   if ((v33 & 1) == 0)
   {
@@ -293,8 +293,8 @@ LABEL_57:
       v60 = sub_100042E68();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        v62 = COERCE_DOUBLE([v61 UTF8String]);
+        sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        v62 = COERCE_DOUBLE([sanitizedFromID UTF8String]);
         *buf = 136315650;
         v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
         v151 = 1024;
@@ -305,8 +305,8 @@ LABEL_57:
       }
     }
 
-    v63 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 294, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "invalid invite dictionary from %s - ignoring", [v63 UTF8String]);
+    sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 294, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "invalid invite dictionary from %s - ignoring", [sanitizedFromID2 UTF8String]);
 
     goto LABEL_56;
   }
@@ -316,7 +316,7 @@ LABEL_57:
     v35 = sub_100042E68();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v14 description];
+      v36 = [messageCopy description];
       v37 = COERCE_DOUBLE([v36 UTF8String]);
       *buf = 136315650;
       v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
@@ -328,34 +328,34 @@ LABEL_57:
     }
   }
 
-  v38 = [v14 description];
+  v38 = [messageCopy description];
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 297, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "inviteOptions: %s", [v38 UTF8String]);
 
   v39 = 0;
   v40 = 0;
   v41 = 0;
-  if ([(IDSServiceEmbeddedController *)self inviteValidForThisOS:v14])
+  if ([(IDSServiceEmbeddedController *)self inviteValidForThisOS:messageCopy])
   {
-    v40 = [v14 objectForKeyedSubscript:@"com.apple.private.applecare"];
+    v40 = [messageCopy objectForKeyedSubscript:@"com.apple.private.applecare"];
     v42 = IDSCopyAddressDestinationForDestination();
     [(IDSServiceEmbeddedController *)self setSanitizedFromID:v42];
 
-    v43 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    v44 = [v43 isEmailAddress];
+    sanitizedFromID3 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    isEmailAddress = [sanitizedFromID3 isEmailAddress];
 
-    if (v44)
+    if (isEmailAddress)
     {
-      v45 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      sanitizedFromID4 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
       v46 = IDSCopyIDForEmailAddress();
       [(IDSServiceEmbeddedController *)self setSanitizedFromID:v46];
     }
 
-    v47 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    v48 = [v47 isPhoneNumber];
+    sanitizedFromID5 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    isPhoneNumber = [sanitizedFromID5 isPhoneNumber];
 
-    if (v48)
+    if (isPhoneNumber)
     {
-      v49 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      sanitizedFromID6 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
       v50 = IDSCopyIDForPhoneNumber();
       [(IDSServiceEmbeddedController *)self setSanitizedFromID:v50];
     }
@@ -365,8 +365,8 @@ LABEL_57:
       v51 = sub_100042E68();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        v53 = COERCE_DOUBLE([v52 UTF8String]);
+        sanitizedFromID7 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        v53 = COERCE_DOUBLE([sanitizedFromID7 UTF8String]);
         *buf = 136315650;
         v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
         v151 = 1024;
@@ -377,8 +377,8 @@ LABEL_57:
       }
     }
 
-    v54 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 317, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "self.sanitizedFromID %s", [v54 UTF8String]);
+    sanitizedFromID8 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 317, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "self.sanitizedFromID %s", [sanitizedFromID8 UTF8String]);
 
     keyExistsAndHasValidFormat = 0;
     if (sub_100022828())
@@ -419,11 +419,11 @@ LABEL_57:
       v59 = 1;
     }
 
-    v64 = [v14 objectForKeyedSubscript:@"cmd"];
+    v64 = [messageCopy objectForKeyedSubscript:@"cmd"];
     v39 = v64;
     if (v64 && (([v64 isEqualToString:@"alreadyAccepted"] & 1) != 0 || objc_msgSend(v39, "isEqualToString:", @"alreadyDeclined")))
     {
-      v143 = v13;
+      v143 = accountCopy;
       if (sub_1000423E0())
       {
         v65 = sub_100042E68();
@@ -438,9 +438,9 @@ LABEL_57:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 333, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "got message accepted or declined elsewhere");
-      v66 = [(IDSServiceEmbeddedController *)self pendingSession];
+      pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
 
-      if (!v66)
+      if (!pendingSession)
       {
         if (sub_1000423E0())
         {
@@ -459,16 +459,16 @@ LABEL_57:
         goto LABEL_57;
       }
 
-      v67 = [v14 objectForKeyedSubscript:@"sessionID"];
-      v68 = [(IDSServiceEmbeddedController *)self pendingSession];
-      v69 = [v68 sessionID];
+      v67 = [messageCopy objectForKeyedSubscript:@"sessionID"];
+      pendingSession2 = [(IDSServiceEmbeddedController *)self pendingSession];
+      sessionID = [pendingSession2 sessionID];
       v70 = v67;
-      LODWORD(v67) = [v69 isEqualToString:v67];
+      LODWORD(v67) = [sessionID isEqualToString:v67];
 
       if (!v67)
       {
         v74 = v70;
-        v13 = v143;
+        accountCopy = v143;
         if (sub_1000423E0())
         {
           v103 = sub_100042E68();
@@ -486,14 +486,14 @@ LABEL_57:
         goto LABEL_146;
       }
 
-      v71 = [(IDSServiceEmbeddedController *)self pendingSession];
-      v72 = [v71 appleIDInviteWasAcceptedOrDeclined];
+      pendingSession3 = [(IDSServiceEmbeddedController *)self pendingSession];
+      appleIDInviteWasAcceptedOrDeclined = [pendingSession3 appleIDInviteWasAcceptedOrDeclined];
 
       v73 = sub_1000423E0();
-      if (v72)
+      if (appleIDInviteWasAcceptedOrDeclined)
       {
         v74 = v70;
-        v13 = v143;
+        accountCopy = v143;
         if (v73)
         {
           v75 = sub_100042E68();
@@ -512,7 +512,7 @@ LABEL_57:
       }
 
       v74 = v70;
-      v13 = v143;
+      accountCopy = v143;
       if (v73)
       {
         v109 = sub_100042E68();
@@ -532,8 +532,8 @@ LABEL_57:
       [v74 UTF8String];
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 341, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "remove session %s");
 LABEL_145:
-      v111 = [(IDSServiceEmbeddedController *)self pendingSession];
-      [v111 doEndSession];
+      pendingSession4 = [(IDSServiceEmbeddedController *)self pendingSession];
+      [pendingSession4 doEndSession];
 
       [(IDSServiceEmbeddedController *)self setPendingSession:0];
 LABEL_146:
@@ -559,9 +559,9 @@ LABEL_146:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 357, "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "got endsession message");
-      v79 = [(IDSServiceEmbeddedController *)self pendingSession];
+      pendingSession5 = [(IDSServiceEmbeddedController *)self pendingSession];
 
-      if (!v79)
+      if (!pendingSession5)
       {
         if (sub_1000423E0())
         {
@@ -580,18 +580,18 @@ LABEL_146:
         goto LABEL_57;
       }
 
-      v144 = v13;
-      v80 = [v14 objectForKeyedSubscript:@"sessionID"];
-      v81 = [(IDSServiceEmbeddedController *)self pendingSession];
-      v82 = [v81 sessionID];
+      v144 = accountCopy;
+      v80 = [messageCopy objectForKeyedSubscript:@"sessionID"];
+      pendingSession6 = [(IDSServiceEmbeddedController *)self pendingSession];
+      sessionID2 = [pendingSession6 sessionID];
       v83 = v80;
-      LODWORD(v80) = [v82 isEqualToString:v80];
+      LODWORD(v80) = [sessionID2 isEqualToString:v80];
 
       v84 = sub_1000423E0();
       v74 = v83;
       if (!v80)
       {
-        v13 = v144;
+        accountCopy = v144;
         if (v84)
         {
           v107 = sub_100042E68();
@@ -613,7 +613,7 @@ LABEL_146:
         goto LABEL_146;
       }
 
-      v13 = v144;
+      accountCopy = v144;
       if (v84)
       {
         v85 = sub_100042E68();
@@ -658,10 +658,10 @@ LABEL_146:
         v89 = sub_100042E68();
         if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
         {
-          v90 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-          v141 = COERCE_DOUBLE([v90 UTF8String]);
-          v91 = [(IDSServiceEmbeddedController *)self activeSessions];
-          v92 = [v91 count];
+          sanitizedFromID9 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+          v141 = COERCE_DOUBLE([sanitizedFromID9 UTF8String]);
+          activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+          v92 = [activeSessions count];
           *buf = 136315906;
           v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
           v151 = 1024;
@@ -674,14 +674,14 @@ LABEL_146:
         }
       }
 
-      v93 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-      v94 = [v93 UTF8String];
-      v95 = [(IDSServiceEmbeddedController *)self activeSessions];
-      sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 379, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "sanitized from %s  active session count %lu", v94, [v95 count]);
+      sanitizedFromID10 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      uTF8String = [sanitizedFromID10 UTF8String];
+      activeSessions2 = [(IDSServiceEmbeddedController *)self activeSessions];
+      sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 379, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "sanitized from %s  active session count %lu", uTF8String, [activeSessions2 count]);
 
-      v96 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      sanitizedFromID11 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
       v147 = 0;
-      v97 = [(IDSServiceEmbeddedController *)self validateRedwoodRequestDictionary:v40 account:v13 fromID:v96 error:&v147];
+      v97 = [(IDSServiceEmbeddedController *)self validateRedwoodRequestDictionary:v40 account:accountCopy fromID:sanitizedFromID11 error:&v147];
       v41 = v147;
 
       if (sub_1000423E0())
@@ -707,7 +707,7 @@ LABEL_146:
           v99 = sub_100042E68();
           if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
           {
-            v100 = COERCE_DOUBLE([v15 UTF8String]);
+            v100 = COERCE_DOUBLE([dCopy UTF8String]);
             *buf = 136315650;
             v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
             v151 = 1024;
@@ -718,7 +718,7 @@ LABEL_146:
           }
         }
 
-        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 386, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "Not a valid request: %s", [v15 UTF8String]);
+        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 386, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "Not a valid request: %s", [dCopy UTF8String]);
         if (v145)
         {
           if (sub_1000423E0())
@@ -746,7 +746,7 @@ LABEL_148:
         }
 
         v140 = v106;
-        v112 = [v14 objectForKeyedSubscript:@"sessionID"];
+        v112 = [messageCopy objectForKeyedSubscript:@"sessionID"];
         if (sub_1000423E0())
         {
           v113 = sub_100042E68();
@@ -773,7 +773,7 @@ LABEL_148:
           v116 = sub_100042E68();
           if (os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT))
           {
-            v117 = [*&v115 UTF8String];
+            uTF8String2 = [*&v115 UTF8String];
             *buf = 136315906;
             v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
             v151 = 1024;
@@ -781,28 +781,28 @@ LABEL_148:
             v153 = 2048;
             v154 = v115;
             v155 = 2080;
-            v156 = v117;
+            v156 = uTF8String2;
             _os_log_impl(&_mh_execute_header, v116, OS_LOG_TYPE_DEFAULT, "[%s:%d] appleNameSpecifier %p  %s", buf, 0x26u);
           }
         }
 
         sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 411, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "appleNameSpecifier %p  %s", *&v115, [*&v115 UTF8String]);
-        v118 = [(IDSServiceEmbeddedController *)self pendingSession];
+        pendingSession7 = [(IDSServiceEmbeddedController *)self pendingSession];
 
-        if (v118)
+        if (pendingSession7)
         {
           if (sub_1000423E0())
           {
             v119 = sub_100042E68();
             if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
             {
-              v137 = [(IDSServiceEmbeddedController *)self pendingSession];
-              v135 = [v137 inviterID];
-              v130 = COERCE_DOUBLE([v135 UTF8String]);
-              v133 = [(IDSServiceEmbeddedController *)self pendingSession];
-              v131 = [v133 idsSession];
-              v120 = [v131 sessionID];
-              v121 = [v120 UTF8String];
+              pendingSession8 = [(IDSServiceEmbeddedController *)self pendingSession];
+              inviterID = [pendingSession8 inviterID];
+              v130 = COERCE_DOUBLE([inviterID UTF8String]);
+              pendingSession9 = [(IDSServiceEmbeddedController *)self pendingSession];
+              idsSession = [pendingSession9 idsSession];
+              sessionID3 = [idsSession sessionID];
+              uTF8String3 = [sessionID3 UTF8String];
               *buf = 136315906;
               v150 = "[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]";
               v151 = 1024;
@@ -810,18 +810,18 @@ LABEL_148:
               v153 = 2080;
               v154 = v130;
               v155 = 2080;
-              v156 = v121;
+              v156 = uTF8String3;
               _os_log_impl(&_mh_execute_header, v119, OS_LOG_TYPE_DEFAULT, "[%s:%d] Ignoring invitation -- pendingSession already active from: %s %s", buf, 0x26u);
             }
           }
 
-          v138 = [(IDSServiceEmbeddedController *)self pendingSession];
-          v136 = [v138 inviterID];
-          v132 = [v136 UTF8String];
-          v134 = [(IDSServiceEmbeddedController *)self pendingSession];
-          v122 = [v134 idsSession];
-          v123 = [v122 sessionID];
-          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 416, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "Ignoring invitation -- pendingSession already active from: %s %s", v132, [v123 UTF8String]);
+          pendingSession10 = [(IDSServiceEmbeddedController *)self pendingSession];
+          inviterID2 = [pendingSession10 inviterID];
+          uTF8String4 = [inviterID2 UTF8String];
+          pendingSession11 = [(IDSServiceEmbeddedController *)self pendingSession];
+          idsSession2 = [pendingSession11 idsSession];
+          sessionID4 = [idsSession2 sessionID];
+          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 416, "-[IDSServiceEmbeddedController service:account:incomingMessage:fromID:context:]", 7, 0, "Ignoring invitation -- pendingSession already active from: %s %s", uTF8String4, [sessionID4 UTF8String]);
 
           v124 = v142;
           if (!v140)
@@ -829,27 +829,27 @@ LABEL_148:
             goto LABEL_168;
           }
 
-          v125 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-          [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:v125 sessionID:v142 service:*&v12 error:@"Ignore_PendingInvite"];
+          sanitizedFromID12 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+          [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:sanitizedFromID12 sessionID:v142 service:*&v12 error:@"Ignore_PendingInvite"];
         }
 
         else
         {
           v126 = [IDSSessionEmbeddedControllerShareSettings alloc];
-          v139 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-          v127 = [(IDSSessionEmbeddedControllerShareSettings *)v126 initWithRemoteID:v139 sessionID:v142 andServiceController:self appleName:*&v115];
+          sanitizedFromID13 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+          v127 = [(IDSSessionEmbeddedControllerShareSettings *)v126 initWithRemoteID:sanitizedFromID13 sessionID:v142 andServiceController:self appleName:*&v115];
           [(IDSServiceEmbeddedController *)self setPendingSession:v127];
 
           v124 = v142;
           [(IDSServiceEmbeddedController *)self setIsShareSettings:1];
           if (v140)
           {
-            v128 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-            [(IDSServiceEmbeddedController *)self sendMessageInviteDisplayed:v128 sessionID:v142 service:*&v12];
+            sanitizedFromID14 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+            [(IDSServiceEmbeddedController *)self sendMessageInviteDisplayed:sanitizedFromID14 sessionID:v142 service:*&v12];
           }
 
-          v125 = [(IDSServiceEmbeddedController *)self pendingSession];
-          [v125 postInvitationNotification];
+          sanitizedFromID12 = [(IDSServiceEmbeddedController *)self pendingSession];
+          [sanitizedFromID12 postInvitationNotification];
         }
 
 LABEL_168:
@@ -889,22 +889,22 @@ LABEL_58:
   [(IDSServiceEmbeddedController *)self checkIfNoSessions];
 }
 
-- (void)service:(id)a3 account:(id)a4 inviteReceivedForSession:(id)a5 fromID:(id)a6 withContext:(id)a7
+- (void)service:(id)service account:(id)account inviteReceivedForSession:(id)session fromID:(id)d withContext:(id)context
 {
-  v184 = a3;
-  v185 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  sessionCopy = session;
+  dCopy = d;
+  contextCopy = context;
   keyExistsAndHasValidFormat = 0;
-  v15 = [(IDSServiceEmbeddedController *)self exitTimer];
-  [v15 invalidate];
+  exitTimer = [(IDSServiceEmbeddedController *)self exitTimer];
+  [exitTimer invalidate];
 
   [(IDSServiceEmbeddedController *)self setExitTimer:0];
   _os_nospin_lock_lock();
-  v16 = [(IDSServiceEmbeddedController *)self osTransaction];
+  osTransaction = [(IDSServiceEmbeddedController *)self osTransaction];
 
-  if (!v16)
+  if (!osTransaction)
   {
     v17 = os_transaction_create();
     [(IDSServiceEmbeddedController *)self setOsTransaction:v17];
@@ -914,19 +914,19 @@ LABEL_58:
       v18 = sub_100042E68();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(IDSServiceEmbeddedController *)self osTransaction];
+        osTransaction2 = [(IDSServiceEmbeddedController *)self osTransaction];
         *buf = 136315650;
         v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
         v197 = 1024;
         v198 = 457;
         v199 = 2048;
-        v200 = v19;
+        v200 = osTransaction2;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[%s:%d] transaction %p", buf, 0x1Cu);
       }
     }
 
-    v20 = [(IDSServiceEmbeddedController *)self osTransaction];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 457, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "transaction %p", v20);
+    osTransaction3 = [(IDSServiceEmbeddedController *)self osTransaction];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 457, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "transaction %p", osTransaction3);
   }
 
   _os_nospin_lock_unlock();
@@ -935,24 +935,24 @@ LABEL_58:
     v21 = sub_100042E68();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v13 UTF8String];
+      uTF8String = [dCopy UTF8String];
       *buf = 136315650;
       v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
       v197 = 1024;
       v198 = 461;
       v199 = 2080;
-      v200 = v22;
+      v200 = uTF8String;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%s:%d] inviteReceivedForSession from %s", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 461, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "inviteReceivedForSession from %s", [v13 UTF8String]);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 461, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "inviteReceivedForSession from %s", [dCopy UTF8String]);
   if (sub_1000423E0())
   {
     v23 = sub_100042E68();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v14 length];
+      v24 = [contextCopy length];
       *buf = 136315650;
       v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
       v197 = 1024;
@@ -963,27 +963,27 @@ LABEL_58:
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 464, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "invite context size %lu", [v14 length]);
-  v25 = sub_1000273A0(v14);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 464, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "invite context size %lu", [contextCopy length]);
+  v25 = sub_1000273A0(contextCopy);
   v26 = IDSCopyAddressDestinationForDestination();
   [(IDSServiceEmbeddedController *)self setSanitizedFromID:v26];
 
-  v27 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  v28 = [v27 isEmailAddress];
+  sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  isEmailAddress = [sanitizedFromID isEmailAddress];
 
-  if (v28)
+  if (isEmailAddress)
   {
-    v29 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
     v30 = IDSCopyIDForEmailAddress();
     [(IDSServiceEmbeddedController *)self setSanitizedFromID:v30];
   }
 
-  v31 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  v32 = [v31 isPhoneNumber];
+  sanitizedFromID3 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  isPhoneNumber = [sanitizedFromID3 isPhoneNumber];
 
-  if (v32)
+  if (isPhoneNumber)
   {
-    v33 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sanitizedFromID4 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
     v34 = IDSCopyIDForPhoneNumber();
     [(IDSServiceEmbeddedController *)self setSanitizedFromID:v34];
   }
@@ -998,13 +998,13 @@ LABEL_58:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
         v38 = [v25 description];
-        v39 = [v38 UTF8String];
+        uTF8String2 = [v38 UTF8String];
         *buf = 136315650;
         v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
         v197 = 1024;
         v198 = 485;
         v199 = 2080;
-        v200 = v39;
+        v200 = uTF8String2;
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[%s:%d] inviteOptions: %s", buf, 0x1Cu);
       }
     }
@@ -1015,7 +1015,7 @@ LABEL_58:
     if ([(IDSServiceEmbeddedController *)self inviteValidForThisOS:v25])
     {
       v41 = [v25 objectForKeyedSubscript:@"com.apple.private.applecare"];
-      v183 = v12;
+      v183 = sessionCopy;
       if (sub_100022828())
       {
         AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AllowAny", @"com.apple.screensharingserver", &keyExistsAndHasValidFormat);
@@ -1062,17 +1062,17 @@ LABEL_58:
           v53 = sub_100042E68();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
-            v54 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+            sanitizedFromID5 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
             v55 = v41;
-            v56 = [v54 UTF8String];
-            v57 = [(IDSServiceEmbeddedController *)self activeSessions];
-            v58 = [v57 count];
+            uTF8String3 = [sanitizedFromID5 UTF8String];
+            activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+            v58 = [activeSessions count];
             *buf = 136315906;
             v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
             v197 = 1024;
             v198 = 504;
             v199 = 2080;
-            v200 = v56;
+            v200 = uTF8String3;
             v41 = v55;
             v201 = 2048;
             v202 = v58;
@@ -1080,36 +1080,36 @@ LABEL_58:
           }
         }
 
-        v59 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        v60 = [v59 UTF8String];
-        v61 = [(IDSServiceEmbeddedController *)self activeSessions];
-        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 504, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "sanitized from %s  active session count %lu", v60, [v61 count]);
+        sanitizedFromID6 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        uTF8String4 = [sanitizedFromID6 UTF8String];
+        activeSessions2 = [(IDSServiceEmbeddedController *)self activeSessions];
+        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 504, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "sanitized from %s  active session count %lu", uTF8String4, [activeSessions2 count]);
 
-        v62 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        LODWORD(v61) = [(IDSServiceEmbeddedController *)self inviterIsInActiveSession:v62];
+        sanitizedFromID7 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        LODWORD(activeSessions2) = [(IDSServiceEmbeddedController *)self inviterIsInActiveSession:sanitizedFromID7];
 
-        if (v61)
+        if (activeSessions2)
         {
-          v12 = v183;
+          sessionCopy = v183;
           if (sub_1000423E0())
           {
             v63 = sub_100042E68();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
             {
-              v64 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-              v65 = [v64 UTF8String];
+              sanitizedFromID8 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+              uTF8String5 = [sanitizedFromID8 UTF8String];
               *buf = 136315650;
               v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
               v197 = 1024;
               v198 = 507;
               v199 = 2080;
-              v200 = v65;
+              v200 = uTF8String5;
               _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "[%s:%d] Ignoring invitation.  Session already established with fromID %s.", buf, 0x1Cu);
             }
           }
 
-          v66 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 507, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation.  Session already established with fromID %s.", [v66 UTF8String]);
+          sanitizedFromID9 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 507, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation.  Session already established with fromID %s.", [sanitizedFromID9 UTF8String]);
 
           goto LABEL_43;
         }
@@ -1118,19 +1118,19 @@ LABEL_58:
         if (v68)
         {
           v180 = v41;
-          v12 = v183;
+          sessionCopy = v183;
           if (sub_1000423E0())
           {
             v69 = sub_100042E68();
             if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
             {
-              v70 = [v68 UTF8String];
+              uTF8String6 = [v68 UTF8String];
               *buf = 136315650;
               v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
               v197 = 1024;
               v198 = 514;
               v199 = 2080;
-              v200 = v70;
+              v200 = uTF8String6;
               _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "[%s:%d] aaToken %s", buf, 0x1Cu);
             }
           }
@@ -1160,9 +1160,9 @@ LABEL_74:
         }
 
         v179 = v46;
-        v73 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        sanitizedFromID10 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
         v190 = 0;
-        v74 = [(IDSServiceEmbeddedController *)self validateRedwoodRequestDictionary:v41 account:v185 fromID:v73 error:&v190];
+        v74 = [(IDSServiceEmbeddedController *)self validateRedwoodRequestDictionary:v41 account:accountCopy fromID:sanitizedFromID10 error:&v190];
         v182 = v190;
 
         if (sub_1000423E0())
@@ -1191,22 +1191,22 @@ LABEL_74:
             v77 = sub_100042E68();
             if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
             {
-              v78 = [v13 UTF8String];
+              uTF8String7 = [dCopy UTF8String];
               *buf = 136315650;
               v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
               v197 = 1024;
               v198 = 525;
               v199 = 2080;
-              v200 = v78;
+              v200 = uTF8String7;
               _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "[%s:%d] Not a valid request: %s", buf, 0x1Cu);
             }
           }
 
-          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 525, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Not a valid request: %s", [v13 UTF8String]);
+          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 525, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Not a valid request: %s", [dCopy UTF8String]);
           if (v179)
           {
             v180 = v41;
-            v12 = v183;
+            sessionCopy = v183;
             if (sub_1000423E0())
             {
               v79 = sub_100042E68();
@@ -1248,13 +1248,13 @@ LABEL_74:
           v86 = sub_100042E68();
           if (os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT))
           {
-            v87 = [(__CFString *)v85 UTF8String];
+            uTF8String8 = [(__CFString *)v85 UTF8String];
             *buf = 136315650;
             v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
             v197 = 1024;
             v198 = 539;
             v199 = 2080;
-            v200 = v87;
+            v200 = uTF8String8;
             _os_log_impl(&_mh_execute_header, v86, OS_LOG_TYPE_DEFAULT, "[%s:%d] appleNameSpecifier:  %s", buf, 0x1Cu);
           }
         }
@@ -1283,8 +1283,8 @@ LABEL_74:
         if (v46)
         {
           [(IDSServiceEmbeddedController *)self checkIfNoSessions];
-          v12 = v183;
-          v51 = v184;
+          sessionCopy = v183;
+          v51 = serviceCopy;
           goto LABEL_44;
         }
 
@@ -1319,7 +1319,7 @@ LABEL_74:
 
       if (v92 == 2)
       {
-        v12 = v183;
+        sessionCopy = v183;
         if (sub_1000423E0())
         {
           v93 = sub_100042E68();
@@ -1338,23 +1338,23 @@ LABEL_74:
 
       else
       {
-        v12 = v183;
+        sessionCopy = v183;
         if (v89 != 2)
         {
-          v96 = [(IDSServiceEmbeddedController *)self pendingSession];
+          pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
 
           v181 = v41;
-          if (!v96)
+          if (!pendingSession)
           {
             v188 = 0u;
             v189 = 0u;
             v186 = 0u;
             v187 = 0u;
-            v109 = [(IDSServiceEmbeddedController *)self activeSessions];
-            v110 = [v109 allValues];
+            activeSessions3 = [(IDSServiceEmbeddedController *)self activeSessions];
+            allValues = [activeSessions3 allValues];
 
-            obj = v110;
-            v111 = [v110 countByEnumeratingWithState:&v186 objects:v192 count:16];
+            obj = allValues;
+            v111 = [allValues countByEnumeratingWithState:&v186 objects:v192 count:16];
             if (v111)
             {
               v112 = v111;
@@ -1374,54 +1374,54 @@ LABEL_74:
                     v115 = sub_100042E68();
                     if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
                     {
-                      v116 = [v114 inviterID];
-                      v117 = [v116 UTF8String];
+                      inviterID = [v114 inviterID];
+                      uTF8String9 = [inviterID UTF8String];
                       *buf = 136315650;
                       v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                       v197 = 1024;
                       v198 = 590;
                       v199 = 2080;
-                      v200 = v117;
+                      v200 = uTF8String9;
                       _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "[%s:%d] active session %s", buf, 0x1Cu);
                     }
                   }
 
-                  v118 = [v114 inviterID];
-                  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 590, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "active session %s", [v118 UTF8String]);
+                  inviterID2 = [v114 inviterID];
+                  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 590, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "active session %s", [inviterID2 UTF8String]);
 
-                  v119 = [v114 inviterID];
-                  v120 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                  v121 = [v119 isEqualToString:v120];
+                  inviterID3 = [v114 inviterID];
+                  sanitizedFromID11 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                  v121 = [inviterID3 isEqualToString:sanitizedFromID11];
 
                   if (v121)
                   {
-                    v12 = v183;
+                    sessionCopy = v183;
                     if (sub_1000423E0())
                     {
                       v140 = sub_100042E68();
                       if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
                       {
-                        v141 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                        v142 = [v141 UTF8String];
+                        sanitizedFromID12 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                        uTF8String10 = [sanitizedFromID12 UTF8String];
                         *buf = 136315650;
                         v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                         v197 = 1024;
                         v198 = 593;
                         v199 = 2080;
-                        v200 = v142;
+                        v200 = uTF8String10;
                         _os_log_impl(&_mh_execute_header, v140, OS_LOG_TYPE_DEFAULT, "[%s:%d] Ignoring invitation.  Session already established with fromID %s.", buf, 0x1Cu);
                       }
                     }
 
-                    v143 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 593, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation.  Session already established with fromID %s.", [v143 UTF8String]);
+                    sanitizedFromID13 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 593, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation.  Session already established with fromID %s.", [sanitizedFromID13 UTF8String]);
 
-                    v51 = v184;
+                    v51 = serviceCopy;
                     if (v177)
                     {
-                      v144 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                      v145 = [v183 sessionID];
-                      [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:v144 sessionID:v145 service:v184 error:@"Ignore_AlreadyInSession"];
+                      sanitizedFromID14 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                      sessionID = [v183 sessionID];
+                      [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:sanitizedFromID14 sessionID:sessionID service:serviceCopy error:@"Ignore_AlreadyInSession"];
                     }
 
                     [(IDSServiceEmbeddedController *)self checkIfNoSessions];
@@ -1440,20 +1440,20 @@ LABEL_74:
               }
             }
 
-            v12 = v183;
+            sessionCopy = v183;
             if (sub_1000423E0())
             {
               v122 = sub_100042E68();
               if (os_log_type_enabled(v122, OS_LOG_TYPE_DEFAULT))
               {
                 v123 = [v25 description];
-                v124 = [v123 UTF8String];
+                uTF8String11 = [v123 UTF8String];
                 *buf = 136315650;
                 v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                 v197 = 1024;
                 v198 = 601;
                 v199 = 2080;
-                v200 = v124;
+                v200 = uTF8String11;
                 _os_log_impl(&_mh_execute_header, v122, OS_LOG_TYPE_DEFAULT, "[%s:%d] inviteOptions %s", buf, 0x1Cu);
               }
             }
@@ -1489,8 +1489,8 @@ LABEL_74:
                   v131 = sub_100042E68();
                   if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
                   {
-                    v132 = [(IDSServiceEmbeddedController *)self activeSessions];
-                    v133 = [v132 count];
+                    activeSessions4 = [(IDSServiceEmbeddedController *)self activeSessions];
+                    v133 = [activeSessions4 count];
                     *buf = 136315650;
                     v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                     v197 = 1024;
@@ -1501,11 +1501,11 @@ LABEL_74:
                   }
                 }
 
-                v134 = [(IDSServiceEmbeddedController *)self activeSessions];
-                sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 619, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "active session count %lu", [v134 count]);
+                activeSessions5 = [(IDSServiceEmbeddedController *)self activeSessions];
+                sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 619, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "active session count %lu", [activeSessions5 count]);
 
-                v135 = [(IDSServiceEmbeddedController *)self activeSessions];
-                v136 = [v135 count];
+                activeSessions6 = [(IDSServiceEmbeddedController *)self activeSessions];
+                v136 = [activeSessions6 count];
 
                 obja = v136;
                 if (v136)
@@ -1526,9 +1526,9 @@ LABEL_74:
                   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 623, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "auto accept invite");
                   if (v177)
                   {
-                    v138 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                    v139 = [v183 sessionID];
-                    [(IDSServiceEmbeddedController *)self sendMessageAutoAccept:v138 sessionID:v139 service:v184];
+                    sanitizedFromID15 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                    sessionID2 = [v183 sessionID];
+                    [(IDSServiceEmbeddedController *)self sendMessageAutoAccept:sanitizedFromID15 sessionID:sessionID2 service:serviceCopy];
                   }
                 }
 
@@ -1544,13 +1544,13 @@ LABEL_74:
                   v148 = sub_100042E68();
                   if (os_log_type_enabled(v148, OS_LOG_TYPE_DEFAULT))
                   {
-                    v149 = [(IDSServiceEmbeddedController *)self sessionPaused];
+                    sessionPaused = [(IDSServiceEmbeddedController *)self sessionPaused];
                     *buf = 136315650;
                     v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                     v197 = 1024;
                     v198 = 640;
                     v199 = 1024;
-                    LODWORD(v200) = v149;
+                    LODWORD(v200) = sessionPaused;
                     _os_log_impl(&_mh_execute_header, v148, OS_LOG_TYPE_DEFAULT, "[%s:%d] start out paused %d", buf, 0x18u);
                   }
                 }
@@ -1574,9 +1574,9 @@ LABEL_74:
                 sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 642, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "isValidatedRedwoodRequest %d", v177);
                 if (v177)
                 {
-                  v151 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-                  v152 = [v183 sessionID];
-                  [(IDSServiceEmbeddedController *)self sendMessageInviteDisplayed:v151 sessionID:v152 service:v184];
+                  sanitizedFromID16 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                  sessionID3 = [v183 sessionID];
+                  [(IDSServiceEmbeddedController *)self sendMessageInviteDisplayed:sanitizedFromID16 sessionID:sessionID3 service:serviceCopy];
                 }
 
                 if (sub_1000423E0())
@@ -1584,13 +1584,13 @@ LABEL_74:
                   v153 = sub_100042E68();
                   if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
                   {
-                    v154 = [(__CFString *)v178 UTF8String];
+                    uTF8String12 = [(__CFString *)v178 UTF8String];
                     *buf = 136315650;
                     v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                     v197 = 1024;
                     v198 = 646;
                     v199 = 2080;
-                    v200 = v154;
+                    v200 = uTF8String12;
                     _os_log_impl(&_mh_execute_header, v153, OS_LOG_TYPE_DEFAULT, "[%s:%d] appleNameSpecifier %s", buf, 0x1Cu);
                   }
                 }
@@ -1636,12 +1636,12 @@ LABEL_74:
                 }
 
                 v159 = v169;
-                v160 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+                sanitizedFromID17 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
                 v178 = v158;
                 v166 = v158;
                 LOBYTE(v165) = [(IDSServiceEmbeddedController *)self sessionPaused];
                 v127 = v167;
-                v161 = [(IDSSessionEmbeddedControllerAppleCare *)v159 initWithRemoteID:v160 session:v183 direction:1 inviteDictionary:v167 andServiceController:self autoAcceptInvite:obja != 0 startOutPaused:v165 appleName:v166];
+                v161 = [(IDSSessionEmbeddedControllerAppleCare *)v159 initWithRemoteID:sanitizedFromID17 session:v183 direction:1 inviteDictionary:v167 andServiceController:self autoAcceptInvite:obja != 0 startOutPaused:v165 appleName:v166];
                 [(IDSServiceEmbeddedController *)self setPendingSession:v161];
 
                 if (sub_1000423E0())
@@ -1649,19 +1649,19 @@ LABEL_74:
                   v162 = sub_100042E68();
                   if (os_log_type_enabled(v162, OS_LOG_TYPE_DEFAULT))
                   {
-                    v163 = [(IDSServiceEmbeddedController *)self pendingSession];
+                    pendingSession2 = [(IDSServiceEmbeddedController *)self pendingSession];
                     *buf = 136315650;
                     v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
                     v197 = 1024;
                     v198 = 663;
                     v199 = 2048;
-                    v200 = v163;
+                    v200 = pendingSession2;
                     _os_log_impl(&_mh_execute_header, v162, OS_LOG_TYPE_DEFAULT, "[%s:%d] PENDING SESSION IS %p", buf, 0x1Cu);
                   }
                 }
 
-                v164 = [(IDSServiceEmbeddedController *)self pendingSession];
-                sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 663, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "PENDING SESSION IS %p", v164);
+                pendingSession3 = [(IDSServiceEmbeddedController *)self pendingSession];
+                sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 663, "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "PENDING SESSION IS %p", pendingSession3);
               }
 
               else
@@ -1712,39 +1712,39 @@ LABEL_74:
             v97 = sub_100042E68();
             if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
             {
-              v173 = [(IDSServiceEmbeddedController *)self pendingSession];
-              v98 = [v173 inviterID];
-              v168 = [v98 UTF8String];
+              pendingSession4 = [(IDSServiceEmbeddedController *)self pendingSession];
+              inviterID4 = [pendingSession4 inviterID];
+              uTF8String13 = [inviterID4 UTF8String];
               objb = [(IDSServiceEmbeddedController *)self pendingSession];
-              v99 = [objb idsSession];
-              v100 = [v99 sessionID];
-              v101 = [v100 UTF8String];
+              idsSession = [objb idsSession];
+              sessionID4 = [idsSession sessionID];
+              uTF8String14 = [sessionID4 UTF8String];
               *buf = 136315906;
               v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
               v197 = 1024;
               v198 = 578;
               v199 = 2080;
-              v200 = v168;
+              v200 = uTF8String13;
               v201 = 2080;
-              v202 = v101;
+              v202 = uTF8String14;
               _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "[%s:%d] Ignoring invitation -- pendingSession already active from: %s %s", buf, 0x26u);
             }
           }
 
-          v102 = [(IDSServiceEmbeddedController *)self pendingSession];
-          v103 = [v102 inviterID];
-          v174 = [v103 UTF8String];
-          v104 = [(IDSServiceEmbeddedController *)self pendingSession];
-          v105 = [v104 idsSession];
-          v106 = [v105 sessionID];
-          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 578, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation -- pendingSession already active from: %s %s", v174, [v106 UTF8String]);
+          pendingSession5 = [(IDSServiceEmbeddedController *)self pendingSession];
+          inviterID5 = [pendingSession5 inviterID];
+          uTF8String15 = [inviterID5 UTF8String];
+          pendingSession6 = [(IDSServiceEmbeddedController *)self pendingSession];
+          idsSession2 = [pendingSession6 idsSession];
+          sessionID5 = [idsSession2 sessionID];
+          sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 578, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "Ignoring invitation -- pendingSession already active from: %s %s", uTF8String15, [sessionID5 UTF8String]);
 
-          v51 = v184;
+          v51 = serviceCopy;
           if (v177)
           {
-            v107 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-            v108 = [v183 sessionID];
-            [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:v107 sessionID:v108 service:v184 error:@"Ignore_PendingInvite"];
+            sanitizedFromID18 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+            sessionID6 = [v183 sessionID];
+            [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:sanitizedFromID18 sessionID:sessionID6 service:serviceCopy error:@"Ignore_PendingInvite"];
           }
 
           [(IDSServiceEmbeddedController *)self checkIfNoSessions];
@@ -1754,12 +1754,12 @@ LABEL_114:
         }
       }
 
-      v51 = v184;
+      v51 = serviceCopy;
       if (v177)
       {
-        v94 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        v95 = [v12 sessionID];
-        [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:v94 sessionID:v95 service:v184 error:@"Ignore_ScreenSharingRestricted"];
+        sanitizedFromID19 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        sessionID7 = [sessionCopy sessionID];
+        [(IDSServiceEmbeddedController *)self sendMessageInviteIgnored:sanitizedFromID19 sessionID:sessionID7 service:serviceCopy error:@"Ignore_ScreenSharingRestricted"];
       }
 
       [(IDSServiceEmbeddedController *)self checkIfNoSessions];
@@ -1775,44 +1775,44 @@ LABEL_114:
       v47 = sub_100042E68();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-        v49 = [v48 UTF8String];
+        sanitizedFromID20 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+        uTF8String16 = [sanitizedFromID20 UTF8String];
         *buf = 136315650;
         v196 = "[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]";
         v197 = 1024;
         v198 = 481;
         v199 = 2080;
-        v200 = v49;
+        v200 = uTF8String16;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "[%s:%d] invalid invite dictionary from %s - ignoring", buf, 0x1Cu);
       }
     }
 
-    v50 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 481, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "invalid invite dictionary from %s - ignoring", [v50 UTF8String]);
+    sanitizedFromID21 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 481, "-[IDSServiceEmbeddedController service:account:inviteReceivedForSession:fromID:withContext:]", 7, 0, "invalid invite dictionary from %s - ignoring", [sanitizedFromID21 UTF8String]);
   }
 
   [(IDSServiceEmbeddedController *)self checkIfNoSessions];
 LABEL_43:
-  v51 = v184;
+  v51 = serviceCopy;
 LABEL_44:
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 protectionSpace];
-  v10 = [v9 authenticationMethod];
-  v11 = [v10 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v11 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   if (v11)
   {
-    v12 = [(IDSServiceEmbeddedController *)self validationURL];
-    v13 = [NSURLComponents componentsWithString:v12];
+    validationURL = [(IDSServiceEmbeddedController *)self validationURL];
+    v13 = [NSURLComponents componentsWithString:validationURL];
 
-    v14 = [v13 host];
+    host = [v13 host];
 
-    if (v14)
+    if (host)
     {
       keyExistsAndHasValidFormat = 0;
       AppBooleanValue = CFPreferencesGetAppBooleanValue(@"PinningDisabled", @"com.apple.screensharingserver", &keyExistsAndHasValidFormat);
@@ -1843,10 +1843,10 @@ LABEL_44:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 682, "[IDSServiceEmbeddedController URLSession:didReceiveChallenge:completionHandler:]", 7, 0, "PinningDisabled: %d", v17);
-      v19 = [v13 host];
+      host2 = [v13 host];
       if (v17)
       {
-        SSL = SecPolicyCreateSSL(1u, v19);
+        SSL = SecPolicyCreateSSL(1u, host2);
 
         if (!SSL)
         {
@@ -1859,10 +1859,10 @@ LABEL_44:
         SSL = SecPolicyCreateAppleSSLPinned();
       }
 
-      v21 = [v7 protectionSpace];
-      v22 = [v21 serverTrust];
+      protectionSpace2 = [challengeCopy protectionSpace];
+      serverTrust = [protectionSpace2 serverTrust];
 
-      v23 = SecTrustSetPolicies(v22, SSL);
+      v23 = SecTrustSetPolicies(serverTrust, SSL);
       if (SSL)
       {
         CFRelease(SSL);
@@ -1871,7 +1871,7 @@ LABEL_44:
       if (!v23)
       {
         result = kSecTrustResultInvalid;
-        if (!SecTrustEvaluate(v22, &result))
+        if (!SecTrustEvaluate(serverTrust, &result))
         {
           if (sub_1000423E0())
           {
@@ -1891,8 +1891,8 @@ LABEL_44:
           sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 717, "[IDSServiceEmbeddedController URLSession:didReceiveChallenge:completionHandler:]", 7, 0, "trustResult: %d", result);
           if (result == kSecTrustResultUnspecified || result == kSecTrustResultProceed)
           {
-            v25 = [NSURLCredential credentialForTrust:v22];
-            v8[2](v8, 0, v25);
+            v25 = [NSURLCredential credentialForTrust:serverTrust];
+            handlerCopy[2](handlerCopy, 0, v25);
 
             goto LABEL_23;
           }
@@ -1901,40 +1901,40 @@ LABEL_44:
     }
 
 LABEL_22:
-    v8[2](v8, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
     dispatch_semaphore_signal(self->url_sem);
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v8[2](v8, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 LABEL_24:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v7 = sub_1000423E0();
-  if (v6)
+  if (errorCopy)
   {
     if (v7)
     {
       v8 = sub_100042E68();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v6 description];
+        v9 = [errorCopy description];
         *buf = 136315650;
         v13 = "[IDSServiceEmbeddedController URLSession:task:didCompleteWithError:]";
         v14 = 1024;
         v15 = 746;
         v16 = 2080;
-        v17 = [v9 UTF8String];
+        uTF8String = [v9 UTF8String];
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%s:%d] URLSession:task:didCompleteWithError: %s", buf, 0x1Cu);
       }
     }
 
-    v10 = [v6 description];
+    v10 = [errorCopy description];
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 746, "-[IDSServiceEmbeddedController URLSession:task:didCompleteWithError:]", 7, 0, "URLSession:task:didCompleteWithError: %s", [v10 UTF8String]);
 
     [(IDSServiceEmbeddedController *)self setUrlResponseData:0];
@@ -1961,20 +1961,20 @@ LABEL_24:
   dispatch_semaphore_signal(self->url_sem);
 }
 
-- (BOOL)validateRedwoodRequestDictionary:(id)a3 account:(id)a4 fromID:(id)a5 error:(id *)a6
+- (BOOL)validateRedwoodRequestDictionary:(id)dictionary account:(id)account fromID:(id)d error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 objectForKeyedSubscript:@"sessionToken"];
+  dictionaryCopy = dictionary;
+  accountCopy = account;
+  dCopy = d;
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"sessionToken"];
   if (v13)
   {
     v14 = v13;
-    v15 = [v10 objectForKeyedSubscript:@"resourcepath"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"resourcepath"];
 
     if (v15)
     {
-      v16 = [v10 objectForKeyedSubscript:@"appleName"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"appleName"];
       if (v16)
       {
         objc_opt_class();
@@ -2021,7 +2021,7 @@ LABEL_94:
         }
       }
 
-      v19 = [v10 objectForKeyedSubscript:@"shareType"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"shareType"];
       v20 = v19;
       if (v19 && [v19 length] >= 0x1F)
       {
@@ -2043,20 +2043,20 @@ LABEL_94:
         goto LABEL_93;
       }
 
-      v79 = a6;
+      errorCopy = error;
       v81 = v20;
       v96[0] = @"version";
       v96[1] = @"params";
       v97[0] = @"1.0";
       v94[0] = @"sessionToken";
-      v22 = [v10 objectForKeyedSubscript:@"sessionToken"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"sessionToken"];
       v95[0] = v22;
       v94[1] = @"fromID";
-      v23 = [v12 stringWithSchemeTrimmed];
-      v95[1] = v23;
+      stringWithSchemeTrimmed = [dCopy stringWithSchemeTrimmed];
+      v95[1] = stringWithSchemeTrimmed;
       v94[2] = @"toID";
-      v24 = [v11 aliasStrings];
-      v95[2] = v24;
+      aliasStrings = [accountCopy aliasStrings];
+      v95[2] = aliasStrings;
       v25 = [NSDictionary dictionaryWithObjects:v95 forKeys:v94 count:3];
       v97[1] = v25;
       v26 = [NSDictionary dictionaryWithObjects:v97 forKeys:v96 count:2];
@@ -2100,7 +2100,7 @@ LABEL_94:
       }
 
       v78 = v28;
-      v33 = [v10 objectForKeyedSubscript:@"timeout"];
+      v33 = [dictionaryCopy objectForKeyedSubscript:@"timeout"];
       [v33 floatValue];
       if (v34 == 0.0)
       {
@@ -2112,19 +2112,19 @@ LABEL_94:
         v35 = v34;
       }
 
-      v36 = [v10 objectForKeyedSubscript:@"isprod"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"isprod"];
       if (sub_1000423E0())
       {
         v37 = sub_100042E68();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [(__CFString *)v36 UTF8String];
+          uTF8String = [(__CFString *)v36 UTF8String];
           *buf = 136315650;
           v89 = "[IDSServiceEmbeddedController validateRedwoodRequestDictionary:account:fromID:error:]";
           v90 = 1024;
           v91 = 842;
           v92 = 2080;
-          v93 = v38;
+          v93 = uTF8String;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[%s:%d] hostIdentifier: %s", buf, 0x1Cu);
         }
       }
@@ -2170,9 +2170,9 @@ LABEL_94:
       v44 = [v43 objectForKeyedSubscript:v36];
       [(IDSServiceEmbeddedController *)self setValidationURL:v44];
 
-      v45 = [(IDSServiceEmbeddedController *)self validationURL];
-      v46 = [NSURL URLWithString:v45];
-      v18 = [v10 objectForKeyedSubscript:@"resourcepath"];
+      validationURL = [(IDSServiceEmbeddedController *)self validationURL];
+      v46 = [NSURL URLWithString:validationURL];
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"resourcepath"];
       v47 = [v46 URLByAppendingPathComponent:v18];
 
       v76 = v47;
@@ -2213,13 +2213,13 @@ LABEL_85:
           if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
           {
             v66 = [NSString stringWithFormat:@"Redwood Validation Failed: %@", v30];
-            v67 = [v66 UTF8String];
+            uTF8String2 = [v66 UTF8String];
             *buf = 136315650;
             v89 = "[IDSServiceEmbeddedController validateRedwoodRequestDictionary:account:fromID:error:]";
             v90 = 1024;
             v91 = 917;
             v92 = 2080;
-            v93 = v67;
+            v93 = uTF8String2;
             _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEFAULT, "[%s:%d] %s", buf, 0x1Cu);
           }
         }
@@ -2227,10 +2227,10 @@ LABEL_85:
         v68 = [NSString stringWithFormat:@"Redwood Validation Failed: %@", v30];
         sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 917, "-[IDSServiceEmbeddedController validateRedwoodRequestDictionary:account:fromID:error:]", 7, 0, "%s", [v68 UTF8String]);
 
-        if (v79)
+        if (errorCopy)
         {
           v69 = v30;
-          *v79 = v30;
+          *errorCopy = v30;
         }
 
         [(IDSServiceEmbeddedController *)self setUrlResponseData:0];
@@ -2275,13 +2275,13 @@ LABEL_85:
 
       else
       {
-        v57 = [(IDSServiceEmbeddedController *)self urlResponseData];
+        urlResponseData = [(IDSServiceEmbeddedController *)self urlResponseData];
 
-        if (v57)
+        if (urlResponseData)
         {
-          v58 = [(IDSServiceEmbeddedController *)self urlResponseData];
+          urlResponseData2 = [(IDSServiceEmbeddedController *)self urlResponseData];
           v83 = 0;
-          v59 = [NSJSONSerialization JSONObjectWithData:v58 options:0 error:&v83];
+          v59 = [NSJSONSerialization JSONObjectWithData:urlResponseData2 options:0 error:&v83];
           v30 = v83;
 
           v53 = v30 != 0;
@@ -2317,13 +2317,13 @@ LABEL_85:
               if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
               {
                 v71 = [v59 objectForKeyedSubscript:@"isAppleCare"];
-                v63 = [v71 BOOLValue];
+                bOOLValue = [v71 BOOLValue];
                 *buf = 136315650;
                 v89 = "[IDSServiceEmbeddedController validateRedwoodRequestDictionary:account:fromID:error:]";
                 v90 = 1024;
                 v91 = 909;
                 v92 = 1024;
-                LODWORD(v93) = v63;
+                LODWORD(v93) = bOOLValue;
                 _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_DEFAULT, "[%s:%d] going to return %d", buf, 0x18u);
               }
             }
@@ -2377,12 +2377,12 @@ LABEL_95:
   return v18 & 1;
 }
 
-- (id)datagramConnectionFromIDS:(id)a3
+- (id)datagramConnectionFromIDS:(id)s
 {
-  v4 = a3;
-  v5 = [(IDSServiceEmbeddedController *)self idsService];
+  sCopy = s;
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
   v14 = 0;
-  v6 = [v5 datagramConnectionForSessionDestination:v4 error:&v14];
+  v6 = [idsService datagramConnectionForSessionDestination:sCopy error:&v14];
 
   v7 = v14;
   if (v7)
@@ -2393,13 +2393,13 @@ LABEL_95:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v9 = [v7 description];
-        v10 = [v9 UTF8String];
+        uTF8String = [v9 UTF8String];
         *buf = 136315650;
         v16 = "[IDSServiceEmbeddedController datagramConnectionFromIDS:]";
         v17 = 1024;
         v18 = 935;
         v19 = 2080;
-        v20 = v10;
+        v20 = uTF8String;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%s:%d] NWDatagramConnection error: %s", buf, 0x1Cu);
       }
     }
@@ -2418,9 +2418,9 @@ LABEL_95:
   return v12;
 }
 
-- (void)addActiveSession:(id)a3
+- (void)addActiveSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -2446,37 +2446,37 @@ LABEL_95:
       v15 = 1024;
       v16 = 955;
       v17 = 2048;
-      v18 = v4;
+      v18 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%s:%d] add active session %p", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 955, "[IDSServiceEmbeddedController addActiveSession:]", 7, 0, "add active session %p", v4);
-  v7 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v8 = [v4 uniqueID];
-  [v7 setObject:v4 forKeyedSubscript:v8];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 955, "[IDSServiceEmbeddedController addActiveSession:]", 7, 0, "add active session %p", sessionCopy);
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  uniqueID = [sessionCopy uniqueID];
+  [activeSessions setObject:sessionCopy forKeyedSubscript:uniqueID];
 
   [(IDSServiceEmbeddedController *)self setPendingSession:0];
-  v9 = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
+  wallpaperSuspensionAssertion = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
 
-  if (!v9)
+  if (!wallpaperSuspensionAssertion)
   {
     SBSAcquireWallpaperAnimationSuspensionAssertion();
   }
 
-  if ([v4 inviterKind] == 2 || objc_msgSend(v4, "inviterKind") == 3)
+  if ([sessionCopy inviterKind] == 2 || objc_msgSend(sessionCopy, "inviterKind") == 3)
   {
-    v10 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    v11 = [v4 sessionID];
-    v12 = [(IDSServiceEmbeddedController *)self idsService];
-    [(IDSServiceEmbeddedController *)self sendMessageStartScreenSend:v10 sessionID:v11 service:v12];
+    sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sessionID = [sessionCopy sessionID];
+    idsService = [(IDSServiceEmbeddedController *)self idsService];
+    [(IDSServiceEmbeddedController *)self sendMessageStartScreenSend:sanitizedFromID sessionID:sessionID service:idsService];
   }
 }
 
-- (void)removeSession:(id)a3 andEndIDSSession:(BOOL)a4
+- (void)removeSession:(id)session andEndIDSSession:(BOOL)sSession
 {
-  v4 = a4;
-  v6 = a3;
+  sSessionCopy = sSession;
+  sessionCopy = session;
   if (sub_1000423E0())
   {
     v7 = sub_100042E68();
@@ -2487,14 +2487,14 @@ LABEL_95:
       v13 = 1024;
       v14 = 979;
       v15 = 1024;
-      v16 = v4;
+      v16 = sSessionCopy;
       v17 = 2048;
-      v18 = v6;
+      v18 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s:%d] removeSession: shouldEndIDSSession:%d for session %p", buf, 0x22u);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 979, "[IDSServiceEmbeddedController removeSession:andEndIDSSession:]", 7, 0, "removeSession: shouldEndIDSSession:%d for session %p", v4, v6);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 979, "[IDSServiceEmbeddedController removeSession:andEndIDSSession:]", 7, 0, "removeSession: shouldEndIDSSession:%d for session %p", sSessionCopy, sessionCopy);
   sub_1000430F0(0, 0, 0.0, 0.0);
   if ([(IDSServiceEmbeddedController *)self viewServicePID]!= -1)
   {
@@ -2502,25 +2502,25 @@ LABEL_95:
     [(IDSServiceEmbeddedController *)self setViewServicePID:0xFFFFFFFFLL];
   }
 
-  if (v6)
+  if (sessionCopy)
   {
-    v8 = [(IDSServiceEmbeddedController *)self pendingSession];
+    pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
 
-    if (v8 == v6)
+    if (pendingSession == sessionCopy)
     {
       [(IDSServiceEmbeddedController *)self setPendingSession:0];
     }
 
     [(IDSServiceEmbeddedController *)self setIsShareSettings:0];
     [(IDSServiceEmbeddedController *)self setSessionPaused:0];
-    if (v4)
+    if (sSessionCopy)
     {
-      [v6 doEndSession];
+      [sessionCopy doEndSession];
     }
 
-    v9 = [(IDSServiceEmbeddedController *)self activeSessions];
-    v10 = [v6 uniqueID];
-    [v9 removeObjectForKey:v10];
+    activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+    uniqueID = [sessionCopy uniqueID];
+    [activeSessions removeObjectForKey:uniqueID];
 
     [(IDSServiceEmbeddedController *)self checkIfNoSessions];
   }
@@ -2546,10 +2546,10 @@ LABEL_95:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v5 = [v4 allValues];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2561,7 +2561,7 @@ LABEL_95:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [(IDSServiceEmbeddedController *)self removeSession:*(*(&v10 + 1) + 8 * v9) andEndIDSSession:1];
@@ -2569,16 +2569,16 @@ LABEL_95:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)exitTimerCallback:(id)a3
+- (void)exitTimerCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -2593,15 +2593,15 @@ LABEL_95:
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1022, "[IDSServiceEmbeddedController exitTimerCallback:]", 7, 0, "exit timer called");
-  v6 = [(IDSServiceEmbeddedController *)self pendingSession];
-  if (v6)
+  pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
+  if (pendingSession)
   {
   }
 
   else
   {
-    v7 = [(IDSServiceEmbeddedController *)self activeSessions];
-    v8 = [v7 count];
+    activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+    v8 = [activeSessions count];
 
     if (!v8)
     {
@@ -2628,8 +2628,8 @@ LABEL_95:
 
 - (void)checkIfNoSessions
 {
-  v3 = [(IDSServiceEmbeddedController *)self pendingSession];
-  if (v3)
+  pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
+  if (pendingSession)
   {
 
 LABEL_4:
@@ -2650,8 +2650,8 @@ LABEL_4:
     return;
   }
 
-  v4 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v5 = [v4 count];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  v5 = [activeSessions count];
 
   if (v5)
   {
@@ -2693,28 +2693,28 @@ LABEL_4:
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1053, "[IDSServiceEmbeddedController checkIfNoSessions]", 7, 0, "released status bar assertion");
   }
 
-  v10 = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
+  wallpaperSuspensionAssertion = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
 
-  if (v10)
+  if (wallpaperSuspensionAssertion)
   {
-    v11 = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
-    [v11 invalidate];
+    wallpaperSuspensionAssertion2 = [(IDSServiceEmbeddedController *)self wallpaperSuspensionAssertion];
+    [wallpaperSuspensionAssertion2 invalidate];
 
     [(IDSServiceEmbeddedController *)self setWallpaperSuspensionAssertion:0];
   }
 
   _os_nospin_lock_lock();
-  v12 = [(IDSServiceEmbeddedController *)self osTransaction];
+  osTransaction = [(IDSServiceEmbeddedController *)self osTransaction];
 
-  if (v12)
+  if (osTransaction)
   {
     [(IDSServiceEmbeddedController *)self setOsTransaction:0];
   }
 
   _os_nospin_lock_unlock();
-  v13 = [(IDSServiceEmbeddedController *)self exitTimer];
+  exitTimer = [(IDSServiceEmbeddedController *)self exitTimer];
 
-  if (v13)
+  if (exitTimer)
   {
     if (sub_1000423E0())
     {
@@ -2745,14 +2745,14 @@ LABEL_4:
 
 - (id)activeViewerStatusString
 {
-  v2 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v3 = [v2 allValues];
-  v4 = [v3 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"kSSViewingScreen" value:&stru_100069830 table:0];
-  v7 = [v4 inviterFullName];
-  v8 = [NSString stringWithFormat:v6, v7];
+  inviterFullName = [lastObject inviterFullName];
+  v8 = [NSString stringWithFormat:v6, inviterFullName];
 
   return v8;
 }
@@ -2793,11 +2793,11 @@ LABEL_4:
 
   else
   {
-    v5 = [(IDSServiceEmbeddedController *)self activeViewerStatusString];
+    activeViewerStatusString = [(IDSServiceEmbeddedController *)self activeViewerStatusString];
     v6 = [[SBSStatusBarStyleOverridesAssertion alloc] initWithStatusBarStyleOverrides:0x4000 forPID:getpid() exclusive:1 showsWhenForeground:0];
     [(IDSServiceEmbeddedController *)self setDoubleHeightStatusBarAssertion:v6];
 
-    [(SBSStatusBarStyleOverridesAssertion *)self->_doubleHeightStatusBarAssertion setStatusString:v5];
+    [(SBSStatusBarStyleOverridesAssertion *)self->_doubleHeightStatusBarAssertion setStatusString:activeViewerStatusString];
     [(SBSStatusBarStyleOverridesAssertion *)self->_doubleHeightStatusBarAssertion acquireWithHandler:&stru_100068E08 invalidationHandler:&stru_100068E28];
   }
 }
@@ -2816,9 +2816,9 @@ LABEL_4:
 - (void)postAskToCopyToPasteboardNotification
 {
   error = 0;
-  v3 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   if (sub_1000423E0())
   {
@@ -2856,26 +2856,26 @@ LABEL_4:
   {
     [(IDSServiceEmbeddedController *)self setAskToCopyToPasteboardTimedOut:0];
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    [v5 addNotificationIconTo:Mutable];
+    [lastObject addNotificationIconTo:Mutable];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"kSSAddToClipboardMessage" value:&stru_100069830 table:0];
-    v11 = [v5 inviterFullName];
-    v12 = [NSString stringWithFormat:v10, v11];
+    inviterFullName = [lastObject inviterFullName];
+    v12 = [NSString stringWithFormat:v10, inviterFullName];
 
     if (v12)
     {
-      v13 = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardUserMessage];
+      askToCopyToPasteboardUserMessage = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardUserMessage];
 
       CFDictionaryAddValue(Mutable, kCFUserNotificationAlertHeaderKey, v12);
-      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, v13);
+      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, askToCopyToPasteboardUserMessage);
       CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertMessageKey, v12);
     }
 
-    v14 = [v5 inviterFullName];
+    inviterFullName2 = [lastObject inviterFullName];
 
-    if (v14)
+    if (inviterFullName2)
     {
-      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v14);
+      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName2);
     }
 
     MainBundle = CFBundleGetMainBundle();
@@ -2899,9 +2899,9 @@ LABEL_4:
     CFDictionaryAddValue(Mutable, kCFUserNotificationAlertTopMostKey, kCFBooleanTrue);
     [(IDSServiceEmbeddedController *)self setAskToCopyToPasteboardNotification:CFUserNotificationCreate(0, 0.0, 0x23uLL, &error, Mutable)];
     CFRelease(Mutable);
-    v21 = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardNotification];
+    askToCopyToPasteboardNotification = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardNotification];
     v22 = sub_1000423E0();
-    if (v21)
+    if (askToCopyToPasteboardNotification)
     {
       if (v22)
       {
@@ -2975,7 +2975,7 @@ LABEL_4:
   }
 }
 
-- (void)askToToCopyToPasteboardTimeout:(id)a3
+- (void)askToToCopyToPasteboardTimeout:(id)timeout
 {
   if (sub_1000423E0())
   {
@@ -3035,12 +3035,12 @@ LABEL_4:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1329, "[IDSServiceEmbeddedController removeAskToCopyToPasteboardNotification]", 7, 0, "cancel err = %d", v5);
     }
 
-    v7 = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardTimeoutTimer];
+    askToCopyToPasteboardTimeoutTimer = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardTimeoutTimer];
 
-    if (v7)
+    if (askToCopyToPasteboardTimeoutTimer)
     {
-      v8 = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardTimeoutTimer];
-      [v8 invalidate];
+      askToCopyToPasteboardTimeoutTimer2 = [(IDSServiceEmbeddedController *)self askToCopyToPasteboardTimeoutTimer];
+      [askToCopyToPasteboardTimeoutTimer2 invalidate];
 
       [(IDSServiceEmbeddedController *)self setAskToCopyToPasteboardTimeoutTimer:0];
     }
@@ -3068,9 +3068,9 @@ LABEL_4:
 - (void)postAskToOpenURLNotification
 {
   error = 0;
-  v3 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   if (sub_1000423E0())
   {
@@ -3108,26 +3108,26 @@ LABEL_4:
   {
     [(IDSServiceEmbeddedController *)self setAskToOpenURLTimedOut:0];
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    [v5 addNotificationIconTo:Mutable];
+    [lastObject addNotificationIconTo:Mutable];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"kSSOpenURLMessage" value:&stru_100069830 table:0];
-    v11 = [v5 inviterFullName];
-    v12 = [NSString stringWithFormat:v10, v11];
+    inviterFullName = [lastObject inviterFullName];
+    v12 = [NSString stringWithFormat:v10, inviterFullName];
 
     if (v12)
     {
-      v13 = [(IDSServiceEmbeddedController *)self urlToOpen];
+      urlToOpen = [(IDSServiceEmbeddedController *)self urlToOpen];
 
       CFDictionaryAddValue(Mutable, kCFUserNotificationAlertHeaderKey, v12);
-      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, v13);
+      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, urlToOpen);
       CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertMessageKey, v12);
     }
 
-    v14 = [v5 inviterFullName];
+    inviterFullName2 = [lastObject inviterFullName];
 
-    if (v14)
+    if (inviterFullName2)
     {
-      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v14);
+      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName2);
     }
 
     MainBundle = CFBundleGetMainBundle();
@@ -3229,7 +3229,7 @@ LABEL_4:
   }
 }
 
-- (void)askToOpenURLTimeout:(id)a3
+- (void)askToOpenURLTimeout:(id)timeout
 {
   if (sub_1000423E0())
   {
@@ -3289,12 +3289,12 @@ LABEL_4:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1521, "[IDSServiceEmbeddedController removeAskToOpenURLNotification]", 7, 0, "cancel err = %d", v5);
     }
 
-    v7 = [(IDSServiceEmbeddedController *)self askToOpenURLTimeoutTimer];
+    askToOpenURLTimeoutTimer = [(IDSServiceEmbeddedController *)self askToOpenURLTimeoutTimer];
 
-    if (v7)
+    if (askToOpenURLTimeoutTimer)
     {
-      v8 = [(IDSServiceEmbeddedController *)self askToOpenURLTimeoutTimer];
-      [v8 invalidate];
+      askToOpenURLTimeoutTimer2 = [(IDSServiceEmbeddedController *)self askToOpenURLTimeoutTimer];
+      [askToOpenURLTimeoutTimer2 invalidate];
 
       [(IDSServiceEmbeddedController *)self setAskToOpenURLTimeoutTimer:0];
     }
@@ -3322,15 +3322,15 @@ LABEL_4:
 - (void)postAskToResumeNotification
 {
   error = 0;
-  v3 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   if ([(IDSServiceEmbeddedController *)self sessionPaused])
   {
-    v6 = [(IDSServiceEmbeddedController *)self askToResumeNotification];
+    askToResumeNotification = [(IDSServiceEmbeddedController *)self askToResumeNotification];
     v7 = sub_1000423E0();
-    if (v6)
+    if (askToResumeNotification)
     {
       if (v7)
       {
@@ -3360,7 +3360,7 @@ LABEL_4:
           v40 = 1024;
           v41 = 1559;
           v42 = 2048;
-          v43 = [(IDSServiceEmbeddedController *)self askToResumeNotification];
+          askToResumeNotification2 = [(IDSServiceEmbeddedController *)self askToResumeNotification];
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%s:%d] self.askToResumeNotification  %p", buf, 0x1Cu);
         }
       }
@@ -3368,22 +3368,22 @@ LABEL_4:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1559, "[IDSServiceEmbeddedController postAskToResumeNotification]", 7, 0, "self.askToResumeNotification  %p", [(IDSServiceEmbeddedController *)self askToResumeNotification]);
       [qword_100070A78 setAskToResumeTimedOut:0];
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-      [v5 addNotificationIconTo:Mutable];
+      [lastObject addNotificationIconTo:Mutable];
       v12 = +[NSBundle mainBundle];
       v13 = [v12 localizedStringForKey:@"kSSAskToResume" value:&stru_100069830 table:0];
-      v14 = [v5 inviterFullName];
-      v15 = [NSString stringWithFormat:v13, v14];
+      inviterFullName = [lastObject inviterFullName];
+      v15 = [NSString stringWithFormat:v13, inviterFullName];
 
       if (v15)
       {
         CFDictionaryAddValue(Mutable, kCFUserNotificationAlertHeaderKey, v15);
       }
 
-      v16 = [v5 inviterFullName];
+      inviterFullName2 = [lastObject inviterFullName];
 
-      if (v16)
+      if (inviterFullName2)
       {
-        CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v16);
+        CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName2);
       }
 
       MainBundle = CFBundleGetMainBundle();
@@ -3439,9 +3439,9 @@ LABEL_4:
 
       [(IDSServiceEmbeddedController *)self setAskToResumeNotification:CFUserNotificationCreate(0, 0.0, 0x23uLL, &error, Mutable)];
       CFRelease(Mutable);
-      v27 = [(IDSServiceEmbeddedController *)self askToResumeNotification];
+      askToResumeNotification3 = [(IDSServiceEmbeddedController *)self askToResumeNotification];
       v28 = sub_1000423E0();
-      if (v27)
+      if (askToResumeNotification3)
       {
         if (v28)
         {
@@ -3453,7 +3453,7 @@ LABEL_4:
             v40 = 1024;
             v41 = 1615;
             v42 = 1024;
-            LODWORD(v43) = error;
+            LODWORD(askToResumeNotification2) = error;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[%s:%d] got error %d", buf, 0x18u);
           }
         }
@@ -3537,7 +3537,7 @@ LABEL_4:
   }
 }
 
-- (void)askToResumeTimeout:(id)a3
+- (void)askToResumeTimeout:(id)timeout
 {
   if (sub_1000423E0())
   {
@@ -3592,12 +3592,12 @@ LABEL_4:
     }
 
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1707, "[IDSServiceEmbeddedController removeUserAskToResumeNotification]", 7, 0, "cancel err = %d", v4);
-    v6 = [(IDSServiceEmbeddedController *)self askToResumeTimeoutTimer];
+    askToResumeTimeoutTimer = [(IDSServiceEmbeddedController *)self askToResumeTimeoutTimer];
 
-    if (v6)
+    if (askToResumeTimeoutTimer)
     {
-      v7 = [(IDSServiceEmbeddedController *)self askToResumeTimeoutTimer];
-      [v7 invalidate];
+      askToResumeTimeoutTimer2 = [(IDSServiceEmbeddedController *)self askToResumeTimeoutTimer];
+      [askToResumeTimeoutTimer2 invalidate];
 
       [(IDSServiceEmbeddedController *)self setAskToResumeTimeoutTimer:0];
     }
@@ -3622,21 +3622,21 @@ LABEL_4:
   }
 }
 
-- (void)showMessageToUser:(id)a3
+- (void)showMessageToUser:(id)user
 {
-  v8 = a3;
-  if ([v8 length] > 0xC7)
+  userCopy = user;
+  if ([userCopy length] > 0xC7)
   {
     v4 = 200;
   }
 
   else
   {
-    v4 = [v8 length];
+    v4 = [userCopy length];
   }
 
-  v5 = [v8 rangeOfComposedCharacterSequencesForRange:{0, v4}];
-  v7 = [v8 substringWithRange:{v5, v6}];
+  v5 = [userCopy rangeOfComposedCharacterSequencesForRange:{0, v4}];
+  v7 = [userCopy substringWithRange:{v5, v6}];
   [(IDSServiceEmbeddedController *)self setShowUserMessage:v7];
   [(IDSServiceEmbeddedController *)self postShowUserMessageNotification];
 }
@@ -3644,9 +3644,9 @@ LABEL_4:
 - (void)postShowUserMessageNotification
 {
   error = 0;
-  v3 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   if (sub_1000423E0())
   {
@@ -3684,26 +3684,26 @@ LABEL_4:
   {
     [(IDSServiceEmbeddedController *)self setShowUserMessageTimedOut:0];
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    [v5 addNotificationIconTo:Mutable];
+    [lastObject addNotificationIconTo:Mutable];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"kSSSentMessage" value:&stru_100069830 table:0];
-    v11 = [v5 inviterFullName];
-    v12 = [NSString stringWithFormat:v10, v11];
+    inviterFullName = [lastObject inviterFullName];
+    v12 = [NSString stringWithFormat:v10, inviterFullName];
 
     if (v12)
     {
-      v13 = [(IDSServiceEmbeddedController *)self showUserMessage];
+      showUserMessage = [(IDSServiceEmbeddedController *)self showUserMessage];
 
       CFDictionaryAddValue(Mutable, kCFUserNotificationAlertHeaderKey, v12);
-      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, v13);
+      CFDictionaryAddValue(Mutable, kCFUserNotificationAlertMessageKey, showUserMessage);
       CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertMessageKey, v12);
     }
 
-    v14 = [v5 inviterFullName];
+    inviterFullName2 = [lastObject inviterFullName];
 
-    if (v14)
+    if (inviterFullName2)
     {
-      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v14);
+      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName2);
     }
 
     MainBundle = CFBundleGetMainBundle();
@@ -3796,7 +3796,7 @@ LABEL_4:
   }
 }
 
-- (void)showUserMessageTimeout:(id)a3
+- (void)showUserMessageTimeout:(id)timeout
 {
   if (sub_1000423E0())
   {
@@ -3856,12 +3856,12 @@ LABEL_4:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1871, "[IDSServiceEmbeddedController removeShowUserMessageNotification]", 7, 0, "cancel err = %d", v5);
     }
 
-    v7 = [(IDSServiceEmbeddedController *)self showUserMessageTimeoutTimer];
+    showUserMessageTimeoutTimer = [(IDSServiceEmbeddedController *)self showUserMessageTimeoutTimer];
 
-    if (v7)
+    if (showUserMessageTimeoutTimer)
     {
-      v8 = [(IDSServiceEmbeddedController *)self showUserMessageTimeoutTimer];
-      [v8 invalidate];
+      showUserMessageTimeoutTimer2 = [(IDSServiceEmbeddedController *)self showUserMessageTimeoutTimer];
+      [showUserMessageTimeoutTimer2 invalidate];
 
       [(IDSServiceEmbeddedController *)self setShowUserMessageTimeoutTimer:0];
     }
@@ -3889,9 +3889,9 @@ LABEL_4:
 - (void)postViewerPausedMessageNotification
 {
   error = 0;
-  v3 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v4 = [v3 allValues];
-  v5 = [v4 lastObject];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
+  lastObject = [allValues lastObject];
 
   if (sub_1000423E0())
   {
@@ -3929,11 +3929,11 @@ LABEL_4:
   {
     [(IDSServiceEmbeddedController *)self setShowViewerPausedTimedOut:0];
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    [v5 addNotificationIconTo:Mutable];
+    [lastObject addNotificationIconTo:Mutable];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"kSSPaused" value:&stru_100069830 table:0];
-    v11 = [v5 inviterFullName];
-    v12 = [NSString stringWithFormat:v10, v11];
+    inviterFullName = [lastObject inviterFullName];
+    v12 = [NSString stringWithFormat:v10, inviterFullName];
 
     if (v12)
     {
@@ -3941,11 +3941,11 @@ LABEL_4:
       CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertMessageKey, v12);
     }
 
-    v13 = [v5 inviterFullName];
+    inviterFullName2 = [lastObject inviterFullName];
 
-    if (v13)
+    if (inviterFullName2)
     {
-      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, v13);
+      CFDictionaryAddValue(Mutable, SBUserNotificationLockScreenAlertHeaderKey, inviterFullName2);
     }
 
     MainBundle = CFBundleGetMainBundle();
@@ -4038,7 +4038,7 @@ LABEL_4:
   }
 }
 
-- (void)showViewerPausedTimeout:(id)a3
+- (void)showViewerPausedTimeout:(id)timeout
 {
   if (sub_1000423E0())
   {
@@ -4098,12 +4098,12 @@ LABEL_4:
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 1987, "[IDSServiceEmbeddedController removeViewerPausedNotification]", 7, 0, "cancel err = %d", v5);
     }
 
-    v7 = [(IDSServiceEmbeddedController *)self showViewerPausedTimeoutTimer];
+    showViewerPausedTimeoutTimer = [(IDSServiceEmbeddedController *)self showViewerPausedTimeoutTimer];
 
-    if (v7)
+    if (showViewerPausedTimeoutTimer)
     {
-      v8 = [(IDSServiceEmbeddedController *)self showViewerPausedTimeoutTimer];
-      [v8 invalidate];
+      showViewerPausedTimeoutTimer2 = [(IDSServiceEmbeddedController *)self showViewerPausedTimeoutTimer];
+      [showViewerPausedTimeoutTimer2 invalidate];
 
       [(IDSServiceEmbeddedController *)self setShowViewerPausedTimeoutTimer:0];
     }
@@ -4128,34 +4128,34 @@ LABEL_4:
   }
 }
 
-- (void)inviteWasAccepted:(id)a3
+- (void)inviteWasAccepted:(id)accepted
 {
-  v4 = a3;
+  acceptedCopy = accepted;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(IDSServiceEmbeddedController *)self idsService];
+      idsService = [(IDSServiceEmbeddedController *)self idsService];
       *buf = 136315650;
       v13 = "[IDSServiceEmbeddedController inviteWasAccepted:]";
       v14 = 1024;
       v15 = 2035;
       v16 = 2048;
-      v17 = v6;
+      v17 = idsService;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] invite accepted   self.idsService %p", buf, 0x1Cu);
     }
   }
 
-  v7 = [(IDSServiceEmbeddedController *)self idsService];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2035, "[IDSServiceEmbeddedController inviteWasAccepted:]", 7, 0, "invite accepted   self.idsService %p", v7);
+  idsService2 = [(IDSServiceEmbeddedController *)self idsService];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2035, "[IDSServiceEmbeddedController inviteWasAccepted:]", 7, 0, "invite accepted   self.idsService %p", idsService2);
 
-  if ([v4 inviterKind] == 2 || objc_msgSend(v4, "inviterKind") == 3)
+  if ([acceptedCopy inviterKind] == 2 || objc_msgSend(acceptedCopy, "inviterKind") == 3)
   {
-    v8 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-    v9 = [v4 sessionID];
-    v10 = [(IDSServiceEmbeddedController *)self idsService];
-    [(IDSServiceEmbeddedController *)self sendMessageInviteAccepted:v8 sessionID:v9 service:v10];
+    sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+    sessionID = [acceptedCopy sessionID];
+    idsService3 = [(IDSServiceEmbeddedController *)self idsService];
+    [(IDSServiceEmbeddedController *)self sendMessageInviteAccepted:sanitizedFromID sessionID:sessionID service:idsService3];
   }
 
   else
@@ -4177,9 +4177,9 @@ LABEL_4:
   }
 }
 
-- (void)pauseResumeResult:(id)a3
+- (void)pauseResumeResult:(id)result
 {
-  v4 = [a3 objectForKey:@"result"];
+  v4 = [result objectForKey:@"result"];
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -4190,16 +4190,16 @@ LABEL_4:
       v15 = 1024;
       v16 = 2057;
       v17 = 2048;
-      v18 = [v4 integerValue];
+      integerValue = [v4 integerValue];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] pauseResumeResult: %ld", buf, 0x1Cu);
     }
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2057, "-[IDSServiceEmbeddedController pauseResumeResult:]", 7, 0, "pauseResumeResult: %ld", [v4 integerValue]);
-  v6 = [v4 integerValue];
-  if (v6 > 1)
+  integerValue2 = [v4 integerValue];
+  if (integerValue2 > 1)
   {
-    if (v6 == 2)
+    if (integerValue2 == 2)
     {
       if (sub_1000423E0())
       {
@@ -4215,12 +4215,12 @@ LABEL_4:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2072, "[IDSServiceEmbeddedController pauseResumeResult:]", 7, 0, "resume chosen");
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
       goto LABEL_30;
     }
 
-    if (v6 == 3)
+    if (integerValue2 == 3)
     {
       if (sub_1000423E0())
       {
@@ -4240,9 +4240,9 @@ LABEL_4:
     }
   }
 
-  else if (v6)
+  else if (integerValue2)
   {
-    if (v6 == 1)
+    if (integerValue2 == 1)
     {
       if (sub_1000423E0())
       {
@@ -4258,10 +4258,10 @@ LABEL_4:
       }
 
       sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2067, "[IDSServiceEmbeddedController pauseResumeResult:]", 7, 0, "pause chosen");
-      v8 = self;
+      selfCopy2 = self;
       v9 = 1;
 LABEL_30:
-      [(IDSServiceEmbeddedController *)v8 pauseScreenSharing:v9];
+      [(IDSServiceEmbeddedController *)selfCopy2 pauseScreenSharing:v9];
     }
   }
 
@@ -4286,9 +4286,9 @@ LABEL_30:
   [(IDSServiceEmbeddedController *)self setViewServicePID:0xFFFFFFFFLL];
 }
 
-- (void)sessionState:(id)a3
+- (void)sessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -4307,57 +4307,57 @@ LABEL_30:
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2086, "[IDSServiceEmbeddedController sessionState:]", 7, 0, "sessionState is called, paused:%d, screenLocked:%d", [(IDSServiceEmbeddedController *)self sessionPaused], [(IDSServiceEmbeddedController *)self screenLocked]);
-  if (v4)
+  if (stateCopy)
   {
     v6 = [NSNumber numberWithBool:[(IDSServiceEmbeddedController *)self sessionPaused]];
-    [v4 setObject:v6 forKeyedSubscript:@"paused"];
+    [stateCopy setObject:v6 forKeyedSubscript:@"paused"];
 
     v7 = [NSNumber numberWithBool:[(IDSServiceEmbeddedController *)self screenLocked]];
-    [v4 setObject:v7 forKeyedSubscript:@"screenLocked"];
+    [stateCopy setObject:v7 forKeyedSubscript:@"screenLocked"];
 
-    v8 = [(IDSServiceEmbeddedController *)self activeSessions];
-    v9 = [v8 allValues];
-    v10 = [v9 lastObject];
+    activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+    allValues = [activeSessions allValues];
+    lastObject = [allValues lastObject];
 
-    if (!v10)
+    if (!lastObject)
     {
-      v10 = [(IDSServiceEmbeddedController *)self pendingSession];
+      lastObject = [(IDSServiceEmbeddedController *)self pendingSession];
     }
 
-    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 sessionStartDelegateWasCalled]);
-    [v4 setObject:v11 forKeyedSubscript:@"isSessionStarted"];
+    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [lastObject sessionStartDelegateWasCalled]);
+    [stateCopy setObject:v11 forKeyedSubscript:@"isSessionStarted"];
 
-    v12 = [v10 inviterFullName];
-    [v4 setObject:v12 forKeyedSubscript:@"viewerName"];
+    inviterFullName = [lastObject inviterFullName];
+    [stateCopy setObject:inviterFullName forKeyedSubscript:@"viewerName"];
 
     if (sub_1000423E0())
     {
       v13 = sub_100042E68();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v4 objectForKeyedSubscript:@"viewerName"];
-        v15 = [v14 UTF8String];
+        v14 = [stateCopy objectForKeyedSubscript:@"viewerName"];
+        uTF8String = [v14 UTF8String];
         *buf = 136315650;
         v28 = "[IDSServiceEmbeddedController sessionState:]";
         v29 = 1024;
         v30 = 2100;
         v31 = 2080;
-        v32[0] = v15;
+        v32[0] = uTF8String;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%s:%d] viewer info %s", buf, 0x1Cu);
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"viewerName"];
+    v16 = [stateCopy objectForKeyedSubscript:@"viewerName"];
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2100, "-[IDSServiceEmbeddedController sessionState:]", 7, 0, "viewer info %s", [v16 UTF8String]);
 
-    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 inviterKind] == 3);
-    [v4 setObject:v17 forKeyedSubscript:@"isAppleSupportRequest"];
+    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [lastObject inviterKind] == 3);
+    [stateCopy setObject:v17 forKeyedSubscript:@"isAppleSupportRequest"];
 
     v18 = [NSNumber numberWithBool:[(IDSServiceEmbeddedController *)self isShareSettings]];
-    [v4 setObject:v18 forKeyedSubscript:@"isShareSettings"];
+    [stateCopy setObject:v18 forKeyedSubscript:@"isShareSettings"];
 
-    v19 = [(IDSServiceEmbeddedController *)self pendingSession];
-    if (v19)
+    pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
+    if (pendingSession)
     {
       v20 = 0;
     }
@@ -4369,9 +4369,9 @@ LABEL_30:
     }
 
     v22 = [NSNumber numberWithBool:v20];
-    [v4 setObject:v22 forKeyedSubscript:@"isEnded"];
+    [stateCopy setObject:v22 forKeyedSubscript:@"isEnded"];
 
-    if (!v19)
+    if (!pendingSession)
     {
     }
 
@@ -4380,19 +4380,19 @@ LABEL_30:
       v23 = sub_100042E68();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v4 description];
-        v25 = [v24 UTF8String];
+        v24 = [stateCopy description];
+        uTF8String2 = [v24 UTF8String];
         *buf = 136315650;
         v28 = "[IDSServiceEmbeddedController sessionState:]";
         v29 = 1024;
         v30 = 2107;
         v31 = 2080;
-        v32[0] = v25;
+        v32[0] = uTF8String2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[%s:%d] returning sessionState: %s", buf, 0x1Cu);
       }
     }
 
-    v26 = [v4 description];
+    v26 = [stateCopy description];
     sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2107, "-[IDSServiceEmbeddedController sessionState:]", 7, 0, "returning sessionState: %s", [v26 UTF8String]);
   }
 
@@ -4415,29 +4415,29 @@ LABEL_30:
   }
 }
 
-- (void)termsAndConditionsResult:(id)a3
+- (void)termsAndConditionsResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 description];
+      v6 = [resultCopy description];
       *buf = 136315650;
       v24 = "[IDSServiceEmbeddedController termsAndConditionsResult:]";
       v25 = 1024;
       v26 = 2116;
       v27 = 2080;
-      v28 = [v6 UTF8String];
+      uTF8String = [v6 UTF8String];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] terms and conditions result  %s", buf, 0x1Cu);
     }
   }
 
-  v7 = [v4 description];
+  v7 = [resultCopy description];
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2116, "-[IDSServiceEmbeddedController termsAndConditionsResult:]", 7, 0, "terms and conditions result  %s", [v7 UTF8String]);
 
-  v8 = [v4 objectForKey:@"result"];
+  v8 = [resultCopy objectForKey:@"result"];
   if (!v8)
   {
     if (sub_1000423E0())
@@ -4458,16 +4458,16 @@ LABEL_30:
 
   if ([v8 BOOLValue])
   {
-    v10 = [(IDSServiceEmbeddedController *)self pendingSession];
-    if ([v10 inviterKind] == 2)
+    pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
+    if ([pendingSession inviterKind] == 2)
     {
 
 LABEL_20:
-      v14 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-      v15 = [(IDSServiceEmbeddedController *)self pendingSession];
-      v16 = [v15 sessionID];
-      v17 = [(IDSServiceEmbeddedController *)self idsService];
-      [(IDSServiceEmbeddedController *)self sendMessageTCAccepted:v14 sessionID:v16 service:v17];
+      sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      pendingSession2 = [(IDSServiceEmbeddedController *)self pendingSession];
+      sessionID = [pendingSession2 sessionID];
+      idsService = [(IDSServiceEmbeddedController *)self idsService];
+      [(IDSServiceEmbeddedController *)self sendMessageTCAccepted:sanitizedFromID sessionID:sessionID service:idsService];
 
       if (sub_1000423E0())
       {
@@ -4486,10 +4486,10 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    v12 = [(IDSServiceEmbeddedController *)self pendingSession];
-    v13 = [v12 inviterKind];
+    pendingSession3 = [(IDSServiceEmbeddedController *)self pendingSession];
+    inviterKind = [pendingSession3 inviterKind];
 
-    if (v13 == 3)
+    if (inviterKind == 3)
     {
       goto LABEL_20;
     }
@@ -4499,19 +4499,19 @@ LABEL_20:
       v20 = sub_100042E68();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(IDSServiceEmbeddedController *)self pendingSession];
+        pendingSession4 = [(IDSServiceEmbeddedController *)self pendingSession];
         *buf = 136315650;
         v24 = "[IDSServiceEmbeddedController termsAndConditionsResult:]";
         v25 = 1024;
         v26 = 2128;
         v27 = 2048;
-        v28 = v21;
+        uTF8String = pendingSession4;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%s:%d] not applecare  pending session %p", buf, 0x1Cu);
       }
     }
 
-    v22 = [(IDSServiceEmbeddedController *)self pendingSession];
-    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2128, "[IDSServiceEmbeddedController termsAndConditionsResult:]", 7, 0, "not applecare  pending session %p", v22);
+    pendingSession5 = [(IDSServiceEmbeddedController *)self pendingSession];
+    sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2128, "[IDSServiceEmbeddedController termsAndConditionsResult:]", 7, 0, "not applecare  pending session %p", pendingSession5);
   }
 
   else
@@ -4533,13 +4533,13 @@ LABEL_20:
   }
 
 LABEL_25:
-  v19 = [(IDSServiceEmbeddedController *)self pendingSession];
-  [v19 termsAndConditionsResult:v4];
+  pendingSession6 = [(IDSServiceEmbeddedController *)self pendingSession];
+  [pendingSession6 termsAndConditionsResult:resultCopy];
 }
 
-- (void)pidNotification:(id)a3
+- (void)pidNotification:(id)notification
 {
-  v4 = [a3 objectForKey:@"pid"];
+  v4 = [notification objectForKey:@"pid"];
   -[IDSServiceEmbeddedController setViewServicePID:](self, "setViewServicePID:", [v4 intValue]);
 
   if (sub_1000423E0())
@@ -4552,7 +4552,7 @@ LABEL_25:
       v8 = 1024;
       v9 = 2138;
       v10 = 1024;
-      v11 = [(IDSServiceEmbeddedController *)self viewServicePID];
+      viewServicePID = [(IDSServiceEmbeddedController *)self viewServicePID];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] pidNotification: %d", buf, 0x18u);
     }
   }
@@ -4579,13 +4579,13 @@ LABEL_25:
   [(IDSServiceEmbeddedController *)self checkIfNoSessions];
 }
 
-- (BOOL)validInviteDictionary:(id)a3
+- (BOOL)validInviteDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 valueForKey:@"avconference"];
+    v5 = [dictionaryCopy valueForKey:@"avconference"];
     if (v5)
     {
       objc_opt_class();
@@ -4914,9 +4914,9 @@ LABEL_80:
   return v16;
 }
 
-- (BOOL)inviteValidForThisOS:(id)a3
+- (BOOL)inviteValidForThisOS:(id)s
 {
-  v4 = [a3 objectForKeyedSubscript:@"osType"];
+  v4 = [s objectForKeyedSubscript:@"osType"];
   if (!v4)
   {
     if (sub_1000423E0())
@@ -4936,8 +4936,8 @@ LABEL_80:
     goto LABEL_13;
   }
 
-  v5 = [(IDSServiceEmbeddedController *)self osTypeString];
-  v6 = [v5 isEqualToString:v4];
+  osTypeString = [(IDSServiceEmbeddedController *)self osTypeString];
+  v6 = [osTypeString isEqualToString:v4];
 
   if (v6)
   {
@@ -4956,7 +4956,7 @@ LABEL_13:
       v13 = 1024;
       v14 = 2281;
       v15 = 2080;
-      v16 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s:%d] invalid osType %s - ignoring", buf, 0x1Cu);
     }
   }
@@ -4982,8 +4982,8 @@ LABEL_14:
   [(IDSServiceEmbeddedController *)self setUrlToOpen:0];
   [(IDSServiceEmbeddedController *)self setActiveSessions:0];
   [(IDSServiceEmbeddedController *)self setPendingSession:0];
-  v3 = [(IDSServiceEmbeddedController *)self idsService];
-  [v3 removeDelegate:self];
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
+  [idsService removeDelegate:self];
 
   [(IDSServiceEmbeddedController *)self setIdsService:0];
   v4.receiver = self;
@@ -4991,27 +4991,27 @@ LABEL_14:
   [(IDSServiceEmbeddedController *)&v4 dealloc];
 }
 
-- (void)sendMessageShareStatusResult:(id)a3 systemInfo:(id)a4
+- (void)sendMessageShareStatusResult:(id)result systemInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  resultCopy = result;
   if (sub_1000423E0())
   {
     v8 = sub_100042E68();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v6 description];
+      v9 = [infoCopy description];
       *buf = 136315650;
       v18 = "[IDSServiceEmbeddedController sendMessageShareStatusResult:systemInfo:]";
       v19 = 1024;
       v20 = 2376;
       v21 = 2080;
-      v22 = [v9 UTF8String];
+      uTF8String = [v9 UTF8String];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%s:%d] share status result info %s", buf, 0x1Cu);
     }
   }
 
-  v10 = [v6 description];
+  v10 = [infoCopy description];
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2376, "-[IDSServiceEmbeddedController sendMessageShareStatusResult:systemInfo:]", 7, 0, "share status result info %s", [v10 UTF8String]);
 
   if (sub_1000423E0())
@@ -5019,29 +5019,29 @@ LABEL_14:
     v11 = sub_100042E68();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-      v13 = [v12 UTF8String];
+      sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      uTF8String2 = [sanitizedFromID UTF8String];
       *buf = 136315650;
       v18 = "[IDSServiceEmbeddedController sendMessageShareStatusResult:systemInfo:]";
       v19 = 1024;
       v20 = 2377;
       v21 = 2080;
-      v22 = v13;
+      uTF8String = uTF8String2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] send to %s", buf, 0x1Cu);
     }
   }
 
-  v14 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2377, "-[IDSServiceEmbeddedController sendMessageShareStatusResult:systemInfo:]", 7, 0, "send to %s", [v14 UTF8String]);
+  sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2377, "-[IDSServiceEmbeddedController sendMessageShareStatusResult:systemInfo:]", 7, 0, "send to %s", [sanitizedFromID2 UTF8String]);
 
-  v15 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  v16 = [(IDSServiceEmbeddedController *)self idsService];
-  [(IDSServiceEmbeddedController *)self sendMessageShareStatusResultInfo:v15 sessionID:v7 service:v16 systemInfo:v6];
+  sanitizedFromID3 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
+  [(IDSServiceEmbeddedController *)self sendMessageShareStatusResultInfo:sanitizedFromID3 sessionID:resultCopy service:idsService systemInfo:infoCopy];
 }
 
-- (void)sendMessageShareSettingsUserDecline:(id)a3
+- (void)sendMessageShareSettingsUserDecline:(id)decline
 {
-  v4 = a3;
+  declineCopy = decline;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -5056,16 +5056,16 @@ LABEL_14:
   }
 
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2383, "[IDSServiceEmbeddedController sendMessageShareSettingsUserDecline:]", 7, 0, "share status user decline");
-  v6 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  v7 = [(IDSServiceEmbeddedController *)self idsService];
-  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:v6 sessionID:v4 service:v7 status:@"UserDeclined"];
+  sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
+  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:sanitizedFromID sessionID:declineCopy service:idsService status:@"UserDeclined"];
 }
 
-- (void)sendMessageInviteDisplayed:(id)a3 sessionID:(id)a4 service:(id)a5
+- (void)sendMessageInviteDisplayed:(id)displayed sessionID:(id)d service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  serviceCopy = service;
+  dCopy = d;
+  displayedCopy = displayed;
   if (sub_1000423E0())
   {
     v11 = sub_100042E68();
@@ -5085,107 +5085,107 @@ LABEL_14:
     v12 = sub_100042E68();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-      v14 = [v13 UTF8String];
+      sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      uTF8String = [sanitizedFromID UTF8String];
       *buf = 136315906;
       v17 = "[IDSServiceEmbeddedController sendMessageInviteDisplayed:sessionID:service:]";
       v18 = 1024;
       v19 = 2390;
       v20 = 2080;
-      v21 = v14;
+      v21 = uTF8String;
       v22 = 2048;
-      v23 = v8;
+      v23 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%s:%d] send to %s with service %p", buf, 0x26u);
     }
   }
 
-  v15 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2390, "-[IDSServiceEmbeddedController sendMessageInviteDisplayed:sessionID:service:]", 7, 0, "send to %s with service %p", [v15 UTF8String], v8);
+  sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2390, "-[IDSServiceEmbeddedController sendMessageInviteDisplayed:sessionID:service:]", 7, 0, "send to %s with service %p", [sanitizedFromID2 UTF8String], serviceCopy);
 
-  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:v10 sessionID:v9 service:v8 status:@"InviteDisplayed"];
+  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:displayedCopy sessionID:dCopy service:serviceCopy status:@"InviteDisplayed"];
 }
 
-- (void)sendMessageInviteIgnored:(id)a3 sessionID:(id)a4 service:(id)a5 error:(id)a6
+- (void)sendMessageInviteIgnored:(id)ignored sessionID:(id)d service:(id)service error:(id)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [NSDictionary dictionaryWithObjectsAndKeys:@"InviteIgnored", @"status", a4, @"sessionID", a6, @"REASON", 0];
-  [(IDSServiceEmbeddedController *)self sendServiceMessage:v12 destination:v11 service:v10];
+  serviceCopy = service;
+  ignoredCopy = ignored;
+  v12 = [NSDictionary dictionaryWithObjectsAndKeys:@"InviteIgnored", @"status", d, @"sessionID", error, @"REASON", 0];
+  [(IDSServiceEmbeddedController *)self sendServiceMessage:v12 destination:ignoredCopy service:serviceCopy];
 }
 
-- (void)sendMessageInviteAccepted:(id)a3 sessionID:(id)a4 service:(id)a5
+- (void)sendMessageInviteAccepted:(id)accepted sessionID:(id)d service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  serviceCopy = service;
+  dCopy = d;
+  acceptedCopy = accepted;
   if (sub_1000423E0())
   {
     v11 = sub_100042E68();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
       *buf = 136315906;
       v15 = "[IDSServiceEmbeddedController sendMessageInviteAccepted:sessionID:service:]";
       v16 = 1024;
       v17 = 2411;
       v18 = 2080;
-      v19 = [v12 UTF8String];
+      uTF8String = [sanitizedFromID UTF8String];
       v20 = 2048;
-      v21 = v8;
+      v21 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] invite accepted - send to %s with service %p", buf, 0x26u);
     }
   }
 
-  v13 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2411, "-[IDSServiceEmbeddedController sendMessageInviteAccepted:sessionID:service:]", 7, 0, "invite accepted - send to %s with service %p", [v13 UTF8String], v8);
+  sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2411, "-[IDSServiceEmbeddedController sendMessageInviteAccepted:sessionID:service:]", 7, 0, "invite accepted - send to %s with service %p", [sanitizedFromID2 UTF8String], serviceCopy);
 
-  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:v10 sessionID:v9 service:v8 status:@"InviteAccepted"];
+  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:acceptedCopy sessionID:dCopy service:serviceCopy status:@"InviteAccepted"];
 }
 
 - (void)sendMessageTCAccepted
 {
-  v6 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  v3 = [(IDSServiceEmbeddedController *)self pendingSession];
-  v4 = [v3 sessionID];
-  v5 = [(IDSServiceEmbeddedController *)self idsService];
-  [(IDSServiceEmbeddedController *)self sendMessageTCAccepted:v6 sessionID:v4 service:v5];
+  sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  pendingSession = [(IDSServiceEmbeddedController *)self pendingSession];
+  sessionID = [pendingSession sessionID];
+  idsService = [(IDSServiceEmbeddedController *)self idsService];
+  [(IDSServiceEmbeddedController *)self sendMessageTCAccepted:sanitizedFromID sessionID:sessionID service:idsService];
 }
 
-- (void)sendMessageTCAccepted:(id)a3 sessionID:(id)a4 service:(id)a5
+- (void)sendMessageTCAccepted:(id)accepted sessionID:(id)d service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  serviceCopy = service;
+  dCopy = d;
+  acceptedCopy = accepted;
   if (sub_1000423E0())
   {
     v11 = sub_100042E68();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+      sanitizedFromID = [(IDSServiceEmbeddedController *)self sanitizedFromID];
       *buf = 136315906;
       v15 = "[IDSServiceEmbeddedController sendMessageTCAccepted:sessionID:service:]";
       v16 = 1024;
       v17 = 2422;
       v18 = 2080;
-      v19 = [v12 UTF8String];
+      uTF8String = [sanitizedFromID UTF8String];
       v20 = 2048;
-      v21 = v8;
+      v21 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] TC accepted - send to %s with service %p", buf, 0x26u);
     }
   }
 
-  v13 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2422, "-[IDSServiceEmbeddedController sendMessageTCAccepted:sessionID:service:]", 7, 0, "TC accepted - send to %s with service %p", [v13 UTF8String], v8);
+  sanitizedFromID2 = [(IDSServiceEmbeddedController *)self sanitizedFromID];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2422, "-[IDSServiceEmbeddedController sendMessageTCAccepted:sessionID:service:]", 7, 0, "TC accepted - send to %s with service %p", [sanitizedFromID2 UTF8String], serviceCopy);
 
-  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:v10 sessionID:v9 service:v8 status:@"TCAccepted"];
+  [(IDSServiceEmbeddedController *)self sendMessageStatusMessage:acceptedCopy sessionID:dCopy service:serviceCopy status:@"TCAccepted"];
 }
 
-- (void)sendMessageStatusMessage:(id)a3 sessionID:(id)a4 service:(id)a5 status:(id)a6
+- (void)sendMessageStatusMessage:(id)message sessionID:(id)d service:(id)service status:(id)status
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  messageCopy = message;
+  serviceCopy = service;
+  statusCopy = status;
+  dCopy = d;
   if (sub_1000423E0())
   {
     v14 = sub_100042E68();
@@ -5196,17 +5196,17 @@ LABEL_14:
       v22 = 1024;
       v23 = 2433;
       v24 = 2080;
-      v25 = [v12 UTF8String];
+      uTF8String = [statusCopy UTF8String];
       v26 = 2080;
-      v27 = [v10 UTF8String];
+      uTF8String2 = [messageCopy UTF8String];
       v28 = 2048;
-      v29 = v11;
+      v29 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%s:%d] status message %s destination %s service %p", buf, 0x30u);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2433, "-[IDSServiceEmbeddedController sendMessageStatusMessage:sessionID:service:status:]", 7, 0, "status message %s destination %s service %p", [v12 UTF8String], objc_msgSend(v10, "UTF8String"), v11);
-  v15 = [NSDictionary dictionaryWithObjectsAndKeys:v12, @"status", v13, @"sessionID", 0];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2433, "-[IDSServiceEmbeddedController sendMessageStatusMessage:sessionID:service:status:]", 7, 0, "status message %s destination %s service %p", [statusCopy UTF8String], objc_msgSend(messageCopy, "UTF8String"), serviceCopy);
+  v15 = [NSDictionary dictionaryWithObjectsAndKeys:statusCopy, @"status", dCopy, @"sessionID", 0];
 
   if (sub_1000423E0())
   {
@@ -5214,13 +5214,13 @@ LABEL_14:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = [v15 description];
-      v18 = [v17 UTF8String];
+      uTF8String3 = [v17 UTF8String];
       *buf = 136315650;
       v21 = "[IDSServiceEmbeddedController sendMessageStatusMessage:sessionID:service:status:]";
       v22 = 1024;
       v23 = 2438;
       v24 = 2080;
-      v25 = v18;
+      uTF8String = uTF8String3;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%s:%d] status message dict %s", buf, 0x1Cu);
     }
   }
@@ -5228,24 +5228,24 @@ LABEL_14:
   v19 = [v15 description];
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2438, "-[IDSServiceEmbeddedController sendMessageStatusMessage:sessionID:service:status:]", 7, 0, "status message dict %s", [v19 UTF8String]);
 
-  [(IDSServiceEmbeddedController *)self sendServiceMessage:v15 destination:v10 service:v11];
+  [(IDSServiceEmbeddedController *)self sendServiceMessage:v15 destination:messageCopy service:serviceCopy];
 }
 
-- (void)sendMessageShareStatusResultInfo:(id)a3 sessionID:(id)a4 service:(id)a5 systemInfo:(id)a6
+- (void)sendMessageShareStatusResultInfo:(id)info sessionID:(id)d service:(id)service systemInfo:(id)systemInfo
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  [v10 setObject:a4 forKeyedSubscript:@"sessionID"];
-  [v10 setObject:@"Settings" forKeyedSubscript:@"status"];
-  [(IDSServiceEmbeddedController *)self sendServiceMessage:v10 destination:v12 service:v11];
+  systemInfoCopy = systemInfo;
+  serviceCopy = service;
+  infoCopy = info;
+  [systemInfoCopy setObject:d forKeyedSubscript:@"sessionID"];
+  [systemInfoCopy setObject:@"Settings" forKeyedSubscript:@"status"];
+  [(IDSServiceEmbeddedController *)self sendServiceMessage:systemInfoCopy destination:infoCopy service:serviceCopy];
 }
 
-- (void)sendMessageShareStatusUserDeclined:(id)a3 sessionID:(id)a4 service:(id)a5
+- (void)sendMessageShareStatusUserDeclined:(id)declined sessionID:(id)d service:(id)service
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [NSDictionary dictionaryWithObjectsAndKeys:@"UserDeclined", @"status", a4, @"sessionID", 0];
+  serviceCopy = service;
+  declinedCopy = declined;
+  v10 = [NSDictionary dictionaryWithObjectsAndKeys:@"UserDeclined", @"status", d, @"sessionID", 0];
   if (sub_1000423E0())
   {
     v11 = sub_100042E68();
@@ -5257,7 +5257,7 @@ LABEL_14:
       v16 = 1024;
       v17 = 2456;
       v18 = 2080;
-      v19 = [v12 UTF8String];
+      uTF8String = [v12 UTF8String];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] decline status request %s", buf, 0x1Cu);
     }
   }
@@ -5265,14 +5265,14 @@ LABEL_14:
   v13 = [v10 description];
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2456, "-[IDSServiceEmbeddedController sendMessageShareStatusUserDeclined:sessionID:service:]", 7, 0, "decline status request %s", [v13 UTF8String]);
 
-  [(IDSServiceEmbeddedController *)self sendServiceMessage:v10 destination:v9 service:v8];
+  [(IDSServiceEmbeddedController *)self sendServiceMessage:v10 destination:declinedCopy service:serviceCopy];
 }
 
-- (void)sendServiceMessage:(id)a3 destination:(id)a4 service:(id)a5
+- (void)sendServiceMessage:(id)message destination:(id)destination service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  destinationCopy = destination;
+  serviceCopy = service;
   v34[0] = IDSSendMessageOptionFireAndForgetKey;
   v34[1] = IDSSendMessageOptionWantsClientAcknowledgementKey;
   v35[0] = &__kCFBooleanTrue;
@@ -5285,7 +5285,7 @@ LABEL_14:
     v11 = sub_100042E68();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 description];
+      v12 = [messageCopy description];
       *buf = 136316162;
       v27 = "[IDSServiceEmbeddedController sendServiceMessage:destination:service:]";
       v28 = 1024;
@@ -5293,20 +5293,20 @@ LABEL_14:
       v30 = 2080;
       *v31 = [v12 UTF8String];
       *&v31[8] = 2080;
-      *&v31[10] = [v8 UTF8String];
+      *&v31[10] = [destinationCopy UTF8String];
       v32 = 2048;
-      v33 = v9;
+      v33 = serviceCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] sendServiceMessage dict = %s  destination %s  sercice %p", buf, 0x30u);
     }
   }
 
-  v13 = [v7 description];
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2471, "-[IDSServiceEmbeddedController sendServiceMessage:destination:service:]", 7, 0, "sendServiceMessage dict = %s  destination %s  sercice %p", [v13 UTF8String], objc_msgSend(v8, "UTF8String"), v9);
+  v13 = [messageCopy description];
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2471, "-[IDSServiceEmbeddedController sendServiceMessage:destination:service:]", 7, 0, "sendServiceMessage dict = %s  destination %s  sercice %p", [v13 UTF8String], objc_msgSend(destinationCopy, "UTF8String"), serviceCopy);
 
-  v14 = [NSSet setWithObject:v8];
+  v14 = [NSSet setWithObject:destinationCopy];
   v24 = 0;
   v25 = 0;
-  v15 = [v9 sendMessage:v7 toDestinations:v14 priority:300 options:v10 identifier:&v25 error:&v24];
+  v15 = [serviceCopy sendMessage:messageCopy toDestinations:v14 priority:300 options:v10 identifier:&v25 error:&v24];
   v16 = v25;
   v17 = v24;
 
@@ -5315,7 +5315,7 @@ LABEL_14:
     v18 = sub_100042E68();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v16 UTF8String];
+      uTF8String = [v16 UTF8String];
       *buf = 136315906;
       v27 = "[IDSServiceEmbeddedController sendServiceMessage:destination:service:]";
       v28 = 1024;
@@ -5323,7 +5323,7 @@ LABEL_14:
       v30 = 1024;
       *v31 = v15;
       *&v31[4] = 2080;
-      *&v31[6] = v19;
+      *&v31[6] = uTF8String;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[%s:%d] sendMessage result %d message uuid %s", buf, 0x22u);
     }
   }
@@ -5337,13 +5337,13 @@ LABEL_14:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = [v17 description];
-        v22 = [v21 UTF8String];
+        uTF8String2 = [v21 UTF8String];
         *buf = 136315650;
         v27 = "[IDSServiceEmbeddedController sendServiceMessage:destination:service:]";
         v28 = 1024;
         v29 = 2480;
         v30 = 2080;
-        *v31 = v22;
+        *v31 = uTF8String2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[%s:%d] sendMessage error: %s", buf, 0x1Cu);
       }
     }
@@ -5366,9 +5366,9 @@ LABEL_14:
   }
 }
 
-- (BOOL)inviterIsInActiveSession:(id)a3
+- (BOOL)inviterIsInActiveSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (sub_1000423E0())
   {
     v5 = sub_100042E68();
@@ -5379,20 +5379,20 @@ LABEL_14:
       v28 = 1024;
       v29 = 2496;
       v30 = 2080;
-      v31 = [v4 UTF8String];
+      uTF8String = [sessionCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%s:%d] check if %s in active session", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2496, "-[IDSServiceEmbeddedController inviterIsInActiveSession:]", 7, 0, "check if %s in active session", [v4 UTF8String]);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2496, "-[IDSServiceEmbeddedController inviterIsInActiveSession:]", 7, 0, "check if %s in active session", [sessionCopy UTF8String]);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(IDSServiceEmbeddedController *)self activeSessions];
-  v7 = [v6 allValues];
+  activeSessions = [(IDSServiceEmbeddedController *)self activeSessions];
+  allValues = [activeSessions allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5403,7 +5403,7 @@ LABEL_14:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -5412,23 +5412,23 @@ LABEL_14:
           v13 = sub_100042E68();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 inviterID];
-            v15 = [v14 UTF8String];
+            inviterID = [v12 inviterID];
+            uTF8String2 = [inviterID UTF8String];
             *buf = 136315650;
             v27 = "[IDSServiceEmbeddedController inviterIsInActiveSession:]";
             v28 = 1024;
             v29 = 2499;
             v30 = 2080;
-            v31 = v15;
+            uTF8String = uTF8String2;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%s:%d] check active session inviterID %s", buf, 0x1Cu);
           }
         }
 
-        v16 = [v12 inviterID];
-        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2499, "-[IDSServiceEmbeddedController inviterIsInActiveSession:]", 7, 0, "check active session inviterID %s", [v16 UTF8String]);
+        inviterID2 = [v12 inviterID];
+        sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2499, "-[IDSServiceEmbeddedController inviterIsInActiveSession:]", 7, 0, "check active session inviterID %s", [inviterID2 UTF8String]);
 
-        v17 = [v12 inviterID];
-        v18 = [v17 isEqualToString:v4];
+        inviterID3 = [v12 inviterID];
+        v18 = [inviterID3 isEqualToString:sessionCopy];
 
         if (v18)
         {
@@ -5437,7 +5437,7 @@ LABEL_14:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v9)
       {
         continue;
@@ -5453,9 +5453,9 @@ LABEL_19:
   return v19;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v6 = a5;
+  identifierCopy = identifier;
   if (sub_1000423E0())
   {
     v7 = sub_100042E68();
@@ -5466,15 +5466,15 @@ LABEL_19:
       v10 = 1024;
       v11 = 2511;
       v12 = 2080;
-      v13 = [v6 UTF8String];
+      uTF8String = [identifierCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%s:%d] hasBeenDeliveredWithContext %s", buf, 0x1Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2511, "-[IDSServiceEmbeddedController service:account:identifier:hasBeenDeliveredWithContext:]", 7, 0, "hasBeenDeliveredWithContext %s", [v6 UTF8String]);
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2511, "-[IDSServiceEmbeddedController service:account:identifier:hasBeenDeliveredWithContext:]", 7, 0, "hasBeenDeliveredWithContext %s", [identifierCopy UTF8String]);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingPendingMessageOfType:(int64_t)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingPendingMessageOfType:(int64_t)type fromID:(id)d context:(id)context
 {
   if (sub_1000423E0())
   {
@@ -5492,7 +5492,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2516, "[IDSServiceEmbeddedController service:account:incomingPendingMessageOfType:fromID:context:]", 7, 0, "incomingPendingMessageOfType");
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   if (sub_1000423E0())
   {
@@ -5510,7 +5510,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2521, "[IDSServiceEmbeddedController service:connectedDevicesChanged:]", 7, 0, "connectedDevicesChanged");
 }
 
-- (void)service:(id)a3 linkedDevicesChanged:(id)a4
+- (void)service:(id)service linkedDevicesChanged:(id)changed
 {
   if (sub_1000423E0())
   {
@@ -5528,7 +5528,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2526, "[IDSServiceEmbeddedController service:linkedDevicesChanged:]", 7, 0, "linkedDevicesChanged");
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 sentBytes:(int64_t)a6 totalBytes:(int64_t)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier sentBytes:(int64_t)bytes totalBytes:(int64_t)totalBytes
 {
   if (sub_1000423E0())
   {
@@ -5546,7 +5546,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2531, "[IDSServiceEmbeddedController service:account:identifier:sentBytes:totalBytes:]", 7, 0, "sentBytes");
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   if (sub_1000423E0())
   {
@@ -5564,7 +5564,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2535, "[IDSServiceEmbeddedController service:account:incomingData:fromID:context:]", 7, 0, "incomingData");
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   if (sub_1000423E0())
   {
@@ -5582,7 +5582,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2539, "[IDSServiceEmbeddedController service:account:incomingUnhandledProtobuf:fromID:context:]", 7, 0, "incomingUnhandledProtobuf");
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context
 {
   if (sub_1000423E0())
   {
@@ -5600,7 +5600,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2543, "[IDSServiceEmbeddedController service:account:incomingResourceAtURL:fromID:context:]", 7, 0, "incomingResourceAtURL");
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   if (sub_1000423E0())
   {
@@ -5618,7 +5618,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2547, "[IDSServiceEmbeddedController service:account:incomingResourceAtURL:metadata:fromID:context:]", 7, 0, "incomingResourceAtURL");
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   if (sub_1000423E0())
   {
@@ -5636,7 +5636,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2552, "[IDSServiceEmbeddedController service:activeAccountsChanged:]", 7, 0, "activeAccountsChanged");
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   if (sub_1000423E0())
   {
@@ -5654,7 +5654,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2556, "[IDSServiceEmbeddedController service:devicesChanged:]", 7, 0, "devicesChanged");
 }
 
-- (void)service:(id)a3 nearbyDevicesChanged:(id)a4
+- (void)service:(id)service nearbyDevicesChanged:(id)changed
 {
   if (sub_1000423E0())
   {
@@ -5672,11 +5672,11 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2560, "[IDSServiceEmbeddedController service:nearbyDevicesChanged:]", 7, 0, "nearbyDevicesChanged");
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (sub_1000423E0())
   {
     v11 = sub_100042E68();
@@ -5687,23 +5687,23 @@ LABEL_19:
       v14 = 1024;
       v15 = 2564;
       v16 = 1024;
-      v17 = v8;
+      v17 = successCopy;
       v18 = 2048;
-      v19 = [v10 code];
+      code = [errorCopy code];
       v20 = 2080;
-      v21 = [v9 UTF8String];
+      uTF8String = [identifierCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%s:%d] didSendWithSuccess success %d error code %ld  id %s", buf, 0x2Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2564, "-[IDSServiceEmbeddedController service:account:identifier:didSendWithSuccess:error:]", 7, 0, "didSendWithSuccess success %d error code %ld  id %s", v8, [v10 code], objc_msgSend(v9, "UTF8String"));
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2564, "-[IDSServiceEmbeddedController service:account:identifier:didSendWithSuccess:error:]", 7, 0, "didSendWithSuccess success %d error code %ld  id %s", successCopy, [errorCopy code], objc_msgSend(identifierCopy, "UTF8String"));
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a7;
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (sub_1000423E0())
   {
     v12 = sub_100042E68();
@@ -5714,19 +5714,19 @@ LABEL_19:
       v15 = 1024;
       v16 = 2568;
       v17 = 1024;
-      v18 = v9;
+      v18 = successCopy;
       v19 = 2048;
-      v20 = [v11 code];
+      code = [errorCopy code];
       v21 = 2080;
-      v22 = [v10 UTF8String];
+      uTF8String = [identifierCopy UTF8String];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%s:%d] didSendWithSuccess success %d error code %ld  id %s", buf, 0x2Cu);
     }
   }
 
-  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2568, "-[IDSServiceEmbeddedController service:account:identifier:didSendWithSuccess:error:context:]", 7, 0, "didSendWithSuccess success %d error code %ld  id %s", v9, [v11 code], objc_msgSend(v10, "UTF8String"));
+  sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2568, "-[IDSServiceEmbeddedController service:account:identifier:didSendWithSuccess:error:context:]", 7, 0, "didSendWithSuccess success %d error code %ld  id %s", successCopy, [errorCopy code], objc_msgSend(identifierCopy, "UTF8String"));
 }
 
-- (void)serviceSpaceDidBecomeAvailable:(id)a3
+- (void)serviceSpaceDidBecomeAvailable:(id)available
 {
   if (sub_1000423E0())
   {
@@ -5744,7 +5744,7 @@ LABEL_19:
   sub_100042760("/Library/Caches/com.apple.xbs/Sources/EmbeddedScreenSharingServer/iOS/ScreenSharingServer/IDSServiceEmbeddedController.m", 121, 2572, "[IDSServiceEmbeddedController serviceSpaceDidBecomeAvailable:]", 7, 0, "serviceSpaceDidBecomeAvailable");
 }
 
-- (void)serviceAllowedTrafficClassifiersDidReset:(id)a3
+- (void)serviceAllowedTrafficClassifiersDidReset:(id)reset
 {
   if (sub_1000423E0())
   {

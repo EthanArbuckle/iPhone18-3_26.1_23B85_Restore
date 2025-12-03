@@ -7,58 +7,58 @@
 - (void)didChangeSize;
 - (void)didScrollIntoVisibleRange;
 - (void)didScrollOutOfVisibleRange;
-- (void)didTapAttachment:(id)a3;
-- (void)setAttachment:(id)a3;
-- (void)setAttachmentContentSize:(CGSize)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)sharedInit:(BOOL)a3;
+- (void)didTapAttachment:(id)attachment;
+- (void)setAttachment:(id)attachment;
+- (void)setAttachmentContentSize:(CGSize)size;
+- (void)setFrame:(CGRect)frame;
+- (void)sharedInit:(BOOL)init;
 @end
 
 @implementation ICDrawingInlineAttachmentView
 
 - (id)icaxHintString
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Double tap to edit sketch" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Double tap to edit sketch" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"sketch attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"sketch attachment" value:&stru_282757698 table:0];
 
-  v7 = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
+  icaxAttachmentViewTypeDescription = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
   v5 = __ICAccessibilityStringForVariables();
 
   return v5;
 }
 
-- (void)sharedInit:(BOOL)a3
+- (void)sharedInit:(BOOL)init
 {
   v13.receiver = self;
   v13.super_class = ICDrawingInlineAttachmentView;
-  [(ICAttachmentView *)&v13 sharedInit:a3];
+  [(ICAttachmentView *)&v13 sharedInit:init];
   v4 = [ICDrawingInlineView alloc];
   [(ICDrawingInlineAttachmentView *)self bounds];
   v9 = [(ICDrawingInlineView *)v4 initWithFrame:[(ICAttachmentView *)self forManualRendering] forManualRendering:v5, v6, v7, v8];
   [(ICDrawingInlineAttachmentView *)self setDrawingInlineView:v9];
 
-  v10 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v10 setEditable:1];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView setEditable:1];
 
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(ICDrawingInlineAttachmentView *)self setIc_backgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(ICDrawingInlineAttachmentView *)self setIc_backgroundColor:clearColor];
 
-  v12 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [(ICDrawingInlineAttachmentView *)self addSubview:v12];
+  drawingInlineView2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [(ICDrawingInlineAttachmentView *)self addSubview:drawingInlineView2];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICDrawingInlineAttachmentView;
@@ -67,8 +67,8 @@
 
 - (CGRect)boundsForDisplay
 {
-  v2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v2 boundsForDisplay];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView boundsForDisplay];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -85,97 +85,97 @@
   return result;
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICDrawingInlineAttachmentView *)self attachment];
+  attachmentCopy = attachment;
+  attachment = [(ICDrawingInlineAttachmentView *)self attachment];
 
   v6 = MEMORY[0x277D35BB8];
   v7 = MEMORY[0x277D35B80];
-  if (v5)
+  if (attachment)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *v6;
-    v10 = [(ICDrawingInlineAttachmentView *)self attachment];
-    v11 = [v10 objectID];
-    [v8 removeObserver:self name:v9 object:v11];
+    attachment2 = [(ICDrawingInlineAttachmentView *)self attachment];
+    objectID = [attachment2 objectID];
+    [defaultCenter removeObserver:self name:v9 object:objectID];
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v13 = *v7;
-    v14 = [(ICDrawingInlineAttachmentView *)self attachment];
-    v15 = [v14 objectID];
-    [v12 removeObserver:self name:v13 object:v15];
+    attachment3 = [(ICDrawingInlineAttachmentView *)self attachment];
+    objectID2 = [attachment3 objectID];
+    [defaultCenter2 removeObserver:self name:v13 object:objectID2];
   }
 
   v28.receiver = self;
   v28.super_class = ICDrawingInlineAttachmentView;
-  [(ICDrawingInlineAttachmentView *)&v28 setAttachment:v4];
-  v16 = [(ICDrawingInlineAttachmentView *)self attachment];
-  v17 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v17 setAttachment:v16];
+  [(ICDrawingInlineAttachmentView *)&v28 setAttachment:attachmentCopy];
+  attachment4 = [(ICDrawingInlineAttachmentView *)self attachment];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView setAttachment:attachment4];
 
-  v18 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v18 setThumbnailDisplay:0];
+  drawingInlineView2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView2 setThumbnailDisplay:0];
 
-  v19 = [(ICDrawingInlineAttachmentView *)self attachment];
+  attachment5 = [(ICDrawingInlineAttachmentView *)self attachment];
 
-  if (v19)
+  if (attachment5)
   {
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
     v21 = *v6;
-    v22 = [(ICDrawingInlineAttachmentView *)self attachment];
-    v23 = [v22 objectID];
-    [v20 addObserver:self selector:sel_didChangeSize name:v21 object:v23];
+    attachment6 = [(ICDrawingInlineAttachmentView *)self attachment];
+    objectID3 = [attachment6 objectID];
+    [defaultCenter3 addObserver:self selector:sel_didChangeSize name:v21 object:objectID3];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
     v25 = *v7;
-    v26 = [(ICDrawingInlineAttachmentView *)self attachment];
-    v27 = [v26 objectID];
-    [v24 addObserver:self selector:sel_didChangeSize name:v25 object:v27];
+    attachment7 = [(ICDrawingInlineAttachmentView *)self attachment];
+    objectID4 = [attachment7 objectID];
+    [defaultCenter4 addObserver:self selector:sel_didChangeSize name:v25 object:objectID4];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = ICDrawingInlineAttachmentView;
-  [(ICDrawingInlineAttachmentView *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICDrawingInlineAttachmentView *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ICDrawingInlineAttachmentView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)setAttachmentContentSize:(CGSize)a3
+- (void)setAttachmentContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = ICDrawingInlineAttachmentView;
   [(ICDrawingInlineAttachmentView *)&v7 setAttachmentContentSize:?];
-  v6 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v6 setAttachmentContentSize:{width, height}];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView setAttachmentContentSize:{width, height}];
 }
 
-- (void)didTapAttachment:(id)a3
+- (void)didTapAttachment:(id)attachment
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICDrawingInlineAttachmentView *)self attachment];
-  v6 = [v5 attachmentModel];
-  if ([v6 isReadyToPresent])
+  attachmentCopy = attachment;
+  attachment = [(ICDrawingInlineAttachmentView *)self attachment];
+  attachmentModel = [attachment attachmentModel];
+  if ([attachmentModel isReadyToPresent])
   {
-    v7 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-    v8 = [v7 isReadyToPresent];
+    drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+    isReadyToPresent = [drawingInlineView isReadyToPresent];
 
-    if (v8)
+    if (isReadyToPresent)
     {
       v12.receiver = self;
       v12.super_class = ICDrawingInlineAttachmentView;
-      [(ICAttachmentView *)&v12 didTapAttachment:v4];
+      [(ICAttachmentView *)&v12 didTapAttachment:attachmentCopy];
       goto LABEL_8;
     }
   }
@@ -187,10 +187,10 @@
   v9 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(ICDrawingInlineAttachmentView *)self attachment];
-    v11 = [v10 shortLoggingDescription];
+    attachment2 = [(ICDrawingInlineAttachmentView *)self attachment];
+    shortLoggingDescription = [attachment2 shortLoggingDescription];
     *buf = 138412290;
-    v14 = v11;
+    v14 = shortLoggingDescription;
     _os_log_impl(&dword_2151A1000, v9, OS_LOG_TYPE_INFO, "Not presenting drawing %@ because it's not ready yet", buf, 0xCu);
   }
 
@@ -199,30 +199,30 @@ LABEL_8:
 
 - (void)didScrollIntoVisibleRange
 {
-  v2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v2 didScrollIntoVisibleRange];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView didScrollIntoVisibleRange];
 }
 
 - (void)didScrollOutOfVisibleRange
 {
-  v2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  [v2 didScrollOutOfVisibleRange];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  [drawingInlineView didScrollOutOfVisibleRange];
 }
 
 - (BOOL)cancelDidScrollIntoVisibleRange
 {
-  v2 = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
-  v3 = [v2 cancelDidScrollIntoVisibleRange];
+  drawingInlineView = [(ICDrawingInlineAttachmentView *)self drawingInlineView];
+  cancelDidScrollIntoVisibleRange = [drawingInlineView cancelDidScrollIntoVisibleRange];
 
-  return v3;
+  return cancelDidScrollIntoVisibleRange;
 }
 
 - (void)didChangeSize
 {
-  v3 = [(ICDrawingInlineAttachmentView *)self attachment];
-  v4 = [v3 managedObjectContext];
-  v5 = [(ICDrawingInlineAttachmentView *)self attachment];
-  [v4 ic_refreshObject:v5 mergeChanges:1];
+  attachment = [(ICDrawingInlineAttachmentView *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
+  attachment2 = [(ICDrawingInlineAttachmentView *)self attachment];
+  [managedObjectContext ic_refreshObject:attachment2 mergeChanges:1];
 
   v6.receiver = self;
   v6.super_class = ICDrawingInlineAttachmentView;

@@ -7,18 +7,18 @@
 
 - (int)errorCode
 {
-  v2 = [(MBException *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"MBErrorCode"];
-  v4 = [v3 intValue];
+  userInfo = [(MBException *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"MBErrorCode"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (id)error
 {
-  v3 = [(MBException *)self errorCode];
-  v4 = [(MBException *)self reason];
-  v5 = [MBError errorWithCode:v3 format:@"%@", v4];
+  errorCode = [(MBException *)self errorCode];
+  reason = [(MBException *)self reason];
+  v5 = [MBError errorWithCode:errorCode format:@"%@", reason];
 
   return v5;
 }

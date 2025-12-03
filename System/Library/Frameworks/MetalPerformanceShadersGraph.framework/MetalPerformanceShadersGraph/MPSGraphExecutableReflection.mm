@@ -1,20 +1,20 @@
 @interface MPSGraphExecutableReflection
-- (MPSGraphExecutableReflection)initWithMPSGraphPackage:(id)a3 error:(id *)a4;
+- (MPSGraphExecutableReflection)initWithMPSGraphPackage:(id)package error:(id *)error;
 - (id)functionNames;
-- (id)inputNamesForFunction:(id)a3;
-- (id)inputRanksForFunction:(id)a3;
-- (id)inputShapesForFunction:(id)a3;
-- (id)outputNamesForFunction:(id)a3;
-- (id)outputRanksForFunction:(id)a3;
-- (id)outputShapesForFunction:(id)a3;
+- (id)inputNamesForFunction:(id)function;
+- (id)inputRanksForFunction:(id)function;
+- (id)inputShapesForFunction:(id)function;
+- (id)outputNamesForFunction:(id)function;
+- (id)outputRanksForFunction:(id)function;
+- (id)outputShapesForFunction:(id)function;
 @end
 
 @implementation MPSGraphExecutableReflection
 
-- (MPSGraphExecutableReflection)initWithMPSGraphPackage:(id)a3 error:(id *)a4
+- (MPSGraphExecutableReflection)initWithMPSGraphPackage:(id)package error:(id *)error
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  packageCopy = package;
   v50.receiver = self;
   v50.super_class = MPSGraphExecutableReflection;
   v8 = [(MPSGraphExecutableReflection *)&v50 init];
@@ -23,58 +23,58 @@
     goto LABEL_34;
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   fileManager = v8->_fileManager;
-  v8->_fileManager = v9;
+  v8->_fileManager = defaultManager;
 
-  objc_storeStrong(&v8->_mpsGraphPackageURL, a3);
+  objc_storeStrong(&v8->_mpsGraphPackageURL, package);
   v49 = 0;
   v11 = v8->_fileManager;
-  v12 = [(NSURL *)v8->_mpsGraphPackageURL path];
-  LODWORD(v11) = [(NSFileManager *)v11 fileExistsAtPath:v12 isDirectory:&v49];
+  path = [(NSURL *)v8->_mpsGraphPackageURL path];
+  LODWORD(v11) = [(NSFileManager *)v11 fileExistsAtPath:path isDirectory:&v49];
 
   if (!v11)
   {
 LABEL_33:
-    a4 = v8;
+    error = v8;
     goto LABEL_35;
   }
 
   if (v49)
   {
     v13 = v8->_mpsGraphPackageURL;
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v15 = [(NSURL *)v13 URLByAppendingPathComponent:@"/reflection.fb"];
-    v16 = [v15 path];
-    v17 = [v14 isReadableFileAtPath:v16];
+    path2 = [v15 path];
+    v17 = [defaultManager2 isReadableFileAtPath:path2];
 
     if (v17)
     {
       v18 = [(NSURL *)v8->_mpsGraphPackageURL URLByAppendingPathComponent:@"/reflection.fb"];
-      v19 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v18 options:2 error:a4];
+      v19 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v18 options:2 error:error];
       reflectionFb = v8->_reflectionFb;
       v8->_reflectionFb = v19;
 
       v21 = v8->_reflectionFb;
       if (!v21)
       {
-        if (a4)
+        if (error)
         {
           v37 = MEMORY[0x1E696ABC0];
           v53 = *MEMORY[0x1E696A578];
           v38 = MEMORY[0x1E696AEC0];
-          v39 = [v18 absoluteString];
-          v40 = [v38 stringWithFormat:@"%@%@", @"Error: no file at url ", v39];
+          absoluteString = [v18 absoluteString];
+          v40 = [v38 stringWithFormat:@"%@%@", @"Error: no file at url ", absoluteString];
           v54 = v40;
           v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-          *a4 = [v37 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v41];
+          *error = [v37 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v41];
         }
 
         goto LABEL_34;
       }
 
-      v22 = [(NSData *)v21 bytes];
-      v23 = (v22 + *v22);
+      bytes = [(NSData *)v21 bytes];
+      v23 = (bytes + *bytes);
       v24 = (v23 - *v23);
       v25 = *v24;
       if (v25 >= 5 && v24[2] && *(v23 + v24[2]) == 1)
@@ -109,7 +109,7 @@ LABEL_33:
         {
           v43 = __dst[1] == 8 && *__dst[0] == 0x687061726773706DLL;
           operator delete(__dst[0]);
-          if (!a4)
+          if (!error)
           {
 LABEL_32:
 
@@ -119,7 +119,7 @@ LABEL_32:
             }
 
 LABEL_34:
-            a4 = 0;
+            error = 0;
             goto LABEL_35;
           }
 
@@ -130,7 +130,7 @@ LABEL_30:
             v51 = *MEMORY[0x1E696A578];
             v52 = @"Error: reflection information is corrupted.";
             v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-            *a4 = [v44 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v45];
+            *error = [v44 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v45];
           }
 
           goto LABEL_32;
@@ -139,7 +139,7 @@ LABEL_30:
         if (v48 == 8)
         {
           v43 = __dst[0] == 0x687061726773706DLL;
-          if (!a4)
+          if (!error)
           {
             goto LABEL_32;
           }
@@ -149,7 +149,7 @@ LABEL_30:
       }
 
       v43 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_32;
       }
@@ -157,41 +157,41 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    if (a4)
+    if (error)
     {
       v35 = MEMORY[0x1E696ABC0];
       v55 = *MEMORY[0x1E696A578];
       v56 = @"Error: reflection information not found in the graph package.";
       v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-      *a4 = [v35 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v36];
+      *error = [v35 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v36];
 
       goto LABEL_34;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v30 = MEMORY[0x1E696ABC0];
     v57 = *MEMORY[0x1E696A578];
     v31 = MEMORY[0x1E696AEC0];
-    v32 = [(NSURL *)v8->_mpsGraphPackageURL absoluteString];
-    v33 = [v31 stringWithFormat:@"%@%@%@", @"Error: file ", v32, @" is unexpectedly not a directory"];
+    absoluteString2 = [(NSURL *)v8->_mpsGraphPackageURL absoluteString];
+    v33 = [v31 stringWithFormat:@"%@%@%@", @"Error: file ", absoluteString2, @" is unexpectedly not a directory"];
     v58[0] = v33;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    *a4 = [v30 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v34];
+    *error = [v30 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v34];
 
     goto LABEL_34;
   }
 
 LABEL_35:
 
-  return a4;
+  return error;
 }
 
 - (id)functionNames
 {
-  v2 = [(NSData *)self->_reflectionFb bytes];
-  v3 = (v2 + *v2);
+  bytes = [(NSData *)self->_reflectionFb bytes];
+  v3 = (bytes + *bytes);
   v4 = (v3 - *v3);
   if (*v4 >= 9u && (v5 = v4[4]) != 0)
   {
@@ -227,17 +227,17 @@ LABEL_35:
   return v7;
 }
 
-- (id)inputNamesForFunction:(id)a3
+- (id)inputNamesForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
     v11 = 0;
     goto LABEL_50;
   }
 
-  v5 = [(NSData *)self->_reflectionFb bytes];
-  v6 = (v5 + *v5);
+  bytes = [(NSData *)self->_reflectionFb bytes];
+  v6 = (bytes + *bytes);
   v7 = (v6 - *v6);
   if (*v7 >= 9u && (v8 = v7[4]) != 0)
   {
@@ -260,8 +260,8 @@ LABEL_35:
     while (1)
     {
       v15 = v9[v13 / 4 + 1];
-      v16 = [v4 UTF8String];
-      v17 = strlen(v16);
+      uTF8String = [functionCopy UTF8String];
+      v17 = strlen(uTF8String);
       if (v17 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -276,7 +276,7 @@ LABEL_35:
       v49 = v17;
       if (v17)
       {
-        memmove(__dst, v16, v17);
+        memmove(__dst, uTF8String, v17);
       }
 
       *(__dst + v18) = 0;
@@ -430,17 +430,17 @@ LABEL_50:
   return v11;
 }
 
-- (id)outputNamesForFunction:(id)a3
+- (id)outputNamesForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
     v11 = 0;
     goto LABEL_50;
   }
 
-  v5 = [(NSData *)self->_reflectionFb bytes];
-  v6 = (v5 + *v5);
+  bytes = [(NSData *)self->_reflectionFb bytes];
+  v6 = (bytes + *bytes);
   v7 = (v6 - *v6);
   if (*v7 >= 9u && (v8 = v7[4]) != 0)
   {
@@ -463,8 +463,8 @@ LABEL_50:
     while (1)
     {
       v15 = v9[v13 / 4 + 1];
-      v16 = [v4 UTF8String];
-      v17 = strlen(v16);
+      uTF8String = [functionCopy UTF8String];
+      v17 = strlen(uTF8String);
       if (v17 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -479,7 +479,7 @@ LABEL_50:
       v49 = v17;
       if (v17)
       {
-        memmove(__dst, v16, v17);
+        memmove(__dst, uTF8String, v17);
       }
 
       *(__dst + v18) = 0;
@@ -633,17 +633,17 @@ LABEL_50:
   return v11;
 }
 
-- (id)inputShapesForFunction:(id)a3
+- (id)inputShapesForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
     v11 = 0;
     goto LABEL_64;
   }
 
-  v5 = [(NSData *)self->_reflectionFb bytes];
-  v6 = (v5 + *v5);
+  bytes = [(NSData *)self->_reflectionFb bytes];
+  v6 = (bytes + *bytes);
   v7 = (v6 - *v6);
   if (*v7 >= 9u && (v8 = v7[4]) != 0)
   {
@@ -666,8 +666,8 @@ LABEL_50:
     while (1)
     {
       v15 = v9[v13 / 4 + 1];
-      v16 = [v4 UTF8String];
-      v17 = strlen(v16);
+      uTF8String = [functionCopy UTF8String];
+      v17 = strlen(uTF8String);
       if (v17 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -682,7 +682,7 @@ LABEL_50:
       v57 = v17;
       if (v17)
       {
-        memmove(__dst, v16, v17);
+        memmove(__dst, uTF8String, v17);
       }
 
       *(__dst + v18) = 0;
@@ -900,10 +900,10 @@ LABEL_64:
   return v11;
 }
 
-- (id)inputRanksForFunction:(id)a3
+- (id)inputRanksForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4 || (v5 = [(NSData *)self->_reflectionFb bytes], v6 = *v5, v7 = *(v5 + v6 - *(v5 + v6) + 8), v8 = (v5 + v6 + v7), v9 = *v8, v10 = *(v8 + v9), !v10))
+  functionCopy = function;
+  if (!functionCopy || (v5 = [(NSData *)self->_reflectionFb bytes], v6 = *v5, v7 = *(v5 + v6 - *(v5 + v6) + 8), v8 = (v5 + v6 + v7), v9 = *v8, v10 = *(v8 + v9), !v10))
   {
 LABEL_40:
     v30 = 0;
@@ -920,8 +920,8 @@ LABEL_40:
   while (1)
   {
     v14 = *&v13[v11 + 4];
-    v15 = [v4 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [functionCopy UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -936,7 +936,7 @@ LABEL_40:
     v50 = v16;
     if (v16)
     {
-      memmove(__dst, v15, v16);
+      memmove(__dst, uTF8String, v16);
     }
 
     *(__dst + v17) = 0;
@@ -1102,17 +1102,17 @@ LABEL_41:
   return v30;
 }
 
-- (id)outputShapesForFunction:(id)a3
+- (id)outputShapesForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
     v11 = 0;
     goto LABEL_64;
   }
 
-  v5 = [(NSData *)self->_reflectionFb bytes];
-  v6 = (v5 + *v5);
+  bytes = [(NSData *)self->_reflectionFb bytes];
+  v6 = (bytes + *bytes);
   v7 = (v6 - *v6);
   if (*v7 >= 9u && (v8 = v7[4]) != 0)
   {
@@ -1135,8 +1135,8 @@ LABEL_41:
     while (1)
     {
       v15 = v9[v13 / 4 + 1];
-      v16 = [v4 UTF8String];
-      v17 = strlen(v16);
+      uTF8String = [functionCopy UTF8String];
+      v17 = strlen(uTF8String);
       if (v17 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -1151,7 +1151,7 @@ LABEL_41:
       v59 = v17;
       if (v17)
       {
-        memmove(__dst, v16, v17);
+        memmove(__dst, uTF8String, v17);
       }
 
       *(__dst + v18) = 0;
@@ -1365,10 +1365,10 @@ LABEL_64:
   return v11;
 }
 
-- (id)outputRanksForFunction:(id)a3
+- (id)outputRanksForFunction:(id)function
 {
-  v4 = a3;
-  if (!v4 || (v5 = [(NSData *)self->_reflectionFb bytes], v6 = *v5, v7 = *(v5 + v6 - *(v5 + v6) + 8), v8 = (v5 + v6 + v7), v9 = *v8, v10 = *(v8 + v9), !v10))
+  functionCopy = function;
+  if (!functionCopy || (v5 = [(NSData *)self->_reflectionFb bytes], v6 = *v5, v7 = *(v5 + v6 - *(v5 + v6) + 8), v8 = (v5 + v6 + v7), v9 = *v8, v10 = *(v8 + v9), !v10))
   {
 LABEL_40:
     v30 = 0;
@@ -1385,8 +1385,8 @@ LABEL_40:
   while (1)
   {
     v14 = *&v13[v11 + 4];
-    v15 = [v4 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [functionCopy UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -1401,7 +1401,7 @@ LABEL_40:
     v50 = v16;
     if (v16)
     {
-      memmove(__dst, v15, v16);
+      memmove(__dst, uTF8String, v16);
     }
 
     *(__dst + v17) = 0;

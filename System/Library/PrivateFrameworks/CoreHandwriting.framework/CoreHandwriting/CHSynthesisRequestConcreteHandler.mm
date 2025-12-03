@@ -1,31 +1,31 @@
 @interface CHSynthesisRequestConcreteHandler
 - (BOOL)hasPersonalizationAvailable;
-- (BOOL)inventoryContainsSampleMatchingRequest:(id)a3;
+- (BOOL)inventoryContainsSampleMatchingRequest:(id)request;
 - (BOOL)isReadyForCharacterInventorySynthesis;
-- (CHSynthesisRequestConcreteHandler)initWithStyleComputeBlock:(id)a3;
-- (id)_queueForRequest:(id)a3 outIsSynchronizedSynthesisQueue:(BOOL *)a4;
-- (id)processSynthesisRequest:(id)a3 isSynchronized:(BOOL)a4 error:(id *)a5;
+- (CHSynthesisRequestConcreteHandler)initWithStyleComputeBlock:(id)block;
+- (id)_queueForRequest:(id)request outIsSynchronizedSynthesisQueue:(BOOL *)queue;
+- (id)processSynthesisRequest:(id)request isSynchronized:(BOOL)synchronized error:(id *)error;
 - (id)resultByAppendingInventoryContents;
-- (id)unsafeSynthesisChunkingRequest:(id)a3;
-- (int64_t)styleScriptForSynthesizerSupportedStyle:(int64_t)a3;
-- (void)_updateStylePredictionsSingleBatch:(int64_t)a3;
-- (void)addToHolderPersonalizedCharacterWithId:(unint64_t)a3;
-- (void)createPersonalizationCandidatesForAll:(BOOL)a3;
-- (void)handleInventoryRequest:(id)a3 reply:(id)a4;
-- (void)handleSynthesisRequest:(id)a3 reply:(id)a4;
-- (void)saveStyleInventoryIfNeededWithMinimumDelay:(double)a3;
+- (id)unsafeSynthesisChunkingRequest:(id)request;
+- (int64_t)styleScriptForSynthesizerSupportedStyle:(int64_t)style;
+- (void)_updateStylePredictionsSingleBatch:(int64_t)batch;
+- (void)addToHolderPersonalizedCharacterWithId:(unint64_t)id;
+- (void)createPersonalizationCandidatesForAll:(BOOL)all;
+- (void)handleInventoryRequest:(id)request reply:(id)reply;
+- (void)handleSynthesisRequest:(id)request reply:(id)reply;
+- (void)saveStyleInventoryIfNeededWithMinimumDelay:(double)delay;
 - (void)unsafeCheckOutStyleInventory;
 - (void)unsafeCheckOutTextSynthesizer;
 - (void)unsafeEvictStyleInventory;
 - (void)unsafeEvictTextSynthesizer;
-- (void)updateInventoryStylePredictionsWithCompletion:(id)a3;
+- (void)updateInventoryStylePredictionsWithCompletion:(id)completion;
 @end
 
 @implementation CHSynthesisRequestConcreteHandler
 
-- (CHSynthesisRequestConcreteHandler)initWithStyleComputeBlock:(id)a3
+- (CHSynthesisRequestConcreteHandler)initWithStyleComputeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = CHSynthesisRequestConcreteHandler;
   v5 = [(CHSynthesisRequestConcreteHandler *)&v11 init];
@@ -33,7 +33,7 @@
   modelPowerLogger = v5->_modelPowerLogger;
   v5->_modelPowerLogger = v6;
 
-  v8 = MEMORY[0x1865E6810](v4);
+  v8 = MEMORY[0x1865E6810](blockCopy);
   styleComputeBlock = v5->_styleComputeBlock;
   v5->_styleComputeBlock = v8;
 
@@ -583,32 +583,32 @@ LABEL_57:
   self->_fastPathCharacterPersonalizer = 0;
 }
 
-- (id)_queueForRequest:(id)a3 outIsSynchronizedSynthesisQueue:(BOOL *)a4
+- (id)_queueForRequest:(id)request outIsSynchronizedSynthesisQueue:(BOOL *)queue
 {
-  v5 = a3;
-  v11 = objc_msgSend_options(v5, v6, v7, v8, v9, v10);
+  requestCopy = request;
+  v11 = objc_msgSend_options(requestCopy, v6, v7, v8, v9, v10);
   isFastPath = objc_msgSend_isFastPath(v11, v12, v13, v14, v15, v16);
 
   if (isFastPath)
   {
     v23 = dispatch_get_global_queue(2, 0);
-    if (!a4)
+    if (!queue)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    *a4 = isFastPath ^ 1;
+    *queue = isFastPath ^ 1;
     goto LABEL_16;
   }
 
-  v24 = objc_msgSend_priority(v5, v18, v19, v20, v21, v22);
+  v24 = objc_msgSend_priority(requestCopy, v18, v19, v20, v21, v22);
   if (v24 >= 2)
   {
     if (v24 == 2)
     {
       v23 = qword_1EA84CE00;
-      if (a4)
+      if (queue)
       {
         goto LABEL_15;
       }
@@ -629,7 +629,7 @@ LABEL_15:
       }
 
       v23 = 0;
-      if (a4)
+      if (queue)
       {
         goto LABEL_15;
       }
@@ -639,7 +639,7 @@ LABEL_15:
   else
   {
     v23 = qword_1EA84CDF8;
-    if (a4)
+    if (queue)
     {
       goto LABEL_15;
     }
@@ -650,13 +650,13 @@ LABEL_16:
   return v23;
 }
 
-- (void)handleSynthesisRequest:(id)a3 reply:(id)a4
+- (void)handleSynthesisRequest:(id)request reply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v22 = 1;
-  v11 = objc_msgSend__queueForRequest_outIsSynchronizedSynthesisQueue_(self, v8, v6, &v22, v9, v10);
+  v11 = objc_msgSend__queueForRequest_outIsSynchronizedSynthesisQueue_(self, v8, requestCopy, &v22, v9, v10);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -726,28 +726,28 @@ LABEL_17:
   v18[2] = sub_183715840;
   v18[3] = &unk_1E6DDCDB0;
   v18[4] = self;
-  v19 = v6;
+  v19 = requestCopy;
   v21 = v22;
-  v20 = v7;
-  v16 = v7;
-  v17 = v6;
+  v20 = replyCopy;
+  v16 = replyCopy;
+  v17 = requestCopy;
   dispatch_async(v11, v18);
 }
 
-- (id)processSynthesisRequest:(id)a3 isSynchronized:(BOOL)a4 error:(id *)a5
+- (id)processSynthesisRequest:(id)request isSynchronized:(BOOL)synchronized error:(id *)error
 {
   v490[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v481 = v6;
-  v12 = objc_msgSend_requestType(v6, v7, v8, v9, v10, v11);
+  requestCopy = request;
+  v481 = requestCopy;
+  v12 = objc_msgSend_requestType(requestCopy, v7, v8, v9, v10, v11);
   if (v12)
   {
     if (v12 == 1)
     {
       textSynthesizer = self->_textSynthesizer;
-      v19 = objc_msgSend_drawing(v6, v13, v14, v15, v16, v17);
-      v64 = objc_msgSend_string(v6, v59, v60, v61, v62, v63);
-      v70 = objc_msgSend_options(v6, v65, v66, v67, v68, v69);
+      v19 = objc_msgSend_drawing(requestCopy, v13, v14, v15, v16, v17);
+      v64 = objc_msgSend_string(requestCopy, v59, v60, v61, v62, v63);
+      v70 = objc_msgSend_options(requestCopy, v65, v66, v67, v68, v69);
       v76 = objc_msgSend_dictionary(v70, v71, v72, v73, v74, v75);
       v486 = 0;
       v56 = objc_msgSend_refineDrawing_transcription_options_shouldCancel_error_(textSynthesizer, v77, v19, v64, v76, 0, &v486);
@@ -759,12 +759,12 @@ LABEL_17:
     if (v12 == 2)
     {
       v18 = self->_textSynthesizer;
-      v19 = objc_msgSend_drawing(v6, v13, v14, v15, v16, v17);
-      v25 = objc_msgSend_options(v6, v20, v21, v22, v23, v24);
+      v19 = objc_msgSend_drawing(requestCopy, v13, v14, v15, v16, v17);
+      v25 = objc_msgSend_options(requestCopy, v20, v21, v22, v23, v24);
       v31 = objc_msgSend_styleContents(v25, v26, v27, v28, v29, v30);
       v36 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, 0, v33, v34, v35);
-      v42 = objc_msgSend_string(v6, v37, v38, v39, v40, v41);
-      v48 = objc_msgSend_options(v6, v43, v44, v45, v46, v47);
+      v42 = objc_msgSend_string(requestCopy, v37, v38, v39, v40, v41);
+      v48 = objc_msgSend_options(requestCopy, v43, v44, v45, v46, v47);
       v54 = objc_msgSend_dictionary(v48, v49, v50, v51, v52, v53);
       v485 = 0;
       v56 = objc_msgSend_replaceDrawing_originalTranscription_replacementTranscription_options_shouldCancel_error_(v18, v55, v19, v36, v42, v54, 0, &v485);
@@ -812,7 +812,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v78 = objc_msgSend_options(v6, v13, v14, v15, v16, v17);
+  v78 = objc_msgSend_options(requestCopy, v13, v14, v15, v16, v17);
   v84 = objc_msgSend_skipStyleInventoryLookup(v78, v79, v80, v81, v82, v83);
 
   if (v84)
@@ -829,14 +829,14 @@ LABEL_19:
       _os_log_impl(&dword_18366B000, v90, OS_LOG_TYPE_DEBUG, "Skipping style inventory lookup", buf, 2u);
     }
 
-    v96 = objc_msgSend_options(v6, v91, v92, v93, v94, v95);
+    v96 = objc_msgSend_options(requestCopy, v91, v92, v93, v94, v95);
     v19 = objc_msgSend_copy(v96, v97, v98, v99, v100, v101);
   }
 
-  else if (a4)
+  else if (synchronized)
   {
     v108 = self->_textSynthesizer;
-    v109 = objc_msgSend_string(v6, v85, v86, v87, v88, v89);
+    v109 = objc_msgSend_string(requestCopy, v85, v86, v87, v88, v89);
     canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(v108, v110, v109, v111, v112, v113);
     v119 = objc_msgSend_styleScriptForSynthesizerSupportedStyle_(self, v115, canPredictStyleForTranscription, v116, v117, v118);
 
@@ -847,29 +847,29 @@ LABEL_19:
       objc_msgSend__updateStylePredictionsSingleBatch_(self, v130, v129, v131, v132, v133);
     }
 
-    v134 = objc_msgSend_options(v6, v124, v125, v126, v127, v128);
+    v134 = objc_msgSend_options(requestCopy, v124, v125, v126, v127, v128);
     v145 = objc_msgSend_styleDrawings(v134, v135, v136, v137, v138, v139);
     if (v145)
     {
-      v146 = objc_msgSend_options(v6, v140, v141, v142, v143, v144);
+      v146 = objc_msgSend_options(requestCopy, v140, v141, v142, v143, v144);
       v152 = objc_msgSend_styleContents(v146, v147, v148, v149, v150, v151);
 
       if (v152)
       {
         v158 = MEMORY[0x1E695DF70];
-        v159 = objc_msgSend_options(v6, v153, v154, v155, v156, v157);
+        v159 = objc_msgSend_options(requestCopy, v153, v154, v155, v156, v157);
         v165 = objc_msgSend_styleDrawings(v159, v160, v161, v162, v163, v164);
         v171 = objc_msgSend_count(v165, v166, v167, v168, v169, v170);
         v476 = objc_msgSend_arrayWithCapacity_(v158, v172, v171, v173, v174, v175);
 
         v176 = MEMORY[0x1E695DF70];
-        v182 = objc_msgSend_options(v6, v177, v178, v179, v180, v181);
+        v182 = objc_msgSend_options(requestCopy, v177, v178, v179, v180, v181);
         v188 = objc_msgSend_styleDrawings(v182, v183, v184, v185, v186, v187);
         v194 = objc_msgSend_count(v188, v189, v190, v191, v192, v193);
         v475 = objc_msgSend_arrayWithCapacity_(v176, v195, v194, v196, v197, v198);
 
         v199 = MEMORY[0x1E695DF70];
-        v205 = objc_msgSend_options(v6, v200, v201, v202, v203, v204);
+        v205 = objc_msgSend_options(requestCopy, v200, v201, v202, v203, v204);
         v211 = objc_msgSend_styleDrawings(v205, v206, v207, v208, v209, v210);
         v217 = objc_msgSend_count(v211, v212, v213, v214, v215, v216);
         v477 = objc_msgSend_arrayWithCapacity_(v199, v218, v217, v219, v220, v221);
@@ -992,7 +992,7 @@ LABEL_19:
 
   else
   {
-    v397 = objc_msgSend_options(v6, v85, v86, v87, v88, v89);
+    v397 = objc_msgSend_options(requestCopy, v85, v86, v87, v88, v89);
     isFastPath = objc_msgSend_isFastPath(v397, v398, v399, v400, v401, v402);
 
     if ((isFastPath & 1) == 0)
@@ -1010,7 +1010,7 @@ LABEL_19:
       }
     }
 
-    v410 = objc_msgSend_options(v6, v404, v405, v406, v407, v408);
+    v410 = objc_msgSend_options(requestCopy, v404, v405, v406, v407, v408);
     v416 = objc_msgSend_isFastPath(v410, v411, v412, v413, v414, v415);
 
     if ((v416 & 1) == 0)
@@ -1028,7 +1028,7 @@ LABEL_19:
       }
     }
 
-    v423 = objc_msgSend_options(v6, v417, v418, v419, v420, v421);
+    v423 = objc_msgSend_options(requestCopy, v417, v418, v419, v420, v421);
     v19 = objc_msgSend_copy(v423, v424, v425, v426, v427, v428);
   }
 
@@ -1040,43 +1040,43 @@ LABEL_19:
   v57 = v482;
 
 LABEL_57:
-  if (a5)
+  if (error)
   {
     v471 = v57;
-    *a5 = v57;
+    *error = v57;
   }
 
   return v56;
 }
 
-- (void)handleInventoryRequest:(id)a3 reply:(id)a4
+- (void)handleInventoryRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = qword_1EA84CE00;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_183716974;
   block[3] = &unk_1E6DDCE00;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = requestCopy;
   dispatch_async(v8, block);
 }
 
-- (id)unsafeSynthesisChunkingRequest:(id)a3
+- (id)unsafeSynthesisChunkingRequest:(id)request
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     textSynthesizer = self->_textSynthesizer;
-    v11 = objc_msgSend_string(v4, v5, v6, v7, v8, v9);
-    v17 = objc_msgSend_allowedSynthesizers(v4, v12, v13, v14, v15, v16);
-    v23 = objc_msgSend_mode(v4, v18, v19, v20, v21, v22);
+    v11 = objc_msgSend_string(requestCopy, v5, v6, v7, v8, v9);
+    v17 = objc_msgSend_allowedSynthesizers(requestCopy, v12, v13, v14, v15, v16);
+    v23 = objc_msgSend_mode(requestCopy, v18, v19, v20, v21, v22);
     v26 = objc_msgSend_chunkForSynthesisString_allowedSynthesizers_mode_(textSynthesizer, v24, v11, v17, v23, v25);
   }
 
@@ -1103,10 +1103,10 @@ LABEL_57:
   return v26;
 }
 
-- (BOOL)inventoryContainsSampleMatchingRequest:(id)a3
+- (BOOL)inventoryContainsSampleMatchingRequest:(id)request
 {
   styleInventory = self->_styleInventory;
-  v7 = objc_msgSend_strokeIdentifiers(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_strokeIdentifiers(request, a2, request, v3, v4, v5);
   LOBYTE(styleInventory) = objc_msgSend_containsSampleWithStrokeIdentifiers_(styleInventory, v8, v7, v9, v10, v11);
 
   return styleInventory;
@@ -1148,17 +1148,17 @@ LABEL_57:
   return hasAllDigits;
 }
 
-- (void)updateInventoryStylePredictionsWithCompletion:(id)a3
+- (void)updateInventoryStylePredictionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = qword_1EA84CE00;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_183717448;
   v7[3] = &unk_1E6DDCE50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1167,7 +1167,7 @@ LABEL_57:
   v97 = *MEMORY[0x1E69E9840];
   if (os_variant_has_internal_diagnostics())
   {
-    v60 = self;
+    selfCopy = self;
     v89 = 0;
     v90 = &v89;
     v91 = 0x3032000000;
@@ -1272,7 +1272,7 @@ LABEL_57:
     }
 
     v80[3] = v80[3] + 20.0;
-    styleInventory = v60->_styleInventory;
+    styleInventory = selfCopy->_styleInventory;
     v63[0] = MEMORY[0x1E69E9820];
     v63[1] = 3221225472;
     v63[2] = sub_183717DB0;
@@ -1311,9 +1311,9 @@ LABEL_57:
   return v58;
 }
 
-- (void)createPersonalizationCandidatesForAll:(BOOL)a3
+- (void)createPersonalizationCandidatesForAll:(BOOL)all
 {
-  v3 = a3;
+  allCopy = all;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -1327,7 +1327,7 @@ LABEL_57:
   v9[4] = self;
   v9[5] = v10;
   v5 = MEMORY[0x1865E6810](v9, a2);
-  objc_msgSend_enumerateCharactersToSynthesize_withPersonalizationBlock_(self->_fastPathCharacterPersonalizer, v6, v3, v5, v7, v8);
+  objc_msgSend_enumerateCharactersToSynthesize_withPersonalizationBlock_(self->_fastPathCharacterPersonalizer, v6, allCopy, v5, v7, v8);
 
   _Block_object_dispose(v10, 8);
 }
@@ -1338,13 +1338,13 @@ LABEL_57:
   self->_styleInventory = 0;
 }
 
-- (void)saveStyleInventoryIfNeededWithMinimumDelay:(double)a3
+- (void)saveStyleInventoryIfNeededWithMinimumDelay:(double)delay
 {
   v9 = objc_msgSend_lastSavedDate(self->_styleInventory, a2, v3, v4, v5, v6);
   objc_msgSend_timeIntervalSinceNow(v9, v10, v11, v12, v13, v14);
   v16 = -v15;
 
-  if (v16 >= a3)
+  if (v16 >= delay)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1362,10 +1362,10 @@ LABEL_57:
   }
 }
 
-- (void)_updateStylePredictionsSingleBatch:(int64_t)a3
+- (void)_updateStylePredictionsSingleBatch:(int64_t)batch
 {
   v171 = *MEMORY[0x1E69E9840];
-  v156 = self;
+  selfCopy = self;
   if (!self->_styleInventory)
   {
     if (qword_1EA84DC48 != -1)
@@ -1380,8 +1380,8 @@ LABEL_57:
       _os_log_impl(&dword_18366B000, v7, OS_LOG_TYPE_ERROR, "Style inventory has not been checked out", buf, 2u);
     }
 
-    self = v156;
-    if (!v156->_styleInventory)
+    self = selfCopy;
+    if (!selfCopy->_styleInventory)
     {
       if (qword_1EA84DC48 == -1)
       {
@@ -1400,8 +1400,8 @@ LABEL_57:
         {
 LABEL_20:
 
-          self = v156;
-          if (v156->_textSynthesizer)
+          self = selfCopy;
+          if (selfCopy->_textSynthesizer)
           {
             goto LABEL_21;
           }
@@ -1434,8 +1434,8 @@ LABEL_8:
     _os_log_impl(&dword_18366B000, v8, OS_LOG_TYPE_ERROR, "Text synthesizer has not been checked out", buf, 2u);
   }
 
-  self = v156;
-  if (!v156->_textSynthesizer)
+  self = selfCopy;
+  if (!selfCopy->_textSynthesizer)
   {
     if (qword_1EA84DC48 == -1)
     {
@@ -1444,7 +1444,7 @@ LABEL_8:
       {
 LABEL_16:
 
-        self = v156;
+        self = selfCopy;
         goto LABEL_21;
       }
     }
@@ -1465,19 +1465,19 @@ LABEL_16:
   }
 
 LABEL_21:
-  v150 = objc_msgSend_samplesWithoutStylePrediction(self->_styleInventory, a2, a3, v3, v4, v5);
+  v150 = objc_msgSend_samplesWithoutStylePrediction(self->_styleInventory, a2, batch, v3, v4, v5);
   v152 = objc_msgSend_sortedArrayUsingComparator_(v150, v11, &unk_1EF1BC578, v12, v13, v14);
-  v19 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v15, a3, v16, v17, v18);
+  v19 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], v15, batch, v16, v17, v18);
   v161[0] = MEMORY[0x1E69E9820];
   v161[1] = 3221225472;
   v161[2] = sub_183719140;
   v161[3] = &unk_1E6DDCF10;
   v20 = v19;
   v162 = v20;
-  v163 = a3;
+  batchCopy = batch;
   v151 = v20;
   objc_msgSend_enumerateObjectsUsingBlock_(v152, v21, v161, v22, v23, v24);
-  if (objc_msgSend_count(v20, v25, v26, v27, v28, v29) > a3)
+  if (objc_msgSend_count(v20, v25, v26, v27, v28, v29) > batch)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1491,12 +1491,12 @@ LABEL_21:
       *buf = 134218240;
       v168 = v41;
       v169 = 2048;
-      v170 = a3;
+      batchCopy3 = batch;
       _os_log_impl(&dword_18366B000, v35, OS_LOG_TYPE_ERROR, "Batch samples size (%lu) is larger than the batch size (%lu)", buf, 0x16u);
     }
   }
 
-  if (objc_msgSend_count(v151, v30, v31, v32, v33, v34) > a3)
+  if (objc_msgSend_count(v151, v30, v31, v32, v33, v34) > batch)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -1510,7 +1510,7 @@ LABEL_21:
       *buf = 134218240;
       v168 = v48;
       v169 = 2048;
-      v170 = a3;
+      batchCopy3 = batch;
       _os_log_impl(&dword_18366B000, v42, OS_LOG_TYPE_FAULT, "Batch samples size (%lu) is larger than the batch size (%lu)", buf, 0x16u);
     }
   }
@@ -1528,7 +1528,7 @@ LABEL_21:
     *buf = 134218240;
     v168 = v55;
     v169 = 2048;
-    v170 = v61;
+    batchCopy3 = v61;
     _os_log_impl(&dword_18366B000, v49, OS_LOG_TYPE_DEBUG, "Computing style prediction for %lu samples out of %lu samples without style prediction.", buf, 0x16u);
   }
 
@@ -1554,14 +1554,14 @@ LABEL_21:
 
         v71 = *(*(&v157 + 1) + 8 * v70);
         v72 = objc_autoreleasePoolPush();
-        textSynthesizer = v156->_textSynthesizer;
+        textSynthesizer = selfCopy->_textSynthesizer;
         v79 = objc_msgSend_transcription(v71, v74, v75, v76, v77, v78);
         canPredictStyleForTranscription = objc_msgSend_canPredictStyleForTranscription_(textSynthesizer, v80, v79, v81, v82, v83);
 
-        v94 = objc_msgSend_styleScriptForSynthesizerSupportedStyle_(v156, v85, canPredictStyleForTranscription, v86, v87, v88);
+        v94 = objc_msgSend_styleScriptForSynthesizerSupportedStyle_(selfCopy, v85, canPredictStyleForTranscription, v86, v87, v88);
         if (v94)
         {
-          v95 = v156->_textSynthesizer;
+          v95 = selfCopy->_textSynthesizer;
           v96 = objc_msgSend_transcription(v71, v89, v90, v91, v92, v93);
           v165 = v96;
           v100 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v97, &v165, 1, v98, v99);
@@ -1607,7 +1607,7 @@ LABEL_21:
   }
 
   objc_msgSend_removeObjectsInArray_(obj, v130, v153, v131, v132, v133);
-  objc_msgSend_updateStylePredictionsWithSamplesToUpdate_toRemove_(v156->_styleInventory, v134, v152, v153, v135, v136);
+  objc_msgSend_updateStylePredictionsWithSamplesToUpdate_toRemove_(selfCopy->_styleInventory, v134, v152, v153, v135, v136);
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -1621,25 +1621,25 @@ LABEL_21:
     *buf = 134218240;
     v168 = v143;
     v169 = 2048;
-    v170 = v149;
+    batchCopy3 = v149;
     _os_log_impl(&dword_18366B000, v137, OS_LOG_TYPE_DEBUG, "Updating style prediction for %lu samples, removing %lu unsupported samples", buf, 0x16u);
   }
 }
 
-- (int64_t)styleScriptForSynthesizerSupportedStyle:(int64_t)a3
+- (int64_t)styleScriptForSynthesizerSupportedStyle:(int64_t)style
 {
-  if ((a3 - 1) >= 3)
+  if ((style - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return style;
   }
 }
 
-- (void)addToHolderPersonalizedCharacterWithId:(unint64_t)a3
+- (void)addToHolderPersonalizedCharacterWithId:(unint64_t)id
 {
   v11 = *MEMORY[0x1E69E9840];
   if (qword_1EA84DC48 != -1)
@@ -1651,11 +1651,11 @@ LABEL_21:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v10[0] = 67109120;
-    v10[1] = a3;
+    v10[1] = id;
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "CHSynthesisRequestConcreteHandler: addToHolderPersonalizedCharacterWithId %d", v10, 8u);
   }
 
-  objc_msgSend_addToPersistentStorageCandidateWithId_(self->_fastPathCharacterPersonalizer, v6, a3, v7, v8, v9);
+  objc_msgSend_addToPersistentStorageCandidateWithId_(self->_fastPathCharacterPersonalizer, v6, id, v7, v8, v9);
 }
 
 @end

@@ -1,53 +1,53 @@
 @interface AFApplicationContextSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFApplicationContextSnapshot)initWithApplicationContexts:(id)a3;
-- (AFApplicationContextSnapshot)initWithBuilder:(id)a3;
-- (AFApplicationContextSnapshot)initWithCoder:(id)a3;
-- (AFApplicationContextSnapshot)initWithSerializedBackingStore:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFApplicationContextSnapshot)initWithApplicationContexts:(id)contexts;
+- (AFApplicationContextSnapshot)initWithBuilder:(id)builder;
+- (AFApplicationContextSnapshot)initWithCoder:(id)coder;
+- (AFApplicationContextSnapshot)initWithSerializedBackingStore:(id)store;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 @end
 
 @implementation AFApplicationContextSnapshot
 
-- (AFApplicationContextSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFApplicationContextSnapshot)initWithSerializedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
-    v6 = [v5 applicationContexts];
-    self = [(AFApplicationContextSnapshot *)self initWithApplicationContexts:v6];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:storeCopy error:0];
+    applicationContexts = [v5 applicationContexts];
+    self = [(AFApplicationContextSnapshot *)self initWithApplicationContexts:applicationContexts];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (AFApplicationContextSnapshot)initWithCoder:(id)a3
+- (AFApplicationContextSnapshot)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"AFApplicationContextSnapshot::applicationContexts"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"AFApplicationContextSnapshot::applicationContexts"];
 
   v9 = [(AFApplicationContextSnapshot *)self initWithApplicationContexts:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -57,9 +57,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AFApplicationContextSnapshot *)v4 applicationContexts];
+      applicationContexts = [(AFApplicationContextSnapshot *)equalCopy applicationContexts];
       applicationContexts = self->_applicationContexts;
-      v7 = applicationContexts == v5 || [(NSArray *)applicationContexts isEqual:v5];
+      v7 = applicationContexts == applicationContexts || [(NSArray *)applicationContexts isEqual:applicationContexts];
     }
 
     else
@@ -71,7 +71,7 @@
   return v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -82,35 +82,35 @@
   return v6;
 }
 
-- (AFApplicationContextSnapshot)initWithApplicationContexts:(id)a3
+- (AFApplicationContextSnapshot)initWithApplicationContexts:(id)contexts
 {
-  v4 = a3;
+  contextsCopy = contexts;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__AFApplicationContextSnapshot_initWithApplicationContexts___block_invoke;
   v8[3] = &unk_1E73483C0;
-  v9 = v4;
-  v5 = v4;
+  v9 = contextsCopy;
+  v5 = contextsCopy;
   v6 = [(AFApplicationContextSnapshot *)self initWithBuilder:v8];
 
   return v6;
 }
 
-- (AFApplicationContextSnapshot)initWithBuilder:(id)a3
+- (AFApplicationContextSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFApplicationContextSnapshot;
   v5 = [(AFApplicationContextSnapshot *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFApplicationContextSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFApplicationContextSnapshotMutation *)v7 isDirty])
     {
-      v8 = [(_AFApplicationContextSnapshotMutation *)v7 getApplicationContexts];
-      v9 = [v8 copy];
+      getApplicationContexts = [(_AFApplicationContextSnapshotMutation *)v7 getApplicationContexts];
+      v9 = [getApplicationContexts copy];
       applicationContexts = v6->_applicationContexts;
       v6->_applicationContexts = v9;
     }
@@ -119,26 +119,26 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFApplicationContextSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFApplicationContextSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFApplicationContextSnapshot);
-      v7 = [(_AFApplicationContextSnapshotMutation *)v5 getApplicationContexts];
-      v8 = [v7 copy];
+      getApplicationContexts = [(_AFApplicationContextSnapshotMutation *)v5 getApplicationContexts];
+      v8 = [getApplicationContexts copy];
       applicationContexts = v6->_applicationContexts;
       v6->_applicationContexts = v8;
     }

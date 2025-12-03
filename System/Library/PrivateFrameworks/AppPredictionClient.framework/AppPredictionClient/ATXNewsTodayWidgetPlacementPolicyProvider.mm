@@ -1,24 +1,24 @@
 @interface ATXNewsTodayWidgetPlacementPolicyProvider
-- (BOOL)isTodayWidgetPermittedForLocale:(id)a3;
+- (BOOL)isTodayWidgetPermittedForLocale:(id)locale;
 @end
 
 @implementation ATXNewsTodayWidgetPlacementPolicyProvider
 
-- (BOOL)isTodayWidgetPermittedForLocale:(id)a3
+- (BOOL)isTodayWidgetPermittedForLocale:(id)locale
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  localeCopy = locale;
   v4 = objc_opt_new();
-  v5 = [v4 isChild];
-  v6 = [v5 BOOLValue];
+  isChild = [v4 isChild];
+  bOOLValue = [isChild BOOLValue];
 
-  if (!v6)
+  if (!bOOLValue)
   {
-    v7 = [v3 countryCode];
-    if (!v7)
+    countryCode = [localeCopy countryCode];
+    if (!countryCode)
     {
-      v11 = __atxlog_handle_home_screen();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      localeIdentifier = __atxlog_handle_home_screen();
+      if (os_log_type_enabled(localeIdentifier, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 136315138;
         v19 = "[ATXNewsTodayWidgetPlacementPolicyProvider isTodayWidgetPermittedForLocale:]";
@@ -33,30 +33,30 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [objc_opt_class() _newsSupportedCountries];
-    v10 = [v9 containsObject:v7];
+    _newsSupportedCountries = [objc_opt_class() _newsSupportedCountries];
+    v10 = [_newsSupportedCountries containsObject:countryCode];
 
     if (v10)
     {
-      v11 = __atxlog_handle_home_screen();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      localeIdentifier = __atxlog_handle_home_screen();
+      if (os_log_type_enabled(localeIdentifier, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 136315138;
         v19 = "[ATXNewsTodayWidgetPlacementPolicyProvider isTodayWidgetPermittedForLocale:]";
         v12 = "%s: in news supported country, allowing News widget";
 LABEL_11:
-        _os_log_impl(&dword_1BF549000, v11, OS_LOG_TYPE_DEFAULT, v12, &v18, 0xCu);
+        _os_log_impl(&dword_1BF549000, localeIdentifier, OS_LOG_TYPE_DEFAULT, v12, &v18, 0xCu);
         goto LABEL_20;
       }
 
       goto LABEL_20;
     }
 
-    v11 = [v3 localeIdentifier];
-    if (v11)
+    localeIdentifier = [localeCopy localeIdentifier];
+    if (localeIdentifier)
     {
-      v13 = [objc_opt_class() _parsecEditorialLocales];
-      v14 = [v13 containsObject:v11];
+      _parsecEditorialLocales = [objc_opt_class() _parsecEditorialLocales];
+      v14 = [_parsecEditorialLocales containsObject:localeIdentifier];
 
       if (!v14)
       {
@@ -94,12 +94,12 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v7 = __atxlog_handle_home_screen();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  countryCode = __atxlog_handle_home_screen();
+  if (os_log_type_enabled(countryCode, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 136315138;
     v19 = "[ATXNewsTodayWidgetPlacementPolicyProvider isTodayWidgetPermittedForLocale:]";
-    _os_log_impl(&dword_1BF549000, v7, OS_LOG_TYPE_DEFAULT, "%s: not allowing News widget for child account", &v18, 0xCu);
+    _os_log_impl(&dword_1BF549000, countryCode, OS_LOG_TYPE_DEFAULT, "%s: not allowing News widget for child account", &v18, 0xCu);
   }
 
   v8 = 0;

@@ -1,65 +1,65 @@
 @interface ICSMultiValueProperty
-- (ICSMultiValueProperty)initWithValue:(id)a3 type:(unint64_t)a4;
+- (ICSMultiValueProperty)initWithValue:(id)value type:(unint64_t)type;
 - (id)value;
 - (id)values;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)setValue:(id)a3 type:(unint64_t)a4;
-- (void)setValues:(id)a3 valueType:(unint64_t)a4;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)setValue:(id)value type:(unint64_t)type;
+- (void)setValues:(id)values valueType:(unint64_t)type;
 @end
 
 @implementation ICSMultiValueProperty
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v6 = a4;
-  v7 = [(ICSProperty *)self type];
-  if (v7 == 5010 || v7 == 5007)
+  stringCopy = string;
+  type = [(ICSProperty *)self type];
+  if (type == 5010 || type == 5007)
   {
-    v8 = [(ICSProperty *)self parameters];
+    parameters = [(ICSProperty *)self parameters];
 
-    if (v8)
+    if (parameters)
     {
-      [(ICSProperty *)self _ICSStringWithOptions:a3 appendingToString:v6 additionalParameters:0];
+      [(ICSProperty *)self _ICSStringWithOptions:options appendingToString:stringCopy additionalParameters:0];
     }
 
-    v9 = [(ICSMultiValueProperty *)self values];
-    if (v9)
+    values = [(ICSMultiValueProperty *)self values];
+    if (values)
     {
-      v10 = v9;
-      v11 = [(ICSMultiValueProperty *)self values];
+      v10 = values;
+      values2 = [(ICSMultiValueProperty *)self values];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v13 = [(ICSMultiValueProperty *)self value];
-        NSLog(&cfstr_PropertyvalueS.isa, v13);
+        value = [(ICSMultiValueProperty *)self value];
+        NSLog(&cfstr_PropertyvalueS.isa, value);
       }
     }
 
-    [v6 appendString:@":"];
-    v14 = [(ICSMultiValueProperty *)self values];
-    [v14 _ICSStringsForPropertyValuesWithOptions:a3 appendingToString:v6];
+    [stringCopy appendString:@":"];
+    values3 = [(ICSMultiValueProperty *)self values];
+    [values3 _ICSStringsForPropertyValuesWithOptions:options appendingToString:stringCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = ICSMultiValueProperty;
-    [(ICSProperty *)&v15 _ICSStringWithOptions:a3 appendingToString:v6];
+    [(ICSProperty *)&v15 _ICSStringWithOptions:options appendingToString:stringCopy];
   }
 }
 
-- (ICSMultiValueProperty)initWithValue:(id)a3 type:(unint64_t)a4
+- (ICSMultiValueProperty)initWithValue:(id)value type:(unint64_t)type
 {
-  v6 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = ICSMultiValueProperty;
   v7 = [(ICSMultiValueProperty *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICSMultiValueProperty *)v7 setValue:v6 type:a4];
+    [(ICSMultiValueProperty *)v7 setValue:valueCopy type:type];
   }
 
   return v8;
@@ -67,10 +67,10 @@
 
 - (id)value
 {
-  v2 = [(ICSMultiValueProperty *)self values];
-  if ([v2 count])
+  values = [(ICSMultiValueProperty *)self values];
+  if ([values count])
   {
-    v3 = [v2 objectAtIndex:0];
+    v3 = [values objectAtIndex:0];
   }
 
   else
@@ -81,9 +81,9 @@
   return v3;
 }
 
-- (void)setValue:(id)a3 type:(unint64_t)a4
+- (void)setValue:(id)value type:(unint64_t)type
 {
-  if (a3)
+  if (value)
   {
     v6 = [MEMORY[0x277CBEA60] arrayWithObject:?];
   }
@@ -94,23 +94,23 @@
   }
 
   v7 = v6;
-  [(ICSMultiValueProperty *)self setValues:v6 valueType:a4];
+  [(ICSMultiValueProperty *)self setValues:v6 valueType:type];
 }
 
 - (id)values
 {
   v4.receiver = self;
   v4.super_class = ICSMultiValueProperty;
-  v2 = [(ICSProperty *)&v4 value];
+  value = [(ICSProperty *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValues:(id)a3 valueType:(unint64_t)a4
+- (void)setValues:(id)values valueType:(unint64_t)type
 {
   v4.receiver = self;
   v4.super_class = ICSMultiValueProperty;
-  [(ICSProperty *)&v4 setValue:a3 type:a4];
+  [(ICSProperty *)&v4 setValue:values type:type];
 }
 
 @end

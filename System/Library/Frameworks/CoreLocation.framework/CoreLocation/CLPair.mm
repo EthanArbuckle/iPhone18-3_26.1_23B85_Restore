@@ -1,27 +1,27 @@
 @interface CLPair
-- (CLPair)initWithCoder:(id)a3;
-- (CLPair)initWithFirst:(int)a3 second:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CLPair)initWithCoder:(id)coder;
+- (CLPair)initWithFirst:(int)first second:(int)second;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLPair
 
-- (CLPair)initWithFirst:(int)a3 second:(int)a4
+- (CLPair)initWithFirst:(int)first second:(int)second
 {
   v7.receiver = self;
   v7.super_class = CLPair;
   result = [(CLPair *)&v7 init];
   if (result)
   {
-    result->_first = a3;
-    result->_second = a4;
+    result->_first = first;
+    result->_second = second;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CLPair alloc];
   first = self->_first;
@@ -30,19 +30,19 @@
   return [(CLPair *)v4 initWithFirst:first second:second];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:-[CLPair first](self forKey:{"first"), @"first"}];
-  v5 = [(CLPair *)self second];
+  [coder encodeInt:-[CLPair first](self forKey:{"first"), @"first"}];
+  second = [(CLPair *)self second];
 
-  [a3 encodeInt:v5 forKey:@"second"];
+  [coder encodeInt:second forKey:@"second"];
 }
 
-- (CLPair)initWithCoder:(id)a3
+- (CLPair)initWithCoder:(id)coder
 {
   v4 = [CLPair alloc];
-  v5 = [a3 decodeIntForKey:@"first"];
-  v6 = [a3 decodeIntForKey:@"second"];
+  v5 = [coder decodeIntForKey:@"first"];
+  v6 = [coder decodeIntForKey:@"second"];
 
   return [(CLPair *)v4 initWithFirst:v5 second:v6];
 }

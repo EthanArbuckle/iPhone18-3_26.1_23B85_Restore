@@ -27,13 +27,13 @@
         v11 = @"clock-stopwatch";
         goto LABEL_11;
       case 4:
-        v9 = [v6 currentTimer];
+        currentTimer = [v6 currentTimer];
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __59__NSURL_MTUtilities__mtURLForClockAppSection_timerManager___block_invoke;
         v15[3] = &unk_1E7B0CDC0;
         v16 = v8;
-        v10 = [v9 addSuccessBlock:v15];
+        v10 = [currentTimer addSuccessBlock:v15];
 
         goto LABEL_12;
     }
@@ -56,7 +56,7 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __59__NSURL_MTUtilities__mtURLForClockAppSection_timerManager___block_invoke_2;
   v14[3] = &__block_descriptor_40_e28___NAFuture_16__0__NSString_8l;
-  v14[4] = a1;
+  v14[4] = self;
   v12 = [v8 flatMap:v14];
 
   return v12;
@@ -75,7 +75,7 @@ LABEL_12:
 {
   v1 = MEMORY[0x1E695DFF8];
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 schemeForSection:?];
+  v3 = [self schemeForSection:?];
   v4 = [v2 stringWithFormat:@"%@:%@", v3, @"default"];
   v5 = [v1 URLWithString:v4];
 
@@ -97,28 +97,28 @@ LABEL_12:
 
 - (uint64_t)mtClockAppSection
 {
-  v1 = [a1 scheme];
-  if ([v1 isEqualToString:@"clock-worldclock"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"clock-worldclock"])
   {
     v2 = 0;
   }
 
-  else if ([v1 isEqualToString:@"clock-alarm"])
+  else if ([scheme isEqualToString:@"clock-alarm"])
   {
     v2 = 1;
   }
 
-  else if ([v1 isEqualToString:@"clock-sleep-alarm"])
+  else if ([scheme isEqualToString:@"clock-sleep-alarm"])
   {
     v2 = 2;
   }
 
-  else if ([v1 isEqualToString:@"clock-stopwatch"])
+  else if ([scheme isEqualToString:@"clock-stopwatch"])
   {
     v2 = 3;
   }
 
-  else if (([v1 isEqualToString:@"clock-timer"] & 1) != 0 || objc_msgSend(v1, "isEqualToString:", @"clock-timer-running"))
+  else if (([scheme isEqualToString:@"clock-timer"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"clock-timer-running"))
   {
     v2 = 4;
   }
@@ -133,19 +133,19 @@ LABEL_12:
 
 - (uint64_t)mtIsList
 {
-  v1 = [a1 host];
-  v2 = [v1 isEqualToString:@"list"];
+  host = [self host];
+  v2 = [host isEqualToString:@"list"];
 
   return v2;
 }
 
 - (uint64_t)mtIsForLastTimer
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"clock-timer"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"clock-timer"])
   {
-    v3 = [a1 host];
-    v4 = [v3 isEqualToString:@"lastTimer"];
+    host = [self host];
+    v4 = [host isEqualToString:@"lastTimer"];
   }
 
   else
@@ -158,13 +158,13 @@ LABEL_12:
 
 - (id)mtID
 {
-  v2 = [a1 path];
-  v3 = [v2 length];
+  path = [self path];
+  v3 = [path length];
 
   if (v3 >= 2)
   {
-    v5 = [a1 path];
-    v4 = [v5 substringFromIndex:1];
+    path2 = [self path];
+    v4 = [path2 substringFromIndex:1];
   }
 
   else

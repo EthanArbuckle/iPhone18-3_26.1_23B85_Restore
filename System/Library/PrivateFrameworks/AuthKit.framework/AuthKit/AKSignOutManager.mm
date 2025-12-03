@@ -1,23 +1,23 @@
 @interface AKSignOutManager
 + (id)sharedManager;
-- (BOOL)markAccountForSignOutForAltDSID:(id)a3;
-- (id)_serviceControllerWithProvider:(id)a3;
-- (void)processPushMessage:(id)a3;
-- (void)reportSignOutForAccount:(id)a3 completion:(id)a4;
+- (BOOL)markAccountForSignOutForAltDSID:(id)d;
+- (id)_serviceControllerWithProvider:(id)provider;
+- (void)processPushMessage:(id)message;
+- (void)reportSignOutForAccount:(id)account completion:(id)completion;
 @end
 
 @implementation AKSignOutManager
 
 + (id)sharedManager
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10013DC14;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374860;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -32,12 +32,12 @@
   return v2;
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 2100)
   {
     v19 = _AKLogSystem();
@@ -51,8 +51,8 @@
     }
 
     objc_storeStrong(&v19, 0);
-    v16 = [location[0] altDSID];
-    v15 = [(AKSignOutManager *)v21 markAccountForSignOutForAltDSID:v16];
+    altDSID = [location[0] altDSID];
+    v15 = [(AKSignOutManager *)selfCopy markAccountForSignOutForAltDSID:altDSID];
     if (v15)
     {
       oslog = _AKLogSystem();
@@ -83,18 +83,18 @@
       objc_storeStrong(&v14, 0);
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&altDSID, 0);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)markAccountForSignOutForAltDSID:(id)a3
+- (BOOL)markAccountForSignOutForAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v26 = +[AKAccountManager sharedInstance];
   v25 = [v26 authKitAccountWithAltDSID:location[0] error:0];
   v24 = _AKLogSystem();
@@ -163,14 +163,14 @@
   return v28 & 1;
 }
 
-- (void)reportSignOutForAccount:(id)a3 completion:(id)a4
+- (void)reportSignOutForAccount:(id)account completion:(id)completion
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -188,7 +188,7 @@
   _objc_release(v6);
   v4 = [AKGrandSlamRequestProvider alloc];
   v15 = [(AKURLRequestProviderImpl *)v4 initWithContext:v16 urlBagKey:AKURLBagKeySignout];
-  v7 = [(AKSignOutManager *)v21 _serviceControllerWithProvider:v15];
+  v7 = [(AKSignOutManager *)selfCopy _serviceControllerWithProvider:v15];
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
@@ -204,12 +204,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_serviceControllerWithProvider:(id)a3
+- (id)_serviceControllerWithProvider:(id)provider
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v3 = [AKServiceControllerImpl alloc];
   v5 = [(AKServiceControllerImpl *)v3 initWithRequestProvider:location[0]];
   objc_storeStrong(location, 0);

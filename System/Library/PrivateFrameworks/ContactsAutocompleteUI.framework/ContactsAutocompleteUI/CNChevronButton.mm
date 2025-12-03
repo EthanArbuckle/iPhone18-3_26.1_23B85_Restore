@@ -1,16 +1,16 @@
 @interface CNChevronButton
-- (CNChevronButton)initWithFrame:(CGRect)a3;
+- (CNChevronButton)initWithFrame:(CGRect)frame;
 - (CNChevronButtonMenuDelegate)delegateView;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation CNChevronButton
 
-- (CNChevronButton)initWithFrame:(CGRect)a3
+- (CNChevronButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CNChevronButton;
-  v3 = [(CNChevronButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNChevronButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,12 +21,12 @@
   return v4;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v4 = [(CNChevronButton *)self delegateView:a3];
-  v5 = [v4 menuConfigurationForChevronButton];
+  v4 = [(CNChevronButton *)self delegateView:interaction];
+  menuConfigurationForChevronButton = [v4 menuConfigurationForChevronButton];
 
-  return v5;
+  return menuConfigurationForChevronButton;
 }
 
 - (CNChevronButtonMenuDelegate)delegateView

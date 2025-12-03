@@ -1,14 +1,14 @@
 @interface TPPlaceholderInfo
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
 @end
 
 @implementation TPPlaceholderInfo
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v10 = objc_msgSend_messageWithDescriptor_(v4, v5, v6, v7, v8, v9, off_2812F85B8[6]);
+  v10 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, v6, v7, v8, v9, off_2812F85B8[6]);
 
   if (*(v10 + 24))
   {
@@ -22,7 +22,7 @@
 
   v12.receiver = self;
   v12.super_class = TPPlaceholderInfo;
-  [(TPPlaceholderInfo *)&v12 loadFromArchive:v11 unarchiver:v4];
+  [(TPPlaceholderInfo *)&v12 loadFromArchive:v11 unarchiver:unarchiverCopy];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPModelKind
 + (BOOL)shouldShowAllExtendedVideoContent;
-+ (id)_curatorKindForVariants:(unint64_t)a3;
++ (id)_curatorKindForVariants:(unint64_t)variants;
 + (id)_defaultAlbumKind;
 + (id)_defaultAlbumKindForTracks;
 + (id)_defaultArtistKind;
@@ -29,14 +29,14 @@
 + (id)_defaultTVEpisodeKind;
 + (id)_defaultTVSeasonKind;
 + (id)_defaultTVShowKind;
-+ (id)_modelKindForModelObjectType:(int64_t)a3;
-+ (id)_sanitizeKind:(id)a3;
-+ (id)_sanitizePlaylistEntryKind:(id)a3;
-+ (id)_sanitizeSongKind:(id)a3;
-+ (id)_songKindForVariants:(unint64_t)a3;
-+ (id)_songKindForVariants:(unint64_t)a3 options:(unint64_t)a4;
-+ (id)playlistEntryKindWithKinds:(id)a3;
-- (id)_initWithUnderlyingKind:(id)a3;
++ (id)_modelKindForModelObjectType:(int64_t)type;
++ (id)_sanitizeKind:(id)kind;
++ (id)_sanitizePlaylistEntryKind:(id)kind;
++ (id)_sanitizeSongKind:(id)kind;
++ (id)_songKindForVariants:(unint64_t)variants;
++ (id)_songKindForVariants:(unint64_t)variants options:(unint64_t)options;
++ (id)playlistEntryKindWithKinds:(id)kinds;
+- (id)_initWithUnderlyingKind:(id)kind;
 - (int64_t)modelObjectType;
 @end
 
@@ -45,15 +45,15 @@
 + (id)_defaultAlbumKind
 {
   MPModelAlbumClass = getMPModelAlbumClass();
-  v4 = [a1 _defaultSongKind];
-  v5 = [MPModelAlbumClass kindWithSongKind:v4];
+  _defaultSongKind = [self _defaultSongKind];
+  v5 = [MPModelAlbumClass kindWithSongKind:_defaultSongKind];
 
   return v5;
 }
 
 + (id)_defaultMovieKind
 {
-  v2 = [a1 shouldShowAllExtendedVideoContent];
+  shouldShowAllExtendedVideoContent = [self shouldShowAllExtendedVideoContent];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -70,7 +70,7 @@
     v3 = v10[3];
   }
 
-  if (v2)
+  if (shouldShowAllExtendedVideoContent)
   {
     v4 = 3;
   }
@@ -89,18 +89,18 @@
 
 + (BOOL)shouldShowAllExtendedVideoContent
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"showAllTVShows"];
-  v4 = [v3 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"showAllTVShows"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (id)_defaultPlaylistKindExcludingEmpty
 {
   MPModelPlaylistClass = getMPModelPlaylistClass();
-  v4 = [a1 _defaultPlaylistEntryKind];
-  v5 = [MPModelPlaylistClass kindWithVariants:215 playlistEntryKind:v4 options:4];
+  _defaultPlaylistEntryKind = [self _defaultPlaylistEntryKind];
+  v5 = [MPModelPlaylistClass kindWithVariants:215 playlistEntryKind:_defaultPlaylistEntryKind options:4];
 
   return v5;
 }
@@ -109,11 +109,11 @@
 {
   v11[3] = *MEMORY[0x277D85DE8];
   MPModelPlaylistEntryClass = getMPModelPlaylistEntryClass();
-  v4 = [a1 _defaultSongKind];
-  v5 = [a1 _defaultTVEpisodeKind];
-  v11[1] = v5;
-  v6 = [a1 _defaultMovieKind];
-  v11[2] = v6;
+  _defaultSongKind = [self _defaultSongKind];
+  _defaultTVEpisodeKind = [self _defaultTVEpisodeKind];
+  v11[1] = _defaultTVEpisodeKind;
+  _defaultMovieKind = [self _defaultMovieKind];
+  v11[2] = _defaultMovieKind;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
   v8 = [MPModelPlaylistEntryClass kindWithKinds:v7];
 
@@ -124,7 +124,7 @@
 
 + (id)_defaultTVEpisodeKind
 {
-  v2 = [a1 shouldShowAllExtendedVideoContent];
+  shouldShowAllExtendedVideoContent = [self shouldShowAllExtendedVideoContent];
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -141,7 +141,7 @@
     v3 = v10[3];
   }
 
-  if (v2)
+  if (shouldShowAllExtendedVideoContent)
   {
     v4 = 3;
   }
@@ -178,22 +178,22 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [a1 _defaultTVEpisodeKind];
-  v6 = [v3 kindWithEpisodeKind:v5];
+  _defaultTVEpisodeKind = [self _defaultTVEpisodeKind];
+  v6 = [v3 kindWithEpisodeKind:_defaultTVEpisodeKind];
 
   return v6;
 }
 
-- (id)_initWithUnderlyingKind:(id)a3
+- (id)_initWithUnderlyingKind:(id)kind
 {
-  v5 = a3;
+  kindCopy = kind;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPModelKind;
   v6 = [(MusicKit_SoftLinking_MPModelKind *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingKind, a3);
+    objc_storeStrong(&v6->_underlyingKind, kind);
   }
 
   return v7;
@@ -201,23 +201,23 @@
 
 - (int64_t)modelObjectType
 {
-  v3 = [(MPModelKind *)self->_underlyingKind identityKind];
-  v4 = [getMPModelPlaylistKindClass() identityKind];
-  v5 = [v3 isEqual:v4];
+  identityKind = [(MPModelKind *)self->_underlyingKind identityKind];
+  identityKind2 = [getMPModelPlaylistKindClass() identityKind];
+  v5 = [identityKind isEqual:identityKind2];
 
   if (!v5)
   {
     return 17;
   }
 
-  v6 = [(MPModelKind *)self->_underlyingKind variants];
+  variants = [(MPModelKind *)self->_underlyingKind variants];
   v7 = 22;
-  if ((v6 & 8) == 0)
+  if ((variants & 8) == 0)
   {
     v7 = 17;
   }
 
-  if (v6 == 8)
+  if (variants == 8)
   {
     return 21;
   }
@@ -228,133 +228,133 @@
   }
 }
 
-+ (id)_modelKindForModelObjectType:(int64_t)a3
++ (id)_modelKindForModelObjectType:(int64_t)type
 {
-  v4 = 0;
-  switch(a3)
+  _defaultAlbumKind = 0;
+  switch(type)
   {
     case 0:
-      v4 = [a1 _defaultAlbumKind];
+      _defaultAlbumKind = [self _defaultAlbumKind];
       break;
     case 1:
-      v7 = a1;
+      selfCopy6 = self;
       v8 = 1;
       goto LABEL_32;
     case 2:
-      v4 = [a1 _defaultArtistKind];
+      _defaultAlbumKind = [self _defaultArtistKind];
       break;
     case 3:
-      v4 = [a1 _defaultComposerKind];
+      _defaultAlbumKind = [self _defaultComposerKind];
       break;
     case 4:
-      v4 = [a1 _defaultCreditArtistKind];
+      _defaultAlbumKind = [self _defaultCreditArtistKind];
       break;
     case 5:
-      v7 = a1;
+      selfCopy6 = self;
       v8 = 8;
       goto LABEL_32;
     case 6:
-      v7 = a1;
+      selfCopy6 = self;
       v8 = 2;
       goto LABEL_32;
     case 7:
-      v7 = a1;
+      selfCopy6 = self;
       v8 = 32;
       goto LABEL_32;
     case 8:
-      v4 = [a1 _defaultFileAssetKind];
+      _defaultAlbumKind = [self _defaultFileAssetKind];
       break;
     case 9:
-      v4 = [a1 _defaultGenreKind];
+      _defaultAlbumKind = [self _defaultGenreKind];
       break;
     case 12:
-      v4 = [a1 _defaultLyricsKind];
+      _defaultAlbumKind = [self _defaultLyricsKind];
       break;
     case 13:
-      v4 = [a1 _defaultMovieKind];
+      _defaultAlbumKind = [self _defaultMovieKind];
       break;
     case 14:
-      v5 = a1;
+      selfCopy10 = self;
       v6 = 2;
       goto LABEL_35;
     case 15:
-      v4 = [a1 _defaultPinKind];
+      _defaultAlbumKind = [self _defaultPinKind];
       break;
     case 17:
-      v4 = [a1 _defaultPlaylistKind];
+      _defaultAlbumKind = [self _defaultPlaylistKind];
       break;
     case 18:
-      v4 = [a1 _defaultPlaylistAuthorKind];
+      _defaultAlbumKind = [self _defaultPlaylistAuthorKind];
       break;
     case 19:
-      v4 = [a1 _defaultPlaylistEntryKind];
+      _defaultAlbumKind = [self _defaultPlaylistEntryKind];
       break;
     case 20:
-      v4 = [a1 _defaultPlaylistEntryReactionKind];
+      _defaultAlbumKind = [self _defaultPlaylistEntryReactionKind];
       break;
     case 21:
-      v4 = [a1 _defaultPlaylistFolderKind];
+      _defaultAlbumKind = [self _defaultPlaylistFolderKind];
       break;
     case 22:
-      v4 = [a1 _defaultPlaylistFolderItemKind];
+      _defaultAlbumKind = [self _defaultPlaylistFolderItemKind];
       break;
     case 24:
-      v7 = a1;
+      selfCopy6 = self;
       v8 = 4;
 LABEL_32:
-      v4 = [v7 _curatorKindForVariants:v8];
+      _defaultAlbumKind = [selfCopy6 _curatorKindForVariants:v8];
       break;
     case 25:
-      v4 = [a1 _defaultRecentlyAddedObjectKind];
+      _defaultAlbumKind = [self _defaultRecentlyAddedObjectKind];
       break;
     case 26:
-      v4 = [a1 _defaultRecordLabelKind];
+      _defaultAlbumKind = [self _defaultRecordLabelKind];
       break;
     case 27:
-      v4 = [a1 _defaultSocialPersonKind];
+      _defaultAlbumKind = [self _defaultSocialPersonKind];
       break;
     case 28:
-      v5 = a1;
+      selfCopy10 = self;
       v6 = 1;
       goto LABEL_35;
     case 29:
-      v4 = [a1 _defaultRadioStationKind];
+      _defaultAlbumKind = [self _defaultRadioStationKind];
       break;
     case 32:
-      v5 = a1;
+      selfCopy10 = self;
       v6 = 3;
       goto LABEL_35;
     case 33:
-      v4 = [a1 _defaultTVEpisodeKind];
+      _defaultAlbumKind = [self _defaultTVEpisodeKind];
       break;
     case 34:
-      v4 = [a1 _defaultTVSeasonKind];
+      _defaultAlbumKind = [self _defaultTVSeasonKind];
       break;
     case 35:
-      v4 = [a1 _defaultTVShowKind];
+      _defaultAlbumKind = [self _defaultTVShowKind];
       break;
     case 36:
-      v5 = a1;
+      selfCopy10 = self;
       v6 = 4;
       goto LABEL_35;
     case 37:
-      v5 = a1;
+      selfCopy10 = self;
       v6 = 6;
 LABEL_35:
-      v4 = [v5 _songKindForVariants:v6];
+      _defaultAlbumKind = [selfCopy10 _songKindForVariants:v6];
       break;
     default:
       break;
   }
 
-  return v4;
+  return _defaultAlbumKind;
 }
 
 + (id)_defaultAlbumKindForTracks
 {
   MPModelAlbumClass = getMPModelAlbumClass();
-  v4 = [a1 _defaultSongKindForTracks];
-  v5 = [MPModelAlbumClass kindWithSongKind:v4];
+  _defaultSongKindForTracks = [self _defaultSongKindForTracks];
+  v5 = [MPModelAlbumClass kindWithSongKind:_defaultSongKindForTracks];
 
   return v5;
 }
@@ -362,8 +362,8 @@ LABEL_35:
 + (id)_defaultArtistKind
 {
   MPModelArtistClass = getMPModelArtistClass();
-  v4 = [a1 _defaultAlbumKind];
-  v5 = [MPModelArtistClass kindWithAlbumKind:v4];
+  _defaultAlbumKind = [self _defaultAlbumKind];
+  v5 = [MPModelArtistClass kindWithAlbumKind:_defaultAlbumKind];
 
   return v5;
 }
@@ -389,8 +389,8 @@ LABEL_35:
   v4 = v3;
   _Block_object_dispose(&v11, 8);
   MPModelAlbumClass = getMPModelAlbumClass();
-  v6 = [a1 _defaultSongKind];
-  v7 = [MPModelAlbumClass kindWithVariants:3 songKind:v6 options:0];
+  _defaultSongKind = [self _defaultSongKind];
+  v7 = [MPModelAlbumClass kindWithVariants:3 songKind:_defaultSongKind options:0];
   v8 = [v3 kindWithAlbumKind:v7];
 
   return v8;
@@ -416,9 +416,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultCuratorKind
@@ -441,9 +441,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultFileAssetKind
@@ -466,9 +466,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultRecentlyAddedObjectKind
@@ -477,20 +477,20 @@ LABEL_35:
   MPModelGenericObjectClass_1 = getMPModelGenericObjectClass_1();
   v4 = getMPModelRelationshipGenericAlbum_0();
   v16[0] = v4;
-  v5 = [a1 _defaultAlbumKindForTracks];
-  v17[0] = v5;
+  _defaultAlbumKindForTracks = [self _defaultAlbumKindForTracks];
+  v17[0] = _defaultAlbumKindForTracks;
   v6 = getMPModelRelationshipGenericMovie_0();
   v16[1] = v6;
-  v7 = [a1 _defaultMovieKind];
-  v17[1] = v7;
+  _defaultMovieKind = [self _defaultMovieKind];
+  v17[1] = _defaultMovieKind;
   v8 = getMPModelRelationshipGenericPlaylist_1();
   v16[2] = v8;
-  v9 = [a1 _defaultPlaylistKind];
-  v17[2] = v9;
+  _defaultPlaylistKind = [self _defaultPlaylistKind];
+  v17[2] = _defaultPlaylistKind;
   v10 = getMPModelRelationshipGenericTVSeason_0();
   v16[3] = v10;
-  v11 = [a1 _defaultTVSeasonKind];
-  v17[3] = v11;
+  _defaultTVSeasonKind = [self _defaultTVSeasonKind];
+  v17[3] = _defaultTVSeasonKind;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v13 = [MPModelGenericObjectClass_1 kindWithRelationshipKinds:v12];
 
@@ -519,8 +519,8 @@ LABEL_35:
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [a1 _defaultAlbumKind];
-  v6 = [v3 kindWithAlbumKind:v5];
+  _defaultAlbumKind = [self _defaultAlbumKind];
+  v6 = [v3 kindWithAlbumKind:_defaultAlbumKind];
 
   return v6;
 }
@@ -545,9 +545,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultPinKind
@@ -570,16 +570,16 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultPlaylistKind
 {
   MPModelPlaylistClass = getMPModelPlaylistClass();
-  v4 = [a1 _defaultPlaylistEntryKind];
-  v5 = [MPModelPlaylistClass kindWithVariants:215 playlistEntryKind:v4 options:0];
+  _defaultPlaylistEntryKind = [self _defaultPlaylistEntryKind];
+  v5 = [MPModelPlaylistClass kindWithVariants:215 playlistEntryKind:_defaultPlaylistEntryKind options:0];
 
   return v5;
 }
@@ -604,9 +604,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultPlaylistEntryReactionKind
@@ -629,17 +629,17 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultPlaylistEntryKindForTracks
 {
   v9[1] = *MEMORY[0x277D85DE8];
   MPModelPlaylistEntryClass = getMPModelPlaylistEntryClass();
-  v4 = [a1 _defaultSongKindForTracks];
-  v9[0] = v4;
+  _defaultSongKindForTracks = [self _defaultSongKindForTracks];
+  v9[0] = _defaultSongKindForTracks;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [MPModelPlaylistEntryClass kindWithKinds:v5];
 
@@ -652,7 +652,7 @@ LABEL_35:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   MPModelPlaylistEntryClass = getMPModelPlaylistEntryClass();
-  v4 = [a1 _songKindForVariants:1];
+  v4 = [self _songKindForVariants:1];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [MPModelPlaylistEntryClass kindWithKinds:v5];
@@ -666,7 +666,7 @@ LABEL_35:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   MPModelPlaylistEntryClass = getMPModelPlaylistEntryClass();
-  v4 = [a1 _songKindForVariants:2];
+  v4 = [self _songKindForVariants:2];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [MPModelPlaylistEntryClass kindWithKinds:v5];
@@ -679,8 +679,8 @@ LABEL_35:
 + (id)_defaultPlaylistFolderKind
 {
   MPModelPlaylistClass = getMPModelPlaylistClass();
-  v4 = [a1 _defaultPlaylistEntryKind];
-  v5 = [MPModelPlaylistClass kindWithVariants:8 playlistEntryKind:v4 options:0];
+  _defaultPlaylistEntryKind = [self _defaultPlaylistEntryKind];
+  v5 = [MPModelPlaylistClass kindWithVariants:8 playlistEntryKind:_defaultPlaylistEntryKind options:0];
 
   return v5;
 }
@@ -688,8 +688,8 @@ LABEL_35:
 + (id)_defaultPlaylistFolderItemKind
 {
   MPModelPlaylistClass = getMPModelPlaylistClass();
-  v4 = [a1 _defaultPlaylistEntryKind];
-  v5 = [MPModelPlaylistClass kindWithVariants:95 playlistEntryKind:v4 options:0];
+  _defaultPlaylistEntryKind = [self _defaultPlaylistEntryKind];
+  v5 = [MPModelPlaylistClass kindWithVariants:95 playlistEntryKind:_defaultPlaylistEntryKind options:0];
 
   return v5;
 }
@@ -714,9 +714,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultRecordLabelKind
@@ -739,9 +739,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 identityKind];
+  identityKind = [v2 identityKind];
 
-  return v4;
+  return identityKind;
 }
 
 + (id)_defaultSocialPersonKind
@@ -764,9 +764,9 @@ LABEL_35:
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 kind];
+  kind = [v2 kind];
 
-  return v4;
+  return kind;
 }
 
 + (id)_defaultTVShowKind
@@ -789,21 +789,21 @@ LABEL_35:
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [a1 _defaultTVSeasonKind];
-  v6 = [v3 kindWithSeasonKind:v5];
+  _defaultTVSeasonKind = [self _defaultTVSeasonKind];
+  v6 = [v3 kindWithSeasonKind:_defaultTVSeasonKind];
 
   return v6;
 }
 
-+ (id)playlistEntryKindWithKinds:(id)a3
++ (id)playlistEntryKindWithKinds:(id)kinds
 {
-  v3 = a3;
-  v4 = [getMPModelPlaylistEntryClass() kindWithKinds:v3];
+  kindsCopy = kinds;
+  v4 = [getMPModelPlaylistEntryClass() kindWithKinds:kindsCopy];
 
   return v4;
 }
 
-+ (id)_curatorKindForVariants:(unint64_t)a3
++ (id)_curatorKindForVariants:(unint64_t)variants
 {
   v9 = 0;
   v10 = &v9;
@@ -823,41 +823,41 @@ LABEL_35:
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 kindWithVariants:a3];
+  v6 = [v4 kindWithVariants:variants];
 
   return v6;
 }
 
-+ (id)_songKindForVariants:(unint64_t)a3
++ (id)_songKindForVariants:(unint64_t)variants
 {
   MPModelSongClass = getMPModelSongClass();
 
-  return [MPModelSongClass kindWithVariants:a3];
+  return [MPModelSongClass kindWithVariants:variants];
 }
 
-+ (id)_songKindForVariants:(unint64_t)a3 options:(unint64_t)a4
++ (id)_songKindForVariants:(unint64_t)variants options:(unint64_t)options
 {
   MPModelSongClass = getMPModelSongClass();
 
-  return [MPModelSongClass kindWithVariants:a3 options:a4];
+  return [MPModelSongClass kindWithVariants:variants options:options];
 }
 
-+ (id)_sanitizeKind:(id)a3
++ (id)_sanitizeKind:(id)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   if (_sanitizeKind__sOnceToken != -1)
   {
     +[MusicKit_SoftLinking_MPModelKind _sanitizeKind:];
   }
 
-  v4 = v3;
+  v4 = kindCopy;
   v5 = v4;
   v6 = v4;
   if (_sanitizeKind__isNanoMusicProcess == 1)
   {
-    v7 = [v4 identityKind];
-    v8 = [getMPModelSongKindClass() identityKind];
-    v9 = [v7 isEqual:v8];
+    identityKind = [v4 identityKind];
+    identityKind2 = [getMPModelSongKindClass() identityKind];
+    v9 = [identityKind isEqual:identityKind2];
 
     if (v9)
     {
@@ -888,20 +888,20 @@ LABEL_13:
 
     v12 = v11;
     _Block_object_dispose(&v44, 8);
-    v13 = [v11 identityKind];
-    v14 = [v7 isEqual:v13];
+    identityKind3 = [v11 identityKind];
+    v14 = [identityKind isEqual:identityKind3];
 
     if (v14)
     {
       v15 = v5;
-      v16 = [v15 songKind];
-      v17 = [MusicKit_SoftLinking_MPModelKind _sanitizeSongKind:v16];
+      songKind = [v15 songKind];
+      v17 = [MusicKit_SoftLinking_MPModelKind _sanitizeSongKind:songKind];
 
       MPModelAlbumClass = getMPModelAlbumClass();
-      v19 = [v15 variants];
-      v20 = [v15 options];
+      variants = [v15 variants];
+      options = [v15 options];
 
-      v21 = [MPModelAlbumClass kindWithVariants:v19 songKind:v17 options:v20];
+      v21 = [MPModelAlbumClass kindWithVariants:variants songKind:v17 options:options];
     }
 
     else
@@ -924,8 +924,8 @@ LABEL_13:
 
       v24 = v23;
       _Block_object_dispose(&v44, 8);
-      v25 = [v23 identityKind];
-      v26 = [v7 isEqual:v25];
+      identityKind4 = [v23 identityKind];
+      v26 = [identityKind isEqual:identityKind4];
 
       if (v26)
       {
@@ -933,8 +933,8 @@ LABEL_13:
         goto LABEL_6;
       }
 
-      v27 = [getMPModelPlaylistKindClass() identityKind];
-      v28 = [v7 isEqual:v27];
+      identityKind5 = [getMPModelPlaylistKindClass() identityKind];
+      v28 = [identityKind isEqual:identityKind5];
 
       if (!v28)
       {
@@ -956,8 +956,8 @@ LABEL_13:
 
         v34 = v33;
         _Block_object_dispose(&v44, 8);
-        v35 = [v33 identityKind];
-        v36 = [v7 isEqual:v35];
+        identityKind6 = [v33 identityKind];
+        v36 = [identityKind isEqual:identityKind6];
 
         v6 = v5;
         if (!v36)
@@ -965,8 +965,8 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        v37 = [v5 relationshipKinds];
-        v38 = [v37 msv_mapKeysAndValues:&__block_literal_global_11];
+        relationshipKinds = [v5 relationshipKinds];
+        v38 = [relationshipKinds msv_mapKeysAndValues:&__block_literal_global_11];
 
         v6 = [getMPModelGenericObjectClass_1() kindWithRelationshipKinds:v38];
 
@@ -974,14 +974,14 @@ LABEL_13:
       }
 
       v15 = v5;
-      v29 = [v15 playlistEntryKind];
-      v17 = [MusicKit_SoftLinking_MPModelKind _sanitizePlaylistEntryKind:v29];
+      playlistEntryKind = [v15 playlistEntryKind];
+      v17 = [MusicKit_SoftLinking_MPModelKind _sanitizePlaylistEntryKind:playlistEntryKind];
 
       MPModelPlaylistClass = getMPModelPlaylistClass();
-      v31 = [v15 variants];
-      v32 = [v15 options];
+      variants2 = [v15 variants];
+      options2 = [v15 options];
 
-      v21 = [MPModelPlaylistClass kindWithVariants:v31 playlistEntryKind:v17 options:v32];
+      v21 = [MPModelPlaylistClass kindWithVariants:variants2 playlistEntryKind:v17 options:options2];
     }
 
     v6 = v21;
@@ -994,20 +994,20 @@ LABEL_14:
   return v6;
 }
 
-+ (id)_sanitizeSongKind:(id)a3
++ (id)_sanitizeSongKind:(id)kind
 {
-  v3 = a3;
-  v4 = [v3 variants];
+  kindCopy = kind;
+  variants = [kindCopy variants];
   MPModelSongClass = getMPModelSongClass();
-  v6 = [v3 options];
+  options = [kindCopy options];
 
-  return [MPModelSongClass kindWithVariants:v4 & 0xFFFFFFFFFFFFFFFDLL options:v6];
+  return [MPModelSongClass kindWithVariants:variants & 0xFFFFFFFFFFFFFFFDLL options:options];
 }
 
-+ (id)_sanitizePlaylistEntryKind:(id)a3
++ (id)_sanitizePlaylistEntryKind:(id)kind
 {
-  v3 = [a3 kinds];
-  v4 = [v3 msv_map:&__block_literal_global_14];
+  kinds = [kind kinds];
+  v4 = [kinds msv_map:&__block_literal_global_14];
 
   v5 = [getMPModelPlaylistEntryClass() kindWithKinds:v4];
 

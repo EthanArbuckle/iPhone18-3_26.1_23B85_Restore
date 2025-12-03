@@ -1,15 +1,15 @@
 @interface UITabBarAppearance
-- (BOOL)_checkEqualTo:(id)a3;
+- (BOOL)_checkEqualTo:(id)to;
 - (id)_carPlayTabButtonAppearanceData;
-- (id)_dataForItemStyle:(int64_t)a3;
-- (unint64_t)_hashInto:(unint64_t)a3;
+- (id)_dataForItemStyle:(int64_t)style;
+- (unint64_t)_hashInto:(unint64_t)into;
 - (void)_completeInit;
-- (void)_copyFromAppearance:(id)a3;
-- (void)_decodeFromCoder:(id)a3;
-- (void)_describeInto:(id)a3;
+- (void)_copyFromAppearance:(id)appearance;
+- (void)_decodeFromCoder:(id)coder;
+- (void)_describeInto:(id)into;
 - (void)_setupDefaults;
-- (void)_tabBarItemDataChanged:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_tabBarItemDataChanged:(id)changed;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCompactInlineLayoutAppearance:(UITabBarItemAppearance *)compactInlineLayoutAppearance;
 - (void)setInlineLayoutAppearance:(UITabBarItemAppearance *)inlineLayoutAppearance;
 - (void)setSelectionIndicatorImage:(UIImage *)selectionIndicatorImage;
@@ -66,117 +66,117 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UITabBarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_stackedLayoutAppearance forKey:{@"Stacked", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_inlineLayoutAppearance forKey:@"Inline"];
-  [v4 encodeObject:self->_compactInlineLayoutAppearance forKey:@"CompactInline"];
-  [(_UITabBarLayoutData *)self->_layoutData encodeToCoder:v4 prefix:@"Layout"];
+  coderCopy = coder;
+  [(UIBarAppearance *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_stackedLayoutAppearance forKey:{@"Stacked", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_inlineLayoutAppearance forKey:@"Inline"];
+  [coderCopy encodeObject:self->_compactInlineLayoutAppearance forKey:@"CompactInline"];
+  [(_UITabBarLayoutData *)self->_layoutData encodeToCoder:coderCopy prefix:@"Layout"];
 }
 
-- (void)_copyFromAppearance:(id)a3
+- (void)_copyFromAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v17.receiver = self;
   v17.super_class = UITabBarAppearance;
-  [(UIBarAppearance *)&v17 _copyFromAppearance:v4];
-  v5 = [v4 _stackedTabButtonAppearanceData];
-  if (v5)
+  [(UIBarAppearance *)&v17 _copyFromAppearance:appearanceCopy];
+  _stackedTabButtonAppearanceData = [appearanceCopy _stackedTabButtonAppearanceData];
+  if (_stackedTabButtonAppearanceData)
   {
-    v6 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:v5];
+    v6 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:_stackedTabButtonAppearanceData];
     stackedLayoutAppearance = self->_stackedLayoutAppearance;
     self->_stackedLayoutAppearance = v6;
   }
 
-  v8 = [v4 _inlineTabButtonAppearanceData];
-  if (v8)
+  _inlineTabButtonAppearanceData = [appearanceCopy _inlineTabButtonAppearanceData];
+  if (_inlineTabButtonAppearanceData)
   {
-    v9 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:v8];
+    v9 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:_inlineTabButtonAppearanceData];
     inlineLayoutAppearance = self->_inlineLayoutAppearance;
     self->_inlineLayoutAppearance = v9;
   }
 
-  v11 = [v4 _compactInlineTabButtonAppearanceData];
-  if (v11)
+  _compactInlineTabButtonAppearanceData = [appearanceCopy _compactInlineTabButtonAppearanceData];
+  if (_compactInlineTabButtonAppearanceData)
   {
-    v12 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:v11];
+    v12 = [[UITabBarItemAppearance alloc] _initWithTabBarItemData:_compactInlineTabButtonAppearanceData];
     compactInlineLayoutAppearance = self->_compactInlineLayoutAppearance;
     self->_compactInlineLayoutAppearance = v12;
   }
 
-  v14 = [v4 _tabLayoutAppearanceData];
-  v15 = [v14 copy];
+  _tabLayoutAppearanceData = [appearanceCopy _tabLayoutAppearanceData];
+  v15 = [_tabLayoutAppearanceData copy];
   layoutData = self->_layoutData;
   self->_layoutData = v15;
 }
 
-- (void)_decodeFromCoder:(id)a3
+- (void)_decodeFromCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = UITabBarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v13 _decodeFromCoder:v4];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:{@"Stacked", v13.receiver, v13.super_class}];
+  coderCopy = coder;
+  [(UIBarAppearance *)&v13 _decodeFromCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"Stacked", v13.receiver, v13.super_class}];
   stackedLayoutAppearance = self->_stackedLayoutAppearance;
   self->_stackedLayoutAppearance = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Inline"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Inline"];
   inlineLayoutAppearance = self->_inlineLayoutAppearance;
   self->_inlineLayoutAppearance = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CompactInline"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CompactInline"];
   compactInlineLayoutAppearance = self->_compactInlineLayoutAppearance;
   self->_compactInlineLayoutAppearance = v9;
 
-  v11 = [_UITabBarLayoutData decodeFromCoder:v4 prefix:@"Layout"];
+  v11 = [_UITabBarLayoutData decodeFromCoder:coderCopy prefix:@"Layout"];
 
   layoutData = self->_layoutData;
   self->_layoutData = v11;
 }
 
-- (void)_describeInto:(id)a3
+- (void)_describeInto:(id)into
 {
   v5.receiver = self;
   v5.super_class = UITabBarAppearance;
-  v4 = a3;
-  [(UIBarAppearance *)&v5 _describeInto:v4];
-  [v4 appendFormat:@"\n\tStackedItemAppearance(%p):", self->_stackedLayoutAppearance];
-  [(UITabBarItemAppearance *)self->_stackedLayoutAppearance _describeInto:v4];
-  [v4 appendFormat:@"\n\tInlineItemAppearance(%p):", self->_inlineLayoutAppearance];
-  [(UITabBarItemAppearance *)self->_inlineLayoutAppearance _describeInto:v4];
-  [v4 appendFormat:@"\n\tCompactInlineItemAppearance(%p):", self->_compactInlineLayoutAppearance];
-  [(UITabBarItemAppearance *)self->_compactInlineLayoutAppearance _describeInto:v4];
-  [v4 appendFormat:@"\n\tItemLayout(%p):", self->_layoutData];
-  [(_UITabBarLayoutData *)self->_layoutData describeInto:v4];
+  intoCopy = into;
+  [(UIBarAppearance *)&v5 _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tStackedItemAppearance(%p):", self->_stackedLayoutAppearance];
+  [(UITabBarItemAppearance *)self->_stackedLayoutAppearance _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tInlineItemAppearance(%p):", self->_inlineLayoutAppearance];
+  [(UITabBarItemAppearance *)self->_inlineLayoutAppearance _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tCompactInlineItemAppearance(%p):", self->_compactInlineLayoutAppearance];
+  [(UITabBarItemAppearance *)self->_compactInlineLayoutAppearance _describeInto:intoCopy];
+  [intoCopy appendFormat:@"\n\tItemLayout(%p):", self->_layoutData];
+  [(_UITabBarLayoutData *)self->_layoutData describeInto:intoCopy];
 }
 
-- (unint64_t)_hashInto:(unint64_t)a3
+- (unint64_t)_hashInto:(unint64_t)into
 {
   v9.receiver = self;
   v9.super_class = UITabBarAppearance;
-  v4 = 3 * [(UIBarAppearance *)&v9 _hashInto:a3];
+  v4 = 3 * [(UIBarAppearance *)&v9 _hashInto:into];
   v5 = 3 * ([(UITabBarItemAppearance *)self->_stackedLayoutAppearance hash]+ v4);
   v6 = 3 * ([(UITabBarItemAppearance *)self->_inlineLayoutAppearance hash]+ v5);
   v7 = 3 * ([(UITabBarItemAppearance *)self->_compactInlineLayoutAppearance hash]+ v6);
   return [(_UIBarAppearanceData *)self->_layoutData hash]+ v7;
 }
 
-- (BOOL)_checkEqualTo:(id)a3
+- (BOOL)_checkEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v20.receiver = self;
   v20.super_class = UITabBarAppearance;
-  if (![(UIBarAppearance *)&v20 _checkEqualTo:v4])
+  if (![(UIBarAppearance *)&v20 _checkEqualTo:toCopy])
   {
     LOBYTE(v10) = 0;
     goto LABEL_19;
   }
 
-  v5 = v4[9];
+  v5 = toCopy[9];
   v6 = self->_stackedLayoutAppearance;
   v7 = v5;
   v8 = v7;
@@ -209,7 +209,7 @@
     }
   }
 
-  v11 = v4[10];
+  v11 = toCopy[10];
   v6 = self->_inlineLayoutAppearance;
   v12 = v11;
   v8 = v12;
@@ -217,7 +217,7 @@
   {
 
 LABEL_22:
-    v15 = v4[11];
+    v15 = toCopy[11];
     v6 = self->_compactInlineLayoutAppearance;
     v16 = v15;
     v8 = v16;
@@ -226,7 +226,7 @@ LABEL_22:
 
 LABEL_28:
       layoutData = self->_layoutData;
-      v18 = v4[7];
+      v18 = toCopy[7];
       v6 = layoutData;
       v19 = v18;
       v8 = v19;
@@ -308,42 +308,42 @@ LABEL_19:
   return [(UITabBarItemAppearance *)v5 _data];
 }
 
-- (id)_dataForItemStyle:(int64_t)a3
+- (id)_dataForItemStyle:(int64_t)style
 {
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (!a3)
+    if (!style)
     {
       v6 = 72;
       goto LABEL_12;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
       goto LABEL_5;
     }
 
 LABEL_8:
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:520 description:{@"Invalid style (%li)", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:520 description:{@"Invalid style (%li)", style}];
 
-    v8 = 0;
+    _carPlayTabButtonAppearanceData = 0;
     goto LABEL_13;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v6 = 88;
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (style == 3)
   {
-    v8 = [(UITabBarAppearance *)self _carPlayTabButtonAppearanceData];
+    _carPlayTabButtonAppearanceData = [(UITabBarAppearance *)self _carPlayTabButtonAppearanceData];
     goto LABEL_13;
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
     goto LABEL_8;
   }
@@ -351,10 +351,10 @@ LABEL_8:
 LABEL_5:
   v6 = 80;
 LABEL_12:
-  v8 = [*(&self->super.super.isa + v6) _data];
+  _carPlayTabButtonAppearanceData = [*(&self->super.super.isa + v6) _data];
 LABEL_13:
 
-  return v8;
+  return _carPlayTabButtonAppearanceData;
 }
 
 - (void)setStackedLayoutAppearance:(UITabBarItemAppearance *)stackedLayoutAppearance
@@ -362,8 +362,8 @@ LABEL_13:
   v5 = stackedLayoutAppearance;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:539 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:539 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
   }
 
   v6 = self->_stackedLayoutAppearance;
@@ -403,8 +403,8 @@ LABEL_11:
   v5 = inlineLayoutAppearance;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:550 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:550 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
   }
 
   v6 = self->_inlineLayoutAppearance;
@@ -444,8 +444,8 @@ LABEL_11:
   v5 = compactInlineLayoutAppearance;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:561 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITabBarAppearance.m" lineNumber:561 description:@"Use -[UITabBarItemAppearance configureWithDefaultForStyle:] to reset"];
   }
 
   v6 = self->_compactInlineLayoutAppearance;
@@ -493,31 +493,31 @@ LABEL_11:
     v7 = 0;
   }
 
-  v8 = [(_UITabBarLayoutData *)self->_layoutData selectionIndicatorTintColor];
+  selectionIndicatorTintColor = [(_UITabBarLayoutData *)self->_layoutData selectionIndicatorTintColor];
   v9 = v7;
   v13 = v9;
-  if (v8 == v9)
+  if (selectionIndicatorTintColor == v9)
   {
 
     goto LABEL_13;
   }
 
-  if (!v9 || !v8)
+  if (!v9 || !selectionIndicatorTintColor)
   {
 
     goto LABEL_12;
   }
 
-  v10 = [(UIColor *)v8 isEqual:v9];
+  v10 = [(UIColor *)selectionIndicatorTintColor isEqual:v9];
 
   if (!v10)
   {
 LABEL_12:
-    v11 = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
     layoutData = self->_layoutData;
-    self->_layoutData = v11;
+    self->_layoutData = writableInstance;
 
-    [(_UITabBarLayoutData *)v11 setSelectionIndicatorTintColor:v13];
+    [(_UITabBarLayoutData *)writableInstance setSelectionIndicatorTintColor:v13];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -543,31 +543,31 @@ LABEL_13:
     v7 = 0;
   }
 
-  v9 = [(_UITabBarLayoutData *)self->_layoutData selectionIndicatorImage];
+  selectionIndicatorImage = [(_UITabBarLayoutData *)self->_layoutData selectionIndicatorImage];
   v10 = v7;
   v14 = v10;
-  if (v9 == v10)
+  if (selectionIndicatorImage == v10)
   {
 
     goto LABEL_14;
   }
 
-  if (!v10 || !v9)
+  if (!v10 || !selectionIndicatorImage)
   {
 
     goto LABEL_13;
   }
 
-  v11 = [(UIImage *)v9 isEqual:v10];
+  v11 = [(UIImage *)selectionIndicatorImage isEqual:v10];
 
   if (!v11)
   {
 LABEL_13:
-    v12 = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
     layoutData = self->_layoutData;
-    self->_layoutData = v12;
+    self->_layoutData = writableInstance;
 
-    [(_UITabBarLayoutData *)v12 setSelectionIndicatorImage:v14];
+    [(_UITabBarLayoutData *)writableInstance setSelectionIndicatorImage:v14];
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 
@@ -578,11 +578,11 @@ LABEL_14:
 {
   if ([(_UITabBarLayoutData *)self->_layoutData itemPositioning]!= stackedItemPositioning)
   {
-    v5 = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
     layoutData = self->_layoutData;
-    self->_layoutData = v5;
+    self->_layoutData = writableInstance;
 
-    [(_UITabBarLayoutData *)v5 setItemPositioning:stackedItemPositioning];
+    [(_UITabBarLayoutData *)writableInstance setItemPositioning:stackedItemPositioning];
 
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
@@ -593,11 +593,11 @@ LABEL_14:
   [(_UITabBarLayoutData *)self->_layoutData itemWidth];
   if (v5 != stackedItemWidth)
   {
-    v6 = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
     layoutData = self->_layoutData;
-    self->_layoutData = v6;
+    self->_layoutData = writableInstance;
 
-    [(_UITabBarLayoutData *)v6 setItemWidth:stackedItemWidth];
+    [(_UITabBarLayoutData *)writableInstance setItemWidth:stackedItemWidth];
 
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
@@ -608,40 +608,40 @@ LABEL_14:
   [(_UITabBarLayoutData *)self->_layoutData itemSpacing];
   if (v5 != stackedItemSpacing)
   {
-    v6 = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
+    writableInstance = [(_UIBarAppearanceData *)self->_layoutData writableInstance];
     layoutData = self->_layoutData;
-    self->_layoutData = v6;
+    self->_layoutData = writableInstance;
 
-    [(_UITabBarLayoutData *)v6 setItemSpacing:stackedItemSpacing];
+    [(_UITabBarLayoutData *)writableInstance setItemSpacing:stackedItemSpacing];
 
     [(UIBarAppearance *)self _signalCategoryChanges:?];
   }
 }
 
-- (void)_tabBarItemDataChanged:(id)a3
+- (void)_tabBarItemDataChanged:(id)changed
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_stackedLayoutAppearance == v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (self->_stackedLayoutAppearance == changedCopy)
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = 32;
 LABEL_10:
-    [(UIBarAppearance *)v7 _signalCategoryChanges:v8];
+    [(UIBarAppearance *)selfCopy3 _signalCategoryChanges:v8];
     goto LABEL_11;
   }
 
-  if (self->_inlineLayoutAppearance == v4)
+  if (self->_inlineLayoutAppearance == changedCopy)
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = 64;
     goto LABEL_10;
   }
 
-  if (self->_compactInlineLayoutAppearance == v4)
+  if (self->_compactInlineLayoutAppearance == changedCopy)
   {
-    v7 = self;
+    selfCopy3 = self;
     v8 = 128;
     goto LABEL_10;
   }

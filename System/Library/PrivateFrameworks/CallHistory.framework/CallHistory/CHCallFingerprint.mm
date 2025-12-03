@@ -1,26 +1,26 @@
 @interface CHCallFingerprint
-+ (BOOL)doCallTypesMatch:(id)a3 :(id)a4;
-+ (BOOL)doHandlesMatch:(id)a3 with:(id)a4;
-+ (BOOL)doesCall:(id)a3 matchWith:(id)a4;
-+ (BOOL)shouldCall:(id)a3 updateMatchingCall:(id)a4;
-+ (id)matchCallWithFingerprint:(id)a3 usingDatabase:(id)a4;
-+ (id)predicateForCall:(id)a3;
-+ (id)predicateForHandoffCall:(id)a3;
-+ (unsigned)getCallStatusForExistingCall:(id)a3 andRemoteCall:(id)a4 areBothCallsLocal:(BOOL)a5 isExistingCallMissedOrAnsweredElsewhere:(BOOL)a6;
++ (BOOL)doCallTypesMatch:(id)match :(id)a4;
++ (BOOL)doHandlesMatch:(id)match with:(id)with;
++ (BOOL)doesCall:(id)call matchWith:(id)with;
++ (BOOL)shouldCall:(id)call updateMatchingCall:(id)matchingCall;
++ (id)matchCallWithFingerprint:(id)fingerprint usingDatabase:(id)database;
++ (id)predicateForCall:(id)call;
++ (id)predicateForHandoffCall:(id)call;
++ (unsigned)getCallStatusForExistingCall:(id)call andRemoteCall:(id)remoteCall areBothCallsLocal:(BOOL)local isExistingCallMissedOrAnsweredElsewhere:(BOOL)elsewhere;
 @end
 
 @implementation CHCallFingerprint
 
-+ (BOOL)doCallTypesMatch:(id)a3 :(id)a4
++ (BOOL)doCallTypesMatch:(id)match :(id)a4
 {
-  v5 = a3;
+  matchCopy = match;
   v6 = a4;
-  v7 = [v5 mediaType];
-  if (v7 == [v6 mediaType] && (v8 = objc_msgSend(v5, "ttyType"), v8 == objc_msgSend(v6, "ttyType")))
+  mediaType = [matchCopy mediaType];
+  if (mediaType == [v6 mediaType] && (v8 = objc_msgSend(matchCopy, "ttyType"), v8 == objc_msgSend(v6, "ttyType")))
   {
-    v9 = [v5 serviceProvider];
-    v10 = [v6 serviceProvider];
-    v11 = [v9 isEqual:v10];
+    serviceProvider = [matchCopy serviceProvider];
+    serviceProvider2 = [v6 serviceProvider];
+    v11 = [serviceProvider isEqual:serviceProvider2];
   }
 
   else
@@ -31,20 +31,20 @@
   return v11;
 }
 
-+ (BOOL)doHandlesMatch:(id)a3 with:(id)a4
++ (BOOL)doHandlesMatch:(id)match with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 remoteParticipantHandles];
-  v8 = [v7 count];
-  v9 = [v6 remoteParticipantHandles];
-  v10 = [v9 count];
+  matchCopy = match;
+  withCopy = with;
+  remoteParticipantHandles = [matchCopy remoteParticipantHandles];
+  v8 = [remoteParticipantHandles count];
+  remoteParticipantHandles2 = [withCopy remoteParticipantHandles];
+  v10 = [remoteParticipantHandles2 count];
 
-  if (v8 == v10 && ([v5 remoteParticipantHandles], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v12))
+  if (v8 == v10 && ([matchCopy remoteParticipantHandles], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "count"), v11, v12))
   {
-    v13 = [v5 notificationThreadIdentifier];
-    v14 = [v6 notificationThreadIdentifier];
-    v15 = [v13 isEqualToString:v14];
+    notificationThreadIdentifier = [matchCopy notificationThreadIdentifier];
+    notificationThreadIdentifier2 = [withCopy notificationThreadIdentifier];
+    v15 = [notificationThreadIdentifier isEqualToString:notificationThreadIdentifier2];
   }
 
   else
@@ -55,13 +55,13 @@
   return v15;
 }
 
-+ (BOOL)doesCall:(id)a3 matchWith:(id)a4
++ (BOOL)doesCall:(id)call matchWith:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 uniqueId];
-  v8 = [v6 uniqueId];
-  v9 = [v7 isEqualToString:v8];
+  callCopy = call;
+  withCopy = with;
+  uniqueId = [callCopy uniqueId];
+  uniqueId2 = [withCopy uniqueId];
+  v9 = [uniqueId isEqualToString:uniqueId2];
 
   if (v9)
   {
@@ -70,14 +70,14 @@
 
   else
   {
-    v11 = [v5 date];
-    v12 = [v6 date];
-    [v11 timeIntervalSinceDate:v12];
+    date = [callCopy date];
+    date2 = [withCopy date];
+    [date timeIntervalSinceDate:date2];
     v14 = v13;
 
-    if ([CHCallFingerprint doCallTypesMatch:v5])
+    if ([CHCallFingerprint doCallTypesMatch:callCopy])
     {
-      v15 = [CHCallFingerprint doHandlesMatch:v5 with:v6];
+      v15 = [CHCallFingerprint doHandlesMatch:callCopy with:withCopy];
       v10 = fabs(v14) <= 5.0 && v15;
     }
 
@@ -90,37 +90,37 @@
   return v10;
 }
 
-+ (BOOL)shouldCall:(id)a3 updateMatchingCall:(id)a4
++ (BOOL)shouldCall:(id)call updateMatchingCall:(id)matchingCall
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 callStatus] & 3) != 0 && (objc_msgSend(v6, "callStatus") & 4) != 0 || (objc_msgSend(v5, "callStatus") & 3) != 0 && (objc_msgSend(v6, "callStatus") & 8) != 0 || (objc_msgSend(v5, "callStatus") & 4) != 0 && (objc_msgSend(v6, "callStatus") & 3) != 0)
+  callCopy = call;
+  matchingCallCopy = matchingCall;
+  if (([callCopy callStatus] & 3) != 0 && (objc_msgSend(matchingCallCopy, "callStatus") & 4) != 0 || (objc_msgSend(callCopy, "callStatus") & 3) != 0 && (objc_msgSend(matchingCallCopy, "callStatus") & 8) != 0 || (objc_msgSend(callCopy, "callStatus") & 4) != 0 && (objc_msgSend(matchingCallCopy, "callStatus") & 3) != 0)
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 conversationID];
-    v9 = [v6 conversationID];
-    v7 = (v8 | v9) == 0;
-    if (v9)
+    conversationID = [callCopy conversationID];
+    conversationID2 = [matchingCallCopy conversationID];
+    v7 = (conversationID | conversationID2) == 0;
+    if (conversationID2)
     {
-      v7 = [v8 isEqual:v9];
+      v7 = [conversationID isEqual:conversationID2];
     }
   }
 
   return v7;
 }
 
-+ (unsigned)getCallStatusForExistingCall:(id)a3 andRemoteCall:(id)a4 areBothCallsLocal:(BOOL)a5 isExistingCallMissedOrAnsweredElsewhere:(BOOL)a6
++ (unsigned)getCallStatusForExistingCall:(id)call andRemoteCall:(id)remoteCall areBothCallsLocal:(BOOL)local isExistingCallMissedOrAnsweredElsewhere:(BOOL)elsewhere
 {
-  v9 = a3;
-  v10 = a4;
-  if (([v10 callStatus] == 1 || objc_msgSend(v10, "callStatus") == 2) && !a5)
+  callCopy = call;
+  remoteCallCopy = remoteCall;
+  if (([remoteCallCopy callStatus] == 1 || objc_msgSend(remoteCallCopy, "callStatus") == 2) && !local)
   {
-    v11 = 4;
-    if (a6)
+    callStatus = 4;
+    if (elsewhere)
     {
       goto LABEL_8;
     }
@@ -128,97 +128,97 @@
     goto LABEL_7;
   }
 
-  v11 = [v10 callStatus];
-  if (!a6)
+  callStatus = [remoteCallCopy callStatus];
+  if (!elsewhere)
   {
 LABEL_7:
-    v11 = [v9 callStatus];
+    callStatus = [callCopy callStatus];
   }
 
 LABEL_8:
 
-  return v11;
+  return callStatus;
 }
 
-+ (id)predicateForHandoffCall:(id)a3
++ (id)predicateForHandoffCall:(id)call
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 conversationID];
+  callCopy = call;
+  array = [MEMORY[0x1E695DF70] array];
+  conversationID = [callCopy conversationID];
 
-  if (v5)
+  if (conversationID)
   {
-    v6 = [v3 conversationID];
-    v7 = [CHRecentCall predicateForCallsWithConversationID:v6];
-    [v4 addObject:v7];
+    conversationID2 = [callCopy conversationID];
+    v7 = [CHRecentCall predicateForCallsWithConversationID:conversationID2];
+    [array addObject:v7];
   }
 
-  v8 = [v3 participantGroupUUID];
+  participantGroupUUID = [callCopy participantGroupUUID];
 
-  if (v8)
+  if (participantGroupUUID)
   {
-    v9 = [v3 participantGroupUUID];
-    v10 = [CHRecentCall predicateForCallsWithGroupUUID:v9];
-    [v4 addObject:v10];
+    participantGroupUUID2 = [callCopy participantGroupUUID];
+    v10 = [CHRecentCall predicateForCallsWithGroupUUID:participantGroupUUID2];
+    [array addObject:v10];
   }
 
-  v11 = [v3 uniqueId];
-  v12 = [CHRecentCall predicateForCallsWithUniqueID:v11];
-  [v4 addObject:v12];
+  uniqueId = [callCopy uniqueId];
+  v12 = [CHRecentCall predicateForCallsWithUniqueID:uniqueId];
+  [array addObject:v12];
 
-  v13 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v4];
+  v13 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:array];
 
   return v13;
 }
 
-+ (id)predicateForCall:(id)a3
++ (id)predicateForCall:(id)call
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 date];
-  v6 = v5;
-  if (v5)
+  callCopy = call;
+  array = [MEMORY[0x1E695DF70] array];
+  date = [callCopy date];
+  v6 = date;
+  if (date)
   {
-    v7 = [v5 dateByAddingTimeInterval:-5.0];
+    v7 = [date dateByAddingTimeInterval:-5.0];
     v8 = [v6 dateByAddingTimeInterval:5.0];
     v9 = [CHRecentCall predicateForCallsBetweenStartDate:v7 endDate:v8];
-    [v4 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [v3 mediaType];
-  if (v10)
+  mediaType = [callCopy mediaType];
+  if (mediaType)
   {
-    v11 = [CHRecentCall predicateForCallsWithMediaType:v10];
-    [v4 addObject:v11];
+    v11 = [CHRecentCall predicateForCallsWithMediaType:mediaType];
+    [array addObject:v11];
   }
 
-  v12 = [v3 serviceProvider];
-  if ([v12 length])
+  serviceProvider = [callCopy serviceProvider];
+  if ([serviceProvider length])
   {
-    v13 = [CHRecentCall predicateForCallsWithServiceProvider:v12];
-    [v4 addObject:v13];
+    v13 = [CHRecentCall predicateForCallsWithServiceProvider:serviceProvider];
+    [array addObject:v13];
   }
 
-  v14 = [v3 ttyType];
-  if (v14)
+  ttyType = [callCopy ttyType];
+  if (ttyType)
   {
-    v15 = [CHRecentCall predicateForCallsWithTTYType:v14];
-    [v4 addObject:v15];
+    v15 = [CHRecentCall predicateForCallsWithTTYType:ttyType];
+    [array addObject:v15];
   }
 
-  v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
+  v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
 
   return v16;
 }
 
-+ (id)matchCallWithFingerprint:(id)a3 usingDatabase:(id)a4
++ (id)matchCallWithFingerprint:(id)fingerprint usingDatabase:(id)database
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 date];
+  fingerprintCopy = fingerprint;
+  databaseCopy = database;
+  date = [fingerprintCopy date];
 
-  if (!v7)
+  if (!date)
   {
     v19 = +[CHLogServer sharedInstance];
     v20 = [v19 logHandleForDomain:"Fingerprint"];
@@ -226,22 +226,22 @@ LABEL_8:
     v18 = v20;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v5 uniqueId];
+      uniqueId = [fingerprintCopy uniqueId];
       v50 = 138543362;
-      v51 = v21;
+      v51 = uniqueId;
       v22 = "Ignoring fingerprinted call %{public}@ without a date";
 LABEL_13:
       _os_log_impl(&dword_1C3E90000, v18, OS_LOG_TYPE_DEFAULT, v22, &v50, 0xCu);
     }
 
 LABEL_14:
-    v17 = 0;
+    firstObject = 0;
     v10 = v18;
     goto LABEL_36;
   }
 
-  v8 = [v5 remoteParticipantHandles];
-  v9 = [v8 count];
+  remoteParticipantHandles = [fingerprintCopy remoteParticipantHandles];
+  v9 = [remoteParticipantHandles count];
 
   if (!v9)
   {
@@ -251,9 +251,9 @@ LABEL_14:
     v18 = v24;
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v5 uniqueId];
+      uniqueId = [fingerprintCopy uniqueId];
       v50 = 138543362;
-      v51 = v21;
+      v51 = uniqueId;
       v22 = "Ignoring fingerprinted call %{public}@ without remote participant handles";
       goto LABEL_13;
     }
@@ -261,7 +261,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [CHCallFingerprint predicateForHandoffCall:v5];
+  v10 = [CHCallFingerprint predicateForHandoffCall:fingerprintCopy];
   v11 = +[CHLogServer sharedInstance];
   v12 = [v11 logHandleForDomain:"Fingerprint"];
 
@@ -272,7 +272,7 @@ LABEL_14:
     _os_log_impl(&dword_1C3E90000, v12, OS_LOG_TYPE_DEFAULT, "Fetching local call records using predicate %@", &v50, 0xCu);
   }
 
-  v13 = [v6 fetchObjectsWithPredicate:v10];
+  v13 = [databaseCopy fetchObjectsWithPredicate:v10];
   if ([v13 count])
   {
     v14 = +[CHLogServer sharedInstance];
@@ -286,13 +286,13 @@ LABEL_14:
     }
 
     v16 = [v13 sortedArrayUsingComparator:&__block_literal_global_10];
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
     v18 = v13;
   }
 
   else
   {
-    v25 = [CHCallFingerprint predicateForCall:v5];
+    v25 = [CHCallFingerprint predicateForCall:fingerprintCopy];
 
     v26 = +[CHLogServer sharedInstance];
     v27 = [v26 logHandleForDomain:"Fingerprint"];
@@ -304,7 +304,7 @@ LABEL_14:
       _os_log_impl(&dword_1C3E90000, v27, OS_LOG_TYPE_DEFAULT, "Fetching local call records using predicate %@", &v50, 0xCu);
     }
 
-    v18 = [v6 fetchObjectsWithPredicate:v25];
+    v18 = [databaseCopy fetchObjectsWithPredicate:v25];
 
     v28 = [v18 count];
     v29 = +[CHLogServer sharedInstance];
@@ -317,36 +317,36 @@ LABEL_14:
       if (v31)
       {
         v32 = [v18 count];
-        v33 = [v5 uniqueId];
+        uniqueId2 = [fingerprintCopy uniqueId];
         v50 = 134218242;
         v51 = v32;
         v52 = 2114;
-        v53 = v33;
+        v53 = uniqueId2;
         _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "Found %lu calls matching %{public}@ in local data store", &v50, 0x16u);
       }
 
       if ([v18 count]!= 1)
       {
-        v38 = [v5 remoteParticipantHandles];
-        v39 = [v38 allObjects];
-        v10 = [CHRecentCall predicateForCallsWithRemoteParticipantHandles:v39];
+        remoteParticipantHandles2 = [fingerprintCopy remoteParticipantHandles];
+        allObjects = [remoteParticipantHandles2 allObjects];
+        v10 = [CHRecentCall predicateForCallsWithRemoteParticipantHandles:allObjects];
 
         v16 = [v18 filteredArrayUsingPredicate:v10];
         if ([v16 count])
         {
-          v17 = [v16 firstObject];
+          firstObject = [v16 firstObject];
           v40 = +[CHLogServer sharedInstance];
           v41 = [v40 logHandleForDomain:"Fingerprint"];
 
           v42 = v41;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v43 = [v17 uniqueId];
-            v44 = [v5 uniqueId];
+            uniqueId3 = [firstObject uniqueId];
+            uniqueId4 = [fingerprintCopy uniqueId];
             v50 = 138543618;
-            v51 = v43;
+            v51 = uniqueId3;
             v52 = 2114;
-            v53 = v44;
+            v53 = uniqueId4;
             _os_log_impl(&dword_1C3E90000, v42, OS_LOG_TYPE_DEFAULT, "Fingerprint matched local call %{public}@ with remote call %{public}@", &v50, 0x16u);
           }
         }
@@ -359,28 +359,28 @@ LABEL_14:
           v42 = v46;
           if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
           {
-            v47 = [v5 uniqueId];
+            uniqueId5 = [fingerprintCopy uniqueId];
             v50 = 138543362;
-            v51 = v47;
+            v51 = uniqueId5;
             _os_log_impl(&dword_1C3E90000, v42, OS_LOG_TYPE_DEFAULT, "Did not find filtered caller ID result matching call %{public}@", &v50, 0xCu);
           }
 
-          v17 = 0;
+          firstObject = 0;
         }
 
         goto LABEL_35;
       }
 
-      v17 = [v18 firstObject];
+      firstObject = [v18 firstObject];
       v34 = +[CHLogServer sharedInstance];
       v35 = [v34 logHandleForDomain:"Fingerprint"];
 
       v16 = v35;
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [v17 uniqueId];
+        uniqueId6 = [firstObject uniqueId];
         v50 = 138543362;
-        v51 = v36;
+        v51 = uniqueId6;
         _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "Returning matching call with uniqueID %{public}@", &v50, 0xCu);
       }
     }
@@ -389,13 +389,13 @@ LABEL_14:
     {
       if (v31)
       {
-        v37 = [v5 uniqueId];
+        uniqueId7 = [fingerprintCopy uniqueId];
         v50 = 138543362;
-        v51 = v37;
+        v51 = uniqueId7;
         _os_log_impl(&dword_1C3E90000, v16, OS_LOG_TYPE_DEFAULT, "Could not find fingerprinted call %{public}@ in local data store", &v50, 0xCu);
       }
 
-      v17 = 0;
+      firstObject = 0;
     }
 
     v10 = v25;
@@ -406,7 +406,7 @@ LABEL_35:
 LABEL_36:
   v48 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return firstObject;
 }
 
 uint64_t __60__CHCallFingerprint_matchCallWithFingerprint_usingDatabase___block_invoke(uint64_t a1, void *a2, void *a3)

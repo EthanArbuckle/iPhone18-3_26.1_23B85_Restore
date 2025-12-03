@@ -1,14 +1,14 @@
 @interface PGProgressCallChecker
-- (PGProgressCallChecker)initWithTaskName:(id)a3 loggingConnection:(id)a4;
+- (PGProgressCallChecker)initWithTaskName:(id)name loggingConnection:(id)connection;
 - (id)memoryUsage;
-- (void)checkCallsWithProgress:(double)a3 stop:(BOOL)a4;
+- (void)checkCallsWithProgress:(double)progress stop:(BOOL)stop;
 @end
 
 @implementation PGProgressCallChecker
 
-- (void)checkCallsWithProgress:(double)a3 stop:(BOOL)a4
+- (void)checkCallsWithProgress:(double)progress stop:(BOOL)stop
 {
-  v4 = a4;
+  stopCopy = stop;
   v50 = *MEMORY[0x277D85DE8];
   wasStopped = self->_wasStopped;
   if (wasStopped)
@@ -18,7 +18,7 @@
     {
       taskName = self->_taskName;
       *&v38 = COERCE_DOUBLE(@" Also *stop* seems to have been reset!!!");
-      if (v4)
+      if (stopCopy)
       {
         *&v38 = COERCE_DOUBLE(&stru_2843F5C58);
       }
@@ -26,22 +26,22 @@
       v40 = 138412546;
       v41 = taskName;
       v42 = 2112;
-      v43 = *&v38;
+      progressCopy5 = *&v38;
       _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "%@: Progress called again although task was stopped!!!%@", &v40, 0x16u);
       LOBYTE(wasStopped) = self->_wasStopped;
     }
   }
 
-  self->_wasStopped = wasStopped || v4;
+  self->_wasStopped = wasStopped || stopCopy;
   v9 = @", stopped";
-  if (!v4)
+  if (!stopCopy)
   {
     v9 = &stru_2843F5C58;
   }
 
   v10 = v9;
   lastProgress = self->_lastProgress;
-  if (lastProgress + -2.22044605e-16 > a3)
+  if (lastProgress + -2.22044605e-16 > progress)
   {
     v12 = self->_loggingConnection;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -50,14 +50,14 @@
       v40 = 138412802;
       v41 = v13;
       v42 = 2048;
-      v43 = lastProgress;
+      progressCopy5 = lastProgress;
       v44 = 2048;
-      v45 = a3;
+      progressCopy = progress;
       _os_log_impl(&dword_22F0FC000, v12, OS_LOG_TYPE_INFO, "%@: Progress going backwards from %1.4f to %1.4f", &v40, 0x20u);
     }
   }
 
-  self->_lastProgress = a3;
+  self->_lastProgress = progress;
   Current = CFAbsoluteTimeGetCurrent();
   timestampOfLastCallToProgress = self->_timestampOfLastCallToProgress;
   v16 = Current - timestampOfLastCallToProgress;
@@ -74,9 +74,9 @@
         v40 = 138413058;
         v41 = v27;
         v42 = 2048;
-        v43 = *&numberOfCallsToProgressSinceLastRecordedCall;
+        progressCopy5 = *&numberOfCallsToProgressSinceLastRecordedCall;
         v44 = 2048;
-        v45 = v28;
+        progressCopy = v28;
         v46 = 2112;
         v47 = *&v10;
         _os_log_impl(&dword_22F0FC000, v26, OS_LOG_TYPE_DEFAULT, "%@: Progress --------, called %lu time(s) in %.2f sec%@", &v40, 0x2Au);
@@ -88,9 +88,9 @@
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           v30 = v29;
-          v31 = [(PGProgressCallChecker *)self memoryUsage];
+          memoryUsage = [(PGProgressCallChecker *)self memoryUsage];
           v40 = 138412290;
-          v41 = v31;
+          v41 = memoryUsage;
           _os_log_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_DEFAULT, "Mem: %@", &v40, 0xCu);
         }
       }
@@ -107,9 +107,9 @@
         v40 = 138413058;
         v41 = v35;
         v42 = 2048;
-        v43 = a3;
+        progressCopy5 = progress;
         v44 = 2048;
-        v45 = Current - timestampOfLastCallToProgress;
+        progressCopy = Current - timestampOfLastCallToProgress;
         v46 = 2112;
         v47 = *&v10;
         _os_log_fault_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_FAULT, "%@: Progress %1.4f, not called for %.2f sec%@", &v40, 0x2Au);
@@ -127,9 +127,9 @@
           v40 = 138413058;
           v41 = v39;
           v42 = 2048;
-          v43 = a3;
+          progressCopy5 = progress;
           v44 = 2048;
-          v45 = Current - timestampOfLastCallToProgress;
+          progressCopy = Current - timestampOfLastCallToProgress;
           v46 = 2112;
           v47 = *&v10;
           _os_log_error_impl(&dword_22F0FC000, v32, OS_LOG_TYPE_ERROR, "%@: Progress %1.4f, not called for %.2f sec%@", &v40, 0x2Au);
@@ -142,9 +142,9 @@
         v40 = 138413058;
         v41 = v33;
         v42 = 2048;
-        v43 = a3;
+        progressCopy5 = progress;
         v44 = 2048;
-        v45 = Current - timestampOfLastCallToProgress;
+        progressCopy = Current - timestampOfLastCallToProgress;
         v46 = 2112;
         v47 = *&v10;
         _os_log_impl(&dword_22F0FC000, v32, OS_LOG_TYPE_DEFAULT, "%@: Progress %1.4f, not called for %.2f sec%@", &v40, 0x2Au);
@@ -159,7 +159,7 @@
     v18 = numberOfCallsToProgressSinceLastRecordedCall + 1;
     self->_numberOfCallsToProgressSinceLastRecordedCall = v18;
     v19 = Current - self->_timestampOfLastRecordedCallToProgress;
-    if (v19 >= 1.0 || v4)
+    if (v19 >= 1.0 || stopCopy)
     {
       v21 = self->_loggingConnection;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -168,9 +168,9 @@
         v40 = 138413314;
         v41 = v22;
         v42 = 2048;
-        v43 = a3;
+        progressCopy5 = progress;
         v44 = 2048;
-        v45 = *&v18;
+        progressCopy = *&v18;
         v46 = 2048;
         v47 = v19;
         v48 = 2112;
@@ -184,9 +184,9 @@
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v23;
-          v25 = [(PGProgressCallChecker *)self memoryUsage];
+          memoryUsage2 = [(PGProgressCallChecker *)self memoryUsage];
           v40 = 138412290;
-          v41 = v25;
+          v41 = memoryUsage2;
           _os_log_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_DEFAULT, "Mem: %@", &v40, 0xCu);
         }
       }
@@ -236,20 +236,20 @@
   return v4;
 }
 
-- (PGProgressCallChecker)initWithTaskName:(id)a3 loggingConnection:(id)a4
+- (PGProgressCallChecker)initWithTaskName:(id)name loggingConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = PGProgressCallChecker;
   v8 = [(PGProgressCallChecker *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     taskName = v8->_taskName;
     v8->_taskName = v9;
 
-    objc_storeStrong(&v8->_loggingConnection, a4);
+    objc_storeStrong(&v8->_loggingConnection, connection);
     Current = CFAbsoluteTimeGetCurrent();
     v8->_timestampOfLastCallToProgress = Current;
     v8->_timestampOfLastRecordedCallToProgress = Current;

@@ -1,12 +1,12 @@
 @interface ARDepthSensor
-+ (void)registerSignPostForPointCloudData:(id)a3;
-- (BOOL)canReconfigure:(id)a3;
++ (void)registerSignPostForPointCloudData:(id)data;
+- (BOOL)canReconfigure:(id)reconfigure;
 - (NSString)description;
 - (id)configureCaptureSession;
 - (id)prepareToStart;
-- (void)_configureProjectorModeForDevice:(id)a3;
-- (void)pointCloudDataOutput:(id)a3 didDropPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7;
-- (void)pointCloudDataOutput:(id)a3 didOutputPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6;
+- (void)_configureProjectorModeForDevice:(id)device;
+- (void)pointCloudDataOutput:(id)output didDropPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason;
+- (void)pointCloudDataOutput:(id)output didOutputPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection;
 - (void)start;
 - (void)stop;
 @end
@@ -22,13 +22,13 @@
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ARImageSensor *)self logPrefix];
+    logPrefix = [(ARImageSensor *)self logPrefix];
     v7 = 138543874;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = logPrefix;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ ARDepthSensor stop complete", &v7, 0x20u);
   }
 }
@@ -50,13 +50,13 @@
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = [(ARImageSensor *)self logPrefix];
+      logPrefix = [(ARImageSensor *)self logPrefix];
       v13 = 138543874;
       v14 = v7;
       v15 = 2048;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
-      v18 = v8;
+      v18 = logPrefix;
       v9 = "%{public}@ <%p>: %@ start called on a child depth image sensor instead of parent image sensor";
       v10 = v5;
       v11 = OS_LOG_TYPE_ERROR;
@@ -69,13 +69,13 @@ LABEL_8:
   {
     v12 = objc_opt_class();
     v7 = NSStringFromClass(v12);
-    v8 = [(ARImageSensor *)self logPrefix];
+    logPrefix = [(ARImageSensor *)self logPrefix];
     v13 = 138543874;
     v14 = v7;
     v15 = 2048;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v8;
+    v18 = logPrefix;
     v9 = "Error: %{public}@ <%p>: %@ start called on a child depth image sensor instead of parent image sensor";
     v10 = v5;
     v11 = OS_LOG_TYPE_INFO;
@@ -91,32 +91,32 @@ LABEL_8:
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [(ARImageSensor *)self logPrefix];
+    logPrefix = [(ARImageSensor *)self logPrefix];
     *buf = 138543874;
     v30 = v5;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2112;
-    v34 = v6;
+    v34 = logPrefix;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ preparing to start", buf, 0x20u);
   }
 
-  v7 = [(ARImageSensor *)self setActiveFormat];
-  if (v7 || ([(ARDepthSensor *)self configureCaptureSession], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  setActiveFormat = [(ARImageSensor *)self setActiveFormat];
+  if (setActiveFormat || ([(ARDepthSensor *)self configureCaptureSession], (setActiveFormat = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = v7;
+    v8 = setActiveFormat;
     goto LABEL_6;
   }
 
-  v10 = [(ARImageSensor *)self captureDevice];
+  captureDevice = [(ARImageSensor *)self captureDevice];
   v26 = 0;
-  v11 = [v10 lockForConfiguration:&v26];
+  v11 = [captureDevice lockForConfiguration:&v26];
   v8 = v26;
   if (v11)
   {
-    [(ARImageSensor *)self configureFrameRateForDevice:v10];
-    [(ARDepthSensor *)self _configureProjectorModeForDevice:v10];
-    [v10 unlockForConfiguration];
+    [(ARImageSensor *)self configureFrameRateForDevice:captureDevice];
+    [(ARDepthSensor *)self _configureProjectorModeForDevice:captureDevice];
+    [captureDevice unlockForConfiguration];
     if (!v8)
     {
       goto LABEL_27;
@@ -142,14 +142,14 @@ LABEL_8:
 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [(ARImageSensor *)self logPrefix];
+    logPrefix2 = [(ARImageSensor *)self logPrefix];
     v18 = [v8 description];
     *buf = 138544130;
     v30 = v16;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2112;
-    v34 = v17;
+    v34 = logPrefix2;
     v35 = 2112;
     v36 = v18;
     v19 = "%{public}@ <%p>: %@ Unable to lock capture device for configuration: %@";
@@ -166,14 +166,14 @@ LABEL_8:
 
     v22 = objc_opt_class();
     v16 = NSStringFromClass(v22);
-    v17 = [(ARImageSensor *)self logPrefix];
+    logPrefix2 = [(ARImageSensor *)self logPrefix];
     v18 = [v8 description];
     *buf = 138544130;
     v30 = v16;
     v31 = 2048;
-    v32 = self;
+    selfCopy3 = self;
     v33 = 2112;
-    v34 = v17;
+    v34 = logPrefix2;
     v35 = 2112;
     v36 = v18;
     v19 = "Error: %{public}@ <%p>: %@ Unable to lock capture device for configuration: %@";
@@ -220,15 +220,15 @@ LABEL_6:
 - (id)configureCaptureSession
 {
   v159 = *MEMORY[0x1E69E9840];
-  v3 = [(ARImageSensor *)self videoInput];
+  videoInput = [(ARImageSensor *)self videoInput];
 
-  if (v3)
+  if (videoInput)
   {
-    v4 = [(ARImageSensor *)self videoInput];
-    v5 = [v4 device];
-    v6 = [(ARImageSensor *)self captureDevice];
+    videoInput2 = [(ARImageSensor *)self videoInput];
+    device = [videoInput2 device];
+    captureDevice = [(ARImageSensor *)self captureDevice];
 
-    if (v5 != v6)
+    if (device != captureDevice)
     {
       if (ARShouldUseLogTypeError_onceToken != -1)
       {
@@ -244,17 +244,17 @@ LABEL_6:
         {
           v10 = objc_opt_class();
           v11 = NSStringFromClass(v10);
-          v12 = [(ARImageSensor *)self logPrefix];
-          v13 = [(ARImageSensor *)self videoInput];
-          v14 = [v13 device];
+          logPrefix = [(ARImageSensor *)self logPrefix];
+          videoInput3 = [(ARImageSensor *)self videoInput];
+          device2 = [videoInput3 device];
           LODWORD(buf.value) = 138544130;
           *(&buf.value + 4) = v11;
           LOWORD(buf.flags) = 2048;
           *(&buf.flags + 2) = self;
           HIWORD(buf.epoch) = 2112;
-          v155 = v12;
+          v155 = logPrefix;
           v156 = 2112;
-          *v157 = v14;
+          *v157 = device2;
           v15 = "%{public}@ <%p>: %@ Unsupported capture device: %@";
           v16 = v9;
           v17 = OS_LOG_TYPE_ERROR;
@@ -267,17 +267,17 @@ LABEL_24:
       {
         v43 = objc_opt_class();
         v11 = NSStringFromClass(v43);
-        v12 = [(ARImageSensor *)self logPrefix];
-        v13 = [(ARImageSensor *)self videoInput];
-        v14 = [v13 device];
+        logPrefix = [(ARImageSensor *)self logPrefix];
+        videoInput3 = [(ARImageSensor *)self videoInput];
+        device2 = [videoInput3 device];
         LODWORD(buf.value) = 138544130;
         *(&buf.value + 4) = v11;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v12;
+        v155 = logPrefix;
         v156 = 2112;
-        *v157 = v14;
+        *v157 = device2;
         v15 = "Error: %{public}@ <%p>: %@ Unsupported capture device: %@";
         v16 = v9;
         v17 = OS_LOG_TYPE_INFO;
@@ -293,10 +293,10 @@ LABEL_56:
       goto LABEL_95;
     }
 
-    v18 = [(ARImageSensor *)self videoInput];
-    v19 = [v18 device];
-    v20 = [v19 activeFormat];
-    MediaSubType = CMFormatDescriptionGetMediaSubType([v20 formatDescription]);
+    videoInput4 = [(ARImageSensor *)self videoInput];
+    device3 = [videoInput4 device];
+    activeFormat = [device3 activeFormat];
+    MediaSubType = CMFormatDescriptionGetMediaSubType([activeFormat formatDescription]);
 
     if (MediaSubType != 1785950320)
     {
@@ -317,13 +317,13 @@ LABEL_56:
 
         v72 = objc_opt_class();
         v73 = NSStringFromClass(v72);
-        v74 = [(ARImageSensor *)self logPrefix];
+        logPrefix2 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138544130;
         *(&buf.value + 4) = v73;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v74;
+        v155 = logPrefix2;
         v156 = 1024;
         *v157 = MediaSubType;
         v75 = "%{public}@ <%p>: %@ Unsupported data format: %d";
@@ -340,13 +340,13 @@ LABEL_56:
 
         v119 = objc_opt_class();
         v73 = NSStringFromClass(v119);
-        v74 = [(ARImageSensor *)self logPrefix];
+        logPrefix2 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138544130;
         *(&buf.value + 4) = v73;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v74;
+        v155 = logPrefix2;
         v156 = 1024;
         *v157 = MediaSubType;
         v75 = "Error: %{public}@ <%p>: %@ Unsupported data format: %d";
@@ -360,24 +360,24 @@ LABEL_56:
     }
   }
 
-  v22 = [(ARImageSensor *)self videoInput];
+  videoInput5 = [(ARImageSensor *)self videoInput];
 
-  if (v22)
+  if (videoInput5)
   {
     v23 = 0;
     goto LABEL_11;
   }
 
   v44 = objc_alloc(MEMORY[0x1E69870B0]);
-  v45 = [(ARImageSensor *)self captureDevice];
+  captureDevice2 = [(ARImageSensor *)self captureDevice];
   v150 = 0;
-  v46 = [v44 initWithDevice:v45 error:&v150];
+  v46 = [v44 initWithDevice:captureDevice2 error:&v150];
   v23 = v150;
   [(ARImageSensor *)self setVideoInput:v46];
 
-  v47 = [(ARImageSensor *)self videoInput];
+  videoInput6 = [(ARImageSensor *)self videoInput];
 
-  if (!v47)
+  if (!videoInput6)
   {
     if (ARShouldUseLogTypeError_onceToken != -1)
     {
@@ -393,19 +393,19 @@ LABEL_56:
       {
         v104 = objc_opt_class();
         v105 = NSStringFromClass(v104);
-        v106 = [(ARImageSensor *)self logPrefix];
+        logPrefix3 = [(ARImageSensor *)self logPrefix];
         v107 = [v23 description];
-        v108 = [(ARImageSensor *)self captureDevice];
+        captureDevice3 = [(ARImageSensor *)self captureDevice];
         LODWORD(buf.value) = 138544386;
         *(&buf.value + 4) = v105;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v106;
+        v155 = logPrefix3;
         v156 = 2112;
         *v157 = v107;
         *&v157[8] = 2112;
-        v158 = v108;
+        v158 = captureDevice3;
         v109 = "%{public}@ <%p>: %@ Error creating capture input for depth sensor: %@ (%@)";
         v110 = v103;
         v111 = OS_LOG_TYPE_ERROR;
@@ -418,19 +418,19 @@ LABEL_76:
     {
       v140 = objc_opt_class();
       v105 = NSStringFromClass(v140);
-      v106 = [(ARImageSensor *)self logPrefix];
+      logPrefix3 = [(ARImageSensor *)self logPrefix];
       v107 = [v23 description];
-      v108 = [(ARImageSensor *)self captureDevice];
+      captureDevice3 = [(ARImageSensor *)self captureDevice];
       LODWORD(buf.value) = 138544386;
       *(&buf.value + 4) = v105;
       LOWORD(buf.flags) = 2048;
       *(&buf.flags + 2) = self;
       HIWORD(buf.epoch) = 2112;
-      v155 = v106;
+      v155 = logPrefix3;
       v156 = 2112;
       *v157 = v107;
       *&v157[8] = 2112;
-      v158 = v108;
+      v158 = captureDevice3;
       v109 = "Error: %{public}@ <%p>: %@ Error creating capture input for depth sensor: %@ (%@)";
       v110 = v103;
       v111 = OS_LOG_TYPE_INFO;
@@ -452,9 +452,9 @@ LABEL_76:
     goto LABEL_86;
   }
 
-  v48 = [(ARImageSensor *)self captureSession];
-  v49 = [(ARImageSensor *)self videoInput];
-  v50 = [v48 canAddInput:v49];
+  captureSession = [(ARImageSensor *)self captureSession];
+  videoInput7 = [(ARImageSensor *)self videoInput];
+  v50 = [captureSession canAddInput:videoInput7];
 
   if (!v50)
   {
@@ -472,13 +472,13 @@ LABEL_76:
       {
         v124 = objc_opt_class();
         v116 = NSStringFromClass(v124);
-        v117 = [(ARImageSensor *)self logPrefix];
+        logPrefix4 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138543874;
         *(&buf.value + 4) = v116;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v117;
+        v155 = logPrefix4;
         v118 = "%{public}@ <%p>: %@ Cannot add video data input to the capture session";
         goto LABEL_62;
       }
@@ -498,13 +498,13 @@ LABEL_86:
 
     v143 = objc_opt_class();
     v116 = NSStringFromClass(v143);
-    v117 = [(ARImageSensor *)self logPrefix];
+    logPrefix4 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v116;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v117;
+    v155 = logPrefix4;
     v118 = "Error: %{public}@ <%p>: %@ Cannot add video data input to the capture session";
 LABEL_83:
     v125 = v114;
@@ -512,48 +512,48 @@ LABEL_83:
     goto LABEL_84;
   }
 
-  v51 = [(ARImageSensor *)self captureSession];
-  v52 = [(ARImageSensor *)self videoInput];
-  [v51 addInputWithNoConnections:v52];
+  captureSession2 = [(ARImageSensor *)self captureSession];
+  videoInput8 = [(ARImageSensor *)self videoInput];
+  [captureSession2 addInputWithNoConnections:videoInput8];
 
   v53 = _ARLogSensor();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
   {
     v54 = objc_opt_class();
     v55 = NSStringFromClass(v54);
-    v56 = [(ARImageSensor *)self logPrefix];
+    logPrefix5 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v55;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v56;
+    v155 = logPrefix5;
     _os_log_impl(&dword_1C241C000, v53, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %@ Added video data input to the capture session", &buf, 0x20u);
   }
 
-  v57 = [(ARImageSensor *)self internalSettings];
-  v58 = [v57 videoFormat];
-  v59 = [v58 frameRatesByPowerUsage];
-  v60 = [v59 objectAtIndexedSubscript:0];
+  internalSettings = [(ARImageSensor *)self internalSettings];
+  videoFormat = [internalSettings videoFormat];
+  frameRatesByPowerUsage = [videoFormat frameRatesByPowerUsage];
+  v60 = [frameRatesByPowerUsage objectAtIndexedSubscript:0];
   [v60 doubleValue];
   v62 = v61;
 
   CMTimeMake(&v149, 1, v62);
-  v63 = [(ARImageSensor *)self videoInput];
+  videoInput9 = [(ARImageSensor *)self videoInput];
   buf = v149;
-  [v63 setVideoMinFrameDurationOverride:&buf];
+  [videoInput9 setVideoMinFrameDurationOverride:&buf];
 
   v64 = _ARLogSensor();
   if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
   {
     v65 = objc_opt_class();
     v66 = NSStringFromClass(v65);
-    v67 = [(ARImageSensor *)self logPrefix];
-    v68 = [(ARImageSensor *)self videoInput];
-    v69 = v68;
-    if (v68)
+    logPrefix6 = [(ARImageSensor *)self logPrefix];
+    videoInput10 = [(ARImageSensor *)self videoInput];
+    v69 = videoInput10;
+    if (videoInput10)
     {
-      [v68 videoMinFrameDurationOverride];
+      [videoInput10 videoMinFrameDurationOverride];
     }
 
     else
@@ -567,7 +567,7 @@ LABEL_83:
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v67;
+    v155 = logPrefix6;
     v156 = 2048;
     *v157 = Seconds;
     _os_log_impl(&dword_1C241C000, v64, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: %@ Video min frame duration override set to %f", &buf, 0x2Au);
@@ -593,24 +593,24 @@ LABEL_11:
   {
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    v29 = [(ARImageSensor *)self logPrefix];
-    v30 = [(AVCapturePointCloudDataOutput *)self->_pointCloudOutput isDeferredStartSupported];
-    v31 = [(AVCapturePointCloudDataOutput *)self->_pointCloudOutput isDeferredStartEnabled];
+    logPrefix7 = [(ARImageSensor *)self logPrefix];
+    isDeferredStartSupported = [(AVCapturePointCloudDataOutput *)self->_pointCloudOutput isDeferredStartSupported];
+    isDeferredStartEnabled = [(AVCapturePointCloudDataOutput *)self->_pointCloudOutput isDeferredStartEnabled];
     LODWORD(buf.value) = 138544386;
     *(&buf.value + 4) = v28;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v29;
+    v155 = logPrefix7;
     v156 = 1024;
-    *v157 = v30;
+    *v157 = isDeferredStartSupported;
     *&v157[4] = 1024;
-    *&v157[6] = v31;
+    *&v157[6] = isDeferredStartEnabled;
     _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %@ deferred start supported: %u, enabled: %u.", &buf, 0x2Cu);
   }
 
-  v32 = [(ARImageSensor *)self captureSession];
-  v33 = [v32 canAddOutput:self->_pointCloudOutput];
+  captureSession3 = [(ARImageSensor *)self captureSession];
+  v33 = [captureSession3 canAddOutput:self->_pointCloudOutput];
 
   if (!v33)
   {
@@ -628,13 +628,13 @@ LABEL_11:
       {
         v115 = objc_opt_class();
         v116 = NSStringFromClass(v115);
-        v117 = [(ARImageSensor *)self logPrefix];
+        logPrefix4 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138543874;
         *(&buf.value + 4) = v116;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v117;
+        v155 = logPrefix4;
         v118 = "%{public}@ <%p>: %@ Cannot add video data output to the capture session";
 LABEL_62:
         v125 = v114;
@@ -655,82 +655,82 @@ LABEL_84:
 
     v142 = objc_opt_class();
     v116 = NSStringFromClass(v142);
-    v117 = [(ARImageSensor *)self logPrefix];
+    logPrefix4 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v116;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v117;
+    v155 = logPrefix4;
     v118 = "Error: %{public}@ <%p>: %@ Cannot add video data output to the capture session";
     goto LABEL_83;
   }
 
-  v34 = [(ARImageSensor *)self captureSession];
-  [v34 addOutputWithNoConnections:self->_pointCloudOutput];
+  captureSession4 = [(ARImageSensor *)self captureSession];
+  [captureSession4 addOutputWithNoConnections:self->_pointCloudOutput];
 
   v35 = _ARLogSensor();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
   {
     v36 = objc_opt_class();
     v37 = NSStringFromClass(v36);
-    v38 = [(ARImageSensor *)self logPrefix];
+    logPrefix8 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v37;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v38;
+    v155 = logPrefix8;
     _os_log_impl(&dword_1C241C000, v35, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %@ Added video data output to the capture session", &buf, 0x20u);
   }
 
 LABEL_20:
-  v39 = [(ARImageSensor *)self videoConnection];
+  videoConnection = [(ARImageSensor *)self videoConnection];
 
-  if (v39)
+  if (videoConnection)
   {
 LABEL_21:
     [(AVCapturePointCloudDataOutput *)self->_pointCloudOutput setAlwaysDiscardsLatePointCloudData:1];
     v40 = self->_pointCloudOutput;
-    v41 = [(ARImageSensor *)self captureQueue];
-    [(AVCapturePointCloudDataOutput *)v40 setDelegate:self callbackQueue:v41];
+    captureQueue = [(ARImageSensor *)self captureQueue];
+    [(AVCapturePointCloudDataOutput *)v40 setDelegate:self callbackQueue:captureQueue];
 
     v42 = 0;
     goto LABEL_95;
   }
 
   v148 = v23;
-  v78 = [(ARImageSensor *)self videoInput];
+  videoInput11 = [(ARImageSensor *)self videoInput];
   v79 = *MEMORY[0x1E6986FA8];
-  v80 = [(ARImageSensor *)self videoInput];
-  v81 = [v80 device];
-  v82 = [v81 deviceType];
-  v83 = [(ARImageSensor *)self videoInput];
-  v84 = [v83 device];
-  v85 = [v78 portsWithMediaType:v79 sourceDeviceType:v82 sourceDevicePosition:{objc_msgSend(v84, "position")}];
-  v86 = [v85 firstObject];
+  videoInput12 = [(ARImageSensor *)self videoInput];
+  device4 = [videoInput12 device];
+  deviceType = [device4 deviceType];
+  videoInput13 = [(ARImageSensor *)self videoInput];
+  device5 = [videoInput13 device];
+  v85 = [videoInput11 portsWithMediaType:v79 sourceDeviceType:deviceType sourceDevicePosition:{objc_msgSend(device5, "position")}];
+  firstObject = [v85 firstObject];
 
-  if (v86)
+  if (firstObject)
   {
     v87 = MEMORY[0x1E6987070];
-    v151 = v86;
+    v151 = firstObject;
     v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v151 count:1];
     v89 = [v87 connectionWithInputPorts:v88 output:self->_pointCloudOutput];
     [(ARImageSensor *)self setVideoConnection:v89];
 
-    v90 = [(ARImageSensor *)self captureSession];
-    v91 = [(ARImageSensor *)self videoConnection];
-    v92 = [v90 canAddConnection:v91];
+    captureSession5 = [(ARImageSensor *)self captureSession];
+    videoConnection2 = [(ARImageSensor *)self videoConnection];
+    v92 = [captureSession5 canAddConnection:videoConnection2];
 
     if (v92)
     {
-      v93 = [(ARImageSensor *)self connections];
-      v94 = [(ARImageSensor *)self videoConnection];
-      [v93 addObject:v94];
+      connections = [(ARImageSensor *)self connections];
+      videoConnection3 = [(ARImageSensor *)self videoConnection];
+      [connections addObject:videoConnection3];
 
-      v95 = [(ARImageSensor *)self captureSession];
-      v96 = [(ARImageSensor *)self videoConnection];
-      [v95 addConnection:v96];
+      captureSession6 = [(ARImageSensor *)self captureSession];
+      videoConnection4 = [(ARImageSensor *)self videoConnection];
+      [captureSession6 addConnection:videoConnection4];
 
       v97 = _ARLogSensor();
       v23 = v148;
@@ -738,13 +738,13 @@ LABEL_21:
       {
         v98 = objc_opt_class();
         v99 = NSStringFromClass(v98);
-        v100 = [(ARImageSensor *)self logPrefix];
+        logPrefix9 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138543874;
         *(&buf.value + 4) = v99;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v100;
+        v155 = logPrefix9;
         _os_log_impl(&dword_1C241C000, v97, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %@ Added video data connection to the capture session", &buf, 0x20u);
       }
 
@@ -766,13 +766,13 @@ LABEL_21:
       {
         v137 = objc_opt_class();
         v132 = NSStringFromClass(v137);
-        v133 = [(ARImageSensor *)self logPrefix];
+        logPrefix10 = [(ARImageSensor *)self logPrefix];
         LODWORD(buf.value) = 138543874;
         *(&buf.value + 4) = v132;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = self;
         HIWORD(buf.epoch) = 2112;
-        v155 = v133;
+        v155 = logPrefix10;
         v134 = "%{public}@ <%p>: %@ Cannot add video connection to capture session";
         goto LABEL_73;
       }
@@ -787,13 +787,13 @@ LABEL_21:
 
     v145 = objc_opt_class();
     v132 = NSStringFromClass(v145);
-    v133 = [(ARImageSensor *)self logPrefix];
+    logPrefix10 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v132;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v133;
+    v155 = logPrefix10;
     v134 = "Error: %{public}@ <%p>: %@ Cannot add video connection to capture session";
 LABEL_92:
     v138 = v130;
@@ -819,13 +819,13 @@ LABEL_92:
 
     v144 = objc_opt_class();
     v132 = NSStringFromClass(v144);
-    v133 = [(ARImageSensor *)self logPrefix];
+    logPrefix10 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v132;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v133;
+    v155 = logPrefix10;
     v134 = "Error: %{public}@ <%p>: %@ Cannot find a video port in the input added to the capture session";
     goto LABEL_92;
   }
@@ -834,13 +834,13 @@ LABEL_92:
   {
     v131 = objc_opt_class();
     v132 = NSStringFromClass(v131);
-    v133 = [(ARImageSensor *)self logPrefix];
+    logPrefix10 = [(ARImageSensor *)self logPrefix];
     LODWORD(buf.value) = 138543874;
     *(&buf.value + 4) = v132;
     LOWORD(buf.flags) = 2048;
     *(&buf.flags + 2) = self;
     HIWORD(buf.epoch) = 2112;
-    v155 = v133;
+    v155 = logPrefix10;
     v134 = "%{public}@ <%p>: %@ Cannot find a video port in the input added to the capture session";
 LABEL_73:
     v138 = v130;
@@ -858,28 +858,28 @@ LABEL_95:
   return v42;
 }
 
-- (BOOL)canReconfigure:(id)a3
+- (BOOL)canReconfigure:(id)reconfigure
 {
-  v4 = a3;
-  v5 = [(ARDepthSensor *)self internalDepthSettings];
-  v6 = [v5 isEqual:v4];
+  reconfigureCopy = reconfigure;
+  internalDepthSettings = [(ARDepthSensor *)self internalDepthSettings];
+  v6 = [internalDepthSettings isEqual:reconfigureCopy];
 
   return v6;
 }
 
-- (void)_configureProjectorModeForDevice:(id)a3
+- (void)_configureProjectorModeForDevice:(id)device
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ARDepthSensor *)self internalDepthSettings];
-  v6 = [v5 timeOfFlightProjectorMode];
+  deviceCopy = device;
+  internalDepthSettings = [(ARDepthSensor *)self internalDepthSettings];
+  timeOfFlightProjectorMode = [internalDepthSettings timeOfFlightProjectorMode];
 
-  v7 = [(ARImageSensor *)self captureDevice];
-  v8 = [v7 isTimeOfFlightProjectorModeSupported:ARAVTimeOfFlightProjectorModeFromARTimeOfFlightProjectMode(v6)];
+  captureDevice = [(ARImageSensor *)self captureDevice];
+  v8 = [captureDevice isTimeOfFlightProjectorModeSupported:ARAVTimeOfFlightProjectorModeFromARTimeOfFlightProjectMode(timeOfFlightProjectorMode)];
 
   if (v8)
   {
-    v9 = v6;
+    v9 = timeOfFlightProjectorMode;
   }
 
   else
@@ -889,17 +889,17 @@ LABEL_95:
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [(ARImageSensor *)self logPrefix];
+      logPrefix = [(ARImageSensor *)self logPrefix];
       v23 = 138544386;
       v24 = v12;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
-      v28 = v13;
+      v28 = logPrefix;
       v29 = 2112;
-      v30 = v6;
+      v30 = timeOfFlightProjectorMode;
       v31 = 2048;
-      v32 = [v4 timeOfFlightProjectorMode];
+      timeOfFlightProjectorMode2 = [deviceCopy timeOfFlightProjectorMode];
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ Requested projector mode %@ is not supported on this device. Current projector mode of the device: %ld.", &v23, 0x34u);
     }
 
@@ -909,54 +909,54 @@ LABEL_95:
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [(ARImageSensor *)self logPrefix];
+      logPrefix2 = [(ARImageSensor *)self logPrefix];
       v23 = 138544130;
       v24 = v16;
       v25 = 2048;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
-      v28 = v17;
+      v28 = logPrefix2;
       v29 = 2112;
       v30 = v9;
       _os_log_impl(&dword_1C241C000, v14, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ Falling back to projector mode %@.", &v23, 0x2Au);
     }
   }
 
-  [v4 setTimeOfFlightProjectorMode:ARAVTimeOfFlightProjectorModeFromARTimeOfFlightProjectMode(v9)];
+  [deviceCopy setTimeOfFlightProjectorMode:ARAVTimeOfFlightProjectorModeFromARTimeOfFlightProjectMode(v9)];
   v18 = _ARLogSensor();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v21 = [(ARImageSensor *)self logPrefix];
-    v22 = [v4 timeOfFlightProjectorMode];
+    logPrefix3 = [(ARImageSensor *)self logPrefix];
+    timeOfFlightProjectorMode3 = [deviceCopy timeOfFlightProjectorMode];
     v23 = 138544386;
     v24 = v20;
     v25 = 2048;
-    v26 = self;
+    selfCopy3 = self;
     v27 = 2112;
-    v28 = v21;
+    v28 = logPrefix3;
     v29 = 2112;
     v30 = v9;
     v31 = 2048;
-    v32 = v22;
+    timeOfFlightProjectorMode2 = timeOfFlightProjectorMode3;
     _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ ARDepthSensor projector mode set to %@(%ld)", &v23, 0x34u);
   }
 }
 
-- (void)pointCloudDataOutput:(id)a3 didOutputPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6
+- (void)pointCloudDataOutput:(id)output didOutputPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  dataCopy = data;
   v9 = [ARPointCloudSensorData alloc];
-  v10 = [(ARImageSensor *)self captureFramesPerSecond];
-  v11 = [(ARImageSensor *)self captureDevice];
-  v12 = [(ARImageSensor *)self captureSession];
-  v13 = [(ARPointCloudSensorData *)v9 initWithPointCloudData:v8 captureFramePerSecond:v10 captureDevice:v11 captureSession:v12];
+  captureFramesPerSecond = [(ARImageSensor *)self captureFramesPerSecond];
+  captureDevice = [(ARImageSensor *)self captureDevice];
+  captureSession = [(ARImageSensor *)self captureSession];
+  v13 = [(ARPointCloudSensorData *)v9 initWithPointCloudData:dataCopy captureFramePerSecond:captureFramesPerSecond captureDevice:captureDevice captureSession:captureSession];
 
   if (v13)
   {
-    v14 = [(ARImageSensor *)self dataSource];
+    dataSource = [(ARImageSensor *)self dataSource];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
@@ -964,8 +964,8 @@ LABEL_95:
       extrinsicsMap = self->_extrinsicsMap;
       if (!extrinsicsMap)
       {
-        v17 = [(ARImageSensor *)self dataSource];
-        v18 = [v17 captureDeviceTypeToExtrinsicsMapForImageSensor:self];
+        dataSource2 = [(ARImageSensor *)self dataSource];
+        v18 = [dataSource2 captureDeviceTypeToExtrinsicsMapForImageSensor:self];
         v19 = self->_extrinsicsMap;
         self->_extrinsicsMap = v18;
 
@@ -976,8 +976,8 @@ LABEL_95:
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v20 = [(NSMutableDictionary *)extrinsicsMap allKeys];
-      v21 = [v20 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      allKeys = [(NSMutableDictionary *)extrinsicsMap allKeys];
+      v21 = [allKeys countByEnumeratingWithState:&v46 objects:v50 count:16];
       if (v21)
       {
         v22 = v21;
@@ -988,7 +988,7 @@ LABEL_95:
           {
             if (*v47 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allKeys);
             }
 
             v25 = *(*(&v46 + 1) + 8 * i);
@@ -1002,7 +1002,7 @@ LABEL_95:
             }
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v46 objects:v50 count:16];
+          v22 = [allKeys countByEnumeratingWithState:&v46 objects:v50 count:16];
           if (v22)
           {
             continue;
@@ -1031,47 +1031,47 @@ LABEL_17:
       }
     }
 
-    v39 = [(ARImageSensor *)self bufferPopulationMonitor];
-    v40 = [v8 pointCloudDataBuffer];
-    v41 = [(ARImageSensor *)self captureDevice];
-    v42 = [v41 localizedName];
-    buf = *a5;
+    bufferPopulationMonitor = [(ARImageSensor *)self bufferPopulationMonitor];
+    pointCloudDataBuffer = [dataCopy pointCloudDataBuffer];
+    captureDevice2 = [(ARImageSensor *)self captureDevice];
+    localizedName = [captureDevice2 localizedName];
+    buf = *timestamp;
     Seconds = CMTimeGetSeconds(&buf);
-    v44 = [(ARImageSensor *)self captureDevice];
-    v45 = [v44 deviceType];
-    [v39 trackDataBuffer:v40 withLabel:v42 timestamp:ARBufferPopulationMonitorSignpostTypeForCaptureDevice(v45) signpostType:Seconds];
+    captureDevice3 = [(ARImageSensor *)self captureDevice];
+    deviceType = [captureDevice3 deviceType];
+    [bufferPopulationMonitor trackDataBuffer:pointCloudDataBuffer withLabel:localizedName timestamp:ARBufferPopulationMonitorSignpostTypeForCaptureDevice(deviceType) signpostType:Seconds];
 
     [objc_opt_class() registerSignPostForPointCloudData:v13];
-    v26 = [(ARImageSensor *)self delegate];
-    [v26 sensor:self didOutputSensorData:v13];
+    delegate = [(ARImageSensor *)self delegate];
+    [delegate sensor:self didOutputSensorData:v13];
   }
 
   else
   {
-    v26 = _ARLogSensor();
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+    delegate = _ARLogSensor();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = [(ARImageSensor *)self captureDevice];
-      v30 = [v29 deviceType];
+      captureDevice4 = [(ARImageSensor *)self captureDevice];
+      deviceType2 = [captureDevice4 deviceType];
       LODWORD(buf.var0) = 138543874;
       *(&buf.var0 + 4) = v28;
       LOWORD(buf.var2) = 2048;
       *(&buf.var2 + 2) = self;
       HIWORD(buf.var3) = 2112;
-      v52 = v30;
-      _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropped a pointCloudDataOutput because data is nil: %@", &buf, 0x20u);
+      v52 = deviceType2;
+      _os_log_impl(&dword_1C241C000, delegate, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropped a pointCloudDataOutput because data is nil: %@", &buf, 0x20u);
     }
   }
 }
 
-- (void)pointCloudDataOutput:(id)a3 didDropPointCloudData:(id)a4 timestamp:(id *)a5 connection:(id)a6 reason:(int64_t)a7
+- (void)pointCloudDataOutput:(id)output didDropPointCloudData:(id)data timestamp:(id *)timestamp connection:(id)connection reason:(int64_t)reason
 {
   v35 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  outputCopy = output;
+  dataCopy = data;
+  connectionCopy = connection;
   if (ARShouldUseLogTypeError_onceToken != -1)
   {
     [ARDepthSensor start];
@@ -1086,17 +1086,17 @@ LABEL_17:
     {
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      v20 = [(ARImageSensor *)self logPrefix];
-      v29 = *a5;
+      logPrefix = [(ARImageSensor *)self logPrefix];
+      v29 = *timestamp;
       Seconds = CMTimeGetSeconds(&v29);
-      if (a7 > 3)
+      if (reason > 3)
       {
         v22 = @"Undefined";
       }
 
       else
       {
-        v22 = off_1E817BC18[a7];
+        v22 = off_1E817BC18[reason];
       }
 
       LODWORD(v29.var0) = 138544386;
@@ -1104,7 +1104,7 @@ LABEL_17:
       LOWORD(v29.var2) = 2048;
       *(&v29.var2 + 2) = self;
       HIWORD(v29.var3) = 2112;
-      v30 = v20;
+      v30 = logPrefix;
       v31 = 2048;
       v32 = Seconds;
       v33 = 2112;
@@ -1121,17 +1121,17 @@ LABEL_14:
   {
     v23 = objc_opt_class();
     v19 = NSStringFromClass(v23);
-    v20 = [(ARImageSensor *)self logPrefix];
-    v29 = *a5;
+    logPrefix = [(ARImageSensor *)self logPrefix];
+    v29 = *timestamp;
     v24 = CMTimeGetSeconds(&v29);
-    if (a7 > 3)
+    if (reason > 3)
     {
       v25 = @"Undefined";
     }
 
     else
     {
-      v25 = off_1E817BC18[a7];
+      v25 = off_1E817BC18[reason];
     }
 
     LODWORD(v29.var0) = 138544386;
@@ -1139,7 +1139,7 @@ LABEL_14:
     LOWORD(v29.var2) = 2048;
     *(&v29.var2 + 2) = self;
     HIWORD(v29.var3) = 2112;
-    v30 = v20;
+    v30 = logPrefix;
     v31 = 2048;
     v32 = v24;
     v33 = 2112;
@@ -1153,22 +1153,22 @@ LABEL_14:
   kdebug_trace();
 }
 
-+ (void)registerSignPostForPointCloudData:(id)a3
++ (void)registerSignPostForPointCloudData:(id)data
 {
-  v8 = a3;
-  v3 = [v8 pointCloud];
-  if (v3)
+  dataCopy = data;
+  pointCloud = [dataCopy pointCloud];
+  if (pointCloud)
   {
-    v4 = v3;
-    v5 = [v8 pointCloud];
-    v6 = [v5 length];
+    v4 = pointCloud;
+    pointCloud2 = [dataCopy pointCloud];
+    v6 = [pointCloud2 length];
 
     if (v6)
     {
-      v7 = [v8 pointCloud];
-      [v7 bankIds];
+      pointCloud3 = [dataCopy pointCloud];
+      [pointCloud3 bankIds];
 
-      [v8 timestamp];
+      [dataCopy timestamp];
       kdebug_trace();
     }
   }
@@ -1181,28 +1181,28 @@ LABEL_14:
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(ARImageSensor *)self captureDevice];
-  [v6 appendFormat:@" %@\n", v7];
+  captureDevice = [(ARImageSensor *)self captureDevice];
+  [v6 appendFormat:@" %@\n", captureDevice];
 
-  v8 = [(ARImageSensor *)self captureDevice];
-  v9 = [v8 timeOfFlightProjectorMode];
-  if (v9 > 6)
+  captureDevice2 = [(ARImageSensor *)self captureDevice];
+  timeOfFlightProjectorMode = [captureDevice2 timeOfFlightProjectorMode];
+  if (timeOfFlightProjectorMode > 6)
   {
     v10 = @"Undefined";
   }
 
   else
   {
-    v10 = off_1E817BC38[v9];
+    v10 = off_1E817BC38[timeOfFlightProjectorMode];
   }
 
   [v6 appendFormat:@"ProjectorMode: %@\n", v10];
 
-  v11 = [(ARImageSensor *)self captureDevice];
-  [v6 appendFormat:@"BankCount: %li\n", objc_msgSend(v11, "timeOfFlightBankCount")];
+  captureDevice3 = [(ARImageSensor *)self captureDevice];
+  [v6 appendFormat:@"BankCount: %li\n", objc_msgSend(captureDevice3, "timeOfFlightBankCount")];
 
-  v12 = [(ARImageSensor *)self internalSettings];
-  v13 = [v12 description];
+  internalSettings = [(ARImageSensor *)self internalSettings];
+  v13 = [internalSettings description];
   v14 = [v13 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t\t"];
   [v6 appendFormat:@"%@\n", v14];
 

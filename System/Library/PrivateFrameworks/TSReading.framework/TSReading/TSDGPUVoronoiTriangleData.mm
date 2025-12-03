@@ -1,27 +1,27 @@
 @interface TSDGPUVoronoiTriangleData
 - (CGRect)bounds;
-- (TSDGPUVoronoiTriangleData)initWithPoints:(unint64_t)a3 clippedToRect:(CGRect)a4 percentOfCellsToSplit:(double)a5 randomGenerator:(id)a6;
-- (id)cellFromTriangleIndex:(unint64_t)a3;
-- (unint64_t)cellIndexFromTriangleIndex:(unint64_t)a3;
-- (unint64_t)triangleIndexInCellFromGlobalTriangleIndex:(unint64_t)a3;
+- (TSDGPUVoronoiTriangleData)initWithPoints:(unint64_t)points clippedToRect:(CGRect)rect percentOfCellsToSplit:(double)split randomGenerator:(id)generator;
+- (id)cellFromTriangleIndex:(unint64_t)index;
+- (unint64_t)cellIndexFromTriangleIndex:(unint64_t)index;
+- (unint64_t)triangleIndexInCellFromGlobalTriangleIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)p_setupDataWithPointCount:(unint64_t)a3 clippedToRect:(CGRect)a4 percentOfCellsToSplit:(double)a5 randomGenerator:(id)a6;
+- (void)p_setupDataWithPointCount:(unint64_t)count clippedToRect:(CGRect)rect percentOfCellsToSplit:(double)split randomGenerator:(id)generator;
 @end
 
 @implementation TSDGPUVoronoiTriangleData
 
-- (void)p_setupDataWithPointCount:(unint64_t)a3 clippedToRect:(CGRect)a4 percentOfCellsToSplit:(double)a5 randomGenerator:(id)a6
+- (void)p_setupDataWithPointCount:(unint64_t)count clippedToRect:(CGRect)rect percentOfCellsToSplit:(double)split randomGenerator:(id)generator
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v151 = *MEMORY[0x277D85DE8];
-  if (!a6)
+  if (!generator)
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData p_setupDataWithPointCount:clippedToRect:percentOfCellsToSplit:randomGenerator:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 507, @"invalid nil value for '%s'", "randGen"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 507, @"invalid nil value for '%s'", "randGen"}];
   }
 
   v13 = 0;
@@ -113,7 +113,7 @@
   }
 
   while (v16 <= v18);
-  if (a3)
+  if (count)
   {
     do
     {
@@ -126,7 +126,7 @@
       v154.origin.y = y;
       v154.size.width = v20;
       v154.size.height = v14;
-      [a6 doubleBetween:MinX :CGRectGetMaxX(v154)];
+      [generator doubleBetween:MinX :CGRectGetMaxX(v154)];
       v35 = v34;
       v155.origin.x = x;
       v155.origin.y = y;
@@ -137,7 +137,7 @@
       v156.origin.y = y;
       v156.size.width = v20;
       v156.size.height = v14;
-      [a6 doubleBetween:MinY :CGRectGetMaxY(v156)];
+      [generator doubleBetween:MinY :CGRectGetMaxY(v156)];
       *&v146 = round(v35);
       *(&v146 + 1) = round(v37);
       if (v140 == std::__tree<boost::polygon::point_data<double>>::find<boost::polygon::point_data<double>>(&v139, &v146))
@@ -159,10 +159,10 @@
         v142 = v39;
       }
 
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
     v13 = v142;
   }
 
@@ -384,9 +384,9 @@ LABEL_106:
                   v160.size.height = v14;
                   if (vabdd_f64(v108.f64[0], CGRectGetMaxX(v160)) >= 0.00999999978)
                   {
-                    v74 = [MEMORY[0x277D6C290] currentHandler];
+                    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
                     v75 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData p_setupDataWithPointCount:clippedToRect:percentOfCellsToSplit:randomGenerator:]"];
-                    [v74 handleFailureInFunction:v75 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 710, @"Couldn't find corner!"}];
+                    [currentHandler2 handleFailureInFunction:v75 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 710, @"Couldn't find corner!"}];
                   }
                 }
               }
@@ -483,19 +483,19 @@ LABEL_107:
             operator delete(v117);
           }
 
-          v83 = a5;
-          if (a5 <= 0.0 || ([a6 randomDouble], v83 >= a5))
+          splitCopy = split;
+          if (split <= 0.0 || ([generator randomDouble], splitCopy >= split))
           {
             v145 = v82;
-            v84 = [MEMORY[0x277CBEA60] arrayWithObjects:&v145 count:{1, v83}];
+            cellsBySplittingCellIntoTriangles = [MEMORY[0x277CBEA60] arrayWithObjects:&v145 count:{1, splitCopy}];
           }
 
           else
           {
-            v84 = [(TSDGPUVoronoiTriangleDataCell *)v82 cellsBySplittingCellIntoTriangles];
+            cellsBySplittingCellIntoTriangles = [(TSDGPUVoronoiTriangleDataCell *)v82 cellsBySplittingCellIntoTriangles];
           }
 
-          v85 = v84;
+          v85 = cellsBySplittingCellIntoTriangles;
 
           [(NSArray *)v105 addObjectsFromArray:v85];
           v115 = 0u;
@@ -516,7 +516,7 @@ LABEL_107:
                 }
 
                 v89 = *(*(&v113 + 1) + 8 * i);
-                v90 = [v89 triangleCount];
+                triangleCount = [v89 triangleCount];
                 [v89 bounds];
                 v163.origin.x = v91;
                 v163.origin.y = v92;
@@ -531,7 +531,7 @@ LABEL_107:
                 v41 = v162.origin.y;
                 v42 = v162.size.width;
                 v43 = v162.size.height;
-                v77 += v90;
+                v77 += triangleCount;
               }
 
               v86 = [v85 countByEnumeratingWithState:&v113 objects:v144 count:16];
@@ -562,7 +562,7 @@ LABEL_108:
   self->_bounds.size.height = v43;
 
   self->_cells = v105;
-  v95 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   free(self->_triangleIndexToCellIndexMappingTable);
   free(self->_triangleIndexToCellTriangleIndexMappingTable);
   self->_triangleIndexToCellMappingTableCount = v77;
@@ -575,7 +575,7 @@ LABEL_108:
     while (v97 < [(NSArray *)self->_cells count])
     {
       v98 = [(NSArray *)self->_cells objectAtIndex:v97];
-      v99 = [v95 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v98, "triangleCount"))}];
+      v99 = [dictionary objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v98, "triangleCount"))}];
       if (v99)
       {
         v100 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v99, "integerValue") + 1}];
@@ -586,7 +586,7 @@ LABEL_108:
         v100 = &unk_287DDD518;
       }
 
-      [v95 setObject:v100 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v98, "triangleCount"))}];
+      [dictionary setObject:v100 forKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", objc_msgSend(v98, "triangleCount"))}];
       for (j = 0; j < [v98 triangleCount]; ++j)
       {
         self->_triangleIndexToCellIndexMappingTable[v96] = v97;
@@ -599,9 +599,9 @@ LABEL_108:
 
   else
   {
-    v102 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
     v103 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData p_setupDataWithPointCount:clippedToRect:percentOfCellsToSplit:randomGenerator:]"];
-    [v102 handleFailureInFunction:v103 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 807, @"No triangles created!"}];
+    [currentHandler3 handleFailureInFunction:v103 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 807, @"No triangles created!"}];
   }
 
   v131[0] = &v128;
@@ -640,25 +640,25 @@ LABEL_108:
   }
 }
 
-- (TSDGPUVoronoiTriangleData)initWithPoints:(unint64_t)a3 clippedToRect:(CGRect)a4 percentOfCellsToSplit:(double)a5 randomGenerator:(id)a6
+- (TSDGPUVoronoiTriangleData)initWithPoints:(unint64_t)points clippedToRect:(CGRect)rect percentOfCellsToSplit:(double)split randomGenerator:(id)generator
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v17.receiver = self;
   v17.super_class = TSDGPUVoronoiTriangleData;
   v13 = [(TSDGPUVoronoiTriangleData *)&v17 init];
   if (v13)
   {
-    if (!a6)
+    if (!generator)
     {
-      v14 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData initWithPoints:clippedToRect:percentOfCellsToSplit:randomGenerator:]"];
-      [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 855, @"invalid nil value for '%s'", "randomGenerator"}];
+      [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 855, @"invalid nil value for '%s'", "randomGenerator"}];
     }
 
-    [(TSDGPUVoronoiTriangleData *)v13 p_setupDataWithPointCount:a3 clippedToRect:a6 percentOfCellsToSplit:x randomGenerator:y, width, height, a5];
+    [(TSDGPUVoronoiTriangleData *)v13 p_setupDataWithPointCount:points clippedToRect:generator percentOfCellsToSplit:x randomGenerator:y, width, height, split];
   }
 
   return v13;
@@ -685,36 +685,36 @@ LABEL_108:
   [(TSDGPUVoronoiTriangleData *)&v5 dealloc];
 }
 
-- (id)cellFromTriangleIndex:(unint64_t)a3
+- (id)cellFromTriangleIndex:(unint64_t)index
 {
   cells = self->_cells;
-  v4 = [(TSDGPUVoronoiTriangleData *)self cellIndexFromTriangleIndex:a3];
+  v4 = [(TSDGPUVoronoiTriangleData *)self cellIndexFromTriangleIndex:index];
 
   return [(NSArray *)cells objectAtIndexedSubscript:v4];
 }
 
-- (unint64_t)cellIndexFromTriangleIndex:(unint64_t)a3
+- (unint64_t)cellIndexFromTriangleIndex:(unint64_t)index
 {
-  if (self->_triangleIndexToCellMappingTableCount <= a3)
+  if (self->_triangleIndexToCellMappingTableCount <= index)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData cellIndexFromTriangleIndex:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 883, @"%d is out of bounds(%d)!", a3, self->_triangleIndexToCellMappingTableCount}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 883, @"%d is out of bounds(%d)!", index, self->_triangleIndexToCellMappingTableCount}];
   }
 
-  return self->_triangleIndexToCellIndexMappingTable[a3];
+  return self->_triangleIndexToCellIndexMappingTable[index];
 }
 
-- (unint64_t)triangleIndexInCellFromGlobalTriangleIndex:(unint64_t)a3
+- (unint64_t)triangleIndexInCellFromGlobalTriangleIndex:(unint64_t)index
 {
-  if (self->_triangleIndexToCellMappingTableCount <= a3)
+  if (self->_triangleIndexToCellMappingTableCount <= index)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleData triangleIndexInCellFromGlobalTriangleIndex:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 891, @"%d is out of bounds(%d)!", a3, self->_triangleIndexToCellMappingTableCount}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 891, @"%d is out of bounds(%d)!", index, self->_triangleIndexToCellMappingTableCount}];
   }
 
-  return self->_triangleIndexToCellTriangleIndexMappingTable[a3];
+  return self->_triangleIndexToCellTriangleIndexMappingTable[index];
 }
 
 - (CGRect)bounds

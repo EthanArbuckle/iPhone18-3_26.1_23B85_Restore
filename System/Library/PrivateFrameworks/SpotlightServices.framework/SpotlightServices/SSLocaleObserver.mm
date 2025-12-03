@@ -1,6 +1,6 @@
 @interface SSLocaleObserver
 - (SSLocaleObserver)init;
-- (void)currentLocaleWithPreferredLanguagesBlock:(id)a3;
+- (void)currentLocaleWithPreferredLanguagesBlock:(id)block;
 - (void)dealloc;
 - (void)update;
 @end
@@ -65,9 +65,9 @@ void __26__SSLocaleObserver_update__block_invoke(uint64_t a1)
   }
 }
 
-- (void)currentLocaleWithPreferredLanguagesBlock:(id)a3
+- (void)currentLocaleWithPreferredLanguagesBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -94,7 +94,7 @@ void __26__SSLocaleObserver_update__block_invoke(uint64_t a1)
   v6[6] = &v11;
   v6[7] = &v7;
   dispatch_sync(queue, v6);
-  v4[2](v4, v18[5], v12[5], *(v8 + 24));
+  blockCopy[2](blockCopy, v18[5], v12[5], *(v8 + 24));
   _Block_object_dispose(&v7, 8);
   _Block_object_dispose(&v11, 8);
 

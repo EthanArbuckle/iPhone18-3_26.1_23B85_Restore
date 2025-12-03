@@ -1,27 +1,27 @@
 @interface PKSelectActionViewController
-- (PKSelectActionViewController)initWithPass:(id)a3 actions:(id)a4 actionType:(unint64_t)a5 paymentDataProvider:(id)a6 webService:(id)a7 balanceDictionary:(id)a8;
+- (PKSelectActionViewController)initWithPass:(id)pass actions:(id)actions actionType:(unint64_t)type paymentDataProvider:(id)provider webService:(id)service balanceDictionary:(id)dictionary;
 - (PKSelectActionViewControllerDelegate)delegate;
-- (void)_cancelButtonPressed:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_reloadActionView;
-- (void)_rightBarButtonPressed:(id)a3;
-- (void)performActionViewControllerDidCancel:(id)a3;
-- (void)performActionViewControllerDidPerformAction:(id)a3;
-- (void)selectActionViewDidSelectAction:(id)a3;
-- (void)setRightBarButtonEnabled:(BOOL)a3;
+- (void)_rightBarButtonPressed:(id)pressed;
+- (void)performActionViewControllerDidCancel:(id)cancel;
+- (void)performActionViewControllerDidPerformAction:(id)action;
+- (void)selectActionViewDidSelectAction:(id)action;
+- (void)setRightBarButtonEnabled:(BOOL)enabled;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKSelectActionViewController
 
-- (PKSelectActionViewController)initWithPass:(id)a3 actions:(id)a4 actionType:(unint64_t)a5 paymentDataProvider:(id)a6 webService:(id)a7 balanceDictionary:(id)a8
+- (PKSelectActionViewController)initWithPass:(id)pass actions:(id)actions actionType:(unint64_t)type paymentDataProvider:(id)provider webService:(id)service balanceDictionary:(id)dictionary
 {
-  v15 = a3;
-  v28 = a4;
-  v27 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (a5)
+  passCopy = pass;
+  actionsCopy = actions;
+  providerCopy = provider;
+  serviceCopy = service;
+  dictionaryCopy = dictionary;
+  if (type)
   {
     v29.receiver = self;
     v29.super_class = PKSelectActionViewController;
@@ -29,24 +29,24 @@
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_pass, a3);
-      objc_storeStrong(&v19->_actions, a4);
-      v19->_actionType = a5;
-      objc_storeStrong(&v19->_paymentDataProvider, a6);
-      objc_storeStrong(&v19->_webService, a7);
-      objc_storeStrong(&v19->_balances, a8);
-      v20 = [(PKSelectActionViewController *)v19 navigationItem];
+      objc_storeStrong(&v18->_pass, pass);
+      objc_storeStrong(&v19->_actions, actions);
+      v19->_actionType = type;
+      objc_storeStrong(&v19->_paymentDataProvider, provider);
+      objc_storeStrong(&v19->_webService, service);
+      objc_storeStrong(&v19->_balances, dictionary);
+      navigationItem = [(PKSelectActionViewController *)v19 navigationItem];
       v21 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
       [v21 configureWithTransparentBackground];
       v22 = PKProvisioningSecondaryBackgroundColor();
       [v21 setBackgroundColor:v22];
 
-      [v20 setStandardAppearance:v21];
+      [navigationItem setStandardAppearance:v21];
       v23 = PKLocalizedPaymentString(&cfstr_Next.isa);
       v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v23 style:2 target:v19 action:sel__rightBarButtonPressed_];
-      [v20 setRightBarButtonItem:v24];
+      [navigationItem setRightBarButtonItem:v24];
       v25 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v19 action:sel__cancelButtonPressed_];
-      [v20 setLeftBarButtonItem:v25];
+      [navigationItem setLeftBarButtonItem:v25];
     }
   }
 
@@ -64,18 +64,18 @@
   v9.receiver = self;
   v9.super_class = PKSelectActionViewController;
   [(PKSelectActionViewController *)&v9 viewDidLoad];
-  v3 = [(PKSelectActionViewController *)self view];
+  view = [(PKSelectActionViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [PKPerformActionPassView alloc];
   pass = self->_pass;
-  [v3 bounds];
+  [view bounds];
   v7 = [(PKPerformActionPassView *)v5 initWithPass:pass frame:?];
   passView = self->_passView;
   self->_passView = v7;
 
-  [v3 addSubview:self->_passView];
+  [view addSubview:self->_passView];
   [(PKSelectActionViewController *)self _reloadActionView];
 }
 
@@ -88,8 +88,8 @@
   self->_actionView = v3;
 
   [(PKSelectActionView *)self->_actionView setDelegate:self];
-  v5 = [(PKSelectActionViewController *)self view];
-  [v5 insertSubview:self->_actionView belowSubview:self->_passView];
+  view = [(PKSelectActionViewController *)self view];
+  [view insertSubview:self->_actionView belowSubview:self->_passView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -97,13 +97,13 @@
   v23.receiver = self;
   v23.super_class = PKSelectActionViewController;
   [(PKSelectActionViewController *)&v23 viewWillLayoutSubviews];
-  v3 = [(PKSelectActionViewController *)self view];
-  [v3 bounds];
+  view = [(PKSelectActionViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v5 + v12;
   v15 = v7 + v14;
   v17 = v9 - (v12 + v16);
@@ -119,7 +119,7 @@
   [(PKSelectActionView *)self->_actionView setFrame:0.0, MaxY, v17, CGRectGetMaxY(v25) - MaxY];
 }
 
-- (void)_rightBarButtonPressed:(id)a3
+- (void)_rightBarButtonPressed:(id)pressed
 {
   v12 = 0;
   v13 = 0;
@@ -147,14 +147,14 @@ LABEL_7:
   }
 
   pass = self->_pass;
-  v8 = [(PKPaymentPassAction *)self->_selectedAction externalActionContent];
-  v9 = [(PKPaymentPassAction *)self->_selectedAction title];
+  externalActionContent = [(PKPaymentPassAction *)self->_selectedAction externalActionContent];
+  title = [(PKPaymentPassAction *)self->_selectedAction title];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __55__PKSelectActionViewController__rightBarButtonPressed___block_invoke;
   v11[3] = &unk_1E8014560;
   v11[4] = self;
-  PKPaymentPassActionPerformExternalActionContent(pass, v8, v9, v11);
+  PKPaymentPassActionPerformExternalActionContent(pass, externalActionContent, title, v11);
 
 LABEL_8:
 }
@@ -169,49 +169,49 @@ uint64_t __55__PKSelectActionViewController__rightBarButtonPressed___block_invok
   return result;
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = [(PKSelectActionViewController *)self delegate];
-  [v4 selectActionViewControllerDidCancel:self];
+  delegate = [(PKSelectActionViewController *)self delegate];
+  [delegate selectActionViewControllerDidCancel:self];
 }
 
-- (void)setRightBarButtonEnabled:(BOOL)a3
+- (void)setRightBarButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKSelectActionViewController *)self navigationItem];
-  v4 = [v5 rightBarButtonItem];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  navigationItem = [(PKSelectActionViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)selectActionViewDidSelectAction:(id)a3
+- (void)selectActionViewDidSelectAction:(id)action
 {
-  objc_storeStrong(&self->_selectedAction, a3);
-  v5 = a3;
-  v7 = [(PKSelectActionViewController *)self navigationItem];
-  v6 = [(PKPaymentPassAction *)self->_selectedAction title];
+  objc_storeStrong(&self->_selectedAction, action);
+  actionCopy = action;
+  navigationItem = [(PKSelectActionViewController *)self navigationItem];
+  title = [(PKPaymentPassAction *)self->_selectedAction title];
 
-  [v7 setTitle:v6];
+  [navigationItem setTitle:title];
 }
 
-- (void)performActionViewControllerDidCancel:(id)a3
+- (void)performActionViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  [v3 setDelegate:0];
-  v4 = [v3 presentingViewController];
+  cancelCopy = cancel;
+  [cancelCopy setDelegate:0];
+  presentingViewController = [cancelCopy presentingViewController];
 
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)performActionViewControllerDidPerformAction:(id)a3
+- (void)performActionViewControllerDidPerformAction:(id)action
 {
-  v4 = a3;
-  [v4 setDelegate:0];
-  v5 = [(PKSelectActionViewController *)self delegate];
-  [v5 selectActionViewControllerDidPerformAction:self];
+  actionCopy = action;
+  [actionCopy setDelegate:0];
+  delegate = [(PKSelectActionViewController *)self delegate];
+  [delegate selectActionViewControllerDidPerformAction:self];
 
-  v6 = [v4 presentingViewController];
+  presentingViewController = [actionCopy presentingViewController];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (PKSelectActionViewControllerDelegate)delegate

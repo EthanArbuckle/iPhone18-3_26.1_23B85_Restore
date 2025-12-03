@@ -1,77 +1,77 @@
 @interface _UIEditMenuContentPresentation
 - (BOOL)_shouldReuseVisibleMenu;
-- (CGRect)_convertSourceWindowRectToContainerView:(CGRect)a3;
-- (CGRect)_queryMenuSourceRectForConfiguration:(id)a3 reuseTargetRect:(BOOL)a4 isValid:(BOOL *)a5;
-- (CGRect)menuFrameInCoordinateSpace:(id)a3;
+- (CGRect)_convertSourceWindowRectToContainerView:(CGRect)view;
+- (CGRect)_queryMenuSourceRectForConfiguration:(id)configuration reuseTargetRect:(BOOL)rect isValid:(BOOL *)valid;
+- (CGRect)menuFrameInCoordinateSpace:(id)space;
 - (CGRect)targetRectInSourceView;
-- (UIEdgeInsets)_preferredContentInsetsForContainerViewWithConfiguration:(id)a3;
+- (UIEdgeInsets)_preferredContentInsetsForContainerViewWithConfiguration:(id)configuration;
 - (id)_currentPlatformMetrics;
-- (id)_queryMenuSourceRectsPreferredLayoutRectsForConfiguration:(id)a3;
-- (id)_resolvedLayoutForMenuWithConfiguration:(id)a3 sourceRect:(CGRect)a4 axis:(int64_t)a5;
-- (int64_t)_listViewAxisForTraitCollection:(id)a3;
-- (void)_displayMenu:(id)a3 reason:(int64_t)a4;
-- (void)_displayPreparedMenu:(id)a3 titleView:(id)a4 reason:(int64_t)a5 didDismissMenu:(BOOL)a6 configuration:(id)a7;
+- (id)_queryMenuSourceRectsPreferredLayoutRectsForConfiguration:(id)configuration;
+- (id)_resolvedLayoutForMenuWithConfiguration:(id)configuration sourceRect:(CGRect)rect axis:(int64_t)axis;
+- (int64_t)_listViewAxisForTraitCollection:(id)collection;
+- (void)_displayMenu:(id)menu reason:(int64_t)reason;
+- (void)_displayPreparedMenu:(id)menu titleView:(id)view reason:(int64_t)reason didDismissMenu:(BOOL)dismissMenu configuration:(id)configuration;
 - (void)_endSourceViewObservation;
 - (void)_observeSourceViewIfNeeded;
-- (void)_performContextMenuHandoffForMenu:(id)a3 sourceView:(id)a4;
-- (void)_reloadMenuLayoutWithSourceRect:(CGRect)a3 animated:(BOOL)a4;
-- (void)_resolvedMenuPositionForArrowDirection:(int64_t *)a3 availableBounds:(CGRect)a4 sourceRect:(CGRect)a5 menuSize:(CGSize)a6 menuPosition:(CGPoint *)a7 anchorPoint:(CGPoint *)a8;
-- (void)_updateMenuPositionAnimated:(BOOL)a3 reuseTargetRect:(BOOL)a4 forced:(BOOL)a5;
-- (void)contentSizeCategoryDidChangeInEditMenuListView:(id)a3;
-- (void)didTransitionFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)displayMenu:(id)a3 configuration:(id)a4;
-- (void)editMenuListView:(id)a3 didSelectMenuElement:(id)a4 source:(id)a5;
-- (void)editMenuListViewDidActivateHandoff:(id)a3 source:(id)a4;
-- (void)hideMenuWithReason:(int64_t)a3;
-- (void)replaceVisibleMenuWithMenu:(id)a3 reason:(int64_t)a4;
-- (void)setUserInterfaceStyle:(int64_t)a3;
-- (void)sourceViewDidUpdateFromTraitCollection:(id)a3;
+- (void)_performContextMenuHandoffForMenu:(id)menu sourceView:(id)view;
+- (void)_reloadMenuLayoutWithSourceRect:(CGRect)rect animated:(BOOL)animated;
+- (void)_resolvedMenuPositionForArrowDirection:(int64_t *)direction availableBounds:(CGRect)bounds sourceRect:(CGRect)rect menuSize:(CGSize)size menuPosition:(CGPoint *)position anchorPoint:(CGPoint *)point;
+- (void)_updateMenuPositionAnimated:(BOOL)animated reuseTargetRect:(BOOL)rect forced:(BOOL)forced;
+- (void)contentSizeCategoryDidChangeInEditMenuListView:(id)view;
+- (void)didTransitionFrom:(unint64_t)from to:(unint64_t)to;
+- (void)displayMenu:(id)menu configuration:(id)configuration;
+- (void)editMenuListView:(id)view didSelectMenuElement:(id)element source:(id)source;
+- (void)editMenuListViewDidActivateHandoff:(id)handoff source:(id)source;
+- (void)hideMenuWithReason:(int64_t)reason;
+- (void)replaceVisibleMenuWithMenu:(id)menu reason:(int64_t)reason;
+- (void)setUserInterfaceStyle:(int64_t)style;
+- (void)sourceViewDidUpdateFromTraitCollection:(id)collection;
 @end
 
 @implementation _UIEditMenuContentPresentation
 
-- (void)displayMenu:(id)a3 configuration:(id)a4
+- (void)displayMenu:(id)menu configuration:(id)configuration
 {
-  v6 = a3;
-  [(_UIEditMenuPresentation *)self setActiveConfiguration:a4];
-  [(_UIEditMenuContentPresentation *)self _displayMenu:v6 reason:0];
+  menuCopy = menu;
+  [(_UIEditMenuPresentation *)self setActiveConfiguration:configuration];
+  [(_UIEditMenuContentPresentation *)self _displayMenu:menuCopy reason:0];
 }
 
-- (void)replaceVisibleMenuWithMenu:(id)a3 reason:(int64_t)a4
+- (void)replaceVisibleMenuWithMenu:(id)menu reason:(int64_t)reason
 {
-  v9 = a3;
-  v7 = [(_UIEditMenuContentPresentation *)self currentListView];
+  menuCopy = menu;
+  currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
 
-  if (!v7)
+  if (!currentListView)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:98 description:@"Cannot replace the visible menu if there are no visible menus present."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:98 description:@"Cannot replace the visible menu if there are no visible menus present."];
   }
 
-  [(_UIEditMenuContentPresentation *)self _displayMenu:v9 reason:a4];
+  [(_UIEditMenuContentPresentation *)self _displayMenu:menuCopy reason:reason];
 }
 
-- (void)_displayMenu:(id)a3 reason:(int64_t)a4
+- (void)_displayMenu:(id)menu reason:(int64_t)reason
 {
-  v7 = a3;
-  v8 = [(_UIEditMenuPresentation *)self activeConfiguration];
-  if (!v8)
+  menuCopy = menu;
+  activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+  if (!activeConfiguration)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:105 description:@"Cannot update the visible menu without an active configuration"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:105 description:@"Cannot update the visible menu without an active configuration"];
   }
 
-  v9 = [(_UIEditMenuContentPresentation *)self currentListView];
-  if (v9 && (v10 = v9, v11 = [(_UIEditMenuContentPresentation *)self _shouldReuseVisibleMenu], v10, !v11))
+  currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
+  if (currentListView && (v10 = currentListView, v11 = [(_UIEditMenuContentPresentation *)self _shouldReuseVisibleMenu], v10, !v11))
   {
-    if (a4 > 2)
+    if (reason > 2)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = qword_18A682F10[a4];
+      v13 = qword_18A682F10[reason];
     }
 
     [(_UIEditMenuContentPresentation *)self hideMenuWithReason:v13];
@@ -85,30 +85,30 @@
 
   if ([(_UIEditMenuContentPresentation *)self canPresentEditMenu])
   {
-    v14 = [(_UIEditMenuPresentation *)self delegate];
+    delegate = [(_UIEditMenuPresentation *)self delegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __54___UIEditMenuContentPresentation__displayMenu_reason___block_invoke;
     v16[3] = &unk_1E71045C0;
     v16[4] = self;
-    v17 = v7;
-    v18 = v8;
-    v19 = a4;
+    v17 = menuCopy;
+    v18 = activeConfiguration;
+    reasonCopy = reason;
     v20 = v12;
-    [v14 _editMenuPresentation:self preparedMenuForDisplay:v17 completion:v16];
+    [delegate _editMenuPresentation:self preparedMenuForDisplay:v17 completion:v16];
   }
 }
 
-- (void)_displayPreparedMenu:(id)a3 titleView:(id)a4 reason:(int64_t)a5 didDismissMenu:(BOOL)a6 configuration:(id)a7
+- (void)_displayPreparedMenu:(id)menu titleView:(id)view reason:(int64_t)reason didDismissMenu:(BOOL)dismissMenu configuration:(id)configuration
 {
-  v8 = a6;
+  dismissMenuCopy = dismissMenu;
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12)
+  menuCopy = menu;
+  viewCopy = view;
+  configurationCopy = configuration;
+  if (menuCopy)
   {
-    v15 = ([v12 metadata] >> 24) & 1;
+    v15 = ([menuCopy metadata] >> 24) & 1;
   }
 
   else
@@ -116,29 +116,29 @@
     LOBYTE(v15) = 0;
   }
 
-  if (v13 || (v15 & 1) != 0)
+  if (viewCopy || (v15 & 1) != 0)
   {
-    v17 = [(_UIEditMenuContentPresentation *)self configureContainerViewWithConfiguration:v14];
+    v17 = [(_UIEditMenuContentPresentation *)self configureContainerViewWithConfiguration:configurationCopy];
     [(_UIEditMenuContentPresentation *)self setUserInterfaceStyle:[(_UIEditMenuContentPresentation *)self initialUserInterfaceStyle]];
     v61 = 1;
-    [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectForConfiguration:v14 reuseTargetRect:0 isValid:&v61];
+    [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectForConfiguration:configurationCopy reuseTargetRect:0 isValid:&v61];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
     if (v61)
     {
-      [(_UIEditMenuPresentation *)self setActiveConfiguration:v14];
-      [(_UIEditMenuPresentation *)self setDisplayedMenu:v12];
+      [(_UIEditMenuPresentation *)self setActiveConfiguration:configurationCopy];
+      [(_UIEditMenuPresentation *)self setDisplayedMenu:menuCopy];
       v26 = +[UIView areAnimationsEnabled];
-      v27 = [v14 _preferredElementDisplayMode];
+      _preferredElementDisplayMode = [configurationCopy _preferredElementDisplayMode];
       if ([(_UIEditMenuContentPresentation *)self _shouldReuseVisibleMenu])
       {
-        v28 = [(_UIEditMenuContentPresentation *)self currentListView];
-        [v28 setPreferredElementDisplayMode:v27];
+        currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
+        [currentListView setPreferredElementDisplayMode:_preferredElementDisplayMode];
 
-        v29 = [(_UIEditMenuContentPresentation *)self currentListView];
-        [v29 reloadWithMenu:v12 titleView:v13 animated:0];
+        currentListView2 = [(_UIEditMenuContentPresentation *)self currentListView];
+        [currentListView2 reloadWithMenu:menuCopy titleView:viewCopy animated:0];
 
         [(_UIEditMenuContentPresentation *)self _updateMenuPositionAnimated:v26 reuseTargetRect:0 forced:1];
       }
@@ -146,16 +146,16 @@
       else
       {
         v53 = v26;
-        v54 = v8;
-        v34 = [v17 traitCollection];
+        v54 = dismissMenuCopy;
+        traitCollection = [v17 traitCollection];
         v35 = v17;
-        v36 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:v34];
+        v36 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:traitCollection];
 
-        v37 = [[_UIEditMenuListView alloc] initWithDelegate:self menu:v12 titleView:v13 preferredElementDisplayMode:v27];
+        v37 = [[_UIEditMenuListView alloc] initWithDelegate:self menu:menuCopy titleView:viewCopy preferredElementDisplayMode:_preferredElementDisplayMode];
         [(UIView *)v37 setAlpha:0.0];
         [(_UIEditMenuListView *)v37 setAxis:v36];
         objc_storeStrong(&self->_currentListView, v37);
-        v38 = [(_UIEditMenuContentPresentation *)self _resolvedLayoutForMenuWithConfiguration:v14 sourceRect:v36 axis:v19, v21, v23, v25];
+        v38 = [(_UIEditMenuContentPresentation *)self _resolvedLayoutForMenuWithConfiguration:configurationCopy sourceRect:v36 axis:v19, v21, v23, v25];
         -[_UIEditMenuListView setArrowDirection:](v37, "setArrowDirection:", [v38 arrowDirection]);
         [v38 anchorPoint];
         [(UIView *)v37 setAnchorPoint:?];
@@ -169,7 +169,7 @@
         [(_UIEditMenuContentPresentation *)self _observeSourceViewIfNeeded];
         objc_storeStrong(&self->_currentListView, v37);
         objc_storeStrong(&self->_currentMenuLayout, v38);
-        if (a5)
+        if (reason)
         {
           v39 = 4;
         }
@@ -196,7 +196,7 @@
 
         else
         {
-          v42 = a5 == 2;
+          v42 = reason == 2;
         }
 
         v43 = v42;
@@ -237,23 +237,23 @@
         {
           if (v41)
           {
-            v49 = self;
+            selfCopy = self;
             v50 = v55;
-            [(_UIEditMenuPresentation *)v49 animateReducedMotionTransitionWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
+            [(_UIEditMenuPresentation *)selfCopy animateReducedMotionTransitionWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
           }
 
           else
           {
-            v51 = self;
+            selfCopy2 = self;
             v50 = v55;
             if (v52)
             {
-              [(_UIEditMenuPresentation *)v51 animateFadeWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
+              [(_UIEditMenuPresentation *)selfCopy2 animateFadeWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
             }
 
             else
             {
-              [(_UIEditMenuPresentation *)v51 animateScalePresentWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
+              [(_UIEditMenuPresentation *)selfCopy2 animateScalePresentWithDelay:v47 animations:v55 completion:v48.n128_f64[0]];
             }
           }
         }
@@ -275,14 +275,14 @@
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
         v31 = v30;
-        v32 = [(_UIEditMenuPresentation *)self activeConfiguration];
+        activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
         v64.origin.x = v19;
         v64.origin.y = v21;
         v64.size.width = v23;
         v64.size.height = v25;
         v33 = NSStringFromCGRect(v64);
         LODWORD(buf.a) = 138412546;
-        *(&buf.a + 4) = v32;
+        *(&buf.a + 4) = activeConfiguration;
         WORD2(buf.b) = 2112;
         *(&buf.b + 6) = v33;
         _os_log_impl(&dword_188A29000, v31, OS_LOG_TYPE_ERROR, "The edit menu (configuration: %@) has an invalid target rect (%@); ignoring present.", &buf, 0x16u);
@@ -298,11 +298,11 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf.a) = 138412290;
-      *(&buf.a + 4) = v14;
+      *(&buf.a + 4) = configurationCopy;
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "The edit menu (configuration: %@) did not have performable commands and/or actions; ignoring present.", &buf, 0xCu);
     }
 
-    if ((a5 - 1) > 1)
+    if ((reason - 1) > 1)
     {
       [(_UIEditMenuContentPresentation *)self hideMenuWithReason:0];
     }
@@ -315,24 +315,24 @@
   }
 }
 
-- (void)hideMenuWithReason:(int64_t)a3
+- (void)hideMenuWithReason:(int64_t)reason
 {
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
   v24[3] = __Block_byref_object_copy__223;
   v24[4] = __Block_byref_object_dispose__223;
-  v25 = [(_UIEditMenuContentPresentation *)self currentListView];
-  v5 = [(_UIEditMenuContentPresentation *)self containerView];
+  currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
+  containerView = [(_UIEditMenuContentPresentation *)self containerView];
   v6 = _AXSReduceMotionEnabled();
-  v7 = [(_UIEditMenuContentPresentation *)self currentListView];
+  currentListView2 = [(_UIEditMenuContentPresentation *)self currentListView];
 
-  if (v7)
+  if (currentListView2)
   {
-    v8 = [(_UIEditMenuPresentation *)self currentState];
-    if (a3 == 5 || v8 != 7)
+    currentState = [(_UIEditMenuPresentation *)self currentState];
+    if (reason == 5 || currentState != 7)
     {
-      v9 = (a3 & 0xFFFFFFFFFFFFFFFELL) != 4 && v6 == 0;
+      v9 = (reason & 0xFFFFFFFFFFFFFFFELL) != 4 && v6 == 0;
       v10 = !v9;
       if (v9)
       {
@@ -355,13 +355,13 @@
       v11[4] = self;
       v11[5] = v24;
       v13 = _Block_copy(v11);
-      v14 = [(_UIEditMenuPresentation *)self activeConfiguration];
-      [(_UIEditMenuPresentation *)self setDismissingConfiguration:v14];
+      activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+      [(_UIEditMenuPresentation *)self setDismissingConfiguration:activeConfiguration];
 
-      if ((a3 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+      if ((reason - 5) <= 0xFFFFFFFFFFFFFFFDLL)
       {
         [(_UIEditMenuPresentation *)self forceEndPresentIfNeeded];
-        if (a3 != 5)
+        if (reason != 5)
         {
           [(_UIEditMenuPresentation *)self transitionWithEvent:2];
         }
@@ -387,7 +387,7 @@
       v21[5] = v24;
       v18 = _Block_copy(v21);
       v19 = +[UIView areAnimationsEnabled];
-      if (a3 != 5 && v19)
+      if (reason != 5 && v19)
       {
         if (v6)
         {
@@ -416,17 +416,17 @@
   _Block_object_dispose(v24, 8);
 }
 
-- (CGRect)menuFrameInCoordinateSpace:(id)a3
+- (CGRect)menuFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
+  spaceCopy = space;
+  currentMenuLayout = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
 
-  if (v5)
+  if (currentMenuLayout)
   {
     currentListView = self->_currentListView;
-    v7 = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
-    [v7 containerBounds];
-    [(UIView *)currentListView convertRect:v4 toCoordinateSpace:?];
+    currentMenuLayout2 = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
+    [currentMenuLayout2 containerBounds];
+    [(UIView *)currentListView convertRect:spaceCopy toCoordinateSpace:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -458,15 +458,15 @@
   return result;
 }
 
-- (void)didTransitionFrom:(unint64_t)a3 to:(unint64_t)a4
+- (void)didTransitionFrom:(unint64_t)from to:(unint64_t)to
 {
   v9.receiver = self;
   v9.super_class = _UIEditMenuContentPresentation;
-  [(_UIEditMenuPresentation *)&v9 didTransitionFrom:a3 to:?];
-  if (a4 == 5)
+  [(_UIEditMenuPresentation *)&v9 didTransitionFrom:from to:?];
+  if (to == 5)
   {
-    v8 = [(_UIEditMenuContentPresentation *)self containerView];
-    v7 = [_UIEditMenuSceneComponent sceneComponentForView:v8];
+    containerView = [(_UIEditMenuContentPresentation *)self containerView];
+    v7 = [_UIEditMenuSceneComponent sceneComponentForView:containerView];
 
     [v7 removeActivePresentation:self];
     [(_UIEditMenuContentPresentation *)self teardownContainerView];
@@ -475,13 +475,13 @@
 
   else
   {
-    if (a4 != 2)
+    if (to != 2)
     {
       return;
     }
 
-    v6 = [(_UIEditMenuContentPresentation *)self containerView];
-    v7 = [_UIEditMenuSceneComponent sceneComponentForView:v6];
+    containerView2 = [(_UIEditMenuContentPresentation *)self containerView];
+    v7 = [_UIEditMenuSceneComponent sceneComponentForView:containerView2];
 
     [v7 setActivePresentation:self];
   }
@@ -491,8 +491,8 @@
 {
   if (!self->_observingSourceView)
   {
-    v3 = [(_UIEditMenuPresentation *)self sourceView];
-    [(UIView *)v3 _addGeometryChangeObserver:?];
+    sourceView = [(_UIEditMenuPresentation *)self sourceView];
+    [(UIView *)sourceView _addGeometryChangeObserver:?];
     self->_observingSourceView = 1;
   }
 }
@@ -501,23 +501,23 @@
 {
   if (self->_observingSourceView)
   {
-    v3 = [(_UIEditMenuPresentation *)self sourceView];
-    [(UIView *)v3 _removeGeometryChangeObserver:?];
+    sourceView = [(_UIEditMenuPresentation *)self sourceView];
+    [(UIView *)sourceView _removeGeometryChangeObserver:?];
     self->_observingSourceView = 0;
   }
 }
 
-- (void)contentSizeCategoryDidChangeInEditMenuListView:(id)a3
+- (void)contentSizeCategoryDidChangeInEditMenuListView:(id)view
 {
-  v8 = a3;
-  v4 = [(_UIEditMenuPresentation *)self sourceView];
+  viewCopy = view;
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
 
-  if (v4)
+  if (sourceView)
   {
-    v5 = [v8 traitCollection];
-    v6 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:v5];
-    v7 = [(_UIEditMenuContentPresentation *)self currentListView];
-    [v7 setAxis:v6];
+    traitCollection = [viewCopy traitCollection];
+    v6 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:traitCollection];
+    currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
+    [currentListView setAxis:v6];
 
     [(_UIEditMenuContentPresentation *)self _updateMenuPositionAnimated:0 reuseTargetRect:0 forced:1];
   }
@@ -528,17 +528,17 @@
   }
 }
 
-- (void)editMenuListView:(id)a3 didSelectMenuElement:(id)a4 source:(id)a5
+- (void)editMenuListView:(id)view didSelectMenuElement:(id)element source:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 _isLeaf])
+  viewCopy = view;
+  elementCopy = element;
+  sourceCopy = source;
+  if ([elementCopy _isLeaf])
   {
-    v11 = v9;
-    v12 = [(_UIEditMenuPresentation *)self displayedMenu];
+    v11 = elementCopy;
+    displayedMenu = [(_UIEditMenuPresentation *)self displayedMenu];
     objc_initWeak(&location, self);
-    v13 = [(_UIEditMenuPresentation *)self delegate];
+    delegate = [(_UIEditMenuPresentation *)self delegate];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __79___UIEditMenuContentPresentation_editMenuListView_didSelectMenuElement_source___block_invoke;
@@ -546,9 +546,9 @@
     objc_copyWeak(&v19, &location);
     v14 = v11;
     v17 = v14;
-    v15 = v12;
+    v15 = displayedMenu;
     v18 = v15;
-    [v13 _editMenuPresentation:self didSelectMenuLeaf:v14 completion:v16];
+    [delegate _editMenuPresentation:self didSelectMenuLeaf:v14 completion:v16];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -556,69 +556,69 @@
 
   else if (_UISolariumEnabled())
   {
-    [(_UIEditMenuContentPresentation *)self _performContextMenuHandoffForMenu:v9 sourceView:v10];
+    [(_UIEditMenuContentPresentation *)self _performContextMenuHandoffForMenu:elementCopy sourceView:sourceCopy];
   }
 
   else
   {
-    [(_UIEditMenuContentPresentation *)self replaceVisibleMenuWithMenu:v9 reason:1];
+    [(_UIEditMenuContentPresentation *)self replaceVisibleMenuWithMenu:elementCopy reason:1];
   }
 }
 
-- (void)editMenuListViewDidActivateHandoff:(id)a3 source:(id)a4
+- (void)editMenuListViewDidActivateHandoff:(id)handoff source:(id)source
 {
-  v6 = a4;
-  v7 = [a3 displayedMenu];
-  [(_UIEditMenuContentPresentation *)self _performContextMenuHandoffForMenu:v7 sourceView:v6];
+  sourceCopy = source;
+  displayedMenu = [handoff displayedMenu];
+  [(_UIEditMenuContentPresentation *)self _performContextMenuHandoffForMenu:displayedMenu sourceView:sourceCopy];
 }
 
-- (void)_performContextMenuHandoffForMenu:(id)a3 sourceView:(id)a4
+- (void)_performContextMenuHandoffForMenu:(id)menu sourceView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIEditMenuPresentation *)self activeConfiguration];
-  v9 = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
-  v11 = +[_UIEditMenuHandoffContext contextForConfiguration:preparedMenu:sourceView:arrowDirection:](_UIEditMenuHandoffContext, "contextForConfiguration:preparedMenu:sourceView:arrowDirection:", v8, v7, v6, [v9 arrowDirection]);
+  viewCopy = view;
+  menuCopy = menu;
+  activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+  currentMenuLayout = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
+  v11 = +[_UIEditMenuHandoffContext contextForConfiguration:preparedMenu:sourceView:arrowDirection:](_UIEditMenuHandoffContext, "contextForConfiguration:preparedMenu:sourceView:arrowDirection:", activeConfiguration, menuCopy, viewCopy, [currentMenuLayout arrowDirection]);
 
   [(_UIEditMenuPresentation *)self transitionWithEvent:5];
-  v10 = [(_UIEditMenuPresentation *)self delegate];
-  [v10 _editMenuPresentation:self handoffDisplayedMenuWithContext:v11];
+  delegate = [(_UIEditMenuPresentation *)self delegate];
+  [delegate _editMenuPresentation:self handoffDisplayedMenuWithContext:v11];
 }
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(_UIEditMenuPresentation *)self sourceView];
-  v3 = _UIEditMenuGetPlatformMetrics([v2 _userInterfaceIdiom]);
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
+  v3 = _UIEditMenuGetPlatformMetrics([sourceView _userInterfaceIdiom]);
 
   return v3;
 }
 
-- (CGRect)_convertSourceWindowRectToContainerView:(CGRect)a3
+- (CGRect)_convertSourceWindowRectToContainerView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UIEditMenuContentPresentation *)self containerView];
-  v9 = [v8 _window];
-  v10 = [(_UIEditMenuPresentation *)self sourceView];
-  v11 = [v10 _window];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  containerView = [(_UIEditMenuContentPresentation *)self containerView];
+  _window = [containerView _window];
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
+  _window2 = [sourceView _window];
 
-  if (v9 != v11)
+  if (_window != _window2)
   {
-    v12 = [(_UIEditMenuContentPresentation *)self containerView];
-    v13 = [v12 _window];
-    v14 = [(_UIEditMenuPresentation *)self sourceView];
-    v15 = [v14 _window];
-    [v13 convertRect:v15 fromWindow:{x, y, width, height}];
+    containerView2 = [(_UIEditMenuContentPresentation *)self containerView];
+    _window3 = [containerView2 _window];
+    sourceView2 = [(_UIEditMenuPresentation *)self sourceView];
+    _window4 = [sourceView2 _window];
+    [_window3 convertRect:_window4 fromWindow:{x, y, width, height}];
     x = v16;
     y = v17;
     width = v18;
     height = v19;
   }
 
-  v20 = [(_UIEditMenuPresentation *)self sourceView];
-  [v20 _currentScreenScale];
+  sourceView3 = [(_UIEditMenuPresentation *)self sourceView];
+  [sourceView3 _currentScreenScale];
   v22 = UIRectRoundToScale(x, y, width, height, v21);
   v24 = v23;
   v26 = v25;
@@ -635,11 +635,11 @@
   return result;
 }
 
-- (CGRect)_queryMenuSourceRectForConfiguration:(id)a3 reuseTargetRect:(BOOL)a4 isValid:(BOOL *)a5
+- (CGRect)_queryMenuSourceRectForConfiguration:(id)configuration reuseTargetRect:(BOOL)rect isValid:(BOOL *)valid
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6 && !CGRectIsNull(self->_targetRectInSourceView))
+  rectCopy = rect;
+  configurationCopy = configuration;
+  if (rectCopy && !CGRectIsNull(self->_targetRectInSourceView))
   {
     x = self->_targetRectInSourceView.origin.x;
     y = self->_targetRectInSourceView.origin.y;
@@ -649,8 +649,8 @@
 
   else
   {
-    v9 = [(_UIEditMenuPresentation *)self delegate];
-    [v9 _editMenuPresentation:self targetRectForConfiguration:v8];
+    delegate = [(_UIEditMenuPresentation *)self delegate];
+    [delegate _editMenuPresentation:self targetRectForConfiguration:configurationCopy];
     x = v10;
     y = v12;
     width = v14;
@@ -662,10 +662,10 @@
     self->_targetRectInSourceView.size.height = height;
   }
 
-  v18 = [(_UIEditMenuPresentation *)self sourceView];
-  v19 = [(_UIEditMenuPresentation *)self sourceView];
-  v20 = [v19 _window];
-  [v18 convertRect:v20 toView:{x, y, width, height}];
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
+  sourceView2 = [(_UIEditMenuPresentation *)self sourceView];
+  _window = [sourceView2 _window];
+  [sourceView convertRect:_window toView:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -676,9 +676,9 @@
   v34 = v30;
   v35 = v31;
   v36 = v32;
-  if (a5)
+  if (valid)
   {
-    *a5 = !CGRectIsNull(*&v29);
+    *valid = !CGRectIsNull(*&v29);
   }
 
   v37 = v33;
@@ -692,12 +692,12 @@
   return result;
 }
 
-- (id)_queryMenuSourceRectsPreferredLayoutRectsForConfiguration:(id)a3
+- (id)_queryMenuSourceRectsPreferredLayoutRectsForConfiguration:(id)configuration
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIEditMenuPresentation *)self delegate];
-  v6 = [v5 _editMenuPresentation:self preferredLayoutRectsForConfiguration:v4];
+  configurationCopy = configuration;
+  delegate = [(_UIEditMenuPresentation *)self delegate];
+  v6 = [delegate _editMenuPresentation:self preferredLayoutRectsForConfiguration:configurationCopy];
 
   if (v6)
   {
@@ -727,10 +727,10 @@
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [(_UIEditMenuPresentation *)self sourceView];
-          v22 = [(_UIEditMenuPresentation *)self sourceView];
-          v23 = [v22 _window];
-          [v21 convertRect:v23 toView:{v14, v16, v18, v20}];
+          sourceView = [(_UIEditMenuPresentation *)self sourceView];
+          sourceView2 = [(_UIEditMenuPresentation *)self sourceView];
+          _window = [sourceView2 _window];
+          [sourceView convertRect:_window toView:{v14, v16, v18, v20}];
           v25 = v24;
           v27 = v26;
           v29 = v28;
@@ -765,57 +765,57 @@
   return v7;
 }
 
-- (int64_t)_listViewAxisForTraitCollection:(id)a3
+- (int64_t)_listViewAxisForTraitCollection:(id)collection
 {
-  v4 = [a3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     return 0;
   }
 
-  v6 = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
-  v7 = ~[v6 prefersHorizontalLayoutForLargeContentSize];
+  _currentPlatformMetrics = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
+  v7 = ~[_currentPlatformMetrics prefersHorizontalLayoutForLargeContentSize];
 
   return v7 & 1;
 }
 
 - (BOOL)_shouldReuseVisibleMenu
 {
-  v3 = [(_UIEditMenuPresentation *)self sourceView];
-  v4 = [v3 traitCollection];
-  v5 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:v4];
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
+  traitCollection = [sourceView traitCollection];
+  v5 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:traitCollection];
 
   return [(_UIEditMenuPresentation *)self currentState]== 2 && v5 == 0;
 }
 
-- (void)_reloadMenuLayoutWithSourceRect:(CGRect)a3 animated:(BOOL)a4
+- (void)_reloadMenuLayoutWithSourceRect:(CGRect)rect animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(_UIEditMenuPresentation *)self activeConfiguration];
-  v11 = [(_UIEditMenuContentPresentation *)self currentListView];
-  v12 = [(_UIEditMenuContentPresentation *)self containerView];
-  v13 = [v12 traitCollection];
-  v14 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:v13];
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+  currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
+  containerView = [(_UIEditMenuContentPresentation *)self containerView];
+  traitCollection = [containerView traitCollection];
+  v14 = [(_UIEditMenuContentPresentation *)self _listViewAxisForTraitCollection:traitCollection];
 
-  v15 = [(_UIEditMenuContentPresentation *)self _resolvedLayoutForMenuWithConfiguration:v10 sourceRect:v14 axis:x, y, width, height];
-  [(_UIEditMenuContentPresentation *)self setCurrentMenuLayout:v15];
+  height = [(_UIEditMenuContentPresentation *)self _resolvedLayoutForMenuWithConfiguration:activeConfiguration sourceRect:v14 axis:x, y, width, height];
+  [(_UIEditMenuContentPresentation *)self setCurrentMenuLayout:height];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __75___UIEditMenuContentPresentation__reloadMenuLayoutWithSourceRect_animated___block_invoke;
   v23 = &unk_1E70F35B8;
-  v24 = v11;
-  v25 = v15;
-  v16 = v15;
-  v17 = v11;
+  v24 = currentListView;
+  v25 = height;
+  v16 = height;
+  v17 = currentListView;
   v18 = _Block_copy(&v20);
   v19 = v18;
-  if (v4)
+  if (animatedCopy)
   {
     [(_UIEditMenuPresentation *)self animateFadeWithDelay:v18 animations:0 completion:0.0, v20, v21, v22, v23, v24, v25];
   }
@@ -826,41 +826,41 @@
   }
 }
 
-- (void)sourceViewDidUpdateFromTraitCollection:(id)a3
+- (void)sourceViewDidUpdateFromTraitCollection:(id)collection
 {
-  v4 = [(_UIEditMenuPresentation *)self resolvedUserInterfaceStyle];
+  resolvedUserInterfaceStyle = [(_UIEditMenuPresentation *)self resolvedUserInterfaceStyle];
 
-  [(_UIEditMenuContentPresentation *)self setUserInterfaceStyle:v4];
+  [(_UIEditMenuContentPresentation *)self setUserInterfaceStyle:resolvedUserInterfaceStyle];
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
-    v5 = [(_UIEditMenuContentPresentation *)self containerView];
-    [v5 setOverrideUserInterfaceStyle:a3];
+    self->_userInterfaceStyle = style;
+    containerView = [(_UIEditMenuContentPresentation *)self containerView];
+    [containerView setOverrideUserInterfaceStyle:style];
   }
 }
 
-- (void)_updateMenuPositionAnimated:(BOOL)a3 reuseTargetRect:(BOOL)a4 forced:(BOOL)a5
+- (void)_updateMenuPositionAnimated:(BOOL)animated reuseTargetRect:(BOOL)rect forced:(BOOL)forced
 {
-  v6 = a4;
-  v7 = a3;
+  rectCopy = rect;
+  animatedCopy = animated;
   v32 = *MEMORY[0x1E69E9840];
-  v9 = [(_UIEditMenuPresentation *)self activeConfiguration];
-  if (v9)
+  activeConfiguration = [(_UIEditMenuPresentation *)self activeConfiguration];
+  if (activeConfiguration)
   {
     v27 = 1;
-    [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectForConfiguration:v9 reuseTargetRect:v6 isValid:&v27];
+    [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectForConfiguration:activeConfiguration reuseTargetRect:rectCopy isValid:&v27];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
     if (v27)
     {
-      v18 = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
-      [v18 menuSourceRect];
+      currentMenuLayout = [(_UIEditMenuContentPresentation *)self currentMenuLayout];
+      [currentMenuLayout menuSourceRect];
       v35.origin.x = v19;
       v35.origin.y = v20;
       v35.size.width = v21;
@@ -871,9 +871,9 @@
       v33.size.height = v17;
       v23 = CGRectEqualToRect(v33, v35);
 
-      if (a5 || !v23)
+      if (forced || !v23)
       {
-        [(_UIEditMenuContentPresentation *)self _reloadMenuLayoutWithSourceRect:v7 animated:v11, v13, v15, v17];
+        [(_UIEditMenuContentPresentation *)self _reloadMenuLayoutWithSourceRect:animatedCopy animated:v11, v13, v15, v17];
       }
     }
 
@@ -889,7 +889,7 @@
         v34.size.height = v17;
         v26 = NSStringFromCGRect(v34);
         *buf = 138412546;
-        v29 = v9;
+        v29 = activeConfiguration;
         v30 = 2112;
         v31 = v26;
         _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_ERROR, "The edit menu (configuration: %@) has an invalid target rect (%@); ignoring update.", buf, 0x16u);
@@ -898,49 +898,49 @@
   }
 }
 
-- (id)_resolvedLayoutForMenuWithConfiguration:(id)a3 sourceRect:(CGRect)a4 axis:(int64_t)a5
+- (id)_resolvedLayoutForMenuWithConfiguration:(id)configuration sourceRect:(CGRect)rect axis:(int64_t)axis
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v202 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = [(_UIEditMenuContentPresentation *)self currentListView];
+  configurationCopy = configuration;
+  currentListView = [(_UIEditMenuContentPresentation *)self currentListView];
 
-  if (!v13)
+  if (!currentListView)
   {
-    v159 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v159 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:674 description:@"Cannot resolve the menu layout without a list view."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:674 description:@"Cannot resolve the menu layout without a list view."];
   }
 
   v175 = x;
   rect = height;
   v169 = y;
   v170 = width;
-  v14 = [(_UIEditMenuPresentation *)self sourceView];
+  sourceView = [(_UIEditMenuPresentation *)self sourceView];
 
-  if (!v14)
+  if (!sourceView)
   {
-    v160 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v160 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:675 description:@"Cannot resolve the menu layout without a source view to the edit menu."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:675 description:@"Cannot resolve the menu layout without a source view to the edit menu."];
   }
 
-  v15 = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
-  v16 = [v12 preferredArrowDirection] - 3;
-  v17 = [(_UIEditMenuContentPresentation *)self containerView];
-  [UIViewController _horizontalContentMarginForView:v17];
+  _currentPlatformMetrics = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
+  v16 = [configurationCopy preferredArrowDirection] - 3;
+  containerView = [(_UIEditMenuContentPresentation *)self containerView];
+  [UIViewController _horizontalContentMarginForView:containerView];
   v19 = v18;
 
-  [v15 sourceRectMargins];
+  [_currentPlatformMetrics sourceRectMargins];
   r2_8 = v20;
-  [(_UIEditMenuContentPresentation *)self _preferredContentInsetsForContainerViewWithConfiguration:v12];
+  [(_UIEditMenuContentPresentation *)self _preferredContentInsetsForContainerViewWithConfiguration:configurationCopy];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(_UIEditMenuContentPresentation *)self containerView];
-  [v29 bounds];
+  containerView2 = [(_UIEditMenuContentPresentation *)self containerView];
+  [containerView2 bounds];
   v31 = v24 + v30;
   v33 = v22 + v32;
   v35 = v34 - (v24 + v28);
@@ -955,8 +955,8 @@
   v192 = v205.origin.x;
   v38 = v205.size.width;
   v39 = v205.size.height;
-  v40 = [v12 preferredArrowDirection];
-  v200 = v40;
+  preferredArrowDirection = [configurationCopy preferredArrowDirection];
+  v200 = preferredArrowDirection;
   v41 = v175;
   v206.origin.x = v175;
   v43 = v169;
@@ -974,16 +974,16 @@
   __asm { FMOV            V0.2D, #0.5 }
 
   *v197 = _Q0;
-  v50 = [(_UIEditMenuContentPresentation *)self currentListView];
-  v51 = [(_UIEditMenuContentPresentation *)self containerView];
+  currentListView2 = [(_UIEditMenuContentPresentation *)self currentListView];
+  containerView3 = [(_UIEditMenuContentPresentation *)self containerView];
   r2_16 = v39;
   r2_24 = v38;
-  [v50 intrinsicContentSizeForContainer:v51 containerSize:{v38, v39}];
+  [currentListView2 intrinsicContentSizeForContainer:containerView3 containerSize:{v38, v39}];
   v53 = v52;
   v55 = v54;
 
-  v56 = [(_UIEditMenuContentPresentation *)self currentListView];
-  [v56 arrowSizeForDirection:v40];
+  currentListView3 = [(_UIEditMenuContentPresentation *)self currentListView];
+  [currentListView3 arrowSizeForDirection:preferredArrowDirection];
   v58 = v57;
   v60 = v59;
 
@@ -1008,9 +1008,9 @@
     v62 = v53 + v58;
   }
 
-  if (v40)
+  if (preferredArrowDirection)
   {
-    if (a5)
+    if (axis)
     {
       goto LABEL_13;
     }
@@ -1024,28 +1024,28 @@ LABEL_31:
   v164 = v62;
   v66 = r2_8 + v61;
   r2 = r2_8 + v61;
-  if ([v12 _prefersMenuPresentationInView])
+  if ([configurationCopy _prefersMenuPresentationInView])
   {
     v182 = v61;
     v67 = v66 * 5.0;
-    v68 = [(_UIEditMenuPresentation *)self sourceView];
-    v69 = [(_UIEditMenuPresentation *)self sourceView];
-    [v69 bounds];
+    sourceView2 = [(_UIEditMenuPresentation *)self sourceView];
+    sourceView3 = [(_UIEditMenuPresentation *)self sourceView];
+    [sourceView3 bounds];
     v71 = v70;
     v73 = v72;
     v75 = v74;
     v77 = v76;
-    v78 = [(_UIEditMenuPresentation *)self sourceView];
-    v79 = [v78 _window];
-    [v68 convertRect:v79 toView:{v71, v73, v75, v77}];
+    sourceView4 = [(_UIEditMenuPresentation *)self sourceView];
+    _window = [sourceView4 _window];
+    [sourceView2 convertRect:_window toView:{v71, v73, v75, v77}];
     v81 = v80;
     v83 = v82;
     v85 = v84;
     v87 = v86;
 
-    v88 = [(_UIEditMenuPresentation *)self sourceView];
-    v89 = [v88 _window];
-    [v89 bounds];
+    sourceView5 = [(_UIEditMenuPresentation *)self sourceView];
+    _window2 = [sourceView5 _window];
+    [_window2 bounds];
     v245.origin.x = v90;
     v245.origin.y = v91;
     v245.size.width = v92;
@@ -1094,8 +1094,8 @@ LABEL_31:
   v215.size.width = r2_24;
   v215.size.height = r2_16;
   MaxY = CGRectGetMaxY(v215);
-  v104 = [v15 derivesAutomaticArrowDirectionsFromAvailableSpace];
-  if (a5 || (v104 & 1) != 0)
+  derivesAutomaticArrowDirectionsFromAvailableSpace = [_currentPlatformMetrics derivesAutomaticArrowDirectionsFromAvailableSpace];
+  if (axis || (derivesAutomaticArrowDirectionsFromAvailableSpace & 1) != 0)
   {
     v41 = v175;
     v219.origin.x = v175;
@@ -1122,23 +1122,23 @@ LABEL_31:
 
   if (MinY < v102)
   {
-    v40 = 1;
+    preferredArrowDirection = 1;
   }
 
   else
   {
-    v40 = 2;
+    preferredArrowDirection = 2;
   }
 
-  v200 = v40;
+  v200 = preferredArrowDirection;
   v62 = v164;
-  if (!a5)
+  if (!axis)
   {
     goto LABEL_31;
   }
 
 LABEL_13:
-  if (v40 == 2)
+  if (preferredArrowDirection == 2)
   {
     v217.origin.x = v41;
     v217.origin.y = v43;
@@ -1154,7 +1154,7 @@ LABEL_13:
   }
 
   v63 = v61;
-  if (v40 == 1)
+  if (preferredArrowDirection == 1)
   {
     v208.origin.y = v190;
     v208.origin.x = v192;
@@ -1198,7 +1198,7 @@ LABEL_32:
   v109 = MidY - v61 * v197[1];
   v178 = v198 - v62 * v197[0];
   v167 = v62 + v178;
-  v110 = [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectsPreferredLayoutRectsForConfiguration:v12];
+  v110 = [(_UIEditMenuContentPresentation *)self _queryMenuSourceRectsPreferredLayoutRectsForConfiguration:configurationCopy];
   v111 = v110;
   if (v16 >= 2 && v110)
   {
@@ -1213,7 +1213,7 @@ LABEL_32:
       v114 = v113;
       v162 = v108;
       v165 = v62;
-      v161 = a5;
+      axisCopy = axis;
       v115 = *v194;
 LABEL_36:
       v116 = 0;
@@ -1306,7 +1306,7 @@ LABEL_45:
           v126 = v169;
           v125 = v170;
           v127 = v175;
-          a5 = v161;
+          axis = axisCopy;
           v108 = v162;
           v62 = v165;
           goto LABEL_52;
@@ -1332,13 +1332,13 @@ LABEL_45:
         v237.size.width = v179;
         v237.size.height = v120;
         v133 = CGRectGetMaxX(v237) - v134;
-        a5 = v161;
+        axis = axisCopy;
         v132 = v134;
       }
 
       else
       {
-        a5 = v161;
+        axis = axisCopy;
         v132 = v131;
         v133 = r2a;
       }
@@ -1465,9 +1465,9 @@ LABEL_69:
 LABEL_70:
   if (v16 >= 2)
   {
-    v148 = [(_UIEditMenuPresentation *)self sourceView];
-    v149 = [v148 traitCollection];
-    [_UIEditMenuListView minimumRequiredWidthForArrowInRoundedListViewForAxis:a5 traitCollection:v149];
+    sourceView6 = [(_UIEditMenuPresentation *)self sourceView];
+    traitCollection = [sourceView6 traitCollection];
+    [_UIEditMenuListView minimumRequiredWidthForArrowInRoundedListViewForAxis:axis traitCollection:traitCollection];
     v151 = v150;
 
     v152 = v151 / fmax(v62, 1.0);
@@ -1480,10 +1480,10 @@ LABEL_70:
 
   v153 = objc_opt_new();
   [v153 setContainerBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v62, v61}];
-  v154 = [(_UIEditMenuContentPresentation *)self containerView];
+  containerView4 = [(_UIEditMenuContentPresentation *)self containerView];
   v155 = v198;
   v156 = MidY;
-  [v154 _currentScreenScale];
+  [containerView4 _currentScreenScale];
   [v153 setMenuPosition:{UIPointRoundToScale(v155, v156, v157)}];
 
   [v153 setAnchorPoint:*v197];
@@ -1493,39 +1493,39 @@ LABEL_70:
   return v153;
 }
 
-- (UIEdgeInsets)_preferredContentInsetsForContainerViewWithConfiguration:(id)a3
+- (UIEdgeInsets)_preferredContentInsetsForContainerViewWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(_UIEditMenuContentPresentation *)self containerView];
-  [v5 safeAreaInsets];
+  configurationCopy = configuration;
+  containerView = [(_UIEditMenuContentPresentation *)self containerView];
+  [containerView safeAreaInsets];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 window];
-  if (([v14 _isRemoteKeyboardWindow] & 1) == 0)
+  window = [containerView window];
+  if (([window _isRemoteKeyboardWindow] & 1) == 0)
   {
-    v15 = [v4 _ignoresKeyboardAvoidance];
+    _ignoresKeyboardAvoidance = [configurationCopy _ignoresKeyboardAvoidance];
 
-    if (v15)
+    if (_ignoresKeyboardAvoidance)
     {
       goto LABEL_4;
     }
 
-    v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    if ([v14 isOnScreen])
+    window = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
+    if ([window isOnScreen])
     {
-      v20 = [v5 window];
-      v21 = [v20 _isTextEffectsWindow];
+      window2 = [containerView window];
+      _isTextEffectsWindow = [window2 _isTextEffectsWindow];
 
-      if (v21)
+      if (_isTextEffectsWindow)
       {
-        [v14 visibleInputViewFrameInView:v5];
+        [window visibleInputViewFrameInView:containerView];
         rect = v22;
         v24 = v23;
         v26 = v25;
         v28 = v27;
-        [v5 bounds];
+        [containerView bounds];
         MaxY = CGRectGetMaxY(v36);
         v37.origin.x = rect;
         v37.origin.y = v24;
@@ -1536,12 +1536,12 @@ LABEL_70:
 
       else
       {
-        [v14 verticalOverlapForView:v5 usingKeyboardInfo:0];
+        [window verticalOverlapForView:containerView usingKeyboardInfo:0];
         v30 = v31;
       }
 
-      v32 = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
-      [v32 sourceRectMargins];
+      _currentPlatformMetrics = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics];
+      [_currentPlatformMetrics sourceRectMargins];
       v34 = v30 + v33;
 
       if (v11 < v34)
@@ -1563,28 +1563,28 @@ LABEL_4:
   return result;
 }
 
-- (void)_resolvedMenuPositionForArrowDirection:(int64_t *)a3 availableBounds:(CGRect)a4 sourceRect:(CGRect)a5 menuSize:(CGSize)a6 menuPosition:(CGPoint *)a7 anchorPoint:(CGPoint *)a8
+- (void)_resolvedMenuPositionForArrowDirection:(int64_t *)direction availableBounds:(CGRect)bounds sourceRect:(CGRect)rect menuSize:(CGSize)size menuPosition:(CGPoint *)position anchorPoint:(CGPoint *)point
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a5.size.height;
-  v12 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4.size.height;
-  v62 = a4.size.width;
-  v16 = a4.origin.y;
-  v17 = a4.origin.x;
-  v20 = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics:a3];
+  height = size.height;
+  width = size.width;
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = bounds.size.height;
+  v62 = bounds.size.width;
+  v16 = bounds.origin.y;
+  v17 = bounds.origin.x;
+  v20 = [(_UIEditMenuContentPresentation *)self _currentPlatformMetrics:direction];
   [v20 sourceRectMargins];
   v22 = v21;
 
-  v23 = *a3;
+  v23 = *direction;
   v61 = v11;
   v63 = x;
   v64 = v12;
   r1 = v15;
-  if ((*a3 - 3) <= 1)
+  if ((*direction - 3) <= 1)
   {
     v69.origin.x = v17;
     v69.origin.y = v16;
@@ -1606,14 +1606,14 @@ LABEL_4:
     v72.size.width = v62;
     v72.size.height = r1;
     v26 = MinX - CGRectGetMinX(v72) - v22;
-    v27 = [(_UIEditMenuPresentation *)self sourceView];
-    v28 = _UIEditMenuGetPlatformMetrics([v27 _userInterfaceIdiom]);
+    sourceView = [(_UIEditMenuPresentation *)self sourceView];
+    v28 = _UIEditMenuGetPlatformMetrics([sourceView _userInterfaceIdiom]);
     [v28 horizontalMenuMaximumWidth];
     v30 = v29 * 0.35;
 
     if ((v23 != 3 || (v67 > v58 ? (v31 = v58 < v30) : (v31 = 0), v31 ? (v32 = v26 <= v58) : (v32 = 1), v32)) && (v23 != 4 || (v67 > v26 ? (v46 = v26 < v30) : (v46 = 0), v46 ? (v47 = v26 <= v58) : (v47 = 0), v47)))
     {
-      *a3 = 3;
+      *direction = 3;
       **&height = 0;
       v82.origin.x = x;
       v82.size.width = v12;
@@ -1629,7 +1629,7 @@ LABEL_4:
 
     else
     {
-      *a3 = 4;
+      *direction = 4;
       **&height = 0x3FF0000000000000;
       v73.origin.x = x;
       v73.size.width = v12;
@@ -1681,7 +1681,7 @@ LABEL_4:
     if (v68 <= v40 || v40 > v55)
     {
 LABEL_16:
-      *a3 = 2;
+      *direction = 2;
       *(*&height + 8) = 0x3FF0000000000000;
       v79.origin.x = v35;
       v79.origin.y = v16;
@@ -1703,7 +1703,7 @@ LABEL_16:
       goto LABEL_37;
     }
 
-    *a3 = 1;
+    *direction = 1;
 LABEL_36:
     *(*&height + 8) = 0;
     v84.origin.x = v35;
@@ -1761,14 +1761,14 @@ LABEL_37:
     return;
   }
 
-  *a3 = v23;
+  *direction = v23;
   if (v23 == 1)
   {
     goto LABEL_36;
   }
 
-  v65 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v65 handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:968 description:{@"Failed to resolve undefined UIEditMenuArrowDirection: %ld", v23}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuContentPresentation.m" lineNumber:968 description:{@"Failed to resolve undefined UIEditMenuArrowDirection: %ld", v23}];
 }
 
 - (CGRect)targetRectInSourceView

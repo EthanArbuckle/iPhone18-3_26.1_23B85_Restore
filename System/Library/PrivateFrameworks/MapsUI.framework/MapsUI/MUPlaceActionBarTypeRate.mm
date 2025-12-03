@@ -1,7 +1,7 @@
 @interface MUPlaceActionBarTypeRate
 - (BOOL)rated;
 - (MUPlaceActionBarTypeRate)init;
-- (void)setRated:(BOOL)a3;
+- (void)setRated:(BOOL)rated;
 @end
 
 @implementation MUPlaceActionBarTypeRate
@@ -13,11 +13,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setRated:(BOOL)a3
+- (void)setRated:(BOOL)rated
 {
   v5 = OBJC_IVAR___MUPlaceActionBarTypeRate_rated;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = rated;
 }
 
 - (MUPlaceActionBarTypeRate)init

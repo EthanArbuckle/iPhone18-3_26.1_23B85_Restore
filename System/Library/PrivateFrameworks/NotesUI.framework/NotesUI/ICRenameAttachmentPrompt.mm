@@ -1,18 +1,18 @@
 @interface ICRenameAttachmentPrompt
-+ (void)showWithTitle:(id)a3 presentingViewController:(id)a4 completion:(id)a5;
++ (void)showWithTitle:(id)title presentingViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation ICRenameAttachmentPrompt
 
-+ (void)showWithTitle:(id)a3 presentingViewController:(id)a4 completion:(id)a5
++ (void)showWithTitle:(id)title presentingViewController:(id)controller completion:(id)completion
 {
   v7 = MEMORY[0x1E699A338];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithExistingTitle:v10];
+  completionCopy = completion;
+  controllerCopy = controller;
+  titleCopy = title;
+  v11 = [[v7 alloc] initWithExistingTitle:titleCopy];
 
-  [v11 showFromViewController:v9 completion:v8];
+  [v11 showFromViewController:controllerCopy completion:completionCopy];
 }
 
 @end

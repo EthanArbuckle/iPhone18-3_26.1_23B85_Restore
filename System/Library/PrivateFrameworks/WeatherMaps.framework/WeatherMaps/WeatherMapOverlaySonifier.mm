@@ -1,14 +1,14 @@
 @interface WeatherMapOverlaySonifier
-- (void)handleGestureWithRecognizer:(id)a3;
+- (void)handleGestureWithRecognizer:(id)recognizer;
 @end
 
 @implementation WeatherMapOverlaySonifier
 
-- (void)handleGestureWithRecognizer:(id)a3
+- (void)handleGestureWithRecognizer:(id)recognizer
 {
-  v3 = a3;
+  recognizerCopy = recognizer;
 
-  sub_220F4EA18(v3);
+  sub_220F4EA18(recognizerCopy);
 }
 
 @end

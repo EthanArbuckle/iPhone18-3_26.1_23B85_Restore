@@ -1,5 +1,5 @@
 @interface HMDCoreFollowUpRemoveItemsOperation
-- (HMDCoreFollowUpRemoveItemsOperation)initWithIdentifiersToRemove:(id)a3 followUpController:(id)a4;
+- (HMDCoreFollowUpRemoveItemsOperation)initWithIdentifiersToRemove:(id)remove followUpController:(id)controller;
 - (void)main;
 @end
 
@@ -9,29 +9,29 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDCoreFollowUpRemoveItemsOperation *)v4 identifiersToRemove];
+    identifiersToRemove = [(HMDCoreFollowUpRemoveItemsOperation *)selfCopy identifiersToRemove];
     *buf = 138543618;
     v14 = v6;
     v15 = 2112;
-    v16 = v7;
+    v16 = identifiersToRemove;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Stopping advertisement for existing followup items: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  objc_initWeak(buf, v4);
-  v8 = [(HMDCoreFollowUpRemoveItemsOperation *)v4 followUpController];
-  v9 = [(HMDCoreFollowUpRemoveItemsOperation *)v4 identifiersToRemove];
+  objc_initWeak(buf, selfCopy);
+  followUpController = [(HMDCoreFollowUpRemoveItemsOperation *)selfCopy followUpController];
+  identifiersToRemove2 = [(HMDCoreFollowUpRemoveItemsOperation *)selfCopy identifiersToRemove];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__HMDCoreFollowUpRemoveItemsOperation_main__block_invoke;
   v11[3] = &unk_27972ED20;
   objc_copyWeak(&v12, buf);
-  [v8 clearPendingFollowUpItemsWithUniqueIdentifiers:v9 completion:v11];
+  [followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:identifiersToRemove2 completion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -87,18 +87,18 @@ void __43__HMDCoreFollowUpRemoveItemsOperation_main__block_invoke(uint64_t a1, i
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCoreFollowUpRemoveItemsOperation)initWithIdentifiersToRemove:(id)a3 followUpController:(id)a4
+- (HMDCoreFollowUpRemoveItemsOperation)initWithIdentifiersToRemove:(id)remove followUpController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  removeCopy = remove;
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (![v6 count])
+  v8 = controllerCopy;
+  if (![removeCopy count])
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -111,11 +111,11 @@ LABEL_7:
   v9 = [(HMFOperation *)&v15 initWithTimeout:0.0];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [removeCopy copy];
     identifiersToRemove = v9->_identifiersToRemove;
     v9->_identifiersToRemove = v10;
 
-    objc_storeStrong(&v9->_followUpController, a4);
+    objc_storeStrong(&v9->_followUpController, controller);
   }
 
   return v9;

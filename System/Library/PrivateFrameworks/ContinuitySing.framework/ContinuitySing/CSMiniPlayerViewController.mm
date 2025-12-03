@@ -2,7 +2,7 @@
 - (CSMiniPlayerViewController)init;
 - (void)dealloc;
 - (void)loadView;
-- (void)updatePlaybackState:(id)a3;
+- (void)updatePlaybackState:(id)state;
 @end
 
 @implementation CSMiniPlayerViewController
@@ -18,14 +18,14 @@
     [v3 addObserver:v2];
 
     v4 = +[CSShieldManager sharedManager];
-    v5 = [v4 isLoading];
+    isLoading = [v4 isLoading];
 
-    if ((v5 & 1) == 0)
+    if ((isLoading & 1) == 0)
     {
       v6 = +[CSShieldManager sharedManager];
-      v7 = [v6 playbackManager];
+      playbackManager = [v6 playbackManager];
       playbackManager = v2->_playbackManager;
-      v2->_playbackManager = v7;
+      v2->_playbackManager = playbackManager;
     }
   }
 
@@ -53,16 +53,16 @@
   [(CSMiniPlayerViewController *)self setView:v5];
 }
 
-- (void)updatePlaybackState:(id)a3
+- (void)updatePlaybackState:(id)state
 {
-  v4 = a3;
-  v5 = [(CSPlaybackState *)v4 playerState]== 2;
+  stateCopy = state;
+  v5 = [(CSPlaybackState *)stateCopy playerState]== 2;
   miniPlayerView = self->_miniPlayerView;
-  v7 = [(CSPlaybackState *)v4 currentSong];
-  [(CSMiniPlayerView *)miniPlayerView updateViewStateToNormalWithMediaPlaying:v5 playingSong:v7];
+  currentSong = [(CSPlaybackState *)stateCopy currentSong];
+  [(CSMiniPlayerView *)miniPlayerView updateViewStateToNormalWithMediaPlaying:v5 playingSong:currentSong];
 
   currentPlaybackState = self->_currentPlaybackState;
-  self->_currentPlaybackState = v4;
+  self->_currentPlaybackState = stateCopy;
 }
 
 @end

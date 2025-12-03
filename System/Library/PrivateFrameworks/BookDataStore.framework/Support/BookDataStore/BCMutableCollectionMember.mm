@@ -1,19 +1,19 @@
 @interface BCMutableCollectionMember
-- (BCMutableCollectionMember)initWithCloudData:(id)a3;
-- (BCMutableCollectionMember)initWithCoder:(id)a3;
-- (BCMutableCollectionMember)initWithCollectionMemberID:(id)a3;
-- (BCMutableCollectionMember)initWithRecord:(id)a3;
+- (BCMutableCollectionMember)initWithCloudData:(id)data;
+- (BCMutableCollectionMember)initWithCoder:(id)coder;
+- (BCMutableCollectionMember)initWithCollectionMemberID:(id)d;
+- (BCMutableCollectionMember)initWithRecord:(id)record;
 - (NSString)description;
 - (id)configuredRecordFromAttributes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCMutableCollectionMember
 
-- (BCMutableCollectionMember)initWithCollectionMemberID:(id)a3
+- (BCMutableCollectionMember)initWithCollectionMemberID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = sub_100002660();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -30,7 +30,7 @@
   v5 = [(BCMutableCloudData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 9);
     *(v5 + 9) = v6;
 LABEL_7:
@@ -39,20 +39,20 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableCollectionMember)initWithCloudData:(id)a3
+- (BCMutableCollectionMember)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = BCMutableCollectionMember;
-  v5 = [(BCMutableCloudData *)&v13 initWithCloudData:v4];
+  v5 = [(BCMutableCloudData *)&v13 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 collectionMemberID];
-      v9 = [v8 copy];
+      collectionMemberID = [v6 collectionMemberID];
+      v9 = [collectionMemberID copy];
       collectionMemberID = v5->_collectionMemberID;
       v5->_collectionMemberID = v9;
 
@@ -89,10 +89,10 @@ LABEL_10:
   return v5;
 }
 
-- (BCMutableCollectionMember)initWithRecord:(id)a3
+- (BCMutableCollectionMember)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
     v9 = sub_100002660();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -106,10 +106,10 @@ LABEL_10:
 
   v11.receiver = self;
   v11.super_class = BCMutableCollectionMember;
-  v5 = [(BCMutableCloudData *)&v11 initWithRecord:v4];
+  v5 = [(BCMutableCloudData *)&v11 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     collectionMemberID = v5->_collectionMemberID;
     v5->_collectionMemberID = v6;
 
@@ -122,7 +122,7 @@ LABEL_10:
       }
     }
 
-    self = [v4 objectForKey:@"sortOrder"];
+    self = [recordCopy objectForKey:@"sortOrder"];
     v5->_sortOrder = [(BCMutableCollectionMember *)self intValue];
 LABEL_11:
   }
@@ -134,10 +134,10 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BCMutableCollectionMember *)self collectionMemberID];
-  v6 = [(BCMutableCollectionMember *)self sortOrder];
-  v7 = [(BCMutableCloudData *)self modificationDate];
-  v8 = [NSString stringWithFormat:@"<%@: %p> collectionMemberID: %@, sortOrder:%d modificationDate:%@", v4, self, v5, v6, v7];
+  collectionMemberID = [(BCMutableCollectionMember *)self collectionMemberID];
+  sortOrder = [(BCMutableCollectionMember *)self sortOrder];
+  modificationDate = [(BCMutableCloudData *)self modificationDate];
+  v8 = [NSString stringWithFormat:@"<%@: %p> collectionMemberID: %@, sortOrder:%d modificationDate:%@", v4, self, collectionMemberID, sortOrder, modificationDate];
 
   return v8;
 }
@@ -146,36 +146,36 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = BCMutableCollectionMember;
-  v3 = [(BCMutableCloudData *)&v6 configuredRecordFromAttributes];
+  configuredRecordFromAttributes = [(BCMutableCloudData *)&v6 configuredRecordFromAttributes];
   v4 = [NSNumber numberWithInt:[(BCMutableCollectionMember *)self sortOrder]];
-  [v3 setObject:v4 forKey:@"sortOrder"];
+  [configuredRecordFromAttributes setObject:v4 forKey:@"sortOrder"];
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BCMutableCollectionMember;
-  v4 = a3;
-  [(BCMutableCloudData *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:-[BCMutableCollectionMember sortOrder](self forKey:{"sortOrder", v5.receiver, v5.super_class), @"sortOrder"}];
+  coderCopy = coder;
+  [(BCMutableCloudData *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:-[BCMutableCollectionMember sortOrder](self forKey:{"sortOrder", v5.receiver, v5.super_class), @"sortOrder"}];
 }
 
-- (BCMutableCollectionMember)initWithCoder:(id)a3
+- (BCMutableCollectionMember)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BCMutableCollectionMember;
-  v5 = [(BCMutableCloudData *)&v10 initWithCoder:v4];
+  v5 = [(BCMutableCloudData *)&v10 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(BCMutableCloudData *)v5 localRecordID];
+    localRecordID = [(BCMutableCloudData *)v5 localRecordID];
     collectionMemberID = v6->_collectionMemberID;
-    v6->_collectionMemberID = v7;
+    v6->_collectionMemberID = localRecordID;
 
-    v6->_sortOrder = [v4 decodeIntForKey:@"sortOrder"];
+    v6->_sortOrder = [coderCopy decodeIntForKey:@"sortOrder"];
   }
 
   return v6;

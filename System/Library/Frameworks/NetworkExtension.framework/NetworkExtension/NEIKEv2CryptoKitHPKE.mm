@@ -1,22 +1,22 @@
 @interface NEIKEv2CryptoKitHPKE
 - (NEIKEv2CryptoKitHPKE)init;
-- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)a3 aad:(id)a4 psk:(id)a5 pskID:(id)a6 keyData:(id)a7;
-- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)a3 aad:(id)a4 psk:(id)a5 pskID:(id)a6 keyRef:(__SecKey *)a7;
+- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)payload aad:(id)aad psk:(id)psk pskID:(id)d keyData:(id)data;
+- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)payload aad:(id)aad psk:(id)psk pskID:(id)d keyRef:(__SecKey *)ref;
 @end
 
 @implementation NEIKEv2CryptoKitHPKE
 
-- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)a3 aad:(id)a4 psk:(id)a5 pskID:(id)a6 keyRef:(__SecKey *)a7
+- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)payload aad:(id)aad psk:(id)psk pskID:(id)d keyRef:(__SecKey *)ref
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v34 = a7;
-  v15 = a4;
+  payloadCopy = payload;
+  pskCopy = psk;
+  dCopy = d;
+  refCopy = ref;
+  aadCopy = aad;
   v16 = sub_1BAA3969C();
   v18 = v17;
 
-  if (v15)
+  if (aadCopy)
   {
     v19 = sub_1BAA3969C();
     v21 = v20;
@@ -47,25 +47,25 @@
   *v31 = v25;
   v31[1] = v27;
   v32 = (&self->super.isa + OBJC_IVAR___NEIKEv2CryptoKitHPKE_key);
-  *v32 = v34;
+  *v32 = refCopy;
   v32[1] = 0;
   v35.receiver = self;
   v35.super_class = NEIKEv2CryptoKitHPKE;
   return [(NEIKEv2CryptoKitHPKE *)&v35 init];
 }
 
-- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)a3 aad:(id)a4 psk:(id)a5 pskID:(id)a6 keyData:(id)a7
+- (NEIKEv2CryptoKitHPKE)initWithPayload:(id)payload aad:(id)aad psk:(id)psk pskID:(id)d keyData:(id)data
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
+  payloadCopy = payload;
+  pskCopy = psk;
+  dCopy = d;
+  dataCopy = data;
+  aadCopy = aad;
   v17 = sub_1BAA3969C();
   v37 = v18;
   v38 = v17;
 
-  if (v16)
+  if (aadCopy)
   {
     v19 = sub_1BAA3969C();
     v21 = v20;

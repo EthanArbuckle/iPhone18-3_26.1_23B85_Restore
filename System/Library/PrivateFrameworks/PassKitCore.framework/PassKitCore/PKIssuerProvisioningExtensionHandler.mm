@@ -1,5 +1,5 @@
 @interface PKIssuerProvisioningExtensionHandler
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)generateAddPaymentPassRequestForPassEntryWithIdentifier:(NSString *)identifier configuration:(PKAddPaymentPassRequestConfiguration *)configuration certificateChain:(NSArray *)certificates nonce:(NSData *)nonce nonceSignature:(NSData *)nonceSignature completionHandler:(void *)completion;
 - (void)passEntriesWithCompletion:(void *)completion;
 - (void)remotePassEntriesWithCompletion:(void *)completion;
@@ -8,12 +8,12 @@
 
 @implementation PKIssuerProvisioningExtensionHandler
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
-    v6 = v4;
+    v6 = contextCopy;
     v5 = objc_autoreleasePoolPush();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -29,7 +29,7 @@
     }
 
     objc_autoreleasePoolPop(v5);
-    v4 = v6;
+    contextCopy = v6;
   }
 }
 

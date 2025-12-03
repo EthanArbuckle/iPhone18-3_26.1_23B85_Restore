@@ -1,26 +1,26 @@
 @interface BMLocationHashedCoordinates
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocationHashedCoordinates)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMLocationHashedCoordinates)initWithLocationHashAt300Meters:(id)a3 locationHashAt2500Meters:(id)a4 locationHashAt156Kilometers:(id)a5 floor:(id)a6 speedBucket:(int)a7 altitudeBucket:(int)a8 distanceBucketFromHome:(int)a9 distanceBucketFromWork:(int)a10 distanceBucketFromGym:(int)a11 distanceBucketFromSchool:(int)a12;
-- (BOOL)isEqual:(id)a3;
+- (BMLocationHashedCoordinates)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMLocationHashedCoordinates)initWithLocationHashAt300Meters:(id)meters locationHashAt2500Meters:(id)at2500Meters locationHashAt156Kilometers:(id)kilometers floor:(id)floor speedBucket:(int)bucket altitudeBucket:(int)altitudeBucket distanceBucketFromHome:(int)home distanceBucketFromWork:(int)self0 distanceBucketFromGym:(int)self1 distanceBucketFromSchool:(int)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocationHashedCoordinates
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMLocationHashedCoordinates hasLocationHashAt300Meters](self, "hasLocationHashAt300Meters") || [v5 hasLocationHashAt300Meters])
     {
       if (![(BMLocationHashedCoordinates *)self hasLocationHashAt300Meters])
@@ -33,8 +33,8 @@
         goto LABEL_29;
       }
 
-      v6 = [(BMLocationHashedCoordinates *)self locationHashAt300Meters];
-      if (v6 != [v5 locationHashAt300Meters])
+      locationHashAt300Meters = [(BMLocationHashedCoordinates *)self locationHashAt300Meters];
+      if (locationHashAt300Meters != [v5 locationHashAt300Meters])
       {
         goto LABEL_29;
       }
@@ -52,8 +52,8 @@
         goto LABEL_29;
       }
 
-      v7 = [(BMLocationHashedCoordinates *)self locationHashAt2500Meters];
-      if (v7 != [v5 locationHashAt2500Meters])
+      locationHashAt2500Meters = [(BMLocationHashedCoordinates *)self locationHashAt2500Meters];
+      if (locationHashAt2500Meters != [v5 locationHashAt2500Meters])
       {
         goto LABEL_29;
       }
@@ -61,8 +61,8 @@
 
     if ((!-[BMLocationHashedCoordinates hasLocationHashAt156Kilometers](self, "hasLocationHashAt156Kilometers") && ![v5 hasLocationHashAt156Kilometers] || -[BMLocationHashedCoordinates hasLocationHashAt156Kilometers](self, "hasLocationHashAt156Kilometers") && objc_msgSend(v5, "hasLocationHashAt156Kilometers") && (v8 = -[BMLocationHashedCoordinates locationHashAt156Kilometers](self, "locationHashAt156Kilometers"), v8 == objc_msgSend(v5, "locationHashAt156Kilometers"))) && (!-[BMLocationHashedCoordinates hasFloor](self, "hasFloor") && !objc_msgSend(v5, "hasFloor") || -[BMLocationHashedCoordinates hasFloor](self, "hasFloor") && objc_msgSend(v5, "hasFloor") && (v9 = -[BMLocationHashedCoordinates floor](self, "floor"), v9 == objc_msgSend(v5, "floor"))) && (v10 = -[BMLocationHashedCoordinates speedBucket](self, "speedBucket"), v10 == objc_msgSend(v5, "speedBucket")) && (v11 = -[BMLocationHashedCoordinates altitudeBucket](self, "altitudeBucket"), v11 == objc_msgSend(v5, "altitudeBucket")) && (v12 = -[BMLocationHashedCoordinates distanceBucketFromHome](self, "distanceBucketFromHome"), v12 == objc_msgSend(v5, "distanceBucketFromHome")) && (v13 = -[BMLocationHashedCoordinates distanceBucketFromWork](self, "distanceBucketFromWork"), v13 == objc_msgSend(v5, "distanceBucketFromWork")) && (v14 = -[BMLocationHashedCoordinates distanceBucketFromGym](self, "distanceBucketFromGym"), v14 == objc_msgSend(v5, "distanceBucketFromGym")))
     {
-      v15 = [(BMLocationHashedCoordinates *)self distanceBucketFromSchool];
-      v16 = v15 == [v5 distanceBucketFromSchool];
+      distanceBucketFromSchool = [(BMLocationHashedCoordinates *)self distanceBucketFromSchool];
+      v16 = distanceBucketFromSchool == [v5 distanceBucketFromSchool];
     }
 
     else
@@ -130,96 +130,96 @@ LABEL_29:
   v10 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationHashedCoordinates distanceBucketFromGym](self, "distanceBucketFromGym")}];
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMLocationHashedCoordinates distanceBucketFromSchool](self, "distanceBucketFromSchool")}];
   v37[0] = @"locationHashAt300Meters";
-  v12 = v3;
+  null = v3;
   if (!v3)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v30 = v12;
-  v38[0] = v12;
+  v30 = null;
+  v38[0] = null;
   v37[1] = @"locationHashAt2500Meters";
-  v13 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v13;
-  v38[1] = v13;
+  v29 = null2;
+  v38[1] = null2;
   v37[2] = @"locationHashAt156Kilometers";
-  v14 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v35 = v3;
-  v28 = v14;
-  v38[2] = v14;
+  v28 = null3;
+  v38[2] = null3;
   v37[3] = @"floor";
-  v15 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v4;
-  v27 = v15;
-  v38[3] = v15;
+  v27 = null4;
+  v38[3] = null4;
   v37[4] = @"speedBucket";
-  v16 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v33 = v5;
-  v26 = v16;
-  v38[4] = v16;
+  v26 = null5;
+  v38[4] = null5;
   v37[5] = @"altitudeBucket";
-  v17 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v32 = v6;
-  v38[5] = v17;
+  v38[5] = null6;
   v37[6] = @"distanceBucketFromHome";
-  v18 = v36;
+  null7 = v36;
   if (!v36)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v19 = v7;
-  v38[6] = v18;
+  v38[6] = null7;
   v37[7] = @"distanceBucketFromWork";
-  v20 = v9;
+  null8 = v9;
   if (!v9)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v21 = v8;
-  v38[7] = v20;
+  v38[7] = null8;
   v37[8] = @"distanceBucketFromGym";
-  v22 = v10;
+  null9 = v10;
   if (!v10)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[8] = v22;
+  v38[8] = null9;
   v37[9] = @"distanceBucketFromSchool";
-  v23 = v11;
+  null10 = v11;
   if (!v11)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38[9] = v23;
+  v38[9] = null10;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:10];
   if (v11)
   {
@@ -295,22 +295,22 @@ LABEL_48:
   return v31;
 }
 
-- (BMLocationHashedCoordinates)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocationHashedCoordinates)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v138[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v118 = [v5 objectForKeyedSubscript:@"locationHashAt300Meters"];
+  dictionaryCopy = dictionary;
+  v118 = [dictionaryCopy objectForKeyedSubscript:@"locationHashAt300Meters"];
   if (!v118 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v116 = 0;
 LABEL_4:
-    v6 = [v5 objectForKeyedSubscript:@"locationHashAt2500Meters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"locationHashAt2500Meters"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v26 = 0;
           goto LABEL_82;
@@ -324,9 +324,9 @@ LABEL_4:
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v136 forKeys:&v135 count:1];
         v32 = [v29 initWithDomain:v30 code:2 userInfo:v7];
         v26 = 0;
-        v33 = a4;
-        a4 = 0;
-        *v33 = v32;
+        errorCopy = error;
+        error = 0;
+        *errorCopy = v32;
         goto LABEL_81;
       }
 
@@ -338,13 +338,13 @@ LABEL_4:
       v111 = 0;
     }
 
-    v7 = [v5 objectForKeyedSubscript:@"locationHashAt156Kilometers"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"locationHashAt156Kilometers"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v31 = 0;
           v26 = v111;
@@ -354,7 +354,7 @@ LABEL_4:
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v35 = *MEMORY[0x1E698F240];
         v133 = *MEMORY[0x1E696A578];
-        v36 = a4;
+        errorCopy2 = error;
         v37 = v7;
         v38 = objc_alloc(MEMORY[0x1E696AEC0]);
         v94 = objc_opt_class();
@@ -366,8 +366,8 @@ LABEL_4:
         v41 = v34;
         v9 = v40;
         v31 = 0;
-        a4 = 0;
-        *v36 = [v41 initWithDomain:v35 code:2 userInfo:v40];
+        error = 0;
+        *errorCopy2 = [v41 initWithDomain:v35 code:2 userInfo:v40];
         v26 = v111;
 LABEL_80:
 
@@ -383,14 +383,14 @@ LABEL_81:
       v109 = 0;
     }
 
-    v8 = [v5 objectForKeyedSubscript:@"floor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"floor"];
     v114 = v8;
     if (v8 && (v9 = v8, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v115 = 0;
           v26 = v111;
@@ -401,7 +401,7 @@ LABEL_81:
         v43 = objc_alloc(MEMORY[0x1E696ABC0]);
         v44 = *MEMORY[0x1E698F240];
         v131 = *MEMORY[0x1E696A578];
-        v45 = a4;
+        errorCopy3 = error;
         v46 = v7;
         v47 = objc_alloc(MEMORY[0x1E696AEC0]);
         v95 = objc_opt_class();
@@ -414,8 +414,8 @@ LABEL_81:
         v9 = v114;
         v107 = v49;
         v115 = 0;
-        a4 = 0;
-        *v45 = [v50 initWithDomain:v44 code:2 userInfo:?];
+        error = 0;
+        *errorCopy3 = [v50 initWithDomain:v44 code:2 userInfo:?];
         v26 = v111;
         v31 = v109;
         goto LABEL_79;
@@ -429,7 +429,7 @@ LABEL_81:
       v115 = 0;
     }
 
-    v10 = [v5 objectForKeyedSubscript:@"speedBucket"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"speedBucket"];
     v107 = v10;
     v108 = v6;
     if (v10 && (v11 = v10, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -445,7 +445,7 @@ LABEL_81:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v112 = 0;
             v31 = v109;
@@ -467,9 +467,9 @@ LABEL_81:
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v130 forKeys:&v129 count:1];
           v63 = [v58 initWithDomain:v59 code:2 userInfo:v12];
           v112 = 0;
-          v64 = a4;
-          a4 = 0;
-          *v64 = v63;
+          errorCopy4 = error;
+          error = 0;
+          *errorCopy4 = v63;
           goto LABEL_102;
         }
 
@@ -482,7 +482,7 @@ LABEL_81:
       v112 = 0;
     }
 
-    v12 = [v5 objectForKeyedSubscript:@"altitudeBucket"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"altitudeBucket"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v110 = 0;
@@ -501,7 +501,7 @@ LABEL_81:
     {
       v110 = [MEMORY[0x1E696AD98] numberWithInt:BMLocationHashedCoordinatesAltitudeRangeFromString(v12)];
 LABEL_19:
-      v13 = [v5 objectForKeyedSubscript:@"distanceBucketFromHome"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"distanceBucketFromHome"];
       v104 = v13;
       if (!v13 || (v14 = v13, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -521,14 +521,14 @@ LABEL_19:
       {
         v113 = [MEMORY[0x1E696AD98] numberWithInt:BMLocationHashedCoordinatesDistanceRangeFromString(v14)];
 LABEL_22:
-        v15 = [v5 objectForKeyedSubscript:@"distanceBucketFromWork"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"distanceBucketFromWork"];
         v102 = v7;
         v103 = v15;
         if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v106 = 0;
 LABEL_25:
-          v17 = [v5 objectForKeyedSubscript:@"distanceBucketFromGym"];
+          v17 = [dictionaryCopy objectForKeyedSubscript:@"distanceBucketFromGym"];
           v9 = v114;
           v101 = v12;
           if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -536,7 +536,7 @@ LABEL_25:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v18 = a4;
+              errorCopy8 = error;
               v105 = v17;
             }
 
@@ -545,7 +545,7 @@ LABEL_25:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!a4)
+                if (!error)
                 {
                   v105 = 0;
                   v31 = v109;
@@ -553,7 +553,7 @@ LABEL_25:
                   goto LABEL_75;
                 }
 
-                v86 = a4;
+                errorCopy6 = error;
                 v87 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v88 = *MEMORY[0x1E698F240];
                 v121 = *MEMORY[0x1E696A578];
@@ -562,33 +562,33 @@ LABEL_25:
                 v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
                 v89 = [v87 initWithDomain:v88 code:2 userInfo:v19];
                 v105 = 0;
-                a4 = 0;
-                *v86 = v89;
+                error = 0;
+                *errorCopy6 = v89;
                 v31 = v109;
                 v26 = v111;
                 goto LABEL_74;
               }
 
-              v18 = a4;
+              errorCopy8 = error;
               v105 = [MEMORY[0x1E696AD98] numberWithInt:BMLocationHashedCoordinatesDistanceRangeFromString(v17)];
             }
           }
 
           else
           {
-            v18 = a4;
+            errorCopy8 = error;
             v105 = 0;
           }
 
-          v19 = [v5 objectForKeyedSubscript:@"distanceBucketFromSchool"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"distanceBucketFromSchool"];
           v100 = v17;
           if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v21 = v5;
-              v22 = self;
+              v21 = dictionaryCopy;
+              selfCopy3 = self;
               v20 = v19;
               v42 = v19;
             }
@@ -598,7 +598,7 @@ LABEL_25:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v18)
+                if (errorCopy8)
                 {
                   v90 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v91 = *MEMORY[0x1E698F240];
@@ -606,19 +606,19 @@ LABEL_25:
                   v92 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"distanceBucketFromSchool"];
                   v120 = v92;
                   v93 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
-                  *v18 = [v90 initWithDomain:v91 code:2 userInfo:v93];
+                  *errorCopy8 = [v90 initWithDomain:v91 code:2 userInfo:v93];
                 }
 
                 v23 = 0;
-                a4 = 0;
+                error = 0;
                 v26 = v111;
                 v31 = v109;
                 v9 = v114;
                 goto LABEL_74;
               }
 
-              v21 = v5;
-              v22 = self;
+              v21 = dictionaryCopy;
+              selfCopy3 = self;
               v20 = v19;
               v42 = [MEMORY[0x1E696AD98] numberWithInt:BMLocationHashedCoordinatesDistanceRangeFromString(v19)];
             }
@@ -629,25 +629,25 @@ LABEL_25:
           else
           {
             v20 = v19;
-            v21 = v5;
-            v22 = self;
+            v21 = dictionaryCopy;
+            selfCopy3 = self;
             v23 = 0;
           }
 
-          v51 = [v112 intValue];
-          v52 = [v110 intValue];
-          v53 = [v113 intValue];
-          v54 = [v106 intValue];
-          v55 = [v105 intValue];
-          v99 = __PAIR64__([v23 intValue], v55);
-          v96 = __PAIR64__(v54, v53);
+          intValue = [v112 intValue];
+          intValue2 = [v110 intValue];
+          intValue3 = [v113 intValue];
+          intValue4 = [v106 intValue];
+          intValue5 = [v105 intValue];
+          v99 = __PAIR64__([v23 intValue], intValue5);
+          v96 = __PAIR64__(intValue4, intValue3);
           v26 = v111;
           v31 = v109;
-          a4 = [BMLocationHashedCoordinates initWithLocationHashAt300Meters:v22 locationHashAt2500Meters:"initWithLocationHashAt300Meters:locationHashAt2500Meters:locationHashAt156Kilometers:floor:speedBucket:altitudeBucket:distanceBucketFromHome:distanceBucketFromWork:distanceBucketFromGym:distanceBucketFromSchool:" locationHashAt156Kilometers:v116 floor:v111 speedBucket:v109 altitudeBucket:v115 distanceBucketFromHome:v51 distanceBucketFromWork:v52 distanceBucketFromGym:v96 distanceBucketFromSchool:v99];
-          self = a4;
+          error = [BMLocationHashedCoordinates initWithLocationHashAt300Meters:selfCopy3 locationHashAt2500Meters:"initWithLocationHashAt300Meters:locationHashAt2500Meters:locationHashAt156Kilometers:floor:speedBucket:altitudeBucket:distanceBucketFromHome:distanceBucketFromWork:distanceBucketFromGym:distanceBucketFromSchool:" locationHashAt156Kilometers:v116 floor:v111 speedBucket:v109 altitudeBucket:v115 distanceBucketFromHome:intValue distanceBucketFromWork:intValue2 distanceBucketFromGym:v96 distanceBucketFromSchool:v99];
+          self = error;
           v6 = v108;
           v9 = v114;
-          v5 = v21;
+          dictionaryCopy = v21;
           v17 = v100;
           v19 = v20;
 LABEL_74:
@@ -679,10 +679,10 @@ LABEL_79:
           goto LABEL_25;
         }
 
-        if (a4)
+        if (error)
         {
           v77 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v78 = a4;
+          errorCopy9 = error;
           v79 = *MEMORY[0x1E698F240];
           v123 = *MEMORY[0x1E696A578];
           v80 = v12;
@@ -697,8 +697,8 @@ LABEL_79:
           v17 = v83;
           v85 = [v84 initWithDomain:v79 code:2 userInfo:v83];
           v106 = 0;
-          a4 = 0;
-          *v78 = v85;
+          error = 0;
+          *errorCopy9 = v85;
           v31 = v109;
           v26 = v111;
           v9 = v114;
@@ -713,13 +713,13 @@ LABEL_106:
         goto LABEL_76;
       }
 
-      if (a4)
+      if (error)
       {
         v71 = objc_alloc(MEMORY[0x1E696ABC0]);
         v72 = v7;
         v73 = *MEMORY[0x1E698F240];
         v125 = *MEMORY[0x1E696A578];
-        v74 = a4;
+        errorCopy10 = error;
         v106 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"distanceBucketFromHome"];
         v126 = v106;
         v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v126 forKeys:&v125 count:1];
@@ -727,8 +727,8 @@ LABEL_106:
         v7 = v72;
         v103 = v75;
         v113 = 0;
-        a4 = 0;
-        *v74 = [v71 initWithDomain:v76 code:2 userInfo:?];
+        error = 0;
+        *errorCopy10 = [v71 initWithDomain:v76 code:2 userInfo:?];
         v6 = v108;
         v26 = v111;
         goto LABEL_106;
@@ -742,10 +742,10 @@ LABEL_104:
       goto LABEL_77;
     }
 
-    if (a4)
+    if (error)
     {
       v65 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v66 = a4;
+      errorCopy11 = error;
       v67 = v7;
       v68 = *MEMORY[0x1E698F240];
       v127 = *MEMORY[0x1E696A578];
@@ -756,8 +756,8 @@ LABEL_104:
       v7 = v67;
       v104 = v69;
       v110 = 0;
-      a4 = 0;
-      *v66 = [v65 initWithDomain:v70 code:2 userInfo:?];
+      error = 0;
+      *errorCopy11 = [v65 initWithDomain:v70 code:2 userInfo:?];
       goto LABEL_104;
     }
 
@@ -777,7 +777,7 @@ LABEL_102:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v24 = objc_alloc(MEMORY[0x1E696ABC0]);
     v25 = *MEMORY[0x1E698F240];
@@ -787,9 +787,9 @@ LABEL_102:
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v138 forKeys:&v137 count:1];
     v27 = [v24 initWithDomain:v25 code:2 userInfo:v6];
     v116 = 0;
-    v28 = a4;
-    a4 = 0;
-    *v28 = v27;
+    errorCopy12 = error;
+    error = 0;
+    *errorCopy12 = v27;
 LABEL_82:
 
     goto LABEL_83;
@@ -799,21 +799,21 @@ LABEL_82:
 LABEL_83:
 
   v56 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLocationHashedCoordinates *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if (self->_hasLocationHashAt300Meters)
   {
     locationHashAt300Meters = self->_locationHashAt300Meters;
@@ -852,9 +852,9 @@ LABEL_83:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v79.receiver = self;
   v79.super_class = BMLocationHashedCoordinates;
   v5 = [(BMEventBase *)&v79 init];
@@ -863,12 +863,12 @@ LABEL_83:
     goto LABEL_168;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_166;
       }
@@ -879,18 +879,18 @@ LABEL_83:
       while (1)
       {
         v80 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v80 & 0x7F) << v7;
@@ -908,9 +908,9 @@ LABEL_83:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_166;
       }
@@ -932,18 +932,18 @@ LABEL_16:
           while (1)
           {
             v80 = 0;
-            v43 = [v4 position] + 1;
-            if (v43 >= [v4 position] && (v44 = objc_msgSend(v4, "position") + 1, v44 <= objc_msgSend(v4, "length")))
+            v43 = [fromCopy position] + 1;
+            if (v43 >= [fromCopy position] && (v44 = objc_msgSend(fromCopy, "position") + 1, v44 <= objc_msgSend(fromCopy, "length")))
             {
-              v45 = [v4 data];
-              [v45 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v42 = (((v80 & 0x7F) << v40) | v42);
@@ -961,7 +961,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v34 = 0;
           }
@@ -989,18 +989,18 @@ LABEL_134:
           while (1)
           {
             v80 = 0;
-            v31 = [v4 position] + 1;
-            if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+            v31 = [fromCopy position] + 1;
+            if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
             {
-              v33 = [v4 data];
-              [v33 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v30 = (((v80 & 0x7F) << v28) | v30);
@@ -1018,7 +1018,7 @@ LABEL_134:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v34 = 0;
           }
@@ -1046,18 +1046,18 @@ LABEL_126:
             while (1)
             {
               v80 = 0;
-              v65 = [v4 position] + 1;
-              if (v65 >= [v4 position] && (v66 = objc_msgSend(v4, "position") + 1, v66 <= objc_msgSend(v4, "length")))
+              v65 = [fromCopy position] + 1;
+              if (v65 >= [fromCopy position] && (v66 = objc_msgSend(fromCopy, "position") + 1, v66 <= objc_msgSend(fromCopy, "length")))
               {
-                v67 = [v4 data];
-                [v67 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v64 |= (v80 & 0x7F) << v62;
@@ -1075,7 +1075,7 @@ LABEL_126:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v68 = 0;
             }
@@ -1101,18 +1101,18 @@ LABEL_159:
           while (1)
           {
             v80 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data5 = [fromCopy data];
+              [data5 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v80 & 0x7F) << v16;
@@ -1129,7 +1129,7 @@ LABEL_159:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 0xA)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 0xA)
           {
 LABEL_150:
             LODWORD(v18) = 0;
@@ -1146,18 +1146,18 @@ LABEL_150:
         while (1)
         {
           v80 = 0;
-          v54 = [v4 position] + 1;
-          if (v54 >= [v4 position] && (v55 = objc_msgSend(v4, "position") + 1, v55 <= objc_msgSend(v4, "length")))
+          v54 = [fromCopy position] + 1;
+          if (v54 >= [fromCopy position] && (v55 = objc_msgSend(fromCopy, "position") + 1, v55 <= objc_msgSend(fromCopy, "length")))
           {
-            v56 = [v4 data];
-            [v56 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+            data6 = [fromCopy data];
+            [data6 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v53 = (((v80 & 0x7F) << v51) | v53);
@@ -1175,7 +1175,7 @@ LABEL_150:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v34 = 0;
         }
@@ -1191,8 +1191,8 @@ LABEL_142:
 
       *(&v5->super.super.isa + v74) = v34;
 LABEL_165:
-      v76 = [v4 position];
-      if (v76 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_166;
       }
@@ -1208,18 +1208,18 @@ LABEL_165:
         while (1)
         {
           v80 = 0;
-          v48 = [v4 position] + 1;
-          if (v48 >= [v4 position] && (v49 = objc_msgSend(v4, "position") + 1, v49 <= objc_msgSend(v4, "length")))
+          v48 = [fromCopy position] + 1;
+          if (v48 >= [fromCopy position] && (v49 = objc_msgSend(fromCopy, "position") + 1, v49 <= objc_msgSend(fromCopy, "length")))
           {
-            v50 = [v4 data];
-            [v50 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+            data7 = [fromCopy data];
+            [data7 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v80 & 0x7F) << v46;
@@ -1236,7 +1236,7 @@ LABEL_165:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 9)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 9)
         {
 LABEL_137:
           LODWORD(v18) = 0;
@@ -1264,18 +1264,18 @@ LABEL_121:
         while (1)
         {
           v80 = 0;
-          v37 = [v4 position] + 1;
-          if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+          v37 = [fromCopy position] + 1;
+          if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
           {
-            v39 = [v4 data];
-            [v39 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+            data8 = [fromCopy data];
+            [data8 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v80 & 0x7F) << v35;
@@ -1292,7 +1292,7 @@ LABEL_121:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 9)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 9)
         {
 LABEL_129:
           LODWORD(v18) = 0;
@@ -1313,18 +1313,18 @@ LABEL_129:
           while (1)
           {
             v80 = 0;
-            v59 = [v4 position] + 1;
-            if (v59 >= [v4 position] && (v60 = objc_msgSend(v4, "position") + 1, v60 <= objc_msgSend(v4, "length")))
+            v59 = [fromCopy position] + 1;
+            if (v59 >= [fromCopy position] && (v60 = objc_msgSend(fromCopy, "position") + 1, v60 <= objc_msgSend(fromCopy, "length")))
             {
-              v61 = [v4 data];
-              [v61 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data9 = [fromCopy data];
+              [data9 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v80 & 0x7F) << v57;
@@ -1341,7 +1341,7 @@ LABEL_129:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 9)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 9)
           {
 LABEL_146:
             LODWORD(v18) = 0;
@@ -1356,18 +1356,18 @@ LABEL_146:
           while (1)
           {
             v80 = 0;
-            v71 = [v4 position] + 1;
-            if (v71 >= [v4 position] && (v72 = objc_msgSend(v4, "position") + 1, v72 <= objc_msgSend(v4, "length")))
+            v71 = [fromCopy position] + 1;
+            if (v71 >= [fromCopy position] && (v72 = objc_msgSend(fromCopy, "position") + 1, v72 <= objc_msgSend(fromCopy, "length")))
             {
-              v73 = [v4 data];
-              [v73 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data10 = [fromCopy data];
+              [data10 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v80 & 0x7F) << v69;
@@ -1384,7 +1384,7 @@ LABEL_146:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 9)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 9)
           {
 LABEL_162:
             LODWORD(v18) = 0;
@@ -1399,18 +1399,18 @@ LABEL_162:
           while (1)
           {
             v80 = 0;
-            v25 = [v4 position] + 1;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 1;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v27 = [v4 data];
-              [v27 getBytes:&v80 range:{objc_msgSend(v4, "position"), 1}];
+              data11 = [fromCopy data];
+              [data11 getBytes:&v80 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v80 & 0x7F) << v23;
@@ -1427,7 +1427,7 @@ LABEL_162:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 9)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 9)
           {
 LABEL_154:
             LODWORD(v18) = 0;
@@ -1446,7 +1446,7 @@ LABEL_164:
   }
 
 LABEL_166:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_167:
     v77 = 0;
@@ -1479,76 +1479,76 @@ LABEL_168:
   return v15;
 }
 
-- (BMLocationHashedCoordinates)initWithLocationHashAt300Meters:(id)a3 locationHashAt2500Meters:(id)a4 locationHashAt156Kilometers:(id)a5 floor:(id)a6 speedBucket:(int)a7 altitudeBucket:(int)a8 distanceBucketFromHome:(int)a9 distanceBucketFromWork:(int)a10 distanceBucketFromGym:(int)a11 distanceBucketFromSchool:(int)a12
+- (BMLocationHashedCoordinates)initWithLocationHashAt300Meters:(id)meters locationHashAt2500Meters:(id)at2500Meters locationHashAt156Kilometers:(id)kilometers floor:(id)floor speedBucket:(int)bucket altitudeBucket:(int)altitudeBucket distanceBucketFromHome:(int)home distanceBucketFromWork:(int)self0 distanceBucketFromGym:(int)self1 distanceBucketFromSchool:(int)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
+  metersCopy = meters;
+  at2500MetersCopy = at2500Meters;
+  kilometersCopy = kilometers;
+  floorCopy = floor;
   v28.receiver = self;
   v28.super_class = BMLocationHashedCoordinates;
   v22 = [(BMEventBase *)&v28 init];
   if (v22)
   {
     v22->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v18)
+    if (metersCopy)
     {
       v22->_hasLocationHashAt300Meters = 1;
-      v23 = [v18 unsignedLongLongValue];
+      unsignedLongLongValue = [metersCopy unsignedLongLongValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedLongLongValue = 0;
       v22->_hasLocationHashAt300Meters = 0;
     }
 
-    v22->_locationHashAt300Meters = v23;
-    if (v19)
+    v22->_locationHashAt300Meters = unsignedLongLongValue;
+    if (at2500MetersCopy)
     {
       v22->_hasLocationHashAt2500Meters = 1;
-      v24 = [v19 unsignedLongLongValue];
+      unsignedLongLongValue2 = [at2500MetersCopy unsignedLongLongValue];
     }
 
     else
     {
-      v24 = 0;
+      unsignedLongLongValue2 = 0;
       v22->_hasLocationHashAt2500Meters = 0;
     }
 
-    v22->_locationHashAt2500Meters = v24;
-    if (v20)
+    v22->_locationHashAt2500Meters = unsignedLongLongValue2;
+    if (kilometersCopy)
     {
       v22->_hasLocationHashAt156Kilometers = 1;
-      v25 = [v20 unsignedLongLongValue];
+      unsignedLongLongValue3 = [kilometersCopy unsignedLongLongValue];
     }
 
     else
     {
-      v25 = 0;
+      unsignedLongLongValue3 = 0;
       v22->_hasLocationHashAt156Kilometers = 0;
     }
 
-    v22->_locationHashAt156Kilometers = v25;
-    if (v21)
+    v22->_locationHashAt156Kilometers = unsignedLongLongValue3;
+    if (floorCopy)
     {
       v22->_hasFloor = 1;
-      v26 = [v21 intValue];
+      intValue = [floorCopy intValue];
     }
 
     else
     {
       v22->_hasFloor = 0;
-      v26 = -1;
+      intValue = -1;
     }
 
-    v22->_floor = v26;
-    v22->_speedBucket = a7;
-    v22->_altitudeBucket = a8;
-    v22->_distanceBucketFromHome = a9;
-    v22->_distanceBucketFromWork = a10;
-    v22->_distanceBucketFromGym = a11;
-    v22->_distanceBucketFromSchool = a12;
+    v22->_floor = intValue;
+    v22->_speedBucket = bucket;
+    v22->_altitudeBucket = altitudeBucket;
+    v22->_distanceBucketFromHome = home;
+    v22->_distanceBucketFromWork = work;
+    v22->_distanceBucketFromGym = gym;
+    v22->_distanceBucketFromSchool = school;
   }
 
   return v22;
@@ -1630,9 +1630,9 @@ LABEL_168:
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1640,8 +1640,8 @@ LABEL_168:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocationHashedCoordinates alloc] initByReadFrom:v7];
     v4 = v8;

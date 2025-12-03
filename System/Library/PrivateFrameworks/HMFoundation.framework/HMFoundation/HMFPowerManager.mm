@@ -3,12 +3,12 @@
 - (HMFPowerManager)init;
 - (float)batteryLevel;
 - (int64_t)batteryState;
-- (void)_deregisterForPowerSourceNotifications:(BOOL)a3;
+- (void)_deregisterForPowerSourceNotifications:(BOOL)notifications;
 - (void)_registerForPowerSourceNotifications;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
-- (void)updateBatteryState:(unsigned int)a3;
+- (void)updateBatteryState:(unsigned int)state;
 @end
 
 @implementation HMFPowerManager
@@ -79,16 +79,16 @@ uint64_t __32__HMFPowerManager_sharedManager__block_invoke()
 
       v14 = v13;
 
-      v15 = [v14 BOOLValue];
+      bOOLValue = [v14 BOOLValue];
       IOObjectRelease(v10);
     }
 
     else
     {
-      v15 = 0;
+      bOOLValue = 0;
     }
 
-    v3->_hasBattery = v15;
+    v3->_hasBattery = bOOLValue;
   }
 
   return v3;
@@ -104,13 +104,13 @@ uint64_t __32__HMFPowerManager_sharedManager__block_invoke()
 
 - (void)start
 {
-  v3 = [(HMFPowerManager *)self clientQueue];
+  clientQueue = [(HMFPowerManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__HMFPowerManager_start__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __24__HMFPowerManager_start__block_invoke(uint64_t a1)
@@ -129,13 +129,13 @@ uint64_t __24__HMFPowerManager_start__block_invoke(uint64_t a1)
 
 - (void)stop
 {
-  v3 = [(HMFPowerManager *)self clientQueue];
+  clientQueue = [(HMFPowerManager *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__HMFPowerManager_stop__block_invoke;
   block[3] = &unk_2786E6C80;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(clientQueue, block);
 }
 
 void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
@@ -168,14 +168,14 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
   return batteryLevel;
 }
 
-- (void)updateBatteryState:(unsigned int)a3
+- (void)updateBatteryState:(unsigned int)state
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (state)
   {
     v5 = objc_autoreleasePoolPush();
     v6 = *MEMORY[0x277CBECE8];
-    CFProperty = IORegistryEntryCreateCFProperty(a3, @"CurrentCapacity", *MEMORY[0x277CBECE8], 0);
+    CFProperty = IORegistryEntryCreateCFProperty(state, @"CurrentCapacity", *MEMORY[0x277CBECE8], 0);
     TypeID = CFNumberGetTypeID();
     objc_opt_class();
     if (CFProperty && CFGetTypeID(CFProperty) != TypeID)
@@ -196,7 +196,7 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
 
     v10 = v9;
 
-    v11 = IORegistryEntryCreateCFProperty(a3, @"MaxCapacity", v6, 0);
+    v11 = IORegistryEntryCreateCFProperty(state, @"MaxCapacity", v6, 0);
     v12 = CFNumberGetTypeID();
     objc_opt_class();
     if (v11 && CFGetTypeID(v11) != v12)
@@ -219,8 +219,8 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
 
     if (v10 && v14 && [v14 integerValue] >= 1)
     {
-      v15 = [v10 integerValue];
-      v16 = v15 / [v14 integerValue];
+      integerValue = [v10 integerValue];
+      v16 = integerValue / [v14 integerValue];
     }
 
     else
@@ -240,7 +240,7 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
     }
 
     __updateBatteryLevel(self, v16);
-    v20 = IORegistryEntryCreateCFProperty(a3, @"ExternalChargeCapable", v6, 0);
+    v20 = IORegistryEntryCreateCFProperty(state, @"ExternalChargeCapable", v6, 0);
     v21 = CFBooleanGetTypeID();
     objc_opt_class();
     if (v20 && CFGetTypeID(v20) != v21)
@@ -265,7 +265,7 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
     {
       if ([v23 BOOLValue])
       {
-        v24 = IORegistryEntryCreateCFProperty(a3, @"FullyCharged", v6, 0);
+        v24 = IORegistryEntryCreateCFProperty(state, @"FullyCharged", v6, 0);
         v25 = CFBooleanGetTypeID();
         objc_opt_class();
         if (v24 && CFGetTypeID(v24) != v25)
@@ -286,8 +286,8 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
 
         v27 = v26;
 
-        v28 = [v27 BOOLValue];
-        if (v28)
+        bOOLValue = [v27 BOOLValue];
+        if (bOOLValue)
         {
           v29 = 3;
         }
@@ -340,9 +340,9 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
       Main = CFRunLoopGetMain();
       CFRunLoopAddSource(Main, v4, *MEMORY[0x277CBF058]);
       notification = 0;
-      v6 = [(HMFPowerManager *)self notificationPort];
+      notificationPort = [(HMFPowerManager *)self notificationPort];
       v7 = IOServiceMatching("IOPMPowerSource");
-      if (!IOServiceAddMatchingNotification(v6, "IOServiceFirstMatch", v7, _matchedBatteryMatchingCallback, self, &notification))
+      if (!IOServiceAddMatchingNotification(notificationPort, "IOServiceFirstMatch", v7, _matchedBatteryMatchingCallback, self, &notification))
       {
         _matchedBatteryMatchingCallback(self, notification);
       }
@@ -358,9 +358,9 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_deregisterForPowerSourceNotifications:(BOOL)a3
+- (void)_deregisterForPowerSourceNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   if ([(HMFPowerManager *)self interestNotification])
   {
     IOObjectRelease([(HMFPowerManager *)self interestNotification]);
@@ -381,7 +381,7 @@ void __23__HMFPowerManager_stop__block_invoke(uint64_t a1)
     self->_notificationPort = 0;
   }
 
-  if (v3)
+  if (notificationsCopy)
   {
     __updateBatteryState(self, 0);
 

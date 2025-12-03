@@ -1,61 +1,61 @@
 @interface CNHandle
-+ (id)geminiHandleForHandle:(id)a3;
++ (id)geminiHandleForHandle:(id)handle;
 + (id)geminiHandleTypeMap;
-+ (id)inPersonHandleForHandle:(id)a3;
++ (id)inPersonHandleForHandle:(id)handle;
 + (id)inPersonHandleTypeMap;
 + (id)keyTypeMapping;
-+ (id)tuHandleForHandle:(id)a3;
++ (id)tuHandleForHandle:(id)handle;
 + (id)tuHandleTypeMap;
-+ (int64_t)geminiHandleTypeForType:(unint64_t)a3;
-+ (int64_t)inPersonHandleTypeForType:(unint64_t)a3;
-+ (int64_t)tuHandleTypeFromType:(unint64_t)a3;
-+ (unint64_t)handleTypeForPropertyKey:(id)a3;
-- (CNHandle)initWithStringValue:(id)a3 customIdentifier:(id)a4 type:(unint64_t)a5;
++ (int64_t)geminiHandleTypeForType:(unint64_t)type;
++ (int64_t)inPersonHandleTypeForType:(unint64_t)type;
++ (int64_t)tuHandleTypeFromType:(unint64_t)type;
++ (unint64_t)handleTypeForPropertyKey:(id)key;
+- (CNHandle)initWithStringValue:(id)value customIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation CNHandle
 
-- (CNHandle)initWithStringValue:(id)a3 customIdentifier:(id)a4 type:(unint64_t)a5
+- (CNHandle)initWithStringValue:(id)value customIdentifier:(id)identifier type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = CNHandle;
   v10 = [(CNHandle *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [valueCopy copy];
     stringValue = v10->_stringValue;
     v10->_stringValue = v11;
 
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     customIdentifier = v10->_customIdentifier;
     v10->_customIdentifier = v13;
 
-    v10->_type = a5;
+    v10->_type = type;
     v15 = v10;
   }
 
   return v10;
 }
 
-+ (unint64_t)handleTypeForPropertyKey:(id)a3
++ (unint64_t)handleTypeForPropertyKey:(id)key
 {
-  v4 = a3;
-  v5 = [a1 keyTypeMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  keyTypeMapping = [self keyTypeMapping];
+  v6 = [keyTypeMapping objectForKeyedSubscript:keyCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 1;
+    integerValue = 1;
   }
 
-  return v7;
+  return integerValue;
 }
 
 + (id)keyTypeMapping
@@ -83,26 +83,26 @@ void __26__CNHandle_keyTypeMapping__block_invoke()
   keyTypeMapping_cn_once_object_1 = v1;
 }
 
-+ (id)tuHandleForHandle:(id)a3
++ (id)tuHandleForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [v4 type];
+  handleCopy = handle;
+  type = [handleCopy type];
   TUHandleClass = getTUHandleClass();
   v7 = TUHandleClass;
-  if (v5 == 1)
+  if (type == 1)
   {
-    v8 = [v4 stringValue];
+    stringValue = [handleCopy stringValue];
 
-    v9 = [(objc_class *)v7 handleWithDestinationID:v8];
+    v9 = [(objc_class *)v7 handleWithDestinationID:stringValue];
   }
 
   else
   {
     v10 = [TUHandleClass alloc];
-    v11 = [a1 tuHandleTypeFromType:{objc_msgSend(v4, "type")}];
-    v8 = [v4 stringValue];
+    v11 = [self tuHandleTypeFromType:{objc_msgSend(handleCopy, "type")}];
+    stringValue = [handleCopy stringValue];
 
-    v9 = [v10 initWithType:v11 value:v8];
+    v9 = [v10 initWithType:v11 value:stringValue];
   }
 
   v12 = v9;
@@ -110,14 +110,14 @@ void __26__CNHandle_keyTypeMapping__block_invoke()
   return v12;
 }
 
-+ (int64_t)tuHandleTypeFromType:(unint64_t)a3
++ (int64_t)tuHandleTypeFromType:(unint64_t)type
 {
-  v4 = [a1 tuHandleTypeMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  tuHandleTypeMap = [self tuHandleTypeMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [tuHandleTypeMap objectForKeyedSubscript:v5];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 + (id)tuHandleTypeMap
@@ -144,28 +144,28 @@ void __37__CNHandle_TUHandle__tuHandleTypeMap__block_invoke()
   tuHandleTypeMap_cn_once_object_2 = v0;
 }
 
-+ (id)inPersonHandleForHandle:(id)a3
++ (id)inPersonHandleForHandle:(id)handle
 {
   v3 = MEMORY[0x1E696E948];
-  v4 = a3;
+  handleCopy = handle;
   v5 = [v3 alloc];
-  v6 = [v4 stringValue];
+  stringValue = [handleCopy stringValue];
   v7 = objc_opt_class();
-  v8 = [v4 type];
+  type = [handleCopy type];
 
-  v9 = [v5 initWithValue:v6 type:{objc_msgSend(v7, "inPersonHandleTypeForType:", v8)}];
+  v9 = [v5 initWithValue:stringValue type:{objc_msgSend(v7, "inPersonHandleTypeForType:", type)}];
 
   return v9;
 }
 
-+ (int64_t)inPersonHandleTypeForType:(unint64_t)a3
++ (int64_t)inPersonHandleTypeForType:(unint64_t)type
 {
-  v4 = [a1 inPersonHandleTypeMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  inPersonHandleTypeMap = [self inPersonHandleTypeMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [inPersonHandleTypeMap objectForKeyedSubscript:v5];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 + (id)inPersonHandleTypeMap
@@ -194,28 +194,28 @@ void __49__CNHandle_INPersonHandle__inPersonHandleTypeMap__block_invoke()
   inPersonHandleTypeMap_cn_once_object_3 = v0;
 }
 
-+ (id)geminiHandleForHandle:(id)a3
++ (id)geminiHandleForHandle:(id)handle
 {
   v3 = MEMORY[0x1E695CEA8];
-  v4 = a3;
+  handleCopy = handle;
   v5 = [v3 alloc];
-  v6 = [v4 stringValue];
+  stringValue = [handleCopy stringValue];
   v7 = objc_opt_class();
-  v8 = [v4 type];
+  type = [handleCopy type];
 
-  v9 = [v5 initWithString:v6 type:{objc_msgSend(v7, "geminiHandleTypeForType:", v8)}];
+  v9 = [v5 initWithString:stringValue type:{objc_msgSend(v7, "geminiHandleTypeForType:", type)}];
 
   return v9;
 }
 
-+ (int64_t)geminiHandleTypeForType:(unint64_t)a3
++ (int64_t)geminiHandleTypeForType:(unint64_t)type
 {
-  v4 = [a1 geminiHandleTypeMap];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  geminiHandleTypeMap = [self geminiHandleTypeMap];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
+  v6 = [geminiHandleTypeMap objectForKeyedSubscript:v5];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 + (id)geminiHandleTypeMap

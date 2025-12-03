@@ -1,10 +1,10 @@
 @interface DMFProvisioningProfile
-- (id)initWithProfileRef:(void *)a3;
+- (id)initWithProfileRef:(void *)ref;
 @end
 
 @implementation DMFProvisioningProfile
 
-- (id)initWithProfileRef:(void *)a3
+- (id)initWithProfileRef:(void *)ref
 {
   UUID = MISProvisioningProfileGetUUID();
   Name = MISProvisioningProfileGetName();

@@ -1,36 +1,36 @@
 @interface SCWWatchlistUpdateSortStateInWatchlistCommand
-- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithCoder:(id)a3;
-- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithWatchlistIdentifier:(id)a3 sortState:(id)a4 sortOrderState:(id)a5 displayState:(id)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithCoder:(id)coder;
+- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithWatchlistIdentifier:(id)identifier sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWWatchlistUpdateSortStateInWatchlistCommand
 
-- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithWatchlistIdentifier:(id)a3 sortState:(id)a4 sortOrderState:(id)a5 displayState:(id)a6
+- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithWatchlistIdentifier:(id)identifier sortState:(id)state sortOrderState:(id)orderState displayState:(id)displayState
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  stateCopy = state;
+  orderStateCopy = orderState;
+  displayStateCopy = displayState;
   v24.receiver = self;
   v24.super_class = SCWWatchlistUpdateSortStateInWatchlistCommand;
   v14 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     watchlistIdentifier = v14->_watchlistIdentifier;
     v14->_watchlistIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [stateCopy copy];
     sortState = v14->_sortState;
     v14->_sortState = v17;
 
-    v19 = [v12 copy];
+    v19 = [orderStateCopy copy];
     sortOrderState = v14->_sortOrderState;
     v14->_sortOrderState = v19;
 
-    v21 = [v13 copy];
+    v21 = [displayStateCopy copy];
     displayState = v14->_displayState;
     v14->_displayState = v21;
   }
@@ -38,17 +38,17 @@
   return v14;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__SCWWatchlistUpdateSortStateInWatchlistCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v4 = a3;
+  zoneCopy = zone;
   v5 = _Block_copy(aBlock);
-  v6 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self watchlistIdentifier];
-  [v4 createOrUpdateRecordWithName:v6 recordType:@"Watchlist" modifyBlock:v5];
+  watchlistIdentifier = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self watchlistIdentifier];
+  [zoneCopy createOrUpdateRecordWithName:watchlistIdentifier recordType:@"Watchlist" modifyBlock:v5];
 }
 
 void __65__SCWWatchlistUpdateSortStateInWatchlistCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -69,44 +69,44 @@ void __65__SCWWatchlistUpdateSortStateInWatchlistCommand_executeWithZone___block
   }
 }
 
-- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithCoder:(id)a3
+- (SCWWatchlistUpdateSortStateInWatchlistCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortState"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortOrderState"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayState"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchlistIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortState"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortOrderState"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayState"];
 
   if (v5)
   {
     self = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self initWithWatchlistIdentifier:v5 sortState:v6 sortOrderState:v7 displayState:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self watchlistIdentifier];
-  [v4 encodeObject:v5 forKey:@"watchlistIdentifier"];
+  coderCopy = coder;
+  watchlistIdentifier = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self watchlistIdentifier];
+  [coderCopy encodeObject:watchlistIdentifier forKey:@"watchlistIdentifier"];
 
-  v6 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self sortState];
-  [v4 encodeObject:v6 forKey:@"sortState"];
+  sortState = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self sortState];
+  [coderCopy encodeObject:sortState forKey:@"sortState"];
 
-  v7 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self sortOrderState];
-  [v4 encodeObject:v7 forKey:@"sortOrderState"];
+  sortOrderState = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self sortOrderState];
+  [coderCopy encodeObject:sortOrderState forKey:@"sortOrderState"];
 
-  v8 = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self displayState];
-  [v4 encodeObject:v8 forKey:@"displayState"];
+  displayState = [(SCWWatchlistUpdateSortStateInWatchlistCommand *)self displayState];
+  [coderCopy encodeObject:displayState forKey:@"displayState"];
 }
 
 @end

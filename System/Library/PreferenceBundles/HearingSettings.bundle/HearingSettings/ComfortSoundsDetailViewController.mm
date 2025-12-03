@@ -1,18 +1,18 @@
 @interface ComfortSoundsDetailViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (ComfortSoundsDetailViewController)init;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)configureBarButton;
 - (void)donePressed;
 - (void)editPressed;
 - (void)reloadSpecifiers;
-- (void)setDownloadProgress:(id)a3;
+- (void)setDownloadProgress:(id)progress;
 - (void)startListeningForUpdates;
 - (void)stopListeningForUpdates;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -55,10 +55,10 @@
   v6.receiver = self;
   v6.super_class = ComfortSoundsDetailViewController;
   [(ComfortSoundsDetailViewController *)&v6 viewDidLoad];
-  v3 = [(ComfortSoundsDetailViewController *)self table];
+  table = [(ComfortSoundsDetailViewController *)self table];
   v4 = objc_opt_class();
   v5 = +[HearingSettingsAssetCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (void)startListeningForUpdates
@@ -93,22 +93,22 @@
 
 - (void)configureBarButton
 {
-  v3 = [(ComfortSoundsDetailViewController *)self availableAssets];
-  v4 = [v3 indexOfObjectPassingTest:&stru_48958];
+  availableAssets = [(ComfortSoundsDetailViewController *)self availableAssets];
+  v4 = [availableAssets indexOfObjectPassingTest:&stru_48958];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || ([(ComfortSoundsDetailViewController *)self availableAssets], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v10 = [(ComfortSoundsDetailViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:0];
+    navigationItem = [(ComfortSoundsDetailViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     [(ComfortSoundsDetailViewController *)self setEditing:0 animated:1];
   }
 
   else
   {
-    v6 = [(ComfortSoundsDetailViewController *)self isEditing];
+    isEditing = [(ComfortSoundsDetailViewController *)self isEditing];
     v7 = objc_allocWithZone(UIBarButtonItem);
-    if (v6)
+    if (isEditing)
     {
       v8 = "donePressed";
       v9 = 0;
@@ -121,8 +121,8 @@
     }
 
     v12 = [v7 initWithBarButtonSystemItem:v9 target:self action:v8];
-    v11 = [(ComfortSoundsDetailViewController *)self navigationItem];
-    [v11 setRightBarButtonItem:v12];
+    navigationItem2 = [(ComfortSoundsDetailViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v12];
   }
 }
 
@@ -140,15 +140,15 @@
   [(ComfortSoundsDetailViewController *)self configureBarButton];
 }
 
-- (void)setDownloadProgress:(id)a3
+- (void)setDownloadProgress:(id)progress
 {
-  v5 = a3;
-  objc_storeStrong(&self->_downloadProgress, a3);
+  progressCopy = progress;
+  objc_storeStrong(&self->_downloadProgress, progress);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = progressCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -165,8 +165,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(ComfortSoundsDetailViewController *)self assetCells];
-        v13 = [v12 valueForKey:v11];
+        assetCells = [(ComfortSoundsDetailViewController *)self assetCells];
+        v13 = [assetCells valueForKey:v11];
 
         v14 = [v6 valueForKey:v11];
         [v13 updateDownloadProgress:v14];
@@ -193,19 +193,19 @@
     [v6 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v5 addObject:v6];
     v7 = +[HUComfortSoundsSettings sharedInstance];
-    v8 = [v7 selectedComfortSound];
+    selectedComfortSound = [v7 selectedComfortSound];
 
     v9 = +[NSMutableArray array];
-    v10 = [(ComfortSoundsDetailViewController *)self availableAssets];
-    v19 = v10;
-    if ([v10 count])
+    availableAssets = [(ComfortSoundsDetailViewController *)self availableAssets];
+    v19 = availableAssets;
+    if ([availableAssets count])
     {
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_2854;
       v24[3] = &unk_48980;
       v25 = v9;
-      [v10 enumerateObjectsUsingBlock:{v24, v10}];
+      [availableAssets enumerateObjectsUsingBlock:{v24, availableAssets}];
     }
 
     else
@@ -222,12 +222,12 @@
     v20[2] = sub_28B4;
     v20[3] = &unk_489A8;
     v20[4] = self;
-    v21 = v8;
+    v21 = selectedComfortSound;
     v22 = v6;
     v23 = v5;
     v13 = v5;
     v14 = v6;
-    v15 = v8;
+    v15 = selectedComfortSound;
     [v9 enumerateObjectsUsingBlock:v20];
     v16 = [v13 copy];
     v17 = *&self->PSListController_opaque[v3];
@@ -239,16 +239,16 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = ComfortSoundsDetailViewController;
-  [(ComfortSoundsDetailViewController *)&v21 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(ComfortSoundsDetailViewController *)&v21 tableView:view didSelectRowAtIndexPath:pathCopy];
   if (([(ComfortSoundsDetailViewController *)self isEditing]& 1) == 0)
   {
-    v7 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:v6];
-    v8 = [v7 userInfo];
+    v7 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:pathCopy];
+    userInfo = [v7 userInfo];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -257,9 +257,9 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v9 = v8;
-    v10 = [v9 asset];
-    if (!v10 || (v11 = v10, [v9 asset], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isInstalled"), v12, v11, v13))
+    v9 = userInfo;
+    asset = [v9 asset];
+    if (!asset || (v11 = asset, [v9 asset], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isInstalled"), v12, v11, v13))
     {
       v14 = +[HUComfortSoundsSettings sharedInstance];
       [v14 setSelectedComfortSound:v9];
@@ -268,13 +268,13 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v15 = [v9 asset];
-    if (([v15 isInstalled] & 1) == 0)
+    asset2 = [v9 asset];
+    if (([asset2 isInstalled] & 1) == 0)
     {
-      v16 = [v9 asset];
-      v17 = [v16 isDownloading];
+      asset3 = [v9 asset];
+      isDownloading = [asset3 isDownloading];
 
-      if (v17)
+      if (isDownloading)
       {
 LABEL_12:
         v14 = +[HUComfortSoundsSettings sharedInstance];
@@ -292,9 +292,9 @@ LABEL_12:
         _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Downloading asset %@", buf, 0xCu);
       }
 
-      v15 = +[AXHAServer sharedInstance];
-      v19 = [v9 asset];
-      [v15 downloadComfortSoundAsset:v19];
+      asset2 = +[AXHAServer sharedInstance];
+      asset4 = [v9 asset];
+      [asset2 downloadComfortSoundAsset:asset4];
     }
 
     goto LABEL_12;
@@ -303,66 +303,66 @@ LABEL_12:
 LABEL_15:
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:a4];
-  v5 = [v4 userInfo];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
+  v4 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:path];
+  userInfo = [v4 userInfo];
+  if ([userInfo conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
   {
-    v6 = [v5 canBeEdited];
+    canBeEdited = [userInfo canBeEdited];
   }
 
   else
   {
-    v6 = 0;
+    canBeEdited = 0;
   }
 
-  return v6;
+  return canBeEdited;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:a4];
-  v5 = [v4 userInfo];
-  if ([v5 conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
+  v4 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:path];
+  userInfo = [v4 userInfo];
+  if ([userInfo conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
   {
-    v6 = [v5 canBeDeleted];
+    canBeDeleted = [userInfo canBeDeleted];
   }
 
   else
   {
-    v6 = 0;
+    canBeDeleted = 0;
   }
 
-  return v6;
+  return canBeDeleted;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v6 = [v13 specifier];
-  v7 = [v6 userInfo];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  userInfo = [specifier userInfo];
 
-  v8 = [v7 asset];
-  v9 = [v8 assetId];
+  asset = [userInfo asset];
+  assetId = [asset assetId];
 
-  if (v9)
+  if (assetId)
   {
-    v10 = [(ComfortSoundsDetailViewController *)self assetCells];
-    [v10 setValue:v13 forKey:v9];
+    assetCells = [(ComfortSoundsDetailViewController *)self assetCells];
+    [assetCells setValue:cellCopy forKey:assetId];
 
-    v11 = [(ComfortSoundsDetailViewController *)self downloadProgress];
-    v12 = [v11 valueForKey:v9];
-    [v13 updateDownloadProgress:v12];
+    downloadProgress = [(ComfortSoundsDetailViewController *)self downloadProgress];
+    v12 = [downloadProgress valueForKey:assetId];
+    [cellCopy updateDownloadProgress:v12];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:a5];
-  v8 = [v7 userInfo];
-  v9 = v8;
-  if (a4 == 1 && [v8 conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
+  v7 = [(ComfortSoundsDetailViewController *)self specifierAtIndexPath:path];
+  userInfo = [v7 userInfo];
+  v9 = userInfo;
+  if (style == 1 && [userInfo conformsToProtocol:&OBJC_PROTOCOL___HUComfortSoundsDelegate])
   {
     v10 = hearingLocString();
     objc_opt_class();
@@ -370,8 +370,8 @@ LABEL_15:
     {
       v11 = v9;
       v12 = hearingLocString();
-      v13 = [v11 localizedName];
-      v14 = [NSString stringWithFormat:v12, v13];
+      localizedName = [v11 localizedName];
+      v14 = [NSString stringWithFormat:v12, localizedName];
 
       v15 = [UIAlertController alertControllerWithTitle:v14 message:v10 preferredStyle:1];
       v16 = hearingLocString();
@@ -384,7 +384,7 @@ LABEL_15:
       v21[2] = sub_3048;
       v21[3] = &unk_489D0;
       v22 = v11;
-      v23 = self;
+      selfCopy = self;
       v19 = v11;
       v20 = [UIAlertAction actionWithTitle:v18 style:0 handler:v21];
       [v15 addAction:v20];

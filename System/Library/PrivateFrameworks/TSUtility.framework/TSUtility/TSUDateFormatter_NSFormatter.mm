@@ -1,8 +1,8 @@
 @interface TSUDateFormatter_NSFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (id)stringForObjectValue:(id)value;
 - (void)dealloc;
-- (void)setPreferredFormat:(id)a3;
+- (void)setPreferredFormat:(id)format;
 @end
 
 @implementation TSUDateFormatter_NSFormatter
@@ -14,12 +14,12 @@
   [(TSUDateFormatter_NSFormatter *)&v3 dealloc];
 }
 
-- (void)setPreferredFormat:(id)a3
+- (void)setPreferredFormat:(id)format
 {
   mPreferredFormat = self->mPreferredFormat;
   if ([(TSUDateFormatter_NSFormatter *)self isDateOnly])
   {
-    v6 = [TSUDateFormatter datePortionOfDateTimeFormatString:a3];
+    v6 = [TSUDateFormatter datePortionOfDateTimeFormatString:format];
   }
 
   else
@@ -29,23 +29,23 @@
       goto LABEL_6;
     }
 
-    v6 = [TSUDateFormatter timePortionOfDateTimeFormatString:a3];
+    v6 = [TSUDateFormatter timePortionOfDateTimeFormatString:format];
   }
 
-  a3 = v6;
+  format = v6;
 LABEL_6:
-  self->mPreferredFormat = a3;
+  self->mPreferredFormat = format;
 
   v7 = self->mPreferredFormat;
 
   v8 = v7;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v12 = 0;
   v9 = [+[TSUDateParserLibrary sharedDateParserLibrary](TSUDateParserLibrary "sharedDateParserLibrary")];
-  v10 = [v9 newDateFromString:a4 preferredFormatString:0 successfulFormatString:&v12 tryAggressiveFormats:0];
+  v10 = [v9 newDateFromString:string preferredFormatString:0 successfulFormatString:&v12 tryAggressiveFormats:0];
   [+[TSUDateParserLibrary sharedDateParserLibrary](TSUDateParserLibrary "sharedDateParserLibrary")];
   if (v12)
   {
@@ -54,22 +54,22 @@ LABEL_6:
 
   if (v10)
   {
-    *a3 = v10;
+    *value = v10;
   }
 
   else
   {
-    *a3 = 0;
-    if (a5)
+    *value = 0;
+    if (description)
     {
-      *a5 = [SFUBundle() localizedStringForKey:@"The date is invalid." value:&stru_287DDF830 table:@"TSUtility"];
+      *description = [SFUBundle() localizedStringForKey:@"The date is invalid." value:&stru_287DDF830 table:@"TSUtility"];
     }
   }
 
   return v10 != 0;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   if (![(TSUDateFormatter_NSFormatter *)self preferredFormat])
   {
@@ -82,13 +82,13 @@ LABEL_6:
   }
 
   v5 = objc_opt_class();
-  result = TSUDynamicCast(v5, a3);
+  result = TSUDynamicCast(v5, value);
   if (result)
   {
     v7 = result;
-    v8 = [(TSUDateFormatter_NSFormatter *)self preferredFormat];
+    preferredFormat = [(TSUDateFormatter_NSFormatter *)self preferredFormat];
 
-    return TSUDateFormatterStringFromDateWithFormat(v7, v8);
+    return TSUDateFormatterStringFromDateWithFormat(v7, preferredFormat);
   }
 
   return result;

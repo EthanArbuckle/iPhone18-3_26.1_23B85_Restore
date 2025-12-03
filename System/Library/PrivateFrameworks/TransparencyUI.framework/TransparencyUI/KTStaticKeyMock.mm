@@ -1,20 +1,20 @@
 @interface KTStaticKeyMock
-+ (id)mockStaticKeyWithNotificationCenter:(id)a3;
-- (void)codeAvailable:(id)a3 code:(id)a4;
-- (void)deleteKTSession:(id)a3 complete:(id)a4;
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4;
-- (void)getKTSessionByID:(id)a3 complete:(id)a4;
-- (void)listKTSessions:(id)a3;
-- (void)postNotification:(id)a3 state:(id)a4;
-- (void)setupCode:(id)a3;
-- (void)setupKTSession:(id)a3 complete:(id)a4;
++ (id)mockStaticKeyWithNotificationCenter:(id)center;
+- (void)codeAvailable:(id)available code:(id)code;
+- (void)deleteKTSession:(id)session complete:(id)complete;
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete;
+- (void)getKTSessionByID:(id)d complete:(id)complete;
+- (void)listKTSessions:(id)sessions;
+- (void)postNotification:(id)notification state:(id)state;
+- (void)setupCode:(id)code;
+- (void)setupKTSession:(id)session complete:(id)complete;
 @end
 
 @implementation KTStaticKeyMock
 
-+ (id)mockStaticKeyWithNotificationCenter:(id)a3
++ (id)mockStaticKeyWithNotificationCenter:(id)center
 {
-  v3 = a3;
+  centerCopy = center;
   v4 = objc_alloc_init(KTStaticKeyMock);
   if (v4)
   {
@@ -27,10 +27,10 @@
     v7 = dispatch_queue_create("KTStaticKeyMock-WorkQueue", 0);
     [(KTStaticKeyMock *)v4 setMockWork:v7];
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(KTStaticKeyMock *)v4 setMockHandles:v8];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(KTStaticKeyMock *)v4 setMockHandles:dictionary];
 
-    [(KTStaticKeyMock *)v4 setNotificationCenter:v3];
+    [(KTStaticKeyMock *)v4 setNotificationCenter:centerCopy];
     [(KTStaticKeyMock *)v4 setDelayCode:0];
     [(KTStaticKeyMock *)v4 setCodeFailure:0];
     v9 = v4;
@@ -39,92 +39,92 @@
   return v4;
 }
 
-- (void)postNotification:(id)a3 state:(id)a4
+- (void)postNotification:(id)notification state:(id)state
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  stateCopy = state;
   v12 = *MEMORY[0x277D73610];
-  v13[0] = v6;
+  v13[0] = notificationCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v8 mutableCopy];
 
-  if (v7)
+  if (stateCopy)
   {
-    [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277D73618]];
+    [v9 setObject:stateCopy forKeyedSubscript:*MEMORY[0x277D73618]];
   }
 
-  v10 = [(KTStaticKeyMock *)self notificationCenter];
-  [v10 postNotificationName:*MEMORY[0x277D73608] object:0 userInfo:v9 deliverImmediately:0];
+  notificationCenter = [(KTStaticKeyMock *)self notificationCenter];
+  [notificationCenter postNotificationName:*MEMORY[0x277D73608] object:0 userInfo:v9 deliverImmediately:0];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)codeAvailable:(id)a3 code:(id)a4
+- (void)codeAvailable:(id)available code:(id)code
 {
-  v9 = a3;
-  v5 = [(KTStaticKeyMock *)self mockQueue];
-  dispatch_assert_queue_V2(v5);
+  availableCopy = available;
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
+  dispatch_assert_queue_V2(mockQueue);
 
   if ([(KTStaticKeyMock *)self codeFailure])
   {
-    [v9 setState:*MEMORY[0x277D73628]];
+    [availableCopy setState:*MEMORY[0x277D73628]];
   }
 
   else
   {
-    [v9 setState:*MEMORY[0x277D73620]];
-    [v9 setSasCode:@"123456"];
+    [availableCopy setState:*MEMORY[0x277D73620]];
+    [availableCopy setSasCode:@"123456"];
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:600.0];
-    [v9 setSessionExpire:v6];
+    [availableCopy setSessionExpire:v6];
   }
 
-  v7 = [v9 sessionID];
-  v8 = [v9 state];
-  [(KTStaticKeyMock *)self postNotification:v7 state:v8];
+  sessionID = [availableCopy sessionID];
+  state = [availableCopy state];
+  [(KTStaticKeyMock *)self postNotification:sessionID state:state];
 }
 
-- (void)setupCode:(id)a3
+- (void)setupCode:(id)code
 {
-  v4 = a3;
-  v5 = [(KTStaticKeyMock *)self mockQueue];
-  dispatch_assert_queue_V2(v5);
+  codeCopy = code;
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
+  dispatch_assert_queue_V2(mockQueue);
 
   if ([(KTStaticKeyMock *)self delayCode])
   {
     v6 = dispatch_time(0, 1000000000);
-    v7 = [(KTStaticKeyMock *)self mockQueue];
+    mockQueue2 = [(KTStaticKeyMock *)self mockQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __29__KTStaticKeyMock_setupCode___block_invoke;
     v8[3] = &unk_279DDAA10;
     v8[4] = self;
-    v9 = v4;
-    dispatch_after(v6, v7, v8);
+    v9 = codeCopy;
+    dispatch_after(v6, mockQueue2, v8);
   }
 
   else
   {
-    [(KTStaticKeyMock *)self codeAvailable:v4 code:@"123456"];
+    [(KTStaticKeyMock *)self codeAvailable:codeCopy code:@"123456"];
   }
 }
 
-- (void)setupKTSession:(id)a3 complete:(id)a4
+- (void)setupKTSession:(id)session complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   v8 = dispatch_time(0, 1000000000);
-  v9 = [(KTStaticKeyMock *)self mockQueue];
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__KTStaticKeyMock_setupKTSession_complete___block_invoke;
   block[3] = &unk_279DDAA60;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_after(v8, v9, block);
+  v13 = sessionCopy;
+  selfCopy = self;
+  v15 = completeCopy;
+  v10 = completeCopy;
+  v11 = sessionCopy;
+  dispatch_after(v8, mockQueue, block);
 }
 
 void __43__KTStaticKeyMock_setupKTSession_complete___block_invoke(id *a1)
@@ -160,22 +160,22 @@ void __43__KTStaticKeyMock_setupKTSession_complete___block_invoke(id *a1)
   dispatch_async(v12, v15);
 }
 
-- (void)deleteKTSession:(id)a3 complete:(id)a4
+- (void)deleteKTSession:(id)session complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   v8 = dispatch_time(0, 2000000000);
-  v9 = [(KTStaticKeyMock *)self mockQueue];
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__KTStaticKeyMock_deleteKTSession_complete___block_invoke;
   block[3] = &unk_279DDAA60;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_after(v8, v9, block);
+  v13 = sessionCopy;
+  v14 = completeCopy;
+  v10 = completeCopy;
+  v11 = sessionCopy;
+  dispatch_after(v8, mockQueue, block);
 }
 
 void __44__KTStaticKeyMock_deleteKTSession_complete___block_invoke(uint64_t a1)
@@ -205,19 +205,19 @@ void __44__KTStaticKeyMock_deleteKTSession_complete___block_invoke(uint64_t a1)
   dispatch_async(v8, v9);
 }
 
-- (void)listKTSessions:(id)a3
+- (void)listKTSessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   v5 = dispatch_time(0, 3000000000);
-  v6 = [(KTStaticKeyMock *)self mockQueue];
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__KTStaticKeyMock_listKTSessions___block_invoke;
   v8[3] = &unk_279DDAAB0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_after(v5, v6, v8);
+  v9 = sessionsCopy;
+  v7 = sessionsCopy;
+  dispatch_after(v5, mockQueue, v8);
 }
 
 void __34__KTStaticKeyMock_listKTSessions___block_invoke(uint64_t a1)
@@ -241,22 +241,22 @@ void __34__KTStaticKeyMock_listKTSessions___block_invoke_2(uint64_t a1)
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  completeCopy = complete;
   v8 = dispatch_time(0, 1000000000);
-  v9 = [(KTStaticKeyMock *)self mockQueue];
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__KTStaticKeyMock_getKTSessionByHandle_complete___block_invoke;
   block[3] = &unk_279DDAA60;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_after(v8, v9, block);
+  v13 = handleCopy;
+  v14 = completeCopy;
+  v10 = completeCopy;
+  v11 = handleCopy;
+  dispatch_after(v8, mockQueue, block);
 }
 
 void __49__KTStaticKeyMock_getKTSessionByHandle_complete___block_invoke(uint64_t a1)
@@ -319,22 +319,22 @@ void __49__KTStaticKeyMock_getKTSessionByHandle_complete___block_invoke(uint64_t
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getKTSessionByID:(id)a3 complete:(id)a4
+- (void)getKTSessionByID:(id)d complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completeCopy = complete;
   v8 = dispatch_time(0, 1000000000);
-  v9 = [(KTStaticKeyMock *)self mockQueue];
+  mockQueue = [(KTStaticKeyMock *)self mockQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__KTStaticKeyMock_getKTSessionByID_complete___block_invoke;
   block[3] = &unk_279DDAB00;
-  v13 = v6;
-  v14 = v7;
+  v13 = dCopy;
+  v14 = completeCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
-  dispatch_after(v8, v9, block);
+  v10 = dCopy;
+  v11 = completeCopy;
+  dispatch_after(v8, mockQueue, block);
 }
 
 void __45__KTStaticKeyMock_getKTSessionByID_complete___block_invoke(uint64_t a1)

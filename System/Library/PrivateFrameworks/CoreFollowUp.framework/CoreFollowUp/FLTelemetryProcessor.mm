@@ -1,55 +1,55 @@
 @interface FLTelemetryProcessor
-- (FLTelemetryProcessor)initWithController:(id)a3;
-- (void)processCurrentItems:(id)a3;
-- (void)processItemAddition:(id)a3;
-- (void)processItemRemoval:(id)a3;
+- (FLTelemetryProcessor)initWithController:(id)controller;
+- (void)processCurrentItems:(id)items;
+- (void)processItemAddition:(id)addition;
+- (void)processItemRemoval:(id)removal;
 @end
 
 @implementation FLTelemetryProcessor
 
-- (FLTelemetryProcessor)initWithController:(id)a3
+- (FLTelemetryProcessor)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(FLTelemetryProcessor *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_telemetryController, a3);
+    objc_storeStrong(&v6->_telemetryController, controller);
   }
 
   return v7;
 }
 
-- (void)processItemRemoval:(id)a3
+- (void)processItemRemoval:(id)removal
 {
-  v6 = a3;
-  v4 = [v6 clientIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.followup.tests"];
+  removalCopy = removal;
+  clientIdentifier = [removalCopy clientIdentifier];
+  v5 = [clientIdentifier isEqualToString:@"com.apple.followup.tests"];
 
   if ((v5 & 1) == 0)
   {
-    [(FLTelemetryController *)self->_telemetryController captureItemRemoval:v6];
+    [(FLTelemetryController *)self->_telemetryController captureItemRemoval:removalCopy];
   }
 }
 
-- (void)processItemAddition:(id)a3
+- (void)processItemAddition:(id)addition
 {
-  v6 = a3;
-  v4 = [v6 clientIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.followup.tests"];
+  additionCopy = addition;
+  clientIdentifier = [additionCopy clientIdentifier];
+  v5 = [clientIdentifier isEqualToString:@"com.apple.followup.tests"];
 
   if ((v5 & 1) == 0)
   {
-    [(FLTelemetryController *)self->_telemetryController captureItemAddition:v6];
+    [(FLTelemetryController *)self->_telemetryController captureItemAddition:additionCopy];
   }
 }
 
-- (void)processCurrentItems:(id)a3
+- (void)processCurrentItems:(id)items
 {
   v4 = MEMORY[0x277CCAC30];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v4 predicateWithBlock:&__block_literal_global_8];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [itemsCopy filteredArrayUsingPredicate:v6];
 
   [(FLTelemetryController *)self->_telemetryController captureCurrentState:v7];
 }

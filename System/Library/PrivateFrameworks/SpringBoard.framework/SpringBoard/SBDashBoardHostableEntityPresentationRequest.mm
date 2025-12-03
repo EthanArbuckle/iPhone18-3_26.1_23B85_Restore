@@ -1,26 +1,26 @@
 @interface SBDashBoardHostableEntityPresentationRequest
-- (SBDashBoardHostableEntityPresentationRequest)initWithEntity:(id)a3 transitionRequest:(id)a4 animated:(BOOL)a5 isEphemeralSwitcher:(BOOL)a6 dismissGestureEnabled:(BOOL)a7 presentationCompletion:(id)a8;
+- (SBDashBoardHostableEntityPresentationRequest)initWithEntity:(id)entity transitionRequest:(id)request animated:(BOOL)animated isEphemeralSwitcher:(BOOL)switcher dismissGestureEnabled:(BOOL)enabled presentationCompletion:(id)completion;
 @end
 
 @implementation SBDashBoardHostableEntityPresentationRequest
 
-- (SBDashBoardHostableEntityPresentationRequest)initWithEntity:(id)a3 transitionRequest:(id)a4 animated:(BOOL)a5 isEphemeralSwitcher:(BOOL)a6 dismissGestureEnabled:(BOOL)a7 presentationCompletion:(id)a8
+- (SBDashBoardHostableEntityPresentationRequest)initWithEntity:(id)entity transitionRequest:(id)request animated:(BOOL)animated isEphemeralSwitcher:(BOOL)switcher dismissGestureEnabled:(BOOL)enabled presentationCompletion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  entityCopy = entity;
+  requestCopy = request;
+  completionCopy = completion;
   v23.receiver = self;
   v23.super_class = SBDashBoardHostableEntityPresentationRequest;
   v18 = [(SBDashBoardHostableEntityPresentationRequest *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_entity, a3);
-    objc_storeStrong(&v19->_transitionRequest, a4);
-    v19->_animated = a5;
-    v19->_isEphemeralSwitcher = a6;
-    v19->_dismissGestureEnabled = a7;
-    v20 = [v17 copy];
+    objc_storeStrong(&v18->_entity, entity);
+    objc_storeStrong(&v19->_transitionRequest, request);
+    v19->_animated = animated;
+    v19->_isEphemeralSwitcher = switcher;
+    v19->_dismissGestureEnabled = enabled;
+    v20 = [completionCopy copy];
     presentationCompletion = v19->_presentationCompletion;
     v19->_presentationCompletion = v20;
   }

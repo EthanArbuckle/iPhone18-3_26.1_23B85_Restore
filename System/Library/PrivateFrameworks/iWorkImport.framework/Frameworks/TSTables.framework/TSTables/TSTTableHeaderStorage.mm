@@ -1,51 +1,51 @@
 @interface TSTTableHeaderStorage
 - (NSIndexSet)populatedIndexes;
-- (TSTTableHeaderStorage)initWithBucket:(id)a3 owner:(id)a4;
-- (TSTTableHeaderStorage)initWithOwner:(id)a3;
-- (double)sizeAtIndex:(unsigned int)a3;
-- (id)cellStyleAtIndex:(unsigned int)a3;
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5;
-- (id)metadataAtIndex:(unsigned int)a3 hidingAction:(unsigned __int8)a4 defaultSize:(double)a5 uuid:(TSKUIDStruct)a6;
-- (id)textStyleAtIndex:(unsigned int)a3;
+- (TSTTableHeaderStorage)initWithBucket:(id)bucket owner:(id)owner;
+- (TSTTableHeaderStorage)initWithOwner:(id)owner;
+- (double)sizeAtIndex:(unsigned int)index;
+- (id)cellStyleAtIndex:(unsigned int)index;
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner;
+- (id)metadataAtIndex:(unsigned int)index hidingAction:(unsigned __int8)action defaultSize:(double)size uuid:(TSKUIDStruct)uuid;
+- (id)textStyleAtIndex:(unsigned int)index;
 - (unint64_t)archivingCompatibilityVersion;
-- (unint64_t)cellCountAtIndex:(unsigned int)a3;
+- (unint64_t)cellCountAtIndex:(unsigned int)index;
 - (unint64_t)count;
-- (unint64_t)defaultStyleHandlesAtIndex:(unsigned int)a3 outCellStyleHandle:(id *)a4 outTextStyleHandle:(id *)a5;
-- (unint64_t)defaultStylesAtIndex:(unsigned int)a3 outCellStyle:(id *)a4 outTextStyle:(id *)a5;
+- (unint64_t)defaultStyleHandlesAtIndex:(unsigned int)index outCellStyleHandle:(id *)handle outTextStyleHandle:(id *)styleHandle;
+- (unint64_t)defaultStylesAtIndex:(unsigned int)index outCellStyle:(id *)style outTextStyle:(id *)textStyle;
 - (unint64_t)totalCellCount;
-- (unsigned)hidingStateAtIndex:(unsigned int)a3;
+- (unsigned)hidingStateAtIndex:(unsigned int)index;
 - (unsigned)maxIndex;
 - (unsigned)minIndex;
-- (void)decrementCellCountAtIndex:(unsigned int)a3 byAmount:(unint64_t)a4;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
+- (void)decrementCellCountAtIndex:(unsigned int)index byAmount:(unint64_t)amount;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
 - (void)forceLoadHeaders;
-- (void)incrementCellCountAtIndex:(unsigned int)a3 byAmount:(unint64_t)a4;
-- (void)moveIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4;
-- (void)removeIndexesAtIndex:(unsigned int)a3 count:(unsigned int)a4;
+- (void)incrementCellCountAtIndex:(unsigned int)index byAmount:(unint64_t)amount;
+- (void)moveIndexRange:(_NSRange)range toIndex:(unsigned int)index;
+- (void)removeIndexesAtIndex:(unsigned int)index count:(unsigned int)count;
 - (void)reset;
 - (void)resetAllCellCounts;
-- (void)setCellStyle:(id)a3 atIndex:(unsigned int)a4;
-- (void)setHidingState:(unsigned __int8)a3 atIndex:(unsigned int)a4;
-- (void)setSize:(double)a3 atIndex:(unsigned int)a4;
-- (void)setTextStyle:(id)a3 atIndex:(unsigned int)a4;
-- (void)shiftIndexesBackAtIndex:(unsigned int)a3 count:(unsigned int)a4;
-- (void)shiftIndexesForwardAtIndex:(unsigned int)a3 count:(unsigned int)a4;
-- (void)swapIndex:(unsigned int)a3 withIndex:(unsigned int)a4;
-- (void)updateHeaderAtIndex:(unsigned int)a3 fromMetadata:(id)a4;
-- (void)updateStylesWithBlock:(id)a3;
+- (void)setCellStyle:(id)style atIndex:(unsigned int)index;
+- (void)setHidingState:(unsigned __int8)state atIndex:(unsigned int)index;
+- (void)setSize:(double)size atIndex:(unsigned int)index;
+- (void)setTextStyle:(id)style atIndex:(unsigned int)index;
+- (void)shiftIndexesBackAtIndex:(unsigned int)index count:(unsigned int)count;
+- (void)shiftIndexesForwardAtIndex:(unsigned int)index count:(unsigned int)count;
+- (void)swapIndex:(unsigned int)index withIndex:(unsigned int)withIndex;
+- (void)updateHeaderAtIndex:(unsigned int)index fromMetadata:(id)metadata;
+- (void)updateStylesWithBlock:(id)block;
 @end
 
 @implementation TSTTableHeaderStorage
 
-- (TSTTableHeaderStorage)initWithOwner:(id)a3
+- (TSTTableHeaderStorage)initWithOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v17.receiver = self;
   v17.super_class = TSTTableHeaderStorage;
-  v9 = [(TSTTableHeaderStorage *)&v17 initWithOwner:v4];
+  v9 = [(TSTTableHeaderStorage *)&v17 initWithOwner:ownerCopy];
   if (v9)
   {
-    v10 = objc_msgSend_context(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_context(ownerCopy, v5, v6, v7, v8);
     v11 = sub_2211AC86C([TSTTableHeaderStorageBucket alloc], v10, 0, 0x10000);
     buckets = v9->_buckets;
     v13 = v9->_buckets[0];
@@ -63,31 +63,31 @@
   return v9;
 }
 
-- (TSTTableHeaderStorage)initWithBucket:(id)a3 owner:(id)a4
+- (TSTTableHeaderStorage)initWithBucket:(id)bucket owner:(id)owner
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = objc_msgSend_initWithOwner_(self, v9, v8, v10, v11);
+  bucketCopy = bucket;
+  ownerCopy = owner;
+  v12 = objc_msgSend_initWithOwner_(self, v9, ownerCopy, v10, v11);
   if (v12)
   {
-    sub_2216F746C(v7, 0, 0x10000);
-    objc_storeStrong(v12->_buckets, a3);
+    sub_2216F746C(bucketCopy, 0, 0x10000);
+    objc_storeStrong(v12->_buckets, bucket);
     v12->_bucketCount = 1;
   }
 
   return v12;
 }
 
-- (id)initFromArchive:(const void *)a3 unarchiver:(id)a4 owner:(id)a5
+- (id)initFromArchive:(const void *)archive unarchiver:(id)unarchiver owner:(id)owner
 {
-  v8 = a4;
-  v9 = a5;
+  unarchiverCopy = unarchiver;
+  ownerCopy = owner;
   v31.receiver = self;
   v31.super_class = TSTTableHeaderStorage;
-  v13 = [(TSTTableHeaderStorage *)&v31 initWithOwner:v9];
+  v13 = [(TSTTableHeaderStorage *)&v31 initWithOwner:ownerCopy];
   if (v13)
   {
-    if (*(a3 + 12) != 1)
+    if (*(archive + 12) != 1)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSTTableHeaderStorage initFromArchive:unarchiver:owner:]", v11, v12);
@@ -102,19 +102,19 @@
     v29[2] = sub_2211A9F98;
     v29[3] = &unk_27845D8D8;
     v30 = v13;
-    v25 = v8;
+    v25 = unarchiverCopy;
     v26 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v25, v27, a3 + 24, v26, 0, v29);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v25, v27, archive + 24, v26, 0, v29);
   }
 
   return v13;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v26 = a4;
-  *(a3 + 4) |= 1u;
-  *(a3 + 12) = 1;
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  *(archive + 12) = 1;
   bucketCount = self->_bucketCount;
   if (bucketCount < 2)
   {
@@ -135,12 +135,12 @@
       abort();
     }
 
-    objc_msgSend_requiresDocumentVersion_featureIdentifier_(v26, v6, 0xA000000000003, @"TSTExpandedTables", v8);
+    objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v6, 0xA000000000003, @"TSTExpandedTables", v8);
     v12 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v10, self->_buckets, 16, v11);
   }
 
   v15 = v12;
-  objc_msgSend_setStrongReferenceArray_message_(v26, v13, v12, a3 + 24, v14);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v13, v12, archive + 24, v14);
 }
 
 - (unint64_t)archivingCompatibilityVersion
@@ -156,10 +156,10 @@
   }
 }
 
-- (double)sizeAtIndex:(unsigned int)a3
+- (double)sizeAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (a3 >= 0x100000)
+  v5 = *&index;
+  if (index >= 0x100000)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage sizeAtIndex:]", v3, v4);
@@ -170,7 +170,7 @@
     return 0.0;
   }
 
-  v17 = self->_buckets[HIWORD(a3)];
+  v17 = self->_buckets[HIWORD(index)];
   if (!v17)
   {
     return 0.0;
@@ -179,10 +179,10 @@
   return sub_2216F6E0C(v17);
 }
 
-- (void)setSize:(double)a3 atIndex:(unsigned int)a4
+- (void)setSize:(double)size atIndex:(unsigned int)index
 {
-  v6 = *&a4;
-  sub_2211A9790(self, *&a4, *&a4, v4, v5);
+  v6 = *&index;
+  sub_2211A9790(self, *&index, *&index, v4, v5);
   if (v6 < 0x100000)
   {
     v23 = self->_buckets[WORD1(v6)];
@@ -199,13 +199,13 @@
     v23 = 0;
   }
 
-  sub_2216F6E58(v23, v6, a3);
+  sub_2216F6E58(v23, v6, size);
 }
 
-- (unsigned)hidingStateAtIndex:(unsigned int)a3
+- (unsigned)hidingStateAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (a3 >= 0x100000)
+  v5 = *&index;
+  if (index >= 0x100000)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage hidingStateAtIndex:]", v3, v4);
@@ -216,7 +216,7 @@
     return 0;
   }
 
-  v17 = self->_buckets[HIWORD(a3)];
+  v17 = self->_buckets[HIWORD(index)];
   if (!v17)
   {
     return 0;
@@ -225,11 +225,11 @@
   return sub_2216F6F28(v17);
 }
 
-- (void)setHidingState:(unsigned __int8)a3 atIndex:(unsigned int)a4
+- (void)setHidingState:(unsigned __int8)state atIndex:(unsigned int)index
 {
-  v5 = *&a4;
-  v6 = a3;
-  sub_2211A9790(self, *&a4, a3, *&a4, v4);
+  v5 = *&index;
+  stateCopy = state;
+  sub_2211A9790(self, *&index, state, *&index, v4);
   if (v5 < 0x100000)
   {
     v22 = self->_buckets[WORD1(v5)];
@@ -246,15 +246,15 @@
     v22 = 0;
   }
 
-  sub_2216F6F74(v22, v6, v5, v9, v10);
+  sub_2216F6F74(v22, stateCopy, v5, v9, v10);
 }
 
-- (id)cellStyleAtIndex:(unsigned int)a3
+- (id)cellStyleAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (a3 < 0x100000)
+  v5 = *&index;
+  if (index < 0x100000)
   {
-    v17 = self->_buckets[HIWORD(a3)];
+    v17 = self->_buckets[HIWORD(index)];
     if (v17)
     {
       v17 = sub_2216F7044(v17);
@@ -275,10 +275,10 @@
   return v17;
 }
 
-- (void)setCellStyle:(id)a3 atIndex:(unsigned int)a4
+- (void)setCellStyle:(id)style atIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v24 = a3;
+  v4 = *&index;
+  styleCopy = style;
   sub_2211A9790(self, v4, v6, v7, v8);
   if (v4 < 0x100000)
   {
@@ -296,18 +296,18 @@
     v23 = 0;
   }
 
-  sub_2211ACD34(v23, v24, v4);
+  sub_2211ACD34(v23, styleCopy, v4);
 }
 
-- (id)textStyleAtIndex:(unsigned int)a3
+- (id)textStyleAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (a3 < 0x100000)
+  v5 = *&index;
+  if (index < 0x100000)
   {
-    v17 = self->_buckets[HIWORD(a3)];
+    v17 = self->_buckets[HIWORD(index)];
     if (v17)
     {
-      v17 = sub_2211ACE6C(v17, *&a3, *&a3, v3, v4);
+      v17 = sub_2211ACE6C(v17, *&index, *&index, v3, v4);
     }
   }
 
@@ -325,10 +325,10 @@
   return v17;
 }
 
-- (void)setTextStyle:(id)a3 atIndex:(unsigned int)a4
+- (void)setTextStyle:(id)style atIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v24 = a3;
+  v4 = *&index;
+  styleCopy = style;
   sub_2211A9790(self, v4, v6, v7, v8);
   if (v4 < 0x100000)
   {
@@ -346,21 +346,21 @@
     v23 = 0;
   }
 
-  sub_2211ACF04(v23, v24, v4);
+  sub_2211ACF04(v23, styleCopy, v4);
 }
 
-- (unint64_t)defaultStylesAtIndex:(unsigned int)a3 outCellStyle:(id *)a4 outTextStyle:(id *)a5
+- (unint64_t)defaultStylesAtIndex:(unsigned int)index outCellStyle:(id *)style outTextStyle:(id *)textStyle
 {
-  v7 = *&a3;
-  if (a3 < 0x100000)
+  v7 = *&index;
+  if (index < 0x100000)
   {
-    v19 = self->_buckets[HIWORD(a3)];
+    v19 = self->_buckets[HIWORD(index)];
   }
 
   else
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage defaultStylesAtIndex:outCellStyle:outTextStyle:]", a4, a5);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage defaultStylesAtIndex:outCellStyle:outTextStyle:]", style, textStyle);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableHeaderStorage.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 247, 0, "Unexpected header bucket index: %u!", v7);
 
@@ -368,21 +368,21 @@
     v19 = 0;
   }
 
-  return sub_2216F7128(v19, v7, a4, a5);
+  return sub_2216F7128(v19, v7, style, textStyle);
 }
 
-- (unint64_t)defaultStyleHandlesAtIndex:(unsigned int)a3 outCellStyleHandle:(id *)a4 outTextStyleHandle:(id *)a5
+- (unint64_t)defaultStyleHandlesAtIndex:(unsigned int)index outCellStyleHandle:(id *)handle outTextStyleHandle:(id *)styleHandle
 {
-  v7 = *&a3;
-  if (a3 < 0x100000)
+  v7 = *&index;
+  if (index < 0x100000)
   {
-    v19 = self->_buckets[HIWORD(a3)];
+    v19 = self->_buckets[HIWORD(index)];
   }
 
   else
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage defaultStyleHandlesAtIndex:outCellStyleHandle:outTextStyleHandle:]", a4, a5);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage defaultStyleHandlesAtIndex:outCellStyleHandle:outTextStyleHandle:]", handle, styleHandle);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableHeaderStorage.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 255, 0, "Unexpected header bucket index: %u!", v7);
 
@@ -390,51 +390,51 @@
     v19 = 0;
   }
 
-  return sub_2216F71C8(v19, v7, a4, a5);
+  return sub_2216F71C8(v19, v7, handle, styleHandle);
 }
 
-- (void)updateStylesWithBlock:(id)a3
+- (void)updateStylesWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if (self->_bucketCount)
   {
     v4 = 0;
     do
     {
-      sub_2211AD178(self->_buckets[v4++], v5);
+      sub_2211AD178(self->_buckets[v4++], blockCopy);
     }
 
     while (v4 < self->_bucketCount);
   }
 }
 
-- (id)metadataAtIndex:(unsigned int)a3 hidingAction:(unsigned __int8)a4 defaultSize:(double)a5 uuid:(TSKUIDStruct)a6
+- (id)metadataAtIndex:(unsigned int)index hidingAction:(unsigned __int8)action defaultSize:(double)size uuid:(TSKUIDStruct)uuid
 {
-  upper = a6._upper;
-  lower = a6._lower;
-  v9 = a4;
-  v10 = *&a3;
-  if (a3 >= 0x100000)
+  upper = uuid._upper;
+  lower = uuid._lower;
+  actionCopy = action;
+  v10 = *&index;
+  if (index >= 0x100000)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage metadataAtIndex:hidingAction:defaultSize:uuid:]", a4, a6._lower);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage metadataAtIndex:hidingAction:defaultSize:uuid:]", action, uuid._lower);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableHeaderStorage.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 273, 0, "Unexpected header bucket index: %u!", v10);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
 LABEL_5:
     v24 = [TSTColumnRowMetadata alloc];
-    v23 = objc_msgSend_initWithSize_hidingAction_cellStyle_textStyle_columnRowUID_(v24, v25, v9, 0, 0, lower, upper, a5);
+    v23 = objc_msgSend_initWithSize_hidingAction_cellStyle_textStyle_columnRowUID_(v24, v25, actionCopy, 0, 0, lower, upper, size);
     goto LABEL_6;
   }
 
-  v22 = self->_buckets[HIWORD(a3)];
+  v22 = self->_buckets[HIWORD(index)];
   if (!v22)
   {
     goto LABEL_5;
   }
 
-  v23 = sub_2216F70B4(v22, *&a3, a4, a6._lower, a6._upper);
+  v23 = sub_2216F70B4(v22, *&index, action, uuid._lower, uuid._upper);
   if (!v23)
   {
     goto LABEL_5;
@@ -445,10 +445,10 @@ LABEL_6:
   return v23;
 }
 
-- (void)updateHeaderAtIndex:(unsigned int)a3 fromMetadata:(id)a4
+- (void)updateHeaderAtIndex:(unsigned int)index fromMetadata:(id)metadata
 {
-  v4 = *&a3;
-  v24 = a4;
+  v4 = *&index;
+  metadataCopy = metadata;
   sub_2211A9790(self, v4, v6, v7, v8);
   if (v4 < 0x100000)
   {
@@ -466,15 +466,15 @@ LABEL_6:
     v23 = 0;
   }
 
-  sub_2211AD03C(v23, v4, v24);
+  sub_2211AD03C(v23, v4, metadataCopy);
 }
 
-- (void)removeIndexesAtIndex:(unsigned int)a3 count:(unsigned int)a4
+- (void)removeIndexesAtIndex:(unsigned int)index count:(unsigned int)count
 {
-  if (a4 + a3 > a3)
+  if (count + index > index)
   {
-    v5 = a4;
-    v6 = *&a3;
+    countCopy = count;
+    v6 = *&index;
     do
     {
       if (v6 < 0x100000)
@@ -485,7 +485,7 @@ LABEL_6:
       else
       {
         v8 = MEMORY[0x277D81150];
-        v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage removeIndexesAtIndex:count:]", *&a4, v4);
+        v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage removeIndexesAtIndex:count:]", *&count, v4);
         v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableHeaderStorage.mm", v11, v12);
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 304, 0, "Unexpected header bucket index: %u!", v6);
 
@@ -495,19 +495,19 @@ LABEL_6:
 
       sub_2211ADC14(v19, 0, v6);
       v6 = (v6 + 1);
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 }
 
-- (void)shiftIndexesForwardAtIndex:(unsigned int)a3 count:(unsigned int)a4
+- (void)shiftIndexesForwardAtIndex:(unsigned int)index count:(unsigned int)count
 {
-  v5 = *&a4;
-  v6 = *&a3;
+  v5 = *&count;
+  v6 = *&index;
   buckets = self->_buckets;
-  v9 = sub_2211AD968(self->_buckets[0], *&a3, *&a4, *&a4, v4);
+  v9 = sub_2211AD968(self->_buckets[0], *&index, *&count, *&count, v4);
   bucketCount = self->_bucketCount;
   if (bucketCount == 1)
   {
@@ -551,14 +551,14 @@ LABEL_6:
   }
 }
 
-- (void)shiftIndexesBackAtIndex:(unsigned int)a3 count:(unsigned int)a4
+- (void)shiftIndexesBackAtIndex:(unsigned int)index count:(unsigned int)count
 {
-  v5 = *&a4;
-  v6 = *&a3;
+  v5 = *&count;
+  v6 = *&index;
   bucketCount = self->_bucketCount;
   if (bucketCount == 1)
   {
-    v8 = sub_2211AD740(self->_buckets[0], *&a3, *&a4, *&a4, v4);
+    v8 = sub_2211AD740(self->_buckets[0], *&index, *&count, *&count, v4);
   }
 
   else if (bucketCount - 1 < 0)
@@ -585,7 +585,7 @@ LABEL_6:
   }
 
   v29 = v8;
-  if (objc_msgSend_count(v8, a2, *&a3, *&a4, v4))
+  if (objc_msgSend_count(v8, a2, *&index, *&count, v4))
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TSTTableHeaderStorage shiftIndexesBackAtIndex:count:]", v15, v16);
@@ -596,11 +596,11 @@ LABEL_6:
   }
 }
 
-- (void)swapIndex:(unsigned int)a3 withIndex:(unsigned int)a4
+- (void)swapIndex:(unsigned int)index withIndex:(unsigned int)withIndex
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v8 = sub_2211A9AE4(&self->super.super.isa, *&a3, *&a3, *&a4, v4);
+  v5 = *&withIndex;
+  v6 = *&index;
+  v8 = sub_2211A9AE4(&self->super.super.isa, *&index, *&index, *&withIndex, v4);
   v12 = v8;
   if (v8)
   {
@@ -673,10 +673,10 @@ LABEL_6:
 LABEL_19:
 }
 
-- (void)moveIndexRange:(_NSRange)a3 toIndex:(unsigned int)a4
+- (void)moveIndexRange:(_NSRange)range toIndex:(unsigned int)index
 {
-  location = a3.location;
-  if (LODWORD(a3.location) < a4 && LODWORD(a3.location) + LODWORD(a3.length) > a4)
+  location = range.location;
+  if (LODWORD(range.location) < index && LODWORD(range.location) + LODWORD(range.length) > index)
   {
     TSUSetCrashReporterInfo();
     v4 = MEMORY[0x277D81150];
@@ -691,10 +691,10 @@ LABEL_19:
   operator new();
 }
 
-- (unint64_t)cellCountAtIndex:(unsigned int)a3
+- (unint64_t)cellCountAtIndex:(unsigned int)index
 {
-  v5 = *&a3;
-  if (a3 >= 0x100000)
+  v5 = *&index;
+  if (index >= 0x100000)
   {
     v6 = MEMORY[0x277D81150];
     v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage cellCountAtIndex:]", v3, v4);
@@ -705,7 +705,7 @@ LABEL_19:
     return 0;
   }
 
-  v17 = self->_buckets[HIWORD(a3)];
+  v17 = self->_buckets[HIWORD(index)];
   if (!v17)
   {
     return 0;
@@ -714,19 +714,19 @@ LABEL_19:
   return sub_2216F7268(v17);
 }
 
-- (void)decrementCellCountAtIndex:(unsigned int)a3 byAmount:(unint64_t)a4
+- (void)decrementCellCountAtIndex:(unsigned int)index byAmount:(unint64_t)amount
 {
-  v5 = a4;
-  v6 = *&a3;
-  if (a3 < 0x100000)
+  amountCopy = amount;
+  v6 = *&index;
+  if (index < 0x100000)
   {
-    v18 = self->_buckets[HIWORD(a3)];
+    v18 = self->_buckets[HIWORD(index)];
   }
 
   else
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage decrementCellCountAtIndex:byAmount:]", a4, v4);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTTableHeaderStorage decrementCellCountAtIndex:byAmount:]", amount, v4);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableHeaderStorage.mm", v10, v11);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v13, v8, v12, 447, 0, "Unexpected header bucket index: %u!", v6);
 
@@ -734,13 +734,13 @@ LABEL_19:
     v18 = 0;
   }
 
-  sub_2216F7350(v18, v6, v5);
+  sub_2216F7350(v18, v6, amountCopy);
 }
 
-- (void)incrementCellCountAtIndex:(unsigned int)a3 byAmount:(unint64_t)a4
+- (void)incrementCellCountAtIndex:(unsigned int)index byAmount:(unint64_t)amount
 {
-  v6 = *&a3;
-  sub_2211A9790(self, *&a3, *&a3, a4, v4);
+  v6 = *&index;
+  sub_2211A9790(self, *&index, *&index, amount, v4);
   if (v6 < 0x100000)
   {
     v22 = self->_buckets[WORD1(v6)];
@@ -757,7 +757,7 @@ LABEL_19:
     v22 = 0;
   }
 
-  sub_2216F72A8(v22, v6, a4);
+  sub_2216F72A8(v22, v6, amount);
 }
 
 - (void)resetAllCellCounts

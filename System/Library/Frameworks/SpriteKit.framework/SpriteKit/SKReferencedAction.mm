@@ -1,15 +1,15 @@
 @interface SKReferencedAction
-+ (id)referenceActionWithName:(id)a3 duration:(double)a4;
++ (id)referenceActionWithName:(id)name duration:(double)duration;
 - (SKReferencedAction)init;
-- (SKReferencedAction)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKReferencedAction)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (id)subactions;
 - (void)_ensureReferencedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setTimingFunction:(id)a3;
-- (void)setTimingMode:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDuration:(double)duration;
+- (void)setTimingFunction:(id)function;
+- (void)setTimingMode:(int64_t)mode;
 @end
 
 @implementation SKReferencedAction
@@ -26,12 +26,12 @@
   return 0;
 }
 
-- (SKReferencedAction)initWithCoder:(id)a3
+- (SKReferencedAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKReferencedAction;
-  if ([(SKAction *)&v7 initWithCoder:v4])
+  if ([(SKAction *)&v7 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -41,27 +41,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = SKReferencedAction;
-  [(SKAction *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_referencedActionName forKey:@"_referencedActionName"];
+  [(SKAction *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_referencedActionName forKey:@"_referencedActionName"];
 }
 
-+ (id)referenceActionWithName:(id)a3 duration:(double)a4
++ (id)referenceActionWithName:(id)name duration:(double)duration
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
     v6 = objc_alloc_init(SKReferencedAction);
-    v7 = [v5 copy];
+    v7 = [nameCopy copy];
     referencedActionName = v6->_referencedActionName;
     v6->_referencedActionName = v7;
 
-    v9 = a4;
-    v6->_mycaction->var8 = v9;
+    durationCopy = duration;
+    v6->_mycaction->var8 = durationCopy;
   }
 
   else
@@ -73,19 +73,19 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SKReferencedAction;
   v5 = [(SKAction *)&v12 copyWithZone:?];
-  v6 = [(NSString *)self->_referencedActionName copyWithZone:a3];
+  v6 = [(NSString *)self->_referencedActionName copyWithZone:zone];
   v7 = *(v5 + 4);
   *(v5 + 4) = v6;
 
   referencedAction = self->_referencedAction;
   if (referencedAction)
   {
-    v9 = [(SKAction *)referencedAction copyWithZone:a3];
+    v9 = [(SKAction *)referencedAction copyWithZone:zone];
     v10 = *(v5 + 3);
     *(v5 + 3) = v9;
 
@@ -105,35 +105,35 @@
   return v3;
 }
 
-- (void)setTimingFunction:(id)a3
+- (void)setTimingFunction:(id)function
 {
-  v7 = a3;
+  functionCopy = function;
   [(SKReferencedAction *)self _ensureReferencedAction];
-  v4 = MEMORY[0x21CF0AB10](v7);
+  v4 = MEMORY[0x21CF0AB10](functionCopy);
   mycaction = self->_mycaction;
   var3 = mycaction->var3;
   mycaction->var3 = v4;
 
-  [(SKAction *)self->_referencedAction setTimingFunction:v7];
+  [(SKAction *)self->_referencedAction setTimingFunction:functionCopy];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = a3;
-  self->_mycaction->var8 = v5;
+  durationCopy = duration;
+  self->_mycaction->var8 = durationCopy;
   [(SKReferencedAction *)self _ensureReferencedAction];
   referencedAction = self->_referencedAction;
 
-  [(SKAction *)referencedAction setDuration:a3];
+  [(SKAction *)referencedAction setDuration:duration];
 }
 
-- (void)setTimingMode:(int64_t)a3
+- (void)setTimingMode:(int64_t)mode
 {
   [(SKReferencedAction *)self _ensureReferencedAction];
-  self->_mycaction->var14 = a3;
+  self->_mycaction->var14 = mode;
   referencedAction = self->_referencedAction;
 
-  [(SKAction *)referencedAction setTimingMode:a3];
+  [(SKAction *)referencedAction setTimingMode:mode];
 }
 
 - (id)reversedAction
@@ -165,10 +165,10 @@
       v5 = self->_referencedAction;
     }
 
-    v9 = [(SKAction *)v5 caction];
+    caction = [(SKAction *)v5 caction];
     mycaction = self->_mycaction;
 
-    SKCReferencedAction::setReferencedCAction(mycaction, v9);
+    SKCReferencedAction::setReferencedCAction(mycaction, caction);
   }
 }
 

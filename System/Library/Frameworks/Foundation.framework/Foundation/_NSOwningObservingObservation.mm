@@ -1,16 +1,16 @@
 @interface _NSOwningObservingObservation
-- (void)setObservation:(id)a3;
+- (void)setObservation:(id)observation;
 @end
 
 @implementation _NSOwningObservingObservation
 
-- (void)setObservation:(id)a3
+- (void)setObservation:(id)observation
 {
   ownedObservation = self->_ownedObservation;
-  if (ownedObservation != a3)
+  if (ownedObservation != observation)
   {
 
-    self->_ownedObservation = a3;
+    self->_ownedObservation = observation;
   }
 }
 

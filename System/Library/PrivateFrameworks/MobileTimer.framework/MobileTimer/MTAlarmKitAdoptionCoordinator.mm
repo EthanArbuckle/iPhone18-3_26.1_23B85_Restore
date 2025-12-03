@@ -1,24 +1,24 @@
 @interface MTAlarmKitAdoptionCoordinator
-- (MTAlarmKitAdoptionCoordinator)initWithStorage:(id)a3 alarmStorage:(id)a4;
+- (MTAlarmKitAdoptionCoordinator)initWithStorage:(id)storage alarmStorage:(id)alarmStorage;
 - (void)handleSystemReady;
-- (void)source:(id)a3 didAddAlarms:(id)a4;
-- (void)source:(id)a3 didAddTimers:(id)a4;
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5;
-- (void)source:(id)a3 didDismissTimer:(id)a4;
-- (void)source:(id)a3 didRemoveAlarms:(id)a4;
-- (void)source:(id)a3 didRemoveTimers:(id)a4;
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5;
-- (void)source:(id)a3 didUpdateAlarms:(id)a4 previousAlarms:(id)a5;
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5;
+- (void)source:(id)source didAddAlarms:(id)alarms;
+- (void)source:(id)source didAddTimers:(id)timers;
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action;
+- (void)source:(id)source didDismissTimer:(id)timer;
+- (void)source:(id)source didRemoveAlarms:(id)alarms;
+- (void)source:(id)source didRemoveTimers:(id)timers;
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action;
+- (void)source:(id)source didUpdateAlarms:(id)alarms previousAlarms:(id)previousAlarms;
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers;
 @end
 
 @implementation MTAlarmKitAdoptionCoordinator
 
-- (MTAlarmKitAdoptionCoordinator)initWithStorage:(id)a3 alarmStorage:(id)a4
+- (MTAlarmKitAdoptionCoordinator)initWithStorage:(id)storage alarmStorage:(id)alarmStorage
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  alarmStorageCopy = alarmStorage;
   v21.receiver = self;
   v21.super_class = MTAlarmKitAdoptionCoordinator;
   v9 = [(MTAlarmKitAdoptionCoordinator *)&v21 init];
@@ -30,14 +30,14 @@
       *buf = 138543874;
       *&buf[4] = v9;
       *&buf[12] = 2114;
-      *&buf[14] = v7;
+      *&buf[14] = storageCopy;
       *&buf[22] = 2114;
-      v27 = v8;
+      v27 = alarmStorageCopy;
       _os_log_impl(&dword_1B1F9F000, v10, OS_LOG_TYPE_INFO, "Initializing %{public}@ with timerStorage:%{public}@ alarmStorage:%{public}@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v9->_timerStorage, a3);
-    objc_storeStrong(&v9->_alarmStorage, a4);
+    objc_storeStrong(&v9->_timerStorage, storage);
+    objc_storeStrong(&v9->_alarmStorage, alarmStorage);
     if (_os_feature_enabled_impl())
     {
       [(MTTimerStorage *)v9->_timerStorage registerObserver:v9];
@@ -87,7 +87,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_INFO, "%{public}@ Feature flag enabled. All alarms and timers routed to ⏰ AlarmKit", buf, 0xCu);
     }
 
@@ -97,17 +97,17 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B1F9F000, v4, OS_LOG_TYPE_INFO, "%{public}@ Scheduling existing alarms", buf, 0xCu);
       }
 
-      v5 = [(MTAlarmStorage *)self->_alarmStorage alarms];
+      alarms = [(MTAlarmStorage *)self->_alarmStorage alarms];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __50__MTAlarmKitAdoptionCoordinator_handleSystemReady__block_invoke;
       v10[3] = &unk_1E7B0CD98;
       v10[4] = self;
-      [v5 na_each:v10];
+      [alarms na_each:v10];
 
       alarmStorage = self->_alarmStorage;
       v7 = 1;
@@ -122,7 +122,7 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v12 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_INFO, "%{public}@ AlarmKit Feature Flag disabled! Unscheduling any existing alarms.", buf, 0xCu);
     }
 
@@ -144,17 +144,17 @@ void __50__MTAlarmKitAdoptionCoordinator_handleSystemReady__block_invoke(uint64_
   }
 }
 
-- (void)source:(id)a3 didAddTimers:(id)a4
+- (void)source:(id)source didAddTimers:(id)timers
 {
-  v5 = a4;
+  timersCopy = timers;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__MTAlarmKitAdoptionCoordinator_source_didAddTimers___block_invoke;
   v8[3] = &unk_1E7B0C928;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = timersCopy;
+  selfCopy = self;
+  v7 = timersCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 
@@ -169,17 +169,17 @@ uint64_t __53__MTAlarmKitAdoptionCoordinator_source_didAddTimers___block_invoke(
   return [v1 na_each:v3];
 }
 
-- (void)source:(id)a3 didDismissTimer:(id)a4
+- (void)source:(id)source didDismissTimer:(id)timer
 {
-  v5 = a4;
+  timerCopy = timer;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MTAlarmKitAdoptionCoordinator_source_didDismissTimer___block_invoke;
   v8[3] = &unk_1E7B0C928;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = timerCopy;
+  v7 = timerCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 
@@ -190,17 +190,17 @@ void __56__MTAlarmKitAdoptionCoordinator_source_didDismissTimer___block_invoke(u
   [v1 dismissAlarm:v2];
 }
 
-- (void)source:(id)a3 didRemoveTimers:(id)a4
+- (void)source:(id)source didRemoveTimers:(id)timers
 {
-  v5 = a4;
+  timersCopy = timers;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MTAlarmKitAdoptionCoordinator_source_didRemoveTimers___block_invoke;
   v8[3] = &unk_1E7B0C928;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = timersCopy;
+  selfCopy = self;
+  v7 = timersCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 
@@ -222,20 +222,20 @@ void __56__MTAlarmKitAdoptionCoordinator_source_didRemoveTimers___block_invoke_2
   [v2 cancelAlarm:v3];
 }
 
-- (void)source:(id)a3 didUpdateTimers:(id)a4 fromTimers:(id)a5
+- (void)source:(id)source didUpdateTimers:(id)timers fromTimers:(id)fromTimers
 {
-  v7 = a4;
-  v8 = a5;
+  timersCopy = timers;
+  fromTimersCopy = fromTimers;
   serializer = self->_serializer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__MTAlarmKitAdoptionCoordinator_source_didUpdateTimers_fromTimers___block_invoke;
   v12[3] = &unk_1E7B0C9A0;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
+  v13 = timersCopy;
+  v14 = fromTimersCopy;
+  selfCopy = self;
+  v10 = fromTimersCopy;
+  v11 = timersCopy;
   [(NAScheduler *)serializer performBlock:v12];
 }
 
@@ -383,17 +383,17 @@ uint64_t __67__MTAlarmKitAdoptionCoordinator_source_didUpdateTimers_fromTimers__
   return v6;
 }
 
-- (void)source:(id)a3 didAddAlarms:(id)a4
+- (void)source:(id)source didAddAlarms:(id)alarms
 {
-  v5 = a4;
+  alarmsCopy = alarms;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__MTAlarmKitAdoptionCoordinator_source_didAddAlarms___block_invoke;
   v8[3] = &unk_1E7B0C928;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = alarmsCopy;
+  selfCopy = self;
+  v7 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 
@@ -417,17 +417,17 @@ void __53__MTAlarmKitAdoptionCoordinator_source_didAddAlarms___block_invoke_2(ui
   }
 }
 
-- (void)source:(id)a3 didDismissAlarm:(id)a4 dismissAction:(unint64_t)a5
+- (void)source:(id)source didDismissAlarm:(id)alarm dismissAction:(unint64_t)action
 {
-  v6 = a4;
+  alarmCopy = alarm;
   serializer = self->_serializer;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__MTAlarmKitAdoptionCoordinator_source_didDismissAlarm_dismissAction___block_invoke;
   v9[3] = &unk_1E7B0C928;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = alarmCopy;
+  selfCopy = self;
+  v8 = alarmCopy;
   [(NAScheduler *)serializer performBlock:v9];
 }
 
@@ -442,17 +442,17 @@ void __70__MTAlarmKitAdoptionCoordinator_source_didDismissAlarm_dismissAction___
   }
 }
 
-- (void)source:(id)a3 didRemoveAlarms:(id)a4
+- (void)source:(id)source didRemoveAlarms:(id)alarms
 {
-  v5 = a4;
+  alarmsCopy = alarms;
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__MTAlarmKitAdoptionCoordinator_source_didRemoveAlarms___block_invoke;
   v8[3] = &unk_1E7B0C928;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = alarmsCopy;
+  selfCopy = self;
+  v7 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v8];
 }
 
@@ -478,17 +478,17 @@ void __56__MTAlarmKitAdoptionCoordinator_source_didRemoveAlarms___block_invoke_2
   }
 }
 
-- (void)source:(id)a3 didSnoozeAlarm:(id)a4 snoozeAction:(unint64_t)a5
+- (void)source:(id)source didSnoozeAlarm:(id)alarm snoozeAction:(unint64_t)action
 {
-  v6 = a4;
+  alarmCopy = alarm;
   serializer = self->_serializer;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__MTAlarmKitAdoptionCoordinator_source_didSnoozeAlarm_snoozeAction___block_invoke;
   v9[3] = &unk_1E7B0C928;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = alarmCopy;
+  selfCopy = self;
+  v8 = alarmCopy;
   [(NAScheduler *)serializer performBlock:v9];
 }
 
@@ -503,20 +503,20 @@ void __68__MTAlarmKitAdoptionCoordinator_source_didSnoozeAlarm_snoozeAction___bl
   }
 }
 
-- (void)source:(id)a3 didUpdateAlarms:(id)a4 previousAlarms:(id)a5
+- (void)source:(id)source didUpdateAlarms:(id)alarms previousAlarms:(id)previousAlarms
 {
-  v7 = a4;
-  v8 = a5;
+  alarmsCopy = alarms;
+  previousAlarmsCopy = previousAlarms;
   serializer = self->_serializer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__MTAlarmKitAdoptionCoordinator_source_didUpdateAlarms_previousAlarms___block_invoke;
   v12[3] = &unk_1E7B0C9A0;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
+  v13 = alarmsCopy;
+  v14 = previousAlarmsCopy;
+  selfCopy = self;
+  v10 = previousAlarmsCopy;
+  v11 = alarmsCopy;
   [(NAScheduler *)serializer performBlock:v12];
 }
 

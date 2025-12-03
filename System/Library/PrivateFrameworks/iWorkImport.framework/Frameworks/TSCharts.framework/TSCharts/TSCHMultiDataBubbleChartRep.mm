@@ -1,17 +1,17 @@
 @interface TSCHMultiDataBubbleChartRep
-- (BOOL)overlayLabelsForSeriesIndex:(unint64_t)a3;
+- (BOOL)overlayLabelsForSeriesIndex:(unint64_t)index;
 - (id)interpolations;
-- (void)updateAppearanceForElementLayer:(id)a3 seriesIndex:(unint64_t)a4;
+- (void)updateAppearanceForElementLayer:(id)layer seriesIndex:(unint64_t)index;
 @end
 
 @implementation TSCHMultiDataBubbleChartRep
 
-- (void)updateAppearanceForElementLayer:(id)a3 seriesIndex:(unint64_t)a4
+- (void)updateAppearanceForElementLayer:(id)layer seriesIndex:(unint64_t)index
 {
-  v6 = a3;
+  layerCopy = layer;
   v56.receiver = self;
   v56.super_class = TSCHMultiDataBubbleChartRep;
-  [(TSCHMultiDataBubbleChartRep *)&v56 updateAppearanceForElementLayer:v6 seriesIndex:a4];
+  [(TSCHMultiDataBubbleChartRep *)&v56 updateAppearanceForElementLayer:layerCopy seriesIndex:index];
   v11 = objc_msgSend_chartLayout(self, v7, v8, v9, v10);
   v16 = objc_msgSend_model(v11, v12, v13, v14, v15);
 
@@ -25,13 +25,13 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
 
-  v36 = objc_msgSend_lineAreaModelCacheForSeries_(v16, v17, v18, v19, v20, a4);
+  v36 = objc_msgSend_lineAreaModelCacheForSeries_(v16, v17, v18, v19, v20, index);
   objc_opt_class();
   v41 = objc_msgSend_symbolFill(v36, v37, v38, v39, v40);
   v42 = TSUDynamicCast();
   v47 = objc_msgSend_symbolStroke(v36, v43, v44, v45, v46);
   objc_msgSend_viewScale(self, v48, v49, v50, v51);
-  objc_msgSend_setFill_stroke_withViewScale_(v6, v52, v53, v54, v55, v42, v47);
+  objc_msgSend_setFill_stroke_withViewScale_(layerCopy, v52, v53, v54, v55, v42, v47);
 }
 
 - (id)interpolations
@@ -43,15 +43,15 @@
   return v15;
 }
 
-- (BOOL)overlayLabelsForSeriesIndex:(unint64_t)a3
+- (BOOL)overlayLabelsForSeriesIndex:(unint64_t)index
 {
   v7 = objc_msgSend_chartLayout(self, a2, v3, v4, v5);
   v12 = objc_msgSend_model(v7, v8, v9, v10, v11);
 
-  v17 = objc_msgSend_lineAreaModelCacheForSeries_(v12, v13, v14, v15, v16, a3);
-  LOBYTE(a3) = objc_msgSend_showLabelsInFront(v17, v18, v19, v20, v21);
+  v17 = objc_msgSend_lineAreaModelCacheForSeries_(v12, v13, v14, v15, v16, index);
+  LOBYTE(index) = objc_msgSend_showLabelsInFront(v17, v18, v19, v20, v21);
 
-  return a3;
+  return index;
 }
 
 @end

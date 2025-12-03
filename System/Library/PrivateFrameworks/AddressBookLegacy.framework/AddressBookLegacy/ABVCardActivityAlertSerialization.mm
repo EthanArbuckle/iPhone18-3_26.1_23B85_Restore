@@ -1,53 +1,53 @@
 @interface ABVCardActivityAlertSerialization
-+ (id)dictionaryWithType:(id)a3 info:(id)a4;
-+ (id)infoFromDictionary:(id)a3;
-+ (id)stringWithType:(id)a3 info:(id)a4;
-+ (id)typeFromDictionary:(id)a3;
-+ (void)parseString:(id)a3 intoTypeAndInfo:(id)a4;
++ (id)dictionaryWithType:(id)type info:(id)info;
++ (id)infoFromDictionary:(id)dictionary;
++ (id)stringWithType:(id)type info:(id)info;
++ (id)typeFromDictionary:(id)dictionary;
++ (void)parseString:(id)string intoTypeAndInfo:(id)info;
 @end
 
 @implementation ABVCardActivityAlertSerialization
 
-+ (id)stringWithType:(id)a3 info:(id)a4
++ (id)stringWithType:(id)type info:(id)info
 {
-  v4 = [a1 dictionaryWithType:a3 info:a4];
+  v4 = [self dictionaryWithType:type info:info];
 
   return [ABVCardActivityAlertSerializer serializeDictionary:v4];
 }
 
-+ (id)dictionaryWithType:(id)a3 info:(id)a4
++ (id)dictionaryWithType:(id)type info:(id)info
 {
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  if (a3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (type)
   {
-    if ([a3 caseInsensitiveCompare:@"com.apple.activityalert.call"])
+    if ([type caseInsensitiveCompare:@"com.apple.activityalert.call"])
     {
-      if ([a3 caseInsensitiveCompare:@"com.apple.activityalert.text"])
+      if ([type caseInsensitiveCompare:@"com.apple.activityalert.text"])
       {
-        v7 = a3;
+        typeCopy = type;
       }
 
       else
       {
-        v7 = @"text";
+        typeCopy = @"text";
       }
     }
 
     else
     {
-      v7 = @"call";
+      typeCopy = @"call";
     }
 
-    [v6 setObject:v7 forKey:@"type"];
+    [dictionary setObject:typeCopy forKey:@"type"];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__ABVCardActivityAlertSerialization_dictionaryWithType_info___block_invoke;
   v9[3] = &unk_1E7CCD788;
-  v9[4] = v6;
-  [a4 enumerateKeysAndObjectsUsingBlock:v9];
-  return v6;
+  v9[4] = dictionary;
+  [info enumerateKeysAndObjectsUsingBlock:v9];
+  return dictionary;
 }
 
 uint64_t __61__ABVCardActivityAlertSerialization_dictionaryWithType_info___block_invoke(uint64_t a1, __CFString *a2, uint64_t a3)
@@ -75,19 +75,19 @@ uint64_t __61__ABVCardActivityAlertSerialization_dictionaryWithType_info___block
   return [v7 setObject:a3 forKey:v6];
 }
 
-+ (void)parseString:(id)a3 intoTypeAndInfo:(id)a4
++ (void)parseString:(id)string intoTypeAndInfo:(id)info
 {
-  v6 = [a1 activityAlertWithString:a3];
-  v7 = [a1 typeFromDictionary:v6];
-  v8 = [a1 infoFromDictionary:v6];
-  v9 = *(a4 + 2);
+  v6 = [self activityAlertWithString:string];
+  v7 = [self typeFromDictionary:v6];
+  v8 = [self infoFromDictionary:v6];
+  v9 = *(info + 2);
 
-  v9(a4, v7, v8);
+  v9(info, v7, v8);
 }
 
-+ (id)typeFromDictionary:(id)a3
++ (id)typeFromDictionary:(id)dictionary
 {
-  result = [a3 objectForKeyedSubscript:@"type"];
+  result = [dictionary objectForKeyedSubscript:@"type"];
   if (result)
   {
     v4 = result;
@@ -113,16 +113,16 @@ uint64_t __61__ABVCardActivityAlertSerialization_dictionaryWithType_info___block
   return result;
 }
 
-+ (id)infoFromDictionary:(id)a3
++ (id)infoFromDictionary:(id)dictionary
 {
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__ABVCardActivityAlertSerialization_infoFromDictionary___block_invoke;
   v6[3] = &unk_1E7CCD788;
-  v6[4] = v4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v6];
-  return v4;
+  v6[4] = dictionary;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v6];
+  return dictionary;
 }
 
 uint64_t __56__ABVCardActivityAlertSerialization_infoFromDictionary___block_invoke(uint64_t a1, __CFString *a2, uint64_t a3)

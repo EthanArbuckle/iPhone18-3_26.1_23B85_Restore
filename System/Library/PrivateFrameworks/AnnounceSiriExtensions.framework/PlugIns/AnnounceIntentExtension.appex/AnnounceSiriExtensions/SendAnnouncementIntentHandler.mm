@@ -1,9 +1,9 @@
 @interface SendAnnouncementIntentHandler
 - (_TtC23AnnounceIntentExtension29SendAnnouncementIntentHandler)init;
 - (void)dealloc;
-- (void)handleSendAnnouncement:(INSendAnnouncementIntent *)a3 completion:(id)a4;
-- (void)resolveAnnouncementForSendAnnouncement:(INSendAnnouncementIntent *)a3 withCompletion:(id)a4;
-- (void)resolveRecipientsForSendAnnouncement:(INSendAnnouncementIntent *)a3 withCompletion:(id)a4;
+- (void)handleSendAnnouncement:(INSendAnnouncementIntent *)announcement completion:(id)completion;
+- (void)resolveAnnouncementForSendAnnouncement:(INSendAnnouncementIntent *)announcement withCompletion:(id)completion;
+- (void)resolveRecipientsForSendAnnouncement:(INSendAnnouncementIntent *)announcement withCompletion:(id)completion;
 @end
 
 @implementation SendAnnouncementIntentHandler
@@ -23,7 +23,7 @@
 {
   v3 = OBJC_IVAR____TtC23AnnounceIntentExtension29SendAnnouncementIntentHandler_announce;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC23AnnounceIntentExtension29SendAnnouncementIntentHandler_announce);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     [v4 setDelegate:0];
@@ -42,15 +42,15 @@
   [(SendAnnouncementIntentHandler *)&v7 dealloc];
 }
 
-- (void)resolveAnnouncementForSendAnnouncement:(INSendAnnouncementIntent *)a3 withCompletion:(id)a4
+- (void)resolveAnnouncementForSendAnnouncement:(INSendAnnouncementIntent *)announcement withCompletion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = announcement;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -65,20 +65,20 @@
   v15[3] = 0;
   v15[4] = &unk_100017748;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  announcementCopy = announcement;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_100017750, v15);
 }
 
-- (void)resolveRecipientsForSendAnnouncement:(INSendAnnouncementIntent *)a3 withCompletion:(id)a4
+- (void)resolveRecipientsForSendAnnouncement:(INSendAnnouncementIntent *)announcement withCompletion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = announcement;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -93,20 +93,20 @@
   v15[3] = 0;
   v15[4] = &unk_100017728;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  announcementCopy = announcement;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_100017730, v15);
 }
 
-- (void)handleSendAnnouncement:(INSendAnnouncementIntent *)a3 completion:(id)a4
+- (void)handleSendAnnouncement:(INSendAnnouncementIntent *)announcement completion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = announcement;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -121,8 +121,8 @@
   v15[3] = 0;
   v15[4] = &unk_1000175C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  announcementCopy = announcement;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_100017710, v15);
 }
 

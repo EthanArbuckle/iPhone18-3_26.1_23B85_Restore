@@ -3,24 +3,24 @@
 - (BOOL)restrictToFull;
 - (NSString)scanType;
 - (NSString)sessionID;
-- (SUPolicyScan)initWithScanOptions:(id)a3;
-- (id)_stringForBool:(BOOL)a3;
+- (SUPolicyScan)initWithScanOptions:(id)options;
+- (id)_stringForBool:(BOOL)bool;
 - (id)description;
 - (int)downloadTimeoutSecs;
 @end
 
 @implementation SUPolicyScan
 
-- (SUPolicyScan)initWithScanOptions:(id)a3
+- (SUPolicyScan)initWithScanOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v8.receiver = self;
   v8.super_class = SUPolicyScan;
   v5 = [(SUPolicyScan *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SUPolicyScan *)v5 setScanOptions:v4];
+    [(SUPolicyScan *)v5 setScanOptions:optionsCopy];
   }
 
   return v6;
@@ -28,10 +28,10 @@
 
 - (NSString)scanType
 {
-  v2 = [(SUPolicyScan *)self scanOptions];
-  v3 = [v2 isForced];
+  scanOptions = [(SUPolicyScan *)self scanOptions];
+  isForced = [scanOptions isForced];
   v4 = &kSUScanTypeForeground;
-  if (!v3)
+  if (!isForced)
   {
     v4 = &kSUScanTypeBackground;
   }
@@ -45,17 +45,17 @@
 - (BOOL)restrictToFull
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 forceFullReplacement];
+  forceFullReplacement = [v2 forceFullReplacement];
 
-  return v3;
+  return forceFullReplacement;
 }
 
 - (BOOL)allowSameVersion
 {
   v2 = +[SUPreferences sharedInstance];
-  v3 = [v2 allowSameBuildUpdates];
+  allowSameBuildUpdates = [v2 allowSameBuildUpdates];
 
-  return v3;
+  return allowSameBuildUpdates;
 }
 
 - (int)downloadTimeoutSecs
@@ -73,15 +73,15 @@
 
 - (NSString)sessionID
 {
-  v2 = [(SUPolicyScan *)self scanOptions];
-  v3 = [v2 sessionID];
+  scanOptions = [(SUPolicyScan *)self scanOptions];
+  sessionID = [scanOptions sessionID];
 
-  return v3;
+  return sessionID;
 }
 
-- (id)_stringForBool:(BOOL)a3
+- (id)_stringForBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"YES";
   }
@@ -95,15 +95,15 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUPolicyScan *)self assetType];
+  assetType = [(SUPolicyScan *)self assetType];
   v5 = [(SUPolicyScan *)self _stringForBool:[(SUPolicy *)self discretionary]];
   v6 = [(SUPolicyScan *)self _stringForBool:[(SUPolicy *)self allowsCellular]];
   v7 = [(SUPolicyScan *)self _stringForBool:[(SUPolicy *)self requiresPowerPluggedIn]];
   v8 = [(SUPolicyScan *)self _stringForBool:[(SUPolicyScan *)self restrictToIncremental]];
   v9 = [(SUPolicyScan *)self _stringForBool:[(SUPolicyScan *)self restrictToFull]];
   v10 = [(SUPolicyScan *)self _stringForBool:[(SUPolicyScan *)self allowSameVersion]];
-  v11 = [(SUPolicyScan *)self sessionID];
-  v12 = [v3 stringWithFormat:@"\n            assetType:%@\n            discretionary: %@\n            allowsCellular: %@\n            requiresPowerPluggedIn: %@\n            restrictToIncremental: %@\n            restrictToFull: %@\n            allowSameVersion: %@\n            sessionID: %@\n            downloadTimeoutSecs: %d\n", v4, v5, v6, v7, v8, v9, v10, v11, -[SUPolicyScan downloadTimeoutSecs](self, "downloadTimeoutSecs")];
+  sessionID = [(SUPolicyScan *)self sessionID];
+  v12 = [v3 stringWithFormat:@"\n            assetType:%@\n            discretionary: %@\n            allowsCellular: %@\n            requiresPowerPluggedIn: %@\n            restrictToIncremental: %@\n            restrictToFull: %@\n            allowSameVersion: %@\n            sessionID: %@\n            downloadTimeoutSecs: %d\n", assetType, v5, v6, v7, v8, v9, v10, sessionID, -[SUPolicyScan downloadTimeoutSecs](self, "downloadTimeoutSecs")];
 
   return v12;
 }

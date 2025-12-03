@@ -69,16 +69,16 @@
       v8 = (1.0 / v6);
     }
 
-    v9 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-    v10 = [(CIColorPosterize *)self _kernel];
-    [(CIImage *)v9 extent];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    _kernel = [(CIColorPosterize *)self _kernel];
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19[0] = v9;
+    v19[0] = imageByUnpremultiplyingAlpha;
     v19[1] = [CIVector vectorWithX:v7 Y:v8];
-    return [objc_msgSend(v10 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 2), v12, v14, v16, v18), "imageByPremultiplyingAlpha"}];
+    return [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v19, 2), v12, v14, v16, v18), "imageByPremultiplyingAlpha"}];
   }
 }
 

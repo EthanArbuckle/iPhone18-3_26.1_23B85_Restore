@@ -1,29 +1,29 @@
 @interface CXHandle
-+ (CXHandle)handleWithTUHandle:(id)a3;
-+ (id)handlesWithTUHandles:(id)a3;
-+ (id)membersWithTUHandles:(id)a3;
-+ (id)tuHandlesWithHandles:(id)a3;
-+ (id)tuHandlesWithMembers:(id)a3;
-- (CXHandle)initWithDestinationID:(id)a3;
++ (CXHandle)handleWithTUHandle:(id)handle;
++ (id)handlesWithTUHandles:(id)handles;
++ (id)membersWithTUHandles:(id)handles;
++ (id)tuHandlesWithHandles:(id)handles;
++ (id)tuHandlesWithMembers:(id)members;
+- (CXHandle)initWithDestinationID:(id)d;
 - (TUHandle)tuHandle;
 @end
 
 @implementation CXHandle
 
-+ (CXHandle)handleWithTUHandle:(id)a3
++ (CXHandle)handleWithTUHandle:(id)handle
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  handleCopy = handle;
+  v4 = handleCopy;
+  if (handleCopy)
   {
-    v5 = [v3 type];
+    type = [handleCopy type];
     v6 = 2;
-    if (v5 == 3)
+    if (type == 3)
     {
       v6 = 3;
     }
 
-    if (v5 == 1)
+    if (type == 1)
     {
       v7 = 1;
     }
@@ -34,9 +34,9 @@
     }
 
     v8 = [CXHandle alloc];
-    v9 = [v4 value];
-    v10 = [v4 siriDisplayName];
-    v11 = [v8 initWithType:v7 value:v9 siriDisplayName:v10];
+    value = [v4 value];
+    siriDisplayName = [v4 siriDisplayName];
+    v11 = [v8 initWithType:v7 value:value siriDisplayName:siriDisplayName];
   }
 
   else
@@ -47,15 +47,15 @@
   return v11;
 }
 
-+ (id)tuHandlesWithHandles:(id)a3
++ (id)tuHandlesWithHandles:(id)handles
 {
-  v3 = a3;
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  handlesCopy = handles;
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [handlesCopy count]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = handlesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -70,10 +70,10 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) tuHandle];
-        if (v10)
+        tuHandle = [*(*(&v13 + 1) + 8 * i) tuHandle];
+        if (tuHandle)
         {
-          [v4 addObject:v10];
+          [v4 addObject:tuHandle];
         }
       }
 
@@ -88,15 +88,15 @@
   return v11;
 }
 
-+ (id)tuHandlesWithMembers:(id)a3
++ (id)tuHandlesWithMembers:(id)members
 {
-  v3 = a3;
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  membersCopy = members;
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [membersCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = membersCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -111,12 +111,12 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) handle];
-        v11 = [v10 tuHandle];
+        handle = [*(*(&v14 + 1) + 8 * i) handle];
+        tuHandle = [handle tuHandle];
 
-        if (v11)
+        if (tuHandle)
         {
-          [v4 addObject:v11];
+          [v4 addObject:tuHandle];
         }
       }
 
@@ -131,15 +131,15 @@
   return v12;
 }
 
-+ (id)handlesWithTUHandles:(id)a3
++ (id)handlesWithTUHandles:(id)handles
 {
-  v4 = a3;
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  handlesCopy = handles;
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [handlesCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = handlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -154,7 +154,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 handleWithTUHandle:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self handleWithTUHandle:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 addObject:v11];
       }
 
@@ -169,15 +169,15 @@
   return v12;
 }
 
-+ (id)membersWithTUHandles:(id)a3
++ (id)membersWithTUHandles:(id)handles
 {
-  v4 = a3;
-  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  handlesCopy = handles;
+  v5 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [handlesCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = handlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -194,7 +194,7 @@
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [CXMember alloc];
-        v13 = [a1 handleWithTUHandle:{v11, v17}];
+        v13 = [self handleWithTUHandle:{v11, v17}];
         v14 = [v12 initWithHandle:v13];
         [v5 addObject:v14];
       }
@@ -210,15 +210,15 @@
   return v15;
 }
 
-- (CXHandle)initWithDestinationID:(id)a3
+- (CXHandle)initWithDestinationID:(id)d
 {
-  v4 = a3;
-  if ([v4 destinationIdIsEmailAddress])
+  dCopy = d;
+  if ([dCopy destinationIdIsEmailAddress])
   {
     v5 = 3;
   }
 
-  else if ([v4 destinationIdIsPhoneNumber])
+  else if ([dCopy destinationIdIsPhoneNumber])
   {
     v5 = 2;
   }
@@ -228,9 +228,9 @@
     v5 = 1;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v6 = [(CXHandle *)self initWithType:v5 value:v4];
+    v6 = [(CXHandle *)self initWithType:v5 value:dCopy];
   }
 
   else
@@ -245,23 +245,23 @@
 
 - (TUHandle)tuHandle
 {
-  v3 = [(CXHandle *)self value];
-  if (!v3)
+  value = [(CXHandle *)self value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v4 = [(CXHandle *)self type];
-  switch(v4)
+  type = [(CXHandle *)self type];
+  switch(type)
   {
     case CXHandleTypeEmailAddress:
-      v5 = [TUHandle normalizedEmailAddressHandleForValue:v3];
+      v5 = [TUHandle normalizedEmailAddressHandleForValue:value];
       break;
     case CXHandleTypePhoneNumber:
-      v5 = [TUHandle normalizedPhoneNumberHandleForValue:v3 isoCountryCode:0];
+      v5 = [TUHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:0];
       break;
     case CXHandleTypeGeneric:
-      v5 = [TUHandle normalizedGenericHandleForValue:v3];
+      v5 = [TUHandle normalizedGenericHandleForValue:value];
       break;
     default:
 LABEL_6:
@@ -272,8 +272,8 @@ LABEL_6:
   v6 = v5;
   if (v5)
   {
-    v7 = [(CXHandle *)self siriDisplayName];
-    [v6 setSiriDisplayName:v7];
+    siriDisplayName = [(CXHandle *)self siriDisplayName];
+    [v6 setSiriDisplayName:siriDisplayName];
   }
 
 LABEL_11:

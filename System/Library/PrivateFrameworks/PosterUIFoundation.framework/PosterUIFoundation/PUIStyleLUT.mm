@@ -1,35 +1,35 @@
 @interface PUIStyleLUT
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation;
 - (NSString)nonVariatedIdentifier;
-- (PUIStyleLUT)initWithCoder:(id)a3;
-- (PUIStyleLUT)initWithLUTIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUIStyleLUT)initWithCoder:(id)coder;
+- (PUIStyleLUT)initWithLUTIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PUIStyleLUT
 
-- (PUIStyleLUT)initWithLUTIdentifier:(id)a3
+- (PUIStyleLUT)initWithLUTIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PUIStyleLUT;
   v6 = [(PUIStyleLUT *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lutIdentifier, a3);
+    objc_storeStrong(&v6->_lutIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  variationCopy = variation;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -37,27 +37,27 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleLUT *)self isEqualToStyle:v6 ignoringVariation:v4];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleLUT *)self isEqualToStyle:equalCopy ignoringVariation:variationCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  variationCopy = variation;
+  styleCopy = style;
+  v7 = styleCopy;
+  if (styleCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v6 && _PUIStyleCompareUsingIdentifiers(self, v6, v4))
+  else if (styleCopy && _PUIStyleCompareUsingIdentifiers(self, styleCopy, variationCopy))
   {
-    v8 = [(PUIStyleLUT *)v7 lutIdentifier];
-    v9 = [(PUIStyleLUT *)self lutIdentifier];
-    v10 = [v8 isEqual:v9];
+    lutIdentifier = [(PUIStyleLUT *)v7 lutIdentifier];
+    lutIdentifier2 = [(PUIStyleLUT *)self lutIdentifier];
+    v10 = [lutIdentifier isEqual:lutIdentifier2];
   }
 
   else
@@ -85,16 +85,16 @@
   return v4;
 }
 
-- (PUIStyleLUT)initWithCoder:(id)a3
+- (PUIStyleLUT)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lutIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lutIdentifier"];
 
   v6 = [(PUIStyleLUT *)self initWithLUTIdentifier:v5];
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUIStyleLUT alloc];
   lutIdentifier = self->_lutIdentifier;

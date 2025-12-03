@@ -1,12 +1,12 @@
 @interface CKDPAssetsToDownload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAssetsToDownload
@@ -42,46 +42,46 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     allAssets = self->_allAssets;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_assetFields)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[16] = self->_allAssets;
-    v4[20] |= 1u;
+    toCopy[16] = self->_allAssets;
+    toCopy[20] |= 1u;
   }
 
   assetFields = self->_assetFields;
   if (assetFields)
   {
-    v7 = v4;
-    objc_msgSend_setAssetFields_(v4, v5, assetFields);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setAssetFields_(toCopy, v5, assetFields);
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -90,34 +90,34 @@
     *(v10 + 20) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_assetFields, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_assetFields, v11, zone);
   v14 = v12[1];
   v12[1] = v13;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_7;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((*(v4 + 20) & 1) == 0)
+  if ((*(equalCopy + 20) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v8 = *(v4 + 16);
+  v8 = *(equalCopy + 16);
   if (!self->_allAssets)
   {
 LABEL_3:
@@ -131,14 +131,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ((v4[2] & 1) == 0)
+  if ((equalCopy[2] & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
   assetFields = self->_assetFields;
-  v10 = v4[1];
+  v10 = equalCopy[1];
   if (assetFields | v10)
   {
     isEqual = objc_msgSend_isEqual_(assetFields, v7, v10);
@@ -169,13 +169,13 @@ LABEL_8:
   return objc_msgSend_hash(self->_assetFields, a2, v2) ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[20])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[20])
   {
-    self->_allAssets = v4[16];
+    self->_allAssets = fromCopy[16];
     *&self->_has |= 1u;
   }
 

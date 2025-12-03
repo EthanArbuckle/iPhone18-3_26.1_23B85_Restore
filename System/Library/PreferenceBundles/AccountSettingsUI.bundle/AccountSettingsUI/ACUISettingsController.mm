@@ -1,40 +1,40 @@
 @interface ACUISettingsController
 - (ACUISettingsController)init;
-- (BOOL)_isAccount:(id)a3 inList:(id)a4;
-- (BOOL)_isAccountList:(id)a3 identicalToAccountList:(id)a4;
+- (BOOL)_isAccount:(id)account inList:(id)list;
+- (BOOL)_isAccountList:(id)list identicalToAccountList:(id)accountList;
 - (BOOL)_isAccountModificationDisabledByRestrictions;
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5 withCompletion:(id)a6;
-- (id)_accountGroupIdentifier:(id)a3 ignoringGroups:(id)a4;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push withCompletion:(id)completion;
+- (id)_accountGroupIdentifier:(id)identifier ignoringGroups:(id)groups;
 - (id)_accountStore;
 - (id)_addAccountSpecifier;
-- (id)_scheduleSettingsModeForSpecifier:(id)a3;
+- (id)_scheduleSettingsModeForSpecifier:(id)specifier;
 - (id)_settingsPluginManager;
-- (id)_specifierForAccount:(id)a3;
-- (id)_specifierForCollectionCellLinkingToAccounts:(id)a3 withGroupIdentifier:(id)a4 underParentGroup:(id)a5;
+- (id)_specifierForAccount:(id)account;
+- (id)_specifierForCollectionCellLinkingToAccounts:(id)accounts withGroupIdentifier:(id)identifier underParentGroup:(id)group;
 - (id)_specifierForScheduleSettings;
 - (id)_specifiersForLoadingMessage;
-- (id)_specifiersForSettingsProvidedByPlugin:(id)a3;
+- (id)_specifiersForSettingsProvidedByPlugin:(id)plugin;
 - (id)specifiers;
-- (void)_accountCellWasTappedWithSpecifier:(id)a3;
+- (void)_accountCellWasTappedWithSpecifier:(id)specifier;
 - (void)_accountStoreDidChange;
-- (void)_accountsWithCompletion:(id)a3;
-- (void)_effectiveSettingsChangedNotification:(id)a3;
+- (void)_accountsWithCompletion:(id)completion;
+- (void)_effectiveSettingsChangedNotification:(id)notification;
 - (void)_fetchLazyLoadedSpecifiers;
-- (void)_filterAccounts:(id)a3 toTopLevel:(id)a4 grouped:(id)a5 ignoringGroups:(id)a6;
-- (void)_loadAccountsWithCompletion:(id)a3;
-- (void)_lowPowerModeChangedNotification:(id)a3;
-- (void)_scheduleSettingsCellWasTappedWithSpecifier:(id)a3;
-- (void)_specifiersForAccountsGroupWithCompletion:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)_filterAccounts:(id)accounts toTopLevel:(id)level grouped:(id)grouped ignoringGroups:(id)groups;
+- (void)_loadAccountsWithCompletion:(id)completion;
+- (void)_lowPowerModeChangedNotification:(id)notification;
+- (void)_scheduleSettingsCellWasTappedWithSpecifier:(id)specifier;
+- (void)_specifiersForAccountsGroupWithCompletion:(id)completion;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)specifiersDidChangeForPlugin:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewController:(id)a3 didFinishRemovingAccountWithSuccess:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)setSpecifier:(id)specifier;
+- (void)specifiersDidChangeForPlugin:(id)plugin;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewController:(id)controller didFinishRemovingAccountWithSuccess:(BOOL)success;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -74,45 +74,45 @@
   return v9;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = ACUISettingsController;
-  [(ACUISettingsController *)&v5 viewDidAppear:a3];
-  v3 = [(ACUISettingsController *)v8 specifier];
-  v4 = [v3 propertyForKey:PSAppSettingsBundleIDKey];
+  [(ACUISettingsController *)&v5 viewDidAppear:appear];
+  specifier = [(ACUISettingsController *)selfCopy specifier];
+  v4 = [specifier propertyForKey:PSAppSettingsBundleIDKey];
 
-  [ACUIUtils emitNavigationEventForSubPane:"emitNavigationEventForSubPane:subPath:account:inHostAppBundleID:" subPath:v8 account:@"root" inHostAppBundleID:?];
+  [ACUIUtils emitNavigationEventForSubPane:"emitNavigationEventForSubPane:subPath:account:inHostAppBundleID:" subPath:selfCopy account:@"root" inHostAppBundleID:?];
   objc_storeStrong(&v4, 0);
 }
 
 - (void)viewDidLoad
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = ACUISettingsController;
   [(ACUISettingsController *)&v8 viewDidLoad];
-  v4 = [(ACUISettingsController *)v10 table];
+  table = [(ACUISettingsController *)selfCopy table];
   v2 = objc_opt_class();
   v3 = +[ACUIAccountSummaryCell cellReuseIdentifier];
-  [v4 registerClass:v2 forCellReuseIdentifier:?];
+  [table registerClass:v2 forCellReuseIdentifier:?];
 
-  v7 = [(ACUISettingsController *)v10 table];
+  table2 = [(ACUISettingsController *)selfCopy table];
   v5 = objc_opt_class();
   v6 = +[ACUIAccountCollectionLinkCell cellReuseIdentifier];
-  [v7 registerClass:v5 forCellReuseIdentifier:?];
+  [table2 registerClass:v5 forCellReuseIdentifier:?];
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v3 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
@@ -120,19 +120,19 @@
   v7 = 0;
   v8 = sub_12C0;
   v9 = &unk_C2C0;
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v5);
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_effectiveSettingsChangedNotification:(id)a3
+- (void)_effectiveSettingsChangedNotification:(id)notification
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   v3 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
   v5 = _NSConcreteStackBlock;
@@ -140,7 +140,7 @@
   v7 = 0;
   v8 = sub_1410;
   v9 = &unk_C2C0;
-  v10 = v12;
+  v10 = selfCopy;
   dispatch_async(queue, &v5);
 
   objc_storeStrong(&v10, 0);
@@ -149,50 +149,50 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   if (self->_accountStore)
   {
-    [(ACMonitoredAccountStore *)v4->_accountStore removeDelegate:v4];
+    [(ACMonitoredAccountStore *)selfCopy->_accountStore removeDelegate:selfCopy];
   }
 
-  [(ACUISettingsPluginManager *)v4->_settingsPluginManager parentViewControllerWillDisappear];
+  [(ACUISettingsPluginManager *)selfCopy->_settingsPluginManager parentViewControllerWillDisappear];
   v3[0] = +[NSNotificationCenter defaultCenter];
-  [v3[0] removeObserver:v4];
+  [v3[0] removeObserver:selfCopy];
   objc_storeStrong(v3, 0);
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = ACUISettingsController;
   [(ACUISettingsController *)&v2 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, specifier);
+  v5.receiver = selfCopy;
   v5.super_class = ACUISettingsController;
   [(ACUISettingsController *)&v5 setSpecifier:location[0]];
   v3 = [location[0] propertyForKey:PSAccountsClientDataclassFilterKey];
-  filteredDataclass = v7->_filteredDataclass;
-  v7->_filteredDataclass = v3;
+  filteredDataclass = selfCopy->_filteredDataclass;
+  selfCopy->_filteredDataclass = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5 withCompletion:(id)a6
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push withCompletion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  v23[1] = a5;
+  objc_storeStrong(&v24, dictionary);
+  v23[1] = push;
   v23[0] = 0;
-  objc_storeStrong(v23, a6);
-  if (v26->_specifierLoadGroup)
+  objc_storeStrong(v23, completion);
+  if (selfCopy->_specifierLoadGroup)
   {
     v22 = _ACUILogSystem();
     v21 = OS_LOG_TYPE_DEBUG;
@@ -203,7 +203,7 @@
     }
 
     objc_storeStrong(&v22, 0);
-    group = v26->_specifierLoadGroup;
+    group = selfCopy->_specifierLoadGroup;
     v6 = &_dispatch_main_q;
     queue = &_dispatch_main_q;
     v13 = _NSConcreteStackBlock;
@@ -211,7 +211,7 @@
     v15 = 0;
     v16 = sub_1990;
     v17 = &unk_C2E8;
-    v18 = v26;
+    v18 = selfCopy;
     v19 = v24;
     v20 = v23[0];
     dispatch_group_notify(group, queue, &v13);
@@ -233,14 +233,14 @@
   return v27 & 1;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v15 = _ACUILogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -250,19 +250,19 @@
   }
 
   objc_storeStrong(&v15, 0);
-  v18->_isInHandleURL = 1;
-  v13.receiver = v18;
+  selfCopy->_isInHandleURL = 1;
+  v13.receiver = selfCopy;
   v13.super_class = ACUISettingsController;
   [(ACUISettingsController *)&v13 handleURL:location[0] withCompletion:&stru_C328];
-  v18->_isInHandleURL = 0;
-  if (v18->_viewControllerPushedByControllerLoadActionDuringHandleURL)
+  selfCopy->_isInHandleURL = 0;
+  if (selfCopy->_viewControllerPushedByControllerLoadActionDuringHandleURL)
   {
-    viewControllerPushedByControllerLoadActionDuringHandleURL = v18->_viewControllerPushedByControllerLoadActionDuringHandleURL;
+    viewControllerPushedByControllerLoadActionDuringHandleURL = selfCopy->_viewControllerPushedByControllerLoadActionDuringHandleURL;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = [location[0] objectForKey:@"path"];
-      v6 = [v12 pathComponents];
+      pathComponents = [v12 pathComponents];
       v11 = [NSMutableArray arrayWithArray:?];
 
       if ([v11 count])
@@ -274,7 +274,7 @@
 
         v10 = [NSMutableDictionary dictionaryWithDictionary:location[0]];
         [(NSMutableDictionary *)v10 setObject:v12 forKey:@"path"];
-        [(PSViewController *)v18->_viewControllerPushedByControllerLoadActionDuringHandleURL handleURL:v10 withCompletion:v16];
+        [(PSViewController *)selfCopy->_viewControllerPushedByControllerLoadActionDuringHandleURL handleURL:v10 withCompletion:v16];
         objc_storeStrong(&v10, 0);
       }
 
@@ -287,7 +287,7 @@
       objc_storeStrong(&v12, 0);
     }
 
-    objc_storeStrong(&v18->_viewControllerPushedByControllerLoadActionDuringHandleURL, 0);
+    objc_storeStrong(&selfCopy->_viewControllerPushedByControllerLoadActionDuringHandleURL, 0);
   }
 
   else
@@ -326,29 +326,29 @@
   return v4;
 }
 
-- (void)_accountsWithCompletion:(id)a3
+- (void)_accountsWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v12->_accounts)
+  objc_storeStrong(location, completion);
+  if (selfCopy->_accounts)
   {
     if (location[0])
     {
-      (*(location[0] + 2))(location[0], v12->_accounts);
+      (*(location[0] + 2))(location[0], selfCopy->_accounts);
     }
   }
 
   else
   {
-    v3 = v12;
+    v3 = selfCopy;
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_2030;
     v8 = &unk_C350;
-    v9 = v12;
+    v9 = selfCopy;
     v10 = location[0];
     [(ACUISettingsController *)v3 _loadAccountsWithCompletion:&v4];
     objc_storeStrong(&v10, 0);
@@ -358,17 +358,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_loadAccountsWithCompletion:(id)a3
+- (void)_loadAccountsWithCompletion:(id)completion
 {
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v51 = 0;
   v50 = +[NSMutableArray array];
   memset(__b, 0, sizeof(__b));
-  v17 = [(ACUISettingsController *)v53 _accountStore];
-  obj = [v17 monitoredAccounts];
+  _accountStore = [(ACUISettingsController *)selfCopy _accountStore];
+  obj = [_accountStore monitoredAccounts];
 
   v19 = [obj countByEnumeratingWithState:__b objects:v54 count:16];
   if (v19)
@@ -387,33 +387,33 @@
       v49 = *(__b[1] + 8 * v15);
       if ([v49 isVisible])
       {
-        v12 = [v49 parentAccount];
+        parentAccount = [v49 parentAccount];
 
-        if (!v12)
+        if (!parentAccount)
         {
-          v3 = [v49 enabledDataclasses];
-          if (v53->_filteredDataclass)
+          enabledDataclasses = [v49 enabledDataclasses];
+          if (selfCopy->_filteredDataclass)
           {
-            v11 = [v49 provisionedDataclasses];
+            provisionedDataclasses = [v49 provisionedDataclasses];
             v41 = _NSConcreteStackBlock;
             v42 = -1073741824;
             v43 = 0;
             v44 = sub_2798;
             v45 = &unk_C378;
-            v46 = v53;
-            v47 = [v11 objectsPassingTest:&v41];
+            v46 = selfCopy;
+            v47 = [provisionedDataclasses objectsPassingTest:&v41];
 
             if (![v47 count])
             {
-              v10 = [v49 accountType];
-              v9 = [v10 supportedDataclasses];
+              accountType = [v49 accountType];
+              supportedDataclasses = [accountType supportedDataclasses];
               v35 = _NSConcreteStackBlock;
               v36 = -1073741824;
               v37 = 0;
               v38 = sub_2870;
               v39 = &unk_C378;
-              v40 = v53;
-              v4 = [v9 objectsPassingTest:&v35];
+              v40 = selfCopy;
+              v4 = [supportedDataclasses objectsPassingTest:&v35];
               v5 = v47;
               v47 = v4;
 
@@ -482,7 +482,7 @@
 
 - (void)_accountStoreDidChange
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _ACUILogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -493,25 +493,25 @@
   }
 
   objc_storeStrong(location, 0);
-  v2 = v11;
+  v2 = selfCopy;
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
   v5 = 0;
   v6 = sub_2DA0;
   v7 = &unk_C418;
-  v8 = v11;
+  v8 = selfCopy;
   [(ACUISettingsController *)v2 _loadAccountsWithCompletion:&v3];
   objc_storeStrong(&v8, 0);
 }
 
-- (BOOL)_isAccountList:(id)a3 identicalToAccountList:(id)a4
+- (BOOL)_isAccountList:(id)list identicalToAccountList:(id)accountList
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, list);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, accountList);
   v12 = [location[0] count];
   if (v12 == [v16 count])
   {
@@ -532,7 +532,7 @@
         }
 
         v14 = *(__b[1] + 8 * v7);
-        if (![(ACUISettingsController *)v18 _isAccount:v14 inList:v16])
+        if (![(ACUISettingsController *)selfCopy _isAccount:v14 inList:v16])
         {
           break;
         }
@@ -577,14 +577,14 @@ LABEL_11:
   return v19 & 1;
 }
 
-- (BOOL)_isAccount:(id)a3 inList:(id)a4
+- (BOOL)_isAccount:(id)account inList:(id)list
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, list);
   memset(__b, 0, sizeof(__b));
   v12 = v33;
   v13 = [v12 countByEnumeratingWithState:__b objects:v36 count:16];
@@ -602,7 +602,7 @@ LABEL_11:
       }
 
       v32 = *(__b[1] + 8 * v9);
-      v5 = [v32 isAuthenticated];
+      isAuthenticated = [v32 isAuthenticated];
       v29 = 0;
       v27 = 0;
       v25 = 0;
@@ -612,34 +612,34 @@ LABEL_11:
       v17 = 0;
       v15 = 0;
       v6 = 0;
-      if (v5 == [location[0] isAuthenticated])
+      if (isAuthenticated == [location[0] isAuthenticated])
       {
-        v30 = [v32 identifier];
+        identifier = [v32 identifier];
         v29 = 1;
-        v28 = [location[0] identifier];
+        identifier2 = [location[0] identifier];
         v27 = 1;
         v6 = 0;
-        if ([v30 isEqualToString:?])
+        if ([identifier isEqualToString:?])
         {
-          v26 = [v32 accountDescription];
+          accountDescription = [v32 accountDescription];
           v25 = 1;
-          v24 = [location[0] accountDescription];
+          accountDescription2 = [location[0] accountDescription];
           v23 = 1;
           v6 = 0;
-          if ([v26 isEqualToString:?])
+          if ([accountDescription isEqualToString:?])
           {
-            v22 = [v32 enabledDataclasses];
+            enabledDataclasses = [v32 enabledDataclasses];
             v21 = 1;
-            v20 = [location[0] enabledDataclasses];
+            enabledDataclasses2 = [location[0] enabledDataclasses];
             v19 = 1;
             v6 = 0;
-            if ([v22 isEqualToSet:?])
+            if ([enabledDataclasses isEqualToSet:?])
             {
-              v18 = [v32 provisionedDataclasses];
+              provisionedDataclasses = [v32 provisionedDataclasses];
               v17 = 1;
-              v16 = [location[0] provisionedDataclasses];
+              provisionedDataclasses2 = [location[0] provisionedDataclasses];
               v15 = 1;
-              v6 = [v18 isEqualToSet:?];
+              v6 = [provisionedDataclasses isEqualToSet:?];
             }
           }
         }
@@ -728,18 +728,18 @@ LABEL_30:
   return v4;
 }
 
-- (void)_filterAccounts:(id)a3 toTopLevel:(id)a4 grouped:(id)a5 ignoringGroups:(id)a6
+- (void)_filterAccounts:(id)accounts toTopLevel:(id)level grouped:(id)grouped ignoringGroups:(id)groups
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, level);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, grouped);
   v24 = 0;
-  objc_storeStrong(&v24, a6);
+  objc_storeStrong(&v24, groups);
   memset(__b, 0, sizeof(__b));
   v18 = location[0];
   v19 = [v18 countByEnumeratingWithState:__b objects:v29 count:16];
@@ -757,7 +757,7 @@ LABEL_30:
       }
 
       v23 = *(__b[1] + 8 * v13);
-      v21 = [(ACUISettingsController *)v28 _accountGroupIdentifier:v23 ignoringGroups:v24];
+      v21 = [(ACUISettingsController *)selfCopy _accountGroupIdentifier:v23 ignoringGroups:v24];
       if (v21)
       {
         v10 = [v25 objectForKey:v21];
@@ -803,17 +803,17 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (id)_accountGroupIdentifier:(id)a3 ignoringGroups:(id)a4
+- (id)_accountGroupIdentifier:(id)identifier ignoringGroups:(id)groups
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v8 = [location[0] accountType];
-  v7 = [v8 identifier];
-  v9 = [v7 isEqualToString:ACAccountTypeIdentifierSubscribedCalendar];
+  objc_storeStrong(&v10, groups);
+  accountType = [location[0] accountType];
+  identifier = [accountType identifier];
+  v9 = [identifier isEqualToString:ACAccountTypeIdentifierSubscribedCalendar];
 
   if (v9 & 1) == 0 || ([v10 containsObject:ACAccountTypeIdentifierSubscribedCalendar])
   {
@@ -834,7 +834,7 @@ LABEL_30:
 
 - (id)specifiers
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   if (!*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
@@ -851,32 +851,32 @@ LABEL_30:
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [(NSBundle *)v14 localizedStringForKey:@"ACCOUNTS" value:&stru_C648 table:@"Localizable"];
     v2 = [PSSpecifier groupSpecifierWithName:?];
-    accountGroupSpecifier = v29->_accountGroupSpecifier;
-    v29->_accountGroupSpecifier = v2;
+    accountGroupSpecifier = selfCopy->_accountGroupSpecifier;
+    selfCopy->_accountGroupSpecifier = v2;
 
-    [v26 addObject:v29->_accountGroupSpecifier];
+    [v26 addObject:selfCopy->_accountGroupSpecifier];
     v25 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:15 edit:0];
-    v24 = v29->_accounts == 0;
+    v24 = selfCopy->_accounts == 0;
     if (v24)
     {
       [v26 addObject:v25];
     }
 
-    v12 = v29;
+    v12 = selfCopy;
     v15 = _NSConcreteStackBlock;
     v16 = -1073741824;
     v17 = 0;
     v18 = sub_48A4;
     v19 = &unk_C440;
     v23 = v24;
-    v20 = v29;
+    v20 = selfCopy;
     v21 = v25;
     v22 = v26;
     [(ACUISettingsController *)v12 _specifiersForAccountsGroupWithCompletion:&v15];
     if (!ACUIIsSharedIPadMode())
     {
       v10 = v26;
-      v11 = [(ACUISettingsController *)v29 _addAccountSpecifier];
+      _addAccountSpecifier = [(ACUISettingsController *)selfCopy _addAccountSpecifier];
       [v10 addObject:?];
     }
 
@@ -885,10 +885,10 @@ LABEL_30:
     [v6 addObject:?];
 
     v8 = v26;
-    v9 = [(ACUISettingsController *)v29 _specifierForScheduleSettings];
+    _specifierForScheduleSettings = [(ACUISettingsController *)selfCopy _specifierForScheduleSettings];
     [v8 addObject:?];
 
-    objc_storeStrong(&v29->PSListController_opaque[OBJC_IVAR___PSListController__specifiers], v26);
+    objc_storeStrong(&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers], v26);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v20, 0);
@@ -896,17 +896,17 @@ LABEL_30:
     objc_storeStrong(&v26, 0);
   }
 
-  v4 = *&v29->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  v4 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
 
   return v4;
 }
 
-- (void)_specifiersForAccountsGroupWithCompletion:(id)a3
+- (void)_specifiersForAccountsGroupWithCompletion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v14 = _ACUILogSystem();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -928,16 +928,16 @@ LABEL_30:
   v12 = 1;
   if ((byte_10B68 & 1) == 0)
   {
-    v12 = ![(ACUISettingsController *)v16 _isAccountModificationDisabledByRestrictions];
+    v12 = ![(ACUISettingsController *)selfCopy _isAccountModificationDisabledByRestrictions];
   }
 
-  v3 = v16;
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_4C84;
   v8 = &unk_C488;
-  v9 = v16;
+  v9 = selfCopy;
   v11 = v12;
   v10 = location[0];
   [(ACUISettingsController *)v3 _accountsWithCompletion:&v4];
@@ -946,16 +946,16 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (id)_specifierForCollectionCellLinkingToAccounts:(id)a3 withGroupIdentifier:(id)a4 underParentGroup:(id)a5
+- (id)_specifierForCollectionCellLinkingToAccounts:(id)accounts withGroupIdentifier:(id)identifier underParentGroup:(id)group
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, accounts);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, identifier);
   v52 = 0;
-  objc_storeStrong(&v52, a5);
+  objc_storeStrong(&v52, group);
   v51 = 0;
   memset(__b, 0, sizeof(__b));
   v33 = location[0];
@@ -974,8 +974,8 @@ LABEL_30:
       }
 
       v50 = *(__b[1] + 8 * v29);
-      v25 = [v50 identifier];
-      v26 = [v25 isEqualToString:v53];
+      identifier = [v50 identifier];
+      v26 = [identifier isEqualToString:v53];
 
       if (v26)
       {
@@ -994,7 +994,7 @@ LABEL_30:
       }
     }
 
-    v5 = [(ACUISettingsController *)v55 _specifierForAccount:v50];
+    v5 = [(ACUISettingsController *)selfCopy _specifierForAccount:v50];
     v6 = v51;
     v51 = v5;
 
@@ -1015,7 +1015,7 @@ LABEL_9:
     [v45 addObject:v52];
   }
 
-  [(ACUISettingsController *)v55 _filterAccounts:location[0] toTopLevel:v47 grouped:v46 ignoringGroups:v45];
+  [(ACUISettingsController *)selfCopy _filterAccounts:location[0] toTopLevel:v47 grouped:v46 ignoringGroups:v45];
   v44 = objc_alloc_init(NSMutableArray);
   memset(v42, 0, sizeof(v42));
   v23 = v47;
@@ -1034,12 +1034,12 @@ LABEL_9:
       }
 
       v43 = *(v42[1] + 8 * v21);
-      v17 = [v43 identifier];
-      v18 = [v17 isEqualToString:v53];
+      identifier2 = [v43 identifier];
+      v18 = [identifier2 isEqualToString:v53];
 
       if ((v18 & 1) == 0)
       {
-        v41 = [(ACUISettingsController *)v55 _specifierForAccount:v43];
+        v41 = [(ACUISettingsController *)selfCopy _specifierForAccount:v43];
         [v44 addObject:v41];
         objc_storeStrong(&v41, 0);
       }
@@ -1058,8 +1058,8 @@ LABEL_9:
   }
 
   memset(v39, 0, sizeof(v39));
-  v15 = [v46 allKeys];
-  v16 = [v15 countByEnumeratingWithState:v39 objects:v58 count:16];
+  allKeys = [v46 allKeys];
+  v16 = [allKeys countByEnumeratingWithState:v39 objects:v58 count:16];
   if (v16)
   {
     v12 = *v39[2];
@@ -1070,12 +1070,12 @@ LABEL_9:
       v11 = v13;
       if (*v39[2] != v12)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(allKeys);
       }
 
       v40 = *(v39[1] + 8 * v13);
       v38 = [v46 objectForKey:v40];
-      v37 = [(ACUISettingsController *)v55 _specifierForCollectionCellLinkingToAccounts:v38 withGroupIdentifier:v40 underParentGroup:v53];
+      v37 = [(ACUISettingsController *)selfCopy _specifierForCollectionCellLinkingToAccounts:v38 withGroupIdentifier:v40 underParentGroup:v53];
       if (v37)
       {
         [v44 addObject:v37];
@@ -1087,7 +1087,7 @@ LABEL_9:
       if (v11 + 1 >= v14)
       {
         v13 = 0;
-        v14 = [v15 countByEnumeratingWithState:v39 objects:v58 count:16];
+        v14 = [allKeys countByEnumeratingWithState:v39 objects:v58 count:16];
         if (!v14)
         {
           break;
@@ -1141,18 +1141,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)_specifierForAccount:(id)a3
+- (id)_specifierForAccount:(id)account
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v4 = [location[0] copy];
   v9 = [ACUIAccountSummaryCell specifierWithStyle:"specifierWithStyle:account:target:controllerLoadAction:" account:3 target:? controllerLoadAction:?];
 
   v5 = v9;
-  v7 = [(ACUISettingsController *)v11 specifier];
-  v6 = [v7 propertyForKey:PSAppSettingsBundleIDKey];
+  specifier = [(ACUISettingsController *)selfCopy specifier];
+  v6 = [specifier propertyForKey:PSAppSettingsBundleIDKey];
   [v5 setProperty:? forKey:?];
 
   v8 = v9;
@@ -1185,8 +1185,8 @@ LABEL_9:
   [PSSpecifier setProperty:v6 forKey:"setProperty:forKey:"];
 
   v8 = self->_addAccountSpecifier;
-  v10 = [(ACUISettingsController *)self specifier];
-  v9 = [v10 propertyForKey:PSAppSettingsBundleIDKey];
+  specifier = [(ACUISettingsController *)self specifier];
+  v9 = [specifier propertyForKey:PSAppSettingsBundleIDKey];
   [PSSpecifier setProperty:v8 forKey:"setProperty:forKey:"];
 
   v4 = self->_addAccountSpecifier;
@@ -1196,7 +1196,7 @@ LABEL_9:
 
 - (id)_specifierForScheduleSettings
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [NSBundle localizedStringForKey:v5 value:"localizedStringForKey:value:table:" table:?];
@@ -1204,7 +1204,7 @@ LABEL_9:
 
   [v6[0] setProperty:@"FETCH_NEW_DATA" forKey:PSIDKey];
   [v6[0] setControllerLoadAction:"_scheduleSettingsCellWasTappedWithSpecifier:"];
-  if ([(ACUISettingsController *)v7 _isAccountModificationDisabledByRestrictions])
+  if ([(ACUISettingsController *)selfCopy _isAccountModificationDisabledByRestrictions])
   {
     [v6[0] setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   }
@@ -1215,12 +1215,12 @@ LABEL_9:
   return v3;
 }
 
-- (void)_scheduleSettingsCellWasTappedWithSpecifier:(id)a3
+- (void)_scheduleSettingsCellWasTappedWithSpecifier:(id)specifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, specifier);
   v6 = 0;
   v10 = &unk_10B78;
   v9 = 0;
@@ -1238,28 +1238,28 @@ LABEL_9:
   if (v6)
   {
     [v6 setSpecifier:location[0]];
-    [v6 setParentController:v8];
-    v5 = [(ACUISettingsController *)v8 rootController];
+    [v6 setParentController:selfCopy];
+    rootController = [(ACUISettingsController *)selfCopy rootController];
     [v6 setRootController:?];
 
-    [(ACUISettingsController *)v8 showController:v6 animate:1];
+    [(ACUISettingsController *)selfCopy showController:v6 animate:1];
   }
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_scheduleSettingsModeForSpecifier:(id)a3
+- (id)_scheduleSettingsModeForSpecifier:(id)specifier
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, specifier);
   v15 = 0;
   v13 = +[NSProcessInfo processInfo];
-  v14 = [(NSProcessInfo *)v13 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [(NSProcessInfo *)v13 isLowPowerModeEnabled];
 
-  if (v14)
+  if (isLowPowerModeEnabled)
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v3 = [(NSBundle *)v12 localizedStringForKey:@"OFF" value:&stru_C648 table:@"Localizable"];
@@ -1299,46 +1299,46 @@ LABEL_9:
 
 - (void)_fetchLazyLoadedSpecifiers
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   if (!self->_isLazyLoadingPluginSpecifiers)
   {
-    v9->_isLazyLoadingPluginSpecifiers = 1;
+    selfCopy->_isLazyLoadingPluginSpecifiers = 1;
     queue = dispatch_get_global_queue(-32768, 0);
     v3 = _NSConcreteStackBlock;
     v4 = -1073741824;
     v5 = 0;
     v6 = sub_69F4;
     v7 = &unk_C2C0;
-    v8[0] = v9;
+    v8[0] = selfCopy;
     dispatch_async(queue, &v3);
 
     objc_storeStrong(v8, 0);
   }
 }
 
-- (id)_specifiersForSettingsProvidedByPlugin:(id)a3
+- (id)_specifiersForSettingsProvidedByPlugin:(id)plugin
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, plugin);
   v14 = objc_alloc_init(NSMutableArray);
-  v13 = [location[0] specifiers];
-  if ([v13 count])
+  specifiers = [location[0] specifiers];
+  if ([specifiers count])
   {
-    v12 = [v13 mutableCopy];
-    v10 = [location[0] headerText];
+    v12 = [specifiers mutableCopy];
+    headerText = [location[0] headerText];
     v11 = [PSSpecifier groupSpecifierWithName:?];
 
     [v12 insertObject:v11 atIndex:0];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [location[0] footerText];
+      footerText = [location[0] footerText];
       [v11 setProperty:? forKey:?];
     }
 
-    pluginToSpecifiersMap = v16->_pluginToSpecifiersMap;
+    pluginToSpecifiersMap = selfCopy->_pluginToSpecifiersMap;
     v6 = v12;
     v3 = objc_opt_class();
     v8 = NSStringFromClass(v3);
@@ -1350,7 +1350,7 @@ LABEL_9:
   }
 
   v5 = v14;
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&specifiers, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 
@@ -1359,7 +1359,7 @@ LABEL_9:
 
 - (id)_specifiersForLoadingMessage
 {
-  v17 = self;
+  selfCopy = self;
   v16[1] = a2;
   if (!self->_loadingInProgressSpecifiers)
   {
@@ -1374,28 +1374,28 @@ LABEL_9:
     v16[0] = v2;
 
     [v16[0] setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-    v13 = [v12[58] emptyGroupSpecifier];
-    v18[0] = v13;
+    emptyGroupSpecifier = [v12[58] emptyGroupSpecifier];
+    v18[0] = emptyGroupSpecifier;
     v18[1] = v16[0];
     v3 = [NSArray arrayWithObjects:v18 count:2];
-    loadingInProgressSpecifiers = v17->_loadingInProgressSpecifiers;
-    v17->_loadingInProgressSpecifiers = v3;
+    loadingInProgressSpecifiers = selfCopy->_loadingInProgressSpecifiers;
+    selfCopy->_loadingInProgressSpecifiers = v3;
 
     objc_storeStrong(v14, v15);
   }
 
-  v7 = v17->_loadingInProgressSpecifiers;
+  v7 = selfCopy->_loadingInProgressSpecifiers;
   v5 = v7;
 
   return v5;
 }
 
-- (void)_accountCellWasTappedWithSpecifier:(id)a3
+- (void)_accountCellWasTappedWithSpecifier:(id)specifier
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, specifier);
   v23 = [location[0] propertyForKey:ACUIAccountKey];
   if (!v23)
   {
@@ -1417,14 +1417,14 @@ LABEL_9:
   v15 = 0;
   v13 = 0;
   v6 = 0;
-  if ([(ACUISettingsController *)v25 isShowDataclassDetailFromAppsEnabled])
+  if ([(ACUISettingsController *)selfCopy isShowDataclassDetailFromAppsEnabled])
   {
-    v18 = [v23 accountType];
+    accountType = [v23 accountType];
     v17 = 1;
-    v16 = [v18 identifier];
+    identifier = [accountType identifier];
     v15 = 1;
     v6 = 0;
-    if ([v16 isEqualToString:ACAccountTypeIdentifierAppleAccount])
+    if ([identifier isEqualToString:ACAccountTypeIdentifierAppleAccount])
     {
       v14 = [v23 objectForKeyedSubscript:@"accountClass"];
       v13 = 1;
@@ -1447,7 +1447,7 @@ LABEL_9:
   if (v6)
   {
     v5 = +[ACUIAccountViewProvidersManager sharedInstance];
-    v19 = [(ACUIAccountViewProvidersManager *)v5 viewControllerClassForViewingAccount:v23 specifier:location[0] presentingVC:v25];
+    v19 = [(ACUIAccountViewProvidersManager *)v5 viewControllerClassForViewingAccount:v23 specifier:location[0] presentingVC:selfCopy];
 
     if (!v19)
     {
@@ -1475,30 +1475,30 @@ LABEL_9:
   {
     obj = objc_alloc_init(v19);
     [obj setSpecifier:location[0]];
-    [obj setAccountChangeObserver:v25];
+    [obj setAccountChangeObserver:selfCopy];
     if (([(objc_class *)v19 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)v19 isSubclassOfClass:objc_opt_class()]& 1) != 0)
     {
-      [obj setParentController:v25];
-      v3 = [(ACUISettingsController *)v25 rootController];
+      [obj setParentController:selfCopy];
+      rootController = [(ACUISettingsController *)selfCopy rootController];
       [obj setRootController:?];
 
-      [(ACUISettingsController *)v25 showController:obj animate:1];
+      [(ACUISettingsController *)selfCopy showController:obj animate:1];
     }
 
     else
     {
       v7 = [[PSSetupController alloc] initWithRootViewController:obj];
       [v7 setSpecifier:location[0]];
-      [v7 setParentController:v25];
+      [v7 setParentController:selfCopy];
       [obj setParentController:v7];
       [obj setRootController:v7];
-      [(ACUISettingsController *)v25 showController:v7 animate:1];
+      [(ACUISettingsController *)selfCopy showController:v7 animate:1];
       objc_storeStrong(&v7, 0);
     }
 
-    if (v25->_isInHandleURL)
+    if (selfCopy->_isInHandleURL)
     {
-      objc_storeStrong(&v25->_viewControllerPushedByControllerLoadActionDuringHandleURL, obj);
+      objc_storeStrong(&selfCopy->_viewControllerPushedByControllerLoadActionDuringHandleURL, obj);
     }
 
     objc_storeStrong(&obj, 0);
@@ -1524,17 +1524,17 @@ LABEL_32:
   objc_storeStrong(location, 0);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [*&v9->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[ACUISettingsController indexForIndexPath:](v9, "indexForIndexPath:", v7)}];
-  [*&v9->PSListController_opaque[OBJC_IVAR___PSListController__table] deselectRowAtIndexPath:v7 animated:1];
-  v5.receiver = v9;
+  objc_storeStrong(&v7, path);
+  v6 = [*&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[ACUISettingsController indexForIndexPath:](selfCopy, "indexForIndexPath:", v7)}];
+  [*&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__table] deselectRowAtIndexPath:v7 animated:1];
+  v5.receiver = selfCopy;
   v5.super_class = ACUISettingsController;
   [(ACUISettingsController *)&v5 tableView:location[0] didSelectRowAtIndexPath:v7];
   objc_storeStrong(&v6, 0);
@@ -1542,25 +1542,25 @@ LABEL_32:
   objc_storeStrong(location, 0);
 }
 
-- (void)viewController:(id)a3 didFinishRemovingAccountWithSuccess:(BOOL)a4
+- (void)viewController:(id)controller didFinishRemovingAccountWithSuccess:(BOOL)success
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v35 = a4;
-  if (a4)
+  objc_storeStrong(location, controller);
+  successCopy = success;
+  if (success)
   {
-    v26 = [(ACUISettingsController *)v37 navigationController];
-    v27 = [v26 topViewController];
+    navigationController = [(ACUISettingsController *)selfCopy navigationController];
+    topViewController = [navigationController topViewController];
     v33 = 0;
     v31 = 0;
     isKindOfClass = 0;
-    if (v27 != v37)
+    if (topViewController != selfCopy)
     {
-      v34 = [(ACUISettingsController *)v37 navigationController];
+      navigationController2 = [(ACUISettingsController *)selfCopy navigationController];
       v33 = 1;
-      v32 = [v34 topViewController];
+      topViewController2 = [navigationController2 topViewController];
       v31 = 1;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1576,30 +1576,30 @@ LABEL_32:
 
     if (isKindOfClass)
     {
-      v22 = [(ACUISettingsController *)v37 navigationController];
-      v30 = [v22 topViewController];
+      navigationController3 = [(ACUISettingsController *)selfCopy navigationController];
+      topViewController3 = [navigationController3 topViewController];
 
-      v24 = [v30 specifiers];
-      v23 = [location[0] specifier];
-      v25 = [v24 containsObject:?];
+      specifiers = [topViewController3 specifiers];
+      specifier = [location[0] specifier];
+      v25 = [specifiers containsObject:?];
 
       if (v25)
       {
-        v18 = [location[0] specifier];
+        specifier2 = [location[0] specifier];
         v19 = +[UIDevice currentDevice];
-        v20 = [(UIDevice *)v19 userInterfaceIdiom];
+        userInterfaceIdiom = [(UIDevice *)v19 userInterfaceIdiom];
 
-        v38 = v20;
+        v38 = userInterfaceIdiom;
         v21 = 1;
-        if (v20 != &dword_0 + 1)
+        if (userInterfaceIdiom != &dword_0 + 1)
         {
           v21 = v38 == &dword_4 + 1;
         }
 
-        [v30 removeSpecifier:v18 animated:v21];
+        [topViewController3 removeSpecifier:specifier2 animated:v21];
       }
 
-      objc_storeStrong(&v30, 0);
+      objc_storeStrong(&topViewController3, 0);
     }
 
     [location[0] setParentController:?];
@@ -1607,41 +1607,41 @@ LABEL_32:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(ACUISettingsController *)v37 navigationController];
-      v15 = [v16 viewControllers];
-      v17 = [v15 containsObject:v37];
+      navigationController4 = [(ACUISettingsController *)selfCopy navigationController];
+      viewControllers = [navigationController4 viewControllers];
+      v17 = [viewControllers containsObject:selfCopy];
 
       if (v17)
       {
-        v14 = [(ACUISettingsController *)v37 navigationController];
-        v4 = [v14 popToViewController:v37 animated:1];
+        navigationController5 = [(ACUISettingsController *)selfCopy navigationController];
+        v4 = [navigationController5 popToViewController:selfCopy animated:1];
       }
 
       else
       {
-        v12 = [(ACUISettingsController *)v37 navigationController];
-        v11 = [v12 viewControllers];
-        v10 = [(ACUISettingsController *)v37 parentViewController];
-        v13 = [v11 containsObject:?];
+        navigationController6 = [(ACUISettingsController *)selfCopy navigationController];
+        viewControllers2 = [navigationController6 viewControllers];
+        parentViewController = [(ACUISettingsController *)selfCopy parentViewController];
+        v13 = [viewControllers2 containsObject:?];
 
         if (v13)
         {
-          v9 = [(ACUISettingsController *)v37 navigationController];
-          v8 = [(ACUISettingsController *)v37 parentViewController];
-          v5 = [v9 popToViewController:? animated:?];
+          navigationController7 = [(ACUISettingsController *)selfCopy navigationController];
+          parentViewController2 = [(ACUISettingsController *)selfCopy parentViewController];
+          v5 = [navigationController7 popToViewController:? animated:?];
         }
 
         else
         {
-          v7 = [(ACUISettingsController *)v37 navigationController];
-          v6 = [v7 popToRootViewControllerAnimated:1];
+          navigationController8 = [(ACUISettingsController *)selfCopy navigationController];
+          v6 = [navigationController8 popToRootViewControllerAnimated:1];
         }
       }
     }
 
     else
     {
-      [(ACUISettingsController *)v37 dismissViewControllerAnimated:1 completion:0];
+      [(ACUISettingsController *)selfCopy dismissViewControllerAnimated:1 completion:0];
     }
   }
 
@@ -1656,18 +1656,18 @@ LABEL_32:
   return v4;
 }
 
-- (void)specifiersDidChangeForPlugin:(id)a3
+- (void)specifiersDidChangeForPlugin:(id)plugin
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  pluginToSpecifiersMap = v10->_pluginToSpecifiersMap;
+  objc_storeStrong(location, plugin);
+  pluginToSpecifiersMap = selfCopy->_pluginToSpecifiersMap;
   v3 = objc_opt_class();
   v5 = NSStringFromClass(v3);
   v8 = [(NSMutableDictionary *)pluginToSpecifiersMap objectForKey:?];
 
-  v7 = [(ACUISettingsController *)v10 _specifiersForSettingsProvidedByPlugin:location[0]];
+  v7 = [(ACUISettingsController *)selfCopy _specifiersForSettingsProvidedByPlugin:location[0]];
   oslog = _ACUILogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -1676,39 +1676,39 @@ LABEL_32:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(ACUISettingsController *)v10 replaceContiguousSpecifiers:v8 withSpecifiers:v7 animated:0];
+  [(ACUISettingsController *)selfCopy replaceContiguousSpecifiers:v8 withSpecifiers:v7 animated:0];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUISettingsController *)v4 _accountStoreDidChange];
+  objc_storeStrong(location, added);
+  [(ACUISettingsController *)selfCopy _accountStoreDidChange];
   objc_storeStrong(location, 0);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUISettingsController *)v4 _accountStoreDidChange];
+  objc_storeStrong(location, modified);
+  [(ACUISettingsController *)selfCopy _accountStoreDidChange];
   objc_storeStrong(location, 0);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(ACUISettingsController *)v4 _accountStoreDidChange];
+  objc_storeStrong(location, removed);
+  [(ACUISettingsController *)selfCopy _accountStoreDidChange];
   objc_storeStrong(location, 0);
 }
 

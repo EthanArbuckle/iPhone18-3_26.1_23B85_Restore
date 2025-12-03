@@ -2,13 +2,13 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (SOExtension)contextExtension;
-- (id)remoteContextWithError:(id *)a3;
-- (void)authorization:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5;
-- (void)canOpenURL:(id)a3 completionHandler:(id)a4;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
-- (void)presentAuthorizationViewControllerWithHints:(id)a3 requestIdentifier:(id)a4 completion:(id)a5;
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3;
-- (void)requestReauthenticationWithRequestIdentifier:(id)a3 completion:(id)a4;
+- (id)remoteContextWithError:(id *)error;
+- (void)authorization:(id)authorization didCompleteWithCredential:(id)credential error:(id)error;
+- (void)canOpenURL:(id)l completionHandler:(id)handler;
+- (void)openURL:(id)l completionHandler:(id)handler;
+- (void)presentAuthorizationViewControllerWithHints:(id)hints requestIdentifier:(id)identifier completion:(id)completion;
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion;
+- (void)requestReauthenticationWithRequestIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SOHostExtensionContext
@@ -51,7 +51,7 @@ uint64_t __59__SOHostExtensionContext__extensionAuxiliaryVendorProtocol__block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)remoteContextWithError:(id *)a3
+- (id)remoteContextWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -59,17 +59,17 @@ uint64_t __59__SOHostExtensionContext__extensionAuxiliaryVendorProtocol__block_i
   v11 = __Block_byref_object_copy__3;
   v12 = __Block_byref_object_dispose__3;
   v13 = 0;
-  v4 = [(SOHostExtensionContext *)self _auxiliaryConnection];
+  _auxiliaryConnection = [(SOHostExtensionContext *)self _auxiliaryConnection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__SOHostExtensionContext_remoteContextWithError___block_invoke;
   v7[3] = &unk_1E813E318;
   v7[4] = &v8;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v5 = [_auxiliaryConnection synchronousRemoteObjectProxyWithErrorHandler:v7];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -91,11 +91,11 @@ void __49__SOHostExtensionContext_remoteContextWithError___block_invoke(uint64_t
   *(v5 + 40) = v3;
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = SO_LOG_SOHostExtensionContext();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,9 +104,9 @@ void __49__SOHostExtensionContext_remoteContextWithError___block_invoke(uint64_t
     v17 = 2160;
     v18 = 1752392040;
     v19 = 2117;
-    v20 = v6;
+    v20 = lCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s URL: %{sensitive, mask.hash}@ on %@", buf, 0x2Au);
   }
 
@@ -114,10 +114,10 @@ void __49__SOHostExtensionContext_remoteContextWithError___block_invoke(uint64_t
   v12[1] = 3221225472;
   v12[2] = __52__SOHostExtensionContext_openURL_completionHandler___block_invoke;
   v12[3] = &unk_1E813EE20;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = lCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   [(SOHostExtensionContext *)self canOpenURL:v10 completionHandler:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -183,11 +183,11 @@ void __52__SOHostExtensionContext_openURL_completionHandler___block_invoke(uint6
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)canOpenURL:(id)a3 completionHandler:(id)a4
+- (void)canOpenURL:(id)l completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = SO_LOG_SOHostExtensionContext();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -196,15 +196,15 @@ void __52__SOHostExtensionContext_openURL_completionHandler___block_invoke(uint6
     v18 = 2160;
     v19 = 1752392040;
     v20 = 2117;
-    v21 = v6;
+    v21 = lCopy;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s URL: %{sensitive, mask.hash}@ on %@", buf, 0x2Au);
   }
 
-  v9 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v15 = 0;
-  v10 = [v9 isApplicationAvailableToOpenURL:v6 error:&v15];
+  v10 = [defaultWorkspace isApplicationAvailableToOpenURL:lCopy error:&v15];
   v11 = v15;
 
   v12 = SO_LOG_SOHostExtensionContext();
@@ -219,83 +219,83 @@ void __52__SOHostExtensionContext_openURL_completionHandler___block_invoke(uint6
       v13 = @"YES";
     }
 
-    v19 = v6;
+    v19 = lCopy;
     v20 = 2114;
     v21 = v13;
     v22 = 2114;
-    v23 = v11;
+    selfCopy = v11;
     _os_log_impl(&dword_1C1317000, v12, OS_LOG_TYPE_DEFAULT, "can open URL %{sensitive, mask.hash}@: result = %{public}@, error = %{public}@", buf, 0x2Au);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentAuthorizationViewControllerWithHints:(id)a3 requestIdentifier:(id)a4 completion:(id)a5
+- (void)presentAuthorizationViewControllerWithHints:(id)hints requestIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  hintsCopy = hints;
   v11 = SO_LOG_SOHostExtensionContext();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[SOHostExtensionContext presentAuthorizationViewControllerWithHints:requestIdentifier:completion:]";
     v16 = 2114;
-    v17 = v8;
+    v17 = identifierCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v11, OS_LOG_TYPE_DEFAULT, "%s requestIdentifier: %{public}@ on %@", &v14, 0x20u);
   }
 
-  v12 = [(SOHostExtensionContext *)self contextExtension];
-  [v12 presentAuthorizationViewControllerWithHints:v10 requestIdentifier:v8 completion:v9];
+  contextExtension = [(SOHostExtensionContext *)self contextExtension];
+  [contextExtension presentAuthorizationViewControllerWithHints:hintsCopy requestIdentifier:identifierCopy completion:completionCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorization:(id)a3 didCompleteWithCredential:(id)a4 error:(id)a5
+- (void)authorization:(id)authorization didCompleteWithCredential:(id)credential error:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  authorizationCopy = authorization;
+  errorCopy = error;
+  credentialCopy = credential;
   v11 = SO_LOG_SOHostExtensionContext();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[SOHostExtensionContext authorization:didCompleteWithCredential:error:]";
     v16 = 2114;
-    v17 = v8;
+    v17 = authorizationCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v11, OS_LOG_TYPE_DEFAULT, "%s requestIdentifier: %{public}@ on %@", &v14, 0x20u);
   }
 
-  v12 = [(SOHostExtensionContext *)self contextExtension];
-  [v12 authorization:v8 didCompleteWithCredential:v10 error:v9];
+  contextExtension = [(SOHostExtensionContext *)self contextExtension];
+  [contextExtension authorization:authorizationCopy didCompleteWithCredential:credentialCopy error:errorCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestReauthenticationWithRequestIdentifier:(id)a3 completion:(id)a4
+- (void)requestReauthenticationWithRequestIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SOHostExtensionContext *)self contextExtension];
-  [v8 requestReauthenticationWithRequestIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  contextExtension = [(SOHostExtensionContext *)self contextExtension];
+  [contextExtension requestReauthenticationWithRequestIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)presentRegistrationViewControllerWithCompletion:(id)a3
+- (void)presentRegistrationViewControllerWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SOHostExtensionContext *)self contextExtension];
-  [v5 presentRegistrationViewControllerWithCompletion:v4];
+  completionCopy = completion;
+  contextExtension = [(SOHostExtensionContext *)self contextExtension];
+  [contextExtension presentRegistrationViewControllerWithCompletion:completionCopy];
 }
 
 - (SOExtension)contextExtension

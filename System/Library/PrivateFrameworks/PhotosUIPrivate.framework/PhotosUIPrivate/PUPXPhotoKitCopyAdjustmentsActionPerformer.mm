@@ -1,6 +1,6 @@
 @interface PUPXPhotoKitCopyAdjustmentsActionPerformer
-+ (BOOL)_canPerformOnAsset:(id)a3 error:(id *)a4;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6;
++ (BOOL)_canPerformOnAsset:(id)asset error:(id *)error;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error;
 - (void)performUserInteractionTask;
 @end
 
@@ -9,33 +9,33 @@
 - (void)performUserInteractionTask
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v5 = [v4 count];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v5 = [assets count];
 
   if (v5 != 1)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:789 description:@"Adjustments can only be copied from one unique asset"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:789 description:@"Adjustments can only be copied from one unique asset"];
   }
 
-  v6 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v7 = [v6 firstObject];
+  assets2 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets2 firstObject];
 
   v21 = 0;
-  v8 = [MEMORY[0x1E69C41E8] synchronousCompositionControllerForAsset:v7 networkAccessAllowed:0 disposition:&v21 originalComposition:0];
+  v8 = [MEMORY[0x1E69C41E8] synchronousCompositionControllerForAsset:firstObject networkAccessAllowed:0 disposition:&v21 originalComposition:0];
   if (v8)
   {
-    if ([(PXPhotoKitAssetActionPerformer *)self shouldSkipUserConfirmation]|| ![PUPhotoEditCopyEditsViewController shouldPresentForCopyingFromCompositionController:v8 asset:v7])
+    if ([(PXPhotoKitAssetActionPerformer *)self shouldSkipUserConfirmation]|| ![PUPhotoEditCopyEditsViewController shouldPresentForCopyingFromCompositionController:v8 asset:firstObject])
     {
-      v15 = [MEMORY[0x1E69C4220] sharedPresetManager];
-      [v15 copyPresetFromAsset:v7 removeCrop:1];
+      mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+      [mEMORY[0x1E69C4220] copyPresetFromAsset:firstObject removeCrop:1];
 
       [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
     }
 
     else
     {
-      v9 = [[PUPhotoEditCopyEditsViewController alloc] initWithCompositionController:v8 asset:v7];
+      v9 = [[PUPhotoEditCopyEditsViewController alloc] initWithCompositionController:v8 asset:firstObject];
       objc_initWeak(&location, self);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -45,12 +45,12 @@
       [(PUPhotoEditCopyEditsViewController *)v9 setCompletionHandler:v18];
       v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v9];
       [v10 setModalPresentationStyle:7];
-      v11 = [v10 popoverPresentationController];
-      v12 = [v11 adaptiveSheetPresentationController];
-      v13 = [MEMORY[0x1E69DCF58] mediumDetent];
-      v22[0] = v13;
+      popoverPresentationController = [v10 popoverPresentationController];
+      adaptiveSheetPresentationController = [popoverPresentationController adaptiveSheetPresentationController];
+      mediumDetent = [MEMORY[0x1E69DCF58] mediumDetent];
+      v22[0] = mediumDetent;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-      [v12 setDetents:v14];
+      [adaptiveSheetPresentationController setDetents:v14];
 
       [(PXActionPerformer *)self presentViewController:v10];
       objc_destroyWeak(&v19);
@@ -77,16 +77,16 @@ void __72__PUPXPhotoKitCopyAdjustmentsActionPerformer_performUserInteractionTask
   [WeakRetained completeUserInteractionTaskWithSuccess:1 error:0];
 }
 
-+ (BOOL)_canPerformOnAsset:(id)a3 error:(id *)a4
++ (BOOL)_canPerformOnAsset:(id)asset error:(id *)error
 {
-  v5 = a3;
+  assetCopy = asset;
   v6 = +[PUPhotoEditProtoSettings sharedInstance];
-  v7 = [v6 enableSpatialMediaEditing];
+  enableSpatialMediaEditing = [v6 enableSpatialMediaEditing];
 
-  if ([v5 canPerformEditOperation:2])
+  if ([assetCopy canPerformEditOperation:2])
   {
-    v8 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:v5];
-    if (v7 & 1 | ((v8 & 1) == 0))
+    v8 = [MEMORY[0x1E69C4320] canPerformEditOnAsset:assetCopy];
+    if (enableSpatialMediaEditing & 1 | ((v8 & 1) == 0))
     {
       if (!v8)
       {
@@ -94,9 +94,9 @@ void __72__PUPXPhotoKitCopyAdjustmentsActionPerformer_performUserInteractionTask
       }
 
 LABEL_8:
-      v14 = [MEMORY[0x1E69C4220] sharedPresetManager];
+      mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
       v15 = +[PUPhotoEditProtoSettings sharedInstance];
-      v16 = [v14 assetHasCopyableAdjustments:v5 removeCrop:{objc_msgSend(v15, "enableSelectiveCopyEdits") ^ 1}];
+      v16 = [mEMORY[0x1E69C4220] assetHasCopyableAdjustments:assetCopy removeCrop:{objc_msgSend(v15, "enableSelectiveCopyEdits") ^ 1}];
 
       if (v16)
       {
@@ -104,7 +104,7 @@ LABEL_8:
         goto LABEL_13;
       }
 
-      if (a4)
+      if (error)
       {
         v9 = MEMORY[0x1E696ABC0];
         v10 = *MEMORY[0x1E69C4128];
@@ -118,14 +118,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    if (([v5 isSpatialMedia] & 1) == 0)
+    if (([assetCopy isSpatialMedia] & 1) == 0)
     {
       goto LABEL_8;
     }
   }
 
 LABEL_4:
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -136,28 +136,28 @@ LABEL_4:
   v12 = -2000;
 LABEL_6:
   [v9 px_errorWithDomain:v10 code:v12 debugDescription:v11];
-  *a4 = v13 = 0;
+  *error = v13 = 0;
 LABEL_13:
 
   return v13;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 selectedIndexPaths];
-  v10 = [v9 count];
+  snapshotCopy = snapshot;
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v10 = [selectedIndexPaths count];
 
   if (v10 == 1)
   {
-    v11 = [v8 firstObject];
+    firstObject = [snapshotCopy firstObject];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v12 = v11;
+      v12 = firstObject;
 
       if (v12)
       {
-        v13 = [a1 _canPerformOnAsset:v12 error:a6];
+        v13 = [self _canPerformOnAsset:v12 error:error];
 LABEL_9:
 
         goto LABEL_10;

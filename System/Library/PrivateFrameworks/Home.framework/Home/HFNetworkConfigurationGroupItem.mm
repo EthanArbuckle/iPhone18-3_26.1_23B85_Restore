@@ -1,33 +1,33 @@
 @interface HFNetworkConfigurationGroupItem
 - (HFNetworkConfigurationGroupItem)init;
-- (HFNetworkConfigurationGroupItem)initWithGroup:(id)a3 valueSource:(id)a4;
+- (HFNetworkConfigurationGroupItem)initWithGroup:(id)group valueSource:(id)source;
 - (NSSet)profiles;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithValueSource:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithValueSource:(id)source;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HFNetworkConfigurationGroupItem
 
-- (HFNetworkConfigurationGroupItem)initWithGroup:(id)a3 valueSource:(id)a4
+- (HFNetworkConfigurationGroupItem)initWithGroup:(id)group valueSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  sourceCopy = source;
   v16.receiver = self;
   v16.super_class = HFNetworkConfigurationGroupItem;
   v9 = [(HFItemGroupItem *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_group, a3);
-    objc_storeStrong(&v10->_valueSource, a4);
-    v11 = [(HFNetworkConfigurationGroupItem *)v10 profiles];
+    objc_storeStrong(&v9->_group, group);
+    objc_storeStrong(&v10->_valueSource, source);
+    profiles = [(HFNetworkConfigurationGroupItem *)v10 profiles];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __61__HFNetworkConfigurationGroupItem_initWithGroup_valueSource___block_invoke;
     v14[3] = &unk_277DFC308;
-    v15 = v8;
-    v12 = [v11 na_map:v14];
+    v15 = sourceCopy;
+    v12 = [profiles na_map:v14];
     [(HFItemGroupItem *)v10 setItems:v12];
   }
 
@@ -44,17 +44,17 @@ HFNetworkConfigurationItem *__61__HFNetworkConfigurationGroupItem_initWithGroup_
 
 - (HFNetworkConfigurationGroupItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithGroup_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFNetworkConfigurationGroupItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFNetworkConfigurationGroupItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFNetworkConfigurationGroupItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HFNetworkConfigurationGroupItem init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(HFNetworkConfigurationGroupItem *)self valueSource];
-  v5 = [(HFNetworkConfigurationGroupItem *)self copyWithValueSource:v4];
+  valueSource = [(HFNetworkConfigurationGroupItem *)self valueSource];
+  v5 = [(HFNetworkConfigurationGroupItem *)self copyWithValueSource:valueSource];
 
   return v5;
 }
@@ -62,18 +62,18 @@ HFNetworkConfigurationItem *__61__HFNetworkConfigurationGroupItem_initWithGroup_
 - (NSSet)profiles
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFNetworkConfigurationGroupItem *)self group];
-  v4 = [v3 hf_networkConfigurationProfiles];
-  v5 = [v2 setWithArray:v4];
+  group = [(HFNetworkConfigurationGroupItem *)self group];
+  hf_networkConfigurationProfiles = [group hf_networkConfigurationProfiles];
+  v5 = [v2 setWithArray:hf_networkConfigurationProfiles];
 
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HFNetworkConfigurationGroupItem;
-  v4 = [(HFItemGroupItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HFItemGroupItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__HFNetworkConfigurationGroupItem__subclass_updateWithOptions___block_invoke;
@@ -360,12 +360,12 @@ BOOL __63__HFNetworkConfigurationGroupItem__subclass_updateWithOptions___block_i
   return v3;
 }
 
-- (id)copyWithValueSource:(id)a3
+- (id)copyWithValueSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFNetworkConfigurationGroupItem *)self group];
-  v7 = [v5 initWithGroup:v6 valueSource:v4];
+  group = [(HFNetworkConfigurationGroupItem *)self group];
+  v7 = [v5 initWithGroup:group valueSource:sourceCopy];
 
   [v7 copyLatestResultsFromItem:self];
   return v7;

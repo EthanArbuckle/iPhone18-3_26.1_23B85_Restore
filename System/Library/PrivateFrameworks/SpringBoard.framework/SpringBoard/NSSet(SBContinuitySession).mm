@@ -13,7 +13,7 @@
   v8[3] = &unk_2783A8B78;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 bs_filter:v8];
+  v6 = [self bs_filter:v8];
 
   return v6;
 }

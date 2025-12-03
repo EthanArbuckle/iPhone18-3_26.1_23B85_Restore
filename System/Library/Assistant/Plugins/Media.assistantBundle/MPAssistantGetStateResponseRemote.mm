@@ -1,18 +1,18 @@
 @interface MPAssistantGetStateResponseRemote
 - (void)dealloc;
-- (void)performWithCompletion:(id)a3;
-- (void)setPlayingInfoFromEndpoint:(void *)a3;
+- (void)performWithCompletion:(id)completion;
+- (void)setPlayingInfoFromEndpoint:(void *)endpoint;
 @end
 
 @implementation MPAssistantGetStateResponseRemote
 
-- (void)setPlayingInfoFromEndpoint:(void *)a3
+- (void)setPlayingInfoFromEndpoint:(void *)endpoint
 {
   v67 = *MEMORY[0x277D85DE8];
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantGetStateResponseRemote *)self aceId];
-    v6 = sub_233505670(@"Get State Response Remote", v5);
+    aceId = [(MPAssistantGetStateResponseRemote *)self aceId];
+    v6 = sub_233505670(@"Get State Response Remote", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -24,7 +24,7 @@
     *buf = 138543618;
     *&buf[4] = v9;
     *&buf[12] = 2114;
-    *&buf[14] = a3;
+    *&buf[14] = endpoint;
     _os_log_impl(&dword_2334D9000, v8, OS_LOG_TYPE_DEFAULT, "Get State Response Remote (playinginfo) <%{public}@>: Set info for: %{public}@", buf, 0x16u);
   }
 
@@ -61,7 +61,7 @@
   v65 = sub_2334EAC20;
   v66 = 0;
   dispatch_group_enter(v13);
-  CFRetain(a3);
+  CFRetain(endpoint);
   v57[0] = MEMORY[0x277D85DD0];
   v57[1] = 3221225472;
   v57[2] = sub_2334EAC28;
@@ -70,7 +70,7 @@
   v17 = v10;
   v58 = v17;
   v60 = buf;
-  v61 = a3;
+  endpointCopy = endpoint;
   v18 = v13;
   v59 = v18;
   MEMORY[0x2383A1020](v16, v15, v12, v57);
@@ -84,16 +84,16 @@
   v55[2] = 0x2020000000;
   v56 = 0;
   dispatch_group_enter(v18);
-  CFRetain(a3);
+  CFRetain(endpoint);
   v46 = MEMORY[0x277D85DD0];
   v47 = 3221225472;
   v48 = sub_2334EAE2C;
   v49 = &unk_2789DB170;
-  v50 = self;
+  selfCopy = self;
   v19 = v17;
   v51 = v19;
   v53 = v55;
-  v54 = a3;
+  endpointCopy2 = endpoint;
   v20 = v18;
   v52 = v20;
   MRMediaRemoteGetPlaybackStateForPlayer();
@@ -102,7 +102,7 @@
   v44[2] = 0x2020000000;
   v45 = 0;
   dispatch_group_enter(v20);
-  CFRetain(a3);
+  CFRetain(endpoint);
   Client = MRNowPlayingPlayerPathGetClient();
   v22 = MEMORY[0x277D85CD0];
   v34 = MEMORY[0x277D85DD0];
@@ -111,10 +111,10 @@
   v37 = &unk_2789DB198;
   v41 = v44;
   v42 = Client;
-  v38 = self;
+  selfCopy2 = self;
   v23 = v19;
   v39 = v23;
-  v43 = a3;
+  endpointCopy3 = endpoint;
   v24 = v20;
   v40 = v24;
   MRMediaRemoteGetDeviceInfo();
@@ -136,7 +136,7 @@
   v25 = v24;
   v30 = v25;
   MEMORY[0x2383A0F80](v12, v28);
-  CFRetain(a3);
+  CFRetain(endpoint);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2334EB308;
@@ -146,7 +146,7 @@
   block[6] = buf;
   block[7] = v44;
   block[8] = v55;
-  block[9] = a3;
+  block[9] = endpoint;
   block[10] = v15;
   block[11] = LocalOrigin;
   dispatch_group_notify(v25, v12, block);
@@ -160,14 +160,14 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantGetStateResponseRemote *)self aceId];
-    v6 = sub_233505670(@"Get State Response Remote", v5);
+    aceId = [(MPAssistantGetStateResponseRemote *)self aceId];
+    v6 = sub_233505670(@"Get State Response Remote", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -176,17 +176,17 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = self->_requestAceHash;
-    v10 = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
+    hashedRouteUIDs = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
     *buf = 138543618;
     v29 = v9;
     v30 = 2048;
-    v31 = [v10 count];
+    v31 = [hashedRouteUIDs count];
     _os_log_impl(&dword_2334D9000, v8, OS_LOG_TYPE_DEFAULT, "Get State Response Remote (invoke) <%{public}@>: %lu UIDs", buf, 0x16u);
   }
 
   v11 = self->_requestAceHash;
-  v12 = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
-  sub_2335057BC(@"Get State Response Remote", v11, v12);
+  hashedRouteUIDs2 = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
+  sub_2335057BC(@"Get State Response Remote", v11, hashedRouteUIDs2);
 
   v13 = objc_alloc_init(MEMORY[0x277D47550]);
   v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -202,25 +202,25 @@
   self->_encoder = v18;
 
   v20 = self->_encoder;
-  v21 = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
+  hashedRouteUIDs3 = [(MPAssistantGetStateResponseRemote *)self hashedRouteUIDs];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = sub_2334EC0E8;
   v25[3] = &unk_2789DBA80;
   v26 = v13;
-  v27 = v4;
+  v27 = completionCopy;
   v25[4] = self;
   v22 = v13;
-  v23 = v4;
-  [(MPCAssistantEncodings *)v20 decodeHashedRouteUIDs:v21 completion:v25];
+  v23 = completionCopy;
+  [(MPCAssistantEncodings *)v20 decodeHashedRouteUIDs:hashedRouteUIDs3 completion:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MPAssistantGetStateResponseRemote;

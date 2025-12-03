@@ -1,71 +1,71 @@
 @interface NCDigestInfo
-- (BOOL)isEqual:(id)a3;
-- (NCDigestInfo)initWithDigestInfo:(id)a3;
-- (id)_stringForDeliveryOrder:(int64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NCDigestInfo)initWithDigestInfo:(id)info;
+- (id)_stringForDeliveryOrder:(int64_t)order;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation NCDigestInfo
 
-- (NCDigestInfo)initWithDigestInfo:(id)a3
+- (NCDigestInfo)initWithDigestInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = NCDigestInfo;
   v5 = [(NCDigestInfo *)&v19 init];
   if (v5)
   {
-    v6 = [v4 scheduleTime];
-    v7 = [v6 copy];
+    scheduleTime = [infoCopy scheduleTime];
+    v7 = [scheduleTime copy];
     scheduleTime = v5->_scheduleTime;
     v5->_scheduleTime = v7;
 
-    v9 = [v4 scheduleDate];
-    v10 = [v9 copy];
+    scheduleDate = [infoCopy scheduleDate];
+    v10 = [scheduleDate copy];
     scheduleDate = v5->_scheduleDate;
     v5->_scheduleDate = v10;
 
-    v12 = [v4 titleString];
-    v13 = [v12 copy];
+    titleString = [infoCopy titleString];
+    v13 = [titleString copy];
     titleString = v5->_titleString;
     v5->_titleString = v13;
 
-    v15 = [v4 headerString];
-    v16 = [v15 copy];
+    headerString = [infoCopy headerString];
+    v16 = [headerString copy];
     headerString = v5->_headerString;
     v5->_headerString = v16;
 
-    v5->_deliveryOrder = [v4 deliveryOrder];
+    v5->_deliveryOrder = [infoCopy deliveryOrder];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NCDigestInfo *)self scheduleTime];
-  v6 = [v4 scheduleTime];
-  if ([v5 isEqual:v6])
+  equalCopy = equal;
+  scheduleTime = [(NCDigestInfo *)self scheduleTime];
+  scheduleTime2 = [equalCopy scheduleTime];
+  if ([scheduleTime isEqual:scheduleTime2])
   {
-    v7 = [(NCDigestInfo *)self scheduleDate];
-    v8 = [v4 scheduleDate];
-    if ([v7 isEqualToDate:v8])
+    scheduleDate = [(NCDigestInfo *)self scheduleDate];
+    scheduleDate2 = [equalCopy scheduleDate];
+    if ([scheduleDate isEqualToDate:scheduleDate2])
     {
-      v9 = [(NCDigestInfo *)self titleString];
-      v10 = [v4 titleString];
-      if ([v9 isEqualToString:v10])
+      titleString = [(NCDigestInfo *)self titleString];
+      titleString2 = [equalCopy titleString];
+      if ([titleString isEqualToString:titleString2])
       {
-        v11 = [(NCDigestInfo *)self headerString];
-        v12 = [v4 headerString];
-        if ([v11 isEqualToString:v12])
+        headerString = [(NCDigestInfo *)self headerString];
+        headerString2 = [equalCopy headerString];
+        if ([headerString isEqualToString:headerString2])
         {
-          v13 = [(NCDigestInfo *)self deliveryOrder];
-          v14 = v13 == [v4 deliveryOrder];
+          deliveryOrder = [(NCDigestInfo *)self deliveryOrder];
+          v14 = deliveryOrder == [equalCopy deliveryOrder];
         }
 
         else
@@ -102,40 +102,40 @@
   return v4 + v5 + [(NSString *)self->_headerString hash]+ self->_deliveryOrder;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableDigestInfo alloc];
 
   return [(NCDigestInfo *)v4 initWithDigestInfo:self];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCDigestInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCDigestInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(NCDigestInfo *)self scheduleTime];
-  v9 = [v8 hour];
-  v10 = [(NCDigestInfo *)self scheduleTime];
-  v11 = [v7 stringWithFormat:@"{h:%lu m:%lu}", v9, objc_msgSend(v10, "minute")];
+  scheduleTime = [(NCDigestInfo *)self scheduleTime];
+  hour = [scheduleTime hour];
+  scheduleTime2 = [(NCDigestInfo *)self scheduleTime];
+  v11 = [v7 stringWithFormat:@"{h:%lu m:%lu}", hour, objc_msgSend(scheduleTime2, "minute")];
 
   v12 = objc_alloc_init(MEMORY[0x277CCA968]);
-  v13 = [MEMORY[0x277CBEAF8] systemLocale];
-  [v12 setLocale:v13];
+  systemLocale = [MEMORY[0x277CBEAF8] systemLocale];
+  [v12 setLocale:systemLocale];
 
   [v12 setDateStyle:1];
   [v12 setTimeStyle:3];
-  v14 = [(NCDigestInfo *)self scheduleDate];
-  v15 = [v12 stringFromDate:v14];
+  scheduleDate = [(NCDigestInfo *)self scheduleDate];
+  v15 = [v12 stringFromDate:scheduleDate];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -145,10 +145,10 @@
   v22 = v16;
   v23 = v11;
   v24 = v15;
-  v25 = self;
+  selfCopy = self;
   v17 = v15;
   v18 = v11;
-  [v16 appendBodySectionWithName:0 multilinePrefix:v5 block:v21];
+  [v16 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v21];
 
   v19 = v16;
   return v16;
@@ -171,25 +171,25 @@ void __54__NCDigestInfo_descriptionBuilderWithMultilinePrefix___block_invoke(uin
   [v6 appendString:v7 withName:@"deliveryOrder"];
 }
 
-- (id)_stringForDeliveryOrder:(int64_t)a3
+- (id)_stringForDeliveryOrder:(int64_t)order
 {
-  if (a3 > 2)
+  if (order > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_2783717A8[a3];
+    return off_2783717A8[order];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(NCDigestInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCDigestInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface PKAddShareablePassConfiguration
-+ (void)_configurationForPassMetadata:(id)a3 provisioningPolicyIdentifier:(id)a4 primaryAction:(unint64_t)a5 completion:(id)a6;
++ (void)_configurationForPassMetadata:(id)metadata provisioningPolicyIdentifier:(id)identifier primaryAction:(unint64_t)action completion:(id)completion;
 - (BOOL)hasRequiredDataForProvisioning;
 - (NSArray)metadataProviders;
-- (PKAddShareablePassConfiguration)initWithCoder:(id)a3;
-- (PKAddShareablePassConfiguration)initWithPrimaryAction:(unint64_t)a3 credentialsMetadata:(id)a4;
-- (id)_primaryActionToString:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_extendableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAddShareablePassConfiguration)initWithCoder:(id)coder;
+- (PKAddShareablePassConfiguration)initWithPrimaryAction:(unint64_t)action credentialsMetadata:(id)metadata;
+- (id)_primaryActionToString:(unint64_t)string;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_extendableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAddShareablePassConfiguration
 
-+ (void)_configurationForPassMetadata:(id)a3 provisioningPolicyIdentifier:(id)a4 primaryAction:(unint64_t)a5 completion:(id)a6
++ (void)_configurationForPassMetadata:(id)metadata provisioningPolicyIdentifier:(id)identifier primaryAction:(unint64_t)action completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  v12 = [[PKAddShareablePassConfiguration alloc] initWithPrimaryAction:a5 credentialsMetadata:v11];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  metadataCopy = metadata;
+  v12 = [[PKAddShareablePassConfiguration alloc] initWithPrimaryAction:action credentialsMetadata:metadataCopy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __119__PKAddShareablePassConfiguration__configurationForPassMetadata_provisioningPolicyIdentifier_primaryAction_completion___block_invoke;
   aBlock[3] = &unk_1E79CEA58;
-  v27 = v10;
+  v27 = completionCopy;
   v13 = v12;
   v25 = v13;
-  v26 = v9;
-  v14 = v9;
-  v15 = v10;
+  v26 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v16 = _Block_copy(aBlock);
   v17 = PKLogFacilityTypeGetObject(0x1CuLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -125,17 +125,17 @@ void __119__PKAddShareablePassConfiguration__configurationForPassMetadata_provis
   }
 }
 
-- (PKAddShareablePassConfiguration)initWithPrimaryAction:(unint64_t)a3 credentialsMetadata:(id)a4
+- (PKAddShareablePassConfiguration)initWithPrimaryAction:(unint64_t)action credentialsMetadata:(id)metadata
 {
-  v7 = a4;
+  metadataCopy = metadata;
   v11.receiver = self;
   v11.super_class = PKAddShareablePassConfiguration;
   v8 = [(PKAddSecureElementPassConfiguration *)&v11 initWithType:2];
   v9 = v8;
   if (v8)
   {
-    v8->_primaryAction = a3;
-    objc_storeStrong(&v8->_credentialsMetadata, a4);
+    v8->_primaryAction = action;
+    objc_storeStrong(&v8->_credentialsMetadata, metadata);
   }
 
   return v9;
@@ -143,9 +143,9 @@ void __119__PKAddShareablePassConfiguration__configurationForPassMetadata_provis
 
 - (BOOL)hasRequiredDataForProvisioning
 {
-  v3 = [(PKAddShareablePassConfiguration *)self credentialsMetadata];
-  v4 = [v3 pk_containsObjectPassingTest:&__block_literal_global_59];
-  v5 = [v3 count];
+  credentialsMetadata = [(PKAddShareablePassConfiguration *)self credentialsMetadata];
+  v4 = [credentialsMetadata pk_containsObjectPassingTest:&__block_literal_global_59];
+  v5 = [credentialsMetadata count];
   v6 = v5 != 0;
   if (v5 && v4)
   {
@@ -189,27 +189,27 @@ uint64_t __65__PKAddShareablePassConfiguration_hasRequiredDataForProvisioning__b
   }
 }
 
-- (void)_extendableDescription:(id)a3
+- (void)_extendableDescription:(id)description
 {
   v6.receiver = self;
   v6.super_class = PKAddShareablePassConfiguration;
-  v4 = a3;
-  [(PKAddSecureElementPassConfiguration *)&v6 _extendableDescription:v4];
-  [v4 appendFormat:@"credentialsMetadata: '%@'; ", self->_credentialsMetadata];
-  [v4 appendFormat:@"requiresNVC: '%d'; ", self->_requiresNonceValidityChecks];
+  descriptionCopy = description;
+  [(PKAddSecureElementPassConfiguration *)&v6 _extendableDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"credentialsMetadata: '%@'; ", self->_credentialsMetadata];
+  [descriptionCopy appendFormat:@"requiresNVC: '%d'; ", self->_requiresNonceValidityChecks];
   v5 = [(PKAddShareablePassConfiguration *)self _primaryActionToString:self->_primaryAction];
-  [v4 appendFormat:@"primaryAction: '%@'; ", v5];
+  [descriptionCopy appendFormat:@"primaryAction: '%@'; ", v5];
 }
 
-- (id)_primaryActionToString:(unint64_t)a3
+- (id)_primaryActionToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Share";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -220,11 +220,11 @@ uint64_t __65__PKAddShareablePassConfiguration_hasRequiredDataForProvisioning__b
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = PKAddShareablePassConfiguration;
-  v4 = [(PKAddSecureElementPassConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(PKAddSecureElementPassConfiguration *)&v8 copyWithZone:zone];
   v5 = [(NSArray *)self->_credentialsMetadata copy];
   v6 = v4[8];
   v4[8] = v5;
@@ -234,35 +234,35 @@ uint64_t __65__PKAddShareablePassConfiguration_hasRequiredDataForProvisioning__b
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PKAddShareablePassConfiguration;
-  v4 = a3;
-  [(PKAddSecureElementPassConfiguration *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_credentialsMetadata forKey:{@"credentialsMetadata", v6.receiver, v6.super_class}];
-  [v4 encodeBool:self->_requiresNonceValidityChecks forKey:@"requiresNonceValidityChecks"];
+  coderCopy = coder;
+  [(PKAddSecureElementPassConfiguration *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_credentialsMetadata forKey:{@"credentialsMetadata", v6.receiver, v6.super_class}];
+  [coderCopy encodeBool:self->_requiresNonceValidityChecks forKey:@"requiresNonceValidityChecks"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_primaryAction];
-  [v4 encodeObject:v5 forKey:@"primaryAction"];
+  [coderCopy encodeObject:v5 forKey:@"primaryAction"];
 }
 
-- (PKAddShareablePassConfiguration)initWithCoder:(id)a3
+- (PKAddShareablePassConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAddShareablePassConfiguration;
-  v5 = [(PKAddSecureElementPassConfiguration *)&v13 initWithCoder:v4];
+  v5 = [(PKAddSecureElementPassConfiguration *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"credentialsMetadata"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"credentialsMetadata"];
     credentialsMetadata = v5->_credentialsMetadata;
     v5->_credentialsMetadata = v9;
 
-    v5->_requiresNonceValidityChecks = [v4 decodeBoolForKey:@"requiresNonceValidityChecks"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAction"];
+    v5->_requiresNonceValidityChecks = [coderCopy decodeBoolForKey:@"requiresNonceValidityChecks"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAction"];
     v5->_primaryAction = [v11 unsignedIntegerValue];
   }
 

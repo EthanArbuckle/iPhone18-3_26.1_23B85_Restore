@@ -1,20 +1,20 @@
 @interface WFWordPressBlog
 + (id)JSONKeyPathsByPropertyKey;
-+ (id)blogWithEndpointURL:(id)a3;
-- (WFWordPressBlog)initWithEndpointURL:(id)a3;
++ (id)blogWithEndpointURL:(id)l;
+- (WFWordPressBlog)initWithEndpointURL:(id)l;
 @end
 
 @implementation WFWordPressBlog
 
-- (WFWordPressBlog)initWithEndpointURL:(id)a3
+- (WFWordPressBlog)initWithEndpointURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = WFWordPressBlog;
   v5 = [(MTLModel *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     endpointURL = v5->_endpointURL;
     v5->_endpointURL = v6;
 
@@ -24,10 +24,10 @@
   return v5;
 }
 
-+ (id)blogWithEndpointURL:(id)a3
++ (id)blogWithEndpointURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEndpointURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithEndpointURL:lCopy];
 
   return v5;
 }

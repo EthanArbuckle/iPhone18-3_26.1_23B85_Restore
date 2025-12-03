@@ -1,31 +1,31 @@
 @interface BNImageProvider
-- (BNImageProvider)initWithCoder:(id)a3;
-- (BNImageProvider)initWithImage:(id)a3;
-- (BNImageProvider)initWithImageName:(id)a3;
-- (BNImageProvider)initWithImageName:(id)a3 fromBundle:(id)a4;
-- (BNImageProvider)initWithSystemImageName:(id)a3;
+- (BNImageProvider)initWithCoder:(id)coder;
+- (BNImageProvider)initWithImage:(id)image;
+- (BNImageProvider)initWithImageName:(id)name;
+- (BNImageProvider)initWithImageName:(id)name fromBundle:(id)bundle;
+- (BNImageProvider)initWithSystemImageName:(id)name;
 - (UIImage)image;
-- (id)_initWithImageSource:(id)a3 ofType:(int64_t)a4 fromBundle:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)_initWithImageSource:(id)source ofType:(int64_t)type fromBundle:(id)bundle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BNImageProvider
 
-- (id)_initWithImageSource:(id)a3 ofType:(int64_t)a4 fromBundle:(id)a5
+- (id)_initWithImageSource:(id)source ofType:(int64_t)type fromBundle:(id)bundle
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  sourceCopy = source;
+  bundleCopy = bundle;
+  if (!sourceCopy)
   {
     [BNImageProvider _initWithImageSource:ofType:fromBundle:];
   }
 
-  if ((a4 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((type - 4) <= 0xFFFFFFFFFFFFFFFCLL)
   {
-    [BNImageProvider _initWithImageSource:a2 ofType:self fromBundle:a4];
+    [BNImageProvider _initWithImageSource:a2 ofType:self fromBundle:type];
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -33,27 +33,27 @@
       goto LABEL_15;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = @"image";
     goto LABEL_14;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = @"[UNKNOWN]";
-    if (a4 == 2)
+    if (type == 2)
     {
       v13 = @"imageName";
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
       v13 = @"systemImageName";
     }
 
 LABEL_14:
-    [v12 handleFailureInMethod:a2 object:self file:@"BNImageProvider.m" lineNumber:64 description:{@"Image source (%@) is not of specified type (%@)", v10, v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BNImageProvider.m" lineNumber:64 description:{@"Image source (%@) is not of specified type (%@)", sourceCopy, v13}];
   }
 
 LABEL_15:
@@ -63,10 +63,10 @@ LABEL_15:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_imageSource, a3);
-    v15->_imageSourceType = a4;
-    v16 = [v11 bundleURL];
-    v17 = [v16 copy];
+    objc_storeStrong(&v14->_imageSource, source);
+    v15->_imageSourceType = type;
+    bundleURL = [bundleCopy bundleURL];
+    v17 = [bundleURL copy];
     bundleURL = v15->_bundleURL;
     v15->_bundleURL = v17;
   }
@@ -74,55 +74,55 @@ LABEL_15:
   return v15;
 }
 
-- (BNImageProvider)initWithImage:(id)a3
+- (BNImageProvider)initWithImage:(id)image
 {
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     [BNImageProvider initWithImage:];
   }
 
-  v5 = [(BNImageProvider *)self _initWithImageSource:v4 ofType:1 fromBundle:0];
+  v5 = [(BNImageProvider *)self _initWithImageSource:imageCopy ofType:1 fromBundle:0];
 
   return v5;
 }
 
-- (BNImageProvider)initWithImageName:(id)a3
+- (BNImageProvider)initWithImageName:(id)name
 {
-  v4 = a3;
-  if (![v4 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     [BNImageProvider initWithImageName:];
   }
 
-  v5 = [(BNImageProvider *)self _initWithImageSource:v4 ofType:2 fromBundle:0];
+  v5 = [(BNImageProvider *)self _initWithImageSource:nameCopy ofType:2 fromBundle:0];
 
   return v5;
 }
 
-- (BNImageProvider)initWithImageName:(id)a3 fromBundle:(id)a4
+- (BNImageProvider)initWithImageName:(id)name fromBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  nameCopy = name;
+  bundleCopy = bundle;
+  if (![nameCopy length])
   {
     [BNImageProvider initWithImageName:fromBundle:];
   }
 
-  v8 = [(BNImageProvider *)self _initWithImageSource:v6 ofType:2 fromBundle:v7];
+  v8 = [(BNImageProvider *)self _initWithImageSource:nameCopy ofType:2 fromBundle:bundleCopy];
 
   return v8;
 }
 
-- (BNImageProvider)initWithSystemImageName:(id)a3
+- (BNImageProvider)initWithSystemImageName:(id)name
 {
-  v4 = a3;
-  if (![v4 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     [BNImageProvider initWithSystemImageName:];
   }
 
-  v5 = [(BNImageProvider *)self _initWithImageSource:v4 ofType:3 fromBundle:0];
+  v5 = [(BNImageProvider *)self _initWithImageSource:nameCopy ofType:3 fromBundle:0];
 
   return v5;
 }
@@ -171,28 +171,28 @@ LABEL_13:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:self->_imageSourceType forKey:@"imageSourceType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_imageSourceType forKey:@"imageSourceType"];
   bundleURL = self->_bundleURL;
   if (bundleURL)
   {
-    [v6 encodeObject:bundleURL forKey:@" bundleURL"];
+    [coderCopy encodeObject:bundleURL forKey:@" bundleURL"];
   }
 
   v5 = self->_imageSourceType - 1;
   if (v5 <= 2)
   {
-    [v6 encodeObject:self->_imageSource forKey:off_1E81E50D8[v5]];
+    [coderCopy encodeObject:self->_imageSource forKey:off_1E81E50D8[v5]];
   }
 }
 
-- (BNImageProvider)initWithCoder:(id)a3
+- (BNImageProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"imageSourceType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@" bundleURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"imageSourceType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@" bundleURL"];
   v7 = v6;
   if (v5 == 1)
   {
@@ -217,7 +217,7 @@ LABEL_8:
     v8 = @"imageName";
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v8];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v8];
   if (!v7)
   {
     goto LABEL_8;

@@ -12,9 +12,9 @@
     v2 = 24;
   }
 
-  v3 = [*(&self->super.isa + v2) route];
+  route = [*(&self->super.isa + v2) route];
 
-  return v3;
+  return route;
 }
 
 @end

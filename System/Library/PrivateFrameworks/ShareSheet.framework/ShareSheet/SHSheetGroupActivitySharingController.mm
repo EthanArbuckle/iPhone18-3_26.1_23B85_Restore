@@ -1,18 +1,18 @@
 @interface SHSheetGroupActivitySharingController
 - (BOOL)isPossibleToDirectlyCreateActivity;
-- (SHSheetGroupActivitySharingController)initWithItemProvider:(id)a3;
+- (SHSheetGroupActivitySharingController)initWithItemProvider:(id)provider;
 - (SHSheetGroupActivitySharingControllerDelegate)delegate;
 - (void)directlyCreateActivity;
-- (void)prepareForShareSheetSessionWithCompletion:(id)a3;
-- (void)setShareSheetSessionID:(id)a3;
+- (void)prepareForShareSheetSessionWithCompletion:(id)completion;
+- (void)setShareSheetSessionID:(id)d;
 - (void)viewDidLoad;
 @end
 
 @implementation SHSheetGroupActivitySharingController
 
-- (SHSheetGroupActivitySharingController)initWithItemProvider:(id)a3
+- (SHSheetGroupActivitySharingController)initWithItemProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = SHSheetGroupActivitySharingController;
   v5 = [(SHSheetGroupActivitySharingController *)&v30 initWithNibName:0 bundle:0];
@@ -29,7 +29,7 @@
       v7 = v6;
       if ([(objc_class *)v6 instancesRespondToSelector:sel_initWithItemProvider_])
       {
-        v8 = [[v7 alloc] initWithItemProvider:v4];
+        v8 = [[v7 alloc] initWithItemProvider:providerCopy];
         groupActivitySharingController = v5->_groupActivitySharingController;
         v5->_groupActivitySharingController = v8;
 
@@ -78,13 +78,13 @@ void __62__SHSheetGroupActivitySharingController_initWithItemProvider___block_in
 
 - (void)directlyCreateActivity
 {
-  v3 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+  groupActivitySharingController = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v13 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
-    [v13 directlyCreateActivity];
+    groupActivitySharingController2 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+    [groupActivitySharingController2 directlyCreateActivity];
   }
 
   else
@@ -99,38 +99,38 @@ void __62__SHSheetGroupActivitySharingController_initWithItemProvider___block_in
 
 - (BOOL)isPossibleToDirectlyCreateActivity
 {
-  v3 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
-  v4 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+  groupActivitySharingController = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+  groupActivitySharingController2 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [v3 isPossibleToDirectlyCreateActivity];
+    isPossibleToDirectlyCreateActivity = [groupActivitySharingController isPossibleToDirectlyCreateActivity];
   }
 
   else
   {
-    v6 = 0;
+    isPossibleToDirectlyCreateActivity = 0;
   }
 
-  return v6;
+  return isPossibleToDirectlyCreateActivity;
 }
 
-- (void)prepareForShareSheetSessionWithCompletion:(id)a3
+- (void)prepareForShareSheetSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
-  v5 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+  completionCopy = completion;
+  groupActivitySharingController = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
+  groupActivitySharingController2 = [(SHSheetGroupActivitySharingController *)self groupActivitySharingController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    [v7 prepareForShareSheetSessionWithCompletion:v4];
+    [groupActivitySharingController prepareForShareSheetSessionWithCompletion:completionCopy];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -145,38 +145,38 @@ void __62__SHSheetGroupActivitySharingController_initWithItemProvider___block_in
   {
     [(GPGroupActivitySharingControllerHelpers *)groupActivitySharingController willMoveToParentViewController:self];
     [(SHSheetGroupActivitySharingController *)self addChildViewController:self->_groupActivitySharingController];
-    v4 = [(SHSheetGroupActivitySharingController *)self view];
-    v5 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
-    [v4 addSubview:v5];
+    view = [(SHSheetGroupActivitySharingController *)self view];
+    view2 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
+    [view addSubview:view2];
 
     v21 = MEMORY[0x1E696ACD8];
-    v31 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
-    v29 = [v31 leadingAnchor];
-    v30 = [(SHSheetGroupActivitySharingController *)self view];
-    v28 = [v30 safeAreaLayoutGuide];
-    v27 = [v28 leadingAnchor];
-    v26 = [v29 constraintEqualToAnchor:v27];
+    view3 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
+    leadingAnchor = [view3 leadingAnchor];
+    view4 = [(SHSheetGroupActivitySharingController *)self view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v33[0] = v26;
-    v25 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
-    v23 = [v25 trailingAnchor];
-    v24 = [(SHSheetGroupActivitySharingController *)self view];
-    v22 = [v24 safeAreaLayoutGuide];
-    v20 = [v22 trailingAnchor];
-    v19 = [v23 constraintEqualToAnchor:v20];
+    view5 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
+    trailingAnchor = [view5 trailingAnchor];
+    view6 = [(SHSheetGroupActivitySharingController *)self view];
+    safeAreaLayoutGuide2 = [view6 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v33[1] = v19;
-    v18 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
-    v16 = [v18 topAnchor];
-    v17 = [(SHSheetGroupActivitySharingController *)self view];
-    v15 = [v17 safeAreaLayoutGuide];
-    v14 = [v15 topAnchor];
-    v6 = [v16 constraintEqualToAnchor:v14];
+    view7 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
+    topAnchor = [view7 topAnchor];
+    view8 = [(SHSheetGroupActivitySharingController *)self view];
+    safeAreaLayoutGuide3 = [view8 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+    v6 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v33[2] = v6;
-    v7 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
-    v8 = [v7 bottomAnchor];
-    v9 = [(SHSheetGroupActivitySharingController *)self view];
-    v10 = [v9 safeAreaLayoutGuide];
-    v11 = [v10 bottomAnchor];
-    v12 = [v8 constraintEqualToAnchor:v11];
+    view9 = [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController view];
+    bottomAnchor = [view9 bottomAnchor];
+    view10 = [(SHSheetGroupActivitySharingController *)self view];
+    safeAreaLayoutGuide4 = [view10 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+    v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v33[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v21 activateConstraints:v13];
@@ -185,13 +185,13 @@ void __62__SHSheetGroupActivitySharingController_initWithItemProvider___block_in
   }
 }
 
-- (void)setShareSheetSessionID:(id)a3
+- (void)setShareSheetSessionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (![(NSString *)self->_shareSheetSessionID isEqualToString:?])
   {
-    objc_storeStrong(&self->_shareSheetSessionID, a3);
-    [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController setShareSheetSessionID:v5];
+    objc_storeStrong(&self->_shareSheetSessionID, d);
+    [(GPGroupActivitySharingControllerHelpers *)self->_groupActivitySharingController setShareSheetSessionID:dCopy];
   }
 }
 

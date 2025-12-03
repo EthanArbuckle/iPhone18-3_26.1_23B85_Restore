@@ -1,7 +1,7 @@
 @interface DeviceRecoveryOverrideClient
 - (DeviceRecoveryOverrideClient)init;
 - (NSDictionary)allOverrides;
-- (id)fetchOverride:(id)a3;
+- (id)fetchOverride:(id)override;
 - (int)brainLoadResult;
 - (int)brainType;
 - (int)issuesScanResult;
@@ -11,13 +11,13 @@
 - (void)allOverrides;
 - (void)init;
 - (void)removeAllOverrides;
-- (void)setBrainLoadResult:(int)a3;
-- (void)setBrainType:(int)a3;
-- (void)setIssuesScanResult:(int)a3;
-- (void)setNetworkAvailableResult:(int)a3;
-- (void)setOverride:(id)a3 value:(id)a4;
-- (void)setRecoveryResult:(int)a3;
-- (void)setUserAuthResult:(int)a3;
+- (void)setBrainLoadResult:(int)result;
+- (void)setBrainType:(int)type;
+- (void)setIssuesScanResult:(int)result;
+- (void)setNetworkAvailableResult:(int)result;
+- (void)setOverride:(id)override value:(id)value;
+- (void)setRecoveryResult:(int)result;
+- (void)setUserAuthResult:(int)result;
 @end
 
 @implementation DeviceRecoveryOverrideClient
@@ -32,28 +32,28 @@
     v3 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.DeviceRecoveryOverrideService" options:4096];
     [(DeviceRecoveryOverrideClient *)v2 setServiceConnection:v3];
 
-    v4 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
+    serviceConnection = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
 
-    if (v4)
+    if (serviceConnection)
     {
       v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DeviceRecoveryOverrideServiceInterface];
       if (v5)
       {
         v6 = v5;
-        v7 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
-        [v7 setRemoteObjectInterface:v6];
+        serviceConnection2 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
+        [serviceConnection2 setRemoteObjectInterface:v6];
 
         objc_initWeak(&location, v2);
-        v8 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
-        [v8 setInterruptionHandler:&__block_literal_global_1];
+        serviceConnection3 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
+        [serviceConnection3 setInterruptionHandler:&__block_literal_global_1];
 
-        v9 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
+        serviceConnection4 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection];
         v12 = _NSConcreteStackBlock;
         v13 = 3221225472;
         v14 = __36__DeviceRecoveryOverrideClient_init__block_invoke_19;
         v15 = &unk_2C618;
         objc_copyWeak(&v16, &location);
-        [v9 setInvalidationHandler:&v12];
+        [serviceConnection4 setInvalidationHandler:&v12];
 
         v10 = [(DeviceRecoveryOverrideClient *)v2 serviceConnection:v12];
         [v10 activate];
@@ -103,21 +103,21 @@ void __36__DeviceRecoveryOverrideClient_init__block_invoke_19(uint64_t a1)
   [WeakRetained setServiceConnection:0];
 }
 
-- (id)fetchOverride:(id)a3
+- (id)fetchOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v5 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+  serviceConnection = [(DeviceRecoveryOverrideClient *)self serviceConnection];
 
-  if (v5)
+  if (serviceConnection)
   {
-    v6 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
+    serviceConnection2 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+    v7 = [serviceConnection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_22];
 
     if (v7)
     {
@@ -126,7 +126,7 @@ void __36__DeviceRecoveryOverrideClient_init__block_invoke_19(uint64_t a1)
       v10[2] = __46__DeviceRecoveryOverrideClient_fetchOverride___block_invoke_24;
       v10[3] = &unk_2C660;
       v10[4] = &v11;
-      [v7 fetchOverride:v4 callback:v10];
+      [v7 fetchOverride:overrideCopy callback:v10];
       goto LABEL_4;
     }
 
@@ -161,19 +161,19 @@ void __46__DeviceRecoveryOverrideClient_fetchOverride___block_invoke(id a1, NSEr
   }
 }
 
-- (void)setOverride:(id)a3 value:(id)a4
+- (void)setOverride:(id)override value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  overrideCopy = override;
+  valueCopy = value;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v8 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+  serviceConnection = [(DeviceRecoveryOverrideClient *)self serviceConnection];
 
-  if (!v8)
+  if (!serviceConnection)
   {
     v13 = DRGetLogHandle();
     [(DeviceRecoveryOverrideClient *)v13 setOverride:&v25 value:?];
@@ -185,8 +185,8 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v9 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+  serviceConnection2 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+  v10 = [serviceConnection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
 
   if (!v10)
   {
@@ -195,14 +195,14 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  if (v7)
+  if (valueCopy)
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke_30;
     v16[3] = &unk_2C688;
     v16[4] = &v18;
-    [v10 setOverride:v6 value:v7 callback:v16];
+    [v10 setOverride:overrideCopy value:valueCopy callback:v16];
     if (v19[5])
     {
       v11 = DRGetLogHandle();
@@ -225,7 +225,7 @@ LABEL_12:
     v17[2] = __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke_28;
     v17[3] = &unk_2C688;
     v17[4] = &v18;
-    [v10 removeOverride:v6 callback:v17];
+    [v10 removeOverride:overrideCopy callback:v17];
     if (v19[5])
     {
       v15 = DRGetLogHandle();
@@ -272,11 +272,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setBrainType:(int)a3
+- (void)setBrainType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:type];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"BrainType" value:v4];
   }
 
@@ -304,11 +304,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setUserAuthResult:(int)a3
+- (void)setUserAuthResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:result];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"UserAuthResult" value:v4];
   }
 
@@ -336,11 +336,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setNetworkAvailableResult:(int)a3
+- (void)setNetworkAvailableResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:result];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"NetworkAvailableResult" value:v4];
   }
 
@@ -368,11 +368,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return ResultFromOverride;
 }
 
-- (void)setBrainLoadResult:(int)a3
+- (void)setBrainLoadResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:result];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"BrainLoadResult" value:v4];
   }
 
@@ -400,11 +400,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setIssuesScanResult:(int)a3
+- (void)setIssuesScanResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:result];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"IssuesScanResult" value:v4];
   }
 
@@ -432,11 +432,11 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   return v4;
 }
 
-- (void)setRecoveryResult:(int)a3
+- (void)setRecoveryResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    v4 = [NSNumber numberWithUnsignedChar:a3];
+    v4 = [NSNumber numberWithUnsignedChar:result];
     [(DeviceRecoveryOverrideClient *)self setOverride:@"RecoveryResult" value:v4];
   }
 
@@ -455,12 +455,12 @@ void __50__DeviceRecoveryOverrideClient_setOverride_value___block_invoke(id a1, 
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  v3 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+  serviceConnection = [(DeviceRecoveryOverrideClient *)self serviceConnection];
 
-  if (v3)
+  if (serviceConnection)
   {
-    v4 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
-    v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_33];
+    serviceConnection2 = [(DeviceRecoveryOverrideClient *)self serviceConnection];
+    v5 = [serviceConnection2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_33];
 
     if (v5)
     {

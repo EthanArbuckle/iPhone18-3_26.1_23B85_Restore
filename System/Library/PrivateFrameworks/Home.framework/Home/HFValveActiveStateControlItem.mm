@@ -1,23 +1,23 @@
 @interface HFValveActiveStateControlItem
-- (HFValveActiveStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6;
-- (HFValveActiveStateControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
+- (HFValveActiveStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results;
+- (HFValveActiveStateControlItem)initWithValueSource:(id)source displayResults:(id)results;
 - (id)_faucetValveSubtypeToIconIdentifierMap;
-- (id)_iconDescriptorForServiceSubtype:(id)a3 inUse:(BOOL)a4 active:(BOOL)a5 hasFaucetAsParentService:(BOOL)a6;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
-- (id)resultsForBatchReadResponse:(id)a3;
-- (id)writeValue:(id)a3;
+- (id)_iconDescriptorForServiceSubtype:(id)subtype inUse:(BOOL)use active:(BOOL)active hasFaucetAsParentService:(BOOL)service;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
+- (id)resultsForBatchReadResponse:(id)response;
+- (id)writeValue:(id)value;
 @end
 
 @implementation HFValveActiveStateControlItem
 
-- (HFValveActiveStateControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFValveActiveStateControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB98];
   v26[0] = *MEMORY[0x277CCF908];
   v7 = MEMORY[0x277CBEA60];
-  v8 = a4;
-  v9 = a3;
+  resultsCopy = results;
+  sourceCopy = source;
   v10 = [v7 arrayWithObjects:v26 count:1];
   v11 = [v6 setWithArray:v10];
 
@@ -37,38 +37,38 @@
   v18 = [MEMORY[0x277CBEB98] set];
   v22.receiver = self;
   v22.super_class = HFValveActiveStateControlItem;
-  v19 = [(HFPowerStateControlItem *)&v22 initWithValueSource:v9 auxiliaryTargetValueTuples:v18 additionalCharacteristicOptions:v17 displayResults:v8];
+  v19 = [(HFPowerStateControlItem *)&v22 initWithValueSource:sourceCopy auxiliaryTargetValueTuples:v18 additionalCharacteristicOptions:v17 displayResults:resultsCopy];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (HFValveActiveStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6
+- (HFValveActiveStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithValueSource_displayResults_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HFValveActiveStateControlItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFValveActiveStateControlItem initWithValueSource:auxiliaryTargetValueTuples:additionalCharacteristicOptions:displayResults:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFValveActiveStateControlItem.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HFValveActiveStateControlItem initWithValueSource:auxiliaryTargetValueTuples:additionalCharacteristicOptions:displayResults:]", v9}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(HFControlItem *)self displayResults];
-  v8 = [v6 initWithValueSource:v5 displayResults:v7];
+  displayResults = [(HFControlItem *)self displayResults];
+  v8 = [v6 initWithValueSource:sourceCopy displayResults:displayResults];
 
   [v8 copyLatestResultsFromItem:self];
   return v8;
 }
 
-- (id)writeValue:(id)a3
+- (id)writeValue:(id)value
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v5 = v4;
+  v5 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -81,12 +81,12 @@
 
   v7 = v6;
 
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __44__HFValveActiveStateControlItem_writeValue___block_invoke;
   v21[3] = &__block_descriptor_40_e5__8__0l;
-  v21[4] = v8;
+  v21[4] = integerValue;
   v9 = __44__HFValveActiveStateControlItem_writeValue___block_invoke(v21);
   v10 = [HFServiceTreeTypePredicate alloc];
   v11 = [MEMORY[0x277CBEB98] set];
@@ -94,9 +94,9 @@
 
   v13 = [HFServiceStateCharacteristicRecipe alloc];
   v14 = [(HFServiceStateCharacteristicRecipe *)v13 initWithCharacteristicType:*MEMORY[0x277CCF748] servicePredicate:v12 required:1];
-  v15 = [(HFControlItem *)self valueSource];
+  valueSource = [(HFControlItem *)self valueSource];
   v16 = &unk_282525020;
-  if (v8 == 2)
+  if (integerValue == 2)
   {
     v16 = &unk_282525008;
   }
@@ -104,7 +104,7 @@
   v22 = v14;
   v23[0] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-  v18 = [v15 writeValuesForCharacteristicRecipes:v17];
+  v18 = [valueSource writeValuesForCharacteristicRecipes:v17];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -173,33 +173,33 @@ void __44__HFValveActiveStateControlItem_writeValue___block_invoke_5()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resultsForBatchReadResponse:(id)a3
+- (id)resultsForBatchReadResponse:(id)response
 {
   v36.receiver = self;
   v36.super_class = HFValveActiveStateControlItem;
-  v4 = a3;
-  v5 = [(HFControlItem *)&v36 resultsForBatchReadResponse:v4];
+  responseCopy = response;
+  v5 = [(HFControlItem *)&v36 resultsForBatchReadResponse:responseCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(HFControlItem *)self valueForCharacteristicType:*MEMORY[0x277CCF748] inBatchReadResponse:v4];
-  v8 = [(HFControlItem *)self valueForCharacteristicType:*MEMORY[0x277CCF908] inBatchReadResponse:v4];
+  v7 = [(HFControlItem *)self valueForCharacteristicType:*MEMORY[0x277CCF748] inBatchReadResponse:responseCopy];
+  v8 = [(HFControlItem *)self valueForCharacteristicType:*MEMORY[0x277CCF908] inBatchReadResponse:responseCopy];
   v9 = [HFServiceStateCharacteristicRecipe alloc];
   v10 = *MEMORY[0x277CCFA08];
   v11 = [(HFValveActiveStateControlItem *)self servicePredicateForCharacteristicType:*MEMORY[0x277CCFA08] withUsage:0];
   v12 = [(HFServiceStateCharacteristicRecipe *)v9 initWithCharacteristicType:v10 servicePredicate:v11 required:0];
 
-  v13 = [v4 responseForCharacteristicRecipe:v12];
+  v13 = [responseCopy responseForCharacteristicRecipe:v12];
 
   v14 = [v13 valueWithExpectedClass:objc_opt_class()];
   if (v14 && [v7 BOOLValue] && objc_msgSend(v8, "BOOLValue"))
   {
-    v15 = [v13 characteristic];
-    v16 = [v15 valueUpdatedTime];
+    characteristic = [v13 characteristic];
+    valueUpdatedTime = [characteristic valueUpdatedTime];
 
-    if (!v16)
+    if (!valueUpdatedTime)
     {
-      v17 = [v13 characteristic];
-      [v17 hf_prettyDescription];
+      characteristic2 = [v13 characteristic];
+      [characteristic2 hf_prettyDescription];
       v19 = v18 = v6;
       NSLog(&cfstr_MissingValueup.isa, v19);
 
@@ -207,38 +207,38 @@ void __44__HFValveActiveStateControlItem_writeValue___block_invoke_5()
     }
 
     [v14 doubleValue];
-    v20 = [HFFormattedTimeRemainingValue valueWithRemainingDuration:v16 relativeToDate:?];
+    v20 = [HFFormattedTimeRemainingValue valueWithRemainingDuration:valueUpdatedTime relativeToDate:?];
     goto LABEL_10;
   }
 
   if ([v7 BOOLValue] && (objc_msgSend(v8, "BOOLValue") & 1) == 0)
   {
     v21 = [HFSimpleFormattedValue alloc];
-    v16 = _HFLocalizedStringWithDefaultValue(@"HFControlSupplementaryDescription.Valve.Waiting", @"HFControlSupplementaryDescription.Valve.Waiting", 1);
-    v20 = [(HFSimpleFormattedValue *)v21 initWithFormattedValue:v16];
+    valueUpdatedTime = _HFLocalizedStringWithDefaultValue(@"HFControlSupplementaryDescription.Valve.Waiting", @"HFControlSupplementaryDescription.Valve.Waiting", 1);
+    v20 = [(HFSimpleFormattedValue *)v21 initWithFormattedValue:valueUpdatedTime];
 LABEL_10:
     v22 = v20;
     [v6 setObject:v20 forKeyedSubscript:@"supplementaryFormattedValue"];
   }
 
-  v23 = [(HFControlItem *)self valueSource];
-  v24 = [v23 primaryServiceDescriptor];
+  valueSource = [(HFControlItem *)self valueSource];
+  primaryServiceDescriptor = [valueSource primaryServiceDescriptor];
 
-  if (v24)
+  if (primaryServiceDescriptor)
   {
-    v25 = [v24 parentServiceDescriptor];
-    [v25 serviceType];
+    parentServiceDescriptor = [primaryServiceDescriptor parentServiceDescriptor];
+    [parentServiceDescriptor serviceType];
     v35 = v12;
     v27 = v26 = v6;
     v28 = [v27 isEqualToString:*MEMORY[0x277CD0E48]];
 
-    v29 = [v24 serviceSubtype];
-    v30 = [v8 BOOLValue];
-    v31 = [v7 BOOLValue];
-    v32 = v30;
+    serviceSubtype = [primaryServiceDescriptor serviceSubtype];
+    bOOLValue = [v8 BOOLValue];
+    bOOLValue2 = [v7 BOOLValue];
+    v32 = bOOLValue;
     v6 = v26;
     v12 = v35;
-    v33 = [(HFValveActiveStateControlItem *)self _iconDescriptorForServiceSubtype:v29 inUse:v32 active:v31 hasFaucetAsParentService:v28];
+    v33 = [(HFValveActiveStateControlItem *)self _iconDescriptorForServiceSubtype:serviceSubtype inUse:v32 active:bOOLValue2 hasFaucetAsParentService:v28];
     [v6 setObject:v33 forKeyedSubscript:@"decorationIconDescriptor"];
   }
 
@@ -277,16 +277,16 @@ void __71__HFValveActiveStateControlItem__faucetValveSubtypeToIconIdentifierMap_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_iconDescriptorForServiceSubtype:(id)a3 inUse:(BOOL)a4 active:(BOOL)a5 hasFaucetAsParentService:(BOOL)a6
+- (id)_iconDescriptorForServiceSubtype:(id)subtype inUse:(BOOL)use active:(BOOL)active hasFaucetAsParentService:(BOOL)service
 {
-  v6 = a6;
-  v7 = a5;
+  serviceCopy = service;
+  activeCopy = active;
   v19[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (([v9 isEqualToString:*MEMORY[0x277CD0DA8]] & 1) != 0 || !v6)
+  subtypeCopy = subtype;
+  if (([subtypeCopy isEqualToString:*MEMORY[0x277CD0DA8]] & 1) != 0 || !serviceCopy)
   {
-    v10 = [MEMORY[0x277D755D0] configurationWithPointSize:5 weight:32.0];
-    v11 = [[HFSymbolIconConfiguration alloc] initWithSystemImageName:@"drop.fill" configuration:v10];
+    _faucetValveSubtypeToIconIdentifierMap = [MEMORY[0x277D755D0] configurationWithPointSize:5 weight:32.0];
+    v11 = [[HFSymbolIconConfiguration alloc] initWithSystemImageName:@"drop.fill" configuration:_faucetValveSubtypeToIconIdentifierMap];
     v18 = &unk_282525038;
     v19[0] = v11;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
@@ -297,12 +297,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [(HFValveActiveStateControlItem *)self _faucetValveSubtypeToIconIdentifierMap];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  _faucetValveSubtypeToIconIdentifierMap = [(HFValveActiveStateControlItem *)self _faucetValveSubtypeToIconIdentifierMap];
+  v11 = [_faucetValveSubtypeToIconIdentifierMap objectForKeyedSubscript:subtypeCopy];
   if (v11)
   {
     v12 = &HFCAPackageStateOn;
-    if (!v7)
+    if (!activeCopy)
     {
       v12 = &HFCAPackageStateOff;
     }

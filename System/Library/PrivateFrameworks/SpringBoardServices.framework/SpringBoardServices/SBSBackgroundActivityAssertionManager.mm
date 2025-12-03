@@ -2,22 +2,22 @@
 + (id)sharedInstance;
 - (SBSBackgroundActivityAssertionManager)init;
 - (SBSBackgroundActivityCoordinator)internalQueue_backgroundActivityCoordinator;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_handleXPCConnectionInvalidation;
-- (void)_internalQueue_removeBackgroundActivityAssertionWithIdentifier:(id)a3 invalidate:(BOOL)a4;
+- (void)_internalQueue_removeBackgroundActivityAssertionWithIdentifier:(id)identifier invalidate:(BOOL)invalidate;
 - (void)_internalQueue_setupXPCConnectionIfNecessary;
-- (void)_internalQueue_updateRegistrationForCoordinator:(id)a3 reply:(id)a4;
+- (void)_internalQueue_updateRegistrationForCoordinator:(id)coordinator reply:(id)reply;
 - (void)_reactivateAssertions;
 - (void)_registerBackgroundActivityCoordinatorAfterInterruption;
-- (void)addBackgroundActivityAssertion:(id)a3 withHandler:(id)a4 onQueue:(id)a5;
-- (void)invalidateBackgroundActivityAssertionsWithIdentifiers:(id)a3;
-- (void)removeBackgroundActivityAssertion:(id)a3;
-- (void)statusBarTappedWithContext:(id)a3 reply:(id)a4;
+- (void)addBackgroundActivityAssertion:(id)assertion withHandler:(id)handler onQueue:(id)queue;
+- (void)invalidateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers;
+- (void)removeBackgroundActivityAssertion:(id)assertion;
+- (void)statusBarTappedWithContext:(id)context reply:(id)reply;
 - (void)unregisterCoordinator;
-- (void)updateRegistrationForCoordinator:(id)a3 reply:(id)a4;
-- (void)updateStatusStringForAssertion:(id)a3;
+- (void)updateRegistrationForCoordinator:(id)coordinator reply:(id)reply;
+- (void)updateStatusStringForAssertion:(id)assertion;
 @end
 
 @implementation SBSBackgroundActivityAssertionManager
@@ -36,13 +36,13 @@ uint64_t __55__SBSBackgroundActivityAssertionManager_sharedInstance__block_invok
   v2 = [(SBSBackgroundActivityAssertionManager *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     assertionsByIdentifier = v2->_assertionsByIdentifier;
-    v2->_assertionsByIdentifier = v3;
+    v2->_assertionsByIdentifier = strongToWeakObjectsMapTable;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     acquisitionHandlerEntriesByIdentifier = v2->_acquisitionHandlerEntriesByIdentifier;
-    v2->_acquisitionHandlerEntriesByIdentifier = v5;
+    v2->_acquisitionHandlerEntriesByIdentifier = dictionary;
 
     Serial = BSDispatchQueueCreateSerial();
     internalQueue = v2->_internalQueue;
@@ -142,23 +142,23 @@ void __85__SBSBackgroundActivityAssertionManager__internalQueue_setupXPCConnecti
   [WeakRetained _handleXPCConnectionInvalidation];
 }
 
-- (void)addBackgroundActivityAssertion:(id)a3 withHandler:(id)a4 onQueue:(id)a5
+- (void)addBackgroundActivityAssertion:(id)assertion withHandler:(id)handler onQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assertionCopy = assertion;
+  handlerCopy = handler;
+  queueCopy = queue;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __92__SBSBackgroundActivityAssertionManager_addBackgroundActivityAssertion_withHandler_onQueue___block_invoke;
   v15[3] = &unk_1E73615D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = assertionCopy;
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = assertionCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -297,22 +297,22 @@ void __92__SBSBackgroundActivityAssertionManager_addBackgroundActivityAssertion_
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)removeBackgroundActivityAssertion:(id)a3
+- (void)removeBackgroundActivityAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v4 assertionData];
+  assertionCopy = assertion;
+  uniqueIdentifier = [assertionCopy uniqueIdentifier];
+  assertionData = [assertionCopy assertionData];
 
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__SBSBackgroundActivityAssertionManager_removeBackgroundActivityAssertion___block_invoke;
   block[3] = &unk_1E73601C8;
-  v11 = v6;
-  v12 = self;
-  v13 = v5;
-  v8 = v5;
-  v9 = v6;
+  v11 = assertionData;
+  selfCopy = self;
+  v13 = uniqueIdentifier;
+  v8 = uniqueIdentifier;
+  v9 = assertionData;
   dispatch_async(internalQueue, block);
 }
 
@@ -334,17 +334,17 @@ void __75__SBSBackgroundActivityAssertionManager_removeBackgroundActivityAsserti
   [v4 deactivateBackgroundActivityAssertionsWithIdentifiers:v5];
 }
 
-- (void)updateStatusStringForAssertion:(id)a3
+- (void)updateStatusStringForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__SBSBackgroundActivityAssertionManager_updateStatusStringForAssertion___block_invoke;
   v7[3] = &unk_1E735F7F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = assertionCopy;
+  selfCopy = self;
+  v6 = assertionCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -360,17 +360,17 @@ void __72__SBSBackgroundActivityAssertionManager_updateStatusStringForAssertion_
   }
 }
 
-- (void)invalidateBackgroundActivityAssertionsWithIdentifiers:(id)a3
+- (void)invalidateBackgroundActivityAssertionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__SBSBackgroundActivityAssertionManager_invalidateBackgroundActivityAssertionsWithIdentifiers___block_invoke;
   v7[3] = &unk_1E735F7F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifiersCopy;
+  selfCopy = self;
+  v6 = identifiersCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -417,20 +417,20 @@ void __95__SBSBackgroundActivityAssertionManager_invalidateBackgroundActivityAss
   }
 }
 
-- (void)statusBarTappedWithContext:(id)a3 reply:(id)a4
+- (void)statusBarTappedWithContext:(id)context reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  replyCopy = reply;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__SBSBackgroundActivityAssertionManager_statusBarTappedWithContext_reply___block_invoke;
   block[3] = &unk_1E7361600;
-  v12 = v6;
-  v13 = v7;
+  v12 = contextCopy;
+  v13 = replyCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = contextCopy;
+  v10 = replyCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -495,32 +495,32 @@ void __74__SBSBackgroundActivityAssertionManager_statusBarTappedWithContext_repl
 
 - (id)succinctDescription
 {
-  v2 = [(SBSBackgroundActivityAssertionManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSBackgroundActivityAssertionManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSBackgroundActivityAssertionManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSBackgroundActivityAssertionManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSBackgroundActivityAssertionManager *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSBackgroundActivityAssertionManager *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__SBSBackgroundActivityAssertionManager_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E735F7F0;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -535,34 +535,34 @@ void __79__SBSBackgroundActivityAssertionManager_descriptionBuilderWithMultiline
   [v1 appendArraySection:v3 withName:@"assertions" skipIfEmpty:0];
 }
 
-- (void)_internalQueue_removeBackgroundActivityAssertionWithIdentifier:(id)a3 invalidate:(BOOL)a4
+- (void)_internalQueue_removeBackgroundActivityAssertionWithIdentifier:(id)identifier invalidate:(BOOL)invalidate
 {
-  v4 = a4;
-  v6 = a3;
+  invalidateCopy = invalidate;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v7 = [(NSMapTable *)self->_assertionsByIdentifier objectForKey:v6];
-  v8 = [(NSMutableDictionary *)self->_acquisitionHandlerEntriesByIdentifier objectForKey:v6];
+  v7 = [(NSMapTable *)self->_assertionsByIdentifier objectForKey:identifierCopy];
+  v8 = [(NSMutableDictionary *)self->_acquisitionHandlerEntriesByIdentifier objectForKey:identifierCopy];
   if (v8)
   {
-    [(NSMutableDictionary *)self->_acquisitionHandlerEntriesByIdentifier removeObjectForKey:v6];
-    if (v4)
+    [(NSMutableDictionary *)self->_acquisitionHandlerEntriesByIdentifier removeObjectForKey:identifierCopy];
+    if (invalidateCopy)
     {
-      v9 = [v8 queue];
+      queue = [v8 queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroundActivityAssertionWithIdentifier_invalidate___block_invoke;
       block[3] = &unk_1E735F9D0;
       v20 = v8;
-      dispatch_async(v9, block);
+      dispatch_async(queue, block);
     }
   }
 
   if (v7)
   {
-    v10 = [v7 invalidationHandler];
-    if (v10)
+    invalidationHandler = [v7 invalidationHandler];
+    if (invalidationHandler)
     {
-      if (v8 || !v4)
+      if (v8 || !invalidateCopy)
       {
         [v7 setInvalidationHandler:0];
       }
@@ -574,14 +574,14 @@ void __79__SBSBackgroundActivityAssertionManager_descriptionBuilderWithMultiline
         v13 = 3221225472;
         v14 = __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroundActivityAssertionWithIdentifier_invalidate___block_invoke_2;
         v15 = &unk_1E735F338;
-        v18 = v10;
-        v16 = self;
+        v18 = invalidationHandler;
+        selfCopy = self;
         v17 = v7;
         dispatch_async(v11, &v12);
       }
     }
 
-    [(NSMapTable *)self->_assertionsByIdentifier removeObjectForKey:v6, v12, v13, v14, v15, v16];
+    [(NSMapTable *)self->_assertionsByIdentifier removeObjectForKey:identifierCopy, v12, v13, v14, v15, selfCopy];
   }
 }
 
@@ -603,28 +603,28 @@ void __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroun
   dispatch_async(v2, block);
 }
 
-- (void)updateRegistrationForCoordinator:(id)a3 reply:(id)a4
+- (void)updateRegistrationForCoordinator:(id)coordinator reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  replyCopy = reply;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__SBSBackgroundActivityAssertionManager_updateRegistrationForCoordinator_reply___block_invoke;
   block[3] = &unk_1E7361628;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = coordinatorCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = coordinatorCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_internalQueue_updateRegistrationForCoordinator:(id)a3 reply:(id)a4
+- (void)_internalQueue_updateRegistrationForCoordinator:(id)coordinator reply:(id)reply
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  replyCopy = reply;
   [(SBSBackgroundActivityAssertionManager *)self _internalQueue_setupXPCConnectionIfNecessary];
   WeakRetained = objc_loadWeakRetained(&self->_internalQueue_backgroundActivityCoordinator);
 
@@ -635,8 +635,8 @@ void __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroun
     v33[0] = @"There is already a coordinator registered for this background activity within this process.";
     v32[0] = v10;
     v32[1] = @"SBSBackgroundActivityCoordinatorErrorBackgroundActivityIdentifiersKey";
-    v11 = [v6 backgroundActivityIdentifiers];
-    v33[1] = v11;
+    backgroundActivityIdentifiers = [coordinatorCopy backgroundActivityIdentifiers];
+    v33[1] = backgroundActivityIdentifiers;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
     v13 = [v9 errorWithDomain:@"SBSBackgroundActivityCoordinatorErrorDomain" code:1 userInfo:v12];
 
@@ -646,9 +646,9 @@ void __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroun
     block[2] = __95__SBSBackgroundActivityAssertionManager__internalQueue_updateRegistrationForCoordinator_reply___block_invoke;
     block[3] = &unk_1E735F120;
     v30 = v13;
-    v31 = v7;
+    v31 = replyCopy;
     v15 = v13;
-    v16 = v7;
+    v16 = replyCopy;
     dispatch_async(coordinatorCalloutQueue, block);
   }
 
@@ -659,14 +659,14 @@ void __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroun
     v25[1] = 3221225472;
     v25[2] = __95__SBSBackgroundActivityAssertionManager__internalQueue_updateRegistrationForCoordinator_reply___block_invoke_2;
     v25[3] = &unk_1E7361650;
-    v18 = v6;
+    v18 = coordinatorCopy;
     v26 = v18;
-    v27 = self;
-    v19 = v7;
+    selfCopy = self;
+    v19 = replyCopy;
     v28 = v19;
     v20 = [(NSXPCConnection *)sbXPCConnection remoteObjectProxyWithErrorHandler:v25];
     objc_storeWeak(&self->_internalQueue_backgroundActivityCoordinator, v18);
-    v21 = [v18 backgroundActivityIdentifiers];
+    backgroundActivityIdentifiers2 = [v18 backgroundActivityIdentifiers];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __95__SBSBackgroundActivityAssertionManager__internalQueue_updateRegistrationForCoordinator_reply___block_invoke_4;
@@ -674,7 +674,7 @@ void __115__SBSBackgroundActivityAssertionManager__internalQueue_removeBackgroun
     v23[4] = self;
     v24 = v19;
     v22 = v19;
-    [v20 setRegisteredBackgroundActivityIdentifiers:v21 reply:v23];
+    [v20 setRegisteredBackgroundActivityIdentifiers:backgroundActivityIdentifiers2 reply:v23];
 
     v15 = v26;
   }

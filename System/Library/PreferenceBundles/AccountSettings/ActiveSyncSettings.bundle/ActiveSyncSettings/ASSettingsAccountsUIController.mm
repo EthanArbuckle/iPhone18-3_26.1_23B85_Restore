@@ -1,44 +1,44 @@
 @interface ASSettingsAccountsUIController
-+ (id)usernameFromAccessToken:(id)a3;
-- (BOOL)_isNetworkOfflineError:(id)a3;
-- (BOOL)_isSSLError:(id)a3;
-- (BOOL)_storeHasDuplicateForUsername:(id)a3;
++ (id)usernameFromAccessToken:(id)token;
+- (BOOL)_isNetworkOfflineError:(id)error;
+- (BOOL)_isSSLError:(id)error;
+- (BOOL)_storeHasDuplicateForUsername:(id)username;
 - (BOOL)autodiscoverAccount;
 - (BOOL)haveEnoughValues;
 - (BOOL)validateAccount;
 - (BOOL)verifyAccountPassword;
-- (id)_configureNewAccountWithInfo:(id)a3;
+- (id)_configureNewAccountWithInfo:(id)info;
 - (id)_defaultAccountDescription;
 - (id)_specifiersForCompletedAutodiscovery;
-- (id)_specifiersForMinimalAutodiscoveryRemovingIDs:(id)a3;
+- (id)_specifiersForMinimalAutodiscoveryRemovingIDs:(id)ds;
 - (id)_specifiersForOptionalServerAutodiscovery;
 - (id)account;
 - (id)accountFromSpecifier;
-- (id)accountFromSpecifier:(id)a3;
-- (id)accountPropertyWithSpecifier:(id)a3;
+- (id)accountFromSpecifier:(id)specifier;
+- (id)accountPropertyWithSpecifier:(id)specifier;
 - (id)accountSpecifiers;
 - (id)localizedAccountSetupTitleString;
 - (id)localizedAccountTitleString;
 - (id)localizedConfirmSaveUnvalidatedAccountMessageString;
 - (id)localizedValidationFailureTitleString;
 - (id)newDefaultAccount;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
-- (void)OAuthAccount:(id)a3 authorizationURI:(id)a4 error:(id)a5;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
+- (void)OAuthAccount:(id)account authorizationURI:(id)i error:(id)error;
 - (void)_autodiscoverOAuthAccountAfterInitialRedirect;
 - (void)_fallBackToAutoDiscoverV1;
 - (void)_reallyStartAutoDiscoverAccount;
 - (void)_setViewsEnabled;
-- (void)_showAlertWithTitle:(id)a3 body:(id)a4 completion:(id)a5;
+- (void)_showAlertWithTitle:(id)title body:(id)body completion:(id)completion;
 - (void)_transitionToCompletedAutodiscovery;
 - (void)_transitionToOptionalServerAutodiscovery;
-- (void)_tryUpdatingCompositeValueWithId:(id)a3 fromValue:(id)a4 forKey:(id)a5;
-- (void)_validateUniquenessAndAddAccount:(id)a3 username:(id)a4 token:(id)a5 refreshToken:(id)a6 completion:(id)a7;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)account:(id)a3 wasAutoDiscovered:(BOOL)a4 error:(id)a5;
+- (void)_tryUpdatingCompositeValueWithId:(id)id fromValue:(id)value forKey:(id)key;
+- (void)_validateUniquenessAndAddAccount:(id)account username:(id)username token:(id)token refreshToken:(id)refreshToken completion:(id)completion;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)account:(id)account wasAutoDiscovered:(BOOL)discovered error:(id)error;
 - (void)dealloc;
-- (void)doneButtonTapped:(id)a3;
-- (void)handleRedirectURL:(id)a3;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
+- (void)doneButtonTapped:(id)tapped;
+- (void)handleRedirectURL:(id)l;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
 @end
 
 @implementation ASSettingsAccountsUIController
@@ -52,32 +52,32 @@
 
   v5.receiver = self;
   v5.super_class = ASSettingsAccountsUIController;
-  v3 = [(ESSettingsAccountsUIController *)&v5 account];
+  account = [(ESSettingsAccountsUIController *)&v5 account];
 
-  return v3;
+  return account;
 }
 
-- (id)accountFromSpecifier:(id)a3
+- (id)accountFromSpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:ACUIAccountKey];
+  userInfo = [specifier userInfo];
+  v5 = [userInfo objectForKeyedSubscript:ACUIAccountKey];
 
   if (v5)
   {
     if ([(ESSettingsAccountsUIController *)self backingAccountIsNewAccountForAutoDiscovery])
     {
       [v5 setAuthenticated:1];
-      v6 = [v5 username];
+      username = [v5 username];
       v7 = ACAccountPropertyIdentityEmailAddress;
-      [v5 setObject:v6 forKeyedSubscript:ACAccountPropertyIdentityEmailAddress];
+      [v5 setObject:username forKeyedSubscript:ACAccountPropertyIdentityEmailAddress];
 
       v8 = [v5 objectForKeyedSubscript:v7];
       v9 = ACUIDescriptionFromEmailAddress();
       [v5 setAccountDescription:v9];
 
       v10 = [(ASSettingsAccountsUIController *)self _configureNewAccountWithInfo:v5];
-      v11 = [v5 username];
-      [v10 setEmailAddress:v11];
+      username2 = [v5 username];
+      [v10 setEmailAddress:username2];
 
       [(ESSettingsAccountsUIController *)self setAddingAccountFromEmailField:1];
     }
@@ -101,24 +101,24 @@
 
 - (id)accountFromSpecifier
 {
-  v3 = [(ASSettingsAccountsUIController *)self specifier];
-  v4 = [(ASSettingsAccountsUIController *)self accountFromSpecifier:v3];
+  specifier = [(ASSettingsAccountsUIController *)self specifier];
+  v4 = [(ASSettingsAccountsUIController *)self accountFromSpecifier:specifier];
 
   return v4;
 }
 
 - (id)newDefaultAccount
 {
-  v3 = [objc_opt_class() isHotmailAccount];
-  v4 = [(ASSettingsAccountsUIController *)self accountStore];
-  v5 = v4;
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
+  accountStore = [(ASSettingsAccountsUIController *)self accountStore];
+  v5 = accountStore;
   v6 = &ACAccountTypeIdentifierHotmail;
-  if (!v3)
+  if (!isHotmailAccount)
   {
     v6 = &ACAccountTypeIdentifierExchange;
   }
 
-  v7 = [v4 accountTypeWithAccountTypeIdentifier:*v6];
+  v7 = [accountStore accountTypeWithAccountTypeIdentifier:*v6];
 
   v8 = [[ACAccount alloc] initWithAccountType:v7];
   v9 = [(ASSettingsAccountsUIController *)self _configureNewAccountWithInfo:v8];
@@ -126,16 +126,16 @@
   return v9;
 }
 
-- (id)_configureNewAccountWithInfo:(id)a3
+- (id)_configureNewAccountWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 accountType];
-  v6 = [v5 supportedDataclasses];
-  v7 = [v6 mutableCopy];
+  infoCopy = info;
+  accountType = [infoCopy accountType];
+  supportedDataclasses = [accountType supportedDataclasses];
+  v7 = [supportedDataclasses mutableCopy];
 
   [v7 removeObject:kAccountDataclassNotes];
-  [v4 setProvisionedDataclasses:v7];
-  v8 = [ESAccount esAccountSubclassWithBackingAccountInfo:v4];
+  [infoCopy setProvisionedDataclasses:v7];
+  v8 = [ESAccount esAccountSubclassWithBackingAccountInfo:infoCopy];
 
   [v8 setUseSSL:1];
   [v8 setEnabled:1 forDADataclass:1];
@@ -152,9 +152,9 @@
   return v8;
 }
 
-- (id)_specifiersForMinimalAutodiscoveryRemovingIDs:(id)a3
+- (id)_specifiersForMinimalAutodiscoveryRemovingIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if ([objc_opt_class() isHotmailAccount])
   {
     sub_1BD1C();
@@ -164,9 +164,9 @@
   v6 = [NSMutableArray arrayWithArray:v5];
 
   v7 = &off_327F0;
-  if (v4)
+  if (dsCopy)
   {
-    v7 = [&off_327F0 arrayByAddingObjectsFromArray:v4];
+    v7 = [&off_327F0 arrayByAddingObjectsFromArray:dsCopy];
   }
 
   v28 = 0u;
@@ -205,14 +205,14 @@
 
   [v6 addObject:v14];
   v17 = [PSSpecifier groupSpecifierWithName:0];
-  v18 = [(ASSettingsAccountsUIController *)self exchangeIdView];
+  exchangeIdView = [(ASSettingsAccountsUIController *)self exchangeIdView];
 
-  if (!v18)
+  if (!exchangeIdView)
   {
     v19 = +[ESDConnection sharedConnection];
-    v20 = [v19 activeSyncDeviceIdentifier];
+    activeSyncDeviceIdentifier = [v19 activeSyncDeviceIdentifier];
 
-    [v17 setProperty:v20 forKey:@"ASExchangeIdKey"];
+    [v17 setProperty:activeSyncDeviceIdentifier forKey:@"ASExchangeIdKey"];
     v21 = [[ASExchangeIdView alloc] initWithSpecifier:v17];
     [(ASSettingsAccountsUIController *)self setExchangeIdView:v21];
   }
@@ -221,8 +221,8 @@
   v23 = NSStringFromClass(v22);
   [v17 setProperty:v23 forKey:PSFooterCellClassGroupKey];
 
-  v24 = [(ASSettingsAccountsUIController *)self exchangeIdView];
-  [v17 setProperty:v24 forKey:PSFooterViewKey];
+  exchangeIdView2 = [(ASSettingsAccountsUIController *)self exchangeIdView];
+  [v17 setProperty:exchangeIdView2 forKey:PSFooterViewKey];
 
   [v6 addObject:v17];
 
@@ -251,14 +251,14 @@
 
   [v4 addObject:v8];
   v11 = [PSSpecifier groupSpecifierWithName:0];
-  v12 = [(ASSettingsAccountsUIController *)self exchangeIdView];
+  exchangeIdView = [(ASSettingsAccountsUIController *)self exchangeIdView];
 
-  if (!v12)
+  if (!exchangeIdView)
   {
     v13 = +[ESDConnection sharedConnection];
-    v14 = [v13 activeSyncDeviceIdentifier];
+    activeSyncDeviceIdentifier = [v13 activeSyncDeviceIdentifier];
 
-    [v11 setProperty:v14 forKey:@"ASExchangeIdKey"];
+    [v11 setProperty:activeSyncDeviceIdentifier forKey:@"ASExchangeIdKey"];
     v15 = [[ASExchangeIdView alloc] initWithSpecifier:v11];
     [(ASSettingsAccountsUIController *)self setExchangeIdView:v15];
   }
@@ -267,8 +267,8 @@
   v17 = NSStringFromClass(v16);
   [v11 setProperty:v17 forKey:PSFooterCellClassGroupKey];
 
-  v18 = [(ASSettingsAccountsUIController *)self exchangeIdView];
-  [v11 setProperty:v18 forKey:PSFooterViewKey];
+  exchangeIdView2 = [(ASSettingsAccountsUIController *)self exchangeIdView];
+  [v11 setProperty:exchangeIdView2 forKey:PSFooterViewKey];
 
   [v4 addObject:v11];
 
@@ -280,11 +280,11 @@
   v3 = @"ASHotmailAccountSetup";
   if (([objc_opt_class() isHotmailAccount] & 1) == 0)
   {
-    v4 = [(ASSettingsAccountsUIController *)self account];
-    v5 = [v4 objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
-    v6 = [v5 BOOLValue];
+    account = [(ASSettingsAccountsUIController *)self account];
+    v5 = [account objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
+    bOOLValue = [v5 BOOLValue];
 
-    if (!v6)
+    if (!bOOLValue)
     {
       v3 = @"ASAccountSetup";
     }
@@ -300,35 +300,35 @@
     v11 = [v10 localizedStringForKey:@"ADVANCED_SETTINGS" value:&stru_30C98 table:@"Localizable"];
     v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
-    v13 = [(ASSettingsAccountsUIController *)self account];
-    [v12 setProperty:v13 forKey:@"ASAdvancedControllerAccountKey"];
+    account2 = [(ASSettingsAccountsUIController *)self account];
+    [v12 setProperty:account2 forKey:@"ASAdvancedControllerAccountKey"];
 
     [v12 setIdentifier:@"ADVANCED_SETTINGS"];
     v54 = v9;
     [v8 addObject:v9];
     v53 = v12;
     [v8 addObject:v12];
-    v14 = [(ASSettingsAccountsUIController *)self account];
-    v15 = [v14 backingAccountInfo];
-    v16 = [v15 mcBackingProfile];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    backingAccountInfo = [account3 backingAccountInfo];
+    mcBackingProfile = [backingAccountInfo mcBackingProfile];
 
-    v55 = v16;
-    if (v16)
+    v55 = mcBackingProfile;
+    if (mcBackingProfile)
     {
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_30C98 table:@"ASAccountSetup"];
-      v19 = [v16 friendlyName];
-      v52 = [NSString stringWithFormat:v18, v19];
+      friendlyName = [mcBackingProfile friendlyName];
+      v52 = [NSString stringWithFormat:v18, friendlyName];
 
-      v20 = [(ASSettingsAccountsUIController *)self account];
-      v21 = [v20 identityPersist];
+      account4 = [(ASSettingsAccountsUIController *)self account];
+      identityPersist = [account4 identityPersist];
 
-      if (v21)
+      if (identityPersist)
       {
-        v22 = [(ASSettingsAccountsUIController *)self account];
-        v23 = [v22 username];
+        account5 = [(ASSettingsAccountsUIController *)self account];
+        username = [account5 username];
 
-        if (v23)
+        if (username)
         {
           v24 = [v8 specifierForID:@"PASSWORD"];
           v25 = [NSBundle bundleForClass:objc_opt_class()];
@@ -392,8 +392,8 @@
             }
 
             v38 = *(*(&v60 + 1) + 8 * j);
-            v39 = [v38 identifier];
-            if (([&off_32820 containsObject:v39] & 1) == 0)
+            identifier = [v38 identifier];
+            if (([&off_32820 containsObject:identifier] & 1) == 0)
             {
               [v38 setProperty:&__kCFBooleanFalse forKey:v36];
             }
@@ -406,7 +406,7 @@
       }
 
       v40 = [(ESSettingsAccountsUIController *)self lastGroupSpecifierInSpecifiers:v32];
-      v16 = v55;
+      mcBackingProfile = v55;
       if (!v40)
       {
         v41 = DALoggingwithCategory();
@@ -445,8 +445,8 @@
             }
 
             v49 = *(*(&v56 + 1) + 8 * k);
-            v50 = [v49 identifier];
-            if ([&off_32838 containsObject:v50])
+            identifier2 = [v49 identifier];
+            if ([&off_32838 containsObject:identifier2])
             {
               [v49 setProperty:&__kCFBooleanFalse forKey:v47];
             }
@@ -458,7 +458,7 @@
         while (v45);
       }
 
-      v16 = v55;
+      mcBackingProfile = v55;
     }
   }
 
@@ -467,47 +467,47 @@
 
 - (id)accountSpecifiers
 {
-  v3 = [(ASSettingsAccountsUIController *)self account];
-  v4 = [(ASSettingsAccountsUIController *)self account];
-  v5 = [v4 backingAccountInfo];
-  v6 = [v5 managingOwnerIdentifier];
-  v7 = v6;
-  if (v6)
+  account = [(ASSettingsAccountsUIController *)self account];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  backingAccountInfo = [account2 backingAccountInfo];
+  managingOwnerIdentifier = [backingAccountInfo managingOwnerIdentifier];
+  v7 = managingOwnerIdentifier;
+  if (managingOwnerIdentifier)
   {
-    v8 = v6;
+    v8 = managingOwnerIdentifier;
   }
 
   else
   {
-    v9 = [(ASSettingsAccountsUIController *)self account];
-    v8 = [v9 objectForKeyedSubscript:ACAccountPropertyConfigurationProfileIdentifier];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    v8 = [account3 objectForKeyedSubscript:ACAccountPropertyConfigurationProfileIdentifier];
   }
 
   if (v8)
   {
-    v4 = DALoggingwithCategory();
+    account2 = DALoggingwithCategory();
     v10 = _CPLog_to_os_log_type[7];
-    if (os_log_type_enabled(v4, v10))
+    if (os_log_type_enabled(account2, v10))
     {
-      v11 = [(ASSettingsAccountsUIController *)self account];
+      account4 = [(ASSettingsAccountsUIController *)self account];
       v20 = 138412546;
-      v21 = v11;
+      v21 = account4;
       v22 = 2112;
       v23 = v8;
-      _os_log_impl(&dword_0, v4, v10, "Disable editing for %@, account is managed by %@", &v20, 0x16u);
+      _os_log_impl(&dword_0, account2, v10, "Disable editing for %@, account is managed by %@", &v20, 0x16u);
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = 1;
   }
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 0;
   }
 
-  [(ASSettingsAccountsUIController *)v12 setRemotedManaged:v13];
+  [(ASSettingsAccountsUIController *)selfCopy2 setRemotedManaged:v13];
   v14 = *(&self->_remotedManaged + 2);
   if (v14 <= 2)
   {
@@ -518,38 +518,38 @@
         goto LABEL_20;
       }
 
-      v16 = self;
+      selfCopy4 = self;
       v15 = 0;
     }
 
     else
     {
       v15 = &off_32850;
-      v16 = self;
+      selfCopy4 = self;
     }
 
-    v18 = [(ASSettingsAccountsUIController *)v16 _specifiersForMinimalAutodiscoveryRemovingIDs:v15];
+    _specifiersForOptionalServerAutodiscovery = [(ASSettingsAccountsUIController *)selfCopy4 _specifiersForMinimalAutodiscoveryRemovingIDs:v15];
     goto LABEL_19;
   }
 
   if (v14 == 3)
   {
-    v18 = [(ASSettingsAccountsUIController *)self _specifiersForOptionalServerAutodiscovery];
+    _specifiersForOptionalServerAutodiscovery = [(ASSettingsAccountsUIController *)self _specifiersForOptionalServerAutodiscovery];
 LABEL_19:
-    v4 = v18;
+    account2 = _specifiersForOptionalServerAutodiscovery;
     goto LABEL_20;
   }
 
   if (v14 == 4)
   {
-    v4 = [(ASSettingsAccountsUIController *)self _specifiersForCompletedAutodiscovery];
-    v17 = [(ASSettingsAccountsUIController *)self localizedAccountTitleString];
-    [(ASSettingsAccountsUIController *)self setTitle:v17];
+    account2 = [(ASSettingsAccountsUIController *)self _specifiersForCompletedAutodiscovery];
+    localizedAccountTitleString = [(ASSettingsAccountsUIController *)self localizedAccountTitleString];
+    [(ASSettingsAccountsUIController *)self setTitle:localizedAccountTitleString];
   }
 
 LABEL_20:
 
-  return v4;
+  return account2;
 }
 
 - (void)_transitionToOptionalServerAutodiscovery
@@ -595,11 +595,11 @@ LABEL_20:
   }
 
   [(ASSettingsAccountsUIController *)self reloadSpecifierID:@"EMAIL"];
-  v18 = [(ASSettingsAccountsUIController *)self account];
-  [v18 setUsername:&stru_30C98];
+  account = [(ASSettingsAccountsUIController *)self account];
+  [account setUsername:&stru_30C98];
 
-  v19 = [(ASSettingsAccountsUIController *)self account];
-  [v19 setHost:&stru_30C98];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  [account2 setHost:&stru_30C98];
 
   [(ASSettingsAccountsUIController *)self reloadSpecifierID:@"DOMAIN"];
   [(ASSettingsAccountsUIController *)self reloadSpecifierID:@"USERNAME"];
@@ -613,8 +613,8 @@ LABEL_20:
     sub_1BE60();
   }
 
-  v3 = [(ESSettingsAccountsUIController *)self specifiers];
-  v6 = [v3 specifierForID:@"HOST"];
+  specifiers = [(ESSettingsAccountsUIController *)self specifiers];
+  v6 = [specifiers specifierForID:@"HOST"];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"REQUIRED" value:&stru_30C98 table:@"ASAccountSetup"];
@@ -625,27 +625,27 @@ LABEL_20:
 
 - (BOOL)validateAccount
 {
-  v3 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"VERIFYING" value:&stru_30C98 table:@"Localizable"];
   [(ASSettingsAccountsUIController *)self startValidationWithPrompt:v5];
 
-  v6 = [(ASSettingsAccountsUIController *)self account];
-  v7 = [(ASSettingsAccountsUIController *)self accountStore];
-  [v6 checkValidityOnAccountStore:v7 withConsumer:self inQueue:&_dispatch_main_q];
+  account = [(ASSettingsAccountsUIController *)self account];
+  accountStore = [(ASSettingsAccountsUIController *)self accountStore];
+  [account checkValidityOnAccountStore:accountStore withConsumer:self inQueue:&_dispatch_main_q];
 
   return 1;
 }
 
-- (void)_showAlertWithTitle:(id)a3 body:(id)a4 completion:(id)a5
+- (void)_showAlertWithTitle:(id)title body:(id)body completion:(id)completion
 {
-  v8 = a5;
-  v12 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  completionCopy = completion;
+  v12 = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:1];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"OK" value:&stru_30C98 table:@"ASAccountSetup"];
-  v11 = [UIAlertAction actionWithTitle:v10 style:1 handler:v8];
+  v11 = [UIAlertAction actionWithTitle:v10 style:1 handler:completionCopy];
 
   [v12 addAction:v11];
   [(ASSettingsAccountsUIController *)self presentViewController:v12 animated:1 completion:0];
@@ -655,17 +655,17 @@ LABEL_20:
 - (BOOL)verifyAccountPassword
 {
   v3 = OBJC_IVAR___PSListController__table;
-  v4 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v4 resignFirstResponder];
+  firstResponder = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
-  v5 = [(ASSettingsAccountsUIController *)self account];
-  v6 = [v5 emailAddress];
-  v7 = [v6 mf_isLegalEmailAddress];
+  account = [(ASSettingsAccountsUIController *)self account];
+  emailAddress = [account emailAddress];
+  mf_isLegalEmailAddress = [emailAddress mf_isLegalEmailAddress];
 
-  if (!v7)
+  if (!mf_isLegalEmailAddress)
   {
-    v11 = [(ASSettingsAccountsUIController *)self specifierForID:@"EMAIL"];
-    v12 = [v11 propertyForKey:PSTableCellKey];
+    account3 = [(ASSettingsAccountsUIController *)self specifierForID:@"EMAIL"];
+    v12 = [account3 propertyForKey:PSTableCellKey];
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"INVALID_EMAIL_ADDRESS_TITLE" value:&stru_30C98 table:@"ASAccountSetup"];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
@@ -685,36 +685,36 @@ LABEL_20:
     [(ASSettingsAccountsUIController *)self _setViewsEnabled];
 LABEL_6:
 
-    return v7;
+    return mf_isLegalEmailAddress;
   }
 
-  v8 = [(ASSettingsAccountsUIController *)self account];
-  v9 = [v8 emailAddress];
-  v10 = [(ASSettingsAccountsUIController *)self _storeHasDuplicateForUsername:v9];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  emailAddress2 = [account2 emailAddress];
+  v10 = [(ASSettingsAccountsUIController *)self _storeHasDuplicateForUsername:emailAddress2];
 
   if (!v10)
   {
-    v11 = [(ASSettingsAccountsUIController *)self account];
-    [(ASSettingsAccountsUIController *)self account:v11 wasAutoDiscovered:1 error:0];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    [(ASSettingsAccountsUIController *)self account:account3 wasAutoDiscovered:1 error:0];
     goto LABEL_6;
   }
 
   [(ESSettingsAccountsUIController *)self showIdenticalAccountFailureView];
   [(ASSettingsAccountsUIController *)self stopValidationWithPrompt:0 showButtons:1];
-  return v7;
+  return mf_isLegalEmailAddress;
 }
 
 - (BOOL)autodiscoverAccount
 {
   v3 = OBJC_IVAR___PSListController__table;
-  v4 = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v4 resignFirstResponder];
+  firstResponder = [*&self->super.ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
-  v5 = [(ASSettingsAccountsUIController *)self account];
-  v6 = [v5 emailAddress];
-  v7 = [v6 mf_isLegalEmailAddress];
+  account = [(ASSettingsAccountsUIController *)self account];
+  emailAddress = [account emailAddress];
+  mf_isLegalEmailAddress = [emailAddress mf_isLegalEmailAddress];
 
-  if (!v7)
+  if (!mf_isLegalEmailAddress)
   {
     v11 = [(ASSettingsAccountsUIController *)self specifierForID:@"EMAIL"];
     v12 = [v11 propertyForKey:PSTableCellKey];
@@ -737,27 +737,27 @@ LABEL_6:
     [(ASSettingsAccountsUIController *)self _setViewsEnabled];
 LABEL_5:
 
-    return v7;
+    return mf_isLegalEmailAddress;
   }
 
-  v8 = [(ASSettingsAccountsUIController *)self account];
-  v9 = [v8 emailAddress];
-  v10 = [(ASSettingsAccountsUIController *)self _storeHasDuplicateForUsername:v9];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  emailAddress2 = [account2 emailAddress];
+  v10 = [(ASSettingsAccountsUIController *)self _storeHasDuplicateForUsername:emailAddress2];
 
   if (!v10)
   {
     if (*(&self->_remotedManaged + 2))
     {
       [(ASSettingsAccountsUIController *)self _reallyStartAutoDiscoverAccount];
-      return v7;
+      return mf_isLegalEmailAddress;
     }
 
     v21 = [NSBundle bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"ALLOW_MODERN_AUTHENTICATION" value:&stru_30C98 table:@"ASAccountSetup"];
-    v23 = [(ASSettingsAccountsUIController *)self account];
-    v24 = [v23 emailAddress];
-    v25 = [v24 mf_addressDomain];
-    v11 = [NSString stringWithFormat:v22, v25];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    emailAddress3 = [account3 emailAddress];
+    mf_addressDomain = [emailAddress3 mf_addressDomain];
+    v11 = [NSString stringWithFormat:v22, mf_addressDomain];
 
     v26 = [NSBundle bundleForClass:objc_opt_class()];
     v27 = [v26 localizedStringForKey:@"ALLOW_MODERN_AUTHENTICATION_ALERT_BODY" value:&stru_30C98 table:@"ASAccountSetup"];
@@ -789,7 +789,7 @@ LABEL_5:
 
   [(ESSettingsAccountsUIController *)self showIdenticalAccountFailureView];
   [(ASSettingsAccountsUIController *)self stopValidationWithPrompt:0 showButtons:1];
-  return v7;
+  return mf_isLegalEmailAddress;
 }
 
 - (void)_reallyStartAutoDiscoverAccount
@@ -800,8 +800,8 @@ LABEL_5:
 
   if (*(&self->_remotedManaged + 2) > 1uLL)
   {
-    v5 = [(ASSettingsAccountsUIController *)self account];
-    [v5 autodiscoverAccountConfigurationWithConsumer:self];
+    account = [(ASSettingsAccountsUIController *)self account];
+    [account autodiscoverAccountConfigurationWithConsumer:self];
   }
 
   else
@@ -844,27 +844,27 @@ LABEL_5:
   [v3 sendRequestForRedirectWithCompletionHandler:v4];
 }
 
-- (void)account:(id)a3 wasAutoDiscovered:(BOOL)a4 error:(id)a5
+- (void)account:(id)account wasAutoDiscovered:(BOOL)discovered error:(id)error
 {
-  v5 = a4;
-  v8 = a5;
+  discoveredCopy = discovered;
+  errorCopy = error;
   if ([objc_opt_class() isHotmailAccount])
   {
     sub_1BECC();
-    if (v5)
+    if (discoveredCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v5)
+  else if (discoveredCopy)
   {
 LABEL_3:
     ADClientAddValueForScalarKey();
     *(&self->_remotedManaged + 2) = 4;
-    v9 = [(ASSettingsAccountsUIController *)self account];
-    v10 = [(ASSettingsAccountsUIController *)self accountStore];
-    [v9 checkValidityOnAccountStore:v10 withConsumer:self inQueue:&_dispatch_main_q];
+    account = [(ASSettingsAccountsUIController *)self account];
+    accountStore = [(ASSettingsAccountsUIController *)self accountStore];
+    [account checkValidityOnAccountStore:accountStore withConsumer:self inQueue:&_dispatch_main_q];
 
     goto LABEL_17;
   }
@@ -889,12 +889,12 @@ LABEL_3:
     [v12 handleFailureInMethod:a2 object:self file:@"ASSettingsAccountsUIController.m" lineNumber:527 description:{@"If we were in state ASAccountSetupAutodiscoverStateComplete, we shouldn't have gotten an autodiscovery response"}];
   }
 
-  v13 = [v8 domain];
-  if ([v13 isEqualToString:ASHTTPConnectionErrorDomain])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:ASHTTPConnectionErrorDomain])
   {
-    v14 = [v8 code];
+    code = [errorCopy code];
 
-    if (v14 == &stru_158.reloff + 1)
+    if (code == &stru_158.reloff + 1)
     {
       v15 = DALoggingwithCategory();
       v16 = _CPLog_to_os_log_type[6];
@@ -904,8 +904,8 @@ LABEL_3:
         _os_log_impl(&dword_0, v15, v16, "Autodiscovery encounters 401 error. Wiping password box.", v18, 2u);
       }
 
-      v17 = [(ASSettingsAccountsUIController *)self account];
-      [v17 setPassword:&stru_30C98];
+      account2 = [(ASSettingsAccountsUIController *)self account];
+      [account2 setPassword:&stru_30C98];
 
       [(ASSettingsAccountsUIController *)self reloadSpecifierID:@"PASSWORD"];
     }
@@ -921,11 +921,11 @@ LABEL_17:
   [(ASSettingsAccountsUIController *)self setTaskCompletionAssertionEnabled:0];
 }
 
-- (BOOL)_isNetworkOfflineError:(id)a3
+- (BOOL)_isNetworkOfflineError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NSURLErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NSURLErrorDomain];
 
   if (!v5)
   {
@@ -934,19 +934,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v3 code];
+  code = [errorCopy code];
   v7 = 1;
-  if (v6 != -1009 && v6 != -1000)
+  if (code != -1009 && code != -1000)
   {
     v8 = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v8, v9))
     {
-      v10 = [v3 domain];
+      domain2 = [errorCopy domain];
       v12 = 138543618;
-      v13 = v10;
+      v13 = domain2;
       v14 = 2048;
-      v15 = [v3 code];
+      code2 = [errorCopy code];
       _os_log_impl(&dword_0, v8, v9, "AutoDV2 Discovery Failed With Fatal Network Error %{public}@:%ld ", &v12, 0x16u);
     }
 
@@ -958,15 +958,15 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)_isSSLError:(id)a3
+- (BOOL)_isSSLError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NSURLErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NSURLErrorDomain];
 
   if (v5)
   {
-    v6 = [v3 code] + 1204 < 5;
+    v6 = [errorCopy code] + 1204 < 5;
   }
 
   else
@@ -977,26 +977,26 @@ LABEL_8:
   return v6;
 }
 
-- (void)OAuthAccount:(id)a3 authorizationURI:(id)a4 error:(id)a5
+- (void)OAuthAccount:(id)account authorizationURI:(id)i error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  accountCopy = account;
+  iCopy = i;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = DALoggingwithCategory();
     v12 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v11, v12))
     {
-      v13 = [v10 domain];
+      domain = [errorCopy domain];
       v32 = 138543618;
-      v33 = v13;
+      v33 = domain;
       v34 = 2048;
-      v35 = [v10 code];
+      code = [errorCopy code];
       _os_log_impl(&dword_0, v11, v12, "AutoDV2 Discovery Failed With Error %{public}@:%ld ", &v32, 0x16u);
     }
 
-    if ([(ASSettingsAccountsUIController *)self _isNetworkOfflineError:v10])
+    if ([(ASSettingsAccountsUIController *)self _isNetworkOfflineError:errorCopy])
     {
       v14 = DALoggingwithCategory();
       if (os_log_type_enabled(v14, v12))
@@ -1010,9 +1010,9 @@ LABEL_8:
       goto LABEL_41;
     }
 
-    if (![(ASSettingsAccountsUIController *)self _isSSLError:v10]|| *(&self->_remotedManaged + 2) == 1)
+    if (![(ASSettingsAccountsUIController *)self _isSSLError:errorCopy]|| *(&self->_remotedManaged + 2) == 1)
     {
-      v18 = v9 != 0;
+      v18 = iCopy != 0;
       goto LABEL_17;
     }
 
@@ -1030,13 +1030,13 @@ LABEL_8:
 
   else
   {
-    if (!v9)
+    if (!iCopy)
     {
       v18 = 0;
 LABEL_17:
       v19 = *(&self->_remotedManaged + 2);
       v20 = DALoggingwithCategory();
-      v21 = v20;
+      account = v20;
       if (v19 == 1)
       {
         v24 = _CPLog_to_os_log_type[6];
@@ -1045,14 +1045,14 @@ LABEL_17:
           v25 = @"Not Valid";
           if (v18)
           {
-            v25 = v9;
+            v25 = iCopy;
           }
 
           v32 = 138543618;
           v33 = v25;
           v34 = 2114;
-          v35 = v10;
-          _os_log_impl(&dword_0, v21, v24, "OAuthURI %{public}@ : Error %{public}@ Falling Back to AutoDiscvoer-V1", &v32, 0x16u);
+          code = errorCopy;
+          _os_log_impl(&dword_0, account, v24, "OAuthURI %{public}@ : Error %{public}@ Falling Back to AutoDiscvoer-V1", &v32, 0x16u);
         }
 
         [(ASSettingsAccountsUIController *)self _fallBackToAutoDiscoverV1];
@@ -1068,7 +1068,7 @@ LABEL_17:
             v27 = *(&self->_remotedManaged + 2);
             v32 = 134217984;
             v33 = v27;
-            _os_log_impl(&dword_0, v21, v26, "OAuth autodiscover failed with inconsistent state %ld", &v32, 0xCu);
+            _os_log_impl(&dword_0, account, v26, "OAuth autodiscover failed with inconsistent state %ld", &v32, 0xCu);
           }
         }
 
@@ -1080,19 +1080,19 @@ LABEL_17:
             v23 = @"Not Valid";
             if (v18)
             {
-              v23 = v9;
+              v23 = iCopy;
             }
 
             v32 = 138543618;
             v33 = v23;
             v34 = 2114;
-            v35 = v10;
-            _os_log_impl(&dword_0, v21, v22, "OAuthURI %{public}@ : Error %{public}@ Trying on-prem AutoDiscvoer-V2", &v32, 0x16u);
+            code = errorCopy;
+            _os_log_impl(&dword_0, account, v22, "OAuthURI %{public}@ : Error %{public}@ Trying on-prem AutoDiscvoer-V2", &v32, 0x16u);
           }
 
           *(&self->_remotedManaged + 2) = 1;
-          v21 = [(ASSettingsAccountsUIController *)self account];
-          [v21 autodiscoverOnPremOAuthAccountWithConsumer:self];
+          account = [(ASSettingsAccountsUIController *)self account];
+          [account autodiscoverOnPremOAuthAccountWithConsumer:self];
         }
       }
 
@@ -1104,33 +1104,33 @@ LABEL_17:
     if (os_log_type_enabled(v15, v16))
     {
       v32 = 138543362;
-      v33 = v9;
+      v33 = iCopy;
       _os_log_impl(&dword_0, v15, v16, "AutoDiscover succeeded with OAuthURI : %{public}@", &v32, 0xCu);
     }
 
     [(ASSettingsAccountsUIController *)self stopValidationWithPrompt:0 showButtons:0];
     if (*(&self->_remotedManaged + 2) == 1)
     {
-      v17 = &dword_0 + 1;
+      bOOLValue = &dword_0 + 1;
     }
 
     else
     {
-      v28 = [v8 backingAccountInfo];
-      v29 = [v28 objectForKeyedSubscript:kESExchangeOAuthOnPremKey];
+      backingAccountInfo = [accountCopy backingAccountInfo];
+      v29 = [backingAccountInfo objectForKeyedSubscript:kESExchangeOAuthOnPremKey];
 
       if (v29 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v17 = [v29 BOOLValue];
+        bOOLValue = [v29 BOOLValue];
       }
 
       else
       {
-        v17 = 0;
+        bOOLValue = 0;
       }
     }
 
-    [(ASSettingsAccountsUIController *)self _bringUpOAuthEndPointWithURL:v9 isOnPrem:v17];
+    [(ASSettingsAccountsUIController *)self _bringUpOAuthEndPointWithURL:iCopy isOnPrem:bOOLValue];
   }
 
 LABEL_41:
@@ -1146,52 +1146,52 @@ LABEL_41:
   [(ASSettingsAccountsUIController *)self stopValidationWithPrompt:0 showButtons:1];
 }
 
-- (BOOL)_storeHasDuplicateForUsername:(id)a3
+- (BOOL)_storeHasDuplicateForUsername:(id)username
 {
-  v4 = a3;
-  v5 = [(ASSettingsAccountsUIController *)self accountStore];
-  v6 = [(ASSettingsAccountsUIController *)self account];
-  v7 = [v6 accountTypeIdentifier];
-  v8 = [v5 accountTypeWithAccountTypeIdentifier:v7];
+  usernameCopy = username;
+  accountStore = [(ASSettingsAccountsUIController *)self accountStore];
+  account = [(ASSettingsAccountsUIController *)self account];
+  accountTypeIdentifier = [account accountTypeIdentifier];
+  v8 = [accountStore accountTypeWithAccountTypeIdentifier:accountTypeIdentifier];
 
-  v9 = [(ASSettingsAccountsUIController *)self accountStore];
-  v10 = [v9 accountsWithAccountType:v8];
+  accountStore2 = [(ASSettingsAccountsUIController *)self accountStore];
+  v10 = [accountStore2 accountsWithAccountType:v8];
   v11 = [v10 mutableCopy];
 
-  v12 = [(ASSettingsAccountsUIController *)self account];
-  v13 = [v12 accountTypeIdentifier];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  accountTypeIdentifier2 = [account2 accountTypeIdentifier];
   v14 = ACAccountTypeIdentifierExchange;
-  v15 = [v13 isEqualToString:ACAccountTypeIdentifierExchange];
+  v15 = [accountTypeIdentifier2 isEqualToString:ACAccountTypeIdentifierExchange];
 
   if (v15)
   {
-    v16 = [(ASSettingsAccountsUIController *)self accountStore];
-    v17 = v16;
+    accountStore3 = [(ASSettingsAccountsUIController *)self accountStore];
+    v17 = accountStore3;
     v18 = ACAccountTypeIdentifierHotmail;
   }
 
   else
   {
-    v19 = [(ASSettingsAccountsUIController *)self account];
-    v20 = [v19 accountTypeIdentifier];
-    v21 = [v20 isEqualToString:ACAccountTypeIdentifierHotmail];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    accountTypeIdentifier3 = [account3 accountTypeIdentifier];
+    v21 = [accountTypeIdentifier3 isEqualToString:ACAccountTypeIdentifierHotmail];
 
     if (!v21)
     {
       goto LABEL_7;
     }
 
-    v16 = [(ASSettingsAccountsUIController *)self accountStore];
-    v17 = v16;
+    accountStore3 = [(ASSettingsAccountsUIController *)self accountStore];
+    v17 = accountStore3;
     v18 = v14;
   }
 
-  v22 = [v16 accountTypeWithAccountTypeIdentifier:v18];
+  v22 = [accountStore3 accountTypeWithAccountTypeIdentifier:v18];
 
   if (v22)
   {
-    v23 = [(ASSettingsAccountsUIController *)self accountStore];
-    v24 = [v23 accountsWithAccountType:v22];
+    accountStore4 = [(ASSettingsAccountsUIController *)self accountStore];
+    v24 = [accountStore4 accountsWithAccountType:v22];
     [v11 addObjectsFromArray:v24];
   }
 
@@ -1217,8 +1217,8 @@ LABEL_7:
         }
 
         v31 = *(*(&v37 + 1) + 8 * i);
-        v32 = [v31 username];
-        if (![v4 compare:v32 options:1])
+        username = [v31 username];
+        if (![usernameCopy compare:username options:1])
         {
 
           v34 = 1;
@@ -1227,7 +1227,7 @@ LABEL_7:
 
         v33 = [v31 objectForKeyedSubscript:v29];
         v34 = 1;
-        v35 = [v4 compare:v33 options:1];
+        v35 = [usernameCopy compare:v33 options:1];
 
         if (!v35)
         {
@@ -1256,25 +1256,25 @@ LABEL_19:
   return v34;
 }
 
-- (void)handleRedirectURL:(id)a3
+- (void)handleRedirectURL:(id)l
 {
   v47 = a2;
-  v49 = a3;
+  lCopy = l;
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"VERIFYING" value:&stru_30C98 table:@"Localizable"];
   [(ASSettingsAccountsUIController *)self startValidationWithPrompt:v4];
 
-  v5 = [(ASSettingsAccountsUIController *)self oauthFlowController];
-  v48 = [v5 oauthType];
+  oauthFlowController = [(ASSettingsAccountsUIController *)self oauthFlowController];
+  oauthType = [oauthFlowController oauthType];
 
-  v6 = [NSURLComponents componentsWithURL:v49 resolvingAgainstBaseURL:1];
-  v7 = [v6 queryItems];
+  v6 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+  queryItems = [v6 queryItems];
 
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v7;
+  obj = queryItems;
   v8 = [obj countByEnumeratingWithState:&v56 objects:v66 count:16];
   if (!v8)
   {
@@ -1298,53 +1298,53 @@ LABEL_19:
       }
 
       v12 = *(*(&v56 + 1) + 8 * i);
-      v13 = [v12 name];
-      v14 = [v13 caseInsensitiveCompare:@"code"] == 0;
+      name = [v12 name];
+      v14 = [name caseInsensitiveCompare:@"code"] == 0;
 
       if (v14)
       {
-        v23 = [v12 value];
+        value = [v12 value];
         v22 = v9;
-        v9 = v23;
+        v9 = value;
       }
 
       else
       {
-        v15 = [v12 name];
-        v16 = [v15 caseInsensitiveCompare:@"state"] == 0;
+        name2 = [v12 name];
+        v16 = [name2 caseInsensitiveCompare:@"state"] == 0;
 
         if (v16)
         {
-          v24 = [v12 value];
+          value2 = [v12 value];
           v22 = v52;
-          v52 = v24;
+          v52 = value2;
         }
 
         else
         {
-          v17 = [v12 name];
-          v18 = [v17 caseInsensitiveCompare:@"error"] == 0;
+          name3 = [v12 name];
+          v18 = [name3 caseInsensitiveCompare:@"error"] == 0;
 
           if (v18)
           {
-            v25 = [v12 value];
+            value3 = [v12 value];
             v22 = *(&v51 + 1);
-            *(&v51 + 1) = v25;
+            *(&v51 + 1) = value3;
           }
 
           else
           {
-            v19 = [v12 name];
-            v20 = [v19 caseInsensitiveCompare:@"error_description"] == 0;
+            name4 = [v12 name];
+            v20 = [name4 caseInsensitiveCompare:@"error_description"] == 0;
 
             if (!v20)
             {
               continue;
             }
 
-            v21 = [v12 value];
+            value4 = [v12 value];
             v22 = v51;
-            *&v51 = v21;
+            *&v51 = value4;
           }
         }
       }
@@ -1359,20 +1359,20 @@ LABEL_19:
   {
     if (v9)
     {
-      v29 = [(ASSettingsAccountsUIController *)self oauthFlowController];
-      v30 = [v29 state];
-      v31 = [v52 isEqualToString:v30];
+      oauthFlowController2 = [(ASSettingsAccountsUIController *)self oauthFlowController];
+      state = [oauthFlowController2 state];
+      v31 = [v52 isEqualToString:state];
 
       if (v31)
       {
         objc_initWeak(buf, self);
-        v32 = [(ASSettingsAccountsUIController *)self oauthFlowController];
-        v33 = [(ASSettingsAccountsUIController *)self oauthFlowController];
-        v34 = [v33 challenge];
-        v35 = [v34 codeVerifier];
-        v36 = [(ASSettingsAccountsUIController *)self account];
-        v37 = [v36 backingAccountInfo];
-        v38 = [v37 objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
+        oauthFlowController3 = [(ASSettingsAccountsUIController *)self oauthFlowController];
+        oauthFlowController4 = [(ASSettingsAccountsUIController *)self oauthFlowController];
+        challenge = [oauthFlowController4 challenge];
+        codeVerifier = [challenge codeVerifier];
+        account = [(ASSettingsAccountsUIController *)self account];
+        backingAccountInfo = [account backingAccountInfo];
+        v38 = [backingAccountInfo objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
         v54[0] = _NSConcreteStackBlock;
         v54[1] = 3221225472;
         v54[2] = sub_1198C;
@@ -1380,8 +1380,8 @@ LABEL_19:
         objc_copyWeak(v55, buf);
         v54[4] = self;
         v55[1] = v47;
-        v55[2] = v48;
-        [v32 exchangeAuthCode:v9 codeVerifier:v35 claims:v38 withCompletion:v54];
+        v55[2] = oauthType;
+        [oauthFlowController3 exchangeAuthCode:v9 codeVerifier:codeVerifier claims:v38 withCompletion:v54];
 
         objc_destroyWeak(v55);
         objc_destroyWeak(buf);
@@ -1396,20 +1396,20 @@ LABEL_25:
     v40 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v39, v40))
     {
-      v41 = [(ASSettingsAccountsUIController *)self oauthFlowController];
-      v42 = [v41 state];
+      oauthFlowController5 = [(ASSettingsAccountsUIController *)self oauthFlowController];
+      state2 = [oauthFlowController5 state];
       *buf = 138412802;
       v61 = v9;
       v62 = 2112;
       v63 = v52;
       v64 = 2112;
-      v65 = v42;
+      v65 = state2;
       _os_log_impl(&dword_0, v39, v40, "Error retrieving an OAuth identity. Params: authCode %@, state %@ [self.oauthFlowController state] %@", buf, 0x20u);
     }
 
     v43 = [NSError errorWithDomain:DAAccountValidationDomain code:102 userInfo:0];
-    v44 = [(ASSettingsAccountsUIController *)self account];
-    [(ASSettingsAccountsUIController *)self account:v44 isValid:0 validationError:v43];
+    account2 = [(ASSettingsAccountsUIController *)self account];
+    [(ASSettingsAccountsUIController *)self account:account2 isValid:0 validationError:v43];
 
     [(ASSettingsAccountsUIController *)self _fallBackToAutoDiscoverV1];
     goto LABEL_28;
@@ -1426,19 +1426,19 @@ LABEL_25:
     _os_log_impl(&dword_0, v26, v27, "Error retrieving an OAuth identity. Failed with error %@, error_description %@", buf, 0x16u);
   }
 
-  v28 = [(ASSettingsAccountsUIController *)self account];
-  [(ASSettingsAccountsUIController *)self account:v28 isValid:0 validationError:0];
+  account3 = [(ASSettingsAccountsUIController *)self account];
+  [(ASSettingsAccountsUIController *)self account:account3 isValid:0 validationError:0];
 
   [(ASSettingsAccountsUIController *)self _fallBackToAutoDiscoverV1];
 LABEL_29:
   v45 = +[PSOAuthAccountRedirectURLController sharedInstance];
-  v46 = [DAEASOAuthClient clientRedirectForOAuthType:v48];
+  v46 = [DAEASOAuthClient clientRedirectForOAuthType:oauthType];
   [v45 unRegisterOAuthClientForRedirectURL:v46];
 }
 
-+ (id)usernameFromAccessToken:(id)a3
++ (id)usernameFromAccessToken:(id)token
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [token componentsSeparatedByString:@"."];
   if ([v3 count] >= 3)
   {
     v5 = [v3 objectAtIndexedSubscript:1];
@@ -1465,9 +1465,9 @@ LABEL_29:
   return v4;
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = *(&self->_remotedManaged + 2);
   if (v5)
   {
@@ -1485,21 +1485,21 @@ LABEL_29:
     {
       v23.receiver = self;
       v23.super_class = ASSettingsAccountsUIController;
-      [(ESSettingsAccountsUIController *)&v23 doneButtonTapped:v4];
+      [(ESSettingsAccountsUIController *)&v23 doneButtonTapped:tappedCopy];
       goto LABEL_19;
     }
   }
 
-  v7 = [(ASSettingsAccountsUIController *)self account];
+  account = [(ASSettingsAccountsUIController *)self account];
   v8 = kESEASEndPointFQDN;
-  v9 = [v7 objectForKeyedSubscript:kESEASEndPointFQDN];
+  v9 = [account objectForKeyedSubscript:kESEASEndPointFQDN];
   if (!v9 || *(&self->_remotedManaged + 2) == 2)
   {
     goto LABEL_17;
   }
 
-  v10 = [(ASSettingsAccountsUIController *)self account];
-  v11 = [v10 objectForKeyedSubscript:kDAAccountHost];
+  account2 = [(ASSettingsAccountsUIController *)self account];
+  v11 = [account2 objectForKeyedSubscript:kDAAccountHost];
   if (!v11)
   {
 
@@ -1508,9 +1508,9 @@ LABEL_17:
   }
 
   v12 = v11;
-  v13 = [(ASSettingsAccountsUIController *)self account];
-  v14 = [v13 host];
-  v15 = [v14 length];
+  account3 = [(ASSettingsAccountsUIController *)self account];
+  host = [account3 host];
+  v15 = [host length];
 
   if (!v15)
   {
@@ -1523,8 +1523,8 @@ LABEL_18:
   v17 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v16, v17))
   {
-    v18 = [(ASSettingsAccountsUIController *)self account];
-    v19 = [v18 objectForKeyedSubscript:v8];
+    account4 = [(ASSettingsAccountsUIController *)self account];
+    v19 = [account4 objectForKeyedSubscript:v8];
     *buf = 138412290;
     v25 = v19;
     _os_log_impl(&dword_0, v16, v17, "Not performing autodiscover. EAS endpoint : %@", buf, 0xCu);
@@ -1534,29 +1534,29 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
+  if (validCopy)
   {
     if ([(ESSettingsAccountsUIController *)self accountNeedsAdd])
     {
-      v10 = [(ASSettingsAccountsUIController *)self account];
-      [v10 setEnabled:1 forDADataclass:1];
+      account = [(ASSettingsAccountsUIController *)self account];
+      [account setEnabled:1 forDADataclass:1];
 
-      v11 = [(ASSettingsAccountsUIController *)self account];
-      [v11 setEnabled:0 forDADataclass:2];
+      account2 = [(ASSettingsAccountsUIController *)self account];
+      [account2 setEnabled:0 forDADataclass:2];
 
-      v12 = [(ASSettingsAccountsUIController *)self account];
-      [v12 setEnabled:0 forDADataclass:4];
+      account3 = [(ASSettingsAccountsUIController *)self account];
+      [account3 setEnabled:0 forDADataclass:4];
 
-      v13 = [(ASSettingsAccountsUIController *)self account];
-      [v13 setEnabled:0 forDADataclass:16];
+      account4 = [(ASSettingsAccountsUIController *)self account];
+      [account4 setEnabled:0 forDADataclass:16];
 
-      v14 = [(ASSettingsAccountsUIController *)self account];
-      [v14 setEnabled:0 forDADataclass:32];
+      account5 = [(ASSettingsAccountsUIController *)self account];
+      [account5 setEnabled:0 forDADataclass:32];
 
       v15 = dispatch_semaphore_create(0);
       *&buf = 0;
@@ -1567,9 +1567,9 @@ LABEL_19:
       v31 = &v30;
       v32 = 0x2020000000;
       v33 = 0;
-      v16 = [(ASSettingsAccountsUIController *)self accountStore];
-      v17 = [(ASSettingsAccountsUIController *)self account];
-      v18 = [v17 backingAccountInfo];
+      accountStore = [(ASSettingsAccountsUIController *)self accountStore];
+      account6 = [(ASSettingsAccountsUIController *)self account];
+      backingAccountInfo = [account6 backingAccountInfo];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_13270;
@@ -1578,7 +1578,7 @@ LABEL_19:
       p_buf = &buf;
       v19 = v15;
       v27 = v19;
-      [v16 canSaveAccount:v18 withCompletionHandler:v26];
+      [accountStore canSaveAccount:backingAccountInfo withCompletionHandler:v26];
 
       dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
       v20 = *(*(&buf + 1) + 24);
@@ -1631,7 +1631,7 @@ LABEL_19:
     if (os_log_type_enabled(v23, v24))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_0, v23, v24, "validation failed with error %@", &buf, 0xCu);
     }
 
@@ -1642,7 +1642,7 @@ LABEL_19:
   [(ESSettingsAccountsUIController *)self hideProgressWithPrompt:v22];
   v25.receiver = self;
   v25.super_class = ASSettingsAccountsUIController;
-  [(ESSettingsAccountsUIController *)&v25 account:v8 isValid:v20 & v6 validationError:v9];
+  [(ESSettingsAccountsUIController *)&v25 account:accountCopy isValid:v20 & validCopy validationError:errorCopy];
 }
 
 - (BOOL)haveEnoughValues
@@ -1663,9 +1663,9 @@ LABEL_19:
     qword_3A2E8 = v7;
   }
 
-  v9 = [objc_opt_class() isHotmailAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
   v10 = &qword_3A2E8;
-  if (!v9)
+  if (!isHotmailAccount)
   {
     v10 = &qword_3A2E0;
   }
@@ -1680,15 +1680,15 @@ LABEL_19:
       v13 = [*&self->super.ACUIViewController_opaque[v3] objectAtIndexedSubscript:v12];
       if (v12 == [(ESSettingsAccountsUIController *)self indexOfCurrentlyEditingCell])
       {
-        v14 = [(ESSettingsAccountsUIController *)self currentlyEditingCell];
+        currentlyEditingCell = [(ESSettingsAccountsUIController *)self currentlyEditingCell];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v13 identifier];
-          if ([v11 containsObject:v15])
+          identifier = [v13 identifier];
+          if ([v11 containsObject:identifier])
           {
-            v16 = [v14 textField];
-            [v16 text];
+            textField = [currentlyEditingCell textField];
+            [textField text];
             v17 = v3;
             v19 = v18 = v11;
             v20 = [v19 length];
@@ -1708,35 +1708,35 @@ LABEL_22:
 
       else
       {
-        v14 = [v13 identifier];
-        if ([v14 isEqualToString:@"USERNAME"])
+        currentlyEditingCell = [v13 identifier];
+        if ([currentlyEditingCell isEqualToString:@"USERNAME"])
         {
-          v15 = [(ASSettingsAccountsUIController *)self account];
-          v21 = [v15 usernameWithoutDomain];
+          identifier = [(ASSettingsAccountsUIController *)self account];
+          usernameWithoutDomain = [identifier usernameWithoutDomain];
           goto LABEL_20;
         }
 
-        if ([v14 isEqualToString:@"PASSWORD"])
+        if ([currentlyEditingCell isEqualToString:@"PASSWORD"])
         {
-          v15 = [(ASSettingsAccountsUIController *)self account];
-          v21 = [v15 passwordWithExpected:0];
+          identifier = [(ASSettingsAccountsUIController *)self account];
+          usernameWithoutDomain = [identifier passwordWithExpected:0];
           goto LABEL_20;
         }
 
-        if ([v14 isEqualToString:@"EMAIL"])
+        if ([currentlyEditingCell isEqualToString:@"EMAIL"])
         {
-          v15 = [(ASSettingsAccountsUIController *)self account];
-          v21 = [v15 emailAddress];
+          identifier = [(ASSettingsAccountsUIController *)self account];
+          usernameWithoutDomain = [identifier emailAddress];
           goto LABEL_20;
         }
 
-        if ([v14 isEqualToString:@"HOST"] && *(&self->_remotedManaged + 2) == 4)
+        if ([currentlyEditingCell isEqualToString:@"HOST"] && *(&self->_remotedManaged + 2) == 4)
         {
-          v15 = [(ASSettingsAccountsUIController *)self account];
-          v21 = [v15 host];
+          identifier = [(ASSettingsAccountsUIController *)self account];
+          usernameWithoutDomain = [identifier host];
 LABEL_20:
-          v16 = v21;
-          v20 = [v21 length];
+          textField = usernameWithoutDomain;
+          v20 = [usernameWithoutDomain length];
 LABEL_21:
           v22 = v20 != 0;
 
@@ -1760,25 +1760,25 @@ LABEL_31:
   return v22;
 }
 
-- (void)_tryUpdatingCompositeValueWithId:(id)a3 fromValue:(id)a4 forKey:(id)a5
+- (void)_tryUpdatingCompositeValueWithId:(id)id fromValue:(id)value forKey:(id)key
 {
-  v40 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v40 isEqualToString:@"EMAIL"])
+  idCopy = id;
+  valueCopy = value;
+  keyCopy = key;
+  if ([idCopy isEqualToString:@"EMAIL"])
   {
-    v10 = [(ASSettingsAccountsUIController *)self account];
-    v11 = [v10 emailAddress];
+    account = [(ASSettingsAccountsUIController *)self account];
+    emailAddress = [account emailAddress];
 LABEL_5:
-    v12 = v11;
+    v12 = emailAddress;
 
     goto LABEL_7;
   }
 
-  if ([v40 isEqualToString:@"DESCRIPTION"])
+  if ([idCopy isEqualToString:@"DESCRIPTION"])
   {
-    v10 = [(ASSettingsAccountsUIController *)self account];
-    v11 = [v10 accountDescription];
+    account = [(ASSettingsAccountsUIController *)self account];
+    emailAddress = [account accountDescription];
     goto LABEL_5;
   }
 
@@ -1789,26 +1789,26 @@ LABEL_7:
   {
     v14 = [v13 objectAtIndexedSubscript:0];
     v15 = [v13 objectAtIndexedSubscript:1];
-    if ([v9 isEqualToString:@"HOST"])
+    if ([keyCopy isEqualToString:@"HOST"])
     {
       if (v15)
       {
-        v16 = [(ASSettingsAccountsUIController *)self account];
-        v17 = [v16 host];
-        v18 = v17;
+        account2 = [(ASSettingsAccountsUIController *)self account];
+        host = [account2 host];
+        v18 = host;
         v19 = v15;
 LABEL_18:
-        v20 = [v17 isEqualToString:v19];
+        v20 = [host isEqualToString:v19];
 
         goto LABEL_19;
       }
     }
 
-    else if (([v9 isEqualToString:@"USERNAME"] & 1) != 0 && v14)
+    else if (([keyCopy isEqualToString:@"USERNAME"] & 1) != 0 && v14)
     {
-      v16 = [(ASSettingsAccountsUIController *)self account];
-      v17 = [v16 username];
-      v18 = v17;
+      account2 = [(ASSettingsAccountsUIController *)self account];
+      host = [account2 username];
+      v18 = host;
       v19 = v14;
       goto LABEL_18;
     }
@@ -1816,9 +1816,9 @@ LABEL_18:
 
   else
   {
-    if (([v9 isEqualToString:@"HOST"] & 1) == 0)
+    if (([keyCopy isEqualToString:@"HOST"] & 1) == 0)
     {
-      [v9 isEqualToString:@"USERNAME"];
+      [keyCopy isEqualToString:@"USERNAME"];
     }
 
     v15 = 0;
@@ -1832,48 +1832,48 @@ LABEL_19:
     goto LABEL_45;
   }
 
-  if ([v9 isEqualToString:@"HOST"])
+  if ([keyCopy isEqualToString:@"HOST"])
   {
     v21 = v14;
     if (v21)
     {
-      v22 = v21;
+      usernameWithoutDomain = v21;
 LABEL_28:
-      [NSString stringWithFormat:@"%@@%@", v22, v8];
+      [NSString stringWithFormat:@"%@@%@", usernameWithoutDomain, valueCopy];
       v26 = LABEL_31:;
 
       goto LABEL_33;
     }
 
-    v24 = [(ASSettingsAccountsUIController *)self account];
-    v22 = [v24 usernameWithoutDomain];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    usernameWithoutDomain = [account3 usernameWithoutDomain];
 
-    if (v22)
+    if (usernameWithoutDomain)
     {
       goto LABEL_28;
     }
   }
 
-  else if ([v9 isEqualToString:@"USERNAME"])
+  else if ([keyCopy isEqualToString:@"USERNAME"])
   {
     v23 = v15;
     if (v23)
     {
-      v22 = v23;
+      usernameWithoutDomain = v23;
     }
 
     else
     {
-      v25 = [(ASSettingsAccountsUIController *)self account];
-      v22 = [v25 host];
+      account4 = [(ASSettingsAccountsUIController *)self account];
+      usernameWithoutDomain = [account4 host];
 
-      if (!v22)
+      if (!usernameWithoutDomain)
       {
         goto LABEL_32;
       }
     }
 
-    [NSString stringWithFormat:@"%@@%@", v8, v22];
+    [NSString stringWithFormat:@"%@@%@", valueCopy, usernameWithoutDomain];
     goto LABEL_31;
   }
 
@@ -1882,20 +1882,20 @@ LABEL_32:
 LABEL_33:
   v37 = v15;
   v38 = v14;
-  v39 = v8;
-  if ([v40 isEqualToString:@"EMAIL"])
+  v39 = valueCopy;
+  if ([idCopy isEqualToString:@"EMAIL"])
   {
-    v27 = [(ASSettingsAccountsUIController *)self account];
-    [v27 setEmailAddress:v26];
+    account5 = [(ASSettingsAccountsUIController *)self account];
+    [account5 setEmailAddress:v26];
 LABEL_37:
 
     goto LABEL_38;
   }
 
-  if ([v40 isEqualToString:@"DESCRIPTION"])
+  if ([idCopy isEqualToString:@"DESCRIPTION"])
   {
-    v27 = [(ASSettingsAccountsUIController *)self account];
-    [v27 setAccountDescription:v26];
+    account5 = [(ASSettingsAccountsUIController *)self account];
+    [account5 setAccountDescription:v26];
     goto LABEL_37;
   }
 
@@ -1909,9 +1909,9 @@ LABEL_38:
     while (1)
     {
       v32 = [*&self->super.ACUIViewController_opaque[v28] objectAtIndexedSubscript:v31];
-      v33 = [v32 identifier];
+      identifier = [v32 identifier];
 
-      if ([v33 isEqualToString:v40])
+      if ([identifier isEqualToString:idCopy])
       {
         break;
       }
@@ -1922,9 +1922,9 @@ LABEL_38:
       }
     }
 
-    v34 = [(ASSettingsAccountsUIController *)self table];
+    table = [(ASSettingsAccountsUIController *)self table];
     v35 = [(ASSettingsAccountsUIController *)self indexPathForIndex:v31];
-    v36 = [v34 cellForRowAtIndexPath:v35];
+    v36 = [table cellForRowAtIndexPath:v35];
 
     [v36 setValue:v26];
   }
@@ -1932,17 +1932,17 @@ LABEL_38:
 LABEL_44:
 
   v14 = v38;
-  v8 = v39;
+  valueCopy = v39;
   v15 = v37;
 LABEL_45:
 }
 
 - (id)_defaultAccountDescription
 {
-  v2 = [objc_opt_class() isHotmailAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isHotmailAccount)
   {
     v5 = @"HOTMAIL";
   }
@@ -1957,33 +1957,33 @@ LABEL_45:
   return v6;
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(ASSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-  v10 = [v6 isEqualToString:v9];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v9 = [(ASSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+  v10 = [propertyCopy isEqualToString:v9];
 
-  if ([v8 isEqualToString:@"HOST"])
+  if ([identifier isEqualToString:@"HOST"])
   {
-    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"EMAIL" fromValue:v6 forKey:v8];
-    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"DESCRIPTION" fromValue:v6 forKey:v8];
-    v11 = [(ASSettingsAccountsUIController *)self account];
-    [v11 setHost:v6];
+    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"EMAIL" fromValue:propertyCopy forKey:identifier];
+    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"DESCRIPTION" fromValue:propertyCopy forKey:identifier];
+    account = [(ASSettingsAccountsUIController *)self account];
+    [account setHost:propertyCopy];
 LABEL_3:
 
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:@"DOMAIN"])
+  if ([identifier isEqualToString:@"DOMAIN"])
   {
-    v12 = [(ASSettingsAccountsUIController *)self account];
-    v13 = [v12 usernameWithoutDomain];
+    account2 = [(ASSettingsAccountsUIController *)self account];
+    usernameWithoutDomain = [account2 usernameWithoutDomain];
 
-    if (v13)
+    if (usernameWithoutDomain)
     {
-      v14 = v13;
+      v14 = usernameWithoutDomain;
     }
 
     else
@@ -1991,10 +1991,10 @@ LABEL_3:
       v14 = &stru_30C98;
     }
 
-    v6 = v6;
-    if ([v6 length])
+    propertyCopy = propertyCopy;
+    if ([propertyCopy length])
     {
-      v15 = [v6 stringByAppendingFormat:@"\\%@", v14];
+      v15 = [propertyCopy stringByAppendingFormat:@"\\%@", v14];
     }
 
     else
@@ -2004,43 +2004,43 @@ LABEL_3:
 
     v20 = v15;
 
-    v21 = [(ASSettingsAccountsUIController *)self account];
-    [v21 setUsername:v20];
+    account3 = [(ASSettingsAccountsUIController *)self account];
+    [account3 setUsername:v20];
   }
 
-  else if ([v8 isEqualToString:@"USERNAME"])
+  else if ([identifier isEqualToString:@"USERNAME"])
   {
-    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"EMAIL" fromValue:v6 forKey:v8];
-    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"DESCRIPTION" fromValue:v6 forKey:v8];
-    v16 = [(ASSettingsAccountsUIController *)self account];
-    v17 = [v16 domainOnly];
+    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"EMAIL" fromValue:propertyCopy forKey:identifier];
+    [(ASSettingsAccountsUIController *)self _tryUpdatingCompositeValueWithId:@"DESCRIPTION" fromValue:propertyCopy forKey:identifier];
+    account4 = [(ASSettingsAccountsUIController *)self account];
+    domainOnly = [account4 domainOnly];
 
-    if ([v17 length])
+    if ([domainOnly length])
     {
-      v18 = [v17 stringByAppendingFormat:@"\\%@", v6];
+      propertyCopy = [domainOnly stringByAppendingFormat:@"\\%@", propertyCopy];
     }
 
     else
     {
-      v18 = v6;
+      propertyCopy = propertyCopy;
     }
 
-    v27 = v18;
+    v27 = propertyCopy;
 
-    v28 = [(ASSettingsAccountsUIController *)self account];
-    [v28 setUsername:v27];
+    account5 = [(ASSettingsAccountsUIController *)self account];
+    [account5 setUsername:v27];
   }
 
   else
   {
-    if (!(v10 & 1 | (([v8 isEqualToString:@"DESCRIPTION"] & 1) == 0)))
+    if (!(v10 & 1 | (([identifier isEqualToString:@"DESCRIPTION"] & 1) == 0)))
     {
-      if (![v6 length])
+      if (![propertyCopy length])
       {
-        v22 = [objc_opt_class() isHotmailAccount];
+        isHotmailAccount = [objc_opt_class() isHotmailAccount];
         v23 = [NSBundle bundleForClass:objc_opt_class()];
         v24 = v23;
-        if (v22)
+        if (isHotmailAccount)
         {
           v25 = @"HOTMAIL_DESCRIPTION";
         }
@@ -2052,32 +2052,32 @@ LABEL_3:
 
         v26 = [v23 localizedStringForKey:v25 value:&stru_30C98 table:@"ASAccountSetup"];
 
-        v6 = v26;
+        propertyCopy = v26;
       }
 
-      v11 = [(ASSettingsAccountsUIController *)self account];
-      [v11 setAccountDescription:v6];
+      account = [(ASSettingsAccountsUIController *)self account];
+      [account setAccountDescription:propertyCopy];
       goto LABEL_3;
     }
 
-    if ([v8 isEqualToString:@"EMAIL"])
+    if ([identifier isEqualToString:@"EMAIL"])
     {
       if ([objc_opt_class() isHotmailAccount])
       {
-        v19 = [(ASSettingsAccountsUIController *)self account];
-        [v19 setUsername:v6];
+        account6 = [(ASSettingsAccountsUIController *)self account];
+        [account6 setUsername:propertyCopy];
       }
 
       v30.receiver = self;
       v30.super_class = ASSettingsAccountsUIController;
-      [(ESSettingsAccountsUIController *)&v30 setAccountProperty:v6 withSpecifier:v7];
+      [(ESSettingsAccountsUIController *)&v30 setAccountProperty:propertyCopy withSpecifier:specifierCopy];
     }
 
     else
     {
       v29.receiver = self;
       v29.super_class = ASSettingsAccountsUIController;
-      [(ESSettingsAccountsUIController *)&v29 setAccountProperty:v6 withSpecifier:v7];
+      [(ESSettingsAccountsUIController *)&v29 setAccountProperty:propertyCopy withSpecifier:specifierCopy];
     }
   }
 
@@ -2086,30 +2086,30 @@ LABEL_29:
   [(ESSettingsAccountsUIController *)self updateDoneButton];
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"DOMAIN"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"DOMAIN"])
   {
-    v6 = [(ASSettingsAccountsUIController *)self account];
-    v7 = [v6 domainOnly];
+    account = [(ASSettingsAccountsUIController *)self account];
+    domainOnly = [account domainOnly];
 LABEL_5:
-    v8 = v7;
+    v8 = domainOnly;
 
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"USERNAME"])
+  if ([identifier isEqualToString:@"USERNAME"])
   {
-    v6 = [(ASSettingsAccountsUIController *)self account];
-    v7 = [v6 usernameWithoutDomain];
+    account = [(ASSettingsAccountsUIController *)self account];
+    domainOnly = [account usernameWithoutDomain];
     goto LABEL_5;
   }
 
   v12.receiver = self;
   v12.super_class = ASSettingsAccountsUIController;
-  v8 = [(ESSettingsAccountsUIController *)&v12 accountPropertyWithSpecifier:v4];
+  v8 = [(ESSettingsAccountsUIController *)&v12 accountPropertyWithSpecifier:specifierCopy];
 LABEL_7:
   if (v8)
   {
@@ -2128,10 +2128,10 @@ LABEL_7:
 
 - (id)localizedValidationFailureTitleString
 {
-  v2 = [objc_opt_class() isHotmailAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isHotmailAccount)
   {
     v5 = @"HOTMAIL_ACCOUNT";
   }
@@ -2156,10 +2156,10 @@ LABEL_7:
 
 - (id)localizedAccountSetupTitleString
 {
-  v2 = [objc_opt_class() isHotmailAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isHotmailAccount)
   {
     v5 = @"HOTMAIL";
   }
@@ -2176,17 +2176,17 @@ LABEL_7:
 
 - (id)localizedAccountTitleString
 {
-  v3 = [objc_opt_class() isHotmailAccount];
-  v4 = [(ESSettingsAccountsUIController *)self isSettingUpNewAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
+  isSettingUpNewAccount = [(ESSettingsAccountsUIController *)self isSettingUpNewAccount];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = v5;
   v7 = @"NEW_ACCOUNT_SETTINGS";
-  if (v3)
+  if (isHotmailAccount)
   {
     v7 = @"NEW_HOTMAIL_ACCOUNT_SETTINGS";
   }
 
-  if (v4)
+  if (isSettingUpNewAccount)
   {
     v8 = v7;
   }
@@ -2220,38 +2220,38 @@ LABEL_7:
   [(ESSettingsAccountsUIController *)&v9 dealloc];
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(ASSettingsAccountsUIController *)self view];
-  v4 = [v3 window];
+  view = [(ASSettingsAccountsUIController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
-- (void)_validateUniquenessAndAddAccount:(id)a3 username:(id)a4 token:(id)a5 refreshToken:(id)a6 completion:(id)a7
+- (void)_validateUniquenessAndAddAccount:(id)account username:(id)username token:(id)token refreshToken:(id)refreshToken completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accountCopy = account;
+  usernameCopy = username;
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_147B4;
   v22[3] = &unk_30AB0;
   objc_copyWeak(&v29, &location);
-  v23 = v14;
-  v24 = self;
-  v25 = v13;
-  v26 = v12;
-  v27 = v15;
-  v28 = v16;
-  v17 = v15;
-  v18 = v12;
-  v19 = v16;
-  v20 = v13;
-  v21 = v14;
+  v23 = tokenCopy;
+  selfCopy = self;
+  v25 = usernameCopy;
+  v26 = accountCopy;
+  v27 = refreshTokenCopy;
+  v28 = completionCopy;
+  v17 = refreshTokenCopy;
+  v18 = accountCopy;
+  v19 = completionCopy;
+  v20 = usernameCopy;
+  v21 = tokenCopy;
   dispatch_async(&_dispatch_main_q, v22);
 
   objc_destroyWeak(&v29);

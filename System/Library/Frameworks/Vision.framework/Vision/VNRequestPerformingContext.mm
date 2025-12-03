@@ -1,39 +1,39 @@
 @interface VNRequestPerformingContext
-- (BOOL)cacheObservationsOfRequest:(id)a3;
-- (VNRequestPerformingContext)initWithSession:(id)a3 requestPerformer:(id)a4 imageBuffer:(id)a5 forensics:(id)a6 observationsCache:(id)a7;
-- (VNRequestPerformingContext)initWithSession:(id)a3 requestPerformer:(id)a4 imageBuffer:(id)a5 forensics:(id)a6 observationsCache:(id)a7 qosClass:(unsigned int)a8;
-- (id)_observationsCacheKeyForRequest:(id)a3;
-- (id)cachedObservationsAcceptedByRequest:(id)a3;
-- (id)imageBufferAndReturnError:(id *)a3;
-- (id)previousSequencedObservationsAcceptedByRequest:(id)a3;
-- (id)requestPerformerAndReturnError:(id *)a3;
-- (void)recordSequencedObservationsOfRequest:(id)a3;
+- (BOOL)cacheObservationsOfRequest:(id)request;
+- (VNRequestPerformingContext)initWithSession:(id)session requestPerformer:(id)performer imageBuffer:(id)buffer forensics:(id)forensics observationsCache:(id)cache;
+- (VNRequestPerformingContext)initWithSession:(id)session requestPerformer:(id)performer imageBuffer:(id)buffer forensics:(id)forensics observationsCache:(id)cache qosClass:(unsigned int)class;
+- (id)_observationsCacheKeyForRequest:(id)request;
+- (id)cachedObservationsAcceptedByRequest:(id)request;
+- (id)imageBufferAndReturnError:(id *)error;
+- (id)previousSequencedObservationsAcceptedByRequest:(id)request;
+- (id)requestPerformerAndReturnError:(id *)error;
+- (void)recordSequencedObservationsOfRequest:(id)request;
 @end
 
 @implementation VNRequestPerformingContext
 
-- (id)previousSequencedObservationsAcceptedByRequest:(id)a3
+- (id)previousSequencedObservationsAcceptedByRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(VNRequestPerformingContext *)self requestPerformerAndReturnError:0];
-  v6 = [v5 previousSequencedObservationsForRequest:v4];
+  v6 = [v5 previousSequencedObservationsForRequest:requestCopy];
 
   return v6;
 }
 
-- (void)recordSequencedObservationsOfRequest:(id)a3
+- (void)recordSequencedObservationsOfRequest:(id)request
 {
-  v5 = a3;
-  if ([v5 wantsSequencedRequestObservationsRecording])
+  requestCopy = request;
+  if ([requestCopy wantsSequencedRequestObservationsRecording])
   {
     v4 = [(VNRequestPerformingContext *)self requestPerformerAndReturnError:0];
-    [v4 recordSequencedObservationsForRequest:v5];
+    [v4 recordSequencedObservationsForRequest:requestCopy];
   }
 }
 
-- (id)cachedObservationsAcceptedByRequest:(id)a3
+- (id)cachedObservationsAcceptedByRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_observationsCacheLock);
   if (self->_requestForensics)
   {
@@ -41,8 +41,8 @@
     v9 = 3221225472;
     v10 = __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___block_invoke;
     v11 = &unk_1E77B6678;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = requestCopy;
     v5 = _Block_copy(&v8);
   }
 
@@ -51,11 +51,11 @@
     v5 = 0;
   }
 
-  v6 = [(VNObservationsCache *)self->_observationsCache observationsAcceptedByRequest:v4 testedKeyHandler:v5, v8, v9, v10, v11, v12];
+  selfCopy = [(VNObservationsCache *)self->_observationsCache observationsAcceptedByRequest:requestCopy testedKeyHandler:v5, v8, v9, v10, v11, selfCopy];
 
   os_unfair_lock_unlock(&self->_observationsCacheLock);
 
-  return v6;
+  return selfCopy;
 }
 
 uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___block_invoke(uint64_t a1, uint64_t a2, int a3)
@@ -73,35 +73,35 @@ uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___
   }
 }
 
-- (BOOL)cacheObservationsOfRequest:(id)a3
+- (BOOL)cacheObservationsOfRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_observationsCacheLock);
-  v5 = [v4 allowsCachingOfResults];
-  if (v5)
+  allowsCachingOfResults = [requestCopy allowsCachingOfResults];
+  if (allowsCachingOfResults)
   {
-    v6 = [(VNRequestPerformingContext *)self _observationsCacheKeyForRequest:v4];
+    v6 = [(VNRequestPerformingContext *)self _observationsCacheKeyForRequest:requestCopy];
     observationsCache = self->_observationsCache;
-    v8 = [v4 results];
-    [(VNObservationsCache *)observationsCache setObservations:v8 forKey:v6];
+    results = [requestCopy results];
+    [(VNObservationsCache *)observationsCache setObservations:results forKey:v6];
 
     [(VNRequestPerformingContext *)self serialNumber];
-    [v4 resolvedRevision];
+    [requestCopy resolvedRevision];
     [objc_opt_class() VNClassCode];
     kdebug_trace();
     requestForensics = self->_requestForensics;
     if (requestForensics)
     {
-      [(VNRequestForensics *)requestForensics request:v4 cachedResultsWithObservationsCacheKey:v6];
+      [(VNRequestForensics *)requestForensics request:requestCopy cachedResultsWithObservationsCacheKey:v6];
     }
   }
 
   os_unfair_lock_unlock(&self->_observationsCacheLock);
 
-  return v5;
+  return allowsCachingOfResults;
 }
 
-- (id)imageBufferAndReturnError:(id *)a3
+- (id)imageBufferAndReturnError:(id *)error
 {
   imageBuffer_DO_NOT_DIRECTLY_ACCESS = self->_imageBuffer_DO_NOT_DIRECTLY_ACCESS;
   if (imageBuffer_DO_NOT_DIRECTLY_ACCESS)
@@ -109,15 +109,15 @@ uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___
     v4 = imageBuffer_DO_NOT_DIRECTLY_ACCESS;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [VNError errorForInvalidOperationWithLocalizedDescription:@"no image is available"];
+    *error = [VNError errorForInvalidOperationWithLocalizedDescription:@"no image is available"];
   }
 
   return imageBuffer_DO_NOT_DIRECTLY_ACCESS;
 }
 
-- (id)requestPerformerAndReturnError:(id *)a3
+- (id)requestPerformerAndReturnError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakRequestPerformer);
   v5 = WeakRetained;
@@ -126,35 +126,35 @@ uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___
     v6 = WeakRetained;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [VNError errorForInternalErrorWithLocalizedDescription:@"no request performer available"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"no request performer available"];
   }
 
   return v5;
 }
 
-- (id)_observationsCacheKeyForRequest:(id)a3
+- (id)_observationsCacheKeyForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_requestToObservationsCacheKeyMap objectForKey:v4];
+  requestCopy = request;
+  v5 = [(NSMapTable *)self->_requestToObservationsCacheKeyMap objectForKey:requestCopy];
   if (!v5)
   {
-    v6 = [v4 configuration];
-    v5 = [v6 copy];
-    [(NSMapTable *)self->_requestToObservationsCacheKeyMap setObject:v5 forKey:v4];
+    configuration = [requestCopy configuration];
+    v5 = [configuration copy];
+    [(NSMapTable *)self->_requestToObservationsCacheKeyMap setObject:v5 forKey:requestCopy];
   }
 
   return v5;
 }
 
-- (VNRequestPerformingContext)initWithSession:(id)a3 requestPerformer:(id)a4 imageBuffer:(id)a5 forensics:(id)a6 observationsCache:(id)a7 qosClass:(unsigned int)a8
+- (VNRequestPerformingContext)initWithSession:(id)session requestPerformer:(id)performer imageBuffer:(id)buffer forensics:(id)forensics observationsCache:(id)cache qosClass:(unsigned int)class
 {
-  v24 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  sessionCopy = session;
+  performerCopy = performer;
+  bufferCopy = buffer;
+  forensicsCopy = forensics;
+  cacheCopy = cache;
   v25.receiver = self;
   v25.super_class = VNRequestPerformingContext;
   v19 = [(VNRequestPerformingContext *)&v25 init];
@@ -162,29 +162,29 @@ uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___
   if (v19)
   {
     v19->_serialNumber = atomic_fetch_add_explicit(&initWithSession_requestPerformer_imageBuffer_forensics_observationsCache_qosClass__ourNextSerialNumber, 1uLL, memory_order_relaxed) + 1;
-    objc_storeStrong(&v19->_session, a3);
-    v20->_qosClass = a8;
-    objc_storeWeak(&v20->_weakRequestPerformer, v15);
-    objc_storeStrong(&v20->_imageBuffer_DO_NOT_DIRECTLY_ACCESS, a5);
-    v21 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v19->_session, session);
+    v20->_qosClass = class;
+    objc_storeWeak(&v20->_weakRequestPerformer, performerCopy);
+    objc_storeStrong(&v20->_imageBuffer_DO_NOT_DIRECTLY_ACCESS, buffer);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     requestToObservationsCacheKeyMap = v20->_requestToObservationsCacheKeyMap;
-    v20->_requestToObservationsCacheKeyMap = v21;
+    v20->_requestToObservationsCacheKeyMap = strongToStrongObjectsMapTable;
 
-    objc_storeStrong(&v20->_observationsCache, a7);
+    objc_storeStrong(&v20->_observationsCache, cache);
     v20->_observationsCacheLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v20->_requestForensics, a6);
+    objc_storeStrong(&v20->_requestForensics, forensics);
   }
 
   return v20;
 }
 
-- (VNRequestPerformingContext)initWithSession:(id)a3 requestPerformer:(id)a4 imageBuffer:(id)a5 forensics:(id)a6 observationsCache:(id)a7
+- (VNRequestPerformingContext)initWithSession:(id)session requestPerformer:(id)performer imageBuffer:(id)buffer forensics:(id)forensics observationsCache:(id)cache
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sessionCopy = session;
+  performerCopy = performer;
+  bufferCopy = buffer;
+  forensicsCopy = forensics;
+  cacheCopy = cache;
   v17 = qos_class_self();
   if (+[VNControlledCapacityTasksQueue requiresHighQoS])
   {
@@ -196,7 +196,7 @@ uint64_t __66__VNRequestPerformingContext_cachedObservationsAcceptedByRequest___
     v18 = v17;
   }
 
-  v19 = [(VNRequestPerformingContext *)self initWithSession:v12 requestPerformer:v13 imageBuffer:v14 forensics:v15 observationsCache:v16 qosClass:v18];
+  v19 = [(VNRequestPerformingContext *)self initWithSession:sessionCopy requestPerformer:performerCopy imageBuffer:bufferCopy forensics:forensicsCopy observationsCache:cacheCopy qosClass:v18];
 
   return v19;
 }

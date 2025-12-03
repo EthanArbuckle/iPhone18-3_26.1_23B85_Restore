@@ -1,18 +1,18 @@
 @interface UIWindowSceneAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityFocusContainerMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityFocusContainerMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query;
 - (BOOL)_accessibilityIsFKARunningForFocusItem;
-- (BOOL)_accessibilityMoveAppFocusForElementMatchingQuery:(id)a3 heading:(unint64_t)a4;
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4;
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4;
+- (BOOL)_accessibilityMoveAppFocusForElementMatchingQuery:(id)query heading:(unint64_t)heading;
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group;
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query;
 - (BOOL)_accessibilityResetAndClearNativeFocusSystem;
-- (BOOL)_accessibilitySafeMoveInDirection:(unint64_t)a3 byGroup:(BOOL)a4 withSearchInfo:(id)a5;
+- (BOOL)_accessibilitySafeMoveInDirection:(unint64_t)direction byGroup:(BOOL)group withSearchInfo:(id)info;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityFBSceneIdentifier;
 - (id)_accessibilityFocusSystem;
 - (id)_accessibilityLeadingMultitaskingElements;
 - (id)_accessibilityNativeFocusElement;
-- (id)_accessibilityNativeFocusableElements:(id)a3 withQueryString:(id)a4;
+- (id)_accessibilityNativeFocusableElements:(id)elements withQueryString:(id)string;
 - (id)_accessibilityTrailingMultitaskingElements;
 - (id)_axCreateLeadingRemoteElementsIfNecessary;
 - (id)_axCreateTrailingRemoteElementsIfNecessary;
@@ -21,42 +21,42 @@
 - (void)_accessibilityDidFocusOnApplication;
 - (void)_accessibilityEnableFocusSystem;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilitySetFocusEnabledInApplication:(BOOL)a3;
-- (void)_accessibilitySetLeadingRemoteElements:(id)a3;
-- (void)_accessibilitySetTrailingRemoteElements:(id)a3;
+- (void)_accessibilitySetFocusEnabledInApplication:(BOOL)application;
+- (void)_accessibilitySetLeadingRemoteElements:(id)elements;
+- (void)_accessibilitySetTrailingRemoteElements:(id)elements;
 - (void)dealloc;
 @end
 
 @implementation UIWindowSceneAccessibility
 
-- (void)_accessibilitySetLeadingRemoteElements:(id)a3
+- (void)_accessibilitySetLeadingRemoteElements:(id)elements
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elements);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilitySetTrailingRemoteElements:(id)a3
+- (void)_accessibilitySetTrailingRemoteElements:(id)elements
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elements);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v14 = location;
   v13 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v12 = "@";
   v3 = @"UIWindowScene";
   [location[0] validateClass:"@" hasInstanceMethod:"@" withFullSignature:0];
@@ -90,30 +90,30 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = UIWindowSceneAccessibility;
   [(UIWindowSceneAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
-  v2 = [(UIWindowSceneAccessibility *)v7 _axCreateLeadingRemoteElementsIfNecessary];
-  v3 = [(UIWindowSceneAccessibility *)v7 _axCreateTrailingRemoteElementsIfNecessary];
+  _axCreateLeadingRemoteElementsIfNecessary = [(UIWindowSceneAccessibility *)selfCopy _axCreateLeadingRemoteElementsIfNecessary];
+  _axCreateTrailingRemoteElementsIfNecessary = [(UIWindowSceneAccessibility *)selfCopy _axCreateTrailingRemoteElementsIfNecessary];
 
-  v4 = v3;
+  v4 = _axCreateTrailingRemoteElementsIfNecessary;
 }
 
 - (id)_axCreateLeadingRemoteElementsIfNecessary
 {
   v28[1] = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   if (AXProcessIsSpringBoard() & 1) == 0 && (AXDeviceSupportsMultitasking())
   {
-    v25[0] = MEMORY[0x29EDC9748](v26);
-    v24 = [v25[0] _FBSScene];
+    v25[0] = MEMORY[0x29EDC9748](selfCopy);
+    _FBSScene = [v25[0] _FBSScene];
     v11 = MEMORY[0x29EDBA0F8];
-    v12 = [v24 identifier];
-    v23 = [v11 stringWithFormat:@"%@:%@", @"window-controls", v12];
-    MEMORY[0x29EDC9740](v12);
+    identifier = [_FBSScene identifier];
+    v23 = [v11 stringWithFormat:@"%@:%@", @"window-controls", identifier];
+    MEMORY[0x29EDC9740](identifier);
     v13 = MEMORY[0x29EDBD800];
     v16 = MEMORY[0x29EDCA5F8];
     v17 = -1073741824;
@@ -124,11 +124,11 @@
     v22 = [v13 remoteElementForBlock:&v16];
     if (!v22)
     {
-      v9 = [v24 hostHandle];
-      v8 = [v9 auditToken];
-      v10 = [v8 pid];
-      MEMORY[0x29EDC9740](v8);
-      MEMORY[0x29EDC9740](v9);
+      hostHandle = [_FBSScene hostHandle];
+      auditToken = [hostHandle auditToken];
+      v10 = [auditToken pid];
+      MEMORY[0x29EDC9740](auditToken);
+      MEMORY[0x29EDC9740](hostHandle);
       v15 = v10;
       v2 = objc_alloc(MEMORY[0x29EDBD800]);
       v3 = [v2 initWithUUID:v23 andRemotePid:v10 andContextId:0];
@@ -136,18 +136,18 @@
       v22 = v3;
       *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
       [v22 setOnClientSide:{1, v5}];
-      [v22 setAccessibilityContainer:v26];
+      [v22 setAccessibilityContainer:selfCopy];
     }
 
     v28[0] = v22;
     v14 = [MEMORY[0x29EDB8D80] arrayWithObjects:v28 count:1];
-    [(UIWindowSceneAccessibility *)v26 _accessibilitySetLeadingRemoteElements:v14];
+    [(UIWindowSceneAccessibility *)selfCopy _accessibilitySetLeadingRemoteElements:v14];
     v27 = MEMORY[0x29EDC9748](v14);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&_FBSScene, 0);
     objc_storeStrong(v25, 0);
   }
 
@@ -176,16 +176,16 @@ uint64_t __71__UIWindowSceneAccessibility__axCreateLeadingRemoteElementsIfNecess
 - (id)_axCreateTrailingRemoteElementsIfNecessary
 {
   v28[1] = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   v25[1] = a2;
   if (AXProcessIsSpringBoard() & 1) == 0 && (AXDeviceSupportsMultitasking())
   {
-    v25[0] = MEMORY[0x29EDC9748](v26);
-    v24 = [v25[0] _FBSScene];
+    v25[0] = MEMORY[0x29EDC9748](selfCopy);
+    _FBSScene = [v25[0] _FBSScene];
     v11 = MEMORY[0x29EDBA0F8];
-    v12 = [v24 identifier];
-    v23 = [v11 stringWithFormat:@"%@:%@", @"resize-grabber", v12];
-    MEMORY[0x29EDC9740](v12);
+    identifier = [_FBSScene identifier];
+    v23 = [v11 stringWithFormat:@"%@:%@", @"resize-grabber", identifier];
+    MEMORY[0x29EDC9740](identifier);
     v13 = MEMORY[0x29EDBD800];
     v16 = MEMORY[0x29EDCA5F8];
     v17 = -1073741824;
@@ -196,11 +196,11 @@ uint64_t __71__UIWindowSceneAccessibility__axCreateLeadingRemoteElementsIfNecess
     v22 = [v13 remoteElementForBlock:&v16];
     if (!v22)
     {
-      v9 = [v24 hostHandle];
-      v8 = [v9 auditToken];
-      v10 = [v8 pid];
-      MEMORY[0x29EDC9740](v8);
-      MEMORY[0x29EDC9740](v9);
+      hostHandle = [_FBSScene hostHandle];
+      auditToken = [hostHandle auditToken];
+      v10 = [auditToken pid];
+      MEMORY[0x29EDC9740](auditToken);
+      MEMORY[0x29EDC9740](hostHandle);
       v15 = v10;
       v2 = objc_alloc(MEMORY[0x29EDBD800]);
       v3 = [v2 initWithUUID:v23 andRemotePid:v10 andContextId:0];
@@ -208,18 +208,18 @@ uint64_t __71__UIWindowSceneAccessibility__axCreateLeadingRemoteElementsIfNecess
       v22 = v3;
       *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
       [v22 setOnClientSide:{1, v5}];
-      [v22 setAccessibilityContainer:v26];
+      [v22 setAccessibilityContainer:selfCopy];
     }
 
     v28[0] = v22;
     v14 = [MEMORY[0x29EDB8D80] arrayWithObjects:v28 count:1];
-    [(UIWindowSceneAccessibility *)v26 _accessibilitySetTrailingRemoteElements:v14];
+    [(UIWindowSceneAccessibility *)selfCopy _accessibilitySetTrailingRemoteElements:v14];
     v27 = MEMORY[0x29EDC9748](v14);
     objc_storeStrong(&v14, 0);
     objc_storeStrong(&v22, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&_FBSScene, 0);
     objc_storeStrong(v25, 0);
   }
 
@@ -247,12 +247,12 @@ uint64_t __72__UIWindowSceneAccessibility__axCreateTrailingRemoteElementsIfNeces
 
 - (id)_accessibilityLeadingMultitaskingElements
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(UIWindowSceneAccessibility *)self _accessibilityLeadingRemoteElements];
   if (!v4[0])
   {
-    v4[0] = [(UIWindowSceneAccessibility *)v5 _axCreateLeadingRemoteElementsIfNecessary];
+    v4[0] = [(UIWindowSceneAccessibility *)selfCopy _axCreateLeadingRemoteElementsIfNecessary];
     MEMORY[0x29EDC9740](0);
   }
 
@@ -264,12 +264,12 @@ uint64_t __72__UIWindowSceneAccessibility__axCreateTrailingRemoteElementsIfNeces
 
 - (id)_accessibilityTrailingMultitaskingElements
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(UIWindowSceneAccessibility *)self _accessibilityTrailingRemoteElements];
   if (!v4[0])
   {
-    v4[0] = [(UIWindowSceneAccessibility *)v5 _axCreateTrailingRemoteElementsIfNecessary];
+    v4[0] = [(UIWindowSceneAccessibility *)selfCopy _axCreateTrailingRemoteElementsIfNecessary];
     MEMORY[0x29EDC9740](0);
   }
 
@@ -281,36 +281,36 @@ uint64_t __72__UIWindowSceneAccessibility__axCreateTrailingRemoteElementsIfNeces
 
 - (id)_accessibilityFocusSystem
 {
-  v3 = [(UIWindowSceneAccessibility *)self _focusSystemSceneComponent];
-  v4 = [v3 focusSystem];
-  MEMORY[0x29EDC9740](v3);
+  _focusSystemSceneComponent = [(UIWindowSceneAccessibility *)self _focusSystemSceneComponent];
+  focusSystem = [_focusSystemSceneComponent focusSystem];
+  MEMORY[0x29EDC9740](_focusSystemSceneComponent);
 
-  return v4;
+  return focusSystem;
 }
 
 - (id)_accessibilityNativeFocusElement
 {
   location[2] = self;
   location[1] = a2;
-  v6 = [(UIWindowSceneAccessibility *)self _accessibilityFocusSystem];
-  location[0] = [v6 focusedItem];
-  MEMORY[0x29EDC9740](v6);
+  _accessibilityFocusSystem = [(UIWindowSceneAccessibility *)self _accessibilityFocusSystem];
+  location[0] = [_accessibilityFocusSystem focusedItem];
+  MEMORY[0x29EDC9740](_accessibilityFocusSystem);
   if (objc_opt_respondsToSelector())
   {
-    v2 = [location[0] _accessibilityUnderlyingElementForFocusItem];
+    _accessibilityUnderlyingElementForFocusItem = [location[0] _accessibilityUnderlyingElementForFocusItem];
     v3 = location[0];
-    location[0] = v2;
+    location[0] = _accessibilityUnderlyingElementForFocusItem;
     MEMORY[0x29EDC9740](v3);
   }
 
-  v7 = [location[0] _accessibilityNativeFocusElement];
-  if (v7)
+  _accessibilityNativeFocusElement = [location[0] _accessibilityNativeFocusElement];
+  if (_accessibilityNativeFocusElement)
   {
-    objc_storeStrong(location, v7);
+    objc_storeStrong(location, _accessibilityNativeFocusElement);
   }
 
   v5 = MEMORY[0x29EDC9748](location[0]);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&_accessibilityNativeFocusElement, 0);
   objc_storeStrong(location, 0);
 
   return v5;
@@ -318,34 +318,34 @@ uint64_t __72__UIWindowSceneAccessibility__axCreateTrailingRemoteElementsIfNeces
 
 - (unsigned)_accessibilityContextId
 {
-  v3 = [(UIWindowSceneAccessibility *)self keyWindow];
-  v4 = [v3 _accessibilityContextId];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  keyWindow = [(UIWindowSceneAccessibility *)self keyWindow];
+  _accessibilityContextId = [keyWindow _accessibilityContextId];
+  MEMORY[0x29EDC9740](keyWindow);
+  return _accessibilityContextId;
 }
 
 - (id)_accessibilityFBSceneIdentifier
 {
-  v3 = [(UIWindowSceneAccessibility *)self _FBSScene];
-  v4 = [v3 identifier];
-  MEMORY[0x29EDC9740](v3);
+  _FBSScene = [(UIWindowSceneAccessibility *)self _FBSScene];
+  identifier = [_FBSScene identifier];
+  MEMORY[0x29EDC9740](_FBSScene);
 
-  return v4;
+  return identifier;
 }
 
 - (BOOL)_accessibilityIsFKARunningForFocusItem
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v8 = 0;
   v7 = __UIAccessibilitySafeClass();
   v6 = MEMORY[0x29EDC9748](v7);
   objc_storeStrong(&v7, 0);
-  v3 = [v6 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
-  MEMORY[0x29EDC9740](v3);
+  traitCollection = [v6 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  MEMORY[0x29EDC9740](traitCollection);
   MEMORY[0x29EDC9740](v6);
-  v9 = v4;
+  v9 = userInterfaceIdiom;
   v5 = 0;
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
@@ -359,25 +359,25 @@ uint64_t __72__UIWindowSceneAccessibility__axCreateTrailingRemoteElementsIfNeces
   return v5;
 }
 
-- (void)_accessibilitySetFocusEnabledInApplication:(BOOL)a3
+- (void)_accessibilitySetFocusEnabledInApplication:(BOOL)application
 {
   v12 = *MEMORY[0x29EDCA608];
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  applicationCopy = application;
   location = AXLogFocusEngine();
   v6 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
   {
-    v3 = [MEMORY[0x29EDBA070] numberWithBool:v8];
-    __os_log_helper_16_2_2_8_64_8_64(v11, v3, v10);
+    v3 = [MEMORY[0x29EDBA070] numberWithBool:applicationCopy];
+    __os_log_helper_16_2_2_8_64_8_64(v11, v3, selfCopy);
     _os_log_debug_impl(&dword_29C4D6000, location, v6, "Setting focus %@ in scene %@", v11, 0x16u);
     MEMORY[0x29EDC9740](v3);
   }
 
   objc_storeStrong(&location, 0);
-  v4 = MEMORY[0x29EDC9748](v10);
-  v5 = v8;
+  v4 = MEMORY[0x29EDC9748](selfCopy);
+  v5 = applicationCopy;
   AXPerformSafeBlock();
   objc_storeStrong(&v4, 0);
 }
@@ -392,7 +392,7 @@ double __73__UIWindowSceneAccessibility__accessibilitySetFocusEnabledInApplicati
 
 - (void)_accessibilityDidFocusOnApplication
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UIWindowSceneAccessibility *)self _accessibilityNativeFocusElement];
   if (!v7[0])
@@ -408,29 +408,29 @@ double __73__UIWindowSceneAccessibility__accessibilitySetFocusEnabledInApplicati
     }
 
     objc_storeStrong(&location, 0);
-    [(UIWindowSceneAccessibility *)v8 _accessibilityEnableFocusSystem];
-    [(UIWindowSceneAccessibility *)v8 _accessibilityMoveFocusWithHeading:16];
+    [(UIWindowSceneAccessibility *)selfCopy _accessibilityEnableFocusSystem];
+    [(UIWindowSceneAccessibility *)selfCopy _accessibilityMoveFocusWithHeading:16];
   }
 
   objc_storeStrong(v7, 0);
 }
 
-- (BOOL)_accessibilitySafeMoveInDirection:(unint64_t)a3 byGroup:(BOOL)a4 withSearchInfo:(id)a5
+- (BOOL)_accessibilitySafeMoveInDirection:(unint64_t)direction byGroup:(BOOL)group withSearchInfo:(id)info
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
+  directionCopy = direction;
+  groupCopy = group;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, info);
   v10 = 0;
   v11 = &v10;
   v12 = 0x20000000;
   v13 = 32;
   v14 = 0;
-  v7 = MEMORY[0x29EDC9748](v19);
-  v9 = v16;
-  v8[2] = v17;
+  v7 = MEMORY[0x29EDC9748](selfCopy);
+  v9 = groupCopy;
+  v8[2] = directionCopy;
   v8[0] = MEMORY[0x29EDC9748](location);
   v8[1] = &v10;
   AXPerformSafeBlock();
@@ -507,31 +507,31 @@ void __87__UIWindowSceneAccessibility__accessibilitySafeMoveInDirection_byGroup_
   objc_storeStrong(v24, 0);
 }
 
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group
 {
   v29 = *MEMORY[0x29EDCA608];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = a4;
+  headingCopy = heading;
+  groupCopy = group;
   location = AXLogFocusEngine();
   v22 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v25];
-    v7 = [MEMORY[0x29EDBA070] numberWithBool:v24];
-    __os_log_helper_16_2_3_8_64_8_64_8_64(v28, v8, v7, v27);
+    v8 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:headingCopy];
+    v7 = [MEMORY[0x29EDBA070] numberWithBool:groupCopy];
+    __os_log_helper_16_2_3_8_64_8_64_8_64(v28, v8, v7, selfCopy);
     _os_log_debug_impl(&dword_29C4D6000, location, v22, "Moving focus with heading: %@, byGroup: %@, in scene: %@", v28, 0x20u);
     MEMORY[0x29EDC9740](v7);
     MEMORY[0x29EDC9740](v8);
   }
 
   objc_storeStrong(&location, 0);
-  v21 = [(UIWindowSceneAccessibility *)v27 _accessibilityNativeFocusElement];
-  v20 = [v21 _accessibilityMoveFocusWithHeading:v25];
+  _accessibilityNativeFocusElement = [(UIWindowSceneAccessibility *)selfCopy _accessibilityNativeFocusElement];
+  v20 = [_accessibilityNativeFocusElement _accessibilityMoveFocusWithHeading:headingCopy];
   if ((v20 & 1) == 0)
   {
-    v19 = (v25 & 0x300) != 0;
+    v19 = (headingCopy & 0x300) != 0;
     v11 = 0;
     v12 = &v11;
     v13 = 838860800;
@@ -544,8 +544,8 @@ void __87__UIWindowSceneAccessibility__accessibilitySafeMoveInDirection_byGroup_
     _Block_object_dispose(&v11, 8);
     objc_storeStrong(&v17, 0);
     v18 = v10;
-    v9 = (v25 & 0xF) != 0;
-    [v10 setForceFocusToLeaveContainer:(v25 & 0xF) == 0];
+    v9 = (headingCopy & 0xF) != 0;
+    [v10 setForceFocusToLeaveContainer:(headingCopy & 0xF) == 0];
     v6 = 1;
     if (!v9)
     {
@@ -553,12 +553,12 @@ void __87__UIWindowSceneAccessibility__accessibilitySafeMoveInDirection_byGroup_
     }
 
     [v18 setTreatFocusableItemAsLeaf:v6 & 1];
-    v20 = [(UIWindowSceneAccessibility *)v27 _accessibilitySafeMoveInDirection:v25 byGroup:v24 withSearchInfo:v18];
+    v20 = [(UIWindowSceneAccessibility *)selfCopy _accessibilitySafeMoveInDirection:headingCopy byGroup:groupCopy withSearchInfo:v18];
     objc_storeStrong(&v18, 0);
   }
 
   v5 = v20;
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&_accessibilityNativeFocusElement, 0);
   return v5 & 1;
 }
 
@@ -572,36 +572,36 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
   return result;
 }
 
-- (BOOL)_accessibilityFocusContainerMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4
+- (BOOL)_accessibilityFocusContainerMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  headingCopy = heading;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(UIWindowSceneAccessibility *)v9 _accessibilityEnableFocusSystem];
-  v5 = [(UIWindowSceneAccessibility *)v9 _accessibilityMoveFocusWithHeading:v7 toElementMatchingQuery:location];
+  objc_storeStrong(&location, query);
+  [(UIWindowSceneAccessibility *)selfCopy _accessibilityEnableFocusSystem];
+  v5 = [(UIWindowSceneAccessibility *)selfCopy _accessibilityMoveFocusWithHeading:headingCopy toElementMatchingQuery:location];
   objc_storeStrong(&location, 0);
   return v5;
 }
 
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  headingCopy = heading;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [(UIWindowSceneAccessibility *)v12 _accessibilityEnableFocusSystem];
-  if ((v10 & 0x300) == 0 || [(UIWindowSceneAccessibility *)v12 _accessibilityResetAndClearNativeFocusSystem])
+  objc_storeStrong(&location, query);
+  [(UIWindowSceneAccessibility *)selfCopy _accessibilityEnableFocusSystem];
+  if ((headingCopy & 0x300) == 0 || [(UIWindowSceneAccessibility *)selfCopy _accessibilityResetAndClearNativeFocusSystem])
   {
-    v6 = [(UIWindowSceneAccessibility *)v12 _accessibilityNativeFocusElement];
-    v7 = [v6 _accessibilityMoveFocusWithHeading:v10 toElementMatchingQuery:location];
-    *&v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+    _accessibilityNativeFocusElement = [(UIWindowSceneAccessibility *)selfCopy _accessibilityNativeFocusElement];
+    v7 = [_accessibilityNativeFocusElement _accessibilityMoveFocusWithHeading:headingCopy toElementMatchingQuery:location];
+    *&v4 = MEMORY[0x29EDC9740](_accessibilityNativeFocusElement).n128_u64[0];
     v8 = v7;
     if ((v7 & 1) == 0)
     {
-      v8 = [(UIWindowSceneAccessibility *)v12 _accessibilityMoveAppFocusForElementMatchingQuery:location heading:v10, v4];
+      v8 = [(UIWindowSceneAccessibility *)selfCopy _accessibilityMoveAppFocusForElementMatchingQuery:location heading:headingCopy, v4];
     }
 
     v13 = v8;
@@ -619,10 +619,10 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
 - (BOOL)_accessibilityResetAndClearNativeFocusSystem
 {
   v23 = *MEMORY[0x29EDCA608];
-  v20 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v19 = [v20 _accessibilityFocusSystem];
+    _accessibilityFocusSystem = [selfCopy _accessibilityFocusSystem];
     v14 = 0;
     v15 = &v14;
     v16 = 0x20000000;
@@ -634,7 +634,7 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
     v11 = __74__UIWindowSceneAccessibility__accessibilityResetAndClearNativeFocusSystem__block_invoke;
     v12 = &unk_29F30CC70;
     v13[1] = &v14;
-    v13[0] = MEMORY[0x29EDC9748](v19);
+    v13[0] = MEMORY[0x29EDC9748](_accessibilityFocusSystem);
     AXPerformSafeBlock();
     oslog[0] = AXLogFocusEngine();
     type = OS_LOG_TYPE_DEBUG;
@@ -642,7 +642,7 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
     {
       v3 = NSStringFromBOOL();
       location = MEMORY[0x29EDC9748](v3);
-      __os_log_helper_16_2_2_8_64_8_64(v22, location, v20);
+      __os_log_helper_16_2_2_8_64_8_64(v22, location, selfCopy);
       _os_log_debug_impl(&dword_29C4D6000, oslog[0], type, "reset and clear focus system: %@ windowScene: %@", v22, 0x16u);
       MEMORY[0x29EDC9740](v3);
       objc_storeStrong(&location, 0);
@@ -653,20 +653,20 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
     v2 = 1;
     if ((v15[3] & 1) == 0)
     {
-      v5 = [v19 focusedItem];
+      focusedItem = [_accessibilityFocusSystem focusedItem];
       v4 = 1;
-      v2 = v5 == 0;
+      v2 = focusedItem == 0;
     }
 
     v21 = v2;
     if (v4)
     {
-      MEMORY[0x29EDC9740](v5);
+      MEMORY[0x29EDC9740](focusedItem);
     }
 
     objc_storeStrong(v13, 0);
     _Block_object_dispose(&v14, 8);
-    objc_storeStrong(&v19, 0);
+    objc_storeStrong(&_accessibilityFocusSystem, 0);
   }
 
   else
@@ -677,13 +677,13 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
   return v21;
 }
 
-- (BOOL)_accessibilityMoveAppFocusForElementMatchingQuery:(id)a3 heading:(unint64_t)a4
+- (BOOL)_accessibilityMoveAppFocusForElementMatchingQuery:(id)query heading:(unint64_t)heading
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, query);
+  headingCopy = heading;
   v9 = 0;
   v10 = &v9;
   v11 = 838860800;
@@ -701,7 +701,7 @@ double __73__UIWindowSceneAccessibility__accessibilityMoveFocusWithHeading_byGro
   v16 = v7;
   [v7 setForceFocusToLeaveContainer:1];
   [v16 setTreatFocusableItemAsLeaf:0];
-  v5 = [(UIWindowSceneAccessibility *)v19 _accessibilitySafeMoveInDirection:v17 byGroup:0 withSearchInfo:v16];
+  v5 = [(UIWindowSceneAccessibility *)selfCopy _accessibilitySafeMoveInDirection:headingCopy byGroup:0 withSearchInfo:v16];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   return v5;
@@ -797,10 +797,10 @@ LABEL_9:
   v20[2] = self;
   v20[1] = a2;
   v20[0] = MEMORY[0x29EDC9748](self);
-  v19 = [v20[0] keyWindow];
-  if (v19)
+  keyWindow = [v20[0] keyWindow];
+  if (keyWindow)
   {
-    [v19 accessibilityFrame];
+    [keyWindow accessibilityFrame];
     *&v21 = v2;
     *(&v21 + 1) = v3;
     *&v22 = v4;
@@ -828,7 +828,7 @@ LABEL_9:
     _Block_object_dispose(&v11, 8);
   }
 
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&keyWindow, 0);
   objc_storeStrong(v20, 0);
   v7 = *(&v21 + 1);
   v6 = *&v21;
@@ -885,8 +885,8 @@ double __74__UIWindowSceneAccessibility__accessibilityResetAndClearNativeFocusSy
 - (uint64_t)_accessibilityUpdateNativeFocusImmediately
 {
   v19 = *MEMORY[0x29EDCA608];
-  v16 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v11 = 0;
     v12 = &v11;
@@ -899,7 +899,7 @@ double __74__UIWindowSceneAccessibility__accessibilityResetAndClearNativeFocusSy
     v8 = __72__UIWindowSceneAccessibility__accessibilityUpdateNativeFocusImmediately__block_invoke;
     v9 = &unk_29F30CC70;
     v10[1] = &v11;
-    v10[0] = MEMORY[0x29EDC9748](v16);
+    v10[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     oslog[0] = AXLogFocusEngine();
     type = OS_LOG_TYPE_DEBUG;
@@ -907,7 +907,7 @@ double __74__UIWindowSceneAccessibility__accessibilityResetAndClearNativeFocusSy
     {
       v2 = NSStringFromBOOL();
       location = MEMORY[0x29EDC9748](v2);
-      __os_log_helper_16_2_2_8_64_8_64(v18, location, v16);
+      __os_log_helper_16_2_2_8_64_8_64(v18, location, selfCopy);
       _os_log_debug_impl(&dword_29C4D6000, oslog[0], type, "did update native focus system: %@ windowScene: %@", v18, 0x16u);
       MEMORY[0x29EDC9740](v2);
       objc_storeStrong(&location, 0);
@@ -935,15 +935,15 @@ double __72__UIWindowSceneAccessibility__accessibilityUpdateNativeFocusImmediate
   return result;
 }
 
-- (id)_accessibilityNativeFocusableElements:(id)a3 withQueryString:(id)a4
+- (id)_accessibilityNativeFocusableElements:(id)elements withQueryString:(id)string
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elements);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
-  v6 = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusableElements:v9 withQueryString:v7];
+  objc_storeStrong(&v7, string);
+  v6 = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusableElements:selfCopy withQueryString:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 
@@ -952,11 +952,11 @@ double __72__UIWindowSceneAccessibility__accessibilityUpdateNativeFocusImmediate
 
 - (void)_accessibilityEnableFocusSystem
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   if ([(UIWindowSceneAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
-    v2[0] = MEMORY[0x29EDC9748](v3);
+    v2[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(v2, 0);
   }
@@ -973,10 +973,10 @@ double __61__UIWindowSceneAccessibility__accessibilityEnableFocusSystem__block_i
 - (void)dealloc
 {
   v25 = *MEMORY[0x29EDCA608];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(UIWindowSceneAccessibility *)v22 _accessibilityLeadingRemoteElements];
+  obj = [(UIWindowSceneAccessibility *)selfCopy _accessibilityLeadingRemoteElements];
   v15 = [obj countByEnumeratingWithState:__b objects:v24 count:16];
   if (v15)
   {
@@ -1009,8 +1009,8 @@ double __61__UIWindowSceneAccessibility__accessibilityEnableFocusSystem__block_i
 
   MEMORY[0x29EDC9740](obj);
   memset(v17, 0, sizeof(v17));
-  v8 = [(UIWindowSceneAccessibility *)v22 _accessibilityTrailingRemoteElements];
-  v9 = [v8 countByEnumeratingWithState:v17 objects:v23 count:16];
+  _accessibilityTrailingRemoteElements = [(UIWindowSceneAccessibility *)selfCopy _accessibilityTrailingRemoteElements];
+  v9 = [_accessibilityTrailingRemoteElements countByEnumeratingWithState:v17 objects:v23 count:16];
   if (v9)
   {
     v5 = *v17[2];
@@ -1021,7 +1021,7 @@ double __61__UIWindowSceneAccessibility__accessibilityEnableFocusSystem__block_i
       v4 = v6;
       if (*v17[2] != v5)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(_accessibilityTrailingRemoteElements);
       }
 
       v18 = *(v17[1] + 8 * v6);
@@ -1032,7 +1032,7 @@ double __61__UIWindowSceneAccessibility__accessibilityEnableFocusSystem__block_i
       if (v4 + 1 >= v3)
       {
         v6 = 0;
-        v7 = [v8 countByEnumeratingWithState:v17 objects:v23 count:16];
+        v7 = [_accessibilityTrailingRemoteElements countByEnumeratingWithState:v17 objects:v23 count:16];
         if (!v7)
         {
           break;
@@ -1041,8 +1041,8 @@ double __61__UIWindowSceneAccessibility__accessibilityEnableFocusSystem__block_i
     }
   }
 
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v16.receiver = v22;
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityTrailingRemoteElements).n128_u64[0];
+  v16.receiver = selfCopy;
   v16.super_class = UIWindowSceneAccessibility;
   [(UIWindowSceneAccessibility *)&v16 dealloc];
 }

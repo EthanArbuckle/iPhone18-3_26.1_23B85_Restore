@@ -1,7 +1,7 @@
 @interface BlockingThreadElement
 - (BlockingThreadElement)init;
-- (int64_t)compareCumulativeTime:(id)a3;
-- (int64_t)compareMaxBlockingTime:(id)a3;
+- (int64_t)compareCumulativeTime:(id)time;
+- (int64_t)compareMaxBlockingTime:(id)time;
 @end
 
 @implementation BlockingThreadElement
@@ -23,14 +23,14 @@
   return v3;
 }
 
-- (int64_t)compareCumulativeTime:(id)a3
+- (int64_t)compareCumulativeTime:(id)time
 {
-  v4 = a3;
-  v5 = [(BlockingThreadElement *)self cumulativeTime];
-  if (v5 <= [v4 cumulativeTime])
+  timeCopy = time;
+  cumulativeTime = [(BlockingThreadElement *)self cumulativeTime];
+  if (cumulativeTime <= [timeCopy cumulativeTime])
   {
-    v7 = [(BlockingThreadElement *)self cumulativeTime];
-    if (v7 >= [v4 cumulativeTime])
+    cumulativeTime2 = [(BlockingThreadElement *)self cumulativeTime];
+    if (cumulativeTime2 >= [timeCopy cumulativeTime])
     {
       v6 = 0;
     }
@@ -49,14 +49,14 @@
   return v6;
 }
 
-- (int64_t)compareMaxBlockingTime:(id)a3
+- (int64_t)compareMaxBlockingTime:(id)time
 {
-  v4 = a3;
-  v5 = [(BlockingThreadElement *)self maxBlockingTime];
-  if (v5 <= [v4 maxBlockingTime])
+  timeCopy = time;
+  maxBlockingTime = [(BlockingThreadElement *)self maxBlockingTime];
+  if (maxBlockingTime <= [timeCopy maxBlockingTime])
   {
-    v7 = [(BlockingThreadElement *)self maxBlockingTime];
-    if (v7 >= [v4 maxBlockingTime])
+    maxBlockingTime2 = [(BlockingThreadElement *)self maxBlockingTime];
+    if (maxBlockingTime2 >= [timeCopy maxBlockingTime])
     {
       v6 = 0;
     }

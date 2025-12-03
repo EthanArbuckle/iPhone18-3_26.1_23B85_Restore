@@ -1,44 +1,44 @@
 @interface VMCarrierStateResponseError
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
-- (VMCarrierStateResponseError)initWithCode:(int64_t)a3 userInfo:(id)a4;
-- (VMCarrierStateResponseError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
++ (id)errorWithCode:(int64_t)code userInfo:(id)info;
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
+- (VMCarrierStateResponseError)initWithCode:(int64_t)code userInfo:(id)info;
+- (VMCarrierStateResponseError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 @end
 
 @implementation VMCarrierStateResponseError
 
-+ (id)errorWithCode:(int64_t)a3 userInfo:(id)a4
++ (id)errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [[VMCarrierStateResponseError alloc] initWithCode:a3 userInfo:v5];
+  infoCopy = info;
+  v6 = [[VMCarrierStateResponseError alloc] initWithCode:code userInfo:infoCopy];
 
   return v6;
 }
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v9 = a5;
-  v10 = a3;
-  [a1 doesNotRecognizeSelector:a2];
-  v13.receiver = a1;
+  infoCopy = info;
+  domainCopy = domain;
+  [self doesNotRecognizeSelector:a2];
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___VMCarrierStateResponseError;
-  v11 = objc_msgSendSuper2(&v13, "errorWithDomain:code:userInfo:", v10, a4, v9);
+  v11 = objc_msgSendSuper2(&v13, "errorWithDomain:code:userInfo:", domainCopy, code, infoCopy);
 
   return v11;
 }
 
-- (VMCarrierStateResponseError)initWithCode:(int64_t)a3 userInfo:(id)a4
+- (VMCarrierStateResponseError)initWithCode:(int64_t)code userInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = VMCarrierStateResponseError;
-  return [(VMCarrierStateResponseError *)&v5 initWithDomain:off_10010D678 code:a3 userInfo:a4];
+  return [(VMCarrierStateResponseError *)&v5 initWithDomain:off_10010D678 code:code userInfo:info];
 }
 
-- (VMCarrierStateResponseError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (VMCarrierStateResponseError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v8 = a5;
+  infoCopy = info;
   [(VMCarrierStateResponseError *)self doesNotRecognizeSelector:a2];
-  v9 = [(VMCarrierStateResponseError *)self initWithCode:a4 userInfo:v8];
+  v9 = [(VMCarrierStateResponseError *)self initWithCode:code userInfo:infoCopy];
 
   return v9;
 }

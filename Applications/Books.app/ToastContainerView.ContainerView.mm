@@ -1,17 +1,17 @@
 @interface ToastContainerView.ContainerView
-- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithCoder:(id)a3;
-- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithFrame:(CGRect)a3;
+- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithCoder:(id)coder;
+- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithFrame:(CGRect)frame;
 - (void)didMoveToSuperview;
 @end
 
 @implementation ToastContainerView.ContainerView
 
-- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithFrame:(CGRect)a3
+- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
   v9.super_class = type metadata accessor for ToastContainerView.ContainerView();
@@ -28,13 +28,13 @@
   [Strong setNeedsLayout];
 }
 
-- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithCoder:(id)a3
+- (_TtCC5Books18ToastContainerViewP33_4DBEA752A9924E02BEA433C77282CE1A13ContainerView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for ToastContainerView.ContainerView();
-  v5 = a3;
-  v6 = [(ToastContainerView.ContainerView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ToastContainerView.ContainerView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

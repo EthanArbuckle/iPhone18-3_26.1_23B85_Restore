@@ -14,8 +14,8 @@
   {
     v18.receiver = self;
     v18.super_class = AUBrowserListItemsController;
-    v5 = [(PSListItemsController *)&v18 specifiers];
-    v6 = [v5 mutableCopy];
+    specifiers = [(PSListItemsController *)&v18 specifiers];
+    v6 = [specifiers mutableCopy];
 
     v7 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"DOWNLOADS_GROUP"];
     [v6 addObject:v7];

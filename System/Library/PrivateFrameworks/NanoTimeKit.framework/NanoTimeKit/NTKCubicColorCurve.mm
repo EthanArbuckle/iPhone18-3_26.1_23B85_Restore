@@ -1,23 +1,23 @@
 @interface NTKCubicColorCurve
-- (NTKCubicColorCurve)initWithColorCurveElements:(id)a3;
-- (NTKCubicColorCurve)initWithCubicColorCurveElements:(id)a3;
-- (id)colorForFraction:(float)a3;
+- (NTKCubicColorCurve)initWithColorCurveElements:(id)elements;
+- (NTKCubicColorCurve)initWithCubicColorCurveElements:(id)elements;
+- (id)colorForFraction:(float)fraction;
 - (uint64_t)rgbfColorForFraction:(uint64_t)result;
 - (void)dealloc;
 @end
 
 @implementation NTKCubicColorCurve
 
-- (NTKCubicColorCurve)initWithCubicColorCurveElements:(id)a3
+- (NTKCubicColorCurve)initWithCubicColorCurveElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v19.receiver = self;
   v19.super_class = NTKCubicColorCurve;
   v5 = [(NTKCubicColorCurve *)&v19 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_90];
-    v7 = [v4 count];
+    v6 = [elementsCopy sortedArrayUsingComparator:&__block_literal_global_90];
+    v7 = [elementsCopy count];
     v5->_count = v7;
     v5->_fractions = malloc_type_malloc(4 * v7, 0x100004052888210uLL);
     *v5->_colors = malloc_type_malloc(16 * v5->_count, 0x1000040451B5BE8uLL);
@@ -25,10 +25,10 @@
     spline = v5->_spline;
     v5->_spline = v8;
 
-    v10 = [(NTKCubicSpline *)v5->_spline controlPointsBuffer];
+    controlPointsBuffer = [(NTKCubicSpline *)v5->_spline controlPointsBuffer];
     if (v5->_count)
     {
-      v11 = v10;
+      v11 = controlPointsBuffer;
       v12 = 0;
       do
       {
@@ -71,16 +71,16 @@ uint64_t __54__NTKCubicColorCurve_initWithCubicColorCurveElements___block_invoke
   return v11;
 }
 
-- (NTKCubicColorCurve)initWithColorCurveElements:(id)a3
+- (NTKCubicColorCurve)initWithColorCurveElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v17.receiver = self;
   v17.super_class = NTKCubicColorCurve;
   v5 = [(NTKCubicColorCurve *)&v17 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_19_1];
-    v7 = [v4 count];
+    v6 = [elementsCopy sortedArrayUsingComparator:&__block_literal_global_19_1];
+    v7 = [elementsCopy count];
     v5->_count = v7;
     v5->_fractions = malloc_type_malloc(4 * v7, 0x100004052888210uLL);
     *v5->_colors = malloc_type_malloc(16 * v5->_count, 0x1000040451B5BE8uLL);
@@ -88,10 +88,10 @@ uint64_t __54__NTKCubicColorCurve_initWithCubicColorCurveElements___block_invoke
     spline = v5->_spline;
     v5->_spline = v8;
 
-    v10 = [(NTKCubicSpline *)v5->_spline controlPointsBuffer];
+    controlPointsBuffer = [(NTKCubicSpline *)v5->_spline controlPointsBuffer];
     if (v5->_count)
     {
-      v11 = v10;
+      v11 = controlPointsBuffer;
       v12 = [v6 objectAtIndexedSubscript:0];
       [v12 fraction];
       **v11 = __PAIR64__(v13, 0);
@@ -135,9 +135,9 @@ uint64_t __49__NTKCubicColorCurve_initWithColorCurveElements___block_invoke(uint
   [(NTKCubicColorCurve *)&v3 dealloc];
 }
 
-- (id)colorForFraction:(float)a3
+- (id)colorForFraction:(float)fraction
 {
-  [(NTKCubicColorCurve *)self rgbfColorForFraction:a3];
+  [(NTKCubicColorCurve *)self rgbfColorForFraction:fraction];
 
   CLKUIConvertToUIColorFromRGBf_fast();
 }

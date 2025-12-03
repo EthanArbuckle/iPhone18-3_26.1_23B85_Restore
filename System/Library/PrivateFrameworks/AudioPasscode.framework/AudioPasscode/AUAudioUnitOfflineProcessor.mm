@@ -1,5 +1,5 @@
 @interface AUAudioUnitOfflineProcessor
-- (AUAudioUnitOfflineProcessor)initWithAudioUnit:(id)a3 inputFileURL:(id)a4 outputFileURL:(id)a5 ioSampleRate:(int64_t)a6;
+- (AUAudioUnitOfflineProcessor)initWithAudioUnit:(id)unit inputFileURL:(id)l outputFileURL:(id)rL ioSampleRate:(int64_t)rate;
 - (BOOL)run;
 - (_DWORD)initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:;
 - (id).cxx_construct;
@@ -7,12 +7,12 @@
 
 @implementation AUAudioUnitOfflineProcessor
 
-- (AUAudioUnitOfflineProcessor)initWithAudioUnit:(id)a3 inputFileURL:(id)a4 outputFileURL:(id)a5 ioSampleRate:(int64_t)a6
+- (AUAudioUnitOfflineProcessor)initWithAudioUnit:(id)unit inputFileURL:(id)l outputFileURL:(id)rL ioSampleRate:(int64_t)rate
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  unitCopy = unit;
+  lCopy = l;
+  rLCopy = rL;
   v51.receiver = self;
   v51.super_class = AUAudioUnitOfflineProcessor;
   v14 = [(AUAudioUnitOfflineProcessor *)&v51 init];
@@ -21,13 +21,13 @@
     goto LABEL_20;
   }
 
-  if (!v11)
+  if (!unitCopy)
   {
     goto LABEL_6;
   }
 
-  v15 = [v11 renderResourcesAllocated] ^ 1;
-  if (!v12)
+  v15 = [unitCopy renderResourcesAllocated] ^ 1;
+  if (!lCopy)
   {
     LOBYTE(v15) = 0;
   }
@@ -49,8 +49,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v17 = [v11 inputBusses];
-  if ([v17 count] != 1)
+  inputBusses = [unitCopy inputBusses];
+  if ([inputBusses count] != 1)
   {
 
 LABEL_16:
@@ -64,17 +64,17 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  v18 = [v11 outputBusses];
-  v19 = [v18 count] == 1;
+  outputBusses = [unitCopy outputBusses];
+  v19 = [outputBusses count] == 1;
 
   if (!v19)
   {
     goto LABEL_16;
   }
 
-  objc_storeStrong(v14 + 3, a3);
+  objc_storeStrong(v14 + 3, unit);
   outExtAudioFile = 0;
-  v20 = ExtAudioFileOpenURL(v12, &outExtAudioFile);
+  v20 = ExtAudioFileOpenURL(lCopy, &outExtAudioFile);
   if (v20)
   {
     v21 = APCLogObject();
@@ -129,13 +129,13 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v27 = *buf;
-  if (a6 >= 0)
+  rateCopy = *buf;
+  if (rate >= 0)
   {
-    v27 = a6;
+    rateCopy = rate;
   }
 
-  inPropertyData.mSampleRate = v27;
+  inPropertyData.mSampleRate = rateCopy;
   *&inPropertyData.mFormatID = xmmword_2415B1840;
   *&inPropertyData.mBytesPerFrame = xmmword_2415B1850;
   v28 = ExtAudioFileSetProperty(*(v14 + 1), 0x63666D74u, 0x28u, &inPropertyData);
@@ -155,8 +155,8 @@ LABEL_34:
   }
 
   v29 = [objc_alloc(MEMORY[0x277CB83A8]) initWithStreamDescription:&inPropertyData];
-  v30 = [v11 inputBusses];
-  v31 = [v30 objectAtIndexedSubscript:0];
+  inputBusses2 = [unitCopy inputBusses];
+  v31 = [inputBusses2 objectAtIndexedSubscript:0];
   v48 = 0;
   [v31 setFormat:v29 error:&v48];
   v32 = v48;
@@ -178,8 +178,8 @@ LABEL_44:
     goto LABEL_19;
   }
 
-  v34 = [v11 outputBusses];
-  v35 = [v34 objectAtIndexedSubscript:0];
+  outputBusses2 = [unitCopy outputBusses];
+  v35 = [outputBusses2 objectAtIndexedSubscript:0];
   v47 = 0;
   [v35 setFormat:v29 error:&v47];
   v32 = v47;
@@ -197,9 +197,9 @@ LABEL_44:
     goto LABEL_43;
   }
 
-  if (v13)
+  if (rLCopy)
   {
-    v38 = ExtAudioFileCreateWithURL(v13, 0x57415645u, &inPropertyData, 0, 1u, &outExtAudioFile);
+    v38 = ExtAudioFileCreateWithURL(rLCopy, 0x57415645u, &inPropertyData, 0, 1u, &outExtAudioFile);
     if (v38)
     {
       v37 = APCLogObject();
@@ -326,9 +326,9 @@ uint64_t __89__AUAudioUnitOfflineProcessor_initWithAudioUnit_inputFileURL_output
 
 - (_DWORD)initWithAudioUnit:inputFileURL:outputFileURL:ioSampleRate:
 {
-  if ((*(a1 + 12) & 0x20) != 0)
+  if ((*(self + 12) & 0x20) != 0)
   {
-    v6 = *(a1 + 28);
+    v6 = *(self + 28);
   }
 
   else
@@ -339,9 +339,9 @@ uint64_t __89__AUAudioUnitOfflineProcessor_initWithAudioUnit_inputFileURL_output
   LOBYTE(v17) = 0;
   std::vector<char>::vector[abi:ne200100](&v18, (16 * v6) | 8);
   *v18 = v6;
-  if ((*(a1 + 12) & 0x20) != 0)
+  if ((*(self + 12) & 0x20) != 0)
   {
-    v8 = (*(a1 + 28) << 11);
+    v8 = (*(self + 28) << 11);
   }
 
   else
@@ -404,9 +404,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v6 = [(AUAudioUnit *)self->_audioUnit renderBlock];
+  renderBlock = [(AUAudioUnit *)self->_audioUnit renderBlock];
   renderBlock = self->_renderBlock;
-  self->_renderBlock = v6;
+  self->_renderBlock = renderBlock;
 
   v30 = 0u;
   v31 = 0u;

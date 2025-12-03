@@ -2,7 +2,7 @@
 - (BWMetadataTimeMachineRequest)init;
 - (void)complete;
 - (void)dealloc;
-- (void)waitForCompletionWithTimeout:(float)a3;
+- (void)waitForCompletionWithTimeout:(float)timeout;
 @end
 
 @implementation BWMetadataTimeMachineRequest
@@ -27,10 +27,10 @@
   [(BWMetadataTimeMachineRequest *)&v3 dealloc];
 }
 
-- (void)waitForCompletionWithTimeout:(float)a3
+- (void)waitForCompletionWithTimeout:(float)timeout
 {
   semaphore = self->_semaphore;
-  v4 = dispatch_time(0, (a3 * 1000000000.0));
+  v4 = dispatch_time(0, (timeout * 1000000000.0));
   if (dispatch_semaphore_wait(semaphore, v4))
   {
     v5 = dword_1EB58E100 == 0;

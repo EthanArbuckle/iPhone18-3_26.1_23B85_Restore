@@ -1,20 +1,20 @@
 @interface CKTransientAttachmentMessagePartChatItem
-- (CKTransientAttachmentMessagePartChatItem)initWithParentChatItem:(id)a3;
+- (CKTransientAttachmentMessagePartChatItem)initWithParentChatItem:(id)item;
 - (id)IMChatItem;
 @end
 
 @implementation CKTransientAttachmentMessagePartChatItem
 
-- (CKTransientAttachmentMessagePartChatItem)initWithParentChatItem:(id)a3
+- (CKTransientAttachmentMessagePartChatItem)initWithParentChatItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CKTransientAttachmentMessagePartChatItem;
   v6 = [(CKMessagePartChatItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentGUID, a3);
+    objc_storeStrong(&v6->_parentGUID, item);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 - (id)IMChatItem
 {
   v3 = objc_alloc(MEMORY[0x1E69A5D10]);
-  v4 = [(CKTransientAttachmentMessagePartChatItem *)self parentGUID];
-  v5 = [v3 initWithGUID:v4];
+  parentGUID = [(CKTransientAttachmentMessagePartChatItem *)self parentGUID];
+  v5 = [v3 initWithGUID:parentGUID];
 
   return v5;
 }

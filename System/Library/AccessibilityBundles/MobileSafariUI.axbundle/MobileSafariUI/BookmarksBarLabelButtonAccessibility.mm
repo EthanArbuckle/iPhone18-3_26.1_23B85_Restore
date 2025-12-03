@@ -10,8 +10,8 @@
   v4 = accessibilityLocalizedString(@"bookmark.button");
   v8.receiver = self;
   v8.super_class = BookmarksBarLabelButtonAccessibility;
-  v5 = [(BookmarksBarLabelButtonAccessibility *)&v8 accessibilityLabel];
-  v6 = [v3 stringWithFormat:v4, v5];
+  accessibilityLabel = [(BookmarksBarLabelButtonAccessibility *)&v8 accessibilityLabel];
+  v6 = [v3 stringWithFormat:v4, accessibilityLabel];
 
   return v6;
 }

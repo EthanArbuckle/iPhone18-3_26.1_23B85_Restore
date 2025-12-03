@@ -1,16 +1,16 @@
 @interface CSDScreenSharingActivityManager
-+ (id)screenShareAttributesFromApplicationContext:(id)a3;
-- (CSDScreenSharingActivityManager)initWithFeatureFlags:(id)a3;
++ (id)screenShareAttributesFromApplicationContext:(id)context;
+- (CSDScreenSharingActivityManager)initWithFeatureFlags:(id)flags;
 - (CSDScreenSharingActivityManagerDelegate)delegate;
 - (NSNumber)systemRootLayerScale;
 - (TUScreenShareAttributes)latestRemoteAttributes;
 - (TUScreenShareAttributes)localScreenShareAttributes;
-- (void)broadcastAttributes:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setLocalScreenShareAttributes:(id)a3;
-- (void)setPresenterOverlayEnabled:(BOOL)a3;
-- (void)setSystemRootLayerScale:(id)a3;
-- (void)startActivitySessionOnConversationWithUUID:(id)a3 for:(id)a4 with:(id)a5;
+- (void)broadcastAttributes:(id)attributes;
+- (void)setDelegate:(id)delegate;
+- (void)setLocalScreenShareAttributes:(id)attributes;
+- (void)setPresenterOverlayEnabled:(BOOL)enabled;
+- (void)setSystemRootLayerScale:(id)scale;
+- (void)startActivitySessionOnConversationWithUUID:(id)d for:(id)for with:(id)with;
 - (void)startObservingSessions;
 - (void)stopActivitySession;
 @end
@@ -19,7 +19,7 @@
 
 - (TUScreenShareAttributes)latestRemoteAttributes
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001EC50();
 
   return v3;
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1003723CC();
 }
 
@@ -46,11 +46,11 @@
   return v2;
 }
 
-- (void)setLocalScreenShareAttributes:(id)a3
+- (void)setLocalScreenShareAttributes:(id)attributes
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100372500(a3);
+  selfCopy = self;
+  sub_100372500(attributes);
 }
 
 - (NSNumber)systemRootLayerScale
@@ -60,33 +60,33 @@
   return v2;
 }
 
-- (void)setSystemRootLayerScale:(id)a3
+- (void)setSystemRootLayerScale:(id)scale
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003725D8(a3);
+  scaleCopy = scale;
+  selfCopy = self;
+  sub_1003725D8(scale);
 }
 
-- (void)setPresenterOverlayEnabled:(BOOL)a3
+- (void)setPresenterOverlayEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_100372B38(a3);
+  selfCopy = self;
+  sub_100372B38(enabled);
 }
 
-- (CSDScreenSharingActivityManager)initWithFeatureFlags:(id)a3
+- (CSDScreenSharingActivityManager)initWithFeatureFlags:(id)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   sub_100372CF8();
   return result;
 }
 
 - (void)startObservingSessions
 {
-  v2 = self;
+  selfCopy = self;
   ScreenSharingActivityManager.startObservingSessions()();
 }
 
-- (void)startActivitySessionOnConversationWithUUID:(id)a3 for:(id)a4 with:(id)a5
+- (void)startActivitySessionOnConversationWithUUID:(id)d for:(id)for with:(id)with
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -94,9 +94,9 @@
   __chkstk_darwin(v8, v11);
   v13 = &v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
+  forCopy = for;
+  withCopy = with;
+  selfCopy = self;
   ScreenSharingActivityManager.startActivitySession(onConversationWithUUID:for:with:)();
 
   (*(v9 + 8))(v13, v8);
@@ -104,20 +104,20 @@
 
 - (void)stopActivitySession
 {
-  v2 = self;
+  selfCopy = self;
   ScreenSharingActivityManager.stopActivitySession()();
 }
 
-- (void)broadcastAttributes:(id)a3
+- (void)broadcastAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   ScreenSharingActivityManager.broadcastAttributes(_:)();
 }
 
-+ (id)screenShareAttributesFromApplicationContext:(id)a3
++ (id)screenShareAttributesFromApplicationContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
 

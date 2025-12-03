@@ -1,20 +1,20 @@
 @interface SUUIReleaseNote
 + (id)dateFormatter;
-- (SUUIReleaseNote)initWithReleaseNoteDictionary:(id)a3 dateFormatter:(id)a4;
+- (SUUIReleaseNote)initWithReleaseNoteDictionary:(id)dictionary dateFormatter:(id)formatter;
 @end
 
 @implementation SUUIReleaseNote
 
-- (SUUIReleaseNote)initWithReleaseNoteDictionary:(id)a3 dateFormatter:(id)a4
+- (SUUIReleaseNote)initWithReleaseNoteDictionary:(id)dictionary dateFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  formatterCopy = formatter;
   v19.receiver = self;
   v19.super_class = SUUIReleaseNote;
   v8 = [(SUUIReleaseNote *)&v19 init];
   if (v8)
   {
-    v9 = [v6 objectForKey:@"releaseNotes"];
+    v9 = [dictionaryCopy objectForKey:@"releaseNotes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -23,7 +23,7 @@
       v8->_changeNotes = v10;
     }
 
-    v12 = [v6 objectForKey:@"versionString"];
+    v12 = [dictionaryCopy objectForKey:@"versionString"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -33,12 +33,12 @@
       v8->_versionString = v13;
     }
 
-    v15 = [v6 objectForKey:@"releaseDate"];
+    v15 = [dictionaryCopy objectForKey:@"releaseDate"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v7 dateFromString:v15];
+      v16 = [formatterCopy dateFromString:v15];
       date = v8->_date;
       v8->_date = v16;
     }

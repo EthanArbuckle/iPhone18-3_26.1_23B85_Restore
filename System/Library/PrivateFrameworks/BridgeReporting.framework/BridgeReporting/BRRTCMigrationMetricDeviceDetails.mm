@@ -7,68 +7,68 @@
 - (id)dictionaryOfMetricKeysWithRecordedValues
 {
   v3 = objc_opt_new();
-  v4 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuild];
+  gizmoBuild = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuild];
 
-  if (v4)
+  if (gizmoBuild)
   {
-    v5 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuild];
-    [v3 setObject:v5 forKey:@"WatchBuild"];
+    gizmoBuild2 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuild];
+    [v3 setObject:gizmoBuild2 forKey:@"WatchBuild"];
   }
 
-  v6 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoHardware];
+  gizmoHardware = [(BRRTCMigrationMetricDeviceDetails *)self gizmoHardware];
 
-  if (v6)
+  if (gizmoHardware)
   {
-    v7 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoHardware];
-    [v3 setObject:v7 forKey:@"WatchHardware"];
+    gizmoHardware2 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoHardware];
+    [v3 setObject:gizmoHardware2 forKey:@"WatchHardware"];
   }
 
-  v8 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuildType];
+  gizmoBuildType = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuildType];
 
-  if (v8)
+  if (gizmoBuildType)
   {
-    v9 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuildType];
-    [v3 setObject:v9 forKey:@"WatchBuildType"];
+    gizmoBuildType2 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoBuildType];
+    [v3 setObject:gizmoBuildType2 forKey:@"WatchBuildType"];
   }
 
-  v10 = [(BRRTCMigrationMetricDeviceDetails *)self pairedDeviceCount];
+  pairedDeviceCount = [(BRRTCMigrationMetricDeviceDetails *)self pairedDeviceCount];
 
-  if (v10)
+  if (pairedDeviceCount)
   {
-    v11 = [(BRRTCMigrationMetricDeviceDetails *)self pairedDeviceCount];
-    [v3 setObject:v11 forKey:@"PairedDeviceCount"];
+    pairedDeviceCount2 = [(BRRTCMigrationMetricDeviceDetails *)self pairedDeviceCount];
+    [v3 setObject:pairedDeviceCount2 forKey:@"PairedDeviceCount"];
   }
 
-  v12 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoMaxPairingVersion];
+  gizmoMaxPairingVersion = [(BRRTCMigrationMetricDeviceDetails *)self gizmoMaxPairingVersion];
 
-  if (v12)
+  if (gizmoMaxPairingVersion)
   {
-    v13 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoMaxPairingVersion];
-    [v3 setObject:v13 forKey:@"WatchMaxPairingVersion"];
+    gizmoMaxPairingVersion2 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoMaxPairingVersion];
+    [v3 setObject:gizmoMaxPairingVersion2 forKey:@"WatchMaxPairingVersion"];
   }
 
-  v14 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoEnclosureMaterial];
+  gizmoEnclosureMaterial = [(BRRTCMigrationMetricDeviceDetails *)self gizmoEnclosureMaterial];
 
-  if (v14)
+  if (gizmoEnclosureMaterial)
   {
-    v15 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoEnclosureMaterial];
-    [v3 setObject:v15 forKey:@"WatchEnclosureMateral"];
+    gizmoEnclosureMaterial2 = [(BRRTCMigrationMetricDeviceDetails *)self gizmoEnclosureMaterial];
+    [v3 setObject:gizmoEnclosureMaterial2 forKey:@"WatchEnclosureMateral"];
   }
 
-  v16 = [(BRRTCMigrationMetricDeviceDetails *)self switchCounter];
+  switchCounter = [(BRRTCMigrationMetricDeviceDetails *)self switchCounter];
 
-  if (v16)
+  if (switchCounter)
   {
-    v17 = [(BRRTCMigrationMetricDeviceDetails *)self switchCounter];
-    [v3 setObject:v17 forKey:@"SwitchCounter"];
+    switchCounter2 = [(BRRTCMigrationMetricDeviceDetails *)self switchCounter];
+    [v3 setObject:switchCounter2 forKey:@"SwitchCounter"];
   }
 
-  v18 = [(BRRTCMigrationMetricDeviceDetails *)self migratingDeviceId];
+  migratingDeviceId = [(BRRTCMigrationMetricDeviceDetails *)self migratingDeviceId];
 
-  if (v18)
+  if (migratingDeviceId)
   {
-    v19 = [(BRRTCMigrationMetricDeviceDetails *)self migratingDeviceId];
-    [v3 setObject:v19 forKey:@"MigratingDeviceId"];
+    migratingDeviceId2 = [(BRRTCMigrationMetricDeviceDetails *)self migratingDeviceId];
+    [v3 setObject:migratingDeviceId2 forKey:@"MigratingDeviceId"];
   }
 
   return v3;

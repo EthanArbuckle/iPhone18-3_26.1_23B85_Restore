@@ -1,5 +1,5 @@
 @interface PushToTalkFullScreenViewController
-- (_TtC15ConversationKit34PushToTalkFullScreenViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit34PushToTalkFullScreenViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PushToTalkFullScreenViewController.viewDidLoad()();
 }
 
-- (_TtC15ConversationKit34PushToTalkFullScreenViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit34PushToTalkFullScreenViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PushToTalkFullScreenViewController.init(nibName:bundle:)();
 }
 

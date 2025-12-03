@@ -1,20 +1,20 @@
 @interface STEyeReliefIntroHowItWorksViewController
-- (STEyeReliefIntroHowItWorksViewController)initWithIntroductionModel:(id)a3 completionHandler:(id)a4;
-- (id)initForChecklistFlow:(BOOL)a3 withCompletionHandler:(id)a4;
+- (STEyeReliefIntroHowItWorksViewController)initWithIntroductionModel:(id)model completionHandler:(id)handler;
+- (id)initForChecklistFlow:(BOOL)flow withCompletionHandler:(id)handler;
 - (void)_enable;
-- (void)_notNow:(id)a3;
+- (void)_notNow:(id)now;
 - (void)viewDidLoad;
 @end
 
 @implementation STEyeReliefIntroHowItWorksViewController
 
-- (id)initForChecklistFlow:(BOOL)a3 withCompletionHandler:(id)a4
+- (id)initForChecklistFlow:(BOOL)flow withCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  flowCopy = flow;
+  handlerCopy = handler;
   v7 = +[STScreenTimeSettingsUIBundle bundle];
   v8 = v7;
-  if (v4)
+  if (flowCopy)
   {
     v9 = @"ChecklistScreenDistanceTitle";
   }
@@ -29,23 +29,23 @@
   v16.receiver = self;
   v16.super_class = STEyeReliefIntroHowItWorksViewController;
   v12 = [(STEyeReliefIntroHowItWorksViewController *)&v16 initWithTitle:v10 detailText:v11 symbolName:@"chevron.3.up.perspective.and.rectangle" contentLayout:2];
-  v13 = _Block_copy(v6);
+  v13 = _Block_copy(handlerCopy);
 
   completionHandler = v12->_completionHandler;
   v12->_completionHandler = v13;
 
-  v12->_forChecklistFlow = v4;
+  v12->_forChecklistFlow = flowCopy;
   return v12;
 }
 
-- (STEyeReliefIntroHowItWorksViewController)initWithIntroductionModel:(id)a3 completionHandler:(id)a4
+- (STEyeReliefIntroHowItWorksViewController)initWithIntroductionModel:(id)model completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = [(STEyeReliefIntroHowItWorksViewController *)self initForChecklistFlow:1 withCompletionHandler:a4];
+  modelCopy = model;
+  v8 = [(STEyeReliefIntroHowItWorksViewController *)self initForChecklistFlow:1 withCompletionHandler:handler];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 155, a3);
+    objc_storeStrong(v8 + 155, model);
   }
 
   return v9;
@@ -58,23 +58,23 @@
   [(OBBaseWelcomeController *)&v41 viewDidLoad];
   v3 = +[STScreenTimeSettingsUIBundle bundle];
   v4 = [v3 localizedStringForKey:@"ScreenDistanceEDUFeatureHowItWorksFirstListItemTitle" value:&stru_28766E5A8 table:0];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 usesMetricSystem];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  usesMetricSystem = [currentLocale usesMetricSystem];
 
   v7 = objc_alloc(MEMORY[0x277CCAB10]);
-  if (v6)
+  if (usesMetricSystem)
   {
-    v8 = [MEMORY[0x277CCAE20] centimeters];
+    centimeters = [MEMORY[0x277CCAE20] centimeters];
     v9 = 30.0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAE20] inches];
+    centimeters = [MEMORY[0x277CCAE20] inches];
     v9 = 12.0;
   }
 
-  v10 = [v7 initWithDoubleValue:v8 unit:v9];
+  v10 = [v7 initWithDoubleValue:centimeters unit:v9];
 
   v11 = objc_alloc_init(MEMORY[0x277CCAB18]);
   [v11 setUnitOptions:1];
@@ -101,10 +101,10 @@
   v20 = [MEMORY[0x277D755B8] systemImageNamed:@"ruler.fill"];
   v31 = v18;
   [(STEyeReliefIntroHowItWorksViewController *)self addBulletedListItemWithTitle:v18 description:v19 image:v20];
-  v21 = [(STIntroductionViewModel *)self->_model screenDistanceEnabled];
-  v22 = [v21 BOOLValue];
+  screenDistanceEnabled = [(STIntroductionViewModel *)self->_model screenDistanceEnabled];
+  bOOLValue = [screenDistanceEnabled BOOLValue];
 
-  if (v22)
+  if (bOOLValue)
   {
     v23 = @"ScreenDistanceEDUFeatureHowItWorksContinueButton";
   }
@@ -114,7 +114,7 @@
     v23 = @"ScreenDistanceEDUFeatureHowItWorksEnablementButton";
   }
 
-  if (v22)
+  if (bOOLValue)
   {
     v24 = @"ScreenDistanceEDUFeatureHowItWorksTurnOffButton";
   }
@@ -126,19 +126,19 @@
 
   v25 = [v3 localizedStringForKey:v23 value:&stru_28766E5A8 table:0];
   v26 = [v3 localizedStringForKey:v24 value:&stru_28766E5A8 table:0];
-  v27 = [MEMORY[0x277D37618] boldButton];
-  [v27 setAccessibilityIdentifier:@"ScreenDistanceEDUFeatureHowItWorksEnablementButton"];
-  [v27 setTitle:v25 forState:0];
-  [v27 addTarget:self action:sel__enable forControlEvents:64];
-  v28 = [(STEyeReliefIntroHowItWorksViewController *)self buttonTray];
-  [v28 addButton:v27];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setAccessibilityIdentifier:@"ScreenDistanceEDUFeatureHowItWorksEnablementButton"];
+  [boldButton setTitle:v25 forState:0];
+  [boldButton addTarget:self action:sel__enable forControlEvents:64];
+  buttonTray = [(STEyeReliefIntroHowItWorksViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v29 = [MEMORY[0x277D37650] linkButton];
-  [v29 setAccessibilityIdentifier:@"ScreenDistanceEDUFeatureHowItWorksNotNowButton"];
-  [v29 setTitle:v26 forState:0];
-  [v29 addTarget:self action:sel__notNow_ forControlEvents:0x2000];
-  v30 = [(STEyeReliefIntroHowItWorksViewController *)self buttonTray];
-  [v30 addButton:v29];
+  linkButton = [MEMORY[0x277D37650] linkButton];
+  [linkButton setAccessibilityIdentifier:@"ScreenDistanceEDUFeatureHowItWorksNotNowButton"];
+  [linkButton setTitle:v26 forState:0];
+  [linkButton addTarget:self action:sel__notNow_ forControlEvents:0x2000];
+  buttonTray2 = [(STEyeReliefIntroHowItWorksViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -149,23 +149,23 @@
 
 - (void)_enable
 {
-  v3 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
+  completionHandler = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
 
-  if (v3)
+  if (completionHandler)
   {
-    v4 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
-    v4[2](v4, &unk_28769D040);
+    completionHandler2 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
+    completionHandler2[2](completionHandler2, &unk_28769D040);
   }
 }
 
-- (void)_notNow:(id)a3
+- (void)_notNow:(id)now
 {
-  v4 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
+  completionHandler = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
-    v5[2](v5, &unk_28769D058);
+    completionHandler2 = [(STEyeReliefIntroHowItWorksViewController *)self completionHandler];
+    completionHandler2[2](completionHandler2, &unk_28769D058);
   }
 }
 

@@ -1,6 +1,6 @@
 @interface BMAppLaunchStream
 - (BMAppLaunchStream)init;
-- (BMAppLaunchStream)initWithConfig:(id)a3;
+- (BMAppLaunchStream)initWithConfig:(id)config;
 - (id)publisher;
 @end
 
@@ -15,8 +15,8 @@
   {
     v3 = BMRootLibraryBridge();
     v4 = [v3 App];
-    v5 = [v4 InFocus];
-    v6 = [v5 storeStreamWithLegacyClass:objc_opt_class()];
+    inFocus = [v4 InFocus];
+    v6 = [inFocus storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v6;
 
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (BMAppLaunchStream)initWithConfig:(id)a3
+- (BMAppLaunchStream)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = BMAppLaunchStream;
   v5 = [(BMAppLaunchStream *)&v12 init];
   if (v5)
   {
     v6 = [BMStoreStream alloc];
-    v7 = [(BMAppLaunchStream *)v5 identifier];
-    v8 = [(BMStoreStream *)v6 initWithStreamIdentifier:v7 storeConfig:v4 streamType:2 eventDataClass:objc_opt_class() useCase:*MEMORY[0x1E698E928]];
+    identifier = [(BMAppLaunchStream *)v5 identifier];
+    v8 = [(BMStoreStream *)v6 initWithStreamIdentifier:identifier storeConfig:configCopy streamType:2 eventDataClass:objc_opt_class() useCase:*MEMORY[0x1E698E928]];
     storeStream = v5->_storeStream;
     v5->_storeStream = v8;
 
@@ -63,8 +63,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMAppLaunchStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMAppLaunchStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

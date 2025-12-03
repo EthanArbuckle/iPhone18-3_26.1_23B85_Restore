@@ -12,11 +12,11 @@
 - (CLLocation)clRepresentation
 {
   v3 = [CLLocation alloc];
-  v4 = [(SALocation *)self latitude];
-  [v4 doubleValue];
+  latitude = [(SALocation *)self latitude];
+  [latitude doubleValue];
   v6 = v5;
-  v7 = [(SALocation *)self longitude];
-  [v7 doubleValue];
+  longitude = [(SALocation *)self longitude];
+  [longitude doubleValue];
   v9 = [v3 initWithLatitude:v6 longitude:v8];
 
   return v9;
@@ -25,76 +25,76 @@
 - (NSDictionary)locationActivityMetaData
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(SALocation *)self label];
+  label = [(SALocation *)self label];
 
-  if (v4)
+  if (label)
   {
-    v5 = [(SALocation *)self label];
+    label2 = [(SALocation *)self label];
     v6 = +[_DKLocationApplicationActivityMetadataKey locationName];
-    [v3 setValue:v5 forKey:v6];
+    [v3 setValue:label2 forKey:v6];
   }
 
-  v7 = [(SALocation *)self city];
+  city = [(SALocation *)self city];
 
-  if (v7)
+  if (city)
   {
-    v8 = [(SALocation *)self city];
+    city2 = [(SALocation *)self city];
     v9 = +[_DKLocationApplicationActivityMetadataKey city];
-    [v3 setValue:v8 forKey:v9];
+    [v3 setValue:city2 forKey:v9];
   }
 
-  v10 = [(SALocation *)self postalCode];
+  postalCode = [(SALocation *)self postalCode];
 
-  if (v10)
+  if (postalCode)
   {
-    v11 = [(SALocation *)self postalCode];
+    postalCode2 = [(SALocation *)self postalCode];
     v12 = +[_DKLocationApplicationActivityMetadataKey postalCode];
-    [v3 setValue:v11 forKey:v12];
+    [v3 setValue:postalCode2 forKey:v12];
   }
 
-  v13 = [(SALocation *)self street];
+  street = [(SALocation *)self street];
 
-  if (v13)
+  if (street)
   {
-    v14 = [(SALocation *)self street];
+    street2 = [(SALocation *)self street];
     v15 = +[_DKLocationApplicationActivityMetadataKey thoroughfare];
-    [v3 setValue:v14 forKey:v15];
+    [v3 setValue:street2 forKey:v15];
   }
 
-  v16 = [(SALocation *)self stateCode];
+  stateCode = [(SALocation *)self stateCode];
 
-  if (v16)
+  if (stateCode)
   {
-    v17 = [(SALocation *)self stateCode];
+    stateCode2 = [(SALocation *)self stateCode];
     v18 = +[_DKLocationApplicationActivityMetadataKey stateOrProvince];
-    [v3 setValue:v17 forKey:v18];
+    [v3 setValue:stateCode2 forKey:v18];
   }
 
-  v19 = [(SALocation *)self countryCode];
+  countryCode = [(SALocation *)self countryCode];
 
-  if (v19)
+  if (countryCode)
   {
-    v20 = [(SALocation *)self countryCode];
+    countryCode2 = [(SALocation *)self countryCode];
     v21 = +[_DKLocationApplicationActivityMetadataKey country];
-    [v3 setValue:v20 forKey:v21];
+    [v3 setValue:countryCode2 forKey:v21];
   }
 
-  v22 = [(SALocation *)self longitude];
+  longitude = [(SALocation *)self longitude];
 
-  if (v22)
+  if (longitude)
   {
-    v23 = [(SALocation *)self longitude];
+    longitude2 = [(SALocation *)self longitude];
     v24 = +[_DKLocationApplicationActivityMetadataKey longitude];
-    [v3 setValue:v23 forKey:v24];
+    [v3 setValue:longitude2 forKey:v24];
   }
 
-  v25 = [(SALocation *)self latitude];
+  latitude = [(SALocation *)self latitude];
 
-  if (v25)
+  if (latitude)
   {
-    v26 = [(SALocation *)self latitude];
+    latitude2 = [(SALocation *)self latitude];
     v27 = +[_DKLocationApplicationActivityMetadataKey latitude];
-    [v3 setValue:v26 forKey:v27];
+    [v3 setValue:latitude2 forKey:v27];
   }
 
   return v3;
@@ -102,32 +102,32 @@
 
 - (BOOL)isRegionCity
 {
-  v2 = [(SALocation *)self regionType];
-  v3 = [v2 isEqualToString:SARegionTypeCityValue];
+  regionType = [(SALocation *)self regionType];
+  v3 = [regionType isEqualToString:SARegionTypeCityValue];
 
   return v3;
 }
 
 - (BOOL)isRegionCounty
 {
-  v2 = [(SALocation *)self regionType];
-  v3 = [v2 isEqualToString:SARegionTypeCountyValue];
+  regionType = [(SALocation *)self regionType];
+  v3 = [regionType isEqualToString:SARegionTypeCountyValue];
 
   return v3;
 }
 
 - (BOOL)isRegionState
 {
-  v2 = [(SALocation *)self regionType];
-  v3 = [v2 isEqualToString:SARegionTypeStateValue];
+  regionType = [(SALocation *)self regionType];
+  v3 = [regionType isEqualToString:SARegionTypeStateValue];
 
   return v3;
 }
 
 - (BOOL)isRegionCountry
 {
-  v2 = [(SALocation *)self regionType];
-  v3 = [v2 isEqualToString:SARegionTypeCountryValue];
+  regionType = [(SALocation *)self regionType];
+  v3 = [regionType isEqualToString:SARegionTypeCountryValue];
 
   return v3;
 }

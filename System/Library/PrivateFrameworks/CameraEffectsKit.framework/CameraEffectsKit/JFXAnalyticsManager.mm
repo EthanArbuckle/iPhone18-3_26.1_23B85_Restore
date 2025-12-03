@@ -2,13 +2,13 @@
 + (id)allIncrementScalarEvents;
 + (id)bundleForAnalytics;
 + (id)sharedInstance;
-- (BOOL)checkIfEventExistsWithName:(id)a3;
-- (BOOL)isIncrementScalar:(id)a3;
+- (BOOL)checkIfEventExistsWithName:(id)name;
+- (BOOL)isIncrementScalar:(id)scalar;
 - (JFXAnalyticsManager)init;
-- (id)dictionaryWithEventName:(id)a3 value:(double)a4;
-- (void)trackEventWithName:(id)a3;
-- (void)trackKey:(id)a3 withCount:(unint64_t)a4;
-- (void)trackKey:(id)a3 withPayload:(id)a4;
+- (id)dictionaryWithEventName:(id)name value:(double)value;
+- (void)trackEventWithName:(id)name;
+- (void)trackKey:(id)key withCount:(unint64_t)count;
+- (void)trackKey:(id)key withPayload:(id)payload;
 @end
 
 @implementation JFXAnalyticsManager
@@ -39,28 +39,28 @@ uint64_t __37__JFXAnalyticsManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)dictionaryWithEventName:(id)a3 value:(double)a4
+- (id)dictionaryWithEventName:(id)name value:(double)value
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v12[0] = a3;
+  v12[0] = name;
   v11[0] = @"AnalyticsEventNameKey";
   v11[1] = @"AnalyticsEventCountOrDurationValueKey";
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
-  v7 = [v5 numberWithDouble:a4];
+  nameCopy = name;
+  v7 = [v5 numberWithDouble:value];
   v12[1] = v7;
   v11[2] = @"AnalyticsEventTimeStampKey";
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v12[2] = v8;
+  date = [MEMORY[0x277CBEAA8] date];
+  v12[2] = date;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;
 }
 
-- (BOOL)checkIfEventExistsWithName:(id)a3
+- (BOOL)checkIfEventExistsWithName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -79,7 +79,7 @@ uint64_t __37__JFXAnalyticsManager_sharedInstance__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 isEqualToString:*(*(&v9 + 1) + 8 * i)])
+        if ([nameCopy isEqualToString:*(*(&v9 + 1) + 8 * i)])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -101,12 +101,12 @@ LABEL_11:
   return v5;
 }
 
-- (void)trackEventWithName:(id)a3
+- (void)trackEventWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ([(JFXAnalyticsManager *)self checkIfEventExistsWithName:?])
   {
-    v4 = [(JFXAnalyticsManager *)self fullKeyFromEvent:v5];
+    v4 = [(JFXAnalyticsManager *)self fullKeyFromEvent:nameCopy];
     [(JFXAnalyticsManager *)self trackKey:v4 withCount:1];
   }
 }
@@ -135,17 +135,17 @@ void __41__JFXAnalyticsManager_bundleForAnalytics__block_invoke()
   bundleForAnalytics_bundle = v3;
 }
 
-- (void)trackKey:(id)a3 withPayload:(id)a4
+- (void)trackKey:(id)key withPayload:(id)payload
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  keyCopy = key;
+  payloadCopy = payload;
+  v7 = payloadCopy;
+  if (keyCopy && payloadCopy)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v6];
-    v9 = [objc_opt_class() bundleForAnalytics];
-    [v8 setValue:v9 forKey:@"hostApp"];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:payloadCopy];
+    bundleForAnalytics = [objc_opt_class() bundleForAnalytics];
+    [v8 setValue:bundleForAnalytics forKey:@"hostApp"];
 
     v15 = v8;
     v10 = v8;
@@ -163,35 +163,35 @@ void __41__JFXAnalyticsManager_bundleForAnalytics__block_invoke()
         v13 = @"failed";
       }
 
-      v14 = [v7 descriptionInStringsFileFormat];
+      descriptionInStringsFileFormat = [v7 descriptionInStringsFileFormat];
       *buf = 138412802;
       v17 = v13;
       v18 = 2112;
-      v19 = v5;
+      v19 = keyCopy;
       v20 = 2112;
-      v21 = v14;
+      v21 = descriptionInStringsFileFormat;
       _os_log_debug_impl(&dword_242A3B000, v12, OS_LOG_TYPE_DEBUG, "Tracking key (%@) %@ : %@", buf, 0x20u);
     }
   }
 }
 
-- (void)trackKey:(id)a3 withCount:(unint64_t)a4
+- (void)trackKey:(id)key withCount:(unint64_t)count
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"itemCount";
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithUnsignedLongLong:a4];
+  keyCopy = key;
+  v8 = [v6 numberWithUnsignedLongLong:count];
   v11[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  [(JFXAnalyticsManager *)self trackKey:v7 withPayload:v9];
+  [(JFXAnalyticsManager *)self trackKey:keyCopy withPayload:v9];
 }
 
-- (BOOL)isIncrementScalar:(id)a3
+- (BOOL)isIncrementScalar:(id)scalar
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scalarCopy = scalar;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -211,7 +211,7 @@ void __41__JFXAnalyticsManager_bundleForAnalytics__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        if ([v3 hasPrefix:*(*(&v11 + 1) + 8 * i)])
+        if ([scalarCopy hasPrefix:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = 1;
           goto LABEL_11;
@@ -229,7 +229,7 @@ void __41__JFXAnalyticsManager_bundleForAnalytics__block_invoke()
   }
 
   v4 = +[JFXAnalyticsKeys allIncrementScalarEvents];
-  v9 = [v4 containsObject:v3];
+  v9 = [v4 containsObject:scalarCopy];
 LABEL_11:
 
   return v9;

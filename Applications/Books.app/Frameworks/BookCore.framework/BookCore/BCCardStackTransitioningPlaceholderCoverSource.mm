@@ -1,18 +1,18 @@
 @interface BCCardStackTransitioningPlaceholderCoverSource
-- (BCCardStackTransitioningPlaceholderCoverSource)initWithCoverFrame:(CGRect)a3 referenceView:(id)a4;
+- (BCCardStackTransitioningPlaceholderCoverSource)initWithCoverFrame:(CGRect)frame referenceView:(id)view;
 - (CGRect)frame;
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3;
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view;
 @end
 
 @implementation BCCardStackTransitioningPlaceholderCoverSource
 
-- (BCCardStackTransitioningPlaceholderCoverSource)initWithCoverFrame:(CGRect)a3 referenceView:(id)a4
+- (BCCardStackTransitioningPlaceholderCoverSource)initWithCoverFrame:(CGRect)frame referenceView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = BCCardStackTransitioningPlaceholderCoverSource;
   v11 = [(BCCardStackTransitioningPlaceholderCoverSource *)&v14 init];
@@ -23,15 +23,15 @@
     v11->_frame.origin.y = y;
     v11->_frame.size.width = width;
     v11->_frame.size.height = height;
-    objc_storeStrong(&v11->_referenceView, a4);
+    objc_storeStrong(&v11->_referenceView, view);
   }
 
   return v12;
 }
 
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view
 {
-  v13 = a3;
+  viewCopy = view;
   [(BCCardStackTransitioningPlaceholderCoverSource *)self frame];
   if (!CGRectIsEmpty(v15))
   {
@@ -40,11 +40,11 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(BCCardStackTransitioningPlaceholderCoverSource *)self referenceView];
-    [v13 convertRect:v12 fromView:{v5, v7, v9, v11}];
+    referenceView = [(BCCardStackTransitioningPlaceholderCoverSource *)self referenceView];
+    [viewCopy convertRect:referenceView fromView:{v5, v7, v9, v11}];
     [(BCCardStackTransitioningPlaceholderCoverSource *)self setFrame:?];
 
-    [(BCCardStackTransitioningPlaceholderCoverSource *)self setReferenceView:v13];
+    [(BCCardStackTransitioningPlaceholderCoverSource *)self setReferenceView:viewCopy];
   }
 }
 

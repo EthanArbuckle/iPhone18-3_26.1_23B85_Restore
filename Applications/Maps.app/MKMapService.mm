@@ -3,26 +3,26 @@
 - (GEOMapServiceTraits)mapsDefaultTraitsWithCarPlayInfo;
 - (id)_mapsDefaultTraits;
 - (id)_mapsDefaultTraitsForAnalytics;
-- (id)_maps_ticketForSearchHistoryEntry:(id)a3 source:(int)a4 traits:(id)a5 isRedoOrAutoRedoSearch:(BOOL)a6;
-- (id)_ticketForSearchQuery:(id)a3 completionItem:(id)a4 retainedSearch:(id)a5 traits:(id)a6 searchSessionData:(id)a7;
-- (id)mapsDefaultTraitsForMapRegion:(id)a3 source:(int)a4;
-- (id)mapsDefaultTraitsForMapView:(id)a3 mapViewEnteredForegroundDate:(id)a4 mapViewportChangedDate:(id)a5;
-- (id)mapsDefaultTraitsForMapView:(id)a3 mapViewEnteredForegroundDate:(id)a4 mapViewportChangedDate:(id)a5 directionsType:(unint64_t)a6 includeCarPlayInfo:(BOOL)a7;
-- (id)ticketForMapItemToRefine:(id)a3;
-- (id)ticketForQuerySearch:(id)a3 source:(int)a4;
-- (id)ticketForReverseGeocodeCoordinate:(CLLocationCoordinate2D)a3;
-- (id)ticketForReverseGeocodeLocation:(id)a3;
-- (id)ticketForURLQuery:(id)a3 identifier:(id)a4 resultProviderId:(int)a5 contentProvider:(id)a6 traits:(id)a7 source:(int)a8;
-- (void)_addCarPlayConnectionToTraits:(id)a3;
-- (void)_addCarPlayInfoToTraits:(id)a3;
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5 routeIndex:(unint64_t)a6;
+- (id)_maps_ticketForSearchHistoryEntry:(id)entry source:(int)source traits:(id)traits isRedoOrAutoRedoSearch:(BOOL)search;
+- (id)_ticketForSearchQuery:(id)query completionItem:(id)item retainedSearch:(id)search traits:(id)traits searchSessionData:(id)data;
+- (id)mapsDefaultTraitsForMapRegion:(id)region source:(int)source;
+- (id)mapsDefaultTraitsForMapView:(id)view mapViewEnteredForegroundDate:(id)date mapViewportChangedDate:(id)changedDate;
+- (id)mapsDefaultTraitsForMapView:(id)view mapViewEnteredForegroundDate:(id)date mapViewportChangedDate:(id)changedDate directionsType:(unint64_t)type includeCarPlayInfo:(BOOL)info;
+- (id)ticketForMapItemToRefine:(id)refine;
+- (id)ticketForQuerySearch:(id)search source:(int)source;
+- (id)ticketForReverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate;
+- (id)ticketForReverseGeocodeLocation:(id)location;
+- (id)ticketForURLQuery:(id)query identifier:(id)identifier resultProviderId:(int)id contentProvider:(id)provider traits:(id)traits source:(int)source;
+- (void)_addCarPlayConnectionToTraits:(id)traits;
+- (void)_addCarPlayInfoToTraits:(id)traits;
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value routeIndex:(unint64_t)index;
 @end
 
 @implementation MKMapService
 
 - (id)_mapsDefaultTraits
 {
-  v3 = [(MKMapService *)self mapsDefaultTraits];
+  mapsDefaultTraits = [(MKMapService *)self mapsDefaultTraits];
   v4 = +[GEOIdealTransportTypeFinder idealTransportType];
   if (v4 > 4)
   {
@@ -36,7 +36,7 @@
     v6 = dword_101215F68[v4];
   }
 
-  [v3 addTransportType:v6];
+  [mapsDefaultTraits addTransportType:v6];
   v7 = [_MKQuickRouteManager counterpartForTransportType:v5];
   if (v7 > 3)
   {
@@ -69,187 +69,187 @@ LABEL_10:
 
   v8 = 2;
 LABEL_13:
-  [v3 addTransportType:v8];
+  [mapsDefaultTraits addTransportType:v8];
 LABEL_14:
   v9 = +[CarDisplayController sharedInstance];
-  v10 = [v9 isCurrentlyConnectedToAnyCarScene];
+  isCurrentlyConnectedToAnyCarScene = [v9 isCurrentlyConnectedToAnyCarScene];
 
-  if ((v10 & 1) == 0)
+  if ((isCurrentlyConnectedToAnyCarScene & 1) == 0)
   {
-    [v3 addTransportType:2];
+    [mapsDefaultTraits addTransportType:2];
   }
 
-  [(MKMapService *)self _addCarPlayConnectionToTraits:v3];
+  [(MKMapService *)self _addCarPlayConnectionToTraits:mapsDefaultTraits];
   v11 = +[SearchVirtualGarageManager sharedSearchVirtualGarageManager];
-  v12 = [v11 updatedTraitsForCurrentGarageState:v3];
+  v12 = [v11 updatedTraitsForCurrentGarageState:mapsDefaultTraits];
 
   v13 = +[MNNavigationService sharedService];
-  v14 = [v13 currentVoiceLanguage];
+  currentVoiceLanguage = [v13 currentVoiceLanguage];
 
-  if ([v14 length])
+  if ([currentVoiceLanguage length])
   {
-    [v12 setDeviceSpokenLocale:v14];
+    [v12 setDeviceSpokenLocale:currentVoiceLanguage];
   }
 
   v15 = [DrivePreferences alloc];
   v16 = +[NSUserDefaults standardUserDefaults];
   v17 = [(DrivePreferences *)v15 initWithDefaults:v16];
-  v18 = [(DrivePreferences *)v17 automobileOptions];
-  [v12 setAutomobileOptions:v18];
+  automobileOptions = [(DrivePreferences *)v17 automobileOptions];
+  [v12 setAutomobileOptions:automobileOptions];
 
   v19 = [WalkPreferences alloc];
   v20 = +[NSUserDefaults standardUserDefaults];
   v21 = [(WalkPreferences *)v19 initWithDefaults:v20];
-  v22 = [(WalkPreferences *)v21 walkingOptions];
-  [v12 setWalkingOptions:v22];
+  walkingOptions = [(WalkPreferences *)v21 walkingOptions];
+  [v12 setWalkingOptions:walkingOptions];
 
   v23 = [TransitPreferences alloc];
   v24 = +[NSUserDefaults standardUserDefaults];
   v25 = [(WatchSyncedPreferences *)v23 initWithDefaults:v24];
-  v26 = [(TransitPreferences *)v25 transitOptions];
-  [v12 setTransitOptions:v26];
+  transitOptions = [(TransitPreferences *)v25 transitOptions];
+  [v12 setTransitOptions:transitOptions];
 
   v27 = [CyclePreferences alloc];
   v28 = +[NSUserDefaults standardUserDefaults];
   v29 = [(CyclePreferences *)v27 initWithDefaults:v28];
-  v30 = [(CyclePreferences *)v29 cyclingOptions];
-  [v12 setCyclingOptions:v30];
+  cyclingOptions = [(CyclePreferences *)v29 cyclingOptions];
+  [v12 setCyclingOptions:cyclingOptions];
 
   [v12 setSupportDymSuggestion:1];
 
   return v12;
 }
 
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5 routeIndex:(unint64_t)a6
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value routeIndex:(unint64_t)index
 {
-  v7 = *&a4;
-  v8 = *&a3;
-  v11 = a5;
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  v7 = *&target;
+  v8 = *&action;
+  valueCopy = value;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [GEORouteDetails routeDetailsWithResultIndex:a6];
+    v10 = [GEORouteDetails routeDetailsWithResultIndex:index];
   }
 
-  [(MKMapService *)self captureUserAction:v8 onTarget:v7 eventValue:v11 routeDetails:v10];
+  [(MKMapService *)self captureUserAction:v8 onTarget:v7 eventValue:valueCopy routeDetails:v10];
 }
 
-- (id)ticketForURLQuery:(id)a3 identifier:(id)a4 resultProviderId:(int)a5 contentProvider:(id)a6 traits:(id)a7 source:(int)a8
+- (id)ticketForURLQuery:(id)query identifier:(id)identifier resultProviderId:(int)id contentProvider:(id)provider traits:(id)traits source:(int)source
 {
-  v8 = *&a8;
-  v10 = *&a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  if (!v14)
+  v8 = *&source;
+  v10 = *&id;
+  traitsCopy = traits;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  queryCopy = query;
+  if (!traitsCopy)
   {
-    v14 = [(MKMapService *)self _mapsDefaultTraits];
+    traitsCopy = [(MKMapService *)self _mapsDefaultTraits];
   }
 
-  [v14 setSource:v8];
-  v18 = [(MKMapService *)self ticketForURLQuery:v17 identifier:v16 resultProviderId:v10 contentProvider:v15 maxResults:+[MKMapService traits:"searchMaxResults"], v14];
+  [traitsCopy setSource:v8];
+  traitsCopy = [(MKMapService *)self ticketForURLQuery:queryCopy identifier:identifierCopy resultProviderId:v10 contentProvider:providerCopy maxResults:+[MKMapService traits:"searchMaxResults"], traitsCopy];
 
-  return v18;
+  return traitsCopy;
 }
 
-- (id)ticketForQuerySearch:(id)a3 source:(int)a4
+- (id)ticketForQuerySearch:(id)search source:(int)source
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [v6 mapRegion];
-  v8 = [(MKMapService *)self mapsDefaultTraitsForMapRegion:v7 source:v4];
+  v4 = *&source;
+  searchCopy = search;
+  mapRegion = [searchCopy mapRegion];
+  v8 = [(MKMapService *)self mapsDefaultTraitsForMapRegion:mapRegion source:v4];
 
-  if ([v6 hasLanguage])
+  if ([searchCopy hasLanguage])
   {
     if ([v8 deviceDisplayLanguagesCount])
     {
-      v9 = [v8 deviceDisplayLanguages];
-      v10 = [v9 firstObject];
-      v11 = [v6 language];
-      v12 = [v10 isEqualToString:v11];
+      deviceDisplayLanguages = [v8 deviceDisplayLanguages];
+      firstObject = [deviceDisplayLanguages firstObject];
+      language = [searchCopy language];
+      v12 = [firstObject isEqualToString:language];
 
       if ((v12 & 1) == 0)
       {
-        v13 = [v8 deviceDisplayLanguages];
-        v14 = [v6 language];
-        [v13 removeObject:v14];
+        deviceDisplayLanguages2 = [v8 deviceDisplayLanguages];
+        language2 = [searchCopy language];
+        [deviceDisplayLanguages2 removeObject:language2];
 
-        v15 = [v8 deviceDisplayLanguages];
-        v16 = [v6 language];
-        [v15 insertObject:v16 atIndex:0];
+        deviceDisplayLanguages3 = [v8 deviceDisplayLanguages];
+        language3 = [searchCopy language];
+        [deviceDisplayLanguages3 insertObject:language3 atIndex:0];
       }
     }
   }
 
-  v17 = [v6 query];
-  v18 = [(MKMapService *)self _ticketForSearchQuery:v17 completionItem:0 retainedSearch:0 traits:v8 searchSessionData:0];
+  query = [searchCopy query];
+  v18 = [(MKMapService *)self _ticketForSearchQuery:query completionItem:0 retainedSearch:0 traits:v8 searchSessionData:0];
 
   return v18;
 }
 
-- (id)_ticketForSearchQuery:(id)a3 completionItem:(id)a4 retainedSearch:(id)a5 traits:(id)a6 searchSessionData:(id)a7
+- (id)_ticketForSearchQuery:(id)query completionItem:(id)item retainedSearch:(id)search traits:(id)traits searchSessionData:(id)data
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(MKMapService *)self ticketForSearchQuery:v16 completionItem:v15 retainedSearch:v14 maxResults:+[MKMapService traits:"searchMaxResults"]searchSessionData:v13, v12];
+  dataCopy = data;
+  traitsCopy = traits;
+  searchCopy = search;
+  itemCopy = item;
+  queryCopy = query;
+  dataCopy = [(MKMapService *)self ticketForSearchQuery:queryCopy completionItem:itemCopy retainedSearch:searchCopy maxResults:+[MKMapService traits:"searchMaxResults"]searchSessionData:traitsCopy, dataCopy];
 
-  return v17;
+  return dataCopy;
 }
 
-- (id)ticketForMapItemToRefine:(id)a3
+- (id)ticketForMapItemToRefine:(id)refine
 {
-  v4 = a3;
-  v5 = [(MKMapService *)self _mapsDefaultTraits];
-  v6 = [(MKMapService *)self ticketForMapItemToRefine:v4 traits:v5];
+  refineCopy = refine;
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  v6 = [(MKMapService *)self ticketForMapItemToRefine:refineCopy traits:_mapsDefaultTraits];
 
   return v6;
 }
 
-- (id)ticketForReverseGeocodeLocation:(id)a3
+- (id)ticketForReverseGeocodeLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(MKMapService *)self _mapsDefaultTraits];
-  v6 = [(MKMapService *)self ticketForReverseGeocodeLocation:v4 traits:v5];
+  locationCopy = location;
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  v6 = [(MKMapService *)self ticketForReverseGeocodeLocation:locationCopy traits:_mapsDefaultTraits];
 
   return v6;
 }
 
-- (id)ticketForReverseGeocodeCoordinate:(CLLocationCoordinate2D)a3
+- (id)ticketForReverseGeocodeCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v6 = [(MKMapService *)self _mapsDefaultTraits];
-  v7 = [(MKMapService *)self ticketForReverseGeocodeCoordinate:v6 traits:latitude, longitude];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  longitude = [(MKMapService *)self ticketForReverseGeocodeCoordinate:_mapsDefaultTraits traits:latitude, longitude];
 
-  return v7;
+  return longitude;
 }
 
-- (void)_addCarPlayInfoToTraits:(id)a3
+- (void)_addCarPlayInfoToTraits:(id)traits
 {
-  v23 = a3;
+  traitsCopy = traits;
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 isCurrentlyConnectedToAnyCarScene];
+  isCurrentlyConnectedToAnyCarScene = [v3 isCurrentlyConnectedToAnyCarScene];
 
-  if (v4)
+  if (isCurrentlyConnectedToAnyCarScene)
   {
     v5 = +[CarDisplayController sharedInstance];
-    v6 = [v5 screen];
+    screen = [v5 screen];
 
-    v7 = [v6 _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
-    v8 = [v7 integerValue];
+    v7 = [screen _capabilityForKey:_UIScreenCapabilityTouchLevelsKey];
+    integerValue = [v7 integerValue];
 
     v9 = 3;
-    if (v8 < 3)
+    if (integerValue < 3)
     {
-      v10 = (v8 + 1);
+      v10 = (integerValue + 1);
     }
 
     else
@@ -257,57 +257,57 @@ LABEL_14:
       v10 = 3;
     }
 
-    [v23 setCarHeadunitInteractionModel:v10];
-    [v6 bounds];
+    [traitsCopy setCarHeadunitInteractionModel:v10];
+    [screen bounds];
     x = v25.origin.x;
     y = v25.origin.y;
     width = v25.size.width;
     height = v25.size.height;
-    [v23 setCarHeadunitPixelHeight:CGRectGetHeight(v25)];
+    [traitsCopy setCarHeadunitPixelHeight:CGRectGetHeight(v25)];
     v26.origin.x = x;
     v26.origin.y = y;
     v26.size.width = width;
     v26.size.height = height;
-    [v23 setCarHeadunitPixelWidth:CGRectGetWidth(v26)];
+    [traitsCopy setCarHeadunitPixelWidth:CGRectGetWidth(v26)];
     v15 = +[MapsExternalDevice sharedInstance];
-    v16 = [v15 manufacturer];
-    [v23 setCarHeadunitManufacturer:v16];
+    manufacturer = [v15 manufacturer];
+    [traitsCopy setCarHeadunitManufacturer:manufacturer];
 
-    v17 = [v15 model];
-    [v23 setCarHeadunitModel:v17];
+    model = [v15 model];
+    [traitsCopy setCarHeadunitModel:model];
 
     v18 = +[NSUserDefaults standardUserDefaults];
     v19 = [v18 BOOLForKey:@"CarEVSearchTestingDebug"];
 
     if ((v19 & 1) == 0)
     {
-      v21 = [v15 hasEngineType];
-      v20 = v23;
-      if (!v21)
+      hasEngineType = [v15 hasEngineType];
+      v20 = traitsCopy;
+      if (!hasEngineType)
       {
         goto LABEL_15;
       }
 
-      [v23 clearEngineTypes];
-      v22 = [v15 engineType];
-      if (v22)
+      [traitsCopy clearEngineTypes];
+      engineType = [v15 engineType];
+      if (engineType)
       {
-        [v23 addEngineType:1];
+        [traitsCopy addEngineType:1];
       }
 
-      if ((v22 & 4) != 0)
+      if ((engineType & 4) != 0)
       {
-        [v23 addEngineType:3];
+        [traitsCopy addEngineType:3];
       }
 
-      v20 = v23;
-      if ((v22 & 2) != 0)
+      v20 = traitsCopy;
+      if ((engineType & 2) != 0)
       {
-        [v23 addEngineType:2];
-        v20 = v23;
+        [traitsCopy addEngineType:2];
+        v20 = traitsCopy;
       }
 
-      if ((v22 & 8) == 0)
+      if ((engineType & 8) == 0)
       {
         goto LABEL_15;
       }
@@ -315,58 +315,58 @@ LABEL_14:
       v9 = 4;
     }
 
-    [v23 addEngineType:v9];
-    v20 = v23;
+    [traitsCopy addEngineType:v9];
+    v20 = traitsCopy;
 LABEL_15:
     [v20 setSupportDirectionIntentAutocomplete:0];
-    [v23 setSupportDirectionIntentSearch:0];
-    [v23 setSupportUnresolvedDirectionIntent:0];
-    [v23 setSupportClientRankingFeatureMetadata:0];
-    [v23 setSupportClientRankingCompositeFeatures:0];
-    [v23 setSupportStructuredRapAffordance:0];
+    [traitsCopy setSupportDirectionIntentSearch:0];
+    [traitsCopy setSupportUnresolvedDirectionIntent:0];
+    [traitsCopy setSupportClientRankingFeatureMetadata:0];
+    [traitsCopy setSupportClientRankingCompositeFeatures:0];
+    [traitsCopy setSupportStructuredRapAffordance:0];
   }
 }
 
-- (void)_addCarPlayConnectionToTraits:(id)a3
+- (void)_addCarPlayConnectionToTraits:(id)traits
 {
-  v8 = a3;
+  traitsCopy = traits;
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 isCurrentlyConnectedToAnyCarScene];
+  isCurrentlyConnectedToAnyCarScene = [v3 isCurrentlyConnectedToAnyCarScene];
 
-  if (v4)
+  if (isCurrentlyConnectedToAnyCarScene)
   {
     v5 = +[MapsExternalDevice sharedInstance];
-    v6 = [v5 connectionType];
-    if (v6 == 1)
+    connectionType = [v5 connectionType];
+    if (connectionType == 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = 2 * (v6 == 2);
+      v7 = 2 * (connectionType == 2);
     }
 
-    [v8 setCarHeadunitConnectionType:v7];
+    [traitsCopy setCarHeadunitConnectionType:v7];
   }
 }
 
 - (GEOMapServiceTraits)mapsDefaultTraitsWithCarPlayInfo
 {
-  v3 = [(MKMapService *)self _mapsDefaultTraits];
-  [(MKMapService *)self _addCarPlayInfoToTraits:v3];
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  [(MKMapService *)self _addCarPlayInfoToTraits:_mapsDefaultTraits];
 
-  return v3;
+  return _mapsDefaultTraits;
 }
 
-- (id)mapsDefaultTraitsForMapView:(id)a3 mapViewEnteredForegroundDate:(id)a4 mapViewportChangedDate:(id)a5 directionsType:(unint64_t)a6 includeCarPlayInfo:(BOOL)a7
+- (id)mapsDefaultTraitsForMapView:(id)view mapViewEnteredForegroundDate:(id)date mapViewportChangedDate:(id)changedDate directionsType:(unint64_t)type includeCarPlayInfo:(BOOL)info
 {
-  v7 = a7;
-  v10 = [(MKMapService *)self mapsDefaultTraitsForMapView:a3 mapViewEnteredForegroundDate:a4 mapViewportChangedDate:a5];
+  infoCopy = info;
+  v10 = [(MKMapService *)self mapsDefaultTraitsForMapView:view mapViewEnteredForegroundDate:date mapViewportChangedDate:changedDate];
   v11 = v10;
-  if (a6 <= 3)
+  if (type <= 3)
   {
-    if (a6 == 2)
+    if (type == 2)
     {
       v12 = 2;
       goto LABEL_10;
@@ -375,14 +375,14 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  if (a6 == 4)
+  if (type == 4)
   {
     v12 = 1;
   }
 
   else
   {
-    if (a6 != 8)
+    if (type != 8)
     {
 LABEL_7:
       v12 = 0;
@@ -394,7 +394,7 @@ LABEL_7:
 
 LABEL_10:
   [v10 addTransportType:v12];
-  v13 = [_MKQuickRouteManager counterpartForTransportType:a6];
+  v13 = [_MKQuickRouteManager counterpartForTransportType:type];
   if (v13 <= 3)
   {
     if (v13 == 2)
@@ -425,7 +425,7 @@ LABEL_16:
 
 LABEL_19:
   [v11 addTransportType:v14];
-  if (v7)
+  if (infoCopy)
   {
     [(MKMapService *)self _addCarPlayInfoToTraits:v11];
   }
@@ -433,57 +433,57 @@ LABEL_19:
   return v11;
 }
 
-- (id)mapsDefaultTraitsForMapView:(id)a3 mapViewEnteredForegroundDate:(id)a4 mapViewportChangedDate:(id)a5
+- (id)mapsDefaultTraitsForMapView:(id)view mapViewEnteredForegroundDate:(id)date mapViewportChangedDate:(id)changedDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MKMapService *)self _mapsDefaultTraits];
-  if (v8)
+  viewCopy = view;
+  dateCopy = date;
+  changedDateCopy = changedDate;
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  if (viewCopy)
   {
-    [v8 visibleMapRect];
+    [viewCopy visibleMapRect];
     v16 = [[GEOMapRegion alloc] initWithMapRect:{v12, v13, v14, v15}];
-    [v11 setMapRegion:v16];
+    [_mapsDefaultTraits setMapRegion:v16];
 
-    v17 = [v8 venueWithFocus];
-    if (v17 && sub_10000FA08(v8) != 5)
+    venueWithFocus = [viewCopy venueWithFocus];
+    if (venueWithFocus && sub_10000FA08(viewCopy) != 5)
     {
-      v18 = [[GEOVenueIdentifier alloc] initWithVenueID:objc_msgSend(v17 featureID:"venueID") businessID:{objc_msgSend(v17, "featureID"), objc_msgSend(v17, "businessID")}];
-      v19 = [v18 placeDataVenueIdentifierForVenue];
-      [v11 setVenueIdentifier:v19];
+      v18 = [[GEOVenueIdentifier alloc] initWithVenueID:objc_msgSend(venueWithFocus featureID:"venueID") businessID:{objc_msgSend(venueWithFocus, "featureID"), objc_msgSend(venueWithFocus, "businessID")}];
+      placeDataVenueIdentifierForVenue = [v18 placeDataVenueIdentifierForVenue];
+      [_mapsDefaultTraits setVenueIdentifier:placeDataVenueIdentifierForVenue];
     }
   }
 
   v20 = +[NSDate date];
   v21 = v20;
-  if (v9)
+  if (dateCopy)
   {
-    [v20 timeIntervalSinceDate:v9];
+    [v20 timeIntervalSinceDate:dateCopy];
     LODWORD(v23) = vcvtad_u64_f64(v22);
-    [v11 setTimeSinceMapEnteredForeground:v23];
+    [_mapsDefaultTraits setTimeSinceMapEnteredForeground:v23];
   }
 
-  if (v10)
+  if (changedDateCopy)
   {
-    [v21 timeIntervalSinceDate:v10];
+    [v21 timeIntervalSinceDate:changedDateCopy];
     LODWORD(v25) = vcvtad_u64_f64(v24);
-    [v11 setTimeSinceMapViewportChanged:v25];
+    [_mapsDefaultTraits setTimeSinceMapViewportChanged:v25];
   }
 
-  v26 = [v8 mapType];
+  mapType = [viewCopy mapType];
   v27 = 1;
-  if (v26 <= 2)
+  if (mapType <= 2)
   {
-    if (!v26)
+    if (!mapType)
     {
 LABEL_23:
-      [v11 setMode:v27];
+      [_mapsDefaultTraits setMode:v27];
       goto LABEL_24;
     }
 
-    if (v26 != 1)
+    if (mapType != 1)
     {
-      if (v26 != 2)
+      if (mapType != 2)
       {
         goto LABEL_24;
       }
@@ -496,11 +496,11 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v26 > 101)
+  if (mapType > 101)
   {
-    if (v26 != 102)
+    if (mapType != 102)
     {
-      if (v26 != 104)
+      if (mapType != 104)
       {
         goto LABEL_24;
       }
@@ -511,12 +511,12 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v26 == 3)
+  if (mapType == 3)
   {
     goto LABEL_22;
   }
 
-  if (v26 == 4)
+  if (mapType == 4)
   {
 LABEL_18:
     v27 = 3;
@@ -524,28 +524,28 @@ LABEL_18:
   }
 
 LABEL_24:
-  [v8 _zoomLevel];
+  [viewCopy _zoomLevel];
   if (v28 > 0.0)
   {
-    [v11 setMapZoomLevel:?];
+    [_mapsDefaultTraits setMapZoomLevel:?];
   }
 
-  [v11 setPhotosCount:GEOConfigGetUInteger()];
-  [v11 setPhotoAlbumCount:GEOConfigGetUInteger()];
-  [v11 setWantsRouteCreationTip:1];
+  [_mapsDefaultTraits setPhotosCount:GEOConfigGetUInteger()];
+  [_mapsDefaultTraits setPhotoAlbumCount:GEOConfigGetUInteger()];
+  [_mapsDefaultTraits setWantsRouteCreationTip:1];
 
-  return v11;
+  return _mapsDefaultTraits;
 }
 
-- (id)mapsDefaultTraitsForMapRegion:(id)a3 source:(int)a4
+- (id)mapsDefaultTraitsForMapRegion:(id)region source:(int)source
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [(MKMapService *)self _mapsDefaultTraits];
-  v8 = v7;
-  if (v6)
+  v4 = *&source;
+  regionCopy = region;
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  v8 = _mapsDefaultTraits;
+  if (regionCopy)
   {
-    [v7 setMapRegion:v6];
+    [_mapsDefaultTraits setMapRegion:regionCopy];
   }
 
   if (v4)
@@ -558,12 +558,12 @@ LABEL_24:
 
 - (id)_mapsDefaultTraitsForAnalytics
 {
-  v3 = [(MKMapService *)self _mapsDefaultTraits];
-  [(MKMapService *)self _addCarPlayInfoToTraits:v3];
-  [(MKMapService *)self _addInVehicleInfoToTraits:v3];
-  v4 = [(MKMapService *)self defaultTraitsForAnalyticsWithTraits:v3];
+  _mapsDefaultTraits = [(MKMapService *)self _mapsDefaultTraits];
+  [(MKMapService *)self _addCarPlayInfoToTraits:_mapsDefaultTraits];
+  [(MKMapService *)self _addInVehicleInfoToTraits:_mapsDefaultTraits];
+  v4 = [(MKMapService *)self defaultTraitsForAnalyticsWithTraits:_mapsDefaultTraits];
 
-  return v3;
+  return _mapsDefaultTraits;
 }
 
 + (unsigned)searchMaxResults
@@ -576,44 +576,44 @@ LABEL_24:
   return dword_10195F568;
 }
 
-- (id)_maps_ticketForSearchHistoryEntry:(id)a3 source:(int)a4 traits:(id)a5 isRedoOrAutoRedoSearch:(BOOL)a6
+- (id)_maps_ticketForSearchHistoryEntry:(id)entry source:(int)source traits:(id)traits isRedoOrAutoRedoSearch:(BOOL)search
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  if (!a6)
+  v8 = *&source;
+  entryCopy = entry;
+  traitsCopy = traits;
+  if (!search)
   {
-    v12 = [v10 mapRegion];
-    [v11 setMapRegion:v12];
+    mapRegion = [entryCopy mapRegion];
+    [traitsCopy setMapRegion:mapRegion];
   }
 
   if (v8)
   {
-    [v11 setSource:v8];
+    [traitsCopy setSource:v8];
   }
 
-  v13 = [v10 languageCode];
-  if (v13)
+  languageCode = [entryCopy languageCode];
+  if (languageCode)
   {
-    if ([v11 deviceDisplayLanguagesCount])
+    if ([traitsCopy deviceDisplayLanguagesCount])
     {
-      v14 = [v11 deviceDisplayLanguages];
-      v15 = [v14 firstObject];
-      v16 = [v15 isEqualToString:v13];
+      deviceDisplayLanguages = [traitsCopy deviceDisplayLanguages];
+      firstObject = [deviceDisplayLanguages firstObject];
+      v16 = [firstObject isEqualToString:languageCode];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v11 deviceDisplayLanguages];
-        [v17 removeObject:v13];
+        deviceDisplayLanguages2 = [traitsCopy deviceDisplayLanguages];
+        [deviceDisplayLanguages2 removeObject:languageCode];
 
-        v18 = [v11 deviceDisplayLanguages];
-        [v18 insertObject:v13 atIndex:0];
+        deviceDisplayLanguages3 = [traitsCopy deviceDisplayLanguages];
+        [deviceDisplayLanguages3 insertObject:languageCode atIndex:0];
       }
     }
   }
 
-  v19 = [v10 query];
-  v20 = [(MKMapService *)self ticketForSearchQuery:v19 completionItem:0 traits:v11 searchSessionData:0];
+  query = [entryCopy query];
+  v20 = [(MKMapService *)self ticketForSearchQuery:query completionItem:0 traits:traitsCopy searchSessionData:0];
 
   return v20;
 }

@@ -1,21 +1,21 @@
 @interface EGStillImageStereoDisparityNode
-- (EGStillImageStereoDisparityNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 delegate:(id)a6;
+- (EGStillImageStereoDisparityNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type delegate:(id)delegate;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageStereoDisparityNode
 
-- (EGStillImageStereoDisparityNode)initWithName:(id)a3 stillImageSettings:(id)a4 portType:(id)a5 delegate:(id)a6
+- (EGStillImageStereoDisparityNode)initWithName:(id)name stillImageSettings:(id)settings portType:(id)type delegate:(id)delegate
 {
   v15.receiver = self;
   v15.super_class = EGStillImageStereoDisparityNode;
-  v8 = [(EGStillImageProcessorControllerDelegateNode *)&v15 initWithName:a3 delegate:a6];
+  v8 = [(EGStillImageProcessorControllerDelegateNode *)&v15 initWithName:name delegate:delegate];
   if (v8)
   {
-    v8->_stillImageSettings = a4;
-    v8->_portType = a5;
+    v8->_stillImageSettings = settings;
+    v8->_portType = type;
     v9 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v10 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v8->_processorInput = v10;
@@ -42,10 +42,10 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_primarySbufInput, "name", a3, a4)), "sampleBuffer"}];
-  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_secondarySbufInput, "name")), "sampleBuffer"}]) == 0) || (v8 = v6, (v6 = objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", -[EGInput name](-[EGStillImageStereoDisparityNode processorInput](self, "processorInput"), "name")), "processorController")) == 0) || (v9 = v6, (v6 = -[BWStereoDisparityProcessorInput initWithSettings:portType:]([BWStereoDisparityProcessorInput alloc], "initWithSettings:portType:", self->_stillImageSettings, self->_portType)) == 0))
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_primarySbufInput, "name", data, group)), "sampleBuffer"}];
+  if (!v6 || (v7 = v6, (v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_secondarySbufInput, "name")), "sampleBuffer"}]) == 0) || (v8 = v6, (v6 = objc_msgSend(objc_msgSend(data, "objectForKeyedSubscript:", -[EGInput name](-[EGStillImageStereoDisparityNode processorInput](self, "processorInput"), "name")), "processorController")) == 0) || (v9 = v6, (v6 = -[BWStereoDisparityProcessorInput initWithSettings:portType:]([BWStereoDisparityProcessorInput alloc], "initWithSettings:portType:", self->_stillImageSettings, self->_portType)) == 0))
   {
     v11 = 4294954516;
 LABEL_10:
@@ -66,22 +66,22 @@ LABEL_10:
   [(BWStereoDisparityProcessorInput *)v12 addSampleBuffer:v8];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!buffer)
   {
-    *&a7 = 4294954516;
+    *&err = 4294954516;
 LABEL_7:
-    [EGStillImageStereoDisparityNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+    [EGStillImageStereoDisparityNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
     return;
   }
 
-  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v8 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)self->_sbufOutput emitPayload:v8];
 }
 

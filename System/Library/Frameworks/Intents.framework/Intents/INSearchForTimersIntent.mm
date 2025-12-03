@@ -1,5 +1,5 @@
 @interface INSearchForTimersIntent
-- (INSearchForTimersIntent)initWithLabel:(id)a3 duration:(double)a4 state:(int64_t)a5 type:(int64_t)a6;
+- (INSearchForTimersIntent)initWithLabel:(id)label duration:(double)duration state:(int64_t)state type:(int64_t)type;
 - (INSpeakableString)label;
 - (double)duration;
 - (id)_dictionaryRepresentation;
@@ -7,19 +7,19 @@
 - (id)_typedBackingStore;
 - (int64_t)state;
 - (int64_t)type;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setLabel:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setDuration:(double)duration;
+- (void)setLabel:(id)label;
+- (void)setState:(int64_t)state;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation INSearchForTimersIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSearchForTimersIntent *)self _typedBackingStore:a3];
+  v6 = [(INSearchForTimersIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -28,34 +28,34 @@
 {
   v18[4] = *MEMORY[0x1E69E9840];
   v17[0] = @"label";
-  v3 = [(INSearchForTimersIntent *)self label];
-  v4 = v3;
-  if (!v3)
+  label = [(INSearchForTimersIntent *)self label];
+  null = label;
+  if (!label)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"duration";
   v5 = MEMORY[0x1E696AD98];
   [(INSearchForTimersIntent *)self duration];
   v6 = [v5 numberWithDouble:?];
-  v7 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v7;
+  v18[1] = null2;
   v17[2] = @"state";
-  v8 = [(INSearchForTimersIntent *)self state];
+  state = [(INSearchForTimersIntent *)self state];
   v9 = @"unknown";
-  if (v8 == 2)
+  if (state == 2)
   {
     v9 = @"timerPaused";
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     v9 = @"timerRunning";
   }
@@ -63,14 +63,14 @@
   v10 = v9;
   v18[2] = v10;
   v17[3] = @"type";
-  v11 = [(INSearchForTimersIntent *)self type];
+  type = [(INSearchForTimersIntent *)self type];
   v12 = @"unknown";
-  if (v11 == 2)
+  if (type == 2)
   {
     v12 = @"sleepTimer";
   }
 
-  if (v11 == 1)
+  if (type == 1)
   {
     v12 = @"defaultType";
   }
@@ -83,7 +83,7 @@
   {
   }
 
-  if (!v3)
+  if (!label)
   {
   }
 
@@ -92,34 +92,34 @@
   return v14;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  v4 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 2)
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (type > 2)
   {
-    [v4 setHasType:0];
+    [_typedBackingStore setHasType:0];
   }
 
   else
   {
-    [v4 setType:a3];
+    [_typedBackingStore setType:type];
   }
 }
 
 - (int64_t)type
 {
-  v3 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v4 = [v3 hasType];
-  v5 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v6 = [v5 type];
-  v7 = v6 == 1;
-  if (v6 == 2)
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  hasType = [_typedBackingStore hasType];
+  _typedBackingStore2 = [(INSearchForTimersIntent *)self _typedBackingStore];
+  type = [_typedBackingStore2 type];
+  v7 = type == 1;
+  if (type == 2)
   {
     v7 = 2;
   }
 
-  if (v4)
+  if (hasType)
   {
     v8 = v7;
   }
@@ -132,34 +132,34 @@
   return v8;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 > 2)
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (state > 2)
   {
-    [v4 setHasState:0];
+    [_typedBackingStore setHasState:0];
   }
 
   else
   {
-    [v4 setState:a3];
+    [_typedBackingStore setState:state];
   }
 }
 
 - (int64_t)state
 {
-  v3 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v4 = [v3 hasState];
-  v5 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v6 = [v5 state];
-  v7 = v6 == 1;
-  if (v6 == 2)
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  hasState = [_typedBackingStore hasState];
+  _typedBackingStore2 = [(INSearchForTimersIntent *)self _typedBackingStore];
+  state = [_typedBackingStore2 state];
+  v7 = state == 1;
+  if (state == 2)
   {
     v7 = 2;
   }
 
-  if (v4)
+  if (hasState)
   {
     v8 = v7;
   }
@@ -172,93 +172,93 @@
   return v8;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v4 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v5 = v4;
-  if (a3 == 0.0)
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
+  if (duration == 0.0)
   {
-    [v4 setHasDuration:0];
+    [_typedBackingStore setHasDuration:0];
   }
 
   else
   {
-    [v4 setDuration:a3];
+    [_typedBackingStore setDuration:duration];
   }
 }
 
 - (double)duration
 {
-  v3 = [(INSearchForTimersIntent *)self _typedBackingStore];
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
   v4 = 0.0;
-  if ([v3 hasDuration])
+  if ([_typedBackingStore hasDuration])
   {
-    v5 = [(INSearchForTimersIntent *)self _typedBackingStore];
-    [v5 duration];
+    _typedBackingStore2 = [(INSearchForTimersIntent *)self _typedBackingStore];
+    [_typedBackingStore2 duration];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  v6 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  labelCopy = label;
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(labelCopy);
 
-  [v6 setLabel:v5];
+  [_typedBackingStore setLabel:v5];
 }
 
 - (INSpeakableString)label
 {
-  v2 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v3 = [v2 label];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  label = [_typedBackingStore label];
+  v4 = INIntentSlotValueTransformFromDataString(label);
 
   return v4;
 }
 
-- (INSearchForTimersIntent)initWithLabel:(id)a3 duration:(double)a4 state:(int64_t)a5 type:(int64_t)a6
+- (INSearchForTimersIntent)initWithLabel:(id)label duration:(double)duration state:(int64_t)state type:(int64_t)type
 {
-  v10 = a3;
+  labelCopy = label;
   v14.receiver = self;
   v14.super_class = INSearchForTimersIntent;
   v11 = [(INIntent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(INSearchForTimersIntent *)v11 setLabel:v10];
-    [(INSearchForTimersIntent *)v12 setDuration:a4];
-    [(INSearchForTimersIntent *)v12 setState:a5];
-    [(INSearchForTimersIntent *)v12 setType:a6];
+    [(INSearchForTimersIntent *)v11 setLabel:labelCopy];
+    [(INSearchForTimersIntent *)v12 setDuration:duration];
+    [(INSearchForTimersIntent *)v12 setState:state];
+    [(INSearchForTimersIntent *)v12 setType:type];
   }
 
   return v12;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSearchForTimersIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSearchForTimersIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

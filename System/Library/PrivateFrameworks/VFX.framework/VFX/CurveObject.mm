@@ -1,15 +1,15 @@
 @interface CurveObject
 - (_TtC3VFX11CurveObject)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CurveObject
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AF65339C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1AF65339C(coderCopy);
 }
 
 - (_TtC3VFX11CurveObject)init

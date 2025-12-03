@@ -1,24 +1,24 @@
 @interface PTRaytracingInterpolateResultV2
-+ (PTNoiseValues)calculateVarReadNoise:(id)a3;
-- (PTRaytracingInterpolateResultV2)initWithMetalContext:(id)a3 useExportQualityNoise:(BOOL)a4;
-- (void)interpolateRGBWeightUsingRGBALinearToDest:(id)a3 renderRequest:(id)a4 inRGBWeight:(id)a5 inRGBA:(id)a6;
-- (void)interpolateRGBWeightUsingSourceToDest:(id)a3 renderRequest:(id)a4 inRGBWeight:(id)a5;
++ (PTNoiseValues)calculateVarReadNoise:(id)noise;
+- (PTRaytracingInterpolateResultV2)initWithMetalContext:(id)context useExportQualityNoise:(BOOL)noise;
+- (void)interpolateRGBWeightUsingRGBALinearToDest:(id)dest renderRequest:(id)request inRGBWeight:(id)weight inRGBA:(id)a;
+- (void)interpolateRGBWeightUsingSourceToDest:(id)dest renderRequest:(id)request inRGBWeight:(id)weight;
 @end
 
 @implementation PTRaytracingInterpolateResultV2
 
-- (PTRaytracingInterpolateResultV2)initWithMetalContext:(id)a3 useExportQualityNoise:(BOOL)a4
+- (PTRaytracingInterpolateResultV2)initWithMetalContext:(id)context useExportQualityNoise:(BOOL)noise
 {
-  v4 = a4;
-  v7 = a3;
+  noiseCopy = noise;
+  contextCopy = context;
   v70.receiver = self;
   v70.super_class = PTRaytracingInterpolateResultV2;
   v8 = [(PTRaytracingInterpolateResultV2 *)&v70 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metalContext, a3);
-    if (v4)
+    objc_storeStrong(&v8->_metalContext, context);
+    if (noiseCopy)
     {
       v10 = 512;
     }
@@ -28,9 +28,9 @@
       v10 = 256;
     }
 
-    v11 = [PTPrecomputeRandom computeGaussian:v9->_metalContext sideLength:v10, v7];
+    contextCopy = [PTPrecomputeRandom computeGaussian:v9->_metalContext sideLength:v10, contextCopy];
     precomputedGaussian = v9->_precomputedGaussian;
-    v9->_precomputedGaussian = v11;
+    v9->_precomputedGaussian = contextCopy;
 
     v9->_precomputedGaussianOffsetMaxValue = v10 - 1;
     v13 = objc_opt_new();
@@ -117,7 +117,7 @@
       if (++v14 == 5)
       {
         v30 = v9;
-        v7 = v68;
+        contextCopy = v68;
         goto LABEL_25;
       }
     }
@@ -129,7 +129,7 @@
     }
 
 LABEL_24:
-    v7 = v68;
+    contextCopy = v68;
 
     v30 = 0;
 LABEL_25:
@@ -143,17 +143,17 @@ LABEL_25:
   return v30;
 }
 
-- (void)interpolateRGBWeightUsingSourceToDest:(id)a3 renderRequest:(id)a4 inRGBWeight:(id)a5
+- (void)interpolateRGBWeightUsingSourceToDest:(id)dest renderRequest:(id)request inRGBWeight:(id)weight
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destCopy = dest;
+  requestCopy = request;
+  weightCopy = weight;
   v11 = 0;
   v61 = 0u;
   v62 = 0u;
-  if (v9)
+  if (requestCopy)
   {
-    [v9 scissorRect];
+    [requestCopy scissorRect];
     v12 = *(&v62 + 1);
     v52 = v62;
     v11 = vmovn_s64(v61);
@@ -167,38 +167,38 @@ LABEL_25:
 
   v60[1] = v11.i16[2];
   v60[0] = v11.i16[0];
-  +[PTRandom nextUshort2:seed:](PTRandom, "nextUshort2:seed:", self->_precomputedGaussianOffsetMaxValue, [v9 frameId]);
+  +[PTRandom nextUshort2:seed:](PTRandom, "nextUshort2:seed:", self->_precomputedGaussianOffsetMaxValue, [requestCopy frameId]);
   v59[1] = v13;
   v59[0] = v14;
-  [PTRaytracingInterpolateResultV2 calculateVarReadNoise:v9];
+  [PTRaytracingInterpolateResultV2 calculateVarReadNoise:requestCopy];
   v58[0] = v15;
   v58[1] = v16;
-  v17 = [v9 sourceColor];
-  v18 = [v17 transferFunction];
-  v19 = [PTColorConversion getTransferFunction:v18 toLinear:1];
+  sourceColor = [requestCopy sourceColor];
+  transferFunction = [sourceColor transferFunction];
+  v19 = [PTColorConversion getTransferFunction:transferFunction toLinear:1];
 
-  v20 = [v9 sourceColor];
-  if ([v20 isRGB])
+  sourceColor2 = [requestCopy sourceColor];
+  if ([sourceColor2 isRGB])
   {
-    v21 = [v9 destinationColor];
-    v22 = [v21 isRGB];
+    destinationColor = [requestCopy destinationColor];
+    isRGB = [destinationColor isRGB];
 
-    if (v22)
+    if (isRGB)
     {
-      [v8 setComputePipelineState:self->_interpolateRGBWeightSourceRGBADestRGBA[v19]];
-      v23 = [v9 sourceColor];
-      v24 = [v23 texRGBA];
-      [v8 setTexture:v24 atIndex:0];
+      [destCopy setComputePipelineState:self->_interpolateRGBWeightSourceRGBADestRGBA[v19]];
+      sourceColor3 = [requestCopy sourceColor];
+      texRGBA = [sourceColor3 texRGBA];
+      [destCopy setTexture:texRGBA atIndex:0];
 
-      [v8 setTexture:v10 atIndex:1];
-      [v8 setTexture:self->_precomputedGaussian atIndex:2];
-      v25 = [v9 destinationColor];
-      v26 = [v25 texRGBA];
-      [v8 setTexture:v26 atIndex:3];
+      [destCopy setTexture:weightCopy atIndex:1];
+      [destCopy setTexture:self->_precomputedGaussian atIndex:2];
+      destinationColor2 = [requestCopy destinationColor];
+      texRGBA2 = [destinationColor2 texRGBA];
+      [destCopy setTexture:texRGBA2 atIndex:3];
 
-      [v8 setBytes:v58 length:8 atIndex:0];
-      [v8 setBytes:v59 length:4 atIndex:1];
-      [v8 setBytes:v60 length:4 atIndex:2];
+      [destCopy setBytes:v58 length:8 atIndex:0];
+      [destCopy setBytes:v59 length:4 atIndex:1];
+      [destCopy setBytes:v60 length:4 atIndex:2];
       goto LABEL_12;
     }
   }
@@ -208,45 +208,45 @@ LABEL_25:
   }
 
   v50 = v12;
-  v51 = v10;
+  v51 = weightCopy;
   *&v55[8] = 0;
   v56 = 0;
   v57 = 0;
-  v27 = [v9 sourceColor];
-  [PTColorConversion getColorMatrix:v27 toRGB:1];
+  sourceColor4 = [requestCopy sourceColor];
+  [PTColorConversion getColorMatrix:sourceColor4 toRGB:1];
 
-  v28 = [v9 sourceColor];
-  v29 = [v28 texLuma];
-  v30 = [v9 sourceColor];
-  v31 = [v30 texChroma];
-  *v55 = [PTColorConversion getChromaSubsampledFromLuma:v29 texChroma:v31];
+  sourceColor5 = [requestCopy sourceColor];
+  texLuma = [sourceColor5 texLuma];
+  sourceColor6 = [requestCopy sourceColor];
+  texChroma = [sourceColor6 texChroma];
+  *v55 = [PTColorConversion getChromaSubsampledFromLuma:texLuma texChroma:texChroma];
 
-  v32 = [v9 destinationColor];
-  LODWORD(v28) = [v32 isRGB];
+  destinationColor3 = [requestCopy destinationColor];
+  LODWORD(sourceColor5) = [destinationColor3 isRGB];
 
-  if (v28)
+  if (sourceColor5)
   {
-    [v8 setComputePipelineState:self->_interpolateRGBWeightSourceYUVDestRGBA[v19]];
-    v33 = [v9 sourceColor];
-    v34 = [v33 texLuma];
-    [v8 setTexture:v34 atIndex:0];
+    [destCopy setComputePipelineState:self->_interpolateRGBWeightSourceYUVDestRGBA[v19]];
+    sourceColor7 = [requestCopy sourceColor];
+    texLuma2 = [sourceColor7 texLuma];
+    [destCopy setTexture:texLuma2 atIndex:0];
 
-    v35 = [v9 sourceColor];
-    v36 = [v35 texChroma];
-    [v8 setTexture:v36 atIndex:1];
+    sourceColor8 = [requestCopy sourceColor];
+    texChroma2 = [sourceColor8 texChroma];
+    [destCopy setTexture:texChroma2 atIndex:1];
 
-    v10 = v51;
-    [v8 setTexture:v51 atIndex:2];
-    [v8 setTexture:self->_precomputedGaussian atIndex:3];
-    v37 = [v9 destinationColor];
-    v38 = [v37 texRGBA];
-    [v8 setTexture:v38 atIndex:4];
+    weightCopy = v51;
+    [destCopy setTexture:v51 atIndex:2];
+    [destCopy setTexture:self->_precomputedGaussian atIndex:3];
+    destinationColor4 = [requestCopy destinationColor];
+    texRGBA3 = [destinationColor4 texRGBA];
+    [destCopy setTexture:texRGBA3 atIndex:4];
 
-    [v8 setBytes:v58 length:8 atIndex:0];
-    [v8 setBytes:v59 length:4 atIndex:1];
-    [v8 setBytes:&v55[2] length:24 atIndex:2];
-    [v8 setBytes:v55 length:2 atIndex:3];
-    v39 = v8;
+    [destCopy setBytes:v58 length:8 atIndex:0];
+    [destCopy setBytes:v59 length:4 atIndex:1];
+    [destCopy setBytes:&v55[2] length:24 atIndex:2];
+    [destCopy setBytes:v55 length:2 atIndex:3];
+    v39 = destCopy;
     v40 = 4;
   }
 
@@ -254,35 +254,35 @@ LABEL_25:
   {
     v53 = 0uLL;
     v54 = 0;
-    v41 = [v9 destinationColor];
-    [PTColorConversion getColorMatrix:v41 toRGB:0];
+    destinationColor5 = [requestCopy destinationColor];
+    [PTColorConversion getColorMatrix:destinationColor5 toRGB:0];
 
-    [v8 setComputePipelineState:self->_interpolateRGBWeightSourceYUVDestYUV[v19]];
-    v42 = [v9 sourceColor];
-    v43 = [v42 texLuma];
-    [v8 setTexture:v43 atIndex:0];
+    [destCopy setComputePipelineState:self->_interpolateRGBWeightSourceYUVDestYUV[v19]];
+    sourceColor9 = [requestCopy sourceColor];
+    texLuma3 = [sourceColor9 texLuma];
+    [destCopy setTexture:texLuma3 atIndex:0];
 
-    v44 = [v9 sourceColor];
-    v45 = [v44 texChroma];
-    [v8 setTexture:v45 atIndex:1];
+    sourceColor10 = [requestCopy sourceColor];
+    texChroma3 = [sourceColor10 texChroma];
+    [destCopy setTexture:texChroma3 atIndex:1];
 
-    v10 = v51;
-    [v8 setTexture:v51 atIndex:2];
-    [v8 setTexture:self->_precomputedGaussian atIndex:3];
-    v46 = [v9 destinationColor];
-    v47 = [v46 texLuma];
-    [v8 setTexture:v47 atIndex:4];
+    weightCopy = v51;
+    [destCopy setTexture:v51 atIndex:2];
+    [destCopy setTexture:self->_precomputedGaussian atIndex:3];
+    destinationColor6 = [requestCopy destinationColor];
+    texLuma4 = [destinationColor6 texLuma];
+    [destCopy setTexture:texLuma4 atIndex:4];
 
-    v48 = [v9 destinationColor];
-    v49 = [v48 texChroma];
-    [v8 setTexture:v49 atIndex:5];
+    destinationColor7 = [requestCopy destinationColor];
+    texChroma4 = [destinationColor7 texChroma];
+    [destCopy setTexture:texChroma4 atIndex:5];
 
-    [v8 setBytes:v58 length:8 atIndex:0];
-    [v8 setBytes:v59 length:4 atIndex:1];
-    [v8 setBytes:&v55[2] length:24 atIndex:2];
-    [v8 setBytes:&v53 length:24 atIndex:3];
-    [v8 setBytes:v55 length:2 atIndex:4];
-    v39 = v8;
+    [destCopy setBytes:v58 length:8 atIndex:0];
+    [destCopy setBytes:v59 length:4 atIndex:1];
+    [destCopy setBytes:&v55[2] length:24 atIndex:2];
+    [destCopy setBytes:&v53 length:24 atIndex:3];
+    [destCopy setBytes:v55 length:2 atIndex:4];
+    v39 = destCopy;
     v40 = 5;
   }
 
@@ -294,21 +294,21 @@ LABEL_12:
   v57 = 1;
   v53 = xmmword_2244A5220;
   v54 = 1;
-  [v8 dispatchThreads:&v55[2] threadsPerThreadgroup:&v53];
+  [destCopy dispatchThreads:&v55[2] threadsPerThreadgroup:&v53];
 }
 
-- (void)interpolateRGBWeightUsingRGBALinearToDest:(id)a3 renderRequest:(id)a4 inRGBWeight:(id)a5 inRGBA:(id)a6
+- (void)interpolateRGBWeightUsingRGBALinearToDest:(id)dest renderRequest:(id)request inRGBWeight:(id)weight inRGBA:(id)a
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destCopy = dest;
+  requestCopy = request;
+  weightCopy = weight;
+  aCopy = a;
   v14 = 0;
   v50 = 0u;
   v51 = 0u;
-  if (v11)
+  if (requestCopy)
   {
-    [v11 scissorRect];
+    [requestCopy scissorRect];
     v15 = *(&v51 + 1);
     v41 = v51;
     v14 = vmovn_s64(v50);
@@ -322,32 +322,32 @@ LABEL_12:
 
   v49[1] = v14.i16[2];
   v49[0] = v14.i16[0];
-  +[PTRandom nextUshort2:seed:](PTRandom, "nextUshort2:seed:", self->_precomputedGaussianOffsetMaxValue, [v11 frameId]);
+  +[PTRandom nextUshort2:seed:](PTRandom, "nextUshort2:seed:", self->_precomputedGaussianOffsetMaxValue, [requestCopy frameId]);
   v48[1] = v16;
   v48[0] = v17;
-  [PTRaytracingInterpolateResultV2 calculateVarReadNoise:v11];
+  [PTRaytracingInterpolateResultV2 calculateVarReadNoise:requestCopy];
   v47[0] = v18;
   v47[1] = v19;
-  v20 = [v11 sourceColor];
-  v21 = [v20 transferFunction];
-  v22 = [PTColorConversion getTransferFunction:v21 toLinear:1];
+  sourceColor = [requestCopy sourceColor];
+  transferFunction = [sourceColor transferFunction];
+  v22 = [PTColorConversion getTransferFunction:transferFunction toLinear:1];
 
-  v23 = [v11 destinationColor];
-  LODWORD(v21) = [v23 isRGB];
+  destinationColor = [requestCopy destinationColor];
+  LODWORD(transferFunction) = [destinationColor isRGB];
 
-  if (v21)
+  if (transferFunction)
   {
-    [v10 setComputePipelineState:self->_interpolateRGBWeightRGBALinearDestRGBA[v22]];
-    [v10 setTexture:v13 atIndex:0];
-    [v10 setTexture:v12 atIndex:1];
-    [v10 setTexture:self->_precomputedGaussian atIndex:2];
-    v24 = [v11 destinationColor];
-    v25 = [v24 texRGBA];
-    [v10 setTexture:v25 atIndex:3];
+    [destCopy setComputePipelineState:self->_interpolateRGBWeightRGBALinearDestRGBA[v22]];
+    [destCopy setTexture:aCopy atIndex:0];
+    [destCopy setTexture:weightCopy atIndex:1];
+    [destCopy setTexture:self->_precomputedGaussian atIndex:2];
+    destinationColor2 = [requestCopy destinationColor];
+    texRGBA = [destinationColor2 texRGBA];
+    [destCopy setTexture:texRGBA atIndex:3];
 
-    [v10 setBytes:v47 length:8 atIndex:0];
-    [v10 setBytes:v48 length:4 atIndex:1];
-    v26 = v10;
+    [destCopy setBytes:v47 length:8 atIndex:0];
+    [destCopy setBytes:v48 length:4 atIndex:1];
+    v26 = destCopy;
     v27 = 2;
   }
 
@@ -356,40 +356,40 @@ LABEL_12:
     v44 = 0;
     v45 = 0;
     v46 = 0;
-    v28 = [v11 sourceColor];
-    [PTColorConversion getColorMatrix:v28 toRGB:0];
+    sourceColor2 = [requestCopy sourceColor];
+    [PTColorConversion getColorMatrix:sourceColor2 toRGB:0];
 
-    v29 = [v11 sourceColor];
-    [v29 texLuma];
-    v40 = v13;
-    v31 = v30 = v12;
-    [v11 sourceColor];
+    sourceColor3 = [requestCopy sourceColor];
+    [sourceColor3 texLuma];
+    v40 = aCopy;
+    v31 = v30 = weightCopy;
+    [requestCopy sourceColor];
     v39 = v22;
     v33 = v32 = v15;
-    v34 = [v33 texChroma];
-    LOWORD(v42) = [PTColorConversion getChromaSubsampledFromLuma:v31 texChroma:v34];
+    texChroma = [v33 texChroma];
+    LOWORD(v42) = [PTColorConversion getChromaSubsampledFromLuma:v31 texChroma:texChroma];
 
     v15 = v32;
-    v12 = v30;
-    v13 = v40;
+    weightCopy = v30;
+    aCopy = v40;
 
-    [v10 setComputePipelineState:self->_interpolateRGBWeightRGBALinearDestYUV[v39]];
-    [v10 setTexture:v40 atIndex:0];
-    [v10 setTexture:v12 atIndex:1];
-    [v10 setTexture:self->_precomputedGaussian atIndex:2];
-    v35 = [v11 destinationColor];
-    v36 = [v35 texLuma];
-    [v10 setTexture:v36 atIndex:3];
+    [destCopy setComputePipelineState:self->_interpolateRGBWeightRGBALinearDestYUV[v39]];
+    [destCopy setTexture:v40 atIndex:0];
+    [destCopy setTexture:weightCopy atIndex:1];
+    [destCopy setTexture:self->_precomputedGaussian atIndex:2];
+    destinationColor3 = [requestCopy destinationColor];
+    texLuma = [destinationColor3 texLuma];
+    [destCopy setTexture:texLuma atIndex:3];
 
-    v37 = [v11 destinationColor];
-    v38 = [v37 texChroma];
-    [v10 setTexture:v38 atIndex:4];
+    destinationColor4 = [requestCopy destinationColor];
+    texChroma2 = [destinationColor4 texChroma];
+    [destCopy setTexture:texChroma2 atIndex:4];
 
-    [v10 setBytes:v47 length:8 atIndex:0];
-    [v10 setBytes:v48 length:4 atIndex:1];
-    [v10 setBytes:&v44 length:24 atIndex:2];
-    [v10 setBytes:&v42 length:2 atIndex:3];
-    v26 = v10;
+    [destCopy setBytes:v47 length:8 atIndex:0];
+    [destCopy setBytes:v48 length:4 atIndex:1];
+    [destCopy setBytes:&v44 length:24 atIndex:2];
+    [destCopy setBytes:&v42 length:2 atIndex:3];
+    v26 = destCopy;
     v27 = 4;
   }
 
@@ -399,42 +399,42 @@ LABEL_12:
   v46 = 1;
   v42 = xmmword_2244A5220;
   v43 = 1;
-  [v10 dispatchThreads:&v44 threadsPerThreadgroup:&v42];
+  [destCopy dispatchThreads:&v44 threadsPerThreadgroup:&v42];
 }
 
-+ (PTNoiseValues)calculateVarReadNoise:(id)a3
++ (PTNoiseValues)calculateVarReadNoise:(id)noise
 {
-  v3 = a3;
-  v4 = [v3 AGC];
-  v5 = [v3 conversionGain];
-  v6 = [v3 readNoise_1x];
-  v7 = [v3 readNoise_8x];
-  v8 = [v3 renderState];
-  [v8 noiseScaleFactor];
+  noiseCopy = noise;
+  v4 = [noiseCopy AGC];
+  conversionGain = [noiseCopy conversionGain];
+  readNoise_1x = [noiseCopy readNoise_1x];
+  readNoise_8x = [noiseCopy readNoise_8x];
+  renderState = [noiseCopy renderState];
+  [renderState noiseScaleFactor];
   v10 = v9;
 
-  v11 = [v3 renderState];
-  v12 = [v11 sourceColorBitDepth];
+  renderState2 = [noiseCopy renderState];
+  sourceColorBitDepth = [renderState2 sourceColorBitDepth];
 
-  [v3 totalSensorCropRectSize];
+  [noiseCopy totalSensorCropRectSize];
   v14 = v13;
-  v15 = [v3 sourceColor];
-  v16 = v14 / [v15 width];
-  [v3 totalSensorCropRectSize];
+  sourceColor = [noiseCopy sourceColor];
+  v16 = v14 / [sourceColor width];
+  [noiseCopy totalSensorCropRectSize];
   v18 = v16 * v17;
-  v19 = [v3 sourceColor];
-  v20 = v10 / (v18 / [v19 height]);
+  sourceColor2 = [noiseCopy sourceColor];
+  v20 = v10 / (v18 / [sourceColor2 height]);
 
   v21 = v20 / 1023.0;
-  if (v12 == 10)
+  if (sourceColorBitDepth == 10)
   {
     v21 = (v20 / 1023.0) * 12.0;
   }
 
   v22 = v4 / 255.0;
-  v23 = (v5 / 65535.0) * v21;
-  v24 = (v6 / 65535.0) * (v6 / 65535.0);
-  v25 = (v24 - ((v7 / 65535.0) * (v7 / 65535.0))) / 0.98438;
+  v23 = (conversionGain / 65535.0) * v21;
+  v24 = (readNoise_1x / 65535.0) * (readNoise_1x / 65535.0);
+  v25 = (v24 - ((readNoise_8x / 65535.0) * (readNoise_8x / 65535.0))) / 0.98438;
   v26 = v23 * ((v25 + ((v22 * (v24 - v25)) * v22)) * v23);
   v27 = v22 * v23;
 

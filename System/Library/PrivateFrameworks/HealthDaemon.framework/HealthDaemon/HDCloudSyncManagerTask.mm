@@ -4,8 +4,8 @@
 - (int64_t)status;
 - (void)finish;
 - (void)main;
-- (void)mirrorTask:(id)a3;
-- (void)startWithCompletion:(id)a3;
+- (void)mirrorTask:(id)task;
+- (void)startWithCompletion:(id)completion;
 @end
 
 @implementation HDCloudSyncManagerTask
@@ -40,14 +40,14 @@
   return status;
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -56,7 +56,7 @@
   status = self->_status;
   if (!status)
   {
-    v8 = [v5 copy];
+    v8 = [completionCopy copy];
     completion = self->_completion;
     self->_completion = v8;
 
@@ -93,8 +93,8 @@
   os_unfair_lock_unlock(&self->_lock);
   if (WeakRetained)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"hasOriginalTask == NO"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"hasOriginalTask == NO"}];
 
     if (!status)
     {
@@ -107,8 +107,8 @@
     goto LABEL_14;
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncManagerTaskStatusPending"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncManagerTaskStatusPending"}];
 
 LABEL_14:
   _HKInitializeLogging();
@@ -116,7 +116,7 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting.", buf, 0xCu);
   }
 
@@ -181,20 +181,20 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
   if (!status)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"status != HDCloudSyncManagerTaskStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"status != HDCloudSyncManagerTaskStatusPending"}];
   }
 
-  v13 = [(NSProgress *)self->_progress completedUnitCount];
-  v14 = [(NSProgress *)self->_progress totalUnitCount];
-  if (v13 <= v14)
+  completedUnitCount = [(NSProgress *)self->_progress completedUnitCount];
+  totalUnitCount = [(NSProgress *)self->_progress totalUnitCount];
+  if (completedUnitCount <= totalUnitCount)
   {
-    v15 = v14;
+    v15 = totalUnitCount;
   }
 
   else
   {
-    v15 = v13;
+    v15 = completedUnitCount;
   }
 
   [(NSProgress *)self->_progress setCompletedUnitCount:v15];
@@ -205,7 +205,7 @@ LABEL_14:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Finished.", buf, 0xCu);
     }
 
@@ -218,13 +218,13 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mirrorTask:(id)a3
+- (void)mirrorTask:(id)task
 {
-  obj = a3;
+  obj = task;
   if (!obj)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"originalTask"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"originalTask"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
@@ -234,40 +234,40 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_lock);
   if (WeakRetained)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"hasOriginalTask == NO"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDCloudSyncManagerTask.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"hasOriginalTask == NO"}];
   }
 
-  v6 = self;
+  selfCopy = self;
   if (obj)
   {
-    if (!v6)
+    if (!selfCopy)
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:sel__addMirroringTask_ object:obj file:@"HDCloudSyncManagerTask.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"mirroringTask"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:sel__addMirroringTask_ object:obj file:@"HDCloudSyncManagerTask.m" lineNumber:110 description:{@"Invalid parameter not satisfying: %@", @"mirroringTask"}];
     }
 
     os_unfair_lock_lock(obj + 2);
     if (*(obj + 3))
     {
       v7 = [MEMORY[0x277CCAC48] hd_progressMirroringProgress:*(obj + 6)];
-      progress = v6->_progress;
-      v6->_progress = v7;
+      progress = selfCopy->_progress;
+      selfCopy->_progress = v7;
 
       os_unfair_lock_unlock(obj + 2);
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:sel__addMirroringTask_ object:obj file:@"HDCloudSyncManagerTask.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncManagerTaskStatusPending"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:sel__addMirroringTask_ object:obj file:@"HDCloudSyncManagerTask.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"status == HDCloudSyncManagerTaskStatusPending"}];
     }
 
     else
     {
-      v10 = [*(obj + 4) arrayByAddingObject:v6];
+      v10 = [*(obj + 4) arrayByAddingObject:selfCopy];
       v11 = *(obj + 4);
       *(obj + 4) = v10;
 
       v12 = [MEMORY[0x277CCAC48] hd_progressMirroringProgress:*(obj + 6)];
-      v13 = v6->_progress;
-      v6->_progress = v12;
+      v13 = selfCopy->_progress;
+      selfCopy->_progress = v12;
 
       os_unfair_lock_unlock(obj + 2);
     }

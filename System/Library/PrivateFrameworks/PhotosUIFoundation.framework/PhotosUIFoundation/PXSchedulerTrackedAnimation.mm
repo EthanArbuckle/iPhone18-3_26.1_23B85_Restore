@@ -1,5 +1,5 @@
 @interface PXSchedulerTrackedAnimation
-- (PXSchedulerTrackedAnimation)initWithScheduler:(id)a3 label:(id)a4;
+- (PXSchedulerTrackedAnimation)initWithScheduler:(id)scheduler label:(id)label;
 - (void)dealloc;
 @end
 
@@ -24,18 +24,18 @@
   [(PXSchedulerTrackedAnimation *)&v5 dealloc];
 }
 
-- (PXSchedulerTrackedAnimation)initWithScheduler:(id)a3 label:(id)a4
+- (PXSchedulerTrackedAnimation)initWithScheduler:(id)scheduler label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  labelCopy = label;
   v11.receiver = self;
   v11.super_class = PXSchedulerTrackedAnimation;
   v8 = [(PXSchedulerTrackedAnimation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_scheduler, v6);
-    objc_storeStrong(&v9->_label, a4);
+    objc_storeWeak(&v8->_scheduler, schedulerCopy);
+    objc_storeStrong(&v9->_label, label);
   }
 
   return v9;

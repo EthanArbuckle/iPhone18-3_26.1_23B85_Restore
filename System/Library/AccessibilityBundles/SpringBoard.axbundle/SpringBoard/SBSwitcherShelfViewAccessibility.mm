@@ -8,10 +8,10 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(SBSwitcherShelfViewAccessibility *)self _axMainSwitcher];
-  v3 = [v2 _axIsShelfSwitcherVisible];
+  _axMainSwitcher = [(SBSwitcherShelfViewAccessibility *)self _axMainSwitcher];
+  _axIsShelfSwitcherVisible = [_axMainSwitcher _axIsShelfSwitcherVisible];
 
-  if (v3)
+  if (_axIsShelfSwitcherVisible)
   {
     v4 = accessibilityLocalizedString(@"shelf.container");
   }
@@ -26,10 +26,10 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(SBSwitcherShelfViewAccessibility *)self _axMainSwitcher];
-  v4 = [v3 _axIsShelfSwitcherVisible];
+  _axMainSwitcher = [(SBSwitcherShelfViewAccessibility *)self _axMainSwitcher];
+  _axIsShelfSwitcherVisible = [_axMainSwitcher _axIsShelfSwitcherVisible];
 
-  if (v4)
+  if (_axIsShelfSwitcherVisible)
   {
     return 4;
   }

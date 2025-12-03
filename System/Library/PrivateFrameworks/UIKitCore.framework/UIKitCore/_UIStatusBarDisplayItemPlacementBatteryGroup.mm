@@ -1,17 +1,17 @@
 @interface _UIStatusBarDisplayItemPlacementBatteryGroup
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority;
 @end
 
 @implementation _UIStatusBarDisplayItemPlacementBatteryGroup
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v6 = a3 - a4;
-  if (a3 <= a4)
+  v6 = priority - lowPriority;
+  if (priority <= lowPriority)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarDisplayItemPlacementBatteryGroup.m" lineNumber:16 description:@"The lowPriority should be smaller than the highPriority"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacementBatteryGroup.m" lineNumber:16 description:@"The lowPriority should be smaller than the highPriority"];
   }
 
   v7 = +[_UIStatusBarBatteryItem staticIconDisplayIdentifier];
@@ -27,7 +27,7 @@
   v18[1] = v10;
   v18[2] = v8;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
-  v14 = [a1 groupWithPriority:a4 placements:v13];
+  v14 = [self groupWithPriority:lowPriority placements:v13];
 
   return v14;
 }

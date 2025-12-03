@@ -1,32 +1,32 @@
 @interface AXMVisionFeatureComparator
-- (int64_t)compareInitialResult:(id)a3 withFinalResult:(id)a4 indexOfUnequalItem:(int64_t *)a5 sortInitialResult:(BOOL)a6 sortFinalResult:(BOOL)a7;
+- (int64_t)compareInitialResult:(id)result withFinalResult:(id)finalResult indexOfUnequalItem:(int64_t *)item sortInitialResult:(BOOL)initialResult sortFinalResult:(BOOL)sortFinalResult;
 @end
 
 @implementation AXMVisionFeatureComparator
 
-- (int64_t)compareInitialResult:(id)a3 withFinalResult:(id)a4 indexOfUnequalItem:(int64_t *)a5 sortInitialResult:(BOOL)a6 sortFinalResult:(BOOL)a7
+- (int64_t)compareInitialResult:(id)result withFinalResult:(id)finalResult indexOfUnequalItem:(int64_t *)item sortInitialResult:(BOOL)initialResult sortFinalResult:(BOOL)sortFinalResult
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  resultCopy = result;
+  finalResultCopy = finalResult;
+  if (initialResult)
   {
-    v12 = [v10 sortedFeatures];
-    [v11 sortedFeatures];
+    sortedFeatures = [resultCopy sortedFeatures];
+    [finalResultCopy sortedFeatures];
   }
 
   else
   {
-    v12 = [v10 features];
-    [v11 features];
+    sortedFeatures = [resultCopy features];
+    [finalResultCopy features];
   }
   v13 = ;
-  v14 = [v12 count];
+  v14 = [sortedFeatures count];
   v15 = [v13 count];
   if (v14 < v15)
   {
     v16 = -1;
     v17 = 1;
-    if (!a5)
+    if (!item)
     {
       goto LABEL_17;
     }
@@ -38,7 +38,7 @@
   {
     v16 = -1;
     v17 = 2;
-    if (!a5)
+    if (!item)
     {
       goto LABEL_17;
     }
@@ -50,7 +50,7 @@
   {
     v17 = 0;
     v16 = -1;
-    if (!a5)
+    if (!item)
     {
       goto LABEL_17;
     }
@@ -58,12 +58,12 @@
     goto LABEL_16;
   }
 
-  v22 = a5;
+  itemCopy = item;
   v16 = 0;
   v17 = 3;
   while (1)
   {
-    v18 = [v12 objectAtIndex:v16];
+    v18 = [sortedFeatures objectAtIndex:v16];
     v19 = [v13 objectAtIndex:v16];
     v20 = [v18 isEqual:v19];
 
@@ -80,11 +80,11 @@
     }
   }
 
-  a5 = v22;
-  if (v22)
+  item = itemCopy;
+  if (itemCopy)
   {
 LABEL_16:
-    *a5 = v16;
+    *item = v16;
   }
 
 LABEL_17:

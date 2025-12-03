@@ -1,32 +1,32 @@
 @interface PKHomeKeyCredential
-- (PKHomeKeyCredential)initWithPaymentPass:(id)a3;
+- (PKHomeKeyCredential)initWithPaymentPass:(id)pass;
 - (id)activationMethods;
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3;
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment;
 - (id)paymentApplications;
 @end
 
 @implementation PKHomeKeyCredential
 
-- (PKHomeKeyCredential)initWithPaymentPass:(id)a3
+- (PKHomeKeyCredential)initWithPaymentPass:(id)pass
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 paymentApplications];
-  v6 = [v5 anyObject];
-  v7 = [v6 secureElementIdentifier];
-  v18[0] = v7;
+  passCopy = pass;
+  paymentApplications = [passCopy paymentApplications];
+  anyObject = [paymentApplications anyObject];
+  secureElementIdentifier = [anyObject secureElementIdentifier];
+  v18[0] = secureElementIdentifier;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  [v4 updateDevicePaymentApplicationsWithSecureElementIdentifiers:v8];
+  [passCopy updateDevicePaymentApplicationsWithSecureElementIdentifiers:v8];
 
   v17.receiver = self;
   v17.super_class = PKHomeKeyCredential;
-  v9 = [(PKPaymentLocalPassCredential *)&v17 initWithPaymentPass:v4];
+  v9 = [(PKPaymentLocalPassCredential *)&v17 initWithPaymentPass:passCopy];
   v10 = v9;
   if (v9)
   {
     [(PKPaymentCredential *)v9 setCardType:3];
-    v11 = [v4 frontFieldBuckets];
-    v12 = [v11 count];
+    frontFieldBuckets = [passCopy frontFieldBuckets];
+    v12 = [frontFieldBuckets count];
     v10->_detailDescriptionAvailable = v12 > 1;
     if (v12 >= 2)
     {
@@ -34,28 +34,28 @@
       [(PKPaymentCredential *)v10 setLongDescription:v13];
     }
 
-    v14 = [v4 paymentApplications];
+    paymentApplications2 = [passCopy paymentApplications];
     paymentApplications = v10->_paymentApplications;
-    v10->_paymentApplications = v14;
+    v10->_paymentApplications = paymentApplications2;
   }
 
   return v10;
 }
 
-- (id)detailDescriptionWithEnvironment:(unint64_t)a3
+- (id)detailDescriptionWithEnvironment:(unint64_t)environment
 {
   if (self->_detailDescriptionAvailable)
   {
-    v3 = [(PKPaymentLocalPassCredential *)self paymentPass];
-    v4 = [v3 localizedDescription];
+    paymentPass = [(PKPaymentLocalPassCredential *)self paymentPass];
+    localizedDescription = [paymentPass localizedDescription];
   }
 
   else
   {
-    v4 = 0;
+    localizedDescription = 0;
   }
 
-  return v4;
+  return localizedDescription;
 }
 
 - (id)paymentApplications
@@ -82,19 +82,19 @@
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 paymentNetworkIdentifier];
-        v11 = [v9 paymentType];
-        if (v10 == 139)
+        paymentNetworkIdentifier = [v9 paymentNetworkIdentifier];
+        paymentType = [v9 paymentType];
+        if (paymentNetworkIdentifier == 139)
         {
           goto LABEL_10;
         }
 
-        if (v10 != 133)
+        if (paymentNetworkIdentifier != 133)
         {
           continue;
         }
 
-        if (v11 == 1004)
+        if (paymentType == 1004)
         {
 LABEL_10:
           v12 = +[PKProvisioningSEStorageSnapshot appletTypePurpleTrustAirAliro];
@@ -108,7 +108,7 @@ LABEL_10:
         v13 = v12;
         if (v12)
         {
-          v14 = [[PKProvisioningPaymentApplication alloc] initWithAppletTypeIdentifier:v12 paymentType:v11];
+          v14 = [[PKProvisioningPaymentApplication alloc] initWithAppletTypeIdentifier:v12 paymentType:paymentType];
           [v3 addObject:v14];
         }
       }

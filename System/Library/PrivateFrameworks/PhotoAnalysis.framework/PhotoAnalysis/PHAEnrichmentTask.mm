@@ -1,12 +1,12 @@
 @interface PHAEnrichmentTask
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
 - (NSString)name;
 - (PGGraphDataModelEnrichmentProcessor)enrichmentProcessor;
 - (double)period;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAEnrichmentTask
@@ -17,9 +17,9 @@
   objc_exception_throw(v2);
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAEnrichmentTask timeoutFatal:]", "PHAEnrichmentTask.m", 72, "NO");
   }
@@ -31,57 +31,57 @@
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 withIncrementalChange:(id)a4 progressReporter:(id)a5 error:(id *)a6
+- (BOOL)runWithGraphManager:(id)manager withIncrementalChange:(id)change progressReporter:(id)reporter error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277D3B928];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  reporterCopy = reporter;
+  changeCopy = change;
+  managerCopy = manager;
   v14 = [v10 alloc];
-  v15 = [(PHAEnrichmentTask *)self enrichmentProcessor];
-  v19[0] = v15;
+  enrichmentProcessor = [(PHAEnrichmentTask *)self enrichmentProcessor];
+  v19[0] = enrichmentProcessor;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v17 = [v14 initWithManager:v13 enrichmentProcessors:v16];
+  v17 = [v14 initWithManager:managerCopy enrichmentProcessors:v16];
 
-  LOBYTE(a6) = [v17 enrichDataModelWithGraphUpdateInventory:v12 progressReporter:v11 error:a6];
-  return a6;
+  LOBYTE(error) = [v17 enrichDataModelWithGraphUpdateInventory:changeCopy progressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D3B928];
-  v9 = a4;
-  v10 = a3;
+  reporterCopy = reporter;
+  managerCopy = manager;
   v11 = [v8 alloc];
-  v12 = [(PHAEnrichmentTask *)self enrichmentProcessor];
-  v16[0] = v12;
+  enrichmentProcessor = [(PHAEnrichmentTask *)self enrichmentProcessor];
+  v16[0] = enrichmentProcessor;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [v11 initWithManager:v10 enrichmentProcessors:v13];
+  v14 = [v11 initWithManager:managerCopy enrichmentProcessors:v13];
 
-  LOBYTE(a5) = [v14 enrichDataModelWithProgressReporter:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [v14 enrichDataModelWithProgressReporter:reporterCopy error:error];
+  return error;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v11 = 0;
-  v5 = [v4 isReadyWithError:&v11];
+  v5 = [managerCopy isReadyWithError:&v11];
   v6 = v11;
   if ((v5 & 1) == 0)
   {
-    v7 = [v4 workingContext];
-    v8 = [v7 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
-      v9 = [(PHAEnrichmentTask *)self name];
+      name = [(PHAEnrichmentTask *)self name];
       *buf = 138412290;
-      v13 = v9;
-      _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_INFO, "[%@] graph is not ready, not running enrichment task.", buf, 0xCu);
+      v13 = name;
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_INFO, "[%@] graph is not ready, not running enrichment task.", buf, 0xCu);
     }
   }
 

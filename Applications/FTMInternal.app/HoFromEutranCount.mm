@@ -1,19 +1,19 @@
 @interface HoFromEutranCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsHoProc:(id)a3;
+- (int)StringAsHoProc:(id)proc;
 - (int)hoProc;
 - (unint64_t)hash;
-- (unsigned)failureCountApAtIndex:(unint64_t)a3;
-- (unsigned)failureCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)failureCountApAtIndex:(unint64_t)index;
+- (unsigned)failureCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartCount:(BOOL)a3;
-- (void)setHasStartCountAp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartCount:(BOOL)count;
+- (void)setHasStartCountAp:(BOOL)ap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HoFromEutranCount
@@ -40,30 +40,30 @@
   }
 }
 
-- (int)StringAsHoProc:(id)a3
+- (int)StringAsHoProc:(id)proc
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_UTRA_HO"])
+  procCopy = proc;
+  if ([procCopy isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_UTRA_HO"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_GERAN_HO"])
+  else if ([procCopy isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_GERAN_HO"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_GERAN_CCO"])
+  else if ([procCopy isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_GERAN_CCO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_E1XCSFB"])
+  else if ([procCopy isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_E1XCSFB"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_HRPD_HO"])
+  else if ([procCopy isEqualToString:@"LTE_HO_FROM_EUTRAN_PROC_HRPD_HO"])
   {
     v4 = 4;
   }
@@ -76,9 +76,9 @@
   return v4;
 }
 
-- (void)setHasStartCount:(BOOL)a3
+- (void)setHasStartCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -91,23 +91,23 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)failureCountAtIndex:(unint64_t)a3
+- (unsigned)failureCountAtIndex:(unint64_t)index
 {
   p_failureCounts = &self->_failureCounts;
   count = self->_failureCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_failureCounts->list[a3];
+  return p_failureCounts->list[index];
 }
 
-- (void)setHasStartCountAp:(BOOL)a3
+- (void)setHasStartCountAp:(BOOL)ap
 {
-  if (a3)
+  if (ap)
   {
     v3 = 4;
   }
@@ -120,18 +120,18 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)failureCountApAtIndex:(unint64_t)a3
+- (unsigned)failureCountApAtIndex:(unint64_t)index
 {
   p_failureCountAps = &self->_failureCountAps;
   count = self->_failureCountAps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_failureCountAps->list[a3];
+  return p_failureCountAps->list[index];
 }
 
 - (id)description
@@ -139,8 +139,8 @@
   v7.receiver = self;
   v7.super_class = HoFromEutranCount;
   v3 = [(HoFromEutranCount *)&v7 description];
-  v4 = [(HoFromEutranCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(HoFromEutranCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -188,9 +188,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -251,31 +251,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[14] = self->_hoProc;
-    *(v4 + 68) |= 1u;
+    toCopy[14] = self->_hoProc;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[15] = self->_startCount;
-    *(v4 + 68) |= 2u;
+    toCopy[15] = self->_startCount;
+    *(toCopy + 68) |= 2u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if ([(HoFromEutranCount *)self failureCountsCount])
   {
     [v12 clearFailureCounts];
-    v6 = [(HoFromEutranCount *)self failureCountsCount];
-    if (v6)
+    failureCountsCount = [(HoFromEutranCount *)self failureCountsCount];
+    if (failureCountsCount)
     {
-      v7 = v6;
+      v7 = failureCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addFailureCount:{-[HoFromEutranCount failureCountAtIndex:](self, "failureCountAtIndex:", i)}];
@@ -292,10 +292,10 @@
   if ([(HoFromEutranCount *)self failureCountApsCount])
   {
     [v12 clearFailureCountAps];
-    v9 = [(HoFromEutranCount *)self failureCountApsCount];
-    if (v9)
+    failureCountApsCount = [(HoFromEutranCount *)self failureCountApsCount];
+    if (failureCountApsCount)
     {
-      v10 = v9;
+      v10 = failureCountApsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addFailureCountAp:{-[HoFromEutranCount failureCountApAtIndex:](self, "failureCountApAtIndex:", j)}];
@@ -304,9 +304,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -333,37 +333,37 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_hoProc != *(v4 + 14))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_hoProc != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_startCount != *(v4 + 15))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_startCount != *(equalCopy + 15))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -375,16 +375,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_startCountAp != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_startCountAp != *(equalCopy + 16))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_19;
   }
@@ -433,28 +433,28 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_hoProc = *(v4 + 14);
+    self->_hoProc = *(fromCopy + 14);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_startCount = *(v4 + 15);
+    self->_startCount = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
-  v12 = v4;
-  v6 = [v4 failureCountsCount];
-  if (v6)
+  v12 = fromCopy;
+  failureCountsCount = [fromCopy failureCountsCount];
+  if (failureCountsCount)
   {
-    v7 = v6;
+    v7 = failureCountsCount;
     for (i = 0; i != v7; ++i)
     {
       -[HoFromEutranCount addFailureCount:](self, "addFailureCount:", [v12 failureCountAtIndex:i]);
@@ -467,10 +467,10 @@ LABEL_6:
     *&self->_has |= 4u;
   }
 
-  v9 = [v12 failureCountApsCount];
-  if (v9)
+  failureCountApsCount = [v12 failureCountApsCount];
+  if (failureCountApsCount)
   {
-    v10 = v9;
+    v10 = failureCountApsCount;
     for (j = 0; j != v10; ++j)
     {
       -[HoFromEutranCount addFailureCountAp:](self, "addFailureCountAp:", [v12 failureCountApAtIndex:j]);

@@ -1,20 +1,20 @@
 @interface NRHKProductVersions
-+ (id)UDIDeviceIdentifierForProductWithName:(id)a3 error:(id *)a4;
++ (id)UDIDeviceIdentifierForProductWithName:(id)name error:(id *)error;
 + (id)_productBuildVersion;
-+ (id)_updateVersionForMajorVersion:(id)a3 productBuildVersion:(id)a4;
-+ (id)majorVersionForProductWithName:(id)a3 error:(id *)a4;
-+ (id)versionForProductWithName:(id)a3 error:(id *)a4;
++ (id)_updateVersionForMajorVersion:(id)version productBuildVersion:(id)buildVersion;
++ (id)majorVersionForProductWithName:(id)name error:(id *)error;
++ (id)versionForProductWithName:(id)name error:(id *)error;
 @end
 
 @implementation NRHKProductVersions
 
-+ (id)versionForProductWithName:(id)a3 error:(id *)a4
++ (id)versionForProductWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"ElectrocardiogramRecording"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ElectrocardiogramRecording"])
   {
     v16 = 0;
-    v7 = [a1 majorVersionForProductWithName:v6 error:&v16];
+    v7 = [self majorVersionForProductWithName:nameCopy error:&v16];
     v8 = v16;
     if (v8)
     {
@@ -30,15 +30,15 @@
         }
       }
 
-      if (a4)
+      if (error)
       {
         v12 = v8;
-        *a4 = v8;
+        *error = v8;
       }
     }
 
-    v13 = [a1 _productBuildVersion];
-    v14 = [a1 _updateVersionForMajorVersion:v7 productBuildVersion:v13];
+    _productBuildVersion = [self _productBuildVersion];
+    v14 = [self _updateVersionForMajorVersion:v7 productBuildVersion:_productBuildVersion];
   }
 
   else
@@ -83,9 +83,9 @@
   return v10;
 }
 
-+ (id)majorVersionForProductWithName:(id)a3 error:(id *)a4
++ (id)majorVersionForProductWithName:(id)name error:(id *)error
 {
-  if ([a3 isEqualToString:@"ElectrocardiogramRecording"])
+  if ([name isEqualToString:@"ElectrocardiogramRecording"])
   {
     v5 = objc_alloc_init(HKHealthStore);
     v14 = 0;
@@ -105,61 +105,61 @@
         }
       }
 
-      if (a4)
+      if (error)
       {
         v11 = v7;
-        *a4 = v7;
+        *error = v7;
       }
     }
 
     if (v6)
     {
-      v12 = [v6 stringValue];
+      stringValue = [v6 stringValue];
     }
 
     else
     {
-      v12 = 0;
+      stringValue = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    stringValue = 0;
   }
 
-  return v12;
+  return stringValue;
 }
 
-+ (id)_updateVersionForMajorVersion:(id)a3 productBuildVersion:(id)a4
++ (id)_updateVersionForMajorVersion:(id)version productBuildVersion:(id)buildVersion
 {
-  v5 = a3;
-  v6 = a4;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [NSString stringWithFormat:@"%@.%@", v5, v6];
+    buildVersionCopy = [NSString stringWithFormat:@"%@.%@", versionCopy, buildVersionCopy];
   }
 
   else
   {
-    v7 = 0;
+    buildVersionCopy = 0;
   }
 
-  return v7;
+  return buildVersionCopy;
 }
 
-+ (id)UDIDeviceIdentifierForProductWithName:(id)a3 error:(id *)a4
++ (id)UDIDeviceIdentifierForProductWithName:(id)name error:(id *)error
 {
-  v7 = a3;
-  if (![v7 isEqualToString:@"ElectrocardiogramRecording"])
+  nameCopy = name;
+  if (![nameCopy isEqualToString:@"ElectrocardiogramRecording"])
   {
     goto LABEL_14;
   }
 
   v8 = HKElectrocardiogramRecordingV1iOSDeviceIdentifierPortion;
   v18 = 0;
-  v9 = [a1 majorVersionForProductWithName:v7 error:&v18];
+  v9 = [self majorVersionForProductWithName:nameCopy error:&v18];
   v10 = v18;
   if (v10)
   {
@@ -175,15 +175,15 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
-  v13 = [a1 _productBuildVersion];
-  v14 = [a1 _updateVersionForMajorVersion:v9 productBuildVersion:v13];
+  _productBuildVersion = [self _productBuildVersion];
+  v14 = [self _updateVersionForMajorVersion:v9 productBuildVersion:_productBuildVersion];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {

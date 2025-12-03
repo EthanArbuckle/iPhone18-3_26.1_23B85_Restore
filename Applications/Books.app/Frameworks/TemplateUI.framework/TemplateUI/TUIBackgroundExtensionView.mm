@@ -1,13 +1,13 @@
 @interface TUIBackgroundExtensionView
 + (NSString)reuseIdentifier;
 - (TUIViewFactory)factory;
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
-- (void)appendRenderOverrideObservers:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
+- (void)appendRenderOverrideObservers:(id)observers;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFactory:(id)a3;
+- (void)setFactory:(id)factory;
 - (void)viewDidEndDisplay;
 @end
 
@@ -28,13 +28,13 @@
   return Strong;
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_18E0D0(Strong);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -45,13 +45,13 @@
   if (*(self + OBJC_IVAR____TtC10TemplateUI26TUIBackgroundExtensionView_needsSubviewsUpdate) == 1)
   {
     *(self + OBJC_IVAR____TtC10TemplateUI26TUIBackgroundExtensionView_needsSubviewsUpdate) = 0;
-    v3 = self;
+    selfCopy = self;
     sub_18EED0();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -59,11 +59,11 @@
   [(TUIBackgroundExtensionView *)&v5 layoutSubviews];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = self;
-  sub_18E528(a3);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_18E528(attributes);
 }
 
 - (void)prepareForReuse
@@ -91,20 +91,20 @@
   [v2 prepareForReuse];
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18E78C(a3);
+  selfCopy = self;
+  sub_18E78C(identifier);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_19C548();
     v6 = v5;
@@ -116,18 +116,18 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_18E970(v4, v6);
   v9 = v8;
 
   return v9;
 }
 
-- (void)appendRenderOverrideObservers:(id)a3
+- (void)appendRenderOverrideObservers:(id)observers
 {
-  v5 = a3;
-  v6 = self;
-  sub_18EBD0(a3);
+  observersCopy = observers;
+  selfCopy = self;
+  sub_18EBD0(observers);
 }
 
 @end

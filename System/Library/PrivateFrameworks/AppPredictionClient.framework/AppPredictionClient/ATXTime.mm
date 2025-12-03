@@ -1,31 +1,31 @@
 @interface ATXTime
-- (ATXTime)initWithCoder:(id)a3;
-- (ATXTime)initWithHour:(int64_t)a3 minute:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXTime:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXTime)initWithCoder:(id)coder;
+- (ATXTime)initWithHour:(int64_t)hour minute:(int64_t)minute;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXTime:(id)time;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXTime
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTime *)self isEqualToATXTime:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXTime *)self isEqualToATXTime:v5];
   }
 
   return v6;
 }
 
-- (ATXTime)initWithHour:(int64_t)a3 minute:(int64_t)a4
+- (ATXTime)initWithHour:(int64_t)hour minute:(int64_t)minute
 {
   v10.receiver = self;
   v10.super_class = ATXTime;
@@ -33,39 +33,39 @@
   v7 = v6;
   if (v6)
   {
-    v6->_hour = a3;
-    v6->_minute = a4;
+    v6->_hour = hour;
+    v6->_minute = minute;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (ATXTime)initWithCoder:(id)a3
+- (ATXTime)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"hour"];
-  v6 = [v4 decodeIntegerForKey:@"minute"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"hour"];
+  v6 = [coderCopy decodeIntegerForKey:@"minute"];
 
   return [(ATXTime *)self initWithHour:v5 minute:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   hour = self->_hour;
-  v5 = a3;
-  [v5 encodeInteger:hour forKey:@"hour"];
-  [v5 encodeInteger:self->_minute forKey:@"minute"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:hour forKey:@"hour"];
+  [coderCopy encodeInteger:self->_minute forKey:@"minute"];
 }
 
-- (BOOL)isEqualToATXTime:(id)a3
+- (BOOL)isEqualToATXTime:(id)time
 {
-  v4 = a3;
-  v5 = [(ATXTime *)self hour];
-  if (v5 == [v4 hour])
+  timeCopy = time;
+  hour = [(ATXTime *)self hour];
+  if (hour == [timeCopy hour])
   {
-    v6 = [(ATXTime *)self minute];
-    v7 = v6 == [v4 minute];
+    minute = [(ATXTime *)self minute];
+    v7 = minute == [timeCopy minute];
   }
 
   else

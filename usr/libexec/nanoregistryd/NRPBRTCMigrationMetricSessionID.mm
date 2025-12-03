@@ -1,9 +1,9 @@
 @interface NRPBRTCMigrationMetricSessionID
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBRTCMigrationMetricSessionID
@@ -13,8 +13,8 @@
   v7.receiver = self;
   v7.super_class = NRPBRTCMigrationMetricSessionID;
   v3 = [(NRPBRTCMigrationMetricSessionID *)&v7 description];
-  v4 = [(NRPBRTCMigrationMetricSessionID *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBRTCMigrationMetricSessionID *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -32,7 +32,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_sessionID)
   {
@@ -40,23 +40,23 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sessionID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     sessionID = self->_sessionID;
-    if (sessionID | v4[1])
+    if (sessionID | equalCopy[1])
     {
       v6 = [(NSString *)sessionID isEqual:?];
     }

@@ -1,107 +1,107 @@
 @interface MOEventBundleMO
-+ (id)managedObjectWithEventBundle:(id)a3 inManagedObjectContext:(id)a4;
-+ (void)updateManagedObject:(id)a3 eventBundle:(id)a4 inManagedObjectContext:(id)a5;
++ (id)managedObjectWithEventBundle:(id)bundle inManagedObjectContext:(id)context;
++ (void)updateManagedObject:(id)object eventBundle:(id)bundle inManagedObjectContext:(id)context;
 @end
 
 @implementation MOEventBundleMO
 
-+ (id)managedObjectWithEventBundle:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithEventBundle:(id)bundle inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOEventBundleMO alloc] initWithContext:v5];
-  [MOEventBundleMO updateManagedObject:v7 eventBundle:v6 inManagedObjectContext:v5];
+  contextCopy = context;
+  bundleCopy = bundle;
+  v7 = [[MOEventBundleMO alloc] initWithContext:contextCopy];
+  [MOEventBundleMO updateManagedObject:v7 eventBundle:bundleCopy inManagedObjectContext:contextCopy];
 
   return v7;
 }
 
-+ (void)updateManagedObject:(id)a3 eventBundle:(id)a4 inManagedObjectContext:(id)a5
++ (void)updateManagedObject:(id)object eventBundle:(id)bundle inManagedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 bundleIdentifier];
-  [v7 setBundleIdentifier:v10];
+  objectCopy = object;
+  bundleCopy = bundle;
+  contextCopy = context;
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  [objectCopy setBundleIdentifier:bundleIdentifier];
 
-  v11 = [v8 suggestionID];
-  [v7 setSuggestionID:v11];
+  suggestionID = [bundleCopy suggestionID];
+  [objectCopy setSuggestionID:suggestionID];
 
-  v12 = [v8 creationDate];
-  [v7 setCreationDate:v12];
+  creationDate = [bundleCopy creationDate];
+  [objectCopy setCreationDate:creationDate];
 
-  v13 = [v8 firstCreationDate];
-  [v7 setFirstCreationDate:v13];
+  firstCreationDate = [bundleCopy firstCreationDate];
+  [objectCopy setFirstCreationDate:firstCreationDate];
 
-  v14 = [v8 endDate];
-  [v7 setEndDate:v14];
+  endDate = [bundleCopy endDate];
+  [objectCopy setEndDate:endDate];
 
-  v15 = [v8 startDate];
-  [v7 setStartDate:v15];
+  startDate = [bundleCopy startDate];
+  [objectCopy setStartDate:startDate];
 
-  v16 = [v8 expirationDate];
-  [v7 setExpirationDate:v16];
+  expirationDate = [bundleCopy expirationDate];
+  [objectCopy setExpirationDate:expirationDate];
 
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 source]);
-  [v7 setSource:v17];
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy source]);
+  [objectCopy setSource:v17];
 
-  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 interfaceType]);
-  [v7 setInterfaceType:v18];
+  v18 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy interfaceType]);
+  [objectCopy setInterfaceType:v18];
 
-  [v7 setFiltered:{objc_msgSend(v8, "filtered")}];
-  v19 = [v8 promptLanguage];
-  [v7 setPromptLanguage:v19];
+  [objectCopy setFiltered:{objc_msgSend(bundleCopy, "filtered")}];
+  promptLanguage = [bundleCopy promptLanguage];
+  [objectCopy setPromptLanguage:promptLanguage];
 
-  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 photoSource]);
-  [v7 setPhotoSource:v20];
+  v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy photoSource]);
+  [objectCopy setPhotoSource:v20];
 
-  [v7 setIsAggregatedAndSuppressed:{objc_msgSend(v8, "isAggregatedAndSuppressed")}];
-  v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 summarizationGranularity]);
-  [v7 setSummarizationGranularity:v21];
+  [objectCopy setIsAggregatedAndSuppressed:{objc_msgSend(bundleCopy, "isAggregatedAndSuppressed")}];
+  v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy summarizationGranularity]);
+  [objectCopy setSummarizationGranularity:v21];
 
-  v22 = [v8 subBundleIDs];
-  [v7 setSubBundleIDs:v22];
+  subBundleIDs = [bundleCopy subBundleIDs];
+  [objectCopy setSubBundleIDs:subBundleIDs];
 
-  v23 = [v8 subSuggestionIDs];
-  [v7 setSubSuggestionIDs:v23];
+  subSuggestionIDs = [bundleCopy subSuggestionIDs];
+  [objectCopy setSubSuggestionIDs:subSuggestionIDs];
 
-  [v7 setIncludedInSummaryBundleOnly:{objc_msgSend(v8, "includedInSummaryBundleOnly")}];
-  v24 = [v8 visitEventsRejectedByWatchLocation];
-  [v7 setVisitEventsRejectedByWatchLocation:v24];
+  [objectCopy setIncludedInSummaryBundleOnly:{objc_msgSend(bundleCopy, "includedInSummaryBundleOnly")}];
+  visitEventsRejectedByWatchLocation = [bundleCopy visitEventsRejectedByWatchLocation];
+  [objectCopy setVisitEventsRejectedByWatchLocation:visitEventsRejectedByWatchLocation];
 
-  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 bundleSubType]);
-  [v7 setBundleSubType:v25];
+  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
+  [objectCopy setBundleSubType:v25];
 
-  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 bundleSuperType]);
-  [v7 setBundleSuperType:v26];
+  v26 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSuperType]);
+  [objectCopy setBundleSuperType:v26];
 
-  [v7 setIsSensitive:{objc_msgSend(v8, "isSensitive")}];
-  [v7 setAction:0];
-  v27 = [v8 action];
+  [objectCopy setIsSensitive:{objc_msgSend(bundleCopy, "isSensitive")}];
+  [objectCopy setAction:0];
+  action = [bundleCopy action];
 
-  if (v27)
+  if (action)
   {
-    v28 = [v8 action];
-    v29 = [MOActionMO managedObjectWithObject:v28 inManagedObjectContext:v9];
-    [v7 setAction:v29];
+    action2 = [bundleCopy action];
+    v29 = [MOActionMO managedObjectWithObject:action2 inManagedObjectContext:contextCopy];
+    [objectCopy setAction:v29];
   }
 
-  [v7 setConcurrentMediaAction:0];
-  v30 = [v8 concurrentMediaAction];
+  [objectCopy setConcurrentMediaAction:0];
+  concurrentMediaAction = [bundleCopy concurrentMediaAction];
 
-  if (v30)
+  if (concurrentMediaAction)
   {
-    v31 = [v8 concurrentMediaAction];
-    v32 = [MOActionMO managedObjectWithObject:v31 inManagedObjectContext:v9];
-    [v7 setConcurrentMediaAction:v32];
+    concurrentMediaAction2 = [bundleCopy concurrentMediaAction];
+    v32 = [MOActionMO managedObjectWithObject:concurrentMediaAction2 inManagedObjectContext:contextCopy];
+    [objectCopy setConcurrentMediaAction:v32];
   }
 
-  [v7 setActions:0];
+  [objectCopy setActions:0];
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v33 = [v8 actions];
-  v34 = [v33 countByEnumeratingWithState:&v114 objects:v123 count:16];
+  actions = [bundleCopy actions];
+  v34 = [actions countByEnumeratingWithState:&v114 objects:v123 count:16];
   if (v34)
   {
     v35 = v34;
@@ -112,26 +112,26 @@
       {
         if (*v115 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(actions);
         }
 
-        v38 = [MOActionMO managedObjectWithObject:*(*(&v114 + 1) + 8 * i) inManagedObjectContext:v9];
-        [v7 addActionsObject:v38];
+        v38 = [MOActionMO managedObjectWithObject:*(*(&v114 + 1) + 8 * i) inManagedObjectContext:contextCopy];
+        [objectCopy addActionsObject:v38];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v114 objects:v123 count:16];
+      v35 = [actions countByEnumeratingWithState:&v114 objects:v123 count:16];
     }
 
     while (v35);
   }
 
-  [v7 setPersons:0];
+  [objectCopy setPersons:0];
   v112 = 0u;
   v113 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v39 = [v8 persons];
-  v40 = [v39 countByEnumeratingWithState:&v110 objects:v122 count:16];
+  persons = [bundleCopy persons];
+  v40 = [persons countByEnumeratingWithState:&v110 objects:v122 count:16];
   if (v40)
   {
     v41 = v40;
@@ -142,60 +142,60 @@
       {
         if (*v111 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(persons);
         }
 
-        v44 = [MOPersonMO managedObjectWithObject:*(*(&v110 + 1) + 8 * j) inManagedObjectContext:v9];
-        [v7 addPersonsObject:v44];
+        v44 = [MOPersonMO managedObjectWithObject:*(*(&v110 + 1) + 8 * j) inManagedObjectContext:contextCopy];
+        [objectCopy addPersonsObject:v44];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v110 objects:v122 count:16];
+      v41 = [persons countByEnumeratingWithState:&v110 objects:v122 count:16];
     }
 
     while (v41);
   }
 
-  [v7 setPlace:0];
-  v45 = [v8 place];
+  [objectCopy setPlace:0];
+  place = [bundleCopy place];
 
-  if (v45)
+  if (place)
   {
-    v46 = [v8 place];
-    v47 = [MOPlaceMO managedObjectWithObject:v46 inManagedObjectContext:v9];
-    [v7 setPlace:v47];
+    place2 = [bundleCopy place];
+    v47 = [MOPlaceMO managedObjectWithObject:place2 inManagedObjectContext:contextCopy];
+    [objectCopy setPlace:v47];
   }
 
-  [v7 setPredominantWeather:0];
-  v48 = [v8 predominantWeather];
+  [objectCopy setPredominantWeather:0];
+  predominantWeather = [bundleCopy predominantWeather];
 
-  if (v48)
+  if (predominantWeather)
   {
-    v49 = [v8 predominantWeather];
-    v50 = [MOWeatherMO managedObjectWithObject:v49 inManagedObjectContext:v9];
-    [v7 setPredominantWeather:v50];
+    predominantWeather2 = [bundleCopy predominantWeather];
+    v50 = [MOWeatherMO managedObjectWithObject:predominantWeather2 inManagedObjectContext:contextCopy];
+    [objectCopy setPredominantWeather:v50];
   }
 
-  [v7 setTime:0];
-  v51 = [v8 time];
+  [objectCopy setTime:0];
+  time = [bundleCopy time];
 
-  if (v51)
+  if (time)
   {
-    v52 = [v8 time];
-    v53 = [MOTimeMO managedObjectWithObject:v52 inManagedObjectContext:v9];
-    [v7 setTime:v53];
+    time2 = [bundleCopy time];
+    v53 = [MOTimeMO managedObjectWithObject:time2 inManagedObjectContext:contextCopy];
+    [objectCopy setTime:v53];
   }
 
-  v54 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 timeAtHomeSubType]);
-  [v7 setTimeAtHomeSubType:v54];
+  v54 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy timeAtHomeSubType]);
+  [objectCopy setTimeAtHomeSubType:v54];
 
-  [v7 setResources:0];
+  [objectCopy setResources:0];
   v108 = 0u;
   v109 = 0u;
   v106 = 0u;
   v107 = 0u;
-  v91 = v8;
-  v55 = [v8 resources];
-  v56 = [v55 countByEnumeratingWithState:&v106 objects:v121 count:16];
+  v91 = bundleCopy;
+  resources = [bundleCopy resources];
+  v56 = [resources countByEnumeratingWithState:&v106 objects:v121 count:16];
   if (v56)
   {
     v57 = v56;
@@ -206,26 +206,26 @@
       {
         if (*v107 != v58)
         {
-          objc_enumerationMutation(v55);
+          objc_enumerationMutation(resources);
         }
 
-        v60 = [MOResourceMO managedObjectWithObject:*(*(&v106 + 1) + 8 * k) inManagedObjectContext:v9];
-        [v7 addResourcesObject:v60];
+        v60 = [MOResourceMO managedObjectWithObject:*(*(&v106 + 1) + 8 * k) inManagedObjectContext:contextCopy];
+        [objectCopy addResourcesObject:v60];
       }
 
-      v57 = [v55 countByEnumeratingWithState:&v106 objects:v121 count:16];
+      v57 = [resources countByEnumeratingWithState:&v106 objects:v121 count:16];
     }
 
     while (v57);
   }
 
-  [v7 setPlaces:0];
+  [objectCopy setPlaces:0];
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v61 = [v91 places];
-  v62 = [v61 countByEnumeratingWithState:&v102 objects:v120 count:16];
+  places = [v91 places];
+  v62 = [places countByEnumeratingWithState:&v102 objects:v120 count:16];
   if (v62)
   {
     v63 = v62;
@@ -236,26 +236,26 @@
       {
         if (*v103 != v64)
         {
-          objc_enumerationMutation(v61);
+          objc_enumerationMutation(places);
         }
 
-        v66 = [MOPlaceMO managedObjectWithObject:*(*(&v102 + 1) + 8 * m) inManagedObjectContext:v9];
-        [v7 addPlacesObject:v66];
+        v66 = [MOPlaceMO managedObjectWithObject:*(*(&v102 + 1) + 8 * m) inManagedObjectContext:contextCopy];
+        [objectCopy addPlacesObject:v66];
       }
 
-      v63 = [v61 countByEnumeratingWithState:&v102 objects:v120 count:16];
+      v63 = [places countByEnumeratingWithState:&v102 objects:v120 count:16];
     }
 
     while (v63);
   }
 
-  [v7 setPhotoTraits:0];
+  [objectCopy setPhotoTraits:0];
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v67 = [v91 photoTraits];
-  v68 = [v67 countByEnumeratingWithState:&v98 objects:v119 count:16];
+  photoTraits = [v91 photoTraits];
+  v68 = [photoTraits countByEnumeratingWithState:&v98 objects:v119 count:16];
   if (v68)
   {
     v69 = v68;
@@ -266,23 +266,23 @@
       {
         if (*v99 != v70)
         {
-          objc_enumerationMutation(v67);
+          objc_enumerationMutation(photoTraits);
         }
 
-        v72 = [MOPhotoTraitMO managedObjectWithObject:*(*(&v98 + 1) + 8 * n) inManagedObjectContext:v9];
-        [v7 addPhotoTraitsObject:v72];
+        v72 = [MOPhotoTraitMO managedObjectWithObject:*(*(&v98 + 1) + 8 * n) inManagedObjectContext:contextCopy];
+        [objectCopy addPhotoTraitsObject:v72];
       }
 
-      v69 = [v67 countByEnumeratingWithState:&v98 objects:v119 count:16];
+      v69 = [photoTraits countByEnumeratingWithState:&v98 objects:v119 count:16];
     }
 
     while (v69);
   }
 
-  v73 = [v91 metaDataForRank];
-  [v7 setMetaDataForRank:v73];
+  metaDataForRank = [v91 metaDataForRank];
+  [objectCopy setMetaDataForRank:metaDataForRank];
 
-  [v7 setEvents:0];
+  [objectCopy setEvents:0];
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
@@ -306,18 +306,18 @@
         v79 = +[MOEventMO fetchRequest];
         [v79 setFetchLimit:1];
         [v79 setReturnsObjectsAsFaults:0];
-        v80 = [v78 eventIdentifier];
-        v81 = [NSPredicate predicateWithFormat:@"eventIdentifier = %@", v80];
+        eventIdentifier = [v78 eventIdentifier];
+        v81 = [NSPredicate predicateWithFormat:@"eventIdentifier = %@", eventIdentifier];
         [v79 setPredicate:v81];
 
         v93 = 0;
         v82 = [v79 execute:&v93];
         v83 = v93;
-        v84 = [v82 firstObject];
+        firstObject = [v82 firstObject];
 
-        if (!v83 && v84)
+        if (!v83 && firstObject)
         {
-          [v7 addEventsObject:v84];
+          [objectCopy addEventsObject:firstObject];
         }
       }
 
@@ -327,17 +327,17 @@
     while (v75);
   }
 
-  v85 = [v7 events];
-  v86 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v85 count]);
-  [v7 setEventCount:v86];
+  events = [objectCopy events];
+  v86 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [events count]);
+  [objectCopy setEventCount:v86];
 
-  v87 = [v91 clusterMetadata];
-  v88 = [MOClusterMetadataMO managedObjectWithObject:v87 inManagedObjectContext:v9];
-  [v7 setClusterMetadata:v88];
+  clusterMetadata = [v91 clusterMetadata];
+  v88 = [MOClusterMetadataMO managedObjectWithObject:clusterMetadata inManagedObjectContext:contextCopy];
+  [objectCopy setClusterMetadata:v88];
 
-  v89 = [v91 outlierMetadata];
-  v90 = [MOOutlierMetadataMO managedObjectWithObject:v89 inManagedObjectContext:v9];
-  [v7 setOutlierMetadata:v90];
+  outlierMetadata = [v91 outlierMetadata];
+  v90 = [MOOutlierMetadataMO managedObjectWithObject:outlierMetadata inManagedObjectContext:contextCopy];
+  [objectCopy setOutlierMetadata:v90];
 }
 
 @end

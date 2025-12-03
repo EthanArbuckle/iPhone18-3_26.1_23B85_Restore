@@ -1,27 +1,27 @@
 @interface ICCreateSmartFolderActivity
-- (ICCreateSmartFolderActivity)initWithTagSelection:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5;
+- (ICCreateSmartFolderActivity)initWithTagSelection:(id)selection presentingViewController:(id)controller eventReporter:(id)reporter;
 - (NSAttributedString)footerAttributedString;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICCreateSmartFolderActivity
 
-- (ICCreateSmartFolderActivity)initWithTagSelection:(id)a3 presentingViewController:(id)a4 eventReporter:(id)a5
+- (ICCreateSmartFolderActivity)initWithTagSelection:(id)selection presentingViewController:(id)controller eventReporter:(id)reporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  selectionCopy = selection;
+  controllerCopy = controller;
+  reporterCopy = reporter;
   v15.receiver = self;
   v15.super_class = ICCreateSmartFolderActivity;
   v12 = [(ICCreateSmartFolderActivity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_tagSelection, a3);
-    objc_storeWeak(&v13->_presentingViewController, v10);
-    objc_storeStrong(&v13->_eventReporter, a5);
+    objc_storeStrong(&v12->_tagSelection, selection);
+    objc_storeWeak(&v13->_presentingViewController, controllerCopy);
+    objc_storeStrong(&v13->_eventReporter, reporter);
   }
 
   return v13;
@@ -61,51 +61,51 @@
   return v3;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICCreateSmartFolderActivity *)self presentingViewController];
+  completionCopy = completion;
+  presentingViewController = [(ICCreateSmartFolderActivity *)self presentingViewController];
 
-  if (v5)
+  if (presentingViewController)
   {
-    v6 = [(ICCreateSmartFolderActivity *)self tagSelection];
-    v7 = [ICQuery queryForNotesMatchingTagSelection:v6];
+    tagSelection = [(ICCreateSmartFolderActivity *)self tagSelection];
+    v7 = [ICQuery queryForNotesMatchingTagSelection:tagSelection];
 
-    v8 = [(ICCreateSmartFolderActivity *)self tagSelection];
-    v9 = [v8 smartFolderTitle];
+    tagSelection2 = [(ICCreateSmartFolderActivity *)self tagSelection];
+    smartFolderTitle = [tagSelection2 smartFolderTitle];
     v10 = +[ICNoteContext sharedContext];
-    v11 = [v10 managedObjectContext];
-    v12 = [ICAccount defaultAccountInContext:v11];
-    v13 = [ICFolder deduplicatingTitle:v9 account:v12];
+    managedObjectContext = [v10 managedObjectContext];
+    v12 = [ICAccount defaultAccountInContext:managedObjectContext];
+    v13 = [ICFolder deduplicatingTitle:smartFolderTitle account:v12];
 
     v14 = [ICFolderCreationController alloc];
-    v15 = [(ICCreateSmartFolderActivity *)self presentingViewController];
-    v16 = [(ICFolderCreationController *)v14 initWithViewController:v15 noteContainer:0 smartFolderQuery:v7 folderTitle:v13 creationApproach:2];
+    presentingViewController2 = [(ICCreateSmartFolderActivity *)self presentingViewController];
+    v16 = [(ICFolderCreationController *)v14 initWithViewController:presentingViewController2 noteContainer:0 smartFolderQuery:v7 folderTitle:v13 creationApproach:2];
     [(ICCreateSmartFolderActivity *)self setFolderCreationController:v16];
 
     v17 = [ICFilterSelection alloc];
-    v18 = [(ICCreateSmartFolderActivity *)self tagSelection];
-    v19 = [v17 initWithFilterTypeSelection:v18];
-    v20 = [(ICCreateSmartFolderActivity *)self folderCreationController];
-    [v20 setFilterSelection:v19];
+    tagSelection3 = [(ICCreateSmartFolderActivity *)self tagSelection];
+    v19 = [v17 initWithFilterTypeSelection:tagSelection3];
+    folderCreationController = [(ICCreateSmartFolderActivity *)self folderCreationController];
+    [folderCreationController setFilterSelection:v19];
 
-    v21 = [(ICCreateSmartFolderActivity *)self folderCreationController];
+    folderCreationController2 = [(ICCreateSmartFolderActivity *)self folderCreationController];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10010057C;
     v23[3] = &unk_100649E90;
     v23[4] = self;
-    v24 = v4;
-    [v21 promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:v23];
+    v24 = completionCopy;
+    [folderCreationController2 promptToAddFolderAllowingSmartFolder:1 withCompletionHandler:v23];
   }
 
   else
   {
     [(ICCreateSmartFolderActivity *)self activityDidFinish:0];
-    if (v4)
+    if (completionCopy)
     {
-      v22 = [(ICCreateSmartFolderActivity *)self activityType];
-      (*(v4 + 2))(v4, 0, v22);
+      activityType = [(ICCreateSmartFolderActivity *)self activityType];
+      (*(completionCopy + 2))(completionCopy, 0, activityType);
     }
   }
 }

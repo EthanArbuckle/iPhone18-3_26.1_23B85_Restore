@@ -2,44 +2,44 @@
 - (BOOL)isDenied;
 - (BOOL)isLostMode;
 - (BOOL)isNetworkError;
-- (void)_restartButtonTapped:(id)a3;
-- (void)_tryAgainButtonTapped:(id)a3;
+- (void)_restartButtonTapped:(id)tapped;
+- (void)_tryAgainButtonTapped:(id)tapped;
 - (void)cancel;
-- (void)endTestWithStatusCode:(int64_t)a3 error:(id)a4;
-- (void)handleButtonEvent:(unint64_t)a3;
+- (void)endTestWithStatusCode:(int64_t)code error:(id)error;
+- (void)handleButtonEvent:(unint64_t)event;
 - (void)moveToNextViewController;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)teardown;
 - (void)viewDidLoad;
 @end
 
 @implementation RepairResultViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[RepairResultViewController setupWithInputs:responder:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = inputsCopy;
     *&buf[22] = 2112;
-    v29 = v7;
+    v29 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", buf, 0x20u);
   }
 
-  [(RepairResultViewController *)self setInputs:v6];
-  v9 = [(RepairResultViewController *)self inputs];
-  v10 = v9 == 0;
+  [(RepairResultViewController *)self setInputs:inputsCopy];
+  inputs = [(RepairResultViewController *)self inputs];
+  v10 = inputs == 0;
 
   if (v10)
   {
-    v11 = [(RepairResultViewController *)self result];
-    [v11 setStatusCode:&off_100008788];
+    result = [(RepairResultViewController *)self result];
+    [result setStatusCode:&off_100008788];
 
     [(RepairResultViewController *)self setFinished:1];
   }
@@ -59,8 +59,8 @@
       sub_100003B58(v13);
     }
 
-    v14 = [(RepairResultViewController *)self result];
-    [v14 setStatusCode:&off_1000087A0];
+    result2 = [(RepairResultViewController *)self result];
+    [result2 setStatusCode:&off_1000087A0];
 
     [(RepairResultViewController *)self setFinished:1];
   }
@@ -86,8 +86,8 @@
   v17 = objc_opt_new();
   [(RepairResultViewController *)self setButtonEventMonitor:v17];
 
-  v18 = [(RepairResultViewController *)self buttonEventMonitor];
-  LODWORD(v17) = v18 == 0;
+  buttonEventMonitor = [(RepairResultViewController *)self buttonEventMonitor];
+  LODWORD(v17) = buttonEventMonitor == 0;
 
   if (v17)
   {
@@ -97,20 +97,20 @@
       sub_100003B9C(v19);
     }
 
-    v20 = [(RepairResultViewController *)self result];
-    [v20 setStatusCode:&off_1000087A0];
+    result3 = [(RepairResultViewController *)self result];
+    [result3 setStatusCode:&off_1000087A0];
 
     [(RepairResultViewController *)self setFinished:1];
   }
 
   objc_initWeak(buf, self);
-  v21 = [(RepairResultViewController *)self buttonEventMonitor];
+  buttonEventMonitor2 = [(RepairResultViewController *)self buttonEventMonitor];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100001338;
   v22[3] = &unk_100008240;
   objc_copyWeak(&v23, buf);
-  [v21 startWithPriority:200 completion:v22];
+  [buttonEventMonitor2 startWithPriority:200 completion:v22];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -139,13 +139,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(RepairResultViewController *)self buttonEventMonitor];
+  buttonEventMonitor = [(RepairResultViewController *)self buttonEventMonitor];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100001590;
   v5[3] = &unk_100008268;
   v5[4] = self;
-  [v4 stopWithCompletion:v5];
+  [buttonEventMonitor stopWithCompletion:v5];
 }
 
 - (void)viewDidLoad
@@ -176,22 +176,22 @@
   v4 = objc_opt_new();
   [(RepairResultViewController *)self setViewControllers:v4];
 
-  v5 = [(RepairResultViewController *)self inputs];
-  v6 = [v5 testStatusCode];
-  v7 = [v6 isEqual:&off_1000087B8];
+  inputs = [(RepairResultViewController *)self inputs];
+  testStatusCode = [inputs testStatusCode];
+  v7 = [testStatusCode isEqual:&off_1000087B8];
 
   if (v7)
   {
-    v8 = [(RepairResultViewController *)self inputs];
-    v9 = [v8 removedPartSPC];
-    v10 = [v9 count];
+    inputs2 = [(RepairResultViewController *)self inputs];
+    removedPartSPC = [inputs2 removedPartSPC];
+    v10 = [removedPartSPC count];
 
     if (v10)
     {
       v11 = [FailedPartViewController alloc];
-      v12 = [(RepairResultViewController *)self inputs];
-      v13 = [v12 removedPartSPC];
-      v14 = [(FailedPartViewController *)v11 initWithComponents:v13];
+      inputs3 = [(RepairResultViewController *)self inputs];
+      removedPartSPC2 = [inputs3 removedPartSPC];
+      v14 = [(FailedPartViewController *)v11 initWithComponents:removedPartSPC2];
 
       v15 = @"checkmark.circle";
       v16 = @"TEST_DONE_DETAILS";
@@ -206,8 +206,8 @@ LABEL_7:
 
 LABEL_6:
       [(FailedPartViewController *)v14 setCoordinator:self];
-      v18 = [(RepairResultViewController *)self viewControllers];
-      [v18 addObject:v14];
+      viewControllers = [(RepairResultViewController *)self viewControllers];
+      [viewControllers addObject:v14];
 
       goto LABEL_7;
     }
@@ -244,16 +244,16 @@ LABEL_6:
 
   else
   {
-    v20 = [(RepairResultViewController *)self inputs];
-    v21 = [v20 removedPartSPC];
-    v22 = [v21 count];
+    inputs4 = [(RepairResultViewController *)self inputs];
+    removedPartSPC3 = [inputs4 removedPartSPC];
+    v22 = [removedPartSPC3 count];
 
     if (v22)
     {
       v23 = [FailedPartViewController alloc];
-      v24 = [(RepairResultViewController *)self inputs];
-      v25 = [v24 removedPartSPC];
-      v14 = [(FailedPartViewController *)v23 initWithComponents:v25];
+      inputs5 = [(RepairResultViewController *)self inputs];
+      removedPartSPC4 = [inputs5 removedPartSPC];
+      v14 = [(FailedPartViewController *)v23 initWithComponents:removedPartSPC4];
 
       v15 = @"arrowtriangle.left.circle";
       v16 = @"TEST_FAILED_DETAILS";
@@ -282,95 +282,95 @@ LABEL_19:
   v30 = [[OBTableWelcomeController alloc] initWithTitle:v27 detailText:v29 symbolName:v15 adoptTableViewScrollView:0];
   [(RepairResultViewController *)self setContentViewController:v30];
 
-  v31 = [(RepairResultViewController *)self contentViewController];
-  v32 = [v31 navigationItem];
-  [v32 setHidesBackButton:1];
+  contentViewController = [(RepairResultViewController *)self contentViewController];
+  navigationItem = [contentViewController navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v33 = [(RepairResultViewController *)self contentViewController];
-  [v33 setScrollingDisabled:1];
+  contentViewController2 = [(RepairResultViewController *)self contentViewController];
+  [contentViewController2 setScrollingDisabled:1];
 
-  v34 = [(RepairResultViewController *)self contentViewController];
-  v35 = [v34 buttonTray];
-  [v35 setHidden:0];
+  contentViewController3 = [(RepairResultViewController *)self contentViewController];
+  buttonTray = [contentViewController3 buttonTray];
+  [buttonTray setHidden:0];
 
   v36 = +[OBBoldTrayButton boldButton];
   [(RepairResultViewController *)self setBoldButton:v36];
 
-  v37 = [(RepairResultViewController *)self boldButton];
+  boldButton = [(RepairResultViewController *)self boldButton];
   v38 = +[NSBundle mainBundle];
   v39 = v38;
   if (v19)
   {
     v40 = [v38 localizedStringForKey:@"TRY_AGAIN" value:&stru_100008370 table:@"RepairResultPlugin-Release"];
-    [v37 setTitle:v40 forState:0];
+    [boldButton setTitle:v40 forState:0];
 
-    v41 = [(RepairResultViewController *)self boldButton];
-    [v41 addTarget:self action:"_tryAgainButtonTapped:" forControlEvents:64];
+    boldButton2 = [(RepairResultViewController *)self boldButton];
+    [boldButton2 addTarget:self action:"_tryAgainButtonTapped:" forControlEvents:64];
 
-    v42 = [(RepairResultViewController *)self contentViewController];
-    v43 = [v42 buttonTray];
-    v44 = [(RepairResultViewController *)self boldButton];
-    [v43 addButton:v44];
+    contentViewController4 = [(RepairResultViewController *)self contentViewController];
+    buttonTray2 = [contentViewController4 buttonTray];
+    boldButton3 = [(RepairResultViewController *)self boldButton];
+    [buttonTray2 addButton:boldButton3];
 
     v45 = +[OBLinkTrayButton linkButton];
     [(RepairResultViewController *)self setLinkButton:v45];
 
-    v46 = [(RepairResultViewController *)self linkButton];
+    linkButton = [(RepairResultViewController *)self linkButton];
     v47 = +[NSBundle mainBundle];
     v48 = [v47 localizedStringForKey:@"RESTART" value:&stru_100008370 table:@"RepairResultPlugin-Release"];
-    [v46 setTitle:v48 forState:0];
+    [linkButton setTitle:v48 forState:0];
 
-    v49 = [(RepairResultViewController *)self linkButton];
-    [v49 addTarget:self action:"_restartButtonTapped:" forControlEvents:64];
+    linkButton2 = [(RepairResultViewController *)self linkButton];
+    [linkButton2 addTarget:self action:"_restartButtonTapped:" forControlEvents:64];
 
-    v50 = [(RepairResultViewController *)self contentViewController];
-    v51 = [v50 buttonTray];
+    contentViewController5 = [(RepairResultViewController *)self contentViewController];
+    buttonTray3 = [contentViewController5 buttonTray];
     [(RepairResultViewController *)self linkButton];
   }
 
   else
   {
     v52 = [v38 localizedStringForKey:@"RESTART" value:&stru_100008370 table:@"RepairResultPlugin-Release"];
-    [v37 setTitle:v52 forState:0];
+    [boldButton setTitle:v52 forState:0];
 
-    v53 = [(RepairResultViewController *)self boldButton];
-    [v53 addTarget:self action:"_restartButtonTapped:" forControlEvents:64];
+    boldButton4 = [(RepairResultViewController *)self boldButton];
+    [boldButton4 addTarget:self action:"_restartButtonTapped:" forControlEvents:64];
 
-    v50 = [(RepairResultViewController *)self contentViewController];
-    v51 = [v50 buttonTray];
+    contentViewController5 = [(RepairResultViewController *)self contentViewController];
+    buttonTray3 = [contentViewController5 buttonTray];
     [(RepairResultViewController *)self boldButton];
   }
   v54 = ;
-  [v51 addButton:v54];
+  [buttonTray3 addButton:v54];
 
-  v55 = [(RepairResultViewController *)self viewControllers];
-  v56 = [(RepairResultViewController *)self contentViewController];
-  [v55 addObject:v56];
+  viewControllers2 = [(RepairResultViewController *)self viewControllers];
+  contentViewController6 = [(RepairResultViewController *)self contentViewController];
+  [viewControllers2 addObject:contentViewController6];
 
   v57 = objc_opt_new();
   [(RepairResultViewController *)self setNavigationController:v57];
 
-  v58 = [(RepairResultViewController *)self view];
-  [v58 bounds];
+  view = [(RepairResultViewController *)self view];
+  [view bounds];
   v60 = v59;
   v62 = v61;
   v64 = v63;
   v66 = v65;
-  v67 = [(RepairResultViewController *)self navigationController];
-  v68 = [v67 view];
-  [v68 setFrame:{v60, v62, v64, v66}];
+  navigationController = [(RepairResultViewController *)self navigationController];
+  view2 = [navigationController view];
+  [view2 setFrame:{v60, v62, v64, v66}];
 
-  v69 = [(RepairResultViewController *)self view];
-  v70 = [(RepairResultViewController *)self navigationController];
-  v71 = [v70 view];
-  [v69 addSubview:v71];
+  view3 = [(RepairResultViewController *)self view];
+  navigationController2 = [(RepairResultViewController *)self navigationController];
+  view4 = [navigationController2 view];
+  [view3 addSubview:view4];
 
-  v72 = [(RepairResultViewController *)self navigationController];
-  [(RepairResultViewController *)self addChildViewController:v72];
+  navigationController3 = [(RepairResultViewController *)self navigationController];
+  [(RepairResultViewController *)self addChildViewController:navigationController3];
 
   [(RepairResultViewController *)self moveToNextViewController];
-  v73 = [(RepairResultViewController *)self navigationController];
-  [v73 didMoveToParentViewController:self];
+  navigationController4 = [(RepairResultViewController *)self navigationController];
+  [navigationController4 didMoveToParentViewController:self];
 }
 
 - (void)moveToNextViewController
@@ -383,8 +383,8 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v12, 0xCu);
   }
 
-  v4 = [(RepairResultViewController *)self viewControllers];
-  v5 = [v4 count];
+  viewControllers = [(RepairResultViewController *)self viewControllers];
+  v5 = [viewControllers count];
 
   v6 = handleForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -396,13 +396,13 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Move to next view", &v12, 2u);
     }
 
-    v8 = [(RepairResultViewController *)self navigationController];
-    v9 = [(RepairResultViewController *)self viewControllers];
-    v10 = [v9 objectAtIndexedSubscript:0];
-    [v8 pushViewController:v10 animated:1];
+    navigationController = [(RepairResultViewController *)self navigationController];
+    viewControllers2 = [(RepairResultViewController *)self viewControllers];
+    v10 = [viewControllers2 objectAtIndexedSubscript:0];
+    [navigationController pushViewController:v10 animated:1];
 
-    v11 = [(RepairResultViewController *)self viewControllers];
-    [v11 removeObjectAtIndex:0];
+    viewControllers3 = [(RepairResultViewController *)self viewControllers];
+    [viewControllers3 removeObjectAtIndex:0];
   }
 
   else
@@ -417,7 +417,7 @@ LABEL_19:
   }
 }
 
-- (void)_restartButtonTapped:(id)a3
+- (void)_restartButtonTapped:(id)tapped
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -445,7 +445,7 @@ LABEL_19:
   [(RepairResultViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_tryAgainButtonTapped:(id)a3
+- (void)_tryAgainButtonTapped:(id)tapped
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -457,28 +457,28 @@ LABEL_19:
   [(RepairResultViewController *)self endTestWithStatusCode:-86 error:0];
 }
 
-- (void)handleButtonEvent:(unint64_t)a3
+- (void)handleButtonEvent:(unint64_t)event
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = a3;
+    eventCopy = event;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Physical button event: %ld", &v5, 0xCu);
   }
 }
 
 - (BOOL)isNetworkError
 {
-  v3 = [(RepairResultViewController *)self inputs];
-  v4 = [v3 testIdentifier];
-  v5 = [v4 isEqual:&off_1000087D0];
+  inputs = [(RepairResultViewController *)self inputs];
+  testIdentifier = [inputs testIdentifier];
+  v5 = [testIdentifier isEqual:&off_1000087D0];
 
   if (v5)
   {
-    v6 = [(RepairResultViewController *)self inputs];
-    v7 = [v6 testStatusCode];
-    v8 = [v7 isEqual:&off_1000087E8];
+    inputs2 = [(RepairResultViewController *)self inputs];
+    testStatusCode = [inputs2 testStatusCode];
+    v8 = [testStatusCode isEqual:&off_1000087E8];
 
     if (v8)
     {
@@ -486,15 +486,15 @@ LABEL_19:
     }
   }
 
-  v9 = [(RepairResultViewController *)self inputs];
-  v10 = [v9 testIdentifier];
-  v11 = [v10 isEqual:&off_100008800];
+  inputs3 = [(RepairResultViewController *)self inputs];
+  testIdentifier2 = [inputs3 testIdentifier];
+  v11 = [testIdentifier2 isEqual:&off_100008800];
 
   if (v11)
   {
-    v12 = [(RepairResultViewController *)self inputs];
-    v13 = [v12 testStatusCode];
-    v14 = [v13 isEqual:&off_100008818];
+    inputs4 = [(RepairResultViewController *)self inputs];
+    testStatusCode2 = [inputs4 testStatusCode];
+    v14 = [testStatusCode2 isEqual:&off_100008818];
 
     if (v14)
     {
@@ -502,34 +502,34 @@ LABEL_19:
     }
   }
 
-  v15 = [(RepairResultViewController *)self inputs];
-  v16 = [v15 testIdentifier];
-  v17 = [v16 isEqual:&off_100008830];
+  inputs5 = [(RepairResultViewController *)self inputs];
+  testIdentifier3 = [inputs5 testIdentifier];
+  v17 = [testIdentifier3 isEqual:&off_100008830];
 
   if (!v17)
   {
     return 0;
   }
 
-  v18 = [(RepairResultViewController *)self inputs];
-  v19 = [v18 testStatusCode];
-  v20 = [v19 isEqual:&off_1000087E8];
+  inputs6 = [(RepairResultViewController *)self inputs];
+  testStatusCode3 = [inputs6 testStatusCode];
+  v20 = [testStatusCode3 isEqual:&off_1000087E8];
 
   return (v20 & 1) != 0;
 }
 
 - (BOOL)isLostMode
 {
-  v3 = [(RepairResultViewController *)self inputs];
-  v4 = [v3 testIdentifier];
-  v5 = [v4 isEqual:&off_100008848];
+  inputs = [(RepairResultViewController *)self inputs];
+  testIdentifier = [inputs testIdentifier];
+  v5 = [testIdentifier isEqual:&off_100008848];
 
   result = 0;
   if (v5)
   {
-    v6 = [(RepairResultViewController *)self inputs];
-    v7 = [v6 testStatusCode];
-    v8 = [v7 isEqual:&off_100008860];
+    inputs2 = [(RepairResultViewController *)self inputs];
+    testStatusCode = [inputs2 testStatusCode];
+    v8 = [testStatusCode isEqual:&off_100008860];
 
     if (v8)
     {
@@ -542,16 +542,16 @@ LABEL_19:
 
 - (BOOL)isDenied
 {
-  v3 = [(RepairResultViewController *)self inputs];
-  v4 = [v3 testIdentifier];
-  v5 = [v4 isEqual:&off_100008848];
+  inputs = [(RepairResultViewController *)self inputs];
+  testIdentifier = [inputs testIdentifier];
+  v5 = [testIdentifier isEqual:&off_100008848];
 
   result = 0;
   if (v5)
   {
-    v6 = [(RepairResultViewController *)self inputs];
-    v7 = [v6 testStatusCode];
-    v8 = [v7 isEqual:&off_100008878];
+    inputs2 = [(RepairResultViewController *)self inputs];
+    testStatusCode = [inputs2 testStatusCode];
+    v8 = [testStatusCode isEqual:&off_100008878];
 
     if (v8)
     {
@@ -562,15 +562,15 @@ LABEL_19:
   return result;
 }
 
-- (void)endTestWithStatusCode:(int64_t)a3 error:(id)a4
+- (void)endTestWithStatusCode:(int64_t)code error:(id)error
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
-  v8 = [(RepairResultViewController *)self result];
-  [v8 setStatusCode:v7];
+  errorCopy = error;
+  v7 = [NSNumber numberWithInteger:code];
+  result = [(RepairResultViewController *)self result];
+  [result setStatusCode:v7];
 
   v15[0] = @"error";
-  v9 = [v6 description];
+  v9 = [errorCopy description];
   v10 = v9;
   if (!v9)
   {
@@ -579,7 +579,7 @@ LABEL_19:
 
   v15[1] = @"errorCode";
   v16[0] = v10;
-  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 code]);
+  v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
   v12 = v11;
   if (!v11)
   {
@@ -588,8 +588,8 @@ LABEL_19:
 
   v16[1] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
-  v14 = [(RepairResultViewController *)self result];
-  [v14 setData:v13];
+  result2 = [(RepairResultViewController *)self result];
+  [result2 setData:v13];
 
   if (!v11)
   {

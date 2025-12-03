@@ -1,48 +1,48 @@
 @interface PXPresentation
-+ (CGSize)readSizeFromChildOfElement:(_xmlNode *)a3 childName:(const char *)a4 state:(id)a5;
-+ (id)readFromPackage:(id)a3 fileName:(id)a4 reader:(id)a5 cancel:(id)a6 isThumbnail:(BOOL)a7 delegate:(id)a8;
-+ (void)readPresentationProperties:(id)a3 to:(id)a4 state:(id)a5;
-+ (void)readSlideIndicesWithPresentationPart:(id)a3 presentationState:(id)a4;
++ (CGSize)readSizeFromChildOfElement:(_xmlNode *)element childName:(const char *)name state:(id)state;
++ (id)readFromPackage:(id)package fileName:(id)name reader:(id)reader cancel:(id)cancel isThumbnail:(BOOL)thumbnail delegate:(id)delegate;
++ (void)readPresentationProperties:(id)properties to:(id)to state:(id)state;
++ (void)readSlideIndicesWithPresentationPart:(id)part presentationState:(id)state;
 @end
 
 @implementation PXPresentation
 
-+ (id)readFromPackage:(id)a3 fileName:(id)a4 reader:(id)a5 cancel:(id)a6 isThumbnail:(BOOL)a7 delegate:(id)a8
++ (id)readFromPackage:(id)package fileName:(id)name reader:(id)reader cancel:(id)cancel isThumbnail:(BOOL)thumbnail delegate:(id)delegate
 {
-  v87 = a7;
-  v13 = a3;
-  v91 = a4;
-  v92 = a5;
-  v93 = a6;
-  v99 = a8;
+  thumbnailCopy = thumbnail;
+  packageCopy = package;
+  nameCopy = name;
+  readerCopy = reader;
+  cancelCopy = cancel;
+  delegateCopy = delegate;
   v100 = objc_alloc_init(PDPresentation);
   v14 = objc_alloc_init(OADGraphicStyleCache);
   [(OCDDocument *)v100 setGraphicStyleCache:v14];
 
   v15 = objc_alloc_init(PXPresentationState);
-  [(PXPresentationState *)v15 setCancelDelegate:v93];
+  [(PXPresentationState *)v15 setCancelDelegate:cancelCopy];
   [(PXPresentationState *)v15 setTgtPresentation:v100];
-  [(OCDDocument *)v100 setReader:v92];
-  v16 = [(OCDDocument *)v100 summary];
-  [OCXSummary readSummary:v16 package:v13];
+  [(OCDDocument *)v100 setReader:readerCopy];
+  summary = [(OCDDocument *)v100 summary];
+  [OCXSummary readSummary:summary package:packageCopy];
 
-  v101 = [v13 mainDocumentPart];
-  if (!v101)
+  mainDocumentPart = [packageCopy mainDocumentPart];
+  if (!mainDocumentPart)
   {
 
     [TCMessageException raise:TCInvalidFileFormatMessage];
     v15 = 0;
   }
 
-  v17 = [v101 xmlDocument];
-  if (!v17)
+  xmlDocument = [mainDocumentPart xmlDocument];
+  if (!xmlDocument)
   {
 
     v15 = 0;
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v18 = OCXGetRootElement(v17);
+  v18 = OCXGetRootElement(xmlDocument);
   if (!v18)
   {
 
@@ -60,24 +60,24 @@
     [(PXPresentationState *)v15 setupNSForXMLFormat:1];
   }
 
-  [a1 readSizeFromChildOfElement:v97 childName:"sldSz" state:v15];
+  [self readSizeFromChildOfElement:v97 childName:"sldSz" state:v15];
   [(PDPresentation *)v100 setSlideSize:?];
-  [a1 readSizeFromChildOfElement:v97 childName:"notesSz" state:v15];
+  [self readSizeFromChildOfElement:v97 childName:"notesSz" state:v15];
   [(PDPresentation *)v100 setNotesSize:?];
-  [a1 readPresentationProperties:v13 to:v100 state:v15];
-  v19 = [v91 pathExtension];
-  v20 = [v19 lowercaseString];
+  [self readPresentationProperties:packageCopy to:v100 state:v15];
+  pathExtension = [nameCopy pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
 
-  v89 = v20;
-  if (([v20 isEqualToString:@"ppsx"] & 1) != 0 || objc_msgSend(v20, "isEqualToString:", @"ppsm"))
+  v89 = lowercaseString;
+  if (([lowercaseString isEqualToString:@"ppsx"] & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"ppsm"))
   {
     [(PDPresentation *)v100 setIsAutoPlay:1];
   }
 
-  v21 = [v13 mainDocumentPart];
-  v102 = v13;
-  v22 = [(OCXState *)v15 OCXPackageViewPropsRelationshipType];
-  v23 = [v21 firstPartWithRelationshipOfType:v22];
+  mainDocumentPart2 = [packageCopy mainDocumentPart];
+  v102 = packageCopy;
+  oCXPackageViewPropsRelationshipType = [(OCXState *)v15 OCXPackageViewPropsRelationshipType];
+  v23 = [mainDocumentPart2 firstPartWithRelationshipOfType:oCXPackageViewPropsRelationshipType];
 
   v88 = v23;
   if (v23)
@@ -99,17 +99,17 @@
   }
 
   [(PDPresentation *)v100 setIsCommentsVisible:v25];
-  [a1 readSlideIndicesWithPresentationPart:v101 presentationState:v15];
-  v26 = [v13 mainDocumentPart];
-  v27 = [(OCXState *)v15 OCXTableStylesRelationshipType];
-  v94 = [v26 firstPartWithRelationshipOfType:v27];
+  [self readSlideIndicesWithPresentationPart:mainDocumentPart presentationState:v15];
+  mainDocumentPart3 = [packageCopy mainDocumentPart];
+  oCXTableStylesRelationshipType = [(OCXState *)v15 OCXTableStylesRelationshipType];
+  v94 = [mainDocumentPart3 firstPartWithRelationshipOfType:oCXTableStylesRelationshipType];
 
-  v28 = [(PXPresentationState *)v15 tableStyleCache];
-  v29 = [(PXPresentationState *)v15 officeArtState];
-  [OAXTable cacheTableStylesInPart:v94 cache:v28 drawingState:v29];
+  tableStyleCache = [(PXPresentationState *)v15 tableStyleCache];
+  officeArtState = [(PXPresentationState *)v15 officeArtState];
+  [OAXTable cacheTableStylesInPart:v94 cache:tableStyleCache drawingState:officeArtState];
 
-  v30 = [(OCXState *)v15 OCXCommentAuthorsRelationshipType];
-  v31 = [v101 relationshipsByType:v30];
+  oCXCommentAuthorsRelationshipType = [(OCXState *)v15 OCXCommentAuthorsRelationshipType];
+  v31 = [mainDocumentPart relationshipsByType:oCXCommentAuthorsRelationshipType];
 
   v95 = v31;
   if ([v31 count])
@@ -122,39 +122,39 @@
     }
 
     v32 = [v31 objectAtIndex:0];
-    v33 = [v101 package];
-    v34 = [v32 targetLocation];
-    v35 = [v33 partForLocation:v34];
+    package = [mainDocumentPart package];
+    targetLocation = [v32 targetLocation];
+    v35 = [package partForLocation:targetLocation];
 
     [PXCommentAuthor readCommentAuthors:v35 presentation:v100 state:v15];
-    v36 = [v101 package];
-    v37 = [v32 targetLocation];
-    [v36 resetPartForLocation:v37];
+    package2 = [mainDocumentPart package];
+    targetLocation2 = [v32 targetLocation];
+    [package2 resetPartForLocation:targetLocation2];
   }
 
-  v38 = [(OCXState *)v15 OCXLegacyDocTextInfoRelationshipType];
-  v39 = [v101 firstPartWithRelationshipOfType:v38];
+  oCXLegacyDocTextInfoRelationshipType = [(OCXState *)v15 OCXLegacyDocTextInfoRelationshipType];
+  v39 = [mainDocumentPart firstPartWithRelationshipOfType:oCXLegacyDocTextInfoRelationshipType];
 
-  v90 = [v39 data];
-  if (v90)
+  data = [v39 data];
+  if (data)
   {
     objc_opt_class();
-    v40 = [(PXPresentationState *)v15 oavState];
-    [PXLegacyText readLegacyTextGlobalsFromData:v90 state:v40];
+    oavState = [(PXPresentationState *)v15 oavState];
+    [PXLegacyText readLegacyTextGlobalsFromData:data state:oavState];
   }
 
-  v41 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  v42 = OCXFindChild(v97, v41, "defaultTextStyle");
+  pXPresentationMLNamespace = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  v42 = OCXFindChild(v97, pXPresentationMLNamespace, "defaultTextStyle");
 
   if (v42)
   {
-    v43 = [(OCDDocument *)v100 defaultTextStyle];
-    v44 = [(PXPresentationState *)v15 officeArtState];
-    [OAXTextListStyle readNode:v42 textListStyle:v43 state:v44];
+    defaultTextStyle = [(OCDDocument *)v100 defaultTextStyle];
+    officeArtState2 = [(PXPresentationState *)v15 officeArtState];
+    [OAXTextListStyle readNode:v42 textListStyle:defaultTextStyle state:officeArtState2];
   }
 
-  v45 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  v46 = OCXFindChild(v97, v45, "sldMasterIdLst");
+  pXPresentationMLNamespace2 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  v46 = OCXFindChild(v97, pXPresentationMLNamespace2, "sldMasterIdLst");
 
   if (!v46)
   {
@@ -163,12 +163,12 @@
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v47 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  v48 = CXCountChildren(v46, v47, "sldMasterId");
+  pXPresentationMLNamespace3 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  v48 = CXCountChildren(v46, pXPresentationMLNamespace3, "sldMasterId");
 
   [TCProgressContext createStageWithSteps:@"read master slides" takingSteps:v48 name:25.0];
-  v49 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  Child = OCXFindChild(v46, v49, "sldMasterId");
+  pXPresentationMLNamespace4 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  Child = OCXFindChild(v46, pXPresentationMLNamespace4, "sldMasterId");
 
   while (Child)
   {
@@ -178,42 +178,42 @@
     }
 
     v51 = objc_alloc(MEMORY[0x277CCACA8]);
-    v52 = [(OCXState *)v15 OCXRelationshipsNamespace];
-    v53 = [v51 tc_initFromXmlNode:Child nsWithFallbackNs:v52 attributeName:"id"];
+    oCXRelationshipsNamespace = [(OCXState *)v15 OCXRelationshipsNamespace];
+    v53 = [v51 tc_initFromXmlNode:Child nsWithFallbackNs:oCXRelationshipsNamespace attributeName:"id"];
 
     if (!v53)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    v54 = [v101 relationshipForIdentifier:v53];
-    v55 = [v54 targetLocation];
-    v56 = [v13 partForLocation:v55];
+    v54 = [mainDocumentPart relationshipForIdentifier:v53];
+    targetLocation3 = [v54 targetLocation];
+    v56 = [packageCopy partForLocation:targetLocation3];
 
     v57 = [PXSlideMaster readFromPackagePart:v56 presentationState:v15];
     [v57 setSlideId:{CXRequiredUnsignedLongAttribute(Child, CXNoNamespace, "id")}];
     [(PDPresentation *)v100 addSlideMaster:v57];
-    v58 = [v54 targetLocation];
-    [v102 resetPartForLocation:v58];
+    targetLocation4 = [v54 targetLocation];
+    [v102 resetPartForLocation:targetLocation4];
 
-    v13 = v102;
-    v59 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-    Child = OCXFindNextChild(Child, v59, "sldMasterId");
+    packageCopy = v102;
+    pXPresentationMLNamespace5 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+    Child = OCXFindNextChild(Child, pXPresentationMLNamespace5, "sldMasterId");
   }
 
   +[TCProgressContext endStage];
   [(PXPresentationState *)v15 resetOfficeArtState];
-  v60 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  v61 = OCXFindChild(v97, v60, "notesMasterIdLst");
+  pXPresentationMLNamespace6 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  v61 = OCXFindChild(v97, pXPresentationMLNamespace6, "notesMasterIdLst");
 
   if (v61)
   {
-    v62 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-    v63 = CXCountChildren(v61, v62, "notesMasterId");
+    pXPresentationMLNamespace7 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+    v63 = CXCountChildren(v61, pXPresentationMLNamespace7, "notesMasterId");
 
     [TCProgressContext createStageWithSteps:@"read note slides" takingSteps:v63 name:5.0];
-    v64 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-    v65 = OCXFindChild(v61, v64, "notesMasterId");
+    pXPresentationMLNamespace8 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+    v65 = OCXFindChild(v61, pXPresentationMLNamespace8, "notesMasterId");
 
     while (v65)
     {
@@ -222,17 +222,17 @@
         break;
       }
 
-      v66 = [(OCXReadState *)v15 OCXReadRequiredRelationshipForNode:v65 packagePart:v101];
-      v67 = [v66 targetLocation];
-      v68 = [v13 partForLocation:v67];
+      v66 = [(OCXReadState *)v15 OCXReadRequiredRelationshipForNode:v65 packagePart:mainDocumentPart];
+      targetLocation5 = [v66 targetLocation];
+      v68 = [packageCopy partForLocation:targetLocation5];
 
       v69 = [PXNotesMaster readFromPackagePart:v68 presentationState:v15];
       [(PDPresentation *)v100 addNotesMaster:v69];
-      v70 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-      v65 = OCXFindNextChild(v65, v70, "notesMasterId");
+      pXPresentationMLNamespace9 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+      v65 = OCXFindNextChild(v65, pXPresentationMLNamespace9, "notesMasterId");
 
-      v71 = [v66 targetLocation];
-      [v13 resetPartForLocation:v71];
+      targetLocation6 = [v66 targetLocation];
+      [packageCopy resetPartForLocation:targetLocation6];
     }
 
     +[TCProgressContext endStage];
@@ -244,22 +244,22 @@
   }
 
   [(PXPresentationState *)v15 resetOfficeArtState];
-  v72 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-  v73 = OCXFindChild(v97, v72, "sldIdLst");
+  pXPresentationMLNamespace10 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+  v73 = OCXFindChild(v97, pXPresentationMLNamespace10, "sldIdLst");
 
   if (v73)
   {
-    v74 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-    v75 = CXCountChildren(v73, v74, "sldId");
+    pXPresentationMLNamespace11 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+    v75 = CXCountChildren(v73, pXPresentationMLNamespace11, "sldId");
 
-    if (v99 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegateCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v99 readerDidStartDocument:v100 withElementCount:v75];
+      [delegateCopy readerDidStartDocument:v100 withElementCount:v75];
     }
 
     [TCProgressContext createStageWithSteps:@"read slides" takingSteps:(2 * v75) name:70.0];
-    v76 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-    v77 = OCXFindChild(v73, v76, "sldId");
+    pXPresentationMLNamespace12 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+    v77 = OCXFindChild(v73, pXPresentationMLNamespace12, "sldId");
 
     if (v77)
     {
@@ -267,9 +267,9 @@
       v98 = v75 - 1;
       while (![(PXPresentationState *)v15 isCancelled])
       {
-        v79 = [(OCXReadState *)v15 OCXReadRequiredRelationshipForNode:v77 packagePart:v101];
-        v80 = [v79 targetLocation];
-        v81 = [v13 partForLocation:v80];
+        v79 = [(OCXReadState *)v15 OCXReadRequiredRelationshipForNode:v77 packagePart:mainDocumentPart];
+        targetLocation7 = [v79 targetLocation];
+        v81 = [packageCopy partForLocation:targetLocation7];
 
         if (!v81)
         {
@@ -282,15 +282,15 @@
         [v82 setSlideId:{CXRequiredUnsignedLongAttribute(v77, CXNoNamespace, "id")}];
         if (([v82 isHidden] & 1) == 0)
         {
-          if (v99 && (objc_opt_respondsToSelector() & 1) != 0)
+          if (delegateCopy && (objc_opt_respondsToSelector() & 1) != 0)
           {
-            v83 = v78 >= v98 || v87;
-            [v99 readerDidReadElement:v82 atIndex:v78 inDocument:v100 isLastElement:v83];
+            v83 = v78 >= v98 || thumbnailCopy;
+            [delegateCopy readerDidReadElement:v82 atIndex:v78 inDocument:v100 isLastElement:v83];
             if (v83)
             {
               [(PXPresentationState *)v15 resetOfficeArtState];
 
-              v13 = v102;
+              packageCopy = v102;
               break;
             }
 
@@ -304,12 +304,12 @@
         }
 
         [(PXPresentationState *)v15 resetOfficeArtState];
-        v84 = [v79 targetLocation];
-        [v102 resetPartForLocation:v84];
+        targetLocation8 = [v79 targetLocation];
+        [v102 resetPartForLocation:targetLocation8];
 
-        v13 = v102;
-        v85 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
-        v77 = OCXFindNextChild(v77, v85, "sldId");
+        packageCopy = v102;
+        pXPresentationMLNamespace13 = [(PXPresentationState *)v15 PXPresentationMLNamespace];
+        v77 = OCXFindNextChild(v77, pXPresentationMLNamespace13, "sldId");
 
         if (!v77)
         {
@@ -319,9 +319,9 @@
     }
 
     +[TCProgressContext endStage];
-    if (v99 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegateCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v99 readerDidEndDocument:v100];
+      [delegateCopy readerDidEndDocument:v100];
     }
   }
 
@@ -333,10 +333,10 @@
   return v100;
 }
 
-+ (CGSize)readSizeFromChildOfElement:(_xmlNode *)a3 childName:(const char *)a4 state:(id)a5
++ (CGSize)readSizeFromChildOfElement:(_xmlNode *)element childName:(const char *)name state:(id)state
 {
-  v7 = [a5 PXPresentationMLNamespace];
-  v8 = OCXFindChild(a3, v7, a4);
+  pXPresentationMLNamespace = [state PXPresentationMLNamespace];
+  v8 = OCXFindChild(element, pXPresentationMLNamespace, name);
 
   v12 = 0;
   CXOptionalLongAttribute(v8, CXNoNamespace, "cx", &v12);
@@ -349,58 +349,58 @@
   return result;
 }
 
-+ (void)readPresentationProperties:(id)a3 to:(id)a4 state:(id)a5
++ (void)readPresentationProperties:(id)properties to:(id)to state:(id)state
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [a3 mainDocumentPart];
-  v9 = [v7 OCXPackagePresPropsRelationshipType];
-  v10 = [v8 firstPartWithRelationshipOfType:v9];
+  toCopy = to;
+  stateCopy = state;
+  mainDocumentPart = [properties mainDocumentPart];
+  oCXPackagePresPropsRelationshipType = [stateCopy OCXPackagePresPropsRelationshipType];
+  v10 = [mainDocumentPart firstPartWithRelationshipOfType:oCXPackagePresPropsRelationshipType];
 
   if (v10)
   {
     v11 = OCXGetRootElement([v10 xmlDocument]);
-    v12 = [v7 PXPresentationMLNamespace];
-    v13 = OCXFindChild(v11, v12, "showPr");
+    pXPresentationMLNamespace = [stateCopy PXPresentationMLNamespace];
+    v13 = OCXFindChild(v11, pXPresentationMLNamespace, "showPr");
 
     if (v13)
     {
-      [v16 setIsLooping:{CXDefaultBoolAttribute(v13, CXNoNamespace, "loop", 0)}];
-      v14 = [v7 PXPresentationMLNamespace];
-      v15 = OCXFindChild(v13, v14, "kiosk");
+      [toCopy setIsLooping:{CXDefaultBoolAttribute(v13, CXNoNamespace, "loop", 0)}];
+      pXPresentationMLNamespace2 = [stateCopy PXPresentationMLNamespace];
+      v15 = OCXFindChild(v13, pXPresentationMLNamespace2, "kiosk");
 
       if (v15)
       {
-        [v16 setIsKiosk:1];
+        [toCopy setIsKiosk:1];
       }
     }
   }
 }
 
-+ (void)readSlideIndicesWithPresentationPart:(id)a3 presentationState:(id)a4
++ (void)readSlideIndicesWithPresentationPart:(id)part presentationState:(id)state
 {
-  v15 = a3;
-  v5 = a4;
-  v6 = OCXGetRootElement([v15 xmlDocument]);
-  v7 = [v5 PXPresentationMLNamespace];
-  v8 = OCXFindChild(v6, v7, "sldIdLst");
+  partCopy = part;
+  stateCopy = state;
+  v6 = OCXGetRootElement([partCopy xmlDocument]);
+  pXPresentationMLNamespace = [stateCopy PXPresentationMLNamespace];
+  v8 = OCXFindChild(v6, pXPresentationMLNamespace, "sldIdLst");
 
   if (v8)
   {
-    v9 = [v5 PXPresentationMLNamespace];
-    Child = OCXFindChild(v8, v9, "sldId");
+    pXPresentationMLNamespace2 = [stateCopy PXPresentationMLNamespace];
+    Child = OCXFindChild(v8, pXPresentationMLNamespace2, "sldId");
 
     if (Child)
     {
       v11 = 0;
       do
       {
-        v12 = [v5 OCXReadRequiredRelationshipForNode:Child packagePart:v15];
-        v13 = [v12 targetLocation];
-        [v5 setSlideIndex:v11 forSlideURL:v13];
+        v12 = [stateCopy OCXReadRequiredRelationshipForNode:Child packagePart:partCopy];
+        targetLocation = [v12 targetLocation];
+        [stateCopy setSlideIndex:v11 forSlideURL:targetLocation];
 
-        v14 = [v5 PXPresentationMLNamespace];
-        Child = OCXFindNextChild(Child, v14, "sldId");
+        pXPresentationMLNamespace3 = [stateCopy PXPresentationMLNamespace];
+        Child = OCXFindNextChild(Child, pXPresentationMLNamespace3, "sldId");
 
         ++v11;
       }

@@ -1,51 +1,51 @@
 @interface _LTDisambiguationUserSelection
-- (BOOL)isEqual:(id)a3;
-- (_LTDisambiguationUserSelection)initWithEdge:(id)a3 sourceSnippet:(id)a4 linkIndex:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LTDisambiguationUserSelection)initWithEdge:(id)edge sourceSnippet:(id)snippet linkIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation _LTDisambiguationUserSelection
 
-- (_LTDisambiguationUserSelection)initWithEdge:(id)a3 sourceSnippet:(id)a4 linkIndex:(unint64_t)a5
+- (_LTDisambiguationUserSelection)initWithEdge:(id)edge sourceSnippet:(id)snippet linkIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  edgeCopy = edge;
+  snippetCopy = snippet;
   v17.receiver = self;
   v17.super_class = _LTDisambiguationUserSelection;
   v10 = [(_LTDisambiguationUserSelection *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [edgeCopy copy];
     edge = v10->_edge;
     v10->_edge = v11;
 
-    v13 = [v9 copy];
+    v13 = [snippetCopy copy];
     sourceSnippet = v10->_sourceSnippet;
     v10->_sourceSnippet = v13;
 
-    v10->_linkIndex = a5;
+    v10->_linkIndex = index;
     v15 = v10;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(_LTDisambiguationUserSelection *)self edge];
-    v6 = [v4 edge];
-    if ([v5 isEqual:v6])
+    edge = [(_LTDisambiguationUserSelection *)self edge];
+    edge2 = [equalCopy edge];
+    if ([edge isEqual:edge2])
     {
-      v7 = [(_LTDisambiguationUserSelection *)self sourceSnippet];
-      v8 = [v4 sourceSnippet];
-      if ([v7 isEqualToString:v8])
+      sourceSnippet = [(_LTDisambiguationUserSelection *)self sourceSnippet];
+      sourceSnippet2 = [equalCopy sourceSnippet];
+      if ([sourceSnippet isEqualToString:sourceSnippet2])
       {
-        v9 = [(_LTDisambiguationUserSelection *)self linkIndex];
-        v10 = v9 == [v4 linkIndex];
+        linkIndex = [(_LTDisambiguationUserSelection *)self linkIndex];
+        v10 = linkIndex == [equalCopy linkIndex];
       }
 
       else
@@ -70,22 +70,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_LTDisambiguationUserSelection *)self edge];
-  v4 = [v3 hash];
-  v5 = [(_LTDisambiguationUserSelection *)self sourceSnippet];
-  v6 = [v5 hash] ^ v4;
+  edge = [(_LTDisambiguationUserSelection *)self edge];
+  v4 = [edge hash];
+  sourceSnippet = [(_LTDisambiguationUserSelection *)self sourceSnippet];
+  v6 = [sourceSnippet hash] ^ v4;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[_LTDisambiguationUserSelection linkIndex](self, "linkIndex")}];
   v8 = [v7 hash];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(_LTDirectedEdge *)v3->_edge copy];
-  v5 = [(NSString *)v3->_sourceSnippet copy];
-  v6 = [(_LTDisambiguationUserSelection *)v3 initWithEdge:v4 sourceSnippet:v5 linkIndex:v3->_linkIndex];
+  selfCopy = self;
+  v4 = [(_LTDirectedEdge *)selfCopy->_edge copy];
+  v5 = [(NSString *)selfCopy->_sourceSnippet copy];
+  v6 = [(_LTDisambiguationUserSelection *)selfCopy initWithEdge:v4 sourceSnippet:v5 linkIndex:selfCopy->_linkIndex];
 
   return v6;
 }

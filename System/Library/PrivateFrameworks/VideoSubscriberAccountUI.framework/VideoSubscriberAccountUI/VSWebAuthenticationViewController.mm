@@ -1,23 +1,23 @@
 @interface VSWebAuthenticationViewController
 - (VSAuthenticationViewControllerDelegate)delegate;
-- (id)_canonicalRequestForRequest:(id)a3;
-- (void)_cancelButtonPressed:(id)a3;
+- (id)_canonicalRequestForRequest:(id)request;
+- (void)_cancelButtonPressed:(id)pressed;
 - (void)_didBeginActivity;
 - (void)_didEndActivity;
 - (void)_retrieveMessages;
-- (void)_sendMessage:(id)a3;
-- (void)_sendMessages:(id)a3;
-- (void)_startObservingViewModel:(id)a3;
-- (void)_stopObservingViewModel:(id)a3;
+- (void)_sendMessage:(id)message;
+- (void)_sendMessages:(id)messages;
+- (void)_startObservingViewModel:(id)model;
+- (void)_stopObservingViewModel:(id)model;
 - (void)dealloc;
-- (void)didAddMessagesToMessageQueue:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCancellationAllowed:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)didAddMessagesToMessageQueue:(id)queue;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCancellationAllowed:(BOOL)allowed;
+- (void)setViewModel:(id)model;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
 @end
 
 @implementation VSWebAuthenticationViewController
@@ -30,54 +30,54 @@
   [(VSWebAuthenticationViewController *)&v3 dealloc];
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v6 = v5;
+    v6 = modelCopy;
     [(VSWebAuthenticationViewController *)self _stopObservingViewModel:?];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(VSWebAuthenticationViewController *)self _startObservingViewModel:self->_viewModel];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
 - (void)_didBeginActivity
 {
-  v3 = [(VSWebAuthenticationViewController *)self webView];
-  [v3 setHidden:1];
+  webView = [(VSWebAuthenticationViewController *)self webView];
+  [webView setHidden:1];
 
-  v4 = [(VSWebAuthenticationViewController *)self activityIndicator];
-  [v4 startAnimating];
+  activityIndicator = [(VSWebAuthenticationViewController *)self activityIndicator];
+  [activityIndicator startAnimating];
 }
 
 - (void)_didEndActivity
 {
-  v3 = [(VSWebAuthenticationViewController *)self webView];
-  [v3 setHidden:0];
+  webView = [(VSWebAuthenticationViewController *)self webView];
+  [webView setHidden:0];
 
-  v4 = [(VSWebAuthenticationViewController *)self activityIndicator];
-  [v4 stopAnimating];
+  activityIndicator = [(VSWebAuthenticationViewController *)self activityIndicator];
+  [activityIndicator stopAnimating];
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
-  v4 = [(VSWebAuthenticationViewController *)self delegate];
-  [v4 authenticationViewControllerDidCancel:self];
+  delegate = [(VSWebAuthenticationViewController *)self delegate];
+  [delegate authenticationViewControllerDidCancel:self];
 }
 
-- (void)_sendMessage:(id)a3
+- (void)_sendMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSWebAuthenticationViewController *)self webView];
-  v6 = VSScriptMessageDispatchInjection(v4);
+  messageCopy = message;
+  webView = [(VSWebAuthenticationViewController *)self webView];
+  v6 = VSScriptMessageDispatchInjection(messageCopy);
   v7 = VSDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = messageCopy;
     _os_log_impl(&dword_270DD4000, v7, OS_LOG_TYPE_DEFAULT, "Will inject message to web: %@", buf, 0xCu);
   }
 
@@ -85,9 +85,9 @@
   v10[1] = 3221225472;
   v10[2] = __50__VSWebAuthenticationViewController__sendMessage___block_invoke;
   v10[3] = &unk_279E1A3C0;
-  v11 = v4;
-  v8 = v4;
-  [v5 evaluateJavaScript:v6 completionHandler:v10];
+  v11 = messageCopy;
+  v8 = messageCopy;
+  [webView evaluateJavaScript:v6 completionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -131,17 +131,17 @@ void __50__VSWebAuthenticationViewController__sendMessage___block_invoke(uint64_
 
 - (void)_retrieveMessages
 {
-  v3 = [(VSWebAuthenticationViewController *)self webView];
-  v4 = [v3 URL];
+  webView = [(VSWebAuthenticationViewController *)self webView];
+  v4 = [webView URL];
   v5 = objc_alloc_init(VSScriptSecurityOrigin);
-  v6 = [v4 scheme];
-  [(VSScriptSecurityOrigin *)v5 setScheme:v6];
+  scheme = [v4 scheme];
+  [(VSScriptSecurityOrigin *)v5 setScheme:scheme];
 
-  v7 = [v4 host];
-  [(VSScriptSecurityOrigin *)v5 setHost:v7];
+  host = [v4 host];
+  [(VSScriptSecurityOrigin *)v5 setHost:host];
 
-  v8 = [v4 port];
-  -[VSScriptSecurityOrigin setPort:](v5, "setPort:", [v8 integerValue]);
+  port = [v4 port];
+  -[VSScriptSecurityOrigin setPort:](v5, "setPort:", [port integerValue]);
 
   v9 = VSDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -155,9 +155,9 @@ void __50__VSWebAuthenticationViewController__sendMessage___block_invoke(uint64_
   v11[2] = __54__VSWebAuthenticationViewController__retrieveMessages__block_invoke;
   v11[3] = &unk_279E1A3E8;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v10 = v5;
-  [v3 evaluateJavaScript:@"VideoSubscriberAccount._retrieveMessages();" completionHandler:v11];
+  [webView evaluateJavaScript:@"VideoSubscriberAccount._retrieveMessages();" completionHandler:v11];
 }
 
 void __54__VSWebAuthenticationViewController__retrieveMessages__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -304,18 +304,18 @@ LABEL_5:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendMessages:(id)a3
+- (void)_sendMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [(VSWebAuthenticationViewController *)self webView];
+  messagesCopy = messages;
+  webView = [(VSWebAuthenticationViewController *)self webView];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__VSWebAuthenticationViewController__sendMessages___block_invoke;
   v7[3] = &unk_279E1A3E8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 evaluateJavaScript:@"location.origin" completionHandler:v7];
+  v8 = messagesCopy;
+  selfCopy = self;
+  v6 = messagesCopy;
+  [webView evaluateJavaScript:@"location.origin" completionHandler:v7];
 }
 
 void __51__VSWebAuthenticationViewController__sendMessages___block_invoke(uint64_t a1, void *a2)
@@ -421,42 +421,42 @@ void __51__VSWebAuthenticationViewController__sendMessages___block_invoke(uint64
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startObservingViewModel:(id)a3
+- (void)_startObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_SourceURL;
-  v5 = a3;
-  [v5 addObserver:self forKeyPath:@"sourceURL" options:4 context:v4];
-  v6 = [v5 messagesToWeb];
+  modelCopy = model;
+  [modelCopy addObserver:self forKeyPath:@"sourceURL" options:4 context:v4];
+  messagesToWeb = [modelCopy messagesToWeb];
 
-  [v6 setDelegate:self];
+  [messagesToWeb setDelegate:self];
 }
 
-- (void)_stopObservingViewModel:(id)a3
+- (void)_stopObservingViewModel:(id)model
 {
   v4 = kVSKeyValueObservingContext_SourceURL;
-  v5 = a3;
-  [v5 removeObserver:self forKeyPath:@"sourceURL" context:v4];
-  v6 = [v5 messagesToWeb];
+  modelCopy = model;
+  [modelCopy removeObserver:self forKeyPath:@"sourceURL" context:v4];
+  messagesToWeb = [modelCopy messagesToWeb];
 
-  [v6 setDelegate:0];
+  [messagesToWeb setDelegate:0];
 }
 
-- (id)_canonicalRequestForRequest:(id)a3
+- (id)_canonicalRequestForRequest:(id)request
 {
-  v3 = [a3 mutableCopy];
+  v3 = [request mutableCopy];
   [v3 _CFURLRequest];
-  v4 = [MEMORY[0x277CCAA38] vs_sharedCookieStorage];
-  [v4 _cookieStorage];
+  vs_sharedCookieStorage = [MEMORY[0x277CCAA38] vs_sharedCookieStorage];
+  [vs_sharedCookieStorage _cookieStorage];
   CFURLRequestSetHTTPCookieStorage();
   [v3 setHTTPShouldHandleCookies:1];
 
   return v3;
 }
 
-- (void)didAddMessagesToMessageQueue:(id)a3
+- (void)didAddMessagesToMessageQueue:(id)queue
 {
-  v4 = a3;
-  v3 = v4;
+  queueCopy = queue;
+  v3 = queueCopy;
   VSPerformBlockOnMainThread();
 }
 
@@ -470,16 +470,16 @@ void __66__VSWebAuthenticationViewController_didAddMessagesToMessageQueue___bloc
   }
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = a3;
+  viewCopy = view;
   v9 = VSScriptMessageSupportInjection(0);
-  [v5 evaluateJavaScript:v9 completionHandler:&__block_literal_global_13];
+  [viewCopy evaluateJavaScript:v9 completionHandler:&__block_literal_global_13];
 
-  v6 = [(VSWebAuthenticationViewController *)self viewModel];
-  v7 = [v6 messagesToWeb];
-  v8 = [v7 removeAllMessages];
-  [(VSWebAuthenticationViewController *)self _sendMessages:v8];
+  viewModel = [(VSWebAuthenticationViewController *)self viewModel];
+  messagesToWeb = [viewModel messagesToWeb];
+  removeAllMessages = [messagesToWeb removeAllMessages];
+  [(VSWebAuthenticationViewController *)self _sendMessages:removeAllMessages];
 
   [(VSWebAuthenticationViewController *)self _didEndActivity];
 }
@@ -497,22 +497,22 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v8 = [(VSWebAuthenticationViewController *)self viewModel:a3];
-  v6 = [v8 messagesToWeb];
-  v7 = [v6 removeAllMessages];
-  [(VSWebAuthenticationViewController *)self _sendMessages:v7];
+  v8 = [(VSWebAuthenticationViewController *)self viewModel:view];
+  messagesToWeb = [v8 messagesToWeb];
+  removeAllMessages = [messagesToWeb removeAllMessages];
+  [(VSWebAuthenticationViewController *)self _sendMessages:removeAllMessages];
 
   [(VSWebAuthenticationViewController *)self _didEndActivity];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a4 request];
-  v9 = [v8 URL];
+  handlerCopy = handler;
+  request = [action request];
+  v9 = [request URL];
   v10 = VSIsScriptMessageNotificationURL(v9);
   v11 = VSDefaultLogObject();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -521,7 +521,7 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
     if (v12)
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = request;
       _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "Web view will *not* load request: %@", &v15, 0xCu);
     }
 
@@ -534,27 +534,27 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
     if (v12)
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = request;
       _os_log_impl(&dword_270DD4000, v11, OS_LOG_TYPE_DEFAULT, "Web view will load request %@", &v15, 0xCu);
     }
 
     v13 = 1;
   }
 
-  v7[2](v7, v13);
+  handlerCopy[2](handlerCopy, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCancellationAllowed:(BOOL)a3
+- (void)setCancellationAllowed:(BOOL)allowed
 {
-  if (self->_cancellationAllowed != a3)
+  if (self->_cancellationAllowed != allowed)
   {
-    self->_cancellationAllowed = a3;
-    if (a3)
+    self->_cancellationAllowed = allowed;
+    if (allowed)
     {
-      v5 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-      v6 = [v5 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
+      vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+      v6 = [vs_frameworkBundle localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
 
       v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v6 style:0 target:self action:sel__cancelButtonPressed_];
     }
@@ -564,26 +564,26 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
       v8 = 0;
     }
 
-    v7 = [(VSWebAuthenticationViewController *)self navigationItem];
-    [v7 setLeftBarButtonItem:v8];
+    navigationItem = [(VSWebAuthenticationViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  if (kVSKeyValueObservingContext_SourceURL == a6)
+  pathCopy = path;
+  objectCopy = object;
+  if (kVSKeyValueObservingContext_SourceURL == context)
   {
     if ([(VSWebAuthenticationViewController *)self isViewLoaded])
     {
-      v12 = [(VSWebAuthenticationViewController *)self webView];
-      if (!v11)
+      webView = [(VSWebAuthenticationViewController *)self webView];
+      if (!objectCopy)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The objectOrNil parameter must not be nil."];
       }
 
-      v13 = v11;
+      v13 = objectCopy;
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -595,23 +595,23 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
       }
 
       v18 = v13;
-      if (!v10)
+      if (!pathCopy)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The keyPathOrNil parameter must not be nil."];
       }
 
-      v19 = [v18 valueForKeyPath:v10];
+      v19 = [v18 valueForKeyPath:pathCopy];
       if (v19)
       {
         v20 = [MEMORY[0x277CCAD20] requestWithURL:v19];
         v21 = [(VSWebAuthenticationViewController *)self _canonicalRequestForRequest:v20];
 
-        v22 = [v12 loadRequest:v21];
+        v22 = [webView loadRequest:v21];
       }
 
       else
       {
-        [v12 stopLoading];
+        [webView stopLoading];
       }
     }
   }
@@ -620,7 +620,7 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
   {
     v23.receiver = self;
     v23.super_class = VSWebAuthenticationViewController;
-    [(VSWebAuthenticationViewController *)&v23 observeValueForKeyPath:v10 ofObject:v11 change:a5 context:a6];
+    [(VSWebAuthenticationViewController *)&v23 observeValueForKeyPath:pathCopy ofObject:objectCopy change:change context:context];
   }
 }
 
@@ -629,66 +629,66 @@ void __65__VSWebAuthenticationViewController_webView_didFinishNavigation___block
   v42.receiver = self;
   v42.super_class = VSWebAuthenticationViewController;
   [(VSWebAuthenticationViewController *)&v42 viewDidLoad];
-  v3 = [(VSWebAuthenticationViewController *)self view];
-  v4 = [MEMORY[0x277D75348] groupTableViewBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VSWebAuthenticationViewController *)self view];
+  groupTableViewBackgroundColor = [MEMORY[0x277D75348] groupTableViewBackgroundColor];
+  [view setBackgroundColor:groupTableViewBackgroundColor];
 
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v13 = objc_alloc_init(MEMORY[0x277CE3858]);
-  v14 = [MEMORY[0x277CE3868] nonPersistentDataStore];
-  [v13 setWebsiteDataStore:v14];
+  nonPersistentDataStore = [MEMORY[0x277CE3868] nonPersistentDataStore];
+  [v13 setWebsiteDataStore:nonPersistentDataStore];
 
   v15 = [objc_alloc(MEMORY[0x277CE3850]) initWithFrame:v13 configuration:{v6, v8, v10, v12}];
   [v15 setNavigationDelegate:self];
   [v15 setHidden:1];
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v15];
+  [view addSubview:v15];
   [(VSWebAuthenticationViewController *)self setWebView:v15];
   v16 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v16];
+  [view addSubview:v16];
   [(VSWebAuthenticationViewController *)self setActivityIndicator:v16];
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v16 centerXAnchor];
-  v19 = [v3 centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  centerXAnchor = [v16 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v17 addObject:v20];
 
-  v21 = [v16 centerYAnchor];
-  v22 = [v3 centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  centerYAnchor = [v16 centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v17 addObject:v23];
 
-  v24 = [v15 topAnchor];
-  v25 = [v3 safeAreaLayoutGuide];
-  v26 = [v25 topAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  topAnchor = [v15 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v17 addObject:v27];
 
-  v28 = [v15 bottomAnchor];
-  v29 = [v3 bottomAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  bottomAnchor = [v15 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 addObject:v30];
 
-  v31 = [v15 leftAnchor];
-  v32 = [v3 leftAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  leftAnchor = [v15 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v17 addObject:v33];
 
-  v34 = [v15 rightAnchor];
-  v35 = [v3 rightAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  rightAnchor = [v15 rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v36 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v17 addObject:v36];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v17];
-  v37 = [(VSWebAuthenticationViewController *)self viewModel];
-  v38 = [v37 sourceURL];
+  viewModel = [(VSWebAuthenticationViewController *)self viewModel];
+  sourceURL = [viewModel sourceURL];
 
-  v39 = [MEMORY[0x277CCAD20] requestWithURL:v38];
+  v39 = [MEMORY[0x277CCAD20] requestWithURL:sourceURL];
   v40 = [(VSWebAuthenticationViewController *)self _canonicalRequestForRequest:v39];
 
   v41 = [v15 loadRequest:v40];

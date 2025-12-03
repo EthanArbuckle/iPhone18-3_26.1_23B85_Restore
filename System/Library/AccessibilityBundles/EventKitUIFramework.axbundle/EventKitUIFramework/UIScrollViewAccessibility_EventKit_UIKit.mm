@@ -1,5 +1,5 @@
 @interface UIScrollViewAccessibility_EventKit_UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollingEnabled;
 - (CGPoint)_pageDecelerationTarget;
 - (id)_accessibilityScrollStatus;
@@ -7,14 +7,14 @@
 
 @implementation UIScrollViewAccessibility_EventKit_UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayGridView"];
-  [v3 validateClass:@"EKDayGridView" hasInstanceMethod:@"hourHeight" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"EKDayGridView" hasInstanceMethod:@"topPadding" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_pageDecelerationTarget" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_stopScrollDecelerationNotify:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayGridView"];
+  [validationsCopy validateClass:@"EKDayGridView" hasInstanceMethod:@"hourHeight" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"EKDayGridView" hasInstanceMethod:@"topPadding" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_pageDecelerationTarget" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_stopScrollDecelerationNotify:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)_accessibilityScrollStatus
@@ -44,30 +44,30 @@
     [v28 setYear:2013];
     [v28 setMonth:6];
     [v28 setDay:30];
-    v29 = [MEMORY[0x29EDB8D98] currentCalendar];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
     [v28 setHour:llround((v17 - v27) / v24)];
-    v30 = [v29 dateFromComponents:v28];
+    v30 = [currentCalendar dateFromComponents:v28];
     v40.origin.x = v15;
     v40.origin.y = v17;
     v40.size.width = v19;
     v40.size.height = v21;
     [v28 setHour:llround((CGRectGetMaxY(v40) - v27) / v24)];
-    v31 = [v29 dateFromComponents:v28];
+    v31 = [currentCalendar dateFromComponents:v28];
     v32 = MEMORY[0x29EDBA0F8];
     v33 = accessibilityLocalizedString(@"day.grid.scroll.status");
     v34 = AXDateStringForFormat();
     v35 = AXDateStringForFormat();
-    v36 = [v32 stringWithFormat:v33, v34, v35];
+    _accessibilityScrollStatus = [v32 stringWithFormat:v33, v34, v35];
   }
 
   else
   {
     v38.receiver = self;
     v38.super_class = UIScrollViewAccessibility_EventKit_UIKit;
-    v36 = [(UIScrollViewAccessibility_EventKit_UIKit *)&v38 _accessibilityScrollStatus];
+    _accessibilityScrollStatus = [(UIScrollViewAccessibility_EventKit_UIKit *)&v38 _accessibilityScrollStatus];
   }
 
-  return v36;
+  return _accessibilityScrollStatus;
 }
 
 - (BOOL)_accessibilityScrollingEnabled

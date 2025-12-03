@@ -1,51 +1,51 @@
 @interface WiFiUsageRealTimeCoexSession
 - (BOOL)isCurrentBandPreferredBand;
 - (BOOL)isCurrentChannelPreferredChannel;
-- (WiFiUsageRealTimeCoexSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7;
-- (void)processIPv4Changes:(id)a3;
-- (void)processIPv6Changes:(id)a3;
+- (WiFiUsageRealTimeCoexSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details;
+- (void)processIPv4Changes:(id)changes;
+- (void)processIPv6Changes:(id)changes;
 - (void)sessionDidStart;
-- (void)setPreferredChannelAndBandUsageWithReferenceDate:(id)a3;
-- (void)setRealtimeCoexStarted:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5;
+- (void)setPreferredChannelAndBandUsageWithReferenceDate:(id)date;
+- (void)setRealtimeCoexStarted:(BOOL)started type:(unint64_t)type reasons:(id)reasons;
 - (void)summarizeSession;
-- (void)updateAssociatedNetworkDetails:(id)a3;
-- (void)updatePreferredChannelAndBandUsageWithReferenceDate:(id)a3;
+- (void)updateAssociatedNetworkDetails:(id)details;
+- (void)updatePreferredChannelAndBandUsageWithReferenceDate:(id)date;
 @end
 
 @implementation WiFiUsageRealTimeCoexSession
 
-- (void)setRealtimeCoexStarted:(BOOL)a3 type:(unint64_t)a4 reasons:(id)a5
+- (void)setRealtimeCoexStarted:(BOOL)started type:(unint64_t)type reasons:(id)reasons
 {
-  v6 = a3;
-  v16 = a5;
-  if ([(WiFiUsageSession *)self isSessionActive]&& !v6)
+  startedCopy = started;
+  reasonsCopy = reasons;
+  if ([(WiFiUsageSession *)self isSessionActive]&& !startedCopy)
   {
-    v8 = [(WiFiUsageSession *)self sessionName];
-    NSLog(&cfstr_SSessionEnded.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", v8);
+    sessionName = [(WiFiUsageSession *)self sessionName];
+    NSLog(&cfstr_SSessionEnded.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", sessionName);
 
     [(WiFiUsageSession *)self sessionDidEnd];
   }
 
-  if (v6)
+  if (startedCopy)
   {
-    v9 = [(WiFiUsageSession *)self isSessionActive];
-    v10 = [(WiFiUsageSession *)self sessionName];
-    v11 = [WiFiUsagePrivacyFilter getLabelForRTCoexType:a4];
-    v12 = [v16 componentsJoinedByString:@"&"];
+    isSessionActive = [(WiFiUsageSession *)self isSessionActive];
+    sessionName2 = [(WiFiUsageSession *)self sessionName];
+    v11 = [WiFiUsagePrivacyFilter getLabelForRTCoexType:type];
+    v12 = [reasonsCopy componentsJoinedByString:@"&"];
     v13 = v12;
-    if (v9)
+    if (isSessionActive)
     {
-      NSLog(&cfstr_SSessionAlread.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", v10, v11, v12);
+      NSLog(&cfstr_SSessionAlread.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", sessionName2, v11, v12);
     }
 
     else
     {
-      NSLog(&cfstr_SSessionStarte_1.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", v10, v11, v12);
+      NSLog(&cfstr_SSessionStarte_1.isa, "[WiFiUsageRealTimeCoexSession setRealtimeCoexStarted:type:reasons:]", sessionName2, v11, v12);
 
-      self->_rtCoexType = a4;
-      v14 = [v16 componentsJoinedByString:@"&"];
+      self->_rtCoexType = type;
+      v14 = [reasonsCopy componentsJoinedByString:@"&"];
       rtCoexSubType = self->_rtCoexSubType;
       self->_rtCoexSubType = v14;
 
@@ -54,11 +54,11 @@
   }
 }
 
-- (void)joinStateDidChange:(id)a3 withReason:(unint64_t)a4 lastDisconnectReason:(int64_t)a5 lastJoinFailure:(int64_t)a6 andNetworkDetails:(id)a7
+- (void)joinStateDidChange:(id)change withReason:(unint64_t)reason lastDisconnectReason:(int64_t)disconnectReason lastJoinFailure:(int64_t)failure andNetworkDetails:(id)details
 {
-  v12 = a3;
-  v13 = a7;
-  if (v12 && a4 == 12)
+  changeCopy = change;
+  detailsCopy = details;
+  if (changeCopy && reason == 12)
   {
     if (!self->_firstSSIDTransition)
     {
@@ -69,7 +69,7 @@ LABEL_12:
     }
   }
 
-  else if (v12 && a4 == 2)
+  else if (changeCopy && reason == 2)
   {
     if (!self->_firstManualJoin)
     {
@@ -91,16 +91,16 @@ LABEL_12:
   NSLog(&cfstr_SFirstssidtran.isa, "[WiFiUsageRealTimeCoexSession joinStateDidChange:withReason:lastDisconnectReason:lastJoinFailure:andNetworkDetails:]", self->_firstSSIDTransition, firstManualJoinAfterSSIDTransition, self->_firstManualJoin);
   v20.receiver = self;
   v20.super_class = WiFiUsageRealTimeCoexSession;
-  [(WiFiUsageSession *)&v20 joinStateDidChange:v12 withReason:a4 lastDisconnectReason:a5 lastJoinFailure:a6 andNetworkDetails:v13];
+  [(WiFiUsageSession *)&v20 joinStateDidChange:changeCopy withReason:reason lastDisconnectReason:disconnectReason lastJoinFailure:failure andNetworkDetails:detailsCopy];
 }
 
-- (void)processIPv4Changes:(id)a3
+- (void)processIPv4Changes:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if ([(WiFiUsageSession *)self lastJoinReason]== 12)
   {
-    v5 = [(WiFiUsageSession *)self ipV4Details];
-    self->_hasDifferentIpv4DetailsAfterSSIDTransition = [v5 isEqual:v4] ^ 1;
+    ipV4Details = [(WiFiUsageSession *)self ipV4Details];
+    self->_hasDifferentIpv4DetailsAfterSSIDTransition = [ipV4Details isEqual:changesCopy] ^ 1;
 
     v6 = [MEMORY[0x277CBEAA8] now];
     firstIPUpdateAfterSSIDTransition = self->_firstIPUpdateAfterSSIDTransition;
@@ -114,16 +114,16 @@ LABEL_12:
 
   v9.receiver = self;
   v9.super_class = WiFiUsageRealTimeCoexSession;
-  [(WiFiUsageSession *)&v9 processIPv4Changes:v4];
+  [(WiFiUsageSession *)&v9 processIPv4Changes:changesCopy];
 }
 
-- (void)processIPv6Changes:(id)a3
+- (void)processIPv6Changes:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if ([(WiFiUsageSession *)self lastJoinReason]== 12)
   {
-    v5 = [(WiFiUsageSession *)self ipV6Details];
-    self->_hasDifferentIpv6DetailsAfterSSIDTransition = [v5 isEqual:v4] ^ 1;
+    ipV6Details = [(WiFiUsageSession *)self ipV6Details];
+    self->_hasDifferentIpv6DetailsAfterSSIDTransition = [ipV6Details isEqual:changesCopy] ^ 1;
   }
 
   if (!self->_firstIPUpdateAfterSSIDTransition)
@@ -140,7 +140,7 @@ LABEL_12:
 
   v9.receiver = self;
   v9.super_class = WiFiUsageRealTimeCoexSession;
-  [(WiFiUsageSession *)&v9 processIPv6Changes:v4];
+  [(WiFiUsageSession *)&v9 processIPv6Changes:changesCopy];
 }
 
 - (void)summarizeSession
@@ -154,11 +154,11 @@ LABEL_12:
   [(WiFiUsageSession *)&v4 summarizeSession];
 }
 
-- (WiFiUsageRealTimeCoexSession)initWithInterfaceName:(id)a3 andCapabilities:(id)a4
+- (WiFiUsageRealTimeCoexSession)initWithInterfaceName:(id)name andCapabilities:(id)capabilities
 {
   v5.receiver = self;
   v5.super_class = WiFiUsageRealTimeCoexSession;
-  return [(WiFiUsageSession *)&v5 initWithSessionType:8 andInterfaceName:a3 andCapabilities:a4];
+  return [(WiFiUsageSession *)&v5 initWithSessionType:8 andInterfaceName:name andCapabilities:capabilities];
 }
 
 - (void)sessionDidStart
@@ -210,11 +210,11 @@ LABEL_12:
   self->_firstIPUpdateAfterSSIDTransition = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = WiFiUsageRealTimeCoexSession;
-  v4 = [(WiFiUsageSession *)&v8 copyWithZone:a3];
+  v4 = [(WiFiUsageSession *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -261,14 +261,14 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(WiFiUsageSession *)self networkDetails];
-  v6 = [v5 connectedBss];
-  if (lastRequestPreferredChannel == [v6 channel])
+  networkDetails = [(WiFiUsageSession *)self networkDetails];
+  connectedBss = [networkDetails connectedBss];
+  if (lastRequestPreferredChannel == [connectedBss channel])
   {
     lastRequestPreferredBand = self->_lastRequestPreferredBand;
-    v8 = [(WiFiUsageSession *)self networkDetails];
-    v9 = [v8 connectedBss];
-    v4 = lastRequestPreferredBand == [v9 band];
+    networkDetails2 = [(WiFiUsageSession *)self networkDetails];
+    connectedBss2 = [networkDetails2 connectedBss];
+    v4 = lastRequestPreferredBand == [connectedBss2 band];
   }
 
   else
@@ -287,32 +287,32 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [(WiFiUsageSession *)self networkDetails];
-  v5 = [v4 connectedBss];
-  v3 = lastRequestPreferredBand == [v5 band];
+  networkDetails = [(WiFiUsageSession *)self networkDetails];
+  connectedBss = [networkDetails connectedBss];
+  v3 = lastRequestPreferredBand == [connectedBss band];
 
   return v3;
 }
 
-- (void)updateAssociatedNetworkDetails:(id)a3
+- (void)updateAssociatedNetworkDetails:(id)details
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  detailsCopy = details;
   v6 = [v4 now];
   [(WiFiUsageRealTimeCoexSession *)self updatePreferredChannelAndBandUsageWithReferenceDate:v6];
   v7.receiver = self;
   v7.super_class = WiFiUsageRealTimeCoexSession;
-  [(WiFiUsageSession *)&v7 updateAssociatedNetworkDetails:v5];
+  [(WiFiUsageSession *)&v7 updateAssociatedNetworkDetails:detailsCopy];
 
   [(WiFiUsageRealTimeCoexSession *)self setPreferredChannelAndBandUsageWithReferenceDate:v6];
 }
 
-- (void)updatePreferredChannelAndBandUsageWithReferenceDate:(id)a3
+- (void)updatePreferredChannelAndBandUsageWithReferenceDate:(id)date
 {
-  v8 = a3;
+  dateCopy = date;
   if ([(WiFiUsageRealTimeCoexSession *)self isCurrentChannelPreferredChannel]&& self->_lastEnterPreferredChannel)
   {
-    [v8 timeIntervalSinceDate:?];
+    [dateCopy timeIntervalSinceDate:?];
     self->_preferredChannelDuration = v4 + self->_preferredChannelDuration;
     lastEnterPreferredChannel = self->_lastEnterPreferredChannel;
     self->_lastEnterPreferredChannel = 0;
@@ -320,24 +320,24 @@ LABEL_12:
 
   if ([(WiFiUsageRealTimeCoexSession *)self isCurrentBandPreferredBand]&& self->_lastEnterPreferredBand)
   {
-    [v8 timeIntervalSinceDate:?];
+    [dateCopy timeIntervalSinceDate:?];
     self->_preferredBandDuration = v6 + self->_preferredBandDuration;
     lastEnterPreferredBand = self->_lastEnterPreferredBand;
     self->_lastEnterPreferredBand = 0;
   }
 }
 
-- (void)setPreferredChannelAndBandUsageWithReferenceDate:(id)a3
+- (void)setPreferredChannelAndBandUsageWithReferenceDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ([(WiFiUsageRealTimeCoexSession *)self isCurrentChannelPreferredChannel])
   {
-    objc_storeStrong(&self->_lastEnterPreferredChannel, a3);
+    objc_storeStrong(&self->_lastEnterPreferredChannel, date);
   }
 
   if ([(WiFiUsageRealTimeCoexSession *)self isCurrentBandPreferredBand])
   {
-    objc_storeStrong(&self->_lastEnterPreferredBand, a3);
+    objc_storeStrong(&self->_lastEnterPreferredBand, date);
   }
 }
 

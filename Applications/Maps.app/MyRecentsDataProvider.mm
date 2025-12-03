@@ -1,14 +1,14 @@
 @interface MyRecentsDataProvider
 - (_TtC4Maps21MyRecentsDataProvider)init;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 @end
 
 @implementation MyRecentsDataProvider
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100275E30();
   swift_unknownObjectRelease();
 }

@@ -12,8 +12,8 @@
   v7.receiver = self;
   v7.super_class = NPKRemotePassActionResponse;
   v3 = [(NPKRemotePassAction *)&v7 description];
-  v4 = [(NPKRemotePassActionResponse *)self identifier];
-  v5 = [v3 stringByAppendingFormat:@" (ID:%@, result:%d)", v4, -[NPKRemotePassActionResponse result](self, "result")];
+  identifier = [(NPKRemotePassActionResponse *)self identifier];
+  v5 = [v3 stringByAppendingFormat:@" (ID:%@, result:%d)", identifier, -[NPKRemotePassActionResponse result](self, "result")];
 
   return v5;
 }

@@ -1,15 +1,15 @@
 @interface MFDMessageBodyLoader
-- (void)_loadMessages:(id)a3 completion:(id)a4;
-- (void)loadBodiesOfMessagesContainingSubject:(id)a3 completion:(id)a4;
-- (void)loadBodyOfMessageWithID:(id)a3 completion:(id)a4;
+- (void)_loadMessages:(id)messages completion:(id)completion;
+- (void)loadBodiesOfMessagesContainingSubject:(id)subject completion:(id)completion;
+- (void)loadBodyOfMessageWithID:(id)d completion:(id)completion;
 @end
 
 @implementation MFDMessageBodyLoader
 
-- (void)loadBodyOfMessageWithID:(id)a3 completion:(id)a4
+- (void)loadBodyOfMessageWithID:(id)d completion:(id)completion
 {
-  v11 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (pthread_main_np())
   {
     v10 = +[NSAssertionHandler currentHandler];
@@ -17,34 +17,34 @@
   }
 
   v8 = +[MFMailMessageLibrary defaultInstance];
-  v9 = [v8 messagesWithMessageIDHeader:v11];
+  v9 = [v8 messagesWithMessageIDHeader:dCopy];
 
-  [(MFDMessageBodyLoader *)self _loadMessages:v9 completion:v7];
+  [(MFDMessageBodyLoader *)self _loadMessages:v9 completion:completionCopy];
 }
 
-- (void)loadBodiesOfMessagesContainingSubject:(id)a3 completion:(id)a4
+- (void)loadBodiesOfMessagesContainingSubject:(id)subject completion:(id)completion
 {
-  v12 = a3;
-  v7 = a4;
+  subjectCopy = subject;
+  completionCopy = completion;
   if (pthread_main_np())
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"MFDMessageBodyLoader.m" lineNumber:32 description:@"Current thread is main"];
   }
 
-  v8 = [[MFMessageCriterion alloc] initWithType:1 qualifier:0 expression:v12];
+  v8 = [[MFMessageCriterion alloc] initWithType:1 qualifier:0 expression:subjectCopy];
   [v8 setCriterionIdentifier:ECMessageHeaderKeySubject];
   v9 = +[MFMailMessageLibrary defaultInstance];
   v10 = [v9 messagesMatchingCriterion:v8 options:6297663];
 
-  [(MFDMessageBodyLoader *)self _loadMessages:v10 completion:v7];
+  [(MFDMessageBodyLoader *)self _loadMessages:v10 completion:completionCopy];
 }
 
-- (void)_loadMessages:(id)a3 completion:(id)a4
+- (void)_loadMessages:(id)messages completion:(id)completion
 {
-  v18 = a3;
-  v19 = a4;
-  if (![v18 count])
+  messagesCopy = messages;
+  completionCopy = completion;
+  if (![messagesCopy count])
   {
     v26 = NSLocalizedDescriptionKey;
     v27 = @"No matching message found in library";
@@ -60,7 +60,7 @@ LABEL_12:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v18;
+  obj = messagesCopy;
   v5 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (!v5)
   {
@@ -82,8 +82,8 @@ LABEL_12:
       v10 = *(*(&v22 + 1) + 8 * i);
       v11 = [MFMessageLoadingContext alloc];
       v12 = sub_100027C70();
-      v13 = [v12 defaultAttachmentManager];
-      v14 = [v11 initWithMessage:v10 attachmentManager:v13];
+      defaultAttachmentManager = [v12 defaultAttachmentManager];
+      v14 = [v11 initWithMessage:v10 attachmentManager:defaultAttachmentManager];
 
       v15 = +[EFScheduler immediateScheduler];
       [v14 load:1 scheduler:v15];
@@ -114,7 +114,7 @@ LABEL_12:
   }
 
 LABEL_14:
-  v19[2](v19, v7, v5);
+  completionCopy[2](completionCopy, v7, v5);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface ICSPosterConfigurationWrapper
 - (PRSPosterConfiguration)configuration;
 - (PRUISPosterTitleStyleAttributes)titleStyleAttributes;
-- (void)setTitleStyleAttributes:(id)a3;
+- (void)setTitleStyleAttributes:(id)attributes;
 @end
 
 @implementation ICSPosterConfigurationWrapper
@@ -20,11 +20,11 @@
   return v2;
 }
 
-- (void)setTitleStyleAttributes:(id)a3
+- (void)setTitleStyleAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = self;
-  sub_100164520(a3);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100164520(attributes);
 }
 
 @end

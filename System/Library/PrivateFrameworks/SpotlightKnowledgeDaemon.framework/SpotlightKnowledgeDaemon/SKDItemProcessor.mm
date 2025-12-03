@@ -1,37 +1,37 @@
 @interface SKDItemProcessor
 - (SKDEventLogger)logger;
-- (SKDItemProcessor)initWithPipelines:(id)a3;
-- (id)processItemWithRecord:(id)a3 filePath:(id)a4;
-- (id)processItemWithRecord:(id)a3 uniqueID:(id)a4 bundleID:(id)a5;
-- (void)processItemUpdate:(id)a3 record:(id)a4 bundleID:(id)a5;
+- (SKDItemProcessor)initWithPipelines:(id)pipelines;
+- (id)processItemWithRecord:(id)record filePath:(id)path;
+- (id)processItemWithRecord:(id)record uniqueID:(id)d bundleID:(id)iD;
+- (void)processItemUpdate:(id)update record:(id)record bundleID:(id)d;
 - (void)resume;
 - (void)suspend;
 @end
 
 @implementation SKDItemProcessor
 
-- (SKDItemProcessor)initWithPipelines:(id)a3
+- (SKDItemProcessor)initWithPipelines:(id)pipelines
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pipelinesCopy = pipelines;
   v22.receiver = self;
   v22.super_class = SKDItemProcessor;
   v6 = [(SKDItemProcessor *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelines, a3);
+    objc_storeStrong(&v6->_pipelines, pipelines);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v8 addObjectsFromArray:&unk_2846E8130];
-    v9 = [(SKDItemProcessor *)v7 fetchAttributes];
-    [v8 addObjectsFromArray:v9];
+    fetchAttributes = [(SKDItemProcessor *)v7 fetchAttributes];
+    [v8 addObjectsFromArray:fetchAttributes];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [(SKDItemProcessor *)v7 pipelines];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    pipelines = [(SKDItemProcessor *)v7 pipelines];
+    v11 = [pipelines countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -43,17 +43,17 @@
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(pipelines);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * v14) fetchAttributes];
-          [v8 addObjectsFromArray:v15];
+          fetchAttributes2 = [*(*(&v18 + 1) + 8 * v14) fetchAttributes];
+          [v8 addObjectsFromArray:fetchAttributes2];
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v12 = [pipelines countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v12);
@@ -66,15 +66,15 @@
   return v7;
 }
 
-- (void)processItemUpdate:(id)a3 record:(id)a4 bundleID:(id)a5
+- (void)processItemUpdate:(id)update record:(id)record bundleID:(id)d
 {
   v99 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v41 = a4;
-  v48 = a5;
-  v45 = self;
-  v9 = [(SKDItemProcessor *)self logger];
-  v44 = [v9 trackingEventBeginWithName:@"process-item" event:v8];
+  updateCopy = update;
+  recordCopy = record;
+  dCopy = d;
+  selfCopy = self;
+  logger = [(SKDItemProcessor *)self logger];
+  v44 = [logger trackingEventBeginWithName:@"process-item" event:updateCopy];
 
   v91 = 0;
   v92 = &v91;
@@ -90,7 +90,7 @@
   v82 = &v81;
   v83 = 0x2020000000;
   v84 = 1;
-  v10 = [v41 mutableCopy];
+  v10 = [recordCopy mutableCopy];
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
@@ -110,25 +110,25 @@
         }
 
         v12 = *(*(&v77 + 1) + 8 * i);
-        v13 = [v12 descriptor];
-        if ([v13 enabled])
+        descriptor = [v12 descriptor];
+        if ([descriptor enabled])
         {
-          v14 = [v12 canRun];
+          canRun = [v12 canRun];
 
-          if (v14)
+          if (canRun)
           {
-            v15 = [v12 fetchAttributes];
-            v16 = [v10 queryRecordEntriesWithKeys:v15];
+            fetchAttributes = [v12 fetchAttributes];
+            v16 = [v10 queryRecordEntriesWithKeys:fetchAttributes];
 
-            if ([v12 supportsRecord:v16 bundleID:v48])
+            if ([v12 supportsRecord:v16 bundleID:dCopy])
             {
               v75 = 0u;
               v76 = 0u;
               v73 = 0u;
               v74 = 0u;
-              v17 = [v12 processors];
-              v18 = [v17 countByEnumeratingWithState:&v73 objects:v97 count:16];
-              v52 = v17;
+              processors = [v12 processors];
+              v18 = [processors countByEnumeratingWithState:&v73 objects:v97 count:16];
+              v52 = processors;
               if (v18)
               {
                 v54 = *v74;
@@ -143,23 +143,23 @@ LABEL_11:
 
                   v20 = *(*(&v73 + 1) + 8 * v19);
                   v21 = objc_autoreleasePoolPush();
-                  if ([v20 willProcessRecord:v16 bundleID:v48])
+                  if ([v20 willProcessRecord:v16 bundleID:dCopy])
                   {
-                    v22 = [(CSEmbeddingsUpdater *)v20 activityJournal];
+                    activityJournal = [(CSEmbeddingsUpdater *)v20 activityJournal];
                     block[0] = MEMORY[0x277D85DD0];
                     block[1] = 3221225472;
                     block[2] = __54__SKDItemProcessor_processItemUpdate_record_bundleID___block_invoke;
                     block[3] = &unk_27893E310;
                     block[4] = v20;
                     v65 = v16;
-                    v66 = v48;
+                    v66 = dCopy;
                     v67 = v44;
                     v68 = v10;
                     v69 = v12;
                     v70 = &v91;
                     v71 = &v81;
                     v72 = &v85;
-                    dispatch_sync(v22, block);
+                    dispatch_sync(activityJournal, block);
                   }
 
                   objc_autoreleasePoolPop(v21);
@@ -204,8 +204,8 @@ LABEL_11:
 
 LABEL_25:
 
-  v24 = [(SKDItemProcessor *)v45 logger];
-  [v24 trackingEventEnd:v44];
+  logger2 = [(SKDItemProcessor *)selfCopy logger];
+  [logger2 trackingEventEnd:v44];
 
   v25 = *(v92 + 24);
   if (!v25)
@@ -218,8 +218,8 @@ LABEL_25:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v47 = [(SKDItemProcessor *)v45 pipelines];
-  v51 = [v47 countByEnumeratingWithState:&v60 objects:v96 count:16];
+  pipelines = [(SKDItemProcessor *)selfCopy pipelines];
+  v51 = [pipelines countByEnumeratingWithState:&v60 objects:v96 count:16];
   if (v51)
   {
     v50 = *v61;
@@ -229,14 +229,14 @@ LABEL_25:
       {
         if (*v61 != v50)
         {
-          objc_enumerationMutation(v47);
+          objc_enumerationMutation(pipelines);
         }
 
         v53 = *(*(&v60 + 1) + 8 * j);
-        v26 = [v53 descriptor];
-        v27 = [v26 enabled];
+        descriptor2 = [v53 descriptor];
+        enabled = [descriptor2 enabled];
 
-        if (v27 && [v53 canRun])
+        if (enabled && [v53 canRun])
         {
           if (*(v92 + 24) == 2)
           {
@@ -244,9 +244,9 @@ LABEL_25:
             v59 = 0u;
             v56 = 0u;
             v57 = 0u;
-            v28 = [v53 processedAttributes];
+            processedAttributes = [v53 processedAttributes];
             v29 = 0;
-            v30 = [v28 countByEnumeratingWithState:&v56 objects:v95 count:16];
+            v30 = [processedAttributes countByEnumeratingWithState:&v56 objects:v95 count:16];
             if (v30)
             {
               v31 = *v57;
@@ -256,12 +256,12 @@ LABEL_25:
                 {
                   if (*v57 != v31)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(processedAttributes);
                   }
 
                   v33 = *(*(&v56 + 1) + 8 * k);
-                  v34 = [v8 attributes];
-                  v35 = [v34 objectForKeyedSubscript:v33];
+                  attributes = [updateCopy attributes];
+                  v35 = [attributes objectForKeyedSubscript:v33];
                   if (v35)
                   {
                   }
@@ -272,7 +272,7 @@ LABEL_25:
 
                     if (v36)
                     {
-                      [v8 addAttribute:v33 value:v36];
+                      [updateCopy addAttribute:v33 value:v36];
                       v29 = v36;
                     }
 
@@ -283,7 +283,7 @@ LABEL_25:
                   }
                 }
 
-                v30 = [v28 countByEnumeratingWithState:&v56 objects:v95 count:16];
+                v30 = [processedAttributes countByEnumeratingWithState:&v56 objects:v95 count:16];
               }
 
               while (v30);
@@ -295,20 +295,20 @@ LABEL_25:
             v29 = 0;
           }
 
-          v37 = [v53 errorAttribute];
-          v38 = [v10 objectForKey:v37];
+          errorAttribute = [v53 errorAttribute];
+          v38 = [v10 objectForKey:errorAttribute];
 
           if (v38)
           {
-            v39 = [v53 errorAttribute];
-            [v8 addAttribute:v39 value:v38];
+            errorAttribute2 = [v53 errorAttribute];
+            [updateCopy addAttribute:errorAttribute2 value:v38];
           }
 
-          [(SKDItemProcessor *)v45 completeItemUpdate:v8 pipeline:v53];
+          [(SKDItemProcessor *)selfCopy completeItemUpdate:updateCopy pipeline:v53];
         }
       }
 
-      v51 = [v47 countByEnumeratingWithState:&v60 objects:v96 count:16];
+      v51 = [pipelines countByEnumeratingWithState:&v60 objects:v96 count:16];
     }
 
     while (v51);
@@ -316,10 +316,10 @@ LABEL_25:
 
   if (v86[5])
   {
-    [v8 updateInfo:?];
+    [updateCopy updateInfo:?];
   }
 
-  [v8 updateStatus:*(v92 + 24)];
+  [updateCopy updateStatus:*(v92 + 24)];
 
   _Block_object_dispose(&v81, 8);
   _Block_object_dispose(&v85, 8);
@@ -384,43 +384,43 @@ void __54__SKDItemProcessor_processItemUpdate_record_bundleID___block_invoke(uin
 LABEL_11:
 }
 
-- (id)processItemWithRecord:(id)a3 uniqueID:(id)a4 bundleID:(id)a5
+- (id)processItemWithRecord:(id)record uniqueID:(id)d bundleID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  dCopy = d;
+  iDCopy = iD;
   v11 = [SKDItemUpdate alloc];
   v12 = [objc_opt_class() description];
-  v13 = [(SKDItemUpdate *)v11 initWithStatus:0 identifier:v12 uniqueID:v9 bundleID:v10];
+  v13 = [(SKDItemUpdate *)v11 initWithStatus:0 identifier:v12 uniqueID:dCopy bundleID:iDCopy];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = [(SKDItemProcessor *)self fetchAttributes];
-  v16 = [v8 queryRecordEntriesWithKeys:v15];
+  fetchAttributes = [(SKDItemProcessor *)self fetchAttributes];
+  v16 = [recordCopy queryRecordEntriesWithKeys:fetchAttributes];
 
-  [(SKDItemProcessor *)self processItemUpdate:v13 record:v16 bundleID:v10];
-  v17 = [(SKDItemProcessor *)self logger];
-  [v17 logEvent:v13 level:5];
+  [(SKDItemProcessor *)self processItemUpdate:v13 record:v16 bundleID:iDCopy];
+  logger = [(SKDItemProcessor *)self logger];
+  [logger logEvent:v13 level:5];
 
   objc_autoreleasePoolPop(v14);
 
   return v13;
 }
 
-- (id)processItemWithRecord:(id)a3 filePath:(id)a4
+- (id)processItemWithRecord:(id)record filePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  pathCopy = path;
   v8 = objc_autoreleasePoolPush();
   v9 = [SKDItemUpdate alloc];
   v10 = [objc_opt_class() description];
-  v11 = [(SKDItemUpdate *)v9 initWithStatus:0 identifier:v10 uniqueID:v7 bundleID:@"com.apple.Metadata"];
+  v11 = [(SKDItemUpdate *)v9 initWithStatus:0 identifier:v10 uniqueID:pathCopy bundleID:@"com.apple.Metadata"];
 
-  v12 = [(SKDItemProcessor *)self fetchAttributes];
-  v13 = [v6 queryRecordEntriesWithKeys:v12];
+  fetchAttributes = [(SKDItemProcessor *)self fetchAttributes];
+  v13 = [recordCopy queryRecordEntriesWithKeys:fetchAttributes];
 
   [(SKDItemProcessor *)self processItemUpdate:v11 record:v13 bundleID:@"com.apple.Metadata"];
-  v14 = [(SKDItemProcessor *)self logger];
-  [v14 logEvent:v11 level:5];
+  logger = [(SKDItemProcessor *)self logger];
+  [logger logEvent:v11 level:5];
 
   objc_autoreleasePoolPop(v8);
 
@@ -434,8 +434,8 @@ LABEL_11:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(SKDItemProcessor *)self pipelines];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  pipelines = [(SKDItemProcessor *)self pipelines];
+  v4 = [pipelines countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -447,7 +447,7 @@ LABEL_11:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pipelines);
         }
 
         v8 = *(*(&v21 + 1) + 8 * v7);
@@ -455,8 +455,8 @@ LABEL_11:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 processors];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        processors = [v8 processors];
+        v10 = [processors countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -468,14 +468,14 @@ LABEL_11:
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(processors);
               }
 
               [*(*(&v17 + 1) + 8 * v13++) suspend];
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [processors countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
@@ -485,15 +485,15 @@ LABEL_11:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [pipelines countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);
   }
 
-  v14 = [(SKDItemProcessor *)self logger];
+  logger = [(SKDItemProcessor *)self logger];
   v15 = +[SKDPipelineEvent stateSuspendedEvent];
-  [v14 logEvent:v15 level:6];
+  [logger logEvent:v15 level:6];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -505,8 +505,8 @@ LABEL_11:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [(SKDItemProcessor *)self pipelines];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  pipelines = [(SKDItemProcessor *)self pipelines];
+  v4 = [pipelines countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -518,7 +518,7 @@ LABEL_11:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pipelines);
         }
 
         v8 = *(*(&v21 + 1) + 8 * v7);
@@ -526,8 +526,8 @@ LABEL_11:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 processors];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        processors = [v8 processors];
+        v10 = [processors countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -539,14 +539,14 @@ LABEL_11:
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(processors);
               }
 
               [*(*(&v17 + 1) + 8 * v13++) resume];
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [processors countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
@@ -556,15 +556,15 @@ LABEL_11:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [pipelines countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);
   }
 
-  v14 = [(SKDItemProcessor *)self logger];
+  logger = [(SKDItemProcessor *)self logger];
   v15 = +[SKDPipelineEvent stateResumedEvent];
-  [v14 logEvent:v15 level:6];
+  [logger logEvent:v15 level:6];
 
   v16 = *MEMORY[0x277D85DE8];
 }

@@ -1,9 +1,9 @@
 @interface MOXPCContext
 - (MOXPCContext)init;
-- (MOXPCContext)initWithCoder:(id)a3;
-- (id)decodeToDictionary:(id)a3;
-- (id)encodeDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MOXPCContext)initWithCoder:(id)coder;
+- (id)decodeToDictionary:(id)dictionary;
+- (id)encodeDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOXPCContext
@@ -20,8 +20,8 @@
     v2->_configuration = v3;
 
     v5 = +[NSProcessInfo processInfo];
-    v6 = [v5 processName];
-    [(NSMutableDictionary *)v2->_configuration setObject:v6 forKeyedSubscript:@"ProcessName"];
+    processName = [v5 processName];
+    [(NSMutableDictionary *)v2->_configuration setObject:processName forKeyedSubscript:@"ProcessName"];
 
     v7 = v2;
   }
@@ -29,13 +29,13 @@
   return v2;
 }
 
-- (MOXPCContext)initWithCoder:(id)a3
+- (MOXPCContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MOXPCContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProcessName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProcessName"];
     v7 = objc_alloc_init(NSMutableDictionary);
     configuration = v5->_configuration;
     v5->_configuration = v7;
@@ -47,18 +47,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configuration = self->_configuration;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NSMutableDictionary *)configuration objectForKeyedSubscript:@"ProcessName"];
-  [v4 encodeObject:v5 forKey:@"ProcessName"];
+  [coderCopy encodeObject:v5 forKey:@"ProcessName"];
 }
 
-- (id)encodeDictionary:(id)a3
+- (id)encodeDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
     v7 = v10;
     v11 = @"Invalid parameter not satisfying: value";
     v12 = a2;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 62;
     goto LABEL_12;
   }
@@ -88,16 +88,16 @@
     v7 = v10;
     v11 = @"Invalid parameter not satisfying: [value isKindOfClass:[NSDictionary class]]";
     v12 = a2;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 63;
 LABEL_12:
-    [v10 handleFailureInMethod:v12 object:v13 file:@"MOXPCContext.m" lineNumber:v14 description:v11];
+    [v10 handleFailureInMethod:v12 object:selfCopy2 file:@"MOXPCContext.m" lineNumber:v14 description:v11];
     v8 = 0;
     goto LABEL_17;
   }
 
   v18 = 0;
-  v6 = [NSJSONSerialization dataWithJSONObject:v5 options:0 error:&v18];
+  v6 = [NSJSONSerialization dataWithJSONObject:dictionaryCopy options:0 error:&v18];
   v7 = v18;
   if (v7 || !v6)
   {
@@ -120,10 +120,10 @@ LABEL_17:
   return v8;
 }
 
-- (id)decodeToDictionary:(id)a3
+- (id)decodeToDictionary:(id)dictionary
 {
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     goto LABEL_10;
   }
@@ -145,7 +145,7 @@ LABEL_17:
   if (objc_opt_isKindOfClass())
   {
     v13 = 0;
-    v8 = [NSJSONSerialization JSONObjectWithData:v5 options:0 error:&v13];
+    v8 = [NSJSONSerialization JSONObjectWithData:dictionaryCopy options:0 error:&v13];
     v9 = v13;
     if (v9 || !v8)
     {

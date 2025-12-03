@@ -1,39 +1,39 @@
 @interface _SFAppAutoFillPasswordViewController
-- (id)_connectToServiceWithCompletion:(id)a3;
-- (void)_sceneDidEnterBackground:(id)a3;
+- (id)_connectToServiceWithCompletion:(id)completion;
+- (void)_sceneDidEnterBackground:(id)background;
 - (void)_setUpServiceProxyIfNeeded;
-- (void)authenticateToPresentInPopover:(BOOL)a3 completion:(id)a4;
-- (void)authenticateToPresentInPopover:(BOOL)a3 savedAccountContext:(id)a4 completion:(id)a5;
-- (void)remoteViewController:(id)a3 fillPassword:(id)a4;
-- (void)remoteViewController:(id)a3 fillText:(id)a4;
-- (void)remoteViewController:(id)a3 fillUsername:(id)a4;
-- (void)remoteViewController:(id)a3 fillVerificationCode:(id)a4;
-- (void)remoteViewController:(id)a3 selectedCredential:(id)a4;
-- (void)setAuthenticationGracePeriod:(double)a3;
-- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)a3;
-- (void)setPageID:(id)a3 frameID:(id)a4 credentialType:(id)a5;
-- (void)setRemoteAppID:(id)a3;
-- (void)setRemoteLocalizedAppName:(id)a3;
-- (void)setRemoteUnlocalizedAppName:(id)a3;
-- (void)setSystemAutoFillDocumentTraits:(id)a3;
-- (void)setWebViewURL:(id)a3;
+- (void)authenticateToPresentInPopover:(BOOL)popover completion:(id)completion;
+- (void)authenticateToPresentInPopover:(BOOL)popover savedAccountContext:(id)context completion:(id)completion;
+- (void)remoteViewController:(id)controller fillPassword:(id)password;
+- (void)remoteViewController:(id)controller fillText:(id)text;
+- (void)remoteViewController:(id)controller fillUsername:(id)username;
+- (void)remoteViewController:(id)controller fillVerificationCode:(id)code;
+- (void)remoteViewController:(id)controller selectedCredential:(id)credential;
+- (void)setAuthenticationGracePeriod:(double)period;
+- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)domains;
+- (void)setPageID:(id)d frameID:(id)iD credentialType:(id)type;
+- (void)setRemoteAppID:(id)d;
+- (void)setRemoteLocalizedAppName:(id)name;
+- (void)setRemoteUnlocalizedAppName:(id)name;
+- (void)setSystemAutoFillDocumentTraits:(id)traits;
+- (void)setWebViewURL:(id)l;
 - (void)viewDidLoad;
 @end
 
 @implementation _SFAppAutoFillPasswordViewController
 
-- (void)_sceneDidEnterBackground:(id)a3
+- (void)_sceneDidEnterBackground:(id)background
 {
-  v8 = a3;
-  v4 = [(_SFAppAutoFillPasswordViewController *)self viewIfLoaded];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  backgroundCopy = background;
+  viewIfLoaded = [(_SFAppAutoFillPasswordViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
 
-  if (v6)
+  if (windowScene)
   {
-    v7 = [v8 object];
+    object = [backgroundCopy object];
 
-    if (v6 == v7)
+    if (windowScene == object)
     {
       [(_SFPasswordViewController *)self remoteViewControllerWillDismiss:self->_remoteViewController];
     }
@@ -54,9 +54,9 @@
   }
 }
 
-- (id)_connectToServiceWithCompletion:(id)a3
+- (id)_connectToServiceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -68,8 +68,8 @@
   v9[2] = __72___SFAppAutoFillPasswordViewController__connectToServiceWithCompletion___block_invoke;
   v9[3] = &unk_1E8490270;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = [(SFPasswordRemoteViewController *)SFPasswordPickerRemoteViewController requestViewControllerWithConnectionHandler:v9];
 
   return v7;
@@ -80,26 +80,26 @@
   v4.receiver = self;
   v4.super_class = _SFAppAutoFillPasswordViewController;
   [(_SFAppAutoFillPasswordViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:0];
 
   [(_SFPasswordViewController *)self _addRemoteViewAsChild];
 }
 
-- (void)authenticateToPresentInPopover:(BOOL)a3 completion:(id)a4
+- (void)authenticateToPresentInPopover:(BOOL)popover completion:(id)completion
 {
-  v4 = a3;
+  popoverCopy = popover;
   v6 = MEMORY[0x1E69C8A20];
-  v7 = a4;
-  v8 = [v6 defaultContext];
-  [(_SFAppAutoFillPasswordViewController *)self authenticateToPresentInPopover:v4 savedAccountContext:v8 completion:v7];
+  completionCopy = completion;
+  defaultContext = [v6 defaultContext];
+  [(_SFAppAutoFillPasswordViewController *)self authenticateToPresentInPopover:popoverCopy savedAccountContext:defaultContext completion:completionCopy];
 }
 
-- (void)authenticateToPresentInPopover:(BOOL)a3 savedAccountContext:(id)a4 completion:(id)a5
+- (void)authenticateToPresentInPopover:(BOOL)popover savedAccountContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
+  popoverCopy = popover;
+  completionCopy = completion;
+  contextCopy = context;
   v10 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -112,164 +112,164 @@
   v13[2] = __102___SFAppAutoFillPasswordViewController_authenticateToPresentInPopover_savedAccountContext_completion___block_invoke;
   v13[3] = &unk_1E8490C40;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [(SFPasswordPickerServiceViewControllerProtocol *)serviceProxy authenticateToPresentInPopover:v6 savedAccountContext:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(SFPasswordPickerServiceViewControllerProtocol *)serviceProxy authenticateToPresentInPopover:popoverCopy savedAccountContext:contextCopy completion:v13];
 }
 
-- (void)setWebViewURL:(id)a3
+- (void)setWebViewURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setWebViewURL:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setWebViewURL:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setWebViewURL:lCopy];
 }
 
-- (void)setRemoteAppID:(id)a3
+- (void)setRemoteAppID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setRemoteAppID:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteAppID:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteAppID:dCopy];
 }
 
-- (void)setRemoteLocalizedAppName:(id)a3
+- (void)setRemoteLocalizedAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setRemoteLocalizedAppName:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteLocalizedAppName:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteLocalizedAppName:nameCopy];
 }
 
-- (void)setRemoteUnlocalizedAppName:(id)a3
+- (void)setRemoteUnlocalizedAppName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setRemoteUnlocalizedAppName:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteUnlocalizedAppName:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setRemoteUnlocalizedAppName:nameCopy];
 }
 
-- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)a3
+- (void)setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:domainsCopy];
 }
 
-- (void)setAuthenticationGracePeriod:(double)a3
+- (void)setAuthenticationGracePeriod:(double)period
 {
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_SFAppAutoFillPasswordViewController *)self setAuthenticationGracePeriod:v5, a3];
+    [(_SFAppAutoFillPasswordViewController *)self setAuthenticationGracePeriod:v5, period];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setAuthenticationGracePeriod:a3];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setAuthenticationGracePeriod:period];
 }
 
-- (void)setPageID:(id)a3 frameID:(id)a4 credentialType:(id)a5
+- (void)setPageID:(id)d frameID:(id)iD credentialType:(id)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  typeCopy = type;
   v11 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134218754;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v8;
+    v15 = dCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = iDCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = typeCopy;
     _os_log_debug_impl(&dword_1D4644000, v11, OS_LOG_TYPE_DEBUG, "In-process view controller %p setPageID: %@ frameID: %@ credentialType: %@", &v12, 0x2Au);
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setPageID:v8 frameID:v9 credentialType:v10];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setPageID:dCopy frameID:iDCopy credentialType:typeCopy];
 }
 
-- (void)setSystemAutoFillDocumentTraits:(id)a3
+- (void)setSystemAutoFillDocumentTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v5 = WBS_LOG_CHANNEL_PREFIXAppPasswordAutoFill();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [_SFAppAutoFillPasswordViewController setSystemAutoFillDocumentTraits:];
   }
 
-  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setSystemAutoFillDocumentTraits:v4];
+  [(SFPasswordPickerServiceViewControllerProtocol *)self->_serviceProxy setSystemAutoFillDocumentTraits:traitsCopy];
 }
 
-- (void)remoteViewController:(id)a3 selectedCredential:(id)a4
+- (void)remoteViewController:(id)controller selectedCredential:(id)credential
 {
-  v6 = a4;
-  v5 = [(_SFPasswordViewController *)self delegate];
+  credentialCopy = credential;
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passwordViewController:self selectedCredential:v6];
+    [delegate passwordViewController:self selectedCredential:credentialCopy];
   }
 }
 
-- (void)remoteViewController:(id)a3 fillUsername:(id)a4
+- (void)remoteViewController:(id)controller fillUsername:(id)username
 {
-  v6 = a4;
-  v5 = [(_SFPasswordViewController *)self delegate];
+  usernameCopy = username;
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passwordViewController:self fillUsername:v6];
+    [delegate passwordViewController:self fillUsername:usernameCopy];
   }
 }
 
-- (void)remoteViewController:(id)a3 fillPassword:(id)a4
+- (void)remoteViewController:(id)controller fillPassword:(id)password
 {
-  v6 = a4;
-  v5 = [(_SFPasswordViewController *)self delegate];
+  passwordCopy = password;
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passwordViewController:self fillPassword:v6];
+    [delegate passwordViewController:self fillPassword:passwordCopy];
   }
 }
 
-- (void)remoteViewController:(id)a3 fillVerificationCode:(id)a4
+- (void)remoteViewController:(id)controller fillVerificationCode:(id)code
 {
-  v6 = a4;
-  v5 = [(_SFPasswordViewController *)self delegate];
+  codeCopy = code;
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passwordViewController:self fillVerificationCode:v6];
+    [delegate passwordViewController:self fillVerificationCode:codeCopy];
   }
 }
 
-- (void)remoteViewController:(id)a3 fillText:(id)a4
+- (void)remoteViewController:(id)controller fillText:(id)text
 {
-  v6 = a4;
-  v5 = [(_SFPasswordViewController *)self delegate];
+  textCopy = text;
+  delegate = [(_SFPasswordViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passwordViewController:self fillText:v6];
+    [delegate passwordViewController:self fillText:textCopy];
   }
 }
 

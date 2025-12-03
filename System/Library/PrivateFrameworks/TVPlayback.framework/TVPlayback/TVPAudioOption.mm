@@ -1,15 +1,15 @@
 @interface TVPAudioOption
 - (BOOL)hasAudioDescriptions;
-- (BOOL)hasMediaCharacteristic:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)hasMediaCharacteristic:(id)characteristic;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)mediaCharacteristics;
 - (NSString)languageCodeBCP47;
 - (NSString)languageCodeFromLocale;
 - (NSString)localizedDisplayString;
 - (NSString)title;
-- (TVPAudioOption)initWithOption:(id)a3;
-- (TVPAudioOption)initWithPropertyListRepresentation:(id)a3;
-- (TVPAudioOption)initWithSavedTrackID:(int)a3 savedLocaleLanguageCode:(id)a4;
+- (TVPAudioOption)initWithOption:(id)option;
+- (TVPAudioOption)initWithPropertyListRepresentation:(id)representation;
+- (TVPAudioOption)initWithSavedTrackID:(int)d savedLocaleLanguageCode:(id)code;
 - (id)description;
 - (id)propertyListRepresentation;
 - (int)trackID;
@@ -19,33 +19,33 @@
 
 @implementation TVPAudioOption
 
-- (TVPAudioOption)initWithPropertyListRepresentation:(id)a3
+- (TVPAudioOption)initWithPropertyListRepresentation:(id)representation
 {
-  v5 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = TVPAudioOption;
   v6 = [(TVPAudioOption *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_propertyListRepresentation, a3);
+    objc_storeStrong(&v6->_propertyListRepresentation, representation);
     v7->_trackID = 0;
   }
 
   return v7;
 }
 
-- (TVPAudioOption)initWithSavedTrackID:(int)a3 savedLocaleLanguageCode:(id)a4
+- (TVPAudioOption)initWithSavedTrackID:(int)d savedLocaleLanguageCode:(id)code
 {
-  v6 = a4;
+  codeCopy = code;
   v12.receiver = self;
   v12.super_class = TVPAudioOption;
   v7 = [(TVPAudioOption *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_trackID = a3;
-    v9 = [v6 copy];
+    v7->_trackID = d;
+    v9 = [codeCopy copy];
     savedLocaleLanguageCode = v8->_savedLocaleLanguageCode;
     v8->_savedLocaleLanguageCode = v9;
   }
@@ -53,19 +53,19 @@
   return v8;
 }
 
-- (TVPAudioOption)initWithOption:(id)a3
+- (TVPAudioOption)initWithOption:(id)option
 {
-  v5 = a3;
+  optionCopy = option;
   v10.receiver = self;
   v10.super_class = TVPAudioOption;
   v6 = [(TVPAudioOption *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_avMediaSelectionOption, a3);
+    objc_storeStrong(&v6->_avMediaSelectionOption, option);
     v7->_trackID = 0;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v7 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__currentLocaleDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v7;
@@ -73,23 +73,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVPAudioOption;
   [(TVPAudioOption *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TVPAudioOption *)self avMediaSelectionOption];
-    v6 = [v4 avMediaSelectionOption];
-    v7 = [v5 isEqual:v6];
+    avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+    avMediaSelectionOption2 = [equalCopy avMediaSelectionOption];
+    v7 = [avMediaSelectionOption isEqual:avMediaSelectionOption2];
   }
 
   else
@@ -102,8 +102,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TVPAudioOption *)self avMediaSelectionOption];
-  v3 = [v2 hash];
+  avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+  v3 = [avMediaSelectionOption hash];
 
   return v3;
 }
@@ -118,10 +118,10 @@
     languageCodeFromLocale = self->_languageCodeFromLocale;
     if (!languageCodeFromLocale)
     {
-      v5 = [(TVPAudioOption *)self avMediaSelectionOption];
-      v6 = [v5 locale];
+      avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+      locale = [avMediaSelectionOption locale];
 
-      v7 = [v6 objectForKey:*MEMORY[0x277CBE6C8]];
+      v7 = [locale objectForKey:*MEMORY[0x277CBE6C8]];
       v8 = [v7 copy];
       v9 = self->_languageCodeFromLocale;
       self->_languageCodeFromLocale = v8;
@@ -138,9 +138,9 @@
   languageCodeBCP47 = self->_languageCodeBCP47;
   if (!languageCodeBCP47)
   {
-    v4 = [(TVPAudioOption *)self avMediaSelectionOption];
-    v5 = [v4 extendedLanguageTag];
-    v6 = [v5 copy];
+    avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+    extendedLanguageTag = [avMediaSelectionOption extendedLanguageTag];
+    v6 = [extendedLanguageTag copy];
     v7 = self->_languageCodeBCP47;
     self->_languageCodeBCP47 = v6;
 
@@ -155,9 +155,9 @@
   localizedDisplayString = self->_localizedDisplayString;
   if (!localizedDisplayString)
   {
-    v4 = [(TVPAudioOption *)self avMediaSelectionOption];
-    v5 = [v4 tvp_localizedDisplayString];
-    v6 = [v5 copy];
+    avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+    tvp_localizedDisplayString = [avMediaSelectionOption tvp_localizedDisplayString];
+    v6 = [tvp_localizedDisplayString copy];
     v7 = self->_localizedDisplayString;
     self->_localizedDisplayString = v6;
 
@@ -173,12 +173,12 @@
   if (!title)
   {
     v4 = MEMORY[0x277CE6520];
-    v5 = [(TVPAudioOption *)self avMediaSelectionOption];
-    v6 = [v5 commonMetadata];
-    v7 = [v4 metadataItemsFromArray:v6 filteredByIdentifier:*MEMORY[0x277CE5EF0]];
-    v8 = [v7 firstObject];
-    v9 = [v8 stringValue];
-    v10 = [v9 copy];
+    avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+    commonMetadata = [avMediaSelectionOption commonMetadata];
+    v7 = [v4 metadataItemsFromArray:commonMetadata filteredByIdentifier:*MEMORY[0x277CE5EF0]];
+    firstObject = [v7 firstObject];
+    stringValue = [firstObject stringValue];
+    v10 = [stringValue copy];
     v11 = self->_title;
     self->_title = v10;
 
@@ -190,59 +190,59 @@
 
 - (id)propertyListRepresentation
 {
-  v3 = self->_propertyListRepresentation;
-  if (!v3)
+  propertyList = self->_propertyListRepresentation;
+  if (!propertyList)
   {
-    v4 = [(TVPAudioOption *)self avMediaSelectionOption];
-    v3 = [v4 propertyList];
+    avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+    propertyList = [avMediaSelectionOption propertyList];
   }
 
-  return v3;
+  return propertyList;
 }
 
 - (BOOL)hasAudioDescriptions
 {
-  v2 = [(TVPAudioOption *)self avMediaSelectionOption];
-  v3 = [v2 hasMediaCharacteristic:*MEMORY[0x277CE5E08]];
+  avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+  v3 = [avMediaSelectionOption hasMediaCharacteristic:*MEMORY[0x277CE5E08]];
 
   return v3;
 }
 
 - (NSArray)mediaCharacteristics
 {
-  v2 = [(TVPAudioOption *)self avMediaSelectionOption];
-  v3 = [v2 mediaCharacteristics];
+  avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+  mediaCharacteristics = [avMediaSelectionOption mediaCharacteristics];
 
-  return v3;
+  return mediaCharacteristics;
 }
 
 - (id)description
 {
-  v2 = [(TVPAudioOption *)self avMediaSelectionOption];
-  v3 = [v2 description];
+  avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+  v3 = [avMediaSelectionOption description];
 
   return v3;
 }
 
 - (int)trackID
 {
-  v2 = self;
+  selfCopy = self;
   LODWORD(self) = self->_trackID;
   if (!self)
   {
-    self = [(TVPAudioOption *)v2 avMediaSelectionOption];
+    self = [(TVPAudioOption *)selfCopy avMediaSelectionOption];
     if (self)
     {
-      v3 = self;
-      v4 = [(TVPAudioOption *)v2 avMediaSelectionOption];
+      selfCopy2 = self;
+      avMediaSelectionOption = [(TVPAudioOption *)selfCopy avMediaSelectionOption];
       v5 = objc_opt_respondsToSelector();
 
       if (v5)
       {
-        v6 = [(TVPAudioOption *)v2 avMediaSelectionOption];
-        v7 = [v6 trackID];
+        avMediaSelectionOption2 = [(TVPAudioOption *)selfCopy avMediaSelectionOption];
+        trackID = [avMediaSelectionOption2 trackID];
 
-        LODWORD(self) = v7;
+        LODWORD(self) = trackID;
       }
 
       else
@@ -255,11 +255,11 @@
   return self;
 }
 
-- (BOOL)hasMediaCharacteristic:(id)a3
+- (BOOL)hasMediaCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(TVPAudioOption *)self avMediaSelectionOption];
-  v6 = [v5 hasMediaCharacteristic:v4];
+  characteristicCopy = characteristic;
+  avMediaSelectionOption = [(TVPAudioOption *)self avMediaSelectionOption];
+  v6 = [avMediaSelectionOption hasMediaCharacteristic:characteristicCopy];
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface FigCaptureStillImageSinkPipelineConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureStillImageSinkPipelineConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureStillImageSinkPipelineConfiguration)initWithCoder:(id)coder;
 - (uint64_t)setClientPID:(uint64_t)result;
 - (uint64_t)setGnrHDRSupported:(uint64_t)result;
 - (uint64_t)setHdrSupported:(uint64_t)result;
@@ -8,48 +8,48 @@
 - (uint64_t)setStereoFusionSupported:(uint64_t)result;
 - (uint64_t)setStillImageISPChromaNoiseReductionEnabled:(uint64_t)result;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStillImageColorInfoForFramesOriginatingFromVideoStream:(void *)a1;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStillImageColorInfoForFramesOriginatingFromVideoStream:(void *)stream;
 @end
 
 @implementation FigCaptureStillImageSinkPipelineConfiguration
 
-- (FigCaptureStillImageSinkPipelineConfiguration)initWithCoder:(id)a3
+- (FigCaptureStillImageSinkPipelineConfiguration)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FigCaptureStillImageSinkPipelineConfiguration;
   v4 = [(FigCaptureBaseStillImageSinkPipelineConfiguration *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_clientPID = [a3 decodeInt32ForKey:@"clientPID"];
-    v4->_stillImageColorInfoForFramesOriginatingFromVideoStream = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"stillImageColorInfoForFramesOriginatingFromVideoStream"];
-    v4->_stillImageISPChromaNoiseReductionEnabled = [a3 decodeBoolForKey:@"stillImageISPChromaNoiseReductionEnabled"];
-    v4->_stereoFusionSupported = [a3 decodeBoolForKey:@"stereoFusionSupported"];
-    v4->_isIrisSupported = [a3 decodeBoolForKey:@"isIrisSupported"];
-    v4->_hdrSupported = [a3 decodeBoolForKey:@"hdrSupported"];
-    v4->_gnrHDRSupported = [a3 decodeBoolForKey:@"gnrHDRSupported"];
+    v4->_clientPID = [coder decodeInt32ForKey:@"clientPID"];
+    v4->_stillImageColorInfoForFramesOriginatingFromVideoStream = [coder decodeObjectOfClass:objc_opt_class() forKey:@"stillImageColorInfoForFramesOriginatingFromVideoStream"];
+    v4->_stillImageISPChromaNoiseReductionEnabled = [coder decodeBoolForKey:@"stillImageISPChromaNoiseReductionEnabled"];
+    v4->_stereoFusionSupported = [coder decodeBoolForKey:@"stereoFusionSupported"];
+    v4->_isIrisSupported = [coder decodeBoolForKey:@"isIrisSupported"];
+    v4->_hdrSupported = [coder decodeBoolForKey:@"hdrSupported"];
+    v4->_gnrHDRSupported = [coder decodeBoolForKey:@"gnrHDRSupported"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FigCaptureStillImageSinkPipelineConfiguration;
   [(FigCaptureBaseStillImageSinkPipelineConfiguration *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:self->_clientPID forKey:@"clientPID"];
-  [a3 encodeObject:self->_stillImageColorInfoForFramesOriginatingFromVideoStream forKey:@"stillImageColorInfoForFramesOriginatingFromVideoStream"];
-  [a3 encodeBool:self->_stillImageISPChromaNoiseReductionEnabled forKey:@"stillImageISPChromaNoiseReductionEnabled"];
-  [a3 encodeBool:self->_stereoFusionSupported forKey:@"stereoFusionSupported"];
-  [a3 encodeBool:self->_isIrisSupported forKey:@"isIrisSupported"];
-  [a3 encodeBool:self->_hdrSupported forKey:@"hdrSupported"];
-  [a3 encodeBool:self->_gnrHDRSupported forKey:@"gnrHDRSupported"];
+  [coder encodeInt32:self->_clientPID forKey:@"clientPID"];
+  [coder encodeObject:self->_stillImageColorInfoForFramesOriginatingFromVideoStream forKey:@"stillImageColorInfoForFramesOriginatingFromVideoStream"];
+  [coder encodeBool:self->_stillImageISPChromaNoiseReductionEnabled forKey:@"stillImageISPChromaNoiseReductionEnabled"];
+  [coder encodeBool:self->_stereoFusionSupported forKey:@"stereoFusionSupported"];
+  [coder encodeBool:self->_isIrisSupported forKey:@"isIrisSupported"];
+  [coder encodeBool:self->_hdrSupported forKey:@"hdrSupported"];
+  [coder encodeBool:self->_gnrHDRSupported forKey:@"gnrHDRSupported"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -62,7 +62,7 @@
     return 0;
   }
 
-  [(FigCaptureStillImageSinkPipelineConfiguration *)self isEqual:a3, &v8];
+  [(FigCaptureStillImageSinkPipelineConfiguration *)self isEqual:equal, &v8];
   return v8;
 }
 
@@ -83,11 +83,11 @@
   return result;
 }
 
-- (void)setStillImageColorInfoForFramesOriginatingFromVideoStream:(void *)a1
+- (void)setStillImageColorInfoForFramesOriginatingFromVideoStream:(void *)stream
 {
-  if (a1)
+  if (stream)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 104);
+    objc_setProperty_nonatomic(stream, newValue, newValue, 104);
   }
 }
 

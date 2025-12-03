@@ -1,6 +1,6 @@
 @interface MPStoreModelTVShowBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelTVShowBuilder
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedTVShowProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyTVShowTitle"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyTVShowTitle"])
     {
       v13 = 2;
     }
@@ -43,7 +43,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFFD | v13;
-    if ([v12 containsObject:@"MPModelPropertyTVShowShortTitle"])
+    if ([properties containsObject:@"MPModelPropertyTVShowShortTitle"])
     {
       v14 = 4;
     }
@@ -54,7 +54,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFFB | v14;
-    if ([v12 containsObject:@"MPModelPropertyTVShowArtwork"])
+    if ([properties containsObject:@"MPModelPropertyTVShowArtwork"])
     {
       v15 = 64;
     }
@@ -65,7 +65,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFBF | v15;
-    if ([v12 containsObject:@"MPModelPropertyTVShowEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyTVShowEditorialArtwork"])
     {
       v16 = 32;
     }
@@ -76,7 +76,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFDF | v16;
-    if ([v12 containsObject:@"MPModelPropertyTVShowEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyTVShowEditorNotes"])
     {
       v17 = 8;
     }
@@ -87,7 +87,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFF7 | v17;
-    if ([v12 containsObject:@"MPModelPropertyTVShowShortEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyTVShowShortEditorNotes"])
     {
       v18 = 16;
     }
@@ -98,7 +98,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFFEF | v18;
-    if ([v12 containsObject:@"MPModelPropertyTVShowTagline"])
+    if ([properties containsObject:@"MPModelPropertyTVShowTagline"])
     {
       v19 = 256;
     }
@@ -109,7 +109,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFEFF | v19;
-    if ([v12 containsObject:@"MPModelPropertyTVShowEpisodeCount"])
+    if ([properties containsObject:@"MPModelPropertyTVShowEpisodeCount"])
     {
       v20 = 128;
     }
@@ -120,7 +120,7 @@
     }
 
     *&self->_requestedTVShowProperties = *&self->_requestedTVShowProperties & 0xFF7F | v20;
-    if ([v12 containsObject:@"MPModelPropertyTVShowStoreCanonicalID"])
+    if ([properties containsObject:@"MPModelPropertyTVShowStoreCanonicalID"])
     {
       v21 = 513;
     }
@@ -137,34 +137,34 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __93__MPStoreModelTVShowBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E7680B28;
-  v22 = v8;
+  v22 = metadataCopy;
   v44 = v22;
   v23 = _Block_copy(aBlock);
   v36 = MEMORY[0x1E69E9820];
   v37 = 3221225472;
   v38 = __93__MPStoreModelTVShowBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_3;
   v39 = &unk_1E767F268;
-  v40 = self;
-  v24 = v9;
+  selfCopy = self;
+  v24 = objectCopy;
   v41 = v24;
   v25 = v22;
   v42 = v25;
   v26 = _Block_copy(&v36);
   if (v24)
   {
-    v27 = [v24 identifiers];
-    v28 = [v27 copyWithSource:@"StorePlatform" block:v23];
+    identifiers = [v24 identifiers];
+    v28 = [identifiers copyWithSource:@"StorePlatform" block:v23];
     v29 = [v24 copyWithIdentifiers:v28 block:v26];
   }
 
   else
   {
-    v30 = [MPModelTVEpisode kindWithVariants:2, v36, v37, v38, v39, v40, v41];
+    v30 = [MPModelTVEpisode kindWithVariants:2, v36, v37, v38, v39, selfCopy, v41];
     v31 = [MPModelTVSeason kindWithEpisodeKind:v30];
-    v27 = [MPModelTVShow kindWithSeasonKind:v31];
+    identifiers = [MPModelTVShow kindWithSeasonKind:v31];
 
     v32 = [MPModelTVShow alloc];
-    v28 = [[MPIdentifierSet alloc] initWithSource:@"StorePlatform" modelKind:v27 block:v23];
+    v28 = [[MPIdentifierSet alloc] initWithSource:@"StorePlatform" modelKind:identifiers block:v23];
     v29 = [(MPModelObject *)v32 initWithIdentifiers:v28 block:v26];
   }
 

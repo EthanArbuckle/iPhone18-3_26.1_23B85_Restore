@@ -1,163 +1,163 @@
 @interface PRRoseSolution
-- (BOOL)isEqual:(id)a3;
-- (PRRoseSolution)initWithCoder:(id)a3;
-- (PRRoseSolution)initWithVariant:(int64_t)a3 macAddr:(unint64_t)a4 machAbsTime_sec:(double)a5 machContTimeValid:(BOOL)a6 machContTime_sec:(double)a7 range_m:(double)a8 rangeUnc_m:(double)a9 azValid:(BOOL)a10 elValid:(BOOL)a11 az_deg:(double)a12 el_deg:(double)a13 azUnc_deg:(double)a14 elUnc_deg:(double)a15 fovConfidence:(double)a16 soiRssiValid:(BOOL)a17 soiRssi_dBm:(double)a18 antennaType:(int64_t)a19 prevSolutionIsBad:(BOOL)a20 trackScoreValid:(BOOL)a21 trackScore:(double)a22 sweepAngleValid:(BOOL)a23 sweepAngle_deg:(double)a24 multipathProbabilityValid:(BOOL)a25 multipathProbability:(double)a26;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRRoseSolution)initWithCoder:(id)coder;
+- (PRRoseSolution)initWithVariant:(int64_t)variant macAddr:(unint64_t)addr machAbsTime_sec:(double)time_sec machContTimeValid:(BOOL)valid machContTime_sec:(double)contTime_sec range_m:(double)range_m rangeUnc_m:(double)unc_m azValid:(BOOL)self0 elValid:(BOOL)self1 az_deg:(double)self2 el_deg:(double)self3 azUnc_deg:(double)self4 elUnc_deg:(double)self5 fovConfidence:(double)self6 soiRssiValid:(BOOL)self7 soiRssi_dBm:(double)self8 antennaType:(int64_t)self9 prevSolutionIsBad:(BOOL)bad trackScoreValid:(BOOL)scoreValid trackScore:(double)score sweepAngleValid:(BOOL)angleValid sweepAngle_deg:(double)angle_deg multipathProbabilityValid:(BOOL)probabilityValid multipathProbability:(double)probability;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRRoseSolution
 
-- (PRRoseSolution)initWithVariant:(int64_t)a3 macAddr:(unint64_t)a4 machAbsTime_sec:(double)a5 machContTimeValid:(BOOL)a6 machContTime_sec:(double)a7 range_m:(double)a8 rangeUnc_m:(double)a9 azValid:(BOOL)a10 elValid:(BOOL)a11 az_deg:(double)a12 el_deg:(double)a13 azUnc_deg:(double)a14 elUnc_deg:(double)a15 fovConfidence:(double)a16 soiRssiValid:(BOOL)a17 soiRssi_dBm:(double)a18 antennaType:(int64_t)a19 prevSolutionIsBad:(BOOL)a20 trackScoreValid:(BOOL)a21 trackScore:(double)a22 sweepAngleValid:(BOOL)a23 sweepAngle_deg:(double)a24 multipathProbabilityValid:(BOOL)a25 multipathProbability:(double)a26
+- (PRRoseSolution)initWithVariant:(int64_t)variant macAddr:(unint64_t)addr machAbsTime_sec:(double)time_sec machContTimeValid:(BOOL)valid machContTime_sec:(double)contTime_sec range_m:(double)range_m rangeUnc_m:(double)unc_m azValid:(BOOL)self0 elValid:(BOOL)self1 az_deg:(double)self2 el_deg:(double)self3 azUnc_deg:(double)self4 elUnc_deg:(double)self5 fovConfidence:(double)self6 soiRssiValid:(BOOL)self7 soiRssi_dBm:(double)self8 antennaType:(int64_t)self9 prevSolutionIsBad:(BOOL)bad trackScoreValid:(BOOL)scoreValid trackScore:(double)score sweepAngleValid:(BOOL)angleValid sweepAngle_deg:(double)angle_deg multipathProbabilityValid:(BOOL)probabilityValid multipathProbability:(double)probability
 {
-  v26 = a17;
-  v27 = a11;
-  v28 = a10;
-  v29 = a6;
+  rssiValidCopy = rssiValid;
+  elValidCopy = elValid;
+  azValidCopy = azValid;
+  validCopy = valid;
   v50.receiver = self;
   v50.super_class = PRRoseSolution;
   result = [(PRRoseSolution *)&v50 init];
   if (result)
   {
-    result->_variant = a3;
-    result->_mac_addr = a4;
-    result->_mach_continuous_time_valid = v29;
-    if (v29)
+    result->_variant = variant;
+    result->_mac_addr = addr;
+    result->_mach_continuous_time_valid = validCopy;
+    if (validCopy)
     {
-      v45 = a7;
+      contTime_secCopy = contTime_sec;
     }
 
     else
     {
-      v45 = 0.0;
+      contTime_secCopy = 0.0;
     }
 
-    result->_mach_absolute_time_sec = a5;
-    result->_mach_continuous_time_sec = v45;
-    result->_range_m = a8;
-    result->_range_unc_m = a9;
-    result->_az_valid = v28;
-    result->_el_valid = v27;
-    if (v28)
+    result->_mach_absolute_time_sec = time_sec;
+    result->_mach_continuous_time_sec = contTime_secCopy;
+    result->_range_m = range_m;
+    result->_range_unc_m = unc_m;
+    result->_az_valid = azValidCopy;
+    result->_el_valid = elValidCopy;
+    if (azValidCopy)
     {
-      v46 = a12;
+      az_degCopy = az_deg;
     }
 
     else
     {
-      v46 = 0.0;
+      az_degCopy = 0.0;
     }
 
-    if (v28)
+    if (azValidCopy)
     {
-      v47 = a14;
+      unc_degCopy = unc_deg;
     }
 
     else
     {
-      v47 = 0.0;
+      unc_degCopy = 0.0;
     }
 
-    if (v27)
+    if (elValidCopy)
     {
-      v48 = a13;
+      el_degCopy = el_deg;
     }
 
     else
     {
-      v48 = 0.0;
+      el_degCopy = 0.0;
     }
 
-    result->_az_deg = v46;
-    result->_el_deg = v48;
-    if (v27)
+    result->_az_deg = az_degCopy;
+    result->_el_deg = el_degCopy;
+    if (elValidCopy)
     {
-      v49 = a15;
+      elUnc_degCopy = elUnc_deg;
     }
 
     else
     {
-      v49 = 0.0;
+      elUnc_degCopy = 0.0;
     }
 
-    result->_az_unc_deg = v47;
-    result->_el_unc_deg = v49;
-    result->_soi_rssi_valid = v26;
-    if (!v26)
+    result->_az_unc_deg = unc_degCopy;
+    result->_el_unc_deg = elUnc_degCopy;
+    result->_soi_rssi_valid = rssiValidCopy;
+    if (!rssiValidCopy)
     {
-      a18 = 0.0;
+      bm = 0.0;
     }
 
-    result->_fov_confidence = a16;
-    result->_soi_rssi_dbm = a18;
-    result->_antenna_type = a19;
-    result->_previous_solution_is_bad = a20;
-    result->_track_score_valid = a21;
-    if (!a21)
+    result->_fov_confidence = confidence;
+    result->_soi_rssi_dbm = bm;
+    result->_antenna_type = type;
+    result->_previous_solution_is_bad = bad;
+    result->_track_score_valid = scoreValid;
+    if (!scoreValid)
     {
-      a22 = 0.0;
+      score = 0.0;
     }
 
-    result->_sweep_angle_valid = a23;
-    if (!a23)
+    result->_sweep_angle_valid = angleValid;
+    if (!angleValid)
     {
-      a24 = 0.0;
+      angle_deg = 0.0;
     }
 
-    result->_track_score = a22;
-    result->_sweep_angle_deg = a24;
-    result->_multipath_probability_valid = a25;
-    if (!a25)
+    result->_track_score = score;
+    result->_sweep_angle_deg = angle_deg;
+    result->_multipath_probability_valid = probabilityValid;
+    if (!probabilityValid)
     {
-      a26 = 0.0;
+      probability = 0.0;
     }
 
-    result->_multipath_probability = a26;
+    result->_multipath_probability = probability;
   }
 
   return result;
 }
 
-- (PRRoseSolution)initWithCoder:(id)a3
+- (PRRoseSolution)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v43 = [v3 decodeIntegerForKey:@"variant"];
-  v44 = [v3 decodeInt64ForKey:@"macAddr"];
-  [v3 decodeDoubleForKey:@"machAbsTime"];
+  coderCopy = coder;
+  v43 = [coderCopy decodeIntegerForKey:@"variant"];
+  v44 = [coderCopy decodeInt64ForKey:@"macAddr"];
+  [coderCopy decodeDoubleForKey:@"machAbsTime"];
   v42 = v4;
-  v5 = [v3 decodeBoolForKey:@"machContTimeValid"];
-  [v3 decodeDoubleForKey:@"machContTime"];
+  v5 = [coderCopy decodeBoolForKey:@"machContTimeValid"];
+  [coderCopy decodeDoubleForKey:@"machContTime"];
   v41 = v6;
-  [v3 decodeDoubleForKey:@"range"];
+  [coderCopy decodeDoubleForKey:@"range"];
   v40 = v7;
-  [v3 decodeDoubleForKey:@"rangeUnc"];
+  [coderCopy decodeDoubleForKey:@"rangeUnc"];
   v39 = v8;
-  v9 = [v3 decodeBoolForKey:@"azValid"];
-  v10 = [v3 decodeBoolForKey:@"elValid"];
-  [v3 decodeDoubleForKey:@"az"];
+  v9 = [coderCopy decodeBoolForKey:@"azValid"];
+  v10 = [coderCopy decodeBoolForKey:@"elValid"];
+  [coderCopy decodeDoubleForKey:@"az"];
   v38 = v11;
-  [v3 decodeDoubleForKey:@"el"];
+  [coderCopy decodeDoubleForKey:@"el"];
   v13 = v12;
-  [v3 decodeDoubleForKey:@"azUnc"];
+  [coderCopy decodeDoubleForKey:@"azUnc"];
   v15 = v14;
-  [v3 decodeDoubleForKey:@"elUnc"];
+  [coderCopy decodeDoubleForKey:@"elUnc"];
   v17 = v16;
-  [v3 decodeDoubleForKey:@"fovConfidence"];
+  [coderCopy decodeDoubleForKey:@"fovConfidence"];
   v19 = v18;
-  v20 = [v3 decodeBoolForKey:@"soiRssiValid"];
-  [v3 decodeDoubleForKey:@"soiRssi"];
+  v20 = [coderCopy decodeBoolForKey:@"soiRssiValid"];
+  [coderCopy decodeDoubleForKey:@"soiRssi"];
   v22 = v21;
-  v23 = [v3 decodeIntegerForKey:@"antennaType"];
-  v24 = [v3 decodeBoolForKey:@"prevSolutionIsBad"];
-  v25 = [v3 decodeBoolForKey:@"trackScoreValid"];
-  [v3 decodeDoubleForKey:@"trackScore"];
+  v23 = [coderCopy decodeIntegerForKey:@"antennaType"];
+  v24 = [coderCopy decodeBoolForKey:@"prevSolutionIsBad"];
+  v25 = [coderCopy decodeBoolForKey:@"trackScoreValid"];
+  [coderCopy decodeDoubleForKey:@"trackScore"];
   v27 = v26;
-  v28 = [v3 decodeBoolForKey:@"sweepAngleValid"];
-  [v3 decodeDoubleForKey:@"sweepAngleDeg"];
+  v28 = [coderCopy decodeBoolForKey:@"sweepAngleValid"];
+  [coderCopy decodeDoubleForKey:@"sweepAngleDeg"];
   v30 = v29;
-  v31 = [v3 decodeBoolForKey:@"multipathProbabilityValid"];
-  [v3 decodeDoubleForKey:@"multipathProbability"];
+  v31 = [coderCopy decodeBoolForKey:@"multipathProbabilityValid"];
+  [coderCopy decodeDoubleForKey:@"multipathProbability"];
   v33 = v32;
 
   LOBYTE(v37) = v31;
@@ -167,37 +167,37 @@
   return [(PRRoseSolution *)self initWithVariant:v43 macAddr:v44 machAbsTime_sec:v5 machContTimeValid:v9 machContTime_sec:v10 range_m:v20 rangeUnc_m:v42 azValid:v41 elValid:v40 az_deg:v39 el_deg:v38 azUnc_deg:v13 elUnc_deg:v15 fovConfidence:v17 soiRssiValid:v19 soiRssi_dBm:v22 antennaType:v23 prevSolutionIsBad:v35 trackScoreValid:v27 trackScore:v36 sweepAngleValid:v30 sweepAngle_deg:v37 multipathProbabilityValid:v33 multipathProbability:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   variant = self->_variant;
-  v5 = a3;
-  [v5 encodeInteger:variant forKey:@"variant"];
-  [v5 encodeInt64:self->_mac_addr forKey:@"macAddr"];
-  [v5 encodeDouble:@"machAbsTime" forKey:self->_mach_absolute_time_sec];
-  [v5 encodeBool:self->_mach_continuous_time_valid forKey:@"machContTimeValid"];
-  [v5 encodeDouble:@"machContTime" forKey:self->_mach_continuous_time_sec];
-  [v5 encodeDouble:@"range" forKey:self->_range_m];
-  [v5 encodeDouble:@"rangeUnc" forKey:self->_range_unc_m];
-  [v5 encodeBool:self->_az_valid forKey:@"azValid"];
-  [v5 encodeBool:self->_el_valid forKey:@"elValid"];
-  [v5 encodeDouble:@"az" forKey:self->_az_deg];
-  [v5 encodeDouble:@"el" forKey:self->_el_deg];
-  [v5 encodeDouble:@"azUnc" forKey:self->_az_unc_deg];
-  [v5 encodeDouble:@"elUnc" forKey:self->_el_unc_deg];
-  [v5 encodeDouble:@"fovConfidence" forKey:self->_fov_confidence];
-  [v5 encodeBool:self->_soi_rssi_valid forKey:@"soiRssiValid"];
-  [v5 encodeDouble:@"soiRssi" forKey:self->_soi_rssi_dbm];
-  [v5 encodeInteger:self->_antenna_type forKey:@"antennaType"];
-  [v5 encodeBool:self->_previous_solution_is_bad forKey:@"prevSolutionIsBad"];
-  [v5 encodeBool:self->_track_score_valid forKey:@"trackScoreValid"];
-  [v5 encodeDouble:@"trackScore" forKey:self->_track_score];
-  [v5 encodeBool:self->_sweep_angle_valid forKey:@"sweepAngleValid"];
-  [v5 encodeDouble:@"sweepAngleDeg" forKey:self->_sweep_angle_deg];
-  [v5 encodeBool:self->_multipath_probability_valid forKey:@"multipathProbabilityValid"];
-  [v5 encodeDouble:@"multipathProbability" forKey:self->_multipath_probability];
+  coderCopy = coder;
+  [coderCopy encodeInteger:variant forKey:@"variant"];
+  [coderCopy encodeInt64:self->_mac_addr forKey:@"macAddr"];
+  [coderCopy encodeDouble:@"machAbsTime" forKey:self->_mach_absolute_time_sec];
+  [coderCopy encodeBool:self->_mach_continuous_time_valid forKey:@"machContTimeValid"];
+  [coderCopy encodeDouble:@"machContTime" forKey:self->_mach_continuous_time_sec];
+  [coderCopy encodeDouble:@"range" forKey:self->_range_m];
+  [coderCopy encodeDouble:@"rangeUnc" forKey:self->_range_unc_m];
+  [coderCopy encodeBool:self->_az_valid forKey:@"azValid"];
+  [coderCopy encodeBool:self->_el_valid forKey:@"elValid"];
+  [coderCopy encodeDouble:@"az" forKey:self->_az_deg];
+  [coderCopy encodeDouble:@"el" forKey:self->_el_deg];
+  [coderCopy encodeDouble:@"azUnc" forKey:self->_az_unc_deg];
+  [coderCopy encodeDouble:@"elUnc" forKey:self->_el_unc_deg];
+  [coderCopy encodeDouble:@"fovConfidence" forKey:self->_fov_confidence];
+  [coderCopy encodeBool:self->_soi_rssi_valid forKey:@"soiRssiValid"];
+  [coderCopy encodeDouble:@"soiRssi" forKey:self->_soi_rssi_dbm];
+  [coderCopy encodeInteger:self->_antenna_type forKey:@"antennaType"];
+  [coderCopy encodeBool:self->_previous_solution_is_bad forKey:@"prevSolutionIsBad"];
+  [coderCopy encodeBool:self->_track_score_valid forKey:@"trackScoreValid"];
+  [coderCopy encodeDouble:@"trackScore" forKey:self->_track_score];
+  [coderCopy encodeBool:self->_sweep_angle_valid forKey:@"sweepAngleValid"];
+  [coderCopy encodeDouble:@"sweepAngleDeg" forKey:self->_sweep_angle_deg];
+  [coderCopy encodeBool:self->_multipath_probability_valid forKey:@"multipathProbabilityValid"];
+  [coderCopy encodeDouble:@"multipathProbability" forKey:self->_multipath_probability];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRRoseSolution alloc];
   LOBYTE(v8) = self->_multipath_probability_valid;
@@ -233,21 +233,21 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"RoseSolution: variant: %@, mac_addr: 0x%016llx, mach_abs_time_sec: %.6f, mach_cont_time_valid: %d, mach_cont_time_sec: %.6f, range_m: %.3f, range_unc_m: %.3f, az_valid: %d, el_valid: %d, az_deg: %.3f, el_deg: %.3f, az_unc_deg: %.3f, el_unc_deg: %.3f, fov_confidence: %.3f, soi_rssi_valid: %d, soi_rssi_dbm: %.3f, antenna_type: %@, previous_solution_is_bad: %d, track_score_valid: %d, track_score: %.1f, sweep_angle_valid: %d, sweep_angle_deg: %.1f, multipath_probability_valid: %d, multipath_probability: %.2f", v5, self->_mac_addr, *&self->_mach_absolute_time_sec, self->_mach_continuous_time_valid, *&self->_mach_continuous_time_sec, *&self->_range_m, *&self->_range_unc_m, self->_az_valid, self->_el_valid, *&self->_az_deg, *&self->_el_deg, *&self->_az_unc_deg, *&self->_el_unc_deg, *&self->_fov_confidence, self->_soi_rssi_valid, *&self->_soi_rssi_dbm, v7, self->_previous_solution_is_bad, self->_track_score_valid, *&self->_track_score, self->_sweep_angle_valid, *&self->_sweep_angle_deg, self->_multipath_probability_valid, *&self->_multipath_probability, v2, v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PRRoseSolution *)self variant];
-    if (v6 != [v5 variant])
+    v5 = equalCopy;
+    variant = [(PRRoseSolution *)self variant];
+    if (variant != [v5 variant])
     {
       goto LABEL_25;
     }
 
-    v7 = [(PRRoseSolution *)self mac_addr];
-    if (v7 != [v5 mac_addr])
+    mac_addr = [(PRRoseSolution *)self mac_addr];
+    if (mac_addr != [v5 mac_addr])
     {
       goto LABEL_25;
     }
@@ -260,8 +260,8 @@
       goto LABEL_25;
     }
 
-    v11 = [(PRRoseSolution *)self mach_continuous_time_valid];
-    if (v11 != [v5 mach_continuous_time_valid])
+    mach_continuous_time_valid = [(PRRoseSolution *)self mach_continuous_time_valid];
+    if (mach_continuous_time_valid != [v5 mach_continuous_time_valid])
     {
       goto LABEL_25;
     }
@@ -290,14 +290,14 @@
       goto LABEL_25;
     }
 
-    v21 = [(PRRoseSolution *)self az_valid];
-    if (v21 != [v5 az_valid])
+    az_valid = [(PRRoseSolution *)self az_valid];
+    if (az_valid != [v5 az_valid])
     {
       goto LABEL_25;
     }
 
-    v22 = [(PRRoseSolution *)self el_valid];
-    if (v22 != [v5 el_valid])
+    el_valid = [(PRRoseSolution *)self el_valid];
+    if (el_valid != [v5 el_valid])
     {
       goto LABEL_25;
     }
@@ -342,8 +342,8 @@
       goto LABEL_25;
     }
 
-    v38 = [(PRRoseSolution *)self soi_rssi_valid];
-    if (v38 != [v5 soi_rssi_valid])
+    soi_rssi_valid = [(PRRoseSolution *)self soi_rssi_valid];
+    if (soi_rssi_valid != [v5 soi_rssi_valid])
     {
       goto LABEL_25;
     }
@@ -356,20 +356,20 @@
       goto LABEL_25;
     }
 
-    v42 = [(PRRoseSolution *)self antenna_type];
-    if (v42 != [v5 antenna_type])
+    antenna_type = [(PRRoseSolution *)self antenna_type];
+    if (antenna_type != [v5 antenna_type])
     {
       goto LABEL_25;
     }
 
-    v43 = [(PRRoseSolution *)self previous_solution_is_bad];
-    if (v43 != [v5 previous_solution_is_bad])
+    previous_solution_is_bad = [(PRRoseSolution *)self previous_solution_is_bad];
+    if (previous_solution_is_bad != [v5 previous_solution_is_bad])
     {
       goto LABEL_25;
     }
 
-    v44 = [(PRRoseSolution *)self track_score_valid];
-    if (v44 != [v5 track_score_valid])
+    track_score_valid = [(PRRoseSolution *)self track_score_valid];
+    if (track_score_valid != [v5 track_score_valid])
     {
       goto LABEL_25;
     }
@@ -382,8 +382,8 @@
       goto LABEL_25;
     }
 
-    v48 = [(PRRoseSolution *)self sweep_angle_valid];
-    if (v48 == [v5 sweep_angle_valid] && (-[PRRoseSolution sweep_angle_deg](self, "sweep_angle_deg"), v50 = v49, objc_msgSend(v5, "sweep_angle_deg"), v50 == v51) && (v52 = -[PRRoseSolution multipath_probability_valid](self, "multipath_probability_valid"), v52 == objc_msgSend(v5, "multipath_probability_valid")))
+    sweep_angle_valid = [(PRRoseSolution *)self sweep_angle_valid];
+    if (sweep_angle_valid == [v5 sweep_angle_valid] && (-[PRRoseSolution sweep_angle_deg](self, "sweep_angle_deg"), v50 = v49, objc_msgSend(v5, "sweep_angle_deg"), v50 == v51) && (v52 = -[PRRoseSolution multipath_probability_valid](self, "multipath_probability_valid"), v52 == objc_msgSend(v5, "multipath_probability_valid")))
     {
       [(PRRoseSolution *)self multipath_probability];
       v56 = v55;

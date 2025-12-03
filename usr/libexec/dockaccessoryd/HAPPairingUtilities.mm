@@ -1,17 +1,17 @@
 @interface HAPPairingUtilities
-+ (BOOL)parseAddPairingResponse:(id)a3 error:(id *)a4;
-+ (BOOL)parseRemovePairingResponse:(id)a3 error:(id *)a4;
-+ (id)createAddPairingRequestForPairingIdentity:(id)a3 error:(id *)a4;
-+ (id)createListPairingsRequest:(id *)a3;
-+ (id)createRemovePairingRequestForPairingIdentity:(id)a3 error:(id *)a4;
-+ (id)parseListPairingsResponse:(id)a3 error:(id *)a4;
++ (BOOL)parseAddPairingResponse:(id)response error:(id *)error;
++ (BOOL)parseRemovePairingResponse:(id)response error:(id *)error;
++ (id)createAddPairingRequestForPairingIdentity:(id)identity error:(id *)error;
++ (id)createListPairingsRequest:(id *)request;
++ (id)createRemovePairingRequestForPairingIdentity:(id)identity error:(id *)error;
++ (id)parseListPairingsResponse:(id)response error:(id *)error;
 @end
 
 @implementation HAPPairingUtilities
 
-+ (id)createAddPairingRequestForPairingIdentity:(id)a3 error:(id *)a4
++ (id)createAddPairingRequestForPairingIdentity:(id)identity error:(id *)error
 {
-  v5 = a3;
+  identityCopy = identity;
   TLV8BufferInit();
   appended = sub_100021F5C();
   if (appended)
@@ -19,8 +19,8 @@
     goto LABEL_2;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v8 dataUsingEncoding:4];
+  identifier = [identityCopy identifier];
+  v9 = [identifier dataUsingEncoding:4];
 
   if (!v9)
   {
@@ -39,16 +39,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = [v5 publicKey];
-  v12 = [v11 data];
-  [v12 bytes];
-  v13 = [v11 data];
-  [v13 length];
+  publicKey = [identityCopy publicKey];
+  data = [publicKey data];
+  [data bytes];
+  data2 = [publicKey data];
+  [data2 length];
   v7 = TLV8BufferAppend();
 
   if (!v7)
   {
-    [v5 permissions];
+    [identityCopy permissions];
     appended = TLV8BufferAppendUInt64();
     if (appended)
     {
@@ -70,10 +70,10 @@ LABEL_2:
 
 LABEL_6:
   TLV8BufferFree();
-  if (a4)
+  if (error)
   {
     [NSError errorWithOSStatus:v7];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -86,21 +86,21 @@ LABEL_9:
   return v14;
 }
 
-+ (BOOL)parseAddPairingResponse:(id)a3 error:(id *)a4
++ (BOOL)parseAddPairingResponse:(id)response error:(id *)error
 {
-  v5 = sub_1001F7AD4(a3);
+  v5 = sub_1001F7AD4(response);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [NSError errorWithOSStatus:v5];
+    *error = [NSError errorWithOSStatus:v5];
   }
 
   return v6 == 0;
 }
 
-+ (id)createRemovePairingRequestForPairingIdentity:(id)a3 error:(id *)a4
++ (id)createRemovePairingRequestForPairingIdentity:(id)identity error:(id *)error
 {
-  v5 = a3;
+  identityCopy = identity;
   TLV8BufferInit();
   v6 = sub_100021F5C();
   if (v6)
@@ -108,8 +108,8 @@ LABEL_9:
     goto LABEL_2;
   }
 
-  v8 = [v5 identifier];
-  v9 = [v8 dataUsingEncoding:4];
+  identifier = [identityCopy identifier];
+  v9 = [identifier dataUsingEncoding:4];
 
   if (!v9)
   {
@@ -139,10 +139,10 @@ LABEL_14:
   v6 = 4294960568;
 LABEL_2:
   TLV8BufferFree();
-  if (a4)
+  if (error)
   {
     [NSError errorWithOSStatus:v6];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -155,7 +155,7 @@ LABEL_9:
   return v7;
 }
 
-+ (id)createListPairingsRequest:(id *)a3
++ (id)createListPairingsRequest:(id *)request
 {
   TLV8BufferInit();
   v4 = sub_100021F5C();
@@ -173,10 +173,10 @@ LABEL_9:
   }
 
   TLV8BufferFree();
-  if (a3)
+  if (request)
   {
     [NSError errorWithOSStatus:v4];
-    *a3 = v5 = 0;
+    *request = v5 = 0;
   }
 
   else
@@ -189,46 +189,46 @@ LABEL_7:
   return v5;
 }
 
-+ (BOOL)parseRemovePairingResponse:(id)a3 error:(id *)a4
++ (BOOL)parseRemovePairingResponse:(id)response error:(id *)error
 {
-  v5 = sub_1001F7AD4(a3);
+  v5 = sub_1001F7AD4(response);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [NSError errorWithOSStatus:v5];
+    *error = [NSError errorWithOSStatus:v5];
   }
 
   return v6 == 0;
 }
 
-+ (id)parseListPairingsResponse:(id)a3 error:(id *)a4
++ (id)parseListPairingsResponse:(id)response error:(id *)error
 {
-  v5 = a3;
-  v72 = [v5 bytes];
-  [v5 length];
+  responseCopy = response;
+  bytes = [responseCopy bytes];
+  [responseCopy length];
   v64 = 0;
   v68 = 0;
   v60 = 0;
   v6 = [NSMutableArray arrayWithCapacity:16];
-  v7 = sub_1001F7AD4(v5);
+  v7 = sub_1001F7AD4(responseCopy);
   v15 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
 LABEL_3:
       [NSError errorWithOSStatus:v15];
-      *a4 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_23;
     }
   }
 
   else
   {
-    v58 = a4;
+    errorCopy = error;
     while (1)
     {
-      sub_1000222D8(v7, v8, v9, v10, v11, v12, v13, v14, v54, v58, v60, v64, v68, v72);
+      sub_1000222D8(v7, v8, v9, v10, v11, v12, v13, v14, v54, errorCopy, v60, v64, v68, bytes);
       v17 = TLV8GetOrCopyCoalesced();
       if (v17)
       {
@@ -317,7 +317,7 @@ LABEL_26:
     v15 = 4294960553;
 LABEL_21:
 
-    a4 = v59;
+    error = v59;
     if (v59)
     {
       goto LABEL_3;

@@ -1,40 +1,40 @@
 @interface PHPerformChangesInstrumentation
-+ (PHPerformChangesInstrumentation)startPeformChangesWithName:(uint64_t)a1;
++ (PHPerformChangesInstrumentation)startPeformChangesWithName:(uint64_t)name;
 - (PHPerformChangesInstrumentation)init;
-- (void)endPerformChangesWithSuccess:(void *)a3 error:;
-- (void)initWithUUID:(void *)a1;
+- (void)endPerformChangesWithSuccess:(void *)success error:;
+- (void)initWithUUID:(void *)d;
 @end
 
 @implementation PHPerformChangesInstrumentation
 
 - (PHPerformChangesInstrumentation)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [(PHPerformChangesInstrumentation *)self initWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [(PHPerformChangesInstrumentation *)self initWithUUID:uUID];
 
   return v4;
 }
 
-- (void)initWithUUID:(void *)a1
+- (void)initWithUUID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v7.receiver = a1;
+    v7.receiver = d;
     v7.super_class = PHPerformChangesInstrumentation;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    d = objc_msgSendSuper2(&v7, sel_init);
+    if (d)
     {
       v4 = [v3 copy];
-      v5 = a1[8];
-      a1[8] = v4;
+      v5 = d[8];
+      d[8] = v4;
     }
   }
 
-  return a1;
+  return d;
 }
 
-+ (PHPerformChangesInstrumentation)startPeformChangesWithName:(uint64_t)a1
++ (PHPerformChangesInstrumentation)startPeformChangesWithName:(uint64_t)name
 {
   v16 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -63,17 +63,17 @@
   return v4;
 }
 
-- (void)endPerformChangesWithSuccess:(void *)a3 error:
+- (void)endPerformChangesWithSuccess:(void *)success error:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  successCopy = success;
+  if (self)
   {
     v6 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = *(a1 + 64);
-      v8 = *(a1 + 8);
+      v7 = *(self + 64);
+      v8 = *(self + 8);
       qos_class_self();
       v9 = PLStringFromQoSClass();
       v10 = @"NO";
@@ -92,11 +92,11 @@
       v18 = 2114;
       v19 = v11;
       v20 = 2112;
-      v21 = v5;
+      v21 = successCopy;
       _os_log_impl(&dword_19C86F000, v6, OS_LOG_TYPE_DEFAULT, "PhotoKit changes: [%{public}@] %{public}s completed at %{public}@, success: %{public}@, error: %@", &v12, 0x34u);
     }
 
-    *(a1 + 8) = 0;
+    *(self + 8) = 0;
   }
 }
 

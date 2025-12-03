@@ -1,25 +1,25 @@
 @interface MFSecureMIMEContactHeaderAction
-- (MFSecureMIMEContactHeaderAction)initWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5;
+- (MFSecureMIMEContactHeaderAction)initWithTitle:(id)title target:(id)target selector:(SEL)selector;
 - (id)target;
 @end
 
 @implementation MFSecureMIMEContactHeaderAction
 
-- (MFSecureMIMEContactHeaderAction)initWithTitle:(id)a3 target:(id)a4 selector:(SEL)a5
+- (MFSecureMIMEContactHeaderAction)initWithTitle:(id)title target:(id)target selector:(SEL)selector
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  targetCopy = target;
   v14.receiver = self;
   v14.super_class = MFSecureMIMEContactHeaderAction;
   v10 = [(MFSecureMIMEContactHeaderAction *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    objc_storeWeak(&v10->_target, v9);
-    v10->_actionSelector = a5;
+    objc_storeWeak(&v10->_target, targetCopy);
+    v10->_actionSelector = selector;
   }
 
   return v10;

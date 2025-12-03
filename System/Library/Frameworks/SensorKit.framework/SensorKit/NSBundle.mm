@@ -1,11 +1,11 @@
 @interface NSBundle
-+ (void)sk_bundleWithIdentifier:(void *)a3 partnerAppDirectoryURL:;
-- (uint64_t)sr_bundleTypeWithPartnerAppDirectoryURL:(void *)a1;
++ (void)sk_bundleWithIdentifier:(void *)identifier partnerAppDirectoryURL:;
+- (uint64_t)sr_bundleTypeWithPartnerAppDirectoryURL:(void *)l;
 @end
 
 @implementation NSBundle
 
-+ (void)sk_bundleWithIdentifier:(void *)a3 partnerAppDirectoryURL:
++ (void)sk_bundleWithIdentifier:(void *)identifier partnerAppDirectoryURL:
 {
   v38[2] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -37,7 +37,7 @@
       *buf = 138543618;
       v33 = a2;
       v34 = 2114;
-      v35 = v30;
+      identifierCopy2 = v30;
       _os_log_impl(&dword_1C914D000, v7, OS_LOG_TYPE_DEFAULT, "No application record found for %{public}@ because %{public}@", buf, 0x16u);
     }
   }
@@ -56,12 +56,12 @@
       *buf = 138543618;
       v33 = a2;
       v34 = 2114;
-      v35 = a3;
+      identifierCopy2 = identifier;
       _os_log_impl(&dword_1C914D000, v9, OS_LOG_TYPE_INFO, "Searching for study bundle %{public}@ in %{public}@", buf, 0x16u);
     }
 
     v10 = [a2 stringByAppendingPathExtension:@"bundle"];
-    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0 relativeToURL:a3];
+    v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0 relativeToURL:identifier];
     v8 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleWithURL:{v11), "bundlePath"}];
     if (!v8)
     {
@@ -76,13 +76,13 @@
         *buf = 138543874;
         v33 = a2;
         v34 = 2114;
-        v35 = a3;
+        identifierCopy2 = identifier;
         v36 = 2114;
         v37 = @"loadedStudies.plist";
         _os_log_impl(&dword_1C914D000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ not found in %{public}@. Trying %{public}@", buf, 0x20u);
       }
 
-      v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"loadedStudies.plist" isDirectory:0 relativeToURL:a3];
+      v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"loadedStudies.plist" isDirectory:0 relativeToURL:identifier];
       if (_MergedGlobals_6 != -1)
       {
         dispatch_once(&_MergedGlobals_6, &__block_literal_global_7);
@@ -94,7 +94,7 @@
         *buf = 138543618;
         v33 = a2;
         v34 = 2114;
-        v35 = v21;
+        identifierCopy2 = v21;
         _os_log_impl(&dword_1C914D000, v22, OS_LOG_TYPE_INFO, "Searching for %{public}@ in plist %{public}@", buf, 0x16u);
       }
 
@@ -136,7 +136,7 @@
               *buf = 138543618;
               v33 = a2;
               v34 = 2114;
-              v35 = v21;
+              identifierCopy2 = v21;
               _os_log_impl(&dword_1C914D000, v29, OS_LOG_TYPE_DEFAULT, "No %{public}@ was found in %{public}@", buf, 0x16u);
             }
 
@@ -145,7 +145,7 @@
 
           v27 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"%@-v%@", a2, objc_msgSend(v26, "stringValue")), "stringByAppendingPathExtension:", @"bundle"];
           v28 = MEMORY[0x1E696AEC0];
-          v38[0] = [a3 path];
+          v38[0] = [identifier path];
           v38[1] = v27;
           v12 = [v28 pathWithComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v38, 2)}];
           if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
@@ -213,11 +213,11 @@ LABEL_19:
     v15 = qword_1EE02AB38;
     if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_INFO))
     {
-      v16 = [v14 bundleURL];
+      bundleURL = [v14 bundleURL];
       *buf = 138543618;
       v33 = a2;
       v34 = 2114;
-      v35 = v16;
+      identifierCopy2 = bundleURL;
       _os_log_impl(&dword_1C914D000, v15, OS_LOG_TYPE_INFO, "Found bundle for %{public}@ at %{public}@", buf, 0x16u);
     }
 
@@ -307,10 +307,10 @@ uint64_t __61__NSBundle_SensorKitPrivate__sk_perCategoryDetailDescription__block
   return result;
 }
 
-- (uint64_t)sr_bundleTypeWithPartnerAppDirectoryURL:(void *)a1
+- (uint64_t)sr_bundleTypeWithPartnerAppDirectoryURL:(void *)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!l)
   {
 LABEL_26:
     v6 = 0;
@@ -318,9 +318,9 @@ LABEL_26:
   }
 
   v16 = 0;
-  if ([a1 bundleIdentifier])
+  if ([l bundleIdentifier])
   {
-    if ([MEMORY[0x1E69635F8] sr_applicationRecordWithIdentifier:objc_msgSend(a1 error:{"bundleIdentifier"), &v16}])
+    if ([MEMORY[0x1E69635F8] sr_applicationRecordWithIdentifier:objc_msgSend(l error:{"bundleIdentifier"), &v16}])
     {
       if (_MergedGlobals_6 != -1)
       {
@@ -330,9 +330,9 @@ LABEL_26:
       v4 = qword_1EE02AB38;
       if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_INFO))
       {
-        v5 = [a1 bundleIdentifier];
+        bundleIdentifier = [l bundleIdentifier];
         *buf = 138543362;
-        v18 = v5;
+        bundleURL = bundleIdentifier;
         _os_log_impl(&dword_1C914D000, v4, OS_LOG_TYPE_INFO, "Detected %{public}@ as app bundle type", buf, 0xCu);
       }
 
@@ -348,9 +348,9 @@ LABEL_26:
     v8 = qword_1EE02AB38;
     if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [a1 bundleIdentifier];
+      bundleIdentifier2 = [l bundleIdentifier];
       *buf = 138543618;
-      v18 = v9;
+      bundleURL = bundleIdentifier2;
       v19 = 2114;
       v20 = v16;
       _os_log_impl(&dword_1C914D000, v8, OS_LOG_TYPE_DEFAULT, "No application record found for %{public}@ because %{public}@", buf, 0x16u);
@@ -368,12 +368,12 @@ LABEL_26:
     if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v18 = [a1 bundleURL];
+      bundleURL = [l bundleURL];
       _os_log_error_impl(&dword_1C914D000, v7, OS_LOG_TYPE_ERROR, "No bundle identifier found for bundle URL: %{public}@", buf, 0xCu);
     }
   }
 
-  if (![objc_msgSend(objc_msgSend(MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(objc_msgSend(a1 isDirectory:"bundleURL") relativeToURL:{"lastPathComponent"), 1, a2), "path"), "isEqualToString:", objc_msgSend(objc_msgSend(a1, "bundleURL"), "path")}])
+  if (![objc_msgSend(objc_msgSend(MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(objc_msgSend(l isDirectory:"bundleURL") relativeToURL:{"lastPathComponent"), 1, a2), "path"), "isEqualToString:", objc_msgSend(objc_msgSend(l, "bundleURL"), "path")}])
   {
     if (_MergedGlobals_6 != -1)
     {
@@ -383,9 +383,9 @@ LABEL_26:
     v12 = qword_1EE02AB38;
     if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_ERROR))
     {
-      v15 = [a1 bundleIdentifier];
+      bundleIdentifier3 = [l bundleIdentifier];
       *buf = 138543362;
-      v18 = v15;
+      bundleURL = bundleIdentifier3;
       _os_log_error_impl(&dword_1C914D000, v12, OS_LOG_TYPE_ERROR, "Failed to detect a bundle type for %{public}@", buf, 0xCu);
     }
 
@@ -401,9 +401,9 @@ LABEL_26:
   v6 = 1;
   if (os_log_type_enabled(qword_1EE02AB38, OS_LOG_TYPE_INFO))
   {
-    v11 = [a1 bundleIdentifier];
+    bundleIdentifier4 = [l bundleIdentifier];
     *buf = 138543362;
-    v18 = v11;
+    bundleURL = bundleIdentifier4;
     v6 = 1;
     _os_log_impl(&dword_1C914D000, v10, OS_LOG_TYPE_INFO, "Detected %{public}@ as study bundle type", buf, 0xCu);
   }

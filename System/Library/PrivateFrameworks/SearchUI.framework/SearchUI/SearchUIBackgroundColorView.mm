@@ -1,19 +1,19 @@
 @interface SearchUIBackgroundColorView
-- (SearchUIBackgroundColorView)initWithFrame:(CGRect)a3;
+- (SearchUIBackgroundColorView)initWithFrame:(CGRect)frame;
 - (SearchUIBackgroundColorViewProtocol)delegate;
 - (id)viewsToOverrideAppearance;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)setShowsPlaceholderPlatterView:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)tlks_setCornerRadius:(double)a3 withStyle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAppearance:(id)a3 withColors:(id)a4;
-- (void)updateWithSFCard:(id)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setColor:(id)color;
+- (void)setHidden:(BOOL)hidden;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)setShowsPlaceholderPlatterView:(BOOL)view;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)tlks_setCornerRadius:(double)radius withStyle:(id)style;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAppearance:(id)appearance withColors:(id)colors;
+- (void)updateWithSFCard:(id)card;
 @end
 
 @implementation SearchUIBackgroundColorView
@@ -31,17 +31,17 @@
   v20.receiver = self;
   v20.super_class = SearchUIBackgroundColorView;
   [(SearchUIBackgroundColorView *)&v20 layoutSubviews];
-  v3 = [(SearchUIBackgroundColorView *)self gradientView];
-  [v3 bounds];
+  gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+  [gradientView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  gradientViewMaskView = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
+  [gradientViewMaskView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(SearchUIBackgroundColorView *)self backgroundImageView];
-  [v13 intrinsicContentSize];
+  backgroundImageView = [(SearchUIBackgroundColorView *)self backgroundImageView];
+  [backgroundImageView intrinsicContentSize];
   v15 = v14;
   v17 = v16;
 
@@ -52,32 +52,32 @@
     v18 = CGRectGetWidth(v21) - v15;
   }
 
-  v19 = [(SearchUIBackgroundColorView *)self backgroundImageView];
-  [v19 setFrame:{v18, 0.0, v15, v17}];
+  backgroundImageView2 = [(SearchUIBackgroundColorView *)self backgroundImageView];
+  [backgroundImageView2 setFrame:{v18, 0.0, v15, v17}];
 }
 
 - (id)viewsToOverrideAppearance
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIBackgroundColorView *)self gradientView];
-  v11[0] = v3;
+  gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+  v11[0] = gradientView;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SearchUIBackgroundColorView *)self delegate];
+  delegate = [(SearchUIBackgroundColorView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(SearchUIBackgroundColorView *)self delegate];
-    v8 = [v7 viewContainingContent];
+    delegate2 = [(SearchUIBackgroundColorView *)self delegate];
+    viewContainingContent = [delegate2 viewContainingContent];
 
-    if (!v8)
+    if (!viewContainingContent)
     {
       goto LABEL_5;
     }
 
-    v6 = [(SearchUIBackgroundColorView *)self delegate];
-    v9 = [v6 viewContainingContent];
-    [v5 addObject:v9];
+    delegate = [(SearchUIBackgroundColorView *)self delegate];
+    viewContainingContent2 = [delegate viewContainingContent];
+    [v5 addObject:viewContainingContent2];
   }
 
 LABEL_5:
@@ -92,12 +92,12 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (SearchUIBackgroundColorView)initWithFrame:(CGRect)a3
+- (SearchUIBackgroundColorView)initWithFrame:(CGRect)frame
 {
   v22[2] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = SearchUIBackgroundColorView;
-  v3 = [(SearchUIBackgroundColorView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchUIBackgroundColorView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69D91C8] viewWithProminence:3];
@@ -107,42 +107,42 @@ LABEL_5:
     [SearchUIAutoLayout fillContainerWithView:v4];
     v5 = objc_opt_new();
     v6 = *MEMORY[0x1E6979840];
-    v7 = [v5 layer];
-    [v7 setCompositingFilter:v6];
+    layer = [v5 layer];
+    [layer setCompositingFilter:v6];
 
     [(SearchUIBackgroundColorView *)v3 setColorBlendView:v5];
-    v8 = [(SearchUIBackgroundColorView *)v3 colorBlendView];
-    [(SearchUIBackgroundColorView *)v3 addSubview:v8];
+    colorBlendView = [(SearchUIBackgroundColorView *)v3 colorBlendView];
+    [(SearchUIBackgroundColorView *)v3 addSubview:colorBlendView];
 
-    v9 = [(SearchUIBackgroundColorView *)v3 colorBlendView];
-    [SearchUIAutoLayout fillContainerWithView:v9];
+    colorBlendView2 = [(SearchUIBackgroundColorView *)v3 colorBlendView];
+    [SearchUIAutoLayout fillContainerWithView:colorBlendView2];
 
     v10 = objc_opt_new();
-    v11 = [MEMORY[0x1E69DC888] blackColor];
-    v22[0] = v11;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    v22[1] = v12;
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v22[0] = blackColor;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v22[1] = clearColor;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     [v10 setColors:v13];
 
-    v14 = [v10 layer];
-    [v14 setLocations:&unk_1F55DD4F0];
+    layer2 = [v10 layer];
+    [layer2 setLocations:&unk_1F55DD4F0];
 
     [(SearchUIBackgroundColorView *)v3 setGradientViewMaskView:v10];
     v15 = objc_opt_new();
     [(SearchUIBackgroundColorView *)v3 setGradientView:v15];
 
-    v16 = [(SearchUIBackgroundColorView *)v3 gradientView];
-    [(SearchUIBackgroundColorView *)v3 addSubview:v16];
+    gradientView = [(SearchUIBackgroundColorView *)v3 gradientView];
+    [(SearchUIBackgroundColorView *)v3 addSubview:gradientView];
 
-    v17 = [(SearchUIBackgroundColorView *)v3 gradientView];
-    [SearchUIAutoLayout fillContainerWithView:v17];
+    gradientView2 = [(SearchUIBackgroundColorView *)v3 gradientView];
+    [SearchUIAutoLayout fillContainerWithView:gradientView2];
 
-    v18 = [(SearchUIBackgroundColorView *)v3 layer];
-    [v18 setAllowsGroupOpacity:0];
+    layer3 = [(SearchUIBackgroundColorView *)v3 layer];
+    [layer3 setAllowsGroupOpacity:0];
 
-    v19 = [(SearchUIBackgroundColorView *)v3 layer];
-    [v19 setAllowsGroupBlending:0];
+    layer4 = [(SearchUIBackgroundColorView *)v3 layer];
+    [layer4 setAllowsGroupBlending:0];
 
     [(SearchUIBackgroundColorView *)v3 setShowsPlaceholderPlatterView:1];
   }
@@ -150,17 +150,17 @@ LABEL_5:
   return v3;
 }
 
-- (void)updateAppearance:(id)a3 withColors:(id)a4
+- (void)updateAppearance:(id)appearance withColors:(id)colors
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  appearanceCopy = appearance;
+  colorsCopy = colors;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(SearchUIBackgroundColorView *)self viewsToOverrideAppearance];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  viewsToOverrideAppearance = [(SearchUIBackgroundColorView *)self viewsToOverrideAppearance];
+  v9 = [viewsToOverrideAppearance countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -172,13 +172,13 @@ LABEL_5:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(viewsToOverrideAppearance);
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        if ([v7 count])
+        if ([colorsCopy count])
         {
-          [SearchUIBackgroundColorUtilities overrideAppearance:v6 onView:v13];
+          [SearchUIBackgroundColorUtilities overrideAppearance:appearanceCopy onView:v13];
         }
 
         else
@@ -190,126 +190,126 @@ LABEL_5:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [viewsToOverrideAppearance countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(SearchUIBackgroundColorView *)self delegate];
+  delegate = [(SearchUIBackgroundColorView *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(SearchUIBackgroundColorView *)self delegate];
-    [v16 backgroundColorView:self updatedAppearance:v6];
+    delegate2 = [(SearchUIBackgroundColorView *)self delegate];
+    [delegate2 backgroundColorView:self updatedAppearance:appearanceCopy];
   }
 }
 
-- (void)updateWithSFCard:(id)a3
+- (void)updateWithSFCard:(id)card
 {
-  v4 = a3;
-  v5 = [v4 backgroundImage];
-  [(SearchUIBackgroundColorView *)self setBackgroundImage:v5];
+  cardCopy = card;
+  backgroundImage = [cardCopy backgroundImage];
+  [(SearchUIBackgroundColorView *)self setBackgroundImage:backgroundImage];
 
-  v6 = [v4 backgroundColor];
+  backgroundColor = [cardCopy backgroundColor];
 
-  [(SearchUIBackgroundColorView *)self setColor:v6];
+  [(SearchUIBackgroundColorView *)self setColor:backgroundColor];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v12 = a3;
-  if (self->_backgroundImage != v12)
+  imageCopy = image;
+  if (self->_backgroundImage != imageCopy)
   {
-    objc_storeStrong(&self->_backgroundImage, a3);
-    v5 = [(SearchUIBackgroundColorView *)self backgroundImageView];
+    objc_storeStrong(&self->_backgroundImage, image);
+    backgroundImageView = [(SearchUIBackgroundColorView *)self backgroundImageView];
 
-    if (!v5)
+    if (!backgroundImageView)
     {
       v6 = objc_opt_new();
       [v6 setShadowDisabled:1];
       [v6 setPlaceholderVisibility:2];
       [(SearchUIBackgroundColorView *)self setBackgroundImageView:v6];
-      v7 = [(SearchUIBackgroundColorView *)self gradientView];
-      [v7 addSubview:v6];
+      gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+      [gradientView addSubview:v6];
     }
 
-    v8 = [(SearchUIBackgroundColorView *)self backgroundImageView];
-    [v8 updateWithImage:v12];
+    backgroundImageView2 = [(SearchUIBackgroundColorView *)self backgroundImageView];
+    [backgroundImageView2 updateWithImage:imageCopy];
 
-    v9 = [(SearchUIBackgroundColorView *)self backgroundImageView];
-    [v9 setHidden:v12 == 0];
+    backgroundImageView3 = [(SearchUIBackgroundColorView *)self backgroundImageView];
+    [backgroundImageView3 setHidden:imageCopy == 0];
 
-    v10 = [(SearchUIBackgroundColorView *)self gradientView];
-    v11 = [v10 layer];
-    [v11 setMasksToBounds:v12 != 0];
+    gradientView2 = [(SearchUIBackgroundColorView *)self gradientView];
+    layer = [gradientView2 layer];
+    [layer setMasksToBounds:imageCopy != 0];
 
-    if (v12)
+    if (imageCopy)
     {
       [(SearchUIBackgroundColorView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setShowsPlaceholderPlatterView:(BOOL)a3
+- (void)setShowsPlaceholderPlatterView:(BOOL)view
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  if (self->_showsPlaceholderPlatterView != a3)
+  if (self->_showsPlaceholderPlatterView != view)
   {
-    self->_showsPlaceholderPlatterView = a3;
-    if (a3 || (v3 = 0x1E69D9000, ([MEMORY[0x1E69D9240] isSiri] & 1) != 0) || (objc_msgSend(MEMORY[0x1E69D9240], "isIpad") & 1) == 0 && !objc_msgSend(MEMORY[0x1E69D9240], "isMacOS"))
+    self->_showsPlaceholderPlatterView = view;
+    if (view || (blackColor2 = 0x1E69D9000, ([MEMORY[0x1E69D9240] isSiri] & 1) != 0) || (objc_msgSend(MEMORY[0x1E69D9240], "isIpad") & 1) == 0 && !objc_msgSend(MEMORY[0x1E69D9240], "isMacOS"))
     {
-      v5 = [MEMORY[0x1E69DC888] blackColor];
-      v15 = v5;
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v15 = blackColor;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
       v8 = 0;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E69DC888] blackColor];
-      v16[0] = v3;
-      v4 = [MEMORY[0x1E69DC888] clearColor];
-      v16[1] = v4;
+      blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+      v16[0] = blackColor2;
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      v16[1] = clearColor;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
       v8 = 1;
     }
 
-    v9 = [(SearchUIBackgroundColorView *)self colorBlendView];
-    [v9 setColors:v7];
+    colorBlendView = [(SearchUIBackgroundColorView *)self colorBlendView];
+    [colorBlendView setColors:v7];
 
     if (v8)
     {
 
-      v3 = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
-      v4 = [v3 layer];
-      v10 = [v4 locations];
+      blackColor2 = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
+      clearColor = [blackColor2 layer];
+      locations = [clearColor locations];
     }
 
     else
     {
 
-      v10 = 0;
+      locations = 0;
     }
 
-    v11 = [(SearchUIBackgroundColorView *)self colorBlendView];
-    v12 = [v11 layer];
-    [v12 setLocations:v10];
+    colorBlendView2 = [(SearchUIBackgroundColorView *)self colorBlendView];
+    layer = [colorBlendView2 layer];
+    [layer setLocations:locations];
 
     if (v8)
     {
 
-      v13 = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
+      gradientViewMaskView = [(SearchUIBackgroundColorView *)self gradientViewMaskView];
     }
 
     else
     {
-      v13 = 0;
+      gradientViewMaskView = 0;
     }
 
-    v14 = [(SearchUIBackgroundColorView *)self gradientView];
-    [v14 setMaskView:v13];
+    gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+    [gradientView setMaskView:gradientViewMaskView];
 
     if (v8)
     {
@@ -317,30 +317,30 @@ LABEL_5:
   }
 }
 
-- (void)tlks_setCornerRadius:(double)a3 withStyle:(id)a4
+- (void)tlks_setCornerRadius:(double)radius withStyle:(id)style
 {
   v10.receiver = self;
   v10.super_class = SearchUIBackgroundColorView;
-  v6 = a4;
-  [(SearchUIBackgroundColorView *)&v10 tlks_setCornerRadius:v6 withStyle:a3];
+  styleCopy = style;
+  [(SearchUIBackgroundColorView *)&v10 tlks_setCornerRadius:styleCopy withStyle:radius];
   v7 = [(SearchUIBackgroundColorView *)self platterView:v10.receiver];
-  [v7 tlks_setCornerRadius:v6 withStyle:a3];
+  [v7 tlks_setCornerRadius:styleCopy withStyle:radius];
 
-  v8 = [(SearchUIBackgroundColorView *)self gradientView];
-  [v8 tlks_setCornerRadius:v6 withStyle:a3];
+  gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+  [gradientView tlks_setCornerRadius:styleCopy withStyle:radius];
 
-  v9 = [(SearchUIBackgroundColorView *)self colorBlendView];
-  [v9 tlks_setCornerRadius:v6 withStyle:a3];
+  colorBlendView = [(SearchUIBackgroundColorView *)self colorBlendView];
+  [colorBlendView tlks_setCornerRadius:styleCopy withStyle:radius];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIBackgroundColorView;
-  [(SearchUIBackgroundColorView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIBackgroundColorView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIBackgroundColorView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIBackgroundColorView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -348,11 +348,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIBackgroundColorView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIBackgroundColorView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -360,30 +360,30 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v30.receiver = self;
   v30.super_class = SearchUIBackgroundColorView;
-  [(SearchUIBackgroundColorView *)&v30 tlk_updateForAppearance:v4];
-  v5 = [(SearchUIBackgroundColorView *)self prominenceView];
-  [v5 setCustomColorAlpha:0.0];
+  [(SearchUIBackgroundColorView *)&v30 tlk_updateForAppearance:appearanceCopy];
+  prominenceView = [(SearchUIBackgroundColorView *)self prominenceView];
+  [prominenceView setCustomColorAlpha:0.0];
 
-  v6 = [(SearchUIBackgroundColorView *)self showsPlaceholderPlatterView];
-  v7 = [(SearchUIBackgroundColorView *)self platterView];
-  [v7 setAlpha:v6];
+  showsPlaceholderPlatterView = [(SearchUIBackgroundColorView *)self showsPlaceholderPlatterView];
+  platterView = [(SearchUIBackgroundColorView *)self platterView];
+  [platterView setAlpha:showsPlaceholderPlatterView];
 
-  v8 = [(SearchUIBackgroundColorView *)self colorBlendView];
-  [v8 setAlpha:0.0];
+  colorBlendView = [(SearchUIBackgroundColorView *)self colorBlendView];
+  [colorBlendView setAlpha:0.0];
 
-  v9 = [(SearchUIBackgroundColorView *)self gradientView];
-  [v9 setAlpha:0.0];
+  gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+  [gradientView setAlpha:0.0];
 
-  v10 = [(SearchUIBackgroundColorView *)self color];
+  color = [(SearchUIBackgroundColorView *)self color];
   objc_opt_class();
-  v11 = (objc_opt_isKindOfClass() & 1) != 0 && [v10 gradientType] == 0;
-  v12 = [(SearchUIBackgroundColorView *)self gradientView];
-  v13 = [v12 layer];
+  v11 = (objc_opt_isKindOfClass() & 1) != 0 && [color gradientType] == 0;
+  gradientView2 = [(SearchUIBackgroundColorView *)self gradientView];
+  layer = [gradientView2 layer];
 
   if (v11)
   {
@@ -425,40 +425,40 @@ LABEL_5:
     v17 = 0.5;
   }
 
-  [v13 setStartPoint:{v14, v15}];
-  [v13 setEndPoint:{v17, v16}];
-  if (v10)
+  [layer setStartPoint:{v14, v15}];
+  [layer setEndPoint:{v17, v16}];
+  if (color)
   {
     v18 = objc_opt_new();
-    [v18 setSfColor:v10];
-    [v18 setAppearance:v4];
+    [v18 setSfColor:color];
+    [v18 setAppearance:appearanceCopy];
     v19 = dispatch_semaphore_create(0);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __55__SearchUIBackgroundColorView_tlk_updateForAppearance___block_invoke;
     v24[3] = &unk_1E85B4740;
     v25 = v19;
-    v26 = v10;
-    v27 = self;
+    v26 = color;
+    selfCopy = self;
     v29 = v11;
     v28 = v18;
     v20 = v18;
-    v21 = v19;
+    delegate2 = v19;
     [SearchUIBackgroundColorUtilities resolvedColoringForColorRequest:v20 completionHandler:v24];
-    dispatch_semaphore_signal(v21);
+    dispatch_semaphore_signal(delegate2);
 
 LABEL_20:
     goto LABEL_21;
   }
 
   [(SearchUIBackgroundColorView *)self updateAppearance:0 withColors:0];
-  v22 = [(SearchUIBackgroundColorView *)self delegate];
+  delegate = [(SearchUIBackgroundColorView *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v21 = [(SearchUIBackgroundColorView *)self delegate];
-    [v21 backgroundColorView:self didFinishColorUpdate:0];
+    delegate2 = [(SearchUIBackgroundColorView *)self delegate];
+    [delegate2 backgroundColorView:self didFinishColorUpdate:0];
     goto LABEL_20;
   }
 
@@ -660,32 +660,32 @@ void __55__SearchUIBackgroundColorView_tlk_updateForAppearance___block_invoke_4(
   [v1 setCustomColorAlpha:0.13];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (!colorCopy)
   {
     [(SearchUIBackgroundColorView *)self updateAppearance:0 withColors:0];
-    v5 = 0;
+    colorCopy = 0;
   }
 
-  if (([v5 isEqual:self->_color] & 1) == 0)
+  if (([colorCopy isEqual:self->_color] & 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(SearchUIBackgroundColorView *)self tlk_updateWithCurrentAppearance];
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(SearchUIBackgroundColorView *)self isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(SearchUIBackgroundColorView *)self isHidden]!= hidden)
   {
     v5.receiver = self;
     v5.super_class = SearchUIBackgroundColorView;
-    [(SearchUIBackgroundColorView *)&v5 setHidden:v3];
-    if (v3)
+    [(SearchUIBackgroundColorView *)&v5 setHidden:hiddenCopy];
+    if (hiddenCopy)
     {
       [(SearchUIBackgroundColorView *)self updateAppearance:0 withColors:0];
     }
@@ -697,62 +697,62 @@ void __55__SearchUIBackgroundColorView_tlk_updateForAppearance___block_invoke_4(
   }
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  v3 = a3;
-  self->_maskedCorners = a3;
+  cornersCopy = corners;
+  self->_maskedCorners = corners;
   v5 = [SearchUIUtilities flippedCornerMaskFromCornerMask:?];
-  v6 = [(SearchUIBackgroundColorView *)self layer];
-  [v6 setMaskedCorners:v3];
+  layer = [(SearchUIBackgroundColorView *)self layer];
+  [layer setMaskedCorners:cornersCopy];
 
-  v7 = [(SearchUIBackgroundColorView *)self platterView];
-  v8 = [v7 layer];
-  v9 = [v8 isGeometryFlipped];
-  v10 = [(SearchUIBackgroundColorView *)self layer];
-  if (v9 != [v10 isGeometryFlipped])
+  platterView = [(SearchUIBackgroundColorView *)self platterView];
+  layer2 = [platterView layer];
+  isGeometryFlipped = [layer2 isGeometryFlipped];
+  layer3 = [(SearchUIBackgroundColorView *)self layer];
+  if (isGeometryFlipped != [layer3 isGeometryFlipped])
   {
     v11 = v5;
   }
 
   else
   {
-    v11 = v3;
+    v11 = cornersCopy;
   }
 
-  v12 = [(SearchUIBackgroundColorView *)self platterView];
-  v13 = [v12 layer];
-  [v13 setMaskedCorners:v11];
+  platterView2 = [(SearchUIBackgroundColorView *)self platterView];
+  layer4 = [platterView2 layer];
+  [layer4 setMaskedCorners:v11];
 
-  v14 = [(SearchUIBackgroundColorView *)self gradientView];
-  v15 = [v14 layer];
-  v16 = [v15 isGeometryFlipped];
-  v17 = [(SearchUIBackgroundColorView *)self layer];
-  if (v16 != [v17 isGeometryFlipped])
+  gradientView = [(SearchUIBackgroundColorView *)self gradientView];
+  layer5 = [gradientView layer];
+  isGeometryFlipped2 = [layer5 isGeometryFlipped];
+  layer6 = [(SearchUIBackgroundColorView *)self layer];
+  if (isGeometryFlipped2 != [layer6 isGeometryFlipped])
   {
     v18 = v5;
   }
 
   else
   {
-    v18 = v3;
+    v18 = cornersCopy;
   }
 
-  v19 = [(SearchUIBackgroundColorView *)self gradientView];
-  v20 = [v19 layer];
-  [v20 setMaskedCorners:v18];
+  gradientView2 = [(SearchUIBackgroundColorView *)self gradientView];
+  layer7 = [gradientView2 layer];
+  [layer7 setMaskedCorners:v18];
 
-  v26 = [(SearchUIBackgroundColorView *)self colorBlendView];
-  v21 = [v26 layer];
-  v22 = [v21 isGeometryFlipped];
-  v23 = [(SearchUIBackgroundColorView *)self layer];
-  if (v22 != [v23 isGeometryFlipped])
+  colorBlendView = [(SearchUIBackgroundColorView *)self colorBlendView];
+  layer8 = [colorBlendView layer];
+  isGeometryFlipped3 = [layer8 isGeometryFlipped];
+  layer9 = [(SearchUIBackgroundColorView *)self layer];
+  if (isGeometryFlipped3 != [layer9 isGeometryFlipped])
   {
-    v3 = v5;
+    cornersCopy = v5;
   }
 
-  v24 = [(SearchUIBackgroundColorView *)self colorBlendView];
-  v25 = [v24 layer];
-  [v25 setMaskedCorners:v3];
+  colorBlendView2 = [(SearchUIBackgroundColorView *)self colorBlendView];
+  layer10 = [colorBlendView2 layer];
+  [layer10 setMaskedCorners:cornersCopy];
 }
 
 @end

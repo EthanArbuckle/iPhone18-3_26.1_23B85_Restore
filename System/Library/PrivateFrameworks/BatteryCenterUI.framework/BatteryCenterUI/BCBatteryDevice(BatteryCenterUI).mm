@@ -9,14 +9,14 @@
 
 + (id)_internalBatteryDeviceGlyphName
 {
-  v0 = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
+  _typeOfCurrentDevice = [MEMORY[0x1E6982C40] _typeOfCurrentDevice];
   v1 = MEMORY[0x1E69A8A40];
-  v2 = [v0 identifier];
-  v3 = [v1 symbolForTypeIdentifier:v2 withResolutionStrategy:1 variantOptions:1 error:0];
+  identifier = [_typeOfCurrentDevice identifier];
+  v3 = [v1 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:1 error:0];
 
-  v4 = [v3 name];
+  name = [v3 name];
 
-  return v4;
+  return name;
 }
 
 + (double)batteryWidgetGlyphLargestSize
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __65__BCBatteryDevice_BatteryCenterUI__batteryWidgetGlyphLargestSize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (batteryWidgetGlyphLargestSize_onceToken[0] != -1)
   {
     dispatch_once(batteryWidgetGlyphLargestSize_onceToken, block);
@@ -37,14 +37,14 @@
 - (__CFString)batteryWidgetGlyphName:()BatteryCenterUI
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [a1 vendor];
-  v3 = [a1 accessoryCategory];
-  v4 = [a1 transportType];
-  if ([a1 isInternal])
+  vendor = [self vendor];
+  accessoryCategory = [self accessoryCategory];
+  transportType = [self transportType];
+  if ([self isInternal])
   {
-    v5 = [objc_opt_class() _internalBatteryDeviceGlyphName];
-    v6 = [a1 parts];
-    if (v5)
+    _internalBatteryDeviceGlyphName = [objc_opt_class() _internalBatteryDeviceGlyphName];
+    parts = [self parts];
+    if (_internalBatteryDeviceGlyphName)
     {
       goto LABEL_15;
     }
@@ -52,44 +52,44 @@
 
   else
   {
-    v6 = [a1 parts];
+    parts = [self parts];
   }
 
-  v7 = v6;
-  if (v2 == 2)
+  v7 = parts;
+  if (vendor == 2)
   {
-    v5 = @"beatslogo";
+    _internalBatteryDeviceGlyphName = @"beatslogo";
     goto LABEL_15;
   }
 
-  if (v2 != 1)
+  if (vendor != 1)
   {
-    if (v3 > 5)
+    if (accessoryCategory > 5)
     {
-      if (v3 > 8)
+      if (accessoryCategory > 8)
       {
 LABEL_43:
-        if (v3 == 9)
+        if (accessoryCategory == 9)
         {
-          v5 = @"computermouse.fill";
+          _internalBatteryDeviceGlyphName = @"computermouse.fill";
           goto LABEL_15;
         }
 
-        if (v3 == 10)
+        if (accessoryCategory == 10)
         {
-          v5 = @"hearingdevice.ear";
+          _internalBatteryDeviceGlyphName = @"hearingdevice.ear";
           goto LABEL_15;
         }
 
         goto LABEL_62;
       }
 
-      if (v3 == 6)
+      if (accessoryCategory == 6)
       {
         goto LABEL_61;
       }
 
-      if (v3 == 8)
+      if (accessoryCategory == 8)
       {
         goto LABEL_53;
       }
@@ -97,19 +97,19 @@ LABEL_43:
       goto LABEL_62;
     }
 
-    if (v3 == 1)
+    if (accessoryCategory == 1)
     {
 LABEL_52:
-      v5 = @"hifispeaker.fill";
+      _internalBatteryDeviceGlyphName = @"hifispeaker.fill";
       goto LABEL_15;
     }
 
-    if (v3 == 2)
+    if (accessoryCategory == 2)
     {
 LABEL_49:
       if (!BCCombinedLeftRightBatteryStatus() || (v17 = v7 - 1, (v7 - 1) >= 4))
       {
-        v5 = @"headphones";
+        _internalBatteryDeviceGlyphName = @"headphones";
         goto LABEL_15;
       }
 
@@ -118,43 +118,43 @@ LABEL_49:
     }
 
 LABEL_57:
-    if (v3 == 5)
+    if (accessoryCategory == 5)
     {
-      v5 = @"keyboard.fill";
+      _internalBatteryDeviceGlyphName = @"keyboard.fill";
       goto LABEL_15;
     }
 
     goto LABEL_62;
   }
 
-  v8 = [a1 productIdentifier];
-  v9 = v8;
-  switch(v4)
+  productIdentifier = [self productIdentifier];
+  v9 = productIdentifier;
+  switch(transportType)
   {
     case 2:
-      if (v8 == *MEMORY[0x1E698E858])
+      if (productIdentifier == *MEMORY[0x1E698E858])
       {
-        v5 = @"iphone.smartbatterycase.gen1";
+        _internalBatteryDeviceGlyphName = @"iphone.smartbatterycase.gen1";
         goto LABEL_15;
       }
 
-      if (v8 == *MEMORY[0x1E698E860])
+      if (productIdentifier == *MEMORY[0x1E698E860])
       {
-        v5 = @"iphone.smartbatterycase.gen2";
+        _internalBatteryDeviceGlyphName = @"iphone.smartbatterycase.gen2";
         goto LABEL_15;
       }
 
       break;
     case 4:
-      if (v8 == *MEMORY[0x1E698E848])
+      if (productIdentifier == *MEMORY[0x1E698E848])
       {
-        v5 = @"magsafe.batterypack.fill";
+        _internalBatteryDeviceGlyphName = @"magsafe.batterypack.fill";
         goto LABEL_15;
       }
 
-      if (v8 == *MEMORY[0x1E698E850])
+      if (productIdentifier == *MEMORY[0x1E698E850])
       {
-        v5 = @"0828E54B965E418AB42353CA91BFBBEE.fill";
+        _internalBatteryDeviceGlyphName = @"0828E54B965E418AB42353CA91BFBBEE.fill";
         goto LABEL_15;
       }
 
@@ -179,12 +179,12 @@ LABEL_57:
 
       v13 = [MEMORY[0x1E6982C40] _typeWithBluetoothProductID:v9 vendorID:76];
       v14 = MEMORY[0x1E69A8A40];
-      v15 = [v13 identifier];
-      v16 = [v14 symbolForTypeIdentifier:v15 withResolutionStrategy:1 variantOptions:v10 error:0];
+      identifier = [v13 identifier];
+      v16 = [v14 symbolForTypeIdentifier:identifier withResolutionStrategy:1 variantOptions:v10 error:0];
 
-      v5 = [v16 name];
+      _internalBatteryDeviceGlyphName = [v16 name];
 
-      if (v5)
+      if (_internalBatteryDeviceGlyphName)
       {
         goto LABEL_15;
       }
@@ -192,81 +192,81 @@ LABEL_57:
       break;
   }
 
-  if (v3 > 5)
+  if (accessoryCategory > 5)
   {
-    if (v3 > 7)
+    if (accessoryCategory > 7)
     {
-      if (v3 != 8)
+      if (accessoryCategory != 8)
       {
         goto LABEL_43;
       }
 
 LABEL_53:
-      v5 = @"gamecontroller.fill";
+      _internalBatteryDeviceGlyphName = @"gamecontroller.fill";
       goto LABEL_15;
     }
 
-    if (v3 != 6)
+    if (accessoryCategory != 6)
     {
-      v5 = @"applepencil";
+      _internalBatteryDeviceGlyphName = @"applepencil";
       goto LABEL_15;
     }
 
 LABEL_61:
-    v5 = @"rectangle.filled.and.hand.point.up.left";
+    _internalBatteryDeviceGlyphName = @"rectangle.filled.and.hand.point.up.left";
     goto LABEL_15;
   }
 
-  if (v3 > 2)
+  if (accessoryCategory > 2)
   {
-    if (v3 == 3)
+    if (accessoryCategory == 3)
     {
-      v5 = @"applewatch";
+      _internalBatteryDeviceGlyphName = @"applewatch";
       goto LABEL_15;
     }
 
     goto LABEL_57;
   }
 
-  if (v3 == 1)
+  if (accessoryCategory == 1)
   {
     goto LABEL_52;
   }
 
-  if (v3 == 2)
+  if (accessoryCategory == 2)
   {
     goto LABEL_49;
   }
 
 LABEL_62:
-  v17 = v4 - 2;
-  if ((v4 - 2) < 3)
+  v17 = transportType - 2;
+  if ((transportType - 2) < 3)
   {
     v18 = off_1E814EF18;
 LABEL_64:
-    v5 = v18[v17];
+    _internalBatteryDeviceGlyphName = v18[v17];
     goto LABEL_15;
   }
 
-  v5 = 0;
+  _internalBatteryDeviceGlyphName = 0;
 LABEL_15:
   v11 = *MEMORY[0x1E698E830];
   if (os_log_type_enabled(*MEMORY[0x1E698E830], OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543618;
-    v20 = a1;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v5;
+    v22 = _internalBatteryDeviceGlyphName;
     _os_log_impl(&dword_1C1C4A000, v11, OS_LOG_TYPE_DEFAULT, "(%{public}@) Glyph name: %@", &v19, 0x16u);
   }
 
-  return v5;
+  return _internalBatteryDeviceGlyphName;
 }
 
 - (id)batteryWidgetGlyph
 {
   v6 = 0;
-  v1 = [a1 batteryWidgetGlyphName:&v6];
+  v1 = [self batteryWidgetGlyphName:&v6];
   v2 = MEMORY[0x1E69DCAB8];
   if (v6)
   {

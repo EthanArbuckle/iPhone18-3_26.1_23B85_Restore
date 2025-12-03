@@ -1,57 +1,57 @@
 @interface STSchemaSTDisambiguationEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTDisambiguationEnded)initWithDictionary:(id)a3;
-- (STSchemaSTDisambiguationEnded)initWithJSON:(id)a3;
+- (STSchemaSTDisambiguationEnded)initWithDictionary:(id)dictionary;
+- (STSchemaSTDisambiguationEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsContentSearch:(BOOL)a3;
-- (void)setHasIsOpenQuery:(BOOL)a3;
-- (void)setHasIsQuestionQuery:(BOOL)a3;
-- (void)setHasNumOfResults:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsContentSearch:(BOOL)search;
+- (void)setHasIsOpenQuery:(BOOL)query;
+- (void)setHasIsQuestionQuery:(BOOL)query;
+- (void)setHasNumOfResults:(BOOL)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTDisambiguationEnded
 
-- (STSchemaSTDisambiguationEnded)initWithDictionary:(id)a3
+- (STSchemaSTDisambiguationEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = STSchemaSTDisambiguationEnded;
   v5 = [(STSchemaSTDisambiguationEnded *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"disambiguationDetected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTDisambiguationEnded setDisambiguationDetected:](v5, "setDisambiguationDetected:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isQuestionQuery"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isQuestionQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTDisambiguationEnded setIsQuestionQuery:](v5, "setIsQuestionQuery:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isOpenQuery"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isOpenQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTDisambiguationEnded setIsOpenQuery:](v5, "setIsOpenQuery:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numOfResults"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numOfResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[STSchemaSTDisambiguationEnded setNumOfResults:](v5, "setNumOfResults:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isContentSearch"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isContentSearch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (STSchemaSTDisambiguationEnded)initWithJSON:(id)a3
+- (STSchemaSTDisambiguationEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTDisambiguationEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTDisambiguationEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTDisambiguationEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isContentSearch + 1);
   if (v4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[STSchemaSTDisambiguationEnded disambiguationDetected](self, "disambiguationDetected")}];
-    [v3 setObject:v7 forKeyedSubscript:@"disambiguationDetected"];
+    [dictionary setObject:v7 forKeyedSubscript:@"disambiguationDetected"];
 
     v4 = *(&self->_isContentSearch + 1);
     if ((v4 & 0x10) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[STSchemaSTDisambiguationEnded isContentSearch](self, "isContentSearch")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isContentSearch"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isContentSearch"];
 
   v4 = *(&self->_isContentSearch + 1);
   if ((v4 & 4) == 0)
@@ -142,7 +142,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[STSchemaSTDisambiguationEnded isOpenQuery](self, "isOpenQuery")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isOpenQuery"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isOpenQuery"];
 
   v4 = *(&self->_isContentSearch + 1);
   if ((v4 & 2) == 0)
@@ -158,19 +158,19 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[STSchemaSTDisambiguationEnded isQuestionQuery](self, "isQuestionQuery")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isQuestionQuery"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isQuestionQuery"];
 
   if ((*(&self->_isContentSearch + 1) & 8) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[STSchemaSTDisambiguationEnded numOfResults](self, "numOfResults")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numOfResults"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numOfResults"];
   }
 
 LABEL_7:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -241,16 +241,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   v5 = *(&self->_isContentSearch + 1);
-  v6 = v4[17];
+  v6 = equalCopy[17];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -259,13 +259,13 @@ LABEL_6:
   if (v5)
   {
     disambiguationDetected = self->_disambiguationDetected;
-    if (disambiguationDetected != [v4 disambiguationDetected])
+    if (disambiguationDetected != [equalCopy disambiguationDetected])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isContentSearch + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -277,13 +277,13 @@ LABEL_6:
   if (v8)
   {
     isQuestionQuery = self->_isQuestionQuery;
-    if (isQuestionQuery != [v4 isQuestionQuery])
+    if (isQuestionQuery != [equalCopy isQuestionQuery])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isContentSearch + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -295,13 +295,13 @@ LABEL_6:
   if (v10)
   {
     isOpenQuery = self->_isOpenQuery;
-    if (isOpenQuery != [v4 isOpenQuery])
+    if (isOpenQuery != [equalCopy isOpenQuery])
     {
       goto LABEL_22;
     }
 
     v5 = *(&self->_isContentSearch + 1);
-    v6 = v4[17];
+    v6 = equalCopy[17];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -313,10 +313,10 @@ LABEL_6:
   if (v12)
   {
     numOfResults = self->_numOfResults;
-    if (numOfResults == [v4 numOfResults])
+    if (numOfResults == [equalCopy numOfResults])
     {
       v5 = *(&self->_isContentSearch + 1);
-      v6 = v4[17];
+      v6 = equalCopy[17];
       goto LABEL_18;
     }
 
@@ -335,7 +335,7 @@ LABEL_18:
   if (v14)
   {
     isContentSearch = self->_isContentSearch;
-    if (isContentSearch != [v4 isContentSearch])
+    if (isContentSearch != [equalCopy isContentSearch])
     {
       goto LABEL_22;
     }
@@ -347,9 +347,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_isContentSearch + 1);
   if (v4)
   {
@@ -410,9 +410,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasIsContentSearch:(BOOL)a3
+- (void)setHasIsContentSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 16;
   }
@@ -425,9 +425,9 @@ LABEL_7:
   *(&self->_isContentSearch + 1) = *(&self->_isContentSearch + 1) & 0xEF | v3;
 }
 
-- (void)setHasNumOfResults:(BOOL)a3
+- (void)setHasNumOfResults:(BOOL)results
 {
-  if (a3)
+  if (results)
   {
     v3 = 8;
   }
@@ -440,9 +440,9 @@ LABEL_7:
   *(&self->_isContentSearch + 1) = *(&self->_isContentSearch + 1) & 0xF7 | v3;
 }
 
-- (void)setHasIsOpenQuery:(BOOL)a3
+- (void)setHasIsOpenQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 4;
   }
@@ -455,9 +455,9 @@ LABEL_7:
   *(&self->_isContentSearch + 1) = *(&self->_isContentSearch + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsQuestionQuery:(BOOL)a3
+- (void)setHasIsQuestionQuery:(BOOL)query
 {
-  if (a3)
+  if (query)
   {
     v3 = 2;
   }

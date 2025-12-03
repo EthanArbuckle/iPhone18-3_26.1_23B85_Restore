@@ -1,15 +1,15 @@
 @interface HomeScreenTintObserver
-- (void)homeScreenService:(id)a3 homeScreenIconStyleConfigurationDidChange:(id)a4;
+- (void)homeScreenService:(id)service homeScreenIconStyleConfigurationDidChange:(id)change;
 @end
 
 @implementation HomeScreenTintObserver
 
-- (void)homeScreenService:(id)a3 homeScreenIconStyleConfigurationDidChange:(id)a4
+- (void)homeScreenService:(id)service homeScreenIconStyleConfigurationDidChange:(id)change
 {
-  v5 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  changeCopy = change;
 
-  sub_249D01820(v6);
+  sub_249D01820(changeCopy);
 }
 
 @end

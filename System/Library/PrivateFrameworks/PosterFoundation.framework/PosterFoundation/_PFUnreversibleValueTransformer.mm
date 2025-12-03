@@ -1,21 +1,21 @@
 @interface _PFUnreversibleValueTransformer
-- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)a3 reverseValueClass:(Class)a4;
-- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4;
-- (id)transformedValue:(id)a3;
-- (id)transformedValue:(id)a3 context:(id)a4;
+- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)class reverseValueClass:(Class)valueClass;
+- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer;
+- (id)transformedValue:(id)value;
+- (id)transformedValue:(id)value context:(id)context;
 @end
 
 @implementation _PFUnreversibleValueTransformer
 
-- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4
+- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer
 {
-  v6 = a4;
+  transformerCopy = transformer;
   v11.receiver = self;
   v11.super_class = _PFUnreversibleValueTransformer;
-  v7 = [(_PFGenericValueTransformerConcreteImplementation *)&v11 initWithTransformedValueClass:a3];
+  v7 = [(_PFGenericValueTransformerConcreteImplementation *)&v11 initWithTransformedValueClass:class];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [transformerCopy copy];
     transformer = v7->_transformer;
     v7->_transformer = v8;
   }
@@ -23,16 +23,16 @@
   return v7;
 }
 
-- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)a3 reverseValueClass:(Class)a4
+- (_PFUnreversibleValueTransformer)initWithTransformedValueClass:(Class)class reverseValueClass:(Class)valueClass
 {
-  [(_PFUnreversibleValueTransformer *)self doesNotRecognizeSelector:a2, a4];
+  [(_PFUnreversibleValueTransformer *)self doesNotRecognizeSelector:a2, valueClass];
 
   return 0;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = (*(self->_transformer + 2))();
   if (v5 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes])
   {
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (id)transformedValue:(id)a3 context:(id)a4
+- (id)transformedValue:(id)value context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  contextCopy = context;
   v8 = (*(self->_transformer + 2))();
   if (v8 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes])
   {

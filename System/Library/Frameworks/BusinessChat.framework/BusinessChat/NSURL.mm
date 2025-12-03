@@ -7,11 +7,11 @@
 - (id)fragments
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
-    v3 = [a1 fragment];
-    v4 = [v3 componentsSeparatedByString:@"&"];
+    fragment = [self fragment];
+    v4 = [fragment componentsSeparatedByString:@"&"];
 
     v17 = 0u;
     v18 = 0u;

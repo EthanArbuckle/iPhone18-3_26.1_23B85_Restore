@@ -1,5 +1,5 @@
 @interface PUIReportSensorListController
-+ (id)appSpecifiersFromManager:(id)a3;
++ (id)appSpecifiersFromManager:(id)manager;
 - (PUIReportSensorListController)init;
 - (id)specifiers;
 - (void)dealloc;
@@ -8,15 +8,15 @@
 
 @implementation PUIReportSensorListController
 
-+ (id)appSpecifiersFromManager:(id)a3
++ (id)appSpecifiersFromManager:(id)manager
 {
   v63 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  managerCopy = manager;
   v52 = objc_opt_new();
   [v52 setUnitsStyle:2];
   v4 = objc_opt_new();
-  v5 = [v3 allEvents];
-  v6 = [v3 bundleIDsAndLatestDatesFromEvents:v5];
+  allEvents = [managerCopy allEvents];
+  v6 = [managerCopy bundleIDsAndLatestDatesFromEvents:allEvents];
 
   v60 = 0u;
   v61 = 0u;
@@ -32,7 +32,7 @@
     v47 = *MEMORY[0x277D40020];
     v46 = *MEMORY[0x277D3FE58];
     v45 = *MEMORY[0x277D40160];
-    v42 = v3;
+    v42 = managerCopy;
     v44 = v4;
     do
     {
@@ -45,12 +45,12 @@
 
         v8 = *(*(&v58 + 1) + 8 * i);
         v9 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
-        v10 = [v9 localizedName];
+        localizedName = [v9 localizedName];
 
         v11 = MEMORY[0x277D3FAD8];
-        if ([v10 length])
+        if ([localizedName length])
         {
-          v12 = v10;
+          v12 = localizedName;
         }
 
         else
@@ -58,74 +58,74 @@
           v12 = v8;
         }
 
-        v13 = [v11 preferenceSpecifierNamed:v12 target:a1 set:0 get:sel_valueForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
+        v13 = [v11 preferenceSpecifierNamed:v12 target:self set:0 get:sel_valueForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
         [v13 setIdentifier:v8];
         [v13 setObject:v8 forKeyedSubscript:@"PUIReportAppIDKey"];
         [v13 setObject:v8 forKeyedSubscript:v48];
         [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v47];
-        [v13 setObject:v3 forKeyedSubscript:@"PUIReportSensorManagerKey"];
+        [v13 setObject:managerCopy forKeyedSubscript:@"PUIReportSensorManagerKey"];
         [v13 setObject:objc_opt_class() forKeyedSubscript:v46];
         v57[0] = MEMORY[0x277D85DD0];
         v57[1] = 3221225472;
         v57[2] = __58__PUIReportSensorListController_appSpecifiersFromManager___block_invoke;
         v57[3] = &unk_279BA21E0;
         v57[4] = v8;
-        v54 = [v3 eventsFiltered:v57];
-        v14 = [v3 categoriesAndLatestDatesFromEvents:?];
-        v15 = [v14 allKeys];
+        v54 = [managerCopy eventsFiltered:v57];
+        v14 = [managerCopy categoriesAndLatestDatesFromEvents:?];
+        allKeys = [v14 allKeys];
 
         v16 = [v51 objectForKeyedSubscript:v8];
         v17 = [MEMORY[0x277CBEAA8] now];
         v18 = [v52 localizedStringForDate:v16 relativeToDate:v17];
 
-        if ([v15 count])
+        if ([allKeys count])
         {
-          if ([v15 count] == 1)
+          if ([allKeys count] == 1)
           {
             v19 = MEMORY[0x277CCACA8];
             v20 = PUI_LocalizedStringForAppReport(@"TIME_AND_CATEGORY_1");
             v21 = objc_opt_class();
-            v22 = [v15 objectAtIndexedSubscript:0];
+            v22 = [allKeys objectAtIndexedSubscript:0];
             v23 = [v21 localizedStringForCategory:v22];
             v24 = [v19 stringWithFormat:v20, v18, v23];
           }
 
           else
           {
-            v25 = [v15 count];
+            v25 = [allKeys count];
             v26 = MEMORY[0x277CCACA8];
             if (v25 == 2)
             {
               v20 = PUI_LocalizedStringForAppReport(@"TIME_AND_CATEGORY_2");
               v27 = objc_opt_class();
-              v22 = [v15 objectAtIndexedSubscript:0];
+              v22 = [allKeys objectAtIndexedSubscript:0];
               v23 = [v27 localizedStringForCategory:v22];
               v39 = v26;
               v28 = objc_opt_class();
-              v29 = [v15 objectAtIndexedSubscript:1];
+              v29 = [allKeys objectAtIndexedSubscript:1];
               [v28 localizedStringForCategory:v29];
-              v40 = v10;
+              v40 = localizedName;
               v31 = v30 = v18;
               v24 = [v39 stringWithFormat:v20, v30, v23, v31];
 
               v18 = v30;
-              v10 = v40;
+              localizedName = v40;
 
-              v3 = v42;
+              managerCopy = v42;
             }
 
             else
             {
               v20 = PUI_LocalizedStringForAppReport(@"TIME_AND_CATEGORY_3");
               v32 = objc_opt_class();
-              v22 = [v15 objectAtIndexedSubscript:0];
+              v22 = [allKeys objectAtIndexedSubscript:0];
               v23 = [v32 localizedStringForCategory:v22];
               v33 = objc_opt_class();
-              v41 = [v15 objectAtIndexedSubscript:1];
+              v41 = [allKeys objectAtIndexedSubscript:1];
               v34 = [v33 localizedStringForCategory:v41];
-              v24 = [v26 localizedStringWithFormat:v20, v18, v23, v34, objc_msgSend(v15, "count") - 2];
+              v24 = [v26 localizedStringWithFormat:v20, v18, v23, v34, objc_msgSend(allKeys, "count") - 2];
 
-              v3 = v42;
+              managerCopy = v42;
             }
           }
 
@@ -152,7 +152,7 @@
   v55[2] = __58__PUIReportSensorListController_appSpecifiersFromManager___block_invoke_2;
   v55[3] = &unk_279BA2208;
   v56 = v51;
-  v35 = v3;
+  v35 = managerCopy;
   v36 = v51;
   [v4 sortUsingComparator:v55];
 
@@ -193,8 +193,8 @@ uint64_t __58__PUIReportSensorListController_appSpecifiersFromManager___block_in
   v2 = [(PUIReportSensorListController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_dataDidChange name:@"PUIReportSensorManagerDataHasChangedNotification" object:0];
 
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -206,8 +206,8 @@ uint64_t __58__PUIReportSensorListController_appSpecifiersFromManager___block_in
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUIReportSensorListController;
@@ -220,12 +220,12 @@ uint64_t __58__PUIReportSensorListController_appSpecifiersFromManager___block_in
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PUIReportSensorListController *)self manager];
+    manager = [(PUIReportSensorListController *)self manager];
 
-    if (!v5)
+    if (!manager)
     {
-      v6 = [(PUIReportSensorListController *)self specifier];
-      v7 = [v6 objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
+      specifier = [(PUIReportSensorListController *)self specifier];
+      v7 = [specifier objectForKeyedSubscript:@"PUIReportSensorManagerKey"];
       [(PUIReportSensorListController *)self setManager:v7];
     }
 
@@ -235,8 +235,8 @@ uint64_t __58__PUIReportSensorListController_appSpecifiersFromManager___block_in
     v9 = objc_alloc(MEMORY[0x277D751E0]);
     v10 = PUI_LocalizedStringForAppReport(@"SORT_BY");
     v11 = [v9 initWithTitle:v10 style:0 target:self action:sel_sortByWasTapped];
-    v12 = [(PUIReportSensorListController *)self navigationItem];
-    [v12 setRightBarButtonItem:v11];
+    navigationItem = [(PUIReportSensorListController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v11];
 
     v13 = objc_opt_new();
     if ([(PUIReportSensorListController *)self alphabeticalSort])
@@ -252,8 +252,8 @@ uint64_t __58__PUIReportSensorListController_appSpecifiersFromManager___block_in
     v15 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"HEADER_GROUP" name:v14];
     [v13 addObject:v15];
     v16 = objc_opt_class();
-    v17 = [(PUIReportSensorListController *)self manager];
-    v18 = [v16 appSpecifiersFromManager:v17];
+    manager2 = [(PUIReportSensorListController *)self manager];
+    v18 = [v16 appSpecifiersFromManager:manager2];
     v19 = [v18 mutableCopy];
 
     if ([(PUIReportSensorListController *)self alphabeticalSort])

@@ -1,6 +1,6 @@
 @interface TTSTraceServer
 + (_TtC9axassetsd14TTSTraceServer)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 @end
 
 @implementation TTSTraceServer
@@ -16,10 +16,10 @@
   return static TTSTraceServer.shared;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_10001DF20;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -27,7 +27,7 @@
 
   swift_beginAccess();
   v5 = static TTSTraceServer.shared;
-  static TTSTraceServer.shared = v4;
+  static TTSTraceServer.shared = sharedCopy;
 }
 
 @end

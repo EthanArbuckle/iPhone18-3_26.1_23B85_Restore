@@ -1,37 +1,37 @@
 @interface HUMultiCameraRecordingOptionsItemManager
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (void)cameraRecordingSettingsModule:(id)a3 didUpdateItem:(id)a4;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (void)cameraRecordingSettingsModule:(id)module didUpdateItem:(id)item;
 @end
 
 @implementation HUMultiCameraRecordingOptionsItemManager
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
+  homeCopy = home;
+  cameraRecordingItemModules = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
 
-  if (!v5)
+  if (!cameraRecordingItemModules)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    [(HUMultiCameraRecordingOptionsItemManager *)self setCameraRecordingItemModules:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    [(HUMultiCameraRecordingOptionsItemManager *)self setCameraRecordingItemModules:array];
 
-    v7 = [v4 hf_allCameraProfilesSupportingRecording];
+    hf_allCameraProfilesSupportingRecording = [homeCopy hf_allCameraProfilesSupportingRecording];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __71__HUMultiCameraRecordingOptionsItemManager__buildItemProvidersForHome___block_invoke;
     v25[3] = &unk_277DC4308;
     v25[4] = self;
-    [v7 na_each:v25];
+    [hf_allCameraProfilesSupportingRecording na_each:v25];
   }
 
   objc_opt_class();
-  v8 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
-  v9 = [v8 lastObject];
+  cameraRecordingItemModules2 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
+  lastObject = [cameraRecordingItemModules2 lastObject];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = lastObject;
   }
 
   else
@@ -42,13 +42,13 @@
   v11 = v10;
 
   [v11 setShouldShowFooterTitle:1];
-  v12 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v13 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  cameraRecordingItemModules3 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
+  v14 = [cameraRecordingItemModules3 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v14)
   {
     v15 = v14;
@@ -59,21 +59,21 @@
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(cameraRecordingItemModules3);
         }
 
-        v18 = [*(*(&v21 + 1) + 8 * i) itemProviders];
-        v19 = [v18 allObjects];
-        [v12 addObjectsFromArray:v19];
+        itemProviders = [*(*(&v21 + 1) + 8 * i) itemProviders];
+        allObjects = [itemProviders allObjects];
+        [array2 addObjectsFromArray:allObjects];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v15 = [cameraRecordingItemModules3 countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v15);
   }
 
-  return v12;
+  return array2;
 }
 
 void __71__HUMultiCameraRecordingOptionsItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1, void *a2)
@@ -89,24 +89,24 @@ void __71__HUMultiCameraRecordingOptionsItemManager__buildItemProvidersForHome__
   [v7 addObject:v8];
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
-  v6 = [v5 count];
+  itemsCopy = items;
+  cameraRecordingItemModules = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
+  v6 = [cameraRecordingItemModules count];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v8 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
+    array = [MEMORY[0x277CBEB18] array];
+    cameraRecordingItemModules2 = [(HUMultiCameraRecordingOptionsItemManager *)self cameraRecordingItemModules];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __77__HUMultiCameraRecordingOptionsItemManager__buildSectionsWithDisplayedItems___block_invoke;
     v13[3] = &unk_277DC4330;
-    v14 = v4;
-    v9 = v7;
+    v14 = itemsCopy;
+    v9 = array;
     v15 = v9;
-    [v8 na_each:v13];
+    [cameraRecordingItemModules2 na_each:v13];
 
     v10 = v15;
     v11 = v9;
@@ -126,22 +126,22 @@ void __77__HUMultiCameraRecordingOptionsItemManager__buildSectionsWithDisplayedI
   [*(a1 + 40) addObjectsFromArray:v3];
 }
 
-- (void)cameraRecordingSettingsModule:(id)a3 didUpdateItem:(id)a4
+- (void)cameraRecordingSettingsModule:(id)module didUpdateItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  moduleCopy = module;
+  itemCopy = item;
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HFItemManager *)self sourceItem];
-  v11 = [v9 setWithObject:v10];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  v11 = [v9 setWithObject:sourceItem];
   v12 = [(HFItemManager *)self updateResultsForItems:v11 senderSelector:a2];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__HUMultiCameraRecordingOptionsItemManager_cameraRecordingSettingsModule_didUpdateItem___block_invoke;
   v16[3] = &unk_277DBE550;
-  v17 = v7;
-  v18 = v8;
-  v13 = v8;
-  v14 = v7;
+  v17 = moduleCopy;
+  v18 = itemCopy;
+  v13 = itemCopy;
+  v14 = moduleCopy;
   v15 = [v12 addCompletionBlock:v16];
 }
 

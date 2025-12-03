@@ -53,9 +53,9 @@
 - (id)getCurrentSleepAlarms
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = defaultLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -63,27 +63,27 @@
       sub_BE40(v5);
     }
 
-    v6 = 0;
+    sleepAlarmsSync = 0;
   }
 
   else
   {
-    v6 = [(MTAlarmManager *)self->_mtAlarmManager sleepAlarmsSync];
-    if (!v6)
+    sleepAlarmsSync = [(MTAlarmManager *)self->_mtAlarmManager sleepAlarmsSync];
+    if (!sleepAlarmsSync)
     {
-      v6 = +[NSArray array];
+      sleepAlarmsSync = +[NSArray array];
     }
   }
 
-  return v6;
+  return sleepAlarmsSync;
 }
 
 - (void)disableSleepAlarm
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
     v5 = defaultLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -94,9 +94,9 @@
 
   else
   {
-    v6 = [(MSDAlarmManager *)self sleepStore];
+    sleepStore = [(MSDAlarmManager *)self sleepStore];
     v26 = 0;
-    v7 = [v6 currentSleepScheduleWithError:&v26];
+    v7 = [sleepStore currentSleepScheduleWithError:&v26];
     v5 = v26;
 
     v8 = [v7 mutableCopy];
@@ -107,8 +107,8 @@
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v10 = [v8 occurrences];
-      v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      occurrences = [v8 occurrences];
+      v11 = [occurrences countByEnumeratingWithState:&v22 objects:v28 count:16];
       if (v11)
       {
         v12 = v11;
@@ -121,12 +121,12 @@
           {
             if (*v23 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(occurrences);
             }
 
             v15 = [*(*(&v22 + 1) + 8 * i) mutableCopy];
-            v16 = [v15 alarmConfiguration];
-            v17 = [v16 mutableCopy];
+            alarmConfiguration = [v15 alarmConfiguration];
+            v17 = [alarmConfiguration mutableCopy];
 
             if ([v17 isEnabled])
             {
@@ -141,12 +141,12 @@
 
               [v15 setAlarmConfiguration:v17];
               [v9 saveOccurrence:v15];
-              v19 = [(MSDAlarmManager *)self sleepStore];
-              [v19 saveCurrentSleepSchedule:v9 options:4 completion:&stru_18650];
+              sleepStore2 = [(MSDAlarmManager *)self sleepStore];
+              [sleepStore2 saveCurrentSleepSchedule:v9 options:4 completion:&stru_18650];
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
+          v12 = [occurrences countByEnumeratingWithState:&v22 objects:v28 count:16];
         }
 
         while (v12);
@@ -158,21 +158,21 @@
     else
     {
       sub_BF48(v5, buf);
-      v10 = *buf;
+      occurrences = *buf;
     }
   }
 }
 
 - (void)disableAlarms
 {
-  v3 = [(MSDAlarmManager *)self mtAlarmManager];
-  v4 = [v3 alarmsSync];
+  mtAlarmManager = [(MSDAlarmManager *)self mtAlarmManager];
+  alarmsSync = [mtAlarmManager alarmsSync];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = alarmsSync;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -203,8 +203,8 @@
 
           v14 = [v12 mutableCopy];
           [v14 setEnabled:0];
-          v15 = [(MSDAlarmManager *)self mtAlarmManager];
-          v16 = [v15 updateAlarm:v14];
+          mtAlarmManager2 = [(MSDAlarmManager *)self mtAlarmManager];
+          v16 = [mtAlarmManager2 updateAlarm:v14];
 
           v9 = v14;
         }

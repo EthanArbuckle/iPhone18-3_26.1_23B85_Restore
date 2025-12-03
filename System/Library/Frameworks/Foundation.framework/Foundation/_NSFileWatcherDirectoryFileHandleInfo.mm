@@ -1,5 +1,5 @@
 @interface _NSFileWatcherDirectoryFileHandleInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)close;
 @end
 
@@ -8,7 +8,7 @@
 - (void)close
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = self;
+  selfCopy = self;
   [qword_1ED440240 removeObject:self];
   if (![qword_1ED440240 countForObject:self])
   {
@@ -17,18 +17,18 @@
     [(_NSFileWatcherFileHandleInfo *)&v5 close];
   }
 
-  v4 = self;
+  selfCopy2 = self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   v5 = objc_opt_class();
-  return v5 == objc_opt_class() && *(&self->super.closed + 1) == *(a3 + 13) && *(&self->inodeDevPair.dev + 1) == *(a3 + 17);
+  return v5 == objc_opt_class() && *(&self->super.closed + 1) == *(equal + 13) && *(&self->inodeDevPair.dev + 1) == *(equal + 17);
 }
 
 @end

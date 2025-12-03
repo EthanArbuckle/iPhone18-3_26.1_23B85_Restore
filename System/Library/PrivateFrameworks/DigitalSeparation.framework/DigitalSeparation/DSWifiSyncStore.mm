@@ -1,10 +1,10 @@
 @interface DSWifiSyncStore
 - (BOOL)fetchWifiSyncStatus;
 - (DSWifiSyncStore)init;
-- (void)fetchPairedDevicesOnQueue:(id)a3 completion:(id)a4;
-- (void)removeAllPairedDevicesOnQueue:(id)a3 completion:(id)a4;
-- (void)removeComputersFromRemotePairing:(id)a3 withCompletion:(id)a4;
-- (void)removePairedDevices:(id)a3 onQueue:(id)a4 withCompletion:(id)a5;
+- (void)fetchPairedDevicesOnQueue:(id)queue completion:(id)completion;
+- (void)removeAllPairedDevicesOnQueue:(id)queue completion:(id)completion;
+- (void)removeComputersFromRemotePairing:(id)pairing withCompletion:(id)completion;
+- (void)removePairedDevices:(id)devices onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation DSWifiSyncStore
@@ -32,35 +32,35 @@
 
 - (BOOL)fetchWifiSyncStatus
 {
-  v2 = [(DSWifiSyncStore *)self remotePairingStore];
-  v3 = [v2 isWifiSyncEnabled];
+  remotePairingStore = [(DSWifiSyncStore *)self remotePairingStore];
+  isWifiSyncEnabled = [remotePairingStore isWifiSyncEnabled];
 
-  return v3;
+  return isWifiSyncEnabled;
 }
 
-- (void)fetchPairedDevicesOnQueue:(id)a3 completion:(id)a4
+- (void)fetchPairedDevicesOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSWifiSyncStore *)self remotePairingStore];
-  [v8 fetchPairedDevicesOnQueue:v7 completion:v6];
+  completionCopy = completion;
+  queueCopy = queue;
+  remotePairingStore = [(DSWifiSyncStore *)self remotePairingStore];
+  [remotePairingStore fetchPairedDevicesOnQueue:queueCopy completion:completionCopy];
 }
 
-- (void)removeAllPairedDevicesOnQueue:(id)a3 completion:(id)a4
+- (void)removeAllPairedDevicesOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSWifiSyncStore *)self workQueue];
+  queueCopy = queue;
+  completionCopy = completion;
+  workQueue = [(DSWifiSyncStore *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__DSWifiSyncStore_removeAllPairedDevicesOnQueue_completion___block_invoke;
   block[3] = &unk_278F729A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __60__DSWifiSyncStore_removeAllPairedDevicesOnQueue_completion___block_invoke(uint64_t a1)
@@ -121,24 +121,24 @@ void __60__DSWifiSyncStore_removeAllPairedDevicesOnQueue_completion___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removePairedDevices:(id)a3 onQueue:(id)a4 withCompletion:(id)a5
+- (void)removePairedDevices:(id)devices onQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DSWifiSyncStore *)self workQueue];
+  devicesCopy = devices;
+  queueCopy = queue;
+  completionCopy = completion;
+  workQueue = [(DSWifiSyncStore *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__DSWifiSyncStore_removePairedDevices_onQueue_withCompletion___block_invoke;
   v15[3] = &unk_278F72A80;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = devicesCopy;
+  selfCopy = self;
+  v18 = queueCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = devicesCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __62__DSWifiSyncStore_removePairedDevices_onQueue_withCompletion___block_invoke(uint64_t a1)
@@ -281,13 +281,13 @@ void __62__DSWifiSyncStore_removePairedDevices_onQueue_withCompletion___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeComputersFromRemotePairing:(id)a3 withCompletion:(id)a4
+- (void)removeComputersFromRemotePairing:(id)pairing withCompletion:(id)completion
 {
   remotePairing = self->_remotePairing;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(DSWifiSyncStore *)self workQueue];
-  [(DSRemotePairingWrapper *)remotePairing removeSelectedDevices:v8 onQueue:v9 withCompletion:v7];
+  completionCopy = completion;
+  pairingCopy = pairing;
+  workQueue = [(DSWifiSyncStore *)self workQueue];
+  [(DSRemotePairingWrapper *)remotePairing removeSelectedDevices:pairingCopy onQueue:workQueue withCompletion:completionCopy];
 }
 
 void __60__DSWifiSyncStore_removeAllPairedDevicesOnQueue_completion___block_invoke_cold_1(int a1, NSObject *a2)

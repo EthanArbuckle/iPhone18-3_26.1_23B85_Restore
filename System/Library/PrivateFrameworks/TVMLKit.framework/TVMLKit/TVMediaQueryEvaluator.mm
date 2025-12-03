@@ -1,48 +1,48 @@
 @interface TVMediaQueryEvaluator
-+ (id)_mobileGestaltStringForKey:(__CFString *)a3;
++ (id)_mobileGestaltStringForKey:(__CFString *)key;
 + (id)_productType;
-+ (id)evaluatorForTemplateElement:(id)a3 inWindow:(id)a4;
-+ (id)evaluatorForTemplateElement:(id)a3 inWindow:(id)a4 traitEnvironment:(id)a5;
-- (BOOL)_evaluateAllMediaFeatureType:(id)a3 withValue:(id)a4;
-- (BOOL)_evaluateDeviceFeatureType:(id)a3 withValue:(id)a4;
-- (BOOL)_evaluateTemplateFeatureType:(id)a3 withValue:(id)a4;
-- (BOOL)evaluateMediaQuery:(id)a3;
-- (TVMediaQueryEvaluator)initWithTemplateElement:(id)a3 inWindow:(id)a4 traitEnvironment:(id)a5;
++ (id)evaluatorForTemplateElement:(id)element inWindow:(id)window;
++ (id)evaluatorForTemplateElement:(id)element inWindow:(id)window traitEnvironment:(id)environment;
+- (BOOL)_evaluateAllMediaFeatureType:(id)type withValue:(id)value;
+- (BOOL)_evaluateDeviceFeatureType:(id)type withValue:(id)value;
+- (BOOL)_evaluateTemplateFeatureType:(id)type withValue:(id)value;
+- (BOOL)evaluateMediaQuery:(id)query;
+- (TVMediaQueryEvaluator)initWithTemplateElement:(id)element inWindow:(id)window traitEnvironment:(id)environment;
 - (TVMediaQueryEvaluatorDelegate)delegate;
 - (UITraitEnvironment)traitEnvironment;
 @end
 
 @implementation TVMediaQueryEvaluator
 
-+ (id)evaluatorForTemplateElement:(id)a3 inWindow:(id)a4
++ (id)evaluatorForTemplateElement:(id)element inWindow:(id)window
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() evaluatorForTemplateElement:v6 inWindow:v5 traitEnvironment:0];
+  windowCopy = window;
+  elementCopy = element;
+  v7 = [objc_opt_class() evaluatorForTemplateElement:elementCopy inWindow:windowCopy traitEnvironment:0];
 
   return v7;
 }
 
-+ (id)evaluatorForTemplateElement:(id)a3 inWindow:(id)a4 traitEnvironment:(id)a5
++ (id)evaluatorForTemplateElement:(id)element inWindow:(id)window traitEnvironment:(id)environment
 {
   v8 = evaluatorForTemplateElement_inWindow_traitEnvironment__onceToken;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  environmentCopy = environment;
+  windowCopy = window;
+  elementCopy = element;
   if (v8 != -1)
   {
     +[TVMediaQueryEvaluator evaluatorForTemplateElement:inWindow:traitEnvironment:];
   }
 
   v12 = evaluatorForTemplateElement_inWindow_traitEnvironment__evaluatorClassByTemplate;
-  v13 = [v11 elementName];
-  v14 = [v12 objectForKey:v13];
+  elementName = [elementCopy elementName];
+  v14 = [v12 objectForKey:elementName];
   if (v14)
   {
-    a1 = v14;
+    self = v14;
   }
 
-  v15 = [[a1 alloc] initWithTemplateElement:v11 inWindow:v10 traitEnvironment:v9];
+  v15 = [[self alloc] initWithTemplateElement:elementCopy inWindow:windowCopy traitEnvironment:environmentCopy];
 
   return v15;
 }
@@ -57,32 +57,32 @@ void __79__TVMediaQueryEvaluator_evaluatorForTemplateElement_inWindow_traitEnvir
   evaluatorForTemplateElement_inWindow_traitEnvironment__evaluatorClassByTemplate = v0;
 }
 
-- (TVMediaQueryEvaluator)initWithTemplateElement:(id)a3 inWindow:(id)a4 traitEnvironment:(id)a5
+- (TVMediaQueryEvaluator)initWithTemplateElement:(id)element inWindow:(id)window traitEnvironment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  windowCopy = window;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = TVMediaQueryEvaluator;
   v12 = [(TVMediaQueryEvaluator *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_templateElement, a3);
-    if (v11)
+    objc_storeStrong(&v12->_templateElement, element);
+    if (environmentCopy)
     {
-      v14 = v11;
+      v14 = environmentCopy;
     }
 
     else
     {
-      v14 = v10;
+      v14 = windowCopy;
     }
 
     objc_storeWeak(&v13->_traitEnvironment, v14);
-    if (v10)
+    if (windowCopy)
     {
-      v15 = [[_TVWindowSizeAdaptor alloc] initWithWindow:v10];
+      v15 = [[_TVWindowSizeAdaptor alloc] initWithWindow:windowCopy];
       windowSizeAdaptor = v13->_windowSizeAdaptor;
       v13->_windowSizeAdaptor = v15;
     }
@@ -93,18 +93,18 @@ void __79__TVMediaQueryEvaluator_evaluatorForTemplateElement_inWindow_traitEnvir
   return v13;
 }
 
-- (BOOL)evaluateMediaQuery:(id)a3
+- (BOOL)evaluateMediaQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v5 = [v4 mediaType];
-  if (IsTemplateMediaType(v5))
+  mediaType = [queryCopy mediaType];
+  if (IsTemplateMediaType(mediaType))
   {
-    v6 = [(TVMediaQueryEvaluator *)self templateElement];
-    *(v22 + 24) = v6 != 0;
+    templateElement = [(TVMediaQueryEvaluator *)self templateElement];
+    *(v22 + 24) = templateElement != 0;
 
     v7 = v20;
     v20[0] = MEMORY[0x277D85DD0];
@@ -112,7 +112,7 @@ void __79__TVMediaQueryEvaluator_evaluatorForTemplateElement_inWindow_traitEnvir
     v8 = __44__TVMediaQueryEvaluator_evaluateMediaQuery___block_invoke;
   }
 
-  else if ([v5 isEqualToString:@"-tv-device"])
+  else if ([mediaType isEqualToString:@"-tv-device"])
   {
     *(v22 + 24) = 1;
     v7 = v19;
@@ -123,7 +123,7 @@ void __79__TVMediaQueryEvaluator_evaluatorForTemplateElement_inWindow_traitEnvir
 
   else
   {
-    if (![v5 isEqualToString:*MEMORY[0x277D1AF70]])
+    if (![mediaType isEqualToString:*MEMORY[0x277D1AF70]])
     {
       v9 = 0;
       goto LABEL_8;
@@ -141,23 +141,23 @@ void __79__TVMediaQueryEvaluator_evaluatorForTemplateElement_inWindow_traitEnvir
   v7[4] = self;
   v9 = MEMORY[0x26D6AFBB0]();
 LABEL_8:
-  v10 = [v4 featureValues];
+  featureValues = [queryCopy featureValues];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __44__TVMediaQueryEvaluator_evaluateMediaQuery___block_invoke_4;
   v14[3] = &unk_279D6FFD8;
   v14[4] = self;
-  v11 = v5;
+  v11 = mediaType;
   v15 = v11;
   v12 = v9;
   v16 = v12;
   v17 = &v21;
-  [v10 enumerateKeysAndObjectsUsingBlock:v14];
+  [featureValues enumerateKeysAndObjectsUsingBlock:v14];
 
-  LOBYTE(v10) = *(v22 + 24);
+  LOBYTE(featureValues) = *(v22 + 24);
   _Block_object_dispose(&v21, 8);
 
-  return v10;
+  return featureValues;
 }
 
 uint64_t __44__TVMediaQueryEvaluator_evaluateMediaQuery___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -209,7 +209,7 @@ void __44__TVMediaQueryEvaluator_evaluateMediaQuery___block_invoke_4(uint64_t a1
   block[1] = 3221225472;
   block[2] = __37__TVMediaQueryEvaluator__productType__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_productType_onceToken != -1)
   {
     dispatch_once(&_productType_onceToken, block);
@@ -233,13 +233,13 @@ uint64_t __37__TVMediaQueryEvaluator__productType__block_invoke()
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-- (BOOL)_evaluateDeviceFeatureType:(id)a3 withValue:(id)a4
+- (BOOL)_evaluateDeviceFeatureType:(id)type withValue:(id)value
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"-tv-product-type"])
+  valueCopy = value;
+  if ([type isEqualToString:@"-tv-product-type"])
   {
-    v6 = [objc_opt_class() _productType];
-    v7 = [v5 isEqualToString:v6];
+    _productType = [objc_opt_class() _productType];
+    v7 = [valueCopy isEqualToString:_productType];
   }
 
   else
@@ -250,21 +250,21 @@ uint64_t __37__TVMediaQueryEvaluator__productType__block_invoke()
   return v7;
 }
 
-- (BOOL)_evaluateTemplateFeatureType:(id)a3 withValue:(id)a4
+- (BOOL)_evaluateTemplateFeatureType:(id)type withValue:(id)value
 {
   v107 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:@"-tv-uber"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"-tv-banner") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"-tv-hero-img"))
+  typeCopy = type;
+  valueCopy = value;
+  if (([typeCopy isEqualToString:@"-tv-uber"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"-tv-banner") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"-tv-hero-img"))
   {
     v97 = 0u;
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v8 = [(TVMediaQueryEvaluator *)self templateElement];
-    v9 = [v8 unfilteredChildren];
+    templateElement = [(TVMediaQueryEvaluator *)self templateElement];
+    unfilteredChildren = [templateElement unfilteredChildren];
 
-    v10 = [v9 countByEnumeratingWithState:&v95 objects:v106 count:16];
+    v10 = [unfilteredChildren countByEnumeratingWithState:&v95 objects:v106 count:16];
     if (v10)
     {
       v11 = *v96;
@@ -274,7 +274,7 @@ uint64_t __37__TVMediaQueryEvaluator__productType__block_invoke()
         {
           if (*v96 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(unfilteredChildren);
           }
 
           v13 = *(*(&v95 + 1) + 8 * i);
@@ -285,7 +285,7 @@ uint64_t __37__TVMediaQueryEvaluator__productType__block_invoke()
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v95 objects:v106 count:16];
+        v10 = [unfilteredChildren countByEnumeratingWithState:&v95 objects:v106 count:16];
         if (v10)
         {
           continue;
@@ -301,8 +301,8 @@ LABEL_14:
     v94 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v14 = [v10 unfilteredChildren];
-    v15 = [v14 countByEnumeratingWithState:&v91 objects:v105 count:16];
+    unfilteredChildren2 = [v10 unfilteredChildren];
+    v15 = [unfilteredChildren2 countByEnumeratingWithState:&v91 objects:v105 count:16];
     if (v15)
     {
       v16 = *v92;
@@ -312,7 +312,7 @@ LABEL_14:
         {
           if (*v92 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(unfilteredChildren2);
           }
 
           v18 = *(*(&v91 + 1) + 8 * j);
@@ -323,7 +323,7 @@ LABEL_14:
           }
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v91 objects:v105 count:16];
+        v15 = [unfilteredChildren2 countByEnumeratingWithState:&v91 objects:v105 count:16];
         if (v15)
         {
           continue;
@@ -339,9 +339,9 @@ LABEL_25:
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v19 = [v10 unfilteredChildren];
-    v20 = [v19 countByEnumeratingWithState:&v87 objects:v104 count:16];
-    v66 = self;
+    unfilteredChildren3 = [v10 unfilteredChildren];
+    v20 = [unfilteredChildren3 countByEnumeratingWithState:&v87 objects:v104 count:16];
+    selfCopy = self;
     if (v20)
     {
       v21 = v15;
@@ -352,7 +352,7 @@ LABEL_25:
         {
           if (*v88 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(unfilteredChildren3);
           }
 
           v24 = *(*(&v87 + 1) + 8 * k);
@@ -363,7 +363,7 @@ LABEL_25:
           }
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v87 objects:v104 count:16];
+        v20 = [unfilteredChildren3 countByEnumeratingWithState:&v87 objects:v104 count:16];
         if (v20)
         {
           continue;
@@ -380,8 +380,8 @@ LABEL_35:
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v25 = [v20 unfilteredChildren];
-    v26 = [v25 countByEnumeratingWithState:&v83 objects:v103 count:16];
+    unfilteredChildren4 = [v20 unfilteredChildren];
+    v26 = [unfilteredChildren4 countByEnumeratingWithState:&v83 objects:v103 count:16];
     if (v26)
     {
       v27 = *v84;
@@ -391,7 +391,7 @@ LABEL_35:
         {
           if (*v84 != v27)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(unfilteredChildren4);
           }
 
           v29 = *(*(&v83 + 1) + 8 * m);
@@ -402,7 +402,7 @@ LABEL_35:
           }
         }
 
-        v26 = [v25 countByEnumeratingWithState:&v83 objects:v103 count:16];
+        v26 = [unfilteredChildren4 countByEnumeratingWithState:&v83 objects:v103 count:16];
         if (v26)
         {
           continue;
@@ -414,7 +414,7 @@ LABEL_35:
 
 LABEL_47:
 
-    if ([v6 isEqualToString:@"-tv-uber"])
+    if ([typeCopy isEqualToString:@"-tv-uber"])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -428,11 +428,11 @@ LABEL_47:
         v82 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v30 = [(TVMediaQueryEvaluator *)v66 templateElement];
-        v31 = [v30 unfilteredChildren];
+        templateElement2 = [(TVMediaQueryEvaluator *)selfCopy templateElement];
+        unfilteredChildren5 = [templateElement2 unfilteredChildren];
 
-        v32 = [v31 countByEnumeratingWithState:&v79 objects:v102 count:16];
-        v65 = v7;
+        v32 = [unfilteredChildren5 countByEnumeratingWithState:&v79 objects:v102 count:16];
+        v65 = valueCopy;
         if (v32)
         {
           v33 = v32;
@@ -444,7 +444,7 @@ LABEL_47:
             {
               if (*v80 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(unfilteredChildren5);
               }
 
               v36 = *(*(&v79 + 1) + 8 * n);
@@ -454,8 +454,8 @@ LABEL_47:
                 v78 = 0u;
                 v75 = 0u;
                 v76 = 0u;
-                v44 = [v36 unfilteredChildren];
-                v37 = [v44 countByEnumeratingWithState:&v75 objects:v101 count:16];
+                unfilteredChildren6 = [v36 unfilteredChildren];
+                v37 = [unfilteredChildren6 countByEnumeratingWithState:&v75 objects:v101 count:16];
                 if (v37)
                 {
                   v45 = *v76;
@@ -465,7 +465,7 @@ LABEL_47:
                     {
                       if (*v76 != v45)
                       {
-                        objc_enumerationMutation(v44);
+                        objc_enumerationMutation(unfilteredChildren6);
                       }
 
                       v47 = *(*(&v75 + 1) + 8 * ii);
@@ -476,7 +476,7 @@ LABEL_47:
                       }
                     }
 
-                    v37 = [v44 countByEnumeratingWithState:&v75 objects:v101 count:16];
+                    v37 = [unfilteredChildren6 countByEnumeratingWithState:&v75 objects:v101 count:16];
                     if (v37)
                     {
                       continue;
@@ -492,7 +492,7 @@ LABEL_100:
               }
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v79 objects:v102 count:16];
+            v33 = [unfilteredChildren5 countByEnumeratingWithState:&v79 objects:v102 count:16];
             if (v33)
             {
               continue;
@@ -511,22 +511,22 @@ LABEL_101:
           v37 = 0;
         }
 
-        v55 = [v37 style];
-        v56 = [v55 tv_imageTreatment];
-        v57 = [v56 isEqualToString:@"blurOverlay"];
+        style = [v37 style];
+        tv_imageTreatment = [style tv_imageTreatment];
+        v57 = [tv_imageTreatment isEqualToString:@"blurOverlay"];
 
-        v7 = v65;
+        valueCopy = v65;
         if (v57)
         {
 LABEL_103:
-          v58 = [(TVMediaQueryEvaluator *)v66 templateElement];
-          v59 = [v58 elementName];
-          v60 = [v59 isEqualToString:@"compilationTemplate"];
+          templateElement3 = [(TVMediaQueryEvaluator *)selfCopy templateElement];
+          elementName = [templateElement3 elementName];
+          v60 = [elementName isEqualToString:@"compilationTemplate"];
 
           if (v60)
           {
-            v61 = [v10 attributes];
-            v62 = [v61 objectForKeyedSubscript:@"floating"];
+            attributes = [v10 attributes];
+            v62 = [attributes objectForKeyedSubscript:@"floating"];
 
             if ([v62 length])
             {
@@ -551,14 +551,14 @@ LABEL_103:
       }
     }
 
-    if ([v6 isEqualToString:@"-tv-banner"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([typeCopy isEqualToString:@"-tv-banner"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       LOBYTE(v38) = v10 != 0;
     }
 
     else
     {
-      if (![v6 isEqualToString:@"-tv-hero-img"])
+      if (![typeCopy isEqualToString:@"-tv-hero-img"])
       {
 LABEL_106:
         LOBYTE(v38) = 0;
@@ -575,16 +575,16 @@ LABEL_111:
     goto LABEL_112;
   }
 
-  if ([v6 isEqualToString:@"-tv-bg-uber"])
+  if ([typeCopy isEqualToString:@"-tv-bg-uber"])
   {
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v39 = [(TVMediaQueryEvaluator *)self templateElement];
-    v40 = [v39 unfilteredChildren];
+    templateElement4 = [(TVMediaQueryEvaluator *)self templateElement];
+    unfilteredChildren7 = [templateElement4 unfilteredChildren];
 
-    v10 = [v40 countByEnumeratingWithState:&v71 objects:v100 count:16];
+    v10 = [unfilteredChildren7 countByEnumeratingWithState:&v71 objects:v100 count:16];
     if (v10)
     {
       v41 = *v72;
@@ -594,7 +594,7 @@ LABEL_111:
         {
           if (*v72 != v41)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(unfilteredChildren7);
           }
 
           v43 = *(*(&v71 + 1) + 8 * jj);
@@ -605,7 +605,7 @@ LABEL_111:
           }
         }
 
-        v10 = [v40 countByEnumeratingWithState:&v71 objects:v100 count:16];
+        v10 = [unfilteredChildren7 countByEnumeratingWithState:&v71 objects:v100 count:16];
         if (v10)
         {
           continue;
@@ -621,8 +621,8 @@ LABEL_86:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v48 = [v10 unfilteredChildren];
-    v49 = [v48 countByEnumeratingWithState:&v67 objects:v99 count:16];
+    unfilteredChildren8 = [v10 unfilteredChildren];
+    v49 = [unfilteredChildren8 countByEnumeratingWithState:&v67 objects:v99 count:16];
     if (v49)
     {
       v50 = v49;
@@ -633,7 +633,7 @@ LABEL_86:
         {
           if (*v68 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(unfilteredChildren8);
           }
 
           v53 = *(*(&v67 + 1) + 8 * kk);
@@ -644,7 +644,7 @@ LABEL_86:
           }
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v67 objects:v99 count:16];
+        v50 = [unfilteredChildren8 countByEnumeratingWithState:&v67 objects:v99 count:16];
         if (v50)
         {
           continue;
@@ -668,18 +668,18 @@ LABEL_112:
   return v38;
 }
 
-- (BOOL)_evaluateAllMediaFeatureType:(id)a3 withValue:(id)a4
+- (BOOL)_evaluateAllMediaFeatureType:(id)type withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB68] null];
-  if (v8 != v7 && [v7 length] || (objc_msgSend(v6, "isEqualToString:", @"ax-text") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"small") & 1) != 0)
+  typeCopy = type;
+  valueCopy = value;
+  null = [MEMORY[0x277CBEB68] null];
+  if (null != valueCopy && [valueCopy length] || (objc_msgSend(typeCopy, "isEqualToString:", @"ax-text") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"small") & 1) != 0)
   {
   }
 
   else
   {
-    v20 = [v6 isEqualToString:@"large"];
+    v20 = [typeCopy isEqualToString:@"large"];
 
     if ((v20 & 1) == 0)
     {
@@ -693,37 +693,37 @@ LABEL_112:
     [TVMediaQueryEvaluator _evaluateAllMediaFeatureType:withValue:];
   }
 
-  v9 = [_evaluateAllMediaFeatureType_withValue__sFeatureLookup objectForKeyedSubscript:v6];
-  v10 = [v9 unsignedIntegerValue];
+  v9 = [_evaluateAllMediaFeatureType_withValue__sFeatureLookup objectForKeyedSubscript:typeCopy];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [(TVMediaQueryEvaluator *)self traitEnvironment];
-  v12 = [v11 traitCollection];
+  traitEnvironment = [(TVMediaQueryEvaluator *)self traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
 
   [(_TVWindowSizeAdaptor *)self->_windowSizeAdaptor adjustedWindowSize];
   v14 = v13;
   v16 = v15;
-  switch(v10)
+  switch(unsignedIntegerValue)
   {
     case 0:
-      v17 = [(TVMediaQueryEvaluator *)self templateElement];
-      if (v17)
+      templateElement = [(TVMediaQueryEvaluator *)self templateElement];
+      if (templateElement)
       {
-        v18 = [(TVMediaQueryEvaluator *)self templateElement];
-        v19 = [TVMLUtilities interfaceStyleForTemplateElement:v18];
+        templateElement2 = [(TVMediaQueryEvaluator *)self templateElement];
+        userInterfaceStyle = [TVMLUtilities interfaceStyleForTemplateElement:templateElement2];
       }
 
       else
       {
-        v19 = [v12 userInterfaceStyle];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
       }
 
       v68 = @"dark";
-      if (v19 != 2)
+      if (userInterfaceStyle != 2)
       {
         v68 = 0;
       }
 
-      if (v19 == 1)
+      if (userInterfaceStyle == 1)
       {
         v24 = @"light";
       }
@@ -735,137 +735,137 @@ LABEL_112:
 
       goto LABEL_95;
     case 1:
-      v49 = [v7 integerValue];
-      [v12 displayScale];
-      v33 = v49 == v50;
+      integerValue = [valueCopy integerValue];
+      [traitCollection displayScale];
+      v33 = integerValue == v50;
       goto LABEL_33;
     case 2:
-      v42 = [v7 integerValue];
-      [v12 displayScale];
-      v21 = v42 <= v43;
+      integerValue2 = [valueCopy integerValue];
+      [traitCollection displayScale];
+      v21 = integerValue2 <= v43;
       goto LABEL_108;
     case 3:
-      v45 = [v7 integerValue];
-      [v12 displayScale];
-      v47 = v45 < v46;
+      integerValue3 = [valueCopy integerValue];
+      [traitCollection displayScale];
+      v47 = integerValue3 < v46;
       goto LABEL_54;
     case 4:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v33 = v14 == v32;
       goto LABEL_33;
     case 5:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v47 = v14 < v52;
       goto LABEL_54;
     case 6:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v36 = v14 > v58;
       goto LABEL_47;
     case 7:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v33 = v16 == v48;
 LABEL_33:
       v21 = v33;
       goto LABEL_108;
     case 8:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v47 = v16 < v61;
 LABEL_54:
       v21 = !v47;
       goto LABEL_108;
     case 9:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v36 = v16 > v35;
 LABEL_47:
       v21 = !v36;
       goto LABEL_108;
     case 10:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v56 = v60;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       Width = CGRectGetWidth(v79);
       goto LABEL_52;
     case 11:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v30 = v29;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v31 = CGRectGetWidth(v75);
       goto LABEL_29;
     case 12:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v26 = v34;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       Height = CGRectGetWidth(v76);
       goto LABEL_19;
     case 13:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v56 = v55;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       Width = CGRectGetHeight(v78);
 LABEL_52:
       v21 = Width == v56;
       goto LABEL_107;
     case 14:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v26 = v25;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       Height = CGRectGetHeight(v74);
 LABEL_19:
       v21 = Height >= v26;
       goto LABEL_107;
     case 15:
-      [v7 floatValue];
+      [valueCopy floatValue];
       v30 = v44;
-      v27 = [MEMORY[0x277D759A0] mainScreen];
-      [v27 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v31 = CGRectGetHeight(v77);
 LABEL_29:
       v21 = v31 <= v30;
       goto LABEL_107;
     case 16:
-      v22 = [MEMORY[0x277D75418] currentDevice];
-      v23 = [v22 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v23 > 2)
+      if (userInterfaceIdiom > 2)
       {
         v24 = 0;
       }
 
       else
       {
-        v24 = off_279D6FFF8[v23];
+        v24 = off_279D6FFF8[userInterfaceIdiom];
       }
 
       goto LABEL_95;
     case 17:
-      v27 = [MEMORY[0x277D75418] currentDevice];
-      v37 = [v27 systemVersion];
-      v39 = [v37 compare:v7 options:64] == 0;
+      mainScreen = [MEMORY[0x277D75418] currentDevice];
+      systemVersion = [mainScreen systemVersion];
+      v39 = [systemVersion compare:valueCopy options:64] == 0;
       goto LABEL_37;
     case 18:
-      v27 = [MEMORY[0x277D75418] currentDevice];
-      v37 = [v27 systemVersion];
-      v59 = [v37 compare:v7 options:64] == -1;
+      mainScreen = [MEMORY[0x277D75418] currentDevice];
+      systemVersion = [mainScreen systemVersion];
+      v59 = [systemVersion compare:valueCopy options:64] == -1;
       goto LABEL_60;
     case 19:
-      v27 = [MEMORY[0x277D75418] currentDevice];
-      v37 = [v27 systemVersion];
-      v59 = [v37 compare:v7 options:64] == 1;
+      mainScreen = [MEMORY[0x277D75418] currentDevice];
+      systemVersion = [mainScreen systemVersion];
+      v59 = [systemVersion compare:valueCopy options:64] == 1;
 LABEL_60:
       v21 = !v59;
       goto LABEL_106;
     case 20:
-      v27 = [v7 lowercaseString];
-      v51 = [TVMLUtilities _isOSFeatureEnabled:v27];
+      mainScreen = [valueCopy lowercaseString];
+      v51 = [TVMLUtilities _isOSFeatureEnabled:mainScreen];
       goto LABEL_97;
     case 21:
-      v53 = [(TVMediaQueryEvaluator *)self templateElement];
-      v54 = [TVMLUtilities semanticContentAttributeForTemplateElement:v53];
+      templateElement3 = [(TVMediaQueryEvaluator *)self templateElement];
+      v54 = [TVMLUtilities semanticContentAttributeForTemplateElement:templateElement3];
 
       v24 = @"ltr";
       if (v54 != 3)
@@ -877,14 +877,14 @@ LABEL_60:
 
         else
         {
-          v69 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+          userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
           v70 = @"rtl";
-          if (v69 != 1)
+          if (userInterfaceLayoutDirection != 1)
           {
             v70 = 0;
           }
 
-          if (v69)
+          if (userInterfaceLayoutDirection)
           {
             v24 = v70;
           }
@@ -892,84 +892,84 @@ LABEL_60:
       }
 
 LABEL_95:
-      v27 = [v7 lowercaseString];
+      mainScreen = [valueCopy lowercaseString];
       v41 = v24;
       goto LABEL_96;
     case 22:
-      if ([v12 horizontalSizeClass] == 1)
+      if ([traitCollection horizontalSizeClass] == 1)
       {
         goto LABEL_64;
       }
 
-      v62 = [v12 horizontalSizeClass];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
       goto LABEL_80;
     case 23:
-      if ([v12 verticalSizeClass] == 1)
+      if ([traitCollection verticalSizeClass] == 1)
       {
 LABEL_64:
-        v27 = [v7 lowercaseString];
+        mainScreen = [valueCopy lowercaseString];
         v41 = @"compact";
         goto LABEL_96;
       }
 
-      v62 = [v12 verticalSizeClass];
+      horizontalSizeClass = [traitCollection verticalSizeClass];
 LABEL_80:
-      if (v62 != 2)
+      if (horizontalSizeClass != 2)
       {
         goto LABEL_82;
       }
 
-      v27 = [v7 lowercaseString];
+      mainScreen = [valueCopy lowercaseString];
       v41 = @"regular";
       goto LABEL_96;
     case 24:
-      v40 = [*MEMORY[0x277D76620] interfaceOrientation];
-      if ((v40 - 1) > 1)
+      interfaceOrientation = [*MEMORY[0x277D76620] interfaceOrientation];
+      if ((interfaceOrientation - 1) > 1)
       {
-        if ((v40 - 3) > 1)
+        if ((interfaceOrientation - 3) > 1)
         {
 LABEL_82:
           v21 = 0;
           goto LABEL_108;
         }
 
-        v27 = [v7 lowercaseString];
+        mainScreen = [valueCopy lowercaseString];
         v41 = @"landscape";
       }
 
       else
       {
-        v27 = [v7 lowercaseString];
+        mainScreen = [valueCopy lowercaseString];
         v41 = @"portrait";
       }
 
 LABEL_96:
-      v51 = [(__CFString *)v41 isEqualToString:v27];
+      v51 = [(__CFString *)v41 isEqualToString:mainScreen];
 LABEL_97:
       v21 = v51;
       goto LABEL_107;
     case 25:
-      v27 = [v7 lowercaseString];
-      if ([@"phone" isEqual:v27])
+      mainScreen = [valueCopy lowercaseString];
+      if ([@"phone" isEqual:mainScreen])
       {
-        v37 = [MEMORY[0x277D75418] currentDevice];
-        v38 = [v37 userInterfaceIdiom];
-        v39 = v14 <= 639.0 || v38 == 0;
+        systemVersion = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom2 = [systemVersion userInterfaceIdiom];
+        v39 = v14 <= 639.0 || userInterfaceIdiom2 == 0;
 LABEL_37:
         v21 = v39;
       }
 
-      else if ([@"pad" isEqual:v27])
+      else if ([@"pad" isEqual:mainScreen])
       {
-        v37 = [MEMORY[0x277D75418] currentDevice];
-        v66 = [v37 userInterfaceIdiom];
+        systemVersion = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom3 = [systemVersion userInterfaceIdiom];
         v67 = v14 > 639.0;
         if (v14 == 1366.0)
         {
           v67 = 0;
         }
 
-        if (v66 != 1)
+        if (userInterfaceIdiom3 != 1)
         {
           v67 = 0;
         }
@@ -979,16 +979,16 @@ LABEL_37:
 
       else
       {
-        if (![@"pad-l" isEqual:v27])
+        if (![@"pad-l" isEqual:mainScreen])
         {
           goto LABEL_103;
         }
 
-        v71 = [*MEMORY[0x277D76620] interfaceOrientation];
-        v37 = [MEMORY[0x277D75418] currentDevice];
-        if ([v37 userInterfaceIdiom] == 1)
+        interfaceOrientation2 = [*MEMORY[0x277D76620] interfaceOrientation];
+        systemVersion = [MEMORY[0x277D75418] currentDevice];
+        if ([systemVersion userInterfaceIdiom] == 1)
         {
-          if ((v71 - 3) <= 1 && v14 == 1366.0)
+          if ((interfaceOrientation2 - 3) <= 1 && v14 == 1366.0)
           {
             v21 = 1;
           }
@@ -1001,7 +1001,7 @@ LABEL_37:
               v73 = 0;
             }
 
-            v21 = (v71 - 1) < 2 && v73;
+            v21 = (interfaceOrientation2 - 1) < 2 && v73;
           }
         }
 
@@ -1013,16 +1013,16 @@ LABEL_37:
 
       goto LABEL_106;
     case 26:
-      v27 = [v7 lowercaseString];
-      if ([@"small" isEqual:v27])
+      mainScreen = [valueCopy lowercaseString];
+      if ([@"small" isEqual:mainScreen])
       {
-        v37 = [MEMORY[0x277D75128] sharedApplication];
-        v63 = [v37 preferredContentSizeCategory];
-        if (UIContentSizeCategoryCompareToCategory(v63, *MEMORY[0x277D76818]) == NSOrderedDescending)
+        systemVersion = [MEMORY[0x277D75128] sharedApplication];
+        preferredContentSizeCategory = [systemVersion preferredContentSizeCategory];
+        if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76818]) == NSOrderedDescending)
         {
-          v64 = [MEMORY[0x277D75128] sharedApplication];
-          v65 = [v64 preferredContentSizeCategory];
-          v21 = UIContentSizeCategoryCompareToCategory(v65, *MEMORY[0x277D767F8]) == NSOrderedAscending;
+          mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+          preferredContentSizeCategory2 = [mEMORY[0x277D75128] preferredContentSizeCategory];
+          v21 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, *MEMORY[0x277D767F8]) == NSOrderedAscending;
         }
 
         else
@@ -1033,16 +1033,16 @@ LABEL_37:
 
       else
       {
-        if (![@"large" isEqual:v27])
+        if (![@"large" isEqual:mainScreen])
         {
 LABEL_103:
           v21 = 0;
           goto LABEL_107;
         }
 
-        v37 = [MEMORY[0x277D75128] sharedApplication];
-        v63 = [v37 preferredContentSizeCategory];
-        v21 = UIContentSizeCategoryCompareToCategory(v63, *MEMORY[0x277D76800]) == NSOrderedDescending;
+        systemVersion = [MEMORY[0x277D75128] sharedApplication];
+        preferredContentSizeCategory = [systemVersion preferredContentSizeCategory];
+        v21 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x277D76800]) == NSOrderedDescending;
       }
 
 LABEL_106:
@@ -1125,7 +1125,7 @@ void __64__TVMediaQueryEvaluator__evaluateAllMediaFeatureType_withValue___block_
   _evaluateAllMediaFeatureType_withValue__sFeatureLookup = v0;
 }
 
-+ (id)_mobileGestaltStringForKey:(__CFString *)a3
++ (id)_mobileGestaltStringForKey:(__CFString *)key
 {
   v3 = MGCopyAnswer();
   if (v3)

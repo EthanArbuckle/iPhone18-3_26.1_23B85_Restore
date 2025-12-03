@@ -1,99 +1,99 @@
 @interface SGSuggestionTableController
-- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithStore:(id)a3 delegate:(id)a4 suggestionPresenter:(id)a5 suggestionList:(id)a6;
-- (void)dismissViewController:(id)a3;
-- (void)dismissalPressed:(id)a3;
-- (void)presentViewController:(id)a3;
-- (void)updateWithSuggestionStore:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithStore:(id)store delegate:(id)delegate suggestionPresenter:(id)presenter suggestionList:(id)list;
+- (void)dismissViewController:(id)controller;
+- (void)dismissalPressed:(id)pressed;
+- (void)presentViewController:(id)controller;
+- (void)updateWithSuggestionStore:(id)store;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SGSuggestionTableController
 
-- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithStore:(id)a3 delegate:(id)a4 suggestionPresenter:(id)a5 suggestionList:(id)a6
+- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithStore:(id)store delegate:(id)delegate suggestionPresenter:(id)presenter suggestionList:(id)list
 {
-  v9 = a3;
+  storeCopy = store;
   swift_unknownObjectRetain();
-  return SGSuggestionTableController.init(store:delegate:suggestionPresenter:suggestionList:)(v9, a4, a5, a6);
+  return SGSuggestionTableController.init(store:delegate:suggestionPresenter:suggestionList:)(storeCopy, delegate, presenter, list);
 }
 
-- (void)updateWithSuggestionStore:(id)a3
+- (void)updateWithSuggestionStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
+  storeCopy = store;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_12_5();
   sub_1B81BCCEC(v6);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B81BCF70();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_0_0();
   sub_1B81BDA84();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_0_0();
   sub_1B81BDC78();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_0_0();
   sub_1B81BDE08();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_0_0();
   sub_1B81BE020();
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_12_5();
   sub_1B81BE1BC(v6);
 }
 
-- (void)dismissViewController:(id)a3
+- (void)dismissViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_12_5();
   sub_1B81BE340(v6);
 }
 
-- (void)dismissalPressed:(id)a3
+- (void)dismissalPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_1B81BE52C();
 }
 
-- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17CoreSuggestionsUI27SGSuggestionTableController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B81F8F98();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SGSuggestionTableController.init(nibName:bundle:)();
 }
 

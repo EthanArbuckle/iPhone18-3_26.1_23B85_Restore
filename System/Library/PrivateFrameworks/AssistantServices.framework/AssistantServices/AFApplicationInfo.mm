@@ -1,8 +1,8 @@
 @interface AFApplicationInfo
-- (AFApplicationInfo)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AFApplicationInfo)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFApplicationInfo
@@ -18,18 +18,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = [v4 identifier];
-    if ([(NSString *)identifier isEqualToString:v6])
+    identifier = [equalCopy identifier];
+    if ([(NSString *)identifier isEqualToString:identifier])
     {
       pid = self->_pid;
-      v8 = pid == [v4 pid];
+      v8 = pid == [equalCopy pid];
     }
 
     else
@@ -46,30 +46,30 @@
   return v8;
 }
 
-- (AFApplicationInfo)initWithCoder:(id)a3
+- (AFApplicationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AFApplicationInfo;
   v5 = [(AFApplicationInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_pid = [v4 decodeInt32ForKey:@"_pid"];
+    v5->_pid = [coderCopy decodeInt32ForKey:@"_pid"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeInt32:self->_pid forKey:@"_pid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeInt32:self->_pid forKey:@"_pid"];
 }
 
 @end

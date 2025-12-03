@@ -1,26 +1,26 @@
 @interface RETaggedFeatureValueArray
-- (BOOL)isEqual:(id)a3;
-- (RETaggedFeatureValueArray)initWithCapacity:(unint64_t)a3;
-- (RETaggedFeatureValueArray)initWithFeatureValues:(id)a3;
-- (RETaggedFeatureValueArray)initWithValues:(unint64_t *)a3 count:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RETaggedFeatureValueArray)initWithCapacity:(unint64_t)capacity;
+- (RETaggedFeatureValueArray)initWithFeatureValues:(id)values;
+- (RETaggedFeatureValueArray)initWithValues:(unint64_t *)values count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (unint64_t)featureValueAtIndex:(unint64_t)a3;
+- (unint64_t)featureValueAtIndex:(unint64_t)index;
 - (unint64_t)firstFeatureValue;
 - (unint64_t)hash;
 - (unint64_t)lastFeatureValue;
-- (void)addFeatureValue:(unint64_t)a3;
+- (void)addFeatureValue:(unint64_t)value;
 - (void)dealloc;
-- (void)enumerateFeatureValuesUsingBlock:(id)a3;
-- (void)insertFeatureValue:(unint64_t)a3 atIndex:(unint64_t)a4;
+- (void)enumerateFeatureValuesUsingBlock:(id)block;
+- (void)insertFeatureValue:(unint64_t)value atIndex:(unint64_t)index;
 - (void)removeAllFeatureValues;
-- (void)removeFeatureValueAtIndex:(unint64_t)a3;
-- (void)replaceFeatureValueAtIndex:(unint64_t)a3 withValue:(unint64_t)a4;
+- (void)removeFeatureValueAtIndex:(unint64_t)index;
+- (void)replaceFeatureValueAtIndex:(unint64_t)index withValue:(unint64_t)value;
 @end
 
 @implementation RETaggedFeatureValueArray
 
-- (RETaggedFeatureValueArray)initWithCapacity:(unint64_t)a3
+- (RETaggedFeatureValueArray)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = RETaggedFeatureValueArray;
@@ -29,24 +29,24 @@
   if (v4)
   {
     v4->_lock._os_unfair_lock_opaque = 0;
-    v4->_array = CFArrayCreateMutable(*MEMORY[0x277CBECE8], a3, &kTaggedFeatureValueCallbacks);
+    v4->_array = CFArrayCreateMutable(*MEMORY[0x277CBECE8], capacity, &kTaggedFeatureValueCallbacks);
   }
 
   return v5;
 }
 
-- (RETaggedFeatureValueArray)initWithFeatureValues:(id)a3
+- (RETaggedFeatureValueArray)initWithFeatureValues:(id)values
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = -[RETaggedFeatureValueArray initWithCapacity:](self, "initWithCapacity:", [v4 count]);
+  valuesCopy = values;
+  v5 = -[RETaggedFeatureValueArray initWithCapacity:](self, "initWithCapacity:", [valuesCopy count]);
   if (v5)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = valuesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -80,20 +80,20 @@
   return v5;
 }
 
-- (RETaggedFeatureValueArray)initWithValues:(unint64_t *)a3 count:(unint64_t)a4
+- (RETaggedFeatureValueArray)initWithValues:(unint64_t *)values count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = [(RETaggedFeatureValueArray *)self initWithCapacity:a4];
-  if (v6 && v4)
+  countCopy = count;
+  v6 = [(RETaggedFeatureValueArray *)self initWithCapacity:count];
+  if (v6 && countCopy)
   {
     do
     {
-      v7 = *a3++;
+      v7 = *values++;
       [(RETaggedFeatureValueArray *)v6 addFeatureValue:v7];
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   return v6;
@@ -117,10 +117,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -130,7 +130,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       os_unfair_lock_lock(&self->_lock);
       array = self->_array;
       v7 = v5->_array;
@@ -151,39 +151,39 @@
 - (unint64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(RETaggedFeatureValueArray *)self _locked_count];
+  _locked_count = [(RETaggedFeatureValueArray *)self _locked_count];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _locked_count;
 }
 
-- (unint64_t)featureValueAtIndex:(unint64_t)a3
+- (unint64_t)featureValueAtIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(RETaggedFeatureValueArray *)self _locked_featureValueAtIndex:a3];
+  v5 = [(RETaggedFeatureValueArray *)self _locked_featureValueAtIndex:index];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (void)addFeatureValue:(unint64_t)a3
+- (void)addFeatureValue:(unint64_t)value
 {
   os_unfair_lock_lock(&self->_lock);
-  CFArrayAppendValue(self->_array, a3);
+  CFArrayAppendValue(self->_array, value);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)insertFeatureValue:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)insertFeatureValue:(unint64_t)value atIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  CFArrayInsertValueAtIndex(self->_array, a4, a3);
+  CFArrayInsertValueAtIndex(self->_array, index, value);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeFeatureValueAtIndex:(unint64_t)a3
+- (void)removeFeatureValueAtIndex:(unint64_t)index
 {
   os_unfair_lock_lock(&self->_lock);
-  CFArrayRemoveValueAtIndex(self->_array, a3);
+  CFArrayRemoveValueAtIndex(self->_array, index);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -196,10 +196,10 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)replaceFeatureValueAtIndex:(unint64_t)a3 withValue:(unint64_t)a4
+- (void)replaceFeatureValueAtIndex:(unint64_t)index withValue:(unint64_t)value
 {
   os_unfair_lock_lock(&self->_lock);
-  CFArraySetValueAtIndex(self->_array, a3, a4);
+  CFArraySetValueAtIndex(self->_array, index, value);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -224,10 +224,10 @@
 - (unint64_t)lastFeatureValue
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(RETaggedFeatureValueArray *)self _locked_count];
-  if (v3)
+  _locked_count = [(RETaggedFeatureValueArray *)self _locked_count];
+  if (_locked_count)
   {
-    v4 = [(RETaggedFeatureValueArray *)self _locked_featureValueAtIndex:v3 - 1];
+    v4 = [(RETaggedFeatureValueArray *)self _locked_featureValueAtIndex:_locked_count - 1];
   }
 
   else
@@ -239,12 +239,12 @@
   return v4;
 }
 
-- (void)enumerateFeatureValuesUsingBlock:(id)a3
+- (void)enumerateFeatureValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_lock);
   v6[1] = 0;
-  v6[0] = MEMORY[0x22AABC5E0](v4);
+  v6[0] = MEMORY[0x22AABC5E0](blockCopy);
   array = self->_array;
   v7.length = [(RETaggedFeatureValueArray *)self _locked_count];
   v7.location = 0;
@@ -252,7 +252,7 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];

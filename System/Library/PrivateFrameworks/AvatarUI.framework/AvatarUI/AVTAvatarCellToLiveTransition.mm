@@ -1,21 +1,21 @@
 @interface AVTAvatarCellToLiveTransition
-- (AVTAvatarCellToLiveTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7;
+- (AVTAvatarCellToLiveTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger;
 - (void)performTransition;
 @end
 
 @implementation AVTAvatarCellToLiveTransition
 
-- (AVTAvatarCellToLiveTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7
+- (AVTAvatarCellToLiveTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger
 {
-  v10 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = AVTAvatarCellToLiveTransition;
-  v14 = [(AVTTransition *)&v17 initWithModel:v13 animated:v10 setupHandler:a5 completionHandler:a6 logger:a7];
+  v14 = [(AVTTransition *)&v17 initWithModel:modelCopy animated:animatedCopy setupHandler:handler completionHandler:completionHandler logger:logger];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_avatarTransitionModel, a3);
+    objc_storeStrong(&v14->_avatarTransitionModel, model);
   }
 
   return v15;
@@ -23,9 +23,9 @@
 
 - (void)performTransition
 {
-  v3 = [(AVTTransition *)self logger];
+  logger = [(AVTTransition *)self logger];
   v4 = [(AVTTransition *)self description];
-  [v3 logPerformTransition:v4];
+  [logger logPerformTransition:v4];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -34,8 +34,8 @@
   v7[4] = self;
   v5 = MEMORY[0x1BFB0DE80](v7);
   v5[2]();
-  v6 = [(AVTTransition *)self completionHandler];
-  v6[2](v6, 1);
+  completionHandler = [(AVTTransition *)self completionHandler];
+  completionHandler[2](completionHandler, 1);
 }
 
 void __50__AVTAvatarCellToLiveTransition_performTransition__block_invoke(uint64_t a1)

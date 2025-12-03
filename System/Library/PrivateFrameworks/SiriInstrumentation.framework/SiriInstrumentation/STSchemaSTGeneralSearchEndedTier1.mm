@@ -1,26 +1,26 @@
 @interface STSchemaSTGeneralSearchEndedTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (STSchemaSTGeneralSearchEndedTier1)initWithDictionary:(id)a3;
-- (STSchemaSTGeneralSearchEndedTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (STSchemaSTGeneralSearchEndedTier1)initWithDictionary:(id)dictionary;
+- (STSchemaSTGeneralSearchEndedTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTGeneralSearchEndedTier1
 
-- (STSchemaSTGeneralSearchEndedTier1)initWithDictionary:(id)a3
+- (STSchemaSTGeneralSearchEndedTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = STSchemaSTGeneralSearchEndedTier1;
   v5 = [(STSchemaSTGeneralSearchEndedTier1 *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(STSchemaSTGeneralSearchEndedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"catId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"catId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(STSchemaSTGeneralSearchEndedTier1 *)v5 setCatId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"staticDialogId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"staticDialogId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (STSchemaSTGeneralSearchEndedTier1)initWithJSON:(id)a3
+- (STSchemaSTGeneralSearchEndedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTGeneralSearchEndedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTGeneralSearchEndedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTGeneralSearchEndedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,40 +86,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_catId)
   {
-    v4 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"catId"];
+    catId = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
+    v5 = [catId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"catId"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_staticDialogId)
   {
-    v9 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"staticDialogId"];
+    staticDialogId = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
+    v10 = [staticDialogId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"staticDialogId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -129,28 +129,28 @@
   return v4 ^ [(NSString *)self->_staticDialogId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -162,20 +162,20 @@
   {
   }
 
-  v5 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
-  v6 = [v4 catId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
+  linkId2 = [equalCopy catId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
-  if (v12)
+  catId = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
+  if (catId)
   {
-    v13 = v12;
-    v14 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
-    v15 = [v4 catId];
-    v16 = [v14 isEqual:v15];
+    v13 = catId;
+    catId2 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
+    catId3 = [equalCopy catId];
+    v16 = [catId2 isEqual:catId3];
 
     if (!v16)
     {
@@ -187,12 +187,12 @@
   {
   }
 
-  v5 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
-  v6 = [v4 staticDialogId];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
+  linkId2 = [equalCopy staticDialogId];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v17 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
-    if (!v17)
+    staticDialogId = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
+    if (!staticDialogId)
     {
 
 LABEL_20:
@@ -200,10 +200,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
-    v20 = [v4 staticDialogId];
-    v21 = [v19 isEqual:v20];
+    v18 = staticDialogId;
+    staticDialogId2 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
+    staticDialogId3 = [equalCopy staticDialogId];
+    v21 = [staticDialogId2 isEqual:staticDialogId3];
 
     if (v21)
     {
@@ -223,75 +223,75 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+    linkId2 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
+  catId = [(STSchemaSTGeneralSearchEndedTier1 *)self catId];
 
-  if (v6)
+  if (catId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
+  staticDialogId = [(STSchemaSTGeneralSearchEndedTier1 *)self staticDialogId];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (staticDialogId)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = STSchemaSTGeneralSearchEndedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteCatId];
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteCatId];
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteCatId];
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteCatId];
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteStaticDialogId];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteCatId];
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteStaticDialogId];
   }
 
-  v6 = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(STSchemaSTGeneralSearchEndedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTGeneralSearchEndedTier1 *)self deleteLinkId];
   }

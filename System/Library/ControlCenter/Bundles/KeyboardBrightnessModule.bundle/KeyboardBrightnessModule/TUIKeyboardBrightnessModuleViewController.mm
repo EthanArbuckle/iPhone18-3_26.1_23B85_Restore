@@ -1,11 +1,11 @@
 @interface TUIKeyboardBrightnessModuleViewController
 - (BOOL)isHardwareKeyboardAvailable;
-- (TUIKeyboardBrightnessModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TUIKeyboardBrightnessModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)createSliderView;
 - (id)sliderView;
 - (void)dealloc;
-- (void)sliderEditingDidEnd:(id)a3;
-- (void)sliderValueDidChange:(id)a3;
+- (void)sliderEditingDidEnd:(id)end;
+- (void)sliderValueDidChange:(id)change;
 - (void)updateControls;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -13,11 +13,11 @@
 
 @implementation TUIKeyboardBrightnessModuleViewController
 
-- (TUIKeyboardBrightnessModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TUIKeyboardBrightnessModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = TUIKeyboardBrightnessModuleViewController;
-  v4 = [(CCUIButtonModuleViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIButtonModuleViewController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -80,9 +80,9 @@
 {
   v4.receiver = self;
   v4.super_class = TUIKeyboardBrightnessModuleViewController;
-  v2 = [(CCUISliderModuleViewController *)&v4 sliderView];
+  sliderView = [(CCUISliderModuleViewController *)&v4 sliderView];
 
-  return v2;
+  return sliderView;
 }
 
 - (id)createSliderView
@@ -95,19 +95,19 @@
   return v17;
 }
 
-- (void)sliderValueDidChange:(id)a3
+- (void)sliderValueDidChange:(id)change
 {
   keyboardBrightnessClient = self->_keyboardBrightnessClient;
-  objc_msgSend_value(a3, a2, a3, v3, v4);
+  objc_msgSend_value(change, a2, change, v3, v4);
   v6 = *MEMORY[0x29EDC0DB8];
 
   MEMORY[0x2A1C70FE8](keyboardBrightnessClient, sel_setBrightness_fadeSpeed_commit_forKeyboard_, 0, 0, v6);
 }
 
-- (void)sliderEditingDidEnd:(id)a3
+- (void)sliderEditingDidEnd:(id)end
 {
   keyboardBrightnessClient = self->_keyboardBrightnessClient;
-  objc_msgSend_value(a3, a2, a3, v3, v4);
+  objc_msgSend_value(end, a2, end, v3, v4);
   v6 = *MEMORY[0x29EDC0DB8];
 
   MEMORY[0x2A1C70FE8](keyboardBrightnessClient, sel_setBrightness_fadeSpeed_commit_forKeyboard_, 0, 1, v6);

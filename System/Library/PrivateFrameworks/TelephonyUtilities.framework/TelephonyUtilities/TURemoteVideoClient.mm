@@ -1,74 +1,74 @@
 @interface TURemoteVideoClient
 - (TURemoteVideoClient)init;
-- (TURemoteVideoClient)initWithVideoContextSlotIdentifier:(int64_t)a3;
-- (void)cleanUpSubLayerForLayer:(id)a3;
-- (void)insertSubLayerInLayer:(id)a3 videoSlotIdentifier:(int64_t)a4;
-- (void)setVideoLayer:(id)a3 forMode:(int)a4;
+- (TURemoteVideoClient)initWithVideoContextSlotIdentifier:(int64_t)identifier;
+- (void)cleanUpSubLayerForLayer:(id)layer;
+- (void)insertSubLayerInLayer:(id)layer videoSlotIdentifier:(int64_t)identifier;
+- (void)setVideoLayer:(id)layer forMode:(int)mode;
 @end
 
 @implementation TURemoteVideoClient
 
 - (TURemoteVideoClient)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TURemoteVideoClient.m" lineNumber:44 description:{@"%s is not available. Use a designated initializer instead.", "-[TURemoteVideoClient init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TURemoteVideoClient.m" lineNumber:44 description:{@"%s is not available. Use a designated initializer instead.", "-[TURemoteVideoClient init]"}];
 
   return 0;
 }
 
-- (TURemoteVideoClient)initWithVideoContextSlotIdentifier:(int64_t)a3
+- (TURemoteVideoClient)initWithVideoContextSlotIdentifier:(int64_t)identifier
 {
   v5.receiver = self;
   v5.super_class = TURemoteVideoClient;
   result = [(TURemoteVideoClient *)&v5 init];
   if (result)
   {
-    result->_videoContextSlotIdentifier = a3;
+    result->_videoContextSlotIdentifier = identifier;
   }
 
   return result;
 }
 
-- (void)setVideoLayer:(id)a3 forMode:(int)a4
+- (void)setVideoLayer:(id)layer forMode:(int)mode
 {
-  v10 = a3;
-  v5 = [(TURemoteVideoClient *)self videoLayer];
+  layerCopy = layer;
+  videoLayer = [(TURemoteVideoClient *)self videoLayer];
 
-  if (v5 != v10)
+  if (videoLayer != layerCopy)
   {
-    v6 = [(TURemoteVideoClient *)self videoLayer];
+    videoLayer2 = [(TURemoteVideoClient *)self videoLayer];
 
-    if (v6)
+    if (videoLayer2)
     {
-      v7 = [(TURemoteVideoClient *)self videoLayer];
-      [(TURemoteVideoClient *)self cleanUpSubLayerForLayer:v7];
+      videoLayer3 = [(TURemoteVideoClient *)self videoLayer];
+      [(TURemoteVideoClient *)self cleanUpSubLayerForLayer:videoLayer3];
     }
 
-    [(TURemoteVideoClient *)self setVideoLayer:v10];
-    v8 = [(TURemoteVideoClient *)self videoLayer];
+    [(TURemoteVideoClient *)self setVideoLayer:layerCopy];
+    videoLayer4 = [(TURemoteVideoClient *)self videoLayer];
 
-    if (v8)
+    if (videoLayer4)
     {
       [getCATransactionClass() begin];
-      v9 = [(TURemoteVideoClient *)self videoLayer];
-      [(TURemoteVideoClient *)self insertSubLayerInLayer:v9 videoSlotIdentifier:[(TURemoteVideoClient *)self videoContextSlotIdentifier]];
+      videoLayer5 = [(TURemoteVideoClient *)self videoLayer];
+      [(TURemoteVideoClient *)self insertSubLayerInLayer:videoLayer5 videoSlotIdentifier:[(TURemoteVideoClient *)self videoContextSlotIdentifier]];
 
       [getCATransactionClass() commit];
     }
   }
 }
 
-- (void)insertSubLayerInLayer:(id)a3 videoSlotIdentifier:(int64_t)a4
+- (void)insertSubLayerInLayer:(id)layer videoSlotIdentifier:(int64_t)identifier
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(TURemoteVideoClient *)self nameForSubLayer];
+  layerCopy = layer;
+  nameForSubLayer = [(TURemoteVideoClient *)self nameForSubLayer];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = [v6 sublayers];
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
+  sublayers = [layerCopy sublayers];
+  v9 = [sublayers countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v9)
   {
     v10 = *v46;
@@ -78,12 +78,12 @@ LABEL_3:
     {
       if (*v46 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(sublayers);
       }
 
       v12 = *(*(&v45 + 1) + 8 * v11);
-      v13 = [v12 name];
-      v14 = [v13 isEqualToString:v7];
+      name = [v12 name];
+      v14 = [name isEqualToString:nameForSubLayer];
 
       if (v14)
       {
@@ -92,7 +92,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v8 countByEnumeratingWithState:&v45 objects:v53 count:16];
+        v9 = [sublayers countByEnumeratingWithState:&v45 objects:v53 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -102,9 +102,9 @@ LABEL_3:
       }
     }
 
-    v15 = v12;
+    layer = v12;
 
-    if (v15)
+    if (layer)
     {
       goto LABEL_14;
     }
@@ -133,14 +133,14 @@ LABEL_9:
 
   v17 = v16;
   _Block_object_dispose(&v41, 8);
-  v15 = [v16 layer];
-  [v6 addSublayer:v15];
+  layer = [v16 layer];
+  [layerCopy addSublayer:layer];
 LABEL_14:
-  [v6 bounds];
+  [layerCopy bounds];
   v19 = v18;
   v21 = v20;
-  [v15 setBounds:{0.0, 0.0, v20, v18}];
-  [v15 setPosition:{v19 * 0.5, v21 * 0.5}];
+  [layer setBounds:{0.0, 0.0, v20, v18}];
+  [layer setPosition:{v19 * 0.5, v21 * 0.5}];
   *&v41 = 0;
   *(&v41 + 1) = &v41;
   *&v42 = 0x2020000000;
@@ -201,13 +201,13 @@ LABEL_14:
   v34 = v44[1];
   v35 = v44[2];
   v36 = v44[3];
-  [v15 setTransform:&v33];
+  [layer setTransform:&v33];
   v26 = getkCAGravityResizeAspectFill();
 
   if (v26)
   {
     v27 = getkCAGravityResizeAspectFill();
-    [v15 setContentsGravity:v27];
+    [layer setContentsGravity:v27];
   }
 
   else
@@ -219,14 +219,14 @@ LABEL_14:
     }
   }
 
-  [v15 setName:v7];
+  [layer setName:nameForSubLayer];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __65__TURemoteVideoClient_insertSubLayerInLayer_videoSlotIdentifier___block_invoke;
   v30[3] = &unk_1E7425340;
-  v31 = v15;
-  v32 = a4;
-  v28 = v15;
+  v31 = layer;
+  identifierCopy = identifier;
+  v28 = layer;
   dispatch_async(MEMORY[0x1E69E96A0], v30);
 
   v29 = *MEMORY[0x1E69E9840];
@@ -259,17 +259,17 @@ uint64_t __65__TURemoteVideoClient_insertSubLayerInLayer_videoSlotIdentifier___b
   return [getCATransactionClass() commit];
 }
 
-- (void)cleanUpSubLayerForLayer:(id)a3
+- (void)cleanUpSubLayerForLayer:(id)layer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TURemoteVideoClient *)self nameForSubLayer];
+  layerCopy = layer;
+  nameForSubLayer = [(TURemoteVideoClient *)self nameForSubLayer];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v4 sublayers];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  sublayers = [layerCopy sublayers];
+  v7 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -280,12 +280,12 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(sublayers);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v10);
-      v12 = [v11 name];
-      v13 = [v12 isEqualToString:v5];
+      name = [v11 name];
+      v13 = [name isEqualToString:nameForSubLayer];
 
       if (v13)
       {
@@ -294,7 +294,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [sublayers countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -313,7 +313,7 @@ LABEL_3:
 
     [v14 setContents:0];
     [v14 removeFromSuperlayer];
-    v6 = v14;
+    sublayers = v14;
   }
 
 LABEL_12:

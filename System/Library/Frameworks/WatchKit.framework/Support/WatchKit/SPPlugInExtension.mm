@@ -1,17 +1,17 @@
 @interface SPPlugInExtension
-- (SPPlugInExtension)initWithPlugin:(id)a3;
+- (SPPlugInExtension)initWithPlugin:(id)plugin;
 - (id)extensionVendor;
 - (void)notifyActive;
-- (void)notifyInactiveWithCompletion:(id)a3;
+- (void)notifyInactiveWithCompletion:(id)completion;
 @end
 
 @implementation SPPlugInExtension
 
-- (SPPlugInExtension)initWithPlugin:(id)a3
+- (SPPlugInExtension)initWithPlugin:(id)plugin
 {
   v4.receiver = self;
   v4.super_class = SPPlugInExtension;
-  return [(SPPlugInExtension *)&v4 _initWithPKPlugin:a3];
+  return [(SPPlugInExtension *)&v4 _initWithPKPlugin:plugin];
 }
 
 - (id)extensionVendor
@@ -24,10 +24,10 @@
     v10[2] = 0x3032000000;
     v10[3] = sub_100016BB0;
     v10[4] = sub_100016BC0;
-    v11 = self;
-    v4 = [(SPPlugInExtension *)v11 _bareExtensionServiceConnection];
+    selfCopy = self;
+    _bareExtensionServiceConnection = [(SPPlugInExtension *)selfCopy _bareExtensionServiceConnection];
     v5 = self->_connection;
-    self->_connection = v4;
+    self->_connection = _bareExtensionServiceConnection;
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -50,25 +50,25 @@
 
 - (void)notifyActive
 {
-  v2 = [(SPPlugInExtension *)self extensionVendor];
-  [v2 _hostWillEnterForegroundForContextUUID:0 completion:&stru_100045C50];
-  [v2 _hostDidBecomeActiveForContextUUID:0 completion:&stru_100045C70];
+  extensionVendor = [(SPPlugInExtension *)self extensionVendor];
+  [extensionVendor _hostWillEnterForegroundForContextUUID:0 completion:&stru_100045C50];
+  [extensionVendor _hostDidBecomeActiveForContextUUID:0 completion:&stru_100045C70];
 }
 
-- (void)notifyInactiveWithCompletion:(id)a3
+- (void)notifyInactiveWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(SPPlugInExtension *)self extensionVendor];
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  extensionVendor = [(SPPlugInExtension *)self extensionVendor];
+  v5 = extensionVendor;
+  if (extensionVendor)
   {
-    [v4 _hostWillResignActiveForContextUUID:0 completion:&stru_100045C90];
-    [v5 _hostDidEnterBackgroundForContextUUID:0 completion:v6];
+    [extensionVendor _hostWillResignActiveForContextUUID:0 completion:&stru_100045C90];
+    [v5 _hostDidEnterBackgroundForContextUUID:0 completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 

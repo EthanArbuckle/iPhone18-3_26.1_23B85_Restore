@@ -1,16 +1,16 @@
 @interface Audio_Device_Serialization
-+ (id)Serialize_All_Devices:(id *)a3;
++ (id)Serialize_All_Devices:(id *)devices;
 @end
 
 @implementation Audio_Device_Serialization
 
-+ (id)Serialize_All_Devices:(id *)a3
++ (id)Serialize_All_Devices:(id *)devices
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   util::WriteDevicesExceptionSafe(&v10);
   if (v10)
   {
-    *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DeviceSerialization" code:? userInfo:?];
+    *devices = [MEMORY[0x277CCA9B8] errorWithDomain:@"DeviceSerialization" code:? userInfo:?];
   }
 
   v5 = v11;

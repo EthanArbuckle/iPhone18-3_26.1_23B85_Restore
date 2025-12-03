@@ -1,12 +1,12 @@
 @interface HMDevice
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)supportsHH2;
 - (HMDevice)init;
-- (HMDevice)initWithCoder:(id)a3;
-- (HMDevice)initWithUUID:(id)a3 name:(id)a4 isCurrentDevice:(BOOL)a5;
+- (HMDevice)initWithCoder:(id)coder;
+- (HMDevice)initWithUUID:(id)d name:(id)name isCurrentDevice:(BOOL)device;
 - (HMFKey)rapportIRK;
 - (HMFProductInfo)productInfo;
 - (NSArray)attributeDescriptions;
@@ -15,57 +15,57 @@
 - (NSString)shortDescription;
 - (NSUUID)idsIdentifier;
 - (NSUUID)uniqueIdentifier;
-- (id)IDSDestinationForIDSService:(id)a3;
-- (id)IDSDeviceForIDSService:(id)a3;
+- (id)IDSDestinationForIDSService:(id)service;
+- (id)IDSDeviceForIDSService:(id)service;
 - (id)hmmmMessageDestination;
 - (id)logIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIdsDestination:(id)a3;
-- (void)setIdsIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setProductInfo:(id)a3;
-- (void)setRapportIRK:(id)a3;
-- (void)setSupportsHH2:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIdsDestination:(id)destination;
+- (void)setIdsIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setProductInfo:(id)info;
+- (void)setRapportIRK:(id)k;
+- (void)setSupportsHH2:(BOOL)h2;
 @end
 
 @implementation HMDevice
 
 - (id)logIdentifier
 {
-  v2 = [(HMDevice *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDevice *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMDevice *)self uuid];
-  v6 = [v4 initWithName:@"UUID" value:v5];
-  [v3 addObject:v6];
+  uuid = [(HMDevice *)self uuid];
+  v6 = [v4 initWithName:@"UUID" value:uuid];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMDevice *)self uniqueIdentifier];
-  v9 = [v7 initWithName:@"Identifier" value:v8];
-  [v3 addObject:v9];
+  uniqueIdentifier = [(HMDevice *)self uniqueIdentifier];
+  v9 = [v7 initWithName:@"Identifier" value:uniqueIdentifier];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMDevice *)self name];
-  v12 = [v10 initWithName:@"Name" value:v11];
-  [v3 addObject:v12];
+  name = [(HMDevice *)self name];
+  v12 = [v10 initWithName:@"Name" value:name];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v14 = [(HMDevice *)self productInfo];
-  v15 = [v13 initWithName:@"Product Info" value:v14];
-  [v3 addObject:v15];
+  productInfo = [(HMDevice *)self productInfo];
+  v15 = [v13 initWithName:@"Product Info" value:productInfo];
+  [array addObject:v15];
 
   v16 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v17 = [(HMDevice *)self rapportIRK];
-  v18 = [v16 initWithName:@"Rapport IRK" value:v17];
-  [v3 addObject:v18];
+  rapportIRK = [(HMDevice *)self rapportIRK];
+  v18 = [v16 initWithName:@"Rapport IRK" value:rapportIRK];
+  [array addObject:v18];
 
   if ([(HMDevice *)self isCurrentDevice])
   {
@@ -73,7 +73,7 @@
     [(HMDevice *)self isCurrentDevice];
     v20 = HMFBooleanToString();
     v21 = [v19 initWithName:@"Is Current Device" value:v20];
-    [v3 addObject:v21];
+    [array addObject:v21];
   }
 
   if ([(HMDevice *)self supportsHH2])
@@ -82,30 +82,30 @@
     [(HMDevice *)self supportsHH2];
     v23 = HMFBooleanToString();
     v24 = [v22 initWithName:@"Supports HH2" value:v23];
-    [v3 addObject:v24];
+    [array addObject:v24];
   }
 
-  v25 = [v3 copy];
+  v25 = [array copy];
 
   return v25;
 }
 
 - (NSString)shortDescription
 {
-  v2 = [(HMDevice *)self uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  uniqueIdentifier = [(HMDevice *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -117,35 +117,35 @@
 
   if (v6)
   {
-    v7 = [v6 name];
-    v8 = [(HMDevice *)self name];
-    v60 = v7;
+    name = [v6 name];
+    name2 = [(HMDevice *)self name];
+    v60 = name;
     v9 = HMFEqualObjects();
 
     if ((v9 & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [(HMDevice *)v11 name];
+        name3 = [(HMDevice *)selfCopy name];
         *buf = 138543874;
         v62 = v13;
         v63 = 2112;
-        v64 = v14;
+        v64 = name3;
         v65 = 2112;
-        v66 = v7;
+        v66 = name;
         _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@Updating name from %@ to %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v10);
-      [(HMDevice *)v11 setName:v7];
+      [(HMDevice *)selfCopy setName:name];
     }
 
-    v15 = [v6 productInfo];
-    v16 = [(HMDevice *)self productInfo];
+    productInfo = [v6 productInfo];
+    productInfo2 = [(HMDevice *)self productInfo];
     v17 = HMFEqualObjects();
 
     if (v17)
@@ -156,40 +156,40 @@
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v22 = HMFGetLogIdentifier();
-        v23 = [(HMDevice *)v20 productInfo];
+        productInfo3 = [(HMDevice *)selfCopy2 productInfo];
         *buf = 138543874;
         v62 = v22;
         v63 = 2112;
-        v64 = v23;
+        v64 = productInfo3;
         v65 = 2112;
-        v66 = v15;
+        v66 = productInfo;
         _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_INFO, "%{public}@Updating productInfo from %@ to %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v19);
-      [(HMDevice *)v20 setProductInfo:v15];
+      [(HMDevice *)selfCopy2 setProductInfo:productInfo];
       v18 = 1;
     }
 
-    v24 = [v6 supportsHH2];
-    if (v24 != [(HMDevice *)self supportsHH2])
+    supportsHH2 = [v6 supportsHH2];
+    if (supportsHH2 != [(HMDevice *)self supportsHH2])
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy3 = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         v28 = HMFGetLogIdentifier();
-        [(HMDevice *)v26 supportsHH2];
+        [(HMDevice *)selfCopy3 supportsHH2];
         HMFBooleanToString();
         v29 = v58 = v25;
         HMFBooleanToString();
-        v31 = v30 = v15;
+        v31 = v30 = productInfo;
         *buf = 138543874;
         v62 = v28;
         v63 = 2112;
@@ -198,94 +198,94 @@
         v66 = v31;
         _os_log_impl(&dword_19BB39000, v27, OS_LOG_TYPE_INFO, "%{public}@Updating supportsHH2 from %@ to %@", buf, 0x20u);
 
-        v15 = v30;
+        productInfo = v30;
         v25 = v58;
       }
 
       objc_autoreleasePoolPop(v25);
-      [(HMDevice *)v26 setSupportsHH2:v24];
+      [(HMDevice *)selfCopy3 setSupportsHH2:supportsHH2];
       v18 = 1;
     }
 
-    v59 = v15;
-    v32 = [v6 rapportIRK];
-    v33 = [(HMDevice *)self rapportIRK];
+    v59 = productInfo;
+    rapportIRK = [v6 rapportIRK];
+    rapportIRK2 = [(HMDevice *)self rapportIRK];
     v34 = HMFEqualObjects();
 
     if ((v34 & 1) == 0)
     {
       v35 = objc_autoreleasePoolPush();
-      v36 = self;
+      selfCopy4 = self;
       v37 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         v38 = HMFGetLogIdentifier();
-        v39 = [(HMDevice *)v36 rapportIRK];
+        rapportIRK3 = [(HMDevice *)selfCopy4 rapportIRK];
         *buf = 138543874;
         v62 = v38;
         v63 = 2112;
-        v64 = v39;
+        v64 = rapportIRK3;
         v65 = 2112;
-        v66 = v32;
+        v66 = rapportIRK;
         _os_log_impl(&dword_19BB39000, v37, OS_LOG_TYPE_INFO, "%{public}@Updating rapportIRK from %@ to %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v35);
-      [(HMDevice *)v36 setRapportIRK:v32];
+      [(HMDevice *)selfCopy4 setRapportIRK:rapportIRK];
       v18 = 1;
     }
 
-    v40 = [v6 idsIdentifier];
-    v41 = [(HMDevice *)self idsIdentifier];
+    idsIdentifier = [v6 idsIdentifier];
+    idsIdentifier2 = [(HMDevice *)self idsIdentifier];
     v42 = HMFEqualObjects();
 
     if ((v42 & 1) == 0)
     {
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy5 = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
         v46 = HMFGetLogIdentifier();
-        v47 = [(HMDevice *)v44 idsIdentifier];
+        idsIdentifier3 = [(HMDevice *)selfCopy5 idsIdentifier];
         *buf = 138543874;
         v62 = v46;
         v63 = 2112;
-        v64 = v47;
+        v64 = idsIdentifier3;
         v65 = 2112;
-        v66 = v40;
+        v66 = idsIdentifier;
         _os_log_impl(&dword_19BB39000, v45, OS_LOG_TYPE_INFO, "%{public}@Updating idsIdentifier from %@ to %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v43);
-      [(HMDevice *)v44 setIdsIdentifier:v40];
+      [(HMDevice *)selfCopy5 setIdsIdentifier:idsIdentifier];
       v18 = 1;
     }
 
-    v48 = [v6 idsDestination];
-    v49 = [(HMDevice *)self idsDestination];
+    idsDestination = [v6 idsDestination];
+    idsDestination2 = [(HMDevice *)self idsDestination];
     v50 = HMFEqualObjects();
 
     if ((v50 & 1) == 0)
     {
       v51 = objc_autoreleasePoolPush();
-      v52 = self;
+      selfCopy6 = self;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
       {
         v54 = HMFGetLogIdentifier();
-        v55 = [(HMDevice *)v52 idsDestination];
+        idsDestination3 = [(HMDevice *)selfCopy6 idsDestination];
         *buf = 138543874;
         v62 = v54;
         v63 = 2112;
-        v64 = v55;
+        v64 = idsDestination3;
         v65 = 2112;
-        v66 = v48;
+        v66 = idsDestination;
         _os_log_impl(&dword_19BB39000, v53, OS_LOG_TYPE_INFO, "%{public}@Updating idsDestination from %@ to %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v51);
-      [(HMDevice *)v52 setIdsDestination:v48];
+      [(HMDevice *)selfCopy6 setIdsDestination:idsDestination];
       v18 = 1;
     }
   }
@@ -299,61 +299,61 @@
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDevice *)self uuid];
-  [v4 encodeObject:v5 forKey:@"HM.identifier"];
+  coderCopy = coder;
+  uuid = [(HMDevice *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"HM.identifier"];
 
-  v6 = [(HMDevice *)self name];
-  [v4 encodeObject:v6 forKey:@"HM.name"];
+  name = [(HMDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"HM.name"];
 
-  v7 = [(HMDevice *)self productInfo];
-  [v4 encodeObject:v7 forKey:@"HM.productInfo"];
+  productInfo = [(HMDevice *)self productInfo];
+  [coderCopy encodeObject:productInfo forKey:@"HM.productInfo"];
 
-  [v4 encodeBool:-[HMDevice isCurrentDevice](self forKey:{"isCurrentDevice"), @"HM.currentDevice"}];
-  [v4 encodeBool:-[HMDevice supportsHH2](self forKey:{"supportsHH2"), @"HM.supportsHH2"}];
-  v8 = [(HMDevice *)self rapportIRK];
-  [v4 encodeObject:v8 forKey:@"HM.rpDeviceIRK"];
+  [coderCopy encodeBool:-[HMDevice isCurrentDevice](self forKey:{"isCurrentDevice"), @"HM.currentDevice"}];
+  [coderCopy encodeBool:-[HMDevice supportsHH2](self forKey:{"supportsHH2"), @"HM.supportsHH2"}];
+  rapportIRK = [(HMDevice *)self rapportIRK];
+  [coderCopy encodeObject:rapportIRK forKey:@"HM.rpDeviceIRK"];
 
-  v9 = [(HMDevice *)self idsIdentifier];
-  [v4 encodeObject:v9 forKey:@"HM.idsIdentifier"];
+  idsIdentifier = [(HMDevice *)self idsIdentifier];
+  [coderCopy encodeObject:idsIdentifier forKey:@"HM.idsIdentifier"];
 
-  v10 = [(HMDevice *)self idsDestination];
-  [v4 encodeObject:v10 forKey:@"HM.idsDestination"];
+  idsDestination = [(HMDevice *)self idsDestination];
+  [coderCopy encodeObject:idsDestination forKey:@"HM.idsDestination"];
 }
 
-- (HMDevice)initWithCoder:(id)a3
+- (HMDevice)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.name"];
-  v7 = [v4 decodeBoolForKey:@"HM.currentDevice"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.name"];
+  v7 = [coderCopy decodeBoolForKey:@"HM.currentDevice"];
   if (v5)
   {
     v8 = [(HMDevice *)self initWithUUID:v5 name:v6 isCurrentDevice:v7];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.productInfo"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.productInfo"];
     [(HMDevice *)v8 setProductInfo:v9];
 
-    -[HMDevice setSupportsHH2:](v8, "setSupportsHH2:", [v4 decodeBoolForKey:@"HM.supportsHH2"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.rpDeviceIRK"];
+    -[HMDevice setSupportsHH2:](v8, "setSupportsHH2:", [coderCopy decodeBoolForKey:@"HM.supportsHH2"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.rpDeviceIRK"];
     [(HMDevice *)v8 setRapportIRK:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsIdentifier"];
     [(HMDevice *)v8 setIdsIdentifier:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsDestination"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.idsDestination"];
     [(HMDevice *)v8 setIdsDestination:v12];
 
-    v13 = v8;
-    v14 = v13;
+    selfCopy = v8;
+    v14 = selfCopy;
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -375,13 +375,13 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -392,15 +392,15 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDevice *)self uuid];
-    v8 = [v6 uuid];
-    if (![v7 isEqual:v8])
+    uuid = [(HMDevice *)self uuid];
+    uuid2 = [v6 uuid];
+    if (![uuid isEqual:uuid2])
     {
       goto LABEL_13;
     }
 
-    v9 = [(HMDevice *)self name];
-    v10 = [v6 name];
+    name = [(HMDevice *)self name];
+    name2 = [v6 name];
     v11 = HMFEqualObjects();
 
     if (!v11)
@@ -408,8 +408,8 @@
       goto LABEL_13;
     }
 
-    v12 = [(HMDevice *)self productInfo];
-    v13 = [v6 productInfo];
+    productInfo = [(HMDevice *)self productInfo];
+    productInfo2 = [v6 productInfo];
     v14 = HMFEqualObjects();
 
     if (!v14)
@@ -417,20 +417,20 @@
       goto LABEL_13;
     }
 
-    v15 = [(HMDevice *)self isCurrentDevice];
-    if (v15 != [v6 isCurrentDevice])
+    isCurrentDevice = [(HMDevice *)self isCurrentDevice];
+    if (isCurrentDevice != [v6 isCurrentDevice])
     {
       goto LABEL_13;
     }
 
-    v16 = [(HMDevice *)self supportsHH2];
-    if (v16 != [v6 supportsHH2])
+    supportsHH2 = [(HMDevice *)self supportsHH2];
+    if (supportsHH2 != [v6 supportsHH2])
     {
       goto LABEL_13;
     }
 
-    v17 = [(HMDevice *)self rapportIRK];
-    v18 = [v6 rapportIRK];
+    rapportIRK = [(HMDevice *)self rapportIRK];
+    rapportIRK2 = [v6 rapportIRK];
     v19 = HMFEqualObjects();
 
     if (!v19)
@@ -438,14 +438,14 @@
       goto LABEL_13;
     }
 
-    v20 = [(HMDevice *)self idsIdentifier];
-    v21 = [v6 idsIdentifier];
+    idsIdentifier = [(HMDevice *)self idsIdentifier];
+    idsIdentifier2 = [v6 idsIdentifier];
     v22 = HMFEqualObjects();
 
     if (v22)
     {
-      v23 = [(HMDevice *)self idsDestination];
-      v24 = [v6 idsDestination];
+      idsDestination = [(HMDevice *)self idsDestination];
+      idsDestination2 = [v6 idsDestination];
       v25 = HMFEqualObjects();
     }
 
@@ -466,18 +466,18 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDevice *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(HMDevice *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)setIdsDestination:(id)a3
+- (void)setIdsDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   os_unfair_lock_lock_with_options();
   idsDestination = self->_idsDestination;
-  self->_idsDestination = v4;
+  self->_idsDestination = destinationCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -491,12 +491,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)setIdsIdentifier:(id)a3
+- (void)setIdsIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   idsIdentifier = self->_idsIdentifier;
-  self->_idsIdentifier = v4;
+  self->_idsIdentifier = identifierCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -510,12 +510,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)setRapportIRK:(id)a3
+- (void)setRapportIRK:(id)k
 {
-  v4 = a3;
+  kCopy = k;
   os_unfair_lock_lock_with_options();
   rapportIRK = self->_rapportIRK;
-  self->_rapportIRK = v4;
+  self->_rapportIRK = kCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -529,10 +529,10 @@ LABEL_13:
   return v3;
 }
 
-- (void)setSupportsHH2:(BOOL)a3
+- (void)setSupportsHH2:(BOOL)h2
 {
   os_unfair_lock_lock_with_options();
-  self->_supportsHH2 = a3;
+  self->_supportsHH2 = h2;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -545,11 +545,11 @@ LABEL_13:
   return supportsHH2;
 }
 
-- (void)setProductInfo:(id)a3
+- (void)setProductInfo:(id)info
 {
-  v6 = a3;
+  infoCopy = info;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [infoCopy copy];
   productInfo = self->_productInfo;
   self->_productInfo = v4;
 
@@ -565,12 +565,12 @@ LABEL_13:
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
   name = self->_name;
-  self->_name = v4;
+  self->_name = nameCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -603,10 +603,10 @@ LABEL_13:
   return v6;
 }
 
-- (HMDevice)initWithUUID:(id)a3 name:(id)a4 isCurrentDevice:(BOOL)a5
+- (HMDevice)initWithUUID:(id)d name:(id)name isCurrentDevice:(BOOL)device
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = HMDevice;
   v10 = [(HMDevice *)&v17 init];
@@ -614,15 +614,15 @@ LABEL_13:
   if (v10)
   {
     v10->_lock._os_unfair_lock_opaque = 0;
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     uuid = v11->_uuid;
     v11->_uuid = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v11->_currentDevice = a5;
+    v11->_currentDevice = device;
   }
 
   return v11;
@@ -668,12 +668,12 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
   return NSStringFromClass(v2);
 }
 
-- (id)IDSDestinationForIDSService:(id)a3
+- (id)IDSDestinationForIDSService:(id)service
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMDevice *)self idsDestination];
-  if (v5 && IDSFoundationLibraryCore())
+  serviceCopy = service;
+  idsDestination = [(HMDevice *)self idsDestination];
+  if (idsDestination && IDSFoundationLibraryCore())
   {
     v16 = 0;
     v17 = &v16;
@@ -693,14 +693,14 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
 
     v7 = v6;
     _Block_object_dispose(&v16, 8);
-    v8 = [MEMORY[0x1E695DFD8] setWithObject:{v5, v16}];
+    v8 = [MEMORY[0x1E695DFD8] setWithObject:{idsDestination, v16}];
     v9 = [v6 destinationWithStrings:v8];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -708,11 +708,11 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
       *buf = 138544130;
       *&buf[4] = v13;
       *&buf[12] = 2112;
-      *&buf[14] = v5;
+      *&buf[14] = idsDestination;
       *&buf[22] = 2112;
-      v21 = v4;
+      v21 = serviceCopy;
       LOWORD(v22[0]) = 2112;
-      *(v22 + 2) = v11;
+      *(v22 + 2) = selfCopy;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@Unable to get IDSDestination from destination: (%@) for service: (%@) on device: %@", buf, 0x2Au);
     }
 
@@ -725,12 +725,12 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
   return v9;
 }
 
-- (id)IDSDeviceForIDSService:(id)a3
+- (id)IDSDeviceForIDSService:(id)service
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMDevice *)self idsIdentifier];
-  if (!v5)
+  serviceCopy = service;
+  idsIdentifier = [(HMDevice *)self idsIdentifier];
+  if (!idsIdentifier)
   {
     goto LABEL_14;
   }
@@ -753,8 +753,8 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [v4 devices];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v25 count:16];
+    devices = [serviceCopy devices];
+    v7 = [devices countByEnumeratingWithState:&v16 objects:v25 count:16];
     if (v7)
     {
       v8 = *v17;
@@ -764,13 +764,13 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(devices);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 uniqueIDOverride];
-          v12 = [v5 UUIDString];
-          v13 = [v11 isEqualToString:v12];
+          uniqueIDOverride = [v10 uniqueIDOverride];
+          uUIDString = [idsIdentifier UUIDString];
+          v13 = [uniqueIDOverride isEqualToString:uUIDString];
 
           if (v13)
           {
@@ -779,7 +779,7 @@ uint64_t __23__HMDevice_logCategory__block_invoke()
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v25 count:16];
+        v7 = [devices countByEnumeratingWithState:&v16 objects:v25 count:16];
         if (v7)
         {
           continue;
@@ -806,10 +806,10 @@ LABEL_14:
 - (id)hmmmMessageDestination
 {
   v3 = [HMMMMessageDestination alloc];
-  v4 = [(HMDevice *)self idsIdentifier];
-  v5 = [v4 UUIDString];
-  v6 = [(HMDevice *)self idsDestination];
-  v7 = [(HMMMMessageDestination *)v3 initWithIDSIdentifier:v5 idsTokenURI:v6];
+  idsIdentifier = [(HMDevice *)self idsIdentifier];
+  uUIDString = [idsIdentifier UUIDString];
+  idsDestination = [(HMDevice *)self idsDestination];
+  v7 = [(HMMMMessageDestination *)v3 initWithIDSIdentifier:uUIDString idsTokenURI:idsDestination];
 
   return v7;
 }

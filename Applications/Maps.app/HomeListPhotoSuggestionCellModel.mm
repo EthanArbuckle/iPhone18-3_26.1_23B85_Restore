@@ -1,32 +1,32 @@
 @interface HomeListPhotoSuggestionCellModel
-- (BOOL)isEqual:(id)a3;
-- (HomeListPhotoSuggestionCellModel)initWithEntry:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HomeListPhotoSuggestionCellModel)initWithEntry:(id)entry;
 - (NSString)subtitle;
 @end
 
 @implementation HomeListPhotoSuggestionCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     entry = self->_entry;
-    v7 = [(HomeListPhotoSuggestionCellModel *)v5 entry];
-    if (entry == v7)
+    entry = [(HomeListPhotoSuggestionCellModel *)v5 entry];
+    if (entry == entry)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [(MapsSuggestionsEntry *)entry isEqual:v7];
+      v8 = [(MapsSuggestionsEntry *)entry isEqual:entry];
     }
   }
 
@@ -46,16 +46,16 @@
   return v3;
 }
 
-- (HomeListPhotoSuggestionCellModel)initWithEntry:(id)a3
+- (HomeListPhotoSuggestionCellModel)initWithEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v9.receiver = self;
   v9.super_class = HomeListPhotoSuggestionCellModel;
   v6 = [(HomeListPhotoSuggestionCellModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entry, a3);
+    objc_storeStrong(&v6->_entry, entry);
   }
 
   return v7;

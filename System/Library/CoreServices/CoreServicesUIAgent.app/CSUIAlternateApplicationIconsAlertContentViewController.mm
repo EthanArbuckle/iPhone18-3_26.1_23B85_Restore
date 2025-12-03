@@ -1,25 +1,25 @@
 @interface CSUIAlternateApplicationIconsAlertContentViewController
-- (CSUIAlternateApplicationIconsAlertContentViewController)initWithApplicationIdentity:(id)a3;
+- (CSUIAlternateApplicationIconsAlertContentViewController)initWithApplicationIdentity:(id)identity;
 - (NSString)messageText;
-- (void)__updateWithVisualStyle:(id)a3;
-- (void)_containingAlertControllerDidChangeVisualStyle:(id)a3;
+- (void)__updateWithVisualStyle:(id)style;
+- (void)_containingAlertControllerDidChangeVisualStyle:(id)style;
 - (void)_updateWithContainingAlertControllerVisualStyle;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)setMessageText:(id)a3;
+- (void)setMessageText:(id)text;
 @end
 
 @implementation CSUIAlternateApplicationIconsAlertContentViewController
 
-- (CSUIAlternateApplicationIconsAlertContentViewController)initWithApplicationIdentity:(id)a3
+- (CSUIAlternateApplicationIconsAlertContentViewController)initWithApplicationIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = [(CSUIAlternateApplicationIconsAlertContentViewController *)self initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [identityCopy bundleIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v6;
+    v5->_bundleIdentifier = bundleIdentifier;
   }
 
   return v5;
@@ -27,62 +27,62 @@
 
 - (NSString)messageText
 {
-  v3 = [(CSUIAlternateApplicationIconsAlertContentViewController *)self view];
+  view = [(CSUIAlternateApplicationIconsAlertContentViewController *)self view];
   messageLabel = self->_messageLabel;
 
   return [(UILabel *)messageLabel text];
 }
 
-- (void)setMessageText:(id)a3
+- (void)setMessageText:(id)text
 {
-  v5 = a3;
-  v4 = [(CSUIAlternateApplicationIconsAlertContentViewController *)self view];
-  [(UILabel *)self->_messageLabel setText:v5];
+  textCopy = text;
+  view = [(CSUIAlternateApplicationIconsAlertContentViewController *)self view];
+  [(UILabel *)self->_messageLabel setText:textCopy];
 }
 
-- (void)_containingAlertControllerDidChangeVisualStyle:(id)a3
+- (void)_containingAlertControllerDidChangeVisualStyle:(id)style
 {
   v5.receiver = self;
   v5.super_class = CSUIAlternateApplicationIconsAlertContentViewController;
-  v4 = a3;
-  [(CSUIAlternateApplicationIconsAlertContentViewController *)&v5 _containingAlertControllerDidChangeVisualStyle:v4];
-  [(CSUIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:v4, v5.receiver, v5.super_class];
+  styleCopy = style;
+  [(CSUIAlternateApplicationIconsAlertContentViewController *)&v5 _containingAlertControllerDidChangeVisualStyle:styleCopy];
+  [(CSUIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:styleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)__updateWithVisualStyle:(id)a3
+- (void)__updateWithVisualStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 messageLabelFont];
-  [(UILabel *)self->_messageLabel setFont:v5];
+  styleCopy = style;
+  messageLabelFont = [styleCopy messageLabelFont];
+  [(UILabel *)self->_messageLabel setFont:messageLabelFont];
 
-  v6 = [v4 messageLabelColor];
-  [(UILabel *)self->_messageLabel setTextColor:v6];
+  messageLabelColor = [styleCopy messageLabelColor];
+  [(UILabel *)self->_messageLabel setTextColor:messageLabelColor];
 
-  v7 = [v4 maximumNumberOfLinesInMessageLabel];
+  maximumNumberOfLinesInMessageLabel = [styleCopy maximumNumberOfLinesInMessageLabel];
   messageLabel = self->_messageLabel;
 
-  [(UILabel *)messageLabel setNumberOfLines:v7];
+  [(UILabel *)messageLabel setNumberOfLines:maximumNumberOfLinesInMessageLabel];
 }
 
 - (void)_updateWithContainingAlertControllerVisualStyle
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(CSUIAlternateApplicationIconsAlertContentViewController *)self _visualStyleOfContainingAlertController];
-    if (v3)
+    _visualStyleOfContainingAlertController = [(CSUIAlternateApplicationIconsAlertContentViewController *)self _visualStyleOfContainingAlertController];
+    if (_visualStyleOfContainingAlertController)
     {
-      [(CSUIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:v3];
+      [(CSUIAlternateApplicationIconsAlertContentViewController *)self __updateWithVisualStyle:_visualStyleOfContainingAlertController];
     }
 
     _objc_release_x1();
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = CSUIAlternateApplicationIconsAlertContentViewController;
-  [(CSUIAlternateApplicationIconsAlertContentViewController *)&v4 didMoveToParentViewController:a3];
+  [(CSUIAlternateApplicationIconsAlertContentViewController *)&v4 didMoveToParentViewController:controller];
   [(CSUIAlternateApplicationIconsAlertContentViewController *)self _updateWithContainingAlertControllerVisualStyle];
 }
 
@@ -91,11 +91,11 @@
   v3 = objc_opt_new();
   [(CSUIAlternateApplicationIconsAlertContentViewController *)self _updateWithContainingAlertControllerVisualStyle];
   [(UILabel *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = self;
+  selfCopy = self;
   messageLabel = self->_messageLabel;
-  v4->_messageLabel = v3;
-  v6 = v4;
-  v37 = v4;
+  selfCopy->_messageLabel = v3;
+  v6 = selfCopy;
+  v37 = selfCopy;
   v35 = v3;
 
   bundleIdentifier = v6->_bundleIdentifier;
@@ -141,13 +141,13 @@
   v39 = @"hStackView";
   v40 = v20;
   v32 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-  v22 = [v20 centerXAnchor];
-  v23 = [v21 centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerXAnchor = [v20 centerXAnchor];
+  centerXAnchor2 = [v21 centerXAnchor];
+  v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v38[0] = v24;
-  v25 = [v20 centerYAnchor];
-  v26 = [v21 centerYAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  centerYAnchor = [v20 centerYAnchor];
+  centerYAnchor2 = [v21 centerYAnchor];
+  v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v38[1] = v27;
   v28 = [NSArray arrayWithObjects:v38 count:2];
   v29 = [v28 mutableCopy];

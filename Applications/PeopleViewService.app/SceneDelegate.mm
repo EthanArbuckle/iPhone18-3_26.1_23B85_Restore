@@ -2,66 +2,66 @@
 - (_TtC17PeopleViewService13SceneDelegate)init;
 - (uint64_t)sceneDidBecomeActive:;
 - (uint64_t)sceneWillResignActive:;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setWindow:(id)window;
 @end
 
 @implementation SceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC17PeopleViewService13SceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC17PeopleViewService13SceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC17PeopleViewService13SceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10000D014(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_10000D014(sceneCopy, optionsCopy);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_10000D76C();
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR____TtC17PeopleViewService13SceneDelegate_peopleView);
   if (v3)
   {
-    v6 = self;
+    selfCopy = self;
     v4 = v3;
     v5 = sub_10000EED8();
     sub_10000BC9C(v5);
   }
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000DAF8(v7);
+  sceneCopy = scene;
+  activityCopy = activity;
+  selfCopy = self;
+  sub_10000DAF8(activityCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_10000C0C0();
   sub_10000CFCC(&qword_1000261A0, sub_10000C0C0);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  sceneCopy = scene;
+  selfCopy = self;
   sub_10000C10C(v6);
 }
 

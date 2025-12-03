@@ -152,16 +152,16 @@
     v52 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v45, @"thickenDirections%02d", v46, v47, v51);
     v204 = objc_msgSend_kernelWithName_(FringeDirectionsKernels, v53, v52, v54, v55);
 
-    v217 = self;
+    selfCopy = self;
     inputImage = self->inputImage;
     objc_msgSend_extent(inputImage, v57, v58, v59, v60);
-    v62 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v61, v213, inputImage, &unk_28492E790, 0, v217->inputColorSpace);
+    v62 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v61, v213, inputImage, &unk_28492E790, 0, selfCopy->inputColorSpace);
     objc_msgSend_extent(v62, v63, v64, v65, v66);
     v234 = CGRectInset(v233, -3.0, -3.0);
-    v68 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v67, v212, v62, &unk_28492E7B0, 0, v217->inputColorSpace, v234.origin.x, v234.origin.y, v234.size.width, v234.size.height);
+    v68 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v67, v212, v62, &unk_28492E7B0, 0, selfCopy->inputColorSpace, v234.origin.x, v234.origin.y, v234.size.width, v234.size.height);
     objc_msgSend_extent(v62, v69, v70, v71, v72);
     v236 = CGRectInset(v235, -3.0, -3.0);
-    v74 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v73, v211, v62, &unk_28492E7D0, 0, v217->inputColorSpace, v236.origin.x, v236.origin.y, v236.size.width, v236.size.height);
+    v74 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v73, v211, v62, &unk_28492E7D0, 0, selfCopy->inputColorSpace, v236.origin.x, v236.origin.y, v236.size.width, v236.size.height);
     objc_msgSend_extent(v68, v75, v76, v77, v78);
     v238 = CGRectInset(v237, -4.0, -4.0);
     x = v238.origin.x;
@@ -180,13 +180,13 @@
 
     objc_msgSend_extent(v88, v89, v90, v91, v92);
     v240 = CGRectInset(v239, -1.0, -1.0);
-    v214 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v93, v208, v88, &unk_28492E810, 0, v217->inputColorSpace, v240.origin.x, v240.origin.y, v240.size.width, v240.size.height);
+    v214 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v93, v208, v88, &unk_28492E810, 0, selfCopy->inputColorSpace, v240.origin.x, v240.origin.y, v240.size.width, v240.size.height);
 
     v94 = self->inputImage;
     v95 = v68;
     objc_msgSend_extent(v94, v96, v97, v98, v99);
     v242 = CGRectInset(v241, -1.0, -1.0);
-    v101 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v100, v207, v94, &unk_28492E830, 0, v217->inputColorSpace, v242.origin.x, v242.origin.y, v242.size.width, v242.size.height);
+    v101 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v100, v207, v94, &unk_28492E830, 0, selfCopy->inputColorSpace, v242.origin.x, v242.origin.y, v242.size.width, v242.size.height);
     v102 = self->inputImage;
     objc_msgSend_extent(v102, v103, v104, v105, v106);
     v108 = v107;
@@ -198,7 +198,7 @@
     v230[2] = v214;
     v117 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v115, v230, 3, v116);
     v118 = v101;
-    v218 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(v217, v119, v206, v102, &unk_28492E850, v117, v217->inputColorSpace, v108, v110, v112, v114);
+    v218 = objc_msgSend_apply_image_extent_roiCallback_arguments_inoutSpace_(selfCopy, v119, v206, v102, &unk_28492E850, v117, selfCopy->inputColorSpace, v108, v110, v112, v114);
 
     v124 = -5.0;
     if (v50 < 8.736)

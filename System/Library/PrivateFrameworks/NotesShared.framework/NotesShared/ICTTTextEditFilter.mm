@@ -1,7 +1,7 @@
 @interface ICTTTextEditFilter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICTTTextEditFilter)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -26,54 +26,54 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICTTTextEditFilter *)self allowedUserIDs];
-  v7 = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
+  allowedUserIDs = [(ICTTTextEditFilter *)self allowedUserIDs];
+  allowedAttachmentIDs = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICTTTextEditFilter allowsMissingTimestamps](self, "allowsMissingTimestamps")}];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICTTTextEditFilter allowsMissingUsers](self, "allowsMissingUsers")}];
-  v10 = [(ICTTTextEditFilter *)self fromDate];
-  v11 = [(ICTTTextEditFilter *)self toDate];
-  v12 = [v3 stringWithFormat:@"<%@: %p, allowedUserIDs: %@, allowedAttachmentIDs: %@, allowsMissingTimestamps: %@, allowsMissingUsers: %@, fromDate: %@, toDate: %@>", v5, self, v6, v7, v8, v9, v10, v11];
+  fromDate = [(ICTTTextEditFilter *)self fromDate];
+  toDate = [(ICTTTextEditFilter *)self toDate];
+  v12 = [v3 stringWithFormat:@"<%@: %p, allowedUserIDs: %@, allowedAttachmentIDs: %@, allowsMissingTimestamps: %@, allowsMissingUsers: %@, fromDate: %@, toDate: %@>", v5, self, allowedUserIDs, allowedAttachmentIDs, v8, v9, fromDate, toDate];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [(ICTTTextEditFilter *)self allowedUserIDs];
-    v7 = [v5 allowedUserIDs];
+    allowedUserIDs = [(ICTTTextEditFilter *)self allowedUserIDs];
+    allowedUserIDs2 = [v5 allowedUserIDs];
     v8 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == allowedUserIDs)
     {
       v9 = 0;
     }
 
     else
     {
-      v9 = v6;
+      v9 = allowedUserIDs;
     }
 
-    v10 = v9;
-    if (v8 == v7)
+    allowedAttachmentIDs = v9;
+    if (v8 == allowedUserIDs2)
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = v7;
+      v11 = allowedUserIDs2;
     }
 
     v12 = v11;
-    if (v10 | v12)
+    if (allowedAttachmentIDs | v12)
     {
-      v13 = v12;
-      if (v10)
+      allowedAttachmentIDs2 = v12;
+      if (allowedAttachmentIDs)
       {
         v14 = v12 == 0;
       }
@@ -88,7 +88,7 @@
         goto LABEL_31;
       }
 
-      v15 = [v10 isEqual:v12];
+      v15 = [allowedAttachmentIDs isEqual:v12];
 
       if (!v15)
       {
@@ -99,34 +99,34 @@ LABEL_58:
       }
     }
 
-    v10 = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
-    v13 = [v5 allowedAttachmentIDs];
-    if (v8 == v10)
+    allowedAttachmentIDs = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
+    allowedAttachmentIDs2 = [v5 allowedAttachmentIDs];
+    if (v8 == allowedAttachmentIDs)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = v10;
+      v16 = allowedAttachmentIDs;
     }
 
-    v17 = v16;
-    if (v8 == v13)
+    fromDate = v16;
+    if (v8 == allowedAttachmentIDs2)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = v13;
+      v18 = allowedAttachmentIDs2;
     }
 
     v19 = v18;
-    if (v17 | v19)
+    if (fromDate | v19)
     {
-      v20 = v19;
-      if (v17)
+      fromDate2 = v19;
+      if (fromDate)
       {
         v21 = v19 == 0;
       }
@@ -141,7 +141,7 @@ LABEL_58:
         goto LABEL_26;
       }
 
-      LODWORD(v22) = [v17 isEqual:v19];
+      LODWORD(v22) = [fromDate isEqual:v19];
 
       if (!v22)
       {
@@ -149,8 +149,8 @@ LABEL_58:
       }
     }
 
-    v23 = [v5 allowsMissingTimestamps];
-    if (v23 != -[ICTTTextEditFilter allowsMissingTimestamps](self, "allowsMissingTimestamps") || (v24 = [v5 allowsMissingUsers], v24 != -[ICTTTextEditFilter allowsMissingUsers](self, "allowsMissingUsers")))
+    allowsMissingTimestamps = [v5 allowsMissingTimestamps];
+    if (allowsMissingTimestamps != -[ICTTTextEditFilter allowsMissingTimestamps](self, "allowsMissingTimestamps") || (v24 = [v5 allowsMissingUsers], v24 != -[ICTTTextEditFilter allowsMissingUsers](self, "allowsMissingUsers")))
     {
 LABEL_31:
       LOBYTE(v22) = 0;
@@ -159,27 +159,27 @@ LABEL_57:
       goto LABEL_58;
     }
 
-    v17 = [(ICTTTextEditFilter *)self fromDate];
-    v20 = [v5 fromDate];
-    if (v8 == v17)
+    fromDate = [(ICTTTextEditFilter *)self fromDate];
+    fromDate2 = [v5 fromDate];
+    if (v8 == fromDate)
     {
       v25 = 0;
     }
 
     else
     {
-      v25 = v17;
+      v25 = fromDate;
     }
 
     v22 = v25;
-    if (v8 == v20)
+    if (v8 == fromDate2)
     {
       v26 = 0;
     }
 
     else
     {
-      v26 = v20;
+      v26 = fromDate2;
     }
 
     v27 = v26;
@@ -205,29 +205,29 @@ LABEL_55:
     if (v39)
     {
 LABEL_43:
-      v31 = [(ICTTTextEditFilter *)self toDate];
-      v32 = [v5 toDate];
-      v41 = v31;
-      if (v8 == v31)
+      toDate = [(ICTTTextEditFilter *)self toDate];
+      toDate2 = [v5 toDate];
+      v41 = toDate;
+      if (v8 == toDate)
       {
         v33 = 0;
       }
 
       else
       {
-        v33 = v31;
+        v33 = toDate;
       }
 
       v38 = v33;
-      v40 = v32;
-      if (v8 == v32)
+      v40 = toDate2;
+      if (v8 == toDate2)
       {
         v34 = 0;
       }
 
       else
       {
-        v34 = v32;
+        v34 = toDate2;
       }
 
       v35 = v34;
@@ -264,7 +264,7 @@ LABEL_56:
 - (unint64_t)hash
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(ICTTTextEditFilter *)self allowedUserIDs];
+  allowedUserIDs = [(ICTTTextEditFilter *)self allowedUserIDs];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 hash];
@@ -273,7 +273,7 @@ LABEL_56:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v3;
+  v7 = allowedUserIDs;
   v8 = [v7 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
@@ -297,7 +297,7 @@ LABEL_56:
     while (v9);
   }
 
-  v12 = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
+  allowedAttachmentIDs = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
   v15 = [v14 hash];
@@ -306,7 +306,7 @@ LABEL_56:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v12;
+  v16 = allowedAttachmentIDs;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v17)
   {
@@ -332,31 +332,31 @@ LABEL_56:
 
   [(ICTTTextEditFilter *)self allowsMissingTimestamps];
   [(ICTTTextEditFilter *)self allowsMissingUsers];
-  v21 = [(ICTTTextEditFilter *)self fromDate];
-  [v21 hash];
-  v22 = [(ICTTTextEditFilter *)self toDate];
-  [v22 hash];
+  fromDate = [(ICTTTextEditFilter *)self fromDate];
+  [fromDate hash];
+  toDate = [(ICTTTextEditFilter *)self toDate];
+  [toDate hash];
   v30 = ICHashWithHashKeys(v6, v23, v24, v25, v26, v27, v28, v29, v15);
 
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICTTTextEditFilter allocWithZone:?]];
-  v5 = [(ICTTTextEditFilter *)self allowedUserIDs];
-  [(ICTTTextEditFilter *)v4 setAllowedUserIDs:v5];
+  allowedUserIDs = [(ICTTTextEditFilter *)self allowedUserIDs];
+  [(ICTTTextEditFilter *)v4 setAllowedUserIDs:allowedUserIDs];
 
-  v6 = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
-  [(ICTTTextEditFilter *)v4 setAllowedAttachmentIDs:v6];
+  allowedAttachmentIDs = [(ICTTTextEditFilter *)self allowedAttachmentIDs];
+  [(ICTTTextEditFilter *)v4 setAllowedAttachmentIDs:allowedAttachmentIDs];
 
   [(ICTTTextEditFilter *)v4 setAllowsMissingTimestamps:[(ICTTTextEditFilter *)self allowsMissingTimestamps]];
   [(ICTTTextEditFilter *)v4 setAllowsMissingUsers:[(ICTTTextEditFilter *)self allowsMissingUsers]];
-  v7 = [(ICTTTextEditFilter *)self fromDate];
-  [(ICTTTextEditFilter *)v4 setFromDate:v7];
+  fromDate = [(ICTTTextEditFilter *)self fromDate];
+  [(ICTTTextEditFilter *)v4 setFromDate:fromDate];
 
-  v8 = [(ICTTTextEditFilter *)self toDate];
-  [(ICTTTextEditFilter *)v4 setToDate:v8];
+  toDate = [(ICTTTextEditFilter *)self toDate];
+  [(ICTTTextEditFilter *)v4 setToDate:toDate];
 
   return v4;
 }

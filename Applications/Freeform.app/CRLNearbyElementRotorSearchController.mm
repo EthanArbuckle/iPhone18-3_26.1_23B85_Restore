@@ -1,29 +1,29 @@
 @interface CRLNearbyElementRotorSearchController
-+ (id)nearbyDescriptionForLayoutFrame:(CGRect)a3 andSelectedLayoutFrame:(CGRect)a4;
++ (id)nearbyDescriptionForLayoutFrame:(CGRect)frame andSelectedLayoutFrame:(CGRect)layoutFrame;
 + (id)searchTargetSearchSelectors;
 - (CRLCanvasRep)selectedRep;
 - (id)focusedRep;
-- (id)nearbyDescriptionForSearchReference:(id)a3;
-- (id)searchReferenceAfterReference:(id)a3 inDirection:(unint64_t)a4;
-- (unint64_t)distanceToSelectedSearchReference:(id)a3;
+- (id)nearbyDescriptionForSearchReference:(id)reference;
+- (id)searchReferenceAfterReference:(id)reference inDirection:(unint64_t)direction;
+- (unint64_t)distanceToSelectedSearchReference:(id)reference;
 - (void)_addObservers;
-- (void)sortLayoutSearchResultsArray:(id)a3;
+- (void)sortLayoutSearchResultsArray:(id)array;
 @end
 
 @implementation CRLNearbyElementRotorSearchController
 
-+ (id)nearbyDescriptionForLayoutFrame:(CGRect)a3 andSelectedLayoutFrame:(CGRect)a4
++ (id)nearbyDescriptionForLayoutFrame:(CGRect)frame andSelectedLayoutFrame:(CGRect)layoutFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v54 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = layoutFrame.size.height;
+  width = layoutFrame.size.width;
+  y = layoutFrame.origin.y;
+  x = layoutFrame.origin.x;
+  v8 = frame.size.height;
+  v54 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  MidX = CGRectGetMidX(frame);
   v57.origin.x = v11;
   v57.origin.y = v10;
   v57.size.width = v9;
@@ -178,16 +178,16 @@ LABEL_28:
   return v46;
 }
 
-- (unint64_t)distanceToSelectedSearchReference:(id)a3
+- (unint64_t)distanceToSelectedSearchReference:(id)reference
 {
-  [a3 searchReferenceLayoutFrame];
+  [reference searchReferenceLayoutFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CRLNearbyElementRotorSearchController *)self selectedRep];
-  v13 = [v12 layout];
-  [v13 alignmentFrameInRoot];
+  selectedRep = [(CRLNearbyElementRotorSearchController *)self selectedRep];
+  layout = [selectedRep layout];
+  [layout alignmentFrameInRoot];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -219,16 +219,16 @@ LABEL_28:
   return v24;
 }
 
-- (id)nearbyDescriptionForSearchReference:(id)a3
+- (id)nearbyDescriptionForSearchReference:(id)reference
 {
-  [a3 searchReferenceLayoutFrame];
+  [reference searchReferenceLayoutFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CRLNearbyElementRotorSearchController *)self selectedRep];
-  v13 = [v12 layout];
-  [v13 alignmentFrameInRoot];
+  selectedRep = [(CRLNearbyElementRotorSearchController *)self selectedRep];
+  layout = [selectedRep layout];
+  [layout alignmentFrameInRoot];
   v18 = [CRLNearbyElementRotorSearchController nearbyDescriptionForLayoutFrame:v5 andSelectedLayoutFrame:v7, v9, v11, v14, v15, v16, v17];
 
   return v18;
@@ -243,29 +243,29 @@ LABEL_28:
   return v3;
 }
 
-- (id)searchReferenceAfterReference:(id)a3 inDirection:(unint64_t)a4
+- (id)searchReferenceAfterReference:(id)reference inDirection:(unint64_t)direction
 {
-  v6 = a3;
+  referenceCopy = reference;
   [(CRLModelSearchController *)self buildSearchResultsIfNecessary];
   if ([(CRLModelSearchController *)self searchResultsCount])
   {
-    v7 = [(CRLNearbyElementRotorSearchController *)self distanceToSelectedSearchReference:v6];
-    v8 = [(CRLModelSearchController *)self layoutSearchResults];
+    v7 = [(CRLNearbyElementRotorSearchController *)self distanceToSelectedSearchReference:referenceCopy];
+    layoutSearchResults = [(CRLModelSearchController *)self layoutSearchResults];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1004FEBC8;
     v16[3] = &unk_10186AA30;
     v16[4] = self;
     v18 = v7;
-    v17 = v6;
-    v9 = [v8 indexOfObjectPassingTest:v16];
+    v17 = referenceCopy;
+    v9 = [layoutSearchResults indexOfObjectPassingTest:v16];
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = -1;
     }
 
-    if (a4)
+    if (direction)
     {
       v10 = -1;
     }
@@ -282,8 +282,8 @@ LABEL_28:
     }
 
     v12 = v11 & ~(v11 >> 63);
-    v13 = [(CRLModelSearchController *)self layoutSearchResults];
-    v14 = [v13 objectAtIndexedSubscript:v12];
+    layoutSearchResults2 = [(CRLModelSearchController *)self layoutSearchResults];
+    v14 = [layoutSearchResults2 objectAtIndexedSubscript:v12];
   }
 
   else
@@ -294,22 +294,22 @@ LABEL_28:
   return v14;
 }
 
-- (void)sortLayoutSearchResultsArray:(id)a3
+- (void)sortLayoutSearchResultsArray:(id)array
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1004FED50;
   v7[3] = &unk_10186AA58;
   v7[4] = self;
-  v4 = a3;
+  arrayCopy = array;
   v5 = [NSPredicate predicateWithBlock:v7];
-  [v4 filterUsingPredicate:v5];
+  [arrayCopy filterUsingPredicate:v5];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1004FEE18;
   v6[3] = &unk_10186AA80;
   v6[4] = self;
-  [v4 sortUsingComparator:v6];
+  [arrayCopy sortUsingComparator:v6];
 }
 
 - (void)_addObservers
@@ -318,21 +318,21 @@ LABEL_28:
   v6.super_class = CRLNearbyElementRotorSearchController;
   [(CRLRotorSearchController *)&v6 _addObservers];
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(CRLRotorSearchController *)self interactiveCanvasController];
-  v5 = [v4 editorController];
-  [v3 addObserver:self selector:"_editorControllerSelectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:v5];
+  interactiveCanvasController = [(CRLRotorSearchController *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  [v3 addObserver:self selector:"_editorControllerSelectionPathDidChange:" name:@"CRLEditorControllerSelectionPathDidChangeNotification" object:editorController];
 }
 
 - (CRLCanvasRep)selectedRep
 {
   v3 = objc_opt_class();
-  v4 = [(CRLRotorSearchController *)self interactiveCanvasController];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  interactiveCanvasController = [(CRLRotorSearchController *)self interactiveCanvasController];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, interactiveCanvasController, 0, 0);
 
-  v6 = [v5 crlaxFirstSelectedRep];
-  v7 = [v6 crlaxTarget];
+  crlaxFirstSelectedRep = [v5 crlaxFirstSelectedRep];
+  crlaxTarget = [crlaxFirstSelectedRep crlaxTarget];
 
-  return v7;
+  return crlaxTarget;
 }
 
 - (id)focusedRep

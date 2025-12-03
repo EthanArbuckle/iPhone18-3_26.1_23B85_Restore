@@ -35,7 +35,7 @@
 - (double)appDrawerTitleIconWidth;
 - (double)attachmentBrowserGridInterItemSpacing;
 - (double)conversationListMinimumWidthForHiddenContactImage;
-- (double)conversationListWidthForInterfaceOrientation:(int64_t)a3;
+- (double)conversationListWidthForInterfaceOrientation:(int64_t)orientation;
 - (double)entryViewConcentricPadding;
 - (double)entryViewMaxHandWritingPluginShelfHeight;
 - (double)photoPickerMaxPopoverPhotoHeight;
@@ -46,7 +46,7 @@
 - (double)transcriptContactImageDiameter;
 - (double)transcriptGroupTypingContactImageDiameter;
 - (double)transcriptHeaderViewMaxRows;
-- (id)fullscreenPickerActionLayoutAxisPrioritiesForWidth:(double)a3;
+- (id)fullscreenPickerActionLayoutAxisPrioritiesForWidth:(double)width;
 - (id)theme;
 - (int64_t)groupRecipientSelectionPresentationStyle;
 - (unint64_t)defaultConversationViewingMessageCount;
@@ -212,15 +212,15 @@ void __24__CKUIBehaviorPad_theme__block_invoke()
   }
 }
 
-- (double)conversationListWidthForInterfaceOrientation:(int64_t)a3
+- (double)conversationListWidthForInterfaceOrientation:(int64_t)orientation
 {
   result = 320.0;
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     result = 0.0;
   }
 
-  if ((a3 - 3) < 2)
+  if ((orientation - 3) < 2)
   {
     return 375.0;
   }
@@ -230,10 +230,10 @@ void __24__CKUIBehaviorPad_theme__block_invoke()
 
 - (BOOL)isConversationListResizable
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  return v3;
+  return isModernSplitViewControllerEnabled;
 }
 
 - (BOOL)showPendingInConversationList
@@ -322,10 +322,10 @@ uint64_t __57__CKUIBehaviorPad_shouldUnreadIndicatorChangeOnSelection__block_inv
 
 - (BOOL)_shouldUnreadIndicatorChangeOnSelection
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  return v3;
+  return isModernSplitViewControllerEnabled;
 }
 
 - (double)conversationListMinimumWidthForHiddenContactImage
@@ -664,9 +664,9 @@ void __59__CKUIBehaviorPad_entryViewMaxHandWritingPluginShelfHeight__block_invok
   }
 }
 
-- (id)fullscreenPickerActionLayoutAxisPrioritiesForWidth:(double)a3
+- (id)fullscreenPickerActionLayoutAxisPrioritiesForWidth:(double)width
 {
-  if (a3 >= 550.0)
+  if (width >= 550.0)
   {
     v5 = &unk_1F04E69D8;
   }

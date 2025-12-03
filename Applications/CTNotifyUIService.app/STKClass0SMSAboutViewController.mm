@@ -10,11 +10,11 @@
   v14.receiver = self;
   v14.super_class = STKClass0SMSAboutViewController;
   [(STKClass0SMSAboutViewController *)&v14 viewDidLoad];
-  v3 = [(STKClass0SMSAboutViewController *)self view];
+  view = [(STKClass0SMSAboutViewController *)self view];
   v4 = [UITextView alloc];
-  [v3 frame];
+  [view frame];
   Width = CGRectGetWidth(v15);
-  [v3 frame];
+  [view frame];
   v6 = [v4 initWithFrame:{0.0, 0.0, Width, CGRectGetHeight(v16)}];
   aboutContentView = self->_aboutContentView;
   self->_aboutContentView = v6;
@@ -23,20 +23,20 @@
   [(UITextView *)self->_aboutContentView setAutoresizingMask:18];
   [(UITextView *)self->_aboutContentView setTextContainerInset:10.0, 10.0, 10.0, 10.0];
   v8 = self->_aboutContentView;
-  v9 = [(STKClass0SMSAboutViewController *)self formattedAboutText];
-  [(UITextView *)v8 setAttributedText:v9];
+  formattedAboutText = [(STKClass0SMSAboutViewController *)self formattedAboutText];
+  [(UITextView *)v8 setAttributedText:formattedAboutText];
 
   [(UITextView *)self->_aboutContentView setScrollEnabled:0];
   [(UITextView *)self->_aboutContentView setEditable:0];
   [(UITextView *)self->_aboutContentView setSelectable:0];
-  [v3 addSubview:self->_aboutContentView];
+  [view addSubview:self->_aboutContentView];
   v10 = [NSBundle bundleWithIdentifier:@"com.apple.CTNotifyUIService"];
   v11 = [v10 localizedStringForKey:@"CLASS0SMS_ABOUT_TITLE" value:&stru_100018670 table:@"SIMToolkitUI"];
   [(STKClass0SMSAboutViewController *)self setTitle:v11];
 
   v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonTapped:"];
-  v13 = [(STKClass0SMSAboutViewController *)self navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem = [(STKClass0SMSAboutViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v12];
 }
 
 - (id)formattedAboutText

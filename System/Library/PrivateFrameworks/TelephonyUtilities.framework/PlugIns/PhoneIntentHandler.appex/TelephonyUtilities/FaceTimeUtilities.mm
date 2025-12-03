@@ -1,11 +1,11 @@
 @interface FaceTimeUtilities
 + (FaceTimeUtilities)sharedInstance;
-- (BOOL)isFaceTimeable:(id)a3;
+- (BOOL)isFaceTimeable:(id)timeable;
 - (FaceTimeUtilities)init;
-- (id)canonicalAddressesForAddresses:(id)a3;
+- (id)canonicalAddressesForAddresses:(id)addresses;
 - (id)fetchFaceTimeAccountAliases;
-- (id)generateFaceTimeLink:(id)a3;
-- (void)runIDSQueryForStartCallIntent:(id)a3;
+- (id)generateFaceTimeLink:(id)link;
+- (void)runIDSQueryForStartCallIntent:(id)intent;
 @end
 
 @implementation FaceTimeUtilities
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000236EC;
   block[3] = &unk_10004CC00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100057A60 != -1)
   {
     dispatch_once(&qword_100057A60, block);
@@ -42,9 +42,9 @@
   return v2;
 }
 
-- (void)runIDSQueryForStartCallIntent:(id)a3
+- (void)runIDSQueryForStartCallIntent:(id)intent
 {
-  v3 = [(FaceTimeUtilities *)self canonicalAddressesForAddresses:a3];
+  v3 = [(FaceTimeUtilities *)self canonicalAddressesForAddresses:intent];
   v4 = IntentHandlerDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,15 +80,15 @@
   [v14 removeObserver:v10];
 }
 
-- (id)canonicalAddressesForAddresses:(id)a3
+- (id)canonicalAddressesForAddresses:(id)addresses
 {
-  v3 = a3;
+  addressesCopy = addresses;
   v4 = objc_alloc_init(NSMutableSet);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = addressesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
@@ -128,12 +128,12 @@
   return v14;
 }
 
-- (BOOL)isFaceTimeable:(id)a3
+- (BOOL)isFaceTimeable:(id)timeable
 {
-  v3 = [(FaceTimeUtilities *)self canonicalAddressesForAddresses:a3];
-  v4 = [v3 allObjects];
+  v3 = [(FaceTimeUtilities *)self canonicalAddressesForAddresses:timeable];
+  allObjects = [v3 allObjects];
   v5 = +[TUIDSLookupManager sharedManager];
-  if ([v5 isFaceTimeAudioAvailableForAnyDestinationInDestinations:v4])
+  if ([v5 isFaceTimeAudioAvailableForAnyDestinationInDestinations:allObjects])
   {
     v6 = 1;
   }
@@ -141,7 +141,7 @@
   else
   {
     v7 = +[TUIDSLookupManager sharedManager];
-    if ([v7 isFaceTimeVideoAvailableForAnyDestinationInDestinations:v4])
+    if ([v7 isFaceTimeVideoAvailableForAnyDestinationInDestinations:allObjects])
     {
       v6 = 1;
     }
@@ -149,16 +149,16 @@
     else
     {
       v8 = +[TUIDSLookupManager sharedManager];
-      v6 = [v8 isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:v4];
+      v6 = [v8 isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:allObjects];
     }
   }
 
   return v6;
 }
 
-- (id)generateFaceTimeLink:(id)a3
+- (id)generateFaceTimeLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -167,7 +167,7 @@
   v22 = 0;
   v4 = dispatch_semaphore_create(0);
   v5 = +[TUCallCenter sharedInstance];
-  v6 = [v5 conversationManager];
+  conversationManager = [v5 conversationManager];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100023DBC;
@@ -175,7 +175,7 @@
   v16 = &v17;
   v7 = v4;
   v15 = v7;
-  [v6 generateLinkWithInvitedMemberHandles:v3 completionHandler:&v11];
+  [conversationManager generateLinkWithInvitedMemberHandles:linkCopy completionHandler:&v11];
 
   v8 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v7, v8);
@@ -195,8 +195,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 accounts];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  accounts = [v3 accounts];
+  v6 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -207,14 +207,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accounts);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) vettedAliases];
-        [v4 addObjectsFromArray:v10];
+        vettedAliases = [*(*(&v13 + 1) + 8 * i) vettedAliases];
+        [v4 addObjectsFromArray:vettedAliases];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

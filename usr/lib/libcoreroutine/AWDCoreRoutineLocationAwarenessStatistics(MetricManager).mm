@@ -7,7 +7,7 @@
 
 - (char)_init
 {
-  v52.receiver = a1;
+  v52.receiver = self;
   v52.super_class = &off_2846276B8;
   v1 = objc_msgSendSuper2(&v52, sel_init);
   if (v1)
@@ -117,7 +117,7 @@
 - (BOOL)valid:()MetricManager
 {
   v25[14] = *MEMORY[0x277D85DE8];
-  if (([a1 conformsToProtocol:&unk_284624910] & 1) == 0)
+  if (([self conformsToProtocol:&unk_284624910] & 1) == 0)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = NSStringFromProtocol(&unk_284624910);
@@ -142,26 +142,26 @@
     goto LABEL_14;
   }
 
-  v5 = *&a1[*MEMORY[0x277D81B58]];
-  v25[0] = *&a1[*MEMORY[0x277D81BA0]];
+  v5 = *&self[*MEMORY[0x277D81B58]];
+  v25[0] = *&self[*MEMORY[0x277D81BA0]];
   v25[1] = v5;
-  v6 = *&a1[*MEMORY[0x277D81BA8]];
-  v25[2] = *&a1[*MEMORY[0x277D81BC0]];
+  v6 = *&self[*MEMORY[0x277D81BA8]];
+  v25[2] = *&self[*MEMORY[0x277D81BC0]];
   v25[3] = v6;
-  v7 = *&a1[*MEMORY[0x277D81BB0]];
-  v25[4] = *&a1[*MEMORY[0x277D81BB8]];
+  v7 = *&self[*MEMORY[0x277D81BB0]];
+  v25[4] = *&self[*MEMORY[0x277D81BB8]];
   v25[5] = v7;
-  v8 = *&a1[*MEMORY[0x277D81B98]];
-  v25[6] = *&a1[*MEMORY[0x277D81B90]];
+  v8 = *&self[*MEMORY[0x277D81B98]];
+  v25[6] = *&self[*MEMORY[0x277D81B90]];
   v25[7] = v8;
-  v9 = *&a1[*MEMORY[0x277D81B70]];
-  v25[8] = *&a1[*MEMORY[0x277D81B68]];
+  v9 = *&self[*MEMORY[0x277D81B70]];
+  v25[8] = *&self[*MEMORY[0x277D81B68]];
   v25[9] = v9;
-  v10 = *&a1[*MEMORY[0x277D81B80]];
-  v25[10] = *&a1[*MEMORY[0x277D81B78]];
+  v10 = *&self[*MEMORY[0x277D81B80]];
+  v25[10] = *&self[*MEMORY[0x277D81B78]];
   v25[11] = v10;
-  v11 = *&a1[*MEMORY[0x277D81B60]];
-  v25[12] = *&a1[*MEMORY[0x277D81B88]];
+  v11 = *&self[*MEMORY[0x277D81B60]];
+  v25[12] = *&self[*MEMORY[0x277D81B88]];
   v25[13] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:14];
   if ([v12 count])

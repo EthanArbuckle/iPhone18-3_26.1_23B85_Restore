@@ -1,5 +1,5 @@
 @interface ISSiriTurn
-+ (id)constructWithEventGraph:(id)a3;
++ (id)constructWithEventGraph:(id)graph;
 - (NSUUID)previousTurnId;
 - (NSUUID)turnId;
 - (double)timeIntervalSince1970Nonnull;
@@ -7,10 +7,10 @@
 
 @implementation ISSiriTurn
 
-+ (id)constructWithEventGraph:(id)a3
++ (id)constructWithEventGraph:(id)graph
 {
   v4 = objc_allocWithZone(type metadata accessor for SiriTurn());
-  v5 = SiriTurn.init(eventGraph:)(a3);
+  v5 = SiriTurn.init(eventGraph:)(graph);
 
   return v5;
 }
@@ -22,7 +22,7 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   result = EventGraph.uei.getter();
   if (result)
   {
@@ -46,7 +46,7 @@
 
 - (double)timeIntervalSince1970Nonnull
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23C654940();
   v5 = v4;
 
@@ -65,7 +65,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   result = EventGraph.uei.getter();
   if (result)
   {

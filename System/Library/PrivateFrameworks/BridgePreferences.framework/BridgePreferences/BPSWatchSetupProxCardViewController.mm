@@ -1,44 +1,44 @@
 @interface BPSWatchSetupProxCardViewController
-- (BPSWatchSetupProxCardViewController)initWithUserInfo:(id)a3 withDismissCompletionHandler:(id)a4;
+- (BPSWatchSetupProxCardViewController)initWithUserInfo:(id)info withDismissCompletionHandler:(id)handler;
 - (PRXFlowDelegate)mainController;
 - (void)_handleContinueButton;
 - (void)_handleLearnMoreButton;
 - (void)_handleUpdateNow;
 - (void)_launchWatchAppForPairing;
 - (void)_restoreWatchApp;
-- (void)addAndConstrainWatchView:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)handleDeviceSetupNotification:(id)a3;
+- (void)addAndConstrainWatchView:(id)view;
+- (void)applicationsDidInstall:(id)install;
+- (void)handleDeviceSetupNotification:(id)notification;
 - (void)installSettingsIcon;
 - (void)setupIncompatibleCard;
 - (void)setupInstallOrLaunchCard;
 - (void)setupUpdateCard;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BPSWatchSetupProxCardViewController
 
-- (BPSWatchSetupProxCardViewController)initWithUserInfo:(id)a3 withDismissCompletionHandler:(id)a4
+- (BPSWatchSetupProxCardViewController)initWithUserInfo:(id)info withDismissCompletionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = BPSWatchSetupProxCardViewController;
   v8 = [(BPSWatchSetupProxCardViewController *)&v32 initWithContentView:0];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"wd"];
+    v9 = [infoCopy objectForKeyedSubscript:@"wd"];
     advertisingPayloadOrIdentifier = v8->_advertisingPayloadOrIdentifier;
     v8->_advertisingPayloadOrIdentifier = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"di"];
+    v11 = [infoCopy objectForKeyedSubscript:@"di"];
     deviceUUID = v8->_deviceUUID;
     v8->_deviceUUID = v11;
 
-    v13 = _Block_copy(v7);
+    v13 = _Block_copy(handlerCopy);
     dismissCompletionHandler = v8->_dismissCompletionHandler;
     v8->_dismissCompletionHandler = v13;
 
@@ -97,9 +97,9 @@
     v29 = pbb_proxcard_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(WatchSetupAdvertisementIdentifier *)v8->_advertisementIdentifier humanReadableName];
+      humanReadableName = [(WatchSetupAdvertisementIdentifier *)v8->_advertisementIdentifier humanReadableName];
       *buf = 138412290;
-      v34 = v30;
+      v34 = humanReadableName;
       _os_log_impl(&dword_241E74000, v29, OS_LOG_TYPE_DEFAULT, "Human readable name for pairing watch - %@", buf, 0xCu);
     }
   }
@@ -133,8 +133,8 @@
   v12 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.applewatch"];
   v13 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v12];
   [v13 setContentMode:1];
-  v14 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-  [v13 setTintColor:v14];
+  quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
+  [v13 setTintColor:quaternarySystemFillColor];
 
   [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BPSWatchSetupProxCardViewController *)self addAndConstrainWatchView:v13];
@@ -149,41 +149,41 @@ void __60__BPSWatchSetupProxCardViewController_setupIncompatibleCard__block_invo
   [WeakRetained _handleLearnMoreButton];
 }
 
-- (void)addAndConstrainWatchView:(id)a3
+- (void)addAndConstrainWatchView:(id)view
 {
   v30[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  contentView = [(BPSWatchSetupProxCardViewController *)self contentView];
+  [contentView addSubview:viewCopy];
 
   v19 = MEMORY[0x277CCAAD0];
-  v28 = [v4 topAnchor];
-  v29 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v27 = [v29 mainContentGuide];
-  v26 = [v27 topAnchor];
-  v25 = [v28 constraintEqualToAnchor:v26];
+  topAnchor = [viewCopy topAnchor];
+  contentView2 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v30[0] = v25;
-  v23 = [v4 bottomAnchor];
-  v24 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v22 = [v24 mainContentGuide];
-  v21 = [v22 bottomAnchor];
-  v20 = [v23 constraintLessThanOrEqualToAnchor:v21];
+  bottomAnchor = [viewCopy bottomAnchor];
+  contentView3 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  mainContentGuide2 = [contentView3 mainContentGuide];
+  bottomAnchor2 = [mainContentGuide2 bottomAnchor];
+  v20 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v30[1] = v20;
-  v17 = [v4 leadingAnchor];
-  v18 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v16 = [v18 mainContentGuide];
-  v6 = [v16 leadingAnchor];
-  v7 = [v17 constraintEqualToAnchor:v6];
+  leadingAnchor = [viewCopy leadingAnchor];
+  contentView4 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  mainContentGuide3 = [contentView4 mainContentGuide];
+  leadingAnchor2 = [mainContentGuide3 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v30[2] = v7;
-  v8 = [v4 trailingAnchor];
-  v9 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v10 = [v9 mainContentGuide];
-  v11 = [v10 trailingAnchor];
-  v12 = [v8 constraintEqualToAnchor:v11];
+  trailingAnchor = [viewCopy trailingAnchor];
+  contentView5 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  mainContentGuide4 = [contentView5 mainContentGuide];
+  trailingAnchor2 = [mainContentGuide4 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v30[3] = v12;
-  v13 = [v4 heightAnchor];
+  heightAnchor = [viewCopy heightAnchor];
 
-  v14 = [v13 constraintEqualToConstant:175.0];
+  v14 = [heightAnchor constraintEqualToConstant:175.0];
   v30[4] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:5];
   [v19 activateConstraints:v15];
@@ -314,33 +314,33 @@ void __54__BPSWatchSetupProxCardViewController_setupUpdateCard__block_invoke_3(u
 {
   v80[17] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D756D0]);
-  v4 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  [v4 addLayoutGuide:v3];
+  contentView = [(BPSWatchSetupProxCardViewController *)self contentView];
+  [contentView addLayoutGuide:v3];
 
   v79 = [MEMORY[0x277D755B8] imageNamed:@"Settings"];
   v5 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v79];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  [v6 addSubview:v5];
+  contentView2 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  [contentView2 addSubview:v5];
 
   v7 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [MEMORY[0x277D75348] systemRedColor];
-  [v7 setBackgroundColor:v8];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [v7 setBackgroundColor:systemRedColor];
 
-  v9 = [v7 layer];
-  [v9 setCornerRadius:19.0];
+  layer = [v7 layer];
+  [layer setCornerRadius:19.0];
 
-  v10 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  [v10 addSubview:v7];
+  contentView3 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  [contentView3 addSubview:v7];
 
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = [MEMORY[0x277CCABB8] localizedStringFromNumber:&unk_28540EE70 numberStyle:0];
   [v11 setText:v12];
 
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  [v11 setTextColor:v13];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v11 setTextColor:whiteColor];
 
   [v11 setTextAlignment:1];
   v14 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76938]];
@@ -351,83 +351,83 @@ void __54__BPSWatchSetupProxCardViewController_setupUpdateCard__block_invoke_3(u
 
   [v7 addSubview:v11];
   v16 = 30.0 - *MEMORY[0x277D43380];
-  v17 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v18 = [v17 mainContentGuide];
+  contentView4 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  mainContentGuide = [contentView4 mainContentGuide];
 
   v54 = MEMORY[0x277CCAAD0];
-  v77 = [v3 centerXAnchor];
-  v73 = v18;
-  v76 = [v18 centerXAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  centerXAnchor = [v3 centerXAnchor];
+  v73 = mainContentGuide;
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v75 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v80[0] = v75;
-  v72 = [v3 topAnchor];
-  v74 = [(BPSWatchSetupProxCardViewController *)self contentView];
-  v71 = [v74 subtitleLabel];
-  v70 = [v71 bottomAnchor];
-  v69 = [v72 constraintGreaterThanOrEqualToAnchor:v70 constant:v16];
+  topAnchor = [v3 topAnchor];
+  contentView5 = [(BPSWatchSetupProxCardViewController *)self contentView];
+  subtitleLabel = [contentView5 subtitleLabel];
+  bottomAnchor = [subtitleLabel bottomAnchor];
+  v69 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:v16];
   v80[1] = v69;
-  v68 = [v3 bottomAnchor];
-  v67 = [v18 bottomAnchor];
-  v66 = [v68 constraintLessThanOrEqualToAnchor:v67];
+  bottomAnchor2 = [v3 bottomAnchor];
+  bottomAnchor3 = [mainContentGuide bottomAnchor];
+  v66 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v80[2] = v66;
-  v65 = [v5 leadingAnchor];
-  v64 = [v3 leadingAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  leadingAnchor = [v5 leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v63 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v80[3] = v63;
-  v61 = [v5 trailingAnchor];
-  v60 = [v3 trailingAnchor];
-  v58 = [v61 constraintEqualToAnchor:v60 constant:-11.0];
+  trailingAnchor = [v5 trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-11.0];
   v80[4] = v58;
-  v57 = [v5 topAnchor];
-  v56 = [v3 topAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:11.0];
+  topAnchor2 = [v5 topAnchor];
+  topAnchor3 = [v3 topAnchor];
+  v55 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:11.0];
   v80[5] = v55;
   v62 = v5;
-  v53 = [v5 bottomAnchor];
-  v52 = [v3 bottomAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  bottomAnchor4 = [v5 bottomAnchor];
+  bottomAnchor5 = [v3 bottomAnchor];
+  v51 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v80[6] = v51;
-  v50 = [v5 widthAnchor];
-  v49 = [v50 constraintEqualToConstant:104.0];
+  widthAnchor = [v5 widthAnchor];
+  v49 = [widthAnchor constraintEqualToConstant:104.0];
   v80[7] = v49;
-  v48 = [v5 heightAnchor];
-  v47 = [v5 widthAnchor];
-  v45 = [v48 constraintEqualToAnchor:v47];
+  heightAnchor = [v5 heightAnchor];
+  widthAnchor2 = [v5 widthAnchor];
+  v45 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v80[8] = v45;
-  v44 = [v7 topAnchor];
+  topAnchor4 = [v7 topAnchor];
   v59 = v3;
-  v43 = [v3 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor5 = [v3 topAnchor];
+  v42 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v80[9] = v42;
   v19 = v7;
-  v41 = [v7 trailingAnchor];
-  v40 = [v3 trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  trailingAnchor3 = [v7 trailingAnchor];
+  trailingAnchor4 = [v3 trailingAnchor];
+  v39 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v80[10] = v39;
-  v38 = [v7 widthAnchor];
-  v37 = [v38 constraintEqualToConstant:38.0];
+  widthAnchor3 = [v7 widthAnchor];
+  v37 = [widthAnchor3 constraintEqualToConstant:38.0];
   v80[11] = v37;
-  v36 = [v7 heightAnchor];
-  v35 = [v7 widthAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  heightAnchor2 = [v7 heightAnchor];
+  widthAnchor4 = [v7 widthAnchor];
+  v34 = [heightAnchor2 constraintEqualToAnchor:widthAnchor4];
   v80[12] = v34;
   v20 = v11;
-  v33 = [v11 leadingAnchor];
-  v32 = [v7 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor3 = [v11 leadingAnchor];
+  leadingAnchor4 = [v7 leadingAnchor];
+  v31 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v80[13] = v31;
-  v30 = [v11 topAnchor];
-  v21 = [v7 topAnchor];
-  v22 = [v30 constraintEqualToAnchor:v21];
+  topAnchor6 = [v11 topAnchor];
+  topAnchor7 = [v7 topAnchor];
+  v22 = [topAnchor6 constraintEqualToAnchor:topAnchor7];
   v80[14] = v22;
   v46 = v11;
-  v23 = [v11 bottomAnchor];
-  v24 = [v7 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor6 = [v11 bottomAnchor];
+  bottomAnchor7 = [v7 bottomAnchor];
+  v25 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v80[15] = v25;
-  v26 = [v20 trailingAnchor];
-  v27 = [v19 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor5 = [v20 trailingAnchor];
+  trailingAnchor6 = [v19 trailingAnchor];
+  v28 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v80[16] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:17];
   [v54 activateConstraints:v29];
@@ -445,8 +445,8 @@ LABEL_13:
     return;
   }
 
-  v6 = [MEMORY[0x277D2BD08] systemVersions];
-  v7 = [v6 pairingCompatibilitySupportStateForAdvertisingWatchVersion:{-[WatchSetupExtendedMetadata pairingVersion](self->_extendedMetadata, "pairingVersion")}];
+  systemVersions = [MEMORY[0x277D2BD08] systemVersions];
+  v7 = [systemVersions pairingCompatibilitySupportStateForAdvertisingWatchVersion:{-[WatchSetupExtendedMetadata pairingVersion](self->_extendedMetadata, "pairingVersion")}];
 
   if (v7 <= 1)
   {
@@ -481,12 +481,12 @@ LABEL_13:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = BPSWatchSetupProxCardViewController;
-  [(BPSWatchSetupProxCardViewController *)&v6 viewWillAppear:a3];
+  [(BPSWatchSetupProxCardViewController *)&v6 viewWillAppear:appear];
   v4 = pbb_proxcard_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -495,16 +495,16 @@ LABEL_13:
     _os_log_impl(&dword_241E74000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v5 addObserver:self selector:sel_handleDeviceSetupNotification_ name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleDeviceSetupNotification_ name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9 = *MEMORY[0x277D85DE8];
   v6.receiver = self;
   v6.super_class = BPSWatchSetupProxCardViewController;
-  [(BPSWatchSetupProxCardViewController *)&v6 viewDidDisappear:a3];
+  [(BPSWatchSetupProxCardViewController *)&v6 viewDidDisappear:disappear];
   v4 = pbb_proxcard_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -513,42 +513,42 @@ LABEL_13:
     _os_log_impl(&dword_241E74000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v5 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (![(BPSWatchSetupProxCardViewController *)self pairing])
   {
-    v5 = [v4 name];
-    v6 = [v4 userInfo];
+    name = [notificationCopy name];
+    userInfo = [notificationCopy userInfo];
     v7 = pbb_proxcard_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = v5;
+      v17 = name;
       v18 = 2112;
-      v19 = v6;
+      v19 = userInfo;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "DeviceSetup notification '%@', %@", &v16, 0x16u);
     }
 
-    v8 = [v4 name];
-    v9 = [v8 isEqual:@"com.apple.sharing.DeviceSetup"];
+    name2 = [notificationCopy name];
+    v9 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
     if (v9)
     {
-      v10 = [v6 objectForKeyedSubscript:@"needsSetup"];
-      v11 = [v10 BOOLValue];
+      v10 = [userInfo objectForKeyedSubscript:@"needsSetup"];
+      bOOLValue = [v10 BOOLValue];
 
-      if ((v11 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v12 = [v6 objectForKeyedSubscript:@"needsSetup"];
-        v13 = [v12 stringValue];
+        v12 = [userInfo objectForKeyedSubscript:@"needsSetup"];
+        stringValue = [v12 stringValue];
 
-        if ([v13 isEqual:self->_deviceUUID])
+        if ([stringValue isEqual:self->_deviceUUID])
         {
           v14 = pbb_proxcard_log();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -592,10 +592,10 @@ LABEL_13:
       }
     }
 
-    v6 = [v3 applicationState];
-    v7 = [v6 isInstalled];
+    applicationState = [v3 applicationState];
+    isInstalled = [applicationState isInstalled];
 
-    if (v7)
+    if (isInstalled)
     {
       [(BPSWatchSetupProxCardViewController *)self _launchWatchAppForPairing];
     }
@@ -671,8 +671,8 @@ void __64__BPSWatchSetupProxCardViewController__launchWatchAppForPairing__block_
   v4 = [v3 localizedStringForKey:@"RESTORING" value:&stru_285406330 table:@"AbstactApplication"];
   [(BPSWatchSetupProxCardViewController *)self showActivityIndicatorWithStatus:v4];
 
-  v5 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v5 addObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace addObserver:self];
 
   v6 = [objc_alloc(MEMORY[0x277CEC4B8]) initWithBundleID:@"com.apple.Bridge"];
   v7[0] = MEMORY[0x277D85DD0];
@@ -725,15 +725,15 @@ uint64_t __55__BPSWatchSetupProxCardViewController__restoreWatchApp__block_invok
   return [v4 hideActivityIndicator];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -744,11 +744,11 @@ uint64_t __55__BPSWatchSetupProxCardViewController__restoreWatchApp__block_invok
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        v10 = [v9 isEqual:@"com.apple.Bridge"];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        v10 = [bundleIdentifier isEqual:@"com.apple.Bridge"];
 
         if (v10)
         {
@@ -769,7 +769,7 @@ uint64_t __55__BPSWatchSetupProxCardViewController__restoreWatchApp__block_invok
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

@@ -1,12 +1,12 @@
 @interface SBCaptureApplicationService
 + (SBCaptureApplicationService)sharedInstance;
-- (SBCaptureApplicationService)initWithCaptureApplicationProvider:(id)a3;
+- (SBCaptureApplicationService)initWithCaptureApplicationProvider:(id)provider;
 - (id)_captureApplication;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)applicationDidCompleteTransition;
 - (void)beginDelayingAppearance;
 - (void)endDelayingAppearance;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SBCaptureApplicationService
@@ -32,9 +32,9 @@ void __45__SBCaptureApplicationService_sharedInstance__block_invoke()
   sharedInstance___result_2 = v1;
 }
 
-- (SBCaptureApplicationService)initWithCaptureApplicationProvider:(id)a3
+- (SBCaptureApplicationService)initWithCaptureApplicationProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v20.receiver = self;
   v20.super_class = SBCaptureApplicationService;
   v6 = [(SBCaptureApplicationService *)&v20 init];
@@ -47,7 +47,7 @@ void __45__SBCaptureApplicationService_sharedInstance__block_invoke()
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBCaptureApplicationService: init", buf, 2u);
     }
 
-    objc_storeStrong(&v6->_applicationProvider, a3);
+    objc_storeStrong(&v6->_applicationProvider, provider);
     v8 = [MEMORY[0x277CBEB58] set];
     connections = v6->_connections;
     v6->_connections = v8;
@@ -83,29 +83,29 @@ void __66__SBCaptureApplicationService_initWithCaptureApplicationProvider___bloc
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v20 = v6;
+    v20 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "SBCaptureApplicationService: received connection: %{public}@", buf, 0xCu);
   }
 
   if (LCSFeatureEnabled())
   {
-    v8 = [(SBCaptureApplicationService *)self queue];
+    queue = [(SBCaptureApplicationService *)self queue];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext___block_invoke;
     v16 = &unk_2783A92D8;
-    v9 = v6;
+    v9 = connectionCopy;
     v17 = v9;
-    v18 = self;
-    dispatch_sync(v8, &v13);
+    selfCopy = self;
+    dispatch_sync(queue, &v13);
 
     [v9 activate];
   }
@@ -115,14 +115,14 @@ void __66__SBCaptureApplicationService_initWithCaptureApplicationProvider___bloc
     v10 = SBLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 remoteToken];
-      v12 = [v11 pid];
+      remoteToken = [connectionCopy remoteToken];
+      v12 = [remoteToken pid];
       *buf = 67109120;
       LODWORD(v20) = v12;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "SBCaptureApplicationService: Invalidating connection from pid %i - Feature is not enabled", buf, 8u);
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -192,11 +192,11 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
 
 - (id)_captureApplication
 {
-  v3 = [MEMORY[0x277CF3280] currentContext];
-  v4 = [v3 remoteProcess];
-  v5 = [v4 bundleIdentifier];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  bundleIdentifier = [remoteProcess bundleIdentifier];
 
-  v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForBundleIdentifier:v5];
+  v6 = [(SBFCaptureApplicationProviding *)self->_applicationProvider captureApplicationForBundleIdentifier:bundleIdentifier];
 
   return v6;
 }
@@ -204,16 +204,16 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
 - (void)applicationDidCompleteTransition
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SBCaptureApplicationService *)self _captureApplication];
+  _captureApplication = [(SBCaptureApplicationService *)self _captureApplication];
   v4 = SBLogCommon();
   v5 = v4;
-  if (v3)
+  if (_captureApplication)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v3 bundleIdentifier];
+      bundleIdentifier = [_captureApplication bundleIdentifier];
       *buf = 138412290;
-      v25 = v6;
+      v25 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBCaptureApplicationService: handling applicationDidCompleteTransition for capture application: %@", buf, 0xCu);
     }
 
@@ -239,7 +239,7 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
           v11 = *(*(&v19 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v11 captureApplicationServiceApplicationDidCompleteTransition:v3];
+            [v11 captureApplicationServiceApplicationDidCompleteTransition:_captureApplication];
           }
         }
 
@@ -259,22 +259,22 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
 - (void)beginDelayingAppearance
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(SBCaptureApplicationService *)self _captureApplication];
+  _captureApplication = [(SBCaptureApplicationService *)self _captureApplication];
   v3 = SBLogCommon();
   v4 = v3;
-  if (v2)
+  if (_captureApplication)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v2 bundleIdentifier];
+      bundleIdentifier = [_captureApplication bundleIdentifier];
       v15 = 138412290;
-      v16 = v5;
+      v16 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "SBCaptureApplicationService: handling beginDelayingAppearance for capture application: %@", &v15, 0xCu);
     }
 
     v4 = +[SBCaptureApplicationLaunchAssertionManager sharedInstance];
-    v6 = [v2 bundleIdentifier];
-    v7 = [v4 acquireCaptureApplicationLaunchAssertionForBundleIdentifier:v6 reason:@"application request"];
+    bundleIdentifier2 = [_captureApplication bundleIdentifier];
+    v7 = [v4 acquireCaptureApplicationLaunchAssertionForBundleIdentifier:bundleIdentifier2 reason:@"application request"];
   }
 
   else if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -286,22 +286,22 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
 - (void)endDelayingAppearance
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(SBCaptureApplicationService *)self _captureApplication];
+  _captureApplication = [(SBCaptureApplicationService *)self _captureApplication];
   v3 = SBLogCommon();
   v4 = v3;
-  if (v2)
+  if (_captureApplication)
   {
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v2 bundleIdentifier];
+      bundleIdentifier = [_captureApplication bundleIdentifier];
       v15 = 138412290;
-      v16 = v5;
+      v16 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "SBCaptureApplicationService: handling endDelayingAppearance for capture application: %@", &v15, 0xCu);
     }
 
     v6 = +[SBCaptureApplicationLaunchAssertionManager sharedInstance];
-    v7 = [v2 bundleIdentifier];
-    v4 = [v6 assertionForBundleIdentifier:v7];
+    bundleIdentifier2 = [_captureApplication bundleIdentifier];
+    v4 = [v6 assertionForBundleIdentifier:bundleIdentifier2];
 
     [v4 invalidate];
   }
@@ -312,28 +312,28 @@ void __73__SBCaptureApplicationService_listener_didReceiveConnection_withContext
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
       if (!observers)
       {
-        v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         observers = self->_observers;
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }

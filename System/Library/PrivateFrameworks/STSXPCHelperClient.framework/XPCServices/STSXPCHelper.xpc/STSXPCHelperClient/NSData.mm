@@ -1,7 +1,7 @@
 @interface NSData
-+ (NSData)dataWithSTSNDEFRecord:(id)a3;
-+ (NSData)dataWithSTSNDEFRecords:(id)a3;
-+ (id)STS_dataFromHexString:(id)a3;
++ (NSData)dataWithSTSNDEFRecord:(id)record;
++ (NSData)dataWithSTSNDEFRecords:(id)records;
++ (id)STS_dataFromHexString:(id)string;
 - (id)STS_asHexString;
 - (id)STS_reverseBytes;
 - (id)cborEncodeToBstrCbor;
@@ -10,19 +10,19 @@
 
 @implementation NSData
 
-+ (NSData)dataWithSTSNDEFRecord:(id)a3
++ (NSData)dataWithSTSNDEFRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = +[NSMutableData data];
   v28 = 0;
-  v27 = [v3 header];
-  [v4 appendBytes:&v27 length:1];
-  v5 = [v3 type];
-  if (v5)
+  header = [recordCopy header];
+  [v4 appendBytes:&header length:1];
+  type = [recordCopy type];
+  if (type)
   {
   }
 
-  else if (![v3 typeNameFormat])
+  else if (![recordCopy typeNameFormat])
   {
     v28 = 0;
     [v4 appendBytes:&v28 length:1];
@@ -31,32 +31,32 @@
     goto LABEL_22;
   }
 
-  v6 = [v3 type];
-  v28 = [v6 length];
+  type2 = [recordCopy type];
+  v28 = [type2 length];
 
   [v4 appendBytes:&v28 length:1];
-  if ([v3 shortRecord])
+  if ([recordCopy shortRecord])
   {
     v28 = 0;
-    v7 = [v3 payload];
-    v8 = [v7 length];
+    payload = [recordCopy payload];
+    v8 = [payload length];
 
     if (v8)
     {
-      v9 = [v3 payload];
-      v28 = [v9 length];
+      payload2 = [recordCopy payload];
+      v28 = [payload2 length];
     }
   }
 
   else
   {
-    v10 = [v3 payload];
-    v11 = [v10 length];
+    payload3 = [recordCopy payload];
+    v11 = [payload3 length];
 
     if (v11)
     {
-      v12 = [v3 payload];
-      v13 = [v12 length];
+      payload4 = [recordCopy payload];
+      v13 = [payload4 length];
     }
 
     else
@@ -74,48 +74,48 @@
   }
 
   [v4 appendBytes:&v28 length:1];
-  if ([v3 _idLengthPresent])
+  if ([recordCopy _idLengthPresent])
   {
-    v14 = [v3 identifier];
-    v15 = [v14 length];
+    identifier = [recordCopy identifier];
+    v15 = [identifier length];
 
     if (v15)
     {
-      v16 = [v3 identifier];
-      v28 = [v16 length];
+      identifier2 = [recordCopy identifier];
+      v28 = [identifier2 length];
 
       [v4 appendBytes:&v28 length:1];
     }
   }
 
-  v17 = [v3 type];
-  v18 = [v17 length];
+  type3 = [recordCopy type];
+  v18 = [type3 length];
 
   if (v18)
   {
-    v19 = [v3 type];
-    [v4 appendData:v19];
+    type4 = [recordCopy type];
+    [v4 appendData:type4];
   }
 
-  if ([v3 _idLengthPresent])
+  if ([recordCopy _idLengthPresent])
   {
-    v20 = [v3 identifier];
-    v21 = [v20 length];
+    identifier3 = [recordCopy identifier];
+    v21 = [identifier3 length];
 
     if (v21)
     {
-      v22 = [v3 identifier];
-      [v4 appendData:v22];
+      identifier4 = [recordCopy identifier];
+      [v4 appendData:identifier4];
     }
   }
 
-  v23 = [v3 payload];
-  v24 = [v23 length];
+  payload5 = [recordCopy payload];
+  v24 = [payload5 length];
 
   if (v24)
   {
-    v25 = [v3 payload];
-    [v4 appendData:v25];
+    payload6 = [recordCopy payload];
+    [v4 appendData:payload6];
   }
 
 LABEL_22:
@@ -123,35 +123,35 @@ LABEL_22:
   return v4;
 }
 
-+ (NSData)dataWithSTSNDEFRecords:(id)a3
++ (NSData)dataWithSTSNDEFRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([recordsCopy count])
   {
     v5 = 0;
     do
     {
       if (!v5)
       {
-        v6 = [v3 objectAtIndexedSubscript:0];
+        v6 = [recordsCopy objectAtIndexedSubscript:0];
         [v6 setMessageBegin:1];
       }
 
-      if (v5 == [v3 count] - 1)
+      if (v5 == [recordsCopy count] - 1)
       {
-        v7 = [v3 objectAtIndexedSubscript:v5];
+        v7 = [recordsCopy objectAtIndexedSubscript:v5];
         [v7 setMessageEnd:1];
       }
 
-      v8 = [v3 objectAtIndexedSubscript:v5];
+      v8 = [recordsCopy objectAtIndexedSubscript:v5];
       v9 = [NSData dataWithSTSNDEFRecord:v8];
       [v4 appendData:v9];
 
       ++v5;
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [recordsCopy count]);
   }
 
   v10 = [v4 copy];
@@ -170,16 +170,16 @@ LABEL_22:
 
 - (id)encodeToBstrCbor
 {
-  v2 = [(NSData *)self cborEncodeToBstrCbor];
-  v3 = [NSData dataWithCBOR:v2];
+  cborEncodeToBstrCbor = [(NSData *)self cborEncodeToBstrCbor];
+  v3 = [NSData dataWithCBOR:cborEncodeToBstrCbor];
 
   return v3;
 }
 
-+ (id)STS_dataFromHexString:(id)a3
++ (id)STS_dataFromHexString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   if (!v4 || (v4 & 1) != 0)
   {
     sub_100024938(OS_LOG_TYPE_ERROR, 0, "+[NSData(STSExtension) STS_dataFromHexString:]", 25, @"String is of invalid length=%ld", v5, v6, v7, v4);
@@ -197,13 +197,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [v8 mutableBytes];
-  v14 = [v3 UTF8String];
+  mutableBytes = [v8 mutableBytes];
+  uTF8String = [stringCopy UTF8String];
   __str[2] = 0;
-  v15 = *v14;
-  if (*v14)
+  v15 = *uTF8String;
+  if (*uTF8String)
   {
-    v16 = v14 + 2;
+    v16 = uTF8String + 2;
     do
     {
       __str[0] = v15;
@@ -225,7 +225,7 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      *v13++ = strtoul(__str, 0, 16);
+      *mutableBytes++ = strtoul(__str, 0, 16);
       v19 = *v16;
       v16 += 2;
       v15 = v19;
@@ -263,11 +263,11 @@ LABEL_7:
 
   v9 = v6;
   v6[2 * v5] = 0;
-  v10 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   v11 = v9;
   do
   {
-    v12 = *v10++;
+    v12 = *bytes++;
     sprintf(v11, "%02X", v12);
     v11 += 2;
     --v4;
@@ -284,13 +284,13 @@ LABEL_8:
 - (id)STS_reverseBytes
 {
   v3 = [[NSMutableData alloc] initWithLength:{-[NSData length](self, "length")}];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = [(NSData *)self length]- 1;
   if (v5 >= 0)
   {
     do
     {
-      *v4++ = (v5--)[[(NSData *)self bytes]];
+      *mutableBytes++ = (v5--)[[(NSData *)self bytes]];
     }
 
     while (v5 != -1);

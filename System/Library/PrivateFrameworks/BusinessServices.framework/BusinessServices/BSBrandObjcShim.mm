@@ -23,12 +23,12 @@
 - (NSURL)termsAndConditionsURL;
 - (NSURL)website;
 - (int64_t)brandType;
-- (void)assetDataOfType:(int64_t)a3 usingSim:(id)a4 completion:(id)a5;
-- (void)clearCachedAssets:(id)a3;
-- (void)logoDataOfType:(int64_t)a3 desiredSize:(CGSize)a4 completion:(id)a5;
-- (void)logoDataOfType:(int64_t)a3 desiredSize:(CGSize)a4 usingSim:(id)a5 completion:(id)a6;
-- (void)logoFileURLOfType:(int64_t)a3 desiredSize:(CGSize)a4 completionHandler:(id)a5;
-- (void)permissions:(NSString *)a3 completionHandler:(id)a4;
+- (void)assetDataOfType:(int64_t)type usingSim:(id)sim completion:(id)completion;
+- (void)clearCachedAssets:(id)assets;
+- (void)logoDataOfType:(int64_t)type desiredSize:(CGSize)size completion:(id)completion;
+- (void)logoDataOfType:(int64_t)type desiredSize:(CGSize)size usingSim:(id)sim completion:(id)completion;
+- (void)logoFileURLOfType:(int64_t)type desiredSize:(CGSize)size completionHandler:(id)handler;
+- (void)permissions:(NSString *)permissions completionHandler:(id)handler;
 @end
 
 @implementation BSBrandObjcShim
@@ -52,7 +52,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 
   v8 = sub_2155DA7DC();
@@ -62,7 +62,7 @@
 
 - (int64_t)brandType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2155CC608();
 
   return v3;
@@ -75,7 +75,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 88);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   if (v8)
   {
@@ -95,7 +95,7 @@
 
 - (BOOL)isRCSChatBot
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2155CC810();
 
   return v3;
@@ -108,7 +108,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 48);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 
   v8 = sub_2155DA7DC();
@@ -123,7 +123,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 56);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   if (v8)
@@ -146,7 +146,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 96);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -174,7 +174,7 @@
   v10 = v8[6];
   __swift_project_boxed_opaque_existential_1(v8 + 2, v9);
   v11 = *(v10 + 80);
-  v12 = self;
+  selfCopy = self;
   v11(v9, v10);
 
   v13 = sub_2155DA67C();
@@ -198,7 +198,7 @@
   v4 = v13;
   __swift_project_boxed_opaque_existential_1(v11, v12);
   v5 = *(v4 + 104);
-  v6 = self;
+  selfCopy = self;
   v5(v3, v4);
   v8 = v7;
   __swift_destroy_boxed_opaque_existential_1(v11);
@@ -223,7 +223,7 @@
   v4 = v13;
   __swift_project_boxed_opaque_existential_1(v11, v12);
   v5 = *(v4 + 112);
-  v6 = self;
+  selfCopy = self;
   v5(v3, v4);
   v8 = v7;
   __swift_destroy_boxed_opaque_existential_1(v11);
@@ -248,7 +248,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 120);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8 & 1;
@@ -261,7 +261,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 128);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -289,7 +289,7 @@
   v10 = v8[6];
   __swift_project_boxed_opaque_existential_1(v8 + 2, v9);
   v11 = *(v10 + 136);
-  v12 = self;
+  selfCopy = self;
   v11(v9, v10);
 
   v13 = sub_2155DA67C();
@@ -313,7 +313,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 144);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -337,7 +337,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 152);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -361,7 +361,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 160);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -389,7 +389,7 @@
   v10 = v8[6];
   __swift_project_boxed_opaque_existential_1(v8 + 2, v9);
   v11 = *(v10 + 168);
-  v12 = self;
+  selfCopy = self;
   v11(v9, v10);
 
   v13 = sub_2155DA67C();
@@ -417,7 +417,7 @@
   v10 = v8[6];
   __swift_project_boxed_opaque_existential_1(v8 + 2, v9);
   v11 = *(v10 + 176);
-  v12 = self;
+  selfCopy = self;
   v11(v9, v10);
 
   v13 = sub_2155DA67C();
@@ -441,7 +441,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 64);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -465,7 +465,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 184);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 
@@ -489,7 +489,7 @@
   v5 = v3[6];
   __swift_project_boxed_opaque_existential_1(v3 + 2, v4);
   v6 = *(v5 + 192);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   v10 = v9;
 
@@ -508,17 +508,17 @@
   return v11;
 }
 
-- (void)logoFileURLOfType:(int64_t)a3 desiredSize:(CGSize)a4 completionHandler:(id)a5
+- (void)logoFileURLOfType:(int64_t)type desiredSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA65040, &qword_2155DD4C0);
   v11 = *(*(v10 - 8) + 64);
   MEMORY[0x28223BE20](v10 - 8, v12);
   v14 = &v21 - v13;
-  v15 = _Block_copy(a5);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  *(v16 + 2) = a3;
+  *(v16 + 2) = type;
   v16[3] = width;
   v16[4] = height;
   *(v16 + 5) = v15;
@@ -535,31 +535,31 @@
   v19[3] = 0;
   v19[4] = &unk_2155DD520;
   v19[5] = v18;
-  v20 = self;
+  selfCopy = self;
   sub_2155D057C(0, 0, v14, &unk_2155DD528, v19);
 }
 
-- (void)logoDataOfType:(int64_t)a3 desiredSize:(CGSize)a4 completion:(id)a5
+- (void)logoDataOfType:(int64_t)type desiredSize:(CGSize)size completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = _Block_copy(a5);
+  height = size.height;
+  width = size.width;
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   v10[2] = v9;
   v11 = *(&self->super.isa + OBJC_IVAR___BSBrandObjcShim_brand);
-  v12 = self;
-  sub_2155D7894(a3, 0, 0, v11, sub_2155D1ED0, v10, width, height);
+  selfCopy = self;
+  sub_2155D7894(type, 0, 0, v11, sub_2155D1ED0, v10, width, height);
 }
 
-- (void)logoDataOfType:(int64_t)a3 desiredSize:(CGSize)a4 usingSim:(id)a5 completion:(id)a6
+- (void)logoDataOfType:(int64_t)type desiredSize:(CGSize)size usingSim:(id)sim completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = _Block_copy(a6);
-  if (a5)
+  height = size.height;
+  width = size.width;
+  v11 = _Block_copy(completion);
+  if (sim)
   {
     v12 = sub_2155DA80C();
-    a5 = v13;
+    sim = v13;
   }
 
   else
@@ -571,17 +571,17 @@
   v14[2] = v11;
   v15 = *(&self->super.isa + OBJC_IVAR___BSBrandObjcShim_brand);
 
-  v16 = self;
-  sub_2155D7894(a3, v12, a5, v15, sub_2155D1ED0, v14, width, height);
+  selfCopy = self;
+  sub_2155D7894(type, v12, sim, v15, sub_2155D1ED0, v14, width, height);
 }
 
-- (void)assetDataOfType:(int64_t)a3 usingSim:(id)a4 completion:(id)a5
+- (void)assetDataOfType:(int64_t)type usingSim:(id)sim completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (sim)
   {
     v9 = sub_2155DA80C();
-    a4 = v10;
+    sim = v10;
   }
 
   else
@@ -593,20 +593,20 @@
   v11[2] = v8;
   v12 = *(&self->super.isa + OBJC_IVAR___BSBrandObjcShim_brand);
 
-  v13 = self;
-  sub_2155D7F30(a3, v9, a4, v12, sub_2155C5B44, v11);
+  selfCopy = self;
+  sub_2155D7F30(type, v9, sim, v12, sub_2155C5B44, v11);
 }
 
-- (void)clearCachedAssets:(id)a3
+- (void)clearCachedAssets:(id)assets
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(assets);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR___BSBrandObjcShim_brand);
   v7 = swift_allocObject();
   *(v7 + 16) = sub_2155D1C24;
   *(v7 + 24) = v5;
-  v8 = self;
+  selfCopy = self;
 
   sub_2155D55D4();
 }
@@ -625,15 +625,15 @@
   return result;
 }
 
-- (void)permissions:(NSString *)a3 completionHandler:(id)a4
+- (void)permissions:(NSString *)permissions completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA65040, &qword_2155DD4C0);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = permissions;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_2155DA94C();
@@ -648,8 +648,8 @@
   v16[3] = 0;
   v16[4] = &unk_2155DD4E0;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  permissionsCopy = permissions;
+  selfCopy = self;
   sub_2155D057C(0, 0, v11, &unk_2155DD4F0, v16);
 }
 

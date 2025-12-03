@@ -1,17 +1,17 @@
 @interface INGetVisualCodeIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INGetVisualCodeIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INGetVisualCodeIntentResponse)initWithBackingStore:(id)store;
 - (INGetVisualCodeIntentResponse)initWithCode:(INGetVisualCodeIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INGetVisualCodeIntentResponse)initWithCoder:(id)a3;
+- (INGetVisualCodeIntentResponse)initWithCoder:(id)coder;
 - (INGetVisualCodeIntentResponseCode)code;
 - (INImage)visualCodeImage;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setVisualCodeImage:(INImage *)visualCodeImage;
 @end
 
@@ -21,32 +21,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INGetVisualCodeIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < 8)
+  code = [(INGetVisualCodeIntentResponse *)self code];
+  v4 = code;
+  if (code < 8)
   {
-    v5 = off_1E72800D0[v3];
-    v6 = v5;
+    null = off_1E72800D0[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"visualCodeImage";
-  v13[0] = v5;
-  v7 = [(INGetVisualCodeIntentResponse *)self visualCodeImage];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  visualCodeImage = [(INGetVisualCodeIntentResponse *)self visualCodeImage];
+  null2 = visualCodeImage;
+  if (!visualCodeImage)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!visualCodeImage)
   {
   }
 
@@ -62,50 +62,50 @@
 - (void)setVisualCodeImage:(INImage *)visualCodeImage
 {
   v4 = visualCodeImage;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToImageValue(v4);
 
-  [v5 setVisualCodeImage:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setVisualCodeImage:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (INImage)visualCodeImage
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 visualCodeImage];
-  v4 = INIntentSlotValueTransformFromImageValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  visualCodeImage = [_responseMessagePBRepresentation visualCodeImage];
+  v4 = INIntentSlotValueTransformFromImageValue(visualCodeImage);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeInProgress"])
+  if ([nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeInProgress"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeSuccess"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeFailure"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 6;
   }
@@ -115,7 +115,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INGetVisualCodeIntentResponseCodeFailureAppConfigurationRequired"];
+  v6 = [nameCopy isEqualToString:@"INGetVisualCodeIntentResponseCodeFailureAppConfigurationRequired"];
 
   if (v6)
   {
@@ -130,30 +130,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INGetVisualCodeIntentResponse *)self code];
-  if ((v2 - 1) > 6)
+  code = [(INGetVisualCodeIntentResponse *)self code];
+  if ((code - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5E850[v2 - 1];
+    return qword_18EE5E850[code - 1];
   }
 }
 
-- (INGetVisualCodeIntentResponse)initWithCoder:(id)a3
+- (INGetVisualCodeIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INGetVisualCodeIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INGetVisualCodeIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INGetVisualCodeIntentResponseCode)code
@@ -163,18 +163,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INGetVisualCodeIntentResponse)initWithBackingStore:(id)a3
+- (INGetVisualCodeIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INGetVisualCodeIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INGetVisualCodeIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INGetVisualCodeIntentResponse)initWithCode:(INGetVisualCodeIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -215,9 +215,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 7)
+  if (code == 7)
   {
     return 1;
   }
@@ -228,56 +228,56 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F138[a3 - 1];
+    return dword_18EE5F138[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
   v6 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = v6;
   }
 
   v7 = 4;
   v8 = 5;
-  if (a5)
+  if (requested)
   {
     v8 = 6;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v8 = 7;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v8;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v7;
   }

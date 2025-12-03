@@ -1,25 +1,25 @@
 @interface STUIStatusBarIndicatorQuietModeAnnounceItem
-- (id)secondarySystemImageNameForUpdate:(id)a3;
-- (id)systemImageNameForUpdate:(id)a3;
+- (id)secondarySystemImageNameForUpdate:(id)update;
+- (id)systemImageNameForUpdate:(id)update;
 @end
 
 @implementation STUIStatusBarIndicatorQuietModeAnnounceItem
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 quietModeEntry];
-  if ([v5 isEnabled])
+  updateCopy = update;
+  data = [updateCopy data];
+  quietModeEntry = [data quietModeEntry];
+  if ([quietModeEntry isEnabled])
   {
-    v6 = [v3 data];
-    v7 = [v6 quietModeEntry];
-    v8 = [v7 imageName];
-    v9 = v8;
+    data2 = [updateCopy data];
+    quietModeEntry2 = [data2 quietModeEntry];
+    imageName = [quietModeEntry2 imageName];
+    v9 = imageName;
     v10 = @"moon.fill";
-    if (v8)
+    if (imageName)
     {
-      v10 = v8;
+      v10 = imageName;
     }
 
     v11 = v10;
@@ -33,11 +33,11 @@
   return v11;
 }
 
-- (id)secondarySystemImageNameForUpdate:(id)a3
+- (id)secondarySystemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 announceNotificationsEntry];
-  if ([v4 isEnabled])
+  data = [update data];
+  announceNotificationsEntry = [data announceNotificationsEntry];
+  if ([announceNotificationsEntry isEnabled])
   {
     v5 = @"bell.and.waveform.fill";
   }

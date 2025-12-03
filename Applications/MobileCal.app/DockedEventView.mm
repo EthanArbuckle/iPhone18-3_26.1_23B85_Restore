@@ -1,12 +1,12 @@
 @interface DockedEventView
-- (_TtC9MobileCal15DockedEventView)initWithCoder:(id)a3;
-- (_TtC9MobileCal15DockedEventView)initWithFrame:(CGRect)a3;
+- (_TtC9MobileCal15DockedEventView)initWithCoder:(id)coder;
+- (_TtC9MobileCal15DockedEventView)initWithFrame:(CGRect)frame;
 - (void)actionButtonTapped;
 @end
 
 @implementation DockedEventView
 
-- (_TtC9MobileCal15DockedEventView)initWithCoder:(id)a3
+- (_TtC9MobileCal15DockedEventView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MobileCal15DockedEventView_event) = 0;
   *&self->event[OBJC_IVAR____TtC9MobileCal15DockedEventView_delegate] = 0;
@@ -27,7 +27,7 @@
   }
 }
 
-- (_TtC9MobileCal15DockedEventView)initWithFrame:(CGRect)a3
+- (_TtC9MobileCal15DockedEventView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

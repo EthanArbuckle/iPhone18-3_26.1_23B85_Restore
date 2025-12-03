@@ -1,42 +1,42 @@
 @interface UIPageControl
-+ (id)_visualProviderForPageControl:(id)a3;
++ (id)_visualProviderForPageControl:(id)control;
 - (BOOL)_implementsCustomCurrentPageImagesOverride;
 - (BOOL)_implementsCustomPageImagesOverride;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)shouldTrack;
 - (CAColorMatrix)_activePageIndicatorVibrantColorMatrix;
 - (CAColorMatrix)_pageIndicatorVibrantColorMatrix;
 - (CGAffineTransform)_activeTransformForTouchedPage;
 - (CGAffineTransform)_targetTransformForTouchedPage;
-- (CGRect)_indicatorFrameForPage:(int64_t)a3;
+- (CGRect)_indicatorFrameForPage:(int64_t)page;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeForNumberOfPages:(NSInteger)pageCount;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIImage)currentPageIndicatorImageForPage:(NSInteger)page;
 - (UIImage)indicatorImageForPage:(NSInteger)page;
-- (UIPageControl)initWithCoder:(id)a3;
-- (UIPageControl)initWithFrame:(CGRect)a3;
+- (UIPageControl)initWithCoder:(id)coder;
+- (UIPageControl)initWithFrame:(CGRect)frame;
 - (UIView)_platterBackgroundView;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)_setActiveTransformForTouchedPage:(CGAffineTransform *)a3;
-- (void)_setAllowsDiscreteInteraction:(BOOL)a3;
-- (void)_setCustomHorizontalPadding:(double)a3;
-- (void)_setCustomIndicatorSpacing:(double)a3;
-- (void)_setCustomVerticalPadding:(double)a3;
-- (void)_setFlickToEndGestureEnabled:(BOOL)a3;
-- (void)_setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)_setPlatterBackgroundView:(id)a3;
-- (void)_setPlatterEffect:(id)a3;
-- (void)_setPrefersTargetPageForDiscreteInteraction:(BOOL)a3;
-- (void)_setTargetTransformForTouchedPage:(CGAffineTransform *)a3;
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3;
-- (void)_updateCurrentPage:(int64_t)a3 updateDisplayImmediately:(BOOL)a4;
-- (void)_updateCurrentPageDisplayWithForceUpdate:(BOOL)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)_setActiveTransformForTouchedPage:(CGAffineTransform *)page;
+- (void)_setAllowsDiscreteInteraction:(BOOL)interaction;
+- (void)_setCustomHorizontalPadding:(double)padding;
+- (void)_setCustomIndicatorSpacing:(double)spacing;
+- (void)_setCustomVerticalPadding:(double)padding;
+- (void)_setFlickToEndGestureEnabled:(BOOL)enabled;
+- (void)_setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)_setPlatterBackgroundView:(id)view;
+- (void)_setPlatterEffect:(id)effect;
+- (void)_setPrefersTargetPageForDiscreteInteraction:(BOOL)interaction;
+- (void)_setTargetTransformForTouchedPage:(CGAffineTransform *)page;
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal;
+- (void)_updateCurrentPage:(int64_t)page updateDisplayImmediately:(BOOL)immediately;
+- (void)_updateCurrentPageDisplayWithForceUpdate:(BOOL)update;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)encodeWithCoder:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)setAllowsContinuousInteraction:(BOOL)allowsContinuousInteraction;
 - (void)setBackgroundStyle:(UIPageControlBackgroundStyle)backgroundStyle;
@@ -49,7 +49,7 @@
 - (void)setNumberOfPages:(NSInteger)numberOfPages;
 - (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor;
 - (void)setProgress:(UIPageControlProgress *)progress;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation UIPageControl
@@ -102,9 +102,9 @@
   return [v2 doesOverrideMethod:sel__pageIndicatorCurrentImageForPage_ inBaseClass:v3];
 }
 
-+ (id)_visualProviderForPageControl:(id)a3
++ (id)_visualProviderForPageControl:(id)control
 {
-  v3 = a3;
+  controlCopy = control;
   v4 = dyld_program_sdk_at_least();
   v5 = off_1E70EB9E0;
   if (!v4)
@@ -112,16 +112,16 @@
     v5 = off_1E70EBAF8;
   }
 
-  v6 = [objc_alloc(*v5) initWithPageControl:v3];
+  v6 = [objc_alloc(*v5) initWithPageControl:controlCopy];
 
   return v6;
 }
 
-- (UIPageControl)initWithFrame:(CGRect)a3
+- (UIPageControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UIPageControl;
-  v3 = [(UIControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -137,12 +137,12 @@
   return v4;
 }
 
-- (UIPageControl)initWithCoder:(id)a3
+- (UIPageControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UIPageControl;
-  v5 = [(UIControl *)&v12 initWithCoder:v4];
+  v5 = [(UIControl *)&v12 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -152,35 +152,35 @@
     v6->_visualProvider = v7;
 
     [(_UIPageControlVisualProvider *)v6->_visualProvider prepare];
-    if ([v4 containsValueForKey:@"UINumberOfPages"])
+    if ([coderCopy containsValueForKey:@"UINumberOfPages"])
     {
-      -[UIPageControl setNumberOfPages:](v6, "setNumberOfPages:", [v4 decodeIntegerForKey:@"UINumberOfPages"]);
+      -[UIPageControl setNumberOfPages:](v6, "setNumberOfPages:", [coderCopy decodeIntegerForKey:@"UINumberOfPages"]);
     }
 
-    if ([v4 containsValueForKey:@"UICurrentPage"])
+    if ([coderCopy containsValueForKey:@"UICurrentPage"])
     {
-      -[UIPageControl setCurrentPage:](v6, "setCurrentPage:", [v4 decodeIntegerForKey:@"UICurrentPage"]);
+      -[UIPageControl setCurrentPage:](v6, "setCurrentPage:", [coderCopy decodeIntegerForKey:@"UICurrentPage"]);
     }
 
-    if ([v4 containsValueForKey:@"UIHideForSinglePage"])
+    if ([coderCopy containsValueForKey:@"UIHideForSinglePage"])
     {
-      -[UIPageControl setHidesForSinglePage:](v6, "setHidesForSinglePage:", [v4 decodeBoolForKey:@"UIHideForSinglePage"]);
+      -[UIPageControl setHidesForSinglePage:](v6, "setHidesForSinglePage:", [coderCopy decodeBoolForKey:@"UIHideForSinglePage"]);
     }
 
-    if ([v4 containsValueForKey:@"UIDefersCurrentPageDisplay"])
+    if ([coderCopy containsValueForKey:@"UIDefersCurrentPageDisplay"])
     {
-      -[UIPageControl setDefersCurrentPageDisplay:](v6, "setDefersCurrentPageDisplay:", [v4 decodeBoolForKey:@"UIDefersCurrentPageDisplay"]);
+      -[UIPageControl setDefersCurrentPageDisplay:](v6, "setDefersCurrentPageDisplay:", [coderCopy decodeBoolForKey:@"UIDefersCurrentPageDisplay"]);
     }
 
-    if ([v4 containsValueForKey:@"UICurrentPageIndicatorTintColor"])
+    if ([coderCopy containsValueForKey:@"UICurrentPageIndicatorTintColor"])
     {
-      v9 = [v4 decodeObjectForKey:@"UICurrentPageIndicatorTintColor"];
+      v9 = [coderCopy decodeObjectForKey:@"UICurrentPageIndicatorTintColor"];
       [(UIPageControl *)v6 setCurrentPageIndicatorTintColor:v9];
     }
 
-    if ([v4 containsValueForKey:@"UIPageIndicatorTintColor"])
+    if ([coderCopy containsValueForKey:@"UIPageIndicatorTintColor"])
     {
-      v10 = [v4 decodeObjectForKey:@"UIPageIndicatorTintColor"];
+      v10 = [coderCopy decodeObjectForKey:@"UIPageIndicatorTintColor"];
       [(UIPageControl *)v6 setPageIndicatorTintColor:v10];
     }
   }
@@ -188,51 +188,51 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIPageControl;
-  [(UIControl *)&v9 encodeWithCoder:v4];
+  [(UIControl *)&v9 encodeWithCoder:coderCopy];
   if ([(UIPageControl *)self numberOfPages])
   {
-    [v4 encodeInteger:-[UIPageControl numberOfPages](self forKey:{"numberOfPages"), @"UINumberOfPages"}];
+    [coderCopy encodeInteger:-[UIPageControl numberOfPages](self forKey:{"numberOfPages"), @"UINumberOfPages"}];
   }
 
   if (([(UIPageControl *)self currentPage]& 0x8000000000000000) == 0)
   {
-    [v4 encodeInteger:-[UIPageControl currentPage](self forKey:{"currentPage"), @"UICurrentPage"}];
+    [coderCopy encodeInteger:-[UIPageControl currentPage](self forKey:{"currentPage"), @"UICurrentPage"}];
   }
 
   if ([(UIPageControl *)self hidesForSinglePage])
   {
-    [v4 encodeBool:-[UIPageControl hidesForSinglePage](self forKey:{"hidesForSinglePage"), @"UIHideForSinglePage"}];
+    [coderCopy encodeBool:-[UIPageControl hidesForSinglePage](self forKey:{"hidesForSinglePage"), @"UIHideForSinglePage"}];
   }
 
-  v5 = [(UIPageControl *)self currentPageIndicatorTintColor];
+  currentPageIndicatorTintColor = [(UIPageControl *)self currentPageIndicatorTintColor];
 
-  if (v5)
+  if (currentPageIndicatorTintColor)
   {
-    v6 = [(UIPageControl *)self currentPageIndicatorTintColor];
-    [v4 encodeObject:v6 forKey:@"UICurrentPageIndicatorTintColor"];
+    currentPageIndicatorTintColor2 = [(UIPageControl *)self currentPageIndicatorTintColor];
+    [coderCopy encodeObject:currentPageIndicatorTintColor2 forKey:@"UICurrentPageIndicatorTintColor"];
   }
 
-  v7 = [(UIPageControl *)self pageIndicatorTintColor];
+  pageIndicatorTintColor = [(UIPageControl *)self pageIndicatorTintColor];
 
-  if (v7)
+  if (pageIndicatorTintColor)
   {
-    v8 = [(UIPageControl *)self pageIndicatorTintColor];
-    [v4 encodeObject:v8 forKey:@"UIPageIndicatorTintColor"];
+    pageIndicatorTintColor2 = [(UIPageControl *)self pageIndicatorTintColor];
+    [coderCopy encodeObject:pageIndicatorTintColor2 forKey:@"UIPageIndicatorTintColor"];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v5.receiver = self;
   v5.super_class = UIPageControl;
-  v4 = a3;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
-  [(_UIPageControlVisualProvider *)self->_visualProvider pruneArchivedSubviews:v4, v5.receiver, v5.super_class];
+  subviewsCopy = subviews;
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
+  [(_UIPageControlVisualProvider *)self->_visualProvider pruneArchivedSubviews:subviewsCopy, v5.receiver, v5.super_class];
 }
 
 - (void)setNumberOfPages:(NSInteger)numberOfPages
@@ -279,21 +279,21 @@ LABEL_6:
   return [(UIControl *)&v4 shouldTrack];
 }
 
-- (void)_updateCurrentPage:(int64_t)a3 updateDisplayImmediately:(BOOL)a4
+- (void)_updateCurrentPage:(int64_t)page updateDisplayImmediately:(BOOL)immediately
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (page != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = fmax(fmin(a3, (self->_numberOfPages - 1)), 0.0);
+    v5 = fmax(fmin(page, (self->_numberOfPages - 1)), 0.0);
     currentPage = self->_currentPage;
     if (currentPage != v5)
     {
-      v7 = a4;
+      immediatelyCopy = immediately;
       self->_previousPage = currentPage;
       self->_currentPage = v5;
-      v8 = [(UIPageControl *)self progress];
-      [v8 _didChangeCurrentPage];
+      progress = [(UIPageControl *)self progress];
+      [progress _didChangeCurrentPage];
 
-      if (v7)
+      if (immediatelyCopy)
       {
 
         [(UIPageControl *)self _updateCurrentPageDisplayWithForceUpdate:1];
@@ -332,9 +332,9 @@ LABEL_6:
   *&self->_pageControlFlags = *&self->_pageControlFlags & 0xFD | v3;
 }
 
-- (void)_updateCurrentPageDisplayWithForceUpdate:(BOOL)a3
+- (void)_updateCurrentPageDisplayWithForceUpdate:(BOOL)update
 {
-  if (a3 || [(UIPageControl *)self defersCurrentPageDisplay])
+  if (update || [(UIPageControl *)self defersCurrentPageDisplay])
   {
     visualProvider = self->_visualProvider;
 
@@ -360,9 +360,9 @@ LABEL_6:
 - (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
 {
   v6 = pageIndicatorTintColor;
-  v5 = [(UIPageControl *)self pageIndicatorTintColor];
+  pageIndicatorTintColor = [(UIPageControl *)self pageIndicatorTintColor];
 
-  if (v5 != v6)
+  if (pageIndicatorTintColor != v6)
   {
     objc_storeStrong(&self->_pageIndicatorTintColor, pageIndicatorTintColor);
     [(_UIPageControlVisualProvider *)self->_visualProvider didUpdatePageIndicatorTintColor];
@@ -425,8 +425,8 @@ LABEL_6:
 {
   if (page < 0 || [(UIPageControl *)self numberOfPages]<= page)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:338 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:338 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
   }
 
   visualProvider = self->_visualProvider;
@@ -439,8 +439,8 @@ LABEL_6:
   v8 = image;
   if (page < 0 || [(UIPageControl *)self numberOfPages]<= page)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:344 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:344 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
   }
 
   [(_UIPageControlVisualProvider *)self->_visualProvider setCustomIndicatorImage:v8 forPage:page];
@@ -450,8 +450,8 @@ LABEL_6:
 {
   if (page < 0 || [(UIPageControl *)self numberOfPages]<= page)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:362 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:362 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
   }
 
   visualProvider = self->_visualProvider;
@@ -464,8 +464,8 @@ LABEL_6:
   v8 = image;
   if (page < 0 || [(UIPageControl *)self numberOfPages]<= page)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:368 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:368 description:{@"Page (%ld) must be within 0 and %ld.", page, -[UIPageControl numberOfPages](self, "numberOfPages")}];
   }
 
   [(_UIPageControlVisualProvider *)self->_visualProvider setCustomActiveIndicatorImage:v8 forPage:page];
@@ -476,12 +476,12 @@ LABEL_6:
   v5 = progress;
   if (dyld_program_sdk_at_least())
   {
-    v6 = [(UIPageControlProgress *)v5 pageControl];
+    pageControl = [(UIPageControlProgress *)v5 pageControl];
 
-    if (v6 != self)
+    if (pageControl != self)
     {
-      v7 = [(UIPageControlProgress *)v5 pageControl];
-      [v7 setProgress:0];
+      pageControl2 = [(UIPageControlProgress *)v5 pageControl];
+      [pageControl2 setProgress:0];
     }
 
     [(UIPageControlProgress *)self->_progress setPageControl:0];
@@ -501,12 +501,12 @@ LABEL_6:
   }
 }
 
-- (void)_setFlickToEndGestureEnabled:(BOOL)a3
+- (void)_setFlickToEndGestureEnabled:(BOOL)enabled
 {
   pageControlFlags = self->_pageControlFlags;
-  if (((((pageControlFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((pageControlFlags & 0x10) == 0) ^ enabled) & 1) == 0)
   {
-    if (a3)
+    if (enabled)
     {
       v4 = 16;
     }
@@ -520,57 +520,57 @@ LABEL_6:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UIPageControlVisualProvider *)self->_visualProvider sizeThatFits:a3.width, a3.height];
+  [(_UIPageControlVisualProvider *)self->_visualProvider sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v4.receiver = self;
   v4.super_class = UIPageControl;
-  [(UIView *)&v4 setSemanticContentAttribute:a3];
+  [(UIView *)&v4 setSemanticContentAttribute:attribute];
   [(_UIPageControlVisualProvider *)self->_visualProvider didUpdateLayoutDirection];
 }
 
-- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)a3
+- (void)_traitCollectionDidChangeOnSubtreeInternal:(const _UITraitCollectionChangeDescription *)internal
 {
   v5.receiver = self;
   v5.super_class = UIPageControl;
   [(UIView *)&v5 _traitCollectionDidChangeOnSubtreeInternal:?];
-  [(_UIPageControlVisualProvider *)self->_visualProvider traitCollectionDidChangeOnSubtree:a3->var0];
+  [(_UIPageControlVisualProvider *)self->_visualProvider traitCollectionDidChangeOnSubtree:internal->var0];
 }
 
-- (void)_setCustomHorizontalPadding:(double)a3
+- (void)_setCustomHorizontalPadding:(double)padding
 {
-  self->_horizontalPadding = a3;
+  self->_horizontalPadding = padding;
   *&self->_custom |= 2u;
   [(_UIPageControlVisualProvider *)self->_visualProvider didUpdateCustomLayoutValues];
 }
 
-- (void)_setCustomVerticalPadding:(double)a3
+- (void)_setCustomVerticalPadding:(double)padding
 {
-  self->_verticalPadding = a3;
+  self->_verticalPadding = padding;
   *&self->_custom |= 1u;
   [(_UIPageControlVisualProvider *)self->_visualProvider didUpdateCustomLayoutValues];
 }
 
-- (void)_setCustomIndicatorSpacing:(double)a3
+- (void)_setCustomIndicatorSpacing:(double)spacing
 {
-  self->_indicatorSpacing = a3;
+  self->_indicatorSpacing = spacing;
   *&self->_custom |= 4u;
   [(_UIPageControlVisualProvider *)self->_visualProvider didUpdateCustomLayoutValues];
 }
 
-- (void)_setAllowsDiscreteInteraction:(BOOL)a3
+- (void)_setAllowsDiscreteInteraction:(BOOL)interaction
 {
   pageControlFlags = self->_pageControlFlags;
-  if (((((pageControlFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((pageControlFlags & 8) == 0) ^ interaction) & 1) == 0)
   {
-    if (a3)
+    if (interaction)
     {
       v4 = 8;
     }
@@ -585,50 +585,50 @@ LABEL_6:
   }
 }
 
-- (void)_setPlatterBackgroundView:(id)a3
+- (void)_setPlatterBackgroundView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   if ((_UIIsPrivateMainBundle() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:550 description:@"This may only be used by the system."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:550 description:@"This may only be used by the system."];
   }
 
-  *&self->_custom = *&self->_custom & 0xF7 | (8 * (v6 != 0));
-  [(_UIPageControlVisualProvider *)self->_visualProvider setBackgroundView:v6];
+  *&self->_custom = *&self->_custom & 0xF7 | (8 * (viewCopy != 0));
+  [(_UIPageControlVisualProvider *)self->_visualProvider setBackgroundView:viewCopy];
 }
 
 - (UIView)_platterBackgroundView
 {
   if ((_UIIsPrivateMainBundle() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:557 description:@"This may only be used by the system."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:557 description:@"This may only be used by the system."];
   }
 
   if ((*&self->_custom & 8) != 0)
   {
-    v4 = [(_UIPageControlVisualProvider *)self->_visualProvider backgroundView];
+    backgroundView = [(_UIPageControlVisualProvider *)self->_visualProvider backgroundView];
   }
 
   else
   {
-    v4 = 0;
+    backgroundView = 0;
   }
 
-  return v4;
+  return backgroundView;
 }
 
-- (void)_setPrefersTargetPageForDiscreteInteraction:(BOOL)a3
+- (void)_setPrefersTargetPageForDiscreteInteraction:(BOOL)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:568 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:568 description:@"This may only be used by SpringBoard."];
   }
 
-  if (v3)
+  if (interactionCopy)
   {
     v6 = 32;
   }
@@ -658,18 +658,18 @@ LABEL_6:
   return result;
 }
 
-- (void)_setActiveTransformForTouchedPage:(CGAffineTransform *)a3
+- (void)_setActiveTransformForTouchedPage:(CGAffineTransform *)page
 {
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:580 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:580 description:@"This may only be used by SpringBoard."];
   }
 
-  v6 = *&a3->c;
-  v8[0] = *&a3->a;
+  v6 = *&page->c;
+  v8[0] = *&page->a;
   v8[1] = v6;
-  v8[2] = *&a3->tx;
+  v8[2] = *&page->tx;
   [(_UIPageControlVisualProvider *)self->_visualProvider setActiveTransformForTouchedPage:v8];
 }
 
@@ -687,18 +687,18 @@ LABEL_6:
   return result;
 }
 
-- (void)_setTargetTransformForTouchedPage:(CGAffineTransform *)a3
+- (void)_setTargetTransformForTouchedPage:(CGAffineTransform *)page
 {
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:591 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:591 description:@"This may only be used by SpringBoard."];
   }
 
-  v6 = *&a3->c;
-  v8[0] = *&a3->a;
+  v6 = *&page->c;
+  v8[0] = *&page->a;
   v8[1] = v6;
-  v8[2] = *&a3->tx;
+  v8[2] = *&page->tx;
   [(_UIPageControlVisualProvider *)self->_visualProvider setTargetTransformForTouchedPage:v8];
 }
 
@@ -718,20 +718,20 @@ LABEL_6:
   return result;
 }
 
-- (void)_setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)_setPageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:602 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:602 description:@"This may only be used by SpringBoard."];
   }
 
-  v6 = *&a3->m33;
-  v9[2] = *&a3->m24;
+  v6 = *&matrix->m33;
+  v9[2] = *&matrix->m24;
   v9[3] = v6;
-  v9[4] = *&a3->m42;
-  v7 = *&a3->m15;
-  v9[0] = *&a3->m11;
+  v9[4] = *&matrix->m42;
+  v7 = *&matrix->m15;
+  v9[0] = *&matrix->m11;
   v9[1] = v7;
   [(_UIPageControlVisualProvider *)self->_visualProvider setPageIndicatorVibrantColorMatrix:v9];
 }
@@ -752,52 +752,52 @@ LABEL_6:
   return result;
 }
 
-- (void)_setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)_setActivePageIndicatorVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   if ((_UIApplicationProcessIsSpringBoard() & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0 && (_UIApplicationProcessIsUIKitester() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:613 description:@"This may only be used by SpringBoard."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageControl.m" lineNumber:613 description:@"This may only be used by SpringBoard."];
   }
 
-  v6 = *&a3->m33;
-  v9[2] = *&a3->m24;
+  v6 = *&matrix->m33;
+  v9[2] = *&matrix->m24;
   v9[3] = v6;
-  v9[4] = *&a3->m42;
-  v7 = *&a3->m15;
-  v9[0] = *&a3->m11;
+  v9[4] = *&matrix->m42;
+  v7 = *&matrix->m15;
+  v9[0] = *&matrix->m11;
   v9[1] = v7;
   [(_UIPageControlVisualProvider *)self->_visualProvider setActivePageIndicatorVibrantColorMatrix:v9];
 }
 
-- (void)_setPlatterEffect:(id)a3
+- (void)_setPlatterEffect:(id)effect
 {
-  objc_storeStrong(&self->__platterEffect, a3);
-  v5 = a3;
+  objc_storeStrong(&self->__platterEffect, effect);
+  effectCopy = effect;
   [(_UIPageControlVisualProvider *)self->_visualProvider didUpdateBackgroundEffect];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIPageControl;
-  v6 = a3;
-  [(UIControl *)&v7 endTrackingWithTouch:v6 withEvent:a4];
-  [(_UIPageControlVisualProvider *)self->_visualProvider didEndTrackingWithTouch:v6, v7.receiver, v7.super_class];
+  touchCopy = touch;
+  [(UIControl *)&v7 endTrackingWithTouch:touchCopy withEvent:event];
+  [(_UIPageControlVisualProvider *)self->_visualProvider didEndTrackingWithTouch:touchCopy, v7.receiver, v7.super_class];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || ![v4 _isGestureType:0] || objc_msgSend(v4, "numberOfTouchesRequired") != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || ![beginCopy _isGestureType:0] || objc_msgSend(beginCopy, "numberOfTouchesRequired") != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (CGRect)_indicatorFrameForPage:(int64_t)a3
+- (CGRect)_indicatorFrameForPage:(int64_t)page
 {
-  [(_UIPageControlVisualProvider *)self->_visualProvider indicatorFrameForPage:a3];
+  [(_UIPageControlVisualProvider *)self->_visualProvider indicatorFrameForPage:page];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

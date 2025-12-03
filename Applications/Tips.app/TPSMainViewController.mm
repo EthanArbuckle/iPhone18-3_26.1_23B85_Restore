@@ -1,68 +1,68 @@
 @interface TPSMainViewController
 - (BOOL)_isAppContentLoaded;
-- (BOOL)canDisplayColumn:(int64_t)a3;
-- (BOOL)handleContinueCoreSpotlightSearchActivity:(id)a3;
-- (BOOL)handleCoreSpotlightItemActivity:(id)a3;
-- (BOOL)handleSearchWithSearchQuery:(id)a3;
-- (BOOL)handleUniversalLinkWithUserActivity:(id)a3;
-- (BOOL)handleUserActivity:(id)a3;
+- (BOOL)canDisplayColumn:(int64_t)column;
+- (BOOL)handleContinueCoreSpotlightSearchActivity:(id)activity;
+- (BOOL)handleCoreSpotlightItemActivity:(id)activity;
+- (BOOL)handleSearchWithSearchQuery:(id)query;
+- (BOOL)handleUniversalLinkWithUserActivity:(id)activity;
+- (BOOL)handleUserActivity:(id)activity;
 - (BOOL)isCollectionsViewVisible;
-- (BOOL)openURL:(id)a3;
-- (BOOL)tipsViewControllerShouldShowSearch:(id)a3;
-- (BOOL)tipsViewControllerShouldStartVideo:(id)a3;
+- (BOOL)openURL:(id)l;
+- (BOOL)tipsViewControllerShouldShowSearch:(id)search;
+- (BOOL)tipsViewControllerShouldStartVideo:(id)video;
 - (TPSLastDisplayedContent)lastDisplayedContent;
 - (TPSMainViewController)init;
 - (id)childViewControllerForStatusBarStyle;
-- (id)tipsByCollectionViewController:(id)a3 tipsForCollectionID:(id)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
-- (void)appController:(id)a3 loadingContent:(BOOL)a4;
-- (void)appControllerContentUpdated:(id)a3;
-- (void)appControllerTipViewed:(id)a3 tipIdentifier:(id)a4 collectionIdentifier:(id)a5;
-- (void)appControllerUserUpdatedSavedTips:(id)a3;
-- (void)appViewControllerViewWillAppear:(id)a3;
+- (id)tipsByCollectionViewController:(id)controller tipsForCollectionID:(id)d;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
+- (void)appController:(id)controller loadingContent:(BOOL)content;
+- (void)appControllerContentUpdated:(id)updated;
+- (void)appControllerTipViewed:(id)viewed tipIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier;
+- (void)appControllerUserUpdatedSavedTips:(id)tips;
+- (void)appViewControllerViewWillAppear:(id)appear;
 - (void)applicationDidBecomeActive;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
 - (void)applicationWillTerminate;
-- (void)displayCollectionID:(id)a3 tipID:(id)a4 preferredColumn:(int64_t)a5;
-- (void)displaySupportFlowWithIdentifier:(id)a3;
-- (void)displayUserGuideWithIdentifier:(id)a3 topicId:(id)a4 version:(id)a5 platformIndependent:(BOOL)a6 prefersLandingPage:(BOOL)a7 referrer:(id)a8;
+- (void)displayCollectionID:(id)d tipID:(id)iD preferredColumn:(int64_t)column;
+- (void)displaySupportFlowWithIdentifier:(id)identifier;
+- (void)displayUserGuideWithIdentifier:(id)identifier topicId:(id)id version:(id)version platformIndependent:(BOOL)independent prefersLandingPage:(BOOL)page referrer:(id)referrer;
 - (void)handleSearchFocus;
-- (void)handleSupportFlowDeeplink:(id)a3;
-- (void)handleTipsURL:(id)a3;
-- (void)helpViewControllerContentViewed:(id)a3 topicID:(id)a4 topicTitle:(id)a5 source:(id)a6 interfaceStyle:(int64_t)a7 fromTopicID:(id)a8 externalURLString:(id)a9;
-- (void)helpViewControllerDoneButtonTapped:(id)a3;
-- (void)helpViewControllerSearchUsed:(id)a3;
-- (void)helpViewControllerTOCUsed:(id)a3;
+- (void)handleSupportFlowDeeplink:(id)deeplink;
+- (void)handleTipsURL:(id)l;
+- (void)helpViewControllerContentViewed:(id)viewed topicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style fromTopicID:(id)iD externalURLString:(id)string;
+- (void)helpViewControllerDoneButtonTapped:(id)tapped;
+- (void)helpViewControllerSearchUsed:(id)used;
+- (void)helpViewControllerTOCUsed:(id)used;
 - (void)logAnalyticsEventForAppForeground;
 - (void)logAnalyticsEventForChecklistSession;
-- (void)presentURL:(id)a3 isModalInPresentation:(BOOL)a4;
+- (void)presentURL:(id)l isModalInPresentation:(BOOL)presentation;
 - (void)resyncTipList;
 - (void)setupCollectionListView;
 - (void)setupSplitView;
 - (void)setupTipListView;
 - (void)setupTipsByCollectionView;
-- (void)showCollectionWithIdentifier:(id)a3 launchType:(id)a4;
+- (void)showCollectionWithIdentifier:(id)identifier launchType:(id)type;
 - (void)showCollectionsView;
-- (void)showModalTipWithVariantID:(id)a3;
+- (void)showModalTipWithVariantID:(id)d;
 - (void)showTOCView;
-- (void)showTipWithID:(id)a3 launchType:(id)a4;
+- (void)showTipWithID:(id)d launchType:(id)type;
 - (void)showTipsView;
-- (void)splitViewController:(id)a3 didHideColumn:(int64_t)a4;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4;
-- (void)tipsViewController:(id)a3 didSelectSearchResult:(id)a4;
-- (void)tipsViewControllerContentUpdated:(id)a3;
-- (void)tipsViewControllerCurrentTipUpdated:(id)a3;
-- (void)tipsViewControllerHandleSupportArticleURL:(id)a3;
+- (void)splitViewController:(id)controller didHideColumn:(int64_t)column;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column;
+- (void)tipsViewController:(id)controller didSelectSearchResult:(id)result;
+- (void)tipsViewControllerContentUpdated:(id)updated;
+- (void)tipsViewControllerCurrentTipUpdated:(id)updated;
+- (void)tipsViewControllerHandleSupportArticleURL:(id)l;
 - (void)updateAppShortcutSuggestions;
 - (void)updateCollectionListModelDynamicSections;
 - (void)updateShortcutItems;
 - (void)updateShouldHoldOffVideo;
-- (void)updateSupplementaryColumnForCollectionID:(id)a3;
+- (void)updateSupplementaryColumnForCollectionID:(id)d;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TPSMainViewController
@@ -110,31 +110,31 @@
   [(TPSMainViewController *)self setupTipListView];
   [(TPSMainViewController *)self setupTipsByCollectionView];
   [(TPSMainViewController *)self setupSplitView];
-  v3 = [(TPSMainViewController *)self lastDisplayedContent];
-  v4 = [v3 hasContent];
+  lastDisplayedContent = [(TPSMainViewController *)self lastDisplayedContent];
+  hasContent = [lastDisplayedContent hasContent];
 
-  if ((v4 & 1) == 0)
+  if ((hasContent & 1) == 0)
   {
     [(TPSMainViewController *)self showCollectionsView];
   }
 
-  v5 = [(TPSMainViewController *)self appController];
-  [v5 updateContent];
+  appController = [(TPSMainViewController *)self appController];
+  [appController updateContent];
 }
 
 - (id)childViewControllerForStatusBarStyle
 {
   if (+[TPSCommonDefines isPhoneUI])
   {
-    v3 = [(TPSMainViewController *)self splitViewController];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
   }
 
   else
   {
-    v3 = 0;
+    splitViewController = 0;
   }
 
-  return v3;
+  return splitViewController;
 }
 
 - (void)setupCollectionListView
@@ -206,18 +206,18 @@
 - (void)setupTipsByCollectionView
 {
   v3 = [TPSTipsByCollectionViewController alloc];
-  v4 = [(TPSMainViewController *)self appController];
-  v5 = [(TPSAppViewController *)v3 initWithAppController:v4];
+  appController = [(TPSMainViewController *)self appController];
+  v5 = [(TPSAppViewController *)v3 initWithAppController:appController];
   [(TPSMainViewController *)self setTipsByCollectionViewController:v5];
 
-  v6 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v6 setDelegate:self];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController setDelegate:self];
 
-  v7 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v7 setContentDelegate:self];
+  tipsByCollectionViewController2 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController2 setContentDelegate:self];
 
-  v8 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v8 setViewCycleDelegate:self];
+  tipsByCollectionViewController3 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController3 setViewCycleDelegate:self];
 }
 
 - (void)setupSplitView
@@ -227,42 +227,42 @@
   [(TPSSplitViewController *)v23 setDelegate:self];
   [(TPSSplitViewController *)v23 setPreferredSupplementaryColumnWidth:400.0];
   [(TPSSplitViewController *)v23 setPreferredSplitBehavior:0];
-  v3 = [(TPSMainViewController *)self collectionListViewController];
-  [(TPSSplitViewController *)v23 setViewController:v3 forColumn:0];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  [(TPSSplitViewController *)v23 setViewController:collectionListViewController forColumn:0];
 
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [(TPSSplitViewController *)v23 setViewController:v4 forColumn:2];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [(TPSSplitViewController *)v23 setViewController:tipsByCollectionViewController forColumn:2];
 
   [(TPSMainViewController *)self setSplitViewController:v23];
-  v5 = [(TPSSplitViewController *)v23 view];
+  view = [(TPSSplitViewController *)v23 view];
   [(TPSMainViewController *)self addChildViewController:v23];
-  v6 = [(TPSMainViewController *)self view];
-  [v6 addSubview:v5];
+  view2 = [(TPSMainViewController *)self view];
+  [view2 addSubview:view];
 
-  [v5 setHidden:1];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v5 leadingAnchor];
-  v8 = [(TPSMainViewController *)self view];
-  v9 = [v8 leadingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  [view setHidden:1];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(TPSMainViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v10 setActive:1];
 
-  v11 = [v5 trailingAnchor];
-  v12 = [(TPSMainViewController *)self view];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  trailingAnchor = [view trailingAnchor];
+  view4 = [(TPSMainViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v14 setActive:1];
 
-  v15 = [v5 topAnchor];
-  v16 = [(TPSMainViewController *)self view];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  topAnchor = [view topAnchor];
+  view5 = [(TPSMainViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v18 setActive:1];
 
-  v19 = [v5 bottomAnchor];
-  v20 = [(TPSMainViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(TPSMainViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v22 setActive:1];
 
   [(TPSSplitViewController *)v23 didMoveToParentViewController:self];
@@ -273,38 +273,38 @@
   v18.receiver = self;
   v18.super_class = TPSMainViewController;
   [(TPSMainViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(TPSMainViewController *)self currentDisplayMode];
+  currentDisplayMode = [(TPSMainViewController *)self currentDisplayMode];
   if ((+[TPSCommonDefines isPhoneUI]& 1) != 0)
   {
-    v4 = 1;
+    isCollapsed = 1;
   }
 
   else
   {
-    v5 = [(TPSMainViewController *)self splitViewController];
-    v4 = [v5 isCollapsed];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
+    isCollapsed = [splitViewController isCollapsed];
   }
 
-  v6 = [(TPSMainViewController *)self appController];
-  v7 = [v6 viewNavigationCollapsed];
+  appController = [(TPSMainViewController *)self appController];
+  viewNavigationCollapsed = [appController viewNavigationCollapsed];
 
-  if (v4 != v7)
+  if (isCollapsed != viewNavigationCollapsed)
   {
-    [(TPSMainViewController *)self updateViewCollapsed:v4];
+    [(TPSMainViewController *)self updateViewCollapsed:isCollapsed];
     [(TPSMainViewController *)self updateCollectionListModelDynamicSections];
   }
 
-  v8 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  v9 = [v8 allowPaging];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  allowPaging = [tipsByCollectionViewController allowPaging];
 
-  if (v3 > 6)
+  if (currentDisplayMode > 6)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = v4;
+    v10 = isCollapsed;
   }
 
   if (v10)
@@ -314,22 +314,22 @@
 
   else
   {
-    v11 = 0x2Bu >> v3;
+    v11 = 0x2Bu >> currentDisplayMode;
   }
 
-  v12 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  tipsByCollectionViewController2 = [(TPSMainViewController *)self tipsByCollectionViewController];
   v13 = v11 & 1;
-  [v12 setAllowPaging:v13];
+  [tipsByCollectionViewController2 setAllowPaging:v13];
 
-  if (v9 != v13)
+  if (allowPaging != v13)
   {
-    v14 = [(TPSMainViewController *)self collectionListViewController];
-    v15 = [v14 viewModel];
+    collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+    viewModel = [collectionListViewController viewModel];
 
-    v16 = [v15 checklistViewModel];
-    [v16 setCurrentDisplayTips:0];
-    v17 = [(TPSMainViewController *)self tipsByCollectionViewController];
-    [v17 setPendingReload:1];
+    checklistViewModel = [viewModel checklistViewModel];
+    [checklistViewModel setCurrentDisplayTips:0];
+    tipsByCollectionViewController3 = [(TPSMainViewController *)self tipsByCollectionViewController];
+    [tipsByCollectionViewController3 setPendingReload:1];
   }
 }
 
@@ -356,67 +356,67 @@
   return lastDisplayedContent;
 }
 
-- (void)showCollectionWithIdentifier:(id)a3 launchType:(id)a4
+- (void)showCollectionWithIdentifier:(id)identifier launchType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v8 = +[TPSLogger default];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v50 = v6;
+    v50 = identifierCopy;
     v51 = 2112;
-    v52 = v7;
+    v52 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "updateLaunchInfoWithIdentifier %@, launch type %@", buf, 0x16u);
   }
 
   [(TPSMainViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v9 = [(TPSMainViewController *)self collectionListViewController];
-  v10 = [v9 navigationController];
-  [v10 dismissViewControllerAnimated:0 completion:0];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  navigationController = [collectionListViewController navigationController];
+  [navigationController dismissViewControllerAnimated:0 completion:0];
 
-  v11 = [v6 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [identifierCopy stringByRemovingPercentEncoding];
 
-  v42 = v11;
-  v12 = [v11 componentsSeparatedByString:@"#"];
-  v13 = [v12 firstObject];
-  v14 = 0;
+  v42 = stringByRemovingPercentEncoding;
+  v12 = [stringByRemovingPercentEncoding componentsSeparatedByString:@"#"];
+  firstObject = [v12 firstObject];
+  lastObject = 0;
   if ([v12 count] == 2)
   {
-    v14 = [v12 lastObject];
+    lastObject = [v12 lastObject];
   }
 
-  if ([v13 length])
+  if ([firstObject length])
   {
-    v15 = [(TPSMainViewController *)self appController];
-    [v15 removeNotificationForIdentifier:v13];
+    appController = [(TPSMainViewController *)self appController];
+    [appController removeNotificationForIdentifier:firstObject];
   }
 
-  if ([v14 length])
+  if ([lastObject length])
   {
-    v16 = [(TPSMainViewController *)self appController];
-    [v16 removeNotificationForIdentifier:v14];
+    appController2 = [(TPSMainViewController *)self appController];
+    [appController2 removeNotificationForIdentifier:lastObject];
   }
 
-  v17 = [(TPSMainViewController *)self appController];
-  v18 = [v17 tipForIdentifier:v13 includingCorrelation:1];
+  appController3 = [(TPSMainViewController *)self appController];
+  v18 = [appController3 tipForIdentifier:firstObject includingCorrelation:1];
 
   if (v18)
   {
-    v19 = [v18 identifier];
+    identifier = [v18 identifier];
 
-    v13 = v19;
+    firstObject = identifier;
   }
 
   v20 = TPSAnalyticsLaunchTypeNotification;
-  v21 = [v7 isEqualToString:TPSAnalyticsLaunchTypeNotification];
-  if (([v7 isEqualToString:TPSAnalyticsLaunchTypeWidget] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", v20))
+  v21 = [typeCopy isEqualToString:TPSAnalyticsLaunchTypeNotification];
+  if (([typeCopy isEqualToString:TPSAnalyticsLaunchTypeWidget] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", v20))
   {
     v21 = v18 == 0;
   }
 
-  v22 = [v18 correlationID];
-  v23 = [TPSAnalyticsEventAppLaunched eventWithContentID:v13 collectionID:v14 correlationID:v22 launchType:v7];
+  correlationID = [v18 correlationID];
+  v23 = [TPSAnalyticsEventAppLaunched eventWithContentID:firstObject collectionID:lastObject correlationID:correlationID launchType:typeCopy];
 
   if (v18)
   {
@@ -433,28 +433,28 @@
   if (v21)
   {
 LABEL_16:
-    v24 = [(TPSMainViewController *)self appController];
-    [v24 updateContent];
+    appController4 = [(TPSMainViewController *)self appController];
+    [appController4 updateContent];
   }
 
 LABEL_17:
-  v25 = [(TPSMainViewController *)self appController];
-  v26 = [v25 contentHasLoaded];
+  appController5 = [(TPSMainViewController *)self appController];
+  contentHasLoaded = [appController5 contentHasLoaded];
 
-  v27 = [(TPSMainViewController *)self appController];
-  v28 = [v27 updatingContent];
+  appController6 = [(TPSMainViewController *)self appController];
+  updatingContent = [appController6 updatingContent];
 
-  if (v28)
+  if (updatingContent)
   {
-    if (!v26)
+    if (!contentHasLoaded)
     {
       goto LABEL_25;
     }
 
-    if ([v14 length])
+    if ([lastObject length])
     {
-      v29 = [(TPSMainViewController *)self appController];
-      v30 = [v29 collectionForIdentifier:v14];
+      appController7 = [(TPSMainViewController *)self appController];
+      v30 = [appController7 collectionForIdentifier:lastObject];
 
       if (!v30)
       {
@@ -462,10 +462,10 @@ LABEL_17:
       }
     }
 
-    if ([v13 length])
+    if ([firstObject length])
     {
       pendingShowTipIdentifier = [(TPSMainViewController *)self appController];
-      v32 = [pendingShowTipIdentifier tipForIdentifier:v13];
+      v32 = [pendingShowTipIdentifier tipForIdentifier:firstObject];
       if (v32)
       {
 
@@ -473,8 +473,8 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v40 = [(TPSMainViewController *)self appController];
-      v41 = [v40 tipForCorrelationIdentifier:v13];
+      appController8 = [(TPSMainViewController *)self appController];
+      v41 = [appController8 tipForCorrelationIdentifier:firstObject];
 
       if (v41)
       {
@@ -489,15 +489,15 @@ LABEL_25:
     }
   }
 
-  else if ((v26 & 1) == 0)
+  else if ((contentHasLoaded & 1) == 0)
   {
     goto LABEL_25;
   }
 
 LABEL_27:
-  if ([v13 length] || objc_msgSend(v14, "length"))
+  if ([firstObject length] || objc_msgSend(lastObject, "length"))
   {
-    if ([v13 length])
+    if ([firstObject length])
     {
       v34 = 2;
     }
@@ -507,54 +507,54 @@ LABEL_27:
       v34 = 1;
     }
 
-    v35 = [(TPSMainViewController *)self appController];
-    v36 = v35;
-    if (v14)
+    appController9 = [(TPSMainViewController *)self appController];
+    v36 = appController9;
+    if (lastObject)
     {
-      v37 = v14;
+      v37 = lastObject;
     }
 
     else
     {
-      v37 = v13;
+      v37 = firstObject;
     }
 
-    v38 = [v35 collectionForIdentifier:v37];
+    v38 = [appController9 collectionForIdentifier:v37];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100014F18;
     block[3] = &unk_1000A31A8;
     v44 = v38;
-    v45 = self;
-    v46 = v14;
-    v47 = v13;
+    selfCopy = self;
+    v46 = lastObject;
+    v47 = firstObject;
     v48 = v34;
     v39 = v38;
     dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(TPSMainViewController *)self splitViewController];
-  v9 = [v8 isCollapsed];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  splitViewController = [(TPSMainViewController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  if (!v9)
+  if (!isCollapsed)
   {
-    v20 = [(TPSMainViewController *)self splitViewController];
-    v21 = [v20 isCollapsed];
+    splitViewController2 = [(TPSMainViewController *)self splitViewController];
+    isCollapsed2 = [splitViewController2 isCollapsed];
 
-    if (!v21)
+    if (!isCollapsed2)
     {
       goto LABEL_15;
     }
 
-    v22 = [(TPSMainViewController *)self splitViewController];
-    v23 = [v22 displayMode];
+    splitViewController3 = [(TPSMainViewController *)self splitViewController];
+    displayMode = [splitViewController3 displayMode];
 
     if ([(TPSMainViewController *)self isCollectionsViewVisible])
     {
@@ -563,22 +563,22 @@ LABEL_27:
       goto LABEL_16;
     }
 
-    if (v23 != 3)
+    if (displayMode != 3)
     {
-      v11 = [(TPSMainViewController *)self tipListViewController];
-      v14 = [v11 viewModel];
-      if (([v14 viewCollapsed] & 1) == 0)
+      tipListViewController = [(TPSMainViewController *)self tipListViewController];
+      viewModel = [tipListViewController viewModel];
+      if (([viewModel viewCollapsed] & 1) == 0)
       {
 LABEL_6:
 
         goto LABEL_7;
       }
 
-      v26 = [(TPSMainViewController *)self tipListViewController];
-      v27 = [v26 view];
-      v28 = [v27 window];
+      tipListViewController2 = [(TPSMainViewController *)self tipListViewController];
+      view = [tipListViewController2 view];
+      window = [view window];
 
-      if (!v28)
+      if (!window)
       {
         goto LABEL_15;
       }
@@ -589,28 +589,28 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v10 = [(TPSMainViewController *)self collectionListViewController];
-  v11 = [v10 viewModel];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  tipListViewController = [collectionListViewController viewModel];
 
-  v12 = [v11 selectedItemID];
+  selectedItemID = [tipListViewController selectedItemID];
 
-  if (!v12)
+  if (!selectedItemID)
   {
-    v13 = [(TPSMainViewController *)self appController];
-    v14 = [v13 featuredCollection];
+    appController = [(TPSMainViewController *)self appController];
+    viewModel = [appController featuredCollection];
 
-    if (!v14)
+    if (!viewModel)
     {
-      v15 = [(TPSMainViewController *)self appController];
-      v16 = [v15 collectionSections];
-      v17 = [v16 firstObject];
+      appController2 = [(TPSMainViewController *)self appController];
+      collectionSections = [appController2 collectionSections];
+      firstObject = [collectionSections firstObject];
 
-      v18 = [v17 collections];
-      v14 = [v18 firstObject];
+      collections = [firstObject collections];
+      viewModel = [collections firstObject];
     }
 
-    v19 = [v14 identifier];
-    [v11 setSelectedItemID:v19];
+    identifier = [viewModel identifier];
+    [tipListViewController setSelectedItemID:identifier];
 
     goto LABEL_6;
   }
@@ -623,7 +623,7 @@ LABEL_15:
 LABEL_16:
   v30.receiver = self;
   v30.super_class = TPSMainViewController;
-  [(TPSMainViewController *)&v30 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(TPSMainViewController *)&v30 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if ((v24 & 1) == 0)
   {
     v29[0] = _NSConcreteStackBlock;
@@ -632,28 +632,28 @@ LABEL_16:
     v29[3] = &unk_1000A31D0;
     v29[4] = self;
     v29[5] = v25;
-    [v7 animateAlongsideTransition:v29 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v29 completion:0];
   }
 }
 
 - (void)updateCollectionListModelDynamicSections
 {
-  v3 = [(TPSMainViewController *)self collectionListViewController];
-  v4 = [v3 viewModel];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  viewModel = [collectionListViewController viewModel];
 
-  v5 = [(TPSMainViewController *)self appController];
-  v6 = [v5 featuredCollection];
-  v7 = [v5 collectionSections];
-  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
-  if ([v4 viewCollapsed])
+  appController = [(TPSMainViewController *)self appController];
+  featuredCollection = [appController featuredCollection];
+  collectionSections = [appController collectionSections];
+  v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [collectionSections count]);
+  if ([viewModel viewCollapsed])
   {
-    v23 = v5;
-    v24 = v4;
+    v23 = appController;
+    v24 = viewModel;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = v7;
+    v9 = collectionSections;
     v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (!v10)
     {
@@ -672,13 +672,13 @@ LABEL_16:
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 collections];
-        v16 = [v15 containsObject:v6];
+        collections = [v14 collections];
+        v16 = [collections containsObject:featuredCollection];
 
         if (v16)
         {
-          v17 = [v14 collections];
-          v18 = [v17 count];
+          collections2 = [v14 collections];
+          v18 = [collections2 count];
 
           if (v18 < 2)
           {
@@ -687,7 +687,7 @@ LABEL_16:
 
           v19 = [v14 copy];
 
-          v29 = v6;
+          v29 = featuredCollection;
           v20 = [NSArray arrayWithObjects:&v29 count:1];
           [v19 removeCollections:v20];
 
@@ -708,65 +708,65 @@ LABEL_12:
       {
 LABEL_15:
 
-        v21 = v6;
-        v5 = v23;
-        v4 = v24;
+        v21 = featuredCollection;
+        appController = v23;
+        viewModel = v24;
         goto LABEL_17;
       }
     }
   }
 
-  [v8 addObjectsFromArray:v7];
+  [v8 addObjectsFromArray:collectionSections];
   v21 = 0;
 LABEL_17:
-  [v4 setFeaturedCollection:v21];
+  [viewModel setFeaturedCollection:v21];
   if ([v8 count])
   {
     v22 = [v8 copy];
-    [v4 setCollectionSections:v22];
+    [viewModel setCollectionSections:v22];
   }
 
   else
   {
-    [v4 setCollectionSections:&__NSArray0__struct];
+    [viewModel setCollectionSections:&__NSArray0__struct];
   }
 }
 
-- (void)appController:(id)a3 loadingContent:(BOOL)a4
+- (void)appController:(id)controller loadingContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 collections];
-  if ([v7 count])
+  contentCopy = content;
+  controllerCopy = controller;
+  collections = [controllerCopy collections];
+  if ([collections count])
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v6 featuredCollection];
-    v8 = v9 == 0;
+    featuredCollection = [controllerCopy featuredCollection];
+    v8 = featuredCollection == 0;
   }
 
-  if (v4)
+  if (contentCopy)
   {
     [(TPSViewController *)self removeErrorView];
-    v10 = [(TPSMainViewController *)self tipListViewController];
-    [v10 removeErrorView];
+    tipListViewController = [(TPSMainViewController *)self tipListViewController];
+    [tipListViewController removeErrorView];
 
     if (v8)
     {
       [(TPSViewController *)self setLoading:1];
-      v11 = [(TPSMainViewController *)self tipListViewController];
-      [v11 setLoading:1];
+      tipListViewController2 = [(TPSMainViewController *)self tipListViewController];
+      [tipListViewController2 setLoading:1];
     }
 
     goto LABEL_32;
   }
 
   [(TPSViewController *)self setLoading:0];
-  v12 = [(TPSMainViewController *)self tipListViewController];
-  [v12 setLoading:0];
+  tipListViewController3 = [(TPSMainViewController *)self tipListViewController];
+  [tipListViewController3 setLoading:0];
 
   pendingShowTipIdentifier = self->_pendingShowTipIdentifier;
   if (pendingShowTipIdentifier)
@@ -774,24 +774,24 @@ LABEL_17:
     v14 = [(NSString *)pendingShowTipIdentifier componentsSeparatedByString:@"#"];
     if ([v14 count] == 1)
     {
-      v15 = [v14 lastObject];
-      v16 = 0;
+      lastObject = [v14 lastObject];
+      lastObject2 = 0;
     }
 
     else if ([v14 count] == 2)
     {
-      v15 = [v14 firstObject];
-      v16 = [v14 lastObject];
+      lastObject = [v14 firstObject];
+      lastObject2 = [v14 lastObject];
     }
 
     else
     {
-      v16 = 0;
-      v15 = 0;
+      lastObject2 = 0;
+      lastObject = 0;
     }
 
     v18 = 1;
-    if ([v15 length])
+    if ([lastObject length])
     {
       v19 = 2;
     }
@@ -801,7 +801,7 @@ LABEL_17:
       v19 = 1;
     }
 
-    [(TPSMainViewController *)self displayCollectionID:v16 tipID:v15 preferredColumn:v19];
+    [(TPSMainViewController *)self displayCollectionID:lastObject2 tipID:lastObject preferredColumn:v19];
   }
 
   else
@@ -834,13 +834,13 @@ LABEL_17:
     {
       if (self->_pendingSharedTipVariantID)
       {
-        v45 = [(TPSMainViewController *)self appController];
-        v46 = [v45 tipForVariantIdentifier:self->_pendingSharedTipVariantID];
+        appController = [(TPSMainViewController *)self appController];
+        v46 = [appController tipForVariantIdentifier:self->_pendingSharedTipVariantID];
 
         if (v46)
         {
-          v47 = [v46 identifier];
-          [(TPSMainViewController *)self showCollectionWithIdentifier:v47 launchType:TPSAnalyticsLaunchTypeSharedTipLocal];
+          identifier = [v46 identifier];
+          [(TPSMainViewController *)self showCollectionWithIdentifier:identifier launchType:TPSAnalyticsLaunchTypeSharedTipLocal];
         }
 
         else
@@ -853,40 +853,40 @@ LABEL_17:
     }
   }
 
-  v20 = [(TPSMainViewController *)self collectionListViewController];
-  v21 = [v20 viewModel];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  viewModel = [collectionListViewController viewModel];
 
-  v22 = [v21 currentCollectionID];
-  v23 = v22;
-  if (!v22 && !v18)
+  currentCollectionID = [viewModel currentCollectionID];
+  v23 = currentCollectionID;
+  if (!currentCollectionID && !v18)
   {
-    v24 = [(TPSMainViewController *)self appController];
-    v25 = [v24 viewNavigationCollapsed];
+    appController2 = [(TPSMainViewController *)self appController];
+    viewNavigationCollapsed = [appController2 viewNavigationCollapsed];
 
-    if (v25)
+    if (viewNavigationCollapsed)
     {
       goto LABEL_28;
     }
 
 LABEL_24:
-    v26 = [(TPSMainViewController *)self tipListViewController];
-    v27 = [v26 viewModel];
-    v28 = [v27 collection];
-    v29 = v28;
-    if (v28)
+    tipListViewController4 = [(TPSMainViewController *)self tipListViewController];
+    viewModel2 = [tipListViewController4 viewModel];
+    collection = [viewModel2 collection];
+    v29 = collection;
+    if (collection)
     {
-      v30 = v28;
+      firstObject = collection;
     }
 
     else
     {
-      v31 = [(TPSMainViewController *)self appController];
-      v32 = [v31 collections];
-      v30 = [v32 firstObject];
+      appController3 = [(TPSMainViewController *)self appController];
+      collections2 = [appController3 collections];
+      firstObject = [collections2 firstObject];
     }
 
-    v33 = [v30 identifier];
-    [v21 setCurrentCollectionID:v33];
+    identifier2 = [firstObject identifier];
+    [viewModel setCurrentCollectionID:identifier2];
 
     goto LABEL_28;
   }
@@ -899,18 +899,18 @@ LABEL_24:
 LABEL_28:
   if (v8)
   {
-    v34 = [(TPSMainViewController *)self appController];
-    v35 = [v34 lastFetchError];
-    [(TPSViewController *)self showErrorView:v35];
+    appController4 = [(TPSMainViewController *)self appController];
+    lastFetchError = [appController4 lastFetchError];
+    [(TPSViewController *)self showErrorView:lastFetchError];
   }
 
   else
   {
-    v36 = [(TPSMainViewController *)self splitViewController];
-    v37 = [v36 view];
-    [v37 setHidden:0];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
+    view = [splitViewController view];
+    [view setHidden:0];
 
-    v34 = self->_pendingShowTipIdentifier;
+    appController4 = self->_pendingShowTipIdentifier;
     self->_pendingShowTipIdentifier = 0;
   }
 
@@ -924,36 +924,36 @@ LABEL_28:
   self->_pendingSharedTipVariantID = 0;
 
   v41 = +[UIApplication sharedApplication];
-  v42 = [UIApp _launchTestName];
-  [v41 finishedTest:v42];
+  _launchTestName = [UIApp _launchTestName];
+  [v41 finishedTest:_launchTestName];
 
 LABEL_32:
 }
 
-- (void)appControllerContentUpdated:(id)a3
+- (void)appControllerContentUpdated:(id)updated
 {
-  v53 = a3;
-  v4 = [(TPSMainViewController *)self collectionListViewController];
-  v5 = [v4 viewModel];
+  updatedCopy = updated;
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  viewModel = [collectionListViewController viewModel];
 
-  v6 = [(TPSMainViewController *)self splitViewController];
-  v7 = [v6 isCollapsed];
+  splitViewController = [(TPSMainViewController *)self splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  v8 = [v5 collections];
-  v9 = [v8 count] == 0;
+  collections = [viewModel collections];
+  v9 = [collections count] == 0;
 
-  v10 = [v53 collections];
-  v11 = [v5 collections];
+  collections2 = [updatedCopy collections];
+  collections3 = [viewModel collections];
 
-  if (v10 != v11)
+  if (collections2 != collections3)
   {
-    v12 = [(TPSMainViewController *)self collectionListViewController];
-    [v12 analyticsIncreaseCountViewForCollectionsViewDelay:TPSAnalyticsViewMethodSpringboardLaunch];
+    collectionListViewController2 = [(TPSMainViewController *)self collectionListViewController];
+    [collectionListViewController2 analyticsIncreaseCountViewForCollectionsViewDelay:TPSAnalyticsViewMethodSpringboardLaunch];
   }
 
-  if ([v10 count])
+  if ([collections2 count])
   {
-    v13 = v10;
+    v13 = collections2;
   }
 
   else
@@ -961,45 +961,45 @@ LABEL_32:
     v13 = &__NSArray0__struct;
   }
 
-  [v5 setCollections:v13];
-  v14 = [v53 checklistCollection];
-  [v5 setChecklistCollection:v14];
+  [viewModel setCollections:v13];
+  checklistCollection = [updatedCopy checklistCollection];
+  [viewModel setChecklistCollection:checklistCollection];
 
-  v15 = [v53 savedTipsCollection];
-  [v5 setSavedTipsCollection:v15];
+  savedTipsCollection = [updatedCopy savedTipsCollection];
+  [viewModel setSavedTipsCollection:savedTipsCollection];
 
-  v16 = [v53 userGuides];
-  [v5 setUserGuides:v16];
+  userGuides = [updatedCopy userGuides];
+  [viewModel setUserGuides:userGuides];
 
   [(TPSMainViewController *)self updateCollectionListModelDynamicSections];
-  v17 = [(TPSMainViewController *)self appController];
-  if ([v17 updatingContent])
+  appController = [(TPSMainViewController *)self appController];
+  if ([appController updatingContent])
   {
     goto LABEL_7;
   }
 
-  v18 = [(TPSMainViewController *)self appController];
-  v19 = [v18 contentHasLoaded];
+  appController2 = [(TPSMainViewController *)self appController];
+  contentHasLoaded = [appController2 contentHasLoaded];
 
-  if (v19)
+  if (contentHasLoaded)
   {
     if (self->_pendingAppLaunchEvent)
     {
-      v20 = [(TPSMainViewController *)self appController];
-      v21 = [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent contentID];
-      v22 = [v20 tipForIdentifier:v21 includingCorrelation:1];
+      appController3 = [(TPSMainViewController *)self appController];
+      contentID = [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent contentID];
+      v22 = [appController3 tipForIdentifier:contentID includingCorrelation:1];
 
-      v23 = [v22 correlationID];
-      [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent setCorrelationID:v23];
+      correlationID = [v22 correlationID];
+      [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent setCorrelationID:correlationID];
 
-      v24 = [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent collectionID];
-      LODWORD(v21) = [v24 isEqual:TPSAnalyticsContentStyleLandingPage];
+      collectionID = [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent collectionID];
+      LODWORD(contentID) = [collectionID isEqual:TPSAnalyticsContentStyleLandingPage];
 
-      if (v21)
+      if (contentID)
       {
-        v25 = [(TPSMainViewController *)self appController];
-        v26 = [v22 identifier];
-        v27 = [v25 collectionIdentifierForTipIdentifier:v26];
+        appController4 = [(TPSMainViewController *)self appController];
+        identifier = [v22 identifier];
+        v27 = [appController4 collectionIdentifierForTipIdentifier:identifier];
         [(TPSAnalyticsEventAppLaunched *)self->_pendingAppLaunchEvent setCollectionID:v27];
       }
 
@@ -1010,41 +1010,41 @@ LABEL_32:
 
     if (!self->_pendingShowTipIdentifier && !self->_pendingOpenUniversalURL && ![(TPSMainViewController *)self hasLoaded])
     {
-      v17 = [(TPSMainViewController *)self tipsByCollectionViewController];
-      if (([v17 pendingContentUpdate] & 1) == 0)
+      appController = [(TPSMainViewController *)self tipsByCollectionViewController];
+      if (([appController pendingContentUpdate] & 1) == 0)
       {
-        v29 = [(TPSMainViewController *)self tipsByCollectionViewController];
-        v30 = [v29 currentTip];
-        if (v30)
+        tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+        currentTip = [tipsByCollectionViewController currentTip];
+        if (currentTip)
         {
         }
 
         else
         {
-          v31 = [(TPSMainViewController *)self appController];
-          v32 = [v31 tips];
-          v33 = [v32 count];
+          appController5 = [(TPSMainViewController *)self appController];
+          tips = [appController5 tips];
+          v33 = [tips count];
 
           if (!v33)
           {
             goto LABEL_16;
           }
 
-          v34 = [(TPSMainViewController *)self lastDisplayedContent];
-          v17 = v34;
-          if (v7)
+          lastDisplayedContent = [(TPSMainViewController *)self lastDisplayedContent];
+          appController = lastDisplayedContent;
+          if (isCollapsed)
           {
             [(TPSMainViewController *)self showCollectionsView];
           }
 
           else
           {
-            if ([v34 hasContent])
+            if ([lastDisplayedContent hasContent])
             {
-              v35 = v9 & (v7 ^ 1);
-              v36 = [v53 featuredCollection];
-              v37 = v36;
-              if (v36)
+              v35 = v9 & (isCollapsed ^ 1);
+              featuredCollection = [updatedCopy featuredCollection];
+              v37 = featuredCollection;
+              if (featuredCollection)
               {
                 v38 = v35;
               }
@@ -1056,52 +1056,52 @@ LABEL_32:
 
               if (v38 == 1)
               {
-                v39 = [v36 identifier];
-                v40 = [v53 tipsForCollectionIdentifier:v39];
+                identifier2 = [featuredCollection identifier];
+                v40 = [updatedCopy tipsForCollectionIdentifier:identifier2];
                 if (v40)
                 {
-                  [v17 setCollectionId:v39];
-                  v41 = [v40 firstObject];
-                  v42 = [v41 identifier];
-                  [v17 setTipId:v42];
+                  [appController setCollectionId:identifier2];
+                  firstObject = [v40 firstObject];
+                  identifier3 = [firstObject identifier];
+                  [appController setTipId:identifier3];
                 }
               }
 
-              v43 = [v17 collectionId];
-              v44 = [v17 tipId];
-              v45 = [v53 collectionForIdentifier:v43];
+              collectionId = [appController collectionId];
+              tipId = [appController tipId];
+              v45 = [updatedCopy collectionForIdentifier:collectionId];
 
               if (!v45)
               {
 
-                v44 = 0;
-                v43 = 0;
+                tipId = 0;
+                collectionId = 0;
               }
 
-              v46 = [v53 tipForIdentifier:v44];
+              v46 = [updatedCopy tipForIdentifier:tipId];
 
               if (!v46)
               {
 
-                v44 = 0;
+                tipId = 0;
               }
             }
 
             else
             {
-              v44 = 0;
-              v43 = 0;
+              tipId = 0;
+              collectionId = 0;
             }
 
-            if (!(v44 | v43))
+            if (!(tipId | collectionId))
             {
               v47 = +[TPSCommonDefines sharedInstance];
-              v43 = [v47 collectionIdentifierForCurrentUserType];
+              collectionId = [v47 collectionIdentifierForCurrentUserType];
             }
 
-            if (v44 | v43)
+            if (tipId | collectionId)
             {
-              if ([v44 length])
+              if ([tipId length])
               {
                 v48 = 2;
               }
@@ -1111,11 +1111,11 @@ LABEL_32:
                 v48 = 1;
               }
 
-              v49 = [(TPSMainViewController *)self collectionListViewController];
-              v50 = [v49 viewModel];
-              v51 = [v50 viewCollapsed];
+              collectionListViewController3 = [(TPSMainViewController *)self collectionListViewController];
+              viewModel2 = [collectionListViewController3 viewModel];
+              viewCollapsed = [viewModel2 viewCollapsed];
 
-              if (v51)
+              if (viewCollapsed)
               {
                 v52 = 0;
               }
@@ -1125,7 +1125,7 @@ LABEL_32:
                 v52 = v48;
               }
 
-              [(TPSMainViewController *)self displayCollectionID:v43 tipID:v44 preferredColumn:v52];
+              [(TPSMainViewController *)self displayCollectionID:collectionId tipID:tipId preferredColumn:v52];
             }
           }
 
@@ -1142,53 +1142,53 @@ LABEL_16:
   [(TPSMainViewController *)self updateAppShortcutSuggestions];
 }
 
-- (void)appControllerUserUpdatedSavedTips:(id)a3
+- (void)appControllerUserUpdatedSavedTips:(id)tips
 {
-  v17 = a3;
-  v4 = [(TPSMainViewController *)self collectionListViewController];
-  v5 = [v4 viewModel];
+  tipsCopy = tips;
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  viewModel = [collectionListViewController viewModel];
 
-  v6 = [v17 savedTipsCollection];
-  [v5 setSavedTipsCollection:v6];
+  savedTipsCollection = [tipsCopy savedTipsCollection];
+  [viewModel setSavedTipsCollection:savedTipsCollection];
 
-  v7 = [v5 currentCollectionID];
+  currentCollectionID = [viewModel currentCollectionID];
   v8 = +[TPSCommonDefines savedTipsCollectionIdentifier];
-  v9 = [v7 isEqual:v8];
+  v9 = [currentCollectionID isEqual:v8];
 
   if (v9)
   {
-    v10 = [v17 savedTipsCollection];
-    v11 = [v10 tipIdentifiers];
-    v12 = [v11 count];
+    savedTipsCollection2 = [tipsCopy savedTipsCollection];
+    tipIdentifiers = [savedTipsCollection2 tipIdentifiers];
+    v12 = [tipIdentifiers count];
 
     if (v12)
     {
-      v13 = [(TPSMainViewController *)self tipsByCollectionViewController];
-      [v13 updateTipsForCurrentCollection];
+      tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+      [tipsByCollectionViewController updateTipsForCurrentCollection];
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v14 = [(TPSMainViewController *)self appController];
-    v15 = [v14 viewNavigationCollapsed];
+    appController = [(TPSMainViewController *)self appController];
+    viewNavigationCollapsed = [appController viewNavigationCollapsed];
 
-    if (v15)
+    if (viewNavigationCollapsed)
     {
       [(TPSMainViewController *)self showCollectionsView];
     }
 
     if (+[TPSCommonDefines isPadUI])
     {
-      v16 = [v17 featuredCollection];
-      v13 = [v16 identifier];
+      featuredCollection = [tipsCopy featuredCollection];
+      tipsByCollectionViewController = [featuredCollection identifier];
 
-      if (!v13)
+      if (!tipsByCollectionViewController)
       {
-        v13 = +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
+        tipsByCollectionViewController = +[TPSCommonDefines softwareWelcomeCollectionIdentifier];
       }
 
-      [(TPSMainViewController *)self displayCollectionID:v13 tipID:0];
+      [(TPSMainViewController *)self displayCollectionID:tipsByCollectionViewController tipID:0];
       goto LABEL_10;
     }
   }
@@ -1196,28 +1196,28 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)appControllerTipViewed:(id)a3 tipIdentifier:(id)a4 collectionIdentifier:(id)a5
+- (void)appControllerTipViewed:(id)viewed tipIdentifier:(id)identifier collectionIdentifier:(id)collectionIdentifier
 {
-  v7 = a5;
-  v8 = a4;
+  collectionIdentifierCopy = collectionIdentifier;
+  identifierCopy = identifier;
   [(TPSMainViewController *)self updateShortcutItems];
-  v9 = [(TPSMainViewController *)self lastDisplayedContent];
-  [v9 setTipId:v8];
+  lastDisplayedContent = [(TPSMainViewController *)self lastDisplayedContent];
+  [lastDisplayedContent setTipId:identifierCopy];
 
-  [v9 setCollectionId:v7];
-  [TPSSecureArchivingUtilities archivedDataWithRootObject:v9 forKey:@"TPSAppLastDisplayedContent"];
+  [lastDisplayedContent setCollectionId:collectionIdentifierCopy];
+  [TPSSecureArchivingUtilities archivedDataWithRootObject:lastDisplayedContent forKey:@"TPSAppLastDisplayedContent"];
 }
 
-- (void)updateSupplementaryColumnForCollectionID:(id)a3
+- (void)updateSupplementaryColumnForCollectionID:(id)d
 {
-  v13 = a3;
-  v4 = [(TPSMainViewController *)self splitViewController];
-  v5 = [v4 viewControllerForColumn:1];
+  dCopy = d;
+  splitViewController = [(TPSMainViewController *)self splitViewController];
+  v5 = [splitViewController viewControllerForColumn:1];
 
-  v6 = [(TPSMainViewController *)self collectionListViewController];
-  v7 = [v6 viewModel];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  viewModel = [collectionListViewController viewModel];
 
-  if ([TPSCommonDefines isChecklistCollectionWithIdentifier:v13])
+  if ([TPSCommonDefines isChecklistCollectionWithIdentifier:dCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1225,12 +1225,12 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = [v7 checklistViewModel];
-    [v8 reset];
-    v9 = [[TPSChecklistViewController alloc] initWithViewModel:v8];
-    [(TPSAppViewController *)v9 setViewCycleDelegate:self];
-    v10 = [(TPSMainViewController *)self splitViewController];
-    [v10 setViewController:v9 forColumn:1];
+    checklistViewModel = [viewModel checklistViewModel];
+    [checklistViewModel reset];
+    tipListViewController = [[TPSChecklistViewController alloc] initWithViewModel:checklistViewModel];
+    [(TPSAppViewController *)tipListViewController setViewCycleDelegate:self];
+    splitViewController2 = [(TPSMainViewController *)self splitViewController];
+    [splitViewController2 setViewController:tipListViewController forColumn:1];
   }
 
   else
@@ -1241,36 +1241,36 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = [(TPSMainViewController *)self splitViewController];
-    v9 = [(TPSMainViewController *)self tipListViewController];
-    [v8 setViewController:v9 forColumn:1];
+    checklistViewModel = [(TPSMainViewController *)self splitViewController];
+    tipListViewController = [(TPSMainViewController *)self tipListViewController];
+    [checklistViewModel setViewController:tipListViewController forColumn:1];
   }
 
 LABEL_7:
-  v11 = [v7 currentCollectionID];
-  v12 = [v11 isEqualToString:v13];
+  currentCollectionID = [viewModel currentCollectionID];
+  v12 = [currentCollectionID isEqualToString:dCopy];
 
   if ((v12 & 1) == 0)
   {
-    [v7 setCurrentCollectionID:v13];
+    [viewModel setCurrentCollectionID:dCopy];
   }
 }
 
-- (void)displayCollectionID:(id)a3 tipID:(id)a4 preferredColumn:(int64_t)a5
+- (void)displayCollectionID:(id)d tipID:(id)iD preferredColumn:(int64_t)column
 {
-  v26 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   [(TPSMainViewController *)self setPendingColumnSwitching:1];
-  v9 = [v26 length];
+  v9 = [dCopy length];
   v10 = v9;
-  if (a5 == 1 && v9)
+  if (column == 1 && v9)
   {
-    a5 = 1;
+    column = 1;
   }
 
-  else if (a5 == 2)
+  else if (column == 2)
   {
-    v11 = [v8 length];
+    v11 = [iDCopy length];
     v12 = 1;
     if (!v10)
     {
@@ -1279,59 +1279,59 @@ LABEL_7:
 
     if (v11)
     {
-      a5 = 2;
+      column = 2;
     }
 
     else
     {
-      a5 = v12;
+      column = v12;
     }
   }
 
-  v13 = [(TPSMainViewController *)self appController];
-  v14 = [v13 tipForIdentifier:v8 includingCorrelation:1];
+  appController = [(TPSMainViewController *)self appController];
+  v14 = [appController tipForIdentifier:iDCopy includingCorrelation:1];
 
   if (v14)
   {
-    v15 = [v14 identifier];
+    identifier = [v14 identifier];
 
-    v8 = v15;
+    iDCopy = identifier;
   }
 
-  v16 = [(TPSMainViewController *)self tipListViewController];
-  v17 = [v16 viewModel];
+  tipListViewController = [(TPSMainViewController *)self tipListViewController];
+  viewModel = [tipListViewController viewModel];
 
-  v18 = [(TPSMainViewController *)self appController];
-  v19 = [v18 tipsForCollectionIdentifier:v26];
-  [v17 setTips:v19];
+  appController2 = [(TPSMainViewController *)self appController];
+  v19 = [appController2 tipsForCollectionIdentifier:dCopy];
+  [viewModel setTips:v19];
 
-  if (!v26)
+  if (!dCopy)
   {
-    v20 = [(TPSMainViewController *)self appController];
-    v26 = [v20 collectionIdentifierForTipIdentifier:v8];
+    appController3 = [(TPSMainViewController *)self appController];
+    dCopy = [appController3 collectionIdentifierForTipIdentifier:iDCopy];
   }
 
-  v21 = [(TPSMainViewController *)self appController];
-  v22 = [v21 collectionForIdentifier:v26];
+  appController4 = [(TPSMainViewController *)self appController];
+  v22 = [appController4 collectionForIdentifier:dCopy];
 
-  v23 = [v17 collection];
-  v24 = [v23 isEqual:v22];
+  collection = [viewModel collection];
+  v24 = [collection isEqual:v22];
 
   if (v22)
   {
-    [v17 setCollection:v22];
+    [viewModel setCollection:v22];
   }
 
-  v25 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v25 updateWithCollectionID:v26 tipID:v8];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController updateWithCollectionID:dCopy tipID:iDCopy];
 
-  [(TPSMainViewController *)self updateSupplementaryColumnForCollectionID:v26];
-  if (a5 == 2 && v22)
+  [(TPSMainViewController *)self updateSupplementaryColumnForCollectionID:dCopy];
+  if (column == 2 && v22)
   {
     [(TPSMainViewController *)self showTipsView];
   }
 
-  else if (a5 == 1)
+  else if (column == 1)
   {
     [(TPSMainViewController *)self showTOCView];
   }
@@ -1339,69 +1339,69 @@ LABEL_7:
   [(TPSMainViewController *)self setPendingColumnSwitching:0];
   if (v10)
   {
-    [v17 setUseStandardNavBarBehavior:{objc_msgSend(v22, "isChecklist")}];
+    [viewModel setUseStandardNavBarBehavior:{objc_msgSend(v22, "isChecklist")}];
     if ((v24 & 1) == 0)
     {
-      [v17 setShouldUseDefaultNavBar:0];
+      [viewModel setShouldUseDefaultNavBar:0];
     }
   }
 }
 
-- (void)displayUserGuideWithIdentifier:(id)a3 topicId:(id)a4 version:(id)a5 platformIndependent:(BOOL)a6 prefersLandingPage:(BOOL)a7 referrer:(id)a8
+- (void)displayUserGuideWithIdentifier:(id)identifier topicId:(id)id version:(id)version platformIndependent:(BOOL)independent prefersLandingPage:(BOOL)page referrer:(id)referrer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = [(TPSMainViewController *)self collectionListViewController];
-  [v18 dismissSearch];
+  identifierCopy = identifier;
+  idCopy = id;
+  versionCopy = version;
+  referrerCopy = referrer;
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  [collectionListViewController dismissSearch];
 
-  v19 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v19 dismissSearch];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController dismissSearch];
 
-  v20 = [(TPSMainViewController *)self appController];
-  v21 = v20;
-  if (v14)
+  appController = [(TPSMainViewController *)self appController];
+  v21 = appController;
+  if (identifierCopy)
   {
-    [v20 userGuideWithIdentifier:v14];
+    [appController userGuideWithIdentifier:identifierCopy];
   }
 
   else
   {
-    [v20 mainUserGuide];
+    [appController mainUserGuide];
   }
   v22 = ;
 
   if (v22)
   {
-    v23 = [v22 identifier];
+    identifier = [v22 identifier];
 
-    v24 = [v22 version];
+    version = [v22 version];
 
-    a6 = [v22 platformIndependent];
-    v16 = v24;
-    v14 = v23;
+    independent = [v22 platformIndependent];
+    versionCopy = version;
+    identifierCopy = identifier;
   }
 
-  if (!v16)
+  if (!versionCopy)
   {
-    v16 = HLPHelpViewControllerVersionLatest;
+    versionCopy = HLPHelpViewControllerVersionLatest;
   }
 
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_100016A5C;
   v51[3] = &unk_1000A31F8;
-  v25 = v15;
+  v25 = idCopy;
   v52 = v25;
-  v53 = a7;
+  pageCopy = page;
   v26 = objc_retainBlock(v51);
-  if ([v17 isEqualToString:TPSAnalyticsLaunchTypeDeviceExpertAttribution])
+  if ([referrerCopy isEqualToString:TPSAnalyticsLaunchTypeDeviceExpertAttribution])
   {
     v27 = 7;
   }
 
-  else if ([v17 isEqualToString:TPSAnalyticsViewMethodDeviceExpertInTips])
+  else if ([referrerCopy isEqualToString:TPSAnalyticsViewMethodDeviceExpertInTips])
   {
     v27 = 8;
   }
@@ -1411,44 +1411,44 @@ LABEL_7:
     v27 = 6;
   }
 
-  v41 = a6;
-  v28 = [(TPSMainViewController *)self presentedViewController];
+  independentCopy = independent;
+  presentedViewController = [(TPSMainViewController *)self presentedViewController];
   objc_opt_class();
-  v42 = v17;
-  v40 = self;
+  v42 = referrerCopy;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v29 = [(TPSMainViewController *)self presentedViewController];
-    [v29 viewControllers];
+    presentedViewController2 = [(TPSMainViewController *)self presentedViewController];
+    [presentedViewController2 viewControllers];
     v30 = v22;
-    v31 = v14;
+    v31 = identifierCopy;
     v32 = v26;
-    v33 = v16;
+    v33 = versionCopy;
     v34 = v27;
     v36 = v35 = v25;
-    v37 = [v36 firstObject];
+    firstObject = [v36 firstObject];
 
     v25 = v35;
     v27 = v34;
-    v16 = v33;
+    versionCopy = v33;
     v26 = v32;
-    v14 = v31;
+    identifierCopy = v31;
     v22 = v30;
   }
 
   else
   {
-    v37 = 0;
+    firstObject = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = v37;
+    v38 = firstObject;
     [v38 setAccessType:v27];
     (v26[2])(v26, v38);
-    v39 = [v22 text];
-    [v38 loadBookWithTitle:v39 identifier:v14 topicID:v25 version:v16];
+    text = [v22 text];
+    [v38 loadBookWithTitle:text identifier:identifierCopy topicID:v25 version:versionCopy];
   }
 
   else
@@ -1458,15 +1458,15 @@ LABEL_7:
     v43[2] = sub_100016AD4;
     v43[3] = &unk_1000A3220;
     v44 = v22;
-    v45 = v14;
-    v46 = v16;
-    v47 = v40;
+    v45 = identifierCopy;
+    v46 = versionCopy;
+    v47 = selfCopy;
     v49 = v27;
     v48 = v26;
-    v50 = v41;
-    [(TPSMainViewController *)v40 dismissViewControllerAnimated:1 completion:v43];
+    v50 = independentCopy;
+    [(TPSMainViewController *)selfCopy dismissViewControllerAnimated:1 completion:v43];
 
-    v39 = v44;
+    text = v44;
   }
 }
 
@@ -1479,10 +1479,10 @@ LABEL_7:
   v3 = v22[3] = &unk_1000A3248;
   v23 = v3;
   v4 = objc_retainBlock(v22);
-  v5 = [(TPSMainViewController *)self appController];
-  v6 = [v5 tips];
+  appController = [(TPSMainViewController *)self appController];
+  tips = [appController tips];
 
-  v7 = [v6 mutableCopy];
+  v7 = [tips mutableCopy];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10001704C;
@@ -1493,7 +1493,7 @@ LABEL_7:
   v19 = v9;
   v10 = v3;
   v20 = v10;
-  [v6 enumerateObjectsUsingBlock:&v15];
+  [tips enumerateObjectsUsingBlock:&v15];
   if ([v10 count] <= 2)
   {
     do
@@ -1526,42 +1526,42 @@ LABEL_7:
   [v14 setShortcutItems:v13];
 }
 
-- (void)handleTipsURL:(id)a3
+- (void)handleTipsURL:(id)l
 {
-  v19 = [NSURLComponents componentsWithString:a3];
-  v4 = [v19 scheme];
-  v5 = [v4 isEqualToString:@"tips"];
+  v19 = [NSURLComponents componentsWithString:l];
+  scheme = [v19 scheme];
+  v5 = [scheme isEqualToString:@"tips"];
 
   if (v5)
   {
-    v6 = [v19 path];
-    if ([v6 isEqualToString:@"open"])
+    path = [v19 path];
+    if ([path isEqualToString:@"open"])
     {
-      v7 = [v19 queryItems];
-      v8 = [v7 count];
+      queryItems = [v19 queryItems];
+      v8 = [queryItems count];
 
       if (v8 < 2)
       {
         goto LABEL_13;
       }
 
-      v9 = [v19 queryItems];
-      v6 = [v9 firstObject];
+      queryItems2 = [v19 queryItems];
+      path = [queryItems2 firstObject];
 
-      v10 = [v19 queryItems];
-      v11 = [v10 objectAtIndexedSubscript:1];
+      queryItems3 = [v19 queryItems];
+      v11 = [queryItems3 objectAtIndexedSubscript:1];
 
-      v12 = [v11 name];
-      v13 = [v11 value];
-      v14 = [v6 name];
-      v15 = [v14 isEqualToString:@"type"];
+      name = [v11 name];
+      value = [v11 value];
+      name2 = [path name];
+      v15 = [name2 isEqualToString:@"type"];
 
       if (v15)
       {
-        v16 = [v6 value];
-        if ([v16 isEqualToString:@"shortcut"] && objc_msgSend(v12, "isEqualToString:", @"id"))
+        value2 = [path value];
+        if ([value2 isEqualToString:@"shortcut"] && objc_msgSend(name, "isEqualToString:", @"id"))
         {
-          v17 = v13;
+          v17 = value;
           if (([v17 containsString:@"#"] & 1) == 0)
           {
             v18 = [NSString stringWithFormat:@"%@%@", v17, @"#"];
@@ -1580,15 +1580,15 @@ LABEL_13:
 
 - (void)applicationDidBecomeActive
 {
-  v3 = [(TPSMainViewController *)self appController];
-  v2 = [v3 fullTipContentManager];
-  [v2 tipsAppActive];
+  appController = [(TPSMainViewController *)self appController];
+  fullTipContentManager = [appController fullTipContentManager];
+  [fullTipContentManager tipsAppActive];
 }
 
 - (void)applicationWillTerminate
 {
-  v2 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v2 applicationWillTerminate];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController applicationWillTerminate];
 
   [TPSAnalyticsEventAppLaunched appSessionEndedWithType:TPSAnalyticsLaunchTypeTerminated];
   +[TPSAnalyticsSessionController endSession];
@@ -1606,13 +1606,13 @@ LABEL_13:
 
   [(TPSMainViewController *)self updateAppInBackground:0];
   [(TPSUIAppController *)self->_appController reloadAppGroupDefaults];
-  v5 = [(TPSMainViewController *)self accessType];
-  if (v5 == 2)
+  accessType = [(TPSMainViewController *)self accessType];
+  if (accessType == 2)
   {
     [(TPSMainViewController *)self logAnalyticsEventForAppForeground];
   }
 
-  else if (v5 == 1)
+  else if (accessType == 1)
   {
     +[TPSAnalyticsSessionController trackSession];
     v6 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:TPSAnalyticsLaunchTypeSpringboard];
@@ -1635,8 +1635,8 @@ LABEL_13:
   [v4 syncCacheImmediately];
 
   v5 = +[TPSCommonDefines sharedInstance];
-  v6 = [v5 appBundleIDMap];
-  [v6 removeAllObjects];
+  appBundleIDMap = [v5 appBundleIDMap];
+  [appBundleIDMap removeAllObjects];
 
   [TPSAnalyticsEventAppLaunched appSessionEndedWithType:TPSAnalyticsLaunchTypeBackground];
   [(TPSMainViewController *)self updateAppInBackground:1];
@@ -1647,20 +1647,20 @@ LABEL_13:
 
 - (void)resyncTipList
 {
-  v3 = [(TPSMainViewController *)self appController];
-  if ([v3 viewNavigationCollapsed])
+  appController = [(TPSMainViewController *)self appController];
+  if ([appController viewNavigationCollapsed])
   {
-    v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
-    v5 = [v4 view];
-    v6 = [v5 window];
+    tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+    view = [tipsByCollectionViewController view];
+    window = [view window];
 
-    if (!v6)
+    if (!window)
     {
       goto LABEL_5;
     }
 
-    v3 = [(TPSMainViewController *)self tipsByCollectionViewController];
-    [v3 continueVideoForCurrentTip];
+    appController = [(TPSMainViewController *)self tipsByCollectionViewController];
+    [appController continueVideoForCurrentTip];
   }
 
 LABEL_5:
@@ -1671,38 +1671,38 @@ LABEL_5:
 
 - (BOOL)isCollectionsViewVisible
 {
-  v3 = [(TPSMainViewController *)self splitViewController];
-  if ([v3 displayMode] == 4)
+  splitViewController = [(TPSMainViewController *)self splitViewController];
+  if ([splitViewController displayMode] == 4)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TPSMainViewController *)self splitViewController];
-    if ([v5 displayMode] == 5)
+    splitViewController2 = [(TPSMainViewController *)self splitViewController];
+    if ([splitViewController2 displayMode] == 5)
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [(TPSMainViewController *)self splitViewController];
-      v8 = [v7 displayMode];
+      splitViewController3 = [(TPSMainViewController *)self splitViewController];
+      displayMode = [splitViewController3 displayMode];
 
-      if (v8 == 6)
+      if (displayMode == 6)
       {
         return 1;
       }
 
-      v3 = [(TPSMainViewController *)self collectionListViewController];
-      v5 = [v3 viewModel];
-      if ([v5 viewCollapsed])
+      splitViewController = [(TPSMainViewController *)self collectionListViewController];
+      splitViewController2 = [splitViewController viewModel];
+      if ([splitViewController2 viewCollapsed])
       {
-        v9 = [(TPSMainViewController *)self collectionListViewController];
-        v10 = [v9 view];
-        v11 = [v10 window];
-        v4 = v11 != 0;
+        collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+        view = [collectionListViewController view];
+        window = [view window];
+        v4 = window != 0;
       }
 
       else
@@ -1715,20 +1715,20 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)canDisplayColumn:(int64_t)a3
+- (BOOL)canDisplayColumn:(int64_t)column
 {
-  v5 = [(TPSMainViewController *)self appController];
-  v6 = [v5 viewNavigationCollapsed];
+  appController = [(TPSMainViewController *)self appController];
+  viewNavigationCollapsed = [appController viewNavigationCollapsed];
 
-  return !v6 || [(TPSMainViewController *)self currentCollapsedDisplayColumn]!= a3;
+  return !viewNavigationCollapsed || [(TPSMainViewController *)self currentCollapsedDisplayColumn]!= column;
 }
 
 - (void)showCollectionsView
 {
   if ([(TPSMainViewController *)self canDisplayColumn:0])
   {
-    v3 = [(TPSMainViewController *)self splitViewController];
-    [v3 showColumn:0];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
+    [splitViewController showColumn:0];
   }
 }
 
@@ -1736,8 +1736,8 @@ LABEL_5:
 {
   if ([(TPSMainViewController *)self canDisplayColumn:1])
   {
-    v3 = [(TPSMainViewController *)self splitViewController];
-    [v3 showColumn:1];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
+    [splitViewController showColumn:1];
   }
 }
 
@@ -1745,102 +1745,102 @@ LABEL_5:
 {
   if ([(TPSMainViewController *)self canDisplayColumn:2])
   {
-    v3 = [(TPSMainViewController *)self splitViewController];
-    [v3 showColumn:2];
+    splitViewController = [(TPSMainViewController *)self splitViewController];
+    [splitViewController showColumn:2];
   }
 }
 
-- (void)showTipWithID:(id)a3 launchType:(id)a4
+- (void)showTipWithID:(id)d launchType:(id)type
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 length])
+  dCopy = d;
+  typeCopy = type;
+  if ([dCopy length])
   {
-    [(TPSMainViewController *)self showCollectionWithIdentifier:v9 launchType:v6];
+    [(TPSMainViewController *)self showCollectionWithIdentifier:dCopy launchType:typeCopy];
   }
 
   else
   {
-    v7 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:v6];
+    v7 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:typeCopy];
     [v7 log];
 
-    v8 = [(TPSMainViewController *)self collectionListViewController];
-    [v8 analyticsIncreaseCountViewForNilTipIDWithLaunchType:v6];
+    collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+    [collectionListViewController analyticsIncreaseCountViewForNilTipIDWithLaunchType:typeCopy];
   }
 }
 
-- (BOOL)openURL:(id)a3
+- (BOOL)openURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[TPSLogger default];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v45 = v4;
+    v45 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "open URL: %@", buf, 0xCu);
   }
 
-  v6 = [[NSURLComponents alloc] initWithURL:v4 resolvingAgainstBaseURL:0];
-  v7 = [v6 scheme];
-  v8 = [v7 isEqualToString:TPSCommonDefinesURLSchemeKey];
+  v6 = [[NSURLComponents alloc] initWithURL:lCopy resolvingAgainstBaseURL:0];
+  scheme = [v6 scheme];
+  v8 = [scheme isEqualToString:TPSCommonDefinesURLSchemeKey];
 
   if (!v8)
   {
     goto LABEL_24;
   }
 
-  v9 = [v6 host];
-  v10 = [v9 isEqualToString:TPSCommonDefinesURLSchemeParameterPathTypeOpen];
+  host = [v6 host];
+  v10 = [host isEqualToString:TPSCommonDefinesURLSchemeParameterPathTypeOpen];
 
   if (!v10)
   {
-    v20 = [v6 host];
-    v21 = [v20 isEqualToString:TPSTipURLSchemeParameterPathTypeSearch];
+    host2 = [v6 host];
+    v21 = [host2 isEqualToString:TPSTipURLSchemeParameterPathTypeSearch];
 
     if (v21)
     {
-      v22 = [v6 queryItems];
-      v23 = [v22 na_firstObjectPassingTest:&stru_1000A32B0];
+      queryItems = [v6 queryItems];
+      v23 = [queryItems na_firstObjectPassingTest:&stru_1000A32B0];
 
-      v24 = [v23 value];
-      v25 = [TPSAppSearchQuery queryWithSearchTerm:v24 origin:2];
+      value = [v23 value];
+      v25 = [TPSAppSearchQuery queryWithSearchTerm:value origin:2];
       v19 = [(TPSMainViewController *)self handleSearchWithSearchQuery:v25];
 
       goto LABEL_25;
     }
 
-    v26 = [v6 host];
-    v27 = [v26 isEqualToString:TPSCommonDefinesURLSchemeTypeUserGuide];
+    host3 = [v6 host];
+    v27 = [host3 isEqualToString:TPSCommonDefinesURLSchemeTypeUserGuide];
 
     if (v27)
     {
-      v28 = [TPSUserGuide getUserGuideFromURL:v4];
-      v29 = [v28 referrer];
-      v30 = [v29 length];
+      v28 = [TPSUserGuide getUserGuideFromURL:lCopy];
+      referrer = [v28 referrer];
+      v30 = [referrer length];
 
       if (v30)
       {
-        v31 = [v28 topicIdentifier];
-        v32 = [v28 referrer];
-        v33 = [TPSAnalyticsEventAppLaunched eventWithContentID:v31 collectionID:0 correlationID:0 launchType:v32];
+        topicIdentifier = [v28 topicIdentifier];
+        referrer2 = [v28 referrer];
+        v33 = [TPSAnalyticsEventAppLaunched eventWithContentID:topicIdentifier collectionID:0 correlationID:0 launchType:referrer2];
         [v33 log];
       }
 
-      v34 = [v28 identifier];
-      v35 = [v28 topicIdentifier];
-      v36 = [v28 version];
-      v37 = [v28 referrer];
-      [(TPSMainViewController *)self displayUserGuideWithIdentifier:v34 topicId:v35 version:v36 platformIndependent:1 prefersLandingPage:1 referrer:v37];
+      identifier = [v28 identifier];
+      topicIdentifier2 = [v28 topicIdentifier];
+      version = [v28 version];
+      referrer3 = [v28 referrer];
+      [(TPSMainViewController *)self displayUserGuideWithIdentifier:identifier topicId:topicIdentifier2 version:version platformIndependent:1 prefersLandingPage:1 referrer:referrer3];
     }
 
     else
     {
-      v38 = [v6 host];
-      v39 = [v38 isEqualToString:TPSCommonDefinesURLSchemeTypeSupportFlow];
+      host4 = [v6 host];
+      v39 = [host4 isEqualToString:TPSCommonDefinesURLSchemeTypeSupportFlow];
 
       if (v39)
       {
-        [(TPSMainViewController *)self handleSupportFlowDeeplink:v4];
+        [(TPSMainViewController *)self handleSupportFlowDeeplink:lCopy];
       }
     }
 
@@ -1849,11 +1849,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v11 = [v6 queryItems];
+  queryItems2 = [v6 queryItems];
   v42 = 0;
   v43 = 0;
   v41 = 0;
-  [TPSDocument getValuesFromOpenURLSchemeQueryItems:v11 tipIdentifier:&v43 collectionIdentifier:&v42 referrer:&v41];
+  [TPSDocument getValuesFromOpenURLSchemeQueryItems:queryItems2 tipIdentifier:&v43 collectionIdentifier:&v42 referrer:&v41];
   v12 = v43;
   v13 = v42;
   v14 = v41;
@@ -1895,31 +1895,31 @@ LABEL_25:
   return v19;
 }
 
-- (BOOL)handleUserActivity:(id)a3
+- (BOOL)handleUserActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
-  v6 = [v5 isEqualToString:CSSearchableItemActionType];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v6 = [activityType isEqualToString:CSSearchableItemActionType];
 
   if (v6)
   {
-    v7 = [(TPSMainViewController *)self handleCoreSpotlightItemActivity:v4];
+    v7 = [(TPSMainViewController *)self handleCoreSpotlightItemActivity:activityCopy];
   }
 
   else
   {
-    v8 = [v4 activityType];
-    v9 = [v8 isEqualToString:CSQueryContinuationActionType];
+    activityType2 = [activityCopy activityType];
+    v9 = [activityType2 isEqualToString:CSQueryContinuationActionType];
 
     if (v9)
     {
-      v7 = [(TPSMainViewController *)self handleContinueCoreSpotlightSearchActivity:v4];
+      v7 = [(TPSMainViewController *)self handleContinueCoreSpotlightSearchActivity:activityCopy];
     }
 
     else
     {
-      v10 = [v4 activityType];
-      v11 = [v10 isEqualToString:NSUserActivityTypeBrowsingWeb];
+      activityType3 = [activityCopy activityType];
+      v11 = [activityType3 isEqualToString:NSUserActivityTypeBrowsingWeb];
 
       if (!v11)
       {
@@ -1927,7 +1927,7 @@ LABEL_25:
         goto LABEL_8;
       }
 
-      v7 = [(TPSMainViewController *)self handleUniversalLinkWithUserActivity:v4];
+      v7 = [(TPSMainViewController *)self handleUniversalLinkWithUserActivity:activityCopy];
     }
   }
 
@@ -1937,13 +1937,13 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)handleContinueCoreSpotlightSearchActivity:(id)a3
+- (BOOL)handleContinueCoreSpotlightSearchActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(TPSMainViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v5 = [v4 userInfo];
+  userInfo = [activityCopy userInfo];
 
-  v6 = [v5 objectForKeyedSubscript:CSSearchQueryString];
+  v6 = [userInfo objectForKeyedSubscript:CSSearchQueryString];
 
   v7 = +[TPSLogger search];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1957,10 +1957,10 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)handleCoreSpotlightItemActivity:(id)a3
+- (BOOL)handleCoreSpotlightItemActivity:(id)activity
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+  userInfo = [activity userInfo];
+  v5 = [userInfo objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
 
   v6 = [v5 length];
   if (v6)
@@ -1976,37 +1976,37 @@ LABEL_8:
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 productId];
-      v18 = [v16 topicId];
-      v19 = [v16 version];
+      productId = [v15 productId];
+      topicId = [v16 topicId];
+      version = [v16 version];
       v20 = +[TPSLogger search];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v27 = v17;
+        v27 = productId;
         v28 = 2112;
-        v29 = v18;
+        v29 = topicId;
         v30 = 2112;
-        v31 = v19;
+        v31 = version;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Opening user guide with productId: %@, topicId: %@, version: %@", buf, 0x20u);
       }
 
-      if (v17 && v18)
+      if (productId && topicId)
       {
-        [(TPSMainViewController *)self displayUserGuideWithIdentifier:v17 topicId:v18 version:v19 platformIndependent:1 prefersLandingPage:1 referrer:0];
+        [(TPSMainViewController *)self displayUserGuideWithIdentifier:productId topicId:topicId version:version platformIndependent:1 prefersLandingPage:1 referrer:0];
       }
 
       v21 = [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:v14];
       [v21 log];
 
-      v22 = [(TPSMainViewController *)self collectionListViewController];
-      [v22 analyticsIncreaseCountViewForNilTipIDWithLaunchType:v14];
+      collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+      [collectionListViewController analyticsIncreaseCountViewForNilTipIDWithLaunchType:v14];
     }
 
     else
     {
-      v23 = [(TPSMainViewController *)self appController];
-      v24 = [v23 collectionForIdentifier:v5];
+      appController = [(TPSMainViewController *)self appController];
+      v24 = [appController collectionForIdentifier:v5];
 
       if (!v24)
       {
@@ -2015,8 +2015,8 @@ LABEL_8:
         goto LABEL_14;
       }
 
-      v17 = [NSString stringWithFormat:@"%@%@", @"#", v5];
-      [(TPSMainViewController *)self showCollectionWithIdentifier:v17 launchType:v14];
+      productId = [NSString stringWithFormat:@"%@%@", @"#", v5];
+      [(TPSMainViewController *)self showCollectionWithIdentifier:productId launchType:v14];
     }
 
 LABEL_14:
@@ -2025,11 +2025,11 @@ LABEL_14:
   return v6 != 0;
 }
 
-- (BOOL)handleSearchWithSearchQuery:(id)a3
+- (BOOL)handleSearchWithSearchQuery:(id)query
 {
-  v5 = a3;
-  v6 = [v5 searchTerm];
-  v7 = [v6 length];
+  queryCopy = query;
+  searchTerm = [queryCopy searchTerm];
+  v7 = [searchTerm length];
   if (v7)
   {
     pendingAppSearchQuery = self->_pendingAppSearchQuery;
@@ -2038,22 +2038,22 @@ LABEL_14:
     v9 = +[TPSLogger search];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_10006A23C(v6, v9, v10, v11, v12, v13, v14, v15);
+      sub_10006A23C(searchTerm, v9, v10, v11, v12, v13, v14, v15);
     }
 
     if ([(TPSMainViewController *)self _isAppContentLoaded])
     {
-      v16 = [(TPSMainViewController *)self collectionListViewController];
-      v17 = [v16 canSearch];
+      collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+      canSearch = [collectionListViewController canSearch];
 
-      if (v17)
+      if (canSearch)
       {
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_1000185BC;
         v25[3] = &unk_1000A2F98;
         v25[4] = self;
-        v26 = v5;
+        v26 = queryCopy;
         [UIView performWithoutAnimation:v25];
         v18 = v26;
 LABEL_12:
@@ -2061,17 +2061,17 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v20 = [(TPSMainViewController *)self tipsByCollectionViewController];
-      v21 = [v20 canSearch];
+      tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+      canSearch2 = [tipsByCollectionViewController canSearch];
 
-      if (v21)
+      if (canSearch2)
       {
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_100018654;
         v23[3] = &unk_1000A2F98;
         v23[4] = self;
-        v24 = v5;
+        v24 = queryCopy;
         [UIView performWithoutAnimation:v23];
         v18 = v24;
         goto LABEL_12;
@@ -2087,7 +2087,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Content not yet fetched, save it for later", buf, 2u);
       }
 
-      objc_storeStrong(&self->_pendingAppSearchQuery, a3);
+      objc_storeStrong(&self->_pendingAppSearchQuery, query);
     }
   }
 
@@ -2098,54 +2098,54 @@ LABEL_13:
 
 - (void)handleSearchFocus
 {
-  v3 = [(TPSMainViewController *)self collectionListViewController];
-  v4 = [v3 canSearch];
+  collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+  canSearch = [collectionListViewController canSearch];
 
-  if (v4)
+  if (canSearch)
   {
-    v5 = [(TPSMainViewController *)self collectionListViewController];
+    collectionListViewController2 = [(TPSMainViewController *)self collectionListViewController];
   }
 
   else
   {
-    v6 = [(TPSMainViewController *)self tipsByCollectionViewController];
-    v7 = [v6 canSearch];
+    tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+    canSearch2 = [tipsByCollectionViewController canSearch];
 
-    if (!v7)
+    if (!canSearch2)
     {
       return;
     }
 
-    v5 = [(TPSMainViewController *)self tipsByCollectionViewController];
+    collectionListViewController2 = [(TPSMainViewController *)self tipsByCollectionViewController];
   }
 
-  v8 = v5;
-  [v5 focusSearch];
+  v8 = collectionListViewController2;
+  [collectionListViewController2 focusSearch];
 }
 
 - (BOOL)_isAppContentLoaded
 {
-  v3 = [(TPSMainViewController *)self appController];
-  if ([v3 updatingContent])
+  appController = [(TPSMainViewController *)self appController];
+  if ([appController updatingContent])
   {
-    v4 = 0;
+    contentHasLoaded = 0;
   }
 
   else
   {
-    v5 = [(TPSMainViewController *)self appController];
-    v4 = [v5 contentHasLoaded];
+    appController2 = [(TPSMainViewController *)self appController];
+    contentHasLoaded = [appController2 contentHasLoaded];
   }
 
-  return v4;
+  return contentHasLoaded;
 }
 
-- (BOOL)handleUniversalLinkWithUserActivity:(id)a3
+- (BOOL)handleUniversalLinkWithUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   [(TPSMainViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v5 = [v4 webpageURL];
-  if (!v5)
+  webpageURL = [activityCopy webpageURL];
+  if (!webpageURL)
   {
     LOBYTE(v9) = 0;
     goto LABEL_41;
@@ -2155,13 +2155,13 @@ LABEL_13:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v5;
+    v55 = webpageURL;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "open URL: %@", buf, 0xCu);
   }
 
-  v7 = [NSURLComponents componentsWithURL:v5 resolvingAgainstBaseURL:1];
-  v8 = [v7 host];
-  v9 = [v8 isEqualToString:@"tips.apple.com"];
+  v7 = [NSURLComponents componentsWithURL:webpageURL resolvingAgainstBaseURL:1];
+  host = [v7 host];
+  v9 = [host isEqualToString:@"tips.apple.com"];
 
   if (!v9)
   {
@@ -2173,8 +2173,8 @@ LABEL_13:
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = [v7 queryItems];
-  v12 = [v11 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  queryItems = [v7 queryItems];
+  v12 = [queryItems countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (!v12)
   {
 
@@ -2183,12 +2183,12 @@ LABEL_13:
   }
 
   v13 = v12;
-  obj = v11;
+  obj = queryItems;
   v41 = v9;
-  v46 = self;
+  selfCopy = self;
   v42 = v7;
-  v43 = v5;
-  v44 = v4;
+  v43 = webpageURL;
+  v44 = activityCopy;
   v14 = 0;
   v15 = 0;
   v16 = *v50;
@@ -2205,57 +2205,57 @@ LABEL_13:
       }
 
       v19 = *(*(&v49 + 1) + 8 * v18);
-      v20 = [v19 name];
-      v21 = [v20 isEqualToString:v17];
+      name = [v19 name];
+      v21 = [name isEqualToString:v17];
 
       if (v21)
       {
-        v22 = [v19 value];
-        if ([v22 length])
+        value = [v19 value];
+        if ([value length])
         {
-          v23 = [v19 value];
+          value2 = [v19 value];
 
-          [TPSAnalyticsEventContentViewed setAppReferrer:v22];
-          v10 = v23;
+          [TPSAnalyticsEventContentViewed setAppReferrer:value];
+          v10 = value2;
         }
 
         goto LABEL_20;
       }
 
-      v24 = [v19 name];
-      v25 = [v24 isEqualToString:@"category"];
+      name2 = [v19 name];
+      v25 = [name2 isEqualToString:@"category"];
 
       if (!v25)
       {
-        v27 = [v19 name];
-        v28 = [v27 isEqualToString:@"share"];
+        name3 = [v19 name];
+        v28 = [name3 isEqualToString:@"share"];
 
         if (!v28)
         {
           goto LABEL_21;
         }
 
-        v22 = [v19 value];
-        if ([v22 length])
+        value = [v19 value];
+        if ([value length])
         {
           v47 = v14;
-          v29 = [(TPSMainViewController *)v46 appController];
-          v30 = [v29 tipForVariantIdentifier:v22];
+          appController = [(TPSMainViewController *)selfCopy appController];
+          v30 = [appController tipForVariantIdentifier:value];
 
           if (!v30)
           {
-            if ([(TPSMainViewController *)v46 _isAppContentLoaded])
+            if ([(TPSMainViewController *)selfCopy _isAppContentLoaded])
             {
-              [(TPSMainViewController *)v46 showModalTipWithVariantID:v22];
+              [(TPSMainViewController *)selfCopy showModalTipWithVariantID:value];
             }
 
             else
             {
-              [(TPSMainViewController *)v46 setPendingSharedTipVariantID:v22];
+              [(TPSMainViewController *)selfCopy setPendingSharedTipVariantID:value];
             }
 
-            v5 = v43;
-            v4 = v44;
+            webpageURL = v43;
+            activityCopy = v44;
             v7 = v42;
             v35 = obj;
 
@@ -2263,32 +2263,32 @@ LABEL_13:
             goto LABEL_39;
           }
 
-          v31 = [(TPSMainViewController *)v46 appController];
-          [v31 logSharedTipDisplayed:v30 isEligible:1];
+          appController2 = [(TPSMainViewController *)selfCopy appController];
+          [appController2 logSharedTipDisplayed:v30 isEligible:1];
 
-          v32 = [v30 identifier];
+          identifier = [v30 identifier];
 
           v33 = v45;
           v10 = v33;
-          v15 = v32;
+          v15 = identifier;
         }
 
         goto LABEL_20;
       }
 
-      v26 = [v19 value];
+      value3 = [v19 value];
 
-      if ([v26 length])
+      if ([value3 length])
       {
-        [NSString stringWithFormat:@"%@%@", @"#", v26];
-        v22 = v15;
-        v15 = v14 = v26;
+        [NSString stringWithFormat:@"%@%@", @"#", value3];
+        value = v15;
+        v15 = v14 = value3;
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v14 = v26;
+      v14 = value3;
 LABEL_21:
       v18 = v18 + 1;
     }
@@ -2309,22 +2309,22 @@ LABEL_21:
   if (v15)
   {
     v35 = v15;
-    v5 = v43;
-    v4 = v44;
+    webpageURL = v43;
+    activityCopy = v44;
     v7 = v42;
-    self = v46;
+    self = selfCopy;
     LOBYTE(v9) = v41;
     goto LABEL_34;
   }
 
-  v5 = v43;
-  v4 = v44;
+  webpageURL = v43;
+  activityCopy = v44;
   v7 = v42;
-  self = v46;
+  self = selfCopy;
   LOBYTE(v9) = v41;
 LABEL_31:
-  v36 = [v7 path];
-  v37 = [v36 componentsSeparatedByString:@"/"];
+  path = [v7 path];
+  v37 = [path componentsSeparatedByString:@"/"];
 
   if ([v37 count] != 6)
   {
@@ -2332,9 +2332,9 @@ LABEL_31:
     goto LABEL_38;
   }
 
-  v38 = [v37 lastObject];
+  lastObject = [v37 lastObject];
 
-  v39 = v38;
+  v39 = lastObject;
   if (!v39)
   {
 LABEL_38:
@@ -2346,7 +2346,7 @@ LABEL_38:
 
   v35 = v39;
 LABEL_34:
-  [(TPSMainViewController *)self setPendingOpenUniversalURL:v5];
+  [(TPSMainViewController *)self setPendingOpenUniversalURL:webpageURL];
   [(TPSMainViewController *)self setPendingShowTipIdentifier:v35];
   [(TPSMainViewController *)self showCollectionWithIdentifier:v35 launchType:v10];
   v15 = v35;
@@ -2361,50 +2361,50 @@ LABEL_41:
 - (void)updateShouldHoldOffVideo
 {
   v3 = (+[TPSCommonDefines isPhoneUI]& 1) == 0 && self->_currentDisplayMode == 3;
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v4 setShouldHoldOffVideo:v3];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController setShouldHoldOffVideo:v3];
 }
 
 - (void)logAnalyticsEventForAppForeground
 {
-  v3 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  v5 = [v4 view];
-  v6 = [v5 window];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  tipsByCollectionViewController2 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  view = [tipsByCollectionViewController2 view];
+  window = [view window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v3 currentTip];
-    v17 = [v7 identifier];
+    currentTip = [tipsByCollectionViewController currentTip];
+    identifier = [currentTip identifier];
 
-    v8 = [v3 collectionID];
-    v9 = [v3 currentTip];
-    v10 = [v9 correlationID];
+    collectionID = [tipsByCollectionViewController collectionID];
+    currentTip2 = [tipsByCollectionViewController currentTip];
+    correlationID = [currentTip2 correlationID];
 LABEL_5:
 
-    [TPSAnalyticsEventAppLaunched eventWithContentID:v17 collectionID:v8 correlationID:v10 launchType:TPSAnalyticsLaunchTypeForeground];
+    [TPSAnalyticsEventAppLaunched eventWithContentID:identifier collectionID:collectionID correlationID:correlationID launchType:TPSAnalyticsLaunchTypeForeground];
     goto LABEL_6;
   }
 
-  v11 = [(TPSMainViewController *)self tipListViewController];
-  v12 = [v11 view];
-  v13 = [v12 window];
+  tipListViewController = [(TPSMainViewController *)self tipListViewController];
+  view2 = [tipListViewController view];
+  window2 = [view2 window];
 
-  if (v13)
+  if (window2)
   {
-    v9 = [(TPSMainViewController *)self tipListViewController];
-    v14 = [v9 viewModel];
-    v15 = [v14 collection];
-    v8 = [v15 identifier];
+    currentTip2 = [(TPSMainViewController *)self tipListViewController];
+    viewModel = [currentTip2 viewModel];
+    collection = [viewModel collection];
+    collectionID = [collection identifier];
 
-    v10 = 0;
-    v17 = 0;
+    correlationID = 0;
+    identifier = 0;
     goto LABEL_5;
   }
 
-  v8 = 0;
-  v10 = 0;
-  v17 = 0;
+  collectionID = 0;
+  correlationID = 0;
+  identifier = 0;
   [TPSAnalyticsEventAppLaunched eventWithContentID:0 collectionID:0 correlationID:0 launchType:TPSAnalyticsLaunchTypeForeground];
   v16 = LABEL_6:;
   [v16 log];
@@ -2419,25 +2419,25 @@ LABEL_5:
   }
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
-  v7 = a3;
+  controllerCopy = controller;
   [(TPSMainViewController *)self updateViewCollapsed:1];
   [(TPSMainViewController *)self updateCollectionListModelDynamicSections];
   if ((+[TPSCommonDefines isPhoneUI]& 1) != 0)
   {
-    a4 = 0;
+    column = 0;
 LABEL_3:
-    [(TPSMainViewController *)self setCurrentCollapsedDisplayColumn:a4];
-    v4 = a4;
+    [(TPSMainViewController *)self setCurrentCollapsedDisplayColumn:column];
+    columnCopy = column;
     goto LABEL_9;
   }
 
-  v8 = [v7 displayMode];
-  v9 = v8;
-  if (v8 <= 6 && ((1 << v8) & 0x68) != 0)
+  displayMode = [controllerCopy displayMode];
+  v9 = displayMode;
+  if (displayMode <= 6 && ((1 << displayMode) & 0x68) != 0)
   {
-    v4 = [(TPSMainViewController *)self isCollectionsViewVisible]^ 1;
+    columnCopy = [(TPSMainViewController *)self isCollectionsViewVisible]^ 1;
   }
 
   if (v9 > 6 || ((1 << v9) & 0x68) == 0)
@@ -2447,161 +2447,161 @@ LABEL_3:
 
 LABEL_9:
 
-  return v4;
+  return columnCopy;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  [(TPSMainViewController *)self setCurrentDisplayMode:a4];
+  [(TPSMainViewController *)self setCurrentDisplayMode:mode];
   [(TPSMainViewController *)self updateShouldHoldOffVideo];
-  v5 = [(TPSMainViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(TPSMainViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (id)tipsByCollectionViewController:(id)a3 tipsForCollectionID:(id)a4
+- (id)tipsByCollectionViewController:(id)controller tipsForCollectionID:(id)d
 {
-  if ([TPSCommonDefines isChecklistCollectionWithIdentifier:a4])
+  if ([TPSCommonDefines isChecklistCollectionWithIdentifier:d])
   {
-    v5 = [(TPSMainViewController *)self collectionListViewController];
-    v6 = [v5 viewModel];
+    collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+    viewModel = [collectionListViewController viewModel];
 
-    v7 = [v6 checklistViewModel];
-    [v7 updateTips];
-    v8 = [v7 currentDisplayTips];
+    checklistViewModel = [viewModel checklistViewModel];
+    [checklistViewModel updateTips];
+    currentDisplayTips = [checklistViewModel currentDisplayTips];
   }
 
   else
   {
-    v8 = 0;
+    currentDisplayTips = 0;
   }
 
-  return v8;
+  return currentDisplayTips;
 }
 
-- (void)tipsViewControllerCurrentTipUpdated:(id)a3
+- (void)tipsViewControllerCurrentTipUpdated:(id)updated
 {
-  v16 = a3;
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  updatedCopy = updated;
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
 
-  v5 = v16;
-  if (v4 == v16)
+  v5 = updatedCopy;
+  if (tipsByCollectionViewController == updatedCopy)
   {
-    v6 = [v16 currentTip];
-    v7 = [v16 collectionID];
-    v8 = [TPSCommonDefines isChecklistCollectionWithIdentifier:v7];
+    currentTip = [updatedCopy currentTip];
+    collectionID = [updatedCopy collectionID];
+    v8 = [TPSCommonDefines isChecklistCollectionWithIdentifier:collectionID];
 
     if (v8)
     {
-      v9 = [(TPSMainViewController *)self collectionListViewController];
-      v10 = [v9 viewModel];
+      collectionListViewController = [(TPSMainViewController *)self collectionListViewController];
+      viewModel = [collectionListViewController viewModel];
 
-      v11 = [v10 checklistViewModel];
-      v12 = [v6 identifier];
-      if (v12)
+      checklistViewModel = [viewModel checklistViewModel];
+      identifier = [currentTip identifier];
+      if (identifier)
       {
-        [v11 setSelectedTipIdentifier:v12];
+        [checklistViewModel setSelectedTipIdentifier:identifier];
       }
 
       else
       {
-        v14 = [v11 firstTip];
-        v15 = [v14 identifier];
-        [v11 setSelectedTipIdentifier:v15];
+        firstTip = [checklistViewModel firstTip];
+        identifier2 = [firstTip identifier];
+        [checklistViewModel setSelectedTipIdentifier:identifier2];
       }
     }
 
     else
     {
-      v13 = [(TPSMainViewController *)self tipListViewController];
-      v10 = [v13 viewModel];
+      tipListViewController = [(TPSMainViewController *)self tipListViewController];
+      viewModel = [tipListViewController viewModel];
 
-      [v10 setCurrentTip:v6];
+      [viewModel setCurrentTip:currentTip];
     }
 
-    v5 = v16;
+    v5 = updatedCopy;
   }
 }
 
-- (void)tipsViewControllerContentUpdated:(id)a3
+- (void)tipsViewControllerContentUpdated:(id)updated
 {
-  v21 = a3;
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  updatedCopy = updated;
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
 
-  v5 = v21;
-  if (v4 == v21)
+  v5 = updatedCopy;
+  if (tipsByCollectionViewController == updatedCopy)
   {
-    v6 = [v21 collectionID];
-    v7 = [(TPSMainViewController *)self tipListViewController];
-    v8 = [v7 viewModel];
+    collectionID = [updatedCopy collectionID];
+    tipListViewController = [(TPSMainViewController *)self tipListViewController];
+    viewModel = [tipListViewController viewModel];
 
-    v9 = [(TPSMainViewController *)self appController];
-    v10 = [v9 collectionForIdentifier:v6];
+    appController = [(TPSMainViewController *)self appController];
+    v10 = [appController collectionForIdentifier:collectionID];
 
-    v11 = [v8 collection];
-    v12 = [v10 isEqual:v11];
+    collection = [viewModel collection];
+    v12 = [v10 isEqual:collection];
 
     if ((v12 & 1) == 0)
     {
-      [v8 setCollection:v10];
+      [viewModel setCollection:v10];
     }
 
-    v13 = [v21 tips];
-    if ([v13 count])
+    tips = [updatedCopy tips];
+    if ([tips count])
     {
-      v14 = [v21 tips];
+      tips2 = [updatedCopy tips];
     }
 
     else
     {
-      v14 = &__NSArray0__struct;
+      tips2 = &__NSArray0__struct;
     }
 
-    [v8 setTips:v14];
-    v15 = [v8 currentTip];
-    v16 = [v14 containsObject:v15];
+    [viewModel setTips:tips2];
+    currentTip = [viewModel currentTip];
+    v16 = [tips2 containsObject:currentTip];
 
     if ((v16 & 1) == 0)
     {
-      v17 = [v14 firstObject];
-      v18 = [(TPSMainViewController *)self appController];
-      v19 = [v18 viewNavigationCollapsed];
+      firstObject = [tips2 firstObject];
+      appController2 = [(TPSMainViewController *)self appController];
+      viewNavigationCollapsed = [appController2 viewNavigationCollapsed];
 
-      if ((v19 & 1) == 0)
+      if ((viewNavigationCollapsed & 1) == 0)
       {
-        v20 = [v17 identifier];
-        [v8 setSelectedTipIdentifier:v20];
+        identifier = [firstObject identifier];
+        [viewModel setSelectedTipIdentifier:identifier];
       }
 
-      [v8 setCurrentTip:v17];
+      [viewModel setCurrentTip:firstObject];
     }
 
-    v5 = v21;
+    v5 = updatedCopy;
   }
 }
 
-- (void)splitViewController:(id)a3 didHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller didHideColumn:(int64_t)column
 {
-  if (!a4)
+  if (!column)
   {
-    v6 = [(TPSMainViewController *)self tipListViewController];
-    v5 = [v6 viewModel];
-    [v5 updateSidebarVisibility:0];
+    tipListViewController = [(TPSMainViewController *)self tipListViewController];
+    viewModel = [tipListViewController viewModel];
+    [viewModel updateSidebarVisibility:0];
   }
 }
 
-- (void)splitViewController:(id)a3 willShowColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willShowColumn:(int64_t)column
 {
-  if (!a4)
+  if (!column)
   {
-    v6 = [(TPSMainViewController *)self tipListViewController];
-    v5 = [v6 viewModel];
-    [v5 updateSidebarVisibility:1];
+    tipListViewController = [(TPSMainViewController *)self tipListViewController];
+    viewModel = [tipListViewController viewModel];
+    [viewModel updateSidebarVisibility:1];
   }
 }
 
-- (BOOL)tipsViewControllerShouldShowSearch:(id)a3
+- (BOOL)tipsViewControllerShouldShowSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   if ((+[TPSCommonDefines isPhoneUI]& 1) != 0)
   {
     LOBYTE(v5) = 0;
@@ -2609,27 +2609,27 @@ LABEL_9:
 
   else
   {
-    v6 = [(TPSMainViewController *)self appController];
-    if ([v6 viewNavigationCollapsed])
+    appController = [(TPSMainViewController *)self appController];
+    if ([appController viewNavigationCollapsed])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v5 = [v4 isSharedVariant] ^ 1;
+      v5 = [searchCopy isSharedVariant] ^ 1;
     }
   }
 
   return v5;
 }
 
-- (BOOL)tipsViewControllerShouldStartVideo:(id)a3
+- (BOOL)tipsViewControllerShouldStartVideo:(id)video
 {
-  v4 = a3;
-  v5 = [(TPSMainViewController *)self tipsByCollectionViewController];
+  videoCopy = video;
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
 
-  if (v5 == v4)
+  if (tipsByCollectionViewController == videoCopy)
   {
     return ![(TPSMainViewController *)self userGuideDisplayed];
   }
@@ -2640,45 +2640,45 @@ LABEL_9:
   }
 }
 
-- (void)helpViewControllerDoneButtonTapped:(id)a3
+- (void)helpViewControllerDoneButtonTapped:(id)tapped
 {
   [(TPSMainViewController *)self dismissViewControllerAnimated:1 completion:0];
   [(TPSMainViewController *)self setUserGuideDisplayed:0];
-  v4 = [(TPSMainViewController *)self tipsByCollectionViewController];
-  [v4 continueVideoForCurrentTip];
+  tipsByCollectionViewController = [(TPSMainViewController *)self tipsByCollectionViewController];
+  [tipsByCollectionViewController continueVideoForCurrentTip];
 }
 
-- (void)helpViewControllerSearchUsed:(id)a3
+- (void)helpViewControllerSearchUsed:(id)used
 {
   v3 = +[TPSAnalyticsEventHLPSearchUsed event];
   [v3 log];
 }
 
-- (void)helpViewControllerTOCUsed:(id)a3
+- (void)helpViewControllerTOCUsed:(id)used
 {
   v3 = +[TPSAnalyticsEventHLPTocUsed event];
   [v3 log];
 }
 
-- (void)helpViewControllerContentViewed:(id)a3 topicID:(id)a4 topicTitle:(id)a5 source:(id)a6 interfaceStyle:(int64_t)a7 fromTopicID:(id)a8 externalURLString:(id)a9
+- (void)helpViewControllerContentViewed:(id)viewed topicID:(id)d topicTitle:(id)title source:(id)source interfaceStyle:(int64_t)style fromTopicID:(id)iD externalURLString:(id)string
 {
   v9 = &TPSConstellationContentUtilitiesAttributeLight;
-  if (a7 != 1)
+  if (style != 1)
   {
     v9 = &TPSConstellationContentUtilitiesAttributeDark;
   }
 
-  v10 = [TPSAnalyticsEventHLPContentViewed eventWithTopicID:a4 topicTitle:a5 source:a6 interfaceStyle:*v9 fromTopicID:a8 externalURLString:a9];
+  v10 = [TPSAnalyticsEventHLPContentViewed eventWithTopicID:d topicTitle:title source:source interfaceStyle:*v9 fromTopicID:iD externalURLString:string];
   [v10 log];
 }
 
-- (void)appViewControllerViewWillAppear:(id)a3
+- (void)appViewControllerViewWillAppear:(id)appear
 {
-  v7 = a3;
-  v4 = [(TPSMainViewController *)self appController];
-  v5 = [v4 viewNavigationCollapsed];
+  appearCopy = appear;
+  appController = [(TPSMainViewController *)self appController];
+  viewNavigationCollapsed = [appController viewNavigationCollapsed];
 
-  if (v5)
+  if (viewNavigationCollapsed)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2721,7 +2721,7 @@ LABEL_8:
   static AppShortcutsProvider.updateAppShortcutParameters()();
 }
 
-- (void)handleSupportFlowDeeplink:(id)a3
+- (void)handleSupportFlowDeeplink:(id)deeplink
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -2730,7 +2730,7 @@ LABEL_8:
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for SupportFlowURLComponents();
-  v9 = self;
+  selfCopy = self;
   static SupportFlowURLComponents.components(from:)();
   v11 = v10;
 
@@ -2744,14 +2744,14 @@ LABEL_8:
     v12 = 0;
   }
 
-  [(TPSMainViewController *)v9 displaySupportFlowWithIdentifier:v12];
+  [(TPSMainViewController *)selfCopy displaySupportFlowWithIdentifier:v12];
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)displaySupportFlowWithIdentifier:(id)a3
+- (void)displaySupportFlowWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -2763,11 +2763,11 @@ LABEL_8:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10002BEE4(v4, v6);
 }
 
-- (void)presentURL:(id)a3 isModalInPresentation:(BOOL)a4
+- (void)presentURL:(id)l isModalInPresentation:(BOOL)presentation
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -2775,18 +2775,18 @@ LABEL_8:
   __chkstk_darwin(v6);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = self;
-  TPSMainViewController.presentURL(_:isModalInPresentation:)(v10, a4);
+  selfCopy = self;
+  TPSMainViewController.presentURL(_:isModalInPresentation:)(v10, presentation);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)tipsViewController:(id)a3 didSelectSearchResult:(id)a4
+- (void)tipsViewController:(id)controller didSelectSearchResult:(id)result
 {
-  if (a4)
+  if (result)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -2795,8 +2795,8 @@ LABEL_8:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
   sub_10002D2C0(v10);
@@ -2804,7 +2804,7 @@ LABEL_8:
   sub_10001F870(v10, &qword_1000B2E90, &unk_100077E50);
 }
 
-- (void)tipsViewControllerHandleSupportArticleURL:(id)a3
+- (void)tipsViewControllerHandleSupportArticleURL:(id)l
 {
   v5 = type metadata accessor for URL();
   v6 = *(v5 - 8);
@@ -2817,7 +2817,7 @@ LABEL_8:
   v14 = &v22 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v12);
   v16 = &v22 - v15;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v6 + 56))(v16, 0, 1, v5);
@@ -2836,30 +2836,30 @@ LABEL_8:
 
   else
   {
-    v17 = self;
+    selfCopy = self;
     URL.appendingSupportArticleQueryParam()();
     v18 = *(v6 + 8);
     v18(v14, v5);
     URL._bridgeToObjectiveC()(v19);
     v21 = v20;
     v18(v9, v5);
-    [(TPSMainViewController *)v17 presentURL:v21 isModalInPresentation:1];
+    [(TPSMainViewController *)selfCopy presentURL:v21 isModalInPresentation:1];
 
     sub_10001F870(v16, &unk_1000B3380, &qword_100079940);
   }
 }
 
-- (void)showModalTipWithVariantID:(id)a3
+- (void)showModalTipWithVariantID:(id)d
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
-  v10 = [(TPSMainViewController *)v9 appController];
+  dCopy = d;
+  selfCopy = self;
+  appController = [(TPSMainViewController *)selfCopy appController];
   v11 = swift_allocObject();
   v11[2] = v5;
   v11[3] = v7;
-  v11[4] = v9;
+  v11[4] = selfCopy;
   v14[4] = sub_100047A58;
   v14[5] = v11;
   v14[0] = _NSConcreteStackBlock;
@@ -2867,9 +2867,9 @@ LABEL_8:
   v14[2] = sub_100047858;
   v14[3] = &unk_1000A3F60;
   v12 = _Block_copy(v14);
-  v13 = v9;
+  v13 = selfCopy;
 
-  [(TPSUIAppController *)v10 contentForVariant:v8 completionHandler:v12];
+  [(TPSUIAppController *)appController contentForVariant:dCopy completionHandler:v12];
 
   _Block_release(v12);
 }

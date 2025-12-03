@@ -1,9 +1,9 @@
 @interface NSPersistentHistoryToken
-- (NSPersistentHistoryToken)initWithCoder:(id)a3;
-- (NSPersistentHistoryToken)initWithDictionary:(id)a3;
-- (NSPersistentHistoryToken)initWithTransactionNumber:(id)a3 andStoreID:(id)a4;
+- (NSPersistentHistoryToken)initWithCoder:(id)coder;
+- (NSPersistentHistoryToken)initWithDictionary:(id)dictionary;
+- (NSPersistentHistoryToken)initWithTransactionNumber:(id)number andStoreID:(id)d;
 - (id)storeTokens;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPersistentHistoryToken
@@ -15,7 +15,7 @@ uint64_t __33___NSPersistentHistoryToken_hash__block_invoke(uint64_t a1, uint64_
   return result;
 }
 
-- (NSPersistentHistoryToken)initWithTransactionNumber:(id)a3 andStoreID:(id)a4
+- (NSPersistentHistoryToken)initWithTransactionNumber:(id)number andStoreID:(id)d
 {
   v6 = [(NSPersistentHistoryToken *)self init];
   if (v6)
@@ -24,10 +24,10 @@ uint64_t __33___NSPersistentHistoryToken_hash__block_invoke(uint64_t a1, uint64_
 
   v7 = [_NSPersistentHistoryToken alloc];
 
-  return [(_NSPersistentHistoryToken *)v7 initWithTransactionNumber:a3 andStoreID:a4];
+  return [(_NSPersistentHistoryToken *)v7 initWithTransactionNumber:number andStoreID:d];
 }
 
-- (NSPersistentHistoryToken)initWithDictionary:(id)a3
+- (NSPersistentHistoryToken)initWithDictionary:(id)dictionary
 {
   v4 = [(NSPersistentHistoryToken *)self init];
   if (v4)
@@ -36,17 +36,17 @@ uint64_t __33___NSPersistentHistoryToken_hash__block_invoke(uint64_t a1, uint64_
 
   v5 = [_NSPersistentHistoryToken alloc];
 
-  return [(_NSPersistentHistoryToken *)v5 initWithDictionary:a3];
+  return [(_NSPersistentHistoryToken *)v5 initWithDictionary:dictionary];
 }
 
-- (NSPersistentHistoryToken)initWithCoder:(id)a3
+- (NSPersistentHistoryToken)initWithCoder:(id)coder
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
 

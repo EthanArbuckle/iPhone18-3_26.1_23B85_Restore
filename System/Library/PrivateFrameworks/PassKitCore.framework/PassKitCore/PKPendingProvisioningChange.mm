@@ -1,23 +1,23 @@
 @interface PKPendingProvisioningChange
-- (PKPendingProvisioningChange)initWithCoder:(id)a3;
-- (PKPendingProvisioningChange)initWithType:(unint64_t)a3 pendingProvisioning:(id)a4;
+- (PKPendingProvisioningChange)initWithCoder:(id)coder;
+- (PKPendingProvisioningChange)initWithType:(unint64_t)type pendingProvisioning:(id)provisioning;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPendingProvisioningChange
 
-- (PKPendingProvisioningChange)initWithType:(unint64_t)a3 pendingProvisioning:(id)a4
+- (PKPendingProvisioningChange)initWithType:(unint64_t)type pendingProvisioning:(id)provisioning
 {
-  v7 = a4;
+  provisioningCopy = provisioning;
   v11.receiver = self;
   v11.super_class = PKPendingProvisioningChange;
   v8 = [(PKPendingProvisioningChange *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_pendingProvisioning, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_pendingProvisioning, provisioning);
   }
 
   return v9;
@@ -49,16 +49,16 @@
   return v9;
 }
 
-- (PKPendingProvisioningChange)initWithCoder:(id)a3
+- (PKPendingProvisioningChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = PKPendingProvisioningChange;
   v5 = [(PKPendingProvisioningChange *)&v33 init];
   if (v5)
   {
-    v32 = v4;
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v32 = coderCopy;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v7 = v6;
     if (v6 != @"addition")
     {
@@ -115,7 +115,7 @@ LABEL_9:
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v13 initWithObjects:{v14, v15, v16, v17, v18, v19, v20, v21, objc_opt_class(), 0}];
-    v4 = v32;
+    coderCopy = v32;
     v23 = [v32 decodeObjectOfClasses:v22 forKey:@"pendingProvisioning"];
     pendingProvisioning = v5->_pendingProvisioning;
     v5->_pendingProvisioning = v23;
@@ -124,7 +124,7 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
   if (type > 3)
@@ -137,9 +137,9 @@ LABEL_9:
     v5 = off_1E79D00E8[type];
   }
 
-  v6 = a3;
-  [v6 encodeObject:v5 forKey:@"type"];
-  [v6 encodeObject:self->_pendingProvisioning forKey:@"pendingProvisioning"];
+  coderCopy = coder;
+  [coderCopy encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:self->_pendingProvisioning forKey:@"pendingProvisioning"];
 }
 
 @end

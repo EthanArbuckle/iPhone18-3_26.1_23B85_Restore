@@ -1,6 +1,6 @@
 @interface DMDFetchCertificatesOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v33 = a3;
+  requestCopy = request;
   v31 = objc_opt_new();
   v3 = objc_opt_new();
   v29 = +[MCProfileConnection sharedConnection];
@@ -51,14 +51,14 @@
         }
 
         v9 = *(*(&v43 + 1) + 8 * i);
-        if (![v33 managedOnly] || objc_msgSend(v9, "isManagedByMDM"))
+        if (![requestCopy managedOnly] || objc_msgSend(v9, "isManagedByMDM"))
         {
           v41 = 0u;
           v42 = 0u;
           v39 = 0u;
           v40 = 0u;
-          v10 = [v9 payloads];
-          v11 = [v10 countByEnumeratingWithState:&v39 objects:v48 count:16];
+          payloads = [v9 payloads];
+          v11 = [payloads countByEnumeratingWithState:&v39 objects:v48 count:16];
           if (v11)
           {
             v12 = v11;
@@ -69,18 +69,18 @@
               {
                 if (*v40 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(payloads);
                 }
 
                 v15 = *(*(&v39 + 1) + 8 * j);
                 if (objc_opt_isKindOfClass())
                 {
-                  v16 = [v15 certificatePersistentID];
-                  [v3 addObject:v16];
+                  certificatePersistentID = [v15 certificatePersistentID];
+                  [v3 addObject:certificatePersistentID];
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v39 objects:v48 count:16];
+              v12 = [payloads countByEnumeratingWithState:&v39 objects:v48 count:16];
             }
 
             while (v12);
@@ -125,8 +125,8 @@
             certificateRef = v24;
 LABEL_30:
             v26 = [DMFCertificate alloc];
-            v27 = [v26 initWithCertificateRef:certificateRef isIdentity:v25 == TypeID];
-            [v31 addObject:v27];
+            typeID = [v26 initWithCertificateRef:certificateRef isIdentity:v25 == TypeID];
+            [v31 addObject:typeID];
 
             CFRelease(certificateRef);
             continue;

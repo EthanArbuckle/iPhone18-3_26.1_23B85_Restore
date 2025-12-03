@@ -1,31 +1,31 @@
 @interface HMDHomeLocationData
-- (HMDHomeLocationData)initWithCoder:(id)a3;
-- (HMDHomeLocationData)initWithLocation:(id)a3 locationUpdateTimestamp:(id)a4 locationSource:(id)a5;
+- (HMDHomeLocationData)initWithCoder:(id)coder;
+- (HMDHomeLocationData)initWithLocation:(id)location locationUpdateTimestamp:(id)timestamp locationSource:(id)source;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDHomeLocationData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDHomeLocationData *)self location];
-  [v4 encodeObject:v5 forKey:@"homeLocation"];
+  coderCopy = coder;
+  location = [(HMDHomeLocationData *)self location];
+  [coderCopy encodeObject:location forKey:@"homeLocation"];
 
-  v6 = [(HMDHomeLocationData *)self locationUpdateTimestamp];
-  [v4 encodeObject:v6 forKey:@"homeLocationNextUpdate"];
+  locationUpdateTimestamp = [(HMDHomeLocationData *)self locationUpdateTimestamp];
+  [coderCopy encodeObject:locationUpdateTimestamp forKey:@"homeLocationNextUpdate"];
 
-  v7 = [(HMDHomeLocationData *)self locationSource];
-  [v4 encodeObject:v7 forKey:@"homeLocationSource"];
+  locationSource = [(HMDHomeLocationData *)self locationSource];
+  [coderCopy encodeObject:locationSource forKey:@"homeLocationSource"];
 }
 
-- (HMDHomeLocationData)initWithCoder:(id)a3
+- (HMDHomeLocationData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocation"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationNextUpdate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationSource"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocation"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationNextUpdate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeLocationSource"];
 
   v8 = [(HMDHomeLocationData *)self initWithLocation:v5 locationUpdateTimestamp:v6 locationSource:v7];
   return v8;
@@ -34,31 +34,31 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(HMDHomeLocationData *)self location];
-  v5 = locationAsString(v4);
-  v6 = [(HMDHomeLocationData *)self locationUpdateTimestamp];
-  v7 = [v6 hmf_localTimeDescription];
-  v8 = [(HMDHomeLocationData *)self locationSource];
-  v9 = HMDHomeLocationSourceToString([v8 intValue]);
-  v10 = [v3 initWithFormat:@"Loc-Data: %@, Timestamp: %@, Source: %@", v5, v7, v9];
+  location = [(HMDHomeLocationData *)self location];
+  v5 = locationAsString(location);
+  locationUpdateTimestamp = [(HMDHomeLocationData *)self locationUpdateTimestamp];
+  hmf_localTimeDescription = [locationUpdateTimestamp hmf_localTimeDescription];
+  locationSource = [(HMDHomeLocationData *)self locationSource];
+  v9 = HMDHomeLocationSourceToString([locationSource intValue]);
+  v10 = [v3 initWithFormat:@"Loc-Data: %@, Timestamp: %@, Source: %@", v5, hmf_localTimeDescription, v9];
 
   return v10;
 }
 
-- (HMDHomeLocationData)initWithLocation:(id)a3 locationUpdateTimestamp:(id)a4 locationSource:(id)a5
+- (HMDHomeLocationData)initWithLocation:(id)location locationUpdateTimestamp:(id)timestamp locationSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  timestampCopy = timestamp;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = HMDHomeLocationData;
   v12 = [(HMDHomeLocationData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_location, a3);
-    objc_storeStrong(&v13->_locationUpdateTimestamp, a4);
-    objc_storeStrong(&v13->_locationSource, a5);
+    objc_storeStrong(&v12->_location, location);
+    objc_storeStrong(&v13->_locationUpdateTimestamp, timestamp);
+    objc_storeStrong(&v13->_locationSource, source);
   }
 
   return v13;

@@ -1,19 +1,19 @@
 @interface VCPVideoMetaLivePhotoMetaAnalyzer
 + (id)defaultDesiredKeys;
 + (id)referenceSoftwareStackVersion;
-- (BOOL)gyroHomographyVersionIsValid:(opaqueCMFormatDescription *)a3;
-- (CGSize)readGyroHomographyDimension:(opaqueCMFormatDescription *)a3;
-- (VCPVideoMetaLivePhotoMetaAnalyzer)initWithRequestAnalyses:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4;
-- (__CFData)getFirstAtomWithFourCharCode:(unsigned int)a3 fromSetupData:(__CFData *)a4;
-- (__CFData)getSetupDataFrom:(opaqueCMFormatDescription *)a3;
-- (float)compareNumericVersion:(id)a3 withReferenceVersion:(id)a4;
-- (float)compareSoftwareStackVersion:(id)a3 withReferenceVersion:(id)a4;
+- (BOOL)gyroHomographyVersionIsValid:(opaqueCMFormatDescription *)valid;
+- (CGSize)readGyroHomographyDimension:(opaqueCMFormatDescription *)dimension;
+- (VCPVideoMetaLivePhotoMetaAnalyzer)initWithRequestAnalyses:(unint64_t)analyses formatDescription:(opaqueCMFormatDescription *)description;
+- (__CFData)getFirstAtomWithFourCharCode:(unsigned int)code fromSetupData:(__CFData *)data;
+- (__CFData)getSetupDataFrom:(opaqueCMFormatDescription *)from;
+- (float)compareNumericVersion:(id)version withReferenceVersion:(id)referenceVersion;
+- (float)compareSoftwareStackVersion:(id)version withReferenceVersion:(id)referenceVersion;
 - (id)privateResults;
-- (id)readSoftwareStackVersion:(opaqueCMFormatDescription *)a3;
-- (int)convertLivePhotoBinary:(id)a3 toDictionary:(id)a4;
-- (int)convertLivePhotoStruct:(FigLivePhotoMetadata *)a3 toDictionary:(id)a4;
+- (id)readSoftwareStackVersion:(opaqueCMFormatDescription *)version;
+- (int)convertLivePhotoBinary:(id)binary toDictionary:(id)dictionary;
+- (int)convertLivePhotoStruct:(FigLivePhotoMetadata *)struct toDictionary:(id)dictionary;
 - (int)finalizeAnalysis;
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4;
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags;
 @end
 
 @implementation VCPVideoMetaLivePhotoMetaAnalyzer
@@ -72,7 +72,7 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return v2;
 }
 
-- (VCPVideoMetaLivePhotoMetaAnalyzer)initWithRequestAnalyses:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4
+- (VCPVideoMetaLivePhotoMetaAnalyzer)initWithRequestAnalyses:(unint64_t)analyses formatDescription:(opaqueCMFormatDescription *)description
 {
   v33.receiver = self;
   v33.super_class = VCPVideoMetaLivePhotoMetaAnalyzer;
@@ -101,7 +101,7 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
       v15 = v6->_metaMotionAnalyzer;
       if (v15)
       {
-        v6->_requestAnalyses = a3;
+        v6->_requestAnalyses = analyses;
         v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
         metadataStabilizationArray = v6->_metadataStabilizationArray;
         v6->_metadataStabilizationArray = v16;
@@ -128,10 +128,10 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
 
         v6->_prevEstimatedCenterMv.dx = 0.0;
         v6->_prevEstimatedCenterMv.dy = 0.0;
-        [(VCPVideoMetaLivePhotoMetaAnalyzer *)v6 readGyroHomographyDimension:a4];
+        [(VCPVideoMetaLivePhotoMetaAnalyzer *)v6 readGyroHomographyDimension:description];
         v6->_gyroHomographyDimension.width = v28;
         v6->_gyroHomographyDimension.height = v29;
-        if ([(VCPVideoMetaLivePhotoMetaAnalyzer *)v6 gyroHomographyVersionIsValid:a4])
+        if ([(VCPVideoMetaLivePhotoMetaAnalyzer *)v6 gyroHomographyVersionIsValid:description])
         {
           v30 = v6->_gyroHomographyDimension.width != *MEMORY[0x1E695F060];
           if (v6->_gyroHomographyDimension.height != *(MEMORY[0x1E695F060] + 8))
@@ -161,13 +161,13 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return v31;
 }
 
-- (BOOL)gyroHomographyVersionIsValid:(opaqueCMFormatDescription *)a3
+- (BOOL)gyroHomographyVersionIsValid:(opaqueCMFormatDescription *)valid
 {
-  v4 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self readSoftwareStackVersion:a3];
+  v4 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self readSoftwareStackVersion:valid];
   if (v4)
   {
-    v5 = [objc_opt_class() referenceSoftwareStackVersion];
-    [(VCPVideoMetaLivePhotoMetaAnalyzer *)self compareSoftwareStackVersion:v4 withReferenceVersion:v5];
+    referenceSoftwareStackVersion = [objc_opt_class() referenceSoftwareStackVersion];
+    [(VCPVideoMetaLivePhotoMetaAnalyzer *)self compareSoftwareStackVersion:v4 withReferenceVersion:referenceSoftwareStackVersion];
     v7 = v6;
 
     v8 = v7 != -1.0;
@@ -181,11 +181,11 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return v8;
 }
 
-- (CGSize)readGyroHomographyDimension:(opaqueCMFormatDescription *)a3
+- (CGSize)readGyroHomographyDimension:(opaqueCMFormatDescription *)dimension
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  v6 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getSetupDataFrom:a3];
+  v6 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getSetupDataFrom:dimension];
   if (v6)
   {
     v7 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getFirstAtomWithFourCharCode:1684630899 fromSetupData:v6];
@@ -215,9 +215,9 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return result;
 }
 
-- (id)readSoftwareStackVersion:(opaqueCMFormatDescription *)a3
+- (id)readSoftwareStackVersion:(opaqueCMFormatDescription *)version
 {
-  v4 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getSetupDataFrom:a3];
+  v4 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getSetupDataFrom:version];
   if (v4 && (v5 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self getFirstAtomWithFourCharCode:1667655542 fromSetupData:v4]) != 0)
   {
     v6 = v5;
@@ -242,7 +242,7 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return v7;
 }
 
-- (__CFData)getSetupDataFrom:(opaqueCMFormatDescription *)a3
+- (__CFData)getSetupDataFrom:(opaqueCMFormatDescription *)from
 {
   LocalIDForMetadataIdentifyingFactors = FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors();
   if (!LocalIDForMetadataIdentifyingFactors)
@@ -250,13 +250,13 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
     return 0;
   }
 
-  return MEMORY[0x1EEDBD738](a3, LocalIDForMetadataIdentifyingFactors);
+  return MEMORY[0x1EEDBD738](from, LocalIDForMetadataIdentifyingFactors);
 }
 
-- (__CFData)getFirstAtomWithFourCharCode:(unsigned int)a3 fromSetupData:(__CFData *)a4
+- (__CFData)getFirstAtomWithFourCharCode:(unsigned int)code fromSetupData:(__CFData *)data
 {
-  Length = CFDataGetLength(a4);
-  BytePtr = CFDataGetBytePtr(a4);
+  Length = CFDataGetLength(data);
+  BytePtr = CFDataGetBytePtr(data);
   if (Length < 8)
   {
     return 0;
@@ -276,7 +276,7 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
       break;
     }
 
-    if (bswap32(*(v12 + 1)) == a3 && result == 0)
+    if (bswap32(*(v12 + 1)) == code && result == 0)
     {
       result = CFDataCreate(v11, v12 + 8, v13 - 8);
     }
@@ -286,35 +286,35 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
   return result;
 }
 
-- (float)compareSoftwareStackVersion:(id)a3 withReferenceVersion:(id)a4
+- (float)compareSoftwareStackVersion:(id)version withReferenceVersion:(id)referenceVersion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  versionCopy = version;
+  referenceVersionCopy = referenceVersion;
+  v8 = referenceVersionCopy;
   v9 = NAN;
-  if (v6)
+  if (versionCopy)
   {
-    if (v7)
+    if (referenceVersionCopy)
     {
-      if ([v6 count] || (v9 = 1.0, !objc_msgSend(v8, "count")))
+      if ([versionCopy count] || (v9 = 1.0, !objc_msgSend(v8, "count")))
       {
-        if ([v6 count] && !objc_msgSend(v8, "count"))
+        if ([versionCopy count] && !objc_msgSend(v8, "count"))
         {
           v9 = -1.0;
         }
 
-        else if ([v6 count] || objc_msgSend(v8, "count"))
+        else if ([versionCopy count] || objc_msgSend(v8, "count"))
         {
-          v10 = [v6 objectForKeyedSubscript:@"LivePhotoMetadataSetupDataVersion"];
+          v10 = [versionCopy objectForKeyedSubscript:@"LivePhotoMetadataSetupDataVersion"];
           v11 = [v8 objectForKeyedSubscript:@"LivePhotoMetadataSetupDataVersion"];
           v12 = v11;
           v9 = NAN;
           if (v10 && v11)
           {
-            v13 = [v10 intValue];
-            if (v13 == [v12 intValue] && objc_msgSend(v10, "intValue") <= 1)
+            intValue = [v10 intValue];
+            if (intValue == [v12 intValue] && objc_msgSend(v10, "intValue") <= 1)
             {
-              v14 = [v6 objectForKeyedSubscript:@"FrameworkVersions"];
+              v14 = [versionCopy objectForKeyedSubscript:@"FrameworkVersions"];
               v15 = [v8 objectForKeyedSubscript:@"FrameworkVersions"];
               v16 = v15;
               v17 = 1.0;
@@ -358,7 +358,7 @@ void __55__VCPVideoMetaLivePhotoMetaAnalyzer_defaultDesiredKeys__block_invoke()
                   v19[2] = __86__VCPVideoMetaLivePhotoMetaAnalyzer_compareSoftwareStackVersion_withReferenceVersion___block_invoke;
                   v19[3] = &unk_1E8350E00;
                   v20 = v14;
-                  v21 = self;
+                  selfCopy = self;
                   v22 = &v26;
                   v23 = &v38;
                   v24 = &v34;
@@ -469,20 +469,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (float)compareNumericVersion:(id)a3 withReferenceVersion:(id)a4
+- (float)compareNumericVersion:(id)version withReferenceVersion:(id)referenceVersion
 {
-  v5 = a3;
-  v6 = a4;
+  versionCopy = version;
+  referenceVersionCopy = referenceVersion;
   v7 = 0.0;
-  if ([v5 isEqualToString:v6])
+  if ([versionCopy isEqualToString:referenceVersionCopy])
   {
     goto LABEL_28;
   }
 
-  v28 = v6;
-  v29 = v5;
-  v8 = [v5 componentsSeparatedByString:@"."];
-  v9 = [v6 componentsSeparatedByString:@"."];
+  v28 = referenceVersionCopy;
+  v29 = versionCopy;
+  v8 = [versionCopy componentsSeparatedByString:@"."];
+  v9 = [referenceVersionCopy componentsSeparatedByString:@"."];
   v10 = [v8 count];
   v11 = [v9 count];
   if (v10 >= v11)
@@ -527,12 +527,12 @@ LABEL_10:
     }
 
     v20 = [v17 numberFromString:v15];
-    v21 = [v20 intValue];
+    intValue = [v20 intValue];
 
     v22 = [v17 numberFromString:v16];
-    v23 = [v22 intValue];
+    intValue2 = [v22 intValue];
 
-    if (v21 >= v23)
+    if (intValue >= intValue2)
     {
       v24 = v14;
     }
@@ -542,7 +542,7 @@ LABEL_10:
       v24 = -1.0;
     }
 
-    if (v21 <= v23)
+    if (intValue <= intValue2)
     {
       v14 = v24;
     }
@@ -552,7 +552,7 @@ LABEL_10:
       v14 = 1.0;
     }
 
-    if (v21 != v23)
+    if (intValue != intValue2)
     {
       goto LABEL_21;
     }
@@ -590,103 +590,103 @@ LABEL_23:
     }
   }
 
-  v6 = v28;
-  v5 = v29;
+  referenceVersionCopy = v28;
+  versionCopy = v29;
 LABEL_28:
 
   return v7;
 }
 
-- (int)convertLivePhotoStruct:(FigLivePhotoMetadata *)a3 toDictionary:(id)a4
+- (int)convertLivePhotoStruct:(FigLivePhotoMetadata *)struct toDictionary:(id)dictionary
 {
-  v6 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    if (a3->var0 - 4 >= 0xFFFFFFFD)
+    if (struct->var0 - 4 >= 0xFFFFFFFD)
     {
-      var6_high = HIWORD(a3->var1.var6);
+      var6_high = HIWORD(struct->var1.var6);
       if (var6_high)
       {
-        LODWORD(v7.dx) = *(&a3->var0 + 1);
+        LODWORD(v7.dx) = *(&struct->var0 + 1);
         v9 = [MEMORY[0x1E696AD98] numberWithFloat:v7.dx];
-        [v6 setObject:v9 forKeyedSubscript:@"privET"];
+        [dictionaryCopy setObject:v9 forKeyedSubscript:@"privET"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 2) != 0)
       {
-        v10 = [MEMORY[0x1E696AD98] numberWithLongLong:*&a3->var1.var0];
-        [v6 setObject:v10 forKeyedSubscript:@"privAFS"];
+        v10 = [MEMORY[0x1E696AD98] numberWithLongLong:*&struct->var1.var0];
+        [dictionaryCopy setObject:v10 forKeyedSubscript:@"privAFS"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 4) != 0)
       {
-        v44.x = *&a3->var1.var1 - self->_prevEstimatedCenterMv.dx;
-        v44.y = *(&a3->var1.var1 + 1) - self->_prevEstimatedCenterMv.dy;
+        v44.x = *&struct->var1.var1 - self->_prevEstimatedCenterMv.dx;
+        v44.y = *(&struct->var1.var1 + 1) - self->_prevEstimatedCenterMv.dy;
         v11 = NSStringFromPoint(v44);
-        [v6 setObject:v11 forKeyedSubscript:@"privECMVct"];
+        [dictionaryCopy setObject:v11 forKeyedSubscript:@"privECMVct"];
 
-        v7 = vcvtq_f64_f32(a3->var1.var1);
+        v7 = vcvtq_f64_f32(struct->var1.var1);
         self->_prevEstimatedCenterMv = v7;
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 8) != 0)
       {
-        v45.x = a3->var1.var2;
-        v45.y = a3->var1.var3;
+        v45.x = struct->var1.var2;
+        v45.y = struct->var1.var3;
         v12 = NSStringFromPoint(v45);
-        [v6 setObject:v12 forKeyedSubscript:@"privEMBVct"];
+        [dictionaryCopy setObject:v12 forKeyedSubscript:@"privEMBVct"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 0x10) != 0)
       {
-        *&v7.dx = a3->var1.var4;
+        *&v7.dx = struct->var1.var4;
         v13 = [MEMORY[0x1E696AD98] numberWithFloat:v7.dx];
-        [v6 setObject:v13 forKeyedSubscript:@"privTZF"];
+        [dictionaryCopy setObject:v13 forKeyedSubscript:@"privTZF"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 0x20) != 0)
       {
-        *&v7.dx = a3->var1.var5;
+        *&v7.dx = struct->var1.var5;
         v14 = [MEMORY[0x1E696AD98] numberWithFloat:v7.dx];
-        [v6 setObject:v14 forKeyedSubscript:@"privImgG"];
+        [dictionaryCopy setObject:v14 forKeyedSubscript:@"privImgG"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 0x40) != 0)
       {
-        v15 = [MEMORY[0x1E696AD98] numberWithChar:SLOBYTE(a3->var1.var6)];
-        [v6 setObject:v15 forKeyedSubscript:@"privAFSt"];
+        v15 = [MEMORY[0x1E696AD98] numberWithChar:SLOBYTE(struct->var1.var6)];
+        [dictionaryCopy setObject:v15 forKeyedSubscript:@"privAFSt"];
 
-        var6_high = HIWORD(a3->var1.var6);
+        var6_high = HIWORD(struct->var1.var6);
       }
 
       if ((var6_high & 0x80) != 0)
       {
-        v16 = [MEMORY[0x1E696AD98] numberWithChar:SBYTE1(a3->var1.var6)];
-        [v6 setObject:v16 forKeyedSubscript:@"privFM"];
+        v16 = [MEMORY[0x1E696AD98] numberWithChar:SBYTE1(struct->var1.var6)];
+        [dictionaryCopy setObject:v16 forKeyedSubscript:@"privFM"];
       }
 
-      if (LODWORD(a3->var1.var7))
+      if (LODWORD(struct->var1.var7))
       {
-        v43 = self;
+        selfCopy = self;
         v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
-        if (LODWORD(a3->var1.var7))
+        if (LODWORD(struct->var1.var7))
         {
           v18 = 0;
-          v19 = &a3->var1.var12[0].var4 + 1;
+          v19 = &struct->var1.var12[0].var4 + 1;
           do
           {
-            v20 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             v21 = *v19;
             if ((*v19 & 2) != 0)
             {
@@ -695,7 +695,7 @@ LABEL_28:
               v46.size.width = *(v19 - 7);
               v46.size.height = *(v19 - 5);
               v22 = NSStringFromRect(v46);
-              [v20 setObject:v22 forKeyedSubscript:@"faceBounds"];
+              [dictionary setObject:v22 forKeyedSubscript:@"faceBounds"];
 
               v21 = *v19;
             }
@@ -703,7 +703,7 @@ LABEL_28:
             if ((v21 & 4) != 0)
             {
               v23 = [MEMORY[0x1E696AD98] numberWithInt:*(v19 - 3)];
-              [v20 setObject:v23 forKeyedSubscript:@"faceId"];
+              [dictionary setObject:v23 forKeyedSubscript:@"faceId"];
 
               v21 = *v19;
             }
@@ -711,27 +711,27 @@ LABEL_28:
             if (v21)
             {
               v24 = [MEMORY[0x1E696AD98] numberWithLongLong:*(v19 - 15)];
-              [v20 setObject:v24 forKeyedSubscript:@"relSampleTime"];
+              [dictionary setObject:v24 forKeyedSubscript:@"relSampleTime"];
             }
 
-            [v17 addObject:v20];
+            [v17 addObject:dictionary];
 
             ++v18;
             v19 += 16;
           }
 
-          while (v18 < LODWORD(a3->var1.var7));
+          while (v18 < LODWORD(struct->var1.var7));
         }
 
-        [v6 setObject:v17 forKeyedSubscript:@"privDFArray"];
+        [dictionaryCopy setObject:v17 forKeyedSubscript:@"privDFArray"];
 
-        self = v43;
+        self = selfCopy;
       }
 
-      if (a3->var0 == 3)
+      if (struct->var0 == 3)
       {
-        var7_low = LODWORD(a3->var1.var7);
-        v28 = (a3 + 32 * var7_low);
+        var7_low = LODWORD(struct->var1.var7);
+        v28 = (struct + 32 * var7_low);
         v26 = vaddvq_s32(v28[3]);
         i64 = v28[2 * v26 + 3].i64;
         v30 = *(i64 + 16);
@@ -741,7 +741,7 @@ LABEL_28:
         {
           v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v33 = 0;
-          p_var2 = &a3->var1.var12[var7_low + v26].var2;
+          p_var2 = &struct->var1.var12[var7_low + v26].var2;
           do
           {
             *&v32 = p_var2[v33];
@@ -752,7 +752,7 @@ LABEL_28:
           }
 
           while (v33 != 9);
-          [v6 setObject:v31 forKeyedSubscript:@"trajectoryHomography"];
+          [dictionaryCopy setObject:v31 forKeyedSubscript:@"trajectoryHomography"];
 
           LOWORD(v28) = *v29;
         }
@@ -760,7 +760,7 @@ LABEL_28:
         if ((v28 & 2) != 0)
         {
           v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v29 + 40)];
-          [v6 setObject:v36 forKeyedSubscript:@"presentingTimestampInNanos"];
+          [dictionaryCopy setObject:v36 forKeyedSubscript:@"presentingTimestampInNanos"];
 
           LOWORD(v28) = *v29;
         }
@@ -768,7 +768,7 @@ LABEL_28:
         if ((v28 & 4) != 0)
         {
           v37 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v29 + 48)];
-          [v6 setObject:v37 forKeyedSubscript:@"originalPresentingTimestampInNanos"];
+          [dictionaryCopy setObject:v37 forKeyedSubscript:@"originalPresentingTimestampInNanos"];
 
           LOWORD(v28) = *v29;
         }
@@ -776,29 +776,29 @@ LABEL_28:
         if ((v28 & 8) != 0)
         {
           v39 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v29 + 56)];
-          [v6 setObject:v39 forKeyedSubscript:@"sequenceAdjusterRecipe"];
+          [dictionaryCopy setObject:v39 forKeyedSubscript:@"sequenceAdjusterRecipe"];
         }
 
         else
         {
-          [v6 setObject:&unk_1F49BE140 forKeyedSubscript:@"sequenceAdjusterRecipe"];
+          [dictionaryCopy setObject:&unk_1F49BE140 forKeyedSubscript:@"sequenceAdjusterRecipe"];
         }
 
         if ((*v29 & 0x10) != 0)
         {
           v40 = [MEMORY[0x1E696AD98] numberWithChar:*(v29 + 57)];
-          [v6 setObject:v40 forKeyedSubscript:@"sequenceAdjusterDisplacement"];
+          [dictionaryCopy setObject:v40 forKeyedSubscript:@"sequenceAdjusterDisplacement"];
         }
 
         else
         {
-          [v6 setObject:&unk_1F49BE140 forKeyedSubscript:@"sequenceAdjusterDisplacement"];
+          [dictionaryCopy setObject:&unk_1F49BE140 forKeyedSubscript:@"sequenceAdjusterDisplacement"];
         }
 
         if ((*v29 & 0x20) != 0)
         {
           v41 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:*(v29 + 58)];
-          [v6 setObject:v41 forKeyedSubscript:@"interpolatedFrame"];
+          [dictionaryCopy setObject:v41 forKeyedSubscript:@"interpolatedFrame"];
         }
       }
     }
@@ -814,39 +814,39 @@ LABEL_28:
   return v38;
 }
 
-- (int)convertLivePhotoBinary:(id)a3 toDictionary:(id)a4
+- (int)convertLivePhotoBinary:(id)binary toDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 bytes];
-  [v6 length];
+  binaryCopy = binary;
+  dictionaryCopy = dictionary;
+  [binaryCopy bytes];
+  [binaryCopy length];
   v8 = FigLivePhotoMetadataComputeDeserializationSize();
   if (!v8)
   {
     [(NSMutableData *)self->_deSerializedMetaBuffer length];
     [(NSMutableData *)self->_deSerializedMetaBuffer resetBytesInRange:0, [(NSMutableData *)self->_deSerializedMetaBuffer length]];
-    v9 = [(NSMutableData *)self->_deSerializedMetaBuffer mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_deSerializedMetaBuffer mutableBytes];
     v8 = FigLivePhotoMetadataDeserializeIntoBuffer();
     if (!v8)
     {
-      v8 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self convertLivePhotoStruct:v9 toDictionary:v7];
+      v8 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)self convertLivePhotoStruct:mutableBytes toDictionary:dictionaryCopy];
     }
   }
 
   return v8;
 }
 
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags
 {
   v120 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v90 = v5;
-  v99 = [MEMORY[0x1E695DF90] dictionary];
-  if (!v5)
+  groupCopy = group;
+  v90 = groupCopy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (!groupCopy)
   {
     v12 = -50;
 LABEL_81:
-    v87 = v99;
+    v87 = dictionary;
     goto LABEL_82;
   }
 
@@ -854,9 +854,9 @@ LABEL_81:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  obj = [v5 items];
+  obj = [groupCopy items];
   v6 = [obj countByEnumeratingWithState:&v105 objects:v119 count:16];
-  v98 = self;
+  selfCopy = self;
   if (v6)
   {
     v94 = 0;
@@ -873,14 +873,14 @@ LABEL_81:
         }
 
         v7 = *(*(&v105 + 1) + 8 * i);
-        v8 = [v7 dataType];
-        v9 = [v8 isEqualToString:v92];
+        dataType = [v7 dataType];
+        v9 = [dataType isEqualToString:v92];
 
         if (v9)
         {
-          v10 = [MEMORY[0x1E695DF90] dictionary];
-          v11 = [v7 dataValue];
-          v12 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)v98 convertLivePhotoBinary:v11 toDictionary:v10];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          dataValue = [v7 dataValue];
+          v12 = [(VCPVideoMetaLivePhotoMetaAnalyzer *)selfCopy convertLivePhotoBinary:dataValue toDictionary:dictionary2];
 
           if (v12)
           {
@@ -899,7 +899,7 @@ LABEL_81:
           }
 
           v94 = v13;
-          if ([v10 count])
+          if ([dictionary2 count])
           {
             if (v7)
             {
@@ -913,7 +913,7 @@ LABEL_81:
 
             time = v104;
             v14 = CMTimeCopyAsDictionary(&time, 0);
-            [v99 setObject:v14 forKeyedSubscript:@"start"];
+            [dictionary setObject:v14 forKeyedSubscript:@"start"];
 
             if (v7)
             {
@@ -927,7 +927,7 @@ LABEL_81:
 
             time = v104;
             v15 = CMTimeCopyAsDictionary(&time, 0);
-            [v99 setObject:v15 forKeyedSubscript:@"duration"];
+            [dictionary setObject:v15 forKeyedSubscript:@"duration"];
 
             if (v7)
             {
@@ -944,13 +944,13 @@ LABEL_81:
             v101 = 0u;
             v102 = 0u;
             v103 = 0u;
-            v17 = [objc_opt_class() defaultDesiredKeys];
-            v18 = [v17 countByEnumeratingWithState:&v100 objects:v118 count:16];
+            defaultDesiredKeys = [objc_opt_class() defaultDesiredKeys];
+            v18 = [defaultDesiredKeys countByEnumeratingWithState:&v100 objects:v118 count:16];
             if (v18)
             {
               v19 = Seconds;
               v20 = *v101;
-              v97 = v17;
+              v97 = defaultDesiredKeys;
               do
               {
                 for (j = 0; j != v18; ++j)
@@ -961,71 +961,71 @@ LABEL_81:
                   }
 
                   v22 = *(*(&v100 + 1) + 8 * j);
-                  v23 = [v10 objectForKeyedSubscript:v22];
+                  v23 = [dictionary2 objectForKeyedSubscript:v22];
                   if (v23)
                   {
-                    [v99 setObject:v23 forKeyedSubscript:v22];
+                    [dictionary setObject:v23 forKeyedSubscript:v22];
                     if ([v22 isEqualToString:@"privTZF"])
                     {
-                      v24 = [v99 objectForKeyedSubscript:v22];
+                      v24 = [dictionary objectForKeyedSubscript:v22];
                       [v24 floatValue];
                       v26 = v25;
-                      [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer minZoom];
+                      [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer minZoom];
                       v28 = v26 < v27;
 
                       if (v28)
                       {
-                        v29 = [v99 objectForKeyedSubscript:v22];
+                        v29 = [dictionary objectForKeyedSubscript:v22];
                         [v29 floatValue];
-                        [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setMinZoom:?];
+                        [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setMinZoom:?];
                       }
 
-                      v30 = [v99 objectForKeyedSubscript:v22];
+                      v30 = [dictionary objectForKeyedSubscript:v22];
                       [v30 floatValue];
                       v32 = v31;
-                      [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer maxZoom];
+                      [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer maxZoom];
                       v34 = v32 > v33;
 
                       if (v34)
                       {
-                        v35 = [v99 objectForKeyedSubscript:v22];
+                        v35 = [dictionary objectForKeyedSubscript:v22];
                         [v35 floatValue];
-                        [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setMaxZoom:?];
+                        [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setMaxZoom:?];
                       }
                     }
 
                     if ([v22 isEqualToString:@"privTZF"])
                     {
-                      [(VCPVideoMetaAnalyzer *)v98 photoOffset];
+                      [(VCPVideoMetaAnalyzer *)selfCopy photoOffset];
                       if (v36 > v19)
                       {
-                        [(VCPVideoMetaAnalyzer *)v98 photoOffset];
+                        [(VCPVideoMetaAnalyzer *)selfCopy photoOffset];
                         if ((v37 + -0.5) < v19)
                         {
-                          v38 = [v99 objectForKeyedSubscript:v22];
+                          v38 = [dictionary objectForKeyedSubscript:v22];
                           [v38 floatValue];
                           v40 = v39;
-                          [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer settlingMinZoom];
+                          [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer settlingMinZoom];
                           v42 = v40 < v41;
 
                           if (v42)
                           {
-                            v43 = [v99 objectForKeyedSubscript:v22];
+                            v43 = [dictionary objectForKeyedSubscript:v22];
                             [v43 floatValue];
-                            [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setSettlingMinZoom:?];
+                            [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setSettlingMinZoom:?];
                           }
 
-                          v44 = [v99 objectForKeyedSubscript:v22];
+                          v44 = [dictionary objectForKeyedSubscript:v22];
                           [v44 floatValue];
                           v46 = v45;
-                          [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer settlingMaxZoom];
+                          [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer settlingMaxZoom];
                           v48 = v46 > v47;
 
                           if (v48)
                           {
-                            v49 = [v99 objectForKeyedSubscript:v22];
+                            v49 = [dictionary objectForKeyedSubscript:v22];
                             [v49 floatValue];
-                            [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setSettlingMaxZoom:?];
+                            [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setSettlingMaxZoom:?];
                           }
                         }
                       }
@@ -1033,7 +1033,7 @@ LABEL_81:
                   }
                 }
 
-                v17 = v97;
+                defaultDesiredKeys = v97;
                 v18 = [v97 countByEnumeratingWithState:&v100 objects:v118 count:16];
               }
 
@@ -1058,31 +1058,31 @@ LABEL_81:
     v94 = 0;
   }
 
-  [v99 objectForKeyedSubscript:@"trajectoryHomography"];
-  v51 = v50 = v98;
+  [dictionary objectForKeyedSubscript:@"trajectoryHomography"];
+  v51 = v50 = selfCopy;
   if (v51)
   {
-    v52 = [v99 objectForKeyedSubscript:@"privEMBVct"];
+    v52 = [dictionary objectForKeyedSubscript:@"privEMBVct"];
     if (v52)
     {
-      v53 = (v98->_requestAnalyses & 0x4000010010000200) == 0;
+      v53 = (selfCopy->_requestAnalyses & 0x4000010010000200) == 0;
 
-      v50 = v98;
+      v50 = selfCopy;
       if (v53)
       {
         goto LABEL_55;
       }
 
-      metadataStabilizationArray = v98->_metadataStabilizationArray;
+      metadataStabilizationArray = selfCopy->_metadataStabilizationArray;
       v116 = @"attributes";
       v114[0] = @"MetaHomographyResults";
-      v51 = [v99 objectForKeyedSubscript:@"trajectoryHomography"];
+      v51 = [dictionary objectForKeyedSubscript:@"trajectoryHomography"];
       v115[0] = v51;
       v114[1] = @"MetaPresentationTimeResults";
-      v55 = [v99 objectForKeyedSubscript:@"start"];
+      v55 = [dictionary objectForKeyedSubscript:@"start"];
       v115[1] = v55;
       v114[2] = @"MetaMotionBlurResults";
-      v56 = [v99 objectForKeyedSubscript:@"privEMBVct"];
+      v56 = [dictionary objectForKeyedSubscript:@"privEMBVct"];
       v115[2] = v56;
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v115 forKeys:v114 count:3];
       v117 = v57;
@@ -1090,55 +1090,55 @@ LABEL_81:
       [(NSMutableArray *)metadataStabilizationArray addObject:v58];
     }
 
-    v50 = v98;
+    v50 = selfCopy;
   }
 
 LABEL_55:
-  v59 = [v99 objectForKeyedSubscript:@"presentingTimestampInNanos"];
+  v59 = [dictionary objectForKeyedSubscript:@"presentingTimestampInNanos"];
   if (!v59)
   {
     goto LABEL_60;
   }
 
-  v60 = [v99 objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
+  v60 = [dictionary objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
   if (v60)
   {
     v61 = (v50->_requestAnalyses & 0x200) == 0;
 
-    v50 = v98;
+    v50 = selfCopy;
     if (v61)
     {
       goto LABEL_60;
     }
 
-    frameTimestampArray = v98->_frameTimestampArray;
-    v63 = [v99 objectForKeyedSubscript:@"presentingTimestampInNanos"];
+    frameTimestampArray = selfCopy->_frameTimestampArray;
+    v63 = [dictionary objectForKeyedSubscript:@"presentingTimestampInNanos"];
     [(NSMutableArray *)frameTimestampArray addObject:v63];
 
-    originalFrameTimestampArray = v98->_originalFrameTimestampArray;
-    v65 = [v99 objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
+    originalFrameTimestampArray = selfCopy->_originalFrameTimestampArray;
+    v65 = [dictionary objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
     [(NSMutableArray *)originalFrameTimestampArray addObject:v65];
 
-    metadataItemTimestampArray = v98->_metadataItemTimestampArray;
-    v59 = [v99 objectForKeyedSubscript:@"start"];
+    metadataItemTimestampArray = selfCopy->_metadataItemTimestampArray;
+    v59 = [dictionary objectForKeyedSubscript:@"start"];
     [(NSMutableArray *)metadataItemTimestampArray addObject:v59];
   }
 
-  v50 = v98;
+  v50 = selfCopy;
 LABEL_60:
-  v67 = [v99 objectForKeyedSubscript:@"sequenceAdjusterRecipe"];
+  v67 = [dictionary objectForKeyedSubscript:@"sequenceAdjusterRecipe"];
   if (!v67)
   {
     goto LABEL_69;
   }
 
-  v68 = [v99 objectForKeyedSubscript:@"sequenceAdjusterDisplacement"];
+  v68 = [dictionary objectForKeyedSubscript:@"sequenceAdjusterDisplacement"];
   if (v68)
   {
-    v69 = [v99 objectForKeyedSubscript:@"presentingTimestampInNanos"];
+    v69 = [dictionary objectForKeyedSubscript:@"presentingTimestampInNanos"];
     if (v69)
     {
-      v70 = [v99 objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
+      v70 = [dictionary objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
       if (v70)
       {
         v71 = (v50->_requestAnalyses & 0x4020000000) == 0;
@@ -1148,22 +1148,22 @@ LABEL_60:
           goto LABEL_69;
         }
 
-        adjusterArray = v98->_adjusterArray;
+        adjusterArray = selfCopy->_adjusterArray;
         v112 = @"attributes";
         v110[0] = @"MetaAdjusterRecipeResults";
-        v67 = [v99 objectForKeyedSubscript:@"sequenceAdjusterRecipe"];
+        v67 = [dictionary objectForKeyedSubscript:@"sequenceAdjusterRecipe"];
         v111[0] = v67;
         v110[1] = @"MetaAdjusterDisplacementKey";
-        v68 = [v99 objectForKeyedSubscript:@"sequenceAdjusterDisplacement"];
+        v68 = [dictionary objectForKeyedSubscript:@"sequenceAdjusterDisplacement"];
         v111[1] = v68;
         v110[2] = @"MetaItemPTSResultsKey";
-        v69 = [v99 objectForKeyedSubscript:@"start"];
+        v69 = [dictionary objectForKeyedSubscript:@"start"];
         v111[2] = v69;
         v110[3] = @"MetaOriginalPTSInNanosResults";
-        v73 = [v99 objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
+        v73 = [dictionary objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
         v111[3] = v73;
         v110[4] = @"MetaPTSInNanosResults";
-        v74 = [v99 objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
+        v74 = [dictionary objectForKeyedSubscript:@"originalPresentingTimestampInNanos"];
         v111[4] = v74;
         v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v111 forKeys:v110 count:5];
         v113 = v75;
@@ -1174,43 +1174,43 @@ LABEL_60:
   }
 
 LABEL_69:
-  v77 = [v99 objectForKeyedSubscript:@"interpolatedFrame"];
+  v77 = [dictionary objectForKeyedSubscript:@"interpolatedFrame"];
   v78 = v77 == 0;
 
   if (!v78)
   {
-    interpolatedFrameArray = v98->_interpolatedFrameArray;
-    v80 = [v99 objectForKeyedSubscript:@"interpolatedFrame"];
+    interpolatedFrameArray = selfCopy->_interpolatedFrameArray;
+    v80 = [dictionary objectForKeyedSubscript:@"interpolatedFrame"];
     [(NSMutableArray *)interpolatedFrameArray addObject:v80];
   }
 
-  [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer maxZoom];
+  [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer maxZoom];
   v82 = v81;
-  [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer minZoom];
+  [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer minZoom];
   if ((v82 - v83) > 0.5)
   {
-    [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setHadZoom:1];
+    [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setHadZoom:1];
   }
 
-  [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer settlingMaxZoom];
+  [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer settlingMaxZoom];
   v85 = v84;
-  [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer settlingMinZoom];
+  [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer settlingMinZoom];
   if ((v85 - v86) > 0.5)
   {
-    [(VCPVideoMetaLensSwitchAnalyzer *)v98->_metaLensSwitchAnalzer setSettlingHadZoom:1];
+    [(VCPVideoMetaLensSwitchAnalyzer *)selfCopy->_metaLensSwitchAnalzer setSettlingHadZoom:1];
   }
 
-  if ((v98->_requestAnalyses & 0xC0) == 0)
+  if ((selfCopy->_requestAnalyses & 0xC0) == 0)
   {
     v12 = v94;
     goto LABEL_81;
   }
 
-  v87 = v99;
-  v12 = [(VCPVideoMetaFocusAnalyzer *)v98->_metaFocusAnalyzer processFrameMetadata:v99];
+  v87 = dictionary;
+  v12 = [(VCPVideoMetaFocusAnalyzer *)selfCopy->_metaFocusAnalyzer processFrameMetadata:dictionary];
   if (!v12)
   {
-    v88 = [(VCPVideoMetaMotionAnalyzer *)v98->_metaMotionAnalyzer processFrameMetadata:v99];
+    v88 = [(VCPVideoMetaMotionAnalyzer *)selfCopy->_metaMotionAnalyzer processFrameMetadata:dictionary];
     if (v88)
     {
       v12 = v88;
@@ -1249,17 +1249,17 @@ LABEL_82:
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(VCPVideoMetaLensSwitchAnalyzer *)self->_metaLensSwitchAnalzer results];
-  [v3 setObject:v4 forKeyedSubscript:@"MetaLensSwitchResults"];
+  results = [(VCPVideoMetaLensSwitchAnalyzer *)self->_metaLensSwitchAnalzer results];
+  [v3 setObject:results forKeyedSubscript:@"MetaLensSwitchResults"];
 
   requestAnalyses = self->_requestAnalyses;
   if ((requestAnalyses & 0xC0) != 0)
   {
-    v6 = [(VCPVideoMetaFocusAnalyzer *)self->_metaFocusAnalyzer results];
-    [v3 setObject:v6 forKeyedSubscript:@"MetaFocusResults"];
+    results2 = [(VCPVideoMetaFocusAnalyzer *)self->_metaFocusAnalyzer results];
+    [v3 setObject:results2 forKeyedSubscript:@"MetaFocusResults"];
 
-    v7 = [(VCPVideoMetaMotionAnalyzer *)self->_metaMotionAnalyzer results];
-    [v3 setObject:v7 forKeyedSubscript:@"MetaMotionResults"];
+    results3 = [(VCPVideoMetaMotionAnalyzer *)self->_metaMotionAnalyzer results];
+    [v3 setObject:results3 forKeyedSubscript:@"MetaMotionResults"];
 
     requestAnalyses = self->_requestAnalyses;
   }

@@ -1,34 +1,34 @@
 @interface ATAsset
-+ (id)assetWithSerializedAsset:(id)a3;
-+ (id)downloadAssetWithIdentifier:(id)a3 dataclass:(id)a4 prettyName:(id)a5;
-+ (id)iCloudRestoreAssetWithIdentifier:(id)a3 dataclass:(id)a4 assetType:(id)a5 restorePath:(id)a6 displayName:(id)a7;
-+ (id)uploadAssetWithIdentifier:(id)a3 dataclass:(id)a4 sourcePath:(id)a5 prettyName:(id)a6;
++ (id)assetWithSerializedAsset:(id)asset;
++ (id)downloadAssetWithIdentifier:(id)identifier dataclass:(id)dataclass prettyName:(id)name;
++ (id)iCloudRestoreAssetWithIdentifier:(id)identifier dataclass:(id)dataclass assetType:(id)type restorePath:(id)path displayName:(id)name;
++ (id)uploadAssetWithIdentifier:(id)identifier dataclass:(id)dataclass sourcePath:(id)path prettyName:(id)name;
 - (ATAsset)init;
-- (ATAsset)initWithCoder:(id)a3;
-- (ATAsset)initWithIdentifier:(id)a3 dataclass:(id)a4 prettyName:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_ATAssetTypeFromDataClass:(id)a3;
+- (ATAsset)initWithCoder:(id)coder;
+- (ATAsset)initWithIdentifier:(id)identifier dataclass:(id)dataclass prettyName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (id)_ATAssetTypeFromDataClass:(id)class;
 - (id)_variantDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serializedAsset;
 - (id)shortDescription;
 - (unint64_t)assetParts;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATAsset
 
-- (id)_ATAssetTypeFromDataClass:(id)a3
+- (id)_ATAssetTypeFromDataClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   if (_ATAssetTypeFromDataClass__onceToken != -1)
   {
     dispatch_once(&_ATAssetTypeFromDataClass__onceToken, &__block_literal_global_601);
   }
 
-  v4 = [_ATAssetTypeFromDataClass__dataClassByKind objectForKeyedSubscript:v3];
+  v4 = [_ATAssetTypeFromDataClass__dataClassByKind objectForKeyedSubscript:classCopy];
   if (v4)
   {
     v5 = v4;
@@ -60,11 +60,11 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
 - (id)_variantDescription
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_variantOptions)
   {
-    [v3 appendString:@"{"];
+    [string appendString:@"{"];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -126,33 +126,33 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ATAsset *)self storeInfo];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  storeInfo = [(ATAsset *)self storeInfo];
+  v7 = [storeInfo copyWithZone:zone];
   [v5 setStoreInfo:v7];
 
-  v8 = [(ATAsset *)self identifier];
-  [v5 setIdentifier:v8];
+  identifier = [(ATAsset *)self identifier];
+  [v5 setIdentifier:identifier];
 
-  v9 = [(ATAsset *)self dataclass];
-  [v5 setDataclass:v9];
+  dataclass = [(ATAsset *)self dataclass];
+  [v5 setDataclass:dataclass];
 
-  v10 = [(ATAsset *)self assetType];
-  [v5 setAssetType:v10];
+  assetType = [(ATAsset *)self assetType];
+  [v5 setAssetType:assetType];
 
-  v11 = [(ATAsset *)self variantOptions];
-  [v5 setVariantOptions:v11];
+  variantOptions = [(ATAsset *)self variantOptions];
+  [v5 setVariantOptions:variantOptions];
 
-  v12 = [(ATAsset *)self path];
-  [v5 setPath:v12];
+  path = [(ATAsset *)self path];
+  [v5 setPath:path];
 
-  v13 = [(ATAsset *)self icon];
-  [v5 setIcon:v13];
+  icon = [(ATAsset *)self icon];
+  [v5 setIcon:icon];
 
-  v14 = [(ATAsset *)self prettyName];
-  [v5 setPrettyName:v14];
+  prettyName = [(ATAsset *)self prettyName];
+  [v5 setPrettyName:prettyName];
 
   [v5 setIsDownload:{-[ATAsset isDownload](self, "isDownload")}];
   [v5 setIsRestore:{-[ATAsset isRestore](self, "isRestore")}];
@@ -168,17 +168,17 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   [v5 setDownloadProgress:?];
   [(ATAsset *)self installProgress];
   [v5 setInstallProgress:?];
-  v15 = [(ATAsset *)self storePlist];
-  [v5 setStorePlist:v15];
+  storePlist = [(ATAsset *)self storePlist];
+  [v5 setStorePlist:storePlist];
 
-  v16 = [(ATAsset *)self infoPlist];
-  [v5 setInfoPlist:v16];
+  infoPlist = [(ATAsset *)self infoPlist];
+  [v5 setInfoPlist:infoPlist];
 
-  v17 = [(ATAsset *)self error];
-  [v5 setError:v17];
+  error = [(ATAsset *)self error];
+  [v5 setError:error];
 
-  v18 = [(ATAsset *)self clientParams];
-  [v5 setClientParams:v18];
+  clientParams = [(ATAsset *)self clientParams];
+  [v5 setClientParams:clientParams];
 
   [(ATAsset *)self transferStartTime];
   [v5 setTransferStartTime:?];
@@ -197,29 +197,29 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   [v5 setEnqueueSource:{-[ATAsset enqueueSource](self, "enqueueSource")}];
   [v5 setAllowDownloadOnConstrainedNetwork:{-[ATAsset allowDownloadOnConstrainedNetwork](self, "allowDownloadOnConstrainedNetwork")}];
   [v5 setDownloadPauseReason:{-[ATAsset downloadPauseReason](self, "downloadPauseReason")}];
-  v19 = [(ATAsset *)self downloadSourceContainerId];
-  [v5 setDownloadSourceContainerId:v19];
+  downloadSourceContainerId = [(ATAsset *)self downloadSourceContainerId];
+  [v5 setDownloadSourceContainerId:downloadSourceContainerId];
 
   return v5;
 }
 
-- (ATAsset)initWithCoder:(id)a3
+- (ATAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v44.receiver = self;
   v44.super_class = ATAsset;
   v5 = [(ATAsset *)&v44 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataclass"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataclass"];
     dataclass = v5->_dataclass;
     v5->_dataclass = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v10;
 
@@ -228,36 +228,36 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v12 setWithObjects:{v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"variantOptions"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"variantOptions"];
     variantOptions = v5->_variantOptions;
     v5->_variantOptions = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     localPath = v5->_localPath;
     v5->_localPath = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prettyName"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prettyName"];
     prettyName = v5->_prettyName;
     v5->_prettyName = v21;
 
-    v5->_isDownload = [v4 decodeBoolForKey:@"isDownload"];
-    v5->_downloadOnly = [v4 decodeBoolForKey:@"downloadOnly"];
-    v5->_isRestore = [v4 decodeBoolForKey:@"isRestore"];
-    v5->_bypassStore = [v4 decodeBoolForKey:@"bypassStore"];
-    v5->_isPrioritized = [v4 decodeBoolForKey:@"prioritize"];
-    v5->_isForeground = [v4 decodeBoolForKey:@"isForeground"];
-    v5->_lyricsEmbeddedInAsset = [v4 decodeBoolForKey:@"lyricsEmbeddedInAsset"];
-    [v4 decodeFloatForKey:@"downloadProgress"];
+    v5->_isDownload = [coderCopy decodeBoolForKey:@"isDownload"];
+    v5->_downloadOnly = [coderCopy decodeBoolForKey:@"downloadOnly"];
+    v5->_isRestore = [coderCopy decodeBoolForKey:@"isRestore"];
+    v5->_bypassStore = [coderCopy decodeBoolForKey:@"bypassStore"];
+    v5->_isPrioritized = [coderCopy decodeBoolForKey:@"prioritize"];
+    v5->_isForeground = [coderCopy decodeBoolForKey:@"isForeground"];
+    v5->_lyricsEmbeddedInAsset = [coderCopy decodeBoolForKey:@"lyricsEmbeddedInAsset"];
+    [coderCopy decodeFloatForKey:@"downloadProgress"];
     v5->_downloadProgress = v23;
-    [v4 decodeFloatForKey:@"installProgress"];
+    [coderCopy decodeFloatForKey:@"installProgress"];
     v5->_installProgress = v24;
     v25 = MEMORY[0x277CBEBC0];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     v27 = [v25 URLWithString:v26];
     icon = v5->_icon;
     v5->_icon = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeInfo"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeInfo"];
     storeInfo = v5->_storeInfo;
     v5->_storeInfo = v29;
 
@@ -266,23 +266,23 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v31 setWithObjects:{v32, v33, v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"clientParams"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"clientParams"];
     clientParams = v5->_clientParams;
     v5->_clientParams = v36;
 
-    v5->_assetState = [v4 decodeIntegerForKey:@"assetState"];
-    v5->_powerRequired = [v4 decodeBoolForKey:@"powerRequired"];
-    v5->_canUseCellularData = [v4 decodeBoolForKey:@"canUseCellularData"];
-    v5->_protectionType = [v4 decodeIntForKey:@"protectionType"];
-    v5->_enqueueSource = [v4 decodeIntForKey:@"enqueueSource"];
-    v5->_allowDownloadOnConstrainedNetwork = [v4 decodeBoolForKey:@"allowDownloadOnConstrainedNetwork"];
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadPausedReason"];
+    v5->_assetState = [coderCopy decodeIntegerForKey:@"assetState"];
+    v5->_powerRequired = [coderCopy decodeBoolForKey:@"powerRequired"];
+    v5->_canUseCellularData = [coderCopy decodeBoolForKey:@"canUseCellularData"];
+    v5->_protectionType = [coderCopy decodeIntForKey:@"protectionType"];
+    v5->_enqueueSource = [coderCopy decodeIntForKey:@"enqueueSource"];
+    v5->_allowDownloadOnConstrainedNetwork = [coderCopy decodeBoolForKey:@"allowDownloadOnConstrainedNetwork"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadPausedReason"];
     v5->_downloadPauseReason = [v38 unsignedIntegerValue];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadSourceContainerId"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadSourceContainerId"];
     downloadSourceContainerId = v5->_downloadSourceContainerId;
     v5->_downloadSourceContainerId = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v41;
   }
@@ -290,192 +290,192 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(NSString *)identifier copy];
-  [v5 encodeObject:v6 forKey:@"identifier"];
+  [coderCopy encodeObject:v6 forKey:@"identifier"];
 
   v7 = [(NSString *)self->_dataclass copy];
-  [v5 encodeObject:v7 forKey:@"dataclass"];
+  [coderCopy encodeObject:v7 forKey:@"dataclass"];
 
   v8 = [(NSString *)self->_assetType copy];
-  [v5 encodeObject:v8 forKey:@"assetType"];
+  [coderCopy encodeObject:v8 forKey:@"assetType"];
 
   v9 = [(NSDictionary *)self->_variantOptions copy];
-  [v5 encodeObject:v9 forKey:@"variantOptions"];
+  [coderCopy encodeObject:v9 forKey:@"variantOptions"];
 
   v10 = [(NSString *)self->_localPath copy];
-  [v5 encodeObject:v10 forKey:@"path"];
+  [coderCopy encodeObject:v10 forKey:@"path"];
 
   v11 = [(NSString *)self->_prettyName copy];
-  [v5 encodeObject:v11 forKey:@"prettyName"];
+  [coderCopy encodeObject:v11 forKey:@"prettyName"];
 
-  [v5 encodeBool:self->_isDownload forKey:@"isDownload"];
-  [v5 encodeBool:self->_downloadOnly forKey:@"downloadOnly"];
-  [v5 encodeBool:self->_isRestore forKey:@"isRestore"];
-  [v5 encodeBool:self->_bypassStore forKey:@"bypassStore"];
-  [v5 encodeBool:self->_isPrioritized forKey:@"prioritize"];
-  [v5 encodeBool:self->_isForeground forKey:@"isForeground"];
-  [v5 encodeBool:self->_lyricsEmbeddedInAsset forKey:@"lyricsEmbeddedInAsset"];
+  [coderCopy encodeBool:self->_isDownload forKey:@"isDownload"];
+  [coderCopy encodeBool:self->_downloadOnly forKey:@"downloadOnly"];
+  [coderCopy encodeBool:self->_isRestore forKey:@"isRestore"];
+  [coderCopy encodeBool:self->_bypassStore forKey:@"bypassStore"];
+  [coderCopy encodeBool:self->_isPrioritized forKey:@"prioritize"];
+  [coderCopy encodeBool:self->_isForeground forKey:@"isForeground"];
+  [coderCopy encodeBool:self->_lyricsEmbeddedInAsset forKey:@"lyricsEmbeddedInAsset"];
   *&v12 = self->_downloadProgress;
-  [v5 encodeFloat:@"downloadProgress" forKey:v12];
+  [coderCopy encodeFloat:@"downloadProgress" forKey:v12];
   *&v13 = self->_installProgress;
-  [v5 encodeFloat:@"installProgress" forKey:v13];
-  v14 = [(NSURL *)self->_icon path];
-  v15 = [v14 copy];
-  [v5 encodeObject:v15 forKey:@"icon"];
+  [coderCopy encodeFloat:@"installProgress" forKey:v13];
+  path = [(NSURL *)self->_icon path];
+  v15 = [path copy];
+  [coderCopy encodeObject:v15 forKey:@"icon"];
 
   v16 = [(ATStoreInfo *)self->_storeInfo copy];
-  [v5 encodeObject:v16 forKey:@"storeInfo"];
+  [coderCopy encodeObject:v16 forKey:@"storeInfo"];
 
   v17 = [(NSDictionary *)self->_clientParams copy];
-  [v5 encodeObject:v17 forKey:@"clientParams"];
+  [coderCopy encodeObject:v17 forKey:@"clientParams"];
 
-  [v5 encodeInteger:self->_assetState forKey:@"assetState"];
-  [v5 encodeBool:self->_powerRequired forKey:@"powerRequired"];
-  [v5 encodeBool:self->_canUseCellularData forKey:@"canUseCellularData"];
-  [v5 encodeInteger:self->_protectionType forKey:@"protectionType"];
-  [v5 encodeInteger:self->_enqueueSource forKey:@"enqueueSource"];
-  [v5 encodeBool:self->_allowDownloadOnConstrainedNetwork forKey:@"allowDownloadOnConstrainedNetwork"];
+  [coderCopy encodeInteger:self->_assetState forKey:@"assetState"];
+  [coderCopy encodeBool:self->_powerRequired forKey:@"powerRequired"];
+  [coderCopy encodeBool:self->_canUseCellularData forKey:@"canUseCellularData"];
+  [coderCopy encodeInteger:self->_protectionType forKey:@"protectionType"];
+  [coderCopy encodeInteger:self->_enqueueSource forKey:@"enqueueSource"];
+  [coderCopy encodeBool:self->_allowDownloadOnConstrainedNetwork forKey:@"allowDownloadOnConstrainedNetwork"];
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_downloadPauseReason];
-  [v5 encodeObject:v18 forKey:@"downloadPausedReason"];
+  [coderCopy encodeObject:v18 forKey:@"downloadPausedReason"];
 
   v19 = [(NSNumber *)self->_downloadSourceContainerId copy];
-  [v5 encodeObject:v19 forKey:@"downloadSourceContainerId"];
+  [coderCopy encodeObject:v19 forKey:@"downloadSourceContainerId"];
 
   v21 = [(NSError *)self->_error copy];
-  v20 = [v21 msv_errorByRemovingUnsafeUserInfo];
-  [v5 encodeObject:v20 forKey:@"error"];
+  msv_errorByRemovingUnsafeUserInfo = [v21 msv_errorByRemovingUnsafeUserInfo];
+  [coderCopy encodeObject:msv_errorByRemovingUnsafeUserInfo forKey:@"error"];
 }
 
 - (unint64_t)assetParts
 {
-  v2 = [(ATAsset *)self variantOptions];
-  v3 = [v2 objectForKey:@"AssetParts"];
-  v4 = [v3 unsignedIntegerValue];
+  variantOptions = [(ATAsset *)self variantOptions];
+  v3 = [variantOptions objectForKey:@"AssetParts"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)serializedAsset
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   identifier = self->_identifier;
   if (identifier)
   {
     v5 = [(NSString *)identifier copy];
-    [v3 setObject:v5 forKey:@"identifier"];
+    [dictionary setObject:v5 forKey:@"identifier"];
   }
 
   dataclass = self->_dataclass;
   if (dataclass)
   {
     v7 = [(NSString *)dataclass copy];
-    [v3 setObject:v7 forKey:@"dataclass"];
+    [dictionary setObject:v7 forKey:@"dataclass"];
   }
 
   assetType = self->_assetType;
   if (assetType)
   {
     v9 = [(NSString *)assetType copy];
-    [v3 setObject:v9 forKey:@"assetType"];
+    [dictionary setObject:v9 forKey:@"assetType"];
   }
 
   variantOptions = self->_variantOptions;
   if (variantOptions)
   {
     v11 = [(NSDictionary *)variantOptions copy];
-    [v3 setObject:v11 forKey:@"variantOptions"];
+    [dictionary setObject:v11 forKey:@"variantOptions"];
   }
 
   localPath = self->_localPath;
   if (localPath)
   {
     v13 = [(NSString *)localPath copy];
-    [v3 setObject:v13 forKey:@"path"];
+    [dictionary setObject:v13 forKey:@"path"];
   }
 
   prettyName = self->_prettyName;
   if (prettyName)
   {
     v15 = [(NSString *)prettyName copy];
-    [v3 setObject:v15 forKey:@"prettyName"];
+    [dictionary setObject:v15 forKey:@"prettyName"];
   }
 
   clientParams = self->_clientParams;
   if (clientParams)
   {
     v17 = [(NSDictionary *)clientParams copy];
-    [v3 setObject:v17 forKey:@"clientParams"];
+    [dictionary setObject:v17 forKey:@"clientParams"];
   }
 
   downloadSourceContainerId = self->_downloadSourceContainerId;
   if (downloadSourceContainerId)
   {
     v19 = [(NSNumber *)downloadSourceContainerId copy];
-    [v3 setObject:v19 forKey:@"downloadSourceContainerId"];
+    [dictionary setObject:v19 forKey:@"downloadSourceContainerId"];
   }
 
   error = self->_error;
   if (error)
   {
     v21 = [(NSError *)error copy];
-    [v3 setObject:v21 forKey:@"error"];
+    [dictionary setObject:v21 forKey:@"error"];
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDownload];
-  [v3 setObject:v22 forKey:@"isDownload"];
+  [dictionary setObject:v22 forKey:@"isDownload"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithBool:self->_isRestore];
-  [v3 setObject:v23 forKey:@"isRestore"];
+  [dictionary setObject:v23 forKey:@"isRestore"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_bypassStore];
-  [v3 setObject:v24 forKey:@"bypassStore"];
+  [dictionary setObject:v24 forKey:@"bypassStore"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPrioritized];
-  [v3 setObject:v25 forKey:@"prioritize"];
+  [dictionary setObject:v25 forKey:@"prioritize"];
 
   v26 = [MEMORY[0x277CCABB0] numberWithBool:self->_isForeground];
-  [v3 setObject:v26 forKey:@"isForeground"];
+  [dictionary setObject:v26 forKey:@"isForeground"];
 
   *&v27 = self->_downloadProgress;
   v28 = [MEMORY[0x277CCABB0] numberWithFloat:v27];
-  [v3 setObject:v28 forKey:@"downloadProgress"];
+  [dictionary setObject:v28 forKey:@"downloadProgress"];
 
   *&v29 = self->_installProgress;
   v30 = [MEMORY[0x277CCABB0] numberWithFloat:v29];
-  [v3 setObject:v30 forKey:@"installProgress"];
+  [dictionary setObject:v30 forKey:@"installProgress"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithInteger:self->_assetState];
-  [v3 setObject:v31 forKey:@"assetState"];
+  [dictionary setObject:v31 forKey:@"assetState"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithBool:self->_downloadOnly];
-  [v3 setObject:v32 forKey:@"downloadOnly"];
+  [dictionary setObject:v32 forKey:@"downloadOnly"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithBool:self->_lyricsEmbeddedInAsset];
-  [v3 setObject:v33 forKey:@"lyricsEmbeddedInAsset"];
+  [dictionary setObject:v33 forKey:@"lyricsEmbeddedInAsset"];
 
   v34 = [MEMORY[0x277CCABB0] numberWithBool:self->_powerRequired];
-  [v3 setObject:v34 forKey:@"powerRequired"];
+  [dictionary setObject:v34 forKey:@"powerRequired"];
 
   v35 = [MEMORY[0x277CCABB0] numberWithBool:self->_canUseCellularData];
-  [v3 setObject:v35 forKey:@"canUseCellularData"];
+  [dictionary setObject:v35 forKey:@"canUseCellularData"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithInteger:self->_protectionType];
-  [v3 setObject:v36 forKey:@"protectionType"];
+  [dictionary setObject:v36 forKey:@"protectionType"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithInteger:self->_enqueueSource];
-  [v3 setObject:v37 forKey:@"enqueueSource"];
+  [dictionary setObject:v37 forKey:@"enqueueSource"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithBool:self->_allowDownloadOnConstrainedNetwork];
-  [v3 setObject:v38 forKey:@"allowDownloadOnConstrainedNetwork"];
+  [dictionary setObject:v38 forKey:@"allowDownloadOnConstrainedNetwork"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_downloadPauseReason];
-  [v3 setObject:v39 forKey:@"downloadPausedReason"];
+  [dictionary setObject:v39 forKey:@"downloadPausedReason"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -485,10 +485,10 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v4 ^ [(ATAsset *)self assetParts];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -498,17 +498,17 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       dataclass = self->_dataclass;
-      v7 = [(ATAsset *)v5 dataclass];
-      if ([(NSString *)dataclass isEqualToString:v7])
+      dataclass = [(ATAsset *)v5 dataclass];
+      if ([(NSString *)dataclass isEqualToString:dataclass])
       {
         identifier = self->_identifier;
-        v9 = [(ATAsset *)v5 identifier];
-        if ([(NSString *)identifier isEqualToString:v9])
+        identifier = [(ATAsset *)v5 identifier];
+        if ([(NSString *)identifier isEqualToString:identifier])
         {
-          v10 = [(ATAsset *)self assetParts];
-          v11 = v10 == [(ATAsset *)v5 assetParts];
+          assetParts = [(ATAsset *)self assetParts];
+          v11 = assetParts == [(ATAsset *)v5 assetParts];
         }
 
         else
@@ -532,20 +532,20 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v11;
 }
 
-- (ATAsset)initWithIdentifier:(id)a3 dataclass:(id)a4 prettyName:(id)a5
+- (ATAsset)initWithIdentifier:(id)identifier dataclass:(id)dataclass prettyName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  dataclassCopy = dataclass;
+  nameCopy = name;
   v12 = [(ATAsset *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_dataclass, a4);
-    objc_storeStrong(&v13->_prettyName, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_dataclass, dataclass);
+    objc_storeStrong(&v13->_prettyName, name);
     v13->_downloadPauseReason = 0;
-    v14 = [(ATAsset *)v13 _ATAssetTypeFromDataClass:v10];
+    v14 = [(ATAsset *)v13 _ATAssetTypeFromDataClass:dataclassCopy];
     assetType = v13->_assetType;
     v13->_assetType = v14;
   }
@@ -657,106 +657,106 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
 
     v16 = *&self->_dataclass;
     identifier = self->_identifier;
-    v7 = [(ATStoreInfo *)self->_storeInfo syncID];
-    v8 = [(ATStoreInfo *)self->_storeInfo adamID];
-    v9 = [(ATStoreInfo *)self->_storeInfo sagaID];
-    v10 = [(NSNumber *)self->_downloadSourceContainerId longLongValue];
-    v11 = [(ATStoreInfo *)self->_storeInfo endpointType];
-    v12 = [(ATAsset *)self _variantDescription];
+    syncID = [(ATStoreInfo *)self->_storeInfo syncID];
+    adamID = [(ATStoreInfo *)self->_storeInfo adamID];
+    sagaID = [(ATStoreInfo *)self->_storeInfo sagaID];
+    longLongValue = [(NSNumber *)self->_downloadSourceContainerId longLongValue];
+    endpointType = [(ATStoreInfo *)self->_storeInfo endpointType];
+    _variantDescription = [(ATAsset *)self _variantDescription];
     downloadPauseReason = self->_downloadPauseReason;
-    v14 = [v3 stringByAppendingFormat:@"[%@%@, %@, %@, id=%@, syncid=%@, adamID=%@, sagaID=%@, downloadSourceContainerId=%lld, endpointType=%@, var=%@, path=%@, pid=%lld, bypassStore=%d, prioritized=%d, foreground=%d, installOnly=%d, allowDownloadOnConstrainedNetwork=%d, downloadPauseReason=%d, %@]", v17, v5, v16, identifier, v7, v8, v9, v10, v11, v12, self->_localPath, self->_storePID, self->_bypassStore, self->_isPrioritized, self->_isForeground, self->_installOnly, self->_allowDownloadOnConstrainedNetwork, downloadPauseReason, self->_prettyName];
+    v14 = [v3 stringByAppendingFormat:@"[%@%@, %@, %@, id=%@, syncid=%@, adamID=%@, sagaID=%@, downloadSourceContainerId=%lld, endpointType=%@, var=%@, path=%@, pid=%lld, bypassStore=%d, prioritized=%d, foreground=%d, installOnly=%d, allowDownloadOnConstrainedNetwork=%d, downloadPauseReason=%d, %@]", v17, v5, v16, identifier, syncID, adamID, sagaID, longLongValue, endpointType, _variantDescription, self->_localPath, self->_storePID, self->_bypassStore, self->_isPrioritized, self->_isForeground, self->_installOnly, self->_allowDownloadOnConstrainedNetwork, downloadPauseReason, self->_prettyName];
   }
 
   return v14;
 }
 
-+ (id)assetWithSerializedAsset:(id)a3
++ (id)assetWithSerializedAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(ATAsset);
-  v5 = [v3 objectForKey:@"identifier"];
+  v5 = [assetCopy objectForKey:@"identifier"];
   identifier = v4->_identifier;
   v4->_identifier = v5;
 
-  v7 = [v3 objectForKey:@"dataclass"];
+  v7 = [assetCopy objectForKey:@"dataclass"];
   dataclass = v4->_dataclass;
   v4->_dataclass = v7;
 
-  v9 = [v3 objectForKey:@"assetType"];
+  v9 = [assetCopy objectForKey:@"assetType"];
   assetType = v4->_assetType;
   v4->_assetType = v9;
 
-  v11 = [v3 objectForKey:@"variantOptions"];
+  v11 = [assetCopy objectForKey:@"variantOptions"];
   variantOptions = v4->_variantOptions;
   v4->_variantOptions = v11;
 
-  v13 = [v3 objectForKey:@"path"];
+  v13 = [assetCopy objectForKey:@"path"];
   localPath = v4->_localPath;
   v4->_localPath = v13;
 
-  v15 = [v3 objectForKey:@"prettyName"];
+  v15 = [assetCopy objectForKey:@"prettyName"];
   prettyName = v4->_prettyName;
   v4->_prettyName = v15;
 
-  v17 = [v3 objectForKey:@"isDownload"];
+  v17 = [assetCopy objectForKey:@"isDownload"];
   v4->_isDownload = [v17 BOOLValue];
 
-  v18 = [v3 objectForKey:@"isRestore"];
+  v18 = [assetCopy objectForKey:@"isRestore"];
   v4->_isRestore = [v18 BOOLValue];
 
-  v19 = [v3 objectForKey:@"bypassStore"];
+  v19 = [assetCopy objectForKey:@"bypassStore"];
   v4->_bypassStore = [v19 BOOLValue];
 
-  v20 = [v3 objectForKey:@"prioritize"];
+  v20 = [assetCopy objectForKey:@"prioritize"];
   v4->_isPrioritized = [v20 BOOLValue];
 
-  v21 = [v3 objectForKey:@"isForeground"];
+  v21 = [assetCopy objectForKey:@"isForeground"];
   v4->_isForeground = [v21 BOOLValue];
 
-  v22 = [v3 objectForKey:@"downloadProgress"];
+  v22 = [assetCopy objectForKey:@"downloadProgress"];
   [v22 floatValue];
   v4->_downloadProgress = v23;
 
-  v24 = [v3 objectForKey:@"installProgress"];
+  v24 = [assetCopy objectForKey:@"installProgress"];
   [v24 floatValue];
   v4->_installProgress = v25;
 
-  v26 = [v3 objectForKey:@"clientParams"];
+  v26 = [assetCopy objectForKey:@"clientParams"];
   clientParams = v4->_clientParams;
   v4->_clientParams = v26;
 
-  v28 = [v3 objectForKey:@"assetState"];
+  v28 = [assetCopy objectForKey:@"assetState"];
   v4->_assetState = [v28 integerValue];
 
-  v29 = [v3 objectForKey:@"downloadOnly"];
+  v29 = [assetCopy objectForKey:@"downloadOnly"];
   v4->_downloadOnly = [v29 BOOLValue];
 
-  v30 = [v3 objectForKey:@"lyricsEmbeddedInAsset"];
+  v30 = [assetCopy objectForKey:@"lyricsEmbeddedInAsset"];
   v4->_lyricsEmbeddedInAsset = [v30 BOOLValue];
 
-  v31 = [v3 objectForKey:@"powerRequired"];
+  v31 = [assetCopy objectForKey:@"powerRequired"];
   v4->_powerRequired = [v31 BOOLValue];
 
-  v32 = [v3 objectForKey:@"canUseCellularData"];
+  v32 = [assetCopy objectForKey:@"canUseCellularData"];
   v4->_canUseCellularData = [v32 BOOLValue];
 
-  v33 = [v3 objectForKey:@"protectionType"];
+  v33 = [assetCopy objectForKey:@"protectionType"];
   v4->_protectionType = [v33 intValue];
 
-  v34 = [v3 objectForKey:@"enqueueSource"];
+  v34 = [assetCopy objectForKey:@"enqueueSource"];
   v4->_enqueueSource = [v34 intValue];
 
-  v35 = [v3 objectForKey:@"allowDownloadOnConstrainedNetwork"];
+  v35 = [assetCopy objectForKey:@"allowDownloadOnConstrainedNetwork"];
   v4->_allowDownloadOnConstrainedNetwork = [v35 BOOLValue];
 
-  v36 = [v3 objectForKey:@"downloadPausedReason"];
+  v36 = [assetCopy objectForKey:@"downloadPausedReason"];
   v4->_downloadPauseReason = [v36 unsignedIntegerValue];
 
-  v37 = [v3 objectForKey:@"downloadSourceContainerId"];
+  v37 = [assetCopy objectForKey:@"downloadSourceContainerId"];
   downloadSourceContainerId = v4->_downloadSourceContainerId;
   v4->_downloadSourceContainerId = v37;
 
-  v39 = [v3 objectForKey:@"error"];
+  v39 = [assetCopy objectForKey:@"error"];
 
   error = v4->_error;
   v4->_error = v39;
@@ -764,21 +764,21 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v4;
 }
 
-+ (id)iCloudRestoreAssetWithIdentifier:(id)a3 dataclass:(id)a4 assetType:(id)a5 restorePath:(id)a6 displayName:(id)a7
++ (id)iCloudRestoreAssetWithIdentifier:(id)identifier dataclass:(id)dataclass assetType:(id)type restorePath:(id)path displayName:(id)name
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[ATAsset alloc] initWithIdentifier:v15 dataclass:v14 prettyName:v13];
+  typeCopy = type;
+  pathCopy = path;
+  nameCopy = name;
+  dataclassCopy = dataclass;
+  identifierCopy = identifier;
+  v16 = [[ATAsset alloc] initWithIdentifier:identifierCopy dataclass:dataclassCopy prettyName:nameCopy];
 
   assetType = v16->_assetType;
-  v16->_assetType = v11;
-  v18 = v11;
+  v16->_assetType = typeCopy;
+  v18 = typeCopy;
 
   localPath = v16->_localPath;
-  v16->_localPath = v12;
+  v16->_localPath = pathCopy;
 
   *&v16->_isRestore = 257;
   v16->_legacy = 1;
@@ -786,16 +786,16 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v16;
 }
 
-+ (id)uploadAssetWithIdentifier:(id)a3 dataclass:(id)a4 sourcePath:(id)a5 prettyName:(id)a6
++ (id)uploadAssetWithIdentifier:(id)identifier dataclass:(id)dataclass sourcePath:(id)path prettyName:(id)name
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[ATAsset alloc] initWithIdentifier:v12 dataclass:v11 prettyName:v10];
+  pathCopy = path;
+  nameCopy = name;
+  dataclassCopy = dataclass;
+  identifierCopy = identifier;
+  v13 = [[ATAsset alloc] initWithIdentifier:identifierCopy dataclass:dataclassCopy prettyName:nameCopy];
 
   localPath = v13->_localPath;
-  v13->_localPath = v9;
+  v13->_localPath = pathCopy;
 
   v13->_isDownload = 0;
   v13->_legacy = 1;
@@ -803,12 +803,12 @@ uint64_t __37__ATAsset__ATAssetTypeFromDataClass___block_invoke()
   return v13;
 }
 
-+ (id)downloadAssetWithIdentifier:(id)a3 dataclass:(id)a4 prettyName:(id)a5
++ (id)downloadAssetWithIdentifier:(id)identifier dataclass:(id)dataclass prettyName:(id)name
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ATAsset alloc] initWithIdentifier:v9 dataclass:v8 prettyName:v7];
+  nameCopy = name;
+  dataclassCopy = dataclass;
+  identifierCopy = identifier;
+  v10 = [[ATAsset alloc] initWithIdentifier:identifierCopy dataclass:dataclassCopy prettyName:nameCopy];
 
   v10->_legacy = 1;
 

@@ -1,13 +1,13 @@
 @interface AAInheritanceContactsViewModel
 - (AAInheritanceContactsViewModel)init;
-- (id)_localBenefactors:(id)a3;
-- (id)_localBeneficiaries:(id)a3 invitationStatuses:(id)a4;
-- (id)_localContact:(id)a3;
-- (void)_fetchInvitationStatuses:(id)a3;
-- (void)_fetchInvitations:(id)a3;
-- (void)fetchBenefactors:(id)a3;
-- (void)fetchBeneficiaries:(id)a3;
-- (void)fetchSuggestedBeneficiaries:(id)a3;
+- (id)_localBenefactors:(id)benefactors;
+- (id)_localBeneficiaries:(id)beneficiaries invitationStatuses:(id)statuses;
+- (id)_localContact:(id)contact;
+- (void)_fetchInvitationStatuses:(id)statuses;
+- (void)_fetchInvitations:(id)invitations;
+- (void)fetchBenefactors:(id)benefactors;
+- (void)fetchBeneficiaries:(id)beneficiaries;
+- (void)fetchSuggestedBeneficiaries:(id)beneficiaries;
 @end
 
 @implementation AAInheritanceContactsViewModel
@@ -31,17 +31,17 @@
   return v2;
 }
 
-- (void)fetchBeneficiaries:(id)a3
+- (void)fetchBeneficiaries:(id)beneficiaries
 {
-  v4 = a3;
+  beneficiariesCopy = beneficiaries;
   inheritanceController = self->_inheritanceController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__AAInheritanceContactsViewModel_fetchBeneficiaries___block_invoke;
   v7[3] = &unk_1E7C9B9E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = beneficiariesCopy;
+  v6 = beneficiariesCopy;
   [(AAInheritanceController *)inheritanceController fetchBeneficiariesWithCompletion:v7];
 }
 
@@ -86,17 +86,17 @@ void __53__AAInheritanceContactsViewModel_fetchBeneficiaries___block_invoke_29(u
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchBenefactors:(id)a3
+- (void)fetchBenefactors:(id)benefactors
 {
-  v4 = a3;
+  benefactorsCopy = benefactors;
   inheritanceController = self->_inheritanceController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__AAInheritanceContactsViewModel_fetchBenefactors___block_invoke;
   v7[3] = &unk_1E7C9B9E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = benefactorsCopy;
+  v6 = benefactorsCopy;
   [(AAInheritanceController *)inheritanceController fetchBenefactorsWithCompletion:v7];
 }
 
@@ -132,16 +132,16 @@ void __51__AAInheritanceContactsViewModel_fetchBenefactors___block_invoke(uint64
   }
 }
 
-- (void)fetchSuggestedBeneficiaries:(id)a3
+- (void)fetchSuggestedBeneficiaries:(id)beneficiaries
 {
-  v4 = a3;
+  beneficiariesCopy = beneficiaries;
   inheritanceController = self->_inheritanceController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__AAInheritanceContactsViewModel_fetchSuggestedBeneficiaries___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v4;
-  v6 = v4;
+  v8 = beneficiariesCopy;
+  v6 = beneficiariesCopy;
   [(AAInheritanceController *)inheritanceController fetchSuggestedBeneficiariesWithCompletion:v7];
 }
 
@@ -167,18 +167,18 @@ void __62__AAInheritanceContactsViewModel_fetchSuggestedBeneficiaries___block_in
   v6();
 }
 
-- (void)_fetchInvitationStatuses:(id)a3
+- (void)_fetchInvitationStatuses:(id)statuses
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  statusesCopy = statuses;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__AAInheritanceContactsViewModel__fetchInvitationStatuses___block_invoke;
   v8[3] = &unk_1E7C9BE18;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = dictionary;
+  v10 = statusesCopy;
+  v6 = statusesCopy;
+  v7 = dictionary;
   [(AAInheritanceContactsViewModel *)self _fetchInvitations:v8];
 }
 
@@ -224,16 +224,16 @@ void __59__AAInheritanceContactsViewModel__fetchInvitationStatuses___block_invok
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchInvitations:(id)a3
+- (void)_fetchInvitations:(id)invitations
 {
-  v4 = a3;
+  invitationsCopy = invitations;
   inheritanceController = self->_inheritanceController;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__AAInheritanceContactsViewModel__fetchInvitations___block_invoke;
   v7[3] = &unk_1E7C9B290;
-  v8 = v4;
-  v6 = v4;
+  v8 = invitationsCopy;
+  v6 = invitationsCopy;
   [(AAInheritanceController *)inheritanceController fetchInvitationsWithCompletion:v7];
 }
 
@@ -259,17 +259,17 @@ void __52__AAInheritanceContactsViewModel__fetchInvitations___block_invoke(uint6
   v6();
 }
 
-- (id)_localBeneficiaries:(id)a3 invitationStatuses:(id)a4
+- (id)_localBeneficiaries:(id)beneficiaries invitationStatuses:(id)statuses
 {
-  v6 = a4;
+  statusesCopy = statuses;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__AAInheritanceContactsViewModel__localBeneficiaries_invitationStatuses___block_invoke;
   v10[3] = &unk_1E7C9BE40;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a3 aaf_map:v10];
+  v11 = statusesCopy;
+  v7 = statusesCopy;
+  v8 = [beneficiaries aaf_map:v10];
 
   return v8;
 }
@@ -312,14 +312,14 @@ LABEL_7:
   return v11;
 }
 
-- (id)_localBenefactors:(id)a3
+- (id)_localBenefactors:(id)benefactors
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__AAInheritanceContactsViewModel__localBenefactors___block_invoke;
   v5[3] = &unk_1E7C9BE68;
   v5[4] = self;
-  v3 = [a3 aaf_map:v5];
+  v3 = [benefactors aaf_map:v5];
 
   return v3;
 }
@@ -357,12 +357,12 @@ id __52__AAInheritanceContactsViewModel__localBenefactors___block_invoke(uint64_
   return v4;
 }
 
-- (id)_localContact:(id)a3
+- (id)_localContact:(id)contact
 {
   contactsManager = self->_contactsManager;
-  v4 = a3;
-  v5 = [(AAContactsManager *)contactsManager contactForHandle:v4];
-  v6 = [[AALocalContactInfo alloc] initWithHandle:v4 contact:v5];
+  contactCopy = contact;
+  v5 = [(AAContactsManager *)contactsManager contactForHandle:contactCopy];
+  v6 = [[AALocalContactInfo alloc] initWithHandle:contactCopy contact:v5];
 
   return v6;
 }

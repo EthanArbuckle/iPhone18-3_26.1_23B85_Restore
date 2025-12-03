@@ -1,12 +1,12 @@
 @interface HKMedicationInteractionResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationInteractionResult)init;
-- (HKMedicationInteractionResult)initWithCoder:(id)a3;
-- (HKMedicationInteractionResult)initWithFirstConceptIdentifier:(id)a3 secondConceptIdentifier:(id)a4 interactionType:(unint64_t)a5 interactions:(id)a6;
+- (HKMedicationInteractionResult)initWithCoder:(id)coder;
+- (HKMedicationInteractionResult)initWithFirstConceptIdentifier:(id)identifier secondConceptIdentifier:(id)conceptIdentifier interactionType:(unint64_t)type interactions:(id)interactions;
 - (id)conceptIdentifiers;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationInteractionResult
@@ -21,21 +21,21 @@
   return 0;
 }
 
-- (HKMedicationInteractionResult)initWithFirstConceptIdentifier:(id)a3 secondConceptIdentifier:(id)a4 interactionType:(unint64_t)a5 interactions:(id)a6
+- (HKMedicationInteractionResult)initWithFirstConceptIdentifier:(id)identifier secondConceptIdentifier:(id)conceptIdentifier interactionType:(unint64_t)type interactions:(id)interactions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  identifierCopy = identifier;
+  conceptIdentifierCopy = conceptIdentifier;
+  interactionsCopy = interactions;
+  if (identifierCopy)
   {
-    if (v11)
+    if (conceptIdentifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [HKMedicationInteractionResult initWithFirstConceptIdentifier:secondConceptIdentifier:interactionType:interactions:];
-    if (v12)
+    if (interactionsCopy)
     {
       goto LABEL_4;
     }
@@ -44,13 +44,13 @@ LABEL_8:
   }
 
   [HKMedicationInteractionResult initWithFirstConceptIdentifier:secondConceptIdentifier:interactionType:interactions:];
-  if (!v11)
+  if (!conceptIdentifierCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (interactionsCopy)
   {
     goto LABEL_4;
   }
@@ -63,16 +63,16 @@ LABEL_4:
   v13 = [(HKMedicationInteractionResult *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     firstIdentifier = v13->_firstIdentifier;
     v13->_firstIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [conceptIdentifierCopy copy];
     secondIdentifier = v13->_secondIdentifier;
     v13->_secondIdentifier = v16;
 
-    v13->_interactionType = a5;
-    v18 = [v12 copy];
+    v13->_interactionType = type;
+    v18 = [interactionsCopy copy];
     interactions = v13->_interactions;
     v13->_interactions = v18;
   }
@@ -88,10 +88,10 @@ LABEL_4:
   return v4 ^ interactionType ^ [(NSSet *)self->_interactions hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_5;
@@ -100,7 +100,7 @@ LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if (![(HKDrugInteractionResult *)self hasEquivalentFirstInteractionClass:v7->_secondIdentifier secondInteractionClass:?]|| self->_interactionType != v7->_interactionType)
     {
       goto LABEL_11;
@@ -155,42 +155,42 @@ LABEL_5:
   firstIdentifier = self->_firstIdentifier;
   secondIdentifier = self->_secondIdentifier;
   v7 = HKStringFromDrugInteractionType(self->_interactionType);
-  v8 = [(NSSet *)self->_interactions allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  allObjects = [(NSSet *)self->_interactions allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
   v10 = [v3 stringWithFormat:@"<%@:%p\nfirst concept identifier: %@, \nsecondc concept identifier: %@, \ninteractionType:%@, \ninteractions:[%@]>", v4, self, firstIdentifier, secondIdentifier, v7, v9];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   firstIdentifier = self->_firstIdentifier;
-  v5 = a3;
-  [v5 encodeObject:firstIdentifier forKey:@"FirstIdentifier"];
-  [v5 encodeObject:self->_secondIdentifier forKey:@"SecondIdentifier"];
-  [v5 encodeInteger:self->_interactionType forKey:@"InteractionType"];
-  [v5 encodeObject:self->_interactions forKey:@"Interactions"];
+  coderCopy = coder;
+  [coderCopy encodeObject:firstIdentifier forKey:@"FirstIdentifier"];
+  [coderCopy encodeObject:self->_secondIdentifier forKey:@"SecondIdentifier"];
+  [coderCopy encodeInteger:self->_interactionType forKey:@"InteractionType"];
+  [coderCopy encodeObject:self->_interactions forKey:@"Interactions"];
 }
 
-- (HKMedicationInteractionResult)initWithCoder:(id)a3
+- (HKMedicationInteractionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HKMedicationInteractionResult;
   v5 = [(HKMedicationInteractionResult *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FirstIdentifier"];
     firstIdentifier = v5->_firstIdentifier;
     v5->_firstIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SecondIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SecondIdentifier"];
     secondIdentifier = v5->_secondIdentifier;
     v5->_secondIdentifier = v8;
 
-    v5->_interactionType = [v4 decodeIntegerForKey:@"InteractionType"];
+    v5->_interactionType = [coderCopy decodeIntegerForKey:@"InteractionType"];
     v10 = [MEMORY[0x277CBEB98] hk_typesForSetOf:objc_opt_class()];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Interactions"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Interactions"];
     interactions = v5->_interactions;
     v5->_interactions = v11;
 

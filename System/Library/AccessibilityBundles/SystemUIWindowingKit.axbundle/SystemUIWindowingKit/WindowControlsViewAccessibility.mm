@@ -8,9 +8,9 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(WindowControlsViewAccessibility *)self _axMenuBarViewController];
+  _axMenuBarViewController = [(WindowControlsViewAccessibility *)self _axMenuBarViewController];
 
-  if (v3)
+  if (_axMenuBarViewController)
   {
     return 0;
   }
@@ -25,28 +25,28 @@
   v7.receiver = self;
   v7.super_class = WindowControlsViewAccessibility;
   [(WindowControlsViewAccessibility *)&v7 accessibilityPerformEscape];
-  v3 = [(WindowControlsViewAccessibility *)self _axMenuBarViewController];
-  v4 = [v3 safeUIViewForKey:@"_windowControlsPlaceholderView"];
+  _axMenuBarViewController = [(WindowControlsViewAccessibility *)self _axMenuBarViewController];
+  v4 = [_axMenuBarViewController safeUIViewForKey:@"_windowControlsPlaceholderView"];
 
   if (v4)
   {
-    v5 = v4;
+    selfCopy = v4;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], v5);
+  UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], selfCopy);
 
   return 1;
 }
 
 - (id)_axMenuBarViewController
 {
-  v2 = [(WindowControlsViewAccessibility *)self _accessibilityViewController];
-  v3 = [v2 safeValueForKey:@"delegate"];
+  _accessibilityViewController = [(WindowControlsViewAccessibility *)self _accessibilityViewController];
+  v3 = [_accessibilityViewController safeValueForKey:@"delegate"];
 
   v4 = [v3 safeValueForKey:@"windowScene"];
   v5 = [v4 safeValueForKey:@"menuBarManager"];

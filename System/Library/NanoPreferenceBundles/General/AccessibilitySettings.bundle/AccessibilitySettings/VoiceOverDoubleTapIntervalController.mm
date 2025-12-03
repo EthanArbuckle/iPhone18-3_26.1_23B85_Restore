@@ -1,8 +1,8 @@
 @interface VoiceOverDoubleTapIntervalController
-- (double)valueForSpecifier:(id)a3;
+- (double)valueForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 @end
 
 @implementation VoiceOverDoubleTapIntervalController
@@ -13,16 +13,16 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    array = [MEMORY[0x277CBEB18] array];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = settingsLocString(@"DOUBLE_TAP_INTERVAL_FOOTER_TEXT", @"VoiceOverSettings");
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
 
-    [v5 addObject:v6];
+    [array addObject:emptyGroupSpecifier];
     v8 = [MEMORY[0x277D3FAD8] ax_stepperSpecifierWithDelegate:self];
-    [v5 addObject:v8];
+    [array addObject:v8];
     v9 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -30,10 +30,10 @@
   return v4;
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [v3 doubleForKey:*MEMORY[0x277CE7F58]];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [accessibilityDomainAccessor doubleForKey:*MEMORY[0x277CE7F58]];
   v5 = v4;
 
   result = 0.35;
@@ -45,17 +45,17 @@
   return result;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:{a3, a4}];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:{specifier, value}];
   v5 = *MEMORY[0x277CE7F58];
-  v6 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  [(AccessibilityBridgeBaseController *)self setGizmoPref:v7 forKey:v5 domainAccessor:v6];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  [(AccessibilityBridgeBaseController *)self setGizmoPref:v7 forKey:v5 domainAccessor:accessibilityDomainAccessor];
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(VoiceOverDoubleTapIntervalController *)self valueForSpecifier:a3];
+  [(VoiceOverDoubleTapIntervalController *)self valueForSpecifier:specifier];
   v3 = [MEMORY[0x277CCABB0] numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 

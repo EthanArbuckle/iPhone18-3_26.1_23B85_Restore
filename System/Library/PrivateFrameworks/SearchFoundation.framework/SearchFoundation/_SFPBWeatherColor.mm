@@ -1,72 +1,72 @@
 @interface _SFPBWeatherColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBWeatherColor)initWithDictionary:(id)a3;
-- (_SFPBWeatherColor)initWithFacade:(id)a3;
-- (_SFPBWeatherColor)initWithJSON:(id)a3;
+- (_SFPBWeatherColor)initWithDictionary:(id)dictionary;
+- (_SFPBWeatherColor)initWithFacade:(id)facade;
+- (_SFPBWeatherColor)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setCondition:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCondition:(id)condition;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBWeatherColor
 
-- (_SFPBWeatherColor)initWithFacade:(id)a3
+- (_SFPBWeatherColor)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBWeatherColor *)self init];
   if (v5)
   {
-    v6 = [v4 condition];
+    condition = [facadeCopy condition];
 
-    if (v6)
+    if (condition)
     {
-      v7 = [v4 condition];
-      [(_SFPBWeatherColor *)v5 setCondition:v7];
+      condition2 = [facadeCopy condition];
+      [(_SFPBWeatherColor *)v5 setCondition:condition2];
     }
 
-    v8 = [v4 location];
+    location = [facadeCopy location];
 
-    if (v8)
+    if (location)
     {
       v9 = [_SFPBLatLng alloc];
-      v10 = [v4 location];
-      v11 = [(_SFPBLatLng *)v9 initWithFacade:v10];
+      location2 = [facadeCopy location];
+      v11 = [(_SFPBLatLng *)v9 initWithFacade:location2];
       [(_SFPBWeatherColor *)v5 setLocation:v11];
     }
 
-    v12 = [v4 date];
+    date = [facadeCopy date];
 
-    if (v12)
+    if (date)
     {
       v13 = [_SFPBDate alloc];
-      v14 = [v4 date];
-      v15 = [(_SFPBDate *)v13 initWithNSDate:v14];
+      date2 = [facadeCopy date];
+      v15 = [(_SFPBDate *)v13 initWithNSDate:date2];
       [(_SFPBWeatherColor *)v5 setDate:v15];
     }
 
-    if ([v4 hasCloudCover])
+    if ([facadeCopy hasCloudCover])
     {
-      [v4 cloudCover];
+      [facadeCopy cloudCover];
       [(_SFPBWeatherColor *)v5 setCloudCover:?];
     }
 
-    if ([v4 hasCloudCoverLowAltPct])
+    if ([facadeCopy hasCloudCoverLowAltPct])
     {
-      [v4 cloudCoverLowAltPct];
+      [facadeCopy cloudCoverLowAltPct];
       [(_SFPBWeatherColor *)v5 setCloudCoverLowAltPct:?];
     }
 
-    if ([v4 hasCloudCoverMidAltPct])
+    if ([facadeCopy hasCloudCoverMidAltPct])
     {
-      [v4 cloudCoverMidAltPct];
+      [facadeCopy cloudCoverMidAltPct];
       [(_SFPBWeatherColor *)v5 setCloudCoverMidAltPct:?];
     }
 
-    if ([v4 hasCloudCoverHighAltPct])
+    if ([facadeCopy hasCloudCoverHighAltPct])
     {
-      [v4 cloudCoverHighAltPct];
+      [facadeCopy cloudCoverHighAltPct];
       [(_SFPBWeatherColor *)v5 setCloudCoverHighAltPct:?];
     }
 
@@ -76,15 +76,15 @@
   return v5;
 }
 
-- (_SFPBWeatherColor)initWithDictionary:(id)a3
+- (_SFPBWeatherColor)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = _SFPBWeatherColor;
   v5 = [(_SFPBWeatherColor *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"condition"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"condition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(_SFPBWeatherColor *)v5 setCondition:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"location"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBWeatherColor *)v5 setLocation:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"date"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBWeatherColor *)v5 setDate:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"cloudCover"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cloudCover"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
       [(_SFPBWeatherColor *)v5 setCloudCover:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"cloudCoverLowAltPct"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"cloudCoverLowAltPct"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(_SFPBWeatherColor *)v5 setCloudCoverLowAltPct:?];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cloudCoverMidAltPct"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cloudCoverMidAltPct"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
       [(_SFPBWeatherColor *)v5 setCloudCoverMidAltPct:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"cloudCoverHighAltPct"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"cloudCoverHighAltPct"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -146,30 +146,30 @@
   return v5;
 }
 
-- (_SFPBWeatherColor)initWithJSON:(id)a3
+- (_SFPBWeatherColor)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBWeatherColor *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBWeatherColor *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBWeatherColor *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -182,13 +182,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cloudCover != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBWeatherColor *)self cloudCover];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"cloudCover"];
+    [dictionary setObject:v5 forKeyedSubscript:@"cloudCover"];
   }
 
   if (self->_cloudCoverHighAltPct != 0.0)
@@ -196,7 +196,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBWeatherColor *)self cloudCoverHighAltPct];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"cloudCoverHighAltPct"];
+    [dictionary setObject:v7 forKeyedSubscript:@"cloudCoverHighAltPct"];
   }
 
   if (self->_cloudCoverLowAltPct != 0.0)
@@ -204,7 +204,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(_SFPBWeatherColor *)self cloudCoverLowAltPct];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"cloudCoverLowAltPct"];
+    [dictionary setObject:v9 forKeyedSubscript:@"cloudCoverLowAltPct"];
   }
 
   if (self->_cloudCoverMidAltPct != 0.0)
@@ -212,49 +212,49 @@
     v10 = MEMORY[0x1E696AD98];
     [(_SFPBWeatherColor *)self cloudCoverMidAltPct];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"cloudCoverMidAltPct"];
+    [dictionary setObject:v11 forKeyedSubscript:@"cloudCoverMidAltPct"];
   }
 
   if (self->_condition)
   {
-    v12 = [(_SFPBWeatherColor *)self condition];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"condition"];
+    condition = [(_SFPBWeatherColor *)self condition];
+    v13 = [condition copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"condition"];
   }
 
   if (self->_date)
   {
-    v14 = [(_SFPBWeatherColor *)self date];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    date = [(_SFPBWeatherColor *)self date];
+    dictionaryRepresentation = [date dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"date"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"date"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"date"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"date"];
     }
   }
 
   if (self->_location)
   {
-    v17 = [(_SFPBWeatherColor *)self location];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    location = [(_SFPBWeatherColor *)self location];
+    dictionaryRepresentation2 = [location dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"location"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"location"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -400,28 +400,28 @@
   return v4 ^ v3 ^ v5 ^ v11 ^ v15 ^ v19 ^ v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBWeatherColor *)self condition];
-  v6 = [v4 condition];
-  if ((v5 != 0) == (v6 == 0))
+  condition = [(_SFPBWeatherColor *)self condition];
+  condition2 = [equalCopy condition];
+  if ((condition != 0) == (condition2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBWeatherColor *)self condition];
-  if (v7)
+  condition3 = [(_SFPBWeatherColor *)self condition];
+  if (condition3)
   {
-    v8 = v7;
-    v9 = [(_SFPBWeatherColor *)self condition];
-    v10 = [v4 condition];
-    v11 = [v9 isEqual:v10];
+    v8 = condition3;
+    condition4 = [(_SFPBWeatherColor *)self condition];
+    condition5 = [equalCopy condition];
+    v11 = [condition4 isEqual:condition5];
 
     if (!v11)
     {
@@ -433,20 +433,20 @@
   {
   }
 
-  v5 = [(_SFPBWeatherColor *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  condition = [(_SFPBWeatherColor *)self location];
+  condition2 = [equalCopy location];
+  if ((condition != 0) == (condition2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBWeatherColor *)self location];
-  if (v12)
+  location = [(_SFPBWeatherColor *)self location];
+  if (location)
   {
-    v13 = v12;
-    v14 = [(_SFPBWeatherColor *)self location];
-    v15 = [v4 location];
-    v16 = [v14 isEqual:v15];
+    v13 = location;
+    location2 = [(_SFPBWeatherColor *)self location];
+    location3 = [equalCopy location];
+    v16 = [location2 isEqual:location3];
 
     if (!v16)
     {
@@ -458,22 +458,22 @@
   {
   }
 
-  v5 = [(_SFPBWeatherColor *)self date];
-  v6 = [v4 date];
-  if ((v5 != 0) == (v6 == 0))
+  condition = [(_SFPBWeatherColor *)self date];
+  condition2 = [equalCopy date];
+  if ((condition != 0) == (condition2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_SFPBWeatherColor *)self date];
-  if (v17)
+  date = [(_SFPBWeatherColor *)self date];
+  if (date)
   {
-    v18 = v17;
-    v19 = [(_SFPBWeatherColor *)self date];
-    v20 = [v4 date];
-    v21 = [v19 isEqual:v20];
+    v18 = date;
+    date2 = [(_SFPBWeatherColor *)self date];
+    date3 = [equalCopy date];
+    v21 = [date2 isEqual:date3];
 
     if (!v21)
     {
@@ -486,19 +486,19 @@ LABEL_16:
   }
 
   cloudCover = self->_cloudCover;
-  [v4 cloudCover];
+  [equalCopy cloudCover];
   if (cloudCover == v25)
   {
     cloudCoverLowAltPct = self->_cloudCoverLowAltPct;
-    [v4 cloudCoverLowAltPct];
+    [equalCopy cloudCoverLowAltPct];
     if (cloudCoverLowAltPct == v27)
     {
       cloudCoverMidAltPct = self->_cloudCoverMidAltPct;
-      [v4 cloudCoverMidAltPct];
+      [equalCopy cloudCoverMidAltPct];
       if (cloudCoverMidAltPct == v29)
       {
         cloudCoverHighAltPct = self->_cloudCoverHighAltPct;
-        [v4 cloudCoverHighAltPct];
+        [equalCopy cloudCoverHighAltPct];
         v22 = cloudCoverHighAltPct == v31;
         goto LABEL_18;
       }
@@ -512,23 +512,23 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(_SFPBWeatherColor *)self condition];
-  if (v4)
+  toCopy = to;
+  condition = [(_SFPBWeatherColor *)self condition];
+  if (condition)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBWeatherColor *)self location];
-  if (v5)
+  location = [(_SFPBWeatherColor *)self location];
+  if (location)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBWeatherColor *)self date];
-  if (v6)
+  date = [(_SFPBWeatherColor *)self date];
+  if (date)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -552,17 +552,17 @@ LABEL_18:
   }
 
   [(_SFPBWeatherColor *)self cloudCoverHighAltPct];
-  v10 = v12;
+  v10 = toCopy;
   if (v11 != 0.0)
   {
     PBDataWriterWriteDoubleField();
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (void)setCondition:(id)a3
+- (void)setCondition:(id)condition
 {
-  v4 = [a3 copy];
+  v4 = [condition copy];
   condition = self->_condition;
   self->_condition = v4;
 

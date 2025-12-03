@@ -5,13 +5,13 @@
 + (os_log_t)makeLogHandleWithCategory:(NSString *)category;
 - (MXMetricManager)init;
 - (id)_createXPCConnection;
-- (id)mergeDiagnosticsAtLocation:(id)a3;
+- (id)mergeDiagnosticsAtLocation:(id)location;
 - (void)_checkAndDeliverDiagnosticReports;
 - (void)_checkAndDeliverMetricReports;
 - (void)addSubscriber:(id)subscriber;
 - (void)dealloc;
-- (void)deliverDiagnosticPayload:(id)a3;
-- (void)deliverMetricPayload:(id)a3;
+- (void)deliverDiagnosticPayload:(id)payload;
+- (void)deliverMetricPayload:(id)payload;
 - (void)removeSubscriber:(id)subscriber;
 @end
 
@@ -33,9 +33,9 @@
     v7 = *(v2 + 5);
     *(v2 + 5) = v6;
 
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v9 = *(v2 + 7);
-    *(v2 + 7) = v8;
+    *(v2 + 7) = weakObjectsHashTable;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEA60]);
     v11 = *(v2 + 2);
@@ -46,15 +46,15 @@
     *(v2 + 3) = v12;
 
     *(v2 + 4) = 0;
-    v14 = [v2 _createXPCConnection];
+    _createXPCConnection = [v2 _createXPCConnection];
     v15 = *(v2 + 6);
-    *(v2 + 6) = v14;
+    *(v2 + 6) = _createXPCConnection;
 
     v16 = *(v2 + 6);
     if (v16)
     {
-      v17 = [v16 remoteObjectProxy];
-      [v17 registerClient];
+      remoteObjectProxy = [v16 remoteObjectProxy];
+      [remoteObjectProxy registerClient];
 
       [*(v2 + 6) invalidate];
       v18 = *(v2 + 6);
@@ -113,7 +113,7 @@ void __23__MXMetricManager_init__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__MXMetricManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -389,11 +389,11 @@ LABEL_19:
       v10 = MEMORY[0x277CBEB98];
       v11 = objc_opt_class();
       v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-      v13 = [(NSXPCConnection *)v3 exportedInterface];
-      [v13 setClasses:v9 forSelector:sel_deliverMetricPayload_ argumentIndex:0 ofReply:0];
+      exportedInterface = [(NSXPCConnection *)v3 exportedInterface];
+      [exportedInterface setClasses:v9 forSelector:sel_deliverMetricPayload_ argumentIndex:0 ofReply:0];
 
-      v14 = [(NSXPCConnection *)v3 exportedInterface];
-      [v14 setClasses:v12 forSelector:sel_deliverDiagnosticPayload_ argumentIndex:0 ofReply:0];
+      exportedInterface2 = [(NSXPCConnection *)v3 exportedInterface];
+      [exportedInterface2 setClasses:v12 forSelector:sel_deliverDiagnosticPayload_ argumentIndex:0 ofReply:0];
 
       [(NSXPCConnection *)v3 setExportedObject:self];
       [(NSXPCConnection *)v3 resume];
@@ -405,13 +405,13 @@ LABEL_19:
 
 - (void)_checkAndDeliverMetricReports
 {
-  v3 = [(MXMetricManager *)self subscribers];
-  v4 = [v3 count];
+  subscribers = [(MXMetricManager *)self subscribers];
+  v4 = [subscribers count];
 
   if (!v4)
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverMetricReports];
     }
@@ -421,8 +421,8 @@ LABEL_19:
 
   if ([(MXMetricManager *)self checkedMetrics])
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverMetricReports];
     }
@@ -432,22 +432,22 @@ LABEL_7:
     return;
   }
 
-  v6 = [(MXMetricManager *)self _createXPCConnection];
-  [(MXMetricManager *)self setConnection:v6];
+  _createXPCConnection = [(MXMetricManager *)self _createXPCConnection];
+  [(MXMetricManager *)self setConnection:_createXPCConnection];
 
-  v7 = [(MXMetricManager *)self connection];
+  connection = [(MXMetricManager *)self connection];
 
-  if (v7)
+  if (connection)
   {
-    v8 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    managerLogHandle2 = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle2, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverMetricReports];
     }
 
-    v9 = [(MXMetricManager *)self connection];
-    v10 = [v9 remoteObjectProxy];
-    [v10 retrieveMetrics];
+    connection2 = [(MXMetricManager *)self connection];
+    remoteObjectProxy = [connection2 remoteObjectProxy];
+    [remoteObjectProxy retrieveMetrics];
 
     [(MXMetricManager *)self setCheckedMetrics:1];
   }
@@ -455,13 +455,13 @@ LABEL_7:
 
 - (void)_checkAndDeliverDiagnosticReports
 {
-  v3 = [(MXMetricManager *)self subscribers];
-  v4 = [v3 count];
+  subscribers = [(MXMetricManager *)self subscribers];
+  v4 = [subscribers count];
 
   if (!v4)
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverDiagnosticReports];
     }
@@ -471,8 +471,8 @@ LABEL_7:
 
   if ([(MXMetricManager *)self checkedDiagnostics])
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverDiagnosticReports];
     }
@@ -482,41 +482,41 @@ LABEL_7:
     return;
   }
 
-  v6 = [(MXMetricManager *)self _createXPCConnection];
-  [(MXMetricManager *)self setConnection:v6];
+  _createXPCConnection = [(MXMetricManager *)self _createXPCConnection];
+  [(MXMetricManager *)self setConnection:_createXPCConnection];
 
-  v7 = [(MXMetricManager *)self connection];
+  connection = [(MXMetricManager *)self connection];
 
-  if (v7)
+  if (connection)
   {
-    v8 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    managerLogHandle2 = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle2, OS_LOG_TYPE_DEBUG))
     {
       [MXMetricManager _checkAndDeliverDiagnosticReports];
     }
 
-    v9 = [(MXMetricManager *)self connection];
-    v10 = [v9 remoteObjectProxy];
-    [v10 retrieveDiagnostics];
+    connection2 = [(MXMetricManager *)self connection];
+    remoteObjectProxy = [connection2 remoteObjectProxy];
+    [remoteObjectProxy retrieveDiagnostics];
 
     [(MXMetricManager *)self setCheckedDiagnostics:1];
   }
 }
 
-- (id)mergeDiagnosticsAtLocation:(id)a3
+- (id)mergeDiagnosticsAtLocation:(id)location
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  locationCopy = location;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v62 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v61 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v72 = 0;
-  v65 = v5;
-  v66 = v4;
-  v9 = [v5 contentsOfDirectoryAtPath:v4 error:&v72];
+  v65 = defaultManager;
+  v66 = locationCopy;
+  v9 = [defaultManager contentsOfDirectoryAtPath:locationCopy error:&v72];
   v10 = v72;
   v63 = v7;
   if (v10)
@@ -547,7 +547,7 @@ LABEL_4:
   }
 
   v16 = v15;
-  v58 = self;
+  selfCopy = self;
   v59 = v8;
   v60 = v6;
   v12 = 0;
@@ -589,78 +589,78 @@ LABEL_4:
           goto LABEL_34;
         }
 
-        v28 = [(MXMetricManager *)v58 managerLogHandle];
-        if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+        managerLogHandle = [(MXMetricManager *)selfCopy managerLogHandle];
+        if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
           v74 = v19;
           v75 = 2112;
           v76 = v26;
-          _os_log_error_impl(&dword_239E37000, v28, OS_LOG_TYPE_ERROR, "Error while reading Diagnostic Report :%@ with error: %@", buf, 0x16u);
+          _os_log_error_impl(&dword_239E37000, managerLogHandle, OS_LOG_TYPE_ERROR, "Error while reading Diagnostic Report :%@ with error: %@", buf, 0x16u);
         }
 
         goto LABEL_32;
       }
 
-      v29 = [v24 hangDiagnostics];
+      hangDiagnostics = [v24 hangDiagnostics];
 
-      if (v29)
+      if (hangDiagnostics)
       {
-        v30 = [v24 hangDiagnostics];
-        [v60 addObjectsFromArray:v30];
+        hangDiagnostics2 = [v24 hangDiagnostics];
+        [v60 addObjectsFromArray:hangDiagnostics2];
       }
 
-      v31 = [v24 cpuExceptionDiagnostics];
+      cpuExceptionDiagnostics = [v24 cpuExceptionDiagnostics];
 
-      if (v31)
+      if (cpuExceptionDiagnostics)
       {
-        v32 = [v24 cpuExceptionDiagnostics];
-        [v62 addObjectsFromArray:v32];
+        cpuExceptionDiagnostics2 = [v24 cpuExceptionDiagnostics];
+        [v62 addObjectsFromArray:cpuExceptionDiagnostics2];
       }
 
-      v33 = [v24 diskWriteExceptionDiagnostics];
+      diskWriteExceptionDiagnostics = [v24 diskWriteExceptionDiagnostics];
 
-      if (v33)
+      if (diskWriteExceptionDiagnostics)
       {
-        v34 = [v24 diskWriteExceptionDiagnostics];
-        [v63 addObjectsFromArray:v34];
+        diskWriteExceptionDiagnostics2 = [v24 diskWriteExceptionDiagnostics];
+        [v63 addObjectsFromArray:diskWriteExceptionDiagnostics2];
       }
 
-      v35 = [v24 crashDiagnostics];
+      crashDiagnostics = [v24 crashDiagnostics];
 
-      if (v35)
+      if (crashDiagnostics)
       {
-        v36 = [v24 crashDiagnostics];
-        [v59 addObjectsFromArray:v36];
+        crashDiagnostics2 = [v24 crashDiagnostics];
+        [v59 addObjectsFromArray:crashDiagnostics2];
       }
 
-      v37 = [v24 appLaunchDiagnostics];
+      appLaunchDiagnostics = [v24 appLaunchDiagnostics];
 
-      if (v37)
+      if (appLaunchDiagnostics)
       {
-        v38 = [v24 appLaunchDiagnostics];
-        [v61 addObjectsFromArray:v38];
+        appLaunchDiagnostics2 = [v24 appLaunchDiagnostics];
+        [v61 addObjectsFromArray:appLaunchDiagnostics2];
       }
 
-      v39 = [v24 timeStampBegin];
-      v40 = v39;
+      timeStampBegin = [v24 timeStampBegin];
+      v40 = timeStampBegin;
       if (v13)
       {
-        v41 = [v39 earlierDate:v13];
+        v41 = [timeStampBegin earlierDate:v13];
 
         v13 = v41;
       }
 
       else
       {
-        v13 = v39;
+        v13 = timeStampBegin;
       }
 
-      v42 = [v24 timeStampEnd];
-      v28 = v42;
+      timeStampEnd = [v24 timeStampEnd];
+      managerLogHandle = timeStampEnd;
       if (v12)
       {
-        v43 = [v42 laterDate:v12];
+        v43 = [timeStampEnd laterDate:v12];
 
         v12 = v43;
 LABEL_32:
@@ -668,7 +668,7 @@ LABEL_32:
         goto LABEL_34;
       }
 
-      v12 = v42;
+      v12 = timeStampEnd;
 LABEL_34:
     }
 
@@ -723,25 +723,25 @@ LABEL_37:
   return v53;
 }
 
-- (void)deliverMetricPayload:(id)a3
+- (void)deliverMetricPayload:(id)payload
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  payloadCopy = payload;
+  if ([payloadCopy count])
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
-      _os_log_impl(&dword_239E37000, v5, OS_LOG_TYPE_DEFAULT, "Delivering metric reports: %@", buf, 0xCu);
+      v14 = payloadCopy;
+      _os_log_impl(&dword_239E37000, managerLogHandle, OS_LOG_TYPE_DEFAULT, "Delivering metric reports: %@", buf, 0xCu);
     }
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(MXMetricManager *)self pastPayloads];
-    [v6 addObjectsFromArray:v7];
+    pastPayloads = [(MXMetricManager *)self pastPayloads];
+    [v6 addObjectsFromArray:pastPayloads];
 
-    [v6 addObjectsFromArray:v4];
+    [v6 addObjectsFromArray:payloadCopy];
     v8 = [v6 copy];
     [(MXMetricManager *)self setPastPayloads:v8];
 
@@ -751,7 +751,7 @@ LABEL_37:
     v11[2] = __40__MXMetricManager_deliverMetricPayload___block_invoke;
     v11[3] = &unk_278B3EDE8;
     v11[4] = self;
-    v12 = v4;
+    v12 = payloadCopy;
     dispatch_async(iVarQueue, v11);
   }
 
@@ -800,25 +800,25 @@ void __40__MXMetricManager_deliverMetricPayload___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deliverDiagnosticPayload:(id)a3
+- (void)deliverDiagnosticPayload:(id)payload
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  payloadCopy = payload;
+  if ([payloadCopy count])
   {
-    v5 = [(MXMetricManager *)self managerLogHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    managerLogHandle = [(MXMetricManager *)self managerLogHandle];
+    if (os_log_type_enabled(managerLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
-      _os_log_impl(&dword_239E37000, v5, OS_LOG_TYPE_DEFAULT, "Delivering diagnostic reports: %@", buf, 0xCu);
+      v14 = payloadCopy;
+      _os_log_impl(&dword_239E37000, managerLogHandle, OS_LOG_TYPE_DEFAULT, "Delivering diagnostic reports: %@", buf, 0xCu);
     }
 
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(MXMetricManager *)self pastDiagnosticPayloads];
-    [v6 addObjectsFromArray:v7];
+    pastDiagnosticPayloads = [(MXMetricManager *)self pastDiagnosticPayloads];
+    [v6 addObjectsFromArray:pastDiagnosticPayloads];
 
-    [v6 addObjectsFromArray:v4];
+    [v6 addObjectsFromArray:payloadCopy];
     v8 = [v6 copy];
     [(MXMetricManager *)self setPastDiagnosticPayloads:v8];
 
@@ -828,7 +828,7 @@ void __40__MXMetricManager_deliverMetricPayload___block_invoke(uint64_t a1)
     v11[2] = __44__MXMetricManager_deliverDiagnosticPayload___block_invoke;
     v11[3] = &unk_278B3EDE8;
     v11[4] = self;
-    v12 = v4;
+    v12 = payloadCopy;
     dispatch_async(iVarQueue, v11);
   }
 

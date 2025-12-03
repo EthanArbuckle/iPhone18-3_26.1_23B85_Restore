@@ -1,32 +1,32 @@
 @interface _INPBDuration
-- (BOOL)isEqual:(id)a3;
-- (_INPBDuration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDuration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDuration
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDuration *)self hasNanos])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[_INPBDuration nanos](self, "nanos")}];
-    [v3 setObject:v4 forKeyedSubscript:@"nanos"];
+    [dictionary setObject:v4 forKeyedSubscript:@"nanos"];
   }
 
   if ([(_INPBDuration *)self hasSeconds])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[_INPBDuration seconds](self, "seconds")}];
-    [v3 setObject:v5 forKeyedSubscript:@"seconds"];
+    [dictionary setObject:v5 forKeyedSubscript:@"seconds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,21 +54,21 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBDuration *)self hasNanos];
-    if (v5 == [v4 hasNanos])
+    hasNanos = [(_INPBDuration *)self hasNanos];
+    if (hasNanos == [equalCopy hasNanos])
     {
-      if (!-[_INPBDuration hasNanos](self, "hasNanos") || ![v4 hasNanos] || (nanos = self->_nanos, nanos == objc_msgSend(v4, "nanos")))
+      if (!-[_INPBDuration hasNanos](self, "hasNanos") || ![equalCopy hasNanos] || (nanos = self->_nanos, nanos == objc_msgSend(equalCopy, "nanos")))
       {
-        v7 = [(_INPBDuration *)self hasSeconds];
-        if (v7 == [v4 hasSeconds])
+        hasSeconds = [(_INPBDuration *)self hasSeconds];
+        if (hasSeconds == [equalCopy hasSeconds])
         {
-          if (!-[_INPBDuration hasSeconds](self, "hasSeconds") || ![v4 hasSeconds] || (seconds = self->_seconds, seconds == objc_msgSend(v4, "seconds")))
+          if (!-[_INPBDuration hasSeconds](self, "hasSeconds") || ![equalCopy hasSeconds] || (seconds = self->_seconds, seconds == objc_msgSend(equalCopy, "seconds")))
           {
             v8 = 1;
           }
@@ -80,7 +80,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBDuration allocWithZone:?]];
   if ([(_INPBDuration *)self hasNanos])
@@ -96,33 +96,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDuration *)self data];
+  coderCopy = coder;
+  data = [(_INPBDuration *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDuration)initWithCoder:(id)a3
+- (_INPBDuration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDuration *)self initWithData:v6];
+    self = [(_INPBDuration *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBDuration *)self hasNanos])
   {
     nanos = self->_nanos;
@@ -136,9 +136,9 @@
   }
 }
 
-- (void)setHasSeconds:(BOOL)a3
+- (void)setHasSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }

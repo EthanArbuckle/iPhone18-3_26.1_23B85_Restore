@@ -1,23 +1,23 @@
 @interface StyledProgressBarView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (double)accessibilityProgress;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation StyledProgressBarView
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v9 = a5;
-  v10 = self;
-  sub_1E41ED0D4(a3, a4, a5);
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_1E41ED0D4(selected, animated, coordinator);
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  v7 = sub_1E41ED274(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  v7 = sub_1E41ED274(only, width);
   v9 = v8;
 
   v10 = v7;
@@ -29,7 +29,7 @@
 
 - (double)accessibilityProgress
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E41EE998();
   v4 = v3;
 

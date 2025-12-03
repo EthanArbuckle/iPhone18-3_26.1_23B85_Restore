@@ -1,5 +1,5 @@
 @interface NMSIncomingFile
-- (NMSIncomingFile)initWithIDSURL:(id)a3 extensionOverride:(id)a4;
+- (NMSIncomingFile)initWithIDSURL:(id)l extensionOverride:(id)override;
 - (id)description;
 - (void)dealloc;
 - (void)unlinkURL;
@@ -7,10 +7,10 @@
 
 @implementation NMSIncomingFile
 
-- (NMSIncomingFile)initWithIDSURL:(id)a3 extensionOverride:(id)a4
+- (NMSIncomingFile)initWithIDSURL:(id)l extensionOverride:(id)override
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  overrideCopy = override;
   v35.receiver = self;
   v35.super_class = NMSIncomingFile;
   v8 = [(NMSIncomingFile *)&v35 init];
@@ -20,35 +20,35 @@
     transaction = v8->_transaction;
     v8->_transaction = v9;
 
-    v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v6 fileSystemRepresentation]);
-    v12 = [v11 pathExtension];
-    v13 = [v11 stringByDeletingPathExtension];
-    v14 = [v13 pathExtension];
+    v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [lCopy fileSystemRepresentation]);
+    pathExtension = [v11 pathExtension];
+    stringByDeletingPathExtension = [v11 stringByDeletingPathExtension];
+    pathExtension2 = [stringByDeletingPathExtension pathExtension];
 
-    if ([v14 length] && (objc_msgSend(v14, "isEqualToString:", v12) & 1) == 0)
+    if ([pathExtension2 length] && (objc_msgSend(pathExtension2, "isEqualToString:", pathExtension) & 1) == 0)
     {
-      v15 = v14;
+      v15 = pathExtension2;
 
-      v12 = v15;
+      pathExtension = v15;
     }
 
-    if (v7)
+    if (overrideCopy)
     {
-      v16 = v7;
+      v16 = overrideCopy;
 
-      v12 = v16;
+      pathExtension = v16;
     }
 
     v17 = +[NSUUID UUID];
-    v18 = [v17 UUIDString];
-    v19 = [v12 length];
+    uUIDString = [v17 UUIDString];
+    v19 = [pathExtension length];
     v20 = @".";
     if (!v19)
     {
       v20 = &stru_10008C6E8;
     }
 
-    v21 = [NSString stringWithFormat:@"incoming-%@%@%@", v18, v20, v12];
+    v21 = [NSString stringWithFormat:@"incoming-%@%@%@", uUIDString, v20, pathExtension];
 
     v22 = NSTemporaryDirectory();
     v23 = [v22 stringByAppendingPathComponent:v21];
@@ -67,9 +67,9 @@
     if (copyfile([v11 fileSystemRepresentation], objc_msgSend(v23, "fileSystemRepresentation"), v25, 0xFu))
     {
       v34 = v21;
-      v26 = v6;
-      v27 = v14;
-      v28 = v7;
+      v26 = lCopy;
+      v27 = pathExtension2;
+      v28 = overrideCopy;
       v29 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
       v30 = sub_10000268C();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -83,9 +83,9 @@
         _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Failed to copy file %@ => %@ with error %@", buf, 0x20u);
       }
 
-      v7 = v28;
-      v14 = v27;
-      v6 = v26;
+      overrideCopy = v28;
+      pathExtension2 = v27;
+      lCopy = v26;
       v21 = v34;
     }
 

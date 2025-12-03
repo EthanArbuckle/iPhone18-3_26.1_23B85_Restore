@@ -1,103 +1,103 @@
 @interface HKMedicationExposableDoseEvent
-+ (id)asNeededExposableDoseEventForMedication:(id)a3 doseQuantity:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HKMedicationExposableDoseEvent)initWithCoder:(id)a3;
-- (HKMedicationExposableDoseEvent)initWithDoseEvent:(id)a3;
-- (id)_initWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 semanticIdentifier:(id)a5 medicationIdentifier:(id)a6 scheduledDoseQuantity:(id)a7 doseQuantity:(id)a8 scheduledDate:(id)a9 startDate:(id)a10 status:(int64_t)a11 persistedUUID:(id)a12;
-- (id)_updateForNewStatus:(void *)a3 doseQuantity:(void *)a4 startDate:(void *)a5 semanticIdentifier:;
-- (id)updateForNewDoseQuantity:(id)a3;
-- (id)updateForNewStartDate:(id)a3;
-- (id)updateForSemanticIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)asNeededExposableDoseEventForMedication:(id)medication doseQuantity:(id)quantity;
+- (BOOL)isEqual:(id)equal;
+- (HKMedicationExposableDoseEvent)initWithCoder:(id)coder;
+- (HKMedicationExposableDoseEvent)initWithDoseEvent:(id)event;
+- (id)_initWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier semanticIdentifier:(id)semanticIdentifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)self0 status:(int64_t)self1 persistedUUID:(id)self2;
+- (id)_updateForNewStatus:(void *)status doseQuantity:(void *)quantity startDate:(void *)date semanticIdentifier:;
+- (id)updateForNewDoseQuantity:(id)quantity;
+- (id)updateForNewStartDate:(id)date;
+- (id)updateForSemanticIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationExposableDoseEvent
 
-+ (id)asNeededExposableDoseEventForMedication:(id)a3 doseQuantity:(id)a4
++ (id)asNeededExposableDoseEventForMedication:(id)medication doseQuantity:(id)quantity
 {
-  v5 = a4;
-  v6 = a3;
+  quantityCopy = quantity;
+  medicationCopy = medication;
   v7 = [HKMedicationExposableDoseEvent alloc];
-  v8 = [v6 medication];
+  medication = [medicationCopy medication];
 
-  v9 = [v8 identifier];
+  identifier = [medication identifier];
   v10 = [MEMORY[0x277CBEAA8] now];
-  v11 = [(HKMedicationExposableDoseEvent *)v7 _initWithLogOrigin:1 scheduleItemIdentifier:0 semanticIdentifier:0 medicationIdentifier:v9 scheduledDoseQuantity:0 doseQuantity:v5 scheduledDate:0 startDate:v10 status:2 persistedUUID:0];
+  v11 = [(HKMedicationExposableDoseEvent *)v7 _initWithLogOrigin:1 scheduleItemIdentifier:0 semanticIdentifier:0 medicationIdentifier:identifier scheduledDoseQuantity:0 doseQuantity:quantityCopy scheduledDate:0 startDate:v10 status:2 persistedUUID:0];
 
   return v11;
 }
 
-- (HKMedicationExposableDoseEvent)initWithDoseEvent:(id)a3
+- (HKMedicationExposableDoseEvent)initWithDoseEvent:(id)event
 {
-  v5 = a3;
-  if (!v5)
+  eventCopy = event;
+  if (!eventCopy)
   {
     [(HKMedicationExposableDoseEvent *)a2 initWithDoseEvent:?];
   }
 
   v6 = objc_alloc(MEMORY[0x277CCD660]);
-  v7 = [v5 medicationIdentifier];
-  v19 = [v6 initWithSemanticIdentifierString:v7];
+  medicationIdentifier = [eventCopy medicationIdentifier];
+  v19 = [v6 initWithSemanticIdentifierString:medicationIdentifier];
 
-  v18 = [v5 logOrigin];
-  v8 = [v5 scheduleItemIdentifier];
-  v9 = [v5 medicationIdentifier];
-  v10 = [v5 scheduledDoseQuantity];
-  v11 = [v5 doseQuantity];
-  v12 = [v5 scheduledDate];
-  v13 = [v5 startDate];
-  v14 = [v5 logStatus];
-  v15 = [v5 UUID];
-  v16 = [(HKMedicationExposableDoseEvent *)self _initWithLogOrigin:v18 scheduleItemIdentifier:v8 semanticIdentifier:v9 medicationIdentifier:v19 scheduledDoseQuantity:v10 doseQuantity:v11 scheduledDate:v12 startDate:v13 status:v14 persistedUUID:v15];
+  logOrigin = [eventCopy logOrigin];
+  scheduleItemIdentifier = [eventCopy scheduleItemIdentifier];
+  medicationIdentifier2 = [eventCopy medicationIdentifier];
+  scheduledDoseQuantity = [eventCopy scheduledDoseQuantity];
+  doseQuantity = [eventCopy doseQuantity];
+  scheduledDate = [eventCopy scheduledDate];
+  startDate = [eventCopy startDate];
+  logStatus = [eventCopy logStatus];
+  uUID = [eventCopy UUID];
+  v16 = [(HKMedicationExposableDoseEvent *)self _initWithLogOrigin:logOrigin scheduleItemIdentifier:scheduleItemIdentifier semanticIdentifier:medicationIdentifier2 medicationIdentifier:v19 scheduledDoseQuantity:scheduledDoseQuantity doseQuantity:doseQuantity scheduledDate:scheduledDate startDate:startDate status:logStatus persistedUUID:uUID];
 
   return v16;
 }
 
-- (id)_initWithLogOrigin:(int64_t)a3 scheduleItemIdentifier:(id)a4 semanticIdentifier:(id)a5 medicationIdentifier:(id)a6 scheduledDoseQuantity:(id)a7 doseQuantity:(id)a8 scheduledDate:(id)a9 startDate:(id)a10 status:(int64_t)a11 persistedUUID:(id)a12
+- (id)_initWithLogOrigin:(int64_t)origin scheduleItemIdentifier:(id)identifier semanticIdentifier:(id)semanticIdentifier medicationIdentifier:(id)medicationIdentifier scheduledDoseQuantity:(id)quantity doseQuantity:(id)doseQuantity scheduledDate:(id)date startDate:(id)self0 status:(int64_t)self1 persistedUUID:(id)self2
 {
-  v17 = a7;
+  quantityCopy = quantity;
   v44.receiver = self;
   v44.super_class = HKMedicationExposableDoseEvent;
-  v43 = a12;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
+  dCopy = d;
+  startDateCopy = startDate;
+  dateCopy = date;
+  doseQuantityCopy = doseQuantity;
+  medicationIdentifierCopy = medicationIdentifier;
+  semanticIdentifierCopy = semanticIdentifier;
+  identifierCopy = identifier;
   v24 = [(HKMedicationExposableDoseEvent *)&v44 init];
-  v24->_logOrigin = a3;
-  v25 = [v23 copy];
+  v24->_logOrigin = origin;
+  v25 = [identifierCopy copy];
 
   scheduleItemIdentifier = v24->_scheduleItemIdentifier;
   v24->_scheduleItemIdentifier = v25;
 
-  v27 = [v22 copy];
+  v27 = [semanticIdentifierCopy copy];
   semanticIdentifier = v24->_semanticIdentifier;
   v24->_semanticIdentifier = v27;
 
-  v29 = [v21 copy];
+  v29 = [medicationIdentifierCopy copy];
   medicationIdentifier = v24->_medicationIdentifier;
   v24->_medicationIdentifier = v29;
 
   scheduledDoseQuantity = v24->_scheduledDoseQuantity;
-  v24->_scheduledDoseQuantity = v17;
-  v32 = v17;
+  v24->_scheduledDoseQuantity = quantityCopy;
+  v32 = quantityCopy;
 
-  v33 = [v20 copy];
+  v33 = [doseQuantityCopy copy];
   doseQuantity = v24->_doseQuantity;
   v24->_doseQuantity = v33;
 
-  v35 = [v19 copy];
+  v35 = [dateCopy copy];
   scheduledDate = v24->_scheduledDate;
   v24->_scheduledDate = v35;
 
-  v37 = [v18 copy];
+  v37 = [startDateCopy copy];
   startDate = v24->_startDate;
   v24->_startDate = v37;
 
-  v24->_status = a11;
-  v39 = [v43 copy];
+  v24->_status = status;
+  v39 = [dCopy copy];
 
   persistedUUID = v24->_persistedUUID;
   v24->_persistedUUID = v39;
@@ -105,10 +105,10 @@
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v22 = 1;
   }
@@ -118,7 +118,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medicationIdentifier = v5->_medicationIdentifier;
       v7 = self->_medicationIdentifier;
       if (medicationIdentifier != v7 && (!v7 || ![(HKMedicationIdentifier *)medicationIdentifier isEqual:?]))
@@ -175,61 +175,61 @@ LABEL_32:
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   logOrigin = self->_logOrigin;
-  v5 = a3;
-  [v5 encodeInteger:logOrigin forKey:@"LogOrigin"];
-  [v5 encodeObject:self->_scheduleItemIdentifier forKey:@"ScheduleItemIdentifier"];
-  [v5 encodeObject:self->_semanticIdentifier forKey:@"SemanticIdentifier"];
-  [v5 encodeObject:self->_medicationIdentifier forKey:@"MedicationIdentifier"];
-  [v5 encodeObject:self->_scheduledDoseQuantity forKey:@"ScheduledDoseQuantity"];
-  [v5 encodeObject:self->_doseQuantity forKey:@"DoseQuantity"];
-  [v5 encodeObject:self->_scheduledDate forKey:@"ScheduledDate"];
-  [v5 encodeObject:self->_startDate forKey:@"StartDate"];
-  [v5 encodeInteger:self->_status forKey:@"Status"];
-  [v5 encodeObject:self->_persistedUUID forKey:@"PersistedUUID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:logOrigin forKey:@"LogOrigin"];
+  [coderCopy encodeObject:self->_scheduleItemIdentifier forKey:@"ScheduleItemIdentifier"];
+  [coderCopy encodeObject:self->_semanticIdentifier forKey:@"SemanticIdentifier"];
+  [coderCopy encodeObject:self->_medicationIdentifier forKey:@"MedicationIdentifier"];
+  [coderCopy encodeObject:self->_scheduledDoseQuantity forKey:@"ScheduledDoseQuantity"];
+  [coderCopy encodeObject:self->_doseQuantity forKey:@"DoseQuantity"];
+  [coderCopy encodeObject:self->_scheduledDate forKey:@"ScheduledDate"];
+  [coderCopy encodeObject:self->_startDate forKey:@"StartDate"];
+  [coderCopy encodeInteger:self->_status forKey:@"Status"];
+  [coderCopy encodeObject:self->_persistedUUID forKey:@"PersistedUUID"];
 }
 
-- (HKMedicationExposableDoseEvent)initWithCoder:(id)a3
+- (HKMedicationExposableDoseEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = HKMedicationExposableDoseEvent;
   v5 = [(HKMedicationExposableDoseEvent *)&v23 init];
   if (v5)
   {
-    v5->_logOrigin = [v4 decodeIntegerForKey:@"LogOrigin"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduleItemIdentifier"];
+    v5->_logOrigin = [coderCopy decodeIntegerForKey:@"LogOrigin"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduleItemIdentifier"];
     scheduleItemIdentifier = v5->_scheduleItemIdentifier;
     v5->_scheduleItemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SemanticIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SemanticIdentifier"];
     semanticIdentifier = v5->_semanticIdentifier;
     v5->_semanticIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
     medicationIdentifier = v5->_medicationIdentifier;
     v5->_medicationIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDoseQuantity"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDoseQuantity"];
     scheduledDoseQuantity = v5->_scheduledDoseQuantity;
     v5->_scheduledDoseQuantity = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DoseQuantity"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DoseQuantity"];
     doseQuantity = v5->_doseQuantity;
     v5->_doseQuantity = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ScheduledDate"];
     scheduledDate = v5->_scheduledDate;
     v5->_scheduledDate = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartDate"];
     startDate = v5->_startDate;
     v5->_startDate = v18;
 
-    v5->_status = [v4 decodeIntegerForKey:@"Status"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PersistedUUID"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"Status"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PersistedUUID"];
     persistedUUID = v5->_persistedUUID;
     v5->_persistedUUID = v20;
   }
@@ -237,35 +237,35 @@ LABEL_32:
   return v5;
 }
 
-- (id)_updateForNewStatus:(void *)a3 doseQuantity:(void *)a4 startDate:(void *)a5 semanticIdentifier:
+- (id)_updateForNewStatus:(void *)status doseQuantity:(void *)quantity startDate:(void *)date semanticIdentifier:
 {
-  if (a1)
+  if (self)
   {
-    v10 = a3;
-    if (!a3)
+    statusCopy = status;
+    if (!status)
     {
-      v10 = a1[5];
+      statusCopy = self[5];
     }
 
-    v11 = a4;
-    if (!a4)
+    quantityCopy = quantity;
+    if (!quantity)
     {
-      v11 = a1[7];
+      quantityCopy = self[7];
     }
 
-    v12 = a5;
-    if (!a5)
+    dateCopy = date;
+    if (!date)
     {
-      v12 = a1[10];
+      dateCopy = self[10];
     }
 
-    v13 = v12;
-    v14 = v11;
-    v15 = v10;
-    v16 = a5;
-    v17 = a4;
-    v18 = a3;
-    v19 = [[HKMedicationExposableDoseEvent alloc] _initWithLogOrigin:a1[1] scheduleItemIdentifier:a1[2] semanticIdentifier:v13 medicationIdentifier:a1[3] scheduledDoseQuantity:a1[4] doseQuantity:v15 scheduledDate:a1[6] startDate:v14 status:a2 persistedUUID:a1[9]];
+    v13 = dateCopy;
+    v14 = quantityCopy;
+    v15 = statusCopy;
+    dateCopy2 = date;
+    quantityCopy2 = quantity;
+    statusCopy2 = status;
+    v19 = [[HKMedicationExposableDoseEvent alloc] _initWithLogOrigin:self[1] scheduleItemIdentifier:self[2] semanticIdentifier:v13 medicationIdentifier:self[3] scheduledDoseQuantity:self[4] doseQuantity:v15 scheduledDate:self[6] startDate:v14 status:a2 persistedUUID:self[9]];
   }
 
   else
@@ -276,26 +276,26 @@ LABEL_32:
   return v19;
 }
 
-- (id)updateForNewDoseQuantity:(id)a3
+- (id)updateForNewDoseQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:v4 doseQuantity:0 startDate:0 semanticIdentifier:?];
+  quantityCopy = quantity;
+  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:quantityCopy doseQuantity:0 startDate:0 semanticIdentifier:?];
 
   return v5;
 }
 
-- (id)updateForNewStartDate:(id)a3
+- (id)updateForNewStartDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:0 doseQuantity:v4 startDate:0 semanticIdentifier:?];
+  dateCopy = date;
+  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:0 doseQuantity:dateCopy startDate:0 semanticIdentifier:?];
 
   return v5;
 }
 
-- (id)updateForSemanticIdentifier:(id)a3
+- (id)updateForSemanticIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:0 doseQuantity:0 startDate:v4 semanticIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(HKMedicationExposableDoseEvent *)self _updateForNewStatus:0 doseQuantity:0 startDate:identifierCopy semanticIdentifier:?];
 
   return v5;
 }

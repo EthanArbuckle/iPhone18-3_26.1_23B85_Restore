@@ -1,76 +1,76 @@
 @interface TSWPFontCacheKey
-+ (id)cacheKeyWithFontName:(id)a3 fontSize:(double)a4 bold:(BOOL)a5 italic:(BOOL)a6 fontFeatures:(id)a7;
-+ (id)cacheKeyWithFontName:(id)a3 size:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSWPFontCacheKey)initWithFontName:(id)a3 fontSize:(double)a4 hasExtraFields:(BOOL)a5 bold:(BOOL)a6 italic:(BOOL)a7 fontFeatures:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)cacheKeyWithFontName:(id)name fontSize:(double)size bold:(BOOL)bold italic:(BOOL)italic fontFeatures:(id)features;
++ (id)cacheKeyWithFontName:(id)name size:(double)size;
+- (BOOL)isEqual:(id)equal;
+- (TSWPFontCacheKey)initWithFontName:(id)name fontSize:(double)size hasExtraFields:(BOOL)fields bold:(BOOL)bold italic:(BOOL)italic fontFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TSWPFontCacheKey
 
-+ (id)cacheKeyWithFontName:(id)a3 size:(double)a4
++ (id)cacheKeyWithFontName:(id)name size:(double)size
 {
-  v6 = a3;
-  v7 = a1;
-  objc_sync_enter(v7);
-  if (!qword_280A582D8 || (objc_msgSend_fontSize(qword_280A582D8, v8, v9), v12 != a4) || (objc_msgSend_fontName(qword_280A582D8, v10, v11), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, v6), v13, (isEqualToString & 1) == 0))
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!qword_280A582D8 || (objc_msgSend_fontSize(qword_280A582D8, v8, v9), v12 != size) || (objc_msgSend_fontName(qword_280A582D8, v10, v11), v13 = objc_claimAutoreleasedReturnValue(), isEqualToString = objc_msgSend_isEqualToString_(v13, v14, nameCopy), v13, (isEqualToString & 1) == 0))
   {
     v16 = objc_alloc(objc_opt_class());
-    hasExtraFields_bold_italic_fontFeatures = objc_msgSend_initWithFontName_fontSize_hasExtraFields_bold_italic_fontFeatures_(v16, v17, v6, 0, 0, 0, 0, a4);
+    hasExtraFields_bold_italic_fontFeatures = objc_msgSend_initWithFontName_fontSize_hasExtraFields_bold_italic_fontFeatures_(v16, v17, nameCopy, 0, 0, 0, 0, size);
     v19 = qword_280A582D8;
     qword_280A582D8 = hasExtraFields_bold_italic_fontFeatures;
   }
 
   v20 = qword_280A582D8;
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v20;
 }
 
-+ (id)cacheKeyWithFontName:(id)a3 fontSize:(double)a4 bold:(BOOL)a5 italic:(BOOL)a6 fontFeatures:(id)a7
++ (id)cacheKeyWithFontName:(id)name fontSize:(double)size bold:(BOOL)bold italic:(BOOL)italic fontFeatures:(id)features
 {
-  v7 = a6;
-  v8 = a5;
-  v11 = a7;
-  v12 = a3;
+  italicCopy = italic;
+  boldCopy = bold;
+  featuresCopy = features;
+  nameCopy = name;
   v13 = objc_alloc(objc_opt_class());
-  hasExtraFields_bold_italic_fontFeatures = objc_msgSend_initWithFontName_fontSize_hasExtraFields_bold_italic_fontFeatures_(v13, v14, v12, 1, v8, v7, v11, a4);
+  hasExtraFields_bold_italic_fontFeatures = objc_msgSend_initWithFontName_fontSize_hasExtraFields_bold_italic_fontFeatures_(v13, v14, nameCopy, 1, boldCopy, italicCopy, featuresCopy, size);
 
   return hasExtraFields_bold_italic_fontFeatures;
 }
 
-- (TSWPFontCacheKey)initWithFontName:(id)a3 fontSize:(double)a4 hasExtraFields:(BOOL)a5 bold:(BOOL)a6 italic:(BOOL)a7 fontFeatures:(id)a8
+- (TSWPFontCacheKey)initWithFontName:(id)name fontSize:(double)size hasExtraFields:(BOOL)fields bold:(BOOL)bold italic:(BOOL)italic fontFeatures:(id)features
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a8;
+  fieldsCopy = fields;
+  nameCopy = name;
+  featuresCopy = features;
   v22.receiver = self;
   v22.super_class = TSWPFontCacheKey;
   v18 = [(TSWPFontCacheKey *)&v22 init];
   if (v18)
   {
-    v19 = objc_msgSend_copy(v14, v16, v17);
+    v19 = objc_msgSend_copy(nameCopy, v16, v17);
     fontName = v18->_fontName;
     v18->_fontName = v19;
 
-    v18->_fontSize = a4;
-    if (v11)
+    v18->_fontSize = size;
+    if (fieldsCopy)
     {
       v18->_hasExtraFields = 1;
-      v18->_bold = a6;
-      v18->_italic = a7;
-      objc_storeStrong(&v18->_fontFeatures, a8);
+      v18->_bold = bold;
+      v18->_italic = italic;
+      objc_storeStrong(&v18->_fontFeatures, features);
     }
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -207,7 +207,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPFontCacheKey alloc];
   v7 = objc_msgSend_fontName(self, v5, v6);

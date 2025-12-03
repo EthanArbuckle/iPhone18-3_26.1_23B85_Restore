@@ -1,33 +1,33 @@
 @interface NDCloudContainer
-+ (id)containerIDForPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4;
++ (id)containerIDForPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier;
 - (BOOL)isForeground;
-- (NDCloudContainer)initWithOperationID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)containerDidEnterBackground:(id)a3;
-- (void)containerDidEnterForeground:(id)a3;
-- (void)removeObserver:(id)a3;
+- (NDCloudContainer)initWithOperationID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)containerDidEnterBackground:(id)background;
+- (void)containerDidEnterForeground:(id)foreground;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NDCloudContainer
 
-+ (id)containerIDForPrimaryIdentifier:(id)a3 secondaryIdentifier:(id)a4
++ (id)containerIDForPrimaryIdentifier:(id)identifier secondaryIdentifier:(id)secondaryIdentifier
 {
   v4 = 0;
-  if (a3 && a4)
+  if (identifier && secondaryIdentifier)
   {
-    v6 = a4;
-    v7 = a3;
-    v4 = [sub_100002060() containerIDFromPrimaryIdentifier:v7 secondaryIdentifier:v6];
+    secondaryIdentifierCopy = secondaryIdentifier;
+    identifierCopy = identifier;
+    v4 = [sub_100002060() containerIDFromPrimaryIdentifier:identifierCopy secondaryIdentifier:secondaryIdentifierCopy];
   }
 
   return v4;
 }
 
-- (NDCloudContainer)initWithOperationID:(id)a3
+- (NDCloudContainer)initWithOperationID:(id)d
 {
   v7.receiver = self;
   v7.super_class = NDCloudContainer;
-  v3 = [(NDApplication *)&v7 initWithOperationID:a3];
+  v3 = [(NDApplication *)&v7 initWithOperationID:d];
   if (v3)
   {
     v4 = objc_alloc_init(sub_100002060());
@@ -75,41 +75,41 @@
   return self->_isForeground;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSMutableArray *)v5->super._observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
-    [(BRContainersMonitor *)v5->_monitor addObserver:v5 forContainerID:v5->super._bundleIdentifier];
+    [(BRContainersMonitor *)selfCopy->_monitor addObserver:selfCopy forContainerID:selfCopy->super._bundleIdentifier];
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = NDCloudContainer;
-  [(NDApplication *)&v6 addObserver:v4];
-  objc_sync_exit(v5);
+  [(NDApplication *)&v6 addObserver:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6.receiver = v5;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6.receiver = selfCopy;
   v6.super_class = NDCloudContainer;
-  [(NDApplication *)&v6 removeObserver:v4];
-  if (![(NSMutableArray *)v5->super._observers count])
+  [(NDApplication *)&v6 removeObserver:observerCopy];
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
-    [(BRContainersMonitor *)v5->_monitor removeObserver:v5 forContainerID:v5->super._bundleIdentifier];
+    [(BRContainersMonitor *)selfCopy->_monitor removeObserver:selfCopy forContainerID:selfCopy->super._bundleIdentifier];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)containerDidEnterBackground:(id)a3
+- (void)containerDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -119,7 +119,7 @@
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v8 = v4;
+    v8 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Container %{public}@ entered background", buf, 0xCu);
   }
 
@@ -134,9 +134,9 @@
   self->_initializedForegroundStateFromMonitorCallback = 1;
 }
 
-- (void)containerDidEnterForeground:(id)a3
+- (void)containerDidEnterForeground:(id)foreground
 {
-  v4 = a3;
+  foregroundCopy = foreground;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -146,7 +146,7 @@
   if (os_log_type_enabled(ck_log_facility_ckdd, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v8 = v4;
+    v8 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Container %{public}@ entered foreground", buf, 0xCu);
   }
 

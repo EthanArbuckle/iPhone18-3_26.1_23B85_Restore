@@ -1,21 +1,21 @@
 @interface ISLiveWallpaperPlayer
-- (void)_handleDidFinishSeeking:(BOOL)a3;
+- (void)_handleDidFinishSeeking:(BOOL)seeking;
 - (void)_seekVideoToBeginning;
 - (void)_seekVideoToEnd;
-- (void)_setActive:(BOOL)a3;
-- (void)_setPlayRate:(float)a3;
+- (void)_setActive:(BOOL)active;
+- (void)_setPlayRate:(float)rate;
 - (void)_update;
 - (void)_updatePlayer;
 - (void)didPerformChanges;
-- (void)setForce:(double)a3;
-- (void)setPlayerItem:(id)a3;
-- (void)setTouching:(BOOL)a3;
+- (void)setForce:(double)force;
+- (void)setPlayerItem:(id)item;
+- (void)setTouching:(BOOL)touching;
 - (void)statusDidChange;
 @end
 
 @implementation ISLiveWallpaperPlayer
 
-- (void)_handleDidFinishSeeking:(BOOL)a3
+- (void)_handleDidFinishSeeking:(BOOL)seeking
 {
   [(ISLiveWallpaperPlayer *)self _setSeeking:0];
 
@@ -28,7 +28,7 @@
   {
     [(ISLiveWallpaperPlayer *)self _setSeeking:1];
     objc_initWeak(&location, self);
-    v3 = [(ISBasePlayer *)self videoPlayer];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __40__ISLiveWallpaperPlayer__seekVideoToEnd__block_invoke;
@@ -40,7 +40,7 @@
     v7 = *(MEMORY[0x277CC08F0] + 16);
     v4 = v6;
     v5 = v7;
-    [v3 seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
+    [videoPlayer seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -71,7 +71,7 @@ void __40__ISLiveWallpaperPlayer__seekVideoToEnd__block_invoke_2(uint64_t a1)
   {
     [(ISLiveWallpaperPlayer *)self _setSeeking:1];
     objc_initWeak(&location, self);
-    v3 = [(ISBasePlayer *)self videoPlayer];
+    videoPlayer = [(ISBasePlayer *)self videoPlayer];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__ISLiveWallpaperPlayer__seekVideoToBeginning__block_invoke;
@@ -83,7 +83,7 @@ void __40__ISLiveWallpaperPlayer__seekVideoToEnd__block_invoke_2(uint64_t a1)
     v7 = v9;
     v4 = v8;
     v5 = v9;
-    [v3 seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
+    [videoPlayer seekToTime:&v8 toleranceBefore:&v6 toleranceAfter:&v4 completionHandler:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -110,17 +110,17 @@ void __46__ISLiveWallpaperPlayer__seekVideoToBeginning__block_invoke_2(uint64_t 
 
 - (void)_updatePlayer
 {
-  v3 = [(ISBasePlayer *)self videoPlayer];
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
   [(ISLiveWallpaperPlayer *)self _playRate];
   v5 = v4;
   videoDuration = self->_videoDuration;
   memset(&v18, 0, sizeof(v18));
-  if (v3)
+  if (videoPlayer)
   {
-    [v3 currentTime];
+    [videoPlayer currentTime];
   }
 
-  [v3 rate];
+  [videoPlayer rate];
   v7 = v6;
   time1 = v18;
   v16 = **&MEMORY[0x277CC08F0];
@@ -148,7 +148,7 @@ void __46__ISLiveWallpaperPlayer__seekVideoToBeginning__block_invoke_2(uint64_t 
       if (CMTimeCompare(&time1, &v16) < 1)
       {
         *&v15 = v5;
-        [v3 setRate:v15];
+        [videoPlayer setRate:v15];
       }
 
       else
@@ -164,27 +164,27 @@ void __46__ISLiveWallpaperPlayer__seekVideoToBeginning__block_invoke_2(uint64_t 
   }
 }
 
-- (void)_setPlayRate:(float)a3
+- (void)_setPlayRate:(float)rate
 {
-  if (self->__playRate != a3)
+  if (self->__playRate != rate)
   {
-    self->__playRate = a3;
+    self->__playRate = rate;
     [(ISLiveWallpaperPlayer *)self _updatePlayer];
   }
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  if (self->__active != a3)
+  if (self->__active != active)
   {
-    v3 = a3;
-    self->__active = a3;
+    activeCopy = active;
+    self->__active = active;
     [(ISObservable *)self signalChange:16];
-    v5 = [(ISLiveWallpaperPlayer *)self _displayLink];
+    _displayLink = [(ISLiveWallpaperPlayer *)self _displayLink];
 
-    if (v3)
+    if (activeCopy)
     {
-      if (!v5)
+      if (!_displayLink)
       {
         v6 = [[ISPlayerState alloc] initWithPhotoBlurRadius:@"WALLPAPER PLAY" videoAlpha:0.0 videoBlurRadius:1.0 label:0.0];
         [(ISBasePlayer *)self applyOutputInfo:v6 fromBehavior:0 withTransitionOptions:0 completion:0];
@@ -204,12 +204,12 @@ void __46__ISLiveWallpaperPlayer__seekVideoToBeginning__block_invoke_2(uint64_t 
       }
     }
 
-    else if (v5)
+    else if (_displayLink)
     {
       v10 = [[ISPlayerState alloc] initWithPhotoBlurRadius:@"WALLPAPER STOP" videoAlpha:0.0 videoBlurRadius:0.0 label:0.0];
       [(ISBasePlayer *)self applyOutputInfo:v10 fromBehavior:0 withTransitionOptions:0 completion:0];
-      v9 = [(ISLiveWallpaperPlayer *)self _displayLink];
-      [v9 stop];
+      _displayLink2 = [(ISLiveWallpaperPlayer *)self _displayLink];
+      [_displayLink2 stop];
 
       [(ISLiveWallpaperPlayer *)self _setDisplayLink:0];
       self->_smoothedVelocity = 0.0;
@@ -225,26 +225,26 @@ void __36__ISLiveWallpaperPlayer__setActive___block_invoke(uint64_t a1)
 
 - (void)_update
 {
-  v3 = [(ISBasePlayer *)self videoPlayer];
-  if (v3)
+  videoPlayer = [(ISBasePlayer *)self videoPlayer];
+  if (videoPlayer)
   {
-    v4 = v3;
-    v5 = [(ISBasePlayer *)self status];
+    v4 = videoPlayer;
+    status = [(ISBasePlayer *)self status];
 
-    if (v5 >= 1)
+    if (status >= 1)
     {
       flags = self->_videoDuration.flags;
       if ((flags & 0x1D) != 1)
       {
         v13 = 0uLL;
         v14 = 0;
-        v7 = [(ISBasePlayer *)self videoPlayer];
-        v8 = [v7 currentItem];
-        v9 = [v8 asset];
-        v10 = v9;
-        if (v9)
+        videoPlayer2 = [(ISBasePlayer *)self videoPlayer];
+        currentItem = [videoPlayer2 currentItem];
+        asset = [currentItem asset];
+        v10 = asset;
+        if (asset)
         {
-          [v9 duration];
+          [asset duration];
         }
 
         else
@@ -262,11 +262,11 @@ void __36__ISLiveWallpaperPlayer__setActive___block_invoke(uint64_t a1)
       {
         v13 = 0uLL;
         v14 = 0;
-        v11 = [(ISBasePlayer *)self videoPlayer];
-        v12 = v11;
-        if (v11)
+        videoPlayer3 = [(ISBasePlayer *)self videoPlayer];
+        v12 = videoPlayer3;
+        if (videoPlayer3)
         {
-          [v11 currentTime];
+          [videoPlayer3 currentTime];
         }
 
         else
@@ -294,33 +294,33 @@ void __36__ISLiveWallpaperPlayer__setActive___block_invoke(uint64_t a1)
   [(ISLiveWallpaperPlayer *)self _update];
 }
 
-- (void)setForce:(double)a3
+- (void)setForce:(double)force
 {
-  if (self->_force != a3)
+  if (self->_force != force)
   {
-    self->_force = a3;
+    self->_force = force;
     [(ISObservable *)self signalChange:8];
   }
 }
 
-- (void)setTouching:(BOOL)a3
+- (void)setTouching:(BOOL)touching
 {
-  if (self->_touching != a3)
+  if (self->_touching != touching)
   {
-    self->_touching = a3;
+    self->_touching = touching;
     [(ISObservable *)self signalChange:4];
   }
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = ISLiveWallpaperPlayer;
-  v3 = a3;
-  [(ISBasePlayer *)&v4 setPlayerItem:v3];
-  [v3 setReversesMoreVideoFramesInMemory:{1, v4.receiver, v4.super_class}];
-  [v3 setAggressivelyCacheVideoFrames:1];
-  [v3 setDecodesAllFramesDuringOrdinaryPlayback:1];
+  itemCopy = item;
+  [(ISBasePlayer *)&v4 setPlayerItem:itemCopy];
+  [itemCopy setReversesMoreVideoFramesInMemory:{1, v4.receiver, v4.super_class}];
+  [itemCopy setAggressivelyCacheVideoFrames:1];
+  [itemCopy setDecodesAllFramesDuringOrdinaryPlayback:1];
 }
 
 @end

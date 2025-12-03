@@ -1,11 +1,11 @@
 @interface HMDHomeManagerDataSource
 - (HMDHomeManagerDataSource)init;
-- (HMDHomeManagerDataSource)initWithBackingStoreFactory:(id)a3 wifiManagerFactory:(id)a4 cloudCacheFactory:(id)a5 threadClientFactory:(id)a6;
+- (HMDHomeManagerDataSource)initWithBackingStoreFactory:(id)factory wifiManagerFactory:(id)managerFactory cloudCacheFactory:(id)cacheFactory threadClientFactory:(id)clientFactory;
 - (id)_threadClientFactory;
 - (id)backingStoreFactory;
 - (id)cloudCacheFactory;
-- (id)createBackingStoreForHomeManager:(id)a3 error:(id *)a4;
-- (id)createCloudCacheForHomeManager:(id)a3 backingStore:(id)a4 workQueue:(id)a5;
+- (id)createBackingStoreForHomeManager:(id)manager error:(id *)error;
+- (id)createCloudCacheForHomeManager:(id)manager backingStore:(id)store workQueue:(id)queue;
 - (id)createWiFiManager;
 - (id)threadClientFactory;
 - (id)wifiManagerFactory;
@@ -77,12 +77,12 @@
   return v3;
 }
 
-- (HMDHomeManagerDataSource)initWithBackingStoreFactory:(id)a3 wifiManagerFactory:(id)a4 cloudCacheFactory:(id)a5 threadClientFactory:(id)a6
+- (HMDHomeManagerDataSource)initWithBackingStoreFactory:(id)factory wifiManagerFactory:(id)managerFactory cloudCacheFactory:(id)cacheFactory threadClientFactory:(id)clientFactory
 {
-  v10 = _Block_copy(a3);
-  v11 = _Block_copy(a4);
-  v12 = _Block_copy(a5);
-  v13 = _Block_copy(a6);
+  v10 = _Block_copy(factory);
+  v11 = _Block_copy(managerFactory);
+  v12 = _Block_copy(cacheFactory);
+  v13 = _Block_copy(clientFactory);
   v14 = swift_allocObject();
   *(v14 + 16) = v10;
   v15 = swift_allocObject();
@@ -119,57 +119,57 @@
   return [(HMDHomeManagerDataSource *)&v24 init];
 }
 
-- (id)createBackingStoreForHomeManager:(id)a3 error:(id *)a4
+- (id)createBackingStoreForHomeManager:(id)manager error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = [(HMDHomeManagerDataSource *)v7 backingStoreFactory];
-  v9 = v8[2](v8, v6, a4);
-  _Block_release(v8);
+  managerCopy = manager;
+  selfCopy = self;
+  backingStoreFactory = [(HMDHomeManagerDataSource *)selfCopy backingStoreFactory];
+  v9 = backingStoreFactory[2](backingStoreFactory, managerCopy, error);
+  _Block_release(backingStoreFactory);
 
   return v9;
 }
 
 - (id)createWiFiManager
 {
-  v2 = self;
-  v3 = [(HMDHomeManagerDataSource *)v2 wifiManagerFactory];
-  v4 = v3[2]();
-  _Block_release(v3);
+  selfCopy = self;
+  wifiManagerFactory = [(HMDHomeManagerDataSource *)selfCopy wifiManagerFactory];
+  v4 = wifiManagerFactory[2]();
+  _Block_release(wifiManagerFactory);
 
   return v4;
 }
 
-- (id)createCloudCacheForHomeManager:(id)a3 backingStore:(id)a4 workQueue:(id)a5
+- (id)createCloudCacheForHomeManager:(id)manager backingStore:(id)store workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = [(HMDHomeManagerDataSource *)v11 cloudCacheFactory];
-  v13 = v12[2](v12, v8, v9, v10);
-  _Block_release(v12);
+  managerCopy = manager;
+  storeCopy = store;
+  queueCopy = queue;
+  selfCopy = self;
+  cloudCacheFactory = [(HMDHomeManagerDataSource *)selfCopy cloudCacheFactory];
+  v13 = cloudCacheFactory[2](cloudCacheFactory, managerCopy, storeCopy, queueCopy);
+  _Block_release(cloudCacheFactory);
 
   return v13;
 }
 
 - (id)threadClientFactory
 {
-  v2 = [(HMDHomeManagerDataSource *)self _threadClientFactory];
-  if (v2)
+  _threadClientFactory = [(HMDHomeManagerDataSource *)self _threadClientFactory];
+  if (_threadClientFactory)
   {
     v3 = swift_allocObject();
-    *(v3 + 16) = v2;
+    *(v3 + 16) = _threadClientFactory;
     v5[4] = sub_25320E6BC;
     v5[5] = v3;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 1107296256;
     v5[2] = sub_25320DEA8;
     v5[3] = &block_descriptor;
-    v2 = _Block_copy(v5);
+    _threadClientFactory = _Block_copy(v5);
   }
 
-  return v2;
+  return _threadClientFactory;
 }
 
 - (HMDHomeManagerDataSource)init

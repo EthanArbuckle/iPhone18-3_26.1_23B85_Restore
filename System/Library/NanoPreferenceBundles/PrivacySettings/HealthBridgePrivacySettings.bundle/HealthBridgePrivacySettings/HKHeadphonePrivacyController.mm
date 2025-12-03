@@ -1,13 +1,13 @@
 @interface HKHeadphonePrivacyController
 - (HKHeadphonePrivacyController)init;
-- (id)preferenceValue:(id)a3;
+- (id)preferenceValue:(id)value;
 - (id)specifiers;
-- (void)_setInterruptionBehaviorSettingForSpecifier:(id)a3;
+- (void)_setInterruptionBehaviorSettingForSpecifier:(id)specifier;
 - (void)_setupMeasureLevelsGroup;
 - (void)_setupOtherHeadphonesGroup;
 - (void)_setupPruningGroup;
-- (void)_updateSpecifiersForPruningPreference:(BOOL)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
+- (void)_updateSpecifiersForPruningPreference:(BOOL)preference;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
 - (void)toggleSecondSection;
 @end
 
@@ -140,11 +140,11 @@
   [(PSSpecifier *)v12 setIdentifier:@"OTHER_HEADPHONES_SWITCH"];
 }
 
-- (void)_updateSpecifiersForPruningPreference:(BOOL)a3
+- (void)_updateSpecifiersForPruningPreference:(BOOL)preference
 {
   saveInHealthGroup = self->_saveInHealthGroup;
   v5 = &OBJC_IVAR___HKHeadphonePrivacyController__untilIDeleteCell;
-  if (a3)
+  if (preference)
   {
     v5 = &OBJC_IVAR___HKHeadphonePrivacyController__forEightDaysCell;
     v6 = @"SAVE_IN_HEALTH_FOR_8_DAYS_FOOTER_TEXT";
@@ -166,11 +166,11 @@
   [(HKHeadphonePrivacyController *)self reloadSpecifier:v10];
 }
 
-- (void)_setInterruptionBehaviorSettingForSpecifier:(id)a3
+- (void)_setInterruptionBehaviorSettingForSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  v5 = [(PSSpecifier *)self->_forEightDaysCell identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [specifier identifier];
+  identifier2 = [(PSSpecifier *)self->_forEightDaysCell identifier];
+  v6 = [identifier isEqualToString:identifier2];
 
   _HKInitializeLogging();
   v7 = HKLogHearing;
@@ -193,12 +193,12 @@
   [(HKHeadphonePrivacyController *)self _updateSpecifiersForPruningPreference:v6];
 }
 
-- (id)preferenceValue:(id)a3
+- (id)preferenceValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(PSSpecifier *)self->_measureLevelsSwitch identifier];
-  v7 = [v5 isEqualToString:v6];
+  valueCopy = value;
+  identifier = [valueCopy identifier];
+  identifier2 = [(PSSpecifier *)self->_measureLevelsSwitch identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
@@ -209,9 +209,9 @@
 
   else
   {
-    v9 = [v4 identifier];
-    v10 = [(PSSpecifier *)self->_otherHeadphonesSwitch identifier];
-    v11 = [v9 isEqualToString:v10];
+    identifier3 = [valueCopy identifier];
+    identifier4 = [(PSSpecifier *)self->_otherHeadphonesSwitch identifier];
+    v11 = [identifier3 isEqualToString:identifier4];
 
     if (v11)
     {
@@ -222,7 +222,7 @@
     {
       v14.receiver = self;
       v14.super_class = HKHeadphonePrivacyController;
-      v12 = [(HKHeadphonePrivacyController *)&v14 readPreferenceValue:v4];
+      v12 = [(HKHeadphonePrivacyController *)&v14 readPreferenceValue:valueCopy];
     }
 
     v8 = v12;
@@ -231,13 +231,13 @@
   return v8;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(PSSpecifier *)self->_measureLevelsSwitch identifier];
-  v10 = [v8 isEqualToString:v9];
+  valueCopy = value;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  identifier2 = [(PSSpecifier *)self->_measureLevelsSwitch identifier];
+  v10 = [identifier isEqualToString:identifier2];
 
   if (v10)
   {
@@ -251,20 +251,20 @@
       *buf = 138543619;
       v26 = v13;
       v27 = 1025;
-      v28 = [v6 BOOLValue];
+      bOOLValue = [valueCopy BOOLValue];
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting measure levels preference to: %{private}d", buf, 0x12u);
     }
 
-    v15 = [(ADASManager *)self->_manager setNanoPreferenceFor:ADAFPreferenceKeyHAEEnableHKWrite value:v6];
-    self->_otherSectionEnabled = [v6 BOOLValue];
+    v15 = [(ADASManager *)self->_manager setNanoPreferenceFor:ADAFPreferenceKeyHAEEnableHKWrite value:valueCopy];
+    self->_otherSectionEnabled = [valueCopy BOOLValue];
     [(HKHeadphonePrivacyController *)self toggleSecondSection];
   }
 
   else
   {
-    v16 = [v7 identifier];
-    v17 = [(PSSpecifier *)self->_otherHeadphonesSwitch identifier];
-    v18 = [v16 isEqualToString:v17];
+    identifier3 = [specifierCopy identifier];
+    identifier4 = [(PSSpecifier *)self->_otherHeadphonesSwitch identifier];
+    v18 = [identifier3 isEqualToString:identifier4];
 
     if (v18)
     {
@@ -278,18 +278,18 @@
         *buf = 138543619;
         v26 = v21;
         v27 = 1025;
-        v28 = [v6 BOOLValue];
+        bOOLValue = [valueCopy BOOLValue];
         _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Setting measure levels (other devices) preference to: %{private}d", buf, 0x12u);
       }
 
-      v23 = [(ADASManager *)self->_manager setNanoPreferenceFor:ADAFPreferenceKeyHAEEnableOtherDevices value:v6];
+      v23 = [(ADASManager *)self->_manager setNanoPreferenceFor:ADAFPreferenceKeyHAEEnableOtherDevices value:valueCopy];
     }
 
     else
     {
       v24.receiver = self;
       v24.super_class = HKHeadphonePrivacyController;
-      [(HKHeadphonePrivacyController *)&v24 setPreferenceValue:v6 specifier:v7];
+      [(HKHeadphonePrivacyController *)&v24 setPreferenceValue:valueCopy specifier:specifierCopy];
     }
   }
 }

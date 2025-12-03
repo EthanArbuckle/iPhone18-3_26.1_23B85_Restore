@@ -1,5 +1,5 @@
 @interface PanEaterGestureRecognizer
-- (_TtC11NotesEditor25PanEaterGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC11NotesEditor25PanEaterGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)reset;
 @end
 
@@ -19,9 +19,9 @@
   *(v4 + 1) = 0;
 }
 
-- (_TtC11NotesEditor25PanEaterGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC11NotesEditor25PanEaterGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_2154A2BCC();
@@ -33,7 +33,7 @@
     memset(v6, 0, sizeof(v6));
   }
 
-  return sub_215316E98(v6, a4);
+  return sub_215316E98(v6, action);
 }
 
 @end

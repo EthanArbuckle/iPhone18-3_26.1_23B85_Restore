@@ -1,26 +1,26 @@
 @interface BDSReadingHistoryServiceStatus
 - (BDSReadingHistoryServiceStatus)init;
-- (BDSReadingHistoryServiceStatus)initWithCoder:(id)a3;
-- (BDSReadingHistoryServiceStatus)initWithIsLoaded:(BOOL)a3;
+- (BDSReadingHistoryServiceStatus)initWithCoder:(id)coder;
+- (BDSReadingHistoryServiceStatus)initWithIsLoaded:(BOOL)loaded;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryServiceStatus
 
-- (BDSReadingHistoryServiceStatus)initWithCoder:(id)a3
+- (BDSReadingHistoryServiceStatus)initWithCoder:(id)coder
 {
   swift_getObjectType();
-  v4 = sub_10011CDC8(a3);
+  v4 = sub_10011CDC8(coder);
   swift_deallocPartialClassInstance();
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10011C690(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10011C690(coderCopy);
 }
 
 - (BDSReadingHistoryServiceStatus)init
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (BDSReadingHistoryServiceStatus)initWithIsLoaded:(BOOL)a3
+- (BDSReadingHistoryServiceStatus)initWithIsLoaded:(BOOL)loaded
 {
   ObjectType = swift_getObjectType();
   v5 = objc_allocWithZone(ObjectType);
-  v5[OBJC_IVAR___BDSReadingHistoryServiceStatus_value] = a3;
+  v5[OBJC_IVAR___BDSReadingHistoryServiceStatus_value] = loaded;
   v8.receiver = v5;
   v8.super_class = ObjectType;
   v6 = [(BDSReadingHistoryServiceStatus *)&v8 init];
@@ -65,7 +65,7 @@
     v3 = 0xE500000000000000;
   }
 
-  v4 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v2;
   v8._object = v3;
   sub_1001C6138(v8);

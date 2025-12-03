@@ -8,55 +8,55 @@
 - (CGPoint)previousPanLocationInView;
 - (CGRect)keyboardSourceRect;
 - (CGRect)sourceRect;
-- (CKBrowserDragViewController)initWithDragImage:(id)a3 inSourceRect:(CGRect)a4 withSourcePoint:(CGPoint)a5 keyboardSourceRect:(CGRect)a6 keyboardSourcePoint:(CGPoint)a7 withGestureRecognizer:(id)a8;
+- (CKBrowserDragViewController)initWithDragImage:(id)image inSourceRect:(CGRect)rect withSourcePoint:(CGPoint)point keyboardSourceRect:(CGRect)sourceRect keyboardSourcePoint:(CGPoint)sourcePoint withGestureRecognizer:(id)recognizer;
 - (CKBrowserDragViewControllerDelegate)delegate;
 - (UIView)keyboardWindowSourceView;
 - (double)absoluteScale;
 - (double)dragViewScale;
 - (double)rotationAngle;
 - (id)draggedSticker;
-- (void)_reversePeelAnimationToPoint:(CGPoint)a3 keyboardPoint:(CGPoint)a4 forPlacement:(BOOL)a5 shouldShrink:(BOOL)a6 completionBlock:(id)a7;
-- (void)animateBackToSourceCompletionBlock:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
+- (void)_reversePeelAnimationToPoint:(CGPoint)point keyboardPoint:(CGPoint)keyboardPoint forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block;
+- (void)animateBackToSourceCompletionBlock:(id)block;
+- (void)applicationDidEnterBackground:(id)background;
 - (void)commitDrag;
 - (void)dealloc;
-- (void)gestureRecognized:(id)a3;
-- (void)manuallyInitializeDragAtPoint:(CGPoint)a3;
-- (void)manuallyUpdateDragPositionToPoint:(CGPoint)a3;
-- (void)panGestureRecognized:(id)a3;
-- (void)setCanPeel:(BOOL)a3;
-- (void)setPlusImageViewHidden:(BOOL)a3;
-- (void)setPressed:(BOOL)a3;
-- (void)setRotationAngle:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)gestureRecognized:(id)recognized;
+- (void)manuallyInitializeDragAtPoint:(CGPoint)point;
+- (void)manuallyUpdateDragPositionToPoint:(CGPoint)point;
+- (void)panGestureRecognized:(id)recognized;
+- (void)setCanPeel:(BOOL)peel;
+- (void)setPlusImageViewHidden:(BOOL)hidden;
+- (void)setPressed:(BOOL)pressed;
+- (void)setRotationAngle:(double)angle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CKBrowserDragViewController
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKBrowserDragViewController;
   [(CKBrowserDragViewController *)&v4 dealloc];
 }
 
-- (CKBrowserDragViewController)initWithDragImage:(id)a3 inSourceRect:(CGRect)a4 withSourcePoint:(CGPoint)a5 keyboardSourceRect:(CGRect)a6 keyboardSourcePoint:(CGPoint)a7 withGestureRecognizer:(id)a8
+- (CKBrowserDragViewController)initWithDragImage:(id)image inSourceRect:(CGRect)rect withSourcePoint:(CGPoint)point keyboardSourceRect:(CGRect)sourceRect keyboardSourcePoint:(CGPoint)sourcePoint withGestureRecognizer:(id)recognizer
 {
-  x = a7.x;
-  y = a5.y;
-  v10 = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v16 = a3;
+  x = sourcePoint.x;
+  y = point.y;
+  v10 = point.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  imageCopy = image;
   v17 = *&x;
   v27.receiver = self;
   v27.super_class = CKBrowserDragViewController;
@@ -65,17 +65,17 @@
   if (v18)
   {
     [(CKBrowserDragViewController *)v18 setGestureRecognizer:v17];
-    [(CKBrowserDragViewController *)v19 setDragImage:v16];
+    [(CKBrowserDragViewController *)v19 setDragImage:imageCopy];
     [(CKBrowserDragViewController *)v19 setSourceRect:v14, v13, width, height];
-    [(CKBrowserDragViewController *)v19 setKeyboardSourceRect:a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+    [(CKBrowserDragViewController *)v19 setKeyboardSourceRect:sourceRect.origin.x, sourceRect.origin.y, sourceRect.size.width, sourceRect.size.height];
     v20.f64[0] = v14;
     v21.f64[0] = width;
     v22.f64[0] = v10;
     [(CKBrowserDragViewController *)v19 setAnchorOffset:CKAnchorOffset(v20, v13, v21, height, v22, y)];
-    v23.f64[0] = a6.origin.x;
-    v24.f64[0] = a6.size.width;
+    v23.f64[0] = sourceRect.origin.x;
+    v24.f64[0] = sourceRect.size.width;
     v25.f64[0] = v28;
-    [(CKBrowserDragViewController *)v19 setKeyboardAnchorOffset:CKAnchorOffset(v23, a6.origin.y, v24, a6.size.height, v25, v29)];
+    [(CKBrowserDragViewController *)v19 setKeyboardAnchorOffset:CKAnchorOffset(v23, sourceRect.origin.y, v24, sourceRect.size.height, v25, v29)];
   }
 
   return v19;
@@ -85,16 +85,16 @@
 {
   [(CKBrowserDragViewController *)self dragViewScale];
   v4 = v3;
-  v5 = [(CKBrowserDragViewController *)self normalDragView];
-  [v5 initialScale];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView initialScale];
   v7 = v4 * v6;
 
   return v7;
 }
 
-- (void)animateBackToSourceCompletionBlock:(id)a3
+- (void)animateBackToSourceCompletionBlock:(id)block
 {
-  v35 = a3;
+  blockCopy = block;
   [(CKBrowserDragViewController *)self sourceRect];
   v33 = v5;
   v34 = v4;
@@ -150,24 +150,24 @@
 
   *&v11.f64[1] = v15;
   *&v13.f64[1] = v10;
-  [(CKBrowserDragViewController *)self _reversePeelAnimationToPoint:0 keyboardPoint:0 forPlacement:v35 shouldShrink:*&v24 completionBlock:vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(v13, vmulq_f64(vsubq_f64(v11, v32), _Q3)), *&v25)), vdupq_lane_s64(v25, 0)), v26, *&v27, v28, *&v29];
+  [(CKBrowserDragViewController *)self _reversePeelAnimationToPoint:0 keyboardPoint:0 forPlacement:blockCopy shouldShrink:*&v24 completionBlock:vdivq_f64(vrndmq_f64(vmulq_n_f64(vaddq_f64(v13, vmulq_f64(vsubq_f64(v11, v32), _Q3)), *&v25)), vdupq_lane_s64(v25, 0)), v26, *&v27, v28, *&v29];
 }
 
-- (void)_reversePeelAnimationToPoint:(CGPoint)a3 keyboardPoint:(CGPoint)a4 forPlacement:(BOOL)a5 shouldShrink:(BOOL)a6 completionBlock:(id)a7
+- (void)_reversePeelAnimationToPoint:(CGPoint)point keyboardPoint:(CGPoint)keyboardPoint forPlacement:(BOOL)placement shouldShrink:(BOOL)shrink completionBlock:(id)block
 {
-  v7 = a6;
-  v8 = a5;
-  y = a3.y;
-  x = a3.x;
-  v12 = a7;
-  v13 = [(CKBrowserDragViewController *)self normalDragView];
+  shrinkCopy = shrink;
+  placementCopy = placement;
+  y = point.y;
+  x = point.x;
+  blockCopy = block;
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboardPoint_forPlacement_shouldShrink_completionBlock___block_invoke;
   v15[3] = &unk_1E72EBDB8;
-  v16 = v12;
-  v14 = v12;
-  [v13 reversePeelAnimationToPoint:v8 forPlacement:v7 shouldShrink:v15 completionBlock:{x, y}];
+  v16 = blockCopy;
+  v14 = blockCopy;
+  [normalDragView reversePeelAnimationToPoint:placementCopy forPlacement:shrinkCopy shouldShrink:v15 completionBlock:{x, y}];
 }
 
 uint64_t __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboardPoint_forPlacement_shouldShrink_completionBlock___block_invoke(uint64_t a1)
@@ -181,14 +181,14 @@ uint64_t __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboar
   return result;
 }
 
-- (void)setPlusImageViewHidden:(BOOL)a3
+- (void)setPlusImageViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CKBrowserDragViewController *)self normalDragView];
-  [v5 setPlusImageViewHidden:v3];
+  hiddenCopy = hidden;
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView setPlusImageViewHidden:hiddenCopy];
 
-  v6 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v6 setPlusImageViewHidden:v3];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView setPlusImageViewHidden:hiddenCopy];
 }
 
 - (void)viewDidLoad
@@ -196,11 +196,11 @@ uint64_t __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboar
   v46.receiver = self;
   v46.super_class = CKBrowserDragViewController;
   [(CKBrowserDragViewController *)&v46 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
-  v4 = [(CKBrowserDragViewController *)self dragImage];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+  dragImage = [(CKBrowserDragViewController *)self dragImage];
 
-  if (v4)
+  if (dragImage)
   {
     v5 = [CKBrowserDragStickerView alloc];
     [(CKBrowserDragViewController *)self sourceRect];
@@ -208,25 +208,25 @@ uint64_t __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboar
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CKBrowserDragViewController *)self dragImage];
-    v15 = [(CKBrowserDragStickerView *)v5 initWithSourceRect:v14 dragImage:v7, v9, v11, v13];
+    dragImage2 = [(CKBrowserDragViewController *)self dragImage];
+    v15 = [(CKBrowserDragStickerView *)v5 initWithSourceRect:dragImage2 dragImage:v7, v9, v11, v13];
     [(CKBrowserDragViewController *)self setNormalDragView:v15];
 
-    v16 = [(CKBrowserDragViewController *)self canPeel];
-    v17 = [(CKBrowserDragViewController *)self normalDragView];
-    [v17 setCanPeel:v16];
+    canPeel = [(CKBrowserDragViewController *)self canPeel];
+    normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView setCanPeel:canPeel];
 
-    v18 = [(CKBrowserDragViewController *)self isPressed];
-    v19 = [(CKBrowserDragViewController *)self normalDragView];
-    [v19 setPressed:v18];
+    isPressed = [(CKBrowserDragViewController *)self isPressed];
+    normalDragView2 = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView2 setPressed:isPressed];
 
-    v20 = [(CKBrowserDragViewController *)self view];
-    v21 = [(CKBrowserDragViewController *)self normalDragView];
-    [v20 addSubview:v21];
+    view = [(CKBrowserDragViewController *)self view];
+    normalDragView3 = [(CKBrowserDragViewController *)self normalDragView];
+    [view addSubview:normalDragView3];
 
-    v22 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+    keyboardWindowSourceView = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
 
-    if (v22)
+    if (keyboardWindowSourceView)
     {
       v23 = [CKBrowserDragStickerView alloc];
       [(CKBrowserDragViewController *)self sourceRect];
@@ -234,154 +234,154 @@ uint64_t __116__CKBrowserDragViewController__reversePeelAnimationToPoint_keyboar
       v27 = v26;
       v29 = v28;
       v31 = v30;
-      v32 = [(CKBrowserDragViewController *)self dragImage];
-      v33 = [(CKBrowserDragStickerView *)v23 initWithSourceRect:v32 dragImage:v25, v27, v29, v31];
+      dragImage3 = [(CKBrowserDragViewController *)self dragImage];
+      v33 = [(CKBrowserDragStickerView *)v23 initWithSourceRect:dragImage3 dragImage:v25, v27, v29, v31];
       [(CKBrowserDragViewController *)self setKeyboardDragView:v33];
 
-      v34 = [(CKBrowserDragViewController *)self canPeel];
-      v35 = [(CKBrowserDragViewController *)self keyboardDragView];
-      [v35 setCanPeel:v34];
+      canPeel2 = [(CKBrowserDragViewController *)self canPeel];
+      keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+      [keyboardDragView setCanPeel:canPeel2];
 
-      v36 = [(CKBrowserDragViewController *)self isPressed];
-      v37 = [(CKBrowserDragViewController *)self keyboardDragView];
-      [v37 setPressed:v36];
+      isPressed2 = [(CKBrowserDragViewController *)self isPressed];
+      keyboardDragView2 = [(CKBrowserDragViewController *)self keyboardDragView];
+      [keyboardDragView2 setPressed:isPressed2];
 
-      v38 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-      v39 = [(CKBrowserDragViewController *)self keyboardDragView];
-      [v38 addSubview:v39];
+      keyboardWindowSourceView2 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+      keyboardDragView3 = [(CKBrowserDragViewController *)self keyboardDragView];
+      [keyboardWindowSourceView2 addSubview:keyboardDragView3];
     }
   }
 
-  v40 = [(CKBrowserDragViewController *)self gestureRecognizer];
-  [v40 addTarget:self action:sel_gestureRecognized_];
+  gestureRecognizer = [(CKBrowserDragViewController *)self gestureRecognizer];
+  [gestureRecognizer addTarget:self action:sel_gestureRecognized_];
 
   v41 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_panGestureRecognized_];
-  v42 = [(CKBrowserDragViewController *)self view];
-  [v42 addGestureRecognizer:v41];
+  view2 = [(CKBrowserDragViewController *)self view];
+  [view2 addGestureRecognizer:v41];
 
   [(CKBrowserDragViewController *)self setPanGestureRecognizer:v41];
-  v43 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+  keyboardWindowSourceView3 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
 
-  if (v43)
+  if (keyboardWindowSourceView3)
   {
     v44 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:self action:sel_panGestureRecognized_];
-    v45 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-    [v45 addGestureRecognizer:v44];
+    keyboardWindowSourceView4 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+    [keyboardWindowSourceView4 addGestureRecognizer:v44];
 
     [(CKBrowserDragViewController *)self setKeyboardPanGestureRecognizer:v44];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v26.receiver = self;
   v26.super_class = CKBrowserDragViewController;
-  [(CKBrowserDragViewController *)&v26 viewDidAppear:a3];
-  v4 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v4 animatePeelWithCompletion:0];
+  [(CKBrowserDragViewController *)&v26 viewDidAppear:appear];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView animatePeelWithCompletion:0];
 
-  v5 = [(CKBrowserDragViewController *)self normalDragView];
-  [v5 animatePeelWithCompletion:0];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView animatePeelWithCompletion:0];
 
-  v6 = [(CKBrowserDragViewController *)self gestureRecognizer];
-  v7 = [(CKBrowserDragViewController *)self view];
-  [v6 locationInView:v7];
+  gestureRecognizer = [(CKBrowserDragViewController *)self gestureRecognizer];
+  view = [(CKBrowserDragViewController *)self view];
+  [gestureRecognizer locationInView:view];
   v9 = v8;
   v11 = v10;
-  v12 = [(CKBrowserDragViewController *)self normalDragView];
-  [v12 setInitialDragStartPosition:{v9, v11}];
+  normalDragView2 = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView2 setInitialDragStartPosition:{v9, v11}];
 
-  v13 = [(CKBrowserDragViewController *)self gestureRecognizer];
-  v14 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-  [v13 locationInView:v14];
+  gestureRecognizer2 = [(CKBrowserDragViewController *)self gestureRecognizer];
+  keyboardWindowSourceView = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+  [gestureRecognizer2 locationInView:keyboardWindowSourceView];
   v16 = v15;
   v18 = v17;
-  v19 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v19 setInitialDragStartPosition:{v16, v18}];
+  keyboardDragView2 = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView2 setInitialDragStartPosition:{v16, v18}];
 
   if (![(CKBrowserDragViewController *)self isPressed])
   {
     [(CKBrowserDragViewController *)self setPressed:1];
-    v20 = [(CKBrowserDragViewController *)self normalDragView];
-    v21 = [(CKBrowserDragViewController *)self normalDragView];
-    [v21 initialDragStartPosition];
-    [v20 attachElasticEffectsForLocation:?];
+    normalDragView3 = [(CKBrowserDragViewController *)self normalDragView];
+    normalDragView4 = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView4 initialDragStartPosition];
+    [normalDragView3 attachElasticEffectsForLocation:?];
 
-    v22 = [(CKBrowserDragViewController *)self keyboardDragView];
-    v23 = [(CKBrowserDragViewController *)self keyboardDragView];
-    [v23 initialDragStartPosition];
-    [v22 attachElasticEffectsForLocation:?];
+    keyboardDragView3 = [(CKBrowserDragViewController *)self keyboardDragView];
+    keyboardDragView4 = [(CKBrowserDragViewController *)self keyboardDragView];
+    [keyboardDragView4 initialDragStartPosition];
+    [keyboardDragView3 attachElasticEffectsForLocation:?];
   }
 
-  v24 = [(CKBrowserDragViewController *)self normalDragView];
-  [v24 updateAnimationTimerObserving];
+  normalDragView5 = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView5 updateAnimationTimerObserving];
 
-  v25 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v25 updateAnimationTimerObserving];
+  keyboardDragView5 = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView5 updateAnimationTimerObserving];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = CKBrowserDragViewController;
-  [(CKBrowserDragViewController *)&v9 viewDidDisappear:a3];
-  v4 = [(CKBrowserDragViewController *)self normalDragView];
-  [v4 updateAnimationTimerObserving];
+  [(CKBrowserDragViewController *)&v9 viewDidDisappear:disappear];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView updateAnimationTimerObserving];
 
-  v5 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v5 updateAnimationTimerObserving];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView updateAnimationTimerObserving];
 
-  v6 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v6 removeFromSuperview];
+  keyboardDragView2 = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView2 removeFromSuperview];
 
-  v7 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-  v8 = [(CKBrowserDragViewController *)self keyboardPanGestureRecognizer];
-  [v7 removeGestureRecognizer:v8];
+  keyboardWindowSourceView = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+  keyboardPanGestureRecognizer = [(CKBrowserDragViewController *)self keyboardPanGestureRecognizer];
+  [keyboardWindowSourceView removeGestureRecognizer:keyboardPanGestureRecognizer];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(CKBrowserDragViewController *)self delegate:a4];
+  v5 = [(CKBrowserDragViewController *)self delegate:coordinator];
   [v5 browserDragViewController:self dragEndedWithTarget:0];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CKBrowserDragViewController;
-  [(CKBrowserDragViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(CKBrowserDragViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(CKBrowserDragViewController *)self setHasMovedToWindow:1];
 }
 
-- (void)gestureRecognized:(id)a3
+- (void)gestureRecognized:(id)recognized
 {
-  v35 = a3;
-  v4 = [(CKBrowserDragViewController *)self view];
-  v5 = [v4 window];
-  if (!v5 && [(CKBrowserDragViewController *)self hasMovedToWindow])
+  recognizedCopy = recognized;
+  view = [(CKBrowserDragViewController *)self view];
+  window = [view window];
+  if (!window && [(CKBrowserDragViewController *)self hasMovedToWindow])
   {
 
 LABEL_13:
     [(CKBrowserDragViewController *)self setPressed:0];
-    v33 = [(CKBrowserDragViewController *)self normalDragView];
-    [v33 detachElasticEffects];
+    normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView detachElasticEffects];
 
-    v34 = [(CKBrowserDragViewController *)self keyboardDragView];
-    [v34 detachElasticEffects];
+    keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+    [keyboardDragView detachElasticEffects];
 
     [(CKBrowserDragViewController *)self commitDrag];
     goto LABEL_14;
   }
 
-  if ([v35 state] == 1)
+  if ([recognizedCopy state] == 1)
   {
   }
 
   else
   {
-    v6 = [v35 state];
+    state = [recognizedCopy state];
 
-    if (v6 != 2)
+    if (state != 2)
     {
       goto LABEL_13;
     }
@@ -389,38 +389,38 @@ LABEL_13:
 
   if ([(CKBrowserDragViewController *)self isPressed])
   {
-    v7 = [(CKBrowserDragViewController *)self normalDragView];
-    v8 = [(CKBrowserDragViewController *)self view];
-    [v35 locationInView:v8];
-    [v7 updateElasticEffectsForLocation:?];
+    normalDragView2 = [(CKBrowserDragViewController *)self normalDragView];
+    view2 = [(CKBrowserDragViewController *)self view];
+    [recognizedCopy locationInView:view2];
+    [normalDragView2 updateElasticEffectsForLocation:?];
 
-    v9 = [(CKBrowserDragViewController *)self keyboardDragView];
-    v10 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-    [v35 locationInView:v10];
-    [v9 updateElasticEffectsForLocation:?];
+    keyboardDragView2 = [(CKBrowserDragViewController *)self keyboardDragView];
+    keyboardWindowSourceView = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+    [recognizedCopy locationInView:keyboardWindowSourceView];
+    [keyboardDragView2 updateElasticEffectsForLocation:?];
   }
 
   if ([(CKBrowserDragViewController *)self _orbScalingEnabled]&& [(CKBrowserDragViewController *)self canScale])
   {
-    v11 = [v35 touches];
-    v12 = [v11 firstObject];
+    touches = [recognizedCopy touches];
+    firstObject = [touches firstObject];
 
-    [v12 force];
+    [firstObject force];
     v14 = v13;
-    [v12 maximumPossibleForce];
+    [firstObject maximumPossibleForce];
     v16 = v14 / v15 + v14 / v15;
-    v17 = [(CKBrowserDragViewController *)self normalDragView];
-    [v17 setDragViewScale:v16];
+    normalDragView3 = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView3 setDragViewScale:v16];
 
-    v18 = [(CKBrowserDragViewController *)self keyboardDragView];
-    [v18 setDragViewScale:v16];
+    keyboardDragView3 = [(CKBrowserDragViewController *)self keyboardDragView];
+    [keyboardDragView3 setDragViewScale:v16];
   }
 
   [(CKBrowserDragViewController *)self dragViewCenter];
   v20 = v19;
   v22 = v21;
-  v23 = [(CKBrowserDragViewController *)self normalDragView];
-  [v23 initialSize];
+  normalDragView4 = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView4 initialSize];
   v25 = v24;
   v27 = v26;
   [(CKBrowserDragViewController *)self absoluteScale];
@@ -428,16 +428,16 @@ LABEL_13:
   [(CKBrowserDragViewController *)self rotationAngle];
   v31 = [CKBrowserDragControllerTarget targetWithScreenCoordinate:0 initialSize:v20 scale:v22 meshScaleFactor:v25 rotation:v27 associatedLayoutIntent:v29, 1.4, v30];
 
-  v32 = [(CKBrowserDragViewController *)self delegate];
-  [v32 browserDragViewController:self draggedWithTarget:v31];
+  delegate = [(CKBrowserDragViewController *)self delegate];
+  [delegate browserDragViewController:self draggedWithTarget:v31];
 
 LABEL_14:
 }
 
 - (CGPoint)dragViewCenter
 {
-  v2 = [(CKBrowserDragViewController *)self normalDragView];
-  [v2 dragViewCenter];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView dragViewCenter];
   v4 = v3;
   v6 = v5;
 
@@ -450,8 +450,8 @@ LABEL_14:
 
 - (CGPoint)keyboardDragViewCenter
 {
-  v2 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v2 dragViewCenter];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView dragViewCenter];
   v4 = v3;
   v6 = v5;
 
@@ -462,64 +462,64 @@ LABEL_14:
   return result;
 }
 
-- (void)manuallyInitializeDragAtPoint:(CGPoint)a3
+- (void)manuallyInitializeDragAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CKBrowserDragViewController *)self setPressed:1];
-  v6 = [(CKBrowserDragViewController *)self normalDragView];
-  [v6 attachElasticEffectsForLocation:{x, y}];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView attachElasticEffectsForLocation:{x, y}];
 
-  v7 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v7 attachElasticEffectsForLocation:{x, y}];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView attachElasticEffectsForLocation:{x, y}];
 }
 
-- (void)manuallyUpdateDragPositionToPoint:(CGPoint)a3
+- (void)manuallyUpdateDragPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CKBrowserDragViewController *)self normalDragView];
-  [v6 updateElasticEffectsForLocation:{x, y}];
+  y = point.y;
+  x = point.x;
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView updateElasticEffectsForLocation:{x, y}];
 
-  v7 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v7 updateElasticEffectsForLocation:{x, y}];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView updateElasticEffectsForLocation:{x, y}];
 }
 
-- (void)panGestureRecognized:(id)a3
+- (void)panGestureRecognized:(id)recognized
 {
-  v45 = a3;
-  v4 = [(CKBrowserDragViewController *)self keyboardPanGestureRecognizer];
+  recognizedCopy = recognized;
+  keyboardPanGestureRecognizer = [(CKBrowserDragViewController *)self keyboardPanGestureRecognizer];
 
-  if (v4 == v45)
+  if (keyboardPanGestureRecognizer == recognizedCopy)
   {
-    v5 = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
-    if ([v45 state] == 1)
+    keyboardWindowSourceView = [(CKBrowserDragViewController *)self keyboardWindowSourceView];
+    if ([recognizedCopy state] == 1)
     {
-      [v45 locationInView:v5];
-      v11 = self;
+      [recognizedCopy locationInView:keyboardWindowSourceView];
+      selfCopy5 = self;
       goto LABEL_21;
     }
   }
 
   else
   {
-    v5 = [(CKBrowserDragViewController *)self view];
-    if ([v45 state] == 1)
+    keyboardWindowSourceView = [(CKBrowserDragViewController *)self view];
+    if ([recognizedCopy state] == 1)
     {
-      [v45 locationInView:v5];
-      v8 = self;
+      [recognizedCopy locationInView:keyboardWindowSourceView];
+      selfCopy3 = self;
 LABEL_19:
-      [(CKBrowserDragViewController *)v8 setPreviousPanLocationInView:v6, v7];
+      [(CKBrowserDragViewController *)selfCopy3 setPreviousPanLocationInView:v6, v7];
       goto LABEL_22;
     }
   }
 
-  if ([v45 state] == 2)
+  if ([recognizedCopy state] == 2)
   {
-    [v45 locationInView:v5];
+    [recognizedCopy locationInView:keyboardWindowSourceView];
     v13 = v12;
     v15 = v14;
-    if (v4 == v45)
+    if (keyboardPanGestureRecognizer == recognizedCopy)
     {
       [(CKBrowserDragViewController *)self previousPanLocationInKeyboardView];
       v17 = v24;
@@ -557,34 +557,34 @@ LABEL_19:
       [v37 dragPinchGestureScaleFactor];
       v39 = v36 / v38;
 
-      v40 = [(CKBrowserDragViewController *)self normalDragView];
-      [v40 dragViewScale];
+      normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+      [normalDragView dragViewScale];
       v42 = v39 + v41;
 
-      v43 = [(CKBrowserDragViewController *)self normalDragView];
-      [v43 setDragViewScale:v42];
+      normalDragView2 = [(CKBrowserDragViewController *)self normalDragView];
+      [normalDragView2 setDragViewScale:v42];
 
-      v44 = [(CKBrowserDragViewController *)self keyboardDragView];
-      [v44 setDragViewScale:v42];
+      keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+      [keyboardDragView setDragViewScale:v42];
     }
 
     [(CKBrowserDragViewController *)self setPreviousPanLocationInView:v13, v15];
-    if (v4 != v45)
+    if (keyboardPanGestureRecognizer != recognizedCopy)
     {
-      v8 = self;
+      selfCopy3 = self;
       v6 = v13;
       v7 = v15;
       goto LABEL_19;
     }
 
-    v11 = self;
+    selfCopy5 = self;
     v9 = v13;
     v10 = v15;
   }
 
   else
   {
-    if ([v45 state] != 3)
+    if ([recognizedCopy state] != 3)
     {
       goto LABEL_22;
     }
@@ -592,42 +592,42 @@ LABEL_19:
     v22 = *MEMORY[0x1E695EFF8];
     v23 = *(MEMORY[0x1E695EFF8] + 8);
     [(CKBrowserDragViewController *)self setPreviousPanLocationInView:*MEMORY[0x1E695EFF8], v23];
-    v11 = self;
+    selfCopy5 = self;
     v9 = v22;
     v10 = v23;
   }
 
 LABEL_21:
-  [(CKBrowserDragViewController *)v11 setPreviousPanLocationInKeyboardView:v9, v10];
+  [(CKBrowserDragViewController *)selfCopy5 setPreviousPanLocationInKeyboardView:v9, v10];
 LABEL_22:
 }
 
 - (double)dragViewScale
 {
-  v2 = [(CKBrowserDragViewController *)self normalDragView];
-  [v2 dragViewScale];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView dragViewScale];
   v4 = v3;
 
   return v4;
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = [(CKBrowserDragViewController *)self delegate];
-  [v4 browserDragViewController:self dragEndedWithTarget:0];
+  delegate = [(CKBrowserDragViewController *)self delegate];
+  [delegate browserDragViewController:self dragEndedWithTarget:0];
 }
 
 - (void)commitDrag
 {
-  v3 = [(CKBrowserDragViewController *)self gestureRecognizer];
-  [v3 removeTarget:self action:sel_gestureRecognized_];
+  gestureRecognizer = [(CKBrowserDragViewController *)self gestureRecognizer];
+  [gestureRecognizer removeTarget:self action:sel_gestureRecognized_];
 
   [(CKBrowserDragViewController *)self setGestureRecognizer:0];
   [(CKBrowserDragViewController *)self dragViewCenter];
   v5 = v4;
   v7 = v6;
-  v8 = [(CKBrowserDragViewController *)self normalDragView];
-  [v8 initialSize];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView initialSize];
   v10 = v9;
   v12 = v11;
   [(CKBrowserDragViewController *)self absoluteScale];
@@ -635,53 +635,53 @@ LABEL_22:
   [(CKBrowserDragViewController *)self rotationAngle];
   v17 = [CKBrowserDragControllerTarget targetWithScreenCoordinate:0 initialSize:v5 scale:v7 meshScaleFactor:v10 rotation:v12 associatedLayoutIntent:v14, 1.4, v15];
 
-  v16 = [(CKBrowserDragViewController *)self delegate];
-  [v16 browserDragViewController:self dragEndedWithTarget:v17];
+  delegate = [(CKBrowserDragViewController *)self delegate];
+  [delegate browserDragViewController:self dragEndedWithTarget:v17];
 }
 
-- (void)setRotationAngle:(double)a3
+- (void)setRotationAngle:(double)angle
 {
-  v5 = [(CKBrowserDragViewController *)self normalDragView];
-  [v5 setRotationAngle:a3];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView setRotationAngle:angle];
 
-  v6 = [(CKBrowserDragViewController *)self keyboardDragView];
-  [v6 setRotationAngle:a3];
+  keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+  [keyboardDragView setRotationAngle:angle];
 }
 
 - (double)rotationAngle
 {
-  v2 = [(CKBrowserDragViewController *)self normalDragView];
-  [v2 rotationAngle];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  [normalDragView rotationAngle];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPressed:(BOOL)a3
+- (void)setPressed:(BOOL)pressed
 {
-  if (self->_pressed != a3)
+  if (self->_pressed != pressed)
   {
-    v4 = a3;
-    self->_pressed = a3;
-    v6 = [(CKBrowserDragViewController *)self normalDragView];
-    [v6 setPressed:v4];
+    pressedCopy = pressed;
+    self->_pressed = pressed;
+    normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView setPressed:pressedCopy];
 
-    v7 = [(CKBrowserDragViewController *)self keyboardDragView];
-    [v7 setPressed:v4];
+    keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+    [keyboardDragView setPressed:pressedCopy];
   }
 }
 
-- (void)setCanPeel:(BOOL)a3
+- (void)setCanPeel:(BOOL)peel
 {
-  if (self->_canPeel != a3)
+  if (self->_canPeel != peel)
   {
-    v4 = a3;
-    self->_canPeel = a3;
-    v6 = [(CKBrowserDragViewController *)self normalDragView];
-    [v6 setCanPeel:v4];
+    peelCopy = peel;
+    self->_canPeel = peel;
+    normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+    [normalDragView setCanPeel:peelCopy];
 
-    v7 = [(CKBrowserDragViewController *)self keyboardDragView];
-    [v7 setCanPeel:v4];
+    keyboardDragView = [(CKBrowserDragViewController *)self keyboardDragView];
+    [keyboardDragView setCanPeel:peelCopy];
   }
 }
 
@@ -704,10 +704,10 @@ uint64_t __49__CKBrowserDragViewController_supportsForceTouch__block_invoke()
 
 - (id)draggedSticker
 {
-  v2 = [(CKBrowserDragViewController *)self normalDragView];
-  v3 = [v2 draggedSticker];
+  normalDragView = [(CKBrowserDragViewController *)self normalDragView];
+  draggedSticker = [normalDragView draggedSticker];
 
-  return v3;
+  return draggedSticker;
 }
 
 - (CKBrowserDragViewControllerDelegate)delegate

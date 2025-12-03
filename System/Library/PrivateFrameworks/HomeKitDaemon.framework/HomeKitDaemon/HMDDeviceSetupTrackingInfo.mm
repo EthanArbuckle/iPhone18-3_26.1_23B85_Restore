@@ -1,30 +1,30 @@
 @interface HMDDeviceSetupTrackingInfo
-- (HMDDeviceSetupTrackingInfo)initWithIdentifier:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 role:(int64_t)a6 accessoryUUID:(id)a7 accessoryCategory:(id)a8 accessoryIDSIdentifier:(id)a9 setupClientBundleID:(id)a10;
+- (HMDDeviceSetupTrackingInfo)initWithIdentifier:(id)identifier startTime:(unint64_t)time endTime:(unint64_t)endTime role:(int64_t)role accessoryUUID:(id)d accessoryCategory:(id)category accessoryIDSIdentifier:(id)sIdentifier setupClientBundleID:(id)self0;
 @end
 
 @implementation HMDDeviceSetupTrackingInfo
 
-- (HMDDeviceSetupTrackingInfo)initWithIdentifier:(id)a3 startTime:(unint64_t)a4 endTime:(unint64_t)a5 role:(int64_t)a6 accessoryUUID:(id)a7 accessoryCategory:(id)a8 accessoryIDSIdentifier:(id)a9 setupClientBundleID:(id)a10
+- (HMDDeviceSetupTrackingInfo)initWithIdentifier:(id)identifier startTime:(unint64_t)time endTime:(unint64_t)endTime role:(int64_t)role accessoryUUID:(id)d accessoryCategory:(id)category accessoryIDSIdentifier:(id)sIdentifier setupClientBundleID:(id)self0
 {
-  v24 = a3;
-  v23 = a7;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
+  identifierCopy = identifier;
+  dCopy = d;
+  categoryCopy = category;
+  sIdentifierCopy = sIdentifier;
+  iDCopy = iD;
   v25.receiver = self;
   v25.super_class = HMDDeviceSetupTrackingInfo;
   v18 = [(HMDDeviceSetupTrackingInfo *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    v19->_startTime = a4;
-    v19->_endTime = a5;
-    v19->_role = a6;
-    objc_storeStrong(&v19->_accessoryUUID, a7);
-    objc_storeStrong(&v19->_accessoryCategory, a8);
-    objc_storeStrong(&v19->_accessoryIDSIdentifier, a9);
-    objc_storeStrong(&v19->_setupClientBundleID, a10);
+    objc_storeStrong(&v18->_identifier, identifier);
+    v19->_startTime = time;
+    v19->_endTime = endTime;
+    v19->_role = role;
+    objc_storeStrong(&v19->_accessoryUUID, d);
+    objc_storeStrong(&v19->_accessoryCategory, category);
+    objc_storeStrong(&v19->_accessoryIDSIdentifier, sIdentifier);
+    objc_storeStrong(&v19->_setupClientBundleID, iD);
   }
 
   return v19;

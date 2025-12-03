@@ -1,26 +1,26 @@
 @interface NRMockClientNSXPCConnection
-- (NRMockClientNSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4;
+- (NRMockClientNSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options;
 - (NRMockServerNSXPCConnection)serverConnection;
 - (NSXPCInterface)remoteObjectInterface;
-- (id)remoteObjectProxyAsync:(BOOL)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyAsync:(BOOL)async;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_invalidate;
 - (void)invalidate;
-- (void)runCompletionBlock:(id)a3;
+- (void)runCompletionBlock:(id)block;
 @end
 
 @implementation NRMockClientNSXPCConnection
 
-- (NRMockClientNSXPCConnection)initWithMachServiceName:(id)a3 options:(unint64_t)a4
+- (NRMockClientNSXPCConnection)initWithMachServiceName:(id)name options:(unint64_t)options
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = [(NRMockClientNSXPCConnection *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_name, a3);
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.mockxpclistener.%@.serverservice%p", v6, v8];
+    objc_storeStrong(&v7->_name, name);
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.nanoregistry.mockxpclistener.%@.serverservice%p", nameCopy, v8];
     v10 = dispatch_queue_create([v9 UTF8String], 0);
     queue = v8->_queue;
     v8->_queue = v10;
@@ -29,9 +29,9 @@
   return v8;
 }
 
-- (void)runCompletionBlock:(id)a3
+- (void)runCompletionBlock:(id)block
 {
-  block = a3;
+  block = block;
   v4 = +[NRMockXPCStuff sharedInstance];
   v5 = v4;
   if (v4)
@@ -40,9 +40,9 @@
   }
 
   v6 = [v4 objectForKeyedSubscript:self->_name];
-  v7 = [(NRMockClientNSXPCConnection *)self serverConnection];
+  serverConnection = [(NRMockClientNSXPCConnection *)self serverConnection];
 
-  if (v7 && v6)
+  if (serverConnection && v6)
   {
     dispatch_async(v6[4], block);
   }
@@ -65,8 +65,8 @@
       }
 
       v6 = [v4 objectForKeyedSubscript:self->_name];
-      v7 = self;
-      v8 = v7;
+      selfCopy = self;
+      v8 = selfCopy;
       if (v6)
       {
         v14 = 0;
@@ -81,7 +81,7 @@
         block[2] = __60__NRMockNSXPCListener_serverConnectionWithClientConnection___block_invoke;
         block[3] = &unk_1E86DAF38;
         block[4] = v6;
-        v12 = v7;
+        v12 = selfCopy;
         v13 = &v14;
         dispatch_sync(v9, block);
         WeakRetained = v15[5];
@@ -152,7 +152,7 @@ void __52__NRMockClientNSXPCConnection_remoteObjectInterface__block_invoke(uint6
   *(v4 + 40) = v3;
 }
 
-- (id)remoteObjectProxyAsync:(BOOL)a3
+- (id)remoteObjectProxyAsync:(BOOL)async
 {
   v14 = 0;
   v15 = &v14;
@@ -178,7 +178,7 @@ void __52__NRMockClientNSXPCConnection_remoteObjectInterface__block_invoke(uint6
   v10[4] = self;
   v11 = v5;
   v12 = &v14;
-  v13 = a3;
+  asyncCopy = async;
   v7 = v5;
   dispatch_sync(v6, v10);
   v8 = v15[5];
@@ -247,20 +247,20 @@ void __54__NRMockClientNSXPCConnection_remoteObjectProxyAsync___block_invoke(uin
   }
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NRMockClientNSXPCConnection *)self remoteObjectProxy];
-  v6 = v5;
-  if (v4 && !v5)
+  handlerCopy = handler;
+  remoteObjectProxy = [(NRMockClientNSXPCConnection *)self remoteObjectProxy];
+  v6 = remoteObjectProxy;
+  if (handlerCopy && !remoteObjectProxy)
   {
-    v7 = [(NRMockClientNSXPCConnection *)self queue];
+    queue = [(NRMockClientNSXPCConnection *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__NRMockClientNSXPCConnection_remoteObjectProxyWithErrorHandler___block_invoke;
     block[3] = &unk_1E86DAE70;
-    v10 = v4;
-    dispatch_async(v7, block);
+    v10 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   return v6;
@@ -281,12 +281,12 @@ void __65__NRMockClientNSXPCConnection_remoteObjectProxyWithErrorHandler___block
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NRMockClientNSXPCConnection *)self remoteObjectProxyAsync:0];
   v6 = v5;
-  if (v4 && !v5)
+  if (handlerCopy && !v5)
   {
     v7 = +[NRMockXPCStuff sharedInstance];
     v8 = v7;
@@ -311,7 +311,7 @@ void __65__NRMockClientNSXPCConnection_remoteObjectProxyWithErrorHandler___block
     block[1] = 3221225472;
     block[2] = __76__NRMockClientNSXPCConnection_synchronousRemoteObjectProxyWithErrorHandler___block_invoke;
     block[3] = &unk_1E86DAE70;
-    v14 = v4;
+    v14 = handlerCopy;
     dispatch_async(v11, block);
   }
 

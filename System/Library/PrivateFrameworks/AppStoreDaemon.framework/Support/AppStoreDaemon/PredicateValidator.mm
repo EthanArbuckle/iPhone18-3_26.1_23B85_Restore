@@ -1,6 +1,6 @@
 @interface PredicateValidator
 - (PredicateValidator)init;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation PredicateValidator
@@ -19,13 +19,13 @@
   return result;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v12 = a3;
-  v4 = [v12 expressionType];
-  if (v4[self + 8] == 1)
+  expressionCopy = expression;
+  expressionType = [expressionCopy expressionType];
+  if (expressionType[self + 8] == 1)
   {
-    if (v4 != 10 && v4 != 3)
+    if (expressionType != 10 && expressionType != 3)
     {
       goto LABEL_9;
     }
@@ -36,8 +36,8 @@
       goto LABEL_9;
     }
 
-    v6 = [v12 keyPath];
-    v7 = [(NSArray *)acceptableKeyPaths containsObject:v6];
+    keyPath = [expressionCopy keyPath];
+    v7 = [(NSArray *)acceptableKeyPaths containsObject:keyPath];
 
     if (v7)
     {
@@ -45,16 +45,16 @@
     }
 
     errors = self->_errors;
-    v9 = [v12 keyPath];
-    v10 = [NSString stringWithFormat:@"Invalid key path '%@' in expression: %@", v9, v12];
-    [(NSMutableArray *)errors addObject:v10];
+    keyPath2 = [expressionCopy keyPath];
+    expressionCopy = [NSString stringWithFormat:@"Invalid key path '%@' in expression: %@", keyPath2, expressionCopy];
+    [(NSMutableArray *)errors addObject:expressionCopy];
   }
 
   else
   {
     v11 = self->_errors;
-    v9 = [NSString stringWithFormat:@"Invalid expression type '%lu' in expression: %@", v4, v12];
-    [(NSMutableArray *)v11 addObject:v9];
+    keyPath2 = [NSString stringWithFormat:@"Invalid expression type '%lu' in expression: %@", expressionType, expressionCopy];
+    [(NSMutableArray *)v11 addObject:keyPath2];
   }
 
   self->_valid = 0;

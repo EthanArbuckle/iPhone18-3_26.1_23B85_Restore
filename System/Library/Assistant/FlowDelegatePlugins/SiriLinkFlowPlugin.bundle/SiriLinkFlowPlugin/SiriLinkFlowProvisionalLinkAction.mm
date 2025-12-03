@@ -1,40 +1,40 @@
 @interface SiriLinkFlowProvisionalLinkAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SiriLinkFlowProvisionalLinkAction)initWithDictionary:(id)a3;
-- (SiriLinkFlowProvisionalLinkAction)initWithJSON:(id)a3;
+- (SiriLinkFlowProvisionalLinkAction)initWithDictionary:(id)dictionary;
+- (SiriLinkFlowProvisionalLinkAction)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SiriLinkFlowProvisionalLinkAction
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_parameters;
     self->_parameters = v6;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
+  toCopy = to;
+  identifier = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
@@ -79,28 +79,28 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
-  if (v7)
+  identifier3 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
+  if (identifier3)
   {
-    v8 = v7;
-    v9 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
-    v10 = [v4 identifier];
-    v11 = [v9 isEqual:v10];
+    v8 = identifier3;
+    identifier4 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v11 = [identifier4 isEqual:identifier5];
 
     if (!v11)
     {
@@ -112,7 +112,7 @@
   {
   }
 
-  if ((v4[32] & 1) != (*&self->_has & 1))
+  if ((equalCopy[32] & 1) != (*&self->_has & 1))
   {
     goto LABEL_15;
   }
@@ -120,18 +120,18 @@
   if (*&self->_has)
   {
     presentationStyle = self->_presentationStyle;
-    if (presentationStyle != [v4 presentationStyle])
+    if (presentationStyle != [equalCopy presentationStyle])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
-  v6 = [v4 parameters];
-  if ((v5 != 0) != (v6 == 0))
+  identifier = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
+  identifier2 = [equalCopy parameters];
+  if ((identifier != 0) != (identifier2 == 0))
   {
-    v13 = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
-    if (!v13)
+    parameters = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
+    if (!parameters)
     {
 
 LABEL_18:
@@ -139,10 +139,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
-    v16 = [v4 parameters];
-    v17 = [v15 isEqual:v16];
+    v14 = parameters;
+    parameters2 = [(SiriLinkFlowProvisionalLinkAction *)self parameters];
+    parameters3 = [equalCopy parameters];
+    v17 = [parameters2 isEqual:parameters3];
 
     if (v17)
     {
@@ -183,8 +183,8 @@ LABEL_16:
   v3 = +[NSMutableDictionary dictionary];
   if (self->_identifier)
   {
-    v4 = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
-    v5 = [v4 copy];
+    identifier = [(SiriLinkFlowProvisionalLinkAction *)self identifier];
+    v5 = [identifier copy];
     [v3 setObject:v5 forKeyedSubscript:@"identifier"];
   }
 
@@ -210,10 +210,10 @@ LABEL_16:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [v6 addObject:dictionaryRepresentation];
           }
 
           else
@@ -234,15 +234,15 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    v14 = [(SiriLinkFlowProvisionalLinkAction *)self presentationStyle];
-    if (v14 >= 4)
+    presentationStyle = [(SiriLinkFlowProvisionalLinkAction *)self presentationStyle];
+    if (presentationStyle >= 4)
     {
-      v15 = [NSString stringWithFormat:@"(unknown: %i)", v14];
+      v15 = [NSString stringWithFormat:@"(unknown: %i)", presentationStyle];
     }
 
     else
     {
-      v15 = off_291910[v14];
+      v15 = off_291910[presentationStyle];
     }
 
     [v3 setObject:v15 forKeyedSubscript:@"presentationStyle"];
@@ -253,10 +253,10 @@ LABEL_16:
 
 - (NSData)jsonData
 {
-  v2 = [(SiriLinkFlowProvisionalLinkAction *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(SiriLinkFlowProvisionalLinkAction *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -267,33 +267,33 @@ LABEL_16:
   return v3;
 }
 
-- (SiriLinkFlowProvisionalLinkAction)initWithJSON:(id)a3
+- (SiriLinkFlowProvisionalLinkAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SiriLinkFlowProvisionalLinkAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (SiriLinkFlowProvisionalLinkAction)initWithDictionary:(id)a3
+- (SiriLinkFlowProvisionalLinkAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SiriLinkFlowProvisionalLinkAction;
   v5 = [(SiriLinkFlowProvisionalLinkAction *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"identifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -301,14 +301,14 @@ LABEL_16:
       [(SiriLinkFlowProvisionalLinkAction *)v5 setIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"presentationStyle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"presentationStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SiriLinkFlowProvisionalLinkAction setPresentationStyle:](v5, "setPresentationStyle:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"parameters"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

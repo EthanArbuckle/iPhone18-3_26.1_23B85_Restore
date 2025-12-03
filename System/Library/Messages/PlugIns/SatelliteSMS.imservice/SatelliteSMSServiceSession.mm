@@ -1,67 +1,67 @@
 @interface SatelliteSMSServiceSession
-- (SatelliteSMSServiceSession)initWithAccount:(id)a3 service:(id)a4 replicatingForSession:(id)a5;
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4;
-- (void)connectedServicesChanged:(int64_t)a3;
-- (void)messageReceived:(id)a3 withMetadata:(id)a4 completionBlock:(id)a5;
-- (void)sendMessageFromIMMessageItem:(id)a3 forChat:(id)a4 chat:(id)a5 style:(unsigned __int8)a6;
-- (void)stateChanged:(id)a3;
+- (SatelliteSMSServiceSession)initWithAccount:(id)account service:(id)service replicatingForSession:(id)session;
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler;
+- (void)connectedServicesChanged:(int64_t)changed;
+- (void)messageReceived:(id)received withMetadata:(id)metadata completionBlock:(id)block;
+- (void)sendMessageFromIMMessageItem:(id)item forChat:(id)chat chat:(id)a5 style:(unsigned __int8)style;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation SatelliteSMSServiceSession
 
-- (SatelliteSMSServiceSession)initWithAccount:(id)a3 service:(id)a4 replicatingForSession:(id)a5
+- (SatelliteSMSServiceSession)initWithAccount:(id)account service:(id)service replicatingForSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  return SatelliteSMSServiceSession.init(account:service:replicatingFor:)(v7, v8, a5);
+  accountCopy = account;
+  serviceCopy = service;
+  sessionCopy = session;
+  return SatelliteSMSServiceSession.init(account:service:replicatingFor:)(accountCopy, serviceCopy, session);
 }
 
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v7 = self;
-  SatelliteSMSServiceSession.calculateReachability(with:responseHandler:)(v6, a4);
+  selfCopy = self;
+  SatelliteSMSServiceSession.calculateReachability(with:responseHandler:)(requestCopy, handler);
 
   swift_unknownObjectRelease();
 }
 
-- (void)sendMessageFromIMMessageItem:(id)a3 forChat:(id)a4 chat:(id)a5 style:(unsigned __int8)a6
+- (void)sendMessageFromIMMessageItem:(id)item forChat:(id)chat chat:(id)a5 style:(unsigned __int8)style
 {
   v10 = sub_DD94();
   v12 = v11;
-  v13 = a3;
+  itemCopy = item;
   v14 = a5;
-  v15 = self;
-  SatelliteSMSServiceSession.sendMessage(from:forChat:chat:style:)(v13, v10, v12, v14, a6);
+  selfCopy = self;
+  SatelliteSMSServiceSession.sendMessage(from:forChat:chat:style:)(itemCopy, v10, v12, v14, style);
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_55B4(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_55B4(changedCopy);
 }
 
-- (void)connectedServicesChanged:(int64_t)a3
+- (void)connectedServicesChanged:(int64_t)changed
 {
-  v4 = self;
-  sub_57E8(a3);
+  selfCopy = self;
+  sub_57E8(changed);
 }
 
-- (void)messageReceived:(id)a3 withMetadata:(id)a4 completionBlock:(id)a5
+- (void)messageReceived:(id)received withMetadata:(id)metadata completionBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (metadata)
   {
     sub_DD64();
   }
 
   _Block_copy(v8);
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_9AD8(a3, v9, v8);
+  selfCopy = self;
+  sub_9AD8(received, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
   swift_unknownObjectRelease();

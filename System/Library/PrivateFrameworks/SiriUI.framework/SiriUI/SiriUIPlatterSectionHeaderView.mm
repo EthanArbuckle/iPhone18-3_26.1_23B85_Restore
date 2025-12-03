@@ -1,24 +1,24 @@
 @interface SiriUIPlatterSectionHeaderView
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-- (SiriUIPlatterSectionHeaderView)initWithText:(id)a3 visualEffect:(id)a4;
-- (void)setTextAlignment:(int64_t)a3;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
+- (SiriUIPlatterSectionHeaderView)initWithText:(id)text visualEffect:(id)effect;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation SiriUIPlatterSectionHeaderView
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [a1 _font];
-  v17.receiver = a1;
+  height = fits.height;
+  width = fits.width;
+  textCopy = text;
+  _font = [self _font];
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___SiriUIPlatterSectionHeaderView;
   v15[0] = xmmword_2694DDDF0;
   v15[1] = unk_2694DDE00;
   v15[2] = xmmword_2694DDE10;
   v16 = 0x4030000000000000;
-  objc_msgSendSuper2(&v17, sel_sizeThatFits_text_font_textContainerStyle_, v7, v8, v15, width, height);
+  objc_msgSendSuper2(&v17, sel_sizeThatFits_text_font_textContainerStyle_, textCopy, _font, v15, width, height);
   v10 = v9;
   v12 = v11;
 
@@ -29,15 +29,15 @@
   return result;
 }
 
-- (SiriUIPlatterSectionHeaderView)initWithText:(id)a3 visualEffect:(id)a4
+- (SiriUIPlatterSectionHeaderView)initWithText:(id)text visualEffect:(id)effect
 {
   v10.receiver = self;
   v10.super_class = SiriUIPlatterSectionHeaderView;
-  v4 = [(SiriUITextContainerView *)&v10 initWithText:a3 visualEffect:a4];
+  v4 = [(SiriUITextContainerView *)&v10 initWithText:text visualEffect:effect];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] siriui_keylineColor];
-    [(SiriUIPlatterSectionHeaderView *)v4 setBackgroundColor:v5];
+    siriui_keylineColor = [MEMORY[0x277D75348] siriui_keylineColor];
+    [(SiriUIPlatterSectionHeaderView *)v4 setBackgroundColor:siriui_keylineColor];
 
     [(SiriUIPlatterSectionHeaderView *)v4 setTextAlignment:4];
     v8[0] = xmmword_2694DDDF0;
@@ -45,18 +45,18 @@
     v8[2] = xmmword_2694DDE10;
     v9 = 0x4030000000000000;
     [(SiriUITextContainerView *)v4 setTextContainerStyle:v8];
-    v6 = [objc_opt_class() _font];
-    [(SiriUITextContainerView *)v4 setFont:v6];
+    _font = [objc_opt_class() _font];
+    [(SiriUITextContainerView *)v4 setFont:_font];
   }
 
   return v4;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v4.receiver = self;
   v4.super_class = SiriUIPlatterSectionHeaderView;
-  [(SiriUITextContainerView *)&v4 setTextAlignment:a3];
+  [(SiriUITextContainerView *)&v4 setTextAlignment:alignment];
   [(UIView *)self recursive_setSemanticContentAttribute:SiriLanguageSemanticContentAttribute()];
 }
 

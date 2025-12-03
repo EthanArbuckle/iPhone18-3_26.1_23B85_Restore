@@ -1,21 +1,21 @@
 @interface EMKEmojiSignifier
-- (EMKEmojiSignifier)initWithString:(id)a3;
+- (EMKEmojiSignifier)initWithString:(id)string;
 - (id)description;
 @end
 
 @implementation EMKEmojiSignifier
 
-- (EMKEmojiSignifier)initWithString:(id)a3
+- (EMKEmojiSignifier)initWithString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v8.receiver = self;
     v8.super_class = EMKEmojiSignifier;
     self = [(EMKEmojiSignifier *)&v8 init];
     if (self)
     {
-      v5 = [v4 copy];
+      v5 = [stringCopy copy];
       string = self->_string;
       self->_string = v5;
     }

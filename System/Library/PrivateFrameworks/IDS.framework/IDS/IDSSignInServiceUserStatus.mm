@@ -1,5 +1,5 @@
 @interface IDSSignInServiceUserStatus
-- (IDSSignInServiceUserStatus)initWithServiceType:(unint64_t)a3 userInfos:(id)a4;
+- (IDSSignInServiceUserStatus)initWithServiceType:(unint64_t)type userInfos:(id)infos;
 - (id)description;
 - (unint64_t)appleIDUserStatus;
 - (unint64_t)phoneUserStatus;
@@ -7,18 +7,18 @@
 
 @implementation IDSSignInServiceUserStatus
 
-- (IDSSignInServiceUserStatus)initWithServiceType:(unint64_t)a3 userInfos:(id)a4
+- (IDSSignInServiceUserStatus)initWithServiceType:(unint64_t)type userInfos:(id)infos
 {
-  v7 = a4;
+  infosCopy = infos;
   if (_IDSRunningInDaemon())
   {
-    v8 = [MEMORY[0x1E69A6138] signInController];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    signInController = [MEMORY[0x1E69A6138] signInController];
+    if (os_log_type_enabled(signInController, OS_LOG_TYPE_ERROR))
     {
       sub_195B28A4C();
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -29,15 +29,15 @@
     v11 = v10;
     if (v10)
     {
-      v10->_serviceType = a3;
-      objc_storeStrong(&v10->_serviceUserInfos, a4);
+      v10->_serviceType = type;
+      objc_storeStrong(&v10->_serviceUserInfos, infos);
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
@@ -67,13 +67,13 @@
   v11 = 0u;
   v12 = 0u;
   v2 = self->_serviceUserInfos;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  status = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (status)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; ++i)
+      for (i = 0; i != status; ++i)
       {
         if (*v10 != v4)
         {
@@ -83,13 +83,13 @@
         v6 = *(*(&v9 + 1) + 8 * i);
         if (![v6 type])
         {
-          v3 = [v6 status];
+          status = [v6 status];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      status = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (status)
       {
         continue;
       }
@@ -101,7 +101,7 @@
 LABEL_11:
 
   v7 = *MEMORY[0x1E69E9840];
-  return v3;
+  return status;
 }
 
 - (unint64_t)appleIDUserStatus
@@ -112,13 +112,13 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v2 = self->_serviceUserInfos;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  status = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (status)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; ++i)
+      for (i = 0; i != status; ++i)
       {
         if (*v10 != v4)
         {
@@ -128,13 +128,13 @@ LABEL_11:
         v6 = *(*(&v9 + 1) + 8 * i);
         if ([v6 type] == 1)
         {
-          v3 = [v6 status];
+          status = [v6 status];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      status = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (status)
       {
         continue;
       }
@@ -146,7 +146,7 @@ LABEL_11:
 LABEL_11:
 
   v7 = *MEMORY[0x1E69E9840];
-  return v3;
+  return status;
 }
 
 @end

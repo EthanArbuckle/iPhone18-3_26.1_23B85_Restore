@@ -1,17 +1,17 @@
 @interface NTKCircularSmallSimpleComplicationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateImageViewWithImageProvider:(id)a3;
+- (void)_updateImageViewWithImageProvider:(id)provider;
 @end
 
 @implementation NTKCircularSmallSimpleComplicationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCircularSmallSimpleComplicationView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCircularSmallSimpleComplicationView" hasInstanceMethod:@"_updateImageViewWithImageProvider:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CDStackedImagesComplicationImageView" hasInstanceMethod:@"imageProvider" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCircularSmallSimpleComplicationView" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCircularSmallSimpleComplicationView" hasInstanceMethod:@"_updateImageViewWithImageProvider:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CDStackedImagesComplicationImageView" hasInstanceMethod:@"imageProvider" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,15 +21,15 @@
   [(NTKCircularSmallSimpleComplicationViewAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
   v3 = [(NTKCircularSmallSimpleComplicationViewAccessibility *)self safeValueForKey:@"_imageView"];
   v4 = [v3 safeValueForKey:@"imageProvider"];
-  v5 = [v4 accessibilityLabel];
-  [v3 setAccessibilityLabel:v5];
+  accessibilityLabel = [v4 accessibilityLabel];
+  [v3 setAccessibilityLabel:accessibilityLabel];
 }
 
-- (void)_updateImageViewWithImageProvider:(id)a3
+- (void)_updateImageViewWithImageProvider:(id)provider
 {
   v4.receiver = self;
   v4.super_class = NTKCircularSmallSimpleComplicationViewAccessibility;
-  [(NTKCircularSmallSimpleComplicationViewAccessibility *)&v4 _updateImageViewWithImageProvider:a3];
+  [(NTKCircularSmallSimpleComplicationViewAccessibility *)&v4 _updateImageViewWithImageProvider:provider];
   [(NTKCircularSmallSimpleComplicationViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

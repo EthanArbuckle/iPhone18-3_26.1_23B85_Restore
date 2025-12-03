@@ -1,13 +1,13 @@
 @interface SKGNodes
 + (MANodeFilter)filter;
 + (id)labels;
-+ (id)nodesInGraph:(id)a3;
-+ (id)nodesWithIdentifier:(unint64_t)a3 inGraph:(id)a4;
-+ (id)nodesWithNode:(id)a3 inGraph:(id)a4;
-+ (id)subsetInCollection:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNodes:(id)a3;
-- (SKGNodes)initWithNode:(id)a3 inGraph:(id)a4;
++ (id)nodesInGraph:(id)graph;
++ (id)nodesWithIdentifier:(unint64_t)identifier inGraph:(id)graph;
++ (id)nodesWithNode:(id)node inGraph:(id)graph;
++ (id)subsetInCollection:(id)collection;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNodes:(id)nodes;
+- (SKGNodes)initWithNode:(id)node inGraph:(id)graph;
 - (id)contacts;
 - (id)displayNames;
 - (id)domains;
@@ -16,13 +16,13 @@
 - (id)nameKeys;
 - (id)names;
 - (id)personas;
-- (id)personasWithPersona:(id)a3 inGraph:(id)a4;
+- (id)personasWithPersona:(id)persona inGraph:(id)graph;
 - (id)persons;
 - (id)phones;
 - (id)photos;
 - (id)references;
 - (id)users;
-- (void)enumerateNodesInGraph:(id)a3 usingBlock:(id)a4;
+- (void)enumerateNodesInGraph:(id)graph usingBlock:(id)block;
 @end
 
 @implementation SKGNodes
@@ -60,168 +60,168 @@
 
 + (MANodeFilter)filter
 {
-  v2 = [a1 nodeClass];
+  nodeClass = [self nodeClass];
 
-  return [v2 filter];
+  return [nodeClass filter];
 }
 
-+ (id)nodesInGraph:(id)a3
++ (id)nodesInGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v5 = objc_opt_class();
-  v6 = [a1 filter];
-  v7 = [v4 graph];
-  v8 = [v5 nodesMatchingFilter:v6 inGraph:v7];
+  filter = [self filter];
+  graph = [graphCopy graph];
+  v8 = [v5 nodesMatchingFilter:filter inGraph:graph];
 
   return v8;
 }
 
-+ (id)subsetInCollection:(id)a3
++ (id)subsetInCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_opt_class();
-  v6 = [a1 filter];
-  v7 = [v6 relation];
-  v8 = [v5 nodesRelatedToNodes:v4 withRelation:v7];
+  filter = [self filter];
+  relation = [filter relation];
+  v8 = [v5 nodesRelatedToNodes:collectionCopy withRelation:relation];
 
   return v8;
 }
 
-+ (id)nodesWithNode:(id)a3 inGraph:(id)a4
++ (id)nodesWithNode:(id)node inGraph:(id)graph
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 label];
-  v8 = [v7 isEqualToString:SKGPeoplePersonUser];
+  nodeCopy = node;
+  graphCopy = graph;
+  label = [nodeCopy label];
+  v8 = [label isEqualToString:SKGPeoplePersonUser];
 
   if (v8)
   {
-    v9 = [[SKGUsers alloc] initWithUserNode:v5 inGraph:v6];
+    v9 = [[SKGUsers alloc] initWithUserNode:nodeCopy inGraph:graphCopy];
   }
 
   else
   {
-    v10 = [v5 label];
-    v11 = [v10 isEqualToString:SKGPeoplePersonIdentifier];
+    label2 = [nodeCopy label];
+    v11 = [label2 isEqualToString:SKGPeoplePersonIdentifier];
 
     if (v11)
     {
-      v9 = [[SKGPersons alloc] initWithPersonNode:v5 inGraph:v6];
+      v9 = [[SKGPersons alloc] initWithPersonNode:nodeCopy inGraph:graphCopy];
     }
 
     else
     {
-      v12 = [v5 label];
-      v13 = [v12 isEqualToString:SKGPeopleContactIdentifier];
+      label3 = [nodeCopy label];
+      v13 = [label3 isEqualToString:SKGPeopleContactIdentifier];
 
       if (v13)
       {
-        v9 = [[SKGContacts alloc] initWithContactNode:v5 inGraph:v6];
+        v9 = [[SKGContacts alloc] initWithContactNode:nodeCopy inGraph:graphCopy];
       }
 
       else
       {
-        v14 = [v5 label];
-        v15 = [v14 isEqualToString:SKGPeoplePhotoPersonIdentifier];
+        label4 = [nodeCopy label];
+        v15 = [label4 isEqualToString:SKGPeoplePhotoPersonIdentifier];
 
         if (v15)
         {
-          v9 = [[SKGPhotos alloc] initWithPhotoNode:v5 inGraph:v6];
+          v9 = [[SKGPhotos alloc] initWithPhotoNode:nodeCopy inGraph:graphCopy];
         }
 
         else
         {
-          v16 = [v5 label];
-          v17 = [v16 isEqualToString:SKGPeopleEntityIdentifier];
+          label5 = [nodeCopy label];
+          v17 = [label5 isEqualToString:SKGPeopleEntityIdentifier];
 
           if (v17)
           {
-            v9 = [[SKGEntities alloc] initWithEntityNode:v5 inGraph:v6];
+            v9 = [[SKGEntities alloc] initWithEntityNode:nodeCopy inGraph:graphCopy];
           }
 
           else
           {
-            v18 = [v5 label];
-            v19 = [v18 isEqualToString:SKGPeopleDisplayName];
+            label6 = [nodeCopy label];
+            v19 = [label6 isEqualToString:SKGPeopleDisplayName];
 
             if (v19)
             {
-              v9 = [[SKGDisplayNames alloc] initWithDisplayNameNode:v5 inGraph:v6];
+              v9 = [[SKGDisplayNames alloc] initWithDisplayNameNode:nodeCopy inGraph:graphCopy];
             }
 
             else
             {
-              v20 = [v5 label];
-              v21 = [v20 isEqualToString:SKGPeopleName];
+              label7 = [nodeCopy label];
+              v21 = [label7 isEqualToString:SKGPeopleName];
 
               if (v21)
               {
-                v9 = [[SKGNames alloc] initWithNameNode:v5 inGraph:v6];
+                v9 = [[SKGNames alloc] initWithNameNode:nodeCopy inGraph:graphCopy];
               }
 
               else
               {
-                v22 = [v5 label];
-                v23 = [v22 isEqualToString:SKGPeopleNameKey];
+                label8 = [nodeCopy label];
+                v23 = [label8 isEqualToString:SKGPeopleNameKey];
 
                 if (v23)
                 {
-                  v9 = [[SKGNameKeys alloc] initWithNameKeyNode:v5 inGraph:v6];
+                  v9 = [[SKGNameKeys alloc] initWithNameKeyNode:nodeCopy inGraph:graphCopy];
                 }
 
                 else
                 {
-                  v24 = [v5 label];
-                  v25 = [v24 isEqualToString:SKGPeopleEmailAddress];
+                  label9 = [nodeCopy label];
+                  v25 = [label9 isEqualToString:SKGPeopleEmailAddress];
 
                   if (v25)
                   {
-                    v9 = [[SKGEmails alloc] initWithEmailNode:v5 inGraph:v6];
+                    v9 = [[SKGEmails alloc] initWithEmailNode:nodeCopy inGraph:graphCopy];
                   }
 
                   else
                   {
-                    v26 = [v5 label];
-                    v27 = [v26 isEqualToString:SKGPeoplePhoneNumber];
+                    label10 = [nodeCopy label];
+                    v27 = [label10 isEqualToString:SKGPeoplePhoneNumber];
 
                     if (v27)
                     {
-                      v9 = [[SKGPhones alloc] initWithPhoneNode:v5 inGraph:v6];
+                      v9 = [[SKGPhones alloc] initWithPhoneNode:nodeCopy inGraph:graphCopy];
                     }
 
                     else
                     {
-                      v28 = [v5 label];
-                      v29 = [v28 isEqualToString:SKGContentReferenceIdentifier];
+                      label11 = [nodeCopy label];
+                      v29 = [label11 isEqualToString:SKGContentReferenceIdentifier];
 
                       if (v29)
                       {
-                        v9 = [[SKGReferences alloc] initWithReferenceNode:v5 inGraph:v6];
+                        v9 = [[SKGReferences alloc] initWithReferenceNode:nodeCopy inGraph:graphCopy];
                       }
 
                       else
                       {
-                        v30 = [v5 label];
-                        v31 = [v30 isEqualToString:SKGContentPersonaIdentifier];
+                        label12 = [nodeCopy label];
+                        v31 = [label12 isEqualToString:SKGContentPersonaIdentifier];
 
                         if (v31)
                         {
-                          v9 = [[SKGPersonas alloc] initWithPersonaNode:v5 inGraph:v6];
+                          v9 = [[SKGPersonas alloc] initWithPersonaNode:nodeCopy inGraph:graphCopy];
                         }
 
                         else
                         {
-                          v32 = [v5 label];
-                          v33 = [v32 isEqualToString:SKGContentDomainIdentifier];
+                          label13 = [nodeCopy label];
+                          v33 = [label13 isEqualToString:SKGContentDomainIdentifier];
 
                           if (v33)
                           {
-                            v9 = [[SKGDomains alloc] initWithDomainNode:v5 inGraph:v6];
+                            v9 = [[SKGDomains alloc] initWithDomainNode:nodeCopy inGraph:graphCopy];
                           }
 
                           else
                           {
-                            v9 = [[SKGNodes alloc] initWithNode:v5 inGraph:v6];
+                            v9 = [[SKGNodes alloc] initWithNode:nodeCopy inGraph:graphCopy];
                           }
                         }
                       }
@@ -241,15 +241,15 @@
   return v34;
 }
 
-- (void)enumerateNodesInGraph:(id)a3 usingBlock:(id)a4
+- (void)enumerateNodesInGraph:(id)graph usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = objc_autoreleasePoolPush();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SKGNodes_enumerateNodesInGraph_usingBlock___block_invoke;
   v8[3] = &unk_27893DB70;
-  v7 = v5;
+  v7 = blockCopy;
   v9 = v7;
   [(MAElementCollection *)self enumerateIdentifiersAsCollectionsWithBlock:v8];
 
@@ -263,48 +263,48 @@ void __45__SKGNodes_enumerateNodesInGraph_usingBlock___block_invoke(uint64_t a1,
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)nodesWithIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)nodesWithIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  graphCopy = graph;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [v5 graph];
-  v8 = [v7 nodeForIdentifier:a3];
+  graph = [graphCopy graph];
+  v8 = [graph nodeForIdentifier:identifier];
   v14[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v10 = [v5 graph];
-  v11 = [v6 initWithArray:v9 graph:v10];
+  graph2 = [graphCopy graph];
+  v11 = [v6 initWithArray:v9 graph:graph2];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (SKGNodes)initWithNode:(id)a3 inGraph:(id)a4
+- (SKGNodes)initWithNode:(id)node inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 graph];
-  v9 = [v7 graph];
-  v10 = [v6 filter];
-  v11 = [v9 nodeIdentifiersMatchingFilter:v10];
+  nodeCopy = node;
+  graphCopy = graph;
+  graph = [graphCopy graph];
+  graph2 = [graphCopy graph];
+  filter = [nodeCopy filter];
+  v11 = [graph2 nodeIdentifiersMatchingFilter:filter];
   v14.receiver = self;
   v14.super_class = SKGNodes;
-  v12 = [(MAElementCollection *)&v14 initWithGraph:v8 elementIdentifiers:v11];
+  v12 = [(MAElementCollection *)&v14 initWithGraph:graph elementIdentifiers:v11];
 
   [(SKGNodes *)v12 setNodeIdentifier:0];
   return v12;
 }
 
-- (BOOL)isEqualToNodes:(id)a3
+- (BOOL)isEqualToNodes:(id)nodes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 nodeIdentifier], v6 == -[SKGNodes nodeIdentifier](self, "nodeIdentifier")))
+  nodesCopy = nodes;
+  v5 = nodesCopy;
+  if (nodesCopy && (v6 = [nodesCopy nodeIdentifier], v6 == -[SKGNodes nodeIdentifier](self, "nodeIdentifier")))
   {
-    v7 = [objc_opt_class() labels];
-    v8 = [objc_opt_class() labels];
-    v9 = [v7 isEqualToSet:v8];
+    labels = [objc_opt_class() labels];
+    labels2 = [objc_opt_class() labels];
+    v9 = [labels isEqualToSet:labels2];
   }
 
   else
@@ -315,10 +315,10 @@ void __45__SKGNodes_enumerateNodesInGraph_usingBlock___block_invoke(uint64_t a1,
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -326,7 +326,7 @@ void __45__SKGNodes_enumerateNodesInGraph_usingBlock___block_invoke(uint64_t a1,
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGNodes *)self isEqualToNodes:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGNodes *)self isEqualToNodes:equalCopy];
   }
 
   return v5;
@@ -440,13 +440,13 @@ void __45__SKGNodes_enumerateNodesInGraph_usingBlock___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (id)personasWithPersona:(id)a3 inGraph:(id)a4
+- (id)personasWithPersona:(id)persona inGraph:(id)graph
 {
-  v6 = a3;
-  v7 = a4;
+  personaCopy = persona;
+  graphCopy = graph;
   v8 = objc_autoreleasePoolPush();
-  v9 = [[SKGPersonaNode alloc] initWithPersona:v6];
-  v10 = [(SKGNodes *)SKGPersonas nodesWithNode:v9 inGraph:v7];
+  v9 = [[SKGPersonaNode alloc] initWithPersona:personaCopy];
+  v10 = [(SKGNodes *)SKGPersonas nodesWithNode:v9 inGraph:graphCopy];
   v11 = +[(SKGEdge *)SKGPersonaEdge];
   v12 = [(MAEdgeCollection *)SKGPersonaEdges edgesFromNodes:v10 toNodes:self matchingFilter:v11];
 

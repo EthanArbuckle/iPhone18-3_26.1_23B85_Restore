@@ -1,25 +1,25 @@
 @interface OrgApacheLuceneUtilFstUtil_TieBreakByInputComparator
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (int)compareWithId:(id)id withId:(id)withId;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstUtil_TieBreakByInputComparator
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
   comparator = self->comparator_;
-  if (!comparator || !a3 || !a4)
+  if (!comparator || !id || !withId)
   {
     goto LABEL_10;
   }
 
-  result = [(JavaUtilComparator *)comparator compareWithId:*(a3 + 2) withId:*(a4 + 2)];
+  result = [(JavaUtilComparator *)comparator compareWithId:*(id + 2) withId:*(withId + 2)];
   if (result)
   {
     return result;
   }
 
-  v8 = *(a3 + 3);
+  v8 = *(id + 3);
   if (!v8 || (v9 = [v8 get]) == 0)
   {
 LABEL_10:
@@ -27,7 +27,7 @@ LABEL_10:
   }
 
   v10 = v9;
-  v11 = [*(a4 + 3) get];
+  v11 = [*(withId + 3) get];
 
   return [v10 compareToWithId:v11];
 }

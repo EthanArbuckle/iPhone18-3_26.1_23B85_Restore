@@ -1,8 +1,8 @@
 @interface HMDCameraIDSSessionInviterDeviceVerifier
 + (id)logCategory;
-- (BOOL)canAcceptInvitationForSessionWithIdentifier:(id)a3;
-- (BOOL)canAcceptInvitationFromDeviceWithHandle:(id)a3;
-- (HMDCameraIDSSessionInviterDeviceVerifier)initWithSessionID:(id)a3 expectedInviter:(id)a4;
+- (BOOL)canAcceptInvitationForSessionWithIdentifier:(id)identifier;
+- (BOOL)canAcceptInvitationFromDeviceWithHandle:(id)handle;
+- (HMDCameraIDSSessionInviterDeviceVerifier)initWithSessionID:(id)d expectedInviter:(id)inviter;
 - (id)logIdentifier;
 @end
 
@@ -10,33 +10,33 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraIDSSessionInviterDeviceVerifier *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraIDSSessionInviterDeviceVerifier *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (BOOL)canAcceptInvitationForSessionWithIdentifier:(id)a3
+- (BOOL)canAcceptInvitationForSessionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDCameraIDSSessionInviterDeviceVerifier *)self sessionID];
-  v6 = [v4 isEqualToString:v5];
+  identifierCopy = identifier;
+  sessionID = [(HMDCameraIDSSessionInviterDeviceVerifier *)self sessionID];
+  v6 = [identifierCopy isEqualToString:sessionID];
 
   return v6;
 }
 
-- (BOOL)canAcceptInvitationFromDeviceWithHandle:(id)a3
+- (BOOL)canAcceptInvitationFromDeviceWithHandle:(id)handle
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraIDSSessionInviterDeviceVerifier *)self expectedInviter];
-  v6 = [v5 handles];
+  handleCopy = handle;
+  expectedInviter = [(HMDCameraIDSSessionInviterDeviceVerifier *)self expectedInviter];
+  handles = [expectedInviter handles];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = handles;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -50,7 +50,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) isEqual:{v4, v13}])
+        if ([*(*(&v13 + 1) + 8 * i) isEqual:{handleCopy, v13}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -73,18 +73,18 @@ LABEL_11:
   return v8;
 }
 
-- (HMDCameraIDSSessionInviterDeviceVerifier)initWithSessionID:(id)a3 expectedInviter:(id)a4
+- (HMDCameraIDSSessionInviterDeviceVerifier)initWithSessionID:(id)d expectedInviter:(id)inviter
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  inviterCopy = inviter;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = inviterCopy;
+  if (!inviterCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -97,8 +97,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sessionID, a3);
-    objc_storeStrong(&v11->_expectedInviter, a4);
+    objc_storeStrong(&v10->_sessionID, d);
+    objc_storeStrong(&v11->_expectedInviter, inviter);
   }
 
   return v11;

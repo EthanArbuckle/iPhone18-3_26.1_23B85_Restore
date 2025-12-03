@@ -3,26 +3,26 @@
 - (id)formulaOwner;
 - (id)nsFormulaOwnerUID;
 - (id)objectToArchiveInDependencyTracker;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)registerWithCalcEngineForDocumentLoad:(id)a3 ownerKind:(unsigned __int16)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)unregisterFromCalcEngine:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)registerWithCalcEngineForDocumentLoad:(id)load ownerKind:(unsigned __int16)kind;
+- (void)saveToArchiver:(id)archiver;
+- (void)unregisterFromCalcEngine:(id)engine;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 - (void)willModify;
 @end
 
 @implementation TNPersistentChartMediator
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  if (objc_msgSend_fileFormatVersion(v4, v5, v6) == 0x300020000000ALL)
+  unarchiverCopy = unarchiver;
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v5, v6) == 0x300020000000ALL)
   {
     objc_msgSend_willModifyForUpgrade(self, v7, v8);
   }
 
-  v9 = v4;
+  v9 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v11 = objc_msgSend_messageWithDescriptor_(v9, v10, off_2812DAFE8[36]);
 
@@ -47,11 +47,11 @@
   [(TSCHPersistentChartMediator *)&v18 loadFromArchive:v17];
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_275F07010, off_2812DAFE8[36]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275F07010, off_2812DAFE8[36]);
 
   *(v6 + 16) |= 2u;
   v7 = *(v6 + 32);
@@ -74,7 +74,7 @@
   v11 = objc_msgSend_mediator(self, v9, v10);
   v12 = TSUDynamicCast();
 
-  objc_msgSend_saveToArchive_archiver_(v12, v13, v6, v4);
+  objc_msgSend_saveToArchive_archiver_(v12, v13, v6, archiverCopy);
 }
 
 - (void)willModify
@@ -84,36 +84,36 @@
   [(TNPersistentChartMediator *)&v2 willModify];
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v25 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_context(v25, v7, v8);
+  rootCopy = root;
+  contextCopy = context;
+  v9 = objc_msgSend_context(rootCopy, v7, v8);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v10, v9);
 
   objc_opt_class();
   v13 = objc_msgSend_mediator(self, v11, v12);
   v14 = TSUDynamicCast();
 
-  v17 = objc_msgSend_calculationEngine(v25, v15, v16);
+  v17 = objc_msgSend_calculationEngine(rootCopy, v15, v16);
   v19 = v17;
   if (v14 && v17)
   {
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v14, v18, v25, v6);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v14, v18, rootCopy, contextCopy);
     v20 = MEMORY[0x277D80D40];
-    v23 = objc_msgSend_insertedTableInfos(v6, v21, v22);
+    v23 = objc_msgSend_insertedTableInfos(contextCopy, v21, v22);
     objc_msgSend_performRewritesForInsertedTableInfos_(v20, v24, v23);
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v17 = a3;
+  rootCopy = root;
   objc_opt_class();
   v6 = objc_msgSend_mediator(self, v4, v5);
   v7 = TSUDynamicCast();
 
-  v10 = objc_msgSend_calculationEngine(v17, v8, v9);
+  v10 = objc_msgSend_calculationEngine(rootCopy, v8, v9);
   v13 = v10;
   if (v7)
   {
@@ -127,31 +127,31 @@
 
   if (!v14)
   {
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v7, v11, v17);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(v7, v11, rootCopy);
   }
 
-  v15 = objc_msgSend_context(v17, v11, v12);
+  v15 = objc_msgSend_context(rootCopy, v11, v12);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v16, v15);
 }
 
-- (void)registerWithCalcEngineForDocumentLoad:(id)a3 ownerKind:(unsigned __int16)a4
+- (void)registerWithCalcEngineForDocumentLoad:(id)load ownerKind:(unsigned __int16)kind
 {
-  v4 = a4;
-  v10 = a3;
+  kindCopy = kind;
+  loadCopy = load;
   v8 = objc_msgSend_mediator(self, v6, v7);
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_registerWithCalcEngineForDocumentLoad_ownerKind_(v8, v9, v10, v4);
+    objc_msgSend_registerWithCalcEngineForDocumentLoad_ownerKind_(v8, v9, loadCopy, kindCopy);
   }
 }
 
-- (void)unregisterFromCalcEngine:(id)a3
+- (void)unregisterFromCalcEngine:(id)engine
 {
-  v8 = a3;
+  engineCopy = engine;
   v6 = objc_msgSend_mediator(self, v4, v5);
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_unregisterFromCalcEngine_(v6, v7, v8);
+    objc_msgSend_unregisterFromCalcEngine_(v6, v7, engineCopy);
   }
 }
 

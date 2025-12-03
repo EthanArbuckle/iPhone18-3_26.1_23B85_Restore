@@ -1,10 +1,10 @@
 @interface TNSheetStyle
-+ (id)defaultSheetStyleWithContext:(id)a3;
++ (id)defaultSheetStyleWithContext:(id)context;
 + (id)properties;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)loadSheetStylePropertiesIntoPropertyMap:(id)a3 fromArchive:(const void *)a4 unarchiver:(id)a5;
-- (void)saveSheetStylePropertiesToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)loadSheetStylePropertiesIntoPropertyMap:(id)map fromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveSheetStylePropertiesToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TNSheetStyle
@@ -21,20 +21,20 @@
   return v3;
 }
 
-+ (id)defaultSheetStyleWithContext:(id)a3
++ (id)defaultSheetStyleWithContext:(id)context
 {
-  v3 = objc_msgSend_defaultStyleWithContext_(a1, a2, a3);
+  v3 = objc_msgSend_defaultStyleWithContext_(self, a2, context);
   v6 = objc_msgSend_whiteColor(MEMORY[0x277D801F8], v4, v5);
   objc_msgSend_setValue_forProperty_(v3, v7, v6, 516);
 
   return v3;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DAFE8[26]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DAFE8[26]);
 
   if (*(v6 + 24))
   {
@@ -48,7 +48,7 @@
 
   v15.receiver = self;
   v15.super_class = TNSheetStyle;
-  [(TNSheetStyle *)&v15 loadFromArchive:v7 unarchiver:v4];
+  [(TNSheetStyle *)&v15 loadFromArchive:v7 unarchiver:unarchiverCopy];
   v8 = *(v6 + 40);
   if (v8)
   {
@@ -56,12 +56,12 @@
     v12 = objc_msgSend_initWithCapacity_(v9, v10, v8);
     if (*(v6 + 32))
     {
-      objc_msgSend_loadSheetStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(v6 + 32), v4);
+      objc_msgSend_loadSheetStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(v6 + 32), unarchiverCopy);
     }
 
     else
     {
-      objc_msgSend_loadSheetStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &qword_2812DB450, v4);
+      objc_msgSend_loadSheetStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &qword_2812DB450, unarchiverCopy);
     }
 
     v13 = *MEMORY[0x277D80AF0];
@@ -70,15 +70,15 @@
   }
 }
 
-- (void)loadSheetStylePropertiesIntoPropertyMap:(id)a3 fromArchive:(const void *)a4 unarchiver:(id)a5
+- (void)loadSheetStylePropertiesIntoPropertyMap:(id)map fromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a3;
-  v8 = a5;
+  mapCopy = map;
+  unarchiverCopy = unarchiver;
   v9 = objc_opt_class();
-  if (*(a4 + 16))
+  if (*(archive + 16))
   {
     v11 = v9;
-    v12 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v10, *(a4 + 3), v8);
+    v12 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v10, *(archive + 3), unarchiverCopy);
     v17 = v12;
     v13 = objc_opt_class();
     LODWORD(v11) = objc_msgSend_validateObjectValue_withClass_forProperty_(v11, v14, &v17, v13, 516);
@@ -86,16 +86,16 @@
 
     if (v11)
     {
-      objc_msgSend_setObject_forProperty_(v7, v16, v15, 516);
+      objc_msgSend_setObject_forProperty_(mapCopy, v16, v15, 516);
     }
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_275F20C98, off_2812DAFE8[26]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_275F20C98, off_2812DAFE8[26]);
 
   *(v6 + 16) |= 1u;
   v7 = *(v6 + 24);
@@ -113,7 +113,7 @@
 
   v16.receiver = self;
   v16.super_class = TNSheetStyle;
-  [(TNSheetStyle *)&v16 saveToArchive:v7 archiver:v4];
+  [(TNSheetStyle *)&v16 saveToArchive:v7 archiver:archiverCopy];
   v11 = objc_msgSend_overrideCount(self, v9, v10);
   if (v11)
   {
@@ -133,13 +133,13 @@
       *(v6 + 32) = v14;
     }
 
-    objc_msgSend_saveSheetStylePropertiesToArchive_archiver_(self, v12, v14, v4);
+    objc_msgSend_saveSheetStylePropertiesToArchive_archiver_(self, v12, v14, archiverCopy);
   }
 }
 
-- (void)saveSheetStylePropertiesToArchive:(void *)a3 archiver:(id)a4
+- (void)saveSheetStylePropertiesToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v7 = objc_opt_class();
   v8 = *(&self->super.super.super.isa + *MEMORY[0x277D80AF0]);
   if (objc_msgSend_containsProperty_(v8, v9, 516))
@@ -152,21 +152,21 @@
 
     if (v14)
     {
-      *(a3 + 4) |= 1u;
-      v17 = *(a3 + 3);
+      *(archive + 4) |= 1u;
+      v17 = *(archive + 3);
       if (!v17)
       {
-        v18 = *(a3 + 1);
+        v18 = *(archive + 1);
         if (v18)
         {
           v18 = *(v18 & 0xFFFFFFFFFFFFFFFELL);
         }
 
         v17 = MEMORY[0x277C90F10](v18);
-        *(a3 + 3) = v17;
+        *(archive + 3) = v17;
       }
 
-      objc_msgSend_saveToArchive_archiver_(v15, v16, v17, v6);
+      objc_msgSend_saveToArchive_archiver_(v15, v16, v17, archiverCopy);
     }
   }
 }

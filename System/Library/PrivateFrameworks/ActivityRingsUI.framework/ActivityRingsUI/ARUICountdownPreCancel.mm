@@ -1,6 +1,6 @@
 @interface ARUICountdownPreCancel
 - (id)identifier;
-- (void)applyToCountdownView:(id)a3 completion:(id)a4;
+- (void)applyToCountdownView:(id)view completion:(id)completion;
 @end
 
 @implementation ARUICountdownPreCancel
@@ -12,40 +12,40 @@
   return [v2 identifier];
 }
 
-- (void)applyToCountdownView:(id)a3 completion:(id)a4
+- (void)applyToCountdownView:(id)view completion:(id)completion
 {
-  v15 = a4;
-  v5 = a3;
-  v6 = [v5 ringGroup];
-  [v6 zRotation];
+  completionCopy = completion;
+  viewCopy = view;
+  ringGroup = [viewCopy ringGroup];
+  [ringGroup zRotation];
   v8 = ARUIFloatGreater(v7, 0.0);
 
-  v9 = [v5 ringGroup];
-  v10 = v9;
+  ringGroup2 = [viewCopy ringGroup];
+  ringGroup3 = ringGroup2;
   if (v8)
   {
-    [v9 setZRotation:0.0];
+    [ringGroup2 setZRotation:0.0];
 
-    v10 = [v5 ringGroup];
+    ringGroup3 = [viewCopy ringGroup];
     LODWORD(v11) = 1.0;
-    [v10 setPercentage:0 ofRingAtIndex:v11];
+    [ringGroup3 setPercentage:0 ofRingAtIndex:v11];
   }
 
   else
   {
-    [v9 removeAllAnimations];
+    [ringGroup2 removeAllAnimations];
   }
 
-  v12 = [v5 ringGroup];
+  ringGroup4 = [viewCopy ringGroup];
 
   LODWORD(v13) = 1051931443;
-  [v12 setEmptyOpacity:v13];
+  [ringGroup4 setEmptyOpacity:v13];
 
-  v14 = v15;
-  if (v15)
+  v14 = completionCopy;
+  if (completionCopy)
   {
-    (*(v15 + 2))(v15);
-    v14 = v15;
+    (*(completionCopy + 2))(completionCopy);
+    v14 = completionCopy;
   }
 }
 

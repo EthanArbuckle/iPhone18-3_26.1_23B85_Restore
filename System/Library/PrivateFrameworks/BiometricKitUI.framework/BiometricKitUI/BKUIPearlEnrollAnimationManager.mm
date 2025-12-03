@@ -1,8 +1,8 @@
 @interface BKUIPearlEnrollAnimationManager
 + (id)sharedManager;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)runBasicAnimationOnLayer:(id)a3 withDuration:(double)a4 keyPath:(id)a5 fromValue:(id)a6 toValue:(id)a7 removedOnCompletion:(BOOL)a8 timingFunction:(id)a9 completion:(id)a10;
-- (void)transitionTo:(id)a3 completion:(id)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)runBasicAnimationOnLayer:(id)layer withDuration:(double)duration keyPath:(id)path fromValue:(id)value toValue:(id)toValue removedOnCompletion:(BOOL)completion timingFunction:(id)function completion:(id)self0;
+- (void)transitionTo:(id)to completion:(id)completion;
 @end
 
 @implementation BKUIPearlEnrollAnimationManager
@@ -26,31 +26,31 @@ uint64_t __48__BKUIPearlEnrollAnimationManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)runBasicAnimationOnLayer:(id)a3 withDuration:(double)a4 keyPath:(id)a5 fromValue:(id)a6 toValue:(id)a7 removedOnCompletion:(BOOL)a8 timingFunction:(id)a9 completion:(id)a10
+- (void)runBasicAnimationOnLayer:(id)layer withDuration:(double)duration keyPath:(id)path fromValue:(id)value toValue:(id)toValue removedOnCompletion:(BOOL)completion timingFunction:(id)function completion:(id)self0
 {
-  v16 = a3;
-  v17 = a9;
+  layerCopy = layer;
+  functionCopy = function;
   v18 = a10;
   v19 = MEMORY[0x277CCAD78];
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = [v19 UUID];
-  v24 = [v23 UUIDString];
+  toValueCopy = toValue;
+  valueCopy = value;
+  pathCopy = path;
+  uUID = [v19 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v25 = [MEMORY[0x277CD9E10] animationWithKeyPath:v22];
+  v25 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
 
   [(CADisplayLink *)v25 bkui_enableHighFrameRate];
-  [v25 setDuration:a4];
-  [v25 setFromValue:v21];
+  [v25 setDuration:duration];
+  [v25 setFromValue:valueCopy];
 
-  [v25 setToValue:v20];
+  [v25 setToValue:toValueCopy];
   [v25 setRemovedOnCompletion:0];
   [v25 setFillMode:*MEMORY[0x277CDA238]];
   [v25 setDelegate:self];
-  if (v17)
+  if (functionCopy)
   {
-    v26 = [MEMORY[0x277CD9EF8] functionWithName:v17];
+    v26 = [MEMORY[0x277CD9EF8] functionWithName:functionCopy];
     [v25 setTimingFunction:v26];
   }
 
@@ -58,12 +58,12 @@ uint64_t __48__BKUIPearlEnrollAnimationManager_sharedManager__block_invoke()
   aBlock[1] = 3221225472;
   aBlock[2] = __145__BKUIPearlEnrollAnimationManager_runBasicAnimationOnLayer_withDuration_keyPath_fromValue_toValue_removedOnCompletion_timingFunction_completion___block_invoke;
   aBlock[3] = &unk_278D0A198;
-  v35 = v24;
+  v35 = uUIDString;
   v36 = v18;
-  v37 = a8;
-  v34 = v16;
-  v27 = v24;
-  v28 = v16;
+  completionCopy = completion;
+  v34 = layerCopy;
+  v27 = uUIDString;
+  v28 = layerCopy;
   v29 = v18;
   v30 = _Block_copy(aBlock);
   v31 = _Block_copy(v30);
@@ -91,38 +91,38 @@ uint64_t __145__BKUIPearlEnrollAnimationManager_runBasicAnimationOnLayer_withDur
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = a3;
-  v4 = [v5 valueForKey:@"PSAnimationCompletion"];
+  stopCopy = stop;
+  v4 = [stopCopy valueForKey:@"PSAnimationCompletion"];
   if (v4)
   {
-    [v5 setValue:0 forKey:@"PSAnimationCompletion"];
+    [stopCopy setValue:0 forKey:@"PSAnimationCompletion"];
     v4[2](v4);
   }
 }
 
-- (void)transitionTo:(id)a3 completion:(id)a4
+- (void)transitionTo:(id)to completion:(id)completion
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  toCopy = to;
+  completionCopy = completion;
   [MEMORY[0x277CD9FF0] begin];
-  [MEMORY[0x277CD9FF0] setCompletionBlock:v6];
-  v7 = [MEMORY[0x277CDA000] animation];
-  v8 = [v5 view];
-  v29[0] = v8;
+  [MEMORY[0x277CD9FF0] setCompletionBlock:completionCopy];
+  animation = [MEMORY[0x277CDA000] animation];
+  view = [toCopy view];
+  v29[0] = view;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
 
   v10 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
-  [v7 setTimingFunction:v10];
+  [animation setTimingFunction:v10];
 
-  [v7 setType:@"push"];
-  v11 = [MEMORY[0x277D75128] sharedApplication];
-  v12 = [v11 userInterfaceLayoutDirection];
+  [animation setType:@"push"];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  [v7 setDuration:0.400000006];
-  if (v12 == 1)
+  [animation setDuration:0.400000006];
+  if (userInterfaceLayoutDirection == 1)
   {
     v13 = @"fromLeft";
   }
@@ -132,7 +132,7 @@ uint64_t __145__BKUIPearlEnrollAnimationManager_runBasicAnimationOnLayer_withDur
     v13 = @"fromRight";
   }
 
-  [v7 setSubtype:v13];
+  [animation setSubtype:v13];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -154,11 +154,11 @@ uint64_t __145__BKUIPearlEnrollAnimationManager_runBasicAnimationOnLayer_withDur
         }
 
         v20 = *(*(&v24 + 1) + 8 * i);
-        v21 = [v20 layer];
-        [v21 removeAllAnimations];
+        layer = [v20 layer];
+        [layer removeAllAnimations];
 
-        v22 = [v20 layer];
-        [v22 addAnimation:v7 forKey:v18];
+        layer2 = [v20 layer];
+        [layer2 addAnimation:animation forKey:v18];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];

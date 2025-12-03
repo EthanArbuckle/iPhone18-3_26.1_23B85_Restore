@@ -1,7 +1,7 @@
 @interface PGHolidayClassifier
-- (BOOL)isCelebratingForDateScore:(double)a3 sceneScore:(double)a4 locationScore:(double)a5;
+- (BOOL)isCelebratingForDateScore:(double)score sceneScore:(double)sceneScore locationScore:(double)locationScore;
 - (PGHolidayClassifier)init;
-- (double)scoreForHolidayDetectedScenes:(id)a3;
+- (double)scoreForHolidayDetectedScenes:(id)scenes;
 - (id)description;
 @end
 
@@ -29,16 +29,16 @@
   return v5;
 }
 
-- (double)scoreForHolidayDetectedScenes:(id)a3
+- (double)scoreForHolidayDetectedScenes:(id)scenes
 {
-  v4 = a3;
-  v5 = [v4 detectedSceneEdgeCaseCount];
+  scenesCopy = scenes;
+  detectedSceneEdgeCaseCount = [scenesCopy detectedSceneEdgeCaseCount];
   edgeCaseSceneWeight = self->_edgeCaseSceneWeight;
-  v7 = self->_mediumSceneWeight * [v4 detectedSceneMediumCount] + v5 * edgeCaseSceneWeight;
-  v8 = v7 + [v4 detectedSceneImportantCount] * self->_importantSceneWeight;
-  v9 = [v4 detectedSceneImperativeCount];
+  v7 = self->_mediumSceneWeight * [scenesCopy detectedSceneMediumCount] + detectedSceneEdgeCaseCount * edgeCaseSceneWeight;
+  v8 = v7 + [scenesCopy detectedSceneImportantCount] * self->_importantSceneWeight;
+  detectedSceneImperativeCount = [scenesCopy detectedSceneImperativeCount];
 
-  result = v8 + v9 * self->_imperativeSceneWeight;
+  result = v8 + detectedSceneImperativeCount * self->_imperativeSceneWeight;
   if (result > 1.0)
   {
     return 1.0;
@@ -47,17 +47,17 @@
   return result;
 }
 
-- (BOOL)isCelebratingForDateScore:(double)a3 sceneScore:(double)a4 locationScore:(double)a5
+- (BOOL)isCelebratingForDateScore:(double)score sceneScore:(double)sceneScore locationScore:(double)locationScore
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 == 0.0)
+  if (score == 0.0)
   {
     result = 0;
   }
 
   else
   {
-    v7 = self->_dateWeight * a3 + self->_locationWeight * a5 + self->_sceneWeight * a4;
+    v7 = self->_dateWeight * score + self->_locationWeight * locationScore + self->_sceneWeight * sceneScore;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v9 = 134217984;

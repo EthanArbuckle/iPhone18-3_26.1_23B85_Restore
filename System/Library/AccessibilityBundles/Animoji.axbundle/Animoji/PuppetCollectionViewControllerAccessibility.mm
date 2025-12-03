@@ -1,31 +1,31 @@
 @interface PuppetCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 @end
 
 @implementation PuppetCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceVariable:@"_puppetCollectionView" withType:"UICollectionView"];
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"numberOfPrecedingCells" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"avatarDataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"recordIndexForIndexPath:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"recordAtIndex:" withFullSignature:{"@", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceVariable:@"_puppetCollectionView" withType:"UICollectionView"];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"numberOfPrecedingCells" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"collectionView:cellForItemAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"avatarDataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"recordIndexForIndexPath:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"recordAtIndex:" withFullSignature:{"@", "Q", 0}];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = PuppetCollectionViewControllerAccessibility;
-  v8 = [(PuppetCollectionViewControllerAccessibility *)&v29 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(PuppetCollectionViewControllerAccessibility *)&v29 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   [v8 setIsAccessibilityElement:1];
   [v8 setAccessibilityTraits:*MEMORY[0x29EDC7F70]];
-  v9 = [v7 row];
+  v9 = [pathCopy row];
   if (v9 >= [(PuppetCollectionViewControllerAccessibility *)self safeIntegerForKey:@"numberOfPrecedingCells"])
   {
     v16 = 0;
@@ -37,8 +37,8 @@
     v24 = __85__PuppetCollectionViewControllerAccessibility_collectionView_cellForItemAtIndexPath___block_invoke;
     v25 = &unk_29F29CE48;
     v28 = &v16;
-    v26 = self;
-    v27 = v7;
+    selfCopy = self;
+    v27 = pathCopy;
     AXPerformSafeBlock();
     v11 = v17[3];
 

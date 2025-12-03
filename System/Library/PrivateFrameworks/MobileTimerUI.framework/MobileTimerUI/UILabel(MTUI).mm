@@ -10,15 +10,15 @@
   if (a2 <= 0.0)
   {
     v9 = a4;
-    [a1 setText:v9];
+    [self setText:v9];
   }
 
   else
   {
     v6 = MEMORY[0x277D74248];
     v7 = a4;
-    v8 = [v6 defaultParagraphStyle];
-    v9 = [v8 mutableCopy];
+    defaultParagraphStyle = [v6 defaultParagraphStyle];
+    v9 = [defaultParagraphStyle mutableCopy];
 
     *&v10 = a2;
     [v9 setHyphenationFactor:v10];
@@ -28,7 +28,7 @@
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v13 = [v11 initWithString:v7 attributes:v12];
 
-    [a1 setAttributedText:v13];
+    [self setAttributedText:v13];
   }
 }
 

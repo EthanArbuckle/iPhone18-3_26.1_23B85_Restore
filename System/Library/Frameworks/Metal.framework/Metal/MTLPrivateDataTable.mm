@@ -1,9 +1,9 @@
 @interface MTLPrivateDataTable
-- (BOOL)getPrivateDataAndOffset:(id)a3 privateData:(id *)a4 privateDataOffset:(unint64_t *)a5;
+- (BOOL)getPrivateDataAndOffset:(id)offset privateData:(id *)data privateDataOffset:(unint64_t *)dataOffset;
 - (MTLPrivateDataTable)init;
 - (void)release;
-- (void)setPrivateData:(id)a3 privateDataOffset:(unint64_t)a4 logState:(id)a5;
-- (void)setReportBufferInPrivateData:(id)a3 privateDataOffset:(unint64_t)a4 logState:(id)a5;
+- (void)setPrivateData:(id)data privateDataOffset:(unint64_t)offset logState:(id)state;
+- (void)setReportBufferInPrivateData:(id)data privateDataOffset:(unint64_t)offset logState:(id)state;
 @end
 
 @implementation MTLPrivateDataTable
@@ -22,7 +22,7 @@
   [(MTLPrivateDataTable *)&v2 release];
 }
 
-- (BOOL)getPrivateDataAndOffset:(id)a3 privateData:(id *)a4 privateDataOffset:(unint64_t *)a5
+- (BOOL)getPrivateDataAndOffset:(id)offset privateData:(id *)data privateDataOffset:(unint64_t *)dataOffset
 {
   if (MTLGPUDebugEnabled())
   {
@@ -34,27 +34,27 @@
     v8 = 8;
   }
 
-  *a4 = [a3 newBufferWithLength:v8 options:0];
-  *a5 = 0;
-  return *a4 != 0;
+  *data = [offset newBufferWithLength:v8 options:0];
+  *dataOffset = 0;
+  return *data != 0;
 }
 
-- (void)setPrivateData:(id)a3 privateDataOffset:(unint64_t)a4 logState:(id)a5
+- (void)setPrivateData:(id)data privateDataOffset:(unint64_t)offset logState:(id)state
 {
-  if (a5)
+  if (state)
   {
-    v6 = *(a5 + 3);
-    v7 = [a3 contents];
-    *(v7 + a4) = [v6 gpuAddress];
+    v6 = *(state + 3);
+    contents = [data contents];
+    *(contents + offset) = [v6 gpuAddress];
   }
 }
 
-- (void)setReportBufferInPrivateData:(id)a3 privateDataOffset:(unint64_t)a4 logState:(id)a5
+- (void)setReportBufferInPrivateData:(id)data privateDataOffset:(unint64_t)offset logState:(id)state
 {
-  if (*(a5 + 56) == 1)
+  if (*(state + 56) == 1)
   {
-    v5 = *(a5 + 3);
-    v6 = [a3 contents] + a4;
+    v5 = *(state + 3);
+    v6 = [data contents] + offset;
     *(v6 + 8) = [v5 gpuAddress];
   }
 }

@@ -1,14 +1,14 @@
 @interface _PBFSQLitePreparedSimpleStatement
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5;
-- (id)_initWithDatabaseConnection:(void *)a3 statement:;
-- (id)_sqliteError:(void *)a3 SQLQuery:;
-- (uint64_t)_bindKey:(void *)a3 value:;
-- (uint64_t)_bindParameterIndex:(id)a3 dataValue:;
-- (uint64_t)_bindParameterIndex:(id)a3 stringValue:;
-- (uint64_t)_bindParameterIndex:(uint64_t)result nullValue:(int)a2;
-- (uint64_t)_bindParameterIndex:(void *)a3 numberValue:;
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error;
+- (id)_initWithDatabaseConnection:(void *)connection statement:;
+- (id)_sqliteError:(void *)error SQLQuery:;
+- (uint64_t)_bindKey:(void *)key value:;
+- (uint64_t)_bindParameterIndex:(id)index dataValue:;
+- (uint64_t)_bindParameterIndex:(id)index stringValue:;
+- (uint64_t)_bindParameterIndex:(uint64_t)result nullValue:(int)value;
+- (uint64_t)_bindParameterIndex:(void *)index numberValue:;
 - (void)dealloc;
-- (void)sqliteDatabaseConnectionWillClose:(id)a3;
+- (void)sqliteDatabaseConnectionWillClose:(id)close;
 @end
 
 @implementation _PBFSQLitePreparedSimpleStatement
@@ -41,10 +41,10 @@
   [(PFSQLitePreparedStatement *)&v5 dealloc];
 }
 
-- (BOOL)executeWithBindings:(id)a3 resultRowHandler:(id)a4 error:(id *)a5
+- (BOOL)executeWithBindings:(id)bindings resultRowHandler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  bindingsCopy = bindings;
+  handlerCopy = handler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -58,12 +58,12 @@
     v16[3] = &unk_1E818A118;
     v19 = &v20;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
+    v17 = bindingsCopy;
+    v18 = handlerCopy;
     [(PFSQLiteDatabaseConnection *)WeakRetained performSyncWithDatabase:v16];
 
     v11 = *(v21 + 6);
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -73,7 +73,7 @@
   {
     v11 = 21;
     *(v21 + 6) = 21;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -92,7 +92,7 @@
       v13 = 0;
     }
 
-    *a5 = [(_PBFSQLitePreparedSimpleStatement *)self _sqliteError:v13 SQLQuery:?];
+    *error = [(_PBFSQLitePreparedSimpleStatement *)self _sqliteError:v13 SQLQuery:?];
 
     v11 = *(v21 + 6);
   }
@@ -104,7 +104,7 @@ LABEL_11:
   return v14;
 }
 
-- (void)sqliteDatabaseConnectionWillClose:(id)a3
+- (void)sqliteDatabaseConnectionWillClose:(id)close
 {
   statement = self->_statement;
   if (statement)
@@ -116,18 +116,18 @@ LABEL_11:
   objc_storeWeak(&self->super._dbConnection, 0);
 }
 
-- (id)_initWithDatabaseConnection:(void *)a3 statement:
+- (id)_initWithDatabaseConnection:(void *)connection statement:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = [(PFSQLitePreparedStatement *)a1 _initWithDatabaseConnection:a2];
+  v4 = [(PFSQLitePreparedStatement *)self _initWithDatabaseConnection:a2];
   v5 = v4;
   if (v4)
   {
-    v4[3] = a3;
+    v4[3] = connection;
     WeakRetained = objc_loadWeakRetained(v4 + 1);
     [WeakRetained addObserver:v5];
   }
@@ -135,84 +135,84 @@ LABEL_11:
   return v5;
 }
 
-- (uint64_t)_bindKey:(void *)a3 value:
+- (uint64_t)_bindKey:(void *)key value:
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  keyCopy = key;
+  if (self)
   {
-    v7 = sqlite3_bind_parameter_index(*(a1 + 24), [v5 UTF8String]);
+    v7 = sqlite3_bind_parameter_index(*(self + 24), [v5 UTF8String]);
     if (v7)
     {
       v8 = v7;
       objc_opt_class();
       if (OUTLINED_FUNCTION_7_1())
       {
-        v9 = sqlite3_bind_null(*(a1 + 24), v8);
+        v9 = sqlite3_bind_null(*(self + 24), v8);
 LABEL_8:
-        a1 = v9;
+        self = v9;
         goto LABEL_14;
       }
 
       objc_opt_class();
       if (OUTLINED_FUNCTION_7_1())
       {
-        v9 = sqlite3_bind_text(*(a1 + 24), v8, [v6 UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+        v9 = sqlite3_bind_text(*(self + 24), v8, [keyCopy UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
         goto LABEL_8;
       }
 
       objc_opt_class();
       if (OUTLINED_FUNCTION_7_1())
       {
-        v9 = [(_PBFSQLitePreparedSimpleStatement *)a1 _bindParameterIndex:v8 numberValue:v6];
+        v9 = [(_PBFSQLitePreparedSimpleStatement *)self _bindParameterIndex:v8 numberValue:keyCopy];
         goto LABEL_8;
       }
 
       objc_opt_class();
       if (OUTLINED_FUNCTION_7_1())
       {
-        v9 = [(_PBFSQLitePreparedSimpleStatement *)a1 _bindParameterIndex:v8 dataValue:v6];
+        v9 = [(_PBFSQLitePreparedSimpleStatement *)self _bindParameterIndex:v8 dataValue:keyCopy];
         goto LABEL_8;
       }
 
-      v10 = *(a1 + 16);
+      v10 = *(self + 16);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v13 = v10;
         v15 = 136315650;
         v16 = "[_PBFSQLitePreparedSimpleStatement _bindKey:value:]";
         v17 = 2112;
-        v18 = v6;
+        v18 = keyCopy;
         v19 = 2112;
         v20 = objc_opt_class();
         v14 = v20;
         _os_log_error_impl(&dword_1C269D000, v13, OS_LOG_TYPE_ERROR, "%s: unexpected object %@ of class %@", &v15, 0x20u);
       }
 
-      a1 = 20;
+      self = 20;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_14:
 
   v11 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (id)_sqliteError:(void *)a3 SQLQuery:
+- (id)_sqliteError:(void *)error SQLQuery:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E696ABC0];
-    v6 = a3;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v8 = [v5 pf_errorForDatabaseConnection:WeakRetained result:a2 query:v6 userInfo:0];
+    errorCopy = error;
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    v8 = [v5 pf_errorForDatabaseConnection:WeakRetained result:a2 query:errorCopy userInfo:0];
   }
 
   else
@@ -223,44 +223,44 @@ LABEL_14:
   return v8;
 }
 
-- (uint64_t)_bindParameterIndex:(uint64_t)result nullValue:(int)a2
+- (uint64_t)_bindParameterIndex:(uint64_t)result nullValue:(int)value
 {
   if (result)
   {
-    return sqlite3_bind_null(*(result + 24), a2);
+    return sqlite3_bind_null(*(result + 24), value);
   }
 
   return result;
 }
 
-- (uint64_t)_bindParameterIndex:(id)a3 stringValue:
+- (uint64_t)_bindParameterIndex:(id)index stringValue:
 {
   if (result)
   {
     v4 = *(result + 24);
-    v5 = [a3 UTF8String];
+    uTF8String = [index UTF8String];
 
-    return sqlite3_bind_text(v4, a2, v5, -1, 0xFFFFFFFFFFFFFFFFLL);
+    return sqlite3_bind_text(v4, a2, uTF8String, -1, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   return result;
 }
 
-- (uint64_t)_bindParameterIndex:(void *)a3 numberValue:
+- (uint64_t)_bindParameterIndex:(void *)index numberValue:
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!a1)
+  indexCopy = index;
+  v6 = indexCopy;
+  if (!self)
   {
     v10 = 0;
     goto LABEL_9;
   }
 
-  v7 = [v5 objCType];
-  if (strlen(v7) != 1)
+  objCType = [indexCopy objCType];
+  if (strlen(objCType) != 1)
   {
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
 LABEL_13:
@@ -274,11 +274,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = *v7 - 66;
+  v8 = *objCType - 66;
   if (v8 > 0x31)
   {
 LABEL_12:
-    v11 = *(a1 + 16);
+    v11 = *(self + 16);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
@@ -291,7 +291,7 @@ LABEL_12:
   {
     if (((1 << v8) & 0x1400000000) != 0)
     {
-      v14 = *(a1 + 24);
+      v14 = *(self + 24);
       [v6 doubleValue];
       v9 = sqlite3_bind_double(v14, a2, v15);
       goto LABEL_6;
@@ -300,7 +300,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = sqlite3_bind_int64(*(a1 + 24), a2, [v6 longLongValue]);
+  v9 = sqlite3_bind_int64(*(self + 24), a2, [v6 longLongValue]);
 LABEL_6:
   v10 = v9;
 LABEL_9:
@@ -309,18 +309,18 @@ LABEL_9:
   return v10;
 }
 
-- (uint64_t)_bindParameterIndex:(id)a3 dataValue:
+- (uint64_t)_bindParameterIndex:(id)index dataValue:
 {
   if (result)
   {
     v5 = result;
-    v6 = a3;
-    v7 = a3;
-    v8 = [v7 bytes];
-    v9 = [v7 length];
+    indexCopy = index;
+    indexCopy2 = index;
+    bytes = [indexCopy2 bytes];
+    v9 = [indexCopy2 length];
 
-    v10 = v7 != 0;
-    v11 = v8 == 0;
+    v10 = indexCopy2 != 0;
+    v11 = bytes == 0;
     if (v10 && v11)
     {
       v12 = 3735936685;
@@ -328,7 +328,7 @@ LABEL_9:
 
     else
     {
-      v12 = v8;
+      v12 = bytes;
     }
 
     v13 = *(v5 + 24);

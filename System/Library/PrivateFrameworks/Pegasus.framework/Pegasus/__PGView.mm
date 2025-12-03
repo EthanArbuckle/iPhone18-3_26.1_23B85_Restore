@@ -1,14 +1,14 @@
 @interface __PGView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation __PGView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(__PGView *)self animatedLayerProperties];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  animatedLayerProperties = [(__PGView *)self animatedLayerProperties];
+  v6 = [animatedLayerProperties containsObject:keyCopy];
 
   if (v6)
   {
@@ -19,7 +19,7 @@
   {
     v9.receiver = self;
     v9.super_class = __PGView;
-    v7 = [(__PGView *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(__PGView *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v7;

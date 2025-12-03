@@ -1,22 +1,22 @@
 @interface PGSurveyQuestion
-- (BOOL)_additionalInfosAreEqualForOtherQuestionAdditionalInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToPersistedQuestion:(id)a3;
-- (BOOL)isEquivalentToQuestion:(id)a3;
-- (id)_additionalInfoWithAnswerReasonRemovedForQuestionType:(unsigned __int16)a3 additionalInfo:(id)a4;
+- (BOOL)_additionalInfosAreEqualForOtherQuestionAdditionalInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToPersistedQuestion:(id)question;
+- (BOOL)isEquivalentToQuestion:(id)question;
+- (id)_additionalInfoWithAnswerReasonRemovedForQuestionType:(unsigned __int16)type additionalInfo:(id)info;
 - (unint64_t)hash;
 - (unsigned)displayType;
 - (unsigned)entityType;
 - (unsigned)type;
-- (void)persistWithCreationDate:(id)a3 questionVersion:(signed __int16)a4;
+- (void)persistWithCreationDate:(id)date questionVersion:(signed __int16)version;
 @end
 
 @implementation PGSurveyQuestion
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -24,7 +24,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGSurveyQuestion *)self isEquivalentToQuestion:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PGSurveyQuestion *)self isEquivalentToQuestion:equalCopy];
   }
 
   return v5;
@@ -32,32 +32,32 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PGSurveyQuestion *)self entityIdentifier];
-  v3 = [v2 hash];
+  entityIdentifier = [(PGSurveyQuestion *)self entityIdentifier];
+  v3 = [entityIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEquivalentToQuestion:(id)a3
+- (BOOL)isEquivalentToQuestion:(id)question
 {
-  v5 = a3;
-  v6 = [v5 entityIdentifier];
-  v7 = [(PGSurveyQuestion *)self entityIdentifier];
-  if ([v6 isEqualToString:v7])
+  questionCopy = question;
+  entityIdentifier = [questionCopy entityIdentifier];
+  entityIdentifier2 = [(PGSurveyQuestion *)self entityIdentifier];
+  if ([entityIdentifier isEqualToString:entityIdentifier2])
   {
-    v8 = [v5 entityType];
-    if (v8 == [(PGSurveyQuestion *)self entityType])
+    entityType = [questionCopy entityType];
+    if (entityType == [(PGSurveyQuestion *)self entityType])
     {
-      v9 = [v5 type];
-      if (v9 == [(PGSurveyQuestion *)self type])
+      type = [questionCopy type];
+      if (type == [(PGSurveyQuestion *)self type])
       {
-        v10 = [v5 additionalInfo];
-        v11 = [v10 count];
+        additionalInfo = [questionCopy additionalInfo];
+        v11 = [additionalInfo count];
         if (v11 || (-[PGSurveyQuestion additionalInfo](self, "additionalInfo"), v3 = objc_claimAutoreleasedReturnValue(), [v3 count]))
         {
-          v12 = [v5 additionalInfo];
-          v13 = [(PGSurveyQuestion *)self additionalInfo];
-          v14 = [v12 isEqualToDictionary:v13];
+          additionalInfo2 = [questionCopy additionalInfo];
+          additionalInfo3 = [(PGSurveyQuestion *)self additionalInfo];
+          v14 = [additionalInfo2 isEqualToDictionary:additionalInfo3];
 
           if (v11)
           {
@@ -83,18 +83,18 @@ LABEL_9:
   return v14;
 }
 
-- (id)_additionalInfoWithAnswerReasonRemovedForQuestionType:(unsigned __int16)a3 additionalInfo:(id)a4
+- (id)_additionalInfoWithAnswerReasonRemovedForQuestionType:(unsigned __int16)type additionalInfo:(id)info
 {
-  v4 = a3;
+  typeCopy = type;
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [infoCopy allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -109,15 +109,15 @@ LABEL_9:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
         if (([v13 isEqualToString:v11] & 1) == 0)
         {
-          if (v4 != 25)
+          if (typeCopy != 25)
           {
-            if (v4 == 14)
+            if (typeCopy == 14)
             {
               v14 = v13;
               v15 = v20;
@@ -128,7 +128,7 @@ LABEL_12:
               }
             }
 
-            v16 = [v5 objectForKeyedSubscript:v13];
+            v16 = [infoCopy objectForKeyedSubscript:v13];
             [v6 setObject:v16 forKeyedSubscript:v13];
 
             continue;
@@ -145,7 +145,7 @@ LABEL_12:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
@@ -156,38 +156,38 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_additionalInfosAreEqualForOtherQuestionAdditionalInfo:(id)a3
+- (BOOL)_additionalInfosAreEqualForOtherQuestionAdditionalInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(PGSurveyQuestion *)self type];
-  v6 = [(PGSurveyQuestion *)self additionalInfo];
-  v7 = [(PGSurveyQuestion *)self _additionalInfoWithAnswerReasonRemovedForQuestionType:v5 additionalInfo:v6];
+  infoCopy = info;
+  type = [(PGSurveyQuestion *)self type];
+  additionalInfo = [(PGSurveyQuestion *)self additionalInfo];
+  v7 = [(PGSurveyQuestion *)self _additionalInfoWithAnswerReasonRemovedForQuestionType:type additionalInfo:additionalInfo];
 
-  v8 = [(PGSurveyQuestion *)self _additionalInfoWithAnswerReasonRemovedForQuestionType:[(PGSurveyQuestion *)self type] additionalInfo:v4];
+  v8 = [(PGSurveyQuestion *)self _additionalInfoWithAnswerReasonRemovedForQuestionType:[(PGSurveyQuestion *)self type] additionalInfo:infoCopy];
 
-  LOBYTE(v4) = [v7 isEqualToDictionary:v8];
-  return v4;
+  LOBYTE(infoCopy) = [v7 isEqualToDictionary:v8];
+  return infoCopy;
 }
 
-- (BOOL)isEquivalentToPersistedQuestion:(id)a3
+- (BOOL)isEquivalentToPersistedQuestion:(id)question
 {
-  v5 = a3;
-  v6 = [v5 entityIdentifier];
-  v7 = [(PGSurveyQuestion *)self entityIdentifier];
-  if ([v6 isEqualToString:v7])
+  questionCopy = question;
+  entityIdentifier = [questionCopy entityIdentifier];
+  entityIdentifier2 = [(PGSurveyQuestion *)self entityIdentifier];
+  if ([entityIdentifier isEqualToString:entityIdentifier2])
   {
-    v8 = [v5 entityType];
-    if (v8 == [(PGSurveyQuestion *)self entityType])
+    entityType = [questionCopy entityType];
+    if (entityType == [(PGSurveyQuestion *)self entityType])
     {
-      v9 = [v5 type];
-      if (v9 == [(PGSurveyQuestion *)self type])
+      type = [questionCopy type];
+      if (type == [(PGSurveyQuestion *)self type])
       {
-        v10 = [v5 additionalInfo];
-        v11 = [v10 count];
+        additionalInfo = [questionCopy additionalInfo];
+        v11 = [additionalInfo count];
         if (v11 || (-[PGSurveyQuestion additionalInfo](self, "additionalInfo"), v3 = objc_claimAutoreleasedReturnValue(), [v3 count]))
         {
-          v12 = [v5 additionalInfo];
-          v13 = [(PGSurveyQuestion *)self _additionalInfosAreEqualForOtherQuestionAdditionalInfo:v12];
+          additionalInfo2 = [questionCopy additionalInfo];
+          v13 = [(PGSurveyQuestion *)self _additionalInfosAreEqualForOtherQuestionAdditionalInfo:additionalInfo2];
 
           if (v11)
           {
@@ -255,20 +255,20 @@ LABEL_9:
   objc_exception_throw(v10);
 }
 
-- (void)persistWithCreationDate:(id)a3 questionVersion:(signed __int16)a4
+- (void)persistWithCreationDate:(id)date questionVersion:(signed __int16)version
 {
-  v17 = a3;
+  dateCopy = date;
   v6 = MEMORY[0x277CD9978];
-  v7 = [(PGSurveyQuestion *)self entityIdentifier];
-  v8 = [(PGSurveyQuestion *)self type];
-  v9 = [(PGSurveyQuestion *)self state];
-  v10 = [(PGSurveyQuestion *)self entityType];
-  v11 = [(PGSurveyQuestion *)self displayType];
+  entityIdentifier = [(PGSurveyQuestion *)self entityIdentifier];
+  type = [(PGSurveyQuestion *)self type];
+  state = [(PGSurveyQuestion *)self state];
+  entityType = [(PGSurveyQuestion *)self entityType];
+  displayType = [(PGSurveyQuestion *)self displayType];
   [(PGSurveyQuestion *)self score];
   v13 = v12;
-  v14 = [(PGSurveyQuestion *)self additionalInfo];
-  LOWORD(v16) = a4;
-  v15 = [v6 creationRequestForQuestionWithEntityIdentifier:v7 type:v8 state:v9 entityType:v10 displayType:v11 score:v14 additionalInfo:v13 creationDate:v17 questionVersion:v16];
+  additionalInfo = [(PGSurveyQuestion *)self additionalInfo];
+  LOWORD(v16) = version;
+  v15 = [v6 creationRequestForQuestionWithEntityIdentifier:entityIdentifier type:type state:state entityType:entityType displayType:displayType score:additionalInfo additionalInfo:v13 creationDate:dateCopy questionVersion:v16];
 }
 
 @end

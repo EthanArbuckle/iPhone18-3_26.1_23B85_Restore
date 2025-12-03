@@ -1,47 +1,47 @@
 @interface HUSideBarViewController
 - (HUSideBarDelegate)sideBarDelegate;
-- (HUSideBarViewController)initWithDelegate:(id)a3 forHome:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)_selectItemAtIndexPath:(id)a3;
-- (void)_sendSideBarInteractionEventForItem:(id)a3;
+- (HUSideBarViewController)initWithDelegate:(id)delegate forHome:(id)home;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)_selectItemAtIndexPath:(id)path;
+- (void)_sendSideBarInteractionEventForItem:(id)item;
 - (void)_updateAppearance;
 - (void)_updateBlurView;
 - (void)_updateNavigationBar;
 - (void)_updateShouldUseDashboardEffects;
 - (void)_updateSplitViewSeparator;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeDidUpdateApplicationData:(id)a3;
-- (void)homeDidUpdateHomeLocationStatus:(id)a3;
-- (void)homeDidUpdateToROAR:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeDidUpdateApplicationData:(id)data;
+- (void)homeDidUpdateHomeLocationStatus:(id)status;
+- (void)homeDidUpdateToROAR:(id)r;
 - (void)refreshSideBarSelection;
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3;
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3;
-- (void)setHideRoomSection:(BOOL)a3;
-- (void)setShouldUseDashboardEffects:(BOOL)a3;
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended;
+- (void)restrictedGuestAllowedPeriodStarted:(id)started;
+- (void)setHideRoomSection:(BOOL)section;
+- (void)setShouldUseDashboardEffects:(BOOL)effects;
 - (void)switchToDiscover;
-- (void)switchToSelectedHome:(id)a3;
-- (void)updateSelectionToItem:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)switchToSelectedHome:(id)home;
+- (void)updateSelectionToItem:(id)item;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUSideBarViewController
 
-- (HUSideBarViewController)initWithDelegate:(id)a3 forHome:(id)a4
+- (HUSideBarViewController)initWithDelegate:(id)delegate forHome:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  homeCopy = home;
   v9 = [[HUSideBarItemManager alloc] initWithDelegate:self];
   v10 = objc_opt_new();
   v18.receiver = self;
@@ -50,16 +50,16 @@
 
   if (v11)
   {
-    objc_storeWeak(&v11->_sideBarDelegate, v7);
-    v12 = [(HUItemCollectionViewController *)v11 itemManager];
-    v13 = [v12 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    objc_storeWeak(&v11->_sideBarDelegate, delegateCopy);
+    itemManager = [(HUItemCollectionViewController *)v11 itemManager];
+    v13 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
 
-    objc_storeStrong(&v11->_home, a4);
-    v14 = [v8 accessories];
-    v11->_hideRoomSection = [v14 count] == 0;
+    objc_storeStrong(&v11->_home, home);
+    accessories = [homeCopy accessories];
+    v11->_hideRoomSection = [accessories count] == 0;
 
-    v15 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v15 addHomeObserver:v11];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeObserver:v11];
 
     v16 = HFLocalizedString();
     [(HUSideBarViewController *)v11 setTitle:v16];
@@ -68,19 +68,19 @@
   return v11;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HUSideBarViewController;
-  [(HUItemCollectionViewController *)&v4 viewWillAppear:a3];
+  [(HUItemCollectionViewController *)&v4 viewWillAppear:appear];
   [(HUSideBarViewController *)self _updateSplitViewSeparator];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HUSideBarViewController;
-  [(HUItemCollectionViewController *)&v6 viewDidAppear:a3];
+  [(HUItemCollectionViewController *)&v6 viewDidAppear:appear];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,34 +96,34 @@
   v29.receiver = self;
   v29.super_class = HUSideBarViewController;
   [(HUItemCollectionViewController *)&v29 viewDidLoad];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(HUSideBarViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  [collectionView setBackgroundColor:clearColor];
 
-  v5 = [(HUSideBarViewController *)self collectionView];
-  [v5 setAlwaysBounceVertical:1];
+  collectionView2 = [(HUSideBarViewController *)self collectionView];
+  [collectionView2 setAlwaysBounceVertical:1];
 
-  v6 = [(HUSideBarViewController *)self collectionView];
-  [v6 setDelegate:self];
+  collectionView3 = [(HUSideBarViewController *)self collectionView];
+  [collectionView3 setDelegate:self];
 
-  v7 = [(HUSideBarViewController *)self collectionView];
-  [v7 setDropDelegate:self];
+  collectionView4 = [(HUSideBarViewController *)self collectionView];
+  [collectionView4 setDropDelegate:self];
 
-  v8 = [(HUSideBarViewController *)self collectionView];
+  collectionView5 = [(HUSideBarViewController *)self collectionView];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v8 registerClass:v9 forCellWithReuseIdentifier:v11];
+  [collectionView5 registerClass:v9 forCellWithReuseIdentifier:v11];
 
-  v12 = [(HUSideBarViewController *)self collectionView];
+  collectionView6 = [(HUSideBarViewController *)self collectionView];
   v13 = objc_opt_class();
   v14 = *MEMORY[0x277D77388];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v12 registerClass:v13 forSupplementaryViewOfKind:v14 withReuseIdentifier:v16];
+  [collectionView6 registerClass:v13 forSupplementaryViewOfKind:v14 withReuseIdentifier:v16];
 
-  v17 = [(HUSideBarViewController *)self collectionView];
-  [v17 setSelectionFollowsFocus:1];
+  collectionView7 = [(HUSideBarViewController *)self collectionView];
+  [collectionView7 setSelectionFollowsFocus:1];
 
   v18 = objc_alloc(MEMORY[0x277D752B8]);
   v28[0] = MEMORY[0x277D85DD0];
@@ -132,8 +132,8 @@
   v28[3] = &unk_277DB8278;
   v28[4] = self;
   v19 = [v18 initWithSectionProvider:v28];
-  v20 = [(HUSideBarViewController *)self collectionView];
-  [v20 setCollectionViewLayout:v19];
+  collectionView8 = [(HUSideBarViewController *)self collectionView];
+  [collectionView8 setCollectionViewLayout:v19];
 
   v21 = objc_opt_new();
   blurView = self->_blurView;
@@ -141,11 +141,11 @@
 
   [(UIView *)self->_blurView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HUSideBarViewController *)self _updateBlurView];
-  v23 = [(HUSideBarViewController *)self view];
-  [v23 addSubview:self->_blurView];
+  view = [(HUSideBarViewController *)self view];
+  [view addSubview:self->_blurView];
 
-  v24 = [(HUSideBarViewController *)self view];
-  [v24 sendSubviewToBack:self->_blurView];
+  view2 = [(HUSideBarViewController *)self view];
+  [view2 sendSubviewToBack:self->_blurView];
 
   v25 = MEMORY[0x277CCAAD0];
   v27[0] = MEMORY[0x277D85DD0];
@@ -208,69 +208,69 @@ id __38__HUSideBarViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   return v2;
 }
 
-- (void)setHideRoomSection:(BOOL)a3
+- (void)setHideRoomSection:(BOOL)section
 {
   v25 = *MEMORY[0x277D85DE8];
-  if (self->_hideRoomSection != a3)
+  if (self->_hideRoomSection != section)
   {
-    v3 = a3;
-    self->_hideRoomSection = a3;
-    v6 = [(HUItemCollectionViewController *)self itemManager];
-    v7 = [v6 reloadAndUpdateAllItemsFromSenderSelector:a2];
+    sectionCopy = section;
+    self->_hideRoomSection = section;
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v7 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
 
-    if (v3)
+    if (sectionCopy)
     {
-      v8 = [(HUSideBarViewController *)self sideBarDelegate];
-      [v8 switchToHomeForTabIdentifier:*MEMORY[0x277D13938]];
+      sideBarDelegate = [(HUSideBarViewController *)self sideBarDelegate];
+      [sideBarDelegate switchToHomeForTabIdentifier:*MEMORY[0x277D13938]];
 
-      v9 = [(HUItemCollectionViewController *)self itemManager];
-      v10 = [(HUItemCollectionViewController *)self itemManager];
-      v11 = [v10 homeItem];
-      v12 = [v9 indexPathForItem:v11];
+      itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+      itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+      homeItem = [itemManager3 homeItem];
+      v12 = [itemManager2 indexPathForItem:homeItem];
 
-      v13 = [(HUSideBarViewController *)self collectionView];
-      [v13 selectItemAtIndexPath:v12 animated:0 scrollPosition:0];
+      collectionView = [(HUSideBarViewController *)self collectionView];
+      [collectionView selectItemAtIndexPath:v12 animated:0 scrollPosition:0];
 
       v14 = HFLogForCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v12 section];
+        section = [v12 section];
         v16 = [v12 row];
-        v17 = [(HUItemCollectionViewController *)self itemManager];
-        v18 = [v17 homeItem];
+        itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+        homeItem2 = [itemManager4 homeItem];
         v19 = 134218498;
-        v20 = v15;
+        v20 = section;
         v21 = 2048;
         v22 = v16;
         v23 = 2112;
-        v24 = v18;
+        v24 = homeItem2;
         _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "switch to home tab since room section should now be hidden, select sidebar section: %ld row: %ld for selected item: %@", &v19, 0x20u);
       }
     }
   }
 }
 
-- (void)updateSelectionToItem:(id)a3
+- (void)updateSelectionToItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 indexPathForItem:v4];
+  itemCopy = item;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager indexPathForItem:itemCopy];
 
   if (v6)
   {
-    v7 = [(HUSideBarViewController *)self collectionView];
-    [v7 selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
+    collectionView = [(HUSideBarViewController *)self collectionView];
+    [collectionView selectItemAtIndexPath:v6 animated:0 scrollPosition:0];
 
     v8 = HFLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134218498;
-      v13 = [v6 section];
+      section = [v6 section];
       v14 = 2048;
       v15 = [v6 row];
       v16 = 2112;
-      v17 = v4;
+      v17 = itemCopy;
       v9 = "select sidebar section: %ld row: %ld for selected item: %@";
       v10 = v8;
       v11 = 32;
@@ -285,7 +285,7 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      section = itemCopy;
       v9 = "invalid indexPath for item: %@";
       v10 = v8;
       v11 = 12;
@@ -294,60 +294,60 @@ LABEL_6:
   }
 }
 
-- (void)switchToSelectedHome:(id)a3
+- (void)switchToSelectedHome:(id)home
 {
-  v10 = a3;
-  v4 = [(HUSideBarViewController *)self home];
-  v5 = [v4 isEqual:v10];
+  homeCopy = home;
+  home = [(HUSideBarViewController *)self home];
+  v5 = [home isEqual:homeCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(HUSideBarViewController *)self setHome:v10];
-    v6 = [v10 accessories];
-    if ([v6 count])
+    [(HUSideBarViewController *)self setHome:homeCopy];
+    accessories = [homeCopy accessories];
+    if ([accessories count])
     {
-      v7 = [v10 hf_shouldBlockCurrentUserFromHome];
+      hf_shouldBlockCurrentUserFromHome = [homeCopy hf_shouldBlockCurrentUserFromHome];
     }
 
     else
     {
-      v7 = 1;
+      hf_shouldBlockCurrentUserFromHome = 1;
     }
 
-    [(HUSideBarViewController *)self setHideRoomSection:v7];
+    [(HUSideBarViewController *)self setHideRoomSection:hf_shouldBlockCurrentUserFromHome];
 
-    v8 = [v10 hf_reorderableRoomsList];
-    v9 = [(HUItemCollectionViewController *)self itemManager];
-    [v9 setReorderableRoomList:v8];
+    hf_reorderableRoomsList = [homeCopy hf_reorderableRoomsList];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    [itemManager setReorderableRoomList:hf_reorderableRoomsList];
   }
 }
 
 - (void)refreshSideBarSelection
 {
-  v3 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
   v4 = +[HUSideBarSelectionManager sharedManager];
-  v5 = [v4 currentSelectedItem];
-  v7 = [v3 indexPathForItem:v5];
+  currentSelectedItem = [v4 currentSelectedItem];
+  v7 = [itemManager indexPathForItem:currentSelectedItem];
 
-  v6 = [(HUSideBarViewController *)self collectionView];
-  [v6 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  [collectionView selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = HUSideBarViewController;
-  v6 = a4;
-  [(HUItemCollectionViewController *)&v7 collectionView:a3 didSelectItemAtIndexPath:v6];
-  [(HUSideBarViewController *)self _selectItemAtIndexPath:v6, v7.receiver, v7.super_class];
+  pathCopy = path;
+  [(HUItemCollectionViewController *)&v7 collectionView:view didSelectItemAtIndexPath:pathCopy];
+  [(HUSideBarViewController *)self _selectItemAtIndexPath:pathCopy, v7.receiver, v7.super_class];
 }
 
-- (void)_selectItemAtIndexPath:(id)a3
+- (void)_selectItemAtIndexPath:(id)path
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 displayedItemAtIndexPath:v4];
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v7 = v6;
@@ -365,18 +365,18 @@ LABEL_6:
 
   if (v9)
   {
-    v10 = [(HUSideBarViewController *)self sideBarDelegate];
-    v11 = [v9 room];
-    [v10 switchToRoom:v11];
+    sideBarDelegate = [(HUSideBarViewController *)self sideBarDelegate];
+    room = [v9 room];
+    [sideBarDelegate switchToRoom:room];
 
     v12 = HFLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v9 room];
+      room2 = [v9 room];
       v33 = 136315394;
       v34 = "[HUSideBarViewController _selectItemAtIndexPath:]";
       v35 = 2112;
-      v36 = v13;
+      v36 = room2;
       _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "(%s) user select room tab %@", &v33, 0x16u);
     }
   }
@@ -397,18 +397,18 @@ LABEL_6:
 
   if (v16)
   {
-    v17 = [(HUSideBarViewController *)self sideBarDelegate];
-    v18 = [v16 accessoryTypeGroup];
-    [v17 switchToAccessoryTypeGroup:v18];
+    sideBarDelegate2 = [(HUSideBarViewController *)self sideBarDelegate];
+    accessoryTypeGroup = [v16 accessoryTypeGroup];
+    [sideBarDelegate2 switchToAccessoryTypeGroup:accessoryTypeGroup];
 
     v19 = HFLogForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v16 accessoryTypeGroup];
+      accessoryTypeGroup2 = [v16 accessoryTypeGroup];
       v33 = 136315394;
       v34 = "[HUSideBarViewController _selectItemAtIndexPath:]";
       v35 = 2112;
-      v36 = v20;
+      v36 = accessoryTypeGroup2;
       _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "(%s) user select accessory type group %@", &v33, 0x16u);
     }
   }
@@ -431,9 +431,9 @@ LABEL_6:
   {
     if (![v23 type])
     {
-      v24 = [(HUSideBarViewController *)self sideBarDelegate];
+      sideBarDelegate3 = [(HUSideBarViewController *)self sideBarDelegate];
       v25 = *MEMORY[0x277D13938];
-      [v24 switchToHomeForTabIdentifier:*MEMORY[0x277D13938]];
+      [sideBarDelegate3 switchToHomeForTabIdentifier:*MEMORY[0x277D13938]];
 
       v26 = HFLogForCategory();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -448,9 +448,9 @@ LABEL_6:
 
     if ([v23 type] == 1)
     {
-      v27 = [(HUSideBarViewController *)self sideBarDelegate];
+      sideBarDelegate4 = [(HUSideBarViewController *)self sideBarDelegate];
       v28 = *MEMORY[0x277D13940];
-      [v27 switchToHomeForTabIdentifier:*MEMORY[0x277D13940]];
+      [sideBarDelegate4 switchToHomeForTabIdentifier:*MEMORY[0x277D13940]];
 
       v29 = HFLogForCategory();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -465,9 +465,9 @@ LABEL_6:
 
     if ([v23 type] == 2)
     {
-      v30 = [(HUSideBarViewController *)self sideBarDelegate];
+      sideBarDelegate5 = [(HUSideBarViewController *)self sideBarDelegate];
       v31 = *MEMORY[0x277D13930];
-      [v30 switchToHomeForTabIdentifier:*MEMORY[0x277D13930]];
+      [sideBarDelegate5 switchToHomeForTabIdentifier:*MEMORY[0x277D13930]];
 
       v32 = HFLogForCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -484,18 +484,18 @@ LABEL_6:
   [(HUSideBarViewController *)self _sendSideBarInteractionEventForItem:v21];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HUItemCollectionViewController *)self itemManager];
-  v12 = [v11 titleForSection:{objc_msgSend(v8, "section")}];
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v12 = [itemManager titleForSection:{objc_msgSend(pathCopy, "section")}];
 
   objc_opt_class();
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [v10 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v14 forIndexPath:v8];
+  v15 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v14 forIndexPath:pathCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -514,7 +514,7 @@ LABEL_6:
   v20[2] = __88__HUSideBarViewController_collectionView_viewForSupplementaryElementOfKind_atIndexPath___block_invoke;
   v20[3] = &unk_277DB82C8;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v18 = v12;
   [v17 _setContentViewConfigurationProvider:v20];
 
@@ -544,18 +544,18 @@ id __88__HUSideBarViewController_collectionView_viewForSupplementaryElementOfKin
   return v2;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [v9 section];
-  v11 = v9;
-  if (v10 != [v8 section])
+  pathCopy = path;
+  proposedIndexPathCopy = proposedIndexPath;
+  section = [proposedIndexPathCopy section];
+  v11 = proposedIndexPathCopy;
+  if (section != [pathCopy section])
   {
-    v12 = [(HUSideBarViewController *)self collectionView];
-    [v12 setDropDelegate:self];
+    collectionView = [(HUSideBarViewController *)self collectionView];
+    [collectionView setDropDelegate:self];
 
-    v11 = v8;
+    v11 = pathCopy;
   }
 
   v13 = v11;
@@ -563,13 +563,13 @@ id __88__HUSideBarViewController_collectionView_viewForSupplementaryElementOfKin
   return v11;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v27 = a4;
-  v7 = a5;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   objc_opt_class();
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v27];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -584,41 +584,41 @@ id __88__HUSideBarViewController_collectionView_viewForSupplementaryElementOfKin
 
   if (v11)
   {
-    v12 = [(HUItemCollectionViewController *)self itemManager];
-    v13 = [v12 reorderableRoomList];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    reorderableRoomList = [itemManager2 reorderableRoomList];
 
     v14 = objc_alloc(MEMORY[0x277CBEB18]);
-    v15 = [(HUItemCollectionViewController *)self itemManager];
-    v16 = [v15 roomItems];
-    v17 = [v14 initWithArray:v16];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    roomItems = [itemManager3 roomItems];
+    v17 = [v14 initWithArray:roomItems];
 
     v18 = [v17 count];
-    if (v18 > [v7 row])
+    if (v18 > [indexPathCopy row])
     {
       v19 = [v17 count];
-      if (v19 > [v27 row])
+      if (v19 > [pathCopy row])
       {
-        [v17 removeObjectAtIndex:{objc_msgSend(v27, "row")}];
-        [v17 insertObject:v11 atIndex:{objc_msgSend(v7, "row")}];
-        v20 = [v13 mutableCopy];
+        [v17 removeObjectAtIndex:{objc_msgSend(pathCopy, "row")}];
+        [v17 insertObject:v11 atIndex:{objc_msgSend(indexPathCopy, "row")}];
+        v20 = [reorderableRoomList mutableCopy];
         [v20 setSortedHomeKitItems:v17];
-        v21 = [(HUItemCollectionViewController *)self itemManager];
-        [v21 setReorderableRoomList:v20];
+        itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+        [itemManager4 setReorderableRoomList:v20];
 
         [(HUItemCollectionViewController *)self setSuppressCollectionViewUpdatesForReorderCommit:1];
-        v22 = [(HUItemCollectionViewController *)self itemManager];
-        [v22 sortDisplayedItemsInSection:{objc_msgSend(v27, "section")}];
+        itemManager5 = [(HUItemCollectionViewController *)self itemManager];
+        [itemManager5 sortDisplayedItemsInSection:{objc_msgSend(pathCopy, "section")}];
 
         [(HUItemCollectionViewController *)self setSuppressCollectionViewUpdatesForReorderCommit:0];
-        v23 = [(HUItemCollectionViewController *)self itemManager];
-        v24 = [v20 saveWithSender:v23];
+        itemManager6 = [(HUItemCollectionViewController *)self itemManager];
+        v24 = [v20 saveWithSender:itemManager6];
         v25 = [v24 addFailureBlock:&__block_literal_global_16];
       }
     }
   }
 
-  v26 = [(HUSideBarViewController *)self collectionView];
-  [v26 setDropDelegate:self];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  [collectionView setDropDelegate:self];
 }
 
 void __74__HUSideBarViewController_collectionView_moveItemAtIndexPath_toIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -629,27 +629,27 @@ void __74__HUSideBarViewController_collectionView_moveItemAtIndexPath_toIndexPat
   [v4 logError:v3 operationDescription:@"ReorderItems"];
 }
 
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v14 = [v5 reorderableRoomList];
+  dCopy = d;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  reorderableRoomList = [itemManager reorderableRoomList];
 
-  v6 = [v14 mutableCopy];
-  v7 = [v4 objectForKeyedSubscript:@"room"];
+  v6 = [reorderableRoomList mutableCopy];
+  v7 = [dCopy objectForKeyedSubscript:@"room"];
 
   v8 = [v7 na_map:&__block_literal_global_35_1];
 
   [v6 setSortedHomeKitItems:v8];
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  [v9 setReorderableRoomList:v6];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  [itemManager2 setReorderableRoomList:v6];
 
-  v10 = [(HUItemCollectionViewController *)self itemManager];
-  v11 = [v6 saveWithSender:v10];
+  itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+  v11 = [v6 saveWithSender:itemManager3];
   v12 = [v11 addFailureBlock:&__block_literal_global_82];
 
-  v13 = [(HUSideBarViewController *)self collectionView];
-  [v13 setDropDelegate:self];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  [collectionView setDropDelegate:self];
 }
 
 void *__68__HUSideBarViewController_didReorderItemWithSortedItemsBySectionID___block_invoke(uint64_t a1, void *a2)
@@ -678,13 +678,13 @@ void __68__HUSideBarViewController_didReorderItemWithSortedItemsBySectionID___bl
   [v4 logError:v3 operationDescription:@"ReorderItems"];
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v22.receiver = self;
   v22.super_class = HUSideBarViewController;
-  [(HUItemCollectionViewController *)&v22 configureCell:v6 forItem:v7];
+  [(HUItemCollectionViewController *)&v22 configureCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -693,8 +693,8 @@ void __68__HUSideBarViewController_didReorderItemWithSortedItemsBySectionID___bl
 
   else
   {
-    v9 = [v7 latestResults];
-    v8 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
+    latestResults = [itemCopy latestResults];
+    v8 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA0]];
   }
 
   v10 = [MEMORY[0x277D755B8] _systemImageNamed:v8 shape:-1 fill:0];
@@ -711,15 +711,15 @@ void __68__HUSideBarViewController_didReorderItemWithSortedItemsBySectionID___bl
 
   v13 = v12;
 
-  v14 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  v15 = [MEMORY[0x277D756E0] sidebarCellConfiguration];
-  [v15 setImage:v14];
-  v16 = [v7 latestResults];
-  v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  [v15 setText:v17];
+  sidebarCellConfiguration = [MEMORY[0x277D756E0] sidebarCellConfiguration];
+  [sidebarCellConfiguration setImage:_imageThatSuppressesAccessibilityHairlineThickening];
+  latestResults2 = [itemCopy latestResults];
+  v17 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [sidebarCellConfiguration setText:v17];
 
-  [v6 setContentConfiguration:v15];
+  [cellCopy setContentConfiguration:sidebarCellConfiguration];
   if ([MEMORY[0x277D14CE8] isAMac])
   {
     [MEMORY[0x277D751C0] clearConfiguration];
@@ -730,16 +730,16 @@ void __68__HUSideBarViewController_didReorderItemWithSortedItemsBySectionID___bl
     [MEMORY[0x277D751C0] listSidebarCellConfiguration];
   }
   v18 = ;
-  [v6 setBackgroundConfiguration:v18];
+  [cellCopy setBackgroundConfiguration:v18];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__HUSideBarViewController_configureCell_forItem___block_invoke;
   aBlock[3] = &unk_277DB8330;
   aBlock[4] = self;
   v19 = _Block_copy(aBlock);
-  [v6 setConfigurationUpdateHandler:v19];
-  v20 = [v6 configurationState];
-  v19[2](v19, v6, v20);
+  [cellCopy setConfigurationUpdateHandler:v19];
+  configurationState = [cellCopy configurationState];
+  v19[2](v19, cellCopy, configurationState);
 }
 
 void __49__HUSideBarViewController_configureCell_forItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -894,14 +894,14 @@ LABEL_30:
   [v34 setBackgroundConfiguration:v9];
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
   v10.receiver = self;
   v10.super_class = HUSideBarViewController;
-  [(HUItemCollectionViewController *)&v10 diffableDataItemManager:a3 didUpdateItems:a4 addItems:a5 removeItems:a6];
-  v7 = [(HUSideBarViewController *)self collectionView];
-  v8 = [v7 indexPathsForSelectedItems];
-  v9 = [v8 count];
+  [(HUItemCollectionViewController *)&v10 diffableDataItemManager:manager didUpdateItems:items addItems:addItems removeItems:removeItems];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v9 = [indexPathsForSelectedItems count];
 
   if (!v9)
   {
@@ -909,54 +909,54 @@ LABEL_30:
   }
 }
 
-- (void)homeDidUpdateApplicationData:(id)a3
+- (void)homeDidUpdateApplicationData:(id)data
 {
-  v5 = [a3 hf_reorderableRoomsList];
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  [v6 setReorderableRoomList:v5];
+  hf_reorderableRoomsList = [data hf_reorderableRoomsList];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  [itemManager setReorderableRoomList:hf_reorderableRoomsList];
 
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [v8 reloadAndUpdateAllItemsFromSenderSelector:a2];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v7 = [itemManager2 reloadAndUpdateAllItemsFromSenderSelector:a2];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v5 = [a3 accessories];
-  -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [v5 count] == 0);
+  accessories = [home accessories];
+  -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [accessories count] == 0);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v5 = [a3 accessories];
-  -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [v5 count] == 0);
+  accessories = [home accessories];
+  -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [accessories count] == 0);
 }
 
-- (void)homeDidUpdateToROAR:(id)a3
+- (void)homeDidUpdateToROAR:(id)r
 {
-  v4 = [a3 hf_shouldBlockCurrentUserFromHome];
+  hf_shouldBlockCurrentUserFromHome = [r hf_shouldBlockCurrentUserFromHome];
 
-  [(HUSideBarViewController *)self setHideRoomSection:v4];
+  [(HUSideBarViewController *)self setHideRoomSection:hf_shouldBlockCurrentUserFromHome];
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HUSideBarViewController *)self home];
-  v6 = v4;
+  userCopy = user;
+  home = [(HUSideBarViewController *)self home];
+  v6 = userCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (home == v6)
   {
 
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!home)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [home isEqual:v6];
 
   if (v7)
   {
@@ -967,25 +967,25 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)homeDidUpdateHomeLocationStatus:(id)a3
+- (void)homeDidUpdateHomeLocationStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(HUSideBarViewController *)self home];
-  v6 = v4;
+  statusCopy = status;
+  home = [(HUSideBarViewController *)self home];
+  v6 = statusCopy;
   v8 = v6;
-  if (v5 == v6)
+  if (home == v6)
   {
 
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!home)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [home isEqual:v6];
 
   if (v7)
   {
@@ -996,78 +996,78 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3
+- (void)restrictedGuestAllowedPeriodStarted:(id)started
 {
-  v4 = a3;
-  v5 = [(HUSideBarViewController *)self home];
-  v6 = [v5 currentUser];
-  v7 = v4;
+  startedCopy = started;
+  home = [(HUSideBarViewController *)self home];
+  currentUser = [home currentUser];
+  v7 = startedCopy;
   v9 = v7;
-  if (v6 == v7)
+  if (currentUser == v7)
   {
 
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!currentUser)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [currentUser isEqual:v7];
 
   if (v8)
   {
 LABEL_6:
-    v5 = [(HUSideBarViewController *)self home];
-    -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [v5 hf_shouldBlockCurrentRestrictedGuestFromHome]);
+    home = [(HUSideBarViewController *)self home];
+    -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [home hf_shouldBlockCurrentRestrictedGuestFromHome]);
 LABEL_8:
   }
 }
 
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended
 {
-  v4 = a3;
-  v5 = [(HUSideBarViewController *)self home];
-  v6 = [v5 currentUser];
-  v7 = v4;
+  endedCopy = ended;
+  home = [(HUSideBarViewController *)self home];
+  currentUser = [home currentUser];
+  v7 = endedCopy;
   v9 = v7;
-  if (v6 == v7)
+  if (currentUser == v7)
   {
 
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!currentUser)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [currentUser isEqual:v7];
 
   if (v8)
   {
 LABEL_6:
-    v5 = [(HUSideBarViewController *)self home];
-    -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [v5 hf_shouldBlockCurrentRestrictedGuestFromHome]);
+    home = [(HUSideBarViewController *)self home];
+    -[HUSideBarViewController setHideRoomSection:](self, "setHideRoomSection:", [home hf_shouldBlockCurrentRestrictedGuestFromHome]);
 LABEL_8:
   }
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  if (!v8)
+  updateCopy = update;
+  pathCopy = path;
+  if (!pathCopy)
   {
     v16 = [objc_alloc(MEMORY[0x277D752E8]) initWithDropOperation:0];
     goto LABEL_10;
   }
 
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1075,19 +1075,19 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [(HUSideBarViewController *)self home];
-  v12 = [v11 hf_currentUserIsAdministrator];
+  home = [(HUSideBarViewController *)self home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (!v12)
+  if (!hf_currentUserIsAdministrator)
   {
     goto LABEL_8;
   }
 
-  v13 = [v7 items];
-  v14 = [v13 firstObject];
-  v15 = [v14 localObject];
+  items = [updateCopy items];
+  firstObject = [items firstObject];
+  localObject = [firstObject localObject];
 
-  if (![v15 conformsToProtocol:&unk_28251B0C8])
+  if (![localObject conformsToProtocol:&unk_28251B0C8])
   {
 
 LABEL_8:
@@ -1103,22 +1103,22 @@ LABEL_10:
   return v16;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [v5 proposal];
-  v7 = [v6 operation];
+  coordinatorCopy = coordinator;
+  proposal = [coordinatorCopy proposal];
+  operation = [proposal operation];
 
-  if (v7 == 3)
+  if (operation == 3)
   {
     objc_opt_class();
-    v8 = [v5 items];
-    v9 = [v8 firstObject];
-    v10 = [v9 dragItem];
-    v11 = [v10 localObject];
+    items = [coordinatorCopy items];
+    firstObject = [items firstObject];
+    dragItem = [firstObject dragItem];
+    localObject = [dragItem localObject];
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = localObject;
     }
 
     else
@@ -1132,9 +1132,9 @@ LABEL_10:
     {
       v14 = v13;
       objc_opt_class();
-      v15 = [(HUItemCollectionViewController *)self itemManager];
-      v16 = [v5 destinationIndexPath];
-      v17 = [v15 displayedItemAtIndexPath:v16];
+      itemManager = [(HUItemCollectionViewController *)self itemManager];
+      destinationIndexPath = [coordinatorCopy destinationIndexPath];
+      v17 = [itemManager displayedItemAtIndexPath:destinationIndexPath];
       if (objc_opt_isKindOfClass())
       {
         v18 = v17;
@@ -1148,11 +1148,11 @@ LABEL_10:
       v19 = v18;
 
       v20 = objc_alloc(MEMORY[0x277D149D8]);
-      v21 = [v19 room];
-      v22 = [v19 home];
+      room = [v19 room];
+      home = [v19 home];
 
-      v23 = [v20 initWithExistingObject:v21 inHome:v22];
-      v24 = [v14 accessories];
+      v23 = [v20 initWithExistingObject:room inHome:home];
+      accessories = [v14 accessories];
 
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
@@ -1160,19 +1160,19 @@ LABEL_10:
       v27[3] = &unk_277DB8358;
       v28 = v23;
       v25 = v23;
-      [v24 na_each:v27];
+      [accessories na_each:v27];
 
-      v26 = [v25 commitItem];
+      commitItem = [v25 commitItem];
     }
   }
 }
 
 - (void)switchToDiscover
 {
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v4 = [v3 discoverItem];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  discoverItem = [itemManager discoverItem];
 
-  if (!v4)
+  if (!discoverItem)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1182,20 +1182,20 @@ LABEL_10:
     }
   }
 
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 discoverItem];
-  v9 = [v6 indexPathForItem:v8];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+  discoverItem2 = [itemManager3 discoverItem];
+  v9 = [itemManager2 indexPathForItem:discoverItem2];
 
-  v10 = [(HUSideBarViewController *)self collectionView];
-  [v10 selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  [collectionView selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
 }
 
-- (void)setShouldUseDashboardEffects:(BOOL)a3
+- (void)setShouldUseDashboardEffects:(BOOL)effects
 {
-  if (self->_shouldUseDashboardEffects != a3)
+  if (self->_shouldUseDashboardEffects != effects)
   {
-    self->_shouldUseDashboardEffects = a3;
+    self->_shouldUseDashboardEffects = effects;
     [(HUSideBarViewController *)self _updateAppearance];
   }
 }
@@ -1203,35 +1203,35 @@ LABEL_10:
 - (void)_updateShouldUseDashboardEffects
 {
   v3 = +[HUSideBarSelectionManager sharedManager];
-  v4 = [v3 currentTabIdentifier];
-  v5 = v4;
-  if (v4)
+  currentTabIdentifier = [v3 currentTabIdentifier];
+  v5 = currentTabIdentifier;
+  if (currentTabIdentifier)
   {
-    v7 = v4;
+    selectedHomeAppTabIdentifier = currentTabIdentifier;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D14B30] sharedInstance];
-    v7 = [v6 selectedHomeAppTabIdentifier];
+    mEMORY[0x277D14B30] = [MEMORY[0x277D14B30] sharedInstance];
+    selectedHomeAppTabIdentifier = [mEMORY[0x277D14B30] selectedHomeAppTabIdentifier];
   }
 
-  -[HUSideBarViewController setShouldUseDashboardEffects:](self, "setShouldUseDashboardEffects:", [v7 isEqualToString:*MEMORY[0x277D13938]]);
+  -[HUSideBarViewController setShouldUseDashboardEffects:](self, "setShouldUseDashboardEffects:", [selectedHomeAppTabIdentifier isEqualToString:*MEMORY[0x277D13938]]);
 }
 
 - (void)_updateBlurView
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [(HUSideBarViewController *)self blurView];
-  if (!v4)
+  blurView = [(HUSideBarViewController *)self blurView];
+  if (!blurView)
   {
     goto LABEL_7;
   }
 
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = blurView;
   }
 
   else
@@ -1239,12 +1239,12 @@ LABEL_10:
     v5 = 0;
   }
 
-  v6 = v4;
+  v6 = blurView;
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
 
 LABEL_7:
     v6 = 0;
@@ -1252,8 +1252,8 @@ LABEL_7:
 
   if ([(HUSideBarViewController *)self shouldUseDashboardEffects])
   {
-    v9 = [MEMORY[0x277D75D58] hu_dashboardBarEffects];
-    [v6 setBackgroundEffects:v9];
+    hu_dashboardBarEffects = [MEMORY[0x277D75D58] hu_dashboardBarEffects];
+    [v6 setBackgroundEffects:hu_dashboardBarEffects];
 
     [v6 setContentEffects:MEMORY[0x277CBEBF8]];
   }
@@ -1281,20 +1281,20 @@ LABEL_7:
   {
     v12 = *MEMORY[0x277D740C0];
     v4 = v12;
-    v5 = [MEMORY[0x277D75348] systemWhiteColor];
-    v13[0] = v5;
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    v13[0] = systemWhiteColor;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     [v3 setTitleTextAttributes:v6];
 
     v10 = v4;
-    v7 = [MEMORY[0x277D75348] systemWhiteColor];
-    v11 = v7;
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    v11 = systemWhiteColor2;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     [v3 setLargeTitleTextAttributes:v8];
   }
 
-  v9 = [(HUSideBarViewController *)self navigationItem];
-  [v9 setStandardAppearance:v3];
+  navigationItem = [(HUSideBarViewController *)self navigationItem];
+  [navigationItem setStandardAppearance:v3];
 }
 
 - (void)_updateSplitViewSeparator
@@ -1309,9 +1309,9 @@ LABEL_7:
     v3 = 1.0;
   }
 
-  v5 = [(HUSideBarViewController *)self splitViewController];
+  splitViewController = [(HUSideBarViewController *)self splitViewController];
   *&v4 = v3;
-  [v5 setGutterWidth:v4];
+  [splitViewController setGutterWidth:v4];
 }
 
 - (void)_updateAppearance
@@ -1319,12 +1319,12 @@ LABEL_7:
   [(HUSideBarViewController *)self _updateBlurView];
   [(HUSideBarViewController *)self _updateNavigationBar];
   [(HUSideBarViewController *)self _updateSplitViewSeparator];
-  v3 = [(HUSideBarViewController *)self collectionView];
-  v4 = [v3 preparedCells];
-  [v4 na_each:&__block_literal_global_137];
+  collectionView = [(HUSideBarViewController *)self collectionView];
+  preparedCells = [collectionView preparedCells];
+  [preparedCells na_each:&__block_literal_global_137];
 
-  v6 = [(HUSideBarViewController *)self collectionView];
-  v5 = [v6 visibleSupplementaryViewsOfKind:*MEMORY[0x277D77388]];
+  collectionView2 = [(HUSideBarViewController *)self collectionView];
+  v5 = [collectionView2 visibleSupplementaryViewsOfKind:*MEMORY[0x277D77388]];
   [v5 na_each:&__block_literal_global_140];
 }
 
@@ -1348,13 +1348,13 @@ void __44__HUSideBarViewController__updateAppearance__block_invoke_2(uint64_t a1
   [v4 _setNeedsConfigurationStateUpdate];
 }
 
-- (void)_sendSideBarInteractionEventForItem:(id)a3
+- (void)_sendSideBarInteractionEventForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_opt_new();
-  [v4 na_safeSetObject:v3 forKey:*MEMORY[0x277D13538]];
+  [v4 na_safeSetObject:itemCopy forKey:*MEMORY[0x277D13538]];
   objc_opt_class();
-  v15 = v3;
+  v15 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v15;
@@ -1385,8 +1385,8 @@ void __44__HUSideBarViewController__updateAppearance__block_invoke_2(uint64_t a1
   if ([MEMORY[0x277D14CE8] isAnIPad])
   {
     v12 = MEMORY[0x277CCABB0];
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v12 numberWithInteger:{objc_msgSend(v13, "orientation")}];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v14 = [v12 numberWithInteger:{objc_msgSend(currentDevice, "orientation")}];
     [v4 na_safeSetObject:v14 forKey:*MEMORY[0x277D13500]];
   }
 

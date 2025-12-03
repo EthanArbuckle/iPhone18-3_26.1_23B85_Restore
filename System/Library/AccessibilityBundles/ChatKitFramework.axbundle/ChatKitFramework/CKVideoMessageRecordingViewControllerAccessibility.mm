@@ -1,24 +1,24 @@
 @interface CKVideoMessageRecordingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)presentVideoActionMenuController;
-- (void)swapCamera:(id)a3;
+- (void)swapCamera:(id)camera;
 - (void)viewDidLoad;
 @end
 
 @implementation CKVideoMessageRecordingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"presentVideoActionMenuController" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"videoActionMenuController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKActionMenuItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKActionMenuItem" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"swapCameraButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"cameraViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"swapCamera:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"presentVideoActionMenuController" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"videoActionMenuController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuItem" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"swapCameraButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"cameraViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKVideoMessageRecordingViewController" hasInstanceMethod:@"swapCamera:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,13 +29,13 @@
   v3 = [(CKVideoMessageRecordingViewControllerAccessibility *)self safeValueForKey:@"cameraViewController"];
   v4 = __UIAccessibilitySafeClass();
 
-  v5 = [v4 cameraDevice];
+  cameraDevice = [v4 cameraDevice];
   v6 = [(CKVideoMessageRecordingViewControllerAccessibility *)self safeValueForKey:@"swapCameraButton"];
   v7 = accessibilityCameraKitLocalizedString(@"camera.chooser.button.text");
   [v6 setAccessibilityLabel:v7];
 
   [v6 setAccessibilityIdentifier:@"FrontBackFacingCameraChooser"];
-  if (v5 == 1)
+  if (cameraDevice == 1)
   {
     v8 = @"camera.chooser.front.text";
   }
@@ -49,11 +49,11 @@
   [v6 setAccessibilityValue:v9];
 }
 
-- (void)swapCamera:(id)a3
+- (void)swapCamera:(id)camera
 {
   v4.receiver = self;
   v4.super_class = CKVideoMessageRecordingViewControllerAccessibility;
-  [(CKVideoMessageRecordingViewControllerAccessibility *)&v4 swapCamera:a3];
+  [(CKVideoMessageRecordingViewControllerAccessibility *)&v4 swapCamera:camera];
   [(CKVideoMessageRecordingViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

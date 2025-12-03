@@ -1,15 +1,15 @@
 @interface NEOnDemandRuleConnect
 - (NEOnDemandRuleConnect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NEOnDemandRuleConnect
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NEOnDemandRuleConnect;
-  return [(NEOnDemandRule *)&v4 copyWithZone:a3];
+  return [(NEOnDemandRule *)&v4 copyWithZone:zone];
 }
 
 - (NEOnDemandRuleConnect)init

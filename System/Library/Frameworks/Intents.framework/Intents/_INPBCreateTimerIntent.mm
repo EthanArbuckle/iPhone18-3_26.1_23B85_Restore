@@ -1,54 +1,54 @@
 @interface _INPBCreateTimerIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBCreateTimerIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCreateTimerIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasType:(BOOL)type;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCreateTimerIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCreateTimerIntent *)self hasDuration])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBCreateTimerIntent *)self duration];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"duration"];
   }
 
-  v6 = [(_INPBCreateTimerIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBCreateTimerIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBCreateTimerIntent *)self label];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"label"];
+  label = [(_INPBCreateTimerIntent *)self label];
+  dictionaryRepresentation2 = [label dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"label"];
 
   if ([(_INPBCreateTimerIntent *)self hasType])
   {
-    v10 = [(_INPBCreateTimerIntent *)self type];
-    if (v10 >= 3)
+    type = [(_INPBCreateTimerIntent *)self type];
+    if (type >= 3)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v11 = *(&off_1E72860F8 + v10);
+      v11 = *(&off_1E72860F8 + type);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"type"];
+    [dictionary setObject:v11 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -101,26 +101,26 @@
   return v9 ^ v8 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBCreateTimerIntent *)self hasDuration];
-  if (v5 != [v4 hasDuration])
+  hasDuration = [(_INPBCreateTimerIntent *)self hasDuration];
+  if (hasDuration != [equalCopy hasDuration])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBCreateTimerIntent *)self hasDuration])
   {
-    if ([v4 hasDuration])
+    if ([equalCopy hasDuration])
     {
       duration = self->_duration;
-      [v4 duration];
+      [equalCopy duration];
       if (duration != v7)
       {
         goto LABEL_16;
@@ -128,20 +128,20 @@
     }
   }
 
-  v8 = [(_INPBCreateTimerIntent *)self intentMetadata];
-  v9 = [v4 intentMetadata];
-  if ((v8 != 0) == (v9 == 0))
+  intentMetadata = [(_INPBCreateTimerIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_15;
   }
 
-  v10 = [(_INPBCreateTimerIntent *)self intentMetadata];
-  if (v10)
+  intentMetadata3 = [(_INPBCreateTimerIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v11 = v10;
-    v12 = [(_INPBCreateTimerIntent *)self intentMetadata];
-    v13 = [v4 intentMetadata];
-    v14 = [v12 isEqual:v13];
+    v11 = intentMetadata3;
+    intentMetadata4 = [(_INPBCreateTimerIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v14 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v14)
     {
@@ -153,22 +153,22 @@
   {
   }
 
-  v8 = [(_INPBCreateTimerIntent *)self label];
-  v9 = [v4 label];
-  if ((v8 != 0) == (v9 == 0))
+  intentMetadata = [(_INPBCreateTimerIntent *)self label];
+  intentMetadata2 = [equalCopy label];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v15 = [(_INPBCreateTimerIntent *)self label];
-  if (v15)
+  label = [(_INPBCreateTimerIntent *)self label];
+  if (label)
   {
-    v16 = v15;
-    v17 = [(_INPBCreateTimerIntent *)self label];
-    v18 = [v4 label];
-    v19 = [v17 isEqual:v18];
+    v16 = label;
+    label2 = [(_INPBCreateTimerIntent *)self label];
+    label3 = [equalCopy label];
+    v19 = [label2 isEqual:label3];
 
     if (!v19)
     {
@@ -180,10 +180,10 @@ LABEL_15:
   {
   }
 
-  v22 = [(_INPBCreateTimerIntent *)self hasType];
-  if (v22 == [v4 hasType])
+  hasType = [(_INPBCreateTimerIntent *)self hasType];
+  if (hasType == [equalCopy hasType])
   {
-    if (!-[_INPBCreateTimerIntent hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+    if (!-[_INPBCreateTimerIntent hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
     {
       v20 = 1;
       goto LABEL_17;
@@ -197,7 +197,7 @@ LABEL_17:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBCreateTimerIntent allocWithZone:](_INPBCreateTimerIntent init];
   if ([(_INPBCreateTimerIntent *)self hasDuration])
@@ -206,10 +206,10 @@ LABEL_17:
     [(_INPBCreateTimerIntent *)v5 setDuration:?];
   }
 
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBCreateTimerIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBDataString *)self->_label copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_label copyWithZone:zone];
   [(_INPBCreateTimerIntent *)v5 setLabel:v7];
 
   if ([(_INPBCreateTimerIntent *)self hasType])
@@ -220,52 +220,52 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCreateTimerIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBCreateTimerIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCreateTimerIntent)initWithCoder:(id)a3
+- (_INPBCreateTimerIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCreateTimerIntent *)self initWithData:v6];
+    self = [(_INPBCreateTimerIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBCreateTimerIntent *)self hasDuration])
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(_INPBCreateTimerIntent *)self intentMetadata];
+  intentMetadata = [(_INPBCreateTimerIntent *)self intentMetadata];
 
-  if (v5)
+  if (intentMetadata)
   {
-    v6 = [(_INPBCreateTimerIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBCreateTimerIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBCreateTimerIntent *)self label];
+  label = [(_INPBCreateTimerIntent *)self label];
 
-  if (v7)
+  if (label)
   {
-    v8 = [(_INPBCreateTimerIntent *)self label];
+    label2 = [(_INPBCreateTimerIntent *)self label];
     PBDataWriterWriteSubmessage();
   }
 
@@ -276,20 +276,20 @@ LABEL_17:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DEFAULT_TYPE"])
+  else if ([typeCopy isEqualToString:@"DEFAULT_TYPE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SLEEP_TIMER"])
+  else if ([typeCopy isEqualToString:@"SLEEP_TIMER"])
   {
     v4 = 2;
   }
@@ -302,9 +302,9 @@ LABEL_17:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -317,10 +317,10 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -328,7 +328,7 @@ LABEL_17:
   else
   {
     *&self->_has = has | 2;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 

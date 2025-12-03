@@ -6,16 +6,16 @@
 
 - (STContactAddress)st_contactAddressValue
 {
-  v2 = [a1 data];
-  v3 = [a1 object];
-  v4 = [v3 internalGUID];
+  data = [self data];
+  object = [self object];
+  internalGUID = [object internalGUID];
 
-  if ([v2 length] || objc_msgSend(v4, "length"))
+  if ([data length] || objc_msgSend(internalGUID, "length"))
   {
     v5 = [STContactAddress alloc];
-    v6 = [a1 object];
-    v7 = [v6 identifier];
-    v8 = [(STContactAddress *)v5 initWithType:0 stringValue:v2 contactIdentifier:v7 contactInternalGUID:v4];
+    object2 = [self object];
+    identifier = [object2 identifier];
+    v8 = [(STContactAddress *)v5 initWithType:0 stringValue:data contactIdentifier:identifier contactInternalGUID:internalGUID];
   }
 
   else

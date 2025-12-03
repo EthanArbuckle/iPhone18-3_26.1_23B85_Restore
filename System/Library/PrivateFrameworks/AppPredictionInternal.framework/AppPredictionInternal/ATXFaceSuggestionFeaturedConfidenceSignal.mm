@@ -1,21 +1,21 @@
 @interface ATXFaceSuggestionFeaturedConfidenceSignal
-- (double)valueForDescriptor:(id)a3;
+- (double)valueForDescriptor:(id)descriptor;
 @end
 
 @implementation ATXFaceSuggestionFeaturedConfidenceSignal
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
-  v3 = [a3 galleryOptions];
-  v4 = [v3 featuredConfidenceLevel];
+  galleryOptions = [descriptor galleryOptions];
+  featuredConfidenceLevel = [galleryOptions featuredConfidenceLevel];
 
-  if (v4 == 2)
+  if (featuredConfidenceLevel == 2)
   {
     return 2.0;
   }
 
   result = 1.0;
-  if (!v4)
+  if (!featuredConfidenceLevel)
   {
     v6 = __atxlog_handle_lock_screen();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

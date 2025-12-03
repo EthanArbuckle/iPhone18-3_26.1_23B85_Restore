@@ -1,194 +1,194 @@
 @interface PKDashboardPassGroupViewController
-- ($2DE36CBD7484E59DE1E6BE98927F692F)externalVCContext:(SEL)a3 destinationFrameForViewWithSize:(id)a4 inViewControllerFrame:(id *)a5;
-- (BOOL)_willUpdateControllerPositionForExternalVCContext:(id)a3 inTransition:(id)a4 viewSize:(id *)a5 expectedViewFrame:(id *)a6 instantaneousPositionDisplacement:(UIOffset *)a7;
-- (BOOL)dashboardViewController:(id)a3 dismissInteractionShouldDismissForContentOffset:(CGPoint)a4 velocity:(CGPoint)a5;
-- (BOOL)dashboardViewController:(id)a3 shouldStartDismissInteractionFromPoint:(CGPoint)a4;
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4;
-- (BOOL)handleDeletePassWithUniqueID:(id)a3;
-- (BOOL)isPassFooterViewInGroup:(id)a3;
+- ($2DE36CBD7484E59DE1E6BE98927F692F)externalVCContext:(SEL)context destinationFrameForViewWithSize:(id)size inViewControllerFrame:(id *)frame;
+- (BOOL)_willUpdateControllerPositionForExternalVCContext:(id)context inTransition:(id)transition viewSize:(id *)size expectedViewFrame:(id *)frame instantaneousPositionDisplacement:(UIOffset *)displacement;
+- (BOOL)dashboardViewController:(id)controller dismissInteractionShouldDismissForContentOffset:(CGPoint)offset velocity:(CGPoint)velocity;
+- (BOOL)dashboardViewController:(id)controller shouldStartDismissInteractionFromPoint:(CGPoint)point;
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller;
+- (BOOL)handleDeletePassWithUniqueID:(id)d;
+- (BOOL)isPassFooterViewInGroup:(id)group;
 - (BOOL)presentAddMoney;
-- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3;
-- (PKDashboardPassGroupViewController)initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5;
-- (PKDashboardPassGroupViewController)initWithPass:(id)a3;
-- (PKDashboardPassGroupViewController)initWithPassUniqueID:(id)a3 groupsController:(id)a4;
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)voucher;
+- (PKDashboardPassGroupViewController)initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout;
+- (PKDashboardPassGroupViewController)initWithPass:(id)pass;
+- (PKDashboardPassGroupViewController)initWithPassUniqueID:(id)d groupsController:(id)controller;
 - (PKDashboardPassGroupViewControllerDelegate)dashboardPassGroupViewControllerDelegate;
 - (PKNavigationItemConfiguration)_navigationItemConfiguration;
 - (PKPaymentOffersController)frontmostPassPaymentOffersController;
-- (double)_presentedViewFrameForViewWithSize:(uint64_t)a3;
-- (double)groupViewModalReferenceScale:(id)a3 isValid:(BOOL *)a4;
-- (id)_initWithPassGroupView:(void *)a3 groupsController:(void *)a4 sizeProvider:(void *)a5 context:;
+- (double)_presentedViewFrameForViewWithSize:(uint64_t)size;
+- (double)groupViewModalReferenceScale:(id)scale isValid:(BOOL *)valid;
+- (id)_initWithPassGroupView:(void *)view groupsController:(void *)controller sizeProvider:(void *)provider context:;
 - (id)_passGroupsViewNavigationController;
 - (id)_passcodeButtonTitle;
 - (id)_updateEffectiveNavigationItems;
-- (id)configurationForNavigationItemHandle:(id)a3;
-- (id)connectTransitionCoordinatorToReceiver:(id)a3;
-- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)a3;
-- (id)transitionCoordinator:(id)a3 prepareForSendingNavigationItem:(id)a4;
-- (id)transitionCoordinatorWillInvertReceiver:(id)a3;
-- (id)transitionCoordinatorWillInvertSender:(id)a3;
-- (int64_t)groupViewContentModeForFrontmostPassWhenPiled:(id)a3 withDefaultContentMode:(int64_t)a4;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
-- (uint64_t)_initWithPassGroupView:(void *)a3 groupsController:(void *)a4 sizeProvider:(void *)a5 context:(char)a6 coordinated:;
+- (id)configurationForNavigationItemHandle:(id)handle;
+- (id)connectTransitionCoordinatorToReceiver:(id)receiver;
+- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)controller;
+- (id)transitionCoordinator:(id)coordinator prepareForSendingNavigationItem:(id)item;
+- (id)transitionCoordinatorWillInvertReceiver:(id)receiver;
+- (id)transitionCoordinatorWillInvertSender:(id)sender;
+- (int64_t)groupViewContentModeForFrontmostPassWhenPiled:(id)piled withDefaultContentMode:(int64_t)mode;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
+- (uint64_t)_initWithPassGroupView:(void *)view groupsController:(void *)controller sizeProvider:(void *)provider context:(char)context coordinated:;
 - (uint64_t)_isForegroundActive;
 - (uint64_t)_leadingItemGroups;
-- (uint64_t)_passFooterAlphaForPass:(char)a3 postTransaction:;
+- (uint64_t)_passFooterAlphaForPass:(char)pass postTransaction:;
 - (uint64_t)_passGroupsViewController;
 - (uint64_t)_trailingItemGroups;
 - (uint64_t)_updatePausedState;
 - (uint64_t)_visibilityDidChange;
-- (uint64_t)shouldOfferManualArchivalForPassWithUniqueID:(uint64_t)a1;
-- (unint64_t)groupViewPassesSuppressedContent:(id)a3;
+- (uint64_t)shouldOfferManualArchivalForPassWithUniqueID:(uint64_t)d;
+- (unint64_t)groupViewPassesSuppressedContent:(id)content;
 - (void)_afterDataSourceContentLoadedUpdateNavigationItems;
-- (void)_applyNavigationItemConfiguration:(void *)a1;
-- (void)_canPresentCreditDetailsViewControllerWithCompletion:(uint64_t)a1;
+- (void)_applyNavigationItemConfiguration:(void *)configuration;
+- (void)_canPresentCreditDetailsViewControllerWithCompletion:(uint64_t)completion;
 - (void)_dismiss;
-- (void)_dismissWithVelocity:(double)a3 byDragging:;
+- (void)_dismissWithVelocity:(double)velocity byDragging:;
 - (void)_endReportingSessionForPassIfNecessary;
 - (void)_ensureCardPresenceIfNecessary;
 - (void)_groupViewTapped;
-- (void)_handleUpdatedAccount:(uint64_t)a1 accountRemoved:(void *)a2;
+- (void)_handleUpdatedAccount:(uint64_t)account accountRemoved:(void *)removed;
 - (void)_insertGroupView;
-- (void)_performActivationStateUpdate:(uint64_t)a1;
-- (void)_presentBarcodePassDetailsAnimated:(void *)a3 completion:;
-- (void)_presentDailyCashOnAccountForDateComponents:(uint64_t)a3 redemptionType:(void *)a4 completion:;
-- (void)_presentDailyCashOnPassForDateComponents:(void *)a3 completion:;
-- (void)_presentInstallmentPlans:(uint64_t)a1;
-- (void)_presentPassDetailsAnimated:(uint64_t)a3 action:;
-- (void)_presentPaymentPassDetailsAnimated:(void *)a3 completion:;
+- (void)_performActivationStateUpdate:(uint64_t)update;
+- (void)_presentBarcodePassDetailsAnimated:(void *)animated completion:;
+- (void)_presentDailyCashOnAccountForDateComponents:(uint64_t)components redemptionType:(void *)type completion:;
+- (void)_presentDailyCashOnPassForDateComponents:(void *)components completion:;
+- (void)_presentInstallmentPlans:(uint64_t)plans;
+- (void)_presentPassDetailsAnimated:(uint64_t)animated action:;
+- (void)_presentPaymentPassDetailsAnimated:(void *)animated completion:;
 - (void)_presentPeerPaymentAddDebitFlow;
-- (void)_presentRewardsHubWithCompletion:(void *)a1;
-- (void)_pushViewControllerWhenNavigationAvailable:(char)a3 animated:(void *)a4 completion:;
+- (void)_presentRewardsHubWithCompletion:(void *)completion;
+- (void)_pushViewControllerWhenNavigationAvailable:(char)available animated:(void *)animated completion:;
 - (void)_relinquishGroupView;
-- (void)_reloadNavigationItemsAnimated:(unsigned __int8 *)a1;
-- (void)_requestModalPresentationFromButton:(uint64_t)a1;
-- (void)_setFrontmostPass:(uint64_t)a1;
+- (void)_reloadNavigationItemsAnimated:(unsigned __int8 *)animated;
+- (void)_requestModalPresentationFromButton:(uint64_t)button;
+- (void)_setFrontmostPass:(uint64_t)pass;
 - (void)_startReportingSessionForPassIfNecessary;
-- (void)_updateDashboardAndFooterContentPostTransaction:(uint64_t)a1;
+- (void)_updateDashboardAndFooterContentPostTransaction:(uint64_t)transaction;
 - (void)_updateDefaultPasscodeButtonSize;
 - (void)_updateFingerDetection;
-- (void)_updateFooterAnimated:(uint64_t)a1;
-- (void)_updateNavigationItemAnimated:(uint64_t)a1;
-- (void)_updatePassFooterViewWithReload:(char)a3 postTransaction:;
+- (void)_updateFooterAnimated:(uint64_t)animated;
+- (void)_updateNavigationItemAnimated:(uint64_t)animated;
+- (void)_updatePassFooterViewWithReload:(char)reload postTransaction:;
 - (void)_updateTitlePassView;
-- (void)accountAutomaticPaymentsController:(id)a3 didSchedulePayment:(id)a4;
-- (void)accountDidUpdate:(id)a3;
-- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4;
+- (void)accountAutomaticPaymentsController:(id)controller didSchedulePayment:(id)payment;
+- (void)accountDidUpdate:(id)update;
+- (void)beginProvidingForNavigationItemHandle:(id)handle withConsumedVoucher:(id)voucher;
 - (void)contentDidFinishScrollInteraction;
 - (void)contentDidScroll;
-- (void)dashboardViewController:(id)a3 didEndDismissInteraction:(BOOL)a4;
-- (void)dashboardViewController:(id)a3 willStartDismissInteractionFromPoint:(CGPoint)a4;
+- (void)dashboardViewController:(id)controller didEndDismissInteraction:(BOOL)interaction;
+- (void)dashboardViewController:(id)controller willStartDismissInteractionFromPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)deleteAnimationController:(id)a3 didComplete:(BOOL)a4;
-- (void)deleteAnimationControllerWillBeginDeleteAnimation:(id)a3;
-- (void)endProvidingForNavigationItemHandle:(id)a3;
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateDeactivationReasons:(unsigned int)a4;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
-- (void)groupView:(id)a3 deleteButtonPressedForPass:(id)a4 sourceView:(id)a5;
-- (void)groupView:(id)a3 didUpdatePassView:(id)a4;
-- (void)groupView:(id)a3 faceViewFrameDidChangeForFrontmostPassView:(id)a4;
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5;
+- (void)deleteAnimationController:(id)controller didComplete:(BOOL)complete;
+- (void)deleteAnimationControllerWillBeginDeleteAnimation:(id)animation;
+- (void)endProvidingForNavigationItemHandle:(id)handle;
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateDeactivationReasons:(unsigned int)reasons;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
+- (void)groupView:(id)view deleteButtonPressedForPass:(id)pass sourceView:(id)sourceView;
+- (void)groupView:(id)view didUpdatePassView:(id)passView;
+- (void)groupView:(id)view faceViewFrameDidChangeForFrontmostPassView:(id)passView;
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context;
 - (void)infoTapped;
 - (void)invalidate;
 - (void)loadView;
-- (void)manuallyArchivePassWithUniqueID:(id *)a1;
-- (void)menuFactoryDidUpdateMenu:(id)a3;
+- (void)manuallyArchivePassWithUniqueID:(id *)d;
+- (void)menuFactoryDidUpdateMenu:(id)menu;
 - (void)moreMenuTriggered;
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)passFooterViewDidTransact:(id)a3 success:(BOOL)a4;
-- (void)passTilesItemPresenter:(id)a3 displayTileContext:(int64_t)a4 forPass:(id)a5 tile:(id)a6 overrideMaximumRows:(BOOL)a7;
-- (void)passTilesItemPresenter:(id)a3 executeSEActionForPass:(id)a4 tile:(id)a5 withCompletion:(id)a6;
-- (void)peerPaymentActionViewControllerDidCancel:(id)a3;
-- (void)peerPaymentActionViewControllerDidPerformAction:(id)a3;
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed;
+- (void)passFooterViewDidTransact:(id)transact success:(BOOL)success;
+- (void)passTilesItemPresenter:(id)presenter displayTileContext:(int64_t)context forPass:(id)pass tile:(id)tile overrideMaximumRows:(BOOL)rows;
+- (void)passTilesItemPresenter:(id)presenter executeSEActionForPass:(id)pass tile:(id)tile withCompletion:(id)completion;
+- (void)peerPaymentActionViewControllerDidCancel:(id)cancel;
+- (void)peerPaymentActionViewControllerDidPerformAction:(id)action;
 - (void)performPrecursorPassAction;
-- (void)presentAccountPromotionWithProgramIdentifier:(void *)a3 completion:;
-- (void)presentAccountWithConfiguration:(void *)a3 presentationContext:(char)a4 animated:(void *)a5 completion:;
-- (void)presentActionGroupsWithPaymentDataProvider:(void *)a3 balanceModel:(void *)a4 webService:;
-- (void)presentActionsWithPaymentDataProvider:(void *)a3 webService:(void *)a4 actionType:(void *)a5 transitBalanceModel:;
-- (void)presentActivityDeletionConfirmationAtIndexPath:(id)a3 completion:(id)a4;
+- (void)presentAccountPromotionWithProgramIdentifier:(void *)identifier completion:;
+- (void)presentAccountWithConfiguration:(void *)configuration presentationContext:(char)context animated:(void *)animated completion:;
+- (void)presentActionGroupsWithPaymentDataProvider:(void *)provider balanceModel:(void *)model webService:;
+- (void)presentActionsWithPaymentDataProvider:(void *)provider webService:(void *)service actionType:(void *)type transitBalanceModel:;
+- (void)presentActivityDeletionConfirmationAtIndexPath:(id)path completion:(id)completion;
 - (void)presentAddMoneyAppleBalance;
 - (void)presentAddMoneyAppleBalanceDirectTopUp;
 - (void)presentAddMoneyAppleBalanceInStoreTopUp;
-- (void)presentAuxiliaryPassInformationItemWithIdentifier:(void *)a3 informationIdentifier:(void *)a4 completion:;
-- (void)presentBalanceDetailsWithCompletion:(void *)a1;
+- (void)presentAuxiliaryPassInformationItemWithIdentifier:(void *)identifier informationIdentifier:(void *)informationIdentifier completion:;
+- (void)presentBalanceDetailsWithCompletion:(void *)completion;
 - (void)presentCardNumbers;
-- (void)presentCombinedActionsWithPaymentDataProvider:(void *)a3 webService:(void *)a4 balanceModel:(void *)a5 mode:;
-- (void)presentDailyCashForDateComponents:(uint64_t)a3 redemptionType:(void *)a4 completion:;
-- (void)presentEditCalendarEvent:(void *)a3 eventStore:;
-- (void)presentExistingCalendarEvent:(void *)a1 eventStore:(void *)a2;
-- (void)presentInstallmentPlan:(uint64_t)a1;
+- (void)presentCombinedActionsWithPaymentDataProvider:(void *)provider webService:(void *)service balanceModel:(void *)model mode:;
+- (void)presentDailyCashForDateComponents:(uint64_t)components redemptionType:(void *)type completion:;
+- (void)presentEditCalendarEvent:(void *)event eventStore:;
+- (void)presentExistingCalendarEvent:(void *)event eventStore:(void *)store;
+- (void)presentInstallmentPlan:(uint64_t)plan;
 - (void)presentInstallmentPlans;
-- (void)presentInvitationWithIdentifier:(void *)a3 completion:;
+- (void)presentInvitationWithIdentifier:(void *)identifier completion:;
 - (void)presentManageBarcodePassNotifications;
-- (void)presentManagePaymentPassNotificationsControllerWithDataProvider:(void *)a3 peerPaymentAccount:(void *)a4 bankConnectAccount:(void *)a5 account:;
-- (void)presentPassDetailsAnimated:(void *)a3 completion:;
-- (void)presentPeerPaymentActionViewControllerForAction:(void *)a3 passLibraryDataProvider:;
-- (void)presentPeerPaymentDeviceTapWithInitialAmount:(void *)a3 initialMemo:;
-- (void)presentPeerPaymentRecurringPaymentsWithIdentifier:(void *)a3 completion:;
+- (void)presentManagePaymentPassNotificationsControllerWithDataProvider:(void *)provider peerPaymentAccount:(void *)account bankConnectAccount:(void *)connectAccount account:;
+- (void)presentPassDetailsAnimated:(void *)animated completion:;
+- (void)presentPeerPaymentActionViewControllerForAction:(void *)action passLibraryDataProvider:;
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(void *)amount initialMemo:;
+- (void)presentPeerPaymentRecurringPaymentsWithIdentifier:(void *)identifier completion:;
 - (void)presentRedeemGiftcard;
-- (void)presentRestrictedGuestAccessScheduleWithHomeIdentifier:(void *)a1;
-- (void)presentRewardsHubMerchantsWithPrivateIdentifier:(void *)a3 completion:;
-- (void)presentRewardsHubWithCompletion:(void *)a1;
+- (void)presentRestrictedGuestAccessScheduleWithHomeIdentifier:(void *)identifier;
+- (void)presentRewardsHubMerchantsWithPrivateIdentifier:(void *)identifier completion:;
+- (void)presentRewardsHubWithCompletion:(void *)completion;
 - (void)presentScheduledPayments;
-- (void)presentSearchWithCompletion:(id *)a1;
-- (void)presentSearchWithQuery:(void *)a3 completion:;
+- (void)presentSearchWithCompletion:(id *)completion;
+- (void)presentSearchWithQuery:(void *)query completion:;
 - (void)presentShareFlow;
 - (void)presentSharesList;
-- (void)presentSpendingSummaryWithType:(void *)a3 categorization:(void *)a4 unit:(void *)a5 completion:;
-- (void)presentTransaction:(void *)a3 forAccount:;
-- (void)presentTransaction:(void *)a3 forPaymentPass:(void *)a4 presentingView:;
+- (void)presentSpendingSummaryWithType:(void *)type categorization:(void *)categorization unit:(void *)unit completion:;
+- (void)presentTransaction:(void *)transaction forAccount:;
+- (void)presentTransaction:(void *)transaction forPaymentPass:(void *)pass presentingView:;
 - (void)presentTransitCardNumber;
-- (void)reportEventForPassIfNecessary:(uint64_t)a1;
-- (void)secureElementDidEnterRestrictedMode:(id)a3;
-- (void)secureElementDidLeaveRestrictedMode:(id)a3;
-- (void)setDashboardPassGroupViewControllerDelegate:(id)a3;
-- (void)setFooterSuppressed:(BOOL)a3;
-- (void)showStatement:(void *)a3 completion:;
-- (void)terminateTransitionCoordinator:(id)a3;
-- (void)transitionCoordinator:(id)a3 didBeginTransition:(id)a4 dirty:(BOOL)a5 withState:(id)a6;
-- (void)transitionCoordinator:(id)a3 transition:(id)a4 didUpdateFromState:(id)a5 toState:(id)a6 interactive:(BOOL)a7;
-- (void)transitionCoordinator:(id)a3 transition:(id)a4 willUpdateFromState:(id)a5 interactive:(BOOL)a6;
-- (void)transitionCoordinator:(id)a3 transitionDidMoveNavigationItem:(id)a4;
-- (void)transitionCoordinator:(id)a3 transitionDidMoveView:(id)a4 withState:(id)a5;
-- (void)transitionCoordinator:(id)a3 transitionWillInterruptViewMove:(id)a4 withState:(id)a5;
-- (void)transitionCoordinator:(id)a3 transitionWillMoveNavigationItem:(id)a4;
-- (void)transitionCoordinator:(id)a3 transitionWillMoveView:(id)a4 withState:(id)a5;
-- (void)transitionCoordinator:(id)a3 willBeginTransition:(id)a4 dirty:(BOOL)a5;
-- (void)transitionCoordinatorDidEndTransition:(id)a3 wasDirty:(BOOL)a4;
-- (void)transitionCoordinatorDidInterruptTransition:(id)a3;
-- (void)transitionCoordinatorSenderDidTapView:(id)a3;
-- (void)transitionCoordinatorWillConnectReceiver:(id)a3 forRequest:(id)a4;
-- (void)transitionCoordinatorWillEndTransition:(id)a3 wasDirty:(BOOL)a4;
-- (void)transitionCoordinatorWillInterruptTransition:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)reportEventForPassIfNecessary:(uint64_t)necessary;
+- (void)secureElementDidEnterRestrictedMode:(id)mode;
+- (void)secureElementDidLeaveRestrictedMode:(id)mode;
+- (void)setDashboardPassGroupViewControllerDelegate:(id)delegate;
+- (void)setFooterSuppressed:(BOOL)suppressed;
+- (void)showStatement:(void *)statement completion:;
+- (void)terminateTransitionCoordinator:(id)coordinator;
+- (void)transitionCoordinator:(id)coordinator didBeginTransition:(id)transition dirty:(BOOL)dirty withState:(id)state;
+- (void)transitionCoordinator:(id)coordinator transition:(id)transition didUpdateFromState:(id)state toState:(id)toState interactive:(BOOL)interactive;
+- (void)transitionCoordinator:(id)coordinator transition:(id)transition willUpdateFromState:(id)state interactive:(BOOL)interactive;
+- (void)transitionCoordinator:(id)coordinator transitionDidMoveNavigationItem:(id)item;
+- (void)transitionCoordinator:(id)coordinator transitionDidMoveView:(id)view withState:(id)state;
+- (void)transitionCoordinator:(id)coordinator transitionWillInterruptViewMove:(id)move withState:(id)state;
+- (void)transitionCoordinator:(id)coordinator transitionWillMoveNavigationItem:(id)item;
+- (void)transitionCoordinator:(id)coordinator transitionWillMoveView:(id)view withState:(id)state;
+- (void)transitionCoordinator:(id)coordinator willBeginTransition:(id)transition dirty:(BOOL)dirty;
+- (void)transitionCoordinatorDidEndTransition:(id)transition wasDirty:(BOOL)dirty;
+- (void)transitionCoordinatorDidInterruptTransition:(id)transition;
+- (void)transitionCoordinatorSenderDidTapView:(id)view;
+- (void)transitionCoordinatorWillConnectReceiver:(id)receiver forRequest:(id)request;
+- (void)transitionCoordinatorWillEndTransition:(id)transition wasDirty:(BOOL)dirty;
+- (void)transitionCoordinatorWillInterruptTransition:(id)transition;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKDashboardPassGroupViewController
 
-- (PKDashboardPassGroupViewController)initWithDataSource:(id)a3 presenters:(id)a4 layout:(id)a5
+- (PKDashboardPassGroupViewController)initWithDataSource:(id)source presenters:(id)presenters layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
-  result = a5;
+  sourceCopy = source;
+  presentersCopy = presenters;
+  result = layout;
   __break(1u);
   return result;
 }
 
-- (uint64_t)_initWithPassGroupView:(void *)a3 groupsController:(void *)a4 sizeProvider:(void *)a5 context:(char)a6 coordinated:
+- (uint64_t)_initWithPassGroupView:(void *)view groupsController:(void *)controller sizeProvider:(void *)provider context:(char)context coordinated:
 {
   v142[4] = *MEMORY[0x1E69E9840];
   v12 = a2;
-  v13 = a3;
-  v132 = a4;
-  v130 = v13;
-  v131 = a5;
-  if (!a1)
+  viewCopy = view;
+  controllerCopy = controller;
+  v130 = viewCopy;
+  providerCopy = provider;
+  if (!self)
   {
     goto LABEL_17;
   }
@@ -198,15 +198,15 @@
     goto LABEL_42;
   }
 
-  v128 = a6;
-  if (!v13)
+  contextCopy = context;
+  if (!viewCopy)
   {
     goto LABEL_42;
   }
 
-  v14 = [v12 group];
-  v15 = [v14 passCount];
-  if (!v15)
+  group = [v12 group];
+  selfCopy = [group passCount];
+  if (!selfCopy)
   {
 
     goto LABEL_41;
@@ -216,43 +216,43 @@
   v17 = -1;
   do
   {
-    v18 = [v14 passAtIndex:v16];
+    v18 = [group passAtIndex:v16];
     v19 = v18;
     if (!v18)
     {
       goto LABEL_42;
     }
 
-    v20 = [v18 passType];
+    passType = [v18 passType];
     if (v17 == -1)
     {
-      v17 = v20;
+      v17 = passType;
     }
 
-    else if (v17 != v20)
+    else if (v17 != passType)
     {
 
 LABEL_17:
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_41;
     }
 
     ++v16;
   }
 
-  while (v15 != v16);
+  while (selfCopy != v16);
 
   if (v17 == -1)
   {
     goto LABEL_17;
   }
 
-  v125 = [[PKDashboardPassGroupItemPresenter alloc] initWithPassGroupView:v12 sizeProvider:v132];
+  v125 = [[PKDashboardPassGroupItemPresenter alloc] initWithPassGroupView:v12 sizeProvider:controllerCopy];
   v126 = objc_alloc_init(PKDashboardPassTilesItemPresenter);
   if (v17 == 1)
   {
-    v127 = [[PKDashboardPaymentPassDataSource alloc] initWithGroupView:v12 context:v131];
-    v119 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:0 detailViewStyle:0 avatarViewDelegate:a1];
+    v127 = [[PKDashboardPaymentPassDataSource alloc] initWithGroupView:v12 context:providerCopy];
+    v119 = [[PKDashboardPaymentTransactionItemPresenter alloc] initWithContext:0 detailViewStyle:0 avatarViewDelegate:self];
     v120 = objc_alloc_init(PKDashboardAccountModulePresenter);
     v141[0] = v125;
     obj = [[PKDashboardPassMessagePresenter alloc] initWithPassGroupView:v12];
@@ -261,12 +261,12 @@ LABEL_17:
     v117 = objc_alloc_init(PKDashboardAuxiliaryPassInformationPresenter);
     v141[3] = v117;
     v21 = [PKDashboardPaymentProductsTransitPresenter alloc];
-    v124 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-    v110 = [(PKDashboardPaymentProductsTransitPresenter *)v21 initWithPassGroupView:v12 paymentDataProvider:v124];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    v110 = [(PKDashboardPaymentProductsTransitPresenter *)v21 initWithPassGroupView:v12 paymentDataProvider:defaultDataProvider];
     v141[4] = v110;
     v111 = objc_alloc_init(PKTransactionGroupItemPresenter);
     v141[5] = v111;
-    v112 = [[PKCreditBalanceAndPaymentPresenter alloc] initWithViewController:a1];
+    v112 = [[PKCreditBalanceAndPaymentPresenter alloc] initWithViewController:self];
     v141[6] = v112;
     v114 = objc_alloc_init(PKDashboardTextActionItemPresenter);
     v141[7] = v114;
@@ -293,11 +293,11 @@ LABEL_19:
     if (!v127)
     {
       v127 = 0;
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_39;
     }
 
-    v15 = 0;
+    selfCopy = 0;
     if (v122 == 0 || !v121)
     {
       goto LABEL_39;
@@ -306,16 +306,16 @@ LABEL_19:
     obja = objc_alloc_init(PKDashboardPassFlowLayout);
     if (obja)
     {
-      v134.receiver = a1;
+      v134.receiver = self;
       v134.super_class = PKDashboardPassGroupViewController;
       v27 = objc_msgSendSuper2(&v134, sel_initWithDataSource_presenters_layout_, v127, v121);
       v28 = v27;
       if (!v27)
       {
 LABEL_36:
-        a1 = v28;
+        self = v28;
 
-        v15 = a1;
+        selfCopy = self;
 LABEL_39:
         v108 = v119;
         goto LABEL_40;
@@ -327,19 +327,19 @@ LABEL_39:
       v31 = *(v28 + 1544);
       *(v28 + 1544) = v30;
 
-      *(v28 + 1473) = v128;
+      *(v28 + 1473) = contextCopy;
       objc_storeStrong((v28 + 1832), obja);
-      v32 = [MEMORY[0x1E69B91E0] sharedSecureElement];
+      mEMORY[0x1E69B91E0] = [MEMORY[0x1E69B91E0] sharedSecureElement];
       v33 = *(v28 + 1232);
-      *(v28 + 1232) = v32;
+      *(v28 + 1232) = mEMORY[0x1E69B91E0];
 
-      objc_storeStrong((v28 + 1240), a3);
+      objc_storeStrong((v28 + 1240), view);
       objc_storeStrong((v28 + 1248), a2);
-      v34 = [*(v28 + 1248) group];
+      group2 = [*(v28 + 1248) group];
       v35 = *(v28 + 1816);
-      *(v28 + 1816) = v34;
+      *(v28 + 1816) = group2;
 
-      objc_storeStrong((v28 + 1256), a5);
+      objc_storeStrong((v28 + 1256), provider);
       objc_storeStrong((v28 + 1208), v127);
       if (v122)
       {
@@ -357,15 +357,15 @@ LABEL_39:
       *(v28 + 1459) = 1;
       objc_storeStrong((v28 + 1840), v119);
       objc_storeStrong((v28 + 1728), v120);
-      v38 = [MEMORY[0x1E69B8400] sharedInstance];
+      mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
       v39 = *(v28 + 1704);
-      *(v28 + 1704) = v38;
+      *(v28 + 1704) = mEMORY[0x1E69B8400];
 
       v129 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [v129 addObject:objc_opt_class()];
       [v129 addObject:objc_opt_class()];
-      v40 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-      [v129 addObjectsFromArray:v40];
+      systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+      [v129 addObjectsFromArray:systemTraitsAffectingColorAppearance];
 
       [v129 addObject:objc_opt_class()];
       v41 = [v28 registerForTraitChanges:v129 withHandler:&__block_literal_global_238];
@@ -393,9 +393,9 @@ LABEL_39:
         [v28 setUseChromelessNavigationItem:1];
       }
 
-      v44 = [v12 frontmostPassView];
-      v45 = [v44 pass];
-      [(PKDashboardPassGroupViewController *)v28 _setFrontmostPass:v45];
+      frontmostPassView = [v12 frontmostPassView];
+      pass = [frontmostPassView pass];
+      [(PKDashboardPassGroupViewController *)v28 _setFrontmostPass:pass];
 
       if (*(v28 + 1448) != 1)
       {
@@ -425,7 +425,7 @@ LABEL_39:
           v55 = *(v28 + 1320);
           *(v28 + 1320) = v52;
 
-          v56 = [(PKDashboardPassGroupViewController *)v28 _leadingItemGroups];
+          _leadingItemGroups = [(PKDashboardPassGroupViewController *)v28 _leadingItemGroups];
           objc_destroyWeak(&v139);
           objc_destroyWeak(&location);
 
@@ -517,7 +517,7 @@ LABEL_39:
             v106 = *(v28 + 1416);
             *(v28 + 1416) = v105;
 
-            v107 = [(PKDashboardPassGroupViewController *)v28 _trailingItemGroups];
+            _trailingItemGroups = [(PKDashboardPassGroupViewController *)v28 _trailingItemGroups];
             objc_destroyWeak(&v139);
             objc_destroyWeak(&location);
 
@@ -534,7 +534,7 @@ LABEL_42:
 
   if (!v17)
   {
-    v127 = [[PKDashboardBarcodePassDataSource alloc] initWithGroupView:v12 context:v131];
+    v127 = [[PKDashboardBarcodePassDataSource alloc] initWithGroupView:v12 context:providerCopy];
     v142[0] = v125;
     obj = [[PKDashboardPassMessagePresenter alloc] initWithPassGroupView:v12];
     v142[1] = obj;
@@ -553,11 +553,11 @@ LABEL_42:
   v121 = 0;
   v122 = 0uLL;
   v127 = 0;
-  v15 = 0;
+  selfCopy = 0;
 LABEL_40:
 
 LABEL_41:
-  return v15;
+  return selfCopy;
 }
 
 void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsController_sizeProvider_context_coordinated___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -599,42 +599,42 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
 
 - (void)_updateDefaultPasscodeButtonSize
 {
-  if (a1)
+  if (self)
   {
-    v11 = [a1 view];
-    [v11 safeAreaInsets];
+    view = [self view];
+    [view safeAreaInsets];
     v3 = v2;
     v5 = v4;
-    v6 = a1 + 210;
-    v7 = a1[212];
-    [v11 bounds];
+    v6 = self + 210;
+    v7 = self[212];
+    [view bounds];
     [v7 sizeThatFits:{v8 - v3 - v5, 1.79769313e308}];
     *v6 = v9;
     v6[1] = v10;
   }
 }
 
-- (void)_setFrontmostPass:(uint64_t)a1
+- (void)_setFrontmostPass:(uint64_t)pass
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (pass)
   {
-    v5 = atomic_load((a1 + 1552));
-    if ((v5 & 1) != 0 || !*(a1 + 1248))
+    v5 = atomic_load((pass + 1552));
+    if ((v5 & 1) != 0 || !*(pass + 1248))
     {
 
       v4 = 0;
     }
 
-    if (*(a1 + 1264) != v4)
+    if (*(pass + 1264) != v4)
     {
       v16 = v4;
-      objc_storeStrong((a1 + 1264), v4);
-      v6 = *(a1 + 1264);
+      objc_storeStrong((pass + 1264), v4);
+      v6 = *(pass + 1264);
       if (v6 && [v6 passType] == 1)
       {
-        v7 = *(a1 + 1264);
+        v7 = *(pass + 1264);
       }
 
       else
@@ -642,26 +642,26 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
         v7 = 0;
       }
 
-      objc_storeStrong((a1 + 1272), v7);
-      [(PKDashboardPassGroupViewController *)a1 _updateFingerDetection];
-      [(PKDashboardPassGroupViewController *)a1 _updateFooterAnimated:?];
-      [(PKDashboardPassGroupViewController *)a1 _endReportingSessionForPassIfNecessary];
-      [(PKDashboardPassGroupViewController *)a1 _startReportingSessionForPassIfNecessary];
-      if (*(a1 + 1264))
+      objc_storeStrong((pass + 1272), v7);
+      [(PKDashboardPassGroupViewController *)pass _updateFingerDetection];
+      [(PKDashboardPassGroupViewController *)pass _updateFooterAnimated:?];
+      [(PKDashboardPassGroupViewController *)pass _endReportingSessionForPassIfNecessary];
+      [(PKDashboardPassGroupViewController *)pass _startReportingSessionForPassIfNecessary];
+      if (*(pass + 1264))
       {
-        [*(a1 + 1712) setPass:?];
+        [*(pass + 1712) setPass:?];
       }
 
-      if (*(a1 + 1448) == 1)
+      if (*(pass + 1448) == 1)
       {
-        [(PKDashboardPassGroupViewController *)a1 _reloadNavigationItemsAnimated:?];
+        [(PKDashboardPassGroupViewController *)pass _reloadNavigationItemsAnimated:?];
       }
 
-      v8 = atomic_load((a1 + 1552));
-      if ((v8 & 1) == 0 && *(a1 + 1264) && [a1 isViewLoaded])
+      v8 = atomic_load((pass + 1552));
+      if ((v8 & 1) == 0 && *(pass + 1264) && [pass isViewLoaded])
       {
-        objc_initWeak(&location, a1);
-        v9 = *(a1 + 1208);
+        objc_initWeak(&location, pass);
+        v9 = *(pass + 1208);
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __79__PKDashboardPassGroupViewController__afterDataSourceContentLoadedUpdateFooter__block_invoke;
@@ -674,19 +674,19 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
 
       if (v16)
       {
-        if (!*(a1 + 1736) && ![*(a1 + 1264) passType])
+        if (!*(pass + 1736) && ![*(pass + 1264) passType])
         {
           v10 = objc_alloc_init(PKBarcodePassBoopProvider);
-          v11 = *(a1 + 1736);
-          *(a1 + 1736) = v10;
+          v11 = *(pass + 1736);
+          *(pass + 1736) = v10;
         }
 
-        v12 = [*(a1 + 1208) groupView];
-        v13 = [v12 frontmostPassView];
+        groupView = [*(pass + 1208) groupView];
+        frontmostPassView = [groupView frontmostPassView];
 
-        v14 = *(a1 + 1736);
-        v15 = [v13 pass];
-        [v14 setPass:v15 passView:v13];
+        v14 = *(pass + 1736);
+        pass = [frontmostPassView pass];
+        [v14 setPass:pass passView:frontmostPassView];
 
         v4 = v16;
       }
@@ -699,31 +699,31 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
   }
 }
 
-- (PKDashboardPassGroupViewController)initWithPass:(id)a3
+- (PKDashboardPassGroupViewController)initWithPass:(id)pass
 {
-  result = a3;
+  result = pass;
   if (result)
   {
     v5 = result;
     v6 = objc_alloc(MEMORY[0x1E69B88E0]);
-    v7 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v8 = [v6 initWithPassLibrary:v7];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v8 = [v6 initWithPassLibrary:mEMORY[0x1E69B8A58]];
 
     if (v8)
     {
       [v8 loadGroupsSynchronously];
-      v9 = [(PKDashboardPassGroupViewController *)v5 uniqueID];
-      self = [(PKDashboardPassGroupViewController *)self initWithPassUniqueID:v9 groupsController:v8];
+      uniqueID = [(PKDashboardPassGroupViewController *)v5 uniqueID];
+      self = [(PKDashboardPassGroupViewController *)self initWithPassUniqueID:uniqueID groupsController:v8];
 
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
 
-    return v10;
+    return selfCopy;
   }
 
   else
@@ -734,20 +734,20 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
   return result;
 }
 
-- (PKDashboardPassGroupViewController)initWithPassUniqueID:(id)a3 groupsController:(id)a4
+- (PKDashboardPassGroupViewController)initWithPassUniqueID:(id)d groupsController:(id)controller
 {
-  v6 = a3;
-  result = a4;
-  if (v6 && (v8 = result) != 0)
+  dCopy = d;
+  result = controller;
+  if (dCopy && (v8 = result) != 0)
   {
-    v9 = [(PKDashboardPassGroupViewController *)result groupAtIndex:[(PKDashboardPassGroupViewController *)result groupIndexForPassUniqueID:v6]];
+    v9 = [(PKDashboardPassGroupViewController *)result groupAtIndex:[(PKDashboardPassGroupViewController *)result groupIndexForPassUniqueID:dCopy]];
     if (v9)
     {
       v10 = [[PKPassGroupView alloc] initWithGroup:v9 delegate:0 presentationState:3];
       v11 = v10;
       if (v10)
       {
-        [(PKPassGroupView *)v10 presentPassWithUniqueID:v6];
+        [(PKPassGroupView *)v10 presentPassWithUniqueID:dCopy];
         if (self)
         {
           v12 = [(PKDashboardPassGroupViewController *)self _initWithPassGroupView:v11 groupsController:v8 sizeProvider:0 context:0 coordinated:0];
@@ -759,21 +759,21 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
         }
 
         self = self;
-        v13 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
 
-    return v13;
+    return selfCopy;
   }
 
   else
@@ -784,24 +784,24 @@ void __111__PKDashboardPassGroupViewController__initWithPassGroupView_groupsCont
   return result;
 }
 
-- (id)_initWithPassGroupView:(void *)a3 groupsController:(void *)a4 sizeProvider:(void *)a5 context:
+- (id)_initWithPassGroupView:(void *)view groupsController:(void *)controller sizeProvider:(void *)provider context:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  result = a5;
+  viewCopy = view;
+  controllerCopy = controller;
+  result = provider;
   v13 = result;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_6;
   }
 
-  if (v9 && v10 && v11)
+  if (v9 && viewCopy && controllerCopy)
   {
-    a1 = [(PKDashboardPassGroupViewController *)a1 _initWithPassGroupView:v9 groupsController:v10 sizeProvider:v11 context:result coordinated:1];
+    self = [(PKDashboardPassGroupViewController *)self _initWithPassGroupView:v9 groupsController:viewCopy sizeProvider:controllerCopy context:result coordinated:1];
 LABEL_6:
 
-    return a1;
+    return self;
   }
 
   __break(1u);
@@ -920,34 +920,34 @@ LABEL_6:
 - (void)_relinquishGroupView
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1248);
+    v2 = *(self + 1248);
     if (v2)
     {
       v3 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         v5 = 134218240;
-        v6 = a1;
+        selfCopy = self;
         v7 = 2048;
         v8 = v2;
         _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): relinquishing group view %p.", &v5, 0x16u);
       }
 
-      v4 = *(a1 + 1248);
-      *(a1 + 1248) = 0;
+      v4 = *(self + 1248);
+      *(self + 1248) = 0;
 
-      *(a1 + 1458) = 0;
-      [(PKDashboardPassGroupViewController *)a1 _setFrontmostPass:?];
-      if (*(a1 + 1457) == 1)
+      *(self + 1458) = 0;
+      [(PKDashboardPassGroupViewController *)self _setFrontmostPass:?];
+      if (*(self + 1457) == 1)
       {
-        *(a1 + 1457) = 0;
-        [v2 removePassGroupViewObserver:a1];
+        *(self + 1457) = 0;
+        [v2 removePassGroupViewObserver:self];
         [v2 clearShadowAlphaOverride];
       }
 
-      [(PKDashboardPassGroupViewController *)a1 _updatePassFooterViewWithReload:0 postTransaction:?];
+      [(PKDashboardPassGroupViewController *)self _updatePassFooterViewWithReload:0 postTransaction:?];
     }
   }
 }
@@ -963,8 +963,8 @@ LABEL_6:
   v17.receiver = self;
   v17.super_class = PKDashboardPassGroupViewController;
   [(PKDashboardViewController *)&v17 loadView];
-  v3 = [(PKDashboardPassGroupViewController *)self view];
-  v4 = [(PKDashboardPassGroupViewController *)self collectionView];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
   v5 = [PKAnimatedNavigationBarTitleView alloc];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
@@ -976,19 +976,19 @@ LABEL_6:
 
   [(PKAnimatedNavigationBarTitleView *)self->_titleView setMaxWidth:50.0];
   v12 = +[PKDashboardPassGroupViewController backgroundColor];
-  [v3 setBackgroundColor:v12];
+  [view setBackgroundColor:v12];
 
   v13 = [[PKPassthroughView alloc] initWithFrame:v6, v7, v8, v9];
   passthroughView = self->_passthroughView;
   self->_passthroughView = v13;
 
-  [v3 insertSubview:self->_passthroughView aboveSubview:v4];
+  [view insertSubview:self->_passthroughView aboveSubview:collectionView];
   v15 = [[PKPassthroughView alloc] initWithFrame:v6, v7, v8, v9];
   portalledPassthroughView = self->_portalledPassthroughView;
   self->_portalledPassthroughView = v15;
 
   [(PKPassthroughView *)self->_passthroughView setPortal:self->_portalledPassthroughView];
-  [v3 insertSubview:self->_portalledPassthroughView belowSubview:v4];
+  [view insertSubview:self->_portalledPassthroughView belowSubview:collectionView];
   if (self->_passFooterView)
   {
     [(PKPassthroughView *)self->_portalledPassthroughView addSubview:?];
@@ -1019,33 +1019,33 @@ void __46__PKDashboardPassGroupViewController_loadView__block_invoke(uint64_t a1
   *(*(a1 + 32) + 1572) = v2;
 }
 
-- (void)_performActivationStateUpdate:(uint64_t)a1
+- (void)_performActivationStateUpdate:(uint64_t)update
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!update)
   {
     goto LABEL_20;
   }
 
-  isForeground = [(PKDashboardPassGroupViewController *)a1 _isForegroundActive];
-  isForegroundActiveFor = [(PKDashboardPassGroupViewController *)a1 _isForegroundActiveForAnalytics];
+  isForeground = [(PKDashboardPassGroupViewController *)update _isForegroundActive];
+  isForegroundActiveFor = [(PKDashboardPassGroupViewController *)update _isForegroundActiveForAnalytics];
   v3[2](v3);
-  v6 = [(PKDashboardPassGroupViewController *)a1 _isForegroundActive];
-  v7 = [(PKDashboardPassGroupViewController *)a1 _isForegroundActiveForAnalytics];
-  v8 = [a1 isViewLoaded];
-  if (isForeground != v6)
+  _isForegroundActive = [(PKDashboardPassGroupViewController *)update _isForegroundActive];
+  _isForegroundActiveForAnalytics = [(PKDashboardPassGroupViewController *)update _isForegroundActiveForAnalytics];
+  isViewLoaded = [update isViewLoaded];
+  if (isForeground != _isForegroundActive)
   {
-    v9 = v8;
-    if (v6)
+    v9 = isViewLoaded;
+    if (_isForegroundActive)
     {
-      if (v8)
+      if (isViewLoaded)
       {
-        [(PKDashboardPassGroupViewController *)a1 _ensureCardPresenceIfNecessary];
+        [(PKDashboardPassGroupViewController *)update _ensureCardPresenceIfNecessary];
       }
 
-      v10 = [a1 navigationController];
-      v11 = [v10 topViewController];
+      navigationController = [update navigationController];
+      topViewController = [navigationController topViewController];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1054,86 +1054,86 @@ void __46__PKDashboardPassGroupViewController_loadView__block_invoke(uint64_t a1
         v16 = *MEMORY[0x1E69BA680];
         v17[0] = *MEMORY[0x1E69BA818];
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-        [(PKDashboardPassGroupViewController *)a1 reportEventForPassIfNecessary:v13];
+        [(PKDashboardPassGroupViewController *)update reportEventForPassIfNecessary:v13];
       }
 
 LABEL_11:
-      [(PKDashboardPassGroupViewController *)a1 _updateFingerDetection];
-      if (!(isForeground & 1 | ((v9 & 1) == 0)) && ((v6 ^ 1) & 1) == 0 && *(a1 + 1576) - 1 <= 1)
+      [(PKDashboardPassGroupViewController *)update _updateFingerDetection];
+      if (!(isForeground & 1 | ((v9 & 1) == 0)) && ((_isForegroundActive ^ 1) & 1) == 0 && *(update + 1576) - 1 <= 1)
       {
         [MEMORY[0x1E69BC740] currentStateForPolicy:0];
-        [(PKDashboardPassGroupViewController *)a1 _updateFooterAnimated:?];
+        [(PKDashboardPassGroupViewController *)update _updateFooterAnimated:?];
       }
 
       goto LABEL_16;
     }
 
-    if (v8)
+    if (isViewLoaded)
     {
-      v14 = [*(a1 + 1264) nfcPayload];
-      v15 = [v14 requiresAuthentication];
+      nfcPayload = [*(update + 1264) nfcPayload];
+      requiresAuthentication = [nfcPayload requiresAuthentication];
 
-      if (v15)
+      if (requiresAuthentication)
       {
-        [a1 shouldPresentAllContent:0 animated:0];
+        [update shouldPresentAllContent:0 animated:0];
       }
 
       goto LABEL_11;
     }
 
-    [(PKDashboardPassGroupViewController *)a1 _updateFingerDetection];
+    [(PKDashboardPassGroupViewController *)update _updateFingerDetection];
   }
 
 LABEL_16:
-  if (isForegroundActiveFor != v7)
+  if (isForegroundActiveFor != _isForegroundActiveForAnalytics)
   {
-    if (v7)
+    if (_isForegroundActiveForAnalytics)
     {
-      [(PKDashboardPassGroupViewController *)a1 _startReportingSessionForPassIfNecessary];
+      [(PKDashboardPassGroupViewController *)update _startReportingSessionForPassIfNecessary];
     }
 
     else
     {
-      [(PKDashboardPassGroupViewController *)a1 _endReportingSessionForPassIfNecessary];
+      [(PKDashboardPassGroupViewController *)update _endReportingSessionForPassIfNecessary];
     }
   }
 
 LABEL_20:
 }
 
-- (void)_updateFooterAnimated:(uint64_t)a1
+- (void)_updateFooterAnimated:(uint64_t)animated
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (animated)
   {
-    v4 = [a1 viewIfLoaded];
-    if (!v4)
+    viewIfLoaded = [animated viewIfLoaded];
+    if (!viewIfLoaded)
     {
 LABEL_35:
 
       return;
     }
 
-    v5 = [*(a1 + 1272) supportedRadioTechnologies];
-    v6 = atomic_load((a1 + 1552));
+    supportedRadioTechnologies = [*(animated + 1272) supportedRadioTechnologies];
+    v6 = atomic_load((animated + 1552));
     if (v6)
     {
       goto LABEL_27;
     }
 
-    v7 = !*(a1 + 1272) || v5 == 2;
-    if (v7 || *(a1 + 1576) - 1 > 1)
+    v7 = !*(animated + 1272) || supportedRadioTechnologies == 2;
+    if (v7 || *(animated + 1576) - 1 > 1)
     {
       goto LABEL_27;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 1824));
+    WeakRetained = objc_loadWeakRetained((animated + 1824));
     if (!WeakRetained || (objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_17;
     }
 
-    v9 = [WeakRetained dashboardPassGroupViewController:a1 canRequestPaymentForPass:*(a1 + 1272)];
+    v9 = [WeakRetained dashboardPassGroupViewController:animated canRequestPaymentForPass:*(animated + 1272)];
 
     if (!v9)
     {
@@ -1142,8 +1142,8 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    WeakRetained = [*(a1 + 1272) devicePrimaryContactlessPaymentApplication];
-    [*(a1 + 1272) effectiveContactlessPaymentApplicationState];
+    WeakRetained = [*(animated + 1272) devicePrimaryContactlessPaymentApplication];
+    [*(animated + 1272) effectiveContactlessPaymentApplicationState];
     if (PKPaymentApplicationStateIsPersonalized())
     {
       if (WeakRetained && ([WeakRetained requiresConsentForDataRelease] & 1) == 0)
@@ -1152,15 +1152,15 @@ LABEL_27:
 
       else
       {
-        v10 = [*(a1 + 1272) supportsBarcodePayment];
+        supportsBarcodePayment = [*(animated + 1272) supportsBarcodePayment];
 
-        if (!v10)
+        if (!supportsBarcodePayment)
         {
           goto LABEL_27;
         }
       }
 
-      if (*(a1 + 1272) && (v12 = [MEMORY[0x1E69B8750] _copyDevicePrimaryContactlessAccessControlForSecureElementPass:?]) != 0)
+      if (*(animated + 1272) && (v12 = [MEMORY[0x1E69B8750] _copyDevicePrimaryContactlessAccessControlForSecureElementPass:?]) != 0)
       {
         v13 = v12;
         v14 = [MEMORY[0x1E69BC740] currentStateForAccessControl:v12];
@@ -1177,58 +1177,58 @@ LABEL_27:
         goto LABEL_27;
       }
 
-      if ([*(a1 + 1272) hasAssociatedPeerPaymentAccount])
+      if ([*(animated + 1272) hasAssociatedPeerPaymentAccount])
       {
-        v15 = [MEMORY[0x1E69B9000] sharedInstance];
-        v16 = [v15 account];
+        mEMORY[0x1E69B9000] = [MEMORY[0x1E69B9000] sharedInstance];
+        account = [mEMORY[0x1E69B9000] account];
 
-        v17 = [v16 state];
-        if (v17 == 3)
+        state = [account state];
+        if (state == 3)
         {
           goto LABEL_27;
         }
       }
 
-      if (![*(a1 + 1272) isAppleCardPass] || (v27 = *(a1 + 1224)) == 0)
+      if (![*(animated + 1272) isAppleCardPass] || (v27 = *(animated + 1224)) == 0)
       {
         v11 = 1;
 LABEL_28:
-        if (*(a1 + 1577) == v11)
+        if (*(animated + 1577) == v11)
         {
-          v18 = *(a1 + 1696);
+          v18 = *(animated + 1696);
           if (v18)
           {
-            v19 = [(PKDashboardPassGroupViewController *)a1 _passcodeButtonTitle];
-            [v18 pkui_updateConfigurationWithTitle:v19];
+            _passcodeButtonTitle = [(PKDashboardPassGroupViewController *)animated _passcodeButtonTitle];
+            [v18 pkui_updateConfigurationWithTitle:_passcodeButtonTitle];
 
-            [(PKDashboardPassGroupViewController *)a1 _updateDefaultPasscodeButtonSize];
-            v20 = [a1 viewIfLoaded];
-            [v20 setNeedsLayout];
+            [(PKDashboardPassGroupViewController *)animated _updateDefaultPasscodeButtonSize];
+            viewIfLoaded2 = [animated viewIfLoaded];
+            [viewIfLoaded2 setNeedsLayout];
           }
         }
 
         else
         {
-          *(a1 + 1577) = v11;
+          *(animated + 1577) = v11;
           if (v11)
           {
             v21 = objc_alloc(MEMORY[0x1E69DC708]);
-            v22 = [(PKDashboardPassGroupViewController *)a1 _passcodeButtonTitle];
-            v23 = [v21 initWithTitle:v22 style:0 target:a1 action:sel__passcodeTapped];
+            _passcodeButtonTitle2 = [(PKDashboardPassGroupViewController *)animated _passcodeButtonTitle];
+            v23 = [v21 initWithTitle:_passcodeButtonTitle2 style:0 target:animated action:sel__passcodeTapped];
 
             v30[0] = v23;
             v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-            v25 = *(a1 + 1440);
-            *(a1 + 1440) = v24;
+            v25 = *(animated + 1440);
+            *(animated + 1440) = v24;
           }
 
           else
           {
-            v26 = *(a1 + 1440);
-            *(a1 + 1440) = 0;
+            v26 = *(animated + 1440);
+            *(animated + 1440) = 0;
           }
 
-          [(PKDashboardPassGroupViewController *)a1 _updateNavigationItemAnimated:a2];
+          [(PKDashboardPassGroupViewController *)animated _updateNavigationItemAnimated:a2];
         }
 
         goto LABEL_35;
@@ -1263,8 +1263,8 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = PKDashboardPassGroupViewController;
   [(PKDashboardPassGroupViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(PKDashboardPassGroupViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewWillLayoutSubviews
@@ -1272,10 +1272,10 @@ LABEL_17:
   v46.receiver = self;
   v46.super_class = PKDashboardPassGroupViewController;
   [(PKDashboardPassGroupViewController *)&v46 viewWillLayoutSubviews];
-  v3 = [(PKDashboardPassGroupViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
-  [v3 bounds];
+  [view bounds];
   x = v6;
   v9 = v8;
   v11 = v10;
@@ -1346,11 +1346,11 @@ LABEL_17:
     v14 = v42;
   }
 
-  v32 = [(PKDashboardPassGroupViewController *)self collectionView];
-  [v32 contentInset];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+  [collectionView contentInset];
   if (v15 != v36 || v14 != v33 || v43 != v35 || v16 != v34)
   {
-    [v32 setContentInset:{v14, v15, v16, v43}];
+    [collectionView setContentInset:{v14, v15, v16, v43}];
   }
 }
 
@@ -1359,14 +1359,14 @@ LABEL_17:
   v18.receiver = self;
   v18.super_class = PKDashboardPassGroupViewController;
   [(PKDashboardPassGroupViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(PKDashboardPassGroupViewController *)self collectionView];
-  [v3 safeAreaInsets];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+  [collectionView safeAreaInsets];
   v5 = v4;
   v7 = v6;
-  v8 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-  v9 = [(PKPassGroupView *)self->_passGroupView superview];
-  [v8 frameOfVisibleFace];
-  [v9 convertRect:v8 fromView:?];
+  frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+  superview = [(PKPassGroupView *)self->_passGroupView superview];
+  [frontmostPassView frameOfVisibleFace];
+  [superview convertRect:frontmostPassView fromView:?];
 
   PKSizeRoundToPixel();
   v11 = v10;
@@ -1377,12 +1377,12 @@ LABEL_17:
   +[PKDashboardPassFlowLayout topMarginInFirstSection];
   CGRectDivide(v16, &slice, &v16, v11 + v12, CGRectMinYEdge);
   CGRectDivide(v16, &v16, &slice, v7, CGRectMaxYEdge);
-  v13 = [(PKPassFooterView *)self->_passFooterView configuration];
-  v14 = [v13 pass];
+  configuration = [(PKPassFooterView *)self->_passFooterView configuration];
+  pass = [configuration pass];
 
-  if (v14)
+  if (pass)
   {
-    [v14 style];
+    [pass style];
   }
 
   PKPassFrontFaceContentSize();
@@ -1391,11 +1391,11 @@ LABEL_17:
   [(PKPassFooterView *)passFooterView setFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PKDashboardPassGroupViewController;
-  [(PKDashboardPassGroupViewController *)&v8 viewWillAppear:a3];
+  [(PKDashboardPassGroupViewController *)&v8 viewWillAppear:appear];
   self->_visibility = 1;
   [MEMORY[0x1E69BC740] currentStateForPolicy:0];
   [(PKDashboardPassGroupViewController *)self _visibilityDidChange];
@@ -1403,8 +1403,8 @@ LABEL_17:
   if (([(PKDashboardPassGroupViewController *)self isMovingToParentViewController]& 1) == 0)
   {
     passGroupView = self->_passGroupView;
-    v5 = [(PKPass *)self->_frontmostPass uniqueID];
-    [(PKPassGroupView *)passGroupView presentPassWithUniqueID:v5 withContext:0 animated:0];
+    uniqueID = [(PKPass *)self->_frontmostPass uniqueID];
+    [(PKPassGroupView *)passGroupView presentPassWithUniqueID:uniqueID withContext:0 animated:0];
   }
 
   if ([(PKPaymentPass *)self->_frontmostPaymentPass isIdentityPass])
@@ -1442,21 +1442,21 @@ LABEL_17:
     [(PKDashboardPassGroupViewController *)v1 _updateFooterAnimated:?];
     if (*(v1 + 1576) == 2)
     {
-      v2 = [v1 dataSource];
-      v3 = [v2 groupView];
-      v4 = [v3 frontmostPassView];
-      v5 = [v4 pass];
+      dataSource = [v1 dataSource];
+      groupView = [dataSource groupView];
+      frontmostPassView = [groupView frontmostPassView];
+      pass = [frontmostPassView pass];
 
-      if ([v5 passType] == 1)
+      if ([pass passType] == 1)
       {
-        v6 = v2;
+        v6 = dataSource;
         objc_initWeak(&location, v1);
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__block_invoke;
         v9[3] = &unk_1E80110E0;
         objc_copyWeak(&v11, &location);
-        v10 = v5;
+        v10 = pass;
         [v6 executeAfterContentIsLoaded:v9];
 
         objc_destroyWeak(&v11);
@@ -1479,22 +1479,22 @@ LABEL_17:
 
 - (void)_ensureCardPresenceIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = atomic_load((a1 + 1552));
-    if ((v2 & 1) == 0 && *(a1 + 1569) == 1 && *(a1 + 1576) - 1 <= 1 && (*(a1 + 1458) & 1) == 0 && *(a1 + 1248))
+    v2 = atomic_load((self + 1552));
+    if ((v2 & 1) == 0 && *(self + 1569) == 1 && *(self + 1576) - 1 <= 1 && (*(self + 1458) & 1) == 0 && *(self + 1248))
     {
-      v3 = *(a1 + 1480);
+      v3 = *(self + 1480);
       v4 = v3;
-      if (!v3 || !*(v3 + 1) && (*(v3 + 16) & 1) == 0 && (*(a1 + 1496) & 1) == 0)
+      if (!v3 || !*(v3 + 1) && (*(v3 + 16) & 1) == 0 && (*(self + 1496) & 1) == 0)
       {
-        v5 = [a1 collectionView];
+        collectionView = [self collectionView];
         v6[0] = MEMORY[0x1E69E9820];
         v6[1] = 3221225472;
         v6[2] = __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary__block_invoke_2;
         v6[3] = &unk_1E8011D28;
-        v6[4] = a1;
-        [v5 performBatchUpdates:&__block_literal_global_138 completion:v6];
+        v6[4] = self;
+        [collectionView performBatchUpdates:&__block_literal_global_138 completion:v6];
       }
     }
   }
@@ -1502,24 +1502,24 @@ LABEL_17:
 
 - (void)_endReportingSessionForPassIfNecessary
 {
-  if (a1 && *(a1 + 1280))
+  if (self && *(self + 1280))
   {
     [MEMORY[0x1E69B8540] endSubjectReporting:?];
-    v2 = *(a1 + 1280);
-    *(a1 + 1280) = 0;
+    v2 = *(self + 1280);
+    *(self + 1280) = 0;
   }
 }
 
 - (void)_startReportingSessionForPassIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 1280))
+    if (!*(self + 1280))
     {
-      v2 = atomic_load((a1 + 1552));
-      if ((v2 & 1) == 0 && [(PKDashboardPassGroupViewController *)a1 _isForegroundActiveForAnalytics])
+      v2 = atomic_load((self + 1552));
+      if ((v2 & 1) == 0 && [(PKDashboardPassGroupViewController *)self _isForegroundActiveForAnalytics])
       {
-        if (*(a1 + 1264))
+        if (*(self + 1264))
         {
           v3 = [MEMORY[0x1E69B8540] subjectToReportDashboardAnalyticsForPass:?];
           if (v3)
@@ -1530,7 +1530,7 @@ LABEL_17:
             if (!v4)
             {
               [MEMORY[0x1E69B8540] beginSubjectReporting:obj];
-              objc_storeStrong((a1 + 1280), obj);
+              objc_storeStrong((self + 1280), obj);
             }
 
             v3 = obj;
@@ -1546,36 +1546,36 @@ LABEL_17:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PKDashboardPassGroupViewController;
-  [(PKDashboardPassGroupViewController *)&v9 viewDidAppear:a3];
+  [(PKDashboardPassGroupViewController *)&v9 viewDidAppear:appear];
   self->_visibility = 2;
   [(PKDashboardPassGroupViewController *)self _visibilityDidChange];
-  v4 = [(PKDashboardPassGroupViewController *)self collectionView];
-  [v4 flashScrollIndicators];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+  [collectionView flashScrollIndicators];
 
   v10 = *MEMORY[0x1E69BA680];
   v11[0] = *MEMORY[0x1E69BA818];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   [(PKDashboardPassGroupViewController *)self reportEventForPassIfNecessary:v5];
 
-  v6 = [(PKDashboardPassGroupViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  [v8 setActivityItemsConfigurationSource:self->_shareablePassProvider];
+  [windowScene setActivityItemsConfigurationSource:self->_shareablePassProvider];
 }
 
-- (void)reportEventForPassIfNecessary:(uint64_t)a1
+- (void)reportEventForPassIfNecessary:(uint64_t)necessary
 {
   v3 = a2;
-  if (a1 && v3)
+  if (necessary && v3)
   {
     v24 = v3;
-    v4 = *(a1 + 1264);
+    v4 = *(necessary + 1264);
     if (!v4)
     {
 LABEL_53:
@@ -1592,8 +1592,8 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v6 = [v4 passType];
-    if (v6 == 1)
+    passType = [v4 passType];
+    if (passType == 1)
     {
       v7 = v4;
     }
@@ -1606,7 +1606,7 @@ LABEL_52:
     v8 = v7;
     v9 = [v24 mutableCopy];
     [v9 setObject:*MEMORY[0x1E69BAC10] forKeyedSubscript:*MEMORY[0x1E69BABE8]];
-    if (v6 != 1)
+    if (passType != 1)
     {
       [MEMORY[0x1E69B8540] subject:v5 sendEvent:v9];
 LABEL_51:
@@ -1615,14 +1615,14 @@ LABEL_51:
     }
 
     [v9 setObject:*MEMORY[0x1E69BAD88] forKeyedSubscript:*MEMORY[0x1E69BAC90]];
-    v10 = [v4 organizationName];
-    [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69BAC80]];
+    organizationName = [v4 organizationName];
+    [v9 setObject:organizationName forKeyedSubscript:*MEMORY[0x1E69BAC80]];
 
-    v11 = [v4 devicePrimaryPaymentApplication];
-    v12 = v11;
-    if (v11)
+    devicePrimaryPaymentApplication = [v4 devicePrimaryPaymentApplication];
+    v12 = devicePrimaryPaymentApplication;
+    if (devicePrimaryPaymentApplication)
     {
-      [v11 paymentNetworkIdentifier];
+      [devicePrimaryPaymentApplication paymentNetworkIdentifier];
       v13 = PKPaymentNetworkNameForPaymentCredentialType();
       [v9 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69BAD48]];
     }
@@ -1637,25 +1637,25 @@ LABEL_51:
 LABEL_50:
 
       [MEMORY[0x1E69B8540] subject:v5 sendEvent:v9];
-      v23 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       PKSetLastViewedFrontOfCardDate();
 
       goto LABEL_51;
     }
 
-    v14 = [v4 secureElementPass];
-    if ([v14 isIdentityPass])
+    secureElementPass = [v4 secureElementPass];
+    if ([secureElementPass isIdentityPass])
     {
-      v15 = [v14 identityType];
-      if (v15 <= 2)
+      identityType = [secureElementPass identityType];
+      if (identityType <= 2)
       {
-        if (v15 == 1)
+        if (identityType == 1)
         {
           v16 = MEMORY[0x1E69BA648];
           goto LABEL_36;
         }
 
-        if (v15 == 2)
+        if (identityType == 2)
         {
           v16 = MEMORY[0x1E69BB2C8];
           goto LABEL_36;
@@ -1664,7 +1664,7 @@ LABEL_50:
 
       else
       {
-        switch(v15)
+        switch(identityType)
         {
           case 3:
             goto LABEL_19;
@@ -1689,23 +1689,23 @@ LABEL_29:
       goto LABEL_36;
     }
 
-    if (![v14 isAccessPass])
+    if (![secureElementPass isAccessPass])
     {
       goto LABEL_29;
     }
 
-    v17 = [v14 accessType];
-    v18 = [v14 accessReportingType];
-    v19 = v18;
-    if (v17 <= 2)
+    accessType = [secureElementPass accessType];
+    accessReportingType = [secureElementPass accessReportingType];
+    v19 = accessReportingType;
+    if (accessType <= 2)
     {
-      switch(v17)
+      switch(accessType)
       {
         case 0:
           v21 = @"general";
-          if (v18)
+          if (accessReportingType)
           {
-            v21 = v18;
+            v21 = accessReportingType;
           }
 
           goto LABEL_44;
@@ -1722,9 +1722,9 @@ LABEL_48:
 
     else
     {
-      if (v17 <= 4)
+      if (accessType <= 4)
       {
-        if (v17 == 3)
+        if (accessType == 3)
         {
           v20 = @"singlefamily";
         }
@@ -1737,13 +1737,13 @@ LABEL_48:
         goto LABEL_48;
       }
 
-      if (v17 == 5)
+      if (accessType == 5)
       {
         v20 = @"multifamily";
         goto LABEL_48;
       }
 
-      if (v17 == 6)
+      if (accessType == 6)
       {
         v20 = @"urbanmobility";
         goto LABEL_48;
@@ -1759,18 +1759,18 @@ LABEL_44:
 LABEL_54:
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKDashboardPassGroupViewController;
-  [(PKDashboardPassGroupViewController *)&v4 viewWillDisappear:a3];
+  [(PKDashboardPassGroupViewController *)&v4 viewWillDisappear:disappear];
   self->_visibility = 3;
   [(PKDashboardPassGroupViewController *)self _visibilityDidChange];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v13[1] = *MEMORY[0x1E69E9840];
   v12 = *MEMORY[0x1E69BA680];
   v5 = v12;
@@ -1781,7 +1781,7 @@ LABEL_54:
 
   v9.receiver = self;
   v9.super_class = PKDashboardPassGroupViewController;
-  [(PKDashboardPassGroupViewController *)&v9 viewDidDisappear:v3];
+  [(PKDashboardPassGroupViewController *)&v9 viewDidDisappear:disappearCopy];
   self->_visibility = 0;
   [(PKDashboardPassGroupViewController *)self _visibilityDidChange];
   v10 = v5;
@@ -1792,21 +1792,21 @@ LABEL_54:
 
 - (id)_passGroupsViewNavigationController
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = atomic_load((a1 + 1552));
-  if (v1 & 1) != 0 || !*(a1 + 1248) || (*(a1 + 1456))
+  v1 = atomic_load((self + 1552));
+  if (v1 & 1) != 0 || !*(self + 1248) || (*(self + 1456))
   {
     return 0;
   }
 
-  v4 = [a1 navigationController];
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  navigationController = [self navigationController];
+  if (navigationController && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = v4;
+    v2 = navigationController;
   }
 
   else
@@ -1819,21 +1819,21 @@ LABEL_54:
 
 - (uint64_t)_passGroupsViewController
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = atomic_load((a1 + 1552));
-  if (v1 & 1) != 0 || !*(a1 + 1248) || (*(a1 + 1456))
+  v1 = atomic_load((self + 1552));
+  if (v1 & 1) != 0 || !*(self + 1248) || (*(self + 1456))
   {
     return 0;
   }
 
-  v4 = [(PKDashboardPassGroupViewController *)a1 _passGroupsViewNavigationController];
-  v2 = [v4 passGroupsViewController];
+  _passGroupsViewNavigationController = [(PKDashboardPassGroupViewController *)self _passGroupsViewNavigationController];
+  passGroupsViewController = [_passGroupsViewNavigationController passGroupsViewController];
 
-  return v2;
+  return passGroupsViewController;
 }
 
 void __78__PKDashboardPassGroupViewController__adjustFrozenOffsetForDismissalToOffset___block_invoke(uint64_t a1)
@@ -1848,37 +1848,37 @@ void __78__PKDashboardPassGroupViewController__adjustFrozenOffsetForDismissalToO
 - (void)_insertGroupView
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = atomic_load((a1 + 1552));
-    if ((v2 & 1) == 0 && *(a1 + 1248) && (*(a1 + 1458) & 1) == 0 && (*(a1 + 1456) & 1) == 0)
+    v2 = atomic_load((self + 1552));
+    if ((v2 & 1) == 0 && *(self + 1248) && (*(self + 1458) & 1) == 0 && (*(self + 1456) & 1) == 0)
     {
-      v3 = [a1 collectionView];
+      collectionView = [self collectionView];
       v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
-      v5 = [v3 cellForItemAtIndexPath:v4];
-      if (v5 || (v20[0] = v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "reloadItemsAtIndexPaths:", v6), v6, objc_msgSend(v3, "cellForItemAtIndexPath:", v4), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+      v5 = [collectionView cellForItemAtIndexPath:v4];
+      if (v5 || (v20[0] = v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(collectionView, "reloadItemsAtIndexPaths:", v6), v6, objc_msgSend(collectionView, "cellForItemAtIndexPath:", v4), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v7 = v5;
-        *(a1 + 1458) = 1;
-        v8 = [v5 contentView];
-        v9 = [*(a1 + 1248) superview];
-        v10 = v9;
-        if (v8)
+        *(self + 1458) = 1;
+        contentView = [v5 contentView];
+        superview = [*(self + 1248) superview];
+        v10 = superview;
+        if (contentView)
         {
-          if (v8 != v9)
+          if (contentView != superview)
           {
-            [v8 addSubview:*(a1 + 1248)];
-            [*(a1 + 1248) bounds];
-            [*(a1 + 1248) anchorPoint];
+            [contentView addSubview:*(self + 1248)];
+            [*(self + 1248) bounds];
+            [*(self + 1248) anchorPoint];
             v12 = v11;
             v14 = v13;
-            [v8 bounds];
+            [contentView bounds];
             PKSizeAlignedInRect();
-            [*(a1 + 1248) setCenter:{v15 + v12 * v16, v17 + v14 * v18}];
-            v19 = [*(a1 + 1248) layer];
-            [v19 removeAllAnimations];
+            [*(self + 1248) setCenter:{v15 + v12 * v16, v17 + v14 * v18}];
+            layer = [*(self + 1248) layer];
+            [layer removeAllAnimations];
 
-            [*(a1 + 1248) updatePageControlFrameAnimated:0];
+            [*(self + 1248) updatePageControlFrameAnimated:0];
           }
         }
       }
@@ -1897,12 +1897,12 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
   return [v2 shouldPresentAllContent:v4 ^ 1u animated:1];
 }
 
-- (void)_pushViewControllerWhenNavigationAvailable:(char)a3 animated:(void *)a4 completion:
+- (void)_pushViewControllerWhenNavigationAvailable:(char)available animated:(void *)animated completion:
 {
   v40 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a4;
-  if (!a1)
+  animatedCopy = animated;
+  if (!self)
   {
     goto LABEL_32;
   }
@@ -1912,10 +1912,10 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
     __break(1u);
   }
 
-  if (*(a1 + 1579) != 1)
+  if (*(self + 1579) != 1)
   {
-    v12 = atomic_load((a1 + 1552));
-    if ((v12 & 1) != 0 || !*(a1 + 1248) || *(a1 + 1456) == 1)
+    v12 = atomic_load((self + 1552));
+    if ((v12 & 1) != 0 || !*(self + 1248) || *(self + 1456) == 1)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1923,7 +1923,7 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         *buf = 134218498;
-        v35 = a1;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = v15;
         v38 = 2048;
@@ -1931,7 +1931,7 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): ignoring requested push of (%{public}@:%p) onto obsolete context.", buf, 0x20u);
       }
 
-      if (v8)
+      if (animatedCopy)
       {
         goto LABEL_7;
       }
@@ -1939,34 +1939,34 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
       goto LABEL_32;
     }
 
-    v16 = [a1 navigationController];
-    v17 = v16;
-    if (v16)
+    navigationController = [self navigationController];
+    v17 = navigationController;
+    if (navigationController)
     {
-      v18 = [v16 presentedViewController];
+      presentedViewController = [navigationController presentedViewController];
 
-      if (!v18)
+      if (!presentedViewController)
       {
-        *(a1 + 1579) = 1;
-        objc_initWeak(buf, a1);
+        *(self + 1579) = 1;
+        objc_initWeak(buf, self);
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __101__PKDashboardPassGroupViewController__pushViewControllerWhenNavigationAvailable_animated_completion___block_invoke;
         aBlock[3] = &unk_1E8018FD0;
         objc_copyWeak(&v32, buf);
         v30 = v7;
-        v33 = a3;
-        v31 = v8;
+        availableCopy = available;
+        v31 = animatedCopy;
         v25 = _Block_copy(aBlock);
-        v26 = [v17 transitionCoordinator];
-        if (v26 && (([v17 isBeingPresented] & 1) != 0 || objc_msgSend(v17, "isBeingDismissed")))
+        transitionCoordinator = [v17 transitionCoordinator];
+        if (transitionCoordinator && (([v17 isBeingPresented] & 1) != 0 || objc_msgSend(v17, "isBeingDismissed")))
         {
           v27[0] = MEMORY[0x1E69E9820];
           v27[1] = 3221225472;
           v27[2] = __101__PKDashboardPassGroupViewController__pushViewControllerWhenNavigationAvailable_animated_completion___block_invoke_2;
           v27[3] = &unk_1E8015D28;
           v28 = v25;
-          [v26 animateAlongsideTransition:0 completion:v27];
+          [transitionCoordinator animateAlongsideTransition:0 completion:v27];
         }
 
         else
@@ -1985,7 +1985,7 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
         *buf = 134218498;
-        v35 = a1;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = v21;
         v38 = 2048;
@@ -1993,7 +1993,7 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): ignoring requested push of (%{public}@:%p) due to an existing presented view controller.", buf, 0x20u);
       }
 
-      if (!v8)
+      if (!animatedCopy)
       {
         goto LABEL_31;
       }
@@ -2007,7 +2007,7 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
         *buf = 134218498;
-        v35 = a1;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = v24;
         v38 = 2048;
@@ -2015,13 +2015,13 @@ uint64_t __68__PKDashboardPassGroupViewController__ensureCardPresenceIfNecessary
         _os_log_impl(&dword_1BD026000, v22, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): ignoring requested push of (%{public}@:%p) due to missing navigation controller.", buf, 0x20u);
       }
 
-      if (!v8)
+      if (!animatedCopy)
       {
         goto LABEL_31;
       }
     }
 
-    (*(v8 + 2))(v8, 1);
+    (*(animatedCopy + 2))(animatedCopy, 1);
 LABEL_31:
 
     goto LABEL_32;
@@ -2033,7 +2033,7 @@ LABEL_31:
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     *buf = 134218498;
-    v35 = a1;
+    selfCopy4 = self;
     v36 = 2114;
     v37 = v11;
     v38 = 2048;
@@ -2041,10 +2041,10 @@ LABEL_31:
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): ignoring requested push of (%{public}@:%p) due to existing push.", buf, 0x20u);
   }
 
-  if (v8)
+  if (animatedCopy)
   {
 LABEL_7:
-    (*(v8 + 2))(v8, 1);
+    (*(animatedCopy + 2))(animatedCopy, 1);
   }
 
 LABEL_32:
@@ -2086,39 +2086,39 @@ LABEL_7:
   }
 }
 
-- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)a3
+- (BOOL)willActivateNavigationItemHandleWithVoucher:(id)voucher
 {
-  v4 = a3;
-  if (!v4 || (p_navigationItem = &self->_navigationItem, self->_navigationItem.active.handle) || p_navigationItem->connecting.pendingVoucher)
+  voucherCopy = voucher;
+  if (!voucherCopy || (p_navigationItem = &self->_navigationItem, self->_navigationItem.active.handle) || p_navigationItem->connecting.pendingVoucher)
   {
     __break(1u);
   }
 
   else
   {
-    p_navigationItem->connecting.pendingVoucher = v4;
-    LOBYTE(v4) = 1;
+    p_navigationItem->connecting.pendingVoucher = voucherCopy;
+    LOBYTE(voucherCopy) = 1;
   }
 
-  return v4;
+  return voucherCopy;
 }
 
-- (void)beginProvidingForNavigationItemHandle:(id)a3 withConsumedVoucher:(id)a4
+- (void)beginProvidingForNavigationItemHandle:(id)handle withConsumedVoucher:(id)voucher
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && v7 && (pendingVoucher = self->_navigationItem.connecting.pendingVoucher, pendingVoucher == v7) && (v13 = v7, !self->_navigationItem.active.handle))
+  handleCopy = handle;
+  voucherCopy = voucher;
+  if (handleCopy && voucherCopy && (pendingVoucher = self->_navigationItem.connecting.pendingVoucher, pendingVoucher == voucherCopy) && (v13 = voucherCopy, !self->_navigationItem.active.handle))
   {
     self->_navigationItem.connecting.pendingVoucher = 0;
 
     handle = self->_navigationItem.active.handle;
-    self->_navigationItem.active.handle = v6;
+    self->_navigationItem.active.handle = handleCopy;
 
-    v10 = [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa _navigationItemConfiguration];
-    v6 = v10;
-    if (v10)
+    _navigationItemConfiguration = [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa _navigationItemConfiguration];
+    handleCopy = _navigationItemConfiguration;
+    if (_navigationItemConfiguration)
     {
-      v11 = [(PKNavigationItemConfiguration *)v10 copy];
+      v11 = [(PKNavigationItemConfiguration *)_navigationItemConfiguration copy];
       *(v11 + 8) = 1;
       v12 = *(v11 + 40);
       *(v11 + 40) = 0;
@@ -2140,7 +2140,7 @@ LABEL_7:
 
 - (PKNavigationItemConfiguration)_navigationItemConfiguration
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -2152,11 +2152,11 @@ LABEL_7:
     v2->_largeTitleDisplayMode = 2;
   }
 
-  v3 = [a1[158] localizedDescription];
-  v5 = v3;
+  localizedDescription = [self[158] localizedDescription];
+  v5 = localizedDescription;
   if (v2)
   {
-    objc_setProperty_nonatomic_copy(v2, v4, v3, 88);
+    objc_setProperty_nonatomic_copy(v2, v4, localizedDescription, 88);
 
     v2->_backButtonDisplayMode = 2;
   }
@@ -2165,24 +2165,24 @@ LABEL_7:
   {
   }
 
-  v6 = [(PKDashboardPassGroupViewController *)a1 _leadingItemGroups];
-  [(PKNavigationItemConfiguration *)v2 setLeadingItemGroups:v6];
+  _leadingItemGroups = [(PKDashboardPassGroupViewController *)self _leadingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setLeadingItemGroups:_leadingItemGroups];
 
-  v7 = [(PKDashboardPassGroupViewController *)a1 _trailingItemGroups];
-  [(PKNavigationItemConfiguration *)v2 setTrailingItemGroups:v7];
+  _trailingItemGroups = [(PKDashboardPassGroupViewController *)self _trailingItemGroups];
+  [(PKNavigationItemConfiguration *)v2 setTrailingItemGroups:_trailingItemGroups];
 
   if (v2)
   {
-    objc_setProperty_nonatomic_copy(v2, v8, a1[180], 120);
+    objc_setProperty_nonatomic_copy(v2, v8, self[180], 120);
   }
 
   return v2;
 }
 
-- (void)_applyNavigationItemConfiguration:(void *)a1
+- (void)_applyNavigationItemConfiguration:(void *)configuration
 {
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
     if (!v3)
     {
@@ -2191,20 +2191,20 @@ LABEL_7:
     }
 
     v4 = v3;
-    [(PKNavigationItemConfiguration *)v3 applyToViewController:a1];
+    [(PKNavigationItemConfiguration *)v3 applyToViewController:configuration];
     v3 = v4;
   }
 }
 
-- (id)configurationForNavigationItemHandle:(id)a3
+- (id)configurationForNavigationItemHandle:(id)handle
 {
-  result = a3;
+  result = handle;
   if (result)
   {
     v5 = result;
-    v6 = [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa _navigationItemConfiguration];
+    _navigationItemConfiguration = [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa _navigationItemConfiguration];
 
-    return v6;
+    return _navigationItemConfiguration;
   }
 
   else
@@ -2215,13 +2215,13 @@ LABEL_7:
   return result;
 }
 
-- (void)endProvidingForNavigationItemHandle:(id)a3
+- (void)endProvidingForNavigationItemHandle:(id)handle
 {
-  v4 = a3;
-  if (v4 && (handle = self->_navigationItem.active.handle, handle == v4))
+  handleCopy = handle;
+  if (handleCopy && (handle = self->_navigationItem.active.handle, handle == handleCopy))
   {
     self->_navigationItem.active.handle = 0;
-    v6 = v4;
+    v6 = handleCopy;
 
     [(PKDashboardPassGroupViewController *)self _updateNavigationItemAnimated:?];
   }
@@ -2232,15 +2232,15 @@ LABEL_7:
   }
 }
 
-- (void)_updateNavigationItemAnimated:(uint64_t)a1
+- (void)_updateNavigationItemAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__PKDashboardPassGroupViewController__updateNavigationItemAnimated___block_invoke;
     aBlock[3] = &unk_1E8010970;
-    aBlock[4] = a1;
+    aBlock[4] = animated;
     v3 = _Block_copy(aBlock);
     v4 = v3;
     v5 = MEMORY[0x1E69DD250];
@@ -2261,15 +2261,15 @@ LABEL_7:
   }
 }
 
-- (id)connectTransitionCoordinatorToReceiver:(id)a3
+- (id)connectTransitionCoordinatorToReceiver:(id)receiver
 {
-  v5 = a3;
-  if (!v5 || self->_transitionCoordinator)
+  receiverCopy = receiver;
+  if (!receiverCopy || self->_transitionCoordinator)
   {
     goto LABEL_9;
   }
 
-  v3 = v5;
+  v3 = receiverCopy;
   v6 = atomic_load(&self->_invalidated);
   if ((v6 & 1) != 0 || self->_dismissed || !self->_passGroupView)
   {
@@ -2278,7 +2278,7 @@ LABEL_7:
 
   v7 = 0;
   atomic_compare_exchange_strong(&self->_connecting, &v7, 1u);
-  if (v7 || (v8 = (*(v5 + 2))(v5, self), self->_transitionCoordinator != v8) || (v9 = v8, v10 = 1, atomic_compare_exchange_strong(&self->_connecting, &v10, 0), v10 != 1))
+  if (v7 || (v8 = (*(receiverCopy + 2))(receiverCopy, self), self->_transitionCoordinator != v8) || (v9 = v8, v10 = 1, atomic_compare_exchange_strong(&self->_connecting, &v10, 0), v10 != 1))
   {
 LABEL_9:
     __break(1u);
@@ -2289,16 +2289,16 @@ LABEL_10:
   return v9;
 }
 
-- (void)transitionCoordinatorWillConnectReceiver:(id)a3 forRequest:(id)a4
+- (void)transitionCoordinatorWillConnectReceiver:(id)receiver forRequest:(id)request
 {
-  v15 = a3;
-  v8 = a4;
-  if (!v15)
+  receiverCopy = receiver;
+  requestCopy = request;
+  if (!receiverCopy)
   {
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!requestCopy)
   {
     goto LABEL_12;
   }
@@ -2309,7 +2309,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&self->_transitionCoordinator, a3);
+  objc_storeStrong(&self->_transitionCoordinator, receiver);
   self->_sendingToTransitionCoordinator = 0;
   passGroupView = self->_passGroupView;
   transitionCoordinator = self->_transitionCoordinator;
@@ -2343,10 +2343,10 @@ LABEL_14:
   }
 }
 
-- (void)terminateTransitionCoordinator:(id)a3
+- (void)terminateTransitionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  if (v4 && (transitionCoordinator = self->_transitionCoordinator, v6 = v4, transitionCoordinator == v4))
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy && (transitionCoordinator = self->_transitionCoordinator, v6 = coordinatorCopy, transitionCoordinator == coordinatorCopy))
   {
     self->_transitionCoordinator = 0;
 
@@ -2359,31 +2359,31 @@ LABEL_14:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 willBeginTransition:(id)a4 dirty:(BOOL)a5
+- (void)transitionCoordinator:(id)coordinator willBeginTransition:(id)transition dirty:(BOOL)dirty
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && (v9 = v8) != 0 && self->_transitionCoordinator == v7)
+  coordinatorCopy = coordinator;
+  transitionCopy = transition;
+  if (coordinatorCopy && (v9 = transitionCopy) != 0 && self->_transitionCoordinator == coordinatorCopy)
   {
-    objc_storeStrong(&self->_transition, a4);
+    objc_storeStrong(&self->_transition, transition);
     if (self->_sendingToTransitionCoordinator && !self->_dismissed)
     {
       self->_dismissed = 1;
-      v10 = [(PKDashboardPassGroupViewController *)self view];
-      v11 = [(PKDashboardPassGroupViewController *)self collectionView];
+      view = [(PKDashboardPassGroupViewController *)self view];
+      collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
       self->_freezeContentOffset = 1;
-      [v11 bounds];
+      [collectionView bounds];
       self->_frozenContentOffset.x = v12;
       self->_frozenContentOffset.y = v13;
       [(PKDashboardPassDataSource *)self->_dataSource freezeContentLoaded];
-      [v10 _setSafeAreaInsetsFrozen:1];
-      [v11 setScrollEnabled:0];
+      [view _setSafeAreaInsetsFrozen:1];
+      [collectionView setScrollEnabled:0];
       v14 = MEMORY[0x1E69DD250];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __86__PKDashboardPassGroupViewController_transitionCoordinator_willBeginTransition_dirty___block_invoke;
       v20[3] = &unk_1E8010970;
-      v15 = v10;
+      v15 = view;
       v21 = v15;
       [v14 performWithoutAnimation:v20];
 
@@ -2394,13 +2394,13 @@ LABEL_14:
         v16 = atomic_load(&self->_invalidated);
         if (v16)
         {
-          v17 = [v15 window];
-          v18 = [v17 windowScene];
+          window = [v15 window];
+          windowScene = [window windowScene];
 
-          if (v18)
+          if (windowScene)
           {
             v19 = objc_alloc_init(PKStoreKitReviewPromptHelper);
-            [(PKStoreKitReviewPromptHelper *)v19 requestReviewInSceneIfEligible:v18 trigger:self->_reviewTrigger];
+            [(PKStoreKitReviewPromptHelper *)v19 requestReviewInSceneIfEligible:windowScene trigger:self->_reviewTrigger];
           }
         }
       }
@@ -2415,28 +2415,28 @@ LABEL_14:
 
 - (void)_updateTitlePassView
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (*(a1 + 1459))
+  if (*(self + 1459))
   {
     v2 = 0;
   }
 
   else
   {
-    v2 = *(a1 + 1456) ^ 1;
+    v2 = *(self + 1456) ^ 1;
   }
 
-  v21 = [*(a1 + 1248) frontmostPassView];
-  v3 = [v21 pass];
-  v4 = v3;
-  v5 = *(a1 + 1624);
-  if (v3)
+  frontmostPassView = [*(self + 1248) frontmostPassView];
+  pass = [frontmostPassView pass];
+  v4 = pass;
+  v5 = *(self + 1624);
+  if (pass)
   {
-    v6 = v5 == v3;
+    v6 = v5 == pass;
   }
 
   else
@@ -2446,25 +2446,25 @@ LABEL_14:
 
   if (!v6)
   {
-    *(a1 + 1624) = 0;
+    *(self + 1624) = 0;
 
-    v7 = *(a1 + 1632);
-    *(a1 + 1632) = 0;
+    v7 = *(self + 1632);
+    *(self + 1632) = 0;
   }
 
-  v8 = [*(a1 + 1376) count];
-  v9 = [*(a1 + 1424) count];
+  v8 = [*(self + 1376) count];
+  v9 = [*(self + 1424) count];
   if (!v4 || (v2 & ((v9 + v8) < 2)) == 0)
   {
-    v11 = *(a1 + 1640);
+    v11 = *(self + 1640);
     v10 = 0;
     goto LABEL_15;
   }
 
-  v10 = *(a1 + 1632);
+  v10 = *(self + 1632);
   if (!v10)
   {
-    objc_storeStrong((a1 + 1624), v4);
+    objc_storeStrong((self + 1624), v4);
     if ([v4 passType] == 1)
     {
       v12 = v4;
@@ -2476,16 +2476,16 @@ LABEL_14:
     }
 
     v13 = v12;
-    v14 = [v13 associatedAccountServiceAccountIdentifier];
-    if (v14)
+    associatedAccountServiceAccountIdentifier = [v13 associatedAccountServiceAccountIdentifier];
+    if (associatedAccountServiceAccountIdentifier)
     {
     }
 
     else
     {
-      v15 = [v13 dynamicLayerConfiguration];
+      dynamicLayerConfiguration = [v13 dynamicLayerConfiguration];
 
-      if (!v15)
+      if (!dynamicLayerConfiguration)
       {
         goto LABEL_26;
       }
@@ -2493,46 +2493,46 @@ LABEL_14:
 
     if ((PKIsLowEndDevice() & 1) == 0)
     {
-      v16 = [v21 rendererState];
-      v20 = [[PKPassView alloc] initWithPass:v4 content:4 suppressedContent:1527 rendererState:v16];
+      rendererState = [frontmostPassView rendererState];
+      v20 = [[PKPassView alloc] initWithPass:v4 content:4 suppressedContent:1527 rendererState:rendererState];
       [(PKPassView *)v20 setModallyPresented:1];
       [(PKPassView *)v20 setPaused:1];
-      v17 = *(a1 + 1632);
-      *(a1 + 1632) = v20;
+      v17 = *(self + 1632);
+      *(self + 1632) = v20;
       goto LABEL_28;
     }
 
 LABEL_26:
-    v16 = [[PKPassView alloc] initWithPass:v4 content:4 suppressedContent:2039];
-    v17 = [(PKPassView *)v16 snapshotOfFrontFaceWithRequestedSize:50.0, 50.0];
+    rendererState = [[PKPassView alloc] initWithPass:v4 content:4 suppressedContent:2039];
+    v17 = [(PKPassView *)rendererState snapshotOfFrontFaceWithRequestedSize:50.0, 50.0];
     v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v17];
-    v19 = *(a1 + 1632);
-    *(a1 + 1632) = v18;
+    v19 = *(self + 1632);
+    *(self + 1632) = v18;
 
-    [*(a1 + 1632) setContentMode:1];
-    [*(a1 + 1632) setAccessibilityIgnoresInvertColors:1];
+    [*(self + 1632) setContentMode:1];
+    [*(self + 1632) setAccessibilityIgnoresInvertColors:1];
 LABEL_28:
 
-    if ((*(a1 + 1459) & 1) == 0)
+    if ((*(self + 1459) & 1) == 0)
     {
-      [*(a1 + 1640) setTitleView:*(a1 + 1632) animated:1];
+      [*(self + 1640) setTitleView:*(self + 1632) animated:1];
     }
 
     goto LABEL_16;
   }
 
-  v11 = *(a1 + 1640);
+  v11 = *(self + 1640);
 LABEL_15:
   [v11 setTitleView:v10 animated:1];
 LABEL_16:
 }
 
-- (void)transitionCoordinator:(id)a3 didBeginTransition:(id)a4 dirty:(BOOL)a5 withState:(id)a6
+- (void)transitionCoordinator:(id)coordinator didBeginTransition:(id)transition dirty:(BOOL)dirty withState:(id)state
 {
-  v43 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v43 || self->_transitionCoordinator != v43 || !v11 || !v12)
+  coordinatorCopy = coordinator;
+  transitionCopy = transition;
+  stateCopy = state;
+  if (!coordinatorCopy || self->_transitionCoordinator != coordinatorCopy || !transitionCopy || !stateCopy)
   {
     goto LABEL_32;
   }
@@ -2540,7 +2540,7 @@ LABEL_16:
   v7 = 1496;
   if (self->_sendingToTransitionCoordinator)
   {
-    v13 = v12;
+    v13 = stateCopy;
     transitionCoordinator = self->_transitionCoordinator;
     if (!transitionCoordinator || !self->_sendingToTransitionCoordinator)
     {
@@ -2572,12 +2572,12 @@ LABEL_33:
         ;
       }
 
-      v18 = [(PKPassGroupView *)v17 superview];
-      if (v18)
+      superview = [(PKPassGroupView *)v17 superview];
+      if (superview)
       {
-        v19 = [(PKDashboardPassGroupViewController *)self view];
-        [v19 bounds];
-        [v18 convertRect:v19 fromView:?];
+        view = [(PKDashboardPassGroupViewController *)self view];
+        [view bounds];
+        [superview convertRect:view fromView:?];
         v41 = v20;
         v42 = v21;
         v23 = v22;
@@ -2636,11 +2636,11 @@ LABEL_33:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 transitionWillMoveNavigationItem:(id)a4
+- (void)transitionCoordinator:(id)coordinator transitionWillMoveNavigationItem:(id)item
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && self->_transitionCoordinator == v7)
+  coordinatorCopy = coordinator;
+  itemCopy = item;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy)
   {
   }
 
@@ -2650,11 +2650,11 @@ LABEL_33:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 transitionDidMoveNavigationItem:(id)a4
+- (void)transitionCoordinator:(id)coordinator transitionDidMoveNavigationItem:(id)item
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && self->_transitionCoordinator == v7)
+  coordinatorCopy = coordinator;
+  itemCopy = item;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy)
   {
   }
 
@@ -2664,14 +2664,14 @@ LABEL_33:
   }
 }
 
-- (void)transitionCoordinatorWillInterruptTransition:(id)a3
+- (void)transitionCoordinatorWillInterruptTransition:(id)transition
 {
-  v4 = a3;
-  if (v4 && self->_transitionCoordinator == v4)
+  transitionCopy = transition;
+  if (transitionCopy && self->_transitionCoordinator == transitionCopy)
   {
     transition = self->_transition;
     self->_transition = 0;
-    v6 = v4;
+    v6 = transitionCopy;
   }
 
   else
@@ -2680,10 +2680,10 @@ LABEL_33:
   }
 }
 
-- (void)transitionCoordinatorDidInterruptTransition:(id)a3
+- (void)transitionCoordinatorDidInterruptTransition:(id)transition
 {
-  v4 = a3;
-  if (v4 && self->_transitionCoordinator == v4)
+  transitionCopy = transition;
+  if (transitionCopy && self->_transitionCoordinator == transitionCopy)
   {
   }
 
@@ -2693,13 +2693,13 @@ LABEL_33:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 transitionWillMoveView:(id)a4 withState:(id)a5
+- (void)transitionCoordinator:(id)coordinator transitionWillMoveView:(id)view withState:(id)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v22 || self->_transitionCoordinator != v22 || !v8 || !v9)
+  coordinatorCopy = coordinator;
+  viewCopy = view;
+  stateCopy = state;
+  if (!coordinatorCopy || self->_transitionCoordinator != coordinatorCopy || !viewCopy || !stateCopy)
   {
     goto LABEL_22;
   }
@@ -2720,52 +2720,52 @@ LABEL_22:
   v12 = self->_passGroupView;
   if ((v11 & 1) == 0 && v12 && !self->_passGroupViewAcquired)
   {
-    v13 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
+    viewIfLoaded = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
     v14 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = self->_passGroupView;
       *buf = 134218240;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2048;
       v26 = v15;
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): acquiring group view %p.", buf, 0x16u);
     }
 
     self->_passGroupViewAcquired = 1;
-    v16 = [(PKPassGroupView *)self->_passGroupView delegate];
-    objc_storeWeak(&self->_originalGroupViewDelegate, v16);
+    delegate = [(PKPassGroupView *)self->_passGroupView delegate];
+    objc_storeWeak(&self->_originalGroupViewDelegate, delegate);
 
     [(PKPassGroupView *)self->_passGroupView setDelegate:self];
     [(PKPassGroupView *)self->_passGroupView addPassGroupViewObserver:self];
-    v17 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-    v18 = [v17 pass];
+    frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+    pass = [frontmostPassView pass];
 
-    if (!v18)
+    if (!pass)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKDashboardPassGroupViewController (%p): acquired a group view with no frontmost pass.", buf, 0xCu);
       }
     }
 
-    [(PKDashboardPassGroupViewController *)self _setFrontmostPass:v18];
-    [v13 setNeedsLayout];
+    [(PKDashboardPassGroupViewController *)self _setFrontmostPass:pass];
+    [viewIfLoaded setNeedsLayout];
     [(PKDashboardPassGroupViewController *)self _updatePassFooterViewWithReload:0 postTransaction:?];
-    v19 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
-    [v19 setNeedsLayout];
+    viewIfLoaded2 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
+    [viewIfLoaded2 setNeedsLayout];
 
     v12 = self->_passGroupView;
   }
 
   self->_paused = [(PKPassGroupView *)v12 isPaused];
   [(PKDashboardPassGroupViewController *)self _updatePausedState];
-  v20 = [(PKPass *)self->_frontmostPass nfcPayload];
-  v21 = [v20 requiresAuthentication];
+  nfcPayload = [(PKPass *)self->_frontmostPass nfcPayload];
+  requiresAuthentication = [nfcPayload requiresAuthentication];
 
-  [(PKDashboardViewController *)self shouldPresentAllContent:v21 ^ 1u animated:0];
+  [(PKDashboardViewController *)self shouldPresentAllContent:requiresAuthentication ^ 1u animated:0];
 LABEL_19:
 }
 
@@ -2802,12 +2802,12 @@ LABEL_19:
   return result;
 }
 
-- (void)transitionCoordinator:(id)a3 transitionWillInterruptViewMove:(id)a4 withState:(id)a5
+- (void)transitionCoordinator:(id)coordinator transitionWillInterruptViewMove:(id)move withState:(id)state
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10 && self->_transitionCoordinator == v10 && v8 && v9 && !self->_sendingToTransitionCoordinator)
+  coordinatorCopy = coordinator;
+  moveCopy = move;
+  stateCopy = state;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy && moveCopy && stateCopy && !self->_sendingToTransitionCoordinator)
   {
     self->_passGroupViewInserted = 0;
   }
@@ -2818,12 +2818,12 @@ LABEL_19:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 transitionDidMoveView:(id)a4 withState:(id)a5
+- (void)transitionCoordinator:(id)coordinator transitionDidMoveView:(id)view withState:(id)state
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v10 && self->_transitionCoordinator == v10 && v8 && v9)
+  coordinatorCopy = coordinator;
+  viewCopy = view;
+  stateCopy = state;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy && viewCopy && stateCopy)
   {
     if (self->_sendingToTransitionCoordinator)
     {
@@ -2843,14 +2843,14 @@ LABEL_19:
   }
 }
 
-- (void)transitionCoordinatorWillEndTransition:(id)a3 wasDirty:(BOOL)a4
+- (void)transitionCoordinatorWillEndTransition:(id)transition wasDirty:(BOOL)dirty
 {
-  v5 = a3;
-  if (v5 && self->_transitionCoordinator == v5)
+  transitionCopy = transition;
+  if (transitionCopy && self->_transitionCoordinator == transitionCopy)
   {
     transition = self->_transition;
     self->_transition = 0;
-    v7 = v5;
+    v7 = transitionCopy;
   }
 
   else
@@ -2859,25 +2859,10 @@ LABEL_19:
   }
 }
 
-- (void)transitionCoordinatorDidEndTransition:(id)a3 wasDirty:(BOOL)a4
+- (void)transitionCoordinatorDidEndTransition:(id)transition wasDirty:(BOOL)dirty
 {
-  v5 = a3;
-  if (v5 && self->_transitionCoordinator == v5)
-  {
-  }
-
-  else
-  {
-    __break(1u);
-  }
-}
-
-- (void)transitionCoordinator:(id)a3 transition:(id)a4 willUpdateFromState:(id)a5 interactive:(BOOL)a6
-{
-  v11 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v11 && self->_transitionCoordinator == v11 && v9 && v10)
+  transitionCopy = transition;
+  if (transitionCopy && self->_transitionCoordinator == transitionCopy)
   {
   }
 
@@ -2887,13 +2872,12 @@ LABEL_19:
   }
 }
 
-- (void)transitionCoordinator:(id)a3 transition:(id)a4 didUpdateFromState:(id)a5 toState:(id)a6 interactive:(BOOL)a7
+- (void)transitionCoordinator:(id)coordinator transition:(id)transition willUpdateFromState:(id)state interactive:(BOOL)interactive
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v14 && self->_transitionCoordinator == v14 && v11 && v12 && v13)
+  coordinatorCopy = coordinator;
+  transitionCopy = transition;
+  stateCopy = state;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy && transitionCopy && stateCopy)
   {
   }
 
@@ -2903,11 +2887,27 @@ LABEL_19:
   }
 }
 
-- (id)transitionCoordinator:(id)a3 prepareForSendingNavigationItem:(id)a4
+- (void)transitionCoordinator:(id)coordinator transition:(id)transition didUpdateFromState:(id)state toState:(id)toState interactive:(BOOL)interactive
 {
-  v6 = a3;
-  result = a4;
-  if (v6 && self->_transitionCoordinator == v6 && ((v8 = result, v9 = self->_navigationItem.active.handle, result = [(PKNavigationItemHandle *)v9 consume], (v10 = result) != 0) || v6->_tombstoned || v6->_invalidated))
+  coordinatorCopy = coordinator;
+  transitionCopy = transition;
+  stateCopy = state;
+  toStateCopy = toState;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy && transitionCopy && stateCopy && toStateCopy)
+  {
+  }
+
+  else
+  {
+    __break(1u);
+  }
+}
+
+- (id)transitionCoordinator:(id)coordinator prepareForSendingNavigationItem:(id)item
+{
+  coordinatorCopy = coordinator;
+  result = item;
+  if (coordinatorCopy && self->_transitionCoordinator == coordinatorCopy && ((v8 = result, v9 = self->_navigationItem.active.handle, result = [(PKNavigationItemHandle *)v9 consume], (v10 = result) != 0) || coordinatorCopy->_tombstoned || coordinatorCopy->_invalidated))
   {
 
     return v10;
@@ -2921,9 +2921,9 @@ LABEL_19:
   return result;
 }
 
-- (id)transitionCoordinatorWillInvertSender:(id)a3
+- (id)transitionCoordinatorWillInvertSender:(id)sender
 {
-  result = a3;
+  result = sender;
   if (result && self->_transitionCoordinator == result && self->_sendingToTransitionCoordinator)
   {
     self->_sendingToTransitionCoordinator = 0;
@@ -2933,10 +2933,10 @@ LABEL_19:
   return result;
 }
 
-- (void)transitionCoordinatorSenderDidTapView:(id)a3
+- (void)transitionCoordinatorSenderDidTapView:(id)view
 {
-  v4 = a3;
-  if (v4 && self->_transitionCoordinator == v4 && (v5 = v4, !self->_sendingToTransitionCoordinator))
+  viewCopy = view;
+  if (viewCopy && self->_transitionCoordinator == viewCopy && (v5 = viewCopy, !self->_sendingToTransitionCoordinator))
   {
     [(PKDashboardPassGroupViewController *)self _groupViewTapped];
   }
@@ -2949,33 +2949,33 @@ LABEL_19:
 
 - (void)_groupViewTapped
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1480);
-    if (v2 && (*(a1 + 1496) & 1) != 0)
+    v2 = *(self + 1480);
+    if (v2 && (*(self + 1496) & 1) != 0)
     {
-      [(PKPGVTransitionCoordinator *)*(a1 + 1480) _assertSender:a1 deallocating:0];
+      [(PKPGVTransitionCoordinator *)*(self + 1480) _assertSender:self deallocating:0];
       v3 = v2;
-      [v3 senderDidTapView:a1];
+      [v3 senderDidTapView:self];
     }
 
     else
     {
 
-      [(PKDashboardPassGroupViewController *)a1 _dismiss];
+      [(PKDashboardPassGroupViewController *)self _dismiss];
     }
   }
 }
 
-- (id)transitionCoordinatorWillInvertReceiver:(id)a3
+- (id)transitionCoordinatorWillInvertReceiver:(id)receiver
 {
-  result = a3;
+  result = receiver;
   if (result && (v5 = result, self->_transitionCoordinator == result) && !self->_sendingToTransitionCoordinator)
   {
     self->_sendingToTransitionCoordinator = 1;
-    v6 = self;
+    selfCopy = self;
 
-    return v6;
+    return selfCopy;
   }
 
   else
@@ -2986,7 +2986,7 @@ LABEL_19:
   return result;
 }
 
-- (double)_presentedViewFrameForViewWithSize:(uint64_t)a3
+- (double)_presentedViewFrameForViewWithSize:(uint64_t)size
 {
   if (a2)
   {
@@ -2994,11 +2994,11 @@ LABEL_19:
     v6 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
     v22 = [v5 layoutAttributesForItemAtIndexPath:v6];
 
-    v7 = *(a3 + 80);
-    v8 = *(a3 + 88);
-    v10 = *(a3 + 96);
-    v9 = *(a3 + 104);
-    v11 = *(a3 + 112);
+    v7 = *(size + 80);
+    v8 = *(size + 88);
+    v10 = *(size + 96);
+    v9 = *(size + 104);
+    v11 = *(size + 112);
     if (v11 != 1.0)
     {
       v7 = v7 * v11;
@@ -3009,56 +3009,56 @@ LABEL_19:
 
     [v22 frame];
     PKSizeAlignedInRect();
-    v16 = *(a3 + 80);
-    v17 = *(a3 + 96);
-    v18 = *(a3 + 48);
-    *(a1 + 64) = *(a3 + 64);
-    *(a1 + 80) = v16;
-    *(a1 + 96) = v17;
-    *(a1 + 112) = *(a3 + 112);
-    v19 = *(a3 + 16);
-    *a1 = *a3;
-    *(a1 + 16) = v19;
-    *(a1 + 32) = *(a3 + 32);
-    *(a1 + 48) = v18;
-    v20 = v13 - v7 + *(a3 + 40) * (v15 - (-v10 - v7));
-    *(a1 + 120) = v12 - v8 + *(a3 + 32) * (v14 - (-v9 - v8));
-    *(a1 + 128) = v20;
+    v16 = *(size + 80);
+    v17 = *(size + 96);
+    v18 = *(size + 48);
+    *(self + 64) = *(size + 64);
+    *(self + 80) = v16;
+    *(self + 96) = v17;
+    *(self + 112) = *(size + 112);
+    v19 = *(size + 16);
+    *self = *size;
+    *(self + 16) = v19;
+    *(self + 32) = *(size + 32);
+    *(self + 48) = v18;
+    v20 = v13 - v7 + *(size + 40) * (v15 - (-v10 - v7));
+    *(self + 120) = v12 - v8 + *(size + 32) * (v14 - (-v9 - v8));
+    *(self + 128) = v20;
   }
 
   else
   {
-    *(a1 + 128) = 0;
+    *(self + 128) = 0;
     result = 0.0;
-    *(a1 + 96) = 0u;
-    *(a1 + 112) = 0u;
-    *(a1 + 64) = 0u;
-    *(a1 + 80) = 0u;
-    *(a1 + 32) = 0u;
-    *(a1 + 48) = 0u;
-    *a1 = 0u;
-    *(a1 + 16) = 0u;
+    *(self + 96) = 0u;
+    *(self + 112) = 0u;
+    *(self + 64) = 0u;
+    *(self + 80) = 0u;
+    *(self + 32) = 0u;
+    *(self + 48) = 0u;
+    *self = 0u;
+    *(self + 16) = 0u;
   }
 
   return result;
 }
 
-- ($2DE36CBD7484E59DE1E6BE98927F692F)externalVCContext:(SEL)a3 destinationFrameForViewWithSize:(id)a4 inViewControllerFrame:(id *)a5
+- ($2DE36CBD7484E59DE1E6BE98927F692F)externalVCContext:(SEL)context destinationFrameForViewWithSize:(id)size inViewControllerFrame:(id *)frame
 {
-  v9 = a4;
+  sizeCopy = size;
   v10 = 1480;
   if (!self->_transitionCoordinator)
   {
     goto LABEL_8;
   }
 
-  v21 = v9;
-  if (!v9)
+  v21 = sizeCopy;
+  if (!sizeCopy)
   {
     goto LABEL_9;
   }
 
-  for (i = *(v9 + 6); ; i = 0)
+  for (i = *(sizeCopy + 6); ; i = 0)
   {
     v12 = i;
     v10 = *(&self->super.super.super.super.super.isa + v10);
@@ -3083,48 +3083,48 @@ LABEL_9:
   *&retstr->var0.var3.var0.top = 0u;
   retstr->var0.var0 = 0u;
   retstr->var0.var1 = 0u;
-  v13 = *&a5->var3.var1.top;
-  v22[4] = *&a5->var3.var0.bottom;
+  v13 = *&frame->var3.var1.top;
+  v22[4] = *&frame->var3.var0.bottom;
   v22[5] = v13;
-  v22[6] = *&a5->var3.var1.bottom;
-  var0 = a5->var4.var0;
-  var1 = a5->var1;
-  v22[0] = a5->var0;
+  v22[6] = *&frame->var3.var1.bottom;
+  var0 = frame->var4.var0;
+  var1 = frame->var1;
+  v22[0] = frame->var0;
   v22[1] = var1;
-  v15 = *&a5->var3.var0.top;
-  v22[2] = a5->var2;
+  v15 = *&frame->var3.var0.top;
+  v22[2] = frame->var2;
   v22[3] = v15;
-  v16 = [(PKDashboardPassGroupViewController *)self view];
-  v17 = [(PKDashboardPassGroupViewController *)self collectionView];
-  [v16 convertPoint:v17 fromView:{retstr->var1.x, retstr->var1.y}];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+  [view convertPoint:collectionView fromView:{retstr->var1.x, retstr->var1.y}];
   retstr->var1.x = v18;
   retstr->var1.y = v19;
 
   return result;
 }
 
-- (BOOL)_willUpdateControllerPositionForExternalVCContext:(id)a3 inTransition:(id)a4 viewSize:(id *)a5 expectedViewFrame:(id *)a6 instantaneousPositionDisplacement:(UIOffset *)a7
+- (BOOL)_willUpdateControllerPositionForExternalVCContext:(id)context inTransition:(id)transition viewSize:(id *)size expectedViewFrame:(id *)frame instantaneousPositionDisplacement:(UIOffset *)displacement
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = 1480;
+  contextCopy = context;
+  transitionCopy = transition;
+  collectionView2 = 1480;
   if (!self->_transitionCoordinator)
   {
     goto LABEL_20;
   }
 
-  a4 = v13;
-  if (!v12)
+  transition = transitionCopy;
+  if (!contextCopy)
   {
     goto LABEL_21;
   }
 
-  for (i = v12[6]; ; i = 0)
+  for (i = contextCopy[6]; ; i = 0)
   {
     v16 = i;
-    v14 = *(&self->super.super.super.super.super.isa + v14);
+    collectionView2 = *(&self->super.super.super.super.super.isa + collectionView2);
 
-    if (v16 == v14 && a4 && a6)
+    if (v16 == collectionView2 && transition && frame)
     {
       if (!self->_sendingToTransitionCoordinator)
       {
@@ -3137,53 +3137,53 @@ LABEL_9:
         v61 = 0u;
         v58 = 0;
         v59 = 0;
-        v17 = *&a5->var3.var1.top;
-        v54 = *&a5->var3.var0.bottom;
+        v17 = *&size->var3.var1.top;
+        v54 = *&size->var3.var0.bottom;
         v55 = v17;
-        v56 = *&a5->var3.var1.bottom;
-        var0 = a5->var4.var0;
-        var1 = a5->var1;
-        v50 = a5->var0;
+        v56 = *&size->var3.var1.bottom;
+        var0 = size->var4.var0;
+        var1 = size->var1;
+        v50 = size->var0;
         v51 = var1;
-        v19 = *&a5->var3.var0.top;
-        var2 = a5->var2;
+        v19 = *&size->var3.var0.top;
+        var2 = size->var2;
         v53 = v19;
-        v20 = [(PKDashboardPassGroupViewController *)self view];
-        v21 = [(PKDashboardPassGroupViewController *)self collectionView];
-        [v20 convertPoint:v21 fromView:{*(&v65 + 1), v66}];
+        view = [(PKDashboardPassGroupViewController *)self view];
+        collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+        [view convertPoint:collectionView fromView:{*(&v65 + 1), v66}];
         *(&v65 + 1) = v22;
         v66 = v23;
 
         v24 = v61;
-        a6->var0.var2 = v60;
-        *&a6->var0.var3.var0.top = v24;
-        a6->var1.y = v66;
+        frame->var0.var2 = v60;
+        *&frame->var0.var3.var0.top = v24;
+        frame->var1.y = v66;
         v25 = v65;
-        *&a6->var0.var3.var1.bottom = v64;
-        *&a6->var0.var4.var0 = v25;
+        *&frame->var0.var3.var1.bottom = v64;
+        *&frame->var0.var4.var0 = v25;
         v26 = v63;
-        *&a6->var0.var3.var0.bottom = v62;
-        *&a6->var0.var3.var1.top = v26;
+        *&frame->var0.var3.var0.bottom = v62;
+        *&frame->var0.var3.var1.top = v26;
         v27 = v59;
-        a6->var0.var0 = v58;
-        a6->var0.var1 = v27;
-        LOBYTE(a5) = 1;
-        *a7 = *MEMORY[0x1E69DE258];
+        frame->var0.var0 = v58;
+        frame->var0.var1 = v27;
+        LOBYTE(size) = 1;
+        *displacement = *MEMORY[0x1E69DE258];
         goto LABEL_19;
       }
 
       if (self->_passGroupViewInserted)
       {
-        LOBYTE(a5) = 0;
+        LOBYTE(size) = 0;
         goto LABEL_19;
       }
 
-      v28 = [(PKDashboardPassGroupViewController *)self view];
-      v14 = [(PKDashboardPassGroupViewController *)self collectionView];
-      [v14 bounds];
+      view2 = [(PKDashboardPassGroupViewController *)self view];
+      collectionView2 = [(PKDashboardPassGroupViewController *)self collectionView];
+      [collectionView2 bounds];
       v30 = v29;
       v32 = v31;
-      [v14 adjustedContentInset];
+      [collectionView2 adjustedContentInset];
       v34 = v33;
       v66 = 0.0;
       v64 = 0u;
@@ -3194,16 +3194,16 @@ LABEL_9:
       v61 = 0u;
       v58 = 0;
       v59 = 0;
-      v35 = *&a5->var3.var1.top;
-      v54 = *&a5->var3.var0.bottom;
+      v35 = *&size->var3.var1.top;
+      v54 = *&size->var3.var0.bottom;
       v55 = v35;
-      v56 = *&a5->var3.var1.bottom;
-      var0 = a5->var4.var0;
-      v36 = a5->var1;
-      v50 = a5->var0;
+      v56 = *&size->var3.var1.bottom;
+      var0 = size->var4.var0;
+      v36 = size->var1;
+      v50 = size->var0;
       v51 = v36;
-      v37 = *&a5->var3.var0.top;
-      var2 = a5->var2;
+      v37 = *&size->var3.var0.top;
+      var2 = size->var2;
       v53 = v37;
       [(PKDashboardPassGroupViewController *)&v58 _presentedViewFrameForViewWithSize:&v50];
       height = v59.height;
@@ -3214,7 +3214,7 @@ LABEL_9:
       }
 
       v40 = height + v66 - v60.y * height;
-      a5 = (v40 >= v32);
+      size = (v40 >= v32);
       if (v40 < v32)
       {
         goto LABEL_18;
@@ -3247,66 +3247,66 @@ LABEL_21:
   *&v51.height = &unk_1E8010970;
   *&var2.x = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:&v50];
-  a7->horizontal = v30 - v30;
-  a7->vertical = v42;
+  displacement->horizontal = v30 - v30;
+  displacement->vertical = v42;
 LABEL_17:
-  [v28 convertPoint:v14 fromView:{v41, v39}];
+  [view2 convertPoint:collectionView2 fromView:{v41, v39}];
   *(&v65 + 1) = v43;
   v66 = v44;
   v45 = v61;
-  a6->var0.var2 = v60;
-  *&a6->var0.var3.var0.top = v45;
+  frame->var0.var2 = v60;
+  *&frame->var0.var3.var0.top = v45;
   v46 = v63;
-  *&a6->var0.var3.var0.bottom = v62;
-  *&a6->var0.var3.var1.top = v46;
+  *&frame->var0.var3.var0.bottom = v62;
+  *&frame->var0.var3.var1.top = v46;
   v47 = v59;
-  a6->var0.var0 = v58;
-  a6->var0.var1 = v47;
+  frame->var0.var0 = v58;
+  frame->var0.var1 = v47;
   v48 = v65;
-  *&a6->var0.var3.var1.bottom = v64;
-  *&a6->var0.var4.var0 = v48;
-  a6->var1.y = v66;
+  *&frame->var0.var3.var1.bottom = v64;
+  *&frame->var0.var4.var0 = v48;
+  frame->var1.y = v66;
 LABEL_18:
 
 LABEL_19:
-  return a5;
+  return size;
 }
 
-- (void)setFooterSuppressed:(BOOL)a3
+- (void)setFooterSuppressed:(BOOL)suppressed
 {
-  if (self->_footerSuppressed != a3)
+  if (self->_footerSuppressed != suppressed)
   {
-    self->_footerSuppressed = a3;
+    self->_footerSuppressed = suppressed;
     [(PKDashboardPassGroupViewController *)self _updatePassFooterViewWithReload:0 postTransaction:?];
   }
 }
 
-- (void)_updatePassFooterViewWithReload:(char)a3 postTransaction:
+- (void)_updatePassFooterViewWithReload:(char)reload postTransaction:
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ((a3 & 1) == 0)
+    if ((reload & 1) == 0)
     {
-      v6 = *(a1 + 1592);
+      v6 = *(self + 1592);
       if (v6)
       {
         dispatch_source_cancel(v6);
-        v7 = *(a1 + 1592);
-        *(a1 + 1592) = 0;
+        v7 = *(self + 1592);
+        *(self + 1592) = 0;
       }
     }
 
-    v8 = [*(a1 + 1248) frontmostPassView];
-    v9 = v8;
+    frontmostPassView = [*(self + 1248) frontmostPassView];
+    v9 = frontmostPassView;
     v10 = 0;
-    v11 = atomic_load((a1 + 1552));
-    if (v8 && (v11 & 1) == 0)
+    v11 = atomic_load((self + 1552));
+    if (frontmostPassView && (v11 & 1) == 0)
     {
-      v12 = [v8 pass];
+      pass = [frontmostPassView pass];
       if (PKValueAddedServicesEnabledForPass())
       {
-        if ([*(a1 + 1232) isInRestrictedMode])
+        if ([*(self + 1232) isInRestrictedMode])
         {
           v13 = 3;
         }
@@ -3325,29 +3325,29 @@ LABEL_19:
       v10 = [[PKPassFooterViewConfiguration alloc] initWithPassView:v9 state:v13];
     }
 
-    v14 = atomic_load((a1 + 1552));
+    v14 = atomic_load((self + 1552));
     v15 = 0.0;
-    if (v14 & 1) != 0 || ![(PKPassFooterViewConfiguration *)v10 state]|| (*(a1 + 1616) & 1) != 0 || *(a1 + 1457) != 1 || (*(a1 + 1808))
+    if (v14 & 1) != 0 || ![(PKPassFooterViewConfiguration *)v10 state]|| (*(self + 1616) & 1) != 0 || *(self + 1457) != 1 || (*(self + 1808))
     {
       v16 = 0;
       v17 = 0;
       a2 = 0;
-      v18 = v10;
+      pass2 = v10;
       v10 = 0;
     }
 
     else
     {
-      v18 = [v9 pass];
-      v15 = [(PKDashboardPassGroupViewController *)a1 _passFooterAlphaForPass:v18 postTransaction:a3];
+      pass2 = [v9 pass];
+      v15 = [(PKDashboardPassGroupViewController *)self _passFooterAlphaForPass:pass2 postTransaction:reload];
       v16 = 1;
       v17 = 1;
     }
 
-    v19 = *(a1 + 1580);
-    [*(a1 + 1664) alpha];
+    v19 = *(self + 1580);
+    [*(self + 1664) alpha];
     v21 = v20;
-    v22 = [*(a1 + 1664) configuration];
+    configuration = [*(self + 1664) configuration];
     v23 = PKEqualObjects();
 
     v24 = v23 ^ 1;
@@ -3356,9 +3356,9 @@ LABEL_19:
       goto LABEL_54;
     }
 
-    v38 = [a1 viewIfLoaded];
-    *(a1 + 1580) = v17;
-    v25 = *(a1 + 1664);
+    viewIfLoaded = [self viewIfLoaded];
+    *(self + 1580) = v17;
+    v25 = *(self + 1664);
     if (v25)
     {
       v26 = v19 == v17;
@@ -3387,21 +3387,21 @@ LABEL_19:
       if (v16)
       {
         [v25 willBecomeVisibleAnimated:1];
-        if (!*(a1 + 1664))
+        if (!*(self + 1664))
         {
 LABEL_32:
           v27 = objc_alloc_init(PKPassFooterView);
-          v28 = *(a1 + 1664);
-          *(a1 + 1664) = v27;
+          v28 = *(self + 1664);
+          *(self + 1664) = v27;
 
-          [*(a1 + 1664) setDelegate:a1];
-          if (v38)
+          [*(self + 1664) setDelegate:self];
+          if (viewIfLoaded)
           {
-            [*(a1 + 1664) setAlpha:0.0];
-            [*(a1 + 1656) insertSubview:*(a1 + 1664) atIndex:0];
+            [*(self + 1664) setAlpha:0.0];
+            [*(self + 1656) insertSubview:*(self + 1664) atIndex:0];
           }
 
-          [*(a1 + 1664) willBecomeVisibleAnimated:1];
+          [*(self + 1664) willBecomeVisibleAnimated:1];
         }
 
 LABEL_35:
@@ -3410,9 +3410,9 @@ LABEL_35:
           v29 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = *(a1 + 1664);
+            v30 = *(self + 1664);
             *buf = 134349312;
-            v44 = a1;
+            selfCopy = self;
             v45 = 2050;
             v46 = v30;
             _os_log_impl(&dword_1BD026000, v29, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): configuring PKPassFooterView %{public}p.", buf, 0x16u);
@@ -3428,38 +3428,38 @@ LABEL_35:
             v31 = 0;
           }
 
-          v32 = (v31 & 1) != 0 || *(a1 + 1584) != 0;
+          v32 = (v31 & 1) != 0 || *(self + 1584) != 0;
           v33 = 2;
           if (!a2)
           {
             v33 = 0;
           }
 
-          [*(a1 + 1664) configureWithConfiguration:v10 context:0 options:v32 | v33];
+          [*(self + 1664) configureWithConfiguration:v10 context:0 options:v32 | v33];
         }
 
-        ++*(a1 + 1584);
-        [v38 setNeedsLayout];
-        [v38 layoutIfNeeded];
+        ++*(self + 1584);
+        [viewIfLoaded setNeedsLayout];
+        [viewIfLoaded layoutIfNeeded];
         goto LABEL_50;
       }
 
       [v25 willBecomeHiddenAnimated:1];
     }
 
-    ++*(a1 + 1584);
+    ++*(self + 1584);
 LABEL_50:
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __86__PKDashboardPassGroupViewController__updatePassFooterViewWithReload_postTransaction___block_invoke_2;
     aBlock[3] = &unk_1E80119C8;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     *&aBlock[5] = v15;
     v34 = _Block_copy(aBlock);
     v35 = v34;
-    if (v38 != 0 && v21 != v15)
+    if (viewIfLoaded != 0 && v21 != v15)
     {
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v36 = MEMORY[0x1E69DD250];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
@@ -3476,14 +3476,14 @@ LABEL_50:
     else
     {
       v37 = (*(v34 + 2))(v34);
-      __86__PKDashboardPassGroupViewController__updatePassFooterViewWithReload_postTransaction___block_invoke(v37, a1);
+      __86__PKDashboardPassGroupViewController__updatePassFooterViewWithReload_postTransaction___block_invoke(v37, self);
     }
 
 LABEL_54:
   }
 }
 
-- (uint64_t)_passFooterAlphaForPass:(char)a3 postTransaction:
+- (uint64_t)_passFooterAlphaForPass:(char)pass postTransaction:
 {
   v5 = a2;
   if ([v5 style] != 9)
@@ -3495,23 +3495,23 @@ LABEL_7:
       goto LABEL_10;
     }
 
-    v7 = [v5 nfcPayload];
-    v8 = v7 != 0;
+    nfcPayload = [v5 nfcPayload];
+    requiresAuthentication = nfcPayload != 0;
 LABEL_9:
 
-    v6 = v8;
+    v6 = requiresAuthentication;
     goto LABEL_10;
   }
 
-  if ((a3 & 1) == 0)
+  if ((pass & 1) == 0)
   {
-    if (*(a1 + 1600))
+    if (*(self + 1600))
     {
       goto LABEL_7;
     }
 
-    v7 = [*(a1 + 1264) nfcPayload];
-    v8 = [v7 requiresAuthentication];
+    nfcPayload = [*(self + 1264) nfcPayload];
+    requiresAuthentication = [nfcPayload requiresAuthentication];
     goto LABEL_9;
   }
 
@@ -3572,42 +3572,42 @@ uint64_t __76__PKDashboardPassGroupViewController__startPostTransactionTimerIfNe
   return result;
 }
 
-- (void)_updateDashboardAndFooterContentPostTransaction:(uint64_t)a1
+- (void)_updateDashboardAndFooterContentPostTransaction:(uint64_t)transaction
 {
-  if (a1)
+  if (transaction)
   {
-    if ([a1 isViewLoaded])
+    if ([transaction isViewLoaded])
     {
-      [*(a1 + 1832) setFade:1];
-      [a1 shouldPresentAllContent:-[PKDashboardPassGroupViewController _passFooterAlphaForPass:postTransaction:](a1 animated:{*(a1 + 1264), a2) == 0, 1}];
-      [(PKDashboardPassGroupViewController *)a1 _updatePassFooterViewWithReload:a2 postTransaction:?];
-      [*(a1 + 1832) setFade:0];
+      [*(transaction + 1832) setFade:1];
+      [transaction shouldPresentAllContent:-[PKDashboardPassGroupViewController _passFooterAlphaForPass:postTransaction:](transaction animated:{*(transaction + 1264), a2) == 0, 1}];
+      [(PKDashboardPassGroupViewController *)transaction _updatePassFooterViewWithReload:a2 postTransaction:?];
+      [*(transaction + 1832) setFade:0];
       if (a2)
       {
-        if (!*(a1 + 1592))
+        if (!*(transaction + 1592))
         {
           v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
-          v5 = *(a1 + 1592);
-          *(a1 + 1592) = v4;
+          v5 = *(transaction + 1592);
+          *(transaction + 1592) = v4;
 
-          v6 = *(a1 + 1592);
+          v6 = *(transaction + 1592);
           v7 = dispatch_time(0, 2500000000);
           dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x5F5E100uLL);
-          v8 = *(a1 + 1592);
+          v8 = *(transaction + 1592);
           handler[0] = MEMORY[0x1E69E9820];
           handler[1] = 3221225472;
           handler[2] = __76__PKDashboardPassGroupViewController__startPostTransactionTimerIfNeccessary__block_invoke;
           handler[3] = &unk_1E8010970;
-          handler[4] = a1;
+          handler[4] = transaction;
           dispatch_source_set_event_handler(v8, handler);
-          v9 = *(a1 + 1592);
+          v9 = *(transaction + 1592);
           v10[0] = MEMORY[0x1E69E9820];
           v10[1] = 3221225472;
           v10[2] = __76__PKDashboardPassGroupViewController__startPostTransactionTimerIfNeccessary__block_invoke_2;
           v10[3] = &unk_1E8010970;
-          v10[4] = a1;
+          v10[4] = transaction;
           dispatch_source_set_cancel_handler(v9, v10);
-          dispatch_resume(*(a1 + 1592));
+          dispatch_resume(*(transaction + 1592));
         }
       }
     }
@@ -3621,12 +3621,12 @@ void __76__PKDashboardPassGroupViewController__startPostTransactionTimerIfNecces
   *(v1 + 1592) = 0;
 }
 
-- (void)setDashboardPassGroupViewControllerDelegate:(id)a3
+- (void)setDashboardPassGroupViewControllerDelegate:(id)delegate
 {
   v3 = atomic_load(&self->_invalidated);
   if ((v3 & 1) == 0)
   {
-    objc_storeWeak(&self->_dashboardPassGroupViewControllerDelegate, a3);
+    objc_storeWeak(&self->_dashboardPassGroupViewControllerDelegate, delegate);
   }
 }
 
@@ -3642,19 +3642,19 @@ void __76__PKDashboardPassGroupViewController__startPostTransactionTimerIfNecces
   return paymentPassDataSource;
 }
 
-- (void)_reloadNavigationItemsAnimated:(unsigned __int8 *)a1
+- (void)_reloadNavigationItemsAnimated:(unsigned __int8 *)animated
 {
-  if (a1)
+  if (animated)
   {
-    v3 = atomic_load(a1 + 1552);
+    v3 = atomic_load(animated + 1552);
     if ((v3 & 1) == 0)
     {
-      if ([(PKDashboardPassGroupViewController *)a1 _updateEffectiveNavigationItems])
+      if ([(PKDashboardPassGroupViewController *)animated _updateEffectiveNavigationItems])
       {
-        [(PKDashboardPassGroupViewController *)a1 _updateNavigationItemAnimated:a2];
+        [(PKDashboardPassGroupViewController *)animated _updateNavigationItemAnimated:a2];
       }
 
-      [(PKDashboardPassGroupViewController *)a1 _afterDataSourceContentLoadedUpdateNavigationItems];
+      [(PKDashboardPassGroupViewController *)animated _afterDataSourceContentLoadedUpdateNavigationItems];
     }
   }
 }
@@ -3693,21 +3693,21 @@ void __62__PKDashboardPassGroupViewController__createLeadingItemGroups__block_in
 
 - (void)_dismiss
 {
-  if (a1)
+  if (self)
   {
-    v2 = atomic_load((a1 + 1552));
-    if ((v2 & 1) == 0 && *(a1 + 1248) && (*(a1 + 1456) & 1) == 0)
+    v2 = atomic_load((self + 1552));
+    if ((v2 & 1) == 0 && *(self + 1248) && (*(self + 1456) & 1) == 0)
     {
       if (PKRunningInRemoteContext())
       {
 
-        [(PKDashboardPassGroupViewController *)a1 _requestModalPresentationFromButton:?];
+        [(PKDashboardPassGroupViewController *)self _requestModalPresentationFromButton:?];
       }
 
       else
       {
 
-        [(PKDashboardPassGroupViewController *)a1 _dismissWithVelocity:0.0 byDragging:?];
+        [(PKDashboardPassGroupViewController *)self _dismissWithVelocity:0.0 byDragging:?];
       }
     }
   }
@@ -3716,14 +3716,14 @@ void __62__PKDashboardPassGroupViewController__createLeadingItemGroups__block_in
 - (uint64_t)_leadingItemGroups
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if ((*(a1 + 1328) & 1) == 0)
+  if ((*(self + 1328) & 1) == 0)
   {
     __break(1u);
   }
 
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [v2 addObject:*(a1 + 1320)];
-  v3 = *(a1 + 1304);
+  [v2 addObject:*(self + 1320)];
+  v3 = *(self + 1304);
   if (v3)
   {
     [v3 setBarButtonItems:v2];
@@ -3731,12 +3731,12 @@ void __62__PKDashboardPassGroupViewController__createLeadingItemGroups__block_in
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v2 representativeItem:*(a1 + 1312)];
-    v5 = *(a1 + 1304);
-    *(a1 + 1304) = v4;
+    v4 = [objc_alloc(MEMORY[0x1E69DC720]) initWithBarButtonItems:v2 representativeItem:*(self + 1312)];
+    v5 = *(self + 1304);
+    *(self + 1304) = v4;
   }
 
-  v7[0] = *(a1 + 1304);
+  v7[0] = *(self + 1304);
   [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   return objc_claimAutoreleasedReturnValue();
 }
@@ -3819,8 +3819,8 @@ void __63__PKDashboardPassGroupViewController__createTrailingItemGroups__block_i
     {
       if (v4)
       {
-        v5 = [v4 barButtonItems];
-        v6 = BarButtonItemsEqual(v5, v2);
+        barButtonItems = [v4 barButtonItems];
+        v6 = BarButtonItemsEqual(barButtonItems, v2);
 
         if (!v6)
         {
@@ -3848,8 +3848,8 @@ void __63__PKDashboardPassGroupViewController__createTrailingItemGroups__block_i
     {
       if (v11)
       {
-        v12 = [v11 barButtonItems];
-        v13 = BarButtonItemsEqual(v12, v9);
+        barButtonItems2 = [v11 barButtonItems];
+        v13 = BarButtonItemsEqual(barButtonItems2, v9);
 
         if (!v13)
         {
@@ -3950,8 +3950,8 @@ void __68__PKDashboardPassGroupViewController__updateNavigationItemAnimated___bl
   v1 = result;
   if (!*(result + 158))
   {
-    v52 = 0;
-    v2 = 0;
+    account = 0;
+    peerPaymentAccount = 0;
     *(result + 1433) = 1;
     *(result + 1720) = 1;
     goto LABEL_8;
@@ -3959,13 +3959,13 @@ void __68__PKDashboardPassGroupViewController__updateNavigationItemAnimated___bl
 
   if (!*(result + 159))
   {
-    v2 = 0;
-    v52 = 0;
+    peerPaymentAccount = 0;
+    account = 0;
     goto LABEL_10;
   }
 
-  v52 = [*(result + 153) account];
-  v2 = [v1[153] peerPaymentAccount];
+  account = [*(result + 153) account];
+  peerPaymentAccount = [v1[153] peerPaymentAccount];
   if (([v1[159] hasAssociatedPeerPaymentAccount] & 1) == 0)
   {
 LABEL_10:
@@ -3982,7 +3982,7 @@ LABEL_10:
   {
     v4 = 0;
 LABEL_11:
-    v5 = v52;
+    v5 = account;
     goto LABEL_12;
   }
 
@@ -3998,19 +3998,19 @@ LABEL_12:
     if (v6)
     {
       v7 = v1[214];
-      v8 = [v6 familyCollection];
-      [v7 setFamilyCollection:v8];
+      familyCollection = [v6 familyCollection];
+      [v7 setFamilyCollection:familyCollection];
 
-      [v1[214] setPeerPaymentAccount:v2];
+      [v1[214] setPeerPaymentAccount:peerPaymentAccount];
       [v1[214] setHomeKitHasHomeGuestAccessSchedule:{objc_msgSend(v1[153], "homeKitHasHomeGuestAccessSchedule")}];
       v9 = v1[214];
-      v10 = [v1[153] homeKitHomeIdentifier];
-      [v9 setHomeKitHomeIdentifier:v10];
+      homeKitHomeIdentifier = [v1[153] homeKitHomeIdentifier];
+      [v9 setHomeKitHomeIdentifier:homeKitHomeIdentifier];
 
       v11 = v1[214];
-      v12 = [v1[153] bankConnectLinkedAccountData];
-      v13 = [v12 account];
-      [v11 setBankConnectAccount:v13];
+      bankConnectLinkedAccountData = [v1[153] bankConnectLinkedAccountData];
+      account2 = [bankConnectLinkedAccountData account];
+      [v11 setBankConnectAccount:account2];
     }
   }
 
@@ -4042,7 +4042,7 @@ LABEL_12:
   {
     v18 = v15;
     v19 = v17;
-    result = v52;
+    result = account;
     if ((v1[179] & 1) == 0)
     {
       goto LABEL_61;
@@ -4051,12 +4051,12 @@ LABEL_12:
     v20 = result;
     if ([v19 cardType] == 1)
     {
-      v21 = [v19 devicePrimaryPaymentApplication];
-      v22 = v2;
-      v23 = [v21 paymentType];
+      devicePrimaryPaymentApplication = [v19 devicePrimaryPaymentApplication];
+      v22 = peerPaymentAccount;
+      paymentType = [devicePrimaryPaymentApplication paymentType];
 
-      v24 = v23 - 3;
-      v2 = v22;
+      v24 = paymentType - 3;
+      peerPaymentAccount = v22;
       if (v24 >= 0xFFFFFFFFFFFFFFFELL)
       {
         if (PKSupportsSearchForPass())
@@ -4067,11 +4067,11 @@ LABEL_12:
     }
   }
 
-  v25 = [v1[214] moreMenu];
-  if (v25)
+  moreMenu = [v1[214] moreMenu];
+  if (moreMenu)
   {
     v26 = v1[169];
-    [v26 setMenu:v25];
+    [v26 setMenu:moreMenu];
     [v16 addObject:v26];
     [v1[214] setSourceItem:v26];
   }
@@ -4093,10 +4093,10 @@ LABEL_12:
   v31 = v1[159];
   if (v31)
   {
-    v32 = v2;
+    v32 = peerPaymentAccount;
     v33 = v30;
     v34 = v31;
-    result = v52;
+    result = account;
     if ((v1[179] & 1) == 0)
     {
       goto LABEL_61;
@@ -4108,32 +4108,32 @@ LABEL_12:
       goto LABEL_39;
     }
 
-    v36 = [v34 devicePrimaryPaymentApplication];
-    v37 = [v36 paymentType];
+    devicePrimaryPaymentApplication2 = [v34 devicePrimaryPaymentApplication];
+    paymentType2 = [devicePrimaryPaymentApplication2 paymentType];
 
-    if ((v37 - 3) < 0xFFFFFFFFFFFFFFFELL)
+    if ((paymentType2 - 3) < 0xFFFFFFFFFFFFFFFELL)
     {
       goto LABEL_39;
     }
 
-    v38 = [v34 passActivationState];
+    passActivationState = [v34 passActivationState];
     if ([v34 isAppleCardPass])
     {
       v50 = MEMORY[0x1E69B8770];
-      v39 = [v35 cardAvailabilityInfo];
-      v40 = [v34 deviceAccountNumberSuffix];
-      LOBYTE(v50) = [v50 shouldShowCardNumbersWithAccountAvailabilityInfo:v39 dpanSuffixForPaymentApplication:v40];
+      cardAvailabilityInfo = [v35 cardAvailabilityInfo];
+      deviceAccountNumberSuffix = [v34 deviceAccountNumberSuffix];
+      LOBYTE(v50) = [v50 shouldShowCardNumbersWithAccountAvailabilityInfo:cardAvailabilityInfo dpanSuffixForPaymentApplication:deviceAccountNumberSuffix];
 
       if ((v50 & 1) == 0)
       {
 LABEL_39:
 
-        v2 = v32;
+        peerPaymentAccount = v32;
         goto LABEL_40;
       }
     }
 
-    else if (v38)
+    else if (passActivationState)
     {
       goto LABEL_39;
     }
@@ -4168,30 +4168,30 @@ LABEL_58:
   if (v1[179])
   {
     v43 = result;
-    v44 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     if ([v43 passType] == 1 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v45 = v43;
       if (([v45 passActivationState] - 5) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v46 = [v45 devicePrimaryPaymentApplication];
-        v51 = v2;
-        v47 = [v46 state];
+        devicePrimaryPaymentApplication3 = [v45 devicePrimaryPaymentApplication];
+        v51 = peerPaymentAccount;
+        state = [devicePrimaryPaymentApplication3 state];
 
-        v48 = v47 == 15;
-        v2 = v51;
+        v48 = state == 15;
+        peerPaymentAccount = v51;
         if (!v48)
         {
           v53 = 0;
-          v49 = [v45 uniqueID];
-          [v44 sharingCapabilitiesForPassIdentifier:v49 outHasShares:&v53 + 1 outHasShareableEntitlements:&v53];
+          uniqueID = [v45 uniqueID];
+          [defaultDataProvider sharingCapabilitiesForPassIdentifier:uniqueID outHasShares:&v53 + 1 outHasShareableEntitlements:&v53];
 
           if (HIBYTE(v53) == 1)
           {
             [v42 addObject:v1[176]];
           }
 
-          v2 = v51;
+          peerPaymentAccount = v51;
           if ([v45 supportsFeatureForCurrentDevice:1] && v53 == 1)
           {
             [v42 addObject:v1[175]];
@@ -4215,18 +4215,18 @@ LABEL_61:
 
 - (void)_afterDataSourceContentLoadedUpdateNavigationItems
 {
-  if (a1)
+  if (self)
   {
-    v2 = atomic_load((a1 + 1552));
+    v2 = atomic_load((self + 1552));
     if ((v2 & 1) == 0)
     {
-      v3 = *(a1 + 1264);
+      v3 = *(self + 1264);
       if (v3)
       {
         if ([v3 passType] == 1)
         {
-          objc_initWeak(&location, a1);
-          v4 = *(a1 + 1224);
+          objc_initWeak(&location, self);
+          v4 = *(self + 1224);
           v5[0] = MEMORY[0x1E69E9820];
           v5[1] = 3221225472;
           v5[2] = __88__PKDashboardPassGroupViewController__afterDataSourceContentLoadedUpdateNavigationItems__block_invoke;
@@ -4279,18 +4279,18 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_requestModalPresentationFromButton:(uint64_t)a1
+- (void)_requestModalPresentationFromButton:(uint64_t)button
 {
-  if (a1)
+  if (button)
   {
-    v3 = atomic_load((a1 + 1552));
-    if ((v3 & 1) == 0 && *(a1 + 1248) && (*(a1 + 1456) & 1) == 0 && *(a1 + 1264) && (*(a1 + 1616) & 1) == 0 && *(a1 + 1480) && (*(a1 + 1496) & 1) == 0)
+    v3 = atomic_load((button + 1552));
+    if ((v3 & 1) == 0 && *(button + 1248) && (*(button + 1456) & 1) == 0 && *(button + 1264) && (*(button + 1616) & 1) == 0 && *(button + 1480) && (*(button + 1496) & 1) == 0)
     {
-      v5 = [(PKDashboardPassGroupViewController *)a1 _passGroupsViewController];
-      v6 = [v5 groupStackView];
-      if (v6)
+      _passGroupsViewController = [(PKDashboardPassGroupViewController *)button _passGroupsViewController];
+      groupStackView = [_passGroupsViewController groupStackView];
+      if (groupStackView)
       {
-        v7 = v6[2997];
+        v7 = groupStackView[2997];
 
         if (v7)
         {
@@ -4310,28 +4310,28 @@ LABEL_13:
       }
 
       v8 = [PKPGVTransitionContext createForAnimatedTransition:v10 withPassContext:?];
-      v9 = *(a1 + 1480);
-      [-[PKPGVTransitionCoordinator coordinatorForTransceiver:](v9 a1)];
+      v9 = *(button + 1480);
+      [-[PKPGVTransitionCoordinator coordinatorForTransceiver:](v9 button)];
     }
   }
 }
 
-- (void)_dismissWithVelocity:(double)a3 byDragging:
+- (void)_dismissWithVelocity:(double)velocity byDragging:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v4 = atomic_load((a1 + 1552));
-  if (v4 & 1) != 0 || !*(a1 + 1248) || (*(a1 + 1456))
+  v4 = atomic_load((self + 1552));
+  if (v4 & 1) != 0 || !*(self + 1248) || (*(self + 1456))
   {
     return;
   }
 
-  if (a3 > 0.0 && (a2 & 1) != 0)
+  if (velocity > 0.0 && (a2 & 1) != 0)
   {
-    v5 = [(PKPGVTransitionContext *)a3 createForPanGestureWithPassContext:0 velocity:?];
+    v5 = [(PKPGVTransitionContext *)velocity createForPanGestureWithPassContext:0 velocity:?];
   }
 
   else
@@ -4339,25 +4339,25 @@ LABEL_13:
     v5 = [PKPGVTransitionContext createForAnimatedTransition:0 withPassContext:?];
   }
 
-  if (*(a1 + 1480) && (*(a1 + 1496) & 1) == 0)
+  if (*(self + 1480) && (*(self + 1496) & 1) == 0)
   {
     v10 = v5;
-    v6 = [(PKDashboardPassGroupViewController *)a1 _passGroupsViewController];
-    v7 = [v6 groupStackView];
-    if (!v7)
+    _passGroupsViewController = [(PKDashboardPassGroupViewController *)self _passGroupsViewController];
+    groupStackView = [_passGroupsViewController groupStackView];
+    if (!groupStackView)
     {
 
       goto LABEL_14;
     }
 
-    v8 = v7[2997];
+    v8 = groupStackView[2997];
 
     v5 = v10;
     if ((v8 & 1) == 0)
     {
 LABEL_14:
-      v9 = *(a1 + 1480);
-      [-[PKPGVTransitionCoordinator coordinatorForTransceiver:](v9 a1)];
+      v9 = *(self + 1480);
+      [-[PKPGVTransitionCoordinator coordinatorForTransceiver:](v9 self)];
 
       v5 = v10;
     }
@@ -4372,16 +4372,16 @@ LABEL_14:
   }
 }
 
-- (void)_presentPassDetailsAnimated:(uint64_t)a3 action:
+- (void)_presentPassDetailsAnimated:(uint64_t)animated action:
 {
-  if (a1)
+  if (self)
   {
-    if ((a3 - 1) >= 0xB)
+    if ((animated - 1) >= 0xB)
     {
-      if (!a3)
+      if (!animated)
       {
 
-        [(PKDashboardPassGroupViewController *)a1 presentPassDetailsAnimated:a2 completion:0];
+        [(PKDashboardPassGroupViewController *)self presentPassDetailsAnimated:a2 completion:0];
       }
     }
 
@@ -4393,8 +4393,8 @@ LABEL_14:
       v5[1] = 3221225472;
       v5[2] = __73__PKDashboardPassGroupViewController__presentPassDetailsAnimated_action___block_invoke;
       v5[3] = &__block_descriptor_40_e43_v16__0__PKPaymentPassDetailViewController_8l;
-      v5[4] = a3;
-      [(PKDashboardPassGroupViewController *)a1 _presentPaymentPassDetailsAnimated:a2 completion:v5];
+      v5[4] = animated;
+      [(PKDashboardPassGroupViewController *)self _presentPaymentPassDetailsAnimated:a2 completion:v5];
     }
   }
 }
@@ -4417,27 +4417,27 @@ LABEL_14:
 - (void)_updateFingerDetection
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (PKPearlIsAvailable() & 1) != 0 || (PKUserIntentIsAvailable() & 1) != 0 || (v2 = atomic_load((a1 + 1552)), (v2) || *(a1 + 1576) - 1 > 1 || ![(PKDashboardPassGroupViewController *)a1 _isForegroundActive]|| !*(a1 + 1272))
+  if (PKPearlIsAvailable() & 1) != 0 || (PKUserIntentIsAvailable() & 1) != 0 || (v2 = atomic_load((self + 1552)), (v2) || *(self + 1576) - 1 > 1 || ![(PKDashboardPassGroupViewController *)self _isForegroundActive]|| !*(self + 1272))
   {
-    v12 = *(a1 + 1752);
+    v12 = *(self + 1752);
     if (v12)
     {
       [v12 setDelegate:0];
-      [*(a1 + 1752) cancel];
-      v13 = *(a1 + 1752);
-      *(a1 + 1752) = 0;
+      [*(self + 1752) cancel];
+      v13 = *(self + 1752);
+      *(self + 1752) = 0;
     }
 
-    v14 = *(a1 + 1760);
+    v14 = *(self + 1760);
     if (v14)
     {
       dispatch_source_cancel(v14);
-      v15 = *(a1 + 1760);
-      *(a1 + 1760) = 0;
+      v15 = *(self + 1760);
+      *(self + 1760) = 0;
     }
   }
 
-  else if (!*(a1 + 1752))
+  else if (!*(self + 1752))
   {
     [(objc_class *)_MergedGlobals_55() availableDevices];
     v18 = 0u;
@@ -4483,19 +4483,19 @@ LABEL_10:
       v10 = v9;
 
       v16 = [v10 createPresenceDetectOperationWithError:0];
-      v17 = *(a1 + 1752);
-      *(a1 + 1752) = v16;
+      v17 = *(self + 1752);
+      *(self + 1752) = v16;
 
-      [*(a1 + 1752) setPriority:40];
-      [*(a1 + 1752) setDelegate:a1];
-      if ([*(a1 + 1752) startWithError:0])
+      [*(self + 1752) setPriority:40];
+      [*(self + 1752) setDelegate:self];
+      if ([*(self + 1752) startWithError:0])
       {
         goto LABEL_27;
       }
 
-      [*(a1 + 1752) setDelegate:0];
-      v11 = *(a1 + 1752);
-      *(a1 + 1752) = 0;
+      [*(self + 1752) setDelegate:0];
+      v11 = *(self + 1752);
+      *(self + 1752) = 0;
     }
 
     else
@@ -4529,35 +4529,35 @@ void __79__PKDashboardPassGroupViewController__afterDataSourceContentLoadedUpdat
 
 - (uint64_t)_isForegroundActive
 {
-  v1 = atomic_load((a1 + 1552));
+  v1 = atomic_load((self + 1552));
   if (v1)
   {
     return 0;
   }
 
-  if (*(a1 + 1569) != 1)
+  if (*(self + 1569) != 1)
   {
     return 0;
   }
 
-  if ([PKUIForegroundActiveArbiter isDeactivedForReasons:*(a1 + 1572)])
+  if ([PKUIForegroundActiveArbiter isDeactivedForReasons:*(self + 1572)])
   {
     return 0;
   }
 
-  v3 = atomic_load((a1 + 1552));
-  if ((v3 & 1) != 0 || *(a1 + 1568) != 1)
+  v3 = atomic_load((self + 1552));
+  if ((v3 & 1) != 0 || *(self + 1568) != 1)
   {
     return 0;
   }
 
   else
   {
-    return [PKUIForegroundActiveArbiter isBackgroundedForReasons:*(a1 + 1572)]^ 1;
+    return [PKUIForegroundActiveArbiter isBackgroundedForReasons:*(self + 1572)]^ 1;
   }
 }
 
-- (void)accountDidUpdate:(id)a3
+- (void)accountDidUpdate:(id)update
 {
   [(PKDashboardPassGroupViewController *)self _updateFooterAnimated:?];
   v4 = self->_visibility - 1 < 2;
@@ -4567,12 +4567,12 @@ void __79__PKDashboardPassGroupViewController__afterDataSourceContentLoadedUpdat
 
 - (id)_passcodeButtonTitle
 {
-  if ([*(a1 + 1272) isAccessPass])
+  if ([*(self + 1272) isAccessPass])
   {
     v2 = @"GENERIC_PASSCODE";
   }
 
-  else if ([*(a1 + 1272) isIdentityPass])
+  else if ([*(self + 1272) isIdentityPass])
   {
     v2 = @"PRESENT_PASSCODE";
   }
@@ -4646,12 +4646,12 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
   }
 }
 
-- (BOOL)dashboardViewController:(id)a3 shouldStartDismissInteractionFromPoint:(CGPoint)a4
+- (BOOL)dashboardViewController:(id)controller shouldStartDismissInteractionFromPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = v7;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
+  v8 = controllerCopy;
   v9 = atomic_load(&self->_invalidated);
   if (v9)
   {
@@ -4663,8 +4663,8 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
     passGroupView = self->_passGroupView;
     if (passGroupView)
     {
-      v11 = [v7 view];
-      [(PKPassGroupView *)passGroupView convertPoint:v11 fromView:x, y];
+      view = [controllerCopy view];
+      [(PKPassGroupView *)passGroupView convertPoint:view fromView:x, y];
       LOBYTE(passGroupView) = [(PKPassGroupView *)passGroupView pointInside:0 withEvent:?];
     }
   }
@@ -4672,16 +4672,16 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
   return passGroupView;
 }
 
-- (void)dashboardViewController:(id)a3 willStartDismissInteractionFromPoint:(CGPoint)a4
+- (void)dashboardViewController:(id)controller willStartDismissInteractionFromPoint:(CGPoint)point
 {
-  [(PKDashboardPassFlowLayout *)self->_passFlowLayout passPanDidBegin:a3];
+  [(PKDashboardPassFlowLayout *)self->_passFlowLayout passPanDidBegin:controller];
   if (self->_transitionCoordinator && !self->_sendingToTransitionCoordinator && !self->_interactionCompletion)
   {
-    v5 = [(PKDashboardPassGroupViewController *)self _passGroupsViewController];
-    v6 = [v5 groupStackView];
-    if (v6)
+    _passGroupsViewController = [(PKDashboardPassGroupViewController *)self _passGroupsViewController];
+    groupStackView = [_passGroupsViewController groupStackView];
+    if (groupStackView)
     {
-      v7 = v6[2997];
+      v7 = groupStackView[2997];
 
       if (v7)
       {
@@ -4701,20 +4701,20 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
   }
 }
 
-- (BOOL)dashboardViewController:(id)a3 dismissInteractionShouldDismissForContentOffset:(CGPoint)a4 velocity:(CGPoint)a5
+- (BOOL)dashboardViewController:(id)controller dismissInteractionShouldDismissForContentOffset:(CGPoint)offset velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  v6 = a4.y;
-  v7 = [a3 collectionView];
-  [v7 adjustedContentInset];
+  y = velocity.y;
+  v6 = offset.y;
+  collectionView = [controller collectionView];
+  [collectionView adjustedContentInset];
   v9 = v8;
 
   return y <= 0.0 && v6 < -80.0 - v9;
 }
 
-- (void)dashboardViewController:(id)a3 didEndDismissInteraction:(BOOL)a4
+- (void)dashboardViewController:(id)controller didEndDismissInteraction:(BOOL)interaction
 {
-  if (!a4)
+  if (!interaction)
   {
     [(PKDashboardPassFlowLayout *)self->_passFlowLayout passPanDidEnd];
   }
@@ -4722,8 +4722,8 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
 
 - (void)contentDidScroll
 {
-  v45 = [(PKDashboardPassGroupViewController *)self collectionView];
-  [v45 bounds];
+  collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   if (self->_freezeContentOffset && (v3 != self->_frozenContentOffset.x || v4 != self->_frozenContentOffset.y))
@@ -4731,17 +4731,17 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
     if (!self->_inFrozenOffsetRecovery)
     {
       self->_inFrozenOffsetRecovery = 1;
-      [v45 setContentOffset:{self->_frozenContentOffset.x, self->_frozenContentOffset.y}];
+      [collectionView setContentOffset:{self->_frozenContentOffset.x, self->_frozenContentOffset.y}];
       self->_inFrozenOffsetRecovery = 0;
     }
 
     goto LABEL_37;
   }
 
-  v9 = [(PKDashboardPassGroupViewController *)self view];
-  [v9 setNeedsLayout];
+  view = [(PKDashboardPassGroupViewController *)self view];
+  [view setNeedsLayout];
 
-  [v45 adjustedContentInset];
+  [collectionView adjustedContentInset];
   v11 = v10;
   v13 = v12;
   passFlowLayout = self->_passFlowLayout;
@@ -4811,13 +4811,13 @@ void __66__PKDashboardPassGroupViewController__displayPassAlertIfNecessary__bloc
 
   if ([(PKDashboardViewController *)self shouldPresentAllContent])
   {
-    v30 = [(PKDashboardPassGroupViewController *)self collectionView];
-    v31 = [v30 numberOfSections];
-    if (v31 >= 2)
+    collectionView2 = [(PKDashboardPassGroupViewController *)self collectionView];
+    numberOfSections = [collectionView2 numberOfSections];
+    if (numberOfSections >= 2)
     {
-      v32 = v31;
+      v32 = numberOfSections;
       v33 = 1;
-      while ([v30 numberOfItemsInSection:v33] <= 0)
+      while ([collectionView2 numberOfItemsInSection:v33] <= 0)
       {
         if (v32 == ++v33)
         {
@@ -4834,10 +4834,10 @@ LABEL_32:
 
   [(PKPassGroupView *)self->_passGroupView overridePageControlAlpha:v24];
 LABEL_34:
-  v34 = [(PKDashboardPassGroupViewController *)self navigationController];
-  v35 = [v34 navigationBar];
+  navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
-  [v35 frame];
+  [navigationBar frame];
   v37 = v36;
   v38 = *MEMORY[0x1E695EFF8];
   v39 = *(MEMORY[0x1E695EFF8] + 8);
@@ -4854,7 +4854,7 @@ LABEL_34:
   if (!CGRectEqualToRect(v47, v48))
   {
     [(PKAnimatedNavigationBarTitleView *)self->_titleView setBounds:v38, v39, v40, v37];
-    [v35 setNeedsLayout];
+    [navigationBar setNeedsLayout];
   }
 
   self->_passGroupViewVisible = v18 + v20 - v5 >= v11;
@@ -4877,18 +4877,18 @@ LABEL_37:
   }
 }
 
-- (void)_handleUpdatedAccount:(uint64_t)a1 accountRemoved:(void *)a2
+- (void)_handleUpdatedAccount:(uint64_t)account accountRemoved:(void *)removed
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  removedCopy = removed;
+  v4 = removedCopy;
+  if (account)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __75__PKDashboardPassGroupViewController__handleUpdatedAccount_accountRemoved___block_invoke;
     v5[3] = &unk_1E8010A10;
-    v5[4] = a1;
-    v6 = v3;
+    v5[4] = account;
+    v6 = removedCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -4949,28 +4949,28 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)presentActivityDeletionConfirmationAtIndexPath:(id)a3 completion:(id)a4
+- (void)presentActivityDeletionConfirmationAtIndexPath:(id)path completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
+    pathCopy = path;
     v19 = PKLocalizedIdentityString(&cfstr_TransactionDel.isa);
     v8 = PKLocalizedIdentityString(&cfstr_TransactionDel_0.isa);
     v9 = PKLocalizedIdentityString(&cfstr_TransactionDel_1.isa);
     v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v19 message:0 preferredStyle:0];
-    v11 = [(PKDashboardPassGroupViewController *)self collectionView];
-    v12 = [v11 cellForItemAtIndexPath:v7];
+    collectionView = [(PKDashboardPassGroupViewController *)self collectionView];
+    v12 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-    v13 = [v10 popoverPresentationController];
-    [v13 setSourceView:v12];
+    popoverPresentationController = [v10 popoverPresentationController];
+    [popoverPresentationController setSourceView:v12];
 
     v14 = MEMORY[0x1E69DC648];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __96__PKDashboardPassGroupViewController_presentActivityDeletionConfirmationAtIndexPath_completion___block_invoke;
     v22[3] = &unk_1E8011248;
-    v15 = v6;
+    v15 = completionCopy;
     v23 = v15;
     v16 = [v14 actionWithTitle:v8 style:2 handler:v22];
     [v10 addAction:v16];
@@ -4988,14 +4988,14 @@ LABEL_13:
   }
 }
 
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed
 {
-  v4 = a4;
-  v6 = a3;
-  if (self->_fingerPresent == !v4)
+  changedCopy = changed;
+  operationCopy = operation;
+  if (self->_fingerPresent == !changedCopy)
   {
-    self->_fingerPresent = v4;
-    if (v4)
+    self->_fingerPresent = changedCopy;
+    if (changedCopy)
     {
       v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
       fingerTimer = self->_fingerTimer;
@@ -5052,29 +5052,29 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
   }
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __93__PKDashboardPassGroupViewController_foregroundActiveArbiter_didUpdateForegroundActiveState___block_invoke;
   v4[3] = &unk_1E8019910;
   v4[4] = self;
-  v5 = a4;
+  stateCopy = state;
   [(PKDashboardPassGroupViewController *)self _performActivationStateUpdate:v4];
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateDeactivationReasons:(unsigned int)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateDeactivationReasons:(unsigned int)reasons
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __91__PKDashboardPassGroupViewController_foregroundActiveArbiter_didUpdateDeactivationReasons___block_invoke;
   v4[3] = &unk_1E80217E0;
   v4[4] = self;
-  v5 = a4;
+  reasonsCopy = reasons;
   [(PKDashboardPassGroupViewController *)self _performActivationStateUpdate:v4];
 }
 
-- (void)secureElementDidEnterRestrictedMode:(id)a3
+- (void)secureElementDidEnterRestrictedMode:(id)mode
 {
   if (self)
   {
@@ -5082,7 +5082,7 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
   }
 }
 
-- (void)secureElementDidLeaveRestrictedMode:(id)a3
+- (void)secureElementDidLeaveRestrictedMode:(id)mode
 {
   if (self)
   {
@@ -5090,46 +5090,46 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
   }
 }
 
-- (BOOL)isPassFooterViewInGroup:(id)a3
+- (BOOL)isPassFooterViewInGroup:(id)group
 {
-  v3 = [(PKPassGroupView *)self->_passGroupView group];
-  v4 = [v3 passCount] > 1;
+  group = [(PKPassGroupView *)self->_passGroupView group];
+  v4 = [group passCount] > 1;
 
   return v4;
 }
 
-- (void)passFooterViewDidTransact:(id)a3 success:(BOOL)a4
+- (void)passFooterViewDidTransact:(id)transact success:(BOOL)success
 {
-  v5 = [a3 configuration];
-  v6 = [v5 pass];
-  v7 = [v6 style];
+  configuration = [transact configuration];
+  pass = [configuration pass];
+  style = [pass style];
 
-  if (v7 == 9)
+  if (style == 9)
   {
 
     [(PKDashboardPassGroupViewController *)self _updateDashboardAndFooterContentPostTransaction:?];
   }
 }
 
-- (int64_t)groupViewContentModeForFrontmostPassWhenPiled:(id)a3 withDefaultContentMode:(int64_t)a4
+- (int64_t)groupViewContentModeForFrontmostPassWhenPiled:(id)piled withDefaultContentMode:(int64_t)mode
 {
-  v6 = a3;
+  piledCopy = piled;
   WeakRetained = objc_loadWeakRetained(&self->_originalGroupViewDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    a4 = [WeakRetained groupViewContentModeForFrontmostPassWhenPiled:v6 withDefaultContentMode:a4];
+    mode = [WeakRetained groupViewContentModeForFrontmostPassWhenPiled:piledCopy withDefaultContentMode:mode];
   }
 
-  return a4;
+  return mode;
 }
 
-- (unint64_t)groupViewPassesSuppressedContent:(id)a3
+- (unint64_t)groupViewPassesSuppressedContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   WeakRetained = objc_loadWeakRetained(&self->_originalGroupViewDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [WeakRetained groupViewPassesSuppressedContent:v4];
+    v6 = [WeakRetained groupViewPassesSuppressedContent:contentCopy];
   }
 
   else
@@ -5140,84 +5140,84 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
   return v6;
 }
 
-- (double)groupViewModalReferenceScale:(id)a3 isValid:(BOOL *)a4
+- (double)groupViewModalReferenceScale:(id)scale isValid:(BOOL *)valid
 {
-  v6 = a3;
+  scaleCopy = scale;
   WeakRetained = objc_loadWeakRetained(&self->_originalGroupViewDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained groupViewModalReferenceScale:v6 isValid:a4];
+    [WeakRetained groupViewModalReferenceScale:scaleCopy isValid:valid];
     v9 = v8;
   }
 
   else
   {
     v9 = 1.0;
-    if (a4)
+    if (valid)
     {
-      *a4 = 0;
+      *valid = 0;
     }
   }
 
   return v9;
 }
 
-- (void)groupView:(id)a3 didUpdatePassView:(id)a4
+- (void)groupView:(id)view didUpdatePassView:(id)passView
 {
-  v8 = a4;
-  v5 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+  passViewCopy = passView;
+  frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
 
-  if (v5 == v8)
+  if (frontmostPassView == passViewCopy)
   {
-    v6 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
     [(PKDashboardPassGroupViewController *)self _updatePassFooterViewWithReload:0 postTransaction:?];
-    v7 = [v8 pass];
-    [(PKDashboardPassGroupViewController *)self _setFrontmostPass:v7];
+    pass = [passViewCopy pass];
+    [(PKDashboardPassGroupViewController *)self _setFrontmostPass:pass];
   }
 }
 
-- (void)groupView:(id)a3 frontmostPassViewDidChange:(id)a4 withContext:(id)a5
+- (void)groupView:(id)view frontmostPassViewDidChange:(id)change withContext:(id)context
 {
-  v6 = [(PKDashboardPassGroupViewController *)self viewIfLoaded:a3];
+  v6 = [(PKDashboardPassGroupViewController *)self viewIfLoaded:view];
   [v6 setNeedsLayout];
 
-  v7 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-  v8 = [v7 pass];
+  frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+  pass = [frontmostPassView pass];
 
-  [(PKDashboardPassGroupViewController *)self _setFrontmostPass:v8];
+  [(PKDashboardPassGroupViewController *)self _setFrontmostPass:pass];
 }
 
-- (void)groupView:(id)a3 faceViewFrameDidChangeForFrontmostPassView:(id)a4
+- (void)groupView:(id)view faceViewFrameDidChangeForFrontmostPassView:(id)passView
 {
-  v4 = [(PKDashboardPassGroupViewController *)self viewIfLoaded:a3];
+  v4 = [(PKDashboardPassGroupViewController *)self viewIfLoaded:view];
   [v4 setNeedsLayout];
 }
 
-- (void)groupView:(id)a3 deleteButtonPressedForPass:(id)a4 sourceView:(id)a5
+- (void)groupView:(id)view deleteButtonPressedForPass:(id)pass sourceView:(id)sourceView
 {
   if (!self->_deleteAnimationController)
   {
-    v11 = a5;
-    v6 = [(PKDashboardPassGroupViewController *)self view];
-    [v6 setUserInteractionEnabled:0];
+    sourceViewCopy = sourceView;
+    view = [(PKDashboardPassGroupViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
     v7 = [PKPassDeleteAnimationController alloc];
-    v8 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-    v9 = [(PKPassDeleteAnimationController *)v7 initWithPassView:v8 groupView:self->_passGroupView];
+    frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+    v9 = [(PKPassDeleteAnimationController *)v7 initWithPassView:frontmostPassView groupView:self->_passGroupView];
     deleteAnimationController = self->_deleteAnimationController;
     self->_deleteAnimationController = v9;
 
     [(PKPassDeleteAnimationController *)self->_deleteAnimationController setDelegate:self];
-    [(PKPassDeleteAnimationController *)self->_deleteAnimationController showInViewController:self sourceView:v11];
+    [(PKPassDeleteAnimationController *)self->_deleteAnimationController showInViewController:self sourceView:sourceViewCopy];
   }
 }
 
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  controllerCopy = controller;
   if (self->_deleteAnimationController)
   {
     v8 = 0;
@@ -5225,25 +5225,25 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
 
   else
   {
-    v9 = [v6 uniqueID];
-    v10 = [(PKPassGroupView *)self->_passGroupView group];
-    v11 = v10;
-    if (v10 && [v10 indexForPassUniqueID:v9] != 0x7FFFFFFFFFFFFFFFLL)
+    uniqueID = [passCopy uniqueID];
+    group = [(PKPassGroupView *)self->_passGroupView group];
+    v11 = group;
+    if (group && [group indexForPassUniqueID:uniqueID] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [(PKDashboardPassGroupViewController *)self _passGroupsViewNavigationController];
-      v8 = v12 != 0;
-      if (v12)
+      _passGroupsViewNavigationController = [(PKDashboardPassGroupViewController *)self _passGroupsViewNavigationController];
+      v8 = _passGroupsViewNavigationController != 0;
+      if (_passGroupsViewNavigationController)
       {
-        v22 = v12;
+        v22 = _passGroupsViewNavigationController;
         v13 = [PKPassDeleteAnimationController alloc];
-        v14 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-        v15 = [(PKPassDeleteAnimationController *)v13 initWithPassView:v14 groupView:self->_passGroupView];
+        frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+        v15 = [(PKPassDeleteAnimationController *)v13 initWithPassView:frontmostPassView groupView:self->_passGroupView];
         deleteAnimationController = self->_deleteAnimationController;
         self->_deleteAnimationController = v15;
 
         [(PKPassDeleteAnimationController *)self->_deleteAnimationController setDelegate:self];
-        v17 = [(PKDashboardPassGroupViewController *)self view];
-        [v17 setUserInteractionEnabled:0];
+        view = [(PKDashboardPassGroupViewController *)self view];
+        [view setUserInteractionEnabled:0];
 
         objc_initWeak(&location, self);
         aBlock[0] = MEMORY[0x1E69E9820];
@@ -5253,10 +5253,10 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
         objc_copyWeak(&v29, &location);
         v18 = v22;
         v27 = v18;
-        v28 = v9;
+        v28 = uniqueID;
         v19 = _Block_copy(aBlock);
-        v20 = [v18 transitionCoordinator];
-        if (v20)
+        transitionCoordinator = [v18 transitionCoordinator];
+        if (transitionCoordinator)
         {
           v23[0] = MEMORY[0x1E69E9820];
           v23[1] = 3221225472;
@@ -5264,7 +5264,7 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
           v23[3] = &unk_1E8023600;
           objc_copyWeak(&v25, &location);
           v24 = v19;
-          [v20 animateAlongsideTransition:0 completion:v23];
+          [transitionCoordinator animateAlongsideTransition:0 completion:v23];
 
           objc_destroyWeak(&v25);
         }
@@ -5276,7 +5276,7 @@ void __69__PKDashboardPassGroupViewController_operation_presenceStateChanged___b
 
         objc_destroyWeak(&v29);
         objc_destroyWeak(&location);
-        v12 = v22;
+        _passGroupsViewNavigationController = v22;
       }
     }
 
@@ -5368,29 +5368,29 @@ void __88__PKDashboardPassGroupViewController_handleDeletePassRequestWithPass_fo
   }
 }
 
-- (void)deleteAnimationControllerWillBeginDeleteAnimation:(id)a3
+- (void)deleteAnimationControllerWillBeginDeleteAnimation:(id)animation
 {
-  v4 = a3;
-  if (self->_transitionCoordinator && !self->_sendingToTransitionCoordinator && self->_deleteAnimationController == v4)
+  animationCopy = animation;
+  if (self->_transitionCoordinator && !self->_sendingToTransitionCoordinator && self->_deleteAnimationController == animationCopy)
   {
     self->_passDeletionInitiated = 1;
-    v6 = v4;
+    v6 = animationCopy;
     WeakRetained = objc_loadWeakRetained(&self->_dashboardPassGroupViewControllerDelegate);
     [WeakRetained dashboardPassGroupViewController:self willBeginDeleteAnimation:v6];
 
     [(PKDashboardViewController *)self shouldPresentAllContent:0 animated:1];
     [(PKDashboardPassGroupViewController *)self _updatePassFooterViewWithReload:0 postTransaction:?];
-    v4 = v6;
+    animationCopy = v6;
   }
 }
 
-- (void)deleteAnimationController:(id)a3 didComplete:(BOOL)a4
+- (void)deleteAnimationController:(id)controller didComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  controllerCopy = controller;
   deleteAnimationController = self->_deleteAnimationController;
-  if (deleteAnimationController == v6)
+  if (deleteAnimationController == controllerCopy)
   {
     v8 = deleteAnimationController;
     v9 = self->_deleteAnimationController;
@@ -5401,25 +5401,25 @@ void __88__PKDashboardPassGroupViewController_handleDeletePassRequestWithPass_fo
     {
       if (!self->_sendingToTransitionCoordinator)
       {
-        v10 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
-        [v10 setUserInteractionEnabled:1];
+        viewIfLoaded = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
+        [viewIfLoaded setUserInteractionEnabled:1];
 
         WeakRetained = objc_loadWeakRetained(&self->_dashboardPassGroupViewControllerDelegate);
-        [WeakRetained dashboardPassGroupViewController:self didFinishDeleteAnimation:v6 deleted:v4];
+        [WeakRetained dashboardPassGroupViewController:self didFinishDeleteAnimation:controllerCopy deleted:completeCopy];
 
-        if (v4)
+        if (completeCopy)
         {
           v27 = v8;
-          v12 = [(PKPassDeleteAnimationController *)v6 passView];
-          v13 = [v12 pass];
+          passView = [(PKPassDeleteAnimationController *)controllerCopy passView];
+          pass = [passView pass];
 
           [(PKPassGroupView *)self->_passGroupView group];
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
           v26 = v31 = 0u;
-          v14 = [v26 passes];
-          v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          passes = [v26 passes];
+          v15 = [passes countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v15)
           {
             v16 = v15;
@@ -5430,13 +5430,13 @@ void __88__PKDashboardPassGroupViewController_handleDeletePassRequestWithPass_fo
               {
                 if (*v29 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(passes);
                 }
 
-                v19 = [*(*(&v28 + 1) + 8 * i) uniqueID];
-                v20 = [v13 uniqueID];
-                v21 = v19;
-                v22 = v20;
+                uniqueID = [*(*(&v28 + 1) + 8 * i) uniqueID];
+                uniqueID2 = [pass uniqueID];
+                v21 = uniqueID;
+                v22 = uniqueID2;
                 v23 = v22;
                 if (v21 == v22)
                 {
@@ -5471,7 +5471,7 @@ LABEL_22:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+              v16 = [passes countByEnumeratingWithState:&v28 objects:v32 count:16];
               if (v16)
               {
                 continue;
@@ -5491,9 +5491,9 @@ LABEL_23:
   }
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  if ([a4 userInterfaceStyle] == 2)
+  if ([collection userInterfaceStyle] == 2)
   {
     return 2030;
   }
@@ -5504,19 +5504,19 @@ LABEL_23:
   }
 }
 
-- (void)menuFactoryDidUpdateMenu:(id)a3
+- (void)menuFactoryDidUpdateMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   if (self->_navigationItem.created && !self->_navigationItem.trailing.suppressed && !self->_willUpdateMoreMenuNavigationItem)
   {
-    v10 = v4;
-    v5 = [(PKDashboardMoreMenuFactory *)self->_moreMenuFactory moreMenu];
-    v6 = [(NSArray *)self->_navigationItem.trailing.more.effectiveItems firstObject];
-    v7 = v6;
-    if (v6)
+    v10 = menuCopy;
+    moreMenu = [(PKDashboardMoreMenuFactory *)self->_moreMenuFactory moreMenu];
+    firstObject = [(NSArray *)self->_navigationItem.trailing.more.effectiveItems firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 menu];
-      v9 = v8 != 0;
+      menu = [firstObject menu];
+      v9 = menu != 0;
     }
 
     else
@@ -5524,9 +5524,9 @@ LABEL_23:
       v9 = 0;
     }
 
-    if (v9 == (v5 != 0))
+    if (v9 == (moreMenu != 0))
     {
-      [v7 setMenu:v5];
+      [v7 setMenu:moreMenu];
     }
 
     else
@@ -5534,29 +5534,29 @@ LABEL_23:
       [(PKDashboardPassGroupViewController *)self _reloadNavigationItemsAnimated:?];
     }
 
-    v4 = v10;
+    menuCopy = v10;
   }
 }
 
-- (void)passTilesItemPresenter:(id)a3 executeSEActionForPass:(id)a4 tile:(id)a5 withCompletion:(id)a6
+- (void)passTilesItemPresenter:(id)presenter executeSEActionForPass:(id)pass tile:(id)tile withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  presenterCopy = presenter;
+  passCopy = pass;
+  tileCopy = tile;
+  completionCopy = completion;
+  v14 = completionCopy;
   v15 = atomic_load(&self->_invalidated);
-  if ((v15 & 1) != 0 || self->_frontmostPass != v11 || self->_visibility - 1 >= 2)
+  if ((v15 & 1) != 0 || self->_frontmostPass != passCopy || self->_visibility - 1 >= 2)
   {
-    (*(v13 + 2))(v13, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   else
   {
-    v16 = [v12 state];
+    state = [tileCopy state];
     v17 = MEMORY[0x1E69B8D10];
-    v18 = [v16 actions];
-    v19 = [v17 effectiveActionForActions:v18];
+    actions = [state actions];
+    v19 = [v17 effectiveActionForActions:actions];
 
     if (v19 && [v19 type] == 4)
     {
@@ -5570,14 +5570,14 @@ LABEL_23:
       aBlock[3] = &unk_1E8011A18;
       aBlock[4] = &v74;
       v20 = _Block_copy(aBlock);
-      v21 = [MEMORY[0x1E69DC668] sharedApplication];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
       v71[0] = MEMORY[0x1E69E9820];
       v71[1] = 3221225472;
       v71[2] = __104__PKDashboardPassGroupViewController_passTilesItemPresenter_executeSEActionForPass_tile_withCompletion___block_invoke_2;
       v71[3] = &unk_1E8010B50;
       v22 = v20;
       v72 = v22;
-      v23 = [v21 beginBackgroundTaskWithExpirationHandler:v71];
+      v23 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v71];
       v75[3] = v23;
 
       v68[0] = MEMORY[0x1E69E9820];
@@ -5616,8 +5616,8 @@ LABEL_23:
       v47 = &v63;
       v48 = &v57;
       v49 = &v51;
-      v44 = v11;
-      v45 = v12;
+      v44 = passCopy;
+      v45 = tileCopy;
       v27 = [v25 startDigitalCarKeySessionWithCompletion:v43];
       if (v27)
       {
@@ -5943,46 +5943,46 @@ void __104__PKDashboardPassGroupViewController_passTilesItemPresenter_executeSEA
   [v1 invalidateSessionWithCompletion:v2];
 }
 
-- (void)passTilesItemPresenter:(id)a3 displayTileContext:(int64_t)a4 forPass:(id)a5 tile:(id)a6 overrideMaximumRows:(BOOL)a7
+- (void)passTilesItemPresenter:(id)presenter displayTileContext:(int64_t)context forPass:(id)pass tile:(id)tile overrideMaximumRows:(BOOL)rows
 {
-  v7 = a7;
-  v37 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (self->_frontmostPass == v12 && self->_visibility - 1 <= 1)
+  rowsCopy = rows;
+  presenterCopy = presenter;
+  passCopy = pass;
+  tileCopy = tile;
+  v14 = tileCopy;
+  if (self->_frontmostPass == passCopy && self->_visibility - 1 <= 1)
   {
-    v15 = [v13 metadata];
-    v16 = [v15 identifier];
+    metadata = [tileCopy metadata];
+    identifier = [metadata identifier];
 
-    v17 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+    frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
     if (self->_barcodePassDataSource)
     {
       v18 = [PKDashboardSectionDataSourcePassSemanticTiles alloc];
-      v19 = [(PKDashboardBarcodePassDataSource *)self->_barcodePassDataSource tileDescriptor];
-      v20 = [(PKDashboardBarcodePassDataSource *)self->_barcodePassDataSource tileFactory];
-      v21 = [(PKDashboardSectionDataSourcePassSemanticTiles *)v18 initWithDescriptor:v19 forContext:a4 tileFactory:v20 tileGroupID:v16 passStateProvider:v17 overridesMaximumRows:v7];
+      tileDescriptor = [(PKDashboardBarcodePassDataSource *)self->_barcodePassDataSource tileDescriptor];
+      tileFactory = [(PKDashboardBarcodePassDataSource *)self->_barcodePassDataSource tileFactory];
+      v21 = [(PKDashboardSectionDataSourcePassSemanticTiles *)v18 initWithDescriptor:tileDescriptor forContext:context tileFactory:tileFactory tileGroupID:identifier passStateProvider:frontmostPassView overridesMaximumRows:rowsCopy];
     }
 
     else
     {
-      v21 = [[PKDashboardSectionDataSourcePassTiles alloc] initWithPass:v12 forContext:a4 tileGroupID:v16 passStateProvider:v17 overridesMaximumRows:v7];
+      v21 = [[PKDashboardSectionDataSourcePassTiles alloc] initWithPass:passCopy forContext:context tileGroupID:identifier passStateProvider:frontmostPassView overridesMaximumRows:rowsCopy];
     }
 
     v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v23 = [v22 addObject:v21];
-    v24 = &stru_1F3BD7330;
-    if (a4 > 2)
+    style = [v22 addObject:v21];
+    header = &stru_1F3BD7330;
+    if (context > 2)
     {
-      if (a4 == 3)
+      if (context == 3)
       {
         v28 = PKLocalizedTicketingString(&cfstr_AdditionalTick.isa);
 LABEL_22:
-        v24 = v28;
+        header = v28;
         goto LABEL_23;
       }
 
-      if ((a4 - 4) < 2)
+      if ((context - 4) < 2)
       {
         goto LABEL_19;
       }
@@ -5990,25 +5990,25 @@ LABEL_22:
 
     else
     {
-      switch(a4)
+      switch(context)
       {
         case 1:
-          v29 = [v14 state];
-          v30 = [v29 stateTypeGroup];
-          v24 = [v30 header];
+          state = [v14 state];
+          stateTypeGroup = [state stateTypeGroup];
+          header = [stateTypeGroup header];
 
           break;
         case 2:
-          v23 = [(PKPass *)v12 style];
-          if (v23 <= 9)
+          style = [(PKPass *)passCopy style];
+          if (style <= 9)
           {
-            if (v23 == 9)
+            if (style == 9)
             {
-              v25 = [(PKPass *)v12 eventName];
-              v26 = v25;
-              if (v25)
+              eventName = [(PKPass *)passCopy eventName];
+              v26 = eventName;
+              if (eventName)
               {
-                v27 = v25;
+                v27 = eventName;
               }
 
               else
@@ -6016,15 +6016,15 @@ LABEL_22:
                 v27 = PKLocalizedTicketingString(&cfstr_EventGuideFall.isa);
               }
 
-              v24 = v27;
+              header = v27;
 
               v34 = [PKDashboardSectionDataSourceLinkedApp alloc];
-              v35 = [(PKPass *)v12 auxiliaryStoreIdentifiers];
-              v36 = [(PKDashboardSectionDataSourceLinkedApp *)v34 initWithStoreIDs:v35 applicationBundleIdentifiers:0 defaultLaunchURL:0];
+              auxiliaryStoreIdentifiers = [(PKPass *)passCopy auxiliaryStoreIdentifiers];
+              v36 = [(PKDashboardSectionDataSourceLinkedApp *)v34 initWithStoreIDs:auxiliaryStoreIdentifiers applicationBundleIdentifiers:0 defaultLaunchURL:0];
               [v22 addObject:v36];
             }
 
-            else if (v23 < 9)
+            else if (style < 9)
             {
               do
               {
@@ -6033,7 +6033,7 @@ LABEL_29:
                 ;
               }
 
-              while (v23 == 13);
+              while (style == 13);
             }
 
             break;
@@ -6044,7 +6044,7 @@ LABEL_29:
 LABEL_19:
           __break(1u);
 LABEL_20:
-          if (v23 != 10)
+          if (style != 10)
           {
             goto LABEL_29;
           }
@@ -6056,60 +6056,60 @@ LABEL_20:
 
 LABEL_23:
     v31 = [[PKSectionedDashboardDataSource alloc] initWithSectionDataSources:v22];
-    v32 = [[PKDashboardTileContextViewController alloc] initWithTitle:v24 dataSource:v31];
-    v33 = [(PKDashboardPassGroupViewController *)self navigationController];
-    [v33 pushViewController:v32 animated:1];
+    v32 = [[PKDashboardTileContextViewController alloc] initWithTitle:header dataSource:v31];
+    navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+    [navigationController pushViewController:v32 animated:1];
   }
 }
 
-- (BOOL)handleDeletePassWithUniqueID:(id)a3
+- (BOOL)handleDeletePassWithUniqueID:(id)d
 {
   frontmostPass = self->_frontmostPass;
-  v5 = a3;
-  v6 = [(PKPass *)frontmostPass uniqueID];
+  dCopy = d;
+  uniqueID = [(PKPass *)frontmostPass uniqueID];
   v7 = PKEqualObjects();
 
   if (v7)
   {
-    v8 = [(PKDashboardPassGroupViewController *)self navigationController];
-    v9 = [PKViewControllerPresentationTarget targetWithPresentingViewController:v8];
-    v10 = [(PKPass *)self->_frontmostPass passType];
-    if (v10 == PKPassTypeSecureElement)
+    navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+    v9 = [PKViewControllerPresentationTarget targetWithPresentingViewController:navigationController];
+    passType = [(PKPass *)self->_frontmostPass passType];
+    if (passType == PKPassTypeSecureElement)
     {
-      v12 = [(PKPass *)self->_frontmostPass paymentPass];
-      if ([v12 hasMerchantTokens])
+      paymentPass = [(PKPass *)self->_frontmostPass paymentPass];
+      if ([paymentPass hasMerchantTokens])
       {
-        v13 = [(PKDashboardPaymentPassDataSource *)self->_paymentPassDataSource account];
+        account = [(PKDashboardPaymentPassDataSource *)self->_paymentPassDataSource account];
         v14 = objc_alloc_init(MEMORY[0x1E69B8A60]);
         LOBYTE(v19) = 0;
-        [PKPassDeleteHelper presentMerchantTokenDeletePaymentPassAlertForPass:v12 withAccount:v13 merchantTokensResponse:0 deleteHander:self passLibraryDataProvider:v14 navigationController:v8 presentationTarget:v9 isBridge:v19];
+        [PKPassDeleteHelper presentMerchantTokenDeletePaymentPassAlertForPass:paymentPass withAccount:account merchantTokensResponse:0 deleteHander:self passLibraryDataProvider:v14 navigationController:navigationController presentationTarget:v9 isBridge:v19];
       }
 
       else
       {
-        if ([v12 isStoredValuePass])
+        if ([paymentPass isStoredValuePass])
         {
-          v13 = [MEMORY[0x1E69B9310] passPropertiesForPass:v12];
-          v14 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:v12];
-          [v14 setTransitProperties:v13 andApplyStoredValueBalances:1];
+          account = [MEMORY[0x1E69B9310] passPropertiesForPass:paymentPass];
+          v14 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:paymentPass];
+          [v14 setTransitProperties:account andApplyStoredValueBalances:1];
         }
 
         else
         {
-          v13 = 0;
+          account = 0;
           v14 = 0;
         }
 
-        v15 = [(PKDashboardPaymentPassDataSource *)self->_paymentPassDataSource account];
-        v16 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+        account2 = [(PKDashboardPaymentPassDataSource *)self->_paymentPassDataSource account];
+        defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
         v17 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-        [PKPassDeleteHelper presentDeletePaymentPassAlertForPass:v12 withAccount:v15 paymentServiceDataProvider:v16 transitBalanceModel:v14 transitPassProperties:v13 fkInstitution:0 detailViewStyle:0 deleteHander:self passLibraryDataProvider:v17 presentationTarget:v9];
+        [PKPassDeleteHelper presentDeletePaymentPassAlertForPass:paymentPass withAccount:account2 paymentServiceDataProvider:defaultDataProvider transitBalanceModel:v14 transitPassProperties:account fkInstitution:0 detailViewStyle:0 deleteHander:self passLibraryDataProvider:v17 presentationTarget:v9];
       }
     }
 
     else
     {
-      if (v10)
+      if (passType)
       {
         v11 = 0;
 LABEL_15:
@@ -6127,62 +6127,62 @@ LABEL_15:
   return 0;
 }
 
-- (void)presentCombinedActionsWithPaymentDataProvider:(void *)a3 webService:(void *)a4 balanceModel:(void *)a5 mode:
+- (void)presentCombinedActionsWithPaymentDataProvider:(void *)provider webService:(void *)service balanceModel:(void *)model mode:
 {
   v31 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  providerCopy = provider;
+  serviceCopy = service;
+  if (self)
   {
-    v12 = a1[158];
+    v12 = self[158];
     if (!v12)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2080;
         v30 = "[PKDashboardPassGroupViewController presentCombinedActionsWithPaymentDataProvider:webService:balanceModel:mode:]";
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v14 = [v12 paymentPass];
-    if ([v14 isTransitPass])
+    paymentPass = [v12 paymentPass];
+    if ([paymentPass isTransitPass])
     {
-      v15 = [v14 actionGroups];
-      if (v15)
+      actionGroups = [paymentPass actionGroups];
+      if (actionGroups)
       {
-        v16 = a1[153];
+        v16 = self[153];
         if (!v16)
         {
           v17 = PKLogFacilityTypeGetObject();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134349314;
-            v28 = a1;
+            selfCopy2 = self;
             v29 = 2080;
             v30 = "[PKDashboardPassGroupViewController presentCombinedActionsWithPaymentDataProvider:webService:balanceModel:mode:]";
             _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
           }
         }
 
-        objc_initWeak(buf, a1);
+        objc_initWeak(buf, self);
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __113__PKDashboardPassGroupViewController_presentCombinedActionsWithPaymentDataProvider_webService_balanceModel_mode___block_invoke;
         v19[3] = &unk_1E8023628;
         objc_copyWeak(v26, buf);
-        v18 = v15;
+        v18 = actionGroups;
         v20 = v18;
-        v21 = v14;
-        v22 = a1;
+        v21 = paymentPass;
+        selfCopy3 = self;
         v23 = v9;
-        v24 = v10;
-        v25 = v11;
-        v26[1] = a5;
+        v24 = providerCopy;
+        v25 = serviceCopy;
+        v26[1] = model;
         [v16 executeAfterContentIsLoaded:v19];
 
         objc_destroyWeak(v26);
@@ -6263,58 +6263,58 @@ void __113__PKDashboardPassGroupViewController_presentCombinedActionsWithPayment
 LABEL_6:
 }
 
-- (void)presentActionGroupsWithPaymentDataProvider:(void *)a3 balanceModel:(void *)a4 webService:
+- (void)presentActionGroupsWithPaymentDataProvider:(void *)provider balanceModel:(void *)model webService:
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  providerCopy = provider;
+  modelCopy = model;
+  if (self)
   {
-    v10 = a1[158];
+    v10 = self[158];
     if (!v10)
     {
       v11 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v25 = a1;
+        selfCopy2 = self;
         v26 = 2080;
         v27 = "[PKDashboardPassGroupViewController presentActionGroupsWithPaymentDataProvider:balanceModel:webService:]";
         _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v12 = [v10 paymentPass];
-    v13 = [v12 actionGroups];
-    if ([v12 isTransitPass])
+    paymentPass = [v10 paymentPass];
+    actionGroups = [paymentPass actionGroups];
+    if ([paymentPass isTransitPass])
     {
-      v14 = a1[153];
+      v14 = self[153];
       if (!v14)
       {
         v15 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349314;
-          v25 = a1;
+          selfCopy2 = self;
           v26 = 2080;
           v27 = "[PKDashboardPassGroupViewController presentActionGroupsWithPaymentDataProvider:balanceModel:webService:]";
           _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
         }
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __105__PKDashboardPassGroupViewController_presentActionGroupsWithPaymentDataProvider_balanceModel_webService___block_invoke;
       v16[3] = &unk_1E8023650;
       objc_copyWeak(&v23, buf);
-      v17 = v13;
-      v18 = v12;
-      v19 = a1;
+      v17 = actionGroups;
+      v18 = paymentPass;
+      selfCopy3 = self;
       v20 = v7;
-      v21 = v9;
-      v22 = v8;
+      v21 = modelCopy;
+      v22 = providerCopy;
       [v14 executeAfterContentIsLoaded:v16];
 
       objc_destroyWeak(&v23);
@@ -6394,59 +6394,59 @@ void __105__PKDashboardPassGroupViewController_presentActionGroupsWithPaymentDat
 LABEL_6:
 }
 
-- (void)presentActionsWithPaymentDataProvider:(void *)a3 webService:(void *)a4 actionType:(void *)a5 transitBalanceModel:
+- (void)presentActionsWithPaymentDataProvider:(void *)provider webService:(void *)service actionType:(void *)type transitBalanceModel:
 {
   v29 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  providerCopy = provider;
+  typeCopy = type;
+  if (self)
   {
-    v12 = a1[158];
+    v12 = self[158];
     if (!v12)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v26 = a1;
+        selfCopy2 = self;
         v27 = 2080;
         v28 = "[PKDashboardPassGroupViewController presentActionsWithPaymentDataProvider:webService:actionType:transitBalanceModel:]";
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v14 = [v12 paymentPass];
-    v15 = [v14 availableActions];
-    if ([v14 isStoredValuePass])
+    paymentPass = [v12 paymentPass];
+    availableActions = [paymentPass availableActions];
+    if ([paymentPass isStoredValuePass])
     {
-      v16 = a1[153];
+      v16 = self[153];
       if (!v16)
       {
         v17 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349314;
-          v26 = a1;
+          selfCopy2 = self;
           v27 = 2080;
           v28 = "[PKDashboardPassGroupViewController presentActionsWithPaymentDataProvider:webService:actionType:transitBalanceModel:]";
           _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
         }
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __118__PKDashboardPassGroupViewController_presentActionsWithPaymentDataProvider_webService_actionType_transitBalanceModel___block_invoke;
       v18[3] = &unk_1E8023628;
       objc_copyWeak(v24, buf);
-      v18[4] = a1;
-      v19 = v14;
-      v20 = v15;
+      v18[4] = self;
+      v19 = paymentPass;
+      v20 = availableActions;
       v21 = v9;
-      v22 = v10;
-      v24[1] = a4;
-      v23 = v11;
+      v22 = providerCopy;
+      v24[1] = service;
+      v23 = typeCopy;
       [v16 executeAfterContentIsLoaded:v18];
 
       objc_destroyWeak(v24);
@@ -6522,32 +6522,32 @@ void __118__PKDashboardPassGroupViewController_presentActionsWithPaymentDataProv
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134349314;
-      v14 = self;
+      selfCopy = self;
       v15 = 2080;
       v16 = "[PKDashboardPassGroupViewController presentAddMoney]";
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", &v13, 0x16u);
     }
   }
 
-  v5 = [(PKPass *)v3 paymentPass];
-  if (([v5 isTransitPass] & 1) != 0 || objc_msgSend(v5, "isEMoneyPass"))
+  paymentPass = [(PKPass *)v3 paymentPass];
+  if (([paymentPass isTransitPass] & 1) != 0 || objc_msgSend(paymentPass, "isEMoneyPass"))
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:v5];
-    v7 = [MEMORY[0x1E69B9310] passPropertiesForPass:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:paymentPass];
+    v7 = [MEMORY[0x1E69B9310] passPropertiesForPass:paymentPass];
     v8 = 1;
     [v6 setTransitProperties:v7 andApplyStoredValueBalances:1];
-    v9 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-    v10 = [MEMORY[0x1E69B8EF8] sharedService];
-    [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa presentActionsWithPaymentDataProvider:v9 webService:v10 actionType:1 transitBalanceModel:v6];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    [(PKDashboardPassGroupViewController *)&self->super.super.super.super.super.isa presentActionsWithPaymentDataProvider:defaultDataProvider webService:mEMORY[0x1E69B8EF8] actionType:1 transitBalanceModel:v6];
   }
 
-  else if ([v5 isAppleBalancePass])
+  else if ([paymentPass isAppleBalancePass])
   {
     [(PKDashboardPassGroupViewController *)self presentAddMoneyAppleBalance];
     v8 = 1;
   }
 
-  else if ([v5 isPeerPaymentPass])
+  else if ([paymentPass isPeerPaymentPass])
   {
     v12 = objc_alloc_init(MEMORY[0x1E69B8A60]);
     [(PKDashboardPassGroupViewController *)self presentPeerPaymentActionViewControllerForAction:v12 passLibraryDataProvider:?];
@@ -6565,44 +6565,44 @@ void __118__PKDashboardPassGroupViewController_presentActionsWithPaymentDataProv
 
 - (void)presentAddMoneyAppleBalance
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1224) appleBalanceAddMoneyUIManager];
-    [v2 presentAddMoneyFromViewController:a1 dtuConfiguration:0 inStoreToken:0];
+    appleBalanceAddMoneyUIManager = [*(self + 1224) appleBalanceAddMoneyUIManager];
+    [appleBalanceAddMoneyUIManager presentAddMoneyFromViewController:self dtuConfiguration:0 inStoreToken:0];
   }
 }
 
-- (void)presentPeerPaymentActionViewControllerForAction:(void *)a3 passLibraryDataProvider:
+- (void)presentPeerPaymentActionViewControllerForAction:(void *)action passLibraryDataProvider:
 {
-  v5 = a3;
-  if (a1)
+  actionCopy = action;
+  if (self)
   {
-    v6 = a1[159];
+    v6 = self[159];
     if (v6)
     {
       if ([v6 isPeerPaymentPass])
       {
-        v7 = [MEMORY[0x1E69B9020] sharedService];
+        mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
         v25 = 0;
-        v8 = [v7 targetDevice];
-        v9 = [v8 account];
+        targetDevice = [mEMORY[0x1E69B9020] targetDevice];
+        account = [targetDevice account];
 
         v24 = 0;
-        v10 = [PKPeerPaymentActionController canPerformPeerPaymentAction:a2 account:v9 unableReason:&v25 displayableError:&v24];
+        v10 = [PKPeerPaymentActionController canPerformPeerPaymentAction:a2 account:account unableReason:&v25 displayableError:&v24];
         v11 = v24;
         if (v10)
         {
-          v12 = [PKPeerPaymentActionViewController peerPaymentActionViewControllerForAction:a2 paymentPass:a1[159] webService:v7 passLibraryDataProvider:v5 context:0];
-          [v12 setDelegate:a1];
+          v12 = [PKPeerPaymentActionViewController peerPaymentActionViewControllerForAction:a2 paymentPass:self[159] webService:mEMORY[0x1E69B9020] passLibraryDataProvider:actionCopy context:0];
+          [v12 setDelegate:self];
           v13 = [[PKNavigationController alloc] initWithRootViewController:v12];
           [(PKNavigationController *)v13 setSupportedInterfaceOrientations:2];
-          v14 = [a1 navigationController];
-          [v14 presentViewController:v13 animated:1 completion:0];
+          navigationController = [self navigationController];
+          [navigationController presentViewController:v13 animated:1 completion:0];
         }
 
         else
         {
-          objc_initWeak(&location, a1);
+          objc_initWeak(&location, self);
           v15 = v25;
           v18 = MEMORY[0x1E69E9820];
           v19 = 3221225472;
@@ -6610,8 +6610,8 @@ void __118__PKDashboardPassGroupViewController_presentActionsWithPaymentDataProv
           v21 = &unk_1E8010998;
           objc_copyWeak(&v22, &location);
           v16 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v15 displayableError:v11 addCardActionHandler:&v18];
-          v17 = [a1 navigationController];
-          [v17 presentViewController:v16 animated:1 completion:0];
+          navigationController2 = [self navigationController];
+          [navigationController2 presentViewController:v16 animated:1 completion:0];
 
           objc_destroyWeak(&v22);
           objc_destroyWeak(&location);
@@ -6623,59 +6623,59 @@ void __118__PKDashboardPassGroupViewController_presentActionsWithPaymentDataProv
 
 - (void)presentAddMoneyAppleBalanceDirectTopUp
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1224) appleBalanceAddMoneyUIManager];
-    [v2 presentDirectTopUpFromViewController:a1 context:1 configuration:0 promotion:0 completion:0];
+    appleBalanceAddMoneyUIManager = [*(self + 1224) appleBalanceAddMoneyUIManager];
+    [appleBalanceAddMoneyUIManager presentDirectTopUpFromViewController:self context:1 configuration:0 promotion:0 completion:0];
   }
 }
 
 - (void)presentAddMoneyAppleBalanceInStoreTopUp
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1224) appleBalanceAddMoneyUIManager];
-    [v2 presentInStoreTopUpFromViewController:a1 context:0 token:0];
+    appleBalanceAddMoneyUIManager = [*(self + 1224) appleBalanceAddMoneyUIManager];
+    [appleBalanceAddMoneyUIManager presentInStoreTopUpFromViewController:self context:0 token:0];
   }
 }
 
 - (void)presentTransitCardNumber
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[158];
+    v2 = self[158];
     if (!v2)
     {
       v3 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v11 = a1;
+        selfCopy2 = self;
         v12 = 2080;
         v13 = "[PKDashboardPassGroupViewController presentTransitCardNumber]";
         _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v4 = a1[159];
+    v4 = self[159];
     if ([v4 isStoredValuePass])
     {
-      v5 = a1[153];
+      v5 = self[153];
       if (!v5)
       {
         v6 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349314;
-          v11 = a1;
+          selfCopy2 = self;
           v12 = 2080;
           v13 = "[PKDashboardPassGroupViewController presentTransitCardNumber]";
           _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
         }
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __62__PKDashboardPassGroupViewController_presentTransitCardNumber__block_invoke;
@@ -6707,16 +6707,16 @@ void __62__PKDashboardPassGroupViewController_presentTransitCardNumber__block_in
 - (void)presentManageBarcodePassNotifications
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[158];
+    v2 = self[158];
     if (!v2)
     {
       v3 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 134349314;
-        v7 = a1;
+        selfCopy = self;
         v8 = 2080;
         v9 = "[PKDashboardPassGroupViewController presentManageBarcodePassNotifications]";
         _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", &v6, 0x16u);
@@ -6724,50 +6724,50 @@ void __62__PKDashboardPassGroupViewController_presentTransitCardNumber__block_in
     }
 
     v4 = [[PKManageBarcodePassNotificationsViewController alloc] initWithPass:v2];
-    v5 = [a1 navigationController];
-    [v5 pushViewController:v4 animated:1];
+    navigationController = [self navigationController];
+    [navigationController pushViewController:v4 animated:1];
   }
 }
 
-- (void)presentManagePaymentPassNotificationsControllerWithDataProvider:(void *)a3 peerPaymentAccount:(void *)a4 bankConnectAccount:(void *)a5 account:
+- (void)presentManagePaymentPassNotificationsControllerWithDataProvider:(void *)provider peerPaymentAccount:(void *)account bankConnectAccount:(void *)connectAccount account:
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a1)
+  providerCopy = provider;
+  accountCopy = account;
+  connectAccountCopy = connectAccount;
+  if (self)
   {
-    v13 = a1[158];
+    v13 = self[158];
     if (!v13)
     {
       v14 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2080;
         v29 = "[PKDashboardPassGroupViewController presentManagePaymentPassNotificationsControllerWithDataProvider:peerPaymentAccount:bankConnectAccount:account:]";
         _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v15 = a1[159];
-    v16 = a1[153];
+    v15 = self[159];
+    v16 = self[153];
     if (!v16)
     {
       v17 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2080;
         v29 = "[PKDashboardPassGroupViewController presentManagePaymentPassNotificationsControllerWithDataProvider:peerPaymentAccount:bankConnectAccount:account:]";
         _os_log_impl(&dword_1BD026000, v17, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
       }
     }
 
-    objc_initWeak(buf, a1);
+    objc_initWeak(buf, self);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __148__PKDashboardPassGroupViewController_presentManagePaymentPassNotificationsControllerWithDataProvider_peerPaymentAccount_bankConnectAccount_account___block_invoke;
@@ -6776,9 +6776,9 @@ void __62__PKDashboardPassGroupViewController_presentTransitCardNumber__block_in
     v18 = v15;
     v20 = v18;
     v21 = v9;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
+    v22 = providerCopy;
+    v23 = accountCopy;
+    v24 = connectAccountCopy;
     [v16 executeAfterContentIsLoaded:v19];
 
     objc_destroyWeak(&v25);
@@ -6827,7 +6827,7 @@ void __148__PKDashboardPassGroupViewController_presentManagePaymentPassNotificat
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2080;
         v15 = "[PKDashboardPassGroupViewController presentCardNumbers]";
         _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
@@ -6857,7 +6857,7 @@ void __148__PKDashboardPassGroupViewController_presentManagePaymentPassNotificat
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2080;
         v15 = "[PKDashboardPassGroupViewController presentCardNumbers]";
         _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
@@ -6966,26 +6966,26 @@ void __56__PKDashboardPassGroupViewController_presentCardNumbers__block_invoke_3
   }
 }
 
-- (void)_presentBarcodePassDetailsAnimated:(void *)a3 completion:
+- (void)_presentBarcodePassDetailsAnimated:(void *)animated completion:
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  animatedCopy = animated;
+  if (self)
   {
-    if (*(a1 + 1264) && *(a1 + 1248))
+    if (*(self + 1264) && *(self + 1248))
     {
-      v6 = [[PKBarcodePassDetailViewController alloc] initWithPass:*(a1 + 1264)];
-      [(PKBarcodePassDetailViewController *)v6 setDeleteOverrider:a1];
+      v6 = [[PKBarcodePassDetailViewController alloc] initWithPass:*(self + 1264)];
+      [(PKBarcodePassDetailViewController *)v6 setDeleteOverrider:self];
       if (v6)
       {
         v13 = MEMORY[0x1E69E9820];
         v14 = 3221225472;
         v15 = __84__PKDashboardPassGroupViewController__presentBarcodePassDetailsAnimated_completion___block_invoke;
         v16 = &unk_1E80109C0;
-        v18 = v5;
+        v18 = animatedCopy;
         v7 = v6;
         v17 = v7;
-        [(PKDashboardPassGroupViewController *)a1 _pushViewControllerWhenNavigationAvailable:v7 animated:a2 completion:&v13];
+        [(PKDashboardPassGroupViewController *)self _pushViewControllerWhenNavigationAvailable:v7 animated:a2 completion:&v13];
         v8 = *MEMORY[0x1E69BA6F0];
         v9 = *MEMORY[0x1E69BA440];
         v19[0] = *MEMORY[0x1E69BA680];
@@ -6994,7 +6994,7 @@ void __56__PKDashboardPassGroupViewController_presentCardNumbers__block_invoke_3
         v20[0] = v8;
         v20[1] = v10;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:{2, v13, v14, v15, v16}];
-        [(PKDashboardPassGroupViewController *)a1 reportEventForPassIfNecessary:v11];
+        [(PKDashboardPassGroupViewController *)self reportEventForPassIfNecessary:v11];
 
 LABEL_12:
         goto LABEL_13;
@@ -7007,16 +7007,16 @@ LABEL_12:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v22 = a1;
+        selfCopy = self;
         v23 = 2080;
         v24 = "[PKDashboardPassGroupViewController _barcodePassDetailsViewController]";
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    if (v5)
+    if (animatedCopy)
     {
-      (*(v5 + 2))(v5, 0);
+      (*(animatedCopy + 2))(animatedCopy, 0);
     }
 
     v7 = 0;
@@ -7047,36 +7047,36 @@ uint64_t __84__PKDashboardPassGroupViewController__presentBarcodePassDetailsAnim
   return result;
 }
 
-- (void)_presentPaymentPassDetailsAnimated:(void *)a3 completion:
+- (void)_presentPaymentPassDetailsAnimated:(void *)animated completion:
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  animatedCopy = animated;
+  if (self)
   {
-    if (*(a1 + 1272) && *(a1 + 1248))
+    if (*(self + 1272) && *(self + 1248))
     {
       v20 = a2;
       v6 = MEMORY[0x1E69B8BD8];
-      v30 = v5;
-      v7 = *(a1 + 1224);
-      v26 = [v6 defaultDataProvider];
+      v30 = animatedCopy;
+      v7 = *(self + 1224);
+      defaultDataProvider = [v6 defaultDataProvider];
       v28 = [PKPaymentPassDetailViewController alloc];
-      v8 = *(a1 + 1272);
-      v29 = [*(a1 + 1248) group];
-      v27 = *(a1 + 1240);
-      v25 = [MEMORY[0x1E69B8EF8] sharedService];
-      v24 = [MEMORY[0x1E69B9020] sharedService];
-      v22 = [MEMORY[0x1E69B8400] sharedInstance];
+      v8 = *(self + 1272);
+      group = [*(self + 1248) group];
+      v27 = *(self + 1240);
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+      mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
       v21 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-      v23 = [*(a1 + 1248) frontmostPassView];
-      v9 = [v23 rendererState];
-      v10 = [v7 familyCollection];
-      v11 = [v7 avatarManager];
-      v12 = [v7 account];
-      v13 = [(PKPaymentPassDetailViewController *)v28 initWithPass:v8 group:v29 groupsController:v27 webService:v25 peerPaymentWebService:v24 accountService:v22 style:0 passLibraryDataProvider:v21 paymentServiceDataProvider:v26 rendererState:v9 context:0 familyCollection:v10 contactAvatarManager:v11 account:v12];
+      frontmostPassView = [*(self + 1248) frontmostPassView];
+      rendererState = [frontmostPassView rendererState];
+      familyCollection = [v7 familyCollection];
+      avatarManager = [v7 avatarManager];
+      account = [v7 account];
+      v13 = [(PKPaymentPassDetailViewController *)v28 initWithPass:v8 group:group groupsController:v27 webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:mEMORY[0x1E69B9020] accountService:mEMORY[0x1E69B8400] style:0 passLibraryDataProvider:v21 paymentServiceDataProvider:defaultDataProvider rendererState:rendererState context:0 familyCollection:familyCollection contactAvatarManager:avatarManager account:account];
 
-      [(PKPaymentPassDetailViewController *)v13 setDeleteOverrider:a1];
-      v5 = v30;
+      [(PKPaymentPassDetailViewController *)v13 setDeleteOverrider:self];
+      animatedCopy = v30;
 
       if (v13)
       {
@@ -7087,7 +7087,7 @@ uint64_t __84__PKDashboardPassGroupViewController__presentBarcodePassDetailsAnim
         v33 = v30;
         v14 = v13;
         v32 = v14;
-        [(PKDashboardPassGroupViewController *)a1 _pushViewControllerWhenNavigationAvailable:v14 animated:v20 completion:v31];
+        [(PKDashboardPassGroupViewController *)self _pushViewControllerWhenNavigationAvailable:v14 animated:v20 completion:v31];
         v15 = *MEMORY[0x1E69BA6F0];
         v16 = *MEMORY[0x1E69BA440];
         v34[0] = *MEMORY[0x1E69BA680];
@@ -7096,7 +7096,7 @@ uint64_t __84__PKDashboardPassGroupViewController__presentBarcodePassDetailsAnim
         v35[0] = v15;
         v35[1] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
-        [(PKDashboardPassGroupViewController *)a1 reportEventForPassIfNecessary:v18];
+        [(PKDashboardPassGroupViewController *)self reportEventForPassIfNecessary:v18];
 
 LABEL_12:
         goto LABEL_13;
@@ -7109,16 +7109,16 @@ LABEL_12:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v37 = a1;
+        selfCopy = self;
         v38 = 2080;
         v39 = "[PKDashboardPassGroupViewController _paymentPassDetailsViewController]";
         _os_log_impl(&dword_1BD026000, v19, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    if (v5)
+    if (animatedCopy)
     {
-      (*(v5 + 2))(v5, 0);
+      (*(animatedCopy + 2))(animatedCopy, 0);
     }
 
     v14 = 0;
@@ -7149,21 +7149,21 @@ uint64_t __84__PKDashboardPassGroupViewController__presentPaymentPassDetailsAnim
   return result;
 }
 
-- (void)presentPassDetailsAnimated:(void *)a3 completion:
+- (void)presentPassDetailsAnimated:(void *)animated completion:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  animatedCopy = animated;
+  v6 = animatedCopy;
+  if (self)
   {
-    if (*(a1 + 1272))
+    if (*(self + 1272))
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __76__PKDashboardPassGroupViewController_presentPassDetailsAnimated_completion___block_invoke;
       v10[3] = &unk_1E8023678;
       v7 = &v11;
-      v11 = v5;
-      [(PKDashboardPassGroupViewController *)a1 _presentPaymentPassDetailsAnimated:a2 completion:v10];
+      v11 = animatedCopy;
+      [(PKDashboardPassGroupViewController *)self _presentPaymentPassDetailsAnimated:a2 completion:v10];
     }
 
     else
@@ -7173,8 +7173,8 @@ uint64_t __84__PKDashboardPassGroupViewController__presentPaymentPassDetailsAnim
       v8[2] = __76__PKDashboardPassGroupViewController_presentPassDetailsAnimated_completion___block_invoke_2;
       v8[3] = &unk_1E80236A0;
       v7 = &v9;
-      v9 = v5;
-      [(PKDashboardPassGroupViewController *)a1 _presentBarcodePassDetailsAnimated:a2 completion:v8];
+      v9 = animatedCopy;
+      [(PKDashboardPassGroupViewController *)self _presentBarcodePassDetailsAnimated:a2 completion:v8];
     }
   }
 }
@@ -7281,22 +7281,22 @@ LABEL_24:
   }
 }
 
-- (void)presentSpendingSummaryWithType:(void *)a3 categorization:(void *)a4 unit:(void *)a5 completion:
+- (void)presentSpendingSummaryWithType:(void *)type categorization:(void *)categorization unit:(void *)unit completion:
 {
-  v9 = a5;
-  if (a1)
+  unitCopy = unit;
+  if (self)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __100__PKDashboardPassGroupViewController_presentSpendingSummaryWithType_categorization_unit_completion___block_invoke;
     v10[3] = &unk_1E80236E8;
     objc_copyWeak(v12, &location);
-    v11 = v9;
+    v11 = unitCopy;
     v12[1] = a2;
-    v12[2] = a4;
-    v12[3] = a3;
-    [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v10];
+    v12[2] = categorization;
+    v12[3] = type;
+    [(PKDashboardPassGroupViewController *)self _canPresentCreditDetailsViewControllerWithCompletion:v10];
 
     objc_destroyWeak(v12);
     objc_destroyWeak(&location);
@@ -7349,32 +7349,32 @@ void __100__PKDashboardPassGroupViewController_presentSpendingSummaryWithType_ca
   }
 }
 
-- (void)_canPresentCreditDetailsViewControllerWithCompletion:(uint64_t)a1
+- (void)_canPresentCreditDetailsViewControllerWithCompletion:(uint64_t)completion
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     if (!v3)
     {
       __break(1u);
     }
 
-    v5 = *(a1 + 1272);
+    v5 = *(completion + 1272);
     if (v5)
     {
-      if (*(a1 + 1579) == 1)
+      if (*(completion + 1579) == 1)
       {
         v4[2](v4, 0, 0);
       }
 
       else
       {
-        v7 = *(a1 + 1224);
+        v7 = *(completion + 1224);
         if (v7)
         {
-          objc_initWeak(buf, a1);
+          objc_initWeak(buf, completion);
           v9[0] = MEMORY[0x1E69E9820];
           v9[1] = 3221225472;
           v9[2] = __91__PKDashboardPassGroupViewController__canPresentCreditDetailsViewControllerWithCompletion___block_invoke;
@@ -7395,7 +7395,7 @@ void __100__PKDashboardPassGroupViewController_presentSpendingSummaryWithType_ca
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134349314;
-            v15 = a1;
+            completionCopy2 = completion;
             v16 = 2080;
             v17 = "[PKDashboardPassGroupViewController _canPresentCreditDetailsViewControllerWithCompletion:]";
             _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
@@ -7412,7 +7412,7 @@ void __100__PKDashboardPassGroupViewController_presentSpendingSummaryWithType_ca
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v15 = a1;
+        completionCopy2 = completion;
         v16 = 2080;
         v17 = "[PKDashboardPassGroupViewController _canPresentCreditDetailsViewControllerWithCompletion:]";
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
@@ -7421,19 +7421,19 @@ void __100__PKDashboardPassGroupViewController_presentSpendingSummaryWithType_ca
   }
 }
 
-- (void)presentBalanceDetailsWithCompletion:(void *)a1
+- (void)presentBalanceDetailsWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, completion);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __74__PKDashboardPassGroupViewController_presentBalanceDetailsWithCompletion___block_invoke;
     v4[3] = &unk_1E8023710;
     objc_copyWeak(&v6, &location);
     v5 = v3;
-    [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v4];
+    [(PKDashboardPassGroupViewController *)completion _canPresentCreditDetailsViewControllerWithCompletion:v4];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -7476,16 +7476,16 @@ void __74__PKDashboardPassGroupViewController_presentBalanceDetailsWithCompletio
   }
 }
 
-- (void)showStatement:(void *)a3 completion:
+- (void)showStatement:(void *)statement completion:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  statementCopy = statement;
+  v7 = statementCopy;
+  if (self)
   {
     if (v5)
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __63__PKDashboardPassGroupViewController_showStatement_completion___block_invoke;
@@ -7493,15 +7493,15 @@ void __74__PKDashboardPassGroupViewController_presentBalanceDetailsWithCompletio
       objc_copyWeak(&v11, &location);
       v10 = v7;
       v9 = v5;
-      [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v8];
+      [(PKDashboardPassGroupViewController *)self _canPresentCreditDetailsViewControllerWithCompletion:v8];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
     }
 
-    else if (v6)
+    else if (statementCopy)
     {
-      (*(v6 + 2))(v6);
+      (*(statementCopy + 2))(statementCopy);
     }
   }
 }
@@ -7642,69 +7642,69 @@ void __91__PKDashboardPassGroupViewController__canPresentCreditDetailsViewContro
   }
 }
 
-- (void)presentDailyCashForDateComponents:(uint64_t)a3 redemptionType:(void *)a4 completion:
+- (void)presentDailyCashForDateComponents:(uint64_t)components redemptionType:(void *)type completion:
 {
   v9 = a2;
-  v7 = a4;
-  v8 = v7;
-  if (a1)
+  typeCopy = type;
+  v8 = typeCopy;
+  if (self)
   {
-    if ((a3 - 1) >= 2)
+    if ((components - 1) >= 2)
     {
-      if (a3 == 3)
+      if (components == 3)
       {
-        [(PKDashboardPassGroupViewController *)a1 _presentDailyCashOnAccountForDateComponents:v9 redemptionType:3 completion:v7];
+        [(PKDashboardPassGroupViewController *)self _presentDailyCashOnAccountForDateComponents:v9 redemptionType:3 completion:typeCopy];
       }
 
-      else if (v7)
+      else if (typeCopy)
       {
-        v7[2](v7);
+        typeCopy[2](typeCopy);
       }
     }
 
     else
     {
-      [(PKDashboardPassGroupViewController *)a1 _presentDailyCashOnPassForDateComponents:v9 completion:v7];
+      [(PKDashboardPassGroupViewController *)self _presentDailyCashOnPassForDateComponents:v9 completion:typeCopy];
     }
   }
 }
 
-- (void)_presentDailyCashOnPassForDateComponents:(void *)a3 completion:
+- (void)_presentDailyCashOnPassForDateComponents:(void *)components completion:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  componentsCopy = components;
+  if (self)
   {
-    v7 = a1[159];
+    v7 = self[159];
     if (v7)
     {
-      v8 = a1[153];
-      v9 = [a1[230] transactionDetailsFactory];
+      v8 = self[153];
+      transactionDetailsFactory = [self[230] transactionDetailsFactory];
       if (!v8)
       {
         v10 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349314;
-          v21 = a1;
+          selfCopy2 = self;
           v22 = 2080;
           v23 = "[PKDashboardPassGroupViewController _presentDailyCashOnPassForDateComponents:completion:]";
           _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
         }
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __90__PKDashboardPassGroupViewController__presentDailyCashOnPassForDateComponents_completion___block_invoke;
       v14[3] = &unk_1E801EF10;
       objc_copyWeak(&v19, buf);
-      v18 = v6;
+      v18 = componentsCopy;
       v11 = v8;
       v15 = v11;
       v16 = v5;
-      v12 = v9;
+      v12 = transactionDetailsFactory;
       v17 = v12;
       [v11 executeAfterContentIsLoaded:v14];
 
@@ -7718,31 +7718,31 @@ void __91__PKDashboardPassGroupViewController__canPresentCreditDetailsViewContro
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v21 = a1;
+        selfCopy2 = self;
         v22 = 2080;
         v23 = "[PKDashboardPassGroupViewController _presentDailyCashOnPassForDateComponents:completion:]";
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
 
-      if (v6)
+      if (componentsCopy)
       {
-        v6[2](v6);
+        componentsCopy[2](componentsCopy);
       }
     }
   }
 }
 
-- (void)_presentDailyCashOnAccountForDateComponents:(uint64_t)a3 redemptionType:(void *)a4 completion:
+- (void)_presentDailyCashOnAccountForDateComponents:(uint64_t)components redemptionType:(void *)type completion:
 {
   v7 = a2;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  typeCopy = type;
+  v9 = typeCopy;
+  if (self)
   {
-    if (a3 == 3)
+    if (components == 3)
     {
-      objc_initWeak(&location, a1);
-      v10 = [MEMORY[0x1E69B8400] sharedInstance];
+      objc_initWeak(&location, self);
+      mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __108__PKDashboardPassGroupViewController__presentDailyCashOnAccountForDateComponents_redemptionType_completion___block_invoke;
@@ -7750,15 +7750,15 @@ void __91__PKDashboardPassGroupViewController__canPresentCreditDetailsViewContro
       objc_copyWeak(&v14, &location);
       v13 = v9;
       v12 = v7;
-      [v10 defaultAccountForFeature:5 completion:v11];
+      [mEMORY[0x1E69B8400] defaultAccountForFeature:5 completion:v11];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
     }
 
-    else if (v8)
+    else if (typeCopy)
     {
-      (*(v8 + 2))(v8);
+      (*(typeCopy + 2))(typeCopy);
     }
   }
 }
@@ -7860,41 +7860,41 @@ uint64_t __108__PKDashboardPassGroupViewController__presentDailyCashOnAccountFor
   return result;
 }
 
-- (void)presentAccountWithConfiguration:(void *)a3 presentationContext:(char)a4 animated:(void *)a5 completion:
+- (void)presentAccountWithConfiguration:(void *)configuration presentationContext:(char)context animated:(void *)animated completion:
 {
   v26 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  configurationCopy = configuration;
+  animatedCopy = animated;
+  if (self)
   {
-    v12 = a1[153];
+    v12 = self[153];
     if (!v12)
     {
       v13 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v23 = a1;
+        selfCopy2 = self;
         v24 = 2080;
         v25 = "[PKDashboardPassGroupViewController presentAccountWithConfiguration:presentationContext:animated:completion:]";
         _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
       }
     }
 
-    v14 = a1[159];
+    v14 = self[159];
     if (v14)
     {
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __110__PKDashboardPassGroupViewController_presentAccountWithConfiguration_presentationContext_animated_completion___block_invoke;
       v16[3] = &unk_1E8023940;
       objc_copyWeak(&v20, buf);
-      v17 = v10;
-      v21 = a4;
+      v17 = configurationCopy;
+      contextCopy = context;
       v18 = v9;
-      v19 = v11;
+      v19 = animatedCopy;
       [v12 executeAfterContentIsLoaded:v16];
 
       objc_destroyWeak(&v20);
@@ -7907,7 +7907,7 @@ uint64_t __108__PKDashboardPassGroupViewController__presentDailyCashOnAccountFor
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v23 = a1;
+        selfCopy2 = self;
         v24 = 2080;
         v25 = "[PKDashboardPassGroupViewController presentAccountWithConfiguration:presentationContext:animated:completion:]";
         _os_log_impl(&dword_1BD026000, v15, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
@@ -7916,23 +7916,23 @@ uint64_t __108__PKDashboardPassGroupViewController__presentDailyCashOnAccountFor
   }
 }
 
-- (void)presentTransaction:(void *)a3 forPaymentPass:(void *)a4 presentingView:
+- (void)presentTransaction:(void *)transaction forPaymentPass:(void *)pass presentingView:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  transactionCopy = transaction;
+  if (self)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __87__PKDashboardPassGroupViewController_presentTransaction_forPaymentPass_presentingView___block_invoke;
     v9[3] = &unk_1E8023800;
     objc_copyWeak(v13, &location);
     v10 = v7;
-    v11 = v8;
-    v12 = a1;
-    v13[1] = a4;
-    [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v9];
+    v11 = transactionCopy;
+    selfCopy = self;
+    v13[1] = pass;
+    [(PKDashboardPassGroupViewController *)self _canPresentCreditDetailsViewControllerWithCompletion:v9];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(&location);
@@ -8132,12 +8132,12 @@ void __87__PKDashboardPassGroupViewController_presentTransaction_forPaymentPass_
   }
 }
 
-- (void)presentTransaction:(void *)a3 forAccount:
+- (void)presentTransaction:(void *)transaction forAccount:
 {
   v9 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1 && [v5 type] == 4)
+  transactionCopy = transaction;
+  v6 = transactionCopy;
+  if (self && [transactionCopy type] == 4)
   {
     v7 = objc_alloc_init(PKAccountViewInterfaceConfiguration);
     [(PKAccountViewInterfaceConfiguration *)v7 setAccount:v6];
@@ -8146,17 +8146,17 @@ void __87__PKDashboardPassGroupViewController_presentTransaction_forPaymentPass_
     [(PKAccountViewInterfaceConfiguration *)v7 setViewStyle:0];
     v8 = objc_alloc_init(PKPassPresentationContext);
     [(PKPassPresentationContext *)v8 setPresentationSource:5];
-    [(PKDashboardPassGroupViewController *)a1 presentAccountWithConfiguration:v7 presentationContext:v8 animated:1 completion:0];
+    [(PKDashboardPassGroupViewController *)self presentAccountWithConfiguration:v7 presentationContext:v8 animated:1 completion:0];
   }
 }
 
 - (void)presentScheduledPayments
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[153];
-    v3 = [MEMORY[0x1E69B8EF8] sharedService];
-    objc_initWeak(&location, a1);
+    v2 = self[153];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __62__PKDashboardPassGroupViewController_presentScheduledPayments__block_invoke;
@@ -8164,9 +8164,9 @@ void __87__PKDashboardPassGroupViewController_presentTransaction_forPaymentPass_
     objc_copyWeak(&v10, &location);
     v4 = v2;
     v7 = v4;
-    v5 = v3;
+    v5 = mEMORY[0x1E69B8EF8];
     v8 = v5;
-    v9 = a1;
+    selfCopy = self;
     [v4 executeAfterContentIsLoaded:v6];
 
     objc_destroyWeak(&v10);
@@ -8205,65 +8205,65 @@ void __62__PKDashboardPassGroupViewController_presentScheduledPayments__block_in
   }
 }
 
-- (void)presentInstallmentPlan:(uint64_t)a1
+- (void)presentInstallmentPlan:(uint64_t)plan
 {
-  if (a1 && a2)
+  if (plan && a2)
   {
     v3 = [MEMORY[0x1E695DFD8] setWithObject:a2];
-    [(PKDashboardPassGroupViewController *)a1 _presentInstallmentPlans:v3];
+    [(PKDashboardPassGroupViewController *)plan _presentInstallmentPlans:v3];
   }
 }
 
-- (void)_presentInstallmentPlans:(uint64_t)a1
+- (void)_presentInstallmentPlans:(uint64_t)plans
 {
   v3 = a2;
-  if (a1)
+  if (plans)
   {
     v24 = v3;
     v4 = [v3 count];
     v3 = v24;
     if (v4)
     {
-      v5 = *(a1 + 1248);
-      v6 = *(a1 + 1224);
-      v7 = [v5 frontmostPassView];
-      v8 = [v7 pass];
-      v9 = [v8 paymentPass];
+      v5 = *(plans + 1248);
+      v6 = *(plans + 1224);
+      frontmostPassView = [v5 frontmostPassView];
+      pass = [frontmostPassView pass];
+      paymentPass = [pass paymentPass];
 
-      v23 = v9;
-      v10 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:v9];
+      v23 = paymentPass;
+      v10 = [objc_alloc(MEMORY[0x1E69B92F8]) initWithPaymentPass:paymentPass];
       v11 = [objc_alloc(MEMORY[0x1E69B9300]) initWithTransactionSource:v10];
       if (v4 == 1)
       {
         v12 = [PKTransactionHistoryViewController alloc];
-        v13 = [v24 anyObject];
-        v14 = [v6 familyCollection];
-        v15 = [v6 account];
-        v16 = [v6 accountUserCollection];
-        v17 = [v6 physicalCards];
+        anyObject = [v24 anyObject];
+        familyCollection = [v6 familyCollection];
+        account = [v6 account];
+        accountUserCollection = [v6 accountUserCollection];
+        physicalCards = [v6 physicalCards];
 
-        v18 = [(PKTransactionHistoryViewController *)v12 initWithInstallmentPlan:v13 transactionSourceCollection:v11 familyCollection:v14 account:v15 accountUserCollection:v16 physicalCards:v17];
+        v18 = [(PKTransactionHistoryViewController *)v12 initWithInstallmentPlan:anyObject transactionSourceCollection:v11 familyCollection:familyCollection account:account accountUserCollection:accountUserCollection physicalCards:physicalCards];
       }
 
       else
       {
-        v13 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+        anyObject = [MEMORY[0x1E69B8BD8] defaultDataProvider];
         v22 = [PKInstallmentPlansViewController alloc];
-        v14 = [v6 account];
-        v15 = [v6 accountUserCollection];
-        v16 = [v6 physicalCards];
-        v17 = [MEMORY[0x1E69B8400] sharedInstance];
+        familyCollection = [v6 account];
+        account = [v6 accountUserCollection];
+        accountUserCollection = [v6 physicalCards];
+        physicalCards = [MEMORY[0x1E69B8400] sharedInstance];
         [v6 familyCollection];
         v20 = v19 = v10;
 
-        v18 = [(PKInstallmentPlansViewController *)v22 initWithAccount:v14 accountUserCollection:v15 physicalCards:v16 accountService:v17 transactionSourceCollection:v11 familyCollection:v20 dataProvider:v13];
+        v18 = [(PKInstallmentPlansViewController *)v22 initWithAccount:familyCollection accountUserCollection:account physicalCards:accountUserCollection accountService:physicalCards transactionSourceCollection:v11 familyCollection:v20 dataProvider:anyObject];
         v10 = v19;
       }
 
       if (v18)
       {
-        v21 = [a1 navigationController];
-        [v21 pushViewController:v18 animated:1];
+        navigationController = [plans navigationController];
+        [navigationController pushViewController:v18 animated:1];
       }
 
       v3 = v24;
@@ -8273,28 +8273,28 @@ void __62__PKDashboardPassGroupViewController_presentScheduledPayments__block_in
 
 - (void)presentInstallmentPlans
 {
-  if (a1)
+  if (self)
   {
-    v4 = [*(a1 + 1224) account];
-    v2 = [v4 creditDetails];
-    v3 = [v2 installmentPlans];
+    account = [*(self + 1224) account];
+    creditDetails = [account creditDetails];
+    installmentPlans = [creditDetails installmentPlans];
 
-    [(PKDashboardPassGroupViewController *)a1 _presentInstallmentPlans:v3];
+    [(PKDashboardPassGroupViewController *)self _presentInstallmentPlans:installmentPlans];
   }
 }
 
-- (void)presentRewardsHubWithCompletion:(void *)a1
+- (void)presentRewardsHubWithCompletion:(void *)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __70__PKDashboardPassGroupViewController_presentRewardsHubWithCompletion___block_invoke;
     v5[3] = &unk_1E8023828;
     v6 = v3;
-    [(PKDashboardPassGroupViewController *)a1 _presentRewardsHubWithCompletion:v5];
+    [(PKDashboardPassGroupViewController *)completion _presentRewardsHubWithCompletion:v5];
   }
 }
 
@@ -8309,38 +8309,38 @@ uint64_t __70__PKDashboardPassGroupViewController_presentRewardsHubWithCompletio
   return result;
 }
 
-- (void)_presentRewardsHubWithCompletion:(void *)a1
+- (void)_presentRewardsHubWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, completion);
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __71__PKDashboardPassGroupViewController__presentRewardsHubWithCompletion___block_invoke;
     v4[3] = &unk_1E8023710;
     objc_copyWeak(&v6, &location);
     v5 = v3;
-    [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v4];
+    [(PKDashboardPassGroupViewController *)completion _canPresentCreditDetailsViewControllerWithCompletion:v4];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)presentAccountPromotionWithProgramIdentifier:(void *)a3 completion:
+- (void)presentAccountPromotionWithProgramIdentifier:(void *)identifier completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __94__PKDashboardPassGroupViewController_presentAccountPromotionWithProgramIdentifier_completion___block_invoke;
     v7[3] = &unk_1E8023850;
     v8 = v5;
-    v9 = v6;
-    [(PKDashboardPassGroupViewController *)a1 _presentRewardsHubWithCompletion:v7];
+    v9 = identifierCopy;
+    [(PKDashboardPassGroupViewController *)self _presentRewardsHubWithCompletion:v7];
   }
 }
 
@@ -8393,19 +8393,19 @@ uint64_t __94__PKDashboardPassGroupViewController_presentAccountPromotionWithPro
   return result;
 }
 
-- (void)presentRewardsHubMerchantsWithPrivateIdentifier:(void *)a3 completion:
+- (void)presentRewardsHubMerchantsWithPrivateIdentifier:(void *)identifier completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __97__PKDashboardPassGroupViewController_presentRewardsHubMerchantsWithPrivateIdentifier_completion___block_invoke;
     v7[3] = &unk_1E8023850;
     v8 = v5;
-    v9 = v6;
-    [(PKDashboardPassGroupViewController *)a1 _presentRewardsHubWithCompletion:v7];
+    v9 = identifierCopy;
+    [(PKDashboardPassGroupViewController *)self _presentRewardsHubWithCompletion:v7];
   }
 }
 
@@ -8717,42 +8717,42 @@ uint64_t __110__PKDashboardPassGroupViewController_presentAccountWithConfigurati
   return result;
 }
 
-- (void)presentPeerPaymentRecurringPaymentsWithIdentifier:(void *)a3 completion:
+- (void)presentPeerPaymentRecurringPaymentsWithIdentifier:(void *)identifier completion:
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  identifierCopy = identifier;
+  if (self)
   {
-    v7 = a1[159];
+    v7 = self[159];
     v8 = v7;
     if (v7)
     {
       if ([v7 isPeerPaymentPass])
       {
-        v9 = [v8 secureElementPass];
-        v10 = [v9 devicePrimaryPaymentApplication];
-        v11 = [v10 state];
+        secureElementPass = [v8 secureElementPass];
+        devicePrimaryPaymentApplication = [secureElementPass devicePrimaryPaymentApplication];
+        state = [devicePrimaryPaymentApplication state];
 
-        if (v11 == 7)
+        if (state == 7)
         {
-          if (v6)
+          if (identifierCopy)
           {
-            v6[2](v6, 0);
+            identifierCopy[2](identifierCopy, 0);
           }
         }
 
         else
         {
-          objc_initWeak(&location, a1);
-          v13 = a1[153];
+          objc_initWeak(&location, self);
+          v13 = self[153];
           if (!v13)
           {
             v14 = PKLogFacilityTypeGetObject();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134349314;
-              v23 = a1;
+              selfCopy2 = self;
               v24 = 2080;
               v25 = "[PKDashboardPassGroupViewController presentPeerPaymentRecurringPaymentsWithIdentifier:completion:]";
               _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
@@ -8766,7 +8766,7 @@ uint64_t __110__PKDashboardPassGroupViewController_presentAccountWithConfigurati
           objc_copyWeak(&v20, &location);
           v15 = v13;
           v17 = v15;
-          v19 = v6;
+          v19 = identifierCopy;
           v18 = v5;
           [v15 executeAfterContentIsLoaded:v16];
 
@@ -8786,16 +8786,16 @@ LABEL_17:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v23 = a1;
+        selfCopy2 = self;
         v24 = 2080;
         v25 = "[PKDashboardPassGroupViewController presentPeerPaymentRecurringPaymentsWithIdentifier:completion:]";
         _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    if (v6)
+    if (identifierCopy)
     {
-      v6[2](v6, 0);
+      identifierCopy[2](identifierCopy, 0);
     }
 
     goto LABEL_17;
@@ -8888,11 +8888,11 @@ void __99__PKDashboardPassGroupViewController_presentPeerPaymentRecurringPayment
 
 - (void)_presentPeerPaymentAddDebitFlow
 {
-  if (a1)
+  if (self)
   {
     v3 = [PKPeerPaymentActionController startProvisionToAddDebitWithNetworkAllowlist:0];
-    v2 = [a1 navigationController];
-    [v2 presentViewController:v3 animated:1 completion:0];
+    navigationController = [self navigationController];
+    [navigationController presentViewController:v3 animated:1 completion:0];
   }
 }
 
@@ -8931,22 +8931,22 @@ void __110__PKDashboardPassGroupViewController_presentPeerPaymentActionViewContr
   [(PKDashboardPassGroupViewController *)WeakRetained _presentPeerPaymentAddDebitFlow];
 }
 
-- (void)presentPeerPaymentDeviceTapWithInitialAmount:(void *)a3 initialMemo:
+- (void)presentPeerPaymentDeviceTapWithInitialAmount:(void *)amount initialMemo:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  amountCopy = amount;
+  if (self)
   {
-    v7 = a1[153];
-    objc_initWeak(&location, a1);
+    v7 = self[153];
+    objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __95__PKDashboardPassGroupViewController_presentPeerPaymentDeviceTapWithInitialAmount_initialMemo___block_invoke;
     v13 = &unk_1E8010998;
     objc_copyWeak(&v14, &location);
-    v8 = [v7 deviceTapAmountEntryViewControllerWithInitialAmount:v5 initialMemo:v6 dismissAction:&v10];
-    v9 = [a1 navigationController];
-    [v9 presentViewController:v8 animated:1 completion:0];
+    v8 = [v7 deviceTapAmountEntryViewControllerWithInitialAmount:v5 initialMemo:amountCopy dismissAction:&v10];
+    navigationController = [self navigationController];
+    [navigationController presentViewController:v8 animated:1 completion:0];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -8959,15 +8959,15 @@ void __95__PKDashboardPassGroupViewController_presentPeerPaymentDeviceTapWithIni
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentAuxiliaryPassInformationItemWithIdentifier:(void *)a3 informationIdentifier:(void *)a4 completion:
+- (void)presentAuxiliaryPassInformationItemWithIdentifier:(void *)identifier informationIdentifier:(void *)informationIdentifier completion:
 {
   v31 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  identifierCopy = identifier;
+  informationIdentifierCopy = informationIdentifier;
+  if (self)
   {
-    v10 = a1[158];
+    v10 = self[158];
     v11 = v10;
     if (!v10)
     {
@@ -8975,83 +8975,83 @@ void __95__PKDashboardPassGroupViewController_presentPeerPaymentDeviceTapWithIni
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v28 = a1;
+        selfCopy = self;
         v29 = 2080;
         v30 = "[PKDashboardPassGroupViewController presentAuxiliaryPassInformationItemWithIdentifier:informationIdentifier:completion:]";
         _os_log_impl(&dword_1BD026000, v21, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
 
-      if (v9)
+      if (informationIdentifierCopy)
       {
-        v9[2](v9, 0);
+        informationIdentifierCopy[2](informationIdentifierCopy, 0);
       }
 
       goto LABEL_30;
     }
 
-    v12 = [v10 secureElementPass];
-    v13 = v12;
-    if (!v12)
+    secureElementPass = [v10 secureElementPass];
+    v13 = secureElementPass;
+    if (!secureElementPass)
     {
-      if (v9)
+      if (informationIdentifierCopy)
       {
-        v9[2](v9, 0);
+        informationIdentifierCopy[2](informationIdentifierCopy, 0);
       }
 
       goto LABEL_29;
     }
 
-    v14 = [v12 auxiliaryPassInformation];
-    v15 = v14;
-    if (!v14 || ![v14 count])
+    auxiliaryPassInformation = [secureElementPass auxiliaryPassInformation];
+    v15 = auxiliaryPassInformation;
+    if (!auxiliaryPassInformation || ![auxiliaryPassInformation count])
     {
-      if (v9)
+      if (informationIdentifierCopy)
       {
-        v9[2](v9, 0);
+        informationIdentifierCopy[2](informationIdentifierCopy, 0);
       }
 
       goto LABEL_28;
     }
 
-    if (v8)
+    if (identifierCopy)
     {
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __121__PKDashboardPassGroupViewController_presentAuxiliaryPassInformationItemWithIdentifier_informationIdentifier_completion___block_invoke;
       v25[3] = &unk_1E8015820;
       v22 = &v26;
-      v26 = v8;
-      v16 = [v15 pk_firstObjectPassingTest:v25];
-      if (v16)
+      v26 = identifierCopy;
+      firstObject = [v15 pk_firstObjectPassingTest:v25];
+      if (firstObject)
       {
 LABEL_8:
-        v17 = [v16 items];
+        items = [firstObject items];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __121__PKDashboardPassGroupViewController_presentAuxiliaryPassInformationItemWithIdentifier_informationIdentifier_completion___block_invoke_2;
         v23[3] = &unk_1E8015848;
         v24 = v7;
-        v18 = [v17 pk_firstObjectPassingTest:v23];
+        v18 = [items pk_firstObjectPassingTest:v23];
 
         if (v18)
         {
           v19 = [[PKDashboardAuxiliaryPassInformationViewController alloc] initWithItem:v18 forPass:v13];
-          v20 = [a1 navigationController];
-          [v20 pushViewController:v19 animated:1];
+          navigationController = [self navigationController];
+          [navigationController pushViewController:v19 animated:1];
 
-          if (v9)
+          if (informationIdentifierCopy)
           {
-            v9[2](v9, 1);
+            informationIdentifierCopy[2](informationIdentifierCopy, 1);
           }
         }
 
-        else if (v9)
+        else if (informationIdentifierCopy)
         {
-          v9[2](v9, 0);
+          informationIdentifierCopy[2](informationIdentifierCopy, 0);
         }
 
 LABEL_26:
-        if (v8)
+        if (identifierCopy)
         {
         }
 
@@ -9066,16 +9066,16 @@ LABEL_30:
 
     else
     {
-      v16 = [v15 firstObject];
-      if (v16)
+      firstObject = [v15 firstObject];
+      if (firstObject)
       {
         goto LABEL_8;
       }
     }
 
-    if (v9)
+    if (informationIdentifierCopy)
     {
-      v9[2](v9, 0);
+      informationIdentifierCopy[2](informationIdentifierCopy, 0);
     }
 
     goto LABEL_26;
@@ -9132,67 +9132,67 @@ uint64_t __121__PKDashboardPassGroupViewController_presentAuxiliaryPassInformati
   return v8;
 }
 
-- (void)presentEditCalendarEvent:(void *)a3 eventStore:
+- (void)presentEditCalendarEvent:(void *)event eventStore:
 {
-  if (a1)
+  if (self)
   {
     v5 = MEMORY[0x1E6966B88];
-    v6 = a3;
+    eventCopy = event;
     v7 = a2;
     v9 = objc_alloc_init(v5);
-    [v9 setEditViewDelegate:a1];
-    [v9 setEventStore:v6];
+    [v9 setEditViewDelegate:self];
+    [v9 setEventStore:eventCopy];
 
     [v9 setEvent:v7];
-    v8 = [a1 navigationController];
-    [v8 presentViewController:v9 animated:1 completion:0];
+    navigationController = [self navigationController];
+    [navigationController presentViewController:v9 animated:1 completion:0];
   }
 }
 
-- (void)presentExistingCalendarEvent:(void *)a1 eventStore:(void *)a2
+- (void)presentExistingCalendarEvent:(void *)event eventStore:(void *)store
 {
-  if (a1)
+  if (event)
   {
     v3 = MEMORY[0x1E6966B90];
-    v4 = a2;
+    storeCopy = store;
     v7 = objc_alloc_init(v3);
-    [v7 setDelegate:a1];
-    [v7 setEvent:v4];
+    [v7 setDelegate:event];
+    [v7 setEvent:storeCopy];
 
     v5 = [objc_opt_new() initWithRootViewController:v7];
-    v6 = [a1 navigationController];
-    [v6 presentViewController:v5 animated:1 completion:0];
+    navigationController = [event navigationController];
+    [navigationController presentViewController:v5 animated:1 completion:0];
   }
 }
 
-- (void)eventViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  if ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+  if ((action & 0xFFFFFFFFFFFFFFFDLL) == 0)
   {
-    [a3 dismissViewControllerAnimated:1 completion:0];
+    [controller dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)presentRestrictedGuestAccessScheduleWithHomeIdentifier:(void *)a1
+- (void)presentRestrictedGuestAccessScheduleWithHomeIdentifier:(void *)identifier
 {
-  if (a1 && a2)
+  if (identifier && a2)
   {
     v3 = getHUScheduleAccessViewControllerClass;
     v4 = a2;
     v5 = objc_alloc(v3());
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    v8 = [v5 initWithHomeID:v4 tintColor:v6];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v8 = [v5 initWithHomeID:v4 tintColor:labelColor];
 
-    v7 = [a1 navigationController];
-    [v7 pushViewController:v8 animated:1];
+    navigationController = [identifier navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 }
 
 - (void)performPrecursorPassAction
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1224);
+    v1 = *(self + 1224);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __64__PKDashboardPassGroupViewController_performPrecursorPassAction__block_invoke;
@@ -9203,18 +9203,18 @@ uint64_t __121__PKDashboardPassGroupViewController_presentAuxiliaryPassInformati
   }
 }
 
-- (void)presentSearchWithCompletion:(id *)a1
+- (void)presentSearchWithCompletion:(id *)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __66__PKDashboardPassGroupViewController_presentSearchWithCompletion___block_invoke;
     v5[3] = &unk_1E8010AD8;
     v6 = v3;
-    [(PKDashboardPassGroupViewController *)a1 presentSearchWithQuery:v5 completion:?];
+    [(PKDashboardPassGroupViewController *)completion presentSearchWithQuery:v5 completion:?];
   }
 }
 
@@ -9229,35 +9229,35 @@ uint64_t __66__PKDashboardPassGroupViewController_presentSearchWithCompletion___
   return result;
 }
 
-- (void)presentSearchWithQuery:(void *)a3 completion:
+- (void)presentSearchWithQuery:(void *)query completion:
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  queryCopy = query;
+  if (self)
   {
-    v7 = a1[158];
+    v7 = self[158];
     if (!v7)
     {
       v8 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v18 = a1;
+        selfCopy2 = self;
         v19 = 2080;
         v20 = "[PKDashboardPassGroupViewController presentSearchWithQuery:completion:]";
         _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Frontmost pass is nil", buf, 0x16u);
       }
     }
 
-    v9 = a1[153];
+    v9 = self[153];
     if (!v9)
     {
       v10 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v18 = a1;
+        selfCopy2 = self;
         v19 = 2080;
         v20 = "[PKDashboardPassGroupViewController presentSearchWithQuery:completion:]";
         _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, "PKNavigationDashboardPassViewController (%{public}p): %s: Data source is nil", buf, 0x16u);
@@ -9266,25 +9266,25 @@ uint64_t __66__PKDashboardPassGroupViewController_presentSearchWithCompletion___
 
     if (PKSupportsSearchForPass())
     {
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __72__PKDashboardPassGroupViewController_presentSearchWithQuery_completion___block_invoke;
       v11[3] = &unk_1E8023990;
       objc_copyWeak(&v16, buf);
-      v15 = v6;
+      v15 = queryCopy;
       v12 = v9;
-      v13 = a1;
+      selfCopy3 = self;
       v14 = v5;
-      [(PKDashboardPassGroupViewController *)a1 _canPresentCreditDetailsViewControllerWithCompletion:v11];
+      [(PKDashboardPassGroupViewController *)self _canPresentCreditDetailsViewControllerWithCompletion:v11];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(buf);
     }
 
-    else if (v6)
+    else if (queryCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(queryCopy + 2))(queryCopy, 0);
     }
   }
 }
@@ -9416,12 +9416,12 @@ uint64_t __72__PKDashboardPassGroupViewController_presentSearchWithQuery_complet
   return v3();
 }
 
-- (void)presentInvitationWithIdentifier:(void *)a3 completion:
+- (void)presentInvitationWithIdentifier:(void *)identifier completion:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (self)
   {
     if (v5)
     {
@@ -9431,12 +9431,12 @@ uint64_t __72__PKDashboardPassGroupViewController_presentSearchWithQuery_complet
       v8[3] = &unk_1E80239B8;
       v9 = v5;
       v10 = v7;
-      [(PKDashboardPassGroupViewController *)a1 _presentPaymentPassDetailsAnimated:v8 completion:?];
+      [(PKDashboardPassGroupViewController *)self _presentPaymentPassDetailsAnimated:v8 completion:?];
     }
 
-    else if (v6)
+    else if (identifierCopy)
     {
-      (*(v6 + 2))(v6);
+      (*(identifierCopy + 2))(identifierCopy);
     }
   }
 }
@@ -9472,8 +9472,8 @@ uint64_t __81__PKDashboardPassGroupViewController_presentInvitationWithIdentifie
       v5 = MEMORY[0x1E696AEC0];
       v6 = *MEMORY[0x1E69BC6E0];
       v7 = *MEMORY[0x1E69BC698];
-      v8 = [(PKPaymentPass *)v3 uniqueID];
-      v9 = [v5 stringWithFormat:@"%@://%@/%@/%@", v6, v7, v8, *MEMORY[0x1E69BC620]];
+      uniqueID = [(PKPaymentPass *)v3 uniqueID];
+      v9 = [v5 stringWithFormat:@"%@://%@/%@/%@", v6, v7, uniqueID, *MEMORY[0x1E69BC620]];
 
       v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
       PKOpenURL();
@@ -9482,9 +9482,9 @@ uint64_t __81__PKDashboardPassGroupViewController_presentInvitationWithIdentifie
     else
     {
       v11 = objc_alloc(MEMORY[0x1E69B9268]);
-      v12 = [MEMORY[0x1E69B8EF8] sharedService];
-      v13 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-      v14 = [v11 initWithPass:v3 webService:v12 paymentServiceProvider:v13 queue:MEMORY[0x1E69E96A0]];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+      v14 = [v11 initWithPass:v3 webService:mEMORY[0x1E69B8EF8] paymentServiceProvider:defaultDataProvider queue:MEMORY[0x1E69E96A0]];
 
       objc_initWeak(buf, self);
       v15[0] = MEMORY[0x1E69E9820];
@@ -9544,8 +9544,8 @@ void __55__PKDashboardPassGroupViewController_presentSharesList__block_invoke(ui
       v5 = MEMORY[0x1E696AEC0];
       v6 = *MEMORY[0x1E69BC6E0];
       v7 = *MEMORY[0x1E69BC698];
-      v8 = [(PKPass *)v3 uniqueID];
-      v9 = [v5 stringWithFormat:@"%@://%@/%@/%@", v6, v7, v8, *MEMORY[0x1E69BC618]];
+      uniqueID = [(PKPass *)v3 uniqueID];
+      v9 = [v5 stringWithFormat:@"%@://%@/%@/%@", v6, v7, uniqueID, *MEMORY[0x1E69BC618]];
 
       v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
       PKOpenURL();
@@ -9553,11 +9553,11 @@ void __55__PKDashboardPassGroupViewController_presentSharesList__block_invoke(ui
 
     else
     {
-      v14 = [(PKPass *)v3 secureElementPass];
+      secureElementPass = [(PKPass *)v3 secureElementPass];
       v15 = objc_alloc(MEMORY[0x1E69B9268]);
-      v16 = [MEMORY[0x1E69B8EF8] sharedService];
-      v17 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
-      v18 = [v15 initWithPass:v14 webService:v16 paymentServiceProvider:v17 queue:MEMORY[0x1E69E96A0]];
+      mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+      defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+      v18 = [v15 initWithPass:secureElementPass webService:mEMORY[0x1E69B8EF8] paymentServiceProvider:defaultDataProvider queue:MEMORY[0x1E69E96A0]];
 
       objc_initWeak(buf, self);
       v21[0] = MEMORY[0x1E69E9820];
@@ -9567,7 +9567,7 @@ void __55__PKDashboardPassGroupViewController_presentSharesList__block_invoke(ui
       v10 = v18;
       v22 = v10;
       objc_copyWeak(&v24, buf);
-      v9 = v14;
+      v9 = secureElementPass;
       v23 = v9;
       [v10 updateEntitlementsWithCompletion:v21];
 
@@ -9580,8 +9580,8 @@ void __55__PKDashboardPassGroupViewController_presentSharesList__block_invoke(ui
   {
     v9 = [[PKLinkedApplication alloc] initWithPass:v3];
     v11 = MEMORY[0x1E69CD9F8];
-    v12 = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
-    v10 = [v11 pkui_activityControllerForPass:v3 passView:v12 passLinkedApplication:v9];
+    frontmostPassView = [(PKPassGroupView *)self->_passGroupView frontmostPassView];
+    v10 = [v11 pkui_activityControllerForPass:v3 passView:frontmostPassView passLinkedApplication:v9];
 
     if (v10)
     {
@@ -9591,8 +9591,8 @@ void __55__PKDashboardPassGroupViewController_presentSharesList__block_invoke(ui
       v19[3] = &unk_1E8012528;
       v20 = v3;
       [v10 setCompletionWithItemsHandler:v19];
-      v13 = [(PKDashboardPassGroupViewController *)self navigationController];
-      [v13 presentViewController:v10 animated:1 completion:0];
+      navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+      [navigationController presentViewController:v10 animated:1 completion:0];
     }
   }
 }
@@ -9655,60 +9655,60 @@ void __54__PKDashboardPassGroupViewController_presentShareFlow__block_invoke_3(u
 
 - (void)presentRedeemGiftcard
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1224) appleBalanceAddMoneyUIManager];
-    [v2 presentAMSRedeemGiftcardFromViewController:a1 webViewDelegate:0];
+    appleBalanceAddMoneyUIManager = [*(self + 1224) appleBalanceAddMoneyUIManager];
+    [appleBalanceAddMoneyUIManager presentAMSRedeemGiftcardFromViewController:self webViewDelegate:0];
   }
 }
 
-- (void)peerPaymentActionViewControllerDidCancel:(id)a3
+- (void)peerPaymentActionViewControllerDidCancel:(id)cancel
 {
-  v3 = [(PKDashboardPassGroupViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)peerPaymentActionViewControllerDidPerformAction:(id)a3
+- (void)peerPaymentActionViewControllerDidPerformAction:(id)action
 {
-  v3 = [(PKDashboardPassGroupViewController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)accountAutomaticPaymentsController:(id)a3 didSchedulePayment:(id)a4
+- (void)accountAutomaticPaymentsController:(id)controller didSchedulePayment:(id)payment
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(PKDashboardPassGroupViewController *)self navigationController];
-  if (v7)
+  controllerCopy = controller;
+  paymentCopy = payment;
+  navigationController = [(PKDashboardPassGroupViewController *)self navigationController];
+  if (navigationController)
   {
-    v8 = [v11 account];
-    v9 = [MEMORY[0x1E69B8EF8] sharedService];
-    v10 = [[PKCreditAccountPaymentDetailsViewController alloc] initWithAccount:v8 payment:v6 paymentWebService:v9 detailViewStyle:0];
-    [v7 pushViewController:v10 animated:1];
+    account = [controllerCopy account];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v10 = [[PKCreditAccountPaymentDetailsViewController alloc] initWithAccount:account payment:paymentCopy paymentWebService:mEMORY[0x1E69B8EF8] detailViewStyle:0];
+    [navigationController pushViewController:v10 animated:1];
   }
 }
 
-- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)a3
+- (id)presentationSceneIdentifierForAccountAutomaticPaymentsController:(id)controller
 {
-  v3 = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  viewIfLoaded = [(PKDashboardPassGroupViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)manuallyArchivePassWithUniqueID:(id *)a1
+- (void)manuallyArchivePassWithUniqueID:(id *)d
 {
   v3 = a2;
-  if (a1 && PKManualArchiveEnabled())
+  if (d && PKManualArchiveEnabled())
   {
-    objc_initWeak(&location, a1);
-    v4 = [MEMORY[0x1E69B8A58] sharedInstance];
-    [v4 archivePassWithUniqueID:v3];
+    objc_initWeak(&location, d);
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    [mEMORY[0x1E69B8A58] archivePassWithUniqueID:v3];
 
-    [a1[155] handleUserPassArchive:v3];
-    v5 = a1[155];
+    [d[155] handleUserPassArchive:v3];
+    v5 = d[155];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __70__PKDashboardPassGroupViewController_manuallyArchivePassWithUniqueID___block_invoke;
@@ -9733,23 +9733,23 @@ void __70__PKDashboardPassGroupViewController_manuallyArchivePassWithUniqueID___
   }
 }
 
-- (uint64_t)shouldOfferManualArchivalForPassWithUniqueID:(uint64_t)a1
+- (uint64_t)shouldOfferManualArchivalForPassWithUniqueID:(uint64_t)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    if (PKManualArchiveEnabled() && ([*(a1 + 1240) passAnnotationsByUniqueId], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectForKey:", v3), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+    if (PKManualArchiveEnabled() && ([*(d + 1240) passAnnotationsByUniqueId], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectForKey:", v3), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
     {
-      a1 = [v5 isArchived] ^ 1;
+      d = [v5 isArchived] ^ 1;
     }
 
     else
     {
-      a1 = 0;
+      d = 0;
     }
   }
 
-  return a1;
+  return d;
 }
 
 - (PKDashboardPassGroupViewControllerDelegate)dashboardPassGroupViewControllerDelegate

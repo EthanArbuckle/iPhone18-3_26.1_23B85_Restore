@@ -1,5 +1,5 @@
 @interface MetadataRibbonBorderedLabelWithDescriptionView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000300D8();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1000303A8();
   v8 = v7;
   v10 = v9;

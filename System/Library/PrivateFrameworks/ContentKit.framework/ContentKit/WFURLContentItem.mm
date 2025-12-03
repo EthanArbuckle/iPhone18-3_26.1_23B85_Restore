@@ -1,34 +1,34 @@
 @interface WFURLContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)URLCoercions;
-+ (id)attributionSetContentOfURL:(id)a3;
++ (id)attributionSetContentOfURL:(id)l;
 + (id)contentCategories;
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)mutableURLCoercions;
 + (id)outputTypes;
 + (id)ownedPasteboardTypes;
 + (id)ownedTypes;
 + (void)rediscoverURLCoercionClassesIfNeeded;
-+ (void)registerURLCoercion:(Class)a3;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
++ (void)registerURLCoercion:(Class)coercion;
+- (BOOL)canGenerateRepresentationForType:(id)type;
 - (NSDictionary)additionalRepresentationsForSerialization;
 - (NSString)description;
 - (NSURL)URL;
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3;
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class;
 - (id)outputTypes;
 - (id)webResource;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentationForPrintHandler:(id)a3 coercionOptions:(id)a4;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getContentsOfURLWithHandler:(id)a3;
-- (void)getContentsWithRequest:(id)a3 cacheResult:(BOOL)a4 expectedByteCountHandler:(id)a5 writtenByteCountHandler:(id)a6 completionHandler:(id)a7;
-- (void)getHeadersWithCompletionHandler:(id)a3;
-- (void)getPDFWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)getPreferredFileExtension:(id)a3;
-- (void)getPreferredFileSize:(id)a3;
-- (void)getTitleWithPermissionRequestor:(id)a3 completionHandler:(id)a4;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentationForPrintHandler:(id)handler coercionOptions:(id)options;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)getContentsOfURLWithHandler:(id)handler;
+- (void)getContentsWithRequest:(id)request cacheResult:(BOOL)result expectedByteCountHandler:(id)handler writtenByteCountHandler:(id)countHandler completionHandler:(id)completionHandler;
+- (void)getHeadersWithCompletionHandler:(id)handler;
+- (void)getPDFWithOptions:(id)options completionHandler:(id)handler;
+- (void)getPreferredFileExtension:(id)extension;
+- (void)getPreferredFileSize:(id)size;
+- (void)getTitleWithPermissionRequestor:(id)requestor completionHandler:(id)handler;
 @end
 
 @implementation WFURLContentItem
@@ -48,28 +48,28 @@
 {
   v10.receiver = self;
   v10.super_class = WFURLContentItem;
-  v3 = [(WFContentItem *)&v10 outputTypes];
+  outputTypes = [(WFContentItem *)&v10 outputTypes];
   v4 = MEMORY[0x277D79F68];
   v5 = [(WFURLContentItem *)self URL];
-  v6 = [v5 lastPathComponent];
-  v7 = [v4 typeFromFilename:v6];
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = [v4 typeFromFilename:lastPathComponent];
 
   if ([v7 isDeclared])
   {
-    v8 = [v3 mutableCopy];
+    v8 = [outputTypes mutableCopy];
     [v8 insertObject:v7 atIndex:0];
 
-    v3 = v8;
+    outputTypes = v8;
   }
 
-  return v3;
+  return outputTypes;
 }
 
-- (id)intermediaryTypesForCoercionToItemClass:(Class)a3
+- (id)intermediaryTypesForCoercionToItemClass:(Class)class
 {
   v5 = [WFObjectType typeWithClass:objc_opt_class()];
-  v6 = [(objc_class *)a3 ownedTypes];
-  v7 = [v6 containsObject:v5];
+  ownedTypes = [(objc_class *)class ownedTypes];
+  v7 = [ownedTypes containsObject:v5];
 
   if (v7)
   {
@@ -79,13 +79,13 @@
 
   v16.receiver = self;
   v16.super_class = WFURLContentItem;
-  v8 = [(WFContentItem *)&v16 intermediaryTypesForCoercionToItemClass:a3];
-  v9 = [v8 firstObject];
-  if ([v9 conformsToUTType:*MEMORY[0x277CE1DA0]])
+  v8 = [(WFContentItem *)&v16 intermediaryTypesForCoercionToItemClass:class];
+  firstObject = [v8 firstObject];
+  if ([firstObject conformsToUTType:*MEMORY[0x277CE1DA0]])
   {
     v10 = objc_opt_class();
 
-    if (v10 != a3)
+    if (v10 != class)
     {
       goto LABEL_10;
     }
@@ -100,7 +100,7 @@
       [v11 moveObjectsAtIndexes:v14 toIndex:0];
     }
 
-    v9 = v8;
+    firstObject = v8;
   }
 
   else
@@ -114,50 +114,50 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v5 = [(WFURLContentItem *)self URL];
-    v6 = [v5 scheme];
-    v7 = [v6 isEqualToString:@"mailto"];
+    uRLCoercions = [(WFURLContentItem *)self URL];
+    scheme = [uRLCoercions scheme];
+    v7 = [scheme isEqualToString:@"mailto"];
 LABEL_3:
-    v8 = v7;
+    isFileURL = v7;
 LABEL_4:
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToClass:objc_opt_class()])
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
     v9 = [(WFURLContentItem *)self URL];
-    v8 = [DCMapsLink isMapsURL:v9];
+    isFileURL = [DCMapsLink isMapsURL:v9];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToClass:objc_opt_class()])
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v5 = [(WFURLContentItem *)self URL];
-    v6 = [v5 scheme];
-    v7 = [v6 hasPrefix:@"http"];
+    uRLCoercions = [(WFURLContentItem *)self URL];
+    scheme = [uRLCoercions scheme];
+    v7 = [scheme hasPrefix:@"http"];
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToUTType:*MEMORY[0x277CE1D48]])
+  if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1D48]])
   {
-    v5 = [(WFURLContentItem *)self URL];
-    v6 = [v5 scheme];
-    if (([v6 hasPrefix:@"http"] & 1) == 0)
+    uRLCoercions = [(WFURLContentItem *)self URL];
+    scheme = [uRLCoercions scheme];
+    if (([scheme hasPrefix:@"http"] & 1) == 0)
     {
       v11 = [(WFURLContentItem *)self URL];
-      v12 = [v11 scheme];
-      if (([v12 isEqualToString:@"ftp"] & 1) == 0)
+      scheme2 = [v11 scheme];
+      if (([scheme2 isEqualToString:@"ftp"] & 1) == 0)
       {
         v13 = [(WFURLContentItem *)self URL];
-        v8 = [v13 isFileURL];
+        isFileURL = [v13 isFileURL];
 LABEL_35:
 
         goto LABEL_36;
@@ -169,54 +169,54 @@ LABEL_35:
     goto LABEL_17;
   }
 
-  if ([v4 isEqualToClass:getUIPrintFormatterClass_12433()] || (objc_msgSend(MEMORY[0x277D79F68], "typeFromPasteboardType:", *MEMORY[0x277D7A7E8]), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v4, "isEqualToType:", v14), v14, v15))
+  if ([typeCopy isEqualToClass:getUIPrintFormatterClass_12433()] || (objc_msgSend(MEMORY[0x277D79F68], "typeFromPasteboardType:", *MEMORY[0x277D7A7E8]), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(typeCopy, "isEqualToType:", v14), v14, v15))
   {
-    v5 = [(WFURLContentItem *)self URL];
-    v6 = [v5 scheme];
-    if (([v6 hasPrefix:@"http"] & 1) == 0)
+    uRLCoercions = [(WFURLContentItem *)self URL];
+    scheme = [uRLCoercions scheme];
+    if (([scheme hasPrefix:@"http"] & 1) == 0)
     {
       v11 = [(WFURLContentItem *)self URL];
-      v12 = [v11 scheme];
-      if (([v12 isEqualToString:@"data"] & 1) == 0)
+      scheme2 = [v11 scheme];
+      if (([scheme2 isEqualToString:@"data"] & 1) == 0)
       {
         v13 = [(WFURLContentItem *)self URL];
-        v24 = [v13 scheme];
-        if ([v24 isEqualToString:@"ftp"])
+        scheme3 = [v13 scheme];
+        if ([scheme3 isEqualToString:@"ftp"])
         {
-          v8 = 1;
+          isFileURL = 1;
         }
 
         else
         {
           v25 = [(WFURLContentItem *)self URL];
-          v8 = [v25 isFileURL];
+          isFileURL = [v25 isFileURL];
         }
 
         goto LABEL_35;
       }
 
 LABEL_19:
-      v8 = 1;
+      isFileURL = 1;
 LABEL_36:
 
       goto LABEL_4;
     }
 
 LABEL_17:
-    v8 = 1;
+    isFileURL = 1;
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v4 objectClass];
+    objectClass = [typeCopy objectClass];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = [objc_opt_class() URLCoercions];
-    v17 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    uRLCoercions = [objc_opt_class() URLCoercions];
+    v17 = [uRLCoercions countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -227,22 +227,22 @@ LABEL_17:
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(uRLCoercions);
           }
 
           v21 = *(*(&v27 + 1) + 8 * i);
-          v22 = [v21 urlItem_outputClasses];
-          v23 = [v22 containsObject:v16];
+          urlItem_outputClasses = [v21 urlItem_outputClasses];
+          v23 = [urlItem_outputClasses containsObject:objectClass];
 
           if (v23)
           {
-            v6 = [(WFURLContentItem *)self URL];
-            v7 = [v21 urlItem_canCoerceFromURL:v6];
+            scheme = [(WFURLContentItem *)self URL];
+            v7 = [v21 urlItem_canCoerceFromURL:scheme];
             goto LABEL_3;
           }
         }
 
-        v18 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v18 = [uRLCoercions countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v18)
         {
           continue;
@@ -255,24 +255,24 @@ LABEL_17:
 
   v26.receiver = self;
   v26.super_class = WFURLContentItem;
-  v8 = [(WFContentItem *)&v26 canGenerateRepresentationForType:v4];
+  isFileURL = [(WFContentItem *)&v26 canGenerateRepresentationForType:typeCopy];
 LABEL_7:
 
-  return v8;
+  return isFileURL;
 }
 
-- (void)generateObjectRepresentationForPrintHandler:(id)a3 coercionOptions:(id)a4
+- (void)generateObjectRepresentationForPrintHandler:(id)handler coercionOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFURLContentItem *)self webResource];
+  handlerCopy = handler;
+  optionsCopy = options;
+  webResource = [(WFURLContentItem *)self webResource];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__WFURLContentItem_generateObjectRepresentationForPrintHandler_coercionOptions___block_invoke;
   v10[3] = &unk_2783476C0;
-  v11 = v6;
-  v9 = v6;
-  [WFWebResourceCapturer getPrintFormatterForWebResource:v8 coercionOptions:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [WFWebResourceCapturer getPrintFormatterForWebResource:webResource coercionOptions:optionsCopy completionHandler:v10];
 }
 
 void __80__WFURLContentItem_generateObjectRepresentationForPrintHandler_coercionOptions___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -296,31 +296,31 @@ void __80__WFURLContentItem_generateObjectRepresentationForPrintHandler_coercion
   }
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
     v16 = [(WFURLContentItem *)self URL];
-    v17 = [v16 absoluteString];
-    v18 = [(WFContentItem *)self name];
-    v19 = [WFObjectRepresentation object:v17 named:v18];
+    absoluteString = [v16 absoluteString];
+    name = [(WFContentItem *)self name];
+    v19 = [WFObjectRepresentation object:absoluteString named:name];
     v59[0] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
-    v8[2](v8, v20, 0);
+    representationsCopy[2](representationsCopy, v20, 0);
 
 LABEL_20:
     goto LABEL_21;
   }
 
-  v10 = NSStringFromClass(a5);
+  v10 = NSStringFromClass(class);
   v11 = [@"UIPrintFormatter" isEqualToString:v10];
 
   if (v11)
   {
-    v12 = [v9 permissionRequestor];
+    permissionRequestor = [optionsCopy permissionRequestor];
     v13 = [(WFURLContentItem *)self URL];
     v58 = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
@@ -328,10 +328,10 @@ LABEL_20:
     v51[1] = 3221225472;
     v51[2] = __67__WFURLContentItem_generateObjectRepresentations_options_forClass___block_invoke;
     v51[3] = &unk_2783478E0;
-    v53 = v8;
+    v53 = representationsCopy;
     v51[4] = self;
-    v52 = v9;
-    [v12 allowNetworkAccessAfterPromptingForURLs:v14 completionHandler:v51];
+    v52 = optionsCopy;
+    [permissionRequestor allowNetworkAccessAfterPromptingForURLs:v14 completionHandler:v51];
 
     v15 = v53;
 LABEL_4:
@@ -339,32 +339,32 @@ LABEL_4:
     goto LABEL_21;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v30 = [(WFURLContentItem *)self URL];
     v16 = [WFEmailAddress addressesWithMailtoURL:v30];
 
     v31 = [v16 if_map:&__block_literal_global_29_12459];
-    v8[2](v8, v31, 0);
+    representationsCopy[2](representationsCopy, v31, 0);
 
     goto LABEL_20;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v32 = [(WFURLContentItem *)self URL];
     v33 = [DCMapsLink mapsLinkWithURL:v32];
     v34 = [WFObjectRepresentation object:v33];
     v57 = v34;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-    v8[2](v8, v35, 0);
+    representationsCopy[2](representationsCopy, v35, 0);
 
     goto LABEL_21;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
-    v36 = [v9 permissionRequestor];
+    permissionRequestor2 = [optionsCopy permissionRequestor];
     v37 = [(WFURLContentItem *)self URL];
     v56 = v37;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
@@ -373,32 +373,32 @@ LABEL_4:
     v49[2] = __67__WFURLContentItem_generateObjectRepresentations_options_forClass___block_invoke_3;
     v49[3] = &unk_278349B20;
     v49[4] = self;
-    v50 = v8;
-    [v36 allowNetworkAccessAfterPromptingForURLs:v38 completionHandler:v49];
+    v50 = representationsCopy;
+    [permissionRequestor2 allowNetworkAccessAfterPromptingForURLs:v38 completionHandler:v49];
 
     v15 = v50;
     goto LABEL_4;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
-    v40 = [(WFURLContentItem *)self webResource];
-    v41 = [(WFContentItem *)self name];
-    v42 = [WFObjectRepresentation object:v40 named:v41];
+    webResource = [(WFURLContentItem *)self webResource];
+    name2 = [(WFContentItem *)self name];
+    v42 = [WFObjectRepresentation object:webResource named:name2];
     v55 = v42;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-    v8[2](v8, v43, 0);
+    representationsCopy[2](representationsCopy, v43, 0);
   }
 
   else
   {
-    v44 = v9;
+    v44 = optionsCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v21 = [objc_opt_class() URLCoercions];
-    v22 = [v21 countByEnumeratingWithState:&v45 objects:v54 count:16];
+    uRLCoercions = [objc_opt_class() URLCoercions];
+    v22 = [uRLCoercions countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v22)
     {
       v23 = v22;
@@ -409,23 +409,23 @@ LABEL_4:
         {
           if (*v46 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(uRLCoercions);
           }
 
           v26 = *(*(&v45 + 1) + 8 * i);
-          v27 = [v26 urlItem_outputClasses];
-          v28 = [v27 containsObject:a5];
+          urlItem_outputClasses = [v26 urlItem_outputClasses];
+          v28 = [urlItem_outputClasses containsObject:class];
 
           if (v28)
           {
             v39 = [(WFURLContentItem *)self URL];
-            [v26 urlItem_generateObjectRepresentations:v8 fromURL:v39 forClass:a5];
+            [v26 urlItem_generateObjectRepresentations:representationsCopy fromURL:v39 forClass:class];
 
             goto LABEL_25;
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v45 objects:v54 count:16];
+        v23 = [uRLCoercions countByEnumeratingWithState:&v45 objects:v54 count:16];
         if (v23)
         {
           continue;
@@ -435,11 +435,11 @@ LABEL_4:
       }
     }
 
-    v29 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (v8)[2](v8, 0, v29);
+    v29 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (representationsCopy)[2](representationsCopy, 0, v29);
 
 LABEL_25:
-    v9 = v44;
+    optionsCopy = v44;
   }
 
 LABEL_21:
@@ -503,10 +503,10 @@ void __67__WFURLContentItem_generateObjectRepresentations_options_forClass___blo
 - (id)webResource
 {
   v3 = [(WFURLContentItem *)self URL];
-  v4 = [v3 isFileURL];
+  isFileURL = [v3 isFileURL];
 
   v5 = [(WFURLContentItem *)self URL];
-  if (v4)
+  if (isFileURL)
   {
     v6 = [WFFileRepresentation fileWithURL:v5 options:0];
     v7 = [WFWebResource webResourceWithFile:v6];
@@ -528,15 +528,15 @@ void __67__WFURLContentItem_generateObjectRepresentations_options_forClass___blo
   return v3;
 }
 
-- (void)getPreferredFileExtension:(id)a3
+- (void)getPreferredFileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = [(WFURLContentItem *)self URL];
-  v6 = [v5 pathExtension];
+  pathExtension = [v5 pathExtension];
 
-  if ([v6 length])
+  if ([pathExtension length])
   {
-    v4[2](v4, v6);
+    extensionCopy[2](extensionCopy, pathExtension);
   }
 
   else
@@ -545,7 +545,7 @@ void __67__WFURLContentItem_generateObjectRepresentations_options_forClass___blo
     v7[1] = 3221225472;
     v7[2] = __46__WFURLContentItem_getPreferredFileExtension___block_invoke;
     v7[3] = &unk_278347670;
-    v8 = v4;
+    v8 = extensionCopy;
     [(WFURLContentItem *)self getHeadersWithCompletionHandler:v7];
   }
 }
@@ -558,15 +558,15 @@ void __46__WFURLContentItem_getPreferredFileExtension___block_invoke(uint64_t a1
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)getPreferredFileSize:(id)a3
+- (void)getPreferredFileSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__WFURLContentItem_getPreferredFileSize___block_invoke;
   v6[3] = &unk_278347670;
-  v7 = v4;
-  v5 = v4;
+  v7 = sizeCopy;
+  v5 = sizeCopy;
   [(WFURLContentItem *)self getHeadersWithCompletionHandler:v6];
 }
 
@@ -578,52 +578,52 @@ uint64_t __41__WFURLContentItem_getPreferredFileSize___block_invoke(uint64_t a1,
   return v3();
 }
 
-- (void)getTitleWithPermissionRequestor:(id)a3 completionHandler:(id)a4
+- (void)getTitleWithPermissionRequestor:(id)requestor completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestorCopy = requestor;
+  handlerCopy = handler;
   v8 = [(WFContentItem *)self objectRepresentationForClass:objc_opt_class()];
-  v9 = [v8 specifiedName];
+  specifiedName = [v8 specifiedName];
 
-  if (v9)
+  if (specifiedName)
   {
-    v10 = [v8 specifiedName];
-    v7[2](v7, v10);
+    specifiedName2 = [v8 specifiedName];
+    handlerCopy[2](handlerCopy, specifiedName2);
   }
 
   else
   {
-    v10 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DA0]];
-    v11 = [(WFContentItem *)self fileRepresentationForType:v10];
+    specifiedName2 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DA0]];
+    v11 = [(WFContentItem *)self fileRepresentationForType:specifiedName2];
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 wfName];
-      if (v13)
+      wfName = [v11 wfName];
+      if (wfName)
       {
-        v7[2](v7, v13);
+        handlerCopy[2](handlerCopy, wfName);
       }
 
       else
       {
-        v16 = [(WFContentItem *)self name];
-        v7[2](v7, v16);
+        name = [(WFContentItem *)self name];
+        handlerCopy[2](handlerCopy, name);
       }
     }
 
     else
     {
-      v14 = [v8 object];
-      v19[0] = v14;
+      object = [v8 object];
+      v19[0] = object;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __70__WFURLContentItem_getTitleWithPermissionRequestor_completionHandler___block_invoke;
       v17[3] = &unk_278349B20;
       v17[4] = self;
-      v18 = v7;
-      [v6 allowNetworkAccessAfterPromptingForURLs:v15 completionHandler:v17];
+      v18 = handlerCopy;
+      [requestorCopy allowNetworkAccessAfterPromptingForURLs:v15 completionHandler:v17];
     }
   }
 }
@@ -703,51 +703,51 @@ LABEL_5:
 LABEL_7:
 }
 
-- (void)getPDFWithOptions:(id)a3 completionHandler:(id)a4
+- (void)getPDFWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dictionary];
-  v9 = [v8 objectForKey:@"WFCoercionOptionPDFIncludeMargin"];
-  v10 = [v9 BOOLValue];
+  handlerCopy = handler;
+  optionsCopy = options;
+  dictionary = [optionsCopy dictionary];
+  v9 = [dictionary objectForKey:@"WFCoercionOptionPDFIncludeMargin"];
+  bOOLValue = [v9 BOOLValue];
 
   v12 = objc_alloc_init(WFWebResourceCapturer);
-  v11 = [(WFURLContentItem *)self webResource];
-  [(WFWebResourceCapturer *)v12 generatePDFForWebResource:v11 includeMargin:v10 coercionOptions:v7 completionHandler:v6];
+  webResource = [(WFURLContentItem *)self webResource];
+  [(WFWebResourceCapturer *)v12 generatePDFForWebResource:webResource includeMargin:bOOLValue coercionOptions:optionsCopy completionHandler:handlerCopy];
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  optionsCopy = options;
+  typeCopy = type;
   v11 = [(WFURLContentItem *)self URL];
-  v12 = [v11 isFileURL];
+  isFileURL = [v11 isFileURL];
 
-  if (v12)
+  if (isFileURL)
   {
     v13 = *MEMORY[0x277CE1E08];
-    if ([v10 isEqualToUTType:*MEMORY[0x277CE1E08]] && (-[WFURLContentItem URL](self, "URL"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "wfType"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToUTType:", v13), v15, v14, (v16 & 1) == 0))
+    if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1E08]] && (-[WFURLContentItem URL](self, "URL"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "wfType"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEqualToUTType:", v13), v15, v14, (v16 & 1) == 0))
     {
-      [(WFURLContentItem *)self getPDFWithOptions:v9 completionHandler:v8];
+      [(WFURLContentItem *)self getPDFWithOptions:optionsCopy completionHandler:representationCopy];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v18 = [(WFURLContentItem *)self URL];
-      v19 = [v18 path];
-      if ([v17 fileExistsAtPath:v19])
+      path = [v18 path];
+      if ([defaultManager fileExistsAtPath:path])
       {
         v20 = [(WFURLContentItem *)self URL];
         v21 = [WFFileRepresentation fileWithURL:v20 options:0];
-        v8[2](v8, v21, 0);
+        representationCopy[2](representationCopy, v21, 0);
       }
 
       else
       {
-        v8[2](v8, 0, 0);
+        representationCopy[2](representationCopy, 0, 0);
       }
     }
   }
@@ -755,17 +755,17 @@ LABEL_7:
   else
   {
     v22 = [(WFURLContentItem *)self URL];
-    v23 = [v22 host];
-    v24 = [v23 isEqualToString:@"maps.apple.com"];
+    host = [v22 host];
+    v24 = [host isEqualToString:@"maps.apple.com"];
 
     if (v24)
     {
-      v8[2](v8, 0, 0);
+      representationCopy[2](representationCopy, 0, 0);
     }
 
     else
     {
-      v25 = [v9 permissionRequestor];
+      permissionRequestor = [optionsCopy permissionRequestor];
       v26 = [(WFURLContentItem *)self URL];
       v33[0] = v26;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -773,11 +773,11 @@ LABEL_7:
       v28[1] = 3221225472;
       v28[2] = __63__WFURLContentItem_generateFileRepresentation_options_forType___block_invoke;
       v28[3] = &unk_278347620;
-      v32 = v8;
-      v29 = v10;
-      v30 = self;
-      v31 = v9;
-      [v25 allowNetworkAccessAfterPromptingForURLs:v27 completionHandler:v28];
+      v32 = representationCopy;
+      v29 = typeCopy;
+      selfCopy = self;
+      v31 = optionsCopy;
+      [permissionRequestor allowNetworkAccessAfterPromptingForURLs:v27 completionHandler:v28];
     }
   }
 }
@@ -886,25 +886,25 @@ void __63__WFURLContentItem_generateFileRepresentation_options_forType___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getContentsWithRequest:(id)a3 cacheResult:(BOOL)a4 expectedByteCountHandler:(id)a5 writtenByteCountHandler:(id)a6 completionHandler:(id)a7
+- (void)getContentsWithRequest:(id)request cacheResult:(BOOL)result expectedByteCountHandler:(id)handler writtenByteCountHandler:(id)countHandler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[WFDownloadURLTask alloc] initWithRequest:v12];
+  requestCopy = request;
+  handlerCopy = handler;
+  countHandlerCopy = countHandler;
+  completionHandlerCopy = completionHandler;
+  v16 = [[WFDownloadURLTask alloc] initWithRequest:requestCopy];
   objc_initWeak(&location, self);
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __122__WFURLContentItem_getContentsWithRequest_cacheResult_expectedByteCountHandler_writtenByteCountHandler_completionHandler___block_invoke;
   v21 = &unk_2783475A8;
   objc_copyWeak(&v23, &location);
-  v17 = v15;
+  v17 = completionHandlerCopy;
   v22 = v17;
-  v24 = a4;
+  resultCopy = result;
   [(WFDownloadURLTask *)v16 setCompletionHandler:&v18];
-  [(WFDownloadURLTask *)v16 setExpectedByteCountHandler:v13, v18, v19, v20, v21];
-  [(WFDownloadURLTask *)v16 setWrittenByteCountHandler:v14];
+  [(WFDownloadURLTask *)v16 setExpectedByteCountHandler:handlerCopy, v18, v19, v20, v21];
+  [(WFDownloadURLTask *)v16 setWrittenByteCountHandler:countHandlerCopy];
   [(WFDownloadURLTask *)v16 start];
 
   objc_destroyWeak(&v23);
@@ -1024,60 +1024,60 @@ LABEL_11:
 LABEL_27:
 }
 
-- (void)getContentsOfURLWithHandler:(id)a3
+- (void)getContentsOfURLWithHandler:(id)handler
 {
   v4 = MEMORY[0x277CCAB70];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(WFURLContentItem *)self URL];
   v7 = [v4 requestWithURL:v6];
 
   [v7 _setNonAppInitiated:1];
-  [(WFURLContentItem *)self getContentsWithRequest:v7 cacheResult:1 expectedByteCountHandler:0 writtenByteCountHandler:0 completionHandler:v5];
+  [(WFURLContentItem *)self getContentsWithRequest:v7 cacheResult:1 expectedByteCountHandler:0 writtenByteCountHandler:0 completionHandler:handlerCopy];
 }
 
-- (void)getHeadersWithCompletionHandler:(id)a3
+- (void)getHeadersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277CCAB70];
   v6 = [(WFURLContentItem *)self URL];
   v7 = [v5 requestWithURL:v6];
 
   [v7 setHTTPMethod:@"HEAD"];
   [v7 _setNonAppInitiated:1];
-  v8 = [MEMORY[0x277CCAD30] wf_sharedSession];
+  wf_sharedSession = [MEMORY[0x277CCAD30] wf_sharedSession];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__WFURLContentItem_getHeadersWithCompletionHandler___block_invoke;
   v11[3] = &unk_278347580;
-  v12 = v4;
-  v9 = v4;
-  v10 = [v8 dataTaskWithRequest:v7 completionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [wf_sharedSession dataTaskWithRequest:v7 completionHandler:v11];
   [v10 resume];
 }
 
 - (NSDictionary)additionalRepresentationsForSerialization
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(WFContentItem *)self internalRepresentation];
-  v4 = [v3 wfName];
-  v5 = [v2 dictionaryWithObjectsAndKeys:{v4, *MEMORY[0x277D7A428], 0}];
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
+  wfName = [internalRepresentation wfName];
+  v5 = [v2 dictionaryWithObjectsAndKeys:{wfName, *MEMORY[0x277D7A428], 0}];
 
   return v5;
 }
 
-+ (id)attributionSetContentOfURL:(id)a3
++ (id)attributionSetContentOfURL:(id)l
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 isFileURL];
-  if (!v3 || v4)
+  lCopy = l;
+  isFileURL = [lCopy isFileURL];
+  if (!lCopy || isFileURL)
   {
     v9 = [WFContentAttributionSet attributionSetByMergingAttributionSets:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB98] setWithObject:v3];
+    v5 = [MEMORY[0x277CBEB98] setWithObject:lCopy];
     v6 = [WFURLContentLocation locationWithURLs:v5 error:0];
 
     if (v6)
@@ -1097,20 +1097,20 @@ LABEL_27:
   return v9;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"URLs", @"URLs");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"URL (singular)", @"URL");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -1144,7 +1144,7 @@ LABEL_27:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [a1 URLCoercions];
+  obj = [self URLCoercions];
   v12 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v12)
   {
@@ -1164,8 +1164,8 @@ LABEL_27:
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v17 = [v16 urlItem_outputClasses];
-        v18 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        urlItem_outputClasses = [v16 urlItem_outputClasses];
+        v18 = [urlItem_outputClasses countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v18)
         {
           v19 = v18;
@@ -1176,14 +1176,14 @@ LABEL_27:
             {
               if (*v29 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(urlItem_outputClasses);
               }
 
               v22 = [WFObjectType typeWithClass:*(*(&v28 + 1) + 8 * j)];
               [v11 addObject:v22];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+            v19 = [urlItem_outputClasses countByEnumeratingWithState:&v28 objects:v36 count:16];
           }
 
           while (v19);
@@ -1218,11 +1218,11 @@ LABEL_27:
   return v4;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1D48]) & 1) != 0 || ((v5 = v4) == 0 ? (v6 = 0) : (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v6 = 0) : (v6 = v5), (v7 = v6, v5, objc_msgSend(v7, "string"), v8 = objc_claimAutoreleasedReturnValue(), v7, LOBYTE(v7) = objc_msgSend(v8, "isEqualToString:", @"UIPrintFormatter"), v8, (v7) || (objc_msgSend(MEMORY[0x277D79F68], "typeFromPasteboardType:", *MEMORY[0x277D7A7E8]), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v5, "isEqualToType:", v9), v9, (v10)))
+  instanceCopy = instance;
+  if ([instanceCopy isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToClass:", objc_opt_class()) & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToUTType:", *MEMORY[0x277CE1D48]) & 1) != 0 || ((v5 = instanceCopy) == 0 ? (v6 = 0) : (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v6 = 0) : (v6 = v5), (v7 = v6, v5, objc_msgSend(v7, "string"), v8 = objc_claimAutoreleasedReturnValue(), v7, LOBYTE(v7) = objc_msgSend(v8, "isEqualToString:", @"UIPrintFormatter"), v8, (v7) || (objc_msgSend(MEMORY[0x277D79F68], "typeFromPasteboardType:", *MEMORY[0x277D7A7E8]), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v5, "isEqualToType:", v9), v9, (v10)))
   {
 LABEL_24:
     v19 = 1;
@@ -1233,13 +1233,13 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v5 objectClass];
+      objectClass = [v5 objectClass];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v12 = [objc_opt_class() URLCoercions];
-      v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      uRLCoercions = [objc_opt_class() URLCoercions];
+      v13 = [uRLCoercions countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v13)
       {
         v14 = v13;
@@ -1250,11 +1250,11 @@ LABEL_24:
           {
             if (*v23 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(uRLCoercions);
             }
 
-            v17 = [*(*(&v22 + 1) + 8 * i) urlItem_outputClasses];
-            v18 = [v17 containsObject:v11];
+            urlItem_outputClasses = [*(*(&v22 + 1) + 8 * i) urlItem_outputClasses];
+            v18 = [urlItem_outputClasses containsObject:objectClass];
 
             if (v18)
             {
@@ -1263,7 +1263,7 @@ LABEL_24:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v14 = [uRLCoercions countByEnumeratingWithState:&v22 objects:v26 count:16];
           if (v14)
           {
             continue;
@@ -1274,7 +1274,7 @@ LABEL_24:
       }
     }
 
-    v21.receiver = a1;
+    v21.receiver = self;
     v21.super_class = &OBJC_METACLASS___WFURLContentItem;
     v19 = objc_msgSendSuper2(&v21, sel_supportedTypeMustBeDeterminedByInstance_, v5);
   }
@@ -1282,17 +1282,17 @@ LABEL_24:
   return v19;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  itemCopy = item;
+  namedCopy = named;
+  setCopy = set;
+  identifierCopy = identifier;
   v15 = objc_opt_class();
   v16 = *MEMORY[0x277CE1E90];
-  v17 = [*MEMORY[0x277CE1E90] identifier];
-  v18 = [v11 wfObjectOfClass:v15 forKey:v17];
+  identifier = [*MEMORY[0x277CE1E90] identifier];
+  v18 = [itemCopy wfObjectOfClass:v15 forKey:identifier];
   v19 = v18;
   if (v18)
   {
@@ -1303,13 +1303,13 @@ LABEL_24:
   {
     v21 = objc_opt_class();
     [*MEMORY[0x277CE1D70] identifier];
-    v23 = v22 = a1;
-    v20 = [v11 wfObjectOfClass:v21 forKey:v23];
+    v23 = v22 = self;
+    v20 = [itemCopy wfObjectOfClass:v21 forKey:v23];
 
-    a1 = v22;
+    self = v22;
   }
 
-  v24 = [v11 wfObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277D7A428]];
+  v24 = [itemCopy wfObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277D7A428]];
   v25 = v24;
   if (v24)
   {
@@ -1318,7 +1318,7 @@ LABEL_24:
 
   else
   {
-    v26 = v12;
+    v26 = namedCopy;
   }
 
   v27 = v26;
@@ -1328,10 +1328,10 @@ LABEL_24:
     goto LABEL_18;
   }
 
-  v44 = a1;
+  selfCopy = self;
   v28 = objc_opt_class();
-  v29 = [v16 identifier];
-  v30 = [v11 wfObjectOfClass:v28 forKey:v29];
+  identifier2 = [v16 identifier];
+  v30 = [itemCopy wfObjectOfClass:v28 forKey:identifier2];
   v31 = v30;
   if (v30)
   {
@@ -1341,13 +1341,13 @@ LABEL_24:
   else
   {
     v33 = objc_opt_class();
-    v34 = [*MEMORY[0x277CE1D70] identifier];
-    v32 = [v11 wfObjectOfClass:v33 forKey:v34];
+    identifier3 = [*MEMORY[0x277CE1D70] identifier];
+    v32 = [itemCopy wfObjectOfClass:v33 forKey:identifier3];
   }
 
-  v35 = [v32 firstObject];
+  firstObject = [v32 firstObject];
   v36 = objc_opt_class();
-  v37 = v35;
+  v37 = firstObject;
   if (v37 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v40 = getWFGeneralLogObject();
@@ -1377,11 +1377,11 @@ LABEL_24:
 
   v20 = [*(v39 + 3008) URLWithString:v38];
 
-  a1 = v44;
+  self = selfCopy;
   if (v20)
   {
 LABEL_18:
-    v42 = [a1 itemWithObject:v20 named:v27 attributionSet:v13 cachingIdentifier:v14];
+    v42 = [self itemWithObject:v20 named:v27 attributionSet:setCopy cachingIdentifier:identifierCopy];
   }
 
   else
@@ -1447,8 +1447,8 @@ BOOL __59__WFURLContentItem_filterRepresentationsForAllowedContent___block_invok
   v3[1] = 3221225472;
   v3[2] = __70__WFURLContentItem_URLCoercions__rediscoverURLCoercionClassesIfNeeded__block_invoke_2;
   v3[3] = &__block_descriptor_40_e8_v16__0_8l;
-  v3[4] = a1;
-  WFRegisterClassesFromClassVendingMethodsIfNeeded(a1, @"allURLCoercionsIn", &rediscoverURLCoercionClassesIfNeeded_lock, WFShouldRediscoverCURLCoercionClasses, rediscoverURLCoercionClassesIfNeeded_calledURLCoercionVendingSelectors, v3);
+  v3[4] = self;
+  WFRegisterClassesFromClassVendingMethodsIfNeeded(self, @"allURLCoercionsIn", &rediscoverURLCoercionClassesIfNeeded_lock, WFShouldRediscoverCURLCoercionClasses, rediscoverURLCoercionClassesIfNeeded_calledURLCoercionVendingSelectors, v3);
 }
 
 uint64_t __70__WFURLContentItem_URLCoercions__rediscoverURLCoercionClassesIfNeeded__block_invoke()
@@ -1462,17 +1462,17 @@ uint64_t __70__WFURLContentItem_URLCoercions__rediscoverURLCoercionClassesIfNeed
   return MEMORY[0x282202120](WFDyldBulkImageLoadCallback_20322);
 }
 
-+ (void)registerURLCoercion:(Class)a3
++ (void)registerURLCoercion:(Class)coercion
 {
-  v4 = [a1 mutableURLCoercions];
-  [v4 addObject:a3];
+  mutableURLCoercions = [self mutableURLCoercions];
+  [mutableURLCoercions addObject:coercion];
 }
 
 + (id)URLCoercions
 {
-  [a1 rediscoverURLCoercionClassesIfNeeded];
+  [self rediscoverURLCoercionClassesIfNeeded];
 
-  return [a1 mutableURLCoercions];
+  return [self mutableURLCoercions];
 }
 
 + (id)mutableURLCoercions

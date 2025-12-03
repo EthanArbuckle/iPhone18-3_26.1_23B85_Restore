@@ -1,5 +1,5 @@
 @interface PKPaletteColorSwatchAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,14 +7,14 @@
 
 @implementation PKPaletteColorSwatchAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaletteMulticolorSwatch"];
-  [v3 validateClass:@"PKPaletteColorSwatch" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PKPaletteColorSwatch" hasInstanceMethod:@"swatchColor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSwatchColor" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSwatchColor" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaletteMulticolorSwatch"];
+  [validationsCopy validateClass:@"PKPaletteColorSwatch" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PKPaletteColorSwatch" hasInstanceMethod:@"swatchColor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSwatchColor" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSwatchColor" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -22,14 +22,14 @@
   v3 = [(PKPaletteColorSwatchAccessibility *)self safeBoolForKey:@"isSelected"];
   v7.receiver = self;
   v7.super_class = PKPaletteColorSwatchAccessibility;
-  v4 = [(PKPaletteColorSwatchAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(PKPaletteColorSwatchAccessibility *)&v7 accessibilityTraits];
   v5 = MEMORY[0x29EDC7FC0];
   if (!v3)
   {
     v5 = MEMORY[0x29EDC7FA0];
   }
 
-  return *MEMORY[0x29EDC7F70] | v4 | *v5;
+  return *MEMORY[0x29EDC7F70] | accessibilityTraits | *v5;
 }
 
 - (id)accessibilityLabel
@@ -105,7 +105,7 @@ LABEL_17:
       {
         v7 = MEMORY[0x29EDBA0F8];
         v8 = accessibilityPencilKitLocalizedString(@"color.picker.current");
-        v9 = [v7 stringWithFormat:v8, v6];
+        accessibilityValue = [v7 stringWithFormat:v8, v6];
 
         goto LABEL_8;
       }
@@ -114,10 +114,10 @@ LABEL_17:
 
   v11.receiver = self;
   v11.super_class = PKPaletteColorSwatchAccessibility;
-  v9 = [(PKPaletteColorSwatchAccessibility *)&v11 accessibilityValue];
+  accessibilityValue = [(PKPaletteColorSwatchAccessibility *)&v11 accessibilityValue];
 LABEL_8:
 
-  return v9;
+  return accessibilityValue;
 }
 
 @end

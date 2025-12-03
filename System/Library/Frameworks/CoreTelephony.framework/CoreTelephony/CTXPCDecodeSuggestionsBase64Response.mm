@@ -1,17 +1,17 @@
 @interface CTXPCDecodeSuggestionsBase64Response
 + (id)allowedClassesForArguments;
 - (CTLazuliDeepLinkBase64StringDecoded)decodedPayload;
-- (CTXPCDecodeSuggestionsBase64Response)initWithDecodedPayload:(id)a3;
+- (CTXPCDecodeSuggestionsBase64Response)initWithDecodedPayload:(id)payload;
 @end
 
 @implementation CTXPCDecodeSuggestionsBase64Response
 
-- (CTXPCDecodeSuggestionsBase64Response)initWithDecodedPayload:(id)a3
+- (CTXPCDecodeSuggestionsBase64Response)initWithDecodedPayload:(id)payload
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v10 = @"decodedPayload";
-  v11[0] = v4;
+  v11[0] = payloadCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCDecodeSuggestionsBase64Response;
@@ -23,8 +23,8 @@
 
 - (CTLazuliDeepLinkBase64StringDecoded)decodedPayload
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"decodedPayload"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"decodedPayload"];
   v4 = CTThrowingCastIfClass<CTLazuliDeepLinkBase64StringDecoded>(v3);
 
   return v4;
@@ -32,7 +32,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCDecodeSuggestionsBase64Response;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

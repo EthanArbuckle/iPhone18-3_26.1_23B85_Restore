@@ -1,22 +1,22 @@
 @interface MSURemoteableBlock
-- (MSURemoteableBlock)initWithProgressBlock:(id)a3;
-- (void)_nsxpcInvoke:(id)a3 args:(id)a4 options:(id)a5 completion:(id)a6;
+- (MSURemoteableBlock)initWithProgressBlock:(id)block;
+- (void)_nsxpcInvoke:(id)invoke args:(id)args options:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)progress:(id)a3;
+- (void)progress:(id)progress;
 @end
 
 @implementation MSURemoteableBlock
 
-- (MSURemoteableBlock)initWithProgressBlock:(id)a3
+- (MSURemoteableBlock)initWithProgressBlock:(id)block
 {
   v4 = [(MSURemoteableBlock *)self init];
   result = 0;
-  if (a3)
+  if (block)
   {
     if (v4)
     {
-      v4->_progressBlock = a3;
-      v4->_progressBlock = _Block_copy(a3);
+      v4->_progressBlock = block;
+      v4->_progressBlock = _Block_copy(block);
       return v4;
     }
   }
@@ -31,21 +31,21 @@
   [(MSURemoteableBlock *)&v3 dealloc];
 }
 
-- (void)_nsxpcInvoke:(id)a3 args:(id)a4 options:(id)a5 completion:(id)a6
+- (void)_nsxpcInvoke:(id)invoke args:(id)args options:(id)options completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    v8 = [NSString stringWithFormat:@"%s not implemented", a4, a5, "[MSURemoteableBlock _nsxpcInvoke:args:options:completion:]", NSDebugDescriptionErrorKey];
-    (*(a6 + 2))(a6, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1300 userInfo:[NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1]], 0);
+    nSDebugDescriptionErrorKey = [NSString stringWithFormat:@"%s not implemented", args, options, "[MSURemoteableBlock _nsxpcInvoke:args:options:completion:]", NSDebugDescriptionErrorKey];
+    (*(completion + 2))(completion, [NSError errorWithDomain:@"MobileSoftwareUpdateErrorDomain" code:1300 userInfo:[NSDictionary dictionaryWithObjects:&nSDebugDescriptionErrorKey forKeys:&v7 count:1]], 0);
   }
 }
 
-- (void)progress:(id)a3
+- (void)progress:(id)progress
 {
   progressBlock = self->_progressBlock;
   if (progressBlock)
   {
-    progressBlock[2](progressBlock, a3);
+    progressBlock[2](progressBlock, progress);
   }
 }
 

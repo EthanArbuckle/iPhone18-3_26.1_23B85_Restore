@@ -1,8 +1,8 @@
 @interface NEPlugin
-- (NEPlugin)initWithAgent:(id)a3 delegateQueue:(id)a4 andDelegate:(id)a5;
+- (NEPlugin)initWithAgent:(id)agent delegateQueue:(id)queue andDelegate:(id)delegate;
 - (NEPluginDelegate)delegate;
 - (id)remotePluginObject;
-- (id)remotePluginObjectWithErrorHandler:(id)a3;
+- (id)remotePluginObjectWithErrorHandler:(id)handler;
 @end
 
 @implementation NEPlugin
@@ -14,7 +14,7 @@
   return WeakRetained;
 }
 
-- (id)remotePluginObjectWithErrorHandler:(id)a3
+- (id)remotePluginObjectWithErrorHandler:(id)handler
 {
   pluginDriver = self->_pluginDriver;
   if (pluginDriver)
@@ -24,9 +24,9 @@
 
   else
   {
-    v6 = a3;
-    v7 = [(NEPlugin *)self pluginConnection];
-    v4 = [v7 remoteObjectProxyWithErrorHandler:v6];
+    handlerCopy = handler;
+    pluginConnection = [(NEPlugin *)self pluginConnection];
+    v4 = [pluginConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v4;
@@ -37,44 +37,44 @@
   pluginDriver = self->_pluginDriver;
   if (pluginDriver)
   {
-    v3 = pluginDriver;
+    remoteObjectProxy = pluginDriver;
   }
 
   else
   {
-    v4 = [(NEPlugin *)self pluginConnection];
-    v3 = [v4 remoteObjectProxy];
+    pluginConnection = [(NEPlugin *)self pluginConnection];
+    remoteObjectProxy = [pluginConnection remoteObjectProxy];
   }
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (NEPlugin)initWithAgent:(id)a3 delegateQueue:(id)a4 andDelegate:(id)a5
+- (NEPlugin)initWithAgent:(id)agent delegateQueue:(id)queue andDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  agentCopy = agent;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = NEPlugin;
   v12 = [(NEPlugin *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_agent, a3);
-    objc_storeStrong(&v13->_delegateQueue, a4);
+    objc_storeStrong(&v12->_agent, agent);
+    objc_storeStrong(&v13->_delegateQueue, queue);
     agent = v13->_agent;
     if (agent)
     {
       objc_setProperty_atomic(agent, v14, v13->_delegateQueue, 32);
     }
 
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v16 = [NSString alloc];
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
-    v19 = [v16 initWithFormat:@"%@(%@)", v18, v9];
+    agentCopy = [v16 initWithFormat:@"%@(%@)", v18, agentCopy];
     internalDescription = v13->_internalDescription;
-    v13->_internalDescription = v19;
+    v13->_internalDescription = agentCopy;
 
     v13->_started = 0;
   }

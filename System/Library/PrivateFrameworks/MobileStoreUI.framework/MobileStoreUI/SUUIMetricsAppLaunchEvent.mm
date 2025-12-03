@@ -4,7 +4,7 @@
 + (void)consumePendingLaunchEvent;
 + (void)createPendingLaunchEvent;
 + (void)resetPendingLaunchEventForTesting;
-+ (void)withPendingLaunchEvent:(id)a3;
++ (void)withPendingLaunchEvent:(id)event;
 - (BOOL)requiredBlockingBagLoad;
 - (BOOL)usedBootstrapFallback;
 - (NSString)description;
@@ -21,31 +21,31 @@
 - (double)launchEndTime;
 - (double)launchFailureTime;
 - (double)mainTime;
-- (void)addTemplateLoadTimingMetric:(id)a3 forURL:(id)a4;
-- (void)appendPropertiesToBody:(id)a3;
-- (void)populateObjectInspector:(id)a3;
-- (void)setBootstrapEndTime:(double)a3;
-- (void)setBootstrapStartTime:(double)a3;
-- (void)setClientConfigurationLoadTime:(double)a3;
-- (void)setInitialTabRequestStartTime:(double)a3;
-- (void)setInitialTabResponseEndTime:(double)a3;
-- (void)setInitialTabResponseStartTime:(double)a3;
-- (void)setJsResourcesEndTime:(double)a3;
-- (void)setJsResourcesStartTime:(double)a3;
-- (void)setLaunchCorrelationKey:(id)a3;
-- (void)setLaunchEndTime:(double)a3;
-- (void)setLaunchFailureTime:(double)a3;
-- (void)setMainTime:(double)a3;
-- (void)setRequiredBlockingBagLoad:(BOOL)a3;
-- (void)setUsedBootstrapFallback:(BOOL)a3;
+- (void)addTemplateLoadTimingMetric:(id)metric forURL:(id)l;
+- (void)appendPropertiesToBody:(id)body;
+- (void)populateObjectInspector:(id)inspector;
+- (void)setBootstrapEndTime:(double)time;
+- (void)setBootstrapStartTime:(double)time;
+- (void)setClientConfigurationLoadTime:(double)time;
+- (void)setInitialTabRequestStartTime:(double)time;
+- (void)setInitialTabResponseEndTime:(double)time;
+- (void)setInitialTabResponseStartTime:(double)time;
+- (void)setJsResourcesEndTime:(double)time;
+- (void)setJsResourcesStartTime:(double)time;
+- (void)setLaunchCorrelationKey:(id)key;
+- (void)setLaunchEndTime:(double)time;
+- (void)setLaunchFailureTime:(double)time;
+- (void)setMainTime:(double)time;
+- (void)setRequiredBlockingBagLoad:(BOOL)load;
+- (void)setUsedBootstrapFallback:(BOOL)fallback;
 @end
 
 @implementation SUUIMetricsAppLaunchEvent
 
 + (void)createPendingLaunchEvent
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SUUIMetricsAppLaunchEvent.m" lineNumber:45 description:@"Called off main thread."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SUUIMetricsAppLaunchEvent.m" lineNumber:45 description:@"Called off main thread."];
 }
 
 - (SUUIMetricsAppLaunchEvent)init
@@ -62,9 +62,9 @@
     templateMetrics = v3->_templateMetrics;
     v3->_templateMetrics = v4;
 
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    v7 = [v6 UUIDString];
-    [(SUUIMetricsAppLaunchEvent *)v3 setLaunchCorrelationKey:v7];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(SUUIMetricsAppLaunchEvent *)v3 setLaunchCorrelationKey:uUIDString];
   }
 
   return v3;
@@ -77,19 +77,19 @@
   _PendingLaunchEvent = 0;
 }
 
-+ (void)withPendingLaunchEvent:(id)a3
++ (void)withPendingLaunchEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    [(SUUIMetricsAppLaunchEvent *)a2 withPendingLaunchEvent:a1];
+    [(SUUIMetricsAppLaunchEvent *)a2 withPendingLaunchEvent:self];
   }
 
-  v5 = v6;
+  v5 = eventCopy;
   if (_PendingLaunchEvent)
   {
-    (*(v6 + 2))(v6);
-    v5 = v6;
+    (*(eventCopy + 2))(eventCopy);
+    v5 = eventCopy;
   }
 }
 
@@ -143,9 +143,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return result;
 }
 
-- (void)setLaunchCorrelationKey:(id)a3
+- (void)setLaunchCorrelationKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"launchCorrelationKey"];
 }
 
@@ -157,9 +157,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v3;
 }
 
-- (void)setMainTime:(double)a3
+- (void)setMainTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"mainTime"];
 }
 
@@ -172,9 +172,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setClientConfigurationLoadTime:(double)a3
+- (void)setClientConfigurationLoadTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"clientConfigurationLoadTime"];
 }
 
@@ -187,16 +187,16 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)addTemplateLoadTimingMetric:(id)a3 forURL:(id)a4
+- (void)addTemplateLoadTimingMetric:(id)metric forURL:(id)l
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)self->_templateMetrics setObject:v7 forKeyedSubscript:v6];
+  lCopy = l;
+  v7 = [metric copy];
+  [(NSMutableDictionary *)self->_templateMetrics setObject:v7 forKeyedSubscript:lCopy];
 }
 
-- (void)setBootstrapStartTime:(double)a3
+- (void)setBootstrapStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"bootstrapStartTime"];
 }
 
@@ -209,9 +209,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setBootstrapEndTime:(double)a3
+- (void)setBootstrapEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"bootstrapEndTime"];
 }
 
@@ -224,9 +224,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setJsResourcesStartTime:(double)a3
+- (void)setJsResourcesStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"jsResourcesStartTime"];
 }
 
@@ -239,9 +239,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setJsResourcesEndTime:(double)a3
+- (void)setJsResourcesEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"jsResourcesEndTime"];
 }
 
@@ -254,9 +254,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setInitialTabRequestStartTime:(double)a3
+- (void)setInitialTabRequestStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"initialTabRequestStartTime"];
 }
 
@@ -269,9 +269,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setInitialTabResponseStartTime:(double)a3
+- (void)setInitialTabResponseStartTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"initialTabResponseStartTime"];
 }
 
@@ -284,9 +284,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setInitialTabResponseEndTime:(double)a3
+- (void)setInitialTabResponseEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"initialTabResponseEndTime"];
 }
 
@@ -299,9 +299,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setLaunchFailureTime:(double)a3
+- (void)setLaunchFailureTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"launchFailureTime"];
 }
 
@@ -314,9 +314,9 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setLaunchEndTime:(double)a3
+- (void)setLaunchEndTime:(double)time
 {
-  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:a3];
+  v4 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:time];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"launchEndTime"];
 }
 
@@ -329,37 +329,37 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
   return v5;
 }
 
-- (void)setRequiredBlockingBagLoad:(BOOL)a3
+- (void)setRequiredBlockingBagLoad:(BOOL)load
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:load];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"requiredBlockingBagLoad"];
 }
 
 - (BOOL)requiredBlockingBagLoad
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"requiredBlockingBagLoad"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setUsedBootstrapFallback:(BOOL)a3
+- (void)setUsedBootstrapFallback:(BOOL)fallback
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:fallback];
   [(SSMetricsMutableEvent *)self setProperty:v4 forBodyKey:@"usedBootstrapFallback"];
 }
 
 - (BOOL)usedBootstrapFallback
 {
   v2 = [(SSMetricsMutableEvent *)self propertyForBodyKey:@"usedBootstrapFallback"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)appendPropertiesToBody:(id)a3
+- (void)appendPropertiesToBody:(id)body
 {
-  v4 = a3;
+  bodyCopy = body;
   if ([(NSMutableDictionary *)self->_templateMetrics count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -371,16 +371,16 @@ uint64_t __45__SUUIMetricsAppLaunchEvent_processStartTime__block_invoke()
     v11 = v5;
     v7 = v5;
     [(NSMutableDictionary *)templateMetrics enumerateKeysAndObjectsUsingBlock:v10];
-    [v4 setObject:v7 forKeyedSubscript:@"templateMetrics"];
+    [bodyCopy setObject:v7 forKeyedSubscript:@"templateMetrics"];
   }
 
   [objc_opt_class() processStartTime];
   v8 = [(SSMetricsEvent *)self millisecondsFromTimeInterval:?];
-  [v4 setObject:v8 forKeyedSubscript:@"processStartTime"];
+  [bodyCopy setObject:v8 forKeyedSubscript:@"processStartTime"];
 
   v9.receiver = self;
   v9.super_class = SUUIMetricsAppLaunchEvent;
-  [(SSMetricsMutableEvent *)&v9 appendPropertiesToBody:v4];
+  [(SSMetricsMutableEvent *)&v9 appendPropertiesToBody:bodyCopy];
 }
 
 void __52__SUUIMetricsAppLaunchEvent_appendPropertiesToBody___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -401,8 +401,8 @@ void __52__SUUIMetricsAppLaunchEvent_appendPropertiesToBody___block_invoke(uint6
   v4 = [(SSMetricsBaseEvent *)&v28 description];
   [v3 appendString:v4];
 
-  v5 = [(SUUIMetricsAppLaunchEvent *)self launchCorrelationKey];
-  [v3 appendFormat:@"\nlaunchCorrelationKey = %@", v5];
+  launchCorrelationKey = [(SUUIMetricsAppLaunchEvent *)self launchCorrelationKey];
+  [v3 appendFormat:@"\nlaunchCorrelationKey = %@", launchCorrelationKey];
 
   [objc_opt_class() processStartTime];
   [v3 appendFormat:@"\nprocessStartTime = %f", v6];
@@ -496,11 +496,11 @@ uint64_t __40__SUUIMetricsAppLaunchEvent_description__block_invoke(uint64_t a1, 
   return [v16 appendString:{@"\n\t}, "}];
 }
 
-- (void)populateObjectInspector:(id)a3
+- (void)populateObjectInspector:(id)inspector
 {
-  v4 = a3;
-  [v4 setFriendlyName:@"App Launch Times"];
-  [v4 setInformation:@"All times relative to process start time"];
+  inspectorCopy = inspector;
+  [inspectorCopy setFriendlyName:@"App Launch Times"];
+  [inspectorCopy setInformation:@"All times relative to process start time"];
   [objc_opt_class() processStartTime];
   v6 = v5;
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -509,28 +509,28 @@ uint64_t __40__SUUIMetricsAppLaunchEvent_description__block_invoke(uint64_t a1, 
   aBlock[3] = &__block_descriptor_40_e18___NSString_16__0d8l;
   *&aBlock[4] = v5;
   v7 = _Block_copy(aBlock);
-  [v4 beginSectionWithFriendlyName:@"Process Stats"];
+  [inspectorCopy beginSectionWithFriendlyName:@"Process Stats"];
   v8 = MEMORY[0x277CCA968];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v6];
   v10 = [v8 localizedStringFromDate:v9 dateStyle:0 timeStyle:3];
 
-  [v4 exposePropertyWithFriendlyName:@"Process Start Time" value:v10];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Process Start Time" value:v10];
   [(SUUIMetricsAppLaunchEvent *)self mainTime];
   v11 = v7 + 2;
   v12 = v7[2](v7);
-  [v4 exposePropertyWithFriendlyName:@"Main Time" value:v12];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Main Time" value:v12];
 
   [(SUUIMetricsAppLaunchEvent *)self clientConfigurationLoadTime];
   v13 = v7[2](v7);
-  [v4 exposePropertyWithFriendlyName:@"Client Configuration Load Time" value:v13];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Client Configuration Load Time" value:v13];
 
   [(SUUIMetricsAppLaunchEvent *)self launchFailureTime];
   v14 = v7[2](v7);
-  [v4 exposePropertyWithFriendlyName:@"Launch Failure Time" value:v14];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Launch Failure Time" value:v14];
 
   [(SUUIMetricsAppLaunchEvent *)self launchEndTime];
   v15 = v7[2](v7);
-  [v4 exposePropertyWithFriendlyName:@"Launch End Time" value:v15];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Launch End Time" value:v15];
 
   if ([(SUUIMetricsAppLaunchEvent *)self requiredBlockingBagLoad])
   {
@@ -542,7 +542,7 @@ uint64_t __40__SUUIMetricsAppLaunchEvent_description__block_invoke(uint64_t a1, 
     v16 = @"No";
   }
 
-  [v4 exposePropertyWithFriendlyName:@"Required Blocking Bag Load" value:v16];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Required Blocking Bag Load" value:v16];
   if ([(SUUIMetricsAppLaunchEvent *)self usedBootstrapFallback])
   {
     v17 = @"Yes";
@@ -553,49 +553,49 @@ uint64_t __40__SUUIMetricsAppLaunchEvent_description__block_invoke(uint64_t a1, 
     v17 = @"No";
   }
 
-  [v4 exposePropertyWithFriendlyName:@"Used Bootstrap Fallback" value:v17];
-  [v4 endSection];
-  [v4 beginSectionWithFriendlyName:@"App Resource Times"];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Used Bootstrap Fallback" value:v17];
+  [inspectorCopy endSection];
+  [inspectorCopy beginSectionWithFriendlyName:@"App Resource Times"];
   [(SUUIMetricsAppLaunchEvent *)self bootstrapStartTime];
   v18 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"Bootstrap Start Time" value:v18];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Bootstrap Start Time" value:v18];
 
   [(SUUIMetricsAppLaunchEvent *)self bootstrapEndTime];
   v19 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"Bootstrap End Time" value:v19];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Bootstrap End Time" value:v19];
 
   [(SUUIMetricsAppLaunchEvent *)self jsResourcesEndTime];
   v20 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"JS Resources Start Time" value:v20];
+  [inspectorCopy exposePropertyWithFriendlyName:@"JS Resources Start Time" value:v20];
 
   [(SUUIMetricsAppLaunchEvent *)self jsResourcesEndTime];
   v21 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"JS Resources End Time" value:v21];
+  [inspectorCopy exposePropertyWithFriendlyName:@"JS Resources End Time" value:v21];
 
   [(SUUIMetricsAppLaunchEvent *)self initialTabRequestStartTime];
   v22 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"Initial Tab Request Start Time" value:v22];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Initial Tab Request Start Time" value:v22];
 
   [(SUUIMetricsAppLaunchEvent *)self initialTabResponseStartTime];
   v23 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"Initial Tab Response Start Time" value:v23];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Initial Tab Response Start Time" value:v23];
 
   [(SUUIMetricsAppLaunchEvent *)self initialTabResponseEndTime];
   v24 = (*v11)(v7);
-  [v4 exposePropertyWithFriendlyName:@"Initial Tab Response End Time" value:v24];
+  [inspectorCopy exposePropertyWithFriendlyName:@"Initial Tab Response End Time" value:v24];
 
-  [v4 endSection];
-  v25 = [(SUUIMetricsAppLaunchEvent *)self templateMetrics];
+  [inspectorCopy endSection];
+  templateMetrics = [(SUUIMetricsAppLaunchEvent *)self templateMetrics];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __53__SUUIMetricsAppLaunchEvent_populateObjectInspector___block_invoke_3;
   v28[3] = &unk_2798FBDB8;
-  v29 = v4;
+  v29 = inspectorCopy;
   v30 = v7;
   v31 = &__block_literal_global_168;
-  v26 = v4;
+  v26 = inspectorCopy;
   v27 = v7;
-  [v25 enumerateKeysAndObjectsUsingBlock:v28];
+  [templateMetrics enumerateKeysAndObjectsUsingBlock:v28];
 }
 
 __CFString *__53__SUUIMetricsAppLaunchEvent_populateObjectInspector___block_invoke(uint64_t a1, double a2)
@@ -673,8 +673,8 @@ uint64_t __53__SUUIMetricsAppLaunchEvent_populateObjectInspector___block_invoke_
 
 + (void)consumePendingLaunchEvent
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SUUIMetricsAppLaunchEvent.m" lineNumber:61 description:@"Called off main thread."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SUUIMetricsAppLaunchEvent.m" lineNumber:61 description:@"Called off main thread."];
 }
 
 @end

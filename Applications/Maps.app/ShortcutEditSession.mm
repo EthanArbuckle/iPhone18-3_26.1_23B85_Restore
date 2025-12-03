@@ -1,27 +1,27 @@
 @interface ShortcutEditSession
-+ (ShortcutEditSession)editSessionWithMapItem:(id)a3;
-+ (ShortcutEditSession)editSessionWithShortcut:(id)a3;
-+ (ShortcutEditSession)editSessionWithSuggestion:(id)a3;
++ (ShortcutEditSession)editSessionWithMapItem:(id)item;
++ (ShortcutEditSession)editSessionWithShortcut:(id)shortcut;
++ (ShortcutEditSession)editSessionWithSuggestion:(id)suggestion;
 + (id)addSession;
-+ (id)addSessionWithShortcut:(id)a3;
-+ (id)addSessionWithType:(int64_t)a3 mapItem:(id)a4;
++ (id)addSessionWithShortcut:(id)shortcut;
++ (id)addSessionWithType:(int64_t)type mapItem:(id)item;
 + (void)captureCreateFavoriteAction;
-- (BOOL)shortcutsContainItem:(id)a3;
+- (BOOL)shortcutsContainItem:(id)item;
 - (NSArray)contacts;
 - (NSString)titleForAddressPicker;
 - (ShortcutEditSession)init;
 - (id)shortcutManager;
-- (void)_saveFavorite:(id)a3 completion:(id)a4;
+- (void)_saveFavorite:(id)favorite completion:(id)completion;
 - (void)_touchMapsSuggestionsEngine;
-- (void)addSharing:(id)a3;
-- (void)removeFromShortcutsWithCompletion:(id)a3;
-- (void)removeSharing:(id)a3;
-- (void)saveWithCompletion:(id)a3;
-- (void)setAdjustedCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setMapItem:(id)a3;
-- (void)setName:(id)a3;
-- (void)setOriginalShortcut:(id)a3;
-- (void)setOriginalSuggestionsEntry:(id)a3;
+- (void)addSharing:(id)sharing;
+- (void)removeFromShortcutsWithCompletion:(id)completion;
+- (void)removeSharing:(id)sharing;
+- (void)saveWithCompletion:(id)completion;
+- (void)setAdjustedCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setMapItem:(id)item;
+- (void)setName:(id)name;
+- (void)setOriginalShortcut:(id)shortcut;
+- (void)setOriginalSuggestionsEntry:(id)entry;
 @end
 
 @implementation ShortcutEditSession
@@ -35,15 +35,15 @@
 - (id)shortcutManager
 {
   v2 = MapsSuggestionsResourceDepotForMapsProcess();
-  v3 = [v2 oneFavorites];
+  oneFavorites = [v2 oneFavorites];
 
-  return v3;
+  return oneFavorites;
 }
 
-- (void)removeFromShortcutsWithCompletion:(id)a3
+- (void)removeFromShortcutsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_shortcut)
   {
     self->_removing = 1;
@@ -69,7 +69,7 @@
 
     else
     {
-      v7 = [(ShortcutEditSession *)self shortcutManager];
+      shortcutManager = [(ShortcutEditSession *)self shortcutManager];
       shortcut = self->_shortcut;
       v8 = [NSArray arrayWithObjects:&shortcut count:1];
       v9[0] = _NSConcreteStackBlock;
@@ -78,7 +78,7 @@
       v9[3] = &unk_101661108;
       objc_copyWeak(&v11, &location);
       v10 = v5;
-      [v7 removeShortcuts:v8 handler:v9];
+      [shortcutManager removeShortcuts:v8 handler:v9];
 
       objc_destroyWeak(&v11);
     }
@@ -86,25 +86,25 @@
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_saveFavorite:(id)a3 completion:(id)a4
+- (void)_saveFavorite:(id)favorite completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  favoriteCopy = favorite;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100FEE7A4;
   v10[3] = &unk_101660FD8;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = favoriteCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [v8 saveWithCompletionHandler:v10];
 
@@ -112,9 +112,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)saveWithCompletion:(id)a3
+- (void)saveWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   shortcut = self->_shortcut;
   if (shortcut && !self->_removing)
   {
@@ -140,7 +140,7 @@
           v22[3] = &unk_101660FD8;
           objc_copyWeak(&v25, &location);
           v23 = v9;
-          v24 = v4;
+          v24 = completionCopy;
           [v10 loadAllShortcutsWithCompletionHandler:v22];
 
           objc_destroyWeak(&v25);
@@ -148,31 +148,31 @@
 
         else
         {
-          [(ShortcutEditSession *)self _saveFavorite:v9 completion:v4];
+          [(ShortcutEditSession *)self _saveFavorite:v9 completion:completionCopy];
         }
       }
 
       else
       {
-        if (v4)
+        if (completionCopy)
         {
-          (*(v4 + 2))(v4, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
         }
 
-        v14 = [(ShortcutEditSession *)self completionHandler];
+        completionHandler = [(ShortcutEditSession *)self completionHandler];
 
-        if (v14)
+        if (completionHandler)
         {
-          v15 = [(ShortcutEditSession *)self completionHandler];
-          v15[2]();
+          completionHandler2 = [(ShortcutEditSession *)self completionHandler];
+          completionHandler2[2]();
         }
       }
     }
 
     else
     {
-      v11 = [(ShortcutEditSession *)self shortcutManager];
-      objc_initWeak(&from, v11);
+      shortcutManager = [(ShortcutEditSession *)self shortcutManager];
+      objc_initWeak(&from, shortcutManager);
 
       v12 = objc_loadWeakRetained(&from);
       v27 = self->_shortcut;
@@ -183,7 +183,7 @@
       v16[3] = &unk_101661000;
       objc_copyWeak(&v18, &location);
       objc_copyWeak(&v19, &from);
-      v17 = v4;
+      v17 = completionCopy;
       v20 = v8;
       [v12 addOrUpdateShortcuts:v13 handler:v16];
 
@@ -197,31 +197,31 @@
 
   else
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
-    v6 = [(ShortcutEditSession *)self completionHandler];
+    completionHandler3 = [(ShortcutEditSession *)self completionHandler];
 
-    if (v6)
+    if (completionHandler3)
     {
-      v7 = [(ShortcutEditSession *)self completionHandler];
-      v7[2]();
+      completionHandler4 = [(ShortcutEditSession *)self completionHandler];
+      completionHandler4[2]();
     }
   }
 }
 
-- (BOOL)shortcutsContainItem:(id)a3
+- (BOOL)shortcutsContainItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 geoCompletionItem];
-    v6 = [v5 geoMapItem];
+    geoCompletionItem = [itemCopy geoCompletionItem];
+    geoMapItem = [geoCompletionItem geoMapItem];
 
-    if (!v6)
+    if (!geoMapItem)
     {
 LABEL_16:
       LOBYTE(v8) = 0;
@@ -237,8 +237,8 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v6 = [v4 _geoMapItem];
-    if (!v6)
+    geoMapItem = [itemCopy _geoMapItem];
+    if (!geoMapItem)
     {
       goto LABEL_16;
     }
@@ -263,11 +263,11 @@ LABEL_16:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 geoMapItem];
-        if (v12)
+        geoMapItem2 = [v11 geoMapItem];
+        if (geoMapItem2)
         {
-          v13 = v12;
-          v14 = [v11 geoMapItem];
+          v13 = geoMapItem2;
+          geoMapItem3 = [v11 geoMapItem];
           IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
 
           if (IsEqualToMapItemForPurpose)
@@ -300,15 +300,15 @@ LABEL_19:
   if (!contacts)
   {
     v4 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
-    v5 = [(MapsSuggestionsShortcutLike *)self->_shortcut contacts];
+    contacts = [(MapsSuggestionsShortcutLike *)self->_shortcut contacts];
     if (v4)
     {
-      [MSPSharedTripContact contactsFromHandles:v5];
+      [MSPSharedTripContact contactsFromHandles:contacts];
     }
 
     else
     {
-      [MSPSharedTripContact contactValuesFromSuggestionsContacts:v5];
+      [MSPSharedTripContact contactValuesFromSuggestionsContacts:contacts];
     }
     v6 = ;
     v7 = self->_contacts;
@@ -320,22 +320,22 @@ LABEL_19:
   return contacts;
 }
 
-- (void)removeSharing:(id)a3
+- (void)removeSharing:(id)sharing
 {
-  v10 = a3;
-  v4 = [v10 suggestionContactValue];
+  sharingCopy = sharing;
+  suggestionContactValue = [sharingCopy suggestionContactValue];
   v5 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
-  v6 = [(ShortcutEditSession *)self shortcut];
-  v7 = v6;
+  shortcut = [(ShortcutEditSession *)self shortcut];
+  v7 = shortcut;
   if (v5)
   {
-    v8 = [v10 stringValue];
-    [v7 removeContact:v8];
+    stringValue = [sharingCopy stringValue];
+    [v7 removeContact:stringValue];
   }
 
   else
   {
-    [v6 removeContact:v4];
+    [shortcut removeContact:suggestionContactValue];
   }
 
   self->_modified = 1;
@@ -343,22 +343,22 @@ LABEL_19:
   self->_contacts = 0;
 }
 
-- (void)addSharing:(id)a3
+- (void)addSharing:(id)sharing
 {
-  v10 = a3;
-  v4 = [v10 suggestionContactValue];
+  sharingCopy = sharing;
+  suggestionContactValue = [sharingCopy suggestionContactValue];
   v5 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
-  v6 = [(ShortcutEditSession *)self shortcut];
-  v7 = v6;
+  shortcut = [(ShortcutEditSession *)self shortcut];
+  v7 = shortcut;
   if (v5)
   {
-    v8 = [v10 stringValue];
-    [v7 addContact:v8];
+    stringValue = [sharingCopy stringValue];
+    [v7 addContact:stringValue];
   }
 
   else
   {
-    [v6 addContact:v4];
+    [shortcut addContact:suggestionContactValue];
   }
 
   self->_modified = 1;
@@ -366,26 +366,26 @@ LABEL_19:
   self->_contacts = 0;
 }
 
-- (void)setAdjustedCoordinate:(CLLocationCoordinate2D)a3
+- (void)setAdjustedCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v16 = self->_shortcut;
-  v6 = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
+  geoMapItem = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
 
-  if (v6)
+  if (geoMapItem)
   {
     v7 = objc_alloc_init(GEOMapItemCorrectedLocationAttributes);
     v8 = objc_alloc_init(GEOLatLng);
     [v8 setLat:latitude];
     [v8 setLng:longitude];
     [v7 setCorrectedCoordinate:v8];
-    v9 = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
-    v10 = [v9 clientAttributes];
-    v11 = v10;
-    if (v10)
+    geoMapItem2 = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
+    clientAttributes = [geoMapItem2 clientAttributes];
+    v11 = clientAttributes;
+    if (clientAttributes)
     {
-      v12 = v10;
+      v12 = clientAttributes;
     }
 
     else
@@ -396,42 +396,42 @@ LABEL_19:
     v13 = v12;
 
     [v13 setCorrectedLocationAttributes:v7];
-    v14 = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
-    v15 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v14 clientAttributes:v13];
+    geoMapItem3 = [(MapsSuggestionsShortcutLike *)v16 geoMapItem];
+    v15 = [GEOMapItemStorage mapItemStorageForGEOMapItem:geoMapItem3 clientAttributes:v13];
     [(MapsSuggestionsShortcutLike *)v16 setGeoMapItem:v15];
 
     self->_modified = 1;
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v4 = [a3 _geoMapItem];
-  v5 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v4];
+  _geoMapItem = [item _geoMapItem];
+  v5 = [GEOMapItemStorage mapItemStorageForGEOMapItem:_geoMapItem];
 
   [(MapsSuggestionsShortcutLike *)self->_shortcut setGeoMapItem:v5];
   self->_modified = 1;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  if ([v4 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
-    [(MapsSuggestionsShortcutLike *)self->_shortcut setCustomName:v4];
+    [(MapsSuggestionsShortcutLike *)self->_shortcut setCustomName:nameCopy];
     self->_modified = 1;
   }
 }
 
 - (NSString)titleForAddressPicker
 {
-  v3 = [(MapsSuggestionsShortcutLike *)self->_shortcut type];
+  type = [(MapsSuggestionsShortcutLike *)self->_shortcut type];
   v4 = 0;
-  if (v3 > 2)
+  if (type > 2)
   {
-    if (v3 != 3)
+    if (type != 3)
     {
-      if (v3 == 5)
+      if (type == 5)
       {
         v8 = +[NSBundle mainBundle];
         v6 = v8;
@@ -440,7 +440,7 @@ LABEL_19:
 
       else
       {
-        if (v3 != 6)
+        if (type != 6)
         {
           goto LABEL_20;
         }
@@ -453,9 +453,9 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v10 = [(MapsSuggestionsShortcutLike *)self->_shortcut isSetupPlaceholder];
+    isSetupPlaceholder = [(MapsSuggestionsShortcutLike *)self->_shortcut isSetupPlaceholder];
     v6 = +[NSBundle mainBundle];
-    if (v10)
+    if (isSetupPlaceholder)
     {
       v7 = @"[Shortcut] Set up Work";
     }
@@ -466,16 +466,16 @@ LABEL_19:
     }
   }
 
-  else if (v3 >= 2)
+  else if (type >= 2)
   {
-    if (v3 != 2)
+    if (type != 2)
     {
       goto LABEL_20;
     }
 
-    v9 = [(MapsSuggestionsShortcutLike *)self->_shortcut isSetupPlaceholder];
+    isSetupPlaceholder2 = [(MapsSuggestionsShortcutLike *)self->_shortcut isSetupPlaceholder];
     v6 = +[NSBundle mainBundle];
-    if (v9)
+    if (isSetupPlaceholder2)
     {
       v7 = @"[Shortcut] Set up Home";
     }
@@ -510,19 +510,19 @@ LABEL_20:
   return v4;
 }
 
-- (void)setOriginalShortcut:(id)a3
+- (void)setOriginalShortcut:(id)shortcut
 {
-  v5 = a3;
-  if (self->_originalShortcut != v5)
+  shortcutCopy = shortcut;
+  if (self->_originalShortcut != shortcutCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_originalShortcut, a3);
+    v9 = shortcutCopy;
+    objc_storeStrong(&self->_originalShortcut, shortcut);
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
-      objc_storeStrong(&self->_shortcut, a3);
-      v6 = [(MapsSuggestionsShortcutLike *)v9 type];
-      v5 = v9;
-      self->_originalShortcutType = v6;
+      objc_storeStrong(&self->_shortcut, shortcut);
+      type = [(MapsSuggestionsShortcutLike *)v9 type];
+      shortcutCopy = v9;
+      self->_originalShortcutType = type;
     }
 
     else
@@ -531,18 +531,18 @@ LABEL_20:
       shortcut = self->_shortcut;
       self->_shortcut = v7;
 
-      v5 = v9;
+      shortcutCopy = v9;
     }
   }
 }
 
-- (void)setOriginalSuggestionsEntry:(id)a3
+- (void)setOriginalSuggestionsEntry:(id)entry
 {
-  v5 = a3;
-  if (self->_originalSuggestionsEntry != v5)
+  entryCopy = entry;
+  if (self->_originalSuggestionsEntry != entryCopy)
   {
-    v16 = v5;
-    objc_storeStrong(&self->_originalSuggestionsEntry, a3);
+    v16 = entryCopy;
+    objc_storeStrong(&self->_originalSuggestionsEntry, entry);
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
       v6 = objc_alloc_init(MSFavoriteItem);
@@ -572,7 +572,7 @@ LABEL_20:
       self->_shortcut = v15;
     }
 
-    v5 = v16;
+    entryCopy = v16;
   }
 }
 
@@ -596,14 +596,14 @@ LABEL_20:
 
     else
     {
-      v4 = [(ShortcutEditSession *)v2 shortcutManager];
+      shortcutManager = [(ShortcutEditSession *)v2 shortcutManager];
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_100FEFC58;
       v6[3] = &unk_101660FB0;
       v3 = &v7;
       v7 = v2;
-      [v4 loadAllShortcutsWithHandler:v6];
+      [shortcutManager loadAllShortcutsWithHandler:v6];
     }
   }
 
@@ -619,9 +619,9 @@ LABEL_20:
     v14 = 0u;
     v15 = 0u;
     v2 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v3 = [v2 shortcuts];
+    shortcuts = [v2 shortcuts];
 
-    v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v4 = [shortcuts countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v4)
     {
       v5 = v4;
@@ -633,17 +633,17 @@ LABEL_20:
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(shortcuts);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) type];
-          if (v9 == 6 || v9 == 1)
+          type = [*(*(&v14 + 1) + 8 * i) type];
+          if (type == 6 || type == 1)
           {
             ++v6;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [shortcuts countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v5);
@@ -683,43 +683,43 @@ LABEL_20:
   else
   {
     v13 = MapsSuggestionsResourceDepotForMapsProcess();
-    v11 = [v13 oneFavorites];
-    [v11 loadAllShortcutsWithHandler:&stru_101661148];
+    oneFavorites = [v13 oneFavorites];
+    [oneFavorites loadAllShortcutsWithHandler:&stru_101661148];
   }
 }
 
-+ (ShortcutEditSession)editSessionWithMapItem:(id)a3
++ (ShortcutEditSession)editSessionWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-  v6 = [v5 shortcutForMapItem:v4];
+  v6 = [v5 shortcutForMapItem:itemCopy];
 
-  v7 = [a1 editSessionWithShortcut:v6];
+  v7 = [self editSessionWithShortcut:v6];
   [v7 setAlreadySaved:1];
 
   return v7;
 }
 
-+ (ShortcutEditSession)editSessionWithShortcut:(id)a3
++ (ShortcutEditSession)editSessionWithShortcut:(id)shortcut
 {
-  v3 = a3;
+  shortcutCopy = shortcut;
   v4 = objc_alloc_init(ShortcutEditSession);
   [(ShortcutEditSession *)v4 setAlreadySaved:1];
   if (!+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v5 = [v3 copy];
+    v5 = [shortcutCopy copy];
 
-    v3 = v5;
+    shortcutCopy = v5;
   }
 
-  [(ShortcutEditSession *)v4 setOriginalShortcut:v3];
+  [(ShortcutEditSession *)v4 setOriginalShortcut:shortcutCopy];
 
   return v4;
 }
 
-+ (id)addSessionWithShortcut:(id)a3
++ (id)addSessionWithShortcut:(id)shortcut
 {
-  v3 = a3;
+  shortcutCopy = shortcut;
   v4 = objc_alloc_init(ShortcutEditSession);
   [(ShortcutEditSession *)v4 setAlreadySaved:0];
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
@@ -727,46 +727,46 @@ LABEL_20:
     [(ShortcutEditSession *)v4 setMoveToPreferredIndexInFavorites:1];
   }
 
-  [(ShortcutEditSession *)v4 setOriginalShortcut:v3];
+  [(ShortcutEditSession *)v4 setOriginalShortcut:shortcutCopy];
 
   return v4;
 }
 
-+ (ShortcutEditSession)editSessionWithSuggestion:(id)a3
++ (ShortcutEditSession)editSessionWithSuggestion:(id)suggestion
 {
-  v3 = a3;
+  suggestionCopy = suggestion;
   v4 = objc_alloc_init(ShortcutEditSession);
   [(ShortcutEditSession *)v4 setAlreadySaved:0];
-  [(ShortcutEditSession *)v4 setOriginalSuggestionsEntry:v3];
+  [(ShortcutEditSession *)v4 setOriginalSuggestionsEntry:suggestionCopy];
 
   return v4;
 }
 
-+ (id)addSessionWithType:(int64_t)a3 mapItem:(id)a4
++ (id)addSessionWithType:(int64_t)type mapItem:(id)item
 {
-  v6 = a4;
-  v7 = [v6 _geoMapItem];
-  if (v7)
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  if (_geoMapItem)
   {
-    v8 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v7];
+    v8 = [GEOMapItemStorage mapItemStorageForGEOMapItem:_geoMapItem];
     if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
     {
       v9 = objc_alloc_init(MSFavoriteItem);
       [v9 setMapItemStorage:v8];
-      v10 = [v6 _geoMapItemStorageForPersistence];
-      v11 = [v10 userValues];
-      v12 = [v11 name];
-      [v9 setCustomName:v12];
+      _geoMapItemStorageForPersistence = [itemCopy _geoMapItemStorageForPersistence];
+      userValues = [_geoMapItemStorageForPersistence userValues];
+      name = [userValues name];
+      [v9 setCustomName:name];
 
       v13 = [[_TtC4Maps16MapsFavoriteItem alloc] initWithFavoriteItem:v9];
-      [(MapsFavoriteItem *)v13 setType:a3];
-      v14 = [a1 addSessionWithShortcut:v13];
+      [(MapsFavoriteItem *)v13 setType:type];
+      v14 = [self addSessionWithShortcut:v13];
     }
 
     else
     {
-      v9 = [[MapsSuggestionsShortcut alloc] initWithType:a3 geoMapItem:v8 customName:0];
-      v14 = [a1 addSessionWithShortcut:v9];
+      v9 = [[MapsSuggestionsShortcut alloc] initWithType:type geoMapItem:v8 customName:0];
+      v14 = [self addSessionWithShortcut:v9];
     }
   }
 

@@ -1,22 +1,22 @@
 @interface ICInlineTextFindingResult
 - (ICInlineAttachment)attachment;
 - (_NSRange)displayTextRange;
-- (id)framesForHighlightInTextView:(id)a3;
-- (id)inlineAttachmentViewControllerInTextView:(id)a3;
-- (id)inlineTextAttachmentViewProviderInTextView:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)framesForHighlightInTextView:(id)view;
+- (id)inlineAttachmentViewControllerInTextView:(id)view;
+- (id)inlineTextAttachmentViewProviderInTextView:(id)view;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation ICInlineTextFindingResult
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   v5 = ICDynamicCast();
   v11.receiver = self;
   v11.super_class = ICInlineTextFindingResult;
-  v6 = [(ICTextFindingResult *)&v11 compare:v4];
+  v6 = [(ICTextFindingResult *)&v11 compare:compareCopy];
 
   if (v6)
   {
@@ -38,17 +38,17 @@
   return v6;
 }
 
-- (id)inlineAttachmentViewControllerInTextView:(id)a3
+- (id)inlineAttachmentViewControllerInTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v5 = [v4 layoutManager];
+  layoutManager = [viewCopy layoutManager];
 
   v6 = ICDynamicCast();
 
   v7 = MEMORY[0x277D367F0];
-  v8 = [(ICInlineTextFindingResult *)self attachment];
-  v9 = [v7 textAttachmentWithAttachment:v8];
+  attachment = [(ICInlineTextFindingResult *)self attachment];
+  v9 = [v7 textAttachmentWithAttachment:attachment];
 
   objc_opt_class();
   v10 = [v6 viewControllerForTextAttachment:v9];
@@ -57,36 +57,36 @@
   return v11;
 }
 
-- (id)inlineTextAttachmentViewProviderInTextView:(id)a3
+- (id)inlineTextAttachmentViewProviderInTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v5 = [v4 textLayoutManager];
+  textLayoutManager = [viewCopy textLayoutManager];
 
   v6 = ICDynamicCast();
 
   objc_opt_class();
-  v7 = [(ICInlineTextFindingResult *)self attachment];
-  v8 = [v7 identifier];
-  v9 = [v6 existingAttachmentViewProviderForIdentifier:v8];
+  attachment = [(ICInlineTextFindingResult *)self attachment];
+  identifier = [attachment identifier];
+  v9 = [v6 existingAttachmentViewProviderForIdentifier:identifier];
   v10 = ICDynamicCast();
 
   return v10;
 }
 
-- (id)framesForHighlightInTextView:(id)a3
+- (id)framesForHighlightInTextView:(id)view
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 textLayoutManager];
+  viewCopy = view;
+  textLayoutManager = [viewCopy textLayoutManager];
 
-  if (v5)
+  if (textLayoutManager)
   {
-    v6 = [(ICInlineTextFindingResult *)self inlineTextAttachmentViewProviderInTextView:v4];
+    v6 = [(ICInlineTextFindingResult *)self inlineTextAttachmentViewProviderInTextView:viewCopy];
     [v6 updateDisplayTextTextStorage];
-    v7 = [v6 tk2displayTextLayoutManager];
-    v8 = [(ICInlineTextFindingResult *)self displayTextRange];
-    [v7 ic_rectForRange:{v8, v9}];
+    tk2displayTextLayoutManager = [v6 tk2displayTextLayoutManager];
+    displayTextRange = [(ICInlineTextFindingResult *)self displayTextRange];
+    [tk2displayTextLayoutManager ic_rectForRange:{displayTextRange, v9}];
     v11 = v10;
     v13 = v12;
     v15 = v14;
@@ -95,25 +95,25 @@
 
   else
   {
-    v6 = [(ICInlineTextFindingResult *)self inlineAttachmentViewControllerInTextView:v4];
+    v6 = [(ICInlineTextFindingResult *)self inlineAttachmentViewControllerInTextView:viewCopy];
     [v6 updateDisplayTextTextStorage];
     v39 = 0;
     v40 = 0;
-    v18 = [v6 displayTextLayoutManager];
-    v19 = [(ICInlineTextFindingResult *)self displayTextRange];
-    [v18 characterRangeForGlyphRange:v19 actualGlyphRange:{v20, &v39}];
+    displayTextLayoutManager = [v6 displayTextLayoutManager];
+    displayTextRange2 = [(ICInlineTextFindingResult *)self displayTextRange];
+    [displayTextLayoutManager characterRangeForGlyphRange:displayTextRange2 actualGlyphRange:{v20, &v39}];
 
-    v21 = [v6 displayTextLayoutManager];
-    v22 = [v6 displayTextTextContainer];
-    [v21 boundingRectForGlyphRange:v39 inTextContainer:{v40, v22}];
+    displayTextLayoutManager2 = [v6 displayTextLayoutManager];
+    displayTextTextContainer = [v6 displayTextTextContainer];
+    [displayTextLayoutManager2 boundingRectForGlyphRange:v39 inTextContainer:{v40, displayTextTextContainer}];
     v11 = v23;
     v13 = v24;
     v15 = v25;
     v17 = v26;
   }
 
-  v27 = [v6 view];
-  [v27 convertRect:v4 toView:{v11, v13, v15, v17}];
+  view = [v6 view];
+  [view convertRect:viewCopy toView:{v11, v13, v15, v17}];
   v29 = v28;
   v31 = v30;
   v33 = v32;

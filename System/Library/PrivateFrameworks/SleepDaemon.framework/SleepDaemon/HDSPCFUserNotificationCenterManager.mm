@@ -1,9 +1,9 @@
 @interface HDSPCFUserNotificationCenterManager
 + (id)sharedManager;
 - (HDSPCFUserNotificationCenterManager)init;
-- (void)_withLock:(id)a3;
-- (void)cancelNotification:(id)a3 fromCenter:(id)a4;
-- (void)postNotification:(id)a3 fromCenter:(id)a4;
+- (void)_withLock:(id)lock;
+- (void)cancelNotification:(id)notification fromCenter:(id)center;
+- (void)postNotification:(id)notification fromCenter:(id)center;
 @end
 
 @implementation HDSPCFUserNotificationCenterManager
@@ -46,27 +46,27 @@ uint64_t __52__HDSPCFUserNotificationCenterManager_sharedManager__block_invoke()
   return v3;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_registrationLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_registrationLock);
 }
 
-- (void)postNotification:(id)a3 fromCenter:(id)a4
+- (void)postNotification:(id)notification fromCenter:(id)center
 {
-  v6 = a4;
-  v7 = a3;
-  RunLoopSource = CFUserNotificationCreateRunLoopSource(0, [v7 notification], _CFUserNotificationCallback, 0);
+  centerCopy = center;
+  notificationCopy = notification;
+  RunLoopSource = CFUserNotificationCreateRunLoopSource(0, [notificationCopy notification], _CFUserNotificationCallback, 0);
   Main = CFRunLoopGetMain();
   CFRunLoopAddSource(Main, RunLoopSource, *MEMORY[0x277CBF048]);
   CFRelease(RunLoopSource);
   v10 = objc_alloc_init(_HDSPCFUserNotificationCenterRegistration);
-  [(_HDSPCFUserNotificationCenterRegistration *)v10 setNotification:v7];
+  [(_HDSPCFUserNotificationCenterRegistration *)v10 setNotification:notificationCopy];
 
-  [(_HDSPCFUserNotificationCenterRegistration *)v10 setNotificationCenter:v6];
+  [(_HDSPCFUserNotificationCenterRegistration *)v10 setNotificationCenter:centerCopy];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HDSPCFUserNotificationCenterManager_postNotification_fromCenter___block_invoke;
@@ -77,13 +77,13 @@ uint64_t __52__HDSPCFUserNotificationCenterManager_sharedManager__block_invoke()
   [(HDSPCFUserNotificationCenterManager *)self _withLock:v12];
 }
 
-- (void)cancelNotification:(id)a3 fromCenter:(id)a4
+- (void)cancelNotification:(id)notification fromCenter:(id)center
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  notificationCopy = notification;
+  v6 = notificationCopy;
+  if (notificationCopy)
   {
-    CFUserNotificationCancel([v5 notification]);
+    CFUserNotificationCancel([notificationCopy notification]);
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__HDSPCFUserNotificationCenterManager_cancelNotification_fromCenter___block_invoke;

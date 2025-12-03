@@ -14,7 +14,7 @@
 
 - (void)actionsUpdated
 {
-  v2 = self;
+  selfCopy = self;
   InlineActionsViewModel.actionsUpdated()();
 }
 

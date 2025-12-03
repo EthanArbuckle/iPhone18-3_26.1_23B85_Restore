@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMFindMyLocationChange_v0;
-  v2 = [(BMFindMyLocationChange *)&v4 stateChange];
-  if (v2 < 3)
+  stateChange = [(BMFindMyLocationChange *)&v4 stateChange];
+  if (stateChange < 3)
   {
-    return v2 + 1;
+    return stateChange + 1;
   }
 
   else

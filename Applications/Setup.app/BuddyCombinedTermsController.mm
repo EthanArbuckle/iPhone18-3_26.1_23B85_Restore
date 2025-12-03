@@ -1,21 +1,21 @@
 @interface BuddyCombinedTermsController
-+ (id)_termsVersionFromObjectModel:(id)a3;
++ (id)_termsVersionFromObjectModel:(id)model;
 - (BFFFlowItemDelegate)delegate;
 - (BOOL)controllerNeedsToRun;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
 - (UINavigationController)navigationController;
-- (void)_addHandlersForTermsButtonsToRemoteUIController:(id)a3;
-- (void)_addHeadersToRequest:(id)a3;
+- (void)_addHandlersForTermsButtonsToRemoteUIController:(id)controller;
+- (void)_addHeadersToRequest:(id)request;
 - (void)_callPresentationCompletionWithNothing;
 - (void)_cleanupRemoteUI;
-- (void)_userRespondedToCombinedTCsWithAgreement:(BOOL)a3 withSLAVersion:(id)a4;
+- (void)_userRespondedToCombinedTCsWithAgreement:(BOOL)agreement withSLAVersion:(id)version;
 - (void)controllerDone;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)presentHostedViewControllerOnNavigationController:(id)a3 completion:(id)a4;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)presentHostedViewControllerOnNavigationController:(id)controller completion:(id)completion;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
 @end
 
 @implementation BuddyCombinedTermsController
@@ -23,24 +23,24 @@
 - (BOOL)controllerNeedsToRun
 {
   v2 = [(BuddyCombinedTermsController *)self networkProvider:a2];
-  v3 = [(BuddyNetworkProvider *)v2 networkReachable];
+  networkReachable = [(BuddyNetworkProvider *)v2 networkReachable];
 
-  return v3 & 1;
+  return networkReachable & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[BuddyAppleIDConfigurationManager sharedManager];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_100210124;
   v8 = &unk_10032D510;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   [v3 getURLConfigurationWithHandler:&v4];
 
@@ -49,25 +49,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentHostedViewControllerOnNavigationController:(id)a3 completion:(id)a4
+- (void)presentHostedViewControllerOnNavigationController:(id)controller completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  [(BuddyCombinedTermsController *)v16 setPresentationCanceled:0];
-  v5 = [(BuddyCombinedTermsController *)v16 combinedTermsProvider];
+  objc_storeStrong(&v14, completion);
+  [(BuddyCombinedTermsController *)selfCopy setPresentationCanceled:0];
+  combinedTermsProvider = [(BuddyCombinedTermsController *)selfCopy combinedTermsProvider];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10021035C;
   v10 = &unk_10032F368;
-  v11 = v16;
+  v11 = selfCopy;
   v12 = location[0];
   v13 = v14;
-  [(BuddyCombinedTermsProvider *)v5 fetchTerms:&v6];
+  [(BuddyCombinedTermsProvider *)combinedTermsProvider fetchTerms:&v6];
 
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
@@ -78,9 +78,9 @@
 
 - (void)controllerDone
 {
-  v2 = [(BuddyCombinedTermsController *)self presentationCompletion];
+  presentationCompletion = [(BuddyCombinedTermsController *)self presentationCompletion];
 
-  if (v2)
+  if (presentationCompletion)
   {
     [(BuddyCombinedTermsController *)self _callPresentationCompletionWithNothing];
     [(BuddyCombinedTermsController *)self _cleanupRemoteUI];
@@ -88,17 +88,17 @@
 
   else
   {
-    v3 = [(BuddyCombinedTermsController *)self delegate];
-    [(BFFFlowItemDelegate *)v3 flowItemDone:self];
+    delegate = [(BuddyCombinedTermsController *)self delegate];
+    [(BFFFlowItemDelegate *)delegate flowItemDone:self];
   }
 }
 
-- (void)_addHeadersToRequest:(id)a3
+- (void)_addHeadersToRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v3 = +[BuddyAccountTools sharedBuddyAccountTools];
   [v3 addAccountHeadersToRequest:location[0]];
 
@@ -142,19 +142,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_addHandlersForTermsButtonsToRemoteUIController:(id)a3
+- (void)_addHandlersForTermsButtonsToRemoteUIController:(id)controller
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = location[0];
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
   v14 = sub_1002109CC;
   v15 = &unk_10032F390;
-  v16 = v18;
+  v16 = selfCopy;
   [v3 setHandlerForElementName:@"agree" handler:&v11];
   v4 = location[0];
   v5 = _NSConcreteStackBlock;
@@ -162,7 +162,7 @@
   v7 = 0;
   v8 = sub_100210B00;
   v9 = &unk_10032F390;
-  v10 = v18;
+  v10 = selfCopy;
   [v4 setHandlerForElementName:@"disagree" handler:&v5];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v16, 0);
@@ -171,14 +171,14 @@
 
 - (void)_callPresentationCompletionWithNothing
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyCombinedTermsController *)self presentationCompletion];
+  presentationCompletion = [(BuddyCombinedTermsController *)self presentationCompletion];
 
-  if (v2)
+  if (presentationCompletion)
   {
-    location[0] = [(BuddyCombinedTermsController *)v4 presentationCompletion];
-    [(BuddyCombinedTermsController *)v4 setPresentationCompletion:0];
+    location[0] = [(BuddyCombinedTermsController *)selfCopy presentationCompletion];
+    [(BuddyCombinedTermsController *)selfCopy setPresentationCompletion:0];
     (*(location[0] + 2))(location[0], 0);
     objc_storeStrong(location, 0);
   }
@@ -186,21 +186,21 @@
 
 - (void)_cleanupRemoteUI
 {
-  v2 = [(BuddyCombinedTermsController *)self remoteUIController];
-  v3 = [(RemoteUIController *)v2 loader];
-  [v3 cancel];
+  remoteUIController = [(BuddyCombinedTermsController *)self remoteUIController];
+  loader = [(RemoteUIController *)remoteUIController loader];
+  [loader cancel];
 
   [(BuddyCombinedTermsController *)self setRemoteUIController:0];
 }
 
-+ (id)_termsVersionFromObjectModel:(id)a3
++ (id)_termsVersionFromObjectModel:(id)model
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] clientInfo];
-  v9 = [v3 objectForKey:@"SLAVersion"];
+  objc_storeStrong(location, model);
+  clientInfo = [location[0] clientInfo];
+  v9 = [clientInfo objectForKey:@"SLAVersion"];
 
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -234,14 +234,14 @@
   return v6;
 }
 
-- (void)_userRespondedToCombinedTCsWithAgreement:(BOOL)a3 withSLAVersion:(id)a4
+- (void)_userRespondedToCombinedTCsWithAgreement:(BOOL)agreement withSLAVersion:(id)version
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  agreementCopy = agreement;
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  if (v9)
+  objc_storeStrong(&v8, version);
+  if (agreementCopy)
   {
     v4 = +[NSFileManager defaultManager];
     [(NSFileManager *)v4 removeItemAtPath:@"/var/mobile/Media/iTunes_Control/iTunes/ShowLicense" error:0];
@@ -253,45 +253,45 @@
     }
 
     +[BuddyTermsConditionsFlow didAgreeToServerTerms];
-    [(BuddyCombinedTermsController *)v11 controllerDone];
-    v5 = [(BuddyCombinedTermsController *)v11 remoteUIController];
-    v6 = [(RemoteUIController *)v5 navigationController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    [(BuddyCombinedTermsController *)selfCopy controllerDone];
+    remoteUIController = [(BuddyCombinedTermsController *)selfCopy remoteUIController];
+    navigationController = [(RemoteUIController *)remoteUIController navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v7 = [(BuddyCombinedTermsController *)v11 delegate];
-    [(BFFFlowItemDelegate *)v7 flowItemCancelled:v11];
+    delegate = [(BuddyCombinedTermsController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate flowItemCancelled:selfCopy];
   }
 
   objc_storeStrong(&v8, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
-  v24 = a5;
-  if (*a5 == 1)
+  objc_storeStrong(&v25, model);
+  signalCopy = signal;
+  if (*signal == 1)
   {
-    v7 = [v25 clientInfo];
-    v8 = [v7 objectForKeyedSubscript:@"continue"];
+    clientInfo = [v25 clientInfo];
+    v8 = [clientInfo objectForKeyedSubscript:@"continue"];
     objc_opt_class();
     v22 = 0;
     v20 = 0;
-    v9 = 0;
+    bOOLValue = 0;
     if (objc_opt_isKindOfClass())
     {
-      v23 = [v25 clientInfo];
+      clientInfo2 = [v25 clientInfo];
       v22 = 1;
-      v21 = [v23 objectForKeyedSubscript:@"continue"];
+      v21 = [clientInfo2 objectForKeyedSubscript:@"continue"];
       v20 = 1;
-      v9 = [v21 BOOLValue];
+      bOOLValue = [v21 BOOLValue];
     }
 
     if (v20)
@@ -302,52 +302,52 @@
     {
     }
 
-    if (v9)
+    if (bOOLValue)
     {
       +[BuddyTermsConditionsFlow didAgreeToServerTerms];
     }
 
-    [(BuddyCombinedTermsController *)v27 controllerDone];
+    [(BuddyCombinedTermsController *)selfCopy controllerDone];
     v19 = 1;
   }
 
   else
   {
-    if (*v24 == 2)
+    if (*signalCopy == 2)
     {
-      v10 = [v25 defaultPages];
-      v18 = [v10 firstObject];
+      defaultPages = [v25 defaultPages];
+      firstObject = [defaultPages firstObject];
 
-      v11 = [v18 presentingViewController];
-      if (!v11)
+      presentingViewController = [firstObject presentingViewController];
+      if (!presentingViewController)
       {
-        *v24 = 5;
-        v12 = [v18 toolbar];
+        *signalCopy = 5;
+        toolbar = [firstObject toolbar];
 
-        if (v12)
+        if (toolbar)
         {
-          v13 = [v18 leftToolbarButtonItem];
+          leftToolbarButtonItem = [firstObject leftToolbarButtonItem];
 
-          if (v13)
+          if (leftToolbarButtonItem)
           {
-            v14 = [v18 leftToolbarButtonItem];
-            [v18 setLeftNavigationBarButtonItem:v14];
+            leftToolbarButtonItem2 = [firstObject leftToolbarButtonItem];
+            [firstObject setLeftNavigationBarButtonItem:leftToolbarButtonItem2];
           }
 
-          v15 = [v18 rightToolbarButtonItem];
+          rightToolbarButtonItem = [firstObject rightToolbarButtonItem];
 
-          if (v15)
+          if (rightToolbarButtonItem)
           {
-            v16 = [v18 rightToolbarButtonItem];
-            [v18 setRightNavigationBarButtonItem:v16];
+            rightToolbarButtonItem2 = [firstObject rightToolbarButtonItem];
+            [firstObject setRightNavigationBarButtonItem:rightToolbarButtonItem2];
           }
 
-          v17 = [v18 toolbar];
-          [v17 setHidden:1];
+          toolbar2 = [firstObject toolbar];
+          [toolbar2 setHidden:1];
         }
       }
 
-      objc_storeStrong(&v18, 0);
+      objc_storeStrong(&firstObject, 0);
     }
 
     v19 = 0;
@@ -357,14 +357,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, navigationController);
   [v7 setModalPresentationStyle:2];
   +[OBBaseWelcomeController preferredContentSize];
   [v7 setPreferredContentSize:{v5, v6, *&v5, *&v6, *&v5, *&v6}];
@@ -373,42 +373,42 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
-  v7 = [(BuddyCombinedTermsController *)v14 presentationCompletion];
+  objc_storeStrong(&v12, model);
+  modallyCopy = modally;
+  presentationCompletion = [(BuddyCombinedTermsController *)selfCopy presentationCompletion];
 
-  if (v7)
+  if (presentationCompletion)
   {
-    v10 = [(BuddyCombinedTermsController *)v14 presentationCompletion];
-    [(BuddyCombinedTermsController *)v14 setPresentationCompletion:0];
-    v8 = [v12 displayedPages];
-    v9 = [v8 firstObject];
-    v10[2](v10, v9);
+    presentationCompletion2 = [(BuddyCombinedTermsController *)selfCopy presentationCompletion];
+    [(BuddyCombinedTermsController *)selfCopy setPresentationCompletion:0];
+    displayedPages = [v12 displayedPages];
+    firstObject = [displayedPages firstObject];
+    presentationCompletion2[2](presentationCompletion2, firstObject);
 
-    objc_storeStrong(&v10, 0);
+    objc_storeStrong(&presentationCompletion2, 0);
   }
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, error);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
+  objc_storeStrong(&v8, request);
   if (v9)
   {
     oslog = _BYLoggingFacility();
@@ -419,7 +419,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(BuddyCombinedTermsController *)v11 _callPresentationCompletionWithNothing];
+    [(BuddyCombinedTermsController *)selfCopy _callPresentationCompletionWithNothing];
   }
 
   objc_storeStrong(&v8, 0);
@@ -427,17 +427,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, request);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  [(BuddyCombinedTermsController *)v11 _addHeadersToRequest:v9];
+  objc_storeStrong(&v8, response);
+  [(BuddyCombinedTermsController *)selfCopy _addHeadersToRequest:v9];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);

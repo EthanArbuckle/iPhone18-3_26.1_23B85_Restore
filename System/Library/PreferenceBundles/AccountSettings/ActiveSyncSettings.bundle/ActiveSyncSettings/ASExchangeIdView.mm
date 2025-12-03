@@ -1,12 +1,12 @@
 @interface ASExchangeIdView
-- (ASExchangeIdView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (ASExchangeIdView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (id)_accessibilityLabels;
 - (id)_generateExchangeIdLabel;
 - (id)_generateExchangeIdText;
-- (void)handleLongPressGesture:(id)a3;
+- (void)handleLongPressGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)setTextForExchangeId:(id)a3;
+- (void)setTextForExchangeId:(id)id;
 @end
 
 @implementation ASExchangeIdView
@@ -49,37 +49,37 @@
   return v3;
 }
 
-- (void)handleLongPressGesture:(id)a3
+- (void)handleLongPressGesture:(id)gesture
 {
-  v17 = a3;
-  if ([v17 state] == &dword_0 + 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == &dword_0 + 1)
   {
-    v3 = [v17 view];
-    v4 = [v3 becomeFirstResponder];
+    view = [gestureCopy view];
+    becomeFirstResponder = [view becomeFirstResponder];
 
-    if (v4)
+    if (becomeFirstResponder)
     {
       v5 = +[UIMenuController sharedMenuController];
-      v6 = [v17 view];
-      [v6 frame];
+      view2 = [gestureCopy view];
+      [view2 frame];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      v15 = [v17 view];
-      v16 = [v15 superview];
-      [v5 setTargetRect:v16 inView:{v8, v10, v12, v14}];
+      view3 = [gestureCopy view];
+      superview = [view3 superview];
+      [v5 setTargetRect:superview inView:{v8, v10, v12, v14}];
 
       [v5 setMenuVisible:1 animated:1];
     }
   }
 }
 
-- (void)setTextForExchangeId:(id)a3
+- (void)setTextForExchangeId:(id)id
 {
-  v4 = [a3 propertyForKey:@"ASExchangeIdKey"];
-  v5 = [(ASExchangeIdView *)self idTextView];
-  [v5 setText:v4];
+  v4 = [id propertyForKey:@"ASExchangeIdKey"];
+  idTextView = [(ASExchangeIdView *)self idTextView];
+  [idTextView setText:v4];
 
   [(ASExchangeIdView *)self setSized:0.0];
   [(ASExchangeIdView *)self setLabelTopPadding:0.0];
@@ -88,22 +88,22 @@
   [(ASExchangeIdView *)self setNeedsLayout];
 }
 
-- (ASExchangeIdView)initWithSpecifier:(id)a3
+- (ASExchangeIdView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = ASExchangeIdView;
   v5 = [(ASExchangeIdView *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    v7 = [(ASExchangeIdView *)v5 _generateExchangeIdLabel];
+    _generateExchangeIdLabel = [(ASExchangeIdView *)v5 _generateExchangeIdLabel];
     label = v6->_label;
-    v6->_label = v7;
+    v6->_label = _generateExchangeIdLabel;
 
-    v9 = [(ASExchangeIdView *)v6 _generateExchangeIdText];
+    _generateExchangeIdText = [(ASExchangeIdView *)v6 _generateExchangeIdText];
     idTextView = v6->_idTextView;
-    v6->_idTextView = v9;
+    v6->_idTextView = _generateExchangeIdText;
 
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"DEVICE_ID_DESCRIPTION" value:&stru_30C98 table:@"ASAccountSetup"];
@@ -111,7 +111,7 @@
 
     [(UILabel *)v6->_label setTextAlignment:1];
     [(ASExchangeIdTextView *)v6->_idTextView setTextAlignment:1];
-    [(ASExchangeIdView *)v6 setTextForExchangeId:v4];
+    [(ASExchangeIdView *)v6 setTextForExchangeId:specifierCopy];
     v13 = +[UIColor clearColor];
     [(ASExchangeIdView *)v6 setBackgroundColor:v13];
   }
@@ -119,31 +119,31 @@
   return v6;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   [(ASExchangeIdView *)self sized];
   if (v5 == 0.0)
   {
     [(ASExchangeIdView *)self setLabelTopPadding:2.0];
     [(ASExchangeIdView *)self setTextViewTopPadding:10.0];
-    v6 = [(ASExchangeIdView *)self label];
-    [v6 sizeToFit];
+    label = [(ASExchangeIdView *)self label];
+    [label sizeToFit];
 
     [(ASExchangeIdView *)self labelTopPadding];
     v8 = v7;
-    v9 = [(ASExchangeIdView *)self label];
-    v10 = sub_15184(v9, a3);
+    label2 = [(ASExchangeIdView *)self label];
+    v10 = sub_15184(label2, width);
     v12 = v8 + v11 * 2.0;
     [(ASExchangeIdView *)self sized];
     [(ASExchangeIdView *)self setSized:v13 + v12];
 
-    v14 = [(ASExchangeIdView *)self idTextView];
-    [v14 sizeToFit];
+    idTextView = [(ASExchangeIdView *)self idTextView];
+    [idTextView sizeToFit];
 
     [(ASExchangeIdView *)self textViewTopPadding];
     v16 = v15;
-    v17 = [(ASExchangeIdView *)self idTextView];
-    v18 = sub_15184(v17, a3);
+    idTextView2 = [(ASExchangeIdView *)self idTextView];
+    v18 = sub_15184(idTextView2, width);
     v20 = v16 + v19 * 2.0;
     [(ASExchangeIdView *)self sized];
     [(ASExchangeIdView *)self setSized:v21 + v20];
@@ -165,12 +165,12 @@
     [(ASExchangeIdView *)self preferredHeightForWidth:v7];
   }
 
-  v8 = [(ASExchangeIdView *)self label];
-  [v8 frame];
+  label = [(ASExchangeIdView *)self label];
+  [label frame];
 
-  v9 = [(ASExchangeIdView *)self label];
+  label2 = [(ASExchangeIdView *)self label];
   [(ASExchangeIdView *)self bounds];
-  v11 = sub_15184(v9, v10);
+  v11 = sub_15184(label2, v10);
   v13 = v12;
 
   [(ASExchangeIdView *)self bounds];
@@ -182,8 +182,8 @@
   v32.size.width = width;
   v32.size.height = height;
   v18 = v17 + CGRectGetMaxY(v32);
-  v19 = [(ASExchangeIdView *)self label];
-  [v19 setFrame:{v15, v18, v11, v13}];
+  label3 = [(ASExchangeIdView *)self label];
+  [label3 setFrame:{v15, v18, v11, v13}];
 
   [(ASExchangeIdTextView *)self->_idTextView frame];
   idTextView = self->_idTextView;
@@ -199,14 +199,14 @@
   v33.size.width = v11;
   v33.size.height = v13;
   v29 = v28 + CGRectGetMaxY(v33);
-  v30 = [(ASExchangeIdView *)self idTextView];
-  [v30 setFrame:{v26, v29, v22, v24}];
+  idTextView = [(ASExchangeIdView *)self idTextView];
+  [idTextView setFrame:{v26, v29, v22, v24}];
 }
 
 - (id)_accessibilityLabels
 {
-  v2 = [(ASExchangeIdView *)self label];
-  v3 = [NSArray arrayWithObjects:v2, 0];
+  label = [(ASExchangeIdView *)self label];
+  v3 = [NSArray arrayWithObjects:label, 0];
 
   return v3;
 }

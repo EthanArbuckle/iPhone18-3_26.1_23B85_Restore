@@ -3,20 +3,20 @@
 - (BOOL)resume;
 - (BOOL)suspend;
 - (BOOL)terminate;
-- (UAPingController)initWithManager:(id)a3 name:(id)a4;
+- (UAPingController)initWithManager:(id)manager name:(id)name;
 @end
 
 @implementation UAPingController
 
-- (UAPingController)initWithManager:(id)a3 name:(id)a4
+- (UAPingController)initWithManager:(id)manager name:(id)name
 {
-  v6 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = UAPingController;
-  v7 = [(UACornerActionManagerHandler *)&v17 initWithManager:v6 name:a4];
+  v7 = [(UACornerActionManagerHandler *)&v17 initWithManager:managerCopy name:name];
   if (v7)
   {
-    v8 = [[UAPingNotifier alloc] initWithManager:v6];
+    v8 = [[UAPingNotifier alloc] initWithManager:managerCopy];
     notifier = v7->_notifier;
     v7->_notifier = v8;
 
@@ -24,13 +24,13 @@
     client = v7->_client;
     v7->_client = v10;
 
-    v12 = [(UACornerActionManagerHandler *)v7 manager];
-    v13 = [(UAPingController *)v7 notifier];
-    [v12 addActivityNotifier:v13];
+    manager = [(UACornerActionManagerHandler *)v7 manager];
+    notifier = [(UAPingController *)v7 notifier];
+    [manager addActivityNotifier:notifier];
 
-    v14 = [(UACornerActionManagerHandler *)v7 manager];
-    v15 = [(UAPingController *)v7 client];
-    [v14 addClient:v15];
+    manager2 = [(UACornerActionManagerHandler *)v7 manager];
+    client = [(UAPingController *)v7 client];
+    [manager2 addClient:client];
   }
 
   return v7;
@@ -38,42 +38,42 @@
 
 - (BOOL)active
 {
-  v2 = [(UAPingController *)self client];
-  v3 = [v2 items];
-  v4 = [v3 count] != 0;
+  client = [(UAPingController *)self client];
+  items = [client items];
+  v4 = [items count] != 0;
 
   return v4;
 }
 
 - (BOOL)resume
 {
-  v3 = [(UAPingController *)self notifier];
-  [v3 resume];
+  notifier = [(UAPingController *)self notifier];
+  [notifier resume];
 
-  v4 = [(UAPingController *)self client];
-  [v4 resume];
+  client = [(UAPingController *)self client];
+  [client resume];
 
   return 1;
 }
 
 - (BOOL)suspend
 {
-  v3 = [(UAPingController *)self notifier];
-  [v3 suspend];
+  notifier = [(UAPingController *)self notifier];
+  [notifier suspend];
 
-  v4 = [(UAPingController *)self client];
-  [v4 suspend];
+  client = [(UAPingController *)self client];
+  [client suspend];
 
   return 1;
 }
 
 - (BOOL)terminate
 {
-  v3 = [(UAPingController *)self notifier];
-  [v3 terminate];
+  notifier = [(UAPingController *)self notifier];
+  [notifier terminate];
 
-  v4 = [(UAPingController *)self client];
-  [v4 terminate];
+  client = [(UAPingController *)self client];
+  [client terminate];
 
   return 1;
 }

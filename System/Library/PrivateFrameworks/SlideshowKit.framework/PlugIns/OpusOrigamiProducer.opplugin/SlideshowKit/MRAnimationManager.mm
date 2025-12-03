@@ -1,7 +1,7 @@
 @interface MRAnimationManager
 + (void)initialize;
-+ (void)loadAnimationManagerWithPaths:(id)a3;
-- (MRAnimationManager)initWithPaths:(id)a3;
++ (void)loadAnimationManagerWithPaths:(id)paths;
+- (MRAnimationManager)initWithPaths:(id)paths;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MRAnimationManager;
   objc_msgSendSuper2(&v2, "initialize");
   if (!qword_1EF3B8)
@@ -18,7 +18,7 @@
   }
 }
 
-+ (void)loadAnimationManagerWithPaths:(id)a3
++ (void)loadAnimationManagerWithPaths:(id)paths
 {
   if (qword_1EF3B8)
   {
@@ -26,10 +26,10 @@
     qword_1EF3B8 = 0;
   }
 
-  qword_1EF3B8 = [[MRAnimationManager alloc] initWithPaths:a3];
+  qword_1EF3B8 = [[MRAnimationManager alloc] initWithPaths:paths];
 }
 
-- (MRAnimationManager)initWithPaths:(id)a3
+- (MRAnimationManager)initWithPaths:(id)paths
 {
   v18.receiver = self;
   v18.super_class = MRAnimationManager;
@@ -39,9 +39,9 @@
     v4->mAnimations = objc_alloc_init(NSMutableDictionary);
     v5 = +[NSMutableArray array];
     v6 = v5;
-    if (a3)
+    if (paths)
     {
-      [v5 addObjectsFromArray:a3];
+      [v5 addObjectsFromArray:paths];
     }
 
     else

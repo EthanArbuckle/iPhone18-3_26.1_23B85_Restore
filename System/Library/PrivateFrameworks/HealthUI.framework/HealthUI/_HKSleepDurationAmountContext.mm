@@ -1,28 +1,28 @@
 @interface _HKSleepDurationAmountContext
 - (HKOverlaySleepRoomContextChangeDelegate)contextChangeDelegate;
-- (_HKSleepDurationAmountContext)initWithBaseDisplayType:(id)a3 overlayChartController:(id)a4 contextChangeDelegate:(id)a5;
-- (id)_amountStringFromCounts:(id)a3 timeScope:(int64_t)a4;
-- (id)_contextItemWithAmountString:(id)a3;
-- (id)_countsOfSleepDataFromChartPoints:(id)a3;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (_HKSleepDurationAmountContext)initWithBaseDisplayType:(id)type overlayChartController:(id)controller contextChangeDelegate:(id)delegate;
+- (id)_amountStringFromCounts:(id)counts timeScope:(int64_t)scope;
+- (id)_contextItemWithAmountString:(id)string;
+- (id)_countsOfSleepDataFromChartPoints:(id)points;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation _HKSleepDurationAmountContext
 
-- (_HKSleepDurationAmountContext)initWithBaseDisplayType:(id)a3 overlayChartController:(id)a4 contextChangeDelegate:(id)a5
+- (_HKSleepDurationAmountContext)initWithBaseDisplayType:(id)type overlayChartController:(id)controller contextChangeDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = _HKSleepDurationAmountContext;
   v12 = [(_HKSleepDurationAmountContext *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_overlayChartController, a4);
-    objc_storeStrong(&v13->_baseDisplayType, a3);
-    objc_storeWeak(&v13->_contextChangeDelegate, v11);
+    objc_storeStrong(&v12->_overlayChartController, controller);
+    objc_storeStrong(&v13->_baseDisplayType, type);
+    objc_storeWeak(&v13->_contextChangeDelegate, delegateCopy);
     v14 = [(_HKSleepDurationAmountContext *)v13 _contextItemWithAmountString:&stru_1F42FFBE0];
     lastUpdatedItem = v13->_lastUpdatedItem;
     v13->_lastUpdatedItem = v14;
@@ -31,9 +31,9 @@
   return v13;
 }
 
-- (id)_contextItemWithAmountString:(id)a3
+- (id)_contextItemWithAmountString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(HKDisplayTypeContextItem);
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"SLEEP_DURATION_AMOUNTS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
@@ -44,10 +44,10 @@
 
   [(HKDisplayTypeContextItem *)v4 setInfoHidden:1];
   [(HKDisplayTypeContextItem *)v4 setUnit:&stru_1F42FFBE0];
-  [(HKDisplayTypeContextItem *)v4 setValue:v3];
+  [(HKDisplayTypeContextItem *)v4 setValue:stringCopy];
 
-  v8 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-  v9 = [HKUIMetricColors defaultContextViewColorsUsingColor:v8];
+  tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+  v9 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
   [(HKDisplayTypeContextItem *)v4 setMetricColors:v9];
 
   v10 = +[HKUIMetricColors sleepColors];
@@ -56,12 +56,12 @@
   return v4;
 }
 
-- (id)_countsOfSleepDataFromChartPoints:(id)a3
+- (id)_countsOfSleepDataFromChartPoints:(id)points
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  pointsCopy = points;
+  v4 = pointsCopy;
+  if (pointsCopy && [pointsCopy count])
   {
     v5 = objc_alloc_init(_HKSleepDurationAmountCounts);
     [(_HKSleepDurationAmountCounts *)v5 setChartPointsWithSleepDataCount:0];
@@ -115,10 +115,10 @@
   return v5;
 }
 
-- (id)_amountStringFromCounts:(id)a3 timeScope:(int64_t)a4
+- (id)_amountStringFromCounts:(id)counts timeScope:(int64_t)scope
 {
-  v5 = a3;
-  if (!v5)
+  countsCopy = counts;
+  if (!countsCopy)
   {
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v12 = [v6 localizedStringForKey:@"SLEEP_AVERAGE_NO_DAY_COUNTS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
@@ -126,18 +126,18 @@
   }
 
   v6 = HKIntegerFormatter();
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v5, "chartPointsWithSleepDataCount")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(countsCopy, "chartPointsWithSleepDataCount")}];
   v8 = [v6 stringFromNumber:v7];
 
   v9 = 0;
-  if (a4 <= 3)
+  if (scope <= 3)
   {
-    if (a4 < 3)
+    if (scope < 3)
     {
       goto LABEL_9;
     }
 
-    if (a4 != 3)
+    if (scope != 3)
     {
       goto LABEL_14;
     }
@@ -148,12 +148,12 @@
     v16 = @"SLEEP_AMOUNTS_WEEKS";
 LABEL_13:
     v17 = [v14 localizedStringForKey:v16 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Eucalyptus"];
-    v9 = [v13 localizedStringWithFormat:v17, objc_msgSend(v5, "totalChartPoints")];
+    v9 = [v13 localizedStringWithFormat:v17, objc_msgSend(countsCopy, "totalChartPoints")];
 
     goto LABEL_14;
   }
 
-  if ((a4 - 4) < 2)
+  if ((scope - 4) < 2)
   {
     v13 = MEMORY[0x1E696AEC0];
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -162,14 +162,14 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ((a4 - 7) < 2)
+  if ((scope - 7) < 2)
   {
 LABEL_9:
     v9 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"UNSUPPORTED_SLEEP_COUNT"];
     goto LABEL_14;
   }
 
-  if (a4 != 6)
+  if (scope != 6)
   {
 LABEL_14:
     v18 = MEMORY[0x1E696AEC0];
@@ -191,29 +191,29 @@ LABEL_16:
   return v12;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(_HKSleepDurationAmountContext *)self baseDisplayType];
+  intervalCopy = interval;
+  completionCopy = completion;
+  baseDisplayType = [(_HKSleepDurationAmountContext *)self baseDisplayType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = [(_HKSleepDurationAmountContext *)self baseDisplayType];
-    v15 = [(_HKSleepDurationAmountContext *)self overlayChartController];
-    v16 = [v14 graphSeriesForTimeScope:a5];
-    v17 = [v10 startDate];
-    v18 = [v10 endDate];
+    baseDisplayType2 = [(_HKSleepDurationAmountContext *)self baseDisplayType];
+    overlayChartController = [(_HKSleepDurationAmountContext *)self overlayChartController];
+    v16 = [baseDisplayType2 graphSeriesForTimeScope:scope];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __116___HKSleepDurationAmountContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
     v19[3] = &unk_1E81B6E70;
     v19[4] = self;
-    v21 = a5;
-    v20 = v11;
-    [v15 cachedDataForCustomGraphSeries:v16 timeScope:a5 resolution:0 startDate:v17 endDate:v18 completion:v19];
+    scopeCopy = scope;
+    v20 = completionCopy;
+    [overlayChartController cachedDataForCustomGraphSeries:v16 timeScope:scope resolution:0 startDate:startDate endDate:endDate completion:v19];
   }
 }
 

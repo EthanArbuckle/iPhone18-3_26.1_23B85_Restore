@@ -5,19 +5,19 @@
 - (BYExpressSettingsSetupCache)expressSettingsCache;
 - (BYRunState)runState;
 - (BuddyFeatureFlags)featureFlags;
-- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)applicationDidBecomeActive;
 - (void)notNowTapped;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)setBuddyPreferencesExcludedFromBackup:(id)a3;
-- (void)setManagedConfiguration:(id)a3;
-- (void)setMiscState:(id)a3;
-- (void)setPaneFeatureAnalyticsManager:(id)a3;
-- (void)setSetupMethod:(id)a3;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)setBuddyPreferencesExcludedFromBackup:(id)backup;
+- (void)setManagedConfiguration:(id)configuration;
+- (void)setMiscState:(id)state;
+- (void)setPaneFeatureAnalyticsManager:(id)manager;
+- (void)setSetupMethod:(id)method;
 - (void)turnOnTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -25,32 +25,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004D4D8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10004D984(a3);
+  selfCopy = self;
+  sub_10004D984(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for BuddyStolenDeviceProtectionController();
   v4 = v6.receiver;
-  [(BuddyStolenDeviceProtectionController *)&v6 viewDidDisappear:v3];
+  [(BuddyStolenDeviceProtectionController *)&v6 viewDidDisappear:disappearCopy];
   v5 = *&v4[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_notificationCenter];
   [v5 removeObserver:v4 name:UIApplicationDidBecomeActiveNotification object:{0, v6.receiver, v6.super_class}];
 }
 
-- (void)setManagedConfiguration:(id)a3
+- (void)setManagedConfiguration:(id)configuration
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_managedConfiguration];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_managedConfiguration] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_managedConfiguration] = configuration;
+  configurationCopy = configuration;
 }
 
 - (BYCapabilities)capabilities
@@ -60,11 +60,11 @@
   return v2;
 }
 
-- (void)setPaneFeatureAnalyticsManager:(id)a3
+- (void)setPaneFeatureAnalyticsManager:(id)manager
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_paneFeatureAnalyticsManager];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_paneFeatureAnalyticsManager] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_paneFeatureAnalyticsManager] = manager;
+  managerCopy = manager;
 }
 
 - (BuddyFeatureFlags)featureFlags
@@ -74,11 +74,11 @@
   return v2;
 }
 
-- (void)setBuddyPreferencesExcludedFromBackup:(id)a3
+- (void)setBuddyPreferencesExcludedFromBackup:(id)backup
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_buddyPreferencesExcludedFromBackup];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_buddyPreferencesExcludedFromBackup] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_buddyPreferencesExcludedFromBackup] = backup;
+  backupCopy = backup;
 }
 
 - (BYRunState)runState
@@ -88,11 +88,11 @@
   return v2;
 }
 
-- (void)setMiscState:(id)a3
+- (void)setMiscState:(id)state
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_miscState];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_miscState] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_miscState] = state;
+  stateCopy = state;
 }
 
 - (BYExpressSettingsSetupCache)expressSettingsCache
@@ -102,11 +102,11 @@
   return v2;
 }
 
-- (void)setSetupMethod:(id)a3
+- (void)setSetupMethod:(id)method
 {
   v4 = *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_setupMethod];
-  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_setupMethod] = a3;
-  v3 = a3;
+  *&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_setupMethod] = method;
+  methodCopy = method;
 }
 
 + (id)cloudConfigSkipKey
@@ -119,31 +119,31 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10004DEEC();
 
   return v3 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_100051B44(v5, v4);
+  selfCopy = self;
+  sub_100051B44(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)turnOnTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004E630();
 }
 
 - (void)notNowTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004EC8C();
 }
 
@@ -151,20 +151,20 @@
 {
   if (*&self->super.OBWelcomeController_opaque[OBJC_IVAR____TtC5Setup37BuddyStolenDeviceProtectionController_postAuthenticationWorkItem])
   {
-    v2 = self;
+    selfCopy = self;
 
     dispatch thunk of DispatchWorkItem.perform()();
   }
 }
 
-- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Setup37BuddyStolenDeviceProtectionController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

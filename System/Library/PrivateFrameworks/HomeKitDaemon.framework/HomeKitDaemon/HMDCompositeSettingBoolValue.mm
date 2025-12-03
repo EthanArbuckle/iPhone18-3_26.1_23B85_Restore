@@ -1,6 +1,6 @@
 @interface HMDCompositeSettingBoolValue
-- (BOOL)isEqualValue:(id)a3;
-- (HMDCompositeSettingBoolValue)initWithValue:(BOOL)a3;
+- (BOOL)isEqualValue:(id)value;
+- (HMDCompositeSettingBoolValue)initWithValue:(BOOL)value;
 - (id)attributeDescriptions;
 @end
 
@@ -21,18 +21,18 @@
   return v6;
 }
 
-- (BOOL)isEqualValue:(id)a3
+- (BOOL)isEqualValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy == self)
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    if ([(HMDCompositeSettingBoolValue *)v4 conformsToProtocol:&unk_283EDACA8])
+    if ([(HMDCompositeSettingBoolValue *)valueCopy conformsToProtocol:&unk_283EDACA8])
     {
       v6 = v5;
     }
@@ -46,8 +46,8 @@
     v8 = v7;
     if (v7)
     {
-      v9 = [(HMDCompositeSettingBoolValue *)v7 BOOLValue];
-      v10 = v9 ^ [(HMDCompositeSettingBoolValue *)self BOOLValue]^ 1;
+      bOOLValue = [(HMDCompositeSettingBoolValue *)v7 BOOLValue];
+      v10 = bOOLValue ^ [(HMDCompositeSettingBoolValue *)self BOOLValue]^ 1;
     }
 
     else
@@ -59,14 +59,14 @@
   return v10;
 }
 
-- (HMDCompositeSettingBoolValue)initWithValue:(BOOL)a3
+- (HMDCompositeSettingBoolValue)initWithValue:(BOOL)value
 {
   v5.receiver = self;
   v5.super_class = HMDCompositeSettingBoolValue;
   result = [(HMDCompositeSettingValue *)&v5 init];
   if (result)
   {
-    result->_BOOLValue = a3;
+    result->_BOOLValue = value;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface AVAnnotationUnknownRepresentation
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4;
-- (id)_propertyListAndBinaryData:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPropertyList:(id)list binaryData:(id)data;
+- (id)_propertyListAndBinaryData:(id *)data;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -9,15 +9,15 @@
 
 @implementation AVAnnotationUnknownRepresentation
 
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4
+- (id)_initWithPropertyList:(id)list binaryData:(id)data
 {
   v8.receiver = self;
   v8.super_class = AVAnnotationUnknownRepresentation;
   v6 = [AVAnnotationRepresentation _initWithPropertyList:sel__initWithPropertyList_binaryData_ binaryData:?];
   if (v6)
   {
-    v6[4] = [a3 copy];
-    v6[5] = [a4 copy];
+    v6[4] = [list copy];
+    v6[5] = [data copy];
     [v6 _setRepresentationType:@"AVAnnotationRepresentationTypeUnknown"];
   }
 
@@ -31,14 +31,14 @@
   [(AVAnnotationRepresentation *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = AVAnnotationUnknownRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v9 isEqual:?];
-  if (a3 != self)
+  if (equal != self)
   {
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_7;
     }
@@ -50,7 +50,7 @@
     }
 
     v8 = 0;
-    v6 = [a3 _propertyListAndBinaryData:&v8];
+    v6 = [equal _propertyListAndBinaryData:&v8];
     if (v5)
     {
       if ([(NSDictionary *)self->_properties isEqualToDictionary:v6])
@@ -76,11 +76,11 @@ LABEL_7:
   return v4 ^ [(NSData *)self->_binaryData hash];
 }
 
-- (id)_propertyListAndBinaryData:(id *)a3
+- (id)_propertyListAndBinaryData:(id *)data
 {
-  if (a3)
+  if (data)
   {
-    *a3 = self->_binaryData;
+    *data = self->_binaryData;
   }
 
   v3 = [(NSDictionary *)self->_properties mutableCopy];

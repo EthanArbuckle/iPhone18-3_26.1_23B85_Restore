@@ -1,44 +1,44 @@
 @interface RFMapMarkerText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFMapMarkerText)initWithCoder:(id)a3;
-- (RFMapMarkerText)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFMapMarkerText)initWithCoder:(id)coder;
+- (RFMapMarkerText)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFMapMarkerText
 
 - (unint64_t)hash
 {
-  v3 = [(RFMapMarkerText *)self coordinate];
-  v4 = [v3 hash];
-  v5 = [(RFMapMarkerText *)self title];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFMapMarkerText *)self monogram];
-  v8 = [v7 hash];
+  coordinate = [(RFMapMarkerText *)self coordinate];
+  v4 = [coordinate hash];
+  title = [(RFMapMarkerText *)self title];
+  v6 = [title hash] ^ v4;
+  monogram = [(RFMapMarkerText *)self monogram];
+  v8 = [monogram hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFMapMarkerText *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFMapMarkerText *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFMapMarkerText *)self coordinate];
-      v8 = [(RFMapMarkerText *)v6 coordinate];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      coordinate = [(RFMapMarkerText *)self coordinate];
+      coordinate2 = [(RFMapMarkerText *)v6 coordinate];
+      if ((coordinate != 0) == (coordinate2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -46,63 +46,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(RFMapMarkerText *)self coordinate];
-      if (v9)
+      coordinate3 = [(RFMapMarkerText *)self coordinate];
+      if (coordinate3)
       {
-        v3 = [(RFMapMarkerText *)self coordinate];
-        v10 = [(RFMapMarkerText *)v6 coordinate];
-        if (![v3 isEqual:v10])
+        coordinate4 = [(RFMapMarkerText *)self coordinate];
+        coordinate5 = [(RFMapMarkerText *)v6 coordinate];
+        if (![coordinate4 isEqual:coordinate5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = coordinate5;
       }
 
-      v12 = [(RFMapMarkerText *)self title];
-      v13 = [(RFMapMarkerText *)v6 title];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      title = [(RFMapMarkerText *)self title];
+      title2 = [(RFMapMarkerText *)v6 title];
+      v14 = title2;
+      if ((title != 0) == (title2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(RFMapMarkerText *)self title];
-      if (v15)
+      title3 = [(RFMapMarkerText *)self title];
+      if (title3)
       {
-        v25 = v12;
-        v16 = [(RFMapMarkerText *)self title];
-        v27 = [(RFMapMarkerText *)v6 title];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = title;
+        title4 = [(RFMapMarkerText *)self title];
+        title5 = [(RFMapMarkerText *)v6 title];
+        v28 = title4;
+        if (![title4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          title = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = title3;
+        v30 = coordinate4;
+        title = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = coordinate4;
       }
 
-      v17 = [(RFMapMarkerText *)self monogram];
-      v18 = [(RFMapMarkerText *)v6 monogram];
-      if ((v17 != 0) == (v18 == 0))
+      monogram = [(RFMapMarkerText *)self monogram];
+      monogram2 = [(RFMapMarkerText *)v6 monogram];
+      if ((monogram != 0) == (monogram2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        title3 = v29;
+        coordinate4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -111,16 +111,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(RFMapMarkerText *)self monogram];
-        v15 = v29;
-        if (v19)
+        v24 = monogram;
+        v26 = monogram2;
+        monogram3 = [(RFMapMarkerText *)self monogram];
+        title3 = v29;
+        if (monogram3)
         {
-          v23 = v19;
-          v22 = [(RFMapMarkerText *)self monogram];
-          v20 = [(RFMapMarkerText *)v6 monogram];
-          v11 = [v22 isEqual:?];
+          v23 = monogram3;
+          monogram4 = [(RFMapMarkerText *)self monogram];
+          monogram5 = [(RFMapMarkerText *)v6 monogram];
+          v11 = [monogram4 isEqual:?];
         }
 
         else
@@ -129,7 +129,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        coordinate4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -140,8 +140,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      coordinate5 = v31;
+      if (!coordinate3)
       {
 LABEL_29:
 
@@ -161,19 +161,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFMapMarkerText *)self coordinate];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  coordinate = [(RFMapMarkerText *)self coordinate];
+  v6 = [coordinate copy];
   [v4 setCoordinate:v6];
 
-  v7 = [(RFMapMarkerText *)self title];
-  v8 = [v7 copy];
+  title = [(RFMapMarkerText *)self title];
+  v8 = [title copy];
   [v4 setTitle:v8];
 
-  v9 = [(RFMapMarkerText *)self monogram];
-  v10 = [v9 copy];
+  monogram = [(RFMapMarkerText *)self monogram];
+  v10 = [monogram copy];
   [v4 setMonogram:v10];
 
   return v4;
@@ -182,31 +182,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFMapMarkerText alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapMarkerText *)v2 jsonData];
+  jsonData = [(_SFPBRFMapMarkerText *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFMapMarkerText alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapMarkerText *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFMapMarkerText *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFMapMarkerText alloc] initWithFacade:self];
-  v5 = [(_SFPBRFMapMarkerText *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFMapMarkerText *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFMapMarkerText)initWithCoder:(id)a3
+- (RFMapMarkerText)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFMapMarkerText alloc] initWithData:v5];
   v7 = [(RFMapMarkerText *)self initWithProtobuf:v6];
@@ -214,39 +214,39 @@ LABEL_31:
   return v7;
 }
 
-- (RFMapMarkerText)initWithProtobuf:(id)a3
+- (RFMapMarkerText)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v18.receiver = self;
   v18.super_class = RFMapMarkerText;
   v5 = [(RFMapMarkerText *)&v18 init];
   if (v5)
   {
-    v6 = [v4 coordinate];
+    coordinate = [protobufCopy coordinate];
 
-    if (v6)
+    if (coordinate)
     {
       v7 = [SFLatLng alloc];
-      v8 = [v4 coordinate];
-      v9 = [(SFLatLng *)v7 initWithProtobuf:v8];
+      coordinate2 = [protobufCopy coordinate];
+      v9 = [(SFLatLng *)v7 initWithProtobuf:coordinate2];
       [(RFMapMarkerText *)v5 setCoordinate:v9];
     }
 
-    v10 = [v4 title];
+    title = [protobufCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(RFMapMarkerText *)v5 setTitle:v11];
+      title2 = [protobufCopy title];
+      [(RFMapMarkerText *)v5 setTitle:title2];
     }
 
-    v12 = [v4 monogram];
+    monogram = [protobufCopy monogram];
 
-    if (v12)
+    if (monogram)
     {
       v13 = [RFTextProperty alloc];
-      v14 = [v4 monogram];
-      v15 = [(RFTextProperty *)v13 initWithProtobuf:v14];
+      monogram2 = [protobufCopy monogram];
+      v15 = [(RFTextProperty *)v13 initWithProtobuf:monogram2];
       [(RFMapMarkerText *)v5 setMonogram:v15];
     }
 

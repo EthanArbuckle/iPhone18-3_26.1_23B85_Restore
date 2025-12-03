@@ -1,23 +1,23 @@
 @interface UIWebElementAction
-+ (id)customElementActionWithTitle:(id)a3 actionHandler:(id)a4;
-+ (id)standardElementActionWithType:(int)a3 customTitle:(id)a4 context:(id)a5;
-- (UIWebElementAction)initWithTitle:(id)a3 actionHandler:(id)a4 type:(int)a5;
-- (void)_runActionWithElement:(id)a3 targetURL:(id)a4 documentView:(id)a5 interactionLocation:(CGPoint)a6;
++ (id)customElementActionWithTitle:(id)title actionHandler:(id)handler;
++ (id)standardElementActionWithType:(int)type customTitle:(id)title context:(id)context;
+- (UIWebElementAction)initWithTitle:(id)title actionHandler:(id)handler type:(int)type;
+- (void)_runActionWithElement:(id)element targetURL:(id)l documentView:(id)view interactionLocation:(CGPoint)location;
 - (void)dealloc;
 @end
 
 @implementation UIWebElementAction
 
-- (UIWebElementAction)initWithTitle:(id)a3 actionHandler:(id)a4 type:(int)a5
+- (UIWebElementAction)initWithTitle:(id)title actionHandler:(id)handler type:(int)type
 {
   v10.receiver = self;
   v10.super_class = UIWebElementAction;
   v8 = [(UIWebElementAction *)&v10 init];
   if (v8)
   {
-    v8->_title = a3;
-    v8->_type = a5;
-    v8->_actionHandler = _Block_copy(a4);
+    v8->_title = title;
+    v8->_type = type;
+    v8->_actionHandler = _Block_copy(handler);
   }
 
   return v8;
@@ -34,23 +34,23 @@
   [(UIWebElementAction *)&v3 dealloc];
 }
 
-+ (id)customElementActionWithTitle:(id)a3 actionHandler:(id)a4
++ (id)customElementActionWithTitle:(id)title actionHandler:(id)handler
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__UIWebElementAction_customElementActionWithTitle_actionHandler___block_invoke;
   v8[3] = &unk_1E712C250;
-  v8[4] = a4;
-  return [v6 initWithTitle:a3 actionHandler:v8 type:0];
+  v8[4] = handler;
+  return [v6 initWithTitle:title actionHandler:v8 type:0];
 }
 
-+ (id)standardElementActionWithType:(int)a3 customTitle:(id)a4 context:(id)a5
++ (id)standardElementActionWithType:(int)type customTitle:(id)title context:(id)context
 {
-  v6 = *&a3;
-  if (a3 <= 3)
+  v6 = *&type;
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v8 = [_UIKitBundle() localizedStringForKey:@"Open Link" value:@"Open" table:@"Localizable"];
@@ -67,15 +67,15 @@
     }
 
 LABEL_13:
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"There is no standard web element action of type %d.", a5, *&a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"There is no standard web element action of type %d.", context, *&type}];
     return 0;
   }
 
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
-      v11 = [a5 objectForKeyedSubscript:@"UIWebElementActionContextAppLinkKey"];
+      v11 = [context objectForKeyedSubscript:@"UIWebElementActionContextAppLinkKey"];
       v12 = [objc_msgSend(v11 "targetApplicationProxy")];
       v8 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:objc_msgSend(_UIKitBundle(), "localizedStringForKey:value:table:", @"Open in “%@” (Link Element Action Sheet Button)", @"Open in “%@”", @"Localizable", v12];
       v9 = v15;
@@ -87,7 +87,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       v8 = _UINSLocalizedStringWithDefaultValue(@"Share…", @"Share…");
       v9 = &__block_literal_global_385_0;
@@ -97,7 +97,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v8 = _UINSLocalizedStringWithDefaultValue(@"Add to Reading List", @"Add to Reading List");
     v9 = &__block_literal_global_365_1;
@@ -105,7 +105,7 @@ LABEL_13:
 
   else
   {
-    v7 = [a5 objectForKeyedSubscript:@"UIWebElementActionContextAppLinkKey"];
+    v7 = [context objectForKeyedSubscript:@"UIWebElementActionContextAppLinkKey"];
     v8 = _UINSLocalizedStringWithDefaultValue(@"Open in Safari", @"Open in Safari");
     v9 = v16;
     v16[0] = MEMORY[0x1E69E9820];
@@ -117,17 +117,17 @@ LABEL_13:
 
 LABEL_17:
   v13 = [UIWebElementAction alloc];
-  if (a4)
+  if (title)
   {
-    v14 = a4;
+    titleCopy = title;
   }
 
   else
   {
-    v14 = v8;
+    titleCopy = v8;
   }
 
-  return [(UIWebElementAction *)v13 initWithTitle:v14 actionHandler:v9 type:v6];
+  return [(UIWebElementAction *)v13 initWithTitle:titleCopy actionHandler:v9 type:v6];
 }
 
 void __72__UIWebElementAction_standardElementActionWithType_customTitle_context___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -211,9 +211,9 @@ uint64_t __72__UIWebElementAction_standardElementActionWithType_customTitle_cont
   return [v9 addReadingListItemWithURL:a3 title:v8 previewText:0 error:0];
 }
 
-- (void)_runActionWithElement:(id)a3 targetURL:(id)a4 documentView:(id)a5 interactionLocation:(CGPoint)a6
+- (void)_runActionWithElement:(id)element targetURL:(id)l documentView:(id)view interactionLocation:(CGPoint)location
 {
-  [objc_alloc_init(UIWebElementActionInfo) _setInteractionLocation:a6.x, a6.y];
+  [objc_alloc_init(UIWebElementActionInfo) _setInteractionLocation:location.x, location.y];
   v7 = *(self->_actionHandler + 2);
 
   v7();

@@ -1,25 +1,25 @@
 @interface _UIFeedbackGeneratorConfiguration
 + (BOOL)_enableHIDFeedbackForAllGenerators;
-+ (id)_configurationWithKey:(id)a3 requiredSupportLevel:(int64_t)a4 preparationBlock:(id)a5;
++ (id)_configurationWithKey:(id)key requiredSupportLevel:(int64_t)level preparationBlock:(id)block;
 + (id)_disabledConfiguration;
 + (id)defaultConfiguration;
 - (BOOL)_setupIfNecessary;
 - (BOOL)_shouldEnable;
 - (BOOL)defaultEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)usedFeedbacks;
 - (NSString)descriptionKey;
 - (_UIFeedbackGeneratorConfiguration)init;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
-- (id)_updateFeedbackForOutputMode:(id)a3;
-- (id)_updateFeedbacksForOutputMode:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
+- (id)_updateFeedbackForOutputMode:(id)mode;
+- (id)_updateFeedbacksForOutputMode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)tweakedConfigurationForCaller:(id)a3 usage:(id)a4;
+- (id)tweakedConfigurationForCaller:(id)caller usage:(id)usage;
 - (void)_updateEnabled;
 - (void)dealloc;
-- (void)setOutputMode:(int64_t)a3;
-- (void)setSettingsEnabled:(BOOL)a3;
+- (void)setOutputMode:(int64_t)mode;
+- (void)setSettingsEnabled:(BOOL)enabled;
 @end
 
 @implementation _UIFeedbackGeneratorConfiguration
@@ -41,24 +41,24 @@
 
 - (void)_updateEnabled
 {
-  v3 = [(_UIFeedbackGeneratorConfiguration *)self _shouldEnable];
+  _shouldEnable = [(_UIFeedbackGeneratorConfiguration *)self _shouldEnable];
 
-  [(_UIFeedbackGeneratorConfiguration *)self setEnabled:v3];
+  [(_UIFeedbackGeneratorConfiguration *)self setEnabled:_shouldEnable];
 }
 
 - (BOOL)_shouldEnable
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIFeedbackGeneratorConfiguration *)self outputMode];
-  if (!v3)
+  outputMode = [(_UIFeedbackGeneratorConfiguration *)self outputMode];
+  if (!outputMode)
   {
     goto LABEL_16;
   }
 
-  v4 = v3;
-  v5 = [(_UIFeedbackGeneratorConfiguration *)self settingsEnabled];
-  LOBYTE(v6) = v5;
-  if ((~v4 & 3) == 0 || !v5)
+  v4 = outputMode;
+  settingsEnabled = [(_UIFeedbackGeneratorConfiguration *)self settingsEnabled];
+  LOBYTE(v6) = settingsEnabled;
+  if ((~v4 & 3) == 0 || !settingsEnabled)
   {
     return v6;
   }
@@ -80,8 +80,8 @@ LABEL_16:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(_UIFeedbackGeneratorConfiguration *)self usedFeedbacks];
-  v6 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  usedFeedbacks = [(_UIFeedbackGeneratorConfiguration *)self usedFeedbacks];
+  v6 = [usedFeedbacks countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v8 = *v14;
@@ -91,19 +91,19 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(usedFeedbacks);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 hapticOutputMode];
-        if ((~([v10 audioOutputMode] | v11) & 3) == 0)
+        hapticOutputMode = [v10 hapticOutputMode];
+        if ((~([v10 audioOutputMode] | hapticOutputMode) & 3) == 0)
         {
           LOBYTE(v6) = 1;
           goto LABEL_19;
         }
       }
 
-      v6 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [usedFeedbacks countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -120,8 +120,8 @@ LABEL_19:
 
 - (BOOL)_setupIfNecessary
 {
-  v3 = [(_UIFeedbackGeneratorConfiguration *)self isSetup];
-  if (!v3)
+  isSetup = [(_UIFeedbackGeneratorConfiguration *)self isSetup];
+  if (!isSetup)
   {
     [(_UIFeedbackGeneratorConfiguration *)self setSetup:1];
     if ([(_UIFeedbackGeneratorConfiguration *)self requiredSupportLevel]== -1)
@@ -132,8 +132,8 @@ LABEL_19:
     else
     {
       v4 = +[UIDevice currentDevice];
-      v5 = [v4 _feedbackSupportLevel];
-      v6 = v5 >= [(_UIFeedbackGeneratorConfiguration *)self requiredSupportLevel];
+      _feedbackSupportLevel = [v4 _feedbackSupportLevel];
+      v6 = _feedbackSupportLevel >= [(_UIFeedbackGeneratorConfiguration *)self requiredSupportLevel];
     }
 
     if ([(_UIFeedbackGeneratorConfiguration *)self requiredPeripheralSupportLevel]== -1)
@@ -149,8 +149,8 @@ LABEL_19:
     if (((v6 | v7) & 1) == 0)
     {
       v8 = +[UIDevice currentDevice];
-      v9 = [(UIDevice *)v8 _peripheralFeedbackSupportLevel];
-      v6 = v9 >= [(_UIFeedbackGeneratorConfiguration *)self requiredPeripheralSupportLevel];
+      _peripheralFeedbackSupportLevel = [(UIDevice *)v8 _peripheralFeedbackSupportLevel];
+      v6 = _peripheralFeedbackSupportLevel >= [(_UIFeedbackGeneratorConfiguration *)self requiredPeripheralSupportLevel];
     }
 
     if ((_UIFeedbackEngineSupportsAll() & 1) != 0 || v6)
@@ -166,9 +166,9 @@ LABEL_19:
         [(_UIFeedbackGeneratorConfiguration *)self setSettingsEnabled:0];
       }
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v12 = +[_UIFeedbackPreferences sharedPreferences];
-      [v11 addObserver:self selector:sel__preferencesUpdated_ name:0x1EFB4AAD0 object:v12];
+      [defaultCenter addObserver:self selector:sel__preferencesUpdated_ name:0x1EFB4AAD0 object:v12];
     }
 
     else
@@ -179,7 +179,7 @@ LABEL_19:
     [(_UIFeedbackGeneratorConfiguration *)self _updateEnabled];
   }
 
-  return !v3;
+  return !isSetup;
 }
 
 + (BOOL)_enableHIDFeedbackForAllGenerators
@@ -217,7 +217,7 @@ LABEL_19:
 
 - (NSSet)usedFeedbacks
 {
-  v2 = self;
+  selfCopy = self;
   v28 = *MEMORY[0x1E69E9840];
   usedFeedbacks = self->_usedFeedbacks;
   if (!usedFeedbacks)
@@ -227,8 +227,8 @@ LABEL_19:
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = [(_UIFeedbackGeneratorConfiguration *)v2 feedbackKeyPaths];
-    v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)selfCopy feedbackKeyPaths];
+    v6 = [feedbackKeyPaths countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -236,7 +236,7 @@ LABEL_19:
       v9 = off_1E70EB000;
       v10 = 0x1E695D000uLL;
       v11 = 0x1E695D000uLL;
-      v22 = v2;
+      v22 = selfCopy;
       do
       {
         v12 = 0;
@@ -244,10 +244,10 @@ LABEL_19:
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(feedbackKeyPaths);
           }
 
-          v13 = [(_UIFeedbackGeneratorConfiguration *)v2 valueForKeyPath:*(*(&v23 + 1) + 8 * v12)];
+          v13 = [(_UIFeedbackGeneratorConfiguration *)selfCopy valueForKeyPath:*(*(&v23 + 1) + 8 * v12)];
           if (v13)
           {
             objc_opt_class();
@@ -270,7 +270,7 @@ LABEL_19:
                 if (objc_opt_isKindOfClass())
                 {
                   [v13 allValues];
-                  v14 = v5;
+                  v14 = feedbackKeyPaths;
                   v15 = v9;
                   v16 = v10;
                   v18 = v17 = v11;
@@ -279,8 +279,8 @@ LABEL_19:
                   v11 = v17;
                   v10 = v16;
                   v9 = v15;
-                  v5 = v14;
-                  v2 = v22;
+                  feedbackKeyPaths = v14;
+                  selfCopy = v22;
                 }
               }
             }
@@ -290,17 +290,17 @@ LABEL_19:
         }
 
         while (v7 != v12);
-        v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v7 = [feedbackKeyPaths countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v7);
     }
 
-    v19 = [(_UIFeedbackGeneratorConfiguration *)v2 _updateFeedbacksForOutputMode:v4];
-    v20 = v2->_usedFeedbacks;
-    v2->_usedFeedbacks = v19;
+    v19 = [(_UIFeedbackGeneratorConfiguration *)selfCopy _updateFeedbacksForOutputMode:v4];
+    v20 = selfCopy->_usedFeedbacks;
+    selfCopy->_usedFeedbacks = v19;
 
-    usedFeedbacks = v2->_usedFeedbacks;
+    usedFeedbacks = selfCopy->_usedFeedbacks;
   }
 
   return usedFeedbacks;
@@ -318,9 +318,9 @@ LABEL_19:
 {
   if (self->_setup)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = +[_UIFeedbackPreferences sharedPreferences];
-    [v3 removeObserver:self name:0x1EFB4AAD0 object:v4];
+    [defaultCenter removeObserver:self name:0x1EFB4AAD0 object:v4];
   }
 
   v5.receiver = self;
@@ -330,12 +330,12 @@ LABEL_19:
 
 + (id)defaultConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(objc_opt_class());
@@ -364,8 +364,8 @@ LABEL_19:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v11 = [(_UIFeedbackGeneratorConfiguration *)self feedbackKeyPaths];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)self feedbackKeyPaths];
+    v12 = [feedbackKeyPaths countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -376,7 +376,7 @@ LABEL_19:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(feedbackKeyPaths);
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
@@ -387,7 +387,7 @@ LABEL_19:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v13 = [feedbackKeyPaths countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v13);
@@ -397,8 +397,8 @@ LABEL_19:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [(_UIFeedbackGeneratorConfiguration *)self hidFeedbackPatternNameKeyPaths];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)self hidFeedbackPatternNameKeyPaths];
+    v19 = [hidFeedbackPatternNameKeyPaths countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v19)
     {
       v20 = v19;
@@ -409,7 +409,7 @@ LABEL_19:
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(hidFeedbackPatternNameKeyPaths);
           }
 
           v23 = *(*(&v26 + 1) + 8 * j);
@@ -420,7 +420,7 @@ LABEL_19:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v20 = [hidFeedbackPatternNameKeyPaths countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v20);
@@ -430,20 +430,20 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v6 = [(_UIFeedbackGeneratorConfiguration *)self feedbackKeyPaths];
-    v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)self feedbackKeyPaths];
+    v7 = [feedbackKeyPaths countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v7)
     {
       v8 = v7;
@@ -454,7 +454,7 @@ LABEL_19:
         {
           if (*v36 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(feedbackKeyPaths);
           }
 
           v11 = *(*(&v35 + 1) + 8 * i);
@@ -497,7 +497,7 @@ LABEL_35:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v8 = [feedbackKeyPaths countByEnumeratingWithState:&v35 objects:v40 count:16];
         if (v8)
         {
           continue;
@@ -511,8 +511,8 @@ LABEL_35:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = [(_UIFeedbackGeneratorConfiguration *)self hidFeedbackPatternNameKeyPaths];
-    v19 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)self hidFeedbackPatternNameKeyPaths];
+    v19 = [feedbackKeyPaths countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v19)
     {
       v20 = v19;
@@ -523,7 +523,7 @@ LABEL_35:
         {
           if (*v32 != v21)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(feedbackKeyPaths);
           }
 
           v23 = *(*(&v31 + 1) + 8 * j);
@@ -562,7 +562,7 @@ LABEL_35:
           }
         }
 
-        v20 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v20 = [feedbackKeyPaths countByEnumeratingWithState:&v31 objects:v39 count:16];
         v29 = 1;
       }
 
@@ -618,32 +618,32 @@ LABEL_36:
   return v5;
 }
 
-- (id)tweakedConfigurationForCaller:(id)a3 usage:(id)a4
+- (id)tweakedConfigurationForCaller:(id)caller usage:(id)usage
 {
-  v5 = a4;
-  v6 = [(_UIFeedbackGeneratorConfiguration *)self tweakedConfigurationForClass:objc_opt_class() usage:v5];
+  usageCopy = usage;
+  v6 = [(_UIFeedbackGeneratorConfiguration *)self tweakedConfigurationForClass:objc_opt_class() usage:usageCopy];
 
   return v6;
 }
 
-- (id)_updateFeedbackForOutputMode:(id)a3
+- (id)_updateFeedbackForOutputMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(_UIFeedbackGeneratorConfiguration *)self outputMode];
-  if (v5 == 1)
+  modeCopy = mode;
+  outputMode = [(_UIFeedbackGeneratorConfiguration *)self outputMode];
+  if (outputMode == 1)
   {
-    v6 = v4;
+    v6 = modeCopy;
   }
 
   else
   {
-    v7 = v5;
+    v7 = outputMode;
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy__76;
     v21 = __Block_byref_object_dispose__76;
-    v22 = v4;
+    v22 = modeCopy;
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x2020000000;
@@ -665,17 +665,17 @@ LABEL_36:
   return v6;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v7 = a3;
+  feedbackCopy = feedback;
   if ([objc_opt_class() _enableHIDFeedbackForAllGenerators] && (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v8 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:0x1EFB49390 deviceType:a4 senderID:a5];
+    v8 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:0x1EFB49390 deviceType:device senderID:d];
   }
 
   else
   {
-    v8 = v7;
+    v8 = feedbackCopy;
   }
 
   v9 = v8;
@@ -683,13 +683,13 @@ LABEL_36:
   return v9;
 }
 
-- (id)_updateFeedbacksForOutputMode:(id)a3
+- (id)_updateFeedbacksForOutputMode:(id)mode
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modeCopy = mode;
   if ([(_UIFeedbackGeneratorConfiguration *)self outputMode]== 1)
   {
-    v5 = v4;
+    v5 = modeCopy;
   }
 
   else
@@ -699,7 +699,7 @@ LABEL_36:
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = modeCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -728,11 +728,11 @@ LABEL_36:
   return v5;
 }
 
-- (void)setOutputMode:(int64_t)a3
+- (void)setOutputMode:(int64_t)mode
 {
-  if (self->_outputMode != a3)
+  if (self->_outputMode != mode)
   {
-    self->_outputMode = a3;
+    self->_outputMode = mode;
     if ([(_UIFeedbackGeneratorConfiguration *)self isSetup])
     {
 
@@ -741,11 +741,11 @@ LABEL_36:
   }
 }
 
-- (void)setSettingsEnabled:(BOOL)a3
+- (void)setSettingsEnabled:(BOOL)enabled
 {
-  if (self->_settingsEnabled != a3)
+  if (self->_settingsEnabled != enabled)
   {
-    self->_settingsEnabled = a3;
+    self->_settingsEnabled = enabled;
     if ([(_UIFeedbackGeneratorConfiguration *)self isSetup])
     {
 
@@ -756,23 +756,23 @@ LABEL_36:
 
 + (id)_disabledConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setSettingsEnabled:0];
 
   return v2;
 }
 
-+ (id)_configurationWithKey:(id)a3 requiredSupportLevel:(int64_t)a4 preparationBlock:(id)a5
++ (id)_configurationWithKey:(id)key requiredSupportLevel:(int64_t)level preparationBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = objc_alloc_init(a1);
+  blockCopy = block;
+  keyCopy = key;
+  v10 = objc_alloc_init(self);
   [v10 setActivationStyle:2];
-  [v10 set_stats_key:v9];
+  [v10 set_stats_key:keyCopy];
 
-  [v10 setPreparationBlock:v8];
+  [v10 setPreparationBlock:blockCopy];
   [v10 setSettingsEnabled:1];
-  [v10 setRequiredSupportLevel:a4];
+  [v10 setRequiredSupportLevel:level];
 
   return v10;
 }

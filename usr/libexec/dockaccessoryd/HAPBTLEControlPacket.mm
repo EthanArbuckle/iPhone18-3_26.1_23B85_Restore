@@ -1,9 +1,9 @@
 @interface HAPBTLEControlPacket
-+ (id)packetWithSerializedData:(id)a3 error:(id *)a4;
++ (id)packetWithSerializedData:(id)data error:(id *)error;
 + (id)shortDescription;
 - (HAPBTLEControlPacket)init;
-- (HAPBTLEControlPacket)initWithControlType:(unsigned __int8)a3 transactionIdentifier:(id)a4 continuationPacket:(BOOL)a5 packetPayload:(id)a6 maximumLength:(unint64_t)a7;
-- (id)descriptionWithPointer:(BOOL)a3;
+- (HAPBTLEControlPacket)initWithControlType:(unsigned __int8)type transactionIdentifier:(id)identifier continuationPacket:(BOOL)packet packetPayload:(id)payload maximumLength:(unint64_t)length;
+- (id)descriptionWithPointer:(BOOL)pointer;
 - (id)serialize;
 - (id)shortDescription;
 @end
@@ -20,17 +20,17 @@
   objc_exception_throw(v4);
 }
 
-+ (id)packetWithSerializedData:(id)a3 error:(id *)a4
++ (id)packetWithSerializedData:(id)data error:(id *)error
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v6 = @"The control field length is invalid.";
     goto LABEL_7;
   }
 
   buf[0] = 0;
-  [v5 getBytes:buf range:{0, 1}];
+  [dataCopy getBytes:buf range:{0, 1}];
   if (buf[0])
   {
     v6 = @"Invalid control field version.";
@@ -64,7 +64,7 @@ LABEL_9:
 
   if ((buf[0] & 0x80) != 0)
   {
-    if ([v5 length] <= 1)
+    if ([dataCopy length] <= 1)
     {
       v7 = [NSError hapErrorWithcode:9 description:@"Failed to parse control field." reason:@"The control field length is invalid for a continuation payload." suggestion:0 underlyingError:0];
       v24 = v7;
@@ -73,7 +73,7 @@ LABEL_9:
 
     v25 = 0;
     v10 = 1;
-    [v5 getBytes:&v25 range:{1, 1}];
+    [dataCopy getBytes:&v25 range:{1, 1}];
     v7 = 0;
     v11 = v25;
     v12 = 2;
@@ -93,7 +93,7 @@ LABEL_10:
   if (v12)
   {
     v14 = [[HAPBTLETransactionIdentifier alloc] initWithUnsignedCharValue:v11];
-    v15 = [v5 subdataWithRange:{v12, objc_msgSend(v5, "length") - v12}];
+    v15 = [dataCopy subdataWithRange:{v12, objc_msgSend(dataCopy, "length") - v12}];
     v16 = [[HAPBTLEControlPacket alloc] initWithControlType:v9 transactionIdentifier:v14 continuationPacket:v10 packetPayload:v15 maximumLength:-1];
   }
 
@@ -113,11 +113,11 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to parse control field with error: %@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v13;
       v16 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -129,11 +129,11 @@ LABEL_10:
   return v16;
 }
 
-- (HAPBTLEControlPacket)initWithControlType:(unsigned __int8)a3 transactionIdentifier:(id)a4 continuationPacket:(BOOL)a5 packetPayload:(id)a6 maximumLength:(unint64_t)a7
+- (HAPBTLEControlPacket)initWithControlType:(unsigned __int8)type transactionIdentifier:(id)identifier continuationPacket:(BOOL)packet packetPayload:(id)payload maximumLength:(unint64_t)length
 {
-  v9 = a5;
-  v13 = a4;
-  v14 = a6;
+  packetCopy = packet;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v27.receiver = self;
   v27.super_class = HAPBTLEControlPacket;
   v15 = [(HAPBTLEControlPacket *)&v27 init];
@@ -145,10 +145,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15->_type = a3;
-  objc_storeStrong(&v15->_transactionIdentifier, a4);
-  v16->_continuationPacket = v9;
-  if (v9)
+  v15->_type = type;
+  objc_storeStrong(&v15->_transactionIdentifier, identifier);
+  v16->_continuationPacket = packetCopy;
+  if (packetCopy)
   {
     v17 = 2;
   }
@@ -158,16 +158,16 @@ LABEL_12:
     v17 = 1;
   }
 
-  v18 = a7 >= v17;
-  v19 = (a7 - v17);
+  v18 = length >= v17;
+  v19 = (length - v17);
   if (v18)
   {
-    if ([v14 length] < v19)
+    if ([payloadCopy length] < v19)
     {
-      v19 = [v14 length];
+      v19 = [payloadCopy length];
     }
 
-    v24 = [v14 subdataWithRange:{0, v19}];
+    v24 = [payloadCopy subdataWithRange:{0, v19}];
     payload = v16->_payload;
     v16->_payload = v24;
 
@@ -178,11 +178,11 @@ LABEL_12:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     v21 = sub_10007FAFC(0);
-    v22 = [(HAPBTLEControlPacket *)v16 shortDescription];
+    shortDescription = [(HAPBTLEControlPacket *)v16 shortDescription];
     *buf = 138543874;
     v29 = v21;
     v30 = 2112;
-    v31 = v22;
+    v31 = shortDescription;
     v32 = 2048;
     v33 = v17;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@[%@] The maximum packet length must be greater than the header length: %tu", buf, 0x20u);
@@ -208,11 +208,11 @@ LABEL_13:
   return [v2 shortDescription];
 }
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
-  v5 = [(HAPBTLEControlPacket *)self shortDescription];
-  if (v3)
+  pointerCopy = pointer;
+  shortDescription = [(HAPBTLEControlPacket *)self shortDescription];
+  if (pointerCopy)
   {
     v6 = [NSString stringWithFormat:@" %p", self];
   }
@@ -222,25 +222,25 @@ LABEL_13:
     v6 = &stru_10027BDA0;
   }
 
-  v7 = [(HAPBTLEControlPacket *)self type];
+  type = [(HAPBTLEControlPacket *)self type];
   v8 = @"unknown";
-  if (v7 == 1)
+  if (type == 1)
   {
     v8 = @"response";
   }
 
-  if (!v7)
+  if (!type)
   {
     v8 = @"request";
   }
 
   v9 = v8;
-  v10 = [(HAPBTLEControlPacket *)self transactionIdentifier];
-  v11 = [v10 unsignedCharValue];
-  v12 = [(HAPBTLEControlPacket *)self payload];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@%@, Type = %@, Transaction Identifier = 0x%02x, Payload Length = %tu>", v5, v6, v9, v11, [v12 length]);
+  transactionIdentifier = [(HAPBTLEControlPacket *)self transactionIdentifier];
+  unsignedCharValue = [transactionIdentifier unsignedCharValue];
+  payload = [(HAPBTLEControlPacket *)self payload];
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@%@, Type = %@, Transaction Identifier = 0x%02x, Payload Length = %tu>", shortDescription, v6, v9, unsignedCharValue, [payload length]);
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -249,22 +249,22 @@ LABEL_13:
 
 - (id)serialize
 {
-  v3 = [(HAPBTLEControlPacket *)self type];
-  v4 = [(HAPBTLEControlPacket *)self transactionIdentifier];
-  v5 = [v4 unsignedCharValue];
-  v6 = [(HAPBTLEControlPacket *)self isContinuationPacket];
-  buf[0] = v5;
+  type = [(HAPBTLEControlPacket *)self type];
+  transactionIdentifier = [(HAPBTLEControlPacket *)self transactionIdentifier];
+  unsignedCharValue = [transactionIdentifier unsignedCharValue];
+  isContinuationPacket = [(HAPBTLEControlPacket *)self isContinuationPacket];
+  buf[0] = unsignedCharValue;
   v7 = [NSMutableData dataWithCapacity:2];
   v8 = v7;
-  v9 = 2 * v3;
-  if (v6)
+  v9 = 2 * type;
+  if (isContinuationPacket)
   {
-    v9 = (2 * v3) | 0x80;
+    v9 = (2 * type) | 0x80;
   }
 
   v16 = v9;
   [v7 appendBytes:&v16 length:1];
-  if (v6)
+  if (isContinuationPacket)
   {
     [v8 appendBytes:buf length:1];
   }
@@ -272,8 +272,8 @@ LABEL_13:
   if (v8)
   {
     v10 = [v8 mutableCopy];
-    v11 = [(HAPBTLEControlPacket *)self payload];
-    [v10 appendData:v11];
+    payload = [(HAPBTLEControlPacket *)self payload];
+    [v10 appendData:payload];
 
     v12 = [v10 copy];
   }
@@ -284,11 +284,11 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = sub_10007FAFC(0);
-      v14 = [(HAPBTLEControlPacket *)self shortDescription];
+      shortDescription = [(HAPBTLEControlPacket *)self shortDescription];
       *buf = 138543874;
       v18 = v13;
       v19 = 2112;
-      v20 = v14;
+      v20 = shortDescription;
       v21 = 2112;
       v22 = 0;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to create control header with error: %@", buf, 0x20u);

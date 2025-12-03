@@ -53,36 +53,36 @@
 - (NSString)spotlightResourcesRootPath;
 - (SKGJobContext)init;
 - (id)allProtectionClasses;
-- (id)deletesPathWithProtectionClass:(id)a3;
-- (id)getEmbeddingGenCompletenessForBundle:(id)a3;
-- (id)journalsPathWithProtectionClass:(id)a3;
-- (id)peopleArchivePathWithProtectionClass:(id)a3;
-- (id)updateArchivePathWithCurrentDateAndDeviceUnlocked:(BOOL)a3 isCleanupPath:(BOOL)a4;
-- (id)updateArchivePathWithProtectionClass:(id)a3;
-- (int64_t)getGenCompleteDayString:(id)a3 forBundle:(id)a4;
+- (id)deletesPathWithProtectionClass:(id)class;
+- (id)getEmbeddingGenCompletenessForBundle:(id)bundle;
+- (id)journalsPathWithProtectionClass:(id)class;
+- (id)peopleArchivePathWithProtectionClass:(id)class;
+- (id)updateArchivePathWithCurrentDateAndDeviceUnlocked:(BOOL)unlocked isCleanupPath:(BOOL)path;
+- (id)updateArchivePathWithProtectionClass:(id)class;
+- (int64_t)getGenCompleteDayString:(id)string forBundle:(id)bundle;
 - (int64_t)graphVersion;
-- (void)_resetWithGroup:(id)a3;
-- (void)commonInitWithResourcePath:(id)a3 bundleIdentifier:(id)a4 isProtected:(BOOL)a5 isDeviceUnlocked:(BOOL)a6 force:(BOOL)a7;
-- (void)destroyWithGroup:(id)a3;
+- (void)_resetWithGroup:(id)group;
+- (void)commonInitWithResourcePath:(id)path bundleIdentifier:(id)identifier isProtected:(BOOL)protected isDeviceUnlocked:(BOOL)unlocked force:(BOOL)force;
+- (void)destroyWithGroup:(id)group;
 - (void)end;
-- (void)ignoreWithGroup:(id)a3;
-- (void)loadWithGroup:(id)a3;
-- (void)logArchiveItemsProcessed:(id)a3;
-- (void)logArchiveWithName:(id)a3 protectionClass:(id)a4;
-- (void)logError:(int64_t)a3 message:(id)a4;
-- (void)logEvent:(int64_t)a3 message:(id)a4;
-- (void)logFlag:(int64_t)a3 message:(id)a4;
-- (void)logJournalItemsProcessed:(id)a3;
-- (void)logProcessedArchiveWithName:(id)a3 protectionClass:(id)a4;
-- (void)logProcessedJournalWithName:(id)a3 protectionClass:(id)a4;
-- (void)logQueryItemsArchived:(id)a3;
-- (void)logQueryItemsProcessed:(id)a3;
-- (void)logQueryItemsUpdated:(id)a3;
-- (void)logReindexCount:(unint64_t)a3;
-- (void)logSignpost:(int64_t)a3 message:(id)a4;
-- (void)resetWithGroup:(id)a3;
-- (void)setEmbeddingGenCompleteness:(id)a3 forBundle:(id)a4;
-- (void)setGenCompleteDayString:(id)a3 forBundle:(id)a4 day:(int64_t)a5;
+- (void)ignoreWithGroup:(id)group;
+- (void)loadWithGroup:(id)group;
+- (void)logArchiveItemsProcessed:(id)processed;
+- (void)logArchiveWithName:(id)name protectionClass:(id)class;
+- (void)logError:(int64_t)error message:(id)message;
+- (void)logEvent:(int64_t)event message:(id)message;
+- (void)logFlag:(int64_t)flag message:(id)message;
+- (void)logJournalItemsProcessed:(id)processed;
+- (void)logProcessedArchiveWithName:(id)name protectionClass:(id)class;
+- (void)logProcessedJournalWithName:(id)name protectionClass:(id)class;
+- (void)logQueryItemsArchived:(id)archived;
+- (void)logQueryItemsProcessed:(id)processed;
+- (void)logQueryItemsUpdated:(id)updated;
+- (void)logReindexCount:(unint64_t)count;
+- (void)logSignpost:(int64_t)signpost message:(id)message;
+- (void)resetWithGroup:(id)group;
+- (void)setEmbeddingGenCompleteness:(id)completeness forBundle:(id)bundle;
+- (void)setGenCompleteDayString:(id)string forBundle:(id)bundle day:(int64_t)day;
 - (void)start;
 - (void)timeout;
 @end
@@ -103,11 +103,11 @@
   return v3;
 }
 
-- (void)commonInitWithResourcePath:(id)a3 bundleIdentifier:(id)a4 isProtected:(BOOL)a5 isDeviceUnlocked:(BOOL)a6 force:(BOOL)a7
+- (void)commonInitWithResourcePath:(id)path bundleIdentifier:(id)identifier isProtected:(BOOL)protected isDeviceUnlocked:(BOOL)unlocked force:(BOOL)force
 {
-  v25 = a3;
-  v13 = a4;
-  if (a7)
+  pathCopy = path;
+  identifierCopy = identifier;
+  if (force)
   {
     [MEMORY[0x277D657A8] sharedProcessorListener];
   }
@@ -120,22 +120,22 @@
   listener = self->_listener;
   self->_listener = v14;
 
-  objc_storeStrong(&self->_spotlightResourcesRoot, a3);
-  objc_storeStrong(&self->_bundleIdentifier, a4);
+  objc_storeStrong(&self->_spotlightResourcesRoot, path);
+  objc_storeStrong(&self->_bundleIdentifier, identifier);
   currentMessage = self->_currentMessage;
   self->_currentMessage = 0;
 
   events = self->_events;
   self->_events = MEMORY[0x277CBEBF8];
 
-  self->_isProtectedActivity = a5;
-  self->_isDeviceUnlocked = a6;
+  self->_isProtectedActivity = protected;
+  self->_isDeviceUnlocked = unlocked;
   self->_isForTesting = 0;
-  v18 = [MEMORY[0x277D657A0] sharedContext];
-  self->_maxItemCountPerJob = [v18 maxQueryItemCount];
+  mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+  self->_maxItemCountPerJob = [mEMORY[0x277D657A0] maxQueryItemCount];
 
-  v19 = [MEMORY[0x277D657A0] sharedContext];
-  self->_maxItemCountPerBatch = [v19 maxItemBatchCount];
+  mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+  self->_maxItemCountPerBatch = [mEMORY[0x277D657A0]2 maxItemBatchCount];
 
   self->_upgradePathIsOldThresInWeeks = 2;
   v20 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"SKGJobContext"];
@@ -187,8 +187,8 @@
 - (NSString)corespotlightResourcesPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self corespotlightResourcesRootPath];
-  v4 = [v2 stringWithFormat:@"%@/CoreSpotlight", v3];
+  corespotlightResourcesRootPath = [(SKGJobContext *)self corespotlightResourcesRootPath];
+  v4 = [v2 stringWithFormat:@"%@/CoreSpotlight", corespotlightResourcesRootPath];
 
   return v4;
 }
@@ -198,22 +198,22 @@
   spotlightResourcesRoot = self->_spotlightResourcesRoot;
   if (spotlightResourcesRoot)
   {
-    v3 = spotlightResourcesRoot;
+    corespotlightResourcesPath = spotlightResourcesRoot;
   }
 
   else
   {
-    v3 = [(SKGJobContext *)self corespotlightResourcesPath];
+    corespotlightResourcesPath = [(SKGJobContext *)self corespotlightResourcesPath];
   }
 
-  return v3;
+  return corespotlightResourcesPath;
 }
 
 - (NSString)spotlightKnowledgePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightResourcesRootPath];
-  v4 = [v2 stringWithFormat:@"%@/SpotlightKnowledge/index.V2", v3];
+  spotlightResourcesRootPath = [(SKGJobContext *)self spotlightResourcesRootPath];
+  v4 = [v2 stringWithFormat:@"%@/SpotlightKnowledge/index.V2", spotlightResourcesRootPath];
 
   return v4;
 }
@@ -221,8 +221,8 @@
 - (NSString)spotlightKnowledgeGraphConfigPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/kg_config.mdplist", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/kg_config.mdplist", spotlightKnowledgePath];
 
   return v4;
 }
@@ -230,8 +230,8 @@
 - (NSString)spotlightKnowledgeGraphPath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/KG", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/KG", spotlightKnowledgePath];
 
   return v4;
 }
@@ -239,8 +239,8 @@
 - (NSString)deleteArchivePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/deletes", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/deletes", spotlightKnowledgePath];
 
   return v4;
 }
@@ -248,8 +248,8 @@
 - (NSString)journalArchivePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/journals", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/journals", spotlightKnowledgePath];
 
   return v4;
 }
@@ -257,8 +257,8 @@
 - (NSString)peopleArchivePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/archives", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/archives", spotlightKnowledgePath];
 
   return v4;
 }
@@ -266,8 +266,8 @@
 - (NSString)keyphraseArchivePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/keyphrases", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/keyphrases", spotlightKnowledgePath];
 
   return v4;
 }
@@ -275,208 +275,208 @@
 - (NSString)eventArchivePath
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v4 = [v2 stringWithFormat:@"%@/events", v3];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v4 = [v2 stringWithFormat:@"%@/events", spotlightKnowledgePath];
 
   return v4;
 }
 
-- (id)deletesPathWithProtectionClass:(id)a3
+- (id)deletesPathWithProtectionClass:(id)class
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(SKGJobContext *)self deleteArchivePath];
-  v7 = [v4 stringWithFormat:@"%@/%@", v6, v5];
+  classCopy = class;
+  deleteArchivePath = [(SKGJobContext *)self deleteArchivePath];
+  classCopy = [v4 stringWithFormat:@"%@/%@", deleteArchivePath, classCopy];
 
-  return v7;
+  return classCopy;
 }
 
-- (id)journalsPathWithProtectionClass:(id)a3
+- (id)journalsPathWithProtectionClass:(id)class
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(SKGJobContext *)self journalArchivePath];
-  v7 = [v4 stringWithFormat:@"%@/%@", v6, v5];
+  classCopy = class;
+  journalArchivePath = [(SKGJobContext *)self journalArchivePath];
+  classCopy = [v4 stringWithFormat:@"%@/%@", journalArchivePath, classCopy];
 
-  return v7;
+  return classCopy;
 }
 
-- (id)peopleArchivePathWithProtectionClass:(id)a3
+- (id)peopleArchivePathWithProtectionClass:(id)class
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(SKGJobContext *)self peopleArchivePath];
-  v7 = [v4 stringWithFormat:@"%@/%@", v6, v5];
+  classCopy = class;
+  peopleArchivePath = [(SKGJobContext *)self peopleArchivePath];
+  classCopy = [v4 stringWithFormat:@"%@/%@", peopleArchivePath, classCopy];
 
-  return v7;
+  return classCopy;
 }
 
-- (id)updateArchivePathWithProtectionClass:(id)a3
+- (id)updateArchivePathWithProtectionClass:(id)class
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v7 = [v4 stringWithFormat:@"%@/updates/%@", v6, v5];
+  classCopy = class;
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  classCopy = [v4 stringWithFormat:@"%@/updates/%@", spotlightKnowledgePath, classCopy];
 
-  return v7;
+  return classCopy;
 }
 
-- (id)updateArchivePathWithCurrentDateAndDeviceUnlocked:(BOOL)a3 isCleanupPath:(BOOL)a4
+- (id)updateArchivePathWithCurrentDateAndDeviceUnlocked:(BOOL)unlocked isCleanupPath:(BOOL)path
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [MEMORY[0x277CBEAA8] date];
+  pathCopy = path;
+  unlockedCopy = unlocked;
+  date = [MEMORY[0x277CBEAA8] date];
   v8 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v8 setDateFormat:@"yyyy-MM-dd"];
-  v9 = [v8 stringFromDate:v7];
+  v9 = [v8 stringFromDate:date];
   v10 = "locked";
-  if (v5)
+  if (unlockedCopy)
   {
     v10 = "unlocked";
   }
 
   v11 = "reindex";
-  if (v4)
+  if (pathCopy)
   {
     v11 = "cleanup";
   }
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s-%s/%@", v10, v11, v9];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(SKGJobContext *)self spotlightKnowledgePath];
-  v15 = [v13 stringWithFormat:@"%@/updates/%@", v14, v12];
+  spotlightKnowledgePath = [(SKGJobContext *)self spotlightKnowledgePath];
+  v15 = [v13 stringWithFormat:@"%@/updates/%@", spotlightKnowledgePath, v12];
 
   return v15;
 }
 
-- (void)logEvent:(int64_t)a3 message:(id)a4
+- (void)logEvent:(int64_t)event message:(id)message
 {
   events = self->_events;
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = [v7 numberWithInteger:a3];
+  messageCopy = message;
+  v9 = [v7 numberWithInteger:event];
   v10 = [(NSArray *)events arrayByAddingObject:v9];
   v11 = self->_events;
   self->_events = v10;
 
-  v12 = [(SKGJobContext *)self feedback];
-  [v12 logEvent:a3 message:v8];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logEvent:event message:messageCopy];
 }
 
-- (void)logError:(int64_t)a3 message:(id)a4
+- (void)logError:(int64_t)error message:(id)message
 {
-  v6 = a4;
-  v7 = [(SKGJobContext *)self feedback];
-  [v7 logError:a3 message:v6];
+  messageCopy = message;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logError:error message:messageCopy];
 }
 
-- (void)logFlag:(int64_t)a3 message:(id)a4
+- (void)logFlag:(int64_t)flag message:(id)message
 {
-  v6 = a4;
-  v7 = [(SKGJobContext *)self feedback];
-  [v7 logFlag:a3 message:v6];
+  messageCopy = message;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logFlag:flag message:messageCopy];
 
   currentMessage = self->_currentMessage;
-  self->_currentMessage = v6;
+  self->_currentMessage = messageCopy;
 }
 
-- (void)logSignpost:(int64_t)a3 message:(id)a4
+- (void)logSignpost:(int64_t)signpost message:(id)message
 {
-  v6 = a4;
-  v7 = [(SKGJobContext *)self feedback];
-  [v7 logSignpost:a3 message:v6];
+  messageCopy = message;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:signpost message:messageCopy];
 }
 
-- (void)logReindexCount:(unint64_t)a3
+- (void)logReindexCount:(unint64_t)count
 {
-  v6 = [(SKGJobContext *)self feedback];
-  v5 = [(SKGJobContext *)self taskName];
-  [v6 logUpdateTaskReindexCount:a3 taskName:v5];
+  feedback = [(SKGJobContext *)self feedback];
+  taskName = [(SKGJobContext *)self taskName];
+  [feedback logUpdateTaskReindexCount:count taskName:taskName];
 }
 
 - (int64_t)graphVersion
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 graphVersion];
+  feedback = [(SKGJobContext *)self feedback];
+  graphVersion = [feedback graphVersion];
 
-  return v3;
+  return graphVersion;
 }
 
 - (void)start
 {
-  v2 = [(SKGJobContext *)self feedback];
-  [v2 logStart];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logStart];
 }
 
 - (void)end
 {
-  v2 = [(SKGJobContext *)self feedback];
-  [v2 logEnd];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logEnd];
 }
 
 - (void)timeout
 {
-  v2 = [(SKGJobContext *)self feedback];
-  [v2 logFlag:17 message:@"didTimeout"];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logFlag:17 message:@"didTimeout"];
 }
 
-- (void)loadWithGroup:(id)a3
+- (void)loadWithGroup:(id)group
 {
-  v25 = a3;
+  groupCopy = group;
   if ([(SKGJobContext *)self shouldIndexPeople]|| [(SKGJobContext *)self shouldAnalyzeGraph])
   {
     v4 = [[SKGDiskManager alloc] initWithJobContext:self];
-    v5 = [(SKGJobContext *)self spotlightKnowledgeGraphConfigPath];
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 fileExistsAtPath:v5];
+    spotlightKnowledgeGraphConfigPath = [(SKGJobContext *)self spotlightKnowledgeGraphConfigPath];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:spotlightKnowledgeGraphConfigPath];
 
     if (v7)
     {
-      v8 = [[SKGConfig alloc] initWithConfigPath:v5];
-      v9 = [(SKGConfig *)v8 resourceVersion];
-      if (v9 == [(SKGJobContext *)self graphVersion])
+      v8 = [[SKGConfig alloc] initWithConfigPath:spotlightKnowledgeGraphConfigPath];
+      resourceVersion = [(SKGConfig *)v8 resourceVersion];
+      if (resourceVersion == [(SKGJobContext *)self graphVersion])
       {
-        v10 = [(SKGConfig *)v8 releaseVersion];
-        v11 = [MEMORY[0x277D657A0] sharedContext];
-        v12 = [v11 releaseVersion];
+        releaseVersion = [(SKGConfig *)v8 releaseVersion];
+        mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+        releaseVersion2 = [mEMORY[0x277D657A0] releaseVersion];
 
-        if (v10 == v12)
+        if (releaseVersion == releaseVersion2)
         {
 LABEL_9:
           if (![(SKGJobContext *)self debug])
           {
-            v13 = [(SKGJobContext *)self protectionClasses];
-            [(SKGDiskManager *)v4 transferJournalsForProtectionClasses:v13];
+            protectionClasses = [(SKGJobContext *)self protectionClasses];
+            [(SKGDiskManager *)v4 transferJournalsForProtectionClasses:protectionClasses];
           }
 
           [(SKGDiskManager *)v4 refresh];
-          v14 = [(SKGDiskManager *)v4 graphSize];
-          v15 = [MEMORY[0x277D657A0] sharedContext];
-          v16 = [v15 maxGraphSize];
+          graphSize = [(SKGDiskManager *)v4 graphSize];
+          mEMORY[0x277D657A0]2 = [MEMORY[0x277D657A0] sharedContext];
+          maxGraphSize = [mEMORY[0x277D657A0]2 maxGraphSize];
 
-          if (v14 > v16)
+          if (graphSize > maxGraphSize)
           {
             [(SKGJobContext *)self logError:3 message:@"graph too large"];
           }
 
-          v17 = [(SKGDiskManager *)v4 peopleArchiveSize];
-          v18 = [MEMORY[0x277D657A0] sharedContext];
-          v19 = [v18 maxArchiveSize];
+          peopleArchiveSize = [(SKGDiskManager *)v4 peopleArchiveSize];
+          mEMORY[0x277D657A0]3 = [MEMORY[0x277D657A0] sharedContext];
+          maxArchiveSize = [mEMORY[0x277D657A0]3 maxArchiveSize];
 
-          if (v17 > v19)
+          if (peopleArchiveSize > maxArchiveSize)
           {
             [(SKGJobContext *)self logError:6 message:@"archive size too large"];
           }
 
-          v20 = [(SKGDiskManager *)v4 journalsSize];
-          v21 = [MEMORY[0x277D657A0] sharedContext];
-          if (v20 <= [v21 maxJournalSize])
+          journalsSize = [(SKGDiskManager *)v4 journalsSize];
+          mEMORY[0x277D657A0]4 = [MEMORY[0x277D657A0] sharedContext];
+          if (journalsSize <= [mEMORY[0x277D657A0]4 maxJournalSize])
           {
-            v22 = [(SKGDiskManager *)v4 deletesSize];
-            v23 = [MEMORY[0x277D657A0] sharedContext];
-            v24 = [v23 maxJournalSize];
+            deletesSize = [(SKGDiskManager *)v4 deletesSize];
+            mEMORY[0x277D657A0]5 = [MEMORY[0x277D657A0] sharedContext];
+            maxJournalSize = [mEMORY[0x277D657A0]5 maxJournalSize];
 
-            if (v22 <= v24)
+            if (deletesSize <= maxJournalSize)
             {
 LABEL_19:
 
@@ -494,14 +494,14 @@ LABEL_19:
       }
 
       [(SKGJobContext *)self logError:5 message:@"graph too old"];
-      [(SKGDiskManager *)v4 resetWithGroup:v25];
-      [(SKGJobContext *)self _resetWithGroup:v25];
+      [(SKGDiskManager *)v4 resetWithGroup:groupCopy];
+      [(SKGJobContext *)self _resetWithGroup:groupCopy];
     }
 
     else
     {
-      [(SKGDiskManager *)v4 resetWithGroup:v25];
-      [(SKGJobContext *)self _resetWithGroup:v25];
+      [(SKGDiskManager *)v4 resetWithGroup:groupCopy];
+      [(SKGJobContext *)self _resetWithGroup:groupCopy];
     }
 
     v8 = 0;
@@ -511,48 +511,48 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)ignoreWithGroup:(id)a3
+- (void)ignoreWithGroup:(id)group
 {
-  v3 = [(SKGJobContext *)self feedback];
-  [v3 logFlag:10 message:@"didIgnore"];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logFlag:10 message:@"didIgnore"];
 }
 
-- (void)_resetWithGroup:(id)a3
+- (void)_resetWithGroup:(id)group
 {
-  v4 = [(SKGJobContext *)self feedback];
-  v5 = [v4 graphVersion];
+  feedback = [(SKGJobContext *)self feedback];
+  graphVersion = [feedback graphVersion];
 
-  v6 = [(SKGJobContext *)self feedback];
-  [v6 clear];
+  feedback2 = [(SKGJobContext *)self feedback];
+  [feedback2 clear];
 
-  v7 = [(SKGJobContext *)self feedback];
-  [v7 logGraphVersion:v5 + 1];
+  feedback3 = [(SKGJobContext *)self feedback];
+  [feedback3 logGraphVersion:graphVersion + 1];
 
-  v8 = [(SKGJobContext *)self feedback];
-  [v8 logFlag:11 message:@"didReset"];
+  feedback4 = [(SKGJobContext *)self feedback];
+  [feedback4 logFlag:11 message:@"didReset"];
 }
 
-- (void)resetWithGroup:(id)a3
+- (void)resetWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [[SKGDiskManager alloc] initWithJobContext:self];
-  [(SKGDiskManager *)v5 resetWithGroup:v4];
-  [(SKGJobContext *)self _resetWithGroup:v4];
+  [(SKGDiskManager *)v5 resetWithGroup:groupCopy];
+  [(SKGJobContext *)self _resetWithGroup:groupCopy];
 }
 
-- (void)destroyWithGroup:(id)a3
+- (void)destroyWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = [[SKGDiskManager alloc] initWithJobContext:self];
-  [(SKGDiskManager *)v5 destroyWithGroup:v4];
+  [(SKGDiskManager *)v5 destroyWithGroup:groupCopy];
 }
 
 - (BOOL)shouldIgnore
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGJobContext *)self feedback];
+  feedback = [(SKGJobContext *)self feedback];
   v4 = 1;
-  v5 = [v3 hasFlag:1];
+  v5 = [feedback hasFlag:1];
 
   if ((v5 & 1) == 0)
   {
@@ -575,8 +575,8 @@ LABEL_20:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [(SKGJobContext *)self feedback];
-          LOBYTE(v10) = [v11 hasError:{objc_msgSend(v10, "intValue")}];
+          feedback2 = [(SKGJobContext *)self feedback];
+          LOBYTE(v10) = [feedback2 hasError:{objc_msgSend(v10, "intValue")}];
 
           if (v10)
           {
@@ -610,8 +610,8 @@ LABEL_13:
 - (BOOL)shouldReset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGJobContext *)self feedback];
-  v4 = [v3 hasEvent:7];
+  feedback = [(SKGJobContext *)self feedback];
+  v4 = [feedback hasEvent:7];
 
   if ((v4 & 1) == 0)
   {
@@ -637,8 +637,8 @@ LABEL_6:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      v11 = [(SKGJobContext *)self feedback];
-      LOBYTE(v10) = [v11 hasError:{objc_msgSend(v10, "intValue")}];
+      feedback2 = [(SKGJobContext *)self feedback];
+      LOBYTE(v10) = [feedback2 hasError:{objc_msgSend(v10, "intValue")}];
 
       if (v10)
       {
@@ -668,8 +668,8 @@ LABEL_3:
 - (BOOL)shouldDestroy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SKGJobContext *)self feedback];
-  v4 = [v3 hasFlag:3];
+  feedback = [(SKGJobContext *)self feedback];
+  v4 = [feedback hasFlag:3];
 
   if ((v4 & 1) == 0)
   {
@@ -697,8 +697,8 @@ LABEL_6:
       }
 
       v11 = *(*(&v13 + 1) + 8 * v10);
-      v12 = [(SKGJobContext *)self feedback];
-      LOBYTE(v11) = [v12 hasError:{objc_msgSend(v11, "intValue")}];
+      feedback2 = [(SKGJobContext *)self feedback];
+      LOBYTE(v11) = [feedback2 hasError:{objc_msgSend(v11, "intValue")}];
 
       if (v11)
       {
@@ -812,8 +812,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"textProcessingJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:1 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:1 message:self->_currentMessage];
 
   return 1;
 }
@@ -823,8 +823,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"textProcessingJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:2 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:2 message:self->_currentMessage];
 
   return 1;
 }
@@ -834,8 +834,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"itemUpdatesJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:5 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:5 message:self->_currentMessage];
 
   return 1;
 }
@@ -845,8 +845,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"itemUpdatesJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:6 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:6 message:self->_currentMessage];
 
   return 1;
 }
@@ -856,8 +856,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"peopleIndexingJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:13 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:13 message:self->_currentMessage];
 
   return 1;
 }
@@ -867,8 +867,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"peopleIndexingJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:14 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:14 message:self->_currentMessage];
 
   return 1;
 }
@@ -878,8 +878,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"graphAnalysisJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:15 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:15 message:self->_currentMessage];
 
   return 1;
 }
@@ -889,8 +889,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"graphAnalysisJob";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:16 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:16 message:self->_currentMessage];
 
   return 1;
 }
@@ -900,8 +900,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readDeleteJournals";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:19 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:19 message:self->_currentMessage];
 
   return 1;
 }
@@ -911,8 +911,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readDeleteJournals";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:20 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:20 message:self->_currentMessage];
 
   return 1;
 }
@@ -922,8 +922,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readJournals";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:17 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:17 message:self->_currentMessage];
 
   return 1;
 }
@@ -933,8 +933,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readJournals";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:18 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:18 message:self->_currentMessage];
 
   return 1;
 }
@@ -944,8 +944,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"itemUpdates";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:5 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:5 message:self->_currentMessage];
 
   return 1;
 }
@@ -955,8 +955,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"itemUpdates";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:6 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:6 message:self->_currentMessage];
 
   return 1;
 }
@@ -966,8 +966,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"textQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:23 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:23 message:self->_currentMessage];
 
   return 1;
 }
@@ -977,17 +977,17 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"textQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:24 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:24 message:self->_currentMessage];
 
-  v5 = [(SKGJobContext *)self feedback];
-  v6 = [v5 queryItemExtractedCount];
-  v7 = [(SKGJobContext *)self maxItemCountPerJob];
+  feedback2 = [(SKGJobContext *)self feedback];
+  queryItemExtractedCount = [feedback2 queryItemExtractedCount];
+  maxItemCountPerJob = [(SKGJobContext *)self maxItemCountPerJob];
 
-  if (v6 >= v7)
+  if (queryItemExtractedCount >= maxItemCountPerJob)
   {
-    v8 = [(SKGJobContext *)self feedback];
-    [v8 logFlag:29 message:@"didHitMax"];
+    feedback3 = [(SKGJobContext *)self feedback];
+    [feedback3 logFlag:29 message:@"didHitMax"];
   }
 
   return 1;
@@ -998,8 +998,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"fileTextQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:23 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:23 message:self->_currentMessage];
 
   return 1;
 }
@@ -1009,17 +1009,17 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"fileTextQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:24 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:24 message:self->_currentMessage];
 
-  v5 = [(SKGJobContext *)self feedback];
-  v6 = [v5 queryItemExtractedCount];
-  v7 = [(SKGJobContext *)self maxItemCountPerJob];
+  feedback2 = [(SKGJobContext *)self feedback];
+  queryItemExtractedCount = [feedback2 queryItemExtractedCount];
+  maxItemCountPerJob = [(SKGJobContext *)self maxItemCountPerJob];
 
-  if (v6 >= v7)
+  if (queryItemExtractedCount >= maxItemCountPerJob)
   {
-    v8 = [(SKGJobContext *)self feedback];
-    [v8 logFlag:29 message:@"didHitMax"];
+    feedback3 = [(SKGJobContext *)self feedback];
+    [feedback3 logFlag:29 message:@"didHitMax"];
   }
 
   return 1;
@@ -1030,8 +1030,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readPeopleArchives";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:21 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:21 message:self->_currentMessage];
 
   return 1;
 }
@@ -1041,8 +1041,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"readPeopleArchives";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:22 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:22 message:self->_currentMessage];
 
   return 1;
 }
@@ -1052,8 +1052,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"peopleQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:23 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:23 message:self->_currentMessage];
 
   return 1;
 }
@@ -1063,17 +1063,17 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"peopleQueries";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:24 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:24 message:self->_currentMessage];
 
-  v5 = [(SKGJobContext *)self feedback];
-  v6 = [v5 queryItemExtractedCount];
-  v7 = [(SKGJobContext *)self maxItemCountPerJob];
+  feedback2 = [(SKGJobContext *)self feedback];
+  queryItemExtractedCount = [feedback2 queryItemExtractedCount];
+  maxItemCountPerJob = [(SKGJobContext *)self maxItemCountPerJob];
 
-  if (v6 >= v7)
+  if (queryItemExtractedCount >= maxItemCountPerJob)
   {
-    v8 = [(SKGJobContext *)self feedback];
-    [v8 logFlag:29 message:@"didHitMax"];
+    feedback3 = [(SKGJobContext *)self feedback];
+    [feedback3 logFlag:29 message:@"didHitMax"];
   }
 
   return 1;
@@ -1084,8 +1084,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"megadomeIndexing";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:25 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:25 message:self->_currentMessage];
 
   return 1;
 }
@@ -1095,8 +1095,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"megadomeIndexing";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:26 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:26 message:self->_currentMessage];
 
   return 1;
 }
@@ -1106,8 +1106,8 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"analyzingGraph";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:27 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:27 message:self->_currentMessage];
 
   return 1;
 }
@@ -1117,16 +1117,16 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"analyzingGraph";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:28 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:28 message:self->_currentMessage];
 
   return 1;
 }
 
 - (BOOL)canDoGraphAnalysis
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 hasCurrentFlagWithName:@"didAnalyzeGraph"];
+  feedback = [(SKGJobContext *)self feedback];
+  v3 = [feedback hasCurrentFlagWithName:@"didAnalyzeGraph"];
 
   return v3 ^ 1;
 }
@@ -1136,27 +1136,27 @@ LABEL_3:
   currentMessage = self->_currentMessage;
   self->_currentMessage = @"scoringGraph";
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logSignpost:27 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:27 message:self->_currentMessage];
 
   return 1;
 }
 
 - (BOOL)finishedGraphScoring
 {
-  v3 = [(SKGJobContext *)self feedback];
-  [v3 logSignpost:30 message:self->_currentMessage];
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logSignpost:30 message:self->_currentMessage];
 
-  v4 = [(SKGJobContext *)self feedback];
-  [v4 logFlag:21 message:@"didScoreGraph"];
+  feedback2 = [(SKGJobContext *)self feedback];
+  [feedback2 logFlag:21 message:@"didScoreGraph"];
 
   return 1;
 }
 
 - (BOOL)canDoGraphScoring
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 hasCurrentFlagWithName:@"didScoreGraph"];
+  feedback = [(SKGJobContext *)self feedback];
+  v3 = [feedback hasCurrentFlagWithName:@"didScoreGraph"];
 
   return v3 ^ 1;
 }
@@ -1167,21 +1167,21 @@ LABEL_3:
   {
     if ([(SKGJobContext *)self shouldProcessText])
     {
-      v4 = [MEMORY[0x277D657A0] sharedContext];
-      v5 = [v4 enableEventUpdater];
+      mEMORY[0x277D657A0] = [MEMORY[0x277D657A0] sharedContext];
+      enableEventUpdater = [mEMORY[0x277D657A0] enableEventUpdater];
 
-      if ((v5 & 1) == 0)
+      if ((enableEventUpdater & 1) == 0)
       {
-        v6 = [(SKGJobContext *)self journalArchivePath];
-        v7 = [(SKGJobContext *)self protectionClasses];
+        journalArchivePath = [(SKGJobContext *)self journalArchivePath];
+        protectionClasses = [(SKGJobContext *)self protectionClasses];
         v8 = &unk_2846E8460;
 LABEL_8:
-        v9 = fileSizeAtPathForProtectionClasses(v6, v7, v8, 0);
+        feedback = fileSizeAtPathForProtectionClasses(journalArchivePath, protectionClasses, v8, 0);
 
-        v10 = [v9 objectForKeyedSubscript:@"fileCount"];
-        v11 = [v10 intValue];
+        v10 = [feedback objectForKeyedSubscript:@"fileCount"];
+        intValue = [v10 intValue];
 
-        v3 = v11 != 0;
+        v3 = intValue != 0;
 LABEL_9:
 
         return v3;
@@ -1192,16 +1192,16 @@ LABEL_9:
     {
       if ([(SKGJobContext *)self shouldIndexPeople])
       {
-        v6 = [(SKGJobContext *)self peopleArchivePath];
-        v7 = [(SKGJobContext *)self protectionClasses];
+        journalArchivePath = [(SKGJobContext *)self peopleArchivePath];
+        protectionClasses = [(SKGJobContext *)self protectionClasses];
         v8 = &unk_2846E8478;
         goto LABEL_8;
       }
 
       if (![(SKGJobContext *)self shouldReportProgress])
       {
-        v9 = [(SKGJobContext *)self feedback];
-        [v9 elapsedTime];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback elapsedTime];
         v3 = v13 < 600.0;
         goto LABEL_9;
       }
@@ -1222,22 +1222,22 @@ LABEL_9:
 
   if ([(SKGJobContext *)self shouldProcessText])
   {
-    v4 = [(SKGJobContext *)self feedback];
-    v5 = v4;
+    feedback = [(SKGJobContext *)self feedback];
+    v5 = feedback;
     v6 = 23;
   }
 
   else if ([(SKGJobContext *)self shouldIndexPeople])
   {
-    v4 = [(SKGJobContext *)self feedback];
-    v5 = v4;
+    feedback = [(SKGJobContext *)self feedback];
+    v5 = feedback;
     v6 = 26;
   }
 
   else if ([(SKGJobContext *)self shouldAnalyzeGraph])
   {
-    v4 = [(SKGJobContext *)self feedback];
-    v5 = v4;
+    feedback = [(SKGJobContext *)self feedback];
+    v5 = feedback;
     v6 = 27;
   }
 
@@ -1250,12 +1250,12 @@ LABEL_2:
       return v3;
     }
 
-    v4 = [(SKGJobContext *)self feedback];
-    v5 = v4;
+    feedback = [(SKGJobContext *)self feedback];
+    v5 = feedback;
     v6 = 28;
   }
 
-  if ([v4 hasFlag:v6])
+  if ([feedback hasFlag:v6])
   {
     LOBYTE(v3) = 1;
   }
@@ -1268,15 +1268,15 @@ LABEL_2:
   return v3;
 }
 
-- (void)logQueryItemsUpdated:(id)a3
+- (void)logQueryItemsUpdated:(id)updated
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [updatedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1287,16 +1287,16 @@ LABEL_2:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updatedCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(SKGJobContext *)self feedback];
-        [v11 logUpdatedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
+        v10 = [updatedCopy objectForKeyedSubscript:v9];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback logUpdatedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [updatedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1305,15 +1305,15 @@ LABEL_2:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logQueryItemsArchived:(id)a3
+- (void)logQueryItemsArchived:(id)archived
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archivedCopy = archived;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [archivedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1324,16 +1324,16 @@ LABEL_2:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(archivedCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(SKGJobContext *)self feedback];
-        [v11 logArchivedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
+        v10 = [archivedCopy objectForKeyedSubscript:v9];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback logArchivedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [archivedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1342,15 +1342,15 @@ LABEL_2:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logQueryItemsProcessed:(id)a3
+- (void)logQueryItemsProcessed:(id)processed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processedCopy = processed;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1361,16 +1361,16 @@ LABEL_2:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(processedCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(SKGJobContext *)self feedback];
-        [v11 logExtractedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
+        v10 = [processedCopy objectForKeyedSubscript:v9];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback logExtractedQueryItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1379,15 +1379,15 @@ LABEL_2:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logJournalItemsProcessed:(id)a3
+- (void)logJournalItemsProcessed:(id)processed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processedCopy = processed;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1398,16 +1398,16 @@ LABEL_2:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(processedCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(SKGJobContext *)self feedback];
-        [v11 logExtractedJournalItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
+        v10 = [processedCopy objectForKeyedSubscript:v9];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback logExtractedJournalItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1416,15 +1416,15 @@ LABEL_2:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logArchiveItemsProcessed:(id)a3
+- (void)logArchiveItemsProcessed:(id)processed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processedCopy = processed;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1435,16 +1435,16 @@ LABEL_2:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(processedCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
-        v11 = [(SKGJobContext *)self feedback];
-        [v11 logExtractedArchiveItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
+        v10 = [processedCopy objectForKeyedSubscript:v9];
+        feedback = [(SKGJobContext *)self feedback];
+        [feedback logExtractedArchiveItemCount:objc_msgSend(v10 bundleIdentifier:{"intValue"), v9}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [processedCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1453,93 +1453,93 @@ LABEL_2:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logArchiveWithName:(id)a3 protectionClass:(id)a4
+- (void)logArchiveWithName:(id)name protectionClass:(id)class
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKGJobContext *)self feedback];
-  [v8 logArchiveWithIdentifier:v7 protectionClass:v6];
+  classCopy = class;
+  nameCopy = name;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logArchiveWithIdentifier:nameCopy protectionClass:classCopy];
 }
 
-- (void)logProcessedArchiveWithName:(id)a3 protectionClass:(id)a4
+- (void)logProcessedArchiveWithName:(id)name protectionClass:(id)class
 {
-  v5 = a3;
-  v6 = [(SKGJobContext *)self feedback];
-  [v6 logProcessedArchiveWithName:v5];
+  nameCopy = name;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logProcessedArchiveWithName:nameCopy];
 }
 
-- (void)logProcessedJournalWithName:(id)a3 protectionClass:(id)a4
+- (void)logProcessedJournalWithName:(id)name protectionClass:(id)class
 {
-  v5 = a3;
-  v6 = [(SKGJobContext *)self feedback];
-  [v6 logProcessedJournalWithName:v5];
+  nameCopy = name;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback logProcessedJournalWithName:nameCopy];
 }
 
-- (int64_t)getGenCompleteDayString:(id)a3 forBundle:(id)a4
+- (int64_t)getGenCompleteDayString:(id)string forBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKGJobContext *)self feedback];
-  v9 = [v8 getGenCompleteDayString:v7 forBundle:v6];
+  bundleCopy = bundle;
+  stringCopy = string;
+  feedback = [(SKGJobContext *)self feedback];
+  v9 = [feedback getGenCompleteDayString:stringCopy forBundle:bundleCopy];
 
   return v9;
 }
 
-- (void)setGenCompleteDayString:(id)a3 forBundle:(id)a4 day:(int64_t)a5
+- (void)setGenCompleteDayString:(id)string forBundle:(id)bundle day:(int64_t)day
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SKGJobContext *)self feedback];
-  [v10 setGenCompleteDayString:v9 forBundle:v8 day:a5];
+  bundleCopy = bundle;
+  stringCopy = string;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback setGenCompleteDayString:stringCopy forBundle:bundleCopy day:day];
 }
 
-- (id)getEmbeddingGenCompletenessForBundle:(id)a3
+- (id)getEmbeddingGenCompletenessForBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [(SKGJobContext *)self feedback];
-  v6 = [v5 getEmbeddingGenCompletenessForBundle:v4];
+  bundleCopy = bundle;
+  feedback = [(SKGJobContext *)self feedback];
+  v6 = [feedback getEmbeddingGenCompletenessForBundle:bundleCopy];
 
   return v6;
 }
 
-- (void)setEmbeddingGenCompleteness:(id)a3 forBundle:(id)a4
+- (void)setEmbeddingGenCompleteness:(id)completeness forBundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKGJobContext *)self feedback];
-  [v8 setEmbeddingGenCompleteness:v7 forBundle:v6];
+  bundleCopy = bundle;
+  completenessCopy = completeness;
+  feedback = [(SKGJobContext *)self feedback];
+  [feedback setEmbeddingGenCompleteness:completenessCopy forBundle:bundleCopy];
 }
 
 - (NSDate)embeddingGenStartTime
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 embeddingGenStartTime];
+  feedback = [(SKGJobContext *)self feedback];
+  embeddingGenStartTime = [feedback embeddingGenStartTime];
 
-  return v3;
+  return embeddingGenStartTime;
 }
 
 - (NSDate)suggestedEventsGenStartTime
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 suggestedEventsGenStartTime];
+  feedback = [(SKGJobContext *)self feedback];
+  suggestedEventsGenStartTime = [feedback suggestedEventsGenStartTime];
 
-  return v3;
+  return suggestedEventsGenStartTime;
 }
 
 - (NSDate)documentUnderstandingGenStartTime
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 documentUnderstandingGenStartTime];
+  feedback = [(SKGJobContext *)self feedback];
+  documentUnderstandingGenStartTime = [feedback documentUnderstandingGenStartTime];
 
-  return v3;
+  return documentUnderstandingGenStartTime;
 }
 
 - (NSDate)keyphraseGenStartTime
 {
-  v2 = [(SKGJobContext *)self feedback];
-  v3 = [v2 keyphraseGenStartTime];
+  feedback = [(SKGJobContext *)self feedback];
+  keyphraseGenStartTime = [feedback keyphraseGenStartTime];
 
-  return v3;
+  return keyphraseGenStartTime;
 }
 
 @end

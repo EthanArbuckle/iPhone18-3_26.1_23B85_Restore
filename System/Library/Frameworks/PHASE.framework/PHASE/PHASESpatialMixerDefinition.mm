@@ -2,8 +2,8 @@
 - (PHASESpatialMixerDefinition)init;
 - (PHASESpatialMixerDefinition)initWithSpatialPipeline:(PHASESpatialPipeline *)spatialPipeline;
 - (PHASESpatialMixerDefinition)initWithSpatialPipeline:(PHASESpatialPipeline *)spatialPipeline identifier:(NSString *)identifier;
-- (void)setListenerDopplerFactor:(double)a3;
-- (void)setSourceDopplerFactor:(double)a3;
+- (void)setListenerDopplerFactor:(double)factor;
+- (void)setSourceDopplerFactor:(double)factor;
 @end
 
 @implementation PHASESpatialMixerDefinition
@@ -20,11 +20,11 @@
   v5 = spatialPipeline;
   v13.receiver = self;
   v13.super_class = PHASESpatialMixerDefinition;
-  v6 = [(PHASEMixerDefinition *)&v13 initInternal];
-  v7 = v6;
-  if (v6)
+  initInternal = [(PHASEMixerDefinition *)&v13 initInternal];
+  v7 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v6 + 4, spatialPipeline);
+    objc_storeStrong(initInternal + 4, spatialPipeline);
     v8 = v7[5];
     v7[5] = 0;
 
@@ -57,20 +57,20 @@
   return v9;
 }
 
-- (void)setListenerDopplerFactor:(double)a3
+- (void)setListenerDopplerFactor:(double)factor
 {
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = NSStringFromSelector(a2);
-  self->_listenerDopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, a3, 0.0, 1.79769313e308);
+  self->_listenerDopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, factor, 0.0, 1.79769313e308);
 }
 
-- (void)setSourceDopplerFactor:(double)a3
+- (void)setSourceDopplerFactor:(double)factor
 {
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = NSStringFromSelector(a2);
-  self->_sourceDopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, a3, 0.0, 1.79769313e308);
+  self->_sourceDopplerFactor = PHASEGetPropertyBounded<double>(v8, v7, factor, 0.0, 1.79769313e308);
 }
 
 @end

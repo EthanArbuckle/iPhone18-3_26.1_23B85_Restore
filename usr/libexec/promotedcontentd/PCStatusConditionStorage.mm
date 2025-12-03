@@ -1,10 +1,10 @@
 @interface PCStatusConditionStorage
-+ (BOOL)isStatusConditionRegistered:(id)a3 error:(id *)a4;
-+ (id)_makeApplicationSupportSubdirectory:(id)a3;
++ (BOOL)isStatusConditionRegistered:(id)registered error:(id *)error;
++ (id)_makeApplicationSupportSubdirectory:(id)subdirectory;
 + (id)baseURL;
-+ (id)clearStatusCondition:(id)a3;
-+ (id)fileURLForCondition:(id)a3;
-+ (id)setStatusCondition:(id)a3;
++ (id)clearStatusCondition:(id)condition;
++ (id)fileURLForCondition:(id)condition;
++ (id)setStatusCondition:(id)condition;
 + (void)clearExpiredStatusConditions;
 @end
 
@@ -25,18 +25,18 @@
   return v2;
 }
 
-+ (id)setStatusCondition:(id)a3
++ (id)setStatusCondition:(id)condition
 {
-  v3 = a3;
-  v4 = [PCStatusConditionStorage fileURLForCondition:v3];
+  conditionCopy = condition;
+  v4 = [PCStatusConditionStorage fileURLForCondition:conditionCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v4 URLByDeletingLastPathComponent];
     v7 = +[NSFileManager defaultManager];
-    v8 = [v6 path];
+    path = [uRLByDeletingLastPathComponent path];
     v20 = 0;
-    [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v20];
+    [v7 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v20];
     v9 = v20;
 
     if (!v9)
@@ -44,20 +44,20 @@
       v10 = APLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v3 value];
-        v12 = [v3 identifier];
+        value = [conditionCopy value];
+        identifier = [conditionCopy identifier];
         v13 = +[APIDAccountProvider privateUserAccount];
-        v14 = [v13 iTunesDSID];
+        iTunesDSID = [v13 iTunesDSID];
         *buf = 136643843;
         v22 = "+[PCStatusConditionStorage setStatusCondition:]";
         v23 = 2114;
-        v24 = v11;
+        v24 = value;
         v25 = 2114;
-        v26 = v12;
+        v26 = identifier;
         v27 = 2160;
         v28 = 1752392040;
         v29 = 2112;
-        v30 = v14;
+        v30 = iTunesDSID;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{sensitive}s]: setting status condition %{public}@ for bundle %{public}@. DSID %{mask.hash}@", buf, 0x34u);
       }
 
@@ -83,15 +83,15 @@
   return v17;
 }
 
-+ (id)clearStatusCondition:(id)a3
++ (id)clearStatusCondition:(id)condition
 {
-  v3 = a3;
-  v4 = [PCStatusConditionStorage fileURLForCondition:v3];
+  conditionCopy = condition;
+  v4 = [PCStatusConditionStorage fileURLForCondition:conditionCopy];
   if (v4)
   {
     v5 = +[NSFileManager defaultManager];
-    v6 = [v4 path];
-    v7 = [v5 fileExistsAtPath:v6];
+    path = [v4 path];
+    v7 = [v5 fileExistsAtPath:path];
 
     v8 = APLogForCategory();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
@@ -99,20 +99,20 @@
     {
       if (v9)
       {
-        v10 = [v3 value];
-        v11 = [v3 identifier];
+        value = [conditionCopy value];
+        identifier = [conditionCopy identifier];
         v12 = +[APIDAccountProvider privateUserAccount];
-        v13 = [v12 iTunesDSID];
+        iTunesDSID = [v12 iTunesDSID];
         *buf = 136643843;
         v24 = "+[PCStatusConditionStorage clearStatusCondition:]";
         v25 = 2114;
-        v26 = v10;
+        v26 = value;
         v27 = 2114;
-        v28 = v11;
+        v28 = identifier;
         v29 = 2160;
         v30 = 1752392040;
         v31 = 2112;
-        v32 = v13;
+        v32 = iTunesDSID;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{sensitive}s]: clearing status condition %{public}@ for bundle %{public}@. DSID %{mask.hash}@.", buf, 0x34u);
       }
 
@@ -125,20 +125,20 @@
     {
       if (v9)
       {
-        v17 = [v3 value];
-        v18 = [v3 identifier];
+        value2 = [conditionCopy value];
+        identifier2 = [conditionCopy identifier];
         v19 = +[APIDAccountProvider privateUserAccount];
-        v20 = [v19 iTunesDSID];
+        iTunesDSID2 = [v19 iTunesDSID];
         *buf = 136643843;
         v24 = "+[PCStatusConditionStorage clearStatusCondition:]";
         v25 = 2114;
-        v26 = v17;
+        v26 = value2;
         v27 = 2114;
-        v28 = v18;
+        v28 = identifier2;
         v29 = 2160;
         v30 = 1752392040;
         v31 = 2112;
-        v32 = v20;
+        v32 = iTunesDSID2;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{sensitive}s]: status condition %{public}@ for bundle %{public}@ doesn't exist. DSID %{mask.hash}@", buf, 0x34u);
       }
 
@@ -161,15 +161,15 @@
   return v16;
 }
 
-+ (BOOL)isStatusConditionRegistered:(id)a3 error:(id *)a4
++ (BOOL)isStatusConditionRegistered:(id)registered error:(id *)error
 {
-  v5 = a3;
-  v6 = [PCStatusConditionStorage fileURLForCondition:v5];
+  registeredCopy = registered;
+  v6 = [PCStatusConditionStorage fileURLForCondition:registeredCopy];
   if (v6)
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    path = [v6 path];
+    v9 = [v7 fileExistsAtPath:path];
 
     if (+[APSystemInternal isAppleInternalInstall]&& (v9 & 1) == 0)
     {
@@ -177,11 +177,11 @@
       v11 = [v10 dictionaryForKey:@"ForcedStatusConditions"];
       if (v11)
       {
-        v12 = [v5 value];
-        v13 = [v11 objectForKeyedSubscript:v12];
+        value = [registeredCopy value];
+        v13 = [v11 objectForKeyedSubscript:value];
 
-        v14 = [v5 identifier];
-        v9 = [v13 isEqualToString:v14];
+        identifier = [registeredCopy identifier];
+        v9 = [v13 isEqualToString:identifier];
       }
 
       else
@@ -193,12 +193,12 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v17 = NSLocalizedDescriptionKey;
       v18 = @"Error creating URL.";
       v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      *a4 = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:1001 userInfo:v15];
+      *error = [NSError errorWithDomain:@"com.apple.ap.statusconditionserror" code:1001 userInfo:v15];
     }
 
     v9 = 0;
@@ -271,14 +271,14 @@
         v17 = APLogForCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v12 path];
-          v24 = [v15 localizedDescription];
+          path = [v12 path];
+          localizedDescription = [v15 localizedDescription];
           *buf = 141558530;
           v44 = 1752392040;
           v45 = 2112;
-          v46 = v23;
+          v46 = path;
           v47 = 2114;
-          v48 = v24;
+          v48 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "An error occurred getting isDirectory from url:%{mask.hash}@. %{public}@", buf, 0x20u);
         }
 
@@ -319,14 +319,14 @@
               v20 = APLogForCategory();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
-                v21 = [v12 path];
-                v22 = [v9 localizedDescription];
+                path2 = [v12 path];
+                localizedDescription2 = [v9 localizedDescription];
                 *buf = 141558530;
                 v44 = 1752392040;
                 v45 = 2112;
-                v46 = v21;
+                v46 = path2;
                 v47 = 2114;
-                v48 = v22;
+                v48 = localizedDescription2;
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "An error occurred attempting to removeItemAtUrl:%{mask.hash}@. %{public}@", buf, 0x20u);
               }
             }
@@ -338,9 +338,9 @@
         v17 = APLogForCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v12 path];
+          path3 = [v12 path];
           *buf = 138412290;
-          v44 = v25;
+          v44 = path3;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "An error occured retrieving modified date from url %@", buf, 0xCu);
         }
 
@@ -356,14 +356,14 @@ LABEL_31:
         v26 = APLogForCategory();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v27 = [v12 path];
-          v28 = [v18 localizedDescription];
+          path4 = [v12 path];
+          localizedDescription3 = [v18 localizedDescription];
           *buf = 141558530;
           v44 = 1752392040;
           v45 = 2112;
-          v46 = v27;
+          v46 = path4;
           v47 = 2114;
-          v48 = v28;
+          v48 = localizedDescription3;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "An error occurred getting date from url:%{mask.hash}@. %{public}@", buf, 0x20u);
         }
 
@@ -396,13 +396,13 @@ LABEL_33:
 LABEL_34:
 }
 
-+ (id)fileURLForCondition:(id)a3
++ (id)fileURLForCondition:(id)condition
 {
-  v3 = [a3 storageRepresentation];
-  v4 = [v3 sha1];
-  v5 = [v4 substringToIndex:2];
-  v6 = [v4 substringWithRange:{2, 2}];
-  v7 = [v4 substringFromIndex:4];
+  storageRepresentation = [condition storageRepresentation];
+  sha1 = [storageRepresentation sha1];
+  v5 = [sha1 substringToIndex:2];
+  v6 = [sha1 substringWithRange:{2, 2}];
+  v7 = [sha1 substringFromIndex:4];
   v8 = [NSString stringWithFormat:@"%@/%@/%@", v5, v6, v7];
   v9 = +[PCStatusConditionStorage baseURL];
   v10 = [v9 URLByAppendingPathComponent:v8 isDirectory:0];
@@ -420,21 +420,21 @@ LABEL_34:
   return v10;
 }
 
-+ (id)_makeApplicationSupportSubdirectory:(id)a3
++ (id)_makeApplicationSupportSubdirectory:(id)subdirectory
 {
-  v3 = a3;
+  subdirectoryCopy = subdirectory;
   v4 = +[NSFileManager defaultManager];
   v5 = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, 1uLL, 1);
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
 
-  v24[0] = v6;
+  v24[0] = lastObject;
   v24[1] = @"com.apple.ap.promotedcontentd";
   v7 = [NSArray arrayWithObjects:v24 count:2];
   v8 = [NSURL fileURLWithPathComponents:v7];
 
-  if (v3)
+  if (subdirectoryCopy)
   {
-    v9 = [v8 URLByAppendingPathComponent:v3 isDirectory:1];
+    v9 = [v8 URLByAppendingPathComponent:subdirectoryCopy isDirectory:1];
 
     v8 = v9;
   }
@@ -452,14 +452,14 @@ LABEL_34:
     v13 = APLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v11 localizedFailureReason];
-      v15 = [v11 userInfo];
+      localizedFailureReason = [v11 localizedFailureReason];
+      userInfo = [v11 userInfo];
       *buf = 138478339;
       v19 = v8;
       v20 = 2114;
-      v21 = v14;
+      v21 = localizedFailureReason;
       v22 = 2114;
-      v23 = v15;
+      v23 = userInfo;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to create Application Support subdirectory: %{private}@ %{public}@ %{public}@", buf, 0x20u);
     }
 

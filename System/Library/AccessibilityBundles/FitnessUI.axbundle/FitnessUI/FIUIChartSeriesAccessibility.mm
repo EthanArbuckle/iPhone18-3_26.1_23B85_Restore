@@ -1,18 +1,18 @@
 @interface FIUIChartSeriesAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityChartPointForDataSetAtIndex:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityChartPointForDataSetAtIndex:(int64_t)index;
 @end
 
 @implementation FIUIChartSeriesAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FIUIChartSeries" hasInstanceMethod:@"dataSet" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FIUIChartDataSet" hasInstanceVariable:@"_points" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FIUIChartSeries" hasInstanceMethod:@"dataSet" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FIUIChartDataSet" hasInstanceVariable:@"_points" withType:"NSArray"];
 }
 
-- (id)_accessibilityChartPointForDataSetAtIndex:(int64_t)a3
+- (id)_accessibilityChartPointForDataSetAtIndex:(int64_t)index
 {
   v3 = [(FIUIChartSeriesAccessibility *)self safeValueForKey:@"dataSet"];
   [v3 safeArrayForKey:@"_points"];

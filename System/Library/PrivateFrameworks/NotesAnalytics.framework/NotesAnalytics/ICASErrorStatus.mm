@@ -1,34 +1,34 @@
 @interface ICASErrorStatus
-- (ICASErrorStatus)initWithErrorStatus:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASErrorStatus)initWithErrorStatus:(int64_t)status;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASErrorStatus
 
-- (ICASErrorStatus)initWithErrorStatus:(int64_t)a3
+- (ICASErrorStatus)initWithErrorStatus:(int64_t)status
 {
   v5.receiver = self;
   v5.super_class = ICASErrorStatus;
   result = [(ICASErrorStatus *)&v5 init];
   if (result)
   {
-    result->_errorStatus = a3;
+    result->_errorStatus = status;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASErrorStatus *)self errorStatus];
-  if ((v3 - 1) > 2)
+  errorStatus = [(ICASErrorStatus *)self errorStatus];
+  if ((errorStatus - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF198[v3 - 1];
+    return off_2799AF198[errorStatus - 1];
   }
 }
 

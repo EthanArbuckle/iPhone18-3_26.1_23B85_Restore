@@ -1,43 +1,43 @@
 @interface WFSlotTemplateViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityLocalizedPlaceholderNameForSlot:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityLocalizedPlaceholderNameForSlot:(id)slot;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
-- (void)_accessibilityEnumerateContentsWithBlock:(id)a3;
-- (void)_accessibilityShowMenuForSlot:(id)a3;
+- (void)_accessibilityEnumerateContentsWithBlock:(id)block;
+- (void)_accessibilityShowMenuForSlot:(id)slot;
 @end
 
 @implementation WFSlotTemplateViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"textStorage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateTextStorage" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"_selectSlot:notifyDelegate:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"WFSlotTemplateSlot"];
-  [v3 validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"isPopulated" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"contentAttributedString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"localizedPlaceholder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"showsDisclosureArrow" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"disclosureArrowIsOpen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"didTapDisclosureArrow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"WFSlotTextAttachment"];
-  [v3 validateClass:@"WFSlotTextAttachment" hasInstanceMethod:@"token" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"sourceRectForSlot:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"textStorage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateTextStorage" hasInstanceMethod:@"contents" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"_selectSlot:notifyDelegate:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot"];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"isPopulated" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"contentAttributedString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"localizedPlaceholder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateSlot" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"showsDisclosureArrow" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"disclosureArrowIsOpen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"didTapDisclosureArrow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"WFSlotTextAttachment"];
+  [validationsCopy validateClass:@"WFSlotTextAttachment" hasInstanceMethod:@"token" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFSlotTemplateView" hasInstanceMethod:@"sourceRectForSlot:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
   if (NSClassFromString(&cfstr_Wfvariable.isa))
   {
-    [v3 validateClass:@"WFVariable" hasInstanceMethod:@"nameIncludingPropertyName" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"WFVariable" hasInstanceMethod:@"nameIncludingPropertyName" withFullSignature:{"@", 0}];
   }
 }
 
-- (void)_accessibilityEnumerateContentsWithBlock:(id)a3
+- (void)_accessibilityEnumerateContentsWithBlock:(id)block
 {
   v19 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   objc_opt_class();
   v5 = [(WFSlotTemplateViewAccessibility *)self safeValueForKeyPath:@"textStorage.contents"];
@@ -62,7 +62,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, *(*(&v13 + 1) + 8 * i));
+        blockCopy[2](blockCopy, *(*(&v13 + 1) + 8 * i));
       }
 
       v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
@@ -74,13 +74,13 @@
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_accessibilityLocalizedPlaceholderNameForSlot:(id)a3
+- (id)_accessibilityLocalizedPlaceholderNameForSlot:(id)slot
 {
-  v3 = a3;
-  v4 = [v3 safeStringForKey:@"localizedName"];
+  slotCopy = slot;
+  v4 = [slotCopy safeStringForKey:@"localizedName"];
   if (![v4 length])
   {
-    v5 = [v3 safeStringForKey:@"localizedPlaceholder"];
+    v5 = [slotCopy safeStringForKey:@"localizedPlaceholder"];
 
     v4 = v5;
   }
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)_accessibilityShowMenuForSlot:(id)a3
+- (void)_accessibilityShowMenuForSlot:(id)slot
 {
-  [(WFSlotTemplateViewAccessibility *)self sourceRectForSlot:a3];
+  [(WFSlotTemplateViewAccessibility *)self sourceRectForSlot:slot];
   AX_CGRectGetCenter();
   v5 = v4;
   v7 = v6;
@@ -215,7 +215,7 @@ void __53__WFSlotTemplateViewAccessibility_accessibilityLabel__block_invoke_3(ui
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -228,7 +228,7 @@ void __53__WFSlotTemplateViewAccessibility_accessibilityLabel__block_invoke_3(ui
   v12[8] = &unk_29F3236C0;
   v12[9] = self;
   v14 = v15;
-  v4 = v3;
+  v4 = array;
   v13 = v4;
   AXPerformSafeBlock();
   if ([(WFSlotTemplateViewAccessibility *)self safeBoolForKey:@"showsDisclosureArrow"])

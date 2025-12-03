@@ -1,34 +1,34 @@
 @interface MUPlaceHikingTileViewModel
 - (NSString)tileName;
-- (id)footerAttributedStringForFont:(id)a3;
-- (id)subtitleAttributedStringForFont:(id)a3;
-- (void)fetchBadgeIconWithCompletion:(id)a3;
-- (void)fetchFallbackIconWithCompletion:(id)a3;
-- (void)fetchImageTilewWithSize:(CGSize)a3 completion:(id)a4;
+- (id)footerAttributedStringForFont:(id)font;
+- (id)subtitleAttributedStringForFont:(id)font;
+- (void)fetchBadgeIconWithCompletion:(id)completion;
+- (void)fetchFallbackIconWithCompletion:(id)completion;
+- (void)fetchImageTilewWithSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation MUPlaceHikingTileViewModel
 
-- (id)subtitleAttributedStringForFont:(id)a3
+- (id)subtitleAttributedStringForFont:(id)font
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)footerAttributedStringForFont:(id)a3
+- (id)footerAttributedStringForFont:(id)font
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fontCopy = font;
   if ([(MUPlaceHikingTileViewModel *)self hikingItemType]- 1 > 1)
   {
-    v6 = 0;
+    factoids = 0;
   }
 
   else
   {
-    v5 = [(MUPlaceHikingTileViewModel *)self geoTrail];
-    v6 = [v5 factoids];
+    geoTrail = [(MUPlaceHikingTileViewModel *)self geoTrail];
+    factoids = [geoTrail factoids];
   }
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -36,7 +36,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
+  v8 = factoids;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -52,12 +52,12 @@
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = _MUFactoidStringForFactoid(v13, v4);
+        v14 = _MUFactoidStringForFactoid(v13, fontCopy);
         [v7 addObject:{v14, v23}];
 
-        v15 = [v8 lastObject];
+        lastObject = [v8 lastObject];
 
-        if (v13 != v15)
+        if (v13 != lastObject)
         {
           v16 = objc_alloc(MEMORY[0x1E696AAB0]);
           v17 = _MULocalizedStringFromThisBundle(@" · [Interpunct delimeter MapsUI]");
@@ -81,41 +81,41 @@
   return v20;
 }
 
-- (void)fetchImageTilewWithSize:(CGSize)a3 completion:(id)a4
+- (void)fetchImageTilewWithSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696F3B8] sharedInstance];
-  [v8 screenScale];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  mEMORY[0x1E696F3B8] = [MEMORY[0x1E696F3B8] sharedInstance];
+  [mEMORY[0x1E696F3B8] screenScale];
   v10 = v9;
 
-  v11 = [(MUPlaceHikingTileViewModel *)self geoTrail];
-  v12 = [v11 photo];
-  v13 = [v12 bestPhotoForSize:1 allowSmaller:{v10 * width, v10 * height}];
+  geoTrail = [(MUPlaceHikingTileViewModel *)self geoTrail];
+  photo = [geoTrail photo];
+  v13 = [photo bestPhotoForSize:1 allowSmaller:{v10 * width, v10 * height}];
 
   v14 = [v13 url];
-  v15 = [v14 absoluteString];
-  v16 = [v15 length];
+  absoluteString = [v14 absoluteString];
+  v16 = [absoluteString length];
 
   if (v16)
   {
-    v17 = [MEMORY[0x1E696F190] sharedImageManager];
+    mEMORY[0x1E696F190] = [MEMORY[0x1E696F190] sharedImageManager];
     v18 = [v13 url];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __65__MUPlaceHikingTileViewModel_fetchImageTilewWithSize_completion___block_invoke;
     v19[3] = &unk_1E821A058;
-    v20 = v7;
+    v20 = completionCopy;
     v21 = width;
     v22 = height;
     v23 = v10;
-    [v17 loadAppImageAtURL:v18 completionHandler:v19];
+    [mEMORY[0x1E696F190] loadAppImageAtURL:v18 completionHandler:v19];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
@@ -144,34 +144,34 @@ void __65__MUPlaceHikingTileViewModel_fetchImageTilewWithSize_completion___block
   }
 }
 
-- (void)fetchFallbackIconWithCompletion:(id)a3
+- (void)fetchFallbackIconWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
-    v6 = [(MUPlaceHikingTileViewModel *)self geoTrail];
-    v5 = [v6 styleAttributes];
-    _MUFetchBadgeIconWithStyleAttributes(v5, 1, v4);
+    completionCopy = completion;
+    geoTrail = [(MUPlaceHikingTileViewModel *)self geoTrail];
+    styleAttributes = [geoTrail styleAttributes];
+    _MUFetchBadgeIconWithStyleAttributes(styleAttributes, 1, completionCopy);
   }
 }
 
-- (void)fetchBadgeIconWithCompletion:(id)a3
+- (void)fetchBadgeIconWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
-    v6 = [(MUPlaceHikingTileViewModel *)self geoTrail];
-    v5 = [v6 styleAttributes];
-    _MUFetchBadgeIconWithStyleAttributes(v5, 1, v4);
+    completionCopy = completion;
+    geoTrail = [(MUPlaceHikingTileViewModel *)self geoTrail];
+    styleAttributes = [geoTrail styleAttributes];
+    _MUFetchBadgeIconWithStyleAttributes(styleAttributes, 1, completionCopy);
   }
 }
 
 - (NSString)tileName
 {
-  v2 = [(MUPlaceHikingTileViewModel *)self geoTrail];
-  v3 = [v2 name];
+  geoTrail = [(MUPlaceHikingTileViewModel *)self geoTrail];
+  name = [geoTrail name];
 
-  return v3;
+  return name;
 }
 
 @end

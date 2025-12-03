@@ -1,9 +1,9 @@
 @interface HMDAccountHandleFormatter
 + (id)defaultFormatter;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (id)accountHandleFromString:(id)a3;
-- (id)privateStringForObjectValue:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (id)accountHandleFromString:(id)string;
+- (id)privateStringForObjectValue:(id)value;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HMDAccountHandleFormatter
@@ -15,14 +15,14 @@
   return v2;
 }
 
-- (id)privateStringForObjectValue:(id)a3
+- (id)privateStringForObjectValue:(id)value
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -32,10 +32,10 @@
 
   v6 = v5;
 
-  v7 = v4;
+  v7 = valueCopy;
   if (!v6)
   {
-    v8 = v4;
+    v8 = valueCopy;
     objc_opt_class();
     v9 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
     v10 = v9;
@@ -48,13 +48,13 @@
     }
   }
 
-  v11 = [v7 type];
-  if (v11 == 2)
+  type = [v7 type];
+  if (type == 2)
   {
     v12 = [v7 URI];
-    v23 = [v12 unprefixedURI];
-    v14 = self;
-    v15 = v23;
+    unprefixedURI = [v12 unprefixedURI];
+    selfCopy2 = self;
+    v15 = unprefixedURI;
     v24 = objc_autoreleasePoolPush();
     v25 = [v15 length];
     v26 = [v15 characterAtIndex:0] == 43;
@@ -62,33 +62,33 @@
     v28 = v25 - v26 - 4;
     if (v28 != 0 && v27)
     {
-      v61 = v14;
+      v61 = selfCopy2;
       v37 = v24;
       v38 = v12;
-      v39 = [MEMORY[0x277CCAB68] string];
+      string = [MEMORY[0x277CCAB68] string];
       if (v28 >= 1)
       {
         v40 = v28;
         do
         {
-          [v39 appendString:@"."];
+          [string appendString:@"."];
           --v40;
         }
 
         while (v40);
       }
 
-      v33 = [v15 stringByReplacingCharactersInRange:v26 withString:{v28, v39}];
+      v33 = [v15 stringByReplacingCharactersInRange:v26 withString:{v28, string}];
 
       v12 = v38;
       v24 = v37;
-      v14 = v61;
+      selfCopy2 = v61;
     }
 
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = v14;
+      v30 = selfCopy2;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
@@ -106,7 +106,7 @@
     goto LABEL_31;
   }
 
-  if (v11 != 1)
+  if (type != 1)
   {
 LABEL_14:
     v22 = 0;
@@ -114,9 +114,9 @@ LABEL_14:
   }
 
   v12 = [v7 URI];
-  v13 = [v12 unprefixedURI];
-  v14 = self;
-  v15 = v13;
+  unprefixedURI2 = [v12 unprefixedURI];
+  selfCopy2 = self;
+  v15 = unprefixedURI2;
   v16 = objc_autoreleasePoolPush();
   if ([v15 length] > 4)
   {
@@ -127,7 +127,7 @@ LABEL_14:
       if (v34)
       {
         v59 = v16;
-        v60 = v14;
+        v60 = selfCopy2;
         v62 = v12;
         v44 = [v15 substringToIndex:v34];
         v58 = [v44 stringByReplacingCharactersInRange:1 withString:{v35 - 1, @"***"}];
@@ -172,10 +172,10 @@ LABEL_14:
         v55 = [v47 componentsJoinedByString:@"."];
 
         v56 = MEMORY[0x277CCACA8];
-        v57 = [v55 lowercaseString];
-        v33 = [v56 stringWithFormat:@"%@@%@", v58, v57];
+        lowercaseString = [v55 lowercaseString];
+        v33 = [v56 stringWithFormat:@"%@@%@", v58, lowercaseString];
 
-        v14 = v60;
+        selfCopy2 = v60;
         v12 = v62;
         v16 = v59;
         goto LABEL_25;
@@ -183,7 +183,7 @@ LABEL_14:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v14;
+    v18 = selfCopy2;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -198,7 +198,7 @@ LABEL_14:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v14;
+    v18 = selfCopy2;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -231,10 +231,10 @@ LABEL_34:
   return v22;
 }
 
-- (id)accountHandleFromString:(id)a3
+- (id)accountHandleFromString:(id)string
 {
   v8 = 0;
-  v3 = [(HMDAccountHandleFormatter *)self getObjectValue:&v8 forString:a3 errorDescription:0];
+  v3 = [(HMDAccountHandleFormatter *)self getObjectValue:&v8 forString:string errorDescription:0];
   v4 = v8;
   v5 = v4;
   v6 = 0;
@@ -246,7 +246,7 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
   v7 = IDSCopyAddressDestinationForDestination();
   if (([v7 _appearsToBeEmail] & 1) != 0 || objc_msgSend(v7, "hasPrefix:", @"mailto:"))
@@ -257,9 +257,9 @@ LABEL_4:
     v10 = v9;
     v11 = [v8 initWithPrefixedURI:v9];
 
-    if (a3)
+    if (value)
     {
-      *a3 = [[HMDAccountHandle alloc] initWithURI:v11];
+      *value = [[HMDAccountHandle alloc] initWithURI:v11];
     }
 
     v12 = 1;
@@ -275,9 +275,9 @@ LABEL_4:
 
   v12 = 0;
   v11 = 0;
-  if (a5)
+  if (description)
   {
-    *a5 = @"String does not appear to be valid handle type";
+    *description = @"String does not appear to be valid handle type";
   }
 
 LABEL_7:
@@ -285,13 +285,13 @@ LABEL_7:
   return v12;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -299,13 +299,13 @@ LABEL_7:
     v5 = 0;
   }
 
-  v6 = v4;
+  v6 = valueCopy;
   if (v5)
   {
     goto LABEL_9;
   }
 
-  v7 = v4;
+  v7 = valueCopy;
   objc_opt_class();
   v8 = (objc_opt_isKindOfClass() & 1) != 0 ? v7 : 0;
   v9 = v8;
@@ -316,15 +316,15 @@ LABEL_7:
   {
 LABEL_9:
     v10 = [v6 URI];
-    v11 = [v10 unprefixedURI];
+    unprefixedURI = [v10 unprefixedURI];
   }
 
   else
   {
-    v11 = 0;
+    unprefixedURI = 0;
   }
 
-  return v11;
+  return unprefixedURI;
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface EMTResult
-- (BOOL)isEqual:(id)a3;
-- (EMTResult)initWithLocale:(id)a3 tokens:(id)a4 confidence:(float)a5 lowConfidence:(BOOL)a6 metaInfo:(id)a7 romanization:(id)a8 alternativeSelectionSpans:(id)a9 sourceSpans:(id)a10 targetProjections:(id)a11 stableSegments:(id)a12;
+- (BOOL)isEqual:(id)equal;
+- (EMTResult)initWithLocale:(id)locale tokens:(id)tokens confidence:(float)confidence lowConfidence:(BOOL)lowConfidence metaInfo:(id)info romanization:(id)romanization alternativeSelectionSpans:(id)spans sourceSpans:(id)self0 targetProjections:(id)self1 stableSegments:(id)self2;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation EMTResult
 
-- (EMTResult)initWithLocale:(id)a3 tokens:(id)a4 confidence:(float)a5 lowConfidence:(BOOL)a6 metaInfo:(id)a7 romanization:(id)a8 alternativeSelectionSpans:(id)a9 sourceSpans:(id)a10 targetProjections:(id)a11 stableSegments:(id)a12
+- (EMTResult)initWithLocale:(id)locale tokens:(id)tokens confidence:(float)confidence lowConfidence:(BOOL)lowConfidence metaInfo:(id)info romanization:(id)romanization alternativeSelectionSpans:(id)spans sourceSpans:(id)self0 targetProjections:(id)self1 stableSegments:(id)self2
 {
-  v39 = a3;
-  v40 = a4;
-  v38 = a7;
-  v37 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  localeCopy = locale;
+  tokensCopy = tokens;
+  infoCopy = info;
+  romanizationCopy = romanization;
+  spansCopy = spans;
+  sourceSpansCopy = sourceSpans;
+  projectionsCopy = projections;
+  segmentsCopy = segments;
   v41.receiver = self;
   v41.super_class = EMTResult;
   v24 = [(EMTResult *)&v41 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_locale, a3);
-    v26 = [v40 copy];
+    objc_storeStrong(&v24->_locale, locale);
+    v26 = [tokensCopy copy];
     tokens = v25->_tokens;
     v25->_tokens = v26;
 
-    v25->_confidence = a5;
-    v25->_lowConfidence = a6;
-    objc_storeStrong(&v25->_metaInfo, a7);
-    objc_storeStrong(&v25->_romanization, a8);
-    v28 = [v20 copy];
+    v25->_confidence = confidence;
+    v25->_lowConfidence = lowConfidence;
+    objc_storeStrong(&v25->_metaInfo, info);
+    objc_storeStrong(&v25->_romanization, romanization);
+    v28 = [spansCopy copy];
     alternativeSelectionSpans = v25->_alternativeSelectionSpans;
     v25->_alternativeSelectionSpans = v28;
 
-    v30 = [v21 copy];
+    v30 = [sourceSpansCopy copy];
     sourceSpans = v25->_sourceSpans;
     v25->_sourceSpans = v30;
 
-    v32 = [v22 copy];
+    v32 = [projectionsCopy copy];
     targetProjections = v25->_targetProjections;
     v25->_targetProjections = v32;
 
-    v34 = [v23 copy];
+    v34 = [segmentsCopy copy];
     stableSegments = v25->_stableSegments;
     v25->_stableSegments = v34;
   }
@@ -91,10 +91,10 @@ LABEL_9:
 
         v10 = 0;
 LABEL_11:
-        v11 = [v9 text];
-        if ([v11 length])
+        text = [v9 text];
+        if ([text length])
         {
-          [v3 addObject:v11];
+          [v3 addObject:text];
         }
 
         else if (v10)
@@ -140,16 +140,16 @@ LABEL_25:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     tokens = self->_tokens;
-    v7 = [v5 tokens];
-    if ([(NSArray *)tokens isEqual:v7])
+    tokens = [v5 tokens];
+    if ([(NSArray *)tokens isEqual:tokens])
     {
       confidence = self->_confidence;
       [v5 confidence];

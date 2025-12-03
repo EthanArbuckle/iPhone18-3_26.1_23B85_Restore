@@ -1,24 +1,24 @@
 @interface SBCameraOverlayUISceneController
 + (id)_setupInfo;
-- (SBCameraOverlayUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8;
+- (SBCameraOverlayUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level;
 - (id)_reasonToDropCameraOverlaySessionRequest;
-- (void)_activateSession:(id)a3;
-- (void)_reevaluteCameraOverlaySessionRequestForReason:(id)a3;
-- (void)_setActiveOverlayRequest:(id)a3;
+- (void)_activateSession:(id)session;
+- (void)_reevaluteCameraOverlaySessionRequestForReason:(id)reason;
+- (void)_setActiveOverlayRequest:(id)request;
 - (void)_updateActiveOverlayRequestSceneSettingsOnOverlayScene;
 - (void)_updateForegroundScenes;
-- (void)cameraViewfinderMonitorSessionDidBegin:(id)a3 auditToken:(id)a4;
-- (void)cameraViewfinderMonitorSessionDidEnd:(id)a3 auditToken:(id)a4;
-- (void)cameraViewfinderMonitorSessionWillBegin:(id)a3 auditToken:(id)a4;
+- (void)cameraViewfinderMonitorSessionDidBegin:(id)begin auditToken:(id)token;
+- (void)cameraViewfinderMonitorSessionDidEnd:(id)end auditToken:(id)token;
+- (void)cameraViewfinderMonitorSessionWillBegin:(id)begin auditToken:(id)token;
 - (void)dealloc;
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 processIdentity:(id)a4 completion:(id)a5;
-- (void)physicalButtonSceneOverridesDidChange:(id)a3;
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4;
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4;
-- (void)setDefaultPresenter:(id)a3;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers processIdentity:(id)identity completion:(id)completion;
+- (void)physicalButtonSceneOverridesDidChange:(id)change;
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene;
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene;
+- (void)setDefaultPresenter:(id)presenter;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBCameraOverlayUISceneController
@@ -62,23 +62,23 @@
   return v6;
 }
 
-- (void)setDefaultPresenter:(id)a3
+- (void)setDefaultPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5.receiver = self;
   v5.super_class = SBCameraOverlayUISceneController;
-  [(SBSystemUISceneController *)&v5 setDefaultPresenter:v4];
+  [(SBSystemUISceneController *)&v5 setDefaultPresenter:presenterCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPresentingDelegate:self];
+    [presenterCopy setPresentingDelegate:self];
   }
 }
 
-- (SBCameraOverlayUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8
+- (SBCameraOverlayUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level
 {
   v19.receiver = self;
   v19.super_class = SBCameraOverlayUISceneController;
-  v8 = [(SBSystemUISceneController *)&v19 initWithSceneWorkspaceIdentifier:a3 clientProcessIdentity:a4 sceneVendingPolicy:a5 traitsRole:a6 jobLabel:a7 level:a8];
+  v8 = [(SBSystemUISceneController *)&v19 initWithSceneWorkspaceIdentifier:identifier clientProcessIdentity:identity sceneVendingPolicy:policy traitsRole:role jobLabel:label level:level];
   if (v8)
   {
     v9 = +[SBCameraViewfinderMonitor sharedInstance];
@@ -90,9 +90,9 @@
     v8->_viewfinderObsserver = v11;
 
     v13 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-    v14 = [v13 physicalButtonSceneOverrideManager];
+    physicalButtonSceneOverrideManager = [v13 physicalButtonSceneOverrideManager];
     physicalButtonOverrideManager = v8->_physicalButtonOverrideManager;
-    v8->_physicalButtonOverrideManager = v14;
+    v8->_physicalButtonOverrideManager = physicalButtonSceneOverrideManager;
 
     v16 = [(SBPhysicalButtonSceneOverrideManager *)&v8->_physicalButtonOverrideManager->super.isa addObserver:v8 forReason:@"Camera Capture Overlay System UI Scene Controller"];
     physicalButtonOverrideObserver = v8->_physicalButtonOverrideObserver;
@@ -104,8 +104,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(BSInvalidatable *)self->_physicalButtonOverrideObserver invalidate];
   physicalButtonOverrideObserver = self->_physicalButtonOverrideObserver;
@@ -120,13 +120,13 @@
   [(SBSystemUISceneController *)&v6 dealloc];
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v9 = a3;
-  if ([v9 isMainDisplayWindowScene] && !self->_zStackParticipant)
+  connectCopy = connect;
+  if ([connectCopy isMainDisplayWindowScene] && !self->_zStackParticipant)
   {
-    v4 = [v9 zStackResolver];
-    v5 = [v4 acquireParticipantWithIdentifier:21 delegate:self];
+    zStackResolver = [connectCopy zStackResolver];
+    v5 = [zStackResolver acquireParticipantWithIdentifier:21 delegate:self];
     zStackParticipant = self->_zStackParticipant;
     self->_zStackParticipant = v5;
 
@@ -136,9 +136,9 @@
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  if ([a3 isMainDisplayWindowScene])
+  if ([disconnect isMainDisplayWindowScene])
   {
     zStackPhysicalButtonPolicyAssistant = self->_zStackPhysicalButtonPolicyAssistant;
     self->_zStackPhysicalButtonPolicyAssistant = 0;
@@ -149,22 +149,22 @@
   }
 }
 
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [v6 definition];
-  v8 = [v7 specification];
-  v9 = [v8 uiSceneSessionRole];
+  presenterCopy = presenter;
+  sceneCopy = scene;
+  definition = [sceneCopy definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v10 = objc_opt_new();
-  v11 = [v10 uiSceneSessionRole];
-  v12 = [v9 isEqual:v11];
+  uiSceneSessionRole2 = [v10 uiSceneSessionRole];
+  v12 = [uiSceneSessionRole isEqual:uiSceneSessionRole2];
 
   if (v12)
   {
     v13 = objc_opt_class();
-    v14 = [v6 componentForExtension:v13 ofClass:objc_opt_class()];
+    v14 = [sceneCopy componentForExtension:v13 ofClass:objc_opt_class()];
     v15 = objc_opt_class();
     v16 = v14;
     if (v15)
@@ -185,22 +185,22 @@
     if (objc_opt_respondsToSelector())
     {
       v20 = self->_featurePolicyComponent;
-      v21 = v22;
+      v21 = presenterCopy;
       [(SBSUIFeaturePolicyHostComponent *)v20 setDelegate:v21];
       [v21 featurePolicyHostComponentDidChangeShouldDisableReachability:self->_featurePolicyComponent];
     }
   }
 }
 
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene
 {
-  v5 = [a4 definition];
-  v6 = [v5 specification];
-  v11 = [v6 uiSceneSessionRole];
+  definition = [scene definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v7 = objc_opt_new();
-  v8 = [v7 uiSceneSessionRole];
-  v9 = [v11 isEqual:v8];
+  uiSceneSessionRole2 = [v7 uiSceneSessionRole];
+  v9 = [uiSceneSessionRole isEqual:uiSceneSessionRole2];
 
   if (v9)
   {
@@ -210,12 +210,12 @@
   }
 }
 
-- (void)_setActiveOverlayRequest:(id)a3
+- (void)_setActiveOverlayRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_activeOverlayRequester, a3);
+    objc_storeStrong(&self->_activeOverlayRequester, request);
     [(SBCameraOverlayUISceneController *)self _updateActiveOverlayRequestSceneSettingsOnOverlayScene];
     [(SBCameraOverlayUISceneController *)self _updateForegroundScenes];
   }
@@ -223,13 +223,13 @@
 
 - (void)_updateActiveOverlayRequestSceneSettingsOnOverlayScene
 {
-  v3 = [(SBSingleSceneController *)self->_sceneController scene];
+  scene = [(SBSingleSceneController *)self->_sceneController scene];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSettingsOnOverlayScene__block_invoke;
   v4[3] = &unk_2783ACB10;
   v4[4] = self;
-  [v3 updateSettingsWithBlock:v4];
+  [scene updateSettingsWithBlock:v4];
 }
 
 void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSettingsOnOverlayScene__block_invoke(uint64_t a1, void *a2)
@@ -252,10 +252,10 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
   [v4 setOverlayRequestingProcessAuditToken:v10];
 }
 
-- (void)_activateSession:(id)a3
+- (void)_activateSession:(id)session
 {
-  v12 = a3;
-  if (!v12)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     [(SBCameraOverlayUISceneController *)a2 _activateSession:?];
   }
@@ -270,8 +270,8 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
     v8 = objc_alloc_init(MEMORY[0x277D75750]);
     [v8 setDisablesReachability:1];
     [v6 setInitialClientSettings:v8];
-    v9 = [(SBSystemUISceneController *)self _newAppSceneRequestOptionsForWindowScene:v12 withBlueprintOptions:v6];
-    v10 = [(SBSystemUISceneController *)self _newSceneControllerForWindowScene:v12 withSceneRequestOptions:v9];
+    v9 = [(SBSystemUISceneController *)self _newAppSceneRequestOptionsForWindowScene:sessionCopy withBlueprintOptions:v6];
+    v10 = [(SBSystemUISceneController *)self _newSceneControllerForWindowScene:sessionCopy withSceneRequestOptions:v9];
     v11 = self->_sceneController;
     self->_sceneController = v10;
 
@@ -295,8 +295,8 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
     sceneController = self->_sceneController;
     if (sceneController)
     {
-      v4 = [(SBSingleSceneController *)sceneController scene];
-      v8[0] = v4;
+      scene = [(SBSingleSceneController *)sceneController scene];
+      v8[0] = scene;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
       [(SBZStackForegroundSceneOrderedPolicyAssistant *)zStackPhysicalButtonPolicyAssistant setForegroundScenes:v5];
 
@@ -318,17 +318,17 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
 
 - (id)_reasonToDropCameraOverlaySessionRequest
 {
-  v3 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
-  if (v3)
+  cameraBehaviorScene = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
+  if (cameraBehaviorScene)
   {
-    v4 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager auditTokenForRequestingProcessOfCameraBehaviorScene];
-    if (v4)
+    auditTokenForRequestingProcessOfCameraBehaviorScene = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager auditTokenForRequestingProcessOfCameraBehaviorScene];
+    if (auditTokenForRequestingProcessOfCameraBehaviorScene)
     {
-      v5 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI];
-      v6 = v5;
-      if (v5)
+      reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI];
+      v6 = reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI;
+      if (reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI)
       {
-        v7 = v5;
+        v7 = reasonCameraBehaviorSceneIsNotEligibleForSupplementalUI;
       }
     }
 
@@ -346,20 +346,20 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
   return v6;
 }
 
-- (void)_reevaluteCameraOverlaySessionRequestForReason:(id)a3
+- (void)_reevaluteCameraOverlaySessionRequestForReason:(id)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBCameraOverlayUISceneController *)self _reasonToDropCameraOverlaySessionRequest];
-  if (v5)
+  reasonCopy = reason;
+  _reasonToDropCameraOverlaySessionRequest = [(SBCameraOverlayUISceneController *)self _reasonToDropCameraOverlaySessionRequest];
+  if (_reasonToDropCameraOverlaySessionRequest)
   {
     v6 = SBLogButtonsCapture();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543618;
-      v17 = v4;
+      v17 = reasonCopy;
       v18 = 2114;
-      v19 = v5;
+      v19 = _reasonToDropCameraOverlaySessionRequest;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "_reevaluteCameraOverlaySessionRequest(%{public}@) dropping request -- %{public}@", &v16, 0x16u);
     }
 
@@ -368,9 +368,9 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
 
   else
   {
-    v7 = [(SBCameraOverlayUISceneController *)self _activeOverlayRequest];
-    v8 = [v7 sceneRequestingOverlay];
-    v9 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
+    _activeOverlayRequest = [(SBCameraOverlayUISceneController *)self _activeOverlayRequest];
+    sceneRequestingOverlay = [_activeOverlayRequest sceneRequestingOverlay];
+    cameraBehaviorScene = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
     v10 = BSEqualObjects();
 
     if ((v10 & 1) == 0)
@@ -378,62 +378,62 @@ void __90__SBCameraOverlayUISceneController__updateActiveOverlayRequestSceneSett
       v11 = SBLogButtonsCapture();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
+        cameraBehaviorScene2 = [(SBPhysicalButtonSceneOverrideManager *)self->_physicalButtonOverrideManager cameraBehaviorScene];
         v16 = 138543618;
-        v17 = v4;
+        v17 = reasonCopy;
         v18 = 2114;
-        v19 = v12;
+        v19 = cameraBehaviorScene2;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "_reevaluteCameraOverlaySessionRequest(%{public}@) activating -- %{public}@", &v16, 0x16u);
       }
 
       v13 = [[_SBCameraOverlayRequest alloc] initWithObservation:self->_physicalButtonOverrideManager];
       [(SBCameraOverlayUISceneController *)self _setActiveOverlayRequest:v13];
 
-      v14 = [(SBSystemUISceneController *)self defaultPresenter];
-      v15 = [v14 targetWindowScene];
+      defaultPresenter = [(SBSystemUISceneController *)self defaultPresenter];
+      targetWindowScene = [defaultPresenter targetWindowScene];
 
-      [(SBCameraOverlayUISceneController *)self _activateSession:v15];
+      [(SBCameraOverlayUISceneController *)self _activateSession:targetWindowScene];
     }
   }
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v5 = a4;
-  [v5 setActivationPolicyForParticipantsBelow:0];
-  v6 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_zStackPhysicalButtonPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
-  [v5 setCaptureButtonFullFidelityEventRequestingScenes:v6];
+  preferencesCopy = preferences;
+  [preferencesCopy setActivationPolicyForParticipantsBelow:0];
+  captureButtonFullFidelityEventRequestingScenes = [(SBPhysicalButtonZStackPolicyAssistant *)self->_zStackPhysicalButtonPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
+  [preferencesCopy setCaptureButtonFullFidelityEventRequestingScenes:captureButtonFullFidelityEventRequestingScenes];
 }
 
-- (void)physicalButtonSceneOverridesDidChange:(id)a3
+- (void)physicalButtonSceneOverridesDidChange:(id)change
 {
   v4 = NSStringFromSelector(a2);
   [(SBCameraOverlayUISceneController *)self _reevaluteCameraOverlaySessionRequestForReason:v4];
 }
 
-- (void)cameraViewfinderMonitorSessionWillBegin:(id)a3 auditToken:(id)a4
+- (void)cameraViewfinderMonitorSessionWillBegin:(id)begin auditToken:(id)token
 {
   v5 = NSStringFromSelector(a2);
   [(SBCameraOverlayUISceneController *)self _reevaluteCameraOverlaySessionRequestForReason:v5];
 }
 
-- (void)cameraViewfinderMonitorSessionDidBegin:(id)a3 auditToken:(id)a4
+- (void)cameraViewfinderMonitorSessionDidBegin:(id)begin auditToken:(id)token
 {
   v5 = NSStringFromSelector(a2);
   [(SBCameraOverlayUISceneController *)self _reevaluteCameraOverlaySessionRequestForReason:v5];
 }
 
-- (void)cameraViewfinderMonitorSessionDidEnd:(id)a3 auditToken:(id)a4
+- (void)cameraViewfinderMonitorSessionDidEnd:(id)end auditToken:(id)token
 {
   v5 = NSStringFromSelector(a2);
   [(SBCameraOverlayUISceneController *)self _reevaluteCameraOverlaySessionRequestForReason:v5];
 }
 
-- (void)destroyScenesWithPersistentIdentifiers:(id)a3 processIdentity:(id)a4 completion:(id)a5
+- (void)destroyScenesWithPersistentIdentifiers:(id)identifiers processIdentity:(id)identity completion:(id)completion
 {
   v7.receiver = self;
   v7.super_class = SBCameraOverlayUISceneController;
-  [(SBSystemUISceneController *)&v7 destroyScenesWithPersistentIdentifiers:a3 processIdentity:a4 completion:a5];
+  [(SBSystemUISceneController *)&v7 destroyScenesWithPersistentIdentifiers:identifiers processIdentity:identity completion:completion];
   sceneController = self->_sceneController;
   self->_sceneController = 0;
 

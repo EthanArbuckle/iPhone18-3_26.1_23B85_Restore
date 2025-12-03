@@ -1,13 +1,13 @@
 @interface NSTextRange
-+ (id)combineTextRanges:(id)a3 withTextRanges:(id)a4 usingOperator:(int)a5;
++ (id)combineTextRanges:(id)ranges withTextRanges:(id)textRanges usingOperator:(int)operator;
 - (BOOL)containsRange:(NSTextRange *)textRange;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToTextRange:(NSTextRange *)textRange;
 - (NSTextRange)initWithLocation:(id)location endLocation:(id)endLocation;
 - (NSTextRange)textRangeByFormingUnionWithTextRange:(NSTextRange *)textRange;
 - (NSTextRange)textRangeByIntersectingWithTextRange:(NSTextRange *)textRange;
-- (NSTextRange)textRangeWithAdjustment:(unint64_t)a3 rangeProvider:(id)a4;
+- (NSTextRange)textRangeWithAdjustment:(unint64_t)adjustment rangeProvider:(id)provider;
 - (void)dealloc;
 @end
 
@@ -36,19 +36,19 @@ LABEL_3:
       {
         if (!endLocation)
         {
-          v11 = [location characterIndex];
-          v10 = v11;
+          characterIndex = [location characterIndex];
+          characterIndex2 = characterIndex;
           goto LABEL_12;
         }
 
         if (objc_opt_isKindOfClass())
         {
-          v10 = [location characterIndex];
-          v11 = [endLocation characterIndex];
+          characterIndex2 = [location characterIndex];
+          characterIndex = [endLocation characterIndex];
 LABEL_12:
-          if (v10 != 0x7FFFFFFFFFFFFFFFLL && v11 != 0x7FFFFFFFFFFFFFFFLL)
+          if (characterIndex2 != 0x7FFFFFFFFFFFFFFFLL && characterIndex != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v12 = [[NSCountableTextRange alloc] initWithRange:v10, v11 - v10];
+            v12 = [[NSCountableTextRange alloc] initWithRange:characterIndex2, characterIndex - characterIndex2];
 
             return &v12->super;
           }
@@ -111,10 +111,10 @@ uint64_t __44__NSTextRange_initWithLocation_endLocation___block_invoke()
 
 - (BOOL)isEmpty
 {
-  v3 = [(NSTextRange *)self location];
-  v4 = [(NSTextRange *)self endLocation];
+  location = [(NSTextRange *)self location];
+  endLocation = [(NSTextRange *)self endLocation];
 
-  return [v3 isEqual:v4];
+  return [location isEqual:endLocation];
 }
 
 - (BOOL)isEqualToTextRange:(NSTextRange *)textRange
@@ -122,16 +122,16 @@ uint64_t __44__NSTextRange_initWithLocation_endLocation___block_invoke()
   v5 = [-[NSTextRange location](self "location")];
   if (v5)
   {
-    v6 = [(NSTextRange *)self endLocation];
-    v7 = [(NSTextRange *)textRange endLocation];
+    endLocation = [(NSTextRange *)self endLocation];
+    endLocation2 = [(NSTextRange *)textRange endLocation];
 
-    LOBYTE(v5) = [v6 isEqual:v7];
+    LOBYTE(v5) = [endLocation isEqual:endLocation2];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -139,7 +139,7 @@ uint64_t __44__NSTextRange_initWithLocation_endLocation___block_invoke()
     return 0;
   }
 
-  return [(NSTextRange *)self isEqualToTextRange:a3];
+  return [(NSTextRange *)self isEqualToTextRange:equal];
 }
 
 - (BOOL)containsRange:(NSTextRange *)textRange
@@ -175,24 +175,24 @@ uint64_t __44__NSTextRange_initWithLocation_endLocation___block_invoke()
     return 0;
   }
 
-  v7 = [(NSTextRange *)self location];
-  v8 = [(NSTextRange *)self endLocation];
-  v9 = [(NSTextRange *)textRange location];
-  v10 = [(NSTextRange *)textRange endLocation];
-  v11 = [v7 compare:v9] == -1 ? v9 : v7;
-  v12 = [v10 compare:v8] == -1 ? v10 : v8;
-  if (v7 == v11 && v8 == v12)
+  location = [(NSTextRange *)self location];
+  endLocation = [(NSTextRange *)self endLocation];
+  location2 = [(NSTextRange *)textRange location];
+  endLocation2 = [(NSTextRange *)textRange endLocation];
+  v11 = [location compare:location2] == -1 ? location2 : location;
+  v12 = [endLocation2 compare:endLocation] == -1 ? endLocation2 : endLocation;
+  if (location == v11 && endLocation == v12)
   {
 LABEL_19:
-    v5 = self;
+    selfCopy = self;
     goto LABEL_20;
   }
 
-  if (v9 != v11 || v10 != v12)
+  if (location2 != v11 || endLocation2 != v12)
   {
     if ([v11 compare:v12] == -1)
     {
-      v5 = [objc_alloc(objc_opt_class()) initWithLocation:v11 endLocation:v12];
+      selfCopy = [objc_alloc(objc_opt_class()) initWithLocation:v11 endLocation:v12];
       goto LABEL_20;
     }
 
@@ -200,10 +200,10 @@ LABEL_19:
   }
 
 LABEL_7:
-  v5 = textRange;
+  selfCopy = textRange;
 LABEL_20:
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSTextRange)textRangeByFormingUnionWithTextRange:(NSTextRange *)textRange
@@ -218,28 +218,28 @@ LABEL_20:
     goto LABEL_13;
   }
 
-  v6 = [(NSTextRange *)self location];
-  v7 = [(NSTextRange *)self endLocation];
-  v8 = [(NSTextRange *)textRange location];
-  v9 = [(NSTextRange *)textRange endLocation];
-  if ([v8 compare:v6] == -1)
+  location = [(NSTextRange *)self location];
+  endLocation = [(NSTextRange *)self endLocation];
+  location2 = [(NSTextRange *)textRange location];
+  endLocation2 = [(NSTextRange *)textRange endLocation];
+  if ([location2 compare:location] == -1)
   {
-    v10 = v8;
+    v10 = location2;
   }
 
   else
   {
-    v10 = v6;
+    v10 = location;
   }
 
-  if ([v7 compare:v9] == -1)
+  if ([endLocation compare:endLocation2] == -1)
   {
-    v11 = v9;
+    v11 = endLocation2;
   }
 
   else
   {
-    v11 = v7;
+    v11 = endLocation;
   }
 
   if ([v10 compare:v11] != -1)
@@ -247,122 +247,122 @@ LABEL_20:
     [NSTextRange textRangeByFormingUnionWithTextRange:];
   }
 
-  if (v6 == v10 && v7 == v11)
+  if (location == v10 && endLocation == v11)
   {
 LABEL_13:
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    if (v8 == v10 && v9 == v11)
+    if (location2 == v10 && endLocation2 == v11)
     {
 LABEL_2:
-      v5 = textRange;
+      selfCopy = textRange;
       goto LABEL_14;
     }
 
-    v5 = [objc_alloc(objc_opt_class()) initWithLocation:v10 endLocation:v11];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithLocation:v10 endLocation:v11];
   }
 
 LABEL_14:
 
-  return v5;
+  return selfCopy;
 }
 
-- (NSTextRange)textRangeWithAdjustment:(unint64_t)a3 rangeProvider:(id)a4
+- (NSTextRange)textRangeWithAdjustment:(unint64_t)adjustment rangeProvider:(id)provider
 {
-  v7 = self;
-  if ((a3 & 3) == 0)
+  selfCopy = self;
+  if ((adjustment & 3) == 0)
   {
     goto LABEL_9;
   }
 
-  if ((a3 & 3) == 3)
+  if ((adjustment & 3) == 3)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v8 = [(NSTextRange *)v7 location];
-  v9 = (*(a4 + 2))(a4, v8, (a3 & 2) == 0);
-  v10 = v9;
+  location = [(NSTextRange *)selfCopy location];
+  v9 = (*(provider + 2))(provider, location, (adjustment & 2) == 0);
+  location3 = v9;
   if (v9)
   {
-    v11 = [v9 location];
-    v12 = v11;
-    if ((a3 & 2) == 0)
+    location2 = [v9 location];
+    endLocation = location2;
+    if ((adjustment & 2) == 0)
     {
       goto LABEL_8;
     }
 
-    if ([v11 compare:v8] == -1)
+    if ([location2 compare:location] == -1)
     {
-      v12 = [v10 endLocation];
+      endLocation = [location3 endLocation];
 LABEL_8:
-      if ([v8 compare:v12] == -1)
+      if ([location compare:endLocation] == -1)
       {
-        v10 = [v10 location];
+        location3 = [location3 location];
         goto LABEL_10;
       }
     }
 
 LABEL_9:
-    v10 = 0;
+    location3 = 0;
   }
 
 LABEL_10:
-  if ((a3 & 0xC) == 0)
+  if ((adjustment & 0xC) == 0)
   {
     goto LABEL_19;
   }
 
-  if ((a3 & 0xC) == 0xC)
+  if ((adjustment & 0xC) == 0xC)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v13 = [(NSTextRange *)v7 endLocation];
-  v14 = (*(a4 + 2))(a4, v13, (a3 >> 2) & 1);
+  endLocation2 = [(NSTextRange *)selfCopy endLocation];
+  v14 = (*(provider + 2))(provider, endLocation2, (adjustment >> 2) & 1);
   if (!v14)
   {
     goto LABEL_19;
   }
 
   v15 = v14;
-  if ((a3 & 4) != 0)
+  if ((adjustment & 4) != 0)
   {
     if ([objc_msgSend(v14 "location")] != -1)
     {
 LABEL_19:
-      v18 = 0;
+      endLocation5 = 0;
       goto LABEL_20;
     }
 
-    v16 = [v15 endLocation];
-    v17 = v13;
+    endLocation3 = [v15 endLocation];
+    endLocation4 = endLocation2;
   }
 
   else
   {
-    v17 = [v14 endLocation];
-    v16 = v13;
+    endLocation4 = [v14 endLocation];
+    endLocation3 = endLocation2;
   }
 
-  if ([v17 compare:v16] != -1)
+  if ([endLocation4 compare:endLocation3] != -1)
   {
     goto LABEL_19;
   }
 
-  v18 = [v15 endLocation];
+  endLocation5 = [v15 endLocation];
 LABEL_20:
-  if (!(v10 | v18))
+  if (!(location3 | endLocation5))
   {
-    return v7;
+    return selfCopy;
   }
 
-  if (v10)
+  if (location3)
   {
-    if (v18)
+    if (endLocation5)
     {
       goto LABEL_23;
     }
@@ -370,33 +370,33 @@ LABEL_20:
 
   else
   {
-    v10 = [(NSTextRange *)v7 location];
-    if (v18)
+    location3 = [(NSTextRange *)selfCopy location];
+    if (endLocation5)
     {
       goto LABEL_23;
     }
   }
 
-  v18 = [(NSTextRange *)v7 endLocation];
+  endLocation5 = [(NSTextRange *)selfCopy endLocation];
 LABEL_23:
-  if ([v18 compare:v10] == -1)
+  if ([endLocation5 compare:location3] == -1)
   {
     return 0;
   }
 
-  v19 = [[NSTextRange alloc] initWithLocation:v10 endLocation:v18];
+  v19 = [[NSTextRange alloc] initWithLocation:location3 endLocation:endLocation5];
 
   return v19;
 }
 
-+ (id)combineTextRanges:(id)a3 withTextRanges:(id)a4 usingOperator:(int)a5
++ (id)combineTextRanges:(id)ranges withTextRanges:(id)textRanges usingOperator:(int)operator
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (![a3 count] || objc_msgSend(a3, "count") == 1 && objc_msgSend(objc_msgSend(a3, "firstObject"), "isEmpty"))
+  if (![ranges count] || objc_msgSend(ranges, "count") == 1 && objc_msgSend(objc_msgSend(ranges, "firstObject"), "isEmpty"))
   {
-    if ((a5 & 2) != 0)
+    if ((operator & 2) != 0)
     {
-      return a4;
+      return textRanges;
     }
 
     else
@@ -405,11 +405,11 @@ LABEL_23:
     }
   }
 
-  if (![a4 count] || objc_msgSend(a4, "count") == 1 && objc_msgSend(objc_msgSend(a4, "firstObject"), "isEmpty"))
+  if (![textRanges count] || objc_msgSend(textRanges, "count") == 1 && objc_msgSend(objc_msgSend(textRanges, "firstObject"), "isEmpty"))
   {
-    if (a5)
+    if (operator)
     {
-      return a3;
+      return ranges;
     }
 
     else
@@ -418,8 +418,8 @@ LABEL_23:
     }
   }
 
-  v9 = [a3 count];
-  v10 = [a4 count] + v9;
+  v9 = [ranges count];
+  v10 = [textRanges count] + v9;
   v42 = 48 * v10;
   v44 = v10;
   if ((48 * v10) < 0x181)
@@ -432,12 +432,12 @@ LABEL_23:
     __base = malloc_type_malloc(48 * v10, 0x10800402F72B0F7uLL);
   }
 
-  v43 = a5;
+  operatorCopy = operator;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  v11 = [ranges countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v11)
   {
     v12 = v11;
@@ -452,7 +452,7 @@ LABEL_23:
       {
         if (*v52 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ranges);
         }
 
         v17 = *(*(&v51 + 1) + 8 * v15);
@@ -469,7 +469,7 @@ LABEL_23:
       }
 
       while (v12 != v15);
-      v12 = [a3 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v12 = [ranges countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v12);
@@ -485,7 +485,7 @@ LABEL_23:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v19 = [a4 countByEnumeratingWithState:&v47 objects:v55 count:16];
+  v19 = [textRanges countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v19)
   {
     v20 = v19;
@@ -499,7 +499,7 @@ LABEL_23:
       {
         if (*v48 != v21)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(textRanges);
         }
 
         v24 = *(*(&v47 + 1) + 8 * v22);
@@ -516,7 +516,7 @@ LABEL_23:
       }
 
       while (v20 != v22);
-      v20 = [a4 countByEnumeratingWithState:&v47 objects:v55 count:16];
+      v20 = [textRanges countByEnumeratingWithState:&v47 objects:v55 count:16];
     }
 
     while (v20);
@@ -528,19 +528,19 @@ LABEL_23:
   }
 
   qsort_b(__base, v18, 0x18uLL, &__block_literal_global_36_0);
-  v25 = [MEMORY[0x1E695DF70] array];
-  v26 = v25;
+  array = [MEMORY[0x1E695DF70] array];
+  v26 = array;
   if (!v18)
   {
     goto LABEL_79;
   }
 
-  v41 = v25;
+  v41 = array;
   v27 = 0;
   v28 = 0;
   v29 = 0;
   v45 = 0;
-  v30 = 0;
+  endLocation = 0;
   v31 = 0;
   v32 = 1;
   v33 = __base;
@@ -582,17 +582,17 @@ LABEL_53:
         if (v37 && ![v31 compare:{objc_msgSend(v37, "location")}])
         {
           v45 = *(v33 + 2);
-          v30 = [v45 endLocation];
+          endLocation = [v45 endLocation];
         }
 
         else
         {
-          v30 = *v33;
+          endLocation = *v33;
         }
       }
 
       v27 = 0;
-      if (!v30)
+      if (!endLocation)
       {
         v31 = 0;
       }
@@ -615,16 +615,16 @@ LABEL_53:
       v35 = 2;
     }
 
-    v36 = v35 & v43;
+    v36 = v35 & operatorCopy;
     if ((v27 & 1) != (v36 != 0))
     {
       if (v36)
       {
-        if (v30 && v31)
+        if (endLocation && v31)
         {
-          if ([v30 compare:*v33] != -1)
+          if ([endLocation compare:*v33] != -1)
           {
-            v30 = 0;
+            endLocation = 0;
 LABEL_60:
             v45 = 0;
 LABEL_70:
@@ -639,11 +639,11 @@ LABEL_70:
 
           else
           {
-            v38 = [[NSTextRange alloc] initWithLocation:v31 endLocation:v30];
+            v38 = [[NSTextRange alloc] initWithLocation:v31 endLocation:endLocation];
             [v41 addObject:v38];
           }
 
-          v30 = 0;
+          endLocation = 0;
         }
 
         else if (v31)
@@ -666,7 +666,7 @@ LABEL_71:
   }
 
   while (v34);
-  if (!v30 || !v31)
+  if (!endLocation || !v31)
   {
     if (v31)
     {
@@ -685,7 +685,7 @@ LABEL_76:
 
   if (!v45)
   {
-    v40 = [[NSTextRange alloc] initWithLocation:v31 endLocation:v30];
+    v40 = [[NSTextRange alloc] initWithLocation:v31 endLocation:endLocation];
     v26 = v41;
     [v41 addObject:v40];
 

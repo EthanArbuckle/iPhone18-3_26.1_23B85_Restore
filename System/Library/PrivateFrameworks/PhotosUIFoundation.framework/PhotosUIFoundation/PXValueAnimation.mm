@@ -1,12 +1,12 @@
 @interface PXValueAnimation
 - (BOOL)completed;
 - (PXValueAnimation)init;
-- (PXValueAnimation)initWithDuration:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5;
+- (PXValueAnimation)initWithDuration:(double)duration currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec;
 - (PXValueAnimationSpec)spec;
 - (double)approximateVelocity;
 - (double)currentValue;
 - (double)remainingTime;
-- (double)valueForProgress:(double)a3;
+- (double)valueForProgress:(double)progress;
 - (id)description;
 @end
 
@@ -24,10 +24,10 @@
   return self;
 }
 
-- (double)valueForProgress:(double)a3
+- (double)valueForProgress:(double)progress
 {
   [(PXValueAnimation *)self duration];
-  v6 = a3 / v5;
+  v6 = progress / v5;
   [(PXValueAnimation *)self startTime];
   [(PXValueAnimation *)self setCurrentMediaTime:v7 + v6];
 
@@ -58,8 +58,8 @@
 
 - (double)currentValue
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:52 description:@"concrete subclass must implement"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:52 description:@"concrete subclass must implement"];
 
   abort();
 }
@@ -85,21 +85,21 @@
   return v9;
 }
 
-- (PXValueAnimation)initWithDuration:(double)a3 currentMediaTime:(double)a4 spec:(PXValueAnimationSpec *)a5
+- (PXValueAnimation)initWithDuration:(double)duration currentMediaTime:(double)time spec:(PXValueAnimationSpec *)spec
 {
   v12.receiver = self;
   v12.super_class = PXValueAnimation;
   result = [(PXValueAnimation *)&v12 init];
   if (result)
   {
-    result->_startTime = a4;
-    result->_currentMediaTime = a4;
-    result->_duration = a3;
-    *&result->_spec.type = *&a5->type;
-    v9 = *&a5->curve;
-    v10 = *&a5->stiffness;
-    v11 = *&a5->initialVelocity;
-    *&result->_spec.controlPoint2x = *&a5->controlPoint2x;
+    result->_startTime = time;
+    result->_currentMediaTime = time;
+    result->_duration = duration;
+    *&result->_spec.type = *&spec->type;
+    v9 = *&spec->curve;
+    v10 = *&spec->stiffness;
+    v11 = *&spec->initialVelocity;
+    *&result->_spec.controlPoint2x = *&spec->controlPoint2x;
     *&result->_spec.stiffness = v10;
     *&result->_spec.initialVelocity = v11;
     *&result->_spec.curve = v9;
@@ -110,8 +110,8 @@
 
 - (PXValueAnimation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:24 description:@"invalid initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXValueAnimation.m" lineNumber:24 description:@"invalid initializer"];
 
   abort();
 }

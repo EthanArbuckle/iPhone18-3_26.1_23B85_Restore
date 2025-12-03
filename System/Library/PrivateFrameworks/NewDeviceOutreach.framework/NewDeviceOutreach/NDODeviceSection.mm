@@ -1,24 +1,24 @@
 @interface NDODeviceSection
-- (NDODeviceSection)initWithCoder:(id)a3;
-- (NDODeviceSection)initWithLabel:(id)a3 identifier:(id)a4;
+- (NDODeviceSection)initWithCoder:(id)coder;
+- (NDODeviceSection)initWithLabel:(id)label identifier:(id)identifier;
 - (id)description;
-- (id)deviceForSN:(id)a3;
-- (void)addDevice:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)deviceForSN:(id)n;
+- (void)addDevice:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDODeviceSection
 
-- (NDODeviceSection)initWithLabel:(id)a3 identifier:(id)a4
+- (NDODeviceSection)initWithLabel:(id)label identifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = NDODeviceSection;
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  labelCopy = label;
   v7 = [(NDODeviceSection *)&v10 init];
-  [(NDODeviceSection *)v7 setLabel:v6, v10.receiver, v10.super_class];
+  [(NDODeviceSection *)v7 setLabel:labelCopy, v10.receiver, v10.super_class];
 
-  [(NDODeviceSection *)v7 setIdentifier:v5];
+  [(NDODeviceSection *)v7 setIdentifier:identifierCopy];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   [(NDODeviceSection *)v7 setPrivateDeviceList:v8];
 
@@ -29,16 +29,16 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NDODeviceSection *)self label];
-  v5 = [(NDODeviceSection *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ (%@):\n", v4, v5];
+  label = [(NDODeviceSection *)self label];
+  identifier = [(NDODeviceSection *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ (%@):\n", label, identifier];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(NDODeviceSection *)self deviceList];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  deviceList = [(NDODeviceSection *)self deviceList];
+  v8 = [deviceList countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -51,7 +51,7 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(deviceList);
         }
 
         v13 = MEMORY[0x277CCACA8];
@@ -64,7 +64,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [deviceList countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -75,43 +75,43 @@
   return v6;
 }
 
-- (void)addDevice:(id)a3
+- (void)addDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NDODeviceSection *)self privateDeviceList];
-  [v5 addObject:v4];
+  deviceCopy = device;
+  privateDeviceList = [(NDODeviceSection *)self privateDeviceList];
+  [privateDeviceList addObject:deviceCopy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NDODeviceSection *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(NDODeviceSection *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(NDODeviceSection *)self label];
-  [v4 encodeObject:v6 forKey:@"label"];
+  label = [(NDODeviceSection *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
   v7 = MEMORY[0x277CCAAB0];
-  v9 = [(NDODeviceSection *)self privateDeviceList];
-  v8 = [v7 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
-  [v4 encodeObject:v8 forKey:@"deviceList"];
+  privateDeviceList = [(NDODeviceSection *)self privateDeviceList];
+  v8 = [v7 archivedDataWithRootObject:privateDeviceList requiringSecureCoding:1 error:0];
+  [coderCopy encodeObject:v8 forKey:@"deviceList"];
 }
 
-- (NDODeviceSection)initWithCoder:(id)a3
+- (NDODeviceSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NDODeviceSection;
   v5 = [(NDODeviceSection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     [(NDODeviceSection *)v5 setLabel:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(NDODeviceSection *)v5 setIdentifier:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceList"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceList"];
     v9 = [MEMORY[0x277CCAAC8] unarchivedArrayOfObjectsOfClass:objc_opt_class() fromData:v8 error:0];
     v10 = [v9 mutableCopy];
     [(NDODeviceSection *)v5 setPrivateDeviceList:v10];
@@ -120,16 +120,16 @@
   return v5;
 }
 
-- (id)deviceForSN:(id)a3
+- (id)deviceForSN:(id)n
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nCopy = n;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NDODeviceSection *)self privateDeviceList];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  privateDeviceList = [(NDODeviceSection *)self privateDeviceList];
+  v6 = [privateDeviceList countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -139,12 +139,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(privateDeviceList);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 serialNumber];
-        v11 = [v10 isEqualToString:v4];
+        serialNumber = [v9 serialNumber];
+        v11 = [serialNumber isEqualToString:nCopy];
 
         if (v11)
         {
@@ -153,7 +153,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [privateDeviceList countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;

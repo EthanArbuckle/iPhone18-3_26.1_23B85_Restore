@@ -1,21 +1,21 @@
 @interface HUSwitchHomesWelcomeViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUSwitchHomesWelcomeViewController)initWithHome:(id)a3;
-- (void)_changeButtonTapped:(id)a3;
-- (void)_continueButtonTapped:(id)a3;
+- (HUSwitchHomesWelcomeViewController)initWithHome:(id)home;
+- (void)_changeButtonTapped:(id)tapped;
+- (void)_continueButtonTapped:(id)tapped;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUSwitchHomesWelcomeViewController
 
-- (HUSwitchHomesWelcomeViewController)initWithHome:(id)a3
+- (HUSwitchHomesWelcomeViewController)initWithHome:(id)home
 {
-  v5 = a3;
-  v6 = [v5 name];
-  v13 = HULocalizedStringWithFormat(@"HUSwitchHomesWelcome_Title", @"%@", v7, v8, v9, v10, v11, v12, v6);
+  homeCopy = home;
+  name = [homeCopy name];
+  v13 = HULocalizedStringWithFormat(@"HUSwitchHomesWelcome_Title", @"%@", v7, v8, v9, v10, v11, v12, name);
 
   v14 = _HULocalizedStringWithDefaultValue(@"HUSwitchHomesWelcome_Detail", @"HUSwitchHomesWelcome_Detail", 1);
   v15 = HUImageNamed(@"Onboarding-Home-Invite");
@@ -25,42 +25,42 @@
 
   if (v16)
   {
-    objc_storeStrong(&v16->_home, a3);
+    objc_storeStrong(&v16->_home, home);
     [(HUTopContentOBWelcomeController *)v16 setContentInsets:0.0, 41.0, 0.0, 41.0];
   }
 
   return v16;
 }
 
-- (void)_changeButtonTapped:(id)a3
+- (void)_changeButtonTapped:(id)tapped
 {
   v54 = *MEMORY[0x277D85DE8];
-  v38 = a3;
+  tappedCopy = tapped;
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v51 = self;
+    selfCopy = self;
     v52 = 2080;
     v53 = "[HUSwitchHomesWelcomeViewController _changeButtonTapped:]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped change button", buf, 0x16u);
   }
 
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v5 = [v4 homeManager];
-  v6 = [v5 hf_orderedHomes];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hf_orderedHomes = [homeManager hf_orderedHomes];
 
-  if (![v6 count] && (objc_msgSend(MEMORY[0x277D14CE8], "isInternalTest") & 1) == 0)
+  if (![hf_orderedHomes count] && (objc_msgSend(MEMORY[0x277D14CE8], "isInternalTest") & 1) == 0)
   {
     NSLog(&cfstr_AttemptingToDi_2.isa);
   }
 
-  v42 = [MEMORY[0x277D75110] hu_actionSheetWithTitle:0 message:0 anchorView:v38];
+  v42 = [MEMORY[0x277D75110] hu_actionSheetWithTitle:0 message:0 anchorView:tappedCopy];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v6;
+  obj = hf_orderedHomes;
   v7 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v7)
   {
@@ -76,8 +76,8 @@
         }
 
         v9 = *(*(&v45 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v11 = [v10 homeManager];
+        mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+        homeManager2 = [mEMORY[0x277D146E8]2 homeManager];
 
         objc_initWeak(buf, self);
         aBlock[0] = MEMORY[0x277D85DD0];
@@ -87,29 +87,29 @@
         objc_copyWeak(&v44, buf);
         aBlock[4] = v9;
         v12 = _Block_copy(aBlock);
-        v13 = [v9 uniqueIdentifier];
-        v14 = [v11 currentHome];
-        v15 = [v14 uniqueIdentifier];
-        v16 = [v13 isEqual:v15];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        currentHome = [homeManager2 currentHome];
+        uniqueIdentifier2 = [currentHome uniqueIdentifier];
+        v16 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         v17 = MEMORY[0x277D750F8];
-        v18 = [v9 name];
+        name = [v9 name];
         if (v16)
         {
-          v19 = [MEMORY[0x277D755B8] hu_locationArrowTemplate];
-          v20 = [v17 _actionWithTitle:v18 image:v19 style:0 handler:v12 shouldDismissHandler:0];
+          hu_locationArrowTemplate = [MEMORY[0x277D755B8] hu_locationArrowTemplate];
+          v20 = [v17 _actionWithTitle:name image:hu_locationArrowTemplate style:0 handler:v12 shouldDismissHandler:0];
         }
 
         else
         {
-          v20 = [v17 actionWithTitle:v18 style:0 handler:v12];
+          v20 = [v17 actionWithTitle:name style:0 handler:v12];
         }
 
-        v21 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v22 = [v21 home];
-        v23 = [v22 uniqueIdentifier];
-        v24 = [v9 uniqueIdentifier];
-        [v20 _setChecked:{objc_msgSend(v23, "isEqual:", v24)}];
+        mEMORY[0x277D146E8]3 = [MEMORY[0x277D146E8] sharedDispatcher];
+        home = [mEMORY[0x277D146E8]3 home];
+        uniqueIdentifier3 = [home uniqueIdentifier];
+        uniqueIdentifier4 = [v9 uniqueIdentifier];
+        [v20 _setChecked:{objc_msgSend(uniqueIdentifier3, "isEqual:", uniqueIdentifier4)}];
 
         [v42 addAction:v20];
         objc_destroyWeak(&v44);
@@ -133,21 +133,21 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v42 popoverPresentationController];
-    [v28 setSourceView:v38];
+    popoverPresentationController = [v42 popoverPresentationController];
+    [popoverPresentationController setSourceView:tappedCopy];
 
-    [v38 bounds];
+    [tappedCopy bounds];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [v42 popoverPresentationController];
-    [v37 setSourceRect:{v30, v32, v34, v36}];
+    popoverPresentationController2 = [v42 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v30, v32, v34, v36}];
   }
 
   else
   {
-    NSLog(&cfstr_UnknownSenderF.isa, v38);
+    NSLog(&cfstr_UnknownSenderF.isa, tappedCopy);
   }
 
   [(HUSwitchHomesWelcomeViewController *)self presentViewController:v42 animated:1 completion:0];
@@ -202,7 +202,7 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   }
 }
 
-- (void)_continueButtonTapped:(id)a3
+- (void)_continueButtonTapped:(id)tapped
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
@@ -210,17 +210,17 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   {
     v6 = NSStringFromSelector(a2);
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v6;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%@ User tapped button", buf, 0x16u);
   }
 
-  v7 = [(HUSwitchHomesWelcomeViewController *)self delegate];
+  delegate = [(HUSwitchHomesWelcomeViewController *)self delegate];
   v9 = @"HUSwitchHomesWelcomeOnboardingKey_UserInput";
   v10 = &unk_282492588;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  [v7 viewController:self didFinishWithConfigurationResults:v8];
+  [delegate viewController:self didFinishWithConfigurationResults:v8];
 }
 
 - (void)viewDidLoad
@@ -228,56 +228,56 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   v27.receiver = self;
   v27.super_class = HUSwitchHomesWelcomeViewController;
   [(HUImageOBWelcomeController *)&v27 viewDidLoad];
-  v3 = [(HUSwitchHomesWelcomeViewController *)self headerView];
-  v4 = [v3 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v4 withIDDictionary:&unk_282493210];
+  headerView = [(HUSwitchHomesWelcomeViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282493210];
 
-  v5 = [MEMORY[0x277D37618] boldButton];
-  [(HUSwitchHomesWelcomeViewController *)self setContinueButton:v5];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [(HUSwitchHomesWelcomeViewController *)self setContinueButton:boldButton];
 
-  v6 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  continueButton = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+  [continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+  continueButton2 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
   v8 = _HULocalizedStringWithDefaultValue(@"HUSwitchHomesWelcome_ContinueButton", @"HUSwitchHomesWelcome_ContinueButton", 1);
-  [v7 setTitle:v8 forState:0];
+  [continueButton2 setTitle:v8 forState:0];
 
-  v9 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
-  [v9 setAccessibilityIdentifier:@"Home.OnboardingView.SwitchHomesWelcome.ContinueButton"];
+  continueButton3 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+  [continueButton3 setAccessibilityIdentifier:@"Home.OnboardingView.SwitchHomesWelcome.ContinueButton"];
 
-  v10 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
-  [v10 addTarget:self action:sel__continueButtonTapped_ forControlEvents:64];
+  continueButton4 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+  [continueButton4 addTarget:self action:sel__continueButtonTapped_ forControlEvents:64];
 
-  v11 = [(HUSwitchHomesWelcomeViewController *)self buttonTray];
-  v12 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
-  [v11 addButton:v12];
+  buttonTray = [(HUSwitchHomesWelcomeViewController *)self buttonTray];
+  continueButton5 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+  [buttonTray addButton:continueButton5];
 
-  v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v14 = [v13 homeManager];
-  v15 = [v14 homes];
-  v16 = [v15 count];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  homes = [homeManager homes];
+  v16 = [homes count];
 
   if (v16 >= 2)
   {
-    v17 = [MEMORY[0x277D37650] linkButton];
-    [(HUSwitchHomesWelcomeViewController *)self setChangeButton:v17];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [(HUSwitchHomesWelcomeViewController *)self setChangeButton:linkButton];
 
-    v18 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    changeButton = [(HUSwitchHomesWelcomeViewController *)self changeButton];
+    [changeButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
+    changeButton2 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
     v20 = _HULocalizedStringWithDefaultValue(@"HUSwitchHomesWelcome_ChangeButton", @"HUSwitchHomesWelcome_ChangeButton", 1);
-    [v19 setTitle:v20 forState:0];
+    [changeButton2 setTitle:v20 forState:0];
 
-    v21 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
-    [v21 setAccessibilityIdentifier:@"Home.OnboardingView.SwitchHomesWelcome.ChangeButton"];
+    changeButton3 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
+    [changeButton3 setAccessibilityIdentifier:@"Home.OnboardingView.SwitchHomesWelcome.ChangeButton"];
 
-    v22 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
-    [v22 addTarget:self action:sel__changeButtonTapped_ forControlEvents:64];
+    changeButton4 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
+    [changeButton4 addTarget:self action:sel__changeButtonTapped_ forControlEvents:64];
 
-    v23 = [(HUSwitchHomesWelcomeViewController *)self buttonTray];
-    v24 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
-    [v23 addButton:v24];
+    buttonTray2 = [(HUSwitchHomesWelcomeViewController *)self buttonTray];
+    changeButton5 = [(HUSwitchHomesWelcomeViewController *)self changeButton];
+    [buttonTray2 addButton:changeButton5];
   }
 
   [(HUSwitchHomesWelcomeViewController *)self setModalInPresentation:1];
@@ -296,15 +296,15 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   [(HUImageOBWelcomeController *)&v8 viewDidLayoutSubviews];
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v3 = [(HUSwitchHomesWelcomeViewController *)self view];
-    [v3 frame];
+    view = [(HUSwitchHomesWelcomeViewController *)self view];
+    [view frame];
     v5 = v4 * 0.65;
   }
 
   else
   {
-    v3 = [(HUSwitchHomesWelcomeViewController *)self continueButton];
-    [v3 bounds];
+    view = [(HUSwitchHomesWelcomeViewController *)self continueButton];
+    [view bounds];
     v5 = v6;
   }
 
@@ -316,11 +316,11 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUSwitchHomesWelcomeViewController;
-  [(HUSwitchHomesWelcomeViewController *)&v5 viewWillAppear:a3];
+  [(HUSwitchHomesWelcomeViewController *)&v5 viewWillAppear:appear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -329,11 +329,11 @@ void __58__HUSwitchHomesWelcomeViewController__changeButtonTapped___block_invoke
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUSwitchHomesWelcomeViewController;
-  [(OBBaseWelcomeController *)&v5 viewWillDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewWillDisappear:disappear];
   v3 = HFLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {

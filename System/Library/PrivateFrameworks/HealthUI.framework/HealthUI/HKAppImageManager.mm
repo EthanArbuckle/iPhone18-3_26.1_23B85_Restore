@@ -1,28 +1,28 @@
 @interface HKAppImageManager
 + (id)defaultAppIcon;
 + (id)defaultAppIconTableUI;
-+ (id)defaultDeviceIconTableUIForSource:(id)a3;
++ (id)defaultDeviceIconTableUIForSource:(id)source;
 + (id)sharedImageManager;
 - (HKAppImageManager)init;
-- (id)MindfulnessAppIconForVisionPro:(id)a3;
-- (id)_queue_fetchIconFromLaunchServicesWithIdentifier:(id)a3;
-- (id)_queue_researchStudyIconForSource:(id)a3;
-- (id)_queue_synchronousLoadIconForSource:(id)a3 productType:(id)a4;
-- (id)iconForDevice:(id)a3;
-- (id)iconForSource:(id)a3 productType:(id)a4;
-- (id)researchStudyIconForSource:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_dispatchResponsesForAppIconForIdentifier:(id)a3 appImage:(id)a4;
-- (void)_enqueueRequestForAppIconForIdentifier:(id)a3 productType:(id)a4;
-- (void)_queue_cacheAppIcon:(id)a3 forIdentifier:(id)a4 productType:(id)a5;
-- (void)_queue_loadAppIconForSource:(id)a3 productType:(id)a4 onCompletion:(id)a5;
-- (void)cacheAppIcon:(id)a3 forIdentifier:(id)a4;
+- (id)MindfulnessAppIconForVisionPro:(id)pro;
+- (id)_queue_fetchIconFromLaunchServicesWithIdentifier:(id)identifier;
+- (id)_queue_researchStudyIconForSource:(id)source;
+- (id)_queue_synchronousLoadIconForSource:(id)source productType:(id)type;
+- (id)iconForDevice:(id)device;
+- (id)iconForSource:(id)source productType:(id)type;
+- (id)researchStudyIconForSource:(id)source;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_dispatchResponsesForAppIconForIdentifier:(id)identifier appImage:(id)image;
+- (void)_enqueueRequestForAppIconForIdentifier:(id)identifier productType:(id)type;
+- (void)_queue_cacheAppIcon:(id)icon forIdentifier:(id)identifier productType:(id)type;
+- (void)_queue_loadAppIconForSource:(id)source productType:(id)type onCompletion:(id)completion;
+- (void)cacheAppIcon:(id)icon forIdentifier:(id)identifier;
 - (void)clearImageCache;
-- (void)loadAppImageAtURL:(id)a3 productType:(id)a4 crop:(int64_t)a5 completionHandler:(id)a6;
-- (void)loadIconForSource:(id)a3 productType:(id)a4 completionHandler:(id)a5;
-- (void)loadIconForSource:(id)a3 productType:(id)a4 syncHandler:(id)a5 asyncHandler:(id)a6;
-- (void)loadIconForSource:(id)a3 syncHandler:(id)a4 asyncHandler:(id)a5;
+- (void)loadAppImageAtURL:(id)l productType:(id)type crop:(int64_t)crop completionHandler:(id)handler;
+- (void)loadIconForSource:(id)source productType:(id)type completionHandler:(id)handler;
+- (void)loadIconForSource:(id)source productType:(id)type syncHandler:(id)handler asyncHandler:(id)asyncHandler;
+- (void)loadIconForSource:(id)source syncHandler:(id)handler asyncHandler:(id)asyncHandler;
 @end
 
 @implementation HKAppImageManager
@@ -56,9 +56,9 @@ uint64_t __39__HKAppImageManager_sharedImageManager__block_invoke()
   if (v2)
   {
     v3 = MEMORY[0x1E696AF78];
-    v4 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    v5 = [MEMORY[0x1E696ADC8] mainQueue];
-    v6 = [v3 sessionWithConfiguration:v4 delegate:v2 delegateQueue:v5];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+    v6 = [v3 sessionWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:mainQueue];
     session = v2->_session;
     v2->_session = v6;
 
@@ -156,16 +156,16 @@ void __42__HKAppImageManager_defaultAppIconTableUI__block_invoke()
   }
 }
 
-+ (id)defaultDeviceIconTableUIForSource:(id)a3
++ (id)defaultDeviceIconTableUIForSource:(id)source
 {
   v3 = MEMORY[0x1E69DCAD8];
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v4 systemBlueColor];
-  v7 = [v3 configurationWithHierarchicalColor:v6];
+  sourceCopy = source;
+  systemBlueColor = [v4 systemBlueColor];
+  v7 = [v3 configurationWithHierarchicalColor:systemBlueColor];
 
-  LODWORD(v6) = [v5 _isAppleWatch];
-  if (v6)
+  LODWORD(systemBlueColor) = [sourceCopy _isAppleWatch];
+  if (systemBlueColor)
   {
     v8 = @"Watch1,2";
   }
@@ -177,15 +177,15 @@ void __42__HKAppImageManager_defaultAppIconTableUI__block_invoke()
 
   v9 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:v8];
   v10 = MEMORY[0x1E69A8A40];
-  v11 = [v9 identifier];
+  identifier = [v9 identifier];
   v17 = 0;
-  v12 = [v10 symbolForTypeIdentifier:v11 error:&v17];
+  v12 = [v10 symbolForTypeIdentifier:identifier error:&v17];
 
   if (v12)
   {
     v13 = MEMORY[0x1E69DCAB8];
-    v14 = [v12 name];
-    v15 = [v13 _systemImageNamed:v14 withConfiguration:v7];
+    name = [v12 name];
+    v15 = [v13 _systemImageNamed:name withConfiguration:v7];
   }
 
   else
@@ -208,10 +208,10 @@ void __42__HKAppImageManager_defaultAppIconTableUI__block_invoke()
   dispatch_sync(managerQueue, block);
 }
 
-- (void)cacheAppIcon:(id)a3 forIdentifier:(id)a4
+- (void)cacheAppIcon:(id)icon forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  identifierCopy = identifier;
   dispatch_assert_queue_not_V2(self->_managerQueue);
   managerQueue = self->_managerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -219,10 +219,10 @@ void __42__HKAppImageManager_defaultAppIconTableUI__block_invoke()
   block[2] = __48__HKAppImageManager_cacheAppIcon_forIdentifier___block_invoke;
   block[3] = &unk_1E81B5A10;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = iconCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = iconCopy;
   dispatch_sync(managerQueue, block);
 }
 
@@ -235,23 +235,23 @@ void __48__HKAppImageManager_cacheAppIcon_forIdentifier___block_invoke(void *a1)
   [v1 _queue_cacheAppIcon:v2 forIdentifier:v3 productType:v4];
 }
 
-- (void)loadIconForSource:(id)a3 productType:(id)a4 completionHandler:(id)a5
+- (void)loadIconForSource:(id)source productType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  typeCopy = type;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__HKAppImageManager_loadIconForSource_productType_completionHandler___block_invoke;
   v15[3] = &unk_1E81BB750;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = sourceCopy;
+  v17 = typeCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = typeCopy;
+  v13 = handlerCopy;
+  v14 = sourceCopy;
   dispatch_async(managerQueue, v15);
 }
 
@@ -311,10 +311,10 @@ void __69__HKAppImageManager_loadIconForSource_productType_completionHandler___b
   }
 }
 
-- (id)iconForSource:(id)a3 productType:(id)a4
+- (id)iconForSource:(id)source productType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  typeCopy = type;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -328,11 +328,11 @@ void __69__HKAppImageManager_loadIconForSource_productType_completionHandler___b
   v13[2] = __47__HKAppImageManager_iconForSource_productType___block_invoke;
   v13[3] = &unk_1E81BB778;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = sourceCopy;
+  v15 = typeCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = typeCopy;
+  v10 = sourceCopy;
   dispatch_sync(managerQueue, v13);
   v11 = v18[5];
 
@@ -351,93 +351,93 @@ uint64_t __47__HKAppImageManager_iconForSource_productType___block_invoke(uint64
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)loadIconForSource:(id)a3 syncHandler:(id)a4 asyncHandler:(id)a5
+- (void)loadIconForSource:(id)source syncHandler:(id)handler asyncHandler:(id)asyncHandler
 {
   v8 = MEMORY[0x1E696C608];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 currentDeviceProductType];
-  [(HKAppImageManager *)self loadIconForSource:v11 productType:v12 syncHandler:v10 asyncHandler:v9];
+  asyncHandlerCopy = asyncHandler;
+  handlerCopy = handler;
+  sourceCopy = source;
+  currentDeviceProductType = [v8 currentDeviceProductType];
+  [(HKAppImageManager *)self loadIconForSource:sourceCopy productType:currentDeviceProductType syncHandler:handlerCopy asyncHandler:asyncHandlerCopy];
 }
 
-- (void)loadIconForSource:(id)a3 productType:(id)a4 syncHandler:(id)a5 asyncHandler:(id)a6
+- (void)loadIconForSource:(id)source productType:(id)type syncHandler:(id)handler asyncHandler:(id)asyncHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sourceCopy = source;
+  typeCopy = type;
+  handlerCopy = handler;
+  asyncHandlerCopy = asyncHandler;
   dispatch_assert_queue_not_V2(self->_managerQueue);
-  if (v10)
+  if (sourceCopy)
   {
-    v14 = [(HKAppImageManager *)self iconForSource:v10 productType:v11];
+    v14 = [(HKAppImageManager *)self iconForSource:sourceCopy productType:typeCopy];
     if (v14)
     {
-      v12[2](v12, v14);
+      handlerCopy[2](handlerCopy, v14);
       managerQueue = self->_managerQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __76__HKAppImageManager_loadIconForSource_productType_syncHandler_asyncHandler___block_invoke_2;
       block[3] = &unk_1E81B77A0;
       v16 = &v22;
-      v22 = v13;
+      v22 = asyncHandlerCopy;
       dispatch_async(managerQueue, block);
     }
 
     else
     {
-      v18 = [objc_opt_class() defaultAppIconTableUI];
-      v12[2](v12, v18);
+      defaultAppIconTableUI = [objc_opt_class() defaultAppIconTableUI];
+      handlerCopy[2](handlerCopy, defaultAppIconTableUI);
 
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __76__HKAppImageManager_loadIconForSource_productType_syncHandler_asyncHandler___block_invoke_3;
       v19[3] = &unk_1E81BB7A0;
       v16 = &v20;
-      v20 = v13;
-      [(HKAppImageManager *)self loadIconForSource:v10 productType:v11 completionHandler:v19];
+      v20 = asyncHandlerCopy;
+      [(HKAppImageManager *)self loadIconForSource:sourceCopy productType:typeCopy completionHandler:v19];
     }
   }
 
   else
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
     v17 = self->_managerQueue;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __76__HKAppImageManager_loadIconForSource_productType_syncHandler_asyncHandler___block_invoke;
     v23[3] = &unk_1E81B77A0;
-    v24 = v13;
+    v24 = asyncHandlerCopy;
     dispatch_async(v17, v23);
     v14 = v24;
   }
 }
 
-- (id)_queue_synchronousLoadIconForSource:(id)a3 productType:(id)a4
+- (id)_queue_synchronousLoadIconForSource:(id)source productType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sourceCopy = source;
+  typeCopy = type;
+  if (!sourceCopy)
   {
     v11 = 0;
     goto LABEL_30;
   }
 
-  v8 = [MEMORY[0x1E696C4A8] bundleIdentifierForIconForSource:v6];
+  v8 = [MEMORY[0x1E696C4A8] bundleIdentifierForIconForSource:sourceCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = v8;
+    bundleIdentifier = v8;
   }
 
   else
   {
-    v10 = [v6 bundleIdentifier];
+    bundleIdentifier = [sourceCopy bundleIdentifier];
   }
 
-  v12 = v10;
+  v12 = bundleIdentifier;
 
-  if (v7)
+  if (typeCopy)
   {
     if (!v12)
     {
@@ -445,7 +445,7 @@ uint64_t __47__HKAppImageManager_iconForSource_productType___block_invoke(uint64
     }
 
 LABEL_10:
-    v13 = [(NSMutableDictionary *)self->_iconCacheByProductType objectForKeyedSubscript:v7];
+    v13 = [(NSMutableDictionary *)self->_iconCacheByProductType objectForKeyedSubscript:typeCopy];
     v11 = [v13 objectForKeyedSubscript:v12];
 
     if (v11)
@@ -456,17 +456,17 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [MEMORY[0x1E696C608] currentDeviceProductType];
+  typeCopy = [MEMORY[0x1E696C608] currentDeviceProductType];
   if (v12)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
-  if ([v6 _isPeripheralSource])
+  if ([sourceCopy _isPeripheralSource])
   {
-    v14 = [v6 _productType];
-    v15 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:v14];
+    _productType = [sourceCopy _productType];
+    v15 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:_productType];
 
     if (!v15)
     {
@@ -482,7 +482,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v6 _isConnectedGymSource])
+  if ([sourceCopy _isConnectedGymSource])
   {
     _HKInitializeLogging();
     v17 = *MEMORY[0x1E696B940];
@@ -491,8 +491,8 @@ LABEL_18:
       [HKAppImageManager _queue_synchronousLoadIconForSource:v17 productType:?];
     }
 
-    v18 = [v6 _productType];
-    v15 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:v18];
+    _productType2 = [sourceCopy _productType];
+    v15 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:_productType2];
 
     if (!v15)
     {
@@ -503,36 +503,36 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v6 _isResearchStudy])
+  if ([sourceCopy _isResearchStudy])
   {
-    v19 = [(HKAppImageManager *)self _queue_researchStudyIconForSource:v6];
+    v19 = [(HKAppImageManager *)self _queue_researchStudyIconForSource:sourceCopy];
   }
 
-  else if ([v6 _isApplication])
+  else if ([sourceCopy _isApplication])
   {
     v19 = [(HKAppImageManager *)self _queue_fetchIconFromLaunchServicesWithIdentifier:v12];
   }
 
   else
   {
-    if ([v6 _isPreferredSource] && (objc_msgSend(v6, "_isApplication") & 1) == 0)
+    if ([sourceCopy _isPreferredSource] && (objc_msgSend(sourceCopy, "_isApplication") & 1) == 0)
     {
       v21 = MEMORY[0x1E6982C40];
-      v22 = [v6 _productType];
-      v23 = [v21 _typeWithDeviceModelCode:v22];
+      _productType3 = [sourceCopy _productType];
+      v23 = [v21 _typeWithDeviceModelCode:_productType3];
 
       v24 = MEMORY[0x1E69A8A40];
-      v25 = [v23 identifier];
+      identifier = [v23 identifier];
       v32 = 0;
-      v26 = [v24 symbolForTypeIdentifier:v25 error:&v32];
+      v26 = [v24 symbolForTypeIdentifier:identifier error:&v32];
 
       v27 = MEMORY[0x1E69DCAD8];
-      v28 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v29 = [v27 configurationWithHierarchicalColor:v28];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v29 = [v27 configurationWithHierarchicalColor:systemBlueColor];
 
       if (!v26 || (v30 = MEMORY[0x1E69DCAB8], [v26 name], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "_systemImageNamed:withConfiguration:", v31, v29), v11 = objc_claimAutoreleasedReturnValue(), v31, !v11))
       {
-        v11 = [objc_opt_class() defaultDeviceIconTableUIForSource:v6];
+        v11 = [objc_opt_class() defaultDeviceIconTableUIForSource:sourceCopy];
       }
 
       goto LABEL_29;
@@ -549,24 +549,24 @@ LABEL_30:
   return v11;
 }
 
-- (void)loadAppImageAtURL:(id)a3 productType:(id)a4 crop:(int64_t)a5 completionHandler:(id)a6
+- (void)loadAppImageAtURL:(id)l productType:(id)type crop:(int64_t)crop completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  typeCopy = type;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__HKAppImageManager_loadAppImageAtURL_productType_crop_completionHandler___block_invoke;
   block[3] = &unk_1E81BB7F0;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a5;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
+  v18 = lCopy;
+  v19 = typeCopy;
+  v20 = handlerCopy;
+  cropCopy = crop;
+  v14 = typeCopy;
+  v15 = handlerCopy;
+  v16 = lCopy;
   dispatch_async(managerQueue, block);
 }
 
@@ -778,12 +778,12 @@ void __74__HKAppImageManager_loadAppImageAtURL_productType_crop_completionHandle
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)iconForDevice:(id)a3
+- (id)iconForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 _isConnectedGymDevice])
+  deviceCopy = device;
+  if ([deviceCopy _isConnectedGymDevice])
   {
-    v4 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:v3 preferredIconWidth:29.0];
+    v4 = [HKUIConnectedGymIconUtilties iconForConnectedGymDevice:deviceCopy preferredIconWidth:29.0];
 
     if (v4)
     {
@@ -798,9 +798,9 @@ LABEL_6:
 
   else
   {
-    v6 = [v3 hardwareVersion];
+    hardwareVersion = [deviceCopy hardwareVersion];
 
-    v7 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:v6];
+    v7 = [HKUIIconUtilties appleDeviceIconForHardwareVersion:hardwareVersion];
 
     if (v7)
     {
@@ -818,9 +818,9 @@ LABEL_10:
   return v8;
 }
 
-- (id)researchStudyIconForSource:(id)a3
+- (id)researchStudyIconForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -832,10 +832,10 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __48__HKAppImageManager_researchStudyIconForSource___block_invoke;
   block[3] = &unk_1E81BB818;
-  v10 = v4;
+  v10 = sourceCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = sourceCopy;
   dispatch_sync(managerQueue, block);
   v7 = v13[5];
 
@@ -854,24 +854,24 @@ uint64_t __48__HKAppImageManager_researchStudyIconForSource___block_invoke(uint6
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_queue_researchStudyIconForSource:(id)a3
+- (id)_queue_researchStudyIconForSource:(id)source
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696C608] currentDeviceProductType];
-  v6 = [(HKAppImageManager *)self iconCacheByProductType];
-  v7 = [v6 objectForKeyedSubscript:v5];
-  v8 = [v4 bundleIdentifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  sourceCopy = source;
+  currentDeviceProductType = [MEMORY[0x1E696C608] currentDeviceProductType];
+  iconCacheByProductType = [(HKAppImageManager *)self iconCacheByProductType];
+  v7 = [iconCacheByProductType objectForKeyedSubscript:currentDeviceProductType];
+  bundleIdentifier = [sourceCopy bundleIdentifier];
+  v9 = [v7 objectForKeyedSubscript:bundleIdentifier];
 
   if (v9)
   {
-    v10 = v9;
+    defaultAppIconTableUI = v9;
   }
 
   else
   {
     v18 = 0;
-    v11 = [v4 _fetchBundleWithError:&v18];
+    v11 = [sourceCopy _fetchBundleWithError:&v18];
     v12 = v18;
     if (v12)
     {
@@ -882,7 +882,7 @@ uint64_t __48__HKAppImageManager_researchStudyIconForSource___block_invoke(uint6
         [(HKAppImageManager *)v12 _queue_researchStudyIconForSource:v13];
       }
 
-      v10 = [objc_opt_class() defaultAppIconTableUI];
+      defaultAppIconTableUI = [objc_opt_class() defaultAppIconTableUI];
     }
 
     else
@@ -891,50 +891,50 @@ uint64_t __48__HKAppImageManager_researchStudyIconForSource___block_invoke(uint6
       v15 = v14;
       if (v14)
       {
-        v10 = [v14 imageByPreparingThumbnailOfSize:{29.0, 29.0}];
-        v16 = [v4 bundleIdentifier];
-        [(HKAppImageManager *)self _queue_cacheAppIcon:v10 forIdentifier:v16 productType:v5];
+        defaultAppIconTableUI = [v14 imageByPreparingThumbnailOfSize:{29.0, 29.0}];
+        bundleIdentifier2 = [sourceCopy bundleIdentifier];
+        [(HKAppImageManager *)self _queue_cacheAppIcon:defaultAppIconTableUI forIdentifier:bundleIdentifier2 productType:currentDeviceProductType];
       }
 
       else
       {
-        v10 = [objc_opt_class() defaultAppIconTableUI];
+        defaultAppIconTableUI = [objc_opt_class() defaultAppIconTableUI];
       }
     }
   }
 
-  return v10;
+  return defaultAppIconTableUI;
 }
 
-- (void)_queue_cacheAppIcon:(id)a3 forIdentifier:(id)a4 productType:(id)a5
+- (void)_queue_cacheAppIcon:(id)icon forIdentifier:(id)identifier productType:(id)type
 {
-  v14 = a5;
+  typeCopy = type;
   iconCacheByProductType = self->_iconCacheByProductType;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSMutableDictionary *)iconCacheByProductType objectForKeyedSubscript:v14];
+  identifierCopy = identifier;
+  iconCopy = icon;
+  v11 = [(NSMutableDictionary *)iconCacheByProductType objectForKeyedSubscript:typeCopy];
 
   if (!v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DEE0]);
-    [(NSMutableDictionary *)self->_iconCacheByProductType setObject:v12 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_iconCacheByProductType setObject:v12 forKeyedSubscript:typeCopy];
   }
 
-  v13 = [(NSMutableDictionary *)self->_iconCacheByProductType objectForKeyedSubscript:v14];
-  [v13 setObject:v10 forKeyedSubscript:v9];
+  v13 = [(NSMutableDictionary *)self->_iconCacheByProductType objectForKeyedSubscript:typeCopy];
+  [v13 setObject:iconCopy forKeyedSubscript:identifierCopy];
 }
 
-- (void)_queue_loadAppIconForSource:(id)a3 productType:(id)a4 onCompletion:(id)a5
+- (void)_queue_loadAppIconForSource:(id)source productType:(id)type onCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 bundleIdentifier];
-  v12 = [(HKAppImageManager *)self _queue_fetchIconFromLaunchServicesWithIdentifier:v11];
+  sourceCopy = source;
+  typeCopy = type;
+  completionCopy = completion;
+  bundleIdentifier = [sourceCopy bundleIdentifier];
+  v12 = [(HKAppImageManager *)self _queue_fetchIconFromLaunchServicesWithIdentifier:bundleIdentifier];
 
   if (v12)
   {
-    (*(v10 + 2))(v10, v12, 0, 1, 0);
+    (*(completionCopy + 2))(completionCopy, v12, 0, 1, 0);
   }
 
   else
@@ -944,9 +944,9 @@ uint64_t __48__HKAppImageManager_researchStudyIconForSource___block_invoke(uint6
     v13[2] = __74__HKAppImageManager__queue_loadAppIconForSource_productType_onCompletion___block_invoke;
     v13[3] = &unk_1E81BB868;
     v13[4] = self;
-    v14 = v9;
-    v16 = v10;
-    v15 = v8;
+    v14 = typeCopy;
+    v16 = completionCopy;
+    v15 = sourceCopy;
     [HKSourceListDataSource fetchIconForSource:v15 completion:v13];
   }
 }
@@ -1022,22 +1022,22 @@ void __74__HKAppImageManager__queue_loadAppIconForSource_productType_onCompletio
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)_queue_fetchIconFromLaunchServicesWithIdentifier:(id)a3
+- (id)_queue_fetchIconFromLaunchServicesWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v11];
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v11];
   if (v5)
   {
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
-    v8 = [v6 _applicationIconImageForBundleIdentifier:v4 format:0 scale:?];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v8 = [v6 _applicationIconImageForBundleIdentifier:identifierCopy format:0 scale:?];
 
     if (v8)
     {
-      v9 = [MEMORY[0x1E696C608] currentDeviceProductType];
-      [(HKAppImageManager *)self _queue_cacheAppIcon:v8 forIdentifier:v4 productType:v9];
+      currentDeviceProductType = [MEMORY[0x1E696C608] currentDeviceProductType];
+      [(HKAppImageManager *)self _queue_cacheAppIcon:v8 forIdentifier:identifierCopy productType:currentDeviceProductType];
     }
   }
 
@@ -1049,21 +1049,21 @@ void __74__HKAppImageManager__queue_loadAppIconForSource_productType_onCompletio
   return v8;
 }
 
-- (void)_dispatchResponsesForAppIconForIdentifier:(id)a3 appImage:(id)a4
+- (void)_dispatchResponsesForAppIconForIdentifier:(id)identifier appImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  identifierCopy = identifier;
+  imageCopy = image;
+  v8 = imageCopy;
+  if (identifierCopy && imageCopy)
   {
     managerQueue = self->_managerQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage___block_invoke;
     block[3] = &unk_1E81B5A10;
-    v12 = v7;
-    v13 = self;
-    v14 = v6;
+    v12 = imageCopy;
+    selfCopy = self;
+    v14 = identifierCopy;
     dispatch_async(managerQueue, block);
   }
 
@@ -1073,7 +1073,7 @@ void __74__HKAppImageManager__queue_loadAppIconForSource_productType_onCompletio
     v10 = *MEMORY[0x1E696B978];
     if (os_log_type_enabled(*MEMORY[0x1E696B978], OS_LOG_TYPE_ERROR))
     {
-      [(HKAppImageManager *)v6 _dispatchResponsesForAppIconForIdentifier:v8 appImage:v10];
+      [(HKAppImageManager *)identifierCopy _dispatchResponsesForAppIconForIdentifier:v8 appImage:v10];
     }
   }
 }
@@ -1123,18 +1123,18 @@ void __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage_
   [v9 removeObjectForKey:*(a1 + 48)];
 }
 
-- (void)_enqueueRequestForAppIconForIdentifier:(id)a3 productType:(id)a4
+- (void)_enqueueRequestForAppIconForIdentifier:(id)identifier productType:(id)type
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696C608] currentDeviceProductType];
+  identifierCopy = identifier;
+  typeCopy = type;
+  currentDeviceProductType = [MEMORY[0x1E696C608] currentDeviceProductType];
   v9 = *MEMORY[0x1E696BC28];
-  v10 = [v8 hasPrefix:*MEMORY[0x1E696BC28]];
+  v10 = [currentDeviceProductType hasPrefix:*MEMORY[0x1E696BC28]];
   v11 = *MEMORY[0x1E696C930];
-  if ([v6 isEqualToString:*MEMORY[0x1E696C930]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E696C930]])
   {
-    v12 = [(HKAppImageManager *)self MindfulnessAppIconForVisionPro:v8];
+    v12 = [(HKAppImageManager *)self MindfulnessAppIconForVisionPro:currentDeviceProductType];
     v13 = v12;
     if (v12)
     {
@@ -1146,9 +1146,9 @@ void __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage_
       block[4] = self;
       v13 = v12;
       v34 = v13;
-      v15 = v6;
+      v15 = identifierCopy;
       v35 = v15;
-      v36 = v7;
+      v36 = typeCopy;
       dispatch_async(managerQueue, block);
       [(HKAppImageManager *)self _dispatchResponsesForAppIconForIdentifier:v15 appImage:v13];
     }
@@ -1166,15 +1166,15 @@ void __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage_
 
   else
   {
-    v16 = [v7 hasPrefix:v9];
+    v16 = [typeCopy hasPrefix:v9];
     v17 = MEMORY[0x1E698C7D8];
-    v18 = [MEMORY[0x1E698C9E0] bagSubProfile];
-    v19 = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
-    v13 = [v17 bagForProfile:v18 profileVersion:v19];
+    bagSubProfile = [MEMORY[0x1E698C9E0] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x1E698C9E0] bagSubProfileVersion];
+    v13 = [v17 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v20 = objc_alloc(MEMORY[0x1E698C9E0]);
     v21 = [v20 initWithType:0 clientIdentifier:*MEMORY[0x1E696C860] clientVersion:@"1" bag:v13];
-    v40[0] = v6;
+    v40[0] = identifierCopy;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
     [v21 setBundleIdentifiers:v22];
 
@@ -1185,13 +1185,13 @@ void __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage_
       [v21 setAdditionalPlatforms:v23];
     }
 
-    v24 = [v21 perform];
+    perform = [v21 perform];
     _HKInitializeLogging();
     v25 = *MEMORY[0x1E696B978];
     if (os_log_type_enabled(*MEMORY[0x1E696B978], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v6;
+      v38 = identifierCopy;
       _os_log_impl(&dword_1C3942000, v25, OS_LOG_TYPE_DEFAULT, "Enqueuing request to download App information for identifier %@", buf, 0xCu);
     }
 
@@ -1199,12 +1199,12 @@ void __72__HKAppImageManager__dispatchResponsesForAppIconForIdentifier_appImage_
     v27[1] = 3221225472;
     v27[2] = __72__HKAppImageManager__enqueueRequestForAppIconForIdentifier_productType___block_invoke_372;
     v27[3] = &unk_1E81BB8B8;
-    v28 = v6;
-    v29 = self;
+    v28 = identifierCopy;
+    selfCopy = self;
     v31 = v16;
     v32 = v10;
-    v30 = v7;
-    [v24 addFinishBlock:v27];
+    v30 = typeCopy;
+    [perform addFinishBlock:v27];
   }
 }
 
@@ -1340,20 +1340,20 @@ void __72__HKAppImageManager__enqueueRequestForAppIconForIdentifier_productType_
   [a1[5] _dispatchResponsesForAppIconForIdentifier:a1[4] appImage:{v11, v18, v19, v20, v21, v22}];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   managerQueue = self->_managerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__HKAppImageManager_URLSession_dataTask_didReceiveData___block_invoke;
   block[3] = &unk_1E81B5A10;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = taskCopy;
+  v14 = dataCopy;
+  v10 = dataCopy;
+  v11 = taskCopy;
   dispatch_async(managerQueue, block);
 }
 
@@ -1370,20 +1370,20 @@ void __56__HKAppImageManager_URLSession_dataTask_didReceiveData___block_invoke(v
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   managerQueue = self->_managerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__HKAppImageManager_URLSession_task_didCompleteWithError___block_invoke;
   block[3] = &unk_1E81B5A10;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = taskCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = taskCopy;
   dispatch_async(managerQueue, block);
 }
 
@@ -1457,7 +1457,7 @@ LABEL_14:
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)MindfulnessAppIconForVisionPro:(id)a3
+- (id)MindfulnessAppIconForVisionPro:(id)pro
 {
   v3 = MEMORY[0x1E69DCAB8];
   v4 = HKHealthUIFrameworkBundle();

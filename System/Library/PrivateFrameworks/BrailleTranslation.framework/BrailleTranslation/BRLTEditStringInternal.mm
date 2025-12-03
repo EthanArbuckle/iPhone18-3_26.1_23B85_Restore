@@ -1,14 +1,14 @@
 @interface BRLTEditStringInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BRLTEditStringInternal)init;
-- (BRLTEditStringInternal)initWithString:(id)a3 NSSelection:(_NSRange)a4 NSFocus:(_NSRange)a5 token:(int64_t)a6 NSSuggestion:(_NSRange)a7 textFormattingRanges:(id)a8;
+- (BRLTEditStringInternal)initWithString:(id)string NSSelection:(_NSRange)selection NSFocus:(_NSRange)focus token:(int64_t)token NSSuggestion:(_NSRange)suggestion textFormattingRanges:(id)ranges;
 - (NSString)description;
 - (NSString)string;
 - (_NSRange)NSContiguousBrailleRange;
 - (_NSRange)NSFocus;
 - (_NSRange)NSSelection;
 - (_NSRange)NSSuggestion;
-- (id)appending:(id)a3;
+- (id)appending:(id)appending;
 @end
 
 @implementation BRLTEditStringInternal
@@ -23,21 +23,21 @@
   return v4;
 }
 
-- (id)appending:(id)a3
+- (id)appending:(id)appending
 {
-  v4 = a3;
-  v5 = self;
-  sub_241E133B4(v4);
+  appendingCopy = appending;
+  selfCopy = self;
+  sub_241E133B4(appendingCopy);
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_241E35A74();
     swift_unknownObjectRelease();
@@ -46,7 +46,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_241E1497C(v11, v9);
@@ -74,7 +74,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_241E14010();
 
   v3 = sub_241E357E4();
@@ -116,7 +116,7 @@ LABEL_9:
 - (_NSRange)NSContiguousBrailleRange
 {
   v2 = *((*MEMORY[0x277D85000] & *self) + 0x90);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   v7 = sub_241E2CC64(v4, v6, v5 & 1);
   v9 = v8;
@@ -128,15 +128,15 @@ LABEL_9:
   return result;
 }
 
-- (BRLTEditStringInternal)initWithString:(id)a3 NSSelection:(_NSRange)a4 NSFocus:(_NSRange)a5 token:(int64_t)a6 NSSuggestion:(_NSRange)a7 textFormattingRanges:(id)a8
+- (BRLTEditStringInternal)initWithString:(id)string NSSelection:(_NSRange)selection NSFocus:(_NSRange)focus token:(int64_t)token NSSuggestion:(_NSRange)suggestion textFormattingRanges:(id)ranges
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = a4.length;
-  v11 = a4.location;
+  length = focus.length;
+  location = focus.location;
+  v10 = selection.length;
+  v11 = selection.location;
   v12 = sub_241E357F4();
   v14 = v13;
-  v15 = a8;
+  rangesCopy = ranges;
   v16 = sub_241E2CC98(v11, v10);
   v35 = v17;
   v36 = v16;
@@ -145,7 +145,7 @@ LABEL_9:
   v33 = v20;
   v34 = v19;
   v22 = v21;
-  v23 = sub_241E2CC98(a7.location, a7.length);
+  v23 = sub_241E2CC98(suggestion.location, suggestion.length);
   v25 = v24;
   v27 = v26;
   ObjectType = swift_getObjectType();
@@ -162,8 +162,8 @@ LABEL_9:
   {
     *(v29 + 32) = 0;
     *(v29 + 40) = result;
-    *(v29 + 48) = a6;
-    v31 = (*(ObjectType + 128))(v12, v14, v36, v35, v32 & 1, v34, v33, v22 & 1, v29, v23, v25, v27 & 1, v15);
+    *(v29 + 48) = token;
+    v31 = (*(ObjectType + 128))(v12, v14, v36, v35, v32 & 1, v34, v33, v22 & 1, v29, v23, v25, v27 & 1, rangesCopy);
     swift_deallocPartialClassInstance();
     return v31;
   }

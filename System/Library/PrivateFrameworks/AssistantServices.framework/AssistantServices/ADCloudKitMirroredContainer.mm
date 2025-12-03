@@ -1,34 +1,34 @@
 @interface ADCloudKitMirroredContainer
-- (ADCloudKitMirroredContainer)initWithContainer:(id)a3 queue:(id)a4;
-- (void)_createRecordZone:(id)a3 shared:(BOOL)a4;
-- (void)createMirroredZonesWithCompletion:(id)a3;
-- (void)resynchronizeMirroredZone:(id)a3 completion:(id)a4;
+- (ADCloudKitMirroredContainer)initWithContainer:(id)container queue:(id)queue;
+- (void)_createRecordZone:(id)zone shared:(BOOL)shared;
+- (void)createMirroredZonesWithCompletion:(id)completion;
+- (void)resynchronizeMirroredZone:(id)zone completion:(id)completion;
 @end
 
 @implementation ADCloudKitMirroredContainer
 
-- (void)resynchronizeMirroredZone:(id)a3 completion:(id)a4
+- (void)resynchronizeMirroredZone:(id)zone completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  completionCopy = completion;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 zoneName];
+    zoneName = [zoneCopy zoneName];
     *buf = 136315394;
     v27 = "[ADCloudKitMirroredContainer resynchronizeMirroredZone:completion:]";
     v28 = 2112;
-    v29 = v10;
+    v29 = zoneName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
   v11 = [CKRecordZoneID alloc];
-  v12 = [v6 zoneName];
-  v13 = [v11 initWithZoneName:v12 ownerName:CKCurrentUserDefaultName];
+  zoneName2 = [zoneCopy zoneName];
+  v13 = [v11 initWithZoneName:zoneName2 ownerName:CKCurrentUserDefaultName];
 
-  v14 = [v6 zoneName];
-  v15 = [v14 isEqualToString:@"com.apple.assistant.multiuser.shared"];
+  zoneName3 = [zoneCopy zoneName];
+  v15 = [zoneName3 isEqualToString:@"com.apple.assistant.multiuser.shared"];
 
   v16 = dispatch_time(0, 120000000000);
   queue = self->_queue;
@@ -39,34 +39,34 @@
   block[4] = self;
   v22 = v13;
   v25 = v15;
-  v23 = v6;
-  v24 = v7;
-  v18 = v6;
+  v23 = zoneCopy;
+  v24 = completionCopy;
+  v18 = zoneCopy;
   v19 = v13;
-  v20 = v7;
+  v20 = completionCopy;
   dispatch_after(v16, queue, block);
 }
 
-- (void)_createRecordZone:(id)a3 shared:(BOOL)a4
+- (void)_createRecordZone:(id)zone shared:(BOOL)shared
 {
-  v4 = a4;
-  v6 = a3;
+  sharedCopy = shared;
+  zoneCopy = zone;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [v6 zoneName];
+    zoneName = [zoneCopy zoneName];
     *buf = 136315394;
     v18 = "[ADCloudKitMirroredContainer _createRecordZone:shared:]";
     v19 = 2112;
-    v20 = v9;
+    v20 = zoneName;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_queue);
   v10 = [CKRecordZoneID alloc];
-  v11 = [v6 zoneName];
-  v12 = [v10 initWithZoneName:v11 ownerName:CKCurrentUserDefaultName];
+  zoneName2 = [zoneCopy zoneName];
+  v12 = [v10 initWithZoneName:zoneName2 ownerName:CKCurrentUserDefaultName];
 
   dispatch_group_enter(self->_group);
   container = self->_container;
@@ -75,38 +75,38 @@
   v15[2] = sub_100142B50;
   v15[3] = &unk_100512EA0;
   v15[4] = self;
-  v16 = v6;
-  v14 = v6;
-  sub_10031AFE0(v12, container, v4, v15);
+  v16 = zoneCopy;
+  v14 = zoneCopy;
+  sub_10031AFE0(v12, container, sharedCopy, v15);
 }
 
-- (void)createMirroredZonesWithCompletion:(id)a3
+- (void)createMirroredZonesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100142E78;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADCloudKitMirroredContainer)initWithContainer:(id)a3 queue:(id)a4
+- (ADCloudKitMirroredContainer)initWithContainer:(id)container queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  queueCopy = queue;
   v38.receiver = self;
   v38.super_class = ADCloudKitMirroredContainer;
   v9 = [(ADCloudKitMirroredContainer *)&v38 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_containerIdentifier, a3);
-    v11 = sub_10031AD70(v7);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_containerIdentifier, container);
+    v11 = sub_10031AD70(containerCopy);
     container = v10->_container;
     v10->_container = v11;
 
@@ -144,14 +144,14 @@
     v30 = objc_alloc_init(ADCloudKitMultiUserSharedDataStore);
     [(ADCloudKitRecordZoneInfo *)v29 setDataStore:v30];
 
-    v31 = [(ADCloudKitRecordZoneInfo *)v10->_accountStatusRecordZoneInfo dataStore];
-    [v31 setIsMirroredDataStore:1];
+    dataStore = [(ADCloudKitRecordZoneInfo *)v10->_accountStatusRecordZoneInfo dataStore];
+    [dataStore setIsMirroredDataStore:1];
 
-    v32 = [(ADCloudKitRecordZoneInfo *)v10->_keyValueRecordZoneInfo dataStore];
-    [v32 setIsMirroredDataStore:1];
+    dataStore2 = [(ADCloudKitRecordZoneInfo *)v10->_keyValueRecordZoneInfo dataStore];
+    [dataStore2 setIsMirroredDataStore:1];
 
-    v33 = [(ADCloudKitRecordZoneInfo *)v10->_multiUserRecordZoneInfo dataStore];
-    [v33 setIsMirroredDataStore:1];
+    dataStore3 = [(ADCloudKitRecordZoneInfo *)v10->_multiUserRecordZoneInfo dataStore];
+    [dataStore3 setIsMirroredDataStore:1];
 
     v34 = dispatch_group_create();
     group = v10->_group;

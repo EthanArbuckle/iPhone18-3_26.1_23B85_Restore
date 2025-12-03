@@ -1,7 +1,7 @@
 @interface BPSRemoteImageView
 - (BPSRemoteImageView)init;
 - (void)dealloc;
-- (void)updateImagesWithAnimation:(BOOL)a3;
+- (void)updateImagesWithAnimation:(BOOL)animation;
 @end
 
 @implementation BPSRemoteImageView
@@ -13,8 +13,8 @@
   v2 = [(BPSRemoteImageView *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_updateImagesWithAnimation name:*MEMORY[0x277D37AA8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateImagesWithAnimation name:*MEMORY[0x277D37AA8] object:0];
   }
 
   return v2;
@@ -22,17 +22,17 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BPSRemoteImageView;
   [(BPSRemoteImageView *)&v4 dealloc];
 }
 
-- (void)updateImagesWithAnimation:(BOOL)a3
+- (void)updateImagesWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__BPSRemoteImageView_updateImagesWithAnimation___block_invoke;
@@ -40,7 +40,7 @@
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v3)
+  if (animationCopy)
   {
     v7 = MEMORY[0x277D75D18];
     v8[0] = MEMORY[0x277D85DD0];

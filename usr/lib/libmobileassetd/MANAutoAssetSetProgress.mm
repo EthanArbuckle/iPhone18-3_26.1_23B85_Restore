@@ -1,10 +1,10 @@
 @interface MANAutoAssetSetProgress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MANAutoAssetSetProgress)init;
-- (MANAutoAssetSetProgress)initWithCoder:(id)a3;
+- (MANAutoAssetSetProgress)initWithCoder:(id)coder;
 - (id)copy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetProgress
@@ -25,37 +25,37 @@
   return result;
 }
 
-- (MANAutoAssetSetProgress)initWithCoder:(id)a3
+- (MANAutoAssetSetProgress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MANAutoAssetSetProgress;
   v5 = [(MANAutoAssetSetProgress *)&v8 init];
   if (v5)
   {
-    v5->_downloadedAssetCount = [v4 decodeInt64ForKey:@"downloadedAssetCount"];
-    v5->_remainingAssetCount = [v4 decodeInt64ForKey:@"remainingAssetCount"];
-    v5->_totalExpectedBytes = [v4 decodeInt64ForKey:@"totalExpectedBytes"];
-    v5->_totalWrittenBytes = [v4 decodeInt64ForKey:@"totalWrittenBytes"];
-    v5->_isStalled = [v4 decodeBoolForKey:@"isStalled"];
-    [v4 decodeFloatForKey:@"expectedTimeRemainingSecs"];
+    v5->_downloadedAssetCount = [coderCopy decodeInt64ForKey:@"downloadedAssetCount"];
+    v5->_remainingAssetCount = [coderCopy decodeInt64ForKey:@"remainingAssetCount"];
+    v5->_totalExpectedBytes = [coderCopy decodeInt64ForKey:@"totalExpectedBytes"];
+    v5->_totalWrittenBytes = [coderCopy decodeInt64ForKey:@"totalWrittenBytes"];
+    v5->_isStalled = [coderCopy decodeBoolForKey:@"isStalled"];
+    [coderCopy decodeFloatForKey:@"expectedTimeRemainingSecs"];
     v5->_expectedTimeRemainingSecs = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt64:-[MANAutoAssetSetProgress downloadedAssetCount](self forKey:{"downloadedAssetCount"), @"downloadedAssetCount"}];
-  [v5 encodeInt64:-[MANAutoAssetSetProgress remainingAssetCount](self forKey:{"remainingAssetCount"), @"remainingAssetCount"}];
-  [v5 encodeInt64:-[MANAutoAssetSetProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
-  [v5 encodeInt64:-[MANAutoAssetSetProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
-  [v5 encodeBool:-[MANAutoAssetSetProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[MANAutoAssetSetProgress downloadedAssetCount](self forKey:{"downloadedAssetCount"), @"downloadedAssetCount"}];
+  [coderCopy encodeInt64:-[MANAutoAssetSetProgress remainingAssetCount](self forKey:{"remainingAssetCount"), @"remainingAssetCount"}];
+  [coderCopy encodeInt64:-[MANAutoAssetSetProgress totalExpectedBytes](self forKey:{"totalExpectedBytes"), @"totalExpectedBytes"}];
+  [coderCopy encodeInt64:-[MANAutoAssetSetProgress totalWrittenBytes](self forKey:{"totalWrittenBytes"), @"totalWrittenBytes"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetProgress isStalled](self forKey:{"isStalled"), @"isStalled"}];
   [(MANAutoAssetSetProgress *)self expectedTimeRemainingSecs];
   *&v4 = v4;
-  [v5 encodeFloat:@"expectedTimeRemainingSecs" forKey:v4];
+  [coderCopy encodeFloat:@"expectedTimeRemainingSecs" forKey:v4];
 }
 
 - (id)copy
@@ -71,10 +71,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -84,9 +84,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MANAutoAssetSetProgress *)v5 downloadedAssetCount];
-      if (v6 == [(MANAutoAssetSetProgress *)self downloadedAssetCount]&& (v7 = [(MANAutoAssetSetProgress *)v5 remainingAssetCount], v7 == [(MANAutoAssetSetProgress *)self remainingAssetCount]) && (v8 = [(MANAutoAssetSetProgress *)v5 totalExpectedBytes], v8 == [(MANAutoAssetSetProgress *)self totalExpectedBytes]) && (v9 = [(MANAutoAssetSetProgress *)v5 totalWrittenBytes], v9 == [(MANAutoAssetSetProgress *)self totalWrittenBytes]) && (v10 = [(MANAutoAssetSetProgress *)v5 isStalled], v10 == [(MANAutoAssetSetProgress *)self isStalled]))
+      v5 = equalCopy;
+      downloadedAssetCount = [(MANAutoAssetSetProgress *)v5 downloadedAssetCount];
+      if (downloadedAssetCount == [(MANAutoAssetSetProgress *)self downloadedAssetCount]&& (v7 = [(MANAutoAssetSetProgress *)v5 remainingAssetCount], v7 == [(MANAutoAssetSetProgress *)self remainingAssetCount]) && (v8 = [(MANAutoAssetSetProgress *)v5 totalExpectedBytes], v8 == [(MANAutoAssetSetProgress *)self totalExpectedBytes]) && (v9 = [(MANAutoAssetSetProgress *)v5 totalWrittenBytes], v9 == [(MANAutoAssetSetProgress *)self totalWrittenBytes]) && (v10 = [(MANAutoAssetSetProgress *)v5 isStalled], v10 == [(MANAutoAssetSetProgress *)self isStalled]))
       {
         [(MANAutoAssetSetProgress *)v5 expectedTimeRemainingSecs];
         v14 = v13;
@@ -111,10 +111,10 @@
 
 - (id)summary
 {
-  v3 = [(MANAutoAssetSetProgress *)self downloadedAssetCount];
-  v4 = [(MANAutoAssetSetProgress *)self remainingAssetCount];
-  v5 = [(MANAutoAssetSetProgress *)self totalExpectedBytes];
-  v6 = [(MANAutoAssetSetProgress *)self totalWrittenBytes];
+  downloadedAssetCount = [(MANAutoAssetSetProgress *)self downloadedAssetCount];
+  remainingAssetCount = [(MANAutoAssetSetProgress *)self remainingAssetCount];
+  totalExpectedBytes = [(MANAutoAssetSetProgress *)self totalExpectedBytes];
+  totalWrittenBytes = [(MANAutoAssetSetProgress *)self totalWrittenBytes];
   if ([(MANAutoAssetSetProgress *)self isStalled])
   {
     v7 = @"Y";
@@ -126,7 +126,7 @@
   }
 
   [(MANAutoAssetSetProgress *)self expectedTimeRemainingSecs];
-  return [NSString stringWithFormat:@"downloadedCount:%lld|remainingAssetCount:%lld|expectedBytes:%lld|writtenBytes:%lld|stalled:%@|timeRemainingSecs:%f", v3, v4, v5, v6, v7, v8];
+  return [NSString stringWithFormat:@"downloadedCount:%lld|remainingAssetCount:%lld|expectedBytes:%lld|writtenBytes:%lld|stalled:%@|timeRemainingSecs:%f", downloadedAssetCount, remainingAssetCount, totalExpectedBytes, totalWrittenBytes, v7, v8];
 }
 
 @end

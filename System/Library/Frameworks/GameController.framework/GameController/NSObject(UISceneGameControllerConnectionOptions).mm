@@ -8,15 +8,15 @@
 {
   if (LoadGameControllerUIFramework(1) == 1)
   {
-    v2 = [a1 gameControllerActivationContext];
+    gameControllerActivationContext = [self gameControllerActivationContext];
   }
 
   else
   {
-    v2 = 0;
+    gameControllerActivationContext = 0;
   }
 
-  return v2;
+  return gameControllerActivationContext;
 }
 
 @end

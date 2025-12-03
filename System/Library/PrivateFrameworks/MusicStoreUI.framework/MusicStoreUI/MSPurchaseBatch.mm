@@ -1,17 +1,17 @@
 @interface MSPurchaseBatch
-- (id)copyContinuationsForPurchases:(id)a3;
+- (id)copyContinuationsForPurchases:(id)purchases;
 @end
 
 @implementation MSPurchaseBatch
 
-- (id)copyContinuationsForPurchases:(id)a3
+- (id)copyContinuationsForPurchases:(id)purchases
 {
-  if ([a3 count] != 1)
+  if ([purchases count] != 1)
   {
     return 0;
   }
 
-  v5 = [a3 objectAtIndex:0];
+  v5 = [purchases objectAtIndex:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

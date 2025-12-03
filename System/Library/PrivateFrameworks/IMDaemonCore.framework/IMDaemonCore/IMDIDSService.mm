@@ -1,33 +1,33 @@
 @interface IMDIDSService
 - (BOOL)canManageRegistration;
 - (BOOL)isRegistrationUnmanaged;
-- (IMDIDSService)initWithBundle:(id)a3 isMainService:(BOOL)a4;
-- (IMDIDSService)initWithBundle:(id)a3 subServiceName:(id)a4;
+- (IMDIDSService)initWithBundle:(id)bundle isMainService:(BOOL)service;
+- (IMDIDSService)initWithBundle:(id)bundle subServiceName:(id)name;
 - (IMDIDSService)mainService;
 - (NSArray)accountsLoadedFromIdentityServices;
 - (NSArray)activeAccountsFromIdentityServices;
-- (id)accountFromIDSAccountWithUniqueID:(id)a3;
-- (id)imdAccountLoginFromIDSAccountWithType:(int)a3 login:(id)a4;
-- (id)newAccountWithAccountDefaults:(id)a3 accountID:(id)a4;
+- (id)accountFromIDSAccountWithUniqueID:(id)d;
+- (id)imdAccountLoginFromIDSAccountWithType:(int)type login:(id)login;
+- (id)newAccountWithAccountDefaults:(id)defaults accountID:(id)d;
 - (void)_loadIDSAccountController;
-- (void)account:(id)a3 aliasesChanged:(id)a4;
-- (void)account:(id)a3 displayNameChanged:(id)a4;
-- (void)account:(id)a3 loginChanged:(id)a4;
-- (void)account:(id)a3 profileChanged:(id)a4;
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4;
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4;
-- (void)accountAdded:(id)a3;
-- (void)accountController:(id)a3 accountAdded:(id)a4;
-- (void)accountController:(id)a3 accountDisabled:(id)a4;
-- (void)accountController:(id)a3 accountEnabled:(id)a4;
-- (void)accountController:(id)a3 accountRemoved:(id)a4;
-- (void)accountController:(id)a3 accountUpdated:(id)a4;
-- (void)accountRemoved:(id)a3;
+- (void)account:(id)account aliasesChanged:(id)changed;
+- (void)account:(id)account displayNameChanged:(id)changed;
+- (void)account:(id)account loginChanged:(id)changed;
+- (void)account:(id)account profileChanged:(id)changed;
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed;
+- (void)account:(id)account vettedAliasesChanged:(id)changed;
+- (void)accountAdded:(id)added;
+- (void)accountController:(id)controller accountAdded:(id)added;
+- (void)accountController:(id)controller accountDisabled:(id)disabled;
+- (void)accountController:(id)controller accountEnabled:(id)enabled;
+- (void)accountController:(id)controller accountRemoved:(id)removed;
+- (void)accountController:(id)controller accountUpdated:(id)updated;
+- (void)accountRemoved:(id)removed;
 - (void)dealloc;
-- (void)disableAccount:(id)a3;
-- (void)enableAccount:(id)a3;
-- (void)refreshRegistrationForAccount:(id)a3;
-- (void)registrationFailedForAccount:(id)a3 needsDeletion:(id)a4;
+- (void)disableAccount:(id)account;
+- (void)enableAccount:(id)account;
+- (void)refreshRegistrationForAccount:(id)account;
+- (void)registrationFailedForAccount:(id)account needsDeletion:(id)deletion;
 @end
 
 @implementation IMDIDSService
@@ -46,8 +46,8 @@
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v4 = [(IDSAccountController *)self->_accountController accounts];
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      accounts = [(IDSAccountController *)self->_accountController accounts];
+      v5 = [accounts countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v5)
       {
         v7 = v5;
@@ -62,16 +62,16 @@
           {
             if (*v16 != v8)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(accounts);
             }
 
             v11 = *(*(&v15 + 1) + 8 * v10);
-            v12 = [MEMORY[0x277D19298] registration];
-            if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+            registration = [MEMORY[0x277D19298] registration];
+            if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
             {
               *buf = v14;
               v20 = v11;
-              _os_log_debug_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_DEBUG, "Adding registration delegate for account %@", buf, 0xCu);
+              _os_log_debug_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEBUG, "Adding registration delegate for account %@", buf, 0xCu);
             }
 
             [v11 addRegistrationDelegate:self queue:v9];
@@ -79,7 +79,7 @@
           }
 
           while (v7 != v10);
-          v7 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+          v7 = [accounts countByEnumeratingWithState:&v15 objects:v21 count:16];
         }
 
         while (v7);
@@ -91,19 +91,19 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (IMDIDSService)initWithBundle:(id)a3 subServiceName:(id)a4
+- (IMDIDSService)initWithBundle:(id)bundle subServiceName:(id)name
 {
   v9.receiver = self;
   v9.super_class = IMDIDSService;
   v6 = [(IMDService *)&v9 initWithBundle:?];
   if (v6)
   {
-    if ([a4 length])
+    if ([name length])
     {
-      v7 = [[IMDIDSService alloc] initWithBundle:a3 isMainService:0];
+      v7 = [[IMDIDSService alloc] initWithBundle:bundle isMainService:0];
       v6->_subService = v7;
       [(IMDIDSService *)v7 setMainService:v6];
-      [(IMDIDSService *)v6->_subService setSubServiceName:a4];
+      [(IMDIDSService *)v6->_subService setSubServiceName:name];
     }
 
     [(IMDIDSService *)v6 _loadIDSAccountController];
@@ -112,16 +112,16 @@
   return v6;
 }
 
-- (IMDIDSService)initWithBundle:(id)a3 isMainService:(BOOL)a4
+- (IMDIDSService)initWithBundle:(id)bundle isMainService:(BOOL)service
 {
-  v4 = a4;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = IMDIDSService;
-  v5 = [(IMDService *)&v9 initWithBundle:a3];
+  v5 = [(IMDService *)&v9 initWithBundle:bundle];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !serviceCopy;
   }
 
   else
@@ -144,8 +144,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(IDSAccountController *)self->_accountController accounts];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  accounts = [(IDSAccountController *)self->_accountController accounts];
+  v4 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -157,14 +157,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) removeRegistrationDelegate:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -179,7 +179,7 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountFromIDSAccountWithUniqueID:(id)a3
+- (id)accountFromIDSAccountWithUniqueID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
   [(IMDIDSService *)self _loadIDSAccountController];
@@ -255,8 +255,8 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(IMDService *)self serviceProperties];
-  v5 = [(NSDictionary *)v4 objectForKeyedSubscript:*MEMORY[0x277D1A6A8]];
+  serviceProperties = [(IMDService *)self serviceProperties];
+  v5 = [(NSDictionary *)serviceProperties objectForKeyedSubscript:*MEMORY[0x277D1A6A8]];
 
   return [v5 BOOLValue];
 }
@@ -274,13 +274,13 @@ LABEL_10:
   }
 }
 
-- (id)imdAccountLoginFromIDSAccountWithType:(int)a3 login:(id)a4
+- (id)imdAccountLoginFromIDSAccountWithType:(int)type login:(id)login
 {
-  v5 = MEMORY[0x231897A70](a4, a2);
+  v5 = MEMORY[0x231897A70](login, a2);
   v6 = v5;
-  if (a3)
+  if (type)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
       if ([v5 length])
       {
@@ -343,10 +343,10 @@ LABEL_10:
     while (v5);
   }
 
-  v13 = [[(IMDIDSService *)self subService] accountsLoadedFromIdentityServices];
-  if ([(NSArray *)v13 count])
+  accountsLoadedFromIdentityServices = [[(IMDIDSService *)self subService] accountsLoadedFromIdentityServices];
+  if ([(NSArray *)accountsLoadedFromIdentityServices count])
   {
-    [v3 addObjectsFromArray:v13];
+    [v3 addObjectsFromArray:accountsLoadedFromIdentityServices];
   }
 
   result = v3;
@@ -357,48 +357,48 @@ LABEL_10:
 - (NSArray)activeAccountsFromIdentityServices
 {
   v3 = [-[IDSAccountController enabledAccounts](self->_accountController "enabledAccounts")];
-  v4 = [[(IMDIDSService *)self subService] activeAccountsFromIdentityServices];
-  if (![(NSArray *)v4 count])
+  activeAccountsFromIdentityServices = [[(IMDIDSService *)self subService] activeAccountsFromIdentityServices];
+  if (![(NSArray *)activeAccountsFromIdentityServices count])
   {
     return v3;
   }
 
-  return [(NSArray *)v3 arrayByAddingObjectsFromArray:v4];
+  return [(NSArray *)v3 arrayByAddingObjectsFromArray:activeAccountsFromIdentityServices];
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ([a3 service] != self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ([added service] != self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_11:
     v8.receiver = self;
     v8.super_class = IMDIDSService;
-    [(IMDService *)&v8 accountAdded:a3];
+    [(IMDService *)&v8 accountAdded:added];
     goto LABEL_12;
   }
 
-  v5 = [a3 idsAccount];
+  idsAccount = [added idsAccount];
   if ([(IMDIDSService *)self canManageRegistration])
   {
-    [v5 addRegistrationDelegate:self queue:MEMORY[0x277D85CD0]];
+    [idsAccount addRegistrationDelegate:self queue:MEMORY[0x277D85CD0]];
   }
 
-  if ([v5 accountType] != 2)
+  if ([idsAccount accountType] != 2)
   {
-    if (-[IMDIDSService canManageRegistration](self, "canManageRegistration") && !-[IDSAccountController accountWithUniqueID:](self->_accountController, "accountWithUniqueID:", [v5 uniqueID]))
+    if (-[IMDIDSService canManageRegistration](self, "canManageRegistration") && !-[IDSAccountController accountWithUniqueID:](self->_accountController, "accountWithUniqueID:", [idsAccount uniqueID]))
     {
-      v6 = [MEMORY[0x277D19298] registration];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x277D19298] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v10 = a3;
+        addedCopy = added;
         v11 = 2112;
-        v12 = v5;
-        _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDAccount added %@, adding corresponding IDSAccount %@", buf, 0x16u);
+        v12 = idsAccount;
+        _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDAccount added %@, adding corresponding IDSAccount %@", buf, 0x16u);
       }
 
-      [(IDSAccountController *)self->_accountController addAccount:v5];
+      [(IDSAccountController *)self->_accountController addAccount:idsAccount];
     }
 
     goto LABEL_11;
@@ -408,35 +408,35 @@ LABEL_12:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ([a3 service] != self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ([removed service] != self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 LABEL_8:
     v8.receiver = self;
     v8.super_class = IMDIDSService;
-    [(IMDService *)&v8 accountRemoved:a3];
+    [(IMDService *)&v8 accountRemoved:removed];
     goto LABEL_9;
   }
 
-  v5 = [a3 idsAccount];
-  [v5 removeRegistrationDelegate:self];
-  if ([v5 accountType] != 2)
+  idsAccount = [removed idsAccount];
+  [idsAccount removeRegistrationDelegate:self];
+  if ([idsAccount accountType] != 2)
   {
     if ([(IMDIDSService *)self canManageRegistration])
     {
-      v6 = [MEMORY[0x277D19298] registration];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x277D19298] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v10 = a3;
+        removedCopy = removed;
         v11 = 2112;
-        v12 = v5;
-        _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDAccount removed %@, removing corresponding IDSAccount %@", buf, 0x16u);
+        v12 = idsAccount;
+        _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDAccount removed %@, removing corresponding IDSAccount %@", buf, 0x16u);
       }
 
-      -[IDSAccountController _removeAccount:](self->_accountController, "_removeAccount:", [v5 uniqueID]);
+      -[IDSAccountController _removeAccount:](self->_accountController, "_removeAccount:", [idsAccount uniqueID]);
     }
 
     goto LABEL_8;
@@ -446,34 +446,34 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newAccountWithAccountDefaults:(id)a3 accountID:(id)a4
+- (id)newAccountWithAccountDefaults:(id)defaults accountID:(id)d
 {
-  v7 = [objc_alloc(MEMORY[0x277D186C0]) initWithDictionary:a3 uniqueID:a4 serviceName:sub_22B6E43EC(self)];
-  v8 = [[IMDIDSAccount alloc] initWithAccountID:a4 defaults:a3 service:self idsAccount:v7];
+  v7 = [objc_alloc(MEMORY[0x277D186C0]) initWithDictionary:defaults uniqueID:d serviceName:sub_22B6E43EC(self)];
+  v8 = [[IMDIDSAccount alloc] initWithAccountID:d defaults:defaults service:self idsAccount:v7];
 
   return v8;
 }
 
-- (void)enableAccount:(id)a3
+- (void)enableAccount:(id)account
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (!self->_activatingAccount && [a3 service] == self)
+  if (!self->_activatingAccount && [account service] == self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 idsAccount];
+      idsAccount = [account idsAccount];
       if ([(IMDIDSService *)self canManageRegistration])
       {
-        v6 = [MEMORY[0x277D19298] registration];
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        registration = [MEMORY[0x277D19298] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138412290;
-          v9 = v5;
-          _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Enabling IDSAccount %@", &v8, 0xCu);
+          v9 = idsAccount;
+          _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Enabling IDSAccount %@", &v8, 0xCu);
         }
 
-        [(IDSAccountController *)self->_accountController enableAccount:v5];
+        [(IDSAccountController *)self->_accountController enableAccount:idsAccount];
       }
     }
   }
@@ -481,28 +481,28 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disableAccount:(id)a3
+- (void)disableAccount:(id)account
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (!self->_deactivatingAccount && [a3 service] == self)
+  if (!self->_deactivatingAccount && [account service] == self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 idsAccount];
-      if ([v5 accountType] != 2)
+      idsAccount = [account idsAccount];
+      if ([idsAccount accountType] != 2)
       {
         if ([(IMDIDSService *)self canManageRegistration])
         {
-          v6 = [MEMORY[0x277D19298] registration];
-          if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+          registration = [MEMORY[0x277D19298] registration];
+          if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
           {
             v8 = 138412290;
-            v9 = [v5 uniqueID];
-            _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Disabling IDSAccount %@", &v8, 0xCu);
+            uniqueID = [idsAccount uniqueID];
+            _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Disabling IDSAccount %@", &v8, 0xCu);
           }
 
-          [(IDSAccountController *)self->_accountController disableAccount:v5];
+          [(IDSAccountController *)self->_accountController disableAccount:idsAccount];
         }
       }
     }
@@ -511,23 +511,23 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountController:(id)a3 accountAdded:(id)a4
+- (void)accountController:(id)controller accountAdded:(id)added
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = [a4 uniqueID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Received account added %@", &v9, 0xCu);
+    uniqueID = [added uniqueID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Received account added %@", &v9, 0xCu);
   }
 
   if ([(IMDIDSService *)self canManageRegistration])
   {
-    [a4 addRegistrationDelegate:self queue:MEMORY[0x277D85CD0]];
+    [added addRegistrationDelegate:self queue:MEMORY[0x277D85CD0]];
   }
 
-  v7 = -[IMDIDSAccount initWithAccountID:defaults:service:idsAccount:]([IMDIDSAccount alloc], "initWithAccountID:defaults:service:idsAccount:", [a4 uniqueID], objc_msgSend(a4, "accountInfo"), self, a4);
+  v7 = -[IMDIDSAccount initWithAccountID:defaults:service:idsAccount:]([IMDIDSAccount alloc], "initWithAccountID:defaults:service:idsAccount:", [added uniqueID], objc_msgSend(added, "accountInfo"), self, added);
   if (v7)
   {
     [+[IMDAccountController sharedAccountController](IMDAccountController "sharedAccountController")];
@@ -536,18 +536,18 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountController:(id)a3 accountUpdated:(id)a4
+- (void)accountController:(id)controller accountUpdated:(id)updated
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = [a4 uniqueID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Received account updates %@", &v9, 0xCu);
+    uniqueID = [updated uniqueID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Received account updates %@", &v9, 0xCu);
   }
 
-  v7 = -[IMDIDSService accountFromIDSAccountWithUniqueID:](self, "accountFromIDSAccountWithUniqueID:", [a4 uniqueID]);
+  v7 = -[IMDIDSService accountFromIDSAccountWithUniqueID:](self, "accountFromIDSAccountWithUniqueID:", [updated uniqueID]);
   if ([(IMDIDSService *)self canManageRegistration])
   {
     [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
@@ -557,20 +557,20 @@ LABEL_9:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountController:(id)a3 accountRemoved:(id)a4
+- (void)accountController:(id)controller accountRemoved:(id)removed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = [a4 uniqueID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Received accountRemoved %@", &v16, 0xCu);
+    uniqueID = [removed uniqueID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Received accountRemoved %@", &v16, 0xCu);
   }
 
   if ([(IMDIDSService *)self canManageRegistration])
   {
-    [a4 removeRegistrationDelegate:self];
+    [removed removeRegistrationDelegate:self];
   }
 
   v7 = [+[IMDAccountController sharedAccountController](IMDAccountController "sharedAccountController")];
@@ -581,25 +581,25 @@ LABEL_9:
 
   else
   {
-    v8 = [MEMORY[0x277D19298] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    registration2 = [MEMORY[0x277D19298] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D9E30(a4, v8, v9, v10, v11, v12, v13, v14);
+      sub_22B7D9E30(removed, registration2, v9, v10, v11, v12, v13, v14);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountController:(id)a3 accountEnabled:(id)a4
+- (void)accountController:(id)controller accountEnabled:(id)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = [a4 uniqueID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Received accountEnabled %@", &v16, 0xCu);
+    uniqueID = [enabled uniqueID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Received accountEnabled %@", &v16, 0xCu);
   }
 
   v7 = [+[IMDAccountController sharedAccountController](IMDAccountController "sharedAccountController")];
@@ -612,25 +612,25 @@ LABEL_9:
 
   else
   {
-    v8 = [MEMORY[0x277D19298] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    registration2 = [MEMORY[0x277D19298] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D9E9C(a4, v8, v9, v10, v11, v12, v13, v14);
+      sub_22B7D9E9C(enabled, registration2, v9, v10, v11, v12, v13, v14);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountController:(id)a3 accountDisabled:(id)a4
+- (void)accountController:(id)controller accountDisabled:(id)disabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = [a4 uniqueID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "Received accountDisabled %@", &v16, 0xCu);
+    uniqueID = [disabled uniqueID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "Received accountDisabled %@", &v16, 0xCu);
   }
 
   v7 = [+[IMDAccountController sharedAccountController](IMDAccountController "sharedAccountController")];
@@ -643,149 +643,149 @@ LABEL_9:
 
   else
   {
-    v8 = [MEMORY[0x277D19298] registration];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    registration2 = [MEMORY[0x277D19298] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D9F08(a4, v8, v9, v10, v11, v12, v13, v14);
+      sub_22B7D9F08(disabled, registration2, v9, v10, v11, v12, v13, v14);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3, a4];
-  v5 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changed = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account, changed];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v4;
+    v8 = changed;
     v9 = 2112;
-    v10 = [v4 accountID];
-    _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_DEFAULT, "IMDIDSService received registration status changed: %@ (%@)", &v7, 0x16u);
+    accountID = [changed accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received registration status changed: %@ (%@)", &v7, 0x16u);
   }
 
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 aliasesChanged:(id)a4
+- (void)account:(id)account aliasesChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
-    v9 = a4;
+    changedCopy = changed;
     v10 = 2112;
     v11 = v5;
     v12 = 2112;
-    v13 = [v5 accountID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDIDSService received aliases changed to %@: %@ (%@)", &v8, 0x20u);
+    accountID = [v5 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received aliases changed to %@: %@ (%@)", &v8, 0x20u);
   }
 
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4
+- (void)account:(id)account vettedAliasesChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3, a4];
-  v5 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changed = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account, changed];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = v4;
+    v8 = changed;
     v9 = 2112;
-    v10 = [v4 accountID];
-    _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_DEFAULT, "IMDIDSService received vetted aliases changed: %@ (%@)", &v7, 0x16u);
+    accountID = [changed accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received vetted aliases changed: %@ (%@)", &v7, 0x16u);
   }
 
-  -[IMDNicknameController aliasesDidChange:](+[IMDNicknameController sharedInstance](IMDNicknameController, "sharedInstance"), "aliasesDidChange:", [v4 multiplePhoneNumbersTiedToAccount]);
+  -[IMDNicknameController aliasesDidChange:](+[IMDNicknameController sharedInstance](IMDNicknameController, "sharedInstance"), "aliasesDidChange:", [changed multiplePhoneNumbersTiedToAccount]);
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 profileChanged:(id)a4
+- (void)account:(id)account profileChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
-    v9 = a4;
+    changedCopy = changed;
     v10 = 2112;
     v11 = v5;
     v12 = 2112;
-    v13 = [v5 accountID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDIDSService received profile changed to %@: %@ (%@)", &v8, 0x20u);
+    accountID = [v5 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received profile changed to %@: %@ (%@)", &v8, 0x20u);
   }
 
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 loginChanged:(id)a4
+- (void)account:(id)account loginChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
-    v9 = a4;
+    changedCopy = changed;
     v10 = 2112;
     v11 = v5;
     v12 = 2112;
-    v13 = [v5 accountID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDIDSService received login changed to %@: %@ (%@)", &v8, 0x20u);
+    accountID = [v5 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received login changed to %@: %@ (%@)", &v8, 0x20u);
   }
 
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(id)a3 displayNameChanged:(id)a4
+- (void)account:(id)account displayNameChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412802;
-    v9 = a4;
+    changedCopy = changed;
     v10 = 2112;
     v11 = v5;
     v12 = 2112;
-    v13 = [v5 accountID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, "IMDIDSService received display name changed to %@: %@ (%@)", &v8, 0x20u);
+    accountID = [v5 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received display name changed to %@: %@ (%@)", &v8, 0x20u);
   }
 
   [-[IMDBroadcasterProviding broadcasterForListenersSupportingService:](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registrationFailedForAccount:(id)a3 needsDeletion:(id)a4
+- (void)registrationFailedForAccount:(id)account needsDeletion:(id)deletion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v6 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  v5 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v10 = v5;
     v11 = 2112;
-    v12 = [v5 accountID];
-    _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_DEFAULT, " => Registration failed, deactivating...: %@ (%@)", buf, 0x16u);
+    accountID = [v5 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, " => Registration failed, deactivating...: %@ (%@)", buf, 0x16u);
   }
 
   [+[IMDAccountController sharedAccountController](IMDAccountController "sharedAccountController")];
-  if ([a4 BOOLValue])
+  if ([deletion BOOLValue])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -798,18 +798,18 @@ LABEL_9:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshRegistrationForAccount:(id)a3
+- (void)refreshRegistrationForAccount:(id)account
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:a3];
-  v4 = [MEMORY[0x277D19298] registration];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  v3 = [(IMDIDSService *)self accountFromIDSAccountWithUniqueID:account];
+  registration = [MEMORY[0x277D19298] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412546;
     v7 = v3;
     v8 = 2112;
-    v9 = [v3 accountID];
-    _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_DEFAULT, "IMDIDSService received refresh registration: %@ (%@)", &v6, 0x16u);
+    accountID = [v3 accountID];
+    _os_log_impl(&dword_22B4CC000, registration, OS_LOG_TYPE_DEFAULT, "IMDIDSService received refresh registration: %@ (%@)", &v6, 0x16u);
   }
 
   [objc_msgSend(v3 "session")];

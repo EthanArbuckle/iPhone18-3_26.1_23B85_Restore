@@ -1,5 +1,5 @@
 @interface AttachmentSearchResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)title;
 - (_TtC11MobileNotesP33_F583289AB4A4398FFA2D9CF750E5A2EB22AttachmentSearchResult)init;
 - (int64_t)hash;
@@ -20,7 +20,7 @@
   Hasher.init()();
   type metadata accessor for AttachmentID();
   sub_1002C3D18(&qword_1006C2F60, &type metadata accessor for AttachmentID);
-  v3 = self;
+  selfCopy = self;
   dispatch thunk of Hashable.hash(into:)();
   String.hash(into:)();
   v4 = Hasher.finalize()();
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1002B7368(v8);

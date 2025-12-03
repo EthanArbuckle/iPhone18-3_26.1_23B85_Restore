@@ -5,26 +5,26 @@
 - (uint64_t)categoryIndex;
 - (uint64_t)categoryView;
 - (uint64_t)setCategoryIndex:(uint64_t)result;
-- (void)setCategory:(uint64_t)a1;
+- (void)setCategory:(uint64_t)category;
 @end
 
 @implementation UIAccessibilityElementKBEmojiCategory
 
 - (CGRect)accessibilityFrame
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
-  v16 = [(UIAccessibilityElementKBEmojiCategory *)self categoryView];
-  MEMORY[0x29EDC9740](v16);
-  if (v16)
+  categoryView = [(UIAccessibilityElementKBEmojiCategory *)self categoryView];
+  MEMORY[0x29EDC9740](categoryView);
+  if (categoryView)
   {
-    v14 = [(UIAccessibilityElementKBEmojiCategory *)v25 categoryView];
-    [v14 accessibilityFrame];
+    categoryView2 = [(UIAccessibilityElementKBEmojiCategory *)selfCopy categoryView];
+    [categoryView2 accessibilityFrame];
     v26 = v6;
     v27 = v7;
     v28 = v8;
     v29 = v9;
-    MEMORY[0x29EDC9740](v14);
+    MEMORY[0x29EDC9740](categoryView2);
   }
 
   else
@@ -38,16 +38,16 @@
     v23 = 0u;
     v22 = *MEMORY[0x29EDB90D8];
     v23 = *(MEMORY[0x29EDB90D8] + 16);
-    v17[0] = MEMORY[0x29EDC9748](v25);
+    v17[0] = MEMORY[0x29EDC9748](selfCopy);
     v17[1] = v18;
     AXPerformSafeBlock();
-    v15 = [(UIAccessibilityElementKBEmojiCategory *)v25 accessibilityContainer];
+    accessibilityContainer = [(UIAccessibilityElementKBEmojiCategory *)selfCopy accessibilityContainer];
     UIAccessibilityFrameForBounds();
     v26 = v2;
     v27 = v3;
     v28 = v4;
     v29 = v5;
-    MEMORY[0x29EDC9740](v15);
+    MEMORY[0x29EDC9740](accessibilityContainer);
     objc_storeStrong(v17, 0);
     _Block_object_dispose(v18, 8);
   }
@@ -65,9 +65,9 @@
 
 - (uint64_t)categoryView
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 56);
+    return *(self + 56);
   }
 
   else
@@ -106,9 +106,9 @@ __n128 __59__UIAccessibilityElementKBEmojiCategory_accessibilityFrame__block_inv
 
 - (uint64_t)categoryIndex
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 64);
+    return *(self + 64);
   }
 
   else
@@ -121,12 +121,12 @@ __n128 __59__UIAccessibilityElementKBEmojiCategory_accessibilityFrame__block_inv
 {
   v16[3] = self;
   v16[2] = a2;
-  v5 = [(UIAccessibilityElementKBEmojiCategory *)self category];
-  v4 = [v5 safeValueForKey:@"_categoryType"];
-  v6 = [v4 intValue];
+  category = [(UIAccessibilityElementKBEmojiCategory *)self category];
+  v4 = [category safeValueForKey:@"_categoryType"];
+  intValue = [v4 intValue];
   MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
-  v16[1] = v6;
+  MEMORY[0x29EDC9740](category);
+  v16[1] = intValue;
   v7 = MEMORY[0x29EDBA0F8];
   v8 = accessibilityLocalizedString(@"emoji.category");
   v10 = 0;
@@ -149,9 +149,9 @@ __n128 __59__UIAccessibilityElementKBEmojiCategory_accessibilityFrame__block_inv
 
 - (uint64_t)category
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -170,11 +170,11 @@ double __59__UIAccessibilityElementKBEmojiCategory_accessibilityLabel__block_inv
   return result;
 }
 
-- (void)setCategory:(uint64_t)a1
+- (void)setCategory:(uint64_t)category
 {
-  if (a1)
+  if (category)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((category + 48), a2);
   }
 }
 

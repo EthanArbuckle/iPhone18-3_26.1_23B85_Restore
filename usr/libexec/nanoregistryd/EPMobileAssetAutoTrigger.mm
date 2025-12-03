@@ -1,35 +1,35 @@
 @interface EPMobileAssetAutoTrigger
-+ (id)newService:(id)a3;
++ (id)newService:(id)service;
 - (BOOL)isUIUnlocked;
-- (EPMobileAssetAutoTrigger)initWithServiceRegistry:(id)a3;
+- (EPMobileAssetAutoTrigger)initWithServiceRegistry:(id)registry;
 - (double)getLastAssetUpdateCheckInterval;
-- (double)getRequiredCooldownIntervalForFailureCount:(int64_t)a3;
-- (id)getLatestAssetFromQueryResults:(id)a3;
-- (id)mobileAssetDownloadOptionsUserInitiated:(BOOL)a3;
+- (double)getRequiredCooldownIntervalForFailureCount:(int64_t)count;
+- (id)getLatestAssetFromQueryResults:(id)results;
+- (id)mobileAssetDownloadOptionsUserInitiated:(BOOL)initiated;
 - (int64_t)getFailureCount;
 - (void)dealloc;
-- (void)queryAndGetLatestAssetForAssetType:(id)a3 withAssetCompatibilityVersion:(id)a4 withCompletion:(id)a5;
+- (void)queryAndGetLatestAssetForAssetType:(id)type withAssetCompatibilityVersion:(id)version withCompletion:(id)completion;
 - (void)registerForNotifications;
-- (void)setLastAssetUpdateCheckDate:(id)a3 withSuccess:(BOOL)a4;
+- (void)setLastAssetUpdateCheckDate:(id)date withSuccess:(BOOL)success;
 - (void)unregisterForNotifications;
 - (void)update;
-- (void)updateAssetFor:(id)a3 onQueue:(id)a4 userInitiated:(BOOL)a5 withCompletion:(id)a6;
+- (void)updateAssetFor:(id)for onQueue:(id)queue userInitiated:(BOOL)initiated withCompletion:(id)completion;
 @end
 
 @implementation EPMobileAssetAutoTrigger
 
-+ (id)newService:(id)a3
++ (id)newService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithServiceRegistry:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initWithServiceRegistry:serviceCopy];
 
   return v5;
 }
 
-- (EPMobileAssetAutoTrigger)initWithServiceRegistry:(id)a3
+- (EPMobileAssetAutoTrigger)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
-  objc_storeStrong(&self->_serviceRegistry, a3);
+  registryCopy = registry;
+  objc_storeStrong(&self->_serviceRegistry, registry);
   v6 = [(EPMobileAssetAutoTrigger *)self init];
   if (v6)
   {
@@ -71,13 +71,13 @@
   if (self->_uiUnlockNotifyToken == -1)
   {
     v4 = +[NRQueue registryDaemonQueue];
-    v5 = [v4 queue];
+    queue = [v4 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10000E250;
     handler[3] = &unk_1001759E8;
     handler[4] = self;
-    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockNotifyToken, v5, handler);
+    v6 = notify_register_dispatch("com.apple.springboard.lockstate", p_uiUnlockNotifyToken, queue, handler);
 
     if (v6)
     {
@@ -135,11 +135,11 @@
 
 - (void)update
 {
-  v3 = [(EPMobileAssetAutoTrigger *)self isUIUnlocked];
-  if (v3)
+  isUIUnlocked = [(EPMobileAssetAutoTrigger *)self isUIUnlocked];
+  if (isUIUnlocked)
   {
     wasUIUnlocked = self->_wasUIUnlocked;
-    self->_wasUIUnlocked = v3;
+    self->_wasUIUnlocked = isUIUnlocked;
     if (!wasUIUnlocked)
     {
       [(EPMobileAssetAutoTrigger *)self getLastAssetUpdateCheckInterval];
@@ -176,13 +176,13 @@
         }
 
         v16 = +[NRQueue assetDownloadQueue];
-        v17 = [v16 queue];
+        queue = [v16 queue];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_10000E630;
         v18[3] = &unk_100175A10;
         v18[4] = self;
-        [(EPMobileAssetAutoTrigger *)self updateCompatibilityIndexAssetOnQueue:v17 userInitiated:1 withCompletion:v18];
+        [(EPMobileAssetAutoTrigger *)self updateCompatibilityIndexAssetOnQueue:queue userInitiated:1 withCompletion:v18];
       }
 
       else if (v13)
@@ -209,20 +209,20 @@
   v2 = [(NRPreferences *)self->_prefs objectForKeyedSubscript:@"lastAssetUpdateFailureCount"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
-- (double)getRequiredCooldownIntervalForFailureCount:(int64_t)a3
+- (double)getRequiredCooldownIntervalForFailureCount:(int64_t)count
 {
-  if (a3 <= 0)
+  if (count <= 0)
   {
     v13 = sub_1000034AC();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -247,13 +247,13 @@
     goto LABEL_12;
   }
 
-  v4 = 9;
-  if (a3 < 9)
+  countCopy = 9;
+  if (count < 9)
   {
-    v4 = a3;
+    countCopy = count;
   }
 
-  v5 = 150 << v4;
+  v5 = 150 << countCopy;
   if (v5 >= 0x5460)
   {
     v5 = 21600;
@@ -276,7 +276,7 @@ LABEL_13:
     v16 = 134218240;
     v17 = v6;
     v18 = 2048;
-    v19 = a3;
+    countCopy2 = count;
     v10 = "EPMobileAssetAutoTrigger: Using backoff interval: %.0f seconds for failure count: %ld";
     v11 = v9;
     v12 = 22;
@@ -288,10 +288,10 @@ LABEL_12:
   return v6;
 }
 
-- (void)setLastAssetUpdateCheckDate:(id)a3 withSuccess:(BOOL)a4
+- (void)setLastAssetUpdateCheckDate:(id)date withSuccess:(BOOL)success
 {
-  v4 = a4;
-  v6 = a3;
+  successCopy = success;
+  dateCopy = date;
   v7 = sub_1000034AC();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -301,20 +301,20 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v4)
+      if (successCopy)
       {
         v10 = @"YES";
       }
 
       v20 = 138543618;
-      v21 = v6;
+      v21 = dateCopy;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "EPMobileAssetAutoTrigger: setLastAssetUpdateCheckDate: %{public}@ withSuccess: %@", &v20, 0x16u);
     }
   }
 
-  if (v4)
+  if (successCopy)
   {
     [(NRPreferences *)self->_prefs setObject:0 forKeyedSubscript:@"lastAssetUpdateFailureCount"];
   }
@@ -340,9 +340,9 @@ LABEL_12:
     }
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    [v6 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v16 = [NSNumber numberWithDouble:?];
     prefs = self->_prefs;
     p_prefs = &self->_prefs;
@@ -396,11 +396,11 @@ LABEL_12:
   return v7;
 }
 
-- (void)updateAssetFor:(id)a3 onQueue:(id)a4 userInitiated:(BOOL)a5 withCompletion:(id)a6
+- (void)updateAssetFor:(id)for onQueue:(id)queue userInitiated:(BOOL)initiated withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  forCopy = for;
+  queueCopy = queue;
+  completionCopy = completion;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -412,17 +412,17 @@ LABEL_12:
   v17[2] = sub_10000EED0;
   v17[3] = &unk_100175AD8;
   v17[4] = self;
-  v21 = a5;
-  v13 = v10;
+  initiatedCopy = initiated;
+  v13 = forCopy;
   v18 = v13;
-  v14 = v12;
+  v14 = completionCopy;
   v19 = v14;
   v20 = v22;
   v15 = objc_retainBlock(v17);
   v16 = v15;
-  if (v11)
+  if (queueCopy)
   {
-    dispatch_async(v11, v15);
+    dispatch_async(queueCopy, v15);
   }
 
   else
@@ -433,16 +433,16 @@ LABEL_12:
   _Block_object_dispose(v22, 8);
 }
 
-- (void)queryAndGetLatestAssetForAssetType:(id)a3 withAssetCompatibilityVersion:(id)a4 withCompletion:(id)a5
+- (void)queryAndGetLatestAssetForAssetType:(id)type withAssetCompatibilityVersion:(id)version withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[MAAssetQuery alloc] initWithType:v8];
+  typeCopy = type;
+  versionCopy = version;
+  completionCopy = completion;
+  v11 = [[MAAssetQuery alloc] initWithType:typeCopy];
   [v11 returnTypes:2];
-  if (v9)
+  if (versionCopy)
   {
-    [v11 addKeyValuePair:ASAttributeCompatibilityVersion with:v9];
+    [v11 addKeyValuePair:ASAttributeCompatibilityVersion with:versionCopy];
   }
 
   v12 = nr_framework_log();
@@ -454,9 +454,9 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v21 = v8;
+      v21 = typeCopy;
       v22 = 2114;
-      v23 = v9;
+      v23 = versionCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "EPMobileAssetAutoTrigger: Query for %{public}@ with asset compatibility version %{public}@", buf, 0x16u);
     }
   }
@@ -467,17 +467,17 @@ LABEL_12:
   v17[3] = &unk_100175B28;
   v17[4] = self;
   v18 = v11;
-  v19 = v10;
-  v15 = v10;
+  v19 = completionCopy;
+  v15 = completionCopy;
   v16 = v11;
   [v16 queryMetaData:v17];
 }
 
-- (id)getLatestAssetFromQueryResults:(id)a3
+- (id)getLatestAssetFromQueryResults:(id)results
 {
-  v3 = a3;
-  v4 = [v3 results];
-  v5 = [v4 count];
+  resultsCopy = results;
+  results = [resultsCopy results];
+  v5 = [results count];
 
   v6 = nr_framework_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -489,9 +489,9 @@ LABEL_12:
       v8 = nr_framework_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v3 results];
+        results2 = [resultsCopy results];
         *buf = 134217984;
-        v36 = [v9 count];
+        v36 = [results2 count];
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "EPMobileAssetAutoTrigger: Query returned %lu assets", buf, 0xCu);
       }
     }
@@ -500,7 +500,7 @@ LABEL_12:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [v3 results];
+    obj = [resultsCopy results];
     v10 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v10)
     {
@@ -521,15 +521,15 @@ LABEL_12:
           [v16 logAsset];
           if (v12)
           {
-            v17 = [v12 attributes];
-            v18 = [v17 objectForKey:v14];
-            v19 = [v18 integerValue];
+            attributes = [v12 attributes];
+            v18 = [attributes objectForKey:v14];
+            integerValue = [v18 integerValue];
 
-            v20 = [v16 attributes];
-            v21 = [v20 objectForKey:v14];
-            v22 = [v21 integerValue];
+            attributes2 = [v16 attributes];
+            v21 = [attributes2 objectForKey:v14];
+            integerValue2 = [v21 integerValue];
 
-            if (v22 > v19)
+            if (integerValue2 > integerValue)
             {
               v23 = v16;
 
@@ -560,7 +560,7 @@ LABEL_12:
     if (v26)
     {
       v24 = nr_framework_log();
-      v3 = v28;
+      resultsCopy = v28;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
@@ -573,7 +573,7 @@ LABEL_26:
       goto LABEL_29;
     }
 
-    v3 = v28;
+    resultsCopy = v28;
   }
 
   else
@@ -599,11 +599,11 @@ LABEL_29:
   return v12;
 }
 
-- (id)mobileAssetDownloadOptionsUserInitiated:(BOOL)a3
+- (id)mobileAssetDownloadOptionsUserInitiated:(BOOL)initiated
 {
-  v3 = a3;
+  initiatedCopy = initiated;
   v4 = objc_alloc_init(MADownloadOptions);
-  [v4 setDiscretionary:!v3];
+  [v4 setDiscretionary:!initiatedCopy];
   [v4 setDisableUI:1];
   [v4 setAllowsCellularAccess:1];
   [v4 setAllowDaemonConnectionRetries:1];

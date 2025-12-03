@@ -1,8 +1,8 @@
 @interface HostSendAskToQuestionFlowCoordinator
 - (_TtC7AskToUI36HostSendAskToQuestionFlowCoordinator)init;
-- (void)dismissWithPropagatingError:(id)a3 reply:(id)a4;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)dismissWithPropagatingError:(id)error reply:(id)reply;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation HostSendAskToQuestionFlowCoordinator
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E533D40, &qword_2411ACDE0);
   v5 = *(*(v4 - 8) + 64);
@@ -37,11 +37,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_241193CF4();
   v10 = sub_2411ABDD8();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
-  v11 = v9;
+  v11 = selfCopy;
   v12 = sub_2411ABD98();
   v13 = swift_allocObject();
   v13[2] = v12;
@@ -50,7 +50,7 @@
   sub_241192B80(0, 0, v7, &unk_2411AD740, v13);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   sub_2411ABDA8();
   sub_2411ABD98();
@@ -60,20 +60,20 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = a4;
-  sub_24119757C(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_24119757C(error);
 }
 
-- (void)dismissWithPropagatingError:(id)a3 reply:(id)a4
+- (void)dismissWithPropagatingError:(id)error reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  v9 = a3;
-  sub_241196984(a3, sub_2411981E8, v7);
+  selfCopy = self;
+  errorCopy = error;
+  sub_241196984(error, sub_2411981E8, v7);
 }
 
 @end

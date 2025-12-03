@@ -8,13 +8,13 @@
 - (NSString)storeFrontIdentifier;
 - (NSString)token;
 - (NSString)userMessage;
-- (SSAuthenticationResponse)initWithURLResponse:(id)a3 dictionary:(id)a4;
-- (id)_valueForFirstAvailableKey:(id)a3;
+- (SSAuthenticationResponse)initWithURLResponse:(id)response dictionary:(id)dictionary;
+- (id)_valueForFirstAvailableKey:(id)key;
 - (id)altDSID;
 - (id)newAccount;
-- (int64_t)_responseTypeForErrorNumber:(int64_t)a3;
-- (int64_t)_responseTypeForFailureType:(int64_t)a3;
-- (int64_t)_responseTypeForStatusValue:(int64_t)a3;
+- (int64_t)_responseTypeForErrorNumber:(int64_t)number;
+- (int64_t)_responseTypeForFailureType:(int64_t)type;
+- (int64_t)_responseTypeForStatusValue:(int64_t)value;
 - (int64_t)accountKind;
 - (int64_t)availableServiceTypes;
 - (int64_t)enabledServiceTypes;
@@ -23,20 +23,20 @@
 
 @implementation SSAuthenticationResponse
 
-- (SSAuthenticationResponse)initWithURLResponse:(id)a3 dictionary:(id)a4
+- (SSAuthenticationResponse)initWithURLResponse:(id)response dictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SSAuthenticationResponse;
   v8 = [(SSAuthenticationResponse *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dictionaryCopy copy];
     responseDictionary = v8->_responseDictionary;
     v8->_responseDictionary = v9;
 
-    v11 = [v6 copy];
+    v11 = [responseCopy copy];
     urlResponse = v8->_urlResponse;
     v8->_urlResponse = v11;
   }
@@ -239,15 +239,15 @@
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"isManagedStudent"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isNewCustomer
@@ -255,22 +255,22 @@
   v2 = [(SSAuthenticationResponse *)self _valueForFirstAvailableKey:@"newCustomer", 0];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)newAccount
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(SSAuthenticationResponse *)self accountUniqueIdentifier];
-  if (v3)
+  accountUniqueIdentifier = [(SSAuthenticationResponse *)self accountUniqueIdentifier];
+  if (accountUniqueIdentifier)
   {
     v4 = objc_alloc_init(MEMORY[0x1E6959A48]);
     v25 = [v4 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930]];
@@ -295,9 +295,9 @@ LABEL_4:
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
-        v11 = [v10 username];
-        v12 = [(SSAuthenticationResponse *)self accountName];
-        v13 = [v11 isEqualToString:v12];
+        username = [v10 username];
+        accountName = [(SSAuthenticationResponse *)self accountName];
+        v13 = [username isEqualToString:accountName];
 
         if (v13)
         {
@@ -335,27 +335,27 @@ LABEL_10:
     v15 = objc_alloc_init(v14[2]);
 LABEL_13:
     [(SSAccount *)v15 setAccountKind:[(SSAuthenticationResponse *)self accountKind]];
-    v16 = [(SSAuthenticationResponse *)self accountName];
-    [(SSAccount *)v15 setAccountName:v16];
+    accountName2 = [(SSAuthenticationResponse *)self accountName];
+    [(SSAccount *)v15 setAccountName:accountName2];
 
     [(SSAccount *)v15 setAccountScope:SSAccountScopeForURLBagType([(SSAuthenticationResponse *)self URLBagType])];
-    v17 = [(SSAuthenticationResponse *)self altDSID];
-    [(SSAccount *)v15 setAltDSID:v17];
+    altDSID = [(SSAuthenticationResponse *)self altDSID];
+    [(SSAccount *)v15 setAltDSID:altDSID];
 
     [(SSAccount *)v15 setAvailableServiceTypes:[(SSAuthenticationResponse *)self availableServiceTypes]];
-    v18 = [(SSAuthenticationResponse *)self creditsString];
-    [(SSAccount *)v15 setCreditsString:v18];
+    creditsString = [(SSAuthenticationResponse *)self creditsString];
+    [(SSAccount *)v15 setCreditsString:creditsString];
 
     [(SSAccount *)v15 setEnabledServiceTypes:[(SSAuthenticationResponse *)self enabledServiceTypes]];
     [(SSAccount *)v15 setManagedAppleID:[(SSAuthenticationResponse *)self isManagedStudent]];
     [(SSAccount *)v15 setNewCustomer:[(SSAuthenticationResponse *)self isNewCustomer]];
-    v19 = [(SSAuthenticationResponse *)self token];
-    [(SSAccount *)v15 setSecureToken:v19];
+    token = [(SSAuthenticationResponse *)self token];
+    [(SSAccount *)v15 setSecureToken:token];
 
-    v20 = [(SSAuthenticationResponse *)self storeFrontIdentifier];
-    [(SSAccount *)v15 setStoreFrontIdentifier:v20];
+    storeFrontIdentifier = [(SSAuthenticationResponse *)self storeFrontIdentifier];
+    [(SSAccount *)v15 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    [(SSAccount *)v15 setUniqueIdentifier:v3];
+    [(SSAccount *)v15 setUniqueIdentifier:accountUniqueIdentifier];
     v21 = [(SSAuthenticationResponse *)self _valueForFirstAvailableKey:@"address", 0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -424,38 +424,38 @@ LABEL_9:
 - (NSString)storeFrontIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(NSHTTPURLResponse *)self->_urlResponse allHeaderFields];
-  v3 = [v2 objectForKey:@"X-Set-Apple-Store-Front"];
+  allHeaderFields = [(NSHTTPURLResponse *)self->_urlResponse allHeaderFields];
+  v3 = [allHeaderFields objectForKey:@"X-Set-Apple-Store-Front"];
   if (v3)
   {
     goto LABEL_2;
   }
 
-  v5 = [@"X-Set-Apple-Store-Front" lowercaseString];
-  v4 = [v2 objectForKey:v5];
+  lowercaseString = [@"X-Set-Apple-Store-Front" lowercaseString];
+  storeFrontIdentifier = [allHeaderFields objectForKey:lowercaseString];
 
-  if (!v4)
+  if (!storeFrontIdentifier)
   {
-    v3 = [v2 objectForKey:@"X-Apple-Request-Store-Front"];
+    v3 = [allHeaderFields objectForKey:@"X-Apple-Request-Store-Front"];
     if (v3)
     {
 LABEL_2:
-      v4 = v3;
+      storeFrontIdentifier = v3;
       goto LABEL_4;
     }
 
-    v7 = [@"X-Apple-Request-Store-Front" lowercaseString];
-    v4 = [v2 objectForKey:v7];
+    lowercaseString2 = [@"X-Apple-Request-Store-Front" lowercaseString];
+    storeFrontIdentifier = [allHeaderFields objectForKey:lowercaseString2];
 
-    if (!v4)
+    if (!storeFrontIdentifier)
     {
       v8 = +[SSAccountStore defaultStore];
-      v9 = [v8 localAccount];
-      v10 = [v9 resultWithError:0];
+      localAccount = [v8 localAccount];
+      v10 = [localAccount resultWithError:0];
 
-      v4 = [v10 storeFrontIdentifier];
+      storeFrontIdentifier = [v10 storeFrontIdentifier];
 
-      if (!v4)
+      if (!storeFrontIdentifier)
       {
         v11 = +[SSLogConfig sharedAccountsAuthenticationConfig];
         if (!v11)
@@ -463,19 +463,19 @@ LABEL_2:
           v11 = +[SSLogConfig sharedConfig];
         }
 
-        v12 = [v11 shouldLog];
+        shouldLog = [v11 shouldLog];
         if ([v11 shouldLogToDisk])
         {
-          v13 = v12 | 2;
+          v13 = shouldLog | 2;
         }
 
         else
         {
-          v13 = v12;
+          v13 = shouldLog;
         }
 
-        v14 = [v11 OSLogObject];
-        if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v11 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v13 &= 2u;
         }
@@ -492,13 +492,13 @@ LABEL_2:
           {
 LABEL_21:
 
-            v4 = 0;
+            storeFrontIdentifier = 0;
             goto LABEL_4;
           }
 
-          v14 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v24, v23, v24}];
+          oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, &v24, v23, v24}];
           free(v16);
-          SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, v14);
+          SSFileLog(v11, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
         }
 
         goto LABEL_21;
@@ -508,7 +508,7 @@ LABEL_21:
 
 LABEL_4:
 
-  return v4;
+  return storeFrontIdentifier;
 }
 
 - (NSString)token
@@ -548,28 +548,28 @@ LABEL_4:
   return v3;
 }
 
-- (int64_t)_responseTypeForErrorNumber:(int64_t)a3
+- (int64_t)_responseTypeForErrorNumber:(int64_t)number
 {
-  if ((a3 - 9007) > 2)
+  if ((number - 9007) > 2)
   {
     return 3;
   }
 
   else
   {
-    return qword_1D4B38FA8[a3 - 9007];
+    return qword_1D4B38FA8[number - 9007];
   }
 }
 
-- (int64_t)_responseTypeForFailureType:(int64_t)a3
+- (int64_t)_responseTypeForFailureType:(int64_t)type
 {
   v3 = 3;
-  if (a3 == -128)
+  if (type == -128)
   {
     v3 = 1;
   }
 
-  if (a3 == -5000)
+  if (type == -5000)
   {
     return 2;
   }
@@ -580,20 +580,20 @@ LABEL_4:
   }
 }
 
-- (int64_t)_responseTypeForStatusValue:(int64_t)a3
+- (int64_t)_responseTypeForStatusValue:(int64_t)value
 {
   v3 = 3;
-  if (a3 == -128)
+  if (value == -128)
   {
     v3 = 1;
   }
 
-  if (!a3)
+  if (!value)
   {
     v3 = 0;
   }
 
-  if (a3 == -5000)
+  if (value == -5000)
   {
     return 2;
   }
@@ -604,19 +604,19 @@ LABEL_4:
   }
 }
 
-- (id)_valueForFirstAvailableKey:(id)a3
+- (id)_valueForFirstAvailableKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(NSDictionary *)self->_responseDictionary objectForKey:@"accountInfo"];
   v11 = &v13;
-  if (v4)
+  if (keyCopy)
   {
     do
     {
-      v6 = [(NSDictionary *)self->_responseDictionary objectForKey:v4];
+      v6 = [(NSDictionary *)self->_responseDictionary objectForKey:keyCopy];
       if (!v6)
       {
-        v6 = [v5 objectForKey:v4];
+        v6 = [v5 objectForKey:keyCopy];
       }
 
       v7 = v11++;
@@ -632,7 +632,7 @@ LABEL_4:
         v9 = 0;
       }
 
-      v4 = v8;
+      keyCopy = v8;
     }
 
     while (v9);

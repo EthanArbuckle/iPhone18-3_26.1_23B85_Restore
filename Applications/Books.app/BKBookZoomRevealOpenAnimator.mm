@@ -8,17 +8,17 @@
 - (id)viewControllerForStatusBarStyle;
 - (void)_animateFirstHalf;
 - (void)_animateSecondHalf;
-- (void)_revealWithCompletion:(id)a3;
-- (void)_showSpinner:(BOOL)a3 delay:(double)a4 completion:(id)a5;
-- (void)_zoomWithCompletion:(id)a3;
+- (void)_revealWithCompletion:(id)completion;
+- (void)_showSpinner:(BOOL)spinner delay:(double)delay completion:(id)completion;
+- (void)_zoomWithCompletion:(id)completion;
 - (void)animateNonInteractive;
-- (void)animateRevealWithCompletion:(id)a3;
-- (void)animateZoomWithCompletion:(id)a3;
+- (void)animateRevealWithCompletion:(id)completion;
+- (void)animateZoomWithCompletion:(id)completion;
 - (void)bookContentDidLoad;
 - (void)setupSpinner;
 - (void)setupViewsForReveal;
 - (void)setupViewsForZoom;
-- (void)teardownViews:(BOOL)a3;
+- (void)teardownViews:(BOOL)views;
 @end
 
 @implementation BKBookZoomRevealOpenAnimator
@@ -51,7 +51,7 @@
   BCReportAssertionFailureWithMessage();
 }
 
-- (void)animateZoomWithCompletion:(id)a3
+- (void)animateZoomWithCompletion:(id)completion
 {
   v5 = NSStringFromSelector(a2);
   v3 = objc_opt_class();
@@ -67,7 +67,7 @@
   BCReportAssertionFailureWithMessage();
 }
 
-- (void)animateRevealWithCompletion:(id)a3
+- (void)animateRevealWithCompletion:(id)completion
 {
   v5 = NSStringFromSelector(a2);
   v3 = objc_opt_class();
@@ -91,16 +91,16 @@
   return [CAMediaTimingFunction functionWithControlPoints:v2];
 }
 
-- (void)teardownViews:(BOOL)a3
+- (void)teardownViews:(BOOL)views
 {
-  v3 = a3;
-  v5 = [(BKBookZoomRevealOpenAnimator *)self spinnerView];
-  [v5 removeFromSuperview];
+  viewsCopy = views;
+  spinnerView = [(BKBookZoomRevealOpenAnimator *)self spinnerView];
+  [spinnerView removeFromSuperview];
 
   [(BKBookZoomRevealOpenAnimator *)self setSpinnerView:0];
   v6.receiver = self;
   v6.super_class = BKBookZoomRevealOpenAnimator;
-  [(BKBookOpenAnimator *)&v6 teardownViews:v3];
+  [(BKBookOpenAnimator *)&v6 teardownViews:viewsCopy];
 }
 
 - (void)bookContentDidLoad
@@ -118,8 +118,8 @@
 {
   [(BKBookOpenAnimator *)self coverAspectRatio];
   v4 = v3;
-  v5 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v5 bounds];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView bounds];
   if (v4 > 0.9)
   {
     v10 = CGRectGetHeight(*&v6) / 768.0;
@@ -138,16 +138,16 @@
   [(BKBookZoomRevealOpenAnimator *)self _spinnerScale];
   v4 = round(v3 * 112.0);
   v10 = [[UIView alloc] initWithFrame:{0.0, 0.0, v4, v4}];
-  v5 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v5 bounds];
+  coverContainerView = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView bounds];
   CGRectGetCenterNoRounding();
   [v10 setCenter:?];
 
   [v10 frame];
   v13 = CGRectIntegral(v12);
   [v10 setFrame:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
-  v6 = [v10 layer];
-  [v6 setCornerRadius:8.0];
+  layer = [v10 layer];
+  [layer setCornerRadius:8.0];
 
   v7 = [UIColor colorWithWhite:0.0 alpha:0.8];
   [v10 setBackgroundColor:v7];
@@ -163,19 +163,19 @@
   [v8 startAnimating];
   [v10 addSubview:v8];
   [v10 setAlpha:0.0];
-  v9 = [(BKBookOpenAnimator *)self coverContainerView];
-  [v9 addSubview:v10];
+  coverContainerView2 = [(BKBookOpenAnimator *)self coverContainerView];
+  [coverContainerView2 addSubview:v10];
 }
 
-- (void)_showSpinner:(BOOL)a3 delay:(double)a4 completion:(id)a5
+- (void)_showSpinner:(BOOL)spinner delay:(double)delay completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000E593C;
   v5[3] = &unk_100A044C8;
   v5[4] = self;
-  v6 = a3;
-  [UIView animateWithDuration:0 delay:v5 options:a5 animations:0.3 completion:a4];
+  spinnerCopy = spinner;
+  [UIView animateWithDuration:0 delay:v5 options:completion animations:0.3 completion:delay];
 }
 
 - (void)_animateFirstHalf
@@ -189,20 +189,20 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000E5E00;
   v10[3] = &unk_100A03788;
-  v11 = self;
+  selfCopy = self;
   v12 = objc_retainBlock(v13);
   v3 = v12;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E60A8;
   v8[3] = &unk_100A04160;
-  v8[4] = v11;
+  v8[4] = selfCopy;
   v9 = objc_retainBlock(v10);
   v4 = v9;
   v5 = objc_retainBlock(v8);
   [(BKBookZoomRevealOpenAnimator *)self setSecondHalfStarted:0];
-  v6 = [(BKBookOpenAnimator *)self fromViewController];
-  [v6 setNeedsStatusBarAppearanceUpdate];
+  fromViewController = [(BKBookOpenAnimator *)self fromViewController];
+  [fromViewController setNeedsStatusBarAppearanceUpdate];
 
   if ([(BKBookOpenAnimator *)self opening])
   {
@@ -240,8 +240,8 @@
   v5[4] = self;
   v3 = objc_retainBlock(v5);
   [(BKBookZoomRevealOpenAnimator *)self setSecondHalfStarted:1];
-  v4 = [(BKBookOpenAnimator *)self toViewController];
-  [v4 setNeedsStatusBarAppearanceUpdate];
+  toViewController = [(BKBookOpenAnimator *)self toViewController];
+  [toViewController setNeedsStatusBarAppearanceUpdate];
 
   if ([(BKBookOpenAnimator *)self opening])
   {
@@ -254,34 +254,34 @@
   }
 }
 
-- (void)_zoomWithCompletion:(id)a3
+- (void)_zoomWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKBookZoomRevealOpenAnimator *)self setupViewsForZoom];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1000E66B4;
   v10 = &unk_100A04160;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v5 = completionCopy;
   [(BKBookZoomRevealOpenAnimator *)self animateZoomWithCompletion:&v7];
   kdebug_trace();
   v6 = [AETestDriver shared:v7];
   [v6 postEvent:kBETestDriverOpenAnimationZoomStart sender:self];
 }
 
-- (void)_revealWithCompletion:(id)a3
+- (void)_revealWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(BKBookZoomRevealOpenAnimator *)self setupViewsForReveal];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1000E684C;
   v10 = &unk_100A04160;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v5 = completionCopy;
   [(BKBookZoomRevealOpenAnimator *)self animateRevealWithCompletion:&v7];
   kdebug_trace();
   v6 = [AETestDriver shared:v7];
@@ -314,15 +314,15 @@
 {
   if ([(BKBookOpenAnimator *)self opening]&& ![(BKBookZoomRevealOpenAnimator *)self secondHalfStarted])
   {
-    v3 = [(BKBookOpenAnimator *)self fromViewController];
+    fromViewController = [(BKBookOpenAnimator *)self fromViewController];
   }
 
   else
   {
-    v3 = [(BKBookOpenAnimator *)self toViewController];
+    fromViewController = [(BKBookOpenAnimator *)self toViewController];
   }
 
-  return v3;
+  return fromViewController;
 }
 
 @end

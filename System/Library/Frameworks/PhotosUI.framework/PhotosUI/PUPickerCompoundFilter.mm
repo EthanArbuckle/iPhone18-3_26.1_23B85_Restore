@@ -1,45 +1,45 @@
 @interface PUPickerCompoundFilter
 - (BOOL)allowsAlbums;
-- (BOOL)containsFilter:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsFilter:(id)filter;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValidFilter;
-- (PUPickerCompoundFilter)initWithCoder:(id)a3;
-- (PUPickerCompoundFilter)initWithFilterType:(int64_t)a3 subfilters:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUPickerCompoundFilter)initWithCoder:(id)coder;
+- (PUPickerCompoundFilter)initWithFilterType:(int64_t)type subfilters:(id)subfilters;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)generatedAssetPredicate;
 - (unint64_t)generatedPossibleAssetTypes;
 - (unint64_t)generatedRequiredAssetTypes;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerCompoundFilter
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:{-[PUPickerCompoundFilter filterType](self, "filterType")}];
-  [v5 encodeObject:v6 forKey:@"PUPickerCompoundFilterDictionaryFilterTypeKey"];
+  [coderCopy encodeObject:v6 forKey:@"PUPickerCompoundFilterDictionaryFilterTypeKey"];
 
-  v7 = [(PUPickerCompoundFilter *)self subfilters];
-  [v5 encodeObject:v7 forKey:@"PUPickerCompoundFilterDictionarySubfiltersKey"];
+  subfilters = [(PUPickerCompoundFilter *)self subfilters];
+  [coderCopy encodeObject:subfilters forKey:@"PUPickerCompoundFilterDictionarySubfiltersKey"];
 }
 
-- (PUPickerCompoundFilter)initWithCoder:(id)a3
+- (PUPickerCompoundFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PUPickerCompoundFilter;
   v5 = [(PUPickerCompoundFilter *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerCompoundFilterDictionaryFilterTypeKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PUPickerCompoundFilterDictionaryFilterTypeKey"];
     v5->_filterType = [v6 integerValue];
 
     v7 = PUPickerFilterAvailableClasses();
     v8 = [v7 setByAddingObject:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"PUPickerCompoundFilterDictionarySubfiltersKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"PUPickerCompoundFilterDictionarySubfiltersKey"];
     subfilters = v5->_subfilters;
     v5->_subfilters = v9;
   }
@@ -59,11 +59,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v5 = [(PUPickerCompoundFilter *)self subfilters];
-  v6 = [v4 initWithArray:v5 copyItems:1];
+  subfilters = [(PUPickerCompoundFilter *)self subfilters];
+  v6 = [v4 initWithArray:subfilters copyItems:1];
 
   v7 = [[PUPickerCompoundFilter alloc] initWithFilterType:[(PUPickerCompoundFilter *)self filterType] subfilters:v6];
   return v7;
@@ -72,16 +72,16 @@
 - (unint64_t)generatedRequiredAssetTypes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerCompoundFilter *)self filterType];
-  switch(v3)
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  switch(filterType)
   {
     case 2:
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v14 = [v4 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v14 = [subfilters countByEnumeratingWithState:&v21 objects:v33 count:16];
       if (v14)
       {
         v15 = v14;
@@ -93,13 +93,13 @@
           {
             if (*v22 != v17)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v16 |= [*(*(&v21 + 1) + 8 * i) generatedPossibleAssetTypes];
           }
 
-          v15 = [v4 countByEnumeratingWithState:&v21 objects:v33 count:16];
+          v15 = [subfilters countByEnumeratingWithState:&v21 objects:v33 count:16];
         }
 
         while (v15);
@@ -117,8 +117,8 @@ LABEL_31:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v10 = [v4 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v10 = [subfilters countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v10)
       {
         v11 = v10;
@@ -130,13 +130,13 @@ LABEL_31:
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v7 &= [*(*(&v25 + 1) + 8 * j) generatedRequiredAssetTypes];
           }
 
-          v11 = [v4 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v11 = [subfilters countByEnumeratingWithState:&v25 objects:v34 count:16];
         }
 
         while (v11);
@@ -149,8 +149,8 @@ LABEL_31:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v5 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v5 = [subfilters countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v5)
       {
         v6 = v5;
@@ -162,13 +162,13 @@ LABEL_31:
           {
             if (*v30 != v8)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v7 |= [*(*(&v29 + 1) + 8 * k) generatedRequiredAssetTypes];
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+          v6 = [subfilters countByEnumeratingWithState:&v29 objects:v35 count:16];
         }
 
         while (v6);
@@ -191,16 +191,16 @@ LABEL_32:
 - (unint64_t)generatedPossibleAssetTypes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerCompoundFilter *)self filterType];
-  switch(v3)
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  switch(filterType)
   {
     case 2:
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v14 = [v4 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v14 = [subfilters countByEnumeratingWithState:&v21 objects:v33 count:16];
       if (v14)
       {
         v15 = v14;
@@ -212,13 +212,13 @@ LABEL_32:
           {
             if (*v22 != v17)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v16 |= [*(*(&v21 + 1) + 8 * i) generatedRequiredAssetTypes];
           }
 
-          v15 = [v4 countByEnumeratingWithState:&v21 objects:v33 count:16];
+          v15 = [subfilters countByEnumeratingWithState:&v21 objects:v33 count:16];
         }
 
         while (v15);
@@ -236,8 +236,8 @@ LABEL_31:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v10 = [v4 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v10 = [subfilters countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v10)
       {
         v11 = v10;
@@ -249,13 +249,13 @@ LABEL_31:
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v7 &= [*(*(&v25 + 1) + 8 * j) generatedPossibleAssetTypes];
           }
 
-          v11 = [v4 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v11 = [subfilters countByEnumeratingWithState:&v25 objects:v34 count:16];
         }
 
         while (v11);
@@ -268,8 +268,8 @@ LABEL_31:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
-      v5 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
+      v5 = [subfilters countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v5)
       {
         v6 = v5;
@@ -281,13 +281,13 @@ LABEL_31:
           {
             if (*v30 != v8)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(subfilters);
             }
 
             v7 |= [*(*(&v29 + 1) + 8 * k) generatedPossibleAssetTypes];
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v29 objects:v35 count:16];
+          v6 = [subfilters countByEnumeratingWithState:&v29 objects:v35 count:16];
         }
 
         while (v6);
@@ -309,11 +309,11 @@ LABEL_32:
 
 - (id)generatedAssetPredicate
 {
-  v3 = [(PUPickerCompoundFilter *)self subfilters];
+  subfilters = [(PUPickerCompoundFilter *)self subfilters];
   v4 = PFMap();
 
-  v5 = [(PUPickerCompoundFilter *)self filterType];
-  switch(v5)
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  switch(filterType)
   {
     case 2:
       v8 = MEMORY[0x1E696AB28];
@@ -337,11 +337,11 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)containsFilter:(id)a3
+- (BOOL)containsFilter:(id)filter
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(PUPickerCompoundFilter *)self isEqual:v4])
+  filterCopy = filter;
+  if ([(PUPickerCompoundFilter *)self isEqual:filterCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -352,8 +352,8 @@ LABEL_6:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(PUPickerCompoundFilter *)self subfilters];
-    v5 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    subfilters = [(PUPickerCompoundFilter *)self subfilters];
+    v5 = [subfilters countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v7 = *v12;
@@ -363,17 +363,17 @@ LABEL_6:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subfilters);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) containsFilter:v4])
+          if ([*(*(&v11 + 1) + 8 * i) containsFilter:filterCopy])
           {
             LOBYTE(v5) = 1;
             goto LABEL_13;
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [subfilters countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -392,19 +392,19 @@ LABEL_13:
 
 - (BOOL)allowsAlbums
 {
-  v3 = [(PUPickerCompoundFilter *)self filterType];
-  switch(v3)
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  switch(filterType)
   {
     case 2:
       LOBYTE(v8) = 1;
       break;
     case 1:
-      v7 = [(PUPickerCompoundFilter *)self subfilters];
+      subfilters = [(PUPickerCompoundFilter *)self subfilters];
       v8 = PFExists() ^ 1;
 
       break;
     case 0:
-      v4 = [(PUPickerCompoundFilter *)self subfilters];
+      subfilters2 = [(PUPickerCompoundFilter *)self subfilters];
       v5 = PFExists();
 
       return v5;
@@ -419,11 +419,11 @@ LABEL_13:
 - (BOOL)isValidFilter
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPickerCompoundFilter *)self filterType];
-  v4 = v3 < 3;
-  if (v3 >= 3)
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  v4 = filterType < 3;
+  if (filterType >= 3)
   {
-    v5 = v3;
+    v5 = filterType;
     v6 = PLPickerGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -433,13 +433,13 @@ LABEL_13:
     }
   }
 
-  v7 = [(PUPickerCompoundFilter *)self subfilters];
-  if (![v7 count])
+  subfilters = [(PUPickerCompoundFilter *)self subfilters];
+  if (![subfilters count])
   {
     v8 = PLPickerGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 count];
+      v9 = [subfilters count];
       *buf = 134217984;
       v25 = v9;
       _os_log_impl(&dword_1D2128000, v8, OS_LOG_TYPE_ERROR, "PUPickerCompoundFilter: invalid subfilters count: %lu", buf, 0xCu);
@@ -452,7 +452,7 @@ LABEL_13:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = subfilters;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -501,17 +501,17 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(PUPickerCompoundFilter *)self filterType];
-  v4 = [(PUPickerCompoundFilter *)self subfilters];
-  v5 = [v4 hash] + 193 * v3;
+  filterType = [(PUPickerCompoundFilter *)self filterType];
+  subfilters = [(PUPickerCompoundFilter *)self subfilters];
+  v5 = [subfilters hash] + 193 * filterType;
 
   return v5 + 37249;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
 LABEL_14:
@@ -526,25 +526,25 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   v6 = objc_opt_class();
   if (v5)
   {
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(PUPickerCompoundFilter *)self filterType];
-      if (v7 == [(PUPickerCompoundFilter *)v5 filterType])
+      filterType = [(PUPickerCompoundFilter *)self filterType];
+      if (filterType == [(PUPickerCompoundFilter *)v5 filterType])
       {
-        v8 = [(PUPickerCompoundFilter *)self subfilters];
-        v9 = [(PUPickerCompoundFilter *)v5 subfilters];
-        if (v8 == v9)
+        subfilters = [(PUPickerCompoundFilter *)self subfilters];
+        subfilters2 = [(PUPickerCompoundFilter *)v5 subfilters];
+        if (subfilters == subfilters2)
         {
           v10 = 1;
         }
 
         else
         {
-          v10 = [v8 isEqual:v9];
+          v10 = [subfilters isEqual:subfilters2];
         }
       }
 
@@ -574,17 +574,17 @@ LABEL_14:
   return [(PUPickerCompoundFilter *)v14 initWithFilterType:v15 subfilters:v16, v17];
 }
 
-- (PUPickerCompoundFilter)initWithFilterType:(int64_t)a3 subfilters:(id)a4
+- (PUPickerCompoundFilter)initWithFilterType:(int64_t)type subfilters:(id)subfilters
 {
-  v7 = a4;
-  if (!v7)
+  subfiltersCopy = subfilters;
+  if (!subfiltersCopy)
   {
     _PFAssertFailHandler();
     goto LABEL_10;
   }
 
-  v8 = v7;
-  if (![v7 count])
+  v8 = subfiltersCopy;
+  if (![subfiltersCopy count])
   {
 LABEL_10:
     v14 = _PFAssertFailHandler();
@@ -597,8 +597,8 @@ LABEL_10:
   v10 = v9;
   if (v9)
   {
-    v9->_filterType = a3;
-    objc_storeStrong(&v9->_subfilters, a4);
+    v9->_filterType = type;
+    objc_storeStrong(&v9->_subfilters, subfilters);
   }
 
   if ([(PUPickerCompoundFilter *)v10 isValidFilter])

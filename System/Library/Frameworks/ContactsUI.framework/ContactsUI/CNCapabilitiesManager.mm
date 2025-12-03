@@ -1,9 +1,9 @@
 @interface CNCapabilitiesManager
 + (id)defaultCapabilitiesManager;
-- (BOOL)_isAppAvailable:(id)a3;
+- (BOOL)_isAppAvailable:(id)available;
 - (BOOL)areFavoritesAvailable;
 - (BOOL)hasCellularTelephonyCapability;
-- (BOOL)hasPreviouslyConferencedWithID:(id)a3;
+- (BOOL)hasPreviouslyConferencedWithID:(id)d;
 - (BOOL)hasVibratorCapability;
 - (BOOL)isConferencingAvailable;
 - (BOOL)isConferencingEverGonnaBeAvailable;
@@ -12,15 +12,15 @@
 - (BOOL)isFaceTimeAudioAvailable;
 - (BOOL)isMadridConfigured;
 - (BOOL)isWeiboServiceAvailable;
-- (id)conferenceURLForDestinationID:(id)a3;
-- (id)conferenceURLForPhoneNumber:(id)a3;
+- (id)conferenceURLForDestinationID:(id)d;
+- (id)conferenceURLForPhoneNumber:(id)number;
 - (id)defaultPhoneCallAppBundleIdentifier;
 - (void)_startListeningToIDSIDQueryControllerIfNecessary;
 - (void)_startListeningToIDSServiceAvailabilityIfNecessary;
-- (void)addIDSServiceAvailabilityListener:(id)a3 selector:(SEL)a4;
+- (void)addIDSServiceAvailabilityListener:(id)listener selector:(SEL)selector;
 - (void)dealloc;
-- (void)idStatusUpdatedForDestinations:(id)a3 service:(id)a4;
-- (void)removeIDSServiceAvailabilityListener:(id)a3;
+- (void)idStatusUpdatedForDestinations:(id)destinations service:(id)service;
+- (void)removeIDSServiceAvailabilityListener:(id)listener;
 @end
 
 @implementation CNCapabilitiesManager
@@ -57,9 +57,9 @@ id __60__CNCapabilitiesManager_defaultPhoneCallAppBundleIdentifier__block_invoke
 - (BOOL)isDefaultPhoneCallAppThirdParty
 {
   v2 = cn_objectResultWithObjectLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invoke(uint64_t a1)
@@ -112,36 +112,36 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
 
 - (BOOL)areFavoritesAvailable
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:18];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:18];
 
   if (v5)
   {
-    LOBYTE(v6) = 1;
+    LOBYTE(hasCellularTelephonyCapability) = 1;
   }
 
   else
   {
-    v6 = [(CNCapabilitiesManager *)self hasCellularTelephonyCapability];
-    if (v6)
+    hasCellularTelephonyCapability = [(CNCapabilitiesManager *)self hasCellularTelephonyCapability];
+    if (hasCellularTelephonyCapability)
     {
 
-      LOBYTE(v6) = [(CNCapabilitiesManager *)self hasCellularTelephonyHardwareCapability];
+      LOBYTE(hasCellularTelephonyCapability) = [(CNCapabilitiesManager *)self hasCellularTelephonyHardwareCapability];
     }
   }
 
-  return v6;
+  return hasCellularTelephonyCapability;
 }
 
-- (BOOL)_isAppAvailable:(id)a3
+- (BOOL)_isAppAvailable:(id)available
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v4 appWhitelistState] == 2)
+  availableCopy = available;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] appWhitelistState] == 2)
   {
-    v5 = [v4 effectiveWhitelistedAppBundleIDs];
-    v6 = [v5 containsObject:v3];
+    effectiveWhitelistedAppBundleIDs = [mEMORY[0x1E69ADFB8] effectiveWhitelistedAppBundleIDs];
+    v6 = [effectiveWhitelistedAppBundleIDs containsObject:availableCopy];
   }
 
   else
@@ -204,26 +204,26 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
     return [v2 isAvailableForServiceType:*v4];
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getSLServiceTypeSinaWeibo(void)"];
-  [v8 handleFailureInFunction:v9 file:@"CNSocial.h" lineNumber:17 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v9 file:@"CNSocial.h" lineNumber:17 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (void)idStatusUpdatedForDestinations:(id)a3 service:(id)a4
+- (void)idStatusUpdatedForDestinations:(id)destinations service:(id)service
 {
-  v10 = a3;
-  v6 = a4;
+  destinationsCopy = destinations;
+  serviceCopy = service;
   v7 = getIDSServiceNameFaceTime();
-  v8 = [v6 isEqualToString:v7];
+  v8 = [serviceCopy isEqualToString:v7];
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_destinationStatus addEntriesFromDictionary:v10];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:ABCapabilitiesConferenceHistoryChanged object:self];
+    [(NSMutableDictionary *)self->_destinationStatus addEntriesFromDictionary:destinationsCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:ABCapabilitiesConferenceHistoryChanged object:self];
   }
 }
 
@@ -235,9 +235,9 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
     destinationStatus = self->_destinationStatus;
     self->_destinationStatus = v4;
 
-    v7 = [getIDSIDQueryControllerClass() sharedInstance];
+    sharedInstance = [getIDSIDQueryControllerClass() sharedInstance];
     v6 = getIDSServiceNameFaceTime();
-    [v7 addDelegate:self forService:v6 listenerID:@"com.apple.addressbookui" queue:MEMORY[0x1E69E96A0]];
+    [sharedInstance addDelegate:self forService:v6 listenerID:@"com.apple.addressbookui" queue:MEMORY[0x1E69E96A0]];
 
     self->_isListeningToIDSQueryController = 1;
   }
@@ -247,41 +247,41 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
 {
   if (!self->_isListeningToIDSServiceAvailability)
   {
-    v6 = [getIDSServiceAvailabilityControllerClass() sharedInstance];
+    sharedInstance = [getIDSServiceAvailabilityControllerClass() sharedInstance];
     v4 = getIDSServiceNameiMessage();
-    [v6 addListenerID:@"com.apple.addressbookui" forService:v4];
+    [sharedInstance addListenerID:@"com.apple.addressbookui" forService:v4];
 
     v5 = getIDSServiceNameFaceTime();
-    [v6 addListenerID:@"com.apple.addressbookui" forService:v5];
+    [sharedInstance addListenerID:@"com.apple.addressbookui" forService:v5];
 
     self->_isListeningToIDSServiceAvailability = 1;
   }
 }
 
-- (void)removeIDSServiceAvailabilityListener:(id)a3
+- (void)removeIDSServiceAvailabilityListener:(id)listener
 {
   v3 = MEMORY[0x1E696AD88];
-  v4 = a3;
-  v6 = [v3 defaultCenter];
+  listenerCopy = listener;
+  defaultCenter = [v3 defaultCenter];
   v5 = getIDSServiceAvailabilityDidChangeNotification();
-  [v6 removeObserver:v4 name:v5 object:0];
+  [defaultCenter removeObserver:listenerCopy name:v5 object:0];
 }
 
-- (void)addIDSServiceAvailabilityListener:(id)a3 selector:(SEL)a4
+- (void)addIDSServiceAvailabilityListener:(id)listener selector:(SEL)selector
 {
-  v6 = a3;
+  listenerCopy = listener;
   [(CNCapabilitiesManager *)self _startListeningToIDSServiceAvailabilityIfNecessary];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = getIDSServiceAvailabilityDidChangeNotification();
-  [v8 addObserver:v6 selector:a4 name:v7 object:0];
+  [defaultCenter addObserver:listenerCopy selector:selector name:v7 object:0];
 }
 
-- (id)conferenceURLForDestinationID:(id)a3
+- (id)conferenceURLForDestinationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(CNCapabilitiesManager *)self isConferencingEverGonnaBeAvailable])
   {
-    v5 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:v4 type:2];
+    v5 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:dCopy type:2];
     v6 = [MEMORY[0x1E695DFF8] _cnui_faceTimeVideoURLWithHandle:v5 contact:0];
   }
 
@@ -293,12 +293,12 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
   return v6;
 }
 
-- (id)conferenceURLForPhoneNumber:(id)a3
+- (id)conferenceURLForPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   if ([(CNCapabilitiesManager *)self isConferencingEverGonnaBeAvailable])
   {
-    v5 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:v4 type:2];
+    v5 = [objc_alloc(MEMORY[0x1E6996A90]) initWithStringValue:numberCopy type:2];
     v6 = [MEMORY[0x1E695DFF8] _cnui_faceTimeVideoURLWithHandle:v5 contact:0];
   }
 
@@ -310,13 +310,13 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
   return v6;
 }
 
-- (BOOL)hasPreviouslyConferencedWithID:(id)a3
+- (BOOL)hasPreviouslyConferencedWithID:(id)d
 {
-  v4 = a3;
-  if (v4 && [(CNCapabilitiesManager *)self isConferencingEverGonnaBeAvailable])
+  dCopy = d;
+  if (dCopy && [(CNCapabilitiesManager *)self isConferencingEverGonnaBeAvailable])
   {
     [(CNCapabilitiesManager *)self _startListeningToIDSIDQueryControllerIfNecessary];
-    v5 = [(NSMutableDictionary *)self->_destinationStatus objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_destinationStatus objectForKey:dCopy];
     v6 = v5;
     if (v5)
     {
@@ -330,7 +330,7 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
       v21 = 0x2020000000;
       v22 = 0;
       v8 = dispatch_semaphore_create(0);
-      v9 = [getIDSIDQueryControllerClass() sharedInstance];
+      sharedInstance = [getIDSIDQueryControllerClass() sharedInstance];
       v10 = getIDSServiceNameFaceTime();
       v11 = dispatch_get_global_queue(0, 0);
       v16[0] = MEMORY[0x1E69E9820];
@@ -340,7 +340,7 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
       v18 = &v19;
       v12 = v8;
       v17 = v12;
-      v13 = [v9 currentIDStatusForDestination:v4 service:v10 listenerID:@"com.apple.addressbookui" queue:v11 completionBlock:v16];
+      v13 = [sharedInstance currentIDStatusForDestination:dCopy service:v10 listenerID:@"com.apple.addressbookui" queue:v11 completionBlock:v16];
 
       if (v13)
       {
@@ -381,9 +381,9 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
   }
 
   [(CNCapabilitiesManager *)self _startListeningToIDSServiceAvailabilityIfNecessary];
-  v3 = [getIDSServiceAvailabilityControllerClass() sharedInstance];
+  sharedInstance = [getIDSServiceAvailabilityControllerClass() sharedInstance];
   v4 = getIDSServiceNameFaceTime();
-  v5 = [v3 availabilityForListenerID:@"com.apple.addressbookui" forService:v4] == 1;
+  v5 = [sharedInstance availabilityForListenerID:@"com.apple.addressbookui" forService:v4] == 1;
 
   return v5;
 }
@@ -391,9 +391,9 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
 - (BOOL)isMadridConfigured
 {
   [(CNCapabilitiesManager *)self _startListeningToIDSServiceAvailabilityIfNecessary];
-  v2 = [getIDSServiceAvailabilityControllerClass() sharedInstance];
+  sharedInstance = [getIDSServiceAvailabilityControllerClass() sharedInstance];
   v3 = getIDSServiceNameiMessage();
-  v4 = [v2 availabilityForListenerID:@"com.apple.addressbookui" forService:v3] == 1;
+  v4 = [sharedInstance availabilityForListenerID:@"com.apple.addressbookui" forService:v3] == 1;
 
   return v4;
 }
@@ -402,7 +402,7 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
 {
   if (!isEmailConfigured_lastCheckDate || ([isEmailConfigured_lastCheckDate timeIntervalSinceNow], v2 < -30.0))
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     if (dyld_program_sdk_at_least())
     {
       v4 = CPCanSendMail() != 0;
@@ -415,7 +415,7 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
 
     isEmailConfigured_isConfigured = v4;
     v5 = isEmailConfigured_lastCheckDate;
-    isEmailConfigured_lastCheckDate = v3;
+    isEmailConfigured_lastCheckDate = date;
   }
 
   return isEmailConfigured_isConfigured;
@@ -428,8 +428,8 @@ uint64_t __56__CNCapabilitiesManager_isDefaultPhoneCallAppThirdParty__block_invo
     return 0;
   }
 
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
@@ -456,19 +456,19 @@ void __35__CNCapabilitiesManager_resetCache__block_invoke(uint64_t a1)
 {
   if (self->_isListeningToIDSServiceAvailability)
   {
-    v3 = [getIDSServiceAvailabilityControllerClass() sharedInstance];
+    sharedInstance = [getIDSServiceAvailabilityControllerClass() sharedInstance];
     v4 = getIDSServiceNameiMessage();
-    [v3 removeListenerID:@"com.apple.addressbookui" forService:v4];
+    [sharedInstance removeListenerID:@"com.apple.addressbookui" forService:v4];
 
     v5 = getIDSServiceNameFaceTime();
-    [v3 removeListenerID:@"com.apple.addressbookui" forService:v5];
+    [sharedInstance removeListenerID:@"com.apple.addressbookui" forService:v5];
   }
 
   if (self->_isListeningToIDSQueryController)
   {
-    v6 = [getIDSIDQueryControllerClass() sharedInstance];
+    sharedInstance2 = [getIDSIDQueryControllerClass() sharedInstance];
     v7 = getIDSServiceNameFaceTime();
-    [v6 removeDelegate:self forService:v7 listenerID:@"com.apple.addressbookui"];
+    [sharedInstance2 removeDelegate:self forService:v7 listenerID:@"com.apple.addressbookui"];
   }
 
   v8.receiver = self;

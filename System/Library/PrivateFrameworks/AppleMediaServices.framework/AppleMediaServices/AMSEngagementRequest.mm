@@ -1,16 +1,16 @@
 @interface AMSEngagementRequest
 - (AMSEngagementRequest)init;
-- (AMSEngagementRequest)initWithCoder:(id)a3;
-- (AMSEngagementRequest)initWithJSONDictionary:(id)a3;
-- (AMSEngagementRequest)initWithModel:(id)a3;
-- (AMSEngagementRequest)initWithModel:(id)a3 destinationStyle:(int64_t)a4;
-- (AMSEngagementRequest)initWithRequestDictionary:(id)a3;
-- (id)_accountFromDictionary:(id)a3;
+- (AMSEngagementRequest)initWithCoder:(id)coder;
+- (AMSEngagementRequest)initWithJSONDictionary:(id)dictionary;
+- (AMSEngagementRequest)initWithModel:(id)model;
+- (AMSEngagementRequest)initWithModel:(id)model destinationStyle:(int64_t)style;
+- (AMSEngagementRequest)initWithRequestDictionary:(id)dictionary;
+- (id)_accountFromDictionary:(id)dictionary;
 - (id)exportObject;
-- (id)modelForClass:(Class)a3 error:(id *)a4;
-- (int64_t)_engagementPresentationStyleFromDictionary:(id)a3;
-- (void)applyOverlayMetrics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)modelForClass:(Class)class error:(id *)error;
+- (int64_t)_engagementPresentationStyleFromDictionary:(id)dictionary;
+- (void)applyOverlayMetrics:(id)metrics;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSEngagementRequest
@@ -36,13 +36,13 @@
   return v3;
 }
 
-- (AMSEngagementRequest)initWithModel:(id)a3
+- (AMSEngagementRequest)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [(AMSEngagementRequest *)self init];
   if (v5)
   {
-    v6 = [AMSEngagementUtils encodeModel:v4];
+    v6 = [AMSEngagementUtils encodeModel:modelCopy];
     modelData = v5->_modelData;
     v5->_modelData = v6;
   }
@@ -50,26 +50,26 @@
   return v5;
 }
 
-- (AMSEngagementRequest)initWithModel:(id)a3 destinationStyle:(int64_t)a4
+- (AMSEngagementRequest)initWithModel:(id)model destinationStyle:(int64_t)style
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = [(AMSEngagementRequest *)self init];
   if (v7)
   {
-    v8 = [AMSEngagementUtils encodeModel:v6];
+    v8 = [AMSEngagementUtils encodeModel:modelCopy];
     modelData = v7->_modelData;
     v7->_modelData = v8;
 
-    v7->_destinationStyle = a4;
+    v7->_destinationStyle = style;
   }
 
   return v7;
 }
 
-- (AMSEngagementRequest)initWithRequestDictionary:(id)a3
+- (AMSEngagementRequest)initWithRequestDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(AMSEngagementRequest *)self init];
   if (v5)
   {
@@ -79,22 +79,22 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
-      v10 = AMSHashIfNeeded(v4);
+      v10 = AMSHashIfNeeded(dictionaryCopy);
       *buf = 138543874;
       v44 = v8;
       v45 = 2114;
       v46 = v9;
       v47 = 2114;
       v48 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decoding engagement request from dict: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decoding engagement request from dict: %{public}@", buf, 0x20u);
     }
 
-    account = [v4 objectForKeyedSubscript:@"account"];
+    account = [dictionaryCopy objectForKeyedSubscript:@"account"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,7 +117,7 @@
 
 LABEL_11:
     v42 = v12;
-    clientData = [v4 objectForKeyedSubscript:@"clientData"];
+    clientData = [dictionaryCopy objectForKeyedSubscript:@"clientData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@ LABEL_11:
       {
         v41 = 0;
 LABEL_16:
-        v17 = [v4 objectForKeyedSubscript:@"failOnDismiss"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"failOnDismiss"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -145,7 +145,7 @@ LABEL_16:
           v18 = 0;
         }
 
-        logKey = [v4 objectForKeyedSubscript:@"logKey"];
+        logKey = [dictionaryCopy objectForKeyedSubscript:@"logKey"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -155,7 +155,7 @@ LABEL_16:
           {
             v40 = 0;
 LABEL_25:
-            metricsOverlay = [v4 objectForKeyedSubscript:@"metricsOverlay"];
+            metricsOverlay = [dictionaryCopy objectForKeyedSubscript:@"metricsOverlay"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -165,7 +165,7 @@ LABEL_25:
               {
                 v24 = 0;
 LABEL_30:
-                v25 = [v4 objectForKeyedSubscript:@"destinationStyle"];
+                v25 = [dictionaryCopy objectForKeyedSubscript:@"destinationStyle"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -183,7 +183,7 @@ LABEL_30:
                   v26 = 0;
                 }
 
-                originatingURL = [v4 objectForKeyedSubscript:@"originatingURL"];
+                originatingURL = [dictionaryCopy objectForKeyedSubscript:@"originatingURL"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -205,7 +205,7 @@ LABEL_30:
                 }
 
 LABEL_39:
-                v30 = [v4 objectForKeyedSubscript:@"presentationStyle"];
+                v30 = [dictionaryCopy objectForKeyedSubscript:@"presentationStyle"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -223,7 +223,7 @@ LABEL_39:
                   v31 = 0;
                 }
 
-                v32 = [v4 objectForKeyedSubscript:@"silentlyCheckURL"];
+                v32 = [dictionaryCopy objectForKeyedSubscript:@"silentlyCheckURL"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -241,10 +241,10 @@ LABEL_39:
                   v33 = 0;
                 }
 
-                v34 = [v4 objectForKeyedSubscript:@"suppressInteractiveModalDismissal"];
+                v34 = [dictionaryCopy objectForKeyedSubscript:@"suppressInteractiveModalDismissal"];
                 if (objc_opt_respondsToSelector())
                 {
-                  v35 = [v4 objectForKeyedSubscript:@"suppressInteractiveModalDismissal"];
+                  v35 = [dictionaryCopy objectForKeyedSubscript:@"suppressInteractiveModalDismissal"];
                   v5->_suppressInteractiveModalDismissal = [v35 BOOLValue];
                 }
 
@@ -253,7 +253,7 @@ LABEL_39:
                   v5->_suppressInteractiveModalDismissal = 0;
                 }
 
-                URL = [v4 objectForKeyedSubscript:@"URL"];
+                URL = [dictionaryCopy objectForKeyedSubscript:@"URL"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -325,11 +325,11 @@ LABEL_56:
   return v5;
 }
 
-- (AMSEngagementRequest)initWithJSONDictionary:(id)a3
+- (AMSEngagementRequest)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count])
   {
     v6 = objc_alloc_init(AMSEngagementRequest);
     v7 = [v5 objectForKeyedSubscript:@"failOnDismiss"];
@@ -438,15 +438,15 @@ LABEL_30:
       }
 
       v21 = [v20 objectForKeyedSubscript:@"dsid"];
-      v22 = [v21 integerValue];
+      integerValue = [v21 integerValue];
 
-      if (v22 != -1)
+      if (integerValue != -1)
       {
         v23 = MEMORY[0x1E6959A48];
         v24 = +[AMSProcessInfo currentProcess];
         v19 = [v23 ams_sharedAccountStoreForClient:v24];
 
-        v25 = [MEMORY[0x1E696AD98] numberWithInteger:v22];
+        v25 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
         v26 = [v19 ams_iTunesAccountWithDSID:v25];
         [(AMSEngagementRequest *)v6 setAccount:v26];
 
@@ -481,20 +481,20 @@ LABEL_32:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
   v8 = [v3 dictionaryWithDictionary:v7];
 
-  v9 = [(AMSEngagementRequest *)self clientData];
+  clientData = [(AMSEngagementRequest *)self clientData];
 
-  if (v9)
+  if (clientData)
   {
-    v10 = [(AMSEngagementRequest *)self clientData];
-    [v8 setObject:v10 forKeyedSubscript:@"clientData"];
+    clientData2 = [(AMSEngagementRequest *)self clientData];
+    [v8 setObject:clientData2 forKeyedSubscript:@"clientData"];
   }
 
-  v11 = [(AMSEngagementRequest *)self metricsOverlay];
+  metricsOverlay = [(AMSEngagementRequest *)self metricsOverlay];
 
-  if (v11)
+  if (metricsOverlay)
   {
-    v12 = [(AMSEngagementRequest *)self metricsOverlay];
-    [v8 setObject:v12 forKeyedSubscript:@"metricsOverlay"];
+    metricsOverlay2 = [(AMSEngagementRequest *)self metricsOverlay];
+    [v8 setObject:metricsOverlay2 forKeyedSubscript:@"metricsOverlay"];
   }
 
   v13 = [(AMSEngagementRequest *)self URL];
@@ -502,21 +502,21 @@ LABEL_32:
   if (v13)
   {
     v14 = [(AMSEngagementRequest *)self URL];
-    v15 = [v14 absoluteString];
-    [v8 setObject:v15 forKeyedSubscript:@"url"];
+    absoluteString = [v14 absoluteString];
+    [v8 setObject:absoluteString forKeyedSubscript:@"url"];
   }
 
-  v16 = [(AMSEngagementRequest *)self account];
+  account = [(AMSEngagementRequest *)self account];
 
-  if (v16)
+  if (account)
   {
-    v17 = [(AMSEngagementRequest *)self account];
-    v18 = [v17 ams_DSID];
+    account2 = [(AMSEngagementRequest *)self account];
+    ams_DSID = [account2 ams_DSID];
 
-    if (v18)
+    if (ams_DSID)
     {
       v21 = @"dsid";
-      v22 = v18;
+      v22 = ams_DSID;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       [v8 setObject:v19 forKeyedSubscript:@"account"];
     }
@@ -525,7 +525,7 @@ LABEL_32:
   return v8;
 }
 
-- (void)applyOverlayMetrics:(id)a3
+- (void)applyOverlayMetrics:(id)metrics
 {
   if (self->_metricsOverlay)
   {
@@ -537,23 +537,23 @@ LABEL_32:
     metricsOverlay = MEMORY[0x1E695E0F8];
   }
 
-  self->_metricsOverlay = [(NSDictionary *)metricsOverlay ams_dictionaryByAddingEntriesFromDictionary:a3];
+  self->_metricsOverlay = [(NSDictionary *)metricsOverlay ams_dictionaryByAddingEntriesFromDictionary:metrics];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)modelForClass:(Class)a3 error:(id *)a4
+- (id)modelForClass:(Class)class error:(id *)error
 {
-  v6 = [(AMSEngagementRequest *)self modelData];
-  v7 = [AMSEngagementUtils modelFromData:v6 class:a3 error:a4];
+  modelData = [(AMSEngagementRequest *)self modelData];
+  v7 = [AMSEngagementUtils modelFromData:modelData class:class error:error];
 
   return v7;
 }
 
-- (id)_accountFromDictionary:(id)a3
+- (id)_accountFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"dsid"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"dsid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -574,7 +574,7 @@ LABEL_32:
 
   v6 = 0;
 LABEL_6:
-  v7 = [v3 objectForKeyedSubscript:@"username"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"username"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -586,7 +586,7 @@ LABEL_6:
     v8 = 0;
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"accountPreSet"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"accountPreSet"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -598,49 +598,49 @@ LABEL_6:
     v10 = 0;
   }
 
-  v11 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v12 = v11;
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v12 = ams_sharedAccountStore;
   if (v6 | v8)
   {
-    v13 = [v11 ams_iTunesAccountWithAltDSID:0 DSID:v6 username:v8];
-    if (!v13)
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_iTunesAccountWithAltDSID:0 DSID:v6 username:v8];
+    if (!ams_activeiTunesAccount)
     {
       v14 = [v12 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930]];
-      v13 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v14];
+      ams_activeiTunesAccount = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v14];
     }
 
-    v15 = [v13 ams_DSID];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-    if (!v15)
+    if (!ams_DSID)
     {
-      [v13 ams_setDSID:v6];
+      [ams_activeiTunesAccount ams_setDSID:v6];
     }
 
-    v16 = [v13 username];
+    username = [ams_activeiTunesAccount username];
 
-    if (!v16)
+    if (!username)
     {
-      [v13 setUsername:v8];
+      [ams_activeiTunesAccount setUsername:v8];
     }
   }
 
   else if ([v10 isEqualToString:@"activeItunes"])
   {
-    v13 = [v12 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v12 ams_activeiTunesAccount];
   }
 
   else
   {
-    v13 = 0;
+    ams_activeiTunesAccount = 0;
   }
 
-  return v13;
+  return ams_activeiTunesAccount;
 }
 
-- (AMSEngagementRequest)initWithCoder:(id)a3
+- (AMSEngagementRequest)initWithCoder:(id)coder
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = AMSEngagementRequest;
   v5 = [(AMSEngagementRequest *)&v31 init];
@@ -652,12 +652,12 @@ LABEL_6:
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
-      v10 = [v4 debugDescription];
+      v10 = [coderCopy debugDescription];
       v11 = AMSHashIfNeeded(v10);
       *buf = 138543874;
       v33 = v8;
@@ -665,45 +665,45 @@ LABEL_6:
       v35 = v9;
       v36 = 2114;
       v37 = v11;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decoding engagement request: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] Decoding engagement request: %{public}@", buf, 0x20u);
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     account = v5->_account;
     v5->_account = v12;
 
-    v14 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"clientData"];
+    ams_JSONClasses = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v15 = [coderCopy decodeObjectOfClasses:ams_JSONClasses forKey:@"clientData"];
     clientData = v5->_clientData;
     v5->_clientData = v15;
 
-    v5->_failOnDismiss = [v4 decodeBoolForKey:@"failOnDismiss"];
-    v5->_suppressInteractiveModalDismissal = [v4 decodeBoolForKey:@"suppressInteractiveModalDismissal"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logKey"];
+    v5->_failOnDismiss = [coderCopy decodeBoolForKey:@"failOnDismiss"];
+    v5->_suppressInteractiveModalDismissal = [coderCopy decodeBoolForKey:@"suppressInteractiveModalDismissal"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logKey"];
     logKey = v5->_logKey;
     v5->_logKey = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaClientIdentifier"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaClientIdentifier"];
     mediaClientIdentifier = v5->_mediaClientIdentifier;
     v5->_mediaClientIdentifier = v19;
 
-    v21 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"metricsOverlay"];
+    ams_JSONClasses2 = [MEMORY[0x1E695DFD8] ams_JSONClasses];
+    v22 = [coderCopy decodeObjectOfClasses:ams_JSONClasses2 forKey:@"metricsOverlay"];
     metricsOverlay = v5->_metricsOverlay;
     v5->_metricsOverlay = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelData"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelData"];
     modelData = v5->_modelData;
     v5->_modelData = v24;
 
-    v5->_destinationStyle = [v4 decodeIntegerForKey:@"destinationStyle"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingURL"];
+    v5->_destinationStyle = [coderCopy decodeIntegerForKey:@"destinationStyle"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingURL"];
     originatingURL = v5->_originatingURL;
     v5->_originatingURL = v26;
 
-    v5->_presentationStyle = [v4 decodeIntegerForKey:@"presentationStyle"];
-    v5->_silentlyCheckURL = [v4 decodeBoolForKey:@"silentlyCheckURL"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v5->_presentationStyle = [coderCopy decodeIntegerForKey:@"presentationStyle"];
+    v5->_silentlyCheckURL = [coderCopy decodeBoolForKey:@"silentlyCheckURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v28;
   }
@@ -711,43 +711,43 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSEngagementRequest *)self account];
-  [v4 encodeObject:v5 forKey:@"account"];
+  coderCopy = coder;
+  account = [(AMSEngagementRequest *)self account];
+  [coderCopy encodeObject:account forKey:@"account"];
 
-  v6 = [(AMSEngagementRequest *)self clientData];
-  [v4 encodeObject:v6 forKey:@"clientData"];
+  clientData = [(AMSEngagementRequest *)self clientData];
+  [coderCopy encodeObject:clientData forKey:@"clientData"];
 
-  [v4 encodeBool:-[AMSEngagementRequest failOnDismiss](self forKey:{"failOnDismiss"), @"failOnDismiss"}];
-  [v4 encodeBool:-[AMSEngagementRequest suppressInteractiveModalDismissal](self forKey:{"suppressInteractiveModalDismissal"), @"suppressInteractiveModalDismissal"}];
-  v7 = [(AMSEngagementRequest *)self logKey];
-  [v4 encodeObject:v7 forKey:@"logKey"];
+  [coderCopy encodeBool:-[AMSEngagementRequest failOnDismiss](self forKey:{"failOnDismiss"), @"failOnDismiss"}];
+  [coderCopy encodeBool:-[AMSEngagementRequest suppressInteractiveModalDismissal](self forKey:{"suppressInteractiveModalDismissal"), @"suppressInteractiveModalDismissal"}];
+  logKey = [(AMSEngagementRequest *)self logKey];
+  [coderCopy encodeObject:logKey forKey:@"logKey"];
 
-  v8 = [(AMSEngagementRequest *)self metricsOverlay];
-  [v4 encodeObject:v8 forKey:@"metricsOverlay"];
+  metricsOverlay = [(AMSEngagementRequest *)self metricsOverlay];
+  [coderCopy encodeObject:metricsOverlay forKey:@"metricsOverlay"];
 
-  v9 = [(AMSEngagementRequest *)self modelData];
-  [v4 encodeObject:v9 forKey:@"modelData"];
+  modelData = [(AMSEngagementRequest *)self modelData];
+  [coderCopy encodeObject:modelData forKey:@"modelData"];
 
-  [v4 encodeInteger:-[AMSEngagementRequest destinationStyle](self forKey:{"destinationStyle"), @"destinationStyle"}];
-  v10 = [(AMSEngagementRequest *)self originatingURL];
-  [v4 encodeObject:v10 forKey:@"originatingURL"];
+  [coderCopy encodeInteger:-[AMSEngagementRequest destinationStyle](self forKey:{"destinationStyle"), @"destinationStyle"}];
+  originatingURL = [(AMSEngagementRequest *)self originatingURL];
+  [coderCopy encodeObject:originatingURL forKey:@"originatingURL"];
 
-  [v4 encodeInteger:-[AMSEngagementRequest presentationStyle](self forKey:{"presentationStyle"), @"presentationStyle"}];
-  [v4 encodeBool:-[AMSEngagementRequest silentlyCheckURL](self forKey:{"silentlyCheckURL"), @"silentlyCheckURL"}];
-  v11 = [(AMSEngagementRequest *)self mediaClientIdentifier];
-  [v4 encodeObject:v11 forKey:@"mediaClientIdentifier"];
+  [coderCopy encodeInteger:-[AMSEngagementRequest presentationStyle](self forKey:{"presentationStyle"), @"presentationStyle"}];
+  [coderCopy encodeBool:-[AMSEngagementRequest silentlyCheckURL](self forKey:{"silentlyCheckURL"), @"silentlyCheckURL"}];
+  mediaClientIdentifier = [(AMSEngagementRequest *)self mediaClientIdentifier];
+  [coderCopy encodeObject:mediaClientIdentifier forKey:@"mediaClientIdentifier"];
 
   v12 = [(AMSEngagementRequest *)self URL];
-  [v4 encodeObject:v12 forKey:@"URL"];
+  [coderCopy encodeObject:v12 forKey:@"URL"];
 }
 
-- (int64_t)_engagementPresentationStyleFromDictionary:(id)a3
+- (int64_t)_engagementPresentationStyleFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"style"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy valueForKey:@"style"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -765,12 +765,12 @@ LABEL_7:
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 integerValue];
+        integerValue = [v6 integerValue];
       }
 
       else
       {
-        v8 = 0;
+        integerValue = 0;
       }
 
       goto LABEL_14;
@@ -781,7 +781,7 @@ LABEL_7:
   {
   }
 
-  v5 = [v3 valueForKeyPath:@"clientData.style"];
+  v5 = [dictionaryCopy valueForKeyPath:@"clientData.style"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -789,18 +789,18 @@ LABEL_7:
 
     if (!v5)
     {
-      v8 = 0;
+      integerValue = 0;
       goto LABEL_15;
     }
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  integerValue = 0;
 LABEL_14:
 
 LABEL_15:
-  return v8;
+  return integerValue;
 }
 
 void __67__AMSEngagementRequest__engagementPresentationStyleFromDictionary___block_invoke()

@@ -1,50 +1,50 @@
 @interface SAUILayoutSpecifyingOverrider
 - (BOOL)isInteractiveDismissalEnabled;
-- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (BOOL)isMinimalPresentationPossible;
-- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4;
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4 forTargetWithOverrider:(id)a5 isDefaultValue:(BOOL *)a6;
+- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode;
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (BOOL)isRequestingMenuPresentation;
-- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5;
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7;
+- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode;
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (NSArray)preferredLayoutModeAssertions;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5;
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets;
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (NSString)description;
 - (SAUILayoutModePreferring)layoutModePreference;
 - (SAUILayoutSpecifying)layoutSpecifyingOverridingTarget;
-- (SAUILayoutSpecifyingOverrider)initWithTarget:(id)a3;
+- (SAUILayoutSpecifyingOverrider)initWithTarget:(id)target;
 - (SAUIPreferredLayoutModeAssertion)preferredLayoutModeAssertion;
-- (id)_behaviorOverridingParticipantSubordinate:(BOOL)a3 toParticipant:(id)a4 passingTest:(id)a5;
-- (id)_firstParticipantThatRespondsToSelector:(SEL)a3;
+- (id)_behaviorOverridingParticipantSubordinate:(BOOL)subordinate toParticipant:(id)participant passingTest:(id)test;
+- (id)_firstParticipantThatRespondsToSelector:(SEL)selector;
 - (id)behaviorOverridingTarget;
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (id)layoutSpecifyingOverridingParticipantSubordinateToParticipant:(id)a3 thatRespondsToSelector:(SEL)a4;
-- (id)layoutSpecifyingOverridingParticipantSuperiorToParticipant:(id)a3 thatRespondsToSelector:(SEL)a4;
-- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (id)layoutSpecifyingOverridingParticipantSubordinateToParticipant:(id)participant thatRespondsToSelector:(SEL)selector;
+- (id)layoutSpecifyingOverridingParticipantSuperiorToParticipant:(id)participant thatRespondsToSelector:(SEL)selector;
+- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)layoutMode;
-- (int64_t)layoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (int64_t)layoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)maximumSupportedLayoutMode;
-- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)minimumSupportedLayoutMode;
-- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
+- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
 - (int64_t)preferredLayoutMode;
-- (int64_t)preferredLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4;
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3;
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3 forTargetWithOverrider:(id)a4 isDefaultValue:(BOOL *)a5;
-- (void)addBehaviorOverridingParticipant:(id)a3;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3;
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3 forTargetWithOverrider:(id)a4;
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3;
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3 forTargetWithOverrider:(id)a4;
-- (void)removeBehaviorOverridingParticipant:(id)a3;
-- (void)removeBehaviorOverridingParticipantWithRole:(int64_t)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4;
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
+- (int64_t)preferredLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode;
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value;
+- (void)addBehaviorOverridingParticipant:(id)participant;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews;
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews forTargetWithOverrider:(id)overrider;
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews;
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews forTargetWithOverrider:(id)overrider;
+- (void)removeBehaviorOverridingParticipant:(id)participant;
+- (void)removeBehaviorOverridingParticipantWithRole:(int64_t)role;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason;
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
 @end
 
 @implementation SAUILayoutSpecifyingOverrider
@@ -60,12 +60,12 @@
 
 - (BOOL)isRequestingMenuPresentation
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v3 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_isRequestingMenuPresentationForTargetWithOverrider_isDefaultValue_];
-  LOBYTE(v2) = [v3 isRequestingMenuPresentationForTargetWithOverrider:v2 isDefaultValue:&v5];
+  LOBYTE(selfCopy) = [v3 isRequestingMenuPresentationForTargetWithOverrider:selfCopy isDefaultValue:&v5];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)behaviorOverridingTarget
@@ -77,10 +77,10 @@
 
 - (int64_t)preferredLayoutMode
 {
-  v2 = [(SAUILayoutSpecifyingOverrider *)self layoutModePreference];
-  v3 = [v2 preferredLayoutMode];
+  layoutModePreference = [(SAUILayoutSpecifyingOverrider *)self layoutModePreference];
+  preferredLayoutMode = [layoutModePreference preferredLayoutMode];
 
-  return v3;
+  return preferredLayoutMode;
 }
 
 - (SAUILayoutModePreferring)layoutModePreference
@@ -110,45 +110,45 @@
   return v4;
 }
 
-- (SAUILayoutSpecifyingOverrider)initWithTarget:(id)a3
+- (SAUILayoutSpecifyingOverrider)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v8.receiver = self;
   v8.super_class = SAUILayoutSpecifyingOverrider;
   v5 = [(SAUILayoutSpecifyingOverrider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_behaviorOverridingTarget, v4);
+    objc_storeWeak(&v5->_behaviorOverridingTarget, targetCopy);
     [(SAUILayoutSpecifyingOverrider *)v6 addBehaviorOverridingParticipant:v6];
   }
 
   return v6;
 }
 
-- (id)_behaviorOverridingParticipantSubordinate:(BOOL)a3 toParticipant:(id)a4 passingTest:(id)a5
+- (id)_behaviorOverridingParticipantSubordinate:(BOOL)subordinate toParticipant:(id)participant passingTest:(id)test
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  subordinateCopy = subordinate;
+  participantCopy = participant;
+  testCopy = test;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy_;
   v31 = __Block_byref_object_dispose_;
   v32 = 0;
-  if (v8)
+  if (participantCopy)
   {
-    v10 = self;
-    objc_sync_enter(v10);
-    [(NSPointerArray *)v10->_orderedBehaviorOverridingParticipants sa_compact];
-    v11 = [(NSPointerArray *)v10->_orderedBehaviorOverridingParticipants count];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants sa_compact];
+    v11 = [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants count];
     v25[0] = 0;
     v25[1] = v25;
     v25[2] = 0x2020000000;
     v26 = 0;
-    v12 = [(NSPointerArray *)v10->_orderedBehaviorOverridingParticipants allObjects];
-    if (v6)
+    allObjects = [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants allObjects];
+    if (subordinateCopy)
     {
       v13 = 0;
     }
@@ -163,16 +163,16 @@
     v17[2] = __101__SAUILayoutSpecifyingOverrider__behaviorOverridingParticipantSubordinate_toParticipant_passingTest___block_invoke;
     v17[3] = &unk_279D32A78;
     v21 = v25;
-    v24 = v6;
+    v24 = subordinateCopy;
     v23 = v11;
-    v18 = v8;
-    v19 = v10;
-    v20 = v9;
+    v18 = participantCopy;
+    v19 = selfCopy;
+    v20 = testCopy;
     v22 = &v27;
-    [v12 enumerateObjectsWithOptions:v13 usingBlock:v17];
+    [allObjects enumerateObjectsWithOptions:v13 usingBlock:v17];
 
     _Block_object_dispose(v25, 8);
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
 
     v14 = v28[5];
   }
@@ -232,88 +232,88 @@ void __101__SAUILayoutSpecifyingOverrider__behaviorOverridingParticipantSubordin
 LABEL_13:
 }
 
-- (void)addBehaviorOverridingParticipant:(id)a3
+- (void)addBehaviorOverridingParticipant:(id)participant
 {
-  v12 = a3;
-  if (v12)
+  participantCopy = participant;
+  if (participantCopy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    orderedBehaviorOverridingParticipants = v4->_orderedBehaviorOverridingParticipants;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    orderedBehaviorOverridingParticipants = selfCopy->_orderedBehaviorOverridingParticipants;
     if (!orderedBehaviorOverridingParticipants)
     {
-      v6 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-      v7 = v4->_orderedBehaviorOverridingParticipants;
-      v4->_orderedBehaviorOverridingParticipants = v6;
+      weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+      v7 = selfCopy->_orderedBehaviorOverridingParticipants;
+      selfCopy->_orderedBehaviorOverridingParticipants = weakObjectsPointerArray;
 
-      orderedBehaviorOverridingParticipants = v4->_orderedBehaviorOverridingParticipants;
+      orderedBehaviorOverridingParticipants = selfCopy->_orderedBehaviorOverridingParticipants;
     }
 
     [(NSPointerArray *)orderedBehaviorOverridingParticipants sa_compact];
-    if ([(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants count])
+    if ([(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants count])
     {
-      v8 = [v12 behaviorOverridingRole];
+      behaviorOverridingRole = [participantCopy behaviorOverridingRole];
       for (i = 0; ; ++i)
       {
-        if (i >= [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants count])
+        if (i >= [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants count])
         {
           goto LABEL_14;
         }
 
-        v10 = [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants pointerAtIndex:i];
-        v11 = [v10 behaviorOverridingRole];
-        if (v11 == v8)
+        v10 = [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants pointerAtIndex:i];
+        behaviorOverridingRole2 = [v10 behaviorOverridingRole];
+        if (behaviorOverridingRole2 == behaviorOverridingRole)
         {
           break;
         }
 
-        if (v11 < v8)
+        if (behaviorOverridingRole2 < behaviorOverridingRole)
         {
-          [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants insertPointer:v12 atIndex:i];
+          [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants insertPointer:participantCopy atIndex:i];
           goto LABEL_13;
         }
       }
 
-      [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants replacePointerAtIndex:i withPointer:v12];
+      [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants replacePointerAtIndex:i withPointer:participantCopy];
 LABEL_13:
 
       goto LABEL_14;
     }
 
-    [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants addPointer:v12];
+    [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants addPointer:participantCopy];
 LABEL_14:
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removeBehaviorOverridingParticipant:(id)a3
+- (void)removeBehaviorOverridingParticipant:(id)participant
 {
-  v6 = a3;
-  if (v6)
+  participantCopy = participant;
+  if (participantCopy)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    for (i = 0; i < [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants count]; ++i)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    for (i = 0; i < [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants count]; ++i)
     {
-      if ([(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants pointerAtIndex:i]== v6)
+      if ([(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants pointerAtIndex:i]== participantCopy)
       {
-        [(NSPointerArray *)v4->_orderedBehaviorOverridingParticipants removePointerAtIndex:i];
+        [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants removePointerAtIndex:i];
         break;
       }
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)removeBehaviorOverridingParticipantWithRole:(int64_t)a3
+- (void)removeBehaviorOverridingParticipantWithRole:(int64_t)role
 {
   obj = self;
   objc_sync_enter(obj);
   for (i = 0; i < [(NSPointerArray *)obj->_orderedBehaviorOverridingParticipants count]; ++i)
   {
     v5 = [(NSPointerArray *)obj->_orderedBehaviorOverridingParticipants pointerAtIndex:i];
-    if ([v5 behaviorOverridingRole] == a3)
+    if ([v5 behaviorOverridingRole] == role)
     {
       [(NSPointerArray *)obj->_orderedBehaviorOverridingParticipants removePointerAtIndex:i];
 
@@ -324,45 +324,45 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v7 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
-  [v7 setLayoutMode:a3 reason:a4 forTargetWithOverrider:self];
+  [v7 setLayoutMode:mode reason:reason forTargetWithOverrider:self];
 }
 
 - (BOOL)isInteractiveDismissalEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v3 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_isInteractiveDismissalEnabledForTargetWithOverrider_isDefaultValue_];
-  LOBYTE(v2) = [v3 isInteractiveDismissalEnabledForTargetWithOverrider:v2 isDefaultValue:&v5];
+  LOBYTE(selfCopy) = [v3 isInteractiveDismissalEnabledForTargetWithOverrider:selfCopy isDefaultValue:&v5];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isMinimalPresentationPossible
 {
-  v2 = self;
+  selfCopy = self;
   v5 = 0;
   v3 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_isMinimalPresentationPossibleForTargetWithOverrider_isDefaultValue_];
-  LOBYTE(v2) = [v3 isMinimalPresentationPossibleForTargetWithOverrider:v2 isDefaultValue:&v5];
+  LOBYTE(selfCopy) = [v3 isMinimalPresentationPossibleForTargetWithOverrider:selfCopy isDefaultValue:&v5];
 
-  return v2;
+  return selfCopy;
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v9 = a4.trailing;
-  v10 = a4.bottom;
-  v11 = a4.leading;
-  v12 = a4.top;
+  trailing = maximumOutsets.trailing;
+  bottom = maximumOutsets.bottom;
+  leading = maximumOutsets.leading;
+  top = maximumOutsets.top;
+  v9 = outsets.trailing;
+  v10 = outsets.bottom;
+  v11 = outsets.leading;
+  v12 = outsets.top;
   v28 = 0;
   v15 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_preferredEdgeOutsetsForLayoutMode_suggestedOutsets_maximumOutsets_forTargetWithOverrider_isDefaultValue_];
-  [v15 preferredEdgeOutsetsForLayoutMode:a3 suggestedOutsets:self maximumOutsets:&v28 forTargetWithOverrider:v12 isDefaultValue:{v11, v10, v9, top, leading, bottom, trailing}];
+  [v15 preferredEdgeOutsetsForLayoutMode:mode suggestedOutsets:self maximumOutsets:&v28 forTargetWithOverrider:v12 isDefaultValue:{v11, v10, v9, top, leading, bottom, trailing}];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -379,14 +379,14 @@ LABEL_14:
   return result;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v17 = 0;
-  v9 = a4;
+  viewCopy = view;
   v10 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_sizeThatFitsSize_forProvidedView_inLayoutMode_forTargetWithOverrider_isDefaultValue_];
-  [v10 sizeThatFitsSize:v9 forProvidedView:a5 inLayoutMode:self forTargetWithOverrider:&v17 isDefaultValue:{width, height}];
+  [v10 sizeThatFitsSize:viewCopy forProvidedView:mode inLayoutMode:self forTargetWithOverrider:&v17 isDefaultValue:{width, height}];
   v12 = v11;
   v14 = v13;
 
@@ -397,35 +397,35 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode
 {
   v9 = 0;
-  v6 = a3;
+  concentricCopy = concentric;
   v7 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_isProvidedViewConcentric_inLayoutMode_forTargetWithOverrider_isDefaultValue_];
-  LOBYTE(a4) = [v7 isProvidedViewConcentric:v6 inLayoutMode:a4 forTargetWithOverrider:self isDefaultValue:&v9];
+  LOBYTE(mode) = [v7 isProvidedViewConcentric:concentricCopy inLayoutMode:mode forTargetWithOverrider:self isDefaultValue:&v9];
 
-  return a4;
+  return mode;
 }
 
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_layoutHostContainerViewWillLayoutSubviews_forTargetWithOverrider_];
-  [v5 layoutHostContainerViewWillLayoutSubviews:v4 forTargetWithOverrider:self];
+  [v5 layoutHostContainerViewWillLayoutSubviews:subviewsCopy forTargetWithOverrider:self];
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_layoutHostContainerViewDidLayoutSubviews_forTargetWithOverrider_];
-  [v5 layoutHostContainerViewDidLayoutSubviews:v4 forTargetWithOverrider:self];
+  [v5 layoutHostContainerViewDidLayoutSubviews:subviewsCopy forTargetWithOverrider:self];
 }
 
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode
 {
   v8 = 0;
   v5 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_customizationOptionsForLayoutMode_forTargetWithOverrider_isDefaultValue_];
-  v6 = [v5 customizationOptionsForLayoutMode:a3 forTargetWithOverrider:self isDefaultValue:&v8];
+  v6 = [v5 customizationOptionsForLayoutMode:mode forTargetWithOverrider:self isDefaultValue:&v8];
 
   return v6;
 }
@@ -442,183 +442,183 @@ LABEL_14:
 - (NSArray)preferredLayoutModeAssertions
 {
   v3 = objc_alloc(MEMORY[0x277CBEA60]);
-  v4 = [(SAUILayoutSpecifyingOverrider *)self preferredLayoutModeAssertion];
-  v5 = [v3 initWithObjects:{v4, 0}];
+  preferredLayoutModeAssertion = [(SAUILayoutSpecifyingOverrider *)self preferredLayoutModeAssertion];
+  v5 = [v3 initWithObjects:{preferredLayoutModeAssertion, 0}];
 
   return v5;
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason
 {
   v7 = [(SAUILayoutSpecifyingOverrider *)self _firstParticipantThatRespondsToSelector:sel_setPreferredLayoutMode_reason_forTargetWithOverrider_];
-  [v7 setPreferredLayoutMode:a3 reason:a4 forTargetWithOverrider:self];
+  [v7 setPreferredLayoutMode:mode reason:reason forTargetWithOverrider:self];
 }
 
-- (int64_t)layoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (int64_t)layoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained layoutMode];
+    layoutMode = [WeakRetained layoutMode];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    layoutMode = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return layoutMode;
 }
 
-- (unint64_t)customizationOptionsForLayoutMode:(int64_t)a3 forTargetWithOverrider:(id)a4 isDefaultValue:(BOOL *)a5
+- (unint64_t)customizationOptionsForLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained customizationOptionsForLayoutMode:a3];
+    v8 = [WeakRetained customizationOptionsForLayoutMode:mode];
   }
 
   else
   {
     v8 = 0;
-    if (a5)
+    if (value)
     {
-      *a5 = 1;
+      *value = 1;
     }
   }
 
   return v8;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setLayoutMode:a3 reason:a4];
+    [WeakRetained setLayoutMode:mode reason:reason];
   }
 }
 
-- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (int64_t)minimumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained minimumSupportedLayoutMode];
+    minimumSupportedLayoutMode = [WeakRetained minimumSupportedLayoutMode];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    minimumSupportedLayoutMode = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return minimumSupportedLayoutMode;
 }
 
-- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (int64_t)maximumSupportedLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained maximumSupportedLayoutMode];
+    maximumSupportedLayoutMode = [WeakRetained maximumSupportedLayoutMode];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    maximumSupportedLayoutMode = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return maximumSupportedLayoutMode;
 }
 
-- (int64_t)preferredLayoutModeForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (int64_t)preferredLayoutModeForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v4 = [(SAUILayoutSpecifyingOverrider *)self layoutModePreferenceForTargetWithOverrider:a3 isDefaultValue:a4];
-  v5 = [v4 preferredLayoutMode];
+  v4 = [(SAUILayoutSpecifyingOverrider *)self layoutModePreferenceForTargetWithOverrider:overrider isDefaultValue:value];
+  preferredLayoutMode = [v4 preferredLayoutMode];
 
-  return v5;
+  return preferredLayoutMode;
 }
 
-- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isInteractiveDismissalEnabledForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained isInteractiveDismissalEnabled];
+    isInteractiveDismissalEnabled = [WeakRetained isInteractiveDismissalEnabled];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    isInteractiveDismissalEnabled = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return isInteractiveDismissalEnabled;
 }
 
-- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isMinimalPresentationPossibleForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained isMinimalPresentationPossible];
+    isMinimalPresentationPossible = [WeakRetained isMinimalPresentationPossible];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    isMinimalPresentationPossible = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return isMinimalPresentationPossible;
 }
 
-- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (id)preferredLayoutModeAssertionForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained preferredLayoutModeAssertion];
+    preferredLayoutModeAssertion = [WeakRetained preferredLayoutModeAssertion];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    preferredLayoutModeAssertion = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return preferredLayoutModeAssertion;
 }
 
-- (id)layoutModePreferenceForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (id)layoutModePreferenceForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained layoutModePreference];
+    layoutModePreference = [WeakRetained layoutModePreference];
 LABEL_5:
-    v9 = v6;
+    v9 = layoutModePreference;
     goto LABEL_6;
   }
 
@@ -626,14 +626,14 @@ LABEL_5:
   v8 = [SAUILayoutModePreference alloc];
   if (v7)
   {
-    v6 = -[SAUILayoutModePreference initWithPreferredLayoutMode:reason:](v8, "initWithPreferredLayoutMode:reason:", [WeakRetained preferredLayoutMode], 1);
+    layoutModePreference = -[SAUILayoutModePreference initWithPreferredLayoutMode:reason:](v8, "initWithPreferredLayoutMode:reason:", [WeakRetained preferredLayoutMode], 1);
     goto LABEL_5;
   }
 
   v9 = [(SAUILayoutModePreference *)v8 initWithPreferredLayoutMode:2 reason:0];
-  if (a4)
+  if (value)
   {
-    *a4 = 1;
+    *value = 1;
   }
 
 LABEL_6:
@@ -641,29 +641,29 @@ LABEL_6:
   return v9;
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setPreferredLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained setPreferredLayoutMode:a3 reason:a4];
+    [WeakRetained setPreferredLayoutMode:mode reason:reason];
   }
 }
 
-- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)a3 suggestedOutsets:(NSDirectionalEdgeInsets)a4 maximumOutsets:(NSDirectionalEdgeInsets)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7
+- (NSDirectionalEdgeInsets)preferredEdgeOutsetsForLayoutMode:(int64_t)mode suggestedOutsets:(NSDirectionalEdgeInsets)outsets maximumOutsets:(NSDirectionalEdgeInsets)maximumOutsets forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v12 = a4.trailing;
-  v13 = a4.bottom;
-  v14 = a4.leading;
-  v15 = a4.top;
+  trailing = maximumOutsets.trailing;
+  bottom = maximumOutsets.bottom;
+  leading = maximumOutsets.leading;
+  top = maximumOutsets.top;
+  v12 = outsets.trailing;
+  v13 = outsets.bottom;
+  v14 = outsets.leading;
+  v15 = outsets.top;
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained preferredEdgeOutsetsForLayoutMode:a3 suggestedOutsets:v15 maximumOutsets:{v14, v13, v12, top, leading, bottom, trailing}];
+    [WeakRetained preferredEdgeOutsetsForLayoutMode:mode suggestedOutsets:v15 maximumOutsets:{v14, v13, v12, top, leading, bottom, trailing}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -676,9 +676,9 @@ LABEL_6:
     v21 = *(MEMORY[0x277D75060] + 8);
     v23 = *(MEMORY[0x277D75060] + 16);
     v25 = *(MEMORY[0x277D75060] + 24);
-    if (a7)
+    if (value)
     {
-      *a7 = 1;
+      *value = 1;
     }
   }
 
@@ -693,15 +693,15 @@ LABEL_6:
   return result;
 }
 
-- (CGSize)sizeThatFitsSize:(CGSize)a3 forProvidedView:(id)a4 inLayoutMode:(int64_t)a5 forTargetWithOverrider:(id)a6 isDefaultValue:(BOOL *)a7
+- (CGSize)sizeThatFitsSize:(CGSize)size forProvidedView:(id)view inLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  height = a3.height;
-  width = a3.width;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained sizeThatFitsSize:v12 forProvidedView:a5 inLayoutMode:{width, height}];
+    [WeakRetained sizeThatFitsSize:viewCopy forProvidedView:mode inLayoutMode:{width, height}];
     v15 = v14;
     v17 = v16;
   }
@@ -710,9 +710,9 @@ LABEL_6:
   {
     v15 = *MEMORY[0x277CBF3A8];
     v17 = *(MEMORY[0x277CBF3A8] + 8);
-    if (a7)
+    if (value)
     {
-      *a7 = 1;
+      *value = 1;
     }
   }
 
@@ -723,65 +723,65 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isProvidedViewConcentric:(id)a3 inLayoutMode:(int64_t)a4 forTargetWithOverrider:(id)a5 isDefaultValue:(BOOL *)a6
+- (BOOL)isProvidedViewConcentric:(id)concentric inLayoutMode:(int64_t)mode forTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
-  v9 = a3;
+  concentricCopy = concentric;
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v11 = [WeakRetained isProvidedViewConcentric:v9 inLayoutMode:a4];
+    v11 = [WeakRetained isProvidedViewConcentric:concentricCopy inLayoutMode:mode];
   }
 
   else
   {
     v11 = 1;
-    if (a6)
+    if (value)
     {
-      *a6 = 1;
+      *value = 1;
     }
   }
 
   return v11;
 }
 
-- (void)layoutHostContainerViewWillLayoutSubviews:(id)a3 forTargetWithOverrider:(id)a4
+- (void)layoutHostContainerViewWillLayoutSubviews:(id)subviews forTargetWithOverrider:(id)overrider
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained layoutHostContainerViewWillLayoutSubviews:v6];
+    [WeakRetained layoutHostContainerViewWillLayoutSubviews:subviewsCopy];
   }
 }
 
-- (void)layoutHostContainerViewDidLayoutSubviews:(id)a3 forTargetWithOverrider:(id)a4
+- (void)layoutHostContainerViewDidLayoutSubviews:(id)subviews forTargetWithOverrider:(id)overrider
 {
-  v6 = a3;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained layoutHostContainerViewDidLayoutSubviews:v6];
+    [WeakRetained layoutHostContainerViewDidLayoutSubviews:subviewsCopy];
   }
 }
 
-- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)a3 isDefaultValue:(BOOL *)a4
+- (BOOL)isRequestingMenuPresentationForTargetWithOverrider:(id)overrider isDefaultValue:(BOOL *)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_behaviorOverridingTarget);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained isRequestingMenuPresentation];
+    isRequestingMenuPresentation = [WeakRetained isRequestingMenuPresentation];
   }
 
   else
   {
-    v6 = 0;
-    if (a4)
+    isRequestingMenuPresentation = 0;
+    if (value)
     {
-      *a4 = 1;
+      *value = 1;
     }
   }
 
-  return v6;
+  return isRequestingMenuPresentation;
 }
 
 - (SAUILayoutSpecifying)layoutSpecifyingOverridingTarget
@@ -802,26 +802,26 @@ LABEL_6:
   return v3;
 }
 
-- (id)layoutSpecifyingOverridingParticipantSubordinateToParticipant:(id)a3 thatRespondsToSelector:(SEL)a4
+- (id)layoutSpecifyingOverridingParticipantSubordinateToParticipant:(id)participant thatRespondsToSelector:(SEL)selector
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __118__SAUILayoutSpecifyingOverrider_layoutSpecifyingOverridingParticipantSubordinateToParticipant_thatRespondsToSelector___block_invoke;
   v6[3] = &__block_descriptor_40_e43_B16__0___SABehaviorOverridingParticipant__8l;
-  v6[4] = a4;
-  v4 = [(SAUILayoutSpecifyingOverrider *)self _behaviorOverridingParticipantSubordinate:1 toParticipant:a3 passingTest:v6];
+  v6[4] = selector;
+  v4 = [(SAUILayoutSpecifyingOverrider *)self _behaviorOverridingParticipantSubordinate:1 toParticipant:participant passingTest:v6];
 
   return v4;
 }
 
-- (id)layoutSpecifyingOverridingParticipantSuperiorToParticipant:(id)a3 thatRespondsToSelector:(SEL)a4
+- (id)layoutSpecifyingOverridingParticipantSuperiorToParticipant:(id)participant thatRespondsToSelector:(SEL)selector
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __115__SAUILayoutSpecifyingOverrider_layoutSpecifyingOverridingParticipantSuperiorToParticipant_thatRespondsToSelector___block_invoke;
   v6[3] = &__block_descriptor_40_e43_B16__0___SABehaviorOverridingParticipant__8l;
-  v6[4] = a4;
-  v4 = [(SAUILayoutSpecifyingOverrider *)self _behaviorOverridingParticipantSubordinate:0 toParticipant:a3 passingTest:v6];
+  v6[4] = selector;
+  v4 = [(SAUILayoutSpecifyingOverrider *)self _behaviorOverridingParticipantSubordinate:0 toParticipant:participant passingTest:v6];
 
   return v4;
 }
@@ -834,14 +834,14 @@ LABEL_6:
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: %p", v5, self];
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = &v7->super.isa;
-  v8 = v7->_orderedBehaviorOverridingParticipants;
+  obj = &selfCopy->super.isa;
+  v8 = selfCopy->_orderedBehaviorOverridingParticipants;
   v9 = [(NSPointerArray *)v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -856,11 +856,11 @@ LABEL_6:
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 behaviorOverridingRole];
+        behaviorOverridingRole = [v12 behaviorOverridingRole];
         v14 = @"[UNKNOWN]";
-        if (v13 <= 3)
+        if (behaviorOverridingRole <= 3)
         {
-          v14 = off_279D32AB8[v13];
+          v14 = off_279D32AB8[behaviorOverridingRole];
         }
 
         v15 = objc_opt_class();
@@ -885,17 +885,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)_firstParticipantThatRespondsToSelector:(SEL)a3
+- (id)_firstParticipantThatRespondsToSelector:(SEL)selector
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = self;
-  objc_sync_enter(v3);
-  [(NSPointerArray *)v3->_orderedBehaviorOverridingParticipants sa_compact];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_orderedBehaviorOverridingParticipants sa_compact];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3->_orderedBehaviorOverridingParticipants;
+  v4 = selfCopy->_orderedBehaviorOverridingParticipants;
   v5 = [(NSPointerArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -930,7 +930,7 @@ LABEL_6:
   v9 = 0;
 LABEL_11:
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }

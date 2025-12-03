@@ -1,15 +1,15 @@
 @interface MPSNDArrayQuantizedScaledDotProductAttention
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7;
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state;
 @end
 
 @implementation MPSNDArrayQuantizedScaledDotProductAttention
 
-- (id)workloadStatisticsForSourceArrays:(id)a3 destArrays:(id)a4 kernel:(id)a5 kernelDAGObject:(id)a6 sourceState:(id)a7
+- (id)workloadStatisticsForSourceArrays:(id)arrays destArrays:(id)destArrays kernel:(id)kernel kernelDAGObject:(id)object sourceState:(id)state
 {
   v78.receiver = self;
   v78.super_class = MPSNDArrayQuantizedScaledDotProductAttention;
-  v10 = [(MPSNDArrayMultiaryBase *)&v78 workloadStatisticsForSourceArrays:a3 destArrays:a4 sourceState:a7, a6];
-  if ([a5 layout] == 1)
+  object = [(MPSNDArrayMultiaryBase *)&v78 workloadStatisticsForSourceArrays:arrays destArrays:destArrays sourceState:state, object];
+  if ([kernel layout] == 1)
   {
     v11 = 1;
   }
@@ -19,7 +19,7 @@
     v11 = 2;
   }
 
-  if ([a5 layout] == 1)
+  if ([kernel layout] == 1)
   {
     v12 = 2;
   }
@@ -29,8 +29,8 @@
     v12 = 1;
   }
 
-  v13 = [a3 objectAtIndexedSubscript:0];
-  v14 = [a3 objectAtIndexedSubscript:1];
+  v13 = [arrays objectAtIndexedSubscript:0];
+  v14 = [arrays objectAtIndexedSubscript:1];
   v15 = *MEMORY[0x277CD7410];
   v16 = *(v13 + v15);
   v17 = *(v13 + v15 + 16);
@@ -63,77 +63,77 @@
   v26 = *(v77 + (BYTE3(v20) & 0xF));
   v27 = MEMORY[0x277CD73C8];
   v28 = (v26 * v25 * v24 * v23 * (2 * v21 + 10));
-  if ((*(a4 + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
+  if ((*(destArrays + *MEMORY[0x277CD73C8]) & 0xFFF8) == 0x20)
   {
-    [v10 setFloat32Ops:v28];
-    [v10 setFloat16Ops:0.0];
+    [object setFloat32Ops:v28];
+    [object setFloat16Ops:0.0];
   }
 
   else
   {
-    [v10 setFloat16Ops:v28];
-    [v10 setFloat32Ops:0.0];
+    [object setFloat16Ops:v28];
+    [object setFloat32Ops:0.0];
   }
 
-  [v10 float32Ops];
+  [object float32Ops];
   v30 = v29;
-  [v10 float16Ops];
+  [object float16Ops];
   v32 = v31;
-  [v10 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v34 = v33;
-  [v10 deviceMemoryBytesWrite];
+  [object deviceMemoryBytesWrite];
   v36 = v35;
-  v37 = [a3 count];
+  v37 = [arrays count];
   if (v37 == 6)
   {
-    v47 = *([a3 objectAtIndexedSubscript:0] + *v27);
+    v47 = *([arrays objectAtIndexedSubscript:0] + *v27);
     v69 = MPSGetDataTypeName();
-    v48 = *([a3 objectAtIndexedSubscript:1] + *v27);
+    v48 = *([arrays objectAtIndexedSubscript:1] + *v27);
     v67 = MPSGetDataTypeName();
-    v49 = *([a3 objectAtIndexedSubscript:2] + *v27);
+    v49 = *([arrays objectAtIndexedSubscript:2] + *v27);
     MPSGetDataTypeName();
-    v50 = *([a3 objectAtIndexedSubscript:3] + *v27);
+    v50 = *([arrays objectAtIndexedSubscript:3] + *v27);
     MPSGetDataTypeName();
-    v51 = *([a3 objectAtIndexedSubscript:4] + *v27);
+    v51 = *([arrays objectAtIndexedSubscript:4] + *v27);
     MPSGetDataTypeName();
-    v52 = *([a3 objectAtIndexedSubscript:5] + *v27);
+    v52 = *([arrays objectAtIndexedSubscript:5] + *v27);
     MPSGetDataTypeName();
-    v53 = *(a4 + *v27);
+    v53 = *(destArrays + *v27);
     MPSGetDataTypeName();
-    MPSKernel_LogInfo(a5, v54, "QuantizedSDPA: Q is not quantized, Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, KScale Datatype: %s, VScale Datatype: %s, Dest Datatype: %s\t", v26, v24, v23, v25, v21, v69, v67);
+    MPSKernel_LogInfo(kernel, v54, "QuantizedSDPA: Q is not quantized, Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, KScale Datatype: %s, VScale Datatype: %s, Dest Datatype: %s\t", v26, v24, v23, v25, v21, v69, v67);
   }
 
   else if (v37 == 7)
   {
-    v38 = *([a3 objectAtIndexedSubscript:0] + *v27);
+    v38 = *([arrays objectAtIndexedSubscript:0] + *v27);
     v68 = MPSGetDataTypeName();
-    v39 = *([a3 objectAtIndexedSubscript:1] + *v27);
+    v39 = *([arrays objectAtIndexedSubscript:1] + *v27);
     v66 = MPSGetDataTypeName();
-    v40 = *([a3 objectAtIndexedSubscript:2] + *v27);
+    v40 = *([arrays objectAtIndexedSubscript:2] + *v27);
     v65 = MPSGetDataTypeName();
-    v41 = *([a3 objectAtIndexedSubscript:3] + *v27);
+    v41 = *([arrays objectAtIndexedSubscript:3] + *v27);
     MPSGetDataTypeName();
-    v42 = *([a3 objectAtIndexedSubscript:4] + *v27);
+    v42 = *([arrays objectAtIndexedSubscript:4] + *v27);
     MPSGetDataTypeName();
-    v43 = *([a3 objectAtIndexedSubscript:5] + *v27);
+    v43 = *([arrays objectAtIndexedSubscript:5] + *v27);
     MPSGetDataTypeName();
-    v44 = *([a3 objectAtIndexedSubscript:6] + *v27);
+    v44 = *([arrays objectAtIndexedSubscript:6] + *v27);
     MPSGetDataTypeName();
-    v45 = *(a4 + *v27);
+    v45 = *(destArrays + *v27);
     MPSGetDataTypeName();
-    MPSKernel_LogInfo(a5, v46, "QuantizedSDPA: Q is quantized, Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, QScale Datatype: %s, KScale Datatype: %s, VScale Datatype: %s, Dest Datatype: %s\t", v26, v24, v23, v25, v21, v68, v66, v65);
+    MPSKernel_LogInfo(kernel, v46, "QuantizedSDPA: Q is quantized, Batches=%lu, PromptSize=%lu, Contexts=%lu, Heads=%lu, Features=%lu, Q Datatype: %s, K Datatype: %s, V Datatype: %s, Mask Datatype: %s, QScale Datatype: %s, KScale Datatype: %s, VScale Datatype: %s, Dest Datatype: %s\t", v26, v24, v23, v25, v21, v68, v66, v65);
   }
 
   v55 = (v30 + v32) / (v34 + v36);
-  [v10 float16Ops];
+  [object float16Ops];
   v57 = v56;
-  [v10 float32Ops];
+  [object float32Ops];
   v59 = v58;
-  [v10 deviceMemoryBytesRead];
+  [object deviceMemoryBytesRead];
   v61 = v60;
-  [v10 deviceMemoryBytesWrite];
-  MPSKernel_LogInfo(a5, v62, "QuantizedSDPA: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v57, v59, v61, v63, v55);
-  return v10;
+  [object deviceMemoryBytesWrite];
+  MPSKernel_LogInfo(kernel, v62, "QuantizedSDPA: f16Ops=%f, f32Ops=%f, BytesRead=%f, BytesWritten=%f, OpsPerByte=%f\n", v57, v59, v61, v63, v55);
+  return object;
 }
 
 @end

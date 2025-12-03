@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSContainerDetailLink.description.getter();
 
   v3 = sub_AB9260();

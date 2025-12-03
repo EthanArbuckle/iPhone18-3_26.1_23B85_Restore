@@ -1,15 +1,15 @@
 @interface HDCorrelationSampleSyncEntity
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
-+ (id)_predicateForSyncSession:(id)a3;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
++ (id)_predicateForSyncSession:(id)session;
 @end
 
 @implementation HDCorrelationSampleSyncEntity
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___HDCorrelationSampleSyncEntity;
-  v3 = objc_msgSendSuper2(&v10, sel__predicateForSyncSession_, a3);
+  v3 = objc_msgSendSuper2(&v10, sel__predicateForSyncSession_, session);
   v4 = [MEMORY[0x277CCD720] _allTypesOfClass:objc_opt_class()];
   v5 = HDSampleEntityPredicateForDataTypes(v4);
 
@@ -20,18 +20,18 @@
   return v8;
 }
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
-  v5 = a3;
-  v6 = [a4 daemon];
-  v7 = [v6 behavior];
-  v8 = [v7 supportsSampleExpiration];
+  dateCopy = date;
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-  if (v8)
+  if (supportsSampleExpiration)
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v10 = [MEMORY[0x277CCD720] _allTypesOfClass:objc_opt_class()];
-    v11 = [v9 hd_predicateForSamplesWithTypes:v10 endingBeforeDate:v5 minusDays:*MEMORY[0x277CCCEE8]];
+    v11 = [currentCalendar hd_predicateForSamplesWithTypes:v10 endingBeforeDate:dateCopy minusDays:*MEMORY[0x277CCCEE8]];
   }
 
   else

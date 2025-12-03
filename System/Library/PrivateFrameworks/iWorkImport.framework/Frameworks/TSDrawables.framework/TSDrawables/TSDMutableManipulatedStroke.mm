@@ -1,18 +1,18 @@
 @interface TSDMutableManipulatedStroke
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setWidth:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setWidth:(double)width;
 @end
 
 @implementation TSDMutableManipulatedStroke
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   objc_msgSend_setI_width_(self, a2, v3);
 
-  objc_msgSend_setI_actualWidth_(self, v6, v7, a3);
+  objc_msgSend_setI_actualWidth_(self, v6, v7, width);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSDManipulatedStroke alloc];
   v7 = objc_msgSend_strokeName(self, v5, v6);

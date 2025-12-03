@@ -1,9 +1,9 @@
 @interface PXPhotosDynamicHeaderLayout
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (NSIndexSet)axSpriteIndexes;
 - (PXPhotosDynamicHeaderLayout)init;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)entityManagerDidChange;
 @end
 
@@ -20,9 +20,9 @@
   PXGLayout.invalidate<A>(updateFlags:with:)();
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  result = sub_1A41FE778(a3);
+  result = sub_1A41FE778(index);
   if (result)
   {
 
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v6 = a4;
-  v7 = self;
-  v8 = sub_1A41FE85C(a3);
+  layoutCopy = layout;
+  selfCopy = self;
+  v8 = sub_1A41FE85C(index);
 
   return v8;
 }
@@ -66,10 +66,10 @@
   return result;
 }
 
-- (CGSize)singleViewLayout:(id)a3 desiredSizeForReferenceSize:(CGSize)a4
+- (CGSize)singleViewLayout:(id)layout desiredSizeForReferenceSize:(CGSize)size
 {
-  width = a4.width;
-  [(PXPhotosDynamicHeaderLayout *)self contentSize:a3];
+  width = size.width;
+  [(PXPhotosDynamicHeaderLayout *)self contentSize:layout];
   v6 = width;
   result.height = v5;
   result.width = v6;

@@ -4,27 +4,27 @@
 - (BOOL)isEnabled;
 - (PRSBagHandler)init;
 - (PRSSessionController)client;
-- (id)_base64CEPDataNoCopyFromFeatureData:(id)a3;
+- (id)_base64CEPDataNoCopyFromFeatureData:(id)data;
 - (id)applicationNameForUserAgent;
 - (id)excludedDomainIdentifiers;
-- (void)_processQIFeatures:(id)a3 forClient:(id)a4;
-- (void)fetchModifiedResourceFromSession:(id)a3 resource:(id)a4 completion:(id)a5;
-- (void)getFTEStringsWithReply:(id)a3;
-- (void)parseCEPFromData:(id)a3 forClient:(id)a4;
-- (void)removeTask:(id)a3;
-- (void)triggerTaskWhenReady:(id)a3;
-- (void)updateFromSession:(id)a3 bag:(id)a4 forClient:(id)a5 error:(id)a6;
-- (void)updateWithBagDictionary:(id)a3 error:(id)a4;
+- (void)_processQIFeatures:(id)features forClient:(id)client;
+- (void)fetchModifiedResourceFromSession:(id)session resource:(id)resource completion:(id)completion;
+- (void)getFTEStringsWithReply:(id)reply;
+- (void)parseCEPFromData:(id)data forClient:(id)client;
+- (void)removeTask:(id)task;
+- (void)triggerTaskWhenReady:(id)ready;
+- (void)updateFromSession:(id)session bag:(id)bag forClient:(id)client error:(id)error;
+- (void)updateWithBagDictionary:(id)dictionary error:(id)error;
 @end
 
 @implementation PRSBagHandler
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v2 stringForKey:@"ParsecExtraParam"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults stringForKey:@"ParsecExtraParam"];
 
     v3 = v6;
     if (v6)
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = __30__PRSBagHandler_sharedHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHandler_onceToken != -1)
   {
     dispatch_once(&sharedHandler_onceToken, block);
@@ -117,9 +117,9 @@ uint64_t __30__PRSBagHandler_sharedHandler__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_base64CEPDataNoCopyFromFeatureData:(id)a3
+- (id)_base64CEPDataNoCopyFromFeatureData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -143,8 +143,8 @@ uint64_t __30__PRSBagHandler_sharedHandler__block_invoke(uint64_t a1)
   aBlock[6] = v15;
   aBlock[7] = "qi_features";
   v4 = _Block_copy(aBlock);
-  [v3 bytes];
-  [v3 length];
+  [dataCopy bytes];
+  [dataCopy length];
   if (json_parse() && *(v10 + 8) == 4 && (v5 = v10[5]) != 0)
   {
     v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v5 length:v10[6] freeWhenDone:0];
@@ -210,10 +210,10 @@ void *__53__PRSBagHandler__base64CEPDataNoCopyFromFeatureData___block_invoke(voi
   return result;
 }
 
-- (void)_processQIFeatures:(id)a3 forClient:(id)a4
+- (void)_processQIFeatures:(id)features forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  featuresCopy = features;
+  clientCopy = client;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3810000000;
@@ -241,8 +241,8 @@ void *__53__PRSBagHandler__base64CEPDataNoCopyFromFeatureData___block_invoke(voi
   aBlock[6] = v20;
   aBlock[7] = Mutable;
   v10 = _Block_copy(aBlock);
-  [v6 bytes];
-  [v6 length];
+  [featuresCopy bytes];
+  [featuresCopy length];
   v11 = json_parse();
   _MDPlistContainerEndDictionary();
   _MDPlistContainerEndContainer();
@@ -402,10 +402,10 @@ LABEL_19:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)parseCEPFromData:(id)a3 forClient:(id)a4
+- (void)parseCEPFromData:(id)data forClient:(id)client
 {
-  v6 = a4;
-  v7 = [(PRSBagHandler *)self _base64CEPDataNoCopyFromFeatureData:a3];
+  clientCopy = client;
+  v7 = [(PRSBagHandler *)self _base64CEPDataNoCopyFromFeatureData:data];
   if (v7)
   {
     v8 = PRSLogCategoryDefault();
@@ -416,16 +416,16 @@ LABEL_19:
     }
 
     v9 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedData:v7 options:0];
-    [(PRSBagHandler *)self _processQIFeatures:v9 forClient:v6];
+    [(PRSBagHandler *)self _processQIFeatures:v9 forClient:clientCopy];
   }
 }
 
 - (BOOL)isEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v3 = [WeakRetained isEnabled];
+  isEnabled = [WeakRetained isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (id)applicationNameForUserAgent
@@ -436,15 +436,15 @@ LABEL_19:
   if (v4)
   {
     v5 = objc_loadWeakRetained(&self->_client);
-    v6 = [v5 applicationNameForUserAgent];
+    applicationNameForUserAgent = [v5 applicationNameForUserAgent];
   }
 
   else
   {
-    v6 = 0;
+    applicationNameForUserAgent = 0;
   }
 
-  return v6;
+  return applicationNameForUserAgent;
 }
 
 - (id)excludedDomainIdentifiers
@@ -455,20 +455,20 @@ LABEL_19:
   if (v4)
   {
     v5 = objc_loadWeakRetained(&self->_client);
-    v6 = [v5 excludedDomainIdentifiers];
+    excludedDomainIdentifiers = [v5 excludedDomainIdentifiers];
   }
 
   else
   {
-    v6 = 0;
+    excludedDomainIdentifiers = 0;
   }
 
-  return v6;
+  return excludedDomainIdentifiers;
 }
 
-- (void)updateWithBagDictionary:(id)a3 error:(id)a4
+- (void)updateWithBagDictionary:(id)dictionary error:(id)error
 {
-  if (a4)
+  if (error)
   {
     v4 = 4;
   }
@@ -481,20 +481,20 @@ LABEL_19:
   [(PRSBagHandler *)self setStatus:v4];
 }
 
-- (void)fetchModifiedResourceFromSession:(id)a3 resource:(id)a4 completion:(id)a5
+- (void)fetchModifiedResourceFromSession:(id)session resource:(id)resource completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  resourceCopy = resource;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__PRSBagHandler_fetchModifiedResourceFromSession_resource_completion___block_invoke;
   v12[3] = &unk_1E85956D8;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a3 fileHandleAndAttributesForResource:v11 completion:v12];
+  v13 = resourceCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = resourceCopy;
+  [session fileHandleAndAttributesForResource:v11 completion:v12];
 }
 
 void __70__PRSBagHandler_fetchModifiedResourceFromSession_resource_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -621,26 +621,26 @@ LABEL_21:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateFromSession:(id)a3 bag:(id)a4 forClient:(id)a5 error:(id)a6
+- (void)updateFromSession:(id)session bag:(id)bag forClient:(id)client error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  bagCopy = bag;
+  clientCopy = client;
+  errorCopy = error;
   bagQueue = self->_bagQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__PRSBagHandler_updateFromSession_bag_forClient_error___block_invoke;
   block[3] = &unk_1E85957F0;
   block[4] = self;
-  v20 = v11;
-  v21 = v13;
-  v22 = v10;
-  v23 = v12;
-  v15 = v12;
-  v16 = v10;
-  v17 = v13;
-  v18 = v11;
+  v20 = bagCopy;
+  v21 = errorCopy;
+  v22 = sessionCopy;
+  v23 = clientCopy;
+  v15 = clientCopy;
+  v16 = sessionCopy;
+  v17 = errorCopy;
+  v18 = bagCopy;
   dispatch_async(bagQueue, block);
 }
 
@@ -908,24 +908,24 @@ void __55__PRSBagHandler_updateFromSession_bag_forClient_error___block_invoke_7(
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)removeTask:(id)a3
+- (void)removeTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   bagQueue = self->_bagQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__PRSBagHandler_removeTask___block_invoke;
   v7[3] = &unk_1E8595728;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = taskCopy;
+  v6 = taskCopy;
   dispatch_async(bagQueue, v7);
 }
 
-- (void)triggerTaskWhenReady:(id)a3
+- (void)triggerTaskWhenReady:(id)ready
 {
-  v4 = a3;
-  if ([v4 needsBag])
+  readyCopy = ready;
+  if ([readyCopy needsBag])
   {
     bagQueue = self->_bagQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -933,13 +933,13 @@ void __55__PRSBagHandler_updateFromSession_bag_forClient_error___block_invoke_7(
     v6[2] = __38__PRSBagHandler_triggerTaskWhenReady___block_invoke;
     v6[3] = &unk_1E8595728;
     v6[4] = self;
-    v7 = v4;
+    v7 = readyCopy;
     dispatch_async(bagQueue, v6);
   }
 
   else
   {
-    [v4 triggerQuery:1];
+    [readyCopy triggerQuery:1];
   }
 }
 
@@ -972,16 +972,16 @@ uint64_t __38__PRSBagHandler_triggerTaskWhenReady___block_invoke(uint64_t a1)
   }
 }
 
-- (void)getFTEStringsWithReply:(id)a3
+- (void)getFTEStringsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [PRSBagHandler getFTEStringsWithReply:v5];
   }
 
-  v6 = [[PRSFTETask alloc] initWithReply:v4];
+  v6 = [[PRSFTETask alloc] initWithReply:replyCopy];
   [(PRSBagHandler *)self triggerTaskWhenReady:v6];
 }
 

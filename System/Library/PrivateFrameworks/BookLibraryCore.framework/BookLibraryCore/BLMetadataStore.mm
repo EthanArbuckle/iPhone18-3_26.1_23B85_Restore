@@ -1,8 +1,8 @@
 @interface BLMetadataStore
 - (BLMetadataStore)init;
-- (BOOL)removeRacGUIDForStoreID:(int64_t)a3 error:(id *)a4;
-- (BOOL)setRacGUID:(id)a3 forStoreID:(int64_t)a4 error:(id *)a5;
-- (void)racGUIDForStoreID:(int64_t)a3 result:(id)a4;
+- (BOOL)removeRacGUIDForStoreID:(int64_t)d error:(id *)error;
+- (BOOL)setRacGUID:(id)d forStoreID:(int64_t)iD error:(id *)error;
+- (void)racGUIDForStoreID:(int64_t)d result:(id)result;
 @end
 
 @implementation BLMetadataStore
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (BOOL)setRacGUID:(id)a3 forStoreID:(int64_t)a4 error:(id *)a5
+- (BOOL)setRacGUID:(id)d forStoreID:(int64_t)iD error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -54,11 +54,11 @@
   v13[2] = sub_241D46538;
   v13[3] = &unk_278D176F8;
   v13[4] = &v14;
-  [(BLServiceProxy *)serviceProxy setRacGUID:v8 forStoreID:a4 withReply:v13];
+  [(BLServiceProxy *)serviceProxy setRacGUID:dCopy forStoreID:iD withReply:v13];
   v10 = v15[5];
-  if (a5 && v10)
+  if (error && v10)
   {
-    *a5 = v10;
+    *error = v10;
     v10 = v15[5];
   }
 
@@ -68,9 +68,9 @@
   return v11;
 }
 
-- (void)racGUIDForStoreID:(int64_t)a3 result:(id)a4
+- (void)racGUIDForStoreID:(int64_t)d result:(id)result
 {
-  v6 = a4;
+  resultCopy = result;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -90,8 +90,8 @@
   v10[3] = &unk_278D17748;
   v10[4] = &v11;
   v10[5] = &v17;
-  [(BLServiceProxy *)serviceProxy racGUIDForStoreID:a3 withReply:v10];
-  v8 = MEMORY[0x245CFF560](v6);
+  [(BLServiceProxy *)serviceProxy racGUIDForStoreID:d withReply:v10];
+  v8 = MEMORY[0x245CFF560](resultCopy);
   v9 = v8;
   if (v8)
   {
@@ -102,7 +102,7 @@
   _Block_object_dispose(&v17, 8);
 }
 
-- (BOOL)removeRacGUIDForStoreID:(int64_t)a3 error:(id *)a4
+- (BOOL)removeRacGUIDForStoreID:(int64_t)d error:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -116,11 +116,11 @@
   v9[2] = sub_241D4686C;
   v9[3] = &unk_278D176F8;
   v9[4] = &v10;
-  [(BLServiceProxy *)serviceProxy removeRacGUIDForStoreID:a3 withReply:v9];
+  [(BLServiceProxy *)serviceProxy removeRacGUIDForStoreID:d withReply:v9];
   v6 = v11[5];
-  if (a4 && v6)
+  if (error && v6)
   {
-    *a4 = v6;
+    *error = v6;
     v6 = v11[5];
   }
 

@@ -6,10 +6,10 @@
 
 - (id)sr_dictionaryRepresentation
 {
-  v3 = [(SRAudioLevel *)[(SRSpeechMetrics *)self audioLevel] sr_dictionaryRepresentation];
-  v4 = [(SFSpeechRecognitionResult *)[(SRSpeechMetrics *)self speechRecognition] sr_dictionaryRepresentation];
-  v5 = [(SNClassificationResult *)[(SRSpeechMetrics *)self soundClassification] sr_dictionaryRepresentation];
-  v6 = [(SRSpeechExpression *)[(SRSpeechMetrics *)self speechExpression] sr_dictionaryRepresentation];
+  sr_dictionaryRepresentation = [(SRAudioLevel *)[(SRSpeechMetrics *)self audioLevel] sr_dictionaryRepresentation];
+  sr_dictionaryRepresentation2 = [(SFSpeechRecognitionResult *)[(SRSpeechMetrics *)self speechRecognition] sr_dictionaryRepresentation];
+  sr_dictionaryRepresentation3 = [(SNClassificationResult *)[(SRSpeechMetrics *)self soundClassification] sr_dictionaryRepresentation];
+  sr_dictionaryRepresentation4 = [(SRSpeechExpression *)[(SRSpeechMetrics *)self speechExpression] sr_dictionaryRepresentation];
   v16[0] = @"sessionIdentifier";
   v17[0] = [(SRSpeechMetrics *)self sessionIdentifier];
   v16[1] = @"sessionFlags";
@@ -39,9 +39,9 @@
     v10 = [NSString stringWithFormat:@"%f", *&v9];
   }
 
-  if (v3)
+  if (sr_dictionaryRepresentation)
   {
-    v11 = v3;
+    v11 = sr_dictionaryRepresentation;
   }
 
   else
@@ -53,9 +53,9 @@
   v17[4] = v11;
   v16[4] = @"audioLevel";
   v16[5] = @"speechRecognition";
-  if (v4)
+  if (sr_dictionaryRepresentation2)
   {
-    v12 = v4;
+    v12 = sr_dictionaryRepresentation2;
   }
 
   else
@@ -63,9 +63,9 @@
     v12 = &__NSDictionary0__struct;
   }
 
-  if (v5)
+  if (sr_dictionaryRepresentation3)
   {
-    v13 = v5;
+    v13 = sr_dictionaryRepresentation3;
   }
 
   else
@@ -77,9 +77,9 @@
   v17[6] = v13;
   v16[6] = @"soundClassification";
   v16[7] = @"speechExpression";
-  if (v6)
+  if (sr_dictionaryRepresentation4)
   {
-    v14 = v6;
+    v14 = sr_dictionaryRepresentation4;
   }
 
   else

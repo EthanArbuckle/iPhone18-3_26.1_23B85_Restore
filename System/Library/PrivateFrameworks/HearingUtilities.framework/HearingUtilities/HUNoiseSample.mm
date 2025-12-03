@@ -1,7 +1,7 @@
 @interface HUNoiseSample
 + (id)dateFormatter;
-- (HUNoiseSample)initWithRepresentation:(id)a3;
-- (HUNoiseSample)initWithSampleDate:(id)a3 splValue:(float)a4 andDuration:(float)a5;
+- (HUNoiseSample)initWithRepresentation:(id)representation;
+- (HUNoiseSample)initWithSampleDate:(id)date splValue:(float)value andDuration:(float)duration;
 - (id)detailedDescription;
 - (id)transportRepresentation;
 @end
@@ -35,41 +35,41 @@ uint64_t __30__HUNoiseSample_dateFormatter__block_invoke()
   return [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss:SS"];
 }
 
-- (HUNoiseSample)initWithSampleDate:(id)a3 splValue:(float)a4 andDuration:(float)a5
+- (HUNoiseSample)initWithSampleDate:(id)date splValue:(float)value andDuration:(float)duration
 {
-  v8 = a3;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = HUNoiseSample;
   v9 = [(HUNoiseSample *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    [(HUNoiseSample *)v9 setSampleDate:v8];
-    *&v11 = a4;
+    [(HUNoiseSample *)v9 setSampleDate:dateCopy];
+    *&v11 = value;
     [(HUNoiseSample *)v10 setSplValue:v11];
-    *&v12 = a5;
+    *&v12 = duration;
     [(HUNoiseSample *)v10 setSampleDuration:v12];
   }
 
   return v10;
 }
 
-- (HUNoiseSample)initWithRepresentation:(id)a3
+- (HUNoiseSample)initWithRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = HUNoiseSample;
   v5 = [(HUNoiseSample *)&v10 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"HUNoiseSampleDateKey"];
+    v6 = [representationCopy valueForKey:@"HUNoiseSampleDateKey"];
     [(HUNoiseSample *)v5 setSampleDate:v6];
 
-    v7 = [v4 valueForKey:@"HUNoiseSampleSPLKey"];
+    v7 = [representationCopy valueForKey:@"HUNoiseSampleSPLKey"];
     [v7 floatValue];
     [(HUNoiseSample *)v5 setSplValue:?];
 
-    v8 = [v4 valueForKey:@"HUNoiseSampleDurationKey"];
+    v8 = [representationCopy valueForKey:@"HUNoiseSampleDurationKey"];
     [v8 floatValue];
     [(HUNoiseSample *)v5 setSampleDuration:?];
   }
@@ -80,13 +80,13 @@ uint64_t __30__HUNoiseSample_dateFormatter__block_invoke()
 - (id)transportRepresentation
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(HUNoiseSample *)self sampleDate];
+  sampleDate = [(HUNoiseSample *)self sampleDate];
 
-  if (v3)
+  if (sampleDate)
   {
     v12[0] = @"HUNoiseSampleDateKey";
-    v4 = [(HUNoiseSample *)self sampleDate];
-    v13[0] = v4;
+    sampleDate2 = [(HUNoiseSample *)self sampleDate];
+    v13[0] = sampleDate2;
     v12[1] = @"HUNoiseSampleSPLKey";
     v5 = MEMORY[0x1E696AD98];
     [(HUNoiseSample *)self splValue];
@@ -117,8 +117,8 @@ uint64_t __30__HUNoiseSample_dateFormatter__block_invoke()
   [(HUNoiseSample *)self splValue];
   v5 = [v4 numberWithFloat:?];
   v6 = +[HUNoiseSample dateFormatter];
-  v7 = [(HUNoiseSample *)self sampleDate];
-  v8 = [v6 stringFromDate:v7];
+  sampleDate = [(HUNoiseSample *)self sampleDate];
+  v8 = [v6 stringFromDate:sampleDate];
   v9 = MEMORY[0x1E696AD98];
   [(HUNoiseSample *)self sampleDuration];
   v10 = [v9 numberWithFloat:?];

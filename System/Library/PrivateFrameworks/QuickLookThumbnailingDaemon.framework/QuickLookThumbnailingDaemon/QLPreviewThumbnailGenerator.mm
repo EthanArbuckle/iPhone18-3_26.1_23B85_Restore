@@ -1,60 +1,60 @@
 @interface QLPreviewThumbnailGenerator
-+ (BOOL)canGenerateThumbnailForContentType:(id)a3 atSize:(CGSize)a4;
++ (BOOL)canGenerateThumbnailForContentType:(id)type atSize:(CGSize)size;
 - (CGContext)_beginContext;
-- (CGContext)_beginContextWithSize:(CGSize)a3;
+- (CGContext)_beginContextWithSize:(CGSize)size;
 - (CGRect)contentRect;
 - (QLPlatformImage)thumbnailImage;
-- (QLPreviewThumbnailGenerator)initWithGeneratorRequest:(id)a3 lowQuality:(BOOL)a4 thumbnailItem:(id)a5;
-- (double)_minimumDimensionForPDFPageRect:(CGRect)a3 requestThumbnailSize:(CGSize)a4 scale:(double)a5;
-- (void)_createThumbnailForPDF:(id)a3;
-- (void)_drawRemotePDFPage:(id)a3 atIndex:(int64_t)a4 completionHandler:(id)a5;
-- (void)_generateThumbnailFromExtensionAndReplyWith:(id)a3;
-- (void)_generateThumbnailWithWillStartBlock:(id)a3 completionHandler:(id)a4;
-- (void)_replyWithImages:(id)a3 error:(id)a4 completionHandler:(id)a5;
+- (QLPreviewThumbnailGenerator)initWithGeneratorRequest:(id)request lowQuality:(BOOL)quality thumbnailItem:(id)item;
+- (double)_minimumDimensionForPDFPageRect:(CGRect)rect requestThumbnailSize:(CGSize)size scale:(double)scale;
+- (void)_createThumbnailForPDF:(id)f;
+- (void)_drawRemotePDFPage:(id)page atIndex:(int64_t)index completionHandler:(id)handler;
+- (void)_generateThumbnailFromExtensionAndReplyWith:(id)with;
+- (void)_generateThumbnailWithWillStartBlock:(id)block completionHandler:(id)handler;
+- (void)_replyWithImages:(id)images error:(id)error completionHandler:(id)handler;
 - (void)cancel;
-- (void)generateThumbnailWithCompletionHandler:(id)a3;
-- (void)generateWithCompletionBlock:(id)a3;
-- (void)generateWithWillStartBlock:(id)a3 completionBlock:(id)a4;
+- (void)generateThumbnailWithCompletionHandler:(id)handler;
+- (void)generateWithCompletionBlock:(id)block;
+- (void)generateWithWillStartBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation QLPreviewThumbnailGenerator
 
-- (QLPreviewThumbnailGenerator)initWithGeneratorRequest:(id)a3 lowQuality:(BOOL)a4 thumbnailItem:(id)a5
+- (QLPreviewThumbnailGenerator)initWithGeneratorRequest:(id)request lowQuality:(BOOL)quality thumbnailItem:(id)item
 {
-  v9 = a3;
-  v10 = a5;
+  requestCopy = request;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = QLPreviewThumbnailGenerator;
   v11 = [(QLPreviewThumbnailGenerator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_request, a3);
-    v12->_wantsLowQuality = a4;
-    objc_storeStrong(&v12->_item, a5);
+    objc_storeStrong(&v11->_request, request);
+    v12->_wantsLowQuality = quality;
+    objc_storeStrong(&v12->_item, item);
   }
 
   return v12;
 }
 
-+ (BOOL)canGenerateThumbnailForContentType:(id)a3 atSize:(CGSize)a4
++ (BOOL)canGenerateThumbnailForContentType:(id)type atSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
   v7 = +[QLThumbnailExtensionMonitor shared];
-  v8 = [v7 canGenerateThumbnailWith:v6 at:{width, height}];
+  v8 = [v7 canGenerateThumbnailWith:typeCopy at:{width, height}];
 
   return v8;
 }
 
-- (void)_generateThumbnailWithWillStartBlock:(id)a3 completionHandler:(id)a4
+- (void)_generateThumbnailWithWillStartBlock:(id)block completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
   request = self->_request;
-  v6 = a4;
-  v7 = [(QLTGeneratorThumbnailRequest *)request request];
-  v8 = [v6 copy];
+  handlerCopy = handler;
+  request = [(QLTGeneratorThumbnailRequest *)request request];
+  v8 = [handlerCopy copy];
 
   if (self->_status == 3)
   {
@@ -64,8 +64,8 @@
     goto LABEL_7;
   }
 
-  v10 = [(QLThumbnailItem *)self->_item contentType];
-  if ([v10 conformsToType:*MEMORY[0x277CE1E08]])
+  contentType = [(QLThumbnailItem *)self->_item contentType];
+  if ([contentType conformsToType:*MEMORY[0x277CE1E08]])
   {
 
 LABEL_6:
@@ -73,9 +73,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [(QLThumbnailItem *)self->_item contentType];
+  contentType2 = [(QLThumbnailItem *)self->_item contentType];
   v12 = [MEMORY[0x277CE1CB8] typeWithIdentifier:@"com.apple.localized-pdf-bundle"];
-  v13 = [v11 conformsToType:v12];
+  v13 = [contentType2 conformsToType:v12];
 
   if (v13)
   {
@@ -83,7 +83,7 @@ LABEL_6:
   }
 
   v15 = +[QLThumbnailExtensionMonitor shared];
-  v16 = [v15 bestExtensionFor:v7 matching:3];
+  v16 = [v15 bestExtensionFor:request matching:3];
 
   if (v16)
   {
@@ -95,11 +95,11 @@ LABEL_6:
     v17 = MEMORY[0x277CDAAE0];
     v23 = *MEMORY[0x277CCA450];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(QLThumbnailItem *)self->_item contentType];
-    v20 = [v18 stringWithFormat:@"No extension found for %@", v19];
+    contentType3 = [(QLThumbnailItem *)self->_item contentType];
+    v20 = [v18 stringWithFormat:@"No extension found for %@", contentType3];
     v24[0] = v20;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    v22 = [v17 errorWithCode:4 request:v7 additionalUserInfo:v21];
+    v22 = [v17 errorWithCode:4 request:request additionalUserInfo:v21];
 
     self->_status = 2;
     (v8)[2](v8, v22);
@@ -110,15 +110,15 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateWithCompletionBlock:(id)a3
+- (void)generateWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__QLPreviewThumbnailGenerator_generateWithCompletionBlock___block_invoke;
   v6[3] = &unk_279ADD788;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(QLPreviewThumbnailGenerator *)self generateWithWillStartBlock:0 completionBlock:v6];
 }
 
@@ -133,16 +133,16 @@ uint64_t __59__QLPreviewThumbnailGenerator_generateWithCompletionBlock___block_i
   return result;
 }
 
-- (void)generateThumbnailWithCompletionHandler:(id)a3
+- (void)generateThumbnailWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__QLPreviewThumbnailGenerator_generateThumbnailWithCompletionHandler___block_invoke;
   v6[3] = &unk_279ADD188;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(QLPreviewThumbnailGenerator *)self generateWithWillStartBlock:0 completionBlock:v6];
 }
 
@@ -156,10 +156,10 @@ void __70__QLPreviewThumbnailGenerator_generateThumbnailWithCompletionHandler___
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)generateWithWillStartBlock:(id)a3 completionBlock:(id)a4
+- (void)generateWithWillStartBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if ((self->_status - 1) >= 2)
   {
     self->_status = 1;
@@ -169,8 +169,8 @@ void __70__QLPreviewThumbnailGenerator_generateThumbnailWithCompletionHandler___
     block[2] = __74__QLPreviewThumbnailGenerator_generateWithWillStartBlock_completionBlock___block_invoke;
     block[3] = &unk_279ADD9D0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = blockCopy;
+    v11 = completionBlockCopy;
     dispatch_async(generationQueue, block);
   }
 }
@@ -194,27 +194,27 @@ void __74__QLPreviewThumbnailGenerator_generateWithWillStartBlock_completionBloc
   }
 }
 
-- (void)_replyWithImages:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_replyWithImages:(id)images error:(id)error completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(QLPreviewThumbnailGenerator *)self item];
+  imagesCopy = images;
+  errorCopy = error;
+  handlerCopy = handler;
+  item = [(QLPreviewThumbnailGenerator *)self item];
   v12 = _log_2();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (imagesCopy)
   {
     if (v13)
     {
-      v14 = [v8 count];
-      v15 = [v8 firstObject];
+      v14 = [imagesCopy count];
+      firstObject = [imagesCopy firstObject];
       *buf = 134218498;
       v31 = v14;
       v32 = 2112;
-      v33 = v15;
+      v33 = firstObject;
       v34 = 2112;
-      v35 = v11;
+      v35 = item;
       _os_log_impl(&dword_2615D3000, v12, OS_LOG_TYPE_INFO, "QLPreviewThumbnailGenerator did generate %lu images: %@ for item: %@.", buf, 0x20u);
     }
 
@@ -223,12 +223,12 @@ void __74__QLPreviewThumbnailGenerator_generateWithWillStartBlock_completionBloc
     block[2] = __72__QLPreviewThumbnailGenerator__replyWithImages_error_completionHandler___block_invoke_11;
     block[3] = &unk_279ADDA20;
     block[4] = self;
-    v26 = v10;
-    v23 = v8;
-    v24 = v9;
-    v25 = v11;
-    v16 = v9;
-    v17 = v10;
+    v26 = handlerCopy;
+    v23 = imagesCopy;
+    v24 = errorCopy;
+    v25 = item;
+    v16 = errorCopy;
+    v17 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     v18 = v23;
@@ -239,9 +239,9 @@ void __74__QLPreviewThumbnailGenerator_generateWithWillStartBlock_completionBloc
     if (v13)
     {
       *buf = 138412546;
-      v31 = v11;
+      v31 = item;
       v32 = 2112;
-      v33 = v9;
+      v33 = errorCopy;
       _os_log_impl(&dword_2615D3000, v12, OS_LOG_TYPE_INFO, "QLPreviewThumbnailGenerator did not generate an image for item: %@. Error: %@", buf, 0x16u);
     }
 
@@ -249,10 +249,10 @@ void __74__QLPreviewThumbnailGenerator_generateWithWillStartBlock_completionBloc
     v27[1] = 3221225472;
     v27[2] = __72__QLPreviewThumbnailGenerator__replyWithImages_error_completionHandler___block_invoke;
     v27[3] = &unk_279ADD9F8;
-    v28 = v9;
-    v29 = v10;
-    v19 = v9;
-    v20 = v10;
+    v28 = errorCopy;
+    v29 = handlerCopy;
+    v19 = errorCopy;
+    v20 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v27);
 
     v18 = v29;
@@ -296,71 +296,71 @@ void __72__QLPreviewThumbnailGenerator__replyWithImages_error_completionHandler_
 
 - (CGContext)_beginContext
 {
-  v3 = [(QLTGeneratorThumbnailRequest *)self->_request request];
-  [v3 size];
+  request = [(QLTGeneratorThumbnailRequest *)self->_request request];
+  [request size];
   v4 = [(QLPreviewThumbnailGenerator *)self _beginContextWithSize:?];
 
   return v4;
 }
 
-- (CGContext)_beginContextWithSize:(CGSize)a3
+- (CGContext)_beginContextWithSize:(CGSize)size
 {
-  v3 = [(QLTGeneratorThumbnailRequest *)self->_request request];
-  [v3 scale];
+  request = [(QLTGeneratorThumbnailRequest *)self->_request request];
+  [request scale];
   v4 = QLTCreateCGContext();
 
   return v4;
 }
 
-- (void)_createThumbnailForPDF:(id)a3
+- (void)_createThumbnailForPDF:(id)f
 {
-  v4 = a3;
-  v5 = [(QLTGeneratorThumbnailRequest *)self->_request request];
-  v6 = [v5 contentType];
-  v7 = [v6 preferredFilenameExtension];
-  v8 = [v7 uppercaseString];
+  fCopy = f;
+  request = [(QLTGeneratorThumbnailRequest *)self->_request request];
+  contentType = [request contentType];
+  preferredFilenameExtension = [contentType preferredFilenameExtension];
+  uppercaseString = [preferredFilenameExtension uppercaseString];
 
   p_item = &self->_item;
-  v10 = [(QLThumbnailItem *)self->_item data];
-  if (v10)
+  data = [(QLThumbnailItem *)self->_item data];
+  if (data)
   {
-    v11 = v10;
+    v11 = data;
     v12 = 0;
-    v13 = 0;
+    urlWrapper = 0;
 LABEL_3:
-    v14 = [MEMORY[0x277CBF3B0] sharedInstance];
+    mEMORY[0x277CBF3B0] = [MEMORY[0x277CBF3B0] sharedInstance];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke;
     v27[3] = &unk_279ADDAE8;
-    v13 = v13;
-    v28 = v13;
-    v29 = self;
-    v32 = v4;
-    v30 = v5;
-    v31 = v8;
-    [v14 newRemotePDFDocumentWithData:v11 completion:v27];
+    urlWrapper = urlWrapper;
+    v28 = urlWrapper;
+    selfCopy = self;
+    v32 = fCopy;
+    v30 = request;
+    v31 = uppercaseString;
+    [mEMORY[0x277CBF3B0] newRemotePDFDocumentWithData:v11 completion:v27];
 
     v15 = v28;
     goto LABEL_20;
   }
 
-  v13 = [(QLThumbnailItem *)*p_item urlWrapper];
+  urlWrapper = [(QLThumbnailItem *)*p_item urlWrapper];
 
-  if (v13)
+  if (urlWrapper)
   {
     v16 = MEMORY[0x277CCA8D8];
-    v17 = [(QLThumbnailItem *)*p_item fileURL];
-    v18 = [v16 bundleWithURL:v17];
+    fileURL = [(QLThumbnailItem *)*p_item fileURL];
+    v18 = [v16 bundleWithURL:fileURL];
 
-    v19 = [(QLThumbnailItem *)*p_item fileURL];
-    v20 = v19;
+    fileURL2 = [(QLThumbnailItem *)*p_item fileURL];
+    v20 = fileURL2;
     if (v18)
     {
-      v21 = [v19 lastPathComponent];
-      v22 = [v21 stringByDeletingPathExtension];
+      lastPathComponent = [fileURL2 lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-      v23 = [v18 URLForResource:v22 withExtension:@"pdf"];
+      v23 = [v18 URLForResource:stringByDeletingPathExtension withExtension:@"pdf"];
       v24 = v23;
       if (v23)
       {
@@ -375,12 +375,12 @@ LABEL_3:
 
     if ([v20 startAccessingSecurityScopedResource])
     {
-      v13 = v20;
+      urlWrapper = v20;
     }
 
     else
     {
-      v13 = 0;
+      urlWrapper = 0;
     }
 
     v33 = 0;
@@ -412,7 +412,7 @@ LABEL_3:
   }
 
   v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CDAB58] code:0 userInfo:v11];
-  [(QLPreviewThumbnailGenerator *)self _replyWithImages:0 error:v15 completionHandler:v4];
+  [(QLPreviewThumbnailGenerator *)self _replyWithImages:0 error:v15 completionHandler:fCopy];
 LABEL_20:
 }
 
@@ -681,10 +681,10 @@ uint64_t __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke
   return (*(v2 + 16))();
 }
 
-- (double)_minimumDimensionForPDFPageRect:(CGRect)a3 requestThumbnailSize:(CGSize)a4 scale:(double)a5
+- (double)_minimumDimensionForPDFPageRect:(CGRect)rect requestThumbnailSize:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   QLGetDrawRectFromPageRectWithMinimumDimension();
   if (v8 >= v9)
   {
@@ -721,27 +721,27 @@ uint64_t __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke
     v13 = width;
   }
 
-  return ceil(v13 * 0.5 * a5);
+  return ceil(v13 * 0.5 * scale);
 }
 
-- (void)_drawRemotePDFPage:(id)a3 atIndex:(int64_t)a4 completionHandler:(id)a5
+- (void)_drawRemotePDFPage:(id)page atIndex:(int64_t)index completionHandler:(id)handler
 {
   v57[6] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   request = self->_request;
-  v10 = a3;
-  v11 = [(QLTGeneratorThumbnailRequest *)request request];
-  v12 = [v10 sync_pageAtIndex:a4];
+  pageCopy = page;
+  request = [(QLTGeneratorThumbnailRequest *)request request];
+  v12 = [pageCopy sync_pageAtIndex:index];
 
   if (v12)
   {
-    [v11 size];
-    [v11 scale];
-    [v11 size];
-    [v11 scale];
-    [v11 minimumDimension];
+    [request size];
+    [request scale];
+    [request size];
+    [request scale];
+    [request minimumDimension];
     v14 = v13;
-    [v11 scale];
+    [request scale];
     v16 = v14 * v15;
     QLGetCGPDFPageProxyRect();
     v18 = v17;
@@ -750,10 +750,10 @@ uint64_t __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke
     v24 = v23;
     if (v16 == 0.0)
     {
-      [v11 size];
+      [request size];
       v26 = v25;
       v28 = v27;
-      [v11 scale];
+      [request scale];
       [(QLPreviewThumbnailGenerator *)self _minimumDimensionForPDFPageRect:v18 requestThumbnailSize:v20 scale:v22, v24, v26, v28, v29];
       v16 = v30;
     }
@@ -794,7 +794,7 @@ uint64_t __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke
     v53[1] = 3221225472;
     v53[2] = __76__QLPreviewThumbnailGenerator__drawRemotePDFPage_atIndex_completionHandler___block_invoke;
     v53[3] = &unk_279ADDB10;
-    v54 = v8;
+    v54 = handlerCopy;
     [v12 drawWithBox:1 size:0 colorSpace:v48 options:v53 completion:{v52, v33}];
 
     v49 = v54;
@@ -809,7 +809,7 @@ uint64_t __54__QLPreviewThumbnailGenerator__createThumbnailForPDF___block_invoke
     }
 
     v49 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CDAB58] code:0 userInfo:0];
-    (*(v8 + 2))(v8, 0, v49, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
+    (*(handlerCopy + 2))(handlerCopy, 0, v49, *MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8));
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -837,11 +837,11 @@ void __76__QLPreviewThumbnailGenerator__drawRemotePDFPage_atIndex_completionHand
   }
 }
 
-- (void)_generateThumbnailFromExtensionAndReplyWith:(id)a3
+- (void)_generateThumbnailFromExtensionAndReplyWith:(id)with
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(QLTGeneratorThumbnailRequest *)self->_request request];
+  withCopy = with;
+  request = [(QLTGeneratorThumbnailRequest *)self->_request request];
   v6 = _log_2();
   v7 = os_signpost_id_generate(v6);
 
@@ -849,20 +849,20 @@ void __76__QLPreviewThumbnailGenerator__drawRemotePDFPage_atIndex_completionHand
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    v10 = [v5 fileURL];
-    v11 = [v5 uuid];
+    fileURL = [request fileURL];
+    uuid = [request uuid];
     *buf = 138412546;
-    v30 = v10;
+    v30 = fileURL;
     v31 = 2112;
-    v32 = v11;
+    v32 = uuid;
     _os_signpost_emit_with_name_impl(&dword_2615D3000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "quicklook.thumbnail.extensionGeneration", "fileURL : %@ UUID: %@", buf, 0x16u);
   }
 
   v12 = self->_item;
-  if ([v5 iconMode])
+  if ([request iconMode])
   {
-    v13 = [(QLThumbnailItem *)self->_item contentType];
-    v14 = [v13 identifier];
+    contentType = [(QLThumbnailItem *)self->_item contentType];
+    identifier = [contentType identifier];
     v15 = QLIconFlavorDefaultFlavorForType();
   }
 
@@ -885,10 +885,10 @@ void __76__QLPreviewThumbnailGenerator__drawRemotePDFPage_atIndex_completionHand
   v25[3] = &unk_279ADDB38;
   v25[4] = self;
   v26 = v12;
-  v27 = v4;
+  v27 = withCopy;
   v28 = v7;
   v22 = v12;
-  v23 = v4;
+  v23 = withCopy;
   [(QLThumbnailExtensionGenerator *)v18 generateThumbnailWithThumbnailRequest:request item:item flavor:v15 wantsLowQuality:wantsLowQuality generationData:0 completionHandler:v25];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -938,10 +938,10 @@ void __75__QLPreviewThumbnailGenerator__generateThumbnailFromExtensionAndReplyWi
 
 - (QLPlatformImage)thumbnailImage
 {
-  v2 = [(QLPreviewThumbnailGenerator *)self thumbnailImages];
-  v3 = [v2 firstObject];
+  thumbnailImages = [(QLPreviewThumbnailGenerator *)self thumbnailImages];
+  firstObject = [thumbnailImages firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (CGRect)contentRect

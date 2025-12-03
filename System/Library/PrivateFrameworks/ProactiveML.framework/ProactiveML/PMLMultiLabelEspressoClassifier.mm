@@ -1,18 +1,18 @@
 @interface PMLMultiLabelEspressoClassifier
-+ (id)classifierWithEspressoModelFile:(id)a3;
-+ (id)makeStringForShape:(unint64_t)a3[10];
-+ (unint64_t)getNumParametersFromShape:(unint64_t)a3[10] rank:(unint64_t)a4;
-- (PMLMultiLabelEspressoClassifier)initWithEspressoContext:(void *)a3 espressoPlan:(void *)a4 espressoModel:(id)a5 inputNumParameters:(unint64_t)a6 outputNumReplyClasses:(unint64_t)a7;
-- (id)predict:(id)a3;
++ (id)classifierWithEspressoModelFile:(id)file;
++ (id)makeStringForShape:(unint64_t)shape[10];
++ (unint64_t)getNumParametersFromShape:(unint64_t)shape[10] rank:(unint64_t)rank;
+- (PMLMultiLabelEspressoClassifier)initWithEspressoContext:(void *)context espressoPlan:(void *)plan espressoModel:(id)model inputNumParameters:(unint64_t)parameters outputNumReplyClasses:(unint64_t)classes;
+- (id)predict:(id)predict;
 - (void)dealloc;
 @end
 
 @implementation PMLMultiLabelEspressoClassifier
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predictCopy = predict;
   v5 = objc_opt_new();
   v6 = objc_autoreleasePoolPush();
   [@"inputSequence" cStringUsingEncoding:4];
@@ -42,7 +42,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  [v4 sparseVectorToDense:0 length:self->_inputNumParameters];
+  [predictCopy sparseVectorToDense:0 length:self->_inputNumParameters];
   v34 = 0;
   memset(v33, 0, sizeof(v33));
   [@"outputLabels" cStringUsingEncoding:4];
@@ -115,21 +115,21 @@ LABEL_12:
   return v24;
 }
 
-- (PMLMultiLabelEspressoClassifier)initWithEspressoContext:(void *)a3 espressoPlan:(void *)a4 espressoModel:(id)a5 inputNumParameters:(unint64_t)a6 outputNumReplyClasses:(unint64_t)a7
+- (PMLMultiLabelEspressoClassifier)initWithEspressoContext:(void *)context espressoPlan:(void *)plan espressoModel:(id)model inputNumParameters:(unint64_t)parameters outputNumReplyClasses:(unint64_t)classes
 {
-  v9 = *&a5.var1;
-  var0 = a5.var0;
+  v9 = *&model.var1;
+  var0 = model.var0;
   v14.receiver = self;
   v14.super_class = PMLMultiLabelEspressoClassifier;
   result = [(PMLMultiLabelEspressoClassifier *)&v14 init];
   if (result)
   {
-    result->_espressoPlan = a4;
-    result->_espressoContext = a3;
+    result->_espressoPlan = plan;
+    result->_espressoContext = context;
     result->_espressoModel.plan = var0;
     *&result->_espressoModel.network_index = v9;
-    result->_outputNumReplyClasses = a7;
-    result->_inputNumParameters = a6;
+    result->_outputNumReplyClasses = classes;
+    result->_inputNumParameters = parameters;
   }
 
   return result;
@@ -146,10 +146,10 @@ LABEL_12:
   [(PMLMultiLabelEspressoClassifier *)&v5 dealloc];
 }
 
-+ (id)classifierWithEspressoModelFile:(id)a3
++ (id)classifierWithEspressoModelFile:(id)file
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fileCopy = file;
   context = espresso_create_context();
   if (!context)
   {
@@ -183,7 +183,7 @@ LABEL_24:
   }
 
   v7 = plan;
-  [v3 UTF8String];
+  [fileCopy UTF8String];
   v8 = espresso_plan_add_network();
   if (v8)
   {
@@ -192,7 +192,7 @@ LABEL_24:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412802;
-      *&buf[4] = v3;
+      *&buf[4] = fileCopy;
       *&buf[12] = 1024;
       *&buf[14] = 65568;
       *&buf[18] = 1024;
@@ -422,38 +422,38 @@ LABEL_11:
   return v14;
 }
 
-+ (unint64_t)getNumParametersFromShape:(unint64_t)a3[10] rank:(unint64_t)a4
++ (unint64_t)getNumParametersFromShape:(unint64_t)shape[10] rank:(unint64_t)rank
 {
-  if (!a4)
+  if (!rank)
   {
     return 0;
   }
 
-  v4 = 10;
-  if (a4 < 0xA)
+  rankCopy = 10;
+  if (rank < 0xA)
   {
-    v4 = a4;
+    rankCopy = rank;
   }
 
   result = 1;
   do
   {
-    v6 = *a3++;
+    v6 = *shape++;
     result *= v6;
-    --v4;
+    --rankCopy;
   }
 
-  while (v4);
+  while (rankCopy);
   return result;
 }
 
-+ (id)makeStringForShape:(unint64_t)a3[10]
++ (id)makeStringForShape:(unint64_t)shape[10]
 {
   v4 = objc_opt_new();
   [v4 appendString:@"{"];
   for (i = 0; i != 10; ++i)
   {
-    [v4 appendFormat:@" %zu", a3[i]];
+    [v4 appendFormat:@" %zu", shape[i]];
   }
 
   [v4 appendString:@" }"];

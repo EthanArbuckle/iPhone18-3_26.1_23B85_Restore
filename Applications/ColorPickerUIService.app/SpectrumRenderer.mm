@@ -1,7 +1,7 @@
 @interface SpectrumRenderer
-+ (CGPoint)positionForColor:(id)a1;
-- (SpectrumRenderer)initWithMetal:(id)a3;
-- (void)drawInMTKView:(id)a3;
++ (CGPoint)positionForColor:(id)color;
+- (SpectrumRenderer)initWithMetal:(id)metal;
+- (void)drawInMTKView:(id)view;
 - (void)initializeVertexBuffer;
 - (void)setupRenderPipeline;
 - (void)startCapturing;
@@ -10,7 +10,7 @@
 
 @implementation SpectrumRenderer
 
-+ (CGPoint)positionForColor:(id)a1
++ (CGPoint)positionForColor:(id)color
 {
   v3 = v2;
   v4 = v2.f32[2];
@@ -47,9 +47,9 @@
   return result;
 }
 
-- (SpectrumRenderer)initWithMetal:(id)a3
+- (SpectrumRenderer)initWithMetal:(id)metal
 {
-  v5 = a3;
+  metalCopy = metal;
   v12.receiver = self;
   v12.super_class = SpectrumRenderer;
   v6 = [(SpectrumRenderer *)&v12 init];
@@ -59,11 +59,11 @@
     device = v6->_device;
     v6->_device = v7;
 
-    v9 = [(MTLDevice *)v6->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v6->_device newCommandQueue];
     commandQueue = v6->_commandQueue;
-    v6->_commandQueue = v9;
+    v6->_commandQueue = newCommandQueue;
 
-    objc_storeStrong(&v6->_metalView, a3);
+    objc_storeStrong(&v6->_metalView, metal);
     [(MTKView *)v6->_metalView setDevice:v6->_device];
     [(MTKView *)v6->_metalView setDelegate:v6];
     [(SpectrumRenderer *)v6 initializeVertexBuffer];
@@ -76,17 +76,17 @@
 - (void)setupRenderPipeline
 {
   v3 = objc_alloc_init(MTLRenderPipelineDescriptor);
-  v4 = [(MTLDevice *)self->_device newDefaultLibrary];
-  v5 = [v4 newFunctionWithName:@"vertexShader"];
+  newDefaultLibrary = [(MTLDevice *)self->_device newDefaultLibrary];
+  v5 = [newDefaultLibrary newFunctionWithName:@"vertexShader"];
   [v3 setVertexFunction:v5];
 
-  v6 = [v4 newFunctionWithName:@"fragmentShader"];
+  v6 = [newDefaultLibrary newFunctionWithName:@"fragmentShader"];
   [v3 setFragmentFunction:v6];
 
-  v7 = [(MTKView *)self->_metalView colorPixelFormat];
-  v8 = [v3 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
-  [v9 setPixelFormat:v7];
+  colorPixelFormat = [(MTKView *)self->_metalView colorPixelFormat];
+  colorAttachments = [v3 colorAttachments];
+  v9 = [colorAttachments objectAtIndexedSubscript:0];
+  [v9 setPixelFormat:colorPixelFormat];
 
   device = self->_device;
   v14 = 0;
@@ -106,23 +106,23 @@
   self->_vertexBuffer = v3;
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v4 = [(MTKView *)self->_metalView currentRenderPassDescriptor];
-  v5 = [v4 colorAttachments];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  currentRenderPassDescriptor = [(MTKView *)self->_metalView currentRenderPassDescriptor];
+  colorAttachments = [currentRenderPassDescriptor colorAttachments];
+  v6 = [colorAttachments objectAtIndexedSubscript:0];
   [v6 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-  v7 = [v9 renderCommandEncoderWithDescriptor:v4];
+  v7 = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
   [v7 setRenderPipelineState:self->_pipelineState];
   [v7 setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
   [v7 drawPrimitives:3 vertexStart:0 vertexCount:6];
   [v7 endEncoding];
-  v8 = [(MTKView *)self->_metalView currentDrawable];
-  [v9 presentDrawable:v8];
+  currentDrawable = [(MTKView *)self->_metalView currentDrawable];
+  [commandBuffer presentDrawable:currentDrawable];
 
-  [v9 commit];
+  [commandBuffer commit];
 }
 
 - (void)startCapturing

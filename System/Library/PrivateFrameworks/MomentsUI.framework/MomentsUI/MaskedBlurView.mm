@@ -9,8 +9,8 @@
   v6.receiver = self;
   v6.super_class = type metadata accessor for MaskedBlurView();
   v2 = v6.receiver;
-  v3 = [(MaskedBlurView *)&v6 layoutSubviews];
-  v4 = (*((*MEMORY[0x277D85000] & *v2) + 0x60))(v3);
+  layoutSubviews = [(MaskedBlurView *)&v6 layoutSubviews];
+  v4 = (*((*MEMORY[0x277D85000] & *v2) + 0x60))(layoutSubviews);
   [v2 bounds];
   [v4 setFrame_];
 

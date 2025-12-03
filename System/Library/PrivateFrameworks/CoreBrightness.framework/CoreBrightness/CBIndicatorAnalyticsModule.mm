@@ -1,9 +1,9 @@
 @interface CBIndicatorAnalyticsModule
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (CBIndicatorAnalyticsModule)initWithQueue:(id)a3 andIndicatorModule:(id)a4;
-- (CBIndicatorAnalyticsModule)initWithQueue:(id)a3 andIndicatorModule:(id)a4 andDDFactorMapping:(id)a5 andLuxMapping:(id)a6 andNitsMapping:(id)a7 andDDFactorEdges:(id)a8 andLuxEdges:(id)a9 andNitsEdges:(id)a10 andTimerIntervalMs:(double)a11;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (CBIndicatorAnalyticsModule)initWithQueue:(id)queue andIndicatorModule:(id)module;
+- (CBIndicatorAnalyticsModule)initWithQueue:(id)queue andIndicatorModule:(id)module andDDFactorMapping:(id)mapping andLuxMapping:(id)luxMapping andNitsMapping:(id)nitsMapping andDDFactorEdges:(id)edges andLuxEdges:(id)luxEdges andNitsEdges:(id)self0 andTimerIntervalMs:(double)self1;
 - (void)dealloc;
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4;
+- (void)handleNotificationForKey:(id)key withProperty:(id)property;
 - (void)indicatorStatsTimerCallback;
 - (void)startTimer;
 - (void)stopTimer;
@@ -12,76 +12,76 @@
 
 @implementation CBIndicatorAnalyticsModule
 
-- (CBIndicatorAnalyticsModule)initWithQueue:(id)a3 andIndicatorModule:(id)a4
+- (CBIndicatorAnalyticsModule)initWithQueue:(id)queue andIndicatorModule:(id)module
 {
   context = objc_autoreleasePoolPush();
-  v6 = [(CBIndicatorAnalyticsModule *)self initWithQueue:a3 andIndicatorModule:a4 andDDFactorMapping:&unk_1F59C98D0 andLuxMapping:&unk_1F59C98F8 andNitsMapping:&unk_1F59C9920 andDDFactorEdges:&unk_1F59C9630 andLuxEdges:16.6666667 andNitsEdges:&unk_1F59C9648 andTimerIntervalMs:&unk_1F59C9660];
+  v6 = [(CBIndicatorAnalyticsModule *)self initWithQueue:queue andIndicatorModule:module andDDFactorMapping:&unk_1F59C98D0 andLuxMapping:&unk_1F59C98F8 andNitsMapping:&unk_1F59C9920 andDDFactorEdges:&unk_1F59C9630 andLuxEdges:16.6666667 andNitsEdges:&unk_1F59C9648 andTimerIntervalMs:&unk_1F59C9660];
   objc_autoreleasePoolPop(context);
   return v6;
 }
 
-- (CBIndicatorAnalyticsModule)initWithQueue:(id)a3 andIndicatorModule:(id)a4 andDDFactorMapping:(id)a5 andLuxMapping:(id)a6 andNitsMapping:(id)a7 andDDFactorEdges:(id)a8 andLuxEdges:(id)a9 andNitsEdges:(id)a10 andTimerIntervalMs:(double)a11
+- (CBIndicatorAnalyticsModule)initWithQueue:(id)queue andIndicatorModule:(id)module andDDFactorMapping:(id)mapping andLuxMapping:(id)luxMapping andNitsMapping:(id)nitsMapping andDDFactorEdges:(id)edges andLuxEdges:(id)luxEdges andNitsEdges:(id)self0 andTimerIntervalMs:(double)self1
 {
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
-  v41 = a4;
-  v40 = a5;
-  v39 = a6;
-  v38 = a7;
-  v37 = a8;
-  v36 = a9;
-  v35 = a10;
-  v34 = a11;
+  queueCopy = queue;
+  moduleCopy = module;
+  mappingCopy = mapping;
+  luxMappingCopy = luxMapping;
+  nitsMappingCopy = nitsMapping;
+  edgesCopy = edges;
+  luxEdgesCopy = luxEdges;
+  nitsEdgesCopy = nitsEdges;
+  msCopy = ms;
   v33.receiver = self;
   v33.super_class = CBIndicatorAnalyticsModule;
-  v44 = [(CBModule *)&v33 initWithQueue:a3];
-  if (!v44)
+  selfCopy = [(CBModule *)&v33 initWithQueue:queue];
+  if (!selfCopy)
   {
-    return v44;
+    return selfCopy;
   }
 
-  if (v41)
+  if (moduleCopy)
   {
-    v11 = MEMORY[0x1E69E5928](v41);
-    *(v44 + 5) = v11;
-    v12 = MEMORY[0x1E69E5928](v40);
-    *(v44 + 7) = v12;
-    v13 = MEMORY[0x1E69E5928](v39);
-    *(v44 + 8) = v13;
-    v14 = MEMORY[0x1E69E5928](v38);
-    *(v44 + 9) = v14;
+    v11 = MEMORY[0x1E69E5928](moduleCopy);
+    *(selfCopy + 5) = v11;
+    v12 = MEMORY[0x1E69E5928](mappingCopy);
+    *(selfCopy + 7) = v12;
+    v13 = MEMORY[0x1E69E5928](luxMappingCopy);
+    *(selfCopy + 8) = v13;
+    v14 = MEMORY[0x1E69E5928](nitsMappingCopy);
+    *(selfCopy + 9) = v14;
     v15 = [CBHistogramBuilder3D alloc];
-    v16 = [(CBHistogramBuilder3D *)v15 initWithFirstDim:v36 andSecondDim:v35 andThirdDim:v37];
-    *(v44 + 4) = v16;
-    if (*(v44 + 4))
+    v16 = [(CBHistogramBuilder3D *)v15 initWithFirstDim:luxEdgesCopy andSecondDim:nitsEdgesCopy andThirdDim:edgesCopy];
+    *(selfCopy + 4) = v16;
+    if (*(selfCopy + 4))
     {
-      v17 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(v44 + 3));
-      *(v44 + 6) = v17;
-      if (*(v44 + 6))
+      v17 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(selfCopy + 3));
+      *(selfCopy + 6) = v17;
+      if (*(selfCopy + 6))
       {
-        *(v44 + 11) = v34;
-        dispatch_source_set_timer(*(v44 + 6), 0, (*(v44 + 11) * 1000000.0), 0);
-        v18 = *(v44 + 6);
+        *(selfCopy + 11) = msCopy;
+        dispatch_source_set_timer(*(selfCopy + 6), 0, (*(selfCopy + 11) * 1000000.0), 0);
+        v18 = *(selfCopy + 6);
         handler = MEMORY[0x1E69E9820];
         v28 = -1073741824;
         v29 = 0;
         v30 = __172__CBIndicatorAnalyticsModule_initWithQueue_andIndicatorModule_andDDFactorMapping_andLuxMapping_andNitsMapping_andDDFactorEdges_andLuxEdges_andNitsEdges_andTimerIntervalMs___block_invoke;
         v31 = &unk_1E867B480;
-        v32 = v44;
+        v32 = selfCopy;
         dispatch_source_set_event_handler(v18, &handler);
-        *(v44 + 80) = 1;
-        *(v44 + 25) = 0;
-        *(v44 + 24) = 0;
-        *(v44 + 26) = 2143289344;
-        return v44;
+        *(selfCopy + 80) = 1;
+        *(selfCopy + 25) = 0;
+        *(selfCopy + 24) = 0;
+        *(selfCopy + 26) = 2143289344;
+        return selfCopy;
       }
     }
   }
 
-  if (*(v44 + 2))
+  if (*(selfCopy + 2))
   {
-    v23 = *(v44 + 2);
+    v23 = *(selfCopy + 2);
   }
 
   else
@@ -109,48 +109,48 @@
     _os_log_error_impl(&dword_1DE8E5000, log, v21, "Failed to create CBIndicatorAnalyticsModule", v24, 2u);
   }
 
-  MEMORY[0x1E69E5920](v44);
-  v44 = 0;
+  MEMORY[0x1E69E5920](selfCopy);
+  selfCopy = 0;
   return 0;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_ddFactorEdgeMapping)
   {
-    MEMORY[0x1E69E5920](v4->_ddFactorEdgeMapping);
+    MEMORY[0x1E69E5920](selfCopy->_ddFactorEdgeMapping);
   }
 
-  if (v4->_luxEdgeMapping)
+  if (selfCopy->_luxEdgeMapping)
   {
-    MEMORY[0x1E69E5920](v4->_luxEdgeMapping);
+    MEMORY[0x1E69E5920](selfCopy->_luxEdgeMapping);
   }
 
-  if (v4->_nitsEdgeMapping)
+  if (selfCopy->_nitsEdgeMapping)
   {
-    MEMORY[0x1E69E5920](v4->_nitsEdgeMapping);
+    MEMORY[0x1E69E5920](selfCopy->_nitsEdgeMapping);
   }
 
-  if (v4->_indicatorModule)
+  if (selfCopy->_indicatorModule)
   {
-    MEMORY[0x1E69E5920](v4->_indicatorModule);
+    MEMORY[0x1E69E5920](selfCopy->_indicatorModule);
   }
 
-  if (v4->_stats)
+  if (selfCopy->_stats)
   {
-    MEMORY[0x1E69E5920](v4->_stats);
+    MEMORY[0x1E69E5920](selfCopy->_stats);
   }
 
-  dispatch_source_cancel(v4->_timer);
-  if (v4->_timerIsSuspended)
+  dispatch_source_cancel(selfCopy->_timer);
+  if (selfCopy->_timerIsSuspended)
   {
-    dispatch_resume(v4->_timer);
+    dispatch_resume(selfCopy->_timer);
   }
 
-  dispatch_release(v4->_timer);
-  v2.receiver = v4;
+  dispatch_release(selfCopy->_timer);
+  v2.receiver = selfCopy;
   v2.super_class = CBIndicatorAnalyticsModule;
   [(CBModule *)&v2 dealloc];
 }
@@ -189,20 +189,20 @@
 
 - (void)submit
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   context = objc_autoreleasePoolPush();
   v11 = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-  stats = v13->_stats;
+  stats = selfCopy->_stats;
   v4 = MEMORY[0x1E69E9820];
   v5 = -1073741824;
   v6 = 0;
   v7 = __36__CBIndicatorAnalyticsModule_submit__block_invoke;
   v8 = &unk_1E867CD58;
-  v9 = v13;
+  v9 = selfCopy;
   v10 = v11;
   [(CBHistogramBuilder3D *)stats enumerateBinsUsingBlock:?];
-  [(CBHistogramBuilder3D *)v13->_stats reset];
+  [(CBHistogramBuilder3D *)selfCopy->_stats reset];
   objc_autoreleasePoolPop(context);
 }
 
@@ -252,20 +252,20 @@ uint64_t __36__CBIndicatorAnalyticsModule_submit__block_invoke_2(void *a1)
   return v4;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  if ([a4 isEqualToString:@"SecureIndicatorState"])
+  if ([key isEqualToString:@"SecureIndicatorState"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 unsignedIntegerValue];
-      if (v5 == 1)
+      unsignedIntegerValue = [property unsignedIntegerValue];
+      if (unsignedIntegerValue == 1)
       {
         [(CBIndicatorAnalyticsModule *)self startTimer];
       }
 
-      else if (v5 == 4)
+      else if (unsignedIntegerValue == 4)
       {
         [(CBIndicatorAnalyticsModule *)self stopTimer];
       }
@@ -275,11 +275,11 @@ uint64_t __36__CBIndicatorAnalyticsModule_submit__block_invoke_2(void *a1)
   return 1;
 }
 
-- (void)handleNotificationForKey:(id)a3 withProperty:(id)a4
+- (void)handleNotificationForKey:(id)key withProperty:(id)property
 {
-  if ([a3 isEqualToString:@"TrustedLux"])
+  if ([key isEqualToString:@"TrustedLux"])
   {
-    [a4 floatValue];
+    [property floatValue];
     self->_trustedLux = v4;
   }
 }

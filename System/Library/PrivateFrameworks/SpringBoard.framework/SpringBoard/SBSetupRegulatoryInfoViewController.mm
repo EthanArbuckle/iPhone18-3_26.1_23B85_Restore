@@ -15,12 +15,12 @@
   if (_os_feature_enabled_impl())
   {
     v5 = self->_regulatoryImageView;
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v5 setTintColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v5 setTintColor:whiteColor];
   }
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
   v11 = v10;
 
@@ -39,8 +39,8 @@
   self->_containerView = v17;
 
   v19 = self->_containerView;
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [(UIScrollView *)v19 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIScrollView *)v19 setBackgroundColor:clearColor];
 
   [(UIScrollView *)self->_containerView setAutoresizingMask:16];
   [(UIScrollView *)self->_containerView setContentInset:24.0, 0.0, 24.0, 0.0];

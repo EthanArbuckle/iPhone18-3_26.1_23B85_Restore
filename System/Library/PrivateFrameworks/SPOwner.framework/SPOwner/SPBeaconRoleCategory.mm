@@ -1,63 +1,63 @@
 @interface SPBeaconRoleCategory
-- (SPBeaconRoleCategory)initWithCategoryId:(int64_t)a3 category:(id)a4 roles:(id)a5;
-- (SPBeaconRoleCategory)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPBeaconRoleCategory)initWithCategoryId:(int64_t)id category:(id)category roles:(id)roles;
+- (SPBeaconRoleCategory)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconRoleCategory
 
-- (SPBeaconRoleCategory)initWithCategoryId:(int64_t)a3 category:(id)a4 roles:(id)a5
+- (SPBeaconRoleCategory)initWithCategoryId:(int64_t)id category:(id)category roles:(id)roles
 {
-  v8 = a4;
-  v9 = a5;
+  categoryCopy = category;
+  rolesCopy = roles;
   v13.receiver = self;
   v13.super_class = SPBeaconRoleCategory;
   v10 = [(SPBeaconRoleCategory *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(SPBeaconRoleCategory *)v10 setCategoryId:a3];
-    [(SPBeaconRoleCategory *)v11 setCategory:v8];
-    [(SPBeaconRoleCategory *)v11 setRoles:v9];
+    [(SPBeaconRoleCategory *)v10 setCategoryId:id];
+    [(SPBeaconRoleCategory *)v11 setCategory:categoryCopy];
+    [(SPBeaconRoleCategory *)v11 setRoles:rolesCopy];
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBeaconRoleCategory alloc];
-  v5 = [(SPBeaconRoleCategory *)self categoryId];
-  v6 = [(SPBeaconRoleCategory *)self category];
+  categoryId = [(SPBeaconRoleCategory *)self categoryId];
+  category = [(SPBeaconRoleCategory *)self category];
   v7 = objc_alloc(MEMORY[0x277CBEA60]);
-  v8 = [(SPBeaconRoleCategory *)self roles];
-  v9 = [v7 initWithArray:v8 copyItems:1];
-  v10 = [(SPBeaconRoleCategory *)v4 initWithCategoryId:v5 category:v6 roles:v9];
+  roles = [(SPBeaconRoleCategory *)self roles];
+  v9 = [v7 initWithArray:roles copyItems:1];
+  v10 = [(SPBeaconRoleCategory *)v4 initWithCategoryId:categoryId category:category roles:v9];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   categoryId = self->_categoryId;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:categoryId];
-  [v7 encodeObject:v6 forKey:@"categoryId"];
+  [coderCopy encodeObject:v6 forKey:@"categoryId"];
 
-  [v7 encodeObject:self->_category forKey:@"category"];
-  [v7 encodeObject:self->_roles forKey:@"roles"];
+  [coderCopy encodeObject:self->_category forKey:@"category"];
+  [coderCopy encodeObject:self->_roles forKey:@"roles"];
 }
 
-- (SPBeaconRoleCategory)initWithCoder:(id)a3
+- (SPBeaconRoleCategory)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryId"];
   self->_categoryId = [v5 integerValue];
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
   category = self->_category;
   self->_category = v6;
 
@@ -66,7 +66,7 @@
   v15[1] = objc_opt_class();
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"roles"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"roles"];
 
   roles = self->_roles;
   self->_roles = v11;

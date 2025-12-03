@@ -1,62 +1,62 @@
 @interface OrgApacheLuceneSearchSloppyPhraseScorer
-- (BOOL)advancePPWithOrgApacheLuceneSearchPhrasePositions:(id)a3;
+- (BOOL)advancePPWithOrgApacheLuceneSearchPhrasePositions:(id)positions;
 - (float)score;
 - (id)asTwoPhaseIterator;
-- (id)lesserWithOrgApacheLuceneSearchPhrasePositions:(id)a3 withOrgApacheLuceneSearchPhrasePositions:(id)a4;
+- (id)lesserWithOrgApacheLuceneSearchPhrasePositions:(id)positions withOrgApacheLuceneSearchPhrasePositions:(id)phrasePositions;
 - (int)docID;
 - (int)nextDoc;
-- (int)tpPosWithOrgApacheLuceneSearchPhrasePositions:(id)a3;
+- (int)tpPosWithOrgApacheLuceneSearchPhrasePositions:(id)positions;
 - (int64_t)cost;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchSloppyPhraseScorer
 
-- (BOOL)advancePPWithOrgApacheLuceneSearchPhrasePositions:(id)a3
+- (BOOL)advancePPWithOrgApacheLuceneSearchPhrasePositions:(id)positions
 {
-  if (!a3)
+  if (!positions)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 nextPosition];
-  if (v5)
+  nextPosition = [positions nextPosition];
+  if (nextPosition)
   {
-    v6 = *(a3 + 2);
+    v6 = *(positions + 2);
     if (v6 > self->end_)
     {
       self->end_ = v6;
     }
   }
 
-  return v5;
+  return nextPosition;
 }
 
-- (id)lesserWithOrgApacheLuceneSearchPhrasePositions:(id)a3 withOrgApacheLuceneSearchPhrasePositions:(id)a4
+- (id)lesserWithOrgApacheLuceneSearchPhrasePositions:(id)positions withOrgApacheLuceneSearchPhrasePositions:(id)phrasePositions
 {
-  if (!a3 || !a4)
+  if (!positions || !phrasePositions)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
-  v5 = *(a4 + 2);
-  if (v4 >= v5 && (v4 != v5 || *(a3 + 4) >= *(a4 + 4)))
+  v4 = *(positions + 2);
+  v5 = *(phrasePositions + 2);
+  if (v4 >= v5 && (v4 != v5 || *(positions + 4) >= *(phrasePositions + 4)))
   {
-    return a4;
+    return phrasePositions;
   }
 
-  return a3;
+  return positions;
 }
 
-- (int)tpPosWithOrgApacheLuceneSearchPhrasePositions:(id)a3
+- (int)tpPosWithOrgApacheLuceneSearchPhrasePositions:(id)positions
 {
-  if (!a3)
+  if (!positions)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 4) + *(a3 + 2);
+  return *(positions + 4) + *(positions + 2);
 }
 
 - (int)docID
@@ -78,24 +78,24 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchConjunctionDISI *)conjunction nextDoc];
+  nextDoc = [(OrgApacheLuceneSearchConjunctionDISI *)conjunction nextDoc];
   v5 = 0x7FFFFFFF;
-  if (v4 != 0x7FFFFFFF)
+  if (nextDoc != 0x7FFFFFFF)
   {
-    v6 = v4;
+    v6 = nextDoc;
     v7 = sub_1000C38E8(self);
     self->sloppyFreq_ = v7;
     if (v7 == 0.0)
     {
       while (1)
       {
-        v9 = [(OrgApacheLuceneSearchConjunctionDISI *)self->conjunction_ nextDoc];
-        if (v9 == 0x7FFFFFFF)
+        nextDoc2 = [(OrgApacheLuceneSearchConjunctionDISI *)self->conjunction_ nextDoc];
+        if (nextDoc2 == 0x7FFFFFFF)
         {
           break;
         }
 
-        v5 = v9;
+        v5 = nextDoc2;
         v8 = sub_1000C38E8(self);
         self->sloppyFreq_ = v8;
         if (v8 != 0.0)
@@ -124,10 +124,10 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchSloppyPhraseScorer *)self docID];
+  docID = [(OrgApacheLuceneSearchSloppyPhraseScorer *)self docID];
   *&v5 = self->sloppyFreq_;
 
-  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:v4 withFloat:v5];
+  [(OrgApacheLuceneSearchSimilaritiesSimilarity_SimScorer *)docScorer scoreWithInt:docID withFloat:v5];
   return result;
 }
 

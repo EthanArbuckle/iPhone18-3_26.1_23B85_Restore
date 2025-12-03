@@ -3,34 +3,34 @@
 - (BOOL)fetchAndStoreAudioBuffer;
 - (BOOL)initializeSecondPass;
 - (BOOL)prepare;
-- (BOOL)setSpeakerProfile:(id)a3 numEmbeddings:(unint64_t)a4 dimension:(unint64_t)a5 speakerRecognizerType:(unint64_t)a6;
+- (BOOL)setSpeakerProfile:(id)profile numEmbeddings:(unint64_t)embeddings dimension:(unint64_t)dimension speakerRecognizerType:(unint64_t)type;
 - (CSSecureSiriAudioProvidingProxy)init;
-- (unint64_t)convertAssetConfigurationError:(unint64_t)a3;
-- (unint64_t)convertSecureSecondPassVoiceTriggerResultType:(corespeechexclave_voicetriggersecondpassresult_s *)a3;
-- (unint64_t)convertSecureSpeakerRecognitionType:(unint64_t)a3;
-- (unint64_t)convertSecureVoiceTriggerKeywordDetectionResultType:(corespeechexclave_voicetriggerkeyworddetectionresult_s)a3;
-- (unint64_t)convertSecureVoiceTriggerSpeakerDetectionResultType:(corespeechexclave_voicetriggerpersonalizationresult_s)a3;
+- (unint64_t)convertAssetConfigurationError:(unint64_t)error;
+- (unint64_t)convertSecureSecondPassVoiceTriggerResultType:(corespeechexclave_voicetriggersecondpassresult_s *)type;
+- (unint64_t)convertSecureSpeakerRecognitionType:(unint64_t)type;
+- (unint64_t)convertSecureVoiceTriggerKeywordDetectionResultType:(corespeechexclave_voicetriggerkeyworddetectionresult_s)type;
+- (unint64_t)convertSecureVoiceTriggerSpeakerDetectionResultType:(corespeechexclave_voicetriggerpersonalizationresult_s)type;
 - (unint64_t)processBargeInVoiceTrigger;
-- (void)adBlockerMatchingInProgress:(id)a3;
+- (void)adBlockerMatchingInProgress:(id)progress;
 - (void)deinitializeSecondPass;
-- (void)fetchAOPVoiceTriggerResult:(id)a3;
-- (void)processBargeInVoiceTriggerWithResult:(id)a3;
-- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)a3 result:(id)a4;
-- (void)requestHistoricalAudioBufferWithStartSample:(unint64_t)a3 completion:(id)a4;
+- (void)fetchAOPVoiceTriggerResult:(id)result;
+- (void)processBargeInVoiceTriggerWithResult:(id)result;
+- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)audio result:(id)result;
+- (void)requestHistoricalAudioBufferWithStartSample:(unint64_t)sample completion:(id)completion;
 - (void)reset;
 - (void)resetFirstPassVoiceTrigger;
-- (void)setAdBlockerAsset:(id)a3;
-- (void)setAssetForLocale:(id)a3 isOTA:(BOOL)a4 completion:(id)a5;
+- (void)setAdBlockerAsset:(id)asset;
+- (void)setAssetForLocale:(id)locale isOTA:(BOOL)a completion:(id)completion;
 - (void)startAdBlockerMatching;
 - (void)startBargeInVoiceTrigger;
-- (void)startSecondPassVoiceTriggerWithStartOption:(id)a3;
-- (void)startSecureAdBlockerMobileAssetLoaderService:(id)a3;
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4;
+- (void)startSecondPassVoiceTriggerWithStartOption:(id)option;
+- (void)startSecureAdBlockerMobileAssetLoaderService:(id)service;
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion;
 - (void)stopAdBlockerMatching;
 - (void)stopBargeInVoiceTrigger;
 - (void)stopSecondPassVoiceTrigger;
-- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)a3;
-- (void)stopSecureMobileAssetLoaderService:(id)a3;
+- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)service;
+- (void)stopSecureMobileAssetLoaderService:(id)service;
 @end
 
 @implementation CSSecureSiriAudioProvidingProxy
@@ -67,16 +67,16 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)adBlockerMatchingInProgress:(id)a3
+- (void)adBlockerMatchingInProgress:(id)progress
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  progressCopy = progress;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __63__CSSecureSiriAudioProvidingProxy_adBlockerMatchingInProgress___block_invoke;
   v13 = &unk_278EB66E8;
-  v14 = v4;
-  v5 = v4;
+  v14 = progressCopy;
+  v5 = progressCopy;
   v21 = 0;
   v19 = 0u;
   v20 = 0u;
@@ -181,10 +181,10 @@ uint64_t __63__CSSecureSiriAudioProvidingProxy_adBlockerMatchingInProgress___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAdBlockerAsset:(id)a3
+- (void)setAdBlockerAsset:(id)asset
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -196,9 +196,9 @@ uint64_t __63__CSSecureSiriAudioProvidingProxy_adBlockerMatchingInProgress___blo
   v12 = 3221225472;
   v13 = __53__CSSecureSiriAudioProvidingProxy_setAdBlockerAsset___block_invoke;
   v14 = &unk_278EB66C0;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = assetCopy;
+  v6 = assetCopy;
   v23 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -242,10 +242,10 @@ uint64_t __53__CSSecureSiriAudioProvidingProxy_setAdBlockerAsset___block_invoke(
   return result;
 }
 
-- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)a3
+- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)service
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -257,9 +257,9 @@ uint64_t __53__CSSecureSiriAudioProvidingProxy_setAdBlockerAsset___block_invoke(
   v12 = 3221225472;
   v13 = __79__CSSecureSiriAudioProvidingProxy_stopSecureAdBlockerMobileAssetLoaderService___block_invoke;
   v14 = &unk_278EB66C0;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = serviceCopy;
+  v6 = serviceCopy;
   v23 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -303,10 +303,10 @@ uint64_t __79__CSSecureSiriAudioProvidingProxy_stopSecureAdBlockerMobileAssetLoa
   return result;
 }
 
-- (void)startSecureAdBlockerMobileAssetLoaderService:(id)a3
+- (void)startSecureAdBlockerMobileAssetLoaderService:(id)service
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -318,9 +318,9 @@ uint64_t __79__CSSecureSiriAudioProvidingProxy_stopSecureAdBlockerMobileAssetLoa
   v12 = 3221225472;
   v13 = __80__CSSecureSiriAudioProvidingProxy_startSecureAdBlockerMobileAssetLoaderService___block_invoke;
   v14 = &unk_278EB66C0;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = serviceCopy;
+  v6 = serviceCopy;
   v23 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -364,10 +364,10 @@ uint64_t __80__CSSecureSiriAudioProvidingProxy_startSecureAdBlockerMobileAssetLo
   return result;
 }
 
-- (void)stopSecureMobileAssetLoaderService:(id)a3
+- (void)stopSecureMobileAssetLoaderService:(id)service
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -379,9 +379,9 @@ uint64_t __80__CSSecureSiriAudioProvidingProxy_startSecureAdBlockerMobileAssetLo
   v12 = 3221225472;
   v13 = __70__CSSecureSiriAudioProvidingProxy_stopSecureMobileAssetLoaderService___block_invoke;
   v14 = &unk_278EB66C0;
-  v15 = self;
-  v16 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v16 = serviceCopy;
+  v6 = serviceCopy;
   v23 = 0;
   v21 = 0u;
   v22 = 0u;
@@ -425,11 +425,11 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_stopSecureMobileAssetLoaderServic
   return result;
 }
 
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion
 {
-  v4 = a3;
+  serviceCopy = service;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -437,14 +437,14 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_stopSecureMobileAssetLoaderServic
     _os_log_impl(&dword_247968000, v7, OS_LOG_TYPE_DEFAULT, &unk_2479731D3, buf, 2u);
   }
 
-  if (v4)
+  if (serviceCopy)
   {
     v8 = sLog;
     if (os_log_type_enabled(sLog, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       _os_log_error_impl(&dword_247968000, v8, OS_LOG_TYPE_ERROR, "isAssistant == YES is not supported!!", buf, 2u);
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -452,10 +452,10 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_stopSecureMobileAssetLoaderServic
       goto LABEL_6;
     }
 
-    if (v6)
+    if (completionCopy)
     {
 LABEL_6:
-      v6[2](v6, 2);
+      completionCopy[2](completionCopy, 2);
     }
   }
 
@@ -465,8 +465,8 @@ LABEL_6:
     v14 = 3221225472;
     v15 = __82__CSSecureSiriAudioProvidingProxy_startSecureMobileAssetLoaderService_completion___block_invoke;
     v16 = &unk_278EB66C0;
-    v17 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = completionCopy;
     v25 = 0;
     v23 = 0u;
     v24 = 0u;
@@ -513,23 +513,23 @@ uint64_t __82__CSSecureSiriAudioProvidingProxy_startSecureMobileAssetLoaderServi
   return result;
 }
 
-- (void)setAssetForLocale:(id)a3 isOTA:(BOOL)a4 completion:(id)a5
+- (void)setAssetForLocale:(id)locale isOTA:(BOOL)a completion:(id)completion
 {
-  v6 = a4;
+  aCopy = a;
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  localeCopy = locale;
+  completionCopy = completion;
   v10 = sLog;
   if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = localeCopy;
     *&buf[12] = 1024;
-    *&buf[14] = v6;
+    *&buf[14] = aCopy;
     _os_log_impl(&dword_247968000, v10, OS_LOG_TYPE_DEFAULT, "Siri locale:%@, isOTA:%d", buf, 0x12u);
   }
 
-  v11 = [v8 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+  v11 = [localeCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
   if ([v11 caseInsensitiveCompare:@"ar-AE"])
   {
     if ([v11 caseInsensitiveCompare:@"ar-SA"])
@@ -622,11 +622,11 @@ uint64_t __82__CSSecureSiriAudioProvidingProxy_startSecureMobileAssetLoaderServi
                                                                                           v13 = sLog;
                                                                                           if (os_log_type_enabled(sLog, OS_LOG_TYPE_DEFAULT))
                                                                                           {
-                                                                                            v14 = v8;
+                                                                                            v14 = localeCopy;
                                                                                             v15 = v13;
-                                                                                            v16 = [v8 UTF8String];
+                                                                                            uTF8String = [localeCopy UTF8String];
                                                                                             *buf = 136315138;
-                                                                                            *&buf[4] = v16;
+                                                                                            *&buf[4] = uTF8String;
                                                                                             _os_log_impl(&dword_247968000, v15, OS_LOG_TYPE_DEFAULT, "Error: Invalid locale %s. Falling back to en-US", buf, 0xCu);
                                                                                           }
                                                                                         }
@@ -893,9 +893,9 @@ uint64_t __82__CSSecureSiriAudioProvidingProxy_startSecureMobileAssetLoaderServi
   v24 = 3221225472;
   v25 = __70__CSSecureSiriAudioProvidingProxy_setAssetForLocale_isOTA_completion___block_invoke;
   v26 = &unk_278EB66C0;
-  v27 = self;
-  v28 = v9;
-  v17 = v9;
+  selfCopy = self;
+  v28 = completionCopy;
+  v17 = completionCopy;
   v35 = 0;
   v33 = 0u;
   v34 = 0u;
@@ -1137,15 +1137,15 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_setAssetForLocale_isOTA_completio
   return result;
 }
 
-- (unint64_t)convertAssetConfigurationError:(unint64_t)a3
+- (unint64_t)convertAssetConfigurationError:(unint64_t)error
 {
   v3 = 4;
-  if (a3 != 0x59D7251024B02BCBLL)
+  if (error != 0x59D7251024B02BCBLL)
   {
     v3 = 0;
   }
 
-  if (a3 == 0x497F1942F7514C1FLL)
+  if (error == 0x497F1942F7514C1FLL)
   {
     v4 = 2;
   }
@@ -1155,17 +1155,17 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_setAssetForLocale_isOTA_completio
     v4 = v3;
   }
 
-  if (a3 == 0xA510336A75EF1B48)
+  if (error == 0xA510336A75EF1B48)
   {
     v5 = 3;
   }
 
   else
   {
-    v5 = a3 == 0xE3C7F6520C58DE7FLL;
+    v5 = error == 0xE3C7F6520C58DE7FLL;
   }
 
-  if (a3 <= 0x497F1942F7514C1ELL)
+  if (error <= 0x497F1942F7514C1ELL)
   {
     return v5;
   }
@@ -1176,22 +1176,22 @@ uint64_t __70__CSSecureSiriAudioProvidingProxy_setAssetForLocale_isOTA_completio
   }
 }
 
-- (BOOL)setSpeakerProfile:(id)a3 numEmbeddings:(unint64_t)a4 dimension:(unint64_t)a5 speakerRecognizerType:(unint64_t)a6
+- (BOOL)setSpeakerProfile:(id)profile numEmbeddings:(unint64_t)embeddings dimension:(unint64_t)dimension speakerRecognizerType:(unint64_t)type
 {
   v54 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  profileCopy = profile;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 0;
   v31 = 0;
   v29[0] = 3;
-  v32 = a4;
-  v33 = a5;
-  v34 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureSpeakerRecognitionType:a6];
-  v11 = v10;
-  v29[1] = [v10 bytes];
-  v30 = a5 * a4;
+  embeddingsCopy = embeddings;
+  dimensionCopy = dimension;
+  v34 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureSpeakerRecognitionType:type];
+  v11 = profileCopy;
+  v29[1] = [profileCopy bytes];
+  v30 = dimension * embeddings;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v26 = __99__CSSecureSiriAudioProvidingProxy_setSpeakerProfile_numEmbeddings_dimension_speakerRecognizerType___block_invoke;
@@ -1299,9 +1299,9 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)convertSecureSpeakerRecognitionType:(unint64_t)a3
+- (unint64_t)convertSecureSpeakerRecognitionType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 0xB4634D822B7084E5;
   }
@@ -1312,10 +1312,10 @@ LABEL_7:
   }
 }
 
-- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)a3 result:(id)a4
+- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)audio result:(id)result
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  resultCopy = result;
   v24 = 0;
   v25 = &v24;
   v26 = 0x6010000000;
@@ -1465,7 +1465,7 @@ LABEL_39:
 LABEL_5:
     v8 = self->_service.connection;
     tb_client_connection_message_destruct();
-    if (!v5)
+    if (!resultCopy)
     {
       goto LABEL_11;
     }
@@ -1473,7 +1473,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!resultCopy)
   {
     goto LABEL_11;
   }
@@ -1490,19 +1490,19 @@ LABEL_6:
   {
     v14 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureVoiceTriggerKeywordDetectionResultType:v25[6]];
     v15 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureVoiceTriggerSpeakerDetectionResultType:v25[7]];
-    (*(v5 + 2))(v5, 2, 0, *(v25 + 10), 0, 0, v14, v15, 0.0);
+    (*(resultCopy + 2))(resultCopy, 2, 0, *(v25 + 10), 0, 0, v14, v15, 0.0);
   }
 
   else if (v11)
   {
-    (*(v5 + 2))(v5, 0.0);
+    (*(resultCopy + 2))(resultCopy, 0.0);
   }
 
   else
   {
     v12 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureVoiceTriggerKeywordDetectionResultType:v25[10]];
     v13 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureVoiceTriggerSpeakerDetectionResultType:v25[11]];
-    (*(v5 + 2))(v5, 0, v25[5], *(v25 + 14), v25[8], v25[9], v12, v13, *(v25 + 6));
+    (*(resultCopy + 2))(resultCopy, 0, v25[5], *(v25 + 14), v25[8], v25[9], v12, v13, *(v25 + 6));
   }
 
 LABEL_11:
@@ -1524,15 +1524,15 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   return result;
 }
 
-- (unint64_t)convertSecureVoiceTriggerSpeakerDetectionResultType:(corespeechexclave_voicetriggerpersonalizationresult_s)a3
+- (unint64_t)convertSecureVoiceTriggerSpeakerDetectionResultType:(corespeechexclave_voicetriggerpersonalizationresult_s)type
 {
   v3 = 4;
-  if (a3.var0 != 0x70B00C30047C77C5)
+  if (type.var0 != 0x70B00C30047C77C5)
   {
     v3 = 0;
   }
 
-  if (a3.var0 == 0xCEA6F7204A05BC07)
+  if (type.var0 == 0xCEA6F7204A05BC07)
   {
     v4 = 3;
   }
@@ -1542,17 +1542,17 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
     v4 = v3;
   }
 
-  if (a3.var0 == 0x92393AFA3ED5D670)
+  if (type.var0 == 0x92393AFA3ED5D670)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = a3.var0 == 0x95C28B8FC17A7457;
+    v5 = type.var0 == 0x95C28B8FC17A7457;
   }
 
-  if (a3.var0 <= 0xCEA6F7204A05BC06)
+  if (type.var0 <= 0xCEA6F7204A05BC06)
   {
     return v5;
   }
@@ -1563,15 +1563,15 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   }
 }
 
-- (unint64_t)convertSecureVoiceTriggerKeywordDetectionResultType:(corespeechexclave_voicetriggerkeyworddetectionresult_s)a3
+- (unint64_t)convertSecureVoiceTriggerKeywordDetectionResultType:(corespeechexclave_voicetriggerkeyworddetectionresult_s)type
 {
   v3 = 2;
-  if (a3.var0 != 0xFD9F2E793902DAD9)
+  if (type.var0 != 0xFD9F2E793902DAD9)
   {
     v3 = 0;
   }
 
-  if (a3.var0 == 0x63184B8076456B7FLL)
+  if (type.var0 == 0x63184B8076456B7FLL)
   {
     v4 = 3;
   }
@@ -1581,7 +1581,7 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
     v4 = v3;
   }
 
-  if (a3.var0 == 0x8F4B41BADF9BCEB7)
+  if (type.var0 == 0x8F4B41BADF9BCEB7)
   {
     return 1;
   }
@@ -1592,11 +1592,11 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   }
 }
 
-- (unint64_t)convertSecureSecondPassVoiceTriggerResultType:(corespeechexclave_voicetriggersecondpassresult_s *)a3
+- (unint64_t)convertSecureSecondPassVoiceTriggerResultType:(corespeechexclave_voicetriggersecondpassresult_s *)type
 {
-  var0 = a3->var0;
+  var0 = type->var0;
   v4 = 2;
-  if (a3->var0 == 0x9D58721FFF2EF4B1)
+  if (type->var0 == 0x9D58721FFF2EF4B1)
   {
     v4 = 0;
   }
@@ -1635,7 +1635,7 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSecondPassVoiceTriggerWithStartOption:(id)a3
+- (void)startSecondPassVoiceTriggerWithStartOption:(id)option
 {
   v8 = *MEMORY[0x277D85DE8];
   connection = self->_service.connection;
@@ -1743,9 +1743,9 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processBargeInVoiceTriggerWithResult:(id)a3
+- (void)processBargeInVoiceTriggerWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3810000000;
@@ -1762,11 +1762,11 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
   v7 = *(v15 + 2);
   v8 = v15[6];
   v5 = [(CSSecureSiriAudioProvidingProxy *)self convertSecureBargeInVoiceTriggerResultType:&v7];
-  if (v4)
+  if (resultCopy)
   {
     if (v5)
     {
-      (*(v4 + 2))(v4, v5, 0, 0);
+      (*(resultCopy + 2))(resultCopy, v5, 0, 0);
     }
 
     else
@@ -1777,7 +1777,7 @@ __n128 __92__CSSecureSiriAudioProvidingProxy_processSecondPassVoiceTriggerWithSh
         v6 = 0;
       }
 
-      (*(v4 + 2))(v4, 0, *v6, *(v6 + 2));
+      (*(resultCopy + 2))(resultCopy, 0, *v6, *(v6 + 2));
     }
   }
 
@@ -1895,18 +1895,18 @@ __n128 __61__CSSecureSiriAudioProvidingProxy_processBargeInVoiceTrigger__block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAOPVoiceTriggerResult:(id)a3
+- (void)fetchAOPVoiceTriggerResult:(id)result
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resultCopy = result;
+  v5 = resultCopy;
+  if (resultCopy)
   {
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __62__CSSecureSiriAudioProvidingProxy_fetchAOPVoiceTriggerResult___block_invoke;
     v13 = &unk_278EB6648;
-    v14 = v4;
+    v14 = resultCopy;
     v21 = 0;
     v19 = 0u;
     v20 = 0u;
@@ -2037,10 +2037,10 @@ __n128 __61__CSSecureSiriAudioProvidingProxy_processBargeInVoiceTrigger__block_i
   return v6;
 }
 
-- (void)requestHistoricalAudioBufferWithStartSample:(unint64_t)a3 completion:(id)a4
+- (void)requestHistoricalAudioBufferWithStartSample:(unint64_t)sample completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2810000000;
@@ -2067,7 +2067,7 @@ __n128 __61__CSSecureSiriAudioProvidingProxy_processBargeInVoiceTrigger__block_i
   connection = self->_service.connection;
   if (tb_client_connection_message_construct())
   {
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
@@ -2092,10 +2092,10 @@ __n128 __61__CSSecureSiriAudioProvidingProxy_processBargeInVoiceTrigger__block_i
 
   v8 = self->_service.connection;
   tb_client_connection_message_destruct();
-  if (v5)
+  if (completionCopy)
   {
 LABEL_8:
-    (*(v5 + 2))(v5, *(v15 + 8), *(v15 + 9));
+    (*(completionCopy + 2))(completionCopy, *(v15 + 8), *(v15 + 9));
   }
 
 LABEL_9:
@@ -2259,16 +2259,16 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"_Bool localAudioCaptureInitialize(void)"];
-      [v21 handleFailureInFunction:v22 file:@"CSSecureSiriAudioProvidingProxy.m" lineNumber:20 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v22 file:@"CSSecureSiriAudioProvidingProxy.m" lineNumber:20 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"_Bool localCSIsInternalBuild(void)"];
-      [v19 handleFailureInFunction:v20 file:@"CSSecureSiriAudioProvidingProxy.m" lineNumber:23 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v20 file:@"CSSecureSiriAudioProvidingProxy.m" lineNumber:23 description:{@"%s", dlerror()}];
     }
 
     __break(1u);

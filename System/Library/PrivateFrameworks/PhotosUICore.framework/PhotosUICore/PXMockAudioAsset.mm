@@ -1,65 +1,65 @@
 @interface PXMockAudioAsset
-- (BOOL)isAudioEqualToAsset:(id)a3;
+- (BOOL)isAudioEqualToAsset:(id)asset;
 - (PXMockAudioAsset)init;
-- (PXMockAudioAsset)initWithConfiguration:(id)a3;
-- (id)artworkURLForTargetPixelSize:(CGSize)a3;
-- (void)setDuration:(id *)a3;
-- (void)setExportableDuration:(id *)a3;
+- (PXMockAudioAsset)initWithConfiguration:(id)configuration;
+- (id)artworkURLForTargetPixelSize:(CGSize)size;
+- (void)setDuration:(id *)duration;
+- (void)setExportableDuration:(id *)duration;
 @end
 
 @implementation PXMockAudioAsset
 
-- (void)setExportableDuration:(id *)a3
+- (void)setExportableDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_exportableDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_exportableDuration.epoch = duration->var3;
   *&self->_exportableDuration.value = v3;
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 
-- (id)artworkURLForTargetPixelSize:(CGSize)a3
+- (id)artworkURLForTargetPixelSize:(CGSize)size
 {
-  height = a3.height;
-  *&a3.width = a3.width;
-  *&a3.width = floorf(*&a3.width);
-  v5 = [MEMORY[0x1E696AD98] numberWithFloat:a3.width];
-  v6 = [v5 stringValue];
+  height = size.height;
+  *&size.width = size.width;
+  *&size.width = floorf(*&size.width);
+  v5 = [MEMORY[0x1E696AD98] numberWithFloat:size.width];
+  stringValue = [v5 stringValue];
 
   v7 = height;
   *&v8 = floorf(v7);
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  v10 = [v9 stringValue];
+  stringValue2 = [v9 stringValue];
 
-  v11 = [(PXMockAudioAsset *)self artworkURLFormat];
-  v12 = [v11 stringByReplacingOccurrencesOfString:@"{w}" withString:v6];
-  v13 = [v12 stringByReplacingOccurrencesOfString:@"{h}" withString:v10];
+  artworkURLFormat = [(PXMockAudioAsset *)self artworkURLFormat];
+  v12 = [artworkURLFormat stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue];
+  v13 = [v12 stringByReplacingOccurrencesOfString:@"{h}" withString:stringValue2];
 
   v14 = [MEMORY[0x1E695DFF8] URLWithString:v13];
 
   return v14;
 }
 
-- (BOOL)isAudioEqualToAsset:(id)a3
+- (BOOL)isAudioEqualToAsset:(id)asset
 {
-  v4 = a3;
-  if ([v4 catalog] == 1)
+  assetCopy = asset;
+  if ([assetCopy catalog] == 1)
   {
-    v5 = [v4 identifier];
-    v6 = [(PXMockAudioAsset *)self identifier];
-    if (v5 == v6)
+    identifier = [assetCopy identifier];
+    identifier2 = [(PXMockAudioAsset *)self identifier];
+    if (identifier == identifier2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isEqualToString:v6];
+      v7 = [identifier isEqualToString:identifier2];
     }
   }
 
@@ -78,10 +78,10 @@
   v2 = [(PXMockAudioAsset *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Mock Song %@", v2->_identifier];
     title = v2->_title;
@@ -106,13 +106,13 @@
   return v2;
 }
 
-- (PXMockAudioAsset)initWithConfiguration:(id)a3
+- (PXMockAudioAsset)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(PXMockAudioAsset *)self init];
   if (v5)
   {
-    v4[2](v4, v5);
+    configurationCopy[2](configurationCopy, v5);
   }
 
   return v5;

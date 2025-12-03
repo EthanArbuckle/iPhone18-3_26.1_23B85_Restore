@@ -1,16 +1,16 @@
 @interface MSVArtworkColorAnalysis
-- (MSVArtworkColorAnalysis)initWithCoder:(id)a3;
-- (id)_copyWithClass:(Class)a3;
+- (MSVArtworkColorAnalysis)initWithCoder:(id)coder;
+- (id)_copyWithClass:(Class)class;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSVArtworkColorAnalysis
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   v5 = v4;
   if (v4)
   {
@@ -27,60 +27,60 @@
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(MSVArtworkColorAnalysis *)self _copyWithClass:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MSVArtworkColorAnalysis *)self backgroundColorHex];
-  [v8 encodeObject:v4 forKey:@"backgroundColor"];
+  coderCopy = coder;
+  backgroundColorHex = [(MSVArtworkColorAnalysis *)self backgroundColorHex];
+  [coderCopy encodeObject:backgroundColorHex forKey:@"backgroundColor"];
 
-  [v8 encodeBool:-[MSVArtworkColorAnalysis isBackgroundColorLight](self forKey:{"isBackgroundColorLight"), @"backgroundColorLight"}];
-  v5 = [(MSVArtworkColorAnalysis *)self primaryTextColorHex];
-  [v8 encodeObject:v5 forKey:@"primaryTextColor"];
+  [coderCopy encodeBool:-[MSVArtworkColorAnalysis isBackgroundColorLight](self forKey:{"isBackgroundColorLight"), @"backgroundColorLight"}];
+  primaryTextColorHex = [(MSVArtworkColorAnalysis *)self primaryTextColorHex];
+  [coderCopy encodeObject:primaryTextColorHex forKey:@"primaryTextColor"];
 
-  [v8 encodeBool:-[MSVArtworkColorAnalysis isPrimaryTextColorLight](self forKey:{"isPrimaryTextColorLight"), @"primaryTextColorLight"}];
-  v6 = [(MSVArtworkColorAnalysis *)self secondaryTextColorHex];
-  [v8 encodeObject:v6 forKey:@"secondaryTextColor"];
+  [coderCopy encodeBool:-[MSVArtworkColorAnalysis isPrimaryTextColorLight](self forKey:{"isPrimaryTextColorLight"), @"primaryTextColorLight"}];
+  secondaryTextColorHex = [(MSVArtworkColorAnalysis *)self secondaryTextColorHex];
+  [coderCopy encodeObject:secondaryTextColorHex forKey:@"secondaryTextColor"];
 
-  [v8 encodeBool:-[MSVArtworkColorAnalysis isSecondaryTextColorLight](self forKey:{"isSecondaryTextColorLight"), @"secondaryTextColorLight"}];
-  v7 = [(MSVArtworkColorAnalysis *)self tertiaryTextColorHex];
-  [v8 encodeObject:v7 forKey:@"tertiaryTextColor"];
+  [coderCopy encodeBool:-[MSVArtworkColorAnalysis isSecondaryTextColorLight](self forKey:{"isSecondaryTextColorLight"), @"secondaryTextColorLight"}];
+  tertiaryTextColorHex = [(MSVArtworkColorAnalysis *)self tertiaryTextColorHex];
+  [coderCopy encodeObject:tertiaryTextColorHex forKey:@"tertiaryTextColor"];
 
-  [v8 encodeBool:-[MSVArtworkColorAnalysis isTertiaryTextColorLight](self forKey:{"isTertiaryTextColorLight"), @"tertiaryTextColorLight"}];
+  [coderCopy encodeBool:-[MSVArtworkColorAnalysis isTertiaryTextColorLight](self forKey:{"isTertiaryTextColorLight"), @"tertiaryTextColorLight"}];
 }
 
-- (MSVArtworkColorAnalysis)initWithCoder:(id)a3
+- (MSVArtworkColorAnalysis)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MSVArtworkColorAnalysis *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColorHex = v5->_backgroundColorHex;
     v5->_backgroundColorHex = v6;
 
-    v5->_backgroundColorLight = [v4 decodeBoolForKey:@"backgroundColorLight"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryTextColor"];
+    v5->_backgroundColorLight = [coderCopy decodeBoolForKey:@"backgroundColorLight"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryTextColor"];
     primaryTextColorHex = v5->_primaryTextColorHex;
     v5->_primaryTextColorHex = v8;
 
-    v5->_primaryTextColorLight = [v4 decodeBoolForKey:@"primaryTextColorLight"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextColor"];
+    v5->_primaryTextColorLight = [coderCopy decodeBoolForKey:@"primaryTextColorLight"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryTextColor"];
     secondaryTextColorHex = v5->_secondaryTextColorHex;
     v5->_secondaryTextColorHex = v10;
 
-    v5->_secondaryTextColorLight = [v4 decodeBoolForKey:@"secondaryTextColorLight"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tertiaryTextColor"];
+    v5->_secondaryTextColorLight = [coderCopy decodeBoolForKey:@"secondaryTextColorLight"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tertiaryTextColor"];
     tertiaryTextColorHex = v5->_tertiaryTextColorHex;
     v5->_tertiaryTextColorHex = v12;
 
-    v5->_tertiaryTextColorLight = [v4 decodeBoolForKey:@"tertiaryTextColorLight"];
+    v5->_tertiaryTextColorLight = [coderCopy decodeBoolForKey:@"tertiaryTextColorLight"];
   }
 
   return v5;
@@ -91,7 +91,7 @@
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v14 = NSStringFromClass(v3);
-  v4 = [(MSVArtworkColorAnalysis *)self backgroundColorHex];
+  backgroundColorHex = [(MSVArtworkColorAnalysis *)self backgroundColorHex];
   if ([(MSVArtworkColorAnalysis *)self isBackgroundColorLight])
   {
     v5 = @"Light";
@@ -102,7 +102,7 @@
     v5 = @"Dark";
   }
 
-  v6 = [(MSVArtworkColorAnalysis *)self primaryTextColorHex];
+  primaryTextColorHex = [(MSVArtworkColorAnalysis *)self primaryTextColorHex];
   if ([(MSVArtworkColorAnalysis *)self isPrimaryTextColorLight])
   {
     v7 = @"Light";
@@ -113,7 +113,7 @@
     v7 = @"Dark";
   }
 
-  v8 = [(MSVArtworkColorAnalysis *)self secondaryTextColorHex];
+  secondaryTextColorHex = [(MSVArtworkColorAnalysis *)self secondaryTextColorHex];
   if ([(MSVArtworkColorAnalysis *)self isSecondaryTextColorLight])
   {
     v9 = @"Light";
@@ -124,7 +124,7 @@
     v9 = @"Dark";
   }
 
-  v10 = [(MSVArtworkColorAnalysis *)self tertiaryTextColorHex];
+  tertiaryTextColorHex = [(MSVArtworkColorAnalysis *)self tertiaryTextColorHex];
   if ([(MSVArtworkColorAnalysis *)self isTertiaryTextColorLight])
   {
     v11 = @"Light";
@@ -135,7 +135,7 @@
     v11 = @"Dark";
   }
 
-  v12 = [v15 stringWithFormat:@"<%@: %p> (\n  backgroundColor: %@ (%@)\n  primaryTextColor: %@ (%@)\n  secondaryTextColor: %@ (%@)\n  tertiaryTextColor: %@ (%@)\n)", v14, self, v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v15 stringWithFormat:@"<%@: %p> (\n  backgroundColor: %@ (%@)\n  primaryTextColor: %@ (%@)\n  secondaryTextColor: %@ (%@)\n  tertiaryTextColor: %@ (%@)\n)", v14, self, backgroundColorHex, v5, primaryTextColorHex, v7, secondaryTextColorHex, v9, tertiaryTextColorHex, v11];
 
   return v12;
 }

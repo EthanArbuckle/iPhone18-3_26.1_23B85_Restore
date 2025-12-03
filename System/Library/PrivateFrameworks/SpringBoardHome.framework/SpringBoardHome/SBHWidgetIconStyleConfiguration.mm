@@ -1,16 +1,16 @@
 @interface SBHWidgetIconStyleConfiguration
-+ (id)_buildColorMatrixFilterForColor:(id)a3;
-+ (id)renderSchemeForFactors:(SBHWidgetRenderSchemeFactors)a3;
-+ (id)tintedRenderSchemeForWidgetDescriptor:(id)a3 family:(int64_t)a4 widgetExtensionProvider:(id)a5;
++ (id)_buildColorMatrixFilterForColor:(id)color;
++ (id)renderSchemeForFactors:(SBHWidgetRenderSchemeFactors)factors;
++ (id)tintedRenderSchemeForWidgetDescriptor:(id)descriptor family:(int64_t)family widgetExtensionProvider:(id)provider;
 - (BOOL)_isCrystalLinked;
 - (BOOL)_isDawnLinked;
 - (BOOL)isAccented;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWidgetIconStyleConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWidgetIconStyleConfiguration:(id)configuration;
 - (CHSWidgetExtensionProvider)widgetExtensionProvider;
-- (SBHWidgetIconStyleConfiguration)initWithContainingApplicationBundleIdentifier:(id)a3 imageAppearance:(id)a4 customDisplayConfiguration:(id)a5 boostsWhitePoint:(BOOL)a6 backdropGroupName:(id)a7;
-- (SBHWidgetIconStyleConfiguration)initWithWidgetDataSource:(id)a3 gridSizeClass:(id)a4 widgetViewController:(id)a5 widgetExtensionProvider:(id)a6 imageAppearance:(id)a7 customDisplayConfiguration:(id)a8 boostsWhitePoint:(BOOL)a9 backdropGroupName:(id)a10;
-- (SBHWidgetIconStyleConfiguration)initWithWidgetExtension:(id)a3 widgetDescriptor:(id)a4 imageAppearance:(id)a5 customDisplayConfiguration:(id)a6 boostsWhitePoint:(BOOL)a7 backdropGroupName:(id)a8;
+- (SBHWidgetIconStyleConfiguration)initWithContainingApplicationBundleIdentifier:(id)identifier imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)name;
+- (SBHWidgetIconStyleConfiguration)initWithWidgetDataSource:(id)source gridSizeClass:(id)class widgetViewController:(id)controller widgetExtensionProvider:(id)provider imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)self0;
+- (SBHWidgetIconStyleConfiguration)initWithWidgetExtension:(id)extension widgetDescriptor:(id)descriptor imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)name;
 - (id)appropriateColorFilter;
 - (id)appropriateWidgetRenderScheme;
 - (id)appropriateWidgetTintParameters;
@@ -18,7 +18,7 @@
 - (id)description;
 - (unint64_t)hash;
 - (void)_generateParameters;
-- (void)_generateTintParametersForWidgetDescriptor:(id)a3;
+- (void)_generateTintParametersForWidgetDescriptor:(id)descriptor;
 @end
 
 @implementation SBHWidgetIconStyleConfiguration
@@ -30,37 +30,37 @@
     return;
   }
 
-  v41 = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
-  v4 = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
-  v5 = [(SBHWidgetIconStyleConfiguration *)self customDisplayConfiguration];
-  if (SBHIconImageAppearanceTypeHasTintColor([v4 appearanceType]))
+  widgetExtension = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
+  imageAppearance = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
+  customDisplayConfiguration = [(SBHWidgetIconStyleConfiguration *)self customDisplayConfiguration];
+  if (SBHIconImageAppearanceTypeHasTintColor([imageAppearance appearanceType]))
   {
-    v6 = [v4 tintColor];
+    tintColor = [imageAppearance tintColor];
   }
 
   else
   {
-    v6 = 0;
+    tintColor = 0;
   }
 
-  v7 = [(SBHWidgetIconStyleConfiguration *)self _isCrystalLinked];
-  v8 = [(SBHWidgetIconStyleConfiguration *)self isAccented];
-  v9 = [(SBHWidgetIconStyleConfiguration *)self widgetDataSource];
-  v10 = [(SBHWidgetIconStyleConfiguration *)self widgetViewController];
-  if (v9)
+  _isCrystalLinked = [(SBHWidgetIconStyleConfiguration *)self _isCrystalLinked];
+  isAccented = [(SBHWidgetIconStyleConfiguration *)self isAccented];
+  widgetDataSource = [(SBHWidgetIconStyleConfiguration *)self widgetDataSource];
+  widgetViewController = [(SBHWidgetIconStyleConfiguration *)self widgetViewController];
+  if (widgetDataSource)
   {
-    v11 = [SBHWidgetStackViewController _shouldDrawSystemBackgroundMaterialForWidget:v9 widgetViewController:v10];
-    if (v5)
+    v11 = [SBHWidgetStackViewController _shouldDrawSystemBackgroundMaterialForWidget:widgetDataSource widgetViewController:widgetViewController];
+    if (customDisplayConfiguration)
     {
 LABEL_7:
       self->_backgroundType = 0;
-      v12 = [v5 renderScheme];
-      v13 = [v12 copy];
+      renderScheme = [customDisplayConfiguration renderScheme];
+      v13 = [renderScheme copy];
       appropriateWidgetRenderScheme = self->_appropriateWidgetRenderScheme;
       self->_appropriateWidgetRenderScheme = v13;
 
-      v15 = [v5 tintParameters];
-      v16 = [(NSString *)v15 copy];
+      tintParameters = [customDisplayConfiguration tintParameters];
+      v16 = [(NSString *)tintParameters copy];
       appropriateWidgetTintParameters = self->_appropriateWidgetTintParameters;
       self->_appropriateWidgetTintParameters = v16;
 
@@ -72,19 +72,19 @@ LABEL_8:
   else
   {
     v11 = 0;
-    if (v5)
+    if (customDisplayConfiguration)
     {
       goto LABEL_7;
     }
   }
 
-  if (v41)
+  if (widgetExtension)
   {
     v38 = v11;
-    v40 = v6;
+    v40 = tintColor;
     appropriateColorFilter = [(SBHWidgetIconStyleConfiguration *)self widgetDescriptor];
     v19 = objc_opt_class();
-    v20 = v10;
+    v20 = widgetViewController;
     if (v19)
     {
       if (objc_opt_isKindOfClass())
@@ -107,7 +107,7 @@ LABEL_8:
 
     if (v25)
     {
-      v26 = v8;
+      v26 = isAccented;
     }
 
     else
@@ -118,12 +118,12 @@ LABEL_8:
     v39 = v25;
     if (v26)
     {
-      v27 = [v25 widget];
-      v28 = [v27 family];
+      widget = [v25 widget];
+      family = [widget family];
 
       v29 = objc_opt_class();
       WeakRetained = objc_loadWeakRetained(&self->_widgetExtensionProvider);
-      v31 = [v29 tintedRenderSchemeForWidgetDescriptor:appropriateColorFilter family:v28 widgetExtensionProvider:WeakRetained];
+      v31 = [v29 tintedRenderSchemeForWidgetDescriptor:appropriateColorFilter family:family widgetExtensionProvider:WeakRetained];
     }
 
     else
@@ -136,20 +136,20 @@ LABEL_8:
     v33 = v31;
 
     [(SBHWidgetIconStyleConfiguration *)self _generateTintParametersForWidgetDescriptor:appropriateColorFilter];
-    v34 = [(CHSWidgetRenderScheme *)self->_appropriateWidgetRenderScheme backgroundViewPolicy];
+    backgroundViewPolicy = [(CHSWidgetRenderScheme *)self->_appropriateWidgetRenderScheme backgroundViewPolicy];
 
-    if (v34 == 2)
+    if (backgroundViewPolicy == 2)
     {
       v37 = 0;
       v36 = 1;
       v35 = v39;
-      v6 = v40;
+      tintColor = v40;
     }
 
     else
     {
       v35 = v39;
-      v6 = v40;
+      tintColor = v40;
       v36 = 0;
       v37 = v38;
     }
@@ -160,7 +160,7 @@ LABEL_8:
     goto LABEL_35;
   }
 
-  if (v11 || !v7 || !v8)
+  if (v11 || !_isCrystalLinked || !isAccented)
   {
     v22 = 0;
     self->_backgroundType = v11;
@@ -173,22 +173,22 @@ LABEL_8:
   }
 
   self->_isBackgroundRemovable = v22;
-  if (!v6)
+  if (!tintColor)
   {
     goto LABEL_9;
   }
 
-  v15 = self->_containingApplicationBundleIdentifier;
-  if ([(NSString *)v15 isEqualToString:@"com.apple.DocumentsApp"])
+  tintParameters = self->_containingApplicationBundleIdentifier;
+  if ([(NSString *)tintParameters isEqualToString:@"com.apple.DocumentsApp"])
   {
     goto LABEL_8;
   }
 
-  v23 = [(NSString *)v15 isEqualToString:@"com.apple.shortcuts"];
+  v23 = [(NSString *)tintParameters isEqualToString:@"com.apple.shortcuts"];
 
   if (!v23)
   {
-    v24 = [objc_opt_class() _buildColorMatrixFilterForColor:v6];
+    v24 = [objc_opt_class() _buildColorMatrixFilterForColor:tintColor];
     appropriateColorFilter = self->_appropriateColorFilter;
     self->_appropriateColorFilter = v24;
     goto LABEL_35;
@@ -204,23 +204,23 @@ LABEL_35:
 
 - (BOOL)_isCrystalLinked
 {
-  v3 = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
-  v4 = v3;
-  if (v3)
+  widgetExtension = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
+  v4 = widgetExtension;
+  if (widgetExtension)
   {
-    v5 = [v3 isLinkedOnOrAfter:1];
+    v5 = [widgetExtension isLinkedOnOrAfter:1];
   }
 
   else
   {
-    v6 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
+    bundleRecord = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
 
-    if (v6)
+    if (bundleRecord)
     {
-      v7 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
-      v8 = [v7 SDKVersion];
+      bundleRecord2 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
+      sDKVersion = [bundleRecord2 SDKVersion];
 
-      v9 = [objc_alloc(MEMORY[0x1E698E638]) initWithString:v8];
+      v9 = [objc_alloc(MEMORY[0x1E698E638]) initWithString:sDKVersion];
       v5 = [v9 majorBuildNumber] == 18;
     }
 
@@ -235,10 +235,10 @@ LABEL_35:
 
 - (BOOL)isAccented
 {
-  v2 = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
-  v3 = [v2 appearanceType];
+  imageAppearance = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
+  appearanceType = [imageAppearance appearanceType];
 
-  return (v3 - 2) < 5;
+  return (appearanceType - 2) < 5;
 }
 
 - (id)appropriateColorFilter
@@ -274,35 +274,35 @@ LABEL_35:
   return appropriateWidgetTintParameters;
 }
 
-- (SBHWidgetIconStyleConfiguration)initWithWidgetExtension:(id)a3 widgetDescriptor:(id)a4 imageAppearance:(id)a5 customDisplayConfiguration:(id)a6 boostsWhitePoint:(BOOL)a7 backdropGroupName:(id)a8
+- (SBHWidgetIconStyleConfiguration)initWithWidgetExtension:(id)extension widgetDescriptor:(id)descriptor imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)name
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  extensionCopy = extension;
+  descriptorCopy = descriptor;
+  appearanceCopy = appearance;
+  configurationCopy = configuration;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = SBHWidgetIconStyleConfiguration;
   v20 = [(SBHWidgetIconStyleConfiguration *)&v31 init];
   if (v20)
   {
-    v21 = [v17 copy];
+    v21 = [appearanceCopy copy];
     imageAppearance = v20->_imageAppearance;
     v20->_imageAppearance = v21;
 
-    objc_storeStrong(&v20->_widgetDescriptor, a4);
-    objc_storeStrong(&v20->_widgetExtension, a3);
-    v23 = [v15 identity];
-    v24 = [v23 extensionBundleIdentifier];
+    objc_storeStrong(&v20->_widgetDescriptor, descriptor);
+    objc_storeStrong(&v20->_widgetExtension, extension);
+    identity = [extensionCopy identity];
+    extensionBundleIdentifier = [identity extensionBundleIdentifier];
     widgetBundleIdentifier = v20->_widgetBundleIdentifier;
-    v20->_widgetBundleIdentifier = v24;
+    v20->_widgetBundleIdentifier = extensionBundleIdentifier;
 
-    v26 = [v18 copy];
+    v26 = [configurationCopy copy];
     customDisplayConfiguration = v20->_customDisplayConfiguration;
     v20->_customDisplayConfiguration = v26;
 
-    v20->_shouldBoostWhitePoint = a7;
-    v28 = [v19 copy];
+    v20->_shouldBoostWhitePoint = point;
+    v28 = [nameCopy copy];
     backdropGroupName = v20->_backdropGroupName;
     v20->_backdropGroupName = v28;
   }
@@ -310,74 +310,74 @@ LABEL_35:
   return v20;
 }
 
-- (SBHWidgetIconStyleConfiguration)initWithWidgetDataSource:(id)a3 gridSizeClass:(id)a4 widgetViewController:(id)a5 widgetExtensionProvider:(id)a6 imageAppearance:(id)a7 customDisplayConfiguration:(id)a8 boostsWhitePoint:(BOOL)a9 backdropGroupName:(id)a10
+- (SBHWidgetIconStyleConfiguration)initWithWidgetDataSource:(id)source gridSizeClass:(id)class widgetViewController:(id)controller widgetExtensionProvider:(id)provider imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v30 = a5;
-  v31 = a5;
-  v18 = a6;
-  v19 = a10;
-  v20 = a8;
-  v21 = a7;
+  sourceCopy = source;
+  classCopy = class;
+  controllerCopy = controller;
+  controllerCopy2 = controller;
+  providerCopy = provider;
+  nameCopy = name;
+  configurationCopy = configuration;
+  appearanceCopy = appearance;
   v22 = objc_opt_self();
-  LOBYTE(a5) = objc_opt_isKindOfClass();
+  LOBYTE(controller) = objc_opt_isKindOfClass();
 
-  v32 = v17;
-  if (a5)
+  v32 = classCopy;
+  if (controller)
   {
-    v23 = v16;
-    v24 = [v23 chsWidgetWithGridSizeClass:v17 intent:0];
-    v25 = [v18 sbh_extensionForWidget:v24];
-    v26 = [v18 sbh_descriptorForWidgetIdentifiable:v23];
+    v23 = sourceCopy;
+    v24 = [v23 chsWidgetWithGridSizeClass:classCopy intent:0];
+    v25 = [providerCopy sbh_extensionForWidget:v24];
+    v26 = [providerCopy sbh_descriptorForWidgetIdentifiable:v23];
 
-    v27 = [(SBHWidgetIconStyleConfiguration *)self initWithWidgetExtension:v25 widgetDescriptor:v26 imageAppearance:v21 customDisplayConfiguration:v20 boostsWhitePoint:a9 backdropGroupName:v19];
-    v19 = v21;
-    v20 = v26;
-    v21 = v25;
+    v27 = [(SBHWidgetIconStyleConfiguration *)self initWithWidgetExtension:v25 widgetDescriptor:v26 imageAppearance:appearanceCopy customDisplayConfiguration:configurationCopy boostsWhitePoint:point backdropGroupName:nameCopy];
+    nameCopy = appearanceCopy;
+    configurationCopy = v26;
+    appearanceCopy = v25;
   }
 
   else
   {
-    v24 = SBHContainerBundleIdentifierForDataSource(v16);
-    v27 = [(SBHWidgetIconStyleConfiguration *)self initWithContainingApplicationBundleIdentifier:v24 imageAppearance:v21 customDisplayConfiguration:v20 boostsWhitePoint:a9 backdropGroupName:v19];
+    v24 = SBHContainerBundleIdentifierForDataSource(sourceCopy);
+    v27 = [(SBHWidgetIconStyleConfiguration *)self initWithContainingApplicationBundleIdentifier:v24 imageAppearance:appearanceCopy customDisplayConfiguration:configurationCopy boostsWhitePoint:point backdropGroupName:nameCopy];
   }
 
   if (v27)
   {
-    objc_storeStrong(&v27->_widgetDataSource, a3);
-    objc_storeStrong(&v27->_widgetViewController, v30);
-    objc_storeWeak(&v27->_widgetExtensionProvider, v18);
+    objc_storeStrong(&v27->_widgetDataSource, source);
+    objc_storeStrong(&v27->_widgetViewController, controllerCopy);
+    objc_storeWeak(&v27->_widgetExtensionProvider, providerCopy);
   }
 
   return v27;
 }
 
-- (SBHWidgetIconStyleConfiguration)initWithContainingApplicationBundleIdentifier:(id)a3 imageAppearance:(id)a4 customDisplayConfiguration:(id)a5 boostsWhitePoint:(BOOL)a6 backdropGroupName:(id)a7
+- (SBHWidgetIconStyleConfiguration)initWithContainingApplicationBundleIdentifier:(id)identifier imageAppearance:(id)appearance customDisplayConfiguration:(id)configuration boostsWhitePoint:(BOOL)point backdropGroupName:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  appearanceCopy = appearance;
+  configurationCopy = configuration;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = SBHWidgetIconStyleConfiguration;
   v16 = [(SBHWidgetIconStyleConfiguration *)&v26 init];
   if (v16)
   {
-    v17 = [v13 copy];
+    v17 = [appearanceCopy copy];
     imageAppearance = v16->_imageAppearance;
     v16->_imageAppearance = v17;
 
-    v19 = [v12 copy];
+    v19 = [identifierCopy copy];
     containingApplicationBundleIdentifier = v16->_containingApplicationBundleIdentifier;
     v16->_containingApplicationBundleIdentifier = v19;
 
-    v21 = [v14 copy];
+    v21 = [configurationCopy copy];
     customDisplayConfiguration = v16->_customDisplayConfiguration;
     v16->_customDisplayConfiguration = v21;
 
-    v16->_shouldBoostWhitePoint = a6;
-    v23 = [v15 copy];
+    v16->_shouldBoostWhitePoint = point;
+    v23 = [nameCopy copy];
     backdropGroupName = v16->_backdropGroupName;
     v16->_backdropGroupName = v23;
   }
@@ -385,10 +385,10 @@ LABEL_35:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -396,25 +396,25 @@ LABEL_35:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHWidgetIconStyleConfiguration *)self isEqualToWidgetIconStyleConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBHWidgetIconStyleConfiguration *)self isEqualToWidgetIconStyleConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToWidgetIconStyleConfiguration:(id)a3
+- (BOOL)isEqualToWidgetIconStyleConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy == self)
   {
     v41 = 1;
   }
 
   else
   {
-    v6 = [(SBHWidgetIconStyleConfiguration *)v4 containingApplicationBundleIdentifier];
-    v7 = [(SBHWidgetIconStyleConfiguration *)self containingApplicationBundleIdentifier];
+    containingApplicationBundleIdentifier = [(SBHWidgetIconStyleConfiguration *)configurationCopy containingApplicationBundleIdentifier];
+    containingApplicationBundleIdentifier2 = [(SBHWidgetIconStyleConfiguration *)self containingApplicationBundleIdentifier];
     v8 = BSEqualStrings();
 
     if (v8
@@ -492,14 +492,14 @@ LABEL_35:
   v17 = [v3 appendObject:self->_customDisplayConfiguration withName:@"_customDisplayConfiguration" skipIfNil:1];
   v18 = [v3 appendBool:-[SBHWidgetIconStyleConfiguration _isCrystalLinked](self withName:{"_isCrystalLinked"), @"isCrystalLinked"}];
   v19 = [v3 appendBool:-[SBHWidgetIconStyleConfiguration _isDawnLinked](self withName:{"_isDawnLinked"), @"isDawnLinked"}];
-  v20 = [v3 build];
+  build = [v3 build];
 
-  return v20;
+  return build;
 }
 
-+ (id)renderSchemeForFactors:(SBHWidgetRenderSchemeFactors)a3
++ (id)renderSchemeForFactors:(SBHWidgetRenderSchemeFactors)factors
 {
-  v3 = *&a3.var0;
+  v3 = *&factors.var0;
   v4 = objc_opt_new();
   v5 = v4;
   if (v3)
@@ -548,26 +548,26 @@ LABEL_35:
   return v5;
 }
 
-+ (id)tintedRenderSchemeForWidgetDescriptor:(id)a3 family:(int64_t)a4 widgetExtensionProvider:(id)a5
++ (id)tintedRenderSchemeForWidgetDescriptor:(id)descriptor family:(int64_t)family widgetExtensionProvider:(id)provider
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 supportsAccentedContent];
-  v10 = [v7 sbh_extensionForWidgetIdentifiable:v8];
+  providerCopy = provider;
+  descriptorCopy = descriptor;
+  supportsAccentedContent = [descriptorCopy supportsAccentedContent];
+  v10 = [providerCopy sbh_extensionForWidgetIdentifiable:descriptorCopy];
 
   v11 = [v10 isLinkedOnOrAfter:1];
   v12 = [v10 isLinkedOnOrAfter:1];
-  v13 = [v8 isBackgroundRemovable];
-  LODWORD(a4) = [v8 wantsMaterialBackgroundForFamily:a4];
+  isBackgroundRemovable = [descriptorCopy isBackgroundRemovable];
+  LODWORD(family) = [descriptorCopy wantsMaterialBackgroundForFamily:family];
 
   v14 = 0x10000000000;
-  if (!a4)
+  if (!family)
   {
     v14 = 0;
   }
 
   v15 = 0x100000000;
-  if (!v13)
+  if (!isBackgroundRemovable)
   {
     v15 = 0;
   }
@@ -585,7 +585,7 @@ LABEL_35:
   }
 
   v18 = 257;
-  if (!v9)
+  if (!supportsAccentedContent)
   {
     v18 = 1;
   }
@@ -595,30 +595,30 @@ LABEL_35:
   return v19;
 }
 
-- (void)_generateTintParametersForWidgetDescriptor:(id)a3
+- (void)_generateTintParametersForWidgetDescriptor:(id)descriptor
 {
   appropriateWidgetTintParameters = self->_appropriateWidgetTintParameters;
   self->_appropriateWidgetTintParameters = 0;
-  v5 = a3;
+  descriptorCopy = descriptor;
 
-  v26 = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
-  v6 = [v26 tintColor];
-  v7 = [(SBHWidgetIconStyleConfiguration *)self _isCrystalLinked];
-  v8 = [(SBHWidgetIconStyleConfiguration *)self isAccented];
-  v9 = [v5 supportsAccentedContent];
+  imageAppearance = [(SBHWidgetIconStyleConfiguration *)self imageAppearance];
+  tintColor = [imageAppearance tintColor];
+  _isCrystalLinked = [(SBHWidgetIconStyleConfiguration *)self _isCrystalLinked];
+  isAccented = [(SBHWidgetIconStyleConfiguration *)self isAccented];
+  supportsAccentedContent = [descriptorCopy supportsAccentedContent];
 
-  v10 = [v6 BSColor];
+  bSColor = [tintColor BSColor];
   v11 = 0;
-  if (v8)
+  if (isAccented)
   {
-    if (v7 & v9)
+    if (_isCrystalLinked & supportsAccentedContent)
     {
       v12 = objc_alloc_init(MEMORY[0x1E6994328]);
-      v13 = [MEMORY[0x1E69DC888] whiteColor];
-      v14 = [v13 BSColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      bSColor2 = [whiteColor BSColor];
 
-      [v12 setPrimaryTintColor:v10];
-      [v12 setSecondaryTintColor:v14];
+      [v12 setPrimaryTintColor:bSColor];
+      [v12 setSecondaryTintColor:bSColor2];
       [v12 setFilterStyle:0];
       [v12 setFraction:1.0];
 
@@ -631,25 +631,25 @@ LABEL_35:
 
     else
     {
-      v11 = [objc_opt_class() _buildColorMatrixFilterForColor:v6];
+      v11 = [objc_opt_class() _buildColorMatrixFilterForColor:tintColor];
     }
   }
 
   v12 = objc_alloc_init(MEMORY[0x1E6994328]);
 LABEL_7:
-  v15 = [v26 appearanceType];
-  if (v15 > 3)
+  appearanceType = [imageAppearance appearanceType];
+  if (appearanceType > 3)
   {
-    if (v15 != 4)
+    if (appearanceType != 4)
     {
-      if (v15 == 5)
+      if (appearanceType == 5)
       {
         v18 = v12;
         v19 = 6;
         goto LABEL_20;
       }
 
-      if (v15 != 6)
+      if (appearanceType != 6)
       {
         goto LABEL_22;
       }
@@ -659,25 +659,25 @@ LABEL_7:
     v19 = 5;
 LABEL_20:
     [v18 setFilterStyle:v19];
-    [v12 setPrimaryTintColor:v10];
+    [v12 setPrimaryTintColor:bSColor];
     goto LABEL_21;
   }
 
-  if (v15 < 2)
+  if (appearanceType < 2)
   {
     v16 = v12;
     v17 = 7;
     goto LABEL_18;
   }
 
-  if (v15 == 2)
+  if (appearanceType == 2)
   {
     v16 = v12;
     v17 = 3;
     goto LABEL_18;
   }
 
-  if (v15 == 3)
+  if (appearanceType == 3)
   {
     v16 = v12;
     v17 = 4;
@@ -695,13 +695,13 @@ LABEL_22:
     [v20 setWantsHighlightsDisplayAngle:0];
   }
 
-  if (v8 && [(SBHWidgetIconStyleConfiguration *)self shouldBoostWhitePoint])
+  if (isAccented && [(SBHWidgetIconStyleConfiguration *)self shouldBoostWhitePoint])
   {
     [v20 setWantsWhitePointBoost:1];
   }
 
-  v21 = [(SBHWidgetIconStyleConfiguration *)self backdropGroupName];
-  [v20 setBackdropGroupName:v21];
+  backdropGroupName = [(SBHWidgetIconStyleConfiguration *)self backdropGroupName];
+  [v20 setBackdropGroupName:backdropGroupName];
 
   [v12 setGlassOptions:v20];
   appropriateColorFilter = self->_appropriateColorFilter;
@@ -713,16 +713,16 @@ LABEL_22:
   self->_appropriateWidgetTintParameters = v24;
 }
 
-+ (id)_buildColorMatrixFilterForColor:(id)a3
++ (id)_buildColorMatrixFilterForColor:(id)color
 {
   v3 = MEMORY[0x1E6979378];
   v4 = *MEMORY[0x1E6979880];
-  v5 = a3;
+  colorCopy = color;
   v6 = [v3 filterWithType:v4];
   v11 = 0;
   v12 = 0;
   v10 = 0;
-  [v5 getRed:&v12 green:&v11 blue:&v10 alpha:0];
+  [colorCopy getRed:&v12 green:&v11 blue:&v10 alpha:0];
 
   CAColorMatrixMakeMultiplyColor();
   memset(v9, 0, sizeof(v9));
@@ -736,23 +736,23 @@ LABEL_22:
 
 - (BOOL)_isDawnLinked
 {
-  v3 = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
-  v4 = v3;
-  if (v3)
+  widgetExtension = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
+  v4 = widgetExtension;
+  if (widgetExtension)
   {
-    v5 = [v3 isLinkedOnOrAfter:0];
+    v5 = [widgetExtension isLinkedOnOrAfter:0];
   }
 
   else
   {
-    v6 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
+    bundleRecord = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
 
-    if (v6)
+    if (bundleRecord)
     {
-      v7 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
-      v8 = [v7 SDKVersion];
+      bundleRecord2 = [(SBHWidgetIconStyleConfiguration *)self bundleRecord];
+      sDKVersion = [bundleRecord2 SDKVersion];
 
-      v9 = [objc_alloc(MEMORY[0x1E698E638]) initWithString:v8];
+      v9 = [objc_alloc(MEMORY[0x1E698E638]) initWithString:sDKVersion];
       v5 = [v9 majorBuildNumber] == 17;
     }
 
@@ -770,20 +770,20 @@ LABEL_22:
   bundleRecord = self->_bundleRecord;
   if (!bundleRecord)
   {
-    v4 = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
+    widgetExtension = [(SBHWidgetIconStyleConfiguration *)self widgetExtension];
 
-    if (v4)
+    if (widgetExtension)
     {
       v5 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:self->_widgetBundleIdentifier error:0];
-      v6 = self->_bundleRecord;
+      containingApplicationBundleIdentifier = self->_bundleRecord;
       self->_bundleRecord = v5;
     }
 
     else
     {
       v7 = objc_alloc(MEMORY[0x1E69635F8]);
-      v6 = [(SBHWidgetIconStyleConfiguration *)self containingApplicationBundleIdentifier];
-      v8 = [v7 initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+      containingApplicationBundleIdentifier = [(SBHWidgetIconStyleConfiguration *)self containingApplicationBundleIdentifier];
+      v8 = [v7 initWithBundleIdentifier:containingApplicationBundleIdentifier allowPlaceholder:0 error:0];
       v9 = self->_bundleRecord;
       self->_bundleRecord = v8;
     }

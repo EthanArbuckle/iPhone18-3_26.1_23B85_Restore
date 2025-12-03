@@ -42,10 +42,10 @@
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      v16 = [(CIImage *)self->inputPersonAlpha imageByClampingToExtent];
+      imageByClampingToExtent = [(CIImage *)self->inputPersonAlpha imageByClampingToExtent];
       v174 = @"inputWeights";
       v175 = v7;
-      v17 = -[CIImage imageByCroppingToRect:](-[CIImage imageByApplyingFilter:withInputParameters:](v16, "imageByApplyingFilter:withInputParameters:", @"CIConvolution3X3", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v175 forKeys:&v174 count:1]), "imageByCroppingToRect:", v9, v11, v13, v15);
+      v17 = -[CIImage imageByCroppingToRect:](-[CIImage imageByApplyingFilter:withInputParameters:](imageByClampingToExtent, "imageByApplyingFilter:withInputParameters:", @"CIConvolution3X3", [MEMORY[0x1E695DF20] dictionaryWithObjects:&v175 forKeys:&v174 count:1]), "imageByCroppingToRect:", v9, v11, v13, v15);
     }
 
     else
@@ -207,9 +207,9 @@
     v64 = v63;
     [(NSNumber *)self->inputEyeProtectionFaceWeightsSmoothStepMax floatValue];
     v66 = v65;
-    v67 = [(NSNumber *)self->inputEyeProtectionMaxFaces intValue];
+    intValue = [(NSNumber *)self->inputEyeProtectionMaxFaces intValue];
     [(NSNumber *)self->inputEyeProtectionSubtractiveMaxBlur floatValue];
-    v69 = [CIVector vectorWithX:v64 Y:v66 Z:v67 W:v68];
+    v69 = [CIVector vectorWithX:v64 Y:v66 Z:intValue W:v68];
     v70 = addPoints(self->inputLeftEyeX, self->inputLeftEyeY, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
     v74 = addPoints(self->inputRightEyeX, self->inputRightEyeY, v70, v71, v72, v73);
     v181.origin.x = addPoints(self->inputFaceMidPointX, self->inputFaceMidPointY, v74, v75, v76, v77);
@@ -252,7 +252,7 @@
       [CIModifyBlurmap outputImage];
     }
 
-    v150 = [v90 _imageByRenderingToIntermediate];
+    _imageByRenderingToIntermediate = [v90 _imageByRenderingToIntermediate];
     [(NSNumber *)self->inputSmoothstepMin floatValue];
     v92 = v91;
     [(NSNumber *)self->inputSmoothstepMax floatValue];
@@ -299,7 +299,7 @@
     v161[1] = MEMORY[0x1E695E118];
     v125 = [v115 applyWithExtent:v114 arguments:objc_msgSend(*(v54 + 3872) options:{"dictionaryWithObjects:forKeys:count:", v161, v160, 2), v117, v119, v121, v123}];
     v159[0] = self->inputImage;
-    v159[1] = v150;
+    v159[1] = _imageByRenderingToIntermediate;
     v126 = v6;
     if (v148)
     {
@@ -312,7 +312,7 @@
     v159[5] = v146;
     v159[6] = v112;
     v127 = [MEMORY[0x1E695DEC8] arrayWithObjects:v159 count:7];
-    [v150 extent];
+    [_imageByRenderingToIntermediate extent];
     v129 = v128;
     v131 = v130;
     v133 = v132;

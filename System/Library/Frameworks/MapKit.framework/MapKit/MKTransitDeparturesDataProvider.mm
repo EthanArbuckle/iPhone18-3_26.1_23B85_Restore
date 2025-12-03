@@ -2,58 +2,58 @@
 - (BOOL)_hasConnectionsSection;
 - (BOOL)_hasIncidentsSection;
 - (BOOL)_hasPlaceCardMessageSection;
-- (BOOL)_isSectionTypeEnabled:(int64_t)a3;
-- (BOOL)_systemHasInactiveLines:(id)a3;
-- (BOOL)isHidingDeparturesForSystem:(id)a3;
-- (BOOL)isLastSectionForSystem:(id)a3;
+- (BOOL)_isSectionTypeEnabled:(int64_t)enabled;
+- (BOOL)_systemHasInactiveLines:(id)lines;
+- (BOOL)isHidingDeparturesForSystem:(id)system;
+- (BOOL)isLastSectionForSystem:(id)system;
 - (BOOL)isStuckWithExpiredInfo;
 - (GEOAttribution)transitPunchoutAttribution;
 - (GEOMapItemTransitInfo)transitInfo;
-- (MKTransitDeparturesDataProvider)initWithMapItem:(id)a3;
+- (MKTransitDeparturesDataProvider)initWithMapItem:(id)item;
 - (MKTransitDeparturesDataProviderDelegate)delegate;
 - (NSArray)connections;
 - (NSDate)departureCutoffDate;
 - (NSSet)disabledSections;
-- (id)_controllerForSection:(int64_t)a3;
-- (id)_departureCutoffDateForLine:(id)a3;
-- (id)_departureCutoffDateForSequence:(id)a3;
-- (id)_departureSequencesForSection:(int64_t)a3;
-- (id)_directionsForSystem:(id)a3 hasSequencesWithNoDirection:(BOOL *)a4;
-- (id)_identifierForSection:(int64_t)a3;
-- (id)_identifierForSequence:(id)a3;
-- (id)_identifierForSystem:(id)a3;
-- (id)_inactiveLinesControllerForSection:(int64_t)a3;
-- (id)_inactiveLinesForSystem:(id)a3;
-- (id)_indexSetForHidingShowingSystem:(id)a3;
-- (id)_systemForSection:(int64_t)a3 directionIndex:(int64_t *)a4;
-- (id)departuresControllerForSection:(int64_t)a3;
-- (id)departuresSectionControllersForSystem:(id)a3;
-- (id)directionForSection:(int64_t)a3;
-- (id)dominantIncidentForDepartureSequence:(id)a3;
-- (id)inactiveLinesForSection:(int64_t)a3;
-- (id)inactiveLinesSectionControllersForSystem:(id)a3;
-- (id)incidentsForSystemIncidentsSection:(id)a3;
+- (id)_controllerForSection:(int64_t)section;
+- (id)_departureCutoffDateForLine:(id)line;
+- (id)_departureCutoffDateForSequence:(id)sequence;
+- (id)_departureSequencesForSection:(int64_t)section;
+- (id)_directionsForSystem:(id)system hasSequencesWithNoDirection:(BOOL *)direction;
+- (id)_identifierForSection:(int64_t)section;
+- (id)_identifierForSequence:(id)sequence;
+- (id)_identifierForSystem:(id)system;
+- (id)_inactiveLinesControllerForSection:(int64_t)section;
+- (id)_inactiveLinesForSystem:(id)system;
+- (id)_indexSetForHidingShowingSystem:(id)system;
+- (id)_systemForSection:(int64_t)section directionIndex:(int64_t *)index;
+- (id)departuresControllerForSection:(int64_t)section;
+- (id)departuresSectionControllersForSystem:(id)system;
+- (id)directionForSection:(int64_t)section;
+- (id)dominantIncidentForDepartureSequence:(id)sequence;
+- (id)inactiveLinesForSection:(int64_t)section;
+- (id)inactiveLinesSectionControllersForSystem:(id)system;
+- (id)incidentsForSystemIncidentsSection:(id)section;
 - (id)possibleActions;
-- (id)ticketForTransitMapItemUpdater:(id)a3;
-- (int64_t)_numberOfDeparturesSectionsForSystem:(id)a3;
-- (int64_t)_sectionForIdentifier:(id)a3;
-- (int64_t)departureSequenceFrequencyTypeForSection:(int64_t)a3;
-- (int64_t)indexOfFirstSectionWithType:(int64_t)a3;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
-- (int64_t)sectionTypeAtIndex:(int64_t)a3;
+- (id)ticketForTransitMapItemUpdater:(id)updater;
+- (int64_t)_numberOfDeparturesSectionsForSystem:(id)system;
+- (int64_t)_sectionForIdentifier:(id)identifier;
+- (int64_t)departureSequenceFrequencyTypeForSection:(int64_t)section;
+- (int64_t)indexOfFirstSectionWithType:(int64_t)type;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
+- (int64_t)sectionTypeAtIndex:(int64_t)index;
 - (void)_updateRefreshFailureErrorDescription;
-- (void)hideDeparturesForSystem:(id)a3 removedIndices:(id *)a4;
+- (void)hideDeparturesForSystem:(id)system removedIndices:(id *)indices;
 - (void)refreshSections;
 - (void)refreshStationSystems;
 - (void)reloadData;
-- (void)setActive:(BOOL)a3;
-- (void)setDepartureCutoffDate:(id)a3;
-- (void)setSelectedSystem:(id)a3;
-- (void)setSupportSystemSectionCollapsing:(BOOL)a3;
-- (void)showDeparturesForSystem:(id)a3 insertedIndices:(id *)a4;
-- (void)showNextPageInSection:(int64_t)a3;
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4;
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5;
+- (void)setActive:(BOOL)active;
+- (void)setDepartureCutoffDate:(id)date;
+- (void)setSelectedSystem:(id)system;
+- (void)setSupportSystemSectionCollapsing:(BOOL)collapsing;
+- (void)showDeparturesForSystem:(id)system insertedIndices:(id *)indices;
+- (void)showNextPageInSection:(int64_t)section;
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date;
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error;
 @end
 
 @implementation MKTransitDeparturesDataProvider
@@ -67,15 +67,15 @@
 
 - (GEOAttribution)transitPunchoutAttribution
 {
-  v2 = [MEMORY[0x1E69A2478] modernManager];
-  v3 = [v2 activeTileGroup];
-  v4 = [v3 attributions];
-  v5 = [v4 firstObject];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
+  attributions = [activeTileGroup attributions];
+  firstObject = [attributions firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)inactiveLinesSectionControllersForSystem:(id)a3
+- (id)inactiveLinesSectionControllersForSystem:(id)system
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(NSMutableArray *)self->_sections count])
@@ -101,7 +101,7 @@
   return v8;
 }
 
-- (id)departuresSectionControllersForSystem:(id)a3
+- (id)departuresSectionControllersForSystem:(id)system
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(NSMutableArray *)self->_sections count])
@@ -129,31 +129,31 @@
 
 - (NSArray)connections
 {
-  v2 = [(MKMapItem *)self->_mapItem _transitInfo];
-  v3 = [v2 connections];
+  _transitInfo = [(MKMapItem *)self->_mapItem _transitInfo];
+  connections = [_transitInfo connections];
 
-  return v3;
+  return connections;
 }
 
 - (id)possibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(MKTransitDeparturesDataProvider *)self _hasIncidentsSection])
   {
-    [v3 addObject:&unk_1F1611818];
+    [array addObject:&unk_1F1611818];
   }
 
-  v4 = [v3 copy];
+  v4 = [array copy];
 
   return v4;
 }
 
-- (void)transitMapItemUpdater:(id)a3 updatedMapItem:(id)a4 error:(id)a5
+- (void)transitMapItemUpdater:(id)updater updatedMapItem:(id)item error:(id)error
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  updaterCopy = updater;
+  itemCopy = item;
+  errorCopy = error;
+  if (itemCopy)
   {
     [(MKTransitItemIncidentsController *)self->_incidentsController resetCache];
     [(NSMapTable *)self->_cachedDirectionsForSystem removeAllObjects];
@@ -170,29 +170,29 @@
   }
 }
 
-- (id)ticketForTransitMapItemUpdater:(id)a3
+- (id)ticketForTransitMapItemUpdater:(id)updater
 {
-  v4 = [(MKTransitDeparturesDataProvider *)self delegate];
-  v5 = [v4 traitsForTransitDeparturesDataProvider:self];
+  delegate = [(MKTransitDeparturesDataProvider *)self delegate];
+  v5 = [delegate traitsForTransitDeparturesDataProvider:self];
 
-  v6 = [(MKMapItem *)self->_mapItem _identifier];
+  _identifier = [(MKMapItem *)self->_mapItem _identifier];
   v7 = +[MKMapService sharedService];
-  v8 = [v7 ticketForFreshIdentifier:v6 resultProviderID:0 contentProvider:0 traits:v5];
+  v8 = [v7 ticketForFreshIdentifier:_identifier resultProviderID:0 contentProvider:0 traits:v5];
 
   return v8;
 }
 
-- (void)transitItemReferenceDateUpdater:(id)a3 didUpdateToReferenceDate:(id)a4
+- (void)transitItemReferenceDateUpdater:(id)updater didUpdateToReferenceDate:(id)date
 {
-  v7 = a4;
+  dateCopy = date;
   if ([(MKTransitDeparturesDataProvider *)self isStuckWithExpiredInfo])
   {
-    v5 = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
+    lastCutoffDateWithValidSchedule = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
 
-    if (!v5)
+    if (!lastCutoffDateWithValidSchedule)
     {
-      v6 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
-      [(MKTransitDeparturesDataProvider *)self setLastCutoffDateWithValidSchedule:v6];
+      departureCutoffDate = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
+      [(MKTransitDeparturesDataProvider *)self setLastCutoffDateWithValidSchedule:departureCutoffDate];
     }
   }
 
@@ -201,7 +201,7 @@
     [(MKTransitDeparturesDataProvider *)self setLastCutoffDateWithValidSchedule:0];
   }
 
-  [(MKTransitDeparturesDataProvider *)self setDepartureCutoffDate:v7];
+  [(MKTransitDeparturesDataProvider *)self setDepartureCutoffDate:dateCopy];
   [(MKTransitDeparturesDataProvider *)self reloadData];
 }
 
@@ -221,16 +221,16 @@
   return departureCutoffDate;
 }
 
-- (void)setDepartureCutoffDate:(id)a3
+- (void)setDepartureCutoffDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_departureCutoffDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_departureCutoffDate, a3);
+    objc_storeStrong(&self->_departureCutoffDate, date);
     [(NSMutableDictionary *)self->_cachedSequencesForSection removeAllObjects];
     [(NSMapTable *)self->_cachedDirectionsForSystem removeAllObjects];
     [(NSMapTable *)self->_cachedSystemHasInactiveLines removeAllObjects];
-    [(MKTransitItemIncidentsController *)self->_incidentsController setReferenceDate:v5];
+    [(MKTransitItemIncidentsController *)self->_incidentsController setReferenceDate:dateCopy];
   }
 }
 
@@ -349,14 +349,14 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v5 = [v4 _transitInfo];
-  if (v5)
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
+  if (_transitInfo)
   {
-    v6 = [(MKTransitDeparturesDataProvider *)self mapItem];
-    v7 = [v6 _transitInfo];
-    v8 = [v7 systems];
-    v3 = [v8 count] == 0;
+    mapItem2 = [(MKTransitDeparturesDataProvider *)self mapItem];
+    _transitInfo2 = [mapItem2 _transitInfo];
+    systems = [_transitInfo2 systems];
+    v3 = [systems count] == 0;
   }
 
   else
@@ -369,31 +369,31 @@ LABEL_11:
 
 - (BOOL)_hasConnectionsSection
 {
-  v2 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v3 = [v2 _transitInfo];
-  v4 = [v3 connections];
-  v5 = [v4 count] != 0;
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
+  connections = [_transitInfo connections];
+  v5 = [connections count] != 0;
 
   return v5;
 }
 
-- (id)_inactiveLinesForSystem:(id)a3
+- (id)_inactiveLinesForSystem:(id)system
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
-  v6 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v7 = [v6 _transitInfo];
+  systemCopy = system;
+  _blockedIncidentEntities = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __59__MKTransitDeparturesDataProvider__inactiveLinesForSystem___block_invoke;
   v27[3] = &unk_1E76CA190;
   v27[4] = self;
-  v8 = [v7 inactiveLinesForSystem:v4 relativeToDateFromBlock:v27 excludingIncidentEntities:v5 usingContainers:1];
+  v8 = [_transitInfo inactiveLinesForSystem:systemCopy relativeToDateFromBlock:v27 excludingIncidentEntities:_blockedIncidentEntities usingContainers:1];
 
   if ([v8 count])
   {
-    v20 = v4;
+    v20 = systemCopy;
     v21 = [v8 mutableCopy];
     v23 = 0u;
     v24 = 0u;
@@ -415,16 +415,16 @@ LABEL_11:
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
-          v14 = [(MKTransitDeparturesDataProvider *)self mapItem];
-          v15 = [v14 _transitInfo];
+          mapItem2 = [(MKTransitDeparturesDataProvider *)self mapItem];
+          _transitInfo2 = [mapItem2 _transitInfo];
           v16 = [(MKTransitDeparturesDataProvider *)self _departureCutoffDateForLine:v13];
-          v17 = [v15 serviceResumesResultForLine:v13 excludingIncidentEntities:v5 afterDate:v16 usingContainers:1];
+          v17 = [_transitInfo2 serviceResumesResultForLine:v13 excludingIncidentEntities:_blockedIncidentEntities afterDate:v16 usingContainers:1];
 
           if (([v17 blocked] & 1) == 0)
           {
-            v18 = [v17 earliestNextDepartureDate];
+            earliestNextDepartureDate = [v17 earliestNextDepartureDate];
 
-            if (!v18)
+            if (!earliestNextDepartureDate)
             {
               [v21 removeObject:v13];
             }
@@ -438,33 +438,33 @@ LABEL_11:
     }
 
     v8 = [v21 copy];
-    v4 = v20;
+    systemCopy = v20;
   }
 
   return v8;
 }
 
-- (BOOL)_systemHasInactiveLines:(id)a3
+- (BOOL)_systemHasInactiveLines:(id)lines
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_cachedSystemHasInactiveLines objectForKey:v4];
+  linesCopy = lines;
+  v5 = [(NSMapTable *)self->_cachedSystemHasInactiveLines objectForKey:linesCopy];
   if (!v5)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(MKTransitDeparturesDataProvider *)self _inactiveLinesForSystem:v4];
+    v7 = [(MKTransitDeparturesDataProvider *)self _inactiveLinesForSystem:linesCopy];
     v5 = [v6 numberWithBool:{objc_msgSend(v7, "count") != 0}];
 
-    [(NSMapTable *)self->_cachedSystemHasInactiveLines setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_cachedSystemHasInactiveLines setObject:v5 forKey:linesCopy];
   }
 
-  v8 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-- (id)_inactiveLinesControllerForSection:(int64_t)a3
+- (id)_inactiveLinesControllerForSection:(int64_t)section
 {
-  v3 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:a3];
+  v3 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:section];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -481,70 +481,70 @@ LABEL_11:
   return v4;
 }
 
-- (id)inactiveLinesForSection:(int64_t)a3
+- (id)inactiveLinesForSection:(int64_t)section
 {
-  v3 = [(MKTransitDeparturesDataProvider *)self _inactiveLinesControllerForSection:a3];
-  v4 = [v3 inactiveLines];
+  v3 = [(MKTransitDeparturesDataProvider *)self _inactiveLinesControllerForSection:section];
+  inactiveLines = [v3 inactiveLines];
 
-  return v4;
+  return inactiveLines;
 }
 
-- (int64_t)_numberOfDeparturesSectionsForSystem:(id)a3
+- (int64_t)_numberOfDeparturesSectionsForSystem:(id)system
 {
   v6 = 0;
-  v3 = [(MKTransitDeparturesDataProvider *)self _directionsForSystem:a3 hasSequencesWithNoDirection:&v6];
+  v3 = [(MKTransitDeparturesDataProvider *)self _directionsForSystem:system hasSequencesWithNoDirection:&v6];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (id)_departureCutoffDateForSequence:(id)a3
+- (id)_departureCutoffDateForSequence:(id)sequence
 {
-  v4 = [a3 line];
-  v5 = [(MKTransitDeparturesDataProvider *)self _departureCutoffDateForLine:v4];
+  line = [sequence line];
+  v5 = [(MKTransitDeparturesDataProvider *)self _departureCutoffDateForLine:line];
 
   return v5;
 }
 
-- (id)_departureCutoffDateForLine:(id)a3
+- (id)_departureCutoffDateForLine:(id)line
 {
-  if (([a3 departuresAreVehicleSpecific] & 1) != 0 || !-[MKTransitDeparturesDataProvider isStuckWithExpiredInfo](self, "isStuckWithExpiredInfo"))
+  if (([line departuresAreVehicleSpecific] & 1) != 0 || !-[MKTransitDeparturesDataProvider isStuckWithExpiredInfo](self, "isStuckWithExpiredInfo"))
   {
-    v7 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
+    departureCutoffDate = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
   }
 
   else
   {
-    v4 = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
-    v5 = v4;
-    if (v4)
+    lastCutoffDateWithValidSchedule = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
+    v5 = lastCutoffDateWithValidSchedule;
+    if (lastCutoffDateWithValidSchedule)
     {
-      v6 = v4;
+      departureCutoffDate2 = lastCutoffDateWithValidSchedule;
     }
 
     else
     {
-      v6 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
+      departureCutoffDate2 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
     }
 
-    v7 = v6;
+    departureCutoffDate = departureCutoffDate2;
   }
 
-  return v7;
+  return departureCutoffDate;
 }
 
-- (id)_departureSequencesForSection:(int64_t)a3
+- (id)_departureSequencesForSection:(int64_t)section
 {
-  v3 = [(MKTransitDeparturesDataProvider *)self departuresControllerForSection:a3];
-  v4 = [v3 sequences];
+  v3 = [(MKTransitDeparturesDataProvider *)self departuresControllerForSection:section];
+  sequences = [v3 sequences];
 
-  return v4;
+  return sequences;
 }
 
-- (int64_t)departureSequenceFrequencyTypeForSection:(int64_t)a3
+- (int64_t)departureSequenceFrequencyTypeForSection:(int64_t)section
 {
   v20 = *MEMORY[0x1E69E9840];
-  if ([(MKTransitDeparturesDataProvider *)self numberOfSections]<= a3 || [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:a3]!= 4)
+  if ([(MKTransitDeparturesDataProvider *)self numberOfSections]<= section || [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:section]!= 4)
   {
     return 0;
   }
@@ -553,7 +553,7 @@ LABEL_11:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(MKTransitDeparturesDataProvider *)self _departureSequencesForSection:a3, 0];
+  v5 = [(MKTransitDeparturesDataProvider *)self _departureSequencesForSection:section, 0];
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v6)
   {
@@ -611,9 +611,9 @@ LABEL_11:
   return v13;
 }
 
-- (id)departuresControllerForSection:(int64_t)a3
+- (id)departuresControllerForSection:(int64_t)section
 {
-  v3 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:a3];
+  v3 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:section];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -630,23 +630,23 @@ LABEL_11:
   return v4;
 }
 
-- (id)_identifierForSequence:(id)a3
+- (id)_identifierForSequence:(id)sequence
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 line];
-  v6 = [v5 name];
-  v7 = [v4 line];
-  v8 = [v7 muid];
-  v9 = [v4 direction];
-  v10 = [v4 headsign];
+  sequenceCopy = sequence;
+  line = [sequenceCopy line];
+  name = [line name];
+  line2 = [sequenceCopy line];
+  muid = [line2 muid];
+  direction = [sequenceCopy direction];
+  headsign = [sequenceCopy headsign];
 
-  v11 = [v3 stringWithFormat:@"_mk_sequence_%@-%llu-%@-%@", v6, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"_mk_sequence_%@-%llu-%@-%@", name, muid, direction, headsign];
 
   return v11;
 }
 
-- (id)_controllerForSection:(int64_t)a3
+- (id)_controllerForSection:(int64_t)section
 {
   v5 = [(MKTransitDeparturesDataProvider *)self _identifierForSection:?];
   v6 = [(NSMutableDictionary *)self->_sectionControllers objectForKeyedSubscript:v5];
@@ -655,16 +655,16 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:a3];
+  v7 = [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:section];
   if (v7 == 7)
   {
     v12 = [MKTransitInactiveLinesSectionController alloc];
-    v9 = [(MKTransitDeparturesDataProvider *)self mapItem];
-    v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+    mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+    v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
     lineLookupBySection = self->_lineLookupBySection;
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v14 = [(NSDictionary *)lineLookupBySection objectForKeyedSubscript:v11];
-    v6 = [(MKTransitInactiveLinesSectionController *)v12 initWithMapItem:v9 system:v10 line:v14];
+    v6 = [(MKTransitInactiveLinesSectionController *)v12 initWithMapItem:mapItem system:v10 line:v14];
   }
 
   else
@@ -676,10 +676,10 @@ LABEL_11:
     }
 
     v8 = [MKTransitDeparturesSectionController alloc];
-    v9 = [(MKTransitDeparturesDataProvider *)self mapItem];
-    v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
-    v11 = [(MKTransitDeparturesDataProvider *)self directionForSection:a3];
-    v6 = [(MKTransitDeparturesSectionController *)v8 initWithMapItem:v9 system:v10 departureSequenceContainer:v11];
+    mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+    v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
+    v11 = [(MKTransitDeparturesDataProvider *)self directionForSection:section];
+    v6 = [(MKTransitDeparturesSectionController *)v8 initWithMapItem:mapItem system:v10 departureSequenceContainer:v11];
   }
 
 LABEL_8:
@@ -690,13 +690,13 @@ LABEL_8:
 
   [(NSMutableDictionary *)self->_sectionControllers setObject:v6 forKeyedSubscript:v5];
 LABEL_11:
-  v15 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
-  [(MKTransitSectionController *)v6 setDepartureCutoffDate:v15];
+  departureCutoffDate = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
+  [(MKTransitSectionController *)v6 setDepartureCutoffDate:departureCutoffDate];
 
   if ([(MKTransitDeparturesDataProvider *)self isStuckWithExpiredInfo])
   {
-    v16 = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
-    [(MKTransitSectionController *)v6 setExpiredHighFrequencyCutoffDate:v16];
+    lastCutoffDateWithValidSchedule = [(MKTransitDeparturesDataProvider *)self lastCutoffDateWithValidSchedule];
+    [(MKTransitSectionController *)v6 setExpiredHighFrequencyCutoffDate:lastCutoffDateWithValidSchedule];
   }
 
   else
@@ -704,8 +704,8 @@ LABEL_11:
     [(MKTransitSectionController *)v6 setExpiredHighFrequencyCutoffDate:0];
   }
 
-  v17 = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
-  [(MKTransitSectionController *)v6 setIncidentEntitiesToExclude:v17];
+  _blockedIncidentEntities = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
+  [(MKTransitSectionController *)v6 setIncidentEntitiesToExclude:_blockedIncidentEntities];
 
   return v6;
 }
@@ -713,36 +713,36 @@ LABEL_11:
 - (BOOL)isStuckWithExpiredInfo
 {
   mapItemUpdater = self->_mapItemUpdater;
-  v3 = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
-  LOBYTE(mapItemUpdater) = [(MKTransitMapItemUpdater *)mapItemUpdater isStuckWithExpiredInfoRelativeToDate:v3];
+  departureCutoffDate = [(MKTransitDeparturesDataProvider *)self departureCutoffDate];
+  LOBYTE(mapItemUpdater) = [(MKTransitMapItemUpdater *)mapItemUpdater isStuckWithExpiredInfoRelativeToDate:departureCutoffDate];
 
   return mapItemUpdater;
 }
 
 - (BOOL)_hasIncidentsSection
 {
-  v2 = [(MKTransitDeparturesDataProvider *)self incidentsForIncidentsSection];
-  v3 = [v2 count] != 0;
+  incidentsForIncidentsSection = [(MKTransitDeparturesDataProvider *)self incidentsForIncidentsSection];
+  v3 = [incidentsForIncidentsSection count] != 0;
 
   return v3;
 }
 
-- (id)dominantIncidentForDepartureSequence:(id)a3
+- (id)dominantIncidentForDepartureSequence:(id)sequence
 {
-  v3 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForDepartureSequence:a3];
-  v4 = [v3 firstObject];
+  v3 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForDepartureSequence:sequence];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)incidentsForSystemIncidentsSection:(id)a3
+- (id)incidentsForSystemIncidentsSection:(id)section
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   incidentsController = self->_incidentsController;
-  v7 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v8 = [(MKTransitItemIncidentsController *)incidentsController incidentsForMapItem:v7];
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  v8 = [(MKTransitItemIncidentsController *)incidentsController incidentsForMapItem:mapItem];
 
   v40 = 0u;
   v41 = 0u;
@@ -773,9 +773,9 @@ LABEL_11:
     while (v11);
   }
 
-  v15 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForSystem:v4];
-  v31 = v4;
-  v29 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForLinesInSystem:v4];
+  v15 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForSystem:sectionCopy];
+  v31 = sectionCopy;
+  v29 = [(MKTransitItemIncidentsController *)self->_incidentsController incidentsForLinesInSystem:sectionCopy];
   v30 = v15;
   v16 = [v15 arrayByAddingObjectsFromArray:?];
   v34 = 0u;
@@ -810,7 +810,7 @@ LABEL_11:
     while (v18);
   }
 
-  v23 = [(MKTransitItemIncidentsController *)self->_incidentsController validIncidents];
+  validIncidents = [(MKTransitItemIncidentsController *)self->_incidentsController validIncidents];
   v24 = MEMORY[0x1E696AE18];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -819,7 +819,7 @@ LABEL_11:
   v33 = v5;
   v25 = v5;
   v26 = [v24 predicateWithBlock:v32];
-  v27 = [v23 filteredArrayUsingPredicate:v26];
+  v27 = [validIncidents filteredArrayUsingPredicate:v26];
 
   return v27;
 }
@@ -833,22 +833,22 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
   return v4;
 }
 
-- (id)_directionsForSystem:(id)a3 hasSequencesWithNoDirection:(BOOL *)a4
+- (id)_directionsForSystem:(id)system hasSequencesWithNoDirection:(BOOL *)direction
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_cachedDirectionsForSystem objectForKey:v6];
+  systemCopy = system;
+  v7 = [(NSMapTable *)self->_cachedDirectionsForSystem objectForKey:systemCopy];
   if (!v7)
   {
-    v8 = [(MKTransitDeparturesDataProvider *)self mapItem];
-    v9 = [v8 _transitInfo];
-    v10 = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
+    mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+    _transitInfo = [mapItem _transitInfo];
+    _blockedIncidentEntities = [(MKTransitDeparturesDataProvider *)self _blockedIncidentEntities];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __84__MKTransitDeparturesDataProvider__directionsForSystem_hasSequencesWithNoDirection___block_invoke;
     v15[3] = &unk_1E76CA190;
     v15[4] = self;
-    v11 = [v9 departureSequenceContainersForSystem:v6 excludingIncidentEntities:v10 validForDateFromBlock:v15];
+    v11 = [_transitInfo departureSequenceContainersForSystem:systemCopy excludingIncidentEntities:_blockedIncidentEntities validForDateFromBlock:v15];
 
     if (v11)
     {
@@ -859,7 +859,7 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
       v17[1] = v12;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-      [(NSMapTable *)self->_cachedDirectionsForSystem setObject:v7 forKey:v6];
+      [(NSMapTable *)self->_cachedDirectionsForSystem setObject:v7 forKey:systemCopy];
     }
 
     else
@@ -868,9 +868,9 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
     }
   }
 
-  if (a4)
+  if (direction)
   {
-    *a4 = 1;
+    *direction = 1;
   }
 
   v13 = [v7 objectForKeyedSubscript:@"kCachedDirectionsDirectionsKey"];
@@ -878,26 +878,26 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
   return v13;
 }
 
-- (id)_identifierForSystem:(id)a3
+- (id)_identifierForSystem:(id)system
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 muid];
+  systemCopy = system;
+  name = [systemCopy name];
+  muid = [systemCopy muid];
 
-  v7 = [v3 stringWithFormat:@"_mk_%@_%llu_system_section", v5, v6];
+  v7 = [v3 stringWithFormat:@"_mk_%@_%llu_system_section", name, muid];
 
   return v7;
 }
 
-- (id)_systemForSection:(int64_t)a3 directionIndex:(int64_t *)a4
+- (id)_systemForSection:(int64_t)section directionIndex:(int64_t *)index
 {
   v30[1] = *MEMORY[0x1E69E9840];
   v6 = [(NSMutableArray *)self->_sections indexOfObject:&unk_1F16117D0];
   v7 = v6;
-  if (a4)
+  if (index)
   {
-    *a4 = 0x7FFFFFFFFFFFFFFFLL;
+    *index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -917,7 +917,7 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
     if (v9)
     {
       v10 = v9;
-      v22 = a4;
+      indexCopy = index;
       v11 = *v26;
       while (2)
       {
@@ -962,16 +962,16 @@ uint64_t __70__MKTransitDeparturesDataProvider_incidentsForSystemIncidentsSectio
           if (v18)
           {
             v7 = v13 + v18 + 1;
-            if (v7 > a3)
+            if (v7 > section)
             {
-              if (v22)
+              if (indexCopy)
               {
                 if (v15 >= 1)
                 {
-                  v20 = ~(v17 + v13) + a3;
+                  v20 = ~(v17 + v13) + section;
                   if (v20 >= 0)
                   {
-                    *v22 = v20;
+                    *indexCopy = v20;
                   }
                 }
               }
@@ -1008,21 +1008,21 @@ LABEL_31:
   return v8;
 }
 
-- (void)setSelectedSystem:(id)a3
+- (void)setSelectedSystem:(id)system
 {
-  v5 = a3;
-  if (self->_selectedSystem != v5)
+  systemCopy = system;
+  if (self->_selectedSystem != systemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedSystem, a3);
+    v6 = systemCopy;
+    objc_storeStrong(&self->_selectedSystem, system);
     [(MKTransitDeparturesDataProvider *)self refreshSections];
-    v5 = v6;
+    systemCopy = v6;
   }
 }
 
-- (void)showNextPageInSection:(int64_t)a3
+- (void)showNextPageInSection:(int64_t)section
 {
-  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSection:a3];
+  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSection:section];
   if (v4)
   {
     v5 = v4;
@@ -1031,11 +1031,11 @@ LABEL_31:
   }
 }
 
-- (id)directionForSection:(int64_t)a3
+- (id)directionForSection:(int64_t)section
 {
   v10 = 0;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = [(MKTransitDeparturesDataProvider *)self _systemForSection:a3 directionIndex:&v9];
+  v4 = [(MKTransitDeparturesDataProvider *)self _systemForSection:section directionIndex:&v9];
   v5 = [(MKTransitDeparturesDataProvider *)self _directionsForSystem:v4 hasSequencesWithNoDirection:&v10];
   [v5 count];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1075,9 +1075,9 @@ LABEL_3:
   return v6;
 }
 
-- (BOOL)isLastSectionForSystem:(id)a3
+- (BOOL)isLastSectionForSystem:(id)system
 {
-  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:a3];
+  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:system];
   v5 = [(MKTransitDeparturesDataProvider *)self _sectionForIdentifier:v4];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL && ((v6 = v5, v7 = v5 + 1, v5 < 0) || v7 < -[NSMutableArray count](self->_sections, "count")) && ((-[NSMutableArray objectAtIndexedSubscript:](self->_sections, "objectAtIndexedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 integerValue], v8, v9 != 7) ? (v10 = v9 == 4) : (v10 = 1), v10))
   {
@@ -1094,9 +1094,9 @@ LABEL_3:
   return v13;
 }
 
-- (id)_indexSetForHidingShowingSystem:(id)a3
+- (id)_indexSetForHidingShowingSystem:(id)system
 {
-  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:a3];
+  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:system];
   v5 = [(MKTransitDeparturesDataProvider *)self _sectionForIdentifier:v4]+ 1;
   if (v5 >= [(NSMutableArray *)self->_sections count])
   {
@@ -1109,9 +1109,9 @@ LABEL_3:
     do
     {
       v7 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:v5 + v6];
-      v8 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-      if (v8 == 5)
+      if (unsignedIntegerValue == 5)
       {
         break;
       }
@@ -1127,45 +1127,45 @@ LABEL_3:
   return v9;
 }
 
-- (void)showDeparturesForSystem:(id)a3 insertedIndices:(id *)a4
+- (void)showDeparturesForSystem:(id)system insertedIndices:(id *)indices
 {
-  v6 = a3;
-  v9 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:v6];
+  systemCopy = system;
+  v9 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:systemCopy];
   [(NSMutableSet *)self->_hiddenSections removeObject:?];
-  v7 = [(MKTransitDeparturesDataProvider *)self _indexSetForHidingShowingSystem:v6];
+  v7 = [(MKTransitDeparturesDataProvider *)self _indexSetForHidingShowingSystem:systemCopy];
 
-  if (a4)
+  if (indices)
   {
     v8 = v7;
-    *a4 = v7;
+    *indices = v7;
   }
 }
 
-- (void)hideDeparturesForSystem:(id)a3 removedIndices:(id *)a4
+- (void)hideDeparturesForSystem:(id)system removedIndices:(id *)indices
 {
-  v6 = a3;
-  v8 = [(MKTransitDeparturesDataProvider *)self _indexSetForHidingShowingSystem:v6];
-  v7 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:v6];
+  systemCopy = system;
+  v8 = [(MKTransitDeparturesDataProvider *)self _indexSetForHidingShowingSystem:systemCopy];
+  v7 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:systemCopy];
 
   [(NSMutableSet *)self->_hiddenSections addObject:v7];
-  if (a4)
+  if (indices)
   {
-    *a4 = v8;
+    *indices = v8;
   }
 }
 
-- (BOOL)isHidingDeparturesForSystem:(id)a3
+- (BOOL)isHidingDeparturesForSystem:(id)system
 {
   hiddenSections = self->_hiddenSections;
-  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:a3];
+  v4 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:system];
   LOBYTE(hiddenSections) = [(NSMutableSet *)hiddenSections containsObject:v4];
 
   return hiddenSections;
 }
 
-- (int64_t)_sectionForIdentifier:(id)a3
+- (int64_t)_sectionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(MKTransitDeparturesDataProvider *)self numberOfSections]< 1)
   {
 LABEL_5:
@@ -1178,7 +1178,7 @@ LABEL_5:
     while (1)
     {
       v6 = [(MKTransitDeparturesDataProvider *)self _identifierForSection:v5];
-      v7 = [v6 isEqualToString:v4];
+      v7 = [v6 isEqualToString:identifierCopy];
 
       if (v7)
       {
@@ -1195,7 +1195,7 @@ LABEL_5:
   return v5;
 }
 
-- (id)_identifierForSection:(int64_t)a3
+- (id)_identifierForSection:(int64_t)section
 {
   v5 = [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:?];
   v6 = &stru_1F15B23C0;
@@ -1228,12 +1228,12 @@ LABEL_5:
       goto LABEL_22;
     }
 
-    v11 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+    v11 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v11 name];
-    v14 = [v11 muid];
-    v15 = [(MKTransitDeparturesDataProvider *)self directionForSection:a3];
-    v6 = [v12 stringWithFormat:@"_mk_%@_%llu_%@_departure_section", v13, v14, v15];
+    name = [v11 name];
+    muid = [v11 muid];
+    v15 = [(MKTransitDeparturesDataProvider *)self directionForSection:section];
+    v6 = [v12 stringWithFormat:@"_mk_%@_%llu_%@_departure_section", name, muid, v15];
 LABEL_21:
 
     goto LABEL_22;
@@ -1243,16 +1243,16 @@ LABEL_21:
   {
     if (v5 == 5)
     {
-      v8 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+      v8 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
       v6 = [(MKTransitDeparturesDataProvider *)self _identifierForSystem:v8];
     }
 
     else
     {
-      v8 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+      v8 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [v8 name];
-      v6 = [v9 stringWithFormat:@"_mk_%@_%llu_incidents", v10, objc_msgSend(v8, "muid")];
+      name2 = [v8 name];
+      v6 = [v9 stringWithFormat:@"_mk_%@_%llu_incidents", name2, objc_msgSend(v8, "muid")];
     }
 
     goto LABEL_22;
@@ -1260,14 +1260,14 @@ LABEL_21:
 
   if (v5 == 7)
   {
-    v11 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+    v11 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
     v16 = MEMORY[0x1E696AEC0];
-    v13 = [v11 name];
-    v17 = [v11 muid];
+    name = [v11 name];
+    muid2 = [v11 muid];
     lineLookupBySection = self->_lineLookupBySection;
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:section];
     v19 = [(NSDictionary *)lineLookupBySection objectForKeyedSubscript:v15];
-    v6 = [v16 stringWithFormat:@"_mk_%@_%llu_%@_inactive_section", v13, v17, v19];
+    v6 = [v16 stringWithFormat:@"_mk_%@_%llu_%@_inactive_section", name, muid2, v19];
 
     goto LABEL_21;
   }
@@ -1282,16 +1282,16 @@ LABEL_22:
   return v6;
 }
 
-- (BOOL)_isSectionTypeEnabled:(int64_t)a3
+- (BOOL)_isSectionTypeEnabled:(int64_t)enabled
 {
-  v4 = [(MKTransitDeparturesDataProvider *)self disabledSections];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 containsObject:v5];
+  disabledSections = [(MKTransitDeparturesDataProvider *)self disabledSections];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:enabled];
+  v6 = [disabledSections containsObject:v5];
 
   return v6 ^ 1;
 }
 
-- (int64_t)indexOfFirstSectionWithType:(int64_t)a3
+- (int64_t)indexOfFirstSectionWithType:(int64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -1303,7 +1303,7 @@ LABEL_22:
   v6[2] = __63__MKTransitDeparturesDataProvider_indexOfFirstSectionWithType___block_invoke;
   v6[3] = &unk_1E76CA168;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = type;
   [(NSMutableArray *)sections enumerateObjectsUsingBlock:v6];
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1322,20 +1322,20 @@ uint64_t __63__MKTransitDeparturesDataProvider_indexOfFirstSectionWithType___blo
   return result;
 }
 
-- (int64_t)sectionTypeAtIndex:(int64_t)a3
+- (int64_t)sectionTypeAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(MKTransitDeparturesDataProvider *)self numberOfSections]<= a3)
+  if (index < 0 || [(MKTransitDeparturesDataProvider *)self numberOfSections]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:a3];
-  v6 = [v5 integerValue];
+  v5 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:index];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
   v5 = [(MKTransitDeparturesDataProvider *)self sectionTypeAtIndex:?];
   v6 = 0;
@@ -1346,15 +1346,15 @@ uint64_t __63__MKTransitDeparturesDataProvider_indexOfFirstSectionWithType___blo
       case 1:
         return 1;
       case 2:
-        v13 = [(MKTransitDeparturesDataProvider *)self mapItem];
-        v14 = [v13 _transitInfo];
-        v15 = [v14 connections];
-        v16 = [v15 count];
+        mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+        _transitInfo = [mapItem _transitInfo];
+        connections = [_transitInfo connections];
+        v16 = [connections count];
 
         return v16;
       case 3:
-        v8 = [(MKTransitDeparturesDataProvider *)self incidentsForIncidentsSection];
-        v6 = [v8 count];
+        incidentsForIncidentsSection = [(MKTransitDeparturesDataProvider *)self incidentsForIncidentsSection];
+        v6 = [incidentsForIncidentsSection count];
 
         break;
     }
@@ -1368,7 +1368,7 @@ uint64_t __63__MKTransitDeparturesDataProvider_indexOfFirstSectionWithType___blo
       {
         if (v5 == 6)
         {
-          v7 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+          v7 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
           if ([(MKTransitDeparturesDataProvider *)self isHidingDeparturesForSystem:v7])
           {
             v6 = 0;
@@ -1385,13 +1385,13 @@ uint64_t __63__MKTransitDeparturesDataProvider_indexOfFirstSectionWithType___blo
       }
 
 LABEL_13:
-      v9 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:a3];
-      v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:a3];
+      v9 = [(MKTransitDeparturesDataProvider *)self _controllerForSection:section];
+      v10 = [(MKTransitDeparturesDataProvider *)self systemForSection:section];
       if (![(MKTransitDeparturesDataProvider *)self isHidingDeparturesForSystem:v10])
       {
-        v11 = [v9 numberOfRows];
+        numberOfRows = [v9 numberOfRows];
 
-        return v11;
+        return numberOfRows;
       }
 
       return 0;
@@ -1419,10 +1419,10 @@ LABEL_13:
 {
   v58[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v5 = [v4 _transitInfo];
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
 
-  if (v5)
+  if (_transitInfo)
   {
     if ([(MKTransitDeparturesDataProvider *)self _hasIncidentsSection])
     {
@@ -1437,7 +1437,7 @@ LABEL_13:
     v37 = v3;
     if (self->_hiddenSections)
     {
-      v39 = 0;
+      allowsSystemSectionCollapsing = 0;
     }
 
     else
@@ -1446,7 +1446,7 @@ LABEL_13:
       hiddenSections = self->_hiddenSections;
       self->_hiddenSections = v6;
 
-      v39 = [(MKTransitDeparturesDataProvider *)self allowsSystemSectionCollapsing];
+      allowsSystemSectionCollapsing = [(MKTransitDeparturesDataProvider *)self allowsSystemSectionCollapsing];
     }
 
     [(MKTransitDeparturesDataProvider *)self refreshStationSystems];
@@ -1473,7 +1473,7 @@ LABEL_13:
     {
       v44 = 0;
       v41 = *v53;
-      v42 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v43; i = v29 + 1)
@@ -1558,12 +1558,12 @@ LABEL_13:
           {
             [v17 insertObject:&unk_1F16117D0 atIndex:0];
             [v40 addObjectsFromArray:v17];
-            self = v42;
+            self = selfCopy;
             v29 = v46;
-            if (v39)
+            if (allowsSystemSectionCollapsing)
             {
-              v30 = v42->_hiddenSections;
-              v31 = [(MKTransitDeparturesDataProvider *)v42 _identifierForSystem:v45];
+              v30 = selfCopy->_hiddenSections;
+              v31 = [(MKTransitDeparturesDataProvider *)selfCopy _identifierForSystem:v45];
               [(NSMutableSet *)v30 addObject:v31];
             }
 
@@ -1572,7 +1572,7 @@ LABEL_13:
 
           else
           {
-            self = v42;
+            self = selfCopy;
             v29 = v46;
           }
         }
@@ -1603,7 +1603,7 @@ LABEL_13:
       [v37 addObject:&unk_1F1611758];
     }
 
-    v5 = v36;
+    _transitInfo = v36;
     self->_wantsSystemSectionCollapsing = v44 > 1;
     if (![(MKTransitDeparturesDataProvider *)self allowsSystemSectionCollapsing])
     {
@@ -1625,8 +1625,8 @@ LABEL_13:
     [v37 filterUsingPredicate:v34];
 
     objc_storeStrong(&self->_sections, v37);
-    v35 = [(MKTransitDeparturesDataProvider *)self delegate];
-    [v35 transitDeparturesDataProviderDidReload:self];
+    delegate = [(MKTransitDeparturesDataProvider *)self delegate];
+    [delegate transitDeparturesDataProviderDidReload:self];
   }
 
   else
@@ -1652,15 +1652,15 @@ uint64_t __50__MKTransitDeparturesDataProvider_refreshSections__block_invoke(uin
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v5 = [v4 _transitInfo];
-  v6 = [v5 systems];
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
+  systems = [_transitInfo systems];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = systems;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -1734,23 +1734,23 @@ uint64_t __50__MKTransitDeparturesDataProvider_refreshSections__block_invoke(uin
   return disabledSections;
 }
 
-- (void)setSupportSystemSectionCollapsing:(BOOL)a3
+- (void)setSupportSystemSectionCollapsing:(BOOL)collapsing
 {
-  self->_supportSystemSectionCollapsing = a3;
-  v4 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v5 = [v4 _transitInfo];
-  self->_wantsSystemSectionCollapsing = [v5 systemsCount] > 1;
+  self->_supportSystemSectionCollapsing = collapsing;
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
+  self->_wantsSystemSectionCollapsing = [_transitInfo systemsCount] > 1;
 
   [(MKTransitDeparturesDataProvider *)self refreshSections];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v4 = a3;
-    self->_active = a3;
-    if (a3)
+    activeCopy = active;
+    self->_active = active;
+    if (active)
     {
       v6 = +[MKTransitItemReferenceDateUpdater referenceDate];
       [(MKTransitDeparturesDataProvider *)self setDepartureCutoffDate:v6];
@@ -1758,34 +1758,34 @@ uint64_t __50__MKTransitDeparturesDataProvider_refreshSections__block_invoke(uin
 
     mapItemUpdater = self->_mapItemUpdater;
 
-    [(MKTransitMapItemUpdater *)mapItemUpdater setActive:v4];
+    [(MKTransitMapItemUpdater *)mapItemUpdater setActive:activeCopy];
   }
 }
 
 - (GEOMapItemTransitInfo)transitInfo
 {
-  v2 = [(MKTransitDeparturesDataProvider *)self mapItem];
-  v3 = [v2 _transitInfo];
+  mapItem = [(MKTransitDeparturesDataProvider *)self mapItem];
+  _transitInfo = [mapItem _transitInfo];
 
-  return v3;
+  return _transitInfo;
 }
 
-- (MKTransitDeparturesDataProvider)initWithMapItem:(id)a3
+- (MKTransitDeparturesDataProvider)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = MKTransitDeparturesDataProvider;
   v6 = [(MKTransitDeparturesDataProvider *)&v29 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
     v7->_supportSystemSectionCollapsing = 1;
-    v8 = [(MKTransitDeparturesDataProvider *)v7 mapItem];
-    v9 = [v8 _transitInfo];
-    v7->_wantsSystemSectionCollapsing = [v9 systemsCount] > 1;
+    mapItem = [(MKTransitDeparturesDataProvider *)v7 mapItem];
+    _transitInfo = [mapItem _transitInfo];
+    v7->_wantsSystemSectionCollapsing = [_transitInfo systemsCount] > 1;
 
-    v10 = [[MKTransitItemIncidentsController alloc] initWithMapItem:v5];
+    v10 = [[MKTransitItemIncidentsController alloc] initWithMapItem:itemCopy];
     incidentsController = v7->_incidentsController;
     v7->_incidentsController = v10;
 
@@ -1801,13 +1801,13 @@ uint64_t __50__MKTransitDeparturesDataProvider_refreshSections__block_invoke(uin
     cachedSequencesForSection = v7->_cachedSequencesForSection;
     v7->_cachedSequencesForSection = v16;
 
-    v18 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     cachedDirectionsForSystem = v7->_cachedDirectionsForSystem;
-    v7->_cachedDirectionsForSystem = v18;
+    v7->_cachedDirectionsForSystem = strongToStrongObjectsMapTable;
 
-    v20 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     cachedSystemHasInactiveLines = v7->_cachedSystemHasInactiveLines;
-    v7->_cachedSystemHasInactiveLines = v20;
+    v7->_cachedSystemHasInactiveLines = strongToStrongObjectsMapTable2;
 
     v22 = [[MKTransitMapItemUpdater alloc] initWithMapItem:v7->_mapItem delegate:v7];
     mapItemUpdater = v7->_mapItemUpdater;
@@ -1817,16 +1817,16 @@ uint64_t __50__MKTransitDeparturesDataProvider_refreshSections__block_invoke(uin
     [(MKTransitDeparturesDataProvider *)v7 refreshStationSystems];
     if ([(NSArray *)v7->_stationSystems count])
     {
-      v24 = [(NSArray *)v7->_stationSystems firstObject];
+      firstObject = [(NSArray *)v7->_stationSystems firstObject];
       selectedSystem = v7->_selectedSystem;
-      v7->_selectedSystem = v24;
+      v7->_selectedSystem = firstObject;
     }
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v7 selector:sel_reloadData name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_reloadData name:*MEMORY[0x1E695D8F0] object:0];
 
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 addObserver:v7 selector:sel_reloadData name:*MEMORY[0x1E695DA68] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_reloadData name:*MEMORY[0x1E695DA68] object:0];
   }
 
   return v7;

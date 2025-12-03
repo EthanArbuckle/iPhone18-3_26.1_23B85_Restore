@@ -1,13 +1,13 @@
 @interface HFAnalyticsEnergyEducationTipVisitEvent
-- (HFAnalyticsEnergyEducationTipVisitEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyEducationTipVisitEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyEducationTipVisitEvent
 
-- (HFAnalyticsEnergyEducationTipVisitEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyEducationTipVisitEvent)initWithData:(id)data
 {
-  v4 = [a3 objectForKeyedSubscript:@"educationTipViewState"];
+  v4 = [data objectForKeyedSubscript:@"educationTipViewState"];
   if (!v4)
   {
     NSLog(&cfstr_Hfanalyticsene_1.isa);
@@ -29,11 +29,11 @@
 {
   v7.receiver = self;
   v7.super_class = HFAnalyticsEnergyEducationTipVisitEvent;
-  v3 = [(HFAnalyticsEvent *)&v7 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v7 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEnergyEducationTipVisitEvent *)self viewState];
-  [v4 setObject:v5 forKeyedSubscript:@"educationTipViewState"];
+  viewState = [(HFAnalyticsEnergyEducationTipVisitEvent *)self viewState];
+  [v4 setObject:viewState forKeyedSubscript:@"educationTipViewState"];
 
   return v4;
 }

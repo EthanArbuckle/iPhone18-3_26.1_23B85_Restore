@@ -1,11 +1,11 @@
 @interface CRLBoardLibrary.BoardInfo
-- (void)activeParticipantListChangedNotification:(id)a3;
-- (void)shareStateUpdatedWithShare:(id)a3;
+- (void)activeParticipantListChangedNotification:(id)notification;
+- (void)shareStateUpdatedWithShare:(id)share;
 @end
 
 @implementation CRLBoardLibrary.BoardInfo
 
-- (void)activeParticipantListChangedNotification:(id)a3
+- (void)activeParticipantListChangedNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -18,11 +18,11 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)shareStateUpdatedWithShare:(id)a3
+- (void)shareStateUpdatedWithShare:(id)share
 {
-  v4 = a3;
+  shareCopy = share;
 
-  sub_1010E73C0(a3);
+  sub_1010E73C0(share);
 }
 
 @end

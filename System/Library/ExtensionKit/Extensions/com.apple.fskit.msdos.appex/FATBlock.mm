@@ -1,7 +1,7 @@
 @interface FATBlock
 - (FATBlock)init;
-- (FATBlock)initWithOffset:(unint64_t)a3;
-- (FATBlock)initWithOffset:(unint64_t)a3 andLength:(unint64_t)a4;
+- (FATBlock)initWithOffset:(unint64_t)offset;
+- (FATBlock)initWithOffset:(unint64_t)offset andLength:(unint64_t)length;
 @end
 
 @implementation FATBlock
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (FATBlock)initWithOffset:(unint64_t)a3
+- (FATBlock)initWithOffset:(unint64_t)offset
 {
   v8.receiver = self;
   v8.super_class = FATBlock;
@@ -32,24 +32,24 @@
     data = v4->_data;
     v4->_data = v5;
 
-    v4->_startOffset = a3;
+    v4->_startOffset = offset;
   }
 
   return v4;
 }
 
-- (FATBlock)initWithOffset:(unint64_t)a3 andLength:(unint64_t)a4
+- (FATBlock)initWithOffset:(unint64_t)offset andLength:(unint64_t)length
 {
   v10.receiver = self;
   v10.super_class = FATBlock;
   v6 = [(FATBlock *)&v10 init];
   if (v6)
   {
-    v7 = [[NSMutableData alloc] initWithLength:a4];
+    v7 = [[NSMutableData alloc] initWithLength:length];
     data = v6->_data;
     v6->_data = v7;
 
-    v6->_startOffset = a3;
+    v6->_startOffset = offset;
   }
 
   return v6;

@@ -12,7 +12,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
   }
 
   else
@@ -20,12 +20,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v2 = [a1 description];
+      v2 = [self description];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v2 = [a1 performSelector:sel_stringValue];
+      v2 = [self performSelector:sel_stringValue];
     }
 
     else
@@ -43,7 +43,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 copy];
+    v2 = [self copy];
     v6[0] = v2;
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
@@ -67,7 +67,7 @@
   v86 = v10;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [NSObject(HealthRecordUtils) hd_valueForKeyPath:a2 rootResource:a1 error:?];
+    [NSObject(HealthRecordUtils) hd_valueForKeyPath:a2 rootResource:self error:?];
   }
 
   v83 = a5;
@@ -76,14 +76,14 @@
   v11 = v85;
   if (!v85)
   {
-    v13 = 0;
+    keyPath = 0;
     goto LABEL_47;
   }
 
-  v12 = a1;
-  v13 = [v85 keyPath];
+  selfCopy = self;
+  keyPath = [v85 keyPath];
   v114 = 0;
-  v14 = [HDHRExtractionRulesKeyPathParser componentsFrom:v13 error:&v114];
+  v14 = [HDHRExtractionRulesKeyPathParser componentsFrom:keyPath error:&v114];
   v82 = v114;
   v15 = [v14 mutableCopy];
 
@@ -115,10 +115,10 @@
     goto LABEL_45;
   }
 
-  if (!v12)
+  if (!selfCopy)
   {
 LABEL_45:
-    v13 = 0;
+    keyPath = 0;
     goto LABEL_46;
   }
 
@@ -126,17 +126,17 @@ LABEL_45:
   {
     if (![v15 count])
     {
-      v36 = [HDHealthRecordsExtractionRuleTransformer transformValue:v12 rootResource:v86 extractionRule:v85 error:v83];
+      v36 = [HDHealthRecordsExtractionRuleTransformer transformValue:selfCopy rootResource:v86 extractionRule:v85 error:v83];
 
-      v12 = v36;
-      v13 = v12;
+      selfCopy = v36;
+      keyPath = selfCopy;
       goto LABEL_46;
     }
 
-    v16 = [v15 firstObject];
-    v17 = [v16 name];
+    firstObject = [v15 firstObject];
+    name = [firstObject name];
     [v15 removeObjectAtIndex:0];
-    if ([v17 isEqualToString:@"@contained"])
+    if ([name isEqualToString:@"@contained"])
     {
       v108 = 0;
       v109 = &v108;
@@ -153,9 +153,9 @@ LABEL_45:
         v105[3] = &unk_2796E2C58;
         v107 = &v108;
         v106 = v86;
-        v18 = [v12 hk_map:v105];
-        v19 = [v18 count];
-        if (v19 != [v12 count])
+        jSONObject = [selfCopy hk_map:v105];
+        v19 = [jSONObject count];
+        if (v19 != [selfCopy count])
         {
           v26 = v109[5];
           v27 = v26;
@@ -173,7 +173,7 @@ LABEL_45:
             }
           }
 
-          v13 = 0;
+          keyPath = 0;
           v22 = 1;
           goto LABEL_29;
         }
@@ -183,36 +183,36 @@ LABEL_45:
       {
         v24 = (v109 + 5);
         obj = v109[5];
-        v25 = [HDHealthRecordsExtractionUtilities resourceReferencedBy:v12 containedIn:v86 error:&obj];
+        v25 = [HDHealthRecordsExtractionUtilities resourceReferencedBy:selfCopy containedIn:v86 error:&obj];
         objc_storeStrong(v24, obj);
-        v18 = [v25 JSONObject];
+        jSONObject = [v25 JSONObject];
 
-        if (!v18)
+        if (!jSONObject)
         {
-          v12 = 0;
+          selfCopy = 0;
           if (v109[5])
           {
             v22 = 1;
-            v13 = 0;
+            keyPath = 0;
             goto LABEL_29;
           }
 
-          v18 = 0;
+          jSONObject = 0;
         }
       }
 
       v22 = 6;
-      v12 = v18;
+      selfCopy = jSONObject;
 LABEL_29:
       _Block_object_dispose(&v108, 8);
 
       goto LABEL_33;
     }
 
-    if ([v17 hasPrefix:@"@extension"])
+    if ([name hasPrefix:@"@extension"])
     {
       v103 = 0;
-      v20 = [v12 hd_handleExtensionComponent:v16 error:&v103];
+      v20 = [selfCopy hd_handleExtensionComponent:firstObject error:&v103];
       v21 = v103;
 
       if (v20)
@@ -238,11 +238,11 @@ LABEL_29:
           }
         }
 
-        v13 = 0;
+        keyPath = 0;
         v22 = 1;
       }
 
-      v12 = v20;
+      selfCopy = v20;
 LABEL_33:
 
       if (v22 != 6)
@@ -259,11 +259,11 @@ LABEL_33:
       break;
     }
 
-    v23 = [v12 valueForKey:v17];
+    v23 = [selfCopy valueForKey:name];
 
-    v12 = v23;
+    selfCopy = v23;
 LABEL_34:
-    if (!v12)
+    if (!selfCopy)
     {
       goto LABEL_45;
     }
@@ -273,8 +273,8 @@ LABEL_34:
   v77 = [v39 componentsJoinedByString:@"."];
 
   v81 = [v85 definitionBySubstitutingKeyPathWith:v77];
-  v40 = v12;
-  if ([v17 isEqualToString:@"@all"])
+  v40 = selfCopy;
+  if ([name isEqualToString:@"@all"])
   {
     v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v101 = 0u;
@@ -284,16 +284,16 @@ LABEL_34:
     v42 = v40;
     v43 = [v42 countByEnumeratingWithState:&v99 objects:v117 count:16];
     v80 = v41;
-    v44 = v42;
+    hd_stringValue = v42;
     if (v43)
     {
       v45 = *v100;
-      v44 = v42;
+      hd_stringValue = v42;
       v78 = v42;
       while (2)
       {
         v46 = 0;
-        v47 = v44;
+        v47 = hd_stringValue;
         do
         {
           if (*v100 != v45)
@@ -303,12 +303,12 @@ LABEL_34:
 
           v48 = *(*(&v99 + 1) + 8 * v46);
           v98 = 0;
-          v44 = [v48 hd_valueForKeyPath:v81 rootResource:v86 error:&v98];
+          hd_stringValue = [v48 hd_valueForKeyPath:v81 rootResource:v86 error:&v98];
           v49 = v98;
 
-          if (v44)
+          if (hd_stringValue)
           {
-            [v80 addObject:v44];
+            [v80 addObject:hd_stringValue];
           }
 
           else
@@ -333,7 +333,7 @@ LABEL_34:
           }
 
           ++v46;
-          v47 = v44;
+          v47 = hd_stringValue;
         }
 
         while (v43 != v46);
@@ -353,13 +353,13 @@ LABEL_34:
     goto LABEL_62;
   }
 
-  if (![v17 isEqualToString:@"@any"])
+  if (![name isEqualToString:@"@any"])
   {
-    if (![v17 isEqualToString:@"@concat"])
+    if (![name isEqualToString:@"@concat"])
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:v83 code:3 format:{@"keypath %@ at key «%@» needs to handle array", v84, v17}];
-      v13 = 0;
-      v44 = v40;
+      [MEMORY[0x277CCA9B8] hk_assignError:v83 code:3 format:{@"keypath %@ at key «%@» needs to handle array", v84, name}];
+      keyPath = 0;
+      hd_stringValue = v40;
       goto LABEL_107;
     }
 
@@ -371,16 +371,16 @@ LABEL_34:
     v64 = v40;
     v65 = [v64 countByEnumeratingWithState:&v88 objects:v115 count:16];
     v80 = v63;
-    v44 = v64;
+    hd_stringValue = v64;
     if (v65)
     {
       v79 = *v89;
-      v44 = v64;
+      hd_stringValue = v64;
       v76 = v64;
       do
       {
         v66 = 0;
-        v67 = v44;
+        v67 = hd_stringValue;
         do
         {
           if (*v89 != v79)
@@ -392,11 +392,11 @@ LABEL_34:
           v87 = 0;
           v69 = [v68 hd_valueForKeyPath:v81 rootResource:v86 error:&v87];
           v70 = v87;
-          v44 = [v69 hd_stringValue];
+          hd_stringValue = [v69 hd_stringValue];
 
-          if (v44)
+          if (hd_stringValue)
           {
-            [v80 addObject:v44];
+            [v80 addObject:hd_stringValue];
           }
 
           else if (v70)
@@ -415,13 +415,13 @@ LABEL_34:
             }
 
 LABEL_95:
-            v44 = 0;
-            v13 = 0;
+            hd_stringValue = 0;
+            keyPath = 0;
             goto LABEL_105;
           }
 
           ++v66;
-          v67 = v44;
+          v67 = hd_stringValue;
         }
 
         while (v65 != v66);
@@ -435,13 +435,13 @@ LABEL_95:
     v51 = v80;
     if (![v80 count])
     {
-      v13 = 0;
+      keyPath = 0;
       goto LABEL_106;
     }
 
     v52 = [v80 componentsJoinedByString:@"\n\n"];
 LABEL_62:
-    v13 = v52;
+    keyPath = v52;
     goto LABEL_106;
   }
 
@@ -453,13 +453,13 @@ LABEL_62:
   v53 = [v51 countByEnumeratingWithState:&v94 objects:v116 count:16];
   if (!v53)
   {
-    v13 = 0;
-    v44 = v51;
+    keyPath = 0;
+    hd_stringValue = v51;
     goto LABEL_106;
   }
 
   v54 = *v95;
-  v13 = v51;
+  keyPath = v51;
   v80 = v51;
   while (2)
   {
@@ -486,15 +486,15 @@ LABEL_62:
         v58 = &v92;
         [HDHealthRecordsExtractionRuleTransformer transformValue:v57 rootResource:v86 extractionRule:v85 error:&v92];
       }
-      v44 = ;
+      hd_stringValue = ;
       v59 = *v58;
 
-      if (v44)
+      if (hd_stringValue)
       {
-        v71 = v44;
+        v71 = hd_stringValue;
 LABEL_104:
 
-        v13 = v44;
+        keyPath = hd_stringValue;
         goto LABEL_105;
       }
 
@@ -516,7 +516,7 @@ LABEL_104:
         goto LABEL_104;
       }
 
-      v13 = 0;
+      keyPath = 0;
       ++v55;
       v53 = v56;
       if (v56 != v55)
@@ -528,7 +528,7 @@ LABEL_104:
     }
 
     v53 = [v80 countByEnumeratingWithState:&v94 objects:v116 count:16];
-    v13 = 0;
+    keyPath = 0;
     if (v53)
     {
       continue;
@@ -537,13 +537,13 @@ LABEL_104:
     break;
   }
 
-  v44 = 0;
+  hd_stringValue = 0;
 LABEL_105:
   v51 = v80;
 LABEL_106:
 
 LABEL_107:
-  v12 = v44;
+  selfCopy = hd_stringValue;
 LABEL_46:
 
   v11 = v85;
@@ -551,21 +551,21 @@ LABEL_47:
 
   v37 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return keyPath;
 }
 
 - (id)hd_handleExtensionComponent:()HealthRecordUtils error:
 {
   v6 = a3;
-  v7 = [v6 parenthesisContent];
+  parenthesisContent = [v6 parenthesisContent];
 
-  if (v7)
+  if (parenthesisContent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 parenthesisContent];
-      v9 = [HDFHIRExtensionProcessor extensionsForURL:v8 inJSONDictionary:a1 error:a4];
+      parenthesisContent2 = [v6 parenthesisContent];
+      v9 = [HDFHIRExtensionProcessor extensionsForURL:parenthesisContent2 inJSONDictionary:self error:a4];
 
       if (v9)
       {
@@ -586,8 +586,8 @@ LABEL_47:
   else
   {
     v11 = MEMORY[0x277CCA9B8];
-    v12 = [v6 name];
-    [v11 hk_assignError:a4 code:3 format:{@"A valid extraction rules component has content between parenthesis, this one doesn't: %@", v12}];
+    name = [v6 name];
+    [v11 hk_assignError:a4 code:3 format:{@"A valid extraction rules component has content between parenthesis, this one doesn't: %@", name}];
   }
 
   v10 = 0;

@@ -1,6 +1,6 @@
 @interface TwinEmbeddingTransformerPortraitInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation TwinEmbeddingTransformerPortraitInput
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_2702B402C();
   v5 = v4;

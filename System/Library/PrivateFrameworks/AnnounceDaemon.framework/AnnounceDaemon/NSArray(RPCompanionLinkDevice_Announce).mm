@@ -18,8 +18,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -30,23 +30,23 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 homeKitIdentifier];
-        if (v9 && [v8 supportsAnnounce])
+        homeKitIdentifier = [v8 homeKitIdentifier];
+        if (homeKitIdentifier && [v8 supportsAnnounce])
         {
-          v10 = [v2 objectForKey:v9];
+          v10 = [v2 objectForKey:homeKitIdentifier];
           v11 = v10;
           if (!v10 || ([v10 statusFlags] & 3) != 0)
           {
-            [v2 setObject:v8 forKey:v9];
+            [v2 setObject:v8 forKey:homeKitIdentifier];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -65,8 +65,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -77,14 +77,14 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 idsDeviceIdentifier];
+        idsDeviceIdentifier = [v8 idsDeviceIdentifier];
         if ([v8 supportsAnnounce])
         {
-          v10 = v9 == 0;
+          v10 = idsDeviceIdentifier == 0;
         }
 
         else
@@ -94,26 +94,26 @@
 
         if (!v10)
         {
-          v11 = [v2 objectForKey:v9];
+          v11 = [v2 objectForKey:idsDeviceIdentifier];
           v12 = v11;
           if (!v11 || ([v11 statusFlags] & 3) != 0)
           {
-            [v2 setObject:v8 forKey:v9];
+            [v2 setObject:v8 forKey:idsDeviceIdentifier];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [v2 allValues];
+  allValues = [v2 allValues];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return allValues;
 }
 
 - (id)activePersonalDevicesSupportingAnnounce
@@ -124,8 +124,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 activeDevicesSupportingAnnounce];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  activeDevicesSupportingAnnounce = [self activeDevicesSupportingAnnounce];
+  v4 = [activeDevicesSupportingAnnounce countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -136,7 +136,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevicesSupportingAnnounce);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -146,7 +146,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [activeDevicesSupportingAnnounce countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -164,8 +164,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = a1;
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  selfCopy = self;
+  v2 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = *v9;
@@ -175,7 +175,7 @@
       {
         if (*v9 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(selfCopy);
         }
 
         v5 = *(*(&v8 + 1) + 8 * i);
@@ -186,7 +186,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v2 = [selfCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v2)
       {
         continue;
@@ -212,7 +212,7 @@ LABEL_11:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a1;
+  obj = self;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -228,15 +228,15 @@ LABEL_11:
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v8 homeKitUserIdentifiers];
-        v10 = v9;
-        if (v9)
+        homeKitUserIdentifiers = [v8 homeKitUserIdentifiers];
+        v10 = homeKitUserIdentifiers;
+        if (homeKitUserIdentifiers)
         {
           v25 = 0u;
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v11 = v9;
+          v11 = homeKitUserIdentifiers;
           v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v12)
           {
@@ -297,7 +297,7 @@ LABEL_17:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = a1;
+  obj = self;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -320,15 +320,15 @@ LABEL_17:
 
         else
         {
-          v11 = [v10 homeKitUserIdentifiers];
-          v12 = v11;
-          if (v11)
+          homeKitUserIdentifiers = [v10 homeKitUserIdentifiers];
+          v12 = homeKitUserIdentifiers;
+          if (homeKitUserIdentifiers)
           {
             v25 = 0u;
             v26 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v13 = v11;
+            v13 = homeKitUserIdentifiers;
             v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
             if (v14)
             {
@@ -385,8 +385,8 @@ LABEL_19:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -397,17 +397,17 @@ LABEL_19:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         if (([v11 isAccessory] & 1) == 0)
         {
-          v12 = [v11 homeKitUserIdentifiers];
-          if (v12)
+          homeKitUserIdentifiers = [v11 homeKitUserIdentifiers];
+          if (homeKitUserIdentifiers)
           {
-            v13 = [v4 uniqueIdentifier];
-            v14 = [v12 containsObject:v13];
+            uniqueIdentifier = [v4 uniqueIdentifier];
+            v14 = [homeKitUserIdentifiers containsObject:uniqueIdentifier];
 
             if (v14)
             {
@@ -417,7 +417,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);

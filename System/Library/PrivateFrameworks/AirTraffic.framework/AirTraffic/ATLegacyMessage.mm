@@ -1,15 +1,15 @@
 @interface ATLegacyMessage
-+ (id)_messageTypeString:(unint64_t)a3;
-+ (id)messageFromData:(id)a3;
-+ (id)messageFromDictionary:(id)a3;
-+ (id)messageFromHeader:(id)a3 withParams:(id)a4 andPayload:(id)a5;
-+ (id)messageWithName:(id)a3 parameters:(id)a4 session:(unsigned int)a5;
-- (ATLegacyMessage)initWithDictionary:(id)a3;
++ (id)_messageTypeString:(unint64_t)string;
++ (id)messageFromData:(id)data;
++ (id)messageFromDictionary:(id)dictionary;
++ (id)messageFromHeader:(id)header withParams:(id)params andPayload:(id)payload;
++ (id)messageWithName:(id)name parameters:(id)parameters session:(unsigned int)session;
+- (ATLegacyMessage)initWithDictionary:(id)dictionary;
 - (id)data;
 - (id)description;
 - (id)dictionary;
-- (id)partialResponseWithParameters:(id)a3;
-- (id)responseWithResultError:(id)a3 parameters:(id)a4;
+- (id)partialResponseWithParameters:(id)parameters;
+- (id)responseWithResultError:(id)error parameters:(id)parameters;
 @end
 
 @implementation ATLegacyMessage
@@ -24,36 +24,36 @@
   return v6;
 }
 
-- (ATLegacyMessage)initWithDictionary:(id)a3
+- (ATLegacyMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = ATLegacyMessage;
   v5 = [(ATLegacyMessage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"Type"];
+    v6 = [dictionaryCopy objectForKey:@"Type"];
     -[ATLegacyMessage setMessageType:](v5, "setMessageType:", [v6 unsignedIntValue]);
 
-    v7 = [v4 objectForKey:@"Session"];
+    v7 = [dictionaryCopy objectForKey:@"Session"];
     -[ATLegacyMessage setMessageId:](v5, "setMessageId:", [v7 unsignedIntValue]);
 
-    v8 = [v4 objectForKey:@"Command"];
+    v8 = [dictionaryCopy objectForKey:@"Command"];
     [(ATLegacyMessage *)v5 setName:v8];
 
-    v9 = [v4 objectForKey:@"Result"];
+    v9 = [dictionaryCopy objectForKey:@"Result"];
     [(ATLegacyMessage *)v5 setResult:v9];
 
-    v10 = [v4 objectForKey:@"Params"];
+    v10 = [dictionaryCopy objectForKey:@"Params"];
     [(ATLegacyMessage *)v5 setParameters:v10];
 
-    v11 = [v4 objectForKey:@"Payload"];
+    v11 = [dictionaryCopy objectForKey:@"Payload"];
     [(ATLegacyMessage *)v5 setPayload:v11];
 
-    v12 = [v4 objectForKey:@"Session"];
+    v12 = [dictionaryCopy objectForKey:@"Session"];
     v5->_session = [v12 unsignedIntValue];
 
-    v13 = [v4 objectForKey:@"Sig"];
+    v13 = [dictionaryCopy objectForKey:@"Sig"];
     [(ATLegacyMessage *)v5 setSig:v13];
   }
 
@@ -63,8 +63,8 @@
 - (id)data
 {
   v2 = MEMORY[0x277CCAC58];
-  v3 = [(ATLegacyMessage *)self dictionary];
-  v4 = [v2 dataWithPropertyList:v3 format:200 options:0 error:0];
+  dictionary = [(ATLegacyMessage *)self dictionary];
+  v4 = [v2 dataWithPropertyList:dictionary format:200 options:0 error:0];
 
   return v4;
 }
@@ -119,57 +119,57 @@
   return v3;
 }
 
-- (id)partialResponseWithParameters:(id)a3
+- (id)partialResponseWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = objc_alloc_init(ATLegacyMessage);
   [(ATLegacyMessage *)v5 setMessageId:[(ATLegacyMessage *)self messageId]];
   [(ATLegacyMessage *)v5 setMessageType:2];
-  v6 = [(ATLegacyMessage *)self name];
-  [(ATLegacyMessage *)v5 setName:v6];
+  name = [(ATLegacyMessage *)self name];
+  [(ATLegacyMessage *)v5 setName:name];
 
-  [(ATLegacyMessage *)v5 setParameters:v4];
+  [(ATLegacyMessage *)v5 setParameters:parametersCopy];
   [(ATLegacyMessage *)v5 setSessionNumber:[(ATLegacyMessage *)self sessionNumber]];
 
   return v5;
 }
 
-- (id)responseWithResultError:(id)a3 parameters:(id)a4
+- (id)responseWithResultError:(id)error parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  errorCopy = error;
   v8 = objc_alloc_init(ATLegacyMessage);
   [(ATLegacyMessage *)v8 setMessageId:[(ATLegacyMessage *)self messageId]];
   [(ATLegacyMessage *)v8 setMessageType:1];
-  v9 = [(ATLegacyMessage *)self name];
-  [(ATLegacyMessage *)v8 setName:v9];
+  name = [(ATLegacyMessage *)self name];
+  [(ATLegacyMessage *)v8 setName:name];
 
-  [(ATLegacyMessage *)v8 setResult:v7];
-  [(ATLegacyMessage *)v8 setParameters:v6];
+  [(ATLegacyMessage *)v8 setResult:errorCopy];
+  [(ATLegacyMessage *)v8 setParameters:parametersCopy];
 
   [(ATLegacyMessage *)v8 setSessionNumber:[(ATLegacyMessage *)self sessionNumber]];
 
   return v8;
 }
 
-+ (id)_messageTypeString:(unint64_t)a3
++ (id)_messageTypeString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"<unknown type!>";
   }
 
   else
   {
-    return off_278C6DB38[a3];
+    return off_278C6DB38[string];
   }
 }
 
-+ (id)messageFromData:(id)a3
++ (id)messageFromData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:v3 options:0 format:0 error:0];
+  dataCopy = data;
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:dataCopy options:0 format:0 error:0];
   if (v4)
   {
     v5 = [ATLegacyMessage messageFromDictionary:v4];
@@ -181,7 +181,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 138543362;
-      v10 = v3;
+      v10 = dataCopy;
       _os_log_impl(&dword_23EC61000, v6, OS_LOG_TYPE_ERROR, "Couldn't create message, data %{public}@", &v9, 0xCu);
     }
 
@@ -193,35 +193,35 @@
   return v5;
 }
 
-+ (id)messageFromDictionary:(id)a3
++ (id)messageFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[ATLegacyMessage alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[ATLegacyMessage alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)messageFromHeader:(id)a3 withParams:(id)a4 andPayload:(id)a5
++ (id)messageFromHeader:(id)header withParams:(id)params andPayload:(id)payload
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [ATLegacyMessage messageFromDictionary:a3];
-  [v9 setParameters:v8];
+  payloadCopy = payload;
+  paramsCopy = params;
+  v9 = [ATLegacyMessage messageFromDictionary:header];
+  [v9 setParameters:paramsCopy];
 
-  [v9 setPayload:v7];
+  [v9 setPayload:payloadCopy];
 
   return v9;
 }
 
-+ (id)messageWithName:(id)a3 parameters:(id)a4 session:(unsigned int)a5
++ (id)messageWithName:(id)name parameters:(id)parameters session:(unsigned int)session
 {
-  v7 = a4;
-  v8 = a3;
+  parametersCopy = parameters;
+  nameCopy = name;
   v9 = objc_alloc_init(ATLegacyMessage);
-  v9->_session = a5;
-  [(ATLegacyMessage *)v9 setName:v8];
+  v9->_session = session;
+  [(ATLegacyMessage *)v9 setName:nameCopy];
 
-  [(ATLegacyMessage *)v9 setParameters:v7];
+  [(ATLegacyMessage *)v9 setParameters:parametersCopy];
   [(ATLegacyMessage *)v9 setMessageId:atomic_fetch_add_explicit(&__nextMessageId, 1u, memory_order_relaxed) + 1];
   [(ATLegacyMessage *)v9 setMessageType:0];
 

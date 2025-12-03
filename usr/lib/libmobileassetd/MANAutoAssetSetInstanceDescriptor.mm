@@ -1,40 +1,40 @@
 @interface MANAutoAssetSetInstanceDescriptor
-- (MANAutoAssetSetInstanceDescriptor)initWithCoder:(id)a3;
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withAtomicInstanceEntries:(id)a5 withFullyDownloaded:(BOOL)a6 withNeverBeenLocked:(BOOL)a7 withDownloadUserInitiated:(BOOL)a8 withDownloadedNetworkBytes:(int64_t)a9 withDownloadedFilesystemBytes:(int64_t)a10 withStagedPriorToAvailable:(BOOL)a11;
+- (MANAutoAssetSetInstanceDescriptor)initWithCoder:(id)coder;
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier withAtomicInstanceEntries:(id)entries withFullyDownloaded:(BOOL)downloaded withNeverBeenLocked:(BOOL)locked withDownloadUserInitiated:(BOOL)initiated withDownloadedNetworkBytes:(int64_t)bytes withDownloadedFilesystemBytes:(int64_t)self0 withStagedPriorToAvailable:(BOOL)self1;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetInstanceDescriptor
 
-- (id)initForClientDomainName:(id)a3 forAssetSetIdentifier:(id)a4 withAtomicInstanceEntries:(id)a5 withFullyDownloaded:(BOOL)a6 withNeverBeenLocked:(BOOL)a7 withDownloadUserInitiated:(BOOL)a8 withDownloadedNetworkBytes:(int64_t)a9 withDownloadedFilesystemBytes:(int64_t)a10 withStagedPriorToAvailable:(BOOL)a11
+- (id)initForClientDomainName:(id)name forAssetSetIdentifier:(id)identifier withAtomicInstanceEntries:(id)entries withFullyDownloaded:(BOOL)downloaded withNeverBeenLocked:(BOOL)locked withDownloadUserInitiated:(BOOL)initiated withDownloadedNetworkBytes:(int64_t)bytes withDownloadedFilesystemBytes:(int64_t)self0 withStagedPriorToAvailable:(BOOL)self1
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  entriesCopy = entries;
   v24.receiver = self;
   v24.super_class = MANAutoAssetSetInstanceDescriptor;
   v21 = [(MANAutoAssetSetInstanceDescriptor *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_clientDomainName, a3);
-    objc_storeStrong(&v22->_assetSetIdentifier, a4);
-    objc_storeStrong(&v22->_atomicInstanceEntries, a5);
-    v22->_isFullyDownloaded = a6;
-    v22->_neverBeenLocked = a7;
-    v22->_downloadUserInitiated = a8;
-    v22->_downloadedNetworkBytes = a9;
-    v22->_downloadedFilesystemBytes = a10;
-    v22->_stagedPriorToAvailable = a11;
+    objc_storeStrong(&v21->_clientDomainName, name);
+    objc_storeStrong(&v22->_assetSetIdentifier, identifier);
+    objc_storeStrong(&v22->_atomicInstanceEntries, entries);
+    v22->_isFullyDownloaded = downloaded;
+    v22->_neverBeenLocked = locked;
+    v22->_downloadUserInitiated = initiated;
+    v22->_downloadedNetworkBytes = bytes;
+    v22->_downloadedFilesystemBytes = filesystemBytes;
+    v22->_stagedPriorToAvailable = available;
   }
 
   return v22;
 }
 
-- (MANAutoAssetSetInstanceDescriptor)initWithCoder:(id)a3
+- (MANAutoAssetSetInstanceDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MANAutoAssetSetInstanceDescriptor;
   v5 = [(MANAutoAssetSetInstanceDescriptor *)&v15 init];
@@ -45,55 +45,55 @@
     v6 = [NSArray arrayWithObjects:v16 count:2];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asetSetIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClasses:v7 forKey:@"atomicInstanceEntries"];
+    v12 = [coderCopy decodeObjectOfClasses:v7 forKey:@"atomicInstanceEntries"];
     atomicInstanceEntries = v5->_atomicInstanceEntries;
     v5->_atomicInstanceEntries = v12;
 
-    v5->_isFullyDownloaded = [v4 decodeBoolForKey:@"isFullyDownloaded"];
-    v5->_neverBeenLocked = [v4 decodeBoolForKey:@"neverBeenLocked"];
-    v5->_downloadUserInitiated = [v4 decodeBoolForKey:@"downloadUserInitiated"];
-    v5->_downloadedNetworkBytes = [v4 decodeIntegerForKey:@"downloadedNetworkBytes"];
-    v5->_downloadedFilesystemBytes = [v4 decodeIntegerForKey:@"downloadedFilesystemBytes"];
-    v5->_stagedPriorToAvailable = [v4 decodeBoolForKey:@"stagedPriorToAvailable"];
+    v5->_isFullyDownloaded = [coderCopy decodeBoolForKey:@"isFullyDownloaded"];
+    v5->_neverBeenLocked = [coderCopy decodeBoolForKey:@"neverBeenLocked"];
+    v5->_downloadUserInitiated = [coderCopy decodeBoolForKey:@"downloadUserInitiated"];
+    v5->_downloadedNetworkBytes = [coderCopy decodeIntegerForKey:@"downloadedNetworkBytes"];
+    v5->_downloadedFilesystemBytes = [coderCopy decodeIntegerForKey:@"downloadedFilesystemBytes"];
+    v5->_stagedPriorToAvailable = [coderCopy decodeBoolForKey:@"stagedPriorToAvailable"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MANAutoAssetSetInstanceDescriptor *)self clientDomainName];
-  [v7 encodeObject:v4 forKey:@"clientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MANAutoAssetSetInstanceDescriptor *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v5 = [(MANAutoAssetSetInstanceDescriptor *)self assetSetIdentifier];
-  [v7 encodeObject:v5 forKey:@"asetSetIdentifier"];
+  assetSetIdentifier = [(MANAutoAssetSetInstanceDescriptor *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"asetSetIdentifier"];
 
-  v6 = [(MANAutoAssetSetInstanceDescriptor *)self atomicInstanceEntries];
-  [v7 encodeObject:v6 forKey:@"atomicInstanceEntries"];
+  atomicInstanceEntries = [(MANAutoAssetSetInstanceDescriptor *)self atomicInstanceEntries];
+  [coderCopy encodeObject:atomicInstanceEntries forKey:@"atomicInstanceEntries"];
 
-  [v7 encodeBool:-[MANAutoAssetSetInstanceDescriptor isFullyDownloaded](self forKey:{"isFullyDownloaded"), @"isFullyDownloaded"}];
-  [v7 encodeBool:-[MANAutoAssetSetInstanceDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
-  [v7 encodeBool:-[MANAutoAssetSetInstanceDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
-  [v7 encodeInteger:-[MANAutoAssetSetInstanceDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
-  [v7 encodeInteger:-[MANAutoAssetSetInstanceDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
-  [v7 encodeBool:-[MANAutoAssetSetInstanceDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetInstanceDescriptor isFullyDownloaded](self forKey:{"isFullyDownloaded"), @"isFullyDownloaded"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetInstanceDescriptor neverBeenLocked](self forKey:{"neverBeenLocked"), @"neverBeenLocked"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetInstanceDescriptor downloadUserInitiated](self forKey:{"downloadUserInitiated"), @"downloadUserInitiated"}];
+  [coderCopy encodeInteger:-[MANAutoAssetSetInstanceDescriptor downloadedNetworkBytes](self forKey:{"downloadedNetworkBytes"), @"downloadedNetworkBytes"}];
+  [coderCopy encodeInteger:-[MANAutoAssetSetInstanceDescriptor downloadedFilesystemBytes](self forKey:{"downloadedFilesystemBytes"), @"downloadedFilesystemBytes"}];
+  [coderCopy encodeBool:-[MANAutoAssetSetInstanceDescriptor stagedPriorToAvailable](self forKey:{"stagedPriorToAvailable"), @"stagedPriorToAvailable"}];
 }
 
 - (id)summary
 {
-  v14 = [(MANAutoAssetSetInstanceDescriptor *)self clientDomainName];
-  v3 = [(MANAutoAssetSetInstanceDescriptor *)self assetSetIdentifier];
-  v4 = [(MANAutoAssetSetInstanceDescriptor *)self atomicInstanceEntries];
-  v13 = [v4 count];
+  clientDomainName = [(MANAutoAssetSetInstanceDescriptor *)self clientDomainName];
+  assetSetIdentifier = [(MANAutoAssetSetInstanceDescriptor *)self assetSetIdentifier];
+  atomicInstanceEntries = [(MANAutoAssetSetInstanceDescriptor *)self atomicInstanceEntries];
+  v13 = [atomicInstanceEntries count];
   if ([(MANAutoAssetSetInstanceDescriptor *)self isFullyDownloaded])
   {
     v5 = @"Y";
@@ -124,8 +124,8 @@
     v7 = @"N";
   }
 
-  v8 = [(MANAutoAssetSetInstanceDescriptor *)self downloadedNetworkBytes];
-  v9 = [(MANAutoAssetSetInstanceDescriptor *)self downloadedFilesystemBytes];
+  downloadedNetworkBytes = [(MANAutoAssetSetInstanceDescriptor *)self downloadedNetworkBytes];
+  downloadedFilesystemBytes = [(MANAutoAssetSetInstanceDescriptor *)self downloadedFilesystemBytes];
   if ([(MANAutoAssetSetInstanceDescriptor *)self stagedPriorToAvailable])
   {
     v10 = @"Y";
@@ -136,7 +136,7 @@
     v10 = @"N";
   }
 
-  v11 = [NSString stringWithFormat:@"[clientDomainName:%@, assetSetIdentifier:%@, numAtomicInstanceEntries:%ld, fullyDownloaded:%@, neverBeenLocked:%@, userInitiated:%@, networkBytes:%ld, fsBytes:%ld, stagedPrior:%@]", v14, v3, v13, v5, v6, v7, v8, v9, v10];
+  v11 = [NSString stringWithFormat:@"[clientDomainName:%@, assetSetIdentifier:%@, numAtomicInstanceEntries:%ld, fullyDownloaded:%@, neverBeenLocked:%@, userInitiated:%@, networkBytes:%ld, fsBytes:%ld, stagedPrior:%@]", clientDomainName, assetSetIdentifier, v13, v5, v6, v7, downloadedNetworkBytes, downloadedFilesystemBytes, v10];
 
   return v11;
 }

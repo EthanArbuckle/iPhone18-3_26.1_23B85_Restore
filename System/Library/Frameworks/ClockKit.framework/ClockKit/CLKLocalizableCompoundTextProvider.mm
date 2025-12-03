@@ -1,40 +1,40 @@
 @interface CLKLocalizableCompoundTextProvider
 - (BOOL)_validate;
-- (BOOL)isEqual:(id)a3;
-- (CLKLocalizableCompoundTextProvider)initWithCoder:(id)a3;
-- (CLKLocalizableCompoundTextProvider)initWithFormatKey:(id)a3 textProviders:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CLKLocalizableCompoundTextProvider)initWithCoder:(id)coder;
+- (CLKLocalizableCompoundTextProvider)initWithFormatKey:(id)key textProviders:(id)providers;
 - (id)JSONObjectRepresentation;
 - (id)_arrayOfTextProviderJSONObjectRepresentations;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_localizedStringForKey:(id)a3 withBundle:(id)a4 forLocalization:(id)a5;
-- (id)_localizedTextProviderWithBundle:(id)a3 forLocalization:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_localizedStringForKey:(id)key withBundle:(id)bundle forLocalization:(id)localization;
+- (id)_localizedTextProviderWithBundle:(id)bundle forLocalization:(id)localization;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKLocalizableCompoundTextProvider
 
-- (CLKLocalizableCompoundTextProvider)initWithFormatKey:(id)a3 textProviders:(id)a4
+- (CLKLocalizableCompoundTextProvider)initWithFormatKey:(id)key textProviders:(id)providers
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  providersCopy = providers;
   v25.receiver = self;
   v25.super_class = CLKLocalizableCompoundTextProvider;
-  v8 = [(CLKTextProvider *)&v25 initPrivate];
-  if (v8)
+  initPrivate = [(CLKTextProvider *)&v25 initPrivate];
+  if (initPrivate)
   {
-    v9 = [v6 copy];
-    formatKey = v8->_formatKey;
-    v8->_formatKey = v9;
+    v9 = [keyCopy copy];
+    formatKey = initPrivate->_formatKey;
+    initPrivate->_formatKey = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v7;
+    v12 = providersCopy;
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {
@@ -50,8 +50,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v21 + 1) + 8 * v16) finalizedCopy];
-          [v11 addObject:v17];
+          finalizedCopy = [*(*(&v21 + 1) + 8 * v16) finalizedCopy];
+          [array addObject:finalizedCopy];
 
           ++v16;
         }
@@ -63,43 +63,43 @@
       while (v14);
     }
 
-    v18 = [v11 copy];
-    textProviders = v8->_textProviders;
-    v8->_textProviders = v18;
+    v18 = [array copy];
+    textProviders = initPrivate->_textProviders;
+    initPrivate->_textProviders = v18;
   }
 
-  return v8;
+  return initPrivate;
 }
 
-- (id)_localizedStringForKey:(id)a3 withBundle:(id)a4 forLocalization:(id)a5
+- (id)_localizedStringForKey:(id)key withBundle:(id)bundle forLocalization:(id)localization
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  keyCopy = key;
+  bundleCopy = bundle;
+  localizationCopy = localization;
+  v10 = localizationCopy;
+  if (!keyCopy)
   {
     v17 = 0;
     goto LABEL_19;
   }
 
-  if (!v8)
+  if (!bundleCopy)
   {
     goto LABEL_18;
   }
 
-  if (v9)
+  if (localizationCopy)
   {
-    v11 = [v8 bundlePath];
+    bundlePath = [bundleCopy bundlePath];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.lproj", v10];
-    v13 = [v11 stringByAppendingPathComponent:v12];
+    v13 = [bundlePath stringByAppendingPathComponent:v12];
 
     v14 = [MEMORY[0x277CCA8D8] bundleWithPath:v13];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 localizedStringForKey:v7 value:v7 table:@"ckcomplication"];
+      v16 = [v14 localizedStringForKey:keyCopy value:keyCopy table:@"ckcomplication"];
       if (v16)
       {
         v17 = v16;
@@ -114,7 +114,7 @@
       }
 
       *buf = 138412546;
-      v26 = v7;
+      v26 = keyCopy;
       v27 = 2112;
       v28 = v13;
       v19 = "Didn't find entry for '%@' in %@";
@@ -144,7 +144,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  v17 = [v8 localizedStringForKey:v7 value:v7 table:@"ckcomplication"];
+  v17 = [bundleCopy localizedStringForKey:keyCopy value:keyCopy table:@"ckcomplication"];
   if (v17)
   {
     goto LABEL_19;
@@ -153,27 +153,27 @@ LABEL_14:
   v22 = CLKLoggingObjectForDomain(4);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v8 bundlePath];
+    bundlePath2 = [bundleCopy bundlePath];
     *buf = 138412546;
-    v26 = v7;
+    v26 = keyCopy;
     v27 = 2112;
-    v28 = v23;
+    v28 = bundlePath2;
     _os_log_impl(&dword_23702D000, v22, OS_LOG_TYPE_DEFAULT, "Didn't find entry for '%@' in %@", buf, 0x16u);
   }
 
 LABEL_18:
-  v17 = v7;
+  v17 = keyCopy;
 LABEL_19:
 
   return v17;
 }
 
-- (id)_localizedTextProviderWithBundle:(id)a3 forLocalization:(id)a4
+- (id)_localizedTextProviderWithBundle:(id)bundle forLocalization:(id)localization
 {
   v32 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = a4;
-  v7 = [(CLKLocalizableCompoundTextProvider *)self _localizedStringForKey:self->_formatKey withBundle:v22 forLocalization:?];
+  bundleCopy = bundle;
+  localizationCopy = localization;
+  v7 = [(CLKLocalizableCompoundTextProvider *)self _localizedStringForKey:self->_formatKey withBundle:bundleCopy forLocalization:?];
   v8 = CLKLoggingObjectForDomain(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,7 +219,7 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v17 localizedTextProviderWithBundle:v22 forLocalization:v6];
+        v18 = [v17 localizedTextProviderWithBundle:bundleCopy forLocalization:localizationCopy];
         if (v18)
         {
           [v10 addObject:v18];
@@ -331,11 +331,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CLKLocalizableCompoundTextProvider;
-  v4 = [(CLKTextProvider *)&v8 copyWithZone:a3];
+  v4 = [(CLKTextProvider *)&v8 copyWithZone:zone];
   if (v4 != self)
   {
     v5 = [(NSArray *)self->_textProviders copy];
@@ -348,14 +348,14 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKLocalizableCompoundTextProvider;
-  if ([(CLKTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_textProviders, v4[16]))
+  if ([(CLKTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CLKEqualObjects(self->_textProviders, equalCopy[16]))
   {
-    v5 = CLKEqualObjects(self->_formatKey, v4[17]);
+    v5 = CLKEqualObjects(self->_formatKey, equalCopy[17]);
   }
 
   else
@@ -375,35 +375,35 @@ LABEL_13:
   return &v4[4 * [(NSString *)self->_formatKey hash]];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKLocalizableCompoundTextProvider;
-  v4 = a3;
-  [(CLKTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_textProviders forKey:{@"_textProviders", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_formatKey forKey:@"_formatKey"];
+  coderCopy = coder;
+  [(CLKTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_textProviders forKey:{@"_textProviders", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_formatKey forKey:@"_formatKey"];
 }
 
-- (CLKLocalizableCompoundTextProvider)initWithCoder:(id)a3
+- (CLKLocalizableCompoundTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CLKLocalizableCompoundTextProvider;
-  v5 = [(CLKTextProvider *)&v16 initWithCoder:v4];
+  v5 = [(CLKTextProvider *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_textProviders"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_textProviders"];
     textProviders = v5->_textProviders;
     v5->_textProviders = v9;
 
     v11 = v5->_textProviders;
     v12 = objc_opt_class();
     CLKValidateArray(v11, v12);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_formatKey"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formatKey"];
     formatKey = v5->_formatKey;
     v5->_formatKey = v13;
   }
@@ -411,16 +411,16 @@ LABEL_13:
   return v5;
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v20.receiver = self;
   v20.super_class = CLKLocalizableCompoundTextProvider;
-  v5 = [(CLKTextProvider *)&v20 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTextProvider *)&v20 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"formatKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"formatKey"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -428,7 +428,7 @@ LABEL_13:
     }
 
     objc_storeStrong(v5 + 17, v6);
-    v7 = [v4 objectForKeyedSubscript:?];
+    v7 = [representationCopy objectForKeyedSubscript:?];
     if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"key in '%@' dictionary must be an array - invalid value: %@", @"textProviders", v7}];
@@ -474,13 +474,13 @@ LABEL_13:
 {
   v6.receiver = self;
   v6.super_class = CLKLocalizableCompoundTextProvider;
-  v3 = [(CLKTextProvider *)&v6 JSONObjectRepresentation];
-  v4 = [(CLKLocalizableCompoundTextProvider *)self _arrayOfTextProviderJSONObjectRepresentations];
-  [v3 setObject:v4 forKeyedSubscript:@"textProviders"];
+  jSONObjectRepresentation = [(CLKTextProvider *)&v6 JSONObjectRepresentation];
+  _arrayOfTextProviderJSONObjectRepresentations = [(CLKLocalizableCompoundTextProvider *)self _arrayOfTextProviderJSONObjectRepresentations];
+  [jSONObjectRepresentation setObject:_arrayOfTextProviderJSONObjectRepresentations forKeyedSubscript:@"textProviders"];
 
-  [v3 setObject:self->_formatKey forKeyedSubscript:@"formatKey"];
+  [jSONObjectRepresentation setObject:self->_formatKey forKeyedSubscript:@"formatKey"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 - (id)_arrayOfTextProviderJSONObjectRepresentations
@@ -506,8 +506,8 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) JSONObjectRepresentation];
-        [v3 addObject:v9];
+        jSONObjectRepresentation = [*(*(&v11 + 1) + 8 * i) JSONObjectRepresentation];
+        [v3 addObject:jSONObjectRepresentation];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

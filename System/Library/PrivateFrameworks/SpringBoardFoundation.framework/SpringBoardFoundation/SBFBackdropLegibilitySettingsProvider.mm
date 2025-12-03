@@ -1,23 +1,23 @@
 @interface SBFBackdropLegibilitySettingsProvider
-- (SBFBackdropLegibilitySettingsProvider)initWithBackdropView:(id)a3;
+- (SBFBackdropLegibilitySettingsProvider)initWithBackdropView:(id)view;
 - (SBFLegibilitySettingsProviderDelegate)delegate;
-- (void)backdropViewDidChange:(id)a3;
+- (void)backdropViewDidChange:(id)change;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SBFBackdropLegibilitySettingsProvider
 
-- (SBFBackdropLegibilitySettingsProvider)initWithBackdropView:(id)a3
+- (SBFBackdropLegibilitySettingsProvider)initWithBackdropView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = SBFBackdropLegibilitySettingsProvider;
   v6 = [(SBFBackdropLegibilitySettingsProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backdropView, a3);
+    objc_storeStrong(&v6->_backdropView, view);
     legibilitySettings = v7->_legibilitySettings;
     v7->_legibilitySettings = 0;
 
@@ -35,9 +35,9 @@
   [(SBFBackdropLegibilitySettingsProvider *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -60,16 +60,16 @@
   }
 }
 
-- (void)backdropViewDidChange:(id)a3
+- (void)backdropViewDidChange:(id)change
 {
-  v4 = [a3 inputSettings];
-  v10 = [v4 colorSettings];
+  inputSettings = [change inputSettings];
+  colorSettings = [inputSettings colorSettings];
 
-  if (v10)
+  if (colorSettings)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD5B8]);
-    v6 = [v10 color];
-    v7 = [v5 initWithContentColor:v6];
+    color = [colorSettings color];
+    v7 = [v5 initWithContentColor:color];
     legibilitySettings = self->_legibilitySettings;
     self->_legibilitySettings = v7;
 

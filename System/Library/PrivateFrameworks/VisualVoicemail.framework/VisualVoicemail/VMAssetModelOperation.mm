@@ -1,8 +1,8 @@
 @interface VMAssetModelOperation
-- (VMAssetModelOperation)initWithAssetModelOperationConfiguration:(id)a3;
+- (VMAssetModelOperation)initWithAssetModelOperationConfiguration:(id)configuration;
 - (void)cancel;
 - (void)dealloc;
-- (void)downloadComplete:(BOOL)a3;
+- (void)downloadComplete:(BOOL)complete;
 - (void)installLIDAsset;
 - (void)installSpeechAsset;
 - (void)start;
@@ -10,9 +10,9 @@
 
 @implementation VMAssetModelOperation
 
-- (VMAssetModelOperation)initWithAssetModelOperationConfiguration:(id)a3
+- (VMAssetModelOperation)initWithAssetModelOperationConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,7 +27,7 @@
   if (v6)
   {
     [(VMAssetModelOperation *)v6 configureProgressWithUnitCount:1];
-    [(VMAssetModelOperation *)v7 setAssetModelOperationConfig:v4];
+    [(VMAssetModelOperation *)v7 setAssetModelOperationConfig:configurationCopy];
   }
 
   return v7;
@@ -75,20 +75,20 @@
     [(VMAssetModelOperation *)self willChangeValueForKey:@"isExecuting"];
     self->_isExecuting = 1;
     [(VMAssetModelOperation *)self didChangeValueForKey:@"isExecuting"];
-    v5 = [(VMAssetModelOperation *)self assetModelOperationConfig];
-    v6 = [v5 assetModelType];
+    assetModelOperationConfig = [(VMAssetModelOperation *)self assetModelOperationConfig];
+    assetModelType = [assetModelOperationConfig assetModelType];
 
-    if (v6 == 2)
+    if (assetModelType == 2)
     {
       [(VMAssetModelOperation *)self installLIDAsset];
     }
 
     else
     {
-      v7 = [(VMAssetModelOperation *)self assetModelOperationConfig];
-      v8 = [v7 assetModelType];
+      assetModelOperationConfig2 = [(VMAssetModelOperation *)self assetModelOperationConfig];
+      assetModelType2 = [assetModelOperationConfig2 assetModelType];
 
-      if (v8 == 1)
+      if (assetModelType2 == 1)
       {
         [(VMAssetModelOperation *)self installSpeechAsset];
       }
@@ -101,8 +101,8 @@
         v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
         v11 = [NSError errorWithDomain:v9 code:5001 userInfo:v10];
 
-        v12 = [(VMAssetModelOperation *)self operationCompletion];
-        (v12)[2](v12, 0, v11);
+        operationCompletion = [(VMAssetModelOperation *)self operationCompletion];
+        (operationCompletion)[2](operationCompletion, 0, v11);
       }
     }
 
@@ -124,7 +124,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelled transcription model install operation %@.", buf, 0xCu);
   }
 }
@@ -141,17 +141,17 @@
   objc_initWeak(&location, self);
   v4 = dispatch_semaphore_create(0);
   v5 = [SFEntitledAssetConfig alloc];
-  v6 = [(VMAssetModelOperation *)self assetModelOperationConfig];
-  v7 = [v6 language];
-  v8 = [(VMAssetModelOperation *)self assetModelOperationConfig];
-  v9 = [v5 initWithLanguage:v7 taskHint:{objc_msgSend(v8, "speechTaskHint")}];
+  assetModelOperationConfig = [(VMAssetModelOperation *)self assetModelOperationConfig];
+  language = [assetModelOperationConfig language];
+  assetModelOperationConfig2 = [(VMAssetModelOperation *)self assetModelOperationConfig];
+  v9 = [v5 initWithLanguage:language taskHint:{objc_msgSend(assetModelOperationConfig2, "speechTaskHint")}];
 
   v10 = vm_vmd_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 language];
+    language2 = [v9 language];
     *buf = 138412290;
-    v24 = v11;
+    v24 = language2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "VMAssetModelOperation.install: Fetching assets for %@", buf, 0xCu);
   }
 
@@ -167,7 +167,7 @@
   v12 = v21;
   v16 = v12;
   objc_copyWeak(&v19, &location);
-  v17 = self;
+  selfCopy = self;
   v13 = v4;
   v18 = v13;
   [SFSpeechAssetManager fetchAssetWithConfig:v12 clientIdentifier:@"com.apple.visualvoicemail" progress:v20 completion:v15 timeout:1800.0];
@@ -222,14 +222,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)downloadComplete:(BOOL)a3
+- (void)downloadComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (completeCopy)
     {
       v6 = @"YES";
     }

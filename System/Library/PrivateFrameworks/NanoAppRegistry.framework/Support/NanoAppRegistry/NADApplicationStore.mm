@@ -2,28 +2,28 @@
 + (id)defaultStore;
 + (id)defaultURL;
 + (id)legacyDefaultURL;
-- (NADApplicationStore)initWithURL:(id)a3;
-- (id)_allApplicationsIncludingHidden:(BOOL)a3;
-- (id)_applicationBundleIdentifiersForParentApplicationBundleIdentifier:(id)a3;
+- (NADApplicationStore)initWithURL:(id)l;
+- (id)_allApplicationsIncludingHidden:(BOOL)hidden;
+- (id)_applicationBundleIdentifiersForParentApplicationBundleIdentifier:(id)identifier;
 - (id)_storeMetadataURL;
-- (id)allApplicationsIncludingHidden:(BOOL)a3;
+- (id)allApplicationsIncludingHidden:(BOOL)hidden;
 - (id)beginTransaction;
 - (id)description;
-- (id)watchAppIDsForParentBundleID:(id)a3;
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3;
-- (void)_insertApplication:(id)a3;
-- (void)_insertApplicationIntoCache:(id)a3;
+- (id)watchAppIDsForParentBundleID:(id)d;
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints;
+- (void)_insertApplication:(id)application;
+- (void)_insertApplicationIntoCache:(id)cache;
 - (void)_loadEntitiesFromDisk;
-- (void)_removeApplicationFromCache:(id)a3;
-- (void)_removeApplicationWithBundleIdentifier:(id)a3;
+- (void)_removeApplicationFromCache:(id)cache;
+- (void)_removeApplicationWithBundleIdentifier:(id)identifier;
 - (void)_writeStoreMetadata;
-- (void)getAllApplications:(id *)a3 UUID:(id *)a4 sequenceNumber:(id *)a5 includeHidden:(BOOL)a6;
-- (void)insertApplication:(id)a3;
-- (void)performTransactionWithBlock:(id)a3;
+- (void)getAllApplications:(id *)applications UUID:(id *)d sequenceNumber:(id *)number includeHidden:(BOOL)hidden;
+- (void)insertApplication:(id)application;
+- (void)performTransactionWithBlock:(id)block;
 - (void)removeAllEntities;
-- (void)removeApplicationWithBundleIdentifier:(id)a3;
-- (void)removeApplicationsWithParentApplicationBundleIdentifier:(id)a3;
-- (void)setSequenceNumber:(id)a3 UUID:(id)a4;
+- (void)removeApplicationWithBundleIdentifier:(id)identifier;
+- (void)removeApplicationsWithParentApplicationBundleIdentifier:(id)identifier;
+- (void)setSequenceNumber:(id)number UUID:(id)d;
 @end
 
 @implementation NADApplicationStore
@@ -44,9 +44,9 @@
 {
   v2 = objc_alloc_init(NSFileManager);
   v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 URLByAppendingPathComponent:@"NanoAppRegistry" isDirectory:1];
+  v5 = [firstObject URLByAppendingPathComponent:@"NanoAppRegistry" isDirectory:1];
 
   return v5;
 }
@@ -73,9 +73,9 @@
   return v3;
 }
 
-- (NADApplicationStore)initWithURL:(id)a3
+- (NADApplicationStore)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v48.receiver = self;
   v48.super_class = NADApplicationStore;
   v5 = [(NADApplicationStore *)&v48 init];
@@ -85,12 +85,12 @@
     fileManager = v5->_fileManager;
     v5->_fileManager = v6;
 
-    if (!v4)
+    if (!lCopy)
     {
-      v4 = [objc_opt_class() defaultURL];
+      lCopy = [objc_opt_class() defaultURL];
     }
 
-    v8 = [v4 URLByAppendingPathComponent:@"Applications" isDirectory:1];
+    v8 = [lCopy URLByAppendingPathComponent:@"Applications" isDirectory:1];
     applicationDirectory = v5->_applicationDirectory;
     v5->_applicationDirectory = v8;
 
@@ -98,13 +98,13 @@
     queue = v5->_queue;
     v5->_queue = v10;
 
-    v12 = [v4 URLByAppendingPathComponent:@"Applications" isDirectory:1];
+    v12 = [lCopy URLByAppendingPathComponent:@"Applications" isDirectory:1];
     v13 = +[NADAppSerializer applicationSerializer];
     v14 = [[NADEntityStore alloc] initWithDirectory:v12 serializer:v13 identifierBlock:&stru_1000184D8];
     applicationStore = v5->_applicationStore;
     v5->_applicationStore = v14;
 
-    v16 = [v4 URLByAppendingPathComponent:@"Glances" isDirectory:1];
+    v16 = [lCopy URLByAppendingPathComponent:@"Glances" isDirectory:1];
     v17 = +[NSFileManager defaultManager];
     [v17 removeItemAtURL:v16 error:0];
 
@@ -116,8 +116,8 @@
     bundleIDToApplicationMap = v5->_bundleIDToApplicationMap;
     v5->_bundleIDToApplicationMap = v20;
 
-    v22 = [(NADApplicationStore *)v5 _storeMetadataURL];
-    v23 = [NSData dataWithContentsOfURL:v22];
+    _storeMetadataURL = [(NADApplicationStore *)v5 _storeMetadataURL];
+    v23 = [NSData dataWithContentsOfURL:_storeMetadataURL];
 
     if (v23)
     {
@@ -167,8 +167,8 @@
 
 - (void)removeAllEntities
 {
-  v3 = [(NADApplicationStore *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(NADApplicationStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = nar_workspace_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -182,31 +182,31 @@
   [(NSMutableDictionary *)self->_bundleIDToApplicationMap removeAllObjects];
 }
 
-- (void)insertApplication:(id)a3
+- (void)insertApplication:(id)application
 {
-  v5 = a3;
-  v4 = [(NADApplicationStore *)self queue];
-  dispatch_assert_queue_V2(v4);
+  applicationCopy = application;
+  queue = [(NADApplicationStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(NADApplicationStore *)self _insertApplication:v5];
+  [(NADApplicationStore *)self _insertApplication:applicationCopy];
 }
 
-- (void)removeApplicationWithBundleIdentifier:(id)a3
+- (void)removeApplicationWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [(NADApplicationStore *)self queue];
-  dispatch_assert_queue_V2(v4);
+  identifierCopy = identifier;
+  queue = [(NADApplicationStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [(NADApplicationStore *)self _removeApplicationWithBundleIdentifier:v5];
+  [(NADApplicationStore *)self _removeApplicationWithBundleIdentifier:identifierCopy];
 }
 
-- (void)removeApplicationsWithParentApplicationBundleIdentifier:(id)a3
+- (void)removeApplicationsWithParentApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NADApplicationStore *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(NADApplicationStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(NADApplicationStore *)self _applicationBundleIdentifiersForParentApplicationBundleIdentifier:v4];
+  v6 = [(NADApplicationStore *)self _applicationBundleIdentifiersForParentApplicationBundleIdentifier:identifierCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -238,15 +238,15 @@
   }
 }
 
-- (id)_applicationBundleIdentifiersForParentApplicationBundleIdentifier:(id)a3
+- (id)_applicationBundleIdentifiersForParentApplicationBundleIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap objectForKeyedSubscript:a3];
-  v4 = [v3 allObjects];
+  v3 = [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap objectForKeyedSubscript:identifier];
+  allObjects = [v3 allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (id)allApplicationsIncludingHidden:(BOOL)a3
+- (id)allApplicationsIncludingHidden:(BOOL)hidden
 {
   v10 = 0;
   v11 = &v10;
@@ -254,15 +254,15 @@
   v13 = sub_1000011D8;
   v14 = sub_1000011E8;
   v15 = 0;
-  v5 = [(NADApplicationStore *)self queue];
+  queue = [(NADApplicationStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001ABC;
   block[3] = &unk_100018528;
   block[4] = self;
   block[5] = &v10;
-  v9 = a3;
-  dispatch_sync(v5, block);
+  hiddenCopy = hidden;
+  dispatch_sync(queue, block);
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -270,29 +270,29 @@
   return v6;
 }
 
-- (void)getAllApplications:(id *)a3 UUID:(id *)a4 sequenceNumber:(id *)a5 includeHidden:(BOOL)a6
+- (void)getAllApplications:(id *)applications UUID:(id *)d sequenceNumber:(id *)number includeHidden:(BOOL)hidden
 {
-  v11 = [(NADApplicationStore *)self queue];
+  queue = [(NADApplicationStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001BBC;
   block[3] = &unk_100018550;
   block[4] = self;
-  block[5] = a3;
-  v13 = a6;
-  block[6] = a4;
-  block[7] = a5;
-  dispatch_sync(v11, block);
+  block[5] = applications;
+  hiddenCopy = hidden;
+  block[6] = d;
+  block[7] = number;
+  dispatch_sync(queue, block);
 }
 
 - (void)_loadEntitiesFromDisk
 {
-  v3 = [(NADEntityStore *)self->_applicationStore allEntities];
+  allEntities = [(NADEntityStore *)self->_applicationStore allEntities];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allEntities countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -304,7 +304,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allEntities);
         }
 
         [(NADApplicationStore *)self _insertApplicationIntoCache:*(*(&v8 + 1) + 8 * v7)];
@@ -312,49 +312,49 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allEntities countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_insertApplication:(id)a3
+- (void)_insertApplication:(id)application
 {
   applicationStore = self->_applicationStore;
-  v5 = a3;
-  [(NADEntityStore *)applicationStore addEntity:v5];
-  [(NADApplicationStore *)self _insertApplicationIntoCache:v5];
+  applicationCopy = application;
+  [(NADEntityStore *)applicationStore addEntity:applicationCopy];
+  [(NADApplicationStore *)self _insertApplicationIntoCache:applicationCopy];
 }
 
-- (void)_insertApplicationIntoCache:(id)a3
+- (void)_insertApplicationIntoCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 parentApplicationBundleIdentifier];
-  v7 = [(NADApplicationStore *)self watchAppIDsForParentBundleID:v5];
+  cacheCopy = cache;
+  parentApplicationBundleIdentifier = [cacheCopy parentApplicationBundleIdentifier];
+  v7 = [(NADApplicationStore *)self watchAppIDsForParentBundleID:parentApplicationBundleIdentifier];
 
-  v6 = [v4 applicationIdentifier];
-  [v7 addObject:v6];
-  [(NSMutableDictionary *)self->_bundleIDToApplicationMap setObject:v4 forKeyedSubscript:v6];
+  applicationIdentifier = [cacheCopy applicationIdentifier];
+  [v7 addObject:applicationIdentifier];
+  [(NSMutableDictionary *)self->_bundleIDToApplicationMap setObject:cacheCopy forKeyedSubscript:applicationIdentifier];
 }
 
-- (id)watchAppIDsForParentBundleID:(id)a3
+- (id)watchAppIDsForParentBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap objectForKeyedSubscript:dCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (dCopy && !v5)
   {
     v6 = +[NSMutableSet set];
-    [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap setObject:v6 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_parentBundleIDToWatchAppMap setObject:v6 forKeyedSubscript:dCopy];
   }
 
   return v6;
 }
 
-- (void)_removeApplicationWithBundleIdentifier:(id)a3
+- (void)_removeApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_bundleIDToApplicationMap objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_bundleIDToApplicationMap objectForKeyedSubscript:identifier];
   if (v4)
   {
     v5 = v4;
@@ -365,25 +365,25 @@
   _objc_release_x1();
 }
 
-- (void)_removeApplicationFromCache:(id)a3
+- (void)_removeApplicationFromCache:(id)cache
 {
-  v4 = a3;
-  v5 = [v4 parentApplicationBundleIdentifier];
-  v7 = [(NADApplicationStore *)self watchAppIDsForParentBundleID:v5];
+  cacheCopy = cache;
+  parentApplicationBundleIdentifier = [cacheCopy parentApplicationBundleIdentifier];
+  v7 = [(NADApplicationStore *)self watchAppIDsForParentBundleID:parentApplicationBundleIdentifier];
 
-  v6 = [v4 applicationIdentifier];
+  applicationIdentifier = [cacheCopy applicationIdentifier];
 
-  [v7 removeObject:v6];
-  [(NSMutableDictionary *)self->_bundleIDToApplicationMap removeObjectForKey:v6];
+  [v7 removeObject:applicationIdentifier];
+  [(NSMutableDictionary *)self->_bundleIDToApplicationMap removeObjectForKey:applicationIdentifier];
 }
 
-- (id)_allApplicationsIncludingHidden:(BOOL)a3
+- (id)_allApplicationsIncludingHidden:(BOOL)hidden
 {
-  v4 = [(NSMutableDictionary *)self->_bundleIDToApplicationMap allValues];
-  v5 = v4;
-  if (a3)
+  allValues = [(NSMutableDictionary *)self->_bundleIDToApplicationMap allValues];
+  v5 = allValues;
+  if (hidden)
   {
-    v6 = v4;
+    v6 = allValues;
   }
 
   else
@@ -425,21 +425,21 @@
   return v6;
 }
 
-- (void)setSequenceNumber:(id)a3 UUID:(id)a4
+- (void)setSequenceNumber:(id)number UUID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NADApplicationStore *)self queue];
-  dispatch_assert_queue_V2(v7);
+  numberCopy = number;
+  dCopy = d;
+  queue = [(NADApplicationStore *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v8)
+  if (numberCopy)
   {
-    [(NSMutableDictionary *)self->_storeMetadata setObject:v8 forKeyedSubscript:@"sequenceNumber"];
+    [(NSMutableDictionary *)self->_storeMetadata setObject:numberCopy forKeyedSubscript:@"sequenceNumber"];
   }
 
-  if (v6)
+  if (dCopy)
   {
-    [(NSMutableDictionary *)self->_storeMetadata setObject:v6 forKeyedSubscript:@"UUID"];
+    [(NSMutableDictionary *)self->_storeMetadata setObject:dCopy forKeyedSubscript:@"UUID"];
   }
 
   [(NADApplicationStore *)self _writeStoreMetadata];
@@ -449,16 +449,16 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(NADApplicationStore *)self applicationDirectory];
-  v6 = [NSString stringWithFormat:@"<%@ %p path=%@>", v4, self, v5];;
+  applicationDirectory = [(NADApplicationStore *)self applicationDirectory];
+  v6 = [NSString stringWithFormat:@"<%@ %p path=%@>", v4, self, applicationDirectory];;
 
   return v6;
 }
 
 - (id)_storeMetadataURL
 {
-  v2 = [(NADApplicationStore *)self applicationDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"storeMetadata.dat" isDirectory:0];
+  applicationDirectory = [(NADApplicationStore *)self applicationDirectory];
+  v3 = [applicationDirectory URLByAppendingPathComponent:@"storeMetadata.dat" isDirectory:0];
 
   return v3;
 }
@@ -477,9 +477,9 @@
   v5 = [NSKeyedArchiver archivedDataWithRootObject:self->_storeMetadata];
   if (v5)
   {
-    v6 = [(NADApplicationStore *)self _storeMetadataURL];
+    _storeMetadataURL = [(NADApplicationStore *)self _storeMetadataURL];
     v16 = 0;
-    v7 = [v5 writeToURL:v6 options:268435457 error:&v16];
+    v7 = [v5 writeToURL:_storeMetadataURL options:268435457 error:&v16];
     v8 = v16;
 
     if ((v7 & 1) == 0)
@@ -500,29 +500,29 @@
   return v2;
 }
 
-- (void)performTransactionWithBlock:(id)a3
+- (void)performTransactionWithBlock:(id)block
 {
   queue = self->_queue;
-  v5 = a3;
+  blockCopy = block;
   dispatch_assert_queue_not_V2(queue);
-  v6 = [(NADApplicationStore *)self beginTransaction];
-  v5[2](v5, v6);
+  beginTransaction = [(NADApplicationStore *)self beginTransaction];
+  blockCopy[2](blockCopy, beginTransaction);
 
-  [v6 commit:0];
+  [beginTransaction commit:0];
 }
 
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints
 {
   v4 = [(NADApplicationStore *)self _allApplicationsIncludingHidden:1];
   v5 = [v4 count];
 
-  v6 = [(NADApplicationStore *)self UUID];
-  v7 = [(NADApplicationStore *)self sequenceNumber];
+  uUID = [(NADApplicationStore *)self UUID];
+  sequenceNumber = [(NADApplicationStore *)self sequenceNumber];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v6 UUIDString];
+  uUIDString = [uUID UUIDString];
   v11 = [NSNumber numberWithInteger:v5];
-  v12 = [NSString stringWithFormat:@"<%@ %p UUID=%@; sequenceNumber=%@; applicationCount=%@>", v9, self, v10, v7, v11];;
+  v12 = [NSString stringWithFormat:@"<%@ %p UUID=%@; sequenceNumber=%@; applicationCount=%@>", v9, self, uUIDString, sequenceNumber, v11];;
 
   v18 = 0;
   v13 = [NSPropertyListSerialization dataWithPropertyList:v12 format:200 options:0 error:&v18];

@@ -1,7 +1,7 @@
 @interface UpdateStore
 - (void)broadcastChangeNotificationIfNotCoalescing;
 - (void)dealloc;
-- (void)reloadFromServerWithCompletionBlock:(id)a3;
+- (void)reloadFromServerWithCompletionBlock:(id)block;
 @end
 
 @implementation UpdateStore
@@ -9,18 +9,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for UpdateStore();
   [(ASDSoftwareUpdatesStore *)&v6 dealloc];
 }
 
-- (void)reloadFromServerWithCompletionBlock:(id)a3
+- (void)reloadFromServerWithCompletionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = v4;
@@ -35,14 +35,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1E156873C(v7, v6);
   sub_1E1300EA8(v7);
 }
 
 - (void)broadcastChangeNotificationIfNotCoalescing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E15690C0();
 }
 

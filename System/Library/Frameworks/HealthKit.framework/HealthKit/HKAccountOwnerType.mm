@@ -7,7 +7,7 @@
 + (id)allTypes
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 accountOwnerTypeForIdentifier:@"HKMedicalTypeIdentifierAccountOwner"];
+  v2 = [self accountOwnerTypeForIdentifier:@"HKMedicalTypeIdentifierAccountOwner"];
   v6[0] = v2;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 

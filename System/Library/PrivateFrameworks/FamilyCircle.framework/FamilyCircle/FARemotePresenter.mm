@@ -1,35 +1,35 @@
 @interface FARemotePresenter
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_callCompletionWithResponse:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_callCompletionWithResponse:(id)response;
 - (void)dealloc;
-- (void)presentRemoteUserInterfaceWithOptions:(id)a3 completion:(id)a4;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentRemoteUserInterfaceWithOptions:(id)options completion:(id)completion;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation FARemotePresenter
 
-- (void)presentRemoteUserInterfaceWithOptions:(id)a3 completion:(id)a4
+- (void)presentRemoteUserInterfaceWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v8 = +[NSXPCListener anonymousListener];
   remoteListener = self->_remoteListener;
   self->_remoteListener = v8;
 
   [(NSXPCListener *)self->_remoteListener setDelegate:self];
   [(NSXPCListener *)self->_remoteListener resume];
-  [(FARemotePresenter *)self setPresentationCompletion:v6];
+  [(FARemotePresenter *)self setPresentationCompletion:completionCopy];
 
   v10 = [SBSRemoteAlertDefinition alloc];
   v11 = [v10 initWithServiceName:FARemoteServiceName viewControllerClassName:FARemoteAlertServiceViewControllerClassName];
   v12 = objc_opt_new();
-  [v12 setUserInfo:v7];
+  [v12 setUserInfo:optionsCopy];
 
-  v13 = [(NSXPCListener *)self->_remoteListener endpoint];
-  v14 = [v13 _endpoint];
-  [v12 setXpcEndpoint:v14];
+  endpoint = [(NSXPCListener *)self->_remoteListener endpoint];
+  _endpoint = [endpoint _endpoint];
+  [v12 setXpcEndpoint:_endpoint];
 
   v15 = [SBSRemoteAlertHandle newHandleWithDefinition:v11 configurationContext:v12];
   [v15 addObserver:self];
@@ -45,52 +45,52 @@
   [v15 activateWithContext:v17];
 }
 
-- (void)_callCompletionWithResponse:(id)a3
+- (void)_callCompletionWithResponse:(id)response
 {
-  v6 = a3;
-  v4 = [(FARemotePresenter *)self presentationCompletion];
+  responseCopy = response;
+  presentationCompletion = [(FARemotePresenter *)self presentationCompletion];
 
-  if (v4)
+  if (presentationCompletion)
   {
-    v5 = [(FARemotePresenter *)self presentationCompletion];
-    (v5)[2](v5, v6);
+    presentationCompletion2 = [(FARemotePresenter *)self presentationCompletion];
+    (presentationCompletion2)[2](presentationCompletion2, responseCopy);
 
     [(FARemotePresenter *)self setPresentationCompletion:0];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[FAFamilyPresenterHostInterface XPCInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v3 = a3;
+  activateCopy = activate;
   v4 = _FALogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = activateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Alert handle activated: %@", &v5, 0xCu);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = deactivateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Alert handle deactivated %@", &v8, 0xCu);
   }
 
@@ -99,23 +99,23 @@
   [(FARemotePresenter *)self _callCompletionWithResponse:v7];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = handleCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Alert handler interrupted!: %@ %@", &v10, 0x16u);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v9 = [[FACircleStateResponse alloc] initWithLoadSuccess:0 error:v7 userInfo:0];
+    v9 = [[FACircleStateResponse alloc] initWithLoadSuccess:0 error:errorCopy userInfo:0];
     [(FARemotePresenter *)self _callCompletionWithResponse:v9];
   }
 }

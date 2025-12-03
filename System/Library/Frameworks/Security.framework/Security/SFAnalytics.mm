@@ -1,65 +1,65 @@
 @interface SFAnalytics
-+ (BOOL)parseEventFilter:(id)a3 format:(id)a4 error:(id *)a5;
-+ (BOOL)parseRules:(id)a3 format:(id)a4 error:(id *)a5;
-+ (BOOL)validateSFACollection:(id)a3 error:(id *)a4;
-+ (id)defaultAnalyticsDatabasePath:(id)a3;
-+ (id)defaultProtectedAnalyticsDatabasePath:(id)a3;
-+ (id)defaultProtectedAnalyticsDatabasePath:(id)a3 uuid:(id)a4;
-+ (id)encodeSFACollection:(id)a3 error:(id *)a4;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 underlying:(id)a5;
-+ (id)formatSFACollection:(id)a3 error:(id *)a4;
-+ (id)fuzzyNumber:(id)a3;
++ (BOOL)parseEventFilter:(id)filter format:(id)format error:(id *)error;
++ (BOOL)parseRules:(id)rules format:(id)format error:(id *)error;
++ (BOOL)validateSFACollection:(id)collection error:(id *)error;
++ (id)defaultAnalyticsDatabasePath:(id)path;
++ (id)defaultProtectedAnalyticsDatabasePath:(id)path;
++ (id)defaultProtectedAnalyticsDatabasePath:(id)path uuid:(id)uuid;
++ (id)encodeSFACollection:(id)collection error:(id *)error;
++ (id)errorWithCode:(int64_t)code description:(id)description;
++ (id)errorWithCode:(int64_t)code description:(id)description underlying:(id)underlying;
++ (id)formatSFACollection:(id)collection error:(id *)error;
++ (id)fuzzyNumber:(id)number;
 + (id)hwModelID;
 + (id)logger;
-+ (id)parseAction:(id)a3 error:(id *)a4;
-+ (id)parseVersions:(id)a3 error:(id *)a4;
-+ (id)treeOfUnderlyingErrors:(id)a3 depth:(int64_t)a4;
-+ (id)underlyingErrors:(id)a3;
-+ (int64_t)fuzzyDaysSinceDate:(id)a3;
-+ (int64_t)fuzzyInteger:(int64_t)a3;
-+ (void)addOSVersionToEvent:(id)a3;
++ (id)parseAction:(id)action error:(id *)error;
++ (id)parseVersions:(id)versions error:(id *)error;
++ (id)treeOfUnderlyingErrors:(id)errors depth:(int64_t)depth;
++ (id)underlyingErrors:(id)errors;
++ (int64_t)fuzzyDaysSinceDate:(id)date;
++ (int64_t)fuzzyInteger:(int64_t)integer;
++ (void)addOSVersionToEvent:(id)event;
 + (void)logConsumerProcessInfo;
-+ (void)removeLegacyDefaultAnalyticsDatabasePath:(id)a3 usingDispatchToken:(int64_t *)a4;
++ (void)removeLegacyDefaultAnalyticsDatabasePath:(id)path usingDispatchToken:(int64_t *)token;
 - (SFAnalytics)init;
-- (id)AddMultiSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5;
-- (id)addMetricSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5;
-- (id)coreAnalyticsKeyFilter:(id)a3;
+- (id)AddMultiSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block;
+- (id)addMetricSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block;
+- (id)coreAnalyticsKeyFilter:(id)filter;
 - (id)dailyMetrics;
-- (id)dataPropertyForKey:(id)a3;
+- (id)dataPropertyForKey:(id)key;
 - (id)database;
-- (id)datePropertyForKey:(id)a3;
-- (id)eventDictForEventName:(id)a3 withAttributes:(id)a4 eventClass:(int64_t)a5 timestampBucket:(double)a6;
-- (id)existingMetricSamplerForName:(id)a3;
-- (id)existingMultiSamplerForName:(id)a3;
-- (id)logSystemMetricsForActivityNamed:(id)a3 withAction:(id)a4;
+- (id)datePropertyForKey:(id)key;
+- (id)eventDictForEventName:(id)name withAttributes:(id)attributes eventClass:(int64_t)class timestampBucket:(double)bucket;
+- (id)existingMetricSamplerForName:(id)name;
+- (id)existingMultiSamplerForName:(id)name;
+- (id)logSystemMetricsForActivityNamed:(id)named withAction:(id)action;
 - (id)metricsAccountID;
-- (id)numberPropertyForKey:(id)a3;
-- (id)startLogSystemMetricsForActivityNamed:(id)a3;
-- (void)addMetricsHook:(id)a3;
-- (void)dailyCoreAnalyticsMetrics:(id)a3;
-- (void)incrementIntegerPropertyForKey:(id)a3;
+- (id)numberPropertyForKey:(id)key;
+- (id)startLogSystemMetricsForActivityNamed:(id)named;
+- (void)addMetricsHook:(id)hook;
+- (void)dailyCoreAnalyticsMetrics:(id)metrics;
+- (void)incrementIntegerPropertyForKey:(id)key;
 - (void)loadCollectionConfiguration;
-- (void)logEventNamed:(id)a3 class:(int64_t)a4 attributes:(id)a5 timestampBucket:(unsigned int)a6;
-- (void)logMetric:(id)a3 withName:(id)a4 oncePerReport:(BOOL)a5;
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5 withAttributes:(id)a6 timestampBucket:(unsigned int)a7;
-- (void)noteLaunchSequence:(id)a3;
-- (void)removeMetricSamplerForName:(id)a3;
-- (void)removeMetricsHook:(id)a3;
-- (void)removeMultiSamplerForName:(id)a3;
-- (void)removeStateAndUnlinkFile:(BOOL)a3;
-- (void)setDataProperty:(id)a3 forKey:(id)a4;
-- (void)setDateProperty:(id)a3 forKey:(id)a4;
-- (void)setMetricsAccountID:(id)a3;
-- (void)setNumberProperty:(id)a3 forKey:(id)a4;
-- (void)updateCollectionConfigurationWithData:(id)a3;
+- (void)logEventNamed:(id)named class:(int64_t)class attributes:(id)attributes timestampBucket:(unsigned int)bucket;
+- (void)logMetric:(id)metric withName:(id)name oncePerReport:(BOOL)report;
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result withAttributes:(id)attributes timestampBucket:(unsigned int)bucket;
+- (void)noteLaunchSequence:(id)sequence;
+- (void)removeMetricSamplerForName:(id)name;
+- (void)removeMetricsHook:(id)hook;
+- (void)removeMultiSamplerForName:(id)name;
+- (void)removeStateAndUnlinkFile:(BOOL)file;
+- (void)setDataProperty:(id)property forKey:(id)key;
+- (void)setDateProperty:(id)property forKey:(id)key;
+- (void)setMetricsAccountID:(id)d;
+- (void)setNumberProperty:(id)property forKey:(id)key;
+- (void)updateCollectionConfigurationWithData:(id)data;
 @end
 
 @implementation SFAnalytics
 
 + (id)logger
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = secLogObjForScope("SecError");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -73,18 +73,18 @@
 
   else
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    v4 = objc_getAssociatedObject(v3, "SFAnalyticsInstance");
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v4 = objc_getAssociatedObject(selfCopy, "SFAnalyticsInstance");
     if (!v4)
     {
-      v4 = objc_alloc_init(v3);
-      objc_setAssociatedObject(v3, "SFAnalyticsInstance", v4, 0x301);
+      v4 = objc_alloc_init(selfCopy);
+      objc_setAssociatedObject(selfCopy, "SFAnalyticsInstance", v4, 0x301);
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
 
-    v5 = [v4 database];
+    database = [v4 database];
   }
 
   return v4;
@@ -96,8 +96,8 @@
   database = self->_database;
   if (!database)
   {
-    v4 = [objc_opt_class() databasePath];
-    v5 = [SFAnalyticsSQLiteStore storeWithPath:v4 schema:@"CREATE TABLE IF NOT EXISTS hard_failures (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n)\nDROP TRIGGER IF EXISTS maintain_ring_buffer_hard_failures;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_hard_failures_v2 AFTER INSERT ON hard_failures\nBEGIN\nDELETE FROM hard_failures WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS soft_failures (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_soft_failures;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_soft_failures_v2 AFTER INSERT ON soft_failures\nBEGIN\nDELETE FROM soft_failures WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS notes (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_notes;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_notes_v2 AFTER INSERT ON notes\nBEGIN\nDELETE FROM notes WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS samples (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, \nname STRING, \nvalue REAL\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_samples;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_samples_v2 AFTER INSERT ON samples\nBEGIN\nDELETE FROM samples WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS success_count (\nevent_type STRING PRIMARY KEY, \nsuccess_count INTEGER, \nhard_failure_count INTEGER, \nsoft_failure_count INTEGER\n);\nCREATE TABLE IF NOT EXISTS rockwell (\nevent_type STRING PRIMARY KEY, \ntimestamp REAL, data BLOB\n);\nCREATE TABLE IF NOT EXISTS upload_file (\nfile STRING PRIMARY KEY, \nstore STRING, \ntimestamp REAL\n);\nDROP TABLE IF EXISTS all_events;\n"];;
+    databasePath = [objc_opt_class() databasePath];
+    v5 = [SFAnalyticsSQLiteStore storeWithPath:databasePath schema:@"CREATE TABLE IF NOT EXISTS hard_failures (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n)\nDROP TRIGGER IF EXISTS maintain_ring_buffer_hard_failures;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_hard_failures_v2 AFTER INSERT ON hard_failures\nBEGIN\nDELETE FROM hard_failures WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS soft_failures (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_soft_failures;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_soft_failures_v2 AFTER INSERT ON soft_failures\nBEGIN\nDELETE FROM soft_failures WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS notes (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, data BLOB\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_notes;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_notes_v2 AFTER INSERT ON notes\nBEGIN\nDELETE FROM notes WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS samples (\nid INTEGER PRIMARY KEY AUTOINCREMENT, \ntimestamp REAL, \nname STRING, \nvalue REAL\n);\nDROP TRIGGER IF EXISTS maintain_ring_buffer_samples;\nCREATE TRIGGER IF NOT EXISTS maintain_ring_buffer_samples_v2 AFTER INSERT ON samples\nBEGIN\nDELETE FROM samples WHERE id <= NEW.id - 1000;\nEND;\nCREATE TABLE IF NOT EXISTS success_count (\nevent_type STRING PRIMARY KEY, \nsuccess_count INTEGER, \nhard_failure_count INTEGER, \nsoft_failure_count INTEGER\n);\nCREATE TABLE IF NOT EXISTS rockwell (\nevent_type STRING PRIMARY KEY, \ntimestamp REAL, data BLOB\n);\nCREATE TABLE IF NOT EXISTS upload_file (\nfile STRING PRIMARY KEY, \nstore STRING, \ntimestamp REAL\n);\nDROP TABLE IF EXISTS all_events;\n"];;
     v6 = self->_database;
     self->_database = v5;
 
@@ -123,43 +123,43 @@
   return database;
 }
 
-+ (id)formatSFACollection:(id)a3 error:(id *)a4
++ (id)formatSFACollection:(id)collection error:(id *)error
 {
-  v4 = [a3 decompressedDataUsingAlgorithm:0 error:a4];
+  v4 = [collection decompressedDataUsingAlgorithm:0 error:error];
   if (v4)
   {
     v5 = [[SECSFARules alloc] initWithData:v4];
     v6 = v5;
     if (v5)
     {
-      v7 = [(SECSFARules *)v5 formattedText];
+      formattedText = [(SECSFARules *)v5 formattedText];
     }
 
     else
     {
-      v7 = 0;
+      formattedText = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    formattedText = 0;
   }
 
-  return v7;
+  return formattedText;
 }
 
-+ (BOOL)validateSFACollection:(id)a3 error:(id *)a4
++ (BOOL)validateSFACollection:(id)collection error:(id *)error
 {
-  v5 = [a3 decompressedDataUsingAlgorithm:0 error:?];
+  v5 = [collection decompressedDataUsingAlgorithm:0 error:?];
   if (v5)
   {
     v6 = [[SECSFARules alloc] initWithData:v5];
     v7 = v6;
     v8 = v6 != 0;
-    if (a4 && !v6)
+    if (error && !v6)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:0];
     }
   }
 
@@ -171,9 +171,9 @@
   return v8;
 }
 
-+ (id)encodeSFACollection:(id)a3 error:(id *)a4
++ (id)encodeSFACollection:(id)collection error:(id *)error
 {
-  v6 = a3;
+  collectionCopy = collection;
   v7 = objc_alloc_init(SECSFARules);
   if (!v7)
   {
@@ -181,7 +181,7 @@
     goto LABEL_24;
   }
 
-  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:a4];
+  v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:collectionCopy options:0 error:error];
   objc_opt_class();
   v9 = 0;
   if (objc_opt_isKindOfClass())
@@ -193,31 +193,31 @@
       if ([v10 intValue] < 3)
       {
         -[SECSFARules setConfigVersion:](v7, "setConfigVersion:", [v10 intValue]);
-        if (![a1 requiredVersion:1 rules:v7 reason:@"base version" error:a4])
+        if (![self requiredVersion:1 rules:v7 reason:@"base version" error:error])
         {
           v9 = 0;
           goto LABEL_22;
         }
 
         v11 = [v8 objectForKeyedSubscript:@"rules"];
-        if (!v11 || [a1 parseRules:v11 format:v7 error:a4])
+        if (!v11 || [self parseRules:v11 format:v7 error:error])
         {
           v15 = [v8 objectForKeyedSubscript:@"versions"];
-          if (!v15 || ([a1 parseVersions:v15 error:a4], v16 = objc_claimAutoreleasedReturnValue(), -[SECSFARules setAllowedBuilds:](v7, "setAllowedBuilds:", v16), v16, -[SECSFARules allowedBuilds](v7, "allowedBuilds"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+          if (!v15 || ([self parseVersions:v15 error:error], v16 = objc_claimAutoreleasedReturnValue(), -[SECSFARules setAllowedBuilds:](v7, "setAllowedBuilds:", v16), v16, -[SECSFARules allowedBuilds](v7, "allowedBuilds"), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
           {
             v17 = [v8 objectForKeyedSubscript:@"eventFilter"];
-            if (v17 && ![a1 parseEventFilter:v17 format:v7 error:a4])
+            if (v17 && ![self parseEventFilter:v17 format:v7 error:error])
             {
               v9 = 0;
             }
 
             else
             {
-              v18 = [(SECSFARules *)v7 data];
-              v19 = v18;
-              if (v18)
+              data = [(SECSFARules *)v7 data];
+              v19 = data;
+              if (data)
               {
-                v9 = [v18 compressedDataUsingAlgorithm:0 error:a4];
+                v9 = [data compressedDataUsingAlgorithm:0 error:error];
               }
 
               else
@@ -234,24 +234,24 @@
       else
       {
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"configVersion not understood %@, this tool knows about %d", v10, 2];
-        v12 = [a1 errorWithCode:15 description:v11];
-        if (a4)
+        v12 = [self errorWithCode:15 description:v11];
+        if (error)
         {
           v12 = v12;
-          *a4 = v12;
+          *error = v12;
         }
       }
     }
 
     else
     {
-      v13 = [a1 errorWithCode:16 description:@"configVersion missing"];
+      v13 = [self errorWithCode:16 description:@"configVersion missing"];
       v11 = v13;
-      if (a4)
+      if (error)
       {
         v14 = v13;
         v9 = 0;
-        *a4 = v11;
+        *error = v11;
 LABEL_21:
 
 LABEL_22:
@@ -270,10 +270,10 @@ LABEL_24:
   return v9;
 }
 
-+ (BOOL)parseEventFilter:(id)a3 format:(id)a4 error:(id *)a5
++ (BOOL)parseEventFilter:(id)filter format:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  filterCopy = filter;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -288,14 +288,14 @@ LABEL_24:
     v14[2] = __60__SFAnalytics_SFACollection__parseEventFilter_format_error___block_invoke;
     v14[3] = &unk_1E70D4978;
     v16 = &v18;
-    v17 = a1;
-    v15 = v9;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    selfCopy = self;
+    v15 = formatCopy;
+    [filterCopy enumerateKeysAndObjectsUsingBlock:v14];
     v10 = v19[5];
     v11 = v10 == 0;
-    if (a5 && v10)
+    if (error && v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
 
     _Block_object_dispose(&v18, 8);
@@ -303,10 +303,10 @@ LABEL_24:
 
   else
   {
-    if (a5)
+    if (error)
     {
-      v12 = [a1 errorWithCode:1 description:@"events key missing"];
-      *a5 = v12;
+      v12 = [self errorWithCode:1 description:@"events key missing"];
+      *error = v12;
     }
 
     v11 = 0;
@@ -356,27 +356,27 @@ void __60__SFAnalytics_SFACollection__parseEventFilter_format_error___block_invo
   }
 }
 
-+ (id)parseVersions:(id)a3 error:(id *)a4
++ (id)parseVersions:(id)versions error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  versionsCopy = versions;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = a4;
+    errorCopy = error;
     v7 = objc_alloc_init(SECSFAVersionMatch);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = v6;
+    v8 = versionsCopy;
     v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v9)
     {
       v10 = v9;
       v11 = *v31;
-      v27 = a1;
-      v28 = v6;
+      selfCopy = self;
+      v28 = versionsCopy;
       while (2)
       {
         for (i = 0; i != v10; ++i)
@@ -390,12 +390,12 @@ void __60__SFAnalytics_SFACollection__parseEventFilter_format_error___block_invo
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v20 = [v27 errorWithCode:3 description:@"versions type invalid"];
+            v20 = [selfCopy errorWithCode:3 description:@"versions type invalid"];
             v14 = v20;
-            if (v29)
+            if (errorCopy)
             {
               v21 = v20;
-              *v29 = v14;
+              *errorCopy = v14;
             }
 
             goto LABEL_24;
@@ -415,16 +415,16 @@ void __60__SFAnalytics_SFACollection__parseEventFilter_format_error___block_invo
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"versions not parsing: %@", v13];
             v22 = LABEL_21:;
-            v23 = [v27 errorWithCode:3 description:v22];
+            v23 = [selfCopy errorWithCode:3 description:v22];
 
-            if (v29)
+            if (errorCopy)
             {
               v24 = v23;
-              *v29 = v23;
+              *errorCopy = v23;
             }
 
 LABEL_24:
-            v6 = v28;
+            versionsCopy = v28;
 
             v18 = 0;
             goto LABEL_25;
@@ -435,7 +435,7 @@ LABEL_24:
         }
 
         v10 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
-        v6 = v28;
+        versionsCopy = v28;
         if (v10)
         {
           continue;
@@ -451,10 +451,10 @@ LABEL_25:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v19 = [a1 errorWithCode:1 description:@"versions key missing"];
-      *a4 = v19;
+      v19 = [self errorWithCode:1 description:@"versions key missing"];
+      *error = v19;
     }
 
     v18 = 0;
@@ -465,11 +465,11 @@ LABEL_25:
   return v18;
 }
 
-+ (BOOL)parseRules:(id)a3 format:(id)a4 error:(id *)a5
++ (BOOL)parseRules:(id)rules format:(id)format error:(id *)error
 {
   v73 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  rulesCopy = rules;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -477,7 +477,7 @@ LABEL_25:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = v8;
+    obj = rulesCopy;
     v57 = [obj countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (!v57)
     {
@@ -485,13 +485,13 @@ LABEL_25:
       goto LABEL_84;
     }
 
-    v60 = v9;
-    v61 = a5;
+    v60 = formatCopy;
+    errorCopy = error;
     v10 = 0x1E695D000uLL;
     v58 = *v69;
     v11 = 0x1E696A000uLL;
-    v63 = a1;
-    v56 = v8;
+    selfCopy = self;
+    v56 = rulesCopy;
     while (1)
     {
       v12 = 0;
@@ -507,13 +507,13 @@ LABEL_25:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v43 = [a1 errorWithCode:3 description:@"rules type invalid"];
+          v43 = [self errorWithCode:3 description:@"rules type invalid"];
           v15 = v43;
-          v8 = v56;
-          if (v61)
+          rulesCopy = v56;
+          if (errorCopy)
           {
             v44 = v43;
-            *v61 = v15;
+            *errorCopy = v15;
           }
 
           goto LABEL_74;
@@ -524,10 +524,10 @@ LABEL_25:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v61)
+          if (errorCopy)
           {
-            v45 = [a1 errorWithCode:2 description:@"eventType missing"];
-            *v61 = v45;
+            v45 = [self errorWithCode:2 description:@"eventType missing"];
+            *errorCopy = v45;
           }
 
           goto LABEL_73;
@@ -543,12 +543,12 @@ LABEL_25:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v8 = v56;
-          v9 = v60;
-          v47 = v61;
-          if (v61)
+          rulesCopy = v56;
+          formatCopy = v60;
+          v47 = errorCopy;
+          if (errorCopy)
           {
-            v48 = [v63 errorWithCode:2 description:@"eventType not a string"];
+            v48 = [selfCopy errorWithCode:2 description:@"eventType not a string"];
             goto LABEL_64;
           }
 
@@ -594,13 +594,13 @@ LABEL_65:
           {
             if (([v17 isEqual:@"rockwell"] & 1) == 0)
             {
-              v8 = v56;
-              v9 = v60;
-              v47 = v61;
-              if (v61)
+              rulesCopy = v56;
+              formatCopy = v60;
+              v47 = errorCopy;
+              if (errorCopy)
               {
                 v55 = [*(v11 + 3776) stringWithFormat:@"unknown eventclass: %@", v17];
-                v48 = [v63 errorWithCode:2 description:v55];
+                v48 = [selfCopy errorWithCode:2 description:v55];
 
 LABEL_64:
                 v49 = v48;
@@ -628,11 +628,11 @@ LABEL_15:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v46 = [a1 errorWithCode:4 description:@"match missing"];
-          if (v61)
+          v46 = [self errorWithCode:4 description:@"match missing"];
+          if (errorCopy)
           {
             v46 = v46;
-            *v61 = v46;
+            *errorCopy = v46;
           }
 
           goto LABEL_72;
@@ -644,10 +644,10 @@ LABEL_15:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v61)
+            if (errorCopy)
             {
-              v50 = [a1 errorWithCode:5 description:@"repeatAfterSeconds not number"];
-              *v61 = v50;
+              v50 = [self errorWithCode:5 description:@"repeatAfterSeconds not number"];
+              *errorCopy = v50;
             }
 
             goto LABEL_72;
@@ -662,17 +662,17 @@ LABEL_15:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v61)
+            if (errorCopy)
             {
-              v51 = [a1 errorWithCode:5 description:@"processName not string"];
-              *v61 = v51;
+              v51 = [self errorWithCode:5 description:@"processName not string"];
+              *errorCopy = v51;
             }
 
 LABEL_72:
 LABEL_73:
-            v8 = v56;
+            rulesCopy = v56;
 LABEL_74:
-            v9 = v60;
+            formatCopy = v60;
             goto LABEL_83;
           }
         }
@@ -685,10 +685,10 @@ LABEL_74:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (v61)
+            if (errorCopy)
             {
-              v52 = [a1 errorWithCode:5 description:@"matchOnFirstFailure not number"];
-              *v61 = v52;
+              v52 = [self errorWithCode:5 description:@"matchOnFirstFailure not number"];
+              *errorCopy = v52;
             }
 
             goto LABEL_81;
@@ -700,7 +700,7 @@ LABEL_74:
         v62 = v17;
         if (objc_opt_isKindOfClass())
         {
-          if (![a1 requiredVersion:2 rules:v60 reason:@"versions on rule" error:v61])
+          if (![self requiredVersion:2 rules:v60 reason:@"versions on rule" error:errorCopy])
           {
             goto LABEL_80;
           }
@@ -711,10 +711,10 @@ LABEL_74:
           v31 = v67;
           if (!v30)
           {
-            if (v61)
+            if (errorCopy)
             {
               v31 = v31;
-              *v61 = v31;
+              *errorCopy = v31;
             }
 
             v17 = v62;
@@ -722,8 +722,8 @@ LABEL_80:
 
 LABEL_81:
 LABEL_82:
-            v8 = v56;
-            v9 = v60;
+            rulesCopy = v56;
+            formatCopy = v60;
             v15 = v64;
 LABEL_83:
 
@@ -754,39 +754,39 @@ LABEL_83:
         v35 = v66;
         [(SECSFAEventRule *)v32 setMatch:v34];
 
-        v36 = [(SECSFAEventRule *)v32 match];
+        match = [(SECSFAEventRule *)v32 match];
 
-        if (!v36)
+        if (!match)
         {
-          if (v61)
+          if (errorCopy)
           {
-            *v61 = [v63 errorWithCode:12 description:@"plist encode failed" underlying:v35];
+            *errorCopy = [selfCopy errorWithCode:12 description:@"plist encode failed" underlying:v35];
           }
 
           goto LABEL_82;
         }
 
         v37 = [v13 objectForKeyedSubscript:@"action"];
-        v38 = [v63 parseAction:v37 error:v61];
+        v38 = [selfCopy parseAction:v37 error:errorCopy];
         [(SECSFAEventRule *)v32 setAction:v38];
 
-        v39 = [(SECSFAEventRule *)v32 action];
+        action = [(SECSFAEventRule *)v32 action];
 
-        if (v39)
+        if (action)
         {
           [v60 addEventRules:v32];
         }
 
-        if (!v39)
+        if (!action)
         {
           v41 = 0;
-          v8 = v56;
-          v9 = v60;
+          rulesCopy = v56;
+          formatCopy = v60;
           goto LABEL_84;
         }
 
         ++v12;
-        a1 = v63;
+        self = selfCopy;
         v10 = 0x1E695D000;
         v11 = 0x1E696A000;
       }
@@ -794,8 +794,8 @@ LABEL_83:
       while (v57 != v12);
       v40 = [obj countByEnumeratingWithState:&v68 objects:v72 count:16];
       v41 = 1;
-      v8 = v56;
-      v9 = v60;
+      rulesCopy = v56;
+      formatCopy = v60;
       v57 = v40;
       if (!v40)
       {
@@ -806,10 +806,10 @@ LABEL_84:
     }
   }
 
-  if (a5)
+  if (error)
   {
-    v42 = [a1 errorWithCode:1 description:@"rules key missing"];
-    *a5 = v42;
+    v42 = [self errorWithCode:1 description:@"rules key missing"];
+    *error = v42;
   }
 
   v41 = 0;
@@ -819,18 +819,18 @@ LABEL_85:
   return v41;
 }
 
-+ (id)parseAction:(id)a3 error:(id *)a4
++ (id)parseAction:(id)action error:(id *)error
 {
-  v6 = a3;
+  actionCopy = action;
   v7 = objc_alloc_init(SECSFAAction);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 objectForKeyedSubscript:@"radarNumber"];
+    v8 = [actionCopy objectForKeyedSubscript:@"radarNumber"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [(SECSFAAction *)v7 setRadarnumber:v8];
-      v9 = [v6 objectForKeyedSubscript:@"actionType"];
+      v9 = [actionCopy objectForKeyedSubscript:@"actionType"];
       if (![v9 isEqual:@"ttr"])
       {
         if ([v9 isEqual:@"abc"])
@@ -838,9 +838,9 @@ LABEL_85:
           v10 = objc_alloc_init(SECSFAActionAutomaticBugCapture);
           if (v8)
           {
-            v14 = [v6 objectForKeyedSubscript:@"domain"];
-            v26 = [v6 objectForKeyedSubscript:@"type"];
-            v15 = [v6 objectForKeyedSubscript:@"subtype"];
+            v14 = [actionCopy objectForKeyedSubscript:@"domain"];
+            v26 = [actionCopy objectForKeyedSubscript:@"type"];
+            v15 = [actionCopy objectForKeyedSubscript:@"subtype"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -860,10 +860,10 @@ LABEL_85:
               }
             }
 
-            if (a4)
+            if (error)
             {
-              v20 = [a1 errorWithCode:10 description:@"abc invalid type"];
-              *a4 = v20;
+              v20 = [self errorWithCode:10 description:@"abc invalid type"];
+              *error = v20;
             }
 
             v17 = v14;
@@ -876,17 +876,17 @@ LABEL_85:
           if ([v9 isEqual:@"drop"])
           {
             v10 = objc_alloc_init(SECSFAActionDropEvent);
-            v18 = [v6 objectForKeyedSubscript:@"event"];
+            v18 = [actionCopy objectForKeyedSubscript:@"event"];
             -[SECSFAActionAutomaticBugCapture setExcludeEvent:](v10, "setExcludeEvent:", [v18 BOOLValue]);
 
-            v19 = [v6 objectForKeyedSubscript:@"count"];
+            v19 = [actionCopy objectForKeyedSubscript:@"count"];
             -[SECSFAActionAutomaticBugCapture setExcludeCount:](v10, "setExcludeCount:", [v19 BOOLValue]);
 
             [(SECSFAAction *)v7 setDrop:v10];
             goto LABEL_30;
           }
 
-          if (!a4)
+          if (!error)
           {
 LABEL_37:
             v10 = 0;
@@ -894,8 +894,8 @@ LABEL_37:
           }
 
           v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"action unknown: %@", v9];
-          v22 = [a1 errorWithCode:11 description:v10];
-          *a4 = v22;
+          v22 = [self errorWithCode:11 description:v10];
+          *error = v22;
         }
 
 LABEL_36:
@@ -906,11 +906,11 @@ LABEL_36:
       v10 = objc_alloc_init(SECSFAActionTapToRadar);
       if (v10)
       {
-        v11 = [v6 objectForKeyedSubscript:@"alert"];
-        v12 = [v6 objectForKeyedSubscript:@"componentID"];
-        v25 = [v6 objectForKeyedSubscript:@"componentName"];
-        v24 = [v6 objectForKeyedSubscript:@"componentVersion"];
-        v23 = [v6 objectForKeyedSubscript:@"radarDescription"];
+        v11 = [actionCopy objectForKeyedSubscript:@"alert"];
+        v12 = [actionCopy objectForKeyedSubscript:@"componentID"];
+        v25 = [actionCopy objectForKeyedSubscript:@"componentName"];
+        v24 = [actionCopy objectForKeyedSubscript:@"componentVersion"];
+        v23 = [actionCopy objectForKeyedSubscript:@"radarDescription"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -945,10 +945,10 @@ LABEL_30:
           }
         }
 
-        if (a4)
+        if (error)
         {
-          v16 = [a1 errorWithCode:9 description:@"attribute invalid type"];
-          *a4 = v16;
+          v16 = [self errorWithCode:9 description:@"attribute invalid type"];
+          *error = v16;
         }
 
         v17 = v11;
@@ -962,11 +962,11 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    if (a4)
+    if (error)
     {
-      v9 = [a1 errorWithCode:8 description:@"radarNumber invalid"];
+      v9 = [self errorWithCode:8 description:@"radarNumber invalid"];
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_38;
     }
 
@@ -975,15 +975,15 @@ LABEL_38:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_40;
     }
 
-    v8 = [a1 errorWithCode:6 description:@"action invalid type"];
+    v8 = [self errorWithCode:6 description:@"action invalid type"];
     v10 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_39:
@@ -993,54 +993,54 @@ LABEL_40:
   return v10;
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 underlying:(id)a5
++ (id)errorWithCode:(int64_t)code description:(id)description underlying:(id)underlying
 {
   v7 = MEMORY[0x1E695DF90];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 dictionary];
-  [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  underlyingCopy = underlying;
+  descriptionCopy = description;
+  dictionary = [v7 dictionary];
+  [dictionary setObject:descriptionCopy forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:kSecSFAErrorDomain code:a3 userInfo:v10];
+  [dictionary setObject:underlyingCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
+  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:kSecSFAErrorDomain code:code userInfo:dictionary];
 
   return v11;
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4
++ (id)errorWithCode:(int64_t)code description:(id)description
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ABC0];
   v6 = kSecSFAErrorDomain;
   v13 = *MEMORY[0x1E696A578];
-  v14[0] = a4;
+  v14[0] = description;
   v7 = MEMORY[0x1E695DF20];
-  v8 = a4;
+  descriptionCopy = description;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v10 = [v5 errorWithDomain:v6 code:a3 userInfo:v9];
+  v10 = [v5 errorWithDomain:v6 code:code userInfo:v9];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (void)noteLaunchSequence:(id)a3
+- (void)noteLaunchSequence:(id)sequence
 {
-  v8 = a3;
-  v4 = [v8 metricsReport];
-  if (v4)
+  sequenceCopy = sequence;
+  metricsReport = [sequenceCopy metricsReport];
+  if (metricsReport)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v8 name];
-    v7 = [v5 stringWithFormat:@"Launch-%@", v6];
-    [(SFAnalytics *)self logEventNamed:v7 class:4 attributes:v4 timestampBucket:0];
+    name = [sequenceCopy name];
+    v7 = [v5 stringWithFormat:@"Launch-%@", name];
+    [(SFAnalytics *)self logEventNamed:v7 class:4 attributes:metricsReport timestampBucket:0];
   }
 }
 
-- (void)logMetric:(id)a3 withName:(id)a4 oncePerReport:(BOOL)a5
+- (void)logMetric:(id)metric withName:(id)name oncePerReport:(BOOL)report
 {
-  v8 = a3;
-  v9 = a4;
+  metricCopy = metric;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -1051,9 +1051,9 @@ LABEL_40:
     v12[2] = __48__SFAnalytics_logMetric_withName_oncePerReport___block_invoke;
     v12[3] = &unk_1E70D4F18;
     objc_copyWeak(&v15, location);
-    v16 = a5;
-    v13 = v9;
-    v14 = v8;
+    reportCopy = report;
+    v13 = nameCopy;
+    v14 = metricCopy;
     dispatch_async(queue, v12);
 
     objc_destroyWeak(&v15);
@@ -1089,13 +1089,13 @@ void __48__SFAnalytics_logMetric_withName_oncePerReport___block_invoke(uint64_t 
   }
 }
 
-- (id)startLogSystemMetricsForActivityNamed:(id)a3
+- (id)startLogSystemMetricsForActivityNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SFAnalyticsActivityTracker alloc] initWithName:v3 clientClass:objc_opt_class()];
+    v4 = [[SFAnalyticsActivityTracker alloc] initWithName:namedCopy clientClass:objc_opt_class()];
     [(SFAnalyticsActivityTracker *)v4 start];
   }
 
@@ -1114,18 +1114,18 @@ void __48__SFAnalytics_logMetric_withName_oncePerReport___block_invoke(uint64_t 
   return v4;
 }
 
-- (id)logSystemMetricsForActivityNamed:(id)a3 withAction:(id)a4
+- (id)logSystemMetricsForActivityNamed:(id)named withAction:(id)action
 {
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [[SFAnalyticsActivityTracker alloc] initWithName:v5 clientClass:objc_opt_class()];
+    v7 = [[SFAnalyticsActivityTracker alloc] initWithName:namedCopy clientClass:objc_opt_class()];
     v8 = v7;
-    if (v6)
+    if (actionCopy)
     {
-      [(SFAnalyticsActivityTracker *)v7 performAction:v6];
+      [(SFAnalyticsActivityTracker *)v7 performAction:actionCopy];
     }
   }
 
@@ -1144,10 +1144,10 @@ void __48__SFAnalytics_logMetric_withName_oncePerReport___block_invoke(uint64_t 
   return v8;
 }
 
-- (void)removeMultiSamplerForName:(id)a3
+- (void)removeMultiSamplerForName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -1156,7 +1156,7 @@ void __48__SFAnalytics_logMetric_withName_oncePerReport___block_invoke(uint64_t 
     v7[2] = __41__SFAnalytics_removeMultiSamplerForName___block_invoke;
     v7[3] = &unk_1E70D4DB0;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = nameCopy;
     dispatch_async(queue, v7);
 
     objc_destroyWeak(&v9);
@@ -1187,10 +1187,10 @@ void __41__SFAnalytics_removeMultiSamplerForName___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeMetricSamplerForName:(id)a3
+- (void)removeMetricSamplerForName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -1199,7 +1199,7 @@ void __41__SFAnalytics_removeMultiSamplerForName___block_invoke(uint64_t a1)
     v7[2] = __42__SFAnalytics_removeMetricSamplerForName___block_invoke;
     v7[3] = &unk_1E70D4DB0;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = nameCopy;
     dispatch_async(queue, v7);
 
     objc_destroyWeak(&v9);
@@ -1230,9 +1230,9 @@ void __42__SFAnalytics_removeMetricSamplerForName___block_invoke(uint64_t a1)
   }
 }
 
-- (id)existingMultiSamplerForName:(id)a3
+- (id)existingMultiSamplerForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1246,9 +1246,9 @@ void __42__SFAnalytics_removeMetricSamplerForName___block_invoke(uint64_t a1)
   v9[2] = __43__SFAnalytics_existingMultiSamplerForName___block_invoke;
   v9[3] = &unk_1E70D4DD8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, v9);
   v7 = v15[5];
 
@@ -1274,9 +1274,9 @@ void __43__SFAnalytics_existingMultiSamplerForName___block_invoke(uint64_t a1)
   }
 }
 
-- (id)existingMetricSamplerForName:(id)a3
+- (id)existingMetricSamplerForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1290,9 +1290,9 @@ void __43__SFAnalytics_existingMultiSamplerForName___block_invoke(uint64_t a1)
   v9[2] = __44__SFAnalytics_existingMetricSamplerForName___block_invoke;
   v9[3] = &unk_1E70D4DD8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(queue, v9);
   v7 = v15[5];
 
@@ -1318,15 +1318,15 @@ void __44__SFAnalytics_existingMetricSamplerForName___block_invoke(uint64_t a1)
   }
 }
 
-- (id)AddMultiSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5
+- (id)AddMultiSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  nameCopy = name;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (nameCopy)
   {
-    if (a4 < 1.0 && a4 != -1.0)
+    if (interval < 1.0 && interval != -1.0)
     {
       v15 = secLogObjForScope("SecError");
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1335,14 +1335,14 @@ void __44__SFAnalytics_existingMetricSamplerForName___block_invoke(uint64_t a1)
       }
 
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a4;
+      *(&buf + 4) = interval;
       v14 = "SFAnalytics: cannot add sampler with interval %f";
       v17 = v15;
       v18 = 12;
       goto LABEL_16;
     }
 
-    if (v9)
+    if (blockCopy)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -1357,10 +1357,10 @@ void __44__SFAnalytics_existingMetricSamplerForName___block_invoke(uint64_t a1)
       block[2] = __61__SFAnalytics_AddMultiSamplerForName_withTimeInterval_block___block_invoke;
       block[3] = &unk_1E70D4EF0;
       objc_copyWeak(v26, &location);
-      v22 = v8;
+      v22 = nameCopy;
       p_buf = &buf;
-      v26[1] = *&a4;
-      v23 = self;
+      v26[1] = *&interval;
+      selfCopy = self;
       v24 = v10;
       dispatch_sync(queue, block);
       v13 = *(*(&buf + 1) + 40);
@@ -1439,15 +1439,15 @@ void __61__SFAnalytics_AddMultiSamplerForName_withTimeInterval_block___block_inv
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addMetricSamplerForName:(id)a3 withTimeInterval:(double)a4 block:(id)a5
+- (id)addMetricSamplerForName:(id)name withTimeInterval:(double)interval block:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  nameCopy = name;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (nameCopy)
   {
-    if (a4 < 1.0 && a4 != -1.0)
+    if (interval < 1.0 && interval != -1.0)
     {
       v15 = secLogObjForScope("SecError");
       if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1456,14 +1456,14 @@ void __61__SFAnalytics_AddMultiSamplerForName_withTimeInterval_block___block_inv
       }
 
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a4;
+      *(&buf + 4) = interval;
       v14 = "SFAnalytics: cannot add sampler with interval %f";
       v17 = v15;
       v18 = 12;
       goto LABEL_16;
     }
 
-    if (v9)
+    if (blockCopy)
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -1478,10 +1478,10 @@ void __61__SFAnalytics_AddMultiSamplerForName_withTimeInterval_block___block_inv
       block[2] = __62__SFAnalytics_addMetricSamplerForName_withTimeInterval_block___block_invoke;
       block[3] = &unk_1E70D4EF0;
       objc_copyWeak(v26, &location);
-      v22 = v8;
+      v22 = nameCopy;
       p_buf = &buf;
-      v26[1] = *&a4;
-      v23 = self;
+      v26[1] = *&interval;
+      selfCopy = self;
       v24 = v10;
       dispatch_sync(queue, block);
       v13 = *(*(&buf + 1) + 40);
@@ -1560,32 +1560,32 @@ void __62__SFAnalytics_addMetricSamplerForName_withTimeInterval_block___block_in
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)eventDictForEventName:(id)a3 withAttributes:(id)a4 eventClass:(int64_t)a5 timestampBucket:(double)a6
+- (id)eventDictForEventName:(id)name withAttributes:(id)attributes eventClass:(int64_t)class timestampBucket:(double)bucket
 {
-  if (a4)
+  if (attributes)
   {
-    v10 = a3;
-    v11 = [a4 mutableCopy];
+    nameCopy = name;
+    dictionary = [attributes mutableCopy];
   }
 
   else
   {
     v12 = MEMORY[0x1E695DF90];
-    v13 = a3;
-    v11 = [v12 dictionary];
+    nameCopy2 = name;
+    dictionary = [v12 dictionary];
   }
 
-  v14 = v11;
-  [v11 setObject:a3 forKeyedSubscript:@"eventType"];
+  v14 = dictionary;
+  [dictionary setObject:name forKeyedSubscript:@"eventType"];
 
-  v15 = [MEMORY[0x1E695DF00] date];
-  [v15 timeIntervalSince1970WithBucket:a6];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970WithBucket:bucket];
   v17 = v16;
 
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:v17 * 1000.0];
   [v14 setObject:v18 forKeyedSubscript:@"eventTime"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+  v19 = [MEMORY[0x1E696AD98] numberWithInteger:class];
   [v14 setObject:v19 forKeyedSubscript:@"eventClass"];
 
   [SFAnalytics addOSVersionToEvent:v14];
@@ -1593,12 +1593,12 @@ void __62__SFAnalytics_addMetricSamplerForName_withTimeInterval_block___block_in
   return v14;
 }
 
-- (void)logEventNamed:(id)a3 class:(int64_t)a4 attributes:(id)a5 timestampBucket:(unsigned int)a6
+- (void)logEventNamed:(id)named class:(int64_t)class attributes:(id)attributes timestampBucket:(unsigned int)bucket
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (v10)
+  namedCopy = named;
+  attributesCopy = attributes;
+  if (namedCopy)
   {
     *buf = 0;
     v34 = buf;
@@ -1652,10 +1652,10 @@ void __62__SFAnalytics_addMetricSamplerForName_withTimeInterval_block___block_in
     v21[3] = &unk_1E70D4EC8;
     objc_copyWeak(v24, &location);
     v21[4] = self;
-    v22 = v10;
-    v23 = v11;
-    v24[1] = a4;
-    v25 = a6;
+    v22 = namedCopy;
+    v23 = attributesCopy;
+    v24[1] = class;
+    bucketCopy = bucket;
     v26 = v14;
     dispatch_sync(v18, v21);
 
@@ -1804,77 +1804,77 @@ LABEL_25:
 LABEL_27:
 }
 
-- (void)logResultForEvent:(id)a3 hardFailure:(BOOL)a4 result:(id)a5 withAttributes:(id)a6 timestampBucket:(unsigned int)a7
+- (void)logResultForEvent:(id)event hardFailure:(BOOL)failure result:(id)result withAttributes:(id)attributes timestampBucket:(unsigned int)bucket
 {
-  v9 = a4;
-  v20 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  failureCopy = failure;
+  eventCopy = event;
+  resultCopy = result;
+  attributesCopy = attributes;
+  v13 = attributesCopy;
+  if (resultCopy)
   {
-    if (v12)
+    if (attributesCopy)
     {
-      v14 = [v12 mutableCopy];
+      dictionary = [attributesCopy mutableCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v15 = v14;
-    v16 = [v14 objectForKeyedSubscript:@"errorChain"];
+    v15 = dictionary;
+    v16 = [dictionary objectForKeyedSubscript:@"errorChain"];
 
     if (!v16)
     {
-      v17 = [objc_opt_class() underlyingErrors:v11];
+      v17 = [objc_opt_class() underlyingErrors:resultCopy];
       [v15 setObject:v17 forKeyedSubscript:@"errorChain"];
     }
 
-    v18 = [v11 domain];
-    [v15 setObject:v18 forKeyedSubscript:@"errorDomain"];
+    domain = [resultCopy domain];
+    [v15 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v11, "code")}];
+    v19 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(resultCopy, "code")}];
     [v15 setObject:v19 forKeyedSubscript:@"errorCode"];
 
-    if (v9)
+    if (failureCopy)
     {
-      [(SFAnalytics *)self logHardFailureForEventNamed:v20 withAttributes:v15];
+      [(SFAnalytics *)self logHardFailureForEventNamed:eventCopy withAttributes:v15];
     }
 
     else
     {
-      [(SFAnalytics *)self logSoftFailureForEventNamed:v20 withAttributes:v15];
+      [(SFAnalytics *)self logSoftFailureForEventNamed:eventCopy withAttributes:v15];
     }
   }
 
   else
   {
-    [(SFAnalytics *)self logSuccessForEventNamed:v20];
+    [(SFAnalytics *)self logSuccessForEventNamed:eventCopy];
   }
 }
 
-- (void)dailyCoreAnalyticsMetrics:(id)a3
+- (void)dailyCoreAnalyticsMetrics:(id)metrics
 {
-  v4 = a3;
-  v6 = [(SFAnalytics *)self dailyMetrics];
-  v5 = [(SFAnalytics *)self coreAnalyticsKeyFilter:v6];
-  [SecCoreAnalytics sendEvent:v4 event:v5];
+  metricsCopy = metrics;
+  dailyMetrics = [(SFAnalytics *)self dailyMetrics];
+  v5 = [(SFAnalytics *)self coreAnalyticsKeyFilter:dailyMetrics];
+  [SecCoreAnalytics sendEvent:metricsCopy event:v5];
 }
 
-- (id)coreAnalyticsKeyFilter:(id)a3
+- (id)coreAnalyticsKeyFilter:(id)filter
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  filterCopy = filter;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__SFAnalytics_coreAnalyticsKeyFilter___block_invoke;
   v8[3] = &unk_1E70D4EA0;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [filterCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1889,7 +1889,7 @@ void __38__SFAnalytics_coreAnalyticsKeyFilter___block_invoke(uint64_t a1, void *
 
 - (id)dailyMetrics
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1916,7 +1916,7 @@ void __38__SFAnalytics_coreAnalyticsKeyFilter___block_invoke(uint64_t a1, void *
   v14[1] = 3221225472;
   v14[2] = __27__SFAnalytics_dailyMetrics__block_invoke_2;
   v14[3] = &unk_1E70D4E50;
-  v6 = v3;
+  v6 = dictionary;
   v15 = v6;
   [v5 enumerateKeysAndObjectsUsingBlock:v14];
   v7 = v18[5];
@@ -2001,15 +2001,15 @@ void __27__SFAnalytics_dailyMetrics__block_invoke_3(uint64_t a1, void *a2, void 
     metricsHooks = v2->_metricsHooks;
     v2->_metricsHooks = v10;
 
-    v12 = [(SFAnalytics *)v2 database];
+    database = [(SFAnalytics *)v2 database];
   }
 
   return v2;
 }
 
-- (void)setMetricsAccountID:(id)a3
+- (void)setMetricsAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2017,8 +2017,8 @@ void __27__SFAnalytics_dailyMetrics__block_invoke_3(uint64_t a1, void *a2, void 
   block[2] = __35__SFAnalytics_setMetricsAccountID___block_invoke;
   block[3] = &unk_1E70D4DB0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_sync(queue, block);
 
   objc_destroyWeak(&v9);
@@ -2079,9 +2079,9 @@ void __31__SFAnalytics_metricsAccountID__block_invoke(uint64_t a1)
   }
 }
 
-- (id)dataPropertyForKey:(id)a3
+- (id)dataPropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2093,10 +2093,10 @@ void __31__SFAnalytics_metricsAccountID__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__SFAnalytics_dataPropertyForKey___block_invoke;
   block[3] = &unk_1E70D6AC0;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -2114,20 +2114,20 @@ void __34__SFAnalytics_dataPropertyForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setDataProperty:(id)a3 forKey:(id)a4
+- (void)setDataProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__SFAnalytics_setDataProperty_forKey___block_invoke;
   block[3] = &unk_1E70D4E00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = propertyCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = propertyCopy;
   dispatch_sync(queue, block);
 }
 
@@ -2137,9 +2137,9 @@ void __38__SFAnalytics_setDataProperty_forKey___block_invoke(uint64_t a1)
   [v2 setDataProperty:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (id)numberPropertyForKey:(id)a3
+- (id)numberPropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2153,9 +2153,9 @@ void __38__SFAnalytics_setDataProperty_forKey___block_invoke(uint64_t a1)
   v9[2] = __36__SFAnalytics_numberPropertyForKey___block_invoke;
   v9[3] = &unk_1E70D4DD8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, v9);
   v7 = v15[5];
 
@@ -2187,10 +2187,10 @@ void __36__SFAnalytics_numberPropertyForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNumberProperty:(id)a3 forKey:(id)a4
+- (void)setNumberProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -2198,10 +2198,10 @@ void __36__SFAnalytics_numberPropertyForKey___block_invoke(uint64_t a1)
   v11[2] = __40__SFAnalytics_setNumberProperty_forKey___block_invoke;
   v11[3] = &unk_1E70D4D88;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = propertyCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = propertyCopy;
   dispatch_sync(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -2222,9 +2222,9 @@ void __40__SFAnalytics_setNumberProperty_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)incrementIntegerPropertyForKey:(id)a3
+- (void)incrementIntegerPropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2232,8 +2232,8 @@ void __40__SFAnalytics_setNumberProperty_forKey___block_invoke(uint64_t a1)
   block[2] = __46__SFAnalytics_incrementIntegerPropertyForKey___block_invoke;
   block[3] = &unk_1E70D4DB0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
 
   objc_destroyWeak(&v9);
@@ -2258,9 +2258,9 @@ void __46__SFAnalytics_incrementIntegerPropertyForKey___block_invoke(uint64_t a1
   }
 }
 
-- (id)datePropertyForKey:(id)a3
+- (id)datePropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2274,9 +2274,9 @@ void __46__SFAnalytics_incrementIntegerPropertyForKey___block_invoke(uint64_t a1
   v9[2] = __34__SFAnalytics_datePropertyForKey___block_invoke;
   v9[3] = &unk_1E70D4DD8;
   objc_copyWeak(&v12, &location);
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v14;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, v9);
   v7 = v15[5];
 
@@ -2303,10 +2303,10 @@ void __34__SFAnalytics_datePropertyForKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setDateProperty:(id)a3 forKey:(id)a4
+- (void)setDateProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -2314,10 +2314,10 @@ void __34__SFAnalytics_datePropertyForKey___block_invoke(uint64_t a1)
   v11[2] = __38__SFAnalytics_setDateProperty_forKey___block_invoke;
   v11[3] = &unk_1E70D4D88;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = propertyCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = propertyCopy;
   dispatch_sync(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -2337,7 +2337,7 @@ void __38__SFAnalytics_setDateProperty_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeStateAndUnlinkFile:(BOOL)a3
+- (void)removeStateAndUnlinkFile:(BOOL)file
 {
   [(NSMutableDictionary *)self->_samplers removeAllObjects];
   [(NSMutableDictionary *)self->_multisamplers removeAllObjects];
@@ -2348,7 +2348,7 @@ void __38__SFAnalytics_setDateProperty_forKey___block_invoke(uint64_t a1)
   block[2] = __40__SFAnalytics_removeStateAndUnlinkFile___block_invoke;
   block[3] = &unk_1E70D4D60;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
+  fileCopy = file;
   dispatch_sync(queue, block);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -2375,23 +2375,23 @@ void __40__SFAnalytics_removeStateAndUnlinkFile___block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateCollectionConfigurationWithData:(id)a3
+- (void)updateCollectionConfigurationWithData:(id)data
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(SFAnalytics *)v4 collection];
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  collection = [(SFAnalytics *)selfCopy collection];
 
-  if (!v5)
+  if (!collection)
   {
     v6 = objc_alloc_init(SFAnalyticsCollection);
-    [(SFAnalytics *)v4 setCollection:v6];
+    [(SFAnalytics *)selfCopy setCollection:v6];
   }
 
-  v7 = [(SFAnalytics *)v4 collection];
-  [v7 storeCollection:v8 logger:v4];
+  collection2 = [(SFAnalytics *)selfCopy collection];
+  [collection2 storeCollection:dataCopy logger:selfCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)loadCollectionConfiguration
@@ -2409,17 +2409,17 @@ void __40__SFAnalytics_removeStateAndUnlinkFile___block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (void)removeMetricsHook:(id)a3
+- (void)removeMetricsHook:(id)hook
 {
-  v4 = a3;
+  hookCopy = hook;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SFAnalytics_removeMetricsHook___block_invoke;
   v7[3] = &unk_1E70D4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hookCopy;
+  v6 = hookCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2430,17 +2430,17 @@ void __33__SFAnalytics_removeMetricsHook___block_invoke(uint64_t a1)
   [v3 removeObject:v2];
 }
 
-- (void)addMetricsHook:(id)a3
+- (void)addMetricsHook:(id)hook
 {
-  v4 = a3;
+  hookCopy = hook;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__SFAnalytics_addMetricsHook___block_invoke;
   v7[3] = &unk_1E70D4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hookCopy;
+  v6 = hookCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -2451,11 +2451,11 @@ void __30__SFAnalytics_addMetricsHook___block_invoke(uint64_t a1)
   [v3 addObject:v2];
 }
 
-+ (id)underlyingErrors:(id)a3
++ (id)underlyingErrors:(id)errors
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() treeOfUnderlyingErrors:v3 depth:0];
+  errorsCopy = errors;
+  v4 = [objc_opt_class() treeOfUnderlyingErrors:errorsCopy depth:0];
   if (v4)
   {
     if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
@@ -2474,7 +2474,7 @@ void __30__SFAnalytics_addMetricsHook___block_invoke(uint64_t a1)
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v13 = v3;
+          v13 = errorsCopy;
           v14 = 2114;
           v15 = v6;
           _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, "SFA: underlyingErrors failed to encode %{public}@ with failure: %{public}@", buf, 0x16u);
@@ -2490,7 +2490,7 @@ void __30__SFAnalytics_addMetricsHook___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v13 = v3;
+        v13 = errorsCopy;
         _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "SFA: underlyingErrors encoded to not json %{public}@", buf, 0xCu);
       }
 
@@ -2508,11 +2508,11 @@ void __30__SFAnalytics_addMetricsHook___block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)treeOfUnderlyingErrors:(id)a3 depth:(int64_t)a4
++ (id)treeOfUnderlyingErrors:(id)errors depth:(int64_t)depth
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 > 5)
+  errorsCopy = errors;
+  if (depth > 5)
   {
     goto LABEL_2;
   }
@@ -2520,30 +2520,30 @@ void __30__SFAnalytics_addMetricsHook___block_invoke(uint64_t a1)
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    if (a4)
+    v8 = errorsCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (depth)
     {
-      v10 = [v8 domain];
-      [v9 setObject:v10 forKeyedSubscript:@"d"];
+      domain = [v8 domain];
+      [dictionary setObject:domain forKeyedSubscript:@"d"];
 
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "code")}];
-      [v9 setObject:v11 forKeyedSubscript:@"c"];
+      [dictionary setObject:v11 forKeyedSubscript:@"c"];
     }
 
-    v12 = [v8 userInfo];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v14 = [a1 treeOfUnderlyingErrors:v13 depth:a4 + 1];
+    userInfo = [v8 userInfo];
+    v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    v14 = [self treeOfUnderlyingErrors:v13 depth:depth + 1];
 
-    [v9 setObject:v14 forKeyedSubscript:@"u"];
-    v15 = [v8 userInfo];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
-    v17 = [a1 treeOfUnderlyingErrors:v16 depth:a4 + 1];
+    [dictionary setObject:v14 forKeyedSubscript:@"u"];
+    userInfo2 = [v8 userInfo];
+    v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
+    v17 = [self treeOfUnderlyingErrors:v16 depth:depth + 1];
 
-    [v9 setObject:v17 forKeyedSubscript:@"m"];
-    if ([v9 count])
+    [dictionary setObject:v17 forKeyedSubscript:@"m"];
+    if ([dictionary count])
     {
-      v7 = v9;
+      v7 = dictionary;
     }
 
     else
@@ -2562,8 +2562,8 @@ LABEL_2:
       goto LABEL_26;
     }
 
-    v18 = v6;
-    v19 = [MEMORY[0x1E695DF70] array];
+    v18 = errorsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -2587,10 +2587,10 @@ LABEL_2:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v26 = [a1 treeOfUnderlyingErrors:v25 depth:{a4 + 1, v29}];
+            v26 = [self treeOfUnderlyingErrors:v25 depth:{depth + 1, v29}];
             if (v26)
             {
-              [v19 addObject:v26];
+              [array addObject:v26];
             }
           }
         }
@@ -2601,9 +2601,9 @@ LABEL_2:
       while (v22);
     }
 
-    if ([v19 count])
+    if ([array count])
     {
-      v7 = v19;
+      v7 = array;
     }
 
     else
@@ -2619,14 +2619,14 @@ LABEL_26:
   return v7;
 }
 
-+ (void)addOSVersionToEvent:(id)a3
++ (void)addOSVersionToEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__SFAnalytics_addOSVersionToEvent___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (addOSVersionToEvent__onceToken != -1)
   {
     dispatch_once(&addOSVersionToEvent__onceToken, block);
@@ -2634,27 +2634,27 @@ LABEL_26:
 
   if (addOSVersionToEvent__build)
   {
-    [v4 setObject:addOSVersionToEvent__build forKeyedSubscript:@"build"];
+    [eventCopy setObject:addOSVersionToEvent__build forKeyedSubscript:@"build"];
   }
 
   if (addOSVersionToEvent__productName)
   {
-    [v4 setObject:addOSVersionToEvent__productName forKeyedSubscript:@"product"];
+    [eventCopy setObject:addOSVersionToEvent__productName forKeyedSubscript:@"product"];
   }
 
   if (addOSVersionToEvent__productVersion)
   {
-    [v4 setObject:addOSVersionToEvent__productVersion forKeyedSubscript:@"version"];
+    [eventCopy setObject:addOSVersionToEvent__productVersion forKeyedSubscript:@"version"];
   }
 
   if (addOSVersionToEvent__modelID)
   {
-    [v4 setObject:addOSVersionToEvent__modelID forKeyedSubscript:@"modelid"];
+    [eventCopy setObject:addOSVersionToEvent__modelID forKeyedSubscript:@"modelid"];
   }
 
   if (addOSVersionToEvent__internal == 1)
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"internal"];
+    [eventCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"internal"];
   }
 }
 
@@ -2709,57 +2709,57 @@ void __24__SFAnalytics_hwModelID__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)fuzzyNumber:(id)a3
++ (id)fuzzyNumber:(id)number
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a1 fuzzyInteger:{objc_msgSend(a3, "integerValue")}];
+  v4 = [self fuzzyInteger:{objc_msgSend(number, "integerValue")}];
 
   return [v3 numberWithInteger:v4];
 }
 
-+ (int64_t)fuzzyInteger:(int64_t)a3
++ (int64_t)fuzzyInteger:(int64_t)integer
 {
-  if (a3 >= 0)
+  if (integer >= 0)
   {
-    v3 = a3;
+    integerCopy = integer;
   }
 
   else
   {
-    v3 = -a3;
+    integerCopy = -integer;
   }
 
-  if (!a3)
+  if (!integer)
   {
     return 0;
   }
 
-  v4 = (a3 >> 63) | 1;
-  if (v3 <= 5)
+  v4 = (integer >> 63) | 1;
+  if (integerCopy <= 5)
   {
     return 5 * v4;
   }
 
-  if (v3 % 5 >= 3)
+  if (integerCopy % 5 >= 3)
   {
-    v6 = 5 * (v3 / 5) + 5;
+    v6 = 5 * (integerCopy / 5) + 5;
   }
 
   else
   {
-    v6 = 5 * (v3 / 5);
+    v6 = 5 * (integerCopy / 5);
   }
 
   return v6 * v4;
 }
 
-+ (int64_t)fuzzyDaysSinceDate:(id)a3
++ (int64_t)fuzzyDaysSinceDate:(id)date
 {
-  v3 = a3;
-  if (v3)
+  dateCopy = date;
+  if (dateCopy)
   {
     v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:1483228800.0];
-    v5 = [v3 compare:v4];
+    v5 = [dateCopy compare:v4];
 
     if (v5 == -1)
     {
@@ -2768,8 +2768,8 @@ void __24__SFAnalytics_hwModelID__block_invoke()
 
     else
     {
-      v6 = [MEMORY[0x1E695DF00] date];
-      [v6 timeIntervalSinceDate:v3];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:dateCopy];
       v8 = v7;
 
       if (v8 >= 86400.0)
@@ -2816,12 +2816,12 @@ void __24__SFAnalytics_hwModelID__block_invoke()
   return v9;
 }
 
-+ (id)defaultProtectedAnalyticsDatabasePath:(id)a3
++ (id)defaultProtectedAnalyticsDatabasePath:(id)path
 {
-  v4 = a3;
-  [a1 removeLegacyDefaultAnalyticsDatabasePath:v4 usingDispatchToken:&defaultProtectedAnalyticsDatabasePath__onceToken];
-  [a1 logConsumerProcessInfo];
-  v5 = [SFAnalytics defaultProtectedAnalyticsDatabasePath:v4 uuid:0];
+  pathCopy = path;
+  [self removeLegacyDefaultAnalyticsDatabasePath:pathCopy usingDispatchToken:&defaultProtectedAnalyticsDatabasePath__onceToken];
+  [self logConsumerProcessInfo];
+  v5 = [SFAnalytics defaultProtectedAnalyticsDatabasePath:pathCopy uuid:0];
 
   return v5;
 }
@@ -2866,29 +2866,29 @@ void __37__SFAnalytics_logConsumerProcessInfo__block_invoke_2(uint64_t a1)
   [v2 logRockwellFailureForEventNamed:*(a1 + 32) withAttributes:*(a1 + 40)];
 }
 
-+ (id)defaultProtectedAnalyticsDatabasePath:(id)a3 uuid:(id)a4
++ (id)defaultProtectedAnalyticsDatabasePath:(id)path uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  [a1 logConsumerProcessInfo];
+  pathCopy = path;
+  uuidCopy = uuid;
+  [self logConsumerProcessInfo];
   v8 = [MEMORY[0x1E696AD60] stringWithString:@"sfanalytics"];
   v9 = SecCopyURLForFileInBaseDirectory(@"private/var/protected/", v8);
   WithPathInDirectory(v9, &__block_literal_global_143);
-  if (v7)
+  if (uuidCopy)
   {
     [v8 appendString:@"/"];
-    v10 = [v7 UUIDString];
-    [v8 appendString:v10];
+    uUIDString = [uuidCopy UUIDString];
+    [v8 appendString:uUIDString];
 
     v11 = SecCopyURLForFileInBaseDirectory(@"private/var/protected/", v8);
     WithPathInDirectory(v11, &__block_literal_global_149);
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@.db", v8, v6];
-  v13 = SecCopyURLForFileInBaseDirectory(@"private/var/protected/", v12);
-  v14 = [(__CFURL *)v13 path];
+  pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@.db", v8, pathCopy];
+  v13 = SecCopyURLForFileInBaseDirectory(@"private/var/protected/", pathCopy);
+  path = [(__CFURL *)v13 path];
 
-  return v14;
+  return path;
 }
 
 uint64_t __58__SFAnalytics_defaultProtectedAnalyticsDatabasePath_uuid___block_invoke_147(int a1, char *path)
@@ -2943,19 +2943,19 @@ uint64_t __58__SFAnalytics_defaultProtectedAnalyticsDatabasePath_uuid___block_in
   return result;
 }
 
-+ (void)removeLegacyDefaultAnalyticsDatabasePath:(id)a3 usingDispatchToken:(int64_t *)a4
++ (void)removeLegacyDefaultAnalyticsDatabasePath:(id)path usingDispatchToken:(int64_t *)token
 {
-  v5 = a3;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__SFAnalytics_removeLegacyDefaultAnalyticsDatabasePath_usingDispatchToken___block_invoke;
   block[3] = &unk_1E70E4300;
-  v9 = v5;
-  v6 = *a4;
-  v7 = v5;
+  v9 = pathCopy;
+  v6 = *token;
+  v7 = pathCopy;
   if (v6 != -1)
   {
-    dispatch_once(a4, block);
+    dispatch_once(token, block);
   }
 }
 
@@ -2972,18 +2972,18 @@ void __75__SFAnalytics_removeLegacyDefaultAnalyticsDatabasePath_usingDispatchTok
   WithPathInKeychainDirectory(@"Analytics", &__block_literal_global_136);
 }
 
-+ (id)defaultAnalyticsDatabasePath:(id)a3
++ (id)defaultAnalyticsDatabasePath:(id)path
 {
-  v4 = a3;
-  [a1 logConsumerProcessInfo];
+  pathCopy = path;
+  [self logConsumerProcessInfo];
   WithPathInKeychainDirectory(@"Analytics", &__block_literal_global_2553);
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Analytics/%@.db", v4];
+  pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Analytics/%@.db", pathCopy];
 
   syslog(5, "SecCopyURLForFileInParameterizedKeychainDirectory: forceUserScope:%d", 0);
-  v6 = SecCopyURLForFileInBaseDirectory(@"Library/Keychains", v5);
-  v7 = [(__CFURL *)v6 path];
+  v6 = SecCopyURLForFileInBaseDirectory(@"Library/Keychains", pathCopy);
+  path = [(__CFURL *)v6 path];
 
-  return v7;
+  return path;
 }
 
 uint64_t __44__SFAnalytics_defaultAnalyticsDatabasePath___block_invoke(int a1, char *path)

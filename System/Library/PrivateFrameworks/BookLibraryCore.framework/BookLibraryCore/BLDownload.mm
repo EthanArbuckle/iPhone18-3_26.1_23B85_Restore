@@ -1,224 +1,224 @@
 @interface BLDownload
-- (BLDownload)initWithCoder:(id)a3;
+- (BLDownload)initWithCoder:(id)coder;
 - (double)transferProgressFraction;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BLDownload
 
-- (BLDownload)initWithCoder:(id)a3
+- (BLDownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = BLDownload;
   v5 = [(BLDownload *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadID"];
     [(BLDownload *)v5 setDownloadID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buyParameters"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buyParameters"];
     [(BLDownload *)v5 setBuyParameters:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"permlink"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"permlink"];
     [(BLDownload *)v5 setPermlink:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeIdentifier"];
     [(BLDownload *)v5 setStoreIdentifier:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"persistentIdentifier"];
     [(BLDownload *)v5 setPersistentIdentifier:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalURL"];
     [(BLDownload *)v5 setUrl:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     [(BLDownload *)v5 setOriginalURL:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"target"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"target"];
     [(BLDownload *)v5 setTargetDownloadDirectory:v13];
 
-    -[BLDownload setState:](v5, "setState:", [v4 decodeIntegerForKey:@"state"]);
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    -[BLDownload setState:](v5, "setState:", [coderCopy decodeIntegerForKey:@"state"]);
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     [(BLDownload *)v5 setStartTime:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetPath"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetPath"];
     [(BLDownload *)v5 setAssetPath:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicationVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicationVersion"];
     [(BLDownload *)v5 setPublicationVersion:v16];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BLDownload *)self downloadID];
-  [v4 encodeObject:v5 forKey:@"downloadID"];
+  coderCopy = coder;
+  downloadID = [(BLDownload *)self downloadID];
+  [coderCopy encodeObject:downloadID forKey:@"downloadID"];
 
-  v6 = [(BLDownload *)self buyParameters];
-  [v4 encodeObject:v6 forKey:@"buyParameters"];
+  buyParameters = [(BLDownload *)self buyParameters];
+  [coderCopy encodeObject:buyParameters forKey:@"buyParameters"];
 
-  v7 = [(BLDownload *)self permlink];
-  [v4 encodeObject:v7 forKey:@"permlink"];
+  permlink = [(BLDownload *)self permlink];
+  [coderCopy encodeObject:permlink forKey:@"permlink"];
 
-  v8 = [(BLDownload *)self storeIdentifier];
-  [v4 encodeObject:v8 forKey:@"storeIdentifier"];
+  storeIdentifier = [(BLDownload *)self storeIdentifier];
+  [coderCopy encodeObject:storeIdentifier forKey:@"storeIdentifier"];
 
   v9 = [(BLDownload *)self url];
-  [v4 encodeObject:v9 forKey:@"url"];
+  [coderCopy encodeObject:v9 forKey:@"url"];
 
-  v10 = [(BLDownload *)self originalURL];
-  [v4 encodeObject:v10 forKey:@"originalURL"];
+  originalURL = [(BLDownload *)self originalURL];
+  [coderCopy encodeObject:originalURL forKey:@"originalURL"];
 
-  v11 = [(BLDownload *)self targetDownloadDirectory];
-  [v4 encodeObject:v11 forKey:@"target"];
+  targetDownloadDirectory = [(BLDownload *)self targetDownloadDirectory];
+  [coderCopy encodeObject:targetDownloadDirectory forKey:@"target"];
 
-  [v4 encodeInteger:-[BLDownload state](self forKey:{"state"), @"state"}];
-  v12 = [(BLDownload *)self startTime];
-  [v4 encodeObject:v12 forKey:@"startTime"];
+  [coderCopy encodeInteger:-[BLDownload state](self forKey:{"state"), @"state"}];
+  startTime = [(BLDownload *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v13 = [(BLDownload *)self assetPath];
-  [v4 encodeObject:v13 forKey:@"assetPath"];
+  assetPath = [(BLDownload *)self assetPath];
+  [coderCopy encodeObject:assetPath forKey:@"assetPath"];
 
-  v14 = [(BLDownload *)self persistentIdentifier];
-  [v4 encodeObject:v14 forKey:@"persistentIdentifier"];
+  persistentIdentifier = [(BLDownload *)self persistentIdentifier];
+  [coderCopy encodeObject:persistentIdentifier forKey:@"persistentIdentifier"];
 
-  v15 = [(BLDownload *)self publicationVersion];
-  [v4 encodeObject:v15 forKey:@"publicationVersion"];
+  publicationVersion = [(BLDownload *)self publicationVersion];
+  [coderCopy encodeObject:publicationVersion forKey:@"publicationVersion"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(BLDownload *)self downloadID];
-    [v4 setDownloadID:v5];
+    downloadID = [(BLDownload *)self downloadID];
+    [v4 setDownloadID:downloadID];
 
     v6 = [(BLDownload *)self url];
     [v4 setUrl:v6];
 
-    v7 = [(BLDownload *)self targetDownloadDirectory];
-    [v4 setTargetDownloadDirectory:v7];
+    targetDownloadDirectory = [(BLDownload *)self targetDownloadDirectory];
+    [v4 setTargetDownloadDirectory:targetDownloadDirectory];
 
     [v4 setState:{-[BLDownload state](self, "state")}];
-    v8 = [(BLDownload *)self startTime];
-    [v4 setStartTime:v8];
+    startTime = [(BLDownload *)self startTime];
+    [v4 setStartTime:startTime];
 
-    v9 = [(BLDownload *)self assetPath];
-    [v4 setAssetPath:v9];
+    assetPath = [(BLDownload *)self assetPath];
+    [v4 setAssetPath:assetPath];
 
-    v10 = [(BLDownload *)self buyParameters];
-    [v4 setBuyParameters:v10];
+    buyParameters = [(BLDownload *)self buyParameters];
+    [v4 setBuyParameters:buyParameters];
 
-    v11 = [(BLDownload *)self permlink];
-    [v4 setPermlink:v11];
+    permlink = [(BLDownload *)self permlink];
+    [v4 setPermlink:permlink];
 
-    v12 = [(BLDownload *)self storeIdentifier];
-    [v4 setStoreIdentifier:v12];
+    storeIdentifier = [(BLDownload *)self storeIdentifier];
+    [v4 setStoreIdentifier:storeIdentifier];
 
-    v13 = [(BLDownload *)self storePlaylistIdentifier];
-    [v4 setStorePlaylistIdentifier:v13];
+    storePlaylistIdentifier = [(BLDownload *)self storePlaylistIdentifier];
+    [v4 setStorePlaylistIdentifier:storePlaylistIdentifier];
 
-    v14 = [(BLDownload *)self clientIdentifier];
-    [v4 setClientIdentifier:v14];
+    clientIdentifier = [(BLDownload *)self clientIdentifier];
+    [v4 setClientIdentifier:clientIdentifier];
 
-    v15 = [(BLDownload *)self persistentIdentifier];
-    [v4 setPersistentIdentifier:v15];
+    persistentIdentifier = [(BLDownload *)self persistentIdentifier];
+    [v4 setPersistentIdentifier:persistentIdentifier];
 
     [v4 setFileSize:{-[BLDownload fileSize](self, "fileSize")}];
-    v16 = [(BLDownload *)self lastStateChangeTime];
-    [v4 setLastStateChangeTime:v16];
+    lastStateChangeTime = [(BLDownload *)self lastStateChangeTime];
+    [v4 setLastStateChangeTime:lastStateChangeTime];
 
-    v17 = [(BLDownload *)self hashType];
-    [v4 setHashType:v17];
+    hashType = [(BLDownload *)self hashType];
+    [v4 setHashType:hashType];
 
-    v18 = [(BLDownload *)self md5HashStrings];
-    [v4 setMd5HashStrings:v18];
+    md5HashStrings = [(BLDownload *)self md5HashStrings];
+    [v4 setMd5HashStrings:md5HashStrings];
 
     [v4 setNumberOfBytesToHash:{-[BLDownload numberOfBytesToHash](self, "numberOfBytesToHash")}];
-    v19 = [(BLDownload *)self serverNumberOfBytesToHash];
-    [v4 setServerNumberOfBytesToHash:v19];
+    serverNumberOfBytesToHash = [(BLDownload *)self serverNumberOfBytesToHash];
+    [v4 setServerNumberOfBytesToHash:serverNumberOfBytesToHash];
 
-    v20 = [(BLDownload *)self publicationVersion];
-    [v4 setPublicationVersion:v20];
+    publicationVersion = [(BLDownload *)self publicationVersion];
+    [v4 setPublicationVersion:publicationVersion];
 
-    v21 = [(BLDownload *)self isAutomaticDownload];
-    [v4 setIsAutomaticDownload:v21];
+    isAutomaticDownload = [(BLDownload *)self isAutomaticDownload];
+    [v4 setIsAutomaticDownload:isAutomaticDownload];
 
-    v22 = [(BLDownload *)self isRestore];
-    [v4 setIsRestore:v22];
+    isRestore = [(BLDownload *)self isRestore];
+    [v4 setIsRestore:isRestore];
 
-    v23 = [(BLDownload *)self downloadKey];
-    [v4 setDownloadKey:v23];
+    downloadKey = [(BLDownload *)self downloadKey];
+    [v4 setDownloadKey:downloadKey];
 
-    v24 = [(BLDownload *)self accountID];
-    [v4 setAccountID:v24];
+    accountID = [(BLDownload *)self accountID];
+    [v4 setAccountID:accountID];
 
-    v25 = [(BLDownload *)self familyAccountID];
-    [v4 setFamilyAccountID:v25];
+    familyAccountID = [(BLDownload *)self familyAccountID];
+    [v4 setFamilyAccountID:familyAccountID];
 
-    v26 = [(BLDownload *)self isZipStreamable];
-    [v4 setIsZipStreamable:v26];
+    isZipStreamable = [(BLDownload *)self isZipStreamable];
+    [v4 setIsZipStreamable:isZipStreamable];
 
-    v27 = [(BLDownload *)self dpInfo];
-    [v4 setDpInfo:v27];
+    dpInfo = [(BLDownload *)self dpInfo];
+    [v4 setDpInfo:dpInfo];
 
-    v28 = [(BLDownload *)self sinfData];
-    [v4 setSinfData:v28];
+    sinfData = [(BLDownload *)self sinfData];
+    [v4 setSinfData:sinfData];
 
-    v29 = [(BLDownload *)self isSample];
-    [v4 setIsSample:v29];
+    isSample = [(BLDownload *)self isSample];
+    [v4 setIsSample:isSample];
 
-    v30 = [(BLDownload *)self isPurchase];
-    [v4 setIsPurchase:v30];
+    isPurchase = [(BLDownload *)self isPurchase];
+    [v4 setIsPurchase:isPurchase];
 
-    v31 = [(BLDownload *)self isLocalCacheServer];
-    [v4 setIsLocalCacheServer:v31];
+    isLocalCacheServer = [(BLDownload *)self isLocalCacheServer];
+    [v4 setIsLocalCacheServer:isLocalCacheServer];
 
-    v32 = [(BLDownload *)self originalURL];
-    [v4 setOriginalURL:v32];
+    originalURL = [(BLDownload *)self originalURL];
+    [v4 setOriginalURL:originalURL];
 
-    v33 = [(BLDownload *)self encryptionKey];
-    [v4 setEncryptionKey:v33];
+    encryptionKey = [(BLDownload *)self encryptionKey];
+    [v4 setEncryptionKey:encryptionKey];
 
-    v34 = [(BLDownload *)self salt];
-    [v4 setSalt:v34];
+    salt = [(BLDownload *)self salt];
+    [v4 setSalt:salt];
 
-    v35 = [(BLDownload *)self cleanupPending];
-    [v4 setCleanupPending:v35];
+    cleanupPending = [(BLDownload *)self cleanupPending];
+    [v4 setCleanupPending:cleanupPending];
 
-    v36 = [(BLDownload *)self purchaseDate];
-    [v4 setPurchaseDate:v36];
+    purchaseDate = [(BLDownload *)self purchaseDate];
+    [v4 setPurchaseDate:purchaseDate];
 
-    v37 = [(BLDownload *)self artistName];
-    [v4 setArtistName:v37];
+    artistName = [(BLDownload *)self artistName];
+    [v4 setArtistName:artistName];
 
-    v38 = [(BLDownload *)self title];
-    [v4 setTitle:v38];
+    title = [(BLDownload *)self title];
+    [v4 setTitle:title];
 
-    v39 = [(BLDownload *)self subtitle];
-    [v4 setSubtitle:v39];
+    subtitle = [(BLDownload *)self subtitle];
+    [v4 setSubtitle:subtitle];
 
-    v40 = [(BLDownload *)self collectionArtistName];
-    [v4 setCollectionArtistName:v40];
+    collectionArtistName = [(BLDownload *)self collectionArtistName];
+    [v4 setCollectionArtistName:collectionArtistName];
 
-    v41 = [(BLDownload *)self collectionTitle];
-    [v4 setCollectionTitle:v41];
+    collectionTitle = [(BLDownload *)self collectionTitle];
+    [v4 setCollectionTitle:collectionTitle];
 
-    v42 = [(BLDownload *)self genre];
-    [v4 setGenre:v42];
+    genre = [(BLDownload *)self genre];
+    [v4 setGenre:genre];
 
-    v43 = [(BLDownload *)self kind];
-    [v4 setKind:v43];
+    kind = [(BLDownload *)self kind];
+    [v4 setKind:kind];
 
-    v44 = [(BLDownload *)self thumbnailImageURL];
-    [v4 setThumbnailImageURL:v44];
+    thumbnailImageURL = [(BLDownload *)self thumbnailImageURL];
+    [v4 setThumbnailImageURL:thumbnailImageURL];
   }
 
   return v4;
@@ -226,18 +226,18 @@
 
 - (double)transferProgressFraction
 {
-  v3 = [(BLDownload *)self dpInfo];
+  dpInfo = [(BLDownload *)self dpInfo];
 
-  if (v3)
+  if (dpInfo)
   {
     return 0.6;
   }
 
-  v5 = [(BLDownload *)self isZipStreamable];
-  v6 = [v5 BOOLValue];
+  isZipStreamable = [(BLDownload *)self isZipStreamable];
+  bOOLValue = [isZipStreamable BOOLValue];
 
   result = 0.8;
-  if (v6)
+  if (bOOLValue)
   {
     return 1.0;
   }
@@ -248,13 +248,13 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BLDownload *)self downloadID];
-  v5 = [(BLDownload *)self title];
+  downloadID = [(BLDownload *)self downloadID];
+  title = [(BLDownload *)self title];
   v6 = NSStringFromBLDownloadState([(BLDownload *)self state]);
   v7 = MEMORY[0x277CCA968];
-  v8 = [(BLDownload *)self startTime];
-  v9 = [v7 localizedStringFromDate:v8 dateStyle:1 timeStyle:3];
-  v10 = [v3 stringWithFormat:@"{ DownloadID: %@ Title: %@ State:%@ Started at: %@}", v4, v5, v6, v9];
+  startTime = [(BLDownload *)self startTime];
+  v9 = [v7 localizedStringFromDate:startTime dateStyle:1 timeStyle:3];
+  v10 = [v3 stringWithFormat:@"{ DownloadID: %@ Title: %@ State:%@ Started at: %@}", downloadID, title, v6, v9];
 
   return v10;
 }

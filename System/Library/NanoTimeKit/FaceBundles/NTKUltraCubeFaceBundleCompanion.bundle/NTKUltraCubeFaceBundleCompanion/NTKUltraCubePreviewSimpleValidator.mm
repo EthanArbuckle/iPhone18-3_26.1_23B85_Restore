@@ -1,14 +1,14 @@
 @interface NTKUltraCubePreviewSimpleValidator
 - (CGSize)photoSize;
-- (NTKUltraCubePreviewSimpleValidator)initWithPhotoSize:(CGSize)a3 maskOffsetTop:(double)a4 timeLabelInsetTop:(double)a5;
+- (NTKUltraCubePreviewSimpleValidator)initWithPhotoSize:(CGSize)size maskOffsetTop:(double)top timeLabelInsetTop:(double)insetTop;
 @end
 
 @implementation NTKUltraCubePreviewSimpleValidator
 
-- (NTKUltraCubePreviewSimpleValidator)initWithPhotoSize:(CGSize)a3 maskOffsetTop:(double)a4 timeLabelInsetTop:(double)a5
+- (NTKUltraCubePreviewSimpleValidator)initWithPhotoSize:(CGSize)size maskOffsetTop:(double)top timeLabelInsetTop:(double)insetTop
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = NTKUltraCubePreviewSimpleValidator;
   result = [(NTKUltraCubePreviewSimpleValidator *)&v10 init];
@@ -16,8 +16,8 @@
   {
     result->_photoSize.width = width;
     result->_photoSize.height = height;
-    result->_maskOffsetTop = a4;
-    result->_timeLabelInsetTop = a5;
+    result->_maskOffsetTop = top;
+    result->_timeLabelInsetTop = insetTop;
   }
 
   return result;

@@ -1,29 +1,29 @@
 @interface _PXSimulatedFailingMediaRequest
-- (_PXSimulatedFailingMediaRequest)initWithWrappedMediaRequest:(id)a3 error:(id)a4;
-- (void)handleOriginalResult:(id)a3 info:(id)a4;
+- (_PXSimulatedFailingMediaRequest)initWithWrappedMediaRequest:(id)request error:(id)error;
+- (void)handleOriginalResult:(id)result info:(id)info;
 @end
 
 @implementation _PXSimulatedFailingMediaRequest
 
-- (void)handleOriginalResult:(id)a3 info:(id)a4
+- (void)handleOriginalResult:(id)result info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
-  v10 = [v9 BOOLValue];
+  resultCopy = result;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6978E50]];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
-    v15.receiver = v8;
+    v15.receiver = selfCopy;
     v15.super_class = _PXSimulatedFailingMediaRequest;
-    [(_PXSimulatedMediaRequest *)&v15 handleOriginalResult:v6 info:v7];
+    [(_PXSimulatedMediaRequest *)&v15 handleOriginalResult:resultCopy info:infoCopy];
   }
 
-  else if (!v8->_didReturnError)
+  else if (!selfCopy->_didReturnError)
   {
-    v11 = [v7 mutableCopy];
+    v11 = [infoCopy mutableCopy];
     v12 = v11;
     if (v11)
     {
@@ -37,24 +37,24 @@
 
     v14 = v13;
 
-    [v14 setObject:v8->_error forKeyedSubscript:*MEMORY[0x1E6978DF0]];
-    v16.receiver = v8;
+    [v14 setObject:selfCopy->_error forKeyedSubscript:*MEMORY[0x1E6978DF0]];
+    v16.receiver = selfCopy;
     v16.super_class = _PXSimulatedFailingMediaRequest;
     [(_PXSimulatedMediaRequest *)&v16 handleOriginalResult:0 info:v14];
-    v8->_didReturnError = 1;
+    selfCopy->_didReturnError = 1;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (_PXSimulatedFailingMediaRequest)initWithWrappedMediaRequest:(id)a3 error:(id)a4
+- (_PXSimulatedFailingMediaRequest)initWithWrappedMediaRequest:(id)request error:(id)error
 {
-  v7 = a4;
-  v8 = [(_PXSimulatedMediaRequest *)self initWithWrappedMediaRequest:a3];
+  errorCopy = error;
+  v8 = [(_PXSimulatedMediaRequest *)self initWithWrappedMediaRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;

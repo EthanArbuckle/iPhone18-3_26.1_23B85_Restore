@@ -1,15 +1,15 @@
 @interface ICTTTextContentStorage
-- (BOOL)canCollapseSectionsInRange:(_NSRange)a3;
-- (BOOL)canExpandSectionsInRange:(_NSRange)a3;
-- (BOOL)isUUIDHidden:(id)a3;
+- (BOOL)canCollapseSectionsInRange:(_NSRange)range;
+- (BOOL)canExpandSectionsInRange:(_NSRange)range;
+- (BOOL)isUUIDHidden:(id)hidden;
 - (ICTTTextContentStorage)init;
-- (ICTTTextContentStorage)initWithTextStorage:(id)a3 outlineState:(id)a4;
-- (void)addTextLayoutManager:(id)a3;
+- (ICTTTextContentStorage)initWithTextStorage:(id)storage outlineState:(id)state;
+- (void)addTextLayoutManager:(id)manager;
 - (void)collapseAllSections;
 - (void)dealloc;
 - (void)expandAllSections;
-- (void)removeTextLayoutManager:(id)a3;
-- (void)setExpanded:(BOOL)a3 forSectionsInRange:(_NSRange)a4;
+- (void)removeTextLayoutManager:(id)manager;
+- (void)setExpanded:(BOOL)expanded forSectionsInRange:(_NSRange)range;
 @end
 
 @implementation ICTTTextContentStorage
@@ -22,36 +22,36 @@
   if (v2)
   {
     v3 = [ICTTTextStorage alloc];
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [(ICTTTextStorage *)v3 initWithData:0 replicaID:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v5 = [(ICTTTextStorage *)v3 initWithData:0 replicaID:uUID];
     [(ICTTTextContentStorage *)v2 setTextStorage:v5];
   }
 
   return v2;
 }
 
-- (ICTTTextContentStorage)initWithTextStorage:(id)a3 outlineState:(id)a4
+- (ICTTTextContentStorage)initWithTextStorage:(id)storage outlineState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v17.receiver = self;
   v17.super_class = ICTTTextContentStorage;
-  v7 = a3;
+  storageCopy = storage;
   v8 = [(ICTTTextContentStorage *)&v17 init];
-  [(ICTTTextContentStorage *)v8 setTextStorage:v7, v17.receiver, v17.super_class];
+  [(ICTTTextContentStorage *)v8 setTextStorage:storageCopy, v17.receiver, v17.super_class];
 
   [(ICTTTextContentStorage *)v8 setIncludesTextListMarkers:0];
   if (ICInternalSettingsIsCollapsibleSectionsEnabled())
   {
     v9 = [ICOutlineController alloc];
-    v10 = [(ICTTTextContentStorage *)v8 textStorage];
-    v11 = [v6 collapsedUUIDs];
-    v12 = [(ICOutlineController *)v9 initWithTextStorage:v10 collapsedUUIDs:v11 asynchronous:1];
+    textStorage = [(ICTTTextContentStorage *)v8 textStorage];
+    collapsedUUIDs = [stateCopy collapsedUUIDs];
+    v12 = [(ICOutlineController *)v9 initWithTextStorage:textStorage collapsedUUIDs:collapsedUUIDs asynchronous:1];
     outlineController = v8->_outlineController;
     v8->_outlineController = v12;
 
     v14 = v8->_outlineController;
-    v15 = [(ICTTTextContentStorage *)v8 textStorage];
-    [v15 setOutlineController:v14];
+    textStorage2 = [(ICTTTextContentStorage *)v8 textStorage];
+    [textStorage2 setOutlineController:v14];
   }
 
   return v8;
@@ -68,95 +68,95 @@
   [(ICTTTextContentStorage *)&v4 dealloc];
 }
 
-- (void)addTextLayoutManager:(id)a3
+- (void)addTextLayoutManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(ICTTTextContentStorage *)self textStorage];
-  [v5 addTextLayoutManager:v4];
+  managerCopy = manager;
+  textStorage = [(ICTTTextContentStorage *)self textStorage];
+  [textStorage addTextLayoutManager:managerCopy];
 
   v6.receiver = self;
   v6.super_class = ICTTTextContentStorage;
-  [(ICTTTextContentStorage *)&v6 addTextLayoutManager:v4];
+  [(ICTTTextContentStorage *)&v6 addTextLayoutManager:managerCopy];
 }
 
-- (void)removeTextLayoutManager:(id)a3
+- (void)removeTextLayoutManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(ICTTTextContentStorage *)self textStorage];
-  [v5 removeTextLayoutManager:v4];
+  managerCopy = manager;
+  textStorage = [(ICTTTextContentStorage *)self textStorage];
+  [textStorage removeTextLayoutManager:managerCopy];
 
   v6.receiver = self;
   v6.super_class = ICTTTextContentStorage;
-  [(ICTTTextContentStorage *)&v6 removeTextLayoutManager:v4];
+  [(ICTTTextContentStorage *)&v6 removeTextLayoutManager:managerCopy];
 }
 
-- (BOOL)isUUIDHidden:(id)a3
+- (BOOL)isUUIDHidden:(id)hidden
 {
-  v4 = a3;
-  v5 = [(ICTTTextContentStorage *)self outlineController];
-  v6 = [v5 isUUIDHidden:v4];
+  hiddenCopy = hidden;
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  v6 = [outlineController isUUIDHidden:hiddenCopy];
 
   return v6;
 }
 
-- (BOOL)canExpandSectionsInRange:(_NSRange)a3
+- (BOOL)canExpandSectionsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICTTTextContentStorage *)self outlineController];
-  v7 = [(ICTTTextContentStorage *)self textStorage];
-  v8 = [v7 paragraphUUIDsInRange:{location, length}];
-  LOBYTE(location) = [v6 canExpandAnyUUIDs:v8];
+  length = range.length;
+  location = range.location;
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  textStorage = [(ICTTTextContentStorage *)self textStorage];
+  v8 = [textStorage paragraphUUIDsInRange:{location, length}];
+  LOBYTE(location) = [outlineController canExpandAnyUUIDs:v8];
 
   return location;
 }
 
-- (BOOL)canCollapseSectionsInRange:(_NSRange)a3
+- (BOOL)canCollapseSectionsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICTTTextContentStorage *)self outlineController];
-  v7 = [(ICTTTextContentStorage *)self textStorage];
-  v8 = [v7 paragraphUUIDsInRange:{location, length}];
-  LOBYTE(location) = [v6 canCollapseAnyUUIDs:v8];
+  length = range.length;
+  location = range.location;
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  textStorage = [(ICTTTextContentStorage *)self textStorage];
+  v8 = [textStorage paragraphUUIDsInRange:{location, length}];
+  LOBYTE(location) = [outlineController canCollapseAnyUUIDs:v8];
 
   return location;
 }
 
-- (void)setExpanded:(BOOL)a3 forSectionsInRange:(_NSRange)a4
+- (void)setExpanded:(BOOL)expanded forSectionsInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v8 = [(ICTTTextContentStorage *)self textStorage];
-  v12 = [v8 paragraphUUIDsInRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  expandedCopy = expanded;
+  textStorage = [(ICTTTextContentStorage *)self textStorage];
+  v12 = [textStorage paragraphUUIDsInRange:{location, length}];
 
-  v9 = [(ICTTTextContentStorage *)self outlineController];
-  v10 = v9;
-  if (v6)
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  v10 = outlineController;
+  if (expandedCopy)
   {
-    [v9 expandUUIDs:v12];
+    [outlineController expandUUIDs:v12];
   }
 
   else
   {
-    [v9 collapseUUIDs:v12];
+    [outlineController collapseUUIDs:v12];
   }
 
-  v11 = [(ICTTTextContentStorage *)self outlineController];
-  [v11 collapsibleSectionAffordanceUsedForUUIDs:v12];
+  outlineController2 = [(ICTTTextContentStorage *)self outlineController];
+  [outlineController2 collapsibleSectionAffordanceUsedForUUIDs:v12];
 }
 
 - (void)expandAllSections
 {
-  v2 = [(ICTTTextContentStorage *)self outlineController];
-  [v2 expandAll];
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  [outlineController expandAll];
 }
 
 - (void)collapseAllSections
 {
-  v2 = [(ICTTTextContentStorage *)self outlineController];
-  [v2 collapseAll];
+  outlineController = [(ICTTTextContentStorage *)self outlineController];
+  [outlineController collapseAll];
 }
 
 @end

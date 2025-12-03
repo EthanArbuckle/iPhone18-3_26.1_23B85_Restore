@@ -1,36 +1,36 @@
 @interface CRLWPRepCaretController
 - (BOOL)caretIsHidden;
 - (BOOL)p_shouldSuppressSelectionHighlight;
-- (CRLWPRepCaretController)initWithDelegate:(id)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (CRLWPRepCaretController)initWithDelegate:(id)delegate;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (void)didEnterBackground;
 - (void)hideCaretLayer;
-- (void)p_caretTimerFired:(id)a3;
+- (void)p_caretTimerFired:(id)fired;
 - (void)p_disableAnimation;
 - (void)p_enableAnimation;
-- (void)p_setCaretOn:(BOOL)a3 forLayer:(id)a4;
+- (void)p_setCaretOn:(BOOL)on forLayer:(id)layer;
 - (void)p_startCaretLayerAnimation;
 - (void)p_toggleCaretOpacity;
-- (void)setCaretAnimates:(BOOL)a3;
-- (void)setCaretLayer:(id)a3;
+- (void)setCaretAnimates:(BOOL)animates;
+- (void)setCaretLayer:(id)layer;
 - (void)showCaretLayerStartingAnimation;
-- (void)stopCaretLayerAnimationHidingCaret:(BOOL)a3;
+- (void)stopCaretLayerAnimationHidingCaret:(BOOL)caret;
 - (void)tearDown;
 - (void)willEnterForeground;
 @end
 
 @implementation CRLWPRepCaretController
 
-- (CRLWPRepCaretController)initWithDelegate:(id)a3
+- (CRLWPRepCaretController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRLWPRepCaretController;
   v5 = [(CRLWPRepCaretController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_caretAnimatorConfigurator = objc_opt_class();
     if ([(CRLWPRepCaretController *)v6 p_isRedesignedTextCursorEnabled])
     {
@@ -52,13 +52,13 @@
   self->_caretLayer = 0;
 }
 
-- (void)setCaretLayer:(id)a3
+- (void)setCaretLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   [(CALayer *)self->_caretLayer setDelegate:0];
-  [(CALayer *)v4 setDelegate:self];
+  [(CALayer *)layerCopy setDelegate:self];
   caretLayer = self->_caretLayer;
-  self->_caretLayer = v4;
+  self->_caretLayer = layerCopy;
 }
 
 - (BOOL)p_shouldSuppressSelectionHighlight
@@ -69,14 +69,14 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained isSelectionHighlightSuppressed];
+  isSelectionHighlightSuppressed = [WeakRetained isSelectionHighlightSuppressed];
 
-  return v5;
+  return isSelectionHighlightSuppressed;
 }
 
-- (void)setCaretAnimates:(BOOL)a3
+- (void)setCaretAnimates:(BOOL)animates
 {
-  if (a3)
+  if (animates)
   {
     [(CRLWPRepCaretController *)self p_enableAnimation];
   }
@@ -131,11 +131,11 @@
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = +[NSNull null];
-  if (-[objc_class caretShouldFade](self->_caretAnimatorConfigurator, "caretShouldFade") && [v5 isEqualToString:@"opacity"])
+  if (-[objc_class caretShouldFade](self->_caretAnimatorConfigurator, "caretShouldFade") && [keyCopy isEqualToString:@"opacity"])
   {
 
     v6 = 0;
@@ -163,13 +163,13 @@
   }
 }
 
-- (void)stopCaretLayerAnimationHidingCaret:(BOOL)a3
+- (void)stopCaretLayerAnimationHidingCaret:(BOOL)caret
 {
-  v3 = a3;
+  caretCopy = caret;
   v5 = self->_caretLayer;
   WeakRetained = objc_loadWeakRetained(&self->_caretTimer);
   self->_caretCancelled = 1;
-  if (WeakRetained || v3)
+  if (WeakRetained || caretCopy)
   {
     objc_storeWeak(&self->_caretTimer, 0);
     v7[0] = _NSConcreteStackBlock;
@@ -178,7 +178,7 @@
     v7[3] = &unk_101852448;
     v7[4] = self;
     v8 = WeakRetained;
-    v10 = v3;
+    v10 = caretCopy;
     v9 = v5;
     dispatch_async(&_dispatch_main_q, v7);
   }
@@ -189,9 +189,9 @@
   WeakRetained = objc_loadWeakRetained(&self->_caretTimer);
 
   v4 = objc_loadWeakRetained(&self->_delegate);
-  v5 = [v4 selectionChangeWasLocal];
+  selectionChangeWasLocal = [v4 selectionChangeWasLocal];
 
-  if ((v5 & 1) != 0 || !WeakRetained)
+  if ((selectionChangeWasLocal & 1) != 0 || !WeakRetained)
   {
     if (!self->_animationDisabled)
     {
@@ -234,9 +234,9 @@
   [(CALayer *)caretLayer setHidden:1];
 }
 
-- (void)p_caretTimerFired:(id)a3
+- (void)p_caretTimerFired:(id)fired
 {
-  v9 = a3;
+  firedCopy = fired;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -264,23 +264,23 @@
 
   else
   {
-    [v9 invalidate];
+    [firedCopy invalidate];
   }
 }
 
-- (void)p_setCaretOn:(BOOL)a3 forLayer:(id)a4
+- (void)p_setCaretOn:(BOOL)on forLayer:(id)layer
 {
-  v4 = a3;
-  v7 = a4;
+  onCopy = on;
+  layerCopy = layer;
   if ([(objc_class *)self->_caretAnimatorConfigurator caretShouldFade])
   {
     LODWORD(v6) = 1008981770;
-    if (v4)
+    if (onCopy)
     {
       *&v6 = 1.0;
     }
 
-    [v7 setOpacity:v6];
+    [layerCopy setOpacity:v6];
   }
 }
 

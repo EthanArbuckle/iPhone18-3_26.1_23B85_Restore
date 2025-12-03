@@ -1,16 +1,16 @@
 @interface EDAddRemoteContentLinksTableUpgradeStep
 + (id)_remoteContentLinksTableSchema;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddRemoteContentLinksTableUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [a1 _remoteContentLinksTableSchema];
-  v6 = [v5 definitionWithDatabaseName:0];
-  v7 = sqlite3_exec([v4 sqlDB], objc_msgSend(v6, "UTF8String"), 0, 0, 0);
+  connectionCopy = connection;
+  _remoteContentLinksTableSchema = [self _remoteContentLinksTableSchema];
+  v6 = [_remoteContentLinksTableSchema definitionWithDatabaseName:0];
+  v7 = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v6, "UTF8String"), 0, 0, 0);
 
   return v7;
 }

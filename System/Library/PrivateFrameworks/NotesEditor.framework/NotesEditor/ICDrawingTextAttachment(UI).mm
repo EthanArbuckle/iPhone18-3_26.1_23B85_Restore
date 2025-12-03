@@ -13,42 +13,42 @@
   if (ICInternalSettingsIsTextKit2Enabled())
   {
     objc_opt_class();
-    v5 = [v4 textLayoutManager];
+    textLayoutManager = [v4 textLayoutManager];
     v6 = ICDynamicCast();
-    v7 = [a1 viewIdentifier];
-    v8 = [v6 existingAttachmentViewForIdentifier:v7];
+    viewIdentifier = [self viewIdentifier];
+    v8 = [v6 existingAttachmentViewForIdentifier:viewIdentifier];
   }
 
   else
   {
     objc_opt_class();
-    v5 = [v4 layoutManager];
+    textLayoutManager = [v4 layoutManager];
     v6 = ICDynamicCast();
-    v8 = [v6 viewForTextAttachment:a1];
+    v8 = [v6 viewForTextAttachment:self];
   }
 
-  v9 = [a1 attachment];
-  v10 = [v9 drawingModel];
-  v11 = [v10 drawing];
-  [v11 fullBounds];
+  attachment = [self attachment];
+  drawingModel = [attachment drawingModel];
+  drawing = [drawingModel drawing];
+  [drawing fullBounds];
 
   if (v8)
   {
     objc_opt_class();
-    v12 = ICCheckedDynamicCast();
-    [v12 boundsForDisplay];
+    drawing2 = ICCheckedDynamicCast();
+    [drawing2 boundsForDisplay];
   }
 
   else
   {
-    v13 = [a1 attachment];
-    v14 = [v13 drawingModel];
-    v12 = [v14 drawing];
+    attachment2 = [self attachment];
+    drawingModel2 = [attachment2 drawingModel];
+    drawing2 = [drawingModel2 drawing];
 
-    [v12 bounds];
+    [drawing2 bounds];
   }
 
-  [a1 availableWidthForTextContainer:v4];
+  [self availableWidthForTextContainer:v4];
   v16 = v15;
 
   return v16;
@@ -57,22 +57,22 @@
 - (ICDrawingInlineAttachmentView)newlyCreatedViewForManualRenderingInTextContainer:()UI
 {
   v4 = a3;
-  v5 = [[ICDrawingInlineAttachmentView alloc] initWithTextAttachment:a1 textContainer:v4 forManualRendering:1];
+  v5 = [[ICDrawingInlineAttachmentView alloc] initWithTextAttachment:self textContainer:v4 forManualRendering:1];
 
   return v5;
 }
 
 - (double)availableWidthForTextContainer:()UI
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &off_282817FE8;
   v3 = a3;
   objc_msgSendSuper2(&v11, sel_availableWidthForTextContainer_, v3);
   v5 = v4;
   objc_opt_class();
-  v6 = [v3 textView];
+  textView = [v3 textView];
 
-  v7 = [v6 superview];
+  superview = [textView superview];
   v8 = ICDynamicCast();
 
   if (v8)
@@ -90,7 +90,7 @@
   v19 = a8;
   v20 = a7;
   objc_opt_class();
-  v21 = [v19 superview];
+  superview = [v19 superview];
   v22 = ICDynamicCast();
 
   v23 = 0.0;
@@ -99,7 +99,7 @@
     v23 = a2;
   }
 
-  v24.receiver = a1;
+  v24.receiver = self;
   v24.super_class = &off_282817FE8;
   objc_msgSendSuper2(&v24, sel_placeView_withFrame_inParentView_characterIndex_layoutManager_, v20, v19, a9, v18, v23, a3, a4, a5);
 }

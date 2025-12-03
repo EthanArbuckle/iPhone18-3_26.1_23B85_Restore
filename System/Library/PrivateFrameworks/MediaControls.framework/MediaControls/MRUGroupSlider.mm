@@ -1,20 +1,20 @@
 @interface MRUGroupSlider
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (MRUGroupSlider)initWithFrame:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (MRUGroupSlider)initWithFrame:(CGRect)frame;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)handleLongPressCancelled;
-- (void)sliderLongPress:(id)a3;
-- (void)sliderLongPressFeedback:(id)a3;
+- (void)sliderLongPress:(id)press;
+- (void)sliderLongPressFeedback:(id)feedback;
 @end
 
 @implementation MRUGroupSlider
 
-- (MRUGroupSlider)initWithFrame:(CGRect)a3
+- (MRUGroupSlider)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = MRUGroupSlider;
-  v3 = [(MRUGroupSlider *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUGroupSlider *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -59,38 +59,38 @@ void __32__MRUGroupSlider_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained handleLongPressCancelled];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   if ([(MRUGroupSlider *)self isTracking])
   {
     self->_longPressEnabled = 0;
-    v5 = [(MRUSlider *)self delegate];
+    delegate = [(MRUSlider *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(MRUSlider *)self delegate];
-      self->_longPressEnabled = [v7 sliderShouldAllowLongPress:self];
+      delegate2 = [(MRUSlider *)self delegate];
+      self->_longPressEnabled = [delegate2 sliderShouldAllowLongPress:self];
     }
 
-    v8 = self->_longPressEnabled && (self->_longPressGestureRecognizer == v4 || self->_longPressFeedbackGestureRecognizer == v4);
+    v8 = self->_longPressEnabled && (self->_longPressGestureRecognizer == beginCopy || self->_longPressFeedbackGestureRecognizer == beginCopy);
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MRUGroupSlider;
-    v8 = [(MRUGroupSlider *)&v10 gestureRecognizerShouldBegin:v4];
+    v8 = [(MRUGroupSlider *)&v10 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v8;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   if ([(MRUGroupSlider *)self isEnabled])
   {
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator prepare];
@@ -98,51 +98,51 @@ void __32__MRUGroupSlider_initWithFrame___block_invoke(uint64_t a1)
 
   v10.receiver = self;
   v10.super_class = MRUGroupSlider;
-  v8 = [(MRUGroupSlider *)&v10 beginTrackingWithTouch:v6 withEvent:v7];
+  v8 = [(MRUGroupSlider *)&v10 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v8;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MRUGroupSlider;
-  [(MRUGroupSlider *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(MRUGroupSlider *)&v5 endTrackingWithTouch:touch withEvent:event];
   if (self->_longPressFeedbackEnabled)
   {
     [(MRUGroupSlider *)self handleLongPressCancelled];
   }
 }
 
-- (void)sliderLongPress:(id)a3
+- (void)sliderLongPress:(id)press
 {
-  if (self->_longPressEnabled && [a3 state] == 1)
+  if (self->_longPressEnabled && [press state] == 1)
   {
     [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
     self->_longPressFeedbackEnabled = 0;
-    v4 = [(MRUSlider *)self delegate];
+    delegate = [(MRUSlider *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(MRUSlider *)self delegate];
-      [v6 sliderLongPressActionDidFinish:self];
+      delegate2 = [(MRUSlider *)self delegate];
+      [delegate2 sliderLongPressActionDidFinish:self];
     }
   }
 }
 
-- (void)sliderLongPressFeedback:(id)a3
+- (void)sliderLongPressFeedback:(id)feedback
 {
-  if (self->_longPressEnabled && [a3 state] == 1)
+  if (self->_longPressEnabled && [feedback state] == 1)
   {
     self->_longPressFeedbackEnabled = 1;
-    v4 = [(MRUSlider *)self delegate];
+    delegate = [(MRUSlider *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(MRUSlider *)self delegate];
-      [v6 sliderLongPressActionDidBegin:self];
+      delegate2 = [(MRUSlider *)self delegate];
+      [delegate2 sliderLongPressActionDidBegin:self];
     }
   }
 }
@@ -150,13 +150,13 @@ void __32__MRUGroupSlider_initWithFrame___block_invoke(uint64_t a1)
 - (void)handleLongPressCancelled
 {
   self->_longPressFeedbackEnabled = 0;
-  v3 = [(MRUSlider *)self delegate];
+  delegate = [(MRUSlider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MRUSlider *)self delegate];
-    [v5 sliderLongPressActionDidCancel:self];
+    delegate2 = [(MRUSlider *)self delegate];
+    [delegate2 sliderLongPressActionDidCancel:self];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface AACustodianMessageInviteContext
-- (AACustodianMessageInviteContext)initWithLocalContact:(id)a3 custodianID:(id)a4 appleAccount:(id)a5;
-- (id)_messageURLForCustodianID:(id)a3;
-- (id)_urlForCustodianID:(id)a3;
+- (AACustodianMessageInviteContext)initWithLocalContact:(id)contact custodianID:(id)d appleAccount:(id)account;
+- (id)_messageURLForCustodianID:(id)d;
+- (id)_urlForCustodianID:(id)d;
 @end
 
 @implementation AACustodianMessageInviteContext
 
-- (AACustodianMessageInviteContext)initWithLocalContact:(id)a3 custodianID:(id)a4 appleAccount:(id)a5
+- (AACustodianMessageInviteContext)initWithLocalContact:(id)contact custodianID:(id)d appleAccount:(id)account
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  contactCopy = contact;
+  dCopy = d;
+  accountCopy = account;
+  if (!dCopy)
   {
     [AACustodianMessageInviteContext initWithLocalContact:a2 custodianID:self appleAccount:?];
   }
@@ -21,7 +21,7 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appleAccount, a5);
+    objc_storeStrong(&v12->_appleAccount, account);
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v15 = [v14 localizedStringForKey:@"CUSTODIAN_MESSAGES_BUBBLE_TITLE" value:0 table:@"Localizable"];
     [(AAMessagesInviteContext *)v13 setTitle:v15];
@@ -34,8 +34,8 @@
     v19 = [v18 localizedStringForKey:@"CUSTODIAN_MESSAGES_BUBBLE_ACTION_LABEL" value:0 table:@"Localizable"];
     [(AAMessagesInviteContext *)v13 setAction:v19];
 
-    v20 = [v9 handle];
-    v28[0] = v20;
+    handle = [contactCopy handle];
+    v28[0] = handle;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
     [(AAMessagesInviteContext *)v13 setRecipients:v21];
 
@@ -43,10 +43,10 @@
     v23 = [v22 localizedStringForKey:@"CUSTODIAN_MESSAGES_BUBBLE_INVITE_BODY" value:0 table:@"Localizable"];
     [(AAMessagesInviteContext *)v13 setMessageBody:v23];
 
-    v24 = [(AACustodianMessageInviteContext *)v13 _urlForCustodianID:v10];
+    v24 = [(AACustodianMessageInviteContext *)v13 _urlForCustodianID:dCopy];
     [(AAMessagesInviteContext *)v13 setInviteURL:v24];
 
-    v25 = [(AACustodianMessageInviteContext *)v13 _messageURLForCustodianID:v10];
+    v25 = [(AACustodianMessageInviteContext *)v13 _messageURLForCustodianID:dCopy];
     [(AACustodianMessageInviteContext *)v13 setMessageURL:v25];
   }
 
@@ -54,18 +54,18 @@
   return v13;
 }
 
-- (id)_urlForCustodianID:(id)a3
+- (id)_urlForCustodianID:(id)d
 {
-  v3 = [AAUniversalLinkHelper stringForCustodianMessagesURLWithUUID:a3];
+  v3 = [AAUniversalLinkHelper stringForCustodianMessagesURLWithUUID:d];
   v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
 
   return v4;
 }
 
-- (id)_messageURLForCustodianID:(id)a3
+- (id)_messageURLForCustodianID:(id)d
 {
   v4 = MEMORY[0x1E696AF20];
-  v5 = a3;
+  dCopy = d;
   v70 = objc_alloc_init(v4);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v7 = objc_alloc(MEMORY[0x1E696AF60]);
@@ -81,8 +81,8 @@
     v13 = MEMORY[0x1E696AEC0];
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v15 = [v14 localizedStringForKey:@"CUSTODIAN_MESSAGES_UPSELL_MESSAGE_SUBTITLE" value:0 table:@"Localizable"];
-    v16 = [(ACAccount *)self->_appleAccount aa_firstName];
-    v17 = [v13 stringWithFormat:v15, v16];
+    aa_firstName = [(ACAccount *)self->_appleAccount aa_firstName];
+    v17 = [v13 stringWithFormat:v15, aa_firstName];
     v18 = [v12 initWithName:@"messageSubTitle" value:v17];
     [v6 addObject:v18];
   }
@@ -91,8 +91,8 @@
   {
     v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v15 = [v14 localizedStringForKey:@"CUSTODIAN_MESSAGES_UPSELL_MESSAGE_SUBTITLE_NO_ACCOUNT" value:0 table:@"Localizable"];
-    v16 = [v12 initWithName:@"messageSubTitle" value:v15];
-    [v6 addObject:v16];
+    aa_firstName = [v12 initWithName:@"messageSubTitle" value:v15];
+    [v6 addObject:aa_firstName];
   }
 
   v19 = objc_alloc(MEMORY[0x1E696AF60]);
@@ -132,9 +132,9 @@
   [v6 addObject:v42];
 
   v43 = objc_alloc(MEMORY[0x1E696AF60]);
-  v44 = [v5 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v45 = [v43 initWithName:@"custodianID" value:v44];
+  v45 = [v43 initWithName:@"custodianID" value:uUIDString];
   [v6 addObject:v45];
 
   v46 = objc_alloc(MEMORY[0x1E696AF60]);

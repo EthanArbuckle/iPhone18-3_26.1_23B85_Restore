@@ -1,45 +1,45 @@
 @interface KGGraphChangeRequest
 - (KGGraphChangeRequest)init;
 - (unint64_t)count;
-- (void)removeEdge:(id)a3;
-- (void)removeNode:(id)a3;
+- (void)removeEdge:(id)edge;
+- (void)removeNode:(id)node;
 - (void)setResolved;
-- (void)updateEdge:(id)a3 newProperties:(id)a4;
-- (void)updateNode:(id)a3 newProperties:(id)a4;
+- (void)updateEdge:(id)edge newProperties:(id)properties;
+- (void)updateNode:(id)node newProperties:(id)properties;
 @end
 
 @implementation KGGraphChangeRequest
 
-- (void)removeEdge:(id)a3
+- (void)removeEdge:(id)edge
 {
   edgeIdentifiersToRemove = self->_edgeIdentifiersToRemove;
-  v4 = [a3 identifier];
+  identifier = [edge identifier];
 
-  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove addIdentifier:v4];
+  [(KGMutableElementIdentifierSet *)edgeIdentifiersToRemove addIdentifier:identifier];
 }
 
-- (void)updateEdge:(id)a3 newProperties:(id)a4
+- (void)updateEdge:(id)edge newProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[KGEdgeChangeRequest alloc] initWithEdge:v7 properties:v6];
+  propertiesCopy = properties;
+  edgeCopy = edge;
+  v8 = [[KGEdgeChangeRequest alloc] initWithEdge:edgeCopy properties:propertiesCopy];
 
   [(NSMutableArray *)self->_edgeUpdates addObject:v8];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
   nodeIdentifiersToRemove = self->_nodeIdentifiersToRemove;
-  v4 = [a3 identifier];
+  identifier = [node identifier];
 
-  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove addIdentifier:v4];
+  [(KGMutableElementIdentifierSet *)nodeIdentifiersToRemove addIdentifier:identifier];
 }
 
-- (void)updateNode:(id)a3 newProperties:(id)a4
+- (void)updateNode:(id)node newProperties:(id)properties
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[KGNodeChangeRequest alloc] initWithNode:v7 properties:v6];
+  propertiesCopy = properties;
+  nodeCopy = node;
+  v8 = [[KGNodeChangeRequest alloc] initWithNode:nodeCopy properties:propertiesCopy];
 
   [(NSMutableArray *)self->_nodeUpdates addObject:v8];
 }

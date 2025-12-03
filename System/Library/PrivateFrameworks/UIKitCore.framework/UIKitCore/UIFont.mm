@@ -1,30 +1,30 @@
 @interface UIFont
-- (CTFontRef)_fontAdjustedForTypesettingLanguage:(const __CTFont *)a1;
-- (CTFontRef)_fontAdjustedForTypesettingLanguageAwareLineHeightRatio:(const __CTFont *)a1;
+- (CTFontRef)_fontAdjustedForTypesettingLanguage:(const __CTFont *)language;
+- (CTFontRef)_fontAdjustedForTypesettingLanguageAwareLineHeightRatio:(const __CTFont *)ratio;
 @end
 
 @implementation UIFont
 
-- (CTFontRef)_fontAdjustedForTypesettingLanguage:(const __CTFont *)a1
+- (CTFontRef)_fontAdjustedForTypesettingLanguage:(const __CTFont *)language
 {
-  v2 = a1;
+  languageCopy = language;
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (language)
   {
-    v4 = [(__CTFont *)a1 fontDescriptor];
-    v5 = [v4 fontAttributes];
+    fontDescriptor = [(__CTFont *)language fontDescriptor];
+    fontAttributes = [fontDescriptor fontAttributes];
     v6 = *MEMORY[0x1E69656F0];
-    v7 = [v5 objectForKey:*MEMORY[0x1E69656F0]];
+    v7 = [fontAttributes objectForKey:*MEMORY[0x1E69656F0]];
 
     if ([a2 length])
     {
       if (!v7 || ([a2 isEqualToString:v7] & 1) == 0)
       {
-        v8 = [(__CTFont *)v2 fontDescriptor];
+        fontDescriptor2 = [(__CTFont *)languageCopy fontDescriptor];
         v16 = v6;
         v17[0] = a2;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-        v10 = [v8 fontDescriptorByAddingAttributes:v9];
+        v10 = [fontDescriptor2 fontDescriptorByAddingAttributes:v9];
 
         if (!v10)
         {
@@ -32,8 +32,8 @@
         }
 
 LABEL_9:
-        [(__CTFont *)v2 pointSize];
-        v2 = CTFontCreateWithFontDescriptor(v10, v14, 0);
+        [(__CTFont *)languageCopy pointSize];
+        languageCopy = CTFontCreateWithFontDescriptor(v10, v14, 0);
 LABEL_12:
 
         goto LABEL_13;
@@ -42,9 +42,9 @@ LABEL_12:
 
     else if (v7)
     {
-      v11 = [(__CTFont *)v2 fontDescriptor];
-      v12 = [v11 fontAttributes];
-      v13 = [v12 mutableCopy];
+      fontDescriptor3 = [(__CTFont *)languageCopy fontDescriptor];
+      fontAttributes2 = [fontDescriptor3 fontAttributes];
+      v13 = [fontAttributes2 mutableCopy];
 
       [v13 removeObjectForKey:v6];
       v10 = [[off_1E70ECC20 alloc] initWithFontAttributes:v13];
@@ -55,7 +55,7 @@ LABEL_12:
       }
 
 LABEL_11:
-      v2 = 0;
+      languageCopy = 0;
       goto LABEL_12;
     }
 
@@ -65,14 +65,14 @@ LABEL_11:
 
 LABEL_13:
 
-  return v2;
+  return languageCopy;
 }
 
-- (CTFontRef)_fontAdjustedForTypesettingLanguageAwareLineHeightRatio:(const __CTFont *)a1
+- (CTFontRef)_fontAdjustedForTypesettingLanguageAwareLineHeightRatio:(const __CTFont *)ratio
 {
-  v2 = a1;
+  ratioCopy = ratio;
   v19[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (ratio)
   {
     if (a2 == -1.0)
     {
@@ -81,9 +81,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v4 = [(__CTFont *)a1 fontDescriptor];
+    fontDescriptor = [(__CTFont *)ratio fontDescriptor];
     v5 = *MEMORY[0x1E69657E0];
-    v6 = [v4 objectForKey:*MEMORY[0x1E69657E0]];
+    v6 = [fontDescriptor objectForKey:*MEMORY[0x1E69657E0]];
 
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:a2];
     v8 = v6;
@@ -115,21 +115,21 @@ LABEL_13:
         }
       }
 
-      v15 = [(__CTFont *)v2 fontDescriptor];
+      fontDescriptor2 = [(__CTFont *)ratioCopy fontDescriptor];
       v18 = v5;
       v19[0] = v10;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      v13 = [v15 fontDescriptorByAddingAttributes:v16];
+      v13 = [fontDescriptor2 fontDescriptorByAddingAttributes:v16];
 
       if (v13)
       {
-        [(__CTFont *)v2 pointSize];
-        v2 = CTFontCreateWithFontDescriptor(v13, v17, 0);
+        [(__CTFont *)ratioCopy pointSize];
+        ratioCopy = CTFontCreateWithFontDescriptor(v13, v17, 0);
         goto LABEL_15;
       }
 
 LABEL_14:
-      v2 = 0;
+      ratioCopy = 0;
 LABEL_15:
 
       goto LABEL_16;
@@ -141,7 +141,7 @@ LABEL_12:
 
 LABEL_16:
 
-  return v2;
+  return ratioCopy;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface JFXAVMediaMetaDataReader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTimeOfCurrentData;
 - (BOOL)hasRemainingAvailableData;
-- (BOOL)readAheadToTime:(id *)a3;
+- (BOOL)readAheadToTime:(id *)time;
 - (id)createAssetReaderTrackOutput;
-- (id)metadataForTime:(id *)a3;
+- (id)metadataForTime:(id *)time;
 - (void)JFX_preloadData;
 - (void)cancelReadingForReaderReset;
 - (void)didUpdateReadingRange;
@@ -16,11 +16,11 @@
 {
   v6.receiver = self;
   v6.super_class = JFXAVMediaMetaDataReader;
-  v3 = [(JFXAVMediaDataReader *)&v6 createAssetReaderTrackOutput];
-  v4 = [MEMORY[0x277CE6420] assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:v3];
+  createAssetReaderTrackOutput = [(JFXAVMediaDataReader *)&v6 createAssetReaderTrackOutput];
+  v4 = [MEMORY[0x277CE6420] assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:createAssetReaderTrackOutput];
   [(JFXAVMediaMetaDataReader *)self setAssetReaderOutputMetadataAdaptor:v4];
 
-  return v3;
+  return createAssetReaderTrackOutput;
 }
 
 - (void)cancelReadingForReaderReset
@@ -39,19 +39,19 @@
   [(JFXAVMediaMetaDataReader *)self JFX_preloadData];
 }
 
-- (BOOL)readAheadToTime:(id *)a3
+- (BOOL)readAheadToTime:(id *)time
 {
-  v5 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-  if (v5)
+  nextMetadataItem = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+  if (nextMetadataItem)
   {
-    v6 = v5;
+    nextMetadataItem4 = nextMetadataItem;
     do
     {
-      v7 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-      v8 = v7;
-      if (v7)
+      nextMetadataItem2 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+      v8 = nextMetadataItem2;
+      if (nextMetadataItem2)
       {
-        [v7 time];
+        [nextMetadataItem2 time];
       }
 
       else
@@ -59,7 +59,7 @@
         memset(&time2, 0, sizeof(time2));
       }
 
-      v22 = *a3;
+      v22 = *time;
       v9 = CMTimeCompare(&v22, &time2);
 
       if (v9 < 0)
@@ -68,16 +68,16 @@
       }
 
       v10 = objc_autoreleasePoolPush();
-      v11 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-      [(JFXAVMediaMetaDataReader *)self setCurrentMetadataItem:v11];
+      nextMetadataItem3 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+      [(JFXAVMediaMetaDataReader *)self setCurrentMetadataItem:nextMetadataItem3];
 
-      v12 = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
-      v13 = v12;
-      if (v12)
+      nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
+      v13 = nextTimedMetadataGroup;
+      if (nextTimedMetadataGroup)
       {
-        v14 = [v12 items];
-        v15 = [v14 firstObject];
-        [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:v15];
+        items = [nextTimedMetadataGroup items];
+        firstObject = [items firstObject];
+        [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:firstObject];
       }
 
       else
@@ -86,52 +86,52 @@
       }
 
       objc_autoreleasePoolPop(v10);
-      v6 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+      nextMetadataItem4 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
     }
 
-    while (v6);
+    while (nextMetadataItem4);
   }
 
-  v16 = [(JFXAVMediaDataReader *)self assetReader];
-  v17 = [v16 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v17 == 3)
+  if (status == 3)
   {
-    v19 = [(JFXAVMediaDataReader *)self assetReader];
-    v20 = [v19 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v20];
+    assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader2 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
 
     goto LABEL_15;
   }
 
-  v18 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+  nextMetadataItem5 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
 
-  if (v18)
+  if (nextMetadataItem5)
   {
-    v19 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-    [v19 loadValuesAsynchronouslyForKeys:&unk_28556D9B0 completionHandler:0];
+    assetReader2 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+    [assetReader2 loadValuesAsynchronouslyForKeys:&unk_28556D9B0 completionHandler:0];
 LABEL_15:
   }
 
-  return v17 != 3;
+  return status != 3;
 }
 
 - (void)readAndDiscardRemainingAvailableData
 {
-  v3 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+  nextMetadataItem = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
 
-  if (v3)
+  if (nextMetadataItem)
   {
     do
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
-      v6 = v5;
-      if (v5)
+      nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
+      v6 = nextTimedMetadataGroup;
+      if (nextTimedMetadataGroup)
       {
-        v7 = [v5 items];
-        v8 = [v7 firstObject];
-        [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:v8];
+        items = [nextTimedMetadataGroup items];
+        firstObject = [items firstObject];
+        [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:firstObject];
       }
 
       else
@@ -140,43 +140,43 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v4);
-      v9 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+      nextMetadataItem2 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
     }
 
-    while (v9);
+    while (nextMetadataItem2);
   }
 
-  v10 = [(JFXAVMediaDataReader *)self assetReader];
-  v11 = [v10 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v11 == 3)
+  if (status == 3)
   {
-    v13 = [(JFXAVMediaDataReader *)self assetReader];
-    v12 = [v13 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v12];
+    assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader2 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 }
 
 - (BOOL)hasRemainingAvailableData
 {
-  v2 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-  v3 = v2 != 0;
+  nextMetadataItem = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+  v3 = nextMetadataItem != 0;
 
   return v3;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)startTimeOfCurrentData
 {
-  v5 = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
+  currentMetadataItem = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
 
-  if (v5)
+  if (currentMetadataItem)
   {
-    v7 = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
-    if (v7)
+    currentMetadataItem2 = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
+    if (currentMetadataItem2)
     {
-      v9 = v7;
-      [v7 time];
-      v7 = v9;
+      v9 = currentMetadataItem2;
+      [currentMetadataItem2 time];
+      currentMetadataItem2 = v9;
     }
 
     else
@@ -197,41 +197,41 @@ LABEL_15:
   return result;
 }
 
-- (id)metadataForTime:(id *)a3
+- (id)metadataForTime:(id *)time
 {
-  v6 = *a3;
+  v6 = *time;
   if ([(JFXAVMediaDataReader *)self seekToTime:&v6])
   {
-    v4 = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
+    currentMetadataItem = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
   }
 
   else
   {
-    v4 = 0;
+    currentMetadataItem = 0;
   }
 
-  return v4;
+  return currentMetadataItem;
 }
 
 - (void)JFX_preloadData
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(JFXAVMediaDataReader *)self assetReader];
-  v4 = [v3 status];
+  assetReader = [(JFXAVMediaDataReader *)self assetReader];
+  status = [assetReader status];
 
-  if (v4 == 1)
+  if (status == 1)
   {
-    v5 = [(JFXAVMediaMetaDataReader *)self assetReaderOutputMetadataAdaptor];
-    v6 = [v5 nextTimedMetadataGroup];
+    assetReaderOutputMetadataAdaptor = [(JFXAVMediaMetaDataReader *)self assetReaderOutputMetadataAdaptor];
+    nextTimedMetadataGroup = [assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
 
-    v7 = [v6 items];
-    v8 = [v7 firstObject];
-    [(JFXAVMediaMetaDataReader *)self setCurrentMetadataItem:v8];
+    items = [nextTimedMetadataGroup items];
+    firstObject = [items firstObject];
+    [(JFXAVMediaMetaDataReader *)self setCurrentMetadataItem:firstObject];
   }
 
-  v9 = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
+  currentMetadataItem = [(JFXAVMediaMetaDataReader *)self currentMetadataItem];
 
-  if (!v9)
+  if (!currentMetadataItem)
   {
     v10 = JFXLog_DebugMediaDataReader();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -247,30 +247,30 @@ LABEL_15:
     }
   }
 
-  v11 = [(JFXAVMediaDataReader *)self assetReader];
-  v12 = [v11 status];
+  assetReader2 = [(JFXAVMediaDataReader *)self assetReader];
+  status2 = [assetReader2 status];
 
-  if (v12 == 1)
+  if (status2 == 1)
   {
-    v13 = [(JFXAVMediaMetaDataReader *)self assetReaderOutputMetadataAdaptor];
-    v14 = [v13 nextTimedMetadataGroup];
+    assetReaderOutputMetadataAdaptor2 = [(JFXAVMediaMetaDataReader *)self assetReaderOutputMetadataAdaptor];
+    nextTimedMetadataGroup2 = [assetReaderOutputMetadataAdaptor2 nextTimedMetadataGroup];
 
-    v15 = [v14 items];
-    v16 = [v15 firstObject];
-    [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:v16];
+    items2 = [nextTimedMetadataGroup2 items];
+    firstObject2 = [items2 firstObject];
+    [(JFXAVMediaMetaDataReader *)self setNextMetadataItem:firstObject2];
 
-    v17 = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
-    [v17 time];
+    nextMetadataItem = [(JFXAVMediaMetaDataReader *)self nextMetadataItem];
+    [nextMetadataItem time];
   }
 
-  v18 = [(JFXAVMediaDataReader *)self assetReader];
-  v19 = [v18 status];
+  assetReader3 = [(JFXAVMediaDataReader *)self assetReader];
+  status3 = [assetReader3 status];
 
-  if (v19 == 3)
+  if (status3 == 3)
   {
-    v20 = [(JFXAVMediaDataReader *)self assetReader];
-    v21 = [v20 error];
-    [(JFXAVMediaDataReader *)self didFailWithError:v21];
+    assetReader4 = [(JFXAVMediaDataReader *)self assetReader];
+    error = [assetReader4 error];
+    [(JFXAVMediaDataReader *)self didFailWithError:error];
   }
 }
 

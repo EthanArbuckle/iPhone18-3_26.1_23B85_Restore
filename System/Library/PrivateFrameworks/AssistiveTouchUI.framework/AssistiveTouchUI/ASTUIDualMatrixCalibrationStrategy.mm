@@ -1,9 +1,9 @@
 @interface ASTUIDualMatrixCalibrationStrategy
 - (ASTUIDualMatrixCalibrationStrategy)init;
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3;
-- (id)calibratedArrayForGazePoint:(CGPoint)a3;
-- (id)learnCalibrationForPoints:(id)a3;
-- (void)captureGazeEnrollmentPoint:(id)a3;
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point;
+- (id)calibratedArrayForGazePoint:(CGPoint)point;
+- (id)learnCalibrationForPoints:(id)points;
+- (void)captureGazeEnrollmentPoint:(id)point;
 - (void)learnCalibration;
 - (void)reset;
 @end
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (id)calibratedArrayForGazePoint:(CGPoint)a3
+- (id)calibratedArrayForGazePoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   [(ASTUIDualMatrixCalibrationStrategy *)self uncalibratedMiddleLineOfTheScreen];
   if (y > v5)
   {
@@ -43,12 +43,12 @@
   return v6;
 }
 
-- (void)captureGazeEnrollmentPoint:(id)a3
+- (void)captureGazeEnrollmentPoint:(id)point
 {
-  v4 = a3;
-  v6 = [(ASTUIDualMatrixCalibrationStrategy *)self storedEnrollments];
-  v5 = [v4 positionName];
-  [v6 setObject:v4 forKey:v5];
+  pointCopy = point;
+  storedEnrollments = [(ASTUIDualMatrixCalibrationStrategy *)self storedEnrollments];
+  positionName = [pointCopy positionName];
+  [storedEnrollments setObject:pointCopy forKey:positionName];
 }
 
 - (void)learnCalibration
@@ -57,21 +57,21 @@
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CBEB98] setWithArray:&unk_28532E060];
   v6 = [MEMORY[0x277CBEB98] setWithArray:&unk_28532E078];
-  v7 = [(ASTUIDualMatrixCalibrationStrategy *)self storedEnrollments];
-  v8 = [v7 allKeys];
-  v9 = [v8 count];
+  storedEnrollments = [(ASTUIDualMatrixCalibrationStrategy *)self storedEnrollments];
+  allKeys = [storedEnrollments allKeys];
+  v9 = [allKeys count];
 
   if (v9 < 5)
   {
     v19 = objc_opt_new();
-    v20 = [v7 allValues];
+    allValues = [storedEnrollments allValues];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __54__ASTUIDualMatrixCalibrationStrategy_learnCalibration__block_invoke_4;
     v22[3] = &unk_278CDC650;
     v23 = v19;
     v18 = v19;
-    [v20 enumerateObjectsUsingBlock:v22];
+    [allValues enumerateObjectsUsingBlock:v22];
 
     [(ASTUIDualMatrixCalibrationStrategy *)self setUncalibratedMiddleLineOfTheScreen:-1.0];
     v21 = [(ASTUIDualMatrixCalibrationStrategy *)self learnCalibrationForPoints:v18];
@@ -90,7 +90,7 @@
     v36 = v6;
     v11 = v4;
     v37 = v11;
-    [v7 enumerateKeysAndObjectsUsingBlock:v33];
+    [storedEnrollments enumerateKeysAndObjectsUsingBlock:v33];
     v12 = objc_opt_new();
     v13 = objc_opt_new();
     v29 = 0;
@@ -210,21 +210,21 @@ void __54__ASTUIDualMatrixCalibrationStrategy_learnCalibration__block_invoke_4(u
   [(ASTUIDualMatrixCalibrationStrategy *)self setStoredEnrollments:v3];
 }
 
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point
 {
   v5.receiver = self;
   v5.super_class = ASTUIDualMatrixCalibrationStrategy;
-  [(ASTUILinearMatrixCalibrationStrategy *)&v5 calibratedGazePointForGazePoint:a3.x, a3.y];
+  [(ASTUILinearMatrixCalibrationStrategy *)&v5 calibratedGazePointForGazePoint:point.x, point.y];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (id)learnCalibrationForPoints:(id)a3
+- (id)learnCalibrationForPoints:(id)points
 {
   v5.receiver = self;
   v5.super_class = ASTUIDualMatrixCalibrationStrategy;
-  v3 = [(ASTUILinearMatrixCalibrationStrategy *)&v5 learnCalibrationForPoints:a3];
+  v3 = [(ASTUILinearMatrixCalibrationStrategy *)&v5 learnCalibrationForPoints:points];
 
   return v3;
 }

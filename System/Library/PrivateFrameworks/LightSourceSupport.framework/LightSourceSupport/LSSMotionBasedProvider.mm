@@ -1,19 +1,19 @@
 @interface LSSMotionBasedProvider
-- (BOOL)_updateLight:(float)a3 motionLevel:(float)a4 activateLevel:(float)a5 deactivateLevel:(float64_t)a6 timestamp:;
-- (LSSMotionBasedProvider)initWithQueue:(id)a3 delegate:(id)a4;
+- (BOOL)_updateLight:(float)light motionLevel:(float)level activateLevel:(float)activateLevel deactivateLevel:(float64_t)deactivateLevel timestamp:;
+- (LSSMotionBasedProvider)initWithQueue:(id)queue delegate:(id)delegate;
 - (LSSProviderDelegate)delegate;
-- (uint64_t)_updateReference:(float)a3 motionLevel:(float)a4 activateLevel:(float)a5 deactivateLevel:;
-- (void)_update:(uint64_t)a3 timestamp:(float64x2_t *)a4;
+- (uint64_t)_updateReference:(float)reference motionLevel:(float)level activateLevel:(float)activateLevel deactivateLevel:;
+- (void)_update:(uint64_t)_update timestamp:(float64x2_t *)timestamp;
 - (void)invalidate;
-- (void)provider:(id)a3 updatedLight:(id)a4;
+- (void)provider:(id)provider updatedLight:(id)light;
 @end
 
 @implementation LSSMotionBasedProvider
 
-- (LSSMotionBasedProvider)initWithQueue:(id)a3 delegate:(id)a4
+- (LSSMotionBasedProvider)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v33.receiver = self;
   v33.super_class = LSSMotionBasedProvider;
   v8 = [(LSSMotionBasedProvider *)&v33 init];
@@ -54,7 +54,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  objc_storeWeak(v8 + 10, v7);
+  objc_storeWeak(v8 + 10, delegateCopy);
   v12 = +[LSSSettings currentSettings];
   v13 = *(v8 + 8);
   *(v8 + 8) = v12;
@@ -126,7 +126,7 @@ LABEL_12:
   v23 = *(v8 + 1);
   *(v8 + 1) = v22;
 
-  [*(v8 + 1) setUnderlyingQueue:v6];
+  [*(v8 + 1) setUnderlyingQueue:queueCopy];
   if (qword_280D2F530 != -1)
   {
     [LSSMotionBasedProvider initWithQueue:delegate:];
@@ -273,9 +273,9 @@ LABEL_11:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provider:(id)a3 updatedLight:(id)a4
+- (void)provider:(id)provider updatedLight:(id)light
 {
-  var0 = a4.var0;
+  var0 = light.var0;
   v12 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = *(*&var0 + 48);
@@ -306,30 +306,30 @@ LABEL_11:
   return WeakRetained;
 }
 
-- (BOOL)_updateLight:(float)a3 motionLevel:(float)a4 activateLevel:(float)a5 deactivateLevel:(float64_t)a6 timestamp:
+- (BOOL)_updateLight:(float)light motionLevel:(float)level activateLevel:(float)activateLevel deactivateLevel:(float64_t)deactivateLevel timestamp:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9 = *(a1 + 88);
+  v9 = *(self + 88);
   if ((v9 & 2) == 0)
   {
-    a4 = INFINITY;
+    level = INFINITY;
   }
 
-  if ((*(a1 + 73) & 1) != 0 || a4 >= a3)
+  if ((*(self + 73) & 1) != 0 || level >= light)
   {
-    v12 = INFINITY;
+    activateLevelCopy = INFINITY;
     if ((v9 & 2) != 0)
     {
-      v12 = a5;
+      activateLevelCopy = activateLevel;
     }
 
-    if (*(a1 + 73))
+    if (*(self + 73))
     {
-      v13 = v12 <= a3;
+      v13 = activateLevelCopy <= light;
     }
 
     else
@@ -342,7 +342,7 @@ LABEL_11:
       goto LABEL_19;
     }
 
-    *(a1 + 73) = 0;
+    *(self + 73) = 0;
     if (qword_280D2F530 != -1)
     {
       dispatch_once(&qword_280D2F530, &__block_literal_global_6);
@@ -360,7 +360,7 @@ LABEL_11:
 
   else
   {
-    *(a1 + 73) = 1;
+    *(self + 73) = 1;
     if (qword_280D2F530 != -1)
     {
       dispatch_once(&qword_280D2F530, &__block_literal_global_6);
@@ -378,62 +378,62 @@ LABEL_11:
 
   _os_log_debug_impl(&dword_255E8B000, v10, OS_LOG_TYPE_DEBUG, v11, v20, 2u);
 LABEL_19:
-  v14 = *(a1 + 24);
-  v15 = *(a1 + 73);
+  v14 = *(self + 24);
+  v15 = *(self + 73);
   v17 = a2[1];
   v20[0] = *a2;
   v16.f64[1] = v20[0].f64[1];
   v20[1] = v17;
   v18 = 1;
-  v16.f64[0] = a6;
+  v16.f64[0] = deactivateLevel;
   [(LSSMotionBasedLightSource *)v14 updateTargetDirectionWithOrientation:v20 goToRest:(v15 & 1) == 0 timestamp:v16];
-  if ((*(a1 + 73) & 1) == 0)
+  if ((*(self + 73) & 1) == 0)
   {
-    return ![(LSSMotionBasedLightSource *)*(a1 + 24) settled];
+    return ![(LSSMotionBasedLightSource *)*(self + 24) settled];
   }
 
   return v18;
 }
 
-- (uint64_t)_updateReference:(float)a3 motionLevel:(float)a4 activateLevel:(float)a5 deactivateLevel:
+- (uint64_t)_updateReference:(float)reference motionLevel:(float)level activateLevel:(float)activateLevel deactivateLevel:
 {
-  if (!a1)
+  if (!self)
   {
     v29 = 0;
     return v29 & 1;
   }
 
-  v8 = *(a1 + 88);
-  v9 = -INFINITY;
+  v8 = *(self + 88);
+  levelCopy = -INFINITY;
   if ((v8 & 8) != 0)
   {
-    a5 = -INFINITY;
+    activateLevel = -INFINITY;
   }
 
   else
   {
-    v9 = a4;
+    levelCopy = level;
   }
 
   if ((v8 & 4) != 0)
   {
-    v10 = a5;
+    activateLevelCopy = activateLevel;
   }
 
   else
   {
-    v10 = INFINITY;
+    activateLevelCopy = INFINITY;
   }
 
   if ((v8 & 4) == 0)
   {
-    v9 = INFINITY;
+    levelCopy = INFINITY;
   }
 
-  if (v9 < a3 && (*(a1 + 74) & 1) == 0)
+  if (levelCopy < reference && (*(self + 74) & 1) == 0)
   {
-    [(LSSQuaternionSmoothFilter *)*(a1 + 32) reset];
-    *(a1 + 74) = 1;
+    [(LSSQuaternionSmoothFilter *)*(self + 32) reset];
+    *(self + 74) = 1;
     if (qword_280D2F530 != -1)
     {
       dispatch_once(&qword_280D2F530, &__block_literal_global_6);
@@ -446,7 +446,7 @@ LABEL_19:
       _os_log_debug_impl(&dword_255E8B000, v11, OS_LOG_TYPE_DEBUG, "motion activate", buf, 2u);
     }
 
-    if ((*(a1 + 74) & 1) == 0)
+    if ((*(self + 74) & 1) == 0)
     {
       goto LABEL_17;
     }
@@ -454,14 +454,14 @@ LABEL_19:
 LABEL_20:
     v32 = a2[1];
     v34 = *a2;
-    if ([(LSSQuaternionSmoothFilter *)*(a1 + 32) hasValue])
+    if ([(LSSQuaternionSmoothFilter *)*(self + 32) hasValue])
     {
-      [(LSSQuaternionSmoothFilter *)*(a1 + 32) value];
+      [(LSSQuaternionSmoothFilter *)*(self + 32) value];
       v19 = OUTLINED_FUNCTION_0_1(vmulq_f64(v34, *buf), vmulq_f64(v32, v36));
       v20 = v19 + v19;
-      v21 = [(LSSSettings *)*(a1 + 64) doubleForKey:?];
-      v22 = [(LSSSettings *)*(a1 + 64) doubleForKey:?];
-      v23 = *(a1 + 32);
+      v21 = [(LSSSettings *)*(self + 64) doubleForKey:?];
+      v22 = [(LSSSettings *)*(self + 64) doubleForKey:?];
+      v23 = *(self + 32);
       *buf = v34;
       v36 = v32;
       [(LSSQuaternionSmoothFilter *)v23 updateQuaternion:buf alpha:v22 + v21 * v20];
@@ -475,9 +475,9 @@ LABEL_20:
       v24 = 0;
     }
 
-    if (v10 > a3 && !v24)
+    if (activateLevelCopy > reference && !v24)
     {
-      *(a1 + 74) = 0;
+      *(self + 74) = 0;
       if (qword_280D2F530 != -1)
       {
         dispatch_once(&qword_280D2F530, &__block_literal_global_6);
@@ -494,23 +494,23 @@ LABEL_20:
     goto LABEL_31;
   }
 
-  if (*(a1 + 74))
+  if (*(self + 74))
   {
     goto LABEL_20;
   }
 
 LABEL_17:
-  [(LSSQuaternionSmoothFilter *)*(a1 + 32) reset];
+  [(LSSQuaternionSmoothFilter *)*(self + 32) reset];
   v31 = a2[1];
   v33 = *a2;
-  if ([(LSSQuaternionSmoothFilter *)*(a1 + 32) hasValue])
+  if ([(LSSQuaternionSmoothFilter *)*(self + 32) hasValue])
   {
-    [(LSSQuaternionSmoothFilter *)*(a1 + 32) value];
+    [(LSSQuaternionSmoothFilter *)*(self + 32) value];
     v12 = OUTLINED_FUNCTION_0_1(vmulq_f64(v33, *buf), vmulq_f64(v31, v36));
     v13 = v12 + v12;
-    v14 = [(LSSSettings *)*(a1 + 64) doubleForKey:?];
-    v15 = [(LSSSettings *)*(a1 + 64) doubleForKey:?];
-    v16 = *(a1 + 32);
+    v14 = [(LSSSettings *)*(self + 64) doubleForKey:?];
+    v15 = [(LSSSettings *)*(self + 64) doubleForKey:?];
+    v16 = *(self + 32);
     v17 = v15 + v14 * v13;
     *buf = v33;
     v36 = v31;
@@ -524,29 +524,29 @@ LABEL_17:
 
   [(LSSQuaternionSmoothFilter *)v16 updateQuaternion:v18 alpha:v17];
 LABEL_31:
-  v29 = *(a1 + 74);
+  v29 = *(self + 74);
   return v29 & 1;
 }
 
-- (void)_update:(uint64_t)a3 timestamp:(float64x2_t *)a4
+- (void)_update:(uint64_t)_update timestamp:(float64x2_t *)timestamp
 {
   v75 = *MEMORY[0x277D85DE8];
-  ++*(a1 + 48);
-  v7 = [(LSSSettings *)*(a1 + 64) floatForKey:?];
-  [(LSSRotationAccumulator *)*(a1 + 40) setSampleClampMax:v7];
-  v8 = [(LSSSettings *)*(a1 + 64) floatForKey:?];
-  [(LSSRotationAccumulator *)*(a1 + 40) setSampleBias:?];
-  v9 = *(a1 + 40);
-  v10 = a4[1];
-  buf[0] = *a4;
+  ++*(self + 48);
+  v7 = [(LSSSettings *)*(self + 64) floatForKey:?];
+  [(LSSRotationAccumulator *)*(self + 40) setSampleClampMax:v7];
+  v8 = [(LSSSettings *)*(self + 64) floatForKey:?];
+  [(LSSRotationAccumulator *)*(self + 40) setSampleBias:?];
+  v9 = *(self + 40);
+  v10 = timestamp[1];
+  buf[0] = *timestamp;
   buf[1] = v10;
   LODWORD(v11) = [(LSSRotationAccumulator *)v9 update:buf].n64_u32[0];
-  v12 = *(a1 + 88);
+  v12 = *(self + 88);
   if ((v12 & 4) != 0)
   {
-    [(LSSSettings *)*(a1 + 64) floatForKey:?];
-    [(LSSSettings *)*(a1 + 64) floatForKey:?];
-    if ((*(a1 + 88) & 2) == 0)
+    [(LSSSettings *)*(self + 64) floatForKey:?];
+    [(LSSSettings *)*(self + 64) floatForKey:?];
+    if ((*(self + 88) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -557,15 +557,15 @@ LABEL_31:
   if ((v12 & 2) != 0)
   {
 LABEL_5:
-    [(LSSSettings *)*(a1 + 64) floatForKey:?];
-    [(LSSSettings *)*(a1 + 64) floatForKey:?];
+    [(LSSSettings *)*(self + 64) floatForKey:?];
+    [(LSSSettings *)*(self + 64) floatForKey:?];
   }
 
 LABEL_6:
   v13 = OUTLINED_FUNCTION_1_1();
   v18 = [(LSSMotionBasedProvider *)v14 _updateLight:v15 motionLevel:v13 activateLevel:v16 deactivateLevel:v17 timestamp:a2];
-  v19 = [(LSSSettings *)*(a1 + 64) floatForKey:?];
-  if (*(a1 + 75) == 1 && v11 > v19)
+  v19 = [(LSSSettings *)*(self + 64) floatForKey:?];
+  if (*(self + 75) == 1 && v11 > v19)
   {
     OUTLINED_FUNCTION_3();
     if (!v21)
@@ -578,10 +578,10 @@ LABEL_6:
       OUTLINED_FUNCTION_4(&dword_255E8B000, v22, v23, "high quality", v24, v25, v26, v27, v62, v64, v65, v67, v68, v69, *&v70.f64[0], *&v70.f64[1], v71, v72, __dst[0], __dst[1], __dst[2], __dst[3], __dst[4], __dst[5], __dst[6], __dst[7], __dst[8], __dst[9], __dst[10], __dst[11], 0);
     }
 
-    *(a1 + 75) = 0;
+    *(self + 75) = 0;
   }
 
-  if (v18 && *(a1 + 72) == 1)
+  if (v18 && *(self + 72) == 1)
   {
     OUTLINED_FUNCTION_3();
     if (!v21)
@@ -594,16 +594,16 @@ LABEL_6:
       OUTLINED_FUNCTION_4(&dword_255E8B000, v28, v29, "unpausing (light)", v30, v31, v32, v33, v62, v64, v65, v67, v68, v69, *&v70.f64[0], *&v70.f64[1], v71, v72, __dst[0], __dst[1], __dst[2], __dst[3], __dst[4], __dst[5], __dst[6], __dst[7], __dst[8], __dst[9], __dst[10], __dst[11], 0);
     }
 
-    *(a1 + 56) = *(a1 + 48);
-    *(a1 + 72) = 0;
+    *(self + 56) = *(self + 48);
+    *(self + 72) = 0;
   }
 
   v34 = OUTLINED_FUNCTION_1_1();
   v39 = [(LSSMotionBasedProvider *)v35 _updateReference:v36 motionLevel:v34 activateLevel:v37 deactivateLevel:v38];
-  v40 = *(a1 + 72);
+  v40 = *(self + 72);
   if (v39)
   {
-    if (*(a1 + 72))
+    if (*(self + 72))
     {
       OUTLINED_FUNCTION_3();
       if (!v21)
@@ -618,21 +618,21 @@ LABEL_6:
         _os_log_impl(&dword_255E8B000, v41, OS_LOG_TYPE_INFO, "unpausing (reference)", buf, 2u);
       }
 
-      *(a1 + 56) = *(a1 + 48);
-      *(a1 + 72) = 0;
+      *(self + 56) = *(self + 48);
+      *(self + 72) = 0;
     }
   }
 
-  else if (*(a1 + 72))
+  else if (*(self + 72))
   {
     goto LABEL_44;
   }
 
-  v42 = a4[1];
-  v43 = 1.0 / vaddvq_f64(vaddq_f64(vmulq_f64(*a4, *a4), vmulq_f64(v42, v42)));
-  v63 = vmulq_n_f64(vnegq_f64(*a4), v43);
+  v42 = timestamp[1];
+  v43 = 1.0 / vaddvq_f64(vaddq_f64(vmulq_f64(*timestamp, *timestamp), vmulq_f64(v42, v42)));
+  v63 = vmulq_n_f64(vnegq_f64(*timestamp), v43);
   v66 = vmulq_n_f64(vmulq_f64(v42, xmmword_255E9CA30), v43);
-  [(LSSMotionBasedLightSource *)*(a1 + 24) direction];
+  [(LSSMotionBasedLightSource *)*(self + 24) direction];
   v44 = vmulq_f64(v66, xmmword_255E9CA30);
   v45 = vnegq_f64(v63);
   v46 = vnegq_f64(v70);
@@ -645,10 +645,10 @@ LABEL_6:
   buf[0] = *&a2;
   buf[2] = vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v49, v66, 1), v51, v66.f64[0]), vmlaq_n_f64(vmulq_laneq_f64(v50, v63, 1), vextq_s8(v48, v50, 8uLL), v63.f64[0]));
   memset(&buf[3], 0, 48);
-  [(LSSQuaternionSmoothFilter *)*(a1 + 32) value];
-  v52 = [(LSSMotionBasedLightSource *)*(a1 + 24) intensity];
-  *buf[5].f64 = v52;
-  if (*(a1 + 75))
+  [(LSSQuaternionSmoothFilter *)*(self + 32) value];
+  intensity = [(LSSMotionBasedLightSource *)*(self + 24) intensity];
+  *buf[5].f64 = intensity;
+  if (*(self + 75))
   {
     v53 = 1;
   }
@@ -659,8 +659,8 @@ LABEL_6:
   }
 
   HIDWORD(buf[5].f64[0]) = v53;
-  v54 = *(a1 + 48);
-  v55 = *(a1 + 56);
+  v54 = *(self + 48);
+  v55 = *(self + 56);
   v56 = v54 >= v55;
   v57 = v54 - v55;
   if (!v56)
@@ -681,8 +681,8 @@ LABEL_6:
   if (((v58 | v18) & 1) == 0)
   {
     HIDWORD(buf[5].f64[0]) = 0;
-    *(a1 + 72) = 1;
-    *(a1 + 75) = 1;
+    *(self + 72) = 1;
+    *(self + 75) = 1;
     OUTLINED_FUNCTION_3();
     if (!v21)
     {
@@ -697,9 +697,9 @@ LABEL_6:
     }
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 80));
+  WeakRetained = objc_loadWeakRetained((self + 80));
   memcpy(__dst, buf, sizeof(__dst));
-  [WeakRetained provider:a1 updatedLight:__dst];
+  [WeakRetained provider:self updatedLight:__dst];
 
 LABEL_44:
   v61 = *MEMORY[0x277D85DE8];

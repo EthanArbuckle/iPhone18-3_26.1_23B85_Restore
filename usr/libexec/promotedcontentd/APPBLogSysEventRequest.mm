@@ -1,18 +1,18 @@
 @interface APPBLogSysEventRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)eventTypeAsString:(int)a3;
-- (int)StringAsEventType:(id)a3;
+- (id)eventTypeAsString:(int)string;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasRequestCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasRequestCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogSysEventRequest
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -57,12 +57,12 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)eventTypeAsString:(int)a3
+- (id)eventTypeAsString:(int)string
 {
-  if (a3 <= 199)
+  if (string <= 199)
   {
     v4 = @"BannerClicked";
-    switch(a3)
+    switch(string)
     {
       case 1:
         goto LABEL_239;
@@ -217,13 +217,13 @@
     return v4;
   }
 
-  if (a3 > 699)
+  if (string > 699)
   {
-    if (a3 <= 902)
+    if (string <= 902)
     {
-      if (a3 <= 800)
+      if (string <= 800)
       {
-        switch(a3)
+        switch(string)
         {
           case 700:
             v4 = @"ReminderCreateOK";
@@ -242,9 +242,9 @@
         }
       }
 
-      else if (a3 > 900)
+      else if (string > 900)
       {
-        if (a3 == 901)
+        if (string == 901)
         {
           v4 = @"PrivacyAdTransparencyDidAppear";
         }
@@ -255,14 +255,14 @@
         }
       }
 
-      else if (a3 == 801)
+      else if (string == 801)
       {
         v4 = @"CreativeUnloadedWithInvalidSize";
       }
 
       else
       {
-        if (a3 != 900)
+        if (string != 900)
         {
           goto LABEL_238;
         }
@@ -271,18 +271,18 @@
       }
     }
 
-    else if (a3 > 906)
+    else if (string > 906)
     {
-      if (a3 > 908)
+      if (string > 908)
       {
-        if (a3 == 909)
+        if (string == 909)
         {
           v4 = @"TimeSpent";
         }
 
         else
         {
-          if (a3 != 910)
+          if (string != 910)
           {
             goto LABEL_238;
           }
@@ -291,7 +291,7 @@
         }
       }
 
-      else if (a3 == 907)
+      else if (string == 907)
       {
         v4 = @"NavigationActionBlockedDueToAccidentalTap";
       }
@@ -302,9 +302,9 @@
       }
     }
 
-    else if (a3 > 904)
+    else if (string > 904)
     {
-      if (a3 == 905)
+      if (string == 905)
       {
         v4 = @"AdCreativeDidUnload";
       }
@@ -315,7 +315,7 @@
       }
     }
 
-    else if (a3 == 903)
+    else if (string == 903)
     {
       v4 = @"PrivacyAdTransparencyDidDisappear";
     }
@@ -326,11 +326,11 @@
     }
   }
 
-  else if (a3 <= 402)
+  else if (string <= 402)
   {
-    if (a3 <= 300)
+    if (string <= 300)
     {
-      switch(a3)
+      switch(string)
       {
         case 200:
           v4 = @"RingtoneDownloadOK";
@@ -349,9 +349,9 @@
       }
     }
 
-    else if (a3 > 400)
+    else if (string > 400)
     {
-      if (a3 == 401)
+      if (string == 401)
       {
         v4 = @"VisibleContentsCaptureCancel";
       }
@@ -362,14 +362,14 @@
       }
     }
 
-    else if (a3 == 301)
+    else if (string == 301)
     {
       v4 = @"InAdWebViewClosed";
     }
 
     else
     {
-      if (a3 != 400)
+      if (string != 400)
       {
         goto LABEL_238;
       }
@@ -378,18 +378,18 @@
     }
   }
 
-  else if (a3 > 502)
+  else if (string > 502)
   {
-    if (a3 > 600)
+    if (string > 600)
     {
-      if (a3 == 601)
+      if (string == 601)
       {
         v4 = @"AdSheetClosedWithPrimaryURLFailure";
       }
 
       else
       {
-        if (a3 != 602)
+        if (string != 602)
         {
           goto LABEL_238;
         }
@@ -398,14 +398,14 @@
       }
     }
 
-    else if (a3 == 503)
+    else if (string == 503)
     {
       v4 = @"SaveVideoToPhotosCancel";
     }
 
     else
     {
-      if (a3 != 600)
+      if (string != 600)
       {
         goto LABEL_238;
       }
@@ -414,9 +414,9 @@
     }
   }
 
-  else if (a3 > 500)
+  else if (string > 500)
   {
-    if (a3 == 501)
+    if (string == 501)
     {
       v4 = @"SaveImageToPhotosCancel";
     }
@@ -429,9 +429,9 @@
 
   else
   {
-    if (a3 != 403)
+    if (string != 403)
     {
-      if (a3 == 500)
+      if (string == 500)
       {
         v4 = @"SaveImageToPhotosOK";
 
@@ -439,7 +439,7 @@
       }
 
 LABEL_238:
-      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
 LABEL_239:
 
       return v4;
@@ -451,340 +451,340 @@ LABEL_239:
   return v4;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BannerClicked"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"BannerClicked"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"iTunesLaunched"])
+  else if ([typeCopy isEqualToString:@"iTunesLaunched"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ExternalLink"])
+  else if ([typeCopy isEqualToString:@"ExternalLink"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetOpened"])
+  else if ([typeCopy isEqualToString:@"AdSheetOpened"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetLoaded"])
+  else if ([typeCopy isEqualToString:@"AdSheetLoaded"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithXButton"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithXButton"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithHomeButton"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithHomeButton"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AppPreventedAdAction"])
+  else if ([typeCopy isEqualToString:@"AppPreventedAdAction"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AppCancelledAdAction"])
+  else if ([typeCopy isEqualToString:@"AppCancelledAdAction"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"AppPause"])
+  else if ([typeCopy isEqualToString:@"AppPause"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"AppResume"])
+  else if ([typeCopy isEqualToString:@"AppResume"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"AdRedirectOK"])
+  else if ([typeCopy isEqualToString:@"AdRedirectOK"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"AdRedirectCancel"])
+  else if ([typeCopy isEqualToString:@"AdRedirectCancel"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"AdBuyOK"])
+  else if ([typeCopy isEqualToString:@"AdBuyOK"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"AdBuyCancel"])
+  else if ([typeCopy isEqualToString:@"AdBuyCancel"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"WallpaperSetOK"])
+  else if ([typeCopy isEqualToString:@"WallpaperSetOK"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"WallpaperSetCancel"])
+  else if ([typeCopy isEqualToString:@"WallpaperSetCancel"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"CalendarEventCreateOK"])
+  else if ([typeCopy isEqualToString:@"CalendarEventCreateOK"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"CalendarEventCreateCancel"])
+  else if ([typeCopy isEqualToString:@"CalendarEventCreateCancel"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"EmailSendOK"])
+  else if ([typeCopy isEqualToString:@"EmailSendOK"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"EmailSendCancel"])
+  else if ([typeCopy isEqualToString:@"EmailSendCancel"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"SMSSendOK"])
+  else if ([typeCopy isEqualToString:@"SMSSendOK"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"SMSSendCancel"])
+  else if ([typeCopy isEqualToString:@"SMSSendCancel"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetCallOK"])
+  else if ([typeCopy isEqualToString:@"AdSheetCallOK"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetCallCancel"])
+  else if ([typeCopy isEqualToString:@"AdSheetCallCancel"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"AdInterstitialDidAppear"])
+  else if ([typeCopy isEqualToString:@"AdInterstitialDidAppear"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"AdInterstitialDidDisappear"])
+  else if ([typeCopy isEqualToString:@"AdInterstitialDidDisappear"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"AdInterstitialWasDismissed"])
+  else if ([typeCopy isEqualToString:@"AdInterstitialWasDismissed"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"AdInterstitialWasRemovedFromView"])
+  else if ([typeCopy isEqualToString:@"AdInterstitialWasRemovedFromView"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"AdContactsEntryCreated"])
+  else if ([typeCopy isEqualToString:@"AdContactsEntryCreated"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"AdContactsEntryCanceled"])
+  else if ([typeCopy isEqualToString:@"AdContactsEntryCanceled"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"AdIBooksPDFAdded"])
+  else if ([typeCopy isEqualToString:@"AdIBooksPDFAdded"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"AdIBooksPDFCanceled"])
+  else if ([typeCopy isEqualToString:@"AdIBooksPDFCanceled"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"AdCameraPictureCaptured"])
+  else if ([typeCopy isEqualToString:@"AdCameraPictureCaptured"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"AdCameraPictureCanceled"])
+  else if ([typeCopy isEqualToString:@"AdCameraPictureCanceled"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithClientBackgrounded"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithClientBackgrounded"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithAutoDismiss"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithAutoDismiss"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"RingtoneDownloadOK"])
+  else if ([typeCopy isEqualToString:@"RingtoneDownloadOK"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"RingtoneDownloadCancel"])
+  else if ([typeCopy isEqualToString:@"RingtoneDownloadCancel"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"InAdWebViewOpened"])
+  else if ([typeCopy isEqualToString:@"InAdWebViewOpened"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"InAdWebViewClosed"])
+  else if ([typeCopy isEqualToString:@"InAdWebViewClosed"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"VisibleContentsCaptureOK"])
+  else if ([typeCopy isEqualToString:@"VisibleContentsCaptureOK"])
   {
     v4 = 400;
   }
 
-  else if ([v3 isEqualToString:@"VisibleContentsCaptureCancel"])
+  else if ([typeCopy isEqualToString:@"VisibleContentsCaptureCancel"])
   {
     v4 = 401;
   }
 
-  else if ([v3 isEqualToString:@"VisibleContentsSaveToPhotosOK"])
+  else if ([typeCopy isEqualToString:@"VisibleContentsSaveToPhotosOK"])
   {
     v4 = 402;
   }
 
-  else if ([v3 isEqualToString:@"VisibleContentsSaveToPhotosCancel"])
+  else if ([typeCopy isEqualToString:@"VisibleContentsSaveToPhotosCancel"])
   {
     v4 = 403;
   }
 
-  else if ([v3 isEqualToString:@"SaveImageToPhotosOK"])
+  else if ([typeCopy isEqualToString:@"SaveImageToPhotosOK"])
   {
     v4 = 500;
   }
 
-  else if ([v3 isEqualToString:@"SaveImageToPhotosCancel"])
+  else if ([typeCopy isEqualToString:@"SaveImageToPhotosCancel"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"SaveVideoToPhotosOK"])
+  else if ([typeCopy isEqualToString:@"SaveVideoToPhotosOK"])
   {
     v4 = 502;
   }
 
-  else if ([v3 isEqualToString:@"SaveVideoToPhotosCancel"])
+  else if ([typeCopy isEqualToString:@"SaveVideoToPhotosCancel"])
   {
     v4 = 503;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedByPrivilegedAd"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedByPrivilegedAd"])
   {
     v4 = 600;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithPrimaryURLFailure"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithPrimaryURLFailure"])
   {
     v4 = 601;
   }
 
-  else if ([v3 isEqualToString:@"AdSheetClosedWithProductPageLoadFailure"])
+  else if ([typeCopy isEqualToString:@"AdSheetClosedWithProductPageLoadFailure"])
   {
     v4 = 602;
   }
 
-  else if ([v3 isEqualToString:@"ReminderCreateOK"])
+  else if ([typeCopy isEqualToString:@"ReminderCreateOK"])
   {
     v4 = 700;
   }
 
-  else if ([v3 isEqualToString:@"ReminderCreateCancel"])
+  else if ([typeCopy isEqualToString:@"ReminderCreateCancel"])
   {
     v4 = 701;
   }
 
-  else if ([v3 isEqualToString:@"PreRollSkip"])
+  else if ([typeCopy isEqualToString:@"PreRollSkip"])
   {
     v4 = 800;
   }
 
-  else if ([v3 isEqualToString:@"CreativeUnloadedWithInvalidSize"])
+  else if ([typeCopy isEqualToString:@"CreativeUnloadedWithInvalidSize"])
   {
     v4 = 801;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdMarkWasTapped"])
+  else if ([typeCopy isEqualToString:@"PrivacyAdMarkWasTapped"])
   {
     v4 = 900;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidAppear"])
+  else if ([typeCopy isEqualToString:@"PrivacyAdTransparencyDidAppear"])
   {
     v4 = 901;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidRenderTransparency"])
+  else if ([typeCopy isEqualToString:@"PrivacyAdTransparencyDidRenderTransparency"])
   {
     v4 = 902;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidDisappear"])
+  else if ([typeCopy isEqualToString:@"PrivacyAdTransparencyDidDisappear"])
   {
     v4 = 903;
   }
 
-  else if ([v3 isEqualToString:@"PrivacyAdTransparencyDidLinkOut"])
+  else if ([typeCopy isEqualToString:@"PrivacyAdTransparencyDidLinkOut"])
   {
     v4 = 904;
   }
 
-  else if ([v3 isEqualToString:@"AdCreativeDidUnload"])
+  else if ([typeCopy isEqualToString:@"AdCreativeDidUnload"])
   {
     v4 = 905;
   }
 
-  else if ([v3 isEqualToString:@"TapGestureTimerDidExpireBeforePrimaryActionWasInvoked"])
+  else if ([typeCopy isEqualToString:@"TapGestureTimerDidExpireBeforePrimaryActionWasInvoked"])
   {
     v4 = 906;
   }
 
-  else if ([v3 isEqualToString:@"NavigationActionBlockedDueToAccidentalTap"])
+  else if ([typeCopy isEqualToString:@"NavigationActionBlockedDueToAccidentalTap"])
   {
     v4 = 907;
   }
 
-  else if ([v3 isEqualToString:@"CarouselFinished"])
+  else if ([typeCopy isEqualToString:@"CarouselFinished"])
   {
     v4 = 908;
   }
 
-  else if ([v3 isEqualToString:@"TimeSpent"])
+  else if ([typeCopy isEqualToString:@"TimeSpent"])
   {
     v4 = 909;
   }
 
-  else if ([v3 isEqualToString:@"AggregatedTimeSpent"])
+  else if ([typeCopy isEqualToString:@"AggregatedTimeSpent"])
   {
     v4 = 910;
   }
@@ -797,9 +797,9 @@ LABEL_239:
   return v4;
 }
 
-- (void)setHasRequestCount:(BOOL)a3
+- (void)setHasRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -817,8 +817,8 @@ LABEL_239:
   v7.receiver = self;
   v7.super_class = APPBLogSysEventRequest;
   v3 = [(APPBLogSysEventRequest *)&v7 description];
-  v4 = [(APPBLogSysEventRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogSysEventRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -829,8 +829,8 @@ LABEL_239:
   metaData = self->_metaData;
   if (metaData)
   {
-    v6 = [(APPBLogMetaData *)metaData dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"metaData"];
+    dictionaryRepresentation = [(APPBLogMetaData *)metaData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"metaData"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -1192,8 +1192,8 @@ LABEL_111:
   clickLocation = self->_clickLocation;
   if (clickLocation)
   {
-    v10 = [(APPBClickLocation *)clickLocation dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"clickLocation"];
+    dictionaryRepresentation2 = [(APPBClickLocation *)clickLocation dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"clickLocation"];
   }
 
   if (*&self->_has)
@@ -1218,92 +1218,92 @@ LABEL_111:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_metaData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clickLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteFloatField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bannerCustomMetadata)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_metaData)
   {
-    [v4 setMetaData:?];
-    v4 = v5;
+    [toCopy setMetaData:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 8) = self->_eventType;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 8) = self->_eventType;
+    *(toCopy + 52) |= 2u;
   }
 
   if (self->_clickLocation)
   {
     [v5 setClickLocation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = LODWORD(self->_actionableDuration);
-    *(v4 + 52) |= 1u;
+    *(toCopy + 2) = LODWORD(self->_actionableDuration);
+    *(toCopy + 52) |= 1u;
   }
 
   if (self->_bannerCustomMetadata)
   {
     [v5 setBannerCustomMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 12) = self->_requestCount;
-    *(v4 + 52) |= 4u;
+    *(toCopy + 12) = self->_requestCount;
+    *(toCopy + 52) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(APPBLogMetaData *)self->_metaData copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
@@ -1313,7 +1313,7 @@ LABEL_111:
     *(v5 + 52) |= 2u;
   }
 
-  v8 = [(APPBClickLocation *)self->_clickLocation copyWithZone:a3];
+  v8 = [(APPBClickLocation *)self->_clickLocation copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -1323,7 +1323,7 @@ LABEL_111:
     *(v5 + 52) |= 1u;
   }
 
-  v10 = [(NSString *)self->_bannerCustomMetadata copyWithZone:a3];
+  v10 = [(NSString *)self->_bannerCustomMetadata copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
@@ -1336,16 +1336,16 @@ LABEL_111:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   metaData = self->_metaData;
-  if (metaData | *(v4 + 5))
+  if (metaData | *(equalCopy + 5))
   {
     if (![(APPBLogMetaData *)metaData isEqual:?])
     {
@@ -1356,19 +1356,19 @@ LABEL_111:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_eventType != *(v4 + 8))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_eventType != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_24;
   }
 
   clickLocation = self->_clickLocation;
-  if (clickLocation | *(v4 + 3))
+  if (clickLocation | *(equalCopy + 3))
   {
     if (![(APPBClickLocation *)clickLocation isEqual:?])
     {
@@ -1380,19 +1380,19 @@ LABEL_111:
 
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_actionableDuration != *(v4 + 2))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_actionableDuration != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_24;
   }
 
   bannerCustomMetadata = self->_bannerCustomMetadata;
-  if (bannerCustomMetadata | *(v4 + 2))
+  if (bannerCustomMetadata | *(equalCopy + 2))
   {
     if ([(NSString *)bannerCustomMetadata isEqual:?])
     {
@@ -1406,10 +1406,10 @@ LABEL_24:
   }
 
 LABEL_20:
-  v9 = (*(v4 + 52) & 4) == 0;
+  v9 = (*(equalCopy + 52) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_requestCount != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_requestCount != *(equalCopy + 12))
     {
       goto LABEL_24;
     }
@@ -1483,12 +1483,12 @@ LABEL_25:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   metaData = self->_metaData;
-  v6 = *(v4 + 5);
-  v9 = v4;
+  v6 = *(fromCopy + 5);
+  v9 = fromCopy;
   if (metaData)
   {
     if (!v6)
@@ -1509,16 +1509,16 @@ LABEL_25:
     [(APPBLogSysEventRequest *)self setMetaData:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if ((*(v4 + 52) & 2) != 0)
+  if ((*(fromCopy + 52) & 2) != 0)
   {
-    self->_eventType = *(v4 + 8);
+    self->_eventType = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
   clickLocation = self->_clickLocation;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (clickLocation)
   {
     if (!v8)
@@ -1539,23 +1539,23 @@ LABEL_7:
     [(APPBLogSysEventRequest *)self setClickLocation:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_actionableDuration = *(v4 + 2);
+    self->_actionableDuration = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBLogSysEventRequest *)self setBannerCustomMetadata:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((*(v4 + 52) & 4) != 0)
+  if ((*(fromCopy + 52) & 4) != 0)
   {
-    self->_requestCount = *(v4 + 12);
+    self->_requestCount = *(fromCopy + 12);
     *&self->_has |= 4u;
   }
 

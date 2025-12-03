@@ -1,47 +1,47 @@
 @interface _UIFeedbackLibraryPattern
-+ (id)feedbackPatternWithLibraryKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)feedbackPatternWithLibraryKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (CHHapticPattern)pattern;
-- (_UIFeedbackLibraryPattern)initWithDictionaryRepresentation:(id)a3;
-- (_UIFeedbackLibraryPattern)initWithLibraryKey:(id)a3;
+- (_UIFeedbackLibraryPattern)initWithDictionaryRepresentation:(id)representation;
+- (_UIFeedbackLibraryPattern)initWithLibraryKey:(id)key;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectivePlayableFeedbackTypes;
 @end
 
 @implementation _UIFeedbackLibraryPattern
 
-+ (id)feedbackPatternWithLibraryKey:(id)a3
++ (id)feedbackPatternWithLibraryKey:(id)key
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithLibraryKey:v4];
+  keyCopy = key;
+  v5 = [[self alloc] initWithLibraryKey:keyCopy];
 
   return v5;
 }
 
-- (_UIFeedbackLibraryPattern)initWithLibraryKey:(id)a3
+- (_UIFeedbackLibraryPattern)initWithLibraryKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v10.receiver = self;
   v10.super_class = _UIFeedbackLibraryPattern;
   v6 = [(_UIFeedback *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryKey, a3);
+    objc_storeStrong(&v6->_libraryKey, key);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UIFeedbackLibraryPattern;
-  if ([(_UIFeedback *)&v7 isEqual:v4])
+  if ([(_UIFeedback *)&v7 isEqual:equalCopy])
   {
-    v5 = [(NSString *)self->_libraryKey isEqual:v4[16]];
+    v5 = [(NSString *)self->_libraryKey isEqual:equalCopy[16]];
   }
 
   else
@@ -52,15 +52,15 @@
   return v5;
 }
 
-- (_UIFeedbackLibraryPattern)initWithDictionaryRepresentation:(id)a3
+- (_UIFeedbackLibraryPattern)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = _UIFeedbackLibraryPattern;
-  v5 = [(_UIFeedback *)&v10 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIFeedback *)&v10 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"libraryKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"libraryKey"];
     libraryKey = v5->_libraryKey;
     v5->_libraryKey = v6;
 
@@ -74,8 +74,8 @@
 {
   v6.receiver = self;
   v6.super_class = _UIFeedbackLibraryPattern;
-  v3 = [(_UIFeedback *)&v6 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIFeedback *)&v6 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   [v4 setObject:self->_libraryKey forKeyedSubscript:@"libraryKey"];
 

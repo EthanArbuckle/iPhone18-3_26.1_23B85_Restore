@@ -1,26 +1,26 @@
 @interface PLModelMigrationAction_FixAppDomainLibraryCreateOptions
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixAppDomainLibraryCreateOptions
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v116 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self pathManager];
-  v8 = [v7 libraryURL];
+  contextCopy = context;
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  if (!v8)
+  if (!libraryURL)
   {
     v21 = PLMigrationGetLog();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
 
     if (v22)
     {
-      v23 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v23)
+      if (logger)
       {
         v114 = 0u;
         v115 = 0u;
@@ -105,9 +105,9 @@ LABEL_53:
       goto LABEL_64;
     }
 
-    v61 = [(PLModelMigrationActionCore *)self logger];
+    logger2 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v61)
+    if (logger2)
     {
       v114 = 0u;
       v115 = 0u;
@@ -168,10 +168,10 @@ LABEL_53:
     goto LABEL_52;
   }
 
-  v9 = [(PLModelMigrationActionCore *)self pathManager];
-  v10 = [v9 libraryURL];
+  pathManager2 = [(PLModelMigrationActionCore *)self pathManager];
+  libraryURL2 = [pathManager2 libraryURL];
   v79 = 0;
-  v11 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v10 createIfMissing:0 error:&v79];
+  v11 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:libraryURL2 createIfMissing:0 error:&v79];
   v12 = v79;
 
   if ([v11 domain]!= 3)
@@ -184,9 +184,9 @@ LABEL_53:
 
       if (v29)
       {
-        v30 = [(PLModelMigrationActionCore *)self logger];
+        logger3 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v30)
+        if (logger3)
         {
           v114 = 0u;
           v115 = 0u;
@@ -258,9 +258,9 @@ LABEL_51:
 
       if (v47)
       {
-        v48 = [(PLModelMigrationActionCore *)self logger];
+        logger4 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v48)
+        if (logger4)
         {
           v114 = 0u;
           v115 = 0u;
@@ -337,18 +337,18 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v13 = [[PLGlobalValues alloc] initWithManagedObjectContext:v6];
-  v14 = [(PLGlobalValues *)v13 libraryCreateOptions];
-  if ((~v14 & 0x73) == 0)
+  v13 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
+  libraryCreateOptions = [(PLGlobalValues *)v13 libraryCreateOptions];
+  if ((~libraryCreateOptions & 0x73) == 0)
   {
     v15 = PLMigrationGetLog();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
     if (v16)
     {
-      v17 = [(PLModelMigrationActionCore *)self logger];
+      logger5 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v17)
+      if (logger5)
       {
         v114 = 0u;
         v115 = 0u;
@@ -415,9 +415,9 @@ LABEL_47:
     goto LABEL_53;
   }
 
-  [PLGlobalValues setLibraryCreateOptions:v14 | 0x73 managedObjectContext:v6];
+  [PLGlobalValues setLibraryCreateOptions:libraryCreateOptions | 0x73 managedObjectContext:contextCopy];
   v78 = v12;
-  v38 = [v6 save:&v78];
+  v38 = [contextCopy save:&v78];
   v39 = v78;
 
   v40 = PLMigrationGetLog();
@@ -428,9 +428,9 @@ LABEL_47:
 
     if (v42)
     {
-      v43 = [(PLModelMigrationActionCore *)self logger];
+      logger6 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v43)
+      if (logger6)
       {
         v114 = 0u;
         v115 = 0u;
@@ -497,9 +497,9 @@ LABEL_47:
 
   if (v50)
   {
-    v51 = [(PLModelMigrationActionCore *)self logger];
+    logger7 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v51)
+    if (logger7)
     {
       v114 = 0u;
       v115 = 0u;
@@ -566,10 +566,10 @@ LABEL_61:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v74 = v39;
   v70 = v74;
-  if (a4)
+  if (error)
   {
     v75 = v74;
-    *a4 = v70;
+    *error = v70;
   }
 
   v71 = 3;

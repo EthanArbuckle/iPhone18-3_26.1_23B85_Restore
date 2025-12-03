@@ -1,26 +1,26 @@
 @interface NSDictionary
-+ (NSDictionary)dictionaryWithJSONData:(id)a3 error:(id *)a4;
-- (id)generateJSONDataWithError:(id *)a3;
-- (id)generateJSONStringWithError:(id *)a3;
++ (NSDictionary)dictionaryWithJSONData:(id)data error:(id *)error;
+- (id)generateJSONDataWithError:(id *)error;
+- (id)generateJSONStringWithError:(id *)error;
 @end
 
 @implementation NSDictionary
 
-+ (NSDictionary)dictionaryWithJSONData:(id)a3 error:(id *)a4
++ (NSDictionary)dictionaryWithJSONData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = DebugHierarchyJSONProcessingOSLog();
-  v8 = os_signpost_id_make_with_pointer(v7, a1);
+  v8 = os_signpost_id_make_with_pointer(v7, self);
   v9 = v7;
   v10 = v9;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
   {
     v18 = 134217984;
-    v19 = [v6 length];
+    v19 = [dataCopy length];
     _os_signpost_emit_with_name_impl(&dword_0, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "JSON Data -> Dict", "Begin with size: %{xcode:size-in-bytes}lu", &v18, 0xCu);
   }
 
-  v11 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:a4];
+  v11 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:error];
   if (v11)
   {
     objc_opt_class();
@@ -31,7 +31,7 @@
   }
 
   v13 = DebugHierarchyJSONProcessingOSLog();
-  v14 = os_signpost_id_make_with_pointer(v13, a1);
+  v14 = os_signpost_id_make_with_pointer(v13, self);
   v15 = v13;
   v16 = v15;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
@@ -43,7 +43,7 @@
   return v11;
 }
 
-- (id)generateJSONDataWithError:(id *)a3
+- (id)generateJSONDataWithError:(id *)error
 {
   v5 = DebugHierarchyJSONProcessingOSLog();
   v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -55,7 +55,7 @@
     _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Dict -> JSON Data", "Begin", &v16, 2u);
   }
 
-  v9 = [NSJSONSerialization dataWithJSONObject:self options:0 error:a3];
+  v9 = [NSJSONSerialization dataWithJSONObject:self options:0 error:error];
   v10 = DebugHierarchyJSONProcessingOSLog();
   v11 = os_signpost_id_make_with_pointer(v10, self);
   v12 = v10;
@@ -71,7 +71,7 @@
   return v9;
 }
 
-- (id)generateJSONStringWithError:(id *)a3
+- (id)generateJSONStringWithError:(id *)error
 {
   v5 = DebugHierarchyJSONProcessingOSLog();
   v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -83,7 +83,7 @@
     _os_signpost_emit_with_name_impl(&dword_0, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Dict -> JSON String", "Begin", buf, 2u);
   }
 
-  v9 = [(NSDictionary *)self generateJSONDataWithError:a3];
+  v9 = [(NSDictionary *)self generateJSONDataWithError:error];
   v10 = [[NSString alloc] initWithData:v9 encoding:4];
   v11 = DebugHierarchyJSONProcessingOSLog();
   v12 = os_signpost_id_make_with_pointer(v11, self);

@@ -1,8 +1,8 @@
 @interface NFPowerObserver
 - (BOOL)registerForEvents;
-- (NFPowerObserver)initWithDelegate:(id)a3;
+- (NFPowerObserver)initWithDelegate:(id)delegate;
 - (id)delegate;
-- (void)_powerNotificationMessage:(unsigned int)a3 argument:(void *)a4;
+- (void)_powerNotificationMessage:(unsigned int)message argument:(void *)argument;
 - (void)allowSleep;
 - (void)dealloc;
 - (void)unregisterForEvents;
@@ -12,24 +12,24 @@
 
 - (id)delegate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (NFPowerObserver)initWithDelegate:(id)a3
+- (NFPowerObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = NFPowerObserver;
   v5 = [(NFPowerObserver *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.stockholm.powerobserver", v7);
     workQueue = v6->_workQueue;
@@ -185,11 +185,11 @@ LABEL_5:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_powerNotificationMessage:(unsigned int)a3 argument:(void *)a4
+- (void)_powerNotificationMessage:(unsigned int)message argument:(void *)argument
 {
   v80 = *MEMORY[0x277D85DE8];
-  HIDWORD(v7) = a3 + 536870288;
-  LODWORD(v7) = a3 + 536870288;
+  HIDWORD(v7) = message + 536870288;
+  LODWORD(v7) = message + 536870288;
   v6 = v7 >> 4;
   if (v6 <= 1)
   {
@@ -209,7 +209,7 @@ LABEL_5:
         os_activity_scope_leave(state);
 
         self->_willSleep = 1;
-        self->_sleepMessageArgument = a4;
+        self->_sleepMessageArgument = argument;
         v29 = objc_msgSend_delegate(self, v64, v65);
         objc_msgSend_powerObserverSystemWillSleep_(v29, v66, self);
         goto LABEL_60;
@@ -269,7 +269,7 @@ LABEL_5:
 
     else
     {
-      v31 = IOAllowPowerChange(self->_powerNotificationConnection, a4);
+      v31 = IOAllowPowerChange(self->_powerNotificationConnection, argument);
       if (!v31)
       {
         goto LABEL_61;

@@ -1,12 +1,12 @@
 @interface FLTCDMCATIBloomFilters
-- (FLTCDMCATIBloomFilters)initWithFlatbuffData:(id)a3 root:(const CDMCATIBloomFilters *)a4 verify:(BOOL)a5;
+- (FLTCDMCATIBloomFilters)initWithFlatbuffData:(id)data root:(const CDMCATIBloomFilters *)root verify:(BOOL)verify;
 - (FLTCDMCATISwiftBloomFilter)general_bf;
 - (NSArray)array_bf;
-- (Offset<CDMCATIBloomFilters>)addObjectToBuffer:(void *)a3;
-- (id)array_bf_objectAtIndex:(unint64_t)a3;
+- (Offset<CDMCATIBloomFilters>)addObjectToBuffer:(void *)buffer;
+- (id)array_bf_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
 - (unint64_t)array_bf_count;
-- (void)array_bf_enumerateObjectsUsingBlock:(id)a3;
+- (void)array_bf_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FLTCDMCATIBloomFilters
@@ -40,14 +40,14 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__FLTCDMCATIBloomFilters_flatbuff
   return result;
 }
 
-- (Offset<CDMCATIBloomFilters>)addObjectToBuffer:(void *)a3
+- (Offset<CDMCATIBloomFilters>)addObjectToBuffer:(void *)buffer
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [(FLTCDMCATIBloomFilters *)self general_bf];
-  v6 = [v5 addObjectToBuffer:a3];
+  general_bf = [(FLTCDMCATIBloomFilters *)self general_bf];
+  v6 = [general_bf addObjectToBuffer:buffer];
 
-  v7 = [(FLTCDMCATIBloomFilters *)self array_bf];
-  v8 = [v7 count];
+  array_bf = [(FLTCDMCATIBloomFilters *)self array_bf];
+  v8 = [array_bf count];
   if (v8)
   {
     if (!(v8 >> 62))
@@ -68,42 +68,42 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__FLTCDMCATIBloomFilters_flatbuff
   {
     *v21;
     *v21;
-    [**(&v20 + 1) addObjectToBuffer:a3];
+    [**(&v20 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<float>>(1uLL);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v9 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(a3, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 8);
-  v11 = *(a3 + 12);
-  v12 = *(a3 + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v9 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(buffer, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 8);
+  v11 = *(buffer + 12);
+  v12 = *(buffer + 10);
   if (v18)
   {
-    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v18);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v13, 0);
+    v13 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v18);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v13, 0);
   }
 
   if (v9)
   {
-    v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v9);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v14, 0);
+    v14 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v9);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v14, 0);
   }
 
-  v15.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v10 - v11 + v12);
+  v15.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v10 - v11 + v12);
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (void)array_bf_enumerateObjectsUsingBlock:(id)a3
+- (void)array_bf_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"array_bf"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -126,7 +126,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__FLTCDMCATIBloomFilters_flatbuff
           do
           {
             v15 = [[FLTCDMCATISwiftBloomFilter alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -174,13 +174,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__38__FLTCDMCATIBloomFilters_flatbuff
   return v5;
 }
 
-- (id)array_bf_objectAtIndex:(unint64_t)a3
+- (id)array_bf_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"array_bf"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -194,12 +194,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[FLTCDMCATISwiftBloomFilter alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[FLTCDMCATISwiftBloomFilter alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -215,12 +215,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"array_bf"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __34__FLTCDMCATIBloomFilters_array_bf__block_invoke;
     v6[3] = &unk_1E8328338;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FLTCDMCATIBloomFilters *)self array_bf_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"array_bf"];
@@ -254,10 +254,10 @@ LABEL_9:
   return v3;
 }
 
-- (FLTCDMCATIBloomFilters)initWithFlatbuffData:(id)a3 root:(const CDMCATIBloomFilters *)a4 verify:(BOOL)a5
+- (FLTCDMCATIBloomFilters)initWithFlatbuffData:(id)data root:(const CDMCATIBloomFilters *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v32.receiver = self;
   v32.super_class = FLTCDMCATIBloomFilters;
   v10 = [(FLTCDMCATIBloomFilters *)&v32 init];
@@ -266,35 +266,35 @@ LABEL_9:
     goto LABEL_28;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_28;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_29;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v28[0] = v16;
+  v28[0] = bytes3;
   v28[1] = v17;
   v29 = xmmword_1C8C15D50;
   v30 = 0;

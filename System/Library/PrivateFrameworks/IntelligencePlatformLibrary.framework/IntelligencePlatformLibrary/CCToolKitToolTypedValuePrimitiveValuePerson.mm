@@ -1,8 +1,8 @@
 @interface CCToolKitToolTypedValuePrimitiveValuePerson
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolDisplayRepresentation)displayRepresentation;
-- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithPerson:(id)a3 displayRepresentation:(id)a4 handle:(id)a5 nameComponents:(id)a6 displayName:(id)a7 image:(id)a8 contactIdentifier:(id)a9 customIdentifier:(id)a10 relationship:(id)a11 contactSuggestion:(id)a12 isMe:(id)a13 error:(id *)a14;
+- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithPerson:(id)person displayRepresentation:(id)representation handle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)self0 relationship:(id)self1 contactSuggestion:(id)self2 isMe:(id)self3 error:(id *)self4;
 - (CCToolKitToolTypedValuePrimitiveValuePersonHandle)handle;
 - (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)nameComponents;
 - (NSData)image;
@@ -12,21 +12,21 @@
 - (NSString)displayName;
 - (NSString)relationship;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValuePerson
 
-- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v38[2] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"person"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"person"];
     if (v9)
     {
       objc_opt_class();
@@ -50,7 +50,7 @@ LABEL_32:
       v8 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"displayRepresentation"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"displayRepresentation"];
     if (v13)
     {
       v38[0] = 0;
@@ -69,7 +69,7 @@ LABEL_31:
       v13 = v14;
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"handle"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"handle"];
     if (v16)
     {
       v37 = 0;
@@ -88,7 +88,7 @@ LABEL_30:
       v16 = v17;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"nameComponents"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"nameComponents"];
     if (v14)
     {
       v36 = 0;
@@ -107,9 +107,9 @@ LABEL_29:
       v14 = v19;
     }
 
-    v33 = self;
-    v17 = [v6 objectForKeyedSubscript:@"displayName"];
-    v21 = [v6 objectForKeyedSubscript:@"image"];
+    selfCopy = self;
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     if (v21)
     {
       v19 = v21;
@@ -140,18 +140,18 @@ LABEL_29:
       v30 = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"contactIdentifier"];
-    v29 = [v6 objectForKeyedSubscript:@"customIdentifier"];
-    v28 = [v6 objectForKeyedSubscript:@"relationship"];
-    v27 = [v6 objectForKeyedSubscript:@"contactSuggestion"];
-    v25 = [v6 objectForKeyedSubscript:@"isMe"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"contactIdentifier"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"customIdentifier"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"relationship"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"contactSuggestion"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isMe"];
     v13 = v31;
     v17 = v32;
     v19 = v30;
-    v24 = [[CCToolKitToolTypedValuePrimitiveValuePerson alloc] initWithPerson:v9 displayRepresentation:v31 handle:v16 nameComponents:v14 displayName:v32 image:v30 contactIdentifier:v35 customIdentifier:v29 relationship:v28 contactSuggestion:v27 isMe:v25 error:a4];
+    v24 = [[CCToolKitToolTypedValuePrimitiveValuePerson alloc] initWithPerson:v9 displayRepresentation:v31 handle:v16 nameComponents:v14 displayName:v32 image:v30 contactIdentifier:v35 customIdentifier:v29 relationship:v28 contactSuggestion:v27 isMe:v25 error:error];
 
 LABEL_28:
-    self = v33;
+    self = selfCopy;
     goto LABEL_29;
   }
 
@@ -167,61 +167,61 @@ LABEL_33:
   v3 = objc_opt_new();
   if (self->_person)
   {
-    v4 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self person];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    person = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self person];
+    v5 = [person base64EncodedStringWithOptions:0];
     [v3 setObject:v5 forKeyedSubscript:@"person"];
   }
 
   if (self->_displayRepresentation)
   {
-    v6 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self displayRepresentation];
-    v7 = [v6 jsonDictionary];
-    [v3 setObject:v7 forKeyedSubscript:@"displayRepresentation"];
+    displayRepresentation = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self displayRepresentation];
+    jsonDictionary = [displayRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"displayRepresentation"];
   }
 
   if (self->_handle)
   {
-    v8 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self handle];
-    v9 = [v8 jsonDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"handle"];
+    handle = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self handle];
+    jsonDictionary2 = [handle jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"handle"];
   }
 
   if (self->_nameComponents)
   {
-    v10 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self nameComponents];
-    v11 = [v10 jsonDictionary];
-    [v3 setObject:v11 forKeyedSubscript:@"nameComponents"];
+    nameComponents = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self nameComponents];
+    jsonDictionary3 = [nameComponents jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"nameComponents"];
   }
 
   if (self->_displayName)
   {
-    v12 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self displayName];
-    [v3 setObject:v12 forKeyedSubscript:@"displayName"];
+    displayName = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self displayName];
+    [v3 setObject:displayName forKeyedSubscript:@"displayName"];
   }
 
   if (self->_image)
   {
-    v13 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self image];
-    v14 = [v13 base64EncodedStringWithOptions:0];
+    image = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self image];
+    v14 = [image base64EncodedStringWithOptions:0];
     [v3 setObject:v14 forKeyedSubscript:@"image"];
   }
 
   if (self->_contactIdentifier)
   {
-    v15 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self contactIdentifier];
-    [v3 setObject:v15 forKeyedSubscript:@"contactIdentifier"];
+    contactIdentifier = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self contactIdentifier];
+    [v3 setObject:contactIdentifier forKeyedSubscript:@"contactIdentifier"];
   }
 
   if (self->_customIdentifier)
   {
-    v16 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self customIdentifier];
-    [v3 setObject:v16 forKeyedSubscript:@"customIdentifier"];
+    customIdentifier = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self customIdentifier];
+    [v3 setObject:customIdentifier forKeyedSubscript:@"customIdentifier"];
   }
 
   if (self->_relationship)
   {
-    v17 = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self relationship];
-    [v3 setObject:v17 forKeyedSubscript:@"relationship"];
+    relationship = [(CCToolKitToolTypedValuePrimitiveValuePerson *)self relationship];
+    [v3 setObject:relationship forKeyedSubscript:@"relationship"];
   }
 
   if (self->_hasContactSuggestion)
@@ -241,11 +241,11 @@ LABEL_33:
   return v20;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v18 = v5;
+  v18 = blockCopy;
   if (self->_person)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] bytesValue:self->_person];
@@ -376,10 +376,10 @@ LABEL_33:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -707,29 +707,29 @@ LABEL_88:
   return v59;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithPerson:(id)a3 displayRepresentation:(id)a4 handle:(id)a5 nameComponents:(id)a6 displayName:(id)a7 image:(id)a8 contactIdentifier:(id)a9 customIdentifier:(id)a10 relationship:(id)a11 contactSuggestion:(id)a12 isMe:(id)a13 error:(id *)a14
+- (CCToolKitToolTypedValuePrimitiveValuePerson)initWithPerson:(id)person displayRepresentation:(id)representation handle:(id)handle nameComponents:(id)components displayName:(id)name image:(id)image contactIdentifier:(id)identifier customIdentifier:(id)self0 relationship:(id)self1 contactSuggestion:(id)self2 isMe:(id)self3 error:(id *)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v58 = a8;
-  v24 = a9;
-  v57 = a10;
-  v56 = a11;
-  v54 = a12;
-  v53 = a13;
+  personCopy = person;
+  representationCopy = representation;
+  handleCopy = handle;
+  componentsCopy = components;
+  nameCopy = name;
+  imageCopy = image;
+  identifierCopy = identifier;
+  customIdentifierCopy = customIdentifier;
+  relationshipCopy = relationship;
+  suggestionCopy = suggestion;
+  meCopy = me;
   v25 = objc_opt_new();
-  v55 = v24;
-  if (!v19)
+  v55 = identifierCopy;
+  if (!personCopy)
   {
     v27 = 0;
-    if (!v20)
+    if (!representationCopy)
     {
 LABEL_4:
       v28 = v27;
-      if (v21)
+      if (handleCopy)
       {
         goto LABEL_5;
       }
@@ -747,10 +747,10 @@ LABEL_11:
       goto LABEL_37;
     }
 
-    v33 = [v20 data];
+    data = [representationCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (v21)
+    if (handleCopy)
     {
 LABEL_5:
       objc_opt_class();
@@ -762,14 +762,14 @@ LABEL_5:
         goto LABEL_42;
       }
 
-      v30 = [v21 data];
+      data2 = [handleCopy data];
       CCPBDataWriterWriteDataField();
 
-      if (!v22)
+      if (!componentsCopy)
       {
 LABEL_7:
         v28 = v27;
-        if (v23)
+        if (nameCopy)
         {
 LABEL_8:
           objc_opt_class();
@@ -783,21 +783,21 @@ LABEL_8:
 
           CCPBDataWriterWriteStringField();
 LABEL_17:
-          if (v58)
+          if (imageCopy)
           {
             objc_opt_class();
             v36 = CCValidateIsInstanceOfExpectedClass();
-            v37 = v58;
+            v37 = imageCopy;
             v38 = v27;
 
             if (!v36)
             {
-              v39 = v19;
+              v39 = personCopy;
               CCSetError();
               v40 = 0;
               v27 = v38;
 LABEL_44:
-              v41 = self;
+              selfCopy2 = self;
               goto LABEL_45;
             }
 
@@ -811,12 +811,12 @@ LABEL_44:
           else
           {
             v38 = v27;
-            if (!v24)
+            if (!identifierCopy)
             {
 LABEL_20:
               v27 = v38;
 LABEL_25:
-              if (v57)
+              if (customIdentifierCopy)
               {
                 objc_opt_class();
                 v43 = CCValidateIsInstanceOfExpectedClass();
@@ -835,7 +835,7 @@ LABEL_25:
                 v28 = v27;
               }
 
-              if (!v56)
+              if (!relationshipCopy)
               {
                 v27 = v28;
                 goto LABEL_34;
@@ -850,7 +850,7 @@ LABEL_25:
                 CCPBDataWriterWriteStringField();
 LABEL_34:
                 v45 = 0x1E696A000uLL;
-                if (!v54)
+                if (!suggestionCopy)
                 {
                   v28 = v27;
                   goto LABEL_39;
@@ -862,13 +862,13 @@ LABEL_34:
 
                 if (v46)
                 {
-                  [v54 BOOLValue];
+                  [suggestionCopy BOOLValue];
                   CCPBDataWriterWriteBOOLField();
                   v45 = 0x1E696A000;
 LABEL_39:
-                  if (!v53)
+                  if (!meCopy)
                   {
-                    v39 = v19;
+                    v39 = personCopy;
                     v27 = v28;
                     goto LABEL_47;
                   }
@@ -880,15 +880,15 @@ LABEL_39:
 
                   if (v48)
                   {
-                    v39 = v19;
-                    [v53 BOOLValue];
+                    v39 = personCopy;
+                    [meCopy BOOLValue];
                     CCPBDataWriterWriteBOOLField();
 LABEL_47:
-                    v37 = v58;
-                    v50 = [v25 immutableData];
-                    v41 = [(CCItemMessage *)self initWithData:v50 error:v51];
+                    v37 = imageCopy;
+                    immutableData = [v25 immutableData];
+                    selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:v51];
 
-                    v40 = v41;
+                    v40 = selfCopy2;
                     goto LABEL_45;
                   }
 
@@ -896,17 +896,17 @@ LABEL_47:
                 }
 
 LABEL_37:
-                v39 = v19;
+                v39 = personCopy;
                 CCSetError();
                 v40 = 0;
                 v27 = v28;
 LABEL_43:
-                v37 = v58;
+                v37 = imageCopy;
                 goto LABEL_44;
               }
 
 LABEL_42:
-              v39 = v19;
+              v39 = personCopy;
               CCSetError();
               v40 = 0;
               goto LABEL_43;
@@ -941,10 +941,10 @@ LABEL_14:
         goto LABEL_37;
       }
 
-      v35 = [v22 data];
+      data3 = [componentsCopy data];
       CCPBDataWriterWriteDataField();
 
-      if (v23)
+      if (nameCopy)
       {
         goto LABEL_8;
       }
@@ -954,7 +954,7 @@ LABEL_14:
 
 LABEL_13:
     v27 = v28;
-    if (!v22)
+    if (!componentsCopy)
     {
       goto LABEL_7;
     }
@@ -968,7 +968,7 @@ LABEL_13:
   if (v26)
   {
     CCPBDataWriterWriteDataField();
-    if (!v20)
+    if (!representationCopy)
     {
       goto LABEL_4;
     }
@@ -976,11 +976,11 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  v39 = v19;
+  v39 = personCopy;
   CCSetError();
   v40 = 0;
-  v41 = self;
-  v37 = v58;
+  selfCopy2 = self;
+  v37 = imageCopy;
 LABEL_45:
 
   return v40;

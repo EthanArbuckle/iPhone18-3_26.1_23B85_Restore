@@ -11,50 +11,50 @@
 - (id)accessibilityTableViewCellText
 {
   v2 = [(SUTableCellAccessibility *)self safeValueForKey:@"_configurationView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   v2 = [(SUTableCellAccessibility *)self safeValueForKey:@"_configurationView"];
-  v3 = [v2 accessibilityHint];
+  accessibilityHint = [v2 accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityValue
 {
   v2 = [(SUTableCellAccessibility *)self safeValueForKey:@"_configurationView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v11.receiver = self;
   v11.super_class = SUTableCellAccessibility;
-  v3 = [(SUTableCellAccessibility *)&v11 accessibilityTraits];
+  accessibilityTraits = [(SUTableCellAccessibility *)&v11 accessibilityTraits];
   v4 = [(SUTableCellAccessibility *)self safeValueForKey:@"_configurationView"];
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits2 = [v4 accessibilityTraits];
 
-  if (v5 == *MEMORY[0x29EDC7FA0])
+  if (accessibilityTraits2 == *MEMORY[0x29EDC7FA0])
   {
     v6 = *MEMORY[0x29EDC7FA0];
   }
 
   else
   {
-    v6 = v5 | v3;
+    v6 = accessibilityTraits2 | accessibilityTraits;
   }
 
   v7 = [(SUTableCellAccessibility *)self safeValueForKey:@"showHighlight"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = *MEMORY[0x29EDC7FC0];
-  if (!v8)
+  if (!bOOLValue)
   {
     v9 = 0;
   }
@@ -67,8 +67,8 @@
   v3 = MEMORY[0x29EDBA0F8];
   v4 = objc_opt_class();
   v5 = [(SUTableCellAccessibility *)self safeValueForKey:@"_configurationView"];
-  v6 = [(SUTableCellAccessibility *)self accessibilityTableViewCellText];
-  v7 = [v3 stringWithFormat:@"<%@ %p> : %@ -- :%@:", v4, self, v5, v6];
+  accessibilityTableViewCellText = [(SUTableCellAccessibility *)self accessibilityTableViewCellText];
+  v7 = [v3 stringWithFormat:@"<%@ %p> : %@ -- :%@:", v4, self, v5, accessibilityTableViewCellText];
 
   return v7;
 }

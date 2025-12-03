@@ -3,39 +3,39 @@
 - (VSOnscreenCodeViewModelDelegate)delegate;
 - (id)formattedWebsiteURL;
 - (id)websiteURLWithQueryParameters;
-- (void)configureWithRequest:(id)a3;
+- (void)configureWithRequest:(id)request;
 @end
 
 @implementation VSOnscreenCodeViewModel
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(VSOnscreenCodeViewModel *)self generateQRCode];
   v5.receiver = self;
   v5.super_class = VSOnscreenCodeViewModel;
-  [(VSViewModel *)&v5 configureWithRequest:v4];
+  [(VSViewModel *)&v5 configureWithRequest:requestCopy];
 }
 
 - (id)websiteURLWithQueryParameters
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(VSOnscreenCodeViewModel *)self webPageURL];
+  webPageURL = [(VSOnscreenCodeViewModel *)self webPageURL];
 
-  if (!v3)
+  if (!webPageURL)
   {
     goto LABEL_10;
   }
 
-  v4 = [(VSOnscreenCodeViewModel *)self webPageURL];
+  webPageURL2 = [(VSOnscreenCodeViewModel *)self webPageURL];
 
-  if (!v4)
+  if (!webPageURL2)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self webPageURL] parameter must not be nil."];
   }
 
-  v5 = [(VSOnscreenCodeViewModel *)self webPageURL];
-  v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v5 resolvingAgainstBaseURL:0];
+  webPageURL3 = [(VSOnscreenCodeViewModel *)self webPageURL];
+  v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:webPageURL3 resolvingAgainstBaseURL:0];
   if (!v6)
   {
 
@@ -45,21 +45,21 @@ LABEL_10:
   }
 
   v7 = v6;
-  v8 = [v7 queryItems];
+  queryItems = [v7 queryItems];
   v32 = v7;
-  v33 = v5;
-  if (v8)
+  v33 = webPageURL3;
+  if (queryItems)
   {
-    v9 = [v7 queryItems];
-    v10 = [v9 mutableCopy];
+    queryItems2 = [v7 queryItems];
+    v10 = [queryItems2 mutableCopy];
 
     if (!v10)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [[urlComponents queryItems] mutableCopy] parameter must not be nil."];
     }
 
-    v11 = [v7 queryItems];
-    v12 = [v11 mutableCopy];
+    queryItems3 = [v7 queryItems];
+    v12 = [queryItems3 mutableCopy];
   }
 
   else
@@ -87,12 +87,12 @@ LABEL_10:
         }
 
         v19 = *(*(&v34 + 1) + 8 * i);
-        v20 = [v19 name];
-        v21 = [v20 isEqualToString:@"code"];
+        name = [v19 name];
+        v21 = [name isEqualToString:@"code"];
 
-        v22 = [v19 value];
-        v23 = [(VSOnscreenCodeViewModel *)self onscreenCode];
-        v24 = [v22 isEqualToString:v23];
+        value = [v19 value];
+        onscreenCode = [(VSOnscreenCodeViewModel *)self onscreenCode];
+        v24 = [value isEqualToString:onscreenCode];
 
         if (v21 & 1) != 0 || (v24)
         {
@@ -113,8 +113,8 @@ LABEL_10:
   }
 
   v25 = objc_alloc(MEMORY[0x277CCAD18]);
-  v26 = [(VSOnscreenCodeViewModel *)self onscreenCode];
-  v27 = [v25 initWithName:@"code" value:v26];
+  onscreenCode2 = [(VSOnscreenCodeViewModel *)self onscreenCode];
+  v27 = [v25 initWithName:@"code" value:onscreenCode2];
 
   [v14 addObject:v27];
   v28 = [v14 copy];
@@ -132,84 +132,84 @@ LABEL_24:
 
 - (id)formattedWebsiteURL
 {
-  v3 = [(VSOnscreenCodeViewModel *)self webPageLabel];
+  webPageLabel = [(VSOnscreenCodeViewModel *)self webPageLabel];
 
-  if (!v3)
+  if (!webPageLabel)
   {
-    v6 = [(VSOnscreenCodeViewModel *)self webPageURL];
+    webPageURL = [(VSOnscreenCodeViewModel *)self webPageURL];
 
-    if (!v6)
+    if (!webPageURL)
     {
-      v5 = &stru_2880B8BB0;
+      webPageLabel3 = &stru_2880B8BB0;
       goto LABEL_31;
     }
 
-    v7 = [(VSOnscreenCodeViewModel *)self webPageURL];
+    webPageURL2 = [(VSOnscreenCodeViewModel *)self webPageURL];
 
-    if (!v7)
+    if (!webPageURL2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self webPageURL] parameter must not be nil."];
     }
 
-    v8 = [(VSOnscreenCodeViewModel *)self webPageURL];
-    v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v8 resolvingAgainstBaseURL:0];
+    webPageURL3 = [(VSOnscreenCodeViewModel *)self webPageURL];
+    v9 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:webPageURL3 resolvingAgainstBaseURL:0];
     v10 = v9;
     if (v9)
     {
       v11 = v9;
-      v12 = [v11 host];
-      if (v12)
+      host = [v11 host];
+      if (host)
       {
-        v5 = [&stru_2880B8BB0 stringByAppendingString:v12];
+        webPageLabel3 = [&stru_2880B8BB0 stringByAppendingString:host];
       }
 
       else
       {
-        v5 = &stru_2880B8BB0;
+        webPageLabel3 = &stru_2880B8BB0;
       }
 
-      v15 = [v11 port];
-      v16 = v15;
-      if (v15)
+      port = [v11 port];
+      v16 = port;
+      if (port)
       {
-        v17 = [(__CFString *)v5 stringByAppendingFormat:@":%@", v15];
+        v17 = [(__CFString *)webPageLabel3 stringByAppendingFormat:@":%@", port];
 
-        v5 = v17;
+        webPageLabel3 = v17;
       }
 
-      v18 = [v11 path];
-      if (!v18)
+      path = [v11 path];
+      if (!path)
       {
         goto LABEL_28;
       }
 
-      v19 = [(__CFString *)v5 stringByAppendingString:v18];
+      v19 = [(__CFString *)webPageLabel3 stringByAppendingString:path];
     }
 
     else
     {
-      v13 = [v8 resourceSpecifier];
-      v11 = v13;
-      if (!v13)
+      resourceSpecifier = [webPageURL3 resourceSpecifier];
+      v11 = resourceSpecifier;
+      if (!resourceSpecifier)
       {
-        v5 = &stru_2880B8BB0;
+        webPageLabel3 = &stru_2880B8BB0;
 LABEL_30:
 
         goto LABEL_31;
       }
 
-      v12 = v13;
-      if ([v12 hasPrefix:@"//"])
+      host = resourceSpecifier;
+      if ([host hasPrefix:@"//"])
       {
-        v14 = [v12 substringFromIndex:2];
+        v14 = [host substringFromIndex:2];
       }
 
       else
       {
-        v14 = v12;
+        v14 = host;
       }
 
-      v5 = v14;
+      webPageLabel3 = v14;
       v16 = [(__CFString *)v14 componentsSeparatedByString:@"?"];
       if ([v16 count] < 2)
       {
@@ -218,16 +218,16 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v20 = [v16 firstObject];
-      v18 = v20;
-      if (v20)
+      firstObject = [v16 firstObject];
+      path = firstObject;
+      if (firstObject)
       {
-        v21 = v20;
+        v21 = firstObject;
       }
 
       else
       {
-        v21 = v5;
+        v21 = webPageLabel3;
       }
 
       v19 = v21;
@@ -235,23 +235,23 @@ LABEL_29:
 
     v22 = v19;
 
-    v5 = v22;
+    webPageLabel3 = v22;
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v4 = [(VSOnscreenCodeViewModel *)self webPageLabel];
+  webPageLabel2 = [(VSOnscreenCodeViewModel *)self webPageLabel];
 
-  if (!v4)
+  if (!webPageLabel2)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [self webPageLabel] parameter must not be nil."];
   }
 
-  v5 = [(VSOnscreenCodeViewModel *)self webPageLabel];
+  webPageLabel3 = [(VSOnscreenCodeViewModel *)self webPageLabel];
 LABEL_31:
 
-  return v5;
+  return webPageLabel3;
 }
 
 - (CGSize)preferredLogoSize

@@ -1,28 +1,28 @@
 @interface SBIconListViewSlideInAnimator
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6;
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block;
 @end
 
 @implementation SBIconListViewSlideInAnimator
 
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a3;
-  [v11 bounds];
+  iconViewCopy = iconView;
+  blockCopy = block;
+  viewCopy = view;
+  [viewCopy bounds];
   Width = CGRectGetWidth(v33);
-  [v11 bounds];
+  [viewCopy bounds];
   Height = CGRectGetHeight(v34);
-  v14 = [v11 userInterfaceLayoutDirection];
-  v15 = [v11 iconInsertionAnimationOriginatingEdge];
+  userInterfaceLayoutDirection = [viewCopy userInterfaceLayoutDirection];
+  iconInsertionAnimationOriginatingEdge = [viewCopy iconInsertionAnimationOriginatingEdge];
 
   v16 = -Width;
-  if (v14 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v16 = Width;
   }
 
-  if (v15 == 1)
+  if (iconInsertionAnimationOriginatingEdge == 1)
   {
     v17 = Height;
   }
@@ -32,30 +32,30 @@
     v17 = 0.0;
   }
 
-  if (v15 == 1)
+  if (iconInsertionAnimationOriginatingEdge == 1)
   {
     v16 = 0.0;
   }
 
-  [v9 setCenter:{a5->var0.x + v16, a5->var0.y + v17}];
+  [iconViewCopy setCenter:{parameters->var0.x + v16, parameters->var0.y + v17}];
   v18 = MEMORY[0x1E69DD250];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __116__SBIconListViewSlideInAnimator_iconListView_wantsAnimatedLayoutForIconView_withParameters_alongsideAnimationBlock___block_invoke;
   v24[3] = &unk_1E808BF90;
-  v19 = *&a5->var2.continuousCornerRadius;
-  v29 = *&a5->var2.size.height;
+  v19 = *&parameters->var2.continuousCornerRadius;
+  v29 = *&parameters->var2.size.height;
   v30 = v19;
-  v20 = *&a5->var5;
-  var4 = a5->var4;
+  v20 = *&parameters->var5;
+  var4 = parameters->var4;
   v32 = v20;
-  v21 = *&a5->var1;
-  var0 = a5->var0;
+  v21 = *&parameters->var1;
+  var0 = parameters->var0;
   v28 = v21;
-  v25 = v9;
-  v26 = v10;
-  v22 = v10;
-  v23 = v9;
+  v25 = iconViewCopy;
+  v26 = blockCopy;
+  v22 = blockCopy;
+  v23 = iconViewCopy;
   [v18 animateWithDuration:v24 animations:0.3];
 }
 

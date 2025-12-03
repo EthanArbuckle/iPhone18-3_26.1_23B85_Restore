@@ -1,8 +1,8 @@
 @interface _DASDiskSpacePolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASDiskSpacePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASDiskSpacePolicy
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_10004B6A8;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B0F8 != -1)
   {
     dispatch_once(&qword_10020B0F8, block);
@@ -39,13 +39,13 @@
   return v2;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 diskVolume];
-  if (v4)
+  activityCopy = activity;
+  diskVolume = [activityCopy diskVolume];
+  if (diskVolume)
   {
-    v5 = [v3 downloadSize] != 0;
+    v5 = [activityCopy downloadSize] != 0;
   }
 
   else
@@ -56,13 +56,13 @@
   return v5;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
+  activityCopy = activity;
   v6 = +[_DASDaemon sharedInstance];
   v7 = [_DASDiskSpaceMonitor sharedMonitorWithDaemon:v6];
 
-  LODWORD(v6) = [v7 isDiskSpaceAvailableForActivity:v5];
+  LODWORD(v6) = [v7 isDiskSpaceAvailableForActivity:activityCopy];
   v8 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   v9 = v8;
   v10 = 1.0;

@@ -16,8 +16,8 @@
     [(VUITextLayout *)v3 setFontWeight:10];
     [(VUITextLayout *)v3 setNumberOfLines:2];
     [(VUITextLayout *)v3 setMinimumScaleFactor:0.67];
-    v4 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(VUITextLayout *)v3 setColor:v4];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(VUITextLayout *)v3 setColor:vui_primaryTextColor];
 
     titleTextLayout = v2->_titleTextLayout;
     v2->_titleTextLayout = v3;
@@ -27,8 +27,8 @@
     [(VUITextLayout *)v7 setTextStyle:14];
     [(VUITextLayout *)v7 setNumberOfLines:2];
     [(VUITextLayout *)v7 setMinimumScaleFactor:0.67];
-    v8 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(VUITextLayout *)v7 setColor:v8];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(VUITextLayout *)v7 setColor:systemGrayColor];
 
     subtitleTextLayout = v2->_subtitleTextLayout;
     v2->_subtitleTextLayout = v7;

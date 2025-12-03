@@ -1,15 +1,15 @@
 @interface PMPopUpMenuCellViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation PMPopUpMenuCellViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PasswordsSettings.PMPopUpMenuCellView"];
-  [v3 validateClass:@"PasswordsSettings.PMPopUpMenuCellView" hasSwiftField:@"popUpButton" withSwiftType:"Optional<UIButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PasswordsSettings.PMPopUpMenuCellView"];
+  [validationsCopy validateClass:@"PasswordsSettings.PMPopUpMenuCellView" hasSwiftField:@"popUpButton" withSwiftType:"Optional<UIButton>"];
 }
 
 - (id)accessibilityValue
@@ -20,16 +20,16 @@
 
   if (v4)
   {
-    v5 = [v4 titleLabel];
-    v6 = [v5 text];
+    titleLabel = [v4 titleLabel];
+    text = [titleLabel text];
   }
 
   else
   {
-    v6 = 0;
+    text = 0;
   }
 
-  return v6;
+  return text;
 }
 
 @end

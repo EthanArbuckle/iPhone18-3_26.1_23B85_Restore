@@ -1,15 +1,15 @@
 @interface DDScannerServiceConfiguration
 - (BOOL)remoteScannerEnabled;
-- (DDScannerServiceConfiguration)initWithCoder:(id)a3;
-- (DDScannerServiceConfiguration)initWithScannerType:(int)a3 passiveIntent:(BOOL)a4;
+- (DDScannerServiceConfiguration)initWithCoder:(id)coder;
+- (DDScannerServiceConfiguration)initWithScannerType:(int)type passiveIntent:(BOOL)intent;
 - (__CFString)recyclingIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initEmpty;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setLanguageHighConfidence:(BOOL)a3;
-- (void)setSpotlightSuggestionsEnabled:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLanguage:(id)language;
+- (void)setLanguageHighConfidence:(BOOL)confidence;
+- (void)setSpotlightSuggestionsEnabled:(BOOL)enabled;
 @end
 
 @implementation DDScannerServiceConfiguration
@@ -27,40 +27,40 @@
 
 - (__CFString)recyclingIdentifier
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (([(__CFString *)a1 remoteScannerEnabled]& 1) != 0)
+    selfCopy = self;
+    if (([(__CFString *)self remoteScannerEnabled]& 1) != 0)
     {
-      a1 = @"Remote";
+      self = @"Remote";
     }
 
     else
     {
-      data = v2->data;
+      data = selfCopy->data;
       if (!data)
       {
         v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-        info = v2[3].info;
+        info = selfCopy[3].info;
         if (!info)
         {
           info = &stru_1F3B75AB8;
         }
 
-        v6 = [v4 initWithFormat:@"T:%d|S:%d:%@:%d:%@", LODWORD(v2->info), BYTE4(v2->info), v2[2].info, BYTE1(v2[1].isa), info];
-        v7 = v2->data;
-        v2->data = v6;
+        info = [v4 initWithFormat:@"T:%d|S:%d:%@:%d:%@", LODWORD(selfCopy->info), BYTE4(selfCopy->info), selfCopy[2].info, BYTE1(selfCopy[1].isa), info];
+        v7 = selfCopy->data;
+        selfCopy->data = info;
 
-        data = v2->data;
+        data = selfCopy->data;
       }
 
-      a1 = data;
+      self = data;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)initEmpty
@@ -70,39 +70,39 @@
   return [(DDScannerServiceConfiguration *)&v3 init];
 }
 
-- (void)setLanguageHighConfidence:(BOOL)a3
+- (void)setLanguageHighConfidence:(BOOL)confidence
 {
-  if (self->_languageHighConfidence != a3)
+  if (self->_languageHighConfidence != confidence)
   {
-    self->_languageHighConfidence = a3;
+    self->_languageHighConfidence = confidence;
     recyclingIdentifier = self->_recyclingIdentifier;
     self->_recyclingIdentifier = 0;
     MEMORY[0x1EEE66BB8]();
   }
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v5 = a3;
+  languageCopy = language;
   p_language = &self->_language;
-  if (self->_language != v5)
+  if (self->_language != languageCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_language, a3);
+    v8 = languageCopy;
+    objc_storeStrong(p_language, language);
     recyclingIdentifier = self->_recyclingIdentifier;
     self->_recyclingIdentifier = 0;
 
-    v5 = v8;
+    languageCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_language, v5);
+  MEMORY[0x1EEE66BB8](p_language, languageCopy);
 }
 
-- (void)setSpotlightSuggestionsEnabled:(BOOL)a3
+- (void)setSpotlightSuggestionsEnabled:(BOOL)enabled
 {
-  if (self->_spotlightSuggestionsEnabled != a3)
+  if (self->_spotlightSuggestionsEnabled != enabled)
   {
-    self->_spotlightSuggestionsEnabled = a3;
+    self->_spotlightSuggestionsEnabled = enabled;
     recyclingIdentifier = self->_recyclingIdentifier;
     self->_recyclingIdentifier = 0;
     MEMORY[0x1EEE66BB8]();
@@ -113,8 +113,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(DDScannerServiceConfiguration *)self recyclingIdentifier];
-  v6 = v5;
+  recyclingIdentifier = [(DDScannerServiceConfiguration *)self recyclingIdentifier];
+  v6 = recyclingIdentifier;
   if (self->_noObjC)
   {
     v7 = @"C";
@@ -125,69 +125,69 @@
     v7 = @"ObjC";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@ %p> %@ timeout:%.1f SPI:%@ resultsOptions:%ld scannerOptions:%ld", v4, self, v5, *&self->_timeout, v7, self->_resultsOptions, self->_scannerOptions];
+  v8 = [v3 stringWithFormat:@"<%@ %p> %@ timeout:%.1f SPI:%@ resultsOptions:%ld scannerOptions:%ld", v4, self, recyclingIdentifier, *&self->_timeout, v7, self->_resultsOptions, self->_scannerOptions];
 
   return v8;
 }
 
-- (DDScannerServiceConfiguration)initWithCoder:(id)a3
+- (DDScannerServiceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DDScannerServiceConfiguration *)self initEmpty];
-  if (v5)
+  coderCopy = coder;
+  initEmpty = [(DDScannerServiceConfiguration *)self initEmpty];
+  if (initEmpty)
   {
-    v5->_scannerType = [v4 decodeIntegerForKey:@"ST"];
-    v5->_resultsOptions = [v4 decodeIntegerForKey:@"RO"];
-    v5->_scannerOptions = [v4 decodeIntegerForKey:@"SO"];
-    [v4 decodeDoubleForKey:@"TO"];
-    v5->_timeout = v6;
-    v5->_noObjC = [v4 decodeBoolForKey:@"OC"];
-    v5->_languageHighConfidence = [v4 decodeBoolForKey:@"LHC"];
-    v5->_spotlightSuggestionsEnabled = [v4 decodeBoolForKey:@"SP"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LG"];
-    language = v5->_language;
-    v5->_language = v7;
+    initEmpty->_scannerType = [coderCopy decodeIntegerForKey:@"ST"];
+    initEmpty->_resultsOptions = [coderCopy decodeIntegerForKey:@"RO"];
+    initEmpty->_scannerOptions = [coderCopy decodeIntegerForKey:@"SO"];
+    [coderCopy decodeDoubleForKey:@"TO"];
+    initEmpty->_timeout = v6;
+    initEmpty->_noObjC = [coderCopy decodeBoolForKey:@"OC"];
+    initEmpty->_languageHighConfidence = [coderCopy decodeBoolForKey:@"LHC"];
+    initEmpty->_spotlightSuggestionsEnabled = [coderCopy decodeBoolForKey:@"SP"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LG"];
+    language = initEmpty->_language;
+    initEmpty->_language = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"country"];
-    country = v5->_country;
-    v5->_country = v9;
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"country"];
+    country = initEmpty->_country;
+    initEmpty->_country = v9;
 
-    v5->_script = [v4 decodeIntegerForKey:@"script"];
-    v5->_qos = [v4 decodeIntegerForKey:@"qos"];
+    initEmpty->_script = [coderCopy decodeIntegerForKey:@"script"];
+    initEmpty->_qos = [coderCopy decodeIntegerForKey:@"qos"];
   }
 
-  return v5;
+  return initEmpty;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:self->_scannerType forKey:@"ST"];
-  [v6 encodeInteger:self->_resultsOptions forKey:@"RO"];
-  [v6 encodeInteger:self->_scannerOptions forKey:@"SO"];
-  [v6 encodeDouble:@"TO" forKey:self->_timeout];
-  [v6 encodeBool:self->_noObjC forKey:@"OC"];
-  [v6 encodeBool:self->_languageHighConfidence forKey:@"LHC"];
-  [v6 encodeBool:self->_spotlightSuggestionsEnabled forKey:@"SP"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_scannerType forKey:@"ST"];
+  [coderCopy encodeInteger:self->_resultsOptions forKey:@"RO"];
+  [coderCopy encodeInteger:self->_scannerOptions forKey:@"SO"];
+  [coderCopy encodeDouble:@"TO" forKey:self->_timeout];
+  [coderCopy encodeBool:self->_noObjC forKey:@"OC"];
+  [coderCopy encodeBool:self->_languageHighConfidence forKey:@"LHC"];
+  [coderCopy encodeBool:self->_spotlightSuggestionsEnabled forKey:@"SP"];
   language = self->_language;
   if (language)
   {
-    [v6 encodeObject:language forKey:@"LG"];
+    [coderCopy encodeObject:language forKey:@"LG"];
   }
 
   country = self->_country;
   if (country)
   {
-    [v6 encodeObject:country forKey:@"country"];
+    [coderCopy encodeObject:country forKey:@"country"];
   }
 
-  [v6 encodeInteger:self->_script forKey:@"script"];
-  [v6 encodeInteger:self->_qos forKey:@"qos"];
+  [coderCopy encodeInteger:self->_script forKey:@"script"];
+  [coderCopy encodeInteger:self->_qos forKey:@"qos"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initEmpty"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initEmpty"}];
   v5 = v4;
   if (v4)
   {
@@ -211,17 +211,17 @@
   return v5;
 }
 
-- (DDScannerServiceConfiguration)initWithScannerType:(int)a3 passiveIntent:(BOOL)a4
+- (DDScannerServiceConfiguration)initWithScannerType:(int)type passiveIntent:(BOOL)intent
 {
-  v4 = a4;
+  intentCopy = intent;
   v8.receiver = self;
   v8.super_class = DDScannerServiceConfiguration;
   result = [(DDScannerServiceConfiguration *)&v8 init];
   if (result)
   {
-    result->_scannerType = a3;
+    result->_scannerType = type;
     v7 = 1537;
-    if (v4)
+    if (intentCopy)
     {
       v7 = 1989;
     }

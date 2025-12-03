@@ -1,18 +1,18 @@
 @interface NUSourceOrientationNode
-+ (int64_t)originalOrientationToApplyToSource:(id)a3 skipOrientation:(BOOL)a4 error:(id *)a5;
-- (NUSourceOrientationNode)initWithInput:(id)a3 source:(id)a4 settings:(id)a5 orientation:(int64_t)a6;
-- (NUSourceOrientationNode)initWithOrientation:(int64_t)a3 input:(id)a4;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
++ (int64_t)originalOrientationToApplyToSource:(id)source skipOrientation:(BOOL)orientation error:(id *)error;
+- (NUSourceOrientationNode)initWithInput:(id)input source:(id)source settings:(id)settings orientation:(int64_t)orientation;
+- (NUSourceOrientationNode)initWithOrientation:(int64_t)orientation input:(id)input;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUSourceOrientationNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!a5)
+  cacheCopy = cache;
+  stateCopy = state;
+  if (!error)
   {
     v25 = NUAssertLogger_8665();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -33,8 +33,8 @@
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v32;
         v60 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,9 +55,9 @@
     _NUAssertFailHandler("[NUSourceOrientationNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1071, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "error != nil");
   }
 
-  v10 = v9;
+  v10 = stateCopy;
   v11 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v12 = [v11 nodeByReplayingAgainstCache:v8 pipelineState:v10 error:a5];
+  v12 = [v11 nodeByReplayingAgainstCache:cacheCopy pipelineState:v10 error:error];
   if (v12)
   {
     v13 = [(NUOrientationNode *)self shouldCacheNodeForPipelineState:v10];
@@ -65,21 +65,21 @@
     v15 = v14;
     if (v13)
     {
-      v16 = [v14 inputs];
-      v17 = [v16 count];
+      inputs = [v14 inputs];
+      v17 = [inputs count];
 
-      v18 = v15;
+      uniqueInputNode = v15;
       if (v17)
       {
         v19 = v15;
         do
         {
-          v18 = [v19 uniqueInputNode];
+          uniqueInputNode = [v19 uniqueInputNode];
 
-          v20 = [v18 inputs];
-          v21 = [v20 count];
+          inputs2 = [uniqueInputNode inputs];
+          v21 = [inputs2 count];
 
-          v19 = v18;
+          v19 = uniqueInputNode;
         }
 
         while (v21);
@@ -107,8 +107,8 @@
             v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
             v49 = MEMORY[0x1E696AF00];
             v50 = v48;
-            v51 = [v49 callStackSymbols];
-            v52 = [v51 componentsJoinedByString:@"\n"];
+            callStackSymbols3 = [v49 callStackSymbols];
+            v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
             *buf = 138543618;
             v59 = v48;
             v60 = 2114;
@@ -119,8 +119,8 @@
 
         else if (v45)
         {
-          v46 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v47 = [v46 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v47 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v59 = v47;
           _os_log_error_impl(&dword_1C0184000, v44, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -129,7 +129,7 @@
         _NUAssertFailHandler("[NUSourceOrientationNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1092, @"Expected a source node", v53, v54, v55, v56, v57);
       }
 
-      v22 = [NUSourceOrientationNode originalOrientationToApplyToSource:v18 skipOrientation:self->_skipOrientation error:a5];
+      v22 = [NUSourceOrientationNode originalOrientationToApplyToSource:uniqueInputNode skipOrientation:self->_skipOrientation error:error];
       if (v22)
       {
         if (v22 == 1)
@@ -141,7 +141,7 @@
         {
           v23 = [[NUOrientationNode alloc] initWithOrientation:v22 input:v15];
           -[NURenderNode setEvaluatedForMode:](v23, "setEvaluatedForMode:", [v10 evaluationMode]);
-          v15 = [NURenderNode nodeFromCache:v23 cache:v8];
+          v15 = [NURenderNode nodeFromCache:v23 cache:cacheCopy];
         }
       }
 
@@ -160,13 +160,13 @@
   return v15;
 }
 
-- (NUSourceOrientationNode)initWithInput:(id)a3 source:(id)a4 settings:(id)a5 orientation:(int64_t)a6
+- (NUSourceOrientationNode)initWithInput:(id)input source:(id)source settings:(id)settings orientation:(int64_t)orientation
 {
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  inputCopy = input;
+  sourceCopy = source;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v18 = NUAssertLogger_8665();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -187,8 +187,8 @@
         v39 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v40 = MEMORY[0x1E696AF00];
         v41 = v39;
-        v42 = [v40 callStackSymbols];
-        v43 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v40 callStackSymbols];
+        v43 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v39;
         v69 = 2114;
@@ -199,8 +199,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -209,7 +209,7 @@
     _NUAssertFailHandler("[NUSourceOrientationNode initWithInput:source:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1020, @"Invalid parameter not satisfying: %s", v44, v45, v46, v47, "input != nil");
   }
 
-  if (!v11)
+  if (!sourceCopy)
   {
     v25 = NUAssertLogger_8665();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -230,8 +230,8 @@
         v48 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v49 = MEMORY[0x1E696AF00];
         v50 = v48;
-        v51 = [v49 callStackSymbols];
-        v52 = [v51 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v49 callStackSymbols];
+        v52 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v48;
         v69 = 2114;
@@ -242,8 +242,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -252,7 +252,7 @@
     _NUAssertFailHandler("[NUSourceOrientationNode initWithInput:source:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1021, @"Invalid parameter not satisfying: %s", v53, v54, v55, v56, "source != nil");
   }
 
-  if ((a6 - 1) >= 8)
+  if ((orientation - 1) >= 8)
   {
     v32 = NUAssertLogger_8665();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -273,8 +273,8 @@
         v57 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v58 = MEMORY[0x1E696AF00];
         v59 = v57;
-        v60 = [v58 callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v58 callStackSymbols];
+        v61 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v57;
         v69 = 2114;
@@ -285,8 +285,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -295,22 +295,22 @@
     _NUAssertFailHandler("[NUSourceOrientationNode initWithInput:source:settings:orientation:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1022, @"Invalid parameter not satisfying: %s", v62, v63, v64, v65, "NUOrientationIsValid(orientation)");
   }
 
-  v13 = v12;
-  v14 = [v12 objectForKeyedSubscript:@"skipOrientation"];
-  v15 = [v14 BOOLValue];
+  v13 = settingsCopy;
+  v14 = [settingsCopy objectForKeyedSubscript:@"skipOrientation"];
+  bOOLValue = [v14 BOOLValue];
 
   v66.receiver = self;
   v66.super_class = NUSourceOrientationNode;
-  v16 = [(NUOrientationNode *)&v66 initWithOrientation:a6 input:v10];
-  v16->_skipOrientation = v15;
+  v16 = [(NUOrientationNode *)&v66 initWithOrientation:orientation input:inputCopy];
+  v16->_skipOrientation = bOOLValue;
 
   return v16;
 }
 
-- (NUSourceOrientationNode)initWithOrientation:(int64_t)a3 input:(id)a4
+- (NUSourceOrientationNode)initWithOrientation:(int64_t)orientation input:(id)input
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  inputCopy = input;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -354,8 +354,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -371,8 +371,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -388,12 +388,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUSourceOrientationNode initWithOrientation:input:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1015, @"Initializer not available: [%@ %@], use designated initializer instead.", v28, v29, v30, v31, v27);
 }
 
-+ (int64_t)originalOrientationToApplyToSource:(id)a3 skipOrientation:(BOOL)a4 error:(id *)a5
++ (int64_t)originalOrientationToApplyToSource:(id)source skipOrientation:(BOOL)orientation error:(id *)error
 {
-  v6 = a4;
+  orientationCopy = orientation;
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!a5)
+  sourceCopy = source;
+  if (!error)
   {
     v19 = NUAssertLogger_8665();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -414,8 +414,8 @@ LABEL_14:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v26;
         v37 = 2114;
@@ -426,8 +426,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -436,38 +436,38 @@ LABEL_14:
     _NUAssertFailHandler("+[NUSourceOrientationNode originalOrientationToApplyToSource:skipOrientation:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 1036, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "error != nil");
   }
 
-  v8 = v7;
-  if (v6)
+  v8 = sourceCopy;
+  if (orientationCopy)
   {
-    v9 = 1;
+    sourceOrientation = 1;
   }
 
   else
   {
-    v9 = [v7 sourceOrientation];
+    sourceOrientation = [sourceCopy sourceOrientation];
   }
 
-  v10 = [v8 originalNode];
-  v11 = v10;
-  if (v10)
+  originalNode = [v8 originalNode];
+  v11 = originalNode;
+  if (originalNode)
   {
-    v12 = [v10 outputImageGeometry:a5];
+    v12 = [originalNode outputImageGeometry:error];
     if (v12)
     {
       v13 = v12;
-      v14 = [v12 orientation];
-      v15 = [v8 sourceDerivation];
-      v9 = [v15 orientationFromOriginal:v14 derivativeOrientation:{objc_msgSend(v8, "sourceOrientation")}];
+      orientation = [v12 orientation];
+      sourceDerivation = [v8 sourceDerivation];
+      sourceOrientation = [sourceDerivation orientationFromOriginal:orientation derivativeOrientation:{objc_msgSend(v8, "sourceOrientation")}];
 
-      if (v6)
+      if (orientationCopy)
       {
         v16 = 6;
-        if (v14 != 8)
+        if (orientation != 8)
         {
-          v16 = v14;
+          v16 = orientation;
         }
 
-        if (v14 == 6)
+        if (orientation == 6)
         {
           v17 = 8;
         }
@@ -477,17 +477,17 @@ LABEL_14:
           v17 = v16;
         }
 
-        v9 = NUOrientationConcat(v9, v17);
+        sourceOrientation = NUOrientationConcat(sourceOrientation, v17);
       }
     }
 
     else
     {
-      v9 = 0;
+      sourceOrientation = 0;
     }
   }
 
-  return v9;
+  return sourceOrientation;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface DYMTLParallelRenderCommandEncoderStateTracker
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (DYMTLParallelRenderCommandEncoderStateTracker)initWithDevice:(id)a3 descriptor:(id)a4;
-- (DYMTLParallelRenderCommandEncoderStateTracker)initWithEncoder:(id)a3 descriptor:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (DYMTLParallelRenderCommandEncoderStateTracker)initWithDevice:(id)device descriptor:(id)descriptor;
+- (DYMTLParallelRenderCommandEncoderStateTracker)initWithEncoder:(id)encoder descriptor:(id)descriptor;
 @end
 
 @implementation DYMTLParallelRenderCommandEncoderStateTracker
 
-- (DYMTLParallelRenderCommandEncoderStateTracker)initWithEncoder:(id)a3 descriptor:(id)a4
+- (DYMTLParallelRenderCommandEncoderStateTracker)initWithEncoder:(id)encoder descriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  encoderCopy = encoder;
+  descriptorCopy = descriptor;
+  if (encoderCopy)
   {
     v14.receiver = self;
     v14.super_class = DYMTLParallelRenderCommandEncoderStateTracker;
@@ -19,30 +19,30 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_renderEncoder, a3);
-      v11 = [v7 device];
-      [(DYMTLParallelRenderCommandEncoderStateTracker *)v10 _setDefaultsWithDescriptor:v8 device:v11];
+      objc_storeStrong(&v9->_renderEncoder, encoder);
+      device = [encoderCopy device];
+      [(DYMTLParallelRenderCommandEncoderStateTracker *)v10 _setDefaultsWithDescriptor:descriptorCopy device:device];
 
-      DYMTLSetAssociatedObject(v10, 0, v8);
+      DYMTLSetAssociatedObject(v10, 0, descriptorCopy);
     }
 
     self = v10;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (DYMTLParallelRenderCommandEncoderStateTracker)initWithDevice:(id)a3 descriptor:(id)a4
+- (DYMTLParallelRenderCommandEncoderStateTracker)initWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  if (deviceCopy)
   {
     v12.receiver = self;
     v12.super_class = DYMTLParallelRenderCommandEncoderStateTracker;
@@ -50,26 +50,26 @@
     v9 = v8;
     if (v8)
     {
-      [(DYMTLParallelRenderCommandEncoderStateTracker *)v8 _setDefaultsWithDescriptor:v7 device:v6];
-      DYMTLSetAssociatedObject(v9, 0, v7);
+      [(DYMTLParallelRenderCommandEncoderStateTracker *)v8 _setDefaultsWithDescriptor:descriptorCopy device:deviceCopy];
+      DYMTLSetAssociatedObject(v9, 0, descriptorCopy);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  if (([(MTLParallelRenderCommandEncoder *)self->_renderEncoder conformsToProtocol:v4]& 1) != 0)
+  protocolCopy = protocol;
+  if (([(MTLParallelRenderCommandEncoder *)self->_renderEncoder conformsToProtocol:protocolCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -78,13 +78,13 @@
   {
     v7.receiver = self;
     v7.super_class = DYMTLParallelRenderCommandEncoderStateTracker;
-    v5 = [(DYMTLParallelRenderCommandEncoderStateTracker *)&v7 conformsToProtocol:v4];
+    v5 = [(DYMTLParallelRenderCommandEncoderStateTracker *)&v7 conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = DYMTLParallelRenderCommandEncoderStateTracker;

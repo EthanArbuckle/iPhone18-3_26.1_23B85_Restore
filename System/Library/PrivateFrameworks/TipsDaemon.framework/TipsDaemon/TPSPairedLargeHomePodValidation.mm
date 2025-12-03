@@ -1,21 +1,21 @@
 @interface TPSPairedLargeHomePodValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSPairedLargeHomePodValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CD19B8];
-  v5 = a3;
-  v6 = [v4 areAnyLargeHomePodConfigured];
-  v7 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  completionCopy = completion;
+  areAnyLargeHomePodConfigured = [v4 areAnyLargeHomePodConfigured];
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v6, v7];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:areAnyLargeHomePodConfigured, targeting];
   }
 
-  v5[2](v5, v6, 0);
+  completionCopy[2](completionCopy, areAnyLargeHomePodConfigured, 0);
 }
 
 @end

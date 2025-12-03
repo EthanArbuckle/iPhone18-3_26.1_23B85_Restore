@@ -1,6 +1,6 @@
 @interface CESRSpeechProfileAdminXPCServiceBridge
 - (CESRSpeechProfileAdminXPCServiceBridge)init;
-- (CESRSpeechProfileAdminXPCServiceBridge)initWithServiceProtocol:(id)a3 machServiceName:(id)a4;
+- (CESRSpeechProfileAdminXPCServiceBridge)initWithServiceProtocol:(id)protocol machServiceName:(id)name;
 - (id)_getOrCreateXPCServiceConnection;
 - (id)service;
 - (void)_clearXPCServiceConnection;
@@ -171,18 +171,18 @@ void __74__CESRSpeechProfileAdminXPCServiceBridge__getOrCreateXPCServiceConnecti
   objc_exception_throw(v2);
 }
 
-- (CESRSpeechProfileAdminXPCServiceBridge)initWithServiceProtocol:(id)a3 machServiceName:(id)a4
+- (CESRSpeechProfileAdminXPCServiceBridge)initWithServiceProtocol:(id)protocol machServiceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  protocolCopy = protocol;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = CESRSpeechProfileAdminXPCServiceBridge;
   v9 = [(CESRSpeechProfileAdminXPCServiceBridge *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceProtocol, a3);
-    if (!v10->_serviceProtocol || (v11 = [v8 copy], machServiceName = v10->_machServiceName, v10->_machServiceName = v11, machServiceName, (v13 = v10->_machServiceName) == 0) || !-[NSString length](v13, "length"))
+    objc_storeStrong(&v9->_serviceProtocol, protocol);
+    if (!v10->_serviceProtocol || (v11 = [nameCopy copy], machServiceName = v10->_machServiceName, v10->_machServiceName = v11, machServiceName, (v13 = v10->_machServiceName) == 0) || !-[NSString length](v13, "length"))
     {
       v19 = 0;
       goto LABEL_8;

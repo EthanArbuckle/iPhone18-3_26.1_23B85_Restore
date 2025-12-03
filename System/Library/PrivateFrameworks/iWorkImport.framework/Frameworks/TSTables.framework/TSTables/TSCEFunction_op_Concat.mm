@@ -1,19 +1,19 @@
 @interface TSCEFunction_op_Concat
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_op_Concat
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   if (!objc_msgSend_isRegexString(v8, v10, v11, v12, v13) || !objc_msgSend_isRegexString(v9, v14, v15, v16, v17))
   {
     v80 = 0;
     if (v8)
     {
-      objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v14, a3, a4, 0, &v80);
+      objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v8, v14, context, spec, 0, &v80);
       v19 = v80;
     }
 
@@ -28,7 +28,7 @@
     v76 = v19;
     if (v9)
     {
-      objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v9, v14, a3, a4, 1, &v76);
+      objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v9, v14, context, spec, 1, &v76);
       v57 = v76;
 
       v19 = v57;
@@ -44,7 +44,7 @@
     memset(v75, 0, 19);
     if (v19)
     {
-      v42 = objc_msgSend_raiseErrorOrConvert_(a3, v14, v19, v16, v17);
+      v42 = objc_msgSend_raiseErrorOrConvert_(context, v14, v19, v16, v17);
 LABEL_24:
 
       goto LABEL_25;
@@ -52,7 +52,7 @@ LABEL_24:
 
     if (sub_221077330(&v81))
     {
-      sub_221077390(&v81, &v77, a3, &v74);
+      sub_221077390(&v81, &v77, context, &v74);
       v58 = *&v74._tskFormat;
       v74._tskFormat = 0;
       *&v74._formatType = 0;
@@ -62,7 +62,7 @@ LABEL_24:
 
     else
     {
-      sub_221077424(&v81, &v77, a3);
+      sub_221077424(&v81, &v77, context);
       *v75 = v81;
       *&v75[8] = v82;
       *&v75[16] = v83;
@@ -72,11 +72,11 @@ LABEL_24:
     v42 = sub_2210789F4(v75, v59, v60, v61, v62);
     if (v8)
     {
-      objc_msgSend_formatWithContext_(v8, v63, a3, v65, v66);
+      objc_msgSend_formatWithContext_(v8, v63, context, v65, v66);
       if (v9)
       {
 LABEL_20:
-        objc_msgSend_formatWithContext_(v9, v63, a3, v65, v66);
+        objc_msgSend_formatWithContext_(v9, v63, context, v65, v66);
 LABEL_23:
         TSCEFormat::formatByMergingWithFormat(&v73, &v72, v64, v65, v66, &v71);
         TSCEFormat::TSCEFormat(&v74, &v71);

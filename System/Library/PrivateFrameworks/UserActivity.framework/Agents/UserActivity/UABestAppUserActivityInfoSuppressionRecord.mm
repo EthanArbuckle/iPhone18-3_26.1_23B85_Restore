@@ -6,11 +6,11 @@
 
 - (id)description
 {
-  v3 = [(UABestAppUserActivityInfoSuppressionRecord *)self itemUUID];
-  v4 = [(UABestAppUserActivityInfoSuppressionRecord *)self hardSupressUntil];
-  v5 = [(UABestAppUserActivityInfoSuppressionRecord *)self supressUntil];
-  v6 = [(UABestAppUserActivityInfoSuppressionRecord *)self lastInterestingTime];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"supressionRec(%@ hard=%@ until=%@ (lastInterestingTime=%@)"), v3, v4, v5, v6;
+  itemUUID = [(UABestAppUserActivityInfoSuppressionRecord *)self itemUUID];
+  hardSupressUntil = [(UABestAppUserActivityInfoSuppressionRecord *)self hardSupressUntil];
+  supressUntil = [(UABestAppUserActivityInfoSuppressionRecord *)self supressUntil];
+  lastInterestingTime = [(UABestAppUserActivityInfoSuppressionRecord *)self lastInterestingTime];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"supressionRec(%@ hard=%@ until=%@ (lastInterestingTime=%@)"), itemUUID, hardSupressUntil, supressUntil, lastInterestingTime;
 
   return v7;
 }

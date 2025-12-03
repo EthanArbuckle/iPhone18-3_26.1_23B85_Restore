@@ -6,11 +6,11 @@
 
 - (id)predicateWithProfile:()HealthDaemon
 {
-  [a1 operatorType];
+  [self operatorType];
   v4 = HDSQLiteComparisonTypeForPredicateOperator();
-  v5 = [a1 value];
-  v6 = [a1 keyPath];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CCC778]];
+  value = [self value];
+  keyPath = [self keyPath];
+  v7 = [keyPath isEqualToString:*MEMORY[0x277CCC778]];
 
   if (v7)
   {
@@ -19,14 +19,14 @@
 
   else
   {
-    v10 = [a1 keyPath];
-    v11 = [v10 isEqualToString:*MEMORY[0x277CCC748]];
+    keyPath2 = [self keyPath];
+    v11 = [keyPath2 isEqualToString:*MEMORY[0x277CCC748]];
 
     if (v11)
     {
-      v12 = [a1 dataTypes];
-      v13 = [v12 anyObject];
-      v14 = [v13 _earliestAllowedStartDateForSampleOverlappingDate:v5];
+      dataTypes = [self dataTypes];
+      anyObject = [dataTypes anyObject];
+      v14 = [anyObject _earliestAllowedStartDateForSampleOverlappingDate:value];
 
       if (v14)
       {
@@ -42,8 +42,8 @@
       goto LABEL_13;
     }
 
-    v15 = [a1 keyPath];
-    v16 = [v15 isEqualToString:*MEMORY[0x277CCC6C8]];
+    keyPath3 = [self keyPath];
+    v16 = [keyPath3 isEqualToString:*MEMORY[0x277CCC6C8]];
 
     if (v16)
     {
@@ -52,8 +52,8 @@
 
     else
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
-      [v17 handleFailureInMethod:a2 object:a1 file:@"_HKSampleComparisonFilter+HealthDaemon.m" lineNumber:40 description:@"Unreachable code has been executed"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_HKSampleComparisonFilter+HealthDaemon.m" lineNumber:40 description:@"Unreachable code has been executed"];
 
       [MEMORY[0x277D10B70] falsePredicate];
     }

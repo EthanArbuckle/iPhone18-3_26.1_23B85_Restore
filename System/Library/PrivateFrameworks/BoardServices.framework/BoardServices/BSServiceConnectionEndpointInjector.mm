@@ -1,5 +1,5 @@
 @interface BSServiceConnectionEndpointInjector
-+ (id)injectorWithConfigurator:(id)a3;
++ (id)injectorWithConfigurator:(id)configurator;
 - (BSServiceConnectionEndpointInjector)init;
 - (NSString)description;
 - (void)dealloc;
@@ -38,7 +38,7 @@
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"BSServiceConnectionEndpointInjector.m";
       v19 = 1024;
@@ -75,7 +75,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceConnectionEndpointInjector.m";
     v18 = 1024;
@@ -92,10 +92,10 @@
   return result;
 }
 
-+ (id)injectorWithConfigurator:(id)a3
++ (id)injectorWithConfigurator:(id)configurator
 {
   v120 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configurator)
   {
     v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -108,7 +108,7 @@
       v110 = 2114;
       v111 = v56;
       v112 = 2048;
-      v113 = a1;
+      selfCopy = self;
       v114 = 2114;
       v115 = @"BSServiceConnectionEndpointInjector.m";
       v116 = 1024;
@@ -129,7 +129,7 @@
   v95[1] = 3221225472;
   v95[2] = __64__BSServiceConnectionEndpointInjector_injectorWithConfigurator___block_invoke;
   v95[3] = &unk_1E75200B0;
-  v95[4] = a3;
+  v95[4] = configurator;
   v93 = objc_opt_self();
   v3 = objc_opt_new();
   v92 = v3;
@@ -147,7 +147,7 @@
       v110 = 2114;
       v111 = v61;
       v112 = 2048;
-      v113 = v93;
+      selfCopy = v93;
       v114 = 2114;
       v115 = @"BSServiceConnectionEndpointInjector.m";
       v116 = 1024;
@@ -178,7 +178,7 @@
       v110 = 2114;
       v111 = v66;
       v112 = 2048;
-      v113 = v93;
+      selfCopy = v93;
       v114 = 2114;
       v115 = @"BSServiceConnectionEndpointInjector.m";
       v116 = 1024;
@@ -209,7 +209,7 @@
       v110 = 2114;
       v111 = v71;
       v112 = 2048;
-      v113 = v93;
+      selfCopy = v93;
       v114 = 2114;
       v115 = @"BSServiceConnectionEndpointInjector.m";
       v116 = 1024;
@@ -252,7 +252,7 @@
         v110 = 2114;
         v111 = v83;
         v112 = 2048;
-        v113 = v93;
+        selfCopy = v93;
         v114 = 2114;
         v115 = @"BSServiceConnectionEndpointInjector.m";
         v116 = 1024;
@@ -299,7 +299,7 @@
         v110 = 2114;
         v111 = v49;
         v112 = 2048;
-        v113 = v93;
+        selfCopy = v93;
         v114 = 2114;
         v115 = @"BSServiceConnectionEndpointInjector.m";
         v116 = 1024;
@@ -336,7 +336,7 @@
       v110 = 2114;
       v111 = v76;
       v112 = 2048;
-      v113 = v93;
+      selfCopy = v93;
       v114 = 2114;
       v115 = @"BSServiceConnectionEndpointInjector.m";
       v116 = 1024;
@@ -353,12 +353,12 @@
     JUMPOUT(0x19A830690);
   }
 
-  v91 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v15 = v92[9];
   v86 = [v15 count];
 
   v94 = [MEMORY[0x1E695DF70] arrayWithCapacity:v86 + 3];
-  v17 = v91;
+  v17 = string;
   v16 = v92;
   if (!v13)
   {
@@ -370,10 +370,10 @@
     goto LABEL_31;
   }
 
-  v18 = [v90 array];
-  v19 = [v18 bs_compactMap:&__block_literal_global_49];
+  array = [v90 array];
+  v19 = [array bs_compactMap:&__block_literal_global_49];
   v20 = [v19 componentsJoinedByString:{@", "}];
-  [v91 appendFormat:@" [%@]", v20];
+  [string appendFormat:@" [%@]", v20];
 
   v98 = 0u;
   v99 = 0u;
@@ -413,8 +413,8 @@
         v27 = v26;
         _Block_object_dispose(&v104, 8);
         v28 = BSServiceEndpointGrantNamespace();
-        v29 = [(BSServiceConnectionEndpoint *)v25 _endowmentRepresentation];
-        v30 = [v26 grantWithNamespace:v28 endowment:v29];
+        _endowmentRepresentation = [(BSServiceConnectionEndpoint *)v25 _endowmentRepresentation];
+        v30 = [v26 grantWithNamespace:v28 endowment:_endowmentRepresentation];
         [v94 addObject:v30];
       }
 
@@ -424,11 +424,11 @@
     while (v22);
   }
 
-  v17 = v91;
+  v17 = string;
   v16 = v92;
   if (v89)
   {
-    [v91 appendString:@" +"];
+    [string appendString:@" +"];
 LABEL_31:
     [v17 appendFormat:@" inherited from '%@'", v89];
     v104 = 0;
@@ -453,7 +453,7 @@ LABEL_31:
     v34 = [v31 grantWithNamespace:v33 sourceEnvironment:v89 attributes:0];
     [v94 addObject:v34];
 
-    v17 = v91;
+    v17 = string;
     v16 = v92;
   }
 
@@ -464,15 +464,15 @@ LABEL_34:
     v36 = v16[9];
     [v94 addObjectsFromArray:v36];
 
-    v17 = v91;
+    v17 = string;
     if (v86 == 1)
     {
-      [v91 appendString:@" + 1 attr"];
+      [string appendString:@" + 1 attr"];
     }
 
     else
     {
-      [v91 appendFormat:@" + %lu attrs", v86];
+      [string appendFormat:@" + %lu attrs", v86];
     }
   }
 
@@ -485,7 +485,7 @@ LABEL_34:
     v39 = objc_msgSendSuper2(&v100, sel_init);
     if (v39)
     {
-      v40 = [v91 copy];
+      v40 = [string copy];
       v41 = *(v39 + 1);
       *(v39 + 1) = v40;
 
@@ -631,9 +631,9 @@ LABEL_5:
   v6 = [v3 appendPointer:lock_assertion withName:@"assertion"];
 LABEL_7:
   os_unfair_lock_unlock(&self->_lock);
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

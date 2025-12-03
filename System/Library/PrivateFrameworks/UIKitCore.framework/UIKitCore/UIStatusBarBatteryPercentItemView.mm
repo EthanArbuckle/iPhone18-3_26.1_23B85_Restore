@@ -1,18 +1,18 @@
 @interface UIStatusBarBatteryPercentItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (id)accessibilityHUDRepresentation;
 @end
 
 @implementation UIStatusBarBatteryPercentItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
+  dataCopy = data;
   v7 = [v5 alloc];
-  v8 = [v6 rawData];
+  rawData = [dataCopy rawData];
 
-  v9 = [v7 initWithCString:v8 + 2112 encoding:4];
+  v9 = [v7 initWithCString:rawData + 2112 encoding:4];
   v10 = [v9 isEqualToString:self->_percentString];
   if ((v10 & 1) == 0)
   {

@@ -1,24 +1,24 @@
 @interface CMVO2MaxInputs
-+ (VO2MaxInput)VO2MaxInputFromCMVO2MaxInputs:(SEL)a3;
-+ (VO2MaxInput)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMVO2MaxInputs)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMVO2MaxInputs)initWithCoder:(id)a3;
-- (CMVO2MaxInputs)initWithRecordId:(unint64_t)a3 startDate:(id)a4 mets:(double)a5 metSource:(int64_t)a6 heartRate:(double)a7 heartRateConfidence:(double)a8 gradeType:(int64_t)a9 grade:(double)a10 cadence:(double)a11 pace:(double)a12 hasGPS:(BOOL)a13 hasStrideCal:(BOOL)a14 workoutType:(int64_t)a15;
-- (CMVO2MaxInputs)initWithSample:(VO2MaxInput *)a3;
++ (VO2MaxInput)VO2MaxInputFromCMVO2MaxInputs:(SEL)inputs;
++ (VO2MaxInput)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMVO2MaxInputs)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMVO2MaxInputs)initWithCoder:(id)coder;
+- (CMVO2MaxInputs)initWithRecordId:(unint64_t)id startDate:(id)date mets:(double)mets metSource:(int64_t)source heartRate:(double)rate heartRateConfidence:(double)confidence gradeType:(int64_t)type grade:(double)self0 cadence:(double)self1 pace:(double)self2 hasGPS:(BOOL)self3 hasStrideCal:(BOOL)self4 workoutType:(int64_t)self5;
+- (CMVO2MaxInputs)initWithSample:(VO2MaxInput *)sample;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMVO2MaxInputs
 
-- (CMVO2MaxInputs)initWithRecordId:(unint64_t)a3 startDate:(id)a4 mets:(double)a5 metSource:(int64_t)a6 heartRate:(double)a7 heartRateConfidence:(double)a8 gradeType:(int64_t)a9 grade:(double)a10 cadence:(double)a11 pace:(double)a12 hasGPS:(BOOL)a13 hasStrideCal:(BOOL)a14 workoutType:(int64_t)a15
+- (CMVO2MaxInputs)initWithRecordId:(unint64_t)id startDate:(id)date mets:(double)mets metSource:(int64_t)source heartRate:(double)rate heartRateConfidence:(double)confidence gradeType:(int64_t)type grade:(double)self0 cadence:(double)self1 pace:(double)self2 hasGPS:(BOOL)self3 hasStrideCal:(BOOL)self4 workoutType:(int64_t)self5
 {
-  if (!a3)
+  if (!id)
   {
     v32 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v32, v33, a2, self, @"CMVO2MaxData.mm", 60, @"Invalid parameter not satisfying: %@", @"recordId");
@@ -30,33 +30,33 @@
   v29 = v28;
   if (v28)
   {
-    v28->fRecordId = a3;
-    v28->fStartDate = a4;
+    v28->fRecordId = id;
+    v28->fStartDate = date;
     v29->fWorkoutSessionId = 0;
-    v29->fMets = a5;
-    v29->fMetSource = a6;
-    v29->fHeartRate = a7;
-    v29->fHeartRateConfidence = a8;
-    v29->fGradeType = a9;
-    v29->fGrade = a10;
-    v29->fCadence = a11;
-    v29->fPace = a12;
-    v29->fHasGPS = a13;
-    v29->fHasStrideCal = a14;
-    v29->fWorkoutType = a15;
+    v29->fMets = mets;
+    v29->fMetSource = source;
+    v29->fHeartRate = rate;
+    v29->fHeartRateConfidence = confidence;
+    v29->fGradeType = type;
+    v29->fGrade = grade;
+    v29->fCadence = cadence;
+    v29->fPace = pace;
+    v29->fHasGPS = s;
+    v29->fHasStrideCal = cal;
+    v29->fWorkoutType = workoutType;
   }
 
   return v29;
 }
 
-- (CMVO2MaxInputs)initWithSample:(VO2MaxInput *)a3
+- (CMVO2MaxInputs)initWithSample:(VO2MaxInput *)sample
 {
-  var0 = a3->var0;
+  var0 = sample->var0;
   v6 = objc_alloc(MEMORY[0x1E695DF00]);
-  v9 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, a3->var3);
-  hasStrideCal_workoutType = objc_msgSend_initWithRecordId_startDate_mets_metSource_heartRate_heartRateConfidence_gradeType_grade_cadence_pace_hasGPS_hasStrideCal_workoutType_(self, v10, var0, v9, a3->var11, a3->var7, a3->var9, a3->var10, a3->var2, a3->var4, a3->var5, a3->var8, a3->var13, a3->var14, a3->var12);
+  v9 = objc_msgSend_initWithTimeIntervalSinceReferenceDate_(v6, v7, v8, sample->var3);
+  hasStrideCal_workoutType = objc_msgSend_initWithRecordId_startDate_mets_metSource_heartRate_heartRateConfidence_gradeType_grade_cadence_pace_hasGPS_hasStrideCal_workoutType_(self, v10, var0, v9, sample->var11, sample->var7, sample->var9, sample->var10, sample->var2, sample->var4, sample->var5, sample->var8, sample->var13, sample->var14, sample->var12);
   v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-  hasStrideCal_workoutType->fWorkoutSessionId = objc_msgSend_initWithUUIDBytes_(v12, v13, a3->var1);
+  hasStrideCal_workoutType->fWorkoutSessionId = objc_msgSend_initWithUUIDBytes_(v12, v13, sample->var1);
   return hasStrideCal_workoutType;
 }
 
@@ -72,37 +72,37 @@
   [(CMVO2MaxInputs *)&v4 dealloc];
 }
 
-- (CMVO2MaxInputs)initWithCoder:(id)a3
+- (CMVO2MaxInputs)initWithCoder:(id)coder
 {
-  v5 = objc_msgSend_decodeIntegerForKey_(a3, a2, @"kVO2MaxDataCodingKeyRecordId");
+  v5 = objc_msgSend_decodeIntegerForKey_(coder, a2, @"kVO2MaxDataCodingKeyRecordId");
   v6 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v7, v6, @"kVO2MaxDataCodingKeyStartDate");
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v7, v6, @"kVO2MaxDataCodingKeyStartDate");
   v11 = objc_msgSend_copy(v8, v9, v10);
-  objc_msgSend_decodeDoubleForKey_(a3, v12, @"kVO2MaxDataCodingKeyMets");
+  objc_msgSend_decodeDoubleForKey_(coder, v12, @"kVO2MaxDataCodingKeyMets");
   v14 = v13;
-  v16 = objc_msgSend_decodeIntegerForKey_(a3, v15, @"kVO2MaxDataCodingKeyMetSource");
-  objc_msgSend_decodeDoubleForKey_(a3, v17, @"kVO2MaxDataCodingKeyHeartRate");
+  v16 = objc_msgSend_decodeIntegerForKey_(coder, v15, @"kVO2MaxDataCodingKeyMetSource");
+  objc_msgSend_decodeDoubleForKey_(coder, v17, @"kVO2MaxDataCodingKeyHeartRate");
   v19 = v18;
-  objc_msgSend_decodeDoubleForKey_(a3, v20, @"kVO2MaxDataCodingKeyHeartRateConfidence");
+  objc_msgSend_decodeDoubleForKey_(coder, v20, @"kVO2MaxDataCodingKeyHeartRateConfidence");
   v22 = v21;
-  v24 = objc_msgSend_decodeIntegerForKey_(a3, v23, @"kVO2MaxDataCodingKeyGradeType");
-  objc_msgSend_decodeDoubleForKey_(a3, v25, @"kVO2MaxDataCodingKeyGrade");
+  v24 = objc_msgSend_decodeIntegerForKey_(coder, v23, @"kVO2MaxDataCodingKeyGradeType");
+  objc_msgSend_decodeDoubleForKey_(coder, v25, @"kVO2MaxDataCodingKeyGrade");
   v27 = v26;
-  objc_msgSend_decodeDoubleForKey_(a3, v28, @"kVO2MaxDataCodingKeyCadence");
+  objc_msgSend_decodeDoubleForKey_(coder, v28, @"kVO2MaxDataCodingKeyCadence");
   v30 = v29;
-  objc_msgSend_decodeDoubleForKey_(a3, v31, @"kVO2MaxDataCodingKeyPace");
+  objc_msgSend_decodeDoubleForKey_(coder, v31, @"kVO2MaxDataCodingKeyPace");
   v33 = v32;
-  v35 = objc_msgSend_decodeBoolForKey_(a3, v34, @"kVO2MaxDataCodingKeyHasGPS");
-  v37 = objc_msgSend_decodeBoolForKey_(a3, v36, @"kVO2MaxDataCodingKeyHasStrideCal");
-  v39 = objc_msgSend_decodeIntegerForKey_(a3, v38, @"kVO2MaxDataCodingKeyWorkoutType");
+  v35 = objc_msgSend_decodeBoolForKey_(coder, v34, @"kVO2MaxDataCodingKeyHasGPS");
+  v37 = objc_msgSend_decodeBoolForKey_(coder, v36, @"kVO2MaxDataCodingKeyHasStrideCal");
+  v39 = objc_msgSend_decodeIntegerForKey_(coder, v38, @"kVO2MaxDataCodingKeyWorkoutType");
   hasStrideCal_workoutType = objc_msgSend_initWithRecordId_startDate_mets_metSource_heartRate_heartRateConfidence_gradeType_grade_cadence_pace_hasGPS_hasStrideCal_workoutType_(self, v40, v5, v11, v16, v24, v35, v37, v14, v19, v22, v27, v30, v33, v39);
   v42 = objc_opt_class();
-  v44 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v43, v42, @"kVO2MaxDataCodingKeyWorkoutSessionId");
+  v44 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v43, v42, @"kVO2MaxDataCodingKeyWorkoutSessionId");
   hasStrideCal_workoutType->fWorkoutSessionId = objc_msgSend_copy(v44, v45, v46);
   return hasStrideCal_workoutType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
   *&v20 = 0;
@@ -111,7 +111,7 @@
   v19 = fRecordId;
   fMets = self->fMets;
   *(&v20 + 2) = fMets;
-  objc_msgSend_timeIntervalSinceReferenceDate(fStartDate, a2, a3);
+  objc_msgSend_timeIntervalSinceReferenceDate(fStartDate, a2, zone);
   v8 = vcvt_f32_f64(*&self->fHeartRate);
   *&v21 = v9;
   *(&v21 + 1) = v8;
@@ -127,7 +127,7 @@
   *&v24[28] = 0;
   objc_msgSend_getUUIDBytes_(self->fWorkoutSessionId, v11, &v19 + 8);
   v12 = objc_opt_class();
-  v14 = objc_msgSend_allocWithZone_(v12, v13, a3);
+  v14 = objc_msgSend_allocWithZone_(v12, v13, zone);
   v18[4] = v23;
   v18[5] = *v24;
   v18[6] = *&v24[16];
@@ -140,35 +140,35 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->fRecordId, @"kVO2MaxDataCodingKeyRecordId");
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fStartDate, @"kVO2MaxDataCodingKeyStartDate");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fWorkoutSessionId, @"kVO2MaxDataCodingKeyWorkoutSessionId");
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kVO2MaxDataCodingKeyMets", self->fMets);
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->fMetSource, @"kVO2MaxDataCodingKeyMetSource");
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kVO2MaxDataCodingKeyHeartRate", self->fHeartRate);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kVO2MaxDataCodingKeyHeartRateConfidence", self->fHeartRateConfidence);
-  objc_msgSend_encodeInteger_forKey_(a3, v11, self->fGradeType, @"kVO2MaxDataCodingKeyGradeType");
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"kVO2MaxDataCodingKeyGrade", self->fGrade);
-  objc_msgSend_encodeDouble_forKey_(a3, v13, @"kVO2MaxDataCodingKeyCadence", self->fCadence);
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"kVO2MaxDataCodingKeyPace", self->fPace);
-  objc_msgSend_encodeBool_forKey_(a3, v15, self->fHasGPS, @"kVO2MaxDataCodingKeyHasGPS");
-  objc_msgSend_encodeBool_forKey_(a3, v16, self->fHasStrideCal, @"kVO2MaxDataCodingKeyHasStrideCal");
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->fRecordId, @"kVO2MaxDataCodingKeyRecordId");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fStartDate, @"kVO2MaxDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fWorkoutSessionId, @"kVO2MaxDataCodingKeyWorkoutSessionId");
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kVO2MaxDataCodingKeyMets", self->fMets);
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->fMetSource, @"kVO2MaxDataCodingKeyMetSource");
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kVO2MaxDataCodingKeyHeartRate", self->fHeartRate);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kVO2MaxDataCodingKeyHeartRateConfidence", self->fHeartRateConfidence);
+  objc_msgSend_encodeInteger_forKey_(coder, v11, self->fGradeType, @"kVO2MaxDataCodingKeyGradeType");
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"kVO2MaxDataCodingKeyGrade", self->fGrade);
+  objc_msgSend_encodeDouble_forKey_(coder, v13, @"kVO2MaxDataCodingKeyCadence", self->fCadence);
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"kVO2MaxDataCodingKeyPace", self->fPace);
+  objc_msgSend_encodeBool_forKey_(coder, v15, self->fHasGPS, @"kVO2MaxDataCodingKeyHasGPS");
+  objc_msgSend_encodeBool_forKey_(coder, v16, self->fHasStrideCal, @"kVO2MaxDataCodingKeyHasStrideCal");
   fWorkoutType = self->fWorkoutType;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v17, fWorkoutType, @"kVO2MaxDataCodingKeyWorkoutType");
+  objc_msgSend_encodeInteger_forKey_(coder, v17, fWorkoutType, @"kVO2MaxDataCodingKeyWorkoutType");
 }
 
-+ (VO2MaxInput)VO2MaxInputFromCMVO2MaxInputs:(SEL)a3
++ (VO2MaxInput)VO2MaxInputFromCMVO2MaxInputs:(SEL)inputs
 {
   if (!a4)
   {
-    v47 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a3, 0);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, a3, a2, @"CMVO2MaxData.mm", 174, @"Invalid parameter not satisfying: %@", @"sample");
+    v47 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], inputs, 0);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v47, v48, inputs, a2, @"CMVO2MaxData.mm", 174, @"Invalid parameter not satisfying: %@", @"sample");
   }
 
-  retstr->var0 = objc_msgSend_recordId(a4, a3, a4);
+  retstr->var0 = objc_msgSend_recordId(a4, inputs, a4);
   *&retstr->var1[8] = 0;
   *retstr->var1 = 0;
   objc_msgSend_mets(a4, v6, v7);
@@ -202,7 +202,7 @@
   return objc_msgSend_getUUIDBytes_(v42, v43, retstr->var1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -211,32 +211,32 @@
   }
 
   v7 = objc_msgSend_recordId(self, v5, v6);
-  if (v7 != objc_msgSend_recordId(a3, v8, v9))
+  if (v7 != objc_msgSend_recordId(equal, v8, v9))
   {
     goto LABEL_19;
   }
 
-  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(a3, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(a3, v15, v16), (isEqual = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
+  if (!objc_msgSend_startDate(self, v10, v11) && !objc_msgSend_startDate(equal, v12, v13) || (started = objc_msgSend_startDate(self, v12, v13), v17 = objc_msgSend_startDate(equal, v15, v16), (isEqual = objc_msgSend_isEqualToDate_(started, v18, v17)) != 0))
   {
-    if (!objc_msgSend_workoutSessionId(self, v12, v13) && !objc_msgSend_workoutSessionId(a3, v20, v21) || (v22 = objc_msgSend_workoutSessionId(self, v20, v21), v25 = objc_msgSend_workoutSessionId(a3, v23, v24), (isEqual = objc_msgSend_isEqual_(v22, v26, v25)) != 0))
+    if (!objc_msgSend_workoutSessionId(self, v12, v13) && !objc_msgSend_workoutSessionId(equal, v20, v21) || (v22 = objc_msgSend_workoutSessionId(self, v20, v21), v25 = objc_msgSend_workoutSessionId(equal, v23, v24), (isEqual = objc_msgSend_isEqual_(v22, v26, v25)) != 0))
     {
       objc_msgSend_mets(self, v20, v21);
       v28 = v27;
-      objc_msgSend_mets(a3, v29, v30);
+      objc_msgSend_mets(equal, v29, v30);
       if (v28 != v33)
       {
         goto LABEL_19;
       }
 
       v34 = objc_msgSend_metSource(self, v31, v32);
-      if (v34 != objc_msgSend_metSource(a3, v35, v36))
+      if (v34 != objc_msgSend_metSource(equal, v35, v36))
       {
         goto LABEL_19;
       }
 
       objc_msgSend_heartRate(self, v37, v38);
       v40 = v39;
-      objc_msgSend_heartRate(a3, v41, v42);
+      objc_msgSend_heartRate(equal, v41, v42);
       if (v40 != v45)
       {
         goto LABEL_19;
@@ -244,21 +244,21 @@
 
       objc_msgSend_heartRateConfidence(self, v43, v44);
       v47 = v46;
-      objc_msgSend_heartRateConfidence(a3, v48, v49);
+      objc_msgSend_heartRateConfidence(equal, v48, v49);
       if (v47 != v52)
       {
         goto LABEL_19;
       }
 
       v53 = objc_msgSend_gradeType(self, v50, v51);
-      if (v53 != objc_msgSend_gradeType(a3, v54, v55))
+      if (v53 != objc_msgSend_gradeType(equal, v54, v55))
       {
         goto LABEL_19;
       }
 
       objc_msgSend_grade(self, v56, v57);
       v59 = v58;
-      objc_msgSend_grade(a3, v60, v61);
+      objc_msgSend_grade(equal, v60, v61);
       if (v59 != v64)
       {
         goto LABEL_19;
@@ -266,8 +266,8 @@
 
       objc_msgSend_cadence(self, v62, v63);
       v66 = v65;
-      objc_msgSend_cadence(a3, v67, v68);
-      if (v66 != v71 || (objc_msgSend_pace(self, v69, v70), v73 = v72, objc_msgSend_pace(a3, v74, v75), v73 != v78) || (hasGPS = objc_msgSend_hasGPS(self, v76, v77), hasGPS != objc_msgSend_hasGPS(a3, v80, v81)) || (hasStrideCal = objc_msgSend_hasStrideCal(self, v82, v83), hasStrideCal != objc_msgSend_hasStrideCal(a3, v85, v86)))
+      objc_msgSend_cadence(equal, v67, v68);
+      if (v66 != v71 || (objc_msgSend_pace(self, v69, v70), v73 = v72, objc_msgSend_pace(equal, v74, v75), v73 != v78) || (hasGPS = objc_msgSend_hasGPS(self, v76, v77), hasGPS != objc_msgSend_hasGPS(equal, v80, v81)) || (hasStrideCal = objc_msgSend_hasStrideCal(self, v82, v83), hasStrideCal != objc_msgSend_hasStrideCal(equal, v85, v86)))
       {
 LABEL_19:
         LOBYTE(isEqual) = 0;
@@ -275,7 +275,7 @@ LABEL_19:
       }
 
       v89 = objc_msgSend_workoutType(self, v87, v88);
-      LOBYTE(isEqual) = v89 == objc_msgSend_workoutType(a3, v90, v91);
+      LOBYTE(isEqual) = v89 == objc_msgSend_workoutType(equal, v90, v91);
     }
   }
 
@@ -310,7 +310,7 @@ LABEL_19:
   return objc_msgSend_stringWithFormat_(v3, v54, @"%@, <recordId %lu, startDate, %@, workoutSessionId %@, mets, %.3f, metSource, %lu, hr, %.3f, hrConf, %.3f, gradeType, %lu, grade, %.3f, cadence, %.3f, pace, %.3f, hasGPS, %d, hasStrideCal, %d, workoutType, %lu>", v5, v8, started, v14, v18, v21, v25, v29, v32, v36, v40, v44, hasGPS, hasStrideCal, v53);
 }
 
-+ (VO2MaxInput)inputFromPreparedStatement:(SEL)a3
++ (VO2MaxInput)inputFromPreparedStatement:(SEL)statement
 {
   retstr->var0 = sqlite3_column_int64(a4, 0);
   *&retstr->var1[8] = 0;
@@ -347,9 +347,9 @@ LABEL_19:
   return v5;
 }
 
-- (CMVO2MaxInputs)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMVO2MaxInputs)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMVO2MaxInputs;
@@ -358,7 +358,7 @@ LABEL_19:
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

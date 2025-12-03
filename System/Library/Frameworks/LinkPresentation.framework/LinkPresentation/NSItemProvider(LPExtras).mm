@@ -14,8 +14,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [a1 registeredTypeIdentifiers];
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  registeredTypeIdentifiers = [self registeredTypeIdentifiers];
+  v8 = [registeredTypeIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = *v22;
@@ -25,7 +25,7 @@ LABEL_3:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(registeredTypeIdentifiers);
       }
 
       v11 = *(*(&v21 + 1) + 8 * v10);
@@ -37,7 +37,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v8 = [registeredTypeIdentifiers countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -59,7 +59,7 @@ LABEL_3:
     block[1] = 3221225472;
     block[2] = __103__NSItemProvider_LPExtras___lp_loadFirstDataRepresentationMatchingMIMETypePredicate_completionHandler___block_invoke;
     block[3] = &unk_1E7A35CF0;
-    block[4] = a1;
+    block[4] = self;
     v15 = v13;
     v18 = v15;
     v20 = v16;

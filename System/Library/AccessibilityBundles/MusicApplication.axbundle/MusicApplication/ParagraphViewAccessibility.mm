@@ -1,5 +1,5 @@
 @interface ParagraphViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,19 +7,19 @@
 
 @implementation ParagraphViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.ParagraphView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(ParagraphViewAccessibility *)self _axLabel];
-  v3 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  _axLabel = [(ParagraphViewAccessibility *)self _axLabel];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v4 = [_axLabel stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v5 = [v4 length] != 0;
 
   return v5;
@@ -34,9 +34,9 @@
   v3 = [(ParagraphViewAccessibility *)self _accessibilityDescendantOfType:objc_opt_class()];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
-  v6 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  text = [v4 text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v7 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v8 = [v7 length];
 
   if (!v8)

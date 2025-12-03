@@ -1,18 +1,18 @@
 @interface SHSpectralPeakFeaturesExtractor
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4;
-- (BOOL)setRollingBufferSeconds:(float)a3 error:(id *)a4;
-- (SHSpectralPeakFeaturesExtractor)initWithClipStype:(int64_t)a3 maximumSeconds:(double)a4 sampleRate:(double)a5 error:(id *)a6;
-- (id)signatureWithError:(id *)a3;
+- (BOOL)flowBuffer:(id)buffer error:(id *)error;
+- (BOOL)setRollingBufferSeconds:(float)seconds error:(id *)error;
+- (SHSpectralPeakFeaturesExtractor)initWithClipStype:(int64_t)stype maximumSeconds:(double)seconds sampleRate:(double)rate error:(id *)error;
+- (id)signatureWithError:(id *)error;
 - (int)signatureType;
 - (void)dealloc;
 - (void)disableSpectralOutput;
-- (void)enableSpectralOutputWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)enableSpectralOutputWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)reset;
 @end
 
 @implementation SHSpectralPeakFeaturesExtractor
 
-- (SHSpectralPeakFeaturesExtractor)initWithClipStype:(int64_t)a3 maximumSeconds:(double)a4 sampleRate:(double)a5 error:(id *)a6
+- (SHSpectralPeakFeaturesExtractor)initWithClipStype:(int64_t)stype maximumSeconds:(double)seconds sampleRate:(double)rate error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
@@ -35,22 +35,22 @@ LABEL_12:
     _os_signpost_emit_with_name_impl(&dword_230F52000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "SHSpectralPeakFeaturesExtractor_Init", "", buf, 2u);
   }
 
-  v10->_clipStyle = a3;
-  v10->_sampleRate = a5;
-  v15 = [[SHSigX alloc] initWithSignatureType:[(SHSpectralPeakFeaturesExtractor *)v10 signatureType] sampleRate:a5 error:a6];
+  v10->_clipStyle = stype;
+  v10->_sampleRate = rate;
+  v15 = [[SHSigX alloc] initWithSignatureType:[(SHSpectralPeakFeaturesExtractor *)v10 signatureType] sampleRate:rate error:error];
   sigX = v10->_sigX;
   v10->_sigX = v15;
 
-  v17 = [(SHSpectralPeakFeaturesExtractor *)v10 sigX];
-  v18 = v17 == 0;
+  sigX = [(SHSpectralPeakFeaturesExtractor *)v10 sigX];
+  v18 = sigX == 0;
 
   if (!v18)
   {
     if ([(SHSpectralPeakFeaturesExtractor *)v10 signatureType]== 4)
     {
-      v19 = [(SHSpectralPeakFeaturesExtractor *)v10 sigX];
-      *&v20 = a4;
-      [v19 setRollingBufferSeconds:a6 error:v20];
+      sigX2 = [(SHSpectralPeakFeaturesExtractor *)v10 sigX];
+      *&v20 = seconds;
+      [sigX2 setRollingBufferSeconds:error error:v20];
     }
 
     v21 = v14;
@@ -67,7 +67,7 @@ LABEL_12:
   v24 = sh_log_object();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    v25 = *a6;
+    v25 = *error;
     *buf = 138412290;
     v30 = v25;
     _os_log_impl(&dword_230F52000, v24, OS_LOG_TYPE_ERROR, "Spectral peaks feature extractor failed to initialize with error: %@", buf, 0xCu);
@@ -138,24 +138,24 @@ LABEL_16:
 
 - (void)disableSpectralOutput
 {
-  v2 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-  [v2 disableSpectralOutput];
+  sigX = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+  [sigX disableSpectralOutput];
 }
 
-- (id)signatureWithError:(id *)a3
+- (id)signatureWithError:(id *)error
 {
-  v4 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-  v5 = [v4 signatureWithError:a3];
+  sigX = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+  v5 = [sigX signatureWithError:error];
 
   return v5;
 }
 
-- (BOOL)flowBuffer:(id)a3 error:(id *)a4
+- (BOOL)flowBuffer:(id)buffer error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 format];
-  [v7 sampleRate];
+  bufferCopy = buffer;
+  format = [bufferCopy format];
+  [format sampleRate];
   v9 = v8;
   [(SHSpectralPeakFeaturesExtractor *)self sampleRate];
   v11 = v10;
@@ -170,8 +170,8 @@ LABEL_16:
   {
     [(SHSpectralPeakFeaturesExtractor *)self sampleRate];
     v14 = v13;
-    v15 = [v6 format];
-    [v15 sampleRate];
+    format2 = [bufferCopy format];
+    [format2 sampleRate];
     *buf = 134218240;
     v34 = v14;
     v35 = 2048;
@@ -183,28 +183,28 @@ LABEL_16:
   sigX = self->_sigX;
   self->_sigX = 0;
 
-  v18 = [v6 format];
-  [v18 sampleRate];
+  format3 = [bufferCopy format];
+  [format3 sampleRate];
   self->_sampleRate = v19;
 
   v20 = [SHSigX alloc];
-  v21 = [(SHSpectralPeakFeaturesExtractor *)self signatureType];
+  signatureType = [(SHSpectralPeakFeaturesExtractor *)self signatureType];
   [(SHSpectralPeakFeaturesExtractor *)self sampleRate];
   v32 = 0;
-  v23 = [(SHSigX *)v20 initWithSignatureType:v21 sampleRate:v22 error:&v32];
-  v24 = v32;
+  v23 = [(SHSigX *)v20 initWithSignatureType:signatureType sampleRate:v22 error:&v32];
+  sigX2 = v32;
   v25 = self->_sigX;
   self->_sigX = v23;
 
-  v26 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-  LODWORD(v23) = v26 == 0;
+  sigX = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+  LODWORD(v23) = sigX == 0;
 
   if (!v23)
   {
 
 LABEL_6:
-    v24 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-    v27 = [v24 flowBuffer:v6 error:a4];
+    sigX2 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+    v27 = [sigX2 flowBuffer:bufferCopy error:error];
     goto LABEL_7;
   }
 
@@ -212,15 +212,15 @@ LABEL_6:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v34 = v24;
+    v34 = sigX2;
     _os_log_impl(&dword_230F52000, v30, OS_LOG_TYPE_ERROR, "Spectral peaks feature extractor failed to initialize with error: %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
-    v31 = v24;
+    v31 = sigX2;
     v27 = 0;
-    *a4 = v24;
+    *error = sigX2;
   }
 
   else
@@ -234,13 +234,13 @@ LABEL_7:
   return v27;
 }
 
-- (BOOL)setRollingBufferSeconds:(float)a3 error:(id *)a4
+- (BOOL)setRollingBufferSeconds:(float)seconds error:(id *)error
 {
-  v6 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-  *&v7 = a3;
-  LOBYTE(a4) = [v6 setRollingBufferSeconds:a4 error:v7];
+  sigX = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+  *&v7 = seconds;
+  LOBYTE(error) = [sigX setRollingBufferSeconds:error error:v7];
 
-  return a4;
+  return error;
 }
 
 - (int)signatureType
@@ -256,12 +256,12 @@ LABEL_7:
   }
 }
 
-- (void)enableSpectralOutputWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)enableSpectralOutputWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SHSpectralPeakFeaturesExtractor *)self sigX];
-  [v7 enableSpectralOutputForNumberOfFrequencyBins:objc_msgSend(v8 callbackFrequency:"numberOfBins") completionHandler:{objc_msgSend(v8, "callbackFrequency"), v6}];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  sigX = [(SHSpectralPeakFeaturesExtractor *)self sigX];
+  [sigX enableSpectralOutputForNumberOfFrequencyBins:objc_msgSend(configurationCopy callbackFrequency:"numberOfBins") completionHandler:{objc_msgSend(configurationCopy, "callbackFrequency"), handlerCopy}];
 }
 
 @end

@@ -2,49 +2,49 @@
 + (RMClientController)sharedController;
 + (void)start;
 + (void)startListeningForNotifications;
-- (BOOL)_canProcessClientStateChanges:(id)a3;
-- (BOOL)_didUnenrollClientWithIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_hasMDMv1ManagementForManagingProfileIdentifier:(id)a3;
-- (BOOL)_verifyUniqueStoreWithURL:(id)a3 enrollmentType:(int64_t)a4 context:(id)a5 error:(id *)a6;
-- (RMClientController)initWithPersistentContainer:(id)a3 context:(id)a4;
-- (id)_bootstrapURIForAccount:(id)a3;
-- (id)_clientWithIdentifier:(id)a3;
-- (id)_genericCredentialForAccount:(id)a3 fromStore:(id)a4;
-- (id)_makeClientWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 persistentContainer:(id)a5;
+- (BOOL)_canProcessClientStateChanges:(id)changes;
+- (BOOL)_didUnenrollClientWithIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_hasMDMv1ManagementForManagingProfileIdentifier:(id)identifier;
+- (BOOL)_verifyUniqueStoreWithURL:(id)l enrollmentType:(int64_t)type context:(id)context error:(id *)error;
+- (RMClientController)initWithPersistentContainer:(id)container context:(id)context;
+- (id)_bootstrapURIForAccount:(id)account;
+- (id)_clientWithIdentifier:(id)identifier;
+- (id)_genericCredentialForAccount:(id)account fromStore:(id)store;
+- (id)_makeClientWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier persistentContainer:(id)container;
 - (void)_checkCloudConfig;
-- (void)_checkCloudConfigAsync:(id)a3;
-- (void)_checkForMandatoryDeviceEnrollmentWithCompletionHandler:(id)a3;
-- (void)_completedClientStateChanges:(id)a3;
-- (void)_didEnrollClient:(id)a3 conduitType:(int64_t)a4 managementSourceObjectID:(id)a5 account:(id)a6 accountStore:(id)a7 completionHandler:(id)a8;
-- (void)_didFailToEnrollClientForManagementObjectID:(id)a3;
-- (void)_enrollAccount:(id)a3 fromStore:(id)a4 completionHandler:(id)a5;
-- (void)_enrollClientWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 conduitType:(int64_t)a5 account:(id)a6 accountStore:(id)a7 completionHandler:(id)a8;
+- (void)_checkCloudConfigAsync:(id)async;
+- (void)_checkForMandatoryDeviceEnrollmentWithCompletionHandler:(id)handler;
+- (void)_completedClientStateChanges:(id)changes;
+- (void)_didEnrollClient:(id)client conduitType:(int64_t)type managementSourceObjectID:(id)d account:(id)account accountStore:(id)store completionHandler:(id)handler;
+- (void)_didFailToEnrollClientForManagementObjectID:(id)d;
+- (void)_enrollAccount:(id)account fromStore:(id)store completionHandler:(id)handler;
+- (void)_enrollClientWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier conduitType:(int64_t)type account:(id)account accountStore:(id)store completionHandler:(id)handler;
 - (void)_registerForCloudConfigAvailableNotificationIfNeeded;
-- (void)_removeInvalidManagementChannels:(id)a3;
+- (void)_removeInvalidManagementChannels:(id)channels;
 - (void)_start;
-- (void)_unenrollAndReenrollIfDEP:(id)a3;
+- (void)_unenrollAndReenrollIfDEP:(id)p;
 - (void)_validateManagementSources;
-- (void)applyNowWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)clientNeedsToReenrollWithManagementSourceIdentifier:(id)a3;
-- (void)clientNeedsToUnenrollWithManagementSourceIdentifier:(id)a3;
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3;
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4;
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)lockStateDidChange:(BOOL)a3;
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4;
+- (void)applyNowWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)clientNeedsToReenrollWithManagementSourceIdentifier:(id)identifier;
+- (void)clientNeedsToUnenrollWithManagementSourceIdentifier:(id)identifier;
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler;
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler;
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler;
+- (void)lockStateDidChange:(BOOL)change;
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler;
 - (void)managementChannelsChanged;
-- (void)queryForStatusSubscriptionsWithIdentifiers:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)reenrollWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)sendStatusData:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)syncAllManagementSourcesWithCompletionHandler:(id)a3;
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)takeOwnershipOfMDMStoreWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unenrollWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5;
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5;
+- (void)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)reenrollWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendStatusData:(id)data toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)syncAllManagementSourcesWithCompletionHandler:(id)handler;
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)takeOwnershipOfMDMStoreWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unenrollWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation RMClientController
@@ -67,7 +67,7 @@
   block[1] = 3221225472;
   block[2] = sub_100011158;
   block[3] = &unk_1000D12D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6760 != -1)
   {
     dispatch_once(&qword_1000E6760, block);
@@ -76,14 +76,14 @@
 
 + (void)startListeningForNotifications
 {
-  v2 = [a1 sharedController];
-  [v2 _startListeningForNotifications];
+  sharedController = [self sharedController];
+  [sharedController _startListeningForNotifications];
 }
 
-- (RMClientController)initWithPersistentContainer:(id)a3 context:(id)a4
+- (RMClientController)initWithPersistentContainer:(id)container context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = RMClientController;
   v9 = [(RMClientController *)&v22 init];
@@ -93,12 +93,12 @@
     processingClientStateChanges = v9->_processingClientStateChanges;
     v9->_processingClientStateChanges = v10;
 
-    objc_storeStrong(&v9->_persistentContainer, a3);
+    objc_storeStrong(&v9->_persistentContainer, container);
     v12 = [RMDeviceLockStateListener newListenerWithDelegate:v9];
     lockStateListener = v9->_lockStateListener;
     v9->_lockStateListener = v12;
 
-    objc_storeStrong(&v9->_context, a4);
+    objc_storeStrong(&v9->_context, context);
     v14 = objc_opt_new();
     clientByManagementSourceIdentifier = v9->_clientByManagementSourceIdentifier;
     v9->_clientByManagementSourceIdentifier = v14;
@@ -149,7 +149,7 @@
   v15 = 3221225472;
   v16 = sub_100011910;
   v17 = &unk_1000D1320;
-  v18 = self;
+  selfCopy = self;
   v10 = v9;
   v19 = v10;
   v11 = v8;
@@ -162,8 +162,8 @@
   [(RMClientController *)self _syncMDMv1ManagementSourcesWithUnenroll:0];
   if (v26[3])
   {
-    v13 = [(RMClientController *)self lockStateListener];
-    [v13 startListening];
+    lockStateListener = [(RMClientController *)self lockStateListener];
+    [lockStateListener startListening];
   }
 
   _Block_object_dispose(&v25, 8);
@@ -190,13 +190,13 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Validating sources...", buf, 2u);
   }
 
-  v7 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v8 = objc_opt_new();
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100011C9C;
   v14 = &unk_1000D1270;
-  v9 = v7;
+  v9 = context;
   v15 = v9;
   v10 = v8;
   v16 = v10;
@@ -209,15 +209,15 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)_removeInvalidManagementChannels:(id)a3
+- (void)_removeInvalidManagementChannels:(id)channels
 {
-  v4 = a3;
-  v5 = [[NSConditionLock alloc] initWithCondition:{objc_msgSend(v4, "count")}];
+  channelsCopy = channels;
+  v5 = [[NSConditionLock alloc] initWithCondition:{objc_msgSend(channelsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v4;
+  obj = channelsCopy;
   v6 = [obj countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -289,17 +289,17 @@
   }
 }
 
-- (void)_checkCloudConfigAsync:(id)a3
+- (void)_checkCloudConfigAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   objc_initWeak(&location, self);
-  v5 = [(RMClientController *)self dispatchQueue];
+  dispatchQueue = [(RMClientController *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000123AC;
   v6[3] = &unk_1000D1390;
   objc_copyWeak(&v7, &location);
-  dispatch_sync(v5, v6);
+  dispatch_sync(dispatchQueue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -338,9 +338,9 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)_checkForMandatoryDeviceEnrollmentWithCompletionHandler:(id)a3
+- (void)_checkForMandatoryDeviceEnrollmentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[RMCloudConfigController cloudConfigEnrollmentURL];
   if (v5)
   {
@@ -350,13 +350,13 @@
     v13[2] = sub_1000128B8;
     v13[3] = sub_1000128C8;
     v14 = 0;
-    v6 = [(RMClientController *)self context];
+    context = [(RMClientController *)self context];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000128D0;
     v11[3] = &unk_1000D13E0;
     v11[4] = &v12;
-    [v6 performBlockAndWait:v11];
+    [context performBlockAndWait:v11];
     if (*(v13[0] + 40))
     {
       if ([v5 isEqual:?])
@@ -377,7 +377,7 @@
         }
       }
 
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -394,7 +394,7 @@
       v9[1] = 3221225472;
       v9[2] = sub_1000129B8;
       v9[3] = &unk_1000D1408;
-      v10 = v4;
+      v10 = handlerCopy;
       [(RMClientController *)self enrollDeviceChannelWithURI:v5 completionHandler:v9];
     }
 
@@ -403,30 +403,30 @@
 
   else
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)_makeClientWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 persistentContainer:(id)a5
+- (id)_makeClientWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier persistentContainer:(id)container
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  containerCopy = container;
+  identifierCopy = identifier;
+  dCopy = d;
   v11 = [RMClient alloc];
   v12 = objc_opt_new();
-  v13 = [(RMClient *)v11 initWithManagementSourceObjectID:v10 managementSourceIdentifier:v9 statusQuerier:v12 persistentContainer:v8];
+  v13 = [(RMClient *)v11 initWithManagementSourceObjectID:dCopy managementSourceIdentifier:identifierCopy statusQuerier:v12 persistentContainer:containerCopy];
 
   [(RMClient *)v13 setDelegate:self];
 
   return v13;
 }
 
-- (void)_unenrollAndReenrollIfDEP:(id)a3
+- (void)_unenrollAndReenrollIfDEP:(id)p
 {
-  v4 = a3;
-  v5 = [(RMClientController *)self context];
-  v6 = v4;
-  v7 = v5;
+  pCopy = p;
+  context = [(RMClientController *)self context];
+  v6 = pCopy;
+  v7 = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -464,20 +464,20 @@
   objc_destroyWeak(location);
 }
 
-- (BOOL)_hasMDMv1ManagementForManagingProfileIdentifier:(id)a3
+- (BOOL)_hasMDMv1ManagementForManagingProfileIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[RMManagedDevice currentManagedDevice];
-  v5 = [v4 mdmProfileIdentifier];
+  mdmProfileIdentifier = [v4 mdmProfileIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v3];
+  LOBYTE(v4) = [mdmProfileIdentifier isEqualToString:identifierCopy];
   return v4;
 }
 
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: enrolling management source", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -497,17 +497,17 @@
     }
 
     v11 = +[RMErrorUtilities createAlreadyEnrolledInMDMv1Error];
-    v7[2](v7, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
   else
   {
-    v12 = [v6 scheme];
-    if ([v12 caseInsensitiveCompare:@"https"])
+    scheme = [iCopy scheme];
+    if ([scheme caseInsensitiveCompare:@"https"])
     {
-      if ([v12 caseInsensitiveCompare:@"file"])
+      if ([scheme caseInsensitiveCompare:@"file"])
       {
-        v13 = 4 * ([v12 caseInsensitiveCompare:@"mdm"] == 0);
+        v13 = 4 * ([scheme caseInsensitiveCompare:@"mdm"] == 0);
       }
 
       else if (+[RMFeatureFlags isFileConduitEnabled])
@@ -542,15 +542,15 @@
         }
 
         v11 = [NSError errorWithDomain:RMErrorDomain code:4 userInfo:0];
-        v7[2](v7, 0, v11);
+        handlerCopy[2](handlerCopy, 0, v11);
       }
 
       else
       {
         v16 = +[RMManagedDevice currentManagedDevice];
-        v17 = [v16 isSupervised];
+        isSupervised = [v16 isSupervised];
 
-        if (v17)
+        if (isSupervised)
         {
           v18 = 3;
         }
@@ -560,7 +560,7 @@
           v18 = 1;
         }
 
-        v23 = [v6 absoluteString];
+        absoluteString = [iCopy absoluteString];
         v45 = 0;
         v46[0] = &v45;
         v46[1] = 0x3032000000;
@@ -579,20 +579,20 @@
         v36 = sub_1000128B8;
         v37 = sub_1000128C8;
         v38 = 0;
-        v19 = [(RMClientController *)self context];
+        context = [(RMClientController *)self context];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_100013C64;
         v24[3] = &unk_1000D14E8;
         v24[4] = self;
-        v20 = v6;
+        v20 = iCopy;
         v25 = v20;
         v31 = v18;
-        v21 = v19;
+        v21 = context;
         v26 = v21;
         v28 = &v45;
         v32 = v13;
-        v11 = v23;
+        v11 = absoluteString;
         v27 = v11;
         v29 = &v39;
         v30 = &v33;
@@ -605,12 +605,12 @@
             sub_100019F98(v20, v46);
           }
 
-          v7[2](v7, 0, *(v46[0] + 40));
+          handlerCopy[2](handlerCopy, 0, *(v46[0] + 40));
         }
 
         else
         {
-          [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v40[5] managementSourceIdentifier:v34[5] conduitType:v13 account:0 accountStore:0 completionHandler:v7];
+          [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v40[5] managementSourceIdentifier:v34[5] conduitType:v13 account:0 accountStore:0 completionHandler:handlerCopy];
         }
 
         _Block_object_dispose(&v33, 8);
@@ -629,37 +629,37 @@
       }
 
       v11 = [NSError errorWithDomain:NSCocoaErrorDomain code:262 userInfo:0];
-      v7[2](v7, 0, v11);
+      handlerCopy[2](handlerCopy, 0, v11);
     }
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_1000128B8;
   v23 = sub_1000128C8;
   v24 = 0;
-  v8 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100014114;
   v15[3] = &unk_1000D0E38;
-  v9 = v6;
+  v9 = identifierCopy;
   v16 = v9;
-  v10 = v8;
+  v10 = context;
   v17 = v10;
   v18 = &v19;
   [v10 performBlockAndWait:v15];
   if (v20[5])
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -668,7 +668,7 @@
     v12 = [v11 accountWithIdentifier:v9];
     if (v12)
     {
-      [(RMClientController *)self _enrollAccount:v12 fromStore:v11 completionHandler:v7];
+      [(RMClientController *)self _enrollAccount:v12 fromStore:v11 completionHandler:handlerCopy];
     }
 
     else
@@ -680,19 +680,19 @@
       }
 
       v14 = [RMErrorUtilities createAccountMissingErrorWithIdentifier:v9];
-      (v7[2])(v7, 0, v14);
+      (handlerCopy[2])(handlerCopy, 0, v14);
     }
   }
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  uriCopy = uri;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  handlerCopy = handler;
   v16 = _os_activity_create(&_mh_execute_header, "ClientController: enrolling management source DDM", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -712,24 +712,24 @@
     }
 
     v23 = +[RMErrorUtilities createBootstrapURINotFound];
-    v15[2](v15, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
     goto LABEL_19;
   }
 
-  v18 = [v12 scheme];
-  if (![v18 caseInsensitiveCompare:@"https"])
+  scheme = [uriCopy scheme];
+  if (![scheme caseInsensitiveCompare:@"https"])
   {
     +[RMFeatureFlags isHTTPConduitEnabled];
     goto LABEL_16;
   }
 
-  if (![v18 caseInsensitiveCompare:@"file"])
+  if (![scheme caseInsensitiveCompare:@"file"])
   {
     +[RMFeatureFlags isFileConduitEnabled];
     goto LABEL_16;
   }
 
-  if ([v18 caseInsensitiveCompare:@"mdm"])
+  if ([scheme caseInsensitiveCompare:@"mdm"])
   {
 LABEL_16:
 
@@ -740,7 +740,7 @@ LABEL_16:
     }
 
     v23 = [NSError errorWithDomain:NSCocoaErrorDomain code:262 userInfo:0];
-    v15[2](v15, 0, v23);
+    handlerCopy[2](handlerCopy, 0, v23);
 LABEL_19:
 
     goto LABEL_20;
@@ -764,21 +764,21 @@ LABEL_19:
   v43 = sub_1000128B8;
   v44 = sub_1000128C8;
   v45 = 0;
-  v19 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v26 = _NSConcreteStackBlock;
   v27 = 3221225472;
   v28 = sub_100014724;
   v29 = &unk_1000D1510;
-  v30 = self;
-  v25 = v12;
+  selfCopy = self;
+  v25 = uriCopy;
   v31 = v25;
-  v38 = a3;
-  v20 = v19;
+  typeCopy = type;
+  v20 = context;
   v32 = v20;
   v35 = &v52;
   v39 = 4;
-  v33 = v13;
-  v34 = v14;
+  v33 = identifierCopy;
+  v34 = personaIdentifierCopy;
   v36 = &v46;
   v37 = &v40;
   [v20 performBlockAndWait:&v26];
@@ -790,12 +790,12 @@ LABEL_19:
       sub_100019F98(v25, v53);
     }
 
-    v15[2](v15, 0, *(v53[0] + 40));
+    handlerCopy[2](handlerCopy, 0, *(v53[0] + 40));
   }
 
   else
   {
-    [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v47[5] managementSourceIdentifier:v41[5] conduitType:4 account:0 accountStore:0 completionHandler:v15, v25, v26, v27, v28, v29, v30, v31, v32, v33];
+    [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v47[5] managementSourceIdentifier:v41[5] conduitType:4 account:0 accountStore:0 completionHandler:handlerCopy, v25, v26, v27, v28, v29, selfCopy, v31, v32, v33];
   }
 
   _Block_object_dispose(&v40, 8);
@@ -806,10 +806,10 @@ LABEL_20:
   os_activity_scope_leave(&state);
 }
 
-- (void)takeOwnershipOfMDMStoreWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)takeOwnershipOfMDMStoreWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: taking ownership of management source DDM", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -844,14 +844,14 @@ LABEL_20:
     v28[2] = sub_1000128B8;
     v28[3] = sub_1000128C8;
     v29 = 0;
-    v10 = [(RMClientController *)self context];
+    context = [(RMClientController *)self context];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100014DB4;
     v20[3] = &unk_1000D1538;
-    v11 = v6;
+    v11 = identifierCopy;
     v21 = v11;
-    v12 = v10;
+    v12 = context;
     v22 = v12;
     v23 = &v27;
     v24 = &v32;
@@ -866,7 +866,7 @@ LABEL_20:
         sub_10001A404(v11, v28);
       }
 
-      v7[2](v7, *(v28[0] + 40));
+      handlerCopy[2](handlerCopy, *(v28[0] + 40));
     }
 
     else
@@ -877,7 +877,7 @@ LABEL_20:
       v18[1] = 3221225472;
       v18[2] = sub_1000151A4;
       v18[3] = &unk_1000D1408;
-      v19 = v7;
+      v19 = handlerCopy;
       [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v16 managementSourceIdentifier:v11 conduitType:v17 account:0 accountStore:0 completionHandler:v18];
     }
 
@@ -897,16 +897,16 @@ LABEL_20:
     }
 
     v15 = +[RMErrorUtilities createBootstrapURINotFound];
-    (v7)[2](v7, v15);
+    (handlerCopy)[2](handlerCopy, v15);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)reenrollWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)reenrollWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: re-enrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -917,7 +917,7 @@ LABEL_20:
     sub_10001A544();
   }
 
-  v10 = [(RMClientController *)self _clientWithIdentifier:v6];
+  v10 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   if (v10)
   {
     v13[0] = _NSConcreteStackBlock;
@@ -925,8 +925,8 @@ LABEL_20:
     v13[2] = sub_10001538C;
     v13[3] = &unk_1000D1100;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = identifierCopy;
+    v15 = handlerCopy;
     [v10 reenrollWithCompletionHandler:v13];
   }
 
@@ -938,23 +938,23 @@ LABEL_20:
       sub_10001A5AC();
     }
 
-    v12 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v6];
-    (*(v7 + 2))(v7, v12);
+    v12 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    (*(handlerCopy + 2))(handlerCopy, v12);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_enrollAccount:(id)a3 fromStore:(id)a4 completionHandler:(id)a5
+- (void)_enrollAccount:(id)account fromStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: enrolling management source", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v11, &state);
-  v12 = [(RMClientController *)self _bootstrapURIForAccount:v8];
+  v12 = [(RMClientController *)self _bootstrapURIForAccount:accountCopy];
   if (v12)
   {
     v13 = +[RMLog clientController];
@@ -972,17 +972,17 @@ LABEL_20:
       }
 
       v15 = +[RMErrorUtilities createAlreadyEnrolledInMDMv1Error];
-      v10[2](v10, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
     }
 
     else
     {
-      v16 = [v12 scheme];
-      if ([v16 caseInsensitiveCompare:@"https"])
+      scheme = [v12 scheme];
+      if ([scheme caseInsensitiveCompare:@"https"])
       {
-        if ([v16 caseInsensitiveCompare:@"file"])
+        if ([scheme caseInsensitiveCompare:@"file"])
         {
-          v17 = 4 * ([v16 caseInsensitiveCompare:@"mdm"] == 0);
+          v17 = 4 * ([scheme caseInsensitiveCompare:@"mdm"] == 0);
         }
 
         else if (+[RMFeatureFlags isFileConduitEnabled])
@@ -1017,12 +1017,12 @@ LABEL_20:
           }
 
           v15 = [NSError errorWithDomain:RMErrorDomain code:4 userInfo:0];
-          v10[2](v10, 0, v15);
+          handlerCopy[2](handlerCopy, 0, v15);
         }
 
         else
         {
-          v20 = [(RMClientController *)self _genericCredentialForAccount:v8 fromStore:v9];
+          v20 = [(RMClientController *)self _genericCredentialForAccount:accountCopy fromStore:storeCopy];
           v46 = 0;
           v47[0] = &v46;
           v47[1] = 0x3032000000;
@@ -1051,7 +1051,7 @@ LABEL_20:
           v33 = v17;
           v15 = v20;
           v28 = v15;
-          v21 = v8;
+          v21 = accountCopy;
           v29 = v21;
           v30 = &v46;
           v31 = &v40;
@@ -1066,12 +1066,12 @@ LABEL_20:
               sub_10001A6E4(v23, v47);
             }
 
-            v10[2](v10, 0, *(v47[0] + 40));
+            handlerCopy[2](handlerCopy, 0, *(v47[0] + 40));
           }
 
           else
           {
-            [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v41[5] managementSourceIdentifier:v35[5] conduitType:v17 account:v21 accountStore:v9 completionHandler:v10];
+            [(RMClientController *)self _enrollClientWithManagementSourceObjectID:v41[5] managementSourceIdentifier:v35[5] conduitType:v17 account:v21 accountStore:storeCopy completionHandler:handlerCopy];
           }
 
           _Block_object_dispose(&v34, 8);
@@ -1090,7 +1090,7 @@ LABEL_20:
         }
 
         v15 = [NSError errorWithDomain:NSCocoaErrorDomain code:262 userInfo:0];
-        v10[2](v10, 0, v15);
+        handlerCopy[2](handlerCopy, 0, v15);
       }
     }
   }
@@ -1098,18 +1098,18 @@ LABEL_20:
   else
   {
     v15 = +[RMErrorUtilities createBootstrapURINotFound];
-    v10[2](v10, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_verifyUniqueStoreWithURL:(id)a3 enrollmentType:(int64_t)a4 context:(id)a5 error:(id *)a6
+- (BOOL)_verifyUniqueStoreWithURL:(id)l enrollmentType:(int64_t)type context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  contextCopy = context;
   v16 = 0;
-  if (![RMStoreHelper hasDuplicateInContext:v10 uri:v9 storeType:a4 hasDuplicate:&v16 error:0])
+  if (![RMStoreHelper hasDuplicateInContext:contextCopy uri:lCopy storeType:type hasDuplicate:&v16 error:0])
   {
     goto LABEL_15;
   }
@@ -1117,11 +1117,11 @@ LABEL_20:
   if (v16 != 1)
   {
     v15 = 0;
-    if ([RMStoreHelper hasExistingSingletonTypeInContext:v10 hasExisting:&v15 error:0])
+    if ([RMStoreHelper hasExistingSingletonTypeInContext:contextCopy hasExisting:&v15 error:0])
     {
       if (v15 != 1)
       {
-        LOBYTE(a6) = 1;
+        LOBYTE(error) = 1;
         goto LABEL_19;
       }
 
@@ -1131,7 +1131,7 @@ LABEL_20:
         sub_10001A884();
       }
 
-      if (!a6)
+      if (!error)
       {
         goto LABEL_19;
       }
@@ -1144,12 +1144,12 @@ LABEL_20:
 
 LABEL_17:
       v12 = v12;
-      *a6 = v12;
+      *error = v12;
       goto LABEL_18;
     }
 
 LABEL_15:
-    if (!a6)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -1159,7 +1159,7 @@ LABEL_15:
     {
 LABEL_18:
 
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_19;
     }
 
@@ -1172,9 +1172,9 @@ LABEL_18:
     sub_10001A8EC();
   }
 
-  if (a6)
+  if (error)
   {
-    v12 = [RMErrorUtilities createManagementSourceAlreadyExistsErrorWithURI:v9];
+    v12 = [RMErrorUtilities createManagementSourceAlreadyExistsErrorWithURI:lCopy];
     if (!v12)
     {
       goto LABEL_18;
@@ -1185,45 +1185,45 @@ LABEL_18:
 
 LABEL_19:
 
-  return a6;
+  return error;
 }
 
-- (void)_enrollClientWithManagementSourceObjectID:(id)a3 managementSourceIdentifier:(id)a4 conduitType:(int64_t)a5 account:(id)a6 accountStore:(id)a7 completionHandler:(id)a8
+- (void)_enrollClientWithManagementSourceObjectID:(id)d managementSourceIdentifier:(id)identifier conduitType:(int64_t)type account:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a4;
-  v19 = [(RMClientController *)self persistentContainer];
-  v20 = [(RMClientController *)self _makeClientWithManagementSourceObjectID:v14 managementSourceIdentifier:v18 persistentContainer:v19];
+  dCopy = d;
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  persistentContainer = [(RMClientController *)self persistentContainer];
+  v20 = [(RMClientController *)self _makeClientWithManagementSourceObjectID:dCopy managementSourceIdentifier:identifierCopy persistentContainer:persistentContainer];
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100015F78;
   v26[3] = &unk_1000D1588;
   v26[4] = self;
-  v27 = v14;
-  v31 = v17;
-  v32 = a5;
+  v27 = dCopy;
+  v31 = handlerCopy;
+  typeCopy = type;
   v28 = v20;
-  v29 = v15;
-  v30 = v16;
-  v21 = v16;
-  v22 = v15;
+  v29 = accountCopy;
+  v30 = storeCopy;
+  v21 = storeCopy;
+  v22 = accountCopy;
   v23 = v20;
-  v24 = v17;
-  v25 = v14;
+  v24 = handlerCopy;
+  v25 = dCopy;
   [v23 enrollWithCompletionHandler:v26];
 }
 
-- (id)_bootstrapURIForAccount:(id)a3
+- (id)_bootstrapURIForAccount:(id)account
 {
-  v3 = a3;
-  if (([v3 rm_isAccountSchemeTest] & 1) != 0 || (objc_msgSend(v3, "rm_isAccountSchemeBearer") & 1) != 0 || (objc_msgSend(v3, "rm_isAccountSchemeMAID") & 1) != 0 || objc_msgSend(v3, "dmc_isAccountSchemeSharediPad"))
+  accountCopy = account;
+  if (([accountCopy rm_isAccountSchemeTest] & 1) != 0 || (objc_msgSend(accountCopy, "rm_isAccountSchemeBearer") & 1) != 0 || (objc_msgSend(accountCopy, "rm_isAccountSchemeMAID") & 1) != 0 || objc_msgSend(accountCopy, "dmc_isAccountSchemeSharediPad"))
   {
-    v4 = [v3 rm_enrollmentURL];
-    v5 = [NSURL URLWithString:v4];
+    rm_enrollmentURL = [accountCopy rm_enrollmentURL];
+    v5 = [NSURL URLWithString:rm_enrollmentURL];
 
     if (v5)
     {
@@ -1233,7 +1233,7 @@ LABEL_19:
     v6 = +[RMLog clientController];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10001AA10(v3);
+      sub_10001AA10(accountCopy);
     }
   }
 
@@ -1242,7 +1242,7 @@ LABEL_19:
     v6 = +[RMLog clientController];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10001A954(v3);
+      sub_10001A954(accountCopy);
     }
   }
 
@@ -1252,20 +1252,20 @@ LABEL_9:
   return v5;
 }
 
-- (id)_genericCredentialForAccount:(id)a3 fromStore:(id)a4
+- (id)_genericCredentialForAccount:(id)account fromStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  if ([v5 rm_isAccountSchemeTest])
+  accountCopy = account;
+  storeCopy = store;
+  identifier = [accountCopy identifier];
+  if ([accountCopy rm_isAccountSchemeTest])
   {
     v8 = objc_opt_new();
-    v9 = [v5 username];
-    [v8 setObject:v9 forKeyedSubscript:RMAuthenticationSchemeTestFieldUsername];
+    username = [accountCopy username];
+    [v8 setObject:username forKeyedSubscript:RMAuthenticationSchemeTestFieldUsername];
 
     v10 = objc_opt_new();
-    v11 = [v10 UUIDString];
-    [v8 setObject:v11 forKeyedSubscript:RMAuthenticationSchemeTestFieldToken];
+    uUIDString = [v10 UUIDString];
+    [v8 setObject:uUIDString forKeyedSubscript:RMAuthenticationSchemeTestFieldToken];
 
     v12 = [RMGenericAuthenticationCredential alloc];
     v13 = &RMAuthenticationSchemeTest;
@@ -1276,31 +1276,31 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v5 rm_isAccountSchemeBearer])
+  if ([accountCopy rm_isAccountSchemeBearer])
   {
     v8 = objc_opt_new();
-    v14 = [v5 rm_bearerToken];
-    [v8 setObject:v14 forKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
+    rm_bearerToken = [accountCopy rm_bearerToken];
+    [v8 setObject:rm_bearerToken forKeyedSubscript:RMAuthenticationSchemeBearerFieldAccessToken];
 
     v12 = [RMGenericAuthenticationCredential alloc];
     v13 = &RMAuthenticationSchemeBearer;
     goto LABEL_5;
   }
 
-  if ([v5 rm_isAccountSchemeMAID])
+  if ([accountCopy rm_isAccountSchemeMAID])
   {
     v8 = objc_opt_new();
-    v17 = [v5 username];
-    [v8 setObject:v17 forKeyedSubscript:RMAuthenticationSchemeMAIDFieldUsername];
+    username2 = [accountCopy username];
+    [v8 setObject:username2 forKeyedSubscript:RMAuthenticationSchemeMAIDFieldUsername];
 
-    v18 = [v5 rm_DSID];
-    [v8 setObject:v18 forKeyedSubscript:RMAuthenticationSchemeMAIDFieldDSID];
+    rm_DSID = [accountCopy rm_DSID];
+    [v8 setObject:rm_DSID forKeyedSubscript:RMAuthenticationSchemeMAIDFieldDSID];
 
-    v19 = [v5 rm_altDSID];
-    [v8 setObject:v19 forKeyedSubscript:RMAuthenticationSchemeMAIDFieldAltDSID];
+    rm_altDSID = [accountCopy rm_altDSID];
+    [v8 setObject:rm_altDSID forKeyedSubscript:RMAuthenticationSchemeMAIDFieldAltDSID];
 
-    v20 = [v5 rm_altDSID];
-    v21 = [v6 aida_accountForAltDSID:v20];
+    rm_altDSID2 = [accountCopy rm_altDSID];
+    v21 = [storeCopy aida_accountForAltDSID:rm_altDSID2];
 
     v22 = [v21 aida_tokenForService:@"com.apple.gs.mdm.auth"];
     [v8 setObject:v22 forKeyedSubscript:RMAuthenticationSchemeMAIDFieldShortLivedToken];
@@ -1313,7 +1313,7 @@ LABEL_6:
   v24 = +[RMLog clientController];
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
-    sub_10001AA9C(v5);
+    sub_10001AA9C(accountCopy);
   }
 
   v15 = 0;
@@ -1322,27 +1322,27 @@ LABEL_7:
   return v15;
 }
 
-- (void)_didFailToEnrollClientForManagementObjectID:(id)a3
+- (void)_didFailToEnrollClientForManagementObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(RMClientController *)self context];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000164AC;
   v8 = v7[3] = &unk_1000D1270;
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = v8;
   [v6 performBlockAndWait:v7];
 }
 
-- (void)_didEnrollClient:(id)a3 conduitType:(int64_t)a4 managementSourceObjectID:(id)a5 account:(id)a6 accountStore:(id)a7 completionHandler:(id)a8
+- (void)_didEnrollClient:(id)client conduitType:(int64_t)type managementSourceObjectID:(id)d account:(id)account accountStore:(id)store completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  clientCopy = client;
+  dCopy = d;
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -1361,15 +1361,15 @@ LABEL_7:
   v42[2] = sub_100016A14;
   v19 = v42[3] = &unk_1000D15B0;
   v43 = v19;
-  v20 = v15;
+  v20 = dCopy;
   v44 = v20;
   v45 = &v47;
   v46 = &v53;
   [v19 performBlockAndWait:v42];
-  if (v16 && v17)
+  if (accountCopy && storeCopy)
   {
-    [v16 rm_setEnrollmentToken:v54[5]];
-    [v16 rm_setManagementSourceIdentifier:v48[5]];
+    [accountCopy rm_setEnrollmentToken:v54[5]];
+    [accountCopy rm_setManagementSourceIdentifier:v48[5]];
     v21 = +[RMLog clientController];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1388,7 +1388,7 @@ LABEL_7:
     v35[2] = sub_100016AC8;
     v35[3] = &unk_1000D15D8;
     v35[4] = buf;
-    [v17 saveAccount:v16 withCompletionHandler:v35];
+    [storeCopy saveAccount:accountCopy withCompletionHandler:v35];
     v22 = +[RMLog clientController];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -1408,36 +1408,36 @@ LABEL_7:
   v24 = v20;
   v33 = v24;
   [v23 performBlockAndWait:v31];
-  if (a4 != 4)
+  if (type != 4)
   {
     +[RMMDMv1Liaison remoteManagementDidEnroll];
   }
 
-  v25 = [(RMClientController *)self lockStateListener];
-  [v25 startListening];
+  lockStateListener = [(RMClientController *)self lockStateListener];
+  [lockStateListener startListening];
 
   v26 = self->_clientByManagementSourceIdentifier;
   objc_sync_enter(v26);
-  [(NSMutableDictionary *)v26 setObject:v14 forKeyedSubscript:v48[5]];
+  [(NSMutableDictionary *)v26 setObject:clientCopy forKeyedSubscript:v48[5]];
   objc_sync_exit(v26);
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100016BE0;
   v28[3] = &unk_1000D1600;
-  v27 = v18;
+  v27 = handlerCopy;
   v29 = v27;
   v30 = &v47;
-  [v14 startWithCompletionHandler:v28];
+  [clientCopy startWithCompletionHandler:v28];
 
   _Block_object_dispose(&v47, 8);
   _Block_object_dispose(&v53, 8);
 }
 
-- (void)unenrollWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)unenrollWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: unenrolling", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1448,7 +1448,7 @@ LABEL_7:
     sub_10001AC1C();
   }
 
-  v10 = [(RMClientController *)self _clientWithIdentifier:v6];
+  v10 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   if (v10)
   {
     v13[0] = _NSConcreteStackBlock;
@@ -1456,8 +1456,8 @@ LABEL_7:
     v13[2] = sub_100016DD8;
     v13[3] = &unk_1000D1628;
     v13[4] = self;
-    v14 = v6;
-    v15 = v7;
+    v14 = identifierCopy;
+    v15 = handlerCopy;
     [v10 unenrollWithCompletionHandler:v13];
   }
 
@@ -1469,19 +1469,19 @@ LABEL_7:
       sub_10001AC84();
     }
 
-    v12 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v6];
-    (*(v7 + 2))(v7, 0, v12);
+    v12 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_didUnenrollClientWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)_didUnenrollClientWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = self->_clientByManagementSourceIdentifier;
   objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7 removeObjectForKey:v6];
+  [(NSMutableDictionary *)v7 removeObjectForKey:identifierCopy];
   objc_sync_exit(v7);
 
   v28 = 0;
@@ -1494,24 +1494,24 @@ LABEL_7:
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v8 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10001710C;
   v19 = &unk_1000D15B0;
-  v9 = v6;
+  v9 = identifierCopy;
   v20 = v9;
-  v10 = v8;
+  v10 = context;
   v21 = v10;
   v22 = &v28;
   v23 = &v24;
   [v10 performBlockAndWait:&v16];
-  if (a4)
+  if (error)
   {
     v11 = v29[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1526,8 +1526,8 @@ LABEL_7:
     if ((v25[3] & 1) == 0)
     {
       +[RMMDMv1Liaison remoteManagementDidUnenroll];
-      v14 = [(RMClientController *)self lockStateListener];
-      [v14 stopListening];
+      lockStateListener = [(RMClientController *)self lockStateListener];
+      [lockStateListener stopListening];
     }
   }
 
@@ -1537,29 +1537,29 @@ LABEL_7:
   return v12 == 0;
 }
 
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v5 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100017494;
   v6[3] = &unk_1000D13E0;
   v6[4] = &v7;
-  [v5 performBlockAndWait:v6];
-  (*(v4 + 2))(v4, *(v8 + 24), 0);
+  [context performBlockAndWait:v6];
+  (*(handlerCopy + 2))(handlerCopy, *(v8 + 24), 0);
 
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1572,28 +1572,28 @@ LABEL_7:
   v19 = sub_1000128B8;
   v20 = sub_1000128C8;
   v21 = 0;
-  v8 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001773C;
   v11[3] = &unk_1000D15B0;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
-  v10 = v8;
+  v10 = context;
   v13 = v10;
   v14 = &v16;
   v15 = &v22;
   [v10 performBlockAndWait:v11];
-  v7[2](v7, v23[5], v17[5]);
+  handlerCopy[2](handlerCopy, v23[5], v17[5]);
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1606,19 +1606,19 @@ LABEL_7:
   v19 = sub_1000128B8;
   v20 = sub_1000128C8;
   v21 = 0;
-  v8 = [(RMClientController *)self context];
+  context = [(RMClientController *)self context];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000179FC;
   v11[3] = &unk_1000D15B0;
-  v9 = v6;
+  v9 = lCopy;
   v12 = v9;
-  v10 = v8;
+  v10 = context;
   v13 = v10;
   v14 = &v16;
   v15 = &v22;
   [v10 performBlockAndWait:v11];
-  v7[2](v7, v23[5], v17[5]);
+  handlerCopy[2](handlerCopy, v23[5], v17[5]);
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v22, 8);
@@ -1637,7 +1637,7 @@ LABEL_7:
   v16[1] = 3221225472;
   v16[2] = sub_100017DD8;
   v17 = v16[3] = &unk_1000D0E38;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   v11 = v17;
   [v17 performBlockAndWait:v16];
@@ -1647,10 +1647,10 @@ LABEL_7:
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(RMClientController *)self clientByManagementSourceIdentifier];
-    v4 = [v3 allKeys];
+    clientByManagementSourceIdentifier = [(RMClientController *)self clientByManagementSourceIdentifier];
+    allKeys = [clientByManagementSourceIdentifier allKeys];
 
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v28 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v12 objects:v28 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -1660,7 +1660,7 @@ LABEL_7:
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
@@ -1674,12 +1674,12 @@ LABEL_7:
               _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Removing stale RMClient for: %{public}@", buf, 0xCu);
             }
 
-            v10 = [(RMClientController *)self clientByManagementSourceIdentifier];
-            [v10 removeObjectForKey:v8];
+            clientByManagementSourceIdentifier2 = [(RMClientController *)self clientByManagementSourceIdentifier];
+            [clientByManagementSourceIdentifier2 removeObjectForKey:v8];
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v28 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v12 objects:v28 count:16];
       }
 
       while (v5);
@@ -1689,10 +1689,10 @@ LABEL_7:
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: syncing", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
@@ -1703,11 +1703,11 @@ LABEL_7:
     sub_10001AF00();
   }
 
-  v10 = [(RMClientController *)self _clientWithIdentifier:v6];
+  v10 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 syncWithCompletionHandler:v7];
+    [v10 syncWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -1718,16 +1718,16 @@ LABEL_7:
       sub_10001AF68();
     }
 
-    v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v6];
-    v7[2](v7, v13);
+    v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v13);
   }
 
   os_activity_scope_leave(&v14);
 }
 
-- (void)syncAllManagementSourcesWithCompletionHandler:(id)a3
+- (void)syncAllManagementSourcesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_group_create();
   v6 = self->_clientByManagementSourceIdentifier;
   objc_sync_enter(v6);
@@ -1741,20 +1741,20 @@ LABEL_7:
   v14 = v5;
   v8 = v5;
   [v7 enumerateKeysAndObjectsUsingBlock:v13];
-  v9 = [(RMClientController *)self dispatchQueue];
+  dispatchQueue = [(RMClientController *)self dispatchQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000183A8;
   v11[3] = &unk_1000D1678;
-  v12 = v4;
-  v10 = v4;
-  dispatch_group_notify(v8, v9, v11);
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  dispatch_group_notify(v8, dispatchQueue, v11);
 }
 
-- (void)applyNowWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)applyNowWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _os_activity_create(&_mh_execute_header, "ClientController: apply now", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v14.opaque[0] = 0;
   v14.opaque[1] = 0;
@@ -1765,11 +1765,11 @@ LABEL_7:
     sub_10001B038();
   }
 
-  v10 = [(RMClientController *)self _clientWithIdentifier:v6];
+  v10 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 applyNowWithCompletionHandler:v7];
+    [v10 applyNowWithCompletionHandler:handlerCopy];
   }
 
   else
@@ -1780,18 +1780,18 @@ LABEL_7:
       sub_10001B0A0();
     }
 
-    v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v6];
-    v7[2](v7, v13);
+    v13 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v13);
   }
 
   os_activity_scope_leave(&v14);
 }
 
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  messageCopy = message;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: updating via push message", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v17.opaque[0] = 0;
   v17.opaque[1] = 0;
@@ -1802,11 +1802,11 @@ LABEL_7:
     sub_10001B108();
   }
 
-  v13 = [(RMClientController *)self _clientWithIdentifier:v8];
+  v13 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 updateWithPushMessage:v9 completionHandler:v10];
+    [v13 updateWithPushMessage:messageCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1817,18 +1817,18 @@ LABEL_7:
       sub_10001B170();
     }
 
-    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v8];
-    v10[2](v10, v16);
+    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v16);
   }
 
   os_activity_scope_leave(&v17);
 }
 
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: updating via sync tokens", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v17.opaque[0] = 0;
   v17.opaque[1] = 0;
@@ -1839,11 +1839,11 @@ LABEL_7:
     sub_10001B1D8();
   }
 
-  v13 = [(RMClientController *)self _clientWithIdentifier:v8];
+  v13 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 updateWithTokensResponse:v9 completionHandler:v10];
+    [v13 updateWithTokensResponse:responseCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1854,18 +1854,18 @@ LABEL_7:
       sub_10001B170();
     }
 
-    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v8];
-    v10[2](v10, v16);
+    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v16);
   }
 
   os_activity_scope_leave(&v17);
 }
 
-- (void)sendStatusData:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendStatusData:(id)data toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: sending arbitrary status", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v17.opaque[0] = 0;
   v17.opaque[1] = 0;
@@ -1876,11 +1876,11 @@ LABEL_7:
     sub_10001B240();
   }
 
-  v13 = [(RMClientController *)self _clientWithIdentifier:v9];
+  v13 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 sendStatusData:v8 completionHandler:v10];
+    [v13 sendStatusData:dataCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1891,18 +1891,18 @@ LABEL_7:
       sub_10001B2A8();
     }
 
-    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v9];
-    v10[2](v10, v16);
+    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v16);
   }
 
   os_activity_scope_leave(&v17);
 }
 
-- (void)queryForStatusSubscriptionsWithIdentifiers:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: query for status subscriptions", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v23.opaque[0] = 0;
   v23.opaque[1] = 0;
@@ -1910,23 +1910,23 @@ LABEL_7:
   v12 = +[RMLog clientController];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v8 allObjects];
-    v18 = [v17 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [identifiersCopy allObjects];
+    v18 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v19 = [v18 componentsJoinedByString:{@", "}];
 
     *buf = 138543618;
     v25 = v19;
     v26 = 2114;
-    v27 = v9;
+    v27 = identifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Querying for status subscriptions with identifiers %{public}@ from %{public}@...", buf, 0x16u);
   }
 
-  v13 = [(RMClientController *)self _clientWithIdentifier:v9];
+  v13 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 queryForStatusSubscriptionsWithIdentifiers:v8];
-    v10[2](v10, v15, 0);
+    v15 = [v13 queryForStatusSubscriptionsWithIdentifiers:identifiersCopy];
+    handlerCopy[2](handlerCopy, v15, 0);
   }
 
   else
@@ -1934,29 +1934,29 @@ LABEL_7:
     v16 = +[RMLog clientController];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 allObjects];
-      v21 = [v20 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+      allObjects2 = [identifiersCopy allObjects];
+      v21 = [allObjects2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v22 = [v21 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v25 = v22;
       v26 = 2114;
-      v27 = v9;
+      v27 = identifierCopy;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Could not query for status subscriptions with identifiers %{public}@, could not find client for identifier: %{public}@", buf, 0x16u);
     }
 
-    v15 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v9];
-    (v10)[2](v10, 0, v15);
+    v15 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    (handlerCopy)[2](handlerCopy, 0, v15);
   }
 
   os_activity_scope_leave(&v23);
 }
 
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = _os_activity_create(&_mh_execute_header, "ClientController: sending specific status", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v23.opaque[0] = 0;
   v23.opaque[1] = 0;
@@ -1964,22 +1964,22 @@ LABEL_7:
   v12 = +[RMLog clientController];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [v8 allObjects];
-    v18 = [v17 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+    allObjects = [identifiersCopy allObjects];
+    v18 = [allObjects sortedArrayUsingSelector:"caseInsensitiveCompare:"];
     v19 = [v18 componentsJoinedByString:{@", "}];
 
     *buf = 138543618;
     v25 = v19;
     v26 = 2114;
-    v27 = v9;
+    v27 = identifierCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Querying for status subscriptions with identifiers %{public}@ then sending to %{public}@...", buf, 0x16u);
   }
 
-  v13 = [(RMClientController *)self _clientWithIdentifier:v9];
+  v13 = [(RMClientController *)self _clientWithIdentifier:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 sendStatusForSubscriptionsWithIdentifiers:v8 completionHandler:v10];
+    [v13 sendStatusForSubscriptionsWithIdentifiers:identifiersCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1987,52 +1987,52 @@ LABEL_7:
     v15 = +[RMLog clientController];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 allObjects];
-      v21 = [v20 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+      allObjects2 = [identifiersCopy allObjects];
+      v21 = [allObjects2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v22 = [v21 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v25 = v22;
       v26 = 2114;
-      v27 = v9;
+      v27 = identifierCopy;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Could not query for status subscriptions with identifiers %{public}@, could not find client for identifier: %{public}@", buf, 0x16u);
     }
 
-    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:v9];
-    v10[2](v10, v16);
+    v16 = [RMErrorUtilities createManagementSourceNotFoundErrorWithIdentifier:identifierCopy];
+    handlerCopy[2](handlerCopy, v16);
   }
 
   os_activity_scope_leave(&v23);
 }
 
-- (id)_clientWithIdentifier:(id)a3
+- (id)_clientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_clientByManagementSourceIdentifier;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_clientByManagementSourceIdentifier objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_clientByManagementSourceIdentifier objectForKeyedSubscript:identifierCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (void)clientNeedsToReenrollWithManagementSourceIdentifier:(id)a3
+- (void)clientNeedsToReenrollWithManagementSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[RMLog clientController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10001B310();
   }
 
-  if ([(RMClientController *)self _canProcessClientStateChanges:v4])
+  if ([(RMClientController *)self _canProcessClientStateChanges:identifierCopy])
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100019214;
     block[3] = &unk_1000D16C8;
-    v9 = v4;
+    v9 = identifierCopy;
     objc_copyWeak(&v10, &location);
     dispatch_async(&_dispatch_main_q, block);
     v6 = +[RMLog clientController];
@@ -2055,18 +2055,18 @@ LABEL_7:
   }
 }
 
-- (void)clientNeedsToUnenrollWithManagementSourceIdentifier:(id)a3
+- (void)clientNeedsToUnenrollWithManagementSourceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[RMLog clientController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_10001B4B0();
   }
 
-  if ([(RMClientController *)self _canProcessClientStateChanges:v4])
+  if ([(RMClientController *)self _canProcessClientStateChanges:identifierCopy])
   {
-    [(RMClientController *)self _unenrollAndReenrollIfDEP:v4];
+    [(RMClientController *)self _unenrollAndReenrollIfDEP:identifierCopy];
   }
 
   else
@@ -2079,18 +2079,18 @@ LABEL_7:
   }
 }
 
-- (BOOL)_canProcessClientStateChanges:(id)a3
+- (BOOL)_canProcessClientStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(RMClientController *)self processingClientStateChanges];
-  objc_sync_enter(v5);
-  v6 = [(RMClientController *)self processingClientStateChanges];
-  v7 = [v6 containsObject:v4];
+  changesCopy = changes;
+  processingClientStateChanges = [(RMClientController *)self processingClientStateChanges];
+  objc_sync_enter(processingClientStateChanges);
+  processingClientStateChanges2 = [(RMClientController *)self processingClientStateChanges];
+  v7 = [processingClientStateChanges2 containsObject:changesCopy];
 
   if (v7)
   {
-    v8 = +[RMLog clientController];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    processingClientStateChanges3 = +[RMLog clientController];
+    if (os_log_type_enabled(processingClientStateChanges3, OS_LOG_TYPE_DEBUG))
     {
       sub_10001B518();
     }
@@ -2098,28 +2098,28 @@ LABEL_7:
 
   else
   {
-    v8 = [(RMClientController *)self processingClientStateChanges];
-    [v8 addObject:v4];
+    processingClientStateChanges3 = [(RMClientController *)self processingClientStateChanges];
+    [processingClientStateChanges3 addObject:changesCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(processingClientStateChanges);
   return v7 ^ 1;
 }
 
-- (void)_completedClientStateChanges:(id)a3
+- (void)_completedClientStateChanges:(id)changes
 {
-  v6 = a3;
-  v4 = [(RMClientController *)self processingClientStateChanges];
-  objc_sync_enter(v4);
-  v5 = [(RMClientController *)self processingClientStateChanges];
-  [v5 removeObject:v6];
+  changesCopy = changes;
+  processingClientStateChanges = [(RMClientController *)self processingClientStateChanges];
+  objc_sync_enter(processingClientStateChanges);
+  processingClientStateChanges2 = [(RMClientController *)self processingClientStateChanges];
+  [processingClientStateChanges2 removeObject:changesCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(processingClientStateChanges);
 }
 
-- (void)lockStateDidChange:(BOOL)a3
+- (void)lockStateDidChange:(BOOL)change
 {
-  if (!a3)
+  if (!change)
   {
     +[RMConfigurationPublisher reprocessActiveConfigurations];
   }

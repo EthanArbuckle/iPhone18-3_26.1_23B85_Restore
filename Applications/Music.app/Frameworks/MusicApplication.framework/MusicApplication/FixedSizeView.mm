@@ -1,12 +1,12 @@
 @interface FixedSizeView
 - (CGSize)intrinsicContentSize;
-- (_TtC16MusicApplication13FixedSizeView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication13FixedSizeView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication13FixedSizeView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication13FixedSizeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FixedSizeView
 
-- (_TtC16MusicApplication13FixedSizeView)initWithCoder:(id)a3
+- (_TtC16MusicApplication13FixedSizeView)initWithCoder:(id)coder
 {
   result = sub_ABAFD0();
   __break(1u);
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC16MusicApplication13FixedSizeView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication13FixedSizeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

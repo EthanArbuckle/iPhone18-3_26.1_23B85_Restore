@@ -1,39 +1,39 @@
 @interface CloudExtensionStore
-- (CloudExtensionStore)initWithContainer:(id)a3;
-- (id)_operationToDeleteCloudExtensionRecordIDs:(id)a3 completionHandler:(id)a4;
-- (void)_addDependenciesForModifyRecordsOperation:(id)a3 operationQueue:(id)a4;
-- (void)_addModifyRecordsOperations:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5;
-- (void)_createCloudExtensionsRecordZoneInOperationGroup:(id)a3 withRetryManager:(id)a4 completionHandler:(id)a5;
-- (void)_fetchRecordsOnInternalQueueWithRetryManager:(id)a3 serverChangeToken:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 inOperationGroup:(id)a7 completionHandler:(id)a8;
-- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)a3 recordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 inOperationGroup:(id)a6 completionHandler:(id)a7;
-- (void)_recursivelyCancelDependentOperations:(id)a3 operationQueue:(id)a4;
-- (void)_saveCloudExtensionsRecordBatch:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)_saveCloudExtensionsRecordBatch:(id)a3 previouslySavedRecords:(id)a4 previouslyDeletedRecordIDs:(id)a5 retryManager:(id)a6 inOperationGroup:(id)a7 completionHandler:(id)a8;
-- (void)_saveRecordZoneSubscriptionInOperationGroup:(id)a3 operationQueue:(id)a4 completionHandler:(id)a5;
-- (void)_scheduleOperation:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5;
-- (void)createCloudExtensionsRecordZoneInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)deleteCloudExtensionRecords:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)fetchCloudExtensionsRecordChangesSinceServerChangeToken:(id)a3 inOperationGroup:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 completionHandler:(id)a7;
-- (void)fetchCloudExtensionsZoneSubscriptionInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)saveCloudExtensionsRecordBatch:(id)a3 createCloudExtensionsZoneIfMissing:(BOOL)a4 inOperationGroup:(id)a5 completionHandler:(id)a6;
-- (void)saveCloudExtensionsZoneSubscriptionInOperationGroup:(id)a3 completionHandler:(id)a4;
+- (CloudExtensionStore)initWithContainer:(id)container;
+- (id)_operationToDeleteCloudExtensionRecordIDs:(id)ds completionHandler:(id)handler;
+- (void)_addDependenciesForModifyRecordsOperation:(id)operation operationQueue:(id)queue;
+- (void)_addModifyRecordsOperations:(id)operations inOperationGroup:(id)group operationQueue:(id)queue;
+- (void)_createCloudExtensionsRecordZoneInOperationGroup:(id)group withRetryManager:(id)manager completionHandler:(id)handler;
+- (void)_fetchRecordsOnInternalQueueWithRetryManager:(id)manager serverChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_recursivelyCancelDependentOperations:(id)operations operationQueue:(id)queue;
+- (void)_saveCloudExtensionsRecordBatch:(id)batch inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_saveCloudExtensionsRecordBatch:(id)batch previouslySavedRecords:(id)records previouslyDeletedRecordIDs:(id)ds retryManager:(id)manager inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_saveRecordZoneSubscriptionInOperationGroup:(id)group operationQueue:(id)queue completionHandler:(id)handler;
+- (void)_scheduleOperation:(id)operation inOperationGroup:(id)group operationQueue:(id)queue;
+- (void)createCloudExtensionsRecordZoneInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)deleteCloudExtensionRecords:(id)records inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchCloudExtensionsRecordChangesSinceServerChangeToken:(id)token inOperationGroup:(id)group recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler;
+- (void)fetchCloudExtensionsZoneSubscriptionInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)saveCloudExtensionsRecordBatch:(id)batch createCloudExtensionsZoneIfMissing:(BOOL)missing inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)saveCloudExtensionsZoneSubscriptionInOperationGroup:(id)group completionHandler:(id)handler;
 @end
 
 @implementation CloudExtensionStore
 
-- (CloudExtensionStore)initWithContainer:(id)a3
+- (CloudExtensionStore)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v22.receiver = self;
   v22.super_class = CloudExtensionStore;
   v6 = [(CloudExtensionStore *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
-    v8 = [(CKContainer *)v7->_container privateCloudDatabase];
+    objc_storeStrong(&v6->_container, container);
+    privateCloudDatabase = [(CKContainer *)v7->_container privateCloudDatabase];
     database = v7->_database;
-    v7->_database = v8;
+    v7->_database = privateCloudDatabase;
 
     if (!v7->_database)
     {
@@ -68,18 +68,18 @@
   return v7;
 }
 
-- (void)createCloudExtensionsRecordZoneInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)createCloudExtensionsRecordZoneInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
   v8 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:sub_1000D23FC()];
-  [(CloudExtensionStore *)self _createCloudExtensionsRecordZoneInOperationGroup:v7 withRetryManager:v8 completionHandler:v6];
+  [(CloudExtensionStore *)self _createCloudExtensionsRecordZoneInOperationGroup:groupCopy withRetryManager:v8 completionHandler:handlerCopy];
 }
 
-- (void)fetchCloudExtensionsZoneSubscriptionInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)fetchCloudExtensionsZoneSubscriptionInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = sub_1000D23FC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -92,18 +92,18 @@
   block[1] = 3221225472;
   block[2] = sub_100003624;
   block[3] = &unk_100130E50;
-  v13 = v6;
-  v14 = v7;
+  v13 = groupCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = groupCopy;
+  v11 = handlerCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)saveCloudExtensionsZoneSubscriptionInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)saveCloudExtensionsZoneSubscriptionInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = sub_1000D23FC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -117,10 +117,10 @@
   v12[1] = 3221225472;
   v12[2] = sub_100003A70;
   v12[3] = &unk_100130EA0;
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
   objc_copyWeak(&v15, buf);
-  v11 = v6;
+  v11 = groupCopy;
   v13 = v11;
   [(CloudExtensionStore *)self _saveRecordZoneSubscriptionInOperationGroup:v11 operationQueue:cloudExtensionsOperationQueue completionHandler:v12];
 
@@ -128,17 +128,17 @@
   objc_destroyWeak(buf);
 }
 
-- (void)saveCloudExtensionsRecordBatch:(id)a3 createCloudExtensionsZoneIfMissing:(BOOL)a4 inOperationGroup:(id)a5 completionHandler:(id)a6
+- (void)saveCloudExtensionsRecordBatch:(id)batch createCloudExtensionsZoneIfMissing:(BOOL)missing inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  batchCopy = batch;
+  groupCopy = group;
+  handlerCopy = handler;
   v13 = sub_1000D23FC();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
     *buf = 134217984;
-    v25 = [v10 count];
+    v25 = [batchCopy count];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Saving record batch of size: %lu", buf, 0xCu);
   }
 
@@ -148,12 +148,12 @@
   v18[2] = sub_100003E88;
   v18[3] = &unk_100130F18;
   objc_copyWeak(&v22, buf);
-  v15 = v12;
+  v15 = handlerCopy;
   v21 = v15;
-  v23 = a4;
-  v16 = v11;
+  missingCopy = missing;
+  v16 = groupCopy;
   v19 = v16;
-  v17 = v10;
+  v17 = batchCopy;
   v20 = v17;
   [(CloudExtensionStore *)self _saveCloudExtensionsRecordBatch:v17 inOperationGroup:v16 completionHandler:v18];
 
@@ -161,27 +161,27 @@
   objc_destroyWeak(buf);
 }
 
-- (void)deleteCloudExtensionRecords:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)deleteCloudExtensionRecords:(id)records inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
+  recordsCopy = records;
+  groupCopy = group;
+  handlerCopy = handler;
+  v11 = [recordsCopy count];
   v12 = sub_1000D23FC();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
   if (v11)
   {
-    v29 = v9;
+    v29 = groupCopy;
     if (v13)
     {
       v14 = v12;
       *buf = 134217984;
-      v45 = [v8 count];
+      v45 = [recordsCopy count];
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Deleting %lu records.", buf, 0xCu);
     }
 
-    v32 = v10;
-    v15 = [v8 safari_arrayByGroupingIntoArraysWithMaxCount:100];
+    v32 = handlerCopy;
+    v15 = [recordsCopy safari_arrayByGroupingIntoArraysWithMaxCount:100];
     v16 = [v15 count];
     if (v16 >= 2)
     {
@@ -189,7 +189,7 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [v8 count];
+        v19 = [recordsCopy count];
         *buf = 134218240;
         v45 = v19;
         v46 = 2048;
@@ -198,7 +198,7 @@
       }
     }
 
-    v30 = v8;
+    v30 = recordsCopy;
     v20 = [NSMutableSet setWithArray:v15];
     v21 = +[NSMutableArray array];
     v22 = [NSMutableArray arrayWithCapacity:v16];
@@ -230,7 +230,7 @@
           v34 = v21;
           v35 = v20;
           v36 = v27;
-          v37 = self;
+          selfCopy = self;
           v38 = v32;
           v28 = [(CloudExtensionStore *)self _operationToDeleteCloudExtensionRecordIDs:v27 completionHandler:v33];
           [v22 addObject:v28];
@@ -245,11 +245,11 @@
       while (v24);
     }
 
-    v9 = v29;
+    groupCopy = v29;
     [(CloudExtensionStore *)self _addModifyRecordsOperations:v22 inOperationGroup:v29 operationQueue:self->_cloudExtensionsOperationQueue];
 
-    v8 = v30;
-    v10 = v32;
+    recordsCopy = v30;
+    handlerCopy = v32;
   }
 
   else
@@ -260,25 +260,25 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No records to delete.", buf, 2u);
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)fetchCloudExtensionsRecordChangesSinceServerChangeToken:(id)a3 inOperationGroup:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 completionHandler:(id)a7
+- (void)fetchCloudExtensionsRecordChangesSinceServerChangeToken:(id)token inOperationGroup:(id)group recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  groupCopy = group;
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  handlerCopy = handler;
   v17 = sub_1000D23FC();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-  if (v12)
+  if (tokenCopy)
   {
     if (v18)
     {
       *buf = 138543362;
-      v35 = v12;
+      v35 = tokenCopy;
       v19 = "Fetching record changes with server change token %{public}@.";
       v20 = v17;
       v21 = 12;
@@ -302,49 +302,49 @@ LABEL_6:
   v28[2] = sub_1000048B0;
   v28[3] = &unk_100130F90;
   v28[4] = self;
-  v29 = v12;
-  v30 = v13;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
-  v23 = v16;
-  v24 = v13;
-  v25 = v15;
-  v26 = v14;
-  v27 = v12;
+  v29 = tokenCopy;
+  v30 = groupCopy;
+  v31 = blockCopy;
+  v32 = deletedBlockCopy;
+  v33 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = groupCopy;
+  v25 = deletedBlockCopy;
+  v26 = blockCopy;
+  v27 = tokenCopy;
   dispatch_async(internalQueue, v28);
 }
 
-- (void)_saveCloudExtensionsRecordBatch:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)_saveCloudExtensionsRecordBatch:(id)batch inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
+  batchCopy = batch;
   v13 = +[NSMutableArray array];
   v11 = +[NSMutableArray array];
   v12 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:sub_1000D23FC()];
-  [(CloudExtensionStore *)self _saveCloudExtensionsRecordBatch:v10 previouslySavedRecords:v13 previouslyDeletedRecordIDs:v11 retryManager:v12 inOperationGroup:v9 completionHandler:v8];
+  [(CloudExtensionStore *)self _saveCloudExtensionsRecordBatch:batchCopy previouslySavedRecords:v13 previouslyDeletedRecordIDs:v11 retryManager:v12 inOperationGroup:groupCopy completionHandler:handlerCopy];
 }
 
-- (void)_saveCloudExtensionsRecordBatch:(id)a3 previouslySavedRecords:(id)a4 previouslyDeletedRecordIDs:(id)a5 retryManager:(id)a6 inOperationGroup:(id)a7 completionHandler:(id)a8
+- (void)_saveCloudExtensionsRecordBatch:(id)batch previouslySavedRecords:(id)records previouslyDeletedRecordIDs:(id)ds retryManager:(id)manager inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  batchCopy = batch;
+  recordsCopy = records;
+  dsCopy = ds;
+  managerCopy = manager;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v20 = sub_1000D23FC();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v14 count];
+    v21 = [batchCopy count];
     LODWORD(buf) = 134217984;
     *(&buf + 4) = v21;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Saving record batch with %lu records", &buf, 0xCu);
   }
 
-  v22 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:v14 recordIDsToDelete:0];
+  v22 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:batchCopy recordIDsToDelete:0];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v46 = 0x2020000000;
@@ -363,18 +363,18 @@ LABEL_6:
   v31[2] = sub_100004FA0;
   v31[3] = &unk_100131080;
   v31[4] = self;
-  v30 = v15;
+  v30 = recordsCopy;
   v32 = v30;
-  v24 = v16;
+  v24 = dsCopy;
   v33 = v24;
-  v25 = v19;
+  v25 = handlerCopy;
   v37 = v25;
   v38 = &buf;
-  v26 = v14;
+  v26 = batchCopy;
   v34 = v26;
-  v27 = v17;
+  v27 = managerCopy;
   v35 = v27;
-  v28 = v18;
+  v28 = groupCopy;
   v36 = v28;
   objc_copyWeak(&v39, &location);
   [v22 setModifyRecordsCompletionBlock:v31];
@@ -388,31 +388,31 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)a3 recordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 inOperationGroup:(id)a6 completionHandler:(id)a7
+- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
+  deletedBlockCopy = deletedBlock;
+  blockCopy = block;
+  tokenCopy = token;
   v17 = [[WBSCloudKitOperationRetryManager alloc] initWithLog:sub_1000D23FC()];
-  [(CloudExtensionStore *)self _fetchRecordsOnInternalQueueWithRetryManager:v17 serverChangeToken:v16 recordChangedBlock:v15 recordWithIDWasDeletedBlock:v14 inOperationGroup:v13 completionHandler:v12];
+  [(CloudExtensionStore *)self _fetchRecordsOnInternalQueueWithRetryManager:v17 serverChangeToken:tokenCopy recordChangedBlock:blockCopy recordWithIDWasDeletedBlock:deletedBlockCopy inOperationGroup:groupCopy completionHandler:handlerCopy];
 }
 
-- (void)_fetchRecordsOnInternalQueueWithRetryManager:(id)a3 serverChangeToken:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 inOperationGroup:(id)a7 completionHandler:(id)a8
+- (void)_fetchRecordsOnInternalQueueWithRetryManager:(id)manager serverChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v38 = a7;
-  v18 = a8;
+  managerCopy = manager;
+  tokenCopy = token;
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  groupCopy = group;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v39 = sub_100003294();
-  v19 = [v18 copy];
+  v19 = [handlerCopy copy];
 
   v20 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
-  [v20 setPreviousServerChangeToken:v15];
+  [v20 setPreviousServerChangeToken:tokenCopy];
   v21 = [CKFetchRecordZoneChangesOperation alloc];
   v62 = v39;
   v22 = [NSArray arrayWithObjects:&v62 count:1];
@@ -426,7 +426,7 @@ LABEL_6:
   v57[2] = sub_1000060CC;
   v57[3] = &unk_1001310A8;
   v57[4] = self;
-  v25 = v16;
+  v25 = blockCopy;
   v58 = v25;
   [v24 setRecordChangedBlock:v57];
   v55[0] = _NSConcreteStackBlock;
@@ -434,25 +434,25 @@ LABEL_6:
   v55[2] = sub_1000061BC;
   v55[3] = &unk_1001310D0;
   v55[4] = self;
-  v26 = v17;
+  v26 = deletedBlockCopy;
   v56 = v26;
   [v24 setRecordWithIDWasDeletedBlock:v55];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_1000062C0;
   v47[3] = &unk_100131148;
-  v37 = v14;
+  v37 = managerCopy;
   v48 = v37;
   objc_copyWeak(&v54, &location);
   v27 = v19;
   v51 = v27;
-  v28 = v15;
+  v28 = tokenCopy;
   v49 = v28;
   v29 = v25;
   v52 = v29;
   v30 = v26;
   v53 = v30;
-  v31 = v38;
+  v31 = groupCopy;
   v50 = v31;
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
@@ -487,17 +487,17 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)_addModifyRecordsOperations:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5
+- (void)_addModifyRecordsOperations:(id)operations inOperationGroup:(id)group operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationsCopy = operations;
+  groupCopy = group;
+  queueCopy = queue;
   v11 = sub_1000D23FC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
     *buf = 134217984;
-    v25 = [v8 count];
+    v25 = [operationsCopy count];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Enqueuing %lu modify records operations", buf, 0xCu);
   }
 
@@ -505,7 +505,7 @@ LABEL_6:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v8;
+  v13 = operationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v14)
   {
@@ -521,8 +521,8 @@ LABEL_6:
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        [(CloudExtensionStore *)self _addDependenciesForModifyRecordsOperation:v18 operationQueue:v10, v19];
-        [(CloudExtensionStore *)self _scheduleOperation:v18 inOperationGroup:v9 operationQueue:v10];
+        [(CloudExtensionStore *)self _addDependenciesForModifyRecordsOperation:v18 operationQueue:queueCopy, v19];
+        [(CloudExtensionStore *)self _scheduleOperation:v18 inOperationGroup:groupCopy operationQueue:queueCopy];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -532,15 +532,15 @@ LABEL_6:
   }
 }
 
-- (void)_addDependenciesForModifyRecordsOperation:(id)a3 operationQueue:(id)a4
+- (void)_addDependenciesForModifyRecordsOperation:(id)operation operationQueue:(id)queue
 {
-  v5 = a3;
+  operationCopy = operation;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a4 operations];
-  v7 = [v6 copy];
+  operations = [queue operations];
+  v7 = [operations copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -561,7 +561,7 @@ LABEL_6:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [v5 addDependency:v12];
+          [operationCopy addDependency:v12];
         }
 
         v11 = v11 + 1;
@@ -575,31 +575,31 @@ LABEL_6:
   }
 }
 
-- (void)_scheduleOperation:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5
+- (void)_scheduleOperation:(id)operation inOperationGroup:(id)group operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  groupCopy = group;
+  queueCopy = queue;
   internalQueue = self->_internalQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100006FB8;
   v15[3] = &unk_1001311E8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = operationCopy;
+  selfCopy = self;
+  v18 = groupCopy;
+  v19 = queueCopy;
+  v12 = queueCopy;
+  v13 = groupCopy;
+  v14 = operationCopy;
   dispatch_async(internalQueue, v15);
 }
 
-- (void)_createCloudExtensionsRecordZoneInOperationGroup:(id)a3 withRetryManager:(id)a4 completionHandler:(id)a5
+- (void)_createCloudExtensionsRecordZoneInOperationGroup:(id)group withRetryManager:(id)manager completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  managerCopy = manager;
+  handlerCopy = handler;
   v11 = sub_1000D23FC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -613,25 +613,25 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_100007164;
   block[3] = &unk_100131260;
-  v17 = v9;
-  v13 = v9;
+  v17 = managerCopy;
+  v13 = managerCopy;
   objc_copyWeak(&v21, buf);
-  v19 = self;
-  v20 = v10;
-  v18 = v8;
-  v14 = v8;
-  v15 = v10;
+  selfCopy = self;
+  v20 = handlerCopy;
+  v18 = groupCopy;
+  v14 = groupCopy;
+  v15 = handlerCopy;
   dispatch_async(internalQueue, block);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
 }
 
-- (void)_saveRecordZoneSubscriptionInOperationGroup:(id)a3 operationQueue:(id)a4 completionHandler:(id)a5
+- (void)_saveRecordZoneSubscriptionInOperationGroup:(id)group operationQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = objc_alloc_init(CKNotificationInfo);
   [v11 setShouldSendContentAvailable:1];
   internalQueue = self->_internalQueue;
@@ -639,23 +639,23 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_1000077F4;
   block[3] = &unk_1001312B0;
-  v21 = v9;
-  v22 = v10;
+  v21 = queueCopy;
+  v22 = handlerCopy;
   v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  selfCopy = self;
+  v20 = groupCopy;
+  v13 = queueCopy;
+  v14 = groupCopy;
+  v15 = handlerCopy;
   v16 = v11;
   dispatch_async(internalQueue, block);
 }
 
-- (id)_operationToDeleteCloudExtensionRecordIDs:(id)a3 completionHandler:(id)a4
+- (id)_operationToDeleteCloudExtensionRecordIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:0 recordIDsToDelete:v6];
+  dsCopy = ds;
+  handlerCopy = handler;
+  v8 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:0 recordIDsToDelete:dsCopy];
   objc_initWeak(&location, v8);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -663,7 +663,7 @@ LABEL_6:
   v11[3] = &unk_100131300;
   v11[4] = self;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v9;
   [v8 setModifyRecordsCompletionBlock:v11];
 
@@ -673,16 +673,16 @@ LABEL_6:
   return v8;
 }
 
-- (void)_recursivelyCancelDependentOperations:(id)a3 operationQueue:(id)a4
+- (void)_recursivelyCancelDependentOperations:(id)operations operationQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  operationsCopy = operations;
+  queueCopy = queue;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 operations];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  operations = [queueCopy operations];
+  v9 = [operations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -693,21 +693,21 @@ LABEL_6:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(operations);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 dependencies];
-        v15 = [v14 containsObject:v6];
+        dependencies = [v13 dependencies];
+        v15 = [dependencies containsObject:operationsCopy];
 
         if (v15 && ([v13 isCancelled] & 1) == 0)
         {
           [v13 cancel];
-          [(CloudExtensionStore *)self _recursivelyCancelDependentOperations:v13 operationQueue:v7];
+          [(CloudExtensionStore *)self _recursivelyCancelDependentOperations:v13 operationQueue:queueCopy];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [operations countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);

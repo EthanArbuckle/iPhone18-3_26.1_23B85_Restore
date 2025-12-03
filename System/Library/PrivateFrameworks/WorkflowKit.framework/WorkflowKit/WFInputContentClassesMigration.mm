@@ -1,5 +1,5 @@
 @interface WFInputContentClassesMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 + (id)addedContentItemClassesByVersion;
 - (void)migrateWorkflow;
 @end
@@ -28,12 +28,12 @@
   return v6;
 }
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"327") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"327") == 3)
   {
-    v6 = [v5 objectForKey:@"WFWorkflowInputContentItemClasses"];
+    v6 = [migrationCopy objectForKey:@"WFWorkflowInputContentItemClasses"];
     v7 = v6 != 0;
   }
 
@@ -47,8 +47,8 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self workflow];
-  v4 = [v3 objectForKey:@"WFWorkflowInputContentItemClasses"];
+  workflow = [(WFWorkflowMigration *)self workflow];
+  v4 = [workflow objectForKey:@"WFWorkflowInputContentItemClasses"];
 
   if ([v4 containsObject:@"WFAudiovisualContentItem"])
   {
@@ -56,19 +56,19 @@
     [v4 addObject:@"WFAVAssetContentItem"];
   }
 
-  v5 = [(WFWorkflowMigration *)self workflow];
-  v6 = [v5 objectForKey:@"WFWorkflowClientVersion"];
-  v7 = [v6 integerValue];
+  workflow2 = [(WFWorkflowMigration *)self workflow];
+  v6 = [workflow2 objectForKey:@"WFWorkflowClientVersion"];
+  integerValue = [v6 integerValue];
 
-  v8 = [objc_opt_class() addedContentItemClassesByVersion];
+  addedContentItemClassesByVersion = [objc_opt_class() addedContentItemClassesByVersion];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __49__WFInputContentClassesMigration_migrateWorkflow__block_invoke;
   v13 = &unk_1E8375FE0;
   v14 = v4;
-  v15 = v7;
+  v15 = integerValue;
   v9 = v4;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v10];
+  [addedContentItemClassesByVersion enumerateKeysAndObjectsUsingBlock:&v10];
 
   [(WFWorkflowMigration *)self finish:v10];
 }

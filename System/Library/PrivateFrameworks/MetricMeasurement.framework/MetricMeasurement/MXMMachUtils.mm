@@ -1,5 +1,5 @@
 @interface MXMMachUtils
-+ (id)_processNameWithBundleIdentifier:(id)a3;
++ (id)_processNameWithBundleIdentifier:(id)identifier;
 + (mach_timebase_info)_timebase;
 @end
 
@@ -27,12 +27,12 @@ uint64_t __25__MXMMachUtils__timebase__block_invoke()
   return result;
 }
 
-+ (id)_processNameWithBundleIdentifier:(id)a3
++ (id)_processNameWithBundleIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:a3];
-  v4 = [v3 bundleExecutable];
-  v5 = [v4 lastPathComponent];
-  v6 = [v5 copy];
+  v3 = [MEMORY[0x277CC1E88] bundleProxyForIdentifier:identifier];
+  bundleExecutable = [v3 bundleExecutable];
+  lastPathComponent = [bundleExecutable lastPathComponent];
+  v6 = [lastPathComponent copy];
 
   return v6;
 }

@@ -1,70 +1,70 @@
 @interface SKUIHorizontalLockupView
-+ (BOOL)_usesEditorialLayoutForLabelViewElement:(id)a3;
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForOrdinal:(id)a3 context:(id)a4;
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (BOOL)_usesEditorialLayoutForLabelViewElement:(id)element;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForOrdinal:(id)ordinal context:(id)context;
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (BOOL)_usesBackgroundWithAlpha;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)offerViewAnimateTransition:(id)a3;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5;
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIHorizontalLockupView)initWithFrame:(CGRect)a3;
-- (double)_dividerHeight:(id)a3;
-- (id)_addFlipContainerViewWithFrontView:(id)a3 backView:(id)a4;
-- (id)_columnForView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)offerViewAnimateTransition:(id)transition;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated;
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIHorizontalLockupView)initWithFrame:(CGRect)frame;
+- (double)_dividerHeight:(id)height;
+- (id)_addFlipContainerViewWithFrontView:(id)view backView:(id)backView;
+- (id)_columnForView:(id)view;
 - (id)_previewFrontView;
 - (id)_previewMediaURL;
 - (id)_previewProgressIndicator;
-- (id)_viewElementForView:(id)a3;
+- (id)_viewElementForView:(id)view;
 - (id)preferredBackgroundColor;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_addConfirmationGradientForView:(id)a3;
-- (void)_animateButton:(id)a3;
-- (void)_audioPlayerStatusChangeNotification:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
-- (void)_expandEditorialForLabel:(id)a3;
-- (void)_handlePlayButtonTap:(id)a3 element:(id)a4;
-- (void)_layoutConfirmationGradientRelativeToItemOfferView:(id)a3 alpha:(double)a4;
-- (void)_performDefaultActionForImage:(id)a3;
-- (void)_resizeMetadataRelativeToItemOfferView:(id)a3;
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3;
-- (void)_showConfirmationAction:(id)a3;
-- (void)_tapGestureAction:(id)a3;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_addConfirmationGradientForView:(id)view;
+- (void)_animateButton:(id)button;
+- (void)_audioPlayerStatusChangeNotification:(id)notification;
+- (void)_buttonAction:(id)action;
+- (void)_cancelConfirmationAction:(id)action;
+- (void)_expandEditorialForLabel:(id)label;
+- (void)_handlePlayButtonTap:(id)tap element:(id)element;
+- (void)_layoutConfirmationGradientRelativeToItemOfferView:(id)view alpha:(double)alpha;
+- (void)_performDefaultActionForImage:(id)image;
+- (void)_resizeMetadataRelativeToItemOfferView:(id)view;
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view;
+- (void)_showConfirmationAction:(id)action;
+- (void)_tapGestureAction:(id)action;
 - (void)dealloc;
-- (void)hidePreviewProgressAnimated:(BOOL)a3;
-- (void)itemOfferButtonDidAnimateTransition:(id)a3;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)hidePreviewProgressAnimated:(BOOL)animated;
+- (void)itemOfferButtonDidAnimateTransition:(id)transition;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)mediaPlayer:(id)a3 itemStateChanged:(id)a4;
-- (void)offerViewDidAnimateTransition:(id)a3;
-- (void)offerViewWillAnimateTransition:(id)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContainerBackgroundImageForPlayButton:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setPerspectiveTargetView:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setVanishingPoint:(CGPoint)a3;
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4;
-- (void)togglePreviewPlaybackAnimated:(BOOL)a3;
+- (void)mediaPlayer:(id)player itemStateChanged:(id)changed;
+- (void)offerViewDidAnimateTransition:(id)transition;
+- (void)offerViewWillAnimateTransition:(id)transition;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setBackgroundColor:(id)color;
+- (void)setContainerBackgroundImageForPlayButton:(id)button;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setPerspectiveTargetView:(id)view;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setVanishingPoint:(CGPoint)point;
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated;
+- (void)togglePreviewPlaybackAnimated:(BOOL)animated;
 @end
 
 @implementation SKUIHorizontalLockupView
 
-- (SKUIHorizontalLockupView)initWithFrame:(CGRect)a3
+- (SKUIHorizontalLockupView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -79,21 +79,21 @@
 
   v20.receiver = self;
   v20.super_class = SKUIHorizontalLockupView;
-  v16 = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
-    viewElementViews = v16->_viewElementViews;
-    v16->_viewElementViews = v17;
+    viewElementViews = height->_viewElementViews;
+    height->_viewElementViews = v17;
   }
 
-  return v16;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
   [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator removeTarget:self action:0 forControlEvents:0xFFFFFFFFLL];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer removeTarget:self action:0];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:0];
@@ -105,29 +105,29 @@
 
 - (id)preferredBackgroundColor
 {
-  v3 = [(SKUILockupViewElement *)self->_lockupElement style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  style = [(SKUILockupViewElement *)self->_lockupElement style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (!v5)
+  if (!color)
   {
     if ([(SKUILockupViewElement *)self->_lockupElement lockupViewType]== 7)
     {
-      v5 = [MEMORY[0x277D75348] colorWithWhite:0.109803922 alpha:0.72];
+      color = [MEMORY[0x277D75348] colorWithWhite:0.109803922 alpha:0.72];
     }
 
     else
     {
-      v5 = 0;
+      color = 0;
     }
   }
 
-  return v5;
+  return color;
 }
 
-- (void)setPerspectiveTargetView:(id)a3
+- (void)setPerspectiveTargetView:(id)view
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, view);
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__SKUIHorizontalLockupView_setPerspectiveTargetView___block_invoke;
@@ -145,17 +145,17 @@ void __53__SKUIHorizontalLockupView_setPerspectiveTargetView___block_invoke(uint
   [v3 setPerspectiveTargetView:WeakRetained];
 }
 
-- (void)setVanishingPoint:(CGPoint)a3
+- (void)setVanishingPoint:(CGPoint)point
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__SKUIHorizontalLockupView_setVanishingPoint___block_invoke;
   v3[3] = &__block_descriptor_48_e23_v32__0__UIView_8Q16_B24l;
-  v4 = a3;
+  pointCopy = point;
   [(SKUIViewReuseView *)self enumerateExistingViewsForReuseIdentifier:0x28280C8C8 usingBlock:v3];
 }
 
-- (void)hidePreviewProgressAnimated:(BOOL)a3
+- (void)hidePreviewProgressAnimated:(BOOL)animated
 {
   previewState = self->_previewState;
   if (previewState)
@@ -170,13 +170,13 @@ void __53__SKUIHorizontalLockupView_setPerspectiveTargetView___block_invoke(uint
 
     if (previewState == 2)
     {
-      v9 = [(SKUIHorizontalLockupView *)self _previewFrontView];
-      if (a3)
+      _previewFrontView = [(SKUIHorizontalLockupView *)self _previewFrontView];
+      if (animated)
       {
-        v10 = [(SKUIHorizontalLockupView *)self _addFlipContainerViewWithFrontView:v6 backView:v9];
-        [v9 setHidden:0];
+        v10 = [(SKUIHorizontalLockupView *)self _addFlipContainerViewWithFrontView:v6 backView:_previewFrontView];
+        [_previewFrontView setHidden:0];
         objc_initWeak(&location, self);
-        v11 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
         v13[0] = MEMORY[0x277D85DD0];
         v13[1] = 3221225472;
         v13[2] = __56__SKUIHorizontalLockupView_hidePreviewProgressAnimated___block_invoke;
@@ -184,7 +184,7 @@ void __53__SKUIHorizontalLockupView_setPerspectiveTargetView___block_invoke(uint
         v12 = v10;
         v14 = v12;
         objc_copyWeak(&v15, &location);
-        [v11 _performBlockAfterCATransactionCommits:v13];
+        [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v13];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -194,7 +194,7 @@ void __53__SKUIHorizontalLockupView_setPerspectiveTargetView___block_invoke(uint
       {
         self->_previewState = 0;
         [(SKUIPreviewProgressIndicator *)v6 removeFromSuperview];
-        [(SKUIHorizontalLockupView *)self addSubview:v9];
+        [(SKUIHorizontalLockupView *)self addSubview:_previewFrontView];
         [(SKUIHorizontalLockupView *)self setNeedsLayout];
       }
     }
@@ -221,35 +221,35 @@ void __56__SKUIHorizontalLockupView_hidePreviewProgressAnimated___block_invoke_2
   [WeakRetained _resolvePreviewStateAfterTransitionForFlipView:*(a1 + 32)];
 }
 
-- (void)showPreviewProgressWithStatus:(id)a3 animated:(BOOL)a4
+- (void)showPreviewProgressWithStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_lastPlayerStatus, a3);
+  animatedCopy = animated;
+  statusCopy = status;
+  objc_storeStrong(&self->_lastPlayerStatus, status);
   previewState = self->_previewState;
   if (previewState)
   {
     if (previewState == 2)
     {
       [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator setHidden:0];
-      [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:v7 animated:v4];
+      [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:statusCopy animated:animatedCopy];
     }
   }
 
   else
   {
-    v9 = [(SKUIHorizontalLockupView *)self _previewFrontView];
-    if (v9)
+    _previewFrontView = [(SKUIHorizontalLockupView *)self _previewFrontView];
+    if (_previewFrontView)
     {
-      v10 = [(SKUIHorizontalLockupView *)self _previewProgressIndicator];
-      v11 = v10;
-      if (v4)
+      _previewProgressIndicator = [(SKUIHorizontalLockupView *)self _previewProgressIndicator];
+      v11 = _previewProgressIndicator;
+      if (animatedCopy)
       {
-        v12 = [(SKUIHorizontalLockupView *)self _addFlipContainerViewWithFrontView:v9 backView:v10];
+        v12 = [(SKUIHorizontalLockupView *)self _addFlipContainerViewWithFrontView:_previewFrontView backView:_previewProgressIndicator];
         self->_previewState = 1;
-        [v11 reloadWithPlayerStatus:v7 animated:1];
+        [v11 reloadWithPlayerStatus:statusCopy animated:1];
         objc_initWeak(&location, self);
-        v13 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __67__SKUIHorizontalLockupView_showPreviewProgressWithStatus_animated___block_invoke_2;
@@ -257,7 +257,7 @@ void __56__SKUIHorizontalLockupView_hidePreviewProgressAnimated___block_invoke_2
         v14 = v12;
         v17 = v14;
         objc_copyWeak(&v18, &location);
-        [v13 _performBlockAfterCATransactionCommits:v16];
+        [mEMORY[0x277D75128] _performBlockAfterCATransactionCommits:v16];
 
         objc_destroyWeak(&v18);
         objc_destroyWeak(&location);
@@ -266,18 +266,18 @@ void __56__SKUIHorizontalLockupView_hidePreviewProgressAnimated___block_invoke_2
       else
       {
         self->_previewState = 2;
-        [v10 setEnabled:1];
+        [_previewProgressIndicator setEnabled:1];
         [(SKUIHorizontalLockupView *)self addSubview:v11];
         [(SKUIHorizontalLockupView *)self setNeedsLayout];
-        v15 = [MEMORY[0x277D75128] sharedApplication];
+        mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __67__SKUIHorizontalLockupView_showPreviewProgressWithStatus_animated___block_invoke;
         v20[3] = &unk_2781F9570;
         v21 = v11;
-        v22 = self;
-        v23 = v4;
-        [v15 _performBlockAfterCATransactionCommits:v20];
+        selfCopy = self;
+        v23 = animatedCopy;
+        [mEMORY[0x277D75128]2 _performBlockAfterCATransactionCommits:v20];
 
         v14 = v21;
       }
@@ -305,43 +305,43 @@ void __67__SKUIHorizontalLockupView_showPreviewProgressWithStatus_animated___blo
   [WeakRetained _resolvePreviewStateAfterTransitionForFlipView:*(a1 + 32)];
 }
 
-- (void)togglePreviewPlaybackAnimated:(BOOL)a3
+- (void)togglePreviewPlaybackAnimated:(BOOL)animated
 {
-  v4 = [(SKUIHorizontalLockupView *)self _previewMediaURL];
-  if (v4)
+  _previewMediaURL = [(SKUIHorizontalLockupView *)self _previewMediaURL];
+  if (_previewMediaURL)
   {
-    v12 = v4;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [MEMORY[0x277D7FDA8] sessionManager];
-    v7 = [v6 endSessionForURL:v12];
+    v12 = _previewMediaURL;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    sessionManager = [MEMORY[0x277D7FDA8] sessionManager];
+    v7 = [sessionManager endSessionForURL:v12];
     if (v7)
     {
-      [v5 removeObserver:self name:*MEMORY[0x277D7FF18] object:v7];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:v7];
       [v7 stop];
       [(SKUIHorizontalLockupView *)self hidePreviewProgressAnimated:1];
     }
 
     else
     {
-      v8 = [v6 stopAllAudioPlayerSessions];
-      v9 = [v6 startSessionWithURL:v12];
-      [v5 addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:v9];
+      stopAllAudioPlayerSessions = [sessionManager stopAllAudioPlayerSessions];
+      v9 = [sessionManager startSessionWithURL:v12];
+      [defaultCenter addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:*MEMORY[0x277D7FF18] object:v9];
       v10 = [(SKUIViewElement *)self->_lockupElement firstChildForElementType:90];
       [v9 setStoreItemIdentifier:{objc_msgSend(v10, "itemIdentifier")}];
-      v11 = [v9 playerStatus];
-      [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:v11 animated:1];
+      playerStatus = [v9 playerStatus];
+      [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:playerStatus animated:1];
 
       [v9 play];
     }
 
-    v4 = v12;
+    _previewMediaURL = v12;
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -350,15 +350,15 @@ void __67__SKUIHorizontalLockupView_showPreviewProgressWithStatus_animated___blo
   v11[1] = 3221225472;
   v11[2] = __75__SKUIHorizontalLockupView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2781F95A0;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __75__SKUIHorizontalLockupView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -368,12 +368,12 @@ uint64_t __75__SKUIHorizontalLockupView_prefetchResourcesForViewElement_reason_c
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -384,10 +384,10 @@ uint64_t __75__SKUIHorizontalLockupView_prefetchResourcesForViewElement_reason_c
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -400,32 +400,32 @@ uint64_t __75__SKUIHorizontalLockupView_prefetchResourcesForViewElement_reason_c
     }
   }
 
-  v18 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:v8 context:v9];
+  v18 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = __Block_byref_object_copy__40;
   v35 = __Block_byref_object_dispose__40;
   v36 = 0;
-  v19 = [(SKUIHorizontalLockupLayout *)v18 columns];
+  columns = [(SKUIHorizontalLockupLayout *)v18 columns];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __70__SKUIHorizontalLockupView_requestLayoutForViewElement_width_context___block_invoke;
   v26 = &unk_2781FCF18;
-  v29 = a1;
-  v30 = a4;
-  v20 = v9;
+  selfCopy = self;
+  widthCopy = width;
+  v20 = contextCopy;
   v27 = v20;
   v28 = &v31;
-  [v19 enumerateObjectsUsingBlock:&v23];
+  [columns enumerateObjectsUsingBlock:&v23];
 
-  [(SKUIHorizontalLockupLayout *)v18 sizeColumnsToFitWidth:v20 context:a4, v23, v24, v25, v26];
+  [(SKUIHorizontalLockupLayout *)v18 sizeColumnsToFitWidth:v20 context:width, v23, v24, v25, v26];
   v21 = v32[5];
   if (v21)
   {
-    v22 = [v21 childViewElements];
+    childViewElements = [v21 childViewElements];
     [v32[5] size];
-    [a1 _requestLayoutForViewElements:v22 width:v20 context:?];
+    [self _requestLayoutForViewElements:childViewElements width:v20 context:?];
   }
 
   _Block_object_dispose(&v31, 8);
@@ -460,10 +460,10 @@ LABEL_4:
 LABEL_5:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -480,22 +480,22 @@ LABEL_5:
   v29 = &v28;
   v30 = 0x3010000000;
   v31 = &unk_215F8ACD7;
-  v32 = a3;
+  widthCopy = width;
   v33 = 0;
-  v17 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:v7 context:v8];
-  [(SKUIHorizontalLockupLayout *)v17 sizeColumnsToFitWidth:v8 context:a3];
+  v17 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
+  [(SKUIHorizontalLockupLayout *)v17 sizeColumnsToFitWidth:contextCopy context:width];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v18 = [(SKUIHorizontalLockupLayout *)v17 columns];
+  columns = [(SKUIHorizontalLockupLayout *)v17 columns];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v23[3] = &unk_2781FCF40;
   v23[4] = &v24;
   v23[5] = &v28;
-  [v18 enumerateObjectsUsingBlock:v23];
+  [columns enumerateObjectsUsingBlock:v23];
 
   v19 = v29[4];
   v20 = v25[3] + v29[5];
@@ -541,10 +541,10 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   *(*(*v6 + 8) + v7) = v5;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSHashTable *)self->_artworkRelatedChildViewElementViews removeAllObjects];
   [(NSMapTable *)self->_cacheKeyToImageView removeAllObjects];
   [(NSMapTable *)self->_buyButtonDescriptorToButton removeAllObjects];
@@ -552,7 +552,7 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   badge = self->_badge;
   self->_badge = 0;
 
-  objc_storeStrong(&self->_lockupElement, a3);
+  objc_storeStrong(&self->_lockupElement, element);
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   tappableViews = self->_tappableViews;
   self->_tappableViews = v12;
@@ -565,11 +565,11 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   playButton = self->_playButton;
   self->_playButton = 0;
 
-  v16 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:v9 context:v10];
+  v16 = [[SKUIHorizontalLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
   layout = self->_layout;
   self->_layout = v16;
 
-  [(SKUIHorizontalLockupLayout *)self->_layout sizeColumnsToFitWidth:v10 context:a4];
+  [(SKUIHorizontalLockupLayout *)self->_layout sizeColumnsToFitWidth:contextCopy context:width];
   self->_useClearBackground = [(SKUIHorizontalLockupView *)self _usesBackgroundWithAlpha];
   v52 = 0;
   v53 = &v52;
@@ -577,8 +577,8 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   v55 = __Block_byref_object_copy__40;
   v56 = __Block_byref_object_dispose__40;
   v57 = 0;
-  v47 = v9;
-  if ([v9 lockupViewType] == 7 || objc_msgSend(v9, "lockupViewType") == 6)
+  v47 = elementCopy;
+  if ([elementCopy lockupViewType] == 7 || objc_msgSend(elementCopy, "lockupViewType") == 6)
   {
     if (!self->_metadataBackgroundView)
     {
@@ -589,31 +589,31 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
       [(SKUIHorizontalLockupView *)self addSubview:self->_metadataBackgroundView];
     }
 
-    v20 = [v9 style];
-    v21 = [v20 ikBackgroundColor];
-    v22 = [v21 color];
+    style = [elementCopy style];
+    ikBackgroundColor = [style ikBackgroundColor];
+    color = [ikBackgroundColor color];
 
-    if (!v22)
+    if (!color)
     {
       if ([v47 lockupViewType] == 7)
       {
-        v22 = [MEMORY[0x277D75348] colorWithWhite:0.109803922 alpha:0.72];
+        color = [MEMORY[0x277D75348] colorWithWhite:0.109803922 alpha:0.72];
       }
 
       else
       {
-        v22 = 0;
+        color = 0;
       }
     }
 
-    [(UIView *)self->_metadataBackgroundView setBackgroundColor:v22];
+    [(UIView *)self->_metadataBackgroundView setBackgroundColor:color];
     self->_useClearBackground = 1;
   }
 
   else
   {
     [(UIView *)self->_metadataBackgroundView removeFromSuperview];
-    v22 = self->_metadataBackgroundView;
+    color = self->_metadataBackgroundView;
     self->_metadataBackgroundView = 0;
   }
 
@@ -622,8 +622,8 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   v48[2] = __64__SKUIHorizontalLockupView_reloadWithViewElement_width_context___block_invoke;
   v48[3] = &unk_2781FCF90;
   v48[4] = self;
-  v51 = a4;
-  v23 = v10;
+  widthCopy = width;
+  v23 = contextCopy;
   v49 = v23;
   v50 = &v52;
   [(SKUIViewReuseView *)self modifyUsingBlock:v48];
@@ -652,15 +652,15 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   }
 
   [(SKUIHorizontalLockupView *)self sendSubviewToBack:v53[5]];
-  v27 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v28 = *MEMORY[0x277D7FF18];
-  [v27 removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
-  v29 = [(SKUIHorizontalLockupView *)self _previewMediaURL];
-  if (v29 && ([MEMORY[0x277D7FDA8] sessionManager], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "audioPlayerForURL:", v29), v31 = objc_claimAutoreleasedReturnValue(), v30, v31))
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FF18] object:0];
+  _previewMediaURL = [(SKUIHorizontalLockupView *)self _previewMediaURL];
+  if (_previewMediaURL && ([MEMORY[0x277D7FDA8] sessionManager], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "audioPlayerForURL:", _previewMediaURL), v31 = objc_claimAutoreleasedReturnValue(), v30, v31))
   {
-    [v27 addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:v28 object:v31];
-    v32 = [v31 playerStatus];
-    [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:v32 animated:0];
+    [defaultCenter addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:v28 object:v31];
+    playerStatus = [v31 playerStatus];
+    [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:playerStatus animated:0];
   }
 
   else
@@ -675,20 +675,20 @@ void __66__SKUIHorizontalLockupView_sizeThatFitsWidth_viewElement_context___bloc
   v34 = self->_playButton;
   if (v34)
   {
-    v35 = [(SKUIPlayButton *)v34 playItemIdentifier];
+    playItemIdentifier = [(SKUIPlayButton *)v34 playItemIdentifier];
 
-    if (v35)
+    if (playItemIdentifier)
     {
       v36 = +[SKUIMediaPlayerInterface sharedInstance];
-      v37 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-      v38 = [v36 playerForItemWithIdentifier:v37];
+      playItemIdentifier2 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+      v38 = [v36 playerForItemWithIdentifier:playItemIdentifier2];
 
-      v39 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
-      if ([v36 identifierIsOnDeck:v39])
+      playItemIdentifier3 = [(SKUIPlayButton *)self->_playButton playItemIdentifier];
+      if ([v36 identifierIsOnDeck:playItemIdentifier3])
       {
-        v40 = [(SKUIPlayButtonControl *)self->_playButton isIndeterminate];
+        isIndeterminate = [(SKUIPlayButtonControl *)self->_playButton isIndeterminate];
 
-        if (!v40)
+        if (!isIndeterminate)
         {
           [(SKUIPlayButtonControl *)self->_playButton beginIndeterminateAnimation];
           [(SKUIPlayButtonControl *)self->_playButton showPlayIndicator:0];
@@ -706,25 +706,25 @@ LABEL_36:
 
       if (v38)
       {
-        v41 = [v38 playerItem];
-        v42 = [v41 playState];
+        playerItem = [v38 playerItem];
+        playState = [playerItem playState];
 
         if ([(SKUIPlayButton *)self->_playButton showOnDemand])
         {
           [(SKUIPlayButton *)self->_playButton setHidden:0];
         }
 
-        if (v42 <= 5 && ((1 << v42) & 0x31) != 0)
+        if (playState <= 5 && ((1 << playState) & 0x31) != 0)
         {
           [(SKUIPlayButtonControl *)self->_playButton hideProgressAnimated:1];
         }
 
         else
         {
-          v44 = [v38 playerItem];
-          [v46 reloadWithItemStatus:v44 animated:0];
+          playerItem2 = [v38 playerItem];
+          [v46 reloadWithItemStatus:playerItem2 animated:0];
 
-          [(SKUIPlayButtonControl *)self->_playButton showPlayIndicator:v42 == 3];
+          [(SKUIPlayButtonControl *)self->_playButton showPlayIndicator:playState == 3];
         }
       }
 
@@ -1270,36 +1270,36 @@ LABEL_119:
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIHorizontalLockupView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
   cacheKeyToImageView = self->_cacheKeyToImageView;
-  v12 = [v9 cacheKey];
-  v13 = [(NSMapTable *)cacheKeyToImageView objectForKey:v12];
+  cacheKey = [requestCopy cacheKey];
+  v13 = [(NSMapTable *)cacheKeyToImageView objectForKey:cacheKey];
 
   if (v13)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 imageView];
-      [(NSHashTable *)v14 setImage:v8];
+      imageView = [v13 imageView];
+      [(NSHashTable *)imageView setImage:imageCopy];
     }
 
     else
@@ -1307,12 +1307,12 @@ LABEL_119:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [v13 setImage:v8];
+        [v13 setImage:imageCopy];
         goto LABEL_16;
       }
 
-      v14 = [v9 cacheKey];
-      [v13 setImage:v8 cacheKey:v14 context:v10];
+      imageView = [requestCopy cacheKey];
+      [v13 setImage:imageCopy cacheKey:imageView context:contextCopy];
     }
 
 LABEL_15:
@@ -1326,8 +1326,8 @@ LABEL_16:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = self->_artworkRelatedChildViewElementViews;
-  v15 = [(NSHashTable *)v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  imageView = self->_artworkRelatedChildViewElementViews;
+  v15 = [(NSHashTable *)imageView countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1338,17 +1338,17 @@ LABEL_6:
     {
       if (*v22 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(imageView);
       }
 
-      if ([*(*(&v21 + 1) + 8 * v18) setImage:v8 forArtworkRequest:v9 context:{v10, v21}])
+      if ([*(*(&v21 + 1) + 8 * v18) setImage:imageCopy forArtworkRequest:requestCopy context:{contextCopy, v21}])
       {
         goto LABEL_15;
       }
 
       if (v16 == ++v18)
       {
-        v16 = [(NSHashTable *)v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v16 = [(NSHashTable *)imageView countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v16)
         {
           goto LABEL_6;
@@ -1365,24 +1365,24 @@ LABEL_17:
   return v19;
 }
 
-- (void)setContainerBackgroundImageForPlayButton:(id)a3
+- (void)setContainerBackgroundImageForPlayButton:(id)button
 {
   playButton = self->_playButton;
   if (playButton)
   {
     LODWORD(v3) = 15.0;
     LODWORD(v4) = 15.0;
-    [(SKUIPlayButtonControl *)playButton setBackgroundImageForBlurring:a3 withOffsetRight:v3 withOffsetBottom:v4];
+    [(SKUIPlayButtonControl *)playButton setBackgroundImageForBlurring:button withOffsetRight:v3 withOffsetBottom:v4];
   }
 }
 
-- (BOOL)updateWithItemState:(id)a3 context:(id)a4 animated:(BOOL)a5
+- (BOOL)updateWithItemState:(id)state context:(id)context animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v24 = [v9 clientContext];
+  stateCopy = state;
+  contextCopy = context;
+  clientContext = [contextCopy clientContext];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -1403,11 +1403,11 @@ LABEL_17:
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        if ([v15 canPersonalizeUsingItemState:v8])
+        if ([v15 canPersonalizeUsingItemState:stateCopy])
         {
           v22 = [(NSMapTable *)self->_buyButtonDescriptorToButton objectForKey:v15];
-          v21 = v24;
-          [v22 setValuesUsingBuyButtonDescriptor:v15 itemState:v8 clientContext:v24 animated:v5];
+          v21 = clientContext;
+          [v22 setValuesUsingBuyButtonDescriptor:v15 itemState:stateCopy clientContext:clientContext animated:animatedCopy];
 
 LABEL_20:
           [(SKUIHorizontalLockupView *)self setNeedsLayout];
@@ -1445,9 +1445,9 @@ LABEL_20:
           objc_enumerationMutation(v10);
         }
 
-        if ([*(*(&v25 + 1) + 8 * j) updateWithItemState:v8 context:v9 animated:v5])
+        if ([*(*(&v25 + 1) + 8 * j) updateWithItemState:stateCopy context:contextCopy animated:animatedCopy])
         {
-          v21 = v24;
+          v21 = clientContext;
           goto LABEL_20;
         }
       }
@@ -1463,16 +1463,16 @@ LABEL_20:
   }
 
   v20 = 0;
-  v21 = v24;
+  v21 = clientContext;
 LABEL_21:
 
   return v20;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1493,8 +1493,8 @@ LABEL_21:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 itmlID];
-        v12 = [v11 isEqualToString:v4];
+        itmlID = [v10 itmlID];
+        v12 = [itmlID isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -1531,17 +1531,17 @@ LABEL_11:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(SKUILockupViewElement *)self->_lockupElement style];
-    v12 = [v11 elementPosition];
+    style = [(SKUILockupViewElement *)self->_lockupElement style];
+    elementPosition = [style elementPosition];
 
-    if (!v12)
+    if (!elementPosition)
     {
-      v12 = 2 * ([(SKUILockupViewElement *)self->_lockupElement lockupViewType]== 6);
+      elementPosition = 2 * ([(SKUILockupViewElement *)self->_lockupElement lockupViewType]== 6);
     }
 
-    v31 = [(SKUIHorizontalLockupView *)self _previewFrontView];
-    v32 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
-    v13 = [v32 count];
+    _previewFrontView = [(SKUIHorizontalLockupView *)self _previewFrontView];
+    columns = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+    v13 = [columns count];
     v14 = malloc_type_malloc(16 * v13, 0x1000040451B5BE8uLL);
     v59[0] = 0;
     v59[1] = v59;
@@ -1568,7 +1568,7 @@ LABEL_11:
     v17 = *(MEMORY[0x277CBF3A0] + 16);
     v47 = *MEMORY[0x277CBF3A0];
     v48 = v17;
-    v18 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+    columns2 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __42__SKUIHorizontalLockupView_layoutSubviews__block_invoke;
@@ -1584,11 +1584,11 @@ LABEL_11:
     v45[13] = v14;
     v45[14] = v13;
     v45[8] = v46;
-    [v18 enumerateObjectsUsingBlock:v45];
+    [columns2 enumerateObjectsUsingBlock:v45];
 
     if (v54[3] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v19 = [v32 objectAtIndex:?];
+      v19 = [columns objectAtIndex:?];
       [(SKUIHorizontalLockupView *)self _sizeViewsForColumn:v19 toFitWidth:v50[3]];
       v21 = v20;
 
@@ -1601,13 +1601,13 @@ LABEL_11:
     v44[1] = v44;
     v44[2] = 0x2020000000;
     *&v44[3] = left;
-    v23 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+    columns3 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __42__SKUIHorizontalLockupView_layoutSubviews__block_invoke_2;
     v33[3] = &unk_2781FD008;
     v38 = v14;
-    v39 = v12;
+    v39 = elementPosition;
     v33[4] = self;
     v35 = v46;
     v36 = v44;
@@ -1616,19 +1616,19 @@ LABEL_11:
     v42 = v8;
     v43 = v10;
     v37 = v57;
-    v24 = v31;
+    v24 = _previewFrontView;
     v34 = v24;
-    [v23 enumerateObjectsUsingBlock:v33];
+    [columns3 enumerateObjectsUsingBlock:v33];
 
     free(v14);
     if (self->_metadataBackgroundView)
     {
       [(SKUIHorizontalLockupView *)self bounds];
       [(UIView *)self->_metadataBackgroundView setFrame:v25 + self->_contentInset.left, v26 + self->_contentInset.top, v27 - (self->_contentInset.left + self->_contentInset.right), v28 - (self->_contentInset.top + self->_contentInset.bottom)];
-      v29 = [(UIView *)self->_metadataBackgroundView subviews];
-      v30 = [v29 firstObject];
+      subviews = [(UIView *)self->_metadataBackgroundView subviews];
+      firstObject = [subviews firstObject];
       [(UIView *)self->_metadataBackgroundView bounds];
-      [v30 setFrame:?];
+      [firstObject setFrame:?];
 
       [(SKUIHorizontalLockupView *)self sendSubviewToBack:self->_metadataBackgroundView];
     }
@@ -2098,7 +2098,7 @@ LABEL_62:
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -2108,8 +2108,8 @@ LABEL_62:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(SKUIHorizontalLockupView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  subviews = [(SKUIHorizontalLockupView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2121,29 +2121,29 @@ LABEL_62:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setSemanticContentAttribute:a3];
+        [*(*(&v10 + 1) + 8 * v9++) setSemanticContentAttribute:attribute];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if ([(SKUILockupViewElement *)self->_lockupElement lockupViewType]== 5 || self->_useClearBackground)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     v10.receiver = self;
     v10.super_class = SKUIHorizontalLockupView;
-    [(SKUIViewReuseView *)&v10 setBackgroundColor:v5];
+    [(SKUIViewReuseView *)&v10 setBackgroundColor:clearColor];
 LABEL_4:
 
     goto LABEL_5;
@@ -2151,14 +2151,14 @@ LABEL_4:
 
   v9.receiver = self;
   v9.super_class = SKUIHorizontalLockupView;
-  [(SKUIViewReuseView *)&v9 setBackgroundColor:v4];
+  [(SKUIViewReuseView *)&v9 setBackgroundColor:colorCopy];
   playButton = self->_playButton;
   if (playButton && [(SKUIPlayButtonControl *)playButton backgroundType]== 2)
   {
-    v5 = [(SKUIPlayButtonControl *)SKUIPlayButton blurColorForColor:v4];
-    if (v5)
+    clearColor = [(SKUIPlayButtonControl *)SKUIPlayButton blurColorForColor:colorCopy];
+    if (clearColor)
     {
-      [(SKUIPlayButtonControl *)self->_playButton setControlColor:v5];
+      [(SKUIPlayButtonControl *)self->_playButton setControlColor:clearColor];
     }
 
     goto LABEL_4;
@@ -2170,27 +2170,27 @@ LABEL_5:
     v6 = [(NSMapTable *)self->_viewElementViews objectForKey:?];
     if (v6)
     {
-      v7 = [MEMORY[0x277D75348] clearColor];
-      [v6 setBackgroundColor:v7];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [v6 setBackgroundColor:clearColor2];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3010000000;
   v12 = &unk_215F8ACD7;
-  width = a3.width;
+  width = fits.width;
   v14 = 0;
-  v3 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+  columns = [(SKUIHorizontalLockupLayout *)self->_layout columns];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke;
   v8[3] = &unk_2781FD030;
   v8[4] = &v9;
-  [v3 enumerateObjectsUsingBlock:v8];
+  [columns enumerateObjectsUsingBlock:v8];
 
   v4 = v10[4];
   v5 = v10[5];
@@ -2220,9 +2220,9 @@ uint64_t __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)itemOfferButtonDidAnimateTransition:(id)a3
+- (void)itemOfferButtonDidAnimateTransition:(id)transition
 {
-  if (([a3 isShowingConfirmation] & 1) == 0)
+  if (([transition isShowingConfirmation] & 1) == 0)
   {
     [(SKUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -2230,24 +2230,24 @@ uint64_t __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke(uint64_t a1,
   }
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   [(SKUIHorizontalLockupView *)self _animateButton:?];
   if ([(SKUIHorizontalLockupView *)self updateLayoutOnButtonConfirmation])
   {
-    [(SKUIHorizontalLockupView *)self _resizeMetadataRelativeToItemOfferView:v4];
+    [(SKUIHorizontalLockupView *)self _resizeMetadataRelativeToItemOfferView:transitionCopy];
   }
 
   else
   {
-    -[SKUIHorizontalLockupView _layoutConfirmationGradientRelativeToItemOfferView:alpha:](self, "_layoutConfirmationGradientRelativeToItemOfferView:alpha:", v4, [v4 isShowingConfirmation]);
+    -[SKUIHorizontalLockupView _layoutConfirmationGradientRelativeToItemOfferView:alpha:](self, "_layoutConfirmationGradientRelativeToItemOfferView:alpha:", transitionCopy, [transitionCopy isShowingConfirmation]);
   }
 }
 
-- (void)offerViewDidAnimateTransition:(id)a3
+- (void)offerViewDidAnimateTransition:(id)transition
 {
-  if (([a3 isShowingConfirmation] & 1) == 0)
+  if (([transition isShowingConfirmation] & 1) == 0)
   {
     [(SKUIGradientView *)self->_offerConfirmationGradientView removeFromSuperview];
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
@@ -2255,16 +2255,16 @@ uint64_t __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)offerViewAnimateTransition:(id)a3
+- (BOOL)offerViewAnimateTransition:(id)transition
 {
   if (self->_offerConfirmationGradientView)
   {
-    v4 = a3;
-    [v4 frame];
+    transitionCopy = transition;
+    [transitionCopy frame];
     x = v15.origin.x;
     y = v15.origin.y;
     MaxX = CGRectGetMaxX(v15);
-    [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+    [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
     v9 = v8;
     v11 = v10;
     ShouldReverseLayoutDirection = storeShouldReverseLayoutDirection();
@@ -2274,31 +2274,31 @@ uint64_t __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke(uint64_t a1,
       v13 = x;
     }
 
-    [v4 setFrame:{v13, y, v9, v11}];
-    [(SKUIHorizontalLockupView *)self _layoutConfirmationGradientRelativeToItemOfferView:v4 alpha:1.0];
+    [transitionCopy setFrame:{v13, y, v9, v11}];
+    [(SKUIHorizontalLockupView *)self _layoutConfirmationGradientRelativeToItemOfferView:transitionCopy alpha:1.0];
   }
 
   return 0;
 }
 
-- (void)offerViewWillAnimateTransition:(id)a3
+- (void)offerViewWillAnimateTransition:(id)transition
 {
-  v4 = a3;
-  if (!-[SKUIHorizontalLockupView updateLayoutOnButtonConfirmation](self, "updateLayoutOnButtonConfirmation") && ![v4 metadataPosition])
+  transitionCopy = transition;
+  if (!-[SKUIHorizontalLockupView updateLayoutOnButtonConfirmation](self, "updateLayoutOnButtonConfirmation") && ![transitionCopy metadataPosition])
   {
-    [(SKUIHorizontalLockupView *)self _addConfirmationGradientForView:v4];
+    [(SKUIHorizontalLockupView *)self _addConfirmationGradientForView:transitionCopy];
   }
 }
 
-- (void)mediaPlayer:(id)a3 itemStateChanged:(id)a4
+- (void)mediaPlayer:(id)player itemStateChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  changedCopy = changed;
   playButton = self->_playButton;
   if (playButton)
   {
-    v9 = [(SKUIPlayButton *)playButton playItemIdentifier];
-    v10 = [SKUIMediaPlayerInterface identifierMatches:v9 item:v7];
+    playItemIdentifier = [(SKUIPlayButton *)playButton playItemIdentifier];
+    v10 = [SKUIMediaPlayerInterface identifierMatches:playItemIdentifier item:changedCopy];
 
     if (v10)
     {
@@ -2307,7 +2307,7 @@ uint64_t __41__SKUIHorizontalLockupView_sizeThatFits___block_invoke(uint64_t a1,
       block[2] = __57__SKUIHorizontalLockupView_mediaPlayer_itemStateChanged___block_invoke;
       block[3] = &unk_2781F80C8;
       block[4] = self;
-      v17 = v7;
+      v17 = changedCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
       v11 = v17;
 LABEL_7:
@@ -2321,8 +2321,8 @@ LABEL_7:
       v13[1] = 3221225472;
       v13[2] = __57__SKUIHorizontalLockupView_mediaPlayer_itemStateChanged___block_invoke_2;
       v13[3] = &unk_2781F80C8;
-      v14 = v7;
-      v15 = self;
+      v14 = changedCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], v13);
       v11 = v14;
       goto LABEL_7;
@@ -2384,15 +2384,15 @@ uint64_t __57__SKUIHorizontalLockupView_mediaPlayer_itemStateChanged___block_inv
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  [v7 locationInView:self];
+  [touchCopy locationInView:self];
   tappableViews = self->_tappableViews;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -2427,13 +2427,13 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIHorizontalLockupView *)self _viewElementForView:v4];
+  actionCopy = action;
+  v5 = [(SKUIHorizontalLockupView *)self _viewElementForView:actionCopy];
   v6 = v5;
-  if (self->_playButton == v4)
+  if (self->_playButton == actionCopy)
   {
     [SKUIHorizontalLockupView _handlePlayButtonTap:"_handlePlayButtonTap:element:" element:?];
   }
@@ -2442,11 +2442,11 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
   {
     v7 = SKUICollectionViewCellForView(self);
     v8 = SKUICollectionViewForView(v7);
-    v9 = [v8 delegate];
+    delegate = [v8 delegate];
     if ((objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v18 = [v8 indexPathForCell:v7];
-      [v9 collectionView:v8 didConfirmButtonElement:v6 withClickInfo:0 forItemAtIndexPath:v18];
+      [delegate collectionView:v8 didConfirmButtonElement:v6 withClickInfo:0 forItemAtIndexPath:v18];
     }
 
     else
@@ -2454,7 +2454,7 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v4;
+        v10 = actionCopy;
         v11 = MEMORY[0x277CBEB38];
         v19[0] = @"toggled";
         v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[SKUIPlayButton isToggled](v10, "isToggled")}];
@@ -2467,12 +2467,12 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
         v15 = [v11 dictionaryWithDictionary:v14];
 
-        v16 = [(SKUIPlayButton *)v10 toggleItemIdentifier];
+        toggleItemIdentifier = [(SKUIPlayButton *)v10 toggleItemIdentifier];
 
-        if (v16)
+        if (toggleItemIdentifier)
         {
-          v17 = [(SKUIPlayButton *)v10 toggleItemIdentifier];
-          [v15 setObject:v17 forKey:@"toggleId"];
+          toggleItemIdentifier2 = [(SKUIPlayButton *)v10 toggleItemIdentifier];
+          [v15 setObject:toggleItemIdentifier2 forKey:@"toggleId"];
         }
       }
 
@@ -2486,24 +2486,24 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
   }
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIHorizontalLockupView *)self bringSubviewToFront:v4];
-  [v4 setShowingConfirmation:0 animated:1];
+  actionCopy = action;
+  [(SKUIHorizontalLockupView *)self bringSubviewToFront:actionCopy];
+  [actionCopy setShowingConfirmation:0 animated:1];
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIHorizontalLockupView *)self _addConfirmationGradientForView:v4];
-  [v4 setShowingConfirmation:1 animated:1];
+  actionCopy = action;
+  [(SKUIHorizontalLockupView *)self _addConfirmationGradientForView:actionCopy];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-- (void)_tapGestureAction:(id)a3
+- (void)_tapGestureAction:(id)action
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  actionCopy = action;
+  [actionCopy locationInView:self];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -2522,12 +2522,12 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
   if (v12[5])
   {
     v8 = [(SKUIHorizontalLockupView *)self _viewElementForView:?];
-    v9 = [v8 elementType];
-    if (v9 > 49)
+    elementType = [v8 elementType];
+    if (elementType > 49)
     {
-      if (v9 != 50)
+      if (elementType != 50)
       {
-        if (v9 == 138)
+        if (elementType == 138)
         {
           [(SKUIHorizontalLockupView *)self _expandEditorialForLabel:v8];
         }
@@ -2536,9 +2536,9 @@ BOOL __65__SKUIHorizontalLockupView_gestureRecognizer_shouldReceiveTouch___block
       }
     }
 
-    else if (v9 != 12)
+    else if (elementType != 12)
     {
-      if (v9 == 49)
+      if (elementType == 49)
       {
         [(SKUIHorizontalLockupView *)self _performDefaultActionForImage:v8];
       }
@@ -2599,58 +2599,58 @@ void __46__SKUIHorizontalLockupView__tapGestureAction___block_invoke(uint64_t a1
   }
 }
 
-- (void)_audioPlayerStatusChangeNotification:(id)a3
+- (void)_audioPlayerStatusChangeNotification:(id)notification
 {
-  v13 = a3;
-  v4 = [(SKUIHorizontalLockupView *)self _previewMediaURL];
-  v5 = [v13 object];
-  v6 = [v5 URL];
-  v7 = [v4 isEqual:v6];
+  notificationCopy = notification;
+  _previewMediaURL = [(SKUIHorizontalLockupView *)self _previewMediaURL];
+  object = [notificationCopy object];
+  v6 = [object URL];
+  v7 = [_previewMediaURL isEqual:v6];
 
   if (v7)
   {
-    v8 = [v5 playerStatus];
-    v9 = [v8 playerState];
+    playerStatus = [object playerStatus];
+    playerState = [playerStatus playerState];
 
-    if ((v9 - 6) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((playerState - 6) > 0xFFFFFFFFFFFFFFFDLL)
     {
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      v11 = [v13 name];
-      v12 = [v13 object];
-      [v10 removeObserver:self name:v11 object:v12];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      name = [notificationCopy name];
+      object2 = [notificationCopy object];
+      [defaultCenter removeObserver:self name:name object:object2];
 
       [(SKUIHorizontalLockupView *)self hidePreviewProgressAnimated:1];
     }
 
     else
     {
-      v10 = [v5 playerStatus];
-      [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:v10 animated:1];
+      defaultCenter = [object playerStatus];
+      [(SKUIHorizontalLockupView *)self showPreviewProgressWithStatus:defaultCenter animated:1];
     }
   }
 }
 
-- (void)_animateButton:(id)a3
+- (void)_animateButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v20 = 0;
   v21 = &v20;
   v22 = 0x4010000000;
   v23 = &unk_215F8ACD7;
   v24 = 0u;
   v25 = 0u;
-  [v4 frame];
+  [buttonCopy frame];
   *&v24 = v5;
   *(&v24 + 1) = v6;
   *&v25 = v7;
   *(&v25 + 1) = v8;
   MaxX = CGRectGetMaxX(v21[1]);
-  [v4 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  [buttonCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v10 = v21;
   v21[1].size.width = v11;
   v10[1].size.height = v12;
-  v13 = [(SKUIHorizontalLockupView *)self _viewElementForView:v4];
-  v14 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+  v13 = [(SKUIHorizontalLockupView *)self _viewElementForView:buttonCopy];
+  columns = [(SKUIHorizontalLockupLayout *)self->_layout columns];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __43__SKUIHorizontalLockupView__animateButton___block_invoke;
@@ -2659,9 +2659,9 @@ void __46__SKUIHorizontalLockupView__tapGestureAction___block_invoke(uint64_t a1
   v17 = v15;
   v18 = &v20;
   v19 = MaxX;
-  [v14 enumerateObjectsUsingBlock:v16];
+  [columns enumerateObjectsUsingBlock:v16];
 
-  [v4 setFrame:{v21[1].origin.x, v21[1].origin.y, v21[1].size.width, v21[1].size.height}];
+  [buttonCopy setFrame:{v21[1].origin.x, v21[1].origin.y, v21[1].size.width, v21[1].size.height}];
   _Block_object_dispose(&v20, 8);
 }
 
@@ -2684,47 +2684,47 @@ void __43__SKUIHorizontalLockupView__animateButton___block_invoke(uint64_t a1, v
   }
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  buttonCopy = button;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIHorizontalLockupView _attributedStringForButton:context:];
   }
 
-  v7 = [SKUIHorizontalLockupLayout fontForButtonViewElement:v5 context:v6];
-  v8 = [v5 buttonTitleStyle];
-  v9 = v8;
-  if (!v8)
+  v7 = [SKUIHorizontalLockupLayout fontForButtonViewElement:buttonCopy context:contextCopy];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  style = buttonTitleStyle;
+  if (!buttonTitleStyle)
   {
-    v9 = [v5 style];
+    style = [buttonCopy style];
   }
 
-  v10 = [v6 tintColor];
-  v11 = SKUIViewElementPlainColorWithStyle(v9, v10);
+  tintColor = [contextCopy tintColor];
+  v11 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v8)
+  if (!buttonTitleStyle)
   {
   }
 
   if (!v11)
   {
-    v12 = [v6 containerViewElementType] == 118;
+    v12 = [contextCopy containerViewElementType] == 118;
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:dbl_215F3F9B0[v12]];
   }
 
-  v13 = [v5 buttonText];
-  v14 = [v5 style];
-  v15 = [v13 attributedStringWithDefaultFont:v7 foregroundColor:v11 style:v14];
+  buttonText = [buttonCopy buttonText];
+  style2 = [buttonCopy style];
+  v15 = [buttonText attributedStringWithDefaultFont:v7 foregroundColor:v11 style:style2];
 
   return v15;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  labelCopy = label;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -2737,14 +2737,14 @@ void __43__SKUIHorizontalLockupView__animateButton___block_invoke(uint64_t a1, v
     }
   }
 
-  v15 = [SKUIHorizontalLockupLayout fontForLabelViewElement:v5 context:v6];
-  v16 = [v5 style];
-  v17 = [v6 tintColor];
-  v18 = SKUIViewElementPlainColorWithStyle(v16, v17);
+  v15 = [SKUIHorizontalLockupLayout fontForLabelViewElement:labelCopy context:contextCopy];
+  style = [labelCopy style];
+  tintColor = [contextCopy tintColor];
+  v18 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v18)
   {
-    v19 = [v6 aggregateValueForKey:@"SKUIPreviewOverlayBackgroundStyleKey"];
+    v19 = [contextCopy aggregateValueForKey:@"SKUIPreviewOverlayBackgroundStyleKey"];
     v20 = v19;
     if (v19)
     {
@@ -2756,14 +2756,14 @@ void __43__SKUIHorizontalLockupView__animateButton___block_invoke(uint64_t a1, v
       v21 = 1;
     }
 
-    v22 = [v5 labelViewStyle];
-    if (v22 > 5)
+    labelViewStyle = [labelCopy labelViewStyle];
+    if (labelViewStyle > 5)
     {
       v18 = 0;
       goto LABEL_21;
     }
 
-    if (((1 << v22) & 0x1B) == 0)
+    if (((1 << labelViewStyle) & 0x1B) == 0)
     {
       if (v21)
       {
@@ -2778,7 +2778,7 @@ void __43__SKUIHorizontalLockupView__animateButton___block_invoke(uint64_t a1, v
       goto LABEL_20;
     }
 
-    if ([v6 containerViewElementType] == 118)
+    if ([contextCopy containerViewElementType] == 118)
     {
       v23 = 0.8;
       if (v21)
@@ -2809,72 +2809,72 @@ LABEL_21:
   }
 
 LABEL_22:
-  v26 = [v5 text];
-  v27 = [v5 style];
-  v28 = [v26 attributedStringWithDefaultFont:v15 foregroundColor:v18 style:v27];
+  text = [labelCopy text];
+  style2 = [labelCopy style];
+  v28 = [text attributedStringWithDefaultFont:v15 foregroundColor:v18 style:style2];
 
   return v28;
 }
 
-+ (id)_attributedStringForOrdinal:(id)a3 context:(id)a4
++ (id)_attributedStringForOrdinal:(id)ordinal context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  ordinalCopy = ordinal;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIHorizontalLockupView _attributedStringForOrdinal:context:];
   }
 
-  v7 = [SKUIHorizontalLockupLayout fontForOrdinalViewElement:v5 context:v6];
-  v8 = [v5 style];
-  v9 = [v6 tintColor];
+  v7 = [SKUIHorizontalLockupLayout fontForOrdinalViewElement:ordinalCopy context:contextCopy];
+  style = [ordinalCopy style];
+  tintColor = [contextCopy tintColor];
 
-  v10 = SKUIViewElementPlainColorWithStyle(v8, v9);
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v7 foregroundColor:v10];
+  text = [ordinalCopy text];
+  v12 = [text attributedStringWithDefaultFont:v7 foregroundColor:v10];
 
   return v12;
 }
 
-- (void)_handlePlayButtonTap:(id)a3 element:(id)a4
+- (void)_handlePlayButtonTap:(id)tap element:(id)element
 {
-  v11 = a3;
-  v5 = a4;
+  tapCopy = tap;
+  elementCopy = element;
   v6 = +[SKUIMediaPlayerInterface sharedInstance];
-  v7 = [v11 playItemIdentifier];
-  v8 = [v6 isItemWithIdentifierActive:v7];
+  playItemIdentifier = [tapCopy playItemIdentifier];
+  v8 = [v6 isItemWithIdentifierActive:playItemIdentifier];
 
   if (v8)
   {
-    v9 = [v11 playItemIdentifier];
-    [v6 togglePlayStateForItemWithIdentifier:v9];
+    playItemIdentifier2 = [tapCopy playItemIdentifier];
+    [v6 togglePlayStateForItemWithIdentifier:playItemIdentifier2];
   }
 
-  else if (v5)
+  else if (elementCopy)
   {
-    v10 = [v11 playItemIdentifier];
-    [v6 notifyWillChangeToItemWithItemIdentifer:v10];
+    playItemIdentifier3 = [tapCopy playItemIdentifier];
+    [v6 notifyWillChangeToItemWithItemIdentifer:playItemIdentifier3];
 
-    if (([v11 isIndeterminate] & 1) == 0)
+    if (([tapCopy isIndeterminate] & 1) == 0)
     {
-      [v11 beginIndeterminateAnimation];
+      [tapCopy beginIndeterminateAnimation];
     }
 
-    [v5 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+    [elementCopy dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
 
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  elementsCopy = elements;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -2887,18 +2887,18 @@ LABEL_22:
     }
   }
 
-  v18 = [v9 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = v8;
+  v19 = elementsCopy;
   v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v20)
   {
     v21 = v20;
     v22 = *v34;
-    v32 = a1;
+    selfCopy = self;
     do
     {
       v23 = 0;
@@ -2910,28 +2910,28 @@ LABEL_22:
         }
 
         v24 = *(*(&v33 + 1) + 8 * v23);
-        v25 = [v24 elementType];
-        if (v25 <= 76)
+        elementType = [v24 elementType];
+        if (elementType <= 76)
         {
-          if (v25 <= 48)
+          if (elementType <= 48)
           {
-            if (v25 == 8)
+            if (elementType == 8)
             {
-              [v18 requestLayoutForBadge:v24 width:a4];
+              [labelLayoutCache requestLayoutForBadge:v24 width:width];
               goto LABEL_43;
             }
 
-            if (v25 == 12)
+            if (elementType == 12)
             {
 LABEL_32:
-              v27 = [a1 _attributedStringForButton:v24 context:v9];
-              [v18 requestLayoutForButton:v24 attributedString:v27 width:a4];
+              v27 = [self _attributedStringForButton:v24 context:contextCopy];
+              [labelLayoutCache requestLayoutForButton:v24 attributedString:v27 width:width];
 LABEL_38:
 
               goto LABEL_43;
             }
 
-            if (v25 != 48)
+            if (elementType != 48)
             {
               goto LABEL_43;
             }
@@ -2940,10 +2940,10 @@ LABEL_38:
             goto LABEL_42;
           }
 
-          switch(v25)
+          switch(elementType)
           {
             case '1':
-              [SKUIAdornedImageView requestLayoutForViewElement:v24 width:v9 context:a4];
+              [SKUIAdornedImageView requestLayoutForViewElement:v24 width:contextCopy context:width];
               break;
             case '3':
               break;
@@ -2956,20 +2956,20 @@ LABEL_38:
 
           v26 = SKUIImageDeckView;
 LABEL_42:
-          [(__objc2_class *)v26 requestLayoutForViewElement:v24 width:v9 context:a4];
+          [(__objc2_class *)v26 requestLayoutForViewElement:v24 width:contextCopy context:width];
           goto LABEL_43;
         }
 
-        if (v25 <= 137)
+        if (elementType <= 137)
         {
-          switch(v25)
+          switch(elementType)
           {
             case 77:
               v26 = SKUIOfferView;
               break;
             case 80:
-              v27 = [a1 _attributedStringForOrdinal:v24 context:v9];
-              [v18 requestLayoutForOrdinal:v24 attributedString:v27 width:a4];
+              v27 = [self _attributedStringForOrdinal:v24 context:contextCopy];
+              [labelLayoutCache requestLayoutForOrdinal:v24 attributedString:v27 width:width];
               goto LABEL_38;
             case 135:
               v26 = SKUIStarRatingViewElementView;
@@ -2981,16 +2981,16 @@ LABEL_42:
           goto LABEL_42;
         }
 
-        if (v25 > 143)
+        if (elementType > 143)
         {
-          if (v25 == 144)
+          if (elementType == 144)
           {
             v26 = SKUITomatoRatingView;
           }
 
           else
           {
-            if (v25 != 154)
+            if (elementType != 154)
             {
               goto LABEL_43;
             }
@@ -3001,26 +3001,26 @@ LABEL_42:
           goto LABEL_42;
         }
 
-        if (v25 == 138)
+        if (elementType == 138)
         {
           v28 = v24;
-          v29 = [v9 maxWidthForElement:v28 withDefaultWidth:a4];
-          if ([a1 _usesEditorialLayoutForLabelViewElement:v28])
+          v29 = [contextCopy maxWidthForElement:v28 withDefaultWidth:width];
+          if ([self _usesEditorialLayoutForLabelViewElement:v28])
           {
-            v30 = [v9 editorialLayoutForLabelElement:v28 width:v29];
+            v30 = [contextCopy editorialLayoutForLabelElement:v28 width:v29];
             [v30 enqueueLayoutRequests];
           }
 
           else
           {
-            v30 = [a1 _attributedStringForLabel:v28 context:v9];
-            [v18 requestLayoutForLabel:v28 attributedString:v30 width:v29];
+            v30 = [self _attributedStringForLabel:v28 context:contextCopy];
+            [labelLayoutCache requestLayoutForLabel:v28 attributedString:v30 width:v29];
           }
 
-          a1 = v32;
+          self = selfCopy;
         }
 
-        else if (v25 == 141)
+        else if (elementType == 141)
         {
           goto LABEL_32;
         }
@@ -3038,9 +3038,9 @@ LABEL_43:
   }
 }
 
-+ (BOOL)_usesEditorialLayoutForLabelViewElement:(id)a3
++ (BOOL)_usesEditorialLayoutForLabelViewElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -3053,50 +3053,50 @@ LABEL_43:
     }
   }
 
-  if ([v3 numberOfLines] == 1)
+  if ([elementCopy numberOfLines] == 1)
   {
     v12 = 0;
   }
 
   else
   {
-    v13 = [v3 moreButtonTitle];
-    v12 = [v13 length] != 0;
+    moreButtonTitle = [elementCopy moreButtonTitle];
+    v12 = [moreButtonTitle length] != 0;
   }
 
   return v12;
 }
 
-- (void)_addConfirmationGradientForView:(id)a3
+- (void)_addConfirmationGradientForView:(id)view
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__40;
   v27 = __Block_byref_object_dispose__40;
   v28 = 0;
-  v6 = [(SKUIHorizontalLockupView *)self _columnForView:v4];
-  v7 = [v6 childViewElements];
+  v6 = [(SKUIHorizontalLockupView *)self _columnForView:viewCopy];
+  childViewElements = [v6 childViewElements];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __60__SKUIHorizontalLockupView__addConfirmationGradientForView___block_invoke;
   v20[3] = &unk_2781FC428;
   v20[4] = self;
   v22 = &v23;
-  v8 = v5;
+  v8 = superview;
   v21 = v8;
-  [v7 enumerateObjectsUsingBlock:v20];
+  [childViewElements enumerateObjectsUsingBlock:v20];
 
-  v9 = [(SKUIHorizontalLockupView *)self gradientColor];
-  if (!v9)
+  gradientColor = [(SKUIHorizontalLockupView *)self gradientColor];
+  if (!gradientColor)
   {
-    v9 = [(UIView *)self skui_apparentBackgroundColor];
-    if (!v9)
+    gradientColor = [(UIView *)self skui_apparentBackgroundColor];
+    if (!gradientColor)
     {
-      v9 = [MEMORY[0x277D75348] whiteColor];
+      gradientColor = [MEMORY[0x277D75348] whiteColor];
     }
   }
 
@@ -3108,25 +3108,25 @@ LABEL_43:
     v13 = self->_offerConfirmationGradientView;
     self->_offerConfirmationGradientView = v12;
 
-    v14 = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
-    v15 = [v9 colorWithAlphaComponent:0.0];
+    layer = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
+    v15 = [gradientColor colorWithAlphaComponent:0.0];
     v16 = v15;
     v29[0] = [v15 CGColor];
-    v17 = v9;
-    v29[1] = [v9 CGColor];
-    v18 = v9;
-    v29[2] = [v9 CGColor];
+    v17 = gradientColor;
+    v29[1] = [gradientColor CGColor];
+    v18 = gradientColor;
+    v29[2] = [gradientColor CGColor];
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
-    [v14 setColors:v19];
+    [layer setColors:v19];
 
-    [v14 setEndPoint:{1.0, 0.5}];
-    [v14 setStartPoint:{0.0, 0.5}];
+    [layer setEndPoint:{1.0, 0.5}];
+    [layer setStartPoint:{0.0, 0.5}];
 
     offerConfirmationGradientView = self->_offerConfirmationGradientView;
   }
 
   [v8 insertSubview:offerConfirmationGradientView belowSubview:v24[5]];
-  [(SKUIHorizontalLockupView *)self _layoutConfirmationGradientRelativeToItemOfferView:v4 alpha:0.0];
+  [(SKUIHorizontalLockupView *)self _layoutConfirmationGradientRelativeToItemOfferView:viewCopy alpha:0.0];
 
   _Block_object_dispose(&v23, 8);
 }
@@ -3147,19 +3147,19 @@ void __60__SKUIHorizontalLockupView__addConfirmationGradientForView___block_invo
   [*(a1 + 40) bringSubviewToFront:v3];
 }
 
-- (id)_addFlipContainerViewWithFrontView:(id)a3 backView:(id)a4
+- (id)_addFlipContainerViewWithFrontView:(id)view backView:(id)backView
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 frame];
+  backViewCopy = backView;
+  viewCopy = view;
+  [viewCopy frame];
   v9 = v8;
   v11 = v10;
-  v12 = [[SKUIInlineFlipContainerView alloc] initWithFrontView:v7 backView:v6];
+  v12 = [[SKUIInlineFlipContainerView alloc] initWithFrontView:viewCopy backView:backViewCopy];
 
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [(SKUIInlineFlipContainerView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SKUIInlineFlipContainerView *)v12 setBackgroundColor:clearColor];
 
-  [v7 frame];
+  [viewCopy frame];
   v15 = v14;
   v17 = v16;
 
@@ -3170,17 +3170,17 @@ void __60__SKUIHorizontalLockupView__addConfirmationGradientForView___block_invo
   return v12;
 }
 
-- (id)_columnForView:(id)a3
+- (id)_columnForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__40;
   v17 = __Block_byref_object_dispose__40;
   v18 = 0;
-  v5 = [(SKUIHorizontalLockupView *)self _viewElementForView:v4];
-  v6 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+  v5 = [(SKUIHorizontalLockupView *)self _viewElementForView:viewCopy];
+  columns = [(SKUIHorizontalLockupLayout *)self->_layout columns];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __43__SKUIHorizontalLockupView__columnForView___block_invoke;
@@ -3188,7 +3188,7 @@ void __60__SKUIHorizontalLockupView__addConfirmationGradientForView___block_invo
   v7 = v5;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [columns enumerateObjectsUsingBlock:v10];
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -3209,14 +3209,14 @@ void __43__SKUIHorizontalLockupView__columnForView___block_invoke(uint64_t a1, v
   }
 }
 
-- (double)_dividerHeight:(id)a3
+- (double)_dividerHeight:(id)height
 {
-  v3 = [a3 style];
-  v4 = [v3 itemHeight];
+  style = [height style];
+  itemHeight = [style itemHeight];
 
-  if (v4)
+  if (itemHeight)
   {
-    [v4 floatValue];
+    [itemHeight floatValue];
     v6 = v5;
   }
 
@@ -3228,57 +3228,57 @@ void __43__SKUIHorizontalLockupView__columnForView___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (void)_expandEditorialForLabel:(id)a3
+- (void)_expandEditorialForLabel:(id)label
 {
-  v8 = a3;
+  labelCopy = label;
   v4 = SKUICollectionViewCellForView(self);
   v5 = SKUICollectionViewForView(v4);
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
   if (objc_opt_respondsToSelector())
   {
     v7 = [v5 indexPathForCell:v4];
-    [v6 collectionView:v5 expandEditorialForLabelElement:v8 indexPath:v7];
+    [delegate collectionView:v5 expandEditorialForLabelElement:labelCopy indexPath:v7];
   }
 }
 
-- (void)_layoutConfirmationGradientRelativeToItemOfferView:(id)a3 alpha:(double)a4
+- (void)_layoutConfirmationGradientRelativeToItemOfferView:(id)view alpha:(double)alpha
 {
   v19[3] = *MEMORY[0x277D85DE8];
   if (self->_offerConfirmationGradientView)
   {
-    [a3 frame];
+    [view frame];
     v7 = v6;
     v9 = v8;
     [(SKUIGradientView *)self->_offerConfirmationGradientView frame];
     v11 = v10;
-    v12 = [(SKUIGradientView *)self->_offerConfirmationGradientView superview];
-    [v12 bounds];
+    superview = [(SKUIGradientView *)self->_offerConfirmationGradientView superview];
+    [superview bounds];
     v14 = v13;
 
     v15 = v9 + 30.0;
-    [(SKUIGradientView *)self->_offerConfirmationGradientView setAlpha:a4];
+    [(SKUIGradientView *)self->_offerConfirmationGradientView setAlpha:alpha];
     [(SKUIGradientView *)self->_offerConfirmationGradientView setFrame:v7 + -30.0, v11, v15, v14];
-    v16 = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
+    layer = [(SKUIGradientView *)self->_offerConfirmationGradientView layer];
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:{30.0 / v15, &unk_2828D2C18}];
     v19[1] = v17;
     v19[2] = &unk_2828D2C30;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-    [v16 setLocations:v18];
+    [layer setLocations:v18];
   }
 }
 
-- (void)_performDefaultActionForImage:(id)a3
+- (void)_performDefaultActionForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = self->_lockupElement;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invoke;
   v8[3] = &unk_2781FD0D0;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = imageCopy;
+  v6 = imageCopy;
   v7 = v5;
   [v6 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:v8];
 }
@@ -3335,12 +3335,12 @@ void *__58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invok
 - (id)_previewFrontView
 {
   v3 = [(SKUIViewElement *)self->_lockupElement firstChildForElementType:90];
-  v4 = [v3 flattenedChildren];
-  v5 = [v4 firstObject];
+  flattenedChildren = [v3 flattenedChildren];
+  firstObject = [flattenedChildren firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [(NSMapTable *)self->_viewElementViews objectForKey:v5];
+    v6 = [(NSMapTable *)self->_viewElementViews objectForKey:firstObject];
   }
 
   else
@@ -3354,11 +3354,11 @@ void *__58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invok
 - (id)_previewMediaURL
 {
   v2 = [(SKUIViewElement *)self->_lockupElement firstChildForElementType:90];
-  v3 = [v2 mediaURLString];
+  mediaURLString = [v2 mediaURLString];
 
-  if (v3)
+  if (mediaURLString)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:mediaURLString];
   }
 
   else
@@ -3379,14 +3379,14 @@ void *__58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invok
 
     [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator addTarget:self action:sel__previewIndicatorAction_ forControlEvents:64];
     v5 = self->_previewProgressIndicator;
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(SKUIPreviewProgressIndicator *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUIPreviewProgressIndicator *)v5 setBackgroundColor:clearColor];
   }
 
   v7 = [(SKUIViewElement *)self->_lockupElement firstChildForElementType:90];
   v8 = self->_previewProgressIndicator;
-  v9 = [v7 style];
-  v10 = SKUIViewElementPlainColorWithStyle(v9, 0);
+  style = [v7 style];
+  v10 = SKUIViewElementPlainColorWithStyle(style, 0);
   [(SKUIPreviewProgressIndicator *)v8 setTintColor:v10];
 
   v11 = self->_previewProgressIndicator;
@@ -3395,32 +3395,32 @@ void *__58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invok
   return v11;
 }
 
-- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)a3
+- (void)_resolvePreviewStateAfterTransitionForFlipView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   previewState = self->_previewState;
   if (previewState == 3)
   {
-    v25 = v4;
-    [v4 removeFromSuperview];
-    v23 = [(SKUIHorizontalLockupView *)self _previewFrontView];
-    [(SKUIHorizontalLockupView *)self addSubview:v23];
+    v25 = viewCopy;
+    [viewCopy removeFromSuperview];
+    _previewFrontView = [(SKUIHorizontalLockupView *)self _previewFrontView];
+    [(SKUIHorizontalLockupView *)self addSubview:_previewFrontView];
     [(SKUIHorizontalLockupView *)self setNeedsLayout];
     self->_previewState = 0;
 
-    v4 = v25;
+    viewCopy = v25;
   }
 
   else if (previewState == 1)
   {
-    v24 = v4;
+    v24 = viewCopy;
     [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator superview];
-    [(SKUIHorizontalLockupView *)self convertRect:v14 fromView:v7, v9, v11, v13];
+    superview = [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator superview];
+    [(SKUIHorizontalLockupView *)self convertRect:superview fromView:v7, v9, v11, v13];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -3431,22 +3431,22 @@ void *__58__SKUIHorizontalLockupView__performDefaultActionForImage___block_invok
     [v24 removeFromSuperview];
     [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator reloadWithPlayerStatus:self->_lastPlayerStatus animated:0];
     [(SKUIPreviewProgressIndicator *)self->_previewProgressIndicator setEnabled:1];
-    v4 = v24;
+    viewCopy = v24;
     self->_previewState = 2;
   }
 }
 
-- (void)_resizeMetadataRelativeToItemOfferView:(id)a3
+- (void)_resizeMetadataRelativeToItemOfferView:(id)view
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIHorizontalLockupView *)self _columnForView:v4];
+  viewCopy = view;
+  v5 = [(SKUIHorizontalLockupView *)self _columnForView:viewCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [(SKUIHorizontalLockupLayout *)self->_layout columns];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  columns = [(SKUIHorizontalLockupLayout *)self->_layout columns];
+  v7 = [columns countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (!v7)
   {
 LABEL_22:
@@ -3455,34 +3455,34 @@ LABEL_22:
   }
 
   v8 = v7;
-  v9 = 0;
+  childViewElements = 0;
   v10 = *v36;
   while (2)
   {
     v11 = 0;
-    v12 = v9;
+    v12 = childViewElements;
     do
     {
       if (*v36 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(columns);
       }
 
       v13 = *(*(&v35 + 1) + 8 * v11);
       if ([v13 isEqual:v5])
       {
-        v9 = v12;
+        childViewElements = v12;
         goto LABEL_11;
       }
 
-      v9 = [v13 childViewElements];
+      childViewElements = [v13 childViewElements];
 
       ++v11;
-      v12 = v9;
+      v12 = childViewElements;
     }
 
     while (v8 != v11);
-    v8 = [v6 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    v8 = [columns countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v8)
     {
       continue;
@@ -3493,14 +3493,14 @@ LABEL_22:
 
 LABEL_11:
 
-  if (v9)
+  if (childViewElements)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v6 = v9;
-    v14 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    columns = childViewElements;
+    v14 = [columns countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v14)
     {
       v15 = v14;
@@ -3511,7 +3511,7 @@ LABEL_11:
         {
           if (*v32 != v16)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(columns);
           }
 
           v18 = [(NSMapTable *)self->_viewElementViews objectForKey:*(*(&v31 + 1) + 8 * i), v31];
@@ -3520,7 +3520,7 @@ LABEL_11:
           v22 = v21;
           v24 = v23;
           v26 = v25;
-          [v4 frame];
+          [viewCopy frame];
           v44.origin.x = v27;
           v44.origin.y = v28;
           v44.size.width = v29;
@@ -3537,7 +3537,7 @@ LABEL_11:
           }
         }
 
-        v15 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v15 = [columns countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v15);
@@ -3549,27 +3549,27 @@ LABEL_11:
 LABEL_23:
 }
 
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width
 {
-  v6 = a3;
+  columnCopy = column;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3010000000;
   v22 = &unk_215F8ACD7;
   v23 = *MEMORY[0x277CBF3A8];
-  v7 = [v6 childViewElements];
-  v8 = [v7 count];
+  childViewElements = [columnCopy childViewElements];
+  v8 = [childViewElements count];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__SKUIHorizontalLockupView__sizeViewsForColumn_toFitWidth___block_invoke;
   v14[3] = &unk_2781FD0F8;
   v14[4] = self;
-  v17 = a4;
-  v9 = v6;
+  widthCopy = width;
+  v9 = columnCopy;
   v15 = v9;
   v16 = &v19;
   v18 = v8;
-  [v7 enumerateObjectsUsingBlock:v14];
+  [childViewElements enumerateObjectsUsingBlock:v14];
   v10 = v20[4];
   v11 = v20[5];
 
@@ -3637,16 +3637,16 @@ void __59__SKUIHorizontalLockupView__sizeViewsForColumn_toFitWidth___block_invok
   v8 = 0;
   v5 = 0.0;
   v6 = 0;
-  v2 = [(SKUIHorizontalLockupView *)self backgroundColor];
-  v3 = [v2 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
+  backgroundColor = [(SKUIHorizontalLockupView *)self backgroundColor];
+  v3 = [backgroundColor getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
 
   return v3 && v5 < 1.0 && v5 != 0.0;
 }
 
-- (id)_viewElementForView:(id)a3
+- (id)_viewElementForView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -3669,7 +3669,7 @@ void __59__SKUIHorizontalLockupView__sizeViewsForColumn_toFitWidth___block_invok
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_viewElementViews objectForKey:v10, v14];
 
-        if (v11 == v4)
+        if (v11 == viewCopy)
         {
           v12 = v10;
           goto LABEL_11;

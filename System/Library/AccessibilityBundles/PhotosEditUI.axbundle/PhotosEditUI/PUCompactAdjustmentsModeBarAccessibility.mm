@@ -1,15 +1,15 @@
 @interface PUCompactAdjustmentsModeBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation PUCompactAdjustmentsModeBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUCompactAdjustmentsModeBar" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PUCompactAdjustmentsModeBar" hasInstanceMethod:@"_updateTitleViewAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUCompactAdjustmentsModeBar" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PUCompactAdjustmentsModeBar" hasInstanceMethod:@"_updateTitleViewAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

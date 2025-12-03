@@ -1,17 +1,17 @@
 @interface AssetManager
-- (id)absoluteURLForAssetPath:(id)a3;
+- (id)absoluteURLForAssetPath:(id)path;
 @end
 
 @implementation AssetManager
 
-- (id)absoluteURLForAssetPath:(id)a3
+- (id)absoluteURLForAssetPath:(id)path
 {
   sub_1AF0D0EA0(0, &qword_1ED7315E0, MEMORY[0x1E6968FB0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
   v7 = &v18[-v6];
   v8 = sub_1AFDFCEF8();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v18[12] = 1;
   sub_1AF8AF2FC(v8, v10, 0x100000000, v7);
 

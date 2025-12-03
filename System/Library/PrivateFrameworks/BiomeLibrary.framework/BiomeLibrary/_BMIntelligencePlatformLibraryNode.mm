@@ -5,7 +5,7 @@
 + (id)configurationForMessageTerms;
 + (id)storeConfigurationForFeatureStore;
 + (id)storeConfigurationForMessageTerms;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)sublibraries;
 + (id)validKeyPaths;
 @end
@@ -15,11 +15,11 @@
 + (id)sublibraries
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [a1 ECR];
-  v4 = [a1 EntityTagging];
-  v9[1] = v4;
-  v5 = [a1 Views];
-  v9[2] = v5;
+  v3 = [self ECR];
+  entityTagging = [self EntityTagging];
+  v9[1] = entityTagging;
+  views = [self Views];
+  v9[2] = views;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x1E69E9840];
@@ -29,13 +29,13 @@
 
 + (id)configurationForFeatureStore
 {
-  v3 = [a1 storeConfigurationForFeatureStore];
-  v4 = [a1 syncPolicyForFeatureStore];
+  storeConfigurationForFeatureStore = [self storeConfigurationForFeatureStore];
+  syncPolicyForFeatureStore = [self syncPolicyForFeatureStore];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"D21A8DB8-7D87-4F3E-B63F-1B173B7907E9"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.FeatureStore" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.FeatureStore" eventClass:objc_opt_class() storeConfig:storeConfigurationForFeatureStore syncPolicy:syncPolicyForFeatureStore legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -50,13 +50,13 @@
 
 + (id)configurationForMessageTerms
 {
-  v3 = [a1 storeConfigurationForMessageTerms];
-  v4 = [a1 syncPolicyForMessageTerms];
+  storeConfigurationForMessageTerms = [self storeConfigurationForMessageTerms];
+  syncPolicyForMessageTerms = [self syncPolicyForMessageTerms];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"F5873872-1331-4952-9DCA-0E8CC6266734"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.MessageTerms" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"IntelligencePlatform.MessageTerms" eventClass:objc_opt_class() storeConfig:storeConfigurationForMessageTerms syncPolicy:syncPolicyForMessageTerms legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -64,7 +64,7 @@
 + (id)MessageTerms
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMessageTerms];
+  configurationForMessageTerms = [self configurationForMessageTerms];
   v3 = +[BMIntelligencePlatformMessageTerms columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -76,7 +76,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligencePlatform.MessageTerms" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.MessageTerms" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.MessageTerms" schema:v9 configuration:configurationForMessageTerms];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -94,7 +94,7 @@
 + (id)FeatureStore
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFeatureStore];
+  configurationForFeatureStore = [self configurationForFeatureStore];
   v3 = +[BMIntelligencePlatformFeatureStore columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -106,27 +106,27 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"IntelligencePlatform.FeatureStore" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.FeatureStore" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"IntelligencePlatform.FeatureStore" schema:v9 configuration:configurationForFeatureStore];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"FeatureStore"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"FeatureStore"])
   {
-    v5 = [a1 FeatureStore];
+    featureStore = [self FeatureStore];
 LABEL_5:
-    v6 = v5;
+    v6 = featureStore;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"MessageTerms"])
+  if ([nameCopy isEqualToString:@"MessageTerms"])
   {
-    v5 = [a1 MessageTerms];
+    featureStore = [self MessageTerms];
     goto LABEL_5;
   }
 

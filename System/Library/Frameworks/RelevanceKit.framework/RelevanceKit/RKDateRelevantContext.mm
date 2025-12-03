@@ -1,75 +1,75 @@
 @interface RKDateRelevantContext
-- (BOOL)isEqual:(id)a3;
-- (RKDateRelevantContext)initWithCoder:(id)a3;
-- (RKDateRelevantContext)initWithStartDate:(id)a3 endDate:(id)a4 priority:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (RKDateRelevantContext)initWithCoder:(id)coder;
+- (RKDateRelevantContext)initWithStartDate:(id)date endDate:(id)endDate priority:(int64_t)priority;
 - (id)analyticsDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RKDateRelevantContext
 
-- (RKDateRelevantContext)initWithStartDate:(id)a3 endDate:(id)a4 priority:(int64_t)a5
+- (RKDateRelevantContext)initWithStartDate:(id)date endDate:(id)endDate priority:(int64_t)priority
 {
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v16.receiver = self;
   v16.super_class = RKDateRelevantContext;
-  v11 = [(RKRelevantContext *)&v16 _init];
-  v12 = v11;
-  if (v11)
+  _init = [(RKRelevantContext *)&v16 _init];
+  v12 = _init;
+  if (_init)
   {
-    objc_storeStrong(v11 + 1, a3);
-    objc_storeStrong(&v12->_endDate, a4);
-    v13 = 2;
-    if ((a5 - 1) < 5)
+    objc_storeStrong(_init + 1, date);
+    objc_storeStrong(&v12->_endDate, endDate);
+    priorityCopy = 2;
+    if ((priority - 1) < 5)
     {
-      v13 = a5;
+      priorityCopy = priority;
     }
 
-    v12->_priority = v13;
+    v12->_priority = priorityCopy;
     v14 = v12;
   }
 
   return v12;
 }
 
-- (RKDateRelevantContext)initWithCoder:(id)a3
+- (RKDateRelevantContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priority"];
 
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   if (v5)
   {
-    self = [(RKDateRelevantContext *)self initWithStartDate:v5 endDate:v6 priority:v8];
-    v9 = self;
+    self = [(RKDateRelevantContext *)self initWithStartDate:v5 endDate:v6 priority:integerValue];
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_priority];
-  [v5 encodeObject:v6 forKey:@"priority"];
+  [coderCopy encodeObject:v6 forKey:@"priority"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -79,7 +79,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       startDate = self->_startDate;
       v8 = (startDate == v5->_startDate || [(NSDate *)startDate isEqual:?]) && ((endDate = self->_endDate, endDate == v5->_endDate) || [(NSDate *)endDate isEqual:?]) && self->_priority == v5->_priority;
     }
@@ -95,31 +95,31 @@
 
 - (id)description
 {
-  v3 = [(RKDateRelevantContext *)self priority];
-  if ((v3 - 1) > 4)
+  priority = [(RKDateRelevantContext *)self priority];
+  if ((priority - 1) > 4)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = off_278B613B8[v3 - 1];
+    v4 = off_278B613B8[priority - 1];
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v6 = [(RKDateRelevantContext *)self endDate];
+  endDate = [(RKDateRelevantContext *)self endDate];
 
-  v7 = [(RKDateRelevantContext *)self startDate];
-  v8 = v7;
-  if (v6)
+  startDate = [(RKDateRelevantContext *)self startDate];
+  v8 = startDate;
+  if (endDate)
   {
-    v9 = [(RKDateRelevantContext *)self endDate];
-    [v5 appendFormat:@"<date range: %@ to %@", v8, v9];
+    endDate2 = [(RKDateRelevantContext *)self endDate];
+    [v5 appendFormat:@"<date range: %@ to %@", v8, endDate2];
   }
 
   else
   {
-    [v5 appendFormat:@"<date: %@", v7];
+    [v5 appendFormat:@"<date: %@", startDate];
   }
 
   [v5 appendFormat:@", priority: %@>", v4];
@@ -131,9 +131,9 @@
 - (id)analyticsDescription
 {
   v3 = objc_msgSend(objc_alloc(MEMORY[0x277CCAB68]), "initWithString:", @".date(");
-  v4 = [(RKDateRelevantContext *)self endDate];
+  endDate = [(RKDateRelevantContext *)self endDate];
 
-  if (v4)
+  if (endDate)
   {
     v5 = @"interval:";
   }

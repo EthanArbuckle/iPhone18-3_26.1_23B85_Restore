@@ -1,16 +1,16 @@
 @interface MapsSuggestionsAppConnectionDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsAppConnectionDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -53,14 +53,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(12, v6, v5))
+  if (!MapsSuggestionsEntriesAreBothOfType(12, withEntryCopy, entryCopy))
   {
 LABEL_11:
     v8 = 0;
     goto LABEL_12;
   }
 
-  [v5 replaceByEntry:v7];
+  [entryCopy replaceByEntry:v7];
   v8 = 1;
 LABEL_12:
 

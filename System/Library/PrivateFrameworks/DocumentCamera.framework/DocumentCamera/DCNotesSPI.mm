@@ -1,15 +1,15 @@
 @interface DCNotesSPI
-+ (void)scanWasDeleted:(id)a3;
++ (void)scanWasDeleted:(id)deleted;
 @end
 
 @implementation DCNotesSPI
 
-+ (void)scanWasDeleted:(id)a3
++ (void)scanWasDeleted:(id)deleted
 {
   v3 = MEMORY[0x277CCAB98];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 postNotificationName:@"DCScanWasDeletedNotification" object:v4];
+  deletedCopy = deleted;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter postNotificationName:@"DCScanWasDeletedNotification" object:deletedCopy];
 }
 
 @end

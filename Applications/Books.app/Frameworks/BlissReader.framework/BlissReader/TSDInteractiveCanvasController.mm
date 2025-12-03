@@ -1,14 +1,14 @@
 @interface TSDInteractiveCanvasController
 - (id)avTransportDelegate;
-- (id)gestureRecognizerWithKind:(id)a3;
-- (id)gestureWithKind:(id)a3;
+- (id)gestureRecognizerWithKind:(id)kind;
+- (id)gestureWithKind:(id)kind;
 - (id)scrollableCanvasHost;
 - (id)widgetHost;
 - (void)disableAllGestures;
-- (void)disableGestureKinds:(id)a3;
+- (void)disableGestureKinds:(id)kinds;
 - (void)disableNormalGestures;
-- (void)enableGestureKinds:(id)a3;
-- (void)pulseStorage:(id)a3 range:(_NSRange)a4;
+- (void)enableGestureKinds:(id)kinds;
+- (void)pulseStorage:(id)storage range:(_NSRange)range;
 @end
 
 @implementation TSDInteractiveCanvasController
@@ -19,8 +19,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  layerHost = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
+  v3 = [layerHost countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -32,7 +32,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(layerHost);
         }
 
         [*(*(&v7 + 1) + 8 * v6) setEnabled:0];
@@ -40,7 +40,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [layerHost countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -60,8 +60,8 @@
   v11 = 0u;
   v12 = 0u;
   v10 = 0u;
-  v4 = [objc_msgSend(v3 view];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  view = [objc_msgSend(v3 view];
+  v5 = [view countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,7 +73,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(view);
         }
 
         objc_opt_class();
@@ -82,21 +82,21 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [view countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)enableGestureKinds:(id)a3
+- (void)enableGestureKinds:(id)kinds
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  layerHost = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
+  v5 = [layerHost countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -108,14 +108,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layerHost);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         v10 = TSUProtocolCast();
         if (v10)
         {
-          if ([a3 containsObject:{objc_msgSend(v10, "gestureKind")}])
+          if ([kinds containsObject:{objc_msgSend(v10, "gestureKind")}])
           {
             [v9 setEnabled:1];
           }
@@ -125,21 +125,21 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [layerHost countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)disableGestureKinds:(id)a3
+- (void)disableGestureKinds:(id)kinds
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  layerHost = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
+  v5 = [layerHost countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -151,14 +151,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(layerHost);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         v10 = TSUProtocolCast();
         if (v10)
         {
-          if ([a3 containsObject:{objc_msgSend(v10, "gestureKind")}])
+          if ([kinds containsObject:{objc_msgSend(v10, "gestureKind")}])
           {
             [v9 setEnabled:0];
           }
@@ -168,20 +168,20 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [layerHost countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)gestureWithKind:(id)a3
+- (id)gestureWithKind:(id)kind
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  layerHost = [objc_msgSend(objc_msgSend(-[TSDInteractiveCanvasController layerHost](self layerHost];
+  v5 = [layerHost countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v5)
   {
     return 0;
@@ -196,31 +196,31 @@
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(layerHost);
       }
 
       v10 = TSUProtocolCast();
       if (v10)
       {
         v11 = v10;
-        if ([v10 gestureKind] == a3)
+        if ([v10 gestureKind] == kind)
         {
           v7 = v11;
         }
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [layerHost countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-- (id)gestureRecognizerWithKind:(id)a3
+- (id)gestureRecognizerWithKind:(id)kind
 {
   objc_opt_class();
-  [(TSDInteractiveCanvasController *)self gestureWithKind:a3];
+  [(TSDInteractiveCanvasController *)self gestureWithKind:kind];
 
   return TSUDynamicCast();
 }
@@ -246,12 +246,12 @@
   return TSUProtocolCast();
 }
 
-- (void)pulseStorage:(id)a3 range:(_NSRange)a4
+- (void)pulseStorage:(id)storage range:(_NSRange)range
 {
-  v6 = [[TSWPSearchReference alloc] initWithStorage:a3 selection:{objc_msgSend([TSWPSelection alloc], "initWithRange:", a4.location, a4.length)}];
+  v6 = [[TSWPSearchReference alloc] initWithStorage:storage selection:{objc_msgSend([TSWPSelection alloc], "initWithRange:", range.location, range.length)}];
   v7 = [NSArray arrayWithObject:v6];
 
-  v8 = [[TSURetainedPointerKeyDictionary alloc] initWithObjectsAndKeys:{v7, a3, 0}];
+  v8 = [[TSURetainedPointerKeyDictionary alloc] initWithObjectsAndKeys:{v7, storage, 0}];
   v9 = [NSDictionary alloc];
   v10 = [v9 initWithObjectsAndKeys:{v8, TSKSearchReferencesToHighlightKey, self, @"THStorageReferenceKey", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", 1), @"THMessageIsForTHWPRep", 0}];
   v11 = +[NSNotificationCenter defaultCenter];

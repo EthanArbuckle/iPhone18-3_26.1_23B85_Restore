@@ -1,34 +1,34 @@
 @interface PKHashtagView
-- (PKHashtagView)initWithHashtagItem:(id)a3 inDrawing:(id)a4;
+- (PKHashtagView)initWithHashtagItem:(id)item inDrawing:(id)drawing;
 - (PKHashtagViewDelegate)delegate;
 - (id)_underlineColor;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)updateActivationState;
 @end
 
 @implementation PKHashtagView
 
-- (PKHashtagView)initWithHashtagItem:(id)a3 inDrawing:(id)a4
+- (PKHashtagView)initWithHashtagItem:(id)item inDrawing:(id)drawing
 {
-  v6 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = PKHashtagView;
-  v7 = a4;
+  drawingCopy = drawing;
   v8 = [(PKDetectionView *)&v12 init];
   hashtagItem = v8->_hashtagItem;
-  v8->_hashtagItem = v6;
-  v10 = v6;
+  v8->_hashtagItem = itemCopy;
+  v10 = itemCopy;
 
-  [(PKDetectionItem *)v8->_hashtagItem setDrawing:v7, v12.receiver, v12.super_class];
+  [(PKDetectionItem *)v8->_hashtagItem setDrawing:drawingCopy, v12.receiver, v12.super_class];
   return v8;
 }
 
 - (id)_underlineColor
 {
-  v3 = [(PKHashtagView *)self hashtagItem];
-  if ([v3 active])
+  hashtagItem = [(PKHashtagView *)self hashtagItem];
+  if ([hashtagItem active])
   {
     [(PKHashtagView *)self tintColor];
   }
@@ -44,34 +44,34 @@
 
 - (void)updateActivationState
 {
-  v3 = [(PKHashtagView *)self hashtagItem];
-  v9 = [v3 hashtagUUID];
+  hashtagItem = [(PKHashtagView *)self hashtagItem];
+  hashtagUUID = [hashtagItem hashtagUUID];
 
-  v4 = [(PKHashtagView *)self hashtagItem];
-  [v4 invalidateUUID];
+  hashtagItem2 = [(PKHashtagView *)self hashtagItem];
+  [hashtagItem2 invalidateUUID];
 
-  v5 = [(PKHashtagView *)self hashtagItem];
-  v6 = [v5 hashtagUUID];
+  hashtagItem3 = [(PKHashtagView *)self hashtagItem];
+  hashtagUUID2 = [hashtagItem3 hashtagUUID];
 
-  if (v9 != v6 && ([v9 isEqual:v6] & 1) == 0)
+  if (hashtagUUID != hashtagUUID2 && ([hashtagUUID isEqual:hashtagUUID2] & 1) == 0)
   {
-    v7 = [(PKHashtagView *)self delegate];
-    v8 = v7;
-    if (v6)
+    delegate = [(PKHashtagView *)self delegate];
+    v8 = delegate;
+    if (hashtagUUID2)
     {
-      [v7 hashtagViewDidActivateHashtag:self];
+      [delegate hashtagViewDidActivateHashtag:self];
     }
 
     else
     {
-      [v7 hashtagViewWillDeactivateHashtag:self];
+      [delegate hashtagViewWillDeactivateHashtag:self];
     }
 
     [(PKHashtagView *)self setNeedsDisplay];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -173,14 +173,14 @@ void __71__PKHashtagView_contextMenuInteraction_configurationForMenuAtLocation__
   [*(a1 + 32) setNeedsDisplay];
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v6 = objc_alloc_init(MEMORY[0x1E69DCE28]);
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
-  v8 = [MEMORY[0x1E69DC728] bezierPath];
-  [v6 setShadowPath:v8];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [v6 setShadowPath:bezierPath];
 
   v9 = objc_alloc(MEMORY[0x1E69DD250]);
   [(PKHashtagView *)self frame];
@@ -198,28 +198,28 @@ void __71__PKHashtagView_contextMenuInteraction_configurationForMenuAtLocation__
   v20 = [v9 initWithFrame:{v30.origin.x, v30.origin.y, v30.size.width, v30.size.height}];
   [(PKHashtagView *)self setBlankPreviewView:v20];
 
-  v21 = [(PKHashtagView *)self blankPreviewView];
-  [v21 setOpaque:0];
+  blankPreviewView = [(PKHashtagView *)self blankPreviewView];
+  [blankPreviewView setOpaque:0];
 
-  v22 = [(PKHashtagView *)self superview];
-  v23 = [(PKHashtagView *)self blankPreviewView];
-  [v22 addSubview:v23];
+  superview = [(PKHashtagView *)self superview];
+  blankPreviewView2 = [(PKHashtagView *)self blankPreviewView];
+  [superview addSubview:blankPreviewView2];
 
   v24 = objc_alloc(MEMORY[0x1E69DD070]);
-  v25 = [(PKHashtagView *)self blankPreviewView];
-  v26 = [v24 initWithView:v25 parameters:v6];
+  blankPreviewView3 = [(PKHashtagView *)self blankPreviewView];
+  v26 = [v24 initWithView:blankPreviewView3 parameters:v6];
 
   return v26;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __73__PKHashtagView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v5[3] = &unk_1E82D7148;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, configuration}];
 }
 
 uint64_t __73__PKHashtagView_contextMenuInteraction_willEndForConfiguration_animator___block_invoke(uint64_t a1)

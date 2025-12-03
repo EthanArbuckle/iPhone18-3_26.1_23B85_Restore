@@ -1,27 +1,27 @@
 @interface MIBUShipUpdateMainController
 + (id)sharedInstance;
 - (BOOL)_acquirePowerAssertion;
-- (BOOL)isCommandAllowed:(id)a3;
+- (BOOL)isCommandAllowed:(id)allowed;
 - (MIBUDeviceStatus)deviceStatus;
 - (MIBUShipUpdateMainController)init;
 - (id)_getStateTransitionTable;
 - (void)_acquireTransaction;
 - (void)_releasePowerAssertion;
 - (void)_releaseTransaction;
-- (void)_setSystemTime:(id)a3;
-- (void)_start:(id *)a3;
-- (void)_startIdleTimerForState:(unint64_t)a3;
+- (void)_setSystemTime:(id)time;
+- (void)_start:(id *)_start;
+- (void)_startIdleTimerForState:(unint64_t)state;
 - (void)_stopIdleTimer;
-- (void)_transitionToState:(unint64_t)a3 error:(id *)a4;
-- (void)cleanup:(id *)a3;
+- (void)_transitionToState:(unint64_t)state error:(id *)error;
+- (void)cleanup:(id *)cleanup;
 - (void)didConnect;
 - (void)didDisconnect;
-- (void)didHandleCommand:(id)a3 withError:(id)a4;
+- (void)didHandleCommand:(id)command withError:(id)error;
 - (void)didInit;
 - (void)didInvalidate;
-- (void)handleIdleTimer:(id)a3;
-- (void)operationFinishedWithError:(id)a3;
-- (void)start:(id *)a3;
+- (void)handleIdleTimer:(id)timer;
+- (void)operationFinishedWithError:(id)error;
+- (void)start:(id *)start;
 @end
 
 @implementation MIBUShipUpdateMainController
@@ -51,8 +51,8 @@
     v8 = +[MIBUOperationFactory sharedInstance];
     [(MIBUShipUpdateMainController *)v3 setOperationFactory:v8];
 
-    v9 = [(MIBUShipUpdateMainController *)v3 _getStateTransitionTable];
-    [(MIBUShipUpdateMainController *)v3 setStateTransitionTable:v9];
+    _getStateTransitionTable = [(MIBUShipUpdateMainController *)v3 _getStateTransitionTable];
+    [(MIBUShipUpdateMainController *)v3 setStateTransitionTable:_getStateTransitionTable];
 
     [(MIBUShipUpdateMainController *)v3 setTransaction:0];
     [(MIBUShipUpdateMainController *)v3 setPowerAssertionID:0];
@@ -73,27 +73,27 @@
   return v3;
 }
 
-- (void)start:(id *)a3
+- (void)start:(id *)start
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10003006C;
   v3[3] = &unk_10009C198;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = start;
   if (qword_1000B8428 != -1)
   {
     dispatch_once(&qword_1000B8428, v3);
   }
 }
 
-- (void)cleanup:(id *)a3
+- (void)cleanup:(id *)cleanup
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(MIBUShipUpdateMainController *)v4 state]!= 5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MIBUShipUpdateMainController *)selfCopy state]!= 5)
   {
-    [(MIBUShipUpdateMainController *)v4 _transitionToState:5 error:a3];
+    [(MIBUShipUpdateMainController *)selfCopy _transitionToState:5 error:cleanup];
   }
 
   if (qword_1000B84A8[0] != -1)
@@ -108,14 +108,14 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "main controller cleaned up", v6, 2u);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)operationFinishedWithError:(id)a3
+- (void)operationFinishedWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005E43C();
@@ -124,28 +124,28 @@
   v6 = qword_1000B84A0;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MIBUShipUpdateMainController *)v5 operation];
+    operation = [(MIBUShipUpdateMainController *)selfCopy operation];
     v8 = 138543618;
-    v9 = v7;
+    v9 = operation;
     v10 = 2114;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Operation %{public}@ finished with error: %{public}@", &v8, 0x16u);
   }
 
-  if ([(MIBUShipUpdateMainController *)v5 state]== 2)
+  if ([(MIBUShipUpdateMainController *)selfCopy state]== 2)
   {
-    [(MIBUShipUpdateMainController *)v5 _transitionToState:3 error:0];
+    [(MIBUShipUpdateMainController *)selfCopy _transitionToState:3 error:0];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)handleIdleTimer:(id)a3
+- (void)handleIdleTimer:(id)timer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 userInfo];
+  timerCopy = timer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userInfo = [timerCopy userInfo];
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005E450();
@@ -158,9 +158,9 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Idle timer fired!", buf, 2u);
   }
 
-  [(MIBUShipUpdateMainController *)v5 _stopIdleTimer];
-  v8 = [v6 intValue];
-  if ([(MIBUShipUpdateMainController *)v5 state]!= v8)
+  [(MIBUShipUpdateMainController *)selfCopy _stopIdleTimer];
+  intValue = [userInfo intValue];
+  if ([(MIBUShipUpdateMainController *)selfCopy state]!= intValue)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -170,34 +170,34 @@
     v10 = qword_1000B84A0;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MIBUShipUpdateMainController *)v5 state];
-      v12 = [v6 intValue];
+      state = [(MIBUShipUpdateMainController *)selfCopy state];
+      intValue2 = [userInfo intValue];
       *buf = 134218240;
-      v17 = v11;
+      v17 = state;
       v18 = 1024;
-      v19 = v12;
+      v19 = intValue2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Current state %lu != launch state %d, device is not idle", buf, 0x12u);
     }
 
     goto LABEL_13;
   }
 
-  if ([v6 unsignedIntValue] == 1 || objc_msgSend(v6, "unsignedIntValue") == 3)
+  if ([userInfo unsignedIntValue] == 1 || objc_msgSend(userInfo, "unsignedIntValue") == 3)
   {
-    v9 = [(MIBUShipUpdateMainController *)v5 idleTimeoutTaskQueue];
+    idleTimeoutTaskQueue = [(MIBUShipUpdateMainController *)selfCopy idleTimeoutTaskQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000306FC;
     v13[3] = &unk_100099480;
-    v14 = v6;
-    v15 = v5;
-    dispatch_async(v9, v13);
+    v14 = userInfo;
+    v15 = selfCopy;
+    dispatch_async(idleTimeoutTaskQueue, v13);
 
     v10 = v14;
 LABEL_13:
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)didInit
@@ -226,36 +226,36 @@ LABEL_13:
 
 - (MIBUDeviceStatus)deviceStatus
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MIBUDeviceStatus);
-  [(MIBUDeviceStatus *)v3 setState:[(MIBUShipUpdateMainController *)v2 state]];
-  v4 = [(MIBUShipUpdateMainController *)v2 deviceDelegate];
-  v5 = [v4 getBatteryLevel];
-  [(MIBUDeviceStatus *)v3 setBatteryLevel:v5];
+  [(MIBUDeviceStatus *)v3 setState:[(MIBUShipUpdateMainController *)selfCopy state]];
+  deviceDelegate = [(MIBUShipUpdateMainController *)selfCopy deviceDelegate];
+  getBatteryLevel = [deviceDelegate getBatteryLevel];
+  [(MIBUDeviceStatus *)v3 setBatteryLevel:getBatteryLevel];
 
-  v6 = [(MIBUShipUpdateMainController *)v2 deviceDelegate];
-  v7 = [v6 thermalDetails];
-  [(MIBUDeviceStatus *)v3 setThermalDetails:v7];
+  deviceDelegate2 = [(MIBUShipUpdateMainController *)selfCopy deviceDelegate];
+  thermalDetails = [deviceDelegate2 thermalDetails];
+  [(MIBUDeviceStatus *)v3 setThermalDetails:thermalDetails];
 
-  v8 = [(MIBUShipUpdateMainController *)v2 deviceDelegate];
-  v9 = [v8 batteryDetails];
-  [(MIBUDeviceStatus *)v3 setBatteryDetails:v9];
+  deviceDelegate3 = [(MIBUShipUpdateMainController *)selfCopy deviceDelegate];
+  batteryDetails = [deviceDelegate3 batteryDetails];
+  [(MIBUDeviceStatus *)v3 setBatteryDetails:batteryDetails];
 
-  v10 = [(MIBUShipUpdateMainController *)v2 operation];
+  operation = [(MIBUShipUpdateMainController *)selfCopy operation];
 
-  if (v10)
+  if (operation)
   {
-    v11 = [(MIBUShipUpdateMainController *)v2 operation];
-    -[MIBUDeviceStatus setOperation:](v3, "setOperation:", [v11 opCode]);
+    operation2 = [(MIBUShipUpdateMainController *)selfCopy operation];
+    -[MIBUDeviceStatus setOperation:](v3, "setOperation:", [operation2 opCode]);
 
-    v12 = [(MIBUShipUpdateMainController *)v2 operation];
-    v13 = [v12 error];
-    [(MIBUDeviceStatus *)v3 setOperationError:v13];
+    operation3 = [(MIBUShipUpdateMainController *)selfCopy operation];
+    error = [operation3 error];
+    [(MIBUDeviceStatus *)v3 setOperationError:error];
 
-    v14 = [(MIBUShipUpdateMainController *)v2 operation];
-    v15 = [v14 details];
-    [(MIBUDeviceStatus *)v3 setOperationDetails:v15];
+    operation4 = [(MIBUShipUpdateMainController *)selfCopy operation];
+    details = [operation4 details];
+    [(MIBUDeviceStatus *)v3 setOperationDetails:details];
   }
 
   else
@@ -265,16 +265,16 @@ LABEL_13:
     [(MIBUDeviceStatus *)v3 setOperationDetails:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isCommandAllowed:(id)a3
+- (BOOL)isCommandAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  allowedCopy = allowed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13[0] = &off_1000A83E8;
   v13[1] = &off_1000A8400;
   v14[0] = &__NSArray0__struct;
@@ -284,10 +284,10 @@ LABEL_13:
   v14[2] = &off_1000A9B78;
   v14[3] = &off_1000A9B90;
   v6 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:4];
-  v7 = [NSNumber numberWithUnsignedInteger:[(MIBUShipUpdateMainController *)v5 state]];
+  v7 = [NSNumber numberWithUnsignedInteger:[(MIBUShipUpdateMainController *)selfCopy state]];
   v8 = [v6 objectForKey:v7];
 
-  v9 = [v8 containsObject:v4];
+  v9 = [v8 containsObject:allowedCopy];
   if ((v9 & 1) == 0)
   {
     if (qword_1000B84A8[0] != -1)
@@ -298,132 +298,132 @@ LABEL_13:
     v10 = qword_1000B84A0;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_10005E528(v4, v12, [(MIBUShipUpdateMainController *)v5 state], v10);
+      sub_10005E528(allowedCopy, v12, [(MIBUShipUpdateMainController *)selfCopy state], v10);
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
-- (void)didHandleCommand:(id)a3 withError:(id)a4
+- (void)didHandleCommand:(id)command withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v6 code];
-  if (v7)
+  commandCopy = command;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  code = [commandCopy code];
+  if (errorCopy)
   {
-    sub_10005E580(v8, v7, v9);
+    sub_10005E580(selfCopy, errorCopy, code);
     goto LABEL_24;
   }
 
-  v10 = [(MIBUShipUpdateMainController *)v8 state];
-  if (v10 == 1)
+  state = [(MIBUShipUpdateMainController *)selfCopy state];
+  if (state == 1)
   {
-    if (v9)
+    if (code)
     {
-      if (v9 == 14)
+      if (code == 14)
       {
-        v16 = [(MIBUShipUpdateMainController *)v8 operationFactory];
-        v17 = [v16 buildOperationFromCode:4 andDelegate:v8];
-        [(MIBUShipUpdateMainController *)v8 setOperation:v17];
+        operationFactory = [(MIBUShipUpdateMainController *)selfCopy operationFactory];
+        v17 = [operationFactory buildOperationFromCode:4 andDelegate:selfCopy];
+        [(MIBUShipUpdateMainController *)selfCopy setOperation:v17];
 
-        v18 = [(MIBUShipUpdateMainController *)v8 operation];
-        v19 = [v6 payload];
-        v20 = [v19 objectForKey:@"HostPort"];
-        [v18 setHostPort:v20];
+        operation = [(MIBUShipUpdateMainController *)selfCopy operation];
+        payload = [commandCopy payload];
+        v20 = [payload objectForKey:@"HostPort"];
+        [operation setHostPort:v20];
 
-        v21 = [v6 payload];
-        v22 = [v21 objectForKey:@"GroupAddress"];
-        [v18 setGroupAddress:v22];
+        payload2 = [commandCopy payload];
+        v22 = [payload2 objectForKey:@"GroupAddress"];
+        [operation setGroupAddress:v22];
 
-        v23 = [v6 payload];
-        v24 = [v23 objectForKey:@"GroupPort"];
-        [v18 setGroupPort:v24];
+        payload3 = [commandCopy payload];
+        v24 = [payload3 objectForKey:@"GroupPort"];
+        [operation setGroupPort:v24];
 
-        v25 = [v6 payload];
-        v26 = [v25 objectForKey:@"InterfaceName"];
-        [v18 setInterfaceName:v26];
+        payload4 = [commandCopy payload];
+        v26 = [payload4 objectForKey:@"InterfaceName"];
+        [operation setInterfaceName:v26];
 
-        v27 = [v6 payload];
-        v28 = [v27 objectForKey:@"ServiceName"];
-        [v18 setServiceName:v28];
+        payload5 = [commandCopy payload];
+        v28 = [payload5 objectForKey:@"ServiceName"];
+        [operation setServiceName:v28];
 
-        v29 = [v6 payload];
-        v30 = [v29 objectForKey:@"RQBasicParameters"];
-        [v18 setRqBasicParameters:v30];
+        payload6 = [commandCopy payload];
+        v30 = [payload6 objectForKey:@"RQBasicParameters"];
+        [operation setRqBasicParameters:v30];
 
-        v31 = [v6 payload];
-        v32 = [v31 objectForKey:@"RQExtendedParameters"];
-        [v18 setRqExtendedParameters:v32];
+        payload7 = [commandCopy payload];
+        v32 = [payload7 objectForKey:@"RQExtendedParameters"];
+        [operation setRqExtendedParameters:v32];
 
-        v33 = [v6 payload];
-        v34 = [v33 objectForKey:@"RQThreshold"];
-        [v18 setRqThreshold:v34];
+        payload8 = [commandCopy payload];
+        v34 = [payload8 objectForKey:@"RQThreshold"];
+        [operation setRqThreshold:v34];
 
-        v35 = [v6 payload];
-        v36 = [v35 objectForKey:@"TCPAddress"];
-        [v18 setTcpAddress:v36];
+        payload9 = [commandCopy payload];
+        v36 = [payload9 objectForKey:@"TCPAddress"];
+        [operation setTcpAddress:v36];
 
-        v37 = [v6 payload];
-        v38 = [v37 objectForKey:@"TCPPort"];
-        [v18 setTcpPort:v38];
+        payload10 = [commandCopy payload];
+        v38 = [payload10 objectForKey:@"TCPPort"];
+        [operation setTcpPort:v38];
 
-        v39 = [v6 payload];
-        v40 = [v39 objectForKey:@"TCPPingInterval"];
-        [v18 setTcpPingInterval:v40];
+        payload11 = [commandCopy payload];
+        v40 = [payload11 objectForKey:@"TCPPingInterval"];
+        [operation setTcpPingInterval:v40];
 
-        v41 = [v6 payload];
-        v42 = [v41 objectForKey:@"OperationTimeout"];
-        [v18 setOperationTimeout:v42];
+        payload12 = [commandCopy payload];
+        v42 = [payload12 objectForKey:@"OperationTimeout"];
+        [operation setOperationTimeout:v42];
 
-        v43 = [v6 payload];
-        v44 = [v43 objectForKey:@"EnableRateAdapter"];
+        payload13 = [commandCopy payload];
+        v44 = [payload13 objectForKey:@"EnableRateAdapter"];
 
         if (v44)
         {
-          v45 = [v6 payload];
-          v46 = [v45 objectForKey:@"EnableRateAdapter"];
-          [v18 setEnableRateAdapter:{objc_msgSend(v46, "BOOLValue")}];
+          payload14 = [commandCopy payload];
+          v46 = [payload14 objectForKey:@"EnableRateAdapter"];
+          [operation setEnableRateAdapter:{objc_msgSend(v46, "BOOLValue")}];
         }
 
-        v47 = [v6 payload];
-        v48 = [v47 objectForKey:@"CountryCode"];
-        [v18 setCountryCode:v48];
+        payload15 = [commandCopy payload];
+        v48 = [payload15 objectForKey:@"CountryCode"];
+        [operation setCountryCode:v48];
 
-        v49 = [v6 payload];
-        v50 = [v49 objectForKey:@"ChannelName"];
-        [v18 setChannelName:v50];
+        payload16 = [commandCopy payload];
+        v50 = [payload16 objectForKey:@"ChannelName"];
+        [operation setChannelName:v50];
 
-        v51 = [v6 payload];
-        v52 = [v51 objectForKey:@"Band"];
-        [v18 setBand:v52];
+        payload17 = [commandCopy payload];
+        v52 = [payload17 objectForKey:@"Band"];
+        [operation setBand:v52];
 
-        v53 = [v6 payload];
-        v54 = [v53 objectForKey:@"Bandwidth"];
-        [v18 setBandwidth:v54];
+        payload18 = [commandCopy payload];
+        v54 = [payload18 objectForKey:@"Bandwidth"];
+        [operation setBandwidth:v54];
 
-        v55 = [v6 payload];
-        v56 = [v55 objectForKey:@"WiFiSSID"];
-        [v18 setWifiSSID:v56];
+        payload19 = [commandCopy payload];
+        v56 = [payload19 objectForKey:@"WiFiSSID"];
+        [operation setWifiSSID:v56];
 
-        v57 = [v6 payload];
-        v58 = [v57 objectForKey:@"WiFiChannel"];
-        [v18 setWifiChannel:v58];
+        payload20 = [commandCopy payload];
+        v58 = [payload20 objectForKey:@"WiFiChannel"];
+        [operation setWifiChannel:v58];
 
         v11 = 2;
         goto LABEL_23;
       }
 
-      if (v9 == 13)
+      if (code == 13)
       {
-        [(MIBUShipUpdateMainController *)v8 _stopIdleTimer];
-        v12 = [v6 payload];
-        v13 = [v12 objectForKey:@"TimeStamp"];
+        [(MIBUShipUpdateMainController *)selfCopy _stopIdleTimer];
+        payload21 = [commandCopy payload];
+        v13 = [payload21 objectForKey:@"TimeStamp"];
 
-        [(MIBUShipUpdateMainController *)v8 _setSystemTime:v13];
+        [(MIBUShipUpdateMainController *)selfCopy _setSystemTime:v13];
       }
 
       if (qword_1000B84A8[0] != -1)
@@ -435,25 +435,25 @@ LABEL_13:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v59 = 138412802;
-        v60 = v8;
+        v60 = selfCopy;
         v61 = 2048;
-        v62 = v9;
+        v62 = code;
         v63 = 2048;
-        v64 = [(MIBUShipUpdateMainController *)v8 state];
+        state2 = [(MIBUShipUpdateMainController *)selfCopy state];
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%@: Received command %ld at state %ld; resetting idle timer...", &v59, 0x20u);
       }
 
-      [(MIBUShipUpdateMainController *)v8 _startIdleTimerForState:[(MIBUShipUpdateMainController *)v8 state]];
+      [(MIBUShipUpdateMainController *)selfCopy _startIdleTimerForState:[(MIBUShipUpdateMainController *)selfCopy state]];
     }
   }
 
-  else if (v10 == 3)
+  else if (state == 3)
   {
-    if (v9 == 12)
+    if (code == 12)
     {
       v11 = 1;
 LABEL_23:
-      [(MIBUShipUpdateMainController *)v8 _transitionToState:v11 error:0];
+      [(MIBUShipUpdateMainController *)selfCopy _transitionToState:v11 error:0];
     }
   }
 
@@ -468,29 +468,29 @@ LABEL_23:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v59 = 138412802;
-      v60 = v8;
+      v60 = selfCopy;
       v61 = 2048;
-      v62 = v9;
+      v62 = code;
       v63 = 2048;
-      v64 = [(MIBUShipUpdateMainController *)v8 state];
+      state2 = [(MIBUShipUpdateMainController *)selfCopy state];
       _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%@: Nothing to do for cmd %lu at state %lu", &v59, 0x20u);
     }
   }
 
 LABEL_24:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_start:(id *)a3
+- (void)_start:(id *)_start
 {
   self->_running = 1;
-  v5 = [(MIBUShipUpdateMainController *)self operationFactory];
-  v6 = [v5 buildCurrentOperationWithDelegate:self];
+  operationFactory = [(MIBUShipUpdateMainController *)self operationFactory];
+  v6 = [operationFactory buildCurrentOperationWithDelegate:self];
   [(MIBUShipUpdateMainController *)self setOperation:v6];
 
-  v7 = [(MIBUShipUpdateMainController *)self operation];
+  operation = [(MIBUShipUpdateMainController *)self operation];
 
-  if (v7)
+  if (operation)
   {
     v8 = 2;
   }
@@ -500,20 +500,20 @@ LABEL_24:
     v8 = 1;
   }
 
-  [(MIBUShipUpdateMainController *)self _transitionToState:v8 error:a3];
+  [(MIBUShipUpdateMainController *)self _transitionToState:v8 error:_start];
 }
 
-- (void)_transitionToState:(unint64_t)a3 error:(id *)a4
+- (void)_transitionToState:(unint64_t)state error:(id *)error
 {
   if ([(MIBUShipUpdateMainController *)self state])
   {
-    v7 = [(MIBUShipUpdateMainController *)self stateTransitionTable];
+    stateTransitionTable = [(MIBUShipUpdateMainController *)self stateTransitionTable];
     v8 = [NSNumber numberWithUnsignedInteger:[(MIBUShipUpdateMainController *)self state]];
-    v9 = [v7 objectForKey:v8];
+    v9 = [stateTransitionTable objectForKey:v8];
 
     if (v9)
     {
-      v10 = [NSNumber numberWithUnsignedInteger:a3];
+      v10 = [NSNumber numberWithUnsignedInteger:state];
       v11 = [v9 containsObject:v10];
 
       if (v11)
@@ -547,41 +547,41 @@ LABEL_5:
     v14 = objc_opt_class();
     v15 = v14;
     *buf = 138543874;
-    v68 = v14;
+    stateCopy3 = v14;
     v69 = 2048;
-    v70 = [(MIBUShipUpdateMainController *)self state];
+    state = [(MIBUShipUpdateMainController *)self state];
     v71 = 2048;
-    v72 = a3;
+    stateCopy2 = state;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: changing device state from %lu to %lu", buf, 0x20u);
   }
 
-  if (a3 > 2)
+  if (state > 2)
   {
-    if (a3 == 3)
+    if (state == 3)
     {
-      v31 = [(MIBUShipUpdateMainController *)self btController];
+      btController = [(MIBUShipUpdateMainController *)self btController];
       v65 = 0;
-      [v31 reset:&v65];
+      [btController reset:&v65];
       v32 = v65;
 
-      v33 = [(MIBUShipUpdateMainController *)self btController];
+      btController2 = [(MIBUShipUpdateMainController *)self btController];
       v64 = v32;
-      [v33 start:&v64];
+      [btController2 start:&v64];
       v22 = v64;
 
-      v34 = [(MIBUShipUpdateMainController *)self operation];
-      if (v34)
+      operation = [(MIBUShipUpdateMainController *)self operation];
+      if (operation)
       {
-        v35 = v34;
-        v36 = [(MIBUShipUpdateMainController *)self operation];
-        v37 = [v36 error];
+        v35 = operation;
+        operation2 = [(MIBUShipUpdateMainController *)self operation];
+        error = [operation2 error];
 
-        if (v37)
+        if (error)
         {
-          v29 = self;
+          selfCopy2 = self;
           v30 = 3;
 LABEL_29:
-          [(MIBUShipUpdateMainController *)v29 _startIdleTimerForState:v30];
+          [(MIBUShipUpdateMainController *)selfCopy2 _startIdleTimerForState:v30];
           goto LABEL_51;
         }
       }
@@ -601,9 +601,9 @@ LABEL_29:
       if (os_variant_has_internal_content())
       {
         v39 = +[MIBUTestPreferences sharedInstance];
-        v40 = [v39 enterLPMAfterUpdateComplete];
+        enterLPMAfterUpdateComplete = [v39 enterLPMAfterUpdateComplete];
 
-        if (v40)
+        if (enterLPMAfterUpdateComplete)
         {
           if (qword_1000B84A8[0] != -1)
           {
@@ -617,10 +617,10 @@ LABEL_29:
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Putting device to low power mode per configuration.", buf, 2u);
           }
 
-          v42 = [(MIBUShipUpdateMainController *)self deviceDelegate];
-          v43 = [v42 shutdownInLPM];
+          deviceDelegate = [(MIBUShipUpdateMainController *)self deviceDelegate];
+          shutdownInLPM = [deviceDelegate shutdownInLPM];
 
-          if (v43)
+          if (shutdownInLPM)
           {
             goto LABEL_51;
           }
@@ -638,8 +638,8 @@ LABEL_29:
         }
       }
 
-      v52 = [(MIBUShipUpdateMainController *)self deviceDelegate];
-      [v52 setShelfLifeMode];
+      deviceDelegate2 = [(MIBUShipUpdateMainController *)self deviceDelegate];
+      [deviceDelegate2 setShelfLifeMode];
 
       if (qword_1000B84A8[0] != -1)
       {
@@ -653,69 +653,69 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "Shutting down device (no longer wakeable).", buf, 2u);
       }
 
-      v24 = [(MIBUShipUpdateMainController *)self deviceDelegate];
-      [v24 shutdown];
+      deviceDelegate3 = [(MIBUShipUpdateMainController *)self deviceDelegate];
+      [deviceDelegate3 shutdown];
     }
 
     else
     {
-      if (a3 != 5)
+      if (state != 5)
       {
         goto LABEL_18;
       }
 
       [(MIBUShipUpdateMainController *)self _stopIdleTimer];
-      v19 = [(MIBUShipUpdateMainController *)self operation];
+      operation3 = [(MIBUShipUpdateMainController *)self operation];
 
-      if (v19)
+      if (operation3)
       {
-        v20 = [(MIBUShipUpdateMainController *)self operation];
-        [v20 terminateNow];
+        operation4 = [(MIBUShipUpdateMainController *)self operation];
+        [operation4 terminateNow];
 
         [(MIBUShipUpdateMainController *)self setOperation:0];
       }
 
       [(MIBUShipUpdateMainController *)self _releaseTransaction];
       [(MIBUShipUpdateMainController *)self _releasePowerAssertion];
-      v21 = [(MIBUShipUpdateMainController *)self btController];
+      btController3 = [(MIBUShipUpdateMainController *)self btController];
       v63 = 0;
-      [v21 terminate:&v63];
+      [btController3 terminate:&v63];
       v22 = v63;
 
-      v23 = [(MIBUShipUpdateMainController *)self deviceDelegate];
-      [v23 removePowerLog];
+      deviceDelegate4 = [(MIBUShipUpdateMainController *)self deviceDelegate];
+      [deviceDelegate4 removePowerLog];
 
-      v24 = +[MIBUDataCollector sharedInstance];
-      [v24 clear];
+      deviceDelegate3 = +[MIBUDataCollector sharedInstance];
+      [deviceDelegate3 clear];
     }
 
     goto LABEL_51;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    v26 = [(MIBUShipUpdateMainController *)self operation];
+    operation5 = [(MIBUShipUpdateMainController *)self operation];
 
-    if (v26)
+    if (operation5)
     {
-      v27 = [(MIBUShipUpdateMainController *)self operation];
-      [v27 terminateNow];
+      operation6 = [(MIBUShipUpdateMainController *)self operation];
+      [operation6 terminateNow];
 
       [(MIBUShipUpdateMainController *)self setOperation:0];
     }
 
     [(MIBUShipUpdateMainController *)self _acquireTransaction];
-    v28 = [(MIBUShipUpdateMainController *)self btController];
+    btController4 = [(MIBUShipUpdateMainController *)self btController];
     v66 = 0;
-    [v28 start:&v66];
+    [btController4 start:&v66];
     v22 = v66;
 
-    v29 = self;
+    selfCopy2 = self;
     v30 = 1;
     goto LABEL_29;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
 LABEL_18:
     if (qword_1000B84A8[0] != -1)
@@ -733,15 +733,15 @@ LABEL_18:
   }
 
   [(MIBUShipUpdateMainController *)self _stopIdleTimer];
-  v16 = [(MIBUShipUpdateMainController *)self btController];
-  [v16 setShouldCloseSession:1];
+  btController5 = [(MIBUShipUpdateMainController *)self btController];
+  [btController5 setShouldCloseSession:1];
 
   [(MIBUShipUpdateMainController *)self _acquirePowerAssertion];
   v17 = +[MIBUDataCollector sharedInstance];
   [v17 start];
 
-  v18 = [(MIBUShipUpdateMainController *)self operation];
-  [v18 resume];
+  operation7 = [(MIBUShipUpdateMainController *)self operation];
+  [operation7 resume];
 
 LABEL_22:
   v22 = 0;
@@ -757,17 +757,17 @@ LABEL_51:
     v55 = v54;
     v56 = objc_opt_class();
     v57 = v56;
-    v58 = [(MIBUShipUpdateMainController *)self state];
+    state2 = [(MIBUShipUpdateMainController *)self state];
     *buf = 138543874;
-    v68 = v56;
+    stateCopy3 = v56;
     v69 = 2048;
-    v70 = v58;
+    state = state2;
     v71 = 2048;
-    v72 = a3;
+    stateCopy2 = state;
     _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%{public}@: state changed from %lu to %lu", buf, 0x20u);
   }
 
-  [(MIBUShipUpdateMainController *)self setState:a3];
+  [(MIBUShipUpdateMainController *)self setState:state];
   if (v22)
   {
     if (qword_1000B84A8[0] != -1)
@@ -779,22 +779,22 @@ LABEL_51:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_ERROR))
     {
       v61 = v59;
-      v62 = [(MIBUShipUpdateMainController *)self state];
+      state3 = [(MIBUShipUpdateMainController *)self state];
       *buf = 134218498;
-      v68 = a3;
+      stateCopy3 = state;
       v69 = 2048;
-      v70 = v62;
+      state = state3;
       v71 = 2114;
-      v72 = v22;
+      stateCopy2 = v22;
       _os_log_error_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "Failed to transition to state: %ld; current device state is: %ld; error: %{public}@", buf, 0x20u);
     }
   }
 
 LABEL_60:
-  if (a4)
+  if (error)
   {
     v60 = v22;
-    *a4 = v22;
+    *error = v22;
   }
 }
 
@@ -815,22 +815,22 @@ LABEL_60:
   return v2;
 }
 
-- (void)_startIdleTimerForState:(unint64_t)a3
+- (void)_startIdleTimerForState:(unint64_t)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100032500;
   v3[3] = &unk_10009C198;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
 - (void)_stopIdleTimer
 {
-  v3 = [(MIBUShipUpdateMainController *)self idleTimer];
+  idleTimer = [(MIBUShipUpdateMainController *)self idleTimer];
 
-  if (v3)
+  if (idleTimer)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -844,8 +844,8 @@ LABEL_60:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping Idle Timer...", v6, 2u);
     }
 
-    v5 = [(MIBUShipUpdateMainController *)self idleTimer];
-    [v5 invalidate];
+    idleTimer2 = [(MIBUShipUpdateMainController *)self idleTimer];
+    [idleTimer2 invalidate];
 
     [(MIBUShipUpdateMainController *)self setIdleTimer:0];
   }
@@ -853,9 +853,9 @@ LABEL_60:
 
 - (void)_acquireTransaction
 {
-  v3 = [(MIBUShipUpdateMainController *)self transaction];
+  transaction = [(MIBUShipUpdateMainController *)self transaction];
 
-  if (!v3)
+  if (!transaction)
   {
     if (qword_1000B84A8[0] != -1)
     {
@@ -922,9 +922,9 @@ LABEL_60:
     if (os_log_type_enabled(qword_1000B84A0, OS_LOG_TYPE_DEFAULT))
     {
       v6 = v5;
-      v7 = [(MIBUShipUpdateMainController *)self powerAssertionID];
+      powerAssertionID = [(MIBUShipUpdateMainController *)self powerAssertionID];
       v9[0] = 67109120;
-      v9[1] = v7;
+      v9[1] = powerAssertionID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Acquired power assertion ID: %u", v9, 8u);
     }
 
@@ -962,9 +962,9 @@ LABEL_60:
   }
 }
 
-- (void)_setSystemTime:(id)a3
+- (void)_setSystemTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   if (qword_1000B84A8[0] != -1)
   {
     sub_10005EC10();
@@ -975,12 +975,12 @@ LABEL_60:
   {
     v6 = v5;
     v17 = 134217984;
-    v18 = [v4 longValue];
+    longValue = [timeCopy longValue];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting system time stamp: %lu", &v17, 0xCu);
   }
 
-  v7 = [(MIBUShipUpdateMainController *)self deviceDelegate];
-  v8 = [v7 setSystemTime:{objc_msgSend(v4, "longValue")}];
+  deviceDelegate = [(MIBUShipUpdateMainController *)self deviceDelegate];
+  v8 = [deviceDelegate setSystemTime:{objc_msgSend(timeCopy, "longValue")}];
 
   if ((v8 & 1) == 0)
   {

@@ -1,5 +1,5 @@
 @interface OADRegularTextRun
-- (BOOL)isSimilarToTextRun:(id)a3;
+- (BOOL)isSimilarToTextRun:(id)run;
 - (OADRegularTextRun)init;
 @end
 
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (BOOL)isSimilarToTextRun:(id)a3
+- (BOOL)isSimilarToTextRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v9.receiver = self;
   v9.super_class = OADRegularTextRun;
-  if ([(OADTextRun *)&v9 isSimilarToTextRun:v4])
+  if ([(OADTextRun *)&v9 isSimilarToTextRun:runCopy])
   {
-    v5 = [(OADRegularTextRun *)self text];
-    v6 = [v4 text];
-    v7 = [v5 isEqualToString:v6];
+    text = [(OADRegularTextRun *)self text];
+    text2 = [runCopy text];
+    v7 = [text isEqualToString:text2];
   }
 
   else

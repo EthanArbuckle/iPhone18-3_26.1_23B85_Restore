@@ -1,21 +1,21 @@
 @interface VCPEffectsAssetProcessingTask
-+ (id)taskWithAssets:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
-- (VCPEffectsAssetProcessingTask)initWithAssets:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
++ (id)taskWithAssets:(id)assets progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (VCPEffectsAssetProcessingTask)initWithAssets:(id)assets progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 - (int)main;
-- (int)persistResults:(id)a3 forAsset:(id)a4;
-- (int)processAsset:(id)a3;
+- (int)persistResults:(id)results forAsset:(id)asset;
+- (int)processAsset:(id)asset;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPEffectsAssetProcessingTask
 
-- (VCPEffectsAssetProcessingTask)initWithAssets:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
+- (VCPEffectsAssetProcessingTask)initWithAssets:(id)assets progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 count])
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if ([assetsCopy count])
   {
     v26.receiver = self;
     v26.super_class = VCPEffectsAssetProcessingTask;
@@ -23,14 +23,14 @@
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_assets, a3);
-      v14 = objc_retainBlock(v10);
+      objc_storeStrong(&v12->_assets, assets);
+      v14 = objc_retainBlock(handlerCopy);
       progressHandler = v13->_progressHandler;
       v13->_progressHandler = v14;
 
-      if (v11)
+      if (completionHandlerCopy)
       {
-        v16 = v11;
+        v16 = completionHandlerCopy;
       }
 
       else
@@ -43,9 +43,9 @@
       v13->_completionHandler = v17;
 
       v19 = [(NSArray *)v13->_assets objectAtIndexedSubscript:0];
-      v20 = [v19 photoLibrary];
+      photoLibrary = [v19 photoLibrary];
       photoLibrary = v13->_photoLibrary;
-      v13->_photoLibrary = v20;
+      v13->_photoLibrary = photoLibrary;
 
       v22 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v13->_photoLibrary];
       database = v13->_database;
@@ -53,61 +53,61 @@
     }
 
     self = v13;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-+ (id)taskWithAssets:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
++ (id)taskWithAssets:(id)assets progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithAssets:v7 progressHandler:v8 andCompletionHandler:v9];
+  assetsCopy = assets;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v10 = [objc_alloc(objc_opt_class()) initWithAssets:assetsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v10;
 }
 
-- (int)persistResults:(id)a3 forAsset:(id)a4
+- (int)persistResults:(id)results forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 vcp_recipe];
-  if (v8)
+  resultsCopy = results;
+  assetCopy = asset;
+  vcp_recipe = [resultsCopy vcp_recipe];
+  if (vcp_recipe)
   {
-    v9 = [(PHPhotoLibrary *)self->_photoLibrary variationCache];
-    v10 = [v6 vcp_recipe];
-    v11 = [v7 localIdentifier];
-    [v9 saveAnalysisResult:v10 assetIdentifier:v11];
+    variationCache = [(PHPhotoLibrary *)self->_photoLibrary variationCache];
+    vcp_recipe2 = [resultsCopy vcp_recipe];
+    localIdentifier = [assetCopy localIdentifier];
+    [variationCache saveAnalysisResult:vcp_recipe2 assetIdentifier:localIdentifier];
 
-    v12 = [v6 vcp_gatingDescriptions];
+    vcp_gatingDescriptions = [resultsCopy vcp_gatingDescriptions];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000E0EFC;
     v30[3] = &unk_100285F18;
-    v13 = v9;
+    v13 = variationCache;
     v31 = v13;
-    v14 = v7;
+    v14 = assetCopy;
     v32 = v14;
-    [v12 enumerateKeysAndObjectsUsingBlock:v30];
+    [vcp_gatingDescriptions enumerateKeysAndObjectsUsingBlock:v30];
 
-    if ([v6 vcp_longExposureSugestionState] == 1)
+    if ([resultsCopy vcp_longExposureSugestionState] == 1)
     {
-      v15 = [v6 vcp_matchingScenes];
-      v16 = v15;
-      if (v15)
+      vcp_matchingScenes = [resultsCopy vcp_matchingScenes];
+      v16 = vcp_matchingScenes;
+      if (vcp_matchingScenes)
       {
         v35 = @"Matching scenes";
-        v36 = v15;
+        v36 = vcp_matchingScenes;
         v17 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-        v18 = [v14 localIdentifier];
-        [v13 saveGatingResult:v17 forVariationType:3 assetIdentifier:v18];
+        localIdentifier2 = [v14 localIdentifier];
+        [v13 saveGatingResult:v17 forVariationType:3 assetIdentifier:localIdentifier2];
       }
     }
 
@@ -117,14 +117,14 @@
     v27[2] = sub_1000E1018;
     v27[3] = &unk_100282BC8;
     v28 = v14;
-    v29 = v6;
+    v29 = resultsCopy;
     v26 = 0;
     [(PHPhotoLibrary *)photoLibrary performChangesAndWait:v27 error:&v26];
     v20 = v26;
     v21 = [v13 analysisResultForAssetIdentifier:@"invalid"];
     if (v20)
     {
-      v22 = [v20 code];
+      code = [v20 code];
       if (MediaAnalysisLogLevel() >= 3)
       {
         v23 = VCPLogToOSLogType[3];
@@ -140,16 +140,16 @@
 
     else
     {
-      v22 = 0;
+      code = 0;
     }
   }
 
   else
   {
-    v22 = -18;
+    code = -18;
   }
 
-  return v22;
+  return code;
 }
 
 - (void)dealloc
@@ -167,36 +167,36 @@
   [(VCPEffectsAssetProcessingTask *)&v6 dealloc];
 }
 
-- (int)processAsset:(id)a3
+- (int)processAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (+[MADManagedPhotosAsset isMACDReadEnabled])
   {
-    v5 = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
-    v6 = [v4 localIdentifier];
-    v7 = [v5 fetchAnalysisWithLocalIdentifier:v6 predicate:0];
+    mad_fetchRequest = [(PHPhotoLibrary *)self->_photoLibrary mad_fetchRequest];
+    localIdentifier = [assetCopy localIdentifier];
+    v7 = [mad_fetchRequest fetchAnalysisWithLocalIdentifier:localIdentifier predicate:0];
   }
 
   else
   {
     database = self->_database;
-    v5 = [v4 localIdentifier];
+    mad_fetchRequest = [assetCopy localIdentifier];
     v29 = 0;
-    [(VCPDatabaseWriter *)database analysisForAsset:v5 analysis:&v29];
+    [(VCPDatabaseWriter *)database analysisForAsset:mad_fetchRequest analysis:&v29];
     v7 = v29;
   }
 
-  v9 = [v7 vcp_effectsResult];
-  v10 = [v7 vcp_version];
-  if (v10 == MediaAnalysisVersion && ([v9 vcp_isValidEffectsResult] & 1) != 0)
+  vcp_effectsResult = [v7 vcp_effectsResult];
+  vcp_version = [v7 vcp_version];
+  if (vcp_version == MediaAnalysisVersion && ([vcp_effectsResult vcp_isValidEffectsResult] & 1) != 0)
   {
     goto LABEL_20;
   }
 
-  v25 = v4;
-  v11 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v11 setIncludedDetectionTypes:&off_1002961E8];
-  v12 = [PHFace fetchFacesInAsset:v4 options:v11];
+  v25 = assetCopy;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&off_1002961E8];
+  v12 = [PHFace fetchFacesInAsset:assetCopy options:librarySpecificFetchOptions];
   if ([v12 count])
   {
     v13 = 1;
@@ -204,8 +204,8 @@
 
   else if (([v7 vcp_types] & 0xC) != 0)
   {
-    v14 = [v7 vcp_results];
-    v15 = [v14 objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
+    vcp_results = [v7 vcp_results];
+    v15 = [vcp_results objectForKeyedSubscript:MediaAnalysisFaceResultsKey];
     v13 = v15 != 0;
   }
 
@@ -216,7 +216,7 @@
 
   v28 = 0;
   v16 = [[VCPEffectsAnalyzer alloc] initWithFlagHasFaceOrPet:v13];
-  v17 = [VCPPhotosAsset assetWithPHAsset:v4];
+  v17 = [VCPPhotosAsset assetWithPHAsset:assetCopy];
   v26 = 0;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
@@ -233,17 +233,17 @@
     v21 = [v20 objectAtIndexedSubscript:0];
     v22 = [v21 objectForKeyedSubscript:MediaAnalysisResultAttributesKey];
 
-    v9 = v22;
+    vcp_effectsResult = v22;
     v12 = v24;
   }
 
-  v4 = v25;
+  assetCopy = v25;
   if (!v18)
   {
 LABEL_20:
-    if ([v9 vcp_isValidEffectsResult])
+    if ([vcp_effectsResult vcp_isValidEffectsResult])
     {
-      v18 = [(VCPEffectsAssetProcessingTask *)self persistResults:v9 forAsset:v4];
+      v18 = [(VCPEffectsAssetProcessingTask *)self persistResults:vcp_effectsResult forAsset:assetCopy];
     }
 
     else
@@ -303,9 +303,9 @@ LABEL_20:
 
         if ([(VCPEffectsAssetProcessingTask *)self processAsset:*(*(&v16 + 1) + 8 * i)]&& MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v9))
         {
-          v13 = [v11 localIdentifier];
+          localIdentifier = [v11 localIdentifier];
           *buf = v15;
-          v21 = v13;
+          v21 = localIdentifier;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[%@] Live Photo Effects processing failed for asset", buf, 0xCu);
         }
 
@@ -331,8 +331,8 @@ LABEL_20:
 - (int)run
 {
   atomic_store(1u, &self->_started);
-  v3 = [(VCPEffectsAssetProcessingTask *)self main];
-  if (v3)
+  main = [(VCPEffectsAssetProcessingTask *)self main];
+  if (main)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -348,7 +348,7 @@ LABEL_20:
     v11 = @"Effects asset processing failed";
     v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     completionHandler = self->_completionHandler;
-    v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v3 userInfo:v5];
+    v7 = [NSError errorWithDomain:NSOSStatusErrorDomain code:main userInfo:v5];
     completionHandler[2](completionHandler, 0, v7);
   }
 
@@ -357,7 +357,7 @@ LABEL_20:
     (*(self->_completionHandler + 2))();
   }
 
-  return v3;
+  return main;
 }
 
 @end

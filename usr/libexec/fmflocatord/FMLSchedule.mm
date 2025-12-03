@@ -1,10 +1,10 @@
 @interface FMLSchedule
-- (BOOL)isCurrentAt:(id)a3;
+- (BOOL)isCurrentAt:(id)at;
 - (NSString)description;
 - (NSTimeZone)timeZone;
 - (_TtC11fmflocatord11FMLSchedule)init;
 - (id)dictionary;
-- (id)nextStartOrEndDateFrom:(id)a3;
+- (id)nextStartOrEndDateFrom:(id)from;
 - (unint64_t)daysOfWeek;
 @end
 
@@ -22,7 +22,7 @@
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = self;
+  selfCopy = self;
   Fence.Schedule.Matcher.schedule.getter();
   Fence.Schedule.daysOfWeek.getter();
   (*(v9 + 8))(v12, v8);
@@ -44,7 +44,7 @@
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = self;
+  selfCopy = self;
   Fence.Schedule.Matcher.schedule.getter();
   Fence.Schedule.timeZone.getter();
 
@@ -55,7 +55,7 @@
   return v14.super.isa;
 }
 
-- (BOOL)isCurrentAt:(id)a3
+- (BOOL)isCurrentAt:(id)at
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -63,14 +63,14 @@
   __chkstk_darwin(v4);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   LOBYTE(self) = Fence.Schedule.Matcher.doesMatchSchedule(_:)();
 
   (*(v5 + 8))(v8, v4);
   return self & 1;
 }
 
-- (id)nextStartOrEndDateFrom:(id)a3
+- (id)nextStartOrEndDateFrom:(id)from
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -80,7 +80,7 @@
   __chkstk_darwin(v7);
   v11 = &v16 - v10;
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
+  selfCopy = self;
   Fence.Schedule.Matcher.nextStartOrEndDate(from:)();
 
   v13 = *(v5 + 8);
@@ -98,7 +98,7 @@
   v5 = *(v4 + 64);
   __chkstk_darwin(v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   Fence.Schedule.Matcher.schedule.getter();
   Fence.Schedule.description.getter();
 
@@ -117,7 +117,7 @@
 
 - (id)dictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033EC4();
 
   v3.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;

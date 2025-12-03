@@ -1,18 +1,18 @@
 @interface DSFileServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation DSFileServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[DSFileService sharedFileService];
   v6 = DSFileServiceXPCInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:v5];
-  [v4 resume];
+  [connectionCopy setExportedObject:v5];
+  [connectionCopy resume];
 
   return 1;
 }

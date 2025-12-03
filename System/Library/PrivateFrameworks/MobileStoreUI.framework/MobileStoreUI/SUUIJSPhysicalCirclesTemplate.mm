@@ -1,18 +1,18 @@
 @interface SUUIJSPhysicalCirclesTemplate
-- (SUUIJSPhysicalCirclesTemplate)initWithAppContext:(id)a3 DOMFeature:(id)a4;
-- (void)_performAnimationWithType:(int64_t)a3 callback:(id)a4;
-- (void)afterDOMUpdate:(id)a3;
+- (SUUIJSPhysicalCirclesTemplate)initWithAppContext:(id)context DOMFeature:(id)feature;
+- (void)_performAnimationWithType:(int64_t)type callback:(id)callback;
+- (void)afterDOMUpdate:(id)update;
 @end
 
 @implementation SUUIJSPhysicalCirclesTemplate
 
-- (SUUIJSPhysicalCirclesTemplate)initWithAppContext:(id)a3 DOMFeature:(id)a4
+- (SUUIJSPhysicalCirclesTemplate)initWithAppContext:(id)context DOMFeature:(id)feature
 {
-  v6 = a3;
-  objc_initWeak(&location, a4);
+  contextCopy = context;
+  objc_initWeak(&location, feature);
   v10.receiver = self;
   v10.super_class = SUUIJSPhysicalCirclesTemplate;
-  v7 = [(IKJSObject *)&v10 initWithAppContext:v6];
+  v7 = [(IKJSObject *)&v10 initWithAppContext:contextCopy];
   if (v7)
   {
     v8 = objc_loadWeakRetained(&location);
@@ -24,27 +24,27 @@
   return v7;
 }
 
-- (void)afterDOMUpdate:(id)a3
+- (void)afterDOMUpdate:(id)update
 {
   v4 = MEMORY[0x277CD4650];
-  v5 = a3;
-  v6 = [v4 managedValueWithValue:v5];
-  v7 = [v5 context];
+  updateCopy = update;
+  v6 = [v4 managedValueWithValue:updateCopy];
+  context = [updateCopy context];
 
-  v8 = [v7 virtualMachine];
+  virtualMachine = [context virtualMachine];
 
-  [v8 addManagedReference:v6 withOwner:self];
-  v9 = [(IKJSObject *)self appContext];
+  [virtualMachine addManagedReference:v6 withOwner:self];
+  appContext = [(IKJSObject *)self appContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__SUUIJSPhysicalCirclesTemplate_afterDOMUpdate___block_invoke;
   v12[3] = &unk_2798FA810;
   v12[4] = self;
   v13 = v6;
-  v14 = v8;
-  v10 = v8;
+  v14 = virtualMachine;
+  v10 = virtualMachine;
   v11 = v6;
-  [v9 evaluateDelegateBlockSync:v12];
+  [appContext evaluateDelegateBlockSync:v12];
 }
 
 void __48__SUUIJSPhysicalCirclesTemplate_afterDOMUpdate___block_invoke(uint64_t a1, void *a2)
@@ -92,28 +92,28 @@ uint64_t __48__SUUIJSPhysicalCirclesTemplate_afterDOMUpdate___block_invoke_3(uin
   return [v4 removeManagedReference:v5 withOwner:v6];
 }
 
-- (void)_performAnimationWithType:(int64_t)a3 callback:(id)a4
+- (void)_performAnimationWithType:(int64_t)type callback:(id)callback
 {
-  v6 = a4;
-  v7 = [(IKJSObject *)self appContext];
+  callbackCopy = callback;
+  appContext = [(IKJSObject *)self appContext];
   v8 = objc_alloc_init(SUUIPhysicalCirclesAnimationRequest);
-  [(SUUIPhysicalCirclesAnimationRequest *)v8 setAnimationType:a3];
-  if (v6)
+  [(SUUIPhysicalCirclesAnimationRequest *)v8 setAnimationType:type];
+  if (callbackCopy)
   {
-    v9 = [MEMORY[0x277CD4650] managedValueWithValue:v6];
-    v10 = [v6 context];
-    v11 = [v10 virtualMachine];
+    v9 = [MEMORY[0x277CD4650] managedValueWithValue:callbackCopy];
+    context = [callbackCopy context];
+    virtualMachine = [context virtualMachine];
 
-    [v11 addManagedReference:v9 withOwner:self];
+    [virtualMachine addManagedReference:v9 withOwner:self];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __68__SUUIJSPhysicalCirclesTemplate__performAnimationWithType_callback___block_invoke;
     v17[3] = &unk_2798F70E0;
-    v18 = v7;
+    v18 = appContext;
     v19 = v9;
-    v20 = v11;
-    v21 = self;
-    v12 = v11;
+    v20 = virtualMachine;
+    selfCopy = self;
+    v12 = virtualMachine;
     v13 = v9;
     [(SUUIPhysicalCirclesAnimationRequest *)v8 _setCompletionBlock:v17];
   }
@@ -125,7 +125,7 @@ uint64_t __48__SUUIJSPhysicalCirclesTemplate_afterDOMUpdate___block_invoke_3(uin
   v15[4] = self;
   v16 = v8;
   v14 = v8;
-  [v7 evaluateDelegateBlockSync:v15];
+  [appContext evaluateDelegateBlockSync:v15];
 }
 
 void __68__SUUIJSPhysicalCirclesTemplate__performAnimationWithType_callback___block_invoke(uint64_t a1)

@@ -1,35 +1,35 @@
 @interface CatacombComponent
-+ (id)component:(id *)a3;
-+ (id)componentForUserID:(unsigned int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToComponent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)component:(id *)component;
++ (id)componentForUserID:(unsigned int)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToComponent:(id)component;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CatacombComponent
 
-+ (id)componentForUserID:(unsigned int)a3
++ (id)componentForUserID:(unsigned int)d
 {
   v4 = objc_alloc_init(CatacombComponent);
   if (v4)
   {
-    v4->_component.userID = a3;
+    v4->_component.userID = d;
     v4->_component.group.type = 0;
   }
 
   return v4;
 }
 
-- (BOOL)isEqualToComponent:(id)a3
+- (BOOL)isEqualToComponent:(id)component
 {
-  if (!a3)
+  if (!component)
   {
     return 0;
   }
 
-  v4 = [a3 component];
-  return *&self->_component.userID == *v4 && *self->_component.group.uuid == v4[1] && *&self->_component.group.uuid[8] == v4[2];
+  component = [component component];
+  return *&self->_component.userID == *component && *self->_component.group.uuid == component[1] && *&self->_component.group.uuid[8] == component[2];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
     {
       v9 = self->_component.group.type;
       v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:self->_component.group.uuid];
-      v11 = [v10 UUIDString];
-      v12 = [v4 stringWithFormat:@"<%@: %p:(Group userID:%u, type:%u, uuid:%@)>", v7, self, userID, v9, v11];
+      uUIDString = [v10 UUIDString];
+      v12 = [v4 stringWithFormat:@"<%@: %p:(Group userID:%u, type:%u, uuid:%@)>", v7, self, userID, v9, uUIDString];
 
       goto LABEL_7;
     }
@@ -68,7 +68,7 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(CatacombComponent);
   if (result)
@@ -81,10 +81,10 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -92,21 +92,21 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CatacombComponent *)self isEqualToComponent:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CatacombComponent *)self isEqualToComponent:equalCopy];
   }
 
   return v5;
 }
 
-+ (id)component:(id *)a3
++ (id)component:(id *)component
 {
-  if (a3)
+  if (component)
   {
     v5 = objc_alloc_init(CatacombComponent);
     if (v5)
     {
-      v6 = *&a3->var0;
-      *&v5->_component.group.uuid[8] = *&a3->var1.var1[8];
+      v6 = *&component->var0;
+      *&v5->_component.group.uuid[8] = *&component->var1.var1[8];
       *&v5->_component.userID = v6;
     }
   }

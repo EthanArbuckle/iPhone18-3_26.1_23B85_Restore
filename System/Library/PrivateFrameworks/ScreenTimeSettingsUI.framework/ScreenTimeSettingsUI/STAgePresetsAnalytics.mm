@@ -1,9 +1,9 @@
 @interface STAgePresetsAnalytics
 - (_TtC20ScreenTimeSettingsUI21STAgePresetsAnalytics)init;
-- (void)sendEnabledRestrictionsEventWithSelectionType:(int64_t)a3 lowerBound:(id)a4 upperBound:(id)a5;
-- (void)sendPresetsValueChangedAnalyticsEventWithRecommendedPresetId:(id)a3 fieldName:(id)a4 recomendedValue:(id)a5 selectedValue:(id)a6;
-- (void)sendPresetsViewedAnalyticsEventWithIsInitialSetup:(BOOL)a3;
-- (void)sendSelectedAgeRangeAnalyticsEventWithLowerBound:(int64_t)a3 upperBound:(int64_t)a4;
+- (void)sendEnabledRestrictionsEventWithSelectionType:(int64_t)type lowerBound:(id)bound upperBound:(id)upperBound;
+- (void)sendPresetsValueChangedAnalyticsEventWithRecommendedPresetId:(id)id fieldName:(id)name recomendedValue:(id)value selectedValue:(id)selectedValue;
+- (void)sendPresetsViewedAnalyticsEventWithIsInitialSetup:(BOOL)setup;
+- (void)sendSelectedAgeRangeAnalyticsEventWithLowerBound:(int64_t)bound upperBound:(int64_t)upperBound;
 @end
 
 @implementation STAgePresetsAnalytics
@@ -31,48 +31,48 @@
   return v12;
 }
 
-- (void)sendPresetsViewedAnalyticsEventWithIsInitialSetup:(BOOL)a3
+- (void)sendPresetsViewedAnalyticsEventWithIsInitialSetup:(BOOL)setup
 {
-  v3 = a3;
+  setupCopy = setup;
   v5 = objc_allocWithZone(MEMORY[0x277D4B8B0]);
-  v10 = self;
+  selfCopy = self;
   v6 = sub_264CC459C();
-  v7 = [v5 initWithSessionId:v6 isInitialSetup:v3];
+  v7 = [v5 initWithSessionId:v6 isInitialSetup:setupCopy];
 
   v8 = objc_opt_self();
   v9 = v7;
   [v8 reportEvent_];
 }
 
-- (void)sendSelectedAgeRangeAnalyticsEventWithLowerBound:(int64_t)a3 upperBound:(int64_t)a4
+- (void)sendSelectedAgeRangeAnalyticsEventWithLowerBound:(int64_t)bound upperBound:(int64_t)upperBound
 {
   v7 = objc_allocWithZone(MEMORY[0x277D4BA20]);
-  v12 = self;
+  selfCopy = self;
   v8 = sub_264CC459C();
-  v9 = [v7 initWithSessionId:v8 lowerBoundAgeRange:a3 upperBoundAgeRange:a4];
+  v9 = [v7 initWithSessionId:v8 lowerBoundAgeRange:bound upperBoundAgeRange:upperBound];
 
   v10 = objc_opt_self();
   v11 = v9;
   [v10 reportEvent_];
 }
 
-- (void)sendEnabledRestrictionsEventWithSelectionType:(int64_t)a3 lowerBound:(id)a4 upperBound:(id)a5
+- (void)sendEnabledRestrictionsEventWithSelectionType:(int64_t)type lowerBound:(id)bound upperBound:(id)upperBound
 {
   v9 = objc_allocWithZone(MEMORY[0x277D4BA30]);
-  v10 = a4;
-  v11 = a5;
-  v16 = self;
+  boundCopy = bound;
+  upperBoundCopy = upperBound;
+  selfCopy = self;
   v12 = sub_264CC459C();
-  v13 = [v9 initWithSessionId:v12 selectionType:a3 lowerBoundAgeRange:v10 upperBoundAgeRange:v11];
+  v13 = [v9 initWithSessionId:v12 selectionType:type lowerBoundAgeRange:boundCopy upperBoundAgeRange:upperBoundCopy];
 
   v14 = objc_opt_self();
   v15 = v13;
   [v14 reportEvent_];
 }
 
-- (void)sendPresetsValueChangedAnalyticsEventWithRecommendedPresetId:(id)a3 fieldName:(id)a4 recomendedValue:(id)a5 selectedValue:(id)a6
+- (void)sendPresetsValueChangedAnalyticsEventWithRecommendedPresetId:(id)id fieldName:(id)name recomendedValue:(id)value selectedValue:(id)selectedValue
 {
-  if (a3)
+  if (id)
   {
     v9 = sub_264CC45DC();
     v11 = v10;
@@ -86,12 +86,12 @@
 
   v12 = sub_264CC45DC();
   v14 = v13;
-  if (!a5)
+  if (!value)
   {
     memset(v18, 0, sizeof(v18));
     swift_unknownObjectRetain();
-    v16 = self;
-    if (a6)
+    selfCopy = self;
+    if (selectedValue)
     {
       goto LABEL_6;
     }
@@ -103,10 +103,10 @@ LABEL_8:
 
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v15 = self;
+  selfCopy2 = self;
   sub_264CC489C();
   swift_unknownObjectRelease();
-  if (!a6)
+  if (!selectedValue)
   {
     goto LABEL_8;
   }

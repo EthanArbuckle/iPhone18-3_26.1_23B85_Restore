@@ -7,17 +7,17 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v5 = self;
-  v2 = [(PDFPageViewInvertColorsAccessibility *)v5 window];
-  if ([AXInvertColorsAppHelper hasInvertFilter:v2])
+  selfCopy = self;
+  window = [(PDFPageViewInvertColorsAccessibility *)selfCopy window];
+  if ([AXInvertColorsAppHelper hasInvertFilter:window])
   {
     v3 = _AXSInvertColorsEnabled();
 
     if (v3)
     {
-      [(PDFPageViewInvertColorsAccessibility *)v5 setAccessibilityInvertColorsIsolatedTree:1];
-      v4 = [(PDFPageViewInvertColorsAccessibility *)v5 layer];
-      [AXInvertColorsAppHelper applyInvertFilterToLayer:v4];
+      [(PDFPageViewInvertColorsAccessibility *)selfCopy setAccessibilityInvertColorsIsolatedTree:1];
+      layer = [(PDFPageViewInvertColorsAccessibility *)selfCopy layer];
+      [AXInvertColorsAppHelper applyInvertFilterToLayer:layer];
       goto LABEL_6;
     }
   }
@@ -26,9 +26,9 @@
   {
   }
 
-  [(PDFPageViewInvertColorsAccessibility *)v5 setAccessibilityInvertColorsIsolatedTree:0];
-  v4 = [(PDFPageViewInvertColorsAccessibility *)v5 layer];
-  [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v4];
+  [(PDFPageViewInvertColorsAccessibility *)selfCopy setAccessibilityInvertColorsIsolatedTree:0];
+  layer = [(PDFPageViewInvertColorsAccessibility *)selfCopy layer];
+  [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layer];
 LABEL_6:
 }
 

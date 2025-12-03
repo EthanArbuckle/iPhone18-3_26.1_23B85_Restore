@@ -1,10 +1,10 @@
 @interface PLInstrumentedBlockOperation
-+ (id)blockOperationWithBlock:(id)a3;
++ (id)blockOperationWithBlock:(id)block;
 - (PLInstrumentedBlockOperation)init;
 - (double)executionTime;
 - (double)timeSpentWaitingInQueue;
 - (id)description;
-- (void)addExecutionBlock:(id)a3;
+- (void)addExecutionBlock:(id)block;
 @end
 
 @implementation PLInstrumentedBlockOperation
@@ -61,18 +61,18 @@
   return v8;
 }
 
-- (void)addExecutionBlock:(id)a3
+- (void)addExecutionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v15.receiver = self;
   v15.super_class = PLInstrumentedBlockOperation;
-  [(NSBlockOperation *)&v15 addExecutionBlock:v5];
+  [(NSBlockOperation *)&v15 addExecutionBlock:blockCopy];
   if ([(PLInstrumentedBlockOperation *)self postambleAdded])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PLInstrumentedBlockOperation.m" lineNumber:57 description:{@"adding multiple execution blocks is not supported on %@", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInstrumentedBlockOperation.m" lineNumber:57 description:{@"adding multiple execution blocks is not supported on %@", v10}];
   }
 
   v13[0] = 0;
@@ -80,18 +80,18 @@
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__99887;
   v13[4] = __Block_byref_object_dispose__99888;
-  v6 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__PLInstrumentedBlockOperation_addExecutionBlock___block_invoke;
   aBlock[3] = &unk_1E7577EA0;
   aBlock[4] = v13;
   v7 = _Block_copy(aBlock);
-  v11.receiver = v6;
+  v11.receiver = selfCopy;
   v11.super_class = PLInstrumentedBlockOperation;
   [(NSBlockOperation *)&v11 addExecutionBlock:v7];
-  [(PLInstrumentedBlockOperation *)v6 setPostambleAdded:1];
+  [(PLInstrumentedBlockOperation *)selfCopy setPostambleAdded:1];
 
   _Block_object_dispose(v13, 8);
 }
@@ -143,11 +143,11 @@ void __36__PLInstrumentedBlockOperation_init__block_invoke(uint64_t a1)
   *(v2 + 40) = 0;
 }
 
-+ (id)blockOperationWithBlock:(id)a3
++ (id)blockOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 addExecutionBlock:v3];
+  [v4 addExecutionBlock:blockCopy];
 
   return v4;
 }

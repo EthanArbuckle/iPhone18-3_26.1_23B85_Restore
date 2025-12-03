@@ -1,23 +1,23 @@
 @interface DDDelegateMultiplexer
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (DDDelegateMultiplexer)initWithDelegate:(id)a3 andDelegate:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (DDDelegateMultiplexer)initWithDelegate:(id)delegate andDelegate:(id)andDelegate;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation DDDelegateMultiplexer
 
-- (DDDelegateMultiplexer)initWithDelegate:(id)a3 andDelegate:(id)a4
+- (DDDelegateMultiplexer)initWithDelegate:(id)delegate andDelegate:(id)andDelegate
 {
-  v6 = a4;
-  objc_storeWeak(&self->_delegateA, a3);
-  objc_storeWeak(&self->_delegateB, v6);
+  andDelegateCopy = andDelegate;
+  objc_storeWeak(&self->_delegateA, delegate);
+  objc_storeWeak(&self->_delegateB, andDelegateCopy);
 
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegateA);
   if (WeakRetained)
@@ -36,9 +36,9 @@
   if (v10)
   {
     v11 = objc_loadWeakRetained(&self->_delegateB);
-    if ((objc_opt_respondsToSelector() & 1) != 0 && !sel_isEqual(a3, sel_adaptivePresentationStyleForPresentationController_traitCollection_))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && !sel_isEqual(selector, sel_adaptivePresentationStyleForPresentationController_traitCollection_))
     {
-      v12 = !sel_isEqual(a3, sel_adaptivePresentationStyleForPresentationController_);
+      v12 = !sel_isEqual(selector, sel_adaptivePresentationStyleForPresentationController_);
     }
 
     else
@@ -55,10 +55,10 @@
   return v12;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v14 = a3;
-  [v14 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   WeakRetained = objc_loadWeakRetained(&self->_delegateA);
   if (WeakRetained)
   {
@@ -69,7 +69,7 @@
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegateA);
-      [v14 invokeWithTarget:v8];
+      [invocationCopy invokeWithTarget:v8];
     }
   }
 
@@ -83,15 +83,15 @@
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegateB);
-      [v14 invokeWithTarget:v13];
+      [invocationCopy invokeWithTarget:v13];
     }
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegateA);
-  v6 = [WeakRetained methodSignatureForSelector:a3];
+  v6 = [WeakRetained methodSignatureForSelector:selector];
 
   if (v6)
   {
@@ -101,7 +101,7 @@
   else
   {
     v9 = objc_loadWeakRetained(&self->_delegateB);
-    v10 = [v9 methodSignatureForSelector:a3];
+    v10 = [v9 methodSignatureForSelector:selector];
 
     v7 = v10;
   }
@@ -109,11 +109,11 @@
   return v7;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   WeakRetained = objc_loadWeakRetained(&self->_delegateA);
-  if (WeakRetained && (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->_delegateA), v8 = [v7 conformsToProtocol:v4], v7, v6, (v8 & 1) != 0))
+  if (WeakRetained && (v6 = WeakRetained, v7 = objc_loadWeakRetained(&self->_delegateA), v8 = [v7 conformsToProtocol:protocolCopy], v7, v6, (v8 & 1) != 0))
   {
     v9 = 1;
   }
@@ -124,7 +124,7 @@
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegateB);
-      v9 = [v11 conformsToProtocol:v4];
+      v9 = [v11 conformsToProtocol:protocolCopy];
     }
 
     else

@@ -1,12 +1,12 @@
 @interface AVCMediaStreamNegotiatorSettingsAirplayMirroring
-- (AVCMediaStreamNegotiatorSettingsAirplayMirroring)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsAirplayMirroring)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsAirplayMirroring
 
-- (AVCMediaStreamNegotiatorSettingsAirplayMirroring)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsAirplayMirroring)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
-  v6 = a4;
+  roleCopy = role;
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = AVCMediaStreamNegotiatorSettingsAirplayMirroring;
@@ -17,10 +17,10 @@
     v8->super._screenRuleCollections = &v9->super;
     if (v9)
     {
-      v8->super._tilesPerFrame = [VCVideoRuleCollectionsScreenAirplay tilesPerFrameForHDRMode:[AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:a3]];
+      v8->super._tilesPerFrame = [VCVideoRuleCollectionsScreenAirplay tilesPerFrameForHDRMode:[AVCMediaStreamNegotiatorSettings hdrModeWithNegotiatorInitOptions:options]];
       v10 = 1;
       v8->super._blackFrameOnClearScreenEnabledDefault = 1;
-      if (v6 == 2)
+      if (roleCopy == 2)
       {
         v10 = +[VCHardwareSettings deviceClass]!= 8;
       }
@@ -30,9 +30,9 @@
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = @"no _screenRuleCollections is created";
+        *error = @"no _screenRuleCollections is created";
       }
 
       return 0;

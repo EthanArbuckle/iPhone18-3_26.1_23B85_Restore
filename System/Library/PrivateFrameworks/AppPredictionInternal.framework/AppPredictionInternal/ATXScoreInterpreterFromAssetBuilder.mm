@@ -1,27 +1,27 @@
 @interface ATXScoreInterpreterFromAssetBuilder
-+ (id)interpreterFromAssetFilename:(id)a3;
++ (id)interpreterFromAssetFilename:(id)filename;
 + (id)scoreInterpretersForAllSubTypes;
 @end
 
 @implementation ATXScoreInterpreterFromAssetBuilder
 
-+ (id)interpreterFromAssetFilename:(id)a3
++ (id)interpreterFromAssetFilename:(id)filename
 {
-  v5 = a3;
+  filenameCopy = filename;
   v6 = objc_alloc(MEMORY[0x277CEB3C8]);
-  v7 = [MEMORY[0x277CEB2B8] abGroupOverride];
-  v8 = [v6 initWithAssetsForResource:v5 ofType:@"plplist" specifiedABGroup:v7];
+  abGroupOverride = [MEMORY[0x277CEB2B8] abGroupOverride];
+  v8 = [v6 initWithAssetsForResource:filenameCopy ofType:@"plplist" specifiedABGroup:abGroupOverride];
 
-  v9 = [v8 abGroupContents];
-  if (!v9)
+  abGroupContents = [v8 abGroupContents];
+  if (!abGroupContents)
   {
-    [(ATXScoreInterpreterFromAssetBuilder *)a2 interpreterFromAssetFilename:a1, v5];
+    [(ATXScoreInterpreterFromAssetBuilder *)a2 interpreterFromAssetFilename:self, filenameCopy];
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"Scorer"];
+  v10 = [abGroupContents objectForKeyedSubscript:@"Scorer"];
   if (!v10)
   {
-    [(ATXScoreInterpreterFromAssetBuilder *)a2 interpreterFromAssetFilename:a1, v5];
+    [(ATXScoreInterpreterFromAssetBuilder *)a2 interpreterFromAssetFilename:self, filenameCopy];
   }
 
   v11 = [[_ATXScoreInterpreter alloc] initWithParseRoot:v10];
@@ -39,11 +39,11 @@
   v25[3] = &unk_2785A1018;
   v5 = v3;
   v26 = v5;
-  v27 = a1;
+  selfCopy = self;
   [v4 iterConsumerSubTypesWithBlock:v25];
   v6 = objc_alloc(MEMORY[0x277CBEB98]);
-  v7 = [v5 allValues];
-  v8 = [v6 initWithArray:v7];
+  allValues = [v5 allValues];
+  v8 = [v6 initWithArray:allValues];
 
   v9 = objc_opt_new();
   v22[0] = MEMORY[0x277D85DD0];
@@ -52,7 +52,7 @@
   v22[3] = &unk_2785A1040;
   v10 = v9;
   v23 = v10;
-  v24 = a1;
+  selfCopy2 = self;
   [v8 enumerateObjectsUsingBlock:v22];
   v11 = objc_opt_new();
   v12 = MEMORY[0x277CEBCF0];

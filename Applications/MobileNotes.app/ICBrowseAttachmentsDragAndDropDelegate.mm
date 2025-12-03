@@ -1,8 +1,8 @@
 @interface ICBrowseAttachmentsDragAndDropDelegate
 + (id)sharedInstance;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)dragItemsForItemAtIndexPath:(id)a3 collectionView:(id)a4;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)dragItemsForItemAtIndexPath:(id)path collectionView:(id)view;
 @end
 
 @implementation ICBrowseAttachmentsDragAndDropDelegate
@@ -19,20 +19,20 @@
   return v3;
 }
 
-- (id)dragItemsForItemAtIndexPath:(id)a3 collectionView:(id)a4
+- (id)dragItemsForItemAtIndexPath:(id)path collectionView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  pathCopy = path;
   objc_opt_class();
-  v7 = [v5 cellForItemAtIndexPath:v6];
+  v7 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   v8 = ICDynamicCast();
 
-  v9 = [v8 dragItemForAttachment];
-  v10 = v9;
-  if (v9)
+  dragItemForAttachment = [v8 dragItemForAttachment];
+  v10 = dragItemForAttachment;
+  if (dragItemForAttachment)
   {
-    v13 = v9;
+    v13 = dragItemForAttachment;
     v11 = [NSArray arrayWithObjects:&v13 count:1];
   }
 
@@ -44,15 +44,15 @@
   return v11;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 localContext];
+  viewCopy = view;
+  pathCopy = path;
+  localContext = [session localContext];
 
-  if (v11 == self)
+  if (localContext == self)
   {
-    v12 = [(ICBrowseAttachmentsDragAndDropDelegate *)self dragItemsForItemAtIndexPath:v10 collectionView:v9];
+    v12 = [(ICBrowseAttachmentsDragAndDropDelegate *)self dragItemsForItemAtIndexPath:pathCopy collectionView:viewCopy];
   }
 
   else
@@ -63,23 +63,23 @@
   return v12;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v4 = [a3 cellForItemAtIndexPath:a4];
+  v4 = [view cellForItemAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v5 = ICDynamicCast();
     v6 = objc_alloc_init(UIDragPreviewParameters);
-    v7 = [v5 attachmentBrickView];
-    [v7 frame];
+    attachmentBrickView = [v5 attachmentBrickView];
+    [attachmentBrickView frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v7 layer];
-    [v16 cornerRadius];
+    layer = [attachmentBrickView layer];
+    [layer cornerRadius];
     v18 = [UIBezierPath bezierPathWithRoundedRect:v9 cornerRadius:v11, v13, v15, v17];
 
     [v6 setVisiblePath:v18];

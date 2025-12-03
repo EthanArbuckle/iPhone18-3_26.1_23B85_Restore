@@ -3,46 +3,46 @@
 - (GEOComposedETARoute)etaRoute;
 - (GEOComposedRouteTraffic)traffic;
 - (GEOTransitRouteUpdateRequest)transitRouteUpdateRequest;
-- (MNActiveRouteInfo)initWithCoder:(id)a3;
-- (MNActiveRouteInfo)initWithRoute:(id)a3;
-- (MNActiveRouteInfo)initWithRoute:(id)a3 etaResponse:(id)a4 alternateRouteIndex:(unint64_t)a5;
+- (MNActiveRouteInfo)initWithCoder:(id)coder;
+- (MNActiveRouteInfo)initWithRoute:(id)route;
+- (MNActiveRouteInfo)initWithRoute:(id)route etaResponse:(id)response alternateRouteIndex:(unint64_t)index;
 - (NSUUID)routeID;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithETARoute:(id)a3 etaResponse:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithETARoute:(id)route etaResponse:(id)response;
 @end
 
 @implementation MNActiveRouteInfo
 
 - (NSUUID)routeID
 {
-  v2 = [(MNActiveRouteInfo *)self route];
-  v3 = [v2 uniqueRouteID];
+  route = [(MNActiveRouteInfo *)self route];
+  uniqueRouteID = [route uniqueRouteID];
 
-  return v3;
+  return uniqueRouteID;
 }
 
 - (GEOComposedETARoute)etaRoute
 {
-  v2 = [(GEOComposedRoute *)self->_route mutableData];
-  v3 = [v2 etaRoute];
+  mutableData = [(GEOComposedRoute *)self->_route mutableData];
+  etaRoute = [mutableData etaRoute];
 
-  return v3;
+  return etaRoute;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   route = self->_route;
-  v5 = [(GEOComposedRoute *)route name];
-  v6 = [v3 stringWithFormat:@"MNActiveRouteInfo: %p (GEOComposedRoute: %p) - %@", self, route, v5];
+  name = [(GEOComposedRoute *)route name];
+  v6 = [v3 stringWithFormat:@"MNActiveRouteInfo: %p (GEOComposedRoute: %p) - %@", self, route, name];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MNGetMNRouteStorageLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -56,23 +56,23 @@
 
   if (+[MNActiveRouteInfo saveRoutesToDiskInsteadXPC])
   {
-    v9 = [(MNActiveRouteInfo *)self routeID];
-    [v4 encodeObject:v9 forKey:@"routeID"];
+    routeID = [(MNActiveRouteInfo *)self routeID];
+    [coderCopy encodeObject:routeID forKey:@"routeID"];
     MNSaveRouteWithSubpath(self->_route, 0, 0, 0);
   }
 
   else
   {
-    [v4 encodeObject:self->_route forKey:@"_route"];
+    [coderCopy encodeObject:self->_route forKey:@"_route"];
   }
 
-  [v4 encodeObject:self->_etaResponse forKey:@"_etaResponse"];
-  [v4 encodeInteger:self->_alternateRouteIndex forKey:@"_alternateRouteIndex"];
-  [v4 encodeObject:self->_displayETAInfo forKey:@"_displayETAInfo"];
-  [v4 encodeObject:self->_remainingDistanceInfo forKey:@"_remainingDistanceInfo"];
-  [v4 encodeObject:self->_batteryChargeInfo forKey:@"_batteryChargeInfo"];
-  v10 = [(GEOComposedRoute *)self->_route mutableData];
-  [v4 encodeObject:v10 forKey:@"_route.mutableData"];
+  [coderCopy encodeObject:self->_etaResponse forKey:@"_etaResponse"];
+  [coderCopy encodeInteger:self->_alternateRouteIndex forKey:@"_alternateRouteIndex"];
+  [coderCopy encodeObject:self->_displayETAInfo forKey:@"_displayETAInfo"];
+  [coderCopy encodeObject:self->_remainingDistanceInfo forKey:@"_remainingDistanceInfo"];
+  [coderCopy encodeObject:self->_batteryChargeInfo forKey:@"_batteryChargeInfo"];
+  mutableData = [(GEOComposedRoute *)self->_route mutableData];
+  [coderCopy encodeObject:mutableData forKey:@"_route.mutableData"];
 
   v11 = MNGetMNRouteStorageLog();
   v12 = v11;
@@ -83,9 +83,9 @@
   }
 }
 
-- (MNActiveRouteInfo)initWithCoder:(id)a3
+- (MNActiveRouteInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = MNActiveRouteInfo;
   v5 = [(MNActiveRouteInfo *)&v28 init];
@@ -102,26 +102,26 @@
       _os_signpost_emit_with_name_impl(&dword_1D311E000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ActiveRouteInfoDecoding", "", v27, 2u);
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_etaResponse"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_etaResponse"];
     etaResponse = v5->_etaResponse;
     v5->_etaResponse = v10;
 
-    v5->_alternateRouteIndex = [v4 decodeIntegerForKey:@"_alternateRouteIndex"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayETAInfo"];
+    v5->_alternateRouteIndex = [coderCopy decodeIntegerForKey:@"_alternateRouteIndex"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayETAInfo"];
     displayETAInfo = v5->_displayETAInfo;
     v5->_displayETAInfo = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_remainingDistanceInfo"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_remainingDistanceInfo"];
     remainingDistanceInfo = v5->_remainingDistanceInfo;
     v5->_remainingDistanceInfo = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_batteryChargeInfo"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_batteryChargeInfo"];
     batteryChargeInfo = v5->_batteryChargeInfo;
     v5->_batteryChargeInfo = v16;
 
     if (+[MNActiveRouteInfo saveRoutesToDiskInsteadXPC])
     {
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routeID"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routeID"];
       v19 = MNGetRouteFromSubpathWithID(v18, 0, 0);
       route = v5->_route;
       v5->_route = v19;
@@ -129,12 +129,12 @@
 
     else
     {
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_route"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_route"];
       v18 = v5->_route;
       v5->_route = v21;
     }
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_route.mutableData"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_route.mutableData"];
     [(GEOComposedRoute *)v5->_route setMutableData:v22];
     [(GEOComposedRoute *)v5->_route setMutableData:v22];
 
@@ -152,63 +152,63 @@
   return v5;
 }
 
-- (void)updateWithETARoute:(id)a3 etaResponse:(id)a4
+- (void)updateWithETARoute:(id)route etaResponse:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   route = self->_route;
-  v8 = a3;
-  v9 = [(GEOComposedRoute *)route mutableData];
-  [v9 updateForRoute:self->_route etaRoute:v8];
+  routeCopy = route;
+  mutableData = [(GEOComposedRoute *)route mutableData];
+  [mutableData updateForRoute:self->_route etaRoute:routeCopy];
 
   etaResponse = self->_etaResponse;
-  self->_etaResponse = v6;
+  self->_etaResponse = responseCopy;
 }
 
 - (GEOTransitRouteUpdateRequest)transitRouteUpdateRequest
 {
-  v2 = [(MNActiveRouteInfo *)self route];
-  v3 = [v2 transitRouteUpdateRequest];
+  route = [(MNActiveRouteInfo *)self route];
+  transitRouteUpdateRequest = [route transitRouteUpdateRequest];
 
-  return v3;
+  return transitRouteUpdateRequest;
 }
 
 - (GEOComposedRouteTraffic)traffic
 {
-  v2 = [(MNActiveRouteInfo *)self route];
-  v3 = [v2 traffic];
+  route = [(MNActiveRouteInfo *)self route];
+  traffic = [route traffic];
 
-  return v3;
+  return traffic;
 }
 
-- (MNActiveRouteInfo)initWithRoute:(id)a3 etaResponse:(id)a4 alternateRouteIndex:(unint64_t)a5
+- (MNActiveRouteInfo)initWithRoute:(id)route etaResponse:(id)response alternateRouteIndex:(unint64_t)index
 {
-  v9 = a3;
-  v10 = a4;
+  routeCopy = route;
+  responseCopy = response;
   v15.receiver = self;
   v15.super_class = MNActiveRouteInfo;
   v11 = [(MNActiveRouteInfo *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_route, a3);
-    objc_storeStrong(&v12->_etaResponse, a4);
-    v12->_alternateRouteIndex = a5;
+    objc_storeStrong(&v11->_route, route);
+    objc_storeStrong(&v12->_etaResponse, response);
+    v12->_alternateRouteIndex = index;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (MNActiveRouteInfo)initWithRoute:(id)a3
+- (MNActiveRouteInfo)initWithRoute:(id)route
 {
-  v5 = a3;
+  routeCopy = route;
   v10.receiver = self;
   v10.super_class = MNActiveRouteInfo;
   v6 = [(MNActiveRouteInfo *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_route, a3);
+    objc_storeStrong(&v6->_route, route);
     v7->_alternateRouteIndex = 0x7FFFFFFFFFFFFFFFLL;
     v8 = v7;
   }

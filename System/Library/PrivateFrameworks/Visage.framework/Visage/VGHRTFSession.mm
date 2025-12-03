@@ -1,29 +1,29 @@
 @interface VGHRTFSession
-- (BOOL)_asyncProcessCaptureData:(id)a3 faceData:(id)a4 userData:(id)a5 error:(id *)a6;
-- (BOOL)processCaptureData:(id)a3 faceData:(id)a4 userData:(id)a5 error:(id *)a6;
-- (BOOL)waitWithError:(id *)a3;
-- (VGHRTFSession)initWithConfig:(id)a3 error:(id *)a4;
+- (BOOL)_asyncProcessCaptureData:(id)data faceData:(id)faceData userData:(id)userData error:(id *)error;
+- (BOOL)processCaptureData:(id)data faceData:(id)faceData userData:(id)userData error:(id *)error;
+- (BOOL)waitWithError:(id *)error;
+- (VGHRTFSession)initWithConfig:(id)config error:(id *)error;
 @end
 
 @implementation VGHRTFSession
 
-- (VGHRTFSession)initWithConfig:(id)a3 error:(id *)a4
+- (VGHRTFSession)initWithConfig:(id)config error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  configCopy = config;
   v38.receiver = self;
   v38.super_class = VGHRTFSession;
   v8 = [(VGHRTFSession *)&v38 init];
   if (v8)
   {
-    [v7 overwriteWithDefaults];
-    objc_storeStrong(&v8->_config, a3);
+    [configCopy overwriteWithDefaults];
+    objc_storeStrong(&v8->_config, config);
     v9 = __VGLogSharedInstance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [(VGHRTFSessionConfig *)v8->_config writeDebugData];
+      writeDebugData = [(VGHRTFSessionConfig *)v8->_config writeDebugData];
       v11 = @"NO";
-      if (v10)
+      if (writeDebugData)
       {
         v11 = @"YES";
       }
@@ -35,60 +35,60 @@
 
     if ([(VGHRTFSessionConfig *)v8->_config writeDebugData])
     {
-      v12 = [(VGHRTFSessionConfig *)v8->_config debugDataRootPath];
-      if (!v12)
+      debugDataRootPath = [(VGHRTFSessionConfig *)v8->_config debugDataRootPath];
+      if (!debugDataRootPath)
       {
         v13 = objc_opt_new();
         [v13 setDateFormat:@"yyyyMMdd_HHmmss_SSS"];
-        v14 = [MEMORY[0x277CBEAA8] date];
-        v15 = [v13 stringFromDate:v14];
+        date = [MEMORY[0x277CBEAA8] date];
+        v15 = [v13 stringFromDate:date];
 
-        v12 = [@"/private/var/mobile/Library/Caches/VisageTestApp/HRTF/" stringByAppendingPathComponent:v15];
+        debugDataRootPath = [@"/private/var/mobile/Library/Caches/VisageTestApp/HRTF/" stringByAppendingPathComponent:v15];
       }
 
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      v17 = [v16 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v17 = [defaultManager fileExistsAtPath:debugDataRootPath];
 
       if (v17)
       {
-        NSLog(&cfstr_PathAlreadyExi.isa, v12);
+        NSLog(&cfstr_PathAlreadyExi.isa, debugDataRootPath);
 
 LABEL_23:
         v18 = 0;
         goto LABEL_24;
       }
 
-      v19 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v37 = 0;
-      [v19 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v37];
+      [defaultManager2 createDirectoryAtPath:debugDataRootPath withIntermediateDirectories:1 attributes:0 error:&v37];
       v20 = v37;
 
       if (v20)
       {
-        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create debug path %@.", v12];
-        vg::hrtf::setError(a4, v21);
+        v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create debug path %@.", debugDataRootPath];
+        vg::hrtf::setError(error, v21);
 
         goto LABEL_23;
       }
 
-      [(VGHRTFSessionConfig *)v8->_config setDebugDataRootPath:v12];
+      [(VGHRTFSessionConfig *)v8->_config setDebugDataRootPath:debugDataRootPath];
       v22 = __VGLogSharedInstance();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [(VGHRTFSessionConfig *)v8->_config debugDataRootPath];
+        debugDataRootPath2 = [(VGHRTFSessionConfig *)v8->_config debugDataRootPath];
         *buf = 138412290;
-        v40 = v23;
+        v40 = debugDataRootPath2;
         _os_log_impl(&dword_270F06000, v22, OS_LOG_TYPE_DEBUG, " Using path for dumping HRTF debug data: %@ ", buf, 0xCu);
       }
     }
 
-    v24 = [[VGHRTFCaptureProcessor alloc] initWithConfig:v8->_config error:a4];
+    v24 = [[VGHRTFCaptureProcessor alloc] initWithConfig:v8->_config error:error];
     captureProcessor = v8->_captureProcessor;
     v8->_captureProcessor = v24;
 
     if (v8->_captureProcessor)
     {
-      v26 = [[VGHRTFPostProcessor alloc] initWithConfig:v8->_config error:a4];
+      v26 = [[VGHRTFPostProcessor alloc] initWithConfig:v8->_config error:error];
       postProcessor = v8->_postProcessor;
       v8->_postProcessor = v26;
 
@@ -120,11 +120,11 @@ LABEL_23:
       v34 = @"Failed to initialize capture processor.";
     }
 
-    vg::hrtf::setError(a4, v34);
+    vg::hrtf::setError(error, v34);
     goto LABEL_23;
   }
 
-  vg::hrtf::setError(a4, @"Failed to initialize VGHRTFSession.");
+  vg::hrtf::setError(error, @"Failed to initialize VGHRTFSession.");
   v18 = 0;
 LABEL_24:
 
@@ -132,10 +132,10 @@ LABEL_24:
   return v18;
 }
 
-- (BOOL)_asyncProcessCaptureData:(id)a3 faceData:(id)a4 userData:(id)a5 error:(id *)a6
+- (BOOL)_asyncProcessCaptureData:(id)data faceData:(id)faceData userData:(id)userData error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  faceDataCopy = faceData;
   v11 = atomic_load(&self->_captureFinished);
   if (v11)
   {
@@ -144,27 +144,27 @@ LABEL_24:
 
   else
   {
-    v13 = [[VGHRTFUpdateData alloc] initEmpty];
-    [v13 setStep:0];
-    v14 = [(VGHRTFCaptureProcessor *)self->_captureProcessor processCaptureData:v9 faceData:v10 error:a6];
-    v15 = [v14 state];
-    if (v15 >= 2)
+    initEmpty = [[VGHRTFUpdateData alloc] initEmpty];
+    [initEmpty setStep:0];
+    v14 = [(VGHRTFCaptureProcessor *)self->_captureProcessor processCaptureData:dataCopy faceData:faceDataCopy error:error];
+    state = [v14 state];
+    if (state >= 2)
     {
-      if (v15 == 2)
+      if (state == 2)
       {
-        [v13 setStep:_os_feature_enabled_impl() ^ 1];
+        [initEmpty setStep:_os_feature_enabled_impl() ^ 1];
         atomic_store(1u, &self->_captureFinished);
       }
     }
 
     else
     {
-      [v13 setStep:v15];
+      [initEmpty setStep:state];
     }
 
-    [v13 setCaptureUpdateData:v14];
-    v16 = [(VGHRTFSessionConfig *)self->_config delegate];
-    [v16 updateWithData:v13 error:a6];
+    [initEmpty setCaptureUpdateData:v14];
+    delegate = [(VGHRTFSessionConfig *)self->_config delegate];
+    [delegate updateWithData:initEmpty error:error];
 
     v17 = atomic_load(&self->_captureFinished);
     if ((v17 & 1) == 0)
@@ -195,34 +195,34 @@ LABEL_24:
     handler[3] = &unk_279E28D28;
     v21 = v14;
     v31 = v21;
-    v32 = self;
+    selfCopy = self;
     v33 = buf;
     dispatch_source_set_event_handler(v20, handler);
-    if (a6)
+    if (error)
     {
-      *a6 = *(v35 + 5);
+      *error = *(v35 + 5);
     }
 
     dispatch_source_set_timer(v20, 0, 0x3B9ACA00uLL, 0);
     dispatch_resume(v20);
-    v22 = [(VGHRTFPostProcessor *)self->_postProcessor processCaptureUpdateData:v21 error:a6];
+    v22 = [(VGHRTFPostProcessor *)self->_postProcessor processCaptureUpdateData:v21 error:error];
     dispatch_suspend(v20);
     dispatch_source_cancel(v20);
     dispatch_resume(v20);
     if (v22)
     {
-      v23 = [[VGHRTFUpdateData alloc] initEmpty];
-      [v23 setCaptureUpdateData:v21];
-      [v23 setStep:3];
-      [v23 setPostProcessUpdateData:v22];
-      v24 = [(VGHRTFSessionConfig *)self->_config delegate];
-      [v24 updateWithData:v23 error:a6];
+      initEmpty2 = [[VGHRTFUpdateData alloc] initEmpty];
+      [initEmpty2 setCaptureUpdateData:v21];
+      [initEmpty2 setStep:3];
+      [initEmpty2 setPostProcessUpdateData:v22];
+      delegate2 = [(VGHRTFSessionConfig *)self->_config delegate];
+      [delegate2 updateWithData:initEmpty2 error:error];
 
-      v25 = __VGLogSharedInstance();
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+      initEmpty3 = __VGLogSharedInstance();
+      if (os_log_type_enabled(initEmpty3, OS_LOG_TYPE_DEBUG))
       {
         *v29 = 0;
-        _os_log_impl(&dword_270F06000, v25, OS_LOG_TYPE_DEBUG, " Successfully completed post-processing ", v29, 2u);
+        _os_log_impl(&dword_270F06000, initEmpty3, OS_LOG_TYPE_DEBUG, " Successfully completed post-processing ", v29, 2u);
       }
     }
 
@@ -235,16 +235,16 @@ LABEL_24:
         _os_log_impl(&dword_270F06000, v26, OS_LOG_TYPE_ERROR, " Post-processing failed! ", v29, 2u);
       }
 
-      vg::hrtf::setError(a6, @"Failed to run post-processing.");
-      v23 = [[VGHRTFUpdateData alloc] initEmpty];
-      [v23 setCaptureUpdateData:v21];
-      [v23 setStep:3];
-      v25 = [[VGHRTFPostProcessUpdateData alloc] initEmpty];
-      [v25 setState:1];
-      [v25 setResult:0];
-      [v23 setPostProcessUpdateData:v25];
-      v27 = [(VGHRTFSessionConfig *)self->_config delegate];
-      [v27 updateWithData:v23 error:a6];
+      vg::hrtf::setError(error, @"Failed to run post-processing.");
+      initEmpty2 = [[VGHRTFUpdateData alloc] initEmpty];
+      [initEmpty2 setCaptureUpdateData:v21];
+      [initEmpty2 setStep:3];
+      initEmpty3 = [[VGHRTFPostProcessUpdateData alloc] initEmpty];
+      [initEmpty3 setState:1];
+      [initEmpty3 setResult:0];
+      [initEmpty2 setPostProcessUpdateData:initEmpty3];
+      delegate3 = [(VGHRTFSessionConfig *)self->_config delegate];
+      [delegate3 updateWithData:initEmpty2 error:error];
     }
 
     _Block_object_dispose(buf, 8);
@@ -279,15 +279,15 @@ void __66__VGHRTFSession__asyncProcessCaptureData_faceData_userData_error___bloc
   objc_storeStrong((v5 + 40), obj);
 }
 
-- (BOOL)processCaptureData:(id)a3 faceData:(id)a4 userData:(id)a5 error:(id *)a6
+- (BOOL)processCaptureData:(id)data faceData:(id)faceData userData:(id)userData error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  faceDataCopy = faceData;
+  userDataCopy = userData;
   v13 = atomic_exchange(&self->_processing.__a_.__a_value, 1u);
   if (v13)
   {
-    vg::hrtf::setError(a6, @"Dropped this frame while still processing a previous frame.");
+    vg::hrtf::setError(error, @"Dropped this frame while still processing a previous frame.");
   }
 
   else
@@ -305,14 +305,14 @@ void __66__VGHRTFSession__asyncProcessCaptureData_faceData_userData_error___bloc
     block[2] = __60__VGHRTFSession_processCaptureData_faceData_userData_error___block_invoke;
     block[3] = &unk_279E28D50;
     block[4] = self;
-    v18 = v10;
-    v19 = v11;
-    v20 = v12;
+    v18 = dataCopy;
+    v19 = faceDataCopy;
+    v20 = userDataCopy;
     v21 = &v22;
     dispatch_group_async(processGroup, processQueue, block);
-    if (a6)
+    if (error)
     {
-      *a6 = v23[5];
+      *error = v23[5];
     }
 
     _Block_object_dispose(&v22, 8);
@@ -334,12 +334,12 @@ void __60__VGHRTFSession_processCaptureData_faceData_userData_error___block_invo
   atomic_store(0, (a1[4] + 56));
 }
 
-- (BOOL)waitWithError:(id *)a3
+- (BOOL)waitWithError:(id *)error
 {
   v4 = dispatch_group_wait(self->_processGroup, 0xFFFFFFFFFFFFFFFFLL);
   if (v4)
   {
-    vg::hrtf::setError(a3, @"HRTF session sync failed.");
+    vg::hrtf::setError(error, @"HRTF session sync failed.");
   }
 
   return v4 == 0;

@@ -14,7 +14,7 @@
 
 - (void)airplaneModeChanged
 {
-  v2 = self;
+  selfCopy = self;
   NetworkMonitor.airplaneModeChanged()();
 }
 

@@ -1,52 +1,52 @@
 @interface CertUIItemDetail
-+ (id)itemDetailWithDetailTitle:(id)a3 detail:(id)a4;
-+ (id)itemDetailWithDetailTitle:(id)a3 detail:(id)a4 detailHighlightColor:(id)a5;
-- (CertUIItemDetail)initWithDetailTitle:(id)a3 detail:(id)a4 detailHighlightColor:(id)a5 showCheckmarkView:(BOOL)a6 checkmarkText:(id)a7 checkmarkHighlightColor:(id)a8 showCheckmark:(BOOL)a9;
++ (id)itemDetailWithDetailTitle:(id)title detail:(id)detail;
++ (id)itemDetailWithDetailTitle:(id)title detail:(id)detail detailHighlightColor:(id)color;
+- (CertUIItemDetail)initWithDetailTitle:(id)title detail:(id)detail detailHighlightColor:(id)color showCheckmarkView:(BOOL)view checkmarkText:(id)text checkmarkHighlightColor:(id)highlightColor showCheckmark:(BOOL)checkmark;
 @end
 
 @implementation CertUIItemDetail
 
-+ (id)itemDetailWithDetailTitle:(id)a3 detail:(id)a4
++ (id)itemDetailWithDetailTitle:(id)title detail:(id)detail
 {
-  v5 = a4;
-  v6 = a3;
+  detailCopy = detail;
+  titleCopy = title;
   LOBYTE(v9) = 0;
-  v7 = [[CertUIItemDetail alloc] initWithDetailTitle:v6 detail:v5 detailHighlightColor:0 showCheckmarkView:0 checkmarkText:0 checkmarkHighlightColor:0 showCheckmark:v9];
+  v7 = [[CertUIItemDetail alloc] initWithDetailTitle:titleCopy detail:detailCopy detailHighlightColor:0 showCheckmarkView:0 checkmarkText:0 checkmarkHighlightColor:0 showCheckmark:v9];
 
   return v7;
 }
 
-+ (id)itemDetailWithDetailTitle:(id)a3 detail:(id)a4 detailHighlightColor:(id)a5
++ (id)itemDetailWithDetailTitle:(id)title detail:(id)detail detailHighlightColor:(id)color
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  colorCopy = color;
+  detailCopy = detail;
+  titleCopy = title;
   LOBYTE(v12) = 0;
-  v10 = [[CertUIItemDetail alloc] initWithDetailTitle:v9 detail:v8 detailHighlightColor:v7 showCheckmarkView:0 checkmarkText:0 checkmarkHighlightColor:0 showCheckmark:v12];
+  v10 = [[CertUIItemDetail alloc] initWithDetailTitle:titleCopy detail:detailCopy detailHighlightColor:colorCopy showCheckmarkView:0 checkmarkText:0 checkmarkHighlightColor:0 showCheckmark:v12];
 
   return v10;
 }
 
-- (CertUIItemDetail)initWithDetailTitle:(id)a3 detail:(id)a4 detailHighlightColor:(id)a5 showCheckmarkView:(BOOL)a6 checkmarkText:(id)a7 checkmarkHighlightColor:(id)a8 showCheckmark:(BOOL)a9
+- (CertUIItemDetail)initWithDetailTitle:(id)title detail:(id)detail detailHighlightColor:(id)color showCheckmarkView:(BOOL)view checkmarkText:(id)text checkmarkHighlightColor:(id)highlightColor showCheckmark:(BOOL)checkmark
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v23 = a7;
-  v18 = a8;
+  titleCopy = title;
+  detailCopy = detail;
+  colorCopy = color;
+  textCopy = text;
+  highlightColorCopy = highlightColor;
   v24.receiver = self;
   v24.super_class = CertUIItemDetail;
   v19 = [(CertUIItemDetail *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_detailTitle, a3);
-    objc_storeStrong(&v20->_detail, a4);
-    objc_storeStrong(&v20->_detailHighlightColor, a5);
-    v20->_showCheckmarkView = a6;
-    objc_storeStrong(&v20->_checkmarkText, a7);
-    objc_storeStrong(&v20->_checkmarkHighlightColor, a8);
-    v20->_showCheckmark = a9;
+    objc_storeStrong(&v19->_detailTitle, title);
+    objc_storeStrong(&v20->_detail, detail);
+    objc_storeStrong(&v20->_detailHighlightColor, color);
+    v20->_showCheckmarkView = view;
+    objc_storeStrong(&v20->_checkmarkText, text);
+    objc_storeStrong(&v20->_checkmarkHighlightColor, highlightColor);
+    v20->_showCheckmark = checkmark;
   }
 
   return v20;

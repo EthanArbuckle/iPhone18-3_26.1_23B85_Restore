@@ -1,30 +1,30 @@
 @interface NEHelperTrackerManager
-- (NEHelperTrackerManager)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperTrackerManager)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperTrackerManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v61 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%@ processing Tracker Manager request", buf, 0xCu);
   }
 
-  reply = xpc_dictionary_create_reply(v4);
+  reply = xpc_dictionary_create_reply(messageCopy);
   if (reply)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "tracker-command");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "tracker-command");
     if (uint64 != 2)
     {
       if (uint64 == 1)
       {
-        v8 = xpc_dictionary_get_value(v4, "test-domains");
+        v8 = xpc_dictionary_get_value(messageCopy, "test-domains");
         os_unfair_lock_lock(&stru_100046AB8);
         if (!v8 && qword_100046990 || (sub_100003144(NEHelperTrackerManager, v8, 0), qword_100046990))
         {
@@ -33,7 +33,7 @@
           {
             count = xpc_array_get_count(qword_100046990);
             *buf = 138412546;
-            v61 = self;
+            selfCopy2 = self;
             v62 = 2048;
             v63 = count;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%@ sending back domain list of %zu items", buf, 0x16u);
@@ -64,13 +64,13 @@
 LABEL_30:
       xpc_dictionary_set_int64(reply, "result-code", 22);
 LABEL_54:
-      v42 = xpc_dictionary_get_remote_connection(v4);
+      v42 = xpc_dictionary_get_remote_connection(messageCopy);
       xpc_connection_send_message(v42, reply);
 
       goto LABEL_55;
     }
 
-    string = xpc_dictionary_get_string(v4, "bundle-id");
+    string = xpc_dictionary_get_string(messageCopy, "bundle-id");
     if (!string)
     {
       goto LABEL_30;
@@ -78,7 +78,7 @@ LABEL_54:
 
     v15 = string;
     v16 = [NSString stringWithUTF8String:string];
-    v45 = self;
+    selfCopy3 = self;
     if (!self)
     {
       v34 = 0;
@@ -106,7 +106,7 @@ LABEL_54:
       {
         v23 = v22;
         v43 = v15;
-        v44 = v4;
+        v44 = messageCopy;
         v24 = 0;
         v25 = *v55;
         do
@@ -121,13 +121,13 @@ LABEL_54:
             v27 = *(*(&v54 + 1) + 8 * i);
             if ([v27 isApproved])
             {
-              v28 = [v27 serviceSpecifier];
-              v29 = [v28 domain];
-              v30 = [v29 lowercaseString];
+              serviceSpecifier = [v27 serviceSpecifier];
+              domain = [serviceSpecifier domain];
+              lowercaseString = [domain lowercaseString];
 
-              if (v30 && ([v18 containsObject:v30] & 1) == 0)
+              if (lowercaseString && ([v18 containsObject:lowercaseString] & 1) == 0)
               {
-                [v18 addObject:v30];
+                [v18 addObject:lowercaseString];
               }
             }
 
@@ -143,7 +143,7 @@ LABEL_54:
         while (v23);
         v31 = v24 ^ 1;
         v15 = v43;
-        v4 = v44;
+        messageCopy = v44;
       }
 
       else
@@ -165,7 +165,7 @@ LABEL_41:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v61 = v45;
+          selfCopy2 = selfCopy3;
           v62 = 2080;
           v63 = v15;
           v64 = 2112;
@@ -224,7 +224,7 @@ LABEL_41:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v61 = v32;
+        selfCopy2 = v32;
         _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Error getting info: %@\n", buf, 0xCu);
       }
 
@@ -238,9 +238,9 @@ LABEL_41:
 LABEL_55:
 }
 
-- (NEHelperTrackerManager)initWithFirstMessage:(id)a3
+- (NEHelperTrackerManager)initWithFirstMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_opt_self();
   if (qword_100046998 != -1)
   {
@@ -252,7 +252,7 @@ LABEL_55:
   v5 = [(NEHelperTrackerManager *)&v13 init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_remote_connection(v4);
+    v6 = xpc_dictionary_get_remote_connection(messageCopy);
     connection = v5->_connection;
     v5->_connection = v6;
 

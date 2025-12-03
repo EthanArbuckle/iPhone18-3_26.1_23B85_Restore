@@ -5,7 +5,7 @@
 - (FBANetworkMonitor)init;
 - (FBANetworkMonitorDelegate)delegate;
 - (void)dealloc;
-- (void)reachabilityDidChange:(id)a3;
+- (void)reachabilityDidChange:(id)change;
 - (void)updateCache;
 @end
 
@@ -15,7 +15,7 @@
 {
   v3 = +[FBKSharedConstants appleSeedURL];
   v4 = [v3 URLByAppendingPathComponent:@"sp"];
-  v5 = [v4 path];
+  path = [v4 path];
 
   v13.receiver = self;
   v13.super_class = FBANetworkMonitor;
@@ -23,7 +23,7 @@
   v7 = v6;
   if (v6)
   {
-    v8 = v5 == 0;
+    v8 = path == 0;
   }
 
   else
@@ -33,11 +33,11 @@
 
   if (!v8)
   {
-    v9 = [(FBANetworkMonitor *)v6 reachabilityWithHost:v5];
+    v9 = [(FBANetworkMonitor *)v6 reachabilityWithHost:path];
     [(FBANetworkMonitor *)v7 setReachability:v9];
 
-    v10 = [(FBANetworkMonitor *)v7 reachability];
-    [v10 startNotifier];
+    reachability = [(FBANetworkMonitor *)v7 reachability];
+    [reachability startNotifier];
 
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:v7 selector:"reachabilityDidChange:" name:off_100108988 object:0];
@@ -71,64 +71,64 @@
 - (BOOL)shouldShowWaitingOnWifi
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(FBANetworkMonitor *)self allowCellDefaultKey];
-  v5 = [v3 BOOLForKey:v4] ^ 1;
+  allowCellDefaultKey = [(FBANetworkMonitor *)self allowCellDefaultKey];
+  v5 = [v3 BOOLForKey:allowCellDefaultKey] ^ 1;
 
   return v5 & [(FBANetworkMonitor *)self isConnectedToCellNetwork];
 }
 
-- (void)reachabilityDidChange:(id)a3
+- (void)reachabilityDidChange:(id)change
 {
-  v4 = [(FBANetworkMonitor *)self reachability];
-  v5 = [v4 currentReachabilityStatus];
+  reachability = [(FBANetworkMonitor *)self reachability];
+  currentReachabilityStatus = [reachability currentReachabilityStatus];
 
-  if (v5 == 2)
+  if (currentReachabilityStatus == 2)
   {
     [(FBANetworkMonitor *)self setIsConnectedToCellNetwork:1];
-    v7 = [(FBANetworkMonitor *)self delegate];
+    delegate = [(FBANetworkMonitor *)self delegate];
 
-    if (!v7)
+    if (!delegate)
     {
       return;
     }
 
-    v8 = [(FBANetworkMonitor *)self delegate];
-    [v8 connectionDidChangeToCellular];
+    delegate2 = [(FBANetworkMonitor *)self delegate];
+    [delegate2 connectionDidChangeToCellular];
   }
 
   else
   {
-    if (v5 != 1)
+    if (currentReachabilityStatus != 1)
     {
       return;
     }
 
     [(FBANetworkMonitor *)self setIsConnectedToCellNetwork:0];
-    v6 = [(FBANetworkMonitor *)self delegate];
+    delegate3 = [(FBANetworkMonitor *)self delegate];
 
-    if (!v6)
+    if (!delegate3)
     {
       return;
     }
 
-    v8 = [(FBANetworkMonitor *)self delegate];
-    [v8 connectionDidChangeToWifi];
+    delegate2 = [(FBANetworkMonitor *)self delegate];
+    [delegate2 connectionDidChangeToWifi];
   }
 }
 
 - (BOOL)_isConnectedToCellNetwork
 {
-  v2 = [(FBANetworkMonitor *)self reachability];
-  v3 = [v2 currentReachabilityStatus];
+  reachability = [(FBANetworkMonitor *)self reachability];
+  currentReachabilityStatus = [reachability currentReachabilityStatus];
 
-  return v3 == 2;
+  return currentReachabilityStatus == 2;
 }
 
 - (void)updateCache
 {
-  v3 = [(FBANetworkMonitor *)self _isConnectedToCellNetwork];
+  _isConnectedToCellNetwork = [(FBANetworkMonitor *)self _isConnectedToCellNetwork];
 
-  [(FBANetworkMonitor *)self setIsConnectedToCellNetwork:v3];
+  [(FBANetworkMonitor *)self setIsConnectedToCellNetwork:_isConnectedToCellNetwork];
 }
 
 - (FBANetworkMonitorDelegate)delegate

@@ -2,26 +2,26 @@
 - (BOOL)_latestKeyBagValueForHasBeenUnlockedSinceBoot;
 - (BOOL)hasBeenUnlockedSinceBoot;
 - (HDSPDeviceUnlockMonitor)init;
-- (HDSPDeviceUnlockMonitor)initWithCallbackScheduler:(id)a3;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)_withLock:(id)a3;
+- (HDSPDeviceUnlockMonitor)initWithCallbackScheduler:(id)scheduler;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)_withLock:(id)lock;
 - (void)handleFirstUnlock;
-- (void)setOverrideDeviceHasBeenUnlockedSinceBoot:(id)a3;
+- (void)setOverrideDeviceHasBeenUnlockedSinceBoot:(id)boot;
 @end
 
 @implementation HDSPDeviceUnlockMonitor
 
 - (HDSPDeviceUnlockMonitor)init
 {
-  v3 = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
-  v4 = [(HDSPDeviceUnlockMonitor *)self initWithCallbackScheduler:v3];
+  hkspMainThreadScheduler = [MEMORY[0x277D2C938] hkspMainThreadScheduler];
+  v4 = [(HDSPDeviceUnlockMonitor *)self initWithCallbackScheduler:hkspMainThreadScheduler];
 
   return v4;
 }
 
-- (HDSPDeviceUnlockMonitor)initWithCallbackScheduler:(id)a3
+- (HDSPDeviceUnlockMonitor)initWithCallbackScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v11.receiver = self;
   v11.super_class = HDSPDeviceUnlockMonitor;
   v5 = [(HDSPDeviceUnlockMonitor *)&v11 init];
@@ -29,7 +29,7 @@
   if (v5)
   {
     v5->_monitorLock._os_unfair_lock_opaque = 0;
-    v7 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:v4];
+    v7 = [objc_alloc(MEMORY[0x277D624A0]) initWithCallbackScheduler:schedulerCopy];
     observers = v6->_observers;
     v6->_observers = v7;
 
@@ -39,19 +39,19 @@
   return v6;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_monitorLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_monitorLock);
 }
 
-- (void)setOverrideDeviceHasBeenUnlockedSinceBoot:(id)a3
+- (void)setOverrideDeviceHasBeenUnlockedSinceBoot:(id)boot
 {
-  objc_storeStrong(&self->_overrideDeviceHasBeenUnlockedSinceBoot, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_overrideDeviceHasBeenUnlockedSinceBoot, boot);
+  bootCopy = boot;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__HDSPDeviceUnlockMonitor_setOverrideDeviceHasBeenUnlockedSinceBoot___block_invoke;
@@ -62,14 +62,14 @@
 
 - (BOOL)hasBeenUnlockedSinceBoot
 {
-  v3 = [(HDSPDeviceUnlockMonitor *)self overrideDeviceHasBeenUnlockedSinceBoot];
+  overrideDeviceHasBeenUnlockedSinceBoot = [(HDSPDeviceUnlockMonitor *)self overrideDeviceHasBeenUnlockedSinceBoot];
 
-  if (v3)
+  if (overrideDeviceHasBeenUnlockedSinceBoot)
   {
-    v4 = [(HDSPDeviceUnlockMonitor *)self overrideDeviceHasBeenUnlockedSinceBoot];
-    v5 = [v4 BOOLValue];
+    overrideDeviceHasBeenUnlockedSinceBoot2 = [(HDSPDeviceUnlockMonitor *)self overrideDeviceHasBeenUnlockedSinceBoot];
+    bOOLValue = [overrideDeviceHasBeenUnlockedSinceBoot2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -175,11 +175,11 @@ void __51__HDSPDeviceUnlockMonitor_hasBeenUnlockedSinceBoot__block_invoke(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.mobile.keybagd.first_unlock"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.mobile.keybagd.first_unlock"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -187,7 +187,7 @@ void __51__HDSPDeviceUnlockMonitor_hasBeenUnlockedSinceBoot__block_invoke(uint64
       *v11 = 138543618;
       *&v11[4] = objc_opt_class();
       *&v11[12] = 2114;
-      *&v11[14] = v5;
+      *&v11[14] = nameCopy;
       v7 = *&v11[4];
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", v11, 0x16u);
     }
@@ -195,11 +195,11 @@ void __51__HDSPDeviceUnlockMonitor_hasBeenUnlockedSinceBoot__block_invoke(uint64
     [(HDSPDeviceUnlockMonitor *)self handleFirstUnlock];
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 @end

@@ -10,9 +10,9 @@
   v0 = BLTFileURLInPairingPath(@"ContactImages");
   if (v0)
   {
-    v1 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = 0;
-    v2 = [v1 createDirectoryAtURL:v0 withIntermediateDirectories:1 attributes:0 error:&v7];
+    v2 = [defaultManager createDirectoryAtURL:v0 withIntermediateDirectories:1 attributes:0 error:&v7];
     v3 = v7;
 
     if ((v2 & 1) == 0)

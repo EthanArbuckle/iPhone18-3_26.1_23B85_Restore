@@ -1,33 +1,33 @@
 @interface CloudPushNotificationController
-- (BOOL)_isSupportedJaliscoMediaKind:(id)a3;
-- (CloudPushNotificationController)initWithAccountManager:(id)a3;
+- (BOOL)_isSupportedJaliscoMediaKind:(id)kind;
+- (CloudPushNotificationController)initWithAccountManager:(id)manager;
 - (CloudUserNotificationControllerProtocol)userNotificationController;
 - (ICDAccountManaging)accountManager;
 - (ICMediaUserStateCenterServerProtocol)mediaUserStateCenterServer;
 - (ICPlaybackPositionService)playbackPositionServer;
-- (id)_intentPayloadForMessage:(id)a3;
+- (id)_intentPayloadForMessage:(id)message;
 - (id)_supportedJaliscoMediaKinds;
 - (id)_supportedJaliscoMediaKindsWithSagaEnabled;
-- (void)_activeConfigurationsWithCompletion:(id)a3;
-- (void)_createAPNSConnectionWithCompletion:(id)a3;
-- (void)_dispatchMusicPushNotificationIntentForMessage:(id)a3;
-- (void)_dispatchPodcastsPushNotificationIntentForMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleITunesStorePushMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleInAppMessagesUpdatedPushMessage:(id)a3;
-- (void)_handleJaliscoPushMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handlePodcastsPushMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleSagaPushMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleStoreBookkeeperPushMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
-- (void)_registerAPNSToken:(id)a3 usingRequestContext:(id)a4 withCompletion:(id)a5;
-- (void)_registerMediaKinds:(id)a3 usingRequestContext:(id)a4 withCompletion:(id)a5;
+- (void)_activeConfigurationsWithCompletion:(id)completion;
+- (void)_createAPNSConnectionWithCompletion:(id)completion;
+- (void)_dispatchMusicPushNotificationIntentForMessage:(id)message;
+- (void)_dispatchPodcastsPushNotificationIntentForMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handleITunesStorePushMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handleInAppMessagesUpdatedPushMessage:(id)message;
+- (void)_handleJaliscoPushMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handlePodcastsPushMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handleSagaPushMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handleStoreBookkeeperPushMessage:(id)message withCompletionHandler:(id)handler;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
+- (void)_registerAPNSToken:(id)token usingRequestContext:(id)context withCompletion:(id)completion;
+- (void)_registerMediaKinds:(id)kinds usingRequestContext:(id)context withCompletion:(id)completion;
 - (void)_updatePushNotificationsRegistration;
-- (void)_updateRegistrationForConfiguration:(id)a3 completion:(id)a4;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_updateRegistrationForConfiguration:(id)configuration completion:(id)completion;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request;
 @end
 
 @implementation CloudPushNotificationController
@@ -60,11 +60,11 @@
   return WeakRetained;
 }
 
-- (void)pushPayload:(id)a3 withBadgeRequest:(id)a4
+- (void)pushPayload:(id)payload withBadgeRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(CloudPushNotificationController *)self userNotificationController];
-  if (!v6)
+  requestCopy = request;
+  userNotificationController = [(CloudPushNotificationController *)self userNotificationController];
+  if (!userNotificationController)
   {
     v9 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -81,8 +81,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [v5 badgeIdentifier];
-  v8 = [v7 isEqualToString:@"appIcon"];
+  badgeIdentifier = [requestCopy badgeIdentifier];
+  v8 = [badgeIdentifier isEqualToString:@"appIcon"];
 
   if (!v8)
   {
@@ -98,26 +98,26 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [v6 badgeAppWithRequest:v5];
+  [userNotificationController badgeAppWithRequest:requestCopy];
 LABEL_10:
 }
 
-- (id)_intentPayloadForMessage:(id)a3
+- (id)_intentPayloadForMessage:(id)message
 {
-  v4 = [a3 userInfo];
+  userInfo = [message userInfo];
   v12 = 0;
-  v5 = [NSJSONSerialization dataWithJSONObject:v4 options:0 error:&v12];
+  v5 = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:&v12];
   v6 = v12;
   if (v6)
   {
     v7 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 msv_description];
+      msv_description = [v6 msv_description];
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
-      v16 = v8;
+      v16 = msv_description;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@ Failed to serialize payload dictionary error=%{public}@", buf, 0x16u);
     }
   }
@@ -134,7 +134,7 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create payload string", buf, 0xCu);
     }
   }
@@ -145,10 +145,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)_dispatchPodcastsPushNotificationIntentForMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_dispatchPodcastsPushNotificationIntentForMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(CloudPushNotificationController *)self _intentPayloadForMessage:a3];
+  handlerCopy = handler;
+  v7 = [(CloudPushNotificationController *)self _intentPayloadForMessage:message];
   if (v7)
   {
     v8 = objc_alloc_init(_TtC12itunescloudd22ICDAppIntentDispatcher);
@@ -156,14 +156,14 @@ LABEL_11:
     v9[1] = 3221225472;
     v9[2] = sub_10010F410;
     v9[3] = &unk_1001DF5C8;
-    v10 = v6;
+    v10 = handlerCopy;
     [(ICDAppIntentDispatcher *)v8 dispatchPodcastsPushNotificationIntentWithTopic:@"com.apple.podcasts" payload:v7 completionHandler:v9];
   }
 }
 
-- (void)_dispatchMusicPushNotificationIntentForMessage:(id)a3
+- (void)_dispatchMusicPushNotificationIntentForMessage:(id)message
 {
-  v3 = [(CloudPushNotificationController *)self _intentPayloadForMessage:a3];
+  v3 = [(CloudPushNotificationController *)self _intentPayloadForMessage:message];
   if (v3)
   {
     v5 = v3;
@@ -198,23 +198,23 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)_isSupportedJaliscoMediaKind:(id)a3
+- (BOOL)_isSupportedJaliscoMediaKind:(id)kind
 {
-  v4 = a3;
-  v5 = [(CloudPushNotificationController *)self _supportedJaliscoMediaKinds];
-  v6 = [v5 containsObject:v4];
+  kindCopy = kind;
+  _supportedJaliscoMediaKinds = [(CloudPushNotificationController *)self _supportedJaliscoMediaKinds];
+  v6 = [_supportedJaliscoMediaKinds containsObject:kindCopy];
 
   return v6;
 }
 
-- (void)_handleInAppMessagesUpdatedPushMessage:(id)a3
+- (void)_handleInAppMessagesUpdatedPushMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 apsPayload];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  apsPayload = [messageCopy apsPayload];
+  v6 = apsPayload;
+  if (apsPayload)
   {
-    v7 = [v5 ic_intValueForKey:@"payloadVersion"];
+    v7 = [apsPayload ic_intValueForKey:@"payloadVersion"];
     if (v7 >= 2)
     {
       if (v7 == 2)
@@ -223,7 +223,7 @@ LABEL_11:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v15 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Received inApp messages push - syncing now", buf, 0xCu);
         }
 
@@ -241,11 +241,11 @@ LABEL_11:
         v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v4 userInfo];
+          userInfo = [messageCopy userInfo];
           *buf = 138543618;
-          v15 = self;
+          selfCopy4 = self;
           v16 = 2114;
-          v17 = v9;
+          v17 = userInfo;
           v10 = "%{public}@Received unsupported in-app sync payload version - ignoring push %{public}@";
           goto LABEL_14;
         }
@@ -257,11 +257,11 @@ LABEL_11:
       v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v4 userInfo];
+        userInfo = [messageCopy userInfo];
         *buf = 138543618;
-        v15 = self;
+        selfCopy4 = self;
         v16 = 2114;
-        v17 = v9;
+        v17 = userInfo;
         v10 = "%{public}@Received legacy banner sync payload version - ignoring push %{public}@";
 LABEL_14:
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0x16u);
@@ -274,44 +274,44 @@ LABEL_14:
     v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 userInfo];
+      userInfo = [messageCopy userInfo];
       *buf = 138543618;
-      v15 = self;
+      selfCopy4 = self;
       v16 = 2114;
-      v17 = v9;
+      v17 = userInfo;
       v10 = "%{public}@ No aps payload - ignoring push %{public}@";
       goto LABEL_14;
     }
   }
 }
 
-- (void)_handlePodcastsPushMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_handlePodcastsPushMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  messageCopy = message;
   v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Received Podcasts push - forwarding to AppIntent", &v9, 0xCu);
   }
 
-  [(CloudPushNotificationController *)self _dispatchPodcastsPushNotificationIntentForMessage:v7 withCompletionHandler:v6];
+  [(CloudPushNotificationController *)self _dispatchPodcastsPushNotificationIntentForMessage:messageCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)_handleStoreBookkeeperPushMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleStoreBookkeeperPushMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 userInfo];
+    userInfo = [messageCopy userInfo];
     *buf = 138543619;
     *&buf[4] = self;
     *&buf[12] = 2113;
-    *&buf[14] = v9;
+    *&buf[14] = userInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ _handleStoreBookkeeperPushMessage: %{private}@", buf, 0x16u);
   }
 
@@ -319,11 +319,11 @@ LABEL_14:
   v11 = WeakRetained;
   if (WeakRetained && [WeakRetained conformsToProtocol:&OBJC_PROTOCOL___ICPlaybackPositionService])
   {
-    v12 = [v6 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"3"];
+    userInfo2 = [messageCopy userInfo];
+    v13 = [userInfo2 objectForKeyedSubscript:@"3"];
 
-    v14 = [v6 userInfo];
-    v15 = [v14 objectForKeyedSubscript:@"1"];
+    userInfo3 = [messageCopy userInfo];
+    v15 = [userInfo3 objectForKeyedSubscript:@"1"];
 
     if (!v13 || !v15)
     {
@@ -333,7 +333,7 @@ LABEL_14:
         *buf = 138543618;
         *&buf[4] = self;
         *&buf[12] = 2114;
-        *&buf[14] = v6;
+        *&buf[14] = messageCopy;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}@ Received invalid Playback Position message %{public}@", buf, 0x16u);
       }
 
@@ -341,7 +341,7 @@ LABEL_14:
       goto LABEL_34;
     }
 
-    v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 accountDSID]);
+    v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [messageCopy accountDSID]);
     v17 = [ICUserIdentity specificAccountWithDSID:v16];
 
     if (v17)
@@ -363,7 +363,7 @@ LABEL_14:
             v21 = sub_100102804();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v22 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 accountDSID]);
+              v22 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [messageCopy accountDSID]);
               *buf = 138543619;
               *&buf[4] = self;
               *&buf[12] = 2113;
@@ -405,8 +405,8 @@ LABEL_34:
       {
         if (![v13 intValue])
         {
-          v31 = [v30 libraryUID];
-          [v11 synchronizePlaybackPositionsForLibraryWithIdentifier:v31 forDomain:v15 isCheckpoint:1];
+          libraryUID = [v30 libraryUID];
+          [v11 synchronizePlaybackPositionsForLibraryWithIdentifier:libraryUID forDomain:v15 isCheckpoint:1];
         }
 
         v24 = 0;
@@ -420,7 +420,7 @@ LABEL_34:
           *buf = 138543618;
           *&buf[4] = self;
           *&buf[12] = 2114;
-          *&buf[14] = v6;
+          *&buf[14] = messageCopy;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%{public}@ Failed to find user library for message %{public}@", buf, 0x16u);
         }
 
@@ -433,7 +433,7 @@ LABEL_34:
     v26 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 accountDSID]);
+      v27 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [messageCopy accountDSID]);
       *buf = 138543619;
       *&buf[4] = self;
       *&buf[12] = 2113;
@@ -447,32 +447,32 @@ LABEL_34:
 
   v24 = 0;
 LABEL_35:
-  v7[2](v7, v24);
+  handlerCopy[2](handlerCopy, v24);
 }
 
-- (void)_handleITunesStorePushMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleITunesStorePushMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v9 = +[ICDeviceInfo currentDeviceInfo];
-  v10 = [v9 isMac];
+  isMac = [v9 isMac];
 
-  v11 = [v6 actionType];
-  if (!v10)
+  actionType = [messageCopy actionType];
+  if (!isMac)
   {
-    if (v11 > 24)
+    if (actionType > 24)
     {
-      if ((v11 - 27) < 2 || v11 == 25)
+      if ((actionType - 27) < 2 || actionType == 25)
       {
-        [(CloudPushNotificationController *)self _handleInAppMessagesUpdatedPushMessage:v6];
+        [(CloudPushNotificationController *)self _handleInAppMessagesUpdatedPushMessage:messageCopy];
         goto LABEL_31;
       }
 
-      if (v11 == 40)
+      if (actionType == 40)
       {
         WeakRetained = objc_loadWeakRetained(&self->_mediaUserStateCenterServer);
-        v15 = WeakRetained;
+        amsPushHandler = WeakRetained;
         if (WeakRetained && [WeakRetained conformsToProtocol:&OBJC_PROTOCOL___ICMediaUserStateCenterServerProtocol])
         {
           v29[0] = _NSConcreteStackBlock;
@@ -480,20 +480,20 @@ LABEL_35:
           v29[2] = sub_10011095C;
           v29[3] = &unk_1001DEAC8;
           v29[4] = self;
-          [v15 refreshSocialProfilesWithReply:v29];
+          [amsPushHandler refreshSocialProfilesWithReply:v29];
           goto LABEL_15;
         }
 
-        v16 = os_log_create("com.apple.amp.itunescloudd", "Push");
-        if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        userInfo4 = os_log_create("com.apple.amp.itunescloudd", "Push");
+        if (!os_log_type_enabled(userInfo4, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_14;
         }
 
         *buf = 138543362;
-        v31 = self;
+        selfCopy3 = self;
         v17 = "%{public}@ Dropping MusicSocialProfileUpdate push notification. _mediaUserStateCenterServer=nil";
-        v18 = v16;
+        v18 = userInfo4;
         v19 = 12;
         goto LABEL_13;
       }
@@ -501,11 +501,11 @@ LABEL_35:
 
     else
     {
-      if (v11 <= 14)
+      if (actionType <= 14)
       {
-        if (v11 != 12)
+        if (actionType != 12)
         {
-          if (v11 == 14)
+          if (actionType == 14)
           {
             v12 = +[ICMusicSubscriptionStatusController sharedStatusController];
             [v12 invalidateCachedSubscriptionStatusWithCompletionHandler:&stru_1001DEA80];
@@ -530,24 +530,24 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      if (v11 == 15)
+      if (actionType == 15)
       {
         v12 = +[CloudContentTasteUpdateRequestListener sharedContentTasteRequestListener];
         [v12 handleContentTasteChangedNotification];
         goto LABEL_5;
       }
 
-      if (v11 == 20)
+      if (actionType == 20)
       {
-        v21 = [v6 moduleIdentifier];
-        if (v21 != 1)
+        moduleIdentifier = [messageCopy moduleIdentifier];
+        if (moduleIdentifier != 1)
         {
-          v27 = v21;
+          v27 = moduleIdentifier;
           v12 = os_log_create("com.apple.amp.itunescloudd", "Push");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            LODWORD(v31) = v27;
+            LODWORD(selfCopy3) = v27;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unknown for-you module identifier %d", buf, 8u);
           }
 
@@ -560,49 +560,49 @@ LABEL_30:
     }
 
 LABEL_33:
-    v15 = [(CloudPushNotificationController *)self amsPushHandler];
-    v24 = [v6 userInfo];
-    v25 = [v15 shouldHandleNotification:v24];
+    amsPushHandler = [(CloudPushNotificationController *)self amsPushHandler];
+    userInfo = [messageCopy userInfo];
+    v25 = [amsPushHandler shouldHandleNotification:userInfo];
 
     if (v25)
     {
-      v26 = [v6 userInfo];
-      [v15 handleNotification:v26];
+      userInfo2 = [messageCopy userInfo];
+      [amsPushHandler handleNotification:userInfo2];
 
       goto LABEL_15;
     }
 
-    v16 = os_log_create("com.apple.amp.itunescloudd", "Push");
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    userInfo4 = os_log_create("com.apple.amp.itunescloudd", "Push");
+    if (os_log_type_enabled(userInfo4, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v6 userInfo];
+      userInfo3 = [messageCopy userInfo];
       *buf = 138543618;
-      v31 = self;
+      selfCopy3 = self;
       v32 = 2114;
-      v33 = v28;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Received unsupported store push notification - ignoring. userInfo=%{public}@", buf, 0x16u);
+      v33 = userInfo3;
+      _os_log_impl(&_mh_execute_header, userInfo4, OS_LOG_TYPE_DEFAULT, "%{public}@ Received unsupported store push notification - ignoring. userInfo=%{public}@", buf, 0x16u);
     }
 
     goto LABEL_14;
   }
 
-  if (v11 != 14)
+  if (actionType != 14)
   {
-    v15 = os_log_create("com.apple.amp.itunescloudd", "Push");
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    amsPushHandler = os_log_create("com.apple.amp.itunescloudd", "Push");
+    if (!os_log_type_enabled(amsPushHandler, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_15:
 
       goto LABEL_31;
     }
 
-    v16 = [v6 userInfo];
+    userInfo4 = [messageCopy userInfo];
     *buf = 138543618;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2114;
-    v33 = v16;
+    v33 = userInfo4;
     v17 = "%{public}@ Received unsupported store push notification - ignoring. userInfo=%{public}@";
-    v18 = v15;
+    v18 = amsPushHandler;
     v19 = 22;
 LABEL_13:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, v17, buf, v19);
@@ -620,17 +620,17 @@ LABEL_4:
 
 LABEL_5:
 LABEL_31:
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)_handleJaliscoPushMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleJaliscoPushMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountDSID];
-  if (v8)
+  messageCopy = message;
+  handlerCopy = handler;
+  accountDSID = [messageCopy accountDSID];
+  if (accountDSID)
   {
-    v9 = [NSNumber numberWithLongLong:v8];
+    v9 = [NSNumber numberWithLongLong:accountDSID];
     v10 = [ICUserIdentity specificAccountWithDSID:v9];
   }
 
@@ -639,11 +639,11 @@ LABEL_31:
     v11 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 userInfo];
+      userInfo = [messageCopy userInfo];
       *buf = 138543618;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
-      v22 = v12;
+      v22 = userInfo;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Received jalisco push notification with no DSID - using active account. userInfo=%{public}@", buf, 0x16u);
     }
 
@@ -656,41 +656,41 @@ LABEL_31:
   v16[2] = sub_100110CA4;
   v16[3] = &unk_1001DE9E0;
   v16[4] = self;
-  v17 = v6;
+  v17 = messageCopy;
   v18 = v10;
   v14 = v10;
-  v15 = v6;
+  v15 = messageCopy;
   [v13 getPropertiesForUserIdentity:v14 completionHandler:v16];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)_handleSagaPushMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)_handleSagaPushMessage:(id)message withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountDSID];
-  if (!v8)
+  messageCopy = message;
+  handlerCopy = handler;
+  accountDSID = [messageCopy accountDSID];
+  if (!accountDSID)
   {
     v9 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v6 userInfo];
+      userInfo = [messageCopy userInfo];
       *buf = 138543618;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
-      v33 = v10;
+      v33 = userInfo;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Received saga push notification with no DSID - using active account. userInfo=%{public}@", buf, 0x16u);
     }
   }
 
   v11 = +[ICDefaults standardDefaults];
-  v12 = [v11 sagaPushNotificationTimes];
-  v13 = [v12 mutableCopy];
+  sagaPushNotificationTimes = [v11 sagaPushNotificationTimes];
+  v13 = [sagaPushNotificationTimes mutableCopy];
 
   if (v13)
   {
-    if (v8)
+    if (accountDSID)
     {
       goto LABEL_7;
     }
@@ -701,14 +701,14 @@ LABEL_16:
   }
 
   v13 = [NSMutableDictionary dictionaryWithCapacity:1];
-  if (!v8)
+  if (!accountDSID)
   {
     goto LABEL_16;
   }
 
 LABEL_7:
   v14 = &v34 + 1;
-  quot = v8;
+  quot = accountDSID;
   do
   {
     v16 = lldiv(quot, 10);
@@ -729,7 +729,7 @@ LABEL_7:
   }
 
   while (v16.quot);
-  if (v8 < 0)
+  if (accountDSID < 0)
   {
     *(v14 - 2) = 45;
     v18 = (v14 - 2);
@@ -743,9 +743,9 @@ LABEL_17:
   v21 = +[ICDefaults standardDefaults];
   [v21 setSagaPushNotificationTimes:v13];
 
-  if (v8)
+  if (accountDSID)
   {
-    v22 = [NSNumber numberWithLongLong:v8];
+    v22 = [NSNumber numberWithLongLong:accountDSID];
     v23 = [ICUserIdentity specificAccountWithDSID:v22];
   }
 
@@ -760,39 +760,39 @@ LABEL_17:
   v27[2] = sub_100111378;
   v27[3] = &unk_1001DE9E0;
   v27[4] = self;
-  v28 = v6;
+  v28 = messageCopy;
   v29 = v23;
   v25 = v23;
-  v26 = v6;
+  v26 = messageCopy;
   [v24 getPropertiesForUserIdentity:v25 completionHandler:v27];
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ received accounts changed notification - updating push notifications", &v5, 0xCu);
   }
 
   [(CloudPushNotificationController *)self _updatePushNotificationsRegistration];
 }
 
-- (void)_registerMediaKinds:(id)a3 usingRequestContext:(id)a4 withCompletion:(id)a5
+- (void)_registerMediaKinds:(id)kinds usingRequestContext:(id)context withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kindsCopy = kinds;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = +[ICDeviceInfo currentDeviceInfo];
-  v12 = [v11 isMac];
+  isMac = [v11 isMac];
 
-  if (v12)
+  if (isMac)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -801,94 +801,94 @@ LABEL_17:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v8;
+      v24 = kindsCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Registering updated media types: %{public}@", buf, 0x16u);
     }
 
     v19 = @"media-kinds";
-    v20 = v8;
+    v20 = kindsCopy;
     v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v15 = [ICPushNotificationsEnableTypesRequest alloc];
-    v16 = [v15 initWithRequestContext:v9 notificationType:ICPushNotificationTypePurchase notificationParameters:v14];
+    v16 = [v15 initWithRequestContext:contextCopy notificationType:ICPushNotificationTypePurchase notificationParameters:v14];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100111A50;
     v17[3] = &unk_1001DE9B8;
     v17[4] = self;
-    v18 = v10;
+    v18 = completionCopy;
     [v16 performRequestWithResponseHandler:v17];
   }
 }
 
-- (void)_registerAPNSToken:(id)a3 usingRequestContext:(id)a4 withCompletion:(id)a5
+- (void)_registerAPNSToken:(id)token usingRequestContext:(id)context withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v8;
+    v20 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Registering updated push token %{public}@", buf, 0x16u);
   }
 
   v12 = +[ICDeviceInfo currentDeviceInfo];
-  v13 = [v12 isWatch];
+  isWatch = [v12 isWatch];
 
-  if (v13)
+  if (isWatch)
   {
-    v14 = [[ICPushNotificationsRegisterAPNSTokenRequest alloc] initWithRequestContext:v9 token:v8];
+    v14 = [[ICPushNotificationsRegisterAPNSTokenRequest alloc] initWithRequestContext:contextCopy token:tokenCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100111D74;
     v15[3] = &unk_1001DE9B8;
     v15[4] = self;
-    v16 = v10;
+    v16 = completionCopy;
     [v14 performRequestWithResponseHandler:v15];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_updateRegistrationForConfiguration:(id)a3 completion:(id)a4
+- (void)_updateRegistrationForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v6;
+    v19 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating push registration for configuration %{public}@", buf, 0x16u);
   }
 
-  v9 = [v6 userIdentityStore];
-  v10 = [v6 userIdentity];
+  userIdentityStore = [configurationCopy userIdentityStore];
+  userIdentity = [configurationCopy userIdentity];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100112068;
   v13[3] = &unk_1001DE990;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  [v9 getPropertiesForUserIdentity:v10 completionHandler:v13];
+  v14 = configurationCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = configurationCopy;
+  [userIdentityStore getPropertiesForUserIdentity:userIdentity completionHandler:v13];
 }
 
-- (void)_createAPNSConnectionWithCompletion:(id)a3
+- (void)_createAPNSConnectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [ICStoreRequestContext alloc];
   v6 = +[ICUserIdentity activeAccount];
   v7 = [v5 initWithIdentity:v6];
@@ -899,20 +899,20 @@ LABEL_17:
   v10[2] = sub_100112CF0;
   v10[3] = &unk_1001DE8F0;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [v8 getBagForRequestContext:v7 withCompletionHandler:v10];
 }
 
-- (void)_activeConfigurationsWithCompletion:(id)a3
+- (void)_activeConfigurationsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CloudPushNotificationController *)self accountManager];
-  v6 = [v5 supportedConfigurations];
+  completionCopy = completion;
+  accountManager = [(CloudPushNotificationController *)self accountManager];
+  supportedConfigurations = [accountManager supportedConfigurations];
 
-  if (v6)
+  if (supportedConfigurations)
   {
-    v4[2](v4, v6, 0);
+    completionCopy[2](completionCopy, supportedConfigurations, 0);
   }
 
   else
@@ -923,7 +923,7 @@ LABEL_17:
 
     v11 = v9;
     v10 = [NSArray arrayWithObjects:&v11 count:1];
-    v4[2](v4, v10, 0);
+    completionCopy[2](completionCopy, v10, 0);
   }
 }
 
@@ -938,16 +938,16 @@ LABEL_17:
   dispatch_async(queue, block);
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
-  if ([v4 isRemoteServerLikelyReachable] && objc_msgSend(v4, "isCurrentNetworkLinkHighQuality"))
+  reachabilityCopy = reachability;
+  if ([reachabilityCopy isRemoteServerLikelyReachable] && objc_msgSend(reachabilityCopy, "isCurrentNetworkLinkHighQuality"))
   {
     v5 = os_log_create("com.apple.amp.itunescloudd", "Push");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Network reachability changed to available - updating push registration if needed", &v6, 0xCu);
     }
 
@@ -955,18 +955,18 @@ LABEL_17:
   }
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  topicCopy = topic;
+  infoCopy = info;
   v11 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = v9;
+    v26 = topicCopy;
     v27 = 2114;
-    v28 = v10;
+    v28 = infoCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received push notification on topic %{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -975,32 +975,32 @@ LABEL_17:
   v18 = 3221225472;
   v19 = sub_100113F0C;
   v20 = &unk_1001DE878;
-  v21 = v8;
-  v22 = self;
-  v23 = v9;
-  v24 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v21 = connectionCopy;
+  selfCopy = self;
+  v23 = topicCopy;
+  v24 = infoCopy;
+  v13 = infoCopy;
+  v14 = topicCopy;
+  v15 = connectionCopy;
   v16 = [v12 initWithStartHandler:&v17];
   [(NSOperationQueue *)self->_operationQueue addOperation:v16, v17, v18, v19, v20];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   v6 = os_log_create("com.apple.amp.itunescloudd", "Push");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v5;
+    v11 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ received new token '%{public}@'", &v8, 0x16u);
   }
 
   currentAPNSToken = self->_currentAPNSToken;
-  self->_currentAPNSToken = v5;
+  self->_currentAPNSToken = tokenCopy;
 
   [(CloudPushNotificationController *)self _updatePushNotificationsRegistration];
 }
@@ -1010,24 +1010,24 @@ LABEL_17:
   v3 = +[ICEnvironmentMonitor sharedMonitor];
   [v3 unregisterObserver:self];
 
-  v4 = [(CloudPushNotificationController *)self connection];
-  [v4 setDelegate:0];
+  connection = [(CloudPushNotificationController *)self connection];
+  [connection setDelegate:0];
 
   v5.receiver = self;
   v5.super_class = CloudPushNotificationController;
   [(CloudPushNotificationController *)&v5 dealloc];
 }
 
-- (CloudPushNotificationController)initWithAccountManager:(id)a3
+- (CloudPushNotificationController)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = CloudPushNotificationController;
   v5 = [(CloudPushNotificationController *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_accountManager, v4);
+    objc_storeWeak(&v5->_accountManager, managerCopy);
     v7 = objc_alloc_init(NSOperationQueue);
     operationQueue = v6->_operationQueue;
     v6->_operationQueue = v7;
@@ -1041,8 +1041,8 @@ LABEL_17:
 
     v11 = [ICDCloudPushNotificationRegistrationState alloc];
     v12 = +[ICDefaults standardDefaults];
-    v13 = [v12 pushNotificationState];
-    v14 = [(ICDCloudPushNotificationRegistrationState *)v11 initWithDictionaryRepresentation:v13];
+    pushNotificationState = [v12 pushNotificationState];
+    v14 = [(ICDCloudPushNotificationRegistrationState *)v11 initWithDictionaryRepresentation:pushNotificationState];
     currentRegistrationState = v6->_currentRegistrationState;
     v6->_currentRegistrationState = v14;
 
@@ -1053,9 +1053,9 @@ LABEL_17:
     if ([v17 isRemoteServerLikelyReachable])
     {
       v18 = +[ICEnvironmentMonitor sharedMonitor];
-      v19 = [v18 isCurrentNetworkLinkHighQuality];
+      isCurrentNetworkLinkHighQuality = [v18 isCurrentNetworkLinkHighQuality];
 
-      if (v19)
+      if (isCurrentNetworkLinkHighQuality)
       {
         [(CloudPushNotificationController *)v6 _updatePushNotificationsRegistration];
       }

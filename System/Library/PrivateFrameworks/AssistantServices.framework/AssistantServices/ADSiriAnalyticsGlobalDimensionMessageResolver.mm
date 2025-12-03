@@ -1,45 +1,45 @@
 @interface ADSiriAnalyticsGlobalDimensionMessageResolver
-- (ADSiriAnalyticsGlobalDimensionMessageResolver)initWithQueue:(id)a3;
-- (BOOL)handlesMessage:(id)a3;
-- (id)_resolveDeviceFixedContext:(id)a3;
-- (id)_resolveSiriAccountInformation:(id)a3;
-- (void)resolveMessage:(id)a3 completion:(id)a4;
+- (ADSiriAnalyticsGlobalDimensionMessageResolver)initWithQueue:(id)queue;
+- (BOOL)handlesMessage:(id)message;
+- (id)_resolveDeviceFixedContext:(id)context;
+- (id)_resolveSiriAccountInformation:(id)information;
+- (void)resolveMessage:(id)message completion:(id)completion;
 @end
 
 @implementation ADSiriAnalyticsGlobalDimensionMessageResolver
 
-- (id)_resolveSiriAccountInformation:(id)a3
+- (id)_resolveSiriAccountInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 longLivedIdentifierUploadingEnabled];
+  longLivedIdentifierUploadingEnabled = [v4 longLivedIdentifierUploadingEnabled];
 
-  if (v5)
+  if (longLivedIdentifierUploadingEnabled)
   {
     v6 = +[ADAccount activeAccount];
     v7 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
     {
       v8 = v7;
-      v9 = [v6 assistantIdentifier];
+      assistantIdentifier = [v6 assistantIdentifier];
       v17 = 136315394;
       v18 = "[ADSiriAnalyticsGlobalDimensionMessageResolver _resolveSiriAccountInformation:]";
       v19 = 2112;
-      v20 = v9;
+      v20 = assistantIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s #RPI: resolving DIMSchemaDIMSiriAccountInformation assistantIdentifier=%@", &v17, 0x16u);
     }
 
-    v10 = [v6 assistantIdentifier];
-    [v3 setSiriDeviceId:v10];
+    assistantIdentifier2 = [v6 assistantIdentifier];
+    [informationCopy setSiriDeviceId:assistantIdentifier2];
 
     v11 = +[ADPreferences sharedPreferences];
-    v12 = [v11 sharedUserIdentifier];
-    [v3 setSiriUserId:v12];
+    sharedUserIdentifier = [v11 sharedUserIdentifier];
+    [informationCopy setSiriUserId:sharedUserIdentifier];
 
-    v13 = [v6 speechIdentifier];
-    [v3 setSiriSpeechId:v13];
+    speechIdentifier = [v6 speechIdentifier];
+    [informationCopy setSiriSpeechId:speechIdentifier];
 
-    v14 = v3;
+    v14 = informationCopy;
   }
 
   else
@@ -58,20 +58,20 @@
   return v14;
 }
 
-- (id)_resolveDeviceFixedContext:(id)a3
+- (id)_resolveDeviceFixedContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[ADPreferences sharedPreferences];
   v5 = +[NSLocale currentLocale];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 countryCode];
+    countryCode = [v5 countryCode];
     [v6 languageCode];
-    if (v7)
+    if (countryCode)
       v8 = {;
-      v9 = [v6 countryCode];
-      v10 = [NSString stringWithFormat:@"%@-%@", v8, v9];
+      countryCode2 = [v6 countryCode];
+      v10 = [NSString stringWithFormat:@"%@-%@", v8, countryCode2];
     }
 
     else
@@ -80,15 +80,15 @@
 
     if (v10)
     {
-      [v3 setSystemLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v10)}];
+      [contextCopy setSystemLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v10)}];
     }
   }
 
-  v11 = [v4 languageCode];
-  v53 = v11;
-  if (v11)
+  languageCode = [v4 languageCode];
+  v53 = languageCode;
+  if (languageCode)
   {
-    v12 = [SIUtilities convertLanguageCodeToSchemaLocale:v11];
+    v12 = [SIUtilities convertLanguageCodeToSchemaLocale:languageCode];
   }
 
   else
@@ -96,33 +96,33 @@
     v12 = 0;
   }
 
-  [v3 setSiriInputLocale:v12];
+  [contextCopy setSiriInputLocale:v12];
   v13 = objc_alloc_init(SISchemaVoiceSettings);
   [v13 setVoiceGender:0];
-  v14 = [v4 outputVoice];
-  v15 = [v14 gender];
+  outputVoice = [v4 outputVoice];
+  gender = [outputVoice gender];
 
-  if (v15 == 2)
+  if (gender == 2)
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [v4 outputVoice];
-    v18 = [v17 gender];
+    outputVoice2 = [v4 outputVoice];
+    gender2 = [outputVoice2 gender];
 
-    if (v18 == 1)
+    if (gender2 == 1)
     {
       v16 = 2;
     }
 
     else
     {
-      v19 = [v4 outputVoice];
-      v20 = [v19 gender];
+      outputVoice3 = [v4 outputVoice];
+      gender3 = [outputVoice3 gender];
 
-      if (v20 != 3)
+      if (gender3 != 3)
       {
         goto LABEL_18;
       }
@@ -133,20 +133,20 @@
 
   [v13 setVoiceGender:v16];
 LABEL_18:
-  v21 = [v4 outputVoice];
-  v22 = [v21 languageCode];
+  outputVoice4 = [v4 outputVoice];
+  languageCode2 = [outputVoice4 languageCode];
 
-  if (v22)
+  if (languageCode2)
   {
-    [v13 setVoiceAccent:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v22)}];
+    [v13 setVoiceAccent:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", languageCode2)}];
   }
 
-  v51 = v22;
-  v23 = [v4 outputVoice];
-  v24 = [v23 name];
-  [v13 setVoiceName:v24];
+  v51 = languageCode2;
+  outputVoice5 = [v4 outputVoice];
+  name = [outputVoice5 name];
+  [v13 setVoiceName:name];
 
-  [v3 setSiriVoiceSettings:v13];
+  [contextCopy setSiriVoiceSettings:v13];
   v25 = [v4 siriDataSharingOptInStatus] - 1;
   if (v25 < 3)
   {
@@ -158,19 +158,19 @@ LABEL_18:
     v26 = 0;
   }
 
-  [v3 setDataSharingOptInState:v26];
-  v27 = [v4 searchQueriesDataSharingStatus];
-  if (v27 == 1)
+  [contextCopy setDataSharingOptInState:v26];
+  searchQueriesDataSharingStatus = [v4 searchQueriesDataSharingStatus];
+  if (searchQueriesDataSharingStatus == 1)
   {
     v28 = 1;
   }
 
   else
   {
-    v28 = 2 * (v27 == 2);
+    v28 = 2 * (searchQueriesDataSharingStatus == 2);
   }
 
-  [v3 setSearchDataOptOutState:v28];
+  [contextCopy setSearchDataOptOutState:v28];
   v29 = objc_alloc_init(NSDateFormatter);
   [v29 setDateFormat:@"ZZZZZ"];
   v30 = +[NSTimeZone localTimeZone];
@@ -180,20 +180,20 @@ LABEL_18:
   v32 = [v29 stringFromDate:v31];
 
   v50 = v32;
-  [v3 setTimezoneOffset:v32];
+  [contextCopy setTimezoneOffset:v32];
   v33 = AFBuildVersion();
-  [v3 setSystemBuild:v33];
+  [contextCopy setSystemBuild:v33];
 
   v34 = AFProductTypeForInstrumentation();
-  [v3 setDeviceType:v34];
+  [contextCopy setDeviceType:v34];
 
-  v35 = [v4 countryCode];
-  if (v35)
+  countryCode3 = [v4 countryCode];
+  if (countryCode3)
   {
-    [v3 setCountryCode:{+[SIUtilities convertCountryCodeToSchemaCountryCode:](SIUtilities, "convertCountryCodeToSchemaCountryCode:", v35)}];
+    [contextCopy setCountryCode:{+[SIUtilities convertCountryCodeToSchemaCountryCode:](SIUtilities, "convertCountryCodeToSchemaCountryCode:", countryCode3)}];
   }
 
-  v49 = v35;
+  v49 = countryCode3;
   v36 = +[ADHomeInfoManager sharedInfoManager];
   if ([v36 hasOptedInHH2])
   {
@@ -205,7 +205,7 @@ LABEL_18:
     v37 = 1;
   }
 
-  [v3 setHomeKitConfiguration:v37];
+  [contextCopy setHomeKitConfiguration:v37];
 
   if (qword_100590550 != -1)
   {
@@ -213,52 +213,52 @@ LABEL_18:
   }
 
   v52 = v13;
-  [v3 setIsStoreDemoMode:byte_100590549];
-  if (([v3 hasTimeIntervalSince1970] & 1) == 0)
+  [contextCopy setIsStoreDemoMode:byte_100590549];
+  if (([contextCopy hasTimeIntervalSince1970] & 1) == 0)
   {
     v38 = +[NSDate date];
     [v38 timeIntervalSince1970];
-    [v3 setTimeIntervalSince1970:?];
+    [contextCopy setTimeIntervalSince1970:?];
   }
 
-  v39 = [v4 productTypePrefix];
-  [v3 setDataCollectionId:v39];
+  productTypePrefix = [v4 productTypePrefix];
+  [contextCopy setDataCollectionId:productTypePrefix];
 
-  v40 = [v6 languageCode];
-  [v3 setEffectiveSystemLanguage:v40];
+  languageCode3 = [v6 languageCode];
+  [contextCopy setEffectiveSystemLanguage:languageCode3];
   v41 = +[NSLocale preferredLanguages];
-  [v3 setPreferredLanguages:v41];
+  [contextCopy setPreferredLanguages:v41];
   v42 = objc_alloc_init(DIMSchemaEntitySyncSettings);
   v43 = +[AFPreferences sharedPreferences];
   [v42 setIsMediaEntitySyncEnabled:{objc_msgSend(v43, "isMediaEntitySyncDisabled") ^ 1}];
 
-  [v3 setEntitySyncSettings:v42];
+  [contextCopy setEntitySyncSettings:v42];
   v44 = objc_alloc_init(DIMSchemaDIMDataSharingSettings);
   [v44 setIsAppAnalyticsEnabled:sub_100216330()];
   [v44 setIsDiagnosticsAndUsageEnabled:AFDiagnosticsSubmissionAllowed()];
-  [v3 setDataSharingSettings:v44];
+  [contextCopy setDataSharingSettings:v44];
   v45 = +[AFPreferences sharedPreferences];
-  v46 = [v45 activeDictationLanguages];
+  activeDictationLanguages = [v45 activeDictationLanguages];
 
-  if (v46)
+  if (activeDictationLanguages)
   {
-    [v3 setAvailableDictationKeyboards:{objc_msgSend(v46, "count")}];
+    [contextCopy setAvailableDictationKeyboards:{objc_msgSend(activeDictationLanguages, "count")}];
   }
 
   v47 = +[AFPreferences sharedPreferences];
-  [v3 setIsLongLivedIDUploadDisabled:{objc_msgSend(v47, "longLivedIdentifierUploadingEnabled") ^ 1}];
+  [contextCopy setIsLongLivedIDUploadDisabled:{objc_msgSend(v47, "longLivedIdentifierUploadingEnabled") ^ 1}];
 
-  return v3;
+  return contextCopy;
 }
 
-- (void)resolveMessage:(id)a3 completion:(id)a4
+- (void)resolveMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 deviceFixedContext];
-  v9 = v8 != 0;
+  messageCopy = message;
+  completionCopy = completion;
+  deviceFixedContext = [messageCopy deviceFixedContext];
+  v9 = deviceFixedContext != 0;
 
-  if (v8)
+  if (deviceFixedContext)
   {
     v10 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -266,18 +266,18 @@ LABEL_18:
       v19 = 136315394;
       v20 = "[ADSiriAnalyticsGlobalDimensionMessageResolver resolveMessage:completion:]";
       v21 = 2112;
-      v22 = v6;
+      v22 = messageCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Resolving deviceFixedContext for message: %@", &v19, 0x16u);
     }
 
-    v11 = [v6 deviceFixedContext];
-    v12 = [(ADSiriAnalyticsGlobalDimensionMessageResolver *)self _resolveDeviceFixedContext:v11];
-    [v6 setDeviceFixedContext:v12];
+    deviceFixedContext2 = [messageCopy deviceFixedContext];
+    v12 = [(ADSiriAnalyticsGlobalDimensionMessageResolver *)self _resolveDeviceFixedContext:deviceFixedContext2];
+    [messageCopy setDeviceFixedContext:v12];
   }
 
-  v13 = [v6 siriAccountInformation];
+  siriAccountInformation = [messageCopy siriAccountInformation];
 
-  if (v13)
+  if (siriAccountInformation)
   {
     v14 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -285,13 +285,13 @@ LABEL_18:
       v19 = 136315394;
       v20 = "[ADSiriAnalyticsGlobalDimensionMessageResolver resolveMessage:completion:]";
       v21 = 2112;
-      v22 = v6;
+      v22 = messageCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Resolving siriAccountInformation for message: %@", &v19, 0x16u);
     }
 
-    v15 = [v6 siriAccountInformation];
-    v16 = [(ADSiriAnalyticsGlobalDimensionMessageResolver *)self _resolveSiriAccountInformation:v15];
-    [v6 setSiriAccountInformation:v16];
+    siriAccountInformation2 = [messageCopy siriAccountInformation];
+    v16 = [(ADSiriAnalyticsGlobalDimensionMessageResolver *)self _resolveSiriAccountInformation:siriAccountInformation2];
+    [messageCopy setSiriAccountInformation:v16];
 
     v17 = AFSiriLogContextAnalytics;
     if (os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_INFO))
@@ -299,7 +299,7 @@ LABEL_18:
       v19 = 136315394;
       v20 = "[ADSiriAnalyticsGlobalDimensionMessageResolver resolveMessage:completion:]";
       v21 = 2112;
-      v22 = v6;
+      v22 = messageCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%s Firing off DIM logging for message: %@", &v19, 0x16u);
     }
 
@@ -309,25 +309,25 @@ LABEL_18:
     v9 = 1;
   }
 
-  v7[2](v7, v6, v9);
+  completionCopy[2](completionCopy, messageCopy, v9);
 }
 
-- (BOOL)handlesMessage:(id)a3
+- (BOOL)handlesMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v4 = v3;
-  v5 = [v4 deviceFixedContext];
-  if (!v5)
+  v4 = messageCopy;
+  deviceFixedContext = [v4 deviceFixedContext];
+  if (!deviceFixedContext)
   {
-    v6 = [v4 siriAccountInformation];
+    siriAccountInformation = [v4 siriAccountInformation];
 
-    if (v6)
+    if (siriAccountInformation)
     {
       goto LABEL_5;
     }
@@ -354,16 +354,16 @@ LABEL_10:
   return v8;
 }
 
-- (ADSiriAnalyticsGlobalDimensionMessageResolver)initWithQueue:(id)a3
+- (ADSiriAnalyticsGlobalDimensionMessageResolver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADSiriAnalyticsGlobalDimensionMessageResolver;
   v6 = [(ADSiriAnalyticsGlobalDimensionMessageResolver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

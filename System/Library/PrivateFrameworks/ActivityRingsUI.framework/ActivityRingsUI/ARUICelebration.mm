@@ -11,9 +11,9 @@
   [(ARUICelebration *)self type];
   [v3 appendString:@"sparks" withName:@"type"];
   v4 = [v3 appendDouble:@"duration" withName:3 decimalPrecision:self->_duration];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash

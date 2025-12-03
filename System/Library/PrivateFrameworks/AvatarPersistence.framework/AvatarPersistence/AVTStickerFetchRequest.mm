@@ -1,11 +1,11 @@
 @interface AVTStickerFetchRequest
 + (id)requestForAllRecentStickers;
-+ (id)requestForMostRecentStickersWithResultLimit:(int64_t)a3;
-+ (id)requestForStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4;
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3;
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3 avatarIdentifier:(id)a4 stickerIdentifier:(id)a5;
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3 resultLimit:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)requestForMostRecentStickersWithResultLimit:(int64_t)limit;
++ (id)requestForStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier;
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria;
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria avatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier;
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria resultLimit:(int64_t)limit;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -14,70 +14,70 @@
 
 + (id)requestForAllRecentStickers
 {
-  v2 = [[a1 alloc] initWithCriteria:1];
+  v2 = [[self alloc] initWithCriteria:1];
 
   return v2;
 }
 
-+ (id)requestForMostRecentStickersWithResultLimit:(int64_t)a3
++ (id)requestForMostRecentStickersWithResultLimit:(int64_t)limit
 {
-  v3 = [[a1 alloc] initWithCriteria:2 resultLimit:a3];
+  v3 = [[self alloc] initWithCriteria:2 resultLimit:limit];
 
   return v3;
 }
 
-+ (id)requestForStickersWithAvatarIdentifier:(id)a3 stickerIdentifier:(id)a4
++ (id)requestForStickersWithAvatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithCriteria:3 avatarIdentifier:v7 stickerIdentifier:v6];
+  stickerIdentifierCopy = stickerIdentifier;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithCriteria:3 avatarIdentifier:identifierCopy stickerIdentifier:stickerIdentifierCopy];
 
   return v8;
 }
 
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria
 {
   v5.receiver = self;
   v5.super_class = AVTStickerFetchRequest;
   result = [(AVTStickerFetchRequest *)&v5 init];
   if (result)
   {
-    result->_criteria = a3;
+    result->_criteria = criteria;
   }
 
   return result;
 }
 
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3 resultLimit:(int64_t)a4
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria resultLimit:(int64_t)limit
 {
-  result = [(AVTStickerFetchRequest *)self initWithCriteria:a3];
+  result = [(AVTStickerFetchRequest *)self initWithCriteria:criteria];
   if (result)
   {
-    result->_resultLimit = a4;
+    result->_resultLimit = limit;
   }
 
   return result;
 }
 
-- (AVTStickerFetchRequest)initWithCriteria:(int64_t)a3 avatarIdentifier:(id)a4 stickerIdentifier:(id)a5
+- (AVTStickerFetchRequest)initWithCriteria:(int64_t)criteria avatarIdentifier:(id)identifier stickerIdentifier:(id)stickerIdentifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AVTStickerFetchRequest *)self initWithCriteria:a3];
+  identifierCopy = identifier;
+  stickerIdentifierCopy = stickerIdentifier;
+  v11 = [(AVTStickerFetchRequest *)self initWithCriteria:criteria];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_avatarIdentifier, a4);
-    objc_storeStrong(&v12->_stickerIdentifier, a5);
+    objc_storeStrong(&v11->_avatarIdentifier, identifier);
+    objc_storeStrong(&v12->_stickerIdentifier, stickerIdentifier);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
@@ -87,27 +87,27 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTStickerFetchRequest *)self criteria];
-      if (v6 == [(AVTStickerFetchRequest *)v5 criteria])
+      criteria = [(AVTStickerFetchRequest *)self criteria];
+      if (criteria == [(AVTStickerFetchRequest *)equalCopy criteria])
       {
-        v7 = [(AVTStickerFetchRequest *)self resultLimit];
-        if (v7 == [(AVTStickerFetchRequest *)v5 resultLimit])
+        resultLimit = [(AVTStickerFetchRequest *)self resultLimit];
+        if (resultLimit == [(AVTStickerFetchRequest *)equalCopy resultLimit])
         {
-          v8 = [(AVTStickerFetchRequest *)self avatarIdentifier];
-          if (!v8)
+          avatarIdentifier = [(AVTStickerFetchRequest *)self avatarIdentifier];
+          if (!avatarIdentifier)
           {
-            v3 = [(AVTStickerFetchRequest *)v5 avatarIdentifier];
-            if (!v3)
+            avatarIdentifier2 = [(AVTStickerFetchRequest *)equalCopy avatarIdentifier];
+            if (!avatarIdentifier2)
             {
 LABEL_9:
-              v12 = [(AVTStickerFetchRequest *)self stickerIdentifier];
-              if (v12 || ([(AVTStickerFetchRequest *)v5 stickerIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+              stickerIdentifier = [(AVTStickerFetchRequest *)self stickerIdentifier];
+              if (stickerIdentifier || ([(AVTStickerFetchRequest *)equalCopy stickerIdentifier], (avatarIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v13 = [(AVTStickerFetchRequest *)self stickerIdentifier];
-                v14 = [(AVTStickerFetchRequest *)v5 stickerIdentifier];
-                v15 = [v13 isEqual:v14];
+                stickerIdentifier2 = [(AVTStickerFetchRequest *)self stickerIdentifier];
+                stickerIdentifier3 = [(AVTStickerFetchRequest *)equalCopy stickerIdentifier];
+                v15 = [stickerIdentifier2 isEqual:stickerIdentifier3];
 
-                if (v12)
+                if (stickerIdentifier)
                 {
 LABEL_19:
 
@@ -124,11 +124,11 @@ LABEL_19:
             }
           }
 
-          v9 = [(AVTStickerFetchRequest *)self avatarIdentifier];
-          v10 = [(AVTStickerFetchRequest *)v5 avatarIdentifier];
-          v11 = [v9 isEqual:v10];
+          avatarIdentifier3 = [(AVTStickerFetchRequest *)self avatarIdentifier];
+          avatarIdentifier4 = [(AVTStickerFetchRequest *)equalCopy avatarIdentifier];
+          v11 = [avatarIdentifier3 isEqual:avatarIdentifier4];
 
-          if (v8)
+          if (avatarIdentifier)
           {
 
             if (v11)
@@ -159,15 +159,15 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTStickerFetchRequest *)self avatarIdentifier];
-  v4 = [(AVTStickerFetchRequest *)self avatarIdentifier];
-  *(&v6 + 1) = v3;
-  *&v6 = v4;
+  avatarIdentifier = [(AVTStickerFetchRequest *)self avatarIdentifier];
+  avatarIdentifier2 = [(AVTStickerFetchRequest *)self avatarIdentifier];
+  *(&v6 + 1) = avatarIdentifier;
+  *&v6 = avatarIdentifier2;
   v5 = v6 >> 48;
-  v7 = [(AVTStickerFetchRequest *)self stickerIdentifier];
-  v8 = [(AVTStickerFetchRequest *)self stickerIdentifier];
-  *(&v6 + 1) = v7;
-  *&v6 = v8;
+  stickerIdentifier = [(AVTStickerFetchRequest *)self stickerIdentifier];
+  stickerIdentifier2 = [(AVTStickerFetchRequest *)self stickerIdentifier];
+  *(&v6 + 1) = stickerIdentifier;
+  *&v6 = stickerIdentifier2;
   v9 = (v6 >> 43) ^ v5;
   *(&v6 + 1) = [(AVTStickerFetchRequest *)self resultLimit];
   *&v6 = [(AVTStickerFetchRequest *)self resultLimit];
@@ -183,11 +183,11 @@ LABEL_16:
   v3 = [(AVTStickerFetchRequest *)&v11 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTStickerFetchRequest *)self criteria];
-  v6 = [(AVTStickerFetchRequest *)self resultLimit];
-  v7 = [(AVTStickerFetchRequest *)self avatarIdentifier];
-  v8 = [(AVTStickerFetchRequest *)self stickerIdentifier];
-  [v4 appendFormat:@" criteria:%ld limit:%ld ari:%@ sci:%@", v5, v6, v7, v8];
+  criteria = [(AVTStickerFetchRequest *)self criteria];
+  resultLimit = [(AVTStickerFetchRequest *)self resultLimit];
+  avatarIdentifier = [(AVTStickerFetchRequest *)self avatarIdentifier];
+  stickerIdentifier = [(AVTStickerFetchRequest *)self stickerIdentifier];
+  [v4 appendFormat:@" criteria:%ld limit:%ld ari:%@ sci:%@", criteria, resultLimit, avatarIdentifier, stickerIdentifier];
 
   v9 = [v4 copy];
 

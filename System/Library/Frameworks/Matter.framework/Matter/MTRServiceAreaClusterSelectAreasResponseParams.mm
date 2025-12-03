@@ -1,9 +1,9 @@
 @interface MTRServiceAreaClusterSelectAreasResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRServiceAreaClusterSelectAreasResponseParams)init;
-- (MTRServiceAreaClusterSelectAreasResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRServiceAreaClusterSelectAreasResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRServiceAreaClusterSelectAreasResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRServiceAreaClusterSelectAreasResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRServiceAreaClusterSelectAreasResponseParams);
-  v5 = [(MTRServiceAreaClusterSelectAreasResponseParams *)self status];
-  [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 setStatus:v5];
+  status = [(MTRServiceAreaClusterSelectAreasResponseParams *)self status];
+  [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRServiceAreaClusterSelectAreasResponseParams *)self statusText];
-  [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 setStatusText:v6];
+  statusText = [(MTRServiceAreaClusterSelectAreasResponseParams *)self statusText];
+  [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 setStatusText:statusText];
 
   return v4;
 }
@@ -49,9 +49,9 @@
   return v6;
 }
 
-- (MTRServiceAreaClusterSelectAreasResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRServiceAreaClusterSelectAreasResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTRServiceAreaClusterSelectAreasResponseParams;
   v7 = [(MTRServiceAreaClusterSelectAreasResponseParams *)&v17 init];
@@ -61,7 +61,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:336 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:336 commandID:1 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -84,7 +84,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -95,7 +95,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRServiceAreaClusterSelectAreasResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRServiceAreaClusterSelectAreasResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRServiceAreaClusterSelectAreasResponseParams;
@@ -103,7 +103,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRServiceAreaClusterSelectAreasResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -119,17 +119,17 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRServiceAreaClusterSelectAreasResponseParams *)self setStatus:v5];
 
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(a3 + 1) length:*(a3 + 2) encoding:4];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(struct + 1) length:*(struct + 2) encoding:4];
   [(MTRServiceAreaClusterSelectAreasResponseParams *)self setStatusText:v6];
 
-  v7 = [(MTRServiceAreaClusterSelectAreasResponseParams *)self statusText];
+  statusText = [(MTRServiceAreaClusterSelectAreasResponseParams *)self statusText];
 
-  if (v7)
+  if (statusText)
   {
     v8 = 0;
   }
@@ -139,7 +139,7 @@ LABEL_6:
     v8 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   }
 
-  if (v7)
+  if (statusText)
   {
     v9 = 0;
   }

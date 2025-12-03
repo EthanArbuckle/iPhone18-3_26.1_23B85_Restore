@@ -1,20 +1,20 @@
 @interface TRIAllocationStatusDefaultProvider
-- (BOOL)enumerateActiveRolloutsWithError:(id *)a3 block:(id)a4;
-- (BOOL)enumerateSampledActiveRolloutsForCorrelationID:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)enumerateActiveRolloutsWithError:(id *)error block:(id)block;
+- (BOOL)enumerateSampledActiveRolloutsForCorrelationID:(id)d error:(id *)error block:(id)block;
 - (BOOL)isOptedOutOfExperimentation;
-- (BOOL)removeUpdateHandlerForToken:(id)a3;
+- (BOOL)removeUpdateHandlerForToken:(id)token;
 - (id)_defaultQueue;
-- (id)activeExperimentInformationWithEnvironments:(id)a3 error:(id *)a4;
-- (id)enumerateExperimentStatusesForEnvironment:(int)a3 startingFromCursor:(id)a4 error:(id *)a5 block:(id)a6;
-- (id)initForTrialdSystem:(BOOL)a3;
+- (id)activeExperimentInformationWithEnvironments:(id)environments error:(id *)error;
+- (id)enumerateExperimentStatusesForEnvironment:(int)environment startingFromCursor:(id)cursor error:(id *)error block:(id)block;
+- (id)initForTrialdSystem:(BOOL)system;
 - (void)dealloc;
 @end
 
 @implementation TRIAllocationStatusDefaultProvider
 
-- (id)initForTrialdSystem:(BOOL)a3
+- (id)initForTrialdSystem:(BOOL)system
 {
-  v3 = a3;
+  systemCopy = system;
   v50.receiver = self;
   v50.super_class = TRIAllocationStatusDefaultProvider;
   v4 = [(TRIAllocationStatusDefaultProvider *)&v50 init];
@@ -59,7 +59,7 @@
     objc_autoreleasePoolPop(v22);
     [v5 setClasses:v25 forSelector:sel_rolloutAllocationStatusWithCompletion_ argumentIndex:0 ofReply:1];
 
-    if (v3)
+    if (systemCopy)
     {
       v26 = 4096;
     }
@@ -69,7 +69,7 @@
       v26 = 0;
     }
 
-    if (v3)
+    if (systemCopy)
     {
       v27 = @"com.apple.triald.system.internal";
     }
@@ -79,7 +79,7 @@
       v27 = @"com.apple.triald.internal";
     }
 
-    if (v3)
+    if (systemCopy)
     {
       v28 = @"com.apple.trial.system.status";
     }
@@ -190,15 +190,15 @@ void __51__TRIAllocationStatusDefaultProvider__defaultQueue__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)enumerateExperimentStatusesForEnvironment:(int)a3 startingFromCursor:(id)a4 error:(id *)a5 block:(id)a6
+- (id)enumerateExperimentStatusesForEnvironment:(int)environment startingFromCursor:(id)cursor error:(id *)error block:(id)block
 {
   v110[1] = *MEMORY[0x277D85DE8];
-  v50 = a4;
-  v53 = a6;
-  if (!v53)
+  cursorCopy = cursor;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v48 = [MEMORY[0x277CCA890] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -219,9 +219,9 @@ void __51__TRIAllocationStatusDefaultProvider__defaultQueue__block_invoke()
     v98 = v55;
     v49 = MEMORY[0x2318F2490](v97);
     v56 = [(_PASXPCClientHelper *)self->_clientHelper remoteObjectProxyWithErrorHandler:v49];
-    if (v50)
+    if (cursorCopy)
     {
-      [v50 date];
+      [cursorCopy date];
     }
 
     else
@@ -275,20 +275,20 @@ void __51__TRIAllocationStatusDefaultProvider__defaultQueue__block_invoke()
       v70 = &v85;
       v71 = &v79;
       v72 = &v73;
-      [v56 experimentHistoryRecordsWithLimit:100 newerThanDate:v58 deploymentEnvironment:a3 completion:v67];
+      [v56 experimentHistoryRecordsWithLimit:100 newerThanDate:v58 deploymentEnvironment:environment completion:v67];
       if ([MEMORY[0x277D425A0] waitForSemaphore:v12 timeoutSeconds:10.0])
       {
         v13 = MEMORY[0x277CCACA8];
         v14 = NSStringFromSelector(a2);
         v15 = [v13 stringWithFormat:@"Timeout while attempting to invoke method on TRIXPCStatusServiceProtocol proxy object from: %@.", v14];
 
-        if (a5)
+        if (error)
         {
           v16 = objc_alloc(MEMORY[0x277CCA9B8]);
           v109 = v51;
           v110[0] = v15;
           v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v110 forKeys:&v109 count:1];
-          *a5 = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:7 userInfo:v17];
+          *error = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:7 userInfo:v17];
         }
 
         v18 = TRILogCategory_ClientFramework();
@@ -306,13 +306,13 @@ void __51__TRIAllocationStatusDefaultProvider__defaultQueue__block_invoke()
         v20 = *(v101 + 5);
         if (v20)
         {
-          if (a5)
+          if (error)
           {
             v21 = v20;
 LABEL_25:
             v11 = 0;
             v19 = 0;
-            *a5 = v21;
+            *error = v21;
             goto LABEL_20;
           }
         }
@@ -364,21 +364,21 @@ LABEL_32:
               v27 = objc_autoreleasePoolPush();
               v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v26, "eventType")}];
               v29 = [v62 objectForKeyedSubscript:v28];
-              v30 = [v29 intValue];
+              intValue = [v29 intValue];
 
-              if (!v30)
+              if (!intValue)
               {
                 goto LABEL_40;
               }
 
-              v31 = [v26 namespaces];
-              if (!v31)
+              namespaces = [v26 namespaces];
+              if (!namespaces)
               {
                 goto LABEL_40;
               }
 
-              v32 = [v26 treatmentId];
-              if (v32 == @"unspecified-or-default-treatment")
+              treatmentId = [v26 treatmentId];
+              if (treatmentId == @"unspecified-or-default-treatment")
               {
                 v41 = 7;
                 goto LABEL_43;
@@ -389,20 +389,20 @@ LABEL_32:
               if (!v33)
               {
                 v34 = [TRIExperimentAllocationStatus alloc];
-                v35 = [v26 eventDate];
-                v36 = [v26 experimentId];
-                v37 = [v26 deploymentId];
-                v38 = [v26 treatmentId];
-                v39 = [v26 namespaces];
-                v31 = [(TRIExperimentAllocationStatus *)v34 initWithType:v30 date:v35 experimentId:v36 deploymentId:v37 treatmentId:v38 namespaces:v39];
+                eventDate = [v26 eventDate];
+                experimentId = [v26 experimentId];
+                deploymentId = [v26 deploymentId];
+                treatmentId2 = [v26 treatmentId];
+                namespaces2 = [v26 namespaces];
+                namespaces = [(TRIExperimentAllocationStatus *)v34 initWithType:intValue date:eventDate experimentId:experimentId deploymentId:deploymentId treatmentId:treatmentId2 namespaces:namespaces2];
 
-                v53[2](v53, v31, buf);
+                blockCopy[2](blockCopy, namespaces, buf);
                 if (buf[0] == 1)
                 {
-                  v40 = [v26 eventDate];
+                  eventDate2 = [v26 eventDate];
 
                   v41 = 6;
-                  v58 = v40;
+                  v58 = eventDate2;
                 }
 
                 else
@@ -440,7 +440,7 @@ LABEL_40:
             }
           }
 
-          if (a5)
+          if (error)
           {
             v21 = v86[5];
             goto LABEL_25;
@@ -476,10 +476,10 @@ LABEL_52:
     _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "unable to enumerate experiment statuses while device is class C locked", v100, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -658,14 +658,14 @@ void __91__TRIAllocationStatusDefaultProvider_enumerateActiveExperimentsForEnvir
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)enumerateActiveRolloutsWithError:(id *)a3 block:(id)a4
+- (BOOL)enumerateActiveRolloutsWithError:(id *)error block:(id)block
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:425 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   if (+[TRIMisc unsafeFirstAuthenticationState])
@@ -713,13 +713,13 @@ void __91__TRIAllocationStatusDefaultProvider_enumerateActiveExperimentsForEnvir
       v14 = NSStringFromSelector(a2);
       v15 = [v13 stringWithFormat:@"Timeout while attempting to invoke method on TRIXPCStatusServiceProtocol proxy object from: %@.", v14];
 
-      if (a3)
+      if (error)
       {
         v16 = objc_alloc(MEMORY[0x277CCA9B8]);
         v64 = *MEMORY[0x277CCA450];
         v65[0] = v15;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
-        *a3 = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:7 userInfo:v17];
+        *error = [v16 initWithDomain:@"TRIGeneralErrorDomain" code:7 userInfo:v17];
       }
 
       v18 = TRILogCategory_ClientFramework();
@@ -737,7 +737,7 @@ void __91__TRIAllocationStatusDefaultProvider_enumerateActiveExperimentsForEnvir
     v21 = *(v56 + 5);
     if (v21)
     {
-      if (!a3)
+      if (!error)
       {
 LABEL_10:
         v19 = 0;
@@ -777,7 +777,7 @@ LABEL_25:
               objc_enumerationMutation(v26);
             }
 
-            v7[2](v7, *(*(&v32 + 1) + 8 * v29), buf);
+            blockCopy[2](blockCopy, *(*(&v32 + 1) + 8 * v29), buf);
             if (buf[0])
             {
               break;
@@ -800,7 +800,7 @@ LABEL_25:
         goto LABEL_11;
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -809,7 +809,7 @@ LABEL_25:
     }
 
     v19 = 0;
-    *a3 = v22;
+    *error = v22;
     goto LABEL_11;
   }
 
@@ -820,10 +820,10 @@ LABEL_25:
     _os_log_error_impl(&dword_22EA6B000, v20, OS_LOG_TYPE_ERROR, "unable to enumerate active rollouts while device is class C locked", v55, 2u);
   }
 
-  if (a3)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-    *a3 = v19 = 0;
+    *error = v19 = 0;
   }
 
   else
@@ -877,15 +877,15 @@ void __77__TRIAllocationStatusDefaultProvider_enumerateActiveRolloutsWithError_b
   }
 }
 
-- (BOOL)enumerateSampledActiveRolloutsForCorrelationID:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)enumerateSampledActiveRolloutsForCorrelationID:(id)d error:(id *)error block:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (!v10)
+  dCopy = d;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v27 = 0;
@@ -899,7 +899,7 @@ void __77__TRIAllocationStatusDefaultProvider_enumerateActiveRolloutsWithError_b
   v26[2] = __97__TRIAllocationStatusDefaultProvider_enumerateSampledActiveRolloutsForCorrelationID_error_block___block_invoke;
   v26[3] = &unk_27885EEC8;
   v26[4] = &v27;
-  [(TRIAllocationStatusDefaultProvider *)self enumerateActiveRolloutsWithError:a4 block:v26];
+  [(TRIAllocationStatusDefaultProvider *)self enumerateActiveRolloutsWithError:error block:v26];
   if ([MEMORY[0x277D42590] isInternalBuild])
   {
     v11 = v28[5];
@@ -907,7 +907,7 @@ void __77__TRIAllocationStatusDefaultProvider_enumerateActiveRolloutsWithError_b
 
   else
   {
-    v11 = [TRIAllocationStatus sampleAllocationStatuses:v28[5] correlationId:v9 nrSamples:2];
+    v11 = [TRIAllocationStatus sampleAllocationStatuses:v28[5] correlationId:dCopy nrSamples:2];
   }
 
   v25 = 0;
@@ -931,7 +931,7 @@ LABEL_8:
 
       v16 = *(*(&v21 + 1) + 8 * v15);
       v17 = objc_autoreleasePoolPush();
-      v10[2](v10, v16, &v25);
+      blockCopy[2](blockCopy, v16, &v25);
       LOBYTE(v16) = v25;
       objc_autoreleasePoolPop(v17);
       if (v16)
@@ -964,10 +964,10 @@ void __87__TRIAllocationStatusDefaultProvider_addStatusUpdateHandlerForEnvironme
   [v2 addObject:v3];
 }
 
-- (BOOL)removeUpdateHandlerForToken:(id)a3
+- (BOOL)removeUpdateHandlerForToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     goto LABEL_6;
   }
@@ -975,15 +975,15 @@ void __87__TRIAllocationStatusDefaultProvider_addStatusUpdateHandlerForEnvironme
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 token];
-    if (!notify_cancel(v5))
+    token = [tokenCopy token];
+    if (!notify_cancel(token))
     {
       lock = self->_lock;
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __66__TRIAllocationStatusDefaultProvider_removeUpdateHandlerForToken___block_invoke;
       v9[3] = &__block_descriptor_36_e48_v16__0__TRIAllocationStatusProviderGuardedData_8l;
-      v10 = v5;
+      v10 = token;
       [(_PASLock *)lock runWithLockAcquired:v9];
 LABEL_6:
       v6 = 1;
@@ -1004,10 +1004,10 @@ void __66__TRIAllocationStatusDefaultProvider_removeUpdateHandlerForToken___bloc
   [v2 removeObject:v3];
 }
 
-- (id)activeExperimentInformationWithEnvironments:(id)a3 error:(id *)a4
+- (id)activeExperimentInformationWithEnvironments:(id)environments error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  environmentsCopy = environments;
   if (+[TRIMisc unsafeFirstAuthenticationState])
   {
     *buf = 0;
@@ -1034,14 +1034,14 @@ void __66__TRIAllocationStatusDefaultProvider_removeUpdateHandlerForToken___bloc
     v14[2] = __88__TRIAllocationStatusDefaultProvider_activeExperimentInformationWithEnvironments_error___block_invoke_2;
     v14[3] = &unk_27885EF38;
     v14[4] = &v15;
-    [v8 activeExperimentInformationWithEnvironments:v6 completion:v14];
+    [v8 activeExperimentInformationWithEnvironments:environmentsCopy completion:v14];
     v9 = *(v23 + 5);
     if (v9)
     {
       v10 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -1065,10 +1065,10 @@ void __66__TRIAllocationStatusDefaultProvider_removeUpdateHandlerForToken___bloc
       _os_log_error_impl(&dword_22EA6B000, v11, OS_LOG_TYPE_ERROR, "unable to fetch active experiments while device is class C locked qos:%{public}u", buf, 8u);
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"TRIGeneralErrorDomain" code:5 userInfo:0];
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else

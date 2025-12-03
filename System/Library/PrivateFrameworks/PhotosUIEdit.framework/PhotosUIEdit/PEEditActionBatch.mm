@@ -1,21 +1,21 @@
 @interface PEEditActionBatch
-- (PEEditActionBatch)initWithAssets:(id)a3 action:(id)a4 progress:(id)a5;
-- (PEEditActionBatch)initWithAssets:(id)a3 actionMap:(id)a4 progress:(id)a5;
+- (PEEditActionBatch)initWithAssets:(id)assets action:(id)action progress:(id)progress;
+- (PEEditActionBatch)initWithAssets:(id)assets actionMap:(id)map progress:(id)progress;
 - (PEEditActionBatchDelegate)delegate;
 - (PELoadingStatusDelegate)loadingStatusManager;
-- (id)_presetForAsset:(id)a3;
-- (id)_processAssets:(id)a3;
-- (id)_processWillBeginWithAsset:(id)a3 progress:(double)a4;
+- (id)_presetForAsset:(id)asset;
+- (id)_processAssets:(id)assets;
+- (id)_processWillBeginWithAsset:(id)asset progress:(double)progress;
 - (void)_cancelLoading;
-- (void)_commitComposition:(id)a3 toResource:(id)a4 changeType:(int64_t)a5 completion:(id)a6;
-- (void)_processDidCompleteWithID:(id)a3 error:(id)a4;
-- (void)_processDidUpdateWithID:(id)a3 progress:(double)a4;
-- (void)_processResult:(id)a3 targetPreset:(id)a4 completion:(id)a5;
-- (void)_requestResourcesForAsset:(id)a3 progressHandler:(id)a4 resultHandler:(id)a5;
-- (void)_setupWithActionMap:(id)a3 assets:(id)a4 progress:(id)a5;
-- (void)_updateProgress:(double)a3 forLoadingID:(id)a4;
+- (void)_commitComposition:(id)composition toResource:(id)resource changeType:(int64_t)type completion:(id)completion;
+- (void)_processDidCompleteWithID:(id)d error:(id)error;
+- (void)_processDidUpdateWithID:(id)d progress:(double)progress;
+- (void)_processResult:(id)result targetPreset:(id)preset completion:(id)completion;
+- (void)_requestResourcesForAsset:(id)asset progressHandler:(id)handler resultHandler:(id)resultHandler;
+- (void)_setupWithActionMap:(id)map assets:(id)assets progress:(id)progress;
+- (void)_updateProgress:(double)progress forLoadingID:(id)d;
 - (void)cancel;
-- (void)runActionWithBatchSize:(unint64_t)a3 completion:(id)a4;
+- (void)runActionWithBatchSize:(unint64_t)size completion:(id)completion;
 @end
 
 @implementation PEEditActionBatch
@@ -34,17 +34,17 @@
   return WeakRetained;
 }
 
-- (void)_updateProgress:(double)a3 forLoadingID:(id)a4
+- (void)_updateProgress:(double)progress forLoadingID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__PEEditActionBatch__updateProgress_forLoadingID___block_invoke;
   v8[3] = &unk_279A30FD8;
-  v10 = a3;
+  progressCopy = progress;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = dCopy;
+  v7 = dCopy;
   [PESupport syncMainThread:v8];
 }
 
@@ -102,14 +102,14 @@ void __50__PEEditActionBatch__updateProgress_forLoadingID___block_invoke(uint64_
 
 - (void)_cancelLoading
 {
-  v3 = [(PEEditActionBatch *)self loadingStatusManager];
+  loadingStatusManager = [(PEEditActionBatch *)self loadingStatusManager];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __35__PEEditActionBatch__cancelLoading__block_invoke;
   v5[3] = &unk_279A31000;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = loadingStatusManager;
+  v4 = loadingStatusManager;
   [PESupport syncMainThread:v5];
 }
 
@@ -149,23 +149,23 @@ uint64_t __35__PEEditActionBatch__cancelLoading__block_invoke(uint64_t a1)
   return [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (void)_processDidCompleteWithID:(id)a3 error:(id)a4
+- (void)_processDidCompleteWithID:(id)d error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dCopy = d;
+  errorCopy = error;
+  if (dCopy)
   {
-    [(PEEditActionBatch *)self _updateProgress:v6 forLoadingID:1.0];
-    v8 = [(PEEditActionBatch *)self loadingStatusManager];
+    [(PEEditActionBatch *)self _updateProgress:dCopy forLoadingID:1.0];
+    loadingStatusManager = [(PEEditActionBatch *)self loadingStatusManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__PEEditActionBatch__processDidCompleteWithID_error___block_invoke;
     v10[3] = &unk_279A31208;
-    v11 = v6;
-    v12 = self;
-    v13 = v8;
-    v14 = v7;
-    v9 = v8;
+    v11 = dCopy;
+    selfCopy = self;
+    v13 = loadingStatusManager;
+    v14 = errorCopy;
+    v9 = loadingStatusManager;
     [PESupport syncMainThread:v10];
   }
 }
@@ -186,27 +186,27 @@ uint64_t __53__PEEditActionBatch__processDidCompleteWithID_error___block_invoke(
   return result;
 }
 
-- (void)_processDidUpdateWithID:(id)a3 progress:(double)a4
+- (void)_processDidUpdateWithID:(id)d progress:(double)progress
 {
-  v6 = a3;
-  [(PEEditActionBatch *)self _updateProgress:v6 forLoadingID:a4];
-  v7 = [(PEEditActionBatch *)self loadingStatusManager];
+  dCopy = d;
+  [(PEEditActionBatch *)self _updateProgress:dCopy forLoadingID:progress];
+  loadingStatusManager = [(PEEditActionBatch *)self loadingStatusManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__PEEditActionBatch__processDidUpdateWithID_progress___block_invoke;
   v10[3] = &unk_279A30FD8;
-  v11 = v7;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
-  v9 = v7;
+  v11 = loadingStatusManager;
+  v12 = dCopy;
+  progressCopy = progress;
+  v8 = dCopy;
+  v9 = loadingStatusManager;
   [PESupport syncMainThread:v10];
 }
 
-- (id)_processWillBeginWithAsset:(id)a3 progress:(double)a4
+- (id)_processWillBeginWithAsset:(id)asset progress:(double)progress
 {
-  v6 = a3;
-  v7 = [(PEEditActionBatch *)self loadingStatusManager];
+  assetCopy = asset;
+  loadingStatusManager = [(PEEditActionBatch *)self loadingStatusManager];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -219,11 +219,11 @@ uint64_t __53__PEEditActionBatch__processDidCompleteWithID_error___block_invoke(
   v12[3] = &unk_279A30FB0;
   v15 = &v17;
   v12[4] = self;
-  v8 = v6;
+  v8 = assetCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = loadingStatusManager;
   v14 = v9;
-  v16 = a4;
+  progressCopy = progress;
   [PESupport syncMainThread:v12];
   v10 = v18[5];
 
@@ -283,12 +283,12 @@ LABEL_2:
   }
 }
 
-- (void)_commitComposition:(id)a3 toResource:(id)a4 changeType:(int64_t)a5 completion:(id)a6
+- (void)_commitComposition:(id)composition toResource:(id)resource changeType:(int64_t)type completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  compositionCopy = composition;
+  resourceCopy = resource;
+  completionCopy = completion;
   if ([(PEEditActionBatch *)self state]== 3)
   {
     v13 = PLPhotoEditGetLog();
@@ -304,14 +304,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (type)
   {
-    v15 = [v11 asset];
+    asset = [resourceCopy asset];
     v16 = objc_alloc_init(PEPhotoKitMediaDestination);
-    if ([MEMORY[0x277D3AC20] isIdentityCompositionController:v10])
+    if ([MEMORY[0x277D3AC20] isIdentityCompositionController:compositionCopy])
     {
-      v17 = [v10 slomoAdjustmentController];
-      v18 = v17 == 0;
+      slomoAdjustmentController = [compositionCopy slomoAdjustmentController];
+      v18 = slomoAdjustmentController == 0;
     }
 
     else
@@ -319,56 +319,56 @@ LABEL_9:
       v18 = 0;
     }
 
-    if (a5 == 2 || v18)
+    if (type == 2 || v18)
     {
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __73__PEEditActionBatch__commitComposition_toResource_changeType_completion___block_invoke;
       v37[3] = &unk_279A30F88;
-      v38 = v12;
-      v20 = [(PEPhotoKitMediaDestination *)v16 revertEditsForAsset:v15 completionHandler:v37];
+      v38 = completionCopy;
+      v20 = [(PEPhotoKitMediaDestination *)v16 revertEditsForAsset:asset completionHandler:v37];
       mediaRequestIds = self->_mediaRequestIds;
       v22 = [MEMORY[0x277CCABB0] numberWithInt:v20];
       [(NSMutableSet *)mediaRequestIds addObject:v22];
 
-      v23 = v38;
+      asset2 = v38;
     }
 
-    else if (a5 == 1)
+    else if (type == 1)
     {
       if ([(PEEditActionBatch *)self actionType]== 4)
       {
-        v19 = 1;
+        retrievedVersion = 1;
       }
 
       else
       {
-        v19 = [v11 retrievedVersion];
+        retrievedVersion = [resourceCopy retrievedVersion];
       }
 
-      v25 = [v11 contentEditingInput];
-      v23 = [PESerializationUtility contentEditingOutputForContentEditingInput:v25 compositionController:v10 asset:v15 async:[(PEEditActionBatch *)self async] onlyChangingOriginalChoice:0];
+      contentEditingInput = [resourceCopy contentEditingInput];
+      asset2 = [PESerializationUtility contentEditingOutputForContentEditingInput:contentEditingInput compositionController:compositionCopy asset:asset async:[(PEEditActionBatch *)self async] onlyChangingOriginalChoice:0];
 
-      if ([v15 isLivePhoto] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if ([asset isLivePhoto] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v26 = v15;
+        v26 = asset;
         [v26 fetchPropertySetsIfNeeded];
-        v27 = [v26 photoIrisProperties];
+        photoIrisProperties = [v26 photoIrisProperties];
 
-        v28 = [v27 photoIrisVisibilityState];
+        photoIrisVisibilityState = [photoIrisProperties photoIrisVisibilityState];
       }
 
       else
       {
-        v28 = 0;
+        photoIrisVisibilityState = 0;
       }
 
       v32 = MEMORY[0x277D85DD0];
       v33 = 3221225472;
       v34 = __73__PEEditActionBatch__commitComposition_toResource_changeType_completion___block_invoke_52;
       v35 = &unk_279A30F88;
-      v36 = v12;
-      v29 = [(PEPhotoKitMediaDestination *)v16 saveInternalEditsForAsset:v15 usingCompositionController:v10 contentEditingOutput:v23 version:v19 livePhotoState:v28 completionHandler:&v32];
+      v36 = completionCopy;
+      v29 = [(PEPhotoKitMediaDestination *)v16 saveInternalEditsForAsset:asset usingCompositionController:compositionCopy contentEditingOutput:asset2 version:retrievedVersion livePhotoState:photoIrisVisibilityState completionHandler:&v32];
       v30 = self->_mediaRequestIds;
       v31 = [MEMORY[0x277CCABB0] numberWithInt:{v29, v32, v33, v34, v35}];
       [(NSMutableSet *)v30 addObject:v31];
@@ -380,17 +380,17 @@ LABEL_9:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v40 = a5;
+        typeCopy = type;
         _os_log_impl(&dword_25E6E9000, v24, OS_LOG_TYPE_ERROR, "PEEditActionBatch commit: finished with unexpected change type: %lu", buf, 0xCu);
       }
 
-      if (!v12)
+      if (!completionCopy)
       {
         goto LABEL_29;
       }
 
-      v23 = [v11 asset];
-      (*(v12 + 2))(v12, v23, 0);
+      asset2 = [resourceCopy asset];
+      (*(completionCopy + 2))(completionCopy, asset2, 0);
     }
 
 LABEL_29:
@@ -407,8 +407,8 @@ LABEL_29:
 
 LABEL_10:
 
-  v15 = [v11 asset];
-  (*(v12 + 2))(v12, v15, 0);
+  asset = [resourceCopy asset];
+  (*(completionCopy + 2))(completionCopy, asset, 0);
 LABEL_30:
 }
 
@@ -476,22 +476,22 @@ void __73__PEEditActionBatch__commitComposition_toResource_changeType_completion
   }
 }
 
-- (void)_processResult:(id)a3 targetPreset:(id)a4 completion:(id)a5
+- (void)_processResult:(id)result targetPreset:(id)preset completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 compositionController];
+  resultCopy = result;
+  presetCopy = preset;
+  completionCopy = completion;
+  compositionController = [resultCopy compositionController];
   objc_initWeak(&location, self);
-  if (!v9)
+  if (!presetCopy)
   {
     v12 = objc_alloc(MEMORY[0x277D3A870]);
-    v13 = [v8 originalComposition];
-    v14 = [v12 initWithComposition:v13];
+    originalComposition = [resultCopy originalComposition];
+    v14 = [v12 initWithComposition:originalComposition];
 
     v15 = [PEAdjustmentPreset alloc];
-    v16 = [v8 asset];
-    v9 = [(PEAdjustmentPreset *)v15 initWithCompositionController:v14 asset:v16];
+    asset = [resultCopy asset];
+    presetCopy = [(PEAdjustmentPreset *)v15 initWithCompositionController:v14 asset:asset];
   }
 
   v20[0] = MEMORY[0x277D85DD0];
@@ -499,13 +499,13 @@ void __73__PEEditActionBatch__commitComposition_toResource_changeType_completion
   v20[2] = __60__PEEditActionBatch__processResult_targetPreset_completion___block_invoke;
   v20[3] = &unk_279A30F60;
   objc_copyWeak(&v24, &location);
-  v17 = v11;
+  v17 = compositionController;
   v21 = v17;
-  v18 = v8;
+  v18 = resultCopy;
   v22 = v18;
-  v19 = v10;
+  v19 = completionCopy;
   v23 = v19;
-  [(PEAdjustmentPreset *)v9 applyToLoadResult:v18 completion:v20];
+  [(PEAdjustmentPreset *)presetCopy applyToLoadResult:v18 completion:v20];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -533,11 +533,11 @@ void __60__PEEditActionBatch__processResult_targetPreset_completion___block_invo
   [WeakRetained _commitComposition:*(a1 + 32) toResource:*(a1 + 40) changeType:*(a1 + 64) completion:*(a1 + 48)];
 }
 
-- (void)_requestResourcesForAsset:(id)a3 progressHandler:(id)a4 resultHandler:(id)a5
+- (void)_requestResourcesForAsset:(id)asset progressHandler:(id)handler resultHandler:(id)resultHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -550,7 +550,7 @@ void __60__PEEditActionBatch__processResult_targetPreset_completion___block_invo
   v31 = __Block_byref_object_copy__2457;
   v32 = __Block_byref_object_dispose__2458;
   v33 = 0;
-  v11 = [(PEEditActionBatch *)self forceRunAsUnadjustedAsset];
+  forceRunAsUnadjustedAsset = [(PEEditActionBatch *)self forceRunAsUnadjustedAsset];
   v12 = dispatch_group_create();
   dispatch_group_enter(v12);
   resourceManager = self->_resourceManager;
@@ -560,13 +560,13 @@ void __60__PEEditActionBatch__processResult_targetPreset_completion___block_invo
   v23[3] = &unk_279A30EE8;
   v26 = &v34;
   v27 = &v28;
-  v14 = v8;
+  v14 = assetCopy;
   v24 = v14;
   v15 = v12;
   v25 = v15;
-  [(PEResourceManager *)resourceManager loadResourceForAsset:v14 requireLocalResources:1 forceRunAsUnadjustedAsset:v11 progressHandler:v9 resultHandler:v23];
+  [(PEResourceManager *)resourceManager loadResourceForAsset:v14 requireLocalResources:1 forceRunAsUnadjustedAsset:forceRunAsUnadjustedAsset progressHandler:handlerCopy resultHandler:v23];
   dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-  if (v11)
+  if (forceRunAsUnadjustedAsset)
   {
     v16 = self->_resourceManager;
     v18[0] = MEMORY[0x277D85DD0];
@@ -575,17 +575,17 @@ void __60__PEEditActionBatch__processResult_targetPreset_completion___block_invo
     v18[3] = &unk_279A30F10;
     v19 = v14;
     v21 = &v34;
-    v20 = v10;
+    v20 = resultHandlerCopy;
     v22 = &v28;
     [(PEResourceManager *)v16 loadResourceForAsset:v19 requireLocalResources:1 forceRunAsUnadjustedAsset:0 progressHandler:&__block_literal_global_2474 resultHandler:v18];
   }
 
   else
   {
-    v17 = [v35[5] compositionController];
-    [v35[5] setAdjustedSourceCompositionController:v17];
+    compositionController = [v35[5] compositionController];
+    [v35[5] setAdjustedSourceCompositionController:compositionController];
 
-    (*(v10 + 2))(v10, v35[5], v29[5]);
+    (*(resultHandlerCopy + 2))(resultHandlerCopy, v35[5], v29[5]);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -640,10 +640,10 @@ void __77__PEEditActionBatch__requestResourcesForAsset_progressHandler_resultHan
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_processAssets:(id)a3
+- (id)_processAssets:(id)assets
 {
   v48 = *MEMORY[0x277D85DE8];
-  v19 = a3;
+  assetsCopy = assets;
   v4 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -670,14 +670,14 @@ void __77__PEEditActionBatch__requestResourcesForAsset_progressHandler_resultHan
     v43 = 0x3032000000;
     v44 = __Block_byref_object_copy__2457;
     v45 = __Block_byref_object_dispose__2458;
-    v46 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v19, "count")}];
+    v46 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
     objc_initWeak(&location, self);
     v7 = dispatch_group_create();
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    obj = v19;
+    obj = assetsCopy;
     v8 = [obj countByEnumeratingWithState:&v36 objects:v47 count:16];
     if (v8)
     {
@@ -692,15 +692,15 @@ void __77__PEEditActionBatch__requestResourcesForAsset_progressHandler_resultHan
           }
 
           v10 = *(*(&v36 + 1) + 8 * i);
-          v11 = [(PEEditActionBatch *)self _presetForAsset:v10, v19];
+          assetsCopy = [(PEEditActionBatch *)self _presetForAsset:v10, assetsCopy];
           v34[0] = 0;
           v34[1] = v34;
           v34[2] = 0x3032000000;
           v34[3] = __Block_byref_object_copy__2457;
           v34[4] = __Block_byref_object_dispose__2458;
           v12 = [PEEditActionResult alloc];
-          v13 = [v10 uuid];
-          v35 = [(PEEditActionResult *)v12 initWithAssetUUID:v13 targetAction:v11];
+          uuid = [v10 uuid];
+          v35 = [(PEEditActionResult *)v12 initWithAssetUUID:uuid targetAction:assetsCopy];
 
           v14 = [(PEEditActionBatch *)self _processWillBeginWithAsset:v10 progress:0.01];
           dispatch_group_enter(v7);
@@ -718,10 +718,10 @@ void __77__PEEditActionBatch__requestResourcesForAsset_progressHandler_resultHan
           objc_copyWeak(&v30, &location);
           v16 = v15;
           v23 = v16;
-          v24 = self;
+          selfCopy = self;
           v25 = v7;
           v28 = v34;
-          v17 = v11;
+          v17 = assetsCopy;
           v29 = buf;
           v26 = v17;
           v27 = v10;
@@ -841,11 +841,11 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
   dispatch_group_leave(v8);
 }
 
-- (id)_presetForAsset:(id)a3
+- (id)_presetForAsset:(id)asset
 {
   actionMap = self->_actionMap;
-  v5 = [a3 uuid];
-  v6 = [(NSDictionary *)actionMap objectForKey:v5];
+  uuid = [asset uuid];
+  v6 = [(NSDictionary *)actionMap objectForKey:uuid];
 
   if (!v6)
   {
@@ -855,19 +855,19 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
   return v6;
 }
 
-- (void)_setupWithActionMap:(id)a3 assets:(id)a4 progress:(id)a5
+- (void)_setupWithActionMap:(id)map assets:(id)assets progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mapCopy = map;
+  assetsCopy = assets;
+  progressCopy = progress;
   self->_state = 0;
   actionMap = self->_actionMap;
-  self->_actionMap = v8;
-  v23 = v8;
+  self->_actionMap = mapCopy;
+  v23 = mapCopy;
 
   assets = self->_assets;
-  self->_assets = v9;
-  v13 = v9;
+  self->_assets = assetsCopy;
+  v13 = assetsCopy;
 
   v14 = dispatch_queue_create("PEEditActionBatch", 0);
   loadingQueue = self->_loadingQueue;
@@ -885,18 +885,18 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
   mediaRequestIds = self->_mediaRequestIds;
   self->_mediaRequestIds = v20;
 
-  [(NSProgress *)v10 setTotalUnitCount:100];
+  [(NSProgress *)progressCopy setTotalUnitCount:100];
   progress = self->_progress;
-  self->_progress = v10;
+  self->_progress = progressCopy;
 }
 
 - (void)cancel
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(PEEditActionBatch *)self state];
+  state = [(PEEditActionBatch *)self state];
   v4 = PLPhotoEditGetLog();
   v5 = v4;
-  if (v3 == 1)
+  if (state == 1)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -944,19 +944,19 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v17 = v3;
+      v17 = state;
       _os_log_impl(&dword_25E6E9000, v5, OS_LOG_TYPE_ERROR, "PEEditActionBatch: Attempted to cancel, but batch is not in progress. PEEditActionBatchState: %lu", buf, 0xCu);
     }
   }
 }
 
-- (void)runActionWithBatchSize:(unint64_t)a3 completion:(id)a4
+- (void)runActionWithBatchSize:(unint64_t)size completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   self->_state = 1;
-  v7 = [(PEEditActionBatch *)self actionType];
-  v8 = [(PEEditActionBatch *)self delegate];
-  [v8 batch:self willStartAction:v7];
+  actionType = [(PEEditActionBatch *)self actionType];
+  delegate = [(PEEditActionBatch *)self delegate];
+  [delegate batch:self willStartAction:actionType];
 
   v9 = self->_assets;
   v10 = [(NSArray *)v9 count];
@@ -968,14 +968,14 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
   progressMap = self->_progressMap;
   self->_progressMap = v13;
 
-  if (v10 >= a3)
+  if (v10 >= size)
   {
-    v15 = a3;
+    sizeCopy = size;
   }
 
   else
   {
-    v15 = v10;
+    sizeCopy = v10;
   }
 
   loadingQueue = self->_loadingQueue;
@@ -983,13 +983,13 @@ void __36__PEEditActionBatch__processAssets___block_invoke_42(uint64_t a1, uint6
   v19[1] = 3221225472;
   v19[2] = __55__PEEditActionBatch_runActionWithBatchSize_completion___block_invoke;
   v19[3] = &unk_279A30E48;
-  v24 = v15;
+  v24 = sizeCopy;
   v25 = v10;
   v20 = v9;
-  v21 = self;
-  v22 = v6;
-  v23 = vcvtpd_u64_f64(v10 / v15);
-  v17 = v6;
+  selfCopy = self;
+  v22 = completionCopy;
+  v23 = vcvtpd_u64_f64(v10 / sizeCopy);
+  v17 = completionCopy;
   v18 = v9;
   dispatch_async(loadingQueue, v19);
 }
@@ -1084,21 +1084,21 @@ void __55__PEEditActionBatch_runActionWithBatchSize_completion___block_invoke_2(
   }
 }
 
-- (PEEditActionBatch)initWithAssets:(id)a3 action:(id)a4 progress:(id)a5
+- (PEEditActionBatch)initWithAssets:(id)assets action:(id)action progress:(id)progress
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  actionCopy = action;
+  progressCopy = progress;
   v14.receiver = self;
   v14.super_class = PEEditActionBatch;
   v11 = [(PEEditActionBatch *)&v14 init];
   if (v11)
   {
-    if (v9)
+    if (actionCopy)
     {
       v15 = @"PESingleActionKey";
-      v16[0] = v9;
+      v16[0] = actionCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     }
 
@@ -1107,25 +1107,25 @@ void __55__PEEditActionBatch_runActionWithBatchSize_completion___block_invoke_2(
       v12 = 0;
     }
 
-    [(PEEditActionBatch *)v11 _setupWithActionMap:v12 assets:v8 progress:v10];
-    v11->_actionType = [v9 actionType];
+    [(PEEditActionBatch *)v11 _setupWithActionMap:v12 assets:assetsCopy progress:progressCopy];
+    v11->_actionType = [actionCopy actionType];
   }
 
   return v11;
 }
 
-- (PEEditActionBatch)initWithAssets:(id)a3 actionMap:(id)a4 progress:(id)a5
+- (PEEditActionBatch)initWithAssets:(id)assets actionMap:(id)map progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  mapCopy = map;
+  progressCopy = progress;
   v14.receiver = self;
   v14.super_class = PEEditActionBatch;
   v11 = [(PEEditActionBatch *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(PEEditActionBatch *)v11 _setupWithActionMap:v9 assets:v8 progress:v10];
+    [(PEEditActionBatch *)v11 _setupWithActionMap:mapCopy assets:assetsCopy progress:progressCopy];
     v12->_actionType = 1;
   }
 

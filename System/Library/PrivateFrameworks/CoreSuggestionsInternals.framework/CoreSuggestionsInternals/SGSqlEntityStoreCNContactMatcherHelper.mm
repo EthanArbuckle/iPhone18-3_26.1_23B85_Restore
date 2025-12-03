@@ -8,7 +8,7 @@
 - (NSArray)weakNamePatterns;
 - (NSString)interactionContactIdentifier;
 - (NSString)prefilterNameMatchTerms;
-- (SGSqlEntityStoreCNContactMatcherHelper)initWithCNContact:(id)a3;
+- (SGSqlEntityStoreCNContactMatcherHelper)initWithCNContact:(id)contact;
 @end
 
 @implementation SGSqlEntityStoreCNContactMatcherHelper
@@ -25,22 +25,22 @@
 - (NSString)interactionContactIdentifier
 {
   v2 = MEMORY[0x277D01FA0];
-  v3 = [(CNContact *)self->_contact identifier];
-  v4 = [v2 interactionContactIdentifier:v3];
-  v5 = [v4 name];
+  identifier = [(CNContact *)self->_contact identifier];
+  v4 = [v2 interactionContactIdentifier:identifier];
+  name = [v4 name];
 
-  return v5;
+  return name;
 }
 
 - (NSArray)addressTags
 {
-  v2 = [(CNContact *)self->_contact postalAddresses];
+  postalAddresses = [(CNContact *)self->_contact postalAddresses];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__SGSqlEntityStoreCNContactMatcherHelper_addressTags__block_invoke_2;
   v5[3] = &unk_27894FB38;
   v6 = &__block_literal_global_50_24395;
-  v3 = [v2 _pas_mappedArrayWithTransform:v5];
+  v3 = [postalAddresses _pas_mappedArrayWithTransform:v5];
 
   return v3;
 }
@@ -91,8 +91,8 @@ id __53__SGSqlEntityStoreCNContactMatcherHelper_addressTags__block_invoke(uint64
 
 - (NSArray)socialProfileTags
 {
-  v2 = [(CNContact *)self->_contact socialProfiles];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_46_24406];
+  socialProfiles = [(CNContact *)self->_contact socialProfiles];
+  v3 = [socialProfiles _pas_mappedArrayWithTransform:&__block_literal_global_46_24406];
 
   return v3;
 }
@@ -116,8 +116,8 @@ id __59__SGSqlEntityStoreCNContactMatcherHelper_socialProfileTags__block_invoke(
 
 - (NSArray)phoneTags
 {
-  v2 = [(CNContact *)self->_contact phoneNumbers];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_44];
+  phoneNumbers = [(CNContact *)self->_contact phoneNumbers];
+  v3 = [phoneNumbers _pas_mappedArrayWithTransform:&__block_literal_global_44];
 
   return v3;
 }
@@ -145,8 +145,8 @@ id __51__SGSqlEntityStoreCNContactMatcherHelper_phoneTags__block_invoke(uint64_t
 
 - (NSArray)emailTags
 {
-  v2 = [(CNContact *)self->_contact emailAddresses];
-  v3 = [v2 _pas_mappedArrayWithTransform:&__block_literal_global_41_24409];
+  emailAddresses = [(CNContact *)self->_contact emailAddresses];
+  v3 = [emailAddresses _pas_mappedArrayWithTransform:&__block_literal_global_41_24409];
 
   return v3;
 }
@@ -190,23 +190,23 @@ id __51__SGSqlEntityStoreCNContactMatcherHelper_emailTags__block_invoke(uint64_t
         if ([v8 length])
         {
           v10 = objc_alloc(MEMORY[0x277CCACA8]);
-          v11 = [(CNContact *)self->_contact familyName];
-          v12 = [v10 initWithFormat:@"%@ %@", v8, v11];
-          [v32 addObject:v12];
+          familyName = [(CNContact *)self->_contact familyName];
+          givenName = [v10 initWithFormat:@"%@ %@", v8, familyName];
+          [v32 addObject:givenName];
         }
 
         else
         {
-          v11 = sgLogHandle();
-          if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          familyName = sgLogHandle();
+          if (!os_log_type_enabled(familyName, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_11;
           }
 
-          v12 = [(CNContact *)self->_contact givenName];
+          givenName = [(CNContact *)self->_contact givenName];
           *buf = 138412290;
-          v38 = v12;
-          _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEFAULT, "empty string found in nickname data for: %@", buf, 0xCu);
+          v38 = givenName;
+          _os_log_impl(&dword_231E60000, familyName, OS_LOG_TYPE_DEFAULT, "empty string found in nickname data for: %@", buf, 0xCu);
         }
 
 LABEL_11:
@@ -219,19 +219,19 @@ LABEL_11:
     while (v5);
   }
 
-  v13 = [(CNContact *)self->_contact familyName];
-  if ([v13 length])
+  familyName2 = [(CNContact *)self->_contact familyName];
+  if ([familyName2 length])
   {
-    v14 = [(CNContact *)self->_contact givenName];
-    v15 = [v14 length];
+    givenName2 = [(CNContact *)self->_contact givenName];
+    v15 = [givenName2 length];
 
     if (v15)
     {
       v16 = objc_autoreleasePoolPush();
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [(CNContact *)self->_contact givenName];
-      v19 = [(CNContact *)self->_contact familyName];
-      v20 = [v17 initWithFormat:@"%@ %@", v18, v19];
+      givenName3 = [(CNContact *)self->_contact givenName];
+      familyName3 = [(CNContact *)self->_contact familyName];
+      v20 = [v17 initWithFormat:@"%@ %@", givenName3, familyName3];
       [v32 addObject:v20];
 
       objc_autoreleasePoolPop(v16);
@@ -242,19 +242,19 @@ LABEL_11:
   {
   }
 
-  v21 = [(CNContact *)self->_contact givenName];
-  if ([v21 length])
+  givenName4 = [(CNContact *)self->_contact givenName];
+  if ([givenName4 length])
   {
-    v22 = [(CNContact *)self->_contact middleName];
-    v23 = [v22 length];
+    middleName = [(CNContact *)self->_contact middleName];
+    v23 = [middleName length];
 
     if (v23)
     {
       v24 = objc_autoreleasePoolPush();
       v25 = objc_alloc(MEMORY[0x277CCACA8]);
-      v26 = [(CNContact *)self->_contact givenName];
-      v27 = [(CNContact *)self->_contact middleName];
-      v28 = [v25 initWithFormat:@"%@ %@", v26, v27];
+      givenName5 = [(CNContact *)self->_contact givenName];
+      middleName2 = [(CNContact *)self->_contact middleName];
+      v28 = [v25 initWithFormat:@"%@ %@", givenName5, middleName2];
       [v32 addObject:v28];
 
       objc_autoreleasePoolPop(v24);
@@ -265,11 +265,11 @@ LABEL_11:
   {
   }
 
-  v29 = [v32 allObjects];
+  allObjects = [v32 allObjects];
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return allObjects;
 }
 
 - (NSArray)weakNamePatterns
@@ -301,23 +301,23 @@ LABEL_11:
         if ([v8 length])
         {
           v10 = objc_alloc(MEMORY[0x277CCACA8]);
-          v11 = [(CNContact *)self->_contact familyName];
-          v12 = [v10 initWithFormat:@"%@%%%@%%", v8, v11];
-          [v45 addObject:v12];
+          familyName = [(CNContact *)self->_contact familyName];
+          givenName = [v10 initWithFormat:@"%@%%%@%%", v8, familyName];
+          [v45 addObject:givenName];
         }
 
         else
         {
-          v11 = sgLogHandle();
-          if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          familyName = sgLogHandle();
+          if (!os_log_type_enabled(familyName, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_11;
           }
 
-          v12 = [(CNContact *)self->_contact givenName];
+          givenName = [(CNContact *)self->_contact givenName];
           *buf = 138412290;
-          v51 = v12;
-          _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEFAULT, "empty string found in nickname data for: %@", buf, 0xCu);
+          v51 = givenName;
+          _os_log_impl(&dword_231E60000, familyName, OS_LOG_TYPE_DEFAULT, "empty string found in nickname data for: %@", buf, 0xCu);
         }
 
 LABEL_11:
@@ -330,38 +330,38 @@ LABEL_11:
     while (v5);
   }
 
-  v13 = [(CNContact *)self->_contact familyName];
-  if ([v13 length])
+  familyName2 = [(CNContact *)self->_contact familyName];
+  if ([familyName2 length])
   {
-    v14 = [(CNContact *)self->_contact givenName];
-    v15 = [v14 length];
+    givenName2 = [(CNContact *)self->_contact givenName];
+    v15 = [givenName2 length];
 
     if (v15)
     {
       v16 = objc_autoreleasePoolPush();
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [(CNContact *)self->_contact givenName];
-      v19 = [(CNContact *)self->_contact familyName];
-      v20 = [v17 initWithFormat:@"%@%%%@", v18, v19];
+      givenName3 = [(CNContact *)self->_contact givenName];
+      familyName3 = [(CNContact *)self->_contact familyName];
+      v20 = [v17 initWithFormat:@"%@%%%@", givenName3, familyName3];
       [v45 addObject:v20];
 
       v21 = objc_alloc(MEMORY[0x277CCACA8]);
-      v22 = [(CNContact *)self->_contact familyName];
-      v23 = [(CNContact *)self->_contact givenName];
-      v24 = [v21 initWithFormat:@"%@%%%@", v22, v23];
+      familyName4 = [(CNContact *)self->_contact familyName];
+      givenName4 = [(CNContact *)self->_contact givenName];
+      v24 = [v21 initWithFormat:@"%@%%%@", familyName4, givenName4];
       [v45 addObject:v24];
 
-      v25 = [(CNContact *)self->_contact givenName];
-      v26 = [v25 substringToIndex:1];
+      givenName5 = [(CNContact *)self->_contact givenName];
+      v26 = [givenName5 substringToIndex:1];
 
       v27 = objc_alloc(MEMORY[0x277CCACA8]);
-      v28 = [(CNContact *)self->_contact familyName];
-      v29 = [v27 initWithFormat:@"%@ %@", v26, v28];
+      familyName5 = [(CNContact *)self->_contact familyName];
+      v29 = [v27 initWithFormat:@"%@ %@", v26, familyName5];
       [v45 addObject:v29];
 
       v30 = objc_alloc(MEMORY[0x277CCACA8]);
-      v31 = [(CNContact *)self->_contact familyName];
-      v32 = [v30 initWithFormat:@"%@. %@", v26, v31];
+      familyName6 = [(CNContact *)self->_contact familyName];
+      v32 = [v30 initWithFormat:@"%@. %@", v26, familyName6];
       [v45 addObject:v32];
 
       objc_autoreleasePoolPop(v16);
@@ -372,19 +372,19 @@ LABEL_11:
   {
   }
 
-  v33 = [(CNContact *)self->_contact givenName];
-  if ([v33 length])
+  givenName6 = [(CNContact *)self->_contact givenName];
+  if ([givenName6 length])
   {
-    v34 = [(CNContact *)self->_contact middleName];
-    v35 = [v34 length];
+    middleName = [(CNContact *)self->_contact middleName];
+    v35 = [middleName length];
 
     if (v35)
     {
       v36 = objc_autoreleasePoolPush();
       v37 = objc_alloc(MEMORY[0x277CCACA8]);
-      v38 = [(CNContact *)self->_contact givenName];
-      v39 = [(CNContact *)self->_contact middleName];
-      v40 = [v37 initWithFormat:@"%@%%%@", v38, v39];
+      givenName7 = [(CNContact *)self->_contact givenName];
+      middleName2 = [(CNContact *)self->_contact middleName];
+      v40 = [v37 initWithFormat:@"%@%%%@", givenName7, middleName2];
       [v45 addObject:v40];
 
       objc_autoreleasePoolPop(v36);
@@ -408,17 +408,17 @@ LABEL_11:
   v44 = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [(CNContact *)self->_contact familyName];
-  v5 = [v4 length];
+  familyName = [(CNContact *)self->_contact familyName];
+  v5 = [familyName length];
 
   if (v5)
   {
-    v6 = [(CNContact *)self->_contact familyName];
-    v7 = [SGTokenizer ftsTokenize:v6];
+    familyName2 = [(CNContact *)self->_contact familyName];
+    v7 = [SGTokenizer ftsTokenize:familyName2];
 
     [v3 addObjectsFromArray:v7];
-    v8 = [(CNContact *)self->_contact familyName];
-    v9 = [v8 length];
+    familyName3 = [(CNContact *)self->_contact familyName];
+    v9 = [familyName3 length];
 
     if (v9 == 1)
     {
@@ -427,17 +427,17 @@ LABEL_11:
     }
   }
 
-  v11 = [(CNContact *)self->_contact givenName];
-  v12 = [v11 length];
+  givenName = [(CNContact *)self->_contact givenName];
+  v12 = [givenName length];
 
   if (v12)
   {
-    v13 = [(CNContact *)self->_contact givenName];
-    v14 = [SGTokenizer ftsTokenize:v13];
+    givenName2 = [(CNContact *)self->_contact givenName];
+    v14 = [SGTokenizer ftsTokenize:givenName2];
 
     [v3 addObjectsFromArray:v14];
-    v15 = [(CNContact *)self->_contact givenName];
-    v16 = [v15 length];
+    givenName3 = [(CNContact *)self->_contact givenName];
+    v16 = [givenName3 length];
 
     if (v16 == 1)
     {
@@ -446,13 +446,13 @@ LABEL_11:
     }
   }
 
-  v18 = [(CNContact *)self->_contact middleName];
-  v19 = [v18 length];
+  middleName = [(CNContact *)self->_contact middleName];
+  v19 = [middleName length];
 
   if (v19)
   {
-    v20 = [(CNContact *)self->_contact middleName];
-    v21 = [SGTokenizer ftsTokenize:v20];
+    middleName2 = [(CNContact *)self->_contact middleName];
+    v21 = [SGTokenizer ftsTokenize:middleName2];
     [v3 addObjectsFromArray:v21];
   }
 
@@ -488,9 +488,9 @@ LABEL_11:
           v29 = sgLogHandle();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [(CNContact *)self->_contact givenName];
+            givenName4 = [(CNContact *)self->_contact givenName];
             *buf = 138412290;
-            v42 = v30;
+            v42 = givenName4;
             _os_log_impl(&dword_231E60000, v29, OS_LOG_TYPE_DEFAULT, "empty string found in nickname data for: %@", buf, 0xCu);
           }
         }
@@ -504,8 +504,8 @@ LABEL_11:
     while (v24);
   }
 
-  v31 = [v3 allObjects];
-  v32 = [v31 _pas_mappedArrayWithTransform:&__block_literal_global_12_24431];
+  allObjects = [v3 allObjects];
+  v32 = [allObjects _pas_mappedArrayWithTransform:&__block_literal_global_12_24431];
 
   v33 = [v32 _pas_componentsJoinedByString:@" OR "];
 
@@ -558,23 +558,23 @@ id __65__SGSqlEntityStoreCNContactMatcherHelper_prefilterNameMatchTerms__block_i
   return v4;
 }
 
-- (SGSqlEntityStoreCNContactMatcherHelper)initWithCNContact:(id)a3
+- (SGSqlEntityStoreCNContactMatcherHelper)initWithCNContact:(id)contact
 {
-  v5 = a3;
+  contactCopy = contact;
   v14.receiver = self;
   v14.super_class = SGSqlEntityStoreCNContactMatcherHelper;
   v6 = [(SGSqlEntityStoreCNContactMatcherHelper *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contact, a3);
-    v8 = [v5 givenName];
-    v9 = [v8 length];
+    objc_storeStrong(&v6->_contact, contact);
+    givenName = [contactCopy givenName];
+    v9 = [givenName length];
 
     if (v9)
     {
-      v10 = [v5 givenName];
-      v11 = [SGNicknames nicknamesForName:v10];
+      givenName2 = [contactCopy givenName];
+      v11 = [SGNicknames nicknamesForName:givenName2];
       nicks = v7->_nicks;
       v7->_nicks = v11;
     }

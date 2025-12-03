@@ -1,23 +1,23 @@
 @interface CKDDiscoverUserIdentitiesOperation
-- (CKDDiscoverUserIdentitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDDiscoverUserIdentitiesOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_discoverIdentitiesWithLookupInfos:(id)a3 completionBlock:(id)a4;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleDiscoveredIdentity:(id)a3 lookupInfo:(id)a4 responseCode:(id)a5;
+- (void)_discoverIdentitiesWithLookupInfos:(id)infos completionBlock:(id)block;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleDiscoveredIdentity:(id)identity lookupInfo:(id)info responseCode:(id)code;
 - (void)main;
 @end
 
 @implementation CKDDiscoverUserIdentitiesOperation
 
-- (CKDDiscoverUserIdentitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDDiscoverUserIdentitiesOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDDiscoverUserIdentitiesOperation;
-  v9 = [(CKDOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_userIdentityLookupInfos(v6, v7, v8);
+    v10 = objc_msgSend_userIdentityLookupInfos(infoCopy, v7, v8);
     userIdentityLookupInfos = v9->_userIdentityLookupInfos;
     v9->_userIdentityLookupInfos = v10;
   }
@@ -32,12 +32,12 @@
   return v2;
 }
 
-- (void)_handleDiscoveredIdentity:(id)a3 lookupInfo:(id)a4 responseCode:(id)a5
+- (void)_handleDiscoveredIdentity:(id)identity lookupInfo:(id)info responseCode:(id)code
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identityCopy = identity;
+  infoCopy = info;
+  codeCopy = code;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -47,15 +47,15 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v37 = v9;
+    v37 = infoCopy;
     v38 = 2112;
-    v39 = v8;
+    v39 = identityCopy;
     _os_log_impl(&dword_22506F000, v11, OS_LOG_TYPE_INFO, "For lookup info %@, discovered identity %@", buf, 0x16u);
   }
 
-  if (objc_msgSend_code(v10, v12, v13) == 1)
+  if (objc_msgSend_code(codeCopy, v12, v13) == 1)
   {
-    if (v8)
+    if (identityCopy)
     {
       v16 = objc_msgSend_callbackQueue(self, v14, v15);
       block[0] = MEMORY[0x277D85DD0];
@@ -63,8 +63,8 @@
       block[2] = sub_225260FE8;
       block[3] = &unk_278546990;
       block[4] = self;
-      v34 = v9;
-      v35 = v8;
+      v34 = infoCopy;
+      v35 = identityCopy;
       dispatch_async(v16, block);
     }
   }
@@ -73,10 +73,10 @@
   {
     v17 = MEMORY[0x277CBC560];
     v18 = *MEMORY[0x277CBC120];
-    v19 = sub_2253962A4(v10);
+    v19 = sub_2253962A4(codeCopy);
     v22 = objc_msgSend_request(self, v20, v21);
-    v23 = sub_225395734(v22, v10);
-    v25 = objc_msgSend_errorWithDomain_code_userInfo_format_(v17, v24, v18, v19, v23, @"Error discovering identity for lookup info %@", v9);
+    v23 = sub_225395734(v22, codeCopy);
+    v25 = objc_msgSend_errorWithDomain_code_userInfo_format_(v17, v24, v18, v19, v23, @"Error discovering identity for lookup info %@", infoCopy);
     objc_msgSend_setError_(self, v26, v25);
 
     v29 = objc_msgSend_request(self, v27, v28);
@@ -86,16 +86,16 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_discoverIdentitiesWithLookupInfos:(id)a3 completionBlock:(id)a4
+- (void)_discoverIdentitiesWithLookupInfos:(id)infos completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_count(v6, v8, v9))
+  infosCopy = infos;
+  blockCopy = block;
+  if (objc_msgSend_count(infosCopy, v8, v9))
   {
     v10 = [CKDDiscoverUserIdentitiesURLRequest alloc];
     v11 = objc_opt_class();
     v14 = objc_msgSend_adopterProvidedLookupInfos(v11, v12, v13);
-    v16 = objc_msgSend_initWithOperation_lookupInfos_adopterProvidedLookupInfos_(v10, v15, self, v6, v14);
+    v16 = objc_msgSend_initWithOperation_lookupInfos_adopterProvidedLookupInfos_(v10, v15, self, infosCopy, v14);
     objc_initWeak(&location, self);
     objc_initWeak(&from, v16);
     v31[0] = MEMORY[0x277D85DD0];
@@ -109,7 +109,7 @@
     v26 = sub_22526133C;
     v27 = &unk_27854B3F8;
     objc_copyWeak(&v29, &location);
-    v28 = v7;
+    v28 = blockCopy;
     objc_copyWeak(&v30, &from);
     objc_msgSend_setCompletionBlock_(v16, v18, &v24);
     objc_msgSend_setRequest_(self, v19, v16, v24, v25, v26, v27);
@@ -125,7 +125,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -140,13 +140,13 @@
   objc_msgSend__discoverIdentitiesWithLookupInfos_completionBlock_(self, v5, v4, v6);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_setDiscoverUserIdentitiesProgressBlock_(self, v5, 0);
   v6.receiver = self;
   v6.super_class = CKDDiscoverUserIdentitiesOperation;
-  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v6 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

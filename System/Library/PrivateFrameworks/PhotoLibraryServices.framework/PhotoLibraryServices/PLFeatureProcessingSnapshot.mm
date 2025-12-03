@@ -1,8 +1,8 @@
 @interface PLFeatureProcessingSnapshot
 - (NSDictionary)dictionary;
 - (PLFeatureProcessingSnapshot)init;
-- (PLFeatureProcessingSnapshot)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PLFeatureProcessingSnapshot)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)resetSearchIndexState;
 @end
 
@@ -13,9 +13,9 @@
   self->_fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex = 0.0;
   *&self->_fractionOfAllAssetsWithSceneAnalysisInSearchIndex = 0u;
   *&self->_fractionOfAllAssetsWithMediaAnalysisInSearchIndex = 0u;
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   dateSearchIndexSnapshotLastUpdated = self->_dateSearchIndexSnapshotLastUpdated;
-  self->_dateSearchIndexSnapshotLastUpdated = v3;
+  self->_dateSearchIndexSnapshotLastUpdated = date;
 }
 
 - (NSDictionary)dictionary
@@ -107,108 +107,108 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(PLFeatureProcessingSnapshot *)self dictionary];
-  v6 = [v4 initWithDictionary:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  dictionary = [(PLFeatureProcessingSnapshot *)self dictionary];
+  v6 = [v4 initWithDictionary:dictionary];
 
   return v6;
 }
 
-- (PLFeatureProcessingSnapshot)initWithDictionary:(id)a3
+- (PLFeatureProcessingSnapshot)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = PLFeatureProcessingSnapshot;
   v5 = [(PLFeatureProcessingSnapshot *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fractionOfAllAssetsAnalyzedForScenes"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfAllAssetsAnalyzedForScenes"];
     [v6 doubleValue];
     v5->_fractionOfAllAssetsAnalyzedForScenes = v7;
 
-    v8 = [v4 objectForKeyedSubscript:@"fractionOfAllAssetsWithSceneAnalysisInSearchIndex"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfAllAssetsWithSceneAnalysisInSearchIndex"];
     [v8 doubleValue];
     v5->_fractionOfAllAssetsWithSceneAnalysisInSearchIndex = v9;
 
-    v10 = [v4 objectForKeyedSubscript:@"numberOfAssetsWithSceneAnalysisInSearchIndex"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numberOfAssetsWithSceneAnalysisInSearchIndex"];
     v5->_numberOfAssetsWithSceneAnalysisInSearchIndex = [v10 unsignedIntegerValue];
 
-    v11 = [v4 objectForKeyedSubscript:@"fractionOfAllAssetsWithMediaAnalysisInSearchIndex"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfAllAssetsWithMediaAnalysisInSearchIndex"];
     [v11 doubleValue];
     v5->_fractionOfAllAssetsWithMediaAnalysisInSearchIndex = v12;
 
-    v13 = [v4 objectForKeyedSubscript:@"numberOfAssetsWithMediaAnalysisInSearchIndex"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numberOfAssetsWithMediaAnalysisInSearchIndex"];
     v5->_numberOfAssetsWithMediaAnalysisInSearchIndex = [v13 unsignedIntegerValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"fractionOfAllAssetsWithCaptions"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfAllAssetsWithCaptions"];
     [v14 doubleValue];
     v5->_fractionOfAllAssetsWithCaptions = v15;
 
-    v16 = [v4 objectForKeyedSubscript:@"dateSearchIndexSnapshotLastUpdated"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"dateSearchIndexSnapshotLastUpdated"];
     dateSearchIndexSnapshotLastUpdated = v5->_dateSearchIndexSnapshotLastUpdated;
     v5->_dateSearchIndexSnapshotLastUpdated = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex"];
     [v18 doubleValue];
     v5->_fractionOfCuratedAssetsWithSceneAnalysisInSearchIndex = v19;
 
-    v20 = [v4 objectForKeyedSubscript:@"fractionOfCuratedAssetsWithEmbeddingsInVectorIndex"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfCuratedAssetsWithEmbeddingsInVectorIndex"];
     [v20 doubleValue];
     v5->_fractionOfCuratedAssetsWithEmbeddingsInVectorIndex = v21;
 
-    v22 = [v4 objectForKeyedSubscript:@"fractionOfCuratedAssetsIndexedInVUClustering"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfCuratedAssetsIndexedInVUClustering"];
     [v22 doubleValue];
     v5->_fractionOfCuratedAssetsIndexedInVUClustering = v23;
 
-    v24 = [v4 objectForKeyedSubscript:@"fractionOfCuratedAssetsWithCaptions"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfCuratedAssetsWithCaptions"];
     [v24 doubleValue];
     v5->_fractionOfCuratedAssetsWithCaptions = v25;
 
-    v26 = [v4 objectForKeyedSubscript:@"fractionOfHighlightsEnriched"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"fractionOfHighlightsEnriched"];
     [v26 doubleValue];
     v5->_fractionOfHighlightsEnriched = v27;
 
-    v28 = [v4 objectForKeyedSubscript:@"photosKnowledgeGraphIsReady"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"photosKnowledgeGraphIsReady"];
     v5->_photosKnowledgeGraphIsReady = [v28 BOOLValue];
 
-    v29 = [v4 objectForKeyedSubscript:@"vuIndexIsFullClustered"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"vuIndexIsFullClustered"];
     v30 = v29;
     if (v29)
     {
-      v31 = [v29 BOOLValue];
+      bOOLValue = [v29 BOOLValue];
     }
 
     else
     {
-      v31 = 1;
+      bOOLValue = 1;
     }
 
-    v5->_vuIndexIsFullClustered = v31;
-    v32 = [v4 objectForKeyedSubscript:@"lastFullVUIndexClusterDate"];
+    v5->_vuIndexIsFullClustered = bOOLValue;
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"lastFullVUIndexClusterDate"];
     lastFullVUIndexClusterDate = v5->_lastFullVUIndexClusterDate;
     v5->_lastFullVUIndexClusterDate = v32;
 
-    v34 = [v4 objectForKeyedSubscript:@"totalAssetCount"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"totalAssetCount"];
     v5->_totalAssetCount = [v34 unsignedIntegerValue];
 
-    v35 = [v4 objectForKeyedSubscript:@"totalCuratedAssetCount"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"totalCuratedAssetCount"];
     v5->_totalCuratedAssetCount = [v35 unsignedIntegerValue];
 
-    v36 = [v4 objectForKeyedSubscript:@"totalAssetForScenesCount"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"totalAssetForScenesCount"];
     v5->_totalAssetForScenesCount = [v36 unsignedIntegerValue];
 
-    v37 = [v4 objectForKeyedSubscript:@"totalCuratedAssetForScenesCount"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"totalCuratedAssetForScenesCount"];
     v5->_totalCuratedAssetForScenesCount = [v37 unsignedIntegerValue];
 
-    v38 = [v4 objectForKeyedSubscript:@"mediaAnalysisImageVersion"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"mediaAnalysisImageVersion"];
     v5->_mediaAnalysisImageVersion = [v38 unsignedIntegerValue];
 
-    v39 = [v4 objectForKeyedSubscript:@"hasConsistentMediaAnalysisImageVersionKey"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"hasConsistentMediaAnalysisImageVersionKey"];
     v5->_hasConsistentMediaAnalysisImageVersion = [v39 BOOLValue];
 
-    v40 = [v4 objectForKeyedSubscript:@"dateComputed"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"dateComputed"];
     dateComputed = v5->_dateComputed;
     v5->_dateComputed = v40;
 

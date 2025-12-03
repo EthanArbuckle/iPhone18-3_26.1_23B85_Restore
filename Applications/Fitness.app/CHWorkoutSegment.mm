@@ -1,18 +1,18 @@
 @interface CHWorkoutSegment
 + (id)_decimalNumberFormatter;
 - (id)description;
-- (id)formattedActiveEnergyValueForUnit:(id)a3;
-- (id)formattedDistanceAchievedDurationValueWithFormattingManager:(id)a3;
-- (id)formattedDistanceValueForUnit:(id)a3;
-- (id)formattedDurationValueWithFormattingManager:(id)a3;
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4 distanceType:(unint64_t)a5;
+- (id)formattedActiveEnergyValueForUnit:(id)unit;
+- (id)formattedDistanceAchievedDurationValueWithFormattingManager:(id)manager;
+- (id)formattedDistanceValueForUnit:(id)unit;
+- (id)formattedDurationValueWithFormattingManager:(id)manager;
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager distanceType:(unint64_t)distanceType;
 @end
 
 @implementation CHWorkoutSegment
 
-- (id)formattedDurationValueWithFormattingManager:(id)a3
+- (id)formattedDurationValueWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(CHWorkoutSegment *)self elapsedTime];
   if (round(v5) >= 3600.0)
   {
@@ -24,16 +24,16 @@
     v6 = 3;
   }
 
-  v7 = [v4 stringWithDuration:v6 durationFormat:?];
+  v7 = [managerCopy stringWithDuration:v6 durationFormat:?];
 
   return v7;
 }
 
-- (id)formattedActiveEnergyValueForUnit:(id)a3
+- (id)formattedActiveEnergyValueForUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(CHWorkoutSegment *)self activeEnergy];
-  [v5 doubleValueForUnit:v4];
+  unitCopy = unit;
+  activeEnergy = [(CHWorkoutSegment *)self activeEnergy];
+  [activeEnergy doubleValueForUnit:unitCopy];
   v7 = v6;
 
   v8 = [NSNumber numberWithDouble:v7];
@@ -54,23 +54,23 @@
   return v3;
 }
 
-- (id)formattedDistanceValueForUnit:(id)a3
+- (id)formattedDistanceValueForUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(CHWorkoutSegment *)self distance];
-  [v5 doubleValueForUnit:v4];
+  unitCopy = unit;
+  distance = [(CHWorkoutSegment *)self distance];
+  [distance doubleValueForUnit:unitCopy];
   v7 = v6;
 
-  v8 = [objc_opt_class() _decimalNumberFormatter];
+  _decimalNumberFormatter = [objc_opt_class() _decimalNumberFormatter];
   v9 = [NSNumber numberWithDouble:v7];
-  v10 = [v8 stringFromNumber:v9];
+  v10 = [_decimalNumberFormatter stringFromNumber:v9];
 
   return v10;
 }
 
-- (id)formattedPaceUsingFormatType:(int64_t)a3 formattingManager:(id)a4 distanceType:(unint64_t)a5
+- (id)formattedPaceUsingFormatType:(int64_t)type formattingManager:(id)manager distanceType:(unint64_t)distanceType
 {
-  v8 = a4;
+  managerCopy = manager;
   [(CHWorkoutSegment *)self distanceGoalAchievedTime];
   if (v9 <= 0.0)
   {
@@ -85,21 +85,21 @@
   v11 = v10;
   if (fabs(v10) < 2.22044605e-16)
   {
-    v12 = [(CHWorkoutSegment *)self endDate];
-    v13 = [(CHWorkoutSegment *)self startDate];
-    [v12 timeIntervalSinceDate:v13];
+    endDate = [(CHWorkoutSegment *)self endDate];
+    startDate = [(CHWorkoutSegment *)self startDate];
+    [endDate timeIntervalSinceDate:startDate];
     v11 = v14;
   }
 
-  v15 = [(CHWorkoutSegment *)self distance];
-  v16 = [v8 localizedPaceStringWithDistance:v15 overDuration:a3 paceFormat:a5 distanceType:v11];
+  distance = [(CHWorkoutSegment *)self distance];
+  v16 = [managerCopy localizedPaceStringWithDistance:distance overDuration:type paceFormat:distanceType distanceType:v11];
 
   return v16;
 }
 
-- (id)formattedDistanceAchievedDurationValueWithFormattingManager:(id)a3
+- (id)formattedDistanceAchievedDurationValueWithFormattingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   [(CHWorkoutSegment *)self distanceGoalAchievedTime];
   if (v5 <= 0.0)
   {
@@ -109,7 +109,7 @@
   else
   {
     [(CHWorkoutSegment *)self distanceGoalAchievedTime];
-    v7 = [v4 stringWithDuration:3 durationFormat:round(v6)];
+    v7 = [managerCopy stringWithDuration:3 durationFormat:round(v6)];
   }
 
   return v7;

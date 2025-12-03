@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitRotateActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v4 = PFFilter();
   if ([v4 count])
   {
     [(PUPXPhotoKitRotateActionPerformer *)self rotateDirection];
     v5 = [PUPXPhotoKitBatchActionPerformer newEditActionForPerformer:self class:objc_opt_class() assets:v4 prepareAction:0];
-    v6 = [(PXActionPerformer *)self undoManager];
-    [v5 executeWithUndoManager:v6 completionHandler:&__block_literal_global_638];
+    undoManager = [(PXActionPerformer *)self undoManager];
+    [v5 executeWithUndoManager:undoManager completionHandler:&__block_literal_global_638];
 
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
   }
@@ -48,13 +48,13 @@ uint64_t __63__PUPXPhotoKitRotateActionPerformer_performUserInteractionTask__blo
   return v3;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 selectedIndexPaths];
-  v12 = [v11 count];
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v12 = [selectedIndexPaths count];
 
   if (v12)
   {
@@ -67,8 +67,8 @@ uint64_t __63__PUPXPhotoKitRotateActionPerformer_performUserInteractionTask__blo
     v15[2] = __88__PUPXPhotoKitRotateActionPerformer_canPerformWithSelectionSnapshot_person_socialGroup___block_invoke;
     v15[3] = &unk_1E7B7A828;
     v15[4] = &v16;
-    v15[5] = a1;
-    [v8 enumerateSelectedObjectsUsingBlock:v15];
+    v15[5] = self;
+    [snapshotCopy enumerateSelectedObjectsUsingBlock:v15];
     v13 = *(v17 + 24);
     _Block_object_dispose(&v16, 8);
   }

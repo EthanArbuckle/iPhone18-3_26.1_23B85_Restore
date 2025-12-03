@@ -1,18 +1,18 @@
 @interface NIHomeDeviceConfiguration
-- (BOOL)canUpdateToConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canUpdateToConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (NIHomeDeviceConfiguration)init;
-- (NIHomeDeviceConfiguration)initWithAllowedDevices:(unint64_t)a3 sessionKey:(id)a4 asAnchor:(BOOL)a5 regions:(id)a6;
-- (NIHomeDeviceConfiguration)initWithCoder:(id)a3;
-- (NIHomeDeviceConfiguration)initWithRegions:(id)a3;
+- (NIHomeDeviceConfiguration)initWithAllowedDevices:(unint64_t)devices sessionKey:(id)key asAnchor:(BOOL)anchor regions:(id)regions;
+- (NIHomeDeviceConfiguration)initWithCoder:(id)coder;
+- (NIHomeDeviceConfiguration)initWithRegions:(id)regions;
 - (NSArray)monitoredRegions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
 - (void)_updateRegionDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMonitoredRegions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMonitoredRegions:(id)regions;
 @end
 
 @implementation NIHomeDeviceConfiguration
@@ -21,13 +21,13 @@
 {
   v6.receiver = self;
   v6.super_class = NIHomeDeviceConfiguration;
-  v2 = [(NIConfiguration *)&v6 initInternal];
-  v3 = v2;
-  if (v2)
+  initInternal = [(NIConfiguration *)&v6 initInternal];
+  v3 = initInternal;
+  if (initInternal)
   {
-    v2->_allowedDevices = 4;
-    sessionKey = v2->_sessionKey;
-    v2->_sessionKey = 0;
+    initInternal->_allowedDevices = 4;
+    sessionKey = initInternal->_sessionKey;
+    initInternal->_sessionKey = 0;
 
     v3->_anchor = 0;
     v3->_minimumPreferredUpdatedRate = 3;
@@ -38,35 +38,35 @@
   return v3;
 }
 
-- (NIHomeDeviceConfiguration)initWithRegions:(id)a3
+- (NIHomeDeviceConfiguration)initWithRegions:(id)regions
 {
-  v4 = a3;
+  regionsCopy = regions;
   v5 = objc_alloc_init(objc_opt_class());
 
-  [(NIHomeDeviceConfiguration *)v5 setMonitoredRegions:v4];
+  [(NIHomeDeviceConfiguration *)v5 setMonitoredRegions:regionsCopy];
   return v5;
 }
 
-- (NIHomeDeviceConfiguration)initWithAllowedDevices:(unint64_t)a3 sessionKey:(id)a4 asAnchor:(BOOL)a5 regions:(id)a6
+- (NIHomeDeviceConfiguration)initWithAllowedDevices:(unint64_t)devices sessionKey:(id)key asAnchor:(BOOL)anchor regions:(id)regions
 {
-  v11 = a4;
-  v12 = a6;
+  keyCopy = key;
+  regionsCopy = regions;
   v13 = objc_alloc_init(objc_opt_class());
 
   if (v13)
   {
-    v13->_allowedDevices = a3;
-    objc_storeStrong(&v13->_sessionKey, a4);
-    v13->_anchor = a5;
-    [(NIHomeDeviceConfiguration *)v13 setMonitoredRegions:v12];
+    v13->_allowedDevices = devices;
+    objc_storeStrong(&v13->_sessionKey, key);
+    v13->_anchor = anchor;
+    [(NIHomeDeviceConfiguration *)v13 setMonitoredRegions:regionsCopy];
   }
 
   return v13;
 }
 
-- (void)setMonitoredRegions:(id)a3
+- (void)setMonitoredRegions:(id)regions
 {
-  objc_storeStrong(&self->_monitoredRegions, a3);
+  objc_storeStrong(&self->_monitoredRegions, regions);
 
   [(NIHomeDeviceConfiguration *)self _updateRegionDescription];
 }
@@ -103,7 +103,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = NIHomeDeviceConfiguration;
@@ -124,41 +124,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIHomeDeviceConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_allowedDevices forKey:@"allowedDevices"];
-  [v4 encodeObject:self->_sessionKey forKey:@"sessionKey"];
-  [v4 encodeBool:self->_anchor forKey:@"anchor"];
-  [v4 encodeInteger:self->_antennaDiversityOverride forKey:@"antennaDiversityOverride"];
-  [v4 encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
-  [v4 encodeInteger:self->_minimumPreferredUpdatedRate forKey:@"minimumPreferredUpdatedRate"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_allowedDevices forKey:@"allowedDevices"];
+  [coderCopy encodeObject:self->_sessionKey forKey:@"sessionKey"];
+  [coderCopy encodeBool:self->_anchor forKey:@"anchor"];
+  [coderCopy encodeInteger:self->_antennaDiversityOverride forKey:@"antennaDiversityOverride"];
+  [coderCopy encodeObject:self->_monitoredRegions forKey:@"monitoredRegions"];
+  [coderCopy encodeInteger:self->_minimumPreferredUpdatedRate forKey:@"minimumPreferredUpdatedRate"];
 }
 
-- (NIHomeDeviceConfiguration)initWithCoder:(id)a3
+- (NIHomeDeviceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = NIHomeDeviceConfiguration;
-  v5 = [(NIConfiguration *)&v16 initWithCoder:v4];
-  if (v5 && (v6 = [v4 decodeIntegerForKey:@"allowedDevices"], +[NIInternalUtils isIntValidRelationshipSpecifier:](NIInternalUtils, "isIntValidRelationshipSpecifier:", v6)))
+  v5 = [(NIConfiguration *)&v16 initWithCoder:coderCopy];
+  if (v5 && (v6 = [coderCopy decodeIntegerForKey:@"allowedDevices"], +[NIInternalUtils isIntValidRelationshipSpecifier:](NIInternalUtils, "isIntValidRelationshipSpecifier:", v6)))
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
-    v8 = [v4 decodeBoolForKey:@"anchor"];
-    v9 = [v4 decodeIntegerForKey:@"antennaDiversityOverride"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
+    v8 = [coderCopy decodeBoolForKey:@"anchor"];
+    v9 = [coderCopy decodeIntegerForKey:@"antennaDiversityOverride"];
     if ([NIInternalUtils isIntValidAntennaDiversityOverride:v9])
     {
       v17[0] = objc_opt_class();
       v17[1] = objc_opt_class();
       v10 = [NSArray arrayWithObjects:v17 count:2];
       v11 = [NSSet setWithArray:v10];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"monitoredRegions"];
+      v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"monitoredRegions"];
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && (v13 = [v4 decodeIntegerForKey:@"minimumPreferredUpdatedRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v13)))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && (v13 = [coderCopy decodeIntegerForKey:@"minimumPreferredUpdatedRate"], +[NIInternalUtils isIntValidNearbyObjectUpdateRate:](NIInternalUtils, "isIntValidNearbyObjectUpdateRate:", v13)))
       {
         v5->_allowedDevices = v6;
         objc_storeStrong(&v5->_sessionKey, v7);
@@ -190,28 +190,28 @@
   return v14;
 }
 
-- (BOOL)canUpdateToConfiguration:(id)a3
+- (BOOL)canUpdateToConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (!configurationCopy)
   {
     goto LABEL_21;
   }
 
-  if (self != v4)
+  if (self != configurationCopy)
   {
-    v6 = [(NIHomeDeviceConfiguration *)v4 allowedDevices];
+    allowedDevices = [(NIHomeDeviceConfiguration *)configurationCopy allowedDevices];
     allowedDevices = self->_allowedDevices;
-    v8 = [(NIHomeDeviceConfiguration *)v5 isAnchor];
+    isAnchor = [(NIHomeDeviceConfiguration *)v5 isAnchor];
     anchor = self->_anchor;
-    v10 = [(NIHomeDeviceConfiguration *)v5 antennaDiversityOverride];
+    antennaDiversityOverride = [(NIHomeDeviceConfiguration *)v5 antennaDiversityOverride];
     antennaDiversityOverride = self->_antennaDiversityOverride;
-    v12 = [(NIHomeDeviceConfiguration *)v5 minimumPreferredUpdatedRate];
+    minimumPreferredUpdatedRate = [(NIHomeDeviceConfiguration *)v5 minimumPreferredUpdatedRate];
     minimumPreferredUpdatedRate = self->_minimumPreferredUpdatedRate;
-    v13 = [(NIHomeDeviceConfiguration *)v5 sessionKey];
-    v28 = v12;
-    if (v13)
+    sessionKey = [(NIHomeDeviceConfiguration *)v5 sessionKey];
+    v28 = minimumPreferredUpdatedRate;
+    if (sessionKey)
     {
       v32 = 0;
     }
@@ -221,19 +221,19 @@
       v32 = self->_sessionKey == 0;
     }
 
-    v15 = [(NIHomeDeviceConfiguration *)v5 sessionKey];
+    sessionKey2 = [(NIHomeDeviceConfiguration *)v5 sessionKey];
     v30 = antennaDiversityOverride;
-    v31 = v10;
-    v16 = v8;
-    v17 = v6;
-    v18 = [v15 isEqualToData:self->_sessionKey];
+    v31 = antennaDiversityOverride;
+    v16 = isAnchor;
+    v17 = allowedDevices;
+    v18 = [sessionKey2 isEqualToData:self->_sessionKey];
 
-    v19 = [(NIHomeDeviceConfiguration *)v5 monitoredRegions];
-    v20 = [v19 isEqualToArray:self->_monitoredRegions];
+    monitoredRegions = [(NIHomeDeviceConfiguration *)v5 monitoredRegions];
+    v20 = [monitoredRegions isEqualToArray:self->_monitoredRegions];
 
-    v21 = [(NIHomeDeviceConfiguration *)v5 monitoredRegions];
+    monitoredRegions2 = [(NIHomeDeviceConfiguration *)v5 monitoredRegions];
     v22 = v32 | v18;
-    if (v21)
+    if (monitoredRegions2)
     {
       v23 = 0;
     }
@@ -261,13 +261,13 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (v5 == self)
     {
       v7 = 1;
@@ -275,8 +275,8 @@ LABEL_22:
 
     else if ([(NIHomeDeviceConfiguration *)self canUpdateToConfiguration:v5])
     {
-      v6 = [(NIConfiguration *)self enabledGestures];
-      v7 = v6 == [(NIConfiguration *)v5 enabledGestures];
+      enabledGestures = [(NIConfiguration *)self enabledGestures];
+      v7 = enabledGestures == [(NIConfiguration *)v5 enabledGestures];
     }
 
     else
@@ -305,8 +305,8 @@ LABEL_22:
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIHomeDeviceConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIHomeDeviceConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

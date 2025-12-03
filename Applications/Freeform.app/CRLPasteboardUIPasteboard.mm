@@ -1,48 +1,48 @@
 @interface CRLPasteboardUIPasteboard
-- (BOOL)canLoadItemsOfClass:(Class)a3;
-- (CRLPasteboardUIPasteboard)initWithNativePasteboard:(id)a3;
-- (CRLPasteboardUIPasteboard)initWithPasteboardName:(id)a3 create:(BOOL)a4;
+- (BOOL)canLoadItemsOfClass:(Class)class;
+- (CRLPasteboardUIPasteboard)initWithNativePasteboard:(id)pasteboard;
+- (CRLPasteboardUIPasteboard)initWithPasteboardName:(id)name create:(BOOL)create;
 - (CRLPasteboardUIPasteboard)initWithUniquePasteboardName;
-- (id)dataForPasteboardType:(id)a3;
+- (id)dataForPasteboardType:(id)type;
 - (id)pasteboardTypes;
-- (id)propertyListForValue:(id)a3;
+- (id)propertyListForValue:(id)value;
 - (id)richTextStrings;
 - (id)string;
-- (id)stringForPasteboardType:(id)a3;
+- (id)stringForPasteboardType:(id)type;
 - (id)strings;
-- (id)stringsForPasteboardType:(id)a3 inItemSet:(id)a4;
-- (id)valueForPasteboardType:(id)a3;
+- (id)stringsForPasteboardType:(id)type inItemSet:(id)set;
+- (id)valueForPasteboardType:(id)type;
 - (int64_t)clearContents;
 - (unint64_t)pasteboardItemMaxSize;
-- (void)addItems:(id)a3 isSmartCopy:(BOOL)a4;
-- (void)addPasteboardItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)addPasteboardItemForObject:(id)a3 type:(id)a4;
-- (void)addPasteboardItemIndex:(unint64_t)a3 forType:(id)a4;
+- (void)addItems:(id)items isSmartCopy:(BOOL)copy;
+- (void)addPasteboardItem:(id)item atIndex:(unint64_t)index;
+- (void)addPasteboardItemForObject:(id)object type:(id)type;
+- (void)addPasteboardItemIndex:(unint64_t)index forType:(id)type;
 - (void)invalidate;
 - (void)invalidatePasteboardCache;
 - (void)invalidatePasteboardCacheIfNeeded;
 - (void)reloadPasteboardItemIndexCacheIfNeeded;
-- (void)setString:(id)a3;
+- (void)setString:(id)string;
 @end
 
 @implementation CRLPasteboardUIPasteboard
 
-- (CRLPasteboardUIPasteboard)initWithPasteboardName:(id)a3 create:(BOOL)a4
+- (CRLPasteboardUIPasteboard)initWithPasteboardName:(id)name create:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
+  createCopy = create;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = CRLPasteboardUIPasteboard;
-  v7 = [(CRLPasteboard *)&v12 initWithPasteboardName:v6 create:v4];
+  v7 = [(CRLPasteboard *)&v12 initWithPasteboardName:nameCopy create:createCopy];
   if (v7)
   {
-    v8 = [UIPasteboard pasteboardWithName:v6 create:v4];
+    v8 = [UIPasteboard pasteboardWithName:nameCopy create:createCopy];
     pasteboard = v7->super._pasteboard;
     v7->super._pasteboard = v8;
 
     if (!v7->super._pasteboard)
     {
-      if (v4)
+      if (createCopy)
       {
         if (qword_101AD5A08 != -1)
         {
@@ -52,7 +52,7 @@
         v10 = off_1019EDA60;
         if (os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_ERROR))
         {
-          sub_10131146C(v6, v10);
+          sub_10131146C(nameCopy, v10);
         }
       }
 
@@ -67,27 +67,27 @@
 {
   v6.receiver = self;
   v6.super_class = CRLPasteboardUIPasteboard;
-  v2 = [(CRLPasteboard *)&v6 initWithUniquePasteboardName];
-  if (v2)
+  initWithUniquePasteboardName = [(CRLPasteboard *)&v6 initWithUniquePasteboardName];
+  if (initWithUniquePasteboardName)
   {
     v3 = +[UIPasteboard pasteboardWithUniqueName];
-    pasteboard = v2->super._pasteboard;
-    v2->super._pasteboard = v3;
+    pasteboard = initWithUniquePasteboardName->super._pasteboard;
+    initWithUniquePasteboardName->super._pasteboard = v3;
   }
 
-  return v2;
+  return initWithUniquePasteboardName;
 }
 
-- (CRLPasteboardUIPasteboard)initWithNativePasteboard:(id)a3
+- (CRLPasteboardUIPasteboard)initWithNativePasteboard:(id)pasteboard
 {
-  v4 = a3;
+  pasteboardCopy = pasteboard;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, pasteboardCopy);
   if (v6)
   {
     v10.receiver = self;
     v10.super_class = CRLPasteboardUIPasteboard;
-    v7 = [(CRLPasteboard *)&v10 initWithNativePasteboard:v4];
+    v7 = [(CRLPasteboard *)&v10 initWithNativePasteboard:pasteboardCopy];
     v8 = v7;
     if (v7)
     {
@@ -104,25 +104,25 @@
   return v8;
 }
 
-- (void)addPasteboardItemForObject:(id)a3 type:(id)a4
+- (void)addPasteboardItemForObject:(id)object type:(id)type
 {
-  v9 = a4;
-  v10 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
+  typeCopy = type;
+  objectCopy = object;
+  typeCopy2 = type;
+  objectCopy2 = object;
+  v8 = [NSDictionary dictionaryWithObjects:&objectCopy forKeys:&typeCopy count:1];
 
   [(CRLPasteboardUIPasteboard *)self addPasteboardItem:v8];
 }
 
-- (void)addPasteboardItem:(id)a3 atIndex:(unint64_t)a4
+- (void)addPasteboardItem:(id)item atIndex:(unint64_t)index
 {
-  v6 = a3;
+  itemCopy = item;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v7 = [itemCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -134,12 +134,12 @@
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemCopy);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
         v13 = objc_opt_class();
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [itemCopy objectForKeyedSubscript:v12];
         v15 = sub_100014370(v13, v14);
 
         if (v15 && ![v15 length])
@@ -149,21 +149,21 @@
 
         else
         {
-          [(CRLPasteboardUIPasteboard *)self addPasteboardItemIndex:a4 forType:v12];
+          [(CRLPasteboardUIPasteboard *)self addPasteboardItemIndex:index forType:v12];
           v16 = 1;
         }
 
         v9 |= v16;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v8 = [itemCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v8);
     if (v9)
     {
       pasteboard = self->super._pasteboard;
-      v23 = v6;
+      v23 = itemCopy;
       v18 = [NSArray arrayWithObjects:&v23 count:1];
       [(UIPasteboard *)pasteboard addItems:v18];
 
@@ -172,23 +172,23 @@
   }
 }
 
-- (void)addPasteboardItemIndex:(unint64_t)a3 forType:(id)a4
+- (void)addPasteboardItemIndex:(unint64_t)index forType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   pasteboardItemIndexCache = self->_pasteboardItemIndexCache;
-  v14 = v6;
+  v14 = typeCopy;
   if (pasteboardItemIndexCache)
   {
-    v8 = [(NSMutableDictionary *)pasteboardItemIndexCache objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)pasteboardItemIndexCache objectForKeyedSubscript:typeCopy];
     v9 = v8;
     if (v8)
     {
-      [v8 addIndex:a3];
+      [v8 addIndex:index];
     }
 
     else
     {
-      v13 = [NSMutableIndexSet indexSetWithIndex:a3];
+      v13 = [NSMutableIndexSet indexSetWithIndex:index];
       [(NSMutableDictionary *)self->_pasteboardItemIndexCache setObject:v13 forKeyedSubscript:v14];
     }
   }
@@ -196,7 +196,7 @@
   else
   {
     v10 = [NSMutableDictionary alloc];
-    v9 = [NSMutableIndexSet indexSetWithIndex:a3];
+    v9 = [NSMutableIndexSet indexSetWithIndex:index];
     v11 = [v10 initWithObjectsAndKeys:{v9, v14, 0}];
     v12 = self->_pasteboardItemIndexCache;
     self->_pasteboardItemIndexCache = v11;
@@ -205,10 +205,10 @@
 
 - (void)invalidatePasteboardCacheIfNeeded
 {
-  v3 = [(CRLPasteboard *)self changeCount];
-  if (self->_cachedChangeCount != v3)
+  changeCount = [(CRLPasteboard *)self changeCount];
+  if (self->_cachedChangeCount != changeCount)
   {
-    v4 = v3;
+    v4 = changeCount;
     [(CRLPasteboardUIPasteboard *)self invalidatePasteboardCache];
     self->_cachedChangeCount = v4;
   }
@@ -300,25 +300,25 @@
   }
 }
 
-- (id)propertyListForValue:(id)a3
+- (id)propertyListForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = v3;
+    v4 = valueCopy;
 LABEL_4:
     v5 = v4;
     goto LABEL_5;
   }
 
-  v5 = [NSPropertyListSerialization propertyListWithData:v3 options:0 format:0 error:0];
+  v5 = [NSPropertyListSerialization propertyListWithData:valueCopy options:0 format:0 error:0];
   if (!v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [v3 bytes]);
+      v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [valueCopy bytes]);
       goto LABEL_4;
     }
 
@@ -333,31 +333,31 @@ LABEL_5:
 - (id)string
 {
   v3 = objc_opt_class();
-  v4 = [UTTypeUTF8PlainText identifier];
-  v5 = [(CRLPasteboardUIPasteboard *)self valueForPasteboardType:v4];
+  identifier = [UTTypeUTF8PlainText identifier];
+  v5 = [(CRLPasteboardUIPasteboard *)self valueForPasteboardType:identifier];
   v6 = sub_100014370(v3, v5);
 
   return v6;
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(CRLPasteboardUIPasteboard *)self clearContents];
-  v5 = [UTTypeUTF8PlainText identifier];
-  [(CRLPasteboardUIPasteboard *)self addPasteboardItemForObject:v4 type:v5];
+  identifier = [UTTypeUTF8PlainText identifier];
+  [(CRLPasteboardUIPasteboard *)self addPasteboardItemForObject:stringCopy type:identifier];
 }
 
 - (id)strings
 {
-  v3 = [UTTypeText identifier];
-  v4 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:v3 inItemSet:0];
+  identifier = [UTTypeText identifier];
+  v4 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:identifier inItemSet:0];
   v5 = [NSMutableArray arrayWithArray:v4];
 
   if (![v5 count])
   {
-    v6 = [UTTypeURL identifier];
-    v7 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:v6 inItemSet:0];
+    identifier2 = [UTTypeURL identifier];
+    v7 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:identifier2 inItemSet:0];
     [v5 addObjectsFromArray:v7];
   }
 
@@ -380,7 +380,7 @@ LABEL_5:
     v10 = v9;
     v11 = &_s10Foundation9IndexPathVSHAAMc_ptr;
     v12 = *v40;
-    v36 = self;
+    selfCopy = self;
     while (1)
     {
       v13 = 0;
@@ -395,7 +395,7 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 absoluteString];
+          absoluteString = [v14 absoluteString];
         }
 
         else
@@ -406,8 +406,8 @@ LABEL_5:
           v18 = v17;
           if (isKindOfClass)
           {
-            v19 = [v14 firstObject];
-            v20 = sub_100014370(v18, v19);
+            firstObject = [v14 firstObject];
+            v20 = sub_100014370(v18, firstObject);
 
             if (v20)
             {
@@ -417,11 +417,11 @@ LABEL_5:
             goto LABEL_13;
           }
 
-          v15 = sub_100014370(v17, v14);
+          absoluteString = sub_100014370(v17, v14);
         }
 
-        v20 = v15;
-        if (v15)
+        v20 = absoluteString;
+        if (absoluteString)
         {
 LABEL_24:
           [v38 addObject:v20];
@@ -479,7 +479,7 @@ LABEL_13:
         [CRLAssertionHandler handleFailureInFunction:v25 file:v26 lineNumber:973 isFatal:0 description:"Failed to convert value from %{public}@ to NSString", v28];
 
         v11 = v23;
-        self = v36;
+        self = selfCopy;
 LABEL_25:
 
         v13 = v13 + 1;
@@ -506,8 +506,8 @@ LABEL_29:
 - (id)richTextStrings
 {
   pasteboard = self->super._pasteboard;
-  v4 = [UTTypeFlatRTFD identifier];
-  v52 = v4;
+  identifier = [UTTypeFlatRTFD identifier];
+  v52 = identifier;
   v5 = [NSArray arrayWithObjects:&v52 count:1];
   v6 = [(UIPasteboard *)pasteboard itemSetWithPasteboardTypes:v5];
 
@@ -515,8 +515,8 @@ LABEL_29:
   v8 = self->super._pasteboard;
   if (v7)
   {
-    v9 = [UTTypeFlatRTFD identifier];
-    v10 = [(UIPasteboard *)v8 valuesForPasteboardType:v9 inItemSet:v6];
+    identifier2 = [UTTypeFlatRTFD identifier];
+    v10 = [(UIPasteboard *)v8 valuesForPasteboardType:identifier2 inItemSet:v6];
 
     v43 = 0u;
     v44 = 0u;
@@ -575,8 +575,8 @@ LABEL_29:
 
   else
   {
-    v22 = [UTTypeRTF identifier];
-    v48 = v22;
+    identifier3 = [UTTypeRTF identifier];
+    v48 = identifier3;
     v23 = [NSArray arrayWithObjects:&v48 count:1];
     v21 = [(UIPasteboard *)v8 itemSetWithPasteboardTypes:v23];
 
@@ -587,8 +587,8 @@ LABEL_29:
     }
 
     v24 = self->super._pasteboard;
-    v25 = [UTTypeRTF identifier];
-    v26 = [(UIPasteboard *)v24 valuesForPasteboardType:v25 inItemSet:v21];
+    identifier4 = [UTTypeRTF identifier];
+    v26 = [(UIPasteboard *)v24 valuesForPasteboardType:identifier4 inItemSet:v21];
 
     v39 = 0u;
     v40 = 0u;
@@ -712,9 +712,9 @@ LABEL_32:
       while (v7);
     }
 
-    v16 = [v4 array];
+    array = [v4 array];
     v17 = self->_cachedPasteboardTypes;
-    self->_cachedPasteboardTypes = v16;
+    self->_cachedPasteboardTypes = array;
 
     cachedPasteboardTypes = self->_cachedPasteboardTypes;
   }
@@ -722,11 +722,11 @@ LABEL_32:
   return cachedPasteboardTypes;
 }
 
-- (id)dataForPasteboardType:(id)a3
+- (id)dataForPasteboardType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(CRLPasteboardUIPasteboard *)self reloadPasteboardItemIndexCacheIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:typeCopy];
   v6 = v5;
   if (v5)
   {
@@ -737,34 +737,34 @@ LABEL_32:
       v6 = v7;
     }
 
-    v8 = [(CRLPasteboardUIPasteboard *)self dataForPasteboardType:v4 inItemSet:v6];
-    v9 = [v8 firstObject];
+    v8 = [(CRLPasteboardUIPasteboard *)self dataForPasteboardType:typeCopy inItemSet:v6];
+    firstObject = [v8 firstObject];
 
-    if (v9)
+    if (firstObject)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [NSPropertyListSerialization dataWithPropertyList:v9 format:200 options:0 error:0];
+        v10 = [NSPropertyListSerialization dataWithPropertyList:firstObject format:200 options:0 error:0];
 
-        v9 = v10;
+        firstObject = v10;
       }
     }
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)stringForPasteboardType:(id)a3
+- (id)stringForPasteboardType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(CRLPasteboardUIPasteboard *)self reloadPasteboardItemIndexCacheIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:typeCopy];
   v6 = v5;
   if (v5)
   {
@@ -775,23 +775,23 @@ LABEL_32:
       v6 = v7;
     }
 
-    v8 = [(CRLPasteboardUIPasteboard *)self stringsForPasteboardType:v4 inItemSet:v6];
-    v9 = [v8 firstObject];
+    v8 = [(CRLPasteboardUIPasteboard *)self stringsForPasteboardType:typeCopy inItemSet:v6];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)valueForPasteboardType:(id)a3
+- (id)valueForPasteboardType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(CRLPasteboardUIPasteboard *)self reloadPasteboardItemIndexCacheIfNeeded];
-  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_pasteboardItemIndexCache objectForKeyedSubscript:typeCopy];
   v6 = v5;
   if (!v5)
   {
@@ -805,12 +805,12 @@ LABEL_32:
     v6 = v7;
   }
 
-  v8 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:v4 inItemSet:v6];
-  v9 = [v8 firstObject];
+  v8 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:typeCopy inItemSet:v6];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v10 = [(CRLPasteboardUIPasteboard *)self propertyListForValue:v9];
+    v10 = [(CRLPasteboardUIPasteboard *)self propertyListForValue:firstObject];
   }
 
   else
@@ -822,9 +822,9 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)canLoadItemsOfClass:(Class)a3
+- (BOOL)canLoadItemsOfClass:(Class)class
 {
-  if (![(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
+  if (![(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___NSItemProviderReading])
   {
     return 0;
   }
@@ -834,8 +834,8 @@ LABEL_6:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(UIPasteboard *)v5 itemProviders];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  itemProviders = [(UIPasteboard *)v5 itemProviders];
+  v7 = [itemProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -846,17 +846,17 @@ LABEL_6:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemProviders);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) canLoadObjectOfClass:a3])
+        if ([*(*(&v13 + 1) + 8 * i) canLoadObjectOfClass:class])
         {
           v11 = 1;
           goto LABEL_13;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [itemProviders countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -872,14 +872,14 @@ LABEL_13:
   return v11;
 }
 
-- (void)addItems:(id)a3 isSmartCopy:(BOOL)a4
+- (void)addItems:(id)items isSmartCopy:(BOOL)copy
 {
-  v64 = a4;
+  copyCopy = copy;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = a3;
+  obj = items;
   v70 = [obj countByEnumeratingWithState:&v94 objects:v100 count:16];
   if (v70)
   {
@@ -1002,7 +1002,7 @@ LABEL_15:
                 v59 = v72;
                 v85 = &v90;
                 v83 = v59;
-                v84 = self;
+                selfCopy = self;
                 [v77 enumerateObjectsAtIndexes:v16 options:0 usingBlock:v82];
               }
 
@@ -1098,9 +1098,9 @@ LABEL_18:
               v23 = off_1019EDA60;
               if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
               {
-                v29 = [(CRLPasteboardUIPasteboard *)self pasteboardItemMaxSize];
+                pasteboardItemMaxSize = [(CRLPasteboardUIPasteboard *)self pasteboardItemMaxSize];
                 *buf = 134218242;
-                *v102 = v29;
+                *v102 = pasteboardItemMaxSize;
                 *&v102[8] = 2114;
                 *&v102[10] = v21;
                 _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "The total size for public data on the pasteboard has reached the allowed limit of %zu bytes per pasteboard item. %{public}@ will not be added to the pasteboard.", buf, 0x16u);
@@ -1153,20 +1153,20 @@ LABEL_18:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v43 = self;
+                  selfCopy2 = self;
                   v44 = v42;
                   v45 = v41;
                   if (self)
                   {
-                    v46 = [(CRLPasteboardUIPasteboard *)v43 pasteboardItemMaxSize];
+                    pasteboardItemMaxSize2 = [(CRLPasteboardUIPasteboard *)selfCopy2 pasteboardItemMaxSize];
                   }
 
                   else
                   {
-                    v46 = 18874368;
+                    pasteboardItemMaxSize2 = 18874368;
                   }
 
-                  if ([v44 length] > v46)
+                  if ([v44 length] > pasteboardItemMaxSize2)
                   {
                     v47 = +[CRLAssertionHandler _atomicIncrementAssertCount];
                     if (qword_101AD5A10 != -1)
@@ -1281,16 +1281,16 @@ LABEL_96:
     while (v70);
   }
 
-  if (v64)
+  if (copyCopy)
   {
     v63 = [@"NeXT smart paste pasteboard type" dataUsingEncoding:4];
     [(CRLPasteboardUIPasteboard *)self addPasteboardItemForObject:v63 type:@"NeXT smart paste pasteboard type"];
   }
 }
 
-- (id)stringsForPasteboardType:(id)a3 inItemSet:(id)a4
+- (id)stringsForPasteboardType:(id)type inItemSet:(id)set
 {
-  v5 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:a3 inItemSet:a4];
+  v5 = [(CRLPasteboardUIPasteboard *)self valuesForPasteboardType:type inItemSet:set];
   v6 = [v5 count];
   if (v6)
   {
@@ -1327,14 +1327,14 @@ LABEL_96:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 path];
-            if (!v14)
+            path = [v13 path];
+            if (!path)
             {
               goto LABEL_17;
             }
 
 LABEL_16:
-            [v33 addObject:v14];
+            [v33 addObject:path];
           }
 
           else
@@ -1349,14 +1349,14 @@ LABEL_16:
                 goto LABEL_17;
               }
 
-              v14 = v13;
+              path = v13;
               goto LABEL_16;
             }
 
-            v17 = [v13 firstObject];
-            v14 = sub_100014370(v16, v17);
+            firstObject = [v13 firstObject];
+            path = sub_100014370(v16, firstObject);
 
-            if (v14)
+            if (path)
             {
               goto LABEL_16;
             }
@@ -1405,11 +1405,11 @@ LABEL_17:
               _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
             }
 
-            v14 = [NSString stringWithUTF8String:"[CRLPasteboardUIPasteboard stringsForPasteboardType:inItemSet:]"];
+            path = [NSString stringWithUTF8String:"[CRLPasteboardUIPasteboard stringsForPasteboardType:inItemSet:]"];
             v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLPasteboard.m"];
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
-            [CRLAssertionHandler handleFailureInFunction:v14 file:v22 lineNumber:1287 isFatal:0 description:"Failed to convert value from %{public}@ to NSString", v24];
+            [CRLAssertionHandler handleFailureInFunction:path file:v22 lineNumber:1287 isFatal:0 description:"Failed to convert value from %{public}@ to NSString", v24];
 
             v10 = v20;
             v7 = v32;
@@ -1440,16 +1440,16 @@ LABEL_31:
 - (int64_t)clearContents
 {
   [(CRLPasteboardUIPasteboard *)self invalidatePasteboardCache];
-  v3 = [(CRLPasteboard *)self changeCount];
+  changeCount = [(CRLPasteboard *)self changeCount];
   [(UIPasteboard *)self->super._pasteboard setItems:&__NSArray0__struct];
   [(CRLPasteboardUIPasteboard *)self updateCachedChangeCount];
-  return v3;
+  return changeCount;
 }
 
 - (unint64_t)pasteboardItemMaxSize
 {
-  v3 = [(CRLPasteboard *)self name];
-  v4 = [v3 isEqualToString:UIPasteboardNameGeneral];
+  name = [(CRLPasteboard *)self name];
+  v4 = [name isEqualToString:UIPasteboardNameGeneral];
 
   if (!v4)
   {
@@ -1463,8 +1463,8 @@ LABEL_31:
 
 - (void)invalidate
 {
-  v2 = [(CRLPasteboard *)self name];
-  [UIPasteboard removePasteboardWithName:v2];
+  name = [(CRLPasteboard *)self name];
+  [UIPasteboard removePasteboardWithName:name];
 }
 
 @end

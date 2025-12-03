@@ -1,28 +1,28 @@
 @interface VCAggregatorSecondDisplay
-- (VCAggregatorSecondDisplay)initWithDelegate:(id)a3 withMode:(unsigned int)a4 options:(id)a5;
+- (VCAggregatorSecondDisplay)initWithDelegate:(id)delegate withMode:(unsigned int)mode options:(id)options;
 - (id)aggregatedSessionReport;
-- (void)addScreenSharingSpecificReportingKeys:(id)a3;
+- (void)addScreenSharingSpecificReportingKeys:(id)keys;
 - (void)dealloc;
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5;
-- (void)processRealtimeStats:(id)a3;
-- (void)processResiliencyEnablementConfig:(id)a3;
-- (void)updateReceiverVideoStreamConfiguration:(id)a3;
-- (void)updateSenderVideoStreamConfiguration:(id)a3;
-- (void)updateVideoFECStats:(id)a3;
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload;
+- (void)processRealtimeStats:(id)stats;
+- (void)processResiliencyEnablementConfig:(id)config;
+- (void)updateReceiverVideoStreamConfiguration:(id)configuration;
+- (void)updateSenderVideoStreamConfiguration:(id)configuration;
+- (void)updateVideoFECStats:(id)stats;
 @end
 
 @implementation VCAggregatorSecondDisplay
 
-- (VCAggregatorSecondDisplay)initWithDelegate:(id)a3 withMode:(unsigned int)a4 options:(id)a5
+- (VCAggregatorSecondDisplay)initWithDelegate:(id)delegate withMode:(unsigned int)mode options:(id)options
 {
   v34 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = VCAggregatorSecondDisplay;
-  v7 = [(VCAggregator *)&v21 initWithDelegate:a3 nwParentActivity:0];
+  v7 = [(VCAggregator *)&v21 initWithDelegate:delegate nwParentActivity:0];
   v8 = v7;
   if (v7)
   {
-    v7->_aggregatorVideoStreamMode = a4;
+    v7->_aggregatorVideoStreamMode = mode;
     v7->_RBR = [[VCReportingHistogram alloc] initWithType:7 bucketValues:0];
     v8->_TBR = [[VCReportingHistogram alloc] initWithType:6 bucketValues:0];
     v8->_SBR = [[VCReportingHistogram alloc] initWithType:8 bucketValues:0];
@@ -35,9 +35,9 @@
     v8->_RTT = [[VCReportingHistogram alloc] initWithType:0 bucketValues:0];
     v8->_HEL = [[VCReportingHistogram alloc] initWithType:39 bucketValues:0];
     v8->_minHIDEventLatency = -1;
-    if (a5)
+    if (options)
     {
-      v8->super.super._shouldReportLowLatencyInterfaceStatistics = [objc_msgSend(a5 objectForKeyedSubscript:{@"ReportLowLatencyInterfaceStatistics", "BOOLValue"}];
+      v8->super.super._shouldReportLowLatencyInterfaceStatistics = [objc_msgSend(options objectForKeyedSubscript:{@"ReportLowLatencyInterfaceStatistics", "BOOLValue"}];
       if (objc_opt_class() == v8)
       {
         if (VRTraceGetErrorLogLevelForModule("") >= 7)
@@ -671,31 +671,31 @@ LABEL_64:
   return result;
 }
 
-- (void)addScreenSharingSpecificReportingKeys:(id)a3
+- (void)addScreenSharingSpecificReportingKeys:(id)keys
 {
   if (self->_aggregatorVideoStreamMode - 2 <= 2)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKey:{"numberWithInt:", self->_transportProtocol), @"VCVSConfigTransportProtocol"}];
+    [keys setObject:objc_msgSend(MEMORY[0x277CCABA8] forKey:{"numberWithInt:", self->_transportProtocol), @"VCVSConfigTransportProtocol"}];
     v6 = [MEMORY[0x277CCABA8] numberWithInt:self->_accessNetworkType];
 
-    [a3 setObject:v6 forKey:@"VCVSConfigAccessNetworkType"];
+    [keys setObject:v6 forKey:@"VCVSConfigAccessNetworkType"];
   }
 }
 
-- (void)updateVideoFECStats:(id)a3
+- (void)updateVideoFECStats:(id)stats
 {
-  v4 = [a3 objectForKeyedSubscript:@"VFecStats"];
+  v4 = [stats objectForKeyedSubscript:@"VFecStats"];
   fecStatsHolder = self->super.super._fecStatsHolder;
 
   [(VCAggregator *)self updateFECStats:fecStatsHolder usingUpdateValuesIn:v4];
 }
 
-- (void)processRealtimeStats:(id)a3
+- (void)processRealtimeStats:(id)stats
 {
   self->_sessionTotalDuration = self->_sessionTotalDuration + 1.0;
-  if ([a3 objectForKeyedSubscript:@"VST"])
+  if ([stats objectForKeyedSubscript:@"VST"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VST", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VST", "doubleValue"}];
     v6 = v5;
     v7 = v5 - self->_lastReportedVideoStallTime;
     [(VCHistogram *)self->_VST addValue:v7];
@@ -710,24 +710,24 @@ LABEL_64:
     self->_totalVideoStallTime = v7 + self->_totalVideoStallTime;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VSTCNT"])
+  if ([stats objectForKeyedSubscript:@"VSTCNT"])
   {
-    v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VSTCNT", "integerValue"}];
+    v9 = [objc_msgSend(stats objectForKeyedSubscript:{@"VSTCNT", "integerValue"}];
     self->_videoStallCount += v9;
     LODWORD(v10) = self->_maxVideoStallCount;
     self->_maxVideoStallCount = fmax(v10, v9);
   }
 
-  if ([a3 objectForKeyedSubscript:@"VRxR"])
+  if ([stats objectForKeyedSubscript:@"VRxR"])
   {
-    v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VRxR", "integerValue"}];
+    v11 = [objc_msgSend(stats objectForKeyedSubscript:{@"VRxR", "integerValue"}];
     [(VCHistogram *)self->_RBR addValue:v11];
     self->_averageReceiveBitrate += v11;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VTxR"])
+  if ([stats objectForKeyedSubscript:@"VTxR"])
   {
-    v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VTxR", "integerValue"}];
+    v12 = [objc_msgSend(stats objectForKeyedSubscript:{@"VTxR", "integerValue"}];
     [(VCHistogram *)self->_SBR addValue:v12];
     maxSendBitrate = self->_maxSendBitrate;
     if (maxSendBitrate <= v12)
@@ -739,9 +739,9 @@ LABEL_64:
     self->_averageSendBitrate += v12;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ULTBR"])
+  if ([stats objectForKeyedSubscript:@"ULTBR"])
   {
-    v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ULTBR", "integerValue"}];
+    v14 = [objc_msgSend(stats objectForKeyedSubscript:{@"ULTBR", "integerValue"}];
     [(VCHistogram *)self->_TBR addValue:v14];
     maxTargetBitrate = self->_maxTargetBitrate;
     if (maxTargetBitrate <= v14)
@@ -753,44 +753,44 @@ LABEL_64:
     self->_averageTargetBitrate += v14;
   }
 
-  if ([a3 objectForKeyedSubscript:@"EncOutFrameCnt"])
+  if ([stats objectForKeyedSubscript:@"EncOutFrameCnt"])
   {
-    self->_encodedVideoFrameCount += [objc_msgSend(a3 objectForKeyedSubscript:{@"EncOutFrameCnt", "integerValue"}];
+    self->_encodedVideoFrameCount += [objc_msgSend(stats objectForKeyedSubscript:{@"EncOutFrameCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"DecOutFrameCnt"])
+  if ([stats objectForKeyedSubscript:@"DecOutFrameCnt"])
   {
-    self->_decodedVideoFrameCount += [objc_msgSend(a3 objectForKeyedSubscript:{@"DecOutFrameCnt", "integerValue"}];
+    self->_decodedVideoFrameCount += [objc_msgSend(stats objectForKeyedSubscript:{@"DecOutFrameCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFCCnt"])
+  if ([stats objectForKeyedSubscript:@"VFCCnt"])
   {
-    self->_captureVideoFrameCount += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFCCnt", "integerValue"}];
+    self->_captureVideoFrameCount += [objc_msgSend(stats objectForKeyedSubscript:{@"VFCCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VIQDCnt"])
+  if ([stats objectForKeyedSubscript:@"VIQDCnt"])
   {
-    self->_videoFrameDisplayedCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VIQDCnt", "integerValue"}];
+    self->_videoFrameDisplayedCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VIQDCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"DVFECnt"])
+  if ([stats objectForKeyedSubscript:@"DVFECnt"])
   {
-    self->_decodedVideoFrameEnqueueCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"DVFECnt", "integerValue"}];
+    self->_decodedVideoFrameEnqueueCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"DVFECnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFRxCnt"])
+  if ([stats objectForKeyedSubscript:@"VFRxCnt"])
   {
-    self->_videoFrameReceivedCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFRxCnt", "integerValue"}];
+    self->_videoFrameReceivedCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VFRxCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFExCnt"])
+  if ([stats objectForKeyedSubscript:@"VFExCnt"])
   {
-    self->_videoFrameExpectedCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFExCnt", "integerValue"}];
+    self->_videoFrameExpectedCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VFExCnt", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"ULPLR"])
+  if ([stats objectForKeyedSubscript:@"ULPLR"])
   {
-    v16 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ULPLR", "integerValue"}];
+    v16 = [objc_msgSend(stats objectForKeyedSubscript:{@"ULPLR", "integerValue"}];
     v17 = v16;
     maxPLR = self->_maxPLR;
     if (maxPLR <= v16)
@@ -803,25 +803,25 @@ LABEL_64:
     self->_averagePacketLossRate += v17;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFIRCnt"])
+  if ([stats objectForKeyedSubscript:@"VFIRCnt"])
   {
-    self->_totalFIRCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFIRCnt", "intValue"}];
+    self->_totalFIRCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VFIRCnt", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VNoFecTF"])
+  if ([stats objectForKeyedSubscript:@"VNoFecTF"])
   {
-    self->_videoFrameNonFECTotalCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VNoFecTF", "intValue"}];
+    self->_videoFrameNonFECTotalCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VNoFecTF", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VNoFecCF"])
+  if ([stats objectForKeyedSubscript:@"VNoFecCF"])
   {
-    self->_videoFrameNonFECCompleteCounter += [objc_msgSend(a3 objectForKeyedSubscript:{@"VNoFecCF", "intValue"}];
+    self->_videoFrameNonFECCompleteCounter += [objc_msgSend(stats objectForKeyedSubscript:{@"VNoFecCF", "intValue"}];
   }
 
-  [(VCAggregatorSecondDisplay *)self updateVideoFECStats:a3];
-  if ([a3 objectForKeyedSubscript:@"VNWET"])
+  [(VCAggregatorSecondDisplay *)self updateVideoFECStats:stats];
+  if ([stats objectForKeyedSubscript:@"VNWET"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VNWET", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VNWET", "doubleValue"}];
     self->_averageExpirationTime = v19 + self->_averageExpirationTime;
     maxExpirationTime = self->_maxExpirationTime;
     if (v19 > maxExpirationTime)
@@ -833,31 +833,31 @@ LABEL_64:
     [(VCHistogram *)self->_EXT addValue:v19];
   }
 
-  if ([a3 objectForKeyedSubscript:@"NWAPD"])
+  if ([stats objectForKeyedSubscript:@"NWAPD"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NWAPD", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NWAPD", "doubleValue"}];
     self->_averageWiFiPacketDelay = v21 + self->_averageWiFiPacketDelay;
   }
 
-  if ([a3 objectForKeyedSubscript:@"MAWFPD"])
+  if ([stats objectForKeyedSubscript:@"MAWFPD"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"MAWFPD", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"MAWFPD", "doubleValue"}];
     self->_averageMaxAverageWiFiPacketDelay = v22 + self->_averageMaxAverageWiFiPacketDelay;
   }
 
-  if ([a3 objectForKeyedSubscript:@"NWATH"])
+  if ([stats objectForKeyedSubscript:@"NWATH"])
   {
-    self->_averageWiFiThroughput += [objc_msgSend(a3 objectForKeyedSubscript:{@"NWATH", "intValue"}];
+    self->_averageWiFiThroughput += [objc_msgSend(stats objectForKeyedSubscript:{@"NWATH", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"NWNaC"])
+  if ([stats objectForKeyedSubscript:@"NWNaC"])
   {
-    self->_totalNACKCounter = [objc_msgSend(a3 objectForKeyedSubscript:{@"NWNaC", "intValue"}];
+    self->_totalNACKCounter = [objc_msgSend(stats objectForKeyedSubscript:{@"NWNaC", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"ULBPL"])
+  if ([stats objectForKeyedSubscript:@"ULBPL"])
   {
-    v23 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ULBPL", "intValue"}];
+    v23 = [objc_msgSend(stats objectForKeyedSubscript:{@"ULBPL", "intValue"}];
     self->_averageBurstyPacketLossCount += v23;
     maxBurstyPacketLossCount = self->_maxBurstyPacketLossCount;
     if (v23 > maxBurstyPacketLossCount)
@@ -869,9 +869,9 @@ LABEL_64:
     [(VCHistogram *)self->_BPL addValue:v23];
   }
 
-  if ([a3 objectForKeyedSubscript:@"RTT"])
+  if ([stats objectForKeyedSubscript:@"RTT"])
   {
-    v25 = [objc_msgSend(a3 objectForKeyedSubscript:{@"RTT", "intValue"}];
+    v25 = [objc_msgSend(stats objectForKeyedSubscript:{@"RTT", "intValue"}];
     self->_averageRoundTripTime += v25;
     maxRoundTripTime = self->_maxRoundTripTime;
     if (v25 > maxRoundTripTime)
@@ -883,10 +883,10 @@ LABEL_64:
     [(VCHistogram *)self->_RTT addValue:v25];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VIQAHEL"])
+  if ([stats objectForKeyedSubscript:@"VIQAHEL"])
   {
-    v27 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VIQAHEL", "intValue"}];
-    v28 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VIQHELSCNT", "intValue"}];
+    v27 = [objc_msgSend(stats objectForKeyedSubscript:{@"VIQAHEL", "intValue"}];
+    v28 = [objc_msgSend(stats objectForKeyedSubscript:{@"VIQHELSCNT", "intValue"}];
     if (v28 <= 1)
     {
       v29 = 1;
@@ -902,9 +902,9 @@ LABEL_64:
     [(VCHistogram *)self->_HEL addValue:v27 withIncrement:?];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VIQMaxHEL"])
+  if ([stats objectForKeyedSubscript:@"VIQMaxHEL"])
   {
-    v30 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VIQMaxHEL", "intValue"}];
+    v30 = [objc_msgSend(stats objectForKeyedSubscript:{@"VIQMaxHEL", "intValue"}];
     maxHIDEventLatency = self->_maxHIDEventLatency;
     if (v30 > maxHIDEventLatency)
     {
@@ -914,9 +914,9 @@ LABEL_64:
     self->_maxHIDEventLatency = maxHIDEventLatency;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VIQMinHEL"])
+  if ([stats objectForKeyedSubscript:@"VIQMinHEL"])
   {
-    v32 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VIQMinHEL", "intValue"}];
+    v32 = [objc_msgSend(stats objectForKeyedSubscript:{@"VIQMinHEL", "intValue"}];
     minHIDEventLatency = self->_minHIDEventLatency;
     if (v32 < minHIDEventLatency)
     {
@@ -926,9 +926,9 @@ LABEL_64:
     self->_minHIDEventLatency = minHIDEventLatency;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ULBWE"])
+  if ([stats objectForKeyedSubscript:@"ULBWE"])
   {
-    v34 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ULBWE", "intValue"}];
+    v34 = [objc_msgSend(stats objectForKeyedSubscript:{@"ULBWE", "intValue"}];
     self->_averageBandwidthEstimation += v34;
     maxBandwidthEstimation = self->_maxBandwidthEstimation;
     if (v34 > maxBandwidthEstimation)
@@ -940,9 +940,9 @@ LABEL_64:
     [(VCHistogram *)self->_BWE addValue:v34];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VJ"])
+  if ([stats objectForKeyedSubscript:@"VJ"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VJ", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VJ", "doubleValue"}];
     v37 = (v36 * 1000.0);
     self->_averageJitterQueueSize += v37;
     maxJitterQueueSize = self->_maxJitterQueueSize;
@@ -955,14 +955,14 @@ LABEL_64:
     [(VCHistogram *)self->_VJS addValue:?];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VJBTC"])
+  if ([stats objectForKeyedSubscript:@"VJBTC"])
   {
-    self->_averageJitterQueueSizeChanges += [objc_msgSend(a3 objectForKeyedSubscript:{@"VJBTC", "intValue"}];
+    self->_averageJitterQueueSizeChanges += [objc_msgSend(stats objectForKeyedSubscript:{@"VJBTC", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VPO"])
+  if ([stats objectForKeyedSubscript:@"VPO"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VPO", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VPO", "doubleValue"}];
     maxPlaybackOffset = v39 * 1000.0;
     self->_averagePlaybackOffset = maxPlaybackOffset + self->_averagePlaybackOffset;
     if (maxPlaybackOffset <= self->_maxPlaybackOffset)
@@ -973,37 +973,37 @@ LABEL_64:
     self->_maxPlaybackOffset = maxPlaybackOffset;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VJBTNZT"])
+  if ([stats objectForKeyedSubscript:@"VJBTNZT"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VJBTNZT", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VJBTNZT", "doubleValue"}];
     self->_timeSpentWithNonZeroJitterQueueSize = v41 + self->_timeSpentWithNonZeroJitterQueueSize;
   }
 
-  if ([a3 objectForKeyedSubscript:@"VJBTWA"])
+  if ([stats objectForKeyedSubscript:@"VJBTWA"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VJBTWA", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VJBTWA", "doubleValue"}];
     self->_timeWeightedJitterQueueSize = v42 * 1000.0 + self->_timeWeightedJitterQueueSize;
   }
 
-  if ([a3 objectForKeyedSubscript:@"ChannelSequence"])
+  if ([stats objectForKeyedSubscript:@"ChannelSequence"])
   {
     [(VCAggregatorSecondDisplay *)self setPreviousChannelSequence:[(VCAggregatorSecondDisplay *)self channelSequence]];
     self->_previousChannelSequenceStats = self->_channelSequenceStats;
-    -[VCAggregatorSecondDisplay setChannelSequence:](self, "setChannelSequence:", [a3 objectForKeyedSubscript:@"ChannelSequence"]);
-    self->_channelSequenceStats.fiveGhzChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"Unique5GhzChannelCount", "intValue"}];
-    self->_channelSequenceStats.twoPtFourGhzChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"Unique2pt4GhzChannelCount", "intValue"}];
-    self->_channelSequenceStats.dfsChannelCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"UniqueDFSChannelCount", "intValue"}];
-    self->_channelSequenceStats.inactiveSlotCount = [objc_msgSend(a3 objectForKeyedSubscript:{@"InactiveSlotCount", "intValue"}];
+    -[VCAggregatorSecondDisplay setChannelSequence:](self, "setChannelSequence:", [stats objectForKeyedSubscript:@"ChannelSequence"]);
+    self->_channelSequenceStats.fiveGhzChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"Unique5GhzChannelCount", "intValue"}];
+    self->_channelSequenceStats.twoPtFourGhzChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"Unique2pt4GhzChannelCount", "intValue"}];
+    self->_channelSequenceStats.dfsChannelCount = [objc_msgSend(stats objectForKeyedSubscript:{@"UniqueDFSChannelCount", "intValue"}];
+    self->_channelSequenceStats.inactiveSlotCount = [objc_msgSend(stats objectForKeyedSubscript:{@"InactiveSlotCount", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFEVTrCnt"])
+  if ([stats objectForKeyedSubscript:@"VFEVTrCnt"])
   {
-    self->_evictedFramesTrackedCount += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFEVTrCnt", "intValue"}];
+    self->_evictedFramesTrackedCount += [objc_msgSend(stats objectForKeyedSubscript:{@"VFEVTrCnt", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFEVLtPktDelay"])
+  if ([stats objectForKeyedSubscript:@"VFEVLtPktDelay"])
   {
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"VFEVLtPktDelay", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"VFEVLtPktDelay", "doubleValue"}];
     self->_evictedFramesAverageLatePacketDelay = v43 + self->_evictedFramesAverageLatePacketDelay;
     if (v43 != 0.0)
     {
@@ -1011,31 +1011,31 @@ LABEL_64:
     }
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFrErCnt"])
+  if ([stats objectForKeyedSubscript:@"VFrErCnt"])
   {
-    v44 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VFrErCnt", "intValue"}];
+    v44 = [objc_msgSend(stats objectForKeyedSubscript:{@"VFrErCnt", "intValue"}];
     self->_accumVideoFrameErasureCount += v44;
     LODWORD(v45) = self->_maxVideoFrameErasureCount;
     self->_maxVideoFrameErasureCount = fmax(v45, v44);
   }
 
-  if ([a3 objectForKeyedSubscript:@"NRFr"])
+  if ([stats objectForKeyedSubscript:@"NRFr"])
   {
-    v46 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NRFr", "intValue"}];
+    v46 = [objc_msgSend(stats objectForKeyedSubscript:{@"NRFr", "intValue"}];
     LODWORD(v47) = self->_minVideoFrameRate;
     self->_minVideoFrameRate = fmin(v47, v46);
   }
 
-  if ([a3 objectForKeyedSubscript:@"VFEVRecoveredCnt"])
+  if ([stats objectForKeyedSubscript:@"VFEVRecoveredCnt"])
   {
-    self->_evictedFramesRecoveredCount += [objc_msgSend(a3 objectForKeyedSubscript:{@"VFEVRecoveredCnt", "intValue"}];
+    self->_evictedFramesRecoveredCount += [objc_msgSend(stats objectForKeyedSubscript:{@"VFEVRecoveredCnt", "intValue"}];
   }
 }
 
-- (void)updateSenderVideoStreamConfiguration:(id)a3
+- (void)updateSenderVideoStreamConfiguration:(id)configuration
 {
-  self->_videoWidth = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigWidth", "intValue"}];
-  self->_videoHeight = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigHeight", "intValue"}];
+  self->_videoWidth = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigWidth", "intValue"}];
+  self->_videoHeight = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigHeight", "intValue"}];
   if (self->super.super._direction == 2)
   {
     v5 = @"VCVSConfigRxCodecType";
@@ -1046,49 +1046,49 @@ LABEL_64:
     v5 = @"VCVSConfigTxCodecType";
   }
 
-  self->_codec = [objc_msgSend(a3 objectForKeyedSubscript:{v5), "intValue"}];
-  self->_hdrMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigHDRMode", "intValue"}];
-  self->_transportProtocol = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigTransportProtocol", "intValue"}];
-  self->_accessNetworkType = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigAccessNetworkType", "intValue"}];
-  self->_remoteFrameworkVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSRemoteFrameworkVersion", "copy"}];
-  self->_remoteOSBuildVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSRemoteOSBuildVersion", "copy"}];
-  self->_remoteDeviceModel = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSRemoteDeviceModel", "copy"}];
-  self->_foveationEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCVSConfigFoveationEnabled", "intValue"}];
+  self->_codec = [objc_msgSend(configuration objectForKeyedSubscript:{v5), "intValue"}];
+  self->_hdrMode = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigHDRMode", "intValue"}];
+  self->_transportProtocol = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigTransportProtocol", "intValue"}];
+  self->_accessNetworkType = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigAccessNetworkType", "intValue"}];
+  self->_remoteFrameworkVersion = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSRemoteFrameworkVersion", "copy"}];
+  self->_remoteOSBuildVersion = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSRemoteOSBuildVersion", "copy"}];
+  self->_remoteDeviceModel = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSRemoteDeviceModel", "copy"}];
+  self->_foveationEnabled = [objc_msgSend(configuration objectForKeyedSubscript:{@"VCVSConfigFoveationEnabled", "intValue"}];
 }
 
-- (void)updateReceiverVideoStreamConfiguration:(id)a3
+- (void)updateReceiverVideoStreamConfiguration:(id)configuration
 {
-  self->_avgFramerate += [objc_msgSend(a3 objectForKeyedSubscript:{@"Framerate", "intValue"}];
-  self->_videoWidth = [objc_msgSend(a3 objectForKeyedSubscript:{@"Width", "intValue"}];
-  self->_videoHeight = [objc_msgSend(a3 objectForKeyedSubscript:{@"Height", "intValue"}];
+  self->_avgFramerate += [objc_msgSend(configuration objectForKeyedSubscript:{@"Framerate", "intValue"}];
+  self->_videoWidth = [objc_msgSend(configuration objectForKeyedSubscript:{@"Width", "intValue"}];
+  self->_videoHeight = [objc_msgSend(configuration objectForKeyedSubscript:{@"Height", "intValue"}];
 }
 
-- (void)processResiliencyEnablementConfig:(id)a3
+- (void)processResiliencyEnablementConfig:(id)config
 {
-  v5 = [a3 objectForKeyedSubscript:@"FecRDKScreenSharing"];
+  v5 = [config objectForKeyedSubscript:@"FecRDKScreenSharing"];
   if (v5)
   {
     self->super.super._fecEnabled = [v5 integerValue] != 0;
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"RtxRDKScreenSharing"];
+  v6 = [config objectForKeyedSubscript:@"RtxRDKScreenSharing"];
   if (v6)
   {
     self->super.super._serverPacketRetransmissionsForVideoEnabled = [v6 integerValue] != 0;
   }
 }
 
-- (void)processEventWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5
+- (void)processEventWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload
 {
   stateQueue = self->super.super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__VCAggregatorSecondDisplay_processEventWithCategory_type_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v7 = a3;
+  categoryCopy = category;
   block[4] = self;
-  block[5] = a5;
-  v8 = a4;
+  block[5] = payload;
+  typeCopy = type;
   dispatch_sync(stateQueue, block);
 }
 

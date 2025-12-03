@@ -1,7 +1,7 @@
 @interface ARDispatchSourceExecutor
 - (ARDispatchSourceExecutor)init;
 - (BOOL)isRunning;
-- (void)executeWithInterval:(double)a3 initialDelay:(double)a4 block:(id)a5;
+- (void)executeWithInterval:(double)interval initialDelay:(double)delay block:(id)block;
 - (void)stop;
 @end
 
@@ -27,23 +27,23 @@
   return v3;
 }
 
-- (void)executeWithInterval:(double)a3 initialDelay:(double)a4 block:(id)a5
+- (void)executeWithInterval:(double)interval initialDelay:(double)delay block:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_timerLock);
   v9 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 1uLL, self->_timerQueue);
   timer = self->_timer;
   self->_timer = v9;
 
-  v11 = dispatch_time(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(self->_timer, v11, (a3 * 1000000000.0), 0);
+  v11 = dispatch_time(0, (delay * 1000000000.0));
+  dispatch_source_set_timer(self->_timer, v11, (interval * 1000000000.0), 0);
   v12 = self->_timer;
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __67__ARDispatchSourceExecutor_executeWithInterval_initialDelay_block___block_invoke;
   handler[3] = &unk_1E817CC30;
-  v15 = v8;
-  v13 = v8;
+  v15 = blockCopy;
+  v13 = blockCopy;
   dispatch_source_set_event_handler(v12, handler);
   dispatch_resume(self->_timer);
 

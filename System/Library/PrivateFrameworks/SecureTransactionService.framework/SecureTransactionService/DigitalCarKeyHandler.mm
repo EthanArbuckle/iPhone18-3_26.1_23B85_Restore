@@ -1,46 +1,46 @@
 @interface DigitalCarKeyHandler
-- (id)setActiveCredential:(id)a3;
-- (id)setActiveCredentials:(id)a3;
-- (id)startNFSessionWithCompletion:(id)a3;
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4;
+- (id)setActiveCredential:(id)credential;
+- (id)setActiveCredentials:(id)credentials;
+- (id)startNFSessionWithCompletion:(id)completion;
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options;
 - (id)stopTransaction;
-- (void)session:(id)a3 didEndTransaction:(id)a4;
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)session:(id)a3 didReceivePassthroughMessage:(id)a4;
-- (void)session:(id)a3 didStartTransaction:(id)a4;
-- (void)session:(id)a3 event:(id)a4;
-- (void)sessionDidExitField:(id)a3;
-- (void)sessionDidFailDeferredAuthorization:(id)a3;
-- (void)sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4;
+- (void)session:(id)session didEndTransaction:(id)transaction;
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)session:(id)session didReceivePassthroughMessage:(id)message;
+- (void)session:(id)session didStartTransaction:(id)transaction;
+- (void)session:(id)session event:(id)event;
+- (void)sessionDidExitField:(id)field;
+- (void)sessionDidFailDeferredAuthorization:(id)authorization;
+- (void)sessionDidReceiveActivityTimeout:(id)timeout result:(id)result;
 @end
 
 @implementation DigitalCarKeyHandler
 
-- (id)startNFSessionWithCompletion:(id)a3
+- (id)startNFSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STSHandler *)self nfHardwareManager];
+  completionCopy = completion;
+  nfHardwareManager = [(STSHandler *)self nfHardwareManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_265394EA8;
   v9[3] = &unk_279B940F8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 startDigitalCarKeySession:v9];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = [nfHardwareManager startDigitalCarKeySession:v9];
 
   return v7;
 }
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v45[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialCopy = credential;
   v39.receiver = self;
   v39.super_class = DigitalCarKeyHandler;
-  v8 = [(STSHandler *)&v39 setActiveCredential:v5];
-  if (!v5 || ([v5 identifier], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  v8 = [(STSHandler *)&v39 setActiveCredential:credentialCopy];
+  if (!credentialCopy || ([credentialCopy identifier], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredential:]", 67, self, @"Invalid credential", v6, v7, v35);
     v27 = MEMORY[0x277CCA9B8];
@@ -54,8 +54,8 @@
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
     v41[2] = v21;
     v40[3] = *MEMORY[0x277CCA068];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 68];
-    v41[3] = v16;
+    subIdentifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 68];
+    v41[3] = subIdentifier;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:4];
     v26 = [v27 errorWithDomain:v12 code:9 userInfo:v22];
 LABEL_10:
@@ -65,13 +65,13 @@ LABEL_11:
   }
 
   nfSession = self->_nfSession;
-  v11 = [v5 identifier];
-  v12 = [(NFDigitalCarKeySession *)nfSession appletWithIdentifier:v11];
+  identifier = [credentialCopy identifier];
+  v12 = [(NFDigitalCarKeySession *)nfSession appletWithIdentifier:identifier];
 
   if (!v12)
   {
-    v30 = [v5 identifier];
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredential:]", 63, self, @"applet not found for identifier = %@", v31, v32, v30);
+    identifier2 = [credentialCopy identifier];
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredential:]", 63, self, @"applet not found for identifier = %@", v31, v32, identifier2);
 
     v33 = MEMORY[0x277CCA9B8];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -81,8 +81,8 @@ LABEL_11:
     v43[1] = &unk_2876ED8A8;
     v42[1] = @"Line";
     v42[2] = @"Method";
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
-    v43[2] = v16;
+    subIdentifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2)];
+    v43[2] = subIdentifier;
     v42[3] = *MEMORY[0x277CCA068];
     v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 64];
     v43[3] = v22;
@@ -96,9 +96,9 @@ LABEL_11:
 
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredential:]", 57, self, @"applet %@", v13, v14, v12);
   v15 = self->_nfSession;
-  v16 = [v5 subIdentifier];
+  subIdentifier = [credentialCopy subIdentifier];
   v38 = v8;
-  LOBYTE(v15) = [(NFDigitalCarKeySession *)v15 setActiveApplet:v12 key:v16 outError:&v38];
+  LOBYTE(v15) = [(NFDigitalCarKeySession *)v15 setActiveApplet:v12 key:subIdentifier outError:&v38];
   v17 = v38;
 
   if (v15)
@@ -117,8 +117,8 @@ LABEL_11:
   if (!v17)
   {
     v23 = MEMORY[0x277CCA9B8];
-    v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
-    v22 = [v23 errorWithDomain:v16 code:5 userInfo:0];
+    subIdentifier = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+    v22 = [v23 errorWithDomain:subIdentifier code:5 userInfo:0];
   }
 
   v45[1] = v22;
@@ -148,19 +148,19 @@ LABEL_13:
   return v17;
 }
 
-- (id)setActiveCredentials:(id)a3
+- (id)setActiveCredentials:(id)credentials
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  sub_265398094(OS_LOG_TYPE_INFO, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 75, self, @"credentials=%@", v6, v7, v5);
-  if ([v5 count] != 1)
+  credentialsCopy = credentials;
+  sub_265398094(OS_LOG_TYPE_INFO, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 75, self, @"credentials=%@", v6, v7, credentialsCopy);
+  if ([credentialsCopy count] != 1)
   {
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 77, self, @"Currently only support 1 credential for this handler", v8, v9, v48);
   }
 
   v60.receiver = self;
   v60.super_class = DigitalCarKeyHandler;
-  v10 = [(STSHandler *)&v60 setActiveCredentials:v5];
+  v10 = [(STSHandler *)&v60 setActiveCredentials:credentialsCopy];
   if (v10)
   {
     v13 = v10;
@@ -174,8 +174,8 @@ LABEL_13:
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v53 = v5;
-  obj = v5;
+  v53 = credentialsCopy;
+  obj = credentialsCopy;
   v16 = [obj countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (!v16)
   {
@@ -197,21 +197,21 @@ LABEL_13:
       }
 
       v21 = *(*(&v56 + 1) + 8 * i);
-      v22 = [v21 identifier];
+      identifier = [v21 identifier];
 
-      if (v22)
+      if (identifier)
       {
         nfSession = self->_nfSession;
-        v24 = [v21 identifier];
-        v25 = [(NFDigitalCarKeySession *)nfSession appletWithIdentifier:v24];
+        identifier2 = [v21 identifier];
+        v25 = [(NFDigitalCarKeySession *)nfSession appletWithIdentifier:identifier2];
 
         if (v25)
         {
           sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 95, self, @"applet %@", v26, v27, v25);
           v28 = self->_nfSession;
-          v29 = [v21 subIdentifier];
+          subIdentifier = [v21 subIdentifier];
           v55 = v18;
-          LOBYTE(v28) = [(NFDigitalCarKeySession *)v28 setActiveApplet:v25 key:v29 outError:&v55];
+          LOBYTE(v28) = [(NFDigitalCarKeySession *)v28 setActiveApplet:v25 key:subIdentifier outError:&v55];
           v14 = v55;
 
           if (v28)
@@ -250,7 +250,7 @@ LABEL_13:
 
           if (v14)
           {
-            v5 = v53;
+            credentialsCopy = v53;
             v36 = v41;
             v37 = v51;
 LABEL_26:
@@ -259,7 +259,7 @@ LABEL_26:
           }
 
           v18 = 0;
-          v5 = v53;
+          credentialsCopy = v53;
           v36 = v41;
           v37 = v51;
           v38 = v49;
@@ -267,8 +267,8 @@ LABEL_26:
 
         else
         {
-          v32 = [v21 identifier];
-          sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 91, self, @"applet not found for identifier = %@", v33, v34, v32);
+          identifier3 = [v21 identifier];
+          sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler setActiveCredentials:]", 91, self, @"applet not found for identifier = %@", v33, v34, identifier3);
 
           v35 = MEMORY[0x277CCA9B8];
           v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -286,7 +286,7 @@ LABEL_26:
           v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:4];
           v15 = [v35 errorWithDomain:v36 code:10 userInfo:v40];
 
-          v5 = v53;
+          credentialsCopy = v53;
         }
 
         v14 = v18;
@@ -307,7 +307,7 @@ LABEL_18:
 
   v15 = 0;
   v14 = v18;
-  v5 = v53;
+  credentialsCopy = v53;
 LABEL_27:
 
   v46 = *MEMORY[0x277D85DE8];
@@ -315,19 +315,19 @@ LABEL_27:
   return v15;
 }
 
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options
 {
   v41[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  authorizationCopy = authorization;
   v37.receiver = self;
   v37.super_class = DigitalCarKeyHandler;
-  v10 = [(STSTransactionHandler *)&v37 startTransactionWithAuthorization:v7 options:a4];
+  v10 = [(STSTransactionHandler *)&v37 startTransactionWithAuthorization:authorizationCopy options:options];
   if (self->_nfSession)
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler startTransactionWithAuthorization:options:]", 113, self, @"auth: %@", v8, v9, v7);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler startTransactionWithAuthorization:options:]", 113, self, @"auth: %@", v8, v9, authorizationCopy);
     nfSession = self->_nfSession;
     v36 = v10;
-    v12 = [(NFDigitalCarKeySession *)nfSession startCardEmulationAuthorization:v7 deferred:0 error:&v36];
+    v12 = [(NFDigitalCarKeySession *)nfSession startCardEmulationAuthorization:authorizationCopy deferred:0 error:&v36];
     v13 = v36;
 
     if ((v12 & 1) == 0)
@@ -400,17 +400,17 @@ LABEL_27:
   v22[4] = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = DigitalCarKeyHandler;
-  v6 = [(STSTransactionHandler *)&v20 stopTransaction];
+  stopTransaction = [(STSTransactionHandler *)&v20 stopTransaction];
   if (self->_nfSession)
   {
     sub_265398094(OS_LOG_TYPE_INFO, 0, "[DigitalCarKeyHandler stopTransaction]", 130, self, &stru_2876E3E50, v4, v5, v18);
     nfSession = self->_nfSession;
-    v19 = v6;
+    v19 = stopTransaction;
     [(NFDigitalCarKeySession *)nfSession stopCardEmulation:&v19];
     v8 = v19;
 
     v9 = v8;
-    v6 = v9;
+    stopTransaction = v9;
   }
 
   else
@@ -438,11 +438,11 @@ LABEL_27:
   return v9;
 }
 
-- (void)session:(id)a3 event:(id)a4
+- (void)session:(id)session event:(id)event
 {
-  v19 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:event:]", 209, self, @"%@", v5, v6, v19);
-  v7 = [v19 objectForKeyedSubscript:*MEMORY[0x277D2C828]];
+  eventCopy = event;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:event:]", 209, self, @"%@", v5, v6, eventCopy);
+  v7 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D2C828]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -450,11 +450,11 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  v12 = [(STSTransactionHandler *)self parent];
-  if (v12)
+  parent = [(STSTransactionHandler *)self parent];
+  if (parent)
   {
-    v13 = [v19 objectForKeyedSubscript:*MEMORY[0x277D2C818]];
-    v14 = [v19 objectForKeyedSubscript:*MEMORY[0x277D2C820]];
+    v13 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D2C818]];
+    v14 = [eventCopy objectForKeyedSubscript:*MEMORY[0x277D2C820]];
     if ([v7 isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.unlock"])
     {
       v15 = [STSExpressEventInfoWithIdentifiers alloc];
@@ -465,7 +465,7 @@ LABEL_27:
     {
       if (![v7 isEqualToString:@"com.apple.secureelementservice.dck.event.vehicle.did.lock"])
       {
-        [v12 fireDigitalCarKeyEventPayload:v19];
+        [parent fireDigitalCarKeyEventPayload:eventCopy];
         goto LABEL_11;
       }
 
@@ -474,7 +474,7 @@ LABEL_27:
     }
 
     v17 = [(STSExpressEventInfoWithIdentifiers *)v15 initWithState:v16 appletIdentifier:v13 keyIdentifier:v14];
-    [v12 fireExpressModeStateChangeWithInfo:v17];
+    [parent fireExpressModeStateChangeWithInfo:v17];
 
 LABEL_11:
     goto LABEL_12;
@@ -486,75 +486,75 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)session:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)session:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didEnterFieldWithNotification:]", 244, self, @"%@", v6, v7, v5);
-  v9 = sub_265399348(v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didEnterFieldWithNotification:]", 244, self, @"%@", v6, v7, notificationCopy);
+  v9 = sub_265399348(notificationCopy);
 
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireFieldNotificationEvent:v9];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldNotificationEvent:v9];
 }
 
-- (void)sessionDidExitField:(id)a3
+- (void)sessionDidExitField:(id)field
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler sessionDidExitField:]", 250, self, @"Field Off", v3, v4, v6);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireFieldDetectEvent:0];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldDetectEvent:0];
 }
 
-- (void)session:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)session:(id)session didExpireTransactionForApplet:(id)applet
 {
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didExpireTransactionForApplet:]", 255, self, @"EXPIRED: %@", v4, v5, a4);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireDidExpireTransaction:1];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didExpireTransactionForApplet:]", 255, self, @"EXPIRED: %@", v4, v5, applet);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidExpireTransaction:1];
 }
 
-- (void)session:(id)a3 didStartTransaction:(id)a4
+- (void)session:(id)session didStartTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didStartTransaction:]", 260, self, @"START: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didStartTransaction:]", 260, self, @"START: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionStartEvent alloc];
-  v9 = [(STSHandler *)self activeSTSCredential];
-  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:v9 andDigitalCarKeyStartEvent:v5];
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  v11 = [(STSTransactionStartEvent *)v8 initWithCredential:activeSTSCredential andDigitalCarKeyStartEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionStartEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionStartEvent:v11];
 }
 
-- (void)session:(id)a3 didEndTransaction:(id)a4
+- (void)session:(id)session didEndTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didEndTransaction:]", 267, self, @"END: %@", v6, v7, v5);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didEndTransaction:]", 267, self, @"END: %@", v6, v7, transactionCopy);
   v8 = [STSTransactionEndEvent alloc];
-  v9 = [(STSHandler *)self activeSTSCredential];
-  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:v9 andDigitalCarKeyEndEvent:v5];
+  activeSTSCredential = [(STSHandler *)self activeSTSCredential];
+  v11 = [(STSTransactionEndEvent *)v8 initWithCredential:activeSTSCredential andDigitalCarKeyEndEvent:transactionCopy];
 
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionEndEvent:v11];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionEndEvent:v11];
 }
 
-- (void)sessionDidFailDeferredAuthorization:(id)a3
+- (void)sessionDidFailDeferredAuthorization:(id)authorization
 {
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler sessionDidFailDeferredAuthorization:]", 274, self, @"Failed deferred authorization", v3, v4, v6);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireDidFailDeferredAuth:1];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidFailDeferredAuth:1];
 }
 
-- (void)sessionDidReceiveActivityTimeout:(id)a3 result:(id)a4
+- (void)sessionDidReceiveActivityTimeout:(id)timeout result:(id)result
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler sessionDidReceiveActivityTimeout:result:]", 288, self, @"Activity Timeout : %@", v6, v7, v5);
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireDidReceiveActivityTimeout:v5];
+  resultCopy = result;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler sessionDidReceiveActivityTimeout:result:]", 288, self, @"Activity Timeout : %@", v6, v7, resultCopy);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidReceiveActivityTimeout:resultCopy];
 }
 
-- (void)session:(id)a3 didReceivePassthroughMessage:(id)a4
+- (void)session:(id)session didReceivePassthroughMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[DigitalCarKeyHandler session:didReceivePassthroughMessage:]", 295, self, @"Received passhtrough message", v6, v7, v8);
-  v9 = [(STSTransactionHandler *)self parent];
-  [v9 fireDidReceivePassthroughMessage:v5];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidReceivePassthroughMessage:messageCopy];
 }
 
 @end

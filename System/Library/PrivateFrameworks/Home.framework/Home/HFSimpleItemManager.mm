@@ -1,23 +1,23 @@
 @interface HFSimpleItemManager
 - (BOOL)_shouldDisableOptionalDataDuringFastInitialUpdate;
-- (HFSimpleItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 itemProvidersCreator:(id)a5;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_comparatorForSectionIdentifier:(id)a3;
+- (HFSimpleItemManager)initWithDelegate:(id)delegate sourceItem:(id)item itemProvidersCreator:(id)creator;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_comparatorForSectionIdentifier:(id)identifier;
 - (id)_homeFuture;
 @end
 
 @implementation HFSimpleItemManager
 
-- (HFSimpleItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4 itemProvidersCreator:(id)a5
+- (HFSimpleItemManager)initWithDelegate:(id)delegate sourceItem:(id)item itemProvidersCreator:(id)creator
 {
-  v8 = a5;
+  creatorCopy = creator;
   v13.receiver = self;
   v13.super_class = HFSimpleItemManager;
-  v9 = [(HFItemManager *)&v13 initWithDelegate:a3 sourceItem:a4];
+  v9 = [(HFItemManager *)&v13 initWithDelegate:delegate sourceItem:item];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(creatorCopy);
     itemProviderCreator = v9->_itemProviderCreator;
     v9->_itemProviderCreator = v10;
 
@@ -29,25 +29,25 @@
 
 - (BOOL)_shouldDisableOptionalDataDuringFastInitialUpdate
 {
-  v3 = [(HFSimpleItemManager *)self shouldDisableOptionalDataDuringFastInitialUpdate];
-  if (v3)
+  shouldDisableOptionalDataDuringFastInitialUpdate = [(HFSimpleItemManager *)self shouldDisableOptionalDataDuringFastInitialUpdate];
+  if (shouldDisableOptionalDataDuringFastInitialUpdate)
   {
     v5.receiver = self;
     v5.super_class = HFSimpleItemManager;
-    LOBYTE(v3) = [(HFItemManager *)&v5 _shouldDisableOptionalDataDuringFastInitialUpdate];
+    LOBYTE(shouldDisableOptionalDataDuringFastInitialUpdate) = [(HFItemManager *)&v5 _shouldDisableOptionalDataDuringFastInitialUpdate];
   }
 
-  return v3;
+  return shouldDisableOptionalDataDuringFastInitialUpdate;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFSimpleItemManager *)self itemModuleCreator];
-  if (v5)
+  homeCopy = home;
+  itemModuleCreator = [(HFSimpleItemManager *)self itemModuleCreator];
+  if (itemModuleCreator)
   {
-    v6 = [(HFSimpleItemManager *)self itemModuleCreator];
-    v7 = (v6)[2](v6, v4, self);
+    itemModuleCreator2 = [(HFSimpleItemManager *)self itemModuleCreator];
+    v7 = (itemModuleCreator2)[2](itemModuleCreator2, homeCopy, self);
   }
 
   else
@@ -58,14 +58,14 @@
   return v7;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HFSimpleItemManager *)self itemProviderCreator];
-  if (v5)
+  homeCopy = home;
+  itemProviderCreator = [(HFSimpleItemManager *)self itemProviderCreator];
+  if (itemProviderCreator)
   {
-    v6 = [(HFSimpleItemManager *)self itemProviderCreator];
-    v7 = (v6)[2](v6, v4);
+    itemProviderCreator2 = [(HFSimpleItemManager *)self itemProviderCreator];
+    v7 = (itemProviderCreator2)[2](itemProviderCreator2, homeCopy);
   }
 
   else
@@ -76,21 +76,21 @@
   return v7;
 }
 
-- (id)_comparatorForSectionIdentifier:(id)a3
+- (id)_comparatorForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HFSimpleItemManager *)self itemComparator];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  itemComparator = [(HFSimpleItemManager *)self itemComparator];
+  v6 = itemComparator;
+  if (itemComparator)
   {
-    v7 = _Block_copy(v5);
+    v7 = _Block_copy(itemComparator);
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = HFSimpleItemManager;
-    v8 = [(HFItemManager *)&v10 _comparatorForSectionIdentifier:v4];
+    v8 = [(HFItemManager *)&v10 _comparatorForSectionIdentifier:identifierCopy];
     v7 = _Block_copy(v8);
   }
 
@@ -99,21 +99,21 @@
 
 - (id)_homeFuture
 {
-  v3 = [(HFSimpleItemManager *)self homeCreator];
-  if (v3)
+  homeCreator = [(HFSimpleItemManager *)self homeCreator];
+  if (homeCreator)
   {
-    v4 = [(HFSimpleItemManager *)self homeCreator];
-    v5 = v4[2]();
+    homeCreator2 = [(HFSimpleItemManager *)self homeCreator];
+    _homeFuture = homeCreator2[2]();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = HFSimpleItemManager;
-    v5 = [(HFItemManager *)&v7 _homeFuture];
+    _homeFuture = [(HFItemManager *)&v7 _homeFuture];
   }
 
-  return v5;
+  return _homeFuture;
 }
 
 @end

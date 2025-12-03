@@ -1,10 +1,10 @@
 @interface _ISCompositorElement
 - (_ISCompositorElement)init;
-- (_ISCompositorElement)initWithRecipe:(id)a3 resources:(id)a4;
-- (id)resourceNamed:(id)a3;
-- (void)addResourcesFromDictionary:(id)a3;
+- (_ISCompositorElement)initWithRecipe:(id)recipe resources:(id)resources;
+- (id)resourceNamed:(id)named;
+- (void)addResourcesFromDictionary:(id)dictionary;
 - (void)clearResources;
-- (void)setResource:(id)a3 forName:(id)a4;
+- (void)setResource:(id)resource forName:(id)name;
 @end
 
 @implementation _ISCompositorElement
@@ -12,69 +12,69 @@
 - (_ISCompositorElement)init
 {
   v3 = objc_alloc_init(ISGenericRecipe);
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [(_ISCompositorElement *)self initWithRecipe:v3 resources:v4];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [(_ISCompositorElement *)self initWithRecipe:v3 resources:dictionary];
 
   return v5;
 }
 
-- (_ISCompositorElement)initWithRecipe:(id)a3 resources:(id)a4
+- (_ISCompositorElement)initWithRecipe:(id)recipe resources:(id)resources
 {
-  v7 = a3;
-  v8 = a4;
+  recipeCopy = recipe;
+  resourcesCopy = resources;
   v13.receiver = self;
   v13.super_class = _ISCompositorElement;
   v9 = [(_ISCompositorElement *)&v13 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:resourcesCopy];
     resourceByName = v9->_resourceByName;
     v9->_resourceByName = v10;
 
-    objc_storeStrong(&v9->_recipe, a3);
+    objc_storeStrong(&v9->_recipe, recipe);
   }
 
   return v9;
 }
 
-- (void)setResource:(id)a3 forName:(id)a4
+- (void)setResource:(id)resource forName:(id)name
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(_ISCompositorElement *)self resourceByName];
-  v8 = v7;
-  if (v9)
+  resourceCopy = resource;
+  nameCopy = name;
+  resourceByName = [(_ISCompositorElement *)self resourceByName];
+  v8 = resourceByName;
+  if (resourceCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [resourceByName setObject:resourceCopy forKey:nameCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [resourceByName removeObjectForKey:nameCopy];
   }
 }
 
-- (void)addResourcesFromDictionary:(id)a3
+- (void)addResourcesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(_ISCompositorElement *)self resourceByName];
-  [v5 addEntriesFromDictionary:v4];
+  dictionaryCopy = dictionary;
+  resourceByName = [(_ISCompositorElement *)self resourceByName];
+  [resourceByName addEntriesFromDictionary:dictionaryCopy];
 }
 
 - (void)clearResources
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   resourceByName = self->_resourceByName;
-  self->_resourceByName = v3;
+  self->_resourceByName = dictionary;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)resourceNamed:(id)a3
+- (id)resourceNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(_ISCompositorElement *)self resourceByName];
-  v6 = [v5 _IS_resourceNamed:v4];
+  namedCopy = named;
+  resourceByName = [(_ISCompositorElement *)self resourceByName];
+  v6 = [resourceByName _IS_resourceNamed:namedCopy];
 
   return v6;
 }

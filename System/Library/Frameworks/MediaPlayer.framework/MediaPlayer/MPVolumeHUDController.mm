@@ -1,14 +1,14 @@
 @interface MPVolumeHUDController
 + (MPVolumeHUDController)sharedInstance;
 - (MPVolumeHUDController)init;
-- (void)_addCategory:(id)a3;
+- (void)_addCategory:(id)category;
 - (void)_updateVisibility;
-- (void)_updateVisibilityForVolumeDisplays:(id)a3 inWindowScene:(id)a4;
-- (void)addVolumeDisplay:(id)a3;
-- (void)removeDeallocHandlerFromDisplay:(id)a3;
-- (void)removeVolumeDisplay:(id)a3;
+- (void)_updateVisibilityForVolumeDisplays:(id)displays inWindowScene:(id)scene;
+- (void)addVolumeDisplay:(id)display;
+- (void)removeDeallocHandlerFromDisplay:(id)display;
+- (void)removeVolumeDisplay:(id)display;
 - (void)setNeedsUpdate;
-- (void)setUpDeallocHandlerForDisplay:(id)a3;
+- (void)setUpDeallocHandlerForDisplay:(id)display;
 @end
 
 @implementation MPVolumeHUDController
@@ -44,19 +44,19 @@
   v50 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(NSHashTable *)self->_scenes allObjects];
-  v34 = [v3 setWithArray:v4];
+  allObjects = [(NSHashTable *)self->_scenes allObjects];
+  v34 = [v3 setWithArray:allObjects];
 
-  v33 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [*MEMORY[0x1E69DDA98] _appAdoptsUISceneLifecycle];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  array = [MEMORY[0x1E695DF70] array];
+  _appAdoptsUISceneLifecycle = [*MEMORY[0x1E69DDA98] _appAdoptsUISceneLifecycle];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v7 = self->_displays;
   v8 = [(NSHashTable *)v7 countByEnumeratingWithState:&v43 objects:v49 count:16];
-  v32 = v5;
+  v32 = array;
   if (v8)
   {
     v9 = v8;
@@ -71,33 +71,33 @@
         }
 
         v12 = *(*(&v43 + 1) + 8 * i);
-        v13 = [v12 volumeAudioCategory];
-        [(MPVolumeHUDController *)self _addCategory:v13];
+        volumeAudioCategory = [v12 volumeAudioCategory];
+        [(MPVolumeHUDController *)self _addCategory:volumeAudioCategory];
 
-        if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (_appAdoptsUISceneLifecycle && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v14 = [v12 windowSceneForVolumeDisplay];
-          if (v14)
+          windowSceneForVolumeDisplay = [v12 windowSceneForVolumeDisplay];
+          if (windowSceneForVolumeDisplay)
           {
-            v15 = [v33 objectForKey:v14];
+            v15 = [strongToStrongObjectsMapTable objectForKey:windowSceneForVolumeDisplay];
 
             if (!v15)
             {
-              v16 = [MEMORY[0x1E695DF70] array];
-              [v33 setObject:v16 forKey:v14];
+              array2 = [MEMORY[0x1E695DF70] array];
+              [strongToStrongObjectsMapTable setObject:array2 forKey:windowSceneForVolumeDisplay];
             }
 
-            v17 = [v33 objectForKey:v14];
+            v17 = [strongToStrongObjectsMapTable objectForKey:windowSceneForVolumeDisplay];
             [v17 addObject:v12];
 
-            [v34 removeObject:v14];
-            v5 = v32;
+            [v34 removeObject:windowSceneForVolumeDisplay];
+            array = v32;
           }
         }
 
         else
         {
-          [v5 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -107,17 +107,17 @@
     while (v9);
   }
 
-  if (v6)
+  if (_appAdoptsUISceneLifecycle)
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v18 = v33;
-    v19 = [v33 keyEnumerator];
-    v20 = [v19 allObjects];
+    v18 = strongToStrongObjectsMapTable;
+    keyEnumerator = [strongToStrongObjectsMapTable keyEnumerator];
+    allObjects2 = [keyEnumerator allObjects];
 
-    v21 = [v20 countByEnumeratingWithState:&v39 objects:v48 count:16];
+    v21 = [allObjects2 countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v21)
     {
       v22 = v21;
@@ -128,15 +128,15 @@
         {
           if (*v40 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allObjects2);
           }
 
           v25 = *(*(&v39 + 1) + 8 * j);
-          v26 = [v33 objectForKey:{v25, v32}];
+          v26 = [strongToStrongObjectsMapTable objectForKey:{v25, v32}];
           [(MPVolumeHUDController *)self _updateVisibilityForVolumeDisplays:v26 inWindowScene:v25];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v22 = [allObjects2 countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v22);
@@ -170,19 +170,19 @@
       while (v29);
     }
 
-    v5 = v32;
+    array = v32;
   }
 
   else
   {
-    [(MPVolumeHUDController *)self _updateVisibilityForVolumeDisplays:v5 inWindowScene:0];
-    v18 = v33;
+    [(MPVolumeHUDController *)self _updateVisibilityForVolumeDisplays:array inWindowScene:0];
+    v18 = strongToStrongObjectsMapTable;
   }
 }
 
-- (void)removeDeallocHandlerFromDisplay:(id)a3
+- (void)removeDeallocHandlerFromDisplay:(id)display
 {
-  object = a3;
+  object = display;
   v3 = objc_getAssociatedObject(object, _DeallocHandlerGuardKey);
   v4 = v3;
   if (v3)
@@ -192,9 +192,9 @@
   }
 }
 
-- (void)setUpDeallocHandlerForDisplay:(id)a3
+- (void)setUpDeallocHandlerForDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69B13F0]);
   v7[0] = MEMORY[0x1E69E9820];
@@ -203,7 +203,7 @@
   v7[3] = &unk_1E76825E8;
   objc_copyWeak(&v8, &location);
   v6 = [v5 initWithDeallocHandler:v7];
-  objc_setAssociatedObject(v4, _DeallocHandlerGuardKey, v6, 1);
+  objc_setAssociatedObject(displayCopy, _DeallocHandlerGuardKey, v6, 1);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -215,11 +215,11 @@ void __55__MPVolumeHUDController_setUpDeallocHandlerForDisplay___block_invoke(ui
   [WeakRetained setNeedsUpdate];
 }
 
-- (void)_updateVisibilityForVolumeDisplays:(id)a3 inWindowScene:(id)a4
+- (void)_updateVisibilityForVolumeDisplays:(id)displays inWindowScene:(id)scene
 {
   v56 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v6 = a4;
+  displaysCopy = displays;
+  sceneCopy = scene;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -231,7 +231,7 @@ void __55__MPVolumeHUDController_setUpDeallocHandlerForDisplay___block_invoke(ui
     v32 = *v44;
     *&v7 = 67109634;
     v29 = v7;
-    v31 = v6;
+    v31 = sceneCopy;
     do
     {
       v8 = 0;
@@ -247,7 +247,7 @@ void __55__MPVolumeHUDController_setUpDeallocHandlerForDisplay___block_invoke(ui
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v10 = v33;
+        v10 = displaysCopy;
         v11 = [v10 countByEnumeratingWithState:&v39 objects:v54 count:16];
         if (!v11)
         {
@@ -281,8 +281,8 @@ void __55__MPVolumeHUDController_setUpDeallocHandlerForDisplay___block_invoke(ui
               goto LABEL_17;
             }
 
-            v16 = [v15 volumeAudioCategory];
-            v17 = [v9 isEqualToString:v16];
+            volumeAudioCategory = [v15 volumeAudioCategory];
+            v17 = [v9 isEqualToString:volumeAudioCategory];
 
             if (v17)
             {
@@ -306,20 +306,20 @@ LABEL_17:
 
         v18 = 1;
 LABEL_21:
-        v6 = v31;
+        sceneCopy = v31;
 LABEL_23:
 
-        if (v6)
+        if (sceneCopy)
         {
-          [v6 _setSystemVolumeHUDEnabled:v18 forAudioCategory:v9];
+          [sceneCopy _setSystemVolumeHUDEnabled:v18 forAudioCategory:v9];
         }
 
         else
         {
           v19 = MPUIApplication();
-          v20 = [v19 _appAdoptsUISceneLifecycle];
+          _appAdoptsUISceneLifecycle = [v19 _appAdoptsUISceneLifecycle];
 
-          if (v20)
+          if (_appAdoptsUISceneLifecycle)
           {
             v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
             v35 = 0u;
@@ -384,58 +384,58 @@ LABEL_23:
   }
 }
 
-- (void)_addCategory:(id)a3
+- (void)_addCategory:(id)category
 {
-  v4 = a3;
-  if ([v4 length])
+  categoryCopy = category;
+  if ([categoryCopy length])
   {
-    [(NSMutableSet *)self->_categories addObject:v4];
+    [(NSMutableSet *)self->_categories addObject:categoryCopy];
   }
 }
 
-- (void)removeVolumeDisplay:(id)a3
+- (void)removeVolumeDisplay:(id)display
 {
-  v8 = a3;
-  v4 = [v8 volumeAudioCategory];
-  [(MPVolumeHUDController *)self _addCategory:v4];
+  displayCopy = display;
+  volumeAudioCategory = [displayCopy volumeAudioCategory];
+  [(MPVolumeHUDController *)self _addCategory:volumeAudioCategory];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v8 windowSceneForVolumeDisplay];
+    windowSceneForVolumeDisplay = [displayCopy windowSceneForVolumeDisplay];
 
-    if (v5)
+    if (windowSceneForVolumeDisplay)
     {
       scenes = self->_scenes;
-      v7 = [v8 windowSceneForVolumeDisplay];
-      [(NSHashTable *)scenes addObject:v7];
+      windowSceneForVolumeDisplay2 = [displayCopy windowSceneForVolumeDisplay];
+      [(NSHashTable *)scenes addObject:windowSceneForVolumeDisplay2];
     }
   }
 
-  [(MPVolumeHUDController *)self removeDeallocHandlerFromDisplay:v8];
-  [(NSHashTable *)self->_displays removeObject:v8];
+  [(MPVolumeHUDController *)self removeDeallocHandlerFromDisplay:displayCopy];
+  [(NSHashTable *)self->_displays removeObject:displayCopy];
   [(MPVolumeHUDController *)self setNeedsUpdate];
 }
 
-- (void)addVolumeDisplay:(id)a3
+- (void)addVolumeDisplay:(id)display
 {
-  v8 = a3;
-  v4 = [v8 volumeAudioCategory];
-  [(MPVolumeHUDController *)self _addCategory:v4];
+  displayCopy = display;
+  volumeAudioCategory = [displayCopy volumeAudioCategory];
+  [(MPVolumeHUDController *)self _addCategory:volumeAudioCategory];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v8 windowSceneForVolumeDisplay];
+    windowSceneForVolumeDisplay = [displayCopy windowSceneForVolumeDisplay];
 
-    if (v5)
+    if (windowSceneForVolumeDisplay)
     {
       scenes = self->_scenes;
-      v7 = [v8 windowSceneForVolumeDisplay];
-      [(NSHashTable *)scenes addObject:v7];
+      windowSceneForVolumeDisplay2 = [displayCopy windowSceneForVolumeDisplay];
+      [(NSHashTable *)scenes addObject:windowSceneForVolumeDisplay2];
     }
   }
 
-  [(MPVolumeHUDController *)self setUpDeallocHandlerForDisplay:v8];
-  [(NSHashTable *)self->_displays addObject:v8];
+  [(MPVolumeHUDController *)self setUpDeallocHandlerForDisplay:displayCopy];
+  [(NSHashTable *)self->_displays addObject:displayCopy];
   [(MPVolumeHUDController *)self setNeedsUpdate];
 }
 
@@ -446,13 +446,13 @@ LABEL_23:
   v2 = [(MPVolumeHUDController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     scenes = v2->_scenes;
-    v2->_scenes = v3;
+    v2->_scenes = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     displays = v2->_displays;
-    v2->_displays = v5;
+    v2->_displays = weakObjectsHashTable2;
 
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     categories = v2->_categories;

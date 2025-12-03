@@ -12,8 +12,8 @@
 - (BOOL)isAccessibilityElement
 {
   objc_opt_class();
-  v3 = [(AXMeasureLabelAccessibilityElement *)self labelRender];
-  v4 = [v3 safeValueForKey:@"labelNode"];
+  labelRender = [(AXMeasureLabelAccessibilityElement *)self labelRender];
+  v4 = [labelRender safeValueForKey:@"labelNode"];
   v5 = __UIAccessibilityCastAsClass();
 
   if (v5)
@@ -32,8 +32,8 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(AXMeasureLabelAccessibilityElement *)self labelRender];
-  v4 = [v3 safeIntegerForKey:@"state"] - 3;
+  labelRender = [(AXMeasureLabelAccessibilityElement *)self labelRender];
+  v4 = [labelRender safeIntegerForKey:@"state"] - 3;
 
   if (v4 < 2)
   {
@@ -63,16 +63,16 @@ LABEL_8:
 
 - (id)accessibilityValue
 {
-  v2 = [(AXMeasureLabelAccessibilityElement *)self labelRender];
-  v3 = [v2 safeStringForKey:@"speakableString"];
+  labelRender = [(AXMeasureLabelAccessibilityElement *)self labelRender];
+  v3 = [labelRender safeStringForKey:@"speakableString"];
 
   return v3;
 }
 
 - (CGRect)accessibilityFrameInContainerSpace
 {
-  v2 = [(AXMeasureLabelAccessibilityElement *)self labelRender];
-  [v2 safeCGRectForKey:@"accessibilityFrameForLabelContainer"];
+  labelRender = [(AXMeasureLabelAccessibilityElement *)self labelRender];
+  [labelRender safeCGRectForKey:@"accessibilityFrameForLabelContainer"];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -92,8 +92,8 @@ LABEL_8:
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7FA0];
-  v3 = [(AXMeasureLabelAccessibilityElement *)self labelRender];
-  v4 = [v3 safeIntegerForKey:@"state"] - 3;
+  labelRender = [(AXMeasureLabelAccessibilityElement *)self labelRender];
+  v4 = [labelRender safeIntegerForKey:@"state"] - 3;
 
   v5 = MEMORY[0x29EDC7FF0];
   if (v4 >= 2)

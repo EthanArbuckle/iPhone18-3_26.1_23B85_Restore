@@ -1,8 +1,8 @@
 @interface PKBarcodePassBoopProvider
 - (PKBarcodePassBoopProvider)init;
 - (id)activityItemsConfiguration;
-- (void)setCachedConfiguration:(id)a3;
-- (void)setPass:(id)a3 passView:(id)a4;
+- (void)setCachedConfiguration:(id)configuration;
+- (void)setPass:(id)pass passView:(id)view;
 @end
 
 @implementation PKBarcodePassBoopProvider
@@ -11,24 +11,24 @@
 {
   v2 = OBJC_IVAR___PKBarcodePassBoopProvider_cachedConfiguration;
   swift_beginAccess();
-  return *(a1 + v2);
+  return *(self + v2);
 }
 
-- (void)setCachedConfiguration:(id)a3
+- (void)setCachedConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___PKBarcodePassBoopProvider_cachedConfiguration;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = configuration;
+  configurationCopy = configuration;
 }
 
-- (void)setPass:(id)a3 passView:(id)a4
+- (void)setPass:(id)pass passView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD99BD90(v6, a4);
+  passCopy = pass;
+  viewCopy = view;
+  selfCopy = self;
+  sub_1BD99BD90(passCopy, view);
 }
 
 - (PKBarcodePassBoopProvider)init

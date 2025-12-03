@@ -2,7 +2,7 @@
 - (NSString)description;
 - (NSUUID)sourceId;
 - (_TtC12HealthDaemon12HDCMSwimData)init;
-- (id)init:(id)a3 safeSwimData:(id)a4;
+- (id)init:(id)init safeSwimData:(id)data;
 - (int64_t)strokeType;
 @end
 
@@ -32,24 +32,24 @@
 
 - (int64_t)strokeType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2289DDE04();
 
   return v3;
 }
 
-- (id)init:(id)a3 safeSwimData:(id)a4
+- (id)init:(id)init safeSwimData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_2289DEE2C(v5, v6);
+  initCopy = init;
+  dataCopy = data;
+  v7 = sub_2289DEE2C(initCopy, dataCopy);
 
   return v7;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2289DDF14();
 
   v3 = sub_22911C34C();

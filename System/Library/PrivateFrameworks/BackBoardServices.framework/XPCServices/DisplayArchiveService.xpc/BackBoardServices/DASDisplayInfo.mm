@@ -1,5 +1,5 @@
 @interface DASDisplayInfo
-- (id)_initWithName:(id)a3 attachedContexts:(id)a4 raw:(id)a5;
+- (id)_initWithName:(id)name attachedContexts:(id)contexts raw:(id)raw;
 - (id)description;
 @end
 
@@ -9,35 +9,35 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [v3 appendString:self->_name withName:@"name"];
-  v4 = [(NSOrderedSet *)self->_attachedContexts array];
-  v5 = [v4 bs_map:&stru_1000103C0];
+  array = [(NSOrderedSet *)self->_attachedContexts array];
+  v5 = [array bs_map:&stru_1000103C0];
   v6 = [v5 componentsJoinedByString:{@", "}];
   [v3 appendString:v6 withName:@"attachedContexts"];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (id)_initWithName:(id)a3 attachedContexts:(id)a4 raw:(id)a5
+- (id)_initWithName:(id)name attachedContexts:(id)contexts raw:(id)raw
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  contextsCopy = contexts;
+  rawCopy = raw;
   v19.receiver = self;
   v19.super_class = DASDisplayInfo;
   v11 = [(DASDisplayInfo *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
-    v14 = [v9 copy];
+    v14 = [contextsCopy copy];
     attachedContexts = v11->_attachedContexts;
     v11->_attachedContexts = v14;
 
-    v16 = [v10 copy];
+    v16 = [rawCopy copy];
     raw = v11->_raw;
     v11->_raw = v16;
   }

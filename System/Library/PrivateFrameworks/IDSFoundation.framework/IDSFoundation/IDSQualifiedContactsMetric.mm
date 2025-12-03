@@ -1,6 +1,6 @@
 @interface IDSQualifiedContactsMetric
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetric:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetric:(id)metric;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 @end
@@ -92,70 +92,70 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSQualifiedContactsMetric *)self isEqualToMetric:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSQualifiedContactsMetric *)self isEqualToMetric:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToMetric:(id)a3
+- (BOOL)isEqualToMetric:(id)metric
 {
-  v4 = a3;
-  if (v4 == self)
+  metricCopy = metric;
+  if (metricCopy == self)
   {
     v19 = 1;
   }
 
   else
   {
-    v5 = [(IDSQualifiedContactsMetric *)self handlesCount];
-    v6 = [(IDSQualifiedContactsMetric *)v4 handlesCount];
-    if ([v5 isEqualToNumber:v6])
+    handlesCount = [(IDSQualifiedContactsMetric *)self handlesCount];
+    handlesCount2 = [(IDSQualifiedContactsMetric *)metricCopy handlesCount];
+    if ([handlesCount isEqualToNumber:handlesCount2])
     {
-      v7 = [(IDSQualifiedContactsMetric *)self qualifiedHandlesCount];
-      v8 = [(IDSQualifiedContactsMetric *)v4 qualifiedHandlesCount];
-      if ([v7 isEqualToNumber:v8])
+      qualifiedHandlesCount = [(IDSQualifiedContactsMetric *)self qualifiedHandlesCount];
+      qualifiedHandlesCount2 = [(IDSQualifiedContactsMetric *)metricCopy qualifiedHandlesCount];
+      if ([qualifiedHandlesCount isEqualToNumber:qualifiedHandlesCount2])
       {
-        v9 = [(IDSQualifiedContactsMetric *)self qualifiedHandlesIML];
-        v10 = [(IDSQualifiedContactsMetric *)v4 qualifiedHandlesIML];
-        if ([v9 isEqualToNumber:v10])
+        qualifiedHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedHandlesIML];
+        qualifiedHandlesIML2 = [(IDSQualifiedContactsMetric *)metricCopy qualifiedHandlesIML];
+        if ([qualifiedHandlesIML isEqualToNumber:qualifiedHandlesIML2])
         {
-          v11 = [(IDSQualifiedContactsMetric *)self primaryHandlesCount];
-          v12 = [(IDSQualifiedContactsMetric *)v4 primaryHandlesCount];
-          if ([v11 isEqualToNumber:v12])
+          primaryHandlesCount = [(IDSQualifiedContactsMetric *)self primaryHandlesCount];
+          primaryHandlesCount2 = [(IDSQualifiedContactsMetric *)metricCopy primaryHandlesCount];
+          if ([primaryHandlesCount isEqualToNumber:primaryHandlesCount2])
           {
-            v31 = v11;
-            v13 = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandles];
-            [(IDSQualifiedContactsMetric *)v4 qualifiedPrimaryHandles];
-            v30 = v32 = v13;
-            if ([v13 isEqualToNumber:?])
+            v31 = primaryHandlesCount;
+            qualifiedPrimaryHandles = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandles];
+            [(IDSQualifiedContactsMetric *)metricCopy qualifiedPrimaryHandles];
+            v30 = v32 = qualifiedPrimaryHandles;
+            if ([qualifiedPrimaryHandles isEqualToNumber:?])
             {
-              v14 = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandlesIML];
-              v28 = [(IDSQualifiedContactsMetric *)v4 qualifiedPrimaryHandlesIML];
-              v29 = v14;
-              if ([v14 isEqualToNumber:?])
+              qualifiedPrimaryHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandlesIML];
+              qualifiedPrimaryHandlesIML2 = [(IDSQualifiedContactsMetric *)metricCopy qualifiedPrimaryHandlesIML];
+              v29 = qualifiedPrimaryHandlesIML;
+              if ([qualifiedPrimaryHandlesIML isEqualToNumber:?])
               {
-                v15 = [(IDSQualifiedContactsMetric *)self familyHandlesCount];
-                v26 = [(IDSQualifiedContactsMetric *)v4 familyHandlesCount];
-                v27 = v15;
-                if ([v15 isEqualToNumber:?])
+                familyHandlesCount = [(IDSQualifiedContactsMetric *)self familyHandlesCount];
+                familyHandlesCount2 = [(IDSQualifiedContactsMetric *)metricCopy familyHandlesCount];
+                v27 = familyHandlesCount;
+                if ([familyHandlesCount isEqualToNumber:?])
                 {
-                  v16 = [(IDSQualifiedContactsMetric *)self emergencyHandlesCount];
-                  v24 = [(IDSQualifiedContactsMetric *)v4 emergencyHandlesCount];
-                  v25 = v16;
-                  if ([v16 isEqualToNumber:?])
+                  emergencyHandlesCount = [(IDSQualifiedContactsMetric *)self emergencyHandlesCount];
+                  emergencyHandlesCount2 = [(IDSQualifiedContactsMetric *)metricCopy emergencyHandlesCount];
+                  v25 = emergencyHandlesCount;
+                  if ([emergencyHandlesCount isEqualToNumber:?])
                   {
-                    v17 = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandles];
-                    v22 = [(IDSQualifiedContactsMetric *)v4 qualifiedEmergencyHandles];
-                    v23 = v17;
-                    if ([v17 isEqualToNumber:?])
+                    qualifiedEmergencyHandles = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandles];
+                    qualifiedEmergencyHandles2 = [(IDSQualifiedContactsMetric *)metricCopy qualifiedEmergencyHandles];
+                    v23 = qualifiedEmergencyHandles;
+                    if ([qualifiedEmergencyHandles isEqualToNumber:?])
                     {
-                      v18 = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandlesIML];
-                      v21 = [(IDSQualifiedContactsMetric *)v4 qualifiedEmergencyHandlesIML];
-                      v19 = [v18 isEqualToNumber:v21];
+                      qualifiedEmergencyHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandlesIML];
+                      qualifiedEmergencyHandlesIML2 = [(IDSQualifiedContactsMetric *)metricCopy qualifiedEmergencyHandlesIML];
+                      v19 = [qualifiedEmergencyHandlesIML isEqualToNumber:qualifiedEmergencyHandlesIML2];
                     }
 
                     else
@@ -163,34 +163,34 @@
                       v19 = 0;
                     }
 
-                    v11 = v31;
+                    primaryHandlesCount = v31;
                   }
 
                   else
                   {
                     v19 = 0;
-                    v11 = v31;
+                    primaryHandlesCount = v31;
                   }
                 }
 
                 else
                 {
                   v19 = 0;
-                  v11 = v31;
+                  primaryHandlesCount = v31;
                 }
               }
 
               else
               {
                 v19 = 0;
-                v11 = v31;
+                primaryHandlesCount = v31;
               }
             }
 
             else
             {
               v19 = 0;
-              v11 = v31;
+              primaryHandlesCount = v31;
             }
           }
 
@@ -225,17 +225,17 @@
 {
   v15 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
-  v16 = [(IDSQualifiedContactsMetric *)self handlesCount];
-  v3 = [(IDSQualifiedContactsMetric *)self qualifiedHandlesCount];
-  v4 = [(IDSQualifiedContactsMetric *)self qualifiedHandlesIML];
-  v5 = [(IDSQualifiedContactsMetric *)self primaryHandlesCount];
-  v6 = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandles];
-  v7 = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandlesIML];
-  v8 = [(IDSQualifiedContactsMetric *)self familyHandlesCount];
-  v9 = [(IDSQualifiedContactsMetric *)self emergencyHandlesCount];
-  v10 = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandles];
-  v11 = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandlesIML];
-  v12 = [v15 stringWithFormat:@"<%@: %p handlesCount = %@; qualifiedHandlesCount = %@; qualifiedHandlesIML = %@; primaryHandlesCount = %@; qualifiedPrimaryHandles = %@; qualifiedPrimaryHandlesIML = %@; familyHandlesCount = %@; emergencyHandlesCount = %@; qualifiedEmergencyHandles = %@; qualifiedEmergencyHandlesIML = %@>", v14, self, v16, v3, v4, v5, v6, v7, v8, v9, v10, v11];;
+  handlesCount = [(IDSQualifiedContactsMetric *)self handlesCount];
+  qualifiedHandlesCount = [(IDSQualifiedContactsMetric *)self qualifiedHandlesCount];
+  qualifiedHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedHandlesIML];
+  primaryHandlesCount = [(IDSQualifiedContactsMetric *)self primaryHandlesCount];
+  qualifiedPrimaryHandles = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandles];
+  qualifiedPrimaryHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedPrimaryHandlesIML];
+  familyHandlesCount = [(IDSQualifiedContactsMetric *)self familyHandlesCount];
+  emergencyHandlesCount = [(IDSQualifiedContactsMetric *)self emergencyHandlesCount];
+  qualifiedEmergencyHandles = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandles];
+  qualifiedEmergencyHandlesIML = [(IDSQualifiedContactsMetric *)self qualifiedEmergencyHandlesIML];
+  v12 = [v15 stringWithFormat:@"<%@: %p handlesCount = %@; qualifiedHandlesCount = %@; qualifiedHandlesIML = %@; primaryHandlesCount = %@; qualifiedPrimaryHandles = %@; qualifiedPrimaryHandlesIML = %@; familyHandlesCount = %@; emergencyHandlesCount = %@; qualifiedEmergencyHandles = %@; qualifiedEmergencyHandlesIML = %@>", v14, self, handlesCount, qualifiedHandlesCount, qualifiedHandlesIML, primaryHandlesCount, qualifiedPrimaryHandles, qualifiedPrimaryHandlesIML, familyHandlesCount, emergencyHandlesCount, qualifiedEmergencyHandles, qualifiedEmergencyHandlesIML];;
 
   return v12;
 }

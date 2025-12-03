@@ -7,7 +7,7 @@
 - (id)hap_validatedAndNormalizedUUIDString
 {
   v32 = *MEMORY[0x277D85DE8];
-  v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:a1];
+  v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:self];
   if (v2)
   {
     v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"00000000-0000-1000-8000-0026BB765291"];
@@ -23,7 +23,7 @@
         *buf = 138543618;
         *&buf[4] = v7;
         *&buf[12] = 2112;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         v8 = "%{public}@### UUID type %@ is using the HAP Base UUID";
 LABEL_8:
         _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_ERROR, v8, buf, 0x16u);
@@ -34,12 +34,12 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v9 = [v2 UUIDString];
+    uUIDString = [v2 UUIDString];
   }
 
   else
   {
-    if ([a1 characterAtIndex:0] == 48)
+    if ([self characterAtIndex:0] == 48)
     {
       v5 = objc_autoreleasePoolPush();
       v6 = HMFGetOSLogHandle();
@@ -49,7 +49,7 @@ LABEL_8:
         *buf = 138543618;
         *&buf[4] = v7;
         *&buf[12] = 2112;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         v8 = "%{public}@### UUID type %@ starts with a '0'";
         goto LABEL_8;
       }
@@ -58,12 +58,12 @@ LABEL_9:
 
 LABEL_10:
       objc_autoreleasePoolPop(v5);
-      v9 = 0;
+      uUIDString = 0;
       goto LABEL_12;
     }
 
     memset(v31, 0, sizeof(v31));
-    [a1 UTF8String];
+    [self UTF8String];
     v12 = NormalizeUUIDString();
     if (v12)
     {
@@ -87,7 +87,7 @@ LABEL_10:
         v21 = 2080;
         v22 = buf;
         v23 = 2112;
-        v24 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%{public}@### Error: %d(%s) creating UUID string from type: %@.", &v17, 0x26u);
       }
 
@@ -95,14 +95,14 @@ LABEL_10:
     }
 
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:v31];
-    v9 = [v16 uppercaseString];
+    uUIDString = [v16 uppercaseString];
   }
 
 LABEL_12:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return uUIDString;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface SCNViewAccessibility
 - (id)accessibilityElements;
-- (id)accessibilityProjectSCNVector3Points:(id)a3;
+- (id)accessibilityProjectSCNVector3Points:(id)points;
 @end
 
 @implementation SCNViewAccessibility
 
-- (id)accessibilityProjectSCNVector3Points:(id)a3
+- (id)accessibilityProjectSCNVector3Points:(id)points
 {
   v32 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  pointsCopy = points;
   v4 = objc_opt_new();
   LOBYTE(v21) = 0;
   objc_opt_class();
@@ -17,7 +17,7 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = pointsCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -77,33 +77,33 @@ uint64_t __61__SCNViewAccessibility_accessibilityProjectSCNVector3Points___block
 
 - (id)accessibilityElements
 {
-  v3 = [(SCNViewAccessibility *)self _accessibilitySceneKitScene];
+  _accessibilitySceneKitScene = [(SCNViewAccessibility *)self _accessibilitySceneKitScene];
   v12 = 0;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsSafeCategory();
-  v5 = [v4 accessibilityContainerIsSet];
+  accessibilityContainerIsSet = [v4 accessibilityContainerIsSet];
 
-  if ((v5 & 1) == 0)
+  if ((accessibilityContainerIsSet & 1) == 0)
   {
-    [v3 setAccessibilityContainer:self];
+    [_accessibilitySceneKitScene setAccessibilityContainer:self];
   }
 
   v11.receiver = self;
   v11.super_class = SCNViewAccessibility;
-  v6 = [(SCNViewAccessibility *)&v11 accessibilityElements];
-  v7 = v6;
-  if (v6)
+  accessibilityElements = [(SCNViewAccessibility *)&v11 accessibilityElements];
+  v7 = accessibilityElements;
+  if (accessibilityElements)
   {
-    v8 = v6;
+    v8 = accessibilityElements;
   }
 
   else
   {
-    v8 = [MEMORY[0x29EDB8DE8] axArrayByIgnoringNilElementsWithCount:{1, v3}];
-    v9 = [(SCNViewAccessibility *)self _accessibilitySortedElementsWithin];
-    if (v9)
+    v8 = [MEMORY[0x29EDB8DE8] axArrayByIgnoringNilElementsWithCount:{1, _accessibilitySceneKitScene}];
+    _accessibilitySortedElementsWithin = [(SCNViewAccessibility *)self _accessibilitySortedElementsWithin];
+    if (_accessibilitySortedElementsWithin)
     {
-      [v8 addObjectsFromArray:v9];
+      [v8 addObjectsFromArray:_accessibilitySortedElementsWithin];
     }
   }
 

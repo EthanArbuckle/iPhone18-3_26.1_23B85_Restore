@@ -1,14 +1,14 @@
 @interface QLThumbnailCachedAddition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isStillValid;
-- (QLThumbnailCachedAddition)initWithAddition:(id)a3;
+- (QLThumbnailCachedAddition)initWithAddition:(id)addition;
 @end
 
 @implementation QLThumbnailCachedAddition
 
-- (QLThumbnailCachedAddition)initWithAddition:(id)a3
+- (QLThumbnailCachedAddition)initWithAddition:(id)addition
 {
-  v4 = a3;
+  additionCopy = addition;
   v11.receiver = self;
   v11.super_class = QLThumbnailCachedAddition;
   v5 = [(QLThumbnailCachedAddition *)&v11 init];
@@ -18,12 +18,12 @@
   }
 
   memset(&v10, 0, sizeof(v10));
-  v6 = [v4 url];
+  v6 = [additionCopy url];
   v7 = stat([v6 fileSystemRepresentation], &v10);
 
   if (!v7)
   {
-    [(QLThumbnailCachedAddition *)v5 setAddition:v4];
+    [(QLThumbnailCachedAddition *)v5 setAddition:additionCopy];
     v5->_fileID = v10.st_ino;
 LABEL_5:
     v8 = v5;
@@ -36,14 +36,14 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 addition];
-    v6 = [v5 isEqual:self->_addition];
+    addition = [equalCopy addition];
+    v6 = [addition isEqual:self->_addition];
   }
 
   else

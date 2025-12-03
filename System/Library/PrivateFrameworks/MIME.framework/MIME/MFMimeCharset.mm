@@ -1,62 +1,62 @@
 @interface MFMimeCharset
-+ (id)allMimeCharsets:(BOOL)a3;
-+ (id)charsetForEncoding:(unsigned int)a3;
++ (id)allMimeCharsets:(BOOL)charsets;
++ (id)charsetForEncoding:(unsigned int)encoding;
 + (id)preferredMimeCharset;
-- (MFMimeCharset)initWithCoder:(id)a3;
-- (MFMimeCharset)initWithEncoding:(unsigned int)a3;
+- (MFMimeCharset)initWithCoder:(id)coder;
+- (MFMimeCharset)initWithEncoding:(unsigned int)encoding;
 - (NSString)charsetName;
 - (NSString)description;
 - (NSString)displayName;
-- (void)_setPrimaryLanguage:(id)a3;
+- (void)_setPrimaryLanguage:(id)language;
 @end
 
 @implementation MFMimeCharset
 
-+ (id)allMimeCharsets:(BOOL)a3
++ (id)allMimeCharsets:(BOOL)charsets
 {
   v57 = *MEMORY[0x1E69E9840];
   _MFLockGlobalLock();
   v4 = allMimeCharsets__cachedResult;
   _MFUnlockGlobalLock();
-  v44 = a3;
-  if (!a3 && v4)
+  charsetsCopy = charsets;
+  if (!charsets && v4)
   {
     goto LABEL_50;
   }
 
   Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x1E695E9C0]);
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v42 = v4;
-  v7 = [v6 stringArrayForKey:@"AppleKeyboards"];
+  v7 = [standardUserDefaults stringArrayForKey:@"AppleKeyboards"];
 
   v39 = v7;
   v43 = _convertKeyboardsArrayToLanguages(v7);
   if (![v43 count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF58] preferredLanguages];
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    v11 = [v10 localeIdentifier];
+    array = [MEMORY[0x1E695DF70] array];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    if ([v9 count])
+    if ([preferredLanguages count])
     {
-      v12 = [v9 objectAtIndex:0];
-      [v8 addObject:v12];
+      v12 = [preferredLanguages objectAtIndex:0];
+      [array addObject:v12];
     }
 
-    if (v11)
+    if (localeIdentifier)
     {
-      [v8 addObject:v11];
+      [array addObject:localeIdentifier];
     }
 
-    v13 = _convertKeyboardsArrayToLanguages(v8);
+    v13 = _convertKeyboardsArrayToLanguages(array);
 
     v43 = v13;
   }
 
-  v40 = [objc_allocWithZone(a1) initWithEncoding:1536];
+  v40 = [objc_allocWithZone(self) initWithEncoding:1536];
   CFArrayAppendValue(Mutable, v40);
-  v41 = [objc_allocWithZone(a1) initWithEncoding:134217984];
+  v41 = [objc_allocWithZone(self) initWithEncoding:134217984];
   CFArrayAppendValue(Mutable, v41);
   v54 = 0u;
   v55 = 0u;
@@ -152,7 +152,7 @@
           if (v27 < 1)
           {
 LABEL_31:
-            v31 = [objc_allocWithZone(a1) initWithEncoding:ValueAtIndex];
+            v31 = [objc_allocWithZone(self) initWithEncoding:ValueAtIndex];
 
             [v31 _setPrimaryLanguage:v16];
             CFArrayAppendValue(Mutable, v31);
@@ -199,7 +199,7 @@ LABEL_37:
 LABEL_43:
 
   v33 = v42;
-  if (!v44)
+  if (!charsetsCopy)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, __keyboardsUpdated, @"AppleKeyboardsPreferencesChangedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -207,7 +207,7 @@ LABEL_43:
 
   _MFLockGlobalLock();
   v35 = allMimeCharsets__cachedResult;
-  if (v44 || !allMimeCharsets__cachedResult)
+  if (charsetsCopy || !allMimeCharsets__cachedResult)
   {
     allMimeCharsets__cachedResult = Mutable;
 
@@ -229,10 +229,10 @@ LABEL_50:
   return v4;
 }
 
-+ (id)charsetForEncoding:(unsigned int)a3
++ (id)charsetForEncoding:(unsigned int)encoding
 {
-  v4 = [a1 allMimeCharsets];
-  Count = CFArrayGetCount(v4);
+  allMimeCharsets = [self allMimeCharsets];
+  Count = CFArrayGetCount(allMimeCharsets);
   if (Count < 1)
   {
 LABEL_5:
@@ -245,8 +245,8 @@ LABEL_5:
     v7 = 0;
     while (1)
     {
-      v8 = CFArrayGetValueAtIndex(v4, v7);
-      if (v8[2] == a3)
+      v8 = CFArrayGetValueAtIndex(allMimeCharsets, v7);
+      if (v8[2] == encoding)
       {
         break;
       }
@@ -263,29 +263,29 @@ LABEL_5:
 
 + (id)preferredMimeCharset
 {
-  v2 = [a1 allMimeCharsets];
-  if ([v2 count] < 2)
+  allMimeCharsets = [self allMimeCharsets];
+  if ([allMimeCharsets count] < 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [v2 objectAtIndex:1];
+    v3 = [allMimeCharsets objectAtIndex:1];
   }
 
   return v3;
 }
 
-- (MFMimeCharset)initWithCoder:(id)a3
+- (MFMimeCharset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[MFMimeCharset initWithEncoding:](self, "initWithEncoding:", [v4 decodeInt32ForKey:@"Encoding"]);
+  coderCopy = coder;
+  v5 = -[MFMimeCharset initWithEncoding:](self, "initWithEncoding:", [coderCopy decodeInt32ForKey:@"Encoding"]);
 
   return v5;
 }
 
-- (MFMimeCharset)initWithEncoding:(unsigned int)a3
+- (MFMimeCharset)initWithEncoding:(unsigned int)encoding
 {
   v24.receiver = self;
   v24.super_class = MFMimeCharset;
@@ -296,16 +296,16 @@ LABEL_5:
     return v5;
   }
 
-  v4->_encoding = a3;
-  if (a3 > 2335)
+  v4->_encoding = encoding;
+  if (encoding > 2335)
   {
-    if (a3 > 2562)
+    if (encoding > 2562)
     {
-      if (a3 <= 2565)
+      if (encoding <= 2565)
       {
-        if (a3 != 2563)
+        if (encoding != 2563)
         {
-          if (a3 != 2565)
+          if (encoding != 2565)
           {
             goto LABEL_33;
           }
@@ -324,12 +324,12 @@ LABEL_30:
         goto LABEL_39;
       }
 
-      if (a3 == 2566)
+      if (encoding == 2566)
       {
         goto LABEL_30;
       }
 
-      if (a3 != 2814)
+      if (encoding != 2814)
       {
         goto LABEL_33;
       }
@@ -337,11 +337,11 @@ LABEL_30:
 
     else
     {
-      if (a3 <= 2367)
+      if (encoding <= 2367)
       {
-        if (a3 != 2336)
+        if (encoding != 2336)
         {
-          if (a3 == 2352)
+          if (encoding == 2352)
           {
             v8 = v4->_primaryLanguage;
             v4->_primaryLanguage = 0;
@@ -356,9 +356,9 @@ LABEL_30:
         goto LABEL_29;
       }
 
-      if (a3 != 2368)
+      if (encoding != 2368)
       {
-        if (a3 != 2562)
+        if (encoding != 2562)
         {
           goto LABEL_33;
         }
@@ -380,11 +380,11 @@ LABEL_39:
     return v5;
   }
 
-  if (a3 > 1056)
+  if (encoding > 1056)
   {
-    if (a3 <= 2079)
+    if (encoding <= 2079)
     {
-      if (a3 == 1057)
+      if (encoding == 1057)
       {
         v19 = v4->_primaryLanguage;
         v4->_primaryLanguage = 0;
@@ -395,7 +395,7 @@ LABEL_39:
         goto LABEL_36;
       }
 
-      if (a3 != 1059)
+      if (encoding != 1059)
       {
         goto LABEL_33;
       }
@@ -412,7 +412,7 @@ LABEL_36:
       goto LABEL_39;
     }
 
-    if (a3 != 2080 && a3 != 2112)
+    if (encoding != 2080 && encoding != 2112)
     {
       goto LABEL_33;
     }
@@ -420,11 +420,11 @@ LABEL_36:
     goto LABEL_30;
   }
 
-  if (a3 <= 519)
+  if (encoding <= 519)
   {
-    if (a3 >= 2)
+    if (encoding >= 2)
     {
-      if (a3 == 518)
+      if (encoding == 518)
       {
         v6 = v4->_primaryLanguage;
         v4->_primaryLanguage = 0;
@@ -444,7 +444,7 @@ LABEL_38:
     goto LABEL_29;
   }
 
-  if (a3 == 520)
+  if (encoding == 520)
   {
     v21 = v4->_primaryLanguage;
     v4->_primaryLanguage = 0;
@@ -453,17 +453,17 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (a3 == 1056)
+  if (encoding == 1056)
   {
     goto LABEL_29;
   }
 
 LABEL_33:
-  v16 = [(MFMimeCharset *)v4 charsetName];
-  v17 = v16;
-  if (v16)
+  charsetName = [(MFMimeCharset *)v4 charsetName];
+  v17 = charsetName;
+  if (charsetName)
   {
-    v18 = 4 * ([v16 rangeOfString:@"X-" options:9] == 0x7FFFFFFFFFFFFFFFLL);
+    v18 = 4 * ([charsetName rangeOfString:@"X-" options:9] == 0x7FFFFFFFFFFFFFFFLL);
   }
 
   else
@@ -476,10 +476,10 @@ LABEL_33:
   return v5;
 }
 
-- (void)_setPrimaryLanguage:(id)a3
+- (void)_setPrimaryLanguage:(id)language
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  languageCopy = language;
+  v4 = [languageCopy copy];
   primaryLanguage = self->_primaryLanguage;
   self->_primaryLanguage = v4;
 }
@@ -529,8 +529,8 @@ LABEL_33:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MFMimeCharset *)self displayName];
-  v6 = [v3 stringWithFormat:@"<%@ %p> %@ encoding=0X%08lX charsetName=%@ lang=%@", v4, self, v5, self->_encoding, self->_charsetName, self->_primaryLanguage];
+  displayName = [(MFMimeCharset *)self displayName];
+  v6 = [v3 stringWithFormat:@"<%@ %p> %@ encoding=0X%08lX charsetName=%@ lang=%@", v4, self, displayName, self->_encoding, self->_charsetName, self->_primaryLanguage];
 
   return v6;
 }

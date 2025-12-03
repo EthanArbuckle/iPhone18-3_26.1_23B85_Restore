@@ -8,7 +8,7 @@
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 supportsCommunicationChannelToDestination:v6])
+  if ([self supportsCommunicationChannelToDestination:v6])
   {
     v8 = AVDataDestinationForAPKDataDestination(v6);
     if (v8)
@@ -18,7 +18,7 @@
       v10[2] = __86__AVOutputDevice_AirPLayKit__openCommunicationChannelToDestination_completionHandler___block_invoke;
       v10[3] = &unk_278C5DCF8;
       v11 = v7;
-      [a1 openCommunicationChannelToDestination:v8 options:0 completionHandler:v10];
+      [self openCommunicationChannelToDestination:v8 options:0 completionHandler:v10];
     }
 
     else

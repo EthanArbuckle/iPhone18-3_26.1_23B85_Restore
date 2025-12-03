@@ -3,16 +3,16 @@
 - (VSManagedProfileConnection)init;
 - (id)providerUniqueID;
 - (id)userToken;
-- (int64_t)BOOLForManagedConfigurationBool:(int)a3;
+- (int64_t)BOOLForManagedConfigurationBool:(int)bool;
 - (int64_t)TVProviderModificationAllowed;
 - (int64_t)UIAppInstallationAllowed;
 - (int64_t)accountModificationAllowed;
 - (int64_t)analyticsAllowed;
 - (int64_t)appInstallationAllowed;
 - (int64_t)maximumAppsRating;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation VSManagedProfileConnection
@@ -43,9 +43,9 @@ uint64_t __46__VSManagedProfileConnection_sharedConnection__block_invoke()
   v2 = [(VSManagedProfileConnection *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
     profileConnection = v2->_profileConnection;
-    v2->_profileConnection = v3;
+    v2->_profileConnection = mEMORY[0x277D262A0];
 
     v5 = dispatch_queue_create(0, 0);
     notificationQueue = v2->_notificationQueue;
@@ -59,18 +59,18 @@ uint64_t __46__VSManagedProfileConnection_sharedConnection__block_invoke()
   return v2;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VSManagedProfileConnection *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(VSManagedProfileConnection *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__VSManagedProfileConnection_registerObserver___block_invoke;
   v7[3] = &unk_278B73708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __47__VSManagedProfileConnection_registerObserver___block_invoke(uint64_t a1)
@@ -82,18 +82,18 @@ void __47__VSManagedProfileConnection_registerObserver___block_invoke(uint64_t a
   [v3 addObject:*(a1 + 40)];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(VSManagedProfileConnection *)self notificationQueue];
+  observerCopy = observer;
+  notificationQueue = [(VSManagedProfileConnection *)self notificationQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__VSManagedProfileConnection_unregisterObserver___block_invoke;
   v7[3] = &unk_278B73708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(notificationQueue, v7);
 }
 
 void __49__VSManagedProfileConnection_unregisterObserver___block_invoke(uint64_t a1)
@@ -104,78 +104,78 @@ void __49__VSManagedProfileConnection_unregisterObserver___block_invoke(uint64_t
 
 - (id)providerUniqueID
 {
-  v2 = [(VSManagedProfileConnection *)self profileConnection];
-  v3 = [v2 deviceOrganizationVendorID];
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  deviceOrganizationVendorID = [profileConnection deviceOrganizationVendorID];
 
-  return v3;
+  return deviceOrganizationVendorID;
 }
 
 - (id)userToken
 {
-  v2 = [(VSManagedProfileConnection *)self profileConnection];
-  v3 = [v2 tvProviderUserToken];
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  tvProviderUserToken = [profileConnection tvProviderUserToken];
 
-  return v3;
+  return tvProviderUserToken;
 }
 
 - (int64_t)analyticsAllowed
 {
-  v3 = [(VSManagedProfileConnection *)self profileConnection];
-  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25E58]]);
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [profileConnection effectiveBoolValueForSetting:*MEMORY[0x277D25E58]]);
 
   return v4;
 }
 
 - (int64_t)appInstallationAllowed
 {
-  v3 = [(VSManagedProfileConnection *)self profileConnection];
-  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25D18]]);
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [profileConnection effectiveBoolValueForSetting:*MEMORY[0x277D25D18]]);
 
   return v4;
 }
 
 - (int64_t)UIAppInstallationAllowed
 {
-  v3 = [(VSManagedProfileConnection *)self profileConnection];
-  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [v3 effectiveBoolValueForSetting:*MEMORY[0x277D260A8]]);
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [profileConnection effectiveBoolValueForSetting:*MEMORY[0x277D260A8]]);
 
   return v4;
 }
 
 - (int64_t)accountModificationAllowed
 {
-  v3 = [(VSManagedProfileConnection *)self profileConnection];
-  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]]);
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [profileConnection effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]]);
 
   return v4;
 }
 
 - (int64_t)TVProviderModificationAllowed
 {
-  v3 = [(VSManagedProfileConnection *)self profileConnection];
-  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [v3 effectiveBoolValueForSetting:*MEMORY[0x277D26078]]);
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v4 = -[VSManagedProfileConnection BOOLForManagedConfigurationBool:](self, "BOOLForManagedConfigurationBool:", [profileConnection effectiveBoolValueForSetting:*MEMORY[0x277D26078]]);
 
   return v4;
 }
 
 - (int64_t)maximumAppsRating
 {
-  v2 = [(VSManagedProfileConnection *)self profileConnection];
-  v3 = [v2 effectiveValueForSetting:*MEMORY[0x277D25F70]];
-  v4 = [v3 integerValue];
+  profileConnection = [(VSManagedProfileConnection *)self profileConnection];
+  v3 = [profileConnection effectiveValueForSetting:*MEMORY[0x277D25F70]];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (int64_t)BOOLForManagedConfigurationBool:(int)a3
+- (int64_t)BOOLForManagedConfigurationBool:(int)bool
 {
   v3 = 1;
-  if (a3 != 1)
+  if (bool != 1)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (bool)
   {
     return v3;
   }
@@ -186,9 +186,9 @@ void __49__VSManagedProfileConnection_unregisterObserver___block_invoke(uint64_t
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [(VSManagedProfileConnection *)self notificationQueue:a3];
+  v5 = [(VSManagedProfileConnection *)self notificationQueue:notification];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __103__VSManagedProfileConnection_profileConnectionDidReceiveEffectiveSettingsChangedNotification_userInfo___block_invoke;

@@ -8,33 +8,33 @@
 - (BOOL)supportsResize;
 - (CGAffineTransform)computeLayoutTransform;
 - (CGPoint)centerForConnecting;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)headLineEndPoint;
 - (CGPoint)headPoint;
 - (CGPoint)tailLineEndPoint;
 - (CGPoint)tailPoint;
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3;
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale;
 - (CGRect)alignmentFrame;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)boundsForStandardKnobs;
-- (CGRect)p_boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4;
+- (CGRect)p_boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform;
 - (CGRect)p_cachedPathBounds;
 - (CGRect)p_cachedPathBoundsWithoutStroke;
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3;
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform;
 - (CGSize)minimumSize;
 - (TSDFill)fill;
-- (TSDShapeLayout)initWithInfo:(id)a3;
+- (TSDShapeLayout)initWithInfo:(id)info;
 - (double)lineEndScale;
 - (id)clippedPathForLineEnds;
 - (id)computeLayoutGeometry;
 - (id)editablePathSource;
 - (id)i_computeWrapPath;
-- (id)i_computeWrapPathClosed:(BOOL)a3;
+- (id)i_computeWrapPathClosed:(BOOL)closed;
 - (id)layoutGeometryFromInfo;
 - (id)layoutInfoGeometry;
 - (id)p_cachedPath;
 - (id)p_createClippedPath;
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5;
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke;
 - (id)pathSource;
 - (id)shapeInfo;
 - (id)smartPathSource;
@@ -42,34 +42,34 @@
 - (id)strokeHeadLineEnd;
 - (id)strokeTailLineEnd;
 - (unint64_t)numberOfControlKnobs;
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7;
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8;
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta;
 - (void)beginDynamicOperation;
 - (void)dealloc;
 - (void)dynamicStrokeWidthChangeDidBegin;
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3;
+- (void)dynamicStrokeWidthUpdateToValue:(double)value;
 - (void)endDynamicOperation;
 - (void)invalidateFrame;
 - (void)invalidatePath;
 - (void)invalidatePathBounds;
-- (void)p_computeAngle:(double *)a3 point:(CGPoint *)a4 cutSegment:(int64_t *)a5 cutT:(double *)a6 forLineEndAtHead:(BOOL)a7;
+- (void)p_computeAngle:(double *)angle point:(CGPoint *)point cutSegment:(int64_t *)segment cutT:(double *)t forLineEndAtHead:(BOOL)head;
 - (void)p_invalidateClippedPath;
 - (void)p_updateResizeInfoGeometryFromResizePathSource;
 - (void)p_validateHeadAndTail;
 - (void)p_validateHeadLineEnd;
 - (void)p_validateTailLineEnd;
-- (void)processChangedProperty:(int)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TSDShapeLayout
 
-- (TSDShapeLayout)initWithInfo:(id)a3
+- (TSDShapeLayout)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = TSDShapeLayout;
-  v3 = [(TSDLayout *)&v6 initWithInfo:a3];
+  v3 = [(TSDLayout *)&v6 initWithInfo:info];
   v4 = v3;
   if (v3)
   {
@@ -130,9 +130,9 @@
     v7 = 1.79769313e308;
   }
 
-  v8 = [(TSDShapeLayout *)self pathSource];
-  v9 = [(TSDLayout *)self i_layoutGeometryProvider];
-  v10 = [v9 layoutGeometryForLayout:self];
+  pathSource = [(TSDShapeLayout *)self pathSource];
+  i_layoutGeometryProvider = [(TSDLayout *)self i_layoutGeometryProvider];
+  v10 = [i_layoutGeometryProvider layoutGeometryForLayout:self];
   if (v10)
   {
     v11 = v10;
@@ -159,17 +159,17 @@
     if (v5 < 1.79769313e308 || v7 < 1.79769313e308)
     {
       v20 = [objc_msgSend(-[TSDShapeLayout shapeInfo](self "shapeInfo")];
-      v21 = [(TSDShapeLayout *)self stroke];
+      stroke = [(TSDShapeLayout *)self stroke];
       [-[TSDShapeLayout layoutInfoGeometry](self "layoutInfoGeometry")];
       v23 = v22;
       v25 = v24;
       [-[TSDShapeLayout layoutInfoGeometry](self "layoutInfoGeometry")];
       v27 = v26;
       memset(&v59, 0, sizeof(v59));
-      v28 = [(TSDShapeLayout *)self layoutInfoGeometry];
-      if (v28)
+      layoutInfoGeometry = [(TSDShapeLayout *)self layoutInfoGeometry];
+      if (layoutInfoGeometry)
       {
-        v29 = v28;
+        v29 = layoutInfoGeometry;
         v30 = TSDSubtractPoints(v23, v25, v27);
         [v29 transformBasedOnPoint:*MEMORY[0x277CBF348] centeredAtPoint:{*(MEMORY[0x277CBF348] + 8), v30, v31}];
       }
@@ -182,15 +182,15 @@
       v32 = 4;
       while (1)
       {
-        v33 = [(TSDPathSource *)v20 bezierPath];
+        bezierPath = [(TSDPathSource *)v20 bezierPath];
         v58 = v59;
         if (!CGAffineTransformIsIdentity(&v58))
         {
           v58 = v59;
-          [v33 transformUsingAffineTransform:&v58];
+          [bezierPath transformUsingAffineTransform:&v58];
         }
 
-        TSDPathBoundsIncludingStroke([v33 CGPath], v21);
+        TSDPathBoundsIncludingStroke([bezierPath CGPath], stroke);
         v35 = v34;
         v37 = v36;
         v38 = TSDSubtractSizes(v34, v36, v5);
@@ -233,7 +233,7 @@
 LABEL_48:
 
     self->mShrunkenPathSource = v20;
-    if ([(TSDShapeLayout *)self pathSource]!= v8)
+    if ([(TSDShapeLayout *)self pathSource]!= pathSource)
     {
       [(TSDShapeLayout *)self invalidatePath];
       [(TSDShapeLayout *)self invalidatePathBounds];
@@ -247,9 +247,9 @@ LABEL_48:
     v56 = [TSDLayoutGeometry alloc];
     v58 = v59;
     v11 = [(TSDLayoutGeometry *)v56 initWithSize:&v58 transform:v53, v55];
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (i_layoutGeometryProvider && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      return [v9 adjustLayoutGeometry:v11 forLayout:self];
+      return [i_layoutGeometryProvider adjustLayoutGeometry:v11 forLayout:self];
     }
   }
 
@@ -259,10 +259,10 @@ LABEL_48:
 - (CGAffineTransform)computeLayoutTransform
 {
   memset(&v10, 0, sizeof(v10));
-  v5 = [(TSDShapeLayout *)self layoutInfoGeometry];
-  if (v5)
+  layoutInfoGeometry = [(TSDShapeLayout *)self layoutInfoGeometry];
+  if (layoutInfoGeometry)
   {
-    [v5 transform];
+    [layoutInfoGeometry transform];
   }
 
   else
@@ -278,29 +278,29 @@ LABEL_48:
   return CGAffineTransformTranslate(retstr, &v9, v6, v7);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   if ((*&self->mShapeInvalidFlags & 0x20) == 0)
   {
-    v5 = [(TSDAbstractLayout *)self geometry];
-    if (!v5)
+    geometry = [(TSDAbstractLayout *)self geometry];
+    if (!geometry)
     {
 LABEL_5:
       *&self->mShapeInvalidFlags |= 0x20u;
       goto LABEL_10;
     }
 
-    v6 = v5;
-    if (![(TSDLayoutGeometry *)v5 isEqual:a3])
+    v6 = geometry;
+    if (![(TSDLayoutGeometry *)geometry isEqual:geometry])
     {
-      if ([(TSDLayoutGeometry *)v6 differsInMoreThanTranslationFrom:a3])
+      if ([(TSDLayoutGeometry *)v6 differsInMoreThanTranslationFrom:geometry])
       {
         goto LABEL_5;
       }
 
-      if (a3)
+      if (geometry)
       {
-        [a3 transform];
+        [geometry transform];
         v8 = v18;
         v9 = v19;
         v10 = v20;
@@ -325,7 +325,7 @@ LABEL_5:
 LABEL_10:
   v17.receiver = self;
   v17.super_class = TSDShapeLayout;
-  [(TSDDrawableLayout *)&v17 setGeometry:a3];
+  [(TSDDrawableLayout *)&v17 setGeometry:geometry];
 }
 
 - (CGRect)alignmentFrame
@@ -382,16 +382,16 @@ LABEL_10:
   return result;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDShapeLayout;
   [(TSDDrawableLayout *)&v5 processChangedProperty:?];
-  if (a3 <= 522)
+  if (property <= 522)
   {
-    if (a3 != 517)
+    if (property != 517)
     {
-      if (a3 != 522)
+      if (property != 522)
       {
         return;
       }
@@ -406,7 +406,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a3 == 523)
+  if (property == 523)
   {
     [(TSDShapeLayout *)self invalidatePathBounds];
 LABEL_10:
@@ -414,7 +414,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 526)
+  if (property != 526)
   {
     return;
   }
@@ -449,44 +449,44 @@ LABEL_11:
     return self->mDynamicStroke;
   }
 
-  v5 = [(TSDShapeLayout *)self shapeInfo];
+  shapeInfo = [(TSDShapeLayout *)self shapeInfo];
 
-  return [v5 stroke];
+  return [shapeInfo stroke];
 }
 
 - (void)dynamicStrokeWidthChangeDidBegin
 {
   if (self->mDynamicStroke)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout dynamicStrokeWidthChangeDidBegin]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 357, @"expected nil value for '%s'", "mDynamicStroke"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 357, @"expected nil value for '%s'", "mDynamicStroke"}];
   }
 
   self->mDynamicStroke = [objc_msgSend(-[TSDShapeLayout shapeInfo](self "shapeInfo")];
 }
 
-- (void)dynamicStrokeWidthUpdateToValue:(double)a3
+- (void)dynamicStrokeWidthUpdateToValue:(double)value
 {
   mDynamicStroke = self->mDynamicStroke;
   if (!mDynamicStroke)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout dynamicStrokeWidthUpdateToValue:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 363, @"invalid nil value for '%s'", "mDynamicStroke"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 363, @"invalid nil value for '%s'", "mDynamicStroke"}];
     mDynamicStroke = self->mDynamicStroke;
   }
 
-  v8 = [(TSDStroke *)mDynamicStroke isFrame];
+  isFrame = [(TSDStroke *)mDynamicStroke isFrame];
   v9 = self->mDynamicStroke;
-  if (v8)
+  if (isFrame)
   {
-    [(TSDMutableStroke *)v9 setAssetScale:a3];
+    [(TSDMutableStroke *)v9 setAssetScale:value];
   }
 
   else
   {
-    [(TSDMutableStroke *)v9 setWidth:a3];
+    [(TSDMutableStroke *)v9 setWidth:value];
   }
 
   [(TSDShapeLayout *)self processChangedProperty:517];
@@ -523,14 +523,14 @@ LABEL_11:
     return mResizePathSource;
   }
 
-  v6 = [(TSDShapeLayout *)self shapeInfo];
+  shapeInfo = [(TSDShapeLayout *)self shapeInfo];
 
-  return [v6 pathSource];
+  return [shapeInfo pathSource];
 }
 
 - (id)editablePathSource
 {
-  v3 = [(TSDShapeLayout *)self pathSource];
+  pathSource = [(TSDShapeLayout *)self pathSource];
   v4 = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -548,8 +548,8 @@ LABEL_11:
     {
 
       self->mCachedEditableBezierPathSource = 0;
-      self->mCachedEditableBezierPathSource = [TSDEditableBezierPathSource editableBezierPathSourceWithPathSource:v3];
-      self->mCachedPathSource = v3;
+      self->mCachedEditableBezierPathSource = [TSDEditableBezierPathSource editableBezierPathSourceWithPathSource:pathSource];
+      self->mCachedPathSource = pathSource;
     }
 
     return self->mCachedEditableBezierPathSource;
@@ -572,9 +572,9 @@ LABEL_11:
     return self->mResizeInfoGeometry;
   }
 
-  v5 = [(TSDLayout *)self info];
+  info = [(TSDLayout *)self info];
 
-  return [(TSDInfo *)v5 geometry];
+  return [(TSDInfo *)info geometry];
 }
 
 - (CGPoint)headPoint
@@ -622,10 +622,10 @@ LABEL_11:
   [(TSDShapeLayout *)self tailLineEndPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(TSDAbstractLayout *)self geometryInRoot];
-  if (v7)
+  geometryInRoot = [(TSDAbstractLayout *)self geometryInRoot];
+  if (geometryInRoot)
   {
-    [v7 transform];
+    [geometryInRoot transform];
     v9 = v25.f64[1];
     v8 = v25.f64[0];
     v11 = v26.f64[1];
@@ -647,10 +647,10 @@ LABEL_11:
   [(TSDShapeLayout *)self headLineEndPoint];
   v23 = v15;
   v24 = v14;
-  v16 = [(TSDAbstractLayout *)self geometryInRoot];
-  if (v16)
+  geometryInRoot2 = [(TSDAbstractLayout *)self geometryInRoot];
+  if (geometryInRoot2)
   {
-    [v16 transform];
+    [geometryInRoot2 transform];
     v17 = v25;
     v18 = v26;
     v19 = v27;
@@ -694,18 +694,18 @@ LABEL_11:
   return self->mCachedClippedPath;
 }
 
-- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)a3
+- (CGRect)shapeFrameWithTransform:(CGAffineTransform *)transform
 {
   [(TSDShapeLayout *)self pathBounds];
-  v7 = *&a3->c;
-  *&v35.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v35.a = *&transform->a;
   *&v35.c = v7;
-  *&v35.tx = *&a3->tx;
+  *&v35.tx = *&transform->tx;
   CGAffineTransformTranslate(&v36, &v35, -v5, -v6);
   v8 = *&v36.c;
-  *&a3->a = *&v36.a;
-  *&a3->c = v8;
-  *&a3->tx = *&v36.tx;
+  *&transform->a = *&v36.a;
+  *&transform->c = v8;
+  *&transform->tx = *&v36.tx;
   if ([-[TSDShapeLayout stroke](self "stroke")])
   {
     [(TSDShapeLayout *)self pathBounds];
@@ -716,10 +716,10 @@ LABEL_11:
     [-[TSDShapeLayout stroke](self "stroke")];
   }
 
-  v13 = *&a3->c;
-  *&v36.a = *&a3->a;
+  v13 = *&transform->c;
+  *&v36.a = *&transform->a;
   *&v36.c = v13;
-  *&v36.tx = *&a3->tx;
+  *&v36.tx = *&transform->tx;
   v37 = CGRectApplyAffineTransform(*&v9, &v36);
   x = v37.origin.x;
   y = v37.origin.y;
@@ -727,10 +727,10 @@ LABEL_11:
   height = v37.size.height;
   if ([(TSDShapeLayout *)self pathIsOpen])
   {
-    v18 = *&a3->c;
-    *&v36.a = *&a3->a;
+    v18 = *&transform->c;
+    *&v36.a = *&transform->a;
     *&v36.c = v18;
-    *&v36.tx = *&a3->tx;
+    *&v36.tx = *&transform->tx;
     [(TSDShapeLayout *)self p_boundsOfLineEndForHead:1 transform:&v36];
     v43.origin.x = v19;
     v43.origin.y = v20;
@@ -745,10 +745,10 @@ LABEL_11:
     v24 = v39.origin.y;
     v25 = v39.size.width;
     v26 = v39.size.height;
-    *&v39.origin.y = *&a3->c;
-    *&v36.a = *&a3->a;
+    *&v39.origin.y = *&transform->c;
+    *&v36.a = *&transform->a;
     *&v36.c = *&v39.origin.y;
-    *&v36.tx = *&a3->tx;
+    *&v36.tx = *&transform->tx;
     [(TSDShapeLayout *)self p_boundsOfLineEndForHead:0 transform:&v36];
     v44.origin.x = v27;
     v44.origin.y = v28;
@@ -831,7 +831,7 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)aliasedAlignmentFrameForScale:(double)a3
+- (CGRect)aliasedAlignmentFrameForScale:(double)scale
 {
   v49 = 0;
   v50 = 0;
@@ -839,7 +839,7 @@ LABEL_11:
   v48 = 0.0;
   v45 = 0.0;
   v46 = 0.0;
-  [(TSDShapeLayout *)self aliasPathForScale:&v50 adjustedStroke:&v49 adjustedPath:&v47 startDelta:&v45 endDelta:a3];
+  [(TSDShapeLayout *)self aliasPathForScale:&v50 adjustedStroke:&v49 adjustedPath:&v47 startDelta:&v45 endDelta:scale];
   [(TSDShapeLayout *)self pathBounds];
   v5 = v4;
   v7 = v6;
@@ -934,40 +934,40 @@ LABEL_11:
   return result;
 }
 
-- (void)aliasPathForScale:(double)a3 adjustedStroke:(id *)a4 adjustedPath:(id *)a5 startDelta:(CGPoint *)a6 endDelta:(CGPoint *)a7
+- (void)aliasPathForScale:(double)scale adjustedStroke:(id *)stroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
-  v13 = [(TSDShapeLayout *)self stroke];
+  stroke = [(TSDShapeLayout *)self stroke];
 
-  [(TSDShapeLayout *)self aliasPathForScale:v13 originalStroke:a4 adjustedStroke:a5 adjustedPath:a6 startDelta:a7 endDelta:a3];
+  [(TSDShapeLayout *)self aliasPathForScale:stroke originalStroke:stroke adjustedStroke:path adjustedPath:delta startDelta:endDelta endDelta:scale];
 }
 
-- (void)aliasPathForScale:(double)a3 originalStroke:(id)a4 adjustedStroke:(id *)a5 adjustedPath:(id *)a6 startDelta:(CGPoint *)a7 endDelta:(CGPoint *)a8
+- (void)aliasPathForScale:(double)scale originalStroke:(id)stroke adjustedStroke:(id *)adjustedStroke adjustedPath:(id *)path startDelta:(CGPoint *)delta endDelta:(CGPoint *)endDelta
 {
   v44 = *MEMORY[0x277D85DE8];
-  v15 = [(TSDShapeLayout *)self shapeInfo];
-  if (-[TSDShapeLayout pathIsOpen](self, "pathIsOpen") && ([v15 headLineEnd] || objc_msgSend(v15, "tailLineEnd")))
+  shapeInfo = [(TSDShapeLayout *)self shapeInfo];
+  if (-[TSDShapeLayout pathIsOpen](self, "pathIsOpen") && ([shapeInfo headLineEnd] || objc_msgSend(shapeInfo, "tailLineEnd")))
   {
-    v16 = [(TSDShapeLayout *)self clippedPathForLineEnds];
+    clippedPathForLineEnds = [(TSDShapeLayout *)self clippedPathForLineEnds];
   }
 
   else
   {
-    v16 = [(TSDShapeLayout *)self path];
+    clippedPathForLineEnds = [(TSDShapeLayout *)self path];
   }
 
-  v17 = v16;
+  v17 = clippedPathForLineEnds;
   memset(&v42, 0, sizeof(v42));
   if (self)
   {
     [(TSDAbstractLayout *)self transformInRoot];
   }
 
-  *a5 = a4;
-  *a6 = [v17 copy];
+  *adjustedStroke = stroke;
+  *path = [v17 copy];
   v18 = *MEMORY[0x277CBF348];
-  *a7 = *MEMORY[0x277CBF348];
+  *delta = *MEMORY[0x277CBF348];
   v38 = v18;
-  *a8 = v18;
+  *endDelta = v18;
   if (v17)
   {
     v43 = v42;
@@ -976,37 +976,37 @@ LABEL_11:
       [(TSDShapeLayout *)self pathBounds];
       v20 = v19;
       v22 = v21;
-      if (![a4 shouldRender] || objc_msgSend(a4, "shouldAntialiasDefeat"))
+      if (![stroke shouldRender] || objc_msgSend(stroke, "shouldAntialiasDefeat"))
       {
-        v23 = [a4 mutableCopy];
+        v23 = [stroke mutableCopy];
         v24 = 0.0;
         if ([v23 shouldRender] && (objc_msgSend(v23, "isFrame") & 1) == 0)
         {
-          [a4 width];
+          [stroke width];
           v24 = 1.0;
-          if (v25 * a3 > 1.0)
+          if (v25 * scale > 1.0)
           {
             TSURound();
             v27 = v26;
-            [v23 setWidth:v26 / a3];
+            [v23 setWidth:v26 / scale];
             v24 = v27;
           }
 
-          [a4 width];
+          [stroke width];
           [v23 setActualWidth:?];
         }
 
         v28 = [v17 copy];
         [v17 elementAtIndex:0 associatedPoints:&v43];
-        *a7 = *&v43.a;
+        *delta = *&v43.a;
         [v17 currentPoint];
-        a8->x = v29;
-        a8->y = v30;
+        endDelta->x = v29;
+        endDelta->y = v30;
         v40 = v42;
         CGAffineTransformTranslate(&v41, &v40, -v20, -v22);
         v42 = v41;
         [v28 transformUsingAffineTransform:&v41];
-        *&v31 = a3;
+        *&v31 = scale;
         *&v32 = v24;
         v33 = [v28 aliasedPathWithViewScale:v31 effectiveStrokeWidth:v32];
         v40 = v42;
@@ -1014,13 +1014,13 @@ LABEL_11:
         [v33 transformUsingAffineTransform:&v41];
         *&v41.a = v39;
         [v33 elementAtIndex:0 associatedPoints:&v41];
-        a7->x = TSDSubtractPoints(v41.a, v41.b, a7->x);
-        a7->y = v34;
+        delta->x = TSDSubtractPoints(v41.a, v41.b, delta->x);
+        delta->y = v34;
         [v33 currentPoint];
-        a8->x = TSDSubtractPoints(v35, v36, a8->x);
-        a8->y = v37;
-        *a5 = v23;
-        *a6 = v33;
+        endDelta->x = TSDSubtractPoints(v35, v36, endDelta->x);
+        endDelta->y = v37;
+        *adjustedStroke = v23;
+        *path = v33;
       }
     }
   }
@@ -1033,9 +1033,9 @@ LABEL_11:
     return self->mDynamicFill;
   }
 
-  v5 = [(TSDShapeLayout *)self shapeInfo];
+  shapeInfo = [(TSDShapeLayout *)self shapeInfo];
 
-  return [v5 fill];
+  return [shapeInfo fill];
 }
 
 - (void)invalidateFrame
@@ -1085,30 +1085,30 @@ LABEL_11:
   [(TSDLayout *)&v10 beginDynamicOperation];
   if (self->mResizePathSource)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout beginDynamicOperation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 784, @"expected nil value for '%s'", "mResizePathSource"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 784, @"expected nil value for '%s'", "mResizePathSource"}];
   }
 
   if (self->mResizeInfoGeometry)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout beginDynamicOperation]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 785, @"expected nil value for '%s'", "mResizeInfoGeometry"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 785, @"expected nil value for '%s'", "mResizeInfoGeometry"}];
   }
 
   self->mResizePathSource = [objc_msgSend(-[TSDShapeLayout shapeInfo](self "shapeInfo")];
   if (-[TSDLayout isInTopLevelContainerForEditing](self, "isInTopLevelContainerForEditing") || [-[TSDInfo geometry](-[TSDLayout info](self "info")] && (objc_msgSend(-[TSDInfo geometry](-[TSDLayout info](self, "info"), "geometry"), "heightValid") & 1) != 0)
   {
-    v7 = [(TSDInfo *)[(TSDLayout *)self info] geometry];
+    geometry = [(TSDInfo *)[(TSDLayout *)self info] geometry];
   }
 
   else
   {
-    v8 = [(TSDLayout *)self info];
-    if (v8)
+    info = [(TSDLayout *)self info];
+    if (info)
     {
-      [(TSDInfo *)v8 computeFullTransform];
+      [(TSDInfo *)info computeFullTransform];
     }
 
     else
@@ -1116,10 +1116,10 @@ LABEL_11:
       memset(v9, 0, sizeof(v9));
     }
 
-    v7 = [TSDInfoGeometry geometryFromFullTransform:v9];
+    geometry = [TSDInfoGeometry geometryFromFullTransform:v9];
   }
 
-  self->mInitialInfoGeometry = v7;
+  self->mInitialInfoGeometry = geometry;
   self->mResizeInfoGeometry = [-[TSDInfo geometry](-[TSDLayout info](self "info")];
 }
 
@@ -1129,16 +1129,16 @@ LABEL_11:
   [(TSDShapeLayout *)self invalidateFrame];
   if (!self->mResizeInfoGeometry)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout endDynamicOperation]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 807, @"invalid nil value for '%s'", "mResizeInfoGeometry"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 807, @"invalid nil value for '%s'", "mResizeInfoGeometry"}];
   }
 
   if (!self->mInitialInfoGeometry)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDShapeLayout endDynamicOperation]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 808, @"invalid nil value for '%s'", "mInitialInfoGeometry"}];
+    [currentHandler2 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDShapeLayout.m"), 808, @"invalid nil value for '%s'", "mInitialInfoGeometry"}];
   }
 
   v7.receiver = self;
@@ -1183,10 +1183,10 @@ LABEL_11:
   result = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
   if (result)
   {
-    v4 = [(TSDShapeLayout *)self stroke];
+    stroke = [(TSDShapeLayout *)self stroke];
     v5 = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
 
-    return [v4 strokeLineEnd:v5];
+    return [stroke strokeLineEnd:v5];
   }
 
   return result;
@@ -1197,10 +1197,10 @@ LABEL_11:
   result = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
   if (result)
   {
-    v4 = [(TSDShapeLayout *)self stroke];
+    stroke = [(TSDShapeLayout *)self stroke];
     v5 = [-[TSDShapeLayout shapeInfo](self "shapeInfo")];
 
-    return [v4 strokeLineEnd:v5];
+    return [stroke strokeLineEnd:v5];
   }
 
   return result;
@@ -1215,24 +1215,24 @@ LABEL_11:
   return [v2 numberOfControlKnobs];
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   [(TSDShapeLayout *)self pathSource];
   objc_opt_class();
   v7 = TSUClassAndProtocolCast();
 
-  [v7 setControlKnobPosition:a3 toPoint:{x, y}];
+  [v7 setControlKnobPosition:position toPoint:{x, y}];
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
   [(TSDShapeLayout *)self pathSource];
   objc_opt_class();
   v4 = TSUClassAndProtocolCast();
 
-  [v4 getControlKnobPosition:a3];
+  [v4 getControlKnobPosition:position];
   result.y = v6;
   result.x = v5;
   return result;
@@ -1240,10 +1240,10 @@ LABEL_11:
 
 - (id)i_computeWrapPath
 {
-  v3 = [(TSDShapeLayout *)self fill];
-  if (v3)
+  fill = [(TSDShapeLayout *)self fill];
+  if (fill)
   {
-    v4 = [(TSDFill *)v3 isClear]^ 1;
+    v4 = [(TSDFill *)fill isClear]^ 1;
   }
 
   else
@@ -1254,10 +1254,10 @@ LABEL_11:
   return [(TSDShapeLayout *)self i_computeWrapPathClosed:v4];
 }
 
-- (id)i_computeWrapPathClosed:(BOOL)a3
+- (id)i_computeWrapPathClosed:(BOOL)closed
 {
-  v5 = [(TSDShapeLayout *)self stroke];
-  if (!v5 || (v6 = v5, ![v5 shouldRender]))
+  stroke = [(TSDShapeLayout *)self stroke];
+  if (!stroke || (v6 = stroke, ![stroke shouldRender]))
   {
     v7 = [TSDBezierPath outsideEdgeOfBezierPath:[(TSDShapeLayout *)self path]];
     goto LABEL_6;
@@ -1275,17 +1275,17 @@ LABEL_6:
 
   v14 = [-[TSDShapeLayout path](self "path")];
   [v14 takeAttributesFromStroke:v6];
-  if (a3 || [v14 isEffectivelyClosed])
+  if (closed || [v14 isEffectivelyClosed])
   {
-    v15 = [v14 uniteWithBezierPath:{objc_msgSend(v14, "outlineStroke")}];
+    outlineStroke = [v14 uniteWithBezierPath:{objc_msgSend(v14, "outlineStroke")}];
   }
 
   else
   {
-    v15 = [v14 outlineStroke];
+    outlineStroke = [v14 outlineStroke];
   }
 
-  v8 = v15;
+  v8 = outlineStroke;
   if ([(TSDShapeLayout *)self pathIsOpen])
   {
     v7 = [(TSDShapeLayout *)self p_unitePath:[(TSDShapeLayout *)self p_unitePath:v8 withLineEndForHead:1 stroke:v6] withLineEndForHead:0 stroke:v6];
@@ -1442,9 +1442,9 @@ LABEL_7:
   if ((mShapeInvalidFlags & 0x40) != 0)
   {
     *&self->mShapeInvalidFlags = mShapeInvalidFlags & 0xFFBF;
-    v5 = [(TSDShapeLayout *)self path];
+    path = [(TSDShapeLayout *)self path];
 
-    [v5 getStartPoint:&self->mTailPoint andEndPoint:&self->mHeadPoint];
+    [path getStartPoint:&self->mTailPoint andEndPoint:&self->mHeadPoint];
   }
 }
 
@@ -1469,12 +1469,12 @@ LABEL_7:
   }
 }
 
-- (void)p_computeAngle:(double *)a3 point:(CGPoint *)a4 cutSegment:(int64_t *)a5 cutT:(double *)a6 forLineEndAtHead:(BOOL)a7
+- (void)p_computeAngle:(double *)angle point:(CGPoint *)point cutSegment:(int64_t *)segment cutT:(double *)t forLineEndAtHead:(BOOL)head
 {
-  v7 = a7;
+  headCopy = head;
   [(TSDShapeLayout *)self p_validateHeadAndTail];
   v13 = &OBJC_IVAR___TSDShapeLayout_mTailPoint;
-  if (v7)
+  if (headCopy)
   {
     v13 = &OBJC_IVAR___TSDShapeLayout_mHeadPoint;
   }
@@ -1482,18 +1482,18 @@ LABEL_7:
   v14 = (self + *v13);
   v16 = *v14;
   v15 = v14[1];
-  if (v7)
+  if (headCopy)
   {
-    v17 = [(TSDShapeLayout *)self strokeHeadLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeHeadLineEnd];
   }
 
   else
   {
-    v17 = [(TSDShapeLayout *)self strokeTailLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeTailLineEnd];
   }
 
-  v18 = v17;
-  if (v17 && ([v17 isNone] & 1) == 0)
+  v18 = strokeHeadLineEnd;
+  if (strokeHeadLineEnd && ([strokeHeadLineEnd isNone] & 1) == 0)
   {
     BoundingBox = CGPathGetBoundingBox([v18 path]);
     MaxY = CGRectGetMaxY(BoundingBox);
@@ -1512,25 +1512,25 @@ LABEL_7:
     if ([v43 count])
     {
       [v43 sortUsingSelector:sel_compareSegmentAndT_];
-      if (v7)
+      if (headCopy)
       {
-        v25 = [v43 lastObject];
+        lastObject = [v43 lastObject];
       }
 
       else
       {
-        v25 = [v43 objectAtIndex:0];
+        lastObject = [v43 objectAtIndex:0];
       }
 
-      v26 = v25;
-      [v25 point];
+      v26 = lastObject;
+      [lastObject point];
       v29 = v28;
       v31 = v30;
     }
 
     else
     {
-      if (v7)
+      if (headCopy)
       {
         v26 = 0;
         v27 = 440;
@@ -1548,7 +1548,7 @@ LABEL_7:
     }
 
     v33 = TSDSubtractPoints(v16, v15, v29);
-    *a3 = TSDAngleFromDelta(v33, v34) + -1.57079633;
+    *angle = TSDAngleFromDelta(v33, v34) + -1.57079633;
     v35 = TSDSubtractPoints(v29, v31, v16);
     v37 = *MEMORY[0x277CBF348];
     if (v35 != *MEMORY[0x277CBF348] || v36 != *(MEMORY[0x277CBF348] + 8))
@@ -1557,30 +1557,30 @@ LABEL_7:
       v37 = TSDMultiplyPointScalar(v39, v40, v23);
     }
 
-    a4->x = TSDAddPoints(v16, v15, v37);
-    a4->y = v41;
+    point->x = TSDAddPoints(v16, v15, v37);
+    point->y = v41;
     if (v26)
     {
-      *a5 = [v26 segment];
+      *segment = [v26 segment];
       [v26 t];
     }
 
     else
     {
-      *a5 = 0;
+      *segment = 0;
       v42 = 0;
     }
 
-    *a6 = v42;
+    *t = v42;
   }
 
   else
   {
-    *a3 = 1.57079633;
-    a4->x = v16;
-    a4->y = v15;
-    *a5 = -1;
-    *a6 = 0.0;
+    *angle = 1.57079633;
+    point->x = v16;
+    point->y = v15;
+    *segment = -1;
+    *t = 0.0;
   }
 }
 
@@ -1643,33 +1643,33 @@ LABEL_7:
     }
   }
 
-  v25 = [(TSDShapeLayout *)self path];
+  path = [(TSDShapeLayout *)self path];
 
-  return v25;
+  return path;
 }
 
-- (CGRect)p_boundsOfLineEndForHead:(BOOL)a3 transform:(CGAffineTransform *)a4
+- (CGRect)p_boundsOfLineEndForHead:(BOOL)head transform:(CGAffineTransform *)transform
 {
-  v5 = a3;
+  headCopy = head;
   v7 = MEMORY[0x277CBF398];
-  if (a3)
+  if (head)
   {
-    v8 = [(TSDShapeLayout *)self strokeHeadLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeHeadLineEnd];
   }
 
   else
   {
-    v8 = [(TSDShapeLayout *)self strokeTailLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeTailLineEnd];
   }
 
-  v9 = v8;
+  v9 = strokeHeadLineEnd;
   v10 = *v7;
   v11 = v7[1];
   v12 = v7[2];
   v13 = v7[3];
-  if (v8 && ([v8 isNone] & 1) == 0)
+  if (strokeHeadLineEnd && ([strokeHeadLineEnd isNone] & 1) == 0)
   {
-    if (v5)
+    if (headCopy)
     {
       [(TSDShapeLayout *)self headLineEndPoint];
       v15 = v14;
@@ -1686,13 +1686,13 @@ LABEL_7:
     }
 
     v21 = v18;
-    v22 = [(TSDShapeLayout *)self stroke];
+    stroke = [(TSDShapeLayout *)self stroke];
     [(TSDShapeLayout *)self lineEndScale];
-    v23 = *&a4->c;
-    v33[0] = *&a4->a;
+    v23 = *&transform->c;
+    v33[0] = *&transform->a;
     v33[1] = v23;
-    v33[2] = *&a4->tx;
-    [v22 boundsForLineEnd:v9 atPoint:v33 atAngle:v15 withScale:v17 transform:{v21, v24}];
+    v33[2] = *&transform->tx;
+    [stroke boundsForLineEnd:v9 atPoint:v33 atAngle:v15 withScale:v17 transform:{v21, v24}];
     v10 = v25;
     v11 = v26;
     v12 = v27;
@@ -1710,26 +1710,26 @@ LABEL_7:
   return result;
 }
 
-- (id)p_unitePath:(id)a3 withLineEndForHead:(BOOL)a4 stroke:(id)a5
+- (id)p_unitePath:(id)path withLineEndForHead:(BOOL)head stroke:(id)stroke
 {
-  v6 = a4;
-  if (a4)
+  headCopy = head;
+  if (head)
   {
-    v9 = [(TSDShapeLayout *)self strokeHeadLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeHeadLineEnd];
   }
 
   else
   {
-    v9 = [(TSDShapeLayout *)self strokeTailLineEnd];
+    strokeHeadLineEnd = [(TSDShapeLayout *)self strokeTailLineEnd];
   }
 
-  v10 = v9;
-  if (!v9 || ([v9 isNone] & 1) != 0)
+  v10 = strokeHeadLineEnd;
+  if (!strokeHeadLineEnd || ([strokeHeadLineEnd isNone] & 1) != 0)
   {
-    return a3;
+    return path;
   }
 
-  if (v6)
+  if (headCopy)
   {
     [(TSDShapeLayout *)self headLineEndPoint];
     v13 = v12;
@@ -1747,9 +1747,9 @@ LABEL_7:
 
   v19 = v16;
   [(TSDShapeLayout *)self lineEndScale];
-  v21 = [a5 pathForLineEnd:v10 wrapPath:1 atPoint:v13 atAngle:v15 withScale:{v19, v20}];
+  v21 = [stroke pathForLineEnd:v10 wrapPath:1 atPoint:v13 atAngle:v15 withScale:{v19, v20}];
 
-  return [a3 uniteWithBezierPath:v21];
+  return [path uniteWithBezierPath:v21];
 }
 
 - (void)p_updateResizeInfoGeometryFromResizePathSource

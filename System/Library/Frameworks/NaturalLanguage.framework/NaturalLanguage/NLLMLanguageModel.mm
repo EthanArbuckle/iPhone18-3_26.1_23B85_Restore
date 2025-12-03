@@ -1,14 +1,14 @@
 @interface NLLMLanguageModel
-- (id)sessionWithOptions:(id)a3;
+- (id)sessionWithOptions:(id)options;
 - (id)tokenIDConverter;
 @end
 
 @implementation NLLMLanguageModel
 
-- (id)sessionWithOptions:(id)a3
+- (id)sessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[NLLMLanguageModelSession alloc] initWithLanguageModel:self options:v4];
+  optionsCopy = options;
+  v5 = [[NLLMLanguageModelSession alloc] initWithLanguageModel:self options:optionsCopy];
 
   return v5;
 }

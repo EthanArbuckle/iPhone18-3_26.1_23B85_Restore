@@ -1,25 +1,25 @@
 @interface LAAnalyticsEvaluation
 - (BOOL)shouldCollect;
 - (EvaluationRequest)request;
-- (LAAnalyticsEvaluation)initWithEvaluationRequest:(id)a3;
+- (LAAnalyticsEvaluation)initWithEvaluationRequest:(id)request;
 - (id)buildPayload;
-- (void)_authenticationStartedForEvent:(int64_t)a3 continuity:(BOOL)a4;
-- (void)_biometryAttempt:(int64_t)a3;
-- (void)_passcodeAccepted:(BOOL)a3;
-- (void)authenticationAttempt:(int64_t)a3 event:(int64_t)a4;
-- (void)authenticationHasEvent:(int64_t)a3;
-- (void)authenticationResult:(int64_t)a3 event:(int64_t)a4;
+- (void)_authenticationStartedForEvent:(int64_t)event continuity:(BOOL)continuity;
+- (void)_biometryAttempt:(int64_t)attempt;
+- (void)_passcodeAccepted:(BOOL)accepted;
+- (void)authenticationAttempt:(int64_t)attempt event:(int64_t)event;
+- (void)authenticationHasEvent:(int64_t)event;
+- (void)authenticationResult:(int64_t)result event:(int64_t)event;
 @end
 
 @implementation LAAnalyticsEvaluation
 
 - (BOOL)shouldCollect
 {
-  v3 = [(LAAnalyticsEvaluation *)self request];
-  if ([v3 isInteractive])
+  request = [(LAAnalyticsEvaluation *)self request];
+  if ([request isInteractive])
   {
-    v4 = [(LAAnalyticsEvaluation *)self request];
-    v5 = [v4 isImmediateSuccess] ^ 1;
+    request2 = [(LAAnalyticsEvaluation *)self request];
+    v5 = [request2 isImmediateSuccess] ^ 1;
   }
 
   else
@@ -37,16 +37,16 @@
   return WeakRetained;
 }
 
-- (LAAnalyticsEvaluation)initWithEvaluationRequest:(id)a3
+- (LAAnalyticsEvaluation)initWithEvaluationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = LAAnalyticsEvaluation;
   v5 = [(LAAnalytics *)&v8 initWithEventName:@"com.apple.LocalAuthentication.Evaluation"];
   if (v5)
   {
-    v5->_policy = [v4 policy];
-    objc_storeWeak(&v5->_request, v4);
+    v5->_policy = [requestCopy policy];
+    objc_storeWeak(&v5->_request, requestCopy);
     v5->_continuity = 0;
     v6 = +[(LACBiometryHelper *)BiometryHelper];
     v5->_biometryType = [v6 biometryType];
@@ -139,35 +139,35 @@
   return v7;
 }
 
-- (void)authenticationHasEvent:(int64_t)a3
+- (void)authenticationHasEvent:(int64_t)event
 {
-  if ((a3 - 1) > 6)
+  if ((event - 1) > 6)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_238B8D858[a3 - 1];
+    v3 = qword_238B8D858[event - 1];
   }
 
   self->_authenticationTypes |= v3;
 }
 
-- (void)_authenticationStartedForEvent:(int64_t)a3 continuity:(BOOL)a4
+- (void)_authenticationStartedForEvent:(int64_t)event continuity:(BOOL)continuity
 {
-  v4 = a4;
+  continuityCopy = continuity;
   v20 = *MEMORY[0x277D85DE8];
-  if (a3 == 7)
+  if (event == 7)
   {
 LABEL_4:
     self->_biometryStarted = 1;
     goto LABEL_5;
   }
 
-  if (a3 != 2)
+  if (event != 2)
   {
-    if (a3 != 1)
+    if (event != 1)
     {
       goto LABEL_5;
     }
@@ -198,8 +198,8 @@ LABEL_4:
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
-          v14 = [(LAAnalyticsEvaluation *)self request];
-          [v13 passcodePresentedWithEvaluationRequest:v14 biometryAttempts:{-[LAAnalyticsEvaluation biometryAttempts](self, "biometryAttempts")}];
+          request = [(LAAnalyticsEvaluation *)self request];
+          [v13 passcodePresentedWithEvaluationRequest:request biometryAttempts:{-[LAAnalyticsEvaluation biometryAttempts](self, "biometryAttempts")}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -210,23 +210,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (v4)
+  if (continuityCopy)
   {
     self->_continuity = 1;
-    self->_continuityEvent = a3;
+    self->_continuityEvent = event;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)authenticationAttempt:(int64_t)a3 event:(int64_t)a4
+- (void)authenticationAttempt:(int64_t)attempt event:(int64_t)event
 {
-  if (a4 == 7)
+  if (event == 7)
   {
 LABEL_4:
-    [(LAAnalyticsEvaluation *)self _biometryAttempt:a3];
+    [(LAAnalyticsEvaluation *)self _biometryAttempt:attempt];
 LABEL_5:
-    if (!a3)
+    if (!attempt)
     {
       return;
     }
@@ -234,9 +234,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a4 != 2)
+  if (event != 2)
   {
-    if (a4 != 1)
+    if (event != 1)
     {
       goto LABEL_5;
     }
@@ -244,25 +244,25 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  [(LAAnalyticsEvaluation *)self _passcodeAccepted:a3 == 0];
-  if (!a3)
+  [(LAAnalyticsEvaluation *)self _passcodeAccepted:attempt == 0];
+  if (!attempt)
   {
     return;
   }
 
 LABEL_6:
-  if (self->_continuityEvent == a4)
+  if (self->_continuityEvent == event)
   {
     self->_continuity = 2;
   }
 }
 
-- (void)authenticationResult:(int64_t)a3 event:(int64_t)a4
+- (void)authenticationResult:(int64_t)result event:(int64_t)event
 {
   v4 = &OBJC_IVAR___LAAnalyticsEvaluation__biometryResult;
-  if (a4 != 1 && a4 != 7)
+  if (event != 1 && event != 7)
   {
-    if (a4 != 2)
+    if (event != 2)
     {
       return;
     }
@@ -270,22 +270,22 @@ LABEL_6:
     v4 = &OBJC_IVAR___LAAnalyticsEvaluation__passcodeResult;
   }
 
-  *(&self->super.super.isa + *v4) = a3;
+  *(&self->super.super.isa + *v4) = result;
 }
 
-- (void)_biometryAttempt:(int64_t)a3
+- (void)_biometryAttempt:(int64_t)attempt
 {
   v18 = *MEMORY[0x277D85DE8];
   ++self->_biometryAttempts;
-  if ((a3 - 2) < 2)
+  if ((attempt - 2) < 2)
   {
     v4 = 88;
     goto LABEL_6;
   }
 
-  if (a3)
+  if (attempt)
   {
-    if (a3 == 1)
+    if (attempt == 1)
     {
       ++self->_biometryFailures;
       v4 = 96;
@@ -317,8 +317,8 @@ LABEL_6:
           }
 
           v10 = *(*(&v13 + 1) + 8 * v9);
-          v11 = [(LAAnalyticsEvaluation *)self request];
-          [v10 biometrySucceededWithEvaluationRequest:v11];
+          request = [(LAAnalyticsEvaluation *)self request];
+          [v10 biometrySucceededWithEvaluationRequest:request];
 
           ++v9;
         }
@@ -334,10 +334,10 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_passcodeAccepted:(BOOL)a3
+- (void)_passcodeAccepted:(BOOL)accepted
 {
   ++self->_passcodeAttempts;
-  if (!a3)
+  if (!accepted)
   {
     ++self->_passcodeFailures;
   }

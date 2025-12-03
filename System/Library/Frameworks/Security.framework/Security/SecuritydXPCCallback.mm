@@ -1,18 +1,18 @@
 @interface SecuritydXPCCallback
-- (SecuritydXPCCallback)initWithCallback:(id)a3;
+- (SecuritydXPCCallback)initWithCallback:(id)callback;
 @end
 
 @implementation SecuritydXPCCallback
 
-- (SecuritydXPCCallback)initWithCallback:(id)a3
+- (SecuritydXPCCallback)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v9.receiver = self;
   v9.super_class = SecuritydXPCCallback;
   v5 = [(SecuritydXPCCallback *)&v9 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(callbackCopy);
     callback = v5->_callback;
     v5->_callback = v6;
   }

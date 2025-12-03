@@ -1,16 +1,16 @@
 @interface CUIEncapsulatedVectorGlyph
-- (CGContext)createContextFor:(id)a3 width:(int64_t)a4 height:(int64_t)a5;
-- (CGImage)rasterizeImageUsingRenderBlock:(id)a3;
+- (CGContext)createContextFor:(id)for width:(int64_t)width height:(int64_t)height;
+- (CGImage)rasterizeImageUsingRenderBlock:(id)block;
 - (CGRect)encapsulatedAlignmentRect;
-- (CGRect)encapsulatedAlignmentRectForCoordinateSystem:(int64_t)a3;
+- (CGRect)encapsulatedAlignmentRectForCoordinateSystem:(int64_t)system;
 - (CGRect)imagePixelRect;
-- (CGRect)imagePixelRectForCoordinateSystem:(int64_t)a3;
+- (CGRect)imagePixelRectForCoordinateSystem:(int64_t)system;
 - (CGRect)imageRect;
-- (CGRect)imageRectForCoordinateSystem:(int64_t)a3;
+- (CGRect)imageRectForCoordinateSystem:(int64_t)system;
 - (CGVector)imageCenter;
-- (CGVector)imageCenterForCoordinateSystem:(int64_t)a3;
+- (CGVector)imageCenterForCoordinateSystem:(int64_t)system;
 - (CGVector)imagePixelCenter;
-- (CGVector)imagePixelCenterForCoordinateSystem:(int64_t)a3;
+- (CGVector)imagePixelCenterForCoordinateSystem:(int64_t)system;
 - (CUINamedVectorGlyph)glyph;
 - (int64_t)coordinateSystem;
 @end
@@ -36,7 +36,7 @@
 
 - (CGVector)imageCenter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18DFFB7CC();
   v5 = v4;
 
@@ -90,17 +90,17 @@
   return *(&self->super.isa + v3);
 }
 
-- (CGRect)imageRectForCoordinateSystem:(int64_t)a3
+- (CGRect)imageRectForCoordinateSystem:(int64_t)system
 {
-  v4 = self;
-  [(CUIEncapsulatedVectorGlyph *)v4 imagePixelRectForCoordinateSystem:a3];
+  selfCopy = self;
+  [(CUIEncapsulatedVectorGlyph *)selfCopy imagePixelRectForCoordinateSystem:system];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v13 = OBJC_IVAR___CUIEncapsulatedVectorGlyph__glyph;
   swift_beginAccess();
-  [*(&v4->super.isa + v13) scale];
+  [*(&selfCopy->super.isa + v13) scale];
   v15 = sub_18E001230(1.0 / v14, v6, v8, v10, v12);
   v17 = v16;
   v19 = v18;
@@ -117,17 +117,17 @@
   return result;
 }
 
-- (CGVector)imageCenterForCoordinateSystem:(int64_t)a3
+- (CGVector)imageCenterForCoordinateSystem:(int64_t)system
 {
-  v4 = self;
-  [(CUIEncapsulatedVectorGlyph *)v4 imagePixelCenterForCoordinateSystem:a3];
+  selfCopy = self;
+  [(CUIEncapsulatedVectorGlyph *)selfCopy imagePixelCenterForCoordinateSystem:system];
   v6 = v5;
   v8 = v7;
   v9 = OBJC_IVAR___CUIEncapsulatedVectorGlyph__glyph;
   swift_beginAccess();
-  [*(&v4->super.isa + v9) scale];
+  [*(&selfCopy->super.isa + v9) scale];
   v11 = v6 / v10;
-  v12 = *(&v4->super.isa + v9);
+  v12 = *(&selfCopy->super.isa + v9);
   [v12 scale];
   v14 = v13;
 
@@ -138,17 +138,17 @@
   return result;
 }
 
-- (CGRect)encapsulatedAlignmentRectForCoordinateSystem:(int64_t)a3
+- (CGRect)encapsulatedAlignmentRectForCoordinateSystem:(int64_t)system
 {
-  v4 = self;
-  sub_18DFFC230(a3, &OBJC_IVAR___CUIEncapsulatedVectorGlyph__encapsulatedAlignmentRect);
+  selfCopy = self;
+  sub_18DFFC230(system, &OBJC_IVAR___CUIEncapsulatedVectorGlyph__encapsulatedAlignmentRect);
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v13 = OBJC_IVAR___CUIEncapsulatedVectorGlyph__glyph;
   swift_beginAccess();
-  [*(&v4->super.isa + v13) scale];
+  [*(&selfCopy->super.isa + v13) scale];
   v15 = sub_18E001230(1.0 / v14, v6, v8, v10, v12);
   v17 = v16;
   v19 = v18;
@@ -165,10 +165,10 @@
   return result;
 }
 
-- (CGRect)imagePixelRectForCoordinateSystem:(int64_t)a3
+- (CGRect)imagePixelRectForCoordinateSystem:(int64_t)system
 {
-  v4 = self;
-  sub_18DFFC224(a3);
+  selfCopy = self;
+  sub_18DFFC224(system);
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -185,10 +185,10 @@
   return result;
 }
 
-- (CGVector)imagePixelCenterForCoordinateSystem:(int64_t)a3
+- (CGVector)imagePixelCenterForCoordinateSystem:(int64_t)system
 {
-  v4 = self;
-  sub_18DFFC3AC(a3);
+  selfCopy = self;
+  sub_18DFFC3AC(system);
   v6 = v5;
   v8 = v7;
 
@@ -199,12 +199,12 @@
   return result;
 }
 
-- (CGImage)rasterizeImageUsingRenderBlock:(id)a3
+- (CGImage)rasterizeImageUsingRenderBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   _Block_copy(v4);
-  v5 = self;
-  sub_18DFFCDF8(v5, v4);
+  selfCopy = self;
+  sub_18DFFCDF8(selfCopy, v4);
   v7 = v6;
   _Block_release(v4);
   _Block_release(v4);
@@ -212,11 +212,11 @@
   return v7;
 }
 
-- (CGContext)createContextFor:(id)a3 width:(int64_t)a4 height:(int64_t)a5
+- (CGContext)createContextFor:(id)for width:(int64_t)width height:(int64_t)height
 {
-  v8 = a3;
-  v9 = self;
-  v10 = sub_18DFFD298(v8, a4, a5);
+  forCopy = for;
+  selfCopy = self;
+  v10 = sub_18DFFD298(forCopy, width, height);
 
   return v10;
 }

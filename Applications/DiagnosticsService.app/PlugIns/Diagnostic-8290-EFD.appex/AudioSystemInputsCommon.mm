@@ -1,18 +1,18 @@
 @interface AudioSystemInputsCommon
-- (BOOL)validateAndInitializeParameters:(id)a3;
-- (BOOL)validateAndInitializeSpecifications:(id)a3;
-- (id)makeOutputFromDictionary:(id)a3 validationFailed:(BOOL *)a4;
+- (BOOL)validateAndInitializeParameters:(id)parameters;
+- (BOOL)validateAndInitializeSpecifications:(id)specifications;
+- (id)makeOutputFromDictionary:(id)dictionary validationFailed:(BOOL *)failed;
 @end
 
 @implementation AudioSystemInputsCommon
 
-- (BOOL)validateAndInitializeParameters:(id)a3
+- (BOOL)validateAndInitializeParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v54 = 0;
   v5 = &DKTemporaryDirectoryURL_ptr;
   v6 = [NSSet setWithObject:objc_opt_class()];
-  v7 = [v4 dk_arrayFromRequiredKey:@"sources" types:v6 maxLength:80 failed:&v54 validator:&stru_10001C6B8];
+  v7 = [parametersCopy dk_arrayFromRequiredKey:@"sources" types:v6 maxLength:80 failed:&v54 validator:&stru_10001C6B8];
   sources = self->_sources;
   self->_sources = v7;
 
@@ -23,8 +23,8 @@
 
   dword_100024210 = [(NSArray *)self->_sources count]- 1;
   v9 = [NSSet setWithObject:objc_opt_class()];
-  v48 = v4;
-  v10 = [v4 dk_arrayFromRequiredKey:@"sequence" types:v9 maxLength:70 failed:&v54];
+  v48 = parametersCopy;
+  v10 = [parametersCopy dk_arrayFromRequiredKey:@"sequence" types:v9 maxLength:70 failed:&v54];
 
   v11 = objc_alloc_init(NSMutableArray);
   sequences = self->_sequences;
@@ -140,14 +140,14 @@
   return (v46 & 1) == 0;
 }
 
-- (BOOL)validateAndInitializeSpecifications:(id)a3
+- (BOOL)validateAndInitializeSpecifications:(id)specifications
 {
-  v4 = a3;
+  specificationsCopy = specifications;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23[0] = 0;
-  v5 = [v4 dk_dictionaryFromRequiredKey:@"inputComponents" failed:v23];
+  v5 = [specificationsCopy dk_dictionaryFromRequiredKey:@"inputComponents" failed:v23];
   v6 = objc_alloc_init(NSMutableDictionary);
   inputValueToName = self->_inputValueToName;
   self->_inputValueToName = v6;
@@ -157,7 +157,7 @@
   v16[2] = sub_10000E168;
   v16[3] = &unk_10001C700;
   v8 = v5;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   v17 = v8;
   [v8 enumerateKeysAndObjectsUsingBlock:v16];
@@ -174,7 +174,7 @@
   outputSpecifications = self->_outputSpecifications;
   self->_outputSpecifications = v10;
 
-  v12 = [v4 dk_dictionaryFromRequiredKey:@"outputComponents" failed:v21 + 3];
+  v12 = [specificationsCopy dk_dictionaryFromRequiredKey:@"outputComponents" failed:v21 + 3];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000E20C;
@@ -188,19 +188,19 @@
   return (v13 & 1) == 0;
 }
 
-- (id)makeOutputFromDictionary:(id)a3 validationFailed:(BOOL *)a4
+- (id)makeOutputFromDictionary:(id)dictionary validationFailed:(BOOL *)failed
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = objc_alloc_init([(AudioSystemInputsCommon *)self outputsClass]);
-  v8 = [(AudioSystemInputsCommon *)self validOutputDeviceSet];
-  v9 = [v6 dk_stringFromRequiredKey:@"output" inSet:v8 failed:a4];
+  validOutputDeviceSet = [(AudioSystemInputsCommon *)self validOutputDeviceSet];
+  v9 = [dictionaryCopy dk_stringFromRequiredKey:@"output" inSet:validOutputDeviceSet failed:failed];
   [v7 setOutputDevice:v9];
 
   v10 = [NSNumber numberWithInt:dword_100024210];
-  v11 = [v6 dk_numberFromRequiredKey:@"source" lowerBound:&off_10001D8A8 upperBound:v10 failed:a4];
+  v11 = [dictionaryCopy dk_numberFromRequiredKey:@"source" lowerBound:&off_10001D8A8 upperBound:v10 failed:failed];
   [v7 setSource:v11];
 
-  v12 = [v6 dk_numberFromRequiredKey:@"volume" lowerBound:&off_10001DB30 upperBound:&off_10001DB40 failed:a4];
+  v12 = [dictionaryCopy dk_numberFromRequiredKey:@"volume" lowerBound:&off_10001DB30 upperBound:&off_10001DB40 failed:failed];
 
   [v7 setVolume:v12];
 

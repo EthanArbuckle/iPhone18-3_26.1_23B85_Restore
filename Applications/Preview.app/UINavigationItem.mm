@@ -1,6 +1,6 @@
 @interface UINavigationItem
 - (id)_objc_renameDelegate;
-- (void)set_objc_renameDelegate:(id)a3;
+- (void)set_objc_renameDelegate:(id)delegate;
 @end
 
 @implementation UINavigationItem
@@ -15,9 +15,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = String._bridgeToObjectiveC()();
-  v5 = [(UINavigationItem *)v3 valueForKey:v4];
+  v5 = [(UINavigationItem *)selfCopy valueForKey:v4];
 
   if (v5)
   {
@@ -56,7 +56,7 @@
   return v12;
 }
 
-- (void)set_objc_renameDelegate:(id)a3
+- (void)set_objc_renameDelegate:(id)delegate
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -66,9 +66,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (delegate)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -77,7 +77,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10002970C(v7);

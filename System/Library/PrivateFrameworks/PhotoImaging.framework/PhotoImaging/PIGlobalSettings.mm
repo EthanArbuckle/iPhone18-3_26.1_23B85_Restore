@@ -45,130 +45,130 @@
 - (double)segmentationManualGatingLenience;
 - (float)settlingEffectMinimumMotionScore;
 - (int64_t)segmentationInfillAlgorithm;
-- (void)setCinematicAllowRGB10Packed:(BOOL)a3;
-- (void)setCinematicAllowYUVSourceInput:(BOOL)a3;
-- (void)setDebugUseStyleEngine:(BOOL)a3;
-- (void)setDisableHeadroom:(BOOL)a3;
-- (void)setDisableMADForSettlingEffect:(BOOL)a3;
-- (void)setDisableSegmentation:(BOOL)a3;
-- (void)setForceEnableSegmentation:(BOOL)a3;
-- (void)setForceEnableSettlingEffect:(BOOL)a3;
-- (void)setForceEnableSpatialPhoto:(BOOL)a3;
-- (void)setInpaintApplySafetyFilterOnFaceLandmarks:(BOOL)a3;
-- (void)setInpaintDumpPath:(id)a3;
-- (void)setInpaintDumpsOriginalMasks:(BOOL)a3;
-- (void)setInpaintDumpsProcessedMasks:(BOOL)a3;
-- (void)setInpaintFillsMaskHoles:(BOOL)a3;
-- (void)setInpaintGainMapMixFactor:(double)a3;
-- (void)setInpaintMaxAreaPercentage:(double)a3;
-- (void)setInpaintOrientInputImages:(BOOL)a3;
-- (void)setInpaintOverlaysMaskBounds:(BOOL)a3;
-- (void)setInpaintOverlaysMasks:(BOOL)a3;
-- (void)setInpaintPixellationIntersectionAreaToFaceAreaThreshold:(double)a3;
-- (void)setInpaintPixellationIntersectionAreaToMaskAreaThreshold:(double)a3;
-- (void)setObjectRemovalRegionOverride:(BOOL)a3;
-- (void)setParallaxLayoutConfigurationOverride:(id)a3;
-- (void)setParallaxStyleEnableGreenScreen:(BOOL)a3;
-- (void)setParallaxWallpaperDisableUpgrade:(BOOL)a3;
-- (void)setPortraitDisableFuzzball:(BOOL)a3;
-- (void)setPortraitDrawDebugInfo:(BOOL)a3;
-- (void)setPortraitForceLightMapLinear:(BOOL)a3;
-- (void)setPosterDisableCropVariant:(BOOL)a3;
-- (void)setRawApplyBoostFirst:(BOOL)a3;
-- (void)setSegmentationDebugPreviewDisableClock:(BOOL)a3;
-- (void)setSegmentationDebugPreviewHighQuality:(BOOL)a3;
-- (void)setSegmentationDebugRoundTripProxyImage:(BOOL)a3;
-- (void)setSegmentationDebugTintLayers:(BOOL)a3;
-- (void)setSegmentationDisableCaching:(BOOL)a3;
-- (void)setSegmentationInfillAlgorithm:(int64_t)a3;
-- (void)setSegmentationInfillDilationPercent:(double)a3;
-- (void)setSegmentationManualGatingLenience:(double)a3;
-- (void)setSemanticStyleDisableStyleEngine:(BOOL)a3;
-- (void)setSensitivityCheckDumpsImages:(BOOL)a3;
-- (void)setSettlingEffectMinimumMotionScore:(float)a3;
-- (void)setStyleRecipeConfigDirectoryPath:(id)a3;
-- (void)setUseStyleRecipeConfigDirectory:(BOOL)a3;
+- (void)setCinematicAllowRGB10Packed:(BOOL)packed;
+- (void)setCinematicAllowYUVSourceInput:(BOOL)input;
+- (void)setDebugUseStyleEngine:(BOOL)engine;
+- (void)setDisableHeadroom:(BOOL)headroom;
+- (void)setDisableMADForSettlingEffect:(BOOL)effect;
+- (void)setDisableSegmentation:(BOOL)segmentation;
+- (void)setForceEnableSegmentation:(BOOL)segmentation;
+- (void)setForceEnableSettlingEffect:(BOOL)effect;
+- (void)setForceEnableSpatialPhoto:(BOOL)photo;
+- (void)setInpaintApplySafetyFilterOnFaceLandmarks:(BOOL)landmarks;
+- (void)setInpaintDumpPath:(id)path;
+- (void)setInpaintDumpsOriginalMasks:(BOOL)masks;
+- (void)setInpaintDumpsProcessedMasks:(BOOL)masks;
+- (void)setInpaintFillsMaskHoles:(BOOL)holes;
+- (void)setInpaintGainMapMixFactor:(double)factor;
+- (void)setInpaintMaxAreaPercentage:(double)percentage;
+- (void)setInpaintOrientInputImages:(BOOL)images;
+- (void)setInpaintOverlaysMaskBounds:(BOOL)bounds;
+- (void)setInpaintOverlaysMasks:(BOOL)masks;
+- (void)setInpaintPixellationIntersectionAreaToFaceAreaThreshold:(double)threshold;
+- (void)setInpaintPixellationIntersectionAreaToMaskAreaThreshold:(double)threshold;
+- (void)setObjectRemovalRegionOverride:(BOOL)override;
+- (void)setParallaxLayoutConfigurationOverride:(id)override;
+- (void)setParallaxStyleEnableGreenScreen:(BOOL)screen;
+- (void)setParallaxWallpaperDisableUpgrade:(BOOL)upgrade;
+- (void)setPortraitDisableFuzzball:(BOOL)fuzzball;
+- (void)setPortraitDrawDebugInfo:(BOOL)info;
+- (void)setPortraitForceLightMapLinear:(BOOL)linear;
+- (void)setPosterDisableCropVariant:(BOOL)variant;
+- (void)setRawApplyBoostFirst:(BOOL)first;
+- (void)setSegmentationDebugPreviewDisableClock:(BOOL)clock;
+- (void)setSegmentationDebugPreviewHighQuality:(BOOL)quality;
+- (void)setSegmentationDebugRoundTripProxyImage:(BOOL)image;
+- (void)setSegmentationDebugTintLayers:(BOOL)layers;
+- (void)setSegmentationDisableCaching:(BOOL)caching;
+- (void)setSegmentationInfillAlgorithm:(int64_t)algorithm;
+- (void)setSegmentationInfillDilationPercent:(double)percent;
+- (void)setSegmentationManualGatingLenience:(double)lenience;
+- (void)setSemanticStyleDisableStyleEngine:(BOOL)engine;
+- (void)setSensitivityCheckDumpsImages:(BOOL)images;
+- (void)setSettlingEffectMinimumMotionScore:(float)score;
+- (void)setStyleRecipeConfigDirectoryPath:(id)path;
+- (void)setUseStyleRecipeConfigDirectory:(BOOL)directory;
 @end
 
 @implementation PIGlobalSettings
 
-- (void)setSensitivityCheckDumpsImages:(BOOL)a3
+- (void)setSensitivityCheckDumpsImages:(BOOL)images
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_DUMP_SENSITIVITY_IMAGES"];
+  imagesCopy = images;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:imagesCopy forKey:@"PI_DUMP_SENSITIVITY_IMAGES"];
 }
 
 - (BOOL)sensitivityCheckDumpsImages
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_DUMP_SENSITIVITY_IMAGES"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_DUMP_SENSITIVITY_IMAGES"];
 
-  LOBYTE(v2) = [v3 BOOLValue];
-  return v2;
+  LOBYTE(standardUserDefaults) = [v3 BOOLValue];
+  return standardUserDefaults;
 }
 
-- (void)setInpaintApplySafetyFilterOnFaceLandmarks:(BOOL)a3
+- (void)setInpaintApplySafetyFilterOnFaceLandmarks:(BOOL)landmarks
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_APPLY_SAFETY_FILTER_FACE_LANDMARKS"];
+  landmarksCopy = landmarks;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:landmarksCopy forKey:@"PI_INPAINT_APPLY_SAFETY_FILTER_FACE_LANDMARKS"];
 }
 
 - (BOOL)inpaintApplySafetyFilterOnFaceLandmarks
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_APPLY_SAFETY_FILTER_FACE_LANDMARKS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_APPLY_SAFETY_FILTER_FACE_LANDMARKS"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setInpaintFillsMaskHoles:(BOOL)a3
+- (void)setInpaintFillsMaskHoles:(BOOL)holes
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_FILL_MASK_HOLES"];
+  holesCopy = holes;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:holesCopy forKey:@"PI_INPAINT_FILL_MASK_HOLES"];
 }
 
 - (BOOL)inpaintFillsMaskHoles
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_FILL_MASK_HOLES"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_FILL_MASK_HOLES"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setInpaintMaxAreaPercentage:(double)a3
+- (void)setInpaintMaxAreaPercentage:(double)percentage
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"PI_INPAINT_MAX_AREA_PERCENTAGE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:percentage];
+  [standardUserDefaults setObject:v4 forKey:@"PI_INPAINT_MAX_AREA_PERCENTAGE"];
 }
 
 - (double)inpaintMaxAreaPercentage
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_MAX_AREA_PERCENTAGE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_MAX_AREA_PERCENTAGE"];
 
   if (v3)
   {
@@ -184,31 +184,31 @@
   return v5;
 }
 
-- (void)setObjectRemovalRegionOverride:(BOOL)a3
+- (void)setObjectRemovalRegionOverride:(BOOL)override
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_OBJECT_REMOVAL_REGION_ELIGIBILITY_OVERRIDE"];
+  overrideCopy = override;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:overrideCopy forKey:@"PI_OBJECT_REMOVAL_REGION_ELIGIBILITY_OVERRIDE"];
 }
 
 - (BOOL)objectRemovalRegionOverride
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_OBJECT_REMOVAL_REGION_ELIGIBILITY_OVERRIDE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_OBJECT_REMOVAL_REGION_ELIGIBILITY_OVERRIDE"];
 
   return v3;
 }
 
-- (void)setInpaintPixellationIntersectionAreaToFaceAreaThreshold:(double)a3
+- (void)setInpaintPixellationIntersectionAreaToFaceAreaThreshold:(double)threshold
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setDouble:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_FACE_AREA_THRESHOLD" forKey:a3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_FACE_AREA_THRESHOLD" forKey:threshold];
 }
 
 - (double)inpaintPixellationIntersectionAreaToFaceAreaThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_FACE_AREA_THRESHOLD"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_FACE_AREA_THRESHOLD"];
 
   if (v3)
   {
@@ -224,16 +224,16 @@
   return v5;
 }
 
-- (void)setInpaintPixellationIntersectionAreaToMaskAreaThreshold:(double)a3
+- (void)setInpaintPixellationIntersectionAreaToMaskAreaThreshold:(double)threshold
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setDouble:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_MASK_AREA_THRESHOLD" forKey:a3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_MASK_AREA_THRESHOLD" forKey:threshold];
 }
 
 - (double)inpaintPixellationIntersectionAreaToMaskAreaThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_MASK_AREA_THRESHOLD"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_PIXELLATION_INTERSECTION_AREA_TO_MASK_AREA_THRESHOLD"];
 
   if (v3)
   {
@@ -249,72 +249,72 @@
   return v5;
 }
 
-- (void)setInpaintDumpsProcessedMasks:(BOOL)a3
+- (void)setInpaintDumpsProcessedMasks:(BOOL)masks
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_DUMPS_PROCESSED_MASKS"];
+  masksCopy = masks;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:masksCopy forKey:@"PI_INPAINT_DUMPS_PROCESSED_MASKS"];
 }
 
 - (BOOL)inpaintDumpsProcessedMasks
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_INPAINT_DUMPS_PROCESSED_MASKS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_INPAINT_DUMPS_PROCESSED_MASKS"];
 
   return v3;
 }
 
-- (void)setInpaintDumpsOriginalMasks:(BOOL)a3
+- (void)setInpaintDumpsOriginalMasks:(BOOL)masks
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_DUMPS_ORIGINAL_MASKS"];
+  masksCopy = masks;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:masksCopy forKey:@"PI_INPAINT_DUMPS_ORIGINAL_MASKS"];
 }
 
 - (BOOL)inpaintDumpsOriginalMasks
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_INPAINT_DUMPS_ORIGINAL_MASKS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_INPAINT_DUMPS_ORIGINAL_MASKS"];
 
   return v3;
 }
 
-- (void)setInpaintOverlaysMaskBounds:(BOOL)a3
+- (void)setInpaintOverlaysMaskBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_OVERLAYS_MASK_BOUNDS"];
+  boundsCopy = bounds;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:boundsCopy forKey:@"PI_INPAINT_OVERLAYS_MASK_BOUNDS"];
 }
 
 - (BOOL)inpaintOverlaysMaskBounds
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_INPAINT_OVERLAYS_MASK_BOUNDS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_INPAINT_OVERLAYS_MASK_BOUNDS"];
 
   return v3;
 }
 
-- (void)setInpaintOverlaysMasks:(BOOL)a3
+- (void)setInpaintOverlaysMasks:(BOOL)masks
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_OVERLAYS_MASKS"];
+  masksCopy = masks;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:masksCopy forKey:@"PI_INPAINT_OVERLAYS_MASKS"];
 }
 
 - (BOOL)inpaintOverlaysMasks
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_INPAINT_OVERLAYS_MASKS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_INPAINT_OVERLAYS_MASKS"];
 
   return v3;
 }
 
-- (void)setInpaintDumpPath:(id)a3
+- (void)setInpaintDumpPath:(id)path
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"PI_INPAINT_DUMP_PATH"];
+  pathCopy = path;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:pathCopy forKey:@"PI_INPAINT_DUMP_PATH"];
 }
 
 - (NSString)inpaintDumpPath
@@ -323,8 +323,8 @@
   v3 = [v2 stringByAppendingPathComponent:@"Photos"];
   v4 = [v3 stringByAppendingPathComponent:@"inpaint"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 stringForKey:@"PI_INPAINT_DUMP_PATH"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults stringForKey:@"PI_INPAINT_DUMP_PATH"];
 
   if (v6)
   {
@@ -341,42 +341,42 @@
   return v7;
 }
 
-- (void)setInpaintOrientInputImages:(BOOL)a3
+- (void)setInpaintOrientInputImages:(BOOL)images
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_INPAINT_ORIENT_INPUTS"];
+  imagesCopy = images;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:imagesCopy forKey:@"PI_INPAINT_ORIENT_INPUTS"];
 }
 
 - (BOOL)inpaintOrientInputImages
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_ORIENT_INPUTS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_ORIENT_INPUTS"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setInpaintGainMapMixFactor:(double)a3
+- (void)setInpaintGainMapMixFactor:(double)factor
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forKey:@"PI_INPAINT_GAIN_MAP_MIX_FACTOR"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:factor];
+  [standardUserDefaults setObject:v4 forKey:@"PI_INPAINT_GAIN_MAP_MIX_FACTOR"];
 }
 
 - (double)inpaintGainMapMixFactor
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_INPAINT_GAIN_MAP_MIX_FACTOR"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_INPAINT_GAIN_MAP_MIX_FACTOR"];
 
   if (v3)
   {
@@ -392,62 +392,62 @@
   return v5;
 }
 
-- (void)setSemanticStyleDisableStyleEngine:(BOOL)a3
+- (void)setSemanticStyleDisableStyleEngine:(BOOL)engine
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEMANTIC_STYLE_DISABLE_STYLE_ENGINE"];
+  engineCopy = engine;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:engineCopy forKey:@"PI_SEMANTIC_STYLE_DISABLE_STYLE_ENGINE"];
 }
 
 - (BOOL)semanticStyleDisableStyleEngine
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEMANTIC_STYLE_DISABLE_STYLE_ENGINE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEMANTIC_STYLE_DISABLE_STYLE_ENGINE"];
 
   return v3;
 }
 
-- (void)setDebugUseStyleEngine:(BOOL)a3
+- (void)setDebugUseStyleEngine:(BOOL)engine
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_DEBUG_USE_STYLE_ENGINE"];
+  engineCopy = engine;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:engineCopy forKey:@"PI_DEBUG_USE_STYLE_ENGINE"];
 }
 
 - (BOOL)debugUseStyleEngine
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_DEBUG_USE_STYLE_ENGINE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_DEBUG_USE_STYLE_ENGINE"];
 
   return v3;
 }
 
-- (void)setPosterDisableCropVariant:(BOOL)a3
+- (void)setPosterDisableCropVariant:(BOOL)variant
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_POSTER_DISABLE_CROP_VARIANT"];
+  variantCopy = variant;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:variantCopy forKey:@"PI_POSTER_DISABLE_CROP_VARIANT"];
 }
 
 - (BOOL)posterDisableCropVariant
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_POSTER_DISABLE_CROP_VARIANT"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_POSTER_DISABLE_CROP_VARIANT"];
 
   return v3;
 }
 
-- (void)setSettlingEffectMinimumMotionScore:(float)a3
+- (void)setSettlingEffectMinimumMotionScore:(float)score
 {
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"PI_PARALLAX_MINIMUM_MOTION_SCORE" forKey:v4];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = score;
+  [standardUserDefaults setFloat:@"PI_PARALLAX_MINIMUM_MOTION_SCORE" forKey:v4];
 }
 
 - (float)settlingEffectMinimumMotionScore
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_PARALLAX_MINIMUM_MOTION_SCORE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_PARALLAX_MINIMUM_MOTION_SCORE"];
 
   if (v3)
   {
@@ -463,448 +463,448 @@
   return v5;
 }
 
-- (void)setForceEnableSpatialPhoto:(BOOL)a3
+- (void)setForceEnableSpatialPhoto:(BOOL)photo
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PARALLAX_FORCE_ENABLE_SPATIAL_PHOTO"];
+  photoCopy = photo;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:photoCopy forKey:@"PI_PARALLAX_FORCE_ENABLE_SPATIAL_PHOTO"];
 }
 
 - (BOOL)forceEnableSpatialPhoto
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_PARALLAX_FORCE_ENABLE_SPATIAL_PHOTO"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_PARALLAX_FORCE_ENABLE_SPATIAL_PHOTO"];
 
   return v3;
 }
 
-- (void)setForceEnableSettlingEffect:(BOOL)a3
+- (void)setForceEnableSettlingEffect:(BOOL)effect
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PARALLAX_FORCE_ENABLE_SETTLING_EFFECT"];
+  effectCopy = effect;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:effectCopy forKey:@"PI_PARALLAX_FORCE_ENABLE_SETTLING_EFFECT"];
 }
 
 - (BOOL)forceEnableSettlingEffect
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_PARALLAX_FORCE_ENABLE_SETTLING_EFFECT"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_PARALLAX_FORCE_ENABLE_SETTLING_EFFECT"];
 
   return v3;
 }
 
-- (void)setDisableMADForSettlingEffect:(BOOL)a3
+- (void)setDisableMADForSettlingEffect:(BOOL)effect
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PARALLAX_DISABLE_MAD_SETTLING_EFFECT"];
+  effectCopy = effect;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:effectCopy forKey:@"PI_PARALLAX_DISABLE_MAD_SETTLING_EFFECT"];
 }
 
 - (BOOL)disableMADForSettlingEffect
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 objectForKey:@"PI_PARALLAX_DISABLE_MAD_SETTLING_EFFECT"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults objectForKey:@"PI_PARALLAX_DISABLE_MAD_SETTLING_EFFECT"];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = v2 ^ 1;
+    bOOLValue = v2 ^ 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setRawApplyBoostFirst:(BOOL)a3
+- (void)setRawApplyBoostFirst:(BOOL)first
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_RAW_APPLY_BOOST_FIRST"];
+  firstCopy = first;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:firstCopy forKey:@"PI_RAW_APPLY_BOOST_FIRST"];
 }
 
 - (BOOL)rawApplyBoostFirst
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_RAW_APPLY_BOOST_FIRST"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_RAW_APPLY_BOOST_FIRST"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setCinematicAllowRGB10Packed:(BOOL)a3
+- (void)setCinematicAllowRGB10Packed:(BOOL)packed
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_CINEMATIC_ALLOW_RGB10_PACKED"];
+  packedCopy = packed;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:packedCopy forKey:@"PI_CINEMATIC_ALLOW_RGB10_PACKED"];
 }
 
 - (BOOL)cinematicAllowRGB10Packed
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_CINEMATIC_ALLOW_RGB10_PACKED"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_CINEMATIC_ALLOW_RGB10_PACKED"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setCinematicAllowYUVSourceInput:(BOOL)a3
+- (void)setCinematicAllowYUVSourceInput:(BOOL)input
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_CINEMATIC_ALLOW_YUV_SOURCE"];
+  inputCopy = input;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:inputCopy forKey:@"PI_CINEMATIC_ALLOW_YUV_SOURCE"];
 }
 
 - (BOOL)cinematicAllowYUVSourceInput
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_CINEMATIC_ALLOW_YUV_SOURCE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_CINEMATIC_ALLOW_YUV_SOURCE"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setParallaxWallpaperDisableUpgrade:(BOOL)a3
+- (void)setParallaxWallpaperDisableUpgrade:(BOOL)upgrade
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PARALLAX_DISABLE_UPGRADE"];
+  upgradeCopy = upgrade;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:upgradeCopy forKey:@"PI_PARALLAX_DISABLE_UPGRADE"];
 }
 
 - (BOOL)parallaxWallpaperDisableUpgrade
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_PARALLAX_DISABLE_UPGRADE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_PARALLAX_DISABLE_UPGRADE"];
 
   return v3;
 }
 
-- (void)setParallaxLayoutConfigurationOverride:(id)a3
+- (void)setParallaxLayoutConfigurationOverride:(id)override
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"PI_PARALLAX_LAYOUT_CONFIG"];
+  overrideCopy = override;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:overrideCopy forKey:@"PI_PARALLAX_LAYOUT_CONFIG"];
 }
 
 - (NSString)parallaxLayoutConfigurationOverride
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PI_PARALLAX_LAYOUT_CONFIG"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PI_PARALLAX_LAYOUT_CONFIG"];
 
   return v3;
 }
 
-- (void)setParallaxStyleEnableGreenScreen:(BOOL)a3
+- (void)setParallaxStyleEnableGreenScreen:(BOOL)screen
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PARALLAX_STYLE_ENABLE_GREEN_SCREEN"];
+  screenCopy = screen;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:screenCopy forKey:@"PI_PARALLAX_STYLE_ENABLE_GREEN_SCREEN"];
 }
 
 - (BOOL)parallaxStyleEnableGreenScreen
 {
   v2 = _os_feature_enabled_impl();
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"PI_PARALLAX_STYLE_ENABLE_GREEN_SCREEN"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"PI_PARALLAX_STYLE_ENABLE_GREEN_SCREEN"];
 
   return (v2 | v4) & 1;
 }
 
-- (void)setUseStyleRecipeConfigDirectory:(BOOL)a3
+- (void)setUseStyleRecipeConfigDirectory:(BOOL)directory
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_USE_STYLE_RECIPE_CONFIG"];
+  directoryCopy = directory;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:directoryCopy forKey:@"PI_USE_STYLE_RECIPE_CONFIG"];
 }
 
 - (BOOL)useStyleRecipeConfigDirectory
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_USE_STYLE_RECIPE_CONFIG"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_USE_STYLE_RECIPE_CONFIG"];
 
   return v3;
 }
 
-- (void)setStyleRecipeConfigDirectoryPath:(id)a3
+- (void)setStyleRecipeConfigDirectoryPath:(id)path
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"PI_STYLE_RECIPE_DIR_PATH"];
+  pathCopy = path;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:pathCopy forKey:@"PI_STYLE_RECIPE_DIR_PATH"];
 }
 
 - (NSString)styleRecipeConfigDirectoryPath
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PI_STYLE_RECIPE_DIR_PATH"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PI_STYLE_RECIPE_DIR_PATH"];
 
   return v3;
 }
 
-- (void)setSegmentationManualGatingLenience:(double)a3
+- (void)setSegmentationManualGatingLenience:(double)lenience
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setDouble:@"PI_SEGMENT_MANUAL_GATING_LENIENCE" forKey:a3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"PI_SEGMENT_MANUAL_GATING_LENIENCE" forKey:lenience];
 }
 
 - (double)segmentationManualGatingLenience
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PI_SEGMENT_MANUAL_GATING_LENIENCE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PI_SEGMENT_MANUAL_GATING_LENIENCE"];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSegmentationDebugPreviewHighQuality:(BOOL)a3
+- (void)setSegmentationDebugPreviewHighQuality:(BOOL)quality
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_PREVIEW_HIGH_QUALITY"];
+  qualityCopy = quality;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:qualityCopy forKey:@"PI_SEGMENT_PREVIEW_HIGH_QUALITY"];
 }
 
 - (BOOL)segmentationDebugPreviewHighQuality
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_PREVIEW_HIGH_QUALITY"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_PREVIEW_HIGH_QUALITY"];
 
   return v3;
 }
 
-- (void)setSegmentationDebugPreviewDisableClock:(BOOL)a3
+- (void)setSegmentationDebugPreviewDisableClock:(BOOL)clock
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_PREVIEW_DISABLE_CLOCK"];
+  clockCopy = clock;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:clockCopy forKey:@"PI_SEGMENT_PREVIEW_DISABLE_CLOCK"];
 }
 
 - (BOOL)segmentationDebugPreviewDisableClock
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_PREVIEW_DISABLE_CLOCK"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_PREVIEW_DISABLE_CLOCK"];
 
   return v3;
 }
 
-- (void)setSegmentationDisableCaching:(BOOL)a3
+- (void)setSegmentationDisableCaching:(BOOL)caching
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_DISABLE_CACHE"];
+  cachingCopy = caching;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:cachingCopy forKey:@"PI_SEGMENT_DISABLE_CACHE"];
 }
 
 - (BOOL)segmentationDisableCaching
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_DISABLE_CACHE"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_DISABLE_CACHE"];
 
   return v3;
 }
 
-- (void)setSegmentationDebugTintLayers:(BOOL)a3
+- (void)setSegmentationDebugTintLayers:(BOOL)layers
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_TINT_LAYERS"];
+  layersCopy = layers;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:layersCopy forKey:@"PI_SEGMENT_TINT_LAYERS"];
 }
 
 - (BOOL)segmentationDebugTintLayers
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_TINT_LAYERS"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_TINT_LAYERS"];
 
   return v3;
 }
 
-- (void)setSegmentationInfillDilationPercent:(double)a3
+- (void)setSegmentationInfillDilationPercent:(double)percent
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setDouble:@"PI_SEGMENT_INFILL_DILATION_PCT" forKey:a3];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"PI_SEGMENT_INFILL_DILATION_PCT" forKey:percent];
 }
 
 - (double)segmentationInfillDilationPercent
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PI_SEGMENT_INFILL_DILATION_PCT"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PI_SEGMENT_INFILL_DILATION_PCT"];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSegmentationInfillAlgorithm:(int64_t)a3
+- (void)setSegmentationInfillAlgorithm:(int64_t)algorithm
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"PI_SEGMENT_INFILL_ALGO"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:algorithm forKey:@"PI_SEGMENT_INFILL_ALGO"];
 }
 
 - (int64_t)segmentationInfillAlgorithm
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PI_SEGMENT_INFILL_ALGO"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PI_SEGMENT_INFILL_ALGO"];
 
   return v3;
 }
 
-- (void)setDisableHeadroom:(BOOL)a3
+- (void)setDisableHeadroom:(BOOL)headroom
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_DISABLE_HEADROOM"];
+  headroomCopy = headroom;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:headroomCopy forKey:@"PI_DISABLE_HEADROOM"];
 }
 
 - (BOOL)disableHeadroom
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_DISABLE_HEADROOM"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_DISABLE_HEADROOM"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setForceEnableSegmentation:(BOOL)a3
+- (void)setForceEnableSegmentation:(BOOL)segmentation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_FORCE_ENABLE_SEGMENTATION"];
+  segmentationCopy = segmentation;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:segmentationCopy forKey:@"PI_SEGMENT_FORCE_ENABLE_SEGMENTATION"];
 }
 
 - (BOOL)forceEnableSegmentation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_FORCE_ENABLE_SEGMENTATION"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_FORCE_ENABLE_SEGMENTATION"];
 
   return v3;
 }
 
-- (void)setDisableSegmentation:(BOOL)a3
+- (void)setDisableSegmentation:(BOOL)segmentation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_DISABLE_SEGMENTATION"];
+  segmentationCopy = segmentation;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:segmentationCopy forKey:@"PI_SEGMENT_DISABLE_SEGMENTATION"];
 }
 
 - (BOOL)disableSegmentation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_DISABLE_SEGMENTATION"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_DISABLE_SEGMENTATION"];
 
   return v3;
 }
 
-- (void)setSegmentationDebugRoundTripProxyImage:(BOOL)a3
+- (void)setSegmentationDebugRoundTripProxyImage:(BOOL)image
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_SEGMENT_ROUND_TRIP_PROXY"];
+  imageCopy = image;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:imageCopy forKey:@"PI_SEGMENT_ROUND_TRIP_PROXY"];
 }
 
 - (BOOL)segmentationDebugRoundTripProxyImage
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_SEGMENT_ROUND_TRIP_PROXY"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_SEGMENT_ROUND_TRIP_PROXY"];
 
   return v3;
 }
 
-- (void)setPortraitDrawDebugInfo:(BOOL)a3
+- (void)setPortraitDrawDebugInfo:(BOOL)info
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PORTRAIT_DRAW_DEBUG_INFO"];
+  infoCopy = info;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:infoCopy forKey:@"PI_PORTRAIT_DRAW_DEBUG_INFO"];
 }
 
 - (BOOL)portraitDrawDebugInfo
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_PORTRAIT_DRAW_DEBUG_INFO"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_PORTRAIT_DRAW_DEBUG_INFO"];
 
   return v3;
 }
 
-- (void)setPortraitForceLightMapLinear:(BOOL)a3
+- (void)setPortraitForceLightMapLinear:(BOOL)linear
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PORTRAIT_FORCE_LIGHT_MAP_LINEAR"];
+  linearCopy = linear;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:linearCopy forKey:@"PI_PORTRAIT_FORCE_LIGHT_MAP_LINEAR"];
 }
 
 - (BOOL)portraitForceLightMapLinear
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PI_PORTRAIT_FORCE_LIGHT_MAP_LINEAR"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PI_PORTRAIT_FORCE_LIGHT_MAP_LINEAR"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setPortraitDisableFuzzball:(BOOL)a3
+- (void)setPortraitDisableFuzzball:(BOOL)fuzzball
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"PI_PORTRAIT_DISABLE_FUZZBALL"];
+  fuzzballCopy = fuzzball;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:fuzzballCopy forKey:@"PI_PORTRAIT_DISABLE_FUZZBALL"];
 }
 
 - (BOOL)portraitDisableFuzzball
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PI_PORTRAIT_DISABLE_FUZZBALL"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PI_PORTRAIT_DISABLE_FUZZBALL"];
 
   return v3;
 }
 
 + (id)PUEditSettings
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PURootSettings"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PURootSettings"];
 
   v4 = [v3 objectForKey:@"PXSettingsArchiveKey"];
   v5 = [v4 objectForKey:@"photoEditingSettings"];
@@ -914,8 +914,8 @@
 
 + (id)IPXEditSettings
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"IPXRootSettings"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"IPXRootSettings"];
 
   v4 = [v3 objectForKey:@"PXSettingsArchiveKey"];
   v5 = [v4 objectForKey:@"editSettings"];

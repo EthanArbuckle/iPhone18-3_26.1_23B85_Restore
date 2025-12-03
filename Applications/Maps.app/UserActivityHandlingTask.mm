@@ -1,30 +1,30 @@
 @interface UserActivityHandlingTask
-+ (id)taskForUserActivity:(id)a3 atColdLaunch:(BOOL)a4;
-- (UserActivityHandlingTask)initWithUserActivity:(id)a3;
++ (id)taskForUserActivity:(id)activity atColdLaunch:(BOOL)launch;
+- (UserActivityHandlingTask)initWithUserActivity:(id)activity;
 - (void)_useMapsUserSessionEntity;
-- (void)taskFinished:(id)a3;
+- (void)taskFinished:(id)finished;
 @end
 
 @implementation UserActivityHandlingTask
 
-- (void)taskFinished:(id)a3
+- (void)taskFinished:(id)finished
 {
   v4.receiver = self;
   v4.super_class = UserActivityHandlingTask;
-  [(RichMapsActivityCreatingTaskImpl *)&v4 taskFinished:a3];
+  [(RichMapsActivityCreatingTaskImpl *)&v4 taskFinished:finished];
   [(UserActivityHandlingTask *)self _sendAnalytics];
 }
 
-- (UserActivityHandlingTask)initWithUserActivity:(id)a3
+- (UserActivityHandlingTask)initWithUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v8.receiver = self;
   v8.super_class = UserActivityHandlingTask;
   v5 = [(UserActivityHandlingTask *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UserActivityHandlingTask *)v5 setUserActivity:v4];
+    [(UserActivityHandlingTask *)v5 setUserActivity:activityCopy];
     [(UserActivityHandlingTask *)v6 _useMapsUserSessionEntity];
   }
 
@@ -33,37 +33,37 @@
 
 - (void)_useMapsUserSessionEntity
 {
-  v2 = [(UserActivityHandlingTask *)self userActivity];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:_MKUserActivitySharedSessionEntityStringKey];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
+  v4 = [userInfo objectForKeyedSubscript:_MKUserActivitySharedSessionEntityStringKey];
 
   if (v4)
   {
     v5 = [v4 componentsSeparatedByString:@"="];
-    v8 = [v5 lastObject];
+    lastObject = [v5 lastObject];
 
-    v6 = [[GEOUserSessionEntity alloc] initWithSessionEntityString:v8];
+    v6 = [[GEOUserSessionEntity alloc] initWithSessionEntityString:lastObject];
     v7 = +[GEOUserSession sharedInstance];
     [v7 setMapsUserSessionEntity:v6];
   }
 }
 
-+ (id)taskForUserActivity:(id)a3 atColdLaunch:(BOOL)a4
++ (id)taskForUserActivity:(id)activity atColdLaunch:(BOOL)launch
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  launchCopy = launch;
+  activityCopy = activity;
+  v6 = activityCopy;
+  if (!activityCopy)
   {
     v12 = 0;
     goto LABEL_19;
   }
 
-  v7 = [v5 activityType];
-  if ([v7 isEqual:@"com.apple.Maps"])
+  activityType = [activityCopy activityType];
+  if ([activityType isEqual:@"com.apple.Maps"])
   {
-    v8 = [v6 userInfo];
-    v9 = [v8 objectForKey:WGWidgetUserInfoKeyKind];
+    userInfo = [v6 userInfo];
+    v9 = [userInfo objectForKey:WGWidgetUserInfoKeyKind];
     v10 = [v9 isEqualToString:@"com.apple.Maps"];
 
     if (v10)
@@ -81,19 +81,19 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (![v7 isEqual:@"com.apple.Maps.Restore"])
+  if (![activityType isEqual:@"com.apple.Maps.Restore"])
   {
-    if ([v7 isEqual:@"com.apple.Maps.NewWindow"])
+    if ([activityType isEqual:@"com.apple.Maps.NewWindow"])
     {
       v11 = _NewWindowActivityHandlingTask;
     }
 
-    else if ([v7 isEqualToString:CSQueryContinuationActionType])
+    else if ([activityType isEqualToString:CSQueryContinuationActionType])
     {
       v11 = _CoreSpotlightActivityHandlingTask;
     }
 
-    else if ([v7 isEqualToString:@"MKPlaceBrandUserActivity"])
+    else if ([activityType isEqualToString:@"MKPlaceBrandUserActivity"])
     {
       v11 = _PlaceBrandActivityHandlingTask;
     }
@@ -102,7 +102,7 @@ LABEL_17:
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v7 isEqualToString:v14];
+      v15 = [activityType isEqualToString:v14];
 
       if (!v15)
       {
@@ -110,7 +110,7 @@ LABEL_17:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v18 = 138412290;
-          v19 = v7;
+          v19 = activityType;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "UserActivityHandlingTask no handling task for %@", &v18, 0xCu);
         }
 
@@ -125,7 +125,7 @@ LABEL_17:
   }
 
   v12 = [(UserActivityHandlingTask *)[_MapsActivityRestoreHandlingTask alloc] initWithUserActivity:v6];
-  [(_MapsActivityRestoreHandlingTask *)v12 setColdLaunch:v4];
+  [(_MapsActivityRestoreHandlingTask *)v12 setColdLaunch:launchCopy];
 LABEL_18:
 
 LABEL_19:

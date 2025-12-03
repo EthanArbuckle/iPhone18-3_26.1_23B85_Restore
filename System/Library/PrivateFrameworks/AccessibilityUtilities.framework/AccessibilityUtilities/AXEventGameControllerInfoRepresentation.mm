@@ -1,68 +1,68 @@
 @interface AXEventGameControllerInfoRepresentation
-- (AXEventGameControllerInfoRepresentation)initWithCoder:(id)a3;
+- (AXEventGameControllerInfoRepresentation)initWithCoder:(id)coder;
 - (id)accessibilityEventRepresentationTabularDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXEventGameControllerInfoRepresentation
 
-- (AXEventGameControllerInfoRepresentation)initWithCoder:(id)a3
+- (AXEventGameControllerInfoRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AXEventGameControllerInfoRepresentation;
   v5 = [(AXEventGameControllerInfoRepresentation *)&v7 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"directionPadUp"];
+    [coderCopy decodeDoubleForKey:@"directionPadUp"];
     [(AXEventGameControllerInfoRepresentation *)v5 setDirectionPadUp:?];
-    [v4 decodeDoubleForKey:@"directionPadDown"];
+    [coderCopy decodeDoubleForKey:@"directionPadDown"];
     [(AXEventGameControllerInfoRepresentation *)v5 setDirectionPadDown:?];
-    [v4 decodeDoubleForKey:@"directionPadLeft"];
+    [coderCopy decodeDoubleForKey:@"directionPadLeft"];
     [(AXEventGameControllerInfoRepresentation *)v5 setDirectionPadLeft:?];
-    [v4 decodeDoubleForKey:@"directionPadRight"];
+    [coderCopy decodeDoubleForKey:@"directionPadRight"];
     [(AXEventGameControllerInfoRepresentation *)v5 setDirectionPadRight:?];
-    [v4 decodeDoubleForKey:@"faceButtonA"];
+    [coderCopy decodeDoubleForKey:@"faceButtonA"];
     [(AXEventGameControllerInfoRepresentation *)v5 setFaceButtonA:?];
-    [v4 decodeDoubleForKey:@"faceButtonB"];
+    [coderCopy decodeDoubleForKey:@"faceButtonB"];
     [(AXEventGameControllerInfoRepresentation *)v5 setFaceButtonB:?];
-    [v4 decodeDoubleForKey:@"faceButtonX"];
+    [coderCopy decodeDoubleForKey:@"faceButtonX"];
     [(AXEventGameControllerInfoRepresentation *)v5 setFaceButtonX:?];
-    [v4 decodeDoubleForKey:@"faceButtonY"];
+    [coderCopy decodeDoubleForKey:@"faceButtonY"];
     [(AXEventGameControllerInfoRepresentation *)v5 setFaceButtonY:?];
-    [v4 decodeDoubleForKey:@"shoulderButtonL1"];
+    [coderCopy decodeDoubleForKey:@"shoulderButtonL1"];
     [(AXEventGameControllerInfoRepresentation *)v5 setShoulderButtonL1:?];
-    [v4 decodeDoubleForKey:@"shoulderButtonL2"];
+    [coderCopy decodeDoubleForKey:@"shoulderButtonL2"];
     [(AXEventGameControllerInfoRepresentation *)v5 setShoulderButtonL2:?];
-    [v4 decodeDoubleForKey:@"shoulderButtonR1"];
+    [coderCopy decodeDoubleForKey:@"shoulderButtonR1"];
     [(AXEventGameControllerInfoRepresentation *)v5 setShoulderButtonR1:?];
-    [v4 decodeDoubleForKey:@"shoulderButtonR2"];
+    [coderCopy decodeDoubleForKey:@"shoulderButtonR2"];
     [(AXEventGameControllerInfoRepresentation *)v5 setShoulderButtonR2:?];
-    [v4 decodeDoubleForKey:@"leftJoystickX"];
+    [coderCopy decodeDoubleForKey:@"leftJoystickX"];
     [(AXEventGameControllerInfoRepresentation *)v5 setLeftJoystickX:?];
-    [v4 decodeDoubleForKey:@"leftJoystickY"];
+    [coderCopy decodeDoubleForKey:@"leftJoystickY"];
     [(AXEventGameControllerInfoRepresentation *)v5 setLeftJoystickY:?];
-    [v4 decodeDoubleForKey:@"leftJoystickButton"];
+    [coderCopy decodeDoubleForKey:@"leftJoystickButton"];
     [(AXEventGameControllerInfoRepresentation *)v5 setLeftJoystickButton:?];
-    [v4 decodeDoubleForKey:@"rightJoystickX"];
+    [coderCopy decodeDoubleForKey:@"rightJoystickX"];
     [(AXEventGameControllerInfoRepresentation *)v5 setRightJoystickX:?];
-    [v4 decodeDoubleForKey:@"rightJoystickY"];
+    [coderCopy decodeDoubleForKey:@"rightJoystickY"];
     [(AXEventGameControllerInfoRepresentation *)v5 setRightJoystickY:?];
-    [v4 decodeDoubleForKey:@"rightJoystickButton"];
+    [coderCopy decodeDoubleForKey:@"rightJoystickButton"];
     [(AXEventGameControllerInfoRepresentation *)v5 setRightJoystickButton:?];
-    [v4 decodeDoubleForKey:@"menuButton"];
+    [coderCopy decodeDoubleForKey:@"menuButton"];
     [(AXEventGameControllerInfoRepresentation *)v5 setMenuButton:?];
-    [v4 decodeDoubleForKey:@"viewButton"];
+    [coderCopy decodeDoubleForKey:@"viewButton"];
     [(AXEventGameControllerInfoRepresentation *)v5 setViewButton:?];
-    [v4 decodeDoubleForKey:@"homeButton"];
+    [coderCopy decodeDoubleForKey:@"homeButton"];
     [(AXEventGameControllerInfoRepresentation *)v5 setHomeButton:?];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AXEventGameControllerInfoRepresentation);
   [(AXEventGameControllerInfoRepresentation *)self directionPadUp];
@@ -110,51 +110,51 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AXEventGameControllerInfoRepresentation *)self directionPadUp];
-  [v4 encodeDouble:@"directionPadUp" forKey:?];
+  [coderCopy encodeDouble:@"directionPadUp" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self directionPadDown];
-  [v4 encodeDouble:@"directionPadDown" forKey:?];
+  [coderCopy encodeDouble:@"directionPadDown" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self directionPadLeft];
-  [v4 encodeDouble:@"directionPadLeft" forKey:?];
+  [coderCopy encodeDouble:@"directionPadLeft" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self directionPadRight];
-  [v4 encodeDouble:@"directionPadRight" forKey:?];
+  [coderCopy encodeDouble:@"directionPadRight" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self faceButtonA];
-  [v4 encodeDouble:@"faceButtonA" forKey:?];
+  [coderCopy encodeDouble:@"faceButtonA" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self faceButtonB];
-  [v4 encodeDouble:@"faceButtonB" forKey:?];
+  [coderCopy encodeDouble:@"faceButtonB" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self faceButtonX];
-  [v4 encodeDouble:@"faceButtonX" forKey:?];
+  [coderCopy encodeDouble:@"faceButtonX" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self faceButtonY];
-  [v4 encodeDouble:@"faceButtonY" forKey:?];
+  [coderCopy encodeDouble:@"faceButtonY" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self shoulderButtonL1];
-  [v4 encodeDouble:@"shoulderButtonL1" forKey:?];
+  [coderCopy encodeDouble:@"shoulderButtonL1" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self shoulderButtonL2];
-  [v4 encodeDouble:@"shoulderButtonL2" forKey:?];
+  [coderCopy encodeDouble:@"shoulderButtonL2" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self shoulderButtonR1];
-  [v4 encodeDouble:@"shoulderButtonR1" forKey:?];
+  [coderCopy encodeDouble:@"shoulderButtonR1" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self shoulderButtonR2];
-  [v4 encodeDouble:@"shoulderButtonR2" forKey:?];
+  [coderCopy encodeDouble:@"shoulderButtonR2" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self leftJoystickX];
-  [v4 encodeDouble:@"leftJoystickX" forKey:?];
+  [coderCopy encodeDouble:@"leftJoystickX" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self leftJoystickY];
-  [v4 encodeDouble:@"leftJoystickY" forKey:?];
+  [coderCopy encodeDouble:@"leftJoystickY" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self leftJoystickButton];
-  [v4 encodeDouble:@"leftJoystickButton" forKey:?];
+  [coderCopy encodeDouble:@"leftJoystickButton" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickX];
-  [v4 encodeDouble:@"rightJoystickX" forKey:?];
+  [coderCopy encodeDouble:@"rightJoystickX" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickY];
-  [v4 encodeDouble:@"rightJoystickY" forKey:?];
+  [coderCopy encodeDouble:@"rightJoystickY" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickButton];
-  [v4 encodeDouble:@"rightJoystickButton" forKey:?];
+  [coderCopy encodeDouble:@"rightJoystickButton" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickButton];
-  [v4 encodeDouble:@"menuButton" forKey:?];
+  [coderCopy encodeDouble:@"menuButton" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickButton];
-  [v4 encodeDouble:@"viewButton" forKey:?];
+  [coderCopy encodeDouble:@"viewButton" forKey:?];
   [(AXEventGameControllerInfoRepresentation *)self rightJoystickButton];
-  [v4 encodeDouble:@"homeButton" forKey:?];
+  [coderCopy encodeDouble:@"homeButton" forKey:?];
 }
 
 - (id)accessibilityEventRepresentationTabularDescription

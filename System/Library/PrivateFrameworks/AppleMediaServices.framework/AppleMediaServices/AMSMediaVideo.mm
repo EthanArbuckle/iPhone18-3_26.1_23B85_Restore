@@ -1,21 +1,21 @@
 @interface AMSMediaVideo
-- (AMSMediaVideo)initWithDictionary:(id)a3;
+- (AMSMediaVideo)initWithDictionary:(id)dictionary;
 - (NSURL)URL;
 - (id)name;
 @end
 
 @implementation AMSMediaVideo
 
-- (AMSMediaVideo)initWithDictionary:(id)a3
+- (AMSMediaVideo)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSMediaVideo;
   v6 = [(AMSMediaVideo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_videoDictionary, a3);
+    objc_storeStrong(&v6->_videoDictionary, dictionary);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 
 - (id)name
 {
-  v2 = [(AMSMediaVideo *)self videoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"name"];
+  videoDictionary = [(AMSMediaVideo *)self videoDictionary];
+  v3 = [videoDictionary objectForKeyedSubscript:@"name"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -42,8 +42,8 @@
 
 - (NSURL)URL
 {
-  v2 = [(AMSMediaVideo *)self videoDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"video"];
+  videoDictionary = [(AMSMediaVideo *)self videoDictionary];
+  v3 = [videoDictionary objectForKeyedSubscript:@"video"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

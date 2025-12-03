@@ -1,20 +1,20 @@
 @interface SBControlCenterSystemControlsHost
-- (id)observeSilentModeWithBlock:(id)a3;
+- (id)observeSilentModeWithBlock:(id)block;
 @end
 
 @implementation SBControlCenterSystemControlsHost
 
-- (id)observeSilentModeWithBlock:(id)a3
+- (id)observeSilentModeWithBlock:(id)block
 {
   v3 = MEMORY[0x277CCACC8];
-  v4 = a3;
+  blockCopy = block;
   if (([v3 isMainThread] & 1) == 0)
   {
     [SBControlCenterSystemControlsHost observeSilentModeWithBlock:];
   }
 
-  v5 = [SBApp ringerControl];
-  v6 = [v5 observeRingerMutedWithBlock:v4];
+  ringerControl = [SBApp ringerControl];
+  v6 = [ringerControl observeRingerMutedWithBlock:blockCopy];
 
   return v6;
 }

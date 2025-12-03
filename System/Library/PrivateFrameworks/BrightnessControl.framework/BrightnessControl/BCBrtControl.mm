@@ -1,21 +1,21 @@
 @interface BCBrtControl
 + (id)copyAllAvailableControls;
-+ (id)newMonitorForAllControlsWithHandler:(id)a3 error:(id *)a4;
++ (id)newMonitorForAllControlsWithHandler:(id)handler error:(id *)error;
 - (BCBrtControl)init;
-- (BOOL)_checkIsValid:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setProperty:(id)a3 value:(id)a4 error:(id *)a5;
+- (BOOL)_checkIsValid:(id *)valid;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setProperty:(id)property value:(id)value error:(id *)error;
 - (OS_dispatch_queue)queue;
 - (OS_os_log)logHandle;
 - (__CFUUID)cfContainerID;
 - (id)ID;
 - (id)copyModuleIdentifier;
-- (id)copyProperty:(id)a3 error:(id *)a4;
+- (id)copyProperty:(id)property error:(id *)error;
 - (unint64_t)hash;
-- (void)_runOnCallbackQueue:(id)a3;
+- (void)_runOnCallbackQueue:(id)queue;
 - (void)dealloc;
-- (void)setNitsAsync:(double)a3 completionHandler:(id)a4;
-- (void)setPropertyAync:(id)a3 value:(id)a4 completionHandler:(id)a5;
+- (void)setNitsAsync:(double)async completionHandler:(id)handler;
+- (void)setPropertyAync:(id)aync value:(id)value completionHandler:(id)handler;
 @end
 
 @implementation BCBrtControl
@@ -28,7 +28,7 @@
   if (v2)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [(BCBrtControl *)v2 copyModuleIdentifier];
+    copyModuleIdentifier = [(BCBrtControl *)v2 copyModuleIdentifier];
     v2->_logHandle = 0;
     v2->_capabilities = objc_alloc_init(MEMORY[0x277CBEB38]);
     v2->_callbackQueue = 0;
@@ -75,13 +75,13 @@
   return [v2 initWithString:@"com.apple.BCBrtControl"];
 }
 
-- (BOOL)_checkIsValid:(id *)a3
+- (BOOL)_checkIsValid:(id *)valid
 {
-  v4 = [(BCBrtControl *)self isValid];
-  v5 = v4;
-  if (a3 && !v4)
+  isValid = [(BCBrtControl *)self isValid];
+  v5 = isValid;
+  if (valid && !isValid)
   {
-    *a3 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:18];
+    *valid = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:18];
   }
 
   return v5;
@@ -92,8 +92,8 @@
   logHandle = self->_logHandle;
   if (!logHandle)
   {
-    v4 = [(BCBrtControl *)self copyModuleIdentifier];
-    v5 = os_log_create([v4 UTF8String], "default");
+    copyModuleIdentifier = [(BCBrtControl *)self copyModuleIdentifier];
+    v5 = os_log_create([copyModuleIdentifier UTF8String], "default");
     self->_logHandle = v5;
     if (!v5)
     {
@@ -185,7 +185,7 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -193,8 +193,8 @@
     return 0;
   }
 
-  v7 = [(BCBrtControl *)self containerID];
-  return v7 == [a3 containerID];
+  containerID = [(BCBrtControl *)self containerID];
+  return containerID == [equal containerID];
 }
 
 - (unint64_t)hash
@@ -205,7 +205,7 @@
   return v4;
 }
 
-- (void)_runOnCallbackQueue:(id)a3
+- (void)_runOnCallbackQueue:(id)queue
 {
   if ([(BCBrtControl *)self callbackQueue])
   {
@@ -215,7 +215,7 @@
     v8[2] = __36__BCBrtControl__runOnCallbackQueue___block_invoke;
     v8[3] = &unk_2784F8F00;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = queue;
     dispatch_async(callbackQueue, v8);
   }
 
@@ -236,15 +236,15 @@ void __36__BCBrtControl__runOnCallbackQueue___block_invoke(uint64_t a1)
   dispatch_sync(v2, v3);
 }
 
-- (void)setNitsAsync:(double)a3 completionHandler:(id)a4
+- (void)setNitsAsync:(double)async completionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__BCBrtControl_setNitsAsync_completionHandler___block_invoke;
   v4[3] = &unk_2784F8F28;
-  *&v4[6] = a3;
+  *&v4[6] = async;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = handler;
   [(BCBrtControl *)self _runOnCallbackQueue:v4];
 }
 
@@ -261,26 +261,26 @@ uint64_t __47__BCBrtControl_setNitsAsync_completionHandler___block_invoke(uint64
   return result;
 }
 
-- (BOOL)setProperty:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setProperty:(id)property value:(id)value error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
   }
 
   return 0;
 }
 
-- (void)setPropertyAync:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)setPropertyAync:(id)aync value:(id)value completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__BCBrtControl_setPropertyAync_value_completionHandler___block_invoke;
   v5[3] = &unk_2784F8F50;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
-  v5[7] = a5;
+  v5[5] = aync;
+  v5[6] = value;
+  v5[7] = handler;
   [(BCBrtControl *)self _runOnCallbackQueue:v5];
 }
 
@@ -295,22 +295,22 @@ void __56__BCBrtControl_setPropertyAync_value_completionHandler___block_invoke(u
   }
 }
 
-- (id)copyProperty:(id)a3 error:(id *)a4
+- (id)copyProperty:(id)property error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithBCError:16];
   }
 
   return 0;
 }
 
-+ (id)newMonitorForAllControlsWithHandler:(id)a3 error:(id *)a4
++ (id)newMonitorForAllControlsWithHandler:(id)handler error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [v6 addObject:{+[BCAppleBacklightBrtControl newMonitorWithHandler:error:](BCAppleBacklightBrtControl, "newMonitorWithHandler:error:", a3, a4)}];
-  [v6 addObject:{+[BCHIDBrtControl newMonitorWithHandler:error:](BCHIDBrtControl, "newMonitorWithHandler:error:", a3, a4)}];
+  [v6 addObject:{+[BCAppleBacklightBrtControl newMonitorWithHandler:error:](BCAppleBacklightBrtControl, "newMonitorWithHandler:error:", handler, error)}];
+  [v6 addObject:{+[BCHIDBrtControl newMonitorWithHandler:error:](BCHIDBrtControl, "newMonitorWithHandler:error:", handler, error)}];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;

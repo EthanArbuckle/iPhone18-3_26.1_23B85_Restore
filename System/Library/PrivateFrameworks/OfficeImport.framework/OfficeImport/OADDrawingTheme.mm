@@ -1,30 +1,30 @@
 @interface OADDrawingTheme
-- (BOOL)isEqual:(id)a3;
-- (OADDrawingTheme)initWithStyleMatrix:(id)a3 fontScheme:(id)a4 colorScheme:(id)a5 colorMap:(id)a6 colorPalette:(id)a7;
-- (OADDrawingTheme)initWithTheme:(id)a3 colorMap:(id)a4 colorPalette:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (OADDrawingTheme)initWithStyleMatrix:(id)matrix fontScheme:(id)scheme colorScheme:(id)colorScheme colorMap:(id)map colorPalette:(id)palette;
+- (OADDrawingTheme)initWithTheme:(id)theme colorMap:(id)map colorPalette:(id)palette;
 - (id)description;
 - (unint64_t)hash;
-- (void)applyThemeOverrides:(id)a3 colorMapOverride:(id)a4;
+- (void)applyThemeOverrides:(id)overrides colorMapOverride:(id)override;
 @end
 
 @implementation OADDrawingTheme
 
-- (OADDrawingTheme)initWithStyleMatrix:(id)a3 fontScheme:(id)a4 colorScheme:(id)a5 colorMap:(id)a6 colorPalette:(id)a7
+- (OADDrawingTheme)initWithStyleMatrix:(id)matrix fontScheme:(id)scheme colorScheme:(id)colorScheme colorMap:(id)map colorPalette:(id)palette
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  matrixCopy = matrix;
+  schemeCopy = scheme;
+  colorSchemeCopy = colorScheme;
+  mapCopy = map;
+  paletteCopy = palette;
   v23.receiver = self;
   v23.super_class = OADDrawingTheme;
   v18 = [(OADDrawingTheme *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->mStyleMatrix, a3);
-    objc_storeStrong(&v19->mFontScheme, a4);
-    v20 = [[OADColorContext alloc] initWithScheme:v15 map:v16 palette:v17];
+    objc_storeStrong(&v18->mStyleMatrix, matrix);
+    objc_storeStrong(&v19->mFontScheme, scheme);
+    v20 = [[OADColorContext alloc] initWithScheme:colorSchemeCopy map:mapCopy palette:paletteCopy];
     mColorContext = v19->mColorContext;
     v19->mColorContext = v20;
   }
@@ -32,30 +32,30 @@
   return v19;
 }
 
-- (OADDrawingTheme)initWithTheme:(id)a3 colorMap:(id)a4 colorPalette:(id)a5
+- (OADDrawingTheme)initWithTheme:(id)theme colorMap:(id)map colorPalette:(id)palette
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  themeCopy = theme;
+  mapCopy = map;
+  paletteCopy = palette;
   v24.receiver = self;
   v24.super_class = OADDrawingTheme;
   v11 = [(OADDrawingTheme *)&v24 init];
   if (v11)
   {
-    v12 = [v8 baseStyles];
-    v13 = [v12 styleMatrix];
+    baseStyles = [themeCopy baseStyles];
+    styleMatrix = [baseStyles styleMatrix];
     mStyleMatrix = v11->mStyleMatrix;
-    v11->mStyleMatrix = v13;
+    v11->mStyleMatrix = styleMatrix;
 
-    v15 = [v8 baseStyles];
-    v16 = [v15 fontScheme];
+    baseStyles2 = [themeCopy baseStyles];
+    fontScheme = [baseStyles2 fontScheme];
     mFontScheme = v11->mFontScheme;
-    v11->mFontScheme = v16;
+    v11->mFontScheme = fontScheme;
 
     v18 = [OADColorContext alloc];
-    v19 = [v8 baseStyles];
-    v20 = [v19 colorScheme];
-    v21 = [(OADColorContext *)v18 initWithScheme:v20 map:v9 palette:v10];
+    baseStyles3 = [themeCopy baseStyles];
+    colorScheme = [baseStyles3 colorScheme];
+    v21 = [(OADColorContext *)v18 initWithScheme:colorScheme map:mapCopy palette:paletteCopy];
     mColorContext = v11->mColorContext;
     v11->mColorContext = v21;
   }
@@ -63,38 +63,38 @@
   return v11;
 }
 
-- (void)applyThemeOverrides:(id)a3 colorMapOverride:(id)a4
+- (void)applyThemeOverrides:(id)overrides colorMapOverride:(id)override
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 fontScheme];
+  overridesCopy = overrides;
+  overrideCopy = override;
+  fontScheme = [overridesCopy fontScheme];
 
-  if (v7)
+  if (fontScheme)
   {
-    v8 = [v13 fontScheme];
+    fontScheme2 = [overridesCopy fontScheme];
     mFontScheme = self->mFontScheme;
-    self->mFontScheme = v8;
+    self->mFontScheme = fontScheme2;
   }
 
-  v10 = [v13 styleMatrix];
+  styleMatrix = [overridesCopy styleMatrix];
 
-  if (v10)
+  if (styleMatrix)
   {
-    v11 = [v13 styleMatrix];
+    styleMatrix2 = [overridesCopy styleMatrix];
     mStyleMatrix = self->mStyleMatrix;
-    self->mStyleMatrix = v11;
+    self->mStyleMatrix = styleMatrix2;
   }
 
-  [(OADColorContext *)self->mColorContext applyThemeOverrides:v13 colorMapOverride:v6];
+  [(OADColorContext *)self->mColorContext applyThemeOverrides:overridesCopy colorMapOverride:overrideCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if ((TCObjectEqual(self->mStyleMatrix, v7[1]) & 1) != 0 && TCObjectEqual(self->mFontScheme, v7[2]))
     {
       v6 = TCObjectEqual(self->mColorContext, v7[3]);
@@ -135,9 +135,9 @@
   v6 = [(OADColorContext *)self->mColorContext description];
   [v3 addField:@"ColorContext" value:v6];
 
-  v7 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v7;
+  return descriptionString;
 }
 
 @end

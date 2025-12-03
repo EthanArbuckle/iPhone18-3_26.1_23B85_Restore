@@ -1,24 +1,24 @@
 @interface SBUserAlertNotificationSource
-- (SBUserAlertNotificationSource)initWithDispatcher:(id)a3;
-- (void)alertItemsController:(id)a3 didDeactivateAlertItem:(id)a4 forReason:(int)a5;
-- (void)alertItemsController:(id)a3 willActivateAlertItem:(id)a4;
+- (SBUserAlertNotificationSource)initWithDispatcher:(id)dispatcher;
+- (void)alertItemsController:(id)controller didDeactivateAlertItem:(id)item forReason:(int)reason;
+- (void)alertItemsController:(id)controller willActivateAlertItem:(id)item;
 - (void)dealloc;
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBUserAlertNotificationSource
 
-- (SBUserAlertNotificationSource)initWithDispatcher:(id)a3
+- (SBUserAlertNotificationSource)initWithDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v10.receiver = self;
   v10.super_class = SBUserAlertNotificationSource;
   v6 = [(SBUserAlertNotificationSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatcher, a3);
+    objc_storeStrong(&v6->_dispatcher, dispatcher);
     v8 = +[SBAlertItemsController sharedInstance];
     [v8 addObserver:v7];
   }
@@ -36,53 +36,53 @@
   [(SBUserAlertNotificationSource *)&v4 dealloc];
 }
 
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a5;
-  v7 = [MEMORY[0x277D77E48] notificationRequestForLockScreenWithAlertItem:a3];
-  v8 = [(SBUserAlertNotificationSource *)self dispatcher];
-  [v8 postNotificationWithRequest:v7];
+  completionCopy = completion;
+  v7 = [MEMORY[0x277D77E48] notificationRequestForLockScreenWithAlertItem:item];
+  dispatcher = [(SBUserAlertNotificationSource *)self dispatcher];
+  [dispatcher postNotificationWithRequest:v7];
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a5;
-  v7 = [MEMORY[0x277D77E48] notificationRequestForLockScreenWithAlertItem:a3];
-  v8 = [(SBUserAlertNotificationSource *)self dispatcher];
-  [v8 withdrawNotificationWithRequest:v7];
+  completionCopy = completion;
+  v7 = [MEMORY[0x277D77E48] notificationRequestForLockScreenWithAlertItem:item];
+  dispatcher = [(SBUserAlertNotificationSource *)self dispatcher];
+  [dispatcher withdrawNotificationWithRequest:v7];
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)alertItemsController:(id)a3 willActivateAlertItem:(id)a4
+- (void)alertItemsController:(id)controller willActivateAlertItem:(id)item
 {
-  v7 = a4;
-  if ([v7 allowInCar])
+  itemCopy = item;
+  if ([itemCopy allowInCar])
   {
-    v5 = [MEMORY[0x277D77E48] notificationRequestForCarPlayWithAlertItem:v7];
-    v6 = [(SBUserAlertNotificationSource *)self dispatcher];
-    [v6 postNotificationWithRequest:v5];
+    v5 = [MEMORY[0x277D77E48] notificationRequestForCarPlayWithAlertItem:itemCopy];
+    dispatcher = [(SBUserAlertNotificationSource *)self dispatcher];
+    [dispatcher postNotificationWithRequest:v5];
   }
 }
 
-- (void)alertItemsController:(id)a3 didDeactivateAlertItem:(id)a4 forReason:(int)a5
+- (void)alertItemsController:(id)controller didDeactivateAlertItem:(id)item forReason:(int)reason
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a5 != 1 && [v8 allowInCar])
+  controllerCopy = controller;
+  itemCopy = item;
+  v9 = itemCopy;
+  if (reason != 1 && [itemCopy allowInCar])
   {
     v10 = [MEMORY[0x277D77E48] notificationRequestForCarPlayWithAlertItem:v9];
-    v11 = [(SBUserAlertNotificationSource *)self dispatcher];
-    [v11 withdrawNotificationWithRequest:v10];
+    dispatcher = [(SBUserAlertNotificationSource *)self dispatcher];
+    [dispatcher withdrawNotificationWithRequest:v10];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface TSNoPlanForTransferViewController
-+ (id)getTitleAndDetailsForTransferCapability:(unint64_t)a3 carrier:(id)a4 phoneNumber:(id)a5 sourceDeviceName:(id)a6 isTransferNotSupportedFromiPhone:(BOOL)a7 isTransferBackPlan:(BOOL)a8 isVisitStoreRequired:(BOOL)a9;
++ (id)getTitleAndDetailsForTransferCapability:(unint64_t)capability carrier:(id)carrier phoneNumber:(id)number sourceDeviceName:(id)name isTransferNotSupportedFromiPhone:(BOOL)phone isTransferBackPlan:(BOOL)plan isVisitStoreRequired:(BOOL)required;
 - (BOOL)_isAnyPlanRequireLocationService;
 - (BOOL)_isAnyPlanWithMismatchedActivationPolicy;
-- (TSNoPlanForTransferViewController)initWithCarrier:(id)a3 phoneNumber:(id)a4 transferCapability:(unint64_t)a5 showOtherOptions:(BOOL)a6 entryPoint:(unint64_t)a7 sourceDeviceName:(id)a8 isTransferNotSupportedFromiPhone:(BOOL)a9 isTransferBackPlan:(BOOL)a10 isStartOverNeeded:(BOOL)a11;
-- (TSNoPlanForTransferViewController)initWithPlans:(id)a3 showOtherOptions:(BOOL)a4 isStartOverNeeded:(BOOL)a5;
+- (TSNoPlanForTransferViewController)initWithCarrier:(id)carrier phoneNumber:(id)number transferCapability:(unint64_t)capability showOtherOptions:(BOOL)options entryPoint:(unint64_t)point sourceDeviceName:(id)name isTransferNotSupportedFromiPhone:(BOOL)phone isTransferBackPlan:(BOOL)self0 isStartOverNeeded:(BOOL)self1;
+- (TSNoPlanForTransferViewController)initWithPlans:(id)plans showOtherOptions:(BOOL)options isStartOverNeeded:(BOOL)needed;
 - (TSSIMSetupFlowDelegate)delegate;
 - (id)initShowNoSIMForCrossPlatformTransfer;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (void)_cancelButtonTapped;
 - (void)_otherButtonTapped;
 - (void)_turnOnLocationServicesTapped;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
 @implementation TSNoPlanForTransferViewController
 
-- (TSNoPlanForTransferViewController)initWithCarrier:(id)a3 phoneNumber:(id)a4 transferCapability:(unint64_t)a5 showOtherOptions:(BOOL)a6 entryPoint:(unint64_t)a7 sourceDeviceName:(id)a8 isTransferNotSupportedFromiPhone:(BOOL)a9 isTransferBackPlan:(BOOL)a10 isStartOverNeeded:(BOOL)a11
+- (TSNoPlanForTransferViewController)initWithCarrier:(id)carrier phoneNumber:(id)number transferCapability:(unint64_t)capability showOtherOptions:(BOOL)options entryPoint:(unint64_t)point sourceDeviceName:(id)name isTransferNotSupportedFromiPhone:(BOOL)phone isTransferBackPlan:(BOOL)self0 isStartOverNeeded:(BOOL)self1
 {
   LOBYTE(v23) = 0;
-  v15 = [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:a5 carrier:a3 phoneNumber:a4 sourceDeviceName:a8 isTransferNotSupportedFromiPhone:a9 isTransferBackPlan:a10 isVisitStoreRequired:v23];
+  v15 = [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:capability carrier:carrier phoneNumber:number sourceDeviceName:name isTransferNotSupportedFromiPhone:phone isTransferBackPlan:plan isVisitStoreRequired:v23];
   v16 = [v15 objectForKeyedSubscript:@"title"];
   v17 = [v15 objectForKeyedSubscript:@"details"];
   v18 = [MEMORY[0x277CCAB68] stringWithString:v17];
@@ -32,10 +32,10 @@
   v21 = v20;
   if (v20)
   {
-    [(TSNoPlanForTransferViewController *)v20 setEntryPoint:a7];
-    v21->_showOtherOptions = a6;
-    v21->_isStartOverNeeded = a11;
-    if (a5 == 19)
+    [(TSNoPlanForTransferViewController *)v20 setEntryPoint:point];
+    v21->_showOtherOptions = options;
+    v21->_isStartOverNeeded = needed;
+    if (capability == 19)
     {
       v21->_showTurnOnLocationServices = 1;
     }
@@ -67,18 +67,18 @@
   return v10;
 }
 
-- (TSNoPlanForTransferViewController)initWithPlans:(id)a3 showOtherOptions:(BOOL)a4 isStartOverNeeded:(BOOL)a5
+- (TSNoPlanForTransferViewController)initWithPlans:(id)plans showOtherOptions:(BOOL)options isStartOverNeeded:(BOOL)needed
 {
-  v7 = [a3 sortedArrayUsingComparator:&__block_literal_global_23];
+  v7 = [plans sortedArrayUsingComparator:&__block_literal_global_23];
   if ([v7 count] == 1)
   {
     v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 transferCapabilityForMessage];
-    v10 = [v8 carrierName];
-    v11 = [v8 phoneNumber];
-    v12 = [v8 deviceName];
+    transferCapabilityForMessage = [v8 transferCapabilityForMessage];
+    carrierName = [v8 carrierName];
+    phoneNumber = [v8 phoneNumber];
+    deviceName = [v8 deviceName];
     LOBYTE(v30) = [v8 requireVisitStoreOnce];
-    v13 = [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:v9 carrier:v10 phoneNumber:v11 sourceDeviceName:v12 isTransferNotSupportedFromiPhone:0 isTransferBackPlan:0 isVisitStoreRequired:v30];
+    v13 = [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:transferCapabilityForMessage carrier:carrierName phoneNumber:phoneNumber sourceDeviceName:deviceName isTransferNotSupportedFromiPhone:0 isTransferBackPlan:0 isVisitStoreRequired:v30];
 
     v14 = [v13 objectForKeyedSubscript:@"title"];
     v15 = [v13 objectForKeyedSubscript:@"details"];
@@ -125,9 +125,9 @@
   {
     objc_storeStrong(&v27->_plans, v7);
     v28->_entryPoint = 1;
-    v28->_showOtherOptions = a4;
+    v28->_showOtherOptions = options;
     v28->_showTurnOnLocationServices = [(TSNoPlanForTransferViewController *)v28 _isAnyPlanRequireLocationService];
-    v28->_isStartOverNeeded = a5;
+    v28->_isStartOverNeeded = needed;
   }
 
   return v28;
@@ -170,37 +170,37 @@ uint64_t __86__TSNoPlanForTransferViewController_initWithPlans_showOtherOptions_
   return v8;
 }
 
-+ (id)getTitleAndDetailsForTransferCapability:(unint64_t)a3 carrier:(id)a4 phoneNumber:(id)a5 sourceDeviceName:(id)a6 isTransferNotSupportedFromiPhone:(BOOL)a7 isTransferBackPlan:(BOOL)a8 isVisitStoreRequired:(BOOL)a9
++ (id)getTitleAndDetailsForTransferCapability:(unint64_t)capability carrier:(id)carrier phoneNumber:(id)number sourceDeviceName:(id)name isTransferNotSupportedFromiPhone:(BOOL)phone isTransferBackPlan:(BOOL)plan isVisitStoreRequired:(BOOL)required
 {
-  v9 = a8;
-  v10 = a7;
+  planCopy = plan;
+  phoneCopy = phone;
   v79[2] = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a5;
-  v75 = a6;
-  if (!v14 || ![v14 length])
+  carrierCopy = carrier;
+  numberCopy = number;
+  nameCopy = name;
+  if (!carrierCopy || ![carrierCopy length])
   {
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v17 = [v16 localizedStringForKey:@"YOUR_CARRIER" value:&stru_28753DF48 table:@"Localizable"];
 
-    v14 = v17;
+    carrierCopy = v17;
   }
 
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = v18;
-  if (a3 == 11001)
+  if (capability == 11001)
   {
     v20 = [v18 localizedStringForKey:@"VISIT_STORE_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
     v21 = MEMORY[0x277CCACA8];
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"VISIT_STORE_FOR_WARNING_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-    v24 = [v21 stringWithFormat:v23, v14];
+    carrierCopy = [v21 stringWithFormat:v23, carrierCopy];
 
     v78[0] = @"title";
     v78[1] = @"details";
     v79[0] = v20;
-    v79[1] = v24;
+    v79[1] = carrierCopy;
     v25 = MEMORY[0x277CBEAC0];
     v26 = v79;
     v27 = v78;
@@ -210,7 +210,7 @@ uint64_t __86__TSNoPlanForTransferViewController_initWithPlans_showOtherOptions_
   {
     v20 = [v18 localizedStringForKey:@"CONTACT_CARRIER_TO_SETUP_ESIM" value:&stru_28753DF48 table:@"Localizable"];
 
-    switch(a3)
+    switch(capability)
     {
       case 0uLL:
       case 1uLL:
@@ -226,19 +226,19 @@ uint64_t __86__TSNoPlanForTransferViewController_initWithPlans_showOtherOptions_
         v28 = _TSLogDomain();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:a3 carrier:v28 phoneNumber:? sourceDeviceName:? isTransferNotSupportedFromiPhone:? isTransferBackPlan:? isVisitStoreRequired:?];
+          [TSNoPlanForTransferViewController getTitleAndDetailsForTransferCapability:capability carrier:v28 phoneNumber:? sourceDeviceName:? isTransferNotSupportedFromiPhone:? isTransferBackPlan:? isVisitStoreRequired:?];
         }
 
-        if (v9)
+        if (planCopy)
         {
           v29 = +[TSUtilities isPad];
-          if (v15 && !v29 && [v15 length])
+          if (numberCopy && !v29 && [numberCopy length])
           {
             v30 = MEMORY[0x277CCACA8];
             v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v32 = [v31 localizedStringForKey:@"TRANSFER_BACK_PLAN_NOT_FOUND_DETAIL_%@%@" value:&stru_28753DF48 table:@"Localizable"];
-            v33 = [v15 formattedPhoneNumber];
-            v24 = [v30 stringWithFormat:v32, v33, v14];
+            formattedPhoneNumber = [numberCopy formattedPhoneNumber];
+            carrierCopy = [v30 stringWithFormat:v32, formattedPhoneNumber, carrierCopy];
 
             goto LABEL_18;
           }
@@ -265,7 +265,7 @@ uint64_t __86__TSNoPlanForTransferViewController_initWithPlans_showOtherOptions_
         v36 = @"SINGLE_INELIGIBLE_ESIM_TRANSFER_CAPABILITY_INELIGIBLE_DETAIL_%@";
 LABEL_17:
         v32 = [v35 localizedStringForKey:v36 value:&stru_28753DF48 table:@"Localizable"];
-        v24 = [v34 stringWithFormat:v32, v14];
+        carrierCopy = [v34 stringWithFormat:v32, carrierCopy];
 LABEL_18:
 
         break;
@@ -298,12 +298,12 @@ LABEL_18:
         v44 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v45 = [v44 localizedStringForKey:@"TRANSFER_UPDATE_REQUIRED_TITLE" value:&stru_28753DF48 table:@"Localizable"];
 
-        if (v75 && [v75 length])
+        if (nameCopy && [nameCopy length])
         {
           v73 = MEMORY[0x277CCACA8];
           v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v47 = [v46 localizedStringForKey:@"TRANSFER_SOURCE_UPDATE_REQUIRED_DETAIL_%@" value:&stru_28753DF48 table:@"Localizable"];
-          v24 = [v73 stringWithFormat:v47, v75];
+          carrierCopy = [v73 stringWithFormat:v47, nameCopy];
         }
 
         else
@@ -312,7 +312,7 @@ LABEL_18:
           v58 = v57;
           v59 = @"TRANSFER_SOURCE_UPDATE_REQUIRED_DETAIL";
 LABEL_42:
-          v24 = [v57 localizedStringForKey:v59 value:&stru_28753DF48 table:@"Localizable"];
+          carrierCopy = [v57 localizedStringForKey:v59 value:&stru_28753DF48 table:@"Localizable"];
         }
 
         v20 = v45;
@@ -321,19 +321,19 @@ LABEL_42:
         v60 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v38 = [v60 localizedStringForKey:@"UNABLE_TO_TRANSFER" value:&stru_28753DF48 table:@"Localizable"];
 
-        if (+[TSUtilities isPhone](TSUtilities, "isPhone") && ([v15 formattedPhoneNumber], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "length"), v61, v62))
+        if (+[TSUtilities isPhone](TSUtilities, "isPhone") && ([numberCopy formattedPhoneNumber], v61 = objc_claimAutoreleasedReturnValue(), v62 = objc_msgSend(v61, "length"), v61, v62))
         {
           v74 = MEMORY[0x277CCACA8];
           v63 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           [v63 localizedStringForKey:@"SINGLE_INELIGIBLE_ESIM_TRANSFER_CAPABILITY_MISSING_CERTIFICATE_%@" value:&stru_28753DF48 table:@"Localizable"];
           v64 = v20 = v38;
-          v65 = [v15 formattedPhoneNumber];
-          v24 = [v74 stringWithFormat:v64, v65];
+          formattedPhoneNumber2 = [numberCopy formattedPhoneNumber];
+          carrierCopy = [v74 stringWithFormat:v64, formattedPhoneNumber2];
         }
 
         else
         {
-          if (+[TSUtilities isPad](TSUtilities, "isPad") && [v14 length])
+          if (+[TSUtilities isPad](TSUtilities, "isPad") && [carrierCopy length])
           {
             v39 = MEMORY[0x277CCACA8];
             v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -341,7 +341,7 @@ LABEL_42:
             v42 = @"SINGLE_INELIGIBLE_ESIM_TRANSFER_CAPABILITY_MISSING_CERTIFICATE_%@";
 LABEL_20:
             v43 = [v40 localizedStringForKey:v42 value:&stru_28753DF48 table:@"Localizable"];
-            v24 = [v39 stringWithFormat:v43, v14];
+            carrierCopy = [v39 stringWithFormat:v43, carrierCopy];
           }
 
           else
@@ -350,7 +350,7 @@ LABEL_20:
             v50 = v49;
             v51 = @"SINGLE_INELIGIBLE_ESIM_TRANSFER_CAPABILITY_MISSING_CERTIFICATE";
 LABEL_30:
-            v24 = [v49 localizedStringForKey:v51 value:&stru_28753DF48 table:@"Localizable"];
+            carrierCopy = [v49 localizedStringForKey:v51 value:&stru_28753DF48 table:@"Localizable"];
           }
 
           v20 = v38;
@@ -400,11 +400,11 @@ LABEL_30:
         v51 = @"ESIM_COUNT_RESTRICTION_WARNING_DETAIL";
         goto LABEL_30;
       default:
-        v24 = 0;
+        carrierCopy = 0;
         break;
     }
 
-    if (v10 && +[TSUtilities isPad])
+    if (phoneCopy && +[TSUtilities isPad])
     {
       v66 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v67 = [v66 localizedStringForKey:@"TRANSFER_FROM_IPHONE_NOT_SUPPORTED" value:&stru_28753DF48 table:@"Localizable"];
@@ -413,13 +413,13 @@ LABEL_30:
       v69 = [v68 localizedStringForKey:@"PRX_TRANSFER_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
 
       v20 = v67;
-      v24 = v69;
+      carrierCopy = v69;
     }
 
     v76[0] = @"title";
     v76[1] = @"details";
     v77[0] = v20;
-    v77[1] = v24;
+    v77[1] = carrierCopy;
     v25 = MEMORY[0x277CBEAC0];
     v26 = v77;
     v27 = v76;
@@ -439,73 +439,73 @@ LABEL_30:
   [(TSOBTableWelcomeController *)&v16 viewDidLoad];
   if (self->_showTurnOnLocationServices && !+[TSUtilities inBuddy])
   {
-    v3 = [MEMORY[0x277D37618] boldButton];
-    [v3 addTarget:self action:sel__turnOnLocationServicesTapped forControlEvents:64];
+    boldButton = [MEMORY[0x277D37618] boldButton];
+    [boldButton addTarget:self action:sel__turnOnLocationServicesTapped forControlEvents:64];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"TURN_ON_LOCATION_SERVICE" value:&stru_28753DF48 table:@"Localizable"];
-    [v3 setTitle:v5 forState:0];
+    [boldButton setTitle:v5 forState:0];
 
-    v6 = [(TSNoPlanForTransferViewController *)self buttonTray];
-    [v6 addButton:v3];
+    buttonTray = [(TSNoPlanForTransferViewController *)self buttonTray];
+    [buttonTray addButton:boldButton];
 
-    [v3 setEnabled:1];
+    [boldButton setEnabled:1];
   }
 
   if (self->_showOtherOptions && !+[TSUtilities inBuddy])
   {
-    v7 = [MEMORY[0x277D37650] linkButton];
-    [v7 addTarget:self action:sel__otherButtonTapped forControlEvents:64];
+    linkButton = [MEMORY[0x277D37650] linkButton];
+    [linkButton addTarget:self action:sel__otherButtonTapped forControlEvents:64];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"OTHER_OPTIONS" value:&stru_28753DF48 table:@"Localizable"];
-    [v7 setTitle:v9 forState:0];
+    [linkButton setTitle:v9 forState:0];
 
-    v10 = [(TSNoPlanForTransferViewController *)self buttonTray];
-    [v10 addButton:v7];
+    buttonTray2 = [(TSNoPlanForTransferViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
   }
 
   if (+[TSUtilities inBuddy])
   {
-    v11 = [MEMORY[0x277D37650] linkButton];
-    [v11 addTarget:self action:sel__cancelButtonTapped forControlEvents:64];
+    linkButton2 = [MEMORY[0x277D37650] linkButton];
+    [linkButton2 addTarget:self action:sel__cancelButtonTapped forControlEvents:64];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"CONTINUE" value:&stru_28753DF48 table:@"Localizable"];
-    [v11 setTitle:v13 forState:0];
+    [linkButton2 setTitle:v13 forState:0];
 
-    v14 = [(TSNoPlanForTransferViewController *)self buttonTray];
-    [v14 addButton:v11];
+    buttonTray3 = [(TSNoPlanForTransferViewController *)self buttonTray];
+    [buttonTray3 addButton:linkButton2];
 
-    v15 = [(OBBaseWelcomeController *)self navigationItem];
-    [v15 setHidesBackButton:0 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:0 animated:0];
   }
 
   else
   {
-    v11 = [(TSNoPlanForTransferViewController *)self delegate];
-    [v11 setCancelNavigationBarItems:self];
+    linkButton2 = [(TSNoPlanForTransferViewController *)self delegate];
+    [linkButton2 setCancelNavigationBarItems:self];
   }
 }
 
 - (void)_cancelButtonTapped
 {
-  v2 = [(TSNoPlanForTransferViewController *)self delegate];
-  [v2 userDidTapCancel];
+  delegate = [(TSNoPlanForTransferViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
 - (void)_otherButtonTapped
 {
   self->_isStartOverNeeded = 1;
-  v3 = [(TSNoPlanForTransferViewController *)self delegate];
-  [v3 restartWith:self];
+  delegate = [(TSNoPlanForTransferViewController *)self delegate];
+  [delegate restartWith:self];
 }
 
 - (void)_turnOnLocationServicesTapped
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.PrivacyAndSecurity/LOCATION"];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 
-  v5 = [(TSNoPlanForTransferViewController *)self delegate];
-  [v5 attemptFailed];
+  delegate = [(TSNoPlanForTransferViewController *)self delegate];
+  [delegate attemptFailed];
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -515,54 +515,54 @@ LABEL_30:
   return WeakRetained;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 >= [(NSArray *)self->_plans count])
   {
     v12 = 0;
     goto LABEL_23;
   }
 
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_plans, "objectAtIndexedSubscript:", [v7 row]);
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_plans, "objectAtIndexedSubscript:", [pathCopy row]);
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 identifier];
-    v12 = [v6 dequeueReusableCellWithIdentifier:v11];
+    identifier = [v9 identifier];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:identifier];
 
     if (!v12)
     {
       v13 = objc_alloc(MEMORY[0x277D75B48]);
-      v14 = [v10 identifier];
-      v12 = [v13 initWithStyle:3 reuseIdentifier:v14];
+      identifier2 = [v10 identifier];
+      v12 = [v13 initWithStyle:3 reuseIdentifier:identifier2];
     }
 
-    v15 = [v12 defaultContentConfiguration];
+    defaultContentConfiguration = [v12 defaultContentConfiguration];
     if (+[TSUtilities isPhone](TSUtilities, "isPhone") && ([v10 phoneNumber], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v17))
     {
-      v18 = [v10 phoneNumber];
-      v19 = [v18 formattedPhoneNumber];
+      phoneNumber = [v10 phoneNumber];
+      formattedPhoneNumber = [phoneNumber formattedPhoneNumber];
     }
 
     else
     {
-      v20 = [v10 carrierName];
-      v21 = [v20 length];
+      carrierName = [v10 carrierName];
+      v21 = [carrierName length];
 
       if (v21)
       {
-        v18 = [v10 carrierName];
-        [v15 setText:v18];
+        phoneNumber = [v10 carrierName];
+        [defaultContentConfiguration setText:phoneNumber];
 LABEL_14:
 
         if ([v10 isRegulatoryRestrictedPlan])
         {
-          v23 = [v10 isRegulatoryRestrictedForCurrentLocationPlan];
+          isRegulatoryRestrictedForCurrentLocationPlan = [v10 isRegulatoryRestrictedForCurrentLocationPlan];
           v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          if (v23)
+          if (isRegulatoryRestrictedForCurrentLocationPlan)
           {
             v25 = @"TRANSFER_PLAN_ITEM_DETAIL_REGULATORY_RESTRICTED_FOR_CURRENT_LOCATION";
           }
@@ -575,9 +575,9 @@ LABEL_14:
 
         else
         {
-          v26 = [v10 transferCapability];
+          transferCapability = [v10 transferCapability];
           v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-          if (v26 == 10)
+          if (transferCapability == 10)
           {
             v25 = @"TRANSFER_PLAN_ITEM_DETAIL_UNAVAILABLE";
           }
@@ -589,33 +589,33 @@ LABEL_14:
         }
 
         v27 = [v24 localizedStringForKey:v25 value:&stru_28753DF48 table:@"Localizable"];
-        [v15 setSecondaryText:v27];
+        [defaultContentConfiguration setSecondaryText:v27];
 
-        v28 = [MEMORY[0x277D75348] lightGrayColor];
-        v29 = [v15 secondaryTextProperties];
-        [v29 setColor:v28];
+        lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+        secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+        [secondaryTextProperties setColor:lightGrayColor];
 
         v30 = MEMORY[0x277D755B8];
-        v31 = [v10 imageName];
-        v32 = [v30 systemImageNamed:v31];
-        [v15 setImage:v32];
+        imageName = [v10 imageName];
+        v32 = [v30 systemImageNamed:imageName];
+        [defaultContentConfiguration setImage:v32];
 
-        [v12 setContentConfiguration:v15];
-        v33 = [v12 contentView];
-        [v33 setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
+        [v12 setContentConfiguration:defaultContentConfiguration];
+        contentView = [v12 contentView];
+        [contentView setLayoutMargins:{10.0, 0.0, 10.0, 0.0}];
 
-        v34 = [MEMORY[0x277D75348] grayColor];
-        [v12 setTintColor:v34];
+        grayColor = [MEMORY[0x277D75348] grayColor];
+        [v12 setTintColor:grayColor];
 
         goto LABEL_22;
       }
 
-      v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v19 = [v18 localizedStringForKey:@"CELLULAR_PLAN" value:&stru_28753DF48 table:@"Localizable"];
+      phoneNumber = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      formattedPhoneNumber = [phoneNumber localizedStringForKey:@"CELLULAR_PLAN" value:&stru_28753DF48 table:@"Localizable"];
     }
 
-    v22 = v19;
-    [v15 setText:v19];
+    v22 = formattedPhoneNumber;
+    [defaultContentConfiguration setText:formattedPhoneNumber];
 
     goto LABEL_14;
   }
@@ -628,9 +628,9 @@ LABEL_23:
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(TSNoPlanForTransferViewController *)self _isAnyPlanRequireLocationService:a3])
+  if ([(TSNoPlanForTransferViewController *)self _isAnyPlanRequireLocationService:view])
   {
     v5 = @"TRANSFER_PLAN_LABELS_SECTION_FOOTER_UNKNOWN_LOCATION";
 LABEL_5:
@@ -652,11 +652,11 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v6 = [a4 textLabel];
-  v5 = [MEMORY[0x277D75348] systemGrayColor];
-  [v6 setTextColor:v5];
+  textLabel = [footerView textLabel];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [textLabel setTextColor:systemGrayColor];
 }
 
 - (BOOL)_isAnyPlanRequireLocationService

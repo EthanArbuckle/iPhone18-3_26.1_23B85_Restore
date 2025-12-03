@@ -1,64 +1,64 @@
 @interface CarPlayService
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdate:(id)a3 state:(unint64_t)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)carManager:(id)a3 didAdd:(id)a4;
-- (void)carManager:(id)a3 didRemove:(id)a4;
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4;
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4;
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdate:(id)update state:(unint64_t)state;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)carManager:(id)manager didAdd:(id)add;
+- (void)carManager:(id)manager didRemove:(id)remove;
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car;
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state;
 @end
 
 @implementation CarPlayService
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = self;
-  sub_13C1E4(v4);
+  accessoriesCopy = accessories;
+  selfCopy = self;
+  sub_13C1E4(accessoriesCopy);
 }
 
-- (void)carDidUpdate:(id)a3 state:(unint64_t)a4
+- (void)carDidUpdate:(id)update state:(unint64_t)state
 {
-  v5 = a3;
-  v6 = self;
-  sub_13C1E4(v5);
+  updateCopy = update;
+  selfCopy = self;
+  sub_13C1E4(updateCopy);
 }
 
-- (void)carManager:(id)a3 didUpdateCurrentCar:(id)a4
+- (void)carManager:(id)manager didUpdateCurrentCar:(id)car
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_13C2BC(v8, a4);
+  managerCopy = manager;
+  carCopy = car;
+  selfCopy = self;
+  sub_13C2BC(selfCopy, car);
 }
 
-- (void)carManager:(id)a3 didAdd:(id)a4
+- (void)carManager:(id)manager didAdd:(id)add
 {
   sub_16484(0, &unk_1EE970, CAFCar_ptr);
   sub_16A7D4();
 }
 
-- (void)carManager:(id)a3 didRemove:(id)a4
+- (void)carManager:(id)manager didRemove:(id)remove
 {
   sub_16484(0, &unk_1EE970, CAFCar_ptr);
   v6 = sub_16A7D4();
-  v7 = a3;
-  v8 = self;
-  sub_13C3D0(v8, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_13C3D0(selfCopy, v6);
 }
 
-- (void)positionManager:(id)a3 didUpdateState:(unint64_t)a4
+- (void)positionManager:(id)manager didUpdateState:(unint64_t)state
 {
-  v5 = a3;
-  v6 = self;
-  sub_13C774(v5);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_13C774(managerCopy);
 }
 
-- (void)accessoryDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)accessoryDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  sub_13C7E0(v6, a4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_13C7E0(updateCopy, values);
 }
 
 @end

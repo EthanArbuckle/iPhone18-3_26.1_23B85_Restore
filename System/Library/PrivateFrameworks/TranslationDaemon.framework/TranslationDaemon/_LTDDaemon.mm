@@ -1,37 +1,37 @@
 @interface _LTDDaemon
-+ (id)buildDateWithError:(id *)a3;
-+ (id)realPathFor:(id)a3 error:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)buildDateWithError:(id *)error;
++ (id)realPathFor:(id)for error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_LTDDaemon)init;
 - (id)_cacheDirectoryPath;
 - (void)_cacheDirectoryPath;
 - (void)_setupMemoryWarningListener;
 - (void)_setupNotifyHandlers;
-- (void)clientConnectionClosed:(id)a3;
+- (void)clientConnectionClosed:(id)closed;
 - (void)run;
 @end
 
 @implementation _LTDDaemon
 
-+ (id)buildDateWithError:(id *)a3
++ (id)buildDateWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
-  v6 = [v5 lastPathComponent];
-  v7 = [v6 stringByDeletingPathExtension];
+  bundleURL = [v4 bundleURL];
+  lastPathComponent = [bundleURL lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v8 = [v5 URLByAppendingPathComponent:v7];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v8 path];
+  v8 = [bundleURL URLByAppendingPathComponent:stringByDeletingPathExtension];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v8 path];
   v16 = 0;
-  v11 = [v9 attributesOfItemAtPath:v10 error:&v16];
+  v11 = [defaultManager attributesOfItemAtPath:path error:&v16];
   v12 = v16;
 
-  if (a3 && v12)
+  if (error && v12)
   {
     v13 = v12;
     v14 = 0;
-    *a3 = v12;
+    *error = v12;
   }
 
   else
@@ -53,9 +53,9 @@
   v2 = [(_LTDDaemon *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     connections = v2->_connections;
-    v2->_connections = v3;
+    v2->_connections = array;
 
     v5 = objc_alloc_init(_LTTranslationServer);
     server = v2->_server;
@@ -71,8 +71,8 @@
     v2->_notifyHandlerQueue = v9;
 
     [_LTDAssetService bootstrapWithCompletion:0];
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v11 registerDefaults:&unk_284868180];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:&unk_284868180];
 
     v12 = v2;
   }
@@ -114,8 +114,8 @@
   [(NSXPCListener *)self->_textTranslationListener _setQueue:self->_listenerQueue];
   [(NSXPCListener *)self->_textTranslationListener setDelegate:self];
   [(NSXPCListener *)self->_textTranslationListener resume];
-  v11 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v11 run];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop run];
 
   exit(1);
 }
@@ -157,15 +157,15 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_listenerQueue);
   translationListener = self->_translationListener;
-  if (translationListener != v6)
+  if (translationListener != listenerCopy)
   {
-    if (self->_textTranslationListener == v6)
+    if (self->_textTranslationListener == listenerCopy)
     {
       goto LABEL_5;
     }
@@ -175,25 +175,25 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.private.translation"];
-  v10 = [v9 BOOLValue];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.private.translation"];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v13 = _LTOSLogXPC();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [_LTDDaemon listener:v13 shouldAcceptNewConnection:v7];
+      [_LTDDaemon listener:v13 shouldAcceptNewConnection:connectionCopy];
     }
 
     goto LABEL_8;
   }
 
 LABEL_5:
-  v11 = [[_LTClientConnection alloc] initWithConnection:v7 server:self->_server trusted:translationListener == v6];
-  [(_LTClientConnection *)v11 setDelegate:self];
-  [(NSMutableArray *)self->_connections addObject:v11];
-  [v7 resume];
+  listenerCopy = [[_LTClientConnection alloc] initWithConnection:connectionCopy server:self->_server trusted:translationListener == listenerCopy];
+  [(_LTClientConnection *)listenerCopy setDelegate:self];
+  [(NSMutableArray *)self->_connections addObject:listenerCopy];
+  [connectionCopy resume];
 
   v12 = 1;
 LABEL_9:
@@ -201,9 +201,9 @@ LABEL_9:
   return v12;
 }
 
-- (void)clientConnectionClosed:(id)a3
+- (void)clientConnectionClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   objc_initWeak(&location, self);
   listenerQueue = self->_listenerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -211,17 +211,17 @@ LABEL_9:
   block[2] = __37___LTDDaemon_clientConnectionClosed___block_invoke;
   block[3] = &unk_2789B5288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = closedCopy;
+  v6 = closedCopy;
   dispatch_async(listenerQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-+ (id)realPathFor:(id)a3 error:(id *)a4
++ (id)realPathFor:(id)for error:(id *)error
 {
-  v5 = realpath_DARWIN_EXTSN([a3 UTF8String], 0);
+  v5 = realpath_DARWIN_EXTSN([for UTF8String], 0);
   if (v5)
   {
     v6 = v5;
@@ -229,10 +229,10 @@ LABEL_9:
     free(v6);
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -260,12 +260,12 @@ LABEL_9:
 - (void)_cacheDirectoryPath
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = __error();
   v3 = strerror(*v2);
   v5 = 136446210;
   v6 = v3;
-  _os_log_error_impl(&dword_232E53000, v1, OS_LOG_TYPE_ERROR, "Failed to get cache directory: %{public}s", &v5, 0xCu);
+  _os_log_error_impl(&dword_232E53000, selfCopy, OS_LOG_TYPE_ERROR, "Failed to get cache directory: %{public}s", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];
 }

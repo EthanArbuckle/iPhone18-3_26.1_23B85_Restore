@@ -1,22 +1,22 @@
 @interface EKTimeZone
-+ (id)timeZoneWithNSTimeZone:(id)a3;
-+ (id)timeZoneWithName:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (EKTimeZone)initWithNSTimeZone:(id)a3;
-- (double)nextDaylightSavingTimeTransitionAfterAbsoluteTime:(double)a3;
-- (double)secondsFromGMTForAbsoluteTime:(double)a3;
++ (id)timeZoneWithNSTimeZone:(id)zone;
++ (id)timeZoneWithName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (EKTimeZone)initWithNSTimeZone:(id)zone;
+- (double)nextDaylightSavingTimeTransitionAfterAbsoluteTime:(double)time;
+- (double)secondsFromGMTForAbsoluteTime:(double)time;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation EKTimeZone
 
-+ (id)timeZoneWithName:(id)a3
++ (id)timeZoneWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = v4;
+    v5 = nameCopy;
   }
 
   else
@@ -30,7 +30,7 @@
     v7 = [MEMORY[0x1E695DFE8] timeZoneWithName:v5];
     if (v7)
     {
-      v6 = [[a1 alloc] initWithNSTimeZone:v7];
+      v6 = [[self alloc] initWithNSTimeZone:v7];
       if (v6)
       {
         v8 = sTimeZones;
@@ -58,38 +58,38 @@
   return v6;
 }
 
-+ (id)timeZoneWithNSTimeZone:(id)a3
++ (id)timeZoneWithNSTimeZone:(id)zone
 {
-  v4 = [a3 name];
-  v5 = [a1 timeZoneWithName:v4];
+  name = [zone name];
+  v5 = [self timeZoneWithName:name];
 
   return v5;
 }
 
-- (EKTimeZone)initWithNSTimeZone:(id)a3
+- (EKTimeZone)initWithNSTimeZone:(id)zone
 {
-  v5 = a3;
+  zoneCopy = zone;
   v9.receiver = self;
   v9.super_class = EKTimeZone;
   v6 = [(EKTimeZone *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nsTimeZone, a3);
+    objc_storeStrong(&v6->_nsTimeZone, zone);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 nsTimeZone];
-    v6 = [(EKTimeZone *)self nsTimeZone];
-    v7 = [v5 isEqual:v6];
+    nsTimeZone = [equalCopy nsTimeZone];
+    nsTimeZone2 = [(EKTimeZone *)self nsTimeZone];
+    v7 = [nsTimeZone isEqual:nsTimeZone2];
   }
 
   else
@@ -102,8 +102,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(EKTimeZone *)self nsTimeZone];
-  v3 = [v2 hash];
+  nsTimeZone = [(EKTimeZone *)self nsTimeZone];
+  v3 = [nsTimeZone hash];
 
   return v3;
 }
@@ -112,27 +112,27 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKTimeZone *)self nsTimeZone];
-  v6 = [v5 name];
-  v7 = [v3 stringWithFormat:@"%@ <%p> {name = %@}", v4, self, v6];
+  nsTimeZone = [(EKTimeZone *)self nsTimeZone];
+  name = [nsTimeZone name];
+  v7 = [v3 stringWithFormat:@"%@ <%p> {name = %@}", v4, self, name];
 
   return v7;
 }
 
-- (double)secondsFromGMTForAbsoluteTime:(double)a3
+- (double)secondsFromGMTForAbsoluteTime:(double)time
 {
-  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
-  v5 = [(EKTimeZone *)self nsTimeZone];
-  v6 = [v5 secondsFromGMTForDate:v4];
+  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
+  nsTimeZone = [(EKTimeZone *)self nsTimeZone];
+  v6 = [nsTimeZone secondsFromGMTForDate:v4];
 
   return v6;
 }
 
-- (double)nextDaylightSavingTimeTransitionAfterAbsoluteTime:(double)a3
+- (double)nextDaylightSavingTimeTransitionAfterAbsoluteTime:(double)time
 {
-  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
-  v5 = [(EKTimeZone *)self nsTimeZone];
-  v6 = [v5 nextDaylightSavingTimeTransitionAfterDate:v4];
+  v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
+  nsTimeZone = [(EKTimeZone *)self nsTimeZone];
+  v6 = [nsTimeZone nextDaylightSavingTimeTransitionAfterDate:v4];
 
   if (v6)
   {

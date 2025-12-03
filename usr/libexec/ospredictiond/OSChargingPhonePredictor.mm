@@ -1,32 +1,32 @@
 @interface OSChargingPhonePredictor
-- (double)timeUntilNextChargeSessionOfMinDuration:(double)a3 fromSOC:(int64_t)a4 WithError:(id *)a5;
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8;
-- (id)getMultiArrayForFeatureDict:(id)a3;
+- (double)timeUntilNextChargeSessionOfMinDuration:(double)duration fromSOC:(int64_t)c WithError:(id *)error;
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log;
+- (id)getMultiArrayForFeatureDict:(id)dict;
 @end
 
 @implementation OSChargingPhonePredictor
 
-- (id)getInputFeatures:(double)a3 events:(id)a4 pluginBatteryLevel:(unint64_t)a5 timeFromPlugin:(double)a6 pluginDate:(id)a7 withLog:(id)a8
+- (id)getInputFeatures:(double)features events:(id)events pluginBatteryLevel:(unint64_t)level timeFromPlugin:(double)plugin pluginDate:(id)date withLog:(id)log
 {
-  v10 = a7;
-  v115 = a8;
-  v11 = a4;
-  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:1];
-  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:2];
-  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:4];
-  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:8];
-  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:16];
-  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:v11 startsBefore:v10 dynamicallyAroundDate:v10 withHourBinWidth:24];
+  dateCopy = date;
+  logCopy = log;
+  eventsCopy = events;
+  v12 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:1];
+  v13 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:2];
+  v14 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:4];
+  v15 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:8];
+  v16 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:16];
+  v17 = [OSIntelligenceUtilities filterEventsSortedByStartDateAscending:eventsCopy startsBefore:dateCopy dynamicallyAroundDate:dateCopy withHourBinWidth:24];
 
-  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:v10];
+  v18 = [OSIntelligenceUtilities filterEvents:v12 startOnSameWeekdayAs:dateCopy];
   v142 = v13;
-  v146 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:v10];
+  v146 = [OSIntelligenceUtilities filterEvents:v13 startOnSameWeekdayAs:dateCopy];
   v19 = v14;
   v114 = v14;
-  v20 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:v10];
-  v145 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:v10];
-  v126 = v10;
-  v144 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:v10];
+  v20 = [OSIntelligenceUtilities filterEvents:v14 startOnSameWeekdayAs:dateCopy];
+  v145 = [OSIntelligenceUtilities filterEvents:v15 startOnSameWeekdayAs:dateCopy];
+  v126 = dateCopy;
+  v144 = [OSIntelligenceUtilities filterEvents:v17 startOnSameWeekdayAs:dateCopy];
   v143 = v12;
   v21 = [OSIntelligenceUtilities getDurationsFromEvents:v12 withUnit:3600.0 cappedAt:0.0];
   v22 = [OSIntelligenceUtilities getDurationsFromEvents:v13 withUnit:3600.0 cappedAt:0.0];
@@ -90,12 +90,12 @@
   v117 = v29;
   [OSIntelligenceUtilities medianOf:v29];
   v57 = v56;
-  v58 = v115;
+  v58 = logCopy;
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [NSNumber numberWithUnsignedInteger:a5];
-    v60 = [NSNumber numberWithDouble:a3];
-    v61 = [NSNumber numberWithDouble:a6];
+    v59 = [NSNumber numberWithUnsignedInteger:level];
+    v60 = [NSNumber numberWithDouble:features];
+    v61 = [NSNumber numberWithDouble:plugin];
     *buf = 138412802;
     v157 = *&v59;
     v158 = 2112;
@@ -278,10 +278,10 @@
   }
 
   v74 = +[NSMutableDictionary dictionary];
-  v75 = [NSNumber numberWithUnsignedInteger:a5];
+  v75 = [NSNumber numberWithUnsignedInteger:level];
   [v74 setObject:v75 forKeyedSubscript:@"plugin_battery_level"];
 
-  v76 = [NSNumber numberWithDouble:a6];
+  v76 = [NSNumber numberWithDouble:plugin];
   [v74 setObject:v76 forKeyedSubscript:@"time_from_plugin"];
 
   v77 = [NSNumber numberWithDouble:v42];
@@ -405,9 +405,9 @@
   return v102;
 }
 
-- (id)getMultiArrayForFeatureDict:(id)a3
+- (id)getMultiArrayForFeatureDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
@@ -435,7 +435,7 @@
       }
 
       v11 = *(*(&v23 + 1) + 8 * i);
-      v12 = [v3 objectForKeyedSubscript:{v11, v18}];
+      v12 = [dictCopy objectForKeyedSubscript:{v11, v18}];
       [v12 doubleValue];
       v13 = [NSNumber numberWithDouble:?];
 
@@ -482,7 +482,7 @@ LABEL_15:
   return v15;
 }
 
-- (double)timeUntilNextChargeSessionOfMinDuration:(double)a3 fromSOC:(int64_t)a4 WithError:(id *)a5
+- (double)timeUntilNextChargeSessionOfMinDuration:(double)duration fromSOC:(int64_t)c WithError:(id *)error
 {
   v68 = +[NSMutableArray array];
   v66 = +[NSMutableDictionary dictionary];
@@ -492,8 +492,8 @@ LABEL_15:
   v11 = +[NSDate date];
   v12 = [v9 initWithStartDate:v10 endDate:v11];
 
-  v13 = [NSNumber numberWithInteger:a4 - 1];
-  v14 = [NSNumber numberWithInteger:a4 + 1];
+  v13 = [NSNumber numberWithInteger:c - 1];
+  v14 = [NSNumber numberWithInteger:c + 1];
   v15 = [NSPredicate predicateWithFormat:@"CurrentCapacity >= %@ AND CurrentCapacity <= %@", v13, v14];
 
   [NSPredicate predicateWithFormat:@"IsCharging == %@", &__kCFBooleanFalse];
@@ -519,7 +519,7 @@ LABEL_15:
       sub_10005CEF4();
     }
 
-    *a5 = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:4 userInfo:0];
+    *error = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:4 userInfo:0];
     v23 = -1.0;
     v24 = v66;
     goto LABEL_43;
@@ -527,7 +527,7 @@ LABEL_15:
 
   v83.receiver = self;
   v83.super_class = OSChargingPhonePredictor;
-  v69 = self;
+  selfCopy = self;
   v25 = [(OSChargingTwoStagePredictor *)&v83 log];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -555,7 +555,7 @@ LABEL_15:
       sub_10005CEF4();
     }
 
-    *a5 = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:4 userInfo:0];
+    *error = [NSError errorWithDomain:@"com.apple.OSIntelligence" code:4 userInfo:0];
     v23 = -1.0;
     goto LABEL_42;
   }
@@ -577,7 +577,7 @@ LABEL_15:
   v63 = v12;
 
   v58 = v29;
-  v32 = [v29 objectEnumerator];
+  objectEnumerator = [v29 objectEnumerator];
   v33 = &MGGetBoolAnswer_ptr;
   v34 = +[NSDate distantPast];
   v76 = 0u;
@@ -614,11 +614,11 @@ LABEL_15:
         v42 = 0.0;
         while (1)
         {
-          v43 = [v32 nextObject];
-          if (!v43)
+          nextObject = [objectEnumerator nextObject];
+          if (!nextObject)
           {
 LABEL_30:
-            v75.receiver = v69;
+            v75.receiver = selfCopy;
             v75.super_class = OSChargingPhonePredictor;
             v51 = [(OSChargingTwoStagePredictor *)&v75 log];
             v37 = &MGGetBoolAnswer_ptr;
@@ -642,12 +642,12 @@ LABEL_30:
             break;
           }
 
-          v44 = v43;
-          v45 = [v43 metricKeysAndValues];
-          v46 = [v45 objectForKeyedSubscript:@"IsCharging"];
-          v47 = [v46 BOOLValue];
+          v44 = nextObject;
+          metricKeysAndValues = [nextObject metricKeysAndValues];
+          v46 = [metricKeysAndValues objectForKeyedSubscript:@"IsCharging"];
+          bOOLValue = [v46 BOOLValue];
 
-          if (v47)
+          if (bOOLValue)
           {
             if (!v35)
             {
@@ -677,7 +677,7 @@ LABEL_27:
 LABEL_28:
           }
 
-          if (v42 >= a3)
+          if (v42 >= duration)
           {
             goto LABEL_30;
           }
@@ -693,7 +693,7 @@ LABEL_39:
 
   [OSIntelligenceUtilities medianOf:v68];
   v23 = v54;
-  v74.receiver = v69;
+  v74.receiver = selfCopy;
   v74.super_class = OSChargingPhonePredictor;
   v55 = [(OSChargingTwoStagePredictor *)&v74 log];
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))

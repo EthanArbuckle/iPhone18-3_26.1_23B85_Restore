@@ -5,13 +5,13 @@
 - (BOOL)isUnderFirstDataProtectionLock;
 - (SKASystemMonitor)init;
 - (id)getBootSessionUUID;
-- (void)_deliverNotificationSelectorToListeners:(SEL)a3;
+- (void)_deliverNotificationSelectorToListeners:(SEL)listeners;
 - (void)_listenForKeyBagChangeNotifications;
 - (void)_updateLockState;
-- (void)addListener:(id)a3;
+- (void)addListener:(id)listener;
 - (void)isFirstProcessLaunchOfBootSession;
-- (void)recordBootSessionUUID:(id)a3;
-- (void)removeListener:(id)a3;
+- (void)recordBootSessionUUID:(id)d;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation SKASystemMonitor
@@ -40,10 +40,10 @@ void __55__SKASystemMonitor__listenForKeyBagChangeNotifications__block_invoke(in
 - (void)_updateLockState
 {
   os_unfair_lock_lock(&self->_ivarLock);
-  v3 = [(SKASystemMonitor *)self _deviceStillUnderFirstLock];
-  if (v3)
+  _deviceStillUnderFirstLock = [(SKASystemMonitor *)self _deviceStillUnderFirstLock];
+  if (_deviceStillUnderFirstLock)
   {
-    self->_underFirstLock = v3;
+    self->_underFirstLock = _deviceStillUnderFirstLock;
 
     os_unfair_lock_unlock(&self->_ivarLock);
   }
@@ -51,7 +51,7 @@ void __55__SKASystemMonitor__listenForKeyBagChangeNotifications__block_invoke(in
   else
   {
     underFirstLock = self->_underFirstLock;
-    self->_underFirstLock = v3;
+    self->_underFirstLock = _deviceStillUnderFirstLock;
     os_unfair_lock_unlock(&self->_ivarLock);
     if (underFirstLock)
     {
@@ -92,23 +92,23 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  if (![(NSHashTable *)self->_listeners containsObject:v4])
+  if (![(NSHashTable *)self->_listeners containsObject:listenerCopy])
   {
-    [(NSHashTable *)self->_listeners addObject:v4];
+    [(NSHashTable *)self->_listeners addObject:listenerCopy];
   }
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_ivarLock);
-  [(NSHashTable *)self->_listeners removeObject:v4];
+  [(NSHashTable *)self->_listeners removeObject:listenerCopy];
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -137,17 +137,17 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
   }
 }
 
-- (void)_deliverNotificationSelectorToListeners:(SEL)a3
+- (void)_deliverNotificationSelectorToListeners:(SEL)listeners
 {
   v24 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_ivarLock);
-  v5 = [(NSHashTable *)self->_listeners allObjects];
+  allObjects = [(NSHashTable *)self->_listeners allObjects];
   os_unfair_lock_unlock(&self->_ivarLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v7)
   {
@@ -168,7 +168,7 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
           v12 = +[SKASystemMonitor logger];
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = NSStringFromSelector(a3);
+            v13 = NSStringFromSelector(listeners);
             *buf = 138412546;
             v20 = v13;
             v21 = 2112;
@@ -176,7 +176,7 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
             _os_log_impl(&dword_220099000, v12, OS_LOG_TYPE_DEFAULT, "Delivering %@ to %@", buf, 0x16u);
           }
 
-          [v11 performSelectorOnMainThread:a3 withObject:0 waitUntilDone:1];
+          [v11 performSelectorOnMainThread:listeners withObject:0 waitUntilDone:1];
         }
       }
 
@@ -216,18 +216,18 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
     v11 = v10;
 
     v12 = CFPreferencesCopyAppValue(v11, v7);
-    v13 = [(SKASystemMonitor *)self getBootSessionUUID];
+    getBootSessionUUID = [(SKASystemMonitor *)self getBootSessionUUID];
     v14 = +[SKASystemMonitor logger];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *v23 = 138412546;
       *&v23[4] = v12;
       v24 = 2112;
-      v25 = v13;
+      v25 = getBootSessionUUID;
       _os_log_impl(&dword_220099000, v14, OS_LOG_TYPE_DEFAULT, "Found current boot UUID %@ and last boot UUID %@", v23, 0x16u);
     }
 
-    if (!v13)
+    if (!getBootSessionUUID)
     {
       v16 = +[SKASystemMonitor logger];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -238,10 +238,10 @@ uint64_t __34__SKASystemMonitor_sharedInstance__block_invoke()
       goto LABEL_18;
     }
 
-    [(SKASystemMonitor *)self recordBootSessionUUID:v13];
+    [(SKASystemMonitor *)self recordBootSessionUUID:getBootSessionUUID];
     if (v12)
     {
-      v15 = [v12 isEqualToString:v13];
+      v15 = [v12 isEqualToString:getBootSessionUUID];
       v16 = +[SKASystemMonitor logger];
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
       if (!v15)
@@ -318,15 +318,15 @@ void __38__SKASystemMonitor_getBootSessionUUID__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordBootSessionUUID:(id)a3
+- (void)recordBootSessionUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[SKASystemMonitor logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Recording that current boot session UUID is %@", &v16, 0xCu);
   }
 
@@ -350,7 +350,7 @@ void __38__SKASystemMonitor_getBootSessionUUID__block_invoke()
 
   v13 = v12;
 
-  CFPreferencesSetAppValue(v13, v4, v9);
+  CFPreferencesSetAppValue(v13, dCopy, v9);
   isFirstProcessLaunch = self->_isFirstProcessLaunch;
   self->_isFirstProcessLaunch = 0;
 
@@ -380,7 +380,7 @@ uint64_t __26__SKASystemMonitor_logger__block_invoke()
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_220099000, a2, OS_LOG_TYPE_ERROR, "Current boot session UUID could not be retrieved, last boot session UUID is %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

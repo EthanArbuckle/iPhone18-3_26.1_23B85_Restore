@@ -7,19 +7,19 @@
 
 - (uint64_t)fp_usesDSCopyEngine
 {
-  if ([a1 isEqualToString:@"com.apple.FileProvider.LocalStorage"] & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"com.apple.filesystems.UserFS.FileProvider") & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"com.apple.SMBClientProvider.FileProvider") & 1) != 0 || (objc_msgSend(a1, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProvider"))
+  if ([self isEqualToString:@"com.apple.FileProvider.LocalStorage"] & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"com.apple.filesystems.UserFS.FileProvider") & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"com.apple.SMBClientProvider.FileProvider") & 1) != 0 || (objc_msgSend(self, "isEqualToString:", @"com.apple.CloudDocs.iCloudDriveFileProvider"))
   {
     return 1;
   }
 
-  return [a1 isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
+  return [self isEqualToString:@"com.apple.CloudDocs.iCloudDriveFileProviderManaged"];
 }
 
 - (uint64_t)fp_isValidProviderIdentifierWithError:()FPProviderID
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"/:"];
-  v6 = [a1 rangeOfCharacterFromSet:v5];
+  v6 = [self rangeOfCharacterFromSet:v5];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = a1;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = @"/:";
       _os_log_impl(&dword_1AAAE1000, v8, OS_LOG_TYPE_DEFAULT, "[WARNING] Provider identifier '%@' may not contain any of the characters '%@'", buf, 0x16u);
@@ -35,7 +35,7 @@
 
     if (a3)
     {
-      [MEMORY[0x1E696ABC0] fp_invalidArgumentError:{@"Provider identifier '%@' may not contain any of the characters '%@'", a1, @"/:"}];
+      [MEMORY[0x1E696ABC0] fp_invalidArgumentError:{@"Provider identifier '%@' may not contain any of the characters '%@'", self, @"/:"}];
       goto LABEL_12;
     }
 
@@ -44,7 +44,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (([a1 isEqualToString:@"."] & 1) == 0 && !objc_msgSend(a1, "isEqualToString:", @".."))
+  if (([self isEqualToString:@"."] & 1) == 0 && !objc_msgSend(self, "isEqualToString:", @".."))
   {
     result = 1;
     goto LABEL_15;
@@ -54,7 +54,7 @@ LABEL_13:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = a1;
+    selfCopy2 = self;
   }
 
   if (!a3)

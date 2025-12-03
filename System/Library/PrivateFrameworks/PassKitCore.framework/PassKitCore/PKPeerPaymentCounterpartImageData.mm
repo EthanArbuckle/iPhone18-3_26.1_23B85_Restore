@@ -1,34 +1,34 @@
 @interface PKPeerPaymentCounterpartImageData
-+ (id)counterpartImageDataIdentifierFromRecordName:(id)a3;
-+ (id)recordNameForCounterpartImageDataIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentCounterpartImageData)initWithAppearanceData:(id)a3;
-- (PKPeerPaymentCounterpartImageData)initWithCloudStoreCoder:(id)a3;
-- (PKPeerPaymentCounterpartImageData)initWithCoder:(id)a3;
-- (PKPeerPaymentCounterpartImageData)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)counterpartImageDataIdentifierFromRecordName:(id)name;
++ (id)recordNameForCounterpartImageDataIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentCounterpartImageData)initWithAppearanceData:(id)data;
+- (PKPeerPaymentCounterpartImageData)initWithCloudStoreCoder:(id)coder;
+- (PKPeerPaymentCounterpartImageData)initWithCoder:(id)coder;
+- (PKPeerPaymentCounterpartImageData)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3;
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentCounterpartImageData
 
-- (PKPeerPaymentCounterpartImageData)initWithDictionary:(id)a3
+- (PKPeerPaymentCounterpartImageData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentCounterpartImageData;
   v5 = [(PKPeerPaymentCounterpartImageData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKDataForKey:@"imageData"];
+    v8 = [dictionaryCopy PKDataForKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v8;
   }
@@ -36,31 +36,31 @@
   return v5;
 }
 
-- (PKPeerPaymentCounterpartImageData)initWithAppearanceData:(id)a3
+- (PKPeerPaymentCounterpartImageData)initWithAppearanceData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 imageData];
-  if (v5)
+  dataCopy = data;
+  imageData = [dataCopy imageData];
+  if (imageData)
   {
     v14.receiver = self;
     v14.super_class = PKPeerPaymentCounterpartImageData;
     v6 = [(PKPeerPaymentCounterpartImageData *)&v14 init];
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      v8 = [v4 displayName];
-      [v7 safelyAddObject:v8];
+      array = [MEMORY[0x1E695DF70] array];
+      displayName = [dataCopy displayName];
+      [array safelyAddObject:displayName];
 
-      [v7 safelyAddObject:v5];
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", PKCombinedHash(17, v7)];
+      [array safelyAddObject:imageData];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", PKCombinedHash(17, array)];
       identifier = v6->_identifier;
       v6->_identifier = v9;
 
-      objc_storeStrong(&v6->_imageData, v5);
+      objc_storeStrong(&v6->_imageData, imageData);
     }
 
     self = v6;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -72,25 +72,25 @@
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Error: attempted to initialize PKPeerPaymentCounterpartImageData with nil image data", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (PKPeerPaymentCounterpartImageData)initWithCoder:(id)a3
+- (PKPeerPaymentCounterpartImageData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentCounterpartImageData;
   v5 = [(PKPeerPaymentCounterpartImageData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v8;
   }
@@ -98,17 +98,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_imageData forKey:@"imageData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_imageData forKey:@"imageData"];
 }
 
-- (PKPeerPaymentCounterpartImageData)initWithCloudStoreCoder:(id)a3
+- (PKPeerPaymentCounterpartImageData)initWithCloudStoreCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = PKPeerPaymentCounterpartImageData;
   v5 = [(PKPeerPaymentCounterpartImageData *)&v21 init];
@@ -117,10 +117,10 @@
     goto LABEL_6;
   }
 
-  v6 = [v4 recordsWithRecordType:@"CounterpartImage"];
-  v7 = [v6 firstObject];
+  v6 = [coderCopy recordsWithRecordType:@"CounterpartImage"];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 pk_encryptedStringForKey:@"identifier"];
+  v8 = [firstObject pk_encryptedStringForKey:@"identifier"];
   identifier = v5->_identifier;
   v5->_identifier = v8;
 
@@ -141,7 +141,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = [v7 objectForKey:@"imageData"];
+  v10 = [firstObject objectForKey:@"imageData"];
   if (!v10)
   {
     v11 = PKLogFacilityTypeGetObject(0xAuLL);
@@ -157,8 +157,8 @@ LABEL_15:
 
   v11 = v10;
   v12 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v13 = [v11 fileURL];
-  v14 = [v12 initWithContentsOfURL:v13];
+  fileURL = [v11 fileURL];
+  v14 = [v12 initWithContentsOfURL:fileURL];
 
   if (!v14)
   {
@@ -182,20 +182,20 @@ LABEL_16:
   return v16;
 }
 
-- (void)encodeWithCloudStoreCoder:(id)a3 codingType:(unint64_t)a4
+- (void)encodeWithCloudStoreCoder:(id)coder codingType:(unint64_t)type
 {
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 recordsWithRecordType:@"CounterpartImage"];
-  v8 = [v7 firstObject];
+  v7 = [coderCopy recordsWithRecordType:@"CounterpartImage"];
+  firstObject = [v7 firstObject];
 
-  v9 = [v8 encryptedValues];
-  [v9 setObject:self->_identifier forKey:@"identifier"];
+  encryptedValues = [firstObject encryptedValues];
+  [encryptedValues setObject:self->_identifier forKey:@"identifier"];
   v10 = NSTemporaryDirectory();
   v11 = [v10 stringByAppendingPathComponent:self->_identifier];
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  [v12 removeItemAtPath:v11 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtPath:v11 error:0];
 
   [(NSData *)self->_imageData writeToFile:v11 atomically:1];
   v13 = objc_alloc(MEMORY[0x1E695B878]);
@@ -204,7 +204,7 @@ LABEL_16:
 
   if (v15)
   {
-    [v8 setObject:v15 forKey:@"imageData"];
+    [firstObject setObject:v15 forKey:@"imageData"];
   }
 
   else
@@ -220,27 +220,27 @@ LABEL_16:
   objc_autoreleasePoolPop(v6);
 }
 
-+ (id)recordNameForCounterpartImageDataIdentifier:(id)a3
++ (id)recordNameForCounterpartImageDataIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 alloc];
-  v7 = [a1 recordNamePrefix];
-  v8 = [v6 initWithFormat:@"%@%@", v7, v5];
+  recordNamePrefix = [self recordNamePrefix];
+  identifierCopy = [v6 initWithFormat:@"%@%@", recordNamePrefix, identifierCopy];
 
-  return v8;
+  return identifierCopy;
 }
 
-+ (id)counterpartImageDataIdentifierFromRecordName:(id)a3
++ (id)counterpartImageDataIdentifierFromRecordName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 recordNamePrefix];
-  v6 = [v4 hasPrefix:v5];
+  nameCopy = name;
+  recordNamePrefix = [self recordNamePrefix];
+  v6 = [nameCopy hasPrefix:recordNamePrefix];
 
   if (v6)
   {
-    v7 = [a1 recordNamePrefix];
-    v8 = [v4 substringFromIndex:{objc_msgSend(v7, "length")}];
+    recordNamePrefix2 = [self recordNamePrefix];
+    v8 = [nameCopy substringFromIndex:{objc_msgSend(recordNamePrefix2, "length")}];
   }
 
   else
@@ -251,13 +251,13 @@ LABEL_16:
   return v8;
 }
 
-- (id)recordTypesAndNamesForCodingType:(unint64_t)a3
+- (id)recordTypesAndNamesForCodingType:(unint64_t)type
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [objc_opt_class() recordNamePrefix];
-  v6 = [(PKPeerPaymentCounterpartImageData *)self primaryIdentifier];
-  v7 = [v4 initWithFormat:@"%@%@", v5, v6, @"CounterpartImage"];
+  recordNamePrefix = [objc_opt_class() recordNamePrefix];
+  primaryIdentifier = [(PKPeerPaymentCounterpartImageData *)self primaryIdentifier];
+  v7 = [v4 initWithFormat:@"%@%@", recordNamePrefix, primaryIdentifier, @"CounterpartImage"];
   v12 = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v13[0] = v8;
@@ -266,11 +266,11 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == v4[1] && self->_imageData == v4[2];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_identifier == equalCopy[1] && self->_imageData == equalCopy[2];
 
   return v5;
 }
@@ -287,15 +287,15 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_imageData];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_imageData];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPeerPaymentCounterpartImageData allocWithZone:?]];
   objc_storeStrong(&v4->_identifier, self->_identifier);

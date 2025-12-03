@@ -1,12 +1,12 @@
 @interface NSXPCStoreNotificationObserver
-- (id)initForObservationWithName:(id)a3 store:(id)a4;
+- (id)initForObservationWithName:(id)name store:(id)store;
 - (id)setStore:(id *)result;
 - (void)dealloc;
 @end
 
 @implementation NSXPCStoreNotificationObserver
 
-- (id)initForObservationWithName:(id)a3 store:(id)a4
+- (id)initForObservationWithName:(id)name store:(id)store
 {
   v22 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -16,12 +16,12 @@
   if (v6)
   {
     v6->_token = -1;
-    v6->_storeID = [objc_msgSend(a4 "identifier")];
-    objc_storeWeak(&v7->_psc, [a4 persistentStoreCoordinator]);
-    v8 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CoreData.%@.%p", a3, v7), "UTF8String"];
+    v6->_storeID = [objc_msgSend(store "identifier")];
+    objc_storeWeak(&v7->_psc, [store persistentStoreCoordinator]);
+    v8 = [objc_msgSend(MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.CoreData.%@.%p", name, v7), "UTF8String"];
     v7->_queue = dispatch_queue_create(v8, MEMORY[0x1E69E96A8]);
     objc_initWeak(&location, v7);
-    v9 = [a3 fileSystemRepresentation];
+    fileSystemRepresentation = [name fileSystemRepresentation];
     queue = v7->_queue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -29,7 +29,7 @@
     handler[3] = &unk_1E6EC2008;
     handler[4] = v7;
     objc_copyWeak(&v17, &location);
-    v11 = notify_register_dispatch(v9, &v7->_token, queue, handler);
+    v11 = notify_register_dispatch(fileSystemRepresentation, &v7->_token, queue, handler);
     if (v11)
     {
       v12 = objc_autoreleasePoolPush();

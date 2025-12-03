@@ -1,19 +1,19 @@
 @interface ICSearchSuggestion
 + (NSArray)orderedDefaultSearchSuggestions;
-+ (id)iconImageForToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICSearchSuggestion)initWithSuggestion:(id)a3;
-- (ICSearchSuggestion)initWithType:(unint64_t)a3;
++ (id)iconImageForToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (ICSearchSuggestion)initWithSuggestion:(id)suggestion;
+- (ICSearchSuggestion)initWithType:(unint64_t)type;
 - (NSString)iconImageName;
 - (UIImage)iconImage;
 - (UISearchSuggestionItem)uiSuggestion;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ICSearchSuggestion
 
-- (ICSearchSuggestion)initWithType:(unint64_t)a3
+- (ICSearchSuggestion)initWithType:(unint64_t)type
 {
   v39.receiver = self;
   v39.super_class = ICSearchSuggestion;
@@ -21,12 +21,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    if (a3 > 3)
+    v4->_type = type;
+    if (type > 3)
     {
-      if (a3 <= 5)
+      if (type <= 5)
       {
-        if (a3 == 4)
+        if (type == 4)
         {
           v27 = __ICLocalizedFrameworkString_impl(@"Notes with Tags", @"Notes with Tags", 0, 1);
           suggestionItemTitle = v5->_suggestionItemTitle;
@@ -59,7 +59,7 @@
         goto LABEL_19;
       }
 
-      if (a3 == 6)
+      if (type == 6)
       {
         v33 = __ICLocalizedFrameworkString_impl(@"Notes with Scanned Documents", @"Notes with Scanned Documents", 0, 1);
         v34 = v5->_suggestionItemTitle;
@@ -75,7 +75,7 @@
         goto LABEL_19;
       }
 
-      if (a3 == 7)
+      if (type == 7)
       {
         v21 = __ICLocalizedFrameworkString_impl(@"Notes with Attachments", @"Notes with Attachments", 0, 1);
         v22 = v5->_suggestionItemTitle;
@@ -94,9 +94,9 @@
 
     else
     {
-      if (a3 > 1)
+      if (type > 1)
       {
-        if (a3 == 2)
+        if (type == 2)
         {
           v30 = __ICLocalizedFrameworkString_impl(@"Locked Notes", @"Locked Notes", 0, 1);
           v31 = v5->_suggestionItemTitle;
@@ -129,7 +129,7 @@
         goto LABEL_19;
       }
 
-      if (!a3)
+      if (!type)
       {
         v24 = v4->_suggestionItemTitle;
         v4->_suggestionItemTitle = @" ";
@@ -145,7 +145,7 @@ LABEL_20:
         return v5;
       }
 
-      if (a3 == 1)
+      if (type == 1)
       {
         v6 = __ICLocalizedFrameworkString_impl(@"Shared Notes", @"Shared Notes", 0, 1);
         v7 = v5->_suggestionItemTitle;
@@ -171,47 +171,47 @@ LABEL_19:
   return v5;
 }
 
-- (ICSearchSuggestion)initWithSuggestion:(id)a3
+- (ICSearchSuggestion)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v18.receiver = self;
   v18.super_class = ICSearchSuggestion;
   v6 = [(ICSearchSuggestion *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_csSuggestion, a3);
-    v8 = [v5 localizedAttributedSuggestion];
-    v9 = [v8 string];
+    objc_storeStrong(&v6->_csSuggestion, suggestion);
+    localizedAttributedSuggestion = [suggestionCopy localizedAttributedSuggestion];
+    string = [localizedAttributedSuggestion string];
     suggestionItemTitle = v7->_suggestionItemTitle;
-    v7->_suggestionItemTitle = v9;
+    v7->_suggestionItemTitle = string;
 
     v11 = [ICSearchToken alloc];
-    v12 = [v5 currentToken];
-    v13 = [(ICSearchToken *)v11 initWithCSSuggestionToken:v12];
+    currentToken = [suggestionCopy currentToken];
+    v13 = [(ICSearchToken *)v11 initWithCSSuggestionToken:currentToken];
     token = v7->_token;
     v7->_token = v13;
 
-    v15 = [v5 userQueryString];
+    userQueryString = [suggestionCopy userQueryString];
     subQueryString = v7->_subQueryString;
-    v7->_subQueryString = v15;
+    v7->_subQueryString = userQueryString;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[ICSearchSuggestion type](self, "type"), v5 == [v4 type]))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[ICSearchSuggestion type](self, "type"), v5 == [equalCopy type]))
   {
-    v6 = [(ICSearchSuggestion *)self csSuggestion];
-    v7 = [v4 csSuggestion];
-    if (v6 == v7)
+    csSuggestion = [(ICSearchSuggestion *)self csSuggestion];
+    csSuggestion2 = [equalCopy csSuggestion];
+    if (csSuggestion == csSuggestion2)
     {
-      v10 = [(ICSearchSuggestion *)self suggestionItemTitle];
-      v11 = [v4 suggestionItemTitle];
-      v8 = [v10 isEqualToString:v11];
+      suggestionItemTitle = [(ICSearchSuggestion *)self suggestionItemTitle];
+      suggestionItemTitle2 = [equalCopy suggestionItemTitle];
+      v8 = [suggestionItemTitle isEqualToString:suggestionItemTitle2];
     }
 
     else
@@ -234,50 +234,50 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = ICSearchSuggestion;
   v4 = [(ICSearchSuggestion *)&v8 description];
-  v5 = [(ICSearchSuggestion *)self token];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  token = [(ICSearchSuggestion *)self token];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, token];
 
   return v6;
 }
 
 - (NSString)iconImageName
 {
-  v2 = [(ICSearchSuggestion *)self token];
-  v3 = [v2 iconImageName];
+  token = [(ICSearchSuggestion *)self token];
+  iconImageName = [token iconImageName];
 
-  return v3;
+  return iconImageName;
 }
 
 - (UIImage)iconImage
 {
-  v3 = [(ICSearchSuggestion *)self csSuggestion];
+  csSuggestion = [(ICSearchSuggestion *)self csSuggestion];
 
-  if (v3)
+  if (csSuggestion)
   {
     v4 = [ICSearchToken alloc];
-    v5 = [(ICSearchSuggestion *)self csSuggestion];
-    v6 = [v5 currentToken];
-    v7 = [(ICSearchToken *)v4 initWithCSSuggestionToken:v6];
+    csSuggestion2 = [(ICSearchSuggestion *)self csSuggestion];
+    currentToken = [csSuggestion2 currentToken];
+    token = [(ICSearchToken *)v4 initWithCSSuggestionToken:currentToken];
   }
 
   else
   {
-    v7 = [(ICSearchSuggestion *)self token];
+    token = [(ICSearchSuggestion *)self token];
   }
 
-  v8 = [ICSearchSuggestion iconImageForToken:v7];
+  v8 = [ICSearchSuggestion iconImageForToken:token];
 
   return v8;
 }
 
-+ (id)iconImageForToken:(id)a3
++ (id)iconImageForToken:(id)token
 {
-  v3 = [a3 iconImageName];
-  v4 = v3;
+  iconImageName = [token iconImageName];
+  v4 = iconImageName;
   v5 = @"magnifyingglass";
-  if (v3)
+  if (iconImageName)
   {
-    v5 = v3;
+    v5 = iconImageName;
   }
 
   v6 = v5;
@@ -287,14 +287,14 @@ LABEL_19:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(ICSearchSuggestion *)self csSuggestion];
+  csSuggestion = [(ICSearchSuggestion *)self csSuggestion];
 
-  if (v5)
+  if (csSuggestion)
   {
-    v6 = [(ICSearchSuggestion *)self csSuggestion];
-    v7 = [v6 copyWithZone:a3];
+    csSuggestion2 = [(ICSearchSuggestion *)self csSuggestion];
+    v7 = [csSuggestion2 copyWithZone:zone];
 
     v8 = [[ICSearchSuggestion allocWithZone:?], "initWithSuggestion:", v7];
     return v8;
@@ -302,20 +302,20 @@ LABEL_19:
 
   else
   {
-    v10 = [ICSearchSuggestion allocWithZone:a3];
-    v11 = [(ICSearchSuggestion *)self type];
+    v10 = [ICSearchSuggestion allocWithZone:zone];
+    type = [(ICSearchSuggestion *)self type];
 
-    return [(ICSearchSuggestion *)v10 initWithType:v11];
+    return [(ICSearchSuggestion *)v10 initWithType:type];
   }
 }
 
 - (UISearchSuggestionItem)uiSuggestion
 {
   v3 = objc_alloc(MEMORY[0x277D759F8]);
-  v4 = [(ICSearchSuggestion *)self suggestionItemTitle];
-  v5 = [(ICSearchSuggestion *)self suggestionItemTitle];
-  v6 = [(ICSearchSuggestion *)self iconImage];
-  v7 = [v3 initWithLocalizedSuggestion:v4 localizedDescription:v5 iconImage:v6];
+  suggestionItemTitle = [(ICSearchSuggestion *)self suggestionItemTitle];
+  suggestionItemTitle2 = [(ICSearchSuggestion *)self suggestionItemTitle];
+  iconImage = [(ICSearchSuggestion *)self iconImage];
+  v7 = [v3 initWithLocalizedSuggestion:suggestionItemTitle localizedDescription:suggestionItemTitle2 iconImage:iconImage];
 
   [v7 setRepresentedObject:self];
 

@@ -1,9 +1,9 @@
 @interface SXPresentationAttributesManager
 - (SXPresentationAttributesManager)init;
-- (void)addObserver:(id)a3;
-- (void)attributesChangedFrom:(id)a3 to:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)updateAttributes:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)attributesChangedFrom:(id)from to:(id)to;
+- (void)removeObserver:(id)observer;
+- (void)updateAttributes:(id)attributes;
 @end
 
 @implementation SXPresentationAttributesManager
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (void)attributesChangedFrom:(id)a3 to:(id)a4
+- (void)attributesChangedFrom:(id)from to:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(SXPresentationAttributesManager *)self observers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  observers = [(SXPresentationAttributesManager *)self observers];
+  v9 = [observers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -45,26 +45,26 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observers);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) presentationAttributesDidChangeFrom:v6 toAttributes:v7];
+        [*(*(&v13 + 1) + 8 * v12++) presentationAttributesDidChangeFrom:fromCopy toAttributes:toCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [observers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)updateAttributes:(id)a3
+- (void)updateAttributes:(id)attributes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXPresentationAttributesManager *)self presentationAttributes];
-  v6 = [v5 isEqual:v4];
+  attributesCopy = attributes;
+  presentationAttributes = [(SXPresentationAttributesManager *)self presentationAttributes];
+  v6 = [presentationAttributes isEqual:attributesCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -72,37 +72,37 @@
     if (os_log_type_enabled(SXLayoutLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = attributesCopy;
       _os_log_impl(&dword_1D825C000, v7, OS_LOG_TYPE_DEFAULT, "Updating presentation attributes: %{public}@", &v12, 0xCu);
     }
 
-    v8 = [(SXPresentationAttributesManager *)self presentationAttributes];
-    v9 = [v4 copy];
+    presentationAttributes2 = [(SXPresentationAttributesManager *)self presentationAttributes];
+    v9 = [attributesCopy copy];
     presentationAttributes = self->_presentationAttributes;
     self->_presentationAttributes = v9;
 
-    v11 = [(SXPresentationAttributesManager *)self presentationAttributes];
-    [(SXPresentationAttributesManager *)self attributesChangedFrom:v8 to:v11];
+    presentationAttributes3 = [(SXPresentationAttributesManager *)self presentationAttributes];
+    [(SXPresentationAttributesManager *)self attributesChangedFrom:presentationAttributes2 to:presentationAttributes3];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SXPresentationAttributesManager *)self observers];
-    [v5 addObject:v4];
+    observerCopy = observer;
+    observers = [(SXPresentationAttributesManager *)self observers];
+    [observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SXPresentationAttributesManager *)self observers];
-    [v5 removeObject:v4];
+    observerCopy = observer;
+    observers = [(SXPresentationAttributesManager *)self observers];
+    [observers removeObject:observerCopy];
   }
 }
 

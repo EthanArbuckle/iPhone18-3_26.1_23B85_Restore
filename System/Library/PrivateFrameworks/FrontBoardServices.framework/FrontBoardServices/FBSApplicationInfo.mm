@@ -1,20 +1,20 @@
 @interface FBSApplicationInfo
-+ (id)_configureEnvironment:(id)a3 withInfo:(id)a4 isPreApex:(BOOL)a5;
-+ (unint64_t)_applicationTypeForProxy:(id)a3;
-+ (unint64_t)_applicationTypeForRecord:(id)a3;
-- (BOOL)builtOnOrAfterSDKVersion:(id)a3;
-- (BOOL)supportsDeviceFamily:(unint64_t)a3;
-- (FBSApplicationInfo)initWithApplicationProxy:(id)a3;
-- (FBSApplicationInfo)initWithApplicationRecord:(id)a3;
++ (id)_configureEnvironment:(id)environment withInfo:(id)info isPreApex:(BOOL)apex;
++ (unint64_t)_applicationTypeForProxy:(id)proxy;
++ (unint64_t)_applicationTypeForRecord:(id)record;
+- (BOOL)builtOnOrAfterSDKVersion:(id)version;
+- (BOOL)supportsDeviceFamily:(unint64_t)family;
+- (FBSApplicationInfo)initWithApplicationProxy:(id)proxy;
+- (FBSApplicationInfo)initWithApplicationRecord:(id)record;
 - (NSDictionary)entitlements;
-- (id)_initWithApplicationProxy:(id)a3 record:(id)a4 appIdentity:(id)a5 processIdentity:(id)a6 overrideURL:(id)a7;
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4;
-- (id)_initWithBundleProxy:(id)a3 overrideURL:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)_initWithApplicationProxy:(id)proxy record:(id)record appIdentity:(id)identity processIdentity:(id)processIdentity overrideURL:(id)l;
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url;
+- (id)_initWithBundleProxy:(id)proxy overrideURL:(id)l;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)unauthoritativeTrustState;
-- (void)_overrideTags:(id)a3;
-- (void)_synchronize:(id)a3;
+- (void)_overrideTags:(id)tags;
+- (void)_synchronize:(id)_synchronize;
 @end
 
 @implementation FBSApplicationInfo
@@ -27,10 +27,10 @@
   return v4;
 }
 
-- (id)_initWithBundleIdentifier:(id)a3 url:(id)a4
+- (id)_initWithBundleIdentifier:(id)identifier url:(id)url
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  urlCopy = url;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this initializer is unavailable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -42,7 +42,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSApplicationInfo.m";
     v21 = 1024;
@@ -56,10 +56,10 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithBundleProxy:(id)a3 overrideURL:(id)a4
+- (id)_initWithBundleProxy:(id)proxy overrideURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  lCopy = l;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"this initializer is unavailable"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -71,7 +71,7 @@
     v15 = 2114;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = @"FBSApplicationInfo.m";
     v21 = 1024;
@@ -85,69 +85,69 @@
   _bs_set_crash_log_message();
 }
 
-- (FBSApplicationInfo)initWithApplicationProxy:(id)a3
+- (FBSApplicationInfo)initWithApplicationProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 fbs_correspondingApplicationRecord];
-  v7 = [v6 identities];
-  v8 = [v7 firstObject];
+  fbs_correspondingApplicationRecord = [proxyCopy fbs_correspondingApplicationRecord];
+  identities = [fbs_correspondingApplicationRecord identities];
+  firstObject = [identities firstObject];
 
-  v9 = [v6 fbs_processIdentityForApplicationIdentity:v8];
-  v10 = [(FBSApplicationInfo *)self _initWithApplicationProxy:v4 record:v6 appIdentity:v8 processIdentity:v9 overrideURL:0];
+  v9 = [fbs_correspondingApplicationRecord fbs_processIdentityForApplicationIdentity:firstObject];
+  v10 = [(FBSApplicationInfo *)self _initWithApplicationProxy:proxyCopy record:fbs_correspondingApplicationRecord appIdentity:firstObject processIdentity:v9 overrideURL:0];
 
   objc_autoreleasePoolPop(v5);
   return v10;
 }
 
-- (FBSApplicationInfo)initWithApplicationRecord:(id)a3
+- (FBSApplicationInfo)initWithApplicationRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 fbs_correspondingApplicationProxy];
-  v7 = [v4 identities];
-  v8 = [v7 firstObject];
+  fbs_correspondingApplicationProxy = [recordCopy fbs_correspondingApplicationProxy];
+  identities = [recordCopy identities];
+  firstObject = [identities firstObject];
 
-  v9 = [v4 fbs_processIdentityForApplicationIdentity:v8];
-  v10 = [(FBSApplicationInfo *)self _initWithApplicationProxy:v6 record:v4 appIdentity:v8 processIdentity:v9 overrideURL:0];
+  v9 = [recordCopy fbs_processIdentityForApplicationIdentity:firstObject];
+  v10 = [(FBSApplicationInfo *)self _initWithApplicationProxy:fbs_correspondingApplicationProxy record:recordCopy appIdentity:firstObject processIdentity:v9 overrideURL:0];
 
   objc_autoreleasePoolPop(v5);
   return v10;
 }
 
-- (id)_initWithApplicationProxy:(id)a3 record:(id)a4 appIdentity:(id)a5 processIdentity:(id)a6 overrideURL:(id)a7
+- (id)_initWithApplicationProxy:(id)proxy record:(id)record appIdentity:(id)identity processIdentity:(id)processIdentity overrideURL:(id)l
 {
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v37 = a7;
+  proxyCopy = proxy;
+  recordCopy = record;
+  identityCopy = identity;
+  processIdentityCopy = processIdentity;
+  lCopy = l;
   context = objc_autoreleasePoolPush();
   if (_initWithApplicationProxy_record_appIdentity_processIdentity_overrideURL__onceToken != -1)
   {
     [FBSApplicationInfo _initWithApplicationProxy:record:appIdentity:processIdentity:overrideURL:];
   }
 
-  v17 = [v13 bundleURL];
-  if (!v17 || ([v13 appState], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isValid"), v18, !v16) || !v15 || !v14 || (v19 & 1) == 0)
+  bundleURL = [proxyCopy bundleURL];
+  if (!bundleURL || ([proxyCopy appState], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isValid"), v18, !processIdentityCopy) || !identityCopy || !recordCopy || (v19 & 1) == 0)
   {
-    if (v37)
+    if (lCopy)
     {
-      v33 = v37;
+      v33 = lCopy;
     }
 
     v34 = FBSLogApplicationLibrary();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v41 = v13;
+      v41 = proxyCopy;
       v42 = 2114;
-      v43 = v14;
+      v43 = recordCopy;
       v44 = 2114;
-      v45 = v15;
+      v45 = identityCopy;
       v46 = 2114;
-      v47 = v16;
+      v47 = processIdentityCopy;
       _os_log_error_impl(&dword_1A2DBB000, v34, OS_LOG_TYPE_ERROR, "Invalid application proxy %{public}@, record %{public}@, app identity %{public}@, or process identity %{public}@", buf, 0x2Au);
     }
 
@@ -161,42 +161,42 @@
     _bs_set_crash_log_message();
   }
 
-  v38 = v16;
+  v38 = processIdentityCopy;
   v39.receiver = self;
   v39.super_class = FBSApplicationInfo;
-  v20 = [(FBSBundleInfo *)&v39 _initWithBundleProxy:v13 overrideURL:v17];
+  v20 = [(FBSBundleInfo *)&v39 _initWithBundleProxy:proxyCopy overrideURL:bundleURL];
   v21 = v20;
   if (v20)
   {
     v20[22] = 0;
-    [v13 objectsForInfoDictionaryKeys:_initWithApplicationProxy_record_appIdentity_processIdentity_overrideURL____infoKeys];
+    [proxyCopy objectsForInfoDictionaryKeys:_initWithApplicationProxy_record_appIdentity_processIdentity_overrideURL____infoKeys];
     objc_claimAutoreleasedReturnValue();
-    [v13 entitlementValuesForKeys:_initWithApplicationProxy_record_appIdentity_processIdentity_overrideURL____entitlementKeys];
+    [proxyCopy entitlementValuesForKeys:_initWithApplicationProxy_record_appIdentity_processIdentity_overrideURL____entitlementKeys];
     objc_claimAutoreleasedReturnValue();
-    *(v21 + 27) = [FBSApplicationInfo _applicationTypeForProxy:v13];
-    objc_storeStrong(v21 + 14, a5);
+    *(v21 + 27) = [FBSApplicationInfo _applicationTypeForProxy:proxyCopy];
+    objc_storeStrong(v21 + 14, identity);
     v22 = [v38 copy];
     v23 = *(v21 + 15);
     *(v21 + 15) = v22;
 
-    v24 = [v13 canonicalExecutablePath];
-    if (v24)
+    canonicalExecutablePath = [proxyCopy canonicalExecutablePath];
+    if (canonicalExecutablePath)
     {
-      v25 = [MEMORY[0x1E695DFF8] fileURLWithPath:v24 isDirectory:0];
+      v25 = [MEMORY[0x1E695DFF8] fileURLWithPath:canonicalExecutablePath isDirectory:0];
       v26 = *(v21 + 16);
       *(v21 + 16) = v25;
     }
 
-    v27 = [v13 bundleContainerURL];
+    bundleContainerURL = [proxyCopy bundleContainerURL];
     v28 = *(v21 + 17);
-    *(v21 + 17) = v27;
+    *(v21 + 17) = bundleContainerURL;
 
-    v29 = [v13 dataContainerURL];
+    dataContainerURL = [proxyCopy dataContainerURL];
     v30 = *(v21 + 18);
-    *(v21 + 18) = v29;
+    *(v21 + 18) = dataContainerURL;
 
-    v21[18] = [v14 codeSignatureVersion];
-    [v17 path];
+    v21[18] = [recordCopy codeSignatureVersion];
+    [bundleURL path];
     objc_claimAutoreleasedReturnValue();
     BSModificationDateForPath();
   }
@@ -275,29 +275,29 @@ void __34__FBSApplicationInfo_entitlements__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)supportsDeviceFamily:(unint64_t)a3
+- (BOOL)supportsDeviceFamily:(unint64_t)family
 {
   deviceFamilies = self->_deviceFamilies;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:family];
   LOBYTE(deviceFamilies) = [(NSArray *)deviceFamilies containsObject:v4];
 
   return deviceFamilies;
 }
 
-- (BOOL)builtOnOrAfterSDKVersion:(id)a3
+- (BOOL)builtOnOrAfterSDKVersion:(id)version
 {
   sdkVersion = self->_sdkVersion;
   if (sdkVersion)
   {
-    LOBYTE(sdkVersion) = [(NSString *)sdkVersion compare:a3 options:64]< 2;
+    LOBYTE(sdkVersion) = [(NSString *)sdkVersion compare:version options:64]< 2;
   }
 
   return sdkVersion;
 }
 
-- (void)_overrideTags:(id)a3
+- (void)_overrideTags:(id)tags
 {
-  v5 = a3;
+  tagsCopy = tags;
   if (!self->_initialized)
   {
     BSEqualObjects();
@@ -306,27 +306,27 @@ void __34__FBSApplicationInfo_entitlements__block_invoke(uint64_t a1)
   [FBSApplicationInfo _overrideTags:a2];
 }
 
-- (void)_synchronize:(id)a3
+- (void)_synchronize:(id)_synchronize
 {
-  if (a3)
+  if (_synchronize)
   {
-    v4 = a3;
+    _synchronizeCopy = _synchronize;
     os_unfair_lock_lock(&self->_lock);
-    v4[2](v4);
+    _synchronizeCopy[2](_synchronizeCopy);
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-+ (unint64_t)_applicationTypeForProxy:(id)a3
++ (unint64_t)_applicationTypeForProxy:(id)proxy
 {
-  v3 = [a3 applicationType];
-  if ([v3 isEqual:*MEMORY[0x1E69635A8]] & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x1E6963570]))
+  applicationType = [proxy applicationType];
+  if ([applicationType isEqual:*MEMORY[0x1E69635A8]] & 1) != 0 || (objc_msgSend(applicationType, "isEqual:", *MEMORY[0x1E6963570]))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:*MEMORY[0x1E6963578]])
+  else if ([applicationType isEqual:*MEMORY[0x1E6963578]])
   {
     v4 = 0;
   }
@@ -339,19 +339,19 @@ void __34__FBSApplicationInfo_entitlements__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (unint64_t)_applicationTypeForRecord:(id)a3
++ (unint64_t)_applicationTypeForRecord:(id)record
 {
-  v4 = [a3 fbs_correspondingApplicationProxy];
-  v5 = [a1 _applicationTypeForProxy:v4];
+  fbs_correspondingApplicationProxy = [record fbs_correspondingApplicationProxy];
+  v5 = [self _applicationTypeForProxy:fbs_correspondingApplicationProxy];
 
   return v5;
 }
 
-+ (id)_configureEnvironment:(id)a3 withInfo:(id)a4 isPreApex:(BOOL)a5
++ (id)_configureEnvironment:(id)environment withInfo:(id)info isPreApex:(BOOL)apex
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  apexCopy = apex;
+  environmentCopy = environment;
+  infoCopy = info;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -363,16 +363,16 @@ void __34__FBSApplicationInfo_entitlements__block_invoke(uint64_t a1)
   v22 = __63__FBSApplicationInfo__configureEnvironment_withInfo_isPreApex___block_invoke;
   v23 = &unk_1E76BCDD8;
   v25 = &v26;
-  v9 = v7;
+  v9 = environmentCopy;
   v24 = v9;
   v10 = MEMORY[0x1A58E80F0](&v20);
   v11 = v10;
-  if (v5)
+  if (apexCopy)
   {
     (*(v10 + 16))(v10, @"MallocCorruptionAbort", @"0");
   }
 
-  v12 = [v8 dictionaryForKey:{@"MallocBehavior", v20, v21, v22, v23}];
+  v12 = [infoCopy dictionaryForKey:{@"MallocBehavior", v20, v21, v22, v23}];
   v13 = v12;
   if (v12)
   {
@@ -429,30 +429,30 @@ void __63__FBSApplicationInfo__configureEnvironment_withInfo_isPreApex___block_i
 {
   v8.receiver = self;
   v8.super_class = FBSApplicationInfo;
-  v3 = [(FBSBundleInfo *)&v8 succinctDescriptionBuilder];
-  v4 = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
+  succinctDescriptionBuilder = [(FBSBundleInfo *)&v8 succinctDescriptionBuilder];
+  fbs_personaUniqueString = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
 
-  if (v4)
+  if (fbs_personaUniqueString)
   {
-    v5 = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
-    v6 = [v3 appendObject:v5 withName:@"persona"];
+    fbs_personaUniqueString2 = [(LSApplicationIdentity *)self->_applicationIdentity fbs_personaUniqueString];
+    v6 = [succinctDescriptionBuilder appendObject:fbs_personaUniqueString2 withName:@"persona"];
   }
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSApplicationInfo *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSApplicationInfo *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__FBSApplicationInfo_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

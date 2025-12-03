@@ -1,43 +1,43 @@
 @interface VLFCrowdsourcingPermissionContaineeViewController
 + (BOOL)shouldShowPermissionViewController;
 - (VLFCrowdsourcingPermissionContaineeViewController)init;
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithCoder:(id)a3;
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithCompletion:(id)a3;
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithCoder:(id)coder;
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithCompletion:(id)completion;
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)_updateForCurrentState;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)willChangeContainerStyle:(unint64_t)a3;
+- (void)willChangeContainerStyle:(unint64_t)style;
 @end
 
 @implementation VLFCrowdsourcingPermissionContaineeViewController
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 != 5)
+  if (layout != 5)
   {
     return -1.0;
   }
 
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 availableHeight];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController availableHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
-  if (a3 > 7 || ((1 << a3) & 0xA3) == 0)
+  if (style > 7 || ((1 << style) & 0xA3) == 0)
   {
     v4 = sub_100603AF8();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Layout changed to landscape; dismissing", &v5, 0xCu);
     }
 
@@ -47,94 +47,94 @@
 
 - (void)_updateForCurrentState
 {
-  v3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v4 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleLargeTitle weight:v3 compatibleWithTraitCollection:UIFontWeightBold];
-  v5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v5 setFont:v4];
+  traitCollection = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v4 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleLargeTitle weight:traitCollection compatibleWithTraitCollection:UIFontWeightBold];
+  titleLabel = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel setFont:v4];
 
-  v6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  v7 = [v6 font];
-  [v7 capHeight];
+  titleLabel2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  font = [titleLabel2 font];
+  [font capHeight];
   v9 = v8 + 30.0;
-  v10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabelBaselineConstraint];
-  [v10 setConstant:v9];
+  titleLabelBaselineConstraint = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabelBaselineConstraint];
+  [titleLabelBaselineConstraint setConstant:v9];
 
-  v11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v12 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v11];
+  traitCollection2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v12 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection2];
   v13 = [UIFont fontWithDescriptor:v12 size:0.0];
-  v14 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v14 setFont:v13];
+  descriptionLabel = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel setFont:v13];
 
-  v15 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v16 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v15];
+  traitCollection3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v16 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection3];
   v17 = [UIFont fontWithDescriptor:v16 size:0.0];
-  v18 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v19 = [v18 titleLabel];
-  [v19 setFont:v17];
+  learnMoreButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  titleLabel3 = [learnMoreButton titleLabel];
+  [titleLabel3 setFont:v17];
 
-  v20 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v21 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v20];
+  traitCollection4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v21 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection4];
   v22 = [UIFont fontWithDescriptor:v21 size:0.0];
-  v23 = [(VLFCrowdsourcingPermissionContaineeViewController *)self topRow];
-  v24 = [v23 infoLabel];
-  [v24 setFont:v22];
+  topRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self topRow];
+  infoLabel = [topRow infoLabel];
+  [infoLabel setFont:v22];
 
-  v25 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v26 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v25];
+  traitCollection5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v26 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection5];
   v27 = [UIFont fontWithDescriptor:v26 size:0.0];
-  v28 = [(VLFCrowdsourcingPermissionContaineeViewController *)self middleRow];
-  v29 = [v28 infoLabel];
-  [v29 setFont:v27];
+  middleRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self middleRow];
+  infoLabel2 = [middleRow infoLabel];
+  [infoLabel2 setFont:v27];
 
-  v30 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v31 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v30];
+  traitCollection6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v31 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection6];
   v32 = [UIFont fontWithDescriptor:v31 size:0.0];
-  v33 = [(VLFCrowdsourcingPermissionContaineeViewController *)self bottomRow];
-  v34 = [v33 infoLabel];
-  [v34 setFont:v32];
+  bottomRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self bottomRow];
+  infoLabel3 = [bottomRow infoLabel];
+  [infoLabel3 setFont:v32];
 
-  v35 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v36 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v35 compatibleWithTraitCollection:UIFontWeightBold];
-  v37 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v38 = [v37 titleLabel];
-  [v38 setFont:v36];
+  traitCollection7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v36 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:traitCollection7 compatibleWithTraitCollection:UIFontWeightBold];
+  allowButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  titleLabel4 = [allowButton titleLabel];
+  [titleLabel4 setFont:v36];
 
-  v39 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v40 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:v39 compatibleWithTraitCollection:UIFontWeightBold];
-  v41 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v42 = [v41 titleLabel];
-  [v42 setFont:v40];
+  traitCollection8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  v40 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleBody weight:traitCollection8 compatibleWithTraitCollection:UIFontWeightBold];
+  denyButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  titleLabel5 = [denyButton titleLabel];
+  [titleLabel5 setFont:v40];
 
-  v43 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  v44 = [v43 preferredContentSizeCategory];
-  v45 = UIContentSizeCategoryCompareToCategory(v44, UIContentSizeCategoryAccessibilityExtraExtraExtraLarge);
+  traitCollection9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection9 preferredContentSizeCategory];
+  v45 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityExtraExtraExtraLarge);
 
-  v46 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  v48 = v46;
+  iconStackView = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  v48 = iconStackView;
   v47 = 52.0;
   if (v45)
   {
     v47 = 26.0;
   }
 
-  [v46 setSpacing:v47];
+  [iconStackView setSpacing:v47];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = VLFCrowdsourcingPermissionContaineeViewController;
-  [(MapsThemeViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
-  v6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-  if (v5 == [v6 userInterfaceStyle])
+  [(MapsThemeViewController *)&v10 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+  if (userInterfaceStyle == [traitCollection userInterfaceStyle])
   {
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    traitCollection2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
 
-    if (v7 == v9)
+    if (preferredContentSizeCategory == preferredContentSizeCategory2)
     {
       goto LABEL_6;
     }
@@ -148,16 +148,16 @@
 LABEL_6:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = VLFCrowdsourcingPermissionContaineeViewController;
-  [(VLFCrowdsourcingPermissionContaineeViewController *)&v5 viewDidAppear:a3];
+  [(VLFCrowdsourcingPermissionContaineeViewController *)&v5 viewDidAppear:appear];
   v4 = sub_100603AF8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] VLF Crowdsourcing Permission Card has been shown", buf, 0xCu);
   }
 
@@ -170,29 +170,29 @@ LABEL_6:
   v288.receiver = self;
   v288.super_class = VLFCrowdsourcingPermissionContaineeViewController;
   [(ContaineeViewController *)&v288 viewDidLoad];
-  v3 = [(ContaineeViewController *)self headerView];
-  [v3 removeFromSuperview];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView removeFromSuperview];
 
-  v4 = [(ContaineeViewController *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentView = [(ContaineeViewController *)self contentView];
+  topAnchor = [contentView topAnchor];
+  view = [(VLFCrowdsourcingPermissionContaineeViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v299 = v8;
   v9 = [NSArray arrayWithObjects:&v299 count:1];
   [NSLayoutConstraint activateConstraints:v9];
 
   v10 = [UIColor colorNamed:@"TeachableMomentCardBackgoundColor"];
-  v11 = [(ContaineeViewController *)self contentView];
-  [v11 setBackgroundColor:v10];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  [contentView2 setBackgroundColor:v10];
 
-  v12 = [(ContaineeViewController *)self contentView];
+  contentView3 = [(ContaineeViewController *)self contentView];
   LODWORD(v13) = 1148846080;
-  [v12 setContentCompressionResistancePriority:1 forAxis:v13];
+  [contentView3 setContentCompressionResistancePriority:1 forAxis:v13];
 
-  v14 = [(ContaineeViewController *)self contentView];
+  contentView4 = [(ContaineeViewController *)self contentView];
   LODWORD(v15) = 1148846080;
-  [v14 setContentHuggingPriority:1 forAxis:v15];
+  [contentView4 setContentHuggingPriority:1 forAxis:v15];
 
   v16 = [UIScrollView alloc];
   y = CGRectZero.origin.y;
@@ -204,23 +204,23 @@ LABEL_6:
   [v278 setContentCompressionResistancePriority:1 forAxis:v20];
   LODWORD(v21) = 1148846080;
   [v278 setContentHuggingPriority:1 forAxis:v21];
-  v22 = [(ContaineeViewController *)self contentView];
-  [v22 addSubview:v278];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  [contentView5 addSubview:v278];
 
-  v275 = [v278 leadingAnchor];
-  v279 = [(ContaineeViewController *)self contentView];
-  v266 = [v279 leadingAnchor];
-  v258 = [v275 constraintEqualToAnchor:v266];
+  leadingAnchor = [v278 leadingAnchor];
+  contentView6 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView6 leadingAnchor];
+  v258 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v298[0] = v258;
-  v23 = [v278 trailingAnchor];
-  v24 = [(ContaineeViewController *)self contentView];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  trailingAnchor = [v278 trailingAnchor];
+  contentView7 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView7 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v298[1] = v26;
-  v27 = [v278 topAnchor];
-  v28 = [(ContaineeViewController *)self contentView];
-  v29 = [v28 topAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  topAnchor3 = [v278 topAnchor];
+  contentView8 = [(ContaineeViewController *)self contentView];
+  topAnchor4 = [contentView8 topAnchor];
+  v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v298[2] = v30;
   v31 = [NSArray arrayWithObjects:v298 count:3];
   [NSLayoutConstraint activateConstraints:v31];
@@ -228,26 +228,26 @@ LABEL_6:
   v280 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [v280 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v278 addSubview:v280];
-  v276 = [v280 leadingAnchor];
-  v267 = [v278 leadingAnchor];
-  v259 = [v276 constraintEqualToAnchor:v267];
+  leadingAnchor3 = [v280 leadingAnchor];
+  leadingAnchor4 = [v278 leadingAnchor];
+  v259 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v297[0] = v259;
-  v251 = [v280 trailingAnchor];
-  v245 = [v278 trailingAnchor];
-  v239 = [v251 constraintEqualToAnchor:v245];
+  trailingAnchor3 = [v280 trailingAnchor];
+  trailingAnchor4 = [v278 trailingAnchor];
+  v239 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v297[1] = v239;
-  v234 = [v280 topAnchor];
-  v229 = [v278 topAnchor];
-  v32 = [v234 constraintEqualToAnchor:v229];
+  topAnchor5 = [v280 topAnchor];
+  topAnchor6 = [v278 topAnchor];
+  v32 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v297[2] = v32;
-  v33 = [v280 bottomAnchor];
-  v34 = [v278 bottomAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  bottomAnchor = [v280 bottomAnchor];
+  bottomAnchor2 = [v278 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v297[3] = v35;
-  v36 = [v280 widthAnchor];
-  v37 = [(ContaineeViewController *)self contentView];
-  v38 = [v37 widthAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  widthAnchor = [v280 widthAnchor];
+  contentView9 = [(ContaineeViewController *)self contentView];
+  widthAnchor2 = [contentView9 widthAnchor];
+  v39 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v297[4] = v39;
   v40 = [NSArray arrayWithObjects:v297 count:5];
   [NSLayoutConstraint activateConstraints:v40];
@@ -258,20 +258,20 @@ LABEL_6:
 
   [v277 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v280 addSubview:v277];
-  v268 = [v277 centerXAnchor];
-  v260 = [v280 centerXAnchor];
-  v252 = [v268 constraintEqualToAnchor:v260];
+  centerXAnchor = [v277 centerXAnchor];
+  centerXAnchor2 = [v280 centerXAnchor];
+  v252 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v296[0] = v252;
-  v43 = [v277 topAnchor];
-  v44 = [v280 topAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44 constant:30.0];
+  topAnchor7 = [v277 topAnchor];
+  topAnchor8 = [v280 topAnchor];
+  v45 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:30.0];
   v296[1] = v45;
-  v46 = [v277 widthAnchor];
-  v47 = [v277 heightAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  widthAnchor3 = [v277 widthAnchor];
+  heightAnchor = [v277 heightAnchor];
+  v48 = [widthAnchor3 constraintEqualToAnchor:heightAnchor];
   v296[2] = v48;
-  v49 = [v277 heightAnchor];
-  v50 = [v49 constraintEqualToConstant:80.0];
+  heightAnchor2 = [v277 heightAnchor];
+  v50 = [heightAnchor2 constraintEqualToConstant:80.0];
   v296[3] = v50;
   v51 = [NSArray arrayWithObjects:v296 count:4];
   [NSLayoutConstraint activateConstraints:v51];
@@ -279,103 +279,103 @@ LABEL_6:
   v52 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setTitleLabel:v52];
 
-  v53 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v53 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v54 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  titleLabel2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
   LODWORD(v55) = 1148846080;
-  [v54 setContentCompressionResistancePriority:1 forAxis:v55];
+  [titleLabel2 setContentCompressionResistancePriority:1 forAxis:v55];
 
-  v56 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  titleLabel3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
   LODWORD(v57) = 1148846080;
-  [v56 setContentHuggingPriority:1 forAxis:v57];
+  [titleLabel3 setContentHuggingPriority:1 forAxis:v57];
 
-  v58 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v58 setNumberOfLines:0];
+  titleLabel4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
   v59 = +[UIColor labelColor];
-  v60 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v60 setTextColor:v59];
+  titleLabel5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel5 setTextColor:v59];
 
   v61 = +[NSBundle mainBundle];
   v62 = [v61 localizedStringForKey:@"[VLF Crowdsourcing] permission card title" value:@"localized string not found" table:0];
-  v63 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v63 setText:v62];
+  titleLabel6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel6 setText:v62];
 
-  v64 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v64 setTextAlignment:1];
+  titleLabel7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [titleLabel7 setTextAlignment:1];
 
-  v65 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  v66 = [v65 firstBaselineAnchor];
-  v67 = [v277 bottomAnchor];
-  v68 = [v66 constraintEqualToAnchor:v67 constant:30.0];
+  titleLabel8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  firstBaselineAnchor = [titleLabel8 firstBaselineAnchor];
+  bottomAnchor3 = [v277 bottomAnchor];
+  v68 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor3 constant:30.0];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setTitleLabelBaselineConstraint:v68];
 
-  v69 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  [v280 addSubview:v69];
+  titleLabel9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  [v280 addSubview:titleLabel9];
 
-  v269 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  v70 = [v269 leadingAnchor];
-  v71 = [v280 leadingAnchor];
-  v72 = [v70 constraintEqualToAnchor:v71 constant:24.0];
+  titleLabel10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  leadingAnchor5 = [titleLabel10 leadingAnchor];
+  leadingAnchor6 = [v280 leadingAnchor];
+  v72 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:24.0];
   v295[0] = v72;
-  v73 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  v74 = [v73 trailingAnchor];
-  v75 = [v280 trailingAnchor];
-  v76 = [v74 constraintEqualToAnchor:v75 constant:-24.0];
+  titleLabel11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  trailingAnchor5 = [titleLabel11 trailingAnchor];
+  trailingAnchor6 = [v280 trailingAnchor];
+  v76 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-24.0];
   v295[1] = v76;
-  v77 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabelBaselineConstraint];
-  v295[2] = v77;
+  titleLabelBaselineConstraint = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabelBaselineConstraint];
+  v295[2] = titleLabelBaselineConstraint;
   v78 = [NSArray arrayWithObjects:v295 count:3];
   [NSLayoutConstraint activateConstraints:v78];
 
   v79 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setDescriptionLabel:v79];
 
-  v80 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v80 setTranslatesAutoresizingMaskIntoConstraints:0];
+  descriptionLabel = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v81 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  descriptionLabel2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
   LODWORD(v82) = 1148846080;
-  [v81 setContentCompressionResistancePriority:1 forAxis:v82];
+  [descriptionLabel2 setContentCompressionResistancePriority:1 forAxis:v82];
 
-  v83 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  descriptionLabel3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
   LODWORD(v84) = 1148846080;
-  [v83 setContentHuggingPriority:1 forAxis:v84];
+  [descriptionLabel3 setContentHuggingPriority:1 forAxis:v84];
 
   v85 = +[NSBundle mainBundle];
   v86 = [v85 localizedStringForKey:@"[VLF Crowdsourcing] permission card description" value:@"localized string not found" table:0];
-  v87 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v87 setText:v86];
+  descriptionLabel4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel4 setText:v86];
 
   v88 = +[UIColor labelColor];
-  v89 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v89 setTextColor:v88];
+  descriptionLabel5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel5 setTextColor:v88];
 
-  v90 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v90 setTextAlignment:1];
+  descriptionLabel6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel6 setTextAlignment:1];
 
-  v91 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v91 setNumberOfLines:0];
+  descriptionLabel7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [descriptionLabel7 setNumberOfLines:0];
 
-  v92 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  [v280 addSubview:v92];
+  descriptionLabel8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  [v280 addSubview:descriptionLabel8];
 
-  v270 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  v261 = [v270 leadingAnchor];
-  v253 = [v280 leadingAnchor];
-  v246 = [v261 constraintEqualToAnchor:v253 constant:24.0];
+  descriptionLabel9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  leadingAnchor7 = [descriptionLabel9 leadingAnchor];
+  leadingAnchor8 = [v280 leadingAnchor];
+  v246 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:24.0];
   v294[0] = v246;
-  v240 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  v93 = [v240 trailingAnchor];
-  v94 = [v280 trailingAnchor];
-  v95 = [v93 constraintEqualToAnchor:v94 constant:-24.0];
+  descriptionLabel10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  trailingAnchor7 = [descriptionLabel10 trailingAnchor];
+  trailingAnchor8 = [v280 trailingAnchor];
+  v95 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-24.0];
   v294[1] = v95;
-  v96 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  v97 = [v96 topAnchor];
-  v98 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
-  v99 = [v98 bottomAnchor];
-  v100 = [v97 constraintEqualToAnchor:v99 constant:16.0];
+  descriptionLabel11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  topAnchor9 = [descriptionLabel11 topAnchor];
+  titleLabel12 = [(VLFCrowdsourcingPermissionContaineeViewController *)self titleLabel];
+  bottomAnchor4 = [titleLabel12 bottomAnchor];
+  v100 = [topAnchor9 constraintEqualToAnchor:bottomAnchor4 constant:16.0];
   v294[2] = v100;
   v101 = [NSArray arrayWithObjects:v294 count:3];
   [NSLayoutConstraint activateConstraints:v101];
@@ -390,46 +390,46 @@ LABEL_6:
   v103 = [UIButton buttonWithType:1 primaryAction:v102];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setLearnMoreButton:v103];
 
-  v104 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  [v104 setTranslatesAutoresizingMaskIntoConstraints:0];
+  learnMoreButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  [learnMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v105 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  learnMoreButton2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
   LODWORD(v106) = 1148846080;
-  [v105 setContentCompressionResistancePriority:1 forAxis:v106];
+  [learnMoreButton2 setContentCompressionResistancePriority:1 forAxis:v106];
 
-  v107 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  learnMoreButton3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
   LODWORD(v108) = 1148846080;
-  [v107 setContentHuggingPriority:1 forAxis:v108];
+  [learnMoreButton3 setContentHuggingPriority:1 forAxis:v108];
 
-  v109 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  learnMoreButton4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
   v110 = +[NSBundle mainBundle];
   v111 = [v110 localizedStringForKey:@"[VLF Crowdsourcing] permission card learn more link" value:@"localized string not found" table:0];
-  [v109 setTitle:v111 forState:0];
+  [learnMoreButton4 setTitle:v111 forState:0];
 
-  v112 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  [v280 addSubview:v112];
+  learnMoreButton5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  [v280 addSubview:learnMoreButton5];
 
-  v271 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v262 = [v271 leadingAnchor];
-  v254 = [v280 leadingAnchor];
-  v247 = [v262 constraintGreaterThanOrEqualToAnchor:v254 constant:24.0];
+  learnMoreButton6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  leadingAnchor9 = [learnMoreButton6 leadingAnchor];
+  leadingAnchor10 = [v280 leadingAnchor];
+  v247 = [leadingAnchor9 constraintGreaterThanOrEqualToAnchor:leadingAnchor10 constant:24.0];
   v293[0] = v247;
-  v241 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v235 = [v241 trailingAnchor];
-  v230 = [v280 trailingAnchor];
-  v225 = [v235 constraintLessThanOrEqualToAnchor:v230 constant:-24.0];
+  learnMoreButton7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  trailingAnchor9 = [learnMoreButton7 trailingAnchor];
+  trailingAnchor10 = [v280 trailingAnchor];
+  v225 = [trailingAnchor9 constraintLessThanOrEqualToAnchor:trailingAnchor10 constant:-24.0];
   v293[1] = v225;
-  v221 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v219 = [v221 centerXAnchor];
-  v113 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  v114 = [v113 centerXAnchor];
-  v115 = [v219 constraintEqualToAnchor:v114];
+  learnMoreButton8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  centerXAnchor3 = [learnMoreButton8 centerXAnchor];
+  descriptionLabel12 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  centerXAnchor4 = [descriptionLabel12 centerXAnchor];
+  v115 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v293[2] = v115;
-  v116 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v117 = [v116 topAnchor];
-  v118 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
-  v119 = [v118 bottomAnchor];
-  v120 = [v117 constraintEqualToAnchor:v119 constant:16.0];
+  learnMoreButton9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  topAnchor10 = [learnMoreButton9 topAnchor];
+  descriptionLabel13 = [(VLFCrowdsourcingPermissionContaineeViewController *)self descriptionLabel];
+  bottomAnchor5 = [descriptionLabel13 bottomAnchor];
+  v120 = [topAnchor10 constraintEqualToAnchor:bottomAnchor5 constant:16.0];
   v293[3] = v120;
   v121 = [NSArray arrayWithObjects:v293 count:4];
   [NSLayoutConstraint activateConstraints:v121];
@@ -456,59 +456,59 @@ LABEL_6:
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setBottomRow:v136];
 
   v137 = [UIStackView alloc];
-  v138 = [(VLFCrowdsourcingPermissionContaineeViewController *)self topRow];
-  v292[0] = v138;
-  v139 = [(VLFCrowdsourcingPermissionContaineeViewController *)self middleRow];
-  v292[1] = v139;
-  v140 = [(VLFCrowdsourcingPermissionContaineeViewController *)self bottomRow];
-  v292[2] = v140;
+  topRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self topRow];
+  v292[0] = topRow;
+  middleRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self middleRow];
+  v292[1] = middleRow;
+  bottomRow = [(VLFCrowdsourcingPermissionContaineeViewController *)self bottomRow];
+  v292[2] = bottomRow;
   v141 = [NSArray arrayWithObjects:v292 count:3];
   v142 = [v137 initWithArrangedSubviews:v141];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setIconStackView:v142];
 
-  v143 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  [v143 setTranslatesAutoresizingMaskIntoConstraints:0];
+  iconStackView = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  [iconStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v144 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  [v144 setAxis:1];
+  iconStackView2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  [iconStackView2 setAxis:1];
 
-  v145 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  [v145 setAlignment:0];
+  iconStackView3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  [iconStackView3 setAlignment:0];
 
-  v146 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  [v146 setSpacing:26.0];
+  iconStackView4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  [iconStackView4 setSpacing:26.0];
 
-  v147 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  iconStackView5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
   LODWORD(v148) = 1148846080;
-  [v147 setContentCompressionResistancePriority:1 forAxis:v148];
+  [iconStackView5 setContentCompressionResistancePriority:1 forAxis:v148];
 
-  v149 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  iconStackView6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
   LODWORD(v150) = 1148846080;
-  [v149 setContentHuggingPriority:1 forAxis:v150];
+  [iconStackView6 setContentHuggingPriority:1 forAxis:v150];
 
-  v151 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  [v280 addSubview:v151];
+  iconStackView7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  [v280 addSubview:iconStackView7];
 
-  v272 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  v263 = [v272 leadingAnchor];
-  v255 = [v280 leadingAnchor];
-  v248 = [v263 constraintEqualToAnchor:v255 constant:48.0];
+  iconStackView8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  leadingAnchor11 = [iconStackView8 leadingAnchor];
+  leadingAnchor12 = [v280 leadingAnchor];
+  v248 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:48.0];
   v291[0] = v248;
-  v242 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  v236 = [v242 trailingAnchor];
-  v231 = [v280 trailingAnchor];
-  v226 = [v236 constraintEqualToAnchor:v231 constant:-48.0];
+  iconStackView9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  trailingAnchor11 = [iconStackView9 trailingAnchor];
+  trailingAnchor12 = [v280 trailingAnchor];
+  v226 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-48.0];
   v291[1] = v226;
-  v222 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  v152 = [v222 topAnchor];
-  v153 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
-  v154 = [v153 bottomAnchor];
-  v155 = [v152 constraintEqualToAnchor:v154 constant:16.0];
+  iconStackView10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  topAnchor11 = [iconStackView10 topAnchor];
+  learnMoreButton10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self learnMoreButton];
+  bottomAnchor6 = [learnMoreButton10 bottomAnchor];
+  v155 = [topAnchor11 constraintEqualToAnchor:bottomAnchor6 constant:16.0];
   v291[2] = v155;
-  v156 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
-  v157 = [v156 bottomAnchor];
-  v158 = [v280 bottomAnchor];
-  v159 = [v157 constraintLessThanOrEqualToAnchor:v158];
+  iconStackView11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self iconStackView];
+  bottomAnchor7 = [iconStackView11 bottomAnchor];
+  bottomAnchor8 = [v280 bottomAnchor];
+  v159 = [bottomAnchor7 constraintLessThanOrEqualToAnchor:bottomAnchor8];
   v291[3] = v159;
   v160 = [NSArray arrayWithObjects:v291 count:4];
   [NSLayoutConstraint activateConstraints:v160];
@@ -522,54 +522,54 @@ LABEL_6:
   v162 = [UIButton buttonWithType:1 primaryAction:v161];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setAllowButton:v162];
 
-  v163 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  [v163 setTranslatesAutoresizingMaskIntoConstraints:0];
+  allowButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  [allowButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v164 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  allowButton2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
   v165 = +[NSBundle mainBundle];
   v166 = [v165 localizedStringForKey:@"[VLF Crowdsourcing] permission card allow button" value:@"localized string not found" table:0];
-  [v164 setTitle:v166 forState:0];
+  [allowButton2 setTitle:v166 forState:0];
 
   v167 = +[UIColor systemBlueColor];
-  v168 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  [v168 setBackgroundColor:v167];
+  allowButton3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  [allowButton3 setBackgroundColor:v167];
 
-  v169 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  allowButton4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
   v170 = +[UIColor whiteColor];
-  [v169 setTitleColor:v170 forState:0];
+  [allowButton4 setTitleColor:v170 forState:0];
 
-  v171 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v172 = [v171 layer];
-  [v172 setCornerRadius:12.0];
+  allowButton5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  layer = [allowButton5 layer];
+  [layer setCornerRadius:12.0];
 
-  v173 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  allowButton6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
   LODWORD(v174) = 1148846080;
-  [v173 setContentCompressionResistancePriority:1 forAxis:v174];
+  [allowButton6 setContentCompressionResistancePriority:1 forAxis:v174];
 
-  v175 = [(ContaineeViewController *)self contentView];
-  v176 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  [v175 addSubview:v176];
+  contentView10 = [(ContaineeViewController *)self contentView];
+  allowButton7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  [contentView10 addSubview:allowButton7];
 
-  v273 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v256 = [v273 leadingAnchor];
-  v264 = [(ContaineeViewController *)self contentView];
-  v249 = [v264 leadingAnchor];
-  v243 = [v256 constraintEqualToAnchor:v249 constant:24.0];
+  allowButton8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  leadingAnchor13 = [allowButton8 leadingAnchor];
+  contentView11 = [(ContaineeViewController *)self contentView];
+  leadingAnchor14 = [contentView11 leadingAnchor];
+  v243 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:24.0];
   v290[0] = v243;
-  v237 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v227 = [v237 trailingAnchor];
-  v232 = [(ContaineeViewController *)self contentView];
-  v223 = [v232 trailingAnchor];
-  v177 = [v227 constraintEqualToAnchor:v223 constant:-24.0];
+  allowButton9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  trailingAnchor13 = [allowButton9 trailingAnchor];
+  contentView12 = [(ContaineeViewController *)self contentView];
+  trailingAnchor14 = [contentView12 trailingAnchor];
+  v177 = [trailingAnchor13 constraintEqualToAnchor:trailingAnchor14 constant:-24.0];
   v290[1] = v177;
-  v178 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v179 = [v178 topAnchor];
-  v180 = [v278 bottomAnchor];
-  v181 = [v179 constraintEqualToAnchor:v180 constant:24.0];
+  allowButton10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  topAnchor12 = [allowButton10 topAnchor];
+  bottomAnchor9 = [v278 bottomAnchor];
+  v181 = [topAnchor12 constraintEqualToAnchor:bottomAnchor9 constant:24.0];
   v290[2] = v181;
-  v182 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v183 = [v182 heightAnchor];
-  v184 = [v183 constraintEqualToConstant:60.0];
+  allowButton11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  heightAnchor3 = [allowButton11 heightAnchor];
+  v184 = [heightAnchor3 constraintEqualToConstant:60.0];
   v290[3] = v184;
   v185 = [NSArray arrayWithObjects:v290 count:4];
   [NSLayoutConstraint activateConstraints:v185];
@@ -583,61 +583,61 @@ LABEL_6:
   v187 = [UIButton buttonWithType:1 primaryAction:v186];
   [(VLFCrowdsourcingPermissionContaineeViewController *)self setDenyButton:v187];
 
-  v188 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  [v188 setTranslatesAutoresizingMaskIntoConstraints:0];
+  denyButton = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  [denyButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v189 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  denyButton2 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
   v190 = +[NSBundle mainBundle];
   v191 = [v190 localizedStringForKey:@"[VLF Crowdsourcing] permission card deny button" value:@"localized string not found" table:0];
-  [v189 setTitle:v191 forState:0];
+  [denyButton2 setTitle:v191 forState:0];
 
-  v192 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v193 = [v192 layer];
-  [v193 setCornerRadius:12.0];
+  denyButton3 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  layer2 = [denyButton3 layer];
+  [layer2 setCornerRadius:12.0];
 
-  v194 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  denyButton4 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
   LODWORD(v195) = 1148846080;
-  [v194 setContentCompressionResistancePriority:1 forAxis:v195];
+  [denyButton4 setContentCompressionResistancePriority:1 forAxis:v195];
 
-  v196 = [(ContaineeViewController *)self contentView];
-  v197 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  [v196 addSubview:v197];
+  contentView13 = [(ContaineeViewController *)self contentView];
+  denyButton5 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  [contentView13 addSubview:denyButton5];
 
-  v274 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v257 = [v274 leadingAnchor];
-  v265 = [(ContaineeViewController *)self contentView];
-  v250 = [v265 leadingAnchor];
-  v244 = [v257 constraintEqualToAnchor:v250 constant:24.0];
+  denyButton6 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  leadingAnchor15 = [denyButton6 leadingAnchor];
+  contentView14 = [(ContaineeViewController *)self contentView];
+  leadingAnchor16 = [contentView14 leadingAnchor];
+  v244 = [leadingAnchor15 constraintEqualToAnchor:leadingAnchor16 constant:24.0];
   v289[0] = v244;
-  v238 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v228 = [v238 trailingAnchor];
-  v233 = [(ContaineeViewController *)self contentView];
-  v224 = [v233 trailingAnchor];
-  v220 = [v228 constraintEqualToAnchor:v224 constant:-24.0];
+  denyButton7 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  trailingAnchor15 = [denyButton7 trailingAnchor];
+  contentView15 = [(ContaineeViewController *)self contentView];
+  trailingAnchor16 = [contentView15 trailingAnchor];
+  v220 = [trailingAnchor15 constraintEqualToAnchor:trailingAnchor16 constant:-24.0];
   v289[1] = v220;
-  v218 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v216 = [v218 topAnchor];
-  v217 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
-  v215 = [v217 bottomAnchor];
-  v214 = [v216 constraintEqualToAnchor:v215 constant:6.0];
+  denyButton8 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  topAnchor13 = [denyButton8 topAnchor];
+  allowButton12 = [(VLFCrowdsourcingPermissionContaineeViewController *)self allowButton];
+  bottomAnchor10 = [allowButton12 bottomAnchor];
+  v214 = [topAnchor13 constraintEqualToAnchor:bottomAnchor10 constant:6.0];
   v289[2] = v214;
-  v213 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v212 = [v213 heightAnchor];
-  v211 = [v212 constraintEqualToConstant:60.0];
+  denyButton9 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  heightAnchor4 = [denyButton9 heightAnchor];
+  v211 = [heightAnchor4 constraintEqualToConstant:60.0];
   v289[3] = v211;
-  v210 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v208 = [v210 bottomAnchor];
-  v209 = [(ContaineeViewController *)self contentView];
-  v198 = [v209 safeAreaLayoutGuide];
-  v199 = [v198 bottomAnchor];
+  denyButton10 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  bottomAnchor11 = [denyButton10 bottomAnchor];
+  contentView16 = [(ContaineeViewController *)self contentView];
+  safeAreaLayoutGuide = [contentView16 safeAreaLayoutGuide];
+  bottomAnchor12 = [safeAreaLayoutGuide bottomAnchor];
   LODWORD(v200) = 1148829696;
-  v201 = [v208 constraintEqualToAnchor:v199 constant:0.0 priority:v200];
+  v201 = [bottomAnchor11 constraintEqualToAnchor:bottomAnchor12 constant:0.0 priority:v200];
   v289[4] = v201;
-  v202 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
-  v203 = [v202 bottomAnchor];
-  v204 = [(ContaineeViewController *)self contentView];
-  v205 = [v204 bottomAnchor];
-  v206 = [v203 constraintLessThanOrEqualToAnchor:v205 constant:-16.0];
+  denyButton11 = [(VLFCrowdsourcingPermissionContaineeViewController *)self denyButton];
+  bottomAnchor13 = [denyButton11 bottomAnchor];
+  contentView17 = [(ContaineeViewController *)self contentView];
+  bottomAnchor14 = [contentView17 bottomAnchor];
+  v206 = [bottomAnchor13 constraintLessThanOrEqualToAnchor:bottomAnchor14 constant:-16.0];
   v289[5] = v206;
   v207 = [NSArray arrayWithObjects:v289 count:6];
   [NSLayoutConstraint activateConstraints:v207];
@@ -655,7 +655,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -664,9 +664,9 @@ LABEL_6:
   [(VLFCrowdsourcingPermissionContaineeViewController *)&v4 dealloc];
 }
 
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithCompletion:(id)a3
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = VLFCrowdsourcingPermissionContaineeViewController;
   v5 = [(VLFCrowdsourcingPermissionContaineeViewController *)&v15 initWithNibName:0 bundle:0];
@@ -680,24 +680,24 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    v7 = [v4 copy];
+    v7 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v7;
 
-    v9 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v9 setHideGrabber:1];
+    cardPresentationController = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController setHideGrabber:1];
 
-    v10 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v10 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
-    v11 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v11 setPresentedModally:1];
+    cardPresentationController3 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController3 setPresentedModally:1];
 
-    v12 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v12 setEdgeAttachedRegularHeightDimmingBehavior:2];
+    cardPresentationController4 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController4 setEdgeAttachedRegularHeightDimmingBehavior:2];
 
-    v13 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v13 setTakesAvailableHeight:1];
+    cardPresentationController5 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController5 setTakesAvailableHeight:1];
   }
 
   return v5;
@@ -710,18 +710,18 @@ LABEL_6:
   return result;
 }
 
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithCoder:(id)a3
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;
 }
 
-- (VLFCrowdsourcingPermissionContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VLFCrowdsourcingPermissionContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   result = [NSException raise:@"MethodNotAvailableException" format:@"This method is unavailable."];
   __break(1u);
   return result;
@@ -739,7 +739,7 @@ LABEL_6:
         if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
         {
           v11 = 134349056;
-          v12 = a1;
+          selfCopy4 = self;
           v4 = "[%{public}p] Not showing VLF Crowdsourcing Permission Card because the user has already made a decision";
 LABEL_10:
           _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, v4, &v11, 0xCu);
@@ -751,9 +751,9 @@ LABEL_10:
         if (byte_10195CC90 != 1)
         {
           v7 = +[PedestrianARSessionUsageTracker sharedInstance];
-          v8 = [v7 numberOfTimesARLocalized];
+          numberOfTimesARLocalized = [v7 numberOfTimesARLocalized];
           v9 = +[VLFSessionUsageTracker sharedInstance];
-          v10 = &v8[[v9 numberOfTimesVLFLocalized]];
+          v10 = &numberOfTimesARLocalized[[v9 numberOfTimesVLFLocalized]];
           v5 = v10 >= GEOConfigGetInteger();
 
           return v5;
@@ -763,7 +763,7 @@ LABEL_10:
         if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
         {
           v11 = 134349056;
-          v12 = a1;
+          selfCopy4 = self;
           v4 = "[%{public}p] Not showing VLF Crowdsourcing Permission Card because the user has already seen the crowdsourcing permission card";
           goto LABEL_10;
         }
@@ -776,7 +776,7 @@ LABEL_10:
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
         v11 = 134349056;
-        v12 = a1;
+        selfCopy4 = self;
         v4 = "[%{public}p] Not showing VLF Crowdsourcing Permission Card because the feature is not supported for the current device posture";
         goto LABEL_10;
       }
@@ -789,7 +789,7 @@ LABEL_10:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = a1;
+      selfCopy4 = self;
       v4 = "[%{public}p] Not showing VLF Crowdsourcing Permission Card because the feature is not enabled";
       goto LABEL_10;
     }

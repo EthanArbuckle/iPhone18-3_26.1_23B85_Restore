@@ -1,35 +1,35 @@
 @interface SBSHomeScreenConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBSHomeScreenConfiguration)initWithBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SBSHomeScreenConfiguration)initWithBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBSHomeScreenConfiguration
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_layout forKey:@"layout"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_layout forKey:@"layout"];
 }
 
-- (SBSHomeScreenConfiguration)initWithBSXPCCoder:(id)a3
+- (SBSHomeScreenConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SBSHomeScreenConfiguration;
   v5 = [(SBSHomeScreenConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"name"];
+    v6 = [coderCopy decodeStringForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layout"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layout"];
     layout = v5->_layout;
     v5->_layout = v8;
   }
@@ -37,9 +37,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_name copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -53,24 +53,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_name];
-  v5 = [v3 appendObject:self->_layout];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_name];
+  v5 = [builder appendObject:self->_layout];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = [MEMORY[0x1E698E6A0] builderWithObject:self ofExpectedClass:objc_opt_class()];
   name = self->_name;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __38__SBSHomeScreenConfiguration_isEqual___block_invoke;
   v18[3] = &unk_1E7360810;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendString:name counterpart:v18];
   layout = self->_layout;
@@ -91,9 +91,9 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendString:self->_name withName:@"name"];
   v4 = [v3 appendObject:self->_layout withName:@"layout"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

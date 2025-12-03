@@ -31,41 +31,41 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v3 IMChatItem];
-      v15 = [v14 dataSource];
-      if (!v15)
+      iMChatItem = [v3 IMChatItem];
+      dataSource = [iMChatItem dataSource];
+      if (!dataSource)
       {
         v25 = 0;
         v13 = 0;
-        v18 = 0;
+        absoluteString = 0;
         v7 = 0;
 LABEL_35:
 
-        v26 = 0;
+        messagePartBody = 0;
         goto LABEL_42;
       }
 
-      v16 = [v14 type];
-      if ([v16 isEqualToString:@"com.apple.messages.URLBalloonProvider"])
+      type = [iMChatItem type];
+      if ([type isEqualToString:@"com.apple.messages.URLBalloonProvider"])
       {
-        v17 = [v15 url];
-        v18 = [v17 absoluteString];
+        v17 = [dataSource url];
+        absoluteString = [v17 absoluteString];
 
         v7 = 1;
       }
 
       else
       {
-        v18 = [objc_opt_class() previewSummaryForPluginBundle:v16];
+        absoluteString = [objc_opt_class() previewSummaryForPluginBundle:type];
         v7 = 9;
       }
 
-      v13 = v16;
+      v13 = type;
       v27 = objc_alloc(MEMORY[0x1E696ACD0]);
-      v28 = [v15 pluginPayload];
-      v29 = [v28 data];
+      pluginPayload = [dataSource pluginPayload];
+      data = [pluginPayload data];
       v45 = 0;
-      v30 = [v27 initForReadingFromData:v29 error:&v45];
+      v30 = [v27 initForReadingFromData:data error:&v45];
       v44 = v45;
 
       if (objc_opt_respondsToSelector())
@@ -89,7 +89,7 @@ LABEL_35:
       if (objc_opt_isKindOfClass())
       {
         v25 = [v33 objectForKey:*MEMORY[0x1E69A6EC0]];
-        if (v18)
+        if (absoluteString)
         {
 LABEL_34:
 
@@ -111,7 +111,7 @@ LABEL_34:
         }
 
         v25 = 0;
-        if (v18)
+        if (absoluteString)
         {
           goto LABEL_34;
         }
@@ -136,45 +136,45 @@ LABEL_34:
     {
       v25 = 0;
       v13 = 0;
-      v26 = 0;
-      v18 = 0;
+      messagePartBody = 0;
+      absoluteString = 0;
       v7 = 0;
       goto LABEL_42;
     }
 
     v19 = v3;
-    v20 = [v19 subject];
-    v21 = [v20 string];
+    subject = [v19 subject];
+    string = [subject string];
 
-    v22 = [v19 text];
-    v23 = [v22 string];
+    text = [v19 text];
+    string2 = [text string];
 
-    if (v21 && v23)
+    if (string && string2)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v21, v23];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", string, string2];
     }
 
-    else if (v21)
+    else if (string)
     {
-      v24 = v21;
+      v24 = string;
     }
 
     else
     {
-      if (!v23)
+      if (!string2)
       {
-        v18 = 0;
+        absoluteString = 0;
         goto LABEL_41;
       }
 
-      v24 = v23;
+      v24 = string2;
     }
 
-    v18 = v24;
+    absoluteString = v24;
 LABEL_41:
-    v36 = [v19 messageItem];
-    v37 = [v36 messagePartMatchingPartIndex:{objc_msgSend(v19, "index")}];
-    v26 = [v37 messagePartBody];
+    messageItem = [v19 messageItem];
+    v37 = [messageItem messagePartMatchingPartIndex:{objc_msgSend(v19, "index")}];
+    messagePartBody = [v37 messagePartBody];
 
     v25 = 0;
     v13 = 0;
@@ -184,14 +184,14 @@ LABEL_41:
 
   v4 = v3;
   v5 = MEMORY[0x1E69A5AE0];
-  v6 = [v4 mediaObject];
-  v7 = [v5 associatedMessageContentTypeFromCKMediaType:{objc_msgSend(v6, "mediaType")}];
+  mediaObject = [v4 mediaObject];
+  v7 = [v5 associatedMessageContentTypeFromCKMediaType:{objc_msgSend(mediaObject, "mediaType")}];
 
-  v8 = [v4 IMChatItem];
-  v9 = [v8 balloonBundleID];
+  iMChatItem2 = [v4 IMChatItem];
+  balloonBundleID = [iMChatItem2 balloonBundleID];
   v10 = *MEMORY[0x1E69A6A08];
   v11 = IMBalloonExtensionIDWithSuffix();
-  v12 = [v9 isEqualToString:v11];
+  v12 = [balloonBundleID isEqualToString:v11];
 
   if (v12)
   {
@@ -204,30 +204,30 @@ LABEL_41:
   }
 
   v25 = 0;
-  v26 = 0;
-  v18 = 0;
+  messagePartBody = 0;
+  absoluteString = 0;
 LABEL_42:
-  v38 = [v3 messageItem];
-  v39 = [v38 expressiveSendStyleID];
-  if ([v39 isEqualToString:*MEMORY[0x1E69A7088]])
+  messageItem2 = [v3 messageItem];
+  expressiveSendStyleID = [messageItem2 expressiveSendStyleID];
+  if ([expressiveSendStyleID isEqualToString:*MEMORY[0x1E69A7088]])
   {
     v40 = CKFrameworkBundle();
     v41 = [v40 localizedStringForKey:@"SUMMARY_INVISIBLE_INK_MESSAGE" value:&stru_1F04268F8 table:@"ChatKit"];
 
-    v18 = v41;
+    absoluteString = v41;
   }
 
-  v42 = [MEMORY[0x1E695DF20] dictionaryWithAssociatedMessageSummary:v18 contentType:v7 associatedMessagePartText:v26 pluginBundleID:v13 pluginDisplayName:v25 messageEffect:v39];
+  v42 = [MEMORY[0x1E695DF20] dictionaryWithAssociatedMessageSummary:absoluteString contentType:v7 associatedMessagePartText:messagePartBody pluginBundleID:v13 pluginDisplayName:v25 messageEffect:expressiveSendStyleID];
 
   return v42;
 }
 
 - (id)_relevantLanguageIdentifierForLocalization
 {
-  v0 = [MEMORY[0x1E69DD0E8] currentInputMode];
-  v1 = [v0 primaryLanguage];
+  currentInputMode = [MEMORY[0x1E69DD0E8] currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
 
-  return v1;
+  return primaryLanguage;
 }
 
 - (void)sendMessageAcknowledgment:()CKMessageAcknowledgment forChatItem:languageIdentifier:
@@ -237,20 +237,20 @@ LABEL_42:
   v10 = a4;
   v11 = [v8 tapbackWithAssociatedMessageType:a3];
   [v11 setLanguageIdentifier:v9];
-  [a1 sendTapback:v11 forChatItem:v10 languageIdentifier:v9];
+  [self sendTapback:v11 forChatItem:v10 languageIdentifier:v9];
 }
 
 - (void)sendTapback:()CKMessageAcknowledgment forChatItem:languageIdentifier:
 {
   v8 = a3;
   v9 = a4;
-  v10 = a5;
-  if (!v10)
+  _relevantLanguageIdentifierForLocalization = a5;
+  if (!_relevantLanguageIdentifierForLocalization)
   {
-    v10 = [a1 _relevantLanguageIdentifierForLocalization];
+    _relevantLanguageIdentifierForLocalization = [self _relevantLanguageIdentifierForLocalization];
   }
 
-  [v8 setLanguageIdentifier:v10];
+  [v8 setLanguageIdentifier:_relevantLanguageIdentifierForLocalization];
   if ([v9 isEditedMessageHistory])
   {
     v11 = IMLogHandleForCategory();
@@ -262,27 +262,27 @@ LABEL_42:
     goto LABEL_16;
   }
 
-  v19 = [v9 IMChatItem];
+  iMChatItem = [v9 IMChatItem];
 
-  if (v19)
+  if (iMChatItem)
   {
-    v20 = [v9 IMChatItem];
+    iMChatItem2 = [v9 IMChatItem];
     v73 = v8;
     v21 = objc_alloc(MEMORY[0x1E69A5CD0]);
-    v22 = [v20 guid];
-    v23 = [v20 originalMessagePartRange];
+    guid = [iMChatItem2 guid];
+    originalMessagePartRange = [iMChatItem2 originalMessagePartRange];
     v25 = v24;
     [objc_opt_class() configureMessageSummaryInfoForChatItem:v9];
-    v26 = v10;
+    v26 = _relevantLanguageIdentifierForLocalization;
     v27 = v9;
-    v29 = v28 = a1;
-    v30 = [v20 threadIdentifierForTapback];
+    v29 = v28 = self;
+    threadIdentifierForTapback = [iMChatItem2 threadIdentifierForTapback];
     v31 = v21;
     v8 = v73;
     v32 = v28;
     v9 = v27;
-    v10 = v26;
-    v11 = [v31 initWithTapback:v73 chat:v32 messageGUID:v22 messagePartRange:v23 messageSummaryInfo:v25 threadIdentifier:{v29, v30}];
+    _relevantLanguageIdentifierForLocalization = v26;
+    v11 = [v31 initWithTapback:v73 chat:v32 messageGUID:guid messagePartRange:originalMessagePartRange messageSummaryInfo:v25 threadIdentifier:{v29, threadIdentifierForTapback}];
 
     goto LABEL_8;
   }
@@ -302,43 +302,43 @@ LABEL_13:
   }
 
   v33 = v9;
-  v34 = [v33 mediaObject];
-  v35 = [v34 transfer];
-  v36 = [v35 attributionInfo];
+  mediaObject = [v33 mediaObject];
+  transfer = [mediaObject transfer];
+  attributionInfo = [transfer attributionInfo];
 
-  v37 = [v36 objectForKey:*MEMORY[0x1E69A6FC0]];
-  v74 = v36;
-  v38 = [v36 objectForKey:*MEMORY[0x1E69A6FE8]];
+  v37 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FC0]];
+  v74 = attributionInfo;
+  v38 = [attributionInfo objectForKey:*MEMORY[0x1E69A6FE8]];
   [v38 unsignedIntValue];
 
-  v39 = [v33 parentGUID];
-  [a1 createIMChatItemForTransientAttachmentWithAssetUUID:v37 parentChatItemGUID:v39];
+  parentGUID = [v33 parentGUID];
+  [self createIMChatItemForTransientAttachmentWithAssetUUID:v37 parentChatItemGUID:parentGUID];
   v40 = IMFauxMessageGUIDForTapbackOfCMMAssetAtIndexInParentMessageGUID();
-  v41 = [v33 IMChatItem];
-  if (v41)
+  iMChatItem3 = [v33 IMChatItem];
+  if (iMChatItem3)
   {
     v70 = objc_alloc(MEMORY[0x1E69A5CD0]);
     v72 = v37;
-    v42 = [v41 originalMessagePartRange];
+    originalMessagePartRange2 = [iMChatItem3 originalMessagePartRange];
     v69 = v43;
     [objc_opt_class() configureMessageSummaryInfoForChatItem:v33];
-    v44 = v10;
+    v44 = _relevantLanguageIdentifierForLocalization;
     v45 = v9;
-    v47 = v46 = a1;
-    [v41 threadIdentifierForTapback];
-    v71 = v39;
+    v47 = v46 = self;
+    [iMChatItem3 threadIdentifierForTapback];
+    v71 = parentGUID;
     v48 = v33;
     v50 = v49 = v40;
     v51 = v46;
     v9 = v45;
-    v10 = v44;
-    v52 = v42;
+    _relevantLanguageIdentifierForLocalization = v44;
+    v52 = originalMessagePartRange2;
     v37 = v72;
     v11 = [v70 initWithTapback:v8 chat:v51 messageGUID:v49 messagePartRange:v52 messageSummaryInfo:v69 threadIdentifier:{v47, v50}];
 
     v40 = v49;
     v33 = v48;
-    v39 = v71;
+    parentGUID = v71;
   }
 
   else
@@ -352,7 +352,7 @@ LABEL_13:
     v11 = 0;
   }
 
-  if (v41)
+  if (iMChatItem3)
   {
 LABEL_8:
     if (v11)

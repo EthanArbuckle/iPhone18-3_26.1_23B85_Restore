@@ -1,43 +1,43 @@
 @interface LNParameterConfiguration
-- (BOOL)isEqual:(id)a3;
-- (LNParameterConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNParameterConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNParameterConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNParameterConfiguration forcesNeedsValue](self forKey:{"forcesNeedsValue"), @"forcesNeedsValue"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNParameterConfiguration forcesNeedsValue](self forKey:{"forcesNeedsValue"), @"forcesNeedsValue"}];
 }
 
-- (LNParameterConfiguration)initWithCoder:(id)a3
+- (LNParameterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(LNParameterConfiguration *)self init];
   if (v5)
   {
-    v5->_forcesNeedsValue = [v4 decodeBoolForKey:@"forcesNeedsValue"];
+    v5->_forcesNeedsValue = [coderCopy decodeBoolForKey:@"forcesNeedsValue"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -45,23 +45,23 @@
     goto LABEL_7;
   }
 
-  v7 = [(LNParameterConfiguration *)self forcesNeedsValue];
-  if (v7 != [(LNParameterConfiguration *)v6 forcesNeedsValue])
+  forcesNeedsValue = [(LNParameterConfiguration *)self forcesNeedsValue];
+  if (forcesNeedsValue != [(LNParameterConfiguration *)v6 forcesNeedsValue])
   {
 LABEL_7:
     LOBYTE(v9) = 0;
     goto LABEL_8;
   }
 
-  v8 = [(LNParameterConfiguration *)self isSecure];
-  v9 = v8 ^ [(LNParameterConfiguration *)v6 isSecure]^ 1;
+  isSecure = [(LNParameterConfiguration *)self isSecure];
+  v9 = isSecure ^ [(LNParameterConfiguration *)v6 isSecure]^ 1;
 LABEL_8:
 
 LABEL_10:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(LNParameterConfiguration);
   [(LNParameterConfiguration *)v4 setForcesNeedsValue:[(LNParameterConfiguration *)self forcesNeedsValue]];

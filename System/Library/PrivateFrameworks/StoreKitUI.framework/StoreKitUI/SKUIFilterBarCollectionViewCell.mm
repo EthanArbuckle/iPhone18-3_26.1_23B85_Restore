@@ -1,20 +1,20 @@
 @interface SKUIFilterBarCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SKUIFilterBarCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SKUIFilterBarCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIFilterBarCollectionViewCell
 
-- (SKUIFilterBarCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIFilterBarCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIFilterBarCollectionViewCell initWithFrame:];
@@ -22,46 +22,46 @@
 
   v15.receiver = self;
   v15.super_class = SKUIFilterBarCollectionViewCell;
-  v8 = [(SKUIViewReuseCollectionViewCell *)&v15 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIViewReuseCollectionViewCell *)&v15 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUIFilterBarCollectionViewCell *)v8 contentView];
+    contentView = [(SKUIFilterBarCollectionViewCell *)height contentView];
     v11 = [SKUIFilterBarView alloc];
-    [v10 bounds];
+    [contentView bounds];
     v12 = [(SKUIFilterBarView *)v11 initWithFrame:?];
     filterBarView = v9->_filterBarView;
     v9->_filterBarView = v12;
 
-    [v10 addSubview:v9->_filterBarView];
+    [contentView addSubview:v9->_filterBarView];
   }
 
   return v9;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   filterBarView = self->_filterBarView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SKUIViewReuseView *)filterBarView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SKUIViewReuseView *)filterBarView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SKUIFilterBarCollectionViewCell;
-  [(SKUIViewReuseCollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SKUIViewReuseCollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SKUIFilterBarView preferredSizeForViewElement:a3 context:a4];
+  [SKUIFilterBarView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SKUIFilterBarView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SKUIFilterBarView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -73,19 +73,19 @@
   v5.super_class = SKUIFilterBarCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   filterBarView = self->_filterBarView;
-  v4 = [(SKUIFilterBarCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUIFilterBarCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUIFilterBarView *)filterBarView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   filterBarView = self->_filterBarView;
-  v5 = a3;
-  [(SKUIViewReuseView *)filterBarView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)filterBarView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIFilterBarCollectionViewCell;
-  [(SKUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUIViewReuseCollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (void)initWithFrame:.cold.1()

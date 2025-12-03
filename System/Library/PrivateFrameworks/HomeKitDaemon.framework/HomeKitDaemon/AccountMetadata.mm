@@ -1,5 +1,5 @@
 @interface AccountMetadata
-- (void)profilePhotoWithCompletionHandler:(id)a3;
+- (void)profilePhotoWithCompletionHandler:(id)handler;
 - (void)updateAccountMetadata;
 @end
 
@@ -7,17 +7,17 @@
 
 - (void)updateAccountMetadata
 {
-  v2 = self;
+  selfCopy = self;
   sub_2296BF5C8();
 }
 
-- (void)profilePhotoWithCompletionHandler:(id)a3
+- (void)profilePhotoWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -33,7 +33,7 @@
   v13[3] = 0;
   v13[4] = &unk_22A57B590;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_229859F70(0, 0, v8, &unk_22A581CC0, v13);
 }
 

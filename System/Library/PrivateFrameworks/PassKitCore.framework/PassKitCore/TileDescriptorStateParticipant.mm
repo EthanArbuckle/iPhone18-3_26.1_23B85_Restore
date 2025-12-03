@@ -1,42 +1,42 @@
 @interface TileDescriptorStateParticipant
-+ (BOOL)removeParticipantsForPassUniqueID:(id)a3 inDatabase:(id)a4;
-+ (BOOL)setPassTileDescriptorStateParticipantIDs:(id)a3 forPassUniqueID:(id)a4 inDatabase:(id)a5;
-+ (id)passUniqueIdentifiersForTileDescriptorStateParticipantWithIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)passUniqueIdentifiersInDatabase:(id)a3;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-- (id)_initWitParticipantID:(id)a3 forPass:(id)a4 inDatabase:(id)a5;
++ (BOOL)removeParticipantsForPassUniqueID:(id)d inDatabase:(id)database;
++ (BOOL)setPassTileDescriptorStateParticipantIDs:(id)ds forPassUniqueID:(id)d inDatabase:(id)database;
++ (id)passUniqueIdentifiersForTileDescriptorStateParticipantWithIdentifier:(id)identifier inDatabase:(id)database;
++ (id)passUniqueIdentifiersInDatabase:(id)database;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
+- (id)_initWitParticipantID:(id)d forPass:(id)pass inDatabase:(id)database;
 @end
 
 @implementation TileDescriptorStateParticipant
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"pass.unique_id"])
+  joinsCopy = joins;
+  if ([property isEqualToString:@"pass.unique_id"])
   {
-    [v5 addObject:@"JOIN pass ON pass_tile_descriptor_state_participant.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"JOIN pass ON pass_tile_descriptor_state_participant.pass_pid = pass.pid"];
   }
 }
 
-- (id)_initWitParticipantID:(id)a3 forPass:(id)a4 inDatabase:(id)a5
+- (id)_initWitParticipantID:(id)d forPass:(id)pass inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  databaseCopy = database;
+  passCopy = pass;
+  dCopy = d;
   v11 = objc_alloc_init(NSMutableDictionary);
-  [v11 setObjectOrNull:v10 forKey:@"participant_identifier"];
+  [v11 setObjectOrNull:dCopy forKey:@"participant_identifier"];
 
-  [v11 setEntityPIDOrNull:v9 forKey:@"pass_pid"];
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v8];
+  [v11 setEntityPIDOrNull:passCopy forKey:@"pass_pid"];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
 
   return v12;
 }
 
-+ (id)passUniqueIdentifiersInDatabase:(id)a3
++ (id)passUniqueIdentifiersInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_alloc_init(NSMutableSet);
-  v6 = [a1 queryWithDatabase:v4 predicate:0];
+  v6 = [self queryWithDatabase:databaseCopy predicate:0];
 
   v13 = @"pass.unique_id";
   v7 = [NSArray arrayWithObjects:&v13 count:1];
@@ -61,14 +61,14 @@
   return v9;
 }
 
-+ (id)passUniqueIdentifiersForTileDescriptorStateParticipantWithIdentifier:(id)a3 inDatabase:(id)a4
++ (id)passUniqueIdentifiersForTileDescriptorStateParticipantWithIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(NSMutableSet);
-  v9 = [a1 _predicateForParticipantID:v7];
+  v9 = [self _predicateForParticipantID:identifierCopy];
 
-  v10 = [a1 queryWithDatabase:v6 predicate:v9];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v9];
 
   v17 = @"pass.unique_id";
   v11 = [NSArray arrayWithObjects:&v17 count:1];
@@ -93,10 +93,10 @@
   return v13;
 }
 
-+ (BOOL)setPassTileDescriptorStateParticipantIDs:(id)a3 forPassUniqueID:(id)a4 inDatabase:(id)a5
++ (BOOL)setPassTileDescriptorStateParticipantIDs:(id)ds forPassUniqueID:(id)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -105,29 +105,29 @@
   v14[1] = 3221225472;
   v14[2] = sub_100078844;
   v14[3] = &unk_10083C290;
-  v10 = a5;
-  v15 = v10;
-  v11 = v9;
+  databaseCopy = database;
+  v15 = databaseCopy;
+  v11 = dCopy;
   v16 = v11;
-  v19 = a1;
-  v12 = v8;
+  selfCopy = self;
+  v12 = dsCopy;
   v17 = v12;
   v18 = &v20;
-  sub_1005D4424(v10, v14);
-  LOBYTE(a1) = *(v21 + 24);
+  sub_1005D4424(databaseCopy, v14);
+  LOBYTE(self) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return a1;
+  return self;
 }
 
-+ (BOOL)removeParticipantsForPassUniqueID:(id)a3 inDatabase:(id)a4
++ (BOOL)removeParticipantsForPassUniqueID:(id)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassUniqueID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassUniqueID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  LOBYTE(v6) = [v8 deleteAllEntities];
-  return v6;
+  LOBYTE(databaseCopy) = [v8 deleteAllEntities];
+  return databaseCopy;
 }
 
 @end

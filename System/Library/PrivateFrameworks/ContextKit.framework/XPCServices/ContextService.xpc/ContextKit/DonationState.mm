@@ -1,7 +1,7 @@
 @interface DonationState
-+ (unint64_t)_validApplicationToExtractFromCount:(id)a3;
++ (unint64_t)_validApplicationToExtractFromCount:(id)count;
 - (DonationState)init;
-- (DonationState)initWithLayoutMonitor:(id)a3;
+- (DonationState)initWithLayoutMonitor:(id)monitor;
 - (void)dealloc;
 @end
 
@@ -24,9 +24,9 @@
   return v2;
 }
 
-- (DonationState)initWithLayoutMonitor:(id)a3
+- (DonationState)initWithLayoutMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v13.receiver = self;
   v13.super_class = DonationState;
   v5 = [(DonationState *)&v13 init];
@@ -36,12 +36,12 @@
     dateCreated = v5->_dateCreated;
     v5->_dateCreated = v6;
 
-    v8 = objc_storeWeak(&v5->_layoutMonitor, v4);
-    v9 = [v4 currentLayout];
+    v8 = objc_storeWeak(&v5->_layoutMonitor, monitorCopy);
+    currentLayout = [monitorCopy currentLayout];
 
     v10 = objc_opt_class();
-    v11 = [v9 elements];
-    v5->_numberOfApplicationsToWaitFor = [v10 _validApplicationToExtractFromCount:v11];
+    elements = [currentLayout elements];
+    v5->_numberOfApplicationsToWaitFor = [v10 _validApplicationToExtractFromCount:elements];
   }
 
   return v5;
@@ -60,14 +60,14 @@
   [(DonationState *)&v3 dealloc];
 }
 
-+ (unint64_t)_validApplicationToExtractFromCount:(id)a3
++ (unint64_t)_validApplicationToExtractFromCount:(id)count
 {
-  v3 = a3;
+  countCopy = count;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  v4 = [countCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v4)
   {
     v6 = v4;
@@ -85,40 +85,40 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(countCopy);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
         if ([v12 isUIApplicationElement])
         {
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:v8];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqualToString:v8];
 
           if ((v14 & 1) == 0)
           {
-            v15 = [v12 identifier];
-            v16 = [v15 isEqualToString:v9];
+            identifier2 = [v12 identifier];
+            v16 = [identifier2 isEqualToString:v9];
 
             if ((v16 & 1) == 0)
             {
-              v17 = [v12 identifier];
-              v18 = [v17 isEqualToString:v10];
+              identifier3 = [v12 identifier];
+              v18 = [identifier3 isEqualToString:v10];
 
               if ((v18 & 1) == 0)
               {
-                v19 = [v12 identifier];
-                v20 = [v19 isEqualToString:v25];
+                identifier4 = [v12 identifier];
+                v20 = [identifier4 isEqualToString:v25];
 
                 if ((v20 & 1) == 0)
                 {
                   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
                   {
-                    v21 = [v12 identifier];
-                    v22 = [v12 bundleIdentifier];
+                    identifier5 = [v12 identifier];
+                    bundleIdentifier = [v12 bundleIdentifier];
                     *buf = v24;
-                    v32 = v21;
+                    v32 = identifier5;
                     v33 = 2112;
-                    v34 = v22;
+                    v34 = bundleIdentifier;
                     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Allowing application element with identifier: %@, bundleID: %@", buf, 0x16u);
                   }
 
@@ -130,7 +130,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v6 = [countCopy countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v6);

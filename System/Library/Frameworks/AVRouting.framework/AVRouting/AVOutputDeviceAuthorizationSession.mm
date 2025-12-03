@@ -1,20 +1,20 @@
 @interface AVOutputDeviceAuthorizationSession
-+ (AVOutputDeviceAuthorizationSession)outputDeviceAuthorizationSessionWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3;
++ (AVOutputDeviceAuthorizationSession)outputDeviceAuthorizationSessionWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent;
 + (id)sharedAuthorizationSession;
 + (void)initialize;
-- (AVOutputDeviceAuthorizationSession)initWithOutputDeviceAuthorizationSessionImpl:(id)a3;
-- (BOOL)outputDeviceAuthorizationSessionImpl:(id)a3 shouldRetryAuthorizationRequest:(id)a4 reason:(id)a5;
+- (AVOutputDeviceAuthorizationSession)initWithOutputDeviceAuthorizationSessionImpl:(id)impl;
+- (BOOL)outputDeviceAuthorizationSessionImpl:(id)impl shouldRetryAuthorizationRequest:(id)request reason:(id)reason;
 - (id)impl;
 - (void)dealloc;
-- (void)outputDeviceAuthorizationSessionImpl:(id)a3 didProvideAuthorizationRequest:(id)a4;
-- (void)outputDeviceAuthorizationSessionImplDidExpireWithReplacementImpl:(id)a3;
+- (void)outputDeviceAuthorizationSessionImpl:(id)impl didProvideAuthorizationRequest:(id)request;
+- (void)outputDeviceAuthorizationSessionImplDidExpireWithReplacementImpl:(id)impl;
 @end
 
 @implementation AVOutputDeviceAuthorizationSession
 
-+ (AVOutputDeviceAuthorizationSession)outputDeviceAuthorizationSessionWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)a3
++ (AVOutputDeviceAuthorizationSession)outputDeviceAuthorizationSessionWithEndpointUIAgent:(OpaqueFigEndpointUIAgent *)agent
 {
-  v3 = [[AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl alloc] initWithFigEndpointUIAgent:a3];
+  v3 = [[AVFigEndpointUIAgentOutputDeviceAuthorizationSessionImpl alloc] initWithFigEndpointUIAgent:agent];
   v4 = [[AVOutputDeviceAuthorizationSession alloc] initWithOutputDeviceAuthorizationSessionImpl:v3];
 
   return v4;
@@ -22,7 +22,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -116,10 +116,10 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)outputDeviceAuthorizationSessionImpl:(id)a3 didProvideAuthorizationRequest:(id)a4
+- (void)outputDeviceAuthorizationSessionImpl:(id)impl didProvideAuthorizationRequest:(id)request
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = [(AVOutputDeviceAuthorizationSession *)self delegate];
+  delegate = [(AVOutputDeviceAuthorizationSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     if (dword_1EB46D568)
@@ -129,7 +129,7 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [(AVOutputDeviceAuthorizationSessionDelegate *)v6 outputDeviceAuthorizationSession:self didProvideAuthorizationRequest:a4, v10, v11];
+    [(AVOutputDeviceAuthorizationSessionDelegate *)delegate outputDeviceAuthorizationSession:self didProvideAuthorizationRequest:request, v10, v11];
   }
 
   else if (dword_1EB46D568)
@@ -142,10 +142,10 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)outputDeviceAuthorizationSessionImpl:(id)a3 shouldRetryAuthorizationRequest:(id)a4 reason:(id)a5
+- (BOOL)outputDeviceAuthorizationSessionImpl:(id)impl shouldRetryAuthorizationRequest:(id)request reason:(id)reason
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = [(AVOutputDeviceAuthorizationSession *)self delegate];
+  delegate = [(AVOutputDeviceAuthorizationSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     if (dword_1EB46D568)
@@ -155,7 +155,7 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    result = [(AVOutputDeviceAuthorizationSessionDelegate *)v8 outputDeviceAuthorizationSession:self shouldRetryAuthorizationRequest:a4 reason:a5, v13, v14];
+    result = [(AVOutputDeviceAuthorizationSessionDelegate *)delegate outputDeviceAuthorizationSession:self shouldRetryAuthorizationRequest:request reason:reason, v13, v14];
   }
 
   else
@@ -174,7 +174,7 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)outputDeviceAuthorizationSessionImplDidExpireWithReplacementImpl:(id)a3
+- (void)outputDeviceAuthorizationSessionImplDidExpireWithReplacementImpl:(id)impl
 {
   v7 = 0;
   v8 = &v7;
@@ -187,12 +187,12 @@ id __42__AVOutputDeviceAuthorizationSession_impl__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __103__AVOutputDeviceAuthorizationSession_outputDeviceAuthorizationSessionImplDidExpireWithReplacementImpl___block_invoke;
   block[3] = &unk_1E794EE90;
-  block[5] = a3;
+  block[5] = impl;
   block[6] = &v7;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [v8[5] setParentAuthorizationSession:0];
-  [a3 setParentAuthorizationSession:self];
+  [impl setParentAuthorizationSession:self];
 
   _Block_object_dispose(&v7, 8);
 }
@@ -206,12 +206,12 @@ id __103__AVOutputDeviceAuthorizationSession_outputDeviceAuthorizationSessionImp
   return result;
 }
 
-- (AVOutputDeviceAuthorizationSession)initWithOutputDeviceAuthorizationSessionImpl:(id)a3
+- (AVOutputDeviceAuthorizationSession)initWithOutputDeviceAuthorizationSessionImpl:(id)impl
 {
   v8.receiver = self;
   v8.super_class = AVOutputDeviceAuthorizationSession;
   v4 = [(AVOutputDeviceAuthorizationSession *)&v8 init];
-  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceAuthorizationSessionInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = a3) != 0)
+  if (v4 && (v5 = objc_alloc_init(AVOutputDeviceAuthorizationSessionInternal), (v4->_ivars = v5) != 0) && (v4->_ivars->impl = impl) != 0)
   {
     v4->_ivars->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.outputdeviceauthorizationsession.ivars");
     [(AVOutputDeviceAuthorizationSessionImpl *)v4->_ivars->impl setParentAuthorizationSession:v4];

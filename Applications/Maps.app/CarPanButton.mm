@@ -1,24 +1,24 @@
 @interface CarPanButton
-+ (id)arrowImageForDirection:(int64_t)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CarPanButton)initWithDirection:(int64_t)a3;
++ (id)arrowImageForDirection:(int64_t)direction;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CarPanButton)initWithDirection:(int64_t)direction;
 - (NSString)description;
 - (id)accessibilityUserInputLabels;
-- (id)axIdentifierForDirection:(int64_t)a3;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
+- (id)axIdentifierForDirection:(int64_t)direction;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
 @end
 
 @implementation CarPanButton
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(CarPanButton *)self direction];
+  direction = [(CarPanButton *)self direction];
   v3 = 0;
-  if (v2 > 2)
+  if (direction > 2)
   {
-    if (v2 == 4)
+    if (direction == 4)
     {
       v4 = +[NSBundle mainBundle];
       v5 = [v4 localizedStringForKey:@"CarPlay_Right" value:@"localized string not found" table:0];
@@ -29,7 +29,7 @@
 
     else
     {
-      if (v2 != 3)
+      if (direction != 3)
       {
         goto LABEL_11;
       }
@@ -42,7 +42,7 @@
     }
   }
 
-  else if (v2 == 1)
+  else if (direction == 1)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"CarPlay_Up" value:@"localized string not found" table:0];
@@ -53,7 +53,7 @@
 
   else
   {
-    if (v2 != 2)
+    if (direction != 2)
     {
       goto LABEL_11;
     }
@@ -75,11 +75,11 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_longPressRecognizer == v4 || self->_tapRecognizer == v4)
+  beginCopy = begin;
+  v5 = beginCopy;
+  if (self->_longPressRecognizer == beginCopy || self->_tapRecognizer == beginCopy)
   {
     v6 = 1;
   }
@@ -88,22 +88,22 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = CarPanButton;
-    v6 = [(CarPanButton *)&v8 gestureRecognizerShouldBegin:v4];
+    v6 = [(CarPanButton *)&v8 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v6;
 }
 
-- (id)axIdentifierForDirection:(int64_t)a3
+- (id)axIdentifierForDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 3)
+  if ((direction - 1) > 3)
   {
     v3 = &stru_1016631F0;
   }
 
   else
   {
-    v3 = off_101631908[a3 - 1];
+    v3 = off_101631908[direction - 1];
   }
 
   return [@"CarPanButton." stringByAppendingString:v3];
@@ -118,7 +118,7 @@ LABEL_11:
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 36.0;
   v4 = 36.0;
@@ -127,19 +127,19 @@ LABEL_11:
   return result;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(CarPanButton *)self sendActionsForControlEvents:0x1000000];
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v5 = a3;
-  if ([v5 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
     v4 = 0x2000000;
 LABEL_6:
@@ -147,7 +147,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v5 state] == 3 || objc_msgSend(v5, "state") == 4)
+  if ([pressCopy state] == 3 || objc_msgSend(pressCopy, "state") == 4)
   {
     v4 = 0x4000000;
     goto LABEL_6;
@@ -156,21 +156,21 @@ LABEL_6:
 LABEL_7:
 }
 
-- (CarPanButton)initWithDirection:(int64_t)a3
+- (CarPanButton)initWithDirection:(int64_t)direction
 {
-  v5 = [objc_opt_class() arrowImageForDirection:a3];
+  v5 = [objc_opt_class() arrowImageForDirection:direction];
   v29.receiver = self;
   v29.super_class = CarPanButton;
   v6 = [(CarFocusableImageButton *)&v29 initWithImage:v5];
   v7 = v6;
   if (v6)
   {
-    v6->_direction = a3;
+    v6->_direction = direction;
     [(CarFocusableBlurControl *)v6 setRoundedCornerRadius:18.0];
-    v8 = [(CarPanButton *)v7 axIdentifierForDirection:a3];
+    v8 = [(CarPanButton *)v7 axIdentifierForDirection:direction];
     [(CarPanButton *)v7 setAccessibilityIdentifier:v8];
 
-    if ((a3 - 3) >= 2)
+    if ((direction - 3) >= 2)
     {
       v9 = 0;
     }
@@ -244,16 +244,16 @@ LABEL_7:
   return v7;
 }
 
-+ (id)arrowImageForDirection:(int64_t)a3
++ (id)arrowImageForDirection:(int64_t)direction
 {
-  if ((a3 - 1) > 3)
+  if ((direction - 1) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [UIImage _mapsCar_systemImageNamed:off_1016318E8[a3 - 1] textStyle:UIFontTextStyleSubheadline, v3];
+    v5 = [UIImage _mapsCar_systemImageNamed:off_1016318E8[direction - 1] textStyle:UIFontTextStyleSubheadline, v3];
   }
 
   return v5;

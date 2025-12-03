@@ -1,20 +1,20 @@
 @interface SBHomeScreenOverlayViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBHomeScreenOverlayViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"isFromLeading" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenOverlayViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"popNestedViewControllerAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"isFromLeading" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenOverlayViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBHLibraryViewController" hasInstanceMethod:@"popNestedViewControllerAnimated:withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -52,15 +52,15 @@ uint64_t __92__SBHomeScreenOverlayViewControllerAccessibility__accessibilityLoad
   }
 
   v8 = [(SBHomeScreenOverlayViewControllerAccessibility *)self safeValueForKey:@"delegate"];
-  v9 = [v8 accessibilityPerformEscape];
+  accessibilityPerformEscape = [v8 accessibilityPerformEscape];
 
-  return v9;
+  return accessibilityPerformEscape;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v5 = [(SBHomeScreenOverlayViewControllerAccessibility *)self safeBoolForKey:@"isFromLeading"];
-  if (a3 == 1)
+  if (scroll == 1)
   {
     if (v5 && ![(SBHomeScreenOverlayViewControllerAccessibility *)self _accessibilityIsRTL])
     {
@@ -68,7 +68,7 @@ uint64_t __92__SBHomeScreenOverlayViewControllerAccessibility__accessibilityLoad
     }
   }
 
-  else if (a3 != 2 || (v5 & 1) == 0 && ([(SBHomeScreenOverlayViewControllerAccessibility *)self _accessibilityIsRTL]& 1) == 0)
+  else if (scroll != 2 || (v5 & 1) == 0 && ([(SBHomeScreenOverlayViewControllerAccessibility *)self _accessibilityIsRTL]& 1) == 0)
   {
     return 0;
   }

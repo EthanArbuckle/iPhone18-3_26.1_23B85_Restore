@@ -31,17 +31,17 @@
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[LTUISourceMeta origin](self, "origin")}];
   v12[1] = @"languageHints";
   v13[0] = v4;
-  v5 = [(LTUISourceMeta *)self languageHints];
-  v13[1] = v5;
+  languageHints = [(LTUISourceMeta *)self languageHints];
+  v13[1] = languageHints;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v7 = [v3 dictionaryWithDictionary:v6];
 
-  v8 = [(LTUISourceMeta *)self context];
+  context = [(LTUISourceMeta *)self context];
 
-  if (v8)
+  if (context)
   {
-    v9 = [(LTUISourceMeta *)self context];
-    [v7 setObject:v9 forKeyedSubscript:@"context"];
+    context2 = [(LTUISourceMeta *)self context];
+    [v7 setObject:context2 forKeyedSubscript:@"context"];
   }
 
   v10 = *MEMORY[0x277D85DE8];

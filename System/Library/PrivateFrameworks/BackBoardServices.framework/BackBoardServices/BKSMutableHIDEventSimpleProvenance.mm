@@ -1,15 +1,15 @@
 @interface BKSMutableHIDEventSimpleProvenance
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSignature:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSignature:(id)signature;
 @end
 
 @implementation BKSMutableHIDEventSimpleProvenance
 
-- (void)setSignature:(id)a3
+- (void)setSignature:(id)signature
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  signatureCopy = signature;
+  if (!signatureCopy)
   {
     v9 = MEMORY[0x1E696AEC0];
     v10 = objc_opt_class();
@@ -26,7 +26,7 @@
       v27 = 2114;
       v28 = v15;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventSimpleProvenance.m";
       v33 = 1024;
@@ -42,18 +42,18 @@
     JUMPOUT(0x18636E13CLL);
   }
 
-  v6 = v5;
+  v6 = signatureCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(NSData *)v6 classForCoder];
-    if (!v17)
+    classForCoder = [(NSData *)v6 classForCoder];
+    if (!classForCoder)
     {
-      v17 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v18 = NSStringFromClass(v17);
+    v18 = NSStringFromClass(classForCoder);
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v16 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"signature", v18, v20];
@@ -68,7 +68,7 @@
       v27 = 2114;
       v28 = v24;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventSimpleProvenance.m";
       v33 = 1024;
@@ -89,7 +89,7 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDEventSimpleProvenance alloc];
 

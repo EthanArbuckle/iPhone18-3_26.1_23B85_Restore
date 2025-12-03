@@ -1,31 +1,31 @@
 @interface PXMonthsLayoutGenerator
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6;
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions;
 @end
 
 @implementation PXMonthsLayoutGenerator
 
-- (void)updateContentSize:(CGSize *)a3 itemRects:(CGRect *)a4 itemKinds:(int64_t *)a5 zPositions:(float *)a6
+- (void)updateContentSize:(CGSize *)size itemRects:(CGRect *)rects itemKinds:(int64_t *)kinds zPositions:(float *)positions
 {
-  v10 = [(PXMonthsLayoutGenerator *)self itemCount];
-  v166 = [(PXMonthsLayoutGenerator *)self itemLayoutInfoBlock];
-  v161 = self;
-  v11 = [(PXMonthsLayoutGenerator *)self metrics];
-  v12 = [v11 layoutStyle];
-  [v11 referenceSize];
+  itemCount = [(PXMonthsLayoutGenerator *)self itemCount];
+  itemLayoutInfoBlock = [(PXMonthsLayoutGenerator *)self itemLayoutInfoBlock];
+  selfCopy = self;
+  metrics = [(PXMonthsLayoutGenerator *)self metrics];
+  layoutStyle = [metrics layoutStyle];
+  [metrics referenceSize];
   v147 = v13;
   v14 = +[PXCuratedLibrarySettings sharedInstance];
-  v162 = [v14 allowsModularLayoutForZoomLevel:2 sizeClass:objc_msgSend(v11 orientation:"sizeClass") layoutStyle:{objc_msgSend(v11, "orientation"), objc_msgSend(v11, "layoutStyle")}];
+  v162 = [v14 allowsModularLayoutForZoomLevel:2 sizeClass:objc_msgSend(metrics orientation:"sizeClass") layoutStyle:{objc_msgSend(metrics, "orientation"), objc_msgSend(metrics, "layoutStyle")}];
 
-  v15 = [v11 orientation];
-  v165 = v11;
-  v150 = v15;
-  v17 = [v11 sizeClass] == 1 && v15 == 2;
+  orientation = [metrics orientation];
+  v165 = metrics;
+  v150 = orientation;
+  v17 = [metrics sizeClass] == 1 && orientation == 2;
   v163 = v17;
-  v148 = v12;
-  if (v12 == 1)
+  v148 = layoutStyle;
+  if (layoutStyle == 1)
   {
     v18 = +[PXLemonadeSettings sharedInstance];
-    v158 = [v18 enableMonthHeroPromotion];
+    enableMonthHeroPromotion = [v18 enableMonthHeroPromotion];
 
     v19 = 1.5;
   }
@@ -33,27 +33,27 @@
   else
   {
     v19 = 1.0;
-    v158 = 1;
+    enableMonthHeroPromotion = 1;
   }
 
-  [v11 padding];
+  [metrics padding];
   v21 = v20;
   v23 = v22;
   v145 = v24;
   v26 = v25;
-  [v11 chapterHeaderPadding];
+  [metrics chapterHeaderPadding];
   v28 = v27;
   v30 = v29;
   v153 = v31;
   v164 = v32;
-  [v11 interitemSpacing];
+  [metrics interitemSpacing];
   v154 = v33;
   v167 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (v10 >= 1)
+  if (itemCount >= 1)
   {
-    for (i = 0; i != v10; ++i)
+    for (i = 0; i != itemCount; ++i)
     {
-      v35 = v166[2](v166, i);
+      v35 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, i);
       [v35 weight];
       v37 = v36;
 
@@ -68,11 +68,11 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __76__PXMonthsLayoutGenerator_updateContentSize_itemRects_itemKinds_zPositions___block_invoke;
   aBlock[3] = &unk_1E7735C90;
-  aBlock[4] = v161;
-  aBlock[5] = v10;
+  aBlock[4] = selfCopy;
+  aBlock[5] = itemCount;
   aBlock[6] = a2;
-  aBlock[7] = a4;
-  aBlock[8] = a5;
+  aBlock[7] = rects;
+  aBlock[8] = kinds;
   v38 = _Block_copy(aBlock);
   v39 = v147 - (v23 + v26);
   v196 = 0;
@@ -80,7 +80,7 @@
   v198 = 0x2020000000;
   v199 = 0;
   v151 = v38;
-  if (v10 > 0)
+  if (itemCount > 0)
   {
     v40 = 0;
     v155 = 0;
@@ -123,7 +123,7 @@
     }
 
     v50 = 1.5;
-    if (v12 != 1)
+    if (layoutStyle != 1)
     {
       v50 = 1.33333333;
     }
@@ -131,7 +131,7 @@
     v51 = v39 / v50;
     v52 = (v39 + v154 * -3.66666667) / 3.25;
     v114 = v154 + v154 + v52 / 1.77777778 * 3.0;
-    if (v12 == 1)
+    if (layoutStyle == 1)
     {
       v41 = 1;
     }
@@ -177,7 +177,7 @@
     v104 = v154 + v53;
     v118 = v55;
     v106 = v154 + v55;
-    v60 = a3;
+    sizeCopy3 = size;
     v149 = v28;
     v152 = v39;
     while ([v167 containsIndex:v40])
@@ -186,16 +186,16 @@
       v62 = v61;
       v63 = v197;
       v64 = v197[3];
-      v65 = &a4[v64];
+      v65 = &rects[v64];
       v67 = v156;
       v66 = v157;
       v65->origin.x = v157;
       v65->origin.y = v21;
       v65->size.width = v156;
       v65->size.height = v62;
-      a5[v64] = 0;
+      kinds[v64] = 0;
       v59 = v63[3];
-      a6[v59] = 0.0;
+      positions[v59] = 0.0;
       if (v163)
       {
         v68 = v59;
@@ -212,7 +212,7 @@
       v40 = v68 + 1;
       v63[3] = v68 + 1;
 LABEL_108:
-      if (v40 >= v10)
+      if (v40 >= itemCount)
       {
         goto LABEL_111;
       }
@@ -222,7 +222,7 @@ LABEL_108:
     v70 = [v167 indexGreaterThanIndex:v69];
     if (v70 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v71 = v10;
+      v71 = itemCount;
     }
 
     else
@@ -252,15 +252,15 @@ LABEL_108:
     v168[3] = &unk_1E7735CB8;
     v175 = v23;
     v176 = v21;
-    v177 = v10;
+    v177 = itemCount;
     v178 = a2;
     v170 = &v196;
-    v168[4] = v161;
-    v179 = a4;
-    v180 = a5;
-    v181 = a6;
-    v182 = v158;
-    v169 = v166;
+    v168[4] = selfCopy;
+    rectsCopy = rects;
+    kindsCopy = kinds;
+    positionsCopy = positions;
+    v182 = enableMonthHeroPromotion;
+    v169 = itemLayoutInfoBlock;
     v171 = v187;
     v172 = &v188;
     v173 = &v192;
@@ -449,13 +449,13 @@ LABEL_74:
       v86 = v197 + 3;
       for (j = v197[3]; j < v71; v197[3] = j)
       {
-        v88 = &a4[j];
+        v88 = &rects[j];
         v88->origin.x = v23;
         v88->origin.y = v21;
         v88->size.width = v39;
         v88->size.height = v85;
-        a5[j] = 0;
-        a6[*v86] = 0.0;
+        kinds[j] = 0;
+        positions[*v86] = 0.0;
         v201.origin.x = v23;
         v201.origin.y = v21;
         v201.size.width = v39;
@@ -514,18 +514,18 @@ LABEL_74:
         }
       }
 
-      a5[v69] |= 8uLL;
+      kinds[v69] |= 8uLL;
     }
 
     if (v59 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v94 = v58;
-      v95 = &a4[v59];
+      v95 = &rects[v59];
       y = v95->origin.y;
       if (v163)
       {
         height = v184[3] - y;
-        a5[v59] = 2;
+        kinds[v59] = 2;
         x = 0.0;
         width = v23;
       }
@@ -538,13 +538,13 @@ LABEL_74:
         if (!v162 || [v165 displaceTopLeadingCardTitle])
         {
           v100 = v184[3];
-          v101 = [v165 displaceTopLeadingCardTitle];
+          displaceTopLeadingCardTitle = [v165 displaceTopLeadingCardTitle];
           if (height < v100 - y)
           {
             height = v100 - y;
           }
 
-          if (v101)
+          if (displaceTopLeadingCardTitle)
           {
             y = y + 30.0;
           }
@@ -570,19 +570,19 @@ LABEL_74:
     _Block_object_dispose(&v192, 8);
     v40 = v197[3];
     v59 = 0x7FFFFFFFFFFFFFFFLL;
-    v60 = a3;
+    sizeCopy3 = size;
     goto LABEL_108;
   }
 
-  v60 = a3;
+  sizeCopy3 = size;
 LABEL_111:
   v203.size.height = *(MEMORY[0x1E695F058] + 24);
-  v60->width = v147;
+  sizeCopy3->width = v147;
   v203.origin.x = v23;
   v203.origin.y = v21;
   v203.size.width = v39;
-  v60->height = v145 + CGRectGetMinY(v203) - v28;
-  v161->_presentedSingleColumn = v162 ^ 1;
+  sizeCopy3->height = v145 + CGRectGetMinY(v203) - v28;
+  selfCopy->_presentedSingleColumn = v162 ^ 1;
   _Block_object_dispose(&v196, 8);
 }
 

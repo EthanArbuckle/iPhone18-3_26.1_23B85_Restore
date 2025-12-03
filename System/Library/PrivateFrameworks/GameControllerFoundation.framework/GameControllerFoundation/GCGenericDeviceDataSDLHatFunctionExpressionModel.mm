@@ -1,42 +1,42 @@
 @interface GCGenericDeviceDataSDLHatFunctionExpressionModel
-- (BOOL)isEqual:(id)a3;
-- (GCGenericDeviceDataSDLHatFunctionExpressionModel)initWithCoder:(id)a3;
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4;
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (GCGenericDeviceDataSDLHatFunctionExpressionModel)initWithCoder:(id)coder;
+- (id)buildExpressionWithContext:(id)context error:(id *)error;
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceDataSDLHatFunctionExpressionModel
 
-- (GCGenericDeviceDataSDLHatFunctionExpressionModel)initWithCoder:(id)a3
+- (GCGenericDeviceDataSDLHatFunctionExpressionModel)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = GCGenericDeviceDataSDLHatFunctionExpressionModel;
-  v3 = a3;
-  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v18 initWithCoder:v3];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"inputExpression", v18.receiver, v18.super_class}];
+  coderCopy = coder;
+  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v18 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"inputExpression", v18.receiver, v18.super_class}];
   inputExpression = v4->_inputExpression;
   v4->_inputExpression = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"inputMinExpression"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputMinExpression"];
   inputMinExpression = v4->_inputMinExpression;
   v4->_inputMinExpression = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"inputMaxExpression"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputMaxExpression"];
   inputMaxExpression = v4->_inputMaxExpression;
   v4->_inputMaxExpression = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"maskExpression"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maskExpression"];
   maskExpression = v4->_maskExpression;
   v4->_maskExpression = v11;
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"trueExpression"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trueExpression"];
   trueExpression = v4->_trueExpression;
   v4->_trueExpression = v13;
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"falseExpression"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"falseExpression"];
 
   falseExpression = v4->_falseExpression;
   v4->_falseExpression = v15;
@@ -44,65 +44,65 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = GCGenericDeviceDataSDLHatFunctionExpressionModel;
-  v4 = a3;
-  [(GCGenericDeviceDataProcessorExpressionModel *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GCGenericDeviceDataProcessorExpressionModel *)&v11 encodeWithCoder:coderCopy];
   v5 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression:v11.receiver];
-  [v4 encodeObject:v5 forKey:@"inputExpression"];
+  [coderCopy encodeObject:v5 forKey:@"inputExpression"];
 
-  v6 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
-  [v4 encodeObject:v6 forKey:@"inputMinExpression"];
+  inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+  [coderCopy encodeObject:inputMinExpression forKey:@"inputMinExpression"];
 
-  v7 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
-  [v4 encodeObject:v7 forKey:@"inputMaxExpression"];
+  inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+  [coderCopy encodeObject:inputMaxExpression forKey:@"inputMaxExpression"];
 
-  v8 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
-  [v4 encodeObject:v8 forKey:@"maskExpression"];
+  maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+  [coderCopy encodeObject:maskExpression forKey:@"maskExpression"];
 
-  v9 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
-  [v4 encodeObject:v9 forKey:@"trueExpression"];
+  trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+  [coderCopy encodeObject:trueExpression forKey:@"trueExpression"];
 
-  v10 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
-  [v4 encodeObject:v10 forKey:@"falseExpression"];
+  falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+  [coderCopy encodeObject:falseExpression forKey:@"falseExpression"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v23.receiver = self;
   v23.super_class = GCGenericDeviceDataSDLHatFunctionExpressionModel;
-  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v23 isEqual:v4])
+  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v23 isEqual:equalCopy])
   {
-    v5 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
-    v6 = [v4 inputExpression];
-    if ([v5 isEqual:v6])
+    inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+    inputExpression2 = [equalCopy inputExpression];
+    if ([inputExpression isEqual:inputExpression2])
     {
-      v7 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
-      v8 = [v4 inputMinExpression];
-      if ([v7 isEqual:v8])
+      inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+      inputMinExpression2 = [equalCopy inputMinExpression];
+      if ([inputMinExpression isEqual:inputMinExpression2])
       {
-        v9 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
-        v10 = [v4 inputMaxExpression];
-        if ([v9 isEqual:v10])
+        inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+        inputMaxExpression2 = [equalCopy inputMaxExpression];
+        if ([inputMaxExpression isEqual:inputMaxExpression2])
         {
-          v11 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
-          v12 = [v4 maskExpression];
-          if ([v11 isEqual:v12])
+          maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+          maskExpression2 = [equalCopy maskExpression];
+          if ([maskExpression isEqual:maskExpression2])
           {
-            v21 = v11;
-            v13 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
-            v14 = [v4 trueExpression];
-            v22 = v13;
-            v15 = v13;
-            v16 = v14;
-            if ([v15 isEqual:v14])
+            v21 = maskExpression;
+            trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+            trueExpression2 = [equalCopy trueExpression];
+            v22 = trueExpression;
+            v15 = trueExpression;
+            v16 = trueExpression2;
+            if ([v15 isEqual:trueExpression2])
             {
-              v20 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
-              v19 = [v4 falseExpression];
-              v17 = [v20 isEqual:v19];
+              falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+              falseExpression2 = [equalCopy falseExpression];
+              v17 = [falseExpression isEqual:falseExpression2];
             }
 
             else
@@ -110,7 +110,7 @@
               v17 = 0;
             }
 
-            v11 = v21;
+            maskExpression = v21;
           }
 
           else
@@ -148,23 +148,23 @@
 - (id)description
 {
   v17 = MEMORY[0x1E696AEC0];
-  v23 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
-  v22 = [v23 description];
+  inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+  v22 = [inputExpression description];
   v15 = [v22 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v21 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
-  v20 = [v21 description];
+  inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+  v20 = [inputMinExpression description];
   v12 = [v20 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v19 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
-  v16 = [v19 description];
+  inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+  v16 = [inputMaxExpression description];
   v3 = [v16 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v14 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
-  v13 = [v14 description];
+  maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+  v13 = [maskExpression description];
   v4 = [v13 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v5 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
-  v6 = [v5 description];
+  trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+  v6 = [trueExpression description];
   v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v8 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
-  v9 = [v8 description];
+  falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+  v9 = [falseExpression description];
   v10 = [v9 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
   v18 = [v17 stringWithFormat:@"(sdl-hat-function\n\t%@\n\t%@\n\t%@\n\t%@\n\t%@\n\t%@\n)", v15, v12, v3, v4, v7, v10];
 
@@ -176,48 +176,48 @@
   v20 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v18 = NSStringFromClass(v3);
-  v25 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
-  v24 = [v25 debugDescription];
+  inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+  v24 = [inputExpression debugDescription];
   v15 = [v24 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v23 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
-  v22 = [v23 debugDescription];
+  inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+  v22 = [inputMinExpression debugDescription];
   v13 = [v22 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v19 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
-  v17 = [v19 debugDescription];
+  inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+  v17 = [inputMaxExpression debugDescription];
   v12 = [v17 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v16 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
-  v14 = [v16 debugDescription];
+  maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+  v14 = [maskExpression debugDescription];
   v4 = [v14 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v5 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
-  v6 = [v5 debugDescription];
+  trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+  v6 = [trueExpression debugDescription];
   v7 = [v6 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v8 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
-  v9 = [v8 debugDescription];
+  falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+  v9 = [falseExpression debugDescription];
   v10 = [v9 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
   v21 = [v20 stringWithFormat:@"<%@ %p> {\n\t input = %@\n\t inputMin = %@\n\t inputMax = %@\n\t mask = %@\n\t true = %@\n\t false = %@\n}", v18, self, v15, v13, v12, v4, v7, v10];
 
   return v21;
 }
 
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4
+- (id)buildExpressionWithContext:(id)context error:(id *)error
 {
   v111[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_opt_respondsToSelector();
-  v8 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
-  v9 = v8;
+  inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+  v9 = inputExpression;
   if (v7)
   {
     v99 = 0;
     v10 = &v99;
-    v11 = [v6 buildExpression:v8 error:&v99];
+    v11 = [contextCopy buildExpression:inputExpression error:&v99];
   }
 
   else
   {
     v98 = 0;
     v10 = &v98;
-    v11 = [v8 buildExpressionWithContext:v6 error:&v98];
+    v11 = [inputExpression buildExpressionWithContext:contextCopy error:&v98];
   }
 
   v12 = v11;
@@ -225,7 +225,7 @@
 
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_48;
@@ -243,7 +243,7 @@
     v111[2] = v13;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v111 forKeys:v110 count:3];
     [v20 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v24];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
     v14 = v13;
     goto LABEL_46;
   }
@@ -251,20 +251,20 @@
   v14 = _Block_copy(v12);
 
   v15 = objc_opt_respondsToSelector();
-  v16 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
-  v17 = v16;
+  inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+  v17 = inputMinExpression;
   if (v15)
   {
     v97 = 0;
     v18 = &v97;
-    v19 = [v6 buildExpression:v16 error:&v97];
+    v19 = [contextCopy buildExpression:inputMinExpression error:&v97];
   }
 
   else
   {
     v96 = 0;
     v18 = &v96;
-    v19 = [v16 buildExpressionWithContext:v6 error:&v96];
+    v19 = [inputMinExpression buildExpressionWithContext:contextCopy error:&v96];
   }
 
   v26 = v19;
@@ -275,20 +275,20 @@
     v21 = _Block_copy(v26);
 
     v28 = objc_opt_respondsToSelector();
-    v29 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
-    v30 = v29;
+    inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+    v30 = inputMaxExpression;
     if (v28)
     {
       v95 = 0;
       v31 = &v95;
-      v32 = [v6 buildExpression:v29 error:&v95];
+      v32 = [contextCopy buildExpression:inputMaxExpression error:&v95];
     }
 
     else
     {
       v94 = 0;
       v31 = &v94;
-      v32 = [v29 buildExpressionWithContext:v6 error:&v94];
+      v32 = [inputMaxExpression buildExpressionWithContext:contextCopy error:&v94];
     }
 
     v37 = v32;
@@ -296,7 +296,7 @@
 
     if (!v37)
     {
-      if (!a4)
+      if (!error)
       {
         v25 = 0;
 LABEL_46:
@@ -319,27 +319,27 @@ LABEL_46:
       v48 = v43;
       v49 = v44;
       [v48 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v47];
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_44;
     }
 
     v80 = _Block_copy(v37);
 
     v38 = objc_opt_respondsToSelector();
-    v39 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
-    v40 = v39;
+    maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+    v40 = maskExpression;
     if (v38)
     {
       v93 = 0;
       v41 = &v93;
-      v42 = [v6 buildExpression:v39 error:&v93];
+      v42 = [contextCopy buildExpression:maskExpression error:&v93];
     }
 
     else
     {
       v92 = 0;
       v41 = &v92;
-      v42 = [v39 buildExpressionWithContext:v6 error:&v92];
+      v42 = [maskExpression buildExpressionWithContext:contextCopy error:&v92];
     }
 
     v50 = v42;
@@ -347,7 +347,7 @@ LABEL_46:
 
     if (!v50)
     {
-      if (!a4)
+      if (!error)
       {
         v25 = 0;
         v24 = v80;
@@ -366,7 +366,7 @@ LABEL_46:
       v105[2] = v36;
       v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:3];
       [v56 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v60];
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       v49 = v36;
       goto LABEL_43;
     }
@@ -374,20 +374,20 @@ LABEL_46:
     v79 = _Block_copy(v50);
 
     v51 = objc_opt_respondsToSelector();
-    v52 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
-    v53 = v52;
+    trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+    v53 = trueExpression;
     if (v51)
     {
       v91 = 0;
       v54 = &v91;
-      v55 = [v6 buildExpression:v52 error:&v91];
+      v55 = [contextCopy buildExpression:trueExpression error:&v91];
     }
 
     else
     {
       v90 = 0;
       v54 = &v90;
-      v55 = [v52 buildExpressionWithContext:v6 error:&v90];
+      v55 = [trueExpression buildExpressionWithContext:contextCopy error:&v90];
     }
 
     v61 = v55;
@@ -398,20 +398,20 @@ LABEL_46:
       v57 = _Block_copy(v61);
 
       v62 = objc_opt_respondsToSelector();
-      v63 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
-      v64 = v63;
+      falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+      v64 = falseExpression;
       if (v62)
       {
         v89 = 0;
         v65 = &v89;
-        v66 = [v6 buildExpression:v63 error:&v89];
+        v66 = [contextCopy buildExpression:falseExpression error:&v89];
       }
 
       else
       {
         v88 = 0;
         v65 = &v88;
-        v66 = [v63 buildExpressionWithContext:v6 error:&v88];
+        v66 = [falseExpression buildExpressionWithContext:contextCopy error:&v88];
       }
 
       v71 = v66;
@@ -450,7 +450,7 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      if (!a4)
+      if (!error)
       {
         v25 = 0;
         v49 = v79;
@@ -468,7 +468,7 @@ LABEL_44:
       v100[2] = v75;
       v101[2] = v60;
       v76 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v101 forKeys:v100 count:3];
-      *a4 = [v73 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v76];
+      *error = [v73 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v76];
 
       v25 = 0;
       v47 = v57;
@@ -476,7 +476,7 @@ LABEL_44:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v25 = 0;
         v49 = v79;
@@ -496,14 +496,14 @@ LABEL_44:
       v103[2] = v47;
       v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:3];
       [v67 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v70];
-      *a4 = v25 = 0;
+      *error = v25 = 0;
     }
 
     v49 = v79;
     goto LABEL_42;
   }
 
-  if (a4)
+  if (error)
   {
     v33 = MEMORY[0x1E696ABC0];
     v108[0] = *MEMORY[0x1E696A578];
@@ -517,7 +517,7 @@ LABEL_44:
     v109[2] = v27;
     v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v109 forKeys:v108 count:3];
     [v33 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v36];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
     v21 = v27;
 LABEL_45:
 
@@ -564,11 +564,11 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
   return result;
 }
 
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error
 {
   v113[6] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  consumerCopy = consumer;
   v100[0] = 0;
   v100[1] = v100;
   v100[2] = 0x2020000000;
@@ -595,14 +595,14 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
   v95[3] = 0;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+    inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
     v10 = v94;
     v94[0] = MEMORY[0x1E69E9820];
     v94[1] = 3221225472;
     v94[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke;
     v94[3] = &unk_1E8414800;
     v94[5] = v100;
-    v94[4] = v8;
+    v94[4] = consumerCopy;
     v94[6] = v98;
     v94[7] = v99;
     v94[8] = v97;
@@ -610,19 +610,19 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v94[10] = v95;
     v11 = &v93;
     v93 = 0;
-    v12 = [v7 buildReactiveExpression:v9 consumer:v94 error:&v93];
+    v12 = [contextCopy buildReactiveExpression:inputExpression consumer:v94 error:&v93];
   }
 
   else
   {
-    v9 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
+    inputExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputExpression];
     v10 = v92;
     v92[0] = MEMORY[0x1E69E9820];
     v92[1] = 3221225472;
     v92[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_2;
     v92[3] = &unk_1E8414800;
     v92[5] = v100;
-    v92[4] = v8;
+    v92[4] = consumerCopy;
     v92[6] = v98;
     v92[7] = v99;
     v92[8] = v97;
@@ -630,7 +630,7 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v92[10] = v95;
     v11 = &v91;
     v91 = 0;
-    v12 = [v9 buildReactiveExpressionWithContext:v7 consumer:v92 error:&v91];
+    v12 = [inputExpression buildReactiveExpressionWithContext:contextCopy consumer:v92 error:&v91];
   }
 
   v13 = v12;
@@ -638,7 +638,7 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
 
   if (!v13)
   {
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_51;
@@ -656,21 +656,21 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v112[2] = v14;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v112 forKeys:v111 count:3];
     [v19 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v23];
-    *a5 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_49;
   }
 
   v113[0] = v13;
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+    inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
     v16 = v90;
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
     v90[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_3;
     v90[3] = &unk_1E8414800;
     v90[5] = v99;
-    v90[4] = v8;
+    v90[4] = consumerCopy;
     v90[6] = v100;
     v90[7] = v98;
     v90[8] = v97;
@@ -678,19 +678,19 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v90[10] = v95;
     v17 = &v89;
     v89 = 0;
-    v18 = [v7 buildReactiveExpression:v15 consumer:v90 error:&v89];
+    v18 = [contextCopy buildReactiveExpression:inputMinExpression consumer:v90 error:&v89];
   }
 
   else
   {
-    v15 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
+    inputMinExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMinExpression];
     v16 = v88;
     v88[0] = MEMORY[0x1E69E9820];
     v88[1] = 3221225472;
     v88[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_4;
     v88[3] = &unk_1E8414800;
     v88[5] = v99;
-    v88[4] = v8;
+    v88[4] = consumerCopy;
     v88[6] = v100;
     v88[7] = v98;
     v88[8] = v97;
@@ -698,7 +698,7 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v88[10] = v95;
     v17 = &v87;
     v87 = 0;
-    v18 = [v15 buildReactiveExpressionWithContext:v7 consumer:v88 error:&v87];
+    v18 = [inputMinExpression buildReactiveExpressionWithContext:contextCopy consumer:v88 error:&v87];
   }
 
   v20 = v18;
@@ -711,14 +711,14 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
     v113[1] = v20;
     if (objc_opt_respondsToSelector())
     {
-      v27 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+      inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
       v28 = v86;
       v86[0] = MEMORY[0x1E69E9820];
       v86[1] = 3221225472;
       v86[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_5;
       v86[3] = &unk_1E8414800;
       v86[5] = v98;
-      v86[4] = v8;
+      v86[4] = consumerCopy;
       v86[6] = v100;
       v86[7] = v99;
       v86[8] = v97;
@@ -726,19 +726,19 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
       v86[10] = v95;
       v29 = &v85;
       v85 = 0;
-      v69 = [v7 buildReactiveExpression:v27 consumer:v86 error:&v85];
+      v69 = [contextCopy buildReactiveExpression:inputMaxExpression consumer:v86 error:&v85];
     }
 
     else
     {
-      v27 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
+      inputMaxExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self inputMaxExpression];
       v28 = v84;
       v84[0] = MEMORY[0x1E69E9820];
       v84[1] = 3221225472;
       v84[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_6;
       v84[3] = &unk_1E8414800;
       v84[5] = v98;
-      v84[4] = v8;
+      v84[4] = consumerCopy;
       v84[6] = v100;
       v84[7] = v99;
       v84[8] = v97;
@@ -746,14 +746,14 @@ uint64_t __98__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__bui
       v84[10] = v95;
       v29 = &v83;
       v83 = 0;
-      v69 = [v27 buildReactiveExpressionWithContext:v7 consumer:v84 error:&v83];
+      v69 = [inputMaxExpression buildReactiveExpressionWithContext:contextCopy consumer:v84 error:&v83];
     }
 
     v23 = *v29;
 
     if (!v69)
     {
-      if (!a5)
+      if (!error)
       {
         v24 = 0;
 LABEL_48:
@@ -777,21 +777,21 @@ LABEL_49:
       v108[2] = v23;
       v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v108 forKeys:v107 count:3];
       [v37 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v40];
-      *a5 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_45;
     }
 
     v113[2] = v69;
     if (objc_opt_respondsToSelector())
     {
-      v34 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+      maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
       v35 = v82;
       v82[0] = MEMORY[0x1E69E9820];
       v82[1] = 3221225472;
       v82[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_7;
       v82[3] = &unk_1E8414800;
       v82[5] = v97;
-      v82[4] = v8;
+      v82[4] = consumerCopy;
       v82[6] = v100;
       v82[7] = v98;
       v82[8] = v99;
@@ -799,19 +799,19 @@ LABEL_49:
       v82[10] = v95;
       v36 = &v81;
       v81 = 0;
-      v68 = [v7 buildReactiveExpression:v34 consumer:v82 error:&v81];
+      v68 = [contextCopy buildReactiveExpression:maskExpression consumer:v82 error:&v81];
     }
 
     else
     {
-      v34 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
+      maskExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self maskExpression];
       v35 = v80;
       v80[0] = MEMORY[0x1E69E9820];
       v80[1] = 3221225472;
       v80[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_8;
       v80[3] = &unk_1E8414800;
       v80[5] = v97;
-      v80[4] = v8;
+      v80[4] = consumerCopy;
       v80[6] = v100;
       v80[7] = v98;
       v80[8] = v99;
@@ -819,7 +819,7 @@ LABEL_49:
       v80[10] = v95;
       v36 = &v79;
       v79 = 0;
-      v68 = [v34 buildReactiveExpressionWithContext:v7 consumer:v80 error:&v79];
+      v68 = [maskExpression buildReactiveExpressionWithContext:contextCopy consumer:v80 error:&v79];
     }
 
     v41 = (v35 + 4);
@@ -827,7 +827,7 @@ LABEL_49:
 
     if (!v68)
     {
-      if (!a5)
+      if (!error)
       {
         v24 = 0;
         goto LABEL_46;
@@ -845,21 +845,21 @@ LABEL_49:
       v106[2] = v33;
       v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:3];
       [v45 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v49];
-      *a5 = v24 = 0;
+      *error = v24 = 0;
       goto LABEL_43;
     }
 
     v113[3] = v68;
     if (objc_opt_respondsToSelector())
     {
-      v42 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+      trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
       v43 = v78;
       v78[0] = MEMORY[0x1E69E9820];
       v78[1] = 3221225472;
       v78[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_9;
       v78[3] = &unk_1E8414800;
       v78[5] = v96;
-      v78[4] = v8;
+      v78[4] = consumerCopy;
       v78[6] = v100;
       v78[7] = v98;
       v78[8] = v99;
@@ -867,19 +867,19 @@ LABEL_49:
       v78[10] = v95;
       v44 = &v77;
       v77 = 0;
-      v67 = [v7 buildReactiveExpression:v42 consumer:v78 error:&v77];
+      v67 = [contextCopy buildReactiveExpression:trueExpression consumer:v78 error:&v77];
     }
 
     else
     {
-      v42 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
+      trueExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self trueExpression];
       v43 = v76;
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_10;
       v76[3] = &unk_1E8414800;
       v76[5] = v96;
-      v76[4] = v8;
+      v76[4] = consumerCopy;
       v76[6] = v100;
       v76[7] = v98;
       v76[8] = v99;
@@ -887,7 +887,7 @@ LABEL_49:
       v76[10] = v95;
       v44 = &v75;
       v75 = 0;
-      v67 = [v42 buildReactiveExpressionWithContext:v7 consumer:v76 error:&v75];
+      v67 = [trueExpression buildReactiveExpressionWithContext:contextCopy consumer:v76 error:&v75];
     }
 
     v50 = (v43 + 4);
@@ -899,14 +899,14 @@ LABEL_49:
       v113[4] = v67;
       if (objc_opt_respondsToSelector())
       {
-        v51 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+        falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
         v52 = v74;
         v74[0] = MEMORY[0x1E69E9820];
         v74[1] = 3221225472;
         v74[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_11;
         v74[3] = &unk_1E8414800;
         v74[5] = v95;
-        v74[4] = v8;
+        v74[4] = consumerCopy;
         v74[6] = v100;
         v74[7] = v98;
         v74[8] = v99;
@@ -914,19 +914,19 @@ LABEL_49:
         v74[10] = v96;
         v53 = &v73;
         v73 = 0;
-        v54 = [v7 buildReactiveExpression:v51 consumer:v74 error:&v73];
+        v54 = [contextCopy buildReactiveExpression:falseExpression consumer:v74 error:&v73];
       }
 
       else
       {
-        v51 = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
+        falseExpression = [(GCGenericDeviceDataSDLHatFunctionExpressionModel *)self falseExpression];
         v52 = v72;
         v72[0] = MEMORY[0x1E69E9820];
         v72[1] = 3221225472;
         v72[2] = __115__GCGenericDeviceDataSDLHatFunctionExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_12;
         v72[3] = &unk_1E8414800;
         v72[5] = v95;
-        v72[4] = v8;
+        v72[4] = consumerCopy;
         v72[6] = v100;
         v72[7] = v98;
         v72[8] = v99;
@@ -934,7 +934,7 @@ LABEL_49:
         v72[10] = v96;
         v53 = &v71;
         v71 = 0;
-        v54 = [v51 buildReactiveExpressionWithContext:v7 consumer:v72 error:&v71];
+        v54 = [falseExpression buildReactiveExpressionWithContext:contextCopy consumer:v72 error:&v71];
       }
 
       v59 = v54;
@@ -965,7 +965,7 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      if (!a5)
+      if (!error)
       {
         v24 = 0;
         goto LABEL_42;
@@ -983,12 +983,12 @@ LABEL_46:
       v102[2] = v49;
       v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:3];
       [v61 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v64];
-      *a5 = v40 = v67;
+      *error = v40 = v67;
     }
 
     else
     {
-      if (!a5)
+      if (!error)
       {
         v24 = 0;
         goto LABEL_44;
@@ -1005,7 +1005,7 @@ LABEL_46:
       v103[2] = v57;
       v104[2] = v40;
       v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:3];
-      *a5 = [v55 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v58];
+      *error = [v55 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v58];
     }
 
     v24 = 0;
@@ -1013,7 +1013,7 @@ LABEL_46:
     goto LABEL_42;
   }
 
-  if (a5)
+  if (error)
   {
     v30 = MEMORY[0x1E696ABC0];
     v109[0] = *MEMORY[0x1E696A578];
@@ -1027,7 +1027,7 @@ LABEL_46:
     v110[2] = v26;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v110 forKeys:v109 count:3];
     [v30 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v33];
-    *a5 = v24 = 0;
+    *error = v24 = 0;
 LABEL_47:
 
     v23 = v69;

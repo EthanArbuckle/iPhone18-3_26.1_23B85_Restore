@@ -1,7 +1,7 @@
 @interface JSPlayerBridgeObject
 - (NSString)playerID;
 - (_TtC11AppStoreKit20JSPlayerBridgeObject)init;
-- (void)setPlayerID:(id)a3;
+- (void)setPlayerID:(id)d;
 @end
 
 @implementation JSPlayerBridgeObject
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (void)setPlayerID:(id)a3
+- (void)setPlayerID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1E1AF5DFC();
   }

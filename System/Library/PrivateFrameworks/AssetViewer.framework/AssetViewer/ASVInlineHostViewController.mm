@@ -1,37 +1,37 @@
 @interface ASVInlineHostViewController
-- (ASVInlineHostViewController)initWithUUID:(id)a3 child:(id)a4 fullscreenInlineService:(id)a5 canonicalWebPageURL:(id)a6;
-- (void)documentInteractionControllerDidDismissOptionsMenu:(id)a3;
+- (ASVInlineHostViewController)initWithUUID:(id)d child:(id)child fullscreenInlineService:(id)service canonicalWebPageURL:(id)l;
+- (void)documentInteractionControllerDidDismissOptionsMenu:(id)menu;
 - (void)handleConnectionInterrupted;
-- (void)queryShowShareSheetAndNotifyDidDismiss:(BOOL)a3;
+- (void)queryShowShareSheetAndNotifyDidDismiss:(BOOL)dismiss;
 - (void)requestNewShareSheetFrame;
-- (void)showShareSheet:(id)a3 frame:(CGRect)a4;
+- (void)showShareSheet:(id)sheet frame:(CGRect)frame;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ASVInlineHostViewController
 
-- (ASVInlineHostViewController)initWithUUID:(id)a3 child:(id)a4 fullscreenInlineService:(id)a5 canonicalWebPageURL:(id)a6
+- (ASVInlineHostViewController)initWithUUID:(id)d child:(id)child fullscreenInlineService:(id)service canonicalWebPageURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  childCopy = child;
+  serviceCopy = service;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = ASVInlineHostViewController;
   v15 = [(ASVInlineHostViewController *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_uuid, a3);
-    objc_storeStrong(&v16->_childVC, a4);
-    objc_storeStrong(&v16->_fullscreenService, a5);
-    objc_storeStrong(&v16->_canonicalWebPageURL, a6);
+    objc_storeStrong(&v15->_uuid, d);
+    objc_storeStrong(&v16->_childVC, child);
+    objc_storeStrong(&v16->_fullscreenService, service);
+    objc_storeStrong(&v16->_canonicalWebPageURL, l);
   }
 
   [(ASVInlineHostViewController *)v16 queryShowShareSheetAndNotifyDidDismiss:0];
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 addObserver:v16 selector:sel_handleConnectionInterrupted name:@"ASVConnectionInterrupted" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v16 selector:sel_handleConnectionInterrupted name:@"ASVConnectionInterrupted" object:0];
 
   return v16;
 }
@@ -43,47 +43,47 @@
   v16.super_class = ASVInlineHostViewController;
   [(ASVInlineHostViewController *)&v16 viewDidLoad];
   [(ASVInlineHostViewController *)self addChildViewController:self->_childVC];
-  v3 = [(ASVInlineHostViewController *)self view];
-  v4 = [(UIViewController *)self->_childVC view];
-  [v3 addSubview:v4];
+  view = [(ASVInlineHostViewController *)self view];
+  view2 = [(UIViewController *)self->_childVC view];
+  [view addSubview:view2];
 
   [(UIViewController *)self->_childVC didMoveToParentViewController:self];
-  v5 = [(UIViewController *)self->_childVC view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(UIViewController *)self->_childVC view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ASVInlineHostViewController *)self view];
+  view4 = [(ASVInlineHostViewController *)self view];
   v7 = MEMORY[0x277CCAAD0];
   v19 = @"childView";
-  v8 = [(UIViewController *)self->_childVC view];
-  v20[0] = v8;
+  view5 = [(UIViewController *)self->_childVC view];
+  v20[0] = view5;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   v10 = [v7 constraintsWithVisualFormat:@"H:|[childView]|" options:0 metrics:0 views:v9];
-  [v6 addConstraints:v10];
+  [view4 addConstraints:v10];
 
-  v11 = [(ASVInlineHostViewController *)self view];
+  view6 = [(ASVInlineHostViewController *)self view];
   v12 = MEMORY[0x277CCAAD0];
   v17 = @"childView";
-  v13 = [(UIViewController *)self->_childVC view];
-  v18 = v13;
+  view7 = [(UIViewController *)self->_childVC view];
+  v18 = view7;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v15 = [v12 constraintsWithVisualFormat:@"V:|[childView]|" options:0 metrics:0 views:v14];
-  [v11 addConstraints:v15];
+  [view6 addConstraints:v15];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = ASVInlineHostViewController;
-  v7 = a4;
-  [(ASVInlineHostViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ASVInlineHostViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __82__ASVInlineHostViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_278CCAFD0;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_3 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_3 completion:v8];
 }
 
 - (void)handleConnectionInterrupted
@@ -169,14 +169,14 @@ void __56__ASVInlineHostViewController_requestNewShareSheetFrame__block_invoke_2
   }
 }
 
-- (void)queryShowShareSheetAndNotifyDidDismiss:(BOOL)a3
+- (void)queryShowShareSheetAndNotifyDidDismiss:(BOOL)dismiss
 {
   if (self->_canonicalWebPageURL)
   {
-    v3 = a3;
+    dismissCopy = dismiss;
     v5 = [&unk_285313548 mutableCopy];
     v6 = v5;
-    if (v3)
+    if (dismissCopy)
     {
       [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"didDismissActivityViewController"];
     }
@@ -248,28 +248,28 @@ void __70__ASVInlineHostViewController_queryShowShareSheetAndNotifyDidDismiss___
   }
 }
 
-- (void)showShareSheet:(id)a3 frame:(CGRect)a4
+- (void)showShareSheet:(id)sheet frame:(CGRect)frame
 {
   if (!self->_documentInteractionController)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v9 = a3;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    sheetCopy = sheet;
     v10 = objc_opt_new();
     documentInteractionController = self->_documentInteractionController;
     self->_documentInteractionController = v10;
 
-    [(UIDocumentInteractionController *)self->_documentInteractionController setURL:v9];
+    [(UIDocumentInteractionController *)self->_documentInteractionController setURL:sheetCopy];
     [(UIDocumentInteractionController *)self->_documentInteractionController setDelegate:self];
     v12 = self->_documentInteractionController;
-    v13 = [(ASVInlineHostViewController *)self view];
-    [(UIDocumentInteractionController *)v12 presentOptionsMenuFromRect:v13 inView:1 animated:x, y, width, height];
+    view = [(ASVInlineHostViewController *)self view];
+    [(UIDocumentInteractionController *)v12 presentOptionsMenuFromRect:view inView:1 animated:x, y, width, height];
   }
 }
 
-- (void)documentInteractionControllerDidDismissOptionsMenu:(id)a3
+- (void)documentInteractionControllerDidDismissOptionsMenu:(id)menu
 {
   documentInteractionController = self->_documentInteractionController;
   self->_documentInteractionController = 0;

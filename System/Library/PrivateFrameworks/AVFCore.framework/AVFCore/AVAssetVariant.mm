@@ -1,11 +1,11 @@
 @interface AVAssetVariant
-- (AVAssetVariant)initWithCoder:(id)a3;
-- (AVAssetVariant)initWithFigAlternate:(OpaqueFigAlternate *)a3;
+- (AVAssetVariant)initWithCoder:(id)coder;
+- (AVAssetVariant)initWithFigAlternate:(OpaqueFigAlternate *)alternate;
 - (AVAssetVariantAudioAttributes)audioAttributes;
 - (AVAssetVariantVideoAttributes)videoAttributes;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAssetVariant
@@ -59,9 +59,9 @@
   return [v3 stringWithFormat:@"<%@: %p, url:%@ peakBitRate:%d averageBitRate:%d video:%@ audio:%@>", v5, self, v6, v8, v9, -[AVAssetVariant videoAttributes](self, "videoAttributes"), -[AVAssetVariant audioAttributes](self, "audioAttributes")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v10 = MEMORY[0x1E695DF30];
     v11 = *MEMORY[0x1E695D940];
@@ -84,11 +84,11 @@ LABEL_6:
   FigAlternateCopyAsXPCObjectWithContext();
 }
 
-- (AVAssetVariant)initWithCoder:(id)a3
+- (AVAssetVariant)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
-    v12 = self;
+    selfCopy = self;
     v13 = MEMORY[0x1E695DF30];
     v14 = *MEMORY[0x1E695D940];
     v15 = @"supports only keyed archivers";
@@ -106,7 +106,7 @@ LABEL_8:
     objc_exception_throw(v16);
   }
 
-  if ([a3 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"variant"])
+  if ([coder decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"variant"])
   {
     FigAlternateCreateWithXPCObject();
   }
@@ -114,14 +114,14 @@ LABEL_8:
   return 0;
 }
 
-- (AVAssetVariant)initWithFigAlternate:(OpaqueFigAlternate *)a3
+- (AVAssetVariant)initWithFigAlternate:(OpaqueFigAlternate *)alternate
 {
   v6.receiver = self;
   v6.super_class = AVAssetVariant;
   v4 = [(AVAssetVariant *)&v6 init];
   if (v4)
   {
-    v4->_figAlternateObjC = [objc_alloc(MEMORY[0x1E6970A90]) initWithFigAlternate:a3];
+    v4->_figAlternateObjC = [objc_alloc(MEMORY[0x1E6970A90]) initWithFigAlternate:alternate];
     v4->_mutex = FigSimpleMutexCreate();
   }
 

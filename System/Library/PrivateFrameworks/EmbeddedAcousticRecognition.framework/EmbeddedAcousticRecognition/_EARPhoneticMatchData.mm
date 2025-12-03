@@ -1,19 +1,19 @@
 @interface _EARPhoneticMatchData
-- (BOOL)appendData:(id)a3 prior:(float)a4;
-- (_EARPhoneticMatchData)initWithFeedType:(int64_t)a3 jsonConfigFile:(id)a4;
+- (BOOL)appendData:(id)data prior:(float)prior;
+- (_EARPhoneticMatchData)initWithFeedType:(int64_t)type jsonConfigFile:(id)file;
 - (id).cxx_construct;
-- (int)convertFeedType:(int64_t)a3;
+- (int)convertFeedType:(int64_t)type;
 - (shared_ptr<quasar::DataFeed>)dataFeed;
-- (void)writeTsv:(id)a3;
+- (void)writeTsv:(id)tsv;
 @end
 
 @implementation _EARPhoneticMatchData
 
-- (int)convertFeedType:(int64_t)a3
+- (int)convertFeedType:(int64_t)type
 {
-  if ((a3 - 1) < 0xD)
+  if ((type - 1) < 0xD)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -22,10 +22,10 @@
   }
 }
 
-- (_EARPhoneticMatchData)initWithFeedType:(int64_t)a3 jsonConfigFile:(id)a4
+- (_EARPhoneticMatchData)initWithFeedType:(int64_t)type jsonConfigFile:(id)file
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  fileCopy = file;
   v7.receiver = self;
   v7.super_class = _EARPhoneticMatchData;
   if ([(_EARPhoneticMatchData *)&v7 init])
@@ -36,14 +36,14 @@
   return 0;
 }
 
-- (void)writeTsv:(id)a3
+- (void)writeTsv:(id)tsv
 {
-  v4 = a3;
-  v5 = v4;
+  tsvCopy = tsv;
+  v5 = tsvCopy;
   ptr = self->_dataFeed.__ptr_;
-  if (v4)
+  if (tsvCopy)
   {
-    [v4 ear_toString];
+    [tsvCopy ear_toString];
   }
 
   else
@@ -60,21 +60,21 @@
   }
 }
 
-- (BOOL)appendData:(id)a3 prior:(float)a4
+- (BOOL)appendData:(id)data prior:(float)prior
 {
-  v6 = a3;
+  dataCopy = data;
   v21[0] = 0;
   v21[1] = 0;
   v20 = v21;
-  quasar::DataFeedItem::setPrior(&v19, a4);
+  quasar::DataFeedItem::setPrior(&v19, prior);
   quasar::DataFeed::getFieldNames(self->_dataFeed.__ptr_, v18);
-  v7 = [v6 count];
+  v7 = [dataCopy count];
   if (v7 == 0xAAAAAAAAAAAAAAABLL * ((v18[1] - v18[0]) >> 3))
   {
     v8 = 0;
-    for (i = 0; [v6 count] > i; ++i)
+    for (i = 0; [dataCopy count] > i; ++i)
     {
-      v10 = [v6 objectAtIndexedSubscript:i];
+      v10 = [dataCopy objectAtIndexedSubscript:i];
       v11 = [v10 length];
 
       if (!v11)
@@ -83,7 +83,7 @@
       }
 
       v12 = v18[0];
-      v13 = [v6 objectAtIndexedSubscript:i];
+      v13 = [dataCopy objectAtIndexedSubscript:i];
       v14 = v13;
       if (v13)
       {

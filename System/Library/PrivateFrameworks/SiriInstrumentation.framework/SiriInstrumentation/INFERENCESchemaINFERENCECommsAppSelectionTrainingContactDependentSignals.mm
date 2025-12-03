@@ -1,25 +1,25 @@
 @interface INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals;
   v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactDependentMessageSignals"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactDependentMessageSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)v5 setContactDependentMessageSignals:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contactDependentPhoneCallSignals"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contactDependentPhoneCallSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactDependentMessageSignals)
   {
-    v4 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contactDependentMessageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+    dictionaryRepresentation = [contactDependentMessageSignals dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contactDependentMessageSignals"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactDependentMessageSignals"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contactDependentMessageSignals"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contactDependentMessageSignals"];
     }
   }
 
   if (self->_contactDependentPhoneCallSignals)
   {
-    v7 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    contactDependentPhoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+    dictionaryRepresentation2 = [contactDependentPhoneCallSignals dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"contactDependentPhoneCallSignals"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contactDependentPhoneCallSignals"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"contactDependentPhoneCallSignals"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contactDependentPhoneCallSignals"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
-  v6 = [v4 contactDependentMessageSignals];
-  if ((v5 != 0) == (v6 == 0))
+  contactDependentMessageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+  contactDependentMessageSignals2 = [equalCopy contactDependentMessageSignals];
+  if ((contactDependentMessageSignals != 0) == (contactDependentMessageSignals2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
-  if (v7)
+  contactDependentMessageSignals3 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+  if (contactDependentMessageSignals3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
-    v10 = [v4 contactDependentMessageSignals];
-    v11 = [v9 isEqual:v10];
+    v8 = contactDependentMessageSignals3;
+    contactDependentMessageSignals4 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+    contactDependentMessageSignals5 = [equalCopy contactDependentMessageSignals];
+    v11 = [contactDependentMessageSignals4 isEqual:contactDependentMessageSignals5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
-  v6 = [v4 contactDependentPhoneCallSignals];
-  if ((v5 != 0) != (v6 == 0))
+  contactDependentMessageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+  contactDependentMessageSignals2 = [equalCopy contactDependentPhoneCallSignals];
+  if ((contactDependentMessageSignals != 0) != (contactDependentMessageSignals2 == 0))
   {
-    v12 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
-    if (!v12)
+    contactDependentPhoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+    if (!contactDependentPhoneCallSignals)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
-    v15 = [v4 contactDependentPhoneCallSignals];
-    v16 = [v14 isEqual:v15];
+    v13 = contactDependentPhoneCallSignals;
+    contactDependentPhoneCallSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+    contactDependentPhoneCallSignals3 = [equalCopy contactDependentPhoneCallSignals];
+    v16 = [contactDependentPhoneCallSignals2 isEqual:contactDependentPhoneCallSignals3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+  toCopy = to;
+  contactDependentMessageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
 
-  if (v4)
+  if (contactDependentMessageSignals)
   {
-    v5 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+    contactDependentMessageSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+  contactDependentPhoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
 
-  if (v6)
+  if (contactDependentPhoneCallSignals)
   {
-    v7 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+    contactDependentPhoneCallSignals2 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  contactDependentMessageSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentMessageSignals];
+  v7 = [contactDependentMessageSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self deleteContactDependentMessageSignals];
   }
 
-  v9 = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  contactDependentPhoneCallSignals = [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self contactDependentPhoneCallSignals];
+  v10 = [contactDependentPhoneCallSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCECommsAppSelectionTrainingContactDependentSignals *)self deleteContactDependentPhoneCallSignals];
   }

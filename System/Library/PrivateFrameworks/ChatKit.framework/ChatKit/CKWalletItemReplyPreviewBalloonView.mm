@@ -1,11 +1,11 @@
 @interface CKWalletItemReplyPreviewBalloonView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKWalletItemReplyPreviewBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKWalletItemReplyPreviewBalloonView)initWithFrame:(CGRect)frame;
 - (id)description;
-- (void)configureForMessagePart:(id)a3;
+- (void)configureForMessagePart:(id)part;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
-- (void)setMediaObject:(id)a3;
+- (void)setMediaObject:(id)object;
 @end
 
 @implementation CKWalletItemReplyPreviewBalloonView
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (CKWalletItemReplyPreviewBalloonView)initWithFrame:(CGRect)a3
+- (CKWalletItemReplyPreviewBalloonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKWalletItemReplyPreviewBalloonView;
-  v3 = [(CKColoredBalloonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
-    [v5 setEnabled:0];
+    doubleTapGestureRecognizer = [(CKBalloonView *)v3 doubleTapGestureRecognizer];
+    [doubleTapGestureRecognizer setEnabled:0];
   }
 
   return v4;
@@ -41,20 +41,20 @@
   v4.receiver = self;
   v4.super_class = CKWalletItemReplyPreviewBalloonView;
   [(CKColoredBalloonView *)&v4 layoutSubviews];
-  v3 = [(CKWalletItemReplyPreviewBalloonView *)self linkView];
+  linkView = [(CKWalletItemReplyPreviewBalloonView *)self linkView];
   [(CKWalletItemReplyPreviewBalloonView *)self bounds];
-  [v3 setFrame:?];
+  [linkView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v19.receiver = self;
   v19.super_class = CKWalletItemReplyPreviewBalloonView;
-  [(CKBalloonView *)&v19 sizeThatFits:a4 textAlignmentInsets:a5 tailInsets:?];
-  v8 = [(CKWalletItemReplyPreviewBalloonView *)self linkView];
-  [v8 sizeThatFits:{width, height}];
+  [(CKBalloonView *)&v19 sizeThatFits:insets textAlignmentInsets:tailInsets tailInsets:?];
+  linkView = [(CKWalletItemReplyPreviewBalloonView *)self linkView];
+  [linkView sizeThatFits:{width, height}];
   v10 = v9;
   v12 = v11;
 
@@ -89,11 +89,11 @@
   v6.receiver = self;
   v6.super_class = CKWalletItemReplyPreviewBalloonView;
   [(CKColoredBalloonView *)&v6 prepareForDisplay];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isCAShapeLayerBalloonsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isCAShapeLayerBalloonsEnabled = [mEMORY[0x1E69A8070] isCAShapeLayerBalloonsEnabled];
 
   linkView = self->_linkView;
-  if (v4)
+  if (isCAShapeLayerBalloonsEnabled)
   {
     [(CKWalletItemReplyPreviewBalloonView *)self addSubview:linkView];
   }
@@ -104,14 +104,14 @@
   }
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mediaObject != v5)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (self->_mediaObject != objectCopy)
   {
-    v22 = v5;
-    objc_storeStrong(&self->_mediaObject, a3);
+    v22 = objectCopy;
+    objc_storeStrong(&self->_mediaObject, object);
     if ([(LPLinkView *)self->_linkView isDescendantOfView:self])
     {
       [(LPLinkView *)self->_linkView removeFromSuperview];
@@ -122,12 +122,12 @@
     v6 = v22;
     if (isKindOfClass & 1) != 0 || (objc_opt_class(), v8 = objc_opt_isKindOfClass(), v6 = v22, (v8))
     {
-      v9 = [(CKMediaObject *)v6 presentationPropertiesForReplyPreview];
+      presentationPropertiesForReplyPreview = [(CKMediaObject *)v6 presentationPropertiesForReplyPreview];
       v6 = v22;
-      if (v9)
+      if (presentationPropertiesForReplyPreview)
       {
-        v10 = v9;
-        v11 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithPresentationProperties:v9 URL:0];
+        v10 = presentationPropertiesForReplyPreview;
+        v11 = [objc_alloc(MEMORY[0x1E696ECC8]) initWithPresentationProperties:presentationPropertiesForReplyPreview URL:0];
         [(LPLinkView *)v11 _setPreferredSizeClass:6];
         [(LPLinkView *)v11 _setApplyCornerRadius:0];
         [(LPLinkView *)v11 _setDisableTapGesture:1];
@@ -149,15 +149,15 @@
   }
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v7.receiver = self;
   v7.super_class = CKWalletItemReplyPreviewBalloonView;
-  [(CKColoredBalloonView *)&v7 configureForMessagePart:v4];
-  if (v4)
+  [(CKColoredBalloonView *)&v7 configureForMessagePart:partCopy];
+  if (partCopy)
   {
-    [v4 balloonDescriptor];
+    [partCopy balloonDescriptor];
   }
 
   else
@@ -166,8 +166,8 @@
   }
 
   [(CKColoredBalloonView *)self setBalloonDescriptor:v6];
-  v5 = [v4 mediaObject];
-  [(CKWalletItemReplyPreviewBalloonView *)self setMediaObject:v5];
+  mediaObject = [partCopy mediaObject];
+  [(CKWalletItemReplyPreviewBalloonView *)self setMediaObject:mediaObject];
 }
 
 @end

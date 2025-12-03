@@ -1,23 +1,23 @@
 @interface IdcContentPreservingWarping
-+ (void)getDefaultConfigurationParameters:(id *)a3;
-- (IdcContentPreservingWarping)initWithMetalContext:(id)a3 idcUtilities:(id)a4;
-- (int)compileShaders:(BOOL)a3;
-- (int)computeSizeOfSharedMetalBuffer:(id *)a3 maximumInputImageWidth:(unsigned int)a4 maximumInputImageHeight:(unsigned int)a5 maximumSegmentationMaskWidth:(unsigned int)a6 maximumSegmentationMaskHeight:(unsigned int)a7 meshWidth:(unsigned int)a8 meshHeight:(unsigned int)a9 paddedMeshWidth:(unsigned int)a10 paddedMeshHeight:(unsigned int)a11;
-- (int)memoryAllocationHandler:(id *)a3 paddedMeshWidth:(unsigned int)a4 paddedMeshHeight:(unsigned int)a5 memoryAllocationParameters:(id *)a6 sharedMemoryBuffer:(id)a7 sharedMetalBufferOffset:(unint64_t)a8 sharedMetalBufferSize:(unint64_t)a9;
-- (int)setSharedMetalBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5;
++ (void)getDefaultConfigurationParameters:(id *)parameters;
+- (IdcContentPreservingWarping)initWithMetalContext:(id)context idcUtilities:(id)utilities;
+- (int)compileShaders:(BOOL)shaders;
+- (int)computeSizeOfSharedMetalBuffer:(id *)buffer maximumInputImageWidth:(unsigned int)width maximumInputImageHeight:(unsigned int)height maximumSegmentationMaskWidth:(unsigned int)maskWidth maximumSegmentationMaskHeight:(unsigned int)maskHeight meshWidth:(unsigned int)meshWidth meshHeight:(unsigned int)meshHeight paddedMeshWidth:(unsigned int)self0 paddedMeshHeight:(unsigned int)self1;
+- (int)memoryAllocationHandler:(id *)handler paddedMeshWidth:(unsigned int)width paddedMeshHeight:(unsigned int)height memoryAllocationParameters:(id *)parameters sharedMemoryBuffer:(id)buffer sharedMetalBufferOffset:(unint64_t)offset sharedMetalBufferSize:(unint64_t)size;
+- (int)setSharedMetalBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size;
 - (void)dealloc;
-- (void)fillEdParameters:(id *)a3 meshWidth:(unsigned int)a4 meshHeight:(unsigned int)a5;
+- (void)fillEdParameters:(id *)parameters meshWidth:(unsigned int)width meshHeight:(unsigned int)height;
 - (void)releaseResources;
 @end
 
 @implementation IdcContentPreservingWarping
 
-+ (void)getDefaultConfigurationParameters:(id *)a3
++ (void)getDefaultConfigurationParameters:(id *)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    *&a3->var21[2].var0[1] = xmmword_2957C7DC0;
-    *&a3->var21[2].var0[5] = 10;
+    *&parameters->var21[2].var0[1] = xmmword_2957C7DC0;
+    *&parameters->var21[2].var0[5] = 10;
   }
 
   else
@@ -26,12 +26,12 @@
   }
 }
 
-- (IdcContentPreservingWarping)initWithMetalContext:(id)a3 idcUtilities:(id)a4
+- (IdcContentPreservingWarping)initWithMetalContext:(id)context idcUtilities:(id)utilities
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  contextCopy = context;
+  utilitiesCopy = utilities;
+  v9 = utilitiesCopy;
+  if (!contextCopy)
   {
     sub_2957C2A00(self);
 LABEL_8:
@@ -39,7 +39,7 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!utilitiesCopy)
   {
     sub_2957C2970(self);
     goto LABEL_8;
@@ -51,8 +51,8 @@ LABEL_8:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_metalContext, a3);
-    objc_storeStrong(&v11->_idcUtilities, a4);
+    objc_storeStrong(&v10->_metalContext, context);
+    objc_storeStrong(&v11->_idcUtilities, utilities);
     v11->_sharedMetalBuffer.resourcesAssigned = 0;
   }
 
@@ -66,7 +66,7 @@ LABEL_5:
   return v11;
 }
 
-- (int)compileShaders:(BOOL)a3
+- (int)compileShaders:(BOOL)shaders
 {
   v5 = [(FigMetalContext *)self->_metalContext computePipelineStateFor:@"icpw_kernels::generateEdStage1" constants:0];
   generateEdStage1 = self->_kernels.generateEdStage1;
@@ -228,11 +228,11 @@ LABEL_5:
     return -12786;
   }
 
-  if (!a3)
+  if (!shaders)
   {
     v37 = objc_alloc(MEMORY[0x29EDBB818]);
-    v38 = [(FigMetalContext *)self->_metalContext device];
-    v39 = [v37 initWithDevice:v38 lower:1 order:216];
+    device = [(FigMetalContext *)self->_metalContext device];
+    v39 = [v37 initWithDevice:device lower:1 order:216];
     choleskyDecomposition = self->_choleskyDecomposition;
     self->_choleskyDecomposition = v39;
 
@@ -267,37 +267,37 @@ LABEL_5:
 
 - (void)releaseResources
 {
-  v2 = self;
+  selfCopy = self;
   buffer = self->_sharedMetalBuffer.buffer;
   self->_sharedMetalBuffer.buffer = 0;
 
-  v2->_sharedMetalBuffer.offset = 0;
-  v2->_sharedMetalBuffer.size = 0;
-  v2->_sharedMetalBuffer.resourcesAssigned = 0;
+  selfCopy->_sharedMetalBuffer.offset = 0;
+  selfCopy->_sharedMetalBuffer.size = 0;
+  selfCopy->_sharedMetalBuffer.resourcesAssigned = 0;
   FigMetalDecRef();
-  *&v2->_offsets.es.arrayOfContainers = 0u;
-  v2 = (v2 + 184);
-  *&v2->_sharedMetalBuffer.resourcesAssigned = 0u;
-  v2 = (v2 + 176);
-  v2[-1]._offsets.vectorAtb = 0;
-  *&v2[-1]._offsets.edColumnHeaders = 0u;
-  *&v2[-1]._offsets.elFullMatrix = 0u;
-  *&v2[-1]._offsets.edPk = 0u;
-  *&v2[-1]._offsets.edRowSubSeqHeader = 0u;
-  *&v2[-1]._offsets.es.numElementsPerContainer = 0u;
-  *&v2[-1]._maximumMemoryAllocationParameters.numCells = 0;
-  *&v2[-1]._maximumMemoryAllocationParameters.meshNumNodes = 0;
-  *&v2[-1]._maximumMemoryAllocationParameters.segmentationMaskWidth = 0;
-  *&v2[-1]._currentMemoryAllocationParameters.numCells = 0;
-  *&v2[-1]._currentMemoryAllocationParameters.meshNumNodes = 0;
-  *&v2[-1]._currentMemoryAllocationParameters.segmentationMaskWidth = 0;
-  *&v2->_idcUtilities = 0u;
-  *&v2->_kernels.generateEdStage2 = 0u;
-  *&v2->_kernels.generateEdColumns = 0u;
-  *&v2->_kernels.generateEsPresetWeightArray = 0u;
-  *&v2->_kernels.generateEsStage1 = 0u;
-  *&v2->_kernels.generateEsStage3 = 0u;
-  *&v2->_kernels.generateElStage2 = 0u;
+  *&selfCopy->_offsets.es.arrayOfContainers = 0u;
+  selfCopy = (selfCopy + 184);
+  *&selfCopy->_sharedMetalBuffer.resourcesAssigned = 0u;
+  selfCopy = (selfCopy + 176);
+  selfCopy[-1]._offsets.vectorAtb = 0;
+  *&selfCopy[-1]._offsets.edColumnHeaders = 0u;
+  *&selfCopy[-1]._offsets.elFullMatrix = 0u;
+  *&selfCopy[-1]._offsets.edPk = 0u;
+  *&selfCopy[-1]._offsets.edRowSubSeqHeader = 0u;
+  *&selfCopy[-1]._offsets.es.numElementsPerContainer = 0u;
+  *&selfCopy[-1]._maximumMemoryAllocationParameters.numCells = 0;
+  *&selfCopy[-1]._maximumMemoryAllocationParameters.meshNumNodes = 0;
+  *&selfCopy[-1]._maximumMemoryAllocationParameters.segmentationMaskWidth = 0;
+  *&selfCopy[-1]._currentMemoryAllocationParameters.numCells = 0;
+  *&selfCopy[-1]._currentMemoryAllocationParameters.meshNumNodes = 0;
+  *&selfCopy[-1]._currentMemoryAllocationParameters.segmentationMaskWidth = 0;
+  *&selfCopy->_idcUtilities = 0u;
+  *&selfCopy->_kernels.generateEdStage2 = 0u;
+  *&selfCopy->_kernels.generateEdColumns = 0u;
+  *&selfCopy->_kernels.generateEsPresetWeightArray = 0u;
+  *&selfCopy->_kernels.generateEsStage1 = 0u;
+  *&selfCopy->_kernels.generateEsStage3 = 0u;
+  *&selfCopy->_kernels.generateElStage2 = 0u;
 }
 
 - (void)dealloc
@@ -308,18 +308,18 @@ LABEL_5:
   [(IdcContentPreservingWarping *)&v3 dealloc];
 }
 
-- (int)computeSizeOfSharedMetalBuffer:(id *)a3 maximumInputImageWidth:(unsigned int)a4 maximumInputImageHeight:(unsigned int)a5 maximumSegmentationMaskWidth:(unsigned int)a6 maximumSegmentationMaskHeight:(unsigned int)a7 meshWidth:(unsigned int)a8 meshHeight:(unsigned int)a9 paddedMeshWidth:(unsigned int)a10 paddedMeshHeight:(unsigned int)a11
+- (int)computeSizeOfSharedMetalBuffer:(id *)buffer maximumInputImageWidth:(unsigned int)width maximumInputImageHeight:(unsigned int)height maximumSegmentationMaskWidth:(unsigned int)maskWidth maximumSegmentationMaskHeight:(unsigned int)maskHeight meshWidth:(unsigned int)meshWidth meshHeight:(unsigned int)meshHeight paddedMeshWidth:(unsigned int)self0 paddedMeshHeight:(unsigned int)self1
 {
-  if (a3)
+  if (buffer)
   {
-    a3->var0 = 0;
-    v14 = (a9 - 1) * (a8 - 1);
-    v15 = a5 / (10 * (a9 - 1)) * (a4 / (10 * (a8 - 1)));
-    v16 = a9 * a8;
-    v17 = 2 * a9 * a8;
-    LODWORD(v20) = a9 * a8;
+    buffer->var0 = 0;
+    v14 = (meshHeight - 1) * (meshWidth - 1);
+    v15 = height / (10 * (meshHeight - 1)) * (width / (10 * (meshWidth - 1)));
+    v16 = meshHeight * meshWidth;
+    v17 = 2 * meshHeight * meshWidth;
+    LODWORD(v20) = meshHeight * meshWidth;
     HIDWORD(v20) = v17;
-    v18 = [(IdcContentPreservingWarping *)self memoryAllocationHandler:0 paddedMeshWidth:__PAIR64__(v15 paddedMeshHeight:v14) memoryAllocationParameters:v20 sharedMemoryBuffer:__PAIR64__(a7 sharedMetalBufferOffset:a6) sharedMetalBufferSize:?];
+    v18 = [(IdcContentPreservingWarping *)self memoryAllocationHandler:0 paddedMeshWidth:__PAIR64__(v15 paddedMeshHeight:v14) memoryAllocationParameters:v20 sharedMemoryBuffer:__PAIR64__(maskHeight sharedMetalBufferOffset:maskWidth) sharedMetalBufferSize:?];
     if (v18)
     {
       sub_2957C3420();
@@ -331,8 +331,8 @@ LABEL_5:
       self->_maximumMemoryAllocationParameters.storageSizePerCell = v15;
       self->_maximumMemoryAllocationParameters.meshNumNodes = v16;
       self->_maximumMemoryAllocationParameters.aDimensions = v17;
-      self->_maximumMemoryAllocationParameters.segmentationMaskWidth = a6;
-      self->_maximumMemoryAllocationParameters.segmentationMaskHeight = a7;
+      self->_maximumMemoryAllocationParameters.segmentationMaskWidth = maskWidth;
+      self->_maximumMemoryAllocationParameters.segmentationMaskHeight = maskHeight;
     }
   }
 
@@ -345,15 +345,15 @@ LABEL_5:
   return v18;
 }
 
-- (int)setSharedMetalBuffer:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5
+- (int)setSharedMetalBuffer:(id)buffer offset:(unint64_t)offset size:(unint64_t)size
 {
-  v9 = a3;
-  if (v9)
+  bufferCopy = buffer;
+  if (bufferCopy)
   {
-    objc_storeStrong(&self->_sharedMetalBuffer.buffer, a3);
+    objc_storeStrong(&self->_sharedMetalBuffer.buffer, buffer);
     v10 = 0;
-    self->_sharedMetalBuffer.offset = a4;
-    self->_sharedMetalBuffer.size = a5;
+    self->_sharedMetalBuffer.offset = offset;
+    self->_sharedMetalBuffer.size = size;
     self->_sharedMetalBuffer.resourcesAssigned = 0;
   }
 
@@ -366,35 +366,35 @@ LABEL_5:
   return v10;
 }
 
-- (void)fillEdParameters:(id *)a3 meshWidth:(unsigned int)a4 meshHeight:(unsigned int)a5
+- (void)fillEdParameters:(id *)parameters meshWidth:(unsigned int)width meshHeight:(unsigned int)height
 {
   v5 = 0;
-  v6 = LODWORD(a3->var21[2].var0[5]);
-  var3 = a3->var17.var3;
-  var4 = a3->var17.var4;
-  self[1].super.isa = vdiv_f32(vdup_n_s32(0x3A83126Fu), *&a3->var4);
+  v6 = LODWORD(parameters->var21[2].var0[5]);
+  var3 = parameters->var17.var3;
+  var4 = parameters->var17.var4;
+  self[1].super.isa = vdiv_f32(vdup_n_s32(0x3A83126Fu), *&parameters->var4);
   do
   {
-    *(&self[1]._metalContext + v5) = *(&a3->var14.var2.var5 + v5);
+    *(&self[1]._metalContext + v5) = *(&parameters->var14.var2.var5 + v5);
     v5 += 4;
   }
 
   while (v5 != 24);
-  v9 = (var3 - 1) / (a4 - 1);
+  v9 = (var3 - 1) / (width - 1);
   v10 = v9 / v6;
   *&v11 = ((v9 % v6) >> 1);
-  v12 = (var4 - 1) / (a5 - 1);
+  v12 = (var4 - 1) / (height - 1);
   v13 = v12 / v6;
   *(&v11 + 1) = ((v12 % v6) >> 1);
-  self[1]._kernels.generateEdStage2 = vdiv_f32(vcvt_f32_s32(*&a3->var21[0].var0[3]), vcvt_f32_s32(*&a3->var15.var0.var3));
-  *&self[1]._kernels.generateEdStage3 = a3->var21[2].var0[3];
+  self[1]._kernels.generateEdStage2 = vdiv_f32(vcvt_f32_s32(*&parameters->var21[0].var0[3]), vcvt_f32_s32(*&parameters->var15.var0.var3));
+  *&self[1]._kernels.generateEdStage3 = parameters->var21[2].var0[3];
   *(&self[1]._kernels.generateEdStage3 + 1) = v6;
-  LODWORD(self[1]._kernels.generateEdColumns) = a5 * a4;
-  HIDWORD(self[1]._kernels.generateEdColumns) = a4;
-  LODWORD(self[1]._kernels.generateEdBuildAtA_Atb) = a5;
-  HIDWORD(self[1]._kernels.generateEdBuildAtA_Atb) = (a5 - 1) * (a4 - 1);
-  LODWORD(self[1]._kernels.generateEsPresetWeightArray) = a4 - 1;
-  HIDWORD(self[1]._kernels.generateEsPresetWeightArray) = a5 - 1;
+  LODWORD(self[1]._kernels.generateEdColumns) = height * width;
+  HIDWORD(self[1]._kernels.generateEdColumns) = width;
+  LODWORD(self[1]._kernels.generateEdBuildAtA_Atb) = height;
+  HIDWORD(self[1]._kernels.generateEdBuildAtA_Atb) = (height - 1) * (width - 1);
+  LODWORD(self[1]._kernels.generateEsPresetWeightArray) = width - 1;
+  HIDWORD(self[1]._kernels.generateEsPresetWeightArray) = height - 1;
   *&self[1]._kernels.generateEsBuildWeightArray = v9;
   *(&self[1]._kernels.generateEsBuildWeightArray + 1) = v12;
   LODWORD(self[1]._kernels.generateEsStage1) = v10 * v13;
@@ -402,42 +402,42 @@ LABEL_5:
   LODWORD(self[1]._kernels.generateEsStage2) = v13;
   self[1]._kernels.generateEsStage3 = v11;
   LODWORD(self[1]._kernels.generateElStage1) = v10 * v13;
-  HIDWORD(self[1]._kernels.generateElStage1) = 2 * a5 * a4;
-  *&v14 = *&a3->var16.var5;
-  *(&v14 + 1) = *&a3->var17.var3;
+  HIDWORD(self[1]._kernels.generateElStage1) = 2 * height * width;
+  *&v14 = *&parameters->var16.var5;
+  *(&v14 + 1) = *&parameters->var17.var3;
   *&self[1]._kernels.generateElStage2 = v14;
 }
 
-- (int)memoryAllocationHandler:(id *)a3 paddedMeshWidth:(unsigned int)a4 paddedMeshHeight:(unsigned int)a5 memoryAllocationParameters:(id *)a6 sharedMemoryBuffer:(id)a7 sharedMetalBufferOffset:(unint64_t)a8 sharedMetalBufferSize:(unint64_t)a9
+- (int)memoryAllocationHandler:(id *)handler paddedMeshWidth:(unsigned int)width paddedMeshHeight:(unsigned int)height memoryAllocationParameters:(id *)parameters sharedMemoryBuffer:(id)buffer sharedMetalBufferOffset:(unint64_t)offset sharedMetalBufferSize:(unint64_t)size
 {
-  v15 = a9;
-  v16 = a7;
-  if (v16 | a8 | a9)
+  sizeCopy = size;
+  bufferCopy = buffer;
+  if (bufferCopy | offset | size)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = a3 == 0;
+    v17 = handler == 0;
   }
 
   v68 = 0;
   v69 = 0;
-  if (a3)
+  if (handler)
   {
-    v18 = (v16 | a8 | a9) == 0;
+    v18 = (bufferCopy | offset | size) == 0;
   }
 
   else
   {
-    v18 = v16 != 0;
+    v18 = bufferCopy != 0;
   }
 
   if (v18)
   {
-    var3 = a6->var3;
-    v20 = *&a6->var4;
+    var3 = parameters->var3;
+    v20 = *&parameters->var4;
     *&v21 = v20;
     *(&v21 + 1) = HIDWORD(v20);
     v67[0] = v21;
@@ -445,13 +445,13 @@ LABEL_5:
     [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities computeTextureStrideForBufferAllocation:v67];
     if (v17)
     {
-      if (v69 > a9)
+      if (v69 > size)
       {
         sub_2957C477C();
         goto LABEL_61;
       }
 
-      v22 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:v16 bufferOffset:a8 textureDescriptor:v67];
+      v22 = [(IntelligentDistortionCorrection_Utilities *)self->_idcUtilities textureFromBuffer:bufferCopy bufferOffset:offset textureDescriptor:v67];
       erodedSegmentationMask = self->_textures.erodedSegmentationMask;
       self->_textures.erodedSegmentationMask = v22;
 
@@ -461,9 +461,9 @@ LABEL_5:
         goto LABEL_66;
       }
 
-      v24 = a9 - v69;
+      v24 = size - v69;
       v25 = (v69 + 63) & 0xFFFFFFC0;
-      self->_offsets.matrixAtA = v25 + a8;
+      self->_offsets.matrixAtA = v25 + offset;
       if (v24 < 4 * (var3 * var3))
       {
         sub_2957C468C();
@@ -473,7 +473,7 @@ LABEL_5:
       v26 = 4 * (var3 * var3);
       v27 = v24 - v26;
       v28 = (v26 + v25 + 63) & 0xFFFFFFC0;
-      self->_offsets.vectorAtb = v28 + a8;
+      self->_offsets.vectorAtb = v28 + offset;
       if (v27 < 4 * var3)
       {
         sub_2957C4614();
@@ -481,7 +481,7 @@ LABEL_5:
       }
 
       v29 = 4 * var3;
-      v15 = v27 - 4 * var3;
+      sizeCopy = v27 - 4 * var3;
     }
 
     else
@@ -495,29 +495,29 @@ LABEL_5:
 
     v32 = 8 * (40 * var3);
     v33 = v29 + 63 + v28;
-    self->_offsets.es.arrayOfContainers = (v33 & 0xFFFFFFC0) + a8;
+    self->_offsets.es.arrayOfContainers = (v33 & 0xFFFFFFC0) + offset;
     if (v17)
     {
-      v34 = v15 - v32;
-      if (v15 < v32)
+      v34 = sizeCopy - v32;
+      if (sizeCopy < v32)
       {
         sub_2957C459C();
         goto LABEL_61;
       }
 
       v35 = (v33 + 320 * var3) & 0xFFFFFFC0;
-      self->_offsets.es.weights = v35 + a8;
-      if (v34 < 4 * (a5 * a4))
+      self->_offsets.es.weights = v35 + offset;
+      if (v34 < 4 * (height * width))
       {
         sub_2957C4524();
         goto LABEL_61;
       }
 
-      v36 = 4 * a5 * a4;
+      v36 = 4 * height * width;
       v37 = v34 - v36;
       v38 = (v36 + v35 + 63) & 0xFFFFFFC0;
-      self->_offsets.es.numElementsPerContainer = v38 + a8;
-      v15 = v37 - v29;
+      self->_offsets.es.numElementsPerContainer = v38 + offset;
+      sizeCopy = v37 - v29;
       if (v37 < v29)
       {
         sub_2957C44AC();
@@ -532,27 +532,27 @@ LABEL_62:
     else
     {
       v39 = (v33 + 320 * var3) & 0xFFFFFFC0;
-      v38 = (v39 + 4 * a5 * a4 + 63) & 0xFFFFFFC0;
+      v38 = (v39 + 4 * height * width + 63) & 0xFFFFFFC0;
       self->_offsets.es.weights = v39;
       self->_offsets.es.numElementsPerContainer = v38;
     }
 
-    var0 = a6->var0;
-    var1 = a6->var1;
+    var0 = parameters->var0;
+    var1 = parameters->var1;
     v42 = 8 * var1 * var0;
     v43 = (v29 + 63 + v38) & 0xFFFFFFC0;
-    self->_offsets.edPhatk = v43 + a8;
+    self->_offsets.edPhatk = v43 + offset;
     if (v17)
     {
-      v44 = v15 - v42;
-      if (v15 < v42)
+      v44 = sizeCopy - v42;
+      if (sizeCopy < v42)
       {
         sub_2957C4434();
         goto LABEL_61;
       }
 
       v45 = (v42 + 63 + v43) & 0xFFFFFFC0;
-      self->_offsets.edPk = v45 + a8;
+      self->_offsets.edPk = v45 + offset;
       v46 = v44 - v42;
       if (v44 < v42)
       {
@@ -561,7 +561,7 @@ LABEL_62:
       }
 
       v47 = (v42 + 63 + v45) & 0xFFFFFFC0;
-      self->_offsets.edNumSamplesPerCell = v47 + a8;
+      self->_offsets.edNumSamplesPerCell = v47 + offset;
       if (v46 < 4 * (var0 + 1))
       {
         sub_2957C4344();
@@ -571,7 +571,7 @@ LABEL_62:
       v48 = 4 * (var0 + 1);
       v49 = v46 - v48;
       v50 = (v48 + v47 + 63) & 0xFFFFFFC0;
-      self->_offsets.edRowSubSeqHeader = v50 + a8;
+      self->_offsets.edRowSubSeqHeader = v50 + offset;
       if (v46 - v48 < 36 * var0)
       {
         sub_2957C42CC();
@@ -579,7 +579,7 @@ LABEL_62:
       }
 
       v51 = 36 * var0;
-      v15 = v49 - 36 * var0;
+      sizeCopy = v49 - 36 * var0;
     }
 
     else
@@ -595,11 +595,11 @@ LABEL_62:
 
     v54 = 32 * var0 * var1;
     v55 = ((v50 | 0x3C) + v51) & 0xFFFFFFC0;
-    self->_offsets.edRowSubSeqData = v55 + a8;
+    self->_offsets.edRowSubSeqData = v55 + offset;
     if (v17)
     {
-      v56 = v15 >= v54;
-      v15 -= v54;
+      v56 = sizeCopy >= v54;
+      sizeCopy -= v54;
       if (!v56)
       {
         sub_2957C4254();
@@ -607,20 +607,20 @@ LABEL_62:
       }
     }
 
-    v57 = 72 * a6->var2;
+    v57 = 72 * parameters->var2;
     v58 = v54 + v55 + 63;
-    self->_offsets.edColumnHeaders = (v58 & 0xFFFFFFC0) + a8;
+    self->_offsets.edColumnHeaders = (v58 & 0xFFFFFFC0) + offset;
     if (v17)
     {
-      v59 = v15 - v57;
-      if (v15 < v57)
+      v59 = sizeCopy - v57;
+      if (sizeCopy < v57)
       {
         sub_2957C41DC();
         goto LABEL_61;
       }
 
       v60 = ((v58 | 0x38) + v57) & 0xFFFFFFC0;
-      self->_offsets.edOffset = v60 + a8;
+      self->_offsets.edOffset = v60 + offset;
       if (v59 < 4 * var0)
       {
         sub_2957C4164();
@@ -628,7 +628,7 @@ LABEL_62:
       }
 
       var0 *= 4;
-      v15 = v59 - var0;
+      sizeCopy = v59 - var0;
     }
 
     else
@@ -639,8 +639,8 @@ LABEL_62:
     }
 
     v61 = ((v60 | 0x3C) + var0) & 0xFFFFFFC0;
-    self->_offsets.elFullMatrix = v61 + a8;
-    if (var3 << 14 > v15 && v17)
+    self->_offsets.elFullMatrix = v61 + offset;
+    if (var3 << 14 > sizeCopy && v17)
     {
       sub_2957C40EC();
       goto LABEL_61;
@@ -650,7 +650,7 @@ LABEL_62:
     {
 LABEL_45:
       v30 = 0;
-      a3->var0 = v61 + (var3 << 14);
+      handler->var0 = v61 + (var3 << 14);
       goto LABEL_46;
     }
 
@@ -664,7 +664,7 @@ LABEL_45:
       if (self->_AtA_matrix)
       {
 
-        if (!a3)
+        if (!handler)
         {
           v30 = 0;
           goto LABEL_46;

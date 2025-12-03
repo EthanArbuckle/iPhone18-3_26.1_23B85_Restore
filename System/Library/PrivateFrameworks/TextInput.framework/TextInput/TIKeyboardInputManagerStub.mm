@@ -1,25 +1,25 @@
 @interface TIKeyboardInputManagerStub
 + (id)serverInterface;
-+ (void)setArrayClassesForSelectorsInInterface:(id)a3;
++ (void)setArrayClassesForSelectorsInInterface:(id)interface;
 - (id)keyboardConfiguration;
-- (void)addSupplementalLexicon:(id)a3 completionHandler:(id)a4;
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4 keyboardState:(id)a5 completionHandler:(id)a6;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6;
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 completionHandler:(id)a4;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5;
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6;
-- (void)generateRefinementsForCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)generateReplacementsForString:(id)a3 keyLayout:(id)a4 continuation:(id)a5;
-- (void)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5;
-- (void)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4 continuation:(id)a5;
-- (void)performHitTestForTouchEvents:(id)a3 keyboardState:(id)a4 continuation:(id)a5;
-- (void)smartSelectionForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7 completion:(id)a8;
-- (void)stickerWithIdentifier:(id)a3 stickerRoles:(id)a4 completionHandler:(id)a5;
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4;
-- (void)textAccepted:(id)a3 completionHandler:(id)a4;
-- (void)writeTypologyLogWithCompletionHandler:(id)a3;
+- (void)addSupplementalLexicon:(id)lexicon completionHandler:(id)handler;
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity keyboardState:(id)state completionHandler:(id)handler;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler;
+- (void)generateAutocorrectionsWithKeyboardState:(id)state completionHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler;
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler;
+- (void)generateRefinementsForCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)generateReplacementsForString:(id)string keyLayout:(id)layout continuation:(id)continuation;
+- (void)handleAcceptedCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler;
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler;
+- (void)performHitTestForTouchEvent:(id)event keyboardState:(id)state continuation:(id)continuation;
+- (void)performHitTestForTouchEvents:(id)events keyboardState:(id)state continuation:(id)continuation;
+- (void)smartSelectionForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options completion:(id)completion;
+- (void)stickerWithIdentifier:(id)identifier stickerRoles:(id)roles completionHandler:(id)handler;
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler;
+- (void)textAccepted:(id)accepted completionHandler:(id)handler;
+- (void)writeTypologyLogWithCompletionHandler:(id)handler;
 @end
 
 @implementation TIKeyboardInputManagerStub
@@ -51,7 +51,7 @@ uint64_t __45__TIKeyboardInputManagerStub_serverInterface__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __45__TIKeyboardInputManagerStub_serverInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (serverInterface_onceToken != -1)
   {
     dispatch_once(&serverInterface_onceToken, block);
@@ -62,190 +62,190 @@ uint64_t __45__TIKeyboardInputManagerStub_serverInterface__block_invoke(uint64_t
   return v2;
 }
 
-+ (void)setArrayClassesForSelectorsInInterface:(id)a3
++ (void)setArrayClassesForSelectorsInInterface:(id)interface
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = objc_opt_class();
   v16 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  [v4 setClasses:v16 forSelector:sel_generateReplacementsForString_keyLayout_continuation_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v16 forSelector:sel_generateReplacementsForString_keyLayout_continuation_ argumentIndex:0 ofReply:1];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  [v4 setClasses:v8 forSelector:sel_skipHitTestForTouchEvents_keyboardState_ argumentIndex:0 ofReply:0];
-  [v4 setClasses:v8 forSelector:sel_performHitTestForTouchEvents_keyboardState_continuation_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v8 forSelector:sel_skipHitTestForTouchEvents_keyboardState_ argumentIndex:0 ofReply:0];
+  [interfaceCopy setClasses:v8 forSelector:sel_performHitTestForTouchEvents_keyboardState_continuation_ argumentIndex:0 ofReply:0];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  [v4 setClasses:v11 forSelector:sel_smartSelectionForTextInDocument_inRange_language_tokenizedRanges_options_completion_ argumentIndex:3 ofReply:0];
+  [interfaceCopy setClasses:v11 forSelector:sel_smartSelectionForTextInDocument_inRange_language_tokenizedRanges_options_completion_ argumentIndex:3 ofReply:0];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v12 setWithObjects:{v13, v14, objc_opt_class(), 0}];
-  [v4 setClasses:v15 forSelector:sel_stickerWithIdentifier_stickerRoles_completionHandler_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v15 forSelector:sel_stickerWithIdentifier_stickerRoles_completionHandler_ argumentIndex:0 ofReply:1];
 }
 
-- (void)stickerWithIdentifier:(id)a3 stickerRoles:(id)a4 completionHandler:(id)a5
+- (void)stickerWithIdentifier:(id)identifier stickerRoles:(id)roles completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)addSupplementalLexicon:(id)a3 completionHandler:(id)a4
+- (void)addSupplementalLexicon:(id)lexicon completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)writeTypologyLogWithCompletionHandler:(id)a3
+- (void)writeTypologyLogWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)textAccepted:(id)a3 completionHandler:(id)a4
+- (void)textAccepted:(id)accepted completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    keyboardConfiguration = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
+    (*(handler + 2))(handlerCopy, keyboardConfiguration);
   }
 }
 
-- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)a3 granularity:(int)a4 keyboardState:(id)a5 completionHandler:(id)a6
+- (void)adjustPhraseBoundaryInForwardDirection:(BOOL)direction granularity:(int)granularity keyboardState:(id)state completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    v8 = a6;
-    v9 = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
-    (*(a6 + 2))(v8, v9);
+    handlerCopy = handler;
+    keyboardConfiguration = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
+    (*(handler + 2))(handlerCopy, keyboardConfiguration);
   }
 }
 
-- (void)smartSelectionForTextInDocument:(id)a3 inRange:(_NSRange)a4 language:(id)a5 tokenizedRanges:(id)a6 options:(unint64_t)a7 completion:(id)a8
+- (void)smartSelectionForTextInDocument:(id)document inRange:(_NSRange)range language:(id)language tokenizedRanges:(id)ranges options:(unint64_t)options completion:(id)completion
 {
-  if (a8)
+  if (completion)
   {
-    (*(a8 + 2))();
+    (*(completion + 2))();
   }
 }
 
-- (void)performHitTestForTouchEvents:(id)a3 keyboardState:(id)a4 continuation:(id)a5
+- (void)performHitTestForTouchEvents:(id)events keyboardState:(id)state continuation:(id)continuation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 lastObject];
-  [(TIKeyboardInputManagerStub *)self performHitTestForTouchEvent:v10 keyboardState:v9 continuation:v8];
+  continuationCopy = continuation;
+  stateCopy = state;
+  lastObject = [events lastObject];
+  [(TIKeyboardInputManagerStub *)self performHitTestForTouchEvent:lastObject keyboardState:stateCopy continuation:continuationCopy];
 }
 
-- (void)performHitTestForTouchEvent:(id)a3 keyboardState:(id)a4 continuation:(id)a5
+- (void)performHitTestForTouchEvent:(id)event keyboardState:(id)state continuation:(id)continuation
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  eventCopy = event;
+  stateCopy = state;
+  continuationCopy = continuation;
+  if (continuationCopy)
   {
-    v9 = [v7 keyLayout];
+    keyLayout = [stateCopy keyLayout];
 
     v10 = -1;
-    if (v12 && v9)
+    if (eventCopy && keyLayout)
     {
-      v11 = [v7 keyLayout];
-      [v12 location];
-      v10 = [v11 keyContainingPoint:?];
+      keyLayout2 = [stateCopy keyLayout];
+      [eventCopy location];
+      v10 = [keyLayout2 keyContainingPoint:?];
     }
 
-    v8[2](v8, v10);
+    continuationCopy[2](continuationCopy, v10);
   }
 }
 
-- (void)generateRefinementsForCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)generateRefinementsForCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)generateReplacementsForString:(id)a3 keyLayout:(id)a4 continuation:(id)a5
+- (void)generateReplacementsForString:(id)string keyLayout:(id)layout continuation:(id)continuation
 {
-  if (a5)
+  if (continuation)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(continuation + 2))(continuation, 0);
   }
 }
 
-- (void)handleAcceptedCandidate:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)handleAcceptedCandidate:(id)candidate keyboardState:(id)state completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    v7 = a5;
-    v8 = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
-    (*(a5 + 2))(v7, v8, 0);
+    handlerCopy = handler;
+    keyboardConfiguration = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
+    (*(handler + 2))(handlerCopy, keyboardConfiguration, 0);
   }
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)generateCandidatesWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)generateCandidatesWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 requestToken:(id)a5 completionHandler:(id)a6
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range requestToken:(id)token completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 candidateRange:(_NSRange)a4 completionHandler:(id)a5
+- (void)generateAutocorrectionsWithKeyboardState:(id)state candidateRange:(_NSRange)range completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)generateAutocorrectionsWithKeyboardState:(id)a3 completionHandler:(id)a4
+- (void)generateAutocorrectionsWithKeyboardState:(id)state completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)handleKeyboardInput:(id)a3 keyboardState:(id)a4 completionHandler:(id)a5
+- (void)handleKeyboardInput:(id)input keyboardState:(id)state completionHandler:(id)handler
 {
-  v7 = a3;
-  if (a5)
+  inputCopy = input;
+  if (handler)
   {
-    v13 = v7;
-    v8 = a5;
+    v13 = inputCopy;
+    handlerCopy = handler;
     v9 = objc_alloc_init(TIKeyboardOutput);
-    v10 = [v13 string];
+    string = [v13 string];
 
-    if (v10)
+    if (string)
     {
-      v11 = [v13 string];
-      [(TIKeyboardOutput *)v9 setInsertionText:v11];
+      string2 = [v13 string];
+      [(TIKeyboardOutput *)v9 setInsertionText:string2];
     }
 
     else if ([v13 isBackspace])
@@ -253,20 +253,20 @@ uint64_t __45__TIKeyboardInputManagerStub_serverInterface__block_invoke(uint64_t
       [(TIKeyboardOutput *)v9 setDeletionCount:1];
     }
 
-    v12 = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
-    v8[2](v8, v9, v12);
+    keyboardConfiguration = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
+    handlerCopy[2](handlerCopy, v9, keyboardConfiguration);
 
-    v7 = v13;
+    inputCopy = v13;
   }
 }
 
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
-    (*(a4 + 2))(v6, v7);
+    handlerCopy = handler;
+    keyboardConfiguration = [(TIKeyboardInputManagerStub *)self keyboardConfiguration];
+    (*(handler + 2))(handlerCopy, keyboardConfiguration);
   }
 }
 

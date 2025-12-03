@@ -55,9 +55,9 @@
 - (id)cal_stringWithNormalizedSpacesForUnitTesting
 {
   v2 = objc_alloc(MEMORY[0x1E696AD40]);
-  v3 = [a1 string];
-  v4 = [v3 cal_stringWithNormalizedSpacesForUnitTesting];
-  v5 = [v2 initWithString:v4];
+  string = [self string];
+  cal_stringWithNormalizedSpacesForUnitTesting = [string cal_stringWithNormalizedSpacesForUnitTesting];
+  v5 = [v2 initWithString:cal_stringWithNormalizedSpacesForUnitTesting];
 
   v6 = [v5 length];
   v9[0] = MEMORY[0x1E69E9820];
@@ -66,7 +66,7 @@
   v9[3] = &unk_1E839A430;
   v7 = v5;
   v10 = v7;
-  [a1 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v9}];
+  [self enumerateAttributesInRange:0 options:v6 usingBlock:{0, v9}];
 
   return v7;
 }

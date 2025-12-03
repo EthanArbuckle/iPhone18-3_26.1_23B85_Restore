@@ -1,11 +1,11 @@
 @interface VFXBillboardConstraint
 + (id)billboardConstraint;
 - (VFXBillboardConstraint)init;
-- (VFXBillboardConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFreeAxes:(unint64_t)a3;
-- (void)setPreserveScale:(BOOL)a3;
+- (VFXBillboardConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFreeAxes:(unint64_t)axes;
+- (void)setPreserveScale:(BOOL)scale;
 @end
 
 @implementation VFXBillboardConstraint
@@ -33,31 +33,31 @@
   return v2;
 }
 
-- (void)setFreeAxes:(unint64_t)a3
+- (void)setFreeAxes:(unint64_t)axes
 {
-  self->_freeAxes = a3;
+  self->_freeAxes = axes;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BCA84;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = axes;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setPreserveScale:(BOOL)a3
+- (void)setPreserveScale:(BOOL)scale
 {
-  self->_preserveScale = a3;
+  self->_preserveScale = scale;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BCB24;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  scaleCopy = scale;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_copyTo_(self, v5, v4, v6);
@@ -68,16 +68,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = VFXBillboardConstraint;
   [(VFXConstraint *)&v7 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_freeAxes, @"freeAxes");
-  objc_msgSend_encodeBool_forKey_(a3, v6, self->_preserveScale, @"preserveScale");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_freeAxes, @"freeAxes");
+  objc_msgSend_encodeBool_forKey_(coder, v6, self->_preserveScale, @"preserveScale");
 }
 
-- (VFXBillboardConstraint)initWithCoder:(id)a3
+- (VFXBillboardConstraint)initWithCoder:(id)coder
 {
   v26.receiver = self;
   v26.super_class = VFXBillboardConstraint;
@@ -87,11 +87,11 @@
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     v7->super._constraintRef = sub_1AF1501E8();
-    v13 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"freeAxes", v12);
+    v13 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"freeAxes", v12);
     objc_msgSend_setFreeAxes_(v7, v14, v13, v15);
-    v18 = objc_msgSend_decodeBoolForKey_(a3, v16, @"preserveScale", v17);
+    v18 = objc_msgSend_decodeBoolForKey_(coder, v16, @"preserveScale", v17);
     objc_msgSend_setPreserveScale_(v7, v19, v18, v20);
-    objc_msgSend_finalizeDecodeConstraint_(v7, v21, a3, v22);
+    objc_msgSend_finalizeDecodeConstraint_(v7, v21, coder, v22);
     objc_msgSend_setImmediateMode_(VFXTransaction, v23, v8, v24);
   }
 

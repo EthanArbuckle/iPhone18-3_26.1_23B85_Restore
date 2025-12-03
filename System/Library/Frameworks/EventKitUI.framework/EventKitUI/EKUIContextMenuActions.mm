@@ -1,21 +1,21 @@
 @interface EKUIContextMenuActions
-+ (BOOL)_canEmailOrganizerForEvent:(id)a3;
-+ (BOOL)eventsAllDeletable:(id)a3;
-+ (BOOL)remindersAllCompleted:(id)a3;
-+ (BOOL)remindersAllTogglable:(id)a3;
++ (BOOL)_canEmailOrganizerForEvent:(id)event;
++ (BOOL)eventsAllDeletable:(id)deletable;
++ (BOOL)remindersAllCompleted:(id)completed;
++ (BOOL)remindersAllTogglable:(id)togglable;
 + (id)_allActionInfos;
-+ (id)_createCalendarsMenuForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5 overrideActionBlock:(id)a6 completionBlock:(id)a7;
-+ (id)_filteredSortedActionInfosForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5;
-+ (id)_organizerContactForEvent:(id)a3;
-+ (id)_proposedDateForEvent:(id)a3;
-+ (id)menuForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5 overrideActionBlock:(id)a6 completionBlock:(id)a7;
-+ (int64_t)_menuStateForStatus:(int64_t)a3 events:(id)a4;
-+ (void)_acceptProposedTimeForEvent:(id)a3 presentationController:(id)a4;
-+ (void)_performSaveWithEvent:(id)a3 span:(int64_t)a4 editor:(id)a5;
-+ (void)_presentMailViewControllerSendingToOrganizer:(BOOL)a3 event:(id)a4 presentationController:(id)a5;
-+ (void)_saveStatus:(int64_t)a3 forEvent:(id)a4 presentationController:(id)a5;
-+ (void)deleteEvents:(id)a3 presentationController:(id)a4;
-+ (void)markReminders:(id)a3 completed:(BOOL)a4 editor:(id)a5;
++ (id)_createCalendarsMenuForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu overrideActionBlock:(id)block completionBlock:(id)completionBlock;
++ (id)_filteredSortedActionInfosForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu;
++ (id)_organizerContactForEvent:(id)event;
++ (id)_proposedDateForEvent:(id)event;
++ (id)menuForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu overrideActionBlock:(id)block completionBlock:(id)completionBlock;
++ (int64_t)_menuStateForStatus:(int64_t)status events:(id)events;
++ (void)_acceptProposedTimeForEvent:(id)event presentationController:(id)controller;
++ (void)_performSaveWithEvent:(id)event span:(int64_t)span editor:(id)editor;
++ (void)_presentMailViewControllerSendingToOrganizer:(BOOL)organizer event:(id)event presentationController:(id)controller;
++ (void)_saveStatus:(int64_t)status forEvent:(id)event presentationController:(id)controller;
++ (void)deleteEvents:(id)events presentationController:(id)controller;
++ (void)markReminders:(id)reminders completed:(BOOL)completed editor:(id)editor;
 @end
 
 @implementation EKUIContextMenuActions
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __41__EKUIContextMenuActions__allActionInfos__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_allActionInfos_onceToken != -1)
   {
     dispatch_once(&_allActionInfos_onceToken, block);
@@ -1702,15 +1702,15 @@ void __41__EKUIContextMenuActions__allActionInfos__block_invoke_4_480(uint64_t a
   [v10 _performSaveWithEvent:v5 span:a3 editor:v11];
 }
 
-+ (int64_t)_menuStateForStatus:(int64_t)a3 events:(id)a4
++ (int64_t)_menuStateForStatus:(int64_t)status events:(id)events
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  eventsCopy = events;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v6)
   {
     goto LABEL_12;
@@ -1726,15 +1726,15 @@ void __41__EKUIContextMenuActions__allActionInfos__block_invoke_4_480(uint64_t a
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(eventsCopy);
       }
 
-      v12 = [*(*(&v15 + 1) + 8 * i) participationStatus] == a3;
+      v12 = [*(*(&v15 + 1) + 8 * i) participationStatus] == status;
       v10 &= v12;
       v8 |= v12;
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v7 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v7);
@@ -1748,23 +1748,23 @@ LABEL_12:
   return v13;
 }
 
-+ (id)_filteredSortedActionInfosForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5
++ (id)_filteredSortedActionInfosForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[ShouldShowBlockParameters alloc] initWithEvents:v9 presentationController:v8];
+  controllerCopy = controller;
+  eventsCopy = events;
+  v10 = [[ShouldShowBlockParameters alloc] initWithEvents:eventsCopy presentationController:controllerCopy];
 
-  v11 = [a1 _allActionInfos];
+  _allActionInfos = [self _allActionInfos];
   v12 = MEMORY[0x1E696AE18];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __96__EKUIContextMenuActions__filteredSortedActionInfosForEvents_presentationController_isEditMenu___block_invoke;
   v21 = &unk_1E8442178;
-  v23 = a5;
+  menuCopy = menu;
   v22 = v10;
   v13 = v10;
   v14 = [v12 predicateWithBlock:&v18];
-  v15 = [v11 filteredArrayUsingPredicate:{v14, v18, v19, v20, v21}];
+  v15 = [_allActionInfos filteredArrayUsingPredicate:{v14, v18, v19, v20, v21}];
 
   v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_490];
 
@@ -1822,33 +1822,33 @@ LABEL_7:
   return v7;
 }
 
-+ (id)_createCalendarsMenuForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5 overrideActionBlock:(id)a6 completionBlock:(id)a7
++ (id)_createCalendarsMenuForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu overrideActionBlock:(id)block completionBlock:(id)completionBlock
 {
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v44 = a4;
-  v45 = a6;
-  v13 = a7;
-  v46 = v12;
-  if (a5)
+  eventsCopy = events;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  v46 = eventsCopy;
+  if (menu)
   {
     v14 = 0;
   }
 
   else
   {
-    val = a1;
-    v43 = v13;
-    v15 = [v12 objectAtIndexedSubscript:0];
-    v16 = [v15 calendar];
-    v47 = [v16 source];
+    val = self;
+    v43 = completionBlockCopy;
+    v15 = [eventsCopy objectAtIndexedSubscript:0];
+    calendar = [v15 calendar];
+    source = [calendar source];
 
     v17 = [MEMORY[0x1E695DFA8] set];
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v18 = v12;
+    v18 = eventsCopy;
     v19 = 0;
     v20 = [v18 countByEnumeratingWithState:&v58 objects:v62 count:16];
     if (v20)
@@ -1864,9 +1864,9 @@ LABEL_7:
           }
 
           v23 = *(*(&v58 + 1) + 8 * i);
-          v24 = [v23 calendar];
-          v25 = [v24 source];
-          v26 = [v25 isEqual:v47];
+          calendar2 = [v23 calendar];
+          source2 = [calendar2 source];
+          v26 = [source2 isEqual:source];
 
           if (!v26 || ![v23 allowsCalendarModifications] || (v27 = objc_msgSend(v23, "hasAttendees"), objc_msgSend(v23, "isExternallyOrganizedInvitation")) && !objc_msgSend(v23, "allowsParticipationStatusModifications") || (objc_msgSend(v23, "isIntegrationEvent") & 1) != 0)
           {
@@ -1874,8 +1874,8 @@ LABEL_7:
             goto LABEL_24;
           }
 
-          v28 = [v23 calendar];
-          [v17 addObject:v28];
+          calendar3 = [v23 calendar];
+          [v17 addObject:calendar3];
 
           v19 |= v27;
         }
@@ -1892,9 +1892,9 @@ LABEL_7:
 
     v29 = [v17 count];
     v30 = v29 == 1;
-    if ((v19 & 1) != 0 || [v47 isDelegate])
+    if ((v19 & 1) != 0 || [source isDelegate])
     {
-      v31 = v47;
+      v31 = source;
     }
 
     else
@@ -1904,25 +1904,25 @@ LABEL_7:
 
     v32 = v31;
     v33 = [v18 objectAtIndexedSubscript:0];
-    v34 = [v33 eventStore];
+    eventStore = [v33 eventStore];
 
-    v41 = [MEMORY[0x1E69933B0] calendarsLimitedToSource:v32 writability:2 onlyUnmanagedAccounts:0 forEvents:v18 entityType:0 inEventStore:v34];
+    v41 = [MEMORY[0x1E69933B0] calendarsLimitedToSource:v32 writability:2 onlyUnmanagedAccounts:0 forEvents:v18 entityType:0 inEventStore:eventStore];
     objc_initWeak(&location, val);
     if (v29 == 1)
     {
-      v35 = [v17 anyObject];
+      anyObject = [v17 anyObject];
       v36 = CUIKDisplayedTitleForCalendar();
     }
 
     else
     {
       v37 = MEMORY[0x1E696AEC0];
-      v35 = EventKitUIBundle();
-      v38 = [v35 localizedStringForKey:@"x_calendars_selected" value:&stru_1F4EF6790 table:0];
+      anyObject = EventKitUIBundle();
+      v38 = [anyObject localizedStringForKey:@"x_calendars_selected" value:&stru_1F4EF6790 table:0];
       v36 = [v37 localizedStringWithFormat:v38, objc_msgSend(v17, "count")];
     }
 
-    v39 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationController_isEditMenu_overrideActionBlock_completionBlock___block_invoke;
@@ -1934,11 +1934,11 @@ LABEL_7:
     v48[2] = __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationController_isEditMenu_overrideActionBlock_completionBlock___block_invoke_2;
     v48[3] = &unk_1E84421E8;
     objc_copyWeak(&v53, &location);
-    v51 = v45;
-    v49 = v44;
+    v51 = blockCopy;
+    v49 = controllerCopy;
     v50 = v18;
     v52 = v43;
-    v14 = [EKUICalendarMenu calendarSubmenuWithSubtitle:v36 calendars:v41 eventStore:v34 backgroundColor:v39 setupActionHandler:v54 selectionHandler:v48];
+    v14 = [EKUICalendarMenu calendarSubmenuWithSubtitle:v36 calendars:v41 eventStore:eventStore backgroundColor:systemBackgroundColor setupActionHandler:v54 selectionHandler:v48];
 
     objc_destroyWeak(&v53);
     objc_destroyWeak(&location);
@@ -1946,7 +1946,7 @@ LABEL_7:
     v18 = v32;
 LABEL_24:
 
-    v13 = v43;
+    completionBlockCopy = v43;
   }
 
   return v14;
@@ -2053,26 +2053,26 @@ void __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationCon
   }
 }
 
-+ (id)menuForEvents:(id)a3 presentationController:(id)a4 isEditMenu:(BOOL)a5 overrideActionBlock:(id)a6 completionBlock:(id)a7
++ (id)menuForEvents:(id)events presentationController:(id)controller isEditMenu:(BOOL)menu overrideActionBlock:(id)block completionBlock:(id)completionBlock
 {
-  v9 = a5;
+  menuCopy = menu;
   v64 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 count])
+  eventsCopy = events;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  if ([eventsCopy count])
   {
-    v48 = v15;
-    v16 = [a1 _createCalendarsMenuForEvents:v12 presentationController:v13 isEditMenu:v9 overrideActionBlock:v14 completionBlock:v15];
-    v49 = v13;
-    v46 = v9;
-    v17 = [a1 _filteredSortedActionInfosForEvents:v12 presentationController:v13 isEditMenu:v9];
-    v47 = [MEMORY[0x1E695DF70] array];
+    v48 = completionBlockCopy;
+    v16 = [self _createCalendarsMenuForEvents:eventsCopy presentationController:controllerCopy isEditMenu:menuCopy overrideActionBlock:blockCopy completionBlock:completionBlockCopy];
+    v49 = controllerCopy;
+    v46 = menuCopy;
+    v17 = [self _filteredSortedActionInfosForEvents:eventsCopy presentationController:controllerCopy isEditMenu:menuCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = [v17 objectAtIndexedSubscript:0];
-    v19 = [v18 group];
+    group = [v18 group];
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
@@ -2096,22 +2096,22 @@ void __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationCon
           }
 
           v25 = *(*(&v58 + 1) + 8 * v24);
-          v26 = [v25 action];
-          if (v26 != 0x20000 || v16 != 0)
+          action = [v25 action];
+          if (action != 0x20000 || v16 != 0)
           {
-            v28 = v26;
-            if ([v25 group] != v19)
+            v28 = action;
+            if ([v25 group] != group)
             {
-              v29 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v20];
-              [v47 addObject:v29];
+              v29 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:array2];
+              [array addObject:v29];
 
-              v19 = [v25 group];
-              [v20 removeAllObjects];
+              group = [v25 group];
+              [array2 removeAllObjects];
             }
 
             if (v28 == 0x20000)
             {
-              [v20 addObject:v16];
+              [array2 addObject:v16];
             }
 
             else
@@ -2122,30 +2122,30 @@ void __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationCon
               v53[0] = __110__EKUIContextMenuActions_menuForEvents_presentationController_isEditMenu_overrideActionBlock_completionBlock___block_invoke;
               v53[1] = &unk_1E8442210;
               v53[2] = v25;
-              v56 = v14;
+              v56 = blockCopy;
               v31 = v23;
               v32 = v16;
-              v33 = v20;
-              v34 = v19;
-              v35 = v14;
-              v36 = v12;
-              v37 = v12;
+              v33 = array2;
+              v34 = group;
+              v35 = blockCopy;
+              v36 = eventsCopy;
+              v37 = eventsCopy;
               v54 = v37;
               v55 = v49;
               v57 = v48;
               v38 = [v30 actionWithTitle:&stru_1F4EF6790 image:0 identifier:0 handler:v52];
-              v39 = [v25 configureUIActionBlock];
+              configureUIActionBlock = [v25 configureUIActionBlock];
               v40 = v37;
-              v12 = v36;
-              v14 = v35;
-              v19 = v34;
-              v20 = v33;
+              eventsCopy = v36;
+              blockCopy = v35;
+              group = v34;
+              array2 = v33;
               v16 = v32;
               v23 = v31;
               v22 = v50;
-              (v39)[2](v39, v40, v38, v46);
+              (configureUIActionBlock)[2](configureUIActionBlock, v40, v38, v46);
 
-              [v20 addObject:v38];
+              [array2 addObject:v38];
             }
           }
 
@@ -2159,16 +2159,16 @@ void __126__EKUIContextMenuActions__createCalendarsMenuForEvents_presentationCon
       while (v22);
     }
 
-    if (v20)
+    if (array2)
     {
-      v41 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v20];
-      [v47 addObject:v41];
+      v41 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:array2];
+      [array addObject:v41];
     }
 
-    v42 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:v47];
+    v42 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4EF6790 image:0 identifier:0 options:1 children:array];
 
-    v15 = v48;
-    v13 = v49;
+    completionBlockCopy = v48;
+    controllerCopy = v49;
   }
 
   else
@@ -2214,17 +2214,17 @@ void __110__EKUIContextMenuActions_menuForEvents_presentationController_isEditMe
   }
 }
 
-+ (id)_organizerContactForEvent:(id)a3
++ (id)_organizerContactForEvent:(id)event
 {
-  v3 = [a3 organizer];
-  v4 = [MEMORY[0x1E6992F50] defaultProvider];
-  v5 = [v3 emailAddress];
-  if (!v5 || ([v4 unifiedContactWithEmailAddress:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  organizer = [event organizer];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  emailAddress = [organizer emailAddress];
+  if (!emailAddress || ([defaultProvider unifiedContactWithEmailAddress:emailAddress], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [v3 phoneNumber];
-    if (v7)
+    phoneNumber = [organizer phoneNumber];
+    if (phoneNumber)
     {
-      v6 = [v4 unifiedContactWithPhoneNumber:v7];
+      v6 = [defaultProvider unifiedContactWithPhoneNumber:phoneNumber];
     }
 
     else
@@ -2236,55 +2236,55 @@ void __110__EKUIContextMenuActions_menuForEvents_presentationController_isEditMe
   return v6;
 }
 
-+ (BOOL)_canEmailOrganizerForEvent:(id)a3
++ (BOOL)_canEmailOrganizerForEvent:(id)event
 {
-  v3 = [a3 organizer];
-  v4 = v3;
-  if (v3 && ([v3 isCurrentUser] & 1) == 0)
+  organizer = [event organizer];
+  v4 = organizer;
+  if (organizer && ([organizer isCurrentUser] & 1) == 0)
   {
-    v6 = [v4 emailAddress];
-    v7 = v6;
-    if (v6 && [v6 length])
+    emailAddress = [v4 emailAddress];
+    v7 = emailAddress;
+    if (emailAddress && [emailAddress length])
     {
-      v5 = [MEMORY[0x1E69ADAC0] canSendMail];
+      canSendMail = [MEMORY[0x1E69ADAC0] canSendMail];
     }
 
     else
     {
-      v5 = 0;
+      canSendMail = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    canSendMail = 0;
   }
 
-  return v5;
+  return canSendMail;
 }
 
-+ (void)_presentMailViewControllerSendingToOrganizer:(BOOL)a3 event:(id)a4 presentationController:(id)a5
++ (void)_presentMailViewControllerSendingToOrganizer:(BOOL)organizer event:(id)event presentationController:(id)controller
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  eventCopy = event;
+  controllerCopy = controller;
   v9 = [EKUIEmailCompositionManager alloc];
   v10 = v9;
-  if (a3)
+  if (organizer)
   {
-    v11 = [v7 organizer];
-    v20[0] = v11;
+    organizer = [eventCopy organizer];
+    v20[0] = organizer;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v13 = [(EKUIEmailCompositionManager *)v10 initWithEvent:v7 participantRecipients:v12 subjectPrefix:0 bodyPrefix:0];
+    v13 = [(EKUIEmailCompositionManager *)v10 initWithEvent:eventCopy participantRecipients:v12 subjectPrefix:0 bodyPrefix:0];
   }
 
   else
   {
-    v13 = [(EKUIEmailCompositionManager *)v9 initWithEvent:v7 participantRecipients:0 subjectPrefix:0 bodyPrefix:0];
+    v13 = [(EKUIEmailCompositionManager *)v9 initWithEvent:eventCopy participantRecipients:0 subjectPrefix:0 bodyPrefix:0];
   }
 
-  v14 = [(EKUIEmailCompositionManager *)v13 viewController];
-  [v14 setModalPresentationStyle:2];
+  viewController = [(EKUIEmailCompositionManager *)v13 viewController];
+  [viewController setModalPresentationStyle:2];
 
   v18[0] = 0;
   v18[1] = v18;
@@ -2299,8 +2299,8 @@ void __110__EKUIContextMenuActions_menuForEvents_presentationController_isEditMe
   v17[3] = &unk_1E8442128;
   v17[4] = v18;
   [(EKUIEmailCompositionManager *)v15 setMessageSendingComplete:v17];
-  v16 = [(EKUIEmailCompositionManager *)v15 viewController];
-  [v8 presentViewController:v16 animated:1 completion:0];
+  viewController2 = [(EKUIEmailCompositionManager *)v15 viewController];
+  [controllerCopy presentViewController:viewController2 animated:1 completion:0];
 
   _Block_object_dispose(v18, 8);
 }
@@ -2320,31 +2320,31 @@ void __100__EKUIContextMenuActions__presentMailViewControllerSendingToOrganizer_
   }
 }
 
-+ (void)_performSaveWithEvent:(id)a3 span:(int64_t)a4 editor:(id)a5
++ (void)_performSaveWithEvent:(id)event span:(int64_t)span editor:(id)editor
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  eventCopy = event;
   v13 = 0;
-  LOBYTE(a4) = [a5 saveEvent:v7 span:a4 error:&v13];
+  LOBYTE(span) = [editor saveEvent:eventCopy span:span error:&v13];
   v8 = v13;
   v9 = v8;
-  if ((a4 & 1) != 0 || !v8)
+  if ((span & 1) != 0 || !v8)
   {
     goto LABEL_9;
   }
 
-  v10 = [v8 domain];
-  if (v10 == *MEMORY[0x1E6966808])
+  domain = [v8 domain];
+  if (domain == *MEMORY[0x1E6966808])
   {
-    v11 = [v9 code];
+    code = [v9 code];
 
-    if (v11 != 1010)
+    if (code != 1010)
     {
       goto LABEL_7;
     }
 
-    v10 = [v7 eventStore];
-    [v10 rollback];
+    domain = [eventCopy eventStore];
+    [domain rollback];
   }
 
 LABEL_7:
@@ -2359,23 +2359,23 @@ LABEL_7:
 LABEL_9:
 }
 
-+ (void)_saveStatus:(int64_t)a3 forEvent:(id)a4 presentationController:(id)a5
++ (void)_saveStatus:(int64_t)status forEvent:(id)event presentationController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 responseMustApplyToAll])
+  eventCopy = event;
+  controllerCopy = controller;
+  if ([eventCopy responseMustApplyToAll])
   {
     v10 = 4;
 LABEL_6:
-    [v8 setParticipationStatus:a3];
-    [v8 setInvitationStatus:0];
-    v16 = [v9 EKUI_editor];
-    [a1 _performSaveWithEvent:v8 span:v10 editor:v16];
+    [eventCopy setParticipationStatus:status];
+    [eventCopy setInvitationStatus:0];
+    eKUI_editor = [controllerCopy EKUI_editor];
+    [self _performSaveWithEvent:eventCopy span:v10 editor:eKUI_editor];
 
     goto LABEL_7;
   }
 
-  if (![v8 isOrWasPartOfRecurringSeries])
+  if (![eventCopy isOrWasPartOfRecurringSeries])
   {
     v10 = 0;
     goto LABEL_6;
@@ -2385,11 +2385,11 @@ LABEL_6:
   v18 = 3221225472;
   v19 = __70__EKUIContextMenuActions__saveStatus_forEvent_presentationController___block_invoke;
   v20 = &unk_1E8442238;
-  v11 = v8;
+  v11 = eventCopy;
   v21 = v11;
-  v23 = a3;
-  v24 = a1;
-  v12 = v9;
+  statusCopy = status;
+  selfCopy = self;
+  v12 = controllerCopy;
   v22 = v12;
   v13 = _Block_copy(&v17);
   v14 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v12 sourceView:0 sourceRect:v11 forEvent:v13 withCompletionHandler:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24), v17, v18, v19, v20];
@@ -2436,29 +2436,29 @@ LABEL_10:
   _presentedAlert = 0;
 }
 
-+ (void)_acceptProposedTimeForEvent:(id)a3 presentationController:(id)a4
++ (void)_acceptProposedTimeForEvent:(id)event presentationController:(id)controller
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _proposedDateForEvent:v6];
+  eventCopy = event;
+  controllerCopy = controller;
+  v8 = [self _proposedDateForEvent:eventCopy];
   if (v8)
   {
-    v9 = [v6 endDateUnadjustedForLegacyClients];
-    v10 = [v6 startDate];
-    [v9 timeIntervalSinceDate:v10];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+    startDate = [eventCopy startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
     v12 = v11;
 
-    [v6 setStartDate:v8];
+    [eventCopy setStartDate:v8];
     v13 = [v8 dateByAddingTimeInterval:v12];
-    [v6 setEndDateUnadjustedForLegacyClients:v13];
+    [eventCopy setEndDateUnadjustedForLegacyClients:v13];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = [v6 attendees];
-    v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    attendees = [eventCopy attendees];
+    v15 = [attendees countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v15)
     {
       v16 = v15;
@@ -2470,7 +2470,7 @@ LABEL_10:
         {
           if (*v29 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(attendees);
           }
 
           v19 = *(*(&v28 + 1) + 8 * v18);
@@ -2487,33 +2487,33 @@ LABEL_10:
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v16 = [attendees countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v16);
     }
 
-    [v6 dismissAcceptedProposeNewTimeNotification];
-    if ([v6 isOrWasPartOfRecurringSeries])
+    [eventCopy dismissAcceptedProposeNewTimeNotification];
+    if ([eventCopy isOrWasPartOfRecurringSeries])
     {
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __77__EKUIContextMenuActions__acceptProposedTimeForEvent_presentationController___block_invoke;
       v24[3] = &unk_1E8442260;
-      v27 = a1;
-      v25 = v6;
-      v26 = v7;
+      selfCopy = self;
+      v25 = eventCopy;
+      v26 = controllerCopy;
       v21 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v26 sourceView:0 sourceRect:v25 forEvent:v24 withCompletionHandler:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       v22 = _presentedAlert;
       _presentedAlert = v21;
 
-      v23 = v25;
+      eKUI_editor = v25;
     }
 
     else
     {
-      v23 = [v7 EKUI_editor];
-      [a1 _performSaveWithEvent:v6 span:0 editor:v23];
+      eKUI_editor = [controllerCopy EKUI_editor];
+      [self _performSaveWithEvent:eventCopy span:0 editor:eKUI_editor];
     }
   }
 }
@@ -2549,16 +2549,16 @@ void __77__EKUIContextMenuActions__acceptProposedTimeForEvent_presentationContro
   }
 }
 
-+ (id)_proposedDateForEvent:(id)a3
++ (id)_proposedDateForEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventCopy = event;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 attendees];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  attendees = [eventCopy attendees];
+  v5 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2569,7 +2569,7 @@ void __77__EKUIContextMenuActions__acceptProposedTimeForEvent_presentationContro
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attendees);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -2579,7 +2579,7 @@ void __77__EKUIContextMenuActions__acceptProposedTimeForEvent_presentationContro
           v10 = v9;
           if ([v10 proposedStartDateStatus] == 1 || !objc_msgSend(v10, "proposedStartDateStatus"))
           {
-            v11 = [v10 proposedStartDateForEvent:v3];
+            v11 = [v10 proposedStartDateForEvent:eventCopy];
             if (v11)
             {
               v12 = v11;
@@ -2590,7 +2590,7 @@ void __77__EKUIContextMenuActions__acceptProposedTimeForEvent_presentationContro
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -2606,20 +2606,20 @@ LABEL_15:
   return v12;
 }
 
-+ (void)deleteEvents:(id)a3 presentationController:(id)a4
++ (void)deleteEvents:(id)events presentationController:(id)controller
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 EKUI_editor];
-  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v5];
+  eventsCopy = events;
+  controllerCopy = controller;
+  eKUI_editor = [controllerCopy EKUI_editor];
+  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:eventsCopy];
   v9 = [MEMORY[0x1E695DFA8] set];
   v10 = [MEMORY[0x1E695DFA8] set];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = v5;
+  v11 = eventsCopy;
   v12 = [v11 countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v12)
   {
@@ -2635,13 +2635,13 @@ LABEL_15:
         }
 
         v16 = *(*(&v42 + 1) + 8 * i);
-        v17 = [v16 isProposedTimeEvent];
+        isProposedTimeEvent = [v16 isProposedTimeEvent];
         v18 = v10;
-        if ((v17 & 1) == 0)
+        if ((isProposedTimeEvent & 1) == 0)
         {
-          v19 = [v16 CUIK_deleteActionShouldDeclineEvent];
+          cUIK_deleteActionShouldDeclineEvent = [v16 CUIK_deleteActionShouldDeclineEvent];
           v18 = v9;
-          if (!v19)
+          if (!cUIK_deleteActionShouldDeclineEvent)
           {
             continue;
           }
@@ -2660,10 +2660,10 @@ LABEL_15:
   if ([v11 count] == 1)
   {
     v20 = [v11 objectAtIndexedSubscript:0];
-    v21 = [v20 status];
+    status = [v20 status];
 
-    v22 = v21 == 3;
-    if (v21 == 3)
+    v22 = status == 3;
+    if (status == 3)
     {
       v23 = 19;
     }
@@ -2680,24 +2680,24 @@ LABEL_15:
     v23 = 18;
   }
 
-  v24 = [[EKUIIntegrationAlertDisplayer alloc] initWithViewController:v6 options:1];
+  v24 = [[EKUIIntegrationAlertDisplayer alloc] initWithViewController:controllerCopy options:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__EKUIContextMenuActions_deleteEvents_presentationController___block_invoke;
   aBlock[3] = &unk_1E84422D8;
-  v35 = v7;
+  v35 = eKUI_editor;
   v36 = v24;
   v41 = v22;
   v37 = v10;
   v38 = v9;
   v39 = v8;
-  v40 = v6;
-  v25 = v6;
+  v40 = controllerCopy;
+  v25 = controllerCopy;
   v26 = v8;
   v27 = v9;
   v28 = v10;
   v29 = v24;
-  v30 = v7;
+  v30 = eKUI_editor;
   v31 = _Block_copy(aBlock);
   v32 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:v23 viewController:v25 forEvents:v11 withCompletionHandler:v31];
   v33 = _presentedAlert;
@@ -3004,18 +3004,18 @@ void __62__EKUIContextMenuActions_deleteEvents_presentationController___block_in
   _presentedAlert = 0;
 }
 
-+ (void)markReminders:(id)a3 completed:(BOOL)a4 editor:(id)a5
++ (void)markReminders:(id)reminders completed:(BOOL)completed editor:(id)editor
 {
-  v6 = a4;
+  completedCopy = completed;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  remindersCopy = reminders;
+  editorCopy = editor;
   v9 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = v7;
+  v10 = remindersCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -3031,9 +3031,9 @@ void __62__EKUIContextMenuActions_deleteEvents_presentationController___block_in
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        if ([v15 isReminderIntegrationEvent] && objc_msgSend(v15, "CUIK_reminderShouldBeEditable") && objc_msgSend(v15, "completed") != v6)
+        if ([v15 isReminderIntegrationEvent] && objc_msgSend(v15, "CUIK_reminderShouldBeEditable") && objc_msgSend(v15, "completed") != completedCopy)
         {
-          [v15 setCompleted:v6];
+          [v15 setCompleted:completedCopy];
           [v9 addObject:v15];
         }
       }
@@ -3044,18 +3044,18 @@ void __62__EKUIContextMenuActions_deleteEvents_presentationController___block_in
     while (v12);
   }
 
-  [v8 saveChangesToEvents:v9 span:0];
+  [editorCopy saveChangesToEvents:v9 span:0];
 }
 
-+ (BOOL)remindersAllTogglable:(id)a3
++ (BOOL)remindersAllTogglable:(id)togglable
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  togglableCopy = togglable;
+  v4 = [togglableCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3066,7 +3066,7 @@ void __62__EKUIContextMenuActions_deleteEvents_presentationController___block_in
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(togglableCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -3077,7 +3077,7 @@ void __62__EKUIContextMenuActions_deleteEvents_presentationController___block_in
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [togglableCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 1;
       if (v5)
       {
@@ -3098,15 +3098,15 @@ LABEL_13:
   return v9;
 }
 
-+ (BOOL)remindersAllCompleted:(id)a3
++ (BOOL)remindersAllCompleted:(id)completed
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  completedCopy = completed;
+  v4 = [completedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3117,7 +3117,7 @@ LABEL_13:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(completedCopy);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) completed])
@@ -3127,7 +3127,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [completedCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -3143,15 +3143,15 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)eventsAllDeletable:(id)a3
++ (BOOL)eventsAllDeletable:(id)deletable
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  deletableCopy = deletable;
+  v4 = [deletableCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3162,7 +3162,7 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deletableCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -3173,7 +3173,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [deletableCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       v9 = 1;
       if (v5)
       {

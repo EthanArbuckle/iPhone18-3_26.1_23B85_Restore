@@ -1,50 +1,50 @@
 @interface SBKPullValueTransaction
-- (SBKPullValueTransaction)initWithStoreBagContext:(id)a3 requestedKey:(id)a4 clientItemPayloadPair:(id)a5 clientItemVersionAnchor:(id)a6;
+- (SBKPullValueTransaction)initWithStoreBagContext:(id)context requestedKey:(id)key clientItemPayloadPair:(id)pair clientItemVersionAnchor:(id)anchor;
 - (id)clampsKey;
 - (id)description;
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4;
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation SBKPullValueTransaction
 
-- (void)processDataInResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)processDataInResponse:(id)response withCompletionHandler:(id)handler
 {
-  v18 = a3;
-  v6 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v18 itemValuePayload];
+    itemValuePayload = [responseCopy itemValuePayload];
 
-    if (v7)
+    if (itemValuePayload)
     {
       clientItemPayloadPair = self->_clientItemPayloadPair;
       v9 = objc_opt_class();
-      v10 = [v18 itemKey];
-      v11 = [v18 itemValuePayload];
-      v12 = SBKKeyValuePayloadPairWithPreferredClass(v9, v10, v11);
+      itemKey = [responseCopy itemKey];
+      itemValuePayload2 = [responseCopy itemValuePayload];
+      v12 = SBKKeyValuePayloadPairWithPreferredClass(v9, itemKey, itemValuePayload2);
       resultItemPayloadPair = self->_resultItemPayloadPair;
       self->_resultItemPayloadPair = v12;
 
-      v14 = [v18 itemVersion];
+      itemVersion = [responseCopy itemVersion];
     }
 
     else
     {
       objc_storeStrong(&self->_resultItemPayloadPair, self->_clientItemPayloadPair);
-      v14 = self->_clientItemVersionAnchor;
+      itemVersion = self->_clientItemVersionAnchor;
     }
 
     resultItemVersionAnchor = self->_resultItemVersionAnchor;
-    self->_resultItemVersionAnchor = v14;
+    self->_resultItemVersionAnchor = itemVersion;
 
-    self->_success = [v18 isSuccess];
-    v16 = [v18 domainVersion];
+    self->_success = [responseCopy isSuccess];
+    domainVersion = [responseCopy domainVersion];
     resultDomainVersion = self->_resultDomainVersion;
-    self->_resultDomainVersion = v16;
+    self->_resultDomainVersion = domainVersion;
   }
 
-  v6[2](v6, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
 - (id)clampsKey
@@ -66,7 +66,7 @@
     clientItemVersionAnchor = @"*unversioned*";
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[client: payload-pair=%@, anchor=%@]", self->_clientItemPayloadPair, clientItemVersionAnchor];
+  clientItemVersionAnchor = [MEMORY[0x277CCACA8] stringWithFormat:@"[client: payload-pair=%@, anchor=%@]", self->_clientItemPayloadPair, clientItemVersionAnchor];
   resultItemPayloadPair = self->_resultItemPayloadPair;
   resultItemVersionAnchor = self->_resultItemVersionAnchor;
   if (!resultItemVersionAnchor)
@@ -74,35 +74,35 @@
     resultItemVersionAnchor = @"*unversioned*";
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[result: payload-pair=%@, anchor=%@]", self->_resultItemPayloadPair, resultItemVersionAnchor];
+  resultItemVersionAnchor = [MEMORY[0x277CCACA8] stringWithFormat:@"[result: payload-pair=%@, anchor=%@]", self->_resultItemPayloadPair, resultItemVersionAnchor];
   v9 = MEMORY[0x277CCACA8];
   v14.receiver = self;
   v14.super_class = SBKPullValueTransaction;
   v10 = [(SBKPullValueTransaction *)&v14 description];
-  v11 = [(SBKTransaction *)self domain];
-  v12 = [v9 stringWithFormat:@"%@ domain = %@, GET: key='%@', %@, %@", v10, v11, self->_requestedKey, v5, v8];
+  domain = [(SBKTransaction *)self domain];
+  v12 = [v9 stringWithFormat:@"%@ domain = %@, GET: key='%@', %@, %@", v10, domain, self->_requestedKey, clientItemVersionAnchor, resultItemVersionAnchor];
 
   return v12;
 }
 
-- (SBKPullValueTransaction)initWithStoreBagContext:(id)a3 requestedKey:(id)a4 clientItemPayloadPair:(id)a5 clientItemVersionAnchor:(id)a6
+- (SBKPullValueTransaction)initWithStoreBagContext:(id)context requestedKey:(id)key clientItemPayloadPair:(id)pair clientItemVersionAnchor:(id)anchor
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 domain];
-  v16 = [v14 pullKeyValueRequestURL];
+  keyCopy = key;
+  pairCopy = pair;
+  anchorCopy = anchor;
+  contextCopy = context;
+  domain = [contextCopy domain];
+  pullKeyValueRequestURL = [contextCopy pullKeyValueRequestURL];
 
   v19.receiver = self;
   v19.super_class = SBKPullValueTransaction;
-  v17 = [(SBKTransaction *)&v19 initWithDomain:v15 requestURL:v16];
+  v17 = [(SBKTransaction *)&v19 initWithDomain:domain requestURL:pullKeyValueRequestURL];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_requestedKey, a4);
-    objc_storeStrong(&v17->_clientItemPayloadPair, a5);
-    objc_storeStrong(&v17->_clientItemVersionAnchor, a6);
+    objc_storeStrong(&v17->_requestedKey, key);
+    objc_storeStrong(&v17->_clientItemPayloadPair, pair);
+    objc_storeStrong(&v17->_clientItemVersionAnchor, anchor);
   }
 
   return v17;

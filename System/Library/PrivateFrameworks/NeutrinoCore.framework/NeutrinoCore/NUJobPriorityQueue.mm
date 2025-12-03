@@ -1,10 +1,10 @@
 @interface NUJobPriorityQueue
-- (BOOL)_removeJob:(id)a3;
+- (BOOL)_removeJob:(id)job;
 - (BOOL)_runNextJob;
-- (BOOL)removeJob:(id)a3;
+- (BOOL)removeJob:(id)job;
 - (BOOL)start;
 - (NUJobPriorityQueue)init;
-- (NUJobPriorityQueue)initWithName:(id)a3 owner:(id)a4 qos:(unsigned int)a5;
+- (NUJobPriorityQueue)initWithName:(id)name owner:(id)owner qos:(unsigned int)qos;
 - (id)_popJob;
 - (id)description;
 - (id)popJob;
@@ -12,7 +12,7 @@
 - (void)_run;
 - (void)_sortIfNeeded;
 - (void)_startRunning;
-- (void)addJob:(id)a3;
+- (void)addJob:(id)job;
 @end
 
 @implementation NUJobPriorityQueue
@@ -20,21 +20,21 @@
 - (BOOL)_runNextJob
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NUJobPriorityQueue *)self popJob];
-  if (v4)
+  popJob = [(NUJobPriorityQueue *)self popJob];
+  if (popJob)
   {
     WeakRetained = objc_loadWeakRetained(&self->_owner);
     if (WeakRetained)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [v4 request];
-      v8 = [v7 name];
-      v9 = [v6 stringWithFormat:@"%@-j%llu", v8, objc_msgSend(v4, "jobNumber")];
+      request = [popJob request];
+      name = [request name];
+      v9 = [v6 stringWithFormat:@"%@-j%llu", name, objc_msgSend(popJob, "jobNumber")];
       currentlyExecutingJobName = self->_currentlyExecutingJobName;
       self->_currentlyExecutingJobName = v9;
 
       dispatch_queue_set_specific(self->_runQueue, NUCurrentlyExecutingJobNameKey, self->_currentlyExecutingJobName, 0);
-      [v4 run:{objc_msgSend(WeakRetained, "stage")}];
+      [popJob run:{objc_msgSend(WeakRetained, "stage")}];
       v11 = self->_currentlyExecutingJobName;
       self->_currentlyExecutingJobName = 0;
 
@@ -43,7 +43,7 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  return v4 != 0;
+  return popJob != 0;
 }
 
 - (void)_run
@@ -188,10 +188,10 @@ uint64_t __27__NUJobPriorityQueue_count__block_invoke(uint64_t a1)
 - (id)_popJob
 {
   [(NUJobPriorityQueue *)self _sortIfNeeded];
-  v3 = [(NSMutableArray *)self->_jobs lastObject];
+  lastObject = [(NSMutableArray *)self->_jobs lastObject];
   [(NSMutableArray *)self->_jobs removeLastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)popJob
@@ -223,21 +223,21 @@ uint64_t __28__NUJobPriorityQueue_popJob__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_removeJob:(id)a3
+- (BOOL)_removeJob:(id)job
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_jobs containsObject:v4];
+  jobCopy = job;
+  v5 = [(NSMutableArray *)self->_jobs containsObject:jobCopy];
   if (v5)
   {
-    [(NSMutableArray *)self->_jobs removeObject:v4];
+    [(NSMutableArray *)self->_jobs removeObject:jobCopy];
   }
 
   return v5;
 }
 
-- (BOOL)removeJob:(id)a3
+- (BOOL)removeJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -247,10 +247,10 @@ uint64_t __28__NUJobPriorityQueue_popJob__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __32__NUJobPriorityQueue_removeJob___block_invoke;
   block[3] = &unk_1E810B500;
-  v9 = v4;
+  v9 = jobCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = jobCopy;
   dispatch_sync(stateQueue, block);
   LOBYTE(stateQueue) = *(v12 + 24);
 
@@ -265,17 +265,17 @@ uint64_t __32__NUJobPriorityQueue_removeJob___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addJob:(id)a3
+- (void)addJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__NUJobPriorityQueue_addJob___block_invoke;
   v7[3] = &unk_1E810B958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobCopy;
+  v6 = jobCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -367,8 +367,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -384,8 +384,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -401,34 +401,34 @@ LABEL_14:
   _NUAssertFailHandler("[NUJobPriorityQueue init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUJobPriorityQueue.m", 43, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (NUJobPriorityQueue)initWithName:(id)a3 owner:(id)a4 qos:(unsigned int)a5
+- (NUJobPriorityQueue)initWithName:(id)name owner:(id)owner qos:(unsigned int)qos
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  ownerCopy = owner;
   v26.receiver = self;
   v26.super_class = NUJobPriorityQueue;
   v11 = [(NUJobPriorityQueue *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
+    objc_storeStrong(&v11->_name, name);
     v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:256];
     jobs = v12->_jobs;
     v12->_jobs = v13;
 
-    objc_storeWeak(&v12->_owner, v10);
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUJobQueue.%@.run", v9];
+    objc_storeWeak(&v12->_owner, ownerCopy);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUJobQueue.%@.run", nameCopy];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_attr_make_with_qos_class(v16, a5, 0);
+    v17 = dispatch_queue_attr_make_with_qos_class(v16, qos, 0);
 
-    v18 = dispatch_queue_create([v15 UTF8String], v17);
+    v18 = dispatch_queue_create([nameCopy UTF8String], v17);
     runQueue = v12->_runQueue;
     v12->_runQueue = v18;
 
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUJobQueue.%@.state", v9];
-    v21 = [v20 UTF8String];
+    nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NUJobQueue.%@.state", nameCopy];
+    uTF8String = [nameCopy2 UTF8String];
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v23 = dispatch_queue_create(v21, v22);
+    v23 = dispatch_queue_create(uTF8String, v22);
     stateQueue = v12->_stateQueue;
     v12->_stateQueue = v23;
   }

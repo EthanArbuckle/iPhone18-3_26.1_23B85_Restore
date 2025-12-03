@@ -1,19 +1,19 @@
 @interface SBFTouchPassThroughClippingView
 - (CGRect)contentClippingFrame;
-- (SBFTouchPassThroughClippingView)initWithFrame:(CGRect)a3;
+- (SBFTouchPassThroughClippingView)initWithFrame:(CGRect)frame;
 - (void)_layoutContentClippingView;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)addSubview:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4;
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSubview:(id)a3 belowSubview:(id)a4;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)addSubview:(id)subview;
+- (void)bringSubviewToFront:(id)front;
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview;
+- (void)insertSubview:(id)subview atIndex:(int64_t)index;
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview;
 - (void)layoutSubviews;
-- (void)sendSubviewToBack:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setContentClippingEnabled:(BOOL)a3;
-- (void)setContentClippingFrame:(CGRect)a3 cornerRadii:(UIRectCornerRadii)a4;
-- (void)setOpaque:(BOOL)a3;
+- (void)sendSubviewToBack:(id)back;
+- (void)setBackgroundColor:(id)color;
+- (void)setContentClippingEnabled:(BOOL)enabled;
+- (void)setContentClippingFrame:(CGRect)frame cornerRadii:(UIRectCornerRadii)radii;
+- (void)setOpaque:(BOOL)opaque;
 @end
 
 @implementation SBFTouchPassThroughClippingView
@@ -71,12 +71,12 @@
   return result;
 }
 
-- (SBFTouchPassThroughClippingView)initWithFrame:(CGRect)a3
+- (SBFTouchPassThroughClippingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = SBFTouchPassThroughClippingView;
   v7 = [(SBFTouchPassThroughClippingView *)&v13 initWithFrame:?];
@@ -86,9 +86,9 @@
     v9 = *(MEMORY[0x1E695F050] + 16);
     v7->_contentClippingFrame.origin = *MEMORY[0x1E695F050];
     v7->_contentClippingFrame.size = v9;
-    v10 = [[_SBFActualClippingView alloc] initWithFrame:x, y, width, height];
+    height = [[_SBFActualClippingView alloc] initWithFrame:x, y, width, height];
     contentClippingView = v8->_contentClippingView;
-    v8->_contentClippingView = v10;
+    v8->_contentClippingView = height;
 
     [(SBFTouchPassThroughClippingView *)v8 addSubview:v8->_contentClippingView];
     [(SBFTouchPassThroughClippingView *)v8 setContentClippingEnabled:1];
@@ -97,17 +97,17 @@
   return v8;
 }
 
-- (void)setContentClippingFrame:(CGRect)a3 cornerRadii:(UIRectCornerRadii)a4
+- (void)setContentClippingFrame:(CGRect)frame cornerRadii:(UIRectCornerRadii)radii
 {
-  var0 = a4.var0;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  var0 = radii.var0;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16 = *MEMORY[0x1E69E9840];
-  var3 = a4.var3;
-  var1 = a4.var1;
-  var2 = a4.var2;
+  var3 = radii.var3;
+  var1 = radii.var1;
+  var2 = radii.var2;
   for (i = 8; i != 32; i += 8)
   {
     if (var0 < *&v12[i])
@@ -117,7 +117,7 @@
   }
 
   p_contentClippingFrame = &self->_contentClippingFrame;
-  if (!CGRectEqualToRect(self->_contentClippingFrame, a3) || (BSFloatEqualToFloat() & 1) == 0)
+  if (!CGRectEqualToRect(self->_contentClippingFrame, frame) || (BSFloatEqualToFloat() & 1) == 0)
   {
     self->_contentCornerRadius = var0;
     p_contentClippingFrame->origin.x = x;
@@ -129,49 +129,49 @@
   }
 }
 
-- (void)setContentClippingEnabled:(BOOL)a3
+- (void)setContentClippingEnabled:(BOOL)enabled
 {
-  if (self->_contentClippingEnabled != a3)
+  if (self->_contentClippingEnabled != enabled)
   {
-    self->_contentClippingEnabled = a3;
+    self->_contentClippingEnabled = enabled;
     [(SBFTouchPassThroughClippingView *)self setNeedsLayout];
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SBFTouchPassThroughClippingView;
   [(SBFTouchPassThroughClippingView *)&v5 _setContinuousCornerRadius:?];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_contentCornerRadius = a3;
+    self->_contentCornerRadius = radius;
     [(SBFTouchPassThroughClippingView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = SBFTouchPassThroughClippingView;
-  v4 = a3;
-  [(SBFTouchPassThroughClippingView *)&v5 setBackgroundColor:v4];
-  [(_SBFActualClippingView *)self->_contentClippingView setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(SBFTouchPassThroughClippingView *)&v5 setBackgroundColor:colorCopy];
+  [(_SBFActualClippingView *)self->_contentClippingView setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v5.receiver = self;
   v5.super_class = SBFTouchPassThroughClippingView;
   [(SBFTouchPassThroughClippingView *)&v5 setOpaque:?];
-  [(_SBFActualClippingView *)self->_contentClippingView setOpaque:v3];
+  [(_SBFActualClippingView *)self->_contentClippingView setOpaque:opaqueCopy];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3)
+  if (contentClippingView == subview)
   {
     v8 = v3;
     v9 = v4;
@@ -188,16 +188,16 @@
   }
 }
 
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4
+- (void)insertSubview:(id)subview atIndex:(int64_t)index
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3)
+  if (contentClippingView == subview)
   {
     v9 = v4;
     v10 = v5;
     v8.receiver = self;
     v8.super_class = SBFTouchPassThroughClippingView;
-    [(SBFTouchPassThroughClippingView *)&v8 insertSubview:contentClippingView atIndex:a4];
+    [(SBFTouchPassThroughClippingView *)&v8 insertSubview:contentClippingView atIndex:index];
   }
 
   else
@@ -208,10 +208,10 @@
   }
 }
 
-- (void)insertSubview:(id)a3 belowSubview:(id)a4
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3 || contentClippingView == a4)
+  if (contentClippingView == subview || contentClippingView == belowSubview)
   {
     v10 = v4;
     v11 = v5;
@@ -228,10 +228,10 @@
   }
 }
 
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3 || contentClippingView == a4)
+  if (contentClippingView == subview || contentClippingView == aboveSubview)
   {
     v10 = v4;
     v11 = v5;
@@ -248,10 +248,10 @@
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3)
+  if (contentClippingView == front)
   {
     v8 = v3;
     v9 = v4;
@@ -268,10 +268,10 @@
   }
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
   contentClippingView = self->_contentClippingView;
-  if (contentClippingView == a3)
+  if (contentClippingView == back)
   {
     v8 = v3;
     v9 = v4;

@@ -1,28 +1,28 @@
 @interface SMReceiverNotificationUtilities
-+ (void)fetchDestinationNameFromMapItem:(id)a3 completionHandler:(id)a4;
-+ (void)prepareNotificationBodyFromMessage:(id)a3 completionHandler:(id)a4;
++ (void)fetchDestinationNameFromMapItem:(id)item completionHandler:(id)handler;
++ (void)prepareNotificationBodyFromMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation SMReceiverNotificationUtilities
 
-+ (void)prepareNotificationBodyFromMessage:(id)a3 completionHandler:(id)a4
++ (void)prepareNotificationBodyFromMessage:(id)message completionHandler:(id)handler
 {
   v117 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() messageType];
+  messageCopy = message;
+  handlerCopy = handler;
+  messageType = [objc_opt_class() messageType];
   v105 = 0;
   v106 = &v105;
   v107 = 0x3032000000;
   v108 = __Block_byref_object_copy__0;
   v109 = __Block_byref_object_dispose__0;
   v110 = 0;
-  switch(v9)
+  switch(messageType)
   {
     case 3:
-      v21 = [v7 summaryText];
+      summaryText = [messageCopy summaryText];
       v22 = v106[5];
-      v106[5] = v21;
+      v106[5] = summaryText;
 
       v23 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -40,33 +40,33 @@
         _os_log_impl(&dword_26455D000, v23, OS_LOG_TYPE_DEFAULT, "#NotificationDeliveryRequest,%@,%@, SMMessageType SMMessageTypeKeyRelease summaryText: %@", buf, 0x20u);
       }
 
-      v8[2](v8, v106[5], 0);
+      handlerCopy[2](handlerCopy, v106[5], 0);
       goto LABEL_42;
     case 2:
-      v16 = v7;
-      v17 = [v16 summaryText];
+      v16 = messageCopy;
+      summaryText2 = [v16 summaryText];
       v18 = v106[5];
-      v106[5] = v17;
+      v106[5] = summaryText2;
 
       if ([v16 sessionEndReason] == 1 && objc_msgSend(v16, "destinationType") == 4)
       {
-        v19 = [v16 destinationMapItem];
+        destinationMapItem = [v16 destinationMapItem];
         v88[0] = MEMORY[0x277D85DD0];
         v88[1] = 3221225472;
         v88[2] = __88__SMReceiverNotificationUtilities_prepareNotificationBodyFromMessage_completionHandler___block_invoke_66;
         v88[3] = &unk_279B65438;
-        v91 = a1;
+        selfCopy = self;
         v92 = a2;
-        v89 = v8;
+        v89 = handlerCopy;
         v90 = &v105;
-        [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:v19 completionHandler:v88];
+        [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:destinationMapItem completionHandler:v88];
 
         v20 = v89;
       }
 
       else
       {
-        v8[2](v8, v106[5], 0);
+        handlerCopy[2](handlerCopy, v106[5], 0);
         v20 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
@@ -86,34 +86,34 @@
 
       goto LABEL_41;
     case 1:
-      v10 = v7;
-      v11 = [v10 summaryText];
+      v10 = messageCopy;
+      summaryText3 = [v10 summaryText];
       v12 = v106[5];
-      v106[5] = v11;
+      v106[5] = summaryText3;
 
-      v13 = [v10 coarseEstimatedEndTime];
-      v14 = v13;
-      if (v13)
+      coarseEstimatedEndTime = [v10 coarseEstimatedEndTime];
+      v14 = coarseEstimatedEndTime;
+      if (coarseEstimatedEndTime)
       {
-        v15 = v13;
+        estimatedEndTime = coarseEstimatedEndTime;
       }
 
       else
       {
-        v15 = [v10 estimatedEndTime];
+        estimatedEndTime = [v10 estimatedEndTime];
       }
 
-      v20 = v15;
+      v20 = estimatedEndTime;
 
-      v37 = [v10 sessionType];
-      if (v37 == 1)
+      sessionType = [v10 sessionType];
+      if (sessionType == 1)
       {
         v52 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v39 = [v52 localizedStringForKey:@"START_MESSAGE_TIME_BOUND_SUMMARY_FORMAT_WITH_ETA" value:@"Check In: Timer %@" table:0];
 
         v53 = MEMORY[0x277CCACA8];
-        v54 = [v20 roundedTime];
-        v55 = [v54 absoluteTimeString:0 preposition:1 capitalized:0];
+        roundedTime = [v20 roundedTime];
+        v55 = [roundedTime absoluteTimeString:0 preposition:1 capitalized:0];
         v56 = [v53 localizedStringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:0, v55];
         v57 = v106[5];
         v106[5] = v56;
@@ -137,28 +137,28 @@
 
       else
       {
-        if (v37 != 2)
+        if (sessionType != 2)
         {
-          if (v37 == 3)
+          if (sessionType == 3)
           {
-            v38 = [v10 destinationMapItem];
+            destinationMapItem2 = [v10 destinationMapItem];
             v93[0] = MEMORY[0x277D85DD0];
             v93[1] = 3221225472;
             v93[2] = __88__SMReceiverNotificationUtilities_prepareNotificationBodyFromMessage_completionHandler___block_invoke_53;
             v93[3] = &unk_279B65410;
             v96 = &v105;
             v94 = v20;
-            v97 = a1;
+            selfCopy2 = self;
             v98 = a2;
-            v95 = v8;
-            [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:v38 completionHandler:v93];
+            v95 = handlerCopy;
+            [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:destinationMapItem2 completionHandler:v93];
 
             v39 = v94;
           }
 
           else
           {
-            v8[2](v8, v106[5], 0);
+            handlerCopy[2](handlerCopy, v106[5], 0);
             v39 = _rt_log_facility_get_os_log(RTLogFacilityFramework);
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
             {
@@ -179,16 +179,16 @@
           goto LABEL_40;
         }
 
-        v40 = [v10 destinationType];
-        switch(v40)
+        destinationType = [v10 destinationType];
+        switch(destinationType)
         {
           case 3:
             v76 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v39 = [v76 localizedStringForKey:@"START_MESSAGE_SCHOOL_SUMMARY_FORMAT_WITH_ETA" value:@"Check In: School %@" table:0];
 
             v77 = MEMORY[0x277CCACA8];
-            v78 = [v20 roundedTime];
-            v79 = [v78 absoluteTimeString:0 preposition:1 capitalized:0];
+            roundedTime2 = [v20 roundedTime];
+            v79 = [roundedTime2 absoluteTimeString:0 preposition:1 capitalized:0];
             v80 = [v77 localizedStringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:0, v79];
             v81 = v106[5];
             v106[5] = v80;
@@ -215,8 +215,8 @@
             v39 = [v66 localizedStringForKey:@"START_MESSAGE_WORK_SUMMARY_FORMAT_WITH_ETA" value:@"Check In: Work %@" table:0];
 
             v67 = MEMORY[0x277CCACA8];
-            v68 = [v20 roundedTime];
-            v69 = [v68 absoluteTimeString:0 preposition:1 capitalized:0];
+            roundedTime3 = [v20 roundedTime];
+            v69 = [roundedTime3 absoluteTimeString:0 preposition:1 capitalized:0];
             v70 = [v67 localizedStringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:0, v69];
             v71 = v106[5];
             v106[5] = v70;
@@ -243,8 +243,8 @@
             v39 = [v41 localizedStringForKey:@"START_MESSAGE_HOME_SUMMARY_FORMAT_WITH_ETA" value:@"Check In: Home %@" table:0];
 
             v42 = MEMORY[0x277CCACA8];
-            v43 = [v20 roundedTime];
-            v44 = [v43 absoluteTimeString:0 preposition:1 capitalized:0];
+            roundedTime4 = [v20 roundedTime];
+            v44 = [roundedTime4 absoluteTimeString:0 preposition:1 capitalized:0];
             v45 = [v42 localizedStringWithValidatedFormat:v39 validFormatSpecifiers:@"%@" error:0, v44];
             v46 = v106[5];
             v106[5] = v45;
@@ -267,24 +267,24 @@
 
             break;
           default:
-            v86 = [v10 destinationMapItem];
+            destinationMapItem3 = [v10 destinationMapItem];
             v99[0] = MEMORY[0x277D85DD0];
             v99[1] = 3221225472;
             v99[2] = __88__SMReceiverNotificationUtilities_prepareNotificationBodyFromMessage_completionHandler___block_invoke;
             v99[3] = &unk_279B65410;
             v102 = &v105;
             v100 = v20;
-            v103 = a1;
+            selfCopy3 = self;
             v104 = a2;
-            v101 = v8;
-            [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:v86 completionHandler:v99];
+            v101 = handlerCopy;
+            [SMReceiverNotificationUtilities fetchDestinationNameFromMapItem:destinationMapItem3 completionHandler:v99];
 
             v39 = v100;
             goto LABEL_40;
         }
       }
 
-      v8[2](v8, v106[5], 0);
+      handlerCopy[2](handlerCopy, v106[5], 0);
 LABEL_40:
 
 LABEL_41:
@@ -309,7 +309,7 @@ LABEL_42:
     _os_log_impl(&dword_26455D000, v28, OS_LOG_TYPE_DEFAULT, "#NotificationDeliveryRequest,%@,%@, SMMessageType DEFAULT summaryText: %@", buf, 0x20u);
   }
 
-  v8[2](v8, v106[5], 0);
+  handlerCopy[2](handlerCopy, v106[5], 0);
 LABEL_43:
   _Block_object_dispose(&v105, 8);
 
@@ -521,21 +521,21 @@ void __88__SMReceiverNotificationUtilities_prepareNotificationBodyFromMessage_co
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fetchDestinationNameFromMapItem:(id)a3 completionHandler:(id)a4
++ (void)fetchDestinationNameFromMapItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D0EBD0];
-  v9 = a3;
-  v10 = [v8 sharedService];
+  itemCopy = item;
+  sharedService = [v8 sharedService];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__SMReceiverNotificationUtilities_fetchDestinationNameFromMapItem_completionHandler___block_invoke;
   v12[3] = &unk_279B65460;
-  v13 = v7;
-  v14 = a1;
+  v13 = handlerCopy;
+  selfCopy = self;
   v15 = a2;
-  v11 = v7;
-  [v10 resolveMapItemFromHandle:v9 completionHandler:v12];
+  v11 = handlerCopy;
+  [sharedService resolveMapItemFromHandle:itemCopy completionHandler:v12];
 }
 
 void __85__SMReceiverNotificationUtilities_fetchDestinationNameFromMapItem_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)

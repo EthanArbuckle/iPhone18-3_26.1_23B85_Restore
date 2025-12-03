@@ -1,19 +1,19 @@
 @interface PPExtractionContext
-- (PPExtractionContext)initWithProbabilities:(id)a3;
+- (PPExtractionContext)initWithProbabilities:(id)probabilities;
 @end
 
 @implementation PPExtractionContext
 
-- (PPExtractionContext)initWithProbabilities:(id)a3
+- (PPExtractionContext)initWithProbabilities:(id)probabilities
 {
-  v5 = a3;
+  probabilitiesCopy = probabilities;
   v9.receiver = self;
   v9.super_class = PPExtractionContext;
   v6 = [(PPExtractionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_probabilities, a3);
+    objc_storeStrong(&v6->_probabilities, probabilities);
   }
 
   return v7;

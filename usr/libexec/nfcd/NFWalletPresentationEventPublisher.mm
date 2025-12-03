@@ -2,7 +2,7 @@
 - (NFWalletPresentationEventPublisher)init;
 - (unint64_t)walletDomain;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NFWalletPresentationEventPublisher
@@ -144,13 +144,13 @@
   [(NFWalletPresentationEventPublisher *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v64 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (off_10035B310 == a6 || off_10035B308 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (off_10035B310 == context || off_10035B308 == context)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -158,7 +158,7 @@
     if (Logger)
     {
       v17 = Logger;
-      v63 = v11;
+      v63 = objectCopy;
       Class = object_getClass(self);
       if (class_isMetaClass(Class))
       {
@@ -173,7 +173,7 @@
       ClassName = object_getClassName(self);
       v21 = a2;
       Name = sel_getName(a2);
-      if (off_10035B310 == a6)
+      if (off_10035B310 == context)
       {
         v16 = "SESD";
       }
@@ -191,7 +191,7 @@
       v24 = sesdDefaults;
       v17(6, "%c[%{public}s %{public}s]:%i %{public}sDoubleClick changed=%{public}@, domain=%{public}lu", v19, ClassName, Name, 190, v16, v13, [(NFWalletPresentationSettingsSESD *)v24 walletDomain]);
 
-      v11 = v63;
+      objectCopy = v63;
       a2 = v21;
       v16 = "PK";
     }
@@ -200,7 +200,7 @@
     v25 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = v11;
+      v26 = objectCopy;
       v27 = object_getClass(self);
       if (class_isMetaClass(v27))
       {
@@ -215,7 +215,7 @@
       v29 = object_getClassName(self);
       v30 = a2;
       v31 = sel_getName(a2);
-      if (off_10035B310 == a6)
+      if (off_10035B310 == context)
       {
         v16 = "SESD";
       }
@@ -230,7 +230,7 @@
         v32 = 0;
       }
 
-      v33 = [(NFWalletPresentationSettingsSESD *)v32 walletDomain];
+      walletDomain = [(NFWalletPresentationSettingsSESD *)v32 walletDomain];
       *buf = 67110658;
       *&buf[4] = v28;
       *v71 = 2082;
@@ -244,10 +244,10 @@
       *&v71[36] = 2114;
       *&v71[38] = v13;
       v72 = 2050;
-      v73 = v33;
+      v73 = walletDomain;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}sDoubleClick changed=%{public}@, domain=%{public}lu", buf, 0x40u);
       a2 = v30;
-      v11 = v26;
+      objectCopy = v26;
     }
 
     v34 = [v13 objectForKeyedSubscript:NSKeyValueChangeNewKey];
@@ -327,9 +327,9 @@
     goto LABEL_43;
   }
 
-  if (off_10035B320 == a6)
+  if (off_10035B320 == context)
   {
-    v34 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v34 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -354,7 +354,7 @@ LABEL_43:
     goto LABEL_63;
   }
 
-  if (off_10035B318 == a6)
+  if (off_10035B318 == context)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v48 = NFLogGetLogger();
@@ -433,7 +433,7 @@ LABEL_43:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v61 = [v35 unsignedIntValue];
+      unsignedIntValue = [v35 unsignedIntValue];
       if (self)
       {
         *buf = _NSConcreteStackBlock;
@@ -441,7 +441,7 @@ LABEL_43:
         *&v71[8] = sub_100048968;
         *&v71[16] = &unk_100315F58;
         *&v71[24] = self;
-        *&v71[32] = v61;
+        *&v71[32] = unsignedIntValue;
         os_unfair_lock_lock(&self->_updateLock);
         (*&v71[8])(buf);
         os_unfair_lock_unlock(&self->_updateLock);
@@ -455,7 +455,7 @@ LABEL_43:
 
   v65.receiver = self;
   v65.super_class = NFWalletPresentationEventPublisher;
-  [(NFWalletPresentationEventPublisher *)&v65 observeValueForKeyPath:v64 ofObject:v11 change:v12 context:a6];
+  [(NFWalletPresentationEventPublisher *)&v65 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_63:
 }
 

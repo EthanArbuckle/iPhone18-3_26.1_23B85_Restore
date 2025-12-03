@@ -1,31 +1,31 @@
 @interface SCNNode
 + (SCNNode)node;
 + (SCNNode)nodeWithGeometry:(SCNGeometry *)geometry;
-+ (SCNNode)nodeWithMDLAsset:(id)a3 options:(id)a4;
-+ (SCNNode)nodeWithMDLObject:(id)a3 masterObjects:(id)a4 sceneNodes:(id)a5 skinnedMeshes:(id)a6 skelNodesMap:(void *)a7 asset:(id)a8 options:(id)a9;
-+ (SCNNode)nodeWithMDLObject:(id)a3 options:(id)a4;
-+ (SCNNode)nodeWithNodeRef:(__C3DNode *)a3;
++ (SCNNode)nodeWithMDLAsset:(id)asset options:(id)options;
++ (SCNNode)nodeWithMDLObject:(id)object masterObjects:(id)objects sceneNodes:(id)nodes skinnedMeshes:(id)meshes skelNodesMap:(void *)map asset:(id)asset options:(id)options;
++ (SCNNode)nodeWithMDLObject:(id)object options:(id)options;
++ (SCNNode)nodeWithNodeRef:(__C3DNode *)ref;
 + (SCNVector3)localFront;
 + (SCNVector3)localRight;
 + (SCNVector3)localUp;
-+ (id)_dumpNodeTree:(id)a3 tab:(id)a4;
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4;
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5;
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3;
++ (id)_dumpNodeTree:(id)tree tab:(id)tab;
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key;
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output;
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block;
 - (BOOL)_isEffectivelyHidden;
 - (BOOL)_isEligibleForFocusInteraction;
-- (BOOL)canAddChildNode:(id)a3;
+- (BOOL)canAddChildNode:(id)node;
 - (BOOL)castsShadow;
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4;
-- (BOOL)getFrustum:(id *)a3 withViewport:;
-- (BOOL)isAnimationForKeyPaused:(id)a3;
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius;
+- (BOOL)getFrustum:(id *)frustum withViewport:;
+- (BOOL)isAnimationForKeyPaused:(id)paused;
 - (BOOL)isHidden;
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5;
-- (BOOL)simdGetBoundingSphereCenter:(SCNNode *)self radius:(SEL)a2;
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination;
+- (BOOL)simdGetBoundingSphereCenter:(SCNNode *)self radius:(SEL)radius;
 - (BOOL)usesDepthPrePass;
 - (CGFloat)opacity;
-- (CGRect)_focusFrameInView:(id)a3;
+- (CGRect)_focusFrameInView:(id)view;
 - (CGRect)frame;
 - (NSArray)animationKeys;
 - (NSArray)childNodes;
@@ -37,8 +37,8 @@
 - (NSString)description;
 - (NSString)name;
 - (NSUInteger)categoryBitMask;
-- (SCNMatrix4)convertTransform:(SEL)a3 fromNode:(SCNMatrix4 *)transform;
-- (SCNMatrix4)convertTransform:(SEL)a3 toNode:(SCNMatrix4 *)transform;
+- (SCNMatrix4)convertTransform:(SEL)transform fromNode:(SCNMatrix4 *)transform;
+- (SCNMatrix4)convertTransform:(SEL)transform toNode:(SCNMatrix4 *)transform;
 - (SCNMatrix4)pivot;
 - (SCNMatrix4)transform;
 - (SCNMatrix4)worldTransform;
@@ -47,8 +47,8 @@
 - (SCNNode)clone;
 - (SCNNode)flattenedClone;
 - (SCNNode)init;
-- (SCNNode)initWithCoder:(id)a3;
-- (SCNNode)initWithNodeRef:(__C3DNode *)a3;
+- (SCNNode)initWithCoder:(id)coder;
+- (SCNNode)initWithNodeRef:(__C3DNode *)ref;
 - (SCNNode)parentNode;
 - (SCNNode)presentationNode;
 - (SCNQuaternion)orientation;
@@ -77,33 +77,33 @@
 - (id)_audioPlayers;
 - (id)_copyRecursively;
 - (id)_dumpTree;
-- (id)_findComponentWithType:(int64_t)a3;
-- (id)_scnAnimationForKey:(id)a3;
-- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)a3;
-- (id)actionForKey:(id)a3;
-- (id)animationForKey:(id)a3;
-- (id)animationPlayerForKey:(id)a3;
-- (id)attributeForKey:(id)a3;
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4;
-- (id)childNodesWithAttribute:(Class)a3 recursively:(BOOL)a4;
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_findComponentWithType:(int64_t)type;
+- (id)_scnAnimationForKey:(id)key;
+- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)level;
+- (id)actionForKey:(id)key;
+- (id)animationForKey:(id)key;
+- (id)animationPlayerForKey:(id)key;
+- (id)attributeForKey:(id)key;
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively;
+- (id)childNodesWithAttribute:(Class)attribute recursively:(BOOL)recursively;
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugQuickLookData;
 - (id)debugQuickLookObject;
 - (id)flattenedCopy;
 - (id)getBoundingBox;
 - (id)getBoundingSphere;
 - (id)identifier;
-- (id)initPresentationNodeWithNodeRef:(__C3DNode *)a3;
-- (id)objectInAudioPlayersAtIndex:(unint64_t)a3;
-- (id)objectInChildNodesAtIndex:(unint64_t)a3;
-- (id)objectInChildNodesWithAttribute:(id)a3 firstOnly:(BOOL)a4;
-- (id)objectInParticleSystemsAtIndex:(unint64_t)a3;
+- (id)initPresentationNodeWithNodeRef:(__C3DNode *)ref;
+- (id)objectInAudioPlayersAtIndex:(unint64_t)index;
+- (id)objectInChildNodesAtIndex:(unint64_t)index;
+- (id)objectInChildNodesWithAttribute:(id)attribute firstOnly:(BOOL)only;
+- (id)objectInParticleSystemsAtIndex:(unint64_t)index;
 - (id)parentFocusEnvironment;
 - (id)preferredFocusEnvironments;
 - (id)scene;
-- (id)valueForKeyPath:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForKeyPath:(id)path;
+- (id)valueForUndefinedKey:(id)key;
 - (int64_t)authoringCameraType;
 - (simd_float3)simdConvertPosition:(simd_float3)position fromNode:(SCNNode *)node;
 - (simd_float3)simdConvertPosition:(simd_float3)position toNode:(SCNNode *)node;
@@ -125,81 +125,81 @@
 - (simd_quatf)simdWorldOrientation;
 - (unint64_t)countOfAudioPlayers;
 - (unint64_t)countOfParticleSystems;
-- (unint64_t)indexOfChildNode:(id)a3;
-- (void)__insertObject:(id)a3 inChildNodesAtIndex:(unint64_t)a4;
-- (void)__removeObjectFromChildNodesAtIndex:(unint64_t)a3;
-- (void)_addSkinnerWithMDLMesh:(id)a3 sceneNodes:(id)a4;
-- (void)_appendFocusableNodesInRect:(CGRect)a3 ofView:(id)a4 toFocusItems:(id)a5;
-- (void)_assignComponent:(id)a3 toContainerWithType:(int64_t)a4;
-- (void)_bakeNodes:(id)a3 folderPath:(id)a4 inVertex:(BOOL)a5 bakeAO:(BOOL)a6 quality:(float)a7 attenuation:(float)a8 geomSetter:(id)a9 terminateSetter:(id)a10;
-- (void)_childNodesWithAttribute:(Class)a3 output:(id)a4 recursively:(BOOL)a5;
-- (void)_copyAnimationsFrom:(id)a3;
-- (void)_customDecodingOfSCNNode:(id)a3;
-- (void)_customEncodingOfSCNNode:(id)a3 usePresentationInstance:(BOOL)a4;
-- (void)_dump:(id)a3;
-- (void)_encodeNodePropertiesWithCoder:(id)a3;
+- (unint64_t)indexOfChildNode:(id)node;
+- (void)__insertObject:(id)object inChildNodesAtIndex:(unint64_t)index;
+- (void)__removeObjectFromChildNodesAtIndex:(unint64_t)index;
+- (void)_addSkinnerWithMDLMesh:(id)mesh sceneNodes:(id)nodes;
+- (void)_appendFocusableNodesInRect:(CGRect)rect ofView:(id)view toFocusItems:(id)items;
+- (void)_assignComponent:(id)component toContainerWithType:(int64_t)type;
+- (void)_bakeNodes:(id)nodes folderPath:(id)path inVertex:(BOOL)vertex bakeAO:(BOOL)o quality:(float)quality attenuation:(float)attenuation geomSetter:(id)setter terminateSetter:(id)self0;
+- (void)_childNodesWithAttribute:(Class)attribute output:(id)output recursively:(BOOL)recursively;
+- (void)_copyAnimationsFrom:(id)from;
+- (void)_customDecodingOfSCNNode:(id)node;
+- (void)_customEncodingOfSCNNode:(id)node usePresentationInstance:(BOOL)instance;
+- (void)_dump:(id)_dump;
+- (void)_encodeNodePropertiesWithCoder:(id)coder;
 - (void)_initChildNodesArray;
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5;
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node;
 - (void)_quaternion;
-- (void)_removeAction:(id)a3 forKey:(id)a4;
-- (void)_removeComponentWithType:(int64_t)a3;
-- (void)_removeDeadParticleSystem:(__C3DParticleSystem *)a3;
-- (void)_setAttributes:(id)a3;
-- (void)_setComponent:(id)a3 withType:(int64_t)a4;
+- (void)_removeAction:(id)action forKey:(id)key;
+- (void)_removeComponentWithType:(int64_t)type;
+- (void)_removeDeadParticleSystem:(__C3DParticleSystem *)system;
+- (void)_setAttributes:(id)attributes;
+- (void)_setComponent:(id)component withType:(int64_t)type;
 - (void)_setHasFocusableChild;
-- (void)_setPausedOrPausedByInheritance:(BOOL)a3;
+- (void)_setPausedOrPausedByInheritance:(BOOL)inheritance;
 - (void)_setPosition:(SCNNode *)self;
-- (void)_setQuaternion:(float32x4_t *)a1;
+- (void)_setQuaternion:(float32x4_t *)quaternion;
 - (void)_setScale:(SCNNode *)self;
 - (void)_syncEntityObjCModel;
 - (void)_syncObjCAnimations;
 - (void)_syncObjCModel;
-- (void)_syncObjCModelAfterC3DIOSceneLoadingWithNodeRef:(__C3DNode *)a3;
+- (void)_syncObjCModelAfterC3DIOSceneLoadingWithNodeRef:(__C3DNode *)ref;
 - (void)_updateAffine;
 - (void)_updateFocusableCache;
 - (void)_updateTransform;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addAnimationPlayer:(id)player forKey:(id)key;
 - (void)addAudioPlayer:(SCNAudioPlayer *)player;
 - (void)addChildNode:(SCNNode *)child;
 - (void)addParticleSystem:(SCNParticleSystem *)system;
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6;
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options;
 - (void)dealloc;
 - (void)dump;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)enumerateChildNodesUsingBlock:(void *)block;
 - (void)enumerateHierarchyUsingBlock:(void *)block;
-- (void)insertObject:(id)a3 inAudioPlayersAtIndex:(unint64_t)a4;
-- (void)insertObject:(id)a3 inParticleSystemsAtIndex:(unint64_t)a4;
+- (void)insertObject:(id)object inAudioPlayersAtIndex:(unint64_t)index;
+- (void)insertObject:(id)object inParticleSystemsAtIndex:(unint64_t)index;
 - (void)lookAt:(SCNVector3)worldTarget up:(SCNVector3)worldUp localFront:(SCNVector3)localFront;
-- (void)pauseAnimationForKey:(id)a3;
-- (void)removeActionForKey:(id)a3;
+- (void)pauseAnimationForKey:(id)key;
+- (void)removeActionForKey:(id)key;
 - (void)removeAllActions;
 - (void)removeAllAnimations;
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3;
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration;
 - (void)removeAllAudioPlayers;
 - (void)removeAllBindings;
 - (void)removeAllChilds;
 - (void)removeAllParticleSystems;
-- (void)removeAnimationForKey:(id)a3;
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4;
+- (void)removeAnimationForKey:(id)key;
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration;
 - (void)removeAudioPlayer:(SCNAudioPlayer *)player;
 - (void)removeFromParentNode;
-- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)a3;
-- (void)removeObjectFromParticleSystemsAtIndex:(unint64_t)a3;
+- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)index;
+- (void)removeObjectFromParticleSystemsAtIndex:(unint64_t)index;
 - (void)removeParticleSystem:(SCNParticleSystem *)system;
-- (void)renderInContext:(void *)a3;
+- (void)renderInContext:(void *)context;
 - (void)replaceChildNode:(SCNNode *)oldChild with:(SCNNode *)newChild;
-- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInChildNodesAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInParticleSystemsAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)resumeAnimationForKey:(id)a3;
+- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)index withObject:(id)object;
+- (void)replaceObjectInChildNodesAtIndex:(unint64_t)index withObject:(id)object;
+- (void)replaceObjectInParticleSystemsAtIndex:(unint64_t)index withObject:(id)object;
+- (void)resumeAnimationForKey:(id)key;
 - (void)rotateBy:(SCNQuaternion)worldRotation aroundTarget:(SCNVector3)worldTarget;
-- (void)runAction:(id)a3 forKey:(id)a4 completionHandler:(id)a5;
-- (void)setAttribute:(id)a3 forKey:(id)a4;
-- (void)setAuthoringCameraType:(int64_t)a3;
-- (void)setAuthoringEnvironmentNode:(BOOL)a3;
-- (void)setBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4;
+- (void)runAction:(id)action forKey:(id)key completionHandler:(id)handler;
+- (void)setAttribute:(id)attribute forKey:(id)key;
+- (void)setAuthoringCameraType:(int64_t)type;
+- (void)setAuthoringEnvironmentNode:(BOOL)node;
+- (void)setBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max;
 - (void)setCamera:(SCNCamera *)camera;
 - (void)setCastsShadow:(BOOL)castsShadow;
 - (void)setCategoryBitMask:(NSUInteger)categoryBitMask;
@@ -209,8 +209,8 @@
 - (void)setFocusBehavior:(SCNNodeFocusBehavior)focusBehavior;
 - (void)setGeometry:(SCNGeometry *)geometry;
 - (void)setHidden:(BOOL)hidden;
-- (void)setIdentifier:(id)a3;
-- (void)setIsJoint:(BOOL)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setIsJoint:(BOOL)joint;
 - (void)setLight:(SCNLight *)light;
 - (void)setMorpher:(SCNMorpher *)morpher;
 - (void)setMovabilityHint:(SCNMovabilityHint)movabilityHint;
@@ -220,8 +220,8 @@
 - (void)setPaused:(BOOL)paused;
 - (void)setPhysicsBody:(SCNPhysicsBody *)physicsBody;
 - (void)setPhysicsField:(SCNPhysicsField *)physicsField;
-- (void)setPostMorphingDeformers:(id)a3;
-- (void)setPostSkinningDeformers:(id)a3;
+- (void)setPostMorphingDeformers:(id)deformers;
+- (void)setPostSkinningDeformers:(id)deformers;
 - (void)setRendererDelegate:(id)rendererDelegate;
 - (void)setRenderingOrder:(NSInteger)renderingOrder;
 - (void)setSimdEulerAngles:(simd_float3)simdEulerAngles;
@@ -235,16 +235,16 @@
 - (void)setSimdWorldPosition:(simd_float3)simdWorldPosition;
 - (void)setSimdWorldTransform:(simd_float4x4)simdWorldTransform;
 - (void)setSkinner:(SCNSkinner *)skinner;
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4;
-- (void)setUsesDepthPrePass:(BOOL)a3;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setSpeed:(double)speed forAnimationKey:(id)key;
+- (void)setUsesDepthPrePass:(BOOL)pass;
+- (void)setValue:(id)value forKeyPath:(id)path;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)simdLocalRotateBy:(simd_quatf)rotation;
 - (void)simdLocalTranslateBy:(simd_float3)translation;
 - (void)simdLookAt:(simd_float3)worldTarget;
 - (void)simdLookAt:(simd_float3)worldTarget up:(simd_float3)worldUp localFront:(simd_float3)localFront;
 - (void)simdRotateBy:(simd_quatf)worldRotation aroundTarget:(simd_float3)worldTarget;
-- (void)unbindAnimatablePath:(id)a3;
+- (void)unbindAnimatablePath:(id)path;
 - (void)updateFocusIfNeeded;
 @end
 
@@ -254,11 +254,11 @@
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    v5 = v4;
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v5 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v4);
+      C3DSceneLock(sceneRef);
     }
 
     Parent = C3DNodeGetParent(self->_node);
@@ -289,20 +289,20 @@
 
 - (__C3DScene)sceneRef
 {
-  v2 = [(SCNNode *)self __CFObject];
+  __CFObject = [(SCNNode *)self __CFObject];
 
-  return C3DGetScene(v2);
+  return C3DGetScene(__CFObject);
 }
 
 - (NSArray)childNodes
 {
   if (*(self + 40))
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     ChildNodesCount = C3DNodeGetChildNodesCount(self->_node);
@@ -345,11 +345,11 @@
 - (NSArray)animationKeys
 {
   os_unfair_lock_lock(&self->_animationsLock);
-  v3 = [(SCNOrderedDictionary *)self->_animations allKeys];
+  allKeys = [(SCNOrderedDictionary *)self->_animations allKeys];
   os_unfair_lock_unlock(&self->_animationsLock);
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)allKeys count])
   {
-    return v3;
+    return allKeys;
   }
 
   else
@@ -358,15 +358,15 @@
   }
 }
 
-+ (SCNNode)nodeWithMDLAsset:(id)a3 options:(id)a4
++ (SCNNode)nodeWithMDLAsset:(id)asset options:(id)options
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [asset countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -378,14 +378,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(asset);
         }
 
-        [v6 addChildNode:{+[SCNNode nodeWithMDLObject:options:](SCNNode, "nodeWithMDLObject:options:", *(*(&v12 + 1) + 8 * v10++), a4)}];
+        [v6 addChildNode:{+[SCNNode nodeWithMDLObject:options:](SCNNode, "nodeWithMDLObject:options:", *(*(&v12 + 1) + 8 * v10++), options)}];
       }
 
       while (v8 != v10);
-      v8 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [asset countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -394,34 +394,34 @@
   return v6;
 }
 
-+ (SCNNode)nodeWithMDLObject:(id)a3 options:(id)a4
++ (SCNNode)nodeWithMDLObject:(id)object options:(id)options
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = [a1 node];
-  -[SCNNode setName:](v6, "setName:", [a3 name]);
-  if ([a3 transform])
+  node = [self node];
+  -[SCNNode setName:](node, "setName:", [object name]);
+  if ([object transform])
   {
-    [objc_msgSend(a3 "transform")];
+    [objc_msgSend(object "transform")];
     v51[0] = v7;
     v51[1] = v8;
     v51[2] = v9;
     v51[3] = v10;
-    [(SCNNode *)v6 setTransform:v51];
-    [a3 transform];
+    [(SCNNode *)node setTransform:v51];
+    [object transform];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v12 = [a3 transform];
+    transform = [object transform];
     if (isKindOfClass)
     {
 LABEL_5:
-      v13 = [v12 transformAnimation];
-      if (v13)
+      transformAnimation = [transform transformAnimation];
+      if (transformAnimation)
       {
-        v14 = v13;
-        [v13 duration];
+        v14 = transformAnimation;
+        [transformAnimation duration];
         if (v15 != 0.0)
         {
-          [(SCNNode *)v6 addAnimation:v14 forKey:@"transform"];
+          [(SCNNode *)node addAnimation:v14 forKey:@"transform"];
         }
       }
 
@@ -431,7 +431,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [a3 transform];
+      transform = [object transform];
       goto LABEL_5;
     }
   }
@@ -447,8 +447,8 @@ LABEL_8:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v16 = [a3 submeshes];
-  v17 = [v16 countByEnumeratingWithState:&v47 objects:v54 count:16];
+  submeshes = [object submeshes];
+  v17 = [submeshes countByEnumeratingWithState:&v47 objects:v54 count:16];
   if (!v17)
   {
     goto LABEL_29;
@@ -463,7 +463,7 @@ LABEL_8:
     {
       if (*v48 != v20)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(submeshes);
       }
 
       v22 = *(*(&v47 + 1) + 8 * i);
@@ -478,7 +478,7 @@ LABEL_8:
       }
     }
 
-    v18 = [v16 countByEnumeratingWithState:&v47 objects:v54 count:16];
+    v18 = [submeshes countByEnumeratingWithState:&v47 objects:v54 count:16];
     if (v18)
     {
       continue;
@@ -493,7 +493,7 @@ LABEL_8:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = [a3 submeshes];
+    obj = [object submeshes];
     v23 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (v23)
     {
@@ -509,10 +509,10 @@ LABEL_8:
           }
 
           v27 = *(*(&v43 + 1) + 8 * j);
-          v28 = [a1 node];
-          [v28 setName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@_%d", objc_msgSend(a3, "name"), 0)}];
-          [v28 setGeometry:{+[SCNGeometry geometryWithMDLMesh:submesh:options:](SCNGeometry, "geometryWithMDLMesh:submesh:options:", a3, v27, a4)}];
-          [(SCNNode *)v6 addChildNode:v28];
+          node2 = [self node];
+          [node2 setName:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@_%d", objc_msgSend(object, "name"), 0)}];
+          [node2 setGeometry:{+[SCNGeometry geometryWithMDLMesh:submesh:options:](SCNGeometry, "geometryWithMDLMesh:submesh:options:", object, v27, options)}];
+          [(SCNNode *)node addChildNode:node2];
         }
 
         v24 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
@@ -528,7 +528,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SCNNode *)v6 setGeometry:[SCNGeometry geometryWithMDLMesh:a3 options:a4]];
+      [(SCNNode *)node setGeometry:[SCNGeometry geometryWithMDLMesh:object options:options]];
     }
 
     else
@@ -536,7 +536,7 @@ LABEL_29:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v29 = [SCNLight lightWithMDLLight:a3];
+        v29 = [SCNLight lightWithMDLLight:object];
       }
 
       else
@@ -547,16 +547,16 @@ LABEL_29:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(SCNNode *)v6 setCamera:[SCNCamera cameraWithMDLCamera:a3]];
+            [(SCNNode *)node setCamera:[SCNCamera cameraWithMDLCamera:object]];
           }
 
           goto LABEL_37;
         }
 
-        v29 = [SCNLight lightWithMDLLightProbe:a3];
+        v29 = [SCNLight lightWithMDLLightProbe:object];
       }
 
-      [(SCNNode *)v6 setLight:v29];
+      [(SCNNode *)node setLight:v29];
     }
   }
 
@@ -565,8 +565,8 @@ LABEL_37:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v30 = [a3 children];
-  v31 = [v30 countByEnumeratingWithState:&v39 objects:v52 count:16];
+  children = [object children];
+  v31 = [children countByEnumeratingWithState:&v39 objects:v52 count:16];
   if (v31)
   {
     v32 = v31;
@@ -577,41 +577,41 @@ LABEL_37:
       {
         if (*v40 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(children);
         }
 
-        v35 = [SCNNode nodeWithMDLObject:*(*(&v39 + 1) + 8 * k) options:a4];
+        v35 = [SCNNode nodeWithMDLObject:*(*(&v39 + 1) + 8 * k) options:options];
         if (v35)
         {
-          [(SCNNode *)v6 addChildNode:v35];
+          [(SCNNode *)node addChildNode:v35];
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v39 objects:v52 count:16];
+      v32 = [children countByEnumeratingWithState:&v39 objects:v52 count:16];
     }
 
     while (v32);
   }
 
-  return v6;
+  return node;
 }
 
-+ (SCNNode)nodeWithMDLObject:(id)a3 masterObjects:(id)a4 sceneNodes:(id)a5 skinnedMeshes:(id)a6 skelNodesMap:(void *)a7 asset:(id)a8 options:(id)a9
++ (SCNNode)nodeWithMDLObject:(id)object masterObjects:(id)objects sceneNodes:(id)nodes skinnedMeshes:(id)meshes skelNodesMap:(void *)map asset:(id)asset options:(id)options
 {
   v59 = *MEMORY[0x277D85DE8];
-  v13 = [a1 node];
-  if ([a3 transform])
+  node = [self node];
+  if ([object transform])
   {
-    [objc_msgSend(a3 "transform")];
+    [objc_msgSend(object "transform")];
     v57[0] = v14;
     v57[1] = v15;
     v57[2] = v16;
     v57[3] = v17;
-    [(SCNNode *)v13 setTransform:v57];
-    [a3 transform];
+    [(SCNNode *)node setTransform:v57];
+    [object transform];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v19 = [a3 transform];
+    transform = [object transform];
     if ((isKindOfClass & 1) == 0)
     {
       objc_opt_class();
@@ -620,21 +620,21 @@ LABEL_37:
         goto LABEL_16;
       }
 
-      v19 = [a3 transform];
+      transform = [object transform];
     }
 
-    v20 = [v19 transformAnimation];
-    if (v20)
+    transformAnimation = [transform transformAnimation];
+    if (transformAnimation)
     {
-      v21 = v20;
-      [v20 duration];
+      v21 = transformAnimation;
+      [transformAnimation duration];
       if (v22 != 0.0)
       {
-        v23 = [a9 valueForKey:@"kSceneSourceAnimationLoadingMode"];
+        v23 = [options valueForKey:@"kSceneSourceAnimationLoadingMode"];
         if (v23)
         {
           v25 = v23;
-          v26 = a3;
+          objectCopy2 = object;
           [v21 setUsesSceneTimeBase:{objc_msgSend(v23, "isEqualToString:", @"playUsingSceneTime"}];
           [v21 setRemovedOnCompletion:{objc_msgSend(v25, "isEqualToString:", @"playUsingSceneTime"}];
           v27 = [v25 isEqualToString:@"playRepeatedly"];
@@ -647,14 +647,14 @@ LABEL_37:
 
         else
         {
-          v26 = a3;
+          objectCopy2 = object;
           LODWORD(v24) = 2139095040;
         }
 
         [v21 setRepeatCount:v24];
-        [a8 endTime];
+        [asset endTime];
         v29 = v28;
-        [a8 startTime];
+        [asset startTime];
         v31 = v29 - v30;
         if (v29 - v30 > 0.0)
         {
@@ -668,49 +668,49 @@ LABEL_37:
           }
         }
 
-        [(SCNNode *)v13 addAnimation:v21 forKey:@"transform"];
-        a3 = v26;
+        [(SCNNode *)node addAnimation:v21 forKey:@"transform"];
+        object = objectCopy2;
       }
     }
   }
 
 LABEL_16:
-  -[SCNNode setName:](v13, "setName:", [a3 name]);
+  -[SCNNode setName:](node, "setName:", [object name]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = [a3 path];
-    v37 = [a4 objectForKey:v36];
+    path = [object path];
+    v37 = [objects objectForKey:path];
     if (v37)
     {
-      [(SCNNode *)v13 setGeometry:v37];
+      [(SCNNode *)node setGeometry:v37];
     }
 
     else
     {
-      [(SCNNode *)v13 setGeometry:[SCNGeometry geometryWithMDLMesh:a3 options:a9]];
-      v39 = [a3 componentConformingToProtocol:&unk_282E568F0];
+      [(SCNNode *)node setGeometry:[SCNGeometry geometryWithMDLMesh:object options:options]];
+      v39 = [object componentConformingToProtocol:&unk_282E568F0];
       if (v39)
       {
         v40 = v39;
-        [(SCNNode *)v13 setMorpher:morpherFromMDLMorphDeformer(v39)];
-        addMorphAnimation(v40, v13, a9);
+        [(SCNNode *)node setMorpher:morpherFromMDLMorphDeformer(v39)];
+        addMorphAnimation(v40, node, options);
       }
 
-      if ([a3 componentConformingToProtocol:&unk_282E56A78])
+      if ([object componentConformingToProtocol:&unk_282E56A78])
       {
-        [a6 addObject:a3];
+        [meshes addObject:object];
       }
 
-      if ([a3 subdivisionScheme])
+      if ([object subdivisionScheme])
       {
-        [(SCNGeometry *)[(SCNNode *)v13 geometry] setSubdivisionLevel:1];
-        [(SCNGeometry *)[(SCNNode *)v13 geometry] setWantsAdaptiveSubdivision:1];
+        [(SCNGeometry *)[(SCNNode *)node geometry] setSubdivisionLevel:1];
+        [(SCNGeometry *)[(SCNNode *)node geometry] setWantsAdaptiveSubdivision:1];
         v41 = objc_opt_new();
-        [(SCNGeometry *)[(SCNNode *)v13 geometry] setTessellator:v41];
+        [(SCNGeometry *)[(SCNNode *)node geometry] setTessellator:v41];
       }
 
-      [a4 setObject:-[SCNNode geometry](v13 forKey:{"geometry"), v36}];
+      [objects setObject:-[SCNNode geometry](node forKey:{"geometry"), path}];
     }
 
     goto LABEL_35;
@@ -719,23 +719,23 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [SCNLight lightWithMDLLight:a3];
+    v38 = [SCNLight lightWithMDLLight:object];
 LABEL_23:
-    [(SCNNode *)v13 setLight:v38];
+    [(SCNNode *)node setLight:v38];
     goto LABEL_35;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = [SCNLight lightWithMDLLightProbe:a3];
+    v38 = [SCNLight lightWithMDLLightProbe:object];
     goto LABEL_23;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SCNNode *)v13 setCamera:[SCNCamera cameraWithMDLCamera:a3]];
+    [(SCNNode *)node setCamera:[SCNCamera cameraWithMDLCamera:object]];
   }
 
   else
@@ -747,20 +747,20 @@ LABEL_23:
   }
 
 LABEL_35:
-  if ([a3 instance])
+  if ([object instance])
   {
-    -[SCNNode addChildNode:](v13, "addChildNode:", +[SCNNode nodeWithMDLObject:masterObjects:sceneNodes:skinnedMeshes:skelNodesMap:asset:options:](SCNNode, "nodeWithMDLObject:masterObjects:sceneNodes:skinnedMeshes:skelNodesMap:asset:options:", [a3 instance], a4, a5, a6, a7, a8, a9));
+    -[SCNNode addChildNode:](node, "addChildNode:", +[SCNNode nodeWithMDLObject:masterObjects:sceneNodes:skinnedMeshes:skelNodesMap:asset:options:](SCNNode, "nodeWithMDLObject:masterObjects:sceneNodes:skinnedMeshes:skelNodesMap:asset:options:", [object instance], objects, nodes, meshes, map, asset, options));
   }
 
-  v42 = v13;
-  [a5 setObject:v13 forKey:{objc_msgSend(a3, "path")}];
+  v42 = node;
+  [nodes setObject:node forKey:{objc_msgSend(object, "path")}];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v50 = a3;
-  v43 = [a3 children];
-  v44 = [v43 countByEnumeratingWithState:&v53 objects:v58 count:16];
+  objectCopy3 = object;
+  children = [object children];
+  v44 = [children countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v44)
   {
     v45 = v44;
@@ -771,46 +771,46 @@ LABEL_35:
       {
         if (*v54 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(children);
         }
 
-        v48 = [SCNNode nodeWithMDLObject:*(*(&v53 + 1) + 8 * i) masterObjects:a4 sceneNodes:a5 skinnedMeshes:a6 skelNodesMap:a7 asset:a8 options:a9];
+        v48 = [SCNNode nodeWithMDLObject:*(*(&v53 + 1) + 8 * i) masterObjects:objects sceneNodes:nodes skinnedMeshes:meshes skelNodesMap:map asset:asset options:options];
         if (v48)
         {
           [(SCNNode *)v42 addChildNode:v48];
         }
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v53 objects:v58 count:16];
+      v45 = [children countByEnumeratingWithState:&v53 objects:v58 count:16];
     }
 
     while (v45);
   }
 
-  -[SCNNode setHidden:](v42, "setHidden:", [v50 hidden]);
+  -[SCNNode setHidden:](v42, "setHidden:", [objectCopy3 hidden]);
   return v42;
 }
 
-- (void)_addSkinnerWithMDLMesh:(id)a3 sceneNodes:(id)a4
+- (void)_addSkinnerWithMDLMesh:(id)mesh sceneNodes:(id)nodes
 {
-  v7 = [a3 componentConformingToProtocol:&unk_282E56A78];
+  v7 = [mesh componentConformingToProtocol:&unk_282E56A78];
   if (v7)
   {
     v8 = v7;
-    v9 = [(SCNNode *)self geometry];
-    v10 = jointNodesFromMDLSkinDeformer(v8, a4);
+    geometry = [(SCNNode *)self geometry];
+    v10 = jointNodesFromMDLSkinDeformer(v8, nodes);
     v11 = boneInverseTransformsFromMDLSkinDeformer(v8);
 
     [(SCNNode *)self setSkinner:v15];
   }
 }
 
-- (void)_bakeNodes:(id)a3 folderPath:(id)a4 inVertex:(BOOL)a5 bakeAO:(BOOL)a6 quality:(float)a7 attenuation:(float)a8 geomSetter:(id)a9 terminateSetter:(id)a10
+- (void)_bakeNodes:(id)nodes folderPath:(id)path inVertex:(BOOL)vertex bakeAO:(BOOL)o quality:(float)quality attenuation:(float)attenuation geomSetter:(id)setter terminateSetter:(id)self0
 {
   v30[1] = *MEMORY[0x277D85DE8];
   v30[0] = self;
   v18 = SCNNodesToMDLAsset([MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1]);
-  v19 = SCNNodesToMDLAsset(a3);
+  v19 = SCNNodesToMDLAsset(nodes);
   v20 = FlattenedMDLMeshesFromMDLAsset(v19);
   v21 = FlattenedMDLMeshesFromMDLAsset(v18);
   v22 = FlattenedMDLLightsFromMDLAsset(v18);
@@ -818,23 +818,23 @@ LABEL_35:
   v29[1] = 3221225472;
   v29[2] = __108__SCNNode_SCNModelIO___bakeNodes_folderPath_inVertex_bakeAO_quality_attenuation_geomSetter_terminateSetter___block_invoke;
   v29[3] = &unk_2782FB260;
-  v29[4] = a4;
+  v29[4] = path;
   global_queue = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__SCNNode_SCNModelIO___bakeNodes_folderPath_inVertex_bakeAO_quality_attenuation_geomSetter_terminateSetter___block_invoke_2;
   block[3] = &unk_2782FB2D8;
-  v27 = a6;
-  v28 = a5;
-  v25 = a7;
-  v26 = a8;
+  oCopy = o;
+  vertexCopy = vertex;
+  qualityCopy = quality;
+  attenuationCopy = attenuation;
   block[4] = v20;
   block[5] = v21;
   block[6] = v22;
   block[7] = v19;
   block[8] = v29;
-  block[9] = a9;
-  block[10] = a10;
+  block[9] = setter;
+  block[10] = terminateSetter;
   dispatch_async(global_queue, block);
 }
 
@@ -1046,7 +1046,7 @@ uint64_t __108__SCNNode_SCNModelIO___bakeNodes_folderPath_inVertex_bakeAO_qualit
   return v2;
 }
 
-- (id)initPresentationNodeWithNodeRef:(__C3DNode *)a3
+- (id)initPresentationNodeWithNodeRef:(__C3DNode *)ref
 {
   v7.receiver = self;
   v7.super_class = SCNNode;
@@ -1055,7 +1055,7 @@ uint64_t __108__SCNNode_SCNModelIO___bakeNodes_folderPath_inVertex_bakeAO_qualit
   if (v4)
   {
     *(v4 + 40) |= 1u;
-    v4->_node = CFRetain(a3);
+    v4->_node = CFRetain(ref);
     v5->_animationsLock._os_unfair_lock_opaque = 0;
     v5->_valueForKeyLock._os_unfair_lock_opaque = 0;
   }
@@ -1063,14 +1063,14 @@ uint64_t __108__SCNNode_SCNModelIO___bakeNodes_folderPath_inVertex_bakeAO_qualit
   return v5;
 }
 
-- (SCNNode)initWithNodeRef:(__C3DNode *)a3
+- (SCNNode)initWithNodeRef:(__C3DNode *)ref
 {
   v9.receiver = self;
   v9.super_class = SCNNode;
   v4 = [(SCNNode *)&v9 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     *(v4 + 1) = v5;
     if (v5)
     {
@@ -1108,11 +1108,11 @@ uint64_t __27__SCNNode_initWithNodeRef___block_invoke(uint64_t a1, uint64_t a2)
 
 - (void)_initChildNodesArray
 {
-  v3 = [(SCNNode *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   node = self->_node;
@@ -1147,16 +1147,16 @@ void __31__SCNNode__initChildNodesArray__block_invoke(uint64_t a1, uint64_t a2)
 
 + (SCNNode)node
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (SCNNode)nodeWithGeometry:(SCNGeometry *)geometry
 {
-  v4 = [a1 node];
-  [(SCNNode *)v4 setGeometry:geometry];
-  return v4;
+  node = [self node];
+  [(SCNNode *)node setGeometry:geometry];
+  return node;
 }
 
 - (void)dealloc
@@ -1194,11 +1194,11 @@ void __31__SCNNode__initChildNodesArray__block_invoke(uint64_t a1, uint64_t a2)
 
     if (self->_rendererDelegate)
     {
-      v8 = [(SCNNode *)self sceneRef];
-      if (v8)
+      sceneRef = [(SCNNode *)self sceneRef];
+      if (sceneRef)
       {
-        v9 = v8;
-        C3DSceneLock(v8);
+        v9 = sceneRef;
+        C3DSceneLock(sceneRef);
         C3DNodeSetRendererDelegate(self->_node, 0);
         C3DSceneUnlock(v9);
       }
@@ -1263,14 +1263,14 @@ void __31__SCNNode__initChildNodesArray__block_invoke(uint64_t a1, uint64_t a2)
     {
 
       self->_name = [(NSString *)name copy];
-      v5 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __19__SCNNode_setName___block_invoke;
       v7[3] = &unk_2782FC950;
       v7[4] = self;
       v7[5] = name;
-      [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
     }
   }
 }
@@ -1290,11 +1290,11 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
     return self->_name;
   }
 
-  v4 = [(SCNNode *)self sceneRef];
-  v5 = v4;
-  if (v4)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v5 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v4);
+    C3DSceneLock(sceneRef);
   }
 
   Name = C3DEntityGetName([(SCNNode *)self __CFObject]);
@@ -1306,57 +1306,57 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   return Name;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [(SCNNode *)self __CFObject];
+  __CFObject = [(SCNNode *)self __CFObject];
 
-  C3DEntitySetID(v4, a3);
+  C3DEntitySetID(__CFObject, identifier);
 }
 
 - (id)identifier
 {
-  v2 = [(SCNNode *)self __CFObject];
+  __CFObject = [(SCNNode *)self __CFObject];
 
-  return C3DEntityGetID(v2);
+  return C3DEntityGetID(__CFObject);
 }
 
 - (void)_syncEntityObjCModel
 {
-  v3 = [(SCNNode *)self __CFObject];
+  __CFObject = [(SCNNode *)self __CFObject];
 
-  self->_name = C3DEntityGetName(v3);
+  self->_name = C3DEntityGetName(__CFObject);
 }
 
-- (void)setAttribute:(id)a3 forKey:(id)a4
+- (void)setAttribute:(id)attribute forKey:(id)key
 {
-  v7 = [(SCNNode *)self sceneRef];
-  if (v7)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v8 = v7;
-    C3DSceneLock(v7);
-    C3DEntitySetAttribute([(SCNNode *)self __CFObject], a4, a3);
+    v8 = sceneRef;
+    C3DSceneLock(sceneRef);
+    C3DEntitySetAttribute([(SCNNode *)self __CFObject], key, attribute);
 
     C3DSceneUnlock(v8);
   }
 
   else
   {
-    v9 = [(SCNNode *)self __CFObject];
+    __CFObject = [(SCNNode *)self __CFObject];
 
-    C3DEntitySetAttribute(v9, a4, a3);
+    C3DEntitySetAttribute(__CFObject, key, attribute);
   }
 }
 
-- (id)attributeForKey:(id)a3
+- (id)attributeForKey:(id)key
 {
-  v5 = [(SCNNode *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  v7 = C3DEntityGetAttribute([(SCNNode *)self __CFObject], a3);
+  v7 = C3DEntityGetAttribute([(SCNNode *)self __CFObject], key);
   if (v6)
   {
     C3DSceneUnlock(v6);
@@ -1367,11 +1367,11 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
 
 - (void)_syncObjCModel
 {
-  v3 = [(SCNNode *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   C3DNodeGetMatrix(self->_node, v10);
@@ -1429,14 +1429,14 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
 
 - (SCNNode)presentationNode
 {
-  v2 = self;
+  selfCopy = self;
   if ((*(self + 40) & 1) == 0)
   {
     self = self->_presentationInstance;
     if (!self)
     {
-      self = [[SCNNode alloc] initPresentationNodeWithNodeRef:v2->_node];
-      v2->_presentationInstance = self;
+      self = [[SCNNode alloc] initPresentationNodeWithNodeRef:selfCopy->_node];
+      selfCopy->_presentationInstance = self;
     }
   }
 
@@ -1455,19 +1455,19 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_dump:(id)a3
+- (void)_dump:(id)_dump
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [a3 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
+  v5 = [_dump cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}];
   v6 = [(SCNNode *)self description];
   printf("%s%s {\n", v5, -[NSString cStringUsingEncoding:](v6, "cStringUsingEncoding:", [MEMORY[0x277CCACA8] defaultCStringEncoding]));
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@", a3];
+  _dump = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@", _dump];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(SCNNode *)self childNodes];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v9 = [(NSArray *)childNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1478,19 +1478,19 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childNodes);
         }
 
-        [*(*(&v13 + 1) + 8 * i) _dump:v7];
+        [*(*(&v13 + 1) + 8 * i) _dump:_dump];
       }
 
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [(NSArray *)childNodes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 
-  printf("%s}\n", [a3 cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}]);
+  printf("%s}\n", [_dump cStringUsingEncoding:{objc_msgSend(MEMORY[0x277CCACA8], "defaultCStringEncoding")}]);
 }
 
 - (void)dump
@@ -1500,28 +1500,28 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   NSLog(&stru_282DDADF8.isa);
 }
 
-+ (id)_dumpNodeTree:(id)a3 tab:(id)a4
++ (id)_dumpNodeTree:(id)tree tab:(id)tab
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCACA8];
-  if ([a3 name])
+  if ([tree name])
   {
-    v8 = [a3 name];
+    name = [tree name];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%p>", a3];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"<%p>", tree];
   }
 
-  v9 = [v7 stringWithFormat:@"%@%@\n", a4, v8];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@", a4];
+  v9 = [v7 stringWithFormat:@"%@%@\n", tab, name];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@", tab];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [a3 childNodes];
-  v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  childNodes = [tree childNodes];
+  v12 = [childNodes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1533,14 +1533,14 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
       {
         if (*v18 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(childNodes);
         }
 
-        v9 = [v9 stringByAppendingString:{objc_msgSend(a1, "_dumpNodeTree:tab:", *(*(&v17 + 1) + 8 * v15++), v10)}];
+        v9 = [v9 stringByAppendingString:{objc_msgSend(self, "_dumpNodeTree:tab:", *(*(&v17 + 1) + 8 * v15++), v10)}];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [childNodes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v13);
@@ -1556,16 +1556,16 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   return [v3 _dumpNodeTree:self tab:&stru_282DCC058];
 }
 
-- (void)_setAttributes:(id)a3
+- (void)_setAttributes:(id)attributes
 {
   os_unfair_lock_lock(&self->_valueForKeyLock);
 
-  self->_valueForKey = a3;
+  self->_valueForKey = attributes;
 
   os_unfair_lock_unlock(&self->_valueForKeyLock);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(objc_opt_class());
@@ -1616,16 +1616,16 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   [v4 setCategoryBitMask:{-[SCNNode categoryBitMask](self, "categoryBitMask")}];
   [v4 setMovabilityHint:{-[SCNNode movabilityHint](self, "movabilityHint")}];
   v6 = [(NSString *)[(SCNLight *)[(SCNNode *)self light] type] isEqualToString:@"probe"];
-  v7 = [(SCNNode *)self light];
+  light = [(SCNNode *)self light];
   if (v6)
   {
-    v8 = [(SCNLight *)v7 copy];
+    v8 = [(SCNLight *)light copy];
     [v4 setLight:v8];
   }
 
   else
   {
-    [v4 setLight:v7];
+    [v4 setLight:light];
   }
 
   [v4 setCamera:{-[SCNNode camera](self, "camera")}];
@@ -1647,8 +1647,8 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(SCNNode *)self particleSystems];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  particleSystems = [(SCNNode *)self particleSystems];
+  v11 = [(NSArray *)particleSystems countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1659,13 +1659,13 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
       {
         if (*v28 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(particleSystems);
         }
 
         [v4 addParticleSystem:*(*(&v27 + 1) + 8 * i)];
       }
 
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v12 = [(NSArray *)particleSystems countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v12);
@@ -1688,8 +1688,8 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v16 = [(SCNNode *)self actionKeys];
-    v17 = [(NSArray *)v16 countByEnumeratingWithState:&v22 objects:v31 count:16];
+    actionKeys = [(SCNNode *)self actionKeys];
+    v17 = [(NSArray *)actionKeys countByEnumeratingWithState:&v22 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1700,13 +1700,13 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
         {
           if (*v23 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(actionKeys);
           }
 
           [v4 runAction:-[SCNNode actionForKey:](self forKey:{"actionForKey:", *(*(&v22 + 1) + 8 * j)), *(*(&v22 + 1) + 8 * j)}];
         }
 
-        v18 = [(NSArray *)v16 countByEnumeratingWithState:&v22 objects:v31 count:16];
+        v18 = [(NSArray *)actionKeys countByEnumeratingWithState:&v22 objects:v31 count:16];
       }
 
       while (v18);
@@ -1731,8 +1731,8 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SCNNode *)self childNodes];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v5 = [(NSArray *)childNodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1743,18 +1743,18 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childNodes);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 isGizmo] & 1) == 0)
         {
-          v10 = [v9 _copyRecursively];
-          [v3 addChildNode:v10];
+          _copyRecursively = [v9 _copyRecursively];
+          [v3 addChildNode:_copyRecursively];
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSArray *)childNodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -1765,19 +1765,19 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
 
 - (SCNNode)clone
 {
-  v3 = [(SCNNode *)self _copyRecursively];
-  _transposeSkinnerToClone(v3, self, v3);
-  _copyAnimations(self, v3);
+  _copyRecursively = [(SCNNode *)self _copyRecursively];
+  _transposeSkinnerToClone(_copyRecursively, self, _copyRecursively);
+  _copyAnimations(self, _copyRecursively);
 
-  return v3;
+  return _copyRecursively;
 }
 
-+ (SCNNode)nodeWithNodeRef:(__C3DNode *)a3
++ (SCNNode)nodeWithNodeRef:(__C3DNode *)ref
 {
-  result = C3DEntityGetObjCWrapper(a3);
+  result = C3DEntityGetObjCWrapper(ref);
   if (!result)
   {
-    v6 = [[a1 alloc] initWithNodeRef:a3];
+    v6 = [[self alloc] initWithNodeRef:ref];
 
     return v6;
   }
@@ -1789,12 +1789,12 @@ CFStringRef __19__SCNNode_setName___block_invoke(uint64_t a1)
 {
   v4 = recursively;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = [(SCNNode *)self childNodes];
+  childNodes = [(SCNNode *)self childNodes];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v7 = [(NSArray *)childNodes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1805,7 +1805,7 @@ LABEL_3:
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(childNodes);
       }
 
       v11 = *(*(&v22 + 1) + 8 * v10);
@@ -1816,7 +1816,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v8 = [(NSArray *)childNodes countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1839,7 +1839,7 @@ LABEL_9:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v12 = [(NSArray *)childNodes countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1850,7 +1850,7 @@ LABEL_9:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childNodes);
           }
 
           v16 = [*(*(&v18 + 1) + 8 * i) childNodeWithName:name recursively:1];
@@ -1860,7 +1860,7 @@ LABEL_9:
           }
         }
 
-        v13 = [(NSArray *)v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v13 = [(NSArray *)childNodes countByEnumeratingWithState:&v18 objects:v26 count:16];
         v11 = 0;
         if (v13)
         {
@@ -1880,17 +1880,17 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)_childNodesPassingTest:(id)a3 recursively:(BOOL)a4 output:(id)a5
+- (BOOL)_childNodesPassingTest:(id)test recursively:(BOOL)recursively output:(id)output
 {
-  v6 = a4;
+  recursivelyCopy = recursively;
   v22 = *MEMORY[0x277D85DE8];
   v20 = 0;
-  if ((*(a3 + 2))(a3, self, &v20))
+  if ((*(test + 2))(test, self, &v20))
   {
-    [a5 addObject:self];
+    [output addObject:self];
   }
 
-  if (v6 && (v20 & 1) == 0 && (v18 = 0u, v19 = 0u, v16 = 0u, v17 = 0u, v9 = [(SCNNode *)self childNodes], (v10 = [(NSArray *)v9 countByEnumeratingWithState:&v16 objects:v21 count:16]) != 0))
+  if (recursivelyCopy && (v20 & 1) == 0 && (v18 = 0u, v19 = 0u, v16 = 0u, v17 = 0u, v9 = [(SCNNode *)self childNodes], (v10 = [(NSArray *)v9 countByEnumeratingWithState:&v16 objects:v21 count:16]) != 0))
   {
     v11 = v10;
     v12 = *v17;
@@ -1904,7 +1904,7 @@ LABEL_7:
       }
 
       v14 = 1;
-      v20 = [*(*(&v16 + 1) + 8 * v13) _childNodesPassingTest:a3 recursively:1 output:a5];
+      v20 = [*(*(&v16 + 1) + 8 * v13) _childNodesPassingTest:test recursively:1 output:output];
       if (v20)
       {
         break;
@@ -1932,17 +1932,17 @@ LABEL_13:
   return v14 & 1;
 }
 
-- (id)childNodesPassingTest:(id)a3 recursively:(BOOL)a4
+- (id)childNodesPassingTest:(id)test recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SCNNode *)self childNodes];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v9 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1953,43 +1953,43 @@ LABEL_3:
     {
       if (*v15 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(childNodes);
       }
 
-      if ([*(*(&v14 + 1) + 8 * v12) _childNodesPassingTest:a3 recursively:v4 output:v7])
+      if ([*(*(&v14 + 1) + 8 * v12) _childNodesPassingTest:test recursively:recursivelyCopy output:array])
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v10)
         {
           goto LABEL_3;
         }
 
-        return v7;
+        return array;
       }
     }
   }
 
-  return v7;
+  return array;
 }
 
-- (BOOL)_enumerateChildNodesUsingBlock:(id)a3
+- (BOOL)_enumerateChildNodesUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
   v16 = 0;
-  (*(a3 + 2))(a3, self, &v16);
+  (*(block + 2))(block, self, &v16);
   if ((v16 & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(SCNNode *)self childNodes];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    childNodes = [(SCNNode *)self childNodes];
+    v6 = [(NSArray *)childNodes countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2000,10 +2000,10 @@ LABEL_3:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childNodes);
           }
 
-          v16 = [*(*(&v12 + 1) + 8 * i) _enumerateChildNodesUsingBlock:a3];
+          v16 = [*(*(&v12 + 1) + 8 * i) _enumerateChildNodesUsingBlock:block];
           if (v16)
           {
             v10 = 1;
@@ -2011,7 +2011,7 @@ LABEL_3:
           }
         }
 
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [(NSArray *)childNodes countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -2033,8 +2033,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(SCNNode *)self childNodes];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v5 = [(NSArray *)childNodes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2045,7 +2045,7 @@ LABEL_3:
     {
       if (*v10 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(childNodes);
       }
 
       if ([*(*(&v9 + 1) + 8 * v8) _enumerateChildNodesUsingBlock:block])
@@ -2055,7 +2055,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [(NSArray *)childNodes countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -2077,16 +2077,16 @@ LABEL_3:
   }
 }
 
-- (void)_childNodesWithAttribute:(Class)a3 output:(id)a4 recursively:(BOOL)a5
+- (void)_childNodesWithAttribute:(Class)attribute output:(id)output recursively:(BOOL)recursively
 {
-  v5 = a5;
+  recursivelyCopy = recursively;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(SCNNode *)self childNodes];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v9 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2098,55 +2098,55 @@ LABEL_3:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childNodes);
         }
 
         v13 = *(*(&v14 + 1) + 8 * v12);
-        if (objc_opt_class() == a3 && [v13 camera] || objc_opt_class() == a3 && objc_msgSend(v13, "light") || objc_opt_class() == a3 && objc_msgSend(v13, "geometry") || objc_opt_class() == a3 && objc_msgSend(v13, "morpher") || objc_opt_class() == a3 && objc_msgSend(v13, "skinner"))
+        if (objc_opt_class() == attribute && [v13 camera] || objc_opt_class() == attribute && objc_msgSend(v13, "light") || objc_opt_class() == attribute && objc_msgSend(v13, "geometry") || objc_opt_class() == attribute && objc_msgSend(v13, "morpher") || objc_opt_class() == attribute && objc_msgSend(v13, "skinner"))
         {
-          [a4 addObject:v13];
+          [output addObject:v13];
         }
 
-        if (v5)
+        if (recursivelyCopy)
         {
-          [v13 _childNodesWithAttribute:a3 output:a4 recursively:1];
+          [v13 _childNodesWithAttribute:attribute output:output recursively:1];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (id)childNodesWithAttribute:(Class)a3 recursively:(BOOL)a4
+- (id)childNodesWithAttribute:(Class)attribute recursively:(BOOL)recursively
 {
-  v4 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  [(SCNNode *)self _childNodesWithAttribute:a3 output:v7 recursively:v4];
-  return v7;
+  recursivelyCopy = recursively;
+  array = [MEMORY[0x277CBEB18] array];
+  [(SCNNode *)self _childNodesWithAttribute:attribute output:array recursively:recursivelyCopy];
+  return array;
 }
 
-- (id)objectInChildNodesWithAttribute:(id)a3 firstOnly:(BOOL)a4
+- (id)objectInChildNodesWithAttribute:(id)attribute firstOnly:(BOOL)only
 {
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
-  v10 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  onlyCopy = only;
+  array = [MEMORY[0x277CBEB18] array];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__SCNNode_objectInChildNodesWithAttribute_firstOnly___block_invoke;
   v8[3] = &unk_2782FEF40;
-  v8[4] = a3;
+  v8[4] = attribute;
   v8[5] = v9;
-  [(SCNNode *)self _childNodesPassingTest:v8 recursively:1 output:v6];
+  [(SCNNode *)self _childNodesPassingTest:v8 recursively:1 output:array];
   _Block_object_dispose(v9, 8);
-  return v6;
+  return array;
 }
 
 uint64_t __53__SCNNode_objectInChildNodesWithAttribute_firstOnly___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -2163,9 +2163,9 @@ uint64_t __53__SCNNode_objectInChildNodesWithAttribute_firstOnly___block_invoke(
   return result;
 }
 
-- (id)_findComponentWithType:(int64_t)a3
+- (id)_findComponentWithType:(int64_t)type
 {
-  if ((((*(self + 22) & 0x1FFFu) >> a3) & 1) == 0)
+  if ((((*(self + 22) & 0x1FFFu) >> type) & 1) == 0)
   {
     return 0;
   }
@@ -2176,7 +2176,7 @@ uint64_t __53__SCNNode_objectInChildNodesWithAttribute_firstOnly___block_invoke(
     return 0;
   }
 
-  while ([(SCNNodeComponent *)components type]!= a3)
+  while ([(SCNNodeComponent *)components type]!= type)
   {
     components = [(SCNNodeComponent *)components next];
     if (!components)
@@ -2188,27 +2188,27 @@ uint64_t __53__SCNNode_objectInChildNodesWithAttribute_firstOnly___block_invoke(
   return [(SCNNodeComponent *)components component];
 }
 
-- (void)_removeComponentWithType:(int64_t)a3
+- (void)_removeComponentWithType:(int64_t)type
 {
   components = self->_components;
   if (components)
   {
-    if ([(SCNNodeComponent *)self->_components type]== a3)
+    if ([(SCNNodeComponent *)self->_components type]== type)
     {
       v6 = 0;
 LABEL_7:
-      v9 = [(SCNNodeComponent *)components next];
+      next = [(SCNNodeComponent *)components next];
       if (v6)
       {
-        [(SCNNodeComponent *)v6 setNext:v9];
+        [(SCNNodeComponent *)v6 setNext:next];
       }
 
       else
       {
-        self->_components = v9;
+        self->_components = next;
       }
 
-      *(self + 22) &= ~(1 << a3) | 0xE000;
+      *(self + 22) &= ~(1 << type) | 0xE000;
     }
 
     else
@@ -2216,16 +2216,16 @@ LABEL_7:
       v7 = components;
       while (1)
       {
-        v8 = [(SCNNodeComponent *)v7 next];
-        if (!v8)
+        next2 = [(SCNNodeComponent *)v7 next];
+        if (!next2)
         {
           break;
         }
 
-        components = v8;
+        components = next2;
         v6 = v7;
-        v7 = v8;
-        if ([(SCNNodeComponent *)v8 type]== a3)
+        v7 = next2;
+        if ([(SCNNodeComponent *)next2 type]== type)
         {
           goto LABEL_7;
         }
@@ -2234,12 +2234,12 @@ LABEL_7:
   }
 }
 
-- (void)_assignComponent:(id)a3 toContainerWithType:(int64_t)a4
+- (void)_assignComponent:(id)component toContainerWithType:(int64_t)type
 {
-  v7 = 1 << a4;
-  if ((*(self + 22) & (1 << a4) & 0x1FFF) != 0 && (components = self->_components) != 0)
+  v7 = 1 << type;
+  if ((*(self + 22) & (1 << type) & 0x1FFF) != 0 && (components = self->_components) != 0)
   {
-    while ([(SCNNodeComponent *)components type]!= a4)
+    while ([(SCNNodeComponent *)components type]!= type)
     {
       components = [(SCNNodeComponent *)components next];
       if (!components)
@@ -2248,19 +2248,19 @@ LABEL_7:
       }
     }
 
-    [(SCNNodeComponent *)components setComponent:a3];
+    [(SCNNodeComponent *)components setComponent:component];
   }
 
   else
   {
 LABEL_5:
     v9 = off_2782F9D88;
-    if (a4 != 10)
+    if (type != 10)
     {
       v9 = off_2782F9D80;
     }
 
-    v10 = [objc_alloc(*v9) initWithType:a4 component:a3];
+    v10 = [objc_alloc(*v9) initWithType:type component:component];
     [(SCNNodeComponent *)v10 setNext:self->_components];
 
     self->_components = v10;
@@ -2274,11 +2274,11 @@ LABEL_5:
   v4 = v3;
   if ((*(self + 40) & 2) == 0 && !v3)
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     *(self + 40) |= 2u;
@@ -2318,11 +2318,11 @@ LABEL_8:
   v4 = v3;
   if ((*(self + 40) & 8) == 0 && !v3)
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     *(self + 40) |= 8u;
@@ -2363,11 +2363,11 @@ LABEL_8:
   if ((*(self + 40) & 4) == 0 && !v3)
   {
     *(self + 40) |= 4u;
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     Geometry = C3DNodeGetGeometry(self->_node);
@@ -2406,11 +2406,11 @@ LABEL_8:
   v4 = v3;
   if ((*(self + 40) & 0x10) == 0 && !v3)
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     *(self + 40) |= 0x10u;
@@ -2449,11 +2449,11 @@ LABEL_9:
   v4 = v3;
   if ((*(self + 40) & 0x20) == 0 && !v3)
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
     *(self + 40) |= 0x20u;
@@ -2493,38 +2493,38 @@ LABEL_8:
   x = pointB.x;
   v18 = pointA.y;
   v19 = pointA.x;
-  v7 = [(SCNNode *)self sceneRef];
-  if (v7)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v8 = v7;
-    C3DSceneLock(v7);
+    v8 = sceneRef;
+    C3DSceneLock(sceneRef);
     memset(v24, 0, sizeof(v24));
     if (options)
     {
       v9 = [(NSDictionary *)options objectForKey:@"kHitTestRootNode"];
-      v10 = self;
+      selfCopy = self;
       if (v9)
       {
-        v10 = [(NSDictionary *)options objectForKey:@"kHitTestRootNode"];
+        selfCopy = [(NSDictionary *)options objectForKey:@"kHitTestRootNode"];
       }
 
-      v11 = [(SCNNode *)v10 nodeRef];
-      v12 = [(NSDictionary *)options mutableCopy];
+      nodeRef = [(SCNNode *)selfCopy nodeRef];
+      dictionary = [(NSDictionary *)options mutableCopy];
     }
 
     else
     {
-      v11 = [(SCNNode *)self nodeRef];
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      nodeRef = [(SCNNode *)self nodeRef];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    [v12 setObject:v11 forKey:@"kHitTestRootNode"];
+    [dictionary setObject:nodeRef forKey:@"kHitTestRootNode"];
     [(SCNNode *)self simdConvertPosition:0 toNode:COERCE_DOUBLE(__PAIR64__(LODWORD(v18), LODWORD(v19)))];
     v23 = v14;
     [(SCNNode *)self simdConvertPosition:0 toNode:COERCE_DOUBLE(__PAIR64__(LODWORD(y), LODWORD(x)))];
     v22 = v15;
     C3DRay3Make(v24, &v23, &v22);
-    HitTestResultsWithSegment = C3DSceneCreateHitTestResultsWithSegment(v8, v24, v12);
+    HitTestResultsWithSegment = C3DSceneCreateHitTestResultsWithSegment(v8, v24, dictionary);
     v13 = [SCNHitTestResult hitTestResultsFromHitTestResultRef:HitTestResultsWithSegment];
     if (HitTestResultsWithSegment)
     {
@@ -2821,11 +2821,11 @@ LABEL_21:
 
 - (void)_quaternion
 {
-  v2 = a1[2].u8[9];
+  v2 = self[2].u8[9];
   if ((v2 & 1) == 0)
   {
-    [(float32x4_t *)a1 _updateAffine];
-    v2 = a1[2].u8[9];
+    [(float32x4_t *)self _updateAffine];
+    v2 = self[2].u8[9];
   }
 
   v3 = (v2 >> 4) & 3;
@@ -2833,7 +2833,7 @@ LABEL_21:
   {
     if (v3)
     {
-      [(float32x4_t *)a1 simdRotation];
+      [(float32x4_t *)self simdRotation];
       v5 = v4;
       v6 = vmulq_f32(v4, v4);
       if ((v6.f32[2] + vaddv_f32(*v6.f32)) > 0.000000001)
@@ -2844,7 +2844,7 @@ LABEL_21:
 
     else
     {
-      v7 = a1[8];
+      v7 = self[8];
       __sincosf_stret(0.5 * v7.f32[0]);
       __sincosf_stret(vmuls_lane_f32(0.5, *v7.f32, 1));
       __sincosf_stret(vmuls_lane_f32(0.5, v7, 2));
@@ -2878,9 +2878,9 @@ LABEL_21:
   return result;
 }
 
-- (void)_setQuaternion:(float32x4_t *)a1
+- (void)_setQuaternion:(float32x4_t *)quaternion
 {
-  if (a1[2].i8[8])
+  if (quaternion[2].i8[8])
   {
     v6 = scn_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -2891,43 +2891,43 @@ LABEL_21:
 
   else
   {
-    if ((a1[2].i8[9] & 1) == 0)
+    if ((quaternion[2].i8[9] & 1) == 0)
     {
-      [(float32x4_t *)a1 _updateAffine];
+      [(float32x4_t *)quaternion _updateAffine];
     }
 
-    [(float32x4_t *)a1 _quaternion];
+    [(float32x4_t *)quaternion _quaternion];
     if ((vminvq_u32(vceqq_f32(v8, v3)) & 0x80000000) == 0)
     {
-      [(float32x4_t *)a1 willChangeValueForKey:@"orientation"];
-      v4 = a1[2].i8[9];
-      a1[8] = v8;
-      a1[2].i8[9] = v4 & 0xCD | 0x20;
-      v5 = [(float32x4_t *)a1 sceneRef];
+      [(float32x4_t *)quaternion willChangeValueForKey:@"orientation"];
+      v4 = quaternion[2].i8[9];
+      quaternion[8] = v8;
+      quaternion[2].i8[9] = v4 & 0xCD | 0x20;
+      sceneRef = [(float32x4_t *)quaternion sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __26__SCNNode__setQuaternion___block_invoke;
       v9[3] = &unk_2782FEBE8;
-      v11 = a1;
+      quaternionCopy = quaternion;
       v10 = v8;
-      [SCNTransaction postCommandWithContext:v5 object:a1 key:@"orientation" applyBlock:v9];
-      [(float32x4_t *)a1 didChangeValueForKey:@"orientation"];
+      [SCNTransaction postCommandWithContext:sceneRef object:quaternion key:@"orientation" applyBlock:v9];
+      [(float32x4_t *)quaternion didChangeValueForKey:@"orientation"];
     }
   }
 }
 
 - (double)_euler
 {
-  v2 = *(a1 + 41);
+  v2 = *(self + 41);
   if ((v2 & 1) == 0)
   {
-    [a1 _updateAffine];
-    v2 = *(a1 + 41);
+    [self _updateAffine];
+    v2 = *(self + 41);
   }
 
   if ((v2 & 0x30) != 0)
   {
-    [a1 _quaternion];
+    [self _quaternion];
     v4 = v3;
     v5 = vmulq_f32(v3, v3);
     v6 = vaddv_f32(vadd_f32(*v5.i8, *&vextq_s8(v5, v5, 8uLL)));
@@ -2969,7 +2969,7 @@ LABEL_21:
 
   else
   {
-    v7 = *(a1 + 128);
+    v7 = *(self + 128);
   }
 
   return *&v7;
@@ -3013,14 +3013,14 @@ LABEL_21:
       [(SCNNode *)self willChangeValueForKey:@"position"];
       *(self + 41) &= ~2u;
       *&self->_position[2] = v7;
-      v5 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __24__SCNNode__setPosition___block_invoke;
       v8[3] = &unk_2782FEBE8;
-      v10 = self;
+      selfCopy = self;
       v9 = v7;
-      [SCNTransaction postCommandWithContext:v5 object:self key:@"translation" applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"translation" applyBlock:v8];
       [(SCNNode *)self didChangeValueForKey:@"position"];
     }
   }
@@ -3064,14 +3064,14 @@ LABEL_21:
       [(SCNNode *)self willChangeValueForKey:@"scale"];
       *(self + 41) &= ~2u;
       *&self->_scale[2] = v7;
-      v5 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __21__SCNNode__setScale___block_invoke;
       v8[3] = &unk_2782FEBE8;
-      v10 = self;
+      selfCopy = self;
       v9 = v7;
-      [SCNTransaction postCommandWithContext:v5 object:self key:@"scale" applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"scale" applyBlock:v8];
       [(SCNNode *)self didChangeValueForKey:@"scale"];
     }
   }
@@ -3149,14 +3149,14 @@ LABEL_21:
     return (*(self + 41) >> 6) & 1;
   }
 
-  v4 = [(SCNNode *)self sceneRef];
-  if (!v4)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (!sceneRef)
   {
     return C3DNodeGetMovability(self->_node);
   }
 
-  v5 = v4;
-  C3DSceneLock(v4);
+  v5 = sceneRef;
+  C3DSceneLock(sceneRef);
   Movability = C3DNodeGetMovability(self->_node);
   C3DSceneUnlock(v5);
   return Movability;
@@ -3179,14 +3179,14 @@ LABEL_21:
     if (((v5 >> 6) & 1) != movabilityHint)
     {
       *(self + 41) = v5 & 0xBF | ((movabilityHint & 1) << 6);
-      v6 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __29__SCNNode_setMovabilityHint___block_invoke;
       v8[3] = &unk_2782FB7D0;
       v8[4] = self;
       v8[5] = movabilityHint;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -3198,11 +3198,11 @@ LABEL_21:
     return *(self + 42) & 1;
   }
 
-  v4 = [(SCNNode *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     CastsShadow = C3DNodeGetCastsShadow(self->_node);
     C3DSceneUnlock(v5);
     return CastsShadow;
@@ -3233,14 +3233,14 @@ LABEL_21:
     if ((v5 & 1) != castsShadow)
     {
       *(self + 42) = v5 & 0xFE | castsShadow;
-      v6 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __26__SCNNode_setCastsShadow___block_invoke;
       v8[3] = &unk_2782FB7F8;
       v8[4] = self;
       v9 = castsShadow;
-      [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 }
@@ -3249,11 +3249,11 @@ LABEL_21:
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       UsesDepthPrePass = C3DNodeGetUsesDepthPrePass(self->_node);
       C3DSceneUnlock(v5);
       LOBYTE(v3) = UsesDepthPrePass;
@@ -3275,7 +3275,7 @@ LABEL_21:
   return v3;
 }
 
-- (void)setUsesDepthPrePass:(BOOL)a3
+- (void)setUsesDepthPrePass:(BOOL)pass
 {
   if (*(self + 40))
   {
@@ -3289,9 +3289,9 @@ LABEL_21:
   else
   {
     v5 = *(self + 42);
-    if (((((v5 & 2) == 0) ^ a3) & 1) == 0)
+    if (((((v5 & 2) == 0) ^ pass) & 1) == 0)
     {
-      if (a3)
+      if (pass)
       {
         v6 = 2;
       }
@@ -3302,14 +3302,14 @@ LABEL_21:
       }
 
       *(self + 42) = v5 & 0xFD | v6;
-      v7 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __31__SCNNode_setUsesDepthPrePass___block_invoke;
       v9[3] = &unk_2782FB7F8;
       v9[4] = self;
-      v10 = a3;
-      [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v9];
+      passCopy = pass;
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
     }
   }
 }
@@ -3321,11 +3321,11 @@ LABEL_21:
     return self->_categoryBitMask;
   }
 
-  v4 = [(SCNNode *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     CategoryBitMask = C3DNodeGetCategoryBitMask(self->_node);
     C3DSceneUnlock(v5);
     return CategoryBitMask;
@@ -3353,14 +3353,14 @@ LABEL_21:
   else if (self->_categoryBitMask != categoryBitMask)
   {
     self->_categoryBitMask = categoryBitMask;
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__SCNNode_setCategoryBitMask___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = categoryBitMask;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -3368,11 +3368,11 @@ LABEL_21:
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       IsHidden = C3DNodeIsHidden(self->_node);
       C3DSceneUnlock(v5);
       LOBYTE(v3) = IsHidden;
@@ -3421,14 +3421,14 @@ LABEL_21:
       }
 
       *(self + 41) = v6 & 0x80 | v5 & 0x7F;
-      v7 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __21__SCNNode_setHidden___block_invoke;
       v9[3] = &unk_2782FB7F8;
       v9[4] = self;
       v10 = hidden;
-      [SCNTransaction postCommandWithContext:v7 object:self key:@"hidden" applyBlock:v9];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"hidden" applyBlock:v9];
     }
   }
 }
@@ -3437,11 +3437,11 @@ LABEL_21:
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       Opacity = C3DNodeGetOpacity(self->_node);
       C3DSceneUnlock(v5);
     }
@@ -3483,14 +3483,14 @@ LABEL_21:
     {
       v5 = v4;
       self->_opacity = v5;
-      v6 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __22__SCNNode_setOpacity___block_invoke;
       v8[3] = &unk_2782FB7D0;
       v8[4] = self;
       *&v8[5] = v4;
-      [SCNTransaction postCommandWithContext:v6 object:self key:@"opacity" applyBlock:v8];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"opacity" applyBlock:v8];
     }
   }
 }
@@ -3509,11 +3509,11 @@ float __22__SCNNode_setOpacity___block_invoke(uint64_t a1)
     return self->_renderingOrder;
   }
 
-  v4 = [(SCNNode *)self sceneRef];
-  if (v4)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v5 = v4;
-    C3DSceneLock(v4);
+    v5 = sceneRef;
+    C3DSceneLock(sceneRef);
     RenderingOrder = C3DNodeGetRenderingOrder(self->_node);
     C3DSceneUnlock(v5);
     return RenderingOrder;
@@ -3541,27 +3541,27 @@ float __22__SCNNode_setOpacity___block_invoke(uint64_t a1)
   else if (self->_renderingOrder != renderingOrder)
   {
     self->_renderingOrder = renderingOrder;
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __29__SCNNode_setRenderingOrder___block_invoke;
     v7[3] = &unk_2782FB7D0;
     v7[4] = self;
     v7[5] = renderingOrder;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
-- (void)_setComponent:(id)a3 withType:(int64_t)a4
+- (void)_setComponent:(id)component withType:(int64_t)type
 {
-  if (a3)
+  if (component)
   {
-    [(SCNNode *)self _assignComponent:a3 toContainerWithType:a4];
+    [(SCNNode *)self _assignComponent:component toContainerWithType:type];
   }
 
   else
   {
-    [(SCNNode *)self _removeComponentWithType:a4];
+    [(SCNNode *)self _removeComponentWithType:type];
   }
 }
 
@@ -3570,14 +3570,14 @@ float __22__SCNNode_setOpacity___block_invoke(uint64_t a1)
   if ([(SCNNode *)self light]!= light)
   {
     [(SCNNode *)self _setComponent:light withType:0];
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __20__SCNNode_setLight___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
     v6[5] = light;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -3589,9 +3589,9 @@ void __20__SCNNode_setLight___block_invoke(uint64_t a1)
   C3DNodeSetLight(v1, v2);
 }
 
-- (void)setIsJoint:(BOOL)a3
+- (void)setIsJoint:(BOOL)joint
 {
-  if (a3)
+  if (joint)
   {
     v3 = 8;
   }
@@ -3614,14 +3614,14 @@ void __20__SCNNode_setLight___block_invoke(uint64_t a1)
     }
 
     [(SCNNode *)self _setComponent:skinner withType:3];
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __22__SCNNode_setSkinner___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
     v6[5] = skinner;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -3638,14 +3638,14 @@ void __22__SCNNode_setSkinner___block_invoke(uint64_t a1)
   if ([(SCNNode *)self morpher]!= morpher)
   {
     [(SCNNode *)self _setComponent:morpher withType:4];
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __22__SCNNode_setMorpher___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = morpher;
     v6[5] = self;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -3670,37 +3670,37 @@ void __22__SCNNode_setMorpher___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPostMorphingDeformers:(id)a3
+- (void)setPostMorphingDeformers:(id)deformers
 {
-  if ([(SCNNode *)self postMorphingDeformers]!= a3)
+  if ([(SCNNode *)self postMorphingDeformers]!= deformers)
   {
-    v5 = [a3 copy];
+    v5 = [deformers copy];
     [(SCNNode *)self _setComponent:v5 withType:11];
-    v6 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SCNNode_setPostMorphingDeformers___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = self;
     v7[5] = v5;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
-- (void)setPostSkinningDeformers:(id)a3
+- (void)setPostSkinningDeformers:(id)deformers
 {
-  if ([(SCNNode *)self postSkinningDeformers]!= a3)
+  if ([(SCNNode *)self postSkinningDeformers]!= deformers)
   {
-    v5 = [a3 copy];
+    v5 = [deformers copy];
     [(SCNNode *)self _setComponent:v5 withType:12];
-    v6 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__SCNNode_setPostSkinningDeformers___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = self;
     v7[5] = v5;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -3709,14 +3709,14 @@ void __22__SCNNode_setMorpher___block_invoke(uint64_t a1)
   if ([(SCNNode *)self camera]!= camera)
   {
     [(SCNNode *)self _setComponent:camera withType:1];
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __21__SCNNode_setCamera___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
     v6[5] = camera;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -3733,25 +3733,25 @@ void __21__SCNNode_setCamera___block_invoke(uint64_t a1)
   if ([(SCNNode *)self geometry]!= geometry)
   {
     [(SCNNode *)self _setComponent:geometry withType:2];
-    v5 = [(SCNNode *)self skinner];
-    if (v5)
+    skinner = [(SCNNode *)self skinner];
+    if (skinner)
     {
-      [(SCNSkinner *)v5 _setBaseGeometry:geometry];
+      [(SCNSkinner *)skinner _setBaseGeometry:geometry];
     }
 
-    v6 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __23__SCNNode_setGeometry___block_invoke;
     v9[3] = &unk_2782FC950;
     v9[4] = self;
     v9[5] = geometry;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v9];
-    v7 = [(SCNNode *)self physicsBody];
-    if (v7)
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
+    physicsBody = [(SCNNode *)self physicsBody];
+    if (physicsBody)
     {
-      v8 = v7;
-      if (![(SCNPhysicsBody *)v7 physicsShape])
+      v8 = physicsBody;
+      if (![(SCNPhysicsBody *)physicsBody physicsShape])
       {
         [(SCNPhysicsBody *)v8 setPhysicsShape:[SCNPhysicsShape shapeWithGeometry:geometry options:0]];
       }
@@ -3772,14 +3772,14 @@ void __23__SCNNode_setGeometry___block_invoke(uint64_t a1)
   if ([(SCNNode *)self filters]!= filters)
   {
     [(SCNNode *)self _setComponent:[(NSArray *)filters copy] withType:5];
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __22__SCNNode_setFilters___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
     v6[5] = filters;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
@@ -3787,11 +3787,11 @@ void __23__SCNNode_setGeometry___block_invoke(uint64_t a1)
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       Filters = C3DNodeGetFilters(self->_node);
       C3DSceneUnlock(v5);
       return Filters;
@@ -3902,33 +3902,33 @@ LABEL_36:
       self->_rendererDelegate = 0;
     }
 
-    v8 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __31__SCNNode_setRendererDelegate___block_invoke;
     v9[3] = &unk_2782FC950;
     v9[4] = self;
     v9[5] = v7;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v9];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
   }
 }
 
-- (void)renderInContext:(void *)a3
+- (void)renderInContext:(void *)context
 {
-  v5 = [SCNRenderer rendererWithContext:a3 options:0];
-  v6 = [MEMORY[0x277CD9388] currentContext];
-  [MEMORY[0x277CD9388] setCurrentContext:a3];
+  v5 = [SCNRenderer rendererWithContext:context options:0];
+  currentContext = [MEMORY[0x277CD9388] currentContext];
+  [MEMORY[0x277CD9388] setCurrentContext:context];
   C3DEngineContextRenderNodeTree([(SCNRenderer *)v5 _engineContext], 0, [(SCNNode *)self nodeRef]);
   v7 = MEMORY[0x277CD9388];
 
-  [v7 setCurrentContext:v6];
+  [v7 setCurrentContext:currentContext];
 }
 
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination
 {
-  if (![a3 hasPrefix:{@"/", a4}])
+  if (![key hasPrefix:{@"/", path}])
   {
-    v9 = [a3 rangeOfString:@"["];
+    v9 = [key rangeOfString:@"["];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_12;
@@ -3936,13 +3936,13 @@ LABEL_36:
 
     v10 = v9;
     v11 = v9 + 1;
-    if (v9 + 1 >= [a3 length])
+    if (v9 + 1 >= [key length])
     {
       goto LABEL_12;
     }
 
-    v12 = [a3 substringToIndex:v10];
-    v13 = [a3 substringFromIndex:v11];
+    v12 = [key substringToIndex:v10];
+    v13 = [key substringFromIndex:v11];
     v14 = [v13 rangeOfString:@"]"];
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -3967,20 +3967,20 @@ LABEL_12:
     goto LABEL_3;
   }
 
-  v8 = -[SCNNode childNodeWithName:recursively:](self, "childNodeWithName:recursively:", [a3 substringWithRange:{1, objc_msgSend(a3, "length") - 1}], 1);
+  v8 = -[SCNNode childNodeWithName:recursively:](self, "childNodeWithName:recursively:", [key substringWithRange:{1, objc_msgSend(key, "length") - 1}], 1);
   if (v8)
   {
 LABEL_3:
-    *a5 = v8;
+    *destination = v8;
     LOBYTE(v8) = 1;
   }
 
   return v8;
 }
 
-- (id)copyAnimationChannelForKeyPath:(id)a3 animation:(id)a4
+- (id)copyAnimationChannelForKeyPath:(id)path animation:(id)animation
 {
-  if (![a3 length])
+  if (![path length])
   {
     return 0;
   }
@@ -3988,10 +3988,10 @@ LABEL_3:
   v13 = 0;
   v14 = 0;
   v12 = 0;
-  SCNKitSplitKVCPath(a3, &v13, &v12);
-  if ([(SCNNode *)self parseSpecialKey:v13 withPath:a3 intoDestination:&v14]&& (objc_opt_respondsToSelector() & 1) != 0)
+  SCNKitSplitKVCPath(path, &v13, &v12);
+  if ([(SCNNode *)self parseSpecialKey:v13 withPath:path intoDestination:&v14]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v14 copyAnimationChannelForKeyPath:v12 animation:a4];
+    v7 = [v14 copyAnimationChannelForKeyPath:v12 animation:animation];
     if (v7)
     {
       v8 = v7;
@@ -4008,13 +4008,13 @@ LABEL_3:
   v14 = [(SCNNode *)self valueForKey:v13];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return SCNCreateAnimationChannelWithObjectAndPath(self, a3);
+    return SCNCreateAnimationChannelWithObjectAndPath(self, path);
   }
 
-  v10 = [v14 copyAnimationChannelForKeyPath:v12 animation:a4];
+  v10 = [v14 copyAnimationChannelForKeyPath:v12 animation:animation];
   if (!v10)
   {
-    return SCNCreateAnimationChannelWithObjectAndPath(self, a3);
+    return SCNCreateAnimationChannelWithObjectAndPath(self, path);
   }
 
   v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count") + 1}];
@@ -4024,31 +4024,31 @@ LABEL_3:
   return v9;
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
-  if ([a4 hasPrefix:@"filters."])
+  if ([path hasPrefix:@"filters."])
   {
     v12 = 0;
     v13 = 0;
-    SCNKitSplitKVCPath(a4, &v13, &v12);
+    SCNKitSplitKVCPath(path, &v13, &v12);
     if (v12)
     {
-      v7 = C3DCFTypeCopyModelInfoAtPath(self->_node, a4, 0);
+      v7 = C3DCFTypeCopyModelInfoAtPath(self->_node, path, 0);
       if (v7)
       {
         v8 = v7;
         if (C3DModelTargetGetTargetAddress(v7))
         {
-          v9 = [(SCNNode *)self sceneRef];
+          sceneRef = [(SCNNode *)self sceneRef];
           v11[0] = MEMORY[0x277D85DD0];
           v11[1] = 3221225472;
           v11[2] = __31__SCNNode_setValue_forKeyPath___block_invoke;
           v11[3] = &unk_2782FEF68;
-          v11[4] = a4;
-          v11[5] = a3;
+          v11[4] = path;
+          v11[5] = value;
           v11[6] = v12;
           v11[7] = self;
-          [SCNTransaction postCommandWithContext:v9 object:self keyPath:a4 applyBlock:v11];
+          [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:path applyBlock:v11];
         }
 
         CFRelease(v8);
@@ -4060,7 +4060,7 @@ LABEL_3:
   {
     v10.receiver = self;
     v10.super_class = SCNNode;
-    [(SCNNode *)&v10 setValue:a3 forKeyPath:a4];
+    [(SCNNode *)&v10 setValue:value forKeyPath:path];
   }
 }
 
@@ -4122,25 +4122,25 @@ uint64_t __31__SCNNode_setValue_forKeyPath___block_invoke(uint64_t result)
   return result;
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  if ([a3 hasPrefix:@"filters."])
+  if ([path hasPrefix:@"filters."])
   {
     v17 = 0;
     v18 = 0;
-    SCNKitSplitKVCPath([a3 substringFromIndex:{objc_msgSend(@"filters.", "length")}], &v18, &v17);
+    SCNKitSplitKVCPath([path substringFromIndex:{objc_msgSend(@"filters.", "length")}], &v18, &v17);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(SCNNode *)self filters];
-    result = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+    filters = [(SCNNode *)self filters];
+    result = [(NSArray *)filters countByEnumeratingWithState:&v13 objects:v19 count:16];
     if (result)
     {
       v7 = result;
@@ -4152,12 +4152,12 @@ uint64_t __31__SCNNode_setValue_forKeyPath___block_invoke(uint64_t result)
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(filters);
           }
 
           v10 = *(*(&v13 + 1) + 8 * v9);
-          v11 = [v10 name];
-          if ([v11 isEqualToString:v18])
+          name = [v10 name];
+          if ([name isEqualToString:v18])
           {
             return [v10 valueForKey:v17];
           }
@@ -4166,7 +4166,7 @@ uint64_t __31__SCNNode_setValue_forKeyPath___block_invoke(uint64_t result)
         }
 
         while (v7 != v9);
-        result = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v19 count:16];
+        result = [(NSArray *)filters countByEnumeratingWithState:&v13 objects:v19 count:16];
         v7 = result;
         if (result)
         {
@@ -4182,27 +4182,27 @@ uint64_t __31__SCNNode_setValue_forKeyPath___block_invoke(uint64_t result)
   {
     v12.receiver = self;
     v12.super_class = SCNNode;
-    return [(SCNNode *)&v12 valueForKeyPath:a3];
+    return [(SCNNode *)&v12 valueForKeyPath:path];
   }
 
   return result;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   if ((*(self + 40) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v5 = [(SCNNode *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  ValueForKey = C3DEntityGetValueForKey(self->_node, a3);
+  ValueForKey = C3DEntityGetValueForKey(self->_node, key);
   v8 = ValueForKey;
   if (ValueForKey)
   {
@@ -4220,7 +4220,7 @@ uint64_t __31__SCNNode_setValue_forKeyPath___block_invoke(uint64_t result)
   {
 LABEL_9:
     v17 = 0;
-    if ([(SCNNode *)self parseSpecialKey:a3 withPath:a3 intoDestination:&v17])
+    if ([(SCNNode *)self parseSpecialKey:key withPath:key intoDestination:&v17])
     {
       return v17;
     }
@@ -4228,7 +4228,7 @@ LABEL_9:
     else
     {
       os_unfair_lock_lock(&self->_valueForKeyLock);
-      v15 = [(NSMutableDictionary *)self->_valueForKey objectForKey:a3];
+      v15 = [(NSMutableDictionary *)self->_valueForKey objectForKey:key];
       os_unfair_lock_unlock(&self->_valueForKeyLock);
       if (v15)
       {
@@ -4245,14 +4245,14 @@ LABEL_9:
   return v8;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   if ((*(self + 40) & 1) == 0)
   {
-    v7 = SCNCopyValueFromObjCProperty(self, a4);
+    v7 = SCNCopyValueFromObjCProperty(self, key);
     os_unfair_lock_lock(&self->_valueForKeyLock);
     valueForKey = self->_valueForKey;
-    if (a3)
+    if (value)
     {
       if (!valueForKey)
       {
@@ -4260,31 +4260,31 @@ LABEL_9:
         self->_valueForKey = valueForKey;
       }
 
-      [(NSMutableDictionary *)valueForKey setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)valueForKey setObject:value forKey:key];
     }
 
     else
     {
-      [(NSMutableDictionary *)valueForKey removeObjectForKey:a4];
+      [(NSMutableDictionary *)valueForKey removeObjectForKey:key];
     }
 
     os_unfair_lock_unlock(&self->_valueForKeyLock);
-    v10 = SCNCopyValueFromObjCProperty(self, a4);
+    v10 = SCNCopyValueFromObjCProperty(self, key);
     v11 = v10;
     if (v7 && v10)
     {
       node = self->_node;
-      C3DEntitySetValueForKey(node, a4, v7);
-      v13 = [objc_msgSend(@"customProperty" stringByAppendingString:{@".", "stringByAppendingString:", a4}];
-      v14 = [(SCNNode *)self sceneRef];
+      C3DEntitySetValueForKey(node, key, v7);
+      v13 = [objc_msgSend(@"customProperty" stringByAppendingString:{@".", "stringByAppendingString:", key}];
+      sceneRef = [(SCNNode *)self sceneRef];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __36__SCNNode_setValue_forUndefinedKey___block_invoke;
       v15[3] = &unk_2782FB630;
       v15[5] = v11;
       v15[6] = node;
-      v15[4] = a4;
-      [SCNTransaction postCommandWithContext:v14 object:self keyPath:v13 applyBlock:v15];
+      v15[4] = key;
+      [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:v13 applyBlock:v15];
     }
 
     else if (!v7)
@@ -4317,20 +4317,20 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)__removeAnimation:(id)a3 forKey:(id)a4
+- (BOOL)__removeAnimation:(id)animation forKey:(id)key
 {
-  if (!a4)
+  if (!key)
   {
     return 0;
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
-  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{a4), "animation"}] == a3;
+  v7 = [-[SCNOrderedDictionary objectForKey:](self->_animations objectForKey:{key), "animation"}] == animation;
   if (v7)
   {
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a4];
-    v8 = [(SCNNode *)self __CFObject];
-    if ((CFTypeIsC3DEntity(v8) & 1) == 0)
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
+    __CFObject = [(SCNNode *)self __CFObject];
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v9 = scn_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -4339,21 +4339,21 @@ LABEL_14:
       }
     }
 
-    C3DEntityRemoveAnimationForKey(v8, a4, 1);
+    C3DEntityRemoveAnimationForKey(__CFObject, key, 1);
   }
 
   os_unfair_lock_unlock(&self->_animationsLock);
   return v7;
 }
 
-- (void)addAnimationPlayer:(id)a3 forKey:(id)a4
+- (void)addAnimationPlayer:(id)player forKey:(id)key
 {
-  if (a3)
+  if (player)
   {
-    v5 = a4;
-    if (!a4)
+    keyCopy = key;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     os_unfair_lock_lock(&self->_animationsLock);
@@ -4364,17 +4364,17 @@ LABEL_14:
       self->_animations = animations;
     }
 
-    [(SCNOrderedDictionary *)animations setObject:a3 forKey:v5];
+    [(SCNOrderedDictionary *)animations setObject:player forKey:keyCopy];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v8 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __37__SCNNode_addAnimationPlayer_forKey___block_invoke;
     v10[3] = &unk_2782FC928;
-    v10[4] = a3;
+    v10[4] = player;
     v10[5] = self;
-    v10[6] = v5;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v10];
+    v10[6] = keyCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v10];
   }
 
   else
@@ -4400,30 +4400,30 @@ void __37__SCNNode_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
-  if (a3)
+  if (animation)
   {
-    v5 = a4;
-    v6 = a3;
-    if (!a4)
+    keyCopy = key;
+    animationCopy = animation;
+    if (!key)
     {
-      v5 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+      keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [SCNAnimation animationWithCAAnimation:v6];
+      animationCopy = [SCNAnimation animationWithCAAnimation:animationCopy];
     }
 
-    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:v6];
-    [(SCNNode *)self addAnimationPlayer:v7 forKey:v5];
+    v7 = [SCNAnimationPlayer animationPlayerWithSCNAnimation:animationCopy];
+    [(SCNNode *)self addAnimationPlayer:v7 forKey:keyCopy];
     [(SCNAnimationPlayer *)v7 play];
     if ([(SCNNode *)self isPausedOrPausedByInheritance])
     {
 
-      [(SCNNode *)self _pauseAnimation:1 forKey:v5 pausedByNode:1];
+      [(SCNNode *)self _pauseAnimation:1 forKey:keyCopy pausedByNode:1];
     }
   }
 
@@ -4442,85 +4442,85 @@ void __37__SCNNode_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v3 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __30__SCNNode_removeAllAnimations__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
-- (void)removeAllAnimationsWithBlendOutDuration:(double)a3
+- (void)removeAllAnimationsWithBlendOutDuration:(double)duration
 {
   os_unfair_lock_lock(&self->_animationsLock);
   [(SCNOrderedDictionary *)self->_animations removeAllObjects];
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SCNNode_removeAllAnimationsWithBlendOutDuration___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  *&v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  *&v6[5] = duration;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__SCNNode_removeAnimationForKey___block_invoke;
     v6[3] = &unk_2782FC950;
     v6[4] = self;
-    v6[5] = a3;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+    v6[5] = key;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
   }
 }
 
-- (void)removeAnimationForKey:(id)a3 blendOutDuration:(double)a4
+- (void)removeAnimationForKey:(id)key blendOutDuration:(double)duration
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
-    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_animations removeObjectForKey:key];
     os_unfair_lock_unlock(&self->_animationsLock);
-    v7 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __50__SCNNode_removeAnimationForKey_blendOutDuration___block_invoke;
     v8[3] = &unk_2782FB630;
     v8[4] = self;
-    v8[5] = a3;
-    *&v8[6] = a4;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+    v8[5] = key;
+    *&v8[6] = duration;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
   }
 }
 
 - (void)_syncObjCAnimations
 {
-  v3 = [(SCNNode *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
   os_unfair_lock_lock(&self->_animationsLock);
 
   self->_animations = objc_alloc_init(SCNOrderedDictionary);
   os_unfair_lock_unlock(&self->_animationsLock);
-  v5 = [(SCNNode *)self __CFObject];
-  if (v5)
+  __CFObject = [(SCNNode *)self __CFObject];
+  if (__CFObject)
   {
-    v6 = v5;
-    if ((CFTypeIsC3DEntity(v5) & 1) == 0)
+    v6 = __CFObject;
+    if ((CFTypeIsC3DEntity(__CFObject) & 1) == 0)
     {
       v7 = scn_default_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -4545,46 +4545,46 @@ void __37__SCNNode_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
   }
 }
 
-- (id)animationForKey:(id)a3
+- (id)animationForKey:(id)key
 {
-  v3 = [(SCNNode *)self _scnAnimationForKey:a3];
+  v3 = [(SCNNode *)self _scnAnimationForKey:key];
   v4 = MEMORY[0x277CD9DF8];
 
   return [v4 animationWithSCNAnimation:v3];
 }
 
-- (id)_scnAnimationForKey:(id)a3
+- (id)_scnAnimationForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{v3), "animation"}];
+      keyCopy = [-[SCNOrderedDictionary objectForKey:](animations objectForKey:{keyCopy), "animation"}];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_copyAnimationsFrom:(id)a3
+- (void)_copyAnimationsFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 animationKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  animationKeys = [from animationKeys];
+  v6 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4595,99 +4595,99 @@ void __37__SCNNode_addAnimationPlayer_forKey___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(animationKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 animationPlayerForKey:{v10), "copy"}];
+        v11 = [objc_msgSend(from animationPlayerForKey:{v10), "copy"}];
         [(SCNNode *)self addAnimationPlayer:v11 forKey:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [animationKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)animationPlayerForKey:(id)a3
+- (id)animationPlayerForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     os_unfair_lock_lock(&self->_animationsLock);
     animations = self->_animations;
     if (animations)
     {
-      v3 = [(SCNOrderedDictionary *)animations objectForKey:v3];
+      keyCopy = [(SCNOrderedDictionary *)animations objectForKey:keyCopy];
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
 
     os_unfair_lock_unlock(&self->_animationsLock);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (void)_pauseAnimation:(BOOL)a3 forKey:(id)a4 pausedByNode:(BOOL)a5
+- (void)_pauseAnimation:(BOOL)animation forKey:(id)key pausedByNode:(BOOL)node
 {
-  v5 = a5;
-  v7 = a3;
-  v9 = [(SCNNode *)self __CFObject];
-  if (v9)
+  nodeCopy = node;
+  animationCopy = animation;
+  __CFObject = [(SCNNode *)self __CFObject];
+  if (__CFObject)
   {
-    v10 = v9;
-    v11 = [(SCNNode *)self animationManager];
-    if (v11)
+    v10 = __CFObject;
+    animationManager = [(SCNNode *)self animationManager];
+    if (animationManager)
     {
-      v12 = v11;
+      v12 = animationManager;
       v13 = CACurrentMediaTime();
 
-      C3DAnimationManagerPauseAnimationForKey(v12, v10, a4, v7, v5, v13);
+      C3DAnimationManagerPauseAnimationForKey(v12, v10, key, animationCopy, nodeCopy, v13);
     }
   }
 }
 
-- (void)pauseAnimationForKey:(id)a3
+- (void)pauseAnimationForKey:(id)key
 {
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__SCNNode_pauseAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)resumeAnimationForKey:(id)a3
+- (void)resumeAnimationForKey:(id)key
 {
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__SCNNode_resumeAnimationForKey___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = key;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
-- (void)setSpeed:(double)a3 forAnimationKey:(id)a4
+- (void)setSpeed:(double)speed forAnimationKey:(id)key
 {
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", a4];
-  v8 = [(SCNNode *)self sceneRef];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"animations.%@.speed", key];
+  sceneRef = [(SCNNode *)self sceneRef];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __36__SCNNode_setSpeed_forAnimationKey___block_invoke;
   v9[3] = &unk_2782FB630;
   v9[4] = self;
-  v9[5] = a4;
-  *&v9[6] = a3;
-  [SCNTransaction postCommandWithContext:v8 object:self keyPath:v7 applyBlock:v9];
+  v9[5] = key;
+  *&v9[6] = speed;
+  [SCNTransaction postCommandWithContext:sceneRef object:self keyPath:v7 applyBlock:v9];
 }
 
 void __36__SCNNode_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
@@ -4707,23 +4707,23 @@ void __36__SCNNode_setSpeed_forAnimationKey___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)isAnimationForKeyPaused:(id)a3
+- (BOOL)isAnimationForKeyPaused:(id)paused
 {
-  v5 = [(SCNNode *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  v7 = [(SCNNode *)self __CFObject];
-  if (v7)
+  __CFObject = [(SCNNode *)self __CFObject];
+  if (__CFObject)
   {
-    v8 = v7;
-    v9 = [(SCNNode *)self animationManager];
-    if (v9)
+    v8 = __CFObject;
+    animationManager = [(SCNNode *)self animationManager];
+    if (animationManager)
     {
-      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(v9, v8, a3);
+      IsPaused = C3DAnimationManagerGetAnimationForKeyIsPaused(animationManager, v8, paused);
       if (!v6)
       {
         return IsPaused;
@@ -4743,17 +4743,17 @@ LABEL_8:
   return IsPaused;
 }
 
-- (void)bindAnimatablePath:(id)a3 toObject:(id)a4 withKeyPath:(id)a5 options:(id)a6
+- (void)bindAnimatablePath:(id)path toObject:(id)object withKeyPath:(id)keyPath options:(id)options
 {
-  if (self != a4)
+  if (self != object)
   {
     v16[15] = v6;
     v16[16] = v7;
     v13 = objc_alloc_init(C3DBinding);
-    [(C3DBinding *)v13 setSourceObject:a4];
-    [(C3DBinding *)v13 setKeyPathDst:a3];
-    [(C3DBinding *)v13 setKeyPathSrc:a5];
-    [(C3DBinding *)v13 setOptions:a6];
+    [(C3DBinding *)v13 setSourceObject:object];
+    [(C3DBinding *)v13 setKeyPathDst:path];
+    [(C3DBinding *)v13 setKeyPathSrc:keyPath];
+    [(C3DBinding *)v13 setOptions:options];
     bindings = self->_bindings;
     if (!bindings)
     {
@@ -4761,19 +4761,19 @@ LABEL_8:
       self->_bindings = bindings;
     }
 
-    [(NSMutableDictionary *)bindings setValue:v13 forKey:a3];
+    [(NSMutableDictionary *)bindings setValue:v13 forKey:path];
 
-    v15 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __59__SCNNode_bindAnimatablePath_toObject_withKeyPath_options___block_invoke;
     v16[3] = &unk_2782FC978;
     v16[4] = self;
-    v16[5] = a4;
-    v16[6] = a3;
-    v16[7] = a5;
-    v16[8] = a6;
-    [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+    v16[5] = object;
+    v16[6] = path;
+    v16[7] = keyPath;
+    v16[8] = options;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v16];
   }
 }
 
@@ -4788,7 +4788,7 @@ void __59__SCNNode_bindAnimatablePath_toObject_withKeyPath_options___block_invok
   C3DEntityAddBinding(v2, v3);
 }
 
-- (void)unbindAnimatablePath:(id)a3
+- (void)unbindAnimatablePath:(id)path
 {
   [(NSMutableDictionary *)self->_bindings removeObjectForKey:?];
   if (![(NSMutableDictionary *)self->_bindings count])
@@ -4797,14 +4797,14 @@ void __59__SCNNode_bindAnimatablePath_toObject_withKeyPath_options___block_invok
     self->_bindings = 0;
   }
 
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__SCNNode_unbindAnimatablePath___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = path;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __32__SCNNode_unbindAnimatablePath___block_invoke(uint64_t a1)
@@ -4818,13 +4818,13 @@ void __32__SCNNode_unbindAnimatablePath___block_invoke(uint64_t a1)
 - (void)removeAllBindings
 {
   self->_bindings = 0;
-  v3 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __28__SCNNode_removeAllBindings__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __28__SCNNode_removeAllBindings__block_invoke(uint64_t a1)
@@ -4834,15 +4834,15 @@ void __28__SCNNode_removeAllBindings__block_invoke(uint64_t a1)
   C3DEntityRemoveAllBindings(v1);
 }
 
-- (id)objectInChildNodesAtIndex:(unint64_t)a3
+- (id)objectInChildNodesAtIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableArray *)self->_childNodes objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->_childNodes objectAtIndex:index];
   objc_sync_exit(self);
   return v5;
 }
 
-- (void)_syncObjCModelAfterC3DIOSceneLoadingWithNodeRef:(__C3DNode *)a3
+- (void)_syncObjCModelAfterC3DIOSceneLoadingWithNodeRef:(__C3DNode *)ref
 {
   v27 = *MEMORY[0x277D85DE8];
   [(SCNNode *)self _syncObjCModel];
@@ -4863,7 +4863,7 @@ void __28__SCNNode_removeAllBindings__block_invoke(uint64_t a1)
   v17[5] = &v22;
   v17[6] = &v18;
   v17[7] = v5;
-  C3DNodeApplyChildrenInterruptible(a3, v17);
+  C3DNodeApplyChildrenInterruptible(ref, v17);
   if (v5 != v19[3])
   {
     *(v23 + 24) = 1;
@@ -4944,11 +4944,11 @@ uint64_t __59__SCNNode__syncObjCModelAfterC3DIOSceneLoadingWithNodeRef___block_i
   return [v4 addObject:v3];
 }
 
-- (BOOL)canAddChildNode:(id)a3
+- (BOOL)canAddChildNode:(id)node
 {
   for (i = self == 0; self; i = self == 0)
   {
-    if (self == a3)
+    if (self == node)
     {
       break;
     }
@@ -4967,9 +4967,9 @@ uint64_t __59__SCNNode__syncObjCModelAfterC3DIOSceneLoadingWithNodeRef___block_i
   objc_sync_exit(self);
 }
 
-- (void)__insertObject:(id)a3 inChildNodesAtIndex:(unint64_t)a4
+- (void)__insertObject:(id)object inChildNodesAtIndex:(unint64_t)index
 {
-  if (a3)
+  if (object)
   {
     objc_sync_enter(self);
     if (!self->_childNodes)
@@ -4977,22 +4977,22 @@ uint64_t __59__SCNNode__syncObjCModelAfterC3DIOSceneLoadingWithNodeRef___block_i
       self->_childNodes = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    if ([(SCNNode *)self canAddChildNode:a3])
+    if ([(SCNNode *)self canAddChildNode:object])
     {
-      if ([a3 parentNode] != self)
+      if ([object parentNode] != self)
       {
-        v7 = a3;
-        [a3 removeFromParentNode];
-        [a3 _setParent:self];
-        [(NSMutableArray *)self->_childNodes insertObject:a3 atIndex:a4];
-        if ((*(a3 + 42) & 0x20) != 0)
+        objectCopy = object;
+        [object removeFromParentNode];
+        [object _setParent:self];
+        [(NSMutableArray *)self->_childNodes insertObject:object atIndex:index];
+        if ((*(object + 42) & 0x20) != 0)
         {
           [(SCNNode *)self _setHasFocusableChild];
         }
 
-        if (a4)
+        if (index)
         {
-          v8 = [(NSMutableArray *)self->_childNodes objectAtIndex:a4 - 1];
+          v8 = [(NSMutableArray *)self->_childNodes objectAtIndex:index - 1];
         }
 
         else
@@ -5000,19 +5000,19 @@ uint64_t __59__SCNNode__syncObjCModelAfterC3DIOSceneLoadingWithNodeRef___block_i
           v8 = 0;
         }
 
-        v10 = [(SCNNode *)self sceneRef];
+        sceneRef = [(SCNNode *)self sceneRef];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __46__SCNNode___insertObject_inChildNodesAtIndex___block_invoke;
         v11[3] = &unk_2782FE350;
         v11[4] = v8;
         v11[5] = self;
-        v11[6] = a3;
-        v11[7] = a4;
-        [SCNTransaction postCommandWithContext:v10 object:self applyBlock:v11];
+        v11[6] = object;
+        v11[7] = index;
+        [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v11];
         if (*(self + 40) < 0)
         {
-          [a3 _setPausedOrPausedByInheritance:1];
+          [object _setPausedOrPausedByInheritance:1];
         }
       }
     }
@@ -5076,11 +5076,11 @@ LABEL_10:
   return C3DNodeInsertChildNodeAfterChild(v10, v9, v11);
 }
 
-- (void)__removeObjectFromChildNodesAtIndex:(unint64_t)a3
+- (void)__removeObjectFromChildNodesAtIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  v5 = self;
-  if ([(NSMutableArray *)self->_childNodes count]<= a3)
+  selfCopy = self;
+  if ([(NSMutableArray *)self->_childNodes count]<= index)
   {
     v8 = scn_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -5091,16 +5091,16 @@ LABEL_10:
 
   else
   {
-    v6 = [(NSMutableArray *)self->_childNodes objectAtIndex:a3];
-    v7 = [(SCNNode *)self sceneRef];
+    v6 = [(NSMutableArray *)self->_childNodes objectAtIndex:index];
+    sceneRef = [(SCNNode *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __47__SCNNode___removeObjectFromChildNodesAtIndex___block_invoke;
     v9[3] = &unk_2782FB820;
     v9[4] = v6;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v9];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
     [v6 _setParent:0];
-    [(NSMutableArray *)self->_childNodes removeObjectAtIndex:a3];
+    [(NSMutableArray *)self->_childNodes removeObjectAtIndex:index];
   }
 
   objc_sync_exit(self);
@@ -5125,30 +5125,30 @@ void __47__SCNNode___removeObjectFromChildNodesAtIndex___block_invoke(uint64_t a
   }
 }
 
-- (void)replaceObjectInChildNodesAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInChildNodesAtIndex:(unint64_t)index withObject:(id)object
 {
   objc_sync_enter(self);
-  if (a4)
+  if (object)
   {
-    if ([(SCNNode *)self canAddChildNode:a4])
+    if ([(SCNNode *)self canAddChildNode:object])
     {
-      v7 = [(NSMutableArray *)self->_childNodes objectAtIndex:a3];
+      v7 = [(NSMutableArray *)self->_childNodes objectAtIndex:index];
       if (v7)
       {
-        v8 = a4;
-        [a4 removeFromParentNode];
+        objectCopy = object;
+        [object removeFromParentNode];
         [v7 _setParent:0];
-        [a4 _setParent:self];
-        v9 = [(SCNNode *)self sceneRef];
+        [object _setParent:self];
+        sceneRef = [(SCNNode *)self sceneRef];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke;
         v12[3] = &unk_2782FC928;
         v12[4] = v7;
-        v12[5] = a4;
+        v12[5] = object;
         v12[6] = self;
-        [SCNTransaction postCommandWithContext:v9 object:self applyBlock:v12];
-        [(NSMutableArray *)self->_childNodes replaceObjectAtIndex:a3 withObject:a4];
+        [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v12];
+        [(NSMutableArray *)self->_childNodes replaceObjectAtIndex:index withObject:object];
       }
 
       else
@@ -5173,7 +5173,7 @@ void __47__SCNNode___removeObjectFromChildNodesAtIndex___block_invoke(uint64_t a
 
   else
   {
-    [(SCNNode *)self removeObjectFromChildNodesAtIndex:a3];
+    [(SCNNode *)self removeObjectFromChildNodesAtIndex:index];
   }
 
   objc_sync_exit(self);
@@ -5222,7 +5222,7 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (unint64_t)indexOfChildNode:(id)a3
+- (unint64_t)indexOfChildNode:(id)node
 {
   childNodes = self->_childNodes;
   v5 = [(NSMutableArray *)childNodes count];
@@ -5233,7 +5233,7 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
 
   v6 = v5;
   v7 = 0;
-  while ([(NSMutableArray *)childNodes objectAtIndex:v7]!= a3)
+  while ([(NSMutableArray *)childNodes objectAtIndex:v7]!= node)
   {
     if (v6 == ++v7)
     {
@@ -5251,8 +5251,8 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(SCNNode *)self childNodes];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v3 = [(NSArray *)childNodes countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -5264,14 +5264,14 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(childNodes);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) removeFromParentNode];
       }
 
       while (v4 != v6);
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [(NSArray *)childNodes countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -5288,7 +5288,7 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
   }
 }
 
-- (BOOL)getBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (BOOL)getBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   v52 = *MEMORY[0x277D85DE8];
   if (!self->_node || *(self + 41) < 0)
@@ -5302,28 +5302,28 @@ void __55__SCNNode_replaceObjectInChildNodesAtIndex_withObject___block_invoke(ui
   v49.i64[0] = 0;
   if (*(self + 40))
   {
-    v11 = [(SCNNode *)self sceneRef];
-    if (v11)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v12 = v11;
-      C3DSceneLock(v11);
+      v12 = sceneRef;
+      C3DSceneLock(sceneRef);
       v13 = C3DGetBoundingBox(self->_node, 1, &v50, &v49);
       C3DSceneUnlock(v12);
       if (v13)
       {
 LABEL_11:
-        if (a3)
+        if (min)
         {
           v14 = v50.f32[2];
-          *&a3->x = v50.i64[0];
-          a3->z = v14;
+          *&min->x = v50.i64[0];
+          min->z = v14;
         }
 
-        if (a4)
+        if (max)
         {
           v15 = v49.f32[2];
-          *&a4->x = v49.i64[0];
-          a4->z = v15;
+          *&max->x = v49.i64[0];
+          max->z = v15;
         }
 
         return 1;
@@ -5345,38 +5345,38 @@ LABEL_11:
   fixedBoundingBoxExtrema = self->_fixedBoundingBoxExtrema;
   if (fixedBoundingBoxExtrema)
   {
-    if (a3)
+    if (min)
     {
       v8 = *&fixedBoundingBoxExtrema->x;
-      a3->z = fixedBoundingBoxExtrema->z;
-      *&a3->x = v8;
+      min->z = fixedBoundingBoxExtrema->z;
+      *&min->x = v8;
     }
 
-    if (a4)
+    if (max)
     {
       v9 = self->_fixedBoundingBoxExtrema;
       v10 = *&v9[1].x;
-      a4->z = v9[1].z;
-      *&a4->x = v10;
+      max->z = v9[1].z;
+      *&max->x = v10;
     }
 
     return 1;
   }
 
-  v17 = [(SCNNode *)self geometry];
-  if (v17 && [(SCNGeometry *)v17 getBoundingBoxMin:a3 max:a4])
+  geometry = [(SCNNode *)self geometry];
+  if (geometry && [(SCNGeometry *)geometry getBoundingBoxMin:min max:max])
   {
-    if (a3)
+    if (min)
     {
-      v18.i64[0] = *&a3->x;
-      v18.i32[2] = LODWORD(a3->z);
+      v18.i64[0] = *&min->x;
+      v18.i32[2] = LODWORD(min->z);
       v50 = v18;
     }
 
-    if (a4)
+    if (max)
     {
-      v18.i64[0] = *&a4->x;
-      v18.i32[2] = LODWORD(a4->z);
+      v18.i64[0] = *&max->x;
+      v18.i32[2] = LODWORD(max->z);
       v49 = v18;
     }
 
@@ -5392,8 +5392,8 @@ LABEL_11:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v20 = [(SCNNode *)self childNodes];
-  v21 = [(NSArray *)v20 countByEnumeratingWithState:&v41 objects:v51 count:16];
+  childNodes = [(SCNNode *)self childNodes];
+  v21 = [(NSArray *)childNodes countByEnumeratingWithState:&v41 objects:v51 count:16];
   if (v21)
   {
     v22 = v21;
@@ -5404,7 +5404,7 @@ LABEL_11:
       {
         if (*v42 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(childNodes);
         }
 
         v25 = *(*(&v41 + 1) + 8 * i);
@@ -5459,7 +5459,7 @@ LABEL_11:
         }
       }
 
-      v22 = [(NSArray *)v20 countByEnumeratingWithState:&v41 objects:v51 count:16];
+      v22 = [(NSArray *)childNodes countByEnumeratingWithState:&v41 objects:v51 count:16];
     }
 
     while (v22);
@@ -5467,36 +5467,36 @@ LABEL_11:
 
   if (v16)
   {
-    if (a3)
+    if (min)
     {
       v33 = v50.f32[2];
-      *&a3->x = v50.i64[0];
-      a3->z = v33;
+      *&min->x = v50.i64[0];
+      min->z = v33;
     }
 
-    if (a4)
+    if (max)
     {
       v34 = v49.f32[2];
-      *&a4->x = v49.i64[0];
-      a4->z = v34;
+      *&max->x = v49.i64[0];
+      max->z = v34;
     }
   }
 
   return v16;
 }
 
-- (void)setBoundingBoxMin:(SCNVector3 *)a3 max:(SCNVector3 *)a4
+- (void)setBoundingBoxMin:(SCNVector3 *)min max:(SCNVector3 *)max
 {
   fixedBoundingBoxExtrema = self->_fixedBoundingBoxExtrema;
-  if (a3 && a4)
+  if (min && max)
   {
     if (fixedBoundingBoxExtrema)
     {
-      v8 = SCNVector3EqualToVector3(*a3, *fixedBoundingBoxExtrema);
+      v8 = SCNVector3EqualToVector3(*min, *fixedBoundingBoxExtrema);
       v10 = self->_fixedBoundingBoxExtrema;
       if (v8)
       {
-        if (SCNVector3EqualToVector3(*a4, v10[1]))
+        if (SCNVector3EqualToVector3(*max, v10[1]))
         {
           return;
         }
@@ -5511,25 +5511,25 @@ LABEL_11:
       self->_fixedBoundingBoxExtrema = v10;
     }
 
-    v13 = *&a3->x;
-    v10->z = a3->z;
+    v13 = *&min->x;
+    v10->z = min->z;
     *&v10->x = v13;
     v14 = self->_fixedBoundingBoxExtrema;
-    v15 = *&a4->x;
-    v14[1].z = a4->z;
+    v15 = *&max->x;
+    v14[1].z = max->z;
     *&v14[1].x = v15;
-    *&v9 = *&a3->x;
-    DWORD2(v9) = LODWORD(a3->z);
+    *&v9 = *&min->x;
+    DWORD2(v9) = LODWORD(min->z);
     v17 = v9;
-    DWORD2(v9) = LODWORD(a4->z);
-    v11 = [(SCNNode *)self sceneRef:*&a4->x];
+    DWORD2(v9) = LODWORD(max->z);
+    sceneRef = [(SCNNode *)self sceneRef:*&max->x];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __33__SCNNode_setBoundingBoxMin_max___block_invoke_2;
     v19[3] = &unk_2782FEFB8;
     v20 = v18;
     v21 = v16;
-    v22 = self;
+    selfCopy = self;
     v12 = v19;
   }
 
@@ -5542,7 +5542,7 @@ LABEL_11:
 
     free(fixedBoundingBoxExtrema);
     self->_fixedBoundingBoxExtrema = 0;
-    v11 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __33__SCNNode_setBoundingBoxMin_max___block_invoke;
@@ -5551,7 +5551,7 @@ LABEL_11:
     v12 = v23;
   }
 
-  [SCNTransaction postCommandWithContext:v11 object:self applyBlock:v12];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v12];
 }
 
 __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
@@ -5570,7 +5570,7 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
   return result;
 }
 
-- (BOOL)getBoundingSphereCenter:(SCNVector3 *)a3 radius:(double *)a4
+- (BOOL)getBoundingSphereCenter:(SCNVector3 *)center radius:(double *)radius
 {
   v11 = 0.0;
   v10 = 0;
@@ -5578,39 +5578,39 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
   v6 = [(SCNNode *)self simdGetBoundingSphereCenter:&v10 radius:&v9];
   if (v6)
   {
-    if (a3)
+    if (center)
     {
       v7 = v11;
-      *&a3->x = v10;
-      a3->z = v7;
+      *&center->x = v10;
+      center->z = v7;
     }
 
-    if (a4)
+    if (radius)
     {
-      *a4 = v9;
+      *radius = v9;
     }
   }
 
   return v6;
 }
 
-- (BOOL)getFrustum:(id *)a3 withViewport:
+- (BOOL)getFrustum:(id *)frustum withViewport:
 {
   v47 = v3;
   v49 = v3;
   if ([(SCNNode *)self isPresentationInstance])
   {
-    v6 = [(SCNNode *)self nodeRef];
+    nodeRef = [(SCNNode *)self nodeRef];
 
-    LOBYTE(v7) = C3DComputeFrustumPlanesFromNode(v6, a3, v47);
+    LOBYTE(camera) = C3DComputeFrustumPlanesFromNode(nodeRef, frustum, v47);
   }
 
   else
   {
-    v7 = [(SCNNode *)self camera];
-    if (v7)
+    camera = [(SCNNode *)self camera];
+    if (camera)
     {
-      ProjectionInfosPtr = C3DCameraGetProjectionInfosPtr([(SCNCamera *)v7 cameraRef]);
+      ProjectionInfosPtr = C3DCameraGetProjectionInfosPtr([(SCNCamera *)camera cameraRef]);
       v9 = ProjectionInfosPtr[1];
       v48[0] = *ProjectionInfosPtr;
       v48[1] = v9;
@@ -5676,8 +5676,8 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
       *&v38 = v37.f32[2] + vaddv_f32(*v37.f32);
       *v37.f32 = vrsqrte_f32(v38);
       *v37.f32 = vmul_f32(*v37.f32, vrsqrts_f32(v38, vmul_f32(*v37.f32, *v37.f32)));
-      a3->var0[0] = v36;
-      a3->var0[1] = vmulq_n_f32(v35, vmul_f32(*v37.f32, vrsqrts_f32(v38, vmul_f32(*v37.f32, *v37.f32))).f32[0]);
+      frustum->var0[0] = v36;
+      frustum->var0[1] = vmulq_n_f32(v35, vmul_f32(*v37.f32, vrsqrts_f32(v38, vmul_f32(*v37.f32, *v37.f32))).f32[0]);
       v37.f32[0] = v28 + *(&v27 + 1);
       v37.f32[1] = v30 + *(&v26 + 1);
       *&v37.u32[2] = vadd_f32(v57.val[3], v57.val[1]);
@@ -5693,8 +5693,8 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
       v39.f32[0] = v42.f32[2] + vaddv_f32(*v42.f32);
       *v42.f32 = vrsqrte_f32(v39.u32[0]);
       *v42.f32 = vmul_f32(*v42.f32, vrsqrts_f32(v39.u32[0], vmul_f32(*v42.f32, *v42.f32)));
-      a3->var0[2] = v41;
-      a3->var0[3] = vmulq_n_f32(v36, vmul_f32(*v42.f32, vrsqrts_f32(v39.u32[0], vmul_f32(*v42.f32, *v42.f32))).f32[0]);
+      frustum->var0[2] = v41;
+      frustum->var0[3] = vmulq_n_f32(v36, vmul_f32(*v42.f32, vrsqrts_f32(v39.u32[0], vmul_f32(*v42.f32, *v42.f32))).f32[0]);
       v36.f32[0] = v28 - *(&v27 + 2);
       v36.f32[1] = v30 - *(&v26 + 2);
       *&v36.u32[2] = vsub_f32(v57.val[3], v57.val[2]);
@@ -5709,13 +5709,13 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
       v31.f32[0] = v45 + vaddv_f32(v57.val[0]);
       v57.val[1] = vrsqrte_f32(v31.u32[0]);
       v57.val[1] = vmul_f32(v57.val[1], vrsqrts_f32(v31.u32[0], vmul_f32(v57.val[1], v57.val[1])));
-      a3->var0[4] = vmulq_n_f32(v36, vmul_f32(*v43.f32, vrsqrts_f32(v42.u32[0], vmul_f32(*v43.f32, *v43.f32))).f32[0]);
-      a3->var0[5] = vmulq_n_f32(v44, vmul_f32(v57.val[1], vrsqrts_f32(v31.u32[0], vmul_f32(v57.val[1], v57.val[1]))).f32[0]);
-      LOBYTE(v7) = 1;
+      frustum->var0[4] = vmulq_n_f32(v36, vmul_f32(*v43.f32, vrsqrts_f32(v42.u32[0], vmul_f32(*v43.f32, *v43.f32))).f32[0]);
+      frustum->var0[5] = vmulq_n_f32(v44, vmul_f32(v57.val[1], vrsqrts_f32(v31.u32[0], vmul_f32(v57.val[1], v57.val[1]))).f32[0]);
+      LOBYTE(camera) = 1;
     }
   }
 
-  return v7;
+  return camera;
 }
 
 - (id)getBoundingSphere
@@ -5769,14 +5769,14 @@ __n128 __33__SCNNode_setBoundingBoxMin_max___block_invoke_2(float32x4_t *a1)
   v3 = [(SCNNode *)self copy];
   [v3 setGeometry:objc_alloc_init(SCNGeometry)];
   node = self->_node;
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__SCNNode_flattenedClone__block_invoke;
   v7[3] = &unk_2782FC950;
   v7[4] = node;
   v7[5] = v3;
-  [SCNTransaction postCommandWithContext:v5 object:v3 applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:v3 applyBlock:v7];
   return v3;
 }
 
@@ -5795,23 +5795,23 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
 
 - (id)flattenedCopy
 {
-  v2 = [(SCNNode *)self flattenedClone];
+  flattenedClone = [(SCNNode *)self flattenedClone];
 
-  return v2;
+  return flattenedClone;
 }
 
-- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)a3
+- (id)_subdividedCopyWithSubdivisionLevel:(int64_t)level
 {
-  v3 = a3;
+  levelCopy = level;
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(SCNNode *)self sceneRef];
-  v6 = v5;
-  if (v5)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v6 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v5);
+    C3DSceneLock(sceneRef);
   }
 
-  SubdividedCopy = C3DNodeCreateSubdividedCopy(self->_node, v3);
+  SubdividedCopy = C3DNodeCreateSubdividedCopy(self->_node, levelCopy);
   v8 = [SCNNode nodeWithNodeRef:SubdividedCopy];
   if (SubdividedCopy)
   {
@@ -5828,8 +5828,8 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(SCNNode *)self actionKeys];
-  v10 = [(NSArray *)v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  actionKeys = [(SCNNode *)self actionKeys];
+  v10 = [(NSArray *)actionKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5841,7 +5841,7 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(actionKeys);
         }
 
         [(SCNNode *)v8 runAction:[(SCNNode *)self actionForKey:*(*(&v15 + 1) + 8 * v13)] forKey:*(*(&v15 + 1) + 8 * v13)];
@@ -5849,7 +5849,7 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
       }
 
       while (v11 != v13);
-      v11 = [(NSArray *)v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [(NSArray *)actionKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -5863,29 +5863,29 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_setPausedOrPausedByInheritance:(BOOL)a3
+- (void)_setPausedOrPausedByInheritance:(BOOL)inheritance
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = *(self + 40);
-  if ((((v3 >= 0) ^ a3) & 1) == 0)
+  if ((((v3 >= 0) ^ inheritance) & 1) == 0)
   {
-    v4 = a3;
-    v6 = a3 ? 0x80 : 0;
+    inheritanceCopy = inheritance;
+    v6 = inheritance ? 0x80 : 0;
     *(self + 40) = v6 & 0x80 | v3 & 0x7F;
-    v7 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __43__SCNNode__setPausedOrPausedByInheritance___block_invoke;
     v18[3] = &unk_2782FB7F8;
     v18[4] = self;
-    v19 = v4;
-    [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v18];
+    v19 = inheritanceCopy;
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v18];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(SCNNode *)self childNodes];
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+    childNodes = [(SCNNode *)self childNodes];
+    v9 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -5896,17 +5896,17 @@ void __25__SCNNode_flattenedClone__block_invoke(uint64_t a1)
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(childNodes);
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
           if (([v13 isPaused] & 1) == 0)
           {
-            [v13 _setPausedOrPausedByInheritance:v4];
+            [v13 _setPausedOrPausedByInheritance:inheritanceCopy];
           }
         }
 
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v20 count:16];
+        v10 = [(NSArray *)childNodes countByEnumeratingWithState:&v14 objects:v20 count:16];
       }
 
       while (v10);
@@ -6053,7 +6053,7 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
   }
 }
 
-- (CGRect)_focusFrameInView:(id)a3
+- (CGRect)_focusFrameInView:(id)view
 {
   v46 = *MEMORY[0x277D85DE8];
   memset(v33, 0, 12);
@@ -6094,7 +6094,7 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
       v16 = &v34.i32[i];
       v17 = vaddq_f32(v28, vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v31, *&v34.i32[i]), v30, *&v34.i32[i + 1]), v29, *&v34.i32[i + 2]));
       v11.i32[0] = v17.i32[2];
-      [a3 projectPoint:{*v17.i64, COERCE_DOUBLE(__PAIR64__(v28.u32[1], v17.u32[1])), *v11.i64, *&v28, *&v29, *&v30, *&v31}];
+      [view projectPoint:{*v17.i64, COERCE_DOUBLE(__PAIR64__(v28.u32[1], v17.u32[1])), *v11.i64, *&v28, *&v29, *&v30, *&v31}];
       *v16 = v18;
       v16[1] = v19;
       v16[2] = v11.i32[0];
@@ -6137,27 +6137,27 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
   return result;
 }
 
-- (void)_appendFocusableNodesInRect:(CGRect)a3 ofView:(id)a4 toFocusItems:(id)a5
+- (void)_appendFocusableNodesInRect:(CGRect)rect ofView:(id)view toFocusItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
   if ((*(self + 42) & 0x20) != 0)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     if ([(SCNNode *)self isFocusInteractionEnabled])
     {
       if (![(SCNNode *)self _isEffectivelyHidden])
       {
-        [(SCNNode *)self _focusFrameInView:a4];
+        [(SCNNode *)self _focusFrameInView:view];
         v24.origin.x = x;
         v24.origin.y = y;
         v24.size.width = width;
         v24.size.height = height;
         if (CGRectIntersectsRect(v23, v24))
         {
-          [a5 addObject:self];
+          [items addObject:self];
         }
       }
     }
@@ -6182,7 +6182,7 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
             objc_enumerationMutation(childNodes);
           }
 
-          [*(*(&v17 + 1) + 8 * v16++) _appendFocusableNodesInRect:a4 ofView:a5 toFocusItems:{x, y, width, height}];
+          [*(*(&v17 + 1) + 8 * v16++) _appendFocusableNodesInRect:view ofView:items toFocusItems:{x, y, width, height}];
         }
 
         while (v14 != v16);
@@ -6221,8 +6221,8 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = [(SCNNode *)self childNodes];
-    v12 = [(NSArray *)v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    childNodes = [(SCNNode *)self childNodes];
+    v12 = [(NSArray *)childNodes countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
       v13 = v12;
@@ -6234,7 +6234,7 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(childNodes);
           }
 
           if ((*(*(*(&v16 + 1) + 8 * v15) + 42) & 0x20) != 0)
@@ -6247,7 +6247,7 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
         }
 
         while (v13 != v15);
-        v13 = [(NSArray *)v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v13 = [(NSArray *)childNodes countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v13)
         {
           continue;
@@ -6370,20 +6370,20 @@ uint64_t __43__SCNNode__setPausedOrPausedByInheritance___block_invoke(uint64_t a
   return [v2 coordinateSpace];
 }
 
-- (void)runAction:(id)a3 forKey:(id)a4 completionHandler:(id)a5
+- (void)runAction:(id)action forKey:(id)key completionHandler:(id)handler
 {
-  if (a4)
+  if (key)
   {
-    v8 = a4;
-    [(SCNNode *)self removeActionForKey:a4];
-    if (!a3)
+    keyCopy = key;
+    [(SCNNode *)self removeActionForKey:key];
+    if (!action)
     {
 LABEL_10:
-      if (a5)
+      if (handler)
       {
-        v12 = *(a5 + 2);
+        v12 = *(handler + 2);
 
-        v12(a5);
+        v12(handler);
       }
 
       return;
@@ -6392,17 +6392,17 @@ LABEL_10:
 
   else
   {
-    if (!a3)
+    if (!action)
     {
       goto LABEL_10;
     }
 
-    v8 = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
+    keyCopy = [objc_msgSend(MEMORY[0x277CCAD78] "UUID")];
   }
 
-  v9 = [a3 copy];
-  [v9 setCompletionBlock:a5];
-  [v9 setKey:v8];
+  v9 = [action copy];
+  [v9 setCompletionBlock:handler];
+  [v9 setKey:keyCopy];
   objc_sync_enter(self);
   actions = self->_actions;
   if (!actions)
@@ -6411,17 +6411,17 @@ LABEL_10:
     self->_actions = actions;
   }
 
-  [(SCNOrderedDictionary *)actions setValue:v9 forKey:v8];
+  [(SCNOrderedDictionary *)actions setValue:v9 forKey:keyCopy];
   objc_sync_exit(self);
-  v11 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __46__SCNNode_runAction_forKey_completionHandler___block_invoke;
   v13[3] = &unk_2782FC928;
   v13[4] = self;
   v13[5] = v9;
-  v13[6] = v8;
-  [SCNTransaction postCommandWithContext:v11 object:self applyBlock:v13];
+  v13[6] = keyCopy;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v13];
 }
 
 uint64_t __46__SCNNode_runAction_forKey_completionHandler___block_invoke(uint64_t a1)
@@ -6435,32 +6435,32 @@ uint64_t __46__SCNNode_runAction_forKey_completionHandler___block_invoke(uint64_
   return SCNActionWasAddedToTargetAtTime(v3, v2);
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   objc_sync_enter(self);
-  v5 = [(SCNOrderedDictionary *)self->_actions objectForKey:a3];
+  v5 = [(SCNOrderedDictionary *)self->_actions objectForKey:key];
   objc_sync_exit(self);
   return v5;
 }
 
-- (void)_removeAction:(id)a3 forKey:(id)a4
+- (void)_removeAction:(id)action forKey:(id)key
 {
   objc_sync_enter(self);
-  if ([(SCNOrderedDictionary *)self->_actions objectForKey:a4]== a3)
+  if ([(SCNOrderedDictionary *)self->_actions objectForKey:key]== action)
   {
-    [(SCNOrderedDictionary *)self->_actions removeObjectForKey:a4];
+    [(SCNOrderedDictionary *)self->_actions removeObjectForKey:key];
     objc_sync_exit(self);
-    if (a3)
+    if (action)
     {
-      v7 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __32__SCNNode__removeAction_forKey___block_invoke;
       v8[3] = &unk_2782FC928;
       v8[4] = self;
-      v8[5] = a3;
-      v8[6] = a4;
-      [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+      v8[5] = action;
+      v8[6] = key;
+      [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
     }
   }
 
@@ -6480,25 +6480,25 @@ void __32__SCNNode__removeAction_forKey___block_invoke(uint64_t a1)
   _C3DEntityCleanupActionForKey(v2, v3, v4);
 }
 
-- (void)removeActionForKey:(id)a3
+- (void)removeActionForKey:(id)key
 {
   objc_sync_enter(self);
-  v5 = [(SCNOrderedDictionary *)self->_actions objectForKey:a3];
+  v5 = [(SCNOrderedDictionary *)self->_actions objectForKey:key];
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    [(SCNOrderedDictionary *)self->_actions removeObjectForKey:a3];
+    [(SCNOrderedDictionary *)self->_actions removeObjectForKey:key];
     objc_sync_exit(self);
-    v8 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__SCNNode_removeActionForKey___block_invoke;
     v9[3] = &unk_2782FC928;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = key;
     v9[6] = v6;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v9];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
   }
 
   else
@@ -6524,14 +6524,14 @@ void __30__SCNNode_removeActionForKey___block_invoke(uint64_t a1)
   v3 = [-[SCNOrderedDictionary dictionary](self->_actions "dictionary")];
   [(SCNOrderedDictionary *)self->_actions removeAllObjects];
   objc_sync_exit(self);
-  v4 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__SCNNode_removeAllActions__block_invoke;
   v5[3] = &unk_2782FC950;
   v5[4] = self;
   v5[5] = v3;
-  [SCNTransaction postCommandWithContext:v4 object:self applyBlock:v5];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v5];
 }
 
 void __27__SCNNode_removeAllActions__block_invoke(uint64_t a1)
@@ -6593,14 +6593,14 @@ void __27__SCNNode_removeAllActions__block_invoke(uint64_t a1)
       [(SCNNode *)self _assignComponent:[(NSArray *)constraints mutableCopy] toContainerWithType:7];
     }
 
-    v6 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNNode_setConstraints___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = constraints;
     v7[5] = self;
-    [SCNTransaction postCommandWithContext:v6 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 }
 
@@ -6652,13 +6652,13 @@ void __26__SCNNode_setConstraints___block_invoke(uint64_t a1)
 
 - (void)setPhysicsBody:(SCNPhysicsBody *)physicsBody
 {
-  v5 = [(SCNNode *)self physicsBody];
-  if (v5 != physicsBody)
+  physicsBody = [(SCNNode *)self physicsBody];
+  if (physicsBody != physicsBody)
   {
-    v6 = v5;
-    if (v5)
+    v6 = physicsBody;
+    if (physicsBody)
     {
-      if ([(SCNPhysicsBody *)v5 _owner]!= self)
+      if ([(SCNPhysicsBody *)physicsBody _owner]!= self)
       {
         v7 = scn_default_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -6691,13 +6691,13 @@ void __26__SCNNode_setConstraints___block_invoke(uint64_t a1)
 
 - (void)setPhysicsField:(SCNPhysicsField *)physicsField
 {
-  v5 = [(SCNNode *)self physicsField];
-  if (v5 != physicsField)
+  physicsField = [(SCNNode *)self physicsField];
+  if (physicsField != physicsField)
   {
-    v6 = v5;
-    if (v5)
+    v6 = physicsField;
+    if (physicsField)
     {
-      v7 = v5;
+      v7 = physicsField;
       [(SCNNode *)self _removeComponentWithType:9];
     }
 
@@ -6706,7 +6706,7 @@ void __26__SCNNode_setConstraints___block_invoke(uint64_t a1)
       [(SCNNode *)self _assignComponent:physicsField toContainerWithType:9];
     }
 
-    v8 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __27__SCNNode_setPhysicsField___block_invoke;
@@ -6714,7 +6714,7 @@ void __26__SCNNode_setConstraints___block_invoke(uint64_t a1)
     v9[4] = v6;
     v9[5] = physicsField;
     v9[6] = self;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v9];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v9];
   }
 }
 
@@ -6740,12 +6740,12 @@ uint64_t __27__SCNNode_setPhysicsField___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_removeDeadParticleSystem:(__C3DParticleSystem *)a3
+- (void)_removeDeadParticleSystem:(__C3DParticleSystem *)system
 {
   [-[SCNNode _particleSystems](self "_particleSystems")];
-  v5 = [(SCNNode *)self nodeRef];
+  nodeRef = [(SCNNode *)self nodeRef];
 
-  C3DNodeRemoveParticleSystem(v5, a3, 0);
+  C3DNodeRemoveParticleSystem(nodeRef, system, 0);
 }
 
 - (NSArray)particleSystems
@@ -6759,34 +6759,34 @@ uint64_t __27__SCNNode_setPhysicsField___block_invoke(uint64_t a1)
 {
   if (system)
   {
-    v5 = [(SCNNode *)self sceneRef];
-    v6 = v5;
-    if (v5)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v6 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v5);
+      C3DSceneLock(sceneRef);
     }
 
-    v7 = [(SCNNode *)self _particleSystems];
-    if (!v7)
+    _particleSystems = [(SCNNode *)self _particleSystems];
+    if (!_particleSystems)
     {
-      v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [(SCNNode *)self _assignComponent:v7 toContainerWithType:6];
+      _particleSystems = objc_alloc_init(MEMORY[0x277CBEB18]);
+      [(SCNNode *)self _assignComponent:_particleSystems toContainerWithType:6];
     }
 
-    [v7 addObject:system];
+    [_particleSystems addObject:system];
     if (v6)
     {
       C3DSceneUnlock(v6);
     }
 
-    v8 = [(SCNNode *)self sceneRef];
+    sceneRef2 = [(SCNNode *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __29__SCNNode_addParticleSystem___block_invoke;
     v10[3] = &unk_2782FC950;
     v10[4] = self;
     v10[5] = system;
-    [SCNTransaction postCommandWithContext:v8 object:self applyBlock:v10];
+    [SCNTransaction postCommandWithContext:sceneRef2 object:self applyBlock:v10];
   }
 
   else
@@ -6809,11 +6809,11 @@ void __29__SCNNode_addParticleSystem___block_invoke(uint64_t a1)
 
 - (void)removeAllParticleSystems
 {
-  v3 = [(SCNNode *)self sceneRef];
-  if (v3)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     [(SCNNode *)self _removeComponentWithType:6];
     C3DSceneUnlock(v4);
   }
@@ -6823,13 +6823,13 @@ void __29__SCNNode_addParticleSystem___block_invoke(uint64_t a1)
     [(SCNNode *)self _removeComponentWithType:6];
   }
 
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef2 = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__SCNNode_removeAllParticleSystems__block_invoke;
   v6[3] = &unk_2782FB820;
   v6[4] = self;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef2 object:self applyBlock:v6];
 }
 
 void __35__SCNNode_removeAllParticleSystems__block_invoke(uint64_t a1)
@@ -6841,11 +6841,11 @@ void __35__SCNNode_removeAllParticleSystems__block_invoke(uint64_t a1)
 
 - (void)removeParticleSystem:(SCNParticleSystem *)system
 {
-  v5 = [(SCNNode *)self sceneRef];
-  if (v5)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v6 = v5;
-    C3DSceneLock(v5);
+    v6 = sceneRef;
+    C3DSceneLock(sceneRef);
     [-[SCNNode _particleSystems](self "_particleSystems")];
     C3DSceneUnlock(v6);
   }
@@ -6855,14 +6855,14 @@ void __35__SCNNode_removeAllParticleSystems__block_invoke(uint64_t a1)
     [-[SCNNode _particleSystems](self "_particleSystems")];
   }
 
-  v7 = [(SCNNode *)self sceneRef];
+  sceneRef2 = [(SCNNode *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__SCNNode_removeParticleSystem___block_invoke;
   v8[3] = &unk_2782FC950;
   v8[4] = self;
   v8[5] = system;
-  [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef2 object:self applyBlock:v8];
 }
 
 void __32__SCNNode_removeParticleSystem___block_invoke(uint64_t a1)
@@ -6875,49 +6875,49 @@ void __32__SCNNode_removeParticleSystem___block_invoke(uint64_t a1)
 
 - (unint64_t)countOfParticleSystems
 {
-  v2 = [(SCNNode *)self _particleSystems];
+  _particleSystems = [(SCNNode *)self _particleSystems];
 
-  return [v2 count];
+  return [_particleSystems count];
 }
 
-- (id)objectInParticleSystemsAtIndex:(unint64_t)a3
+- (id)objectInParticleSystemsAtIndex:(unint64_t)index
 {
-  v4 = [(SCNNode *)self _particleSystems];
+  _particleSystems = [(SCNNode *)self _particleSystems];
 
-  return [v4 objectAtIndex:a3];
+  return [_particleSystems objectAtIndex:index];
 }
 
-- (void)insertObject:(id)a3 inParticleSystemsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inParticleSystemsAtIndex:(unint64_t)index
 {
-  v7 = [(SCNNode *)self sceneRef];
-  v8 = v7;
-  if (v7)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v8 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v7);
+    C3DSceneLock(sceneRef);
   }
 
-  v9 = [(SCNNode *)self _particleSystems];
-  if (!v9)
+  _particleSystems = [(SCNNode *)self _particleSystems];
+  if (!_particleSystems)
   {
-    v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(SCNNode *)self _assignComponent:v9 toContainerWithType:6];
+    _particleSystems = objc_alloc_init(MEMORY[0x277CBEB18]);
+    [(SCNNode *)self _assignComponent:_particleSystems toContainerWithType:6];
   }
 
-  [v9 insertObject:a3 atIndex:a4];
+  [_particleSystems insertObject:object atIndex:index];
   if (v8)
   {
     C3DSceneUnlock(v8);
   }
 
-  v10 = [(SCNNode *)self sceneRef];
+  sceneRef2 = [(SCNNode *)self sceneRef];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__SCNNode_insertObject_inParticleSystemsAtIndex___block_invoke;
   v11[3] = &unk_2782FB630;
   v11[4] = self;
-  v11[5] = a3;
-  v11[6] = a4;
-  [SCNTransaction postCommandWithContext:v10 object:self applyBlock:v11];
+  v11[5] = object;
+  v11[6] = index;
+  [SCNTransaction postCommandWithContext:sceneRef2 object:self applyBlock:v11];
 }
 
 void __49__SCNNode_insertObject_inParticleSystemsAtIndex___block_invoke(uint64_t a1)
@@ -6929,9 +6929,9 @@ void __49__SCNNode_insertObject_inParticleSystemsAtIndex___block_invoke(uint64_t
   C3DNodeInsertParticleSystemAtIndex(v2, v3, v4);
 }
 
-- (void)removeObjectFromParticleSystemsAtIndex:(unint64_t)a3
+- (void)removeObjectFromParticleSystemsAtIndex:(unint64_t)index
 {
-  if ([-[SCNNode _particleSystems](self "_particleSystems")] <= a3)
+  if ([-[SCNNode _particleSystems](self "_particleSystems")] <= index)
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -6940,11 +6940,11 @@ void __49__SCNNode_insertObject_inParticleSystemsAtIndex___block_invoke(uint64_t
     }
   }
 
-  v13 = [(SCNNode *)self sceneRef];
-  if (v13)
+  sceneRef = [(SCNNode *)self sceneRef];
+  if (sceneRef)
   {
-    v14 = v13;
-    C3DSceneLock(v13);
+    v14 = sceneRef;
+    C3DSceneLock(sceneRef);
     [-[SCNNode _particleSystems](self "_particleSystems")];
     C3DSceneUnlock(v14);
   }
@@ -6954,14 +6954,14 @@ void __49__SCNNode_insertObject_inParticleSystemsAtIndex___block_invoke(uint64_t
     [-[SCNNode _particleSystems](self "_particleSystems")];
   }
 
-  v15 = [(SCNNode *)self sceneRef];
+  sceneRef2 = [(SCNNode *)self sceneRef];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __50__SCNNode_removeObjectFromParticleSystemsAtIndex___block_invoke;
   v16[3] = &unk_2782FB7D0;
   v16[4] = self;
-  v16[5] = a3;
-  [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+  v16[5] = index;
+  [SCNTransaction postCommandWithContext:sceneRef2 object:self applyBlock:v16];
 }
 
 void __50__SCNNode_removeObjectFromParticleSystemsAtIndex___block_invoke(uint64_t a1)
@@ -6972,9 +6972,9 @@ void __50__SCNNode_removeObjectFromParticleSystemsAtIndex___block_invoke(uint64_
   C3DNodeRemoveParticleSystemAtIndex(v2, v3, 1);
 }
 
-- (void)replaceObjectInParticleSystemsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInParticleSystemsAtIndex:(unint64_t)index withObject:(id)object
 {
-  if (!a4)
+  if (!object)
   {
     v7 = scn_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -6983,20 +6983,20 @@ void __50__SCNNode_removeObjectFromParticleSystemsAtIndex___block_invoke(uint64_
     }
   }
 
-  v15 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__SCNNode_replaceObjectInParticleSystemsAtIndex_withObject___block_invoke;
   v18[3] = &unk_2782FB630;
   v18[4] = self;
-  v18[5] = a4;
-  v18[6] = a3;
-  [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v18];
-  v16 = [(SCNNode *)self sceneRef];
-  if (v16)
+  v18[5] = object;
+  v18[6] = index;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v18];
+  sceneRef2 = [(SCNNode *)self sceneRef];
+  if (sceneRef2)
   {
-    v17 = v16;
-    C3DSceneLock(v16);
+    v17 = sceneRef2;
+    C3DSceneLock(sceneRef2);
     [-[SCNNode _particleSystems](self "_particleSystems")];
     C3DSceneUnlock(v17);
   }
@@ -7018,15 +7018,15 @@ void __60__SCNNode_replaceObjectInParticleSystemsAtIndex_withObject___block_invo
 
 - (id)_audioPlayers
 {
-  v3 = [(SCNNode *)self sceneRef];
-  v4 = v3;
-  if (v3)
+  sceneRef = [(SCNNode *)self sceneRef];
+  v4 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v3);
+    C3DSceneLock(sceneRef);
   }
 
-  v5 = [(SCNNode *)self nodeRef];
-  if (!v5)
+  nodeRef = [(SCNNode *)self nodeRef];
+  if (!nodeRef)
   {
     v6 = 0;
     if (!v4)
@@ -7037,7 +7037,7 @@ void __60__SCNNode_replaceObjectInParticleSystemsAtIndex_withObject___block_invo
     goto LABEL_5;
   }
 
-  v6 = [(__CFDictionary *)C3DNodeGetAudioPlayers(v5) copy];
+  v6 = [(__CFDictionary *)C3DNodeGetAudioPlayers(nodeRef) copy];
   if (v4)
   {
 LABEL_5:
@@ -7051,14 +7051,14 @@ LABEL_5:
 {
   if (player)
   {
-    v5 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __26__SCNNode_addAudioPlayer___block_invoke;
     v7[3] = &unk_2782FC950;
     v7[4] = player;
     v7[5] = self;
-    [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v7];
+    [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v7];
   }
 
   else
@@ -7088,13 +7088,13 @@ uint64_t __26__SCNNode_addAudioPlayer___block_invoke(uint64_t a1)
 
 - (void)removeAllAudioPlayers
 {
-  v3 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __32__SCNNode_removeAllAudioPlayers__block_invoke;
   v4[3] = &unk_2782FB820;
   v4[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:self applyBlock:v4];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v4];
 }
 
 void __32__SCNNode_removeAllAudioPlayers__block_invoke(uint64_t a1)
@@ -7106,14 +7106,14 @@ void __32__SCNNode_removeAllAudioPlayers__block_invoke(uint64_t a1)
 
 - (void)removeAudioPlayer:(SCNAudioPlayer *)player
 {
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __29__SCNNode_removeAudioPlayer___block_invoke;
   v6[3] = &unk_2782FC950;
   v6[4] = self;
   v6[5] = player;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 uint64_t __29__SCNNode_removeAudioPlayer___block_invoke(uint64_t a1)
@@ -7126,29 +7126,29 @@ uint64_t __29__SCNNode_removeAudioPlayer___block_invoke(uint64_t a1)
 
 - (unint64_t)countOfAudioPlayers
 {
-  v2 = [(SCNNode *)self audioPlayers];
+  audioPlayers = [(SCNNode *)self audioPlayers];
 
-  return [(NSArray *)v2 count];
+  return [(NSArray *)audioPlayers count];
 }
 
-- (id)objectInAudioPlayersAtIndex:(unint64_t)a3
+- (id)objectInAudioPlayersAtIndex:(unint64_t)index
 {
-  v4 = [(SCNNode *)self audioPlayers];
+  audioPlayers = [(SCNNode *)self audioPlayers];
 
-  return [(NSArray *)v4 objectAtIndex:a3];
+  return [(NSArray *)audioPlayers objectAtIndex:index];
 }
 
-- (void)insertObject:(id)a3 inAudioPlayersAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inAudioPlayersAtIndex:(unint64_t)index
 {
-  v7 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__SCNNode_insertObject_inAudioPlayersAtIndex___block_invoke;
   v8[3] = &unk_2782FB630;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
-  [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+  v8[5] = object;
+  v8[6] = index;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
 }
 
 uint64_t __46__SCNNode_insertObject_inAudioPlayersAtIndex___block_invoke(uint64_t a1)
@@ -7160,16 +7160,16 @@ uint64_t __46__SCNNode_insertObject_inAudioPlayersAtIndex___block_invoke(uint64_
   return C3DNodeInsertAudioPlayerAtIndex(v2, v3, v4);
 }
 
-- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)a3
+- (void)removeObjectFromAudioPlayersAtIndex:(unint64_t)index
 {
-  v5 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__SCNNode_removeObjectFromAudioPlayersAtIndex___block_invoke;
   v6[3] = &unk_2782FB7D0;
   v6[4] = self;
-  v6[5] = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  v6[5] = index;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 void __47__SCNNode_removeObjectFromAudioPlayersAtIndex___block_invoke(uint64_t a1)
@@ -7180,9 +7180,9 @@ void __47__SCNNode_removeObjectFromAudioPlayersAtIndex___block_invoke(uint64_t a
   C3DNodeRemoveAudioPlayerAtIndex(v2, v3, 1);
 }
 
-- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInAudioPlayerAtIndex:(unint64_t)index withObject:(id)object
 {
-  if (!a4)
+  if (!object)
   {
     v7 = scn_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -7191,15 +7191,15 @@ void __47__SCNNode_removeObjectFromAudioPlayersAtIndex___block_invoke(uint64_t a
     }
   }
 
-  v15 = [(SCNNode *)self sceneRef];
+  sceneRef = [(SCNNode *)self sceneRef];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke;
   v16[3] = &unk_2782FB630;
   v16[4] = self;
-  v16[5] = a4;
-  v16[6] = a3;
-  [SCNTransaction postCommandWithContext:v15 object:self applyBlock:v16];
+  v16[5] = object;
+  v16[6] = index;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v16];
 }
 
 void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(uint64_t a1)
@@ -7259,7 +7259,7 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   return result;
 }
 
-- (SCNMatrix4)convertTransform:(SEL)a3 toNode:(SCNMatrix4 *)transform
+- (SCNMatrix4)convertTransform:(SEL)transform toNode:(SCNMatrix4 *)transform
 {
   result = [(SCNNode *)self simdConvertTransform:node toNode:*&transform->m11, *&transform->m21, *&transform->m31, *&transform->m41];
   *&retstr->m11 = v7;
@@ -7269,7 +7269,7 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   return result;
 }
 
-- (SCNMatrix4)convertTransform:(SEL)a3 fromNode:(SCNMatrix4 *)transform
+- (SCNMatrix4)convertTransform:(SEL)transform fromNode:(SCNMatrix4 *)transform
 {
   result = [(SCNNode *)self simdConvertTransform:node fromNode:*&transform->m11, *&transform->m21, *&transform->m31, *&transform->m41];
   *&retstr->m11 = v7;
@@ -7279,9 +7279,9 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   return result;
 }
 
-- (void)_customEncodingOfSCNNode:(id)a3 usePresentationInstance:(BOOL)a4
+- (void)_customEncodingOfSCNNode:(id)node usePresentationInstance:(BOOL)instance
 {
-  v4 = a4;
+  instanceCopy = instance;
   if ((*(self + 41) & 1) == 0)
   {
     [(SCNNode *)self _updateAffine];
@@ -7289,97 +7289,97 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
 
   if ([(SCNNode *)self light])
   {
-    v7 = [(SCNNode *)self light];
-    v8 = v7;
-    if (v4)
+    light = [(SCNNode *)self light];
+    presentationLight = light;
+    if (instanceCopy)
     {
-      v8 = [(SCNLight *)v7 presentationLight];
+      presentationLight = [(SCNLight *)light presentationLight];
     }
 
-    [a3 encodeObject:v8 forKey:@"light"];
+    [node encodeObject:presentationLight forKey:@"light"];
   }
 
   if ([(SCNNode *)self geometry])
   {
-    v9 = [(SCNNode *)self geometry];
-    v10 = v9;
-    if (v4)
+    geometry = [(SCNNode *)self geometry];
+    presentationGeometry = geometry;
+    if (instanceCopy)
     {
-      v10 = [(SCNGeometry *)v9 presentationGeometry];
+      presentationGeometry = [(SCNGeometry *)geometry presentationGeometry];
     }
 
-    [a3 encodeObject:v10 forKey:@"geometry"];
+    [node encodeObject:presentationGeometry forKey:@"geometry"];
   }
 
   if ([(SCNNode *)self camera])
   {
-    v11 = [(SCNNode *)self camera];
-    v12 = v11;
-    if (v4)
+    camera = [(SCNNode *)self camera];
+    presentationCamera = camera;
+    if (instanceCopy)
     {
-      v12 = [(SCNCamera *)v11 presentationCamera];
+      presentationCamera = [(SCNCamera *)camera presentationCamera];
     }
 
-    [a3 encodeObject:v12 forKey:@"camera"];
+    [node encodeObject:presentationCamera forKey:@"camera"];
   }
 
   if ([(SCNNode *)self skinner])
   {
-    [a3 encodeObject:-[SCNNode skinner](self forKey:{"skinner"), @"skinner"}];
+    [node encodeObject:-[SCNNode skinner](self forKey:{"skinner"), @"skinner"}];
   }
 
   if ([(SCNNode *)self morpher])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (a3 && (isKindOfClass & 1) != 0 && [objc_msgSend(objc_msgSend(a3 "options")] && SCNEncodeMorpherUsingAnimCodec(a3, self))
+    if (node && (isKindOfClass & 1) != 0 && [objc_msgSend(objc_msgSend(node "options")] && SCNEncodeMorpherUsingAnimCodec(node, self))
     {
-      [a3 setSkipMorphTargets:1];
-      [a3 encodeObject:-[SCNNode morpher](self forKey:{"morpher"), @"morpher"}];
-      [a3 setSkipMorphTargets:0];
+      [node setSkipMorphTargets:1];
+      [node encodeObject:-[SCNNode morpher](self forKey:{"morpher"), @"morpher"}];
+      [node setSkipMorphTargets:0];
     }
 
     else
     {
-      [a3 encodeObject:-[SCNNode morpher](self forKey:{"morpher"), @"morpher"}];
+      [node encodeObject:-[SCNNode morpher](self forKey:{"morpher"), @"morpher"}];
     }
   }
 
-  v14 = [(SCNNode *)self postMorphingDeformers];
-  if (v14)
+  postMorphingDeformers = [(SCNNode *)self postMorphingDeformers];
+  if (postMorphingDeformers)
   {
-    [a3 encodeObject:v14 forKey:@"postMorphingDeformers"];
+    [node encodeObject:postMorphingDeformers forKey:@"postMorphingDeformers"];
   }
 
-  v15 = [(SCNNode *)self postSkinningDeformers];
-  if (v15)
+  postSkinningDeformers = [(SCNNode *)self postSkinningDeformers];
+  if (postSkinningDeformers)
   {
-    [a3 encodeObject:v15 forKey:@"postSkinningDeformers"];
+    [node encodeObject:postSkinningDeformers forKey:@"postSkinningDeformers"];
   }
 
   if ([(SCNNode *)self filters])
   {
-    [a3 encodeObject:-[SCNNode filters](self forKey:{"filters"), @"filters"}];
+    [node encodeObject:-[SCNNode filters](self forKey:{"filters"), @"filters"}];
   }
 
   if ([(SCNNode *)self constraints])
   {
-    [a3 encodeObject:-[SCNNode constraints](self forKey:{"constraints"), @"constraints"}];
+    [node encodeObject:-[SCNNode constraints](self forKey:{"constraints"), @"constraints"}];
   }
 
   if ([(SCNNode *)self physicsBody])
   {
-    [a3 encodeObject:-[SCNNode physicsBody](self forKey:{"physicsBody"), @"physicsBody"}];
+    [node encodeObject:-[SCNNode physicsBody](self forKey:{"physicsBody"), @"physicsBody"}];
   }
 
   if ([(SCNNode *)self physicsField])
   {
-    [a3 encodeObject:-[SCNNode physicsField](self forKey:{"physicsField"), @"physicsField"}];
+    [node encodeObject:-[SCNNode physicsField](self forKey:{"physicsField"), @"physicsField"}];
   }
 
   if ([(SCNNode *)self particleSystems])
   {
-    [a3 encodeObject:-[SCNNode particleSystems](self forKey:{"particleSystems"), @"particleSystem"}];
+    [node encodeObject:-[SCNNode particleSystems](self forKey:{"particleSystems"), @"particleSystem"}];
   }
 
   fixedBoundingBoxExtrema = self->_fixedBoundingBoxExtrema;
@@ -7388,30 +7388,30 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     *&v16 = fixedBoundingBoxExtrema->x;
     *&v17 = fixedBoundingBoxExtrema->y;
     *&v18 = fixedBoundingBoxExtrema->z;
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithSCNVector3:", v16, v17, v18), @"fixedBoundingBoxExtrema[0]"}];
+    [node encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithSCNVector3:", v16, v17, v18), @"fixedBoundingBoxExtrema[0]"}];
     v20 = self->_fixedBoundingBoxExtrema;
     *&v21 = v20[1].x;
     *&v22 = v20[1].y;
     *&v23 = v20[1].z;
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithSCNVector3:", v21, v22, v23), @"fixedBoundingBoxExtrema[1]"}];
+    [node encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithSCNVector3:", v21, v22, v23), @"fixedBoundingBoxExtrema[1]"}];
   }
 
-  [a3 encodeBool:(*(self + 40) >> 6) & 1 forKey:@"paused"];
+  [node encodeBool:(*(self + 40) >> 6) & 1 forKey:@"paused"];
   v24 = (*(self + 42) >> 3) & 3;
   if (v24)
   {
-    [a3 encodeInt:v24 forKey:@"focusBehavior"];
+    [node encodeInt:v24 forKey:@"focusBehavior"];
   }
 
   if ((*(self + 41) & 4) != 0)
   {
-    v25 = self;
-    if (v4)
+    selfCopy = self;
+    if (instanceCopy)
     {
-      v25 = [(SCNNode *)self presentationNode];
+      selfCopy = [(SCNNode *)self presentationNode];
     }
 
-    v26 = [(SCNNode *)v25 valueForKey:@"kPivotKey"];
+    v26 = [(SCNNode *)selfCopy valueForKey:@"kPivotKey"];
     if (v26)
     {
       v34 = 0u;
@@ -7423,21 +7423,21 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
       v31[1] = v33;
       v31[2] = v34;
       v31[3] = v35;
-      SCNEncodeSCNMatrix4(a3, @"pivot", v31);
+      SCNEncodeSCNMatrix4(node, @"pivot", v31);
     }
   }
 
   actions = self->_actions;
-  if (actions && !v4)
+  if (actions && !instanceCopy)
   {
-    [a3 encodeObject:-[SCNOrderedDictionary allKeys](actions forKey:{"allKeys"), @"action-keys"}];
-    [a3 encodeObject:-[SCNOrderedDictionary dictionary](self->_actions forKey:{"dictionary"), @"actions"}];
+    [node encodeObject:-[SCNOrderedDictionary allKeys](actions forKey:{"allKeys"), @"action-keys"}];
+    [node encodeObject:-[SCNOrderedDictionary dictionary](self->_actions forKey:{"dictionary"), @"actions"}];
   }
 
   ID = C3DNodeGetID(self->_node);
   if (ID)
   {
-    [a3 encodeObject:ID forKey:@"nodeID"];
+    [node encodeObject:ID forKey:@"nodeID"];
   }
 
   os_unfair_lock_lock(&self->_valueForKeyLock);
@@ -7447,14 +7447,14 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     [v29 removeObjectForKey:@"kPivotKey"];
     if ([v29 count])
     {
-      [a3 encodeObject:v29 forKey:@"clientAttributes"];
+      [node encodeObject:v29 forKey:@"clientAttributes"];
     }
   }
 
   os_unfair_lock_unlock(&self->_valueForKeyLock);
   if ([(SCNNode *)self _isAReference]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v30 = [objc_msgSend(objc_msgSend(a3 "options")];
+    v30 = [objc_msgSend(objc_msgSend(node "options")];
   }
 
   else
@@ -7466,23 +7466,23 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   {
     if (v30 & 1 | ![(SCNNode *)self _isAReference])
     {
-      [a3 encodeObject:-[SCNNode childNodes](self forKey:{"childNodes"), @"childNodes"}];
+      [node encodeObject:-[SCNNode childNodes](self forKey:{"childNodes"), @"childNodes"}];
     }
   }
 }
 
-- (void)_customDecodingOfSCNNode:(id)a3
+- (void)_customDecodingOfSCNNode:(id)node
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"nodeID"];
+  v5 = [node decodeObjectOfClass:objc_opt_class() forKey:@"nodeID"];
   if (v5)
   {
     C3DNodeSetID(self->_node, v5);
   }
 
-  if ([a3 containsValueForKey:@"paused"])
+  if ([node containsValueForKey:@"paused"])
   {
-    if ([a3 decodeBoolForKey:@"paused"])
+    if ([node decodeBoolForKey:@"paused"])
     {
       v6 = 64;
     }
@@ -7495,7 +7495,7 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     *(self + 40) = *(self + 40) & 0xBF | v6;
   }
 
-  -[SCNNode setFocusBehavior:](self, "setFocusBehavior:", [a3 decodeIntForKey:@"focusBehavior"]);
+  -[SCNNode setFocusBehavior:](self, "setFocusBehavior:", [node decodeIntForKey:@"focusBehavior"]);
   v7 = *(MEMORY[0x277D860B8] + 16);
   v8 = *(MEMORY[0x277D860B8] + 32);
   v9 = *(MEMORY[0x277D860B8] + 48);
@@ -7505,18 +7505,18 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   *&self->_anon_30[50] = v9;
   *(self + 41) |= 2u;
   *(self + 40) |= 0x3Eu;
-  if ([a3 containsValueForKey:@"fixedBoundingBoxExtrema[0]"])
+  if ([node containsValueForKey:@"fixedBoundingBoxExtrema[0]"])
   {
-    [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"fixedBoundingBoxExtrema[0]", "SCNVector3Value"}];
+    [objc_msgSend(node decodeObjectOfClass:objc_opt_class() forKey:{@"fixedBoundingBoxExtrema[0]", "SCNVector3Value"}];
     *&v49 = __PAIR64__(v11, v10);
     DWORD2(v49) = v12;
-    [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"fixedBoundingBoxExtrema[1]", "SCNVector3Value"}];
+    [objc_msgSend(node decodeObjectOfClass:objc_opt_class() forKey:{@"fixedBoundingBoxExtrema[1]", "SCNVector3Value"}];
     HIDWORD(v49) = v13;
     *&v50 = __PAIR64__(v15, v14);
     [(SCNNode *)self setBoundingBoxMin:&v49 max:&v49 + 12];
   }
 
-  v16 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"particleSystem"];
+  v16 = [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"particleSystem"];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -7545,21 +7545,21 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   }
 
   v21 = objc_opt_class();
-  v22 = [a3 scn_decodeDictionaryWithKeysOfClass:v21 objectsOfClass:objc_opt_class() forKey:@"actions"];
+  v22 = [node scn_decodeDictionaryWithKeysOfClass:v21 objectsOfClass:objc_opt_class() forKey:@"actions"];
   if (v22)
   {
     v23 = v22;
-    v24 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"action-keys"];
-    if (!v24)
+    allKeys = [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"action-keys"];
+    if (!allKeys)
     {
-      v24 = [v23 allKeys];
+      allKeys = [v23 allKeys];
     }
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v25 = [v24 countByEnumeratingWithState:&v40 objects:v53 count:16];
+    v25 = [allKeys countByEnumeratingWithState:&v40 objects:v53 count:16];
     if (v25)
     {
       v26 = v25;
@@ -7570,29 +7570,29 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
         {
           if (*v41 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(allKeys);
           }
 
           -[SCNNode runAction:forKey:](self, "runAction:forKey:", [v23 objectForKeyedSubscript:*(*(&v40 + 1) + 8 * j)], *(*(&v40 + 1) + 8 * j));
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v40 objects:v53 count:16];
+        v26 = [allKeys countByEnumeratingWithState:&v40 objects:v53 count:16];
       }
 
       while (v26);
     }
   }
 
-  v29 = [a3 decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"clientAttributes"];
+  v29 = [node decodeObjectOfClasses:SCNUserInfoClasses() forKey:@"clientAttributes"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     -[SCNNode _setAttributes:](self, "_setAttributes:", [v29 mutableCopy]);
   }
 
-  if ([a3 containsValueForKey:@"pivot"])
+  if ([node containsValueForKey:@"pivot"])
   {
-    SCNDecodeSCNMatrix4(a3, @"pivot", v39);
+    SCNDecodeSCNMatrix4(node, @"pivot", v39);
     v49 = v39[0];
     v50 = v39[1];
     v51 = v39[2];
@@ -7600,29 +7600,29 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     [(SCNNode *)self setPivot:&v49];
   }
 
-  -[SCNNode setLight:](self, "setLight:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"light"]);
-  -[SCNNode setGeometry:](self, "setGeometry:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"geometry"]);
-  -[SCNNode setCamera:](self, "setCamera:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"camera"]);
-  -[SCNNode setSkinner:](self, "setSkinner:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"skinner"]);
+  -[SCNNode setLight:](self, "setLight:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"light"]);
+  -[SCNNode setGeometry:](self, "setGeometry:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"geometry"]);
+  -[SCNNode setCamera:](self, "setCamera:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"camera"]);
+  -[SCNNode setSkinner:](self, "setSkinner:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"skinner"]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 setAllTargetsFromAnimCodec:{SCNDecodeMorpherUsingAnimCodec(a3, self)}];
-    -[SCNNode setMorpher:](self, "setMorpher:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"morpher"]);
-    [a3 setAllTargetsFromAnimCodec:0];
+    [node setAllTargetsFromAnimCodec:{SCNDecodeMorpherUsingAnimCodec(node, self)}];
+    -[SCNNode setMorpher:](self, "setMorpher:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"morpher"]);
+    [node setAllTargetsFromAnimCodec:0];
   }
 
   else
   {
-    -[SCNNode setMorpher:](self, "setMorpher:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"morpher"]);
+    -[SCNNode setMorpher:](self, "setMorpher:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"morpher"]);
   }
 
-  -[SCNNode setPostMorphingDeformers:](self, "setPostMorphingDeformers:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"postMorphingDeformers"]);
-  -[SCNNode setPostSkinningDeformers:](self, "setPostSkinningDeformers:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"postSkinningDeformers"]);
-  -[SCNNode setFilters:](self, "setFilters:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"filters"]);
-  -[SCNNode setConstraints:](self, "setConstraints:", [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"constraints"]);
-  -[SCNNode setPhysicsField:](self, "setPhysicsField:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsField"]);
-  v30 = [a3 scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"childNodes"];
+  -[SCNNode setPostMorphingDeformers:](self, "setPostMorphingDeformers:", [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"postMorphingDeformers"]);
+  -[SCNNode setPostSkinningDeformers:](self, "setPostSkinningDeformers:", [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"postSkinningDeformers"]);
+  -[SCNNode setFilters:](self, "setFilters:", [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"filters"]);
+  -[SCNNode setConstraints:](self, "setConstraints:", [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"constraints"]);
+  -[SCNNode setPhysicsField:](self, "setPhysicsField:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsField"]);
+  v30 = [node scn_decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"childNodes"];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -7650,12 +7650,12 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     while (v32);
   }
 
-  -[SCNNode setPhysicsBody:](self, "setPhysicsBody:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsBody"]);
+  -[SCNNode setPhysicsBody:](self, "setPhysicsBody:", [node scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsBody"]);
 }
 
-- (void)_encodeNodePropertiesWithCoder:(id)a3
+- (void)_encodeNodePropertiesWithCoder:(id)coder
 {
-  SCNEncodeVector3(a3, @"position", COERCE_FLOAT(*&self->_position[2]), COERCE_FLOAT(HIDWORD(*&self->_position[2])), COERCE_FLOAT(*&self->_position[10]));
+  SCNEncodeVector3(coder, @"position", COERCE_FLOAT(*&self->_position[2]), COERCE_FLOAT(HIDWORD(*&self->_position[2])), COERCE_FLOAT(*&self->_position[10]));
   v5 = (*(self + 41) >> 4) & 3;
   if (v5 > 1)
   {
@@ -7675,7 +7675,7 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
   {
     if (!v5)
     {
-      SCNEncodeVector3(a3, @"eulerAngles", COERCE_FLOAT(*&self->_anon_80[2]), COERCE_FLOAT(HIDWORD(*&self->_anon_80[2])), COERCE_FLOAT(*&self->_anon_80[10]));
+      SCNEncodeVector3(coder, @"eulerAngles", COERCE_FLOAT(*&self->_anon_80[2]), COERCE_FLOAT(HIDWORD(*&self->_anon_80[2])), COERCE_FLOAT(*&self->_anon_80[10]));
       goto LABEL_8;
     }
 
@@ -7686,58 +7686,58 @@ void __56__SCNNode_replaceObjectInAudioPlayerAtIndex_withObject___block_invoke(u
     v10 = @"rotation";
   }
 
-  SCNEncodeVector4(a3, v10, *&v6, v7, v8, v9);
+  SCNEncodeVector4(coder, v10, *&v6, v7, v8, v9);
 LABEL_8:
   if ((*(self + 41) & 0x30) != 0x10)
   {
     [(SCNNode *)self rotation];
-    SCNEncodeVector4(a3, @"rotation", v11, v12, v13, v14);
+    SCNEncodeVector4(coder, @"rotation", v11, v12, v13, v14);
   }
 
-  SCNEncodeVector3(a3, @"scale", COERCE_FLOAT(*&self->_scale[2]), COERCE_FLOAT(HIDWORD(*&self->_scale[2])), COERCE_FLOAT(*&self->_scale[10]));
+  SCNEncodeVector3(coder, @"scale", COERCE_FLOAT(*&self->_scale[2]), COERCE_FLOAT(HIDWORD(*&self->_scale[2])), COERCE_FLOAT(*&self->_scale[10]));
   *&v15 = self->_opacity;
-  [a3 encodeFloat:@"opacity" forKey:v15];
-  [a3 encodeInteger:self->_categoryBitMask forKey:@"categoryBitMask"];
-  [a3 encodeInteger:(*(self + 41) >> 6) & 1 forKey:@"movabilityHint"];
-  [a3 encodeInteger:self->_renderingOrder forKey:@"renderingOrder"];
+  [coder encodeFloat:@"opacity" forKey:v15];
+  [coder encodeInteger:self->_categoryBitMask forKey:@"categoryBitMask"];
+  [coder encodeInteger:(*(self + 41) >> 6) & 1 forKey:@"movabilityHint"];
+  [coder encodeInteger:self->_renderingOrder forKey:@"renderingOrder"];
   name = self->_name;
   if (name)
   {
-    [a3 encodeObject:name forKey:@"name"];
+    [coder encodeObject:name forKey:@"name"];
   }
 
-  [a3 encodeBool:*(self + 41) >> 7 forKey:@"hidden"];
-  [a3 encodeBool:*(self + 42) & 1 forKey:@"castsShadow"];
+  [coder encodeBool:*(self + 41) >> 7 forKey:@"hidden"];
+  [coder encodeBool:*(self + 42) & 1 forKey:@"castsShadow"];
   v17 = (*(self + 42) >> 1) & 1;
 
-  [a3 encodeBool:v17 forKey:@"depthPrePass"];
+  [coder encodeBool:v17 forKey:@"depthPrePass"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(objc_msgSend(a3 "options")])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_msgSend(objc_msgSend(coder "options")])
   {
-    v5 = [(SCNNode *)self presentationNode];
-    [(SCNNode *)v5 _syncObjCModel];
-    [(SCNNode *)v5 _updateAffine];
-    [(SCNNode *)self _customEncodingOfSCNNode:a3 usePresentationInstance:1];
-    [(SCNNode *)v5 _encodeNodePropertiesWithCoder:a3];
+    presentationNode = [(SCNNode *)self presentationNode];
+    [(SCNNode *)presentationNode _syncObjCModel];
+    [(SCNNode *)presentationNode _updateAffine];
+    [(SCNNode *)self _customEncodingOfSCNNode:coder usePresentationInstance:1];
+    [(SCNNode *)presentationNode _encodeNodePropertiesWithCoder:coder];
 
-    SCNEncodeEntity(a3, self);
+    SCNEncodeEntity(coder, self);
   }
 
   else
   {
-    [(SCNNode *)self _customEncodingOfSCNNode:a3 usePresentationInstance:0];
-    [(SCNNode *)self _encodeNodePropertiesWithCoder:a3];
-    SCNEncodeEntity(a3, self);
+    [(SCNNode *)self _customEncodingOfSCNNode:coder usePresentationInstance:0];
+    [(SCNNode *)self _encodeNodePropertiesWithCoder:coder];
+    SCNEncodeEntity(coder, self);
 
-    SCNEncodeAnimations(a3, self);
+    SCNEncodeAnimations(coder, self);
   }
 }
 
-- (SCNNode)initWithCoder:(id)a3
+- (SCNNode)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = SCNNode;
@@ -7755,55 +7755,55 @@ LABEL_8:
 
     v4->_valueForKeyLock._os_unfair_lock_opaque = 0;
     [(SCNNode *)v4 _syncObjCModel];
-    -[SCNNode setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
-    [(SCNNode *)v4 _customDecodingOfSCNNode:a3];
-    *&v7 = SCNDecodeVector3(a3, @"position");
+    -[SCNNode setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    [(SCNNode *)v4 _customDecodingOfSCNNode:coder];
+    *&v7 = SCNDecodeVector3(coder, @"position");
     [(SCNNode *)v4 setPosition:v7];
-    if ([a3 containsValueForKey:@"orientation"])
+    if ([coder containsValueForKey:@"orientation"])
     {
-      *&v8 = SCNDecodeVector4(a3, @"orientation");
+      *&v8 = SCNDecodeVector4(coder, @"orientation");
       [(SCNNode *)v4 setOrientation:v8];
     }
 
-    else if ([a3 containsValueForKey:@"eulerAngles"])
+    else if ([coder containsValueForKey:@"eulerAngles"])
     {
-      *&v9 = SCNDecodeVector3(a3, @"eulerAngles");
+      *&v9 = SCNDecodeVector3(coder, @"eulerAngles");
       [(SCNNode *)v4 setEulerAngles:v9];
     }
 
     else
     {
-      *&v10 = SCNDecodeVector4(a3, @"rotation");
+      *&v10 = SCNDecodeVector4(coder, @"rotation");
       [(SCNNode *)v4 setRotation:v10];
     }
 
-    *&v11 = SCNDecodeVector3(a3, @"scale");
+    *&v11 = SCNDecodeVector3(coder, @"scale");
     [(SCNNode *)v4 setScale:v11];
-    [a3 decodeFloatForKey:@"opacity"];
+    [coder decodeFloatForKey:@"opacity"];
     [(SCNNode *)v4 setOpacity:v12];
-    -[SCNNode setCategoryBitMask:](v4, "setCategoryBitMask:", [a3 decodeIntegerForKey:@"categoryBitMask"]);
-    -[SCNNode setMovabilityHint:](v4, "setMovabilityHint:", [a3 decodeIntegerForKey:@"movabilityHint"]);
-    -[SCNNode setRenderingOrder:](v4, "setRenderingOrder:", [a3 decodeIntegerForKey:@"renderingOrder"]);
-    -[SCNNode setHidden:](v4, "setHidden:", [a3 decodeBoolForKey:@"hidden"]);
-    -[SCNNode setCastsShadow:](v4, "setCastsShadow:", [a3 decodeBoolForKey:@"castsShadow"]);
-    if ([a3 containsValueForKey:@"depthPrePass"])
+    -[SCNNode setCategoryBitMask:](v4, "setCategoryBitMask:", [coder decodeIntegerForKey:@"categoryBitMask"]);
+    -[SCNNode setMovabilityHint:](v4, "setMovabilityHint:", [coder decodeIntegerForKey:@"movabilityHint"]);
+    -[SCNNode setRenderingOrder:](v4, "setRenderingOrder:", [coder decodeIntegerForKey:@"renderingOrder"]);
+    -[SCNNode setHidden:](v4, "setHidden:", [coder decodeBoolForKey:@"hidden"]);
+    -[SCNNode setCastsShadow:](v4, "setCastsShadow:", [coder decodeBoolForKey:@"castsShadow"]);
+    if ([coder containsValueForKey:@"depthPrePass"])
     {
-      -[SCNNode setUsesDepthPrePass:](v4, "setUsesDepthPrePass:", [a3 decodeBoolForKey:@"depthPrePass"]);
+      -[SCNNode setUsesDepthPrePass:](v4, "setUsesDepthPrePass:", [coder decodeBoolForKey:@"depthPrePass"]);
     }
 
     v4->_animationsLock._os_unfair_lock_opaque = 0;
-    SCNDecodeEntity(a3, v4);
-    SCNDecodeAnimations(a3, v4);
-    [(SCNNode *)v4 _didDecodeSCNNode:a3];
+    SCNDecodeEntity(coder, v4);
+    SCNDecodeAnimations(coder, v4);
+    [(SCNNode *)v4 _didDecodeSCNNode:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 
   return v4;
 }
 
-- (void)setAuthoringEnvironmentNode:(BOOL)a3
+- (void)setAuthoringEnvironmentNode:(BOOL)node
 {
-  if (a3)
+  if (node)
   {
     v3 = 64;
   }
@@ -7814,7 +7814,7 @@ LABEL_8:
   }
 
   *(self + 42) = *(self + 42) & 0xBF | v3;
-  if (a3)
+  if (node)
   {
     [(SCNNode *)self setCastsShadow:0];
   }
@@ -7900,7 +7900,7 @@ LABEL_8:
   [(SCNNode *)self simdRotateBy:*&worldRotation.x aroundTarget:*&worldTarget.x];
 }
 
-- (BOOL)simdGetBoundingSphereCenter:(SCNNode *)self radius:(SEL)a2
+- (BOOL)simdGetBoundingSphereCenter:(SCNNode *)self radius:(SEL)radius
 {
   v68 = *MEMORY[0x277D85DE8];
   if (self->_node)
@@ -7910,11 +7910,11 @@ LABEL_8:
     v61 = 0uLL;
     if (*(self + 40))
     {
-      v12 = [(SCNNode *)self sceneRef];
-      v13 = v12;
-      if (v12)
+      sceneRef = [(SCNNode *)self sceneRef];
+      v13 = sceneRef;
+      if (sceneRef)
       {
-        C3DSceneLock(v12);
+        C3DSceneLock(sceneRef);
       }
 
       v9 = C3DGetBoundingSphere(self->_node, 1, &v61);
@@ -7938,16 +7938,16 @@ LABEL_8:
     {
       v44 = v3;
       v60 = 0uLL;
-      v7 = [(SCNNode *)self geometry];
+      geometry = [(SCNNode *)self geometry];
       v59.i32[2] = 0;
       v59.i64[0] = 0;
       v58 = 0;
-      if (v7)
+      if (geometry)
       {
         v63.i32[2] = 0;
         v63.i64[0] = 0;
         v62.columns[0].i64[0] = 0;
-        v8 = [(SCNGeometry *)v7 getBoundingSphereCenter:&v63 radius:&v62];
+        v8 = [(SCNGeometry *)geometry getBoundingSphereCenter:&v63 radius:&v62];
         v9 = v8;
         if (v8)
         {
@@ -7968,8 +7968,8 @@ LABEL_8:
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v14 = [(SCNNode *)self childNodes];
-      v15 = [(NSArray *)v14 countByEnumeratingWithState:&v54 objects:v67 count:16];
+      childNodes = [(SCNNode *)self childNodes];
+      v15 = [(NSArray *)childNodes countByEnumeratingWithState:&v54 objects:v67 count:16];
       if (v15)
       {
         v17 = v15;
@@ -7982,7 +7982,7 @@ LABEL_8:
           {
             if (*v55 != v18)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(childNodes);
             }
 
             v20 = *(*(&v54 + 1) + 8 * i);
@@ -8059,7 +8059,7 @@ LABEL_8:
             }
           }
 
-          v17 = [(NSArray *)v14 countByEnumeratingWithState:&v54 objects:v67 count:16];
+          v17 = [(NSArray *)childNodes countByEnumeratingWithState:&v54 objects:v67 count:16];
         }
 
         while (v17);
@@ -8092,11 +8092,11 @@ LABEL_8:
 {
   if (*(self + 40))
   {
-    v8 = [(SCNNode *)self sceneRef];
-    v9 = v8;
-    if (v8)
+    sceneRef = [(SCNNode *)self sceneRef];
+    v9 = sceneRef;
+    if (sceneRef)
     {
-      C3DSceneLock(v8);
+      C3DSceneLock(sceneRef);
     }
 
     PivotMatrix = C3DNodeGetPivotMatrix(self->_node);
@@ -8194,14 +8194,14 @@ LABEL_8:
       v17[2] = 0x6010000000;
       v17[3] = &unk_21C362C36;
       v18 = simdPivot;
-      v14 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __30__SCNNode_SIMD__setSimdPivot___block_invoke;
       v16[3] = &unk_2782FE1E8;
       v16[4] = self;
       v16[5] = v17;
-      [SCNTransaction postCommandWithContext:v14 object:self key:@"pivot" applyBlock:v16];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"pivot" applyBlock:v16];
       if ((*(self + 22) & 0x100) != 0)
       {
         [-[SCNNode _findComponentWithType:](self _findComponentWithType:{8), "resetTransform"}];
@@ -8217,11 +8217,11 @@ LABEL_8:
 {
   if (*(self + 40))
   {
-    v7 = [(SCNNode *)self sceneRef];
-    if (v7)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v8 = v7;
-      C3DSceneLock(v7);
+      v8 = sceneRef;
+      C3DSceneLock(sceneRef);
       v11 = 0u;
       v12 = 0u;
       v9 = 0u;
@@ -8413,11 +8413,11 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       *v6.i64 = C3DNodeGetPosition(self->_node);
       v8 = v6;
       C3DSceneUnlock(v5);
@@ -8460,11 +8460,11 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
 {
   if (*(self + 40))
   {
-    v6 = [(SCNNode *)self sceneRef];
-    if (v6)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v7 = v6;
-      C3DSceneLock(v6);
+      v7 = sceneRef;
+      C3DSceneLock(sceneRef);
       C3DNodeGetAxisAngle(self->_node);
       v19 = v8;
       C3DSceneUnlock(v7);
@@ -8576,14 +8576,14 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
       }
 
       v9.i32[3] = v13.i32[3];
-      v11 = [(SCNNode *)self sceneRef];
+      sceneRef = [(SCNNode *)self sceneRef];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __33__SCNNode_SIMD__setSimdRotation___block_invoke;
       v15[3] = &unk_2782FEBE8;
-      v17 = self;
+      selfCopy = self;
       v16 = v14;
-      [SCNTransaction postCommandWithContext:v11 object:self key:@"rotation" applyBlock:v15];
+      [SCNTransaction postCommandWithContext:sceneRef object:self key:@"rotation" applyBlock:v15];
       if ((*(self + 22) & 0x100) != 0)
       {
         [-[SCNNode _findComponentWithType:](self _findComponentWithType:{8), "resetTransform"}];
@@ -8598,11 +8598,11 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       C3DNodeGetQuaternion(self->_node);
       v7 = v6;
       C3DSceneUnlock(v5);
@@ -8638,11 +8638,11 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       *v6.i64 = C3DNodeGetEuler(self->_node);
       v8 = v6;
       C3DSceneUnlock(v5);
@@ -8682,14 +8682,14 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
     v6 = *(self + 41);
     *&self->_anon_80[2] = v9;
     *(self + 41) = v6 & 0xCD;
-    v7 = [(SCNNode *)self sceneRef];
+    sceneRef = [(SCNNode *)self sceneRef];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __36__SCNNode_SIMD__setSimdEulerAngles___block_invoke;
     v10[3] = &unk_2782FEBE8;
-    v12 = self;
+    selfCopy = self;
     v11 = v9;
-    [SCNTransaction postCommandWithContext:v7 object:self key:@"eulerAngles" applyBlock:v10];
+    [SCNTransaction postCommandWithContext:sceneRef object:self key:@"eulerAngles" applyBlock:v10];
     if ((*(self + 22) & 0x100) != 0)
     {
       [-[SCNNode _findComponentWithType:](self _findComponentWithType:{8), "resetTransform"}];
@@ -8703,11 +8703,11 @@ void __34__SCNNode_SIMD__setSimdTransform___block_invoke_2(__n128 *a1)
 {
   if (*(self + 40))
   {
-    v4 = [(SCNNode *)self sceneRef];
-    if (v4)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v5 = v4;
-      C3DSceneLock(v4);
+      v5 = sceneRef;
+      C3DSceneLock(sceneRef);
       *v6.i64 = C3DNodeGetScale(self->_node);
       v8 = v6;
       C3DSceneUnlock(v5);
@@ -8962,11 +8962,11 @@ LABEL_21:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [(SCNNode *)self sceneRef];
-    if (v14)
+    sceneRef = [(SCNNode *)self sceneRef];
+    if (sceneRef)
     {
-      v15 = v14;
-      C3DSceneLock(v14);
+      v15 = sceneRef;
+      C3DSceneLock(sceneRef);
       C3DNodeComputeWorldMatrix(self->_node, &v32);
       C3DSceneUnlock(v15);
     }
@@ -9619,28 +9619,28 @@ LABEL_15:
   return [AssociatedObject integerValue];
 }
 
-- (void)setAuthoringCameraType:(int64_t)a3
+- (void)setAuthoringCameraType:(int64_t)type
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
 
   objc_setAssociatedObject(self, sel_authoringCameraType, v4, 0x301);
 }
 
 - (id)debugQuickLookObject
 {
-  v2 = [(SCNNode *)self clone];
-  [(SCNNode *)v2 setHidden:0];
+  clone = [(SCNNode *)self clone];
+  [(SCNNode *)clone setHidden:0];
   v3 = +[SCNScene scene];
-  [(SCNNode *)[(SCNScene *)v3 rootNode] addChildNode:v2];
+  [(SCNNode *)[(SCNScene *)v3 rootNode] addChildNode:clone];
 
   return [(SCNScene *)v3 debugQuickLookObject];
 }
 
 - (id)debugQuickLookData
 {
-  v2 = [(SCNNode *)self debugQuickLookObject];
+  debugQuickLookObject = [(SCNNode *)self debugQuickLookObject];
 
-  return UIImagePNGRepresentation(v2);
+  return UIImagePNGRepresentation(debugQuickLookObject);
 }
 
 - (void)setName:.cold.1()

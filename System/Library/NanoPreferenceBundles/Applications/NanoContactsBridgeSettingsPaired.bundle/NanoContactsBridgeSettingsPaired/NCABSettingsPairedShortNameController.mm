@@ -1,14 +1,14 @@
 @interface NCABSettingsPairedShortNameController
 - (NCABSettingsPairedShortNameController)init;
-- (id)_getValueForKey:(id)a3;
+- (id)_getValueForKey:(id)key;
 - (id)preferNicknames;
 - (id)shortNameEnabled;
 - (id)shortNameFormat;
 - (id)specifiers;
-- (void)_setValue:(id)a3 forKey:(id)a4 syncWithClient:(BOOL)a5;
-- (void)setShortNameEnabled:(id)a3;
-- (void)setShortNameFormat:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_setValue:(id)value forKey:(id)key syncWithClient:(BOOL)client;
+- (void)setShortNameEnabled:(id)enabled;
+- (void)setShortNameFormat:(id)format;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NCABSettingsPairedShortNameController
@@ -31,9 +31,9 @@
 
     v8 = +[PDRRegistry sharedInstance];
     v9 = [v8 getDevicesExcluding:4];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
-    if (v10)
+    if (firstObject)
     {
       PDRWatchOSVersionForRemoteDevice();
       IsGreaterThanOrEqual = PDRVersionIsGreaterThanOrEqual();
@@ -70,8 +70,8 @@
 
     v47 = v4;
     [v4 addObject:self->_shortNameEnabledSpecifier];
-    v11 = [(NCABSettingsPairedShortNameController *)self shortNameFormat];
-    v12 = [v11 integerValue];
+    shortNameFormat = [(NCABSettingsPairedShortNameController *)self shortNameFormat];
+    integerValue = [shortNameFormat integerValue];
 
     v13 = [[NSMutableArray alloc] initWithCapacity:6];
     shortNameFormatsSpecifiers = self->_shortNameFormatsSpecifiers;
@@ -97,7 +97,7 @@
     v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v24 setUserInfo:&off_8678];
-    if (v12 == (&dword_0 + 1))
+    if (integerValue == (&dword_0 + 1))
     {
       [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v24 forKey:PSRadioGroupCheckedSpecifierKey];
     }
@@ -108,7 +108,7 @@
     v27 = [PSSpecifier preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v27 setUserInfo:&off_8690];
-    if (v12 == (&dword_0 + 2))
+    if (integerValue == (&dword_0 + 2))
     {
       [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v27 forKey:PSRadioGroupCheckedSpecifierKey];
     }
@@ -119,7 +119,7 @@
     v30 = [PSSpecifier preferenceSpecifierNamed:v29 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v30 setUserInfo:&off_86A8];
-    if (v12 == (&dword_0 + 3))
+    if (integerValue == (&dword_0 + 3))
     {
       [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v30 forKey:PSRadioGroupCheckedSpecifierKey];
     }
@@ -130,16 +130,16 @@
     v33 = [PSSpecifier preferenceSpecifierNamed:v32 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v33 setUserInfo:&off_86C0];
-    if (v12 == &dword_4)
+    if (integerValue == &dword_4)
     {
       [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v33 forKey:PSRadioGroupCheckedSpecifierKey];
     }
 
     [(NSMutableArray *)self->_shortNameFormatsSpecifiers addObject:v33];
-    v34 = [(NCABSettingsPairedShortNameController *)self shortNameEnabled];
-    v35 = [v34 BOOLValue];
+    shortNameEnabled = [(NCABSettingsPairedShortNameController *)self shortNameEnabled];
+    bOOLValue = [shortNameEnabled BOOLValue];
 
-    if (v35)
+    if (bOOLValue)
     {
       [v47 addObjectsFromArray:self->_shortNameFormatsSpecifiers];
     }
@@ -168,34 +168,34 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = NCABSettingsPairedShortNameController;
-  [(NCABSettingsPairedShortNameController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  [(NCABSettingsPairedShortNameController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
   v8 = [(NCABSettingsPairedShortNameController *)self indexPathForIndex:[(NCABSettingsPairedShortNameController *)self indexOfSpecifier:self->_shortNameFormatsGroup]];
-  v9 = [v8 section];
+  section2 = [v8 section];
 
-  if (v7 == v9)
+  if (section == section2)
   {
-    v10 = [(NCABSettingsPairedShortNameController *)self specifierAtIndex:[(NCABSettingsPairedShortNameController *)self indexForIndexPath:v6]];
-    v11 = [v10 userInfo];
-    [(NCABSettingsPairedShortNameController *)self setShortNameFormat:v11];
+    v10 = [(NCABSettingsPairedShortNameController *)self specifierAtIndex:[(NCABSettingsPairedShortNameController *)self indexForIndexPath:pathCopy]];
+    userInfo = [v10 userInfo];
+    [(NCABSettingsPairedShortNameController *)self setShortNameFormat:userInfo];
 
     [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v10 forKey:PSRadioGroupCheckedSpecifierKey];
   }
 }
 
-- (void)setShortNameEnabled:(id)a3
+- (void)setShortNameEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = [v4 BOOLValue];
-  [(NCABSettingsPairedShortNameController *)self _setValue:v4 forKey:NSPersonNameDefaultShortNameEnabledKey syncWithClient:1];
+  enabledCopy = enabled;
+  bOOLValue = [enabledCopy BOOLValue];
+  [(NCABSettingsPairedShortNameController *)self _setValue:enabledCopy forKey:NSPersonNameDefaultShortNameEnabledKey syncWithClient:1];
 
   shortNameFormatsSpecifiers = self->_shortNameFormatsSpecifiers;
-  if (v5)
+  if (bOOLValue)
   {
     shortNameEnabledSpecifier = self->_shortNameEnabledSpecifier;
 
@@ -228,9 +228,9 @@
   return v4;
 }
 
-- (void)setShortNameFormat:(id)a3
+- (void)setShortNameFormat:(id)format
 {
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 integerValue]);
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [format integerValue]);
   [(NCABSettingsPairedShortNameController *)self _setValue:v4 forKey:NSPersonNameDefaultShortNameFormatKey syncWithClient:1];
 }
 
@@ -272,29 +272,29 @@
   return v5;
 }
 
-- (id)_getValueForKey:(id)a3
+- (id)_getValueForKey:(id)key
 {
   foundationDomainAccessor = self->_foundationDomainAccessor;
-  v5 = a3;
-  v6 = [(NPSDomainAccessor *)foundationDomainAccessor synchronize];
-  v7 = [(NPSDomainAccessor *)self->_foundationDomainAccessor objectForKey:v5];
+  keyCopy = key;
+  synchronize = [(NPSDomainAccessor *)foundationDomainAccessor synchronize];
+  v7 = [(NPSDomainAccessor *)self->_foundationDomainAccessor objectForKey:keyCopy];
 
   return v7;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4 syncWithClient:(BOOL)a5
+- (void)_setValue:(id)value forKey:(id)key syncWithClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(NPSDomainAccessor *)self->_foundationDomainAccessor setObject:v8 forKey:v9];
-  v10 = [(NPSDomainAccessor *)self->_foundationDomainAccessor synchronize];
-  if (v5)
+  clientCopy = client;
+  valueCopy = value;
+  keyCopy = key;
+  [(NPSDomainAccessor *)self->_foundationDomainAccessor setObject:valueCopy forKey:keyCopy];
+  synchronize = [(NPSDomainAccessor *)self->_foundationDomainAccessor synchronize];
+  if (clientCopy)
   {
     if (self->_activePairedWatchRequiresLegacyKeys)
     {
-      v14 = v9;
-      v15 = v8;
+      v14 = keyCopy;
+      v15 = valueCopy;
       v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
       [NCABSettingsPairedController mapFoundationPreferenceKeysAndValues:v11 toLegacyDomainAccessor:self->_peoplePickerDomainAccessor withSyncManager:self->_syncManager];
     }
@@ -303,7 +303,7 @@
     {
       syncManager = self->_syncManager;
       v13 = NSPersonNameDefaultNamePreferencesDomain;
-      v11 = [NSSet setWithObject:v9];
+      v11 = [NSSet setWithObject:keyCopy];
       [(NPSManager *)syncManager synchronizeNanoDomain:v13 keys:v11];
     }
   }

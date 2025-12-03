@@ -1,35 +1,35 @@
 @interface UIImage
-+ (id)crl_accessibilityBoldTextAdaptiveImageNamed:(id)a3;
-+ (id)crl_bidiConsciousImageNamed:(id)a3;
-+ (id)crl_imageNamed:(id)a3 withPointSize:(double)a4;
-+ (id)crl_imageWithColor:(id)a3 size:(CGSize)a4;
-+ (id)crl_internalSystemImageNamed:(id)a3 pointSize:(double)a4;
-+ (id)crl_systemImageNamed:(id)a3 withFallbackCustomImageNamed:(id)a4;
-+ (id)crl_systemImageNamed:(id)a3 withFont:(id)a4;
-+ (id)crl_systemImageNamed:(id)a3 withPointSize:(double)a4 weight:(int64_t)a5;
-+ (id)crl_systemImageNamed:(id)a3 withPointSize:(double)a4 weight:(int64_t)a5 scale:(int64_t)a6;
-+ (id)crl_templateImageWithCGPath:(CGPath *)a3 scale:(double)a4;
-- (id)crl_imageWithAlpha:(double)a3 renderingMode:(int64_t)a4;
-- (id)crl_imageWithRTLMirroringForcedOn:(BOOL)a3;
++ (id)crl_accessibilityBoldTextAdaptiveImageNamed:(id)named;
++ (id)crl_bidiConsciousImageNamed:(id)named;
++ (id)crl_imageNamed:(id)named withPointSize:(double)size;
++ (id)crl_imageWithColor:(id)color size:(CGSize)size;
++ (id)crl_internalSystemImageNamed:(id)named pointSize:(double)size;
++ (id)crl_systemImageNamed:(id)named withFallbackCustomImageNamed:(id)imageNamed;
++ (id)crl_systemImageNamed:(id)named withFont:(id)font;
++ (id)crl_systemImageNamed:(id)named withPointSize:(double)size weight:(int64_t)weight;
++ (id)crl_systemImageNamed:(id)named withPointSize:(double)size weight:(int64_t)weight scale:(int64_t)scale;
++ (id)crl_templateImageWithCGPath:(CGPath *)path scale:(double)scale;
+- (id)crl_imageWithAlpha:(double)alpha renderingMode:(int64_t)mode;
+- (id)crl_imageWithRTLMirroringForcedOn:(BOOL)on;
 - (id)crl_resizableImage;
-- (id)crl_tintedImageWithColor:(id)a3;
+- (id)crl_tintedImageWithColor:(id)color;
 @end
 
 @implementation UIImage
 
-+ (id)crl_templateImageWithCGPath:(CGPath *)a3 scale:(double)a4
++ (id)crl_templateImageWithCGPath:(CGPath *)path scale:(double)scale
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
   x = BoundingBox.origin.x;
   y = BoundingBox.origin.y;
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
-  v10 = CRLCreateRGBABitmapContext(1, BoundingBox.size.width, BoundingBox.size.height, a4);
+  v10 = CRLCreateRGBABitmapContext(1, BoundingBox.size.width, BoundingBox.size.height, scale);
   if (v10)
   {
     v11 = v10;
     CGContextSaveGState(v10);
-    CGContextAddPath(v11, a3);
+    CGContextAddPath(v11, path);
     CGContextClip(v11);
     CGContextSetRGBFillColor(v11, 1.0, 1.0, 1.0, 1.0);
     v18.origin.x = x;
@@ -39,7 +39,7 @@
     CGContextFillRect(v11, v18);
     CGContextRestoreGState(v11);
     Image = CGBitmapContextCreateImage(v11);
-    v13 = [UIImage imageWithCGImage:Image scale:0 orientation:a4];
+    v13 = [UIImage imageWithCGImage:Image scale:0 orientation:scale];
     v14 = [v13 imageWithRenderingMode:2];
 
     CGImageRelease(Image);
@@ -54,7 +54,7 @@
   return v14;
 }
 
-- (id)crl_imageWithAlpha:(double)a3 renderingMode:(int64_t)a4
+- (id)crl_imageWithAlpha:(double)alpha renderingMode:(int64_t)mode
 {
   v7 = [UIGraphicsImageRenderer alloc];
   [(UIImage *)self size];
@@ -64,16 +64,16 @@
   v12[2] = sub_100002488;
   v12[3] = &unk_1000A5D98;
   v12[4] = self;
-  *&v12[5] = a3;
+  *&v12[5] = alpha;
   v9 = [v8 imageWithActions:v12];
-  v10 = [v9 imageWithRenderingMode:a4];
+  v10 = [v9 imageWithRenderingMode:mode];
 
   return v10;
 }
 
-- (id)crl_tintedImageWithColor:(id)a3
+- (id)crl_tintedImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   v8 = v7;
@@ -82,7 +82,7 @@
   v18.width = v6;
   v18.height = v8;
   UIGraphicsBeginImageContextWithOptions(v18, 0, v10);
-  [v4 setFill];
+  [colorCopy setFill];
 
   [(UIImage *)self size];
   v12 = v11;
@@ -107,57 +107,57 @@
   return [(UIImage *)self resizableImageWithCapInsets:?];
 }
 
-+ (id)crl_imageWithColor:(id)a3 size:(CGSize)a4
++ (id)crl_imageWithColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v7 = [[UIGraphicsImageRenderer alloc] initWithSize:{width, height}];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100002720;
   v12[3] = &unk_1000A5DC0;
-  v13 = v6;
+  v13 = colorCopy;
   v14 = width;
   v15 = height;
-  v8 = v6;
+  v8 = colorCopy;
   v9 = [v7 imageWithActions:v12];
   v10 = [v9 imageWithRenderingMode:0];
 
   return v10;
 }
 
-+ (id)crl_accessibilityBoldTextAdaptiveImageNamed:(id)a3
++ (id)crl_accessibilityBoldTextAdaptiveImageNamed:(id)named
 {
-  v3 = a3;
-  if (!UIAccessibilityIsBoldTextEnabled() || ([v3 stringByAppendingString:@"-bold"], v4 = objc_claimAutoreleasedReturnValue(), +[UIImage imageNamed:](UIImage, "imageNamed:", v4), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  namedCopy = named;
+  if (!UIAccessibilityIsBoldTextEnabled() || ([namedCopy stringByAppendingString:@"-bold"], v4 = objc_claimAutoreleasedReturnValue(), +[UIImage imageNamed:](UIImage, "imageNamed:", v4), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
-    v5 = [UIImage imageNamed:v3];
+    v5 = [UIImage imageNamed:namedCopy];
   }
 
   return v5;
 }
 
-+ (id)crl_bidiConsciousImageNamed:(id)a3
++ (id)crl_bidiConsciousImageNamed:(id)named
 {
-  v3 = [UIImage imageNamed:a3];
+  v3 = [UIImage imageNamed:named];
   if (CRLUILayoutIsRTL())
   {
-    v4 = [v3 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation = [v3 imageWithHorizontallyFlippedOrientation];
 
-    v3 = v4;
+    v3 = imageWithHorizontallyFlippedOrientation;
   }
 
   return v3;
 }
 
-+ (id)crl_systemImageNamed:(id)a3 withFallbackCustomImageNamed:(id)a4
++ (id)crl_systemImageNamed:(id)named withFallbackCustomImageNamed:(id)imageNamed
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  namedCopy = named;
+  imageNamedCopy = imageNamed;
+  if (namedCopy)
   {
-    v7 = [UIImage systemImageNamed:v5];
+    v7 = [UIImage systemImageNamed:namedCopy];
     if (v7)
     {
       goto LABEL_13;
@@ -191,83 +191,83 @@
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:103 isFatal:0 description:"invalid nil value for '%{public}s'", "result"];
   }
 
-  v7 = [UIImage imageNamed:v6];
+  v7 = [UIImage imageNamed:imageNamedCopy];
 LABEL_13:
 
   return v7;
 }
 
-+ (id)crl_imageNamed:(id)a3 withPointSize:(double)a4
++ (id)crl_imageNamed:(id)named withPointSize:(double)size
 {
-  v5 = a3;
-  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:a4];
-  v7 = [UIImage imageNamed:v5 inBundle:0 withConfiguration:v6];
+  namedCopy = named;
+  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:size];
+  v7 = [UIImage imageNamed:namedCopy inBundle:0 withConfiguration:v6];
 
   return v7;
 }
 
-+ (id)crl_systemImageNamed:(id)a3 withPointSize:(double)a4 weight:(int64_t)a5
++ (id)crl_systemImageNamed:(id)named withPointSize:(double)size weight:(int64_t)weight
 {
-  v7 = a3;
-  v8 = [UIImageSymbolConfiguration configurationWithPointSize:a5 weight:a4];
-  v9 = [UIImage systemImageNamed:v7 withConfiguration:v8];
+  namedCopy = named;
+  v8 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:size];
+  v9 = [UIImage systemImageNamed:namedCopy withConfiguration:v8];
 
   return v9;
 }
 
-+ (id)crl_systemImageNamed:(id)a3 withPointSize:(double)a4 weight:(int64_t)a5 scale:(int64_t)a6
++ (id)crl_systemImageNamed:(id)named withPointSize:(double)size weight:(int64_t)weight scale:(int64_t)scale
 {
-  v9 = a3;
-  v10 = [UIImageSymbolConfiguration configurationWithPointSize:a5 weight:a6 scale:a4];
-  v11 = [UIImage systemImageNamed:v9 withConfiguration:v10];
+  namedCopy = named;
+  v10 = [UIImageSymbolConfiguration configurationWithPointSize:weight weight:scale scale:size];
+  v11 = [UIImage systemImageNamed:namedCopy withConfiguration:v10];
 
   return v11;
 }
 
-+ (id)crl_systemImageNamed:(id)a3 withFont:(id)a4
++ (id)crl_systemImageNamed:(id)named withFont:(id)font
 {
-  v5 = a3;
-  v6 = [UIImageSymbolConfiguration configurationWithFont:a4];
-  v7 = [UIImage systemImageNamed:v5 withConfiguration:v6];
+  namedCopy = named;
+  v6 = [UIImageSymbolConfiguration configurationWithFont:font];
+  v7 = [UIImage systemImageNamed:namedCopy withConfiguration:v6];
 
   return v7;
 }
 
-- (id)crl_imageWithRTLMirroringForcedOn:(BOOL)a3
+- (id)crl_imageWithRTLMirroringForcedOn:(BOOL)on
 {
-  v3 = a3;
-  v4 = self;
+  onCopy = on;
+  selfCopy = self;
   if (CRLUILayoutIsRTL())
   {
-    v5 = v4;
-    if (![(UIImage *)v4 imageOrientation])
+    imageFlippedForRightToLeftLayoutDirection = selfCopy;
+    if (![(UIImage *)selfCopy imageOrientation])
     {
-      v5 = v4;
-      if (v3)
+      imageFlippedForRightToLeftLayoutDirection = selfCopy;
+      if (onCopy)
       {
-        v5 = [(UIImage *)v4 imageFlippedForRightToLeftLayoutDirection];
+        imageFlippedForRightToLeftLayoutDirection = [(UIImage *)selfCopy imageFlippedForRightToLeftLayoutDirection];
       }
     }
 
-    if ([(UIImage *)v4 imageOrientation]!= 4 || v3)
+    if ([(UIImage *)selfCopy imageOrientation]!= 4 || onCopy)
     {
-      v4 = v5;
+      selfCopy = imageFlippedForRightToLeftLayoutDirection;
     }
 
     else
     {
-      v4 = [(UIImage *)v4 imageWithHorizontallyFlippedOrientation];
+      selfCopy = [(UIImage *)selfCopy imageWithHorizontallyFlippedOrientation];
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-+ (id)crl_internalSystemImageNamed:(id)a3 pointSize:(double)a4
++ (id)crl_internalSystemImageNamed:(id)named pointSize:(double)size
 {
-  v5 = a3;
-  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:a4];
-  v7 = [UIImage _systemImageNamed:v5 withConfiguration:v6];
+  namedCopy = named;
+  v6 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:size];
+  v7 = [UIImage _systemImageNamed:namedCopy withConfiguration:v6];
 
   return v7;
 }

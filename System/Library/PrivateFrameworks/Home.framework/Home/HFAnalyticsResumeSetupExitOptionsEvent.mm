@@ -1,15 +1,15 @@
 @interface HFAnalyticsResumeSetupExitOptionsEvent
-- (HFAnalyticsResumeSetupExitOptionsEvent)initWithData:(id)a3;
+- (HFAnalyticsResumeSetupExitOptionsEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsResumeSetupExitOptionsEvent
 
-- (HFAnalyticsResumeSetupExitOptionsEvent)initWithData:(id)a3
+- (HFAnalyticsResumeSetupExitOptionsEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"accessoryCategoryType"];
+  v5 = [dataCopy objectForKeyedSubscript:@"accessoryCategoryType"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -23,7 +23,7 @@
   v7 = v6;
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"resumeSetupSelectedOption"];
+  v8 = [dataCopy objectForKeyedSubscript:@"resumeSetupSelectedOption"];
 
   if (objc_opt_isKindOfClass())
   {
@@ -54,14 +54,14 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsResumeSetupExitOptionsEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsResumeSetupExitOptionsEvent *)self accessoryType];
-  [v4 na_safeSetObject:v5 forKey:@"accessory"];
+  accessoryType = [(HFAnalyticsResumeSetupExitOptionsEvent *)self accessoryType];
+  [v4 na_safeSetObject:accessoryType forKey:@"accessory"];
 
-  v6 = [(HFAnalyticsResumeSetupExitOptionsEvent *)self resumeSetupOption];
-  [v4 na_safeSetObject:v6 forKey:@"optionSelected"];
+  resumeSetupOption = [(HFAnalyticsResumeSetupExitOptionsEvent *)self resumeSetupOption];
+  [v4 na_safeSetObject:resumeSetupOption forKey:@"optionSelected"];
 
   return v4;
 }

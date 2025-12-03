@@ -1,22 +1,22 @@
 @interface PXPhotoKitCopyActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
 - (void)_performCopy;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitCopyActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v6 = a3;
-  if (![v6 isPhoto] || (objc_msgSend(v6, "isTrashed") & 1) != 0 || (objc_msgSend(v6, "isRecoveredAsset") & 1) != 0)
+  assetCopy = asset;
+  if (![assetCopy isPhoto] || (objc_msgSend(assetCopy, "isTrashed") & 1) != 0 || (objc_msgSend(assetCopy, "isRecoveredAsset") & 1) != 0)
   {
     LOBYTE(v7) = 0;
   }
 
   else
   {
-    v7 = [v6 needsSensitivityProtection] ^ 1;
+    v7 = [assetCopy needsSensitivityProtection] ^ 1;
   }
 
   return v7;
@@ -25,19 +25,19 @@
 - (void)_performCopy
 {
   v3 = PXDefaultAssetSharingHelperClass();
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__PXPhotoKitCopyActionPerformer__performCopy__block_invoke;
   v5[3] = &unk_1E774C5C0;
   v5[4] = self;
-  [v3 copyAssets:v4 completionHandler:v5];
+  [v3 copyAssets:assets completionHandler:v5];
 }
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [PXSharingConfidentialityController confidentialWarningRequiredForAssets:v3];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  v4 = [PXSharingConfidentialityController confidentialWarningRequiredForAssets:assets];
 
   if (v4)
   {

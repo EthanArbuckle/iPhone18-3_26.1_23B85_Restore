@@ -20,7 +20,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HMDeviceCloudRecord.description.getter();
 
   v3 = String._bridgeToObjectiveC()();
@@ -44,7 +44,7 @@
 
 - (id)hmDeviceCloudRecordInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100171664();
 
   return v3;

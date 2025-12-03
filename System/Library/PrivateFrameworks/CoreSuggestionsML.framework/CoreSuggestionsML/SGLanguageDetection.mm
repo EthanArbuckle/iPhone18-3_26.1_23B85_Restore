@@ -1,32 +1,32 @@
 @interface SGLanguageDetection
-+ (_NSRange)tokenRangeForText:(id)a3 maxTruncatedLength:(unint64_t)a4 tagger:(id)a5 taggerOptions:(unint64_t)a6 prevTextTokenMaxRange:(unint64_t)a7 originalLengthShortfall:(unint64_t)a8 lowercaseText:(id)a9 lowercaseRange:(_NSRange)a10;
++ (_NSRange)tokenRangeForText:(id)text maxTruncatedLength:(unint64_t)length tagger:(id)tagger taggerOptions:(unint64_t)options prevTextTokenMaxRange:(unint64_t)range originalLengthShortfall:(unint64_t)shortfall lowercaseText:(id)lowercaseText lowercaseRange:(_NSRange)self0;
 + (id)defaultLanguage;
-+ (id)detectLanguageFromLanguageTags:(id)a3;
-+ (id)detectLanguageFromLanguageTags:(id)a3 withMinimumCount:(unint64_t)a4 withMinimumAgreement:(double)a5;
-+ (id)detectLanguageFromText:(id)a3;
-+ (id)detectLanguageFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5 withMinimumCount:(unint64_t)a6 withMinimumAgreement:(double)a7;
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3;
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3 withMinimumCount:(unint64_t)a4 withMinimumAgreement:(double)a5;
-+ (id)dominantLanguageTagFromText:(id)a3;
-+ (id)dominantLanguageTagFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5 withMinimumCount:(unint64_t)a6 withMinimumAgreement:(double)a7;
-+ (id)languageForLocaleIdentifier:(id)a3;
-+ (id)languageTagsFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5;
-+ (void)logMatchingForRange:(_NSRange)a3 lowercaseRange:(_NSRange)a4 text:(id)a5 lowercaseText:(id)a6;
++ (id)detectLanguageFromLanguageTags:(id)tags;
++ (id)detectLanguageFromLanguageTags:(id)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement;
++ (id)detectLanguageFromText:(id)text;
++ (id)detectLanguageFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement;
++ (id)dominantLanguageTagFromLanguageTags:(id)tags;
++ (id)dominantLanguageTagFromLanguageTags:(id)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement;
++ (id)dominantLanguageTagFromText:(id)text;
++ (id)dominantLanguageTagFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement;
++ (id)languageForLocaleIdentifier:(id)identifier;
++ (id)languageTagsFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags;
++ (void)logMatchingForRange:(_NSRange)range lowercaseRange:(_NSRange)lowercaseRange text:(id)text lowercaseText:(id)lowercaseText;
 @end
 
 @implementation SGLanguageDetection
 
-+ (void)logMatchingForRange:(_NSRange)a3 lowercaseRange:(_NSRange)a4 text:(id)a5 lowercaseText:(id)a6
++ (void)logMatchingForRange:(_NSRange)range lowercaseRange:(_NSRange)lowercaseRange text:(id)text lowercaseText:(id)lowercaseText
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3.length;
-  v10 = a3.location;
+  length = lowercaseRange.length;
+  location = lowercaseRange.location;
+  v9 = range.length;
+  v10 = range.location;
   v31 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = location + length == [v13 length];
-  if (((v14 ^ (v10 + v9 != [v12 length])) & 1) == 0)
+  textCopy = text;
+  lowercaseTextCopy = lowercaseText;
+  v14 = location + length == [lowercaseTextCopy length];
+  if (((v14 ^ (v10 + v9 != [textCopy length])) & 1) == 0)
   {
     v15 = objc_autoreleasePoolPush();
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -34,11 +34,11 @@
       *buf = 67109888;
       *v29 = location + length;
       *&v29[4] = 1024;
-      *&v29[6] = [v13 length];
+      *&v29[6] = [lowercaseTextCopy length];
       *v30 = 1024;
       *&v30[2] = v10 + v9;
       *&v30[6] = 1024;
-      *&v30[8] = [v12 length];
+      *&v30[8] = [textCopy length];
       _os_log_debug_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "SGLanguageDetection: mismatched lowercase rangeEnd %d, stringEnd %d / original rangeEnd %d, stringEnd %d", buf, 0x1Au);
     }
 
@@ -84,10 +84,10 @@
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v20 = [v13 substringWithRange:{location, length}];
-        v21 = [v13 length];
-        v22 = [v12 substringWithRange:{v10, v9}];
-        v23 = [v12 length];
+        v20 = [lowercaseTextCopy substringWithRange:{location, length}];
+        v21 = [lowercaseTextCopy length];
+        v22 = [textCopy substringWithRange:{v10, v9}];
+        v23 = [textCopy length];
         *buf = 138413058;
         *v29 = v20;
         *&v29[8] = 1024;
@@ -100,19 +100,19 @@
       }
     }
 
-    v18 = [v12 length];
-    if (v18 > [v13 length] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
+    v18 = [textCopy length];
+    if (v18 > [lowercaseTextCopy length] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
-      v24 = [v12 length];
-      v25 = [v13 length];
-      v26 = [a1 defaultLanguage];
-      v27 = [MEMORY[0x277CCAAE8] dominantLanguageForString:v12];
+      v24 = [textCopy length];
+      v25 = [lowercaseTextCopy length];
+      defaultLanguage = [self defaultLanguage];
+      v27 = [MEMORY[0x277CCAAE8] dominantLanguageForString:textCopy];
       *buf = 67109890;
       *v29 = v24;
       *&v29[4] = 1024;
       *&v29[6] = v25;
       *v30 = 2112;
-      *&v30[2] = v26;
+      *&v30[2] = defaultLanguage;
       *&v30[10] = 2112;
       *&v30[12] = v27;
       _os_log_fault_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "SGLanguageDetection: original len %d is longer than the lowercased len %d in locale %@, detected %@", buf, 0x22u);
@@ -124,45 +124,45 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (_NSRange)tokenRangeForText:(id)a3 maxTruncatedLength:(unint64_t)a4 tagger:(id)a5 taggerOptions:(unint64_t)a6 prevTextTokenMaxRange:(unint64_t)a7 originalLengthShortfall:(unint64_t)a8 lowercaseText:(id)a9 lowercaseRange:(_NSRange)a10
++ (_NSRange)tokenRangeForText:(id)text maxTruncatedLength:(unint64_t)length tagger:(id)tagger taggerOptions:(unint64_t)options prevTextTokenMaxRange:(unint64_t)range originalLengthShortfall:(unint64_t)shortfall lowercaseText:(id)lowercaseText lowercaseRange:(_NSRange)self0
 {
   v57 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a9;
-  [v15 setString:v14];
+  textCopy = text;
+  taggerCopy = tagger;
+  lowercaseTextCopy = lowercaseText;
+  [taggerCopy setString:textCopy];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3010000000;
   v47 = &unk_2479DE472;
   v48 = xmmword_2479D4580;
-  v17 = [v14 length];
-  if (v17 >= a4)
+  v17 = [textCopy length];
+  if (v17 >= length)
   {
-    v18 = a4;
+    lengthCopy = length;
   }
 
   else
   {
-    v18 = v17;
+    lengthCopy = v17;
   }
 
-  v19 = v18 - a7;
+  v19 = lengthCopy - range;
   v20 = *MEMORY[0x277CCA408];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __156__SGLanguageDetection_tokenRangeForText_maxTruncatedLength_tagger_taggerOptions_prevTextTokenMaxRange_originalLengthShortfall_lowercaseText_lowercaseRange___block_invoke;
   v36[3] = &unk_278EB8410;
-  v21 = v14;
+  v21 = textCopy;
   v37 = v21;
   v40 = a2;
-  v41 = a1;
-  v42 = a8;
-  v43 = a10;
-  v22 = v16;
+  selfCopy = self;
+  shortfallCopy = shortfall;
+  lowercaseRangeCopy = lowercaseRange;
+  v22 = lowercaseTextCopy;
   v38 = v22;
   v39 = &v44;
-  [v15 enumerateTagsInRange:a7 unit:v19 scheme:0 options:v20 usingBlock:{a6, v36}];
+  [taggerCopy enumerateTagsInRange:range unit:v19 scheme:0 options:v20 usingBlock:{options, v36}];
   v23 = v45;
   v24 = v45[4];
   if (v24 == 0x7FFFFFFFFFFFFFFFLL)
@@ -176,9 +176,9 @@
       *buf = 67109888;
       v50 = v31;
       v51 = 1024;
-      location = a10.location;
+      location = lowercaseRange.location;
       v53 = 1024;
-      length = a10.length;
+      length = lowercaseRange.length;
       v55 = 1024;
       v56 = v32;
       _os_log_debug_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "SGLanguageDetection: lowercase len %d, range loc %d / len %d found no range in original len %d", buf, 0x1Au);
@@ -221,31 +221,31 @@ void __156__SGLanguageDetection_tokenRangeForText_maxTruncatedLength_tagger_tagg
   }
 }
 
-+ (id)languageTagsFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5
++ (id)languageTagsFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags
 {
   v78 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 length];
+  textCopy = text;
+  v10 = [textCopy length];
   if (v10)
   {
     v39 = a2;
-    v41 = a5;
-    if (v10 > 2 * a4)
+    tagsCopy = tags;
+    if (v10 > 2 * length)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = [v9 substringToIndex:2 * a4];
+      v12 = [textCopy substringToIndex:2 * length];
 
       objc_autoreleasePoolPop(v11);
-      v9 = v12;
+      textCopy = v12;
     }
 
     v13 = objc_opt_new();
-    v14 = [MEMORY[0x277CBEAF8] currentLocale];
-    v43 = [v14 objectForKey:*MEMORY[0x277CBE6C8]];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    v43 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
 
     if (v43)
     {
-      v15 = [a1 languageForLocaleIdentifier:v43];
+      v15 = [self languageForLocaleIdentifier:v43];
       [v13 addObject:v15];
     }
 
@@ -253,8 +253,8 @@ void __156__SGLanguageDetection_tokenRangeForText_maxTruncatedLength_tagger_tagg
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v16 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v17 = [v16 countByEnumeratingWithState:&v71 objects:v77 count:16];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    v17 = [preferredLanguages countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v17)
     {
       v18 = *v72;
@@ -264,10 +264,10 @@ LABEL_8:
       {
         if (*v72 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(preferredLanguages);
         }
 
-        v20 = [a1 languageForLocaleIdentifier:*(*(&v71 + 1) + 8 * v19)];
+        v20 = [self languageForLocaleIdentifier:*(*(&v71 + 1) + 8 * v19)];
         [v13 addObject:v20];
 
         if ([v13 count] > 2)
@@ -277,7 +277,7 @@ LABEL_8:
 
         if (v17 == ++v19)
         {
-          v17 = [v16 countByEnumeratingWithState:&v71 objects:v77 count:16];
+          v17 = [preferredLanguages countByEnumeratingWithState:&v71 objects:v77 count:16];
           if (v17)
           {
             goto LABEL_8;
@@ -301,8 +301,8 @@ LABEL_8:
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:3];
     v26 = [v24 initWithTagSchemes:v25 options:0];
 
-    v27 = [v9 localizedLowercaseString];
-    [v23 setString:v27];
+    localizedLowercaseString = [textCopy localizedLowercaseString];
+    [v23 setString:localizedLowercaseString];
     v69[0] = 0;
     v69[1] = v69;
     v69[2] = 0x3032000000;
@@ -323,45 +323,45 @@ LABEL_8:
     v61[1] = v61;
     v61[2] = 0x2020000000;
     v61[3] = 0;
-    v28 = [v27 length];
-    v29 = v28 == [v9 length];
-    v30 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v31 = [v27 length];
-    if (a4 + 20 >= v31)
+    v28 = [localizedLowercaseString length];
+    v29 = v28 == [textCopy length];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v31 = [localizedLowercaseString length];
+    if (length + 20 >= v31)
     {
       v32 = v31;
     }
 
     else
     {
-      v32 = a4 + 20;
+      v32 = length + 20;
     }
 
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __70__SGLanguageDetection_languageTagsFromText_withMaxLength_withMaxTags___block_invoke;
     v44[3] = &unk_278EB83E8;
-    v33 = v27;
+    v33 = localizedLowercaseString;
     v45 = v33;
     v54 = v39;
-    v55 = a1;
-    v56 = a4;
+    selfCopy = self;
+    lengthCopy = length;
     v40 = v13;
     v46 = v40;
     v50 = &v63;
     v51 = v69;
     v60 = v29;
-    v9 = v9;
-    v47 = v9;
-    v57 = a4 + 20;
+    textCopy = textCopy;
+    v47 = textCopy;
+    v57 = length + 20;
     v34 = v26;
     v48 = v34;
     v52 = v62;
     v58 = 536870926;
     v53 = v61;
-    v35 = v30;
+    v35 = uppercaseLetterCharacterSet;
     v49 = v35;
-    v59 = v41;
+    v59 = tagsCopy;
     [v23 enumerateTagsInRange:0 unit:v32 scheme:0 options:v42 usingBlock:{536870926, v44}];
     v36 = v64[5];
 
@@ -509,23 +509,23 @@ LABEL_35:
 LABEL_37:
 }
 
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3 withMinimumCount:(unint64_t)a4 withMinimumAgreement:(double)a5
++ (id)dominantLanguageTagFromLanguageTags:(id)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 count] >= a4 && objc_msgSend(v7, "count"))
+  tagsCopy = tags;
+  if ([tagsCopy count] >= count && objc_msgSend(tagsCopy, "count"))
   {
-    if ([v7 count] == 1)
+    if ([tagsCopy count] == 1)
     {
-      v8 = [v7 firstObject];
+      firstObject = [tagsCopy firstObject];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:v7];
+      v11 = [objc_alloc(MEMORY[0x277CCA940]) initWithArray:tagsCopy];
       if ([v11 count] == 1)
       {
-        v8 = [v7 firstObject];
+        firstObject = [tagsCopy firstObject];
       }
 
       else if ([v11 count] <= 2)
@@ -576,15 +576,15 @@ LABEL_37:
           v16 = 0;
         }
 
-        v23 = [v7 count];
-        if (v16 >= a4 && v16 / v23 >= a5)
+        v23 = [tagsCopy count];
+        if (v16 >= count && v16 / v23 >= agreement)
         {
-          v8 = v15;
+          firstObject = v15;
         }
 
         else
         {
-          v8 = 0;
+          firstObject = 0;
         }
 
         v11 = v24;
@@ -592,53 +592,53 @@ LABEL_37:
 
       else
       {
-        v8 = 0;
+        firstObject = 0;
       }
     }
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)dominantLanguageTagFromLanguageTags:(id)a3
++ (id)dominantLanguageTagFromLanguageTags:(id)tags
 {
-  v3 = a3;
-  v4 = [objc_opt_class() dominantLanguageTagFromLanguageTags:v3 withMinimumCount:0 withMinimumAgreement:0.6];
+  tagsCopy = tags;
+  v4 = [objc_opt_class() dominantLanguageTagFromLanguageTags:tagsCopy withMinimumCount:0 withMinimumAgreement:0.6];
 
   return v4;
 }
 
-+ (id)dominantLanguageTagFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5 withMinimumCount:(unint64_t)a6 withMinimumAgreement:(double)a7
++ (id)dominantLanguageTagFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement
 {
-  v11 = a3;
-  v12 = [objc_opt_class() languageTagsFromText:v11 withMaxLength:a4 withMaxTags:a5];
+  textCopy = text;
+  v12 = [objc_opt_class() languageTagsFromText:textCopy withMaxLength:length withMaxTags:tags];
 
-  v13 = [objc_opt_class() dominantLanguageTagFromLanguageTags:v12 withMinimumCount:a6 withMinimumAgreement:a7];
+  v13 = [objc_opt_class() dominantLanguageTagFromLanguageTags:v12 withMinimumCount:count withMinimumAgreement:agreement];
 
   return v13;
 }
 
-+ (id)dominantLanguageTagFromText:(id)a3
++ (id)dominantLanguageTagFromText:(id)text
 {
-  v3 = a3;
-  v4 = [objc_opt_class() dominantLanguageTagFromText:v3 withMaxLength:30 withMaxTags:8 withMinimumCount:0 withMinimumAgreement:0.6];
+  textCopy = text;
+  v4 = [objc_opt_class() dominantLanguageTagFromText:textCopy withMaxLength:30 withMaxTags:8 withMinimumCount:0 withMinimumAgreement:0.6];
 
   return v4;
 }
 
-+ (id)detectLanguageFromLanguageTags:(id)a3 withMinimumCount:(unint64_t)a4 withMinimumAgreement:(double)a5
++ (id)detectLanguageFromLanguageTags:(id)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement
 {
-  v8 = a3;
-  if ([v8 count])
+  tagsCopy = tags;
+  if ([tagsCopy count])
   {
-    [a1 dominantLanguageTagFromLanguageTags:v8 withMinimumCount:a4 withMinimumAgreement:a5];
+    [self dominantLanguageTagFromLanguageTags:tagsCopy withMinimumCount:count withMinimumAgreement:agreement];
   }
 
   else
@@ -650,68 +650,68 @@ LABEL_37:
   return v9;
 }
 
-+ (id)detectLanguageFromLanguageTags:(id)a3
++ (id)detectLanguageFromLanguageTags:(id)tags
 {
-  v3 = [a1 dominantLanguageTagFromLanguageTags:a3];
+  v3 = [self dominantLanguageTagFromLanguageTags:tags];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultLanguage = v3;
   }
 
   else
   {
-    v5 = [objc_opt_class() defaultLanguage];
+    defaultLanguage = [objc_opt_class() defaultLanguage];
   }
 
-  v6 = v5;
+  v6 = defaultLanguage;
 
   return v6;
 }
 
-+ (id)detectLanguageFromText:(id)a3 withMaxLength:(unint64_t)a4 withMaxTags:(unint64_t)a5 withMinimumCount:(unint64_t)a6 withMinimumAgreement:(double)a7
++ (id)detectLanguageFromText:(id)text withMaxLength:(unint64_t)length withMaxTags:(unint64_t)tags withMinimumCount:(unint64_t)count withMinimumAgreement:(double)agreement
 {
-  v11 = a3;
-  v12 = [objc_opt_class() dominantLanguageTagFromText:v11 withMaxLength:a4 withMaxTags:a5 withMinimumCount:a6 withMinimumAgreement:a7];
+  textCopy = text;
+  v12 = [objc_opt_class() dominantLanguageTagFromText:textCopy withMaxLength:length withMaxTags:tags withMinimumCount:count withMinimumAgreement:agreement];
 
   if (v12)
   {
-    v13 = v12;
+    defaultLanguage = v12;
   }
 
   else
   {
-    v13 = [objc_opt_class() defaultLanguage];
+    defaultLanguage = [objc_opt_class() defaultLanguage];
   }
 
-  v14 = v13;
+  v14 = defaultLanguage;
 
   return v14;
 }
 
-+ (id)detectLanguageFromText:(id)a3
++ (id)detectLanguageFromText:(id)text
 {
-  v3 = [a1 dominantLanguageTagFromText:a3];
+  v3 = [self dominantLanguageTagFromText:text];
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    defaultLanguage = v3;
   }
 
   else
   {
-    v5 = [objc_opt_class() defaultLanguage];
+    defaultLanguage = [objc_opt_class() defaultLanguage];
   }
 
-  v6 = v5;
+  v6 = defaultLanguage;
 
   return v6;
 }
 
 + (id)defaultLanguage
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE6C0]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE6C0]];
 
   if (v3 && [v3 length] >= 2)
   {
@@ -726,25 +726,25 @@ LABEL_37:
   return v4;
 }
 
-+ (id)languageForLocaleIdentifier:(id)a3
++ (id)languageForLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_autoreleasePoolPush();
-  if ([v5 length] <= 1)
+  if ([identifierCopy length] <= 1)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"SGLanguageDetection.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier.length >= 2"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGLanguageDetection.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"localeIdentifier.length >= 2"}];
   }
 
-  v7 = [MEMORY[0x277CCA900] letterCharacterSet];
-  v8 = [SGStringSplitter splitString:v5 withCharacterSet:v7];
+  letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+  v8 = [SGStringSplitter splitString:identifierCopy withCharacterSet:letterCharacterSet];
 
-  v9 = [v8 firstObject];
-  v10 = [v9 lowercaseString];
+  firstObject = [v8 firstObject];
+  lowercaseString = [firstObject lowercaseString];
 
-  v11 = [v8 lastObject];
+  lastObject = [v8 lastObject];
   v12 = [v8 count];
-  v13 = [v10 isEqualToString:@"zh"];
+  v13 = [lowercaseString isEqualToString:@"zh"];
   if (v12 == 1)
   {
     if (v13)
@@ -754,7 +754,7 @@ LABEL_37:
     }
 
 LABEL_32:
-    v14 = v10;
+    v14 = lowercaseString;
     goto LABEL_33;
   }
 
@@ -769,7 +769,7 @@ LABEL_32:
       v17 = [v8 objectAtIndexedSubscript:1];
       v18 = [v17 isEqualToString:@"Hant"];
 
-      if (v18 & 1) != 0 || ([v11 isEqualToString:@"HK"])
+      if (v18 & 1) != 0 || ([lastObject isEqualToString:@"HK"])
       {
         v14 = @"zh-Hant";
       }
@@ -777,7 +777,7 @@ LABEL_32:
       else
       {
         v14 = @"zh-Hant";
-        if (([v11 isEqualToString:@"MO"] & 1) == 0 && !objc_msgSend(v11, "isEqualToString:", @"TW"))
+        if (([lastObject isEqualToString:@"MO"] & 1) == 0 && !objc_msgSend(lastObject, "isEqualToString:", @"TW"))
         {
           v14 = @"zh-Hans";
         }
@@ -788,9 +788,9 @@ LABEL_32:
   else
   {
     v14 = @"hi";
-    if (![v10 isEqualToString:@"hi"])
+    if (![lowercaseString isEqualToString:@"hi"])
     {
-      if ([v10 isEqualToString:@"uz"])
+      if ([lowercaseString isEqualToString:@"uz"])
       {
         v21 = [v8 objectAtIndexedSubscript:1];
         v22 = [v21 isEqualToString:@"Cyrl"];
@@ -812,13 +812,13 @@ LABEL_32:
         v25 = [v8 objectAtIndexedSubscript:1];
         v26 = [v25 isEqualToString:@"Latn"];
 
-        if (v26 & 1) != 0 || ([v11 isEqualToString:@"UZ"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"AZ"))
+        if (v26 & 1) != 0 || ([lastObject isEqualToString:@"UZ"] & 1) != 0 || (objc_msgSend(lastObject, "isEqualToString:", @"AZ"))
         {
           v14 = @"uz-Latn";
           goto LABEL_33;
         }
 
-        if ([v11 isEqualToString:@"AF"])
+        if ([lastObject isEqualToString:@"AF"])
         {
 LABEL_23:
           v14 = @"uz-Arab";
@@ -826,7 +826,7 @@ LABEL_23:
         }
       }
 
-      if ([v10 isEqualToString:@"sr"])
+      if ([lowercaseString isEqualToString:@"sr"])
       {
         v27 = [v8 objectAtIndexedSubscript:1];
         v28 = [v27 isEqualToString:@"Latn"];

@@ -1,13 +1,13 @@
 @interface FMDRatchetManager
 + (BOOL)isFeatureEnabled;
-+ (id)ratchetErrorDeniedWithUnderlyingError:(id)a3;
++ (id)ratchetErrorDeniedWithUnderlyingError:(id)error;
 + (id)ratchetManagerTurnOffFMIP;
 + (id)ratchetManageriCloudSignOut;
-- (FMDRatchetManager)initWithIdentifier:(id)a3;
+- (FMDRatchetManager)initWithIdentifier:(id)identifier;
 - (id)ratchetOptions;
 - (void)armRatchetIfNeeded;
 - (void)evaluateOperation;
-- (void)handleRatchetError:(id)a3;
+- (void)handleRatchetError:(id)error;
 @end
 
 @implementation FMDRatchetManager
@@ -15,20 +15,20 @@
 + (BOOL)isFeatureEnabled
 {
   v2 = +[LARatchetManager sharedInstance];
-  v3 = [v2 isFeatureEnabled];
+  isFeatureEnabled = [v2 isFeatureEnabled];
 
-  return v3;
+  return isFeatureEnabled;
 }
 
-+ (id)ratchetErrorDeniedWithUnderlyingError:(id)a3
++ (id)ratchetErrorDeniedWithUnderlyingError:(id)error
 {
   v3 = off_100312B78;
-  if (a3)
+  if (error)
   {
     v8 = NSUnderlyingErrorKey;
-    v9 = a3;
-    v4 = a3;
-    v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
+    errorCopy = error;
+    errorCopy2 = error;
+    v5 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v8 count:1];
     v6 = [NSError errorWithDomain:v3 code:1 userInfo:v5];
   }
 
@@ -93,16 +93,16 @@
   return v2;
 }
 
-- (FMDRatchetManager)initWithIdentifier:(id)a3
+- (FMDRatchetManager)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FMDRatchetManager;
   v6 = [(FMDRatchetManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ratchetIdentifier, a3);
+    objc_storeStrong(&v6->_ratchetIdentifier, identifier);
   }
 
   return v7;
@@ -110,9 +110,9 @@
 
 - (void)evaluateOperation
 {
-  v3 = [(FMDRatchetManager *)self currentTask];
+  currentTask = [(FMDRatchetManager *)self currentTask];
 
-  if (!v3)
+  if (!currentTask)
   {
     v4 = objc_alloc_init(FMFuture);
     [(FMDRatchetManager *)self permittedOperationBlock];
@@ -143,23 +143,23 @@
 - (id)ratchetOptions
 {
   v12[0] = &off_1002E7A80;
-  v3 = [(FMDRatchetManager *)self localizedReason];
-  v13[0] = v3;
+  localizedReason = [(FMDRatchetManager *)self localizedReason];
+  v13[0] = localizedReason;
   v12[1] = &off_1002E7A98;
-  v4 = [(FMDRatchetManager *)self localizedCalloutReason];
-  v13[1] = v4;
+  localizedCalloutReason = [(FMDRatchetManager *)self localizedCalloutReason];
+  v13[1] = localizedCalloutReason;
   v12[2] = &off_1002E7AB0;
-  v5 = [(FMDRatchetManager *)self deepLinkURL];
-  v13[2] = v5;
+  deepLinkURL = [(FMDRatchetManager *)self deepLinkURL];
+  v13[2] = deepLinkURL;
   v12[3] = &off_1002E7AC8;
-  v6 = [(FMDRatchetManager *)self localizedBeginTitle];
-  v13[3] = v6;
+  localizedBeginTitle = [(FMDRatchetManager *)self localizedBeginTitle];
+  v13[3] = localizedBeginTitle;
   v12[4] = &off_1002E7AE0;
-  v7 = [(FMDRatchetManager *)self localizedBeginBody];
-  v13[4] = v7;
+  localizedBeginBody = [(FMDRatchetManager *)self localizedBeginBody];
+  v13[4] = localizedBeginBody;
   v12[5] = &off_1002E7AF8;
-  v8 = [(FMDRatchetManager *)self localizedCountdownBody];
-  v13[5] = v8;
+  localizedCountdownBody = [(FMDRatchetManager *)self localizedCountdownBody];
+  v13[5] = localizedCountdownBody;
   v12[6] = &off_1002E7B10;
   v9 = [NSNumber numberWithBool:[(FMDRatchetManager *)self fallbackToNoAuthentication]];
   v13[6] = v9;
@@ -170,16 +170,16 @@
 
 - (void)armRatchetIfNeeded
 {
-  v3 = [(FMDRatchetManager *)self ratchet];
+  ratchet = [(FMDRatchetManager *)self ratchet];
 
-  if (v3)
+  if (ratchet)
   {
     v4 = sub_10017DEB4();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(FMDRatchetManager *)self ratchetIdentifier];
+      ratchetIdentifier = [(FMDRatchetManager *)self ratchetIdentifier];
       *buf = 138412290;
-      v13 = v5;
+      v13 = ratchetIdentifier;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Ratchet already initialized %@.", buf, 0xCu);
     }
   }
@@ -187,19 +187,19 @@
   else
   {
     v6 = [LARatchet alloc];
-    v7 = [(FMDRatchetManager *)self ratchetIdentifier];
-    v4 = [v6 initWithIdentifier:v7];
+    ratchetIdentifier2 = [(FMDRatchetManager *)self ratchetIdentifier];
+    v4 = [v6 initWithIdentifier:ratchetIdentifier2];
 
     [(FMDRatchetManager *)self setRatchet:v4];
-    v8 = [(FMDRatchetManager *)self ratchetOptions];
+    ratchetOptions = [(FMDRatchetManager *)self ratchetOptions];
     v9 = sub_10017DEB4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(FMDRatchetManager *)self ratchetIdentifier];
+      ratchetIdentifier3 = [(FMDRatchetManager *)self ratchetIdentifier];
       *buf = 138412546;
-      v13 = v10;
+      v13 = ratchetIdentifier3;
       v14 = 2112;
-      v15 = v8;
+      v15 = ratchetOptions;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Arming ratchet %@ with options %@.", buf, 0x16u);
     }
 
@@ -208,35 +208,35 @@
     v11[2] = sub_100158E0C;
     v11[3] = &unk_1002CD7C0;
     v11[4] = self;
-    [v4 armWithOptions:v8 completion:v11];
+    [v4 armWithOptions:ratchetOptions completion:v11];
   }
 }
 
-- (void)handleRatchetError:(id)a3
+- (void)handleRatchetError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:LARatchetErrorUserInfoKeyState];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:LARatchetErrorUserInfoKeyState];
 
   if (v6)
   {
-    v7 = v6;
-    v8 = [v4 code];
+    currentTask2 = v6;
+    code = [errorCopy code];
     v9 = sub_10017DEB4();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_ERROR);
-    if (v8)
+    if (code)
     {
       if (v10)
       {
-        v11 = [(FMDRatchetManager *)self ratchetIdentifier];
-        v12 = [v7 rawValue];
-        v13 = [v4 localizedDescription];
+        ratchetIdentifier = [(FMDRatchetManager *)self ratchetIdentifier];
+        rawValue = [currentTask2 rawValue];
+        localizedDescription = [errorCopy localizedDescription];
         v19 = 138412802;
-        v20 = v11;
+        v20 = ratchetIdentifier;
         v21 = 2048;
-        v22 = v12;
+        v22 = rawValue;
         v23 = 2112;
-        v24 = v13;
+        v24 = localizedDescription;
         v14 = "Unexpected failure to arm ratchet %@ state %li, error: %@.";
 LABEL_12:
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, v14, &v19, 0x20u);
@@ -245,22 +245,22 @@ LABEL_12:
 
     else if (v10)
     {
-      v11 = [(FMDRatchetManager *)self ratchetIdentifier];
-      v18 = [v7 rawValue];
-      v13 = [v4 localizedDescription];
+      ratchetIdentifier = [(FMDRatchetManager *)self ratchetIdentifier];
+      rawValue2 = [currentTask2 rawValue];
+      localizedDescription = [errorCopy localizedDescription];
       v19 = 138412802;
-      v20 = v11;
+      v20 = ratchetIdentifier;
       v21 = 2048;
-      v22 = v18;
+      v22 = rawValue2;
       v23 = 2112;
-      v24 = v13;
+      v24 = localizedDescription;
       v14 = "Failed to arm ratchet %@ state %li, error: %@.";
       goto LABEL_12;
     }
 
-    v16 = [(FMDRatchetManager *)self currentTask];
-    v17 = [FMDRatchetManager ratchetErrorDeniedWithUnderlyingError:v4];
-    [v16 finishWithError:v17];
+    currentTask = [(FMDRatchetManager *)self currentTask];
+    v17 = [FMDRatchetManager ratchetErrorDeniedWithUnderlyingError:errorCopy];
+    [currentTask finishWithError:v17];
 
     goto LABEL_10;
   }
@@ -268,12 +268,12 @@ LABEL_12:
   v15 = sub_10017DEB4();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_100228718(self, v4);
+    sub_100228718(self, errorCopy);
   }
 
-  v7 = [(FMDRatchetManager *)self currentTask];
-  v16 = [FMDRatchetManager ratchetErrorDeniedWithUnderlyingError:v4];
-  [v7 finishWithError:v16];
+  currentTask2 = [(FMDRatchetManager *)self currentTask];
+  currentTask = [FMDRatchetManager ratchetErrorDeniedWithUnderlyingError:errorCopy];
+  [currentTask2 finishWithError:currentTask];
 LABEL_10:
 }
 

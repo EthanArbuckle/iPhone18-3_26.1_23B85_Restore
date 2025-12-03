@@ -8,7 +8,7 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 bundleForClass:v2];
+  return [self bundleForClass:v2];
 }
 
 @end

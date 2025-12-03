@@ -1,8 +1,8 @@
 @interface QSSErrorBlamerResponse
 - (NSString)blamer_report;
 - (NSString)return_str;
-- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)a3;
-- (QSSErrorBlamerResponse)initWithFlatbuffData:(id)a3 root:(const ErrorBlamerResponse *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)buffer;
+- (QSSErrorBlamerResponse)initWithFlatbuffData:(id)data root:(const ErrorBlamerResponse *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)return_code;
 @end
@@ -38,40 +38,40 @@ flatbuffers::DetachedBuffer *__38__QSSErrorBlamerResponse_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ErrorBlamerResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSErrorBlamerResponse *)self return_code];
-  v6 = [(QSSErrorBlamerResponse *)self return_str];
-  v7 = v6;
-  if (!v6)
+  return_code = [(QSSErrorBlamerResponse *)self return_code];
+  return_str = [(QSSErrorBlamerResponse *)self return_str];
+  v7 = return_str;
+  if (!return_str)
   {
-    v6 = &stru_2879AE8E0;
+    return_str = &stru_2879AE8E0;
   }
 
-  v8 = [(__CFString *)v6 UTF8String];
-  v9 = strlen(v8);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v8, v9);
+  uTF8String = [(__CFString *)return_str UTF8String];
+  v9 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v9);
 
-  v11 = [(QSSErrorBlamerResponse *)self blamer_report];
-  v12 = v11;
-  if (!v11)
+  blamer_report = [(QSSErrorBlamerResponse *)self blamer_report];
+  v12 = blamer_report;
+  if (!blamer_report)
   {
-    v11 = &stru_2879AE8E0;
+    blamer_report = &stru_2879AE8E0;
   }
 
-  v13 = [(__CFString *)v11 UTF8String];
-  v14 = strlen(v13);
-  LODWORD(v13) = flatbuffers::FlatBufferBuilder::CreateString(a3, v13, v14);
+  uTF8String2 = [(__CFString *)blamer_report UTF8String];
+  v14 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v14);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v15 = *(a3 + 10);
-  v16 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v13);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v15 = *(buffer + 10);
+  v16 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, return_code);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String2);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v16 + v15);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v16 + v15);
 }
 
 - (NSString)blamer_report
@@ -135,42 +135,42 @@ flatbuffers::DetachedBuffer *__38__QSSErrorBlamerResponse_flatbuffData__block_in
   }
 }
 
-- (QSSErrorBlamerResponse)initWithFlatbuffData:(id)a3 root:(const ErrorBlamerResponse *)a4 verify:(BOOL)a5
+- (QSSErrorBlamerResponse)initWithFlatbuffData:(id)data root:(const ErrorBlamerResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v35.receiver = self;
   v35.super_class = QSSErrorBlamerResponse;
   v10 = [(QSSErrorBlamerResponse *)&v35 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_32;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_32;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v30 = v17;
+      v30 = bytes3;
       v31 = v18;
       v32 = xmmword_26914CD70;
       v33 = 0;
@@ -192,9 +192,9 @@ LABEL_32:
       }
     }
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v11->_storage;
-    v11->_storage = v26;
+    v11->_storage = dictionary;
   }
 
   v28 = v11;

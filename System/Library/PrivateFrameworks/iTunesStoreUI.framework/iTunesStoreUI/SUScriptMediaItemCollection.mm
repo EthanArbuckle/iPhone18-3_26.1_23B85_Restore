@@ -1,26 +1,26 @@
 @interface SUScriptMediaItemCollection
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (MPMediaItemCollection)nativeCollection;
 - (NSArray)items;
 - (NSArray)mediaTypes;
 - (SUScriptMediaItem)representativeItem;
-- (SUScriptMediaItemCollection)initWithItems:(id)a3;
+- (SUScriptMediaItemCollection)initWithItems:(id)items;
 - (id)scriptAttributeKeys;
 - (int64_t)count;
 - (void)_beginWatchingLibraryIfNecessary;
-- (void)_libraryChangedNotification:(id)a3;
+- (void)_libraryChangedNotification:(id)notification;
 - (void)dealloc;
 @end
 
 @implementation SUScriptMediaItemCollection
 
-- (SUScriptMediaItemCollection)initWithItems:(id)a3
+- (SUScriptMediaItemCollection)initWithItems:(id)items
 {
   v4 = [(SUScriptObject *)self init];
   if (v4)
   {
-    if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (a3 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()]) != 0)
+    if (!items || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (items = [items copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()]) != 0)
     {
       WebThreadRunOnMainThread();
     }
@@ -29,7 +29,7 @@
     {
       [MEMORY[0x1E69E2F88] throwException:@"Invalid argument"];
 
-      a3 = 0;
+      items = 0;
       v4 = 0;
     }
   }
@@ -83,8 +83,8 @@ void __45__SUScriptMediaItemCollection_initWithItems___block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E696FBA8] object:0];
 
   v4.receiver = self;
   v4.super_class = SUScriptMediaItemCollection;
@@ -93,9 +93,9 @@ void __45__SUScriptMediaItemCollection_initWithItems___block_invoke(uint64_t a1)
 
 - (MPMediaItemCollection)nativeCollection
 {
-  v2 = [(SUScriptObject *)self nativeObject];
+  nativeObject = [(SUScriptObject *)self nativeObject];
 
-  return [(SUScriptNativeObject *)v2 object];
+  return [(SUScriptNativeObject *)nativeObject object];
 }
 
 - (int64_t)count
@@ -130,15 +130,15 @@ uint64_t __36__SUScriptMediaItemCollection_count__block_invoke(uint64_t a1)
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -288,15 +288,15 @@ LABEL_23:
   v2 = v9[5];
   if (v2)
   {
-    v3 = v2;
+    null = v2;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v4 = v3;
+  v4 = null;
   _Block_object_dispose(&v8, 8);
   return v4;
 }
@@ -322,7 +322,7 @@ id __49__SUScriptMediaItemCollection_representativeItem__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_libraryChangedNotification:(id)a3
+- (void)_libraryChangedNotification:(id)notification
 {
   self->_items = 0;
 
@@ -333,22 +333,22 @@ id __49__SUScriptMediaItemCollection_representativeItem__block_invoke(uint64_t a
 {
   if (!self->_watchingLibrary)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     self->_watchingLibrary = 1;
     v4 = *MEMORY[0x1E696FBA8];
 
-    [v3 addObserver:self selector:sel__libraryChangedNotification_ name:v4 object:0];
+    [defaultCenter addObserver:self selector:sel__libraryChangedNotification_ name:v4 object:0];
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_36 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptMediaItemCollection;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -358,14 +358,14 @@ id __49__SUScriptMediaItemCollection_representativeItem__block_invoke(uint64_t a
 {
   v4.receiver = self;
   v4.super_class = SUScriptMediaItemCollection;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_36 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_36 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_36 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"count", @"items", @"items", @"mediaTypes", @"mediaTypes", @"representativeItem", @"representativeItem", 0}];
   }

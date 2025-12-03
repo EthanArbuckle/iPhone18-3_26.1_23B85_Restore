@@ -1,20 +1,20 @@
 @interface SceneSettingsDiffAction
 - (_TtC16SharingUIService23SceneSettingsDiffAction)init;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation SceneSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  if (!a3)
+  if (!scene)
   {
     __break(1u);
     return;
   }
 
-  v8 = a3;
-  if (![v8 delegate])
+  sceneCopy = scene;
+  if (![sceneCopy delegate])
   {
     goto LABEL_5;
   }
@@ -22,7 +22,7 @@
   type metadata accessor for SceneDelegate();
   if (swift_dynamicCastClass())
   {
-    sub_100017390(v8);
+    sub_100017390(sceneCopy);
     swift_unknownObjectRelease();
 LABEL_5:
 

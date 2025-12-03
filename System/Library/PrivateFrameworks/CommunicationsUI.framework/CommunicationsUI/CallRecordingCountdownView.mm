@@ -1,12 +1,12 @@
 @interface CallRecordingCountdownView
-- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithFrame:(CGRect)frame;
 - (void)handleTapClose;
 @end
 
 @implementation CallRecordingCountdownView
 
-- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC16CommunicationsUI26CallRecordingCountdownView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -28,13 +28,13 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI26CallRecordingCountdownView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

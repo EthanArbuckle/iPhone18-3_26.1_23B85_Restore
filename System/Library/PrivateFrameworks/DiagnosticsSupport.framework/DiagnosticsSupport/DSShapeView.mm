@@ -1,83 +1,83 @@
 @interface DSShapeView
-+ (id)circleWithFrame:(CGRect)a3 radius:(double)a4 color:(id)a5;
-+ (id)rectangleWithFrame:(CGRect)a3 borderColor:(id)a4 fillColor:(id)a5;
-+ (id)rectangleWithFrame:(CGRect)a3 borderColor:(id)a4 fillColor:(id)a5 borderWidth:(int)a6;
++ (id)circleWithFrame:(CGRect)frame radius:(double)radius color:(id)color;
++ (id)rectangleWithFrame:(CGRect)frame borderColor:(id)color fillColor:(id)fillColor;
++ (id)rectangleWithFrame:(CGRect)frame borderColor:(id)color fillColor:(id)fillColor borderWidth:(int)width;
 @end
 
 @implementation DSShapeView
 
-+ (id)circleWithFrame:(CGRect)a3 radius:(double)a4 color:(id)a5
++ (id)circleWithFrame:(CGRect)frame radius:(double)radius color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [[DSShapeView alloc] initWithFrame:x, y, width, height];
-  [(DSShapeView *)v11 setBackgroundColor:v10];
-  v12 = [(DSShapeView *)v11 layer];
-  [v12 setCornerRadius:a4];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  height = [[DSShapeView alloc] initWithFrame:x, y, width, height];
+  [(DSShapeView *)height setBackgroundColor:colorCopy];
+  layer = [(DSShapeView *)height layer];
+  [layer setCornerRadius:radius];
 
-  v13 = [v10 CGColor];
-  v14 = [(DSShapeView *)v11 layer];
-  [v14 setBorderColor:v13];
+  cGColor = [colorCopy CGColor];
+  layer2 = [(DSShapeView *)height layer];
+  [layer2 setBorderColor:cGColor];
 
-  v15 = [(DSShapeView *)v11 layer];
-  [v15 setBorderWidth:4.0];
+  layer3 = [(DSShapeView *)height layer];
+  [layer3 setBorderWidth:4.0];
 
-  [(DSShapeView *)v11 setClipsToBounds:1];
-  [(DSShapeView *)v11 setAlpha:1.0];
+  [(DSShapeView *)height setClipsToBounds:1];
+  [(DSShapeView *)height setAlpha:1.0];
 
-  return v11;
+  return height;
 }
 
-+ (id)rectangleWithFrame:(CGRect)a3 borderColor:(id)a4 fillColor:(id)a5
++ (id)rectangleWithFrame:(CGRect)frame borderColor:(id)color fillColor:(id)fillColor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[DSShapeView alloc] initWithFrame:x, y, width, height];
-  [(DSShapeView *)v12 setBackgroundColor:v10];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fillColorCopy = fillColor;
+  colorCopy = color;
+  height = [[DSShapeView alloc] initWithFrame:x, y, width, height];
+  [(DSShapeView *)height setBackgroundColor:fillColorCopy];
 
-  v13 = [v11 CGColor];
-  v14 = [(DSShapeView *)v12 layer];
-  [v14 setBorderColor:v13];
+  cGColor = [colorCopy CGColor];
+  layer = [(DSShapeView *)height layer];
+  [layer setBorderColor:cGColor];
 
-  v15 = [(DSShapeView *)v12 layer];
-  [v15 setBorderWidth:4.0];
+  layer2 = [(DSShapeView *)height layer];
+  [layer2 setBorderWidth:4.0];
 
-  [(DSShapeView *)v12 setClipsToBounds:1];
-  [(DSShapeView *)v12 setAlpha:1.0];
+  [(DSShapeView *)height setClipsToBounds:1];
+  [(DSShapeView *)height setAlpha:1.0];
 
-  return v12;
+  return height;
 }
 
-+ (id)rectangleWithFrame:(CGRect)a3 borderColor:(id)a4 fillColor:(id)a5 borderWidth:(int)a6
++ (id)rectangleWithFrame:(CGRect)frame borderColor:(id)color fillColor:(id)fillColor borderWidth:(int)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
-  v13 = a4;
-  v14 = [[DSShapeView alloc] initWithFrame:x, y, width, height];
-  [(DSShapeView *)v14 setBackgroundColor:v12];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  fillColorCopy = fillColor;
+  colorCopy = color;
+  height = [[DSShapeView alloc] initWithFrame:x, y, width, height];
+  [(DSShapeView *)height setBackgroundColor:fillColorCopy];
 
-  v15 = [v13 CGColor];
-  v16 = [(DSShapeView *)v14 layer];
-  [v16 setBorderColor:v15];
+  cGColor = [colorCopy CGColor];
+  layer = [(DSShapeView *)height layer];
+  [layer setBorderColor:cGColor];
 
-  v17 = a6;
-  v18 = [(DSShapeView *)v14 layer];
-  [v18 setBorderWidth:v17];
+  widthCopy = width;
+  layer2 = [(DSShapeView *)height layer];
+  [layer2 setBorderWidth:widthCopy];
 
-  [(DSShapeView *)v14 setClipsToBounds:1];
-  [(DSShapeView *)v14 setAlpha:1.0];
+  [(DSShapeView *)height setClipsToBounds:1];
+  [(DSShapeView *)height setAlpha:1.0];
 
-  return v14;
+  return height;
 }
 
 @end

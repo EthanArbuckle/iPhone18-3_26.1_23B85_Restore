@@ -1,16 +1,16 @@
 @interface _TVGridViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)_visibleBounds;
 @end
 
 @implementation _TVGridViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVGridView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"_TVGridView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVGridView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"_TVGridView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"_visibleBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (CGRect)_visibleBounds

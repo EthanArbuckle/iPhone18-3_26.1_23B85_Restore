@@ -1,10 +1,10 @@
 @interface HKClinicalIngestionOutcome
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalIngestionOutcome)init;
-- (HKClinicalIngestionOutcome)initWithCoder:(id)a3;
-- (HKClinicalIngestionOutcome)initWithTaskSuccess:(BOOL)a3 taskError:(id)a4 taskRuntime:(double)a5 perAccountOutcomes:(id)a6 analyticsString:(id)a7;
+- (HKClinicalIngestionOutcome)initWithCoder:(id)coder;
+- (HKClinicalIngestionOutcome)initWithTaskSuccess:(BOOL)success taskError:(id)error taskRuntime:(double)runtime perAccountOutcomes:(id)outcomes analyticsString:(id)string;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalIngestionOutcome
@@ -19,31 +19,31 @@
   return 0;
 }
 
-- (HKClinicalIngestionOutcome)initWithTaskSuccess:(BOOL)a3 taskError:(id)a4 taskRuntime:(double)a5 perAccountOutcomes:(id)a6 analyticsString:(id)a7
+- (HKClinicalIngestionOutcome)initWithTaskSuccess:(BOOL)success taskError:(id)error taskRuntime:(double)runtime perAccountOutcomes:(id)outcomes analyticsString:(id)string
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  errorCopy = error;
+  outcomesCopy = outcomes;
+  stringCopy = string;
   v26.receiver = self;
   v26.super_class = HKClinicalIngestionOutcome;
   v15 = [(HKClinicalIngestionOutcome *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    v15->_taskSuccess = a3;
-    v17 = [v12 copy];
+    v15->_taskSuccess = success;
+    v17 = [errorCopy copy];
     taskError = v16->_taskError;
     v16->_taskError = v17;
 
-    v19 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+    v19 = [MEMORY[0x277CCABB0] numberWithDouble:runtime];
     taskRuntime = v16->_taskRuntime;
     v16->_taskRuntime = v19;
 
-    v21 = [v13 copy];
+    v21 = [outcomesCopy copy];
     perAccountOutcomes = v16->_perAccountOutcomes;
     v16->_perAccountOutcomes = v21;
 
-    v23 = [v14 copy];
+    v23 = [stringCopy copy];
     analyticsString = v16->_analyticsString;
     v16->_analyticsString = v23;
   }
@@ -60,129 +60,129 @@
   return v6 ^ [(NSString *)self->_analyticsString hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || (taskSuccess = self->_taskSuccess, taskSuccess != [(HKClinicalIngestionOutcome *)v7 taskSuccess]))
     {
-      LOBYTE(v14) = 0;
+      LOBYTE(taskRuntime2) = 0;
 LABEL_43:
 
       goto LABEL_44;
     }
 
     taskError = self->_taskError;
-    v10 = [(HKClinicalIngestionOutcome *)v7 taskError];
-    if (taskError != v10)
+    taskError = [(HKClinicalIngestionOutcome *)v7 taskError];
+    if (taskError != taskError)
     {
-      v11 = [(HKClinicalIngestionOutcome *)v7 taskError];
-      if (!v11)
+      taskError2 = [(HKClinicalIngestionOutcome *)v7 taskError];
+      if (!taskError2)
       {
-        LOBYTE(v14) = 0;
+        LOBYTE(taskRuntime2) = 0;
         goto LABEL_42;
       }
 
-      v3 = v11;
+      v3 = taskError2;
       v12 = self->_taskError;
-      v13 = [(HKClinicalIngestionOutcome *)v7 taskError];
-      if (![(NSError *)v12 isEqual:v13])
+      taskError3 = [(HKClinicalIngestionOutcome *)v7 taskError];
+      if (![(NSError *)v12 isEqual:taskError3])
       {
-        LOBYTE(v14) = 0;
+        LOBYTE(taskRuntime2) = 0;
 LABEL_41:
 
         goto LABEL_42;
       }
 
-      v42 = v13;
+      v42 = taskError3;
     }
 
     taskRuntime = self->_taskRuntime;
-    v16 = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
-    if (taskRuntime == v16)
+    taskRuntime = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
+    if (taskRuntime == taskRuntime)
     {
       v41 = taskRuntime;
     }
 
     else
     {
-      v14 = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
-      if (!v14)
+      taskRuntime2 = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
+      if (!taskRuntime2)
       {
         goto LABEL_39;
       }
 
       v41 = taskRuntime;
       v17 = self->_taskRuntime;
-      v18 = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
-      if (([(NSNumber *)v17 isEqual:v18]& 1) == 0)
+      taskRuntime3 = [(HKClinicalIngestionOutcome *)v7 taskRuntime];
+      if (([(NSNumber *)v17 isEqual:taskRuntime3]& 1) == 0)
       {
 
-        LOBYTE(v14) = 0;
+        LOBYTE(taskRuntime2) = 0;
         goto LABEL_40;
       }
 
-      v38 = v18;
-      v39 = v14;
+      v38 = taskRuntime3;
+      v39 = taskRuntime2;
     }
 
     perAccountOutcomes = self->_perAccountOutcomes;
-    v40 = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
-    if (perAccountOutcomes == v40)
+    perAccountOutcomes = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
+    if (perAccountOutcomes == perAccountOutcomes)
     {
       v37 = v3;
     }
 
     else
     {
-      v14 = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
-      if (!v14)
+      taskRuntime2 = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
+      if (!taskRuntime2)
       {
         v31 = v38;
         v32 = v39;
-        v30 = v40;
+        v30 = perAccountOutcomes;
         goto LABEL_31;
       }
 
       v20 = self->_perAccountOutcomes;
-      v21 = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
+      perAccountOutcomes2 = [(HKClinicalIngestionOutcome *)v7 perAccountOutcomes];
       v22 = v20;
-      v23 = v21;
-      if (![(NSArray *)v22 isEqualToArray:v21])
+      v23 = perAccountOutcomes2;
+      if (![(NSArray *)v22 isEqualToArray:perAccountOutcomes2])
       {
 
-        LOBYTE(v14) = 0;
-        v29 = v41 == v16;
+        LOBYTE(taskRuntime2) = 0;
+        v29 = v41 == taskRuntime;
         goto LABEL_34;
       }
 
       v34 = v23;
-      v36 = v14;
+      v36 = taskRuntime2;
       v37 = v3;
     }
 
     analyticsString = self->_analyticsString;
-    v25 = [(HKClinicalIngestionOutcome *)v7 analyticsString];
-    LOBYTE(v14) = analyticsString == v25;
-    if (analyticsString != v25)
+    analyticsString = [(HKClinicalIngestionOutcome *)v7 analyticsString];
+    LOBYTE(taskRuntime2) = analyticsString == analyticsString;
+    if (analyticsString != analyticsString)
     {
-      v26 = [(HKClinicalIngestionOutcome *)v7 analyticsString];
-      if (v26)
+      analyticsString2 = [(HKClinicalIngestionOutcome *)v7 analyticsString];
+      if (analyticsString2)
       {
-        v27 = v26;
-        v14 = self->_analyticsString;
-        v28 = [(HKClinicalIngestionOutcome *)v7 analyticsString];
-        LOBYTE(v14) = [v14 isEqualToString:v28];
+        v27 = analyticsString2;
+        taskRuntime2 = self->_analyticsString;
+        analyticsString3 = [(HKClinicalIngestionOutcome *)v7 analyticsString];
+        LOBYTE(taskRuntime2) = [taskRuntime2 isEqualToString:analyticsString3];
 
-        if (perAccountOutcomes != v40)
+        if (perAccountOutcomes != perAccountOutcomes)
         {
         }
 
-        v29 = v41 == v16;
+        v29 = v41 == taskRuntime;
         v3 = v37;
 LABEL_34:
         v32 = v39;
@@ -195,8 +195,8 @@ LABEL_38:
 LABEL_39:
 
 LABEL_40:
-        v13 = v42;
-        if (taskError != v10)
+        taskError3 = v42;
+        if (taskError != taskError)
         {
           goto LABEL_41;
         }
@@ -207,14 +207,14 @@ LABEL_42:
       }
     }
 
-    v30 = v40;
-    if (perAccountOutcomes == v40)
+    v30 = perAccountOutcomes;
+    if (perAccountOutcomes == perAccountOutcomes)
     {
 
       v3 = v37;
       v31 = v38;
       v32 = v39;
-      if (v41 == v16)
+      if (v41 == taskRuntime)
       {
         goto LABEL_39;
       }
@@ -229,7 +229,7 @@ LABEL_37:
     v32 = v39;
 LABEL_31:
 
-    if (v41 == v16)
+    if (v41 == taskRuntime)
     {
       goto LABEL_39;
     }
@@ -237,60 +237,60 @@ LABEL_31:
     goto LABEL_37;
   }
 
-  LOBYTE(v14) = 1;
+  LOBYTE(taskRuntime2) = 1;
 LABEL_44:
 
-  return v14;
+  return taskRuntime2;
 }
 
-- (HKClinicalIngestionOutcome)initWithCoder:(id)a3
+- (HKClinicalIngestionOutcome)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"TaskSuccess"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TaskError"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TaskRuntime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"TaskSuccess"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TaskError"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TaskRuntime"];
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"PerAccountOutcomes"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnalyticsString"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"PerAccountOutcomes"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnalyticsString"];
 
   if (v7)
   {
     [v7 doubleValue];
     self = [(HKClinicalIngestionOutcome *)self initWithTaskSuccess:v5 taskError:v6 taskRuntime:v11 perAccountOutcomes:v12 analyticsString:?];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:self->_taskSuccess forKey:@"TaskSuccess"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_taskSuccess forKey:@"TaskSuccess"];
   taskError = self->_taskError;
   if (taskError)
   {
-    [v7 encodeObject:taskError forKey:@"TaskError"];
+    [coderCopy encodeObject:taskError forKey:@"TaskError"];
   }
 
-  [v7 encodeObject:self->_taskRuntime forKey:@"TaskRuntime"];
+  [coderCopy encodeObject:self->_taskRuntime forKey:@"TaskRuntime"];
   perAccountOutcomes = self->_perAccountOutcomes;
   if (perAccountOutcomes)
   {
-    [v7 encodeObject:perAccountOutcomes forKey:@"PerAccountOutcomes"];
+    [coderCopy encodeObject:perAccountOutcomes forKey:@"PerAccountOutcomes"];
   }
 
   analyticsString = self->_analyticsString;
   if (analyticsString)
   {
-    [v7 encodeObject:analyticsString forKey:@"AnalyticsString"];
+    [coderCopy encodeObject:analyticsString forKey:@"AnalyticsString"];
   }
 }
 

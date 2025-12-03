@@ -1,5 +1,5 @@
 @interface BWNodeEnumerator
-- (BWNodeEnumerator)initWithGraph:(id)a3;
+- (BWNodeEnumerator)initWithGraph:(id)graph;
 - (uint64_t)_updateVisitedCount:(uint64_t)result;
 - (void)dealloc;
 @end
@@ -13,14 +13,14 @@
   [(BWNodeEnumerator *)&v3 dealloc];
 }
 
-- (BWNodeEnumerator)initWithGraph:(id)a3
+- (BWNodeEnumerator)initWithGraph:(id)graph
 {
   v6.receiver = self;
   v6.super_class = BWNodeEnumerator;
   v4 = [(BWNodeEnumerator *)&v6 init];
   if (v4)
   {
-    v4->_graph = a3;
+    v4->_graph = graph;
     v4->_depth = 0;
     v4->_nodeVisitCountMap = objc_alloc_init(MEMORY[0x1E695DF90]);
   }

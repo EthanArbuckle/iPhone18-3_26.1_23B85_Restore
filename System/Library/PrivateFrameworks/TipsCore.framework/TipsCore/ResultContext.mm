@@ -1,6 +1,6 @@
 @interface ResultContext
 - (_TtC8TipsCore13ResultContext)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ResultContext
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ResultContext.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ResultContext.encode(with:)(coderCopy);
 }
 
 @end

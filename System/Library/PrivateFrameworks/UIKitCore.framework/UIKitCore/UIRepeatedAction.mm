@@ -1,13 +1,13 @@
 @interface UIRepeatedAction
-+ (UIRepeatedAction)actionWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
-+ (id)_invocationForTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
-- (BOOL)_shouldBeginCurrentRepetitionForPhase:(unint64_t)a3;
++ (UIRepeatedAction)actionWithTarget:(id)target selector:(SEL)selector object:(id)object;
++ (id)_invocationForTarget:(id)target selector:(SEL)selector object:(id)object;
+- (BOOL)_shouldBeginCurrentRepetitionForPhase:(unint64_t)phase;
 - (BOOL)_shouldInvokeRepeatedAction;
 - (BOOL)invoke;
-- (UIRepeatedAction)initWithInvocation:(id)a3;
-- (UIRepeatedAction)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
+- (UIRepeatedAction)initWithInvocation:(id)invocation;
+- (UIRepeatedAction)initWithTarget:(id)target selector:(SEL)selector object:(id)object;
 - (UIRepeatedActionDelegate)delegate;
-- (void)_adjustInvocationForPhase:(unint64_t)a3;
+- (void)_adjustInvocationForPhase:(unint64_t)phase;
 - (void)_invocationTimerFire;
 - (void)_preInvocationTimerFire;
 - (void)_repeatedTimerFire;
@@ -15,28 +15,28 @@
 - (void)invalidate;
 - (void)reset;
 - (void)schedule;
-- (void)scheduleWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5;
-- (void)setInvocationDelay:(double)a3;
-- (void)setPreInvocationDelay:(double)a3;
+- (void)scheduleWithTarget:(id)target selector:(SEL)selector object:(id)object;
+- (void)setInvocationDelay:(double)delay;
+- (void)setPreInvocationDelay:(double)delay;
 @end
 
 @implementation UIRepeatedAction
 
-+ (id)_invocationForTarget:(id)a3 selector:(SEL)a4 object:(id)a5
++ (id)_invocationForTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v7 = a3;
-  v15 = a5;
-  v8 = [v7 methodSignatureForSelector:a4];
+  targetCopy = target;
+  objectCopy = object;
+  v8 = [targetCopy methodSignatureForSelector:selector];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_4;
   }
 
-  v10 = [v8 numberOfArguments];
-  if (v10 <= 1)
+  numberOfArguments = [v8 numberOfArguments];
+  if (numberOfArguments <= 1)
   {
-    v11 = NSStringFromSelector(a4);
+    v11 = NSStringFromSelector(selector);
     NSLog(&cfstr_SMethodRequire.isa, "+[UIRepeatedAction _invocationForTarget:selector:object:]", v11);
 
 LABEL_4:
@@ -44,13 +44,13 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v13 = v10;
+  v13 = numberOfArguments;
   v12 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v9];
-  [v12 setTarget:v7];
-  [v12 setSelector:a4];
+  [v12 setTarget:targetCopy];
+  [v12 setSelector:selector];
   if (v13 != 2)
   {
-    [v12 setArgument:&v15 atIndex:2];
+    [v12 setArgument:&objectCopy atIndex:2];
   }
 
   [v12 retainArguments];
@@ -59,46 +59,46 @@ LABEL_8:
   return v12;
 }
 
-+ (UIRepeatedAction)actionWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
++ (UIRepeatedAction)actionWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTarget:v9 selector:a4 object:v8];
+  objectCopy = object;
+  targetCopy = target;
+  v10 = [[self alloc] initWithTarget:targetCopy selector:selector object:objectCopy];
 
   return v10;
 }
 
-- (UIRepeatedAction)initWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (UIRepeatedAction)initWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() _invocationForTarget:v9 selector:a4 object:v8];
+  objectCopy = object;
+  targetCopy = target;
+  v10 = [objc_opt_class() _invocationForTarget:targetCopy selector:selector object:objectCopy];
 
   if (v10)
   {
     self = [(UIRepeatedAction *)self initWithInvocation:v10];
-    [(UIRepeatedAction *)self setInvocationArgument:v8];
-    v11 = self;
+    [(UIRepeatedAction *)self setInvocationArgument:objectCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (UIRepeatedAction)initWithInvocation:(id)a3
+- (UIRepeatedAction)initWithInvocation:(id)invocation
 {
-  v5 = a3;
+  invocationCopy = invocation;
   v9.receiver = self;
   v9.super_class = UIRepeatedAction;
   v6 = [(UIRepeatedAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_invocation, a3);
+    objc_storeStrong(&v6->_invocation, invocation);
     *&v7->_preInvocationDelay = xmmword_18A682F90;
     v7->_repeatedDelay = 0.1;
   }
@@ -106,22 +106,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)scheduleWithTarget:(id)a3 selector:(SEL)a4 object:(id)a5
+- (void)scheduleWithTarget:(id)target selector:(SEL)selector object:(id)object
 {
-  v8 = a5;
-  v9 = a3;
+  objectCopy = object;
+  targetCopy = target;
   [(UIRepeatedAction *)self _resetInternalState];
-  v10 = [objc_opt_class() _invocationForTarget:v9 selector:a4 object:v8];
+  v10 = [objc_opt_class() _invocationForTarget:targetCopy selector:selector object:objectCopy];
 
   [(UIRepeatedAction *)self setInvocation:v10];
-  [(UIRepeatedAction *)self setInvocationArgument:v8];
+  [(UIRepeatedAction *)self setInvocationArgument:objectCopy];
 
   [(UIRepeatedAction *)self schedule];
 }
 
 - (BOOL)invoke
 {
-  v3 = [(UIRepeatedAction *)self invocation];
+  invocation = [(UIRepeatedAction *)self invocation];
   if ((self->_didCompletePreInvocationDelay || ([(UIRepeatedAction *)self preInvocationDelay], v4 > 0.0)) && ![(UIRepeatedAction *)self _shouldInvokeRepeatedAction])
   {
     v7 = 0;
@@ -129,39 +129,39 @@ LABEL_8:
 
   else
   {
-    v5 = [(UIRepeatedAction *)self delegate];
-    v6 = [v3 target];
-    [v5 repeatedAction:self willInvokeWithTarget:v6 object:self->_invocationArgument];
+    delegate = [(UIRepeatedAction *)self delegate];
+    target = [invocation target];
+    [delegate repeatedAction:self willInvokeWithTarget:target object:self->_invocationArgument];
 
-    [v3 invoke];
+    [invocation invoke];
     v7 = 1;
   }
 
   return v7;
 }
 
-- (void)_adjustInvocationForPhase:(unint64_t)a3
+- (void)_adjustInvocationForPhase:(unint64_t)phase
 {
-  v5 = [(UIRepeatedAction *)self invocationArgument];
-  if (!v5)
+  invocationArgument = [(UIRepeatedAction *)self invocationArgument];
+  if (!invocationArgument)
   {
     return;
   }
 
-  v11 = v5;
-  v6 = [(UIRepeatedAction *)self invocation];
-  v7 = [v6 methodSignature];
-  if ([v7 numberOfArguments] > 1)
+  v11 = invocationArgument;
+  invocation = [(UIRepeatedAction *)self invocation];
+  methodSignature = [invocation methodSignature];
+  if ([methodSignature numberOfArguments] > 1)
   {
-    v8 = [(UIRepeatedAction *)self delegate];
+    delegate = [(UIRepeatedAction *)self delegate];
 
-    if (!v8)
+    if (!delegate)
     {
       return;
     }
 
-    v9 = [(UIRepeatedAction *)self delegate];
-    v11 = [v9 repeatedAction:self prepareInvocationObject:self->_invocationArgument forPhase:a3];
+    delegate2 = [(UIRepeatedAction *)self delegate];
+    v11 = [delegate2 repeatedAction:self prepareInvocationObject:self->_invocationArgument forPhase:phase];
 
     v10 = v11;
     if (self->_invocationArgument == v11)
@@ -170,8 +170,8 @@ LABEL_8:
     }
 
     [(UIRepeatedAction *)self setInvocationArgument:?];
-    v6 = [(UIRepeatedAction *)self invocation];
-    [v6 setArgument:&self->_invocationArgument atIndex:2];
+    invocation = [(UIRepeatedAction *)self invocation];
+    [invocation setArgument:&self->_invocationArgument atIndex:2];
   }
 
   else
@@ -182,13 +182,13 @@ LABEL_8:
 LABEL_8:
 }
 
-- (BOOL)_shouldBeginCurrentRepetitionForPhase:(unint64_t)a3
+- (BOOL)_shouldBeginCurrentRepetitionForPhase:(unint64_t)phase
 {
-  v5 = [(UIRepeatedAction *)self delegate];
-  v6 = v5;
-  if (v5)
+  delegate = [(UIRepeatedAction *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    v7 = [v5 shouldBeginCurrentRepetitionOfRepeatedAction:self forPhase:a3];
+    v7 = [delegate shouldBeginCurrentRepetitionOfRepeatedAction:self forPhase:phase];
   }
 
   else
@@ -201,12 +201,12 @@ LABEL_8:
 
 - (BOOL)_shouldInvokeRepeatedAction
 {
-  v3 = [(UIRepeatedAction *)self delegate];
-  if (v3)
+  delegate = [(UIRepeatedAction *)self delegate];
+  if (delegate)
   {
-    v4 = [(UIRepeatedAction *)self invocation];
-    v5 = [v4 target];
-    v6 = [v3 shouldInvokeRepeatedAction:self forTarget:v5 object:self->_invocationArgument];
+    invocation = [(UIRepeatedAction *)self invocation];
+    target = [invocation target];
+    v6 = [delegate shouldInvokeRepeatedAction:self forTarget:target object:self->_invocationArgument];
   }
 
   else
@@ -222,9 +222,9 @@ LABEL_8:
   if ([(UIRepeatedAction *)self _shouldBeginCurrentRepetitionForPhase:1])
   {
     [(UIRepeatedAction *)self _adjustInvocationForPhase:1];
-    v3 = [(UIRepeatedAction *)self invoke];
+    invoke = [(UIRepeatedAction *)self invoke];
     self->_didCompletePreInvocationDelay = 1;
-    if (!v3)
+    if (!invoke)
     {
       return;
     }
@@ -243,9 +243,9 @@ LABEL_8:
   if ([(UIRepeatedAction *)self _shouldBeginCurrentRepetitionForPhase:2])
   {
     [(UIRepeatedAction *)self _adjustInvocationForPhase:2];
-    v3 = [(UIRepeatedAction *)self invoke];
+    invoke = [(UIRepeatedAction *)self invoke];
     self->_didCompleteInvocationDelay = 1;
-    if (!v3)
+    if (!invoke)
     {
       return;
     }
@@ -270,8 +270,8 @@ LABEL_8:
 
 - (void)schedule
 {
-  v3 = [(UIRepeatedAction *)self timer];
-  [v3 invalidate];
+  timer = [(UIRepeatedAction *)self timer];
+  [timer invalidate];
 
   [(UIRepeatedAction *)self setTimer:0];
   if (self->_skipInitialFire && !self->_didCompletePreInvocationDelay)
@@ -333,8 +333,8 @@ LABEL_23:
 
 - (void)invalidate
 {
-  v3 = [(UIRepeatedAction *)self timer];
-  [v3 invalidate];
+  timer = [(UIRepeatedAction *)self timer];
+  [timer invalidate];
 
   [(UIRepeatedAction *)self setTimer:0];
   [(UIRepeatedAction *)self setInvocation:0];
@@ -350,26 +350,26 @@ LABEL_23:
   *&self->_disableRepeat = 0;
 }
 
-- (void)setPreInvocationDelay:(double)a3
+- (void)setPreInvocationDelay:(double)delay
 {
-  self->_preInvocationDelay = a3;
-  v4 = [(UIRepeatedAction *)self timer];
-  v5 = [v4 isValid];
+  self->_preInvocationDelay = delay;
+  timer = [(UIRepeatedAction *)self timer];
+  isValid = [timer isValid];
 
-  if (v5)
+  if (isValid)
   {
 
     [(UIRepeatedAction *)self schedule];
   }
 }
 
-- (void)setInvocationDelay:(double)a3
+- (void)setInvocationDelay:(double)delay
 {
-  self->_invocationDelay = a3;
-  v4 = [(UIRepeatedAction *)self timer];
-  v5 = [v4 isValid];
+  self->_invocationDelay = delay;
+  timer = [(UIRepeatedAction *)self timer];
+  isValid = [timer isValid];
 
-  if (v5)
+  if (isValid)
   {
 
     [(UIRepeatedAction *)self schedule];

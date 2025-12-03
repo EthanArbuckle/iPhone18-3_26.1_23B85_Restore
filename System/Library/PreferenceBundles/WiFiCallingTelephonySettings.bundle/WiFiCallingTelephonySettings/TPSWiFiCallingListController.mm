@@ -14,19 +14,19 @@
 - (TPSCloudCallingThumperProvisioningURLController)thumperProvisioningURLController;
 - (TPSWiFiCallingController)callingController;
 - (UIAlertController)privacyAlertController;
-- (id)isMainSwitchOn:(id)a3;
-- (id)isRoamingSwitchOn:(id)a3;
-- (id)isThumperSwitchOn:(id)a3;
+- (id)isMainSwitchOn:(id)on;
+- (id)isRoamingSwitchOn:(id)on;
+- (id)isThumperSwitchOn:(id)on;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)configureCell:(id)a3;
-- (void)configureCell:(id)a3 forSpecifier:(id)a4;
-- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)a3;
-- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)a3;
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4;
-- (void)setRoamingSwitchOn:(id)a3 specifier:(id)a4;
-- (void)setThumperSwitchOn:(id)a3 specifier:(id)a4;
-- (void)updateEmergencyAddress:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)configureCell:(id)cell;
+- (void)configureCell:(id)cell forSpecifier:(id)specifier;
+- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)d;
+- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)notification;
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier;
+- (void)setRoamingSwitchOn:(id)on specifier:(id)specifier;
+- (void)setThumperSwitchOn:(id)on specifier:(id)specifier;
+- (void)updateEmergencyAddress:(id)address;
 @end
 
 @implementation TPSWiFiCallingListController
@@ -37,10 +37,10 @@
   v4 = *&self->TPSCloudCallingListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TPSWiFiCallingListController *)self callingController];
-    v6 = [v5 subscriptionCapabilities];
+    callingController = [(TPSWiFiCallingListController *)self callingController];
+    subscriptionCapabilities = [callingController subscriptionCapabilities];
 
-    if (!v6)
+    if (!subscriptionCapabilities)
     {
 LABEL_27:
 
@@ -49,19 +49,19 @@ LABEL_27:
     }
 
     v7 = +[NSMutableArray array];
-    v8 = [(TPSWiFiCallingListController *)self callingController];
-    v9 = [v8 localizedCarrierName];
+    callingController2 = [(TPSWiFiCallingListController *)self callingController];
+    localizedCarrierName = [callingController2 localizedCarrierName];
 
-    if (![v6 supportsWiFiCalling])
+    if (![subscriptionCapabilities supportsWiFiCalling])
     {
 LABEL_24:
       if ([(TPSWiFiCallingListController *)self isThumperSpecifierVisible])
       {
-        v24 = [(TPSWiFiCallingListController *)self thumperGroupSpecifier];
-        [v7 addObject:v24];
+        thumperGroupSpecifier = [(TPSWiFiCallingListController *)self thumperGroupSpecifier];
+        [v7 addObject:thumperGroupSpecifier];
 
-        v25 = [(TPSWiFiCallingListController *)self thumperSwitchSpecifier];
-        [v7 addObject:v25];
+        thumperSwitchSpecifier = [(TPSWiFiCallingListController *)self thumperSwitchSpecifier];
+        [v7 addObject:thumperSwitchSpecifier];
       }
 
       v26 = [v7 copy];
@@ -71,22 +71,22 @@ LABEL_24:
       goto LABEL_27;
     }
 
-    v10 = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
-    [v7 addObject:v10];
+    mainGroupSpecifier = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
+    [v7 addObject:mainGroupSpecifier];
 
-    v11 = [(TPSWiFiCallingListController *)self mainSwitchSpecifier];
-    [v7 addObject:v11];
+    mainSwitchSpecifier = [(TPSWiFiCallingListController *)self mainSwitchSpecifier];
+    [v7 addObject:mainSwitchSpecifier];
 
-    if ([v6 supportsWiFiCallingRoaming])
+    if ([subscriptionCapabilities supportsWiFiCallingRoaming])
     {
-      v12 = [(TPSWiFiCallingListController *)self roamingGroupSpecifier];
-      [v7 addObject:v12];
+      roamingGroupSpecifier = [(TPSWiFiCallingListController *)self roamingGroupSpecifier];
+      [v7 addObject:roamingGroupSpecifier];
 
-      v13 = [(TPSWiFiCallingListController *)self roamingSwitchSpecifier];
-      [v7 addObject:v13];
+      roamingSwitchSpecifier = [(TPSWiFiCallingListController *)self roamingSwitchSpecifier];
+      [v7 addObject:roamingSwitchSpecifier];
     }
 
-    if ([v6 wiFiCallingProvisioningStatus] == 1)
+    if ([subscriptionCapabilities wiFiCallingProvisioningStatus] == 1)
     {
       goto LABEL_7;
     }
@@ -95,17 +95,17 @@ LABEL_24:
     {
       if ([(TPSWiFiCallingListController *)self isEmergencyAddressSpecifierVisible])
       {
-        v16 = [(TPSWiFiCallingListController *)self emergencyAddressGroupSpecifier];
-        [v7 addObject:v16];
+        emergencyAddressGroupSpecifier = [(TPSWiFiCallingListController *)self emergencyAddressGroupSpecifier];
+        [v7 addObject:emergencyAddressGroupSpecifier];
 
-        v17 = [(TPSWiFiCallingListController *)self emergencyAddressButtonSpecifier];
-        [v7 addObject:v17];
+        emergencyAddressButtonSpecifier = [(TPSWiFiCallingListController *)self emergencyAddressButtonSpecifier];
+        [v7 addObject:emergencyAddressButtonSpecifier];
 
-        if ([v9 length])
+        if ([localizedCarrierName length])
         {
           v18 = TUStringKeyForNetwork();
           v19 = [TPSWiFiCallingStrings localizedStringForKey:v18];
-          v15 = [NSString stringWithFormat:v19, v9];
+          v15 = [NSString stringWithFormat:v19, localizedCarrierName];
         }
 
         else
@@ -117,25 +117,25 @@ LABEL_24:
         v21 = TUStringKeyForNetwork();
         v14 = [TPSWiFiCallingStrings localizedStringForKey:v21];
 
-        v20 = [(TPSWiFiCallingListController *)self emergencyAddressGroupSpecifier];
-        [v20 setProperty:v14 forKey:PSFooterTextGroupKey];
+        emergencyAddressGroupSpecifier2 = [(TPSWiFiCallingListController *)self emergencyAddressGroupSpecifier];
+        [emergencyAddressGroupSpecifier2 setProperty:v14 forKey:PSFooterTextGroupKey];
         goto LABEL_20;
       }
 
-      if ([v9 length])
+      if ([localizedCarrierName length])
       {
         v14 = TUStringKeyForNetwork();
-        v20 = [TPSWiFiCallingStrings localizedStringForKey:v14];
-        [NSString stringWithFormat:v20, v9, v29];
+        emergencyAddressGroupSpecifier2 = [TPSWiFiCallingStrings localizedStringForKey:v14];
+        [NSString stringWithFormat:emergencyAddressGroupSpecifier2, localizedCarrierName, v29];
         goto LABEL_16;
       }
     }
 
-    else if ([v9 length])
+    else if ([localizedCarrierName length])
     {
       v14 = TUStringKeyForNetwork();
-      v20 = [TPSWiFiCallingStrings localizedStringForKey:v14];
-      [NSString stringWithFormat:v20, v9, v9];
+      emergencyAddressGroupSpecifier2 = [TPSWiFiCallingStrings localizedStringForKey:v14];
+      [NSString stringWithFormat:emergencyAddressGroupSpecifier2, localizedCarrierName, localizedCarrierName];
       v15 = LABEL_16:;
 LABEL_20:
 
@@ -149,12 +149,12 @@ LABEL_21:
 
     if ([v15 length])
     {
-      v22 = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
-      [v22 setProperty:v15 forKey:PSFooterTextGroupKey];
+      mainGroupSpecifier2 = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
+      [mainGroupSpecifier2 setProperty:v15 forKey:PSFooterTextGroupKey];
     }
 
-    v23 = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
-    [(TPSWiFiCallingListController *)self appendAboutWiFiCallingFooterToGroupSpecifier:v23];
+    mainGroupSpecifier3 = [(TPSWiFiCallingListController *)self mainGroupSpecifier];
+    [(TPSWiFiCallingListController *)self appendAboutWiFiCallingFooterToGroupSpecifier:mainGroupSpecifier3];
 
     goto LABEL_24;
   }
@@ -164,11 +164,11 @@ LABEL_28:
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = TPSWiFiCallingListController;
-  v5 = [(TPSWiFiCallingListController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(TPSWiFiCallingListController *)&v7 tableView:view cellForRowAtIndexPath:path];
   [(TPSWiFiCallingListController *)self configureCell:v5];
 
   return v5;
@@ -312,23 +312,23 @@ LABEL_28:
   return thumperSwitchSpecifier;
 }
 
-- (id)isMainSwitchOn:(id)a3
+- (id)isMainSwitchOn:(id)on
 {
-  v3 = [(TPSWiFiCallingListController *)self callingController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isWiFiCallingEnabled]);
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [callingController isWiFiCallingEnabled]);
 
   return v4;
 }
 
-- (void)setMainSwitchOn:(id)a3 specifier:(id)a4
+- (void)setMainSwitchOn:(id)on specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:PSControlKey];
-  [v7 setOn:objc_msgSend(v6 animated:{"BOOLValue"), 1}];
+  onCopy = on;
+  v7 = [specifier propertyForKey:PSControlKey];
+  [v7 setOn:objc_msgSend(onCopy animated:{"BOOLValue"), 1}];
   v8 = TPSWiFiCallingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v6 BOOLValue])
+    if ([onCopy BOOLValue])
     {
       v9 = @"Enabling";
     }
@@ -338,58 +338,58 @@ LABEL_28:
       v9 = @"Disabling";
     }
 
-    v10 = [(TPSWiFiCallingListController *)self subscriptionContext];
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
     v12 = 138412546;
     v13 = v9;
     v14 = 2112;
-    v15 = v10;
+    v15 = subscriptionContext;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ WiFi Calling services for subscription context %@.", &v12, 0x16u);
   }
 
-  if ([v6 BOOLValue])
+  if ([onCopy BOOLValue])
   {
-    v11 = [(TPSWiFiCallingListController *)self privacyAlertController];
-    [(TPSWiFiCallingListController *)self presentViewController:v11 animated:1 completion:0];
+    privacyAlertController = [(TPSWiFiCallingListController *)self privacyAlertController];
+    [(TPSWiFiCallingListController *)self presentViewController:privacyAlertController animated:1 completion:0];
   }
 
   else
   {
-    v11 = [(TPSWiFiCallingListController *)self callingController];
-    [v11 setWiFiCallingEnabled:0];
+    privacyAlertController = [(TPSWiFiCallingListController *)self callingController];
+    [privacyAlertController setWiFiCallingEnabled:0];
   }
 }
 
-- (void)updateEmergencyAddress:(id)a3
+- (void)updateEmergencyAddress:(id)address
 {
-  v4 = [(TPSWiFiCallingListController *)self callingController];
-  v5 = [v4 subscriptionCapabilities];
-  [v5 invalidateAndRefreshWiFiCallingProvisioningURL];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  subscriptionCapabilities = [callingController subscriptionCapabilities];
+  [subscriptionCapabilities invalidateAndRefreshWiFiCallingProvisioningURL];
 
-  v7 = [(TPSWiFiCallingListController *)self emergencyAddressURLController];
-  v6 = [v7 updateEmergencyAddressController];
-  [(TPSWiFiCallingListController *)self presentOrUpdateViewController:v6];
+  emergencyAddressURLController = [(TPSWiFiCallingListController *)self emergencyAddressURLController];
+  updateEmergencyAddressController = [emergencyAddressURLController updateEmergencyAddressController];
+  [(TPSWiFiCallingListController *)self presentOrUpdateViewController:updateEmergencyAddressController];
 }
 
-- (id)isRoamingSwitchOn:(id)a3
+- (id)isRoamingSwitchOn:(id)on
 {
-  v3 = [(TPSWiFiCallingListController *)self callingController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isWiFiCallingRoamingEnabled]);
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [callingController isWiFiCallingRoamingEnabled]);
 
   return v4;
 }
 
-- (void)setRoamingSwitchOn:(id)a3 specifier:(id)a4
+- (void)setRoamingSwitchOn:(id)on specifier:(id)specifier
 {
   v6 = PSControlKey;
-  v7 = a3;
-  v8 = [a4 propertyForKey:v6];
-  [v8 setOn:objc_msgSend(v7 animated:{"BOOLValue"), 1}];
-  v9 = [v7 BOOLValue];
+  onCopy = on;
+  v8 = [specifier propertyForKey:v6];
+  [v8 setOn:objc_msgSend(onCopy animated:{"BOOLValue"), 1}];
+  bOOLValue = [onCopy BOOLValue];
 
   v10 = TPSWiFiCallingLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v9)
+    if (bOOLValue)
     {
       v11 = @"Enabling";
     }
@@ -399,35 +399,35 @@ LABEL_28:
       v11 = @"Disabling";
     }
 
-    v12 = [(TPSWiFiCallingListController *)self subscriptionContext];
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
     v14 = 138412546;
     v15 = v11;
     v16 = 2112;
-    v17 = v12;
+    v17 = subscriptionContext;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%@ WiFi Calling services while roaming for subscription context %@.", &v14, 0x16u);
   }
 
-  v13 = [(TPSWiFiCallingListController *)self callingController];
-  [v13 setWiFiCallingRoamingEnabled:v9];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  [callingController setWiFiCallingRoamingEnabled:bOOLValue];
 }
 
-- (id)isThumperSwitchOn:(id)a3
+- (id)isThumperSwitchOn:(id)on
 {
-  v3 = [(TPSWiFiCallingListController *)self callingController];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isThumperCallingEnabled]);
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [callingController isThumperCallingEnabled]);
 
   return v4;
 }
 
-- (void)setThumperSwitchOn:(id)a3 specifier:(id)a4
+- (void)setThumperSwitchOn:(id)on specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = [a4 propertyForKey:PSControlKey];
-  [v7 setOn:objc_msgSend(v6 animated:{"BOOLValue"), 1}];
+  onCopy = on;
+  v7 = [specifier propertyForKey:PSControlKey];
+  [v7 setOn:objc_msgSend(onCopy animated:{"BOOLValue"), 1}];
   v8 = TPSWiFiCallingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v6 BOOLValue])
+    if ([onCopy BOOLValue])
     {
       v9 = @"Enabling";
     }
@@ -437,20 +437,20 @@ LABEL_28:
       v9 = @"Disabling";
     }
 
-    v10 = [(TPSWiFiCallingListController *)self subscriptionContext];
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
     v18 = 138412546;
     v19 = v9;
     v20 = 2112;
-    v21 = v10;
+    v21 = subscriptionContext;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%@ Thumper Calling services for subscription context %@.", &v18, 0x16u);
   }
 
-  if ([v6 BOOLValue])
+  if ([onCopy BOOLValue])
   {
-    v11 = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
-    v12 = [v11 shouldEnableCapability];
+    thumperProvisioningURLController = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
+    shouldEnableCapability = [thumperProvisioningURLController shouldEnableCapability];
 
-    if (v12)
+    if (shouldEnableCapability)
     {
       v13 = TPSWiFiCallingLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -459,26 +459,26 @@ LABEL_28:
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Capability should be enabled, so enabling it directly now", &v18, 2u);
       }
 
-      v14 = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
-      [v14 enableCapability];
+      thumperProvisioningURLController2 = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
+      [thumperProvisioningURLController2 enableCapability];
     }
 
     else
     {
-      v15 = [(TPSWiFiCallingListController *)self callingController];
-      v16 = [v15 subscriptionCapabilities];
-      [v16 invalidateAndRefreshThumperCallingProvisioningURL];
+      callingController = [(TPSWiFiCallingListController *)self callingController];
+      subscriptionCapabilities = [callingController subscriptionCapabilities];
+      [subscriptionCapabilities invalidateAndRefreshThumperCallingProvisioningURL];
 
-      v14 = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
-      v17 = [v14 provisionCapabilityController];
-      [(TPSWiFiCallingListController *)self presentOrUpdateViewController:v17];
+      thumperProvisioningURLController2 = [(TPSWiFiCallingListController *)self thumperProvisioningURLController];
+      provisionCapabilityController = [thumperProvisioningURLController2 provisionCapabilityController];
+      [(TPSWiFiCallingListController *)self presentOrUpdateViewController:provisionCapabilityController];
     }
   }
 
   else
   {
-    v14 = [(TPSWiFiCallingListController *)self callingController];
-    [v14 setThumperCallingEnabled:0];
+    thumperProvisioningURLController2 = [(TPSWiFiCallingListController *)self callingController];
+    [thumperProvisioningURLController2 setThumperCallingEnabled:0];
   }
 }
 
@@ -487,10 +487,10 @@ LABEL_28:
   callingController = self->_callingController;
   if (!callingController)
   {
-    v4 = [(TPSWiFiCallingListController *)self specifier];
+    specifier = [(TPSWiFiCallingListController *)self specifier];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v4 propertyForKey:v6];
+    v7 = [specifier propertyForKey:v6];
     v8 = self->_callingController;
     self->_callingController = v7;
 
@@ -499,10 +499,10 @@ LABEL_28:
       goto LABEL_6;
     }
 
-    v9 = [(TPSWiFiCallingListController *)self subscriptionContext];
-    if (v9)
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
+    if (subscriptionContext)
     {
-      v10 = [[TPSWiFiCallingController alloc] initWithSubscriptionContext:v9];
+      v10 = [[TPSWiFiCallingController alloc] initWithSubscriptionContext:subscriptionContext];
       v11 = self->_callingController;
       self->_callingController = v10;
     }
@@ -527,45 +527,45 @@ LABEL_6:
 
 - (BOOL)isEmergencyAddressSpecifierVisible
 {
-  v2 = [(TPSWiFiCallingListController *)self callingController];
-  v3 = [v2 subscriptionCapabilities];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  subscriptionCapabilities = [callingController subscriptionCapabilities];
 
-  if ((([v3 isThumperCallingEnabled] & 1) != 0 || objc_msgSend(v3, "isWiFiCallingEnabled")) && objc_msgSend(v3, "wiFiCallingProvisioningStatus") == 3)
+  if ((([subscriptionCapabilities isThumperCallingEnabled] & 1) != 0 || objc_msgSend(subscriptionCapabilities, "isWiFiCallingEnabled")) && objc_msgSend(subscriptionCapabilities, "wiFiCallingProvisioningStatus") == 3)
   {
-    v4 = [v3 wiFiCallingProvisioningURL];
-    if (v4)
+    wiFiCallingProvisioningURL = [subscriptionCapabilities wiFiCallingProvisioningURL];
+    if (wiFiCallingProvisioningURL)
     {
-      v5 = 1;
+      isWiFiCallingProvisioningURLInvalid = 1;
     }
 
     else
     {
-      v5 = [v3 isWiFiCallingProvisioningURLInvalid];
+      isWiFiCallingProvisioningURLInvalid = [subscriptionCapabilities isWiFiCallingProvisioningURLInvalid];
     }
   }
 
   else
   {
-    v5 = 0;
+    isWiFiCallingProvisioningURLInvalid = 0;
   }
 
-  return v5;
+  return isWiFiCallingProvisioningURLInvalid;
 }
 
 - (BOOL)isEmergencyCallingSpecifierVisible
 {
-  v2 = [(TPSWiFiCallingListController *)self callingController];
-  v3 = [v2 supportsWiFiEmergencyCalling];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  supportsWiFiEmergencyCalling = [callingController supportsWiFiEmergencyCalling];
 
-  return v3;
+  return supportsWiFiEmergencyCalling;
 }
 
 - (BOOL)isThumperSpecifierVisible
 {
-  v2 = [(TPSWiFiCallingListController *)self callingController];
-  v3 = [v2 supportsThumperCalling];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  supportsThumperCalling = [callingController supportsThumperCalling];
 
-  return v3;
+  return supportsThumperCalling;
 }
 
 - (TPSCloudCallingEmergencyAddressURLController)emergencyAddressURLController
@@ -574,8 +574,8 @@ LABEL_6:
   if (!emergencyAddressURLController)
   {
     v4 = [TPSCloudCallingEmergencyAddressURLController alloc];
-    v5 = [(TPSWiFiCallingListController *)self subscriptionContext];
-    v6 = [v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
+    v6 = [v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_emergencyAddressURLController;
     self->_emergencyAddressURLController = v6;
 
@@ -592,8 +592,8 @@ LABEL_6:
   if (!thumperProvisioningURLController)
   {
     v4 = [TPSCloudCallingThumperProvisioningURLController alloc];
-    v5 = [(TPSWiFiCallingListController *)self subscriptionContext];
-    v6 = [v4 initWithSubscriptionContext:v5];
+    subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
+    v6 = [v4 initWithSubscriptionContext:subscriptionContext];
     v7 = self->_thumperProvisioningURLController;
     self->_thumperProvisioningURLController = v6;
 
@@ -604,35 +604,35 @@ LABEL_6:
   return thumperProvisioningURLController;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v6 = a3;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v6;
-    v5 = [v4 specifier];
-    [(TPSWiFiCallingListController *)self configureCell:v4 forSpecifier:v5];
+    v4 = cellCopy;
+    specifier = [v4 specifier];
+    [(TPSWiFiCallingListController *)self configureCell:v4 forSpecifier:specifier];
   }
 }
 
-- (void)configureCell:(id)a3 forSpecifier:(id)a4
+- (void)configureCell:(id)cell forSpecifier:(id)specifier
 {
-  v5 = [a3 specifier];
+  specifier = [cell specifier];
   [(TPSWiFiCallingListController *)self mainSwitchSpecifier];
 }
 
 - (UIAlertController)privacyAlertController
 {
-  v3 = [(TPSWiFiCallingListController *)self callingController];
-  v4 = [v3 isWiFiCallingCertified];
+  callingController = [(TPSWiFiCallingListController *)self callingController];
+  isWiFiCallingCertified = [callingController isWiFiCallingCertified];
 
-  if (v4)
+  if (isWiFiCallingCertified)
   {
-    v5 = [(TPSWiFiCallingListController *)self callingController];
-    v6 = [v5 supportsEncryptedIdentity];
+    callingController2 = [(TPSWiFiCallingListController *)self callingController];
+    supportsEncryptedIdentity = [callingController2 supportsEncryptedIdentity];
     v7 = @"WIFI_CALLING_CONSENT_ALERT_MESSAGE_WITHOUT_CARRIER_ENCRYPTION";
-    if (v6)
+    if (supportsEncryptedIdentity)
     {
       v7 = @"WIFI_CALLING_CONSENT_ALERT_MESSAGE_WITH_CARRIER_ENCRYPTION";
     }
@@ -674,16 +674,16 @@ LABEL_6:
   return v13;
 }
 
-- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)a3
+- (void)handleTPSWiFiCallingControllerSubscriptionCapabilitiesChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSWiFiCallingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = objc_opt_class();
     v9 = 2112;
-    v10 = v4;
+    v10 = notificationCopy;
     v6 = v8;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@.", &v7, 0x16u);
   }
@@ -691,33 +691,33 @@ LABEL_6:
   [(TPSWiFiCallingListController *)self reloadSpecifiers];
 }
 
-- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)a3
+- (void)didChangeWiFiCallingProvisionalURLForSenderIdentityWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(TPSWiFiCallingListController *)self subscriptionContext];
-  v6 = [v5 uuid];
-  v7 = [v4 isEqual:v6];
+  dCopy = d;
+  subscriptionContext = [(TPSWiFiCallingListController *)self subscriptionContext];
+  uuid = [subscriptionContext uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
     v8 = TPSWiFiCallingLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(TPSWiFiCallingListController *)self subscriptionContext];
+      subscriptionContext2 = [(TPSWiFiCallingListController *)self subscriptionContext];
       v17 = 138412290;
-      v18 = v9;
+      v18 = subscriptionContext2;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "WiFi calling provisioning URL changed for subscription context %@.", &v17, 0xCu);
     }
 
-    v10 = [(TPSWiFiCallingListController *)self presentedViewController];
+    presentedViewController = [(TPSWiFiCallingListController *)self presentedViewController];
 
-    if (v10)
+    if (presentedViewController)
     {
-      v11 = [(TPSWiFiCallingListController *)self callingController];
-      v12 = [v11 subscriptionCapabilities];
-      v13 = [v12 wiFiCallingProvisioningStatus];
+      callingController = [(TPSWiFiCallingListController *)self callingController];
+      subscriptionCapabilities = [callingController subscriptionCapabilities];
+      wiFiCallingProvisioningStatus = [subscriptionCapabilities wiFiCallingProvisioningStatus];
 
-      if (!v13)
+      if (!wiFiCallingProvisioningStatus)
       {
         v14 = TPSWiFiCallingLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -726,9 +726,9 @@ LABEL_6:
           _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "We have presented a view controller and WiFi provisioning status is not-allowed; update the presented controller.", &v17, 2u);
         }
 
-        v15 = [(TPSWiFiCallingListController *)self emergencyAddressURLController];
-        v16 = [v15 provisionCapabilityController];
-        [(TPSWiFiCallingListController *)self presentOrUpdateViewController:v16];
+        emergencyAddressURLController = [(TPSWiFiCallingListController *)self emergencyAddressURLController];
+        provisionCapabilityController = [emergencyAddressURLController provisionCapabilityController];
+        [(TPSWiFiCallingListController *)self presentOrUpdateViewController:provisionCapabilityController];
       }
     }
   }

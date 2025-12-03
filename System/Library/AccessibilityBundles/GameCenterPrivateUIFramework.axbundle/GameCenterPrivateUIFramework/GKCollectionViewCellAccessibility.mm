@@ -1,19 +1,19 @@
 @interface GKCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityPerformCustomAction:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityPerformCustomAction:(int64_t)action;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 @end
 
 @implementation GKCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GKCollectionViewCell" hasInstanceMethod:@"editActionsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKEditAction" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GKEditAction" hasInstanceMethod:@"selector" withFullSignature:{":", 0}];
-  [v3 validateClass:@"UIApplication" hasInstanceMethod:@"_gkSendAction: viaResponder: withObject:" withFullSignature:{"B", ":", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GKCollectionViewCell" hasInstanceMethod:@"editActionsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKEditAction" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GKEditAction" hasInstanceMethod:@"selector" withFullSignature:{":", 0}];
+  [validationsCopy validateClass:@"UIApplication" hasInstanceMethod:@"_gkSendAction: viaResponder: withObject:" withFullSignature:{"B", ":", "@", "@", 0}];
 }
 
 - (id)accessibilityCustomActions
@@ -27,7 +27,7 @@
   v5 = [v4 safeValueForKey:@"editActions"];
   v6 = __UIAccessibilitySafeClass();
 
-  v7 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -48,7 +48,7 @@
         }
 
         v13 = [*(*(&v16 + 1) + 8 * i) safeValueForKey:{@"name", v16}];
-        [v7 axSafelyAddObject:v13];
+        [array axSafelyAddObject:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -59,10 +59,10 @@
 
   v14 = *MEMORY[0x29EDCA608];
 
-  return v7;
+  return array;
 }
 
-- (BOOL)accessibilityPerformCustomAction:(int64_t)a3
+- (BOOL)accessibilityPerformCustomAction:(int64_t)action
 {
   v4 = [(GKCollectionViewCellAccessibility *)self safeValueForKey:@"editActionsView"];
   v5 = __UIAccessibilitySafeClass();
@@ -73,9 +73,9 @@
   v8 = __UIAccessibilitySafeClass();
 
   v9 = [v8 count];
-  if (v9 > a3)
+  if (v9 > action)
   {
-    v10 = [v8 objectAtIndex:a3];
+    v10 = [v8 objectAtIndex:action];
     v11 = __UIAccessibilitySafeClass();
 
     v16 = 0;
@@ -91,7 +91,7 @@
     AXPerformSafeBlock();
   }
 
-  return v9 > a3;
+  return v9 > action;
 }
 
 uint64_t __70__GKCollectionViewCellAccessibility_accessibilityPerformCustomAction___block_invoke(uint64_t a1)

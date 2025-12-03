@@ -1,5 +1,5 @@
 @interface _UITabBarVisualProvider_FloatingAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 - (void)morphAnimationsForHostedElementsDidEnd;
@@ -7,14 +7,14 @@
 
 @implementation _UITabBarVisualProvider_FloatingAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"UIKit._UITabBarVisualProvider_Floating";
   [location[0] validateClass:? hasSwiftField:? withSwiftType:?];
   [location[0] validateClass:@"UIKit._UITabBarVisualProvider_Floating" hasSwiftField:@"itemForCollapseButton" withSwiftType:"Optional<UITabBarItem>"];
@@ -32,23 +32,23 @@
 
 - (void)layoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UITabBarVisualProvider_FloatingAccessibility;
   [(_UITabBarVisualProvider_FloatingAccessibility *)&v2 layoutSubviews];
-  [(_UITabBarVisualProvider_FloatingAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(_UITabBarVisualProvider_FloatingAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11.receiver = self;
   v11.super_class = _UITabBarVisualProvider_FloatingAccessibility;
   [(_UITabBarVisualProvider_FloatingAccessibility *)&v11 _accessibilityLoadAccessibilityInformation];
-  v10 = [(_UITabBarVisualProvider_FloatingAccessibility *)v13 safeSwiftValueForKey:@"collapseButton"];
-  objc_initWeak(&location, v13);
+  v10 = [(_UITabBarVisualProvider_FloatingAccessibility *)selfCopy safeSwiftValueForKey:@"collapseButton"];
+  objc_initWeak(&location, selfCopy);
   v2 = v10;
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
@@ -66,22 +66,22 @@
 
 - (void)morphAnimationsForHostedElementsDidEnd
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11.receiver = self;
   v11.super_class = _UITabBarVisualProvider_FloatingAccessibility;
   [(_UITabBarVisualProvider_FloatingAccessibility *)&v11 morphAnimationsForHostedElementsDidEnd];
-  if (![(_UITabBarVisualProvider_FloatingAccessibility *)v13 safeIntegerForKey:@"currentMorphTarget"])
+  if (![(_UITabBarVisualProvider_FloatingAccessibility *)selfCopy safeIntegerForKey:@"currentMorphTarget"])
   {
     v9 = 0;
     objc_opt_class();
-    v4 = [(_UITabBarVisualProvider_FloatingAccessibility *)v13 safeSwiftValueForKey:@"tabBarButtonsForItem"];
+    v4 = [(_UITabBarVisualProvider_FloatingAccessibility *)selfCopy safeSwiftValueForKey:@"tabBarButtonsForItem"];
     v8 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v4);
     v7 = MEMORY[0x29EDC9748](v8);
     objc_storeStrong(&v8, 0);
     v10 = v7;
-    v3 = [(_UITabBarVisualProvider_FloatingAccessibility *)v13 safeValueForKey:@"tabBar"];
+    v3 = [(_UITabBarVisualProvider_FloatingAccessibility *)selfCopy safeValueForKey:@"tabBar"];
     v6 = [v3 safeValueForKey:@"_selectedItem"];
     *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
     argument = [v10 objectForKey:{v6, v2}];

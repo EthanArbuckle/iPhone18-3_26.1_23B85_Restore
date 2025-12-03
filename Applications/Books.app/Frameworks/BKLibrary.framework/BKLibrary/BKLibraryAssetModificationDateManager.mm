@@ -1,36 +1,36 @@
 @interface BKLibraryAssetModificationDateManager
-- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4;
-- (id)libraryAssetForAssetIDs:(id)a3 inManagedObjectContext:(id)a4;
-- (id)updatesFromLibraryAssets:(id)a3 annotations:(id)a4;
-- (void)annotationsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)consumeUpdates:(id)a3 inManagedObjectContext:(id)a4;
-- (void)resetModificationDateForAssetIDs:(id)a3 completion:(id)a4;
+- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)manager annotationProvider:(id)provider;
+- (id)libraryAssetForAssetIDs:(id)ds inManagedObjectContext:(id)context;
+- (id)updatesFromLibraryAssets:(id)assets annotations:(id)annotations;
+- (void)annotationsForAssetIDs:(id)ds completion:(id)completion;
+- (void)consumeUpdates:(id)updates inManagedObjectContext:(id)context;
+- (void)resetModificationDateForAssetIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation BKLibraryAssetModificationDateManager
 
-- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)a3 annotationProvider:(id)a4
+- (BKLibraryAssetModificationDateManager)initWithLibraryManager:(id)manager annotationProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v9 = [(BKLibraryAssetModificationDateManager *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_libraryManager, a3);
-    objc_storeStrong(&v10->_annotationProvider, a4);
+    objc_storeStrong(&v9->_libraryManager, manager);
+    objc_storeStrong(&v10->_annotationProvider, provider);
   }
 
   return v10;
 }
 
-- (void)resetModificationDateForAssetIDs:(id)a3 completion:(id)a4
+- (void)resetModificationDateForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ![v6 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if (dsCopy && ![dsCopy count])
   {
-    v9 = objc_retainBlock(v7);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -46,19 +46,19 @@
     block[2] = sub_56998;
     block[3] = &unk_D62F8;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = dsCopy;
+    v13 = completionCopy;
     dispatch_async(v8, block);
   }
 }
 
-- (id)libraryAssetForAssetIDs:(id)a3 inManagedObjectContext:(id)a4
+- (id)libraryAssetForAssetIDs:(id)ds inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dsCopy = ds;
+  contextCopy = context;
+  if (dsCopy)
   {
-    v7 = [BKLibraryManager predicateForAssetIDsTaggedLibraryAssets:v5];
+    v7 = [BKLibraryManager predicateForAssetIDsTaggedLibraryAssets:dsCopy];
   }
 
   else
@@ -70,8 +70,8 @@
   v25[1] = @"modificationDate";
   v25[2] = @"creationDate";
   v8 = [NSArray arrayWithObjects:v25 count:3];
-  v19 = v6;
-  v9 = [v6 copyEntityPropertiesArray:v8 fromEntityName:@"BKLibraryAsset" withPredicate:v7 sortBy:0 ascending:0];
+  v19 = contextCopy;
+  v9 = [contextCopy copyEntityPropertiesArray:v8 fromEntityName:@"BKLibraryAsset" withPredicate:v7 sortBy:0 ascending:0];
 
   v10 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v9, "count")}];
   v20 = 0u;
@@ -110,37 +110,37 @@
   return v10;
 }
 
-- (void)annotationsForAssetIDs:(id)a3 completion:(id)a4
+- (void)annotationsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = sub_56EC4;
   v13[4] = sub_56ED4;
   v14 = 0;
-  if ([v6 count])
+  if ([dsCopy count])
   {
-    v8 = [(BKLibraryAssetModificationDateManager *)self annotationProvider];
+    annotationProvider = [(BKLibraryAssetModificationDateManager *)self annotationProvider];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_56EDC;
     v9[3] = &unk_D6F90;
-    v10 = v6;
+    v10 = dsCopy;
     v12 = v13;
-    v11 = v7;
-    [v8 performBlockOnUserSideQueue:v9];
+    v11 = completionCopy;
+    [annotationProvider performBlockOnUserSideQueue:v9];
   }
 
   _Block_object_dispose(v13, 8);
 }
 
-- (id)updatesFromLibraryAssets:(id)a3 annotations:(id)a4
+- (id)updatesFromLibraryAssets:(id)assets annotations:(id)annotations
 {
-  v21 = a3;
-  v5 = a4;
-  if ([v5 count])
+  assetsCopy = assets;
+  annotationsCopy = annotations;
+  if ([annotationsCopy count])
   {
     v19 = objc_alloc_init(NSMutableDictionary);
     v6 = +[AEAnnotation maxModificationDateColumnName];
@@ -148,8 +148,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = v5;
-    obj = v5;
+    v18 = annotationsCopy;
+    obj = annotationsCopy;
     v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v7)
     {
@@ -168,7 +168,7 @@
           v12 = [v11 objectForKeyedSubscript:{@"annotationAssetID", v18}];
           if (v12)
           {
-            v13 = [v21 objectForKeyedSubscript:v12];
+            v13 = [assetsCopy objectForKeyedSubscript:v12];
             v14 = [v11 objectForKeyedSubscript:v6];
             if (v14)
             {
@@ -188,7 +188,7 @@
       while (v8);
     }
 
-    v5 = v18;
+    annotationsCopy = v18;
   }
 
   else
@@ -199,15 +199,15 @@
   return v19;
 }
 
-- (void)consumeUpdates:(id)a3 inManagedObjectContext:(id)a4
+- (void)consumeUpdates:(id)updates inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  updatesCopy = updates;
+  contextCopy = context;
+  if ([updatesCopy count])
   {
-    v7 = [v5 allKeys];
-    v18 = v6;
-    v8 = [BKLibraryManager libraryAssetsWithAssetIDsContainedInList:v7 tempAssetIDs:0 inManagedObjectContext:v6];
+    allKeys = [updatesCopy allKeys];
+    v18 = contextCopy;
+    v8 = [BKLibraryManager libraryAssetsWithAssetIDsContainedInList:allKeys tempAssetIDs:0 inManagedObjectContext:contextCopy];
 
     v21 = 0u;
     v22 = 0u;
@@ -232,15 +232,15 @@
           v14 = *(*(&v19 + 1) + 8 * v13);
           if ([v14 isValid])
           {
-            v15 = [v14 assetID];
-            if (v15)
+            assetID = [v14 assetID];
+            if (assetID)
             {
-              v16 = [v5 objectForKeyedSubscript:v15];
+              v16 = [updatesCopy objectForKeyedSubscript:assetID];
               if (v16)
               {
                 [v14 setDifferentObject:v16 forKey:@"modificationDate"];
-                v17 = [v14 purchasedAndLocalParent];
-                [v17 setDifferentObject:v16 forKey:@"modificationDate"];
+                purchasedAndLocalParent = [v14 purchasedAndLocalParent];
+                [purchasedAndLocalParent setDifferentObject:v16 forKey:@"modificationDate"];
               }
             }
           }
@@ -255,7 +255,7 @@
       while (v11);
     }
 
-    v6 = v18;
+    contextCopy = v18;
     [v18 saveLibrary];
   }
 }

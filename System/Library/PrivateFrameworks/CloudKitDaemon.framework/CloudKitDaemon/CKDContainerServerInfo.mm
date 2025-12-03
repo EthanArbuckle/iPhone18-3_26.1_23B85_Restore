@@ -1,11 +1,11 @@
 @interface CKDContainerServerInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKDContainerServerInfo)init;
-- (CKDContainerServerInfo)initWithCoder:(id)a3;
+- (CKDContainerServerInfo)initWithCoder:(id)coder;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDContainerServerInfo
@@ -40,10 +40,10 @@
   return v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v60 = 1;
   }
@@ -53,7 +53,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_publicCloudDBURL(self, v6, v7);
       v11 = objc_msgSend_publicCloudDBURL(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual();
@@ -155,7 +155,7 @@ LABEL_13:
   return v43 ^ v46;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v7 = objc_msgSend_publicCloudDBURL(self, v5, v6);
@@ -197,9 +197,9 @@ LABEL_13:
   return v4;
 }
 
-- (CKDContainerServerInfo)initWithCoder:(id)a3
+- (CKDContainerServerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = CKDContainerServerInfo;
   v5 = [(CKDContainerServerInfo *)&v37 init];
@@ -207,74 +207,74 @@ LABEL_13:
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"PublicCloudDBURL");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"PublicCloudDBURL");
     publicCloudDBURL = v5->_publicCloudDBURL;
     v5->_publicCloudDBURL = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"PublicShareServiceURL");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"PublicShareServiceURL");
     publicShareServiceURL = v5->_publicShareServiceURL;
     v5->_publicShareServiceURL = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"PublicDeviceServiceURL");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"PublicDeviceServiceURL");
     publicDeviceServiceURL = v5->_publicDeviceServiceURL;
     v5->_publicDeviceServiceURL = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"PublicCodeServiceURL");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"PublicCodeServiceURL");
     publicCodeServiceURL = v5->_publicCodeServiceURL;
     v5->_publicCodeServiceURL = v21;
 
     v23 = objc_opt_class();
-    v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"PublicMetricsServiceURL");
+    v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"PublicMetricsServiceURL");
     publicMetricsServiceURL = v5->_publicMetricsServiceURL;
     v5->_publicMetricsServiceURL = v25;
 
     v27 = objc_opt_class();
-    v29 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v28, v27, @"ContainerScopedUserID");
+    v29 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v28, v27, @"ContainerScopedUserID");
     containerScopedUserID = v5->_containerScopedUserID;
     v5->_containerScopedUserID = v29;
 
     v31 = objc_opt_class();
-    v33 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"OrgAdminUserID");
+    v33 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"OrgAdminUserID");
     orgAdminUserID = v5->_orgAdminUserID;
     v5->_orgAdminUserID = v33;
 
-    v5->_environment = objc_msgSend_decodeIntegerForKey_(v4, v35, @"Environment");
+    v5->_environment = objc_msgSend_decodeIntegerForKey_(coderCopy, v35, @"Environment");
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v37 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_publicCloudDBURL(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v37, v8, v7, @"PublicCloudDBURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"PublicCloudDBURL");
 
   v11 = objc_msgSend_publicShareServiceURL(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v37, v12, v11, @"PublicShareServiceURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"PublicShareServiceURL");
 
   v15 = objc_msgSend_publicDeviceServiceURL(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v37, v16, v15, @"PublicDeviceServiceURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"PublicDeviceServiceURL");
 
   v19 = objc_msgSend_publicCodeServiceURL(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v37, v20, v19, @"PublicCodeServiceURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"PublicCodeServiceURL");
 
   v23 = objc_msgSend_publicMetricsServiceURL(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v37, v24, v23, @"PublicMetricsServiceURL");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"PublicMetricsServiceURL");
 
   v27 = objc_msgSend_containerScopedUserID(self, v25, v26);
-  objc_msgSend_encodeObject_forKey_(v37, v28, v27, @"ContainerScopedUserID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"ContainerScopedUserID");
 
   v31 = objc_msgSend_orgAdminUserID(self, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v37, v32, v31, @"OrgAdminUserID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"OrgAdminUserID");
 
   v35 = objc_msgSend_environment(self, v33, v34);
-  objc_msgSend_encodeInteger_forKey_(v37, v36, v35, @"Environment");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v36, v35, @"Environment");
   objc_autoreleasePoolPop(v4);
 }
 

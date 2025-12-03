@@ -1,53 +1,53 @@
 @interface ASCLockupFeatureSingleSignOn
-- (ASCLockupFeatureSingleSignOn)initWithCoder:(id)a3;
-- (ASCLockupFeatureSingleSignOn)initWithRequiresSSOEntitlement:(BOOL)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureSingleSignOn)initWithCoder:(id)coder;
+- (ASCLockupFeatureSingleSignOn)initWithRequiresSSOEntitlement:(BOOL)entitlement;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureSingleSignOn
 
-- (ASCLockupFeatureSingleSignOn)initWithRequiresSSOEntitlement:(BOOL)a3
+- (ASCLockupFeatureSingleSignOn)initWithRequiresSSOEntitlement:(BOOL)entitlement
 {
   v5.receiver = self;
   v5.super_class = ASCLockupFeatureSingleSignOn;
   result = [(ASCLockupFeatureSingleSignOn *)&v5 init];
   if (result)
   {
-    result->_requiresSSOEntitlement = a3;
+    result->_requiresSSOEntitlement = entitlement;
   }
 
   return result;
 }
 
-- (ASCLockupFeatureSingleSignOn)initWithCoder:(id)a3
+- (ASCLockupFeatureSingleSignOn)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"requiresSSOEntitlement"];
+  v4 = [coder decodeBoolForKey:@"requiresSSOEntitlement"];
 
   return [(ASCLockupFeatureSingleSignOn *)self initWithRequiresSSOEntitlement:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[ASCLockupFeatureSingleSignOn requiresSSOEntitlement](self forKey:{"requiresSSOEntitlement"), @"requiresSSOEntitlement"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[ASCLockupFeatureSingleSignOn requiresSSOEntitlement](self forKey:{"requiresSSOEntitlement"), @"requiresSSOEntitlement"}];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
   [(ASCHasher *)v3 combineBool:[(ASCLockupFeatureSingleSignOn *)self requiresSSOEntitlement]];
-  v4 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v4;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
@@ -55,7 +55,7 @@
   else
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -78,8 +78,8 @@
 
     if (v8)
     {
-      v9 = [(ASCLockupFeatureSingleSignOn *)self requiresSSOEntitlement];
-      v7 = v9 ^ [(ASCLockupFeatureSingleSignOn *)v8 requiresSSOEntitlement]^ 1;
+      requiresSSOEntitlement = [(ASCLockupFeatureSingleSignOn *)self requiresSSOEntitlement];
+      v7 = requiresSSOEntitlement ^ [(ASCLockupFeatureSingleSignOn *)v8 requiresSSOEntitlement]^ 1;
     }
 
     else
@@ -95,9 +95,9 @@
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
   [(ASCDescriber *)v3 addBool:[(ASCLockupFeatureSingleSignOn *)self requiresSSOEntitlement] withName:@"requiresSSOEntitlement"];
-  v4 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v4;
+  return finalizeDescription;
 }
 
 @end

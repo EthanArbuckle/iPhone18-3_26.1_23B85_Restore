@@ -1,10 +1,10 @@
 @interface FCRecipeDraftAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (BOOL)shouldShowAllDraftContent;
 - (FCRecipeDraftAccessChecker)init;
-- (FCRecipeDraftAccessChecker)initWithPrivateChannelMembershipController:(id)a3;
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
+- (FCRecipeDraftAccessChecker)initWithPrivateChannelMembershipController:(id)controller;
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCRecipeDraftAccessChecker
@@ -35,11 +35,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCRecipeDraftAccessChecker)initWithPrivateChannelMembershipController:(id)a3
+- (FCRecipeDraftAccessChecker)initWithPrivateChannelMembershipController:(id)controller
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  if (!controllerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateChannelMembershipController != nil"];
     *buf = 136315906;
@@ -59,18 +59,18 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_privateChannelMembershipController, a3);
+    objc_storeStrong(&v6->_privateChannelMembershipController, controller);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -88,11 +88,11 @@
   return 1;
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -106,29 +106,29 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (![v6 isDraft] || (objc_msgSend(v6, "isLocalDraft") & 1) != 0 || -[FCRecipeDraftAccessChecker shouldShowAllDraftContent](self, "shouldShowAllDraftContent"))
+  if (![itemCopy isDraft] || (objc_msgSend(itemCopy, "isLocalDraft") & 1) != 0 || -[FCRecipeDraftAccessChecker shouldShowAllDraftContent](self, "shouldShowAllDraftContent"))
   {
     v7 = 1;
   }
 
   else
   {
-    v10 = [(FCRecipeDraftAccessChecker *)self privateChannelMembershipController];
-    v11 = [v6 sourceChannel];
-    v12 = [v11 identifier];
-    v7 = [v10 isAllowedToSeeDraftsForChannelID:v12];
+    privateChannelMembershipController = [(FCRecipeDraftAccessChecker *)self privateChannelMembershipController];
+    sourceChannel = [itemCopy sourceChannel];
+    identifier = [sourceChannel identifier];
+    v7 = [privateChannelMembershipController isAllowedToSeeDraftsForChannelID:identifier];
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -141,13 +141,13 @@
     v21 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -169,7 +169,7 @@
 LABEL_6:
   v14 = 0;
   *buf = 0;
-  v9 = [(FCRecipeDraftAccessChecker *)self hasAccessToItem:v7 blockedReason:&v14 error:buf];
+  v9 = [(FCRecipeDraftAccessChecker *)self hasAccessToItem:itemCopy blockedReason:&v14 error:buf];
   if (v9)
   {
     v10 = 0;
@@ -181,7 +181,7 @@ LABEL_6:
   }
 
   v14 = v10;
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 
   v11 = *MEMORY[0x1E69E9840];
 }

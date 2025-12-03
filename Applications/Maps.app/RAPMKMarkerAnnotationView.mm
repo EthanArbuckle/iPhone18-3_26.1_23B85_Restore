@@ -1,13 +1,13 @@
 @interface RAPMKMarkerAnnotationView
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
-- (void)setAnnotationTitle:(id)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
+- (void)setAnnotationTitle:(id)title;
 @end
 
 @implementation RAPMKMarkerAnnotationView
 
-- (void)setAnnotationTitle:(id)a3
+- (void)setAnnotationTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   annotationTitle = self->_annotationTitle;
   self->_annotationTitle = v4;
 
@@ -32,9 +32,9 @@
   [(_RAPAnnotationTitleLabel *)v10 setHidden:v6 == 0];
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = [[_RAPAnnotationTitleLabel alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   annotationTitleLabel = self->_annotationTitleLabel;
   self->_annotationTitleLabel = v5;
@@ -51,24 +51,24 @@
   [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel setTextColor:v8];
 
   [(RAPMKMarkerAnnotationView *)self addSubview:self->_annotationTitleLabel];
-  v9 = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel topAnchor];
-  v10 = [(RAPMKMarkerAnnotationView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel topAnchor];
+  bottomAnchor = [(RAPMKMarkerAnnotationView *)self bottomAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   [v11 setActive:1];
 
-  v12 = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel widthAnchor];
-  v13 = [v12 constraintEqualToConstant:100.0];
+  widthAnchor = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:100.0];
   [v13 setActive:1];
 
-  v14 = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel centerXAnchor];
-  v15 = [(RAPMKMarkerAnnotationView *)self centerXAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  centerXAnchor = [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel centerXAnchor];
+  centerXAnchor2 = [(RAPMKMarkerAnnotationView *)self centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v16 setActive:1];
 
   [(_RAPAnnotationTitleLabel *)self->_annotationTitleLabel setHidden:1];
   v18.receiver = self;
   v18.super_class = RAPMKMarkerAnnotationView;
-  return [(RAPMKMarkerAnnotationView *)&v18 updateCalloutViewIfNeededAnimated:v3];
+  return [(RAPMKMarkerAnnotationView *)&v18 updateCalloutViewIfNeededAnimated:animatedCopy];
 }
 
 @end

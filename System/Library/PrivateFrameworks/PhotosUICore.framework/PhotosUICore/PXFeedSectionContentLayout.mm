@@ -1,23 +1,23 @@
 @interface PXFeedSectionContentLayout
-- (BOOL)_handlePresentMenuActionForIndex:(int64_t)a3 atLocation:(CGPoint)a4 inView:(id)a5;
-- (BOOL)_handlePrimaryActionForItemAtIndex:(int64_t)a3;
-- (CGRect)decorationOverlayRectForSpriteIndex:(unsigned int)a3;
+- (BOOL)_handlePresentMenuActionForIndex:(int64_t)index atLocation:(CGPoint)location inView:(id)view;
+- (BOOL)_handlePrimaryActionForItemAtIndex:(int64_t)index;
+- (CGRect)decorationOverlayRectForSpriteIndex:(unsigned int)index;
 - (PXFeedSectionContentLayout)init;
-- (PXFeedSectionContentLayout)initWithViewModel:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5;
+- (PXFeedSectionContentLayout)initWithViewModel:(id)model dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
 - (PXSimpleIndexPath)sectionIndexPath;
-- (double)alphaForSublayout:(id)a3 atIndex:(int64_t)a4;
-- (id)_handleHoverForItemAtIndex:(int64_t)a3;
-- (id)_handleTouchForItemAtIndex:(int64_t)a3;
+- (double)alphaForSublayout:(id)sublayout atIndex:(int64_t)index;
+- (id)_handleHoverForItemAtIndex:(int64_t)index;
+- (id)_handleTouchForItemAtIndex:(int64_t)index;
 - (id)axSpriteIndexes;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)itemPlacementControllerForItemReference:(id)a3;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3;
-- (int64_t)itemForSpriteIndex:(unsigned int)a3;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)itemPlacementControllerForItemReference:(id)reference;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
+- (id)objectReferenceForSpriteIndex:(unsigned int)index;
+- (int64_t)itemForSpriteIndex:(unsigned int)index;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3;
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index;
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction;
 - (void)_invalidateAutoplayControllerParameters;
 - (void)_invalidateCompositionParameters;
 - (void)_invalidateFeedSublayouts;
@@ -27,18 +27,18 @@
 - (void)_updateFeedSprites;
 - (void)_updateFeedSublayouts;
 - (void)_updatePresentedRootLayoutOrientation;
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)didUpdate;
 - (void)didUpdateSublayouts;
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3;
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block;
 - (void)localHiddenSpriteIndexesDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
-- (void)setPresentedRootLayoutOrientation:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDataSource:(id)source changeDetails:(id)details;
+- (void)setPresentedRootLayoutOrientation:(int64_t)orientation;
 - (void)update;
 - (void)visibleRectDidChange;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -52,10 +52,10 @@
   return self;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+  containerCopy = container;
+  itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
   if (objc_opt_respondsToSelector())
   {
     v11[0] = 0;
@@ -65,15 +65,15 @@
     v12 = 0u;
     v13 = 0u;
     [(PXFeedSectionContentLayout *)self sectionIndexPath];
-    v6 = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
+    sublayoutDataStore = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContainer___block_invoke;
     v7[3] = &unk_1E774AE98;
     v10 = v11;
-    v8 = v5;
-    v9 = v4;
-    [v6 enumerateSublayoutsUsingBlock:v7];
+    v8 = itemLayoutFactory;
+    v9 = containerCopy;
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
 
     _Block_object_dispose(v11, 8);
   }
@@ -91,17 +91,17 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
   return [v5 collectTapToRadarDiagnosticsForItemLayout:a3 indexPath:v8 intoContainer:v3];
 }
 
-- (void)axGroup:(id)a3 didChange:(unint64_t)a4 userInfo:(id)a5
+- (void)axGroup:(id)group didChange:(unint64_t)change userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  if ((a4 & 2) != 0)
+  groupCopy = group;
+  infoCopy = info;
+  if ((change & 2) != 0)
   {
     v12 = 0;
     PXGAXGetFocusFromAndToInfosForUserInfo();
   }
 
-  if ((a4 & 4) != 0)
+  if ((change & 4) != 0)
   {
     v11 = 0;
     PXGAXGetSelectionFromAndToInfosForUserInfo();
@@ -109,16 +109,16 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
 
   v10.receiver = self;
   v10.super_class = PXFeedSectionContentLayout;
-  [(PXGCompositeLayout *)&v10 axGroup:v8 didChange:a4 userInfo:v9];
+  [(PXGCompositeLayout *)&v10 axGroup:groupCopy didChange:change userInfo:infoCopy];
 }
 
-- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)a3
+- (unint64_t)axFocusabilityForSpriteAtIndex:(unsigned int)index
 {
-  v4 = [(PXFeedSectionContentLayout *)self viewModel];
-  v5 = [v4 spec];
-  v6 = [v5 wantsFirstItemFullscreen];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  spec = [viewModel spec];
+  wantsFirstItemFullscreen = [spec wantsFirstItemFullscreen];
 
-  if (((a3 == 0) & v6) != 0)
+  if (((index == 0) & wantsFirstItemFullscreen) != 0)
   {
     return 1;
   }
@@ -129,23 +129,23 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
   }
 }
 
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction
 {
-  v5 = *&a3;
-  v7 = [(PXFeedSectionContentLayout *)self viewModel];
-  v8 = [v7 spec];
-  v9 = [v8 numberOfColumns];
+  v5 = *&index;
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  spec = [viewModel spec];
+  numberOfColumns = [spec numberOfColumns];
 
-  if (v9)
+  if (numberOfColumns)
   {
-    v10 = v5 % v9;
+    v10 = v5 % numberOfColumns;
     v11 = -1;
-    if (a4 > 3)
+    if (direction > 3)
     {
-      switch(a4)
+      switch(direction)
       {
         case 4uLL:
-          if ((v10 + 1) < v9)
+          if ((v10 + 1) < numberOfColumns)
           {
             v11 = v5 + 1;
           }
@@ -167,22 +167,22 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
 
     else
     {
-      switch(a4)
+      switch(direction)
       {
         case 1uLL:
-          if (v9 > v5)
+          if (numberOfColumns > v5)
           {
             v11 = -1;
           }
 
           else
           {
-            v11 = v5 - v9;
+            v11 = v5 - numberOfColumns;
           }
 
           break;
         case 2uLL:
-          v11 = v9 + v5;
+          v11 = numberOfColumns + v5;
           break;
         case 3uLL:
           if (v10)
@@ -213,59 +213,59 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
   else
   {
 
-    return [(PXFeedSectionContentLayout *)self axSpriteIndexClosestToSpriteIndexDefaultImplementation:v5 inDirection:a4];
+    return [(PXFeedSectionContentLayout *)self axSpriteIndexClosestToSpriteIndexDefaultImplementation:v5 inDirection:direction];
   }
 }
 
 - (id)axSpriteIndexes
 {
-  v2 = [(PXFeedSectionContentLayout *)self localNumberOfSprites];
-  v3 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, v2}];
+  localNumberOfSprites = [(PXFeedSectionContentLayout *)self localNumberOfSprites];
+  v3 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, localNumberOfSprites}];
 
   return v3;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ViewModelObservationContext_248659 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ViewModelObservationContext_248659 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:500 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:500 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v11 = v9;
-  if ((v6 & 8) != 0)
+  v11 = observableCopy;
+  if ((changeCopy & 8) != 0)
   {
     [(PXFeedSectionContentLayout *)self _invalidateCompositionParameters];
     [(PXFeedSectionContentLayout *)self _invalidatePresentedRootLayoutOrientation];
-    v9 = v11;
+    observableCopy = v11;
   }
 
-  if (v6)
+  if (changeCopy)
   {
     [(PXFeedSectionContentLayout *)self _invalidateAutoplayControllerParameters];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v10.receiver = self;
   v10.super_class = PXFeedSectionContentLayout;
-  v8 = a3;
-  [(PXGCompositeLayout *)&v10 willRemoveSublayout:v8 atIndex:a4 flags:a5];
+  sublayoutCopy = sublayout;
+  [(PXGCompositeLayout *)&v10 willRemoveSublayout:sublayoutCopy atIndex:index flags:flags];
   v9 = [(PXFeedSectionContentLayout *)self autoplayController:v10.receiver];
-  [v9 removeItemLayout:v8];
+  [v9 removeItemLayout:sublayoutCopy];
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v7 = [(PXFeedSectionContentLayout *)self viewModel];
-  v8 = [(PXFeedSectionContentLayout *)self dataSource];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  dataSource = [(PXFeedSectionContentLayout *)self dataSource];
   v23 = 0u;
   v24 = 0u;
   [(PXFeedSectionContentLayout *)self sectionIndexPath];
@@ -281,27 +281,27 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
 
   if (v9 || v24 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:468 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:468 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
   }
 
-  *&v24 = a4;
-  v11 = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
-  v12 = ([v11 geometries] + 136 * a4);
+  *&v24 = index;
+  sublayoutDataStore = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
+  v12 = ([sublayoutDataStore geometries] + 136 * index);
   v13 = *v12;
   v14 = v12[1];
 
-  v15 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+  itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
   v22 = 0;
   v21[0] = v23;
   v21[1] = v24;
-  v16 = [v15 createLayoutForFeedItemAtIndexPath:v21 inDataSource:v8 viewModel:v7 initialReferenceSize:&v22 thumbnailAsset:{v13, v14}];
+  v16 = [itemLayoutFactory createLayoutForFeedItemAtIndexPath:v21 inDataSource:dataSource viewModel:viewModel initialReferenceSize:&v22 thumbnailAsset:{v13, v14}];
   v17 = v22;
 
   if (v17)
   {
-    v18 = [(PXFeedSectionContentLayout *)self autoplayController];
-    [v18 addItemLayout:v16 withDisplayAsset:v17];
+    autoplayController = [(PXFeedSectionContentLayout *)self autoplayController];
+    [autoplayController addItemLayout:v16 withDisplayAsset:v17];
   }
 
   return v16;
@@ -309,10 +309,10 @@ uint64_t __72__PXFeedSectionContentLayout_collectTapToRadarDiagnosticsIntoContai
 
 - (void)_updateAutoplayControllerParameters
 {
-  v5 = [(PXFeedSectionContentLayout *)self viewModel];
-  v3 = [v5 isActive];
-  v4 = [(PXFeedSectionContentLayout *)self autoplayController];
-  [v4 setIsContainerLayoutVisible:v3];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  isActive = [viewModel isActive];
+  autoplayController = [(PXFeedSectionContentLayout *)self autoplayController];
+  [autoplayController setIsContainerLayoutVisible:isActive];
 }
 
 - (void)_invalidateAutoplayControllerParameters
@@ -331,9 +331,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout _invalidateAutoplayControllerParameters]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:451 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:451 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -357,10 +357,10 @@ LABEL_5:
 
 - (void)_updateCompositionParameters
 {
-  v5 = [(PXFeedSectionContentLayout *)self viewModel];
-  v3 = [v5 spec];
-  v4 = [(PXGCompositeLayout *)self composition];
-  [v4 setSpec:v3];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  spec = [viewModel spec];
+  composition = [(PXGCompositeLayout *)self composition];
+  [composition setSpec:spec];
 }
 
 - (void)_invalidateCompositionParameters
@@ -379,9 +379,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout _invalidateCompositionParameters]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:443 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:443 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -405,23 +405,23 @@ LABEL_5:
 
 - (void)_updateFeedSprites
 {
-  v3 = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
-  v4 = [v3 geometries];
+  sublayoutDataStore = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
+  geometries = [sublayoutDataStore geometries];
 
-  v5 = [(PXFeedSectionContentLayout *)self viewModel];
-  v6 = [v5 spec];
-  [v6 itemCornerRadius];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  spec = [viewModel spec];
+  [spec itemCornerRadius];
   *v7.i32 = *v7.i32;
   v9 = v7;
 
-  v8 = [(PXFeedSectionContentLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXFeedSectionContentLayout *)self localNumberOfSprites];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke;
   v10[3] = &__block_descriptor_56_e101_v40__0__PXGSpriteIndexRange_II_8_______ddd__16____f_________ffff__4f___ffffSCf____4___24____CCfqSC_32l;
-  v10[4] = v4;
+  v10[4] = geometries;
   v11 = vdupq_lane_s32(v9, 0);
-  [(PXFeedSectionContentLayout *)self modifySpritesInRange:v8 << 32 state:v10];
+  [(PXFeedSectionContentLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v10];
 }
 
 void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t a1, unint64_t a2, float32x2_t *a3, _OWORD *a4, uint64_t a5)
@@ -502,14 +502,14 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
 - (void)_updateFeedSublayouts
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = [(PXFeedSectionContentLayout *)self dataSource];
+  dataSource = [(PXFeedSectionContentLayout *)self dataSource];
   v48 = 0u;
   v49 = 0u;
   [(PXFeedSectionContentLayout *)self sectionIndexPath];
-  if ([v4 identifier])
+  if ([dataSource identifier])
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"sectionIndexPath.dataSourceIdentifier == dataSource.identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"sectionIndexPath.dataSourceIdentifier == dataSource.identifier"}];
   }
 
   v5 = *(&v48 + 1);
@@ -518,8 +518,8 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [(PXSectionedDataSource *)v6 identifier];
-    v10 = [v4 identifier];
+    identifier = [(PXSectionedDataSource *)v6 identifier];
+    identifier2 = [dataSource identifier];
     lastChangeDetails = self->_lastChangeDetails;
     *buf = 134219266;
     *&buf[4] = self;
@@ -528,16 +528,16 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
     *&buf[22] = 2048;
     v55 = *(&v48 + 1);
     LOWORD(v56[0]) = 2048;
-    *(v56 + 2) = v9;
+    *(v56 + 2) = identifier;
     WORD5(v56[0]) = 2048;
-    *(v56 + 12) = v10;
+    *(v56 + 12) = identifier2;
     WORD2(v56[1]) = 2112;
     *(&v56[1] + 6) = lastChangeDetails;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "[PXFeedSectionContentLayout] %p %@ section:%li ds:%lu->%lu lastChangeDetails: %@", buf, 0x3Eu);
   }
 
-  v12 = [(PXSectionedDataSourceChangeDetails *)self->_lastChangeDetails fromDataSourceIdentifier];
-  if (v12 == -[PXSectionedDataSource identifier](v6, "identifier") && (v13 = -[PXSectionedDataSourceChangeDetails toDataSourceIdentifier](self->_lastChangeDetails, "toDataSourceIdentifier"), v13 == [v4 identifier]))
+  fromDataSourceIdentifier = [(PXSectionedDataSourceChangeDetails *)self->_lastChangeDetails fromDataSourceIdentifier];
+  if (fromDataSourceIdentifier == -[PXSectionedDataSource identifier](v6, "identifier") && (v13 = -[PXSectionedDataSourceChangeDetails toDataSourceIdentifier](self->_lastChangeDetails, "toDataSourceIdentifier"), v13 == [dataSource identifier]))
   {
     v14 = [(PXSectionedDataSourceChangeDetails *)self->_lastChangeDetails itemChangesInSection:*(&v48 + 1)];
     v15 = PLStoryGetLog();
@@ -555,7 +555,7 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
     if (shouldReloadItemLayoutForChangedItemFromIndexPathInDataSourceToIndexPathInDataSource || self->_itemLayoutFactoryRespondsTo.configureItemLayoutForChangedItemFromIndexPathInDataSourceToIndexPathInDataSource)
     {
       v33 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v18 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+      itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x4010000000;
@@ -573,28 +573,28 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
       v45[3] = &unk_1A561E057;
       v46 = 0u;
       v47 = 0u;
-      *&v46 = [v4 identifier];
+      *&v46 = [dataSource identifier];
       *(&v46 + 1) = v5;
       v47 = v32;
-      v20 = [v14 changedIndexes];
+      changedIndexes = [v14 changedIndexes];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __51__PXFeedSectionContentLayout__updateFeedSublayouts__block_invoke;
       v34[3] = &unk_1E774AE50;
       v14 = v14;
       v35 = v14;
-      v36 = self;
+      selfCopy = self;
       v41 = v45;
       v42 = buf;
       v43 = shouldReloadItemLayoutForChangedItemFromIndexPathInDataSourceToIndexPathInDataSource;
-      v21 = v18;
+      v21 = itemLayoutFactory;
       v37 = v21;
       v38 = v6;
-      v39 = v4;
+      v39 = dataSource;
       v22 = v33;
       v40 = v22;
       v44 = configureItemLayoutForChangedItemFromIndexPathInDataSourceToIndexPathInDataSource;
-      [v20 enumerateIndexesUsingBlock:v34];
+      [changedIndexes enumerateIndexesUsingBlock:v34];
 
       if ([v22 count])
       {
@@ -602,7 +602,7 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *v50 = 134218242;
-          v51 = self;
+          selfCopy2 = self;
           v52 = 2112;
           v53 = v22;
           _os_log_impl(&dword_1A3C1C000, v23, OS_LOG_TYPE_DEFAULT, "[PXFeedSectionContentLayout] %p indexesToReload: %@", v50, 0x16u);
@@ -624,15 +624,15 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
     v14 = 0;
   }
 
-  v26 = [v4 numberOfItemsInSection:v5];
+  v26 = [dataSource numberOfItemsInSection:v5];
   v27 = PLStoryGetLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(PXFeedSectionContentLayout *)self numberOfSublayouts];
+    numberOfSublayouts = [(PXFeedSectionContentLayout *)self numberOfSublayouts];
     *buf = 134218496;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = v28;
+    *&buf[14] = numberOfSublayouts;
     *&buf[22] = 2048;
     v55 = v26;
     _os_log_impl(&dword_1A3C1C000, v27, OS_LOG_TYPE_DEFAULT, "[PXFeedSectionContentLayout] %p numberOfSublayouts: %li->%li", buf, 0x20u);
@@ -640,7 +640,7 @@ void __48__PXFeedSectionContentLayout__updateFeedSprites__block_invoke(uint64_t 
 
   [(PXFeedSectionContentLayout *)self applySublayoutChangeDetails:v14 countAfterChanges:v26 sublayoutProvider:self];
   [(PXFeedSectionContentLayout *)self applySpriteChangeDetails:v14 countAfterChanges:v26 initialState:0 modifyState:0];
-  objc_storeStrong(&self->_presentedDataSource, v4);
+  objc_storeStrong(&self->_presentedDataSource, dataSource);
   v29 = PLStoryGetLog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -704,9 +704,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout _invalidateFeedSublayouts]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:369 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:369 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -728,20 +728,20 @@ LABEL_5:
   }
 }
 
-- (void)setPresentedRootLayoutOrientation:(int64_t)a3
+- (void)setPresentedRootLayoutOrientation:(int64_t)orientation
 {
-  if (self->_presentedRootLayoutOrientation != a3)
+  if (self->_presentedRootLayoutOrientation != orientation)
   {
-    self->_presentedRootLayoutOrientation = a3;
+    self->_presentedRootLayoutOrientation = orientation;
     [(PXFeedSectionContentLayout *)self _invalidateFeedSublayouts];
   }
 }
 
 - (void)_updatePresentedRootLayoutOrientation
 {
-  v4 = [(PXFeedSectionContentLayout *)self viewModel];
-  v3 = [v4 spec];
-  -[PXFeedSectionContentLayout setPresentedRootLayoutOrientation:](self, "setPresentedRootLayoutOrientation:", [v3 rootLayoutOrientation]);
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  spec = [viewModel spec];
+  -[PXFeedSectionContentLayout setPresentedRootLayoutOrientation:](self, "setPresentedRootLayoutOrientation:", [spec rootLayoutOrientation]);
 }
 
 - (void)_invalidatePresentedRootLayoutOrientation
@@ -760,9 +760,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout _invalidatePresentedRootLayoutOrientation]"];
-      [v6 handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:349 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXFeedSectionContentLayout.m" lineNumber:349 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -791,9 +791,9 @@ LABEL_5:
   [(PXGCompositeLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXFeedSectionContentLayout.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXFeedSectionContentLayout.m" lineNumber:344 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -806,9 +806,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout update]"];
-      [v8 handleFailureInFunction:v9 file:@"PXFeedSectionContentLayout.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXFeedSectionContentLayout.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -821,9 +821,9 @@ LABEL_5:
       [(PXFeedSectionContentLayout *)self _updatePresentedRootLayoutOrientation];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout update]"];
-        [v10 handleFailureInFunction:v11 file:@"PXFeedSectionContentLayout.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXFeedSectionContentLayout.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -837,9 +837,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXFeedSectionContentLayout.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXFeedSectionContentLayout.m" lineNumber:332 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -852,9 +852,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXFeedSectionContentLayout.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXFeedSectionContentLayout.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -869,9 +869,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXFeedSectionContentLayout.m" lineNumber:338 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v17 file:@"PXFeedSectionContentLayout.m" lineNumber:338 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -888,29 +888,29 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXFeedSectionContentLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXFeedSectionContentLayout.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXFeedSectionContentLayout.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (id)itemPlacementControllerForItemReference:(id)a3
+- (id)itemPlacementControllerForItemReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (self->_itemLayoutFactoryRespondsTo.itemPlacementControllerForItemReferenceItemLayout)
   {
-    v6 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
-    v7 = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
+    itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+    sublayoutDataStore = [(PXFeedSectionContentLayout *)self sublayoutDataStore];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___block_invoke;
     v11[3] = &unk_1E774AE28;
-    v12 = v6;
-    v13 = v4;
+    v12 = itemLayoutFactory;
+    v13 = referenceCopy;
     v14 = v5;
-    v8 = v6;
-    [v7 enumerateSublayoutsUsingBlock:v11];
+    v8 = itemLayoutFactory;
+    [sublayoutDataStore enumerateSublayoutsUsingBlock:v11];
   }
 
   v9 = [off_1E7721650 itemPlacementControllerForItemPlacementControllers:v5];
@@ -929,7 +929,7 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   }
 }
 
-- (CGRect)decorationOverlayRectForSpriteIndex:(unsigned int)a3
+- (CGRect)decorationOverlayRectForSpriteIndex:(unsigned int)index
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
@@ -937,11 +937,11 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   v6 = *(MEMORY[0x1E695F050] + 24);
   if (self->_itemLayoutFactoryRespondsTo.decorationOverlayAnchorSpriteIndexForItemLayout)
   {
-    v8 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:a3 loadIfNeeded:0];
+    v8 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:index loadIfNeeded:0];
     if (v8)
     {
-      v9 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
-      v10 = [v9 decorationOverlayAnchorSpriteIndexForItemLayout:v8];
+      itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+      v10 = [itemLayoutFactory decorationOverlayAnchorSpriteIndexForItemLayout:v8];
 
       [v8 geometryForSpriteAtIndex:v10];
       v11 = vmul_f32(0, 0x3F0000003F000000);
@@ -964,36 +964,36 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   return result;
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  detailsCopy = details;
   v9 = PLStoryGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [(PXSectionedDataSource *)self->_dataSource identifier];
+    identifier = [(PXSectionedDataSource *)self->_dataSource identifier];
     *buf = 134219010;
     *&buf[4] = self;
     *&buf[12] = 2112;
     *&buf[14] = v10;
     *&buf[22] = 2048;
-    *&buf[24] = v11;
+    *&buf[24] = identifier;
     v20 = 2048;
-    v21 = [(PXSectionedDataSource *)v7 identifier];
+    identifier2 = [(PXSectionedDataSource *)sourceCopy identifier];
     v22 = 2112;
-    v23 = v8;
+    v23 = detailsCopy;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "[PXFeedSectionContentLayout] %p %@ ds:%lu->%lu changeDetails: %@", buf, 0x34u);
   }
 
   p_sectionIndexPath = &self->_sectionIndexPath;
-  if (v8)
+  if (detailsCopy)
   {
     v13 = *&self->_sectionIndexPath.item;
     v18[0] = *&p_sectionIndexPath->dataSourceIdentifier;
     v18[1] = v13;
-    [(PXSectionedDataSourceChangeDetails *)v8 indexPathAfterApplyingChangesToIndexPath:v18 hasIncrementalChanges:0 objectChanged:0];
+    [(PXSectionedDataSourceChangeDetails *)detailsCopy indexPathAfterApplyingChangesToIndexPath:v18 hasIncrementalChanges:0 objectChanged:0];
   }
 
   else
@@ -1005,30 +1005,30 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   *&p_sectionIndexPath->dataSourceIdentifier = *buf;
   *&self->_sectionIndexPath.item = v14;
   dataSource = self->_dataSource;
-  self->_dataSource = v7;
-  v16 = v7;
+  self->_dataSource = sourceCopy;
+  v16 = sourceCopy;
 
   lastChangeDetails = self->_lastChangeDetails;
-  self->_lastChangeDetails = v8;
+  self->_lastChangeDetails = detailsCopy;
 
   [(PXFeedSectionContentLayout *)self _invalidateFeedSublayouts];
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(PXFeedSectionContentLayout *)self dataSource];
-    v10 = [v9 objectReferenceNearestToObjectReference:v8];
+    dataSource = [(PXFeedSectionContentLayout *)self dataSource];
+    v10 = [dataSource objectReferenceNearestToObjectReference:referenceCopy];
     v19 = 0u;
     *&v20 = 0;
     if (v10)
     {
-      if (v9)
+      if (dataSource)
       {
-        [v9 indexPathForObjectReference:v10];
+        [dataSource indexPathForObjectReference:v10];
       }
     }
 
@@ -1045,13 +1045,13 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
         v11 = v20;
         if (!v10)
         {
-          v15 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"nearestObjectReference != nil"}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"nearestObjectReference != nil"}];
         }
 
         v14 = v10;
 
-        v8 = v14;
+        referenceCopy = v14;
       }
     }
 
@@ -1066,16 +1066,16 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = v8;
-  *a5 = v8;
+  v12 = referenceCopy;
+  *objectReference = referenceCopy;
 
   return v11;
 }
 
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3
+- (id)objectReferenceForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= a3)
+  v3 = *&index;
+  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= index)
   {
     v8.receiver = self;
     v8.super_class = PXFeedSectionContentLayout;
@@ -1088,52 +1088,52 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
     v11 = 0u;
     [(PXFeedSectionContentLayout *)self sectionIndexPath];
     *&v11 = v3;
-    v5 = [(PXFeedSectionContentLayout *)self dataSource];
+    dataSource = [(PXFeedSectionContentLayout *)self dataSource];
     v9[0] = v10;
     v9[1] = v11;
-    v6 = [v5 objectReferenceAtIndexPath:v9];
+    v6 = [dataSource objectReferenceAtIndexPath:v9];
   }
 
   return v6;
 }
 
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PXFeedSectionContentLayout *)self visibleRect];
   PXRectGetCenter();
 }
 
-- (BOOL)_handlePresentMenuActionForIndex:(int64_t)a3 atLocation:(CGPoint)a4 inView:(id)a5
+- (BOOL)_handlePresentMenuActionForIndex:(int64_t)index atLocation:(CGPoint)location inView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  v10 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
   v11 = objc_opt_respondsToSelector();
   if (v11)
   {
-    v12 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:a3 loadIfNeeded:0];
-    [v10 presentMenuForItemLayout:v12 atLocation:v9 inView:{x, y}];
+    v12 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:index loadIfNeeded:0];
+    [itemLayoutFactory presentMenuForItemLayout:v12 atLocation:viewCopy inView:{x, y}];
   }
 
   return v11 & 1;
 }
 
-- (id)_handleHoverForItemAtIndex:(int64_t)a3
+- (id)_handleHoverForItemAtIndex:(int64_t)index
 {
-  v4 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:a3 loadIfNeeded:0];
+  v4 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:index loadIfNeeded:0];
   if (v4 && self->_itemLayoutFactoryRespondsTo.setItemLayoutIsHovered)
   {
-    v5 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
-    [v5 setItemLayout:v4 isHovered:1];
+    itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+    [itemLayoutFactory setItemLayout:v4 isHovered:1];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__PXFeedSectionContentLayout__handleHoverForItemAtIndex___block_invoke;
     v9[3] = &unk_1E774C620;
-    v10 = v5;
+    v10 = itemLayoutFactory;
     v11 = v4;
-    v6 = v5;
+    v6 = itemLayoutFactory;
     v7 = _Block_copy(v9);
   }
 
@@ -1145,20 +1145,20 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   return v7;
 }
 
-- (id)_handleTouchForItemAtIndex:(int64_t)a3
+- (id)_handleTouchForItemAtIndex:(int64_t)index
 {
-  v4 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:a3 loadIfNeeded:0];
+  v4 = [(PXFeedSectionContentLayout *)self sublayoutAtIndex:index loadIfNeeded:0];
   if (v4 && self->_itemLayoutFactoryRespondsTo.setItemLayoutIsTouched)
   {
-    v5 = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
-    [v5 setItemLayout:v4 isTouched:1];
+    itemLayoutFactory = [(PXFeedSectionContentLayout *)self itemLayoutFactory];
+    [itemLayoutFactory setItemLayout:v4 isTouched:1];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__PXFeedSectionContentLayout__handleTouchForItemAtIndex___block_invoke;
     v9[3] = &unk_1E774C620;
-    v10 = v5;
+    v10 = itemLayoutFactory;
     v11 = v4;
-    v6 = v5;
+    v6 = itemLayoutFactory;
     v7 = _Block_copy(v9);
   }
 
@@ -1170,26 +1170,26 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
   return v7;
 }
 
-- (BOOL)_handlePrimaryActionForItemAtIndex:(int64_t)a3
+- (BOOL)_handlePrimaryActionForItemAtIndex:(int64_t)index
 {
   v11 = 0u;
   v12 = 0u;
   [(PXFeedSectionContentLayout *)self sectionIndexPath];
-  *&v12 = a3;
-  v5 = [(PXFeedSectionContentLayout *)self viewModel];
-  v6 = [v5 actionPerformer];
-  v7 = [(PXFeedSectionContentLayout *)self dataSource];
+  *&v12 = index;
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  actionPerformer = [viewModel actionPerformer];
+  dataSource = [(PXFeedSectionContentLayout *)self dataSource];
   v10[0] = v11;
   v10[1] = v12;
-  v8 = [v6 handlePrimaryActionOnItemAtIndexPath:v10 inDataSource:v7];
+  v8 = [actionPerformer handlePrimaryActionOnItemAtIndexPath:v10 inDataSource:dataSource];
 
   return v8;
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= a3)
+  v3 = *&index;
+  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= index)
   {
     v5 = 0;
   }
@@ -1230,10 +1230,10 @@ void __70__PXFeedSectionContentLayout_itemPlacementControllerForItemReference___
     v17 = 0u;
     [(PXFeedSectionContentLayout *)self sectionIndexPath];
     *&v17 = v3;
-    v10 = [(PXFeedSectionContentLayout *)self dataSource];
+    dataSource = [(PXFeedSectionContentLayout *)self dataSource];
     v14 = v16;
     v15 = v17;
-    v11 = [v10 objectReferenceAtIndexPath:&v14];
+    v11 = [dataSource objectReferenceAtIndexPath:&v14];
 
     v12 = [(PXFeedHitTestResult *)v5 objectReference:v11];
     v14 = v16;
@@ -1283,29 +1283,29 @@ uint64_t __58__PXFeedSectionContentLayout_hitTestResultForSpriteIndex___block_in
   return v9;
 }
 
-- (double)alphaForSublayout:(id)a3 atIndex:(int64_t)a4
+- (double)alphaForSublayout:(id)sublayout atIndex:(int64_t)index
 {
-  v6 = [(PXFeedSectionContentLayout *)self localHiddenSpriteIndexes];
-  v7 = [v6 containsIndex:a4];
+  localHiddenSpriteIndexes = [(PXFeedSectionContentLayout *)self localHiddenSpriteIndexes];
+  v7 = [localHiddenSpriteIndexes containsIndex:index];
 
   v8 = 0.0;
   if ((v7 & 1) == 0)
   {
     v8 = 1.0;
-    if (!a4)
+    if (!index)
     {
-      v9 = [(PXFeedSectionContentLayout *)self viewModel];
-      v10 = [v9 spec];
-      v11 = [v10 wantsFirstItemFullscreen];
+      viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+      spec = [viewModel spec];
+      wantsFirstItemFullscreen = [spec wantsFirstItemFullscreen];
 
-      if (v11)
+      if (wantsFirstItemFullscreen)
       {
         [(PXFeedSectionContentLayout *)self visibleRect];
         v13 = v12;
-        v14 = [(PXFeedSectionContentLayout *)self viewModel];
-        v15 = [v14 spec];
-        v16 = [v15 scrollBehavior];
-        [v16 intrinsicContentOffset];
+        viewModel2 = [(PXFeedSectionContentLayout *)self viewModel];
+        spec2 = [viewModel2 spec];
+        scrollBehavior = [spec2 scrollBehavior];
+        [scrollBehavior intrinsicContentOffset];
         v18 = v13 / v17;
         v8 = 1.0;
         v19 = 1.0 - v18;
@@ -1335,18 +1335,18 @@ uint64_t __58__PXFeedSectionContentLayout_hitTestResultForSpriteIndex___block_in
   v8.receiver = self;
   v8.super_class = PXFeedSectionContentLayout;
   [(PXGCompositeLayout *)&v8 visibleRectDidChange];
-  v3 = [(PXFeedSectionContentLayout *)self autoplayController];
-  [v3 containerLayoutVisibleRectDidChange];
+  autoplayController = [(PXFeedSectionContentLayout *)self autoplayController];
+  [autoplayController containerLayoutVisibleRectDidChange];
 
-  v4 = [(PXFeedSectionContentLayout *)self viewModel];
-  v5 = [v4 visibleRectChangeObserver];
+  viewModel = [(PXFeedSectionContentLayout *)self viewModel];
+  visibleRectChangeObserver = [viewModel visibleRectChangeObserver];
 
-  if (v5)
+  if (visibleRectChangeObserver)
   {
-    v6 = [(PXFeedSectionContentLayout *)self viewModel];
-    v7 = [v6 visibleRectChangeObserver];
+    viewModel2 = [(PXFeedSectionContentLayout *)self viewModel];
+    visibleRectChangeObserver2 = [viewModel2 visibleRectChangeObserver];
     [(PXFeedSectionContentLayout *)self visibleRect];
-    v7[2](v7);
+    visibleRectChangeObserver2[2](visibleRectChangeObserver2);
   }
 }
 
@@ -1360,40 +1360,40 @@ uint64_t __58__PXFeedSectionContentLayout_hitTestResultForSpriteIndex___block_in
 
 - (int64_t)scrollableAxis
 {
-  v2 = [(PXGCompositeLayout *)self composition];
-  v3 = [v2 scrollableAxis];
+  composition = [(PXGCompositeLayout *)self composition];
+  scrollableAxis = [composition scrollableAxis];
 
-  return v3;
+  return scrollableAxis;
 }
 
-- (int64_t)itemForSpriteIndex:(unsigned int)a3
+- (int64_t)itemForSpriteIndex:(unsigned int)index
 {
-  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= a3)
+  if ([(PXFeedSectionContentLayout *)self localNumberOfSprites]<= index)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a3;
+    return index;
   }
 }
 
-- (PXFeedSectionContentLayout)initWithViewModel:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5
+- (PXFeedSectionContentLayout)initWithViewModel:(id)model dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v9 = a3;
-  v10 = a4;
+  modelCopy = model;
+  sourceCopy = source;
   v24.receiver = self;
   v24.super_class = PXFeedSectionContentLayout;
   v11 = [(PXGCompositeLayout *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_viewModel, a3);
+    objc_storeStrong(&v11->_viewModel, model);
     [(PXFeedViewModel *)v12->_viewModel registerChangeObserver:v12 context:ViewModelObservationContext_248659];
     [(PXFeedViewModel *)v12->_viewModel registerAccessoryTapToRadarDiagnosticsProvider:v12];
-    v13 = [(PXFeedViewModel *)v12->_viewModel itemLayoutFactory];
-    objc_storeStrong(&v12->_itemLayoutFactory, v13);
+    itemLayoutFactory = [(PXFeedViewModel *)v12->_viewModel itemLayoutFactory];
+    objc_storeStrong(&v12->_itemLayoutFactory, itemLayoutFactory);
     v12->_itemLayoutFactoryRespondsTo.setItemLayoutShouldAutoplayContentVideoTimeRange = objc_opt_respondsToSelector() & 1;
     v12->_itemLayoutFactoryRespondsTo.setItemLayoutIsTouched = objc_opt_respondsToSelector() & 1;
     v12->_itemLayoutFactoryRespondsTo.setItemLayoutIsHovered = objc_opt_respondsToSelector() & 1;
@@ -1401,9 +1401,9 @@ uint64_t __58__PXFeedSectionContentLayout_hitTestResultForSpriteIndex___block_in
     v12->_itemLayoutFactoryRespondsTo.configureItemLayoutForChangedItemFromIndexPathInDataSourceToIndexPathInDataSource = objc_opt_respondsToSelector() & 1;
     v12->_itemLayoutFactoryRespondsTo.decorationOverlayAnchorSpriteIndexForItemLayout = objc_opt_respondsToSelector() & 1;
     v12->_itemLayoutFactoryRespondsTo.itemPlacementControllerForItemReferenceItemLayout = objc_opt_respondsToSelector() & 1;
-    objc_storeStrong(&v12->_dataSource, a4);
-    v14 = *&a5->item;
-    *&v12->_sectionIndexPath.dataSourceIdentifier = *&a5->dataSourceIdentifier;
+    objc_storeStrong(&v12->_dataSource, source);
+    v14 = *&path->item;
+    *&v12->_sectionIndexPath.dataSourceIdentifier = *&path->dataSourceIdentifier;
     *&v12->_sectionIndexPath.item = v14;
     [(PXFeedSectionContentLayout *)v12 setContentSource:v12];
     v15 = objc_alloc_init(PXFeedSublayoutComposition);
@@ -1411,18 +1411,18 @@ uint64_t __58__PXFeedSectionContentLayout_hitTestResultForSpriteIndex___block_in
 
     if (v12->_itemLayoutFactoryRespondsTo.setItemLayoutShouldAutoplayContentVideoTimeRange)
     {
-      v16 = [v9 spec];
-      v17 = [v16 allowsAutoplayContent];
+      spec = [modelCopy spec];
+      allowsAutoplayContent = [spec allowsAutoplayContent];
 
-      if (v17)
+      if (allowsAutoplayContent)
       {
         v18 = [PXFeedAutoplayController alloc];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __76__PXFeedSectionContentLayout_initWithViewModel_dataSource_sectionIndexPath___block_invoke;
         v22[3] = &unk_1E774AD38;
-        v23 = v13;
-        v19 = [(PXFeedAutoplayController *)v18 initWithContainerLayout:v12 viewModel:v9 itemLayoutDesiredPlayStateSetter:v22];
+        v23 = itemLayoutFactory;
+        v19 = [(PXFeedAutoplayController *)v18 initWithContainerLayout:v12 viewModel:modelCopy itemLayoutDesiredPlayStateSetter:v22];
         autoplayController = v12->_autoplayController;
         v12->_autoplayController = v19;
       }
@@ -1448,8 +1448,8 @@ uint64_t __76__PXFeedSectionContentLayout_initWithViewModel_dataSource_sectionIn
 
 - (PXFeedSectionContentLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:67 description:{@"%s is not available as initializer", "-[PXFeedSectionContentLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedSectionContentLayout.m" lineNumber:67 description:{@"%s is not available as initializer", "-[PXFeedSectionContentLayout init]"}];
 
   abort();
 }

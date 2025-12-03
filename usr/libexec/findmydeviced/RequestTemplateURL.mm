@@ -1,40 +1,40 @@
 @interface RequestTemplateURL
-- (RequestTemplateURL)urlWithString:(id)a3;
-- (id)_substituteNonAuthenticatedURLPlaceholders:(id)a3;
-- (id)_substituteStandardURLPlaceholders:(id)a3 account:(id)a4 udid:(id)a5;
-- (id)unauthenticatedURLFromTemplate:(id)a3;
-- (id)urlFromTemplate:(id)a3 account:(id)a4 udid:(id)a5;
+- (RequestTemplateURL)urlWithString:(id)string;
+- (id)_substituteNonAuthenticatedURLPlaceholders:(id)placeholders;
+- (id)_substituteStandardURLPlaceholders:(id)placeholders account:(id)account udid:(id)udid;
+- (id)unauthenticatedURLFromTemplate:(id)template;
+- (id)urlFromTemplate:(id)template account:(id)account udid:(id)udid;
 @end
 
 @implementation RequestTemplateURL
 
-- (id)urlFromTemplate:(id)a3 account:(id)a4 udid:(id)a5
+- (id)urlFromTemplate:(id)template account:(id)account udid:(id)udid
 {
-  v6 = [(RequestTemplateURL *)self _substituteStandardURLPlaceholders:a3 account:a4 udid:a5];
+  v6 = [(RequestTemplateURL *)self _substituteStandardURLPlaceholders:template account:account udid:udid];
   v7 = [(RequestTemplateURL *)self urlWithString:v6];
 
   return v7;
 }
 
-- (id)unauthenticatedURLFromTemplate:(id)a3
+- (id)unauthenticatedURLFromTemplate:(id)template
 {
-  v4 = [(RequestTemplateURL *)self _substituteNonAuthenticatedURLPlaceholders:a3];
+  v4 = [(RequestTemplateURL *)self _substituteNonAuthenticatedURLPlaceholders:template];
   v5 = [(RequestTemplateURL *)self urlWithString:v4];
 
   return v5;
 }
 
-- (RequestTemplateURL)urlWithString:(id)a3
+- (RequestTemplateURL)urlWithString:(id)string
 {
-  v3 = a3;
-  v4 = [[NSURL alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[NSURL alloc] initWithString:stringCopy];
   if (!v4)
   {
     v5 = sub_100002880();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = stringCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Could not create an NSURL from the url string %@", &v7, 0xCu);
     }
   }
@@ -42,100 +42,100 @@
   return v4;
 }
 
-- (id)_substituteNonAuthenticatedURLPlaceholders:(id)a3
+- (id)_substituteNonAuthenticatedURLPlaceholders:(id)placeholders
 {
-  v4 = a3;
-  v5 = [(RequestTemplateURL *)self nonAuthenticatedSchemeInURL];
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v5];
+  placeholdersCopy = placeholders;
+  nonAuthenticatedSchemeInURL = [(RequestTemplateURL *)self nonAuthenticatedSchemeInURL];
+  v6 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:nonAuthenticatedSchemeInURL];
 
-  v7 = [(RequestTemplateURL *)self nonAuthenticatedHostNameInURL];
-  v8 = [v6 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v7];
+  nonAuthenticatedHostNameInURL = [(RequestTemplateURL *)self nonAuthenticatedHostNameInURL];
+  v8 = [v6 stringByReplacingOccurrencesOfString:@"${hostname}" withString:nonAuthenticatedHostNameInURL];
 
-  v9 = [(RequestTemplateURL *)self nonAuthenticatedServiceInURL];
-  v10 = [v8 stringByReplacingOccurrencesOfString:@"${service}" withString:v9];
+  nonAuthenticatedServiceInURL = [(RequestTemplateURL *)self nonAuthenticatedServiceInURL];
+  v10 = [v8 stringByReplacingOccurrencesOfString:@"${service}" withString:nonAuthenticatedServiceInURL];
 
   return v10;
 }
 
-- (id)_substituteStandardURLPlaceholders:(id)a3 account:(id)a4 udid:(id)a5
+- (id)_substituteStandardURLPlaceholders:(id)placeholders account:(id)account udid:(id)udid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeholdersCopy = placeholders;
+  accountCopy = account;
+  udidCopy = udid;
   v11 = +[FMDPreferencesMgr hostportOverride];
   if ([v11 length])
   {
-    v12 = [v8 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v11];
+    v12 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:v11];
   }
 
   else
   {
-    v13 = [v9 serverHost];
+    serverHost = [accountCopy serverHost];
 
-    if (!v13)
+    if (!serverHost)
     {
       goto LABEL_6;
     }
 
-    v14 = [v9 serverHost];
-    v12 = [v8 stringByReplacingOccurrencesOfString:@"${hostname}" withString:v14];
+    serverHost2 = [accountCopy serverHost];
+    v12 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${hostname}" withString:serverHost2];
 
-    v8 = v14;
+    placeholdersCopy = serverHost2;
   }
 
-  v8 = v12;
+  placeholdersCopy = v12;
 LABEL_6:
   v15 = +[FMDPreferencesMgr protocolSchemeOverride];
   if ([v15 length])
   {
-    v16 = [v8 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v15];
+    v16 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:v15];
   }
 
   else
   {
-    v17 = [v9 serverProtocolScheme];
+    serverProtocolScheme = [accountCopy serverProtocolScheme];
 
-    if (!v17)
+    if (!serverProtocolScheme)
     {
       goto LABEL_11;
     }
 
-    v18 = [v9 serverProtocolScheme];
-    v16 = [v8 stringByReplacingOccurrencesOfString:@"${scheme}" withString:v18];
+    serverProtocolScheme2 = [accountCopy serverProtocolScheme];
+    v16 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${scheme}" withString:serverProtocolScheme2];
 
-    v8 = v18;
+    placeholdersCopy = serverProtocolScheme2;
   }
 
-  v8 = v16;
+  placeholdersCopy = v16;
 LABEL_11:
-  v19 = [(RequestTemplateURL *)self serviceIdentifierInURL];
+  serviceIdentifierInURL = [(RequestTemplateURL *)self serviceIdentifierInURL];
 
-  if (v19)
+  if (serviceIdentifierInURL)
   {
-    v20 = [(RequestTemplateURL *)self serviceIdentifierInURL];
-    v21 = [v8 stringByReplacingOccurrencesOfString:@"${service}" withString:v20];
+    serviceIdentifierInURL2 = [(RequestTemplateURL *)self serviceIdentifierInURL];
+    v21 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${service}" withString:serviceIdentifierInURL2];
 
-    v8 = v21;
+    placeholdersCopy = v21;
   }
 
-  v22 = [v9 authId];
+  authId = [accountCopy authId];
 
-  if (v22)
+  if (authId)
   {
-    v23 = [v9 authId];
-    v24 = [v8 stringByReplacingOccurrencesOfString:@"${dsid}" withString:v23];
+    authId2 = [accountCopy authId];
+    v24 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${dsid}" withString:authId2];
 
-    v8 = v24;
+    placeholdersCopy = v24;
   }
 
-  if (v10)
+  if (udidCopy)
   {
-    v25 = [v8 stringByReplacingOccurrencesOfString:@"${udid}" withString:v10];
+    v25 = [placeholdersCopy stringByReplacingOccurrencesOfString:@"${udid}" withString:udidCopy];
 
-    v8 = v25;
+    placeholdersCopy = v25;
   }
 
-  return v8;
+  return placeholdersCopy;
 }
 
 @end

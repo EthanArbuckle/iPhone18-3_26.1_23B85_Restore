@@ -1,70 +1,70 @@
 @interface VCPDatabaseReader
-+ (id)databaseForPhotoLibrary:(id)a3;
-+ (id)databaseForPhotoLibraryURL:(id)a3;
-+ (id)databaseWithURL:(id)a3;
-+ (void)deprecatedExceptionForMethodName:(id)a3 replacedByMethodName:(id)a4;
++ (id)databaseForPhotoLibrary:(id)library;
++ (id)databaseForPhotoLibraryURL:(id)l;
++ (id)databaseWithURL:(id)l;
++ (void)deprecatedExceptionForMethodName:(id)name replacedByMethodName:(id)methodName;
 - (BOOL)exists;
-- (BOOL)isAssetBlacklisted:(id)a3 blacklistDate:(id *)a4;
-- (VCPDatabaseReader)initWithDatabaseURL:(id)a3;
-- (VCPDatabaseReader)initWithPhotoLibrary:(id)a3;
-- (VCPDatabaseReader)initWithPhotoLibraryURL:(id)a3;
-- (id)blacklistedLocalIdentifiersFromAssets:(id)a3;
+- (BOOL)isAssetBlacklisted:(id)blacklisted blacklistDate:(id *)date;
+- (VCPDatabaseReader)initWithDatabaseURL:(id)l;
+- (VCPDatabaseReader)initWithPhotoLibrary:(id)library;
+- (VCPDatabaseReader)initWithPhotoLibraryURL:(id)l;
+- (id)blacklistedLocalIdentifiersFromAssets:(id)assets;
 - (id)loadChangeTokens;
 - (id)loadKeyValues;
 - (id)loadProcessingStatus;
 - (id)migration_loadKeyValues;
 - (id)migration_loadMomentsScheduledAssets;
-- (id)migration_queryAnalysesForAssets:(id)a3 statsFlags:(unint64_t)a4 withTypes:(id)a5;
-- (id)queryAnalysesForAssets:(id)a3 withTypes:(id)a4;
-- (id)queryAnalysisForAsset:(id)a3;
-- (id)queryAnalysisForAsset:(id)a3 withTypes:(id)a4;
-- (id)queryAnalysisPropertiesForAssets:(id)a3;
-- (id)queryAssetsAnalyzedSince:(id)a3;
-- (id)queryFailedProcessingStatusFromAssets:(id)a3 forTaskID:(unint64_t)a4;
-- (id)queryLocalIdentifiersForTaskID:(unint64_t)a3 withStatus:(unint64_t)a4;
-- (int)_queryValue:(int64_t *)a3 forKey:(id)a4;
-- (int)countAssetsForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5;
-- (int)executeDatabaseBlock:(id)a3;
-- (int)migration_queryProgressHistoryRecords:(id *)a3 sinceDate:(id)a4;
-- (int)migration_querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5;
+- (id)migration_queryAnalysesForAssets:(id)assets statsFlags:(unint64_t)flags withTypes:(id)types;
+- (id)queryAnalysesForAssets:(id)assets withTypes:(id)types;
+- (id)queryAnalysisForAsset:(id)asset;
+- (id)queryAnalysisForAsset:(id)asset withTypes:(id)types;
+- (id)queryAnalysisPropertiesForAssets:(id)assets;
+- (id)queryAssetsAnalyzedSince:(id)since;
+- (id)queryFailedProcessingStatusFromAssets:(id)assets forTaskID:(unint64_t)d;
+- (id)queryLocalIdentifiersForTaskID:(unint64_t)d withStatus:(unint64_t)status;
+- (int)_queryValue:(int64_t *)value forKey:(id)key;
+- (int)countAssetsForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets;
+- (int)executeDatabaseBlock:(id)block;
+- (int)migration_queryProgressHistoryRecords:(id *)records sinceDate:(id)date;
+- (int)migration_querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate;
 - (int)openDatabase;
-- (int)parseHeader:(sqlite3_stmt *)a3 startColumn:(int)a4 analysis:(id)a5;
-- (int)parseResults:(sqlite3_stmt *)a3 typeColumn:(int)a4 dataColumn:(int)a5 results:(id)a6;
-- (int)queryHeaderForAsset:(id)a3 analysis:(id *)a4 assetId:(int64_t *)a5;
-- (int)queryHeadersForAssets:(id)a3 statsFlags:(unint64_t)a4 analyses:(id)a5 idMap:(id)a6;
-- (int)queryProgressHistoryRecords:(id *)a3 sinceDate:(id)a4;
-- (int)queryResultsForAssetId:(int64_t)a3 analysis:(id)a4;
-- (int)queryResultsForAssetId:(int64_t)a3 withTypes:(id)a4 analysis:(id)a5;
-- (int)queryResultsForAssets:(id)a3 withTypes:(id)a4 batchResults:(id)a5;
-- (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6;
-- (int)querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5;
-- (int64_t)valueForKey:(id)a3;
-- (unint64_t)countForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4;
-- (unint64_t)countForTaskID:(unint64_t)a3 withProcessingStatus:(unint64_t)a4;
+- (int)parseHeader:(sqlite3_stmt *)header startColumn:(int)column analysis:(id)analysis;
+- (int)parseResults:(sqlite3_stmt *)results typeColumn:(int)column dataColumn:(int)dataColumn results:(id)a6;
+- (int)queryHeaderForAsset:(id)asset analysis:(id *)analysis assetId:(int64_t *)id;
+- (int)queryHeadersForAssets:(id)assets statsFlags:(unint64_t)flags analyses:(id)analyses idMap:(id)map;
+- (int)queryProgressHistoryRecords:(id *)records sinceDate:(id)date;
+- (int)queryResultsForAssetId:(int64_t)id analysis:(id)analysis;
+- (int)queryResultsForAssetId:(int64_t)id withTypes:(id)types analysis:(id)analysis;
+- (int)queryResultsForAssets:(id)assets withTypes:(id)types batchResults:(id)results;
+- (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d startDate:(id)date endDate:(id)endDate;
+- (int)querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate;
+- (int64_t)valueForKey:(id)key;
+- (unint64_t)countForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts;
+- (unint64_t)countForTaskID:(unint64_t)d withProcessingStatus:(unint64_t)status;
 - (void)dealloc;
 - (void)openDatabase;
 @end
 
 @implementation VCPDatabaseReader
 
-+ (void)deprecatedExceptionForMethodName:(id)a3 replacedByMethodName:(id)a4
++ (void)deprecatedExceptionForMethodName:(id)name replacedByMethodName:(id)methodName
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD60] string];
-  [v7 appendFormat:@"[VCPDatabaseReader %@] is deprecated. ", v5];
-  if (v6)
+  nameCopy = name;
+  methodNameCopy = methodName;
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"[VCPDatabaseReader %@] is deprecated. ", nameCopy];
+  if (methodNameCopy)
   {
-    [v7 appendFormat:@"Use [MAD[Change|Fetch]Request %@] instead.", v6];
+    [string appendFormat:@"Use [MAD[Change|Fetch]Request %@] instead.", methodNameCopy];
   }
 
-  v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"DeprecatedMethodException" reason:v7 userInfo:0];
+  v8 = [MEMORY[0x1E695DF30] exceptionWithName:@"DeprecatedMethodException" reason:string userInfo:0];
   objc_exception_throw(v8);
 }
 
-- (VCPDatabaseReader)initWithPhotoLibrary:(id)a3
+- (VCPDatabaseReader)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = VCPDatabaseReader;
   v5 = [(VCPDatabaseReader *)&v12 init];
@@ -74,9 +74,9 @@
     sqlSerialQueue = v5->_sqlSerialQueue;
     v5->_sqlSerialQueue = v6;
 
-    if (v4)
+    if (libraryCopy)
     {
-      [v4 vcp_mediaAnalysisDatabaseFilepath];
+      [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
     }
 
     else
@@ -94,9 +94,9 @@
   return v5;
 }
 
-- (VCPDatabaseReader)initWithPhotoLibraryURL:(id)a3
+- (VCPDatabaseReader)initWithPhotoLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = VCPDatabaseReader;
   v5 = [(VCPDatabaseReader *)&v14 init];
@@ -106,15 +106,15 @@
     sqlSerialQueue = v5->_sqlSerialQueue;
     v5->_sqlSerialQueue = v6;
 
-    if ([MEMORY[0x1E69789B0] isSystemPhotoLibraryURL:v4])
+    if ([MEMORY[0x1E69789B0] isSystemPhotoLibraryURL:lCopy])
     {
       v8 = @"/var/mobile/Media/MediaAnalysis";
     }
 
     else
     {
-      v9 = [v4 path];
-      v8 = [v9 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis"];
+      path = [lCopy path];
+      v8 = [path stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis"];
     }
 
     v10 = [(__CFString *)v8 stringByAppendingPathComponent:@"mediaanalysis.db"];
@@ -128,9 +128,9 @@
   return v5;
 }
 
-- (VCPDatabaseReader)initWithDatabaseURL:(id)a3
+- (VCPDatabaseReader)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = VCPDatabaseReader;
   v5 = [(VCPDatabaseReader *)&v11 init];
@@ -140,9 +140,9 @@
     sqlSerialQueue = v5->_sqlSerialQueue;
     v5->_sqlSerialQueue = v6;
 
-    v8 = [v4 absoluteString];
+    absoluteString = [lCopy absoluteString];
     filepath = v5->_filepath;
-    v5->_filepath = v8;
+    v5->_filepath = absoluteString;
 
     v5->_database = 0;
   }
@@ -150,26 +150,26 @@
   return v5;
 }
 
-+ (id)databaseForPhotoLibrary:(id)a3
++ (id)databaseForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v3];
+  libraryCopy = library;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v4;
 }
 
-+ (id)databaseForPhotoLibraryURL:(id)a3
++ (id)databaseForPhotoLibraryURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(objc_opt_class()) initWithPhotoLibraryURL:lCopy];
 
   return v4;
 }
 
-+ (id)databaseWithURL:(id)a3
++ (id)databaseWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseURL:v3];
+  lCopy = l;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseURL:lCopy];
 
   return v4;
 }
@@ -192,8 +192,8 @@
 
   else
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v4 fileExistsAtPath:self->_filepath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager fileExistsAtPath:self->_filepath];
   }
 
   return v3;
@@ -202,8 +202,8 @@
 - (int)openDatabase
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:self->_filepath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:self->_filepath];
 
   if (v4)
   {
@@ -246,92 +246,92 @@
   return -23;
 }
 
-- (int)parseHeader:(sqlite3_stmt *)a3 startColumn:(int)a4 analysis:(id)a5
+- (int)parseHeader:(sqlite3_stmt *)header startColumn:(int)column analysis:(id)analysis
 {
-  v7 = a5;
-  v8 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(a3, a4)}];
-  [v7 setObject:v8 forKeyedSubscript:@"version"];
+  analysisCopy = analysis;
+  v8 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(header, column)}];
+  [analysisCopy setObject:v8 forKeyedSubscript:@"version"];
 
-  if (sqlite3_column_type(a3, a4 + 1) == 5)
+  if (sqlite3_column_type(header, column + 1) == 5)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{sqlite3_column_double(a3, a4 + 1)}];
+    v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{sqlite3_column_double(header, column + 1)}];
   }
 
-  [v7 setObject:v9 forKeyedSubscript:@"dateModified"];
+  [analysisCopy setObject:v9 forKeyedSubscript:@"dateModified"];
 
-  if (sqlite3_column_type(a3, a4 + 2) == 5)
+  if (sqlite3_column_type(header, column + 2) == 5)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{sqlite3_column_double(a3, a4 + 2)}];
+    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{sqlite3_column_double(header, column + 2)}];
   }
 
-  [v7 setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
+  [analysisCopy setObject:v10 forKeyedSubscript:@"dateAnalyzed"];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(a3, a4 + 3)}];
-  [v7 setObject:v11 forKeyedSubscript:@"performedAnalysisTypes"];
+  v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(header, column + 3)}];
+  [analysisCopy setObject:v11 forKeyedSubscript:@"performedAnalysisTypes"];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(a3, a4 + 4)}];
-  [v7 setObject:v12 forKeyedSubscript:@"flags"];
+  v12 = [MEMORY[0x1E696AD98] numberWithInt:{sqlite3_column_int(header, column + 4)}];
+  [analysisCopy setObject:v12 forKeyedSubscript:@"flags"];
 
-  if (sqlite3_column_double(a3, a4 + 5) != -1.0)
+  if (sqlite3_column_double(header, column + 5) != -1.0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    [v7 setObject:v13 forKeyedSubscript:@"quality"];
+    [analysisCopy setObject:v13 forKeyedSubscript:@"quality"];
   }
 
-  if (sqlite3_column_type(a3, a4 + 6) == 5)
+  if (sqlite3_column_type(header, column + 6) == 5)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_column_text(a3, a4 + 6)}];
+    v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_column_text(header, column + 6)}];
   }
 
-  if (sqlite3_column_type(a3, a4 + 7) == 5)
+  if (sqlite3_column_type(header, column + 7) == 5)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_column_text(a3, a4 + 7)}];
+    v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{sqlite3_column_text(header, column + 7)}];
   }
 
   v16 = [VCPFingerprint fingerprintWithMaster:v14 adjusted:v15];
-  [v7 vcp_setFingerprint:v16];
+  [analysisCopy vcp_setFingerprint:v16];
 
   if ([objc_opt_class() shouldQueryInternalFields])
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(a3, a4 + 8)}];
-    [v7 setObject:v17 forKeyedSubscript:@"statsFlags"];
+    v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(header, column + 8)}];
+    [analysisCopy setObject:v17 forKeyedSubscript:@"statsFlags"];
   }
 
-  if ([v7 vcp_version] < 3 && (objc_msgSend(v7, "vcp_types") & 4) != 0)
+  if ([analysisCopy vcp_version] < 3 && (objc_msgSend(analysisCopy, "vcp_types") & 4) != 0)
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "vcp_types") | 8}];
-    [v7 setObject:v18 forKeyedSubscript:@"performedAnalysisTypes"];
+    v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(analysisCopy, "vcp_types") | 8}];
+    [analysisCopy setObject:v18 forKeyedSubscript:@"performedAnalysisTypes"];
   }
 
   return 0;
 }
 
-- (int)parseResults:(sqlite3_stmt *)a3 typeColumn:(int)a4 dataColumn:(int)a5 results:(id)a6
+- (int)parseResults:(sqlite3_stmt *)results typeColumn:(int)column dataColumn:(int)dataColumn results:(id)a6
 {
   v26 = *MEMORY[0x1E69E9840];
   v9 = a6;
-  v10 = sqlite3_column_int(a3, a4);
-  if (sqlite3_column_type(a3, a5) == 5 || (v11 = MEMORY[0x1E695DEF0], v12 = sqlite3_column_blob(a3, a5), [v11 dataWithBytesNoCopy:v12 length:sqlite3_column_bytes(a3 freeWhenDone:{a5), 0}], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
+  v10 = sqlite3_column_int(results, column);
+  if (sqlite3_column_type(results, dataColumn) == 5 || (v11 = MEMORY[0x1E695DEF0], v12 = sqlite3_column_blob(results, dataColumn), [v11 dataWithBytesNoCopy:v12 length:sqlite3_column_bytes(results freeWhenDone:{dataColumn), 0}], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_10:
     v19 = -18;
@@ -348,7 +348,7 @@ LABEL_10:
     {
       v18 = [v16 description];
       *buf = 67109378;
-      v23 = a5;
+      dataColumnCopy = dataColumn;
       v24 = 2112;
       v25 = v18;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to extract NSArray from column %d (%@)", buf, 0x12u);
@@ -366,7 +366,7 @@ LABEL_10:
   else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v23 = v10;
+    dataColumnCopy = v10;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MediaAnalysis] Unknown result key for result type %u", buf, 8u);
   }
 
@@ -376,10 +376,10 @@ LABEL_11:
   return v19;
 }
 
-- (int)queryHeaderForAsset:(id)a3 analysis:(id *)a4 assetId:(int64_t *)a5
+- (int)queryHeaderForAsset:(id)asset analysis:(id *)analysis assetId:(int64_t *)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  assetCopy = asset;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -405,7 +405,7 @@ LABEL_11:
   if (!v12)
   {
     v13 = ppStmt;
-    v14 = v8;
+    v14 = assetCopy;
     v15 = v14;
     if (v14)
     {
@@ -442,11 +442,11 @@ LABEL_11:
       v19 = sqlite3_step(ppStmt);
       if (v19 == 100)
       {
-        *a5 = sqlite3_column_int(ppStmt, 0);
-        v20 = [MEMORY[0x1E695DF90] dictionary];
-        v21 = v20;
-        *a4 = v20;
-        v12 = [(VCPDatabaseReader *)self parseHeader:ppStmt startColumn:1 analysis:v20];
+        *id = sqlite3_column_int(ppStmt, 0);
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v21 = dictionary;
+        *analysis = dictionary;
+        v12 = [(VCPDatabaseReader *)self parseHeader:ppStmt startColumn:1 analysis:dictionary];
         if (v12)
         {
           goto LABEL_22;
@@ -473,10 +473,10 @@ LABEL_22:
   return v12;
 }
 
-- (int)queryResultsForAssetId:(int64_t)a3 analysis:(id)a4
+- (int)queryResultsForAssetId:(int64_t)id analysis:(id)analysis
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  analysisCopy = analysis;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -489,11 +489,11 @@ LABEL_22:
   }
 
   ppStmt = 0;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = sqlite3_prepare_v2(self->_database, "SELECT resultsType, results FROM Results WHERE assetId=(?);", -1, &ppStmt, 0);
   if (!v8)
   {
-    v8 = sqlite3_bind_int64(ppStmt, 1, a3);
+    v8 = sqlite3_bind_int64(ppStmt, 1, id);
     if (!v8)
     {
       v10 = sqlite3_expanded_sql(ppStmt);
@@ -521,7 +521,7 @@ LABEL_22:
           break;
         }
 
-        v8 = [(VCPDatabaseReader *)self parseResults:ppStmt typeColumn:0 dataColumn:1 results:v7];
+        v8 = [(VCPDatabaseReader *)self parseResults:ppStmt typeColumn:0 dataColumn:1 results:dictionary];
         if (v8)
         {
           goto LABEL_6;
@@ -530,9 +530,9 @@ LABEL_22:
 
       if (v11 == 101)
       {
-        if ([v7 count])
+        if ([dictionary count])
         {
-          [v6 setObject:v7 forKey:@"metadataRanges"];
+          [analysisCopy setObject:dictionary forKey:@"metadataRanges"];
         }
 
         v8 = 0;
@@ -551,11 +551,11 @@ LABEL_6:
   return v8;
 }
 
-- (int)queryResultsForAssetId:(int64_t)a3 withTypes:(id)a4 analysis:(id)a5
+- (int)queryResultsForAssetId:(int64_t)id withTypes:(id)types analysis:(id)analysis
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  typesCopy = types;
+  analysisCopy = analysis;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -567,7 +567,7 @@ LABEL_6:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (v8 && ![v8 count])
+  if (typesCopy && ![typesCopy count])
   {
     v15 = 0;
   }
@@ -575,12 +575,12 @@ LABEL_6:
   else
   {
     ppStmt = 0;
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = objc_msgSend(MEMORY[0x1E696AD60], "stringWithString:", @"SELECT resultsType, results FROM Results WHERE assetId=(?");
-    if ([v8 count])
+    if ([typesCopy count])
     {
       [v11 appendString:@") AND resultsType IN (?"];
-      for (i = 1; i < [v8 count]; ++i)
+      for (i = 1; i < [typesCopy count]; ++i)
       {
         [v11 appendString:{@", ?"}];
       }
@@ -592,15 +592,15 @@ LABEL_6:
     v15 = sqlite3_prepare_v2(database, [v11 UTF8String], -1, &ppStmt, 0);
     if (!v15)
     {
-      v15 = sqlite3_bind_int64(ppStmt, 1, a3);
+      v15 = sqlite3_bind_int64(ppStmt, 1, id);
       if (!v15)
       {
-        v25 = v9;
+        v25 = analysisCopy;
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v16 = v8;
+        v16 = typesCopy;
         v17 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];
         if (v17)
         {
@@ -615,12 +615,12 @@ LABEL_6:
                 objc_enumerationMutation(v16);
               }
 
-              v21 = [*(*(&v26 + 1) + 8 * j) unsignedIntegerValue];
-              v15 = sqlite3_bind_int64(ppStmt, v19, v21);
+              unsignedIntegerValue = [*(*(&v26 + 1) + 8 * j) unsignedIntegerValue];
+              v15 = sqlite3_bind_int64(ppStmt, v19, unsignedIntegerValue);
               if (v15)
               {
 
-                v9 = v25;
+                analysisCopy = v25;
                 goto LABEL_36;
               }
 
@@ -637,7 +637,7 @@ LABEL_6:
           }
         }
 
-        v9 = v25;
+        analysisCopy = v25;
         v22 = sqlite3_expanded_sql(ppStmt);
         if (v22)
         {
@@ -663,7 +663,7 @@ LABEL_6:
             break;
           }
 
-          v15 = [(VCPDatabaseReader *)self parseResults:ppStmt typeColumn:0 dataColumn:1 results:v10];
+          v15 = [(VCPDatabaseReader *)self parseResults:ppStmt typeColumn:0 dataColumn:1 results:dictionary];
           if (v15)
           {
             goto LABEL_36;
@@ -677,9 +677,9 @@ LABEL_6:
 
         else
         {
-          if ([v10 count])
+          if ([dictionary count])
           {
-            [v25 setObject:v10 forKey:@"metadataRanges"];
+            [v25 setObject:dictionary forKey:@"metadataRanges"];
           }
 
           v15 = 0;
@@ -694,12 +694,12 @@ LABEL_36:
   return v15;
 }
 
-- (int)queryHeadersForAssets:(id)a3 statsFlags:(unint64_t)a4 analyses:(id)a5 idMap:(id)a6
+- (int)queryHeadersForAssets:(id)assets statsFlags:(unint64_t)flags analyses:(id)analyses idMap:(id)map
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v37 = a5;
-  v39 = a6;
+  assetsCopy = assets;
+  analysesCopy = analyses;
+  mapCopy = map;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -712,21 +712,21 @@ LABEL_36:
   }
 
   *buf = 0;
-  v11 = [MEMORY[0x1E696AD60] stringWithString:{@"SELECT id, localIdentifier, version, dateModified, dateAnalyzed, analysisTypes, flags, quality, masterFingerprint, adjustedFingerprint", v37}];
+  v11 = [MEMORY[0x1E696AD60] stringWithString:{@"SELECT id, localIdentifier, version, dateModified, dateAnalyzed, analysisTypes, flags, quality, masterFingerprint, adjustedFingerprint", analysesCopy}];
   if ([objc_opt_class() shouldQueryInternalFields])
   {
     [v11 appendString:{@", statsFlags"}];
   }
 
   [v11 appendString:@" FROM Assets"];
-  if (a4)
+  if (flags)
   {
     [v11 appendString:@" WHERE (statsFlags & (?))"];
   }
 
-  if (v10)
+  if (assetsCopy)
   {
-    if (a4)
+    if (flags)
     {
       v12 = CFSTR(" AND localIdentifier IN (?");
     }
@@ -739,7 +739,7 @@ LABEL_36:
     [v11 appendString:v12];
     v13 = 1;
     v14 = @";");
-    while (v13 < [v10 count])
+    while (v13 < [assetsCopy count])
     {
       [v11 appendString:{@", ?"}];
       ++v13;
@@ -757,9 +757,9 @@ LABEL_36:
   v17 = sqlite3_prepare_v2(database, [v11 UTF8String], -1, buf, 0);
   if (!v17)
   {
-    if (a4)
+    if (flags)
     {
-      v17 = sqlite3_bind_int64(*buf, 1, a4);
+      v17 = sqlite3_bind_int64(*buf, 1, flags);
       if (v17)
       {
         goto LABEL_17;
@@ -777,7 +777,7 @@ LABEL_36:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v20 = v10;
+    v20 = assetsCopy;
     v21 = [v20 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v21)
     {
@@ -845,17 +845,17 @@ LABEL_36:
 
         v33 = v30;
         v34 = [MEMORY[0x1E696AD98] numberWithLongLong:v30];
-        [v39 setObject:v32 forKey:v34];
+        [mapCopy setObject:v32 forKey:v34];
 
-        v35 = [MEMORY[0x1E695DF90] dictionary];
-        v17 = [(VCPDatabaseReader *)self parseHeader:*buf startColumn:2 analysis:v35];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v17 = [(VCPDatabaseReader *)self parseHeader:*buf startColumn:2 analysis:dictionary];
         if (v17)
         {
           break;
         }
 
         v36 = [MEMORY[0x1E696AD98] numberWithLongLong:v33];
-        [v38 setObject:v35 forKey:v36];
+        [v38 setObject:dictionary forKey:v36];
 
         v29 = sqlite3_step(*buf);
         if (v29 != 100)
@@ -886,12 +886,12 @@ LABEL_17:
   return v17;
 }
 
-- (int)queryResultsForAssets:(id)a3 withTypes:(id)a4 batchResults:(id)a5
+- (int)queryResultsForAssets:(id)assets withTypes:(id)types batchResults:(id)results
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v38 = a4;
-  v8 = a5;
+  assetsCopy = assets;
+  typesCopy = types;
+  resultsCopy = results;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -903,7 +903,7 @@ LABEL_17:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (v38 && ![v38 count])
+  if (typesCopy && ![typesCopy count])
   {
     v14 = 0;
   }
@@ -912,15 +912,15 @@ LABEL_17:
   {
     ppStmt = 0;
     v9 = objc_msgSend(MEMORY[0x1E696AD60], "stringWithString:", @"SELECT assetId, resultsType, results FROM Results WHERE assetId IN (?");
-    for (i = 1; i < [v7 count]; ++i)
+    for (i = 1; i < [assetsCopy count]; ++i)
     {
       [v9 appendString:{@", ?"}];
     }
 
-    if ([v38 count])
+    if ([typesCopy count])
     {
       [v9 appendString:@") AND resultsType IN (?"];
-      for (j = 1; j < [v38 count]; ++j)
+      for (j = 1; j < [typesCopy count]; ++j)
       {
         [v9 appendString:{@", ?"}];
       }
@@ -936,7 +936,7 @@ LABEL_17:
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v15 = v7;
+      v15 = assetsCopy;
       v16 = [v15 countByEnumeratingWithState:&v47 objects:v54 count:16];
       if (v16)
       {
@@ -951,8 +951,8 @@ LABEL_17:
               objc_enumerationMutation(v15);
             }
 
-            v20 = [*(*(&v47 + 1) + 8 * k) unsignedIntegerValue];
-            v14 = sqlite3_bind_int64(ppStmt, v18, v20);
+            unsignedIntegerValue = [*(*(&v47 + 1) + 8 * k) unsignedIntegerValue];
+            v14 = sqlite3_bind_int64(ppStmt, v18, unsignedIntegerValue);
             if (v14)
             {
 
@@ -981,7 +981,7 @@ LABEL_17:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v21 = v38;
+      v21 = typesCopy;
       v22 = [v21 countByEnumeratingWithState:&v43 objects:v53 count:16];
       if (v22)
       {
@@ -995,8 +995,8 @@ LABEL_17:
               objc_enumerationMutation(v21);
             }
 
-            v25 = [*(*(&v43 + 1) + 8 * m) unsignedIntegerValue];
-            v14 = sqlite3_bind_int64(ppStmt, v18, v25);
+            unsignedIntegerValue2 = [*(*(&v43 + 1) + 8 * m) unsignedIntegerValue];
+            v14 = sqlite3_bind_int64(ppStmt, v18, unsignedIntegerValue2);
             if (v14)
             {
 
@@ -1053,8 +1053,8 @@ LABEL_17:
             }
 
             v31 = *(*(&v39 + 1) + 8 * n);
-            v32 = [MEMORY[0x1E695DF90] dictionary];
-            [v8 setObject:v32 forKeyedSubscript:v31];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [resultsCopy setObject:dictionary forKeyedSubscript:v31];
           }
 
           v28 = [v27 countByEnumeratingWithState:&v39 objects:v52 count:16];
@@ -1072,7 +1072,7 @@ LABEL_17:
         }
 
         v33 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int(ppStmt, 0)}];
-        v27 = [v8 objectForKeyedSubscript:v33];
+        v27 = [resultsCopy objectForKeyedSubscript:v33];
 
         if (!v27)
         {
@@ -1118,9 +1118,9 @@ LABEL_59:
   return v14;
 }
 
-- (int)executeDatabaseBlock:(id)a3
+- (int)executeDatabaseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1130,10 +1130,10 @@ LABEL_59:
   block[1] = 3221225472;
   block[2] = __42__VCPDatabaseReader_executeDatabaseBlock___block_invoke;
   block[3] = &unk_1E834E170;
-  v9 = v4;
+  v9 = blockCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = blockCopy;
   dispatch_sync(sqlSerialQueue, block);
   LODWORD(sqlSerialQueue) = *(v12 + 6);
 
@@ -1195,13 +1195,13 @@ void __42__VCPDatabaseReader_executeDatabaseBlock___block_invoke(uint64_t a1)
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__VCPDatabaseReader_loadChangeTokens__block_invoke;
   v7[3] = &unk_1E834E198;
   v7[4] = self;
-  v4 = v3;
+  v4 = array;
   v8 = v4;
   if ([(VCPDatabaseReader *)self executeDatabaseBlock:v7])
   {
@@ -1299,10 +1299,10 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)isAssetBlacklisted:(id)a3 blacklistDate:(id *)a4
+- (BOOL)isAssetBlacklisted:(id)blacklisted blacklistDate:(id *)date
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  blacklistedCopy = blacklisted;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"isAssetBlacklisted:blacklistDate:" replacedByMethodName:0];
@@ -1332,8 +1332,8 @@ LABEL_25:
     v9[3] = &unk_1E834E1C0;
     v9[4] = self;
     v11 = buf;
-    v12 = a4;
-    v10 = v6;
+    dateCopy = date;
+    v10 = blacklistedCopy;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
     v7 = *(*&buf[8] + 24);
 
@@ -1423,10 +1423,10 @@ uint64_t __54__VCPDatabaseReader_isAssetBlacklisted_blacklistDate___block_invoke
   return v2;
 }
 
-- (id)blacklistedLocalIdentifiersFromAssets:(id)a3
+- (id)blacklistedLocalIdentifiersFromAssets:(id)assets
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"blacklistedLocalIdentifiersFromAssets:" replacedByMethodName:0];
@@ -1445,7 +1445,7 @@ uint64_t __54__VCPDatabaseReader_isAssetBlacklisted_blacklistDate___block_invoke
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    if ([v4 count])
+    if ([assetsCopy count])
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -1457,8 +1457,8 @@ uint64_t __54__VCPDatabaseReader_isAssetBlacklisted_blacklistDate___block_invoke
       v7[1] = 3221225472;
       v7[2] = __59__VCPDatabaseReader_blacklistedLocalIdentifiersFromAssets___block_invoke;
       v7[3] = &unk_1E834E1E8;
-      v8 = v4;
-      v9 = self;
+      v8 = assetsCopy;
+      selfCopy = self;
       v10 = buf;
       [(VCPDatabaseReader *)self executeDatabaseBlock:v7];
       v5 = *(*&buf[8] + 40);
@@ -1609,10 +1609,10 @@ LABEL_32:
   return v4;
 }
 
-- (id)queryAnalysisForAsset:(id)a3
+- (id)queryAnalysisForAsset:(id)asset
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAnalysisForAsset:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:"];
@@ -1643,7 +1643,7 @@ LABEL_32:
     v7[2] = __43__VCPDatabaseReader_queryAnalysisForAsset___block_invoke;
     v7[3] = &unk_1E834E1E8;
     v7[4] = self;
-    v8 = v4;
+    v8 = assetCopy;
     v9 = buf;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v7];
     v5 = *(*&buf[8] + 40);
@@ -1693,10 +1693,10 @@ uint64_t __43__VCPDatabaseReader_queryAnalysisForAsset___block_invoke(uint64_t a
   return v5;
 }
 
-- (id)queryAnalysisPropertiesForAssets:(id)a3
+- (id)queryAnalysisPropertiesForAssets:(id)assets
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAnalysisPropertiesForAssets:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:"];
@@ -1715,20 +1715,20 @@ uint64_t __43__VCPDatabaseReader_queryAnalysisForAsset___block_invoke(uint64_t a
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    if ([v4 count])
+    if ([assetsCopy count])
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
       *&buf[24] = __Block_byref_object_copy__29;
       v11 = __Block_byref_object_dispose__29;
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __54__VCPDatabaseReader_queryAnalysisPropertiesForAssets___block_invoke;
       v7[3] = &unk_1E834E1E8;
       v7[4] = self;
-      v8 = v4;
+      v8 = assetsCopy;
       v9 = buf;
       [(VCPDatabaseReader *)self executeDatabaseBlock:v7];
       v5 = *(*&buf[8] + 40);
@@ -1892,11 +1892,11 @@ LABEL_33:
   return v4;
 }
 
-- (id)queryAnalysisForAsset:(id)a3 withTypes:(id)a4
+- (id)queryAnalysisForAsset:(id)asset withTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  typesCopy = types;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAnalysisForAsset:withTypes:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:resultTypes:"];
@@ -1927,9 +1927,9 @@ LABEL_33:
     v10[2] = __53__VCPDatabaseReader_queryAnalysisForAsset_withTypes___block_invoke;
     v10[3] = &unk_1E834E210;
     v10[4] = self;
-    v11 = v6;
+    v11 = assetCopy;
     v13 = buf;
-    v12 = v7;
+    v12 = typesCopy;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v10];
     v8 = *(*&buf[8] + 40);
 
@@ -1987,11 +1987,11 @@ uint64_t __53__VCPDatabaseReader_queryAnalysisForAsset_withTypes___block_invoke(
   return v5;
 }
 
-- (id)queryAnalysesForAssets:(id)a3 withTypes:(id)a4
+- (id)queryAnalysesForAssets:(id)assets withTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  typesCopy = types;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAnalysesForAssets:withTypes:" replacedByMethodName:@"fetchAnalysisWithLocalIdentifier:predicate:resultTypes:"];
@@ -2010,7 +2010,7 @@ uint64_t __53__VCPDatabaseReader_queryAnalysisForAsset_withTypes___block_invoke(
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    if ([v6 count])
+    if ([assetsCopy count])
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -2023,8 +2023,8 @@ uint64_t __53__VCPDatabaseReader_queryAnalysisForAsset_withTypes___block_invoke(
       v10[2] = __54__VCPDatabaseReader_queryAnalysesForAssets_withTypes___block_invoke;
       v10[3] = &unk_1E834E238;
       v10[4] = self;
-      v11 = v6;
-      v12 = v7;
+      v11 = assetsCopy;
+      v12 = typesCopy;
       v13 = buf;
       [(VCPDatabaseReader *)self executeDatabaseBlock:v10];
       v8 = *(*&buf[8] + 40);
@@ -2122,11 +2122,11 @@ uint64_t __54__VCPDatabaseReader_queryAnalysesForAssets_withTypes___block_invoke
   return v3;
 }
 
-- (id)migration_queryAnalysesForAssets:(id)a3 statsFlags:(unint64_t)a4 withTypes:(id)a5
+- (id)migration_queryAnalysesForAssets:(id)assets statsFlags:(unint64_t)flags withTypes:(id)types
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  assetsCopy = assets;
+  typesCopy = types;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -2149,10 +2149,10 @@ uint64_t __54__VCPDatabaseReader_queryAnalysesForAssets_withTypes___block_invoke
   v14[2] = __75__VCPDatabaseReader_migration_queryAnalysesForAssets_statsFlags_withTypes___block_invoke;
   v14[3] = &unk_1E834E260;
   v14[4] = self;
-  v10 = v8;
+  v10 = assetsCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  flagsCopy = flags;
+  v11 = typesCopy;
   v16 = v11;
   v17 = buf;
   [(VCPDatabaseReader *)self executeDatabaseBlock:v14];
@@ -2245,10 +2245,10 @@ uint64_t __75__VCPDatabaseReader_migration_queryAnalysesForAssets_statsFlags_wit
   return v3;
 }
 
-- (id)queryAssetsAnalyzedSince:(id)a3
+- (id)queryAssetsAnalyzedSince:(id)since
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sinceCopy = since;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryAssetsAnalyzedSince:" replacedByMethodName:@"fetchAnalysesWithLocalIdentifiers:predicate:"];
@@ -2274,9 +2274,9 @@ uint64_t __75__VCPDatabaseReader_migration_queryAnalysesForAssets_statsFlags_wit
     *&buf[24] = __Block_byref_object_copy__29;
     v11 = __Block_byref_object_dispose__29;
     v12 = 0;
-    if (!v4)
+    if (!sinceCopy)
     {
-      v4 = [MEMORY[0x1E695DF00] distantPast];
+      sinceCopy = [MEMORY[0x1E695DF00] distantPast];
     }
 
     v7[0] = MEMORY[0x1E69E9820];
@@ -2284,8 +2284,8 @@ uint64_t __75__VCPDatabaseReader_migration_queryAnalysesForAssets_statsFlags_wit
     v7[2] = __46__VCPDatabaseReader_queryAssetsAnalyzedSince___block_invoke;
     v7[3] = &unk_1E834E1E8;
     v7[4] = self;
-    v4 = v4;
-    v8 = v4;
+    sinceCopy = sinceCopy;
+    v8 = sinceCopy;
     v9 = buf;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v7];
     v5 = *(*&buf[8] + 40);
@@ -2415,10 +2415,10 @@ uint64_t __46__VCPDatabaseReader_queryAssetsAnalyzedSince___block_invoke(uint64_
   return v2;
 }
 
-- (id)queryFailedProcessingStatusFromAssets:(id)a3 forTaskID:(unint64_t)a4
+- (id)queryFailedProcessingStatusFromAssets:(id)assets forTaskID:(unint64_t)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetsCopy = assets;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryFailedProcessingStatusFromAssets:forTaskID:" replacedByMethodName:@"queryAssetCountFromLocalIdentifiers:taskID:excludingStatuses:"];
@@ -2437,22 +2437,22 @@ uint64_t __46__VCPDatabaseReader_queryAssetsAnalyzedSince___block_invoke(uint64_
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    if ([v6 count])
+    if ([assetsCopy count])
     {
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
       *&buf[24] = __Block_byref_object_copy__29;
       v15 = __Block_byref_object_dispose__29;
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __69__VCPDatabaseReader_queryFailedProcessingStatusFromAssets_forTaskID___block_invoke;
       v9[3] = &unk_1E834E1C0;
-      v10 = v6;
-      v11 = self;
+      v10 = assetsCopy;
+      selfCopy = self;
       v12 = buf;
-      v13 = a4;
+      dCopy = d;
       [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
       v7 = *(*&buf[8] + 40);
 
@@ -2651,7 +2651,7 @@ LABEL_42:
   return v4;
 }
 
-- (id)queryLocalIdentifiersForTaskID:(unint64_t)a3 withStatus:(unint64_t)a4
+- (id)queryLocalIdentifiersForTaskID:(unint64_t)d withStatus:(unint64_t)status
 {
   v13 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
@@ -2683,8 +2683,8 @@ LABEL_42:
     v9[1] = 3221225472;
     v9[2] = __63__VCPDatabaseReader_queryLocalIdentifiersForTaskID_withStatus___block_invoke;
     v9[3] = &unk_1E834E288;
-    v9[6] = a3;
-    v9[7] = a4;
+    v9[6] = d;
+    v9[7] = status;
     v9[4] = self;
     v9[5] = buf;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
@@ -2779,7 +2779,7 @@ LABEL_4:
   return v3;
 }
 
-- (unint64_t)countForTaskID:(unint64_t)a3 minimumAttempts:(unint64_t)a4
+- (unint64_t)countForTaskID:(unint64_t)d minimumAttempts:(unint64_t)attempts
 {
   v11 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
@@ -2809,8 +2809,8 @@ LABEL_4:
     v9[1] = 3221225472;
     v9[2] = __52__VCPDatabaseReader_countForTaskID_minimumAttempts___block_invoke;
     v9[3] = &unk_1E834E288;
-    v9[6] = a3;
-    v9[7] = a4;
+    v9[6] = d;
+    v9[7] = attempts;
     v9[4] = self;
     v9[5] = buf;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
@@ -2870,7 +2870,7 @@ uint64_t __52__VCPDatabaseReader_countForTaskID_minimumAttempts___block_invoke(v
   return v3;
 }
 
-- (unint64_t)countForTaskID:(unint64_t)a3 withProcessingStatus:(unint64_t)a4
+- (unint64_t)countForTaskID:(unint64_t)d withProcessingStatus:(unint64_t)status
 {
   v11 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
@@ -2900,8 +2900,8 @@ uint64_t __52__VCPDatabaseReader_countForTaskID_minimumAttempts___block_invoke(v
     v9[1] = 3221225472;
     v9[2] = __57__VCPDatabaseReader_countForTaskID_withProcessingStatus___block_invoke;
     v9[3] = &unk_1E834E288;
-    v9[6] = a3;
-    v9[7] = a4;
+    v9[6] = d;
+    v9[7] = status;
     v9[4] = self;
     v9[5] = buf;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
@@ -2975,13 +2975,13 @@ uint64_t __57__VCPDatabaseReader_countForTaskID_withProcessingStatus___block_inv
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__VCPDatabaseReader_loadProcessingStatus__block_invoke;
   v7[3] = &unk_1E834E198;
   v7[4] = self;
-  v4 = v3;
+  v4 = array;
   v8 = v4;
   if ([(VCPDatabaseReader *)self executeDatabaseBlock:v7])
   {
@@ -3092,10 +3092,10 @@ LABEL_28:
   return v1;
 }
 
-- (int)_queryValue:(int64_t *)a3 forKey:(id)a4
+- (int)_queryValue:(int64_t *)value forKey:(id)key
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -3108,7 +3108,7 @@ LABEL_28:
   }
 
   ppStmt = 0;
-  *a3 = 0;
+  *value = 0;
   v7 = sqlite3_prepare_v2(self->_database, "SELECT value FROM KeyValueStore WHERE key = (?);", -1, &ppStmt, 0);
   if (v7)
   {
@@ -3116,7 +3116,7 @@ LABEL_28:
   }
 
   v8 = ppStmt;
-  v9 = v6;
+  v9 = keyCopy;
   v10 = v9;
   if (v9)
   {
@@ -3156,7 +3156,7 @@ LABEL_28:
   v7 = sqlite3_step(ppStmt);
   if (v7 == 100)
   {
-    *a3 = sqlite3_column_int64(ppStmt, 0);
+    *value = sqlite3_column_int64(ppStmt, 0);
     v7 = sqlite3_step(ppStmt);
   }
 
@@ -3182,10 +3182,10 @@ LABEL_26:
   return v13;
 }
 
-- (int64_t)valueForKey:(id)a3
+- (int64_t)valueForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"valueForKey:" replacedByMethodName:@"dataStoreValueForKey:"];
@@ -3205,7 +3205,7 @@ LABEL_8:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
@@ -3220,7 +3220,7 @@ LABEL_8:
   v7[3] = &unk_1E834E2B0;
   v7[4] = self;
   v9 = buf;
-  v8 = v4;
+  v8 = keyCopy;
   [(VCPDatabaseReader *)self executeDatabaseBlock:v7];
   v5 = *(*&buf[8] + 24);
 
@@ -3252,13 +3252,13 @@ LABEL_9:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
     }
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __34__VCPDatabaseReader_loadKeyValues__block_invoke;
     v8[3] = &unk_1E834E198;
     v8[4] = self;
-    v5 = v4;
+    v5 = dictionary;
     v9 = v5;
     [(VCPDatabaseReader *)self executeDatabaseBlock:v8];
     v6 = v9;
@@ -3353,13 +3353,13 @@ LABEL_26:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__VCPDatabaseReader_migration_loadKeyValues__block_invoke;
   v8[3] = &unk_1E834E198;
   v8[4] = self;
-  v4 = v3;
+  v4 = dictionary;
   v9 = v4;
   [(VCPDatabaseReader *)self executeDatabaseBlock:v8];
   v5 = v9;
@@ -3439,11 +3439,11 @@ LABEL_26:
   return v2;
 }
 
-- (int)querySchedulingHistoryRecords:(id *)a3 forActivityID:(unint64_t)a4 startDate:(id)a5 endDate:(id)a6
+- (int)querySchedulingHistoryRecords:(id *)records forActivityID:(unint64_t)d startDate:(id)date endDate:(id)endDate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"querySchedulingHistoryRecords:forActivityID:startDate:endDate:" replacedByMethodName:@"querySchedulingHistoryRecords:forActivityID:startDate:endDate:"];
@@ -3468,18 +3468,18 @@ LABEL_26:
     *&buf[16] = 0x3032000000;
     *&buf[24] = __Block_byref_object_copy__29;
     v20 = __Block_byref_object_dispose__29;
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__VCPDatabaseReader_querySchedulingHistoryRecords_forActivityID_startDate_endDate___block_invoke;
     v14[3] = &unk_1E834E260;
     v14[4] = self;
-    v18 = a4;
-    v15 = v10;
-    v16 = v11;
+    dCopy = d;
+    v15 = dateCopy;
+    v16 = endDateCopy;
     v17 = buf;
     v12 = [(VCPDatabaseReader *)self executeDatabaseBlock:v14];
-    *a3 = *(*&buf[8] + 40);
+    *records = *(*&buf[8] + 40);
 
     _Block_object_dispose(buf, 8);
   }
@@ -3626,11 +3626,11 @@ LABEL_35:
   return v2;
 }
 
-- (int)querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5
+- (int)querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"querySchedulingHistoryRecords:startDate:endDate:" replacedByMethodName:@"querySchedulingHistoryRecords:startDate:endDate:"];
@@ -3655,17 +3655,17 @@ LABEL_35:
     *&buf[16] = 0x3032000000;
     *&buf[24] = __Block_byref_object_copy__29;
     v17 = __Block_byref_object_dispose__29;
-    v18 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__VCPDatabaseReader_querySchedulingHistoryRecords_startDate_endDate___block_invoke;
     v12[3] = &unk_1E834E238;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
+    v13 = dateCopy;
+    v14 = endDateCopy;
     v15 = buf;
     v10 = [(VCPDatabaseReader *)self executeDatabaseBlock:v12];
-    *a3 = *(*&buf[8] + 40);
+    *records = *(*&buf[8] + 40);
 
     _Block_object_dispose(buf, 8);
   }
@@ -3803,11 +3803,11 @@ LABEL_34:
   return v2;
 }
 
-- (int)migration_querySchedulingHistoryRecords:(id *)a3 startDate:(id)a4 endDate:(id)a5
+- (int)migration_querySchedulingHistoryRecords:(id *)records startDate:(id)date endDate:(id)endDate
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -3824,19 +3824,19 @@ LABEL_34:
   *&buf[16] = 0x3032000000;
   *&buf[24] = __Block_byref_object_copy__29;
   v19 = __Block_byref_object_dispose__29;
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__VCPDatabaseReader_migration_querySchedulingHistoryRecords_startDate_endDate___block_invoke;
   v14[3] = &unk_1E834E238;
   v14[4] = self;
-  v10 = v8;
+  v10 = dateCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = endDateCopy;
   v16 = v11;
   v17 = buf;
   v12 = [(VCPDatabaseReader *)self executeDatabaseBlock:v14];
-  *a3 = *(*&buf[8] + 40);
+  *records = *(*&buf[8] + 40);
 
   _Block_object_dispose(buf, 8);
   return v12;
@@ -3972,10 +3972,10 @@ LABEL_34:
   return v2;
 }
 
-- (int)queryProgressHistoryRecords:(id *)a3 sinceDate:(id)a4
+- (int)queryProgressHistoryRecords:(id *)records sinceDate:(id)date
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dateCopy = date;
   if (_os_feature_enabled_impl())
   {
     [objc_opt_class() deprecatedExceptionForMethodName:@"queryProgressHistoryRecords:sinceDate:" replacedByMethodName:@"queryProgressHistoryRecords:sinceDate:"];
@@ -4000,16 +4000,16 @@ LABEL_34:
     *&buf[16] = 0x3032000000;
     *&buf[24] = __Block_byref_object_copy__29;
     v13 = __Block_byref_object_dispose__29;
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __59__VCPDatabaseReader_queryProgressHistoryRecords_sinceDate___block_invoke;
     v9[3] = &unk_1E834E1E8;
     v9[4] = self;
-    v10 = v6;
+    v10 = dateCopy;
     v11 = buf;
     v7 = [(VCPDatabaseReader *)self executeDatabaseBlock:v9];
-    *a3 = *(*&buf[8] + 40);
+    *records = *(*&buf[8] + 40);
 
     _Block_object_dispose(buf, 8);
   }
@@ -4114,7 +4114,7 @@ LABEL_27:
   return v2;
 }
 
-- (int)countAssetsForTaskID:(unint64_t)a3 totalAssets:(unint64_t *)a4 processedAssets:(unint64_t *)a5
+- (int)countAssetsForTaskID:(unint64_t)d totalAssets:(unint64_t *)assets processedAssets:(unint64_t *)processedAssets
 {
   v17 = *MEMORY[0x1E69E9840];
   if (_os_feature_enabled_impl())
@@ -4126,7 +4126,7 @@ LABEL_27:
   else
   {
     result = -50;
-    if (a4 && a5)
+    if (assets && processedAssets)
     {
       if (MediaAnalysisEnableDatabaseLog())
       {
@@ -4147,9 +4147,9 @@ LABEL_27:
       v10[2] = __70__VCPDatabaseReader_countAssetsForTaskID_totalAssets_processedAssets___block_invoke;
       v10[3] = &unk_1E834E2D8;
       v10[4] = self;
-      v10[5] = a3;
-      v10[6] = a4;
-      v10[7] = a5;
+      v10[5] = d;
+      v10[6] = assets;
+      v10[7] = processedAssets;
       [(VCPDatabaseReader *)self executeDatabaseBlock:v10];
       return 0;
     }
@@ -4215,10 +4215,10 @@ uint64_t __70__VCPDatabaseReader_countAssetsForTaskID_totalAssets_processedAsset
   return v3;
 }
 
-- (int)migration_queryProgressHistoryRecords:(id *)a3 sinceDate:(id)a4
+- (int)migration_queryProgressHistoryRecords:(id *)records sinceDate:(id)date
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dateCopy = date;
   if (MediaAnalysisEnableDatabaseLog() && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
@@ -4235,17 +4235,17 @@ uint64_t __70__VCPDatabaseReader_countAssetsForTaskID_totalAssets_processedAsset
   *&buf[16] = 0x3032000000;
   *&buf[24] = __Block_byref_object_copy__29;
   v14 = __Block_byref_object_dispose__29;
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__VCPDatabaseReader_migration_queryProgressHistoryRecords_sinceDate___block_invoke;
   v10[3] = &unk_1E834E1E8;
   v10[4] = self;
-  v7 = v6;
+  v7 = dateCopy;
   v11 = v7;
   v12 = buf;
   v8 = [(VCPDatabaseReader *)self executeDatabaseBlock:v10];
-  *a3 = *(*&buf[8] + 40);
+  *records = *(*&buf[8] + 40);
 
   _Block_object_dispose(buf, 8);
   return v8;
@@ -4362,13 +4362,13 @@ LABEL_27:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[MADB] Executing: %s[line:%d]: %s", buf, 0x1Cu);
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__VCPDatabaseReader_migration_loadMomentsScheduledAssets__block_invoke;
   v7[3] = &unk_1E834E198;
   v7[4] = self;
-  v4 = v3;
+  v4 = array;
   v8 = v4;
   if ([(VCPDatabaseReader *)self executeDatabaseBlock:v7])
   {
@@ -4466,7 +4466,7 @@ LABEL_25:
 {
   v2 = *MEMORY[0x1E69E9840];
   v1[0] = 67109120;
-  v1[1] = a1;
+  v1[1] = self;
   _os_log_fault_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "[VCPDatabaseReader] Failed to set busy handler: %d", v1, 8u);
 }
 

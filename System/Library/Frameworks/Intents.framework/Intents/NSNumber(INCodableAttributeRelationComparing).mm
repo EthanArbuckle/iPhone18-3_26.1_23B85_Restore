@@ -35,7 +35,7 @@
         }
 
         v14 = v10;
-        if ([a1 compare:v14] == -1)
+        if ([self compare:v14] == -1)
         {
           goto LABEL_47;
         }
@@ -63,7 +63,7 @@
       }
 
       v15 = v11;
-      v16 = [a1 compare:v15];
+      v16 = [self compare:v15];
 
       v17 = v16 == -1;
       goto LABEL_50;
@@ -93,11 +93,11 @@
       v14 = v12;
       if ([v14 count] == 2)
       {
-        v18 = [v14 firstObject];
-        v19 = [v14 lastObject];
-        if ([a1 _intents_compareValue:v18 relation:5])
+        firstObject = [v14 firstObject];
+        lastObject = [v14 lastObject];
+        if ([self _intents_compareValue:firstObject relation:5])
         {
-          v8 = [a1 _intents_compareValue:v19 relation:7];
+          v8 = [self _intents_compareValue:lastObject relation:7];
         }
 
         else
@@ -125,7 +125,7 @@
     }
 
 LABEL_16:
-    v8 = [a1 isEqual:v6];
+    v8 = [self isEqual:v6];
     goto LABEL_56;
   }
 
@@ -155,7 +155,7 @@ LABEL_16:
         }
 
         v14 = v9;
-        if ([a1 compare:v14] == 1)
+        if ([self compare:v14] == 1)
         {
 LABEL_47:
           v8 = 1;
@@ -163,7 +163,7 @@ LABEL_47:
         }
 
 LABEL_37:
-        v8 = [a1 isEqual:v7];
+        v8 = [self isEqual:v7];
 LABEL_55:
 
         goto LABEL_56;
@@ -189,7 +189,7 @@ LABEL_55:
       }
 
       v20 = v13;
-      v21 = [a1 compare:v20];
+      v21 = [self compare:v20];
 
       v17 = v21 == 1;
 LABEL_50:
@@ -198,7 +198,7 @@ LABEL_50:
     }
 
 LABEL_13:
-    v8 = [a1 isEqual:v6] ^ 1;
+    v8 = [self isEqual:v6] ^ 1;
     goto LABEL_56;
   }
 

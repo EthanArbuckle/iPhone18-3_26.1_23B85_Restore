@@ -1,10 +1,10 @@
 @interface HAP2AsynchronousBlockOperation
 - (HAP2AsynchronousBlockOperation)init;
-- (HAP2AsynchronousBlockOperation)initWithBlock:(id)a3;
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3;
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3 activity:(id)a4;
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3 optionalActivity:(id)a4;
-- (void)initWithName:(uint64_t)a3 optionalActivity:(void *)a4 block:;
+- (HAP2AsynchronousBlockOperation)initWithBlock:(id)block;
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name;
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name activity:(id)activity;
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name optionalActivity:(id)activity;
+- (void)initWithName:(uint64_t)name optionalActivity:(void *)activity block:;
 - (void)main;
 @end
 
@@ -26,17 +26,17 @@
   v4[2]();
 }
 
-- (void)initWithName:(uint64_t)a3 optionalActivity:(void *)a4 block:
+- (void)initWithName:(uint64_t)name optionalActivity:(void *)activity block:
 {
-  v7 = a4;
-  if (a1)
+  activityCopy = activity;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = HAP2AsynchronousBlockOperation;
-    v8 = objc_msgSendSuper2(&v12, sel_initWithName_optionalActivity_, a2, a3);
+    v8 = objc_msgSendSuper2(&v12, sel_initWithName_optionalActivity_, a2, name);
     if (v8)
     {
-      v9 = MEMORY[0x231885210](v7);
+      v9 = MEMORY[0x231885210](activityCopy);
       v10 = v8[35];
       v8[35] = v9;
     }
@@ -50,20 +50,20 @@
   return v8;
 }
 
-- (HAP2AsynchronousBlockOperation)initWithBlock:(id)a3
+- (HAP2AsynchronousBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(HAP2AsynchronousBlockOperation *)self initWithName:v6 block:v4];
+  v7 = [(HAP2AsynchronousBlockOperation *)self initWithName:v6 block:blockCopy];
 
   return v7;
 }
 
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3 optionalActivity:(id)a4
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name optionalActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  activityCopy = activity;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -75,10 +75,10 @@
   objc_exception_throw(v13);
 }
 
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3 activity:(id)a4
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  activityCopy = activity;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -90,9 +90,9 @@
   objc_exception_throw(v13);
 }
 
-- (HAP2AsynchronousBlockOperation)initWithName:(id)a3
+- (HAP2AsynchronousBlockOperation)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

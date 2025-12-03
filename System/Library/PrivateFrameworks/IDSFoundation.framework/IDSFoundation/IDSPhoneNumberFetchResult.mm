@@ -1,52 +1,52 @@
 @interface IDSPhoneNumberFetchResult
-- (IDSPhoneNumberFetchResult)initWithCoder:(id)a3;
-- (IDSPhoneNumberFetchResult)initWithTelURI:(id)a3 fetchType:(int64_t)a4;
+- (IDSPhoneNumberFetchResult)initWithCoder:(id)coder;
+- (IDSPhoneNumberFetchResult)initWithTelURI:(id)i fetchType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPhoneNumberFetchResult
 
-- (IDSPhoneNumberFetchResult)initWithTelURI:(id)a3 fetchType:(int64_t)a4
+- (IDSPhoneNumberFetchResult)initWithTelURI:(id)i fetchType:(int64_t)type
 {
-  v7 = a3;
+  iCopy = i;
   v11.receiver = self;
   v11.super_class = IDSPhoneNumberFetchResult;
   v8 = [(IDSPhoneNumberFetchResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_telURI, a3);
-    v9->_fetchType = a4;
+    objc_storeStrong(&v8->_telURI, i);
+    v9->_fetchType = type;
   }
 
   return v9;
 }
 
-- (IDSPhoneNumberFetchResult)initWithCoder:(id)a3
+- (IDSPhoneNumberFetchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IDSPhoneNumberFetchResult;
   v5 = [(IDSPhoneNumberFetchResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TelURI"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TelURI"];
     telURI = v5->_telURI;
     v5->_telURI = v6;
 
-    v5->_fetchType = [v4 decodeIntegerForKey:@"FetchType"];
+    v5->_fetchType = [coderCopy decodeIntegerForKey:@"FetchType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   telURI = self->_telURI;
-  v5 = a3;
-  [v5 encodeObject:telURI forKey:@"TelURI"];
-  [v5 encodeInteger:self->_fetchType forKey:@"FetchType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:telURI forKey:@"TelURI"];
+  [coderCopy encodeInteger:self->_fetchType forKey:@"FetchType"];
 }
 
 - (id)description

@@ -1,64 +1,64 @@
 @interface ARUIRingGroup
-+ (double)preferredActivityRingInterspacingForDiameter:(double)a3;
-+ (double)preferredActivityRingThicknessForDiameter:(double)a3 isStandaloneRing:(BOOL)a4;
-+ (id)_timingFunctionForCurve:(unint64_t)a3;
-+ (id)activityRingGroupForRingType:(int64_t)a3;
++ (double)preferredActivityRingInterspacingForDiameter:(double)diameter;
++ (double)preferredActivityRingThicknessForDiameter:(double)diameter isStandaloneRing:(BOOL)ring;
++ (id)_timingFunctionForCurve:(unint64_t)curve;
++ (id)activityRingGroupForRingType:(int64_t)type;
 + (id)countdownRingGroupOnCompanion;
-+ (unint64_t)_numberOfRingsForRingType:(int64_t)a3;
-+ (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 animations:(id)a5 completion:(id)a6;
-+ (void)animateWithDuration:(double)a3 animations:(id)a4 curve:(unint64_t)a5 completion:(id)a6;
++ (unint64_t)_numberOfRingsForRingType:(int64_t)type;
++ (void)animateUsingSpringWithTension:(double)tension friction:(double)friction animations:(id)animations completion:(id)completion;
++ (void)animateWithDuration:(double)duration animations:(id)animations curve:(unint64_t)curve completion:(id)completion;
 - (ARUIRingGroup)forCompanion;
 - (ARUIRingGroup)forWatch;
-- (ARUIRingGroup)initWithNumberOfRings:(int64_t)a3;
-- (ARUIRingGroup)initWithNumberOfRings:(int64_t)a3 animationSequencer:(id)a4;
-- (ARUIRingGroup)initWithRings:(id)a3 animationSequencer:(id)a4;
+- (ARUIRingGroup)initWithNumberOfRings:(int64_t)rings;
+- (ARUIRingGroup)initWithNumberOfRings:(int64_t)rings animationSequencer:(id)sequencer;
+- (ARUIRingGroup)initWithRings:(id)rings animationSequencer:(id)sequencer;
 - (ARUIRingGroup)withSpriteSheet;
 - (ARUIRingGroup)withWheelchairSpriteSheet;
 - (ARUIRingGroupDelegate)delegate;
 - (NSString)description;
-- (double)_adjustedDurationForRingWithIndex:(int64_t)a3 startPercentage:(float)a4 targetPercentage:(float)a5 defaultDuration:(double)a6;
-- (float)_ringPercentageAdjustedForProximityToFull:(float)result withRingDiameter:(float)a4 thickness:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)_adjustedDurationForRingWithIndex:(int64_t)index startPercentage:(float)percentage targetPercentage:(float)targetPercentage defaultDuration:(double)duration;
+- (float)_ringPercentageAdjustedForProximityToFull:(float)result withRingDiameter:(float)diameter thickness:(float)thickness;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_positionSprites;
-- (void)_removeAnimationForKey:(id)a3;
-- (void)_setDefaultGroupValues:(id)a3;
-- (void)_setStandardColorsWithAnimated:(BOOL)a3;
-- (void)_setupColorAnimationForState:(id)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 key:(id)a8 applier:(id)a9;
-- (void)_setupFloat2AnimationForState:(ARUIRingGroup *)self startValue:(SEL)a2 endValue:(id)a3 key:(id)a4 applier:(id)a5;
-- (void)_setupFloatAnimationForState:(id)a3 startValue:(float)a4 endValue:(float)a5 key:(id)a6 applier:(id)a7;
-- (void)_setupUIntAnimationForState:(id)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 key:(id)a6 applier:(id)a7;
+- (void)_removeAnimationForKey:(id)key;
+- (void)_setDefaultGroupValues:(id)values;
+- (void)_setStandardColorsWithAnimated:(BOOL)animated;
+- (void)_setupColorAnimationForState:(id)state startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor key:(id)key applier:(id)applier;
+- (void)_setupFloat2AnimationForState:(ARUIRingGroup *)self startValue:(SEL)value endValue:(id)endValue key:(id)key applier:(id)applier;
+- (void)_setupFloatAnimationForState:(id)state startValue:(float)value endValue:(float)endValue key:(id)key applier:(id)applier;
+- (void)_setupUIntAnimationForState:(id)state startValue:(unint64_t)value endValue:(unint64_t)endValue key:(id)key applier:(id)applier;
 - (void)_updateAnimationObserving;
 - (void)_updateRingGroupLayout;
-- (void)animationSequencer:(id)a3 updatedWithTime:(double)a4;
+- (void)animationSequencer:(id)sequencer updatedWithTime:(double)time;
 - (void)dealloc;
 - (void)drawSprites;
-- (void)playCelebration:(id)a3 onRingAtIndex:(unint64_t)a4 completion:(id)a5;
-- (void)playSpriteAnimationWithCompletion:(id)a3;
+- (void)playCelebration:(id)celebration onRingAtIndex:(unint64_t)index completion:(id)completion;
+- (void)playSpriteAnimationWithCompletion:(id)completion;
 - (void)removeAllAnimations;
-- (void)setActiveEnergyPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setActiveEnergyPercentage:(float)a3 exerciseMinutesPercentage:(float)a4 standHoursPercentage:(float)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)setEmptyOpacity:(float)a3;
-- (void)setEmptyOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4;
-- (void)setExerciseMinutesPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setFrame:(unint64_t)a3 ofSpriteAtIndex:(unint64_t)a4;
-- (void)setGroupDiameter:(float)a3;
-- (void)setInterspacing:(float)a3;
-- (void)setIsPaused:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setIsStandalonePhoneFitnessMode:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setOpacity:(float)a3;
-- (void)setOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4;
-- (void)setPercentage:(float)a3 ofRingAtIndex:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)setPercentage:(float)a3 ofRingAtIndex:(unint64_t)a4 fromAnimation:(BOOL)a5;
-- (void)setScale:(float)a3;
-- (void)setSpriteSheet:(id)a3;
-- (void)setStandHoursPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setThickness:(float)a3;
-- (void)setThickness:(float)a3 ofRingAtIndex:(unint64_t)a4;
-- (void)setTopColor:(id)a3 bottomColor:(id)a4 ofRingAtIndex:(int64_t)a5 animated:(BOOL)a6;
-- (void)setTrackOpacity:(float)a3;
-- (void)setTrackOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4;
+- (void)setActiveEnergyPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion;
+- (void)setActiveEnergyPercentage:(float)percentage exerciseMinutesPercentage:(float)minutesPercentage standHoursPercentage:(float)hoursPercentage animated:(BOOL)animated completion:(id)completion;
+- (void)setEmptyOpacity:(float)opacity;
+- (void)setEmptyOpacity:(float)opacity ofRingAtIndex:(unint64_t)index;
+- (void)setExerciseMinutesPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion;
+- (void)setFrame:(unint64_t)frame ofSpriteAtIndex:(unint64_t)index;
+- (void)setGroupDiameter:(float)diameter;
+- (void)setInterspacing:(float)interspacing;
+- (void)setIsPaused:(BOOL)paused animated:(BOOL)animated completion:(id)completion;
+- (void)setIsStandalonePhoneFitnessMode:(BOOL)mode animated:(BOOL)animated completion:(id)completion;
+- (void)setOpacity:(float)opacity;
+- (void)setOpacity:(float)opacity ofRingAtIndex:(unint64_t)index;
+- (void)setPercentage:(float)percentage ofRingAtIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion;
+- (void)setPercentage:(float)percentage ofRingAtIndex:(unint64_t)index fromAnimation:(BOOL)animation;
+- (void)setScale:(float)scale;
+- (void)setSpriteSheet:(id)sheet;
+- (void)setStandHoursPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion;
+- (void)setThickness:(float)thickness;
+- (void)setThickness:(float)thickness ofRingAtIndex:(unint64_t)index;
+- (void)setTopColor:(id)color bottomColor:(id)bottomColor ofRingAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setTrackOpacity:(float)opacity;
+- (void)setTrackOpacity:(float)opacity ofRingAtIndex:(unint64_t)index;
 - (void)setTranslation:(ARUIRingGroup *)self;
-- (void)setZRotation:(float)a3;
+- (void)setZRotation:(float)rotation;
 @end
 
 @implementation ARUIRingGroup
@@ -97,46 +97,46 @@
   self->_observingSequencing = v3;
 }
 
-- (ARUIRingGroup)initWithNumberOfRings:(int64_t)a3
+- (ARUIRingGroup)initWithNumberOfRings:(int64_t)rings
 {
   v5 = +[ARUIRingGroupGlobalAnimationSequencer sharedInstance];
-  v6 = [(ARUIRingGroup *)self initWithNumberOfRings:a3 animationSequencer:v5];
+  v6 = [(ARUIRingGroup *)self initWithNumberOfRings:rings animationSequencer:v5];
 
   return v6;
 }
 
-- (ARUIRingGroup)initWithNumberOfRings:(int64_t)a3 animationSequencer:(id)a4
+- (ARUIRingGroup)initWithNumberOfRings:(int64_t)rings animationSequencer:(id)sequencer
 {
-  v6 = a4;
-  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+  sequencerCopy = sequencer;
+  for (i = [MEMORY[0x1E695DF70] arrayWithCapacity:rings];
   {
     v8 = objc_alloc_init(ARUIRing);
     [i addObject:v8];
   }
 
-  v9 = [(ARUIRingGroup *)self initWithRings:i animationSequencer:v6];
+  v9 = [(ARUIRingGroup *)self initWithRings:i animationSequencer:sequencerCopy];
 
   return v9;
 }
 
-- (ARUIRingGroup)initWithRings:(id)a3 animationSequencer:(id)a4
+- (ARUIRingGroup)initWithRings:(id)rings animationSequencer:(id)sequencer
 {
-  v7 = a3;
-  v8 = a4;
+  ringsCopy = rings;
+  sequencerCopy = sequencer;
   v14.receiver = self;
   v14.super_class = ARUIRingGroup;
   v9 = [(ARUIRingGroup *)&v14 init];
   if (v9)
   {
-    v10 = [v7 firstObject];
-    [(ARUIRingGroup *)v9 _setDefaultGroupValues:v10];
+    firstObject = [ringsCopy firstObject];
+    [(ARUIRingGroup *)v9 _setDefaultGroupValues:firstObject];
 
-    objc_storeStrong(&v9->_rings, a3);
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_rings, rings);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     animations = v9->_animations;
-    v9->_animations = v11;
+    v9->_animations = dictionary;
 
-    objc_storeStrong(&v9->_animationSequencer, a4);
+    objc_storeStrong(&v9->_animationSequencer, sequencer);
     v9->_observingSequencing = 0;
     v9->_paused = 0;
   }
@@ -152,34 +152,34 @@
   [(ARUIRingGroup *)&v3 dealloc];
 }
 
-- (void)_setDefaultGroupValues:(id)a3
+- (void)_setDefaultGroupValues:(id)values
 {
-  v4 = a3;
-  [v4 opacity];
+  valuesCopy = values;
+  [valuesCopy opacity];
   self->_opacity = v5;
-  [v4 emptyOpacity];
+  [valuesCopy emptyOpacity];
   self->_emptyOpacity = v6;
-  [v4 trackOpacity];
+  [valuesCopy trackOpacity];
   self->_trackOpacity = v7;
-  [v4 scale];
+  [valuesCopy scale];
   self->_scale = v8;
-  [v4 zRotation];
+  [valuesCopy zRotation];
   self->_zRotation = v9;
-  [v4 translation];
+  [valuesCopy translation];
   v11 = v10;
 
   *self->_translation = v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v6 = [(ARUIRingGroup *)self rings];
-  v7 = [v5 initWithArray:v6 copyItems:1];
+  rings = [(ARUIRingGroup *)self rings];
+  v7 = [v5 initWithArray:rings copyItems:1];
 
   v8 = [[ARUIRingGroup alloc] initWithRings:v7 animationSequencer:self->_animationSequencer];
-  v9 = [(ARUIRingGroup *)self spriteSheet];
-  v10 = [v9 copyWithZone:a3];
+  spriteSheet = [(ARUIRingGroup *)self spriteSheet];
+  v10 = [spriteSheet copyWithZone:zone];
   [(ARUIRingGroup *)v8 setSpriteSheet:v10];
 
   [(ARUIRingGroup *)self groupDiameter];
@@ -229,9 +229,9 @@ void __30__ARUIRingGroup_copyWithZone___block_invoke(uint64_t a1, void *a2, uint
   [v5 setTrackOpacity:?];
 }
 
-- (void)setGroupDiameter:(float)a3
+- (void)setGroupDiameter:(float)diameter
 {
-  if (!ARUIFloatEqual(a3, self->_groupDiameter))
+  if (!ARUIFloatEqual(diameter, self->_groupDiameter))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -244,7 +244,7 @@ void __30__ARUIRingGroup_copyWithZone___block_invoke(uint64_t a1, void *a2, uint
       v10[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v11, &location);
       *&v7 = groupDiameter;
-      *&v8 = a3;
+      *&v8 = diameter;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"groupDiameter" endValue:v10 key:v7 applier:v8];
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -252,10 +252,10 @@ void __30__ARUIRingGroup_copyWithZone___block_invoke(uint64_t a1, void *a2, uint
 
     else
     {
-      self->_groupDiameter = a3;
+      self->_groupDiameter = diameter;
       [(ARUIRingGroup *)self _updateRingGroupLayout];
-      v9 = [(ARUIRingGroup *)self delegate];
-      [v9 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -267,9 +267,9 @@ void __34__ARUIRingGroup_setGroupDiameter___block_invoke(uint64_t a1, float a2)
   [WeakRetained setGroupDiameter:v3];
 }
 
-- (void)setInterspacing:(float)a3
+- (void)setInterspacing:(float)interspacing
 {
-  if (!ARUIFloatEqual(a3, self->_interspacing))
+  if (!ARUIFloatEqual(interspacing, self->_interspacing))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -282,7 +282,7 @@ void __34__ARUIRingGroup_setGroupDiameter___block_invoke(uint64_t a1, float a2)
       v10[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v11, &location);
       *&v7 = interspacing;
-      *&v8 = a3;
+      *&v8 = interspacing;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"interspacing" endValue:v10 key:v7 applier:v8];
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -290,10 +290,10 @@ void __34__ARUIRingGroup_setGroupDiameter___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_interspacing = a3;
+      self->_interspacing = interspacing;
       [(ARUIRingGroup *)self _updateRingGroupLayout];
-      v9 = [(ARUIRingGroup *)self delegate];
-      [v9 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -313,8 +313,8 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSArray *)self->_rings reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_rings reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v7 = v5;
@@ -325,7 +325,7 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -336,7 +336,7 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
         groupDiameter = v6;
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -345,9 +345,9 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
   [(ARUIRingGroup *)self _positionSprites];
 }
 
-- (void)setThickness:(float)a3
+- (void)setThickness:(float)thickness
 {
-  if (!ARUIFloatEqual(a3, self->_thickness))
+  if (!ARUIFloatEqual(thickness, self->_thickness))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -360,7 +360,7 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = thickness;
-      *&v8 = a3;
+      *&v8 = thickness;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"thickness" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -368,17 +368,17 @@ void __33__ARUIRingGroup_setInterspacing___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_thickness = a3;
+      self->_thickness = thickness;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __30__ARUIRingGroup_setThickness___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      thicknessCopy = thickness;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
       [(ARUIRingGroup *)self _updateRingGroupLayout];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -390,9 +390,9 @@ void __30__ARUIRingGroup_setThickness___block_invoke(uint64_t a1, float a2)
   [WeakRetained setThickness:v3];
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  if (!ARUIFloatEqual(a3, self->_opacity))
+  if (!ARUIFloatEqual(opacity, self->_opacity))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -405,7 +405,7 @@ void __30__ARUIRingGroup_setThickness___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = opacity;
-      *&v8 = a3;
+      *&v8 = opacity;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"opacity" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -413,16 +413,16 @@ void __30__ARUIRingGroup_setThickness___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_opacity = a3;
+      self->_opacity = opacity;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __28__ARUIRingGroup_setOpacity___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      opacityCopy = opacity;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -434,9 +434,9 @@ void __28__ARUIRingGroup_setOpacity___block_invoke(uint64_t a1, float a2)
   [WeakRetained setOpacity:v3];
 }
 
-- (void)setEmptyOpacity:(float)a3
+- (void)setEmptyOpacity:(float)opacity
 {
-  if (!ARUIFloatEqual(a3, self->_emptyOpacity))
+  if (!ARUIFloatEqual(opacity, self->_emptyOpacity))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -449,7 +449,7 @@ void __28__ARUIRingGroup_setOpacity___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = emptyOpacity;
-      *&v8 = a3;
+      *&v8 = opacity;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"emptyOpacity" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -457,16 +457,16 @@ void __28__ARUIRingGroup_setOpacity___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_emptyOpacity = a3;
+      self->_emptyOpacity = opacity;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __33__ARUIRingGroup_setEmptyOpacity___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      opacityCopy = opacity;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -478,9 +478,9 @@ void __33__ARUIRingGroup_setEmptyOpacity___block_invoke(uint64_t a1, float a2)
   [WeakRetained setEmptyOpacity:v3];
 }
 
-- (void)setTrackOpacity:(float)a3
+- (void)setTrackOpacity:(float)opacity
 {
-  if (!ARUIFloatEqual(a3, self->_trackOpacity))
+  if (!ARUIFloatEqual(opacity, self->_trackOpacity))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -493,7 +493,7 @@ void __33__ARUIRingGroup_setEmptyOpacity___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = trackOpacity;
-      *&v8 = a3;
+      *&v8 = opacity;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"trackOpacity" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -501,16 +501,16 @@ void __33__ARUIRingGroup_setEmptyOpacity___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_trackOpacity = a3;
+      self->_trackOpacity = opacity;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __33__ARUIRingGroup_setTrackOpacity___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      opacityCopy = opacity;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -522,9 +522,9 @@ void __33__ARUIRingGroup_setTrackOpacity___block_invoke(uint64_t a1, float a2)
   [WeakRetained setTrackOpacity:v3];
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
-  if (!ARUIFloatEqual(a3, self->_scale))
+  if (!ARUIFloatEqual(scale, self->_scale))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -537,7 +537,7 @@ void __33__ARUIRingGroup_setTrackOpacity___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = scale;
-      *&v8 = a3;
+      *&v8 = scale;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"scale" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -545,17 +545,17 @@ void __33__ARUIRingGroup_setTrackOpacity___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_scale = a3;
+      self->_scale = scale;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __26__ARUIRingGroup_setScale___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      scaleCopy = scale;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
       [(ARUIRingGroup *)self _positionSprites];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -567,9 +567,9 @@ void __26__ARUIRingGroup_setScale___block_invoke(uint64_t a1, float a2)
   [WeakRetained setScale:v3];
 }
 
-- (void)setZRotation:(float)a3
+- (void)setZRotation:(float)rotation
 {
-  if (!ARUIFloatEqual(a3, self->_zRotation))
+  if (!ARUIFloatEqual(rotation, self->_zRotation))
   {
     v5 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v5)
@@ -582,7 +582,7 @@ void __26__ARUIRingGroup_setScale___block_invoke(uint64_t a1, float a2)
       v13[3] = &unk_1E83CE0E0;
       objc_copyWeak(&v14, &location);
       *&v7 = zRotation;
-      *&v8 = a3;
+      *&v8 = rotation;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v5 startValue:@"zRotation" endValue:v13 key:v7 applier:v8];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -590,16 +590,16 @@ void __26__ARUIRingGroup_setScale___block_invoke(uint64_t a1, float a2)
 
     else
     {
-      self->_zRotation = a3;
+      self->_zRotation = rotation;
       rings = self->_rings;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __30__ARUIRingGroup_setZRotation___block_invoke_2;
       v11[3] = &__block_descriptor_36_e25_v32__0__ARUIRing_8Q16_B24l;
-      v12 = a3;
+      rotationCopy = rotation;
       [(NSArray *)rings enumerateObjectsUsingBlock:v11];
-      v10 = [(ARUIRingGroup *)self delegate];
-      [v10 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -642,8 +642,8 @@ void __30__ARUIRingGroup_setZRotation___block_invoke(uint64_t a1, float a2)
       *&v9[4] = v3;
       [(NSArray *)rings enumerateObjectsUsingBlock:v9];
       [(ARUIRingGroup *)self _positionSprites];
-      v8 = [(ARUIRingGroup *)self delegate];
-      [v8 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -654,22 +654,22 @@ void __32__ARUIRingGroup_setTranslation___block_invoke(uint64_t a1, double a2)
   [WeakRetained setTranslation:a2];
 }
 
-- (void)setPercentage:(float)a3 ofRingAtIndex:(unint64_t)a4 fromAnimation:(BOOL)a5
+- (void)setPercentage:(float)percentage ofRingAtIndex:(unint64_t)index fromAnimation:(BOOL)animation
 {
   v9 = [(NSArray *)self->_rings objectAtIndex:?];
   [v9 percentage];
-  if (!ARUIFloatEqual(v10, a3))
+  if (!ARUIFloatEqual(v10, percentage))
   {
     v11 = +[ARUIRingGroupAnimationState currentAnimationState];
-    v12 = [ARUIAnimationKeyCoordinator animationKeyForType:0 ringIndex:a4];
-    if (v11 && !ARUIFloatEqual(a3, *&ARUIRingPercentageValueNoRing))
+    v12 = [ARUIAnimationKeyCoordinator animationKeyForType:0 ringIndex:index];
+    if (v11 && !ARUIFloatEqual(percentage, *&ARUIRingPercentageValueNoRing))
     {
       [v9 percentage];
       if (v15 < 0.0)
       {
         [v9 setPercentage:0.0];
-        v16 = [(ARUIRingGroup *)self delegate];
-        [v16 ringGroupHasUpdated:self];
+        delegate = [(ARUIRingGroup *)self delegate];
+        [delegate ringGroupHasUpdated:self];
       }
 
       objc_initWeak(&location, self);
@@ -680,9 +680,9 @@ void __32__ARUIRingGroup_setTranslation___block_invoke(uint64_t a1, double a2)
       v21[2] = __59__ARUIRingGroup_setPercentage_ofRingAtIndex_fromAnimation___block_invoke;
       v21[3] = &unk_1E83CE170;
       objc_copyWeak(v22, &location);
-      v22[1] = a4;
+      v22[1] = index;
       LODWORD(v19) = v18;
-      *&v20 = a3;
+      *&v20 = percentage;
       [(ARUIRingGroup *)self _setupFloatAnimationForState:v11 startValue:v12 endValue:v21 key:v19 applier:v20];
       objc_destroyWeak(v22);
       objc_destroyWeak(&location);
@@ -690,15 +690,15 @@ void __32__ARUIRingGroup_setTranslation___block_invoke(uint64_t a1, double a2)
 
     else
     {
-      if (!a5)
+      if (!animation)
       {
         [(ARUIRingGroup *)self _removeAnimationForKey:v12];
       }
 
-      *&v13 = a3;
+      *&v13 = percentage;
       [v9 setPercentage:v13];
-      v14 = [(ARUIRingGroup *)self delegate];
-      [v14 ringGroupHasUpdated:self];
+      delegate2 = [(ARUIRingGroup *)self delegate];
+      [delegate2 ringGroupHasUpdated:self];
     }
   }
 }
@@ -710,28 +710,28 @@ void __59__ARUIRingGroup_setPercentage_ofRingAtIndex_fromAnimation___block_invok
   [WeakRetained setPercentage:*(a1 + 40) ofRingAtIndex:1 fromAnimation:v4];
 }
 
-- (void)setTopColor:(id)a3 bottomColor:(id)a4 ofRingAtIndex:(int64_t)a5 animated:(BOOL)a6
+- (void)setTopColor:(id)color bottomColor:(id)bottomColor ofRingAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  colorCopy = color;
+  bottomColorCopy = bottomColor;
+  if (animated)
   {
     v12 = +[ARUIRingGroupAnimationState currentAnimationState];
-    v13 = [(NSArray *)self->_rings objectAtIndex:a5];
+    v13 = [(NSArray *)self->_rings objectAtIndex:index];
     v14 = v13;
     if (v12)
     {
-      v15 = [ARUIAnimationKeyCoordinator animationKeyForType:6 ringIndex:a5];
+      v15 = [ARUIAnimationKeyCoordinator animationKeyForType:6 ringIndex:index];
       objc_initWeak(&location, self);
-      v16 = [v14 topColor];
-      v17 = [v14 bottomColor];
+      topColor = [v14 topColor];
+      bottomColor = [v14 bottomColor];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __64__ARUIRingGroup_setTopColor_bottomColor_ofRingAtIndex_animated___block_invoke;
       v23[3] = &unk_1E83CE198;
       objc_copyWeak(v24, &location);
-      v24[1] = a5;
-      [(ARUIRingGroup *)self _setupColorAnimationForState:v12 startTopColor:v16 endTopColor:v10 startBottomColor:v17 endBottomColor:v11 key:v15 applier:v23];
+      v24[1] = index;
+      [(ARUIRingGroup *)self _setupColorAnimationForState:v12 startTopColor:topColor endTopColor:colorCopy startBottomColor:bottomColor endBottomColor:bottomColorCopy key:v15 applier:v23];
 
       objc_destroyWeak(v24);
       objc_destroyWeak(&location);
@@ -739,23 +739,23 @@ void __59__ARUIRingGroup_setPercentage_ofRingAtIndex_fromAnimation___block_invok
 
     else
     {
-      [v13 setTopColor:v10];
-      [v14 setBottomColor:v11];
+      [v13 setTopColor:colorCopy];
+      [v14 setBottomColor:bottomColorCopy];
       [(ARUIRingGroup *)self _updateRingGroupLayout];
-      v22 = [(ARUIRingGroup *)self delegate];
-      [v22 ringGroupHasUpdated:self];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 
   else
   {
-    v18 = [(ARUIRingGroup *)self rings];
-    v19 = [v18 objectAtIndex:a5];
-    [v19 setTopColor:v10];
+    rings = [(ARUIRingGroup *)self rings];
+    v19 = [rings objectAtIndex:index];
+    [v19 setTopColor:colorCopy];
 
-    v20 = [(ARUIRingGroup *)self rings];
-    v21 = [v20 objectAtIndex:a5];
-    [v21 setBottomColor:v11];
+    rings2 = [(ARUIRingGroup *)self rings];
+    v21 = [rings2 objectAtIndex:index];
+    [v21 setBottomColor:bottomColorCopy];
   }
 }
 
@@ -767,14 +767,14 @@ void __64__ARUIRingGroup_setTopColor_bottomColor_ofRingAtIndex_animated___block_
   [WeakRetained setTopColor:v6 bottomColor:v5 ofRingAtIndex:*(a1 + 40)];
 }
 
-- (void)setThickness:(float)a3 ofRingAtIndex:(unint64_t)a4
+- (void)setThickness:(float)thickness ofRingAtIndex:(unint64_t)index
 {
   v7 = +[ARUIRingGroupAnimationState currentAnimationState];
-  v8 = [(NSArray *)self->_rings objectAtIndex:a4];
+  v8 = [(NSArray *)self->_rings objectAtIndex:index];
   v10 = v8;
   if (v7)
   {
-    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:1 ringIndex:a4];
+    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:1 ringIndex:index];
     objc_initWeak(&location, self);
     [v10 thickness];
     v13 = v12;
@@ -783,9 +783,9 @@ void __64__ARUIRingGroup_setTopColor_bottomColor_ofRingAtIndex_animated___block_
     v17[2] = __44__ARUIRingGroup_setThickness_ofRingAtIndex___block_invoke;
     v17[3] = &unk_1E83CE170;
     objc_copyWeak(v18, &location);
-    v18[1] = a4;
+    v18[1] = index;
     LODWORD(v14) = v13;
-    *&v15 = a3;
+    *&v15 = thickness;
     [(ARUIRingGroup *)self _setupFloatAnimationForState:v7 startValue:v11 endValue:v17 key:v14 applier:v15];
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -793,11 +793,11 @@ void __64__ARUIRingGroup_setTopColor_bottomColor_ofRingAtIndex_animated___block_
 
   else
   {
-    *&v9 = a3;
+    *&v9 = thickness;
     [v8 setThickness:v9];
     [(ARUIRingGroup *)self _updateRingGroupLayout];
-    v16 = [(ARUIRingGroup *)self delegate];
-    [v16 ringGroupHasUpdated:self];
+    delegate = [(ARUIRingGroup *)self delegate];
+    [delegate ringGroupHasUpdated:self];
   }
 }
 
@@ -808,14 +808,14 @@ void __44__ARUIRingGroup_setThickness_ofRingAtIndex___block_invoke(uint64_t a1, 
   [WeakRetained setThickness:*(a1 + 40) ofRingAtIndex:v4];
 }
 
-- (void)setOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4
+- (void)setOpacity:(float)opacity ofRingAtIndex:(unint64_t)index
 {
   v7 = +[ARUIRingGroupAnimationState currentAnimationState];
-  v8 = [(NSArray *)self->_rings objectAtIndex:a4];
+  v8 = [(NSArray *)self->_rings objectAtIndex:index];
   v10 = v8;
   if (v7)
   {
-    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:2 ringIndex:a4];
+    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:2 ringIndex:index];
     objc_initWeak(&location, self);
     [v10 opacity];
     v13 = v12;
@@ -824,9 +824,9 @@ void __44__ARUIRingGroup_setThickness_ofRingAtIndex___block_invoke(uint64_t a1, 
     v17[2] = __42__ARUIRingGroup_setOpacity_ofRingAtIndex___block_invoke;
     v17[3] = &unk_1E83CE170;
     objc_copyWeak(v18, &location);
-    v18[1] = a4;
+    v18[1] = index;
     LODWORD(v14) = v13;
-    *&v15 = a3;
+    *&v15 = opacity;
     [(ARUIRingGroup *)self _setupFloatAnimationForState:v7 startValue:v11 endValue:v17 key:v14 applier:v15];
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -834,11 +834,11 @@ void __44__ARUIRingGroup_setThickness_ofRingAtIndex___block_invoke(uint64_t a1, 
 
   else
   {
-    *&v9 = a3;
+    *&v9 = opacity;
     [v8 setOpacity:v9];
     [(ARUIRingGroup *)self _updateRingGroupLayout];
-    v16 = [(ARUIRingGroup *)self delegate];
-    [v16 ringGroupHasUpdated:self];
+    delegate = [(ARUIRingGroup *)self delegate];
+    [delegate ringGroupHasUpdated:self];
   }
 }
 
@@ -849,14 +849,14 @@ void __42__ARUIRingGroup_setOpacity_ofRingAtIndex___block_invoke(uint64_t a1, fl
   [WeakRetained setOpacity:*(a1 + 40) ofRingAtIndex:v4];
 }
 
-- (void)setEmptyOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4
+- (void)setEmptyOpacity:(float)opacity ofRingAtIndex:(unint64_t)index
 {
   v7 = +[ARUIRingGroupAnimationState currentAnimationState];
-  v8 = [(NSArray *)self->_rings objectAtIndex:a4];
+  v8 = [(NSArray *)self->_rings objectAtIndex:index];
   v10 = v8;
   if (v7)
   {
-    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:3 ringIndex:a4];
+    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:3 ringIndex:index];
     objc_initWeak(&location, self);
     [v10 emptyOpacity];
     v13 = v12;
@@ -865,9 +865,9 @@ void __42__ARUIRingGroup_setOpacity_ofRingAtIndex___block_invoke(uint64_t a1, fl
     v17[2] = __47__ARUIRingGroup_setEmptyOpacity_ofRingAtIndex___block_invoke;
     v17[3] = &unk_1E83CE170;
     objc_copyWeak(v18, &location);
-    v18[1] = a4;
+    v18[1] = index;
     LODWORD(v14) = v13;
-    *&v15 = a3;
+    *&v15 = opacity;
     [(ARUIRingGroup *)self _setupFloatAnimationForState:v7 startValue:v11 endValue:v17 key:v14 applier:v15];
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -875,11 +875,11 @@ void __42__ARUIRingGroup_setOpacity_ofRingAtIndex___block_invoke(uint64_t a1, fl
 
   else
   {
-    *&v9 = a3;
+    *&v9 = opacity;
     [v8 setEmptyOpacity:v9];
     [(ARUIRingGroup *)self _updateRingGroupLayout];
-    v16 = [(ARUIRingGroup *)self delegate];
-    [v16 ringGroupHasUpdated:self];
+    delegate = [(ARUIRingGroup *)self delegate];
+    [delegate ringGroupHasUpdated:self];
   }
 }
 
@@ -890,14 +890,14 @@ void __47__ARUIRingGroup_setEmptyOpacity_ofRingAtIndex___block_invoke(uint64_t a
   [WeakRetained setEmptyOpacity:*(a1 + 40) ofRingAtIndex:v4];
 }
 
-- (void)setTrackOpacity:(float)a3 ofRingAtIndex:(unint64_t)a4
+- (void)setTrackOpacity:(float)opacity ofRingAtIndex:(unint64_t)index
 {
   v7 = +[ARUIRingGroupAnimationState currentAnimationState];
-  v8 = [(NSArray *)self->_rings objectAtIndex:a4];
+  v8 = [(NSArray *)self->_rings objectAtIndex:index];
   v10 = v8;
   if (v7)
   {
-    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:4 ringIndex:a4];
+    v11 = [ARUIAnimationKeyCoordinator animationKeyForType:4 ringIndex:index];
     objc_initWeak(&location, self);
     [v10 trackOpacity];
     v13 = v12;
@@ -906,9 +906,9 @@ void __47__ARUIRingGroup_setEmptyOpacity_ofRingAtIndex___block_invoke(uint64_t a
     v17[2] = __47__ARUIRingGroup_setTrackOpacity_ofRingAtIndex___block_invoke;
     v17[3] = &unk_1E83CE170;
     objc_copyWeak(v18, &location);
-    v18[1] = a4;
+    v18[1] = index;
     LODWORD(v14) = v13;
-    *&v15 = a3;
+    *&v15 = opacity;
     [(ARUIRingGroup *)self _setupFloatAnimationForState:v7 startValue:v11 endValue:v17 key:v14 applier:v15];
     objc_destroyWeak(v18);
     objc_destroyWeak(&location);
@@ -916,11 +916,11 @@ void __47__ARUIRingGroup_setEmptyOpacity_ofRingAtIndex___block_invoke(uint64_t a
 
   else
   {
-    *&v9 = a3;
+    *&v9 = opacity;
     [v8 setTrackOpacity:v9];
     [(ARUIRingGroup *)self _updateRingGroupLayout];
-    v16 = [(ARUIRingGroup *)self delegate];
-    [v16 ringGroupHasUpdated:self];
+    delegate = [(ARUIRingGroup *)self delegate];
+    [delegate ringGroupHasUpdated:self];
   }
 }
 
@@ -931,41 +931,41 @@ void __47__ARUIRingGroup_setTrackOpacity_ofRingAtIndex___block_invoke(uint64_t a
   [WeakRetained setTrackOpacity:*(a1 + 40) ofRingAtIndex:v4];
 }
 
-- (void)setSpriteSheet:(id)a3
+- (void)setSpriteSheet:(id)sheet
 {
-  v5 = a3;
+  sheetCopy = sheet;
   p_spriteSheet = &self->_spriteSheet;
-  if (self->_spriteSheet != v5)
+  if (self->_spriteSheet != sheetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_spriteSheet, a3);
+    v8 = sheetCopy;
+    objc_storeStrong(p_spriteSheet, sheet);
     [(ARUIRingGroup *)self _positionSprites];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained ringGroupHasUpdated:self];
 
-    v5 = v8;
+    sheetCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_spriteSheet, v5);
+  MEMORY[0x1EEE66BB8](p_spriteSheet, sheetCopy);
 }
 
 - (void)drawSprites
 {
-  v3 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-  v4 = [v3 count];
+  sprites = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+  v4 = [sprites count];
 
   if (v4)
   {
     v5 = 0;
     do
     {
-      v6 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-      v7 = [v6 objectAtIndex:v5];
+      sprites2 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+      v7 = [sprites2 objectAtIndex:v5];
 
       -[ARUIRingGroup setFrame:ofSpriteAtIndex:](self, "setFrame:ofSpriteAtIndex:", [v7 frameCount] - 1, v5);
       ++v5;
-      v8 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-      v9 = [v8 count];
+      sprites3 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+      v9 = [sprites3 count];
     }
 
     while (v5 < v9);
@@ -975,13 +975,13 @@ void __47__ARUIRingGroup_setTrackOpacity_ofRingAtIndex___block_invoke(uint64_t a
   [WeakRetained ringGroupHasUpdated:self];
 }
 
-- (void)playSpriteAnimationWithCompletion:(id)a3
+- (void)playSpriteAnimationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_spriteSheet)
   {
-    v16 = v4;
+    v16 = completionCopy;
     v6 = dispatch_group_create();
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -993,16 +993,16 @@ void __47__ARUIRingGroup_setTrackOpacity_ofRingAtIndex___block_invoke(uint64_t a
     objc_initWeak(&location, self);
     for (i = 0; ; ++i)
     {
-      v10 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-      v11 = [v10 count];
+      sprites = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+      v11 = [sprites count];
 
       if (i >= v11)
       {
         break;
       }
 
-      v12 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-      v13 = [v12 objectAtIndex:i];
+      sprites2 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+      v13 = [sprites2 objectAtIndex:i];
 
       [v13 setCurrentFrameIndex:0];
       v14 = [v13 frameCount] / 60.0;
@@ -1031,9 +1031,9 @@ void __47__ARUIRingGroup_setTrackOpacity_ofRingAtIndex___block_invoke(uint64_t a
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4);
+    (*(completionCopy + 2))(completionCopy);
   }
 }
 
@@ -1054,18 +1054,18 @@ uint64_t __51__ARUIRingGroup_playSpriteAnimationWithCompletion___block_invoke_3(
   return result;
 }
 
-- (void)playCelebration:(id)a3 onRingAtIndex:(unint64_t)a4 completion:(id)a5
+- (void)playCelebration:(id)celebration onRingAtIndex:(unint64_t)index completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  celebrationCopy = celebration;
+  completionCopy = completion;
   v10 = arui_rings_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = celebrationCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = index;
     _os_log_impl(&dword_1CFD67000, v10, OS_LOG_TYPE_DEFAULT, "Playing celebration %@ on ring at index %lu", buf, 0x16u);
   }
 
@@ -1074,20 +1074,20 @@ uint64_t __51__ARUIRingGroup_playSpriteAnimationWithCompletion___block_invoke_3(
   *&buf[16] = 0x3032000000;
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
-  v21 = [(NSArray *)self->_rings objectAtIndex:a4];
-  [*(*&buf[8] + 40) setCelebration:v8];
-  [v8 duration];
+  v21 = [(NSArray *)self->_rings objectAtIndex:index];
+  [*(*&buf[8] + 40) setCelebration:celebrationCopy];
+  [celebrationCopy duration];
   v12 = v11;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__ARUIRingGroup_playCelebration_onRingAtIndex_completion___block_invoke;
   v14[3] = &unk_1E83CE210;
   v14[4] = self;
-  v17 = a4;
-  v13 = v8;
+  indexCopy = index;
+  v13 = celebrationCopy;
   v15 = v13;
   v16 = buf;
-  [ARUIRingGroup animateWithDuration:v14 animations:v9 completion:v12];
+  [ARUIRingGroup animateWithDuration:v14 animations:completionCopy completion:v12];
 
   _Block_object_dispose(buf, 8);
 }
@@ -1133,13 +1133,13 @@ uint64_t __58__ARUIRingGroup_playCelebration_onRingAtIndex_completion___block_in
 
 - (void)_positionSprites
 {
-  v3 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+  sprites = [(ARUISpriteSheet *)self->_spriteSheet sprites];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __33__ARUIRingGroup__positionSprites__block_invoke;
   v4[3] = &unk_1E83CE238;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [sprites enumerateObjectsUsingBlock:v4];
 }
 
 void __33__ARUIRingGroup__positionSprites__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1170,26 +1170,26 @@ void __33__ARUIRingGroup__positionSprites__block_invoke(uint64_t a1, void *a2, u
   [v5 setOpacity:?];
 }
 
-- (void)setFrame:(unint64_t)a3 ofSpriteAtIndex:(unint64_t)a4
+- (void)setFrame:(unint64_t)frame ofSpriteAtIndex:(unint64_t)index
 {
-  v7 = [(ARUISpriteSheet *)self->_spriteSheet sprites];
-  v8 = [v7 objectAtIndex:a4];
+  sprites = [(ARUISpriteSheet *)self->_spriteSheet sprites];
+  v8 = [sprites objectAtIndex:index];
 
-  if ([v8 currentFrameIndex] != a3)
+  if ([v8 currentFrameIndex] != frame)
   {
     v9 = +[ARUIRingGroupAnimationState currentAnimationState];
     if (v9)
     {
       objc_initWeak(&location, self);
-      v10 = [v8 currentFrameIndex];
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spriteFrame-%lu", a4];
+      currentFrameIndex = [v8 currentFrameIndex];
+      index = [MEMORY[0x1E696AEC0] stringWithFormat:@"spriteFrame-%lu", index];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __42__ARUIRingGroup_setFrame_ofSpriteAtIndex___block_invoke;
       v13[3] = &unk_1E83CE260;
       objc_copyWeak(v14, &location);
-      v14[1] = a4;
-      [(ARUIRingGroup *)self _setupUIntAnimationForState:v9 startValue:v10 endValue:a3 key:v11 applier:v13];
+      v14[1] = index;
+      [(ARUIRingGroup *)self _setupUIntAnimationForState:v9 startValue:currentFrameIndex endValue:frame key:index applier:v13];
 
       objc_destroyWeak(v14);
       objc_destroyWeak(&location);
@@ -1197,9 +1197,9 @@ void __33__ARUIRingGroup__positionSprites__block_invoke(uint64_t a1, void *a2, u
 
     else
     {
-      [v8 setCurrentFrameIndex:a3];
-      v12 = [(ARUIRingGroup *)self delegate];
-      [v12 ringGroupHasUpdated:self];
+      [v8 setCurrentFrameIndex:frame];
+      delegate = [(ARUIRingGroup *)self delegate];
+      [delegate ringGroupHasUpdated:self];
     }
   }
 }
@@ -1210,16 +1210,16 @@ void __42__ARUIRingGroup_setFrame_ofSpriteAtIndex___block_invoke(uint64_t a1, ui
   [WeakRetained setFrame:a2 ofSpriteAtIndex:*(a1 + 40)];
 }
 
-+ (void)animateWithDuration:(double)a3 animations:(id)a4 curve:(unint64_t)a5 completion:(id)a6
++ (void)animateWithDuration:(double)duration animations:(id)animations curve:(unint64_t)curve completion:(id)completion
 {
-  v9 = a6;
-  v10 = a4;
+  completionCopy = completion;
+  animationsCopy = animations;
   v11 = objc_alloc_init(ARUIRingGroupAnimationState);
-  [(ARUIRingGroupAnimationState *)v11 setDuration:a3];
-  v12 = [ARUIRingGroup _timingFunctionForCurve:a5];
+  [(ARUIRingGroupAnimationState *)v11 setDuration:duration];
+  v12 = [ARUIRingGroup _timingFunctionForCurve:curve];
   [(ARUIRingGroupAnimationState *)v11 setTimingFunction:v12];
 
-  [(ARUIRingGroupAnimationState *)v11 setCompletion:v9];
+  [(ARUIRingGroupAnimationState *)v11 setCompletion:completionCopy];
   v13 = arui_rings_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -1233,7 +1233,7 @@ void __42__ARUIRingGroup_setFrame_ofSpriteAtIndex___block_invoke(uint64_t a1, ui
     [ARUIRingGroup animateWithDuration:v14 animations:? curve:? completion:?];
   }
 
-  v10[2](v10);
+  animationsCopy[2](animationsCopy);
   v15 = arui_rings_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -1243,28 +1243,28 @@ void __42__ARUIRingGroup_setFrame_ofSpriteAtIndex___block_invoke(uint64_t a1, ui
   +[ARUIRingGroupAnimationState popAnimationState];
 }
 
-+ (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 animations:(id)a5 completion:(id)a6
++ (void)animateUsingSpringWithTension:(double)tension friction:(double)friction animations:(id)animations completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
+  completionCopy = completion;
+  animationsCopy = animations;
   v11 = objc_alloc_init(ARUIRingGroupSpringAnimationState);
-  [(ARUIRingGroupSpringAnimationState *)v11 setTension:a3];
-  [(ARUIRingGroupSpringAnimationState *)v11 setFriction:a4];
-  [(ARUIRingGroupAnimationState *)v11 setCompletion:v9];
+  [(ARUIRingGroupSpringAnimationState *)v11 setTension:tension];
+  [(ARUIRingGroupSpringAnimationState *)v11 setFriction:friction];
+  [(ARUIRingGroupAnimationState *)v11 setCompletion:completionCopy];
 
   [ARUIRingGroupAnimationState pushAnimationState:v11];
-  v10[2](v10);
+  animationsCopy[2](animationsCopy);
 
   +[ARUIRingGroupAnimationState popAnimationState];
 }
 
-+ (id)_timingFunctionForCurve:(unint64_t)a3
++ (id)_timingFunctionForCurve:(unint64_t)curve
 {
-  if (a3 <= 1)
+  if (curve <= 1)
   {
-    if (a3)
+    if (curve)
     {
-      if (a3 != 1)
+      if (curve != 1)
       {
         goto LABEL_14;
       }
@@ -1282,18 +1282,18 @@ void __42__ARUIRingGroup_setFrame_ofSpriteAtIndex___block_invoke(uint64_t a1, ui
 
   else
   {
-    if (a3 == 2)
+    if (curve == 2)
     {
       v7 = MEMORY[0x1E69793D0];
       v8 = MEMORY[0x1E6979EB0];
 LABEL_10:
-      a1 = [v7 functionWithName:*v8];
+      self = [v7 functionWithName:*v8];
       goto LABEL_14;
     }
 
-    if (a3 != 3)
+    if (curve != 3)
     {
-      if (a3 != 4)
+      if (curve != 4)
       {
         goto LABEL_14;
       }
@@ -1310,113 +1310,113 @@ LABEL_10:
   }
 
   LODWORD(v6) = 1.0;
-  a1 = [v9 functionWithControlPoints:v3 :v4 :v5 :v6];
+  self = [v9 functionWithControlPoints:v3 :v4 :v5 :v6];
 LABEL_14:
 
-  return a1;
+  return self;
 }
 
-- (void)_setupFloatAnimationForState:(id)a3 startValue:(float)a4 endValue:(float)a5 key:(id)a6 applier:(id)a7
+- (void)_setupFloatAnimationForState:(id)state startValue:(float)value endValue:(float)endValue key:(id)key applier:(id)applier
 {
-  v26 = a3;
-  v12 = a7;
-  v13 = a6;
-  [(ARUIRingGroup *)self _removeAnimationForKey:v13];
+  stateCopy = state;
+  applierCopy = applier;
+  keyCopy = key;
+  [(ARUIRingGroup *)self _removeAnimationForKey:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v26;
+    v14 = stateCopy;
     [v14 tension];
     v16 = v15;
     [v14 friction];
-    *&v17 = a4;
-    *&v18 = a5;
-    v20 = [ARUIFloatSpringAnimation animationWithTension:v12 friction:v16 startValue:v19 endValue:v17 applier:v18];
+    *&v17 = value;
+    *&v18 = endValue;
+    v20 = [ARUIFloatSpringAnimation animationWithTension:applierCopy friction:v16 startValue:v19 endValue:v17 applier:v18];
 
     [v14 addAnimation:v20];
   }
 
   else
   {
-    [v26 duration];
+    [stateCopy duration];
     v22 = v21;
-    v23 = [v26 timingFunction];
-    *&v24 = a4;
-    *&v25 = a5;
-    v20 = [ARUIFloatAnimation animationWithDuration:v23 startValue:v12 endValue:v22 timingFunction:v24 applier:v25];
+    timingFunction = [stateCopy timingFunction];
+    *&v24 = value;
+    *&v25 = endValue;
+    v20 = [ARUIFloatAnimation animationWithDuration:timingFunction startValue:applierCopy endValue:v22 timingFunction:v24 applier:v25];
 
-    [v26 addAnimation:v20];
+    [stateCopy addAnimation:v20];
   }
 
-  [(NSMutableDictionary *)self->_animations setObject:v20 forKey:v13];
+  [(NSMutableDictionary *)self->_animations setObject:v20 forKey:keyCopy];
 
   [(ARUIRingGroup *)self _updateAnimationObserving];
 }
 
-- (void)_setupColorAnimationForState:(id)a3 startTopColor:(id)a4 endTopColor:(id)a5 startBottomColor:(id)a6 endBottomColor:(id)a7 key:(id)a8 applier:(id)a9
+- (void)_setupColorAnimationForState:(id)state startTopColor:(id)color endTopColor:(id)topColor startBottomColor:(id)bottomColor endBottomColor:(id)endBottomColor key:(id)key applier:(id)applier
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  [(ARUIRingGroup *)self _removeAnimationForKey:v17];
-  [v22 duration];
+  applierCopy = applier;
+  keyCopy = key;
+  endBottomColorCopy = endBottomColor;
+  bottomColorCopy = bottomColor;
+  topColorCopy = topColor;
+  colorCopy = color;
+  stateCopy = state;
+  [(ARUIRingGroup *)self _removeAnimationForKey:keyCopy];
+  [stateCopy duration];
   v24 = v23;
-  v25 = [v22 timingFunction];
-  v26 = [ARUIColorAnimation animationWithDuration:v21 startTopColor:v20 endTopColor:v19 startBottomColor:v18 endBottomColor:v25 timingFunction:v16 applier:v24];
+  timingFunction = [stateCopy timingFunction];
+  v26 = [ARUIColorAnimation animationWithDuration:colorCopy startTopColor:topColorCopy endTopColor:bottomColorCopy startBottomColor:endBottomColorCopy endBottomColor:timingFunction timingFunction:applierCopy applier:v24];
 
-  [v22 addAnimation:v26];
-  [(NSMutableDictionary *)self->_animations setObject:v26 forKey:v17];
+  [stateCopy addAnimation:v26];
+  [(NSMutableDictionary *)self->_animations setObject:v26 forKey:keyCopy];
 
   [(ARUIRingGroup *)self _updateAnimationObserving];
 }
 
-- (void)_setupFloat2AnimationForState:(ARUIRingGroup *)self startValue:(SEL)a2 endValue:(id)a3 key:(id)a4 applier:(id)a5
+- (void)_setupFloat2AnimationForState:(ARUIRingGroup *)self startValue:(SEL)value endValue:(id)endValue key:(id)key applier:(id)applier
 {
   v8 = v6;
   v9 = v5;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  [(ARUIRingGroup *)self _removeAnimationForKey:v13];
-  [v14 duration];
+  applierCopy = applier;
+  keyCopy = key;
+  endValueCopy = endValue;
+  [(ARUIRingGroup *)self _removeAnimationForKey:keyCopy];
+  [endValueCopy duration];
   v16 = v15;
-  v17 = [v14 timingFunction];
-  v18 = [ARUIFloat2Animation animationWithDuration:v17 startValue:v12 endValue:v16 timingFunction:v9 applier:v8];
+  timingFunction = [endValueCopy timingFunction];
+  v18 = [ARUIFloat2Animation animationWithDuration:timingFunction startValue:applierCopy endValue:v16 timingFunction:v9 applier:v8];
 
-  [v14 addAnimation:v18];
-  [(NSMutableDictionary *)self->_animations setObject:v18 forKey:v13];
+  [endValueCopy addAnimation:v18];
+  [(NSMutableDictionary *)self->_animations setObject:v18 forKey:keyCopy];
 
   [(ARUIRingGroup *)self _updateAnimationObserving];
 }
 
-- (void)_setupUIntAnimationForState:(id)a3 startValue:(unint64_t)a4 endValue:(unint64_t)a5 key:(id)a6 applier:(id)a7
+- (void)_setupUIntAnimationForState:(id)state startValue:(unint64_t)value endValue:(unint64_t)endValue key:(id)key applier:(id)applier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  [(ARUIRingGroup *)self _removeAnimationForKey:v13];
-  [v14 duration];
+  applierCopy = applier;
+  keyCopy = key;
+  stateCopy = state;
+  [(ARUIRingGroup *)self _removeAnimationForKey:keyCopy];
+  [stateCopy duration];
   v16 = v15;
-  v17 = [v14 timingFunction];
-  v18 = [ARUIUIntAnimation animationWithDuration:a4 startValue:a5 endValue:v17 timingFunction:v12 applier:v16];
+  timingFunction = [stateCopy timingFunction];
+  v18 = [ARUIUIntAnimation animationWithDuration:value startValue:endValue endValue:timingFunction timingFunction:applierCopy applier:v16];
 
-  [v14 addAnimation:v18];
-  [(NSMutableDictionary *)self->_animations setObject:v18 forKey:v13];
+  [stateCopy addAnimation:v18];
+  [(NSMutableDictionary *)self->_animations setObject:v18 forKey:keyCopy];
 
   [(ARUIRingGroup *)self _updateAnimationObserving];
 }
 
-- (void)_removeAnimationForKey:(id)a3
+- (void)_removeAnimationForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_animations objectForKey:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_animations removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_animations removeObjectForKey:keyCopy];
     [v4 completeAnimation];
   }
 }
@@ -1429,24 +1429,24 @@ LABEL_14:
   [(NSMutableDictionary *)animations removeAllObjects];
 }
 
-- (void)animationSequencer:(id)a3 updatedWithTime:(double)a4
+- (void)animationSequencer:(id)sequencer updatedWithTime:(double)time
 {
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_animations, "count", a3)}];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_animations, "count", sequencer)}];
   animations = self->_animations;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke;
   v15 = &unk_1E83CE2A8;
-  v17 = a4;
+  timeCopy = time;
   v16 = v6;
   v8 = v6;
   [(NSMutableDictionary *)animations enumerateKeysAndObjectsUsingBlock:&v12];
   v9 = self->_animations;
-  v10 = [v8 allKeys];
-  [(NSMutableDictionary *)v9 removeObjectsForKeys:v10];
+  allKeys = [v8 allKeys];
+  [(NSMutableDictionary *)v9 removeObjectsForKeys:allKeys];
 
-  v11 = [v8 allValues];
-  [v11 enumerateObjectsUsingBlock:&__block_literal_global_56];
+  allValues = [v8 allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_56];
 
   [(ARUIRingGroup *)self _updateAnimationObserving];
 }
@@ -1466,25 +1466,25 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendArraySection:self->_rings withName:@"rings" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-+ (double)preferredActivityRingThicknessForDiameter:(double)a3 isStandaloneRing:(BOOL)a4
++ (double)preferredActivityRingThicknessForDiameter:(double)diameter isStandaloneRing:(BOOL)ring
 {
   v4 = 0.105769231;
-  if (a4)
+  if (ring)
   {
     v4 = 0.2;
   }
 
-  return v4 * a3;
+  return v4 * diameter;
 }
 
-+ (double)preferredActivityRingInterspacingForDiameter:(double)a3
++ (double)preferredActivityRingInterspacingForDiameter:(double)diameter
 {
-  v3 = (a3 + -29.0) / 114.0;
+  v3 = (diameter + -29.0) / 114.0;
   if (v3 < 0.0)
   {
     v3 = 0.0;
@@ -1495,7 +1495,7 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
     v3 = 1.0;
   }
 
-  return (v3 * -0.0288461538 + 0.0432692308) * a3;
+  return (v3 * -0.0288461538 + 0.0432692308) * diameter;
 }
 
 + (id)countdownRingGroupOnCompanion
@@ -1507,16 +1507,16 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   LODWORD(v5) = 1099694080;
   [(ARUIRingGroup *)v3 setThickness:v5];
   [(ARUIRingGroup *)v3 setPercentage:0 ofRingAtIndex:0.0];
-  v6 = [v2 gradientLightColor];
-  v7 = [v2 gradientDarkColor];
-  [(ARUIRingGroup *)v3 setTopColor:v6 bottomColor:v7 ofRingAtIndex:0];
+  gradientLightColor = [v2 gradientLightColor];
+  gradientDarkColor = [v2 gradientDarkColor];
+  [(ARUIRingGroup *)v3 setTopColor:gradientLightColor bottomColor:gradientDarkColor ofRingAtIndex:0];
 
   return v3;
 }
 
-+ (unint64_t)_numberOfRingsForRingType:(int64_t)a3
++ (unint64_t)_numberOfRingsForRingType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return 3;
   }
@@ -1527,10 +1527,10 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   }
 }
 
-+ (id)activityRingGroupForRingType:(int64_t)a3
++ (id)activityRingGroupForRingType:(int64_t)type
 {
-  v4 = [[a1 alloc] initWithNumberOfRings:{+[ARUIRingGroup _numberOfRingsForRingType:](ARUIRingGroup, "_numberOfRingsForRingType:")}];
-  [v4 setRingType:a3];
+  v4 = [[self alloc] initWithNumberOfRings:{+[ARUIRingGroup _numberOfRingsForRingType:](ARUIRingGroup, "_numberOfRingsForRingType:")}];
+  [v4 setRingType:type];
   [v4 _setStandardColorsWithAnimated:0];
 
   return v4;
@@ -1559,8 +1559,8 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   [v2 setInterspacing:v4];
   LODWORD(v5) = 27.0;
   [v2 setThickness:v5];
-  v6 = [v2 rings];
-  [v6 enumerateObjectsUsingBlock:&__block_literal_global_4];
+  rings = [v2 rings];
+  [rings enumerateObjectsUsingBlock:&__block_literal_global_4];
 
   return v2;
 }
@@ -1583,20 +1583,20 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   return v2;
 }
 
-- (void)_setStandardColorsWithAnimated:(BOOL)a3
+- (void)_setStandardColorsWithAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v30[3] = *MEMORY[0x1E69E9840];
   v5 = +[ARUIMetricColors energyColors];
   v6 = +[ARUIMetricColors briskColors];
   v7 = +[ARUIMetricColors sedentaryColors];
-  v8 = [(ARUIRingGroup *)self rings];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  rings = [(ARUIRingGroup *)self rings];
+  v9 = [rings objectAtIndexedSubscript:0];
   [v9 emptyOpacity];
   if (v10 == 0.0)
   {
-    v11 = [(ARUIRingGroup *)self rings];
-    v12 = [v11 objectAtIndexedSubscript:1];
+    rings2 = [(ARUIRingGroup *)self rings];
+    v12 = [rings2 objectAtIndexedSubscript:1];
     [v12 emptyOpacity];
     v14 = v13 == 0.0;
   }
@@ -1606,10 +1606,10 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
     v14 = 0;
   }
 
-  v15 = [v7 gradientDarkColor];
-  v30[0] = v15;
-  v16 = [v6 gradientDarkColor];
-  v30[1] = v16;
+  gradientDarkColor = [v7 gradientDarkColor];
+  v30[0] = gradientDarkColor;
+  gradientDarkColor2 = [v6 gradientDarkColor];
+  v30[1] = gradientDarkColor2;
   if (v14)
   {
     [v5 nonGradientTextColor];
@@ -1623,10 +1623,10 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   v30[2] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:3];
 
-  v19 = [v7 gradientLightColor];
-  v29[0] = v19;
-  v20 = [v6 gradientLightColor];
-  v29[1] = v20;
+  gradientLightColor = [v7 gradientLightColor];
+  v29[0] = gradientLightColor;
+  gradientLightColor2 = [v6 gradientLightColor];
+  v29[1] = gradientLightColor2;
   if (v14)
   {
     [v5 nonGradientTextColor];
@@ -1640,80 +1640,80 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   v29[2] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:3];
 
-  v23 = [(ARUIRingGroup *)self rings];
-  if ([v23 count])
+  rings3 = [(ARUIRingGroup *)self rings];
+  if ([rings3 count])
   {
     v24 = 0;
     do
     {
-      v25 = v24;
-      if ([v23 count] == 1)
+      ringType = v24;
+      if ([rings3 count] == 1)
       {
-        v25 = [(ARUIRingGroup *)self ringType];
+        ringType = [(ARUIRingGroup *)self ringType];
       }
 
-      v26 = [v18 objectAtIndex:v25];
-      v27 = [v22 objectAtIndex:v25];
-      [(ARUIRingGroup *)self setTopColor:v26 bottomColor:v27 ofRingAtIndex:v24 animated:v3];
+      v26 = [v18 objectAtIndex:ringType];
+      v27 = [v22 objectAtIndex:ringType];
+      [(ARUIRingGroup *)self setTopColor:v26 bottomColor:v27 ofRingAtIndex:v24 animated:animatedCopy];
 
       ++v24;
     }
 
-    while (v24 < [v23 count]);
+    while (v24 < [rings3 count]);
   }
 }
 
-- (void)setPercentage:(float)a3 ofRingAtIndex:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setPercentage:(float)percentage ofRingAtIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(ARUIRingGroup *)self rings];
-  v12 = [v11 objectAtIndex:a4];
+  completionCopy = completion;
+  rings = [(ARUIRingGroup *)self rings];
+  v12 = [rings objectAtIndex:index];
 
   LODWORD(v13) = ARUIRingPercentageValueNoRing;
-  if (*&ARUIRingPercentageValueNoRing != a3)
+  if (*&ARUIRingPercentageValueNoRing != percentage)
   {
     [v12 diameter];
     v15 = v14;
     [v12 thickness];
     LODWORD(v17) = v16;
-    *&v18 = a3;
+    *&v18 = percentage;
     LODWORD(v19) = v15;
     [(ARUIRingGroup *)self _ringPercentageAdjustedForProximityToFull:v18 withRingDiameter:v19 thickness:v17];
-    a3 = *&v13;
+    percentage = *&v13;
   }
 
-  if (a5)
+  if (animated)
   {
     [v12 percentage];
-    [ARUIRingGroup _adjustedDurationForRingWithIndex:"_adjustedDurationForRingWithIndex:startPercentage:targetPercentage:defaultDuration:" startPercentage:a4 targetPercentage:? defaultDuration:?];
+    [ARUIRingGroup _adjustedDurationForRingWithIndex:"_adjustedDurationForRingWithIndex:startPercentage:targetPercentage:defaultDuration:" startPercentage:index targetPercentage:? defaultDuration:?];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __75__ARUIRingGroup_Activity__setPercentage_ofRingAtIndex_animated_completion___block_invoke;
     v20[3] = &unk_1E83CE5A0;
-    v21 = a3;
+    percentageCopy = percentage;
     v20[4] = self;
-    v20[5] = a4;
-    [ARUIRingGroup animateWithDuration:v20 animations:v10 completion:?];
+    v20[5] = index;
+    [ARUIRingGroup animateWithDuration:v20 animations:completionCopy completion:?];
   }
 
   else
   {
-    *&v13 = a3;
-    [(ARUIRingGroup *)self setPercentage:a4 ofRingAtIndex:v13];
-    if (v10)
+    *&v13 = percentage;
+    [(ARUIRingGroup *)self setPercentage:index ofRingAtIndex:v13];
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (double)_adjustedDurationForRingWithIndex:(int64_t)a3 startPercentage:(float)a4 targetPercentage:(float)a5 defaultDuration:(double)a6
+- (double)_adjustedDurationForRingWithIndex:(int64_t)index startPercentage:(float)percentage targetPercentage:(float)targetPercentage defaultDuration:(double)duration
 {
-  v10 = [(ARUIRingGroup *)self rings];
-  v11 = a6 + ([v10 count] + ~a3) * 0.0833333333;
+  rings = [(ARUIRingGroup *)self rings];
+  v11 = duration + ([rings count] + ~index) * 0.0833333333;
 
-  v12 = a5 <= a4 || a5 <= 1.0;
-  result = ((a5 + -1.0) * 0.600000024 + 1.0) * a6;
+  v12 = targetPercentage <= percentage || targetPercentage <= 1.0;
+  result = ((targetPercentage + -1.0) * 0.600000024 + 1.0) * duration;
   if (v12)
   {
     return v11;
@@ -1722,54 +1722,54 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
   return result;
 }
 
-- (float)_ringPercentageAdjustedForProximityToFull:(float)result withRingDiameter:(float)a4 thickness:(float)a5
+- (float)_ringPercentageAdjustedForProximityToFull:(float)result withRingDiameter:(float)diameter thickness:(float)thickness
 {
-  if (result > 0.00000011921 && result < 1.0 && a4 > 0.00000011921)
+  if (result > 0.00000011921 && result < 1.0 && diameter > 0.00000011921)
   {
-    v6 = (result * 6.28318531 * (a4 * 0.5) - a5 * 0.5) / (a4 * 0.5) * 0.5 / 3.14159265;
+    v6 = (result * 6.28318531 * (diameter * 0.5) - thickness * 0.5) / (diameter * 0.5) * 0.5 / 3.14159265;
     return fmaxf(v6, 0.0);
   }
 
   return result;
 }
 
-- (void)setActiveEnergyPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setActiveEnergyPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v11 = [(ARUIRingGroup *)self rings];
-  v9 = [v11 count];
-  *&v10 = a3;
-  [(ARUIRingGroup *)self setPercentage:2 * (v9 > 1) ofRingAtIndex:v5 animated:v8 completion:v10];
+  animatedCopy = animated;
+  completionCopy = completion;
+  rings = [(ARUIRingGroup *)self rings];
+  v9 = [rings count];
+  *&v10 = percentage;
+  [(ARUIRingGroup *)self setPercentage:2 * (v9 > 1) ofRingAtIndex:animatedCopy animated:completionCopy completion:v10];
 }
 
-- (void)setExerciseMinutesPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setExerciseMinutesPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v11 = [(ARUIRingGroup *)self rings];
-  v9 = [v11 count] > 1;
-  *&v10 = a3;
-  [(ARUIRingGroup *)self setPercentage:v9 ofRingAtIndex:v5 animated:v8 completion:v10];
+  animatedCopy = animated;
+  completionCopy = completion;
+  rings = [(ARUIRingGroup *)self rings];
+  v9 = [rings count] > 1;
+  *&v10 = percentage;
+  [(ARUIRingGroup *)self setPercentage:v9 ofRingAtIndex:animatedCopy animated:completionCopy completion:v10];
 }
 
-- (void)setStandHoursPercentage:(float)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setStandHoursPercentage:(float)percentage animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v10 = [(ARUIRingGroup *)self rings];
-  [v10 count];
-  *&v9 = a3;
-  [(ARUIRingGroup *)self setPercentage:0 ofRingAtIndex:v5 animated:v8 completion:v9];
+  animatedCopy = animated;
+  completionCopy = completion;
+  rings = [(ARUIRingGroup *)self rings];
+  [rings count];
+  *&v9 = percentage;
+  [(ARUIRingGroup *)self setPercentage:0 ofRingAtIndex:animatedCopy animated:completionCopy completion:v9];
 }
 
-- (void)setActiveEnergyPercentage:(float)a3 exerciseMinutesPercentage:(float)a4 standHoursPercentage:(float)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)setActiveEnergyPercentage:(float)percentage exerciseMinutesPercentage:(float)minutesPercentage standHoursPercentage:(float)hoursPercentage animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a6;
-  v14 = a7;
+  animatedCopy = animated;
+  completionCopy = completion;
   v15 = dispatch_group_create();
   v16 = v15;
-  if (v9)
+  if (animatedCopy)
   {
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -1796,21 +1796,21 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
 
   v20 = MEMORY[0x1D3875270](v19);
   (v18[2].isa)(v18);
-  *&v21 = a3;
-  [(ARUIRingGroup *)self setPercentage:2 ofRingAtIndex:v9 animated:v20 completion:v21];
+  *&v21 = percentage;
+  [(ARUIRingGroup *)self setPercentage:2 ofRingAtIndex:animatedCopy animated:v20 completion:v21];
   (v18[2].isa)(v18);
-  *&v22 = a4;
-  [(ARUIRingGroup *)self setPercentage:1 ofRingAtIndex:v9 animated:v20 completion:v22];
+  *&v22 = minutesPercentage;
+  [(ARUIRingGroup *)self setPercentage:1 ofRingAtIndex:animatedCopy animated:v20 completion:v22];
   (v18[2].isa)(v18);
-  *&v23 = a5;
-  [(ARUIRingGroup *)self setPercentage:0 ofRingAtIndex:v9 animated:v20 completion:v23];
-  if (v9)
+  *&v23 = hoursPercentage;
+  [(ARUIRingGroup *)self setPercentage:0 ofRingAtIndex:animatedCopy animated:v20 completion:v23];
+  if (animatedCopy)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __120__ARUIRingGroup_Activity__setActiveEnergyPercentage_exerciseMinutesPercentage_standHoursPercentage_animated_completion___block_invoke_4;
     v24[3] = &unk_1E83CE018;
-    v25 = v14;
+    v25 = completionCopy;
     dispatch_group_notify(v16, MEMORY[0x1E69E96A0], v24);
 
     v18 = *v7;
@@ -1818,9 +1818,9 @@ void __52__ARUIRingGroup_animationSequencer_updatedWithTime___block_invoke(uint6
 
   else
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -1836,12 +1836,12 @@ uint64_t __120__ARUIRingGroup_Activity__setActiveEnergyPercentage_exerciseMinute
   return result;
 }
 
-- (void)setIsStandalonePhoneFitnessMode:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setIsStandalonePhoneFitnessMode:(BOOL)mode animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(ARUIRingGroup *)self rings];
-  v10 = [v9 count];
+  animatedCopy = animated;
+  completionCopy = completion;
+  rings = [(ARUIRingGroup *)self rings];
+  v10 = [rings count];
 
   if (v10 == 3)
   {
@@ -1849,38 +1849,38 @@ uint64_t __120__ARUIRingGroup_Activity__setActiveEnergyPercentage_exerciseMinute
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 1;
-    v11 = [(ARUIRingGroup *)self rings];
+    rings2 = [(ARUIRingGroup *)self rings];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __79__ARUIRingGroup_Activity__setIsStandalonePhoneFitnessMode_animated_completion___block_invoke;
     v17[3] = &unk_1E83CE5C8;
     v17[4] = &v18;
-    [v11 enumerateObjectsUsingBlock:v17];
+    [rings2 enumerateObjectsUsingBlock:v17];
 
-    if (v5)
+    if (animatedCopy)
     {
-      LOBYTE(v5) = *(v19 + 24) ^ 1;
+      LOBYTE(animatedCopy) = *(v19 + 24) ^ 1;
     }
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __79__ARUIRingGroup_Activity__setIsStandalonePhoneFitnessMode_animated_completion___block_invoke_2;
     v15[3] = &unk_1E83CE5F0;
-    v16 = a3;
+    modeCopy = mode;
     v15[4] = self;
     v12 = MEMORY[0x1D3875270](v15);
     v13 = v12;
-    if (v5)
+    if (animatedCopy)
     {
-      [ARUIRingGroup animateWithDuration:v12 animations:v8 completion:3.0];
+      [ARUIRingGroup animateWithDuration:v12 animations:completionCopy completion:3.0];
     }
 
     else
     {
       (*(v12 + 16))(v12);
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -2055,39 +2055,39 @@ void __79__ARUIRingGroup_Activity__setIsStandalonePhoneFitnessMode_animated_comp
   [*(a1 + 32) setTrackOpacity:0 ofRingAtIndex:v57];
 }
 
-- (void)setIsPaused:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setIsPaused:(BOOL)paused animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__ARUIRingGroup_Activity__setIsPaused_animated_completion___block_invoke;
     v11[3] = &unk_1E83CE618;
-    v12 = a3;
+    pausedCopy = paused;
     v11[4] = self;
-    v13 = v5;
+    v13 = animatedCopy;
     v9 = MEMORY[0x1D3875270](v11);
     v10 = v9;
-    if (v5)
+    if (animatedCopy)
     {
-      [ARUIRingGroup animateWithDuration:v9 animations:v8 completion:1.0];
+      [ARUIRingGroup animateWithDuration:v9 animations:completionCopy completion:1.0];
     }
 
     else
     {
       (*(v9 + 16))(v9);
-      if (v8)
+      if (completionCopy)
       {
-        v8[2](v8);
+        completionCopy[2](completionCopy);
       }
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 

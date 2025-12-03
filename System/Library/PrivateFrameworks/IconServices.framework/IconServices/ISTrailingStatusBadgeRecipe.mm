@@ -3,7 +3,7 @@
 - (id)badgedDocumentIconRect;
 - (id)badgedFolderIconRect;
 - (id)defaultBadgeRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 - (id)trailingBottomBadgeRect;
 @end
 
@@ -105,15 +105,15 @@ uint64_t __51__ISTrailingStatusBadgeRecipe_badgedFolderIconRect__block_invoke()
 
 - (id)trailingBottomBadgeRect
 {
-  v3 = [(ISTrailingStatusBadgeRecipe *)self primaryIconType];
-  if (v3 == 2)
+  primaryIconType = [(ISTrailingStatusBadgeRecipe *)self primaryIconType];
+  if (primaryIconType == 2)
   {
-    v4 = [(ISTrailingStatusBadgeRecipe *)self badgedFolderIconRect];
+    badgedFolderIconRect = [(ISTrailingStatusBadgeRecipe *)self badgedFolderIconRect];
   }
 
   else
   {
-    if (v3 == 1)
+    if (primaryIconType == 1)
     {
       [(ISTrailingStatusBadgeRecipe *)self badgedDocumentIconRect];
     }
@@ -122,16 +122,16 @@ uint64_t __51__ISTrailingStatusBadgeRecipe_badgedFolderIconRect__block_invoke()
     {
       [(ISTrailingStatusBadgeRecipe *)self defaultBadgeRect];
     }
-    v4 = ;
+    badgedFolderIconRect = ;
   }
 
-  return v4;
+  return badgedFolderIconRect;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v8 setSize:width, height];
   [(ISLayer *)v8 setName:@"layer"];
@@ -144,13 +144,13 @@ uint64_t __51__ISTrailingStatusBadgeRecipe_badgedFolderIconRect__block_invoke()
   [v11 hintedFloatForSize:{width, height}];
   [v9 setSpread:?];
 
-  [v9 setScale:a4];
+  [v9 setScale:scale];
   [(ISLayer *)v8 setEffect:v9];
   v12 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v12 setName:@"Trailing bottom badge"];
   [(ISContentLayer *)v12 setContent:@"kISPrimaryResourceKey"];
-  v13 = [(ISTrailingStatusBadgeRecipe *)self trailingBottomBadgeRect];
-  [v13 hintedRectForSize:{width, height}];
+  trailingBottomBadgeRect = [(ISTrailingStatusBadgeRecipe *)self trailingBottomBadgeRect];
+  [trailingBottomBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v12 setFrame:?];
 
   [(ISLayer *)v8 addSublayer:v12];

@@ -1,17 +1,17 @@
 @interface CTXPCRetrieveMessageResponse
 + (id)allowedClassesForArguments;
 - (CTLazuliMessageEnvelope)messageEnvelope;
-- (CTXPCRetrieveMessageResponse)initWithMessageEnvelope:(id)a3;
+- (CTXPCRetrieveMessageResponse)initWithMessageEnvelope:(id)envelope;
 @end
 
 @implementation CTXPCRetrieveMessageResponse
 
-- (CTXPCRetrieveMessageResponse)initWithMessageEnvelope:(id)a3
+- (CTXPCRetrieveMessageResponse)initWithMessageEnvelope:(id)envelope
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  envelopeCopy = envelope;
   v10 = @"messageEnvelope";
-  v11[0] = v4;
+  v11[0] = envelopeCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCRetrieveMessageResponse;
@@ -23,8 +23,8 @@
 
 - (CTLazuliMessageEnvelope)messageEnvelope
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"messageEnvelope"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"messageEnvelope"];
   v4 = CTThrowingCastIfClass<CTLazuliMessageEnvelope>(v3);
 
   return v4;
@@ -32,7 +32,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCRetrieveMessageResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

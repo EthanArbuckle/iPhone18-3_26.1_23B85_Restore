@@ -1,14 +1,14 @@
 @interface IPv4AddressOctetFormatter
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7;
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5;
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description;
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description;
 @end
 
 @implementation IPv4AddressOctetFormatter
 
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description
 {
-  length = a6.length;
-  location = a6.location;
+  length = selectedRange.length;
+  location = selectedRange.location;
   maxLength = self->super.super._maxLength;
   v15 = WORD1(maxLength);
   if ((maxLength & 0xFFFF0000) == 0 || WORD1(maxLength) == 0)
@@ -16,7 +16,7 @@
 LABEL_6:
     v22.receiver = self;
     v22.super_class = IPv4AddressOctetFormatter;
-    return [(APFormatter *)&v22 isPartialStringValid:a3 proposedSelectedRange:a4 originalString:a5 originalSelectedRange:location errorDescription:length, a7];
+    return [(APFormatter *)&v22 isPartialStringValid:valid proposedSelectedRange:range originalString:string originalSelectedRange:location errorDescription:length, description];
   }
 
   else
@@ -24,8 +24,8 @@ LABEL_6:
     v18 = 0;
     while (1)
     {
-      v19 = objc_msgSend_length(a5, a2, a3);
-      v21 = objc_msgSend_rangeOfString_options_range_(a5, v20, @".", 0, v18, v19 - v18);
+      v19 = objc_msgSend_length(string, a2, valid);
+      v21 = objc_msgSend_rangeOfString_options_range_(string, v20, @".", 0, v18, v19 - v18);
       v18 = &a2[v21];
       if (!&a2[v21])
       {
@@ -45,15 +45,15 @@ LABEL_6:
   }
 }
 
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description
 {
   maxLength = self->super.super._maxLength;
   v27.receiver = self;
   v27.super_class = IPv4AddressOctetFormatter;
-  LODWORD(v7) = [(IPv4AddressFormatter *)&v27 isPartialStringValid:a3 newEditingString:a4 errorDescription:a5];
+  LODWORD(v7) = [(IPv4AddressFormatter *)&v27 isPartialStringValid:valid newEditingString:string errorDescription:description];
   if (v7)
   {
-    v9 = objc_msgSend_componentsSeparatedByString_(a3, v8, @".");
+    v9 = objc_msgSend_componentsSeparatedByString_(valid, v8, @".");
     if (objc_msgSend_count(v9, v10, v11) <= WORD1(maxLength))
     {
       LOBYTE(v7) = 0;

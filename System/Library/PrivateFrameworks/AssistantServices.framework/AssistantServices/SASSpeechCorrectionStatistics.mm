@@ -1,37 +1,37 @@
 @interface SASSpeechCorrectionStatistics
-- (void)ad_setAFCorrectionContext:(id)a3;
-- (void)ad_setAFSpeechCorrectionInfo:(id)a3;
+- (void)ad_setAFCorrectionContext:(id)context;
+- (void)ad_setAFSpeechCorrectionInfo:(id)info;
 @end
 
 @implementation SASSpeechCorrectionStatistics
 
-- (void)ad_setAFCorrectionContext:(id)a3
+- (void)ad_setAFCorrectionContext:(id)context
 {
-  v6 = a3;
-  if (v6)
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v6 objectForKey:AFCorrectionContextInteractionIdKey];
+      v4 = [contextCopy objectForKey:AFCorrectionContextInteractionIdKey];
       [(SASSpeechCorrectionStatistics *)self setInteractionId:v4];
 
-      v5 = [v6 objectForKey:AFCorrectionContextSessionIdKey];
+      v5 = [contextCopy objectForKey:AFCorrectionContextSessionIdKey];
       [(SASSpeechCorrectionStatistics *)self setSessionId:v5];
     }
   }
 }
 
-- (void)ad_setAFSpeechCorrectionInfo:(id)a3
+- (void)ad_setAFSpeechCorrectionInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v4 = a3;
-    -[SASSpeechCorrectionStatistics setAlternativeSelectCount:](self, "setAlternativeSelectCount:", [v4 alternativeSelectionCount]);
-    -[SASSpeechCorrectionStatistics setCharacterChangeCount:](self, "setCharacterChangeCount:", [v4 characterModificationCount]);
-    v5 = [v4 correctedText];
+    infoCopy = info;
+    -[SASSpeechCorrectionStatistics setAlternativeSelectCount:](self, "setAlternativeSelectCount:", [infoCopy alternativeSelectionCount]);
+    -[SASSpeechCorrectionStatistics setCharacterChangeCount:](self, "setCharacterChangeCount:", [infoCopy characterModificationCount]);
+    correctedText = [infoCopy correctedText];
 
-    [(SASSpeechCorrectionStatistics *)self setCorrectionText:v5];
+    [(SASSpeechCorrectionStatistics *)self setCorrectionText:correctedText];
     v6 = SASSpeechCorrectionStatisticsSourceDictationValue;
 
     [(SASSpeechCorrectionStatistics *)self setCorrectionSource:v6];

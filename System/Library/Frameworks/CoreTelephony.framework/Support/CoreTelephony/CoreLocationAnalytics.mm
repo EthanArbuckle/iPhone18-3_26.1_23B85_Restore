@@ -1,13 +1,13 @@
 @interface CoreLocationAnalytics
-- (CoreLocationAnalytics)initWithQueue:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (CoreLocationAnalytics)initWithQueue:(id)queue;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation CoreLocationAnalytics
 
-- (CoreLocationAnalytics)initWithQueue:(id)a3
+- (CoreLocationAnalytics)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = CoreLocationAnalytics;
   v5 = [(CoreLocationAnalytics *)&v10 init];
@@ -15,7 +15,7 @@
   if (v5)
   {
     v5->_authStatus = 0;
-    v7 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/WirelessDiagnostics.bundle" delegate:v5 onQueue:v4];
+    v7 = [[CLLocationManager alloc] initWithEffectiveBundlePath:@"/System/Library/LocationBundles/WirelessDiagnostics.bundle" delegate:v5 onQueue:queueCopy];
     locationManager = v6->_locationManager;
     v6->_locationManager = v7;
 
@@ -25,10 +25,10 @@
   return 0;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  self->_authStatus = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  self->_authStatus = [authorizationCopy authorizationStatus];
   v5 = sub_100032AC8(self->_logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

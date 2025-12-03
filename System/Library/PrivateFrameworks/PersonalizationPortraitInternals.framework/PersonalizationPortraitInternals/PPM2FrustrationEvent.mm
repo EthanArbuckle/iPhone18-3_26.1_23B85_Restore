@@ -1,45 +1,45 @@
 @interface PPM2FrustrationEvent
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDomain:(id)a3;
+- (int)StringAsDomain:(id)domain;
 - (int)domain;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2FrustrationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(PPM2FrustrationEvent *)self setClientId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PPM2FrustrationEvent *)self setBundleId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_domain = v4[8];
+    self->_domain = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPM2FrustrationEvent *)self setActiveTreatments:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -60,16 +60,16 @@
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_activeTreatments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   clientId = self->_clientId;
-  if (clientId | *(v4 + 3))
+  if (clientId | *(equalCopy + 3))
   {
     if (![(NSString *)clientId isEqual:?])
     {
@@ -78,7 +78,7 @@
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2))
+  if (bundleId | *(equalCopy + 2))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -86,16 +86,16 @@
     }
   }
 
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_domain != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_domain != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -103,7 +103,7 @@ LABEL_13:
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     v9 = [(NSString *)activeTreatments isEqual:?];
   }
@@ -118,14 +118,14 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_clientId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_clientId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleId copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -135,80 +135,80 @@ LABEL_14:
     *(v5 + 36) |= 1u;
   }
 
-  v10 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v10 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_clientId)
   {
-    [v4 setClientId:?];
-    v4 = v5;
+    [toCopy setClientId:?];
+    toCopy = v5;
   }
 
   if (self->_bundleId)
   {
     [v5 setBundleId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_domain;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_domain;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_activeTreatments)
   {
     [v5 setActiveTreatments:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_clientId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     domain = self->_domain;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activeTreatments)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   clientId = self->_clientId;
   if (clientId)
   {
-    [v3 setObject:clientId forKey:@"clientId"];
+    [dictionary setObject:clientId forKey:@"clientId"];
   }
 
   bundleId = self->_bundleId;
@@ -248,51 +248,51 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = PPM2FrustrationEvent;
   v4 = [(PPM2FrustrationEvent *)&v8 description];
-  v5 = [(PPM2FrustrationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2FrustrationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsDomain:(id)a3
+- (int)StringAsDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Topics"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"Topics"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NamedEntities"])
+  else if ([domainCopy isEqualToString:@"NamedEntities"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Locations"])
+  else if ([domainCopy isEqualToString:@"Locations"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Events"])
+  else if ([domainCopy isEqualToString:@"Events"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ContactsDomain"])
+  else if ([domainCopy isEqualToString:@"ContactsDomain"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Connections"])
+  else if ([domainCopy isEqualToString:@"Connections"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"QuickTypeBroker"])
+  else if ([domainCopy isEqualToString:@"QuickTypeBroker"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"UniversalSearchSpotlightTopics"])
+  else if ([domainCopy isEqualToString:@"UniversalSearchSpotlightTopics"])
   {
     v4 = 7;
   }

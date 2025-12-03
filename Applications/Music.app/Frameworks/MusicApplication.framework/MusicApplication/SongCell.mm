@@ -1,36 +1,36 @@
 @interface SongCell
 - (BOOL)isPopular;
 - (NSString)accessibilityTrackNumberString;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutSubviews;
-- (void)setDuration:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsDisabled:(BOOL)a3;
-- (void)setIsFavorite:(BOOL)a3;
-- (void)setIsProminentItem:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDuration:(double)duration;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsDisabled:(BOOL)disabled;
+- (void)setIsFavorite:(BOOL)favorite;
+- (void)setIsProminentItem:(BOOL)item;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SongCell
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v4 = self;
-  sub_142E58(a3);
+  selfCopy = self;
+  sub_142E58(duration);
 }
 
-- (void)setIsProminentItem:(BOOL)a3
+- (void)setIsProminentItem:(BOOL)item
 {
-  v4 = self;
-  sub_142FDC(a3);
+  selfCopy = self;
+  sub_142FDC(item);
 }
 
-- (void)setIsFavorite:(BOOL)a3
+- (void)setIsFavorite:(BOOL)favorite
 {
-  v4 = self;
-  sub_143184(a3);
+  selfCopy = self;
+  sub_143184(favorite);
 }
 
 - (BOOL)isPopular
@@ -42,71 +42,71 @@
 
   v4 = *(self + OBJC_IVAR____TtC16MusicApplication8SongCell_popularity);
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 standardUserDefaults];
+  selfCopy = self;
+  standardUserDefaults = [v5 standardUserDefaults];
   sub_F7790();
   v9 = v8;
 
   return v4 >= v9;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_143A5C(a3, &selRef_isHighlighted, &selRef_setHighlighted_);
+  selfCopy = self;
+  sub_143A5C(highlighted, &selRef_isHighlighted, &selRef_setHighlighted_);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  sub_143A5C(a3, &selRef_isSelected, &selRef_setSelected_);
+  selfCopy = self;
+  sub_143A5C(selected, &selRef_isSelected, &selRef_setSelected_);
 }
 
-- (void)setIsDisabled:(BOOL)a3
+- (void)setIsDisabled:(BOOL)disabled
 {
-  v4 = self;
-  sub_143BBC(a3);
+  selfCopy = self;
+  sub_143BBC(disabled);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  [v4 size];
-  [(SongCell *)v5 music_inheritedLayoutInsets];
+  attributesCopy = attributes;
+  selfCopy = self;
+  [attributesCopy size];
+  [(SongCell *)selfCopy music_inheritedLayoutInsets];
   sub_ABA530();
   v7 = v6;
-  v8 = [(SongCell *)v5 traitCollection];
-  sub_14CD64(v8, 0, v7);
+  traitCollection = [(SongCell *)selfCopy traitCollection];
+  sub_14CD64(traitCollection, 0, v7);
 
-  [v4 size];
-  [v4 setSize:?];
+  [attributesCopy size];
+  [attributesCopy setSize:?];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_14497C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_14497C(change);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_144BA4();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v5 = sub_AB4E30();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB4E00();
-  v9 = a3;
-  v10 = self;
+  stateCopy = state;
+  selfCopy = self;
   sub_14AA84();
 
   (*(v6 + 8))(v8, v5);

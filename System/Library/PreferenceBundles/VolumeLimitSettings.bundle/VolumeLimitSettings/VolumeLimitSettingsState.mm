@@ -6,7 +6,7 @@
 
 - (void)effectiveSettingsChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_9B40();
 }
 

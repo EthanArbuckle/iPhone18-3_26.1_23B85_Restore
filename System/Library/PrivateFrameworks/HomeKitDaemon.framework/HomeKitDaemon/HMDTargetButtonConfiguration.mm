@@ -1,7 +1,7 @@
 @interface HMDTargetButtonConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDTargetButtonConfiguration)init;
-- (HMDTargetButtonConfiguration)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5;
+- (HMDTargetButtonConfiguration)initWithType:(int64_t)type identifier:(id)identifier name:(id)name;
 - (id)buttonName;
 - (id)description;
 - (id)shortDescription;
@@ -9,10 +9,10 @@
 
 @implementation HMDTargetButtonConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -22,7 +22,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -38,8 +38,8 @@
 
       if (v7 && (v8 = [(HMDTargetButtonConfiguration *)self identifier], v8 == [(HMDTargetButtonConfiguration *)v7 identifier]))
       {
-        v9 = [(HMDTargetButtonConfiguration *)self type];
-        v10 = v9 == [(HMDTargetButtonConfiguration *)v7 type];
+        type = [(HMDTargetButtonConfiguration *)self type];
+        v10 = type == [(HMDTargetButtonConfiguration *)v7 type];
       }
 
       else
@@ -60,19 +60,19 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDTargetButtonConfiguration *)self identifier];
-  v5 = [(HMDTargetButtonConfiguration *)self type];
-  if ((v5 - 1) > 0xC)
+  identifier = [(HMDTargetButtonConfiguration *)self identifier];
+  type = [(HMDTargetButtonConfiguration *)self type];
+  if ((type - 1) > 0xC)
   {
     v6 = @"Unknown";
   }
 
   else
   {
-    v6 = off_278675260[v5 - 1];
+    v6 = off_278675260[type - 1];
   }
 
-  v7 = v4;
+  v7 = identifier;
   v8 = v6;
   v9 = [v3 stringWithFormat:@"%lu/%@", v7, v8];
 
@@ -82,22 +82,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDTargetButtonConfiguration *)self identifier];
-  v5 = [(HMDTargetButtonConfiguration *)self type];
-  if ((v5 - 1) > 0xC)
+  identifier = [(HMDTargetButtonConfiguration *)self identifier];
+  type = [(HMDTargetButtonConfiguration *)self type];
+  if ((type - 1) > 0xC)
   {
     v6 = @"Unknown";
   }
 
   else
   {
-    v6 = off_278675260[v5 - 1];
+    v6 = off_278675260[type - 1];
   }
 
-  v7 = v4;
+  v7 = identifier;
   v8 = v6;
-  v9 = [(HMDTargetButtonConfiguration *)self buttonName];
-  v10 = [v3 stringWithFormat:@"(%lu, %@, %@)", v7, v8, v9];
+  buttonName = [(HMDTargetButtonConfiguration *)self buttonName];
+  v10 = [v3 stringWithFormat:@"(%lu, %@, %@)", v7, v8, buttonName];
 
   return v10;
 }
@@ -106,12 +106,12 @@
 {
   if (([(HMDTargetButtonConfiguration *)self type]- 1) > 0xC)
   {
-    v5 = [(HMDTargetButtonConfiguration *)self name];
-    v6 = v5;
+    name = [(HMDTargetButtonConfiguration *)self name];
+    v6 = name;
     v7 = @"Undefined";
-    if (v5)
+    if (name)
     {
-      v7 = v5;
+      v7 = name;
     }
 
     v8 = v7;
@@ -119,15 +119,15 @@
 
   else
   {
-    v3 = [(HMDTargetButtonConfiguration *)self type];
-    if ((v3 - 1) > 0xC)
+    type = [(HMDTargetButtonConfiguration *)self type];
+    if ((type - 1) > 0xC)
     {
       v4 = @"Unknown";
     }
 
     else
     {
-      v4 = off_278675260[v3 - 1];
+      v4 = off_278675260[type - 1];
     }
 
     v8 = v4;
@@ -136,19 +136,19 @@
   return v8;
 }
 
-- (HMDTargetButtonConfiguration)initWithType:(int64_t)a3 identifier:(id)a4 name:(id)a5
+- (HMDTargetButtonConfiguration)initWithType:(int64_t)type identifier:(id)identifier name:(id)name
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = HMDTargetButtonConfiguration;
   v10 = [(HMDTargetButtonConfiguration *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v10->_identifier = [v8 unsignedCharValue];
-    v12 = [v9 copy];
+    v10->_type = type;
+    v10->_identifier = [identifierCopy unsignedCharValue];
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
   }

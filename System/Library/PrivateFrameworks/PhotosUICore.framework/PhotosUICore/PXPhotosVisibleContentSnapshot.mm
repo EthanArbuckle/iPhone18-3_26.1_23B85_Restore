@@ -3,7 +3,7 @@
 - (NSDateInterval)dateInterval;
 - (NSString)localizedPlaceholderText;
 - (PXPhotosVisibleContentSnapshot)init;
-- (PXPhotosVisibleContentSnapshot)initWithPhotosLayout:(id)a3 dateType:(unint64_t)a4 dateIntervalGranularity:(unint64_t)a5;
+- (PXPhotosVisibleContentSnapshot)initWithPhotosLayout:(id)layout dateType:(unint64_t)type dateIntervalGranularity:(unint64_t)granularity;
 @end
 
 @implementation PXPhotosVisibleContentSnapshot
@@ -49,21 +49,21 @@
 
 - (PXPhotosVisibleContentSnapshot)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosVisibleContentSnapshot.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXPhotosVisibleContentSnapshot init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosVisibleContentSnapshot.m" lineNumber:37 description:{@"%s is not available as initializer", "-[PXPhotosVisibleContentSnapshot init]"}];
 
   abort();
 }
 
-- (PXPhotosVisibleContentSnapshot)initWithPhotosLayout:(id)a3 dateType:(unint64_t)a4 dateIntervalGranularity:(unint64_t)a5
+- (PXPhotosVisibleContentSnapshot)initWithPhotosLayout:(id)layout dateType:(unint64_t)type dateIntervalGranularity:(unint64_t)granularity
 {
-  v6 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = PXPhotosVisibleContentSnapshot;
   if ([(PXPhotosVisibleContentSnapshot *)&v8 init])
   {
-    [v6 visibleRect];
-    [v6 safeAreaInsets];
+    [layoutCopy visibleRect];
+    [layoutCopy safeAreaInsets];
     PXEdgeInsetsInsetRect();
   }
 

@@ -1,44 +1,44 @@
 @interface HKDataMetadataDataSource
-- (HKDataMetadataDataSource)initWithSample:(id)a3 unitPreferenceController:(id)a4;
-- (id)_formattedValueTextForVO2MaxQuantityObject:(id)a3 key:(id)a4 section:(id)a5;
-- (id)_mediaSourceDisplayNamesForSample:(id)a3;
-- (void)addAdditionalOxygenSaturationDetailValuesToSection:(id)a3 key:(id)a4 value:(id)a5;
-- (void)addDetailValuesToSection:(id)a3;
+- (HKDataMetadataDataSource)initWithSample:(id)sample unitPreferenceController:(id)controller;
+- (id)_formattedValueTextForVO2MaxQuantityObject:(id)object key:(id)key section:(id)section;
+- (id)_mediaSourceDisplayNamesForSample:(id)sample;
+- (void)addAdditionalOxygenSaturationDetailValuesToSection:(id)section key:(id)key value:(id)value;
+- (void)addDetailValuesToSection:(id)section;
 @end
 
 @implementation HKDataMetadataDataSource
 
-- (HKDataMetadataDataSource)initWithSample:(id)a3 unitPreferenceController:(id)a4
+- (HKDataMetadataDataSource)initWithSample:(id)sample unitPreferenceController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = HKDataMetadataDataSource;
   v8 = [(HKDataMetadataDataSource *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [sampleCopy copy];
     sample = v8->_sample;
     v8->_sample = v9;
 
-    objc_storeStrong(&v8->_unitPreferenceController, a4);
+    objc_storeStrong(&v8->_unitPreferenceController, controller);
   }
 
   return v8;
 }
 
-- (void)addDetailValuesToSection:(id)a3
+- (void)addDetailValuesToSection:(id)section
 {
-  v4 = a3;
-  v5 = [(HKSample *)self->_sample metadata];
+  sectionCopy = section;
+  metadata = [(HKSample *)self->_sample metadata];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke;
   v7[3] = &unk_1E81BB5F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = sectionCopy;
+  v6 = sectionCopy;
+  [metadata enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1054,34 +1054,34 @@ uint64_t __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)_formattedValueTextForVO2MaxQuantityObject:(id)a3 key:(id)a4 section:(id)a5
+- (id)_formattedValueTextForVO2MaxQuantityObject:(id)object key:(id)key section:(id)section
 {
-  v6 = a3;
-  v7 = a5;
+  objectCopy = object;
+  sectionCopy = section;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v7 displayTypeController];
-    v10 = [v9 displayTypeWithIdentifier:&unk_1F4384738];
+    v8 = objectCopy;
+    displayTypeController = [sectionCopy displayTypeController];
+    v10 = [displayTypeController displayTypeWithIdentifier:&unk_1F4384738];
 
-    v11 = [v7 unitController];
-    v12 = [v11 unitForDisplayType:v10];
+    unitController = [sectionCopy unitController];
+    v12 = [unitController unitForDisplayType:v10];
     [v8 doubleValueForUnit:v12];
     v14 = v13;
-    v15 = [v10 presentation];
+    presentation = [v10 presentation];
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
-    v17 = [v15 adjustedValueForDaemonValue:v16];
+    v17 = [presentation adjustedValueForDaemonValue:v16];
 
-    v18 = HKFormattedStringFromValueForContext(v17, v10, v11, 0, 0, 1);
-    if (HKFormatterIncludesUnitForDisplayTypeInContext(v10, 1, v11))
+    v18 = HKFormattedStringFromValueForContext(v17, v10, unitController, 0, 0, 1);
+    if (HKFormatterIncludesUnitForDisplayTypeInContext(v10, 1, unitController))
     {
       v19 = v18;
     }
 
     else
     {
-      v20 = [v11 localizedDisplayNameForDisplayType:v10 value:v17 nameContext:3];
+      v20 = [unitController localizedDisplayNameForDisplayType:v10 value:v17 nameContext:3];
       v19 = HKFormatValueAndUnit(v18, v20);
     }
   }
@@ -1094,12 +1094,12 @@ uint64_t __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke_
   return v19;
 }
 
-- (void)addAdditionalOxygenSaturationDetailValuesToSection:(id)a3 key:(id)a4 value:(id)a5
+- (void)addAdditionalOxygenSaturationDetailValuesToSection:(id)section key:(id)key value:(id)value
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([a4 isEqualToString:*MEMORY[0x1E696BA50]])
+  sectionCopy = section;
+  valueCopy = value;
+  if ([key isEqualToString:*MEMORY[0x1E696BA50]])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1107,7 +1107,7 @@ uint64_t __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke_
       v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v10 = [v9 localizedStringForKey:@"SCANDIUM_OVERLAY_LOW_AIR_PRESSURE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Scandium"];
 
-      v11 = v8;
+      v11 = valueCopy;
       v12 = HKOxygenSaturationLowBarometricPressureThresholdQuantity();
       v13 = [v11 hk_isGreaterThanQuantity:v12];
 
@@ -1129,16 +1129,16 @@ uint64_t __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke_
       v20[1] = @"HighElevationEnvironment";
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
       v19 = HKUIJoinStringsForAutomationIdentifier(v18);
-      [v7 addText:v17 detail:v10 baseIdentifier:v19];
+      [sectionCopy addText:v17 detail:v10 baseIdentifier:v19];
     }
   }
 }
 
-- (id)_mediaSourceDisplayNamesForSample:(id)a3
+- (id)_mediaSourceDisplayNamesForSample:(id)sample
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(HKSample *)self->_sample metadata];
-  v4 = [v3 objectForKey:*MEMORY[0x1E696C6D0]];
+  metadata = [(HKSample *)self->_sample metadata];
+  v4 = [metadata objectForKey:*MEMORY[0x1E696C6D0]];
   v5 = [v4 componentsSeparatedByString:{@", "}];
 
   if (![v5 count])
@@ -1175,19 +1175,19 @@ uint64_t __53__HKDataMetadataDataSource_addDetailValuesToSection___block_invoke_
       }
 
       v14 = *(*(&v32 + 1) + 8 * i);
-      v15 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v16 = [v14 stringByTrimmingCharactersInSet:v15];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v16 = [v14 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v31 = 0;
       v17 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v16 allowPlaceholder:1 error:&v31];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 localizedName];
-        if (v19)
+        localizedName = [v17 localizedName];
+        if (localizedName)
         {
-          v20 = v19;
-          [v30 addObject:v19];
+          v20 = localizedName;
+          [v30 addObject:localizedName];
         }
       }
 

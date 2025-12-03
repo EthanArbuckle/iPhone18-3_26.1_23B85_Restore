@@ -1,31 +1,31 @@
 @interface BMNanoSettingsControlCenterUsage
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMNanoSettingsControlCenterUsage)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMNanoSettingsControlCenterUsage)initWithTransition:(int)a3 statusDetailTransition:(int)a4 buttonID:(id)a5 buttonPress:(int)a6;
-- (BOOL)isEqual:(id)a3;
+- (BMNanoSettingsControlCenterUsage)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMNanoSettingsControlCenterUsage)initWithTransition:(int)transition statusDetailTransition:(int)detailTransition buttonID:(id)d buttonPress:(int)press;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMNanoSettingsControlCenterUsage
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMNanoSettingsControlCenterUsage *)self transition];
-    if (v6 == [v5 transition] && (v7 = -[BMNanoSettingsControlCenterUsage statusDetailTransition](self, "statusDetailTransition"), v7 == objc_msgSend(v5, "statusDetailTransition")) && (!-[BMNanoSettingsControlCenterUsage hasButtonID](self, "hasButtonID") && !objc_msgSend(v5, "hasButtonID") || -[BMNanoSettingsControlCenterUsage hasButtonID](self, "hasButtonID") && objc_msgSend(v5, "hasButtonID") && (v8 = -[BMNanoSettingsControlCenterUsage buttonID](self, "buttonID"), v8 == objc_msgSend(v5, "buttonID"))))
+    v5 = equalCopy;
+    transition = [(BMNanoSettingsControlCenterUsage *)self transition];
+    if (transition == [v5 transition] && (v7 = -[BMNanoSettingsControlCenterUsage statusDetailTransition](self, "statusDetailTransition"), v7 == objc_msgSend(v5, "statusDetailTransition")) && (!-[BMNanoSettingsControlCenterUsage hasButtonID](self, "hasButtonID") && !objc_msgSend(v5, "hasButtonID") || -[BMNanoSettingsControlCenterUsage hasButtonID](self, "hasButtonID") && objc_msgSend(v5, "hasButtonID") && (v8 = -[BMNanoSettingsControlCenterUsage buttonID](self, "buttonID"), v8 == objc_msgSend(v5, "buttonID"))))
     {
-      v9 = [(BMNanoSettingsControlCenterUsage *)self buttonPress];
-      v10 = v9 == [v5 buttonPress];
+      buttonPress = [(BMNanoSettingsControlCenterUsage *)self buttonPress];
+      v10 = buttonPress == [v5 buttonPress];
     }
 
     else
@@ -59,37 +59,37 @@
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMNanoSettingsControlCenterUsage buttonPress](self, "buttonPress")}];
   v14[0] = @"transition";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"statusDetailTransition";
-  v8 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"buttonID";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"buttonPress";
-  v10 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   if (v6)
   {
@@ -140,17 +140,17 @@ LABEL_16:
   return v11;
 }
 
-- (BMNanoSettingsControlCenterUsage)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMNanoSettingsControlCenterUsage)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"transition"];
-  v32 = self;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"transition"];
+  selfCopy = self;
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v34 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"statusDetailTransition"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"statusDetailTransition"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -164,10 +164,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v9 = 0;
-            v19 = 0;
+            selfCopy2 = 0;
             goto LABEL_34;
           }
 
@@ -179,8 +179,8 @@ LABEL_4:
           v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
           v26 = [v24 initWithDomain:v25 code:2 userInfo:v11];
           v9 = 0;
-          v19 = 0;
-          *a4 = v26;
+          selfCopy2 = 0;
+          *error = v26;
           goto LABEL_33;
         }
 
@@ -195,16 +195,16 @@ LABEL_4:
       v9 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"buttonID"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"buttonID"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
-          v19 = 0;
+          selfCopy2 = 0;
           goto LABEL_33;
         }
 
@@ -214,25 +214,25 @@ LABEL_4:
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"buttonID"];
         v38 = v15;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-        v14 = v30 = a4;
+        v14 = v30 = error;
         v18 = [v33 initWithDomain:v17 code:2 userInfo:v14];
         v13 = 0;
-        v19 = 0;
+        selfCopy2 = 0;
         *v30 = v18;
         goto LABEL_32;
       }
 
-      v12 = a4;
+      errorCopy2 = error;
       v13 = v11;
     }
 
     else
     {
-      v12 = a4;
+      errorCopy2 = error;
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"buttonPress"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"buttonPress"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -246,7 +246,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v12)
+          if (errorCopy2)
           {
             v31 = objc_alloc(MEMORY[0x1E696ABC0]);
             v29 = *MEMORY[0x1E698F240];
@@ -254,12 +254,12 @@ LABEL_4:
             v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"buttonPress"];
             v36 = v27;
             v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-            *v12 = [v31 initWithDomain:v29 code:2 userInfo:v28];
+            *errorCopy2 = [v31 initWithDomain:v29 code:2 userInfo:v28];
           }
 
           v15 = 0;
-          v19 = 0;
-          self = v32;
+          selfCopy2 = 0;
+          self = selfCopy;
           goto LABEL_32;
         }
 
@@ -274,8 +274,8 @@ LABEL_4:
       v15 = 0;
     }
 
-    self = -[BMNanoSettingsControlCenterUsage initWithTransition:statusDetailTransition:buttonID:buttonPress:](v32, "initWithTransition:statusDetailTransition:buttonID:buttonPress:", [v34 intValue], objc_msgSend(v9, "intValue"), v13, objc_msgSend(v15, "intValue"));
-    v19 = self;
+    self = -[BMNanoSettingsControlCenterUsage initWithTransition:statusDetailTransition:buttonID:buttonPress:](selfCopy, "initWithTransition:statusDetailTransition:buttonID:buttonPress:", [v34 intValue], objc_msgSend(v9, "intValue"), v13, objc_msgSend(v15, "intValue"));
+    selfCopy2 = self;
 LABEL_32:
 
 LABEL_33:
@@ -296,10 +296,10 @@ LABEL_33:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v34 = 0;
-    v19 = 0;
+    selfCopy2 = 0;
     goto LABEL_35;
   }
 
@@ -310,27 +310,27 @@ LABEL_33:
   v42[0] = v9;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
   v34 = 0;
-  v19 = 0;
-  *a4 = [v22 initWithDomain:v23 code:2 userInfo:v8];
+  selfCopy2 = 0;
+  *error = [v22 initWithDomain:v23 code:2 userInfo:v8];
 LABEL_34:
 
 LABEL_35:
   v20 = *MEMORY[0x1E69E9840];
-  return v19;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMNanoSettingsControlCenterUsage *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   transition = self->_transition;
   PBDataWriterWriteUint32Field();
   statusDetailTransition = self->_statusDetailTransition;
@@ -345,9 +345,9 @@ LABEL_35:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v45.receiver = self;
   v45.super_class = BMNanoSettingsControlCenterUsage;
   v5 = [(BMEventBase *)&v45 init];
@@ -356,12 +356,12 @@ LABEL_35:
     goto LABEL_81;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -372,18 +372,18 @@ LABEL_35:
       while (1)
       {
         v46 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v46 & 0x7F) << v7;
@@ -400,9 +400,9 @@ LABEL_35:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -419,18 +419,18 @@ LABEL_16:
           while (1)
           {
             v46 = 0;
-            v38 = [v4 position] + 1;
-            if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+            v38 = [fromCopy position] + 1;
+            if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
             {
-              v40 = [v4 data];
-              [v40 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v37 |= (v46 & 0x7F) << v35;
@@ -448,7 +448,7 @@ LABEL_16:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             LODWORD(v31) = 0;
           }
@@ -481,18 +481,18 @@ LABEL_41:
           while (1)
           {
             v46 = 0;
-            v26 = [v4 position] + 1;
-            if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+            v26 = [fromCopy position] + 1;
+            if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
             {
-              v28 = [v4 data];
-              [v28 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v25 |= (v46 & 0x7F) << v23;
@@ -509,7 +509,7 @@ LABEL_41:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || (LODWORD(v31) = v25, v25 > 2))
+          if (([fromCopy hasError] & 1) != 0 || (LODWORD(v31) = v25, v25 > 2))
           {
 LABEL_67:
             LODWORD(v31) = 0;
@@ -527,18 +527,18 @@ LABEL_67:
         while (1)
         {
           v46 = 0;
-          v32 = [v4 position] + 1;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 1;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v34 = [v4 data];
-            [v34 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 |= (v46 & 0x7F) << v29;
@@ -555,7 +555,7 @@ LABEL_67:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v31 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v31 > 3)
         {
 LABEL_71:
           LODWORD(v31) = 0;
@@ -577,18 +577,18 @@ LABEL_71:
         while (1)
         {
           v46 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v46 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v46 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v46 & 0x7F) << v16;
@@ -605,7 +605,7 @@ LABEL_71:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || (LODWORD(v31) = v18, v18 > 2))
+        if (([fromCopy hasError] & 1) != 0 || (LODWORD(v31) = v18, v18 > 2))
         {
 LABEL_63:
           LODWORD(v31) = 0;
@@ -616,13 +616,13 @@ LABEL_63:
 
       *(&v5->super.super.isa + *v41) = v31;
 LABEL_78:
-      v42 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v42 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_80:
     v43 = 0;
@@ -649,31 +649,31 @@ LABEL_81:
   return v8;
 }
 
-- (BMNanoSettingsControlCenterUsage)initWithTransition:(int)a3 statusDetailTransition:(int)a4 buttonID:(id)a5 buttonPress:(int)a6
+- (BMNanoSettingsControlCenterUsage)initWithTransition:(int)transition statusDetailTransition:(int)detailTransition buttonID:(id)d buttonPress:(int)press
 {
-  v10 = a5;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = BMNanoSettingsControlCenterUsage;
   v11 = [(BMEventBase *)&v14 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    v11->_transition = a3;
-    v11->_statusDetailTransition = a4;
-    if (v10)
+    v11->_transition = transition;
+    v11->_statusDetailTransition = detailTransition;
+    if (dCopy)
     {
       v11->_hasButtonID = 1;
-      v12 = [v10 intValue];
+      intValue = [dCopy intValue];
     }
 
     else
     {
       v11->_hasButtonID = 0;
-      v12 = -1;
+      intValue = -1;
     }
 
-    v11->_buttonID = v12;
-    v11->_buttonPress = a6;
+    v11->_buttonID = intValue;
+    v11->_buttonPress = press;
   }
 
   return v11;
@@ -715,9 +715,9 @@ LABEL_81:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -725,8 +725,8 @@ LABEL_81:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMNanoSettingsControlCenterUsage alloc] initByReadFrom:v7];
     v4 = v8;

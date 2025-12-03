@@ -1,13 +1,13 @@
 @interface PGMobilityFeatureExtractor
-+ (id)_labelsForVersion:(int64_t)a3;
-- (PGMobilityFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
++ (id)_labelsForVersion:(int64_t)version;
+- (PGMobilityFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
 @end
 
 @implementation PGMobilityFeatureExtractor
 
-- (PGMobilityFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGMobilityFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
-  v5 = [objc_opt_class() _labelsForVersion:a3];
+  v5 = [objc_opt_class() _labelsForVersion:version];
   v6 = +[PGGraphMomentNode mobilityOfMoment];
   v9.receiver = self;
   v9.super_class = PGMobilityFeatureExtractor;
@@ -16,10 +16,10 @@
   return v7;
 }
 
-+ (id)_labelsForVersion:(int64_t)a3
++ (id)_labelsForVersion:(int64_t)version
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (version == 2)
   {
     v8 = *MEMORY[0x277D274D0];
     v13 = *MEMORY[0x277D274E0];
@@ -34,7 +34,7 @@
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     v3 = *MEMORY[0x277D274D0];
     v18 = *MEMORY[0x277D274E0];

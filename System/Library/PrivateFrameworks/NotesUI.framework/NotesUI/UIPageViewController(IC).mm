@@ -12,10 +12,10 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 view];
-  v2 = [v1 subviews];
+  view = [self view];
+  subviews = [view subviews];
 
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -25,7 +25,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subviews);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -37,7 +37,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [subviews countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -54,8 +54,8 @@ LABEL_11:
 
 - (void)ic_setAutoscrollEnabled:()IC
 {
-  v4 = [a1 ic_internalScrollView];
-  [v4 _setAutoScrollEnabled:a3];
+  ic_internalScrollView = [self ic_internalScrollView];
+  [ic_internalScrollView _setAutoScrollEnabled:a3];
 }
 
 @end

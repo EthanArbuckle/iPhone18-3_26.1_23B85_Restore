@@ -1,34 +1,34 @@
 @interface RTPredictedContextResult
-+ (unint64_t)contextTypeMaskForContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (RTPredictedContextResult)initWithCoder:(id)a3;
-- (RTPredictedContextResult)initWithPredictedContexts:(id)a3 analytics:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)currentPredictedContextsWithType:(unint64_t)a3;
-- (id)dateIntervalFromStart:(id)a3 end:(id)a4;
++ (unint64_t)contextTypeMaskForContext:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (RTPredictedContextResult)initWithCoder:(id)coder;
+- (RTPredictedContextResult)initWithPredictedContexts:(id)contexts analytics:(id)analytics;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)currentPredictedContextsWithType:(unint64_t)type;
+- (id)dateIntervalFromStart:(id)start end:(id)end;
 - (id)description;
-- (id)generateSequencesFromDate:(id)a3 toDate:(id)a4;
-- (id)nextStepPredictedContextsWithFilterMask:(unint64_t)a3;
-- (id)predictedContextsWithType:(unint64_t)a3 afterContext:(id)a4;
-- (id)predictedSequencesAfterContext:(id)a3;
-- (id)unknownPredictedContextFromStart:(id)a3 end:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)generateSequencesFromDate:(id)date toDate:(id)toDate;
+- (id)nextStepPredictedContextsWithFilterMask:(unint64_t)mask;
+- (id)predictedContextsWithType:(unint64_t)type afterContext:(id)context;
+- (id)predictedSequencesAfterContext:(id)context;
+- (id)unknownPredictedContextFromStart:(id)start end:(id)end;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPredictedContextResult
 
-- (RTPredictedContextResult)initWithPredictedContexts:(id)a3 analytics:(id)a4
+- (RTPredictedContextResult)initWithPredictedContexts:(id)contexts analytics:(id)analytics
 {
-  v7 = a3;
-  v8 = a4;
+  contextsCopy = contexts;
+  analyticsCopy = analytics;
   v14.receiver = self;
   v14.super_class = RTPredictedContextResult;
   v9 = [(RTPredictedContextResult *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_predictedContexts, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_predictedContexts, contexts);
+    v11 = [analyticsCopy copy];
     analytics = v10->_analytics;
     v10->_analytics = v11;
   }
@@ -36,17 +36,17 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predictedContexts = self->_predictedContexts;
-  v5 = a3;
-  [v5 encodeObject:predictedContexts forKey:@"predictedContexts"];
-  [v5 encodeObject:self->_analytics forKey:@"analytics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:predictedContexts forKey:@"predictedContexts"];
+  [coderCopy encodeObject:self->_analytics forKey:@"analytics"];
 }
 
-- (RTPredictedContextResult)initWithCoder:(id)a3
+- (RTPredictedContextResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = RTPredictedContextResult;
   v5 = [(RTPredictedContextResult *)&v14 init];
@@ -55,11 +55,11 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"predictedContexts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"predictedContexts"];
     predictedContexts = v5->_predictedContexts;
     v5->_predictedContexts = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"analytics"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analytics"];
     analytics = v5->_analytics;
     v5->_analytics = v11;
   }
@@ -67,7 +67,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTPredictedContextResult alloc];
   predictedContexts = self->_predictedContexts;
@@ -76,28 +76,28 @@
   return [(RTPredictedContextResult *)v4 initWithPredictedContexts:predictedContexts analytics:analytics];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
     goto LABEL_17;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     LOBYTE(v11) = 0;
     goto LABEL_17;
   }
 
   v7 = v6;
-  v8 = [(RTPredictedContextResult *)self predictedContexts];
-  if (!v8)
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
+  if (!predictedContexts)
   {
-    v3 = [(RTPredictedContextResult *)v7 predictedContexts];
-    if (!v3)
+    predictedContexts2 = [(RTPredictedContextResult *)v7 predictedContexts];
+    if (!predictedContexts2)
     {
       v11 = 1;
 LABEL_11:
@@ -106,32 +106,32 @@ LABEL_11:
     }
   }
 
-  v9 = [(RTPredictedContextResult *)self predictedContexts];
-  v10 = [(RTPredictedContextResult *)v7 predictedContexts];
-  v11 = [v9 isEqual:v10];
+  predictedContexts3 = [(RTPredictedContextResult *)self predictedContexts];
+  predictedContexts4 = [(RTPredictedContextResult *)v7 predictedContexts];
+  v11 = [predictedContexts3 isEqual:predictedContexts4];
 
-  if (!v8)
+  if (!predictedContexts)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  v12 = [(RTPredictedContextResult *)self analytics];
-  if (!v12)
+  analytics = [(RTPredictedContextResult *)self analytics];
+  if (!analytics)
   {
-    v3 = [(RTPredictedContextResult *)v7 analytics];
-    if (!v3)
+    predictedContexts2 = [(RTPredictedContextResult *)v7 analytics];
+    if (!predictedContexts2)
     {
       goto LABEL_15;
     }
   }
 
-  v13 = [(RTPredictedContextResult *)self analytics];
-  v14 = [(RTPredictedContextResult *)v7 analytics];
-  v11 &= [v13 isEqual:v14];
+  analytics2 = [(RTPredictedContextResult *)self analytics];
+  analytics3 = [(RTPredictedContextResult *)v7 analytics];
+  v11 &= [analytics2 isEqual:analytics3];
 
-  if (!v12)
+  if (!analytics)
   {
 LABEL_15:
   }
@@ -140,9 +140,9 @@ LABEL_17:
   return v11;
 }
 
-+ (unint64_t)contextTypeMaskForContext:(id)a3
++ (unint64_t)contextTypeMaskForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -175,17 +175,17 @@ LABEL_17:
   return v4;
 }
 
-- (id)nextStepPredictedContextsWithFilterMask:(unint64_t)a3
+- (id)nextStepPredictedContextsWithFilterMask:(unint64_t)mask
 {
-  v5 = [(RTPredictedContextResult *)self predictedContexts];
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__RTPredictedContextResult_nextStepPredictedContextsWithFilterMask___block_invoke;
   v9[3] = &unk_1E80B4BA0;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = mask;
   v6 = [MEMORY[0x1E696AE18] predicateWithBlock:v9];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  v7 = [predictedContexts filteredArrayUsingPredicate:v6];
 
   return v7;
 }
@@ -199,25 +199,25 @@ BOOL __68__RTPredictedContextResult_nextStepPredictedContextsWithFilterMask___bl
   return (*(a1 + 40) & v5) != 0;
 }
 
-- (id)currentPredictedContextsWithType:(unint64_t)a3
+- (id)currentPredictedContextsWithType:(unint64_t)type
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v5 dateByAddingTimeInterval:900.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [date dateByAddingTimeInterval:900.0];
   v7 = MEMORY[0x1E696AE18];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __61__RTPredictedContextResult_currentPredictedContextsWithType___block_invoke;
   v37[3] = &unk_1E80B4BC8;
   v37[4] = self;
-  v40 = a3;
-  v8 = v5;
+  typeCopy = type;
+  v8 = date;
   v38 = v8;
   v9 = v6;
   v39 = v9;
   v10 = [v7 predicateWithBlock:v37];
-  v11 = [(RTPredictedContextResult *)self predictedContexts];
-  v12 = [v11 filteredArrayUsingPredicate:v10];
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
+  v12 = [predictedContexts filteredArrayUsingPredicate:v10];
 
   if ([v12 count])
   {
@@ -229,13 +229,13 @@ BOOL __68__RTPredictedContextResult_nextStepPredictedContextsWithFilterMask___bl
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = [(RTPredictedContextResult *)self predictedContexts];
-  v15 = [v14 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  predictedContexts2 = [(RTPredictedContextResult *)self predictedContexts];
+  v15 = [predictedContexts2 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v15)
   {
     v16 = v15;
     v31 = v9;
-    obj = v14;
+    obj = predictedContexts2;
     v29 = v12;
     v30 = v10;
     v17 = v8;
@@ -251,15 +251,15 @@ BOOL __68__RTPredictedContextResult_nextStepPredictedContextsWithFilterMask___bl
         }
 
         v21 = *(*(&v33 + 1) + 8 * i);
-        if (([objc_opt_class() contextTypeMaskForContext:v21] & a3) != 0)
+        if (([objc_opt_class() contextTypeMaskForContext:v21] & type) != 0)
         {
-          v22 = [v21 dateInterval];
-          v23 = [v22 startDate];
-          v24 = [v23 date];
+          dateInterval = [v21 dateInterval];
+          startDate = [dateInterval startDate];
+          date2 = [startDate date];
 
-          if ([v24 compare:v17] == 1 && (!v18 || objc_msgSend(v24, "compare:", v18) == -1))
+          if ([date2 compare:v17] == 1 && (!v18 || objc_msgSend(date2, "compare:", v18) == -1))
           {
-            v25 = v24;
+            v25 = date2;
 
             v18 = v25;
           }
@@ -328,33 +328,33 @@ BOOL __61__RTPredictedContextResult_currentPredictedContextsWithType___block_inv
   return v11;
 }
 
-- (id)predictedContextsWithType:(unint64_t)a3 afterContext:(id)a4
+- (id)predictedContextsWithType:(unint64_t)type afterContext:(id)context
 {
-  if (a4)
+  if (context)
   {
-    v6 = [a4 dateInterval];
-    v7 = [v6 endDate];
-    v8 = [v7 date];
+    dateInterval = [context dateInterval];
+    endDate = [dateInterval endDate];
+    date = [endDate date];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v9 = [v8 dateByAddingTimeInterval:-900.0];
-  v10 = [(RTPredictedContextResult *)self predictedContexts];
+  v9 = [date dateByAddingTimeInterval:-900.0];
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
   v11 = MEMORY[0x1E696AE18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__RTPredictedContextResult_predictedContextsWithType_afterContext___block_invoke;
   v16[3] = &unk_1E80B4BF0;
   v17 = v9;
-  v18 = a3;
+  typeCopy = type;
   v16[4] = self;
   v12 = v9;
   v13 = [v11 predicateWithBlock:v16];
-  v14 = [v10 filteredArrayUsingPredicate:v13];
+  v14 = [predictedContexts filteredArrayUsingPredicate:v13];
 
   return v14;
 }
@@ -379,10 +379,10 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
   return v8;
 }
 
-- (id)predictedSequencesAfterContext:(id)a3
+- (id)predictedSequencesAfterContext:(id)context
 {
   v78 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -396,28 +396,28 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
       v74 = 2112;
       v75 = v7;
       v76 = 2117;
-      v77 = v3;
+      v77 = contextCopy;
       _os_log_impl(&dword_1BF1C4000, v4, OS_LOG_TYPE_INFO, "%@, %@, input predictedContext, %{sensitive}@", buf, 0x20u);
     }
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = v8;
-  v50 = v8;
-  v51 = v3;
-  if (v3)
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = date;
+  v50 = date;
+  v51 = contextCopy;
+  if (contextCopy)
   {
-    v10 = [v3 dateInterval];
-    v11 = [v10 endDate];
-    obj = [v11 date];
+    dateInterval = [contextCopy dateInterval];
+    endDate = [dateInterval endDate];
+    obj = [endDate date];
 
     v12 = [v9 dateByAddingTimeInterval:86400.0];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v13 = [(RTPredictedContextResult *)self predictedContexts];
-    v14 = [v13 countByEnumeratingWithState:&v65 objects:v71 count:16];
+    predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
+    v14 = [predictedContexts countByEnumeratingWithState:&v65 objects:v71 count:16];
     if (v14)
     {
       v15 = v14;
@@ -428,26 +428,26 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
         {
           if (*v66 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(predictedContexts);
           }
 
           v18 = *(*(&v65 + 1) + 8 * i);
-          v19 = [v18 dateInterval];
-          v20 = [v19 endDate];
-          v21 = [v20 date];
-          v22 = [v21 compare:v12];
+          dateInterval2 = [v18 dateInterval];
+          endDate2 = [dateInterval2 endDate];
+          date2 = [endDate2 date];
+          v22 = [date2 compare:v12];
 
           if (v22 == 1)
           {
-            v23 = [v18 dateInterval];
-            v24 = [v23 endDate];
-            v25 = [v24 date];
+            dateInterval3 = [v18 dateInterval];
+            endDate3 = [dateInterval3 endDate];
+            date3 = [endDate3 date];
 
-            v12 = v25;
+            v12 = date3;
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v65 objects:v71 count:16];
+        v15 = [predictedContexts countByEnumeratingWithState:&v65 objects:v71 count:16];
       }
 
       while (v15);
@@ -458,7 +458,7 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
 
   else
   {
-    v26 = v8;
+    v26 = date;
     v12 = [v26 dateByAddingTimeInterval:86400.0];
   }
 
@@ -482,7 +482,7 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
     }
   }
 
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -540,7 +540,7 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
 
         v46 = [(RTPredictedContextResult *)self dateIntervalFromStart:v26 end:v12];
         v47 = [[RTPredictedContextSequence alloc] initWithProbability:v46 dateInterval:v39 predictedContexts:v43];
-        [v33 addObject:v47];
+        [array addObject:v47];
       }
 
       v35 = [obja countByEnumeratingWithState:&v61 objects:v70 count:16];
@@ -555,11 +555,11 @@ BOOL __67__RTPredictedContextResult_predictedContextsWithType_afterContext___blo
   v56[3] = &unk_1E80B4C18;
   v56[4] = self;
   v56[5] = a2;
-  [v33 enumerateObjectsUsingBlock:v56];
+  [array enumerateObjectsUsingBlock:v56];
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v33;
+  return array;
 }
 
 void __59__RTPredictedContextResult_predictedSequencesAfterContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -590,12 +590,12 @@ void __59__RTPredictedContextResult_predictedSequencesAfterContext___block_invok
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)generateSequencesFromDate:(id)a3 toDate:(id)a4
+- (id)generateSequencesFromDate:(id)date toDate:(id)toDate
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v45 = v6;
+  dateCopy = date;
+  toDateCopy = toDate;
+  v45 = dateCopy;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -609,43 +609,43 @@ void __59__RTPredictedContextResult_predictedSequencesAfterContext___block_invok
       v63 = 2112;
       v64 = v11;
       v65 = 2112;
-      v66 = v6;
+      v66 = dateCopy;
       v67 = 2112;
-      v68 = v7;
+      v68 = toDateCopy;
       _os_log_impl(&dword_1BF1C4000, v8, OS_LOG_TYPE_INFO, "%@, %@, startDate, %@, endDate, %@", buf, 0x2Au);
     }
   }
 
-  if ([v6 compare:v7] != -1)
+  if ([dateCopy compare:toDateCopy] != -1)
   {
-    v12 = &unk_1F3DE3C10;
+    array = &unk_1F3DE3C10;
     goto LABEL_33;
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v13 = [(RTPredictedContextResult *)self predictedContexts];
-  v49 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
+  v49 = [predictedContexts countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (!v49)
   {
 
 LABEL_31:
-    if ([v6 compare:v7] == -1)
+    if ([dateCopy compare:toDateCopy] == -1)
     {
-      v39 = [(RTPredictedContextResult *)self unknownPredictedContextFromStart:v6 end:v7];
+      v39 = [(RTPredictedContextResult *)self unknownPredictedContextFromStart:dateCopy end:toDateCopy];
       v58 = v39;
       v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
-      [v12 addObject:v40];
+      [array addObject:v40];
     }
 
     goto LABEL_33;
   }
 
-  v43 = v13;
-  v44 = v7;
+  v43 = predictedContexts;
+  v44 = toDateCopy;
   v14 = 0;
   v48 = *v55;
   do
@@ -654,46 +654,46 @@ LABEL_31:
     {
       if (*v55 != v48)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(predictedContexts);
       }
 
       v16 = *(*(&v54 + 1) + 8 * i);
-      v17 = [v16 dateInterval];
-      v18 = [v17 endDate];
-      v19 = [v18 date];
-      v20 = [v19 compare:v6];
+      dateInterval = [v16 dateInterval];
+      endDate = [dateInterval endDate];
+      date = [endDate date];
+      v20 = [date compare:dateCopy];
 
       if (v20 == 1)
       {
-        v21 = [v16 dateInterval];
-        v22 = [v21 startDate];
-        v23 = [v22 date];
-        if ([v23 compare:v6] == -1)
+        dateInterval2 = [v16 dateInterval];
+        startDate = [dateInterval2 startDate];
+        date2 = [startDate date];
+        if ([date2 compare:dateCopy] == -1)
         {
-          v26 = v6;
+          date3 = dateCopy;
         }
 
         else
         {
-          v24 = [v16 dateInterval];
-          v25 = [v24 startDate];
-          v26 = [v25 date];
+          dateInterval3 = [v16 dateInterval];
+          startDate2 = [dateInterval3 startDate];
+          date3 = [startDate2 date];
         }
 
-        v27 = [MEMORY[0x1E695DF70] array];
-        if ([v26 compare:v6] == 1)
+        array2 = [MEMORY[0x1E695DF70] array];
+        if ([date3 compare:dateCopy] == 1)
         {
-          v28 = [(RTPredictedContextResult *)self unknownPredictedContextFromStart:v6 end:v26];
-          [v27 addObject:v28];
+          v28 = [(RTPredictedContextResult *)self unknownPredictedContextFromStart:dateCopy end:date3];
+          [array2 addObject:v28];
         }
 
-        v47 = v26;
-        [v27 addObject:v16];
-        v29 = [v16 dateInterval];
-        v30 = [v29 endDate];
-        v31 = [v30 date];
+        v47 = date3;
+        [array2 addObject:v16];
+        dateInterval4 = [v16 dateInterval];
+        endDate2 = [dateInterval4 endDate];
+        date4 = [endDate2 date];
 
-        v32 = [(RTPredictedContextResult *)self generateSequencesFromDate:v31 toDate:v44];
+        v32 = [(RTPredictedContextResult *)self generateSequencesFromDate:date4 toDate:v44];
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
@@ -713,9 +713,9 @@ LABEL_31:
               }
 
               v37 = *(*(&v50 + 1) + 8 * j);
-              v38 = [v27 mutableCopy];
+              v38 = [array2 mutableCopy];
               [v38 addObjectsFromArray:v37];
-              [v12 addObject:v38];
+              [array addObject:v38];
             }
 
             v34 = [v32 countByEnumeratingWithState:&v50 objects:v59 count:16];
@@ -725,17 +725,17 @@ LABEL_31:
         }
 
         v14 = 1;
-        v6 = v45;
-        v13 = v43;
+        dateCopy = v45;
+        predictedContexts = v43;
       }
     }
 
-    v49 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    v49 = [predictedContexts countByEnumeratingWithState:&v54 objects:v60 count:16];
   }
 
   while (v49);
 
-  v7 = v44;
+  toDateCopy = v44;
   if ((v14 & 1) == 0)
   {
     goto LABEL_31;
@@ -745,16 +745,16 @@ LABEL_33:
 
   v41 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return array;
 }
 
-- (id)unknownPredictedContextFromStart:(id)a3 end:(id)a4
+- (id)unknownPredictedContextFromStart:(id)start end:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RTPredictedContextDate alloc] initWithDate:v6 confidenceInterval:120.0];
+  endCopy = end;
+  startCopy = start;
+  v7 = [[RTPredictedContextDate alloc] initWithDate:startCopy confidenceInterval:120.0];
 
-  v8 = [[RTPredictedContextDate alloc] initWithDate:v5 confidenceInterval:120.0];
+  v8 = [[RTPredictedContextDate alloc] initWithDate:endCopy confidenceInterval:120.0];
   v9 = [[RTPredictedContextDateInterval alloc] initWithStartDate:v7 endDate:v8];
   v10 = [RTPredictedContext alloc];
   v11 = [(RTPredictedContext *)v10 initWithPredictedContextDateInterval:v9 predictionSources:MEMORY[0x1E695E0F0] probability:1.0];
@@ -762,13 +762,13 @@ LABEL_33:
   return v11;
 }
 
-- (id)dateIntervalFromStart:(id)a3 end:(id)a4
+- (id)dateIntervalFromStart:(id)start end:(id)end
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RTPredictedContextDate alloc] initWithDate:v6 confidenceInterval:120.0];
+  endCopy = end;
+  startCopy = start;
+  v7 = [[RTPredictedContextDate alloc] initWithDate:startCopy confidenceInterval:120.0];
 
-  v8 = [[RTPredictedContextDate alloc] initWithDate:v5 confidenceInterval:120.0];
+  v8 = [[RTPredictedContextDate alloc] initWithDate:endCopy confidenceInterval:120.0];
   v9 = [[RTPredictedContextDateInterval alloc] initWithStartDate:v7 endDate:v8];
 
   return v9;
@@ -777,8 +777,8 @@ LABEL_33:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(RTPredictedContextResult *)self predictedContexts];
-  v4 = [v2 stringWithFormat:@"contexts, %lu", objc_msgSend(v3, "count")];
+  predictedContexts = [(RTPredictedContextResult *)self predictedContexts];
+  v4 = [v2 stringWithFormat:@"contexts, %lu", objc_msgSend(predictedContexts, "count")];
 
   return v4;
 }

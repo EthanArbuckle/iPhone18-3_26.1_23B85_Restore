@@ -8,37 +8,37 @@
 
 - (uint64_t)pk_isLAErrorUserCancel
 {
-  if ([a1 code] != -2)
+  if ([self code] != -2)
   {
     return 0;
   }
 
-  v2 = [a1 domain];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E696EE30]];
+  domain = [self domain];
+  v3 = [domain isEqualToString:*MEMORY[0x1E696EE30]];
 
   return v3;
 }
 
 - (uint64_t)pk_isLAErrorAuthenticationFailed
 {
-  if ([a1 code] != -1)
+  if ([self code] != -1)
   {
     return 0;
   }
 
-  v3 = [a1 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E696EE30]];
+  domain = [self domain];
+  v4 = [domain isEqualToString:*MEMORY[0x1E696EE30]];
 
   return v4;
 }
 
 - (uint64_t)pk_shouldSuppressAfterAuthenticationPolicyWasLocationBased:()PKLAErrorExtensions
 {
-  result = [a1 pk_isLAErrorUserCancel];
+  result = [self pk_isLAErrorUserCancel];
   if ((result & 1) == 0 && a3)
   {
 
-    return [a1 pk_isLAErrorAuthenticationFailed];
+    return [self pk_isLAErrorAuthenticationFailed];
   }
 
   return result;

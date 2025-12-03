@@ -5,22 +5,22 @@
 - (UIVideoEditorController)init;
 - (id)_createInitialController;
 - (id)_properties;
-- (id)_valueForProperty:(id)a3;
+- (id)_valueForProperty:(id)property;
 - (void)_autoDismiss;
 - (void)_initializeProperties;
 - (void)_removeAllChildren;
-- (void)_setProperties:(id)a3;
-- (void)_setValue:(id)a3 forProperty:(id)a4;
+- (void)_setProperties:(id)properties;
+- (void)_setValue:(id)value forProperty:(id)property;
 - (void)_setupControllers;
-- (void)editVideoViewController:(id)a3 didFailWithError:(id)a4;
-- (void)editVideoViewController:(id)a3 didTrimVideoWithOptions:(id)a4;
-- (void)editVideoViewControllerDidCancel:(id)a3;
+- (void)editVideoViewController:(id)controller didFailWithError:(id)error;
+- (void)editVideoViewController:(id)controller didTrimVideoWithOptions:(id)options;
+- (void)editVideoViewControllerDidCancel:(id)cancel;
 - (void)setVideoMaximumDuration:(NSTimeInterval)videoMaximumDuration;
 - (void)setVideoPath:(NSString *)videoPath;
 - (void)setVideoQuality:(UIImagePickerControllerQualityType)videoQuality;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
 @end
 
@@ -65,9 +65,9 @@
   [(UIViewController *)&v3 viewWillUnload];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ((*&self->_flags & 3) == 0)
   {
     *&self->_flags = *&self->_flags & 0xF8 | 1;
@@ -91,25 +91,25 @@
 
   v7.receiver = self;
   v7.super_class = UIVideoEditorController;
-  [(UINavigationController *)&v7 viewWillAppear:v3];
+  [(UINavigationController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (([UIApp _viewControllerBasedStatusBarAppearance] & 1) == 0)
   {
-    v5 = [(UINavigationController *)self viewControllers];
-    if (![(UIViewController *)self presentedViewController]&& [(NSArray *)v5 count]>= 2)
+    viewControllers = [(UINavigationController *)self viewControllers];
+    if (![(UIViewController *)self presentedViewController]&& [(NSArray *)viewControllers count]>= 2)
     {
       *&self->_flags |= 4u;
       v6 = [__UIStatusBarManagerForWindow(-[UINavigationController _window](self "_window"))];
-      v7 = [-[NSArray lastObject](v5 "lastObject")];
+      v7 = [-[NSArray lastObject](viewControllers "lastObject")];
       previousStatusBarStyle = self->_previousStatusBarStyle;
       v9 = previousStatusBarStyle != -1 && v6 == v7;
       if (v9 && v6 != previousStatusBarStyle)
       {
-        if (v3)
+        if (disappearCopy)
         {
           [UITransitionView defaultDurationForTransition:2];
           *&v11 = v11;
@@ -129,12 +129,12 @@
 
   v13.receiver = self;
   v13.super_class = UIVideoEditorController;
-  [(UINavigationController *)&v13 viewWillDisappear:v3];
+  [(UINavigationController *)&v13 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (![(UIViewController *)self parentViewController]&& ![(UIViewController *)self presentingViewController])
   {
     *&self->_flags &= ~1u;
@@ -144,7 +144,7 @@
   *&self->_flags &= ~4u;
   v5.receiver = self;
   v5.super_class = UIVideoEditorController;
-  [(UINavigationController *)&v5 viewDidDisappear:v3];
+  [(UINavigationController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (void)_removeAllChildren
@@ -159,9 +159,9 @@
     }
 
     [(UINavigationController *)self setViewControllers:MEMORY[0x1E695E0F0]];
-    v3 = [(UIViewController *)self view];
+    view = [(UIViewController *)self view];
 
-    [(UIView *)v3 layoutSubviews];
+    [(UIView *)view layoutSubviews];
   }
 }
 
@@ -174,10 +174,10 @@
 
 - (void)_setupControllers
 {
-  v3 = [(UIVideoEditorController *)self _createInitialController];
-  if (v3)
+  _createInitialController = [(UIVideoEditorController *)self _createInitialController];
+  if (_createInitialController)
   {
-    v4 = v3;
+    v4 = _createInitialController;
     [(UIVideoEditorController *)self _removeAllChildren];
     -[UINavigationController setNavigationBarHidden:animated:](self, "setNavigationBarHidden:animated:", [v4 _displaysFullScreen], 0);
     [(UINavigationController *)self pushViewController:v4 animated:0];
@@ -186,19 +186,19 @@
 
 - (void)_autoDismiss
 {
-  v2 = [(UIViewController *)self presentingViewController];
+  presentingViewController = [(UIViewController *)self presentingViewController];
 
-  [(UIViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+  [(UIViewController *)presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)editVideoViewControllerDidCancel:(id)a3
+- (void)editVideoViewControllerDidCancel:(id)cancel
 {
   [(UINavigationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(UINavigationController *)self delegate];
+    delegate = [(UINavigationController *)self delegate];
 
-    [v4 videoEditorControllerDidCancel:self];
+    [delegate videoEditorControllerDidCancel:self];
   }
 
   else
@@ -208,43 +208,43 @@
   }
 }
 
-- (void)editVideoViewController:(id)a3 didTrimVideoWithOptions:(id)a4
+- (void)editVideoViewController:(id)controller didTrimVideoWithOptions:(id)options
 {
-  v7 = [a4 objectForKey:@"UIImagePickerControllerMediaURL"];
+  v7 = [options objectForKey:@"UIImagePickerControllerMediaURL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 isFileURL];
-    if (v8)
+    isFileURL = [v7 isFileURL];
+    if (isFileURL)
     {
-      v9 = [v7 path];
-      LOBYTE(v8) = 1;
+      path = [v7 path];
+      LOBYTE(isFileURL) = 1;
     }
 
     else
     {
-      v9 = 0;
+      path = 0;
     }
   }
 
   else
   {
     objc_opt_class();
-    LOBYTE(v8) = objc_opt_isKindOfClass();
-    if (v8)
+    LOBYTE(isFileURL) = objc_opt_isKindOfClass();
+    if (isFileURL)
     {
-      v9 = v7;
+      path = v7;
     }
 
     else
     {
-      v9 = 0;
+      path = 0;
     }
   }
 
   if (v7)
   {
-    v10 = (v8 & (v9 == 0)) == 0;
+    v10 = (isFileURL & (path == 0)) == 0;
   }
 
   else
@@ -256,21 +256,21 @@
   {
 LABEL_12:
 
-    [(UIVideoEditorController *)self editVideoViewControllerDidCancel:a3];
+    [(UIVideoEditorController *)self editVideoViewControllerDidCancel:controller];
     return;
   }
 
   [(UINavigationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(UINavigationController *)self delegate];
+    delegate = [(UINavigationController *)self delegate];
 
-    [v11 videoEditorController:self didTrimVideoWithOptions:a4];
+    [delegate videoEditorController:self didTrimVideoWithOptions:options];
   }
 
   else
   {
-    if (!v9)
+    if (!path)
     {
       goto LABEL_12;
     }
@@ -278,9 +278,9 @@ LABEL_12:
     [(UINavigationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(UINavigationController *)self delegate];
+      delegate2 = [(UINavigationController *)self delegate];
 
-      [v12 videoEditorController:self didSaveEditedVideoToPath:v9];
+      [delegate2 videoEditorController:self didSaveEditedVideoToPath:path];
     }
 
     else
@@ -291,14 +291,14 @@ LABEL_12:
   }
 }
 
-- (void)editVideoViewController:(id)a3 didFailWithError:(id)a4
+- (void)editVideoViewController:(id)controller didFailWithError:(id)error
 {
   [(UINavigationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UINavigationController *)self delegate];
+    delegate = [(UINavigationController *)self delegate];
 
-    [v6 videoEditorController:self didFailWithError:a4];
+    [delegate videoEditorController:self didFailWithError:error];
   }
 
   else
@@ -310,8 +310,8 @@ LABEL_12:
 
 - (NSString)videoPath
 {
-  v3 = [(UIVideoEditorController *)self _videoURL];
-  if (![v3 isFileURL] || (result = objc_msgSend(v3, "path")) == 0)
+  _videoURL = [(UIVideoEditorController *)self _videoURL];
+  if (![_videoURL isFileURL] || (result = objc_msgSend(_videoURL, "path")) == 0)
   {
 
     return [(UIVideoEditorController *)self _valueForProperty:@"_UIVideoEditorControllerVideoPath"];
@@ -349,13 +349,13 @@ LABEL_12:
   [(UIVideoEditorController *)self _setValue:v4 forProperty:@"UIImagePickerControllerVideoQuality"];
 }
 
-- (void)_setProperties:(id)a3
+- (void)_setProperties:(id)properties
 {
   properties = self->_properties;
-  if (properties != a3)
+  if (properties != properties)
   {
 
-    self->_properties = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:a3];
+    self->_properties = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:properties];
   }
 }
 
@@ -384,16 +384,16 @@ LABEL_12:
   return v4;
 }
 
-- (void)_setValue:(id)a3 forProperty:(id)a4
+- (void)_setValue:(id)value forProperty:(id)property
 {
   properties = self->_properties;
   if (properties)
   {
-    if (a3)
+    if (value)
     {
 LABEL_3:
 
-      [(NSMutableDictionary *)properties setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)properties setObject:value forKey:property];
       return;
     }
   }
@@ -402,16 +402,16 @@ LABEL_3:
   {
     [(UIVideoEditorController *)self _initializeProperties];
     properties = self->_properties;
-    if (a3)
+    if (value)
     {
       goto LABEL_3;
     }
   }
 
-  [(NSMutableDictionary *)properties removeObjectForKey:a4];
+  [(NSMutableDictionary *)properties removeObjectForKey:property];
 }
 
-- (id)_valueForProperty:(id)a3
+- (id)_valueForProperty:(id)property
 {
   properties = self->_properties;
   if (!properties)
@@ -420,7 +420,7 @@ LABEL_3:
     properties = self->_properties;
   }
 
-  return [(NSMutableDictionary *)properties objectForKey:a3];
+  return [(NSMutableDictionary *)properties objectForKey:property];
 }
 
 @end

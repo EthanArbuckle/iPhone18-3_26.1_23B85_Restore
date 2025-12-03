@@ -10,7 +10,7 @@
 
 - (int64_t)accountType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASSourceFlowResultObjc.accountTypeObjc.getter();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (FAFamilyMember)familyMember
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASSourceFlowResultObjc.familyMember.getter();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (ACAccount)personalAccount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASSourceFlowResultObjc.personalAccount.getter();
 
   return v3;
@@ -34,7 +34,7 @@
 
 - (NSDictionary)authResults
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASSourceFlowResultObjc.authResults.getter();
 
   return v3;

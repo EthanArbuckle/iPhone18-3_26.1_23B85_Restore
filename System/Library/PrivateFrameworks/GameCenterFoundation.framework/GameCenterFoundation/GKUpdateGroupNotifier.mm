@@ -1,11 +1,11 @@
 @interface GKUpdateGroupNotifier
 - (GKUpdateGroupNotifier)init;
 - (GKUpdateGroupNotifier)retain;
-- (void)addUpdate:(id)a3 error:(id)a4;
-- (void)addUpdatesFromGroup:(id)a3;
+- (void)addUpdate:(id)update error:(id)error;
+- (void)addUpdatesFromGroup:(id)group;
 - (void)dealloc;
 - (void)release;
-- (void)updateError:(id)a3;
+- (void)updateError:(id)error;
 @end
 
 @implementation GKUpdateGroupNotifier
@@ -65,9 +65,9 @@
   [(NSLock *)v3 unlock];
 }
 
-- (void)updateError:(id)a3
+- (void)updateError:(id)error
 {
-  if (a3)
+  if (error)
   {
     if (!self->_error)
     {
@@ -76,19 +76,19 @@
       {
         Weak = objc_loadWeak(&self->_group);
 
-        [Weak setError:a3];
+        [Weak setError:error];
       }
     }
   }
 }
 
-- (void)addUpdate:(id)a3 error:(id)a4
+- (void)addUpdate:(id)update error:(id)error
 {
-  if (!a4 || self->_error)
+  if (!error || self->_error)
   {
     [(NSLock *)self->_lock lock];
     v6 = [(GKUpdateGroupNotifier *)self retainCount];
-    v11 = _Block_copy(a3);
+    v11 = _Block_copy(update);
     [(NSMutableArray *)self->_updateQueue addObject:?];
     v7 = [(GKUpdateGroupNotifier *)self retainCount];
     [(NSLock *)self->_lock unlock];
@@ -104,19 +104,19 @@
   else
   {
 
-    [(GKUpdateGroupNotifier *)self updateError:a4];
+    [(GKUpdateGroupNotifier *)self updateError:error];
   }
 }
 
-- (void)addUpdatesFromGroup:(id)a3
+- (void)addUpdatesFromGroup:(id)group
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __45__GKUpdateGroupNotifier_addUpdatesFromGroup___block_invoke;
   v3[3] = &unk_2785DE138;
-  v3[4] = a3;
+  v3[4] = group;
   v3[5] = self;
-  [a3 join:v3];
+  [group join:v3];
 }
 
 uint64_t __45__GKUpdateGroupNotifier_addUpdatesFromGroup___block_invoke(uint64_t a1)

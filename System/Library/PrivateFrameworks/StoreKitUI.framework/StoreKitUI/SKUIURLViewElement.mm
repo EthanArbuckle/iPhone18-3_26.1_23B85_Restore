@@ -1,14 +1,14 @@
 @interface SKUIURLViewElement
-- (SKUIURLViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIURLViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUIURLViewElement
 
-- (SKUIURLViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIURLViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIURLViewElement initWithDOMElement:parent:elementFactory:];
@@ -16,20 +16,20 @@
 
   v18.receiver = self;
   v18.super_class = SKUIURLViewElement;
-  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v18 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 textContent];
-    if ([v12 length])
+    textContent = [elementCopy textContent];
+    if ([textContent length])
     {
-      v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v14 = [v12 stringByTrimmingCharactersInSet:v13];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      v14 = [textContent stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v15 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v14];
       url = v11->_url;
       v11->_url = v15;
 
-      v12 = v14;
+      textContent = v14;
     }
   }
 

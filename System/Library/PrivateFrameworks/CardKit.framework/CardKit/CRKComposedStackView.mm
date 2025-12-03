@@ -1,22 +1,22 @@
 @interface CRKComposedStackView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CRKComposedStackView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CRKComposedStackView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)templatedContentMargins;
 - (void)_updateLayout;
-- (void)addCardSectionSubview:(id)a3 withKeyline:(int64_t)a4;
-- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)a3;
+- (void)addCardSectionSubview:(id)subview withKeyline:(int64_t)keyline;
+- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy;
 - (void)layoutSubviews;
-- (void)setCardSectionSubviews:(id)a3;
-- (void)triggerLayoutAnimated:(BOOL)a3 completion:(id)a4;
+- (void)setCardSectionSubviews:(id)subviews;
+- (void)triggerLayoutAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation CRKComposedStackView
 
-- (CRKComposedStackView)initWithFrame:(CGRect)a3
+- (CRKComposedStackView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CRKComposedStackView;
-  v3 = [(CRKComposedView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRKComposedView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -35,17 +35,17 @@
   [(CRKComposedStackView *)self _updateLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CRKComposedView *)self cardSectionSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  cardSectionSubviews = [(CRKComposedView *)self cardSectionSubviews];
+  v6 = [cardSectionSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -57,14 +57,14 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cardSectionSubviews);
         }
 
         [*(*(&v14 + 1) + 8 * i) sizeThatFits:{width, height}];
         v9 = v9 + v11;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [cardSectionSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -109,14 +109,14 @@
   v16 = 0x3FF0000000000000;
   if ([(NSMutableArray *)self->_keylines count])
   {
-    v4 = [(NSMutableArray *)self->_keylines firstObject];
-    [v4 sizeThatFits:{v10[6], v10[7]}];
+    firstObject = [(NSMutableArray *)self->_keylines firstObject];
+    [firstObject sizeThatFits:{v10[6], v10[7]}];
     v6 = v5;
 
     *(v10 + 7) = v6;
   }
 
-  v7 = [(CRKComposedView *)self cardSectionSubviews];
+  cardSectionSubviews = [(CRKComposedView *)self cardSectionSubviews];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__CRKComposedStackView__updateLayout__block_invoke;
@@ -125,7 +125,7 @@
   v8[5] = v17;
   *&v8[7] = Width;
   v8[6] = &v9;
-  [v7 enumerateObjectsUsingBlock:v8];
+  [cardSectionSubviews enumerateObjectsUsingBlock:v8];
 
   _Block_object_dispose(&v9, 8);
   _Block_object_dispose(v17, 8);
@@ -150,20 +150,20 @@ void __37__CRKComposedStackView__updateLayout__block_invoke(uint64_t a1, void *a
   [v7 setHidden:{objc_msgSend(*(*(a1 + 32) + 424), "count") - 1 == a3}];
 }
 
-- (void)triggerLayoutAnimated:(BOOL)a3 completion:(id)a4
+- (void)triggerLayoutAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__CRKComposedStackView_triggerLayoutAnimated_completion___block_invoke;
   v11[3] = &unk_278DA34D8;
   v11[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v12 = v7;
   v8 = MEMORY[0x245D2D520](v11);
   v9 = v8;
-  if (v4)
+  if (animatedCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -193,11 +193,11 @@ uint64_t __57__CRKComposedStackView_triggerLayoutAnimated_completion___block_inv
   return result;
 }
 
-- (void)setCardSectionSubviews:(id)a3
+- (void)setCardSectionSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(CRKComposedView *)self cardSectionSubviews];
-  if (v5 != v4)
+  subviewsCopy = subviews;
+  cardSectionSubviews = [(CRKComposedView *)self cardSectionSubviews];
+  if (cardSectionSubviews != subviewsCopy)
   {
     keylines = self->_keylines;
     v12[0] = MEMORY[0x277D85DD0];
@@ -205,9 +205,9 @@ uint64_t __57__CRKComposedStackView_triggerLayoutAnimated_completion___block_inv
     v12[2] = __47__CRKComposedStackView_setCardSectionSubviews___block_invoke;
     v12[3] = &unk_278DA3500;
     v12[4] = self;
-    v7 = v4;
+    v7 = subviewsCopy;
     v13 = v7;
-    v14 = v5;
+    v14 = cardSectionSubviews;
     v8 = [(NSMutableArray *)keylines sortedArrayUsingComparator:v12];
     v9 = [v8 mutableCopy];
     v10 = self->_keylines;
@@ -241,31 +241,31 @@ uint64_t __47__CRKComposedStackView_setCardSectionSubviews___block_invoke(uint64
   return v17;
 }
 
-- (void)addCardSectionSubview:(id)a3 withKeyline:(int64_t)a4
+- (void)addCardSectionSubview:(id)subview withKeyline:(int64_t)keyline
 {
-  v6 = a3;
+  subviewCopy = subview;
   v10.receiver = self;
   v10.super_class = CRKComposedStackView;
-  [(CRKComposedView *)&v10 addCardSectionSubview:v6 withKeyline:a4];
-  if (v6)
+  [(CRKComposedView *)&v10 addCardSectionSubview:subviewCopy withKeyline:keyline];
+  if (subviewCopy)
   {
-    v7 = [v6 traitCollection];
-    v8 = [v7 userInterfaceStyle] == 2;
+    traitCollection = [subviewCopy traitCollection];
+    v8 = [traitCollection userInterfaceStyle] == 2;
 
-    v9 = [[CRKKeyline alloc] initWithType:a4 direction:self->_direction - 3 < 0xFFFFFFFFFFFFFFFELL visualEffectStyle:v8];
+    v9 = [[CRKKeyline alloc] initWithType:keyline direction:self->_direction - 3 < 0xFFFFFFFFFFFFFFFELL visualEffectStyle:v8];
     [(NSMutableArray *)self->_keylines addObject:v9];
     [(CRKComposedStackView *)self addSubview:v9];
     [(CRKComposedStackView *)self setNeedsLayout];
   }
 }
 
-- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)a3
+- (void)cardSectionSubviewWantsToBeRemovedFromHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  if (v4)
+  hierarchyCopy = hierarchy;
+  if (hierarchyCopy)
   {
-    v5 = [(CRKComposedView *)self cardSectionSubviews];
-    v6 = [v5 indexOfObject:v4];
+    cardSectionSubviews = [(CRKComposedView *)self cardSectionSubviews];
+    v6 = [cardSectionSubviews indexOfObject:hierarchyCopy];
 
     v7 = [(NSMutableArray *)self->_keylines objectAtIndex:v6];
     [(NSMutableArray *)self->_keylines removeObject:v7];
@@ -275,7 +275,7 @@ uint64_t __47__CRKComposedStackView_setCardSectionSubviews___block_invoke(uint64
 
   v8.receiver = self;
   v8.super_class = CRKComposedStackView;
-  [(CRKComposedView *)&v8 cardSectionSubviewWantsToBeRemovedFromHierarchy:v4];
+  [(CRKComposedView *)&v8 cardSectionSubviewWantsToBeRemovedFromHierarchy:hierarchyCopy];
 }
 
 - (UIEdgeInsets)templatedContentMargins

@@ -1,15 +1,15 @@
 @interface ADRequestDelayManager
-- (ADRequestDelayManager)initWithQueue:(id)a3;
+- (ADRequestDelayManager)initWithQueue:(id)queue;
 - (ADRequestDelayManagerDelegate)delegate;
 - (id)_delayedCommandHandlers;
 - (id)_delayedcontextCommandHandlers;
 - (void)_beginTimerForContextCommands;
 - (void)beginTimerForContextCommands;
-- (void)dequeueDelayedCommandsAndSend:(BOOL)a3 completion:(id)a4;
-- (void)interceptCommand:(id)a3 completion:(id)a4;
-- (void)releaseStoredContextCommandsAndSendCommands:(BOOL)a3;
+- (void)dequeueDelayedCommandsAndSend:(BOOL)send completion:(id)completion;
+- (void)interceptCommand:(id)command completion:(id)completion;
+- (void)releaseStoredContextCommandsAndSendCommands:(BOOL)commands;
 - (void)startDelaying;
-- (void)stopDelayingAndSendCommands:(BOOL)a3 completion:(id)a4;
+- (void)stopDelayingAndSendCommands:(BOOL)commands completion:(id)completion;
 @end
 
 @implementation ADRequestDelayManager
@@ -21,18 +21,18 @@
   return WeakRetained;
 }
 
-- (void)interceptCommand:(id)a3 completion:(id)a4
+- (void)interceptCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   if (qword_100590240 != -1)
   {
     dispatch_once(&qword_100590240, &stru_1005128E0);
   }
 
   v8 = qword_100590238;
-  v9 = [v6 groupIdentifier];
-  v10 = [v8 objectForKey:v9];
+  groupIdentifier = [commandCopy groupIdentifier];
+  v10 = [v8 objectForKey:groupIdentifier];
   if (!v10)
   {
 
@@ -40,10 +40,10 @@
   }
 
   v11 = v10;
-  v12 = [v6 groupIdentifier];
-  v13 = [v8 objectForKey:v12];
-  v14 = [v6 encodedClassName];
-  v15 = [v13 containsObject:v14];
+  groupIdentifier2 = [commandCopy groupIdentifier];
+  v13 = [v8 objectForKey:groupIdentifier2];
+  encodedClassName = [commandCopy encodedClassName];
+  v15 = [v13 containsObject:encodedClassName];
 
   if (!v15)
   {
@@ -54,8 +54,8 @@ LABEL_9:
     block[2] = sub_10012AF3C;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v19 = v6;
-    v20 = v7;
+    v19 = commandCopy;
+    v20 = completionCopy;
     dispatch_async(queue, block);
 
     goto LABEL_10;
@@ -67,18 +67,18 @@ LABEL_9:
     *buf = 136315394;
     v22 = "[ADRequestDelayManager interceptCommand:completion:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = commandCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Allowed command received, bypassing delay: %@", buf, 0x16u);
   }
 
-  (*(v7 + 2))(v7, 1);
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_10:
 }
 
 - (void)_beginTimerForContextCommands
 {
-  v3 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
-  v4 = [v3 count];
+  _delayedcontextCommandHandlers = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
+  v4 = [_delayedcontextCommandHandlers count];
 
   if (v4)
   {
@@ -130,79 +130,79 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)releaseStoredContextCommandsAndSendCommands:(BOOL)a3
+- (void)releaseStoredContextCommandsAndSendCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
+    _delayedcontextCommandHandlers = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
     v12 = 136315650;
     v13 = "[ADRequestDelayManager releaseStoredContextCommandsAndSendCommands:]";
     v14 = 2048;
-    v15 = [v7 count];
+    v15 = [_delayedcontextCommandHandlers count];
     v16 = 1024;
-    v17 = v3;
+    v17 = commandsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Releasing %lu delayed context commands sendCommands: %d", &v12, 0x1Cu);
   }
 
   while (1)
   {
-    v10 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
-    v11 = [v10 count];
+    _delayedcontextCommandHandlers2 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
+    v11 = [_delayedcontextCommandHandlers2 count];
 
     if (!v11)
     {
       break;
     }
 
-    v8 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
-    v9 = [v8 dequeueObject];
-    v9[2](v9, v3);
+    _delayedcontextCommandHandlers3 = [(ADRequestDelayManager *)self _delayedcontextCommandHandlers];
+    dequeueObject = [_delayedcontextCommandHandlers3 dequeueObject];
+    dequeueObject[2](dequeueObject, commandsCopy);
   }
 }
 
-- (void)dequeueDelayedCommandsAndSend:(BOOL)a3 completion:(id)a4
+- (void)dequeueDelayedCommandsAndSend:(BOOL)send completion:(id)completion
 {
-  v4 = a3;
-  v11 = a4;
+  sendCopy = send;
+  completionCopy = completion;
   while (1)
   {
-    v6 = [(ADRequestDelayManager *)self _delayedCommandHandlers];
-    v7 = [v6 count];
+    _delayedCommandHandlers = [(ADRequestDelayManager *)self _delayedCommandHandlers];
+    v7 = [_delayedCommandHandlers count];
 
     if (!v7)
     {
       break;
     }
 
-    v8 = [(ADRequestDelayManager *)self _delayedCommandHandlers];
-    v9 = [v8 dequeueObject];
+    _delayedCommandHandlers2 = [(ADRequestDelayManager *)self _delayedCommandHandlers];
+    dequeueObject = [_delayedCommandHandlers2 dequeueObject];
 
-    v9[2](v9, v4);
+    dequeueObject[2](dequeueObject, sendCopy);
   }
 
-  v10 = v11;
-  if (v11)
+  v10 = completionCopy;
+  if (completionCopy)
   {
-    (*(v11 + 2))(v11);
-    v10 = v11;
+    (*(completionCopy + 2))(completionCopy);
+    v10 = completionCopy;
   }
 }
 
-- (void)stopDelayingAndSendCommands:(BOOL)a3 completion:(id)a4
+- (void)stopDelayingAndSendCommands:(BOOL)commands completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10012B7B8;
   block[3] = &unk_10051D228;
-  v11 = a3;
+  commandsCopy = commands;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -247,16 +247,16 @@ LABEL_10:
   return delayedCommandHandlers;
 }
 
-- (ADRequestDelayManager)initWithQueue:(id)a3
+- (ADRequestDelayManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADRequestDelayManager;
   v6 = [(ADRequestDelayManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;

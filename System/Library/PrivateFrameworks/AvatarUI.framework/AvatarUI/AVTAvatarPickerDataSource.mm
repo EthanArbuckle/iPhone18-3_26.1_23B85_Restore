@@ -1,9 +1,9 @@
 @interface AVTAvatarPickerDataSource
-- (AVTAvatarPickerDataSource)initWithRecordDataSource:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
+- (AVTAvatarPickerDataSource)initWithRecordDataSource:(id)source environment:(id)environment allowAddItem:(BOOL)item;
 - (AVTAvatarStore)store;
 - (BOOL)canCreateMemoji;
-- (BOOL)isItemAtIndexAddItem:(int64_t)a3;
-- (id)itemAtIndex:(int64_t)a3;
+- (BOOL)isItemAtIndexAddItem:(int64_t)item;
+- (id)itemAtIndex:(int64_t)index;
 - (int64_t)indexOfAddItem;
 - (int64_t)numberOfItems;
 - (void)reloadModel;
@@ -11,19 +11,19 @@
 
 @implementation AVTAvatarPickerDataSource
 
-- (AVTAvatarPickerDataSource)initWithRecordDataSource:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
+- (AVTAvatarPickerDataSource)initWithRecordDataSource:(id)source environment:(id)environment allowAddItem:(BOOL)item
 {
-  v9 = a3;
-  v10 = a4;
+  sourceCopy = source;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = AVTAvatarPickerDataSource;
   v11 = [(AVTAvatarPickerDataSource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_recordDataSource, a3);
-    objc_storeStrong(&v12->_environment, a4);
-    v12->_allowAddItem = a5;
+    objc_storeStrong(&v11->_recordDataSource, source);
+    objc_storeStrong(&v12->_environment, environment);
+    v12->_allowAddItem = item;
   }
 
   return v12;
@@ -31,30 +31,30 @@
 
 - (AVTAvatarStore)store
 {
-  v2 = [(AVTAvatarPickerDataSource *)self recordDataSource];
-  v3 = [v2 recordStore];
+  recordDataSource = [(AVTAvatarPickerDataSource *)self recordDataSource];
+  recordStore = [recordDataSource recordStore];
 
-  return v3;
+  return recordStore;
 }
 
 - (BOOL)canCreateMemoji
 {
-  v3 = [(AVTAvatarPickerDataSource *)self allowAddItem];
-  if (v3)
+  allowAddItem = [(AVTAvatarPickerDataSource *)self allowAddItem];
+  if (allowAddItem)
   {
-    v4 = [(AVTAvatarPickerDataSource *)self recordDataSource];
-    v5 = [v4 recordStore];
-    v6 = [v5 canCreateAvatar];
+    recordDataSource = [(AVTAvatarPickerDataSource *)self recordDataSource];
+    recordStore = [recordDataSource recordStore];
+    canCreateAvatar = [recordStore canCreateAvatar];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(allowAddItem) = canCreateAvatar;
   }
 
-  return v3;
+  return allowAddItem;
 }
 
 - (void)reloadModel
 {
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(AVTAvatarPickerDataSource *)self canCreateMemoji])
   {
     v3 = [AVTCircularButton alloc];
@@ -63,8 +63,8 @@
     v5 = [[AVTAvatarListViewItem alloc] initWithView:v4];
     [(AVTAvatarPickerDataSource *)self setAddItem:v5];
 
-    v6 = [(AVTAvatarPickerDataSource *)self addItem];
-    [v16 addObject:v6];
+    addItem = [(AVTAvatarPickerDataSource *)self addItem];
+    [array addObject:addItem];
   }
 
   else
@@ -72,89 +72,89 @@
     [(AVTAvatarPickerDataSource *)self setAddItem:0];
   }
 
-  v7 = [(AVTAvatarPickerDataSource *)self recordDataSource];
-  objc_sync_enter(v7);
-  v8 = [(AVTAvatarPickerDataSource *)self recordDataSource];
-  v9 = [v8 numberOfRecords];
+  recordDataSource = [(AVTAvatarPickerDataSource *)self recordDataSource];
+  objc_sync_enter(recordDataSource);
+  recordDataSource2 = [(AVTAvatarPickerDataSource *)self recordDataSource];
+  numberOfRecords = [recordDataSource2 numberOfRecords];
 
-  if (v9 >= 1)
+  if (numberOfRecords >= 1)
   {
-    for (i = 0; i != v9; ++i)
+    for (i = 0; i != numberOfRecords; ++i)
     {
-      v11 = [(AVTAvatarPickerDataSource *)self recordDataSource];
-      v12 = [v11 recordAtIndex:i];
+      recordDataSource3 = [(AVTAvatarPickerDataSource *)self recordDataSource];
+      v12 = [recordDataSource3 recordAtIndex:i];
 
       v13 = [[AVTAvatarListRecordItem alloc] initWithAvatar:v12];
-      [v16 addObject:v13];
+      [array addObject:v13];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(recordDataSource);
 
-  v14 = [(AVTAvatarPickerDataSource *)self items];
-  objc_sync_enter(v14);
-  v15 = [v16 copy];
+  items = [(AVTAvatarPickerDataSource *)self items];
+  objc_sync_enter(items);
+  v15 = [array copy];
   [(AVTAvatarPickerDataSource *)self setItems:v15];
 
-  objc_sync_exit(v14);
+  objc_sync_exit(items);
 }
 
 - (int64_t)numberOfItems
 {
-  v2 = [(AVTAvatarPickerDataSource *)self items];
-  v3 = [v2 count];
+  items = [(AVTAvatarPickerDataSource *)self items];
+  v3 = [items count];
 
   return v3;
 }
 
-- (id)itemAtIndex:(int64_t)a3
+- (id)itemAtIndex:(int64_t)index
 {
-  v5 = [(AVTAvatarPickerDataSource *)self items];
-  v6 = [v5 count];
+  items = [(AVTAvatarPickerDataSource *)self items];
+  v6 = [items count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(AVTAvatarPickerDataSource *)self items];
-    v8 = [v7 objectAtIndex:a3];
+    items2 = [(AVTAvatarPickerDataSource *)self items];
+    v8 = [items2 objectAtIndex:index];
   }
 
   return v8;
 }
 
-- (BOOL)isItemAtIndexAddItem:(int64_t)a3
+- (BOOL)isItemAtIndexAddItem:(int64_t)item
 {
-  v5 = [(AVTAvatarPickerDataSource *)self items];
-  v6 = [v5 count];
+  items = [(AVTAvatarPickerDataSource *)self items];
+  v6 = [items count];
 
-  if (v6 <= a3)
+  if (v6 <= item)
   {
     return 0;
   }
 
-  v7 = [(AVTAvatarPickerDataSource *)self itemAtIndex:a3];
-  v8 = [(AVTAvatarPickerDataSource *)self addItem];
-  v9 = v7 == v8;
+  v7 = [(AVTAvatarPickerDataSource *)self itemAtIndex:item];
+  addItem = [(AVTAvatarPickerDataSource *)self addItem];
+  v9 = v7 == addItem;
 
   return v9;
 }
 
 - (int64_t)indexOfAddItem
 {
-  v3 = [(AVTAvatarPickerDataSource *)self addItem];
+  addItem = [(AVTAvatarPickerDataSource *)self addItem];
 
-  if (!v3)
+  if (!addItem)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v4 = [(AVTAvatarPickerDataSource *)self items];
-  v5 = [(AVTAvatarPickerDataSource *)self addItem];
-  v6 = [v4 indexOfObject:v5];
+  items = [(AVTAvatarPickerDataSource *)self items];
+  addItem2 = [(AVTAvatarPickerDataSource *)self addItem];
+  v6 = [items indexOfObject:addItem2];
 
   return v6;
 }

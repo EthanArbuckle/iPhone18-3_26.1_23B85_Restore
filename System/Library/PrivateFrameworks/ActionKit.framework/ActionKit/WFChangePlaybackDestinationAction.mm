@@ -1,21 +1,21 @@
 @interface WFChangePlaybackDestinationAction
-- (id)errorFromRoutePickerError:(id)a3;
-- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)a3;
+- (id)errorFromRoutePickerError:(id)error;
+- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)code;
 - (id)routeDescriptor;
 - (int64_t)operation;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFChangePlaybackDestinationAction
 
-- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)a3
+- (id)errorUserInfoForRoutePickerErrorCode:(int64_t)code
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  if ((a3 - 4) >= 5)
+  if ((code - 4) >= 5)
   {
-    if (a3 >= 3)
+    if (code >= 3)
     {
-      if (a3 != 3)
+      if (code != 3)
       {
         goto LABEL_8;
       }
@@ -23,9 +23,9 @@
       v20[0] = *MEMORY[0x277CCA470];
       v15 = MEMORY[0x277CCACA8];
       v6 = WFLocalizedString(@"Could Not Set Playback Destination to “%@”");
-      v7 = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
-      v8 = [v7 routeName];
-      v9 = [v15 localizedStringWithFormat:v6, v8];
+      routeDescriptor = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
+      routeName = [routeDescriptor routeName];
+      v9 = [v15 localizedStringWithFormat:v6, routeName];
       v21[0] = v9;
       v20[1] = *MEMORY[0x277CCA450];
       v10 = WFLocalizedString(@"It took too long to set the destination to the specified device.");
@@ -40,9 +40,9 @@
       v22[0] = *MEMORY[0x277CCA470];
       v14 = MEMORY[0x277CCACA8];
       v6 = WFLocalizedString(@"Could Not Find “%@”");
-      v7 = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
-      v8 = [v7 routeName];
-      v9 = [v14 localizedStringWithFormat:v6, v8];
+      routeDescriptor = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
+      routeName = [routeDescriptor routeName];
+      v9 = [v14 localizedStringWithFormat:v6, routeName];
       v23[0] = v9;
       v22[1] = *MEMORY[0x277CCA450];
       v10 = WFLocalizedString(@"Set Playback Destination failed because the device could not be found.");
@@ -58,9 +58,9 @@
     v18[0] = *MEMORY[0x277CCA470];
     v5 = MEMORY[0x277CCACA8];
     v6 = WFLocalizedString(@"Failed to Set Playback Destination to “%@”");
-    v7 = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
-    v8 = [v7 routeName];
-    v9 = [v5 localizedStringWithFormat:v6, v8, v18[0]];
+    routeDescriptor = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
+    routeName = [routeDescriptor routeName];
+    v9 = [v5 localizedStringWithFormat:v6, routeName, v18[0]];
     v19[0] = v9;
     v18[1] = *MEMORY[0x277CCA450];
     v10 = WFLocalizedString(@"The playback destination could not be set.");
@@ -78,15 +78,15 @@ LABEL_8:
   return v3;
 }
 
-- (id)errorFromRoutePickerError:(id)a3
+- (id)errorFromRoutePickerError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:@"WFMediaRoutePickerErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:@"WFMediaRoutePickerErrorDomain"];
 
   if ((v6 & 1) == 0)
   {
-    v10 = [v4 domain];
+    domain2 = [errorCopy domain];
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
@@ -106,23 +106,23 @@ LABEL_8:
     _Block_object_dispose(&v18, 8);
     if (!v11)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMPAVRoutingControllerErrorDomain(void)"];
-      [v15 handleFailureInFunction:v16 file:@"WFChangePlaybackDestinationAction.m" lineNumber:18 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v16 file:@"WFChangePlaybackDestinationAction.m" lineNumber:18 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
-    if ([v10 isEqualToString:*v11])
+    if ([domain2 isEqualToString:*v11])
     {
-      v12 = [v4 code];
+      code = [errorCopy code];
 
-      if (v12 == 6)
+      if (code == 6)
       {
-        v13 = [MEMORY[0x277CCA9B8] userCancelledError];
+        userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
 LABEL_11:
-        v9 = v13;
+        v9 = userCancelledError;
         goto LABEL_12;
       }
     }
@@ -131,13 +131,13 @@ LABEL_11:
     {
     }
 
-    v13 = v4;
+    userCancelledError = errorCopy;
     goto LABEL_11;
   }
 
-  v7 = -[WFChangePlaybackDestinationAction errorUserInfoForRoutePickerErrorCode:](self, "errorUserInfoForRoutePickerErrorCode:", [v4 code]);
+  v7 = -[WFChangePlaybackDestinationAction errorUserInfoForRoutePickerErrorCode:](self, "errorUserInfoForRoutePickerErrorCode:", [errorCopy code]);
   v8 = [v7 mutableCopy];
-  [v8 setObject:v4 forKey:*MEMORY[0x277CCA7E8]];
+  [v8 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   v9 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7CB30] code:5 userInfo:v8];
 
 LABEL_12:
@@ -145,10 +145,10 @@ LABEL_12:
   return v9;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = objc_opt_new();
-  v5 = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
+  routeDescriptor = [(WFChangePlaybackDestinationAction *)self routeDescriptor];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__WFChangePlaybackDestinationAction_runAsynchronouslyWithInput___block_invoke;
@@ -156,7 +156,7 @@ LABEL_12:
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  [v6 findRouteMatchingDescriptor:v5 timeout:v7 completionHandler:15.0];
+  [v6 findRouteMatchingDescriptor:routeDescriptor timeout:v7 completionHandler:15.0];
 }
 
 void __64__WFChangePlaybackDestinationAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, uint64_t a3)

@@ -1,7 +1,7 @@
 @interface PLDeviceRestoreMigrationPostProcessingSupport
-+ (BOOL)_writeTokenToPath:(id)a3 withInfo:(id)a4 allowOverwrite:(BOOL)a5 error:(id *)a6;
-+ (BOOL)createForegroundRestoreFromCloudBackupCompleteTokenWithPathManager:(id)a3 error:(id *)a4;
-+ (id)_readTokenAtPath:(id)a3 allowNotExists:(BOOL)a4 error:(id *)a5;
++ (BOOL)_writeTokenToPath:(id)path withInfo:(id)info allowOverwrite:(BOOL)overwrite error:(id *)error;
++ (BOOL)createForegroundRestoreFromCloudBackupCompleteTokenWithPathManager:(id)manager error:(id *)error;
++ (id)_readTokenAtPath:(id)path allowNotExists:(BOOL)exists error:(id *)error;
 - (BOOL)foregroundRestoreFromCloudBackupCompleteTokenExists;
 - (BOOL)isBackgroundRestorePostProcessingInProgressTokenValid;
 - (BOOL)isModelMigrationRestorePostProcessingComplete;
@@ -9,7 +9,7 @@
 - (BOOL)writeBackgroundRestorePostProcessingCompleteAndArchiveTokens;
 - (BOOL)writeBackgroundRestorePostProcessingInProgressToken;
 - (BOOL)writeModelMigrationRestorePostProcessingCompleteToken;
-- (PLDeviceRestoreMigrationPostProcessingSupport)initWithModelMigrator:(id)a3;
+- (PLDeviceRestoreMigrationPostProcessingSupport)initWithModelMigrator:(id)migrator;
 @end
 
 @implementation PLDeviceRestoreMigrationPostProcessingSupport
@@ -22,7 +22,7 @@
   v9 = 0;
   if ([(PLPhotoLibraryPathManager *)self->_pathManager isDeviceRestoreSupported])
   {
-    v5 = [(PLPhotoLibraryPathManager *)self->_pathManager modelRestorePostProcessingCompleteTokenPath];
+    modelRestorePostProcessingCompleteTokenPath = [(PLPhotoLibraryPathManager *)self->_pathManager modelRestorePostProcessingCompleteTokenPath];
     PLSafeRunWithUnfairLock();
   }
 
@@ -39,25 +39,25 @@ void __94__PLDeviceRestoreMigrationPostProcessingSupport_isModelMigrationRestore
 
 - (BOOL)writeModelMigrationRestorePostProcessingCompleteToken
 {
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager modelRestorePostProcessingCompleteTokenPath];
+  modelRestorePostProcessingCompleteTokenPath = [(PLPhotoLibraryPathManager *)self->_pathManager modelRestorePostProcessingCompleteTokenPath];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_modelMigrator);
-  v5 = [WeakRetained deviceRestoreMigrationSupport];
-  v6 = [v5 restoreTypeDescription];
-  v7 = v6;
+  deviceRestoreMigrationSupport = [WeakRetained deviceRestoreMigrationSupport];
+  restoreTypeDescription = [deviceRestoreMigrationSupport restoreTypeDescription];
+  v7 = restoreTypeDescription;
   v8 = @"error";
-  if (v6)
+  if (restoreTypeDescription)
   {
-    v8 = v6;
+    v8 = restoreTypeDescription;
   }
 
   v9 = v8;
 
   v12 = v9;
-  v13 = v3;
+  v13 = modelRestorePostProcessingCompleteTokenPath;
   PLSafeRunWithUnfairLock();
   v10 = *(v15 + 24);
 
@@ -113,26 +113,26 @@ void __102__PLDeviceRestoreMigrationPostProcessingSupport_writeModelMigrationRes
 
 - (BOOL)writeBackgroundRestorePostProcessingCompleteAndArchiveTokens
 {
-  v2 = self;
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
-  v4 = [(PLPhotoLibraryPathManager *)v2->_pathManager cloudRestoreBackgroundPhaseInProgressTokenPath];
-  v5 = [(PLPhotoLibraryPathManager *)v2->_pathManager cloudRestoreCompleteTokenPath];
-  v6 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
-  v7 = [v3 stringByAppendingFormat:@"_%@", v6];
+  selfCopy = self;
+  cloudRestoreForegroundPhaseCompleteTokenPath = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
+  cloudRestoreBackgroundPhaseInProgressTokenPath = [(PLPhotoLibraryPathManager *)selfCopy->_pathManager cloudRestoreBackgroundPhaseInProgressTokenPath];
+  cloudRestoreCompleteTokenPath = [(PLPhotoLibraryPathManager *)selfCopy->_pathManager cloudRestoreCompleteTokenPath];
+  currentBuildVersionString = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+  v7 = [cloudRestoreForegroundPhaseCompleteTokenPath stringByAppendingFormat:@"_%@", currentBuildVersionString];
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 1;
-  v9 = v3;
+  v9 = cloudRestoreForegroundPhaseCompleteTokenPath;
   v10 = v7;
-  v11 = v4;
-  v12 = v5;
+  v11 = cloudRestoreBackgroundPhaseInProgressTokenPath;
+  v12 = cloudRestoreCompleteTokenPath;
   PLSafeRunWithUnfairLock();
-  LOBYTE(v2) = *(v14 + 24);
+  LOBYTE(selfCopy) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __109__PLDeviceRestoreMigrationPostProcessingSupport_writeBackgroundRestorePostProcessingCompleteAndArchiveTokens__block_invoke(void *a1)
@@ -431,19 +431,19 @@ void __102__PLDeviceRestoreMigrationPostProcessingSupport_isBackgroundRestorePos
 
 - (BOOL)needsToPrepareForBackgroundRestore
 {
-  v2 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
-  v5 = [(PLPhotoLibraryPathManager *)v2->_pathManager cloudRestoreCompleteTokenPath];
-  v6 = v3;
+  cloudRestoreForegroundPhaseCompleteTokenPath = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
+  cloudRestoreCompleteTokenPath = [(PLPhotoLibraryPathManager *)selfCopy->_pathManager cloudRestoreCompleteTokenPath];
+  v6 = cloudRestoreForegroundPhaseCompleteTokenPath;
   PLSafeRunWithUnfairLock();
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
 
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __83__PLDeviceRestoreMigrationPostProcessingSupport_needsToPrepareForBackgroundRestore__block_invoke(void *a1)
@@ -461,7 +461,7 @@ void __83__PLDeviceRestoreMigrationPostProcessingSupport_needsToPrepareForBackgr
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v4 = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
+  cloudRestoreForegroundPhaseCompleteTokenPath = [(PLPhotoLibraryPathManager *)self->_pathManager cloudRestoreForegroundPhaseCompleteTokenPath];
   PLSafeRunWithUnfairLock();
   v2 = *(v6 + 24);
 
@@ -475,19 +475,19 @@ void __100__PLDeviceRestoreMigrationPostProcessingSupport_foregroundRestoreFromC
   *(*(*(a1 + 40) + 8) + 24) = [v2 fileExistsAtPath:*(a1 + 32) isDirectory:0];
 }
 
-- (PLDeviceRestoreMigrationPostProcessingSupport)initWithModelMigrator:(id)a3
+- (PLDeviceRestoreMigrationPostProcessingSupport)initWithModelMigrator:(id)migrator
 {
-  v4 = a3;
+  migratorCopy = migrator;
   v10.receiver = self;
   v10.super_class = PLDeviceRestoreMigrationPostProcessingSupport;
   v5 = [(PLDeviceRestoreMigrationPostProcessingSupport *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_modelMigrator, v4);
-    v7 = [v4 pathManager];
+    objc_storeWeak(&v5->_modelMigrator, migratorCopy);
+    pathManager = [migratorCopy pathManager];
     pathManager = v6->_pathManager;
-    v6->_pathManager = v7;
+    v6->_pathManager = pathManager;
 
     v6->_tokenLock._os_unfair_lock_opaque = 0;
   }
@@ -495,16 +495,16 @@ void __100__PLDeviceRestoreMigrationPostProcessingSupport_foregroundRestoreFromC
   return v6;
 }
 
-+ (BOOL)_writeTokenToPath:(id)a3 withInfo:(id)a4 allowOverwrite:(BOOL)a5 error:(id *)a6
++ (BOOL)_writeTokenToPath:(id)path withInfo:(id)info allowOverwrite:(BOOL)overwrite error:(id *)error
 {
-  v7 = a5;
+  overwriteCopy = overwrite;
   v40 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  infoCopy = info;
   v11 = MEMORY[0x1E69BF238];
-  v12 = [v9 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
   v33 = 0;
-  LOBYTE(v11) = [v11 createDirectoryAtPath:v12 error:&v33];
+  LOBYTE(v11) = [v11 createDirectoryAtPath:stringByDeletingLastPathComponent error:&v33];
   v13 = v33;
 
   if ((v11 & 1) == 0)
@@ -512,9 +512,9 @@ void __100__PLDeviceRestoreMigrationPostProcessingSupport_foregroundRestoreFromC
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v9 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent2 = [pathCopy stringByDeletingLastPathComponent];
       *buf = 138543618;
-      v35 = v15;
+      v35 = stringByDeletingLastPathComponent2;
       v36 = 2112;
       v37 = v13;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to create post processing token directory: %{public}@ %@", buf, 0x16u);
@@ -522,7 +522,7 @@ void __100__PLDeviceRestoreMigrationPostProcessingSupport_foregroundRestoreFromC
   }
 
   v32 = 0;
-  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:v10 format:100 options:0 error:&v32];
+  v16 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:100 options:0 error:&v32];
   v17 = v32;
 
   if (v16)
@@ -534,18 +534,18 @@ void __100__PLDeviceRestoreMigrationPostProcessingSupport_foregroundRestoreFromC
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v35 = v9;
+    v35 = pathCopy;
     v36 = 2114;
-    v37 = v10;
+    v37 = infoCopy;
     v38 = 2112;
     v39 = v17;
     _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to encode data for token %{public}@ with info %{public}@: %@", buf, 0x20u);
   }
 
-  if (!a6)
+  if (!error)
   {
 LABEL_6:
-    if (v7)
+    if (overwriteCopy)
     {
       v18 = 0x40000000;
     }
@@ -556,13 +556,13 @@ LABEL_6:
     }
 
     v31 = v17;
-    v19 = [v16 writeToFile:v9 options:v18 error:&v31];
+    v19 = [v16 writeToFile:pathCopy options:v18 error:&v31];
     v20 = v31;
 
     if (v19)
     {
       v30 = 0;
-      v21 = [MEMORY[0x1E69BF238] changeFileOwnerToMobileAtPath:v9 error:&v30];
+      v21 = [MEMORY[0x1E69BF238] changeFileOwnerToMobileAtPath:pathCopy error:&v30];
       v22 = v30;
       if ((v21 & 1) == 0)
       {
@@ -570,7 +570,7 @@ LABEL_6:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v35 = v9;
+          v35 = pathCopy;
           _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to chown token file %{public}@ to mobile", buf, 0xCu);
         }
       }
@@ -584,19 +584,19 @@ LABEL_6:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v35 = v9;
+        v35 = pathCopy;
         v36 = 2114;
-        v37 = v10;
+        v37 = infoCopy;
         v38 = 2112;
         v39 = v20;
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Failed to write token %{public}@ with info %{public}@: %@", buf, 0x20u);
       }
 
-      if (a6)
+      if (error)
       {
         v26 = v20;
         v24 = 0;
-        *a6 = v20;
+        *error = v20;
       }
 
       else
@@ -610,20 +610,20 @@ LABEL_6:
   {
     v28 = v17;
     v24 = 0;
-    *a6 = v17;
+    *error = v17;
     v20 = v17;
   }
 
   return v24;
 }
 
-+ (id)_readTokenAtPath:(id)a3 allowNotExists:(BOOL)a4 error:(id *)a5
++ (id)_readTokenAtPath:(id)path allowNotExists:(BOOL)exists error:(id *)error
 {
-  v6 = a4;
+  existsCopy = exists;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  pathCopy = path;
   v19 = 0;
-  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v7 options:0 error:&v19];
+  v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy options:0 error:&v19];
   v9 = v19;
   if ([v8 length])
   {
@@ -640,13 +640,13 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v7;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v11;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to extract info from token data %{public}@: %@", buf, 0x16u);
     }
 
-    if (!a5)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_17;
@@ -655,7 +655,7 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (v6 && (PLUnderlyingPOSIXError(), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 code], v13, v14 == 2))
+  if (existsCopy && (PLUnderlyingPOSIXError(), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 code], v13, v14 == 2))
   {
     v10 = MEMORY[0x1E695E0F8];
   }
@@ -666,19 +666,19 @@ LABEL_6:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = v7;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v9;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to read data for token %{public}@: %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v11 = v9;
 LABEL_14:
       v16 = v11;
       v10 = 0;
-      *a5 = v11;
+      *error = v11;
       goto LABEL_17;
     }
 
@@ -691,19 +691,19 @@ LABEL_17:
   return v10;
 }
 
-+ (BOOL)createForegroundRestoreFromCloudBackupCompleteTokenWithPathManager:(id)a3 error:(id *)a4
++ (BOOL)createForegroundRestoreFromCloudBackupCompleteTokenWithPathManager:(id)manager error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [a3 cloudRestoreForegroundPhaseCompleteTokenPath];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:0];
+  cloudRestoreForegroundPhaseCompleteTokenPath = [manager cloudRestoreForegroundPhaseCompleteTokenPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:cloudRestoreForegroundPhaseCompleteTokenPath isDirectory:0];
 
   if (v6)
   {
     v7 = PLMigrationGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v4];
+      v8 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:cloudRestoreForegroundPhaseCompleteTokenPath];
       *buf = 138543362;
       v30 = v8;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_FAULT, "Foreground restore token already exists!  Should only be possible if MobileSlideShow datamigrator plugin has run twice: %{public}@", buf, 0xCu);
@@ -712,25 +712,25 @@ LABEL_17:
 
   v27[0] = @"Date";
   v9 = PLCompleteDateFormatter();
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [v9 stringFromDate:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [v9 stringFromDate:date];
   v28[0] = v11;
   v27[1] = @"Build";
-  v12 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
-  v28[1] = v12;
+  currentBuildVersionString = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+  v28[1] = currentBuildVersionString;
   v27[2] = @"Process";
-  v13 = [MEMORY[0x1E696AE30] processInfo];
-  v14 = [v13 processName];
-  v28[2] = v14;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v28[2] = processName;
   v27[3] = @"PID";
   v15 = MEMORY[0x1E696AD98];
-  v16 = [MEMORY[0x1E696AE30] processInfo];
-  v17 = [v15 numberWithInt:{objc_msgSend(v16, "processIdentifier")}];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  v17 = [v15 numberWithInt:{objc_msgSend(processInfo2, "processIdentifier")}];
   v28[3] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:4];
 
   v26 = 0;
-  v19 = [a1 _writeTokenToPath:v4 withInfo:v18 allowOverwrite:1 error:&v26];
+  v19 = [self _writeTokenToPath:cloudRestoreForegroundPhaseCompleteTokenPath withInfo:v18 allowOverwrite:1 error:&v26];
   v20 = v26;
   if ((v19 & 1) == 0)
   {
@@ -742,10 +742,10 @@ LABEL_17:
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to write ForegroundRestoreFromCloudBackupCompleteToken %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v22 = v20;
-      *a4 = v20;
+      *error = v20;
     }
   }
 

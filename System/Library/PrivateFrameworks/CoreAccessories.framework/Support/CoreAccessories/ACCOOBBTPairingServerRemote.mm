@@ -1,18 +1,18 @@
 @interface ACCOOBBTPairingServerRemote
-- (ACCOOBBTPairingServerRemote)initWithXPCConnection:(id)a3;
+- (ACCOOBBTPairingServerRemote)initWithXPCConnection:(id)connection;
 - (void)dealloc;
-- (void)initConnection:(id)a3;
-- (void)linkKeyInfo:(id)a3 oobBtPairingUID:(id)a4 linkKey:(id)a5 deviceMacAddr:(id)a6;
-- (void)notifyOfProvider:(id)a3;
-- (void)startOOBBTPairing:(id)a3;
-- (void)stopOOBBTPairing:(id)a3;
+- (void)initConnection:(id)connection;
+- (void)linkKeyInfo:(id)info oobBtPairingUID:(id)d linkKey:(id)key deviceMacAddr:(id)addr;
+- (void)notifyOfProvider:(id)provider;
+- (void)startOOBBTPairing:(id)pairing;
+- (void)stopOOBBTPairing:(id)pairing;
 @end
 
 @implementation ACCOOBBTPairingServerRemote
 
-- (ACCOOBBTPairingServerRemote)initWithXPCConnection:(id)a3
+- (ACCOOBBTPairingServerRemote)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v6 = gNumLogObjects < 5;
@@ -42,7 +42,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = [v5 hash];
+    v14 = [connectionCopy hash];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "initWithXPCConnection: XPCConnection=%lu", buf, 0xCu);
   }
 
@@ -52,9 +52,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v5)
+    if (connectionCopy)
     {
-      objc_storeStrong(&v9->_XPCConnection, a3);
+      objc_storeStrong(&v9->_XPCConnection, connection);
     }
 
     else
@@ -77,14 +77,14 @@
   [(ACCOOBBTPairingServerRemote *)&v4 dealloc];
 }
 
-- (void)initConnection:(id)a3
+- (void)initConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[ACCOOBBTPairingServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCOOBBTPairingServerRemote *)self XPCConnection];
-    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v6] != 0;
+    xPCConnection = [(ACCOOBBTPairingServerRemote *)self XPCConnection];
+    v7 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -153,12 +153,12 @@
     [v13 sendUpdatedSubscriberList];
   }
 
-  v4[2](v4, v7);
+  connectionCopy[2](connectionCopy, v7);
 }
 
-- (void)notifyOfProvider:(id)a3
+- (void)notifyOfProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -187,18 +187,18 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCOOBBTPairingServerRemote *)v4 notifyOfProvider:v7];
+    [(ACCOOBBTPairingServerRemote *)providerCopy notifyOfProvider:v7];
   }
 
   v8 = +[ACCOOBBTPairingServer sharedServer];
-  v9 = [(ACCOOBBTPairingServerRemote *)self XPCConnection];
-  [v8 notifyOfProvider:v4 connection:v9];
+  xPCConnection = [(ACCOOBBTPairingServerRemote *)self XPCConnection];
+  [v8 notifyOfProvider:providerCopy connection:xPCConnection];
 }
 
-- (void)startOOBBTPairing:(id)a3
+- (void)startOOBBTPairing:(id)pairing
 {
-  v3 = a3;
-  isSupported = platform_oobBtPairing2_isSupported(v3);
+  pairingCopy = pairing;
+  isSupported = platform_oobBtPairing2_isSupported(pairingCopy);
   if (gLogObjects)
   {
     v5 = gNumLogObjects <= 4;
@@ -231,11 +231,11 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pairingCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "OOBBTPairing2 startOOBBTPairing: accessoryUID %@, oobBtPairing2", &v11, 0xCu);
     }
 
-    platform_oobBtPairing2_startOobBtPairingHandler(v3);
+    platform_oobBtPairing2_startOobBtPairingHandler(pairingCopy);
   }
 
   else
@@ -259,18 +259,18 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pairingCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "OOBBTPairing startOOBBTPairing: accessoryUID %@, oobBtPairing", &v11, 0xCu);
     }
 
-    platform_oobBtPairing_startOobBtPairingHandler(v3);
+    platform_oobBtPairing_startOobBtPairingHandler(pairingCopy);
   }
 }
 
-- (void)stopOOBBTPairing:(id)a3
+- (void)stopOOBBTPairing:(id)pairing
 {
-  v3 = a3;
-  isSupported = platform_oobBtPairing2_isSupported(v3);
+  pairingCopy = pairing;
+  isSupported = platform_oobBtPairing2_isSupported(pairingCopy);
   if (gLogObjects)
   {
     v5 = gNumLogObjects <= 4;
@@ -303,11 +303,11 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pairingCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "OOBBTPairing2 stopOOBBTPairing: accessoryUID %@, oobBtPairing2", &v11, 0xCu);
     }
 
-    platform_oobBtPairing2_stopOobBtPairingHandler(v3);
+    platform_oobBtPairing2_stopOobBtPairingHandler(pairingCopy);
   }
 
   else
@@ -331,20 +331,20 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pairingCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "OOBBTPairing stopOOBBTPairing: accessoryUID %@, oobBtPairing", &v11, 0xCu);
     }
 
-    platform_oobBtPairing_stopOobBtPairingHandler(v3);
+    platform_oobBtPairing_stopOobBtPairingHandler(pairingCopy);
   }
 }
 
-- (void)linkKeyInfo:(id)a3 oobBtPairingUID:(id)a4 linkKey:(id)a5 deviceMacAddr:(id)a6
+- (void)linkKeyInfo:(id)info oobBtPairingUID:(id)d linkKey:(id)key deviceMacAddr:(id)addr
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  infoCopy = info;
+  dCopy = d;
+  keyCopy = key;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v13 = gNumLogObjects < 5;
@@ -374,17 +374,17 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138413058;
-    v19 = v9;
+    v19 = infoCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v12;
+    v23 = addrCopy;
     v24 = 2112;
-    v25 = v11;
+    v25 = keyCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "OOBBTPairing linkKeyInfo: accessoryUID %@, oobBtPairingUID=%@, deviceMacAddr=%@ linkKey=%@", &v18, 0x2Au);
   }
 
-  if (platform_oobBtPairing2_isSupported(v9))
+  if (platform_oobBtPairing2_isSupported(infoCopy))
   {
     if (gLogObjects && gNumLogObjects >= 5)
     {
@@ -405,14 +405,14 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v9;
+      v19 = infoCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "OOBBTPairing linkKeyInfo: accessoryUID %@, oobBtPairing2, not supported", &v18, 0xCu);
     }
   }
 
   else
   {
-    platform_oobBtPairing_linkKeyInfoHandler(v9, v10, v11, v12);
+    platform_oobBtPairing_linkKeyInfoHandler(infoCopy, dCopy, keyCopy, addrCopy);
   }
 }
 

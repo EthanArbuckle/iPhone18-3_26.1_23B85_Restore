@@ -1,6 +1,6 @@
 @interface ComponentForceTouch
 - (BOOL)isPresent;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentForceTouch
@@ -19,15 +19,15 @@
   return Default;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v3 = objc_alloc_init(OSDGrape);
-  v4 = [(OSDGrape *)v3 orbErrorDetected];
-  if ([v4 count])
+  orbErrorDetected = [(OSDGrape *)v3 orbErrorDetected];
+  if ([orbErrorDetected count])
   {
-    v5 = [v4 allObjects];
-    [v6 setObject:v5 forKeyedSubscript:@"Errors"];
+    allObjects = [orbErrorDetected allObjects];
+    [attributesCopy setObject:allObjects forKeyedSubscript:@"Errors"];
   }
 }
 

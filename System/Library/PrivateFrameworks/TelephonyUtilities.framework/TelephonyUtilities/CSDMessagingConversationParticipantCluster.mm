@@ -1,34 +1,34 @@
 @interface CSDMessagingConversationParticipantCluster
-+ (CSDMessagingConversationParticipantCluster)participantClusterWithTUConversationParticipantCluster:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CSDMessagingConversationParticipantCluster)participantClusterWithTUConversationParticipantCluster:(id)cluster;
+- (BOOL)isEqual:(id)equal;
 - (TUConversationParticipantCluster)tuConversationParticipantCluster;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingConversationParticipantCluster
 
-+ (CSDMessagingConversationParticipantCluster)participantClusterWithTUConversationParticipantCluster:(id)a3
++ (CSDMessagingConversationParticipantCluster)participantClusterWithTUConversationParticipantCluster:(id)cluster
 {
-  if (a3)
+  if (cluster)
   {
-    v3 = a3;
+    clusterCopy = cluster;
     v4 = objc_alloc_init(CSDMessagingConversationParticipantCluster);
-    v5 = [v3 UUID];
-    v6 = [v5 UUIDString];
-    [(CSDMessagingConversationParticipantCluster *)v4 setUuidString:v6];
+    uUID = [clusterCopy UUID];
+    uUIDString = [uUID UUIDString];
+    [(CSDMessagingConversationParticipantCluster *)v4 setUuidString:uUIDString];
 
-    v7 = [v3 type];
-    if (v7)
+    type = [clusterCopy type];
+    if (type)
     {
-      if (v7 != 1)
+      if (type != 1)
       {
         goto LABEL_8;
       }
@@ -82,17 +82,17 @@ LABEL_8:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Nearby"];
+    v4 = [typeCopy isEqualToString:@"Nearby"];
   }
 
   return v4;
@@ -103,8 +103,8 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = CSDMessagingConversationParticipantCluster;
   v3 = [(CSDMessagingConversationParticipantCluster *)&v7 description];
-  v4 = [(CSDMessagingConversationParticipantCluster *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingConversationParticipantCluster *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -146,45 +146,45 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuidString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uuidString)
   {
-    v5 = v4;
-    [v4 setUuidString:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setUuidString:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_type;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 2) = self->_type;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuidString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuidString copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -197,16 +197,16 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   uuidString = self->_uuidString;
-  if (uuidString | *(v4 + 2))
+  if (uuidString | *(equalCopy + 2))
   {
     if (![(NSString *)uuidString isEqual:?])
     {
@@ -214,10 +214,10 @@ LABEL_8:
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_type == *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_type == *(equalCopy + 2))
     {
       v6 = 1;
       goto LABEL_9;
@@ -248,19 +248,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(CSDMessagingConversationParticipantCluster *)self setUuidString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_type = v4[2];
+    self->_type = fromCopy[2];
     *&self->_has |= 1u;
   }
 }

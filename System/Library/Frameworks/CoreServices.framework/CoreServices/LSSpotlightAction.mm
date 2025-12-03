@@ -1,16 +1,16 @@
 @interface LSSpotlightAction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpotlightAction:(id)a3;
-- (LSSpotlightAction)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(id)a3 unlocalizedTitle:(id)a4 symbolImageName:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpotlightAction:(id)action;
+- (LSSpotlightAction)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(id)identifier unlocalizedTitle:(id)title symbolImageName:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSSpotlightAction
 
-- (id)_initWithIdentifier:(id)a3 unlocalizedTitle:(id)a4 symbolImageName:(id)a5
+- (id)_initWithIdentifier:(id)identifier unlocalizedTitle:(id)title symbolImageName:(id)name
 {
   v11.receiver = self;
   v11.super_class = LSSpotlightAction;
@@ -18,17 +18,17 @@
   p_isa = &v8->super.isa;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v8->_identifier, identifier);
+    objc_storeStrong(p_isa + 2, title);
+    objc_storeStrong(p_isa + 3, name);
   }
 
   return p_isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -39,17 +39,17 @@
     return 0;
   }
 
-  return [(LSSpotlightAction *)self isEqualToSpotlightAction:a3];
+  return [(LSSpotlightAction *)self isEqualToSpotlightAction:equal];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LSSpotlightAction *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(LSSpotlightAction *)self unlocalizedTitle];
-  v6 = [v5 hash];
-  v7 = [(LSSpotlightAction *)self symbolImageName];
-  v8 = [v7 hash];
+  identifier = [(LSSpotlightAction *)self identifier];
+  v4 = [identifier hash];
+  unlocalizedTitle = [(LSSpotlightAction *)self unlocalizedTitle];
+  v6 = [unlocalizedTitle hash];
+  symbolImageName = [(LSSpotlightAction *)self symbolImageName];
+  v8 = [symbolImageName hash];
 
   return v6 ^ v4 ^ v8;
 }
@@ -58,39 +58,39 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(LSSpotlightAction *)self identifier];
-  v6 = [(LSSpotlightAction *)self unlocalizedTitle];
-  v7 = [(LSSpotlightAction *)self symbolImageName];
-  v8 = [v3 stringWithFormat:@"<%@ %p> { identifier = %@, unlocalizedTitle = %@, symbolImageName = %@ }", v4, self, v5, v6, v7];
+  identifier = [(LSSpotlightAction *)self identifier];
+  unlocalizedTitle = [(LSSpotlightAction *)self unlocalizedTitle];
+  symbolImageName = [(LSSpotlightAction *)self symbolImageName];
+  v8 = [v3 stringWithFormat:@"<%@ %p> { identifier = %@, unlocalizedTitle = %@, symbolImageName = %@ }", v4, self, identifier, unlocalizedTitle, symbolImageName];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_identifier forKey:@"identifier"];
-  [a3 encodeObject:self->_unlocalizedTitle forKey:@"unlocalizedTitle"];
+  [coder encodeObject:self->_identifier forKey:@"identifier"];
+  [coder encodeObject:self->_unlocalizedTitle forKey:@"unlocalizedTitle"];
   symbolImageName = self->_symbolImageName;
 
-  [a3 encodeObject:symbolImageName forKey:@"symbolImageName"];
+  [coder encodeObject:symbolImageName forKey:@"symbolImageName"];
 }
 
-- (LSSpotlightAction)initWithCoder:(id)a3
+- (LSSpotlightAction)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = LSSpotlightAction;
   v4 = [(LSSpotlightAction *)&v12 init];
   if (v4)
   {
-    v5 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v4->_identifier;
     v4->_identifier = v5;
 
-    v7 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"unlocalizedTitle"];
+    v7 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"unlocalizedTitle"];
     unlocalizedTitle = v4->_unlocalizedTitle;
     v4->_unlocalizedTitle = v7;
 
-    v9 = [a3 ls_decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
+    v9 = [coder ls_decodeObjectOfClass:objc_opt_class() forKey:@"symbolImageName"];
     symbolImageName = v4->_symbolImageName;
     v4->_symbolImageName = v9;
   }
@@ -98,15 +98,15 @@
   return v4;
 }
 
-- (BOOL)isEqualToSpotlightAction:(id)a3
+- (BOOL)isEqualToSpotlightAction:(id)action
 {
-  v6 = [(LSSpotlightAction *)self identifier];
-  v7 = [a3 identifier];
-  if ([v6 isEqual:v7])
+  identifier = [(LSSpotlightAction *)self identifier];
+  identifier2 = [action identifier];
+  if ([identifier isEqual:identifier2])
   {
-    v8 = [(LSSpotlightAction *)self unlocalizedTitle];
-    v9 = [a3 unlocalizedTitle];
-    if (![v8 isEqual:v9])
+    unlocalizedTitle = [(LSSpotlightAction *)self unlocalizedTitle];
+    unlocalizedTitle2 = [action unlocalizedTitle];
+    if (![unlocalizedTitle isEqual:unlocalizedTitle2])
     {
       v13 = 0;
 LABEL_12:
@@ -114,14 +114,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = [(LSSpotlightAction *)self symbolImageName];
-    if (v10 || ([a3 symbolImageName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    symbolImageName = [(LSSpotlightAction *)self symbolImageName];
+    if (symbolImageName || ([action symbolImageName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v11 = [(LSSpotlightAction *)self symbolImageName];
-      v12 = [a3 symbolImageName];
-      v13 = [v11 isEqual:v12];
+      symbolImageName2 = [(LSSpotlightAction *)self symbolImageName];
+      symbolImageName3 = [action symbolImageName];
+      v13 = [symbolImageName2 isEqual:symbolImageName3];
 
-      if (v10)
+      if (symbolImageName)
       {
 LABEL_11:
 

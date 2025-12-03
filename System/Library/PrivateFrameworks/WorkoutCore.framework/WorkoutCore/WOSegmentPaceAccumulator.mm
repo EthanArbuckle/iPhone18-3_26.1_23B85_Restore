@@ -1,17 +1,17 @@
 @interface WOSegmentPaceAccumulator
-- (WOSegmentPaceAccumulator)initWithBuilder:(id)a3;
-- (void)updateDistance:(double)a3 duration:(double)a4;
+- (WOSegmentPaceAccumulator)initWithBuilder:(id)builder;
+- (void)updateDistance:(double)distance duration:(double)duration;
 @end
 
 @implementation WOSegmentPaceAccumulator
 
-- (void)updateDistance:(double)a3 duration:(double)a4
+- (void)updateDistance:(double)distance duration:(double)duration
 {
-  v6 = self;
-  SegmentPaceAccumulator.updateDistance(_:duration:)(a3, a4);
+  selfCopy = self;
+  SegmentPaceAccumulator.updateDistance(_:duration:)(distance, duration);
 }
 
-- (WOSegmentPaceAccumulator)initWithBuilder:(id)a3
+- (WOSegmentPaceAccumulator)initWithBuilder:(id)builder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

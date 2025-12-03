@@ -1,35 +1,35 @@
 @interface FCUIActivityBaubleCompleteDescription
-- (FCUIActivityBaubleCompleteDescription)initWithActivityDescription:(id)a3 referencePointSize:(double)a4 maximumPointSize:(double)a5 referenceDimension:(double)a6;
-- (FCUIActivityBaubleCompleteDescription)initWithSystemImageName:(id)a3 tintColor:(id)a4 referencePointSize:(double)a5 maximumPointSize:(double)a6 referenceDimension:(double)a7;
+- (FCUIActivityBaubleCompleteDescription)initWithActivityDescription:(id)description referencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension;
+- (FCUIActivityBaubleCompleteDescription)initWithSystemImageName:(id)name tintColor:(id)color referencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension;
 @end
 
 @implementation FCUIActivityBaubleCompleteDescription
 
-- (FCUIActivityBaubleCompleteDescription)initWithSystemImageName:(id)a3 tintColor:(id)a4 referencePointSize:(double)a5 maximumPointSize:(double)a6 referenceDimension:(double)a7
+- (FCUIActivityBaubleCompleteDescription)initWithSystemImageName:(id)name tintColor:(id)color referencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension
 {
   v11.receiver = self;
   v11.super_class = FCUIActivityBaubleCompleteDescription;
-  result = [(FCUIActivityBaubleDescription *)&v11 initWithSystemImageName:a3 tintColor:a4];
+  result = [(FCUIActivityBaubleDescription *)&v11 initWithSystemImageName:name tintColor:color];
   if (result)
   {
-    result->_referencePointSize = a5;
-    result->_maximumPointSize = a6;
-    result->_referenceDimension = a7;
+    result->_referencePointSize = size;
+    result->_maximumPointSize = pointSize;
+    result->_referenceDimension = dimension;
   }
 
   return result;
 }
 
-- (FCUIActivityBaubleCompleteDescription)initWithActivityDescription:(id)a3 referencePointSize:(double)a4 maximumPointSize:(double)a5 referenceDimension:(double)a6
+- (FCUIActivityBaubleCompleteDescription)initWithActivityDescription:(id)description referencePointSize:(double)size maximumPointSize:(double)pointSize referenceDimension:(double)dimension
 {
   v10.receiver = self;
   v10.super_class = FCUIActivityBaubleCompleteDescription;
-  result = [(FCUIActivityBaubleDescription *)&v10 initWithActivityDescription:a3];
+  result = [(FCUIActivityBaubleDescription *)&v10 initWithActivityDescription:description];
   if (result)
   {
-    result->_referencePointSize = a4;
-    result->_maximumPointSize = a5;
-    result->_referenceDimension = a6;
+    result->_referencePointSize = size;
+    result->_maximumPointSize = pointSize;
+    result->_referenceDimension = dimension;
   }
 
   return result;

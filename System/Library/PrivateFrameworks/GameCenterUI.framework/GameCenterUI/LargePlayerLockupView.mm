@@ -1,17 +1,17 @@
 @interface LargePlayerLockupView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation LargePlayerLockupView
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_24E1F76A0();
   v8 = v7;
   v10 = v9;
@@ -31,15 +31,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E1F807C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E1F8768(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E1F8768(change);
 }
 
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel

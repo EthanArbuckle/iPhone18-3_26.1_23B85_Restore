@@ -1,14 +1,14 @@
 @interface PCXMPStringParser
 - (PCXMPStringParser)init;
 - (void)dealloc;
-- (void)parseXMPData:(id)a3;
-- (void)parseXMPString:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
+- (void)parseXMPData:(id)data;
+- (void)parseXMPString:(id)string;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidStartDocument:(id)document;
 @end
 
 @implementation PCXMPStringParser
@@ -63,24 +63,24 @@
   [(PCXMPStringParser *)&v7 dealloc];
 }
 
-- (void)parseXMPString:(id)a3
+- (void)parseXMPString:(id)string
 {
   v5 = objc_autoreleasePoolPush();
-  -[PCXMPStringParser parseXMPData:](self, "parseXMPData:", [a3 dataUsingEncoding:4]);
+  -[PCXMPStringParser parseXMPData:](self, "parseXMPData:", [string dataUsingEncoding:4]);
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)parseXMPData:(id)a3
+- (void)parseXMPData:(id)data
 {
-  v4 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:data];
   [v4 setDelegate:self];
   [v4 parse];
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
-  [(PCXMPStringParser *)self parserDidEndDocument:a3];
+  [(PCXMPStringParser *)self parserDidEndDocument:document];
   self->tagParent1 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_2872E16E0];
   self->tagParent2 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_2872E16E0];
   self->tagParent3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_2872E16E0];
@@ -89,11 +89,11 @@
   [(NSMutableDictionary *)mDict removeAllObjects];
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([(NSArray *)self->parentTags1 containsObject:a4])
+  if ([(NSArray *)self->parentTags1 containsObject:element])
   {
-    [(NSMutableString *)self->tagParent1 setString:a4];
+    [(NSMutableString *)self->tagParent1 setString:element];
     [(NSMutableString *)self->tagParent2 setString:&stru_2872E16E0];
     [(NSMutableString *)self->tagParent3 setString:&stru_2872E16E0];
     tagDict1 = self->tagDict1;
@@ -110,9 +110,9 @@
     }
   }
 
-  else if ([(NSArray *)self->parentTags2 containsObject:a4])
+  else if ([(NSArray *)self->parentTags2 containsObject:element])
   {
-    [(NSMutableString *)self->tagParent2 setString:a4];
+    [(NSMutableString *)self->tagParent2 setString:element];
     [(NSMutableString *)self->tagParent3 setString:&stru_2872E16E0];
     v12 = self->tagDict2;
     if (v12)
@@ -122,9 +122,9 @@
     self->tagDict2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:47];
   }
 
-  else if ([(NSArray *)self->parentTags3 containsObject:a4])
+  else if ([(NSArray *)self->parentTags3 containsObject:element])
   {
-    [(NSMutableString *)self->tagParent3 setString:a4];
+    [(NSMutableString *)self->tagParent3 setString:element];
     tagDict3 = self->tagDict3;
     if (tagDict3)
     {
@@ -139,7 +139,7 @@
   }
 
   self->valueString = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_2872E16E0];
-  if (a7 && [a7 count])
+  if (attributes && [attributes count])
   {
     mDict = self->tagDict3;
     if (!mDict)
@@ -155,22 +155,22 @@
       }
     }
 
-    [(NSMutableDictionary *)mDict setObject:a7 forKey:a4];
+    [(NSMutableDictionary *)mDict setObject:attributes forKey:element];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   valueString = self->valueString;
   if (valueString)
   {
-    [(NSMutableString *)valueString appendString:a4];
+    [(NSMutableString *)valueString appendString:characters];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([(NSArray *)self->parentTags1 containsObject:a4])
+  if ([(NSArray *)self->parentTags1 containsObject:element])
   {
     tagDict3 = self->tagDict3;
     if (tagDict3)
@@ -230,7 +230,7 @@ LABEL_44:
     return;
   }
 
-  if ([(NSArray *)self->parentTags2 containsObject:a4])
+  if ([(NSArray *)self->parentTags2 containsObject:element])
   {
     v14 = self->tagDict3;
     if (v14)
@@ -275,7 +275,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if ([(NSArray *)self->parentTags3 containsObject:a4])
+  if ([(NSArray *)self->parentTags3 containsObject:element])
   {
     v18 = self->tagDict3;
     if (v18)
@@ -318,7 +318,7 @@ LABEL_44:
       }
     }
 
-    v21 = [(NSMutableDictionary *)v20 objectForKey:a4];
+    v21 = [(NSMutableDictionary *)v20 objectForKey:element];
     if (v21)
     {
       v22 = v21;
@@ -326,36 +326,36 @@ LABEL_44:
       if (objc_opt_isKindOfClass())
       {
         v23 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v22];
-        v24 = v23;
+        dictionary = v23;
         valueString = self->valueString;
-        v26 = a4;
+        elementCopy = element;
       }
 
       else
       {
-        v24 = [MEMORY[0x277CBEB38] dictionary];
-        -[NSMutableString setObject:forKey:](v24, "setObject:forKey:", v22, [a4 stringByAppendingString:@"-0"]);
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        -[NSMutableString setObject:forKey:](dictionary, "setObject:forKey:", v22, [element stringByAppendingString:@"-0"]);
         v27 = self->valueString;
-        v26 = [a4 stringByAppendingString:@"-1"];
-        v23 = v24;
+        elementCopy = [element stringByAppendingString:@"-1"];
+        v23 = dictionary;
         valueString = v27;
       }
 
-      [(NSMutableString *)v23 setObject:valueString forKey:v26];
+      [(NSMutableString *)v23 setObject:valueString forKey:elementCopy];
     }
 
     else
     {
-      v24 = self->valueString;
+      dictionary = self->valueString;
     }
 
-    [(NSMutableDictionary *)v20 setValue:v24 forKey:a4];
+    [(NSMutableDictionary *)v20 setValue:dictionary forKey:element];
 
     self->valueString = 0;
   }
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
   tagParent1 = self->tagParent1;
   if (tagParent1)
@@ -414,14 +414,14 @@ LABEL_44:
   }
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
   xmlError = self->xmlError;
   if (xmlError)
   {
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"XML Parse Error %i, Description: %@, Line: %i", objc_msgSend(a4, "code"), objc_msgSend(a4, "localizedDescription"), objc_msgSend(a3, "lineNumber")];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"XML Parse Error %i, Description: %@, Line: %i", objc_msgSend(occurred, "code"), objc_msgSend(occurred, "localizedDescription"), objc_msgSend(parser, "lineNumber")];
   self->xmlError = v8;
 
   v9 = v8;

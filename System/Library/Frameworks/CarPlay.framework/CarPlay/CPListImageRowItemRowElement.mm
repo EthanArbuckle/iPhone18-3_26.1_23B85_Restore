@@ -1,25 +1,25 @@
 @interface CPListImageRowItemRowElement
-- (CPListImageRowItemRowElement)initWithCoder:(id)a3;
-- (CPListImageRowItemRowElement)initWithImage:(id)a3 title:(id)a4 subtitle:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (CPListImageRowItemRowElement)initWithCoder:(id)coder;
+- (CPListImageRowItemRowElement)initWithImage:(id)image title:(id)title subtitle:(id)subtitle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPListImageRowItemRowElement
 
-- (CPListImageRowItemRowElement)initWithImage:(id)a3 title:(id)a4 subtitle:(id)a5
+- (CPListImageRowItemRowElement)initWithImage:(id)image title:(id)title subtitle:(id)subtitle
 {
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v16.receiver = self;
   v16.super_class = CPListImageRowItemRowElement;
-  v10 = [(CPListImageRowItemElement *)&v16 initWithImage:a3];
+  v10 = [(CPListImageRowItemElement *)&v16 initWithImage:image];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v9 copy];
+    v13 = [subtitleCopy copy];
     subtitle = v10->_subtitle;
     v10->_subtitle = v13;
   }
@@ -27,19 +27,19 @@
   return v10;
 }
 
-- (CPListImageRowItemRowElement)initWithCoder:(id)a3
+- (CPListImageRowItemRowElement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPListImageRowItemRowElement;
-  v5 = [(CPListImageRowItemElement *)&v11 initWithCoder:v4];
+  v5 = [(CPListImageRowItemElement *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemRowElementTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemRowElementTitleKey"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemRowElementSubtitleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListImageRowItemRowElementSubtitleKey"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
   }
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPListImageRowItemRowElement;
-  v4 = a3;
-  [(CPListImageRowItemElement *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPListImageRowItemElement *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPListImageRowItemRowElement *)self title:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPListImageRowItemRowElementTitleKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPListImageRowItemRowElementTitleKey"];
 
-  v6 = [(CPListImageRowItemRowElement *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"kCPListImageRowItemRowElementSubtitleKey"];
+  subtitle = [(CPListImageRowItemRowElement *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"kCPListImageRowItemRowElementSubtitleKey"];
 }
 
 @end

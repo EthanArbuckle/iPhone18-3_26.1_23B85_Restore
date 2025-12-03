@@ -2,8 +2,8 @@
 + (id)log;
 + (id)sharedInstance;
 - (SPEmbeddingTokenizer)init;
-- (id)getTokenIDsForText:(id)a3;
-- (id)getTokensForText:(id)a3;
+- (id)getTokenIDsForText:(id)text;
+- (id)getTokensForText:(id)text;
 - (unint64_t)maxTokenLength;
 - (void)clear;
 - (void)initTokenizer;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __27__SPEmbeddingTokenizer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -98,9 +98,9 @@ uint64_t __38__SPEmbeddingTokenizer_sharedInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getTokenIDsForText:(id)a3
+- (id)getTokenIDsForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -112,10 +112,10 @@ uint64_t __38__SPEmbeddingTokenizer_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __43__SPEmbeddingTokenizer_getTokenIDsForText___block_invoke;
   block[3] = &unk_279D01C18;
-  v11 = v4;
+  v11 = textCopy;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = textCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_sync(queue, v7);
 
@@ -142,9 +142,9 @@ void *__43__SPEmbeddingTokenizer_getTokenIDsForText___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)getTokensForText:(id)a3
+- (id)getTokensForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -156,10 +156,10 @@ void *__43__SPEmbeddingTokenizer_getTokenIDsForText___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __41__SPEmbeddingTokenizer_getTokensForText___block_invoke;
   block[3] = &unk_279D01C18;
-  v11 = v4;
+  v11 = textCopy;
   v12 = &v13;
   block[4] = self;
-  v6 = v4;
+  v6 = textCopy;
   v7 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_sync(queue, v7);
 

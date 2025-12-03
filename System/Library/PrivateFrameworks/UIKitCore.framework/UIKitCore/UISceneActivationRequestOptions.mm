@@ -1,18 +1,18 @@
 @interface UISceneActivationRequestOptions
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation UISceneActivationRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(UISceneActivationRequestOptions *)self requestingScene];
-  [v4 setRequestingScene:v5];
+  requestingScene = [(UISceneActivationRequestOptions *)self requestingScene];
+  [v4 setRequestingScene:requestingScene];
 
   [v4 setPreserveLayout:{-[UISceneActivationRequestOptions preserveLayout](self, "preserveLayout")}];
   [v4 _setRequestFullscreen:{-[UISceneActivationRequestOptions _requestFullscreen](self, "_requestFullscreen")}];
@@ -21,25 +21,25 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneActivationRequestOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneActivationRequestOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UISceneActivationRequestOptions *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UISceneActivationRequestOptions *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__UISceneActivationRequestOptions_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:&stru_1EFB14550 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -52,20 +52,20 @@ void __73__UISceneActivationRequestOptions_descriptionBuilderWithMultilinePrefix
   v2 = [v1 appendObject:v3 withName:@"requestingScene" skipIfNil:1];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneActivationRequestOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneActivationRequestOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneActivationRequestOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneActivationRequestOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface PXSectionedDataSourceManager
 - (PXSectionedDataSource)dataSource;
 - (PXSectionedDataSourceManager)init;
-- (id)allChangeDetailsFromDataSource:(id)a3 toDataSource:(id)a4;
-- (id)changeDetailsFromDataSource:(id)a3 toDataSource:(id)a4;
+- (id)allChangeDetailsFromDataSource:(id)source toDataSource:(id)dataSource;
+- (id)changeDetailsFromDataSource:(id)source toDataSource:(id)dataSource;
 - (id)createInitialDataSource;
 - (id)queryObserversInterestingObjectReferences;
 - (void)_reevaluateWaitingConditions;
-- (void)_setDataSource:(id)a3;
-- (void)_waitingConditionDidTimeout:(id)a3;
-- (void)didPublishChanges:(unint64_t)a3;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
-- (void)waitForCondition:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)_setDataSource:(id)source;
+- (void)_waitingConditionDidTimeout:(id)timeout;
+- (void)didPublishChanges:(unint64_t)changes;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)setDataSource:(id)source changeDetails:(id)details;
+- (void)setDataSource:(id)source changeDetailsArray:(id)array;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
+- (void)waitForCondition:(id)condition timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation PXSectionedDataSourceManager
@@ -38,9 +38,9 @@
   dataSource = self->_dataSource;
   if (!dataSource)
   {
-    v4 = [(PXSectionedDataSourceManager *)self createInitialDataSource];
+    createInitialDataSource = [(PXSectionedDataSourceManager *)self createInitialDataSource];
     v5 = self->_dataSource;
-    self->_dataSource = v4;
+    self->_dataSource = createInitialDataSource;
 
     [(PXSectionedDataSourceManager *)self didCreateInitialDataSource];
     dataSource = self->_dataSource;
@@ -55,13 +55,13 @@
   if ([(NSMutableArray *)self->_waitingConditions count])
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v4 = [(PXSectionedDataSourceManager *)self dataSource];
+    dataSource = [(PXSectionedDataSourceManager *)self dataSource];
     waitingConditions = self->_waitingConditions;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__PXSectionedDataSourceManager__reevaluateWaitingConditions__block_invoke;
     v19[3] = &unk_1E7BB6CA0;
-    v6 = v4;
+    v6 = dataSource;
     v20 = v6;
     v7 = v3;
     v21 = v7;
@@ -90,8 +90,8 @@
               objc_enumerationMutation(v9);
             }
 
-            v14 = [*(*(&v15 + 1) + 8 * v13) completionHandler];
-            v14[2](v14, 1);
+            completionHandler = [*(*(&v15 + 1) + 8 * v13) completionHandler];
+            completionHandler[2](completionHandler, 1);
 
             ++v13;
           }
@@ -108,10 +108,10 @@
 
 - (id)createInitialDataSource
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSectionedDataSourceManager.m" lineNumber:161 description:{@"Method %s is a responsibility of subclass %@", "-[PXSectionedDataSourceManager createInitialDataSource]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedDataSourceManager.m" lineNumber:161 description:{@"Method %s is a responsibility of subclass %@", "-[PXSectionedDataSourceManager createInitialDataSource]", v6}];
 
   abort();
 }
@@ -123,13 +123,13 @@
   v8 = 3221225472;
   v9 = __73__PXSectionedDataSourceManager_queryObserversInterestingObjectReferences__block_invoke;
   v10 = &unk_1E7BB6CF0;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [(PXObservable *)self enumerateObserversUsingBlock:&v7];
-  v5 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 uint64_t __73__PXSectionedDataSourceManager_queryObserversInterestingObjectReferences__block_invoke(uint64_t a1, void *a2)
@@ -151,42 +151,42 @@ uint64_t __73__PXSectionedDataSourceManager_queryObserversInterestingObjectRefer
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)_setDataSource:(id)a3
+- (void)_setDataSource:(id)source
 {
-  v6 = a3;
-  v5 = [(PXSectionedDataSource *)self->_dataSource identifier];
-  if (v5 != [v6 identifier])
+  sourceCopy = source;
+  identifier = [(PXSectionedDataSource *)self->_dataSource identifier];
+  if (identifier != [sourceCopy identifier])
   {
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (void)didPublishChanges:(unint64_t)a3
+- (void)didPublishChanges:(unint64_t)changes
 {
-  v3 = a3;
+  changesCopy = changes;
   v5.receiver = self;
   v5.super_class = PXSectionedDataSourceManager;
   [(PXObservable *)&v5 didPublishChanges:?];
-  if (v3)
+  if (changesCopy)
   {
     [(PXSectionedDataSourceManager *)self _reevaluateWaitingConditions];
   }
 }
 
-- (void)setDataSource:(id)a3 changeDetailsArray:(id)a4
+- (void)setDataSource:(id)source changeDetailsArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  arrayCopy = array;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__PXSectionedDataSourceManager_setDataSource_changeDetailsArray___block_invoke;
   v10[3] = &unk_1E7BB6CC8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = sourceCopy;
+  v12 = arrayCopy;
+  v8 = arrayCopy;
+  v9 = sourceCopy;
   [(PXObservable *)self performChanges:v10];
 }
 
@@ -229,36 +229,36 @@ void __65__PXSectionedDataSourceManager_setDataSource_changeDetailsArray___block
   }
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
   v12 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  detailsCopy = details;
+  v7 = detailsCopy;
+  if (detailsCopy)
   {
-    v11 = v6;
+    v11 = detailsCopy;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
-    v10 = [v8 arrayWithObjects:&v11 count:1];
-    [(PXSectionedDataSourceManager *)self setDataSource:v9 changeDetailsArray:v10, v11, v12];
+    sourceCopy = source;
+    sourceCopy2 = [v8 arrayWithObjects:&v11 count:1];
+    [(PXSectionedDataSourceManager *)self setDataSource:sourceCopy changeDetailsArray:sourceCopy2, v11, v12];
   }
 
   else
   {
-    v10 = a3;
-    [(PXSectionedDataSourceManager *)self setDataSource:v10 changeDetailsArray:0];
+    sourceCopy2 = source;
+    [(PXSectionedDataSourceManager *)self setDataSource:sourceCopy2 changeDetailsArray:0];
   }
 }
 
-- (void)_waitingConditionDidTimeout:(id)a3
+- (void)_waitingConditionDidTimeout:(id)timeout
 {
-  v6 = a3;
+  timeoutCopy = timeout;
   v4 = [(NSMutableArray *)self->_waitingConditions indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_waitingConditions removeObjectAtIndex:v4];
-    v5 = [v6 completionHandler];
-    v5[2](v5, 0);
+    completionHandler = [timeoutCopy completionHandler];
+    completionHandler[2](completionHandler, 0);
   }
 }
 
@@ -275,23 +275,23 @@ void __60__PXSectionedDataSourceManager__reevaluateWaitingConditions__block_invo
   }
 }
 
-- (void)waitForCondition:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)waitForCondition:(id)condition timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PXSectionedDataSourceManager *)self dataSource];
-  v11 = v8[2](v8, v10);
+  conditionCopy = condition;
+  handlerCopy = handler;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  v11 = conditionCopy[2](conditionCopy, dataSource);
 
   if (v11)
   {
-    v9[2](v9, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
     v12 = objc_alloc_init(PXSectionedDataSourceWaitingCondition);
-    [(PXSectionedDataSourceWaitingCondition *)v12 setCondition:v8];
-    [(PXSectionedDataSourceWaitingCondition *)v12 setCompletionHandler:v9];
+    [(PXSectionedDataSourceWaitingCondition *)v12 setCondition:conditionCopy];
+    [(PXSectionedDataSourceWaitingCondition *)v12 setCompletionHandler:handlerCopy];
     waitingConditions = self->_waitingConditions;
     if (!waitingConditions)
     {
@@ -304,7 +304,7 @@ void __60__PXSectionedDataSourceManager__reevaluateWaitingConditions__block_invo
 
     [(NSMutableArray *)waitingConditions addObject:v12];
     objc_initWeak(&location, self);
-    v16 = dispatch_time(0, (a4 * 1000000000.0));
+    v16 = dispatch_time(0, (timeout * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __75__PXSectionedDataSourceManager_waitForCondition_timeout_completionHandler___block_invoke;
@@ -325,82 +325,82 @@ void __75__PXSectionedDataSourceManager_waitForCondition_timeout_completionHandl
   [WeakRetained _waitingConditionDidTimeout:*(a1 + 32)];
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXSectionedDataSourceManager;
-  [(PXObservable *)&v4 unregisterChangeObserver:a3 context:a4];
+  [(PXObservable *)&v4 unregisterChangeObserver:observer context:context];
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXSectionedDataSourceManager;
-  [(PXObservable *)&v4 registerChangeObserver:a3 context:a4];
+  [(PXObservable *)&v4 registerChangeObserver:observer context:context];
 }
 
-- (id)allChangeDetailsFromDataSource:(id)a3 toDataSource:(id)a4
+- (id)allChangeDetailsFromDataSource:(id)source toDataSource:(id)dataSource
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  v8 = dataSourceCopy;
+  if (sourceCopy)
   {
-    v9 = [v6 identifier];
+    identifier = [sourceCopy identifier];
     if (v8)
     {
 LABEL_3:
-      v10 = [v8 identifier];
+      identifier2 = [v8 identifier];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v9 = 0;
-    if (v7)
+    identifier = 0;
+    if (dataSourceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = 0;
+  identifier2 = 0;
 LABEL_6:
-  v11 = [(PXSectionedDataSourceManager *)self changeHistory];
-  v12 = [v11 changeDetailsFromDataSourceIdentifier:v9 toDataSourceIdentifier:v10];
+  changeHistory = [(PXSectionedDataSourceManager *)self changeHistory];
+  v12 = [changeHistory changeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2];
 
   return v12;
 }
 
-- (id)changeDetailsFromDataSource:(id)a3 toDataSource:(id)a4
+- (id)changeDetailsFromDataSource:(id)source toDataSource:(id)dataSource
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  v8 = dataSourceCopy;
+  if (sourceCopy)
   {
-    v9 = [v6 identifier];
+    identifier = [sourceCopy identifier];
     if (v8)
     {
 LABEL_3:
-      v10 = [v8 identifier];
+      identifier2 = [v8 identifier];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v9 = 0;
-    if (v7)
+    identifier = 0;
+    if (dataSourceCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = 0;
+  identifier2 = 0;
 LABEL_6:
-  v11 = [(PXSectionedDataSourceManager *)self changeHistory];
-  v12 = [v11 coalescedChangeDetailsFromDataSourceIdentifier:v9 toDataSourceIdentifier:v10];
+  changeHistory = [(PXSectionedDataSourceManager *)self changeHistory];
+  v12 = [changeHistory coalescedChangeDetailsFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2];
 
   return v12;
 }

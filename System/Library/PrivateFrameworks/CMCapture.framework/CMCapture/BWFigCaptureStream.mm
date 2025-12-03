@@ -1,27 +1,27 @@
 @interface BWFigCaptureStream
 + (void)initialize;
 - (BOOL)vibeMitigationEnabled;
-- (BWFigCaptureStream)initWithFigCaptureStream:(OpaqueFigCaptureStream *)a3 deviceID:(id)a4 errOut:(int *)a5;
+- (BWFigCaptureStream)initWithFigCaptureStream:(OpaqueFigCaptureStream *)stream deviceID:(id)d errOut:(int *)out;
 - (BWFigCaptureStreamStartStopDelegate)startStopDelegate;
-- (_DWORD)_copyProperty:(int)a3 requireSupported:(int *)a4 error:;
+- (_DWORD)_copyProperty:(int)property requireSupported:(int *)supported error:;
 - (id)description;
-- (id)getProperty:(__CFString *)a3 error:(int *)a4;
-- (id)getPropertyIfSupported:(__CFString *)a3 error:(int *)a4;
-- (int)addAttachmentsToSampleBuffer:(opaqueCMSampleBuffer *)a3 options:(id)a4;
-- (int)enqueueReactionEffect:(id)a3;
-- (int)registerForNotification:(__CFString *)a3 listener:(const void *)a4 callback:(void *)a5;
+- (id)getProperty:(__CFString *)property error:(int *)error;
+- (id)getPropertyIfSupported:(__CFString *)supported error:(int *)error;
+- (int)addAttachmentsToSampleBuffer:(opaqueCMSampleBuffer *)buffer options:(id)options;
+- (int)enqueueReactionEffect:(id)effect;
+- (int)registerForNotification:(__CFString *)notification listener:(const void *)listener callback:(void *)callback;
 - (int)start;
 - (int)stop;
-- (int)unregisterForNotification:(__CFString *)a3 listener:(const void *)a4;
-- (uint64_t)_setProperty:(void *)a3 value:(int)a4 requireSupported:(char)a5 lockHeldByCaller:;
+- (int)unregisterForNotification:(__CFString *)notification listener:(const void *)listener;
+- (uint64_t)_setProperty:(void *)property value:(int)value requireSupported:(char)supported lockHeldByCaller:;
 - (void)_activateVibeMitigationIfEnabled;
 - (void)_resetStreamingState;
 - (void)dealloc;
 - (void)flushPropertyCache;
-- (void)invalidateWhilePreservingTorchState:(BOOL)a3;
+- (void)invalidateWhilePreservingTorchState:(BOOL)state;
 - (void)resetTorchState;
-- (void)setStartStopDelegate:(id)a3;
-- (void)setVibeMitigationEnabled:(BOOL)a3;
+- (void)setStartStopDelegate:(id)delegate;
+- (void)setVibeMitigationEnabled:(BOOL)enabled;
 - (void)synchronizedStreamsGroupDidStop;
 @end
 
@@ -102,14 +102,14 @@
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
-    v7 = 0;
+    retainReferencedObject = 0;
     v8 = 0;
     v9 = -12785;
   }
 
   else if (self->_streaming)
   {
-    v7 = 0;
+    retainReferencedObject = 0;
     v8 = 0;
     v9 = -12780;
   }
@@ -130,7 +130,7 @@
       v9 = v12(stream);
       if (v9)
       {
-        v7 = 0;
+        retainReferencedObject = 0;
         v8 = 0;
       }
 
@@ -138,13 +138,13 @@
       {
         v8 = 1;
         self->_streaming = 1;
-        v7 = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
+        retainReferencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
       }
     }
 
     else
     {
-      v7 = 0;
+      retainReferencedObject = 0;
       v8 = 0;
       v9 = -12782;
     }
@@ -167,9 +167,9 @@
     if (v8)
     {
 LABEL_25:
-      if (v7)
+      if (retainReferencedObject)
       {
-        [v7 captureStreamDidStart];
+        [retainReferencedObject captureStreamDidStart];
       }
 
       else
@@ -211,7 +211,7 @@ LABEL_25:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -339,23 +339,23 @@ LABEL_25:
   }
 }
 
-- (BWFigCaptureStream)initWithFigCaptureStream:(OpaqueFigCaptureStream *)a3 deviceID:(id)a4 errOut:(int *)a5
+- (BWFigCaptureStream)initWithFigCaptureStream:(OpaqueFigCaptureStream *)stream deviceID:(id)d errOut:(int *)out
 {
-  v8 = self;
+  selfCopy = self;
   v50 = 0;
-  if (a3)
+  if (stream)
   {
     v49.receiver = self;
     v49.super_class = BWFigCaptureStream;
     v9 = [(BWFigCaptureStream *)&v49 init];
-    v8 = v9;
+    selfCopy = v9;
     if (v9)
     {
       v9->_lock._os_unfair_lock_opaque = 0;
       v9->_cachedProperties = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v8->_stream = CFRetain(a3);
-      v10 = [(BWFigCaptureStream *)v8 copyProperty:*off_1E798C0E0 error:&v50];
-      v8->_portType = v10;
+      selfCopy->_stream = CFRetain(stream);
+      v10 = [(BWFigCaptureStream *)selfCopy copyProperty:*off_1E798C0E0 error:&v50];
+      selfCopy->_portType = v10;
       if (v50)
       {
         [BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:];
@@ -363,8 +363,8 @@ LABEL_25:
 
       else
       {
-        v8->_portTypeShortString = BWPortTypeToDisplayString(v10, v11);
-        v8->_loggingPrefix = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%p FigCaptureStreamRef(%p), %@>", v8, v8->_stream, v8->_portTypeShortString];
+        selfCopy->_portTypeShortString = BWPortTypeToDisplayString(v10, v11);
+        selfCopy->_loggingPrefix = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<%p FigCaptureStreamRef(%p), %@>", selfCopy, selfCopy->_stream, selfCopy->_portTypeShortString];
         if (dword_1ED844370)
         {
           v48 = 0;
@@ -374,7 +374,7 @@ LABEL_25:
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
 
-        v8->_supportedProperties = [(BWFigCaptureStream *)v8 copyProperty:*off_1E798A2C8 error:&v50, v35, v36];
+        selfCopy->_supportedProperties = [(BWFigCaptureStream *)selfCopy copyProperty:*off_1E798A2C8 error:&v50, v35, v36];
         if (v50)
         {
           [BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:];
@@ -384,28 +384,28 @@ LABEL_25:
         {
           if ((BWCaptureIsRunningInMacCatalystEnvironment() & 1) == 0 && (BWCaptureIsRunningInIOSAppOnMacEnvironment() & 1) == 0)
           {
-            v8->_staticPropertiesCacheEnabled = [a4 isEqualToString:0x1F21702D0];
+            selfCopy->_staticPropertiesCacheEnabled = [d isEqualToString:0x1F21702D0];
           }
 
-          if (v8->_staticPropertiesCacheEnabled)
+          if (selfCopy->_staticPropertiesCacheEnabled)
           {
             os_unfair_lock_lock(&sStaticCachedPropertiesByPortTypeLock);
-            -[NSMutableDictionary addEntriesFromDictionary:](v8->_cachedProperties, "addEntriesFromDictionary:", [sStaticCachedPropertiesByPortType objectForKeyedSubscript:v8->_portType]);
+            -[NSMutableDictionary addEntriesFromDictionary:](selfCopy->_cachedProperties, "addEntriesFromDictionary:", [sStaticCachedPropertiesByPortType objectForKeyedSubscript:selfCopy->_portType]);
             os_unfair_lock_unlock(&sStaticCachedPropertiesByPortTypeLock);
           }
 
           v13 = *off_1E798A0E8;
-          if ([(NSString *)v8->_portType isEqualToString:*off_1E798A0E8])
+          if ([(NSString *)selfCopy->_portType isEqualToString:*off_1E798A0E8])
           {
-            v14 = [(NSDictionary *)v8->_supportedProperties mutableCopy];
+            v14 = [(NSDictionary *)selfCopy->_supportedProperties mutableCopy];
             [v14 setObject:0 forKeyedSubscript:*off_1E798C1E8];
             [v14 setObject:0 forKeyedSubscript:*off_1E798C1E0];
             [v14 setObject:0 forKeyedSubscript:*off_1E798C1D8];
 
-            v8->_supportedProperties = [v14 copy];
+            selfCopy->_supportedProperties = [v14 copy];
           }
 
-          v8->_uniqueID = [(BWFigCaptureStream *)v8 copyPropertyIfSupported:*off_1E798C240 error:&v50];
+          selfCopy->_uniqueID = [(BWFigCaptureStream *)selfCopy copyPropertyIfSupported:*off_1E798C240 error:&v50];
           if (v50)
           {
             [BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:];
@@ -415,7 +415,7 @@ LABEL_25:
           {
             if (*MEMORY[0x1E695FF58])
             {
-              portType = v8->_portType;
+              portType = selfCopy->_portType;
               v16 = 822151424;
               if ([(NSString *)portType isEqualToString:*off_1E798A0D8])
               {
@@ -461,17 +461,17 @@ LABEL_25:
               v16 = 0;
             }
 
-            v8->_ktraceCodePrefix = v16;
-            [(BWFigCaptureStream *)v8 registerForNotification:*off_1E798B8B8 listener:v8 callback:fcs_handleStreamControlTakenByAnotherClientNotification];
-            [(BWFigCaptureStream *)v8 registerForNotification:*off_1E798B8B0 listener:v8 callback:fcs_handleStreamControlRelinquishedByAnotherClientNotification];
-            [(BWFigCaptureStream *)v8 registerForNotification:*off_1E798B890 listener:v8 callback:fcs_handleFrameReceiveTimeout];
-            [(BWFigCaptureStream *)v8 registerForNotification:*off_1E798B8A0 listener:v8 callback:fcs_reactionsInProgressChanged];
-            [(BWFigCaptureStream *)v8 registerForNotification:*off_1E798B8D0 listener:v8 callback:fcs_suppressedGesture];
-            v8->_vibeMitigationWhileCameraStreamingSupported = 0;
+            selfCopy->_ktraceCodePrefix = v16;
+            [(BWFigCaptureStream *)selfCopy registerForNotification:*off_1E798B8B8 listener:selfCopy callback:fcs_handleStreamControlTakenByAnotherClientNotification];
+            [(BWFigCaptureStream *)selfCopy registerForNotification:*off_1E798B8B0 listener:selfCopy callback:fcs_handleStreamControlRelinquishedByAnotherClientNotification];
+            [(BWFigCaptureStream *)selfCopy registerForNotification:*off_1E798B890 listener:selfCopy callback:fcs_handleFrameReceiveTimeout];
+            [(BWFigCaptureStream *)selfCopy registerForNotification:*off_1E798B8A0 listener:selfCopy callback:fcs_reactionsInProgressChanged];
+            [(BWFigCaptureStream *)selfCopy registerForNotification:*off_1E798B8D0 listener:selfCopy callback:fcs_suppressedGesture];
+            selfCopy->_vibeMitigationWhileCameraStreamingSupported = 0;
             v17 = *off_1E798C270;
-            if ([(NSDictionary *)v8->_supportedProperties objectForKeyedSubscript:*off_1E798C270])
+            if ([(NSDictionary *)selfCopy->_supportedProperties objectForKeyedSubscript:*off_1E798C270])
             {
-              v50 = [(BWFigCaptureStream *)v8 setProperty:v17 value:MEMORY[0x1E695E110]];
+              v50 = [(BWFigCaptureStream *)selfCopy setProperty:v17 value:MEMORY[0x1E695E110]];
               if (v50)
               {
                 v48 = 0;
@@ -490,13 +490,13 @@ LABEL_25:
 
                 if (v20)
                 {
-                  loggingPrefix = v8->_loggingPrefix;
+                  loggingPrefix = selfCopy->_loggingPrefix;
                   v37 = 136315650;
                   v38 = "[BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:]";
                   v39 = 2114;
                   v40 = loggingPrefix;
                   v41 = 1024;
-                  LODWORD(v42) = v50;
+                  LODWORD(streamCopy2) = v50;
                   _os_log_send_and_compose_impl();
                 }
               }
@@ -505,8 +505,8 @@ LABEL_25:
               {
                 if (!dword_1ED844370)
                 {
-                  *a5 = 0;
-                  return v8;
+                  *out = 0;
+                  return selfCopy;
                 }
 
                 v48 = 0;
@@ -525,7 +525,7 @@ LABEL_25:
 
                 if (v24)
                 {
-                  v25 = v8->_loggingPrefix;
+                  v25 = selfCopy->_loggingPrefix;
                   v37 = 136315394;
                   v38 = "[BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:]";
                   v39 = 2114;
@@ -548,10 +548,10 @@ LABEL_25:
   }
 
   v26 = v50;
-  *a5 = v50;
+  *out = v50;
   if (v26)
   {
-    if (v8->_loggingPrefix)
+    if (selfCopy->_loggingPrefix)
     {
       v48 = 0;
       v47 = OS_LOG_TYPE_DEFAULT;
@@ -572,15 +572,15 @@ LABEL_25:
         goto LABEL_60;
       }
 
-      v30 = v8->_loggingPrefix;
+      v30 = selfCopy->_loggingPrefix;
       v37 = 136316162;
       v38 = "[BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:]";
       v39 = 2114;
       v40 = v30;
       v41 = 2048;
-      v42 = a3;
+      streamCopy2 = stream;
       v43 = 2114;
-      v44 = a4;
+      dCopy2 = d;
       v45 = 1024;
       v46 = v50;
     }
@@ -609,11 +609,11 @@ LABEL_25:
       v37 = 136316162;
       v38 = "[BWFigCaptureStream initWithFigCaptureStream:deviceID:errOut:]";
       v39 = 2048;
-      v40 = v8;
+      v40 = selfCopy;
       v41 = 2048;
-      v42 = a3;
+      streamCopy2 = stream;
       v43 = 2114;
-      v44 = a4;
+      dCopy2 = d;
       v45 = 1024;
       v46 = v50;
     }
@@ -625,7 +625,7 @@ LABEL_60:
     return 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -698,23 +698,23 @@ LABEL_60:
 - (BWFigCaptureStreamStartStopDelegate)startStopDelegate
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(FigWeakReference *)self->_startStopDelegateWeakReference referencedObject];
+  referencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference referencedObject];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return referencedObject;
 }
 
-- (void)setStartStopDelegate:(id)a3
+- (void)setStartStopDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(FigWeakReference *)self->_startStopDelegateWeakReference referencedObject];
-  if (!a3 || (v5 ? (v6 = v5 == a3) : (v6 = 1), v6))
+  referencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference referencedObject];
+  if (!delegate || (referencedObject ? (v6 = referencedObject == delegate) : (v6 = 1), v6))
   {
-    if (v5 != a3)
+    if (referencedObject != delegate)
     {
 
-      if (a3)
+      if (delegate)
       {
-        v8 = [[FigWeakReference alloc] initWithReferencedObject:a3];
+        v8 = [[FigWeakReference alloc] initWithReferencedObject:delegate];
       }
 
       else
@@ -730,7 +730,7 @@ LABEL_60:
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"setting delegate to %@ while one is already set %@", a3, v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"setting delegate to %@ while one is already set %@", delegate, referencedObject];
     os_unfair_lock_unlock(&self->_lock);
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -738,21 +738,21 @@ LABEL_60:
   }
 }
 
-- (int)registerForNotification:(__CFString *)a3 listener:(const void *)a4 callback:(void *)a5
+- (int)registerForNotification:(__CFString *)notification listener:(const void *)listener callback:(void *)callback
 {
   CMNotificationCenterGetDefaultLocalCenter();
 
   return FigNotificationCenterAddWeakListener();
 }
 
-- (int)unregisterForNotification:(__CFString *)a3 listener:(const void *)a4
+- (int)unregisterForNotification:(__CFString *)notification listener:(const void *)listener
 {
   CMNotificationCenterGetDefaultLocalCenter();
 
   return FigNotificationCenterRemoveWeakListener();
 }
 
-- (int)enqueueReactionEffect:(id)a3
+- (int)enqueueReactionEffect:(id)effect
 {
   stream = self->_stream;
   v5 = *(CMBaseObjectGetVTable() + 16);
@@ -767,10 +767,10 @@ LABEL_60:
     return -12782;
   }
 
-  return v6(stream, a3);
+  return v6(stream, effect);
 }
 
-- (int)addAttachmentsToSampleBuffer:(opaqueCMSampleBuffer *)a3 options:(id)a4
+- (int)addAttachmentsToSampleBuffer:(opaqueCMSampleBuffer *)buffer options:(id)options
 {
   ktraceCodePrefix = self->_ktraceCodePrefix;
   v8 = MEMORY[0x1E695FF58];
@@ -808,7 +808,7 @@ LABEL_60:
     v12 = *(CMBaseObjectGetVTable() + 16);
     if (*v12 >= 2uLL && (v13 = v12[3]) != 0)
     {
-      v10 = v13(stream, a3, a4);
+      v10 = v13(stream, buffer, options);
     }
 
     else
@@ -825,13 +825,13 @@ LABEL_60:
   return v10;
 }
 
-- (void)setVibeMitigationEnabled:(BOOL)a3
+- (void)setVibeMitigationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_vibeMitigationEnabled != v3)
+  if (self->_vibeMitigationEnabled != enabledCopy)
   {
-    self->_vibeMitigationEnabled = v3;
+    self->_vibeMitigationEnabled = enabledCopy;
     [(BWFigCaptureStream *)self _activateVibeMitigationIfEnabled];
   }
 
@@ -866,12 +866,12 @@ LABEL_60:
 
 - (void)_activateVibeMitigationIfEnabled
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 68));
-    if (*(a1 + 105) == 1)
+    os_unfair_lock_assert_owner((self + 68));
+    if (*(self + 105) == 1)
     {
-      if (*(a1 + 104) == 1 && *(a1 + 72) == 1)
+      if (*(self + 104) == 1 && *(self + 72) == 1)
       {
         if (!dword_1ED844370)
         {
@@ -890,7 +890,7 @@ LABEL_60:
 
       else
       {
-        if (-[BWFigCaptureStream _setProperty:value:requireSupported:lockHeldByCaller:](a1, *off_1E798C270, [MEMORY[0x1E696AD98] numberWithBool:?], 0, 1))
+        if (-[BWFigCaptureStream _setProperty:value:requireSupported:lockHeldByCaller:](self, *off_1E798C270, [MEMORY[0x1E696AD98] numberWithBool:?], 0, 1))
         {
           OUTLINED_FUNCTION_1_5();
           FigDebugAssert3();
@@ -962,7 +962,7 @@ LABEL_15:
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
-    v6 = 0;
+    retainReferencedObject = 0;
     v7 = 0;
     v8 = -12785;
   }
@@ -998,13 +998,13 @@ LABEL_15:
     }
 
     self->_streaming = 0;
-    v6 = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
+    retainReferencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
     v7 = 1;
   }
 
   else
   {
-    v6 = 0;
+    retainReferencedObject = 0;
     v7 = 0;
     v8 = -12780;
   }
@@ -1053,9 +1053,9 @@ LABEL_15:
 LABEL_31:
   if (v7)
   {
-    if (v6)
+    if (retainReferencedObject)
     {
-      [v6 captureStreamDidStop];
+      [retainReferencedObject captureStreamDidStop];
     }
 
     else
@@ -1080,28 +1080,28 @@ LABEL_31:
 
 - (void)_resetStreamingState
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 68));
-    v2 = *(a1 + 72);
+    os_unfair_lock_lock((self + 68));
+    v2 = *(self + 72);
     if (v2 == 1)
     {
-      v3 = [*(a1 + 88) retainReferencedObject];
+      retainReferencedObject = [*(self + 88) retainReferencedObject];
     }
 
     else
     {
-      v3 = 0;
+      retainReferencedObject = 0;
     }
 
-    *(a1 + 72) = 0;
-    [(BWFigCaptureStream *)a1 _activateVibeMitigationIfEnabled];
-    os_unfair_lock_unlock((a1 + 68));
+    *(self + 72) = 0;
+    [(BWFigCaptureStream *)self _activateVibeMitigationIfEnabled];
+    os_unfair_lock_unlock((self + 68));
     if (v2)
     {
-      if (v3)
+      if (retainReferencedObject)
       {
-        [v3 captureStreamDidStop];
+        [retainReferencedObject captureStreamDidStop];
       }
 
       else
@@ -1122,17 +1122,17 @@ LABEL_31:
   }
 }
 
-- (uint64_t)_setProperty:(void *)a3 value:(int)a4 requireSupported:(char)a5 lockHeldByCaller:
+- (uint64_t)_setProperty:(void *)property value:(int)value requireSupported:(char)supported lockHeldByCaller:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   if (CFEqual(cf1, *off_1E798C230))
   {
-    [a3 floatValue];
-    *(a1 + 107) = v10 == 1.0;
+    [property floatValue];
+    *(self + 107) = v10 == 1.0;
   }
 
   specific = dispatch_get_specific(@"BWFigCaptureStreamSetPropertySetPropertyAsyncQueue");
@@ -1142,16 +1142,16 @@ LABEL_31:
     block[1] = 3221225472;
     block[2] = __75__BWFigCaptureStream__setProperty_value_requireSupported_lockHeldByCaller___block_invoke;
     block[3] = &unk_1E79988E0;
-    block[5] = a3;
+    block[5] = property;
     block[6] = cf1;
-    block[4] = a1;
-    v21 = a4;
-    v22 = a5;
+    block[4] = self;
+    valueCopy = value;
+    supportedCopy = supported;
     dispatch_async(specific, block);
     return 0;
   }
 
-  v13 = *(a1 + 76);
+  v13 = *(self + 76);
   v14 = MEMORY[0x1E695FF58];
   if (v13)
   {
@@ -1172,7 +1172,7 @@ LABEL_31:
       OUTLINED_FUNCTION_5_7();
     }
 
-    if ((a5 & 1) == 0)
+    if ((supported & 1) == 0)
     {
       goto LABEL_14;
     }
@@ -1181,17 +1181,17 @@ LABEL_31:
   else
   {
     v16 = 0;
-    if ((a5 & 1) == 0)
+    if ((supported & 1) == 0)
     {
 LABEL_14:
-      os_unfair_lock_lock((a1 + 68));
+      os_unfair_lock_lock((self + 68));
     }
   }
 
-  if (*(a1 + 65))
+  if (*(self + 65))
   {
     v12 = 4294954511;
-    if ((a5 & 1) == 0)
+    if ((supported & 1) == 0)
     {
       goto LABEL_32;
     }
@@ -1205,10 +1205,10 @@ LABEL_26:
     goto LABEL_35;
   }
 
-  v17 = *(a1 + 48);
+  v17 = *(self + 48);
   if (v17 && ![v17 objectForKeyedSubscript:cf1])
   {
-    if (a4)
+    if (value)
     {
       v12 = 4294954509;
     }
@@ -1218,7 +1218,7 @@ LABEL_26:
       v12 = 0;
     }
 
-    if (a5)
+    if (supported)
     {
       goto LABEL_26;
     }
@@ -1226,20 +1226,20 @@ LABEL_26:
 
   else
   {
-    if (([objc_msgSend(*(a1 + 56) objectForKeyedSubscript:{cf1), "isEqual:", a3}] & 1) == 0)
+    if (([objc_msgSend(*(self + 56) objectForKeyedSubscript:{cf1), "isEqual:", property}] & 1) == 0)
     {
       FigCaptureStreamGetFigBaseObject();
     }
 
     v12 = 0;
-    if (a5)
+    if (supported)
     {
       goto LABEL_26;
     }
   }
 
 LABEL_32:
-  os_unfair_lock_unlock((a1 + 68));
+  os_unfair_lock_unlock((self + 68));
   if (v16)
   {
 LABEL_33:
@@ -1261,7 +1261,7 @@ LABEL_35:
   return v12;
 }
 
-- (_DWORD)_copyProperty:(int)a3 requireSupported:(int *)a4 error:
+- (_DWORD)_copyProperty:(int)property requireSupported:(int *)supported error:
 {
   if (result)
   {
@@ -1305,7 +1305,7 @@ LABEL_35:
       v13 = *(v7 + 48);
       if (v13 && ![v13 objectForKeyedSubscript:cf])
       {
-        if (a3)
+        if (property)
         {
           v12 = -12787;
         }
@@ -1345,9 +1345,9 @@ LABEL_35:
       v14 = v12;
     }
 
-    if (a4)
+    if (supported)
     {
-      *a4 = v14;
+      *supported = v14;
     }
 
     return v16;
@@ -1356,21 +1356,21 @@ LABEL_35:
   return result;
 }
 
-- (id)getProperty:(__CFString *)a3 error:(int *)a4
+- (id)getProperty:(__CFString *)property error:(int *)error
 {
-  v4 = [(BWFigCaptureStream *)self _copyProperty:a3 requireSupported:1 error:a4];
+  v4 = [(BWFigCaptureStream *)self _copyProperty:property requireSupported:1 error:error];
 
   return v4;
 }
 
-- (id)getPropertyIfSupported:(__CFString *)a3 error:(int *)a4
+- (id)getPropertyIfSupported:(__CFString *)supported error:(int *)error
 {
-  v4 = [(BWFigCaptureStream *)self _copyProperty:a3 requireSupported:0 error:a4];
+  v4 = [(BWFigCaptureStream *)self _copyProperty:supported requireSupported:0 error:error];
 
   return v4;
 }
 
-- (void)invalidateWhilePreservingTorchState:(BOOL)a3
+- (void)invalidateWhilePreservingTorchState:(BOOL)state
 {
   ktraceCodePrefix = self->_ktraceCodePrefix;
   v6 = MEMORY[0x1E695FF58];
@@ -1400,7 +1400,7 @@ LABEL_35:
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
-    v8 = 0;
+    retainReferencedObject = 0;
     streaming = 0;
     goto LABEL_25;
   }
@@ -1432,8 +1432,8 @@ LABEL_35:
     }
 
     self->_streaming = 0;
-    v8 = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
-    if (a3)
+    retainReferencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
+    if (state)
     {
       goto LABEL_22;
     }
@@ -1441,8 +1441,8 @@ LABEL_35:
     goto LABEL_20;
   }
 
-  v8 = 0;
-  if (!a3)
+  retainReferencedObject = 0;
+  if (!state)
   {
 LABEL_20:
     if ([(NSString *)self->_portType isEqual:*off_1E798A0C0])
@@ -1465,9 +1465,9 @@ LABEL_25:
   os_unfair_lock_unlock(&self->_lock);
   if (streaming)
   {
-    if (v8)
+    if (retainReferencedObject)
     {
-      [v8 captureStreamDidStop];
+      [retainReferencedObject captureStreamDidStop];
     }
 
     else
@@ -1501,12 +1501,12 @@ LABEL_25:
   streaming = self->_streaming;
   if (streaming)
   {
-    v4 = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
+    retainReferencedObject = [(FigWeakReference *)self->_startStopDelegateWeakReference retainReferencedObject];
   }
 
   else
   {
-    v4 = 0;
+    retainReferencedObject = 0;
   }
 
   self->_streaming = 0;
@@ -1514,9 +1514,9 @@ LABEL_25:
   os_unfair_lock_unlock(&self->_lock);
   if (streaming)
   {
-    if (v4)
+    if (retainReferencedObject)
     {
-      [v4 captureStreamDidStop];
+      [retainReferencedObject captureStreamDidStop];
     }
 
     else

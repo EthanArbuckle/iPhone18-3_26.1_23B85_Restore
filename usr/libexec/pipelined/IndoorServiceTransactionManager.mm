@@ -1,11 +1,11 @@
 @interface IndoorServiceTransactionManager
-- (BOOL)closeTransactionWithDescription:(id)a3;
-- (BOOL)hasOpenTransactionWithDescription:(id)a3;
-- (BOOL)isLastOpenTransactionWithDescription:(id)a3;
+- (BOOL)closeTransactionWithDescription:(id)description;
+- (BOOL)hasOpenTransactionWithDescription:(id)description;
+- (BOOL)isLastOpenTransactionWithDescription:(id)description;
 - (IndoorServiceTransactionManager)init;
 - (unint64_t)numOpenTransactions;
 - (void)dealloc;
-- (void)openTransactionWithDescription:(id)a3;
+- (void)openTransactionWithDescription:(id)description;
 @end
 
 @implementation IndoorServiceTransactionManager
@@ -72,9 +72,9 @@
   [(IndoorServiceTransactionManager *)&v3 dealloc];
 }
 
-- (void)openTransactionWithDescription:(id)a3
+- (void)openTransactionWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if (qword_10045B050 != -1)
   {
     sub_10038798C();
@@ -84,15 +84,15 @@
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "IndoorServiceTransactionManager: opening a transaction w/ name %@", &v13, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:descriptionCopy];
   if (v6)
   {
-    v7 = v4;
-    [v4 UTF8String];
+    v7 = descriptionCopy;
+    [descriptionCopy UTF8String];
     v8 = os_transaction_create();
     [v6 addObject:v8];
   }
@@ -100,11 +100,11 @@
   else
   {
     activeTransactions = self->_activeTransactions;
-    v10 = v4;
-    [v4 UTF8String];
+    v10 = descriptionCopy;
+    [descriptionCopy UTF8String];
     v8 = os_transaction_create();
     v11 = [NSMutableArray arrayWithObject:v8];
-    [(NSMutableDictionary *)activeTransactions setObject:v11 forKey:v4];
+    [(NSMutableDictionary *)activeTransactions setObject:v11 forKey:descriptionCopy];
   }
 
   if (qword_10045B050 != -1)
@@ -116,14 +116,14 @@
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "IndoorServiceTransactionManager: opened a transaction w/ name %@", &v13, 0xCu);
   }
 }
 
-- (BOOL)hasOpenTransactionWithDescription:(id)a3
+- (BOOL)hasOpenTransactionWithDescription:(id)description
 {
-  v3 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:description];
   v4 = v3;
   if (v3)
   {
@@ -139,12 +139,12 @@
   }
 }
 
-- (BOOL)isLastOpenTransactionWithDescription:(id)a3
+- (BOOL)isLastOpenTransactionWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(IndoorServiceTransactionManager *)self numOpenTransactions]== 1)
   {
-    v5 = [(IndoorServiceTransactionManager *)self hasOpenTransactionWithDescription:v4];
+    v5 = [(IndoorServiceTransactionManager *)self hasOpenTransactionWithDescription:descriptionCopy];
 
     return v5;
   }
@@ -156,9 +156,9 @@
   }
 }
 
-- (BOOL)closeTransactionWithDescription:(id)a3
+- (BOOL)closeTransactionWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if (qword_10045B050 != -1)
   {
     sub_10038798C();
@@ -168,25 +168,25 @@
   if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *v28 = v4;
+    *v28 = descriptionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "IndoorServiceTransactionManager: request to end transaction w/ name %@", buf, 0xCu);
   }
 
-  v6 = [(IndoorServiceTransactionManager *)self hasOpenTransactionWithDescription:v4];
+  v6 = [(IndoorServiceTransactionManager *)self hasOpenTransactionWithDescription:descriptionCopy];
   if (v6)
   {
-    v7 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_activeTransactions objectForKey:descriptionCopy];
     v8 = v7;
     if (v7)
     {
       if ([v7 count])
       {
-        v9 = [v8 lastObject];
+        lastObject = [v8 lastObject];
         [v8 removeLastObject];
 
         if (![v8 count])
         {
-          [(NSMutableDictionary *)self->_activeTransactions removeObjectForKey:v4];
+          [(NSMutableDictionary *)self->_activeTransactions removeObjectForKey:descriptionCopy];
         }
 
         if (qword_10045B050 == -1)
@@ -200,14 +200,14 @@
       v20 = sub_10034D0D0();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v21 = v4;
-        v22 = [v4 UTF8String];
+        v21 = descriptionCopy;
+        uTF8String = [descriptionCopy UTF8String];
         *buf = 68289795;
         *v28 = 0;
         *&v28[4] = 2082;
         *&v28[6] = "";
         v29 = 2081;
-        v30 = v22;
+        v30 = uTF8String;
         v31 = 2082;
         v32 = "assert";
         v33 = 2081;
@@ -218,14 +218,14 @@
       v23 = sub_10034D0D0();
       if (os_signpost_enabled(v23))
       {
-        v24 = v4;
-        v25 = [v4 UTF8String];
+        v24 = descriptionCopy;
+        uTF8String2 = [descriptionCopy UTF8String];
         *buf = 68289795;
         *v28 = 0;
         *&v28[4] = 2082;
         *&v28[6] = "";
         v29 = 2081;
-        v30 = v25;
+        v30 = uTF8String2;
         v31 = 2082;
         v32 = "assert";
         v33 = 2081;
@@ -236,8 +236,8 @@
       v18 = sub_10034D0D0();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v26 = v4;
-        sub_1003879C8([v4 UTF8String], buf);
+        v26 = descriptionCopy;
+        sub_1003879C8([descriptionCopy UTF8String], buf);
       }
 
       v6 = 89;
@@ -248,14 +248,14 @@
       v12 = sub_10034D0D0();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        v13 = v4;
-        v14 = [v4 UTF8String];
+        v13 = descriptionCopy;
+        uTF8String3 = [descriptionCopy UTF8String];
         *buf = 68289795;
         *v28 = 0;
         *&v28[4] = 2082;
         *&v28[6] = "";
         v29 = 2081;
-        v30 = v14;
+        v30 = uTF8String3;
         v31 = 2082;
         v32 = "assert";
         v33 = 2081;
@@ -266,14 +266,14 @@
       v15 = sub_10034D0D0();
       if (os_signpost_enabled(v15))
       {
-        v16 = v4;
-        v17 = [v4 UTF8String];
+        v16 = descriptionCopy;
+        uTF8String4 = [descriptionCopy UTF8String];
         *buf = 68289795;
         *v28 = 0;
         *&v28[4] = 2082;
         *&v28[6] = "";
         v29 = 2081;
-        v30 = v17;
+        v30 = uTF8String4;
         v31 = 2082;
         v32 = "assert";
         v33 = 2081;
@@ -284,8 +284,8 @@
       v18 = sub_10034D0D0();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = v4;
-        sub_100387A38([v4 UTF8String], buf);
+        v19 = descriptionCopy;
+        sub_100387A38([descriptionCopy UTF8String], buf);
       }
 
       v6 = 88;
@@ -300,7 +300,7 @@ LABEL_11:
     if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      *v28 = v4;
+      *v28 = descriptionCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "IndoorServiceTransactionManager: successfully closed a transaction w/ name %@", buf, 0xCu);
     }
   }

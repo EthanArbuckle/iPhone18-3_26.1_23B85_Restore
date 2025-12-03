@@ -1,32 +1,32 @@
 @interface FCHLSStreamInf
 - (id)description;
-- (void)setPropertiesFromAttributeList:(void *)a1;
+- (void)setPropertiesFromAttributeList:(void *)list;
 @end
 
 @implementation FCHLSStreamInf
 
-- (void)setPropertiesFromAttributeList:(void *)a1
+- (void)setPropertiesFromAttributeList:(void *)list
 {
   v3 = a2;
-  if (a1)
+  if (list)
   {
     v11 = v3;
     v4 = [v3 objectForKeyedSubscript:@"BANDWIDTH"];
-    a1[2] = FCHLSUIntegerFromString(v4);
+    list[2] = FCHLSUIntegerFromString(v4);
     v5 = [v11 objectForKeyedSubscript:@"AVERAGE-BANDWIDTH"];
     v6 = v5;
     if (v5)
     {
-      a1[3] = FCHLSUIntegerFromString(v5);
+      list[3] = FCHLSUIntegerFromString(v5);
     }
 
     v7 = [v11 objectForKeyedSubscript:@"CODECS"];
-    v8 = a1[4];
-    a1[4] = v7;
+    v8 = list[4];
+    list[4] = v7;
 
     v9 = [v11 objectForKeyedSubscript:@"AUDIO"];
-    v10 = a1[5];
-    a1[5] = v9;
+    v10 = list[5];
+    list[5] = v9;
 
     v3 = v11;
   }
@@ -51,9 +51,9 @@
     audio = 0;
   }
 
-  v8 = [v2 stringWithFormat:@"{ Bandwidth: %llu, Average Bandwidth: %llu, codecs: %@, audio: %@", bandwidth, averageBandwidth, v6, audio];
+  audio = [v2 stringWithFormat:@"{ Bandwidth: %llu, Average Bandwidth: %llu, codecs: %@, audio: %@", bandwidth, averageBandwidth, v6, audio];
 
-  return v8;
+  return audio;
 }
 
 @end

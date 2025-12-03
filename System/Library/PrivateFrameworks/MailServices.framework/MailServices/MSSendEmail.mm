@@ -1,17 +1,17 @@
 @interface MSSendEmail
-- (void)_sendEmail:(id)a3 playSound:(BOOL)a4 completionBlock:(id)a5;
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5;
+- (void)_sendEmail:(id)email playSound:(BOOL)sound completionBlock:(id)block;
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback;
 @end
 
 @implementation MSSendEmail
 
-- (void)_sendEmail:(id)a3 playSound:(BOOL)a4 completionBlock:(id)a5
+- (void)_sendEmail:(id)email playSound:(BOOL)sound completionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  emailCopy = email;
+  blockCopy = block;
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+  v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:emailCopy requiringSecureCoding:1 error:0];
   v11 = v10;
   if (v10)
   {
@@ -24,7 +24,7 @@
     v15[1] = 3221225472;
     v15[2] = __52__MSSendEmail__sendEmail_playSound_completionBlock___block_invoke;
     v15[3] = &unk_1E855E998;
-    v16 = v8;
+    v16 = blockCopy;
     [(MSService *)self _callServicesMethod:@"SendEmail" arguments:v12 callback:v15];
   }
 
@@ -39,7 +39,7 @@
     }
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-    (*(v8 + 2))(v8, 0, v12);
+    (*(blockCopy + 2))(blockCopy, 0, v12);
   }
 
   objc_autoreleasePoolPop(v9);
@@ -78,27 +78,27 @@ void __94__MSSendEmail__sendMessageData_autosaveIdentifier_isHMEMessage_sendLate
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_simulateServicesMethod:(id)a3 arguments:(id)a4 callback:(id)a5
+- (void)_simulateServicesMethod:(id)method arguments:(id)arguments callback:(id)callback
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"MailSendMessage"])
+  methodCopy = method;
+  argumentsCopy = arguments;
+  callbackCopy = callback;
+  if ([methodCopy isEqualToString:@"MailSendMessage"])
   {
     v14[0] = @"success";
     v14[1] = @"inAirplaneMode";
     v15[0] = &unk_1F541F2D8;
     v15[1] = &unk_1F541F2F0;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v10[2](v10, v11, 0);
+    callbackCopy[2](callbackCopy, v11, 0);
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = MSSendEmail;
-    [(MSService *)&v13 _simulateServicesMethod:v8 arguments:v9 callback:v10];
+    [(MSService *)&v13 _simulateServicesMethod:methodCopy arguments:argumentsCopy callback:callbackCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];

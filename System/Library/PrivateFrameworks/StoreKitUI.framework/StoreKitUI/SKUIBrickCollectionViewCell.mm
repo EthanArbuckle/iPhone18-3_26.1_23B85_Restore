@@ -7,16 +7,16 @@
 - (void)_removeOverlay;
 - (void)itemImage;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setCountdown:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItemImage:(id)a3;
-- (void)setItemImageHidden:(BOOL)a3;
-- (void)setItemImageInsets:(UIEdgeInsets)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setBackgroundColor:(id)color;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setCountdown:(id)countdown;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItemImage:(id)image;
+- (void)setItemImageHidden:(BOOL)hidden;
+- (void)setItemImageInsets:(UIEdgeInsets)insets;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SKUIBrickCollectionViewCell
@@ -35,9 +35,9 @@
     }
   }
 
-  v11 = [(SKUICountdownView *)self->_countdownView countdown];
+  countdown = [(SKUICountdownView *)self->_countdownView countdown];
 
-  return v11;
+  return countdown;
 }
 
 - (UIImage)itemImage
@@ -47,14 +47,14 @@
     [SKUIBrickCollectionViewCell itemImage];
   }
 
-  v3 = [(UIImageView *)self->_itemImageView image];
+  image = [(UIImageView *)self->_itemImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -67,9 +67,9 @@
     }
   }
 
-  if (self->_accessibilityLabel != v4)
+  if (self->_accessibilityLabel != labelCopy)
   {
-    v13 = [(NSString *)v4 copy];
+    v13 = [(NSString *)labelCopy copy];
     accessibilityLabel = self->_accessibilityLabel;
     self->_accessibilityLabel = v13;
 
@@ -77,9 +77,9 @@
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v4 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -92,11 +92,11 @@
     }
   }
 
-  v13 = [v4 primaryTextColor];
+  primaryTextColor = [schemeCopy primaryTextColor];
   titleColor = self->_titleColor;
-  if (v13 != titleColor && ([(UIColor *)titleColor isEqual:v13]& 1) == 0)
+  if (primaryTextColor != titleColor && ([(UIColor *)titleColor isEqual:primaryTextColor]& 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, v13);
+    objc_storeStrong(&self->_titleColor, primaryTextColor);
     titleLabel = self->_titleLabel;
     if (self->_titleColor)
     {
@@ -105,15 +105,15 @@
 
     else
     {
-      v16 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v16];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
   }
 }
 
-- (void)setCountdown:(id)a3
+- (void)setCountdown:(id)countdown
 {
-  v4 = a3;
+  countdownCopy = countdown;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -126,17 +126,17 @@
     }
   }
 
-  v13 = [(SKUICountdownView *)self->_countdownView countdown];
+  countdown = [(SKUICountdownView *)self->_countdownView countdown];
 
-  if (v13 != v4)
+  if (countdown != countdownCopy)
   {
     [(SKUICountdownView *)self->_countdownView removeFromSuperview];
     countdownView = self->_countdownView;
     self->_countdownView = 0;
 
-    if (v4)
+    if (countdownCopy)
     {
-      v15 = [[SKUICountdownView alloc] initWithCountdown:v4 clientContext:self->_clientContext];
+      v15 = [[SKUICountdownView alloc] initWithCountdown:countdownCopy clientContext:self->_clientContext];
       v16 = self->_countdownView;
       self->_countdownView = v15;
 
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -164,13 +164,13 @@
 
   v13.receiver = self;
   v13.super_class = SKUIBrickCollectionViewCell;
-  [(SKUIBrickCollectionViewCell *)&v13 setHighlighted:v3];
+  [(SKUIBrickCollectionViewCell *)&v13 setHighlighted:highlightedCopy];
   [(SKUIBrickCollectionViewCell *)self _reloadHighlight];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -185,13 +185,13 @@
 
   v13.receiver = self;
   v13.super_class = SKUIBrickCollectionViewCell;
-  [(SKUIBrickCollectionViewCell *)&v13 setSelected:v3];
+  [(SKUIBrickCollectionViewCell *)&v13 setSelected:selectedCopy];
   [(SKUIBrickCollectionViewCell *)self _reloadHighlight];
 }
 
-- (void)setItemImage:(id)a3
+- (void)setItemImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -204,12 +204,12 @@
     }
   }
 
-  v13 = [(UIImageView *)self->_itemImageView image];
+  image = [(UIImageView *)self->_itemImageView image];
 
-  if (v13 != v4)
+  if (image != imageCopy)
   {
     itemImageView = self->_itemImageView;
-    if (v4)
+    if (imageCopy)
     {
       if (!itemImageView)
       {
@@ -219,17 +219,17 @@
 
         [(UIImageView *)self->_itemImageView setAccessibilityLabel:self->_accessibilityLabel];
         v17 = self->_itemImageView;
-        v18 = [(SKUIBrickCollectionViewCell *)self backgroundColor];
-        [(UIImageView *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIBrickCollectionViewCell *)self backgroundColor];
+        [(UIImageView *)v17 setBackgroundColor:backgroundColor];
 
         [(UIImageView *)self->_itemImageView setHidden:[(SKUIBrickCollectionViewCell *)self isItemImageHidden]];
-        v19 = [(SKUIBrickCollectionViewCell *)self contentView];
-        [v19 addSubview:self->_itemImageView];
+        contentView = [(SKUIBrickCollectionViewCell *)self contentView];
+        [contentView addSubview:self->_itemImageView];
 
         itemImageView = self->_itemImageView;
       }
 
-      [(UIImageView *)itemImageView setImage:v4];
+      [(UIImageView *)itemImageView setImage:imageCopy];
       [(UIImageView *)self->_itemImageView sizeToFit];
     }
 
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)setItemImageHidden:(BOOL)a3
+- (void)setItemImageHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -259,19 +259,19 @@
     }
   }
 
-  if (self->_itemImageHidden != v3)
+  if (self->_itemImageHidden != hiddenCopy)
   {
-    self->_itemImageHidden = v3;
-    [(UIImageView *)self->_itemImageView setHidden:v3];
+    self->_itemImageHidden = hiddenCopy;
+    [(UIImageView *)self->_itemImageView setHidden:hiddenCopy];
   }
 }
 
-- (void)setItemImageInsets:(UIEdgeInsets)a3
+- (void)setItemImageInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  left = a3.left;
-  bottom = a3.bottom;
-  top = a3.top;
+  right = insets.right;
+  left = insets.left;
+  bottom = insets.bottom;
+  top = insets.top;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -298,9 +298,9 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -313,11 +313,11 @@
     }
   }
 
-  v13 = [(SKUIBrickCollectionViewCell *)self title];
-  if (v13 != v4 && ([v4 isEqualToString:v13] & 1) == 0)
+  title = [(SKUIBrickCollectionViewCell *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v4)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -326,8 +326,8 @@
         self->_titleLabel = v15;
 
         v17 = self->_titleLabel;
-        v18 = [(SKUIBrickCollectionViewCell *)self backgroundColor];
-        [(UILabel *)v17 setBackgroundColor:v18];
+        backgroundColor = [(SKUIBrickCollectionViewCell *)self backgroundColor];
+        [(UILabel *)v17 setBackgroundColor:backgroundColor];
 
         v19 = self->_titleLabel;
         v20 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -341,15 +341,15 @@
 
         else
         {
-          v23 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v21 setTextColor:v23];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v21 setTextColor:blackColor];
         }
 
         [(SKUIBrickCollectionViewCell *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
       }
 
-      [(UILabel *)titleLabel setText:v4];
+      [(UILabel *)titleLabel setText:titleCopy];
       [(UILabel *)self->_titleLabel sizeToFit];
     }
 
@@ -378,14 +378,14 @@
     }
   }
 
-  v11 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  return v11;
+  return text;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -398,11 +398,11 @@
     }
   }
 
-  [(UIImageView *)self->_itemImageView setBackgroundColor:v4];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v4];
+  [(UIImageView *)self->_itemImageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIBrickCollectionViewCell;
-  [(SKUIBrickCollectionViewCell *)&v13 setBackgroundColor:v4];
+  [(SKUIBrickCollectionViewCell *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (void)layoutSubviews
@@ -456,32 +456,32 @@
       self->_overlayImageView = v3;
 
       v5 = self->_overlayImageView;
-      v6 = [(SKUIBrickCollectionViewCell *)self backgroundColor];
-      [(UIImageView *)v5 setBackgroundColor:v6];
+      backgroundColor = [(SKUIBrickCollectionViewCell *)self backgroundColor];
+      [(UIImageView *)v5 setBackgroundColor:backgroundColor];
 
-      v7 = [(SKUIBrickCollectionViewCell *)self contentView];
-      [v7 addSubview:self->_overlayImageView];
+      contentView = [(SKUIBrickCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_overlayImageView];
 
       [(SKUIBrickCollectionViewCell *)self setNeedsLayout];
     }
 
-    v8 = [(SKUICountdownView *)self->_countdownView backgroundImage];
-    v9 = v8;
-    if (v8)
+    backgroundImage = [(SKUICountdownView *)self->_countdownView backgroundImage];
+    v9 = backgroundImage;
+    if (backgroundImage)
     {
-      v10 = v8;
+      image = backgroundImage;
     }
 
     else
     {
-      v10 = [(UIImageView *)self->_itemImageView image];
+      image = [(UIImageView *)self->_itemImageView image];
     }
 
-    v14 = v10;
+    v14 = image;
 
     v11 = self->_overlayImageView;
-    v12 = [MEMORY[0x277D75348] blackColor];
-    v13 = [v14 _flatImageWithColor:v12];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v13 = [v14 _flatImageWithColor:blackColor];
     [(UIImageView *)v11 setImage:v13];
 
     [(UIImageView *)self->_overlayImageView setAlpha:0.3];

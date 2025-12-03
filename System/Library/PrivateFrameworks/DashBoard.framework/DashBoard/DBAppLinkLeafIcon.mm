@@ -1,19 +1,19 @@
 @interface DBAppLinkLeafIcon
 - (CAFAppLink)appLink;
-- (DBAppLinkLeafIcon)initWithAppLink:(id)a3;
+- (DBAppLinkLeafIcon)initWithAppLink:(id)link;
 @end
 
 @implementation DBAppLinkLeafIcon
 
-- (DBAppLinkLeafIcon)initWithAppLink:(id)a3
+- (DBAppLinkLeafIcon)initWithAppLink:(id)link
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 identifier];
+  linkCopy = link;
+  identifier = [linkCopy identifier];
+  identifier2 = [linkCopy identifier];
   v13.receiver = self;
   v13.super_class = DBAppLinkLeafIcon;
-  v7 = [(SBLeafIcon *)&v13 initWithLeafIdentifier:v5 applicationBundleID:v6];
+  v7 = [(SBLeafIcon *)&v13 initWithLeafIdentifier:identifier applicationBundleID:identifier2];
 
   if (v7)
   {
@@ -21,15 +21,15 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = linkCopy;
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "Creating DBAppLinkLeafIcon from: %@", buf, 0xCu);
     }
 
     v9 = [_TtC9DashBoard27DBAppLinkLeafIconDataSource alloc];
-    v10 = [v4 identifier];
-    v11 = [(DBAppLinkLeafIconDataSource *)v9 initWithIdentifier:v10 application:0 sessionConfiguration:0];
+    identifier3 = [linkCopy identifier];
+    v11 = [(DBAppLinkLeafIconDataSource *)v9 initWithIdentifier:identifier3 application:0 sessionConfiguration:0];
 
-    [(DBAppLinkLeafIconDataSource *)v11 setAppLink:v4];
+    [(DBAppLinkLeafIconDataSource *)v11 setAppLink:linkCopy];
     [(SBLeafIcon *)v7 addIconDataSource:v11];
   }
 
@@ -39,10 +39,10 @@
 - (CAFAppLink)appLink
 {
   objc_opt_class();
-  v3 = [(SBLeafIcon *)self activeDataSource];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  activeDataSource = [(SBLeafIcon *)self activeDataSource];
+  if (activeDataSource && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = activeDataSource;
   }
 
   else
@@ -59,9 +59,9 @@
     }
   }
 
-  v6 = [v4 appLink];
+  appLink = [v4 appLink];
 
-  return v6;
+  return appLink;
 }
 
 @end

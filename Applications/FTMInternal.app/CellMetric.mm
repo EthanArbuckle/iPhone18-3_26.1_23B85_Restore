@@ -1,22 +1,22 @@
 @interface CellMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)sizeTbTotalByStateAtIndex:(unint64_t)a3;
-- (unint64_t)sizeTbTotalByTypeAtIndex:(unint64_t)a3;
-- (unint64_t)ulSizeTbTotalByStateAtIndex:(unint64_t)a3;
-- (unint64_t)ulSizeTbTotalByTypeAtIndex:(unint64_t)a3;
-- (unsigned)sfScheduledByStateAtIndex:(unint64_t)a3;
-- (unsigned)sfScheduledByTypeAtIndex:(unint64_t)a3;
-- (unsigned)ulSfScheduledByStateAtIndex:(unint64_t)a3;
-- (unsigned)ulSfScheduledByTypeAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)sizeTbTotalByStateAtIndex:(unint64_t)index;
+- (unint64_t)sizeTbTotalByTypeAtIndex:(unint64_t)index;
+- (unint64_t)ulSizeTbTotalByStateAtIndex:(unint64_t)index;
+- (unint64_t)ulSizeTbTotalByTypeAtIndex:(unint64_t)index;
+- (unsigned)sfScheduledByStateAtIndex:(unint64_t)index;
+- (unsigned)sfScheduledByTypeAtIndex:(unint64_t)index;
+- (unsigned)ulSfScheduledByStateAtIndex:(unint64_t)index;
+- (unsigned)ulSfScheduledByTypeAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasWakeupMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasWakeupMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellMetric
@@ -36,9 +36,9 @@
   [(CellMetric *)&v3 dealloc];
 }
 
-- (void)setHasWakeupMs:(BOOL)a3
+- (void)setHasWakeupMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -51,116 +51,116 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)sfScheduledByStateAtIndex:(unint64_t)a3
+- (unsigned)sfScheduledByStateAtIndex:(unint64_t)index
 {
   p_sfScheduledByStates = &self->_sfScheduledByStates;
   count = self->_sfScheduledByStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sfScheduledByStates->list[a3];
+  return p_sfScheduledByStates->list[index];
 }
 
-- (unint64_t)sizeTbTotalByStateAtIndex:(unint64_t)a3
+- (unint64_t)sizeTbTotalByStateAtIndex:(unint64_t)index
 {
   p_sizeTbTotalByStates = &self->_sizeTbTotalByStates;
   count = self->_sizeTbTotalByStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sizeTbTotalByStates->list[a3];
+  return p_sizeTbTotalByStates->list[index];
 }
 
-- (unsigned)sfScheduledByTypeAtIndex:(unint64_t)a3
+- (unsigned)sfScheduledByTypeAtIndex:(unint64_t)index
 {
   p_sfScheduledByTypes = &self->_sfScheduledByTypes;
   count = self->_sfScheduledByTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sfScheduledByTypes->list[a3];
+  return p_sfScheduledByTypes->list[index];
 }
 
-- (unint64_t)sizeTbTotalByTypeAtIndex:(unint64_t)a3
+- (unint64_t)sizeTbTotalByTypeAtIndex:(unint64_t)index
 {
   p_sizeTbTotalByTypes = &self->_sizeTbTotalByTypes;
   count = self->_sizeTbTotalByTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_sizeTbTotalByTypes->list[a3];
+  return p_sizeTbTotalByTypes->list[index];
 }
 
-- (unsigned)ulSfScheduledByStateAtIndex:(unint64_t)a3
+- (unsigned)ulSfScheduledByStateAtIndex:(unint64_t)index
 {
   p_ulSfScheduledByStates = &self->_ulSfScheduledByStates;
   count = self->_ulSfScheduledByStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_ulSfScheduledByStates->list[a3];
+  return p_ulSfScheduledByStates->list[index];
 }
 
-- (unint64_t)ulSizeTbTotalByStateAtIndex:(unint64_t)a3
+- (unint64_t)ulSizeTbTotalByStateAtIndex:(unint64_t)index
 {
   p_ulSizeTbTotalByStates = &self->_ulSizeTbTotalByStates;
   count = self->_ulSizeTbTotalByStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_ulSizeTbTotalByStates->list[a3];
+  return p_ulSizeTbTotalByStates->list[index];
 }
 
-- (unsigned)ulSfScheduledByTypeAtIndex:(unint64_t)a3
+- (unsigned)ulSfScheduledByTypeAtIndex:(unint64_t)index
 {
   p_ulSfScheduledByTypes = &self->_ulSfScheduledByTypes;
   count = self->_ulSfScheduledByTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_ulSfScheduledByTypes->list[a3];
+  return p_ulSfScheduledByTypes->list[index];
 }
 
-- (unint64_t)ulSizeTbTotalByTypeAtIndex:(unint64_t)a3
+- (unint64_t)ulSizeTbTotalByTypeAtIndex:(unint64_t)index
 {
   p_ulSizeTbTotalByTypes = &self->_ulSizeTbTotalByTypes;
   count = self->_ulSizeTbTotalByTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_ulSizeTbTotalByTypes->list[a3];
+  return p_ulSizeTbTotalByTypes->list[index];
 }
 
 - (id)description
@@ -168,8 +168,8 @@
   v7.receiver = self;
   v7.super_class = CellMetric;
   v3 = [(CellMetric *)&v7 description];
-  v4 = [(CellMetric *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellMetric *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -219,16 +219,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v25 = v4;
+  v25 = toCopy;
   if (has)
   {
     elapsedMs = self->_elapsedMs;
     PBDataWriterWriteUint32Field();
-    v4 = v25;
+    toCopy = v25;
     has = self->_has;
   }
 
@@ -236,7 +236,7 @@
   {
     wakeupMs = self->_wakeupMs;
     PBDataWriterWriteUint32Field();
-    v4 = v25;
+    toCopy = v25;
   }
 
   if (self->_sfScheduledByStates.count)
@@ -246,7 +246,7 @@
     {
       v9 = self->_sfScheduledByStates.list[v8];
       PBDataWriterWriteUint32Field();
-      v4 = v25;
+      toCopy = v25;
       ++v8;
     }
 
@@ -260,7 +260,7 @@
     {
       v11 = self->_sizeTbTotalByStates.list[v10];
       PBDataWriterWriteUint64Field();
-      v4 = v25;
+      toCopy = v25;
       ++v10;
     }
 
@@ -274,7 +274,7 @@
     {
       v13 = self->_sfScheduledByTypes.list[v12];
       PBDataWriterWriteUint32Field();
-      v4 = v25;
+      toCopy = v25;
       ++v12;
     }
 
@@ -288,7 +288,7 @@
     {
       v15 = self->_sizeTbTotalByTypes.list[v14];
       PBDataWriterWriteUint64Field();
-      v4 = v25;
+      toCopy = v25;
       ++v14;
     }
 
@@ -302,7 +302,7 @@
     {
       v17 = self->_ulSfScheduledByStates.list[v16];
       PBDataWriterWriteUint32Field();
-      v4 = v25;
+      toCopy = v25;
       ++v16;
     }
 
@@ -316,7 +316,7 @@
     {
       v19 = self->_ulSizeTbTotalByStates.list[v18];
       PBDataWriterWriteUint64Field();
-      v4 = v25;
+      toCopy = v25;
       ++v18;
     }
 
@@ -330,7 +330,7 @@
     {
       v21 = self->_ulSfScheduledByTypes.list[v20];
       PBDataWriterWriteUint32Field();
-      v4 = v25;
+      toCopy = v25;
       ++v20;
     }
 
@@ -345,7 +345,7 @@
     {
       v24 = p_ulSizeTbTotalByTypes->list[v23];
       PBDataWriterWriteUint64Field();
-      v4 = v25;
+      toCopy = v25;
       ++v23;
     }
 
@@ -353,31 +353,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[50] = self->_elapsedMs;
-    *(v4 + 208) |= 1u;
+    toCopy[50] = self->_elapsedMs;
+    *(toCopy + 208) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[51] = self->_wakeupMs;
-    *(v4 + 208) |= 2u;
+    toCopy[51] = self->_wakeupMs;
+    *(toCopy + 208) |= 2u;
   }
 
-  v30 = v4;
+  v30 = toCopy;
   if ([(CellMetric *)self sfScheduledByStatesCount])
   {
     [v30 clearSfScheduledByStates];
-    v6 = [(CellMetric *)self sfScheduledByStatesCount];
-    if (v6)
+    sfScheduledByStatesCount = [(CellMetric *)self sfScheduledByStatesCount];
+    if (sfScheduledByStatesCount)
     {
-      v7 = v6;
+      v7 = sfScheduledByStatesCount;
       for (i = 0; i != v7; ++i)
       {
         [v30 addSfScheduledByState:{-[CellMetric sfScheduledByStateAtIndex:](self, "sfScheduledByStateAtIndex:", i)}];
@@ -388,10 +388,10 @@
   if ([(CellMetric *)self sizeTbTotalByStatesCount])
   {
     [v30 clearSizeTbTotalByStates];
-    v9 = [(CellMetric *)self sizeTbTotalByStatesCount];
-    if (v9)
+    sizeTbTotalByStatesCount = [(CellMetric *)self sizeTbTotalByStatesCount];
+    if (sizeTbTotalByStatesCount)
     {
-      v10 = v9;
+      v10 = sizeTbTotalByStatesCount;
       for (j = 0; j != v10; ++j)
       {
         [v30 addSizeTbTotalByState:{-[CellMetric sizeTbTotalByStateAtIndex:](self, "sizeTbTotalByStateAtIndex:", j)}];
@@ -402,10 +402,10 @@
   if ([(CellMetric *)self sfScheduledByTypesCount])
   {
     [v30 clearSfScheduledByTypes];
-    v12 = [(CellMetric *)self sfScheduledByTypesCount];
-    if (v12)
+    sfScheduledByTypesCount = [(CellMetric *)self sfScheduledByTypesCount];
+    if (sfScheduledByTypesCount)
     {
-      v13 = v12;
+      v13 = sfScheduledByTypesCount;
       for (k = 0; k != v13; ++k)
       {
         [v30 addSfScheduledByType:{-[CellMetric sfScheduledByTypeAtIndex:](self, "sfScheduledByTypeAtIndex:", k)}];
@@ -416,10 +416,10 @@
   if ([(CellMetric *)self sizeTbTotalByTypesCount])
   {
     [v30 clearSizeTbTotalByTypes];
-    v15 = [(CellMetric *)self sizeTbTotalByTypesCount];
-    if (v15)
+    sizeTbTotalByTypesCount = [(CellMetric *)self sizeTbTotalByTypesCount];
+    if (sizeTbTotalByTypesCount)
     {
-      v16 = v15;
+      v16 = sizeTbTotalByTypesCount;
       for (m = 0; m != v16; ++m)
       {
         [v30 addSizeTbTotalByType:{-[CellMetric sizeTbTotalByTypeAtIndex:](self, "sizeTbTotalByTypeAtIndex:", m)}];
@@ -430,10 +430,10 @@
   if ([(CellMetric *)self ulSfScheduledByStatesCount])
   {
     [v30 clearUlSfScheduledByStates];
-    v18 = [(CellMetric *)self ulSfScheduledByStatesCount];
-    if (v18)
+    ulSfScheduledByStatesCount = [(CellMetric *)self ulSfScheduledByStatesCount];
+    if (ulSfScheduledByStatesCount)
     {
-      v19 = v18;
+      v19 = ulSfScheduledByStatesCount;
       for (n = 0; n != v19; ++n)
       {
         [v30 addUlSfScheduledByState:{-[CellMetric ulSfScheduledByStateAtIndex:](self, "ulSfScheduledByStateAtIndex:", n)}];
@@ -444,10 +444,10 @@
   if ([(CellMetric *)self ulSizeTbTotalByStatesCount])
   {
     [v30 clearUlSizeTbTotalByStates];
-    v21 = [(CellMetric *)self ulSizeTbTotalByStatesCount];
-    if (v21)
+    ulSizeTbTotalByStatesCount = [(CellMetric *)self ulSizeTbTotalByStatesCount];
+    if (ulSizeTbTotalByStatesCount)
     {
-      v22 = v21;
+      v22 = ulSizeTbTotalByStatesCount;
       for (ii = 0; ii != v22; ++ii)
       {
         [v30 addUlSizeTbTotalByState:{-[CellMetric ulSizeTbTotalByStateAtIndex:](self, "ulSizeTbTotalByStateAtIndex:", ii)}];
@@ -458,10 +458,10 @@
   if ([(CellMetric *)self ulSfScheduledByTypesCount])
   {
     [v30 clearUlSfScheduledByTypes];
-    v24 = [(CellMetric *)self ulSfScheduledByTypesCount];
-    if (v24)
+    ulSfScheduledByTypesCount = [(CellMetric *)self ulSfScheduledByTypesCount];
+    if (ulSfScheduledByTypesCount)
     {
-      v25 = v24;
+      v25 = ulSfScheduledByTypesCount;
       for (jj = 0; jj != v25; ++jj)
       {
         [v30 addUlSfScheduledByType:{-[CellMetric ulSfScheduledByTypeAtIndex:](self, "ulSfScheduledByTypeAtIndex:", jj)}];
@@ -472,10 +472,10 @@
   if ([(CellMetric *)self ulSizeTbTotalByTypesCount])
   {
     [v30 clearUlSizeTbTotalByTypes];
-    v27 = [(CellMetric *)self ulSizeTbTotalByTypesCount];
-    if (v27)
+    ulSizeTbTotalByTypesCount = [(CellMetric *)self ulSizeTbTotalByTypesCount];
+    if (ulSizeTbTotalByTypesCount)
     {
-      v28 = v27;
+      v28 = ulSizeTbTotalByTypesCount;
       for (kk = 0; kk != v28; ++kk)
       {
         [v30 addUlSizeTbTotalByType:{-[CellMetric ulSizeTbTotalByTypeAtIndex:](self, "ulSizeTbTotalByTypeAtIndex:", kk)}];
@@ -484,9 +484,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -513,24 +513,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = *(v4 + 208);
+  v5 = *(equalCopy + 208);
   if (*&self->_has)
   {
-    if ((*(v4 + 208) & 1) == 0 || self->_elapsedMs != *(v4 + 50))
+    if ((*(equalCopy + 208) & 1) == 0 || self->_elapsedMs != *(equalCopy + 50))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 208))
+  else if (*(equalCopy + 208))
   {
 LABEL_20:
     IsEqual = 0;
@@ -539,13 +539,13 @@ LABEL_20:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 208) & 2) == 0 || self->_wakeupMs != *(v4 + 51))
+    if ((*(equalCopy + 208) & 2) == 0 || self->_wakeupMs != *(equalCopy + 51))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 208) & 2) != 0)
+  else if ((*(equalCopy + 208) & 2) != 0)
   {
     goto LABEL_20;
   }
@@ -595,98 +595,98 @@ LABEL_6:
   return v9 ^ v10 ^ PBRepeatedUInt64Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 208);
+  fromCopy = from;
+  v5 = *(fromCopy + 208);
   if (v5)
   {
-    self->_elapsedMs = *(v4 + 50);
+    self->_elapsedMs = *(fromCopy + 50);
     *&self->_has |= 1u;
-    v5 = *(v4 + 208);
+    v5 = *(fromCopy + 208);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_wakeupMs = *(v4 + 51);
+    self->_wakeupMs = *(fromCopy + 51);
     *&self->_has |= 2u;
   }
 
-  v30 = v4;
-  v6 = [v4 sfScheduledByStatesCount];
-  if (v6)
+  v30 = fromCopy;
+  sfScheduledByStatesCount = [fromCopy sfScheduledByStatesCount];
+  if (sfScheduledByStatesCount)
   {
-    v7 = v6;
+    v7 = sfScheduledByStatesCount;
     for (i = 0; i != v7; ++i)
     {
       -[CellMetric addSfScheduledByState:](self, "addSfScheduledByState:", [v30 sfScheduledByStateAtIndex:i]);
     }
   }
 
-  v9 = [v30 sizeTbTotalByStatesCount];
-  if (v9)
+  sizeTbTotalByStatesCount = [v30 sizeTbTotalByStatesCount];
+  if (sizeTbTotalByStatesCount)
   {
-    v10 = v9;
+    v10 = sizeTbTotalByStatesCount;
     for (j = 0; j != v10; ++j)
     {
       -[CellMetric addSizeTbTotalByState:](self, "addSizeTbTotalByState:", [v30 sizeTbTotalByStateAtIndex:j]);
     }
   }
 
-  v12 = [v30 sfScheduledByTypesCount];
-  if (v12)
+  sfScheduledByTypesCount = [v30 sfScheduledByTypesCount];
+  if (sfScheduledByTypesCount)
   {
-    v13 = v12;
+    v13 = sfScheduledByTypesCount;
     for (k = 0; k != v13; ++k)
     {
       -[CellMetric addSfScheduledByType:](self, "addSfScheduledByType:", [v30 sfScheduledByTypeAtIndex:k]);
     }
   }
 
-  v15 = [v30 sizeTbTotalByTypesCount];
-  if (v15)
+  sizeTbTotalByTypesCount = [v30 sizeTbTotalByTypesCount];
+  if (sizeTbTotalByTypesCount)
   {
-    v16 = v15;
+    v16 = sizeTbTotalByTypesCount;
     for (m = 0; m != v16; ++m)
     {
       -[CellMetric addSizeTbTotalByType:](self, "addSizeTbTotalByType:", [v30 sizeTbTotalByTypeAtIndex:m]);
     }
   }
 
-  v18 = [v30 ulSfScheduledByStatesCount];
-  if (v18)
+  ulSfScheduledByStatesCount = [v30 ulSfScheduledByStatesCount];
+  if (ulSfScheduledByStatesCount)
   {
-    v19 = v18;
+    v19 = ulSfScheduledByStatesCount;
     for (n = 0; n != v19; ++n)
     {
       -[CellMetric addUlSfScheduledByState:](self, "addUlSfScheduledByState:", [v30 ulSfScheduledByStateAtIndex:n]);
     }
   }
 
-  v21 = [v30 ulSizeTbTotalByStatesCount];
-  if (v21)
+  ulSizeTbTotalByStatesCount = [v30 ulSizeTbTotalByStatesCount];
+  if (ulSizeTbTotalByStatesCount)
   {
-    v22 = v21;
+    v22 = ulSizeTbTotalByStatesCount;
     for (ii = 0; ii != v22; ++ii)
     {
       -[CellMetric addUlSizeTbTotalByState:](self, "addUlSizeTbTotalByState:", [v30 ulSizeTbTotalByStateAtIndex:ii]);
     }
   }
 
-  v24 = [v30 ulSfScheduledByTypesCount];
-  if (v24)
+  ulSfScheduledByTypesCount = [v30 ulSfScheduledByTypesCount];
+  if (ulSfScheduledByTypesCount)
   {
-    v25 = v24;
+    v25 = ulSfScheduledByTypesCount;
     for (jj = 0; jj != v25; ++jj)
     {
       -[CellMetric addUlSfScheduledByType:](self, "addUlSfScheduledByType:", [v30 ulSfScheduledByTypeAtIndex:jj]);
     }
   }
 
-  v27 = [v30 ulSizeTbTotalByTypesCount];
-  if (v27)
+  ulSizeTbTotalByTypesCount = [v30 ulSizeTbTotalByTypesCount];
+  if (ulSizeTbTotalByTypesCount)
   {
-    v28 = v27;
+    v28 = ulSizeTbTotalByTypesCount;
     for (kk = 0; kk != v28; ++kk)
     {
       -[CellMetric addUlSizeTbTotalByType:](self, "addUlSizeTbTotalByType:", [v30 ulSizeTbTotalByTypeAtIndex:kk]);

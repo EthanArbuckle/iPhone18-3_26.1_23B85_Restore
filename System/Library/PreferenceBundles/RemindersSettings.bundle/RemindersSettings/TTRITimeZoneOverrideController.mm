@@ -1,20 +1,20 @@
 @interface TTRITimeZoneOverrideController
-- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithCoder:(id)a3;
-- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithCoder:(id)coder;
+- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
 - (id)timeZoneOverrideEnabled;
 - (id)timeZoneOverrideSelected;
-- (void)loadTimeZonePickerController:(id)a3;
-- (void)setTimeZoneOverrideEnabled:(id)a3;
+- (void)loadTimeZonePickerController:(id)controller;
+- (void)setTimeZoneOverrideEnabled:(id)enabled;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TTRITimeZoneOverrideController
 
-- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_23C90();
   }
@@ -22,7 +22,7 @@
   return sub_E680();
 }
 
-- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithCoder:(id)a3
+- (_TtC17RemindersSettings30TTRITimeZoneOverrideController)initWithCoder:(id)coder
 {
   *&self->PSListController_opaque[OBJC_IVAR____TtC17RemindersSettings30TTRITimeZoneOverrideController_timeZoneOverrideEnableSwitch] = 0;
   *&self->PSListController_opaque[OBJC_IVAR____TtC17RemindersSettings30TTRITimeZoneOverrideController_timeZonePickerSpecifier] = 0;
@@ -38,19 +38,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_C7A4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_CF48(a3);
+  selfCopy = self;
+  sub_CF48(appear);
 }
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_D560();
 
   if (v3)
@@ -66,26 +66,26 @@
   return v4.super.isa;
 }
 
-- (void)setTimeZoneOverrideEnabled:(id)a3
+- (void)setTimeZoneOverrideEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = self;
-  sub_DC24(v4);
+  enabledCopy = enabled;
+  selfCopy = self;
+  sub_DC24(enabledCopy);
 }
 
 - (id)timeZoneOverrideEnabled
 {
-  v2 = [objc_opt_self() daemonUserDefaults];
-  v3 = [v2 timeZoneOverrideEnabled];
+  daemonUserDefaults = [objc_opt_self() daemonUserDefaults];
+  timeZoneOverrideEnabled = [daemonUserDefaults timeZoneOverrideEnabled];
 
-  v4 = [objc_allocWithZone(NSNumber) initWithBool:v3];
+  v4 = [objc_allocWithZone(NSNumber) initWithBool:timeZoneOverrideEnabled];
 
   return v4;
 }
 
 - (id)timeZoneOverrideSelected
 {
-  v2 = self;
+  selfCopy = self;
   sub_DF10();
 
   v3 = sub_23C80();
@@ -93,10 +93,10 @@
   return v3;
 }
 
-- (void)loadTimeZonePickerController:(id)a3
+- (void)loadTimeZonePickerController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_E744();
 }
 

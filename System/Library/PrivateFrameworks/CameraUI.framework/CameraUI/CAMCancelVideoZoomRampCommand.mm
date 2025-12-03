@@ -1,13 +1,13 @@
 @interface CAMCancelVideoZoomRampCommand
-- (void)executeWithContext:(id)a3;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMCancelVideoZoomRampCommand
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v3 = [a3 currentVideoDevice];
-  [v3 cancelVideoZoomRamp];
+  currentVideoDevice = [context currentVideoDevice];
+  [currentVideoDevice cancelVideoZoomRamp];
 }
 
 @end

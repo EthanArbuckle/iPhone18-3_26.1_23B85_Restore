@@ -1,41 +1,41 @@
 @interface CFXAnimationHelper
-+ (id)_animationWithKeyPath:(id)a3;
-+ (void)animateLayer:(id)a3 forButtonHighlighted:(BOOL)a4 layoutStyle:(int64_t)a5;
-+ (void)animateLayer:(id)a3 toFrame:(CGRect)a4 fromCurrentState:(BOOL)a5;
-+ (void)configurePowerSensitiveAnimation:(id)a3;
++ (id)_animationWithKeyPath:(id)path;
++ (void)animateLayer:(id)layer forButtonHighlighted:(BOOL)highlighted layoutStyle:(int64_t)style;
++ (void)animateLayer:(id)layer toFrame:(CGRect)frame fromCurrentState:(BOOL)state;
++ (void)configurePowerSensitiveAnimation:(id)animation;
 @end
 
 @implementation CFXAnimationHelper
 
-+ (void)animateLayer:(id)a3 toFrame:(CGRect)a4 fromCurrentState:(BOOL)a5
++ (void)animateLayer:(id)layer toFrame:(CGRect)frame fromCurrentState:(BOOL)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v23 = a3;
-  v11 = [v23 presentationLayer];
-  if (v11 && a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  if (presentationLayer && state)
   {
-    v12 = [v23 presentationLayer];
-    v13 = [v12 valueForKeyPath:@"position"];
+    presentationLayer2 = [layerCopy presentationLayer];
+    v13 = [presentationLayer2 valueForKeyPath:@"position"];
   }
 
   else
   {
-    v13 = [v23 valueForKeyPath:@"position"];
+    v13 = [layerCopy valueForKeyPath:@"position"];
   }
 
-  v14 = [v23 presentationLayer];
-  if (v14 && a5)
+  presentationLayer3 = [layerCopy presentationLayer];
+  if (presentationLayer3 && state)
   {
-    v15 = [v23 presentationLayer];
-    v16 = [v15 valueForKeyPath:@"bounds"];
+    presentationLayer4 = [layerCopy presentationLayer];
+    v16 = [presentationLayer4 valueForKeyPath:@"bounds"];
   }
 
   else
   {
-    v16 = [v23 valueForKeyPath:@"bounds"];
+    v16 = [layerCopy valueForKeyPath:@"bounds"];
   }
 
   v25.origin.x = x;
@@ -58,19 +58,19 @@
   v28.size.width = width;
   v28.size.height = height;
   v20 = CGRectGetHeight(v28);
-  [v23 setPosition:{MidX, MidY}];
-  [v23 setBounds:{0.0, 0.0, v19, v20}];
-  v21 = [a1 _animationWithKeyPath:@"position"];
+  [layerCopy setPosition:{MidX, MidY}];
+  [layerCopy setBounds:{0.0, 0.0, v19, v20}];
+  v21 = [self _animationWithKeyPath:@"position"];
   [v21 setFromValue:v13];
-  v22 = [a1 _animationWithKeyPath:@"bounds"];
+  v22 = [self _animationWithKeyPath:@"bounds"];
   [v22 setFromValue:v16];
-  [v23 addAnimation:v21 forKey:@"positionAnimation"];
-  [v23 addAnimation:v22 forKey:@"boundsAnimation"];
+  [layerCopy addAnimation:v21 forKey:@"positionAnimation"];
+  [layerCopy addAnimation:v22 forKey:@"boundsAnimation"];
 }
 
-+ (id)_animationWithKeyPath:(id)a3
++ (id)_animationWithKeyPath:(id)path
 {
-  v3 = [MEMORY[0x277CD9FA0] animationWithKeyPath:a3];
+  v3 = [MEMORY[0x277CD9FA0] animationWithKeyPath:path];
   [v3 setMass:2.0];
   [v3 setStiffness:300.0];
   [v3 setDamping:400.0];
@@ -88,10 +88,10 @@
   return v3;
 }
 
-+ (void)animateLayer:(id)a3 forButtonHighlighted:(BOOL)a4 layoutStyle:(int64_t)a5
++ (void)animateLayer:(id)layer forButtonHighlighted:(BOOL)highlighted layoutStyle:(int64_t)style
 {
-  v6 = a4;
-  v8 = a3;
+  highlightedCopy = highlighted;
+  layerCopy = layer;
   UIAnimationDragCoefficient();
   v10 = v9;
   v11 = [MEMORY[0x277CD9FA0] animationWithKeyPath:@"transform"];
@@ -107,16 +107,16 @@
   v15 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v12 :0.0 :v13 :v14];
   [v11 setTimingFunction:v15];
 
-  v16 = [v8 presentationLayer];
-  v17 = v16;
-  if (v16)
+  presentationLayer = [layerCopy presentationLayer];
+  v17 = presentationLayer;
+  if (presentationLayer)
   {
-    v18 = v16;
+    v18 = presentationLayer;
   }
 
   else
   {
-    v18 = v8;
+    v18 = layerCopy;
   }
 
   v19 = v18;
@@ -145,9 +145,9 @@
   CATransform3DInvert(&b, &a);
   a = v34;
   CATransform3DConcat(&v32, &a, &b);
-  if (v6)
+  if (highlightedCopy)
   {
-    [a1 _highlightScaleForLayoutStyle:a5];
+    [self _highlightScaleForLayoutStyle:style];
     memset(&b, 0, sizeof(b));
     CATransform3DMakeScale(&b, v25, v25, 1.0);
     v29 = v32;
@@ -164,16 +164,16 @@
   v27 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&b];
   [v11 setToValue:v27];
 
-  [v8 addAnimation:v11 forKey:@"highlightScaleAnimation"];
+  [layerCopy addAnimation:v11 forKey:@"highlightScaleAnimation"];
   b = v32;
-  [v8 setTransform:&b];
+  [layerCopy setTransform:&b];
 }
 
-+ (void)configurePowerSensitiveAnimation:(id)a3
++ (void)configurePowerSensitiveAnimation:(id)animation
 {
-  v3 = a3;
-  [v3 setFrameInterval:0.0166666667];
-  [v3 setDiscretizesTime:1];
+  animationCopy = animation;
+  [animationCopy setFrameInterval:0.0166666667];
+  [animationCopy setDiscretizesTime:1];
 }
 
 @end

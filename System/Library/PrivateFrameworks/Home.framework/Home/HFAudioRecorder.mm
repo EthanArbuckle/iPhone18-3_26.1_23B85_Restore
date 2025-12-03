@@ -1,6 +1,6 @@
 @interface HFAudioRecorder
 - (BOOL)_isPowerMeteringTimerValid;
-- (HFAudioRecorder)initWithAudioRecorderDelegate:(id)a3;
+- (HFAudioRecorder)initWithAudioRecorderDelegate:(id)delegate;
 - (HFAudioRecorderDelegate)audioRecorderDelegate;
 - (double)currentRecordedDuration;
 - (id)_audioRecorderSettings;
@@ -13,13 +13,13 @@
 - (void)_setupAudioFileForRecording;
 - (void)_startPowerMeteringTimer;
 - (void)_stopPowerMeteringTimer;
-- (void)audioRecorderDidFinishRecording:(id)a3 successfully:(BOOL)a4;
-- (void)audioSessionDidInterrupt:(id)a3;
-- (void)audioSessionMediaServicesWereLost:(id)a3;
-- (void)audioSessionMediaServicesWereReset:(id)a3;
-- (void)audioSessionRouteChanged:(id)a3;
+- (void)audioRecorderDidFinishRecording:(id)recording successfully:(BOOL)successfully;
+- (void)audioSessionDidInterrupt:(id)interrupt;
+- (void)audioSessionMediaServicesWereLost:(id)lost;
+- (void)audioSessionMediaServicesWereReset:(id)reset;
+- (void)audioSessionRouteChanged:(id)changed;
 - (void)dealloc;
-- (void)playAlertSoundForType:(unint64_t)a3 withCompletion:(id)a4;
+- (void)playAlertSoundForType:(unint64_t)type withCompletion:(id)completion;
 - (void)prepareRecording;
 - (void)startRecording;
 - (void)stopRecording;
@@ -27,10 +27,10 @@
 
 @implementation HFAudioRecorder
 
-- (HFAudioRecorder)initWithAudioRecorderDelegate:(id)a3
+- (HFAudioRecorder)initWithAudioRecorderDelegate:(id)delegate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = HFAudioRecorder;
   v5 = [(HFAudioRecorder *)&v21 init];
@@ -40,7 +40,7 @@
     goto LABEL_7;
   }
 
-  objc_storeWeak(&v5->_audioRecorderDelegate, v4);
+  objc_storeWeak(&v5->_audioRecorderDelegate, delegateCopy);
   v7 = objc_opt_new();
   dateFormatter = v6->_dateFormatter;
   v6->_dateFormatter = v7;
@@ -51,20 +51,20 @@
   [(HFAudioRecorder *)v6 _registerAudioSessionObservers];
   [(HFAudioRecorder *)v6 _setupAudioFileForRecording];
   v9 = objc_alloc(MEMORY[0x277CB83E8]);
-  v10 = [(HFAudioRecorder *)v6 recordingAudiofileURL];
-  v11 = [(HFAudioRecorder *)v6 _audioRecorderSettings];
+  recordingAudiofileURL = [(HFAudioRecorder *)v6 recordingAudiofileURL];
+  _audioRecorderSettings = [(HFAudioRecorder *)v6 _audioRecorderSettings];
   v20 = 0;
-  v12 = [v9 initWithURL:v10 settings:v11 error:&v20];
+  v12 = [v9 initWithURL:recordingAudiofileURL settings:_audioRecorderSettings error:&v20];
   v13 = v20;
   [(HFAudioRecorder *)v6 setAudioRecorder:v12];
 
   if (!v13)
   {
-    v16 = [(HFAudioRecorder *)v6 audioRecorder];
-    [v16 setDelegate:v6];
+    audioRecorder = [(HFAudioRecorder *)v6 audioRecorder];
+    [audioRecorder setDelegate:v6];
 
-    v17 = [(HFAudioRecorder *)v6 audioRecorder];
-    [v17 setMeteringEnabled:1];
+    audioRecorder2 = [(HFAudioRecorder *)v6 audioRecorder];
+    [audioRecorder2 setMeteringEnabled:1];
 
 LABEL_7:
     v15 = v6;
@@ -119,9 +119,9 @@ LABEL_8:
     [(HFAudioRecorder *)self _activateRecordingAudioSession];
   }
 
-  v3 = [(HFAudioRecorder *)self audioRecorder];
+  audioRecorder = [(HFAudioRecorder *)self audioRecorder];
   [(HFAudioRecorder *)self recordingDurationLimit];
-  v4 = [v3 recordForDuration:?];
+  v4 = [audioRecorder recordForDuration:?];
 
   v5 = HFLogForCategory(0xBuLL);
   v6 = v5;
@@ -133,10 +133,10 @@ LABEL_8:
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "AVAudioRecorder failed to start recording", buf, 2u);
     }
 
-    v11 = [(HFAudioRecorder *)self audioRecorderDelegate];
-    if ([v11 conformsToProtocol:&unk_2825BAEE0])
+    audioRecorderDelegate = [(HFAudioRecorder *)self audioRecorderDelegate];
+    if ([audioRecorderDelegate conformsToProtocol:&unk_2825BAEE0])
     {
-      v12 = [(HFAudioRecorder *)self audioRecorderDelegate];
+      audioRecorderDelegate2 = [(HFAudioRecorder *)self audioRecorderDelegate];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -146,9 +146,9 @@ LABEL_16:
         return;
       }
 
-      v11 = [(HFAudioRecorder *)self audioRecorderDelegate];
+      audioRecorderDelegate = [(HFAudioRecorder *)self audioRecorderDelegate];
       v14 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-      [v11 audioRecorderFailedToStartRecording:v14];
+      [audioRecorderDelegate audioRecorderFailedToStartRecording:v14];
     }
 
     goto LABEL_16;
@@ -160,16 +160,16 @@ LABEL_16:
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "AVAudioRecorder started recording successfully", v15, 2u);
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [(HFAudioRecorder *)self setRecordingStartTimeInterval:?];
 
   [(HFAudioRecorder *)self _startPowerMeteringTimer];
   [(HFAudioRecorder *)self setRecording:1];
-  v8 = [(HFAudioRecorder *)self audioRecorderDelegate];
-  if ([v8 conformsToProtocol:&unk_2825BAEE0])
+  audioRecorderDelegate3 = [(HFAudioRecorder *)self audioRecorderDelegate];
+  if ([audioRecorderDelegate3 conformsToProtocol:&unk_2825BAEE0])
   {
-    v9 = [(HFAudioRecorder *)self audioRecorderDelegate];
+    audioRecorderDelegate4 = [(HFAudioRecorder *)self audioRecorderDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -177,16 +177,16 @@ LABEL_16:
       return;
     }
 
-    v8 = [(HFAudioRecorder *)self audioRecorderDelegate];
-    [v8 audioRecorderDidStartRecording:self];
+    audioRecorderDelegate3 = [(HFAudioRecorder *)self audioRecorderDelegate];
+    [audioRecorderDelegate3 audioRecorderDidStartRecording:self];
   }
 }
 
 - (void)stopRecording
 {
   [(HFAudioRecorder *)self _deregisterAudioSessionObservers];
-  v3 = [(HFAudioRecorder *)self audioRecorder];
-  [v3 stop];
+  audioRecorder = [(HFAudioRecorder *)self audioRecorder];
+  [audioRecorder stop];
 }
 
 - (double)currentRecordedDuration
@@ -195,8 +195,8 @@ LABEL_16:
   [(HFAudioRecorder *)self recordingStopTimeInterval];
   if (v3 == 0.0)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v6 = v5;
   }
 
@@ -220,31 +220,31 @@ LABEL_16:
   return v9;
 }
 
-- (void)playAlertSoundForType:(unint64_t)a3 withCompletion:(id)a4
+- (void)playAlertSoundForType:(unint64_t)type withCompletion:(id)completion
 {
-  v6 = a4;
-  if (a3 == 1)
+  completionCopy = completion;
+  if (type == 1)
   {
-    v7 = v6;
-    [(HFAudioRecorder *)self _playStopRecordingToneWithCompletion:v6];
+    v7 = completionCopy;
+    [(HFAudioRecorder *)self _playStopRecordingToneWithCompletion:completionCopy];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
-    [(HFAudioRecorder *)self _playStartRecordingToneWithCompletion:v6];
+    v7 = completionCopy;
+    [(HFAudioRecorder *)self _playStartRecordingToneWithCompletion:completionCopy];
   }
 
-  v6 = v7;
+  completionCopy = v7;
 LABEL_6:
 }
 
-- (void)audioRecorderDidFinishRecording:(id)a3 successfully:(BOOL)a4
+- (void)audioRecorderDidFinishRecording:(id)recording successfully:(BOOL)successfully
 {
   v5 = HFLogForCategory(0xBuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -253,20 +253,20 @@ LABEL_6:
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "AVAudioRecorder stopped recording", v15, 2u);
   }
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v6 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   [(HFAudioRecorder *)self setRecordingStopTimeInterval:?];
 
   [(HFAudioRecorder *)self _stopPowerMeteringTimer];
   [(HFAudioRecorder *)self setRecording:0];
-  v7 = [(HFAudioRecorder *)self recordingAudiofileID];
-  if (v7)
+  recordingAudiofileID = [(HFAudioRecorder *)self recordingAudiofileID];
+  if (recordingAudiofileID)
   {
-    AudioFileClose(v7);
-    v8 = [(HFAudioRecorder *)self audioRecorderDelegate];
-    if ([v8 conformsToProtocol:&unk_2825BAEE0])
+    AudioFileClose(recordingAudiofileID);
+    audioRecorderDelegate = [(HFAudioRecorder *)self audioRecorderDelegate];
+    if ([audioRecorderDelegate conformsToProtocol:&unk_2825BAEE0])
     {
-      v9 = [(HFAudioRecorder *)self audioRecorderDelegate];
+      audioRecorderDelegate2 = [(HFAudioRecorder *)self audioRecorderDelegate];
       v10 = objc_opt_respondsToSelector();
 
       if ((v10 & 1) == 0)
@@ -276,42 +276,42 @@ LABEL_8:
         return;
       }
 
-      v8 = [(HFAudioRecorder *)self audioRecorderDelegate];
-      v11 = [(HFAudioRecorder *)self recordingAudiofileURL];
-      [v8 audioRecorderFinishedRecording:self audioFile:v11];
+      audioRecorderDelegate = [(HFAudioRecorder *)self audioRecorderDelegate];
+      recordingAudiofileURL = [(HFAudioRecorder *)self recordingAudiofileURL];
+      [audioRecorderDelegate audioRecorderFinishedRecording:self audioFile:recordingAudiofileURL];
     }
 
     goto LABEL_8;
   }
 
-  v12 = [(HFAudioRecorder *)self audioRecorderDelegate];
-  if (![v12 conformsToProtocol:&unk_2825BAEE0])
+  audioRecorderDelegate3 = [(HFAudioRecorder *)self audioRecorderDelegate];
+  if (![audioRecorderDelegate3 conformsToProtocol:&unk_2825BAEE0])
   {
     goto LABEL_12;
   }
 
-  v13 = [(HFAudioRecorder *)self audioRecorderDelegate];
+  audioRecorderDelegate4 = [(HFAudioRecorder *)self audioRecorderDelegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v12 = [(HFAudioRecorder *)self audioRecorderDelegate];
-    [v12 audioRecorderFailedToFinishRecording:self];
+    audioRecorderDelegate3 = [(HFAudioRecorder *)self audioRecorderDelegate];
+    [audioRecorderDelegate3 audioRecorderFailedToFinishRecording:self];
 LABEL_12:
   }
 
   [(HFAudioRecorder *)self _cleanup];
 }
 
-- (void)audioSessionDidInterrupt:(id)a3
+- (void)audioSessionDidInterrupt:(id)interrupt
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = HFLogForCategory(0xBuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = interruptCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Audio Session was interrupted [%@]", &v7, 0xCu);
   }
 
@@ -321,15 +321,15 @@ LABEL_12:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereLost:(id)a3
+- (void)audioSessionMediaServicesWereLost:(id)lost
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v5 = HFLogForCategory(0xBuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = lostCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Media Services Were Lost [%@]", &v7, 0xCu);
   }
 
@@ -339,15 +339,15 @@ LABEL_12:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereReset:(id)a3
+- (void)audioSessionMediaServicesWereReset:(id)reset
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   v5 = HFLogForCategory(0xBuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = resetCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Media Services Were Reset [%@]", &v7, 0xCu);
   }
 
@@ -357,28 +357,28 @@ LABEL_12:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionRouteChanged:(id)a3
+- (void)audioSessionRouteChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   if ([(HFAudioRecorder *)self isAudioSessionActive])
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKey:*MEMORY[0x277CB8220]];
-    v7 = [v6 unsignedIntegerValue];
+    userInfo = [changedCopy userInfo];
+    v6 = [userInfo objectForKey:*MEMORY[0x277CB8220]];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-    if ((v7 - 1) <= 1)
+    if ((unsignedIntegerValue - 1) <= 1)
     {
       v8 = HFLogForCategory(0xBuLL);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = changedCopy;
         _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Audio Session Route Changed [%@]", &v11, 0xCu);
       }
 
       [(HFAudioRecorder *)self setRecordingStopSource:3];
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       [(HFAudioRecorder *)self setRouteChangeReason:v9];
 
       [(HFAudioRecorder *)self stopRecording];
@@ -409,47 +409,47 @@ LABEL_12:
 
 - (void)_registerAudioSessionObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_audioSessionDidInterrupt_ name:*MEMORY[0x277CB8068] object:0];
-  [v3 addObserver:self selector:sel_audioSessionRouteChanged_ name:*MEMORY[0x277CB8210] object:0];
-  [v3 addObserver:self selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x277CB8098] object:0];
-  [v3 addObserver:self selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_audioSessionDidInterrupt_ name:*MEMORY[0x277CB8068] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionRouteChanged_ name:*MEMORY[0x277CB8210] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionMediaServicesWereLost_ name:*MEMORY[0x277CB8098] object:0];
+  [defaultCenter addObserver:self selector:sel_audioSessionMediaServicesWereReset_ name:*MEMORY[0x277CB80A0] object:0];
 }
 
 - (void)_deregisterAudioSessionObservers
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8068] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8210] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB8098] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CB80A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8068] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8210] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB8098] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CB80A0] object:0];
 }
 
 - (void)_setupAudioFileForRecording
 {
   v33 = *MEMORY[0x277D85DE8];
   outAudioFile = 0;
-  v3 = [(HFAudioRecorder *)self dateFormatter];
-  [v3 setDateFormat:@"MM-dd-yyyy"];
+  dateFormatter = [(HFAudioRecorder *)self dateFormatter];
+  [dateFormatter setDateFormat:@"MM-dd-yyyy"];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [(HFAudioRecorder *)self dateFormatter];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v7 stringFromDate:v8];
-  v10 = [v4 stringWithFormat:@"%@-%@.%@", v6, v9, @"caf"];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  dateFormatter2 = [(HFAudioRecorder *)self dateFormatter];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [dateFormatter2 stringFromDate:date];
+  v10 = [v4 stringWithFormat:@"%@-%@.%@", uUIDString, v9, @"caf"];
 
   v11 = +[HFUtilities sharedAnnouncementsDirectoryURL];
-  v12 = [v11 path];
+  path = [v11 path];
   v13 = MEMORY[0x277CBEBC0];
-  v14 = [v12 stringByAppendingPathComponent:v10];
+  v14 = [path stringByAppendingPathComponent:v10];
   v15 = [v13 fileURLWithPath:v14];
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  v17 = [v15 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
   v28 = 0;
-  [v16 createDirectoryAtURL:v17 withIntermediateDirectories:1 attributes:0 error:&v28];
+  [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v28];
   v18 = v28;
 
   if (!v18)
@@ -470,9 +470,9 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v22 userInfo:0];
+      uRLByDeletingLastPathComponent2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v22 userInfo:0];
       *v30 = 138412290;
-      v31 = v20;
+      v31 = uRLByDeletingLastPathComponent2;
       v23 = "AudioFormatGetProperty failed with error [%@]";
     }
 
@@ -493,9 +493,9 @@ LABEL_12:
         goto LABEL_12;
       }
 
-      v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v25 userInfo:0];
+      uRLByDeletingLastPathComponent2 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v25 userInfo:0];
       *v30 = 138412290;
-      v31 = v20;
+      v31 = uRLByDeletingLastPathComponent2;
       v23 = "AudioFileCreateWithURL error %@";
     }
 
@@ -506,9 +506,9 @@ LABEL_12:
   v19 = HFLogForCategory(0xBuLL);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v15 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent2 = [v15 URLByDeletingLastPathComponent];
     LODWORD(buf.mSampleRate) = 138412546;
-    *(&buf.mSampleRate + 4) = v20;
+    *(&buf.mSampleRate + 4) = uRLByDeletingLastPathComponent2;
     LOWORD(buf.mFormatFlags) = 2112;
     *(&buf.mFormatFlags + 2) = v18;
     _os_log_error_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_ERROR, "Error creating audio file at path [%@] - [%@]", &buf, 0x16u);
@@ -531,11 +531,11 @@ LABEL_13:
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Now Activiation AudioSession", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v5 = *MEMORY[0x277CB8028];
   v6 = *MEMORY[0x277CB80A8];
   v14 = 0;
-  [v4 setCategory:v5 mode:v6 routeSharingPolicy:0 options:12 error:&v14];
+  [mEMORY[0x277CB83F8] setCategory:v5 mode:v6 routeSharingPolicy:0 options:12 error:&v14];
   v7 = v14;
   if (v7)
   {
@@ -554,9 +554,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v4 setInterruptionFadeDuration:&unk_2825255B0 error:0];
+  [mEMORY[0x277CB83F8] setInterruptionFadeDuration:&unk_2825255B0 error:0];
   v13 = 0;
-  [v4 setActive:1 error:&v13];
+  [mEMORY[0x277CB83F8] setActive:1 error:&v13];
   v11 = v13;
   if (v11)
   {
@@ -598,9 +598,9 @@ LABEL_11:
     _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "Releasing Audio Session", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CB83F8] sharedInstance];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
   v8 = 0;
-  [v4 setActive:0 withOptions:1 error:&v8];
+  [mEMORY[0x277CB83F8] setActive:0 withOptions:1 error:&v8];
   v5 = v8;
   if (v5)
   {
@@ -636,9 +636,9 @@ LABEL_11:
 
 - (void)_startPowerMeteringTimer
 {
-  v3 = [(HFAudioRecorder *)self powerMeteringTimer];
+  powerMeteringTimer = [(HFAudioRecorder *)self powerMeteringTimer];
 
-  if (v3)
+  if (powerMeteringTimer)
   {
     [(HFAudioRecorder *)self _stopPowerMeteringTimer];
   }
@@ -646,17 +646,17 @@ LABEL_11:
   v4 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   [(HFAudioRecorder *)self setPowerMeteringTimer:v4];
 
-  v5 = [(HFAudioRecorder *)self powerMeteringTimer];
-  dispatch_source_set_timer(v5, 0, 0x3F940AAuLL, 0);
+  powerMeteringTimer2 = [(HFAudioRecorder *)self powerMeteringTimer];
+  dispatch_source_set_timer(powerMeteringTimer2, 0, 0x3F940AAuLL, 0);
 
   objc_initWeak(&location, self);
-  v6 = [(HFAudioRecorder *)self powerMeteringTimer];
+  powerMeteringTimer3 = [(HFAudioRecorder *)self powerMeteringTimer];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __43__HFAudioRecorder__startPowerMeteringTimer__block_invoke;
   v11 = &unk_277DF4460;
   objc_copyWeak(&v12, &location);
-  dispatch_source_set_event_handler(v6, &v8);
+  dispatch_source_set_event_handler(powerMeteringTimer3, &v8);
 
   v7 = [(HFAudioRecorder *)self powerMeteringTimer:v8];
   dispatch_resume(v7);
@@ -698,18 +698,18 @@ LABEL_5:
 {
   if ([(HFAudioRecorder *)self _isPowerMeteringTimerValid])
   {
-    v3 = [(HFAudioRecorder *)self powerMeteringTimer];
-    dispatch_source_cancel(v3);
+    powerMeteringTimer = [(HFAudioRecorder *)self powerMeteringTimer];
+    dispatch_source_cancel(powerMeteringTimer);
   }
 }
 
 - (BOOL)_isPowerMeteringTimerValid
 {
-  v3 = [(HFAudioRecorder *)self powerMeteringTimer];
-  if (v3)
+  powerMeteringTimer = [(HFAudioRecorder *)self powerMeteringTimer];
+  if (powerMeteringTimer)
   {
-    v4 = [(HFAudioRecorder *)self powerMeteringTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    powerMeteringTimer2 = [(HFAudioRecorder *)self powerMeteringTimer];
+    v5 = dispatch_source_testcancel(powerMeteringTimer2) == 0;
   }
 
   else

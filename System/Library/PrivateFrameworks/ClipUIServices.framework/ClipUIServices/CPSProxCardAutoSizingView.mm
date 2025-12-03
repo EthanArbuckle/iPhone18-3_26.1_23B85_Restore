@@ -7,8 +7,8 @@
 
 - (CPSProxCardAutoSizingView)init
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -73,9 +73,9 @@
 
 - (void)init
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"PRXCardSizeClass _PRXCardPreferredSizeClassForContainerBounds(CGRect)"];
-  [v0 handleFailureInFunction:v1 file:@"CPSProxCardAutoSizingView.m" lineNumber:12 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"CPSProxCardAutoSizingView.m" lineNumber:12 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

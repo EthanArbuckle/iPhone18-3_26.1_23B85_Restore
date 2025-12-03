@@ -2,14 +2,14 @@
 - (BOOL)isExpired;
 - (NSDate)expirationDate;
 - (_TtC7JetCore12AMSKitAMSBag)init;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
-- (id)integerForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)createSnapshotWithCompletion:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
+- (id)integerForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)createSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation AMSKitAMSBag
@@ -19,7 +19,7 @@
   v3 = (self + OBJC_IVAR____TtC7JetCore12AMSKitAMSBag_amsKitBag);
   v4 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v3[3]);
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1DB50A0F0();
 
   return v6 & 1;
@@ -34,7 +34,7 @@
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(self + OBJC_IVAR____TtC7JetCore12AMSKitAMSBag_amsKitBag + 32);
   __swift_project_boxed_opaque_existential_1((self + OBJC_IVAR____TtC7JetCore12AMSKitAMSBag_amsKitBag), *(self + OBJC_IVAR____TtC7JetCore12AMSKitAMSBag_amsKitBag + 24));
-  v9 = self;
+  selfCopy = self;
   sub_1DB50A090();
 
   v10 = sub_1DB509D40();
@@ -43,92 +43,92 @@
   return v10;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D575C(v5);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D575C(selfCopy);
   if (v6)
   {
     v7 = v6;
     v8 = objc_opt_self();
     v9 = v7;
-    v10 = [v8 promiseWithResult_];
-    v11 = [objc_opt_self() bagValueWithKey:v4 valueType:0 valuePromise:v10];
+    promiseWithResult_ = [v8 promiseWithResult_];
+    v11 = [objc_opt_self() bagValueWithKey:keyCopy valueType:0 valuePromise:promiseWithResult_];
 
-    v4 = v9;
-    v5 = v10;
+    keyCopy = v9;
+    selfCopy = promiseWithResult_;
   }
 
   else
   {
-    v11 = sub_1DB4D6A90(v4, 0);
+    v11 = sub_1DB4D6A90(keyCopy, 0);
   }
 
   return v11;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D6084(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D6084(keyCopy);
 
   return v6;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D620C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D620C(keyCopy);
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D639C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D639C(keyCopy);
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D6520(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D6520(keyCopy);
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D6698(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D6698(keyCopy);
 
   return v6;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1DB4D68D8(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_1DB4D68D8(keyCopy);
 
   return v6;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECC46EB0, &qword_1DB50F750);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -144,7 +144,7 @@
   v13[3] = 0;
   v13[4] = &unk_1DB522498;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1DB419B9C(0, 0, v8, &unk_1DB5224A8, v13);
 }
 

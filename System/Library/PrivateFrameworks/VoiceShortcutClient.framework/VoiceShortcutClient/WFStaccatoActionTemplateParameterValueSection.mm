@@ -1,11 +1,11 @@
 @interface WFStaccatoActionTemplateParameterValueSection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActionTemplateParameterValueSection:(id)a3;
-- (WFStaccatoActionTemplateParameterValueSection)initWithCoder:(id)a3;
-- (WFStaccatoActionTemplateParameterValueSection)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 values:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActionTemplateParameterValueSection:(id)section;
+- (WFStaccatoActionTemplateParameterValueSection)initWithCoder:(id)coder;
+- (WFStaccatoActionTemplateParameterValueSection)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image values:(id)values;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFStaccatoActionTemplateParameterValueSection
@@ -13,48 +13,48 @@
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFStaccatoActionTemplateParameterValueSection *)self title];
-  v5 = [v3 combine:v4];
+  title = [(WFStaccatoActionTemplateParameterValueSection *)self title];
+  v5 = [v3 combine:title];
 
-  v6 = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
-  v7 = [v3 combine:v6];
+  subtitle = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
+  v7 = [v3 combine:subtitle];
 
-  v8 = [(WFStaccatoActionTemplateParameterValueSection *)self image];
-  v9 = [v3 combine:v8];
+  image = [(WFStaccatoActionTemplateParameterValueSection *)self image];
+  v9 = [v3 combine:image];
 
-  v10 = [(WFStaccatoActionTemplateParameterValueSection *)self values];
-  v11 = [v3 combine:v10];
+  values = [(WFStaccatoActionTemplateParameterValueSection *)self values];
+  v11 = [v3 combine:values];
 
   v12 = [v3 finalize];
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplateParameterValueSection *)self isEqualToActionTemplateParameterValueSection:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WFStaccatoActionTemplateParameterValueSection *)self isEqualToActionTemplateParameterValueSection:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToActionTemplateParameterValueSection:(id)a3
+- (BOOL)isEqualToActionTemplateParameterValueSection:(id)section
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  sectionCopy = section;
+  v5 = sectionCopy;
+  if (sectionCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (sectionCopy)
     {
-      v6 = [(WFStaccatoActionTemplateParameterValueSection *)self title];
-      v7 = [(WFStaccatoActionTemplateParameterValueSection *)v5 title];
-      v8 = v6;
-      v9 = v7;
+      title = [(WFStaccatoActionTemplateParameterValueSection *)self title];
+      title2 = [(WFStaccatoActionTemplateParameterValueSection *)v5 title];
+      v8 = title;
+      v9 = title2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -81,10 +81,10 @@ LABEL_32:
         }
       }
 
-      v15 = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
-      v16 = [(WFStaccatoActionTemplateParameterValueSection *)v5 subtitle];
-      v13 = v15;
-      v17 = v16;
+      subtitle = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
+      subtitle2 = [(WFStaccatoActionTemplateParameterValueSection *)v5 subtitle];
+      v13 = subtitle;
+      v17 = subtitle2;
       v12 = v17;
       if (v13 == v17)
       {
@@ -111,10 +111,10 @@ LABEL_31:
         }
       }
 
-      v21 = [(WFStaccatoActionTemplateParameterValueSection *)self image];
-      v22 = [(WFStaccatoActionTemplateParameterValueSection *)v5 image];
-      v19 = v21;
-      v23 = v22;
+      image = [(WFStaccatoActionTemplateParameterValueSection *)self image];
+      image2 = [(WFStaccatoActionTemplateParameterValueSection *)v5 image];
+      v19 = image;
+      v23 = image2;
       v18 = v23;
       v30 = v19;
       if (v19 == v23)
@@ -144,10 +144,10 @@ LABEL_30:
         }
       }
 
-      v26 = [(WFStaccatoActionTemplateParameterValueSection *)self values];
-      v27 = [(WFStaccatoActionTemplateParameterValueSection *)v5 values];
-      v19 = v26;
-      v28 = v27;
+      values = [(WFStaccatoActionTemplateParameterValueSection *)self values];
+      values2 = [(WFStaccatoActionTemplateParameterValueSection *)v5 values];
+      v19 = values;
+      v28 = values2;
       v24 = v28;
       if (v19 == v28)
       {
@@ -180,68 +180,68 @@ LABEL_33:
   v9.receiver = self;
   v9.super_class = WFStaccatoActionTemplateParameterValueSection;
   v4 = [(WFStaccatoActionTemplateParameterValueSection *)&v9 description];
-  v5 = [(WFStaccatoActionTemplateParameterValueSection *)self title];
-  v6 = [(WFStaccatoActionTemplateParameterValueSection *)self values];
-  v7 = [v3 stringWithFormat:@"<%@: %@ [%lu values]>", v4, v5, objc_msgSend(v6, "count")];
+  title = [(WFStaccatoActionTemplateParameterValueSection *)self title];
+  values = [(WFStaccatoActionTemplateParameterValueSection *)self values];
+  v7 = [v3 stringWithFormat:@"<%@: %@ [%lu values]>", v4, title, objc_msgSend(values, "count")];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFStaccatoActionTemplateParameterValueSection *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(WFStaccatoActionTemplateParameterValueSection *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
-  [v4 encodeObject:v6 forKey:@"subtitle"];
+  subtitle = [(WFStaccatoActionTemplateParameterValueSection *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v7 = [(WFStaccatoActionTemplateParameterValueSection *)self image];
-  [v4 encodeObject:v7 forKey:@"image"];
+  image = [(WFStaccatoActionTemplateParameterValueSection *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 
-  v8 = [(WFStaccatoActionTemplateParameterValueSection *)self values];
-  [v4 encodeObject:v8 forKey:@"values"];
+  values = [(WFStaccatoActionTemplateParameterValueSection *)self values];
+  [coderCopy encodeObject:values forKey:@"values"];
 }
 
-- (WFStaccatoActionTemplateParameterValueSection)initWithCoder:(id)a3
+- (WFStaccatoActionTemplateParameterValueSection)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
   v8 = MEMORY[0x1E695DFD8];
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v10 = [v8 setWithArray:v9];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"values"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"values"];
 
   if (v11)
   {
     self = [(WFStaccatoActionTemplateParameterValueSection *)self initWithTitle:v5 subtitle:v6 image:v7 values:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (WFStaccatoActionTemplateParameterValueSection)initWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 values:(id)a6
+- (WFStaccatoActionTemplateParameterValueSection)initWithTitle:(id)title subtitle:(id)subtitle image:(id)image values:(id)values
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  valuesCopy = values;
+  if (!valuesCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameterValueSection.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"values"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStaccatoActionTemplateParameterValueSection.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"values"}];
   }
 
   v25.receiver = self;
@@ -249,16 +249,16 @@ LABEL_33:
   v15 = [(WFStaccatoActionTemplateParameterValueSection *)&v25 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [titleCopy copy];
     title = v15->_title;
     v15->_title = v16;
 
-    v18 = [v12 copy];
+    v18 = [subtitleCopy copy];
     subtitle = v15->_subtitle;
     v15->_subtitle = v18;
 
-    objc_storeStrong(&v15->_image, a5);
-    v20 = [v14 copy];
+    objc_storeStrong(&v15->_image, image);
+    v20 = [valuesCopy copy];
     values = v15->_values;
     v15->_values = v20;
 

@@ -12,8 +12,8 @@
   v3 = [(TVFocusableTextViewAccessibility *)self safeValueForKey:@"descriptionTextView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
-  v6 = [v5 length] != 0;
+  text = [v4 text];
+  v6 = [text length] != 0;
 
   [v4 setIsAccessibilityElement:v6];
   return v6;
@@ -26,8 +26,8 @@
   v7 = 0;
   if (v4)
   {
-    v5 = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusElement];
-    v6 = [v5 _accessibilityAncestorIsKindOf:v3];
+    _accessibilityNativeFocusElement = [*MEMORY[0x29EDC8008] _accessibilityNativeFocusElement];
+    v6 = [_accessibilityNativeFocusElement _accessibilityAncestorIsKindOf:v3];
 
     if (v4 == v6)
     {
@@ -43,9 +43,9 @@
   v2 = [(TVFocusableTextViewAccessibility *)self safeValueForKey:@"descriptionTextView"];
   v3 = __UIAccessibilitySafeClass();
 
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
-  return v4;
+  return accessibilityValue;
 }
 
 @end

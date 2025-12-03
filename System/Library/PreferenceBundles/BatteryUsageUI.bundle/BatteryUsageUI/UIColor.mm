@@ -1,7 +1,7 @@
 @interface UIColor
 - (id)dynamicGrayScaleColor;
 - (id)grayScaleColor;
-- (id)grayScaleColorWithMin:(double)a3 andMax:(double)a4;
+- (id)grayScaleColorWithMin:(double)min andMax:(double)max;
 @end
 
 @implementation UIColor
@@ -12,15 +12,15 @@
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  v2 = self;
-  if ([(UIColor *)v2 getRed:&v8 green:&v7 blue:&v6 alpha:&v5])
+  selfCopy = self;
+  if ([(UIColor *)selfCopy getRed:&v8 green:&v7 blue:&v6 alpha:&v5])
   {
     v3 = [UIColor colorWithWhite:v7 * 0.587 + v8 * 0.299 + v6 * 0.114 alpha:v5];
 
-    v2 = v3;
+    selfCopy = v3;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)dynamicGrayScaleColor
@@ -40,23 +40,23 @@
   return v8;
 }
 
-- (id)grayScaleColorWithMin:(double)a3 andMax:(double)a4
+- (id)grayScaleColorWithMin:(double)min andMax:(double)max
 {
   v13 = 0;
   v14 = 0;
   v11 = 0.0;
   v12 = 0;
-  v6 = self;
-  if ([(UIColor *)v6 getRed:&v14 green:&v13 blue:&v12 alpha:&v11])
+  selfCopy = self;
+  if ([(UIColor *)selfCopy getRed:&v14 green:&v13 blue:&v12 alpha:&v11])
   {
-    [(UIColor *)v6 _luminance];
+    [(UIColor *)selfCopy _luminance];
     v8 = cos(v7 * 3.14159265);
-    v9 = [UIColor colorWithWhite:(a3 + (a4 - a3) * (0.5 - v8 * 0.5)) alpha:v11];
+    v9 = [UIColor colorWithWhite:(min + (max - min) * (0.5 - v8 * 0.5)) alpha:v11];
 
-    v6 = v9;
+    selfCopy = v9;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

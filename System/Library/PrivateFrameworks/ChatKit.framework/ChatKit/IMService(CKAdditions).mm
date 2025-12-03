@@ -22,8 +22,8 @@
 
 - (BOOL)__ck_isSMS
 {
-  v2 = [MEMORY[0x1E69A5CA0] smsService];
-  v3 = v2 == a1;
+  smsService = [MEMORY[0x1E69A5CA0] smsService];
+  v3 = smsService == self;
 
   return v3;
 }
@@ -31,16 +31,16 @@
 - (id)__ck_entryViewDisplayName
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 messageEntryViewUsesAbbreviatedServiceNames];
+  messageEntryViewUsesAbbreviatedServiceNames = [v2 messageEntryViewUsesAbbreviatedServiceNames];
 
-  if (!v3)
+  if (!messageEntryViewUsesAbbreviatedServiceNames)
   {
     goto LABEL_8;
   }
 
-  if (![a1 __ck_isSMS])
+  if (![self __ck_isSMS])
   {
-    if ([a1 __ck_isRCS])
+    if ([self __ck_isRCS])
     {
       if ((IMDeviceIsGreenTea() & 1) != 0 || [MEMORY[0x1E69A8020] IMDeviceIsChinaRegion])
       {
@@ -60,7 +60,7 @@
     }
 
 LABEL_8:
-    v7 = [a1 __ck_displayName];
+    __ck_displayName = [self __ck_displayName];
     goto LABEL_11;
   }
 
@@ -68,63 +68,63 @@ LABEL_8:
   v5 = v4;
   v6 = @"TEXT_MESSAGE_WATCH";
 LABEL_10:
-  v7 = [v4 localizedStringForKey:v6 value:&stru_1F04268F8 table:@"ChatKit"];
+  __ck_displayName = [v4 localizedStringForKey:v6 value:&stru_1F04268F8 table:@"ChatKit"];
 
 LABEL_11:
 
-  return v7;
+  return __ck_displayName;
 }
 
 - (BOOL)__ck_isRCS
 {
-  v2 = [MEMORY[0x1E69A5CA0] rcsService];
-  v3 = v2 == a1;
+  rcsService = [MEMORY[0x1E69A5CA0] rcsService];
+  v3 = rcsService == self;
 
   return v3;
 }
 
 - (uint64_t)__ck_isMadrid
 {
-  if ([a1 __ck_isiMessage])
+  if ([self __ck_isiMessage])
   {
     return 1;
   }
 
-  return [a1 __ck_isiMessageLite];
+  return [self __ck_isiMessageLite];
 }
 
 - (BOOL)__ck_isiMessage
 {
-  v2 = [MEMORY[0x1E69A5CA0] iMessageService];
-  v3 = v2 == a1;
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
+  v3 = iMessageService == self;
 
   return v3;
 }
 
 - (uint64_t)__ck_isiMessageLite
 {
-  v1 = [a1 name];
-  v2 = [v1 isEqualToString:*MEMORY[0x1E69A7AF8]];
+  name = [self name];
+  v2 = [name isEqualToString:*MEMORY[0x1E69A7AF8]];
 
   return v2;
 }
 
 - (uint64_t)__ck_isSatelliteSMS
 {
-  v1 = [a1 name];
-  v2 = [v1 isEqualToString:*MEMORY[0x1E69A7AE8]];
+  name = [self name];
+  v2 = [name isEqualToString:*MEMORY[0x1E69A7AE8]];
 
   return v2;
 }
 
 - (uint64_t)__ck_isCarrierBased
 {
-  if ([a1 __ck_isSMS])
+  if ([self __ck_isSMS])
   {
     return 1;
   }
 
-  return [a1 __ck_isRCS];
+  return [self __ck_isRCS];
 }
 
 - (BOOL)__ck_isSendingAllowedForChat:()CKAdditions
@@ -133,10 +133,10 @@ LABEL_11:
   v5 = 1;
   if (([MEMORY[0x1E69A7F58] isMessagesTheDefaultTextApp] & 1) == 0)
   {
-    v7 = [a1 __ck_isCarrierBased];
+    __ck_isCarrierBased = [self __ck_isCarrierBased];
     if (v4)
     {
-      if (v7 && ![v4 isStewieChat])
+      if (__ck_isCarrierBased && ![v4 isStewieChat])
       {
         v5 = 0;
       }
@@ -149,21 +149,21 @@ LABEL_11:
 - (id)__ck_attributedEntryViewDisplayName
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 messageEntryViewUsesAbbreviatedServiceNames];
+  messageEntryViewUsesAbbreviatedServiceNames = [v2 messageEntryViewUsesAbbreviatedServiceNames];
 
-  if (!v3)
+  if (!messageEntryViewUsesAbbreviatedServiceNames)
   {
     goto LABEL_8;
   }
 
-  if ([a1 __ck_isiMessageLite])
+  if ([self __ck_isiMessageLite])
   {
     v4 = @"MADRID";
   }
 
   else
   {
-    if (![a1 __ck_isSatelliteSMS])
+    if (![self __ck_isSatelliteSMS])
     {
       goto LABEL_8;
     }
@@ -172,18 +172,18 @@ LABEL_11:
   }
 
   v5 = CKFrameworkBundle();
-  v6 = [v5 localizedStringForKey:v4 value:&stru_1F04268F8 table:@"ChatKit"];
+  __ck_entryViewDisplayName = [v5 localizedStringForKey:v4 value:&stru_1F04268F8 table:@"ChatKit"];
 
-  if (v6)
+  if (__ck_entryViewDisplayName)
   {
-    v7 = [a1 ___ck_appendSatelliteGlyphToString:v6];
+    v7 = [self ___ck_appendSatelliteGlyphToString:__ck_entryViewDisplayName];
     goto LABEL_9;
   }
 
 LABEL_8:
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v6 = [a1 __ck_entryViewDisplayName];
-  v7 = [v8 initWithString:v6];
+  __ck_entryViewDisplayName = [self __ck_entryViewDisplayName];
+  v7 = [v8 initWithString:__ck_entryViewDisplayName];
 LABEL_9:
   v9 = v7;
 
@@ -193,18 +193,18 @@ LABEL_9:
 - (id)__ck_attributedEntryViewDisplayNameForSOS
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 messageEntryViewUsesAbbreviatedServiceNames];
+  messageEntryViewUsesAbbreviatedServiceNames = [v2 messageEntryViewUsesAbbreviatedServiceNames];
 
-  if (v3 && (CKFrameworkBundle(), v4 = objc_claimAutoreleasedReturnValue(), [v4 localizedStringForKey:@"TEXT_MESSAGE_SOS" value:&stru_1F04268F8 table:@"ChatKit"], v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  if (messageEntryViewUsesAbbreviatedServiceNames && (CKFrameworkBundle(), v4 = objc_claimAutoreleasedReturnValue(), [v4 localizedStringForKey:@"TEXT_MESSAGE_SOS" value:&stru_1F04268F8 table:@"ChatKit"], __ck_entryViewDisplayName = objc_claimAutoreleasedReturnValue(), v4, __ck_entryViewDisplayName))
   {
-    v6 = [a1 ___ck_appendSatelliteGlyphToString:v5];
+    v6 = [self ___ck_appendSatelliteGlyphToString:__ck_entryViewDisplayName];
   }
 
   else
   {
     v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v5 = [a1 __ck_entryViewDisplayName];
-    v6 = [v7 initWithString:v5];
+    __ck_entryViewDisplayName = [self __ck_entryViewDisplayName];
+    v6 = [v7 initWithString:__ck_entryViewDisplayName];
   }
 
   v8 = v6;
@@ -216,20 +216,20 @@ LABEL_9:
 {
   v6 = a3;
   v7 = a4;
-  if ([a1 __ck_isSMS])
+  if ([self __ck_isSMS])
   {
     v8 = [MEMORY[0x1E69A7F58] IMMMSMaxRecipientsForPhoneNumber:v6 simID:v7];
   }
 
-  else if ([a1 __ck_isRCS])
+  else if ([self __ck_isRCS])
   {
-    v9 = [MEMORY[0x1E69A7F50] sharedManager];
-    v8 = [v9 groupMessagingMaxGroupSizeForPhoneNumber:v6 simID:v7];
+    mEMORY[0x1E69A7F50] = [MEMORY[0x1E69A7F50] sharedManager];
+    v8 = [mEMORY[0x1E69A7F50] groupMessagingMaxGroupSizeForPhoneNumber:v6 simID:v7];
   }
 
   else if ([MEMORY[0x1E69A5CA0] iMessageEnabled])
   {
-    v8 = [a1 maxChatParticipantsForHandle:v6 simID:v7];
+    v8 = [self maxChatParticipantsForHandle:v6 simID:v7];
   }
 
   else
@@ -242,7 +242,7 @@ LABEL_9:
 
 - (uint64_t)__ck_displayReplyColor
 {
-  if ([a1 __ck_isMadrid])
+  if ([self __ck_isMadrid])
   {
     return 10;
   }
@@ -255,12 +255,12 @@ LABEL_9:
 
 - (uint64_t)__ck_serviceType
 {
-  if ([a1 __ck_isSMS])
+  if ([self __ck_isSMS])
   {
     return 3;
   }
 
-  else if ([a1 __ck_isiMessage])
+  else if ([self __ck_isiMessage])
   {
     return 2;
   }
@@ -273,26 +273,26 @@ LABEL_9:
 
 - (uint64_t)__ck_needsEnforceMaxCharacterCount
 {
-  if ([a1 __ck_isiMessageLite])
+  if ([self __ck_isiMessageLite])
   {
     return 1;
   }
 
-  return [a1 __ck_isSatelliteSMS];
+  return [self __ck_isSatelliteSMS];
 }
 
 - (uint64_t)__ck_maxCharacterCountForEnforcing
 {
-  if (![a1 __ck_needsEnforceMaxCharacterCount])
+  if (![self __ck_needsEnforceMaxCharacterCount])
   {
     return 0;
   }
 
-  v2 = [a1 serviceProperties];
-  v3 = [v2 valueForKey:*MEMORY[0x1E69A7B30]];
-  v4 = [v3 intValue];
+  serviceProperties = [self serviceProperties];
+  v3 = [serviceProperties valueForKey:*MEMORY[0x1E69A7B30]];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (id)___ck_appendSatelliteGlyphToString:()CKAdditions
@@ -300,10 +300,10 @@ LABEL_9:
   v3 = [a3 stringByAppendingString:@" "];
   v4 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v3 attributes:0];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 satelliteServiceIcon];
+  satelliteServiceIcon = [v5 satelliteServiceIcon];
 
   v7 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
-  [v7 setImage:v6];
+  [v7 setImage:satelliteServiceIcon];
   v8 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v7];
   [v4 appendAttributedString:v8];
 

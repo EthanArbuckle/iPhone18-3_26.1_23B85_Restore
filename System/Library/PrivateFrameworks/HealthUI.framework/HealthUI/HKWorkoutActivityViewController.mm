@@ -1,39 +1,39 @@
 @interface HKWorkoutActivityViewController
-- (HKWorkoutActivityViewController)initWithWorkout:(id)a3 activity:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 healthStore:(id)a7;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)viewControllerForSampleSelected:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addSectionIfNotNil:(id)a3;
+- (HKWorkoutActivityViewController)initWithWorkout:(id)workout activity:(id)activity displayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)viewControllerForSampleSelected:(id)selected;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addSectionIfNotNil:(id)nil;
 - (void)_loadSections;
 - (void)finishedAggregateQuery;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation HKWorkoutActivityViewController
 
-- (HKWorkoutActivityViewController)initWithWorkout:(id)a3 activity:(id)a4 displayTypeController:(id)a5 unitController:(id)a6 healthStore:(id)a7
+- (HKWorkoutActivityViewController)initWithWorkout:(id)workout activity:(id)activity displayTypeController:(id)controller unitController:(id)unitController healthStore:(id)store
 {
-  v27 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  workoutCopy = workout;
+  activityCopy = activity;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  storeCopy = store;
   v28.receiver = self;
   v28.super_class = HKWorkoutActivityViewController;
   v17 = [(HKTableViewController *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_workout, a3);
-    objc_storeStrong(&v18->_activity, a4);
-    objc_storeStrong(&v18->_displayTypeController, a5);
-    objc_storeStrong(&v18->_unitPreferenceController, a6);
-    objc_storeStrong(&v18->_healthStore, a7);
+    objc_storeStrong(&v17->_workout, workout);
+    objc_storeStrong(&v18->_activity, activity);
+    objc_storeStrong(&v18->_displayTypeController, controller);
+    objc_storeStrong(&v18->_unitPreferenceController, unitController);
+    objc_storeStrong(&v18->_healthStore, store);
     v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v20 = MEMORY[0x1E696C588];
-    v21 = [v13 workoutConfiguration];
-    v22 = [v20 _stringFromWorkoutActivityType:{objc_msgSend(v21, "activityType")}];
+    workoutConfiguration = [activityCopy workoutConfiguration];
+    v22 = [v20 _stringFromWorkoutActivityType:{objc_msgSend(workoutConfiguration, "activityType")}];
     v23 = [v19 localizedStringForKey:v22 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
     [(HKWorkoutActivityViewController *)v18 setTitle:v23];
@@ -47,9 +47,9 @@
   return v18;
 }
 
-- (void)_addSectionIfNotNil:(id)a3
+- (void)_addSectionIfNotNil:(id)nil
 {
-  if (a3)
+  if (nil)
   {
     [(NSMutableArray *)self->_sections addObject:?];
   }
@@ -57,14 +57,14 @@
 
 - (void)finishedAggregateQuery
 {
-  v2 = [(HKWorkoutActivityViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(HKWorkoutActivityViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)viewControllerForSampleSelected:(id)a3
+- (id)viewControllerForSampleSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [[HKDataMetadataViewController alloc] initWithSample:v4 usingInsetStyling:1 profileName:0 delegate:self];
+  selectedCopy = selected;
+  v5 = [[HKDataMetadataViewController alloc] initWithSample:selectedCopy usingInsetStyling:1 profileName:0 delegate:self];
 
   return v5;
 }
@@ -80,43 +80,43 @@
   [(HKWorkoutActivityViewController *)self _addSectionIfNotNil:v5];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 sectionTitle];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  sectionTitle = [v4 sectionTitle];
 
-  return v5;
+  return sectionTitle;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 numberOfRowsInSection];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  numberOfRowsInSection = [v4 numberOfRowsInSection];
 
-  return v5;
+  return numberOfRowsInSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v6 section]);
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [pathCopy row];
 
-  v10 = [v8 cellForIndex:v9 tableView:v7];
+  v10 = [v8 cellForIndex:v9 tableView:viewCopy];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v9 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v6 section]);
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v7 = [pathCopy row];
 
-  v8 = [(HKWorkoutActivityViewController *)self navigationController];
-  [v9 selectCellForIndex:v7 navigationController:v8 animated:1];
+  navigationController = [(HKWorkoutActivityViewController *)self navigationController];
+  [v9 selectCellForIndex:v7 navigationController:navigationController animated:1];
 }
 
 @end

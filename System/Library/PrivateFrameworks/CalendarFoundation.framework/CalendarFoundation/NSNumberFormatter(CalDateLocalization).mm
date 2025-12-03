@@ -7,7 +7,7 @@
 - (id)stringFromInteger:()CalDateLocalization
 {
   v2 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-  v3 = [a1 stringFromNumber:v2];
+  v3 = [self stringFromNumber:v2];
 
   return v3;
 }

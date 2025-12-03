@@ -2,28 +2,28 @@
 + (PKIdentityIntentToStore)mayStoreIntent;
 + (PKIdentityIntentToStore)mayStoreIntentForDays:(NSInteger)days;
 + (PKIdentityIntentToStore)willNotStoreIntent;
-- (PKIdentityIntentToStore)initWithDIIdentityIntentToStore:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKIdentityIntentToStore)initWithDIIdentityIntentToStore:(id)store;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKIdentityIntentToStore
 
-- (PKIdentityIntentToStore)initWithDIIdentityIntentToStore:(id)a3
+- (PKIdentityIntentToStore)initWithDIIdentityIntentToStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = PKIdentityIntentToStore;
   v5 = [(PKIdentityIntentToStore *)&v8 init];
   wrapped = v5->_wrapped;
-  v5->_wrapped = v4;
+  v5->_wrapped = storeCopy;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKIdentityIntentToStore alloc];
-  v6 = [(DIIdentityIntentToStore *)self->_wrapped copyWithZone:a3];
+  v6 = [(DIIdentityIntentToStore *)self->_wrapped copyWithZone:zone];
   v7 = [(PKIdentityIntentToStore *)v5 initWithDIIdentityIntentToStore:v6];
 
   return v7;
@@ -32,8 +32,8 @@
 + (PKIdentityIntentToStore)willNotStoreIntent
 {
   v2 = [PKIdentityIntentToStore alloc];
-  v3 = [MEMORY[0x1E6997DC0] willNotStoreIntent];
-  v4 = [(PKIdentityIntentToStore *)v2 initWithDIIdentityIntentToStore:v3];
+  willNotStoreIntent = [MEMORY[0x1E6997DC0] willNotStoreIntent];
+  v4 = [(PKIdentityIntentToStore *)v2 initWithDIIdentityIntentToStore:willNotStoreIntent];
 
   return v4;
 }
@@ -41,8 +41,8 @@
 + (PKIdentityIntentToStore)mayStoreIntent
 {
   v2 = [PKIdentityIntentToStore alloc];
-  v3 = [MEMORY[0x1E6997DC0] mayStoreIntent];
-  v4 = [(PKIdentityIntentToStore *)v2 initWithDIIdentityIntentToStore:v3];
+  mayStoreIntent = [MEMORY[0x1E6997DC0] mayStoreIntent];
+  v4 = [(PKIdentityIntentToStore *)v2 initWithDIIdentityIntentToStore:mayStoreIntent];
 
   return v4;
 }

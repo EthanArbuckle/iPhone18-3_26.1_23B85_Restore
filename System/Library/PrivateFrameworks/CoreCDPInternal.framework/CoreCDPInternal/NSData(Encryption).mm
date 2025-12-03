@@ -11,22 +11,22 @@
   v4 = a3;
   v5 = MEMORY[0x277CBEB28];
   v6 = IV_LENGTH;
-  v7 = [a1 length];
-  v8 = [v5 dataWithLength:v7 + v6 + TAG_LENGTH];
-  v9 = [a1 _randomDataGeneratorWithNumberOfBytes:IV_LENGTH];
+  v7 = [self length];
+  tAG_LENGTH = [v5 dataWithLength:v7 + v6 + TAG_LENGTH];
+  v9 = [self _randomDataGeneratorWithNumberOfBytes:IV_LENGTH];
   if (v9)
   {
     [v4 bytes];
     [v4 length];
     [v9 bytes];
     [v9 length];
-    [a1 bytes];
-    v10 = [a1 length];
-    v11 = [v8 mutableBytes];
-    v12 = v11 + IV_LENGTH;
-    v13 = [v8 mutableBytes];
+    [self bytes];
+    v10 = [self length];
+    mutableBytes = [tAG_LENGTH mutableBytes];
+    v12 = mutableBytes + IV_LENGTH;
+    mutableBytes2 = [tAG_LENGTH mutableBytes];
     v14 = IV_LENGTH;
-    v23 = v13 + v14 + [a1 length];
+    v23 = mutableBytes2 + v14 + [self length];
     v24 = TAG_LENGTH;
     v15 = CCCryptorGCMOneshotEncrypt();
     if (v15)
@@ -43,10 +43,10 @@
 
     else
     {
-      v20 = [v8 mutableBytes];
-      v21 = [v9 bytes];
-      memcpy(v20, v21, IV_LENGTH);
-      v18 = [v8 copy];
+      mutableBytes3 = [tAG_LENGTH mutableBytes];
+      bytes = [v9 bytes];
+      memcpy(mutableBytes3, bytes, IV_LENGTH);
+      v18 = [tAG_LENGTH copy];
     }
   }
 
@@ -68,22 +68,22 @@
 {
   v4 = MEMORY[0x277CBEB28];
   v5 = a3;
-  v6 = [a1 length];
+  v6 = [self length];
   v7 = [v4 dataWithLength:v6 - (IV_LENGTH + TAG_LENGTH)];
   v8 = [MEMORY[0x277CBEB28] dataWithLength:IV_LENGTH];
-  v9 = [v8 mutableBytes];
-  v10 = [a1 bytes];
-  memcpy(v9, v10, IV_LENGTH);
+  mutableBytes = [v8 mutableBytes];
+  bytes = [self bytes];
+  memcpy(mutableBytes, bytes, IV_LENGTH);
   [v5 bytes];
   [v5 length];
 
   [v8 bytes];
   [v8 length];
-  [a1 bytes];
+  [self bytes];
   v11 = [v7 length];
-  v12 = [v7 mutableBytes];
-  v13 = [a1 bytes];
-  v14 = v13 + IV_LENGTH;
+  mutableBytes2 = [v7 mutableBytes];
+  bytes2 = [self bytes];
+  v14 = bytes2 + IV_LENGTH;
   v20 = v14 + [v7 length];
   v21 = TAG_LENGTH;
   v15 = CCCryptorGCMOneshotDecrypt();

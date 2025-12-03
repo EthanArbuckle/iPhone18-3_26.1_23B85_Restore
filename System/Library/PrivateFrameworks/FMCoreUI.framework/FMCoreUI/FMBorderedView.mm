@@ -2,37 +2,37 @@
 - (UIColor)borderColor;
 - (double)borderWidth;
 - (double)cornerRadius;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setCornerRadius:(double)a3;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation FMBorderedView
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  if (a3 >= 0.0)
+  if (width >= 0.0)
   {
-    v7 = a3;
+    widthCopy = width;
     [(FMBorderedView *)self setHairlineBorder:0];
   }
 
   else
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     [(FMBorderedView *)self setHairlineBorder:1];
-    v7 = 1.0;
+    widthCopy = 1.0;
     if (v6 > 1.0)
     {
-      v7 = 1.0 / v6;
+      widthCopy = 1.0 / v6;
     }
   }
 
-  v8 = [(FMBorderedView *)self layer];
-  [v8 setBorderWidth:v7];
+  layer = [(FMBorderedView *)self layer];
+  [layer setBorderWidth:widthCopy];
 }
 
 - (double)borderWidth
@@ -42,41 +42,41 @@
     return -1.0;
   }
 
-  v4 = [(FMBorderedView *)self layer];
-  [v4 borderWidth];
+  layer = [(FMBorderedView *)self layer];
+  [layer borderWidth];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = [(FMBorderedView *)self layer];
-  [v4 setCornerRadius:a3];
+  layer = [(FMBorderedView *)self layer];
+  [layer setCornerRadius:radius];
 }
 
 - (double)cornerRadius
 {
-  v2 = [(FMBorderedView *)self layer];
-  [v2 cornerRadius];
+  layer = [(FMBorderedView *)self layer];
+  [layer cornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v7 = [(FMBorderedView *)self layer];
-  [v7 setBorderColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  layer = [(FMBorderedView *)self layer];
+  [layer setBorderColor:cGColor];
 }
 
 - (UIColor)borderColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(FMBorderedView *)self layer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "borderColor")}];
+  layer = [(FMBorderedView *)self layer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(layer, "borderColor")}];
 
   return v4;
 }

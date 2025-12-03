@@ -3,9 +3,9 @@
 - (BOOL)firstPartyCall;
 - (CSCXPhoneCallStateMonitor)init;
 - (unint64_t)phoneCallState;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 @end
 
 @implementation CSCXPhoneCallStateMonitor
@@ -51,20 +51,20 @@
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
         {
           v9 = v8;
-          v10 = [v7 hasConnected];
-          v11 = [v7 isOnHold];
-          v12 = [v7 hasEnded];
-          v13 = [v7 isOutgoing];
+          hasConnected = [v7 hasConnected];
+          isOnHold = [v7 isOnHold];
+          hasEnded = [v7 hasEnded];
+          isOutgoing = [v7 isOutgoing];
           *buf = v17;
           v24 = "[CSCXPhoneCallStateMonitor phoneCallState]";
           v25 = 1024;
-          v26 = v10;
+          v26 = hasConnected;
           v27 = 1024;
-          v28 = v11;
+          v28 = isOnHold;
           v29 = 1024;
-          v30 = v12;
+          v30 = hasEnded;
           v31 = 1024;
-          v32 = v13;
+          v32 = isOutgoing;
           _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s Call : [connected:%d] [onhold:%d] [hasEnd:%d] [isOutputgoing:%d]", buf, 0x24u);
         }
 
@@ -139,24 +139,24 @@ LABEL_23:
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 providerIdentifier];
+        providerIdentifier = [v8 providerIdentifier];
         v10 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315394;
           v24 = "[CSCXPhoneCallStateMonitor firstPartyCall]";
           v25 = 2112;
-          v26 = v9;
+          v26 = providerIdentifier;
           _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s Call : [providerIdentifier: %@]", buf, 0x16u);
         }
 
-        if (!v9)
+        if (!providerIdentifier)
         {
           v6 = 0;
           goto LABEL_18;
         }
 
-        v11 = [(TUCallProviderManager *)self->_tuCallProviderManager providerWithIdentifier:v9];
+        v11 = [(TUCallProviderManager *)self->_tuCallProviderManager providerWithIdentifier:providerIdentifier];
         v12 = v11;
         if (v11)
         {
@@ -167,11 +167,11 @@ LABEL_23:
             if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
             {
               v14 = v13;
-              v15 = [v8 providerIdentifier];
+              providerIdentifier2 = [v8 providerIdentifier];
               *buf = 136315394;
               v24 = "[CSCXPhoneCallStateMonitor firstPartyCall]";
               v25 = 2112;
-              v26 = v15;
+              v26 = providerIdentifier2;
               _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Call identifier is not first party: %@", buf, 0x16u);
 
               v6 = 0;
@@ -201,29 +201,29 @@ LABEL_18:
   return v6 & 1;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = a4;
-    v9 = [v8 hasConnected];
-    v10 = [v8 isOnHold];
-    v11 = [v8 hasEnded];
-    v12 = [v8 isOutgoing];
+    changedCopy = changed;
+    hasConnected = [changedCopy hasConnected];
+    isOnHold = [changedCopy isOnHold];
+    hasEnded = [changedCopy hasEnded];
+    isOutgoing = [changedCopy isOutgoing];
 
     *buf = 136316162;
     v16 = "[CSCXPhoneCallStateMonitor callObserver:callChanged:]";
     v17 = 1024;
-    v18 = v9;
+    v18 = hasConnected;
     v19 = 1024;
-    v20 = v10;
+    v20 = isOnHold;
     v21 = 1024;
-    v22 = v11;
+    v22 = hasEnded;
     v23 = 1024;
-    v24 = v12;
+    v24 = isOutgoing;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Received Call Observer Input : [connected:%d] [onhold:%d] [hasEnd:%d] [isOutputgoing:%d]", buf, 0x24u);
   }
 
@@ -263,9 +263,9 @@ void __54__CSCXPhoneCallStateMonitor_callObserver_callChanged___block_invoke(uin
   [(CSPhoneCallStateMonitor *)self deregisterDropInCallNotification];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v8 = a3;
+  queueCopy = queue;
   if (!self->_callObserver)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695AF00]);
@@ -289,7 +289,7 @@ void __54__CSCXPhoneCallStateMonitor_callObserver_callChanged___block_invoke(uin
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -297,10 +297,10 @@ void __54__CSCXPhoneCallStateMonitor_callObserver_callChanged___block_invoke(uin
     v5.receiver = self;
     v5.super_class = CSCXPhoneCallStateMonitor;
     self = [(CSEventMonitor *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __43__CSCXPhoneCallStateMonitor_sharedInstance__block_invoke()

@@ -1,11 +1,11 @@
 @interface CAAnimationGroup
 - (NSArray)animations;
-- (unsigned)_propertyFlagsForLayer:(id)a3;
+- (unsigned)_propertyFlagsForLayer:(id)layer;
 - (void)CA_prepareRenderValue;
-- (void)_copyRenderAnimationForLayer:(id)a3;
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5;
+- (void)_copyRenderAnimationForLayer:(id)layer;
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject;
 - (void)setAnimations:(NSArray *)animations;
-- (void)setDefaultDuration:(double)a3;
+- (void)setDefaultDuration:(double)duration;
 @end
 
 @implementation CAAnimationGroup
@@ -20,11 +20,11 @@
 
 - (void)CA_prepareRenderValue
 {
-  v2 = [(CAAnimationGroup *)self animations];
-  if (v2)
+  animations = [(CAAnimationGroup *)self animations];
+  if (animations)
   {
-    v3 = v2;
-    v4 = [(NSArray *)v2 count];
+    v3 = animations;
+    v4 = [(NSArray *)animations count];
     if (v4)
     {
       v5 = v4;
@@ -43,16 +43,16 @@
   CAAnimation_setter(self, 0x29, 3, v3);
 }
 
-- (unsigned)_propertyFlagsForLayer:(id)a3
+- (unsigned)_propertyFlagsForLayer:(id)layer
 {
-  v4 = [(CAAnimationGroup *)self animations];
-  if (!v4)
+  animations = [(CAAnimationGroup *)self animations];
+  if (!animations)
   {
     return 0;
   }
 
-  v5 = v4;
-  v6 = [(NSArray *)v4 count];
+  v5 = animations;
+  v6 = [(NSArray *)animations count];
   if (!v6)
   {
     return 0;
@@ -63,18 +63,18 @@
   v9 = 0;
   do
   {
-    v9 |= [-[NSArray objectAtIndex:](v5 objectAtIndex:{v8++), "_propertyFlagsForLayer:", a3}];
+    v9 |= [-[NSArray objectAtIndex:](v5 objectAtIndex:{v8++), "_propertyFlagsForLayer:", layer}];
   }
 
   while (v7 != v8);
   return v9;
 }
 
-- (void)_copyRenderAnimationForLayer:(id)a3
+- (void)_copyRenderAnimationForLayer:(id)layer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [(CAAnimationGroup *)self animations];
-  v6 = [(NSArray *)v5 count];
+  animations = [(CAAnimationGroup *)self animations];
+  v6 = [(NSArray *)animations count];
   if (!v6)
   {
     return 0;
@@ -102,7 +102,7 @@ LABEL_5:
   v12 = 0;
   do
   {
-    v13 = [-[NSArray objectAtIndex:](v5 objectAtIndex:{v10), "_copyRenderAnimationForLayer:", a3}];
+    v13 = [-[NSArray objectAtIndex:](animations objectAtIndex:{v10), "_copyRenderAnimationForLayer:", layer}];
     if (v13)
     {
       v11 |= *(v13 + 12) >> 8;
@@ -144,7 +144,7 @@ LABEL_5:
 
   v21.receiver = self;
   v21.super_class = CAAnimationGroup;
-  if ([(CAAnimation *)&v21 _setCARenderAnimation:v14 layer:a3])
+  if ([(CAAnimation *)&v21 _setCARenderAnimation:v14 layer:layer])
   {
     v16 = CA::Render::Array::new_array(v12, v9, 0, 0);
     v17 = *(v15 + 12);
@@ -202,14 +202,14 @@ LABEL_33:
   return v15;
 }
 
-- (void)applyForTime:(double)a3 presentationObject:(id)a4 modelObject:(id)a5
+- (void)applyForTime:(double)time presentationObject:(id)object modelObject:(id)modelObject
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
+  v15[0] = time;
   if ([(CAAnimation *)self isEnabled])
   {
-    v8 = [(CAAnimationGroup *)self animations];
-    v9 = [(NSArray *)v8 count];
+    animations = [(CAAnimationGroup *)self animations];
+    v9 = [(NSArray *)animations count];
     if (v9)
     {
       v10 = v9;
@@ -221,7 +221,7 @@ LABEL_33:
         v14 = v13 * v11;
         do
         {
-          [-[NSArray objectAtIndex:](v8 objectAtIndex:{v12++), "applyForTime:presentationObject:modelObject:", a4, a5, v14}];
+          [-[NSArray objectAtIndex:](animations objectAtIndex:{v12++), "applyForTime:presentationObject:modelObject:", object, modelObject, v14}];
         }
 
         while (v10 != v12);
@@ -230,24 +230,24 @@ LABEL_33:
   }
 }
 
-- (void)setDefaultDuration:(double)a3
+- (void)setDefaultDuration:(double)duration
 {
   [(CAAnimation *)self duration];
-  v6 = v5;
+  durationCopy = v5;
   if (v5 <= 0.0)
   {
-    [(CAAnimation *)self setDuration:a3];
-    v6 = a3;
+    [(CAAnimation *)self setDuration:duration];
+    durationCopy = duration;
   }
 
-  v7 = [(CAAnimationGroup *)self animations];
-  v8 = [(NSArray *)v7 count];
+  animations = [(CAAnimationGroup *)self animations];
+  v8 = [(NSArray *)animations count];
   if (v8)
   {
     v9 = v8;
     for (i = 0; i != v9; ++i)
     {
-      [-[NSArray objectAtIndex:](v7 objectAtIndex:{i), "setDefaultDuration:", v6}];
+      [-[NSArray objectAtIndex:](animations objectAtIndex:{i), "setDefaultDuration:", durationCopy}];
     }
   }
 }

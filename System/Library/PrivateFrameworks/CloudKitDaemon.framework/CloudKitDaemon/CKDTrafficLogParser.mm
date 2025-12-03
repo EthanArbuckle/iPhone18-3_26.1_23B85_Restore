@@ -1,22 +1,22 @@
 @interface CKDTrafficLogParser
-- (BOOL)parse:(id)a3 error:(id *)a4;
-- (id)consumeParsedTrafficLogsAndReturnError:(id *)a3;
+- (BOOL)parse:(id)parse error:(id *)error;
+- (id)consumeParsedTrafficLogsAndReturnError:(id *)error;
 @end
 
 @implementation CKDTrafficLogParser
 
-- (BOOL)parse:(id)a3 error:(id *)a4
+- (BOOL)parse:(id)parse error:(id *)error
 {
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_2250FF0EC();
 
   return 1;
 }
 
-- (id)consumeParsedTrafficLogsAndReturnError:(id *)a3
+- (id)consumeParsedTrafficLogsAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_2250FF80C();
 
   type metadata accessor for TrafficLogMessage();

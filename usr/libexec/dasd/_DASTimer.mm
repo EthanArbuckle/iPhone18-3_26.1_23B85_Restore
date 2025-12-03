@@ -1,9 +1,9 @@
 @interface _DASTimer
-+ (_DASTimer)timerWithCallback:(id)a3;
-- (_DASTimer)initWithCallback:(id)a3;
++ (_DASTimer)timerWithCallback:(id)callback;
+- (_DASTimer)initWithCallback:(id)callback;
 - (void)cancelPreviousWakeRequest;
-- (void)requestSystemWakeOnBehalfOf:(id)a3 at:(id)a4 withLeeway:(double)a5 cancelPrevious:(BOOL)a6;
-- (void)scheduleOnBehalfOf:(id)a3 between:(double)a4 and:(double)a5 waking:(BOOL)a6;
+- (void)requestSystemWakeOnBehalfOf:(id)of at:(id)at withLeeway:(double)leeway cancelPrevious:(BOOL)previous;
+- (void)scheduleOnBehalfOf:(id)of between:(double)between and:(double)and waking:(BOOL)waking;
 @end
 
 @implementation _DASTimer
@@ -28,15 +28,15 @@
   }
 }
 
-- (_DASTimer)initWithCallback:(id)a3
+- (_DASTimer)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v19.receiver = self;
   v19.super_class = _DASTimer;
   v5 = [(_DASTimer *)&v19 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
@@ -68,29 +68,29 @@
   return v5;
 }
 
-+ (_DASTimer)timerWithCallback:(id)a3
++ (_DASTimer)timerWithCallback:(id)callback
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithCallback:v3];
+  callbackCopy = callback;
+  v4 = [objc_alloc(objc_opt_class()) initWithCallback:callbackCopy];
 
   return v4;
 }
 
-- (void)requestSystemWakeOnBehalfOf:(id)a3 at:(id)a4 withLeeway:(double)a5 cancelPrevious:(BOOL)a6
+- (void)requestSystemWakeOnBehalfOf:(id)of at:(id)at withLeeway:(double)leeway cancelPrevious:(BOOL)previous
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  previousCopy = previous;
+  ofCopy = of;
+  atCopy = at;
   v12 = +[NSMutableDictionary dictionary];
-  [v12 setObject:v11 forKeyedSubscript:@"time"];
+  [v12 setObject:atCopy forKeyedSubscript:@"time"];
 
-  v13 = [NSNumber numberWithInteger:a5];
+  v13 = [NSNumber numberWithInteger:leeway];
   [v12 setObject:v13 forKeyedSubscript:@"leeway"];
 
-  v14 = [NSString stringWithFormat:@"%@.%@", _DASDaemonServiceName, v10];
-  [v12 setObject:v14 forKeyedSubscript:@"scheduledby"];
+  ofCopy = [NSString stringWithFormat:@"%@.%@", _DASDaemonServiceName, ofCopy];
+  [v12 setObject:ofCopy forKeyedSubscript:@"scheduledby"];
 
-  if (v6)
+  if (previousCopy)
   {
     [(_DASTimer *)self cancelPreviousWakeRequest];
     v15 = [NSDictionary dictionaryWithDictionary:v12];
@@ -104,22 +104,22 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v10;
+      v19 = ofCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Failed to request system wake for %@", buf, 0xCu);
     }
   }
 }
 
-- (void)scheduleOnBehalfOf:(id)a3 between:(double)a4 and:(double)a5 waking:(BOOL)a6
+- (void)scheduleOnBehalfOf:(id)of between:(double)between and:(double)and waking:(BOOL)waking
 {
-  v6 = a6;
-  v15 = a3;
+  wakingCopy = waking;
+  ofCopy = of;
   dispatch_suspend(self->_timer);
-  v10 = a5 - a4;
-  if (v6)
+  v10 = and - between;
+  if (wakingCopy)
   {
-    v11 = [NSDate dateWithTimeIntervalSinceNow:a4 + 10.0];
-    [(_DASTimer *)self requestSystemWakeOnBehalfOf:v15 at:v11 withLeeway:1 cancelPrevious:v10 + -10.0];
+    v11 = [NSDate dateWithTimeIntervalSinceNow:between + 10.0];
+    [(_DASTimer *)self requestSystemWakeOnBehalfOf:ofCopy at:v11 withLeeway:1 cancelPrevious:v10 + -10.0];
 
     v12 = 10;
   }
@@ -130,7 +130,7 @@
   }
 
   timer = self->_timer;
-  v14 = dispatch_walltime(0, (a4 * 1000000000.0));
+  v14 = dispatch_walltime(0, (between * 1000000000.0));
   dispatch_source_set_timer(timer, v14, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * v12);
   dispatch_resume(self->_timer);
 }

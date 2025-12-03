@@ -1,31 +1,31 @@
 @interface MRDRouteRecommendationController
-- (BOOL)isRoutePlaying:(id)a3;
-- (BOOL)shouldUseVideoSymbolForDevices:(id)a3 bundleIdentifier:(id)a4;
+- (BOOL)isRoutePlaying:(id)playing;
+- (BOOL)shouldUseVideoSymbolForDevices:(id)devices bundleIdentifier:(id)identifier;
 - (MRDRouteRecommendationController)init;
 - (MRRouteRecommender)recommender;
 - (MRRouteValidator)validator;
 - (NSArray)recommendedRoutes;
-- (id)_updateMediaControlsBlob:(id)a3 sender:(id)a4;
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3;
-- (void)_handleLayoutDidChangeNotification:(id)a3;
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3;
-- (void)airPlayTo:(id)a3 completion:(id)a4;
+- (id)_updateMediaControlsBlob:(id)blob sender:(id)sender;
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification;
+- (void)_handleLayoutDidChangeNotification:(id)notification;
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification;
+- (void)airPlayTo:(id)to completion:(id)completion;
 - (void)clearUnusedAutoRoute;
-- (void)didReceiveNewRecommendations:(id)a3 forBundleIdentifier:(id)a4;
+- (void)didReceiveNewRecommendations:(id)recommendations forBundleIdentifier:(id)identifier;
 - (void)dismissAllBannerRequests;
-- (void)donatePickerChoiceFor:(id)a3 bundleIdentifier:(id)a4 contextIdentifier:(id)a5;
-- (void)handOffQueueOrAirPlay:(id)a3 sourceEndpoint:(id)a4 destinationEndpoint:(id)a5 playerPath:(id)a6 completion:(id)a7;
-- (void)handlePlaybackStartForEndpoint:(id)a3 bundleIdentifier:(id)a4 eligibleForRecommendationsOutsideApp:(BOOL)a5;
-- (void)mediaApplicationsInFocus:(id)a3;
-- (void)openRoutePickerForRouteUID:(id)a3;
-- (void)performTopologyModificationToRoute:(id)a3 devices:(id)a4 endpoint:(id)a5 requestName:(id)a6 completion:(id)a7;
-- (void)remoteControl:(id)a3 completion:(id)a4;
-- (void)route:(id)a3 endpoint:(id)a4 bundleIdentifier:(id)a5 emittedEvent:(unint64_t)a6;
+- (void)donatePickerChoiceFor:(id)for bundleIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier;
+- (void)handOffQueueOrAirPlay:(id)play sourceEndpoint:(id)endpoint destinationEndpoint:(id)destinationEndpoint playerPath:(id)path completion:(id)completion;
+- (void)handlePlaybackStartForEndpoint:(id)endpoint bundleIdentifier:(id)identifier eligibleForRecommendationsOutsideApp:(BOOL)app;
+- (void)mediaApplicationsInFocus:(id)focus;
+- (void)openRoutePickerForRouteUID:(id)d;
+- (void)performTopologyModificationToRoute:(id)route devices:(id)devices endpoint:(id)endpoint requestName:(id)name completion:(id)completion;
+- (void)remoteControl:(id)control completion:(id)completion;
+- (void)route:(id)route endpoint:(id)endpoint bundleIdentifier:(id)identifier emittedEvent:(unint64_t)event;
 - (void)setASEToLocal;
-- (void)setRecommendedRoutes:(id)a3;
+- (void)setRecommendedRoutes:(id)routes;
 - (void)setup;
-- (void)setupTimerForRoute:(id)a3 bundleIdentifier:(id)a4;
-- (void)signpostEndWillShowBanner:(BOOL)a3;
+- (void)setupTimerForRoute:(id)route bundleIdentifier:(id)identifier;
+- (void)signpostEndWillShowBanner:(BOOL)banner;
 - (void)stopAirPlayingAndRemoteControlling;
 @end
 
@@ -33,41 +33,41 @@
 
 - (MRRouteRecommender)recommender
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  recommender = v2->_recommender;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  recommender = selfCopy->_recommender;
   if (!recommender)
   {
     v4 = objc_alloc_init(MRDIRDRouteRecommender);
-    v5 = v2->_recommender;
-    v2->_recommender = v4;
+    v5 = selfCopy->_recommender;
+    selfCopy->_recommender = v4;
 
-    [(MRRouteRecommender *)v2->_recommender setDelegate:v2];
-    recommender = v2->_recommender;
+    [(MRRouteRecommender *)selfCopy->_recommender setDelegate:selfCopy];
+    recommender = selfCopy->_recommender;
   }
 
   v6 = recommender;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (MRRouteValidator)validator
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  validator = v2->_validator;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  validator = selfCopy->_validator;
   if (!validator)
   {
     v4 = objc_alloc_init(MRDRouteValidator);
-    v5 = v2->_validator;
-    v2->_validator = v4;
+    v5 = selfCopy->_validator;
+    selfCopy->_validator = v4;
 
-    validator = v2->_validator;
+    validator = selfCopy->_validator;
   }
 
   v6 = validator;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -83,8 +83,8 @@
 
 - (void)dismissAllBannerRequests
 {
-  v2 = [(MRDRouteRecommendationController *)self mediaActivityManager];
-  [v2 dismissAllBannerRequests];
+  mediaActivityManager = [(MRDRouteRecommendationController *)self mediaActivityManager];
+  [mediaActivityManager dismissAllBannerRequests];
 }
 
 - (MRDRouteRecommendationController)init
@@ -130,11 +130,11 @@
 
 - (void)setup
 {
-  v3 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
-  [v3 setAlwaysAllowUpdates:1];
+  remoteControlDiscoverySession = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+  [remoteControlDiscoverySession setAlwaysAllowUpdates:1];
 
-  v4 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
-  [v4 setAlwaysAllowUpdates:1];
+  audioDiscoverySession = [(MRDRouteRecommendationController *)self audioDiscoverySession];
+  [audioDiscoverySession setAlwaysAllowUpdates:1];
 
   objc_initWeak(&location, self);
   v5 = +[NSNotificationCenter defaultCenter];
@@ -159,80 +159,80 @@
   v14 = _MRLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
-    v16 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+    remoteControlDiscoverySession2 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+    remoteControlDiscoverySession3 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
     *buf = 134218498;
-    v43 = self;
+    selfCopy4 = self;
     v44 = 2048;
-    v45 = v15;
+    v45 = remoteControlDiscoverySession2;
     v46 = 2112;
-    v47 = v16;
+    v47 = remoteControlDiscoverySession3;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[MRDRRC] <%p> Setup RRC: RC discovery session (%p) = %@", buf, 0x20u);
   }
 
-  v17 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+  remoteControlDiscoverySession4 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_10003C8B4;
   v39[3] = &unk_1004B9B48;
   objc_copyWeak(&v40, &location);
-  v18 = [v17 addEndpointsAddedCallback:v39];
+  v18 = [remoteControlDiscoverySession4 addEndpointsAddedCallback:v39];
 
-  v19 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+  remoteControlDiscoverySession5 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100020EFC;
   v37[3] = &unk_1004B9B48;
   objc_copyWeak(&v38, &location);
-  v20 = [v19 addEndpointsModifiedCallback:v37];
+  v20 = [remoteControlDiscoverySession5 addEndpointsModifiedCallback:v37];
 
   v21 = _MRLogForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
-    v23 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+    remoteControlDiscoverySession6 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
+    remoteControlDiscoverySession7 = [(MRDRouteRecommendationController *)self remoteControlDiscoverySession];
     *buf = 134218498;
-    v43 = self;
+    selfCopy4 = self;
     v44 = 2048;
-    v45 = v22;
+    v45 = remoteControlDiscoverySession6;
     v46 = 2112;
-    v47 = v23;
+    v47 = remoteControlDiscoverySession7;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[MRDRRC] <%p> Setup RRC: added callbacks for RC discovery session (%p) = %@", buf, 0x20u);
   }
 
   v24 = _MRLogForCategory();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
-    v26 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
+    audioDiscoverySession2 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
+    audioDiscoverySession3 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
     *buf = 134218498;
-    v43 = self;
+    selfCopy4 = self;
     v44 = 2048;
-    v45 = v25;
+    v45 = audioDiscoverySession2;
     v46 = 2112;
-    v47 = v26;
+    v47 = audioDiscoverySession3;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[MRDRRC] <%p> Setup RRC: audio discovery session (%p) = %@", buf, 0x20u);
   }
 
-  v27 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
+  audioDiscoverySession4 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
   v32 = _NSConcreteStackBlock;
   v33 = 3221225472;
   v34 = sub_1001AA73C;
   v35 = &unk_1004B9B48;
   objc_copyWeak(&v36, &location);
-  v28 = [v27 addOutputDevicesAddedCallback:&v32];
+  v28 = [audioDiscoverySession4 addOutputDevicesAddedCallback:&v32];
 
   v29 = _MRLogForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     v30 = [(MRDRouteRecommendationController *)self audioDiscoverySession:v32];
-    v31 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
+    audioDiscoverySession5 = [(MRDRouteRecommendationController *)self audioDiscoverySession];
     *buf = 134218498;
-    v43 = self;
+    selfCopy4 = self;
     v44 = 2048;
     v45 = v30;
     v46 = 2112;
-    v47 = v31;
+    v47 = audioDiscoverySession5;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[MRDRRC] <%p> Setup RRC: added callbacks for audio discovery session (%p) = %@", buf, 0x20u);
   }
 
@@ -242,60 +242,60 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setRecommendedRoutes:(id)a3
+- (void)setRecommendedRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   os_unfair_lock_lock(&self->_recommendedRoutesLock);
   recommendedRoutes = self->_recommendedRoutes;
-  self->_recommendedRoutes = v4;
+  self->_recommendedRoutes = routesCopy;
 
   os_unfair_lock_unlock(&self->_recommendedRoutesLock);
 }
 
-- (void)_handleActiveSystemEndpointDidChangeNotification:(id)a3
+- (void)_handleActiveSystemEndpointDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
-  v7 = [v6 intValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
+  intValue = [v6 intValue];
 
-  if (!v7)
+  if (!intValue)
   {
     v8 = _MRLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC] _handleActiveSystemEndpointDidChangeNotification: %@", buf, 0xCu);
     }
 
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
+    userInfo2 = [notificationCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
 
-    v11 = [(MRDRouteRecommendationController *)self queue];
+    queue = [(MRDRouteRecommendationController *)self queue];
     v12 = v10;
     MRAVEndpointResolveActiveSystemEndpointWithType();
   }
 }
 
-- (void)_handleOutputDevicesDidChangeNotification:(id)a3
+- (void)_handleOutputDevicesDidChangeNotification:(id)notification
 {
   v6 = +[MRAVLocalEndpoint sharedLocalEndpoint];
   if ([v6 shouldDonate])
   {
-    v4 = [(MRDRouteRecommendationController *)self recommender];
+    recommender = [(MRDRouteRecommendationController *)self recommender];
     v5 = [MRIRRoute routeWithEndpoint:v6];
-    [v4 updateRouteCandidate:v5];
+    [recommender updateRouteCandidate:v5];
   }
 }
 
-- (void)donatePickerChoiceFor:(id)a3 bundleIdentifier:(id)a4 contextIdentifier:(id)a5
+- (void)donatePickerChoiceFor:(id)for bundleIdentifier:(id)identifier contextIdentifier:(id)contextIdentifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(MRDRouteRecommendationController *)self lastDonatedPickerChoice];
-  v12 = [v8 isEqual:v11];
+  forCopy = for;
+  contextIdentifierCopy = contextIdentifier;
+  identifierCopy = identifier;
+  lastDonatedPickerChoice = [(MRDRouteRecommendationController *)self lastDonatedPickerChoice];
+  v12 = [forCopy isEqual:lastDonatedPickerChoice];
 
   if (v12)
   {
@@ -303,30 +303,30 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v8;
+      v17 = forCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Not dropping duplicate picker choice for %@ - picks are distributed", &v16, 0xCu);
     }
   }
 
-  [(MRDRouteRecommendationController *)self setLastDonatedPickerChoice:v8];
+  [(MRDRouteRecommendationController *)self setLastDonatedPickerChoice:forCopy];
   v14 = [[IRMediaEvent alloc] initWithEventType:0 eventSubType:0];
-  [v14 setBundleID:v10];
+  [v14 setBundleID:identifierCopy];
 
-  [v14 setContextIdentifier:v9];
-  v15 = [(MRDRouteRecommendationController *)self recommender];
-  [v15 addEvent:v14 forRouteCandidate:v8];
+  [v14 setContextIdentifier:contextIdentifierCopy];
+  recommender = [(MRDRouteRecommendationController *)self recommender];
+  [recommender addEvent:v14 forRouteCandidate:forCopy];
 }
 
-- (void)mediaApplicationsInFocus:(id)a3
+- (void)mediaApplicationsInFocus:(id)focus
 {
-  v4 = a3;
-  v5 = [v4 allObjects];
-  [(MRDRouteRecommendationController *)self setVisibleMediaApps:v5];
+  focusCopy = focus;
+  allObjects = [focusCopy allObjects];
+  [(MRDRouteRecommendationController *)self setVisibleMediaApps:allObjects];
 
-  v6 = [(MRDRouteRecommendationController *)self focusMonitor];
-  v7 = [v6 lockScreenVisible];
+  focusMonitor = [(MRDRouteRecommendationController *)self focusMonitor];
+  lockScreenVisible = [focusMonitor lockScreenVisible];
 
-  v8 = ([v4 count] != 0) | v7;
+  v8 = ([focusCopy count] != 0) | lockScreenVisible;
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -340,44 +340,44 @@
       v10 = @"Paused";
     }
 
-    v11 = [v4 count];
+    v11 = [focusCopy count];
     v12 = @"NO";
     *v22 = 138413058;
     *&v22[4] = v10;
     *&v22[12] = 2048;
-    if (v7)
+    if (lockScreenVisible)
     {
       v12 = @"YES";
     }
 
     *&v22[14] = v11;
     v23 = 2112;
-    v24 = v4;
+    v24 = focusCopy;
     v25 = 2112;
     v26 = v12;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[MRDRRC] setting mode to %@: %lu media apps in focus: %@, lockscreen: %@", v22, 0x2Au);
   }
 
-  v13 = [(MRDRouteRecommendationController *)self recommender];
-  v14 = v13;
+  recommender = [(MRDRouteRecommendationController *)self recommender];
+  v14 = recommender;
   if (v8)
   {
-    v15 = [v13 mode];
+    mode = [recommender mode];
 
-    if (v15 == 1)
+    if (mode == 1)
     {
-      v16 = _MRLogForCategory();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      recommender2 = _MRLogForCategory();
+      if (os_log_type_enabled(recommender2, OS_LOG_TYPE_DEFAULT))
       {
         *v22 = 0;
-        _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDRRC] mode already set to update on events - won't set again", v22, 2u);
+        _os_log_impl(&_mh_execute_header, recommender2, OS_LOG_TYPE_DEFAULT, "[MRDRRC] mode already set to update on events - won't set again", v22, 2u);
       }
     }
 
     else
     {
-      v16 = [(MRDRouteRecommendationController *)self recommender];
-      [v16 setMode:1];
+      recommender2 = [(MRDRouteRecommendationController *)self recommender];
+      [recommender2 setMode:1];
     }
 
     v17 = +[NSUUID UUID];
@@ -397,19 +397,19 @@
 
   else
   {
-    [v13 setMode:0];
+    [recommender setMode:0];
 
     [(MRDRouteRecommendationController *)self dismissAllBannerRequests];
   }
 
-  v21 = [(MRDRouteRecommendationController *)self routedBackgroundActivityManager];
-  [v21 mediaApplicationsInFocus:v4];
+  routedBackgroundActivityManager = [(MRDRouteRecommendationController *)self routedBackgroundActivityManager];
+  [routedBackgroundActivityManager mediaApplicationsInFocus:focusCopy];
 }
 
-- (void)_handleLayoutDidChangeNotification:(id)a3
+- (void)_handleLayoutDidChangeNotification:(id)notification
 {
-  v4 = [(MRDRouteRecommendationController *)self lastUnusedAutoRouteBundleIdentifier];
-  if (!v4)
+  lastUnusedAutoRouteBundleIdentifier = [(MRDRouteRecommendationController *)self lastUnusedAutoRouteBundleIdentifier];
+  if (!lastUnusedAutoRouteBundleIdentifier)
   {
     goto LABEL_11;
   }
@@ -418,21 +418,21 @@
   if ([v5 displayOn])
   {
     v6 = +[MRDDisplayMonitor sharedMonitor];
-    v7 = [v6 presentedBundleIdentifiers];
-    v8 = [v7 containsObject:v4];
+    presentedBundleIdentifiers = [v6 presentedBundleIdentifiers];
+    v8 = [presentedBundleIdentifiers containsObject:lastUnusedAutoRouteBundleIdentifier];
 
     if (v8)
     {
-      v9 = [(MRDRouteRecommendationController *)self undoTimer];
+      undoTimer = [(MRDRouteRecommendationController *)self undoTimer];
 
-      if (v9)
+      if (undoTimer)
       {
         [(MRDRouteRecommendationController *)self setUndoTimer:0];
         v10 = _MRLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138412290;
-          v14 = v4;
+          v14 = lastUnusedAutoRouteBundleIdentifier;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDRRC] cancelling timer, %@ is in focus again", &v13, 0xCu);
         }
       }
@@ -445,72 +445,72 @@
   {
   }
 
-  v11 = [(MRDRouteRecommendationController *)self undoTimer];
+  undoTimer2 = [(MRDRouteRecommendationController *)self undoTimer];
 
-  if (!v11)
+  if (!undoTimer2)
   {
-    v12 = [(MRDRouteRecommendationController *)self lastUnusedAutoRoute];
-    [(MRDRouteRecommendationController *)self setupTimerForRoute:v12 bundleIdentifier:v4];
+    lastUnusedAutoRoute = [(MRDRouteRecommendationController *)self lastUnusedAutoRoute];
+    [(MRDRouteRecommendationController *)self setupTimerForRoute:lastUnusedAutoRoute bundleIdentifier:lastUnusedAutoRouteBundleIdentifier];
   }
 
 LABEL_11:
 }
 
-- (void)didReceiveNewRecommendations:(id)a3 forBundleIdentifier:(id)a4
+- (void)didReceiveNewRecommendations:(id)recommendations forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  recommendationsCopy = recommendations;
+  identifierCopy = identifier;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v6;
+    v29 = recommendationsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC] %@", buf, 0xCu);
   }
 
-  [(MRDRouteRecommendationController *)self setRecommendedRoutes:v6];
+  [(MRDRouteRecommendationController *)self setRecommendedRoutes:recommendationsCopy];
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"MRRouteRecommenderDidReceiveNewRecommendationsNotification" object:self];
 
-  v10 = [v6 msv_compactMap:&stru_1004C14B8];
+  v10 = [recommendationsCopy msv_compactMap:&stru_1004C14B8];
   v11 = +[MRDDisplayMonitor sharedMonitor];
-  v12 = [v11 primaryUIApplicationBundleIdentifier];
+  primaryUIApplicationBundleIdentifier = [v11 primaryUIApplicationBundleIdentifier];
 
-  if (v7)
+  if (identifierCopy)
   {
     v13 = _MRLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v29 = v12;
+      v29 = primaryUIApplicationBundleIdentifier;
       v30 = 2112;
-      v31 = v7;
+      v31 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC] overriding %@ with %@ - request outside app", buf, 0x16u);
     }
 
-    v14 = v7;
-    v12 = v14;
+    v14 = identifierCopy;
+    primaryUIApplicationBundleIdentifier = v14;
   }
 
   else
   {
-    v15 = [(MRDRouteRecommendationController *)self recommender];
-    v16 = [v15 mode];
+    recommender = [(MRDRouteRecommendationController *)self recommender];
+    mode = [recommender mode];
 
-    if (v16 != 1)
+    if (mode != 1)
     {
       v19 = _MRLogForCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(MRDRouteRecommendationController *)self recommender];
-        v23 = [v22 mode];
+        recommender2 = [(MRDRouteRecommendationController *)self recommender];
+        mode2 = [recommender2 mode];
         v24 = [v10 count];
         *buf = 134218498;
-        v29 = v23;
+        v29 = mode2;
         v30 = 2048;
         v31 = v24;
         v32 = 2112;
-        v33 = v12;
+        v33 = primaryUIApplicationBundleIdentifier;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Session mode is %ld - ignoring %lu recommendations - primary: %@", buf, 0x20u);
       }
 
@@ -519,9 +519,9 @@ LABEL_11:
   }
 
   v17 = +[MRDDisplayMonitor sharedMonitor];
-  v18 = [v17 lockScreenVisible];
+  lockScreenVisible = [v17 lockScreenVisible];
 
-  if (v18)
+  if (lockScreenVisible)
   {
     v19 = _MRLogForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -538,43 +538,43 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v21 = [(MRDRouteRecommendationController *)self validator];
+  validator = [(MRDRouteRecommendationController *)self validator];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1001AB8D4;
   v25[3] = &unk_1004C15D0;
   v25[4] = self;
-  v12 = v12;
-  v26 = v12;
-  v27 = v7 != 0;
-  [v21 bestRecommendationIn:v10 primaryBundleIdentifier:v12 eligibleToShowRecommendationsOutsideApp:v7 != 0 completion:v25];
+  primaryUIApplicationBundleIdentifier = primaryUIApplicationBundleIdentifier;
+  v26 = primaryUIApplicationBundleIdentifier;
+  v27 = identifierCopy != 0;
+  [validator bestRecommendationIn:v10 primaryBundleIdentifier:primaryUIApplicationBundleIdentifier eligibleToShowRecommendationsOutsideApp:identifierCopy != 0 completion:v25];
 
 LABEL_15:
 }
 
-- (void)signpostEndWillShowBanner:(BOOL)a3
+- (void)signpostEndWillShowBanner:(BOOL)banner
 {
-  v3 = a3;
-  v5 = [(MRDRouteRecommendationController *)self signpostIds];
-  v6 = [v5 count];
+  bannerCopy = banner;
+  signpostIds = [(MRDRouteRecommendationController *)self signpostIds];
+  v6 = [signpostIds count];
 
   if (v6)
   {
-    v7 = [(MRDRouteRecommendationController *)self signpostIds];
-    v8 = [v7 firstObject];
+    signpostIds2 = [(MRDRouteRecommendationController *)self signpostIds];
+    firstObject = [signpostIds2 firstObject];
 
-    v9 = [(MRDRouteRecommendationController *)self signpostIds];
-    [v9 removeFirstObject];
+    signpostIds3 = [(MRDRouteRecommendationController *)self signpostIds];
+    [signpostIds3 removeFirstObject];
 
     v10 = _MRLogForCategory();
-    v11 = [v8 hash];
+    v11 = [firstObject hash];
     if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v12 = v11;
       if (os_signpost_enabled(v10))
       {
         v13 = @"NO";
-        if (v3)
+        if (bannerCopy)
         {
           v13 = @"YES";
         }
@@ -587,45 +587,45 @@ LABEL_15:
   }
 }
 
-- (BOOL)shouldUseVideoSymbolForDevices:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)shouldUseVideoSymbolForDevices:(id)devices bundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  devicesCopy = devices;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v7 = +[MRDMediaBundleManager shared];
-    v8 = [v7 cachedEligibilityOf:v6];
+    v8 = [v7 cachedEligibilityOf:identifierCopy];
 
     if ([v8 isVideoApp])
     {
-      v9 = [v5 mr_containsVideoOutputDevice];
+      mr_containsVideoOutputDevice = [devicesCopy mr_containsVideoOutputDevice];
     }
 
     else
     {
-      v9 = 0;
+      mr_containsVideoOutputDevice = 0;
     }
   }
 
   else
   {
-    v9 = [v5 mr_containsVideoOutputDevice];
+    mr_containsVideoOutputDevice = [devicesCopy mr_containsVideoOutputDevice];
   }
 
-  return v9;
+  return mr_containsVideoOutputDevice;
 }
 
 - (void)setASEToLocal
 {
-  v3 = [(MRDRouteRecommendationController *)self activeSystemEndpoint];
-  v4 = [v3 isLocalEndpoint];
+  activeSystemEndpoint = [(MRDRouteRecommendationController *)self activeSystemEndpoint];
+  isLocalEndpoint = [activeSystemEndpoint isLocalEndpoint];
 
-  if ((v4 & 1) == 0)
+  if ((isLocalEndpoint & 1) == 0)
   {
     v6 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:@"Coriander setASEToLocal"];
     [v6 setChangeType:0];
-    v5 = [(MRDRouteRecommendationController *)self queue];
-    [v6 perform:v5 completion:&stru_1004C15F0];
+    queue = [(MRDRouteRecommendationController *)self queue];
+    [v6 perform:queue completion:&stru_1004C15F0];
   }
 }
 
@@ -633,45 +633,45 @@ LABEL_15:
 {
   v4 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:0 reason:@"Coriander Clear State"];
   [v4 setChangeType:0];
-  v3 = [(MRDRouteRecommendationController *)self queue];
-  [v4 perform:v3 completion:&stru_1004C1610];
+  queue = [(MRDRouteRecommendationController *)self queue];
+  [v4 perform:queue completion:&stru_1004C1610];
 }
 
-- (void)airPlayTo:(id)a3 completion:(id)a4
+- (void)airPlayTo:(id)to completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  toCopy = to;
+  completionCopy = completion;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
+    localSystemEndpoint = [(MRDRouteRecommendationController *)self localSystemEndpoint];
     *buf = 138412546;
-    v26 = v9;
+    v26 = localSystemEndpoint;
     v27 = 2112;
-    v28 = v6;
+    v28 = toCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Will AirPlay %@ to %@", buf, 0x16u);
   }
 
-  v10 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
-  objc_initWeak(buf, v10);
+  localSystemEndpoint2 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
+  objc_initWeak(buf, localSystemEndpoint2);
 
   v11 = [MRRequestDetails alloc];
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v11 initWithName:@"RouteRecommendation.AirPlay" requestID:v13 reason:@"MRDRRC/AP"];
+  uUIDString = [v12 UUIDString];
+  v14 = [v11 initWithName:@"RouteRecommendation.AirPlay" requestID:uUIDString reason:@"MRDRRC/AP"];
 
-  v15 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v14 type:3 outputDevices:v6];
+  v15 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v14 type:3 outputDevices:toCopy];
   [v15 setMuteUntilFinished:1];
-  v16 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
-  v17 = [(MRDRouteRecommendationController *)self queue];
+  localSystemEndpoint3 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
+  queue = [(MRDRouteRecommendationController *)self queue];
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_1001AD6D4;
   v22 = &unk_1004B95A0;
-  v18 = v7;
+  v18 = completionCopy;
   v23 = v18;
   objc_copyWeak(&v24, buf);
-  [v16 modifyTopologyWithRequest:v15 withReplyQueue:v17 completion:&v19];
+  [localSystemEndpoint3 modifyTopologyWithRequest:v15 withReplyQueue:queue completion:&v19];
 
   [(MRDRouteRecommendationController *)self setASEToLocal:v19];
   objc_destroyWeak(&v24);
@@ -679,48 +679,48 @@ LABEL_15:
   objc_destroyWeak(buf);
 }
 
-- (void)handOffQueueOrAirPlay:(id)a3 sourceEndpoint:(id)a4 destinationEndpoint:(id)a5 playerPath:(id)a6 completion:(id)a7
+- (void)handOffQueueOrAirPlay:(id)play sourceEndpoint:(id)endpoint destinationEndpoint:(id)destinationEndpoint playerPath:(id)path completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  playCopy = play;
+  endpointCopy = endpoint;
+  destinationEndpointCopy = destinationEndpoint;
+  pathCopy = path;
+  completionCopy = completion;
   v17 = _MRLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v14 uniqueIdentifier];
+    uniqueIdentifier = [destinationEndpointCopy uniqueIdentifier];
     *buf = 138412802;
-    v33 = v18;
+    v33 = uniqueIdentifier;
     v34 = 2112;
-    v35 = v12;
+    v35 = playCopy;
     v36 = 2112;
-    v37 = v15;
+    v37 = pathCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Will try to HandOff or AirPlay to %@ (%@) pp: %@", buf, 0x20u);
   }
 
   v19 = +[MRUserSettings currentSettings];
-  v20 = [v19 enableQueueHandOffForRouteRecommendations];
+  enableQueueHandOffForRouteRecommendations = [v19 enableQueueHandOffForRouteRecommendations];
 
-  if (v20)
+  if (enableQueueHandOffForRouteRecommendations)
   {
     v21 = objc_alloc_init(MRPlaybackSessionMigrateRequest);
-    [v21 setPlayerPath:v15];
+    [v21 setPlayerPath:pathCopy];
     v22 = [MRRequestDetails alloc];
     v23 = +[NSUUID UUID];
-    v24 = [v23 UUIDString];
-    v25 = [v22 initWithName:@"RouteRecommendation.HandOffQueueOrAirPlay" requestID:v24 reason:@"MRDRRC/QHOFallbackToAirPlay"];
+    uUIDString = [v23 UUIDString];
+    v25 = [v22 initWithName:@"RouteRecommendation.HandOffQueueOrAirPlay" requestID:uUIDString reason:@"MRDRRC/QHOFallbackToAirPlay"];
 
-    v26 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v25 type:3 outputDevices:v12];
+    v26 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v25 type:3 outputDevices:playCopy];
     [v26 setMuteUntilFinished:1];
-    v27 = [(MRDRouteRecommendationController *)self queue];
+    queue = [(MRDRouteRecommendationController *)self queue];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_1001ADA58;
     v29[3] = &unk_1004B9DE8;
-    v31 = v16;
-    v30 = v14;
-    [v13 migrateToEndpointOrModifyTopology:v30 migrationRequest:v21 topologyModificationRequest:v26 withReplyQueue:v27 completion:v29];
+    v31 = completionCopy;
+    v30 = destinationEndpointCopy;
+    [endpointCopy migrateToEndpointOrModifyTopology:v30 migrationRequest:v21 topologyModificationRequest:v26 withReplyQueue:queue completion:v29];
   }
 
   else
@@ -732,56 +732,56 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[MRDRRC] HandOff is disabled, AirPlaying...", buf, 2u);
     }
 
-    [(MRDRouteRecommendationController *)self airPlayTo:v12 completion:v16];
+    [(MRDRouteRecommendationController *)self airPlayTo:playCopy completion:completionCopy];
   }
 }
 
-- (void)remoteControl:(id)a3 completion:(id)a4
+- (void)remoteControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = [MRUpdateActiveSystemEndpointRequest alloc];
-  v9 = [v6 outputDeviceUIDs];
-  v10 = [v9 firstObject];
-  v11 = [v8 initWithOutputDeviceUID:v10 reason:@"Coriander One-Tap Recommendation accepted"];
+  outputDeviceUIDs = [controlCopy outputDeviceUIDs];
+  firstObject = [outputDeviceUIDs firstObject];
+  v11 = [v8 initWithOutputDeviceUID:firstObject reason:@"Coriander One-Tap Recommendation accepted"];
 
   [v11 setChangeType:0];
-  v12 = [(MRDRouteRecommendationController *)self queue];
+  queue = [(MRDRouteRecommendationController *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001ADBB8;
   v15[3] = &unk_1004C1678;
-  v16 = v6;
-  v17 = v7;
-  v13 = v6;
-  v14 = v7;
-  [v11 perform:v12 completion:v15];
+  v16 = controlCopy;
+  v17 = completionCopy;
+  v13 = controlCopy;
+  v14 = completionCopy;
+  [v11 perform:queue completion:v15];
 }
 
-- (void)performTopologyModificationToRoute:(id)a3 devices:(id)a4 endpoint:(id)a5 requestName:(id)a6 completion:(id)a7
+- (void)performTopologyModificationToRoute:(id)route devices:(id)devices endpoint:(id)endpoint requestName:(id)name completion:(id)completion
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = v12;
-  v15 = v13;
-  v16 = a7;
-  v17 = a6;
-  v18 = a3;
+  devicesCopy = devices;
+  endpointCopy = endpoint;
+  v14 = devicesCopy;
+  v15 = endpointCopy;
+  completionCopy = completion;
+  nameCopy = name;
+  routeCopy = route;
   v19 = +[NSDate date];
-  v20 = [NSString stringWithFormat:@"MRDRRC:TM/%@", v17];
+  nameCopy = [NSString stringWithFormat:@"MRDRRC:TM/%@", nameCopy];
 
   v21 = +[NSUUID UUID];
-  v22 = [v21 UUIDString];
+  uUIDString = [v21 UUIDString];
 
-  v23 = [v18 routeIdentifier];
+  routeIdentifier = [routeCopy routeIdentifier];
 
   v146 = v15;
-  v24 = [v15 debugName];
+  debugName = [v15 debugName];
   v144 = v14;
   v25 = MRAVOutputDeviceArrayDescription();
-  v26 = [NSString stringWithFormat:@"route=%@, endpoint=%@, devices=%@", v23, v24, v25];
+  v26 = [NSString stringWithFormat:@"route=%@, endpoint=%@, devices=%@", routeIdentifier, debugName, v25];
 
-  v27 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", v20, v22];
+  v27 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", nameCopy, uUIDString];
   v28 = v27;
   if (v26)
   {
@@ -802,13 +802,13 @@ LABEL_15:
   v152[3] = &unk_1004BAE50;
   v141 = v26;
   v153 = v141;
-  v30 = v20;
+  v30 = nameCopy;
   v154 = v30;
-  v148 = v22;
+  v148 = uUIDString;
   v155 = v148;
   v140 = v19;
   v156 = v140;
-  v139 = v16;
+  v139 = completionCopy;
   v157 = v139;
   v138 = objc_retainBlock(v152);
   v31 = v146;
@@ -822,18 +822,18 @@ LABEL_15:
     v32 = 0;
   }
 
-  v33 = [(MRDRouteRecommendationController *)self focusMonitor];
-  v34 = [v33 bundlesInFocus];
+  focusMonitor = [(MRDRouteRecommendationController *)self focusMonitor];
+  bundlesInFocus = [focusMonitor bundlesInFocus];
 
-  v142 = v34;
-  v35 = [v34 msv_filter:&stru_1004C16B8];
+  v142 = bundlesInFocus;
+  v35 = [bundlesInFocus msv_filter:&stru_1004C16B8];
   v36 = [NSSet setWithArray:v35];
 
-  v37 = [(MRDRouteRecommendationController *)self focusMonitor];
-  v38 = [v37 mediaBundlesInFocus];
+  focusMonitor2 = [(MRDRouteRecommendationController *)self focusMonitor];
+  mediaBundlesInFocus = [focusMonitor2 mediaBundlesInFocus];
 
-  v143 = v38;
-  v39 = [v38 mutableCopy];
+  v143 = mediaBundlesInFocus;
+  v39 = [mediaBundlesInFocus mutableCopy];
   [v39 minusSet:v36];
   v147 = v36;
   v145 = v30;
@@ -848,26 +848,26 @@ LABEL_15:
   }
 
   v41 = v39;
-  v42 = [(MRDRouteRecommendationController *)self localSystemEndpoint];
-  v134 = self;
-  v43 = [(MRDRouteRecommendationController *)self activeSystemEndpoint];
-  v44 = v43;
+  localSystemEndpoint = [(MRDRouteRecommendationController *)self localSystemEndpoint];
+  selfCopy = self;
+  activeSystemEndpoint = [(MRDRouteRecommendationController *)self activeSystemEndpoint];
+  v44 = activeSystemEndpoint;
   if (v40)
   {
-    v45 = v43;
+    v45 = activeSystemEndpoint;
   }
 
   else
   {
-    v45 = v42;
+    v45 = localSystemEndpoint;
   }
 
   v46 = v45;
-  v47 = [v46 uniqueIdentifier];
-  v48 = [v146 uniqueIdentifier];
+  uniqueIdentifier = [v46 uniqueIdentifier];
+  uniqueIdentifier2 = [v146 uniqueIdentifier];
   v136 = v44;
-  v137 = v42;
-  v49 = [NSString stringWithFormat:@"visible RC: %@\n visible AP: %@\n sEP: %@, dEP: %@\n ASE: %@ local: %@", v147, v41, v47, v48, v44, v42];
+  v137 = localSystemEndpoint;
+  v49 = [NSString stringWithFormat:@"visible RC: %@\n visible AP: %@\n sEP: %@, dEP: %@\n ASE: %@ local: %@", v147, v41, uniqueIdentifier, uniqueIdentifier2, v44, localSystemEndpoint];
 
   v50 = _MRLogForCategory();
   v51 = v145;
@@ -890,23 +890,23 @@ LABEL_15:
     v53 = v40;
     v132 = v41;
     v54 = +[MRDMediaRemoteServer server];
-    v55 = [v54 nowPlayingServer];
+    nowPlayingServer = [v54 nowPlayingServer];
     v56 = v46;
-    v57 = [v46 origin];
-    v58 = [v55 originClientForOrigin:v57];
+    origin = [v46 origin];
+    v58 = [nowPlayingServer originClientForOrigin:origin];
 
-    v59 = [v58 activeNowPlayingClient];
-    v60 = [v59 client];
-    v61 = [v60 bundleIdentifier];
+    activeNowPlayingClient = [v58 activeNowPlayingClient];
+    client = [activeNowPlayingClient client];
+    bundleIdentifier = [client bundleIdentifier];
 
     v127 = v58;
-    v62 = [v58 activeNowPlayingClient];
-    v63 = [v62 activePlayerClient];
-    v64 = [v63 isPlaying];
+    activeNowPlayingClient2 = [v58 activeNowPlayingClient];
+    activePlayerClient = [activeNowPlayingClient2 activePlayerClient];
+    isPlaying = [activePlayerClient isPlaying];
 
-    if (v61)
+    if (bundleIdentifier)
     {
-      v129 = [v142 containsObject:v61];
+      v129 = [v142 containsObject:bundleIdentifier];
     }
 
     else
@@ -916,22 +916,22 @@ LABEL_15:
 
     v68 = v146;
     v69 = +[MRDMediaRemoteServer server];
-    v70 = [v69 nowPlayingServer];
-    v71 = [v68 origin];
-    v72 = [v70 originClientForOrigin:v71];
+    nowPlayingServer2 = [v69 nowPlayingServer];
+    origin2 = [v68 origin];
+    v72 = [nowPlayingServer2 originClientForOrigin:origin2];
 
-    v73 = [v72 activeNowPlayingClient];
-    v74 = [v73 client];
-    v75 = [v74 bundleIdentifier];
+    activeNowPlayingClient3 = [v72 activeNowPlayingClient];
+    client2 = [activeNowPlayingClient3 client];
+    bundleIdentifier2 = [client2 bundleIdentifier];
 
     v125 = v72;
-    v76 = [v72 activeNowPlayingClient];
-    v77 = [v76 activePlayerClient];
-    v78 = [v77 isPlaying];
+    activeNowPlayingClient4 = [v72 activeNowPlayingClient];
+    activePlayerClient2 = [activeNowPlayingClient4 activePlayerClient];
+    isPlaying2 = [activePlayerClient2 isPlaying];
 
-    if (v75)
+    if (bundleIdentifier2)
     {
-      v122 = [v143 containsObject:v75] & v78;
+      v122 = [v143 containsObject:bundleIdentifier2] & isPlaying2;
     }
 
     else
@@ -939,11 +939,11 @@ LABEL_15:
       v122 = 0;
     }
 
-    v79 = [v56 uniqueIdentifier];
+    uniqueIdentifier3 = [v56 uniqueIdentifier];
     v126 = v68;
-    v80 = [v68 uniqueIdentifier];
-    v81 = v80;
-    if (v64)
+    uniqueIdentifier4 = [v68 uniqueIdentifier];
+    v81 = uniqueIdentifier4;
+    if (isPlaying)
     {
       v82 = @"YES";
     }
@@ -953,7 +953,7 @@ LABEL_15:
       v82 = @"NO";
     }
 
-    if (v78)
+    if (isPlaying2)
     {
       v83 = @"YES";
     }
@@ -963,8 +963,8 @@ LABEL_15:
       v83 = @"NO";
     }
 
-    v128 = v75;
-    v84 = [NSString stringWithFormat:@"sEP: %@\n dEP: %@\n sNP: %@\n dNP: %@\n sPL: %@ - dPL: %@\n", v79, v80, v61, v75, v82, v83];
+    v128 = bundleIdentifier2;
+    v84 = [NSString stringWithFormat:@"sEP: %@\n dEP: %@\n sNP: %@\n dNP: %@\n sPL: %@ - dPL: %@\n", uniqueIdentifier3, uniqueIdentifier4, bundleIdentifier, bundleIdentifier2, v82, v83];
 
     v85 = _MRLogForCategory();
     v51 = v145;
@@ -981,9 +981,9 @@ LABEL_15:
 
     v31 = v146;
     v52 = v132;
-    if (!(v129 & 1 | ((v64 & 1) == 0)) && [v143 count])
+    if (!(v129 & 1 | ((isPlaying & 1) == 0)) && [v143 count])
     {
-      v86 = [NSString stringWithFormat:@"Pausing ASE - NP: %@", v61];
+      v86 = [NSString stringWithFormat:@"Pausing ASE - NP: %@", bundleIdentifier];
       v87 = _MRLogForCategory();
       if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
       {
@@ -996,7 +996,7 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
       }
 
-      v149 = v61;
+      v149 = bundleIdentifier;
       v150 = v148;
       v151 = v145;
       MRMediaRemoteSendCommandToPlayer();
@@ -1021,17 +1021,17 @@ LABEL_15:
 
       v66 = v144;
       v67 = v138;
-      [(MRDRouteRecommendationController *)v134 airPlayTo:v144 completion:v138];
+      [(MRDRouteRecommendationController *)selfCopy airPlayTo:v144 completion:v138];
       v93 = v126;
       goto LABEL_74;
     }
 
-    if (v64)
+    if (isPlaying)
     {
       v66 = v144;
       if ((v129 & 1) == 0)
       {
-        v97 = [NSString stringWithFormat:@"Only RC, source was playing %@ (not FG): Migrating", v61];
+        v97 = [NSString stringWithFormat:@"Only RC, source was playing %@ (not FG): Migrating", bundleIdentifier];
         v98 = _MRLogForCategory();
         if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
         {
@@ -1045,9 +1045,9 @@ LABEL_15:
         }
 
         v99 = [v147 mutableCopy];
-        if (v61)
+        if (bundleIdentifier)
         {
-          [NSSet setWithObject:v61];
+          [NSSet setWithObject:bundleIdentifier];
         }
 
         else
@@ -1057,8 +1057,8 @@ LABEL_15:
 
         v123 = v130 = v97;
         [v99 minusSet:v123];
-        v104 = [v99 anyObject];
-        v105 = [NSString stringWithFormat:@"migration candidates: %@, will try to migrate %@", v99, v104];
+        anyObject = [v99 anyObject];
+        v104 = [NSString stringWithFormat:@"migration candidates: %@, will try to migrate %@", v99, anyObject];
         v106 = _MRLogForCategory();
         if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
         {
@@ -1067,19 +1067,19 @@ LABEL_15:
           v160 = 2114;
           v161 = v148;
           v162 = 2112;
-          v163 = v105;
+          v163 = v104;
           _os_log_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
         }
 
-        v107 = [[MRClient alloc] initWithBundleIdentifier:v104];
+        v107 = [[MRClient alloc] initWithBundleIdentifier:anyObject];
         v108 = [MRPlayerPath alloc];
         v109 = +[MROrigin localOrigin];
         v110 = [v108 initWithOrigin:v109 client:v107 player:0];
 
         v93 = v126;
-        v111 = v105;
+        v111 = v104;
         v67 = v138;
-        [(MRDRouteRecommendationController *)v134 handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v110 completion:v138];
+        [(MRDRouteRecommendationController *)selfCopy handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v110 completion:v138];
 
         v51 = v145;
         v31 = v146;
@@ -1099,14 +1099,14 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
       }
 
-      v89 = [[MRClient alloc] initWithBundleIdentifier:v61];
+      v89 = [[MRClient alloc] initWithBundleIdentifier:bundleIdentifier];
       v90 = [MRPlayerPath alloc];
       v91 = +[MROrigin localOrigin];
       v92 = [v90 initWithOrigin:v91 client:v89 player:0];
 
       v93 = v126;
       v67 = v138;
-      [(MRDRouteRecommendationController *)v134 handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v92 completion:v138];
+      [(MRDRouteRecommendationController *)selfCopy handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v92 completion:v138];
 
       v51 = v145;
     }
@@ -1115,7 +1115,7 @@ LABEL_15:
     {
       if (v122)
       {
-        v95 = [NSString stringWithFormat:@"Only RC, source is not playing, destination is playing %@ (FG locally): RC", v128];
+        v128 = [NSString stringWithFormat:@"Only RC, source is not playing, destination is playing %@ (FG locally): RC", v128];
         v96 = _MRLogForCategory();
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
         {
@@ -1124,13 +1124,13 @@ LABEL_15:
           v160 = 2114;
           v161 = v148;
           v162 = 2112;
-          v163 = v95;
+          v163 = v128;
           _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
         }
 
         v93 = v126;
         v67 = v138;
-        [(MRDRouteRecommendationController *)v134 remoteControl:v126 completion:v138];
+        [(MRDRouteRecommendationController *)selfCopy remoteControl:v126 completion:v138];
 
         v66 = v144;
         goto LABEL_74;
@@ -1154,15 +1154,15 @@ LABEL_15:
       v66 = v144;
       if (v129)
       {
-        v102 = v61;
+        anyObject2 = bundleIdentifier;
       }
 
       else
       {
         v103 = [v147 mutableCopy];
-        if (v61)
+        if (bundleIdentifier)
         {
-          [NSSet setWithObject:v61];
+          [NSSet setWithObject:bundleIdentifier];
         }
 
         else
@@ -1171,8 +1171,8 @@ LABEL_15:
         }
         v112 = ;
         [v103 minusSet:v112];
-        v102 = [v103 anyObject];
-        v131 = [NSString stringWithFormat:@"migration candidates: %@", v103];
+        anyObject2 = [v103 anyObject];
+        v103 = [NSString stringWithFormat:@"migration candidates: %@", v103];
         v113 = _MRLogForCategory();
         if (os_log_type_enabled(v113, OS_LOG_TYPE_DEFAULT))
         {
@@ -1181,12 +1181,12 @@ LABEL_15:
           v160 = 2114;
           v161 = v148;
           v162 = 2112;
-          v163 = v131;
+          v163 = v103;
           _os_log_impl(&_mh_execute_header, v113, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
         }
       }
 
-      v114 = [NSString stringWithFormat:@"will try to migrate %@", v102];
+      v102 = [NSString stringWithFormat:@"will try to migrate %@", anyObject2];
       v115 = _MRLogForCategory();
       if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
       {
@@ -1195,20 +1195,20 @@ LABEL_15:
         v160 = 2114;
         v161 = v148;
         v162 = 2112;
-        v163 = v114;
+        v163 = v102;
         _os_log_impl(&_mh_execute_header, v115, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
       }
 
-      v116 = [[MRClient alloc] initWithBundleIdentifier:v102];
+      v116 = [[MRClient alloc] initWithBundleIdentifier:anyObject2];
       v117 = [MRPlayerPath alloc];
       +[MROrigin localOrigin];
-      v119 = v118 = v102;
+      v119 = v118 = anyObject2;
       v120 = [v117 initWithOrigin:v119 client:v116 player:0];
 
       v93 = v126;
-      v121 = v114;
+      v121 = v102;
       v67 = v138;
-      [(MRDRouteRecommendationController *)v134 handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v120 completion:v138];
+      [(MRDRouteRecommendationController *)selfCopy handOffQueueOrAirPlay:v144 sourceEndpoint:v56 destinationEndpoint:v126 playerPath:v120 completion:v138];
 
       v51 = v145;
     }
@@ -1234,14 +1234,14 @@ LABEL_74:
 
   v66 = v144;
   v67 = v138;
-  [(MRDRouteRecommendationController *)v134 airPlayTo:v144 completion:v138];
+  [(MRDRouteRecommendationController *)selfCopy airPlayTo:v144 completion:v138];
 LABEL_75:
 }
 
-- (void)setupTimerForRoute:(id)a3 bundleIdentifier:(id)a4
+- (void)setupTimerForRoute:(id)route bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  routeCopy = route;
+  identifierCopy = identifier;
   v8 = +[MRUserSettings currentSettings];
   [v8 undoUnusedAutoRouteTimerDuration];
   v10 = v9;
@@ -1252,23 +1252,23 @@ LABEL_75:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v22 = v6;
+      v22 = routeCopy;
       v23 = 2112;
-      v24 = v7;
+      v24 = identifierCopy;
       v25 = 2048;
       v26 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Setting up timer for %@ (%@) for %f seconds", buf, 0x20u);
     }
 
-    [(MRDRouteRecommendationController *)self setLastUnusedAutoRoute:v6];
+    [(MRDRouteRecommendationController *)self setLastUnusedAutoRoute:routeCopy];
     objc_initWeak(buf, self);
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1001B0144;
     v16 = &unk_1004C1730;
-    v17 = v7;
-    v18 = self;
-    v19 = v6;
+    v17 = identifierCopy;
+    selfCopy = self;
+    v19 = routeCopy;
     objc_copyWeak(&v20, buf);
     v12 = [MSVTimer timerWithInterval:0 repeats:&v13 block:v10];
     [(MRDRouteRecommendationController *)self setUndoTimer:v12, v13, v14, v15, v16];
@@ -1278,18 +1278,18 @@ LABEL_75:
   }
 }
 
-- (BOOL)isRoutePlaying:(id)a3
+- (BOOL)isRoutePlaying:(id)playing
 {
-  v3 = a3;
+  playingCopy = playing;
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 nowPlayingServer];
+  nowPlayingServer = [v4 nowPlayingServer];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v3 nodes];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  nodes = [playingCopy nodes];
+  v7 = [nodes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -1299,21 +1299,21 @@ LABEL_75:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(nodes);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) avOutputDeviceIdentifier];
-        v11 = [v5 originClientForGroupLeaderOfDeviceUID:v10];
+        avOutputDeviceIdentifier = [*(*(&v13 + 1) + 8 * i) avOutputDeviceIdentifier];
+        v11 = [nowPlayingServer originClientForGroupLeaderOfDeviceUID:avOutputDeviceIdentifier];
 
-        LOBYTE(v10) = [v11 isPlaying];
-        if (v10)
+        LOBYTE(avOutputDeviceIdentifier) = [v11 isPlaying];
+        if (avOutputDeviceIdentifier)
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [nodes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1336,21 +1336,21 @@ LABEL_11:
   [(MRDRouteRecommendationController *)self setUndoTimer:0];
 }
 
-- (void)openRoutePickerForRouteUID:(id)a3
+- (void)openRoutePickerForRouteUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC] Long pressed - will open route picker for %@", &buf, 0xCu);
   }
 
   v6 = objc_alloc_init(sub_1001B0780());
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 bundleIdentifier];
-  [v6 setPresentingAppBundleID:v8];
+  bundleIdentifier = [v7 bundleIdentifier];
+  [v6 setPresentingAppBundleID:bundleIdentifier];
 
   [v6 setStyle:2];
   [v6 setSurface:11];
@@ -1360,7 +1360,7 @@ LABEL_11:
     [v6 setRoutingContextUID:v9];
   }
 
-  [v6 setRouteUID:v4];
+  [v6 setRouteUID:dCopy];
   objc_initWeak(&location, self);
   v20 = 0;
   v21 = &v20;
@@ -1395,50 +1395,50 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)route:(id)a3 endpoint:(id)a4 bundleIdentifier:(id)a5 emittedEvent:(unint64_t)a6
+- (void)route:(id)route endpoint:(id)endpoint bundleIdentifier:(id)identifier emittedEvent:(unint64_t)event
 {
-  v10 = a3;
-  v44 = a4;
-  v11 = a5;
+  routeCopy = route;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
   v12 = _MRLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v46 = v10;
+    v46 = routeCopy;
     v47 = 2112;
-    v48 = v11;
+    v48 = identifierCopy;
     v49 = 2048;
-    v50 = a6;
+    eventCopy = event;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MRDRRC] route: %@ bundleIdentifier: %@, emittedEvent: %ld", buf, 0x20u);
   }
 
-  v42 = a6;
+  eventCopy2 = event;
 
   v13 = +[MRDMediaBundleManager shared];
-  v14 = [v13 cachedEligibilityOf:v11];
+  v14 = [v13 cachedEligibilityOf:identifierCopy];
 
   v41 = v14;
-  v15 = [v14 isEligible];
-  v43 = self;
-  v16 = [(MRDRouteRecommendationController *)self focusMonitor];
-  v17 = [v16 bundlesInFocus];
-  v18 = [v17 containsObject:v11];
+  isEligible = [v14 isEligible];
+  selfCopy = self;
+  focusMonitor = [(MRDRouteRecommendationController *)self focusMonitor];
+  bundlesInFocus = [focusMonitor bundlesInFocus];
+  v18 = [bundlesInFocus containsObject:identifierCopy];
 
-  v19 = [v44 isLocalEndpoint];
+  isLocalEndpoint = [endpointCopy isLocalEndpoint];
   v20 = +[MRDDisplayMonitor sharedMonitor];
   if ([v20 homeScreenVisible])
   {
-    v21 = 1;
+    controlCenterVisible = 1;
   }
 
   else
   {
     v22 = +[MRDDisplayMonitor sharedMonitor];
-    v21 = [v22 controlCenterVisible];
+    controlCenterVisible = [v22 controlCenterVisible];
   }
 
   v23 = +[MRDDisplayMonitor sharedMonitor];
-  v24 = [v23 siriVisible];
+  siriVisible = [v23 siriVisible];
 
   if (v18)
   {
@@ -1447,10 +1447,10 @@ LABEL_11:
 
   else
   {
-    v25 = v21 & (v24 ^ 1);
+    v25 = controlCenterVisible & (siriVisible ^ 1);
   }
 
-  v26 = v19 & v15 & v25;
+  v26 = isLocalEndpoint & isEligible & v25;
   v27 = _MRLogForCategory();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
@@ -1464,7 +1464,7 @@ LABEL_11:
       v28 = @"NO";
     }
 
-    if (v19)
+    if (isLocalEndpoint)
     {
       v29 = @"YES";
     }
@@ -1474,7 +1474,7 @@ LABEL_11:
       v29 = @"NO";
     }
 
-    if (v15)
+    if (isEligible)
     {
       v30 = @"YES";
     }
@@ -1484,7 +1484,7 @@ LABEL_11:
       v30 = @"NO";
     }
 
-    v40 = v11;
+    v40 = identifierCopy;
     if (v25)
     {
       v31 = @"YES";
@@ -1495,8 +1495,8 @@ LABEL_11:
       v31 = @"NO";
     }
 
-    v32 = v10;
-    if (v24)
+    v32 = routeCopy;
+    if (siriVisible)
     {
       v33 = @"YES";
     }
@@ -1506,56 +1506,56 @@ LABEL_11:
       v33 = @"NO";
     }
 
-    v34 = [(MRDRouteRecommendationController *)v43 focusMonitor];
-    v35 = [v34 bundlesInFocus];
+    focusMonitor2 = [(MRDRouteRecommendationController *)selfCopy focusMonitor];
+    bundlesInFocus2 = [focusMonitor2 bundlesInFocus];
     *buf = 138413570;
     v46 = v28;
     v47 = 2112;
     v48 = v29;
     v49 = 2112;
-    v50 = v30;
+    eventCopy = v30;
     v51 = 2112;
     v52 = v31;
-    v11 = v40;
+    identifierCopy = v40;
     v53 = 2112;
     v54 = v33;
-    v10 = v32;
+    routeCopy = v32;
     v55 = 2112;
-    v56 = v35;
+    v56 = bundlesInFocus2;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[MRDRRC] eligible: %@, route: %@, app: %@, vis: %@ - siri: %@ - %@", buf, 0x3Eu);
   }
 
-  if (v42 && v42 != 2)
+  if (eventCopy2 && eventCopy2 != 2)
   {
-    if (v42 == 1)
+    if (eventCopy2 == 1)
     {
-      v36 = v43;
-      [(MRDRouteRecommendationController *)v43 handlePlaybackStartForEndpoint:v44 bundleIdentifier:v11 eligibleForRecommendationsOutsideApp:v26];
+      v36 = selfCopy;
+      [(MRDRouteRecommendationController *)selfCopy handlePlaybackStartForEndpoint:endpointCopy bundleIdentifier:identifierCopy eligibleForRecommendationsOutsideApp:v26];
       v37 = 5;
     }
 
     else
     {
       v37 = 0;
-      v36 = v43;
+      v36 = selfCopy;
     }
 
     v38 = [[IRMediaEvent alloc] initWithEventType:v37 eventSubType:0];
-    [v38 setBundleID:v11];
+    [v38 setBundleID:identifierCopy];
     [v38 setIsOutsideApp:v26];
-    v39 = [(MRDRouteRecommendationController *)v36 recommender];
-    [v39 addEvent:v38 forRouteCandidate:v10];
+    recommender = [(MRDRouteRecommendationController *)v36 recommender];
+    [recommender addEvent:v38 forRouteCandidate:routeCopy];
   }
 }
 
-- (void)handlePlaybackStartForEndpoint:(id)a3 bundleIdentifier:(id)a4 eligibleForRecommendationsOutsideApp:(BOOL)a5
+- (void)handlePlaybackStartForEndpoint:(id)endpoint bundleIdentifier:(id)identifier eligibleForRecommendationsOutsideApp:(BOOL)app
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [MRIRRoute routeWithEndpoint:v8];
-  v11 = [(MRDRouteRecommendationController *)self lastUnusedAutoRoute];
-  v12 = [v11 isEqual:v10];
+  appCopy = app;
+  endpointCopy = endpoint;
+  identifierCopy = identifier;
+  v10 = [MRIRRoute routeWithEndpoint:endpointCopy];
+  lastUnusedAutoRoute = [(MRDRouteRecommendationController *)self lastUnusedAutoRoute];
+  v12 = [lastUnusedAutoRoute isEqual:v10];
 
   v13 = _MRLogForCategory();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -1564,14 +1564,14 @@ LABEL_11:
     if (v14)
     {
       v17 = 138412546;
-      v18 = v8;
+      v18 = endpointCopy;
       v19 = 2112;
-      v20 = v9;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC] playbackStarted ForEndpoint: %@ bundleIdentifier: %@, invalidating timer", &v17, 0x16u);
     }
 
     [(MRDRouteRecommendationController *)self clearUnusedAutoRoute];
-    if (!v5)
+    if (!appCopy)
     {
       goto LABEL_12;
     }
@@ -1581,14 +1581,14 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412546;
-      v18 = v9;
+      v18 = identifierCopy;
       v19 = 2112;
-      v20 = v8;
+      v20 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[MRDRRC] playback started for %@-%@; will request context update", &v17, 0x16u);
     }
 
-    v16 = [(MRDRouteRecommendationController *)self recommender];
-    [v16 requestCurrentContextWithBundleID:v9];
+    recommender = [(MRDRouteRecommendationController *)self recommender];
+    [recommender requestCurrentContextWithBundleID:identifierCopy];
 
     goto LABEL_12;
   }
@@ -1596,13 +1596,13 @@ LABEL_9:
   if (v14)
   {
     v17 = 138412546;
-    v18 = v8;
+    v18 = endpointCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC] playbackStarted forUnrelatedEndpoint: %@ bundleIdentifier: %@", &v17, 0x16u);
   }
 
-  if (v5)
+  if (appCopy)
   {
     goto LABEL_9;
   }
@@ -1610,47 +1610,47 @@ LABEL_9:
 LABEL_12:
 }
 
-- (id)_updateMediaControlsBlob:(id)a3 sender:(id)a4
+- (id)_updateMediaControlsBlob:(id)blob sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  blobCopy = blob;
+  senderCopy = sender;
   sub_1001B0780();
-  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0];
+  v8 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:blobCopy error:0];
   if (!v8)
   {
-    v13 = v6;
+    v13 = blobCopy;
     goto LABEL_12;
   }
 
-  v9 = [(MRDRouteRecommendationController *)self nowPlayingStateMonitor];
-  v10 = [v9 nowPlayingApp];
+  nowPlayingStateMonitor = [(MRDRouteRecommendationController *)self nowPlayingStateMonitor];
+  nowPlayingApp = [nowPlayingStateMonitor nowPlayingApp];
 
-  [v8 setNowPlayingAppBundleID:v10];
-  v11 = [(MRDRouteRecommendationController *)self visibleMediaApps];
-  [v8 setVisibleMediaApps:v11];
+  [v8 setNowPlayingAppBundleID:nowPlayingApp];
+  visibleMediaApps = [(MRDRouteRecommendationController *)self visibleMediaApps];
+  [v8 setVisibleMediaApps:visibleMediaApps];
 
-  if ([v7 isEqualToString:@"com.apple.MediaRemoteUI"])
+  if ([senderCopy isEqualToString:@"com.apple.MediaRemoteUI"])
   {
-    v12 = [MRSystemMediaBundles systemMediaBundleIDForBundleID:v10 type:1];
+    v12 = [MRSystemMediaBundles systemMediaBundleIDForBundleID:nowPlayingApp type:1];
   }
 
   else
   {
-    if ([v7 isEqualToString:@"com.apple.mediaremoted"])
+    if ([senderCopy isEqualToString:@"com.apple.mediaremoted"])
     {
-      v14 = [(MRDRouteRecommendationController *)self visibleMediaApps];
-      if ([v14 count] == 1)
+      visibleMediaApps2 = [(MRDRouteRecommendationController *)self visibleMediaApps];
+      if ([visibleMediaApps2 count] == 1)
       {
-        v15 = [(MRDRouteRecommendationController *)self visibleMediaApps];
-        v16 = [v15 firstObject];
+        visibleMediaApps3 = [(MRDRouteRecommendationController *)self visibleMediaApps];
+        firstObject = [visibleMediaApps3 firstObject];
       }
 
       else
       {
-        v16 = 0;
+        firstObject = 0;
       }
 
-      if (!v16)
+      if (!firstObject)
       {
         goto LABEL_11;
       }
@@ -1658,18 +1658,18 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    v12 = v7;
+    v12 = senderCopy;
   }
 
-  v16 = v12;
+  firstObject = v12;
   if (v12)
   {
 LABEL_10:
     v17 = +[MRDMediaBundleManager shared];
-    v18 = [v17 cachedEligibilityOf:v16];
+    v18 = [v17 cachedEligibilityOf:firstObject];
 
     [v8 setDonatingAppEligible:{objc_msgSend(v18, "isEligible")}];
-    [v8 setDonatingAppBundleID:v16];
+    [v8 setDonatingAppBundleID:firstObject];
   }
 
 LABEL_11:

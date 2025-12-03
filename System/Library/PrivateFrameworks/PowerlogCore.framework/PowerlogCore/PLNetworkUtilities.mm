@@ -1,23 +1,23 @@
 @interface PLNetworkUtilities
-+ (BOOL)getCompanionLink:(npi_if_info *)a3;
-+ (BOOL)isESPPacket:(__CFData *)a3 offset:(unsigned __int8)a4;
-+ (id)decodeIPPacket:(id)a3 encryptedPath:(BOOL)a4;
-+ (id)getIPAddress:(in_addr_4_6 *)a3 withAddressFamily:(int)a4;
-+ (id)getNetworkWakeInfo:(kern_event_msg *)a3;
-+ (id)getNormalizedIPV6Address:(id)a3;
-+ (id)getSeqNoAndSPI:(__CFData *)a3 offset:(unsigned __int8)a4;
-+ (id)getUnattributedWakeInfo:(kern_event_msg *)a3;
-+ (id)interfaceNameForIndex:(id)a3;
-+ (id)sockaddrToNSDictionary:(const char *)a3;
-+ (id)stringFromTrafficClass:(unsigned int)a3;
-+ (id)tcpParse:(__CFData *)a3 offset:(unsigned __int8)a4;
-+ (id)udpParse:(__CFData *)a3 offset:(unsigned __int8)a4;
-+ (int)getInterfaceType:(char *)a3 withPktIFName:(char *)a4 withPktIFInfo:(npi_if_info *)a5 withPktPhyIFInfo:(npi_if_info *)a6;
++ (BOOL)getCompanionLink:(npi_if_info *)link;
++ (BOOL)isESPPacket:(__CFData *)packet offset:(unsigned __int8)offset;
++ (id)decodeIPPacket:(id)packet encryptedPath:(BOOL)path;
++ (id)getIPAddress:(in_addr_4_6 *)address withAddressFamily:(int)family;
++ (id)getNetworkWakeInfo:(kern_event_msg *)info;
++ (id)getNormalizedIPV6Address:(id)address;
++ (id)getSeqNoAndSPI:(__CFData *)i offset:(unsigned __int8)offset;
++ (id)getUnattributedWakeInfo:(kern_event_msg *)info;
++ (id)interfaceNameForIndex:(id)index;
++ (id)sockaddrToNSDictionary:(const char *)dictionary;
++ (id)stringFromTrafficClass:(unsigned int)class;
++ (id)tcpParse:(__CFData *)parse offset:(unsigned __int8)offset;
++ (id)udpParse:(__CFData *)parse offset:(unsigned __int8)offset;
++ (int)getInterfaceType:(char *)type withPktIFName:(char *)name withPktIFInfo:(npi_if_info *)info withPktPhyIFInfo:(npi_if_info *)fInfo;
 @end
 
 @implementation PLNetworkUtilities
 
-+ (id)sockaddrToNSDictionary:(const char *)a3
++ (id)sockaddrToNSDictionary:(const char *)dictionary
 {
   v15 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -26,7 +26,7 @@
   v11 = 0;
   *v10 = 0;
   v4 = objc_opt_new();
-  if (getnameinfo(a3, *a3, v12, 0x39u, v10, 6u, 10))
+  if (getnameinfo(dictionary, *dictionary, v12, 0x39u, v10, 6u, 10))
   {
     v5 = 0;
   }
@@ -49,10 +49,10 @@
   return v5;
 }
 
-+ (id)interfaceNameForIndex:(id)a3
++ (id)interfaceNameForIndex:(id)index
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  indexCopy = index;
   if (interfaceNameForIndex__onceToken != -1)
   {
     +[PLNetworkUtilities interfaceNameForIndex:];
@@ -60,22 +60,22 @@
 
   v4 = interfaceNameForIndex___interfaceNames;
   objc_sync_enter(v4);
-  v5 = [interfaceNameForIndex___interfaceNames objectForKeyedSubscript:v3];
+  v5 = [interfaceNameForIndex___interfaceNames objectForKeyedSubscript:indexCopy];
   if (!v5)
   {
     v9[0] = 0;
-    if (if_indextoname([v3 unsignedIntValue], v9) && v9[0])
+    if (if_indextoname([indexCopy unsignedIntValue], v9) && v9[0])
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
+      indexCopy = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown%@", v3];
+      indexCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown%@", indexCopy];
     }
 
-    v5 = v6;
-    [interfaceNameForIndex___interfaceNames setObject:v6 forKeyedSubscript:v3];
+    v5 = indexCopy;
+    [interfaceNameForIndex___interfaceNames setObject:indexCopy forKeyedSubscript:indexCopy];
   }
 
   objc_sync_exit(v4);
@@ -92,18 +92,18 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)stringFromTrafficClass:(unsigned int)a3
++ (id)stringFromTrafficClass:(unsigned int)class
 {
-  if (a3 > 499)
+  if (class > 499)
   {
-    if (a3 <= 699)
+    if (class <= 699)
     {
-      if (a3 == 500)
+      if (class == 500)
       {
         return @"AV:Multimedia_Audio/Video_Streaming";
       }
 
-      if (a3 == 600)
+      if (class == 600)
       {
         return @"RV:Responsive_Multimedia_Audio/Video";
       }
@@ -111,7 +111,7 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
 
     else
     {
-      switch(a3)
+      switch(class)
       {
         case 0x2BCu:
           return @"VI:Interactive_Video";
@@ -123,14 +123,14 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
     }
   }
 
-  else if (a3 <= 199)
+  else if (class <= 199)
   {
-    if (!a3)
+    if (!class)
     {
       return @"BE:Best_Effort";
     }
 
-    if (a3 == 100)
+    if (class == 100)
     {
       return @"BK_SYS:Background_System-Initiated";
     }
@@ -138,7 +138,7 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
 
   else
   {
-    switch(a3)
+    switch(class)
     {
       case 0xC8u:
         return @"BK:Background";
@@ -152,14 +152,14 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
   return @"unknown?";
 }
 
-+ (id)getNetworkWakeInfo:(kern_event_msg *)a3
++ (id)getNetworkWakeInfo:(kern_event_msg *)info
 {
   v45 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   memset(out, 0, 37);
-  uuid_unparse(a3->event_data, out);
+  uuid_unparse(info->event_data, out);
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:out];
-  if ((a3[1].event_data[0] & 2) != 0)
+  if ((info[1].event_data[0] & 2) != 0)
   {
     v7 = 30;
   }
@@ -169,9 +169,9 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
     v7 = 2;
   }
 
-  v8 = [a1 getIPAddress:&a3[5].kev_class withAddressFamily:v7];
-  v9 = [a1 getIPAddress:&a3[4].event_code withAddressFamily:v7];
-  v10 = [a1 getInterfaceType:&a3[7].kev_class withPktIFName:a3[5].event_data withPktIFInfo:a3[6].event_data withPktPhyIFInfo:a3[7].event_data];
+  v8 = [self getIPAddress:&info[5].kev_class withAddressFamily:v7];
+  v9 = [self getIPAddress:&info[4].event_code withAddressFamily:v7];
+  v10 = [self getInterfaceType:&info[7].kev_class withPktIFName:info[5].event_data withPktIFInfo:info[6].event_data withPktPhyIFInfo:info[7].event_data];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     +[PLNetworkUtilities getNetworkWakeInfo:];
@@ -195,11 +195,11 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
     {
       v39 = v9;
       v40 = v8;
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wake uuid %s ifname %s port %d flags 0x%x pid %d pname %s epid %d epname %s\n", out, a3[5].event_data, bswap32(HIWORD(a3[1].event_code)) >> 16, LOWORD(a3[1].event_data[0]), a3[2].total_size, &a3[2].kev_class, a3[2].vendor_code, a3[2].event_data + 1];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wake uuid %s ifname %s port %d flags 0x%x pid %d pname %s epid %d epname %s\n", out, info[5].event_data, bswap32(HIWORD(info[1].event_code)) >> 16, LOWORD(info[1].event_data[0]), info[2].total_size, &info[2].kev_class, info[2].vendor_code, info[2].event_data + 1];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getNetworkWakeInfo:]"];
-      [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:194];
+      [PLCoreStorage logMessage:v12 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:194];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -214,50 +214,50 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
   }
 
   [v5 setObject:v6 forKeyedSubscript:@"wakeUUID"];
-  v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3[5].event_data];
+  v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:info[5].event_data];
   [v5 setObject:v17 forKeyedSubscript:@"Interface"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithInt:a3[2].total_size];
+  v18 = [MEMORY[0x1E696AD98] numberWithInt:info[2].total_size];
   [v5 setObject:v18 forKeyedSubscript:@"PID"];
 
-  v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&a3[2].kev_class];
+  v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&info[2].kev_class];
   [v5 setObject:v19 forKeyedSubscript:@"ProcessName"];
 
-  v20 = [MEMORY[0x1E696AD98] numberWithInt:a3[2].vendor_code];
+  v20 = [MEMORY[0x1E696AD98] numberWithInt:info[2].vendor_code];
   [v5 setObject:v20 forKeyedSubscript:@"EffectivePID"];
 
-  v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3[2].event_data + 1];
+  v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:info[2].event_data + 1];
   [v5 setObject:v21 forKeyedSubscript:@"EffectiveProcessName"];
 
   [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"AttributedWake"];
   v22 = [MEMORY[0x1E696AD98] numberWithInt:v10];
   [v5 setObject:v22 forKeyedSubscript:@"InterfaceType"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "getCompanionLink:", a3[6].event_data)}];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "getCompanionLink:", info[6].event_data)}];
   [v5 setObject:v23 forKeyedSubscript:@"CompanionLink"];
 
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(a3[4].id)) >> 16];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(info[4].id)) >> 16];
   [v5 setObject:v24 forKeyedSubscript:@"sourcePort"];
 
   [v5 setObject:v8 forKeyedSubscript:@"sourceAddress"];
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(a3[1].event_code)) >> 16];
+  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(info[1].event_code)) >> 16];
   [v5 setObject:v25 forKeyedSubscript:@"destinationPort"];
 
   [v5 setObject:v9 forKeyedSubscript:@"destinationAddress"];
-  if ((a3[1].event_data[0] & 4) != 0)
+  if ((info[1].event_data[0] & 4) != 0)
   {
-    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:LOWORD(a3[6].event_code)];
+    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:LOWORD(info[6].event_code)];
     [v5 setObject:v26 forKeyedSubscript:@"controlFlagType"];
   }
 
-  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3[6].id];
+  v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:info[6].id];
   [v5 setObject:v27 forKeyedSubscript:@"packetDataLength"];
 
-  v28 = [MEMORY[0x1E696AD98] numberWithInt:a3[1].event_data[0] & 0x2000];
-  [v5 setObject:v28 forKeyedSubscript:@"idleConnectionWake"];
+  0x2000 = [MEMORY[0x1E696AD98] numberWithInt:info[1].event_data[0] & 0x2000];
+  [v5 setObject:0x2000 forKeyedSubscript:@"idleConnectionWake"];
 
-  v29 = [MEMORY[0x1E696AD98] numberWithInt:a3[1].event_data[0] & 0x4000];
-  [v5 setObject:v29 forKeyedSubscript:@"lpwProcessedWake"];
+  0x4000 = [MEMORY[0x1E696AD98] numberWithInt:info[1].event_data[0] & 0x4000];
+  [v5 setObject:0x4000 forKeyedSubscript:@"lpwProcessedWake"];
 
   if (+[PLDefaults debugEnabled])
   {
@@ -277,9 +277,9 @@ uint64_t __44__PLNetworkUtilities_interfaceNameForIndex___block_invoke()
       v31 = v9;
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wake dictionary %@", v5];
       v33 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v34 = [v33 lastPathComponent];
+      lastPathComponent2 = [v33 lastPathComponent];
       v35 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getNetworkWakeInfo:]"];
-      [PLCoreStorage logMessage:v32 fromFile:v34 fromFunction:v35 fromLineNumber:219];
+      [PLCoreStorage logMessage:v32 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:219];
 
       v36 = PLLogCommon();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -310,11 +310,11 @@ BOOL __41__PLNetworkUtilities_getNetworkWakeInfo___block_invoke_129(uint64_t a1)
   return result;
 }
 
-+ (id)getIPAddress:(in_addr_4_6 *)a3 withAddressFamily:(int)a4
++ (id)getIPAddress:(in_addr_4_6 *)address withAddressFamily:(int)family
 {
   v9 = *MEMORY[0x1E69E9840];
   memset(v8, 0, 46);
-  if (a4 == 2)
+  if (family == 2)
   {
     v4 = 2;
   }
@@ -324,16 +324,16 @@ BOOL __41__PLNetworkUtilities_getNetworkWakeInfo___block_invoke_129(uint64_t a1)
     v4 = 30;
   }
 
-  inet_ntop(v4, a3, v8, 0x2Eu);
+  inet_ntop(v4, address, v8, 0x2Eu);
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v8];
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (BOOL)getCompanionLink:(npi_if_info *)a3
++ (BOOL)getCompanionLink:(npi_if_info *)link
 {
-  if (a3->var0 == 18 && a3->var2 == 7)
+  if (link->var0 == 18 && link->var2 == 7)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
@@ -356,19 +356,19 @@ BOOL __41__PLNetworkUtilities_getNetworkWakeInfo___block_invoke_129(uint64_t a1)
   return v3;
 }
 
-+ (int)getInterfaceType:(char *)a3 withPktIFName:(char *)a4 withPktIFInfo:(npi_if_info *)a5 withPktPhyIFInfo:(npi_if_info *)a6
++ (int)getInterfaceType:(char *)type withPktIFName:(char *)name withPktIFInfo:(npi_if_info *)info withPktPhyIFInfo:(npi_if_info *)fInfo
 {
-  var0 = a5->var0;
-  if (a5->var0 > 16)
+  var0 = info->var0;
+  if (info->var0 > 16)
   {
     if (var0 == 17)
     {
-      if (a6->var1 == 3)
+      if (fInfo->var1 == 3)
       {
         return 2;
       }
 
-      v12 = a6->var0 == 15;
+      v12 = fInfo->var0 == 15;
       v13 = 3;
     }
 
@@ -379,12 +379,12 @@ BOOL __41__PLNetworkUtilities_getNetworkWakeInfo___block_invoke_129(uint64_t a1)
         return 0;
       }
 
-      var2 = a5->var2;
+      var2 = info->var2;
       if (!var2)
       {
-        if (a6->var1 != 3)
+        if (fInfo->var1 != 3)
         {
-          var0 = a6->var0;
+          var0 = fInfo->var0;
 LABEL_3:
           if (var0 == 15)
           {
@@ -402,7 +402,7 @@ LABEL_3:
         return 0;
       }
 
-      var1 = a5->var1;
+      var1 = info->var1;
       if (var1 == 2)
       {
         return 1;
@@ -412,11 +412,11 @@ LABEL_3:
       {
         if (var1 != 3)
         {
-          v10 = a6->var1;
+          v10 = fInfo->var1;
           if (v10 != 3)
           {
             v11 = v10 == 2;
-            if (a6->var0 == 15)
+            if (fInfo->var0 == 15)
             {
               return 3;
             }
@@ -431,12 +431,12 @@ LABEL_3:
         return 2;
       }
 
-      if (a6->var1 == 3)
+      if (fInfo->var1 == 3)
       {
         return 4;
       }
 
-      v12 = a6->var0 == 15;
+      v12 = fInfo->var0 == 15;
       v13 = 5;
     }
 
@@ -456,7 +456,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if (a5->var1 == 3)
+  if (info->var1 == 3)
   {
     return 2;
   }
@@ -467,14 +467,14 @@ LABEL_3:
   }
 }
 
-+ (id)getUnattributedWakeInfo:(kern_event_msg *)a3
++ (id)getUnattributedWakeInfo:(kern_event_msg *)info
 {
   v39 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   memset(out, 0, 37);
-  uuid_unparse(a3->event_data, out);
+  uuid_unparse(info->event_data, out);
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:out];
-  if ((a3[1].event_code & 0x20000) != 0)
+  if ((info[1].event_code & 0x20000) != 0)
   {
     v7 = 30;
   }
@@ -484,9 +484,9 @@ LABEL_3:
     v7 = 2;
   }
 
-  v8 = [a1 getIPAddress:&a3[6].kev_subclass withAddressFamily:v7];
-  v9 = [a1 getIPAddress:a3[5].event_data withAddressFamily:v7];
-  v10 = [a1 getInterfaceType:&a3[8].kev_subclass withPktIFName:&a3[7] withPktIFInfo:&a3[8] withPktPhyIFInfo:&a3[9]];
+  v8 = [self getIPAddress:&info[6].kev_subclass withAddressFamily:v7];
+  v9 = [self getIPAddress:info[5].event_data withAddressFamily:v7];
+  v10 = [self getInterfaceType:&info[8].kev_subclass withPktIFName:&info[7] withPktIFInfo:&info[8] withPktPhyIFInfo:&info[9]];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     +[PLNetworkUtilities getUnattributedWakeInfo:];
@@ -510,11 +510,11 @@ LABEL_3:
       v33 = v9;
       v34 = v8;
       v35 = v6;
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wake uuid %s ifname %s src port %d dst port %d \n", out, &a3[7], bswap32(LOWORD(a3[5].event_code)) >> 16, bswap32(HIWORD(a3[5].id)) >> 16];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Wake uuid %s ifname %s src port %d dst port %d \n", out, &info[7], bswap32(LOWORD(info[5].event_code)) >> 16, bswap32(HIWORD(info[5].id)) >> 16];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getUnattributedWakeInfo:]"];
-      [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:322];
+      [PLCoreStorage logMessage:v12 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:322];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -529,14 +529,14 @@ LABEL_3:
   }
 
   [v5 setObject:v6 forKeyedSubscript:@"wakeUUID"];
-  v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&a3[7]];
+  v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&info[7]];
   [v5 setObject:v17 forKeyedSubscript:@"Interface"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(LOWORD(a3[5].event_code)) >> 16];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(LOWORD(info[5].event_code)) >> 16];
   [v5 setObject:v18 forKeyedSubscript:@"sourcePort"];
 
   [v5 setObject:v8 forKeyedSubscript:@"sourceAddress"];
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(a3[5].id)) >> 16];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:bswap32(HIWORD(info[5].id)) >> 16];
   [v5 setObject:v19 forKeyedSubscript:@"destinationPort"];
 
   [v5 setObject:v9 forKeyedSubscript:@"destinationAddress"];
@@ -544,16 +544,16 @@ LABEL_3:
   v20 = [MEMORY[0x1E696AD98] numberWithInt:v10];
   [v5 setObject:v20 forKeyedSubscript:@"InterfaceType"];
 
-  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "getCompanionLink:", &a3[8])}];
+  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "getCompanionLink:", &info[8])}];
   [v5 setObject:v21 forKeyedSubscript:@"CompanionLink"];
 
-  if ((a3[1].event_code & 0x40000) != 0)
+  if ((info[1].event_code & 0x40000) != 0)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:LOWORD(a3[7].event_data[0])];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:LOWORD(info[7].event_data[0])];
     [v5 setObject:v22 forKeyedSubscript:@"controlFlagType"];
   }
 
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3[7].event_code];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:info[7].event_code];
   [v5 setObject:v23 forKeyedSubscript:@"packetDataLength"];
 
   if (+[PLDefaults debugEnabled])
@@ -574,9 +574,9 @@ LABEL_3:
       v25 = v9;
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unattributed wake dictionary %@", v5];
       v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v28 = [v27 lastPathComponent];
+      lastPathComponent2 = [v27 lastPathComponent];
       v29 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getUnattributedWakeInfo:]"];
-      [PLCoreStorage logMessage:v26 fromFile:v28 fromFunction:v29 fromLineNumber:340];
+      [PLCoreStorage logMessage:v26 fromFile:lastPathComponent2 fromFunction:v29 fromLineNumber:340];
 
       v30 = PLLogCommon();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -628,13 +628,13 @@ BOOL __43__PLNetworkUtilities_handlePowerWakeEvent___block_invoke_150(uint64_t a
   return result;
 }
 
-+ (id)getNormalizedIPV6Address:(id)a3
++ (id)getNormalizedIPV6Address:(id)address
 {
   v26 = *MEMORY[0x1E69E9840];
   v24[0] = 0;
   v24[1] = 0;
-  v4 = a3;
-  if (!inet_pton(30, [a3 UTF8String], v24))
+  addressCopy = address;
+  if (!inet_pton(30, [address UTF8String], v24))
   {
     if (+[PLDefaults debugEnabled])
     {
@@ -653,9 +653,9 @@ BOOL __43__PLNetworkUtilities_handlePowerWakeEvent___block_invoke_150(uint64_t a
       {
         v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed in inet_pton %d", 0, v18, v19, v20, v21, v22];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getNormalizedIPV6Address:]"];
-        [PLCoreStorage logMessage:v7 fromFile:v14 fromFunction:v15 fromLineNumber:390];
+        [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:390];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -696,9 +696,9 @@ LABEL_17:
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Normalized Address is %@", v5];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent2 = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getNormalizedIPV6Address:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:387];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent2 fromFunction:v10 fromLineNumber:387];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -730,17 +730,17 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
   return result;
 }
 
-+ (id)decodeIPPacket:(id)a3 encryptedPath:(BOOL)a4
++ (id)decodeIPPacket:(id)packet encryptedPath:(BOOL)path
 {
-  v6 = a3;
-  v7 = v6;
+  packetCopy = packet;
+  v7 = packetCopy;
   buffer[0] = 0;
-  if (!v6)
+  if (!packetCopy)
   {
     goto LABEL_32;
   }
 
-  if (!CFDataGetLength(v6))
+  if (!CFDataGetLength(packetCopy))
   {
     if (+[PLDefaults debugEnabled])
     {
@@ -759,9 +759,9 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] Packet too short or no data available"];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent = [v16 lastPathComponent];
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-        [PLCoreStorage logMessage:v10 fromFile:v17 fromFunction:v18 fromLineNumber:419];
+        [PLCoreStorage logMessage:v10 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:419];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -791,7 +791,7 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
       v110.location = 0;
       v110.length = 40;
       CFDataGetBytes(v7, v110, v100);
-      v29 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v35 = bswap32(*&v100[8]);
       v36 = bswap32(*&v100[12]);
       v37 = bswap32(v101);
@@ -802,8 +802,8 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
       v42 = bswap32(v102);
       v43 = bswap32(HIDWORD(v102));
       v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%x:%x:%x:%x:%x:%x:%x:%x", HIWORD(v40), v40, HIWORD(v41), v41, HIWORD(v42), v42, HIWORD(v43), v43];
-      v32 = [a1 getNormalizedIPV6Address:v39];
-      v93 = [a1 getNormalizedIPV6Address:v44];
+      v32 = [self getNormalizedIPV6Address:v39];
+      v93 = [self getNormalizedIPV6Address:v44];
       if (+[PLDefaults debugEnabled])
       {
         v45 = objc_opt_class();
@@ -822,9 +822,9 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
           v91 = v32;
           v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Normalized address is source %@ dest %@ orig s %@ orig d %@", v32, v93, v39, v44];
           v47 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-          v48 = [v47 lastPathComponent];
+          lastPathComponent2 = [v47 lastPathComponent];
           v49 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-          [PLCoreStorage logMessage:v46 fromFile:v48 fromFunction:v49 fromLineNumber:474];
+          [PLCoreStorage logMessage:v46 fromFile:lastPathComponent2 fromFunction:v49 fromLineNumber:474];
 
           v50 = v46;
           v51 = PLLogCommon();
@@ -843,14 +843,14 @@ BOOL __47__PLNetworkUtilities_getNormalizedIPV6Address___block_invoke_159(uint64
 LABEL_42:
       if (v33 == 50)
       {
-        if (a4)
+        if (path)
         {
           v52 = 0;
         }
 
         else
         {
-          v52 = [a1 getSeqNoAndSPI:v7 offset:v34];
+          v52 = [self getSeqNoAndSPI:v7 offset:v34];
           if (+[PLDefaults debugEnabled])
           {
             v70 = objc_opt_class();
@@ -868,9 +868,9 @@ LABEL_42:
             {
               v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invoked from non encrypted path (esp) - wifi or bb agent %@", v52];
               v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-              v73 = [v72 lastPathComponent];
+              lastPathComponent3 = [v72 lastPathComponent];
               v74 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-              [PLCoreStorage logMessage:v71 fromFile:v73 fromFunction:v74 fromLineNumber:515];
+              [PLCoreStorage logMessage:v71 fromFile:lastPathComponent3 fromFunction:v74 fromLineNumber:515];
 
               v75 = PLLogCommon();
               if (os_log_type_enabled(v75, OS_LOG_TYPE_DEBUG))
@@ -890,7 +890,7 @@ LABEL_42:
       {
         if (v33 == 6)
         {
-          v14 = [a1 tcpParse:v7 offset:v34];
+          v14 = [self tcpParse:v7 offset:v34];
           v52 = 0;
           v53 = @"TCP";
         }
@@ -906,7 +906,7 @@ LABEL_42:
       }
 
       v92 = v32;
-      v14 = [a1 udpParse:v7 offset:v34];
+      v14 = [self udpParse:v7 offset:v34];
       v54 = [v14 objectForKeyedSubscript:@"dest_port"];
       if ([v54 intValue] == 4500)
       {
@@ -915,9 +915,9 @@ LABEL_42:
       else
       {
         v55 = [v14 objectForKeyedSubscript:@"source_port"];
-        v56 = [v55 intValue];
+        intValue = [v55 intValue];
 
-        if (v56 != 4500)
+        if (intValue != 4500)
         {
           v52 = 0;
           v53 = @"UDP";
@@ -925,7 +925,7 @@ LABEL_42:
         }
       }
 
-      v57 = [a1 isESPPacket:v7 offset:v34];
+      v57 = [self isESPPacket:v7 offset:v34];
       v58 = +[PLDefaults debugEnabled];
       if (v57)
       {
@@ -946,9 +946,9 @@ LABEL_42:
           {
             v90 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found an ESP packet in UDP"];
             v60 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-            v61 = [v60 lastPathComponent];
+            lastPathComponent4 = [v60 lastPathComponent];
             v62 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-            [PLCoreStorage logMessage:v90 fromFile:v61 fromFunction:v62 fromLineNumber:497];
+            [PLCoreStorage logMessage:v90 fromFile:lastPathComponent4 fromFunction:v62 fromLineNumber:497];
 
             v63 = PLLogCommon();
             if (os_log_type_enabled(v63, OS_LOG_TYPE_DEBUG))
@@ -960,9 +960,9 @@ LABEL_42:
           }
         }
 
-        if (!a4)
+        if (!path)
         {
-          v52 = [a1 getSeqNoAndSPI:v7 offset:(v34 + 8)];
+          v52 = [self getSeqNoAndSPI:v7 offset:(v34 + 8)];
           if (+[PLDefaults debugEnabled])
           {
             v64 = objc_opt_class();
@@ -980,9 +980,9 @@ LABEL_42:
             {
               v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invoked from non encrypted path - wifi or bb agent %@", v52];
               v66 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-              v67 = [v66 lastPathComponent];
+              lastPathComponent5 = [v66 lastPathComponent];
               v68 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-              [PLCoreStorage logMessage:v65 fromFile:v67 fromFunction:v68 fromLineNumber:502];
+              [PLCoreStorage logMessage:v65 fromFile:lastPathComponent5 fromFunction:v68 fromLineNumber:502];
 
               v69 = PLLogCommon();
               if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
@@ -1013,9 +1013,9 @@ LABEL_42:
         {
           v77 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found an IKE packet in UDP"];
           v78 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-          v79 = [v78 lastPathComponent];
+          lastPathComponent6 = [v78 lastPathComponent];
           v80 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-          [PLCoreStorage logMessage:v77 fromFile:v79 fromFunction:v80 fromLineNumber:505];
+          [PLCoreStorage logMessage:v77 fromFile:lastPathComponent6 fromFunction:v80 fromLineNumber:505];
 
           v81 = PLLogCommon();
           if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
@@ -1029,31 +1029,31 @@ LABEL_42:
 LABEL_84:
       v53 = @"UDP";
 LABEL_86:
-      [v29 setObject:v53 forKeyedSubscript:@"protocol"];
+      [dictionary setObject:v53 forKeyedSubscript:@"protocol"];
       v82 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:buffer[0]];
-      [v29 setObject:v82 forKeyedSubscript:@"version"];
+      [dictionary setObject:v82 forKeyedSubscript:@"version"];
 
-      [v29 setObject:v32 forKeyedSubscript:@"source"];
-      [v29 setObject:v93 forKeyedSubscript:@"destination"];
+      [dictionary setObject:v32 forKeyedSubscript:@"source"];
+      [dictionary setObject:v93 forKeyedSubscript:@"destination"];
       if (v52)
       {
         v83 = MEMORY[0x1E696AD98];
         v84 = [v52 objectForKeyedSubscript:@"seqNo"];
         v85 = [v83 numberWithUnsignedInt:{objc_msgSend(v84, "unsignedIntValue")}];
-        [v29 setObject:v85 forKeyedSubscript:@"seqNo"];
+        [dictionary setObject:v85 forKeyedSubscript:@"seqNo"];
 
         v86 = MEMORY[0x1E696AD98];
         v87 = [v52 objectForKeyedSubscript:@"spi"];
         v88 = [v86 numberWithUnsignedInt:{objc_msgSend(v87, "unsignedIntValue")}];
-        [v29 setObject:v88 forKeyedSubscript:@"spi"];
+        [dictionary setObject:v88 forKeyedSubscript:@"spi"];
       }
 
       if (v14)
       {
-        [v29 setObject:v14 forKey:@"protocol_info"];
+        [dictionary setObject:v14 forKey:@"protocol_info"];
       }
 
-      v10 = v29;
+      v10 = dictionary;
 
       v27 = v10;
       goto LABEL_91;
@@ -1076,9 +1076,9 @@ LABEL_86:
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] IPv6 Packet too short"];
         v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v21 = [v20 lastPathComponent];
+        lastPathComponent7 = [v20 lastPathComponent];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-        [PLCoreStorage logMessage:v10 fromFile:v21 fromFunction:v22 fromLineNumber:452];
+        [PLCoreStorage logMessage:v10 fromFile:lastPathComponent7 fromFunction:v22 fromLineNumber:452];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1114,9 +1114,9 @@ LABEL_32:
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] unknown type: %d", buffer[0]];
         v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v25 = [v24 lastPathComponent];
+        lastPathComponent8 = [v24 lastPathComponent];
         v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-        [PLCoreStorage logMessage:v10 fromFile:v25 fromFunction:v26 fromLineNumber:480];
+        [PLCoreStorage logMessage:v10 fromFile:lastPathComponent8 fromFunction:v26 fromLineNumber:480];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1139,7 +1139,7 @@ LABEL_32:
     v109.length = 20;
     CFDataGetBytes(v7, v109, v100);
     v28 = v100[0];
-    v29 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v30 = bswap32(*&v100[12]);
     v31 = bswap32(v101);
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu.%lu.%lu.%lu", HIBYTE(v30), BYTE2(v30), BYTE1(v30), v30];
@@ -1172,9 +1172,9 @@ LABEL_32:
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] IPv4 Packet too short"];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-  v12 = [v11 lastPathComponent];
+  lastPathComponent9 = [v11 lastPathComponent];
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities decodeIPPacket:encryptedPath:]"];
-  [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:430];
+  [PLCoreStorage logMessage:v10 fromFile:lastPathComponent9 fromFunction:v13 fromLineNumber:430];
 
   v14 = PLLogCommon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1254,35 +1254,35 @@ BOOL __51__PLNetworkUtilities_decodeIPPacket_encryptedPath___block_invoke_231(ui
   return result;
 }
 
-+ (id)tcpParse:(__CFData *)a3 offset:(unsigned __int8)a4
++ (id)tcpParse:(__CFData *)parse offset:(unsigned __int8)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   *buffer = 0;
   v27 = 0;
   v28 = 0;
-  if (CFDataGetLength(a3) >= a4 + 20)
+  if (CFDataGetLength(parse) >= offset + 20)
   {
-    v14 = [MEMORY[0x1E695DF90] dictionary];
-    v30.location = v4;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v30.location = offsetCopy;
     v30.length = 20;
-    CFDataGetBytes(a3, v30, buffer);
+    CFDataGetBytes(parse, v30, buffer);
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*buffer) >> 16];
-    [v14 setObject:v15 forKey:@"source_port"];
+    [dictionary setObject:v15 forKey:@"source_port"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*&buffer[2]) >> 16];
-    [v14 setObject:v16 forKey:@"dest_port"];
+    [dictionary setObject:v16 forKey:@"dest_port"];
 
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*&buffer[4])];
-    [v14 setObject:v17 forKey:@"seq"];
+    [dictionary setObject:v17 forKey:@"seq"];
 
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(v27)];
-    [v14 setObject:v18 forKey:@"ack"];
+    [dictionary setObject:v18 forKey:@"ack"];
 
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:BYTE5(v27)];
-    [v14 setObject:v19 forKey:@"control"];
+    [dictionary setObject:v19 forKey:@"control"];
 
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(HIWORD(v27)) >> 16];
-    [v14 setObject:v9 forKey:@"window"];
+    [dictionary setObject:v9 forKey:@"window"];
 LABEL_10:
 
     goto LABEL_12;
@@ -1304,12 +1304,12 @@ LABEL_10:
     if (tcpParse_offset__classDebugEnabled == 1)
     {
       v7 = MEMORY[0x1E696AEC0];
-      Length = CFDataGetLength(a3);
-      v9 = [v7 stringWithFormat:@"[PacketDecoder] TCP Packet too short: %@ Length: %ld", a3, Length, block, v22, v23, v24, v25];
+      Length = CFDataGetLength(parse);
+      v9 = [v7 stringWithFormat:@"[PacketDecoder] TCP Packet too short: %@ Length: %ld", parse, Length, block, v22, v23, v24, v25];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities tcpParse:offset:]"];
-      [PLCoreStorage logMessage:v9 fromFile:v11 fromFunction:v12 fromLineNumber:543];
+      [PLCoreStorage logMessage:v9 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:543];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1317,15 +1317,15 @@ LABEL_10:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v14 = 0;
+      dictionary = 0;
       goto LABEL_10;
     }
   }
 
-  v14 = 0;
+  dictionary = 0;
 LABEL_12:
 
-  return v14;
+  return dictionary;
 }
 
 BOOL __38__PLNetworkUtilities_tcpParse_offset___block_invoke(uint64_t a1)
@@ -1335,21 +1335,21 @@ BOOL __38__PLNetworkUtilities_tcpParse_offset___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)udpParse:(__CFData *)a3 offset:(unsigned __int8)a4
++ (id)udpParse:(__CFData *)parse offset:(unsigned __int8)offset
 {
-  v4 = a4;
+  offsetCopy = offset;
   *buffer = 0;
-  if (CFDataGetLength(a3) >= a4 + 8)
+  if (CFDataGetLength(parse) >= offset + 8)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    v22.location = v4;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v22.location = offsetCopy;
     v22.length = 8;
-    CFDataGetBytes(a3, v22, buffer);
+    CFDataGetBytes(parse, v22, buffer);
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*buffer) >> 16];
-    [v12 setObject:v13 forKey:@"source_port"];
+    [dictionary setObject:v13 forKey:@"source_port"];
 
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*&buffer[2]) >> 16];
-    [v12 setObject:v7 forKey:@"dest_port"];
+    [dictionary setObject:v7 forKey:@"dest_port"];
 LABEL_10:
 
     goto LABEL_12;
@@ -1372,9 +1372,9 @@ LABEL_10:
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] UDP Packet too short", v15, v16, v17, v18, v19];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities udpParse:offset:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:566];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:566];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1382,15 +1382,15 @@ LABEL_10:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v12 = 0;
+      dictionary = 0;
       goto LABEL_10;
     }
   }
 
-  v12 = 0;
+  dictionary = 0;
 LABEL_12:
 
-  return v12;
+  return dictionary;
 }
 
 BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
@@ -1400,10 +1400,10 @@ BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (BOOL)isESPPacket:(__CFData *)a3 offset:(unsigned __int8)a4
++ (BOOL)isESPPacket:(__CFData *)packet offset:(unsigned __int8)offset
 {
-  v5 = a4;
-  if (CFDataGetLength(a3) <= a4 + 12)
+  offsetCopy = offset;
+  if (CFDataGetLength(packet) <= offset + 12)
   {
     return 0;
   }
@@ -1426,9 +1426,9 @@ BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] Read marker value."];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities isESPPacket:offset:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:586];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:586];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1438,9 +1438,9 @@ BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
     }
   }
 
-  v34.location = v5 + 8;
+  v34.location = offsetCopy + 8;
   v34.length = 4;
-  CFDataGetBytes(a3, v34, buffer);
+  CFDataGetBytes(packet, v34, buffer);
   v12 = *buffer;
   v13 = *buffer != 0;
   v14 = +[PLDefaults debugEnabled];
@@ -1463,9 +1463,9 @@ BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
       {
         v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] Found an IKE packet"];
         v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent2 = [v22 lastPathComponent];
         v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities isESPPacket:offset:]"];
-        [PLCoreStorage logMessage:v16 fromFile:v23 fromFunction:v24 fromLineNumber:591];
+        [PLCoreStorage logMessage:v16 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:591];
 
         v20 = PLLogCommon();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1497,9 +1497,9 @@ BOOL __38__PLNetworkUtilities_udpParse_offset___block_invoke(uint64_t a1)
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] Found an ESP packet", v26, v27, v28, v29, v30];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent3 = [v17 lastPathComponent];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities isESPPacket:offset:]"];
-      [PLCoreStorage logMessage:v16 fromFile:v18 fromFunction:v19 fromLineNumber:594];
+      [PLCoreStorage logMessage:v16 fromFile:lastPathComponent3 fromFunction:v19 fromLineNumber:594];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -1537,24 +1537,24 @@ BOOL __41__PLNetworkUtilities_isESPPacket_offset___block_invoke_288(uint64_t a1)
   return result;
 }
 
-+ (id)getSeqNoAndSPI:(__CFData *)a3 offset:(unsigned __int8)a4
++ (id)getSeqNoAndSPI:(__CFData *)i offset:(unsigned __int8)offset
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  offsetCopy = offset;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *buffer = 0;
-  Length = CFDataGetLength(a3);
-  v8.location = v4;
-  if (Length >= v4 + 8)
+  Length = CFDataGetLength(i);
+  v8.location = offsetCopy;
+  if (Length >= offsetCopy + 8)
   {
     v8.length = 8;
-    CFDataGetBytes(a3, v8, buffer);
+    CFDataGetBytes(i, v8, buffer);
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*&buffer[4])];
-    [v6 setObject:v16 forKeyedSubscript:@"seqNo"];
+    [dictionary setObject:v16 forKeyedSubscript:@"seqNo"];
 
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:bswap32(*buffer)];
-    [v6 setObject:v17 forKeyedSubscript:@"spi"];
+    [dictionary setObject:v17 forKeyedSubscript:@"spi"];
 
-    v15 = v6;
+    v15 = dictionary;
   }
 
   else
@@ -1576,9 +1576,9 @@ BOOL __41__PLNetworkUtilities_isESPPacket_offset___block_invoke_288(uint64_t a1)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PacketDecoder] Cannot get spi and seq no", v19, v20, v21, v22, v23];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Utilities/PLNetworkUtilities.m"];
-        v12 = [v11 lastPathComponent];
+        lastPathComponent = [v11 lastPathComponent];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[PLNetworkUtilities getSeqNoAndSPI:offset:]"];
-        [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:607];
+        [PLCoreStorage logMessage:v10 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:607];
 
         v14 = PLLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))

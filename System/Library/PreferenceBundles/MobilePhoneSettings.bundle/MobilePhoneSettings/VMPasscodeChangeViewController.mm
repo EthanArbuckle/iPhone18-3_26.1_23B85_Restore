@@ -1,13 +1,13 @@
 @interface VMPasscodeChangeViewController
 - (VMAccountsViewController)accountsViewController;
-- (id)accountAtIndex:(unint64_t)a3;
-- (id)accountsView:(id)a3 buttonForRowAtIndex:(unint64_t)a4;
-- (id)passcodeViewControllerForAccount:(id)a3;
-- (id)titleForAccountsView:(id)a3;
-- (unint64_t)numberOfRowsForAccountsView:(id)a3;
-- (void)accountsView:(id)a3 buttonTappedForRowWithIndex:(unint64_t)a4;
-- (void)cancelAction:(id)a3;
-- (void)setPINViewControllerFinished:(id)a3 success:(BOOL)a4 oldPIN:(id)a5 newPIN:(id)a6;
+- (id)accountAtIndex:(unint64_t)index;
+- (id)accountsView:(id)view buttonForRowAtIndex:(unint64_t)index;
+- (id)passcodeViewControllerForAccount:(id)account;
+- (id)titleForAccountsView:(id)view;
+- (unint64_t)numberOfRowsForAccountsView:(id)view;
+- (void)accountsView:(id)view buttonTappedForRowWithIndex:(unint64_t)index;
+- (void)cancelAction:(id)action;
+- (void)setPINViewControllerFinished:(id)finished success:(BOOL)success oldPIN:(id)n newPIN:(id)iN;
 - (void)updateAccounts;
 - (void)updateView;
 - (void)viewDidLoad;
@@ -22,24 +22,24 @@
   [(VMPasscodeChangeViewController *)&v6 viewDidLoad];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"ACCOUNTS_VIEW_CONTROLLER_NAVIGATION_ITEM_TITLE_PASSWORD" value:&stru_284EEA450 table:@"VoicemailUI"];
-  v5 = [(VMPasscodeChangeViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(VMPasscodeChangeViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
   [(VMPasscodeChangeViewController *)self updateAccounts];
   [(VMPasscodeChangeViewController *)self updateView];
 }
 
-- (id)accountAtIndex:(unint64_t)a3
+- (id)accountAtIndex:(unint64_t)index
 {
-  v4 = [(VMPasscodeChangeViewController *)self accounts];
-  if ([v4 count] <= a3)
+  accounts = [(VMPasscodeChangeViewController *)self accounts];
+  if ([accounts count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [accounts objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -48,15 +48,15 @@
 - (void)updateAccounts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(VMNavigationController *)self manager];
-  v5 = [v4 accounts];
+  array = [MEMORY[0x277CBEB18] array];
+  manager = [(VMNavigationController *)self manager];
+  accounts = [manager accounts];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v5;
+  v6 = accounts;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -74,13 +74,13 @@
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 isProvisioned])
         {
-          v12 = [(VMNavigationController *)self manager];
-          v13 = [v11 UUID];
-          v14 = [v12 isPasscodeChangeSupportedForAccountUUID:v13];
+          manager2 = [(VMNavigationController *)self manager];
+          uUID = [v11 UUID];
+          v14 = [manager2 isPasscodeChangeSupportedForAccountUUID:uUID];
 
           if (v14)
           {
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -91,26 +91,26 @@
     while (v8);
   }
 
-  [(VMPasscodeChangeViewController *)self setAccounts:v3];
+  [(VMPasscodeChangeViewController *)self setAccounts:array];
   v15 = *MEMORY[0x277D85DE8];
 }
 
 - (void)updateView
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(VMNavigationController *)self manager];
-  v4 = [v3 accounts];
-  v5 = [v4 count];
+  manager = [(VMNavigationController *)self manager];
+  accounts = [manager accounts];
+  v5 = [accounts count];
 
   if (v5 < 2)
   {
-    v8 = [(VMPasscodeChangeViewController *)self accounts];
-    v6 = [v8 firstObject];
+    accounts2 = [(VMPasscodeChangeViewController *)self accounts];
+    firstObject = [accounts2 firstObject];
 
-    if (v6)
+    if (firstObject)
     {
-      [(VMPasscodeChangeViewController *)self setSelectedAccount:v6];
-      v7 = [(VMPasscodeChangeViewController *)self passcodeViewControllerForAccount:v6];
+      [(VMPasscodeChangeViewController *)self setSelectedAccount:firstObject];
+      v7 = [(VMPasscodeChangeViewController *)self passcodeViewControllerForAccount:firstObject];
       v12 = v7;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
       [(VMPasscodeChangeViewController *)self setViewControllers:v9];
@@ -129,8 +129,8 @@
 
   else
   {
-    v6 = [(VMPasscodeChangeViewController *)self accountsViewController];
-    v13[0] = v6;
+    firstObject = [(VMPasscodeChangeViewController *)self accountsViewController];
+    v13[0] = firstObject;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [(VMPasscodeChangeViewController *)self setViewControllers:v7];
   }
@@ -144,20 +144,20 @@
   if (!accountsViewController)
   {
     v4 = [VMAccountsViewController alloc];
-    v5 = [(VMNavigationController *)self manager];
-    v6 = [(VMViewController *)v4 initWithManager:v5];
+    manager = [(VMNavigationController *)self manager];
+    v6 = [(VMViewController *)v4 initWithManager:manager];
     v7 = self->_accountsViewController;
     self->_accountsViewController = v6;
 
-    v8 = [(VMAccountsViewController *)self->_accountsViewController accountsView];
-    [v8 setDataSource:self];
+    accountsView = [(VMAccountsViewController *)self->_accountsViewController accountsView];
+    [accountsView setDataSource:self];
 
-    v9 = [(VMAccountsViewController *)self->_accountsViewController accountsView];
-    [v9 setDelegate:self];
+    accountsView2 = [(VMAccountsViewController *)self->_accountsViewController accountsView];
+    [accountsView2 setDelegate:self];
 
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelAction_];
-    v11 = [(VMAccountsViewController *)self->_accountsViewController navigationItem];
-    [v11 setLeftBarButtonItem:v10];
+    navigationItem = [(VMAccountsViewController *)self->_accountsViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:v10];
 
     accountsViewController = self->_accountsViewController;
   }
@@ -165,17 +165,17 @@
   return accountsViewController;
 }
 
-- (id)passcodeViewControllerForAccount:(id)a3
+- (id)passcodeViewControllerForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(VMNavigationController *)self manager];
-  v6 = [v4 UUID];
-  v7 = [v5 minimumPasscodeLengthForAccountUUID:v6];
+  accountCopy = account;
+  manager = [(VMNavigationController *)self manager];
+  uUID = [accountCopy UUID];
+  v7 = [manager minimumPasscodeLengthForAccountUUID:uUID];
 
-  v8 = [(VMNavigationController *)self manager];
-  v9 = [v4 UUID];
+  manager2 = [(VMNavigationController *)self manager];
+  uUID2 = [accountCopy UUID];
 
-  v10 = [v8 maximumPasscodeLengthForAccountUUID:v9];
+  v10 = [manager2 maximumPasscodeLengthForAccountUUID:uUID2];
   v11 = [objc_alloc(MEMORY[0x277D6ED88]) initForNewPINWithMinLength:v7 maxLength:v10 confirmPIN:1];
   [v11 setDelegate:self];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -197,43 +197,43 @@
   return v11;
 }
 
-- (void)cancelAction:(id)a3
+- (void)cancelAction:(id)action
 {
-  v3 = [(VMPasscodeChangeViewController *)self accountsViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  accountsViewController = [(VMPasscodeChangeViewController *)self accountsViewController];
+  [accountsViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)accountsView:(id)a3 buttonForRowAtIndex:(unint64_t)a4
+- (id)accountsView:(id)view buttonForRowAtIndex:(unint64_t)index
 {
   v6 = +[VMAccountButton accountButton];
-  v7 = [(VMPasscodeChangeViewController *)self accountAtIndex:a4];
-  v8 = [v7 accountDescription];
-  v9 = [(VMNavigationController *)self manager];
-  v10 = [v9 accounts];
-  v11 = [v10 count];
+  v7 = [(VMPasscodeChangeViewController *)self accountAtIndex:index];
+  accountDescription = [v7 accountDescription];
+  manager = [(VMNavigationController *)self manager];
+  accounts = [manager accounts];
+  v11 = [accounts count];
 
   if (v11 == 1)
   {
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"ACCOUNTS_VIEW_BUTTON_TITLE_CHANGE_PASSCODE" value:&stru_284EEA450 table:@"VoicemailUI"];
 
-    v8 = v13;
+    accountDescription = v13;
   }
 
-  [v6 setTitle:v8 forState:0];
+  [v6 setTitle:accountDescription forState:0];
 
   return v6;
 }
 
-- (unint64_t)numberOfRowsForAccountsView:(id)a3
+- (unint64_t)numberOfRowsForAccountsView:(id)view
 {
-  v3 = [(VMPasscodeChangeViewController *)self accounts];
-  v4 = [v3 count];
+  accounts = [(VMPasscodeChangeViewController *)self accounts];
+  v4 = [accounts count];
 
   return v4;
 }
 
-- (id)titleForAccountsView:(id)a3
+- (id)titleForAccountsView:(id)view
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"ACCOUNTS_VIEW_MESSAGE_TITLE_CHANGE_PASSWORD" value:&stru_284EEA450 table:@"VoicemailUI"];
@@ -241,10 +241,10 @@
   return v4;
 }
 
-- (void)accountsView:(id)a3 buttonTappedForRowWithIndex:(unint64_t)a4
+- (void)accountsView:(id)view buttonTappedForRowWithIndex:(unint64_t)index
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = [(VMPasscodeChangeViewController *)self accountAtIndex:a4];
+  v6 = [(VMPasscodeChangeViewController *)self accountAtIndex:index];
   if (v6)
   {
     [(VMPasscodeChangeViewController *)self setSelectedAccount:v6];
@@ -258,7 +258,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134217984;
-      v11 = a4;
+      indexCopy = index;
       _os_log_impl(&dword_23C144000, v8, OS_LOG_TYPE_DEFAULT, "Could not retrieve account at index %lu", &v10, 0xCu);
     }
   }
@@ -266,34 +266,34 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPINViewControllerFinished:(id)a3 success:(BOOL)a4 oldPIN:(id)a5 newPIN:(id)a6
+- (void)setPINViewControllerFinished:(id)finished success:(BOOL)success oldPIN:(id)n newPIN:(id)iN
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  successCopy = success;
+  finishedCopy = finished;
+  nCopy = n;
+  iNCopy = iN;
   objc_initWeak(&location, self);
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __85__VMPasscodeChangeViewController_setPINViewControllerFinished_success_oldPIN_newPIN___block_invoke;
   v22[3] = &unk_278BB36E0;
   objc_copyWeak(&v24, &location);
-  v13 = v10;
+  v13 = finishedCopy;
   v23 = v13;
   v14 = MEMORY[0x23EEC9570](v22);
   v15 = v14;
-  if (v8)
+  if (successCopy)
   {
-    v16 = [(VMNavigationController *)self manager];
-    v17 = [(VMPasscodeChangeViewController *)self selectedAccount];
-    v18 = [v17 UUID];
+    manager = [(VMNavigationController *)self manager];
+    selectedAccount = [(VMPasscodeChangeViewController *)self selectedAccount];
+    uUID = [selectedAccount UUID];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __85__VMPasscodeChangeViewController_setPINViewControllerFinished_success_oldPIN_newPIN___block_invoke_3;
     v19[3] = &unk_278BB3730;
     v21 = v15;
     v20 = v13;
-    [v16 setPasscode:v12 forAccountUUID:v18 completion:v19];
+    [manager setPasscode:iNCopy forAccountUUID:uUID completion:v19];
   }
 
   else

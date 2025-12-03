@@ -1,20 +1,20 @@
 @interface MTNowPlayingArtworkProvider
 - (MTNowPlayingArtworkProvider)init;
-- (id)fetchInfoCenterArtworkWith:(id)a3 at:(double)a4 of:(CGSize)a5 completion:(id)a6;
+- (id)fetchInfoCenterArtworkWith:(id)with at:(double)at of:(CGSize)of completion:(id)completion;
 @end
 
 @implementation MTNowPlayingArtworkProvider
 
-- (id)fetchInfoCenterArtworkWith:(id)a3 at:(double)a4 of:(CGSize)a5 completion:(id)a6
+- (id)fetchInfoCenterArtworkWith:(id)with at:(double)at of:(CGSize)of completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = _Block_copy(a6);
+  height = of.height;
+  width = of.width;
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
-  v13 = a3;
-  v14 = self;
-  v15 = NowPlayingArtworkProviderObjCWrapper.fetchInfoCenterArtwork(with:at:of:completion:)(v13, sub_21B3F8E4C, v12, a4, width, height);
+  withCopy = with;
+  selfCopy = self;
+  v15 = NowPlayingArtworkProviderObjCWrapper.fetchInfoCenterArtwork(with:at:of:completion:)(withCopy, sub_21B3F8E4C, v12, at, width, height);
 
   return v15;
 }

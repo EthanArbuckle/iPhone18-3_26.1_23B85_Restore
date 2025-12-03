@@ -1,24 +1,24 @@
 @interface MapsSuggestionsAppGuardian
-+ (int64_t)protectionStatusForBundleID:(id)a3;
-- (BOOL)isBundleIDLocked:(id)a3 forSource:(id)a4;
++ (int64_t)protectionStatusForBundleID:(id)d;
+- (BOOL)isBundleIDLocked:(id)locked forSource:(id)source;
 - (NSString)uniqueName;
-- (id)initFromResourceDepot:(id)a3;
-- (void)_add:(id)a3 source:(id)a4;
-- (void)_remove:(id)a3 source:(id)a4;
-- (void)_removeAllBundleIDsForSource:(id)a3;
-- (void)appProtectionStatusChanged:(id)a3;
-- (void)registerAppTracker:(id)a3;
-- (void)registerBundleID:(id)a3 withSource:(id)a4;
-- (void)unregisterAllBundleIDsForSource:(id)a3;
-- (void)unregisterAppTracker:(id)a3;
-- (void)unregisterBundleID:(id)a3 withSource:(id)a4;
+- (id)initFromResourceDepot:(id)depot;
+- (void)_add:(id)_add source:(id)source;
+- (void)_remove:(id)_remove source:(id)source;
+- (void)_removeAllBundleIDsForSource:(id)source;
+- (void)appProtectionStatusChanged:(id)changed;
+- (void)registerAppTracker:(id)tracker;
+- (void)registerBundleID:(id)d withSource:(id)source;
+- (void)unregisterAllBundleIDsForSource:(id)source;
+- (void)unregisterAppTracker:(id)tracker;
+- (void)unregisterBundleID:(id)d withSource:(id)source;
 @end
 
 @implementation MapsSuggestionsAppGuardian
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
-  v4 = a3;
+  depotCopy = depot;
   v14.receiver = self;
   v14.super_class = MapsSuggestionsAppGuardian;
   v5 = [(MapsSuggestionsAppGuardian *)&v14 init];
@@ -29,13 +29,13 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    v9 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     sources = v5->_sources;
-    v5->_sources = v9;
+    v5->_sources = strongToStrongObjectsMapTable;
 
-    v11 = [v4 oneAppProtectionConnector];
+    oneAppProtectionConnector = [depotCopy oneAppProtectionConnector];
     connector = v5->_connector;
-    v5->_connector = v11;
+    v5->_connector = oneAppProtectionConnector;
 
     [(MapsSuggestionsAppProtectionConnector *)v5->_connector setDelegate:v5];
     [(MapsSuggestionsAppProtectionConnector *)v5->_connector addMonitor:v5];
@@ -51,35 +51,35 @@
   return [v2 description];
 }
 
-- (void)_add:(id)a3 source:(id)a4
+- (void)_add:(id)_add source:(id)source
 {
-  v8 = a3;
-  v6 = a4;
+  _addCopy = _add;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(NSMapTable *)self->_sources objectForKey:v6];
+  v7 = [(NSMapTable *)self->_sources objectForKey:sourceCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
 
-  [v7 addObject:v8];
-  [(NSMapTable *)self->_sources setObject:v7 forKey:v6];
+  [v7 addObject:_addCopy];
+  [(NSMapTable *)self->_sources setObject:v7 forKey:sourceCopy];
 }
 
-- (void)_remove:(id)a3 source:(id)a4
+- (void)_remove:(id)_remove source:(id)source
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  _removeCopy = _remove;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(NSMapTable *)self->_sources objectForKey:v7];
+  v8 = [(NSMapTable *)self->_sources objectForKey:sourceCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 removeObject:v6];
+    [v8 removeObject:_removeCopy];
     if ([v9 count])
     {
-      [(NSMapTable *)self->_sources setObject:v9 forKey:v7];
+      [(NSMapTable *)self->_sources setObject:v9 forKey:sourceCopy];
     }
 
     else
@@ -87,42 +87,42 @@
       v10 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v7 uniqueName];
+        uniqueName = [sourceCopy uniqueName];
         v12 = 138412290;
-        v13 = v11;
+        v13 = uniqueName;
         _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "No more bundleIDs to monitor for %@", &v12, 0xCu);
       }
 
-      [(NSMapTable *)self->_sources removeObjectForKey:v7];
+      [(NSMapTable *)self->_sources removeObjectForKey:sourceCopy];
     }
   }
 }
 
-- (void)_removeAllBundleIDsForSource:(id)a3
+- (void)_removeAllBundleIDsForSource:(id)source
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMapTable *)self->_sources objectForKey:v4];
+  v5 = [(NSMapTable *)self->_sources objectForKey:sourceCopy];
 
   if (v5)
   {
-    [(NSMapTable *)self->_sources removeObjectForKey:v4];
+    [(NSMapTable *)self->_sources removeObjectForKey:sourceCopy];
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [v4 uniqueName];
+      uniqueName = [sourceCopy uniqueName];
       v8 = 138412290;
-      v9 = v7;
+      v9 = uniqueName;
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "Removed all bundleIDs for %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)registerBundleID:(id)a3 withSource:(id)a4
+- (void)registerBundleID:(id)d withSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -130,10 +130,10 @@
   v11[2] = __58__MapsSuggestionsAppGuardian_registerBundleID_withSource___block_invoke;
   v11[3] = &unk_1E81F5410;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = sourceCopy;
+  v9 = sourceCopy;
+  v10 = dCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -178,10 +178,10 @@ void __58__MapsSuggestionsAppGuardian_registerBundleID_withSource___block_invoke
   }
 }
 
-- (void)unregisterBundleID:(id)a3 withSource:(id)a4
+- (void)unregisterBundleID:(id)d withSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -189,10 +189,10 @@ void __58__MapsSuggestionsAppGuardian_registerBundleID_withSource___block_invoke
   v11[2] = __60__MapsSuggestionsAppGuardian_unregisterBundleID_withSource___block_invoke;
   v11[3] = &unk_1E81F5410;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = sourceCopy;
+  v9 = sourceCopy;
+  v10 = dCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -237,9 +237,9 @@ void __60__MapsSuggestionsAppGuardian_unregisterBundleID_withSource___block_invo
   }
 }
 
-- (void)unregisterAllBundleIDsForSource:(id)a3
+- (void)unregisterAllBundleIDsForSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -247,8 +247,8 @@ void __60__MapsSuggestionsAppGuardian_unregisterBundleID_withSource___block_invo
   block[2] = __62__MapsSuggestionsAppGuardian_unregisterAllBundleIDsForSource___block_invoke;
   block[3] = &unk_1E81F4F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -290,10 +290,10 @@ void __62__MapsSuggestionsAppGuardian_unregisterAllBundleIDsForSource___block_in
   }
 }
 
-- (BOOL)isBundleIDLocked:(id)a3 forSource:(id)a4
+- (BOOL)isBundleIDLocked:(id)locked forSource:(id)source
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lockedCopy = locked;
   if ((GEOConfigGetBOOL() & 1) == 0)
   {
     v5 = GEOFindOrCreateLog();
@@ -306,7 +306,7 @@ void __62__MapsSuggestionsAppGuardian_unregisterAllBundleIDsForSource___block_in
     goto LABEL_9;
   }
 
-  v5 = appForBundleID(v4);
+  v5 = appForBundleID(lockedCopy);
   if (([v5 isLocked]& 1) == 0 && ![v5 isHidden])
   {
 LABEL_9:
@@ -318,11 +318,11 @@ LABEL_9:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412802;
-    v10 = v4;
+    v10 = lockedCopy;
     v11 = 1024;
-    v12 = [v5 isLocked];
+    isLocked = [v5 isLocked];
     v13 = 1024;
-    v14 = [v5 isHidden];
+    isHidden = [v5 isHidden];
     _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "%@ is protected. Locked = %d, Hidden = %d", &v9, 0x18u);
   }
 
@@ -332,9 +332,9 @@ LABEL_10:
   return v7;
 }
 
-- (void)appProtectionStatusChanged:(id)a3
+- (void)appProtectionStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -342,8 +342,8 @@ LABEL_10:
   block[2] = __57__MapsSuggestionsAppGuardian_appProtectionStatusChanged___block_invoke;
   block[3] = &unk_1E81F4F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -495,9 +495,9 @@ LABEL_35:
   }
 }
 
-- (void)registerAppTracker:(id)a3
+- (void)registerAppTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -505,8 +505,8 @@ LABEL_35:
   block[2] = __49__MapsSuggestionsAppGuardian_registerAppTracker___block_invoke;
   block[3] = &unk_1E81F4F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = trackerCopy;
+  v6 = trackerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -549,9 +549,9 @@ void __49__MapsSuggestionsAppGuardian_registerAppTracker___block_invoke(uint64_t
   }
 }
 
-- (void)unregisterAppTracker:(id)a3
+- (void)unregisterAppTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -559,8 +559,8 @@ void __49__MapsSuggestionsAppGuardian_registerAppTracker___block_invoke(uint64_t
   block[2] = __51__MapsSuggestionsAppGuardian_unregisterAppTracker___block_invoke;
   block[3] = &unk_1E81F4F48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = trackerCopy;
+  v6 = trackerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -593,20 +593,20 @@ void __51__MapsSuggestionsAppGuardian_unregisterAppTracker___block_invoke(uint64
   }
 }
 
-+ (int64_t)protectionStatusForBundleID:(id)a3
++ (int64_t)protectionStatusForBundleID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   if (GEOConfigGetBOOL())
   {
-    v4 = appForBundleID(v3);
+    v4 = appForBundleID(dCopy);
     if ([v4 isHidden])
     {
       v5 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = dCopy;
         _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "%@ is hidden", &v8, 0xCu);
       }
 
@@ -626,7 +626,7 @@ void __51__MapsSuggestionsAppGuardian_unregisterAppTracker___block_invoke(uint64
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = dCopy;
         v6 = 2;
         _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "%@ is locked", &v8, 0xCu);
       }

@@ -1,23 +1,23 @@
 @interface _KSFileFile
-+ (int)protectionFromURL:(id)a3;
-- (_KSFileFile)initWithCoder:(id)a3;
-- (_KSFileFile)initWithURL:(id)a3;
++ (int)protectionFromURL:(id)l;
+- (_KSFileFile)initWithCoder:(id)coder;
+- (_KSFileFile)initWithURL:(id)l;
 - (id)URL;
 - (id)contents;
 - (id)description;
 - (void)consistencyCheck;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadAttributesFromURL:(id)a3;
-- (void)restoreToPath:(id)a3;
-- (void)saveAttributesToURL:(id)a3;
-- (void)saveTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadAttributesFromURL:(id)l;
+- (void)restoreToPath:(id)path;
+- (void)saveAttributesToURL:(id)l;
+- (void)saveTo:(id)to;
 @end
 
 @implementation _KSFileFile
 
-+ (int)protectionFromURL:(id)a3
++ (int)protectionFromURL:(id)l
 {
-  v3 = open_dprotected_np([a3 fileSystemRepresentation], 256, 0, 1);
+  v3 = open_dprotected_np([l fileSystemRepresentation], 256, 0, 1);
   if (v3 < 0)
   {
     return -1;
@@ -29,18 +29,18 @@
   return v5;
 }
 
-- (_KSFileFile)initWithCoder:(id)a3
+- (_KSFileFile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _KSFileFile;
-  v5 = [(_KSFileEntry *)&v9 initWithCoder:v4];
+  v5 = [(_KSFileEntry *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_offset = [v4 decodeIntForKey:@"offset"];
-    v5->_size = [v4 decodeIntForKey:@"size"];
-    v5->_protectionClass = [v4 decodeIntForKey:@"class"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastmodified"];
+    v5->_offset = [coderCopy decodeIntForKey:@"offset"];
+    v5->_size = [coderCopy decodeIntForKey:@"size"];
+    v5->_protectionClass = [coderCopy decodeIntForKey:@"class"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastmodified"];
     lastModified = v5->_lastModified;
     v5->_lastModified = v6;
   }
@@ -48,29 +48,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _KSFileFile;
-  v4 = a3;
-  [(_KSFileEntry *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt:-[_KSFileEntry addBlobToFile:](self forKey:{"addBlobToFile:", self, v5.receiver, v5.super_class), @"offset"}];
-  [v4 encodeInt:LODWORD(self->_size) forKey:@"size"];
-  [v4 encodeInt:self->_protectionClass forKey:@"class"];
-  [v4 encodeObject:self->_lastModified forKey:@"lastmodified"];
+  coderCopy = coder;
+  [(_KSFileEntry *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:-[_KSFileEntry addBlobToFile:](self forKey:{"addBlobToFile:", self, v5.receiver, v5.super_class), @"offset"}];
+  [coderCopy encodeInt:LODWORD(self->_size) forKey:@"size"];
+  [coderCopy encodeInt:self->_protectionClass forKey:@"class"];
+  [coderCopy encodeObject:self->_lastModified forKey:@"lastmodified"];
 }
 
-- (_KSFileFile)initWithURL:(id)a3
+- (_KSFileFile)initWithURL:(id)l
 {
-  v5 = a3;
-  v6 = [v5 lastPathComponent];
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
   v10.receiver = self;
   v10.super_class = _KSFileFile;
-  v7 = [(_KSFileEntry *)&v10 initWithName:v6];
+  v7 = [(_KSFileEntry *)&v10 initWithName:lastPathComponent];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_url, a3);
+    objc_storeStrong(&v7->_url, l);
     memset(&v9, 0, sizeof(v9));
     if (stat([(NSURL *)v7->_url fileSystemRepresentation], &v9) == -1)
     {
@@ -84,15 +84,15 @@
   return v7;
 }
 
-- (void)loadAttributesFromURL:(id)a3
+- (void)loadAttributesFromURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = _KSFileFile;
-  v4 = a3;
-  [(_KSFileEntry *)&v9 loadAttributesFromURL:v4];
+  lCopy = l;
+  [(_KSFileEntry *)&v9 loadAttributesFromURL:lCopy];
   self->_protectionClass = [objc_opt_class() protectionFromURL:self->_url];
   v8 = 0;
-  v5 = [v4 getResourceValue:&v8 forKey:*MEMORY[0x277CBE7B0] error:0];
+  v5 = [lCopy getResourceValue:&v8 forKey:*MEMORY[0x277CBE7B0] error:0];
 
   v6 = v8;
   v7 = v8;
@@ -102,22 +102,22 @@
   }
 }
 
-- (void)saveAttributesToURL:(id)a3
+- (void)saveAttributesToURL:(id)l
 {
   v5.receiver = self;
   v5.super_class = _KSFileFile;
-  v4 = a3;
-  [(_KSFileEntry *)&v5 saveAttributesToURL:v4];
-  [v4 setResourceValue:self->_lastModified forKey:*MEMORY[0x277CBE7B0] error:{0, v5.receiver, v5.super_class}];
+  lCopy = l;
+  [(_KSFileEntry *)&v5 saveAttributesToURL:lCopy];
+  [lCopy setResourceValue:self->_lastModified forKey:*MEMORY[0x277CBE7B0] error:{0, v5.receiver, v5.super_class}];
 }
 
-- (void)saveTo:(id)a3
+- (void)saveTo:(id)to
 {
-  v4 = a3;
-  v5 = [(_KSFileFile *)self contents];
-  if (v5)
+  toCopy = to;
+  contents = [(_KSFileFile *)self contents];
+  if (contents)
   {
-    v6 = open_dprotected_np([v4 fileSystemRepresentation], 1573, self->_protectionClass, 0, 384);
+    v6 = open_dprotected_np([toCopy fileSystemRepresentation], 1573, self->_protectionClass, 0, 384);
     if (v6 < 0)
     {
       v9 = KSCategory();
@@ -130,9 +130,9 @@
     else
     {
       v7 = v6;
-      write(v6, [v5 bytes], objc_msgSend(v5, "length"));
+      write(v6, [contents bytes], objc_msgSend(contents, "length"));
       close(v7);
-      [(_KSFileFile *)self saveAttributesToURL:v4];
+      [(_KSFileFile *)self saveAttributesToURL:toCopy];
     }
   }
 
@@ -258,11 +258,11 @@ LABEL_7:
   }
 }
 
-- (void)restoreToPath:(id)a3
+- (void)restoreToPath:(id)path
 {
-  v4 = a3;
-  v6 = [(_KSFileEntry *)self name];
-  v5 = [v4 URLByAppendingPathComponent:v6];
+  pathCopy = path;
+  name = [(_KSFileEntry *)self name];
+  v5 = [pathCopy URLByAppendingPathComponent:name];
 
   [(_KSFileFile *)self saveTo:v5];
 }

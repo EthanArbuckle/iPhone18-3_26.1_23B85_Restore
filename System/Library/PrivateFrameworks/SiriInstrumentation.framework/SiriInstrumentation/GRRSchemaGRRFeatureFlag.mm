@@ -1,25 +1,25 @@
 @interface GRRSchemaGRRFeatureFlag
-- (BOOL)isEqual:(id)a3;
-- (GRRSchemaGRRFeatureFlag)initWithDictionary:(id)a3;
-- (GRRSchemaGRRFeatureFlag)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRRSchemaGRRFeatureFlag)initWithDictionary:(id)dictionary;
+- (GRRSchemaGRRFeatureFlag)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRRSchemaGRRFeatureFlag
 
-- (GRRSchemaGRRFeatureFlag)initWithDictionary:(id)a3
+- (GRRSchemaGRRFeatureFlag)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GRRSchemaGRRFeatureFlag;
   v5 = [(GRRSchemaGRRFeatureFlag *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"featureFlagKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"featureFlagKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(GRRSchemaGRRFeatureFlag *)v5 setFeatureFlagKey:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isEnabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (GRRSchemaGRRFeatureFlag)initWithJSON:(id)a3
+- (GRRSchemaGRRFeatureFlag)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRRSchemaGRRFeatureFlag *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRRSchemaGRRFeatureFlag *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRRSchemaGRRFeatureFlag *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,23 +76,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_featureFlagKey)
   {
-    v4 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"featureFlagKey"];
+    featureFlagKey = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
+    v5 = [featureFlagKey copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"featureFlagKey"];
   }
 
   if (*(&self->_isEnabled + 1))
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[GRRSchemaGRRFeatureFlag isEnabled](self, "isEnabled")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isEnabled"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isEnabled"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -111,18 +111,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
-  v6 = [v4 featureFlagKey];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  featureFlagKey = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
+  featureFlagKey2 = [equalCopy featureFlagKey];
+  v7 = featureFlagKey2;
+  if ((featureFlagKey != 0) == (featureFlagKey2 == 0))
   {
 
 LABEL_12:
@@ -130,13 +130,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
-  if (v8)
+  featureFlagKey3 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
+  if (featureFlagKey3)
   {
-    v9 = v8;
-    v10 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
-    v11 = [v4 featureFlagKey];
-    v12 = [v10 isEqual:v11];
+    v9 = featureFlagKey3;
+    featureFlagKey4 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
+    featureFlagKey5 = [equalCopy featureFlagKey];
+    v12 = [featureFlagKey4 isEqual:featureFlagKey5];
 
     if (!v12)
     {
@@ -148,7 +148,7 @@ LABEL_12:
   {
   }
 
-  if (*(&self->_isEnabled + 1) != (v4[17] & 1))
+  if (*(&self->_isEnabled + 1) != (equalCopy[17] & 1))
   {
     goto LABEL_12;
   }
@@ -156,7 +156,7 @@ LABEL_12:
   if (*(&self->_isEnabled + 1))
   {
     isEnabled = self->_isEnabled;
-    if (isEnabled != [v4 isEnabled])
+    if (isEnabled != [equalCopy isEnabled])
     {
       goto LABEL_12;
     }
@@ -168,12 +168,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
+  toCopy = to;
+  featureFlagKey = [(GRRSchemaGRRFeatureFlag *)self featureFlagKey];
 
-  if (v4)
+  if (featureFlagKey)
   {
     PBDataWriterWriteStringField();
   }

@@ -1,7 +1,7 @@
 @interface CWFConfigurationProfileManager
-- (BOOL)isNetworkManagedByMDM:(id)a3;
+- (BOOL)isNetworkManagedByMDM:(id)m;
 - (CWFConfigurationProfileManager)init;
-- (void)__updateCachedMDMManagedProfileUUIDs:(id)a3;
+- (void)__updateCachedMDMManagedProfileUUIDs:(id)ds;
 - (void)activate;
 @end
 
@@ -70,15 +70,15 @@ LABEL_6:
   [(CWFConfigurationProfileManager *)self __updateCachedMDMManagedProfileUUIDs:0];
 }
 
-- (BOOL)isNetworkManagedByMDM:(id)a3
+- (BOOL)isNetworkManagedByMDM:(id)m
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 payloadUUID];
-  if (v6)
+  mCopy = m;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  payloadUUID = [mCopy payloadUUID];
+  if (payloadUUID)
   {
-    v7 = [(NSMutableSet *)v5->_mdmManagedProfileUUIDs containsObject:v6];
+    v7 = [(NSMutableSet *)selfCopy->_mdmManagedProfileUUIDs containsObject:payloadUUID];
   }
 
   else
@@ -86,14 +86,14 @@ LABEL_6:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (void)__updateCachedMDMManagedProfileUUIDs:(id)a3
+- (void)__updateCachedMDMManagedProfileUUIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = [MEMORY[0x1E695DFA8] set];
   [(MCProfileConnection *)self->_mcProfileConnection installedProfilesWithFilterFlags:32];
   v15 = 0u;
@@ -114,10 +114,10 @@ LABEL_6:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * v9) UUID];
-        if (v10)
+        uUID = [*(*(&v13 + 1) + 8 * v9) UUID];
+        if (uUID)
         {
-          [v5 addObject:v10];
+          [v5 addObject:uUID];
         }
 
         ++v9;
@@ -130,11 +130,11 @@ LABEL_6:
     while (v7);
   }
 
-  v11 = self;
-  objc_sync_enter(v11);
-  [(NSMutableSet *)v11->_mdmManagedProfileUUIDs removeAllObjects];
-  [(NSMutableSet *)v11->_mdmManagedProfileUUIDs unionSet:v5];
-  objc_sync_exit(v11);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_mdmManagedProfileUUIDs removeAllObjects];
+  [(NSMutableSet *)selfCopy->_mdmManagedProfileUUIDs unionSet:v5];
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }

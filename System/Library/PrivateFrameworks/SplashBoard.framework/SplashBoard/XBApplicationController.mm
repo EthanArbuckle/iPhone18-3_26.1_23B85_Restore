@@ -1,16 +1,16 @@
 @interface XBApplicationController
-- (XBApplicationController)initWithMainDisplayConfiguration:(id)a3 applicationProvider:(id)a4 launchRequestProvider:(id)a5 configureVolumeMaintenance:(BOOL)a6;
-- (id)_launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4;
-- (id)findRecentlyUsedOfApplications:(id)a3;
-- (void)_captureOrUpdateLaunchImagesForApplications:(id)a3 firstImageIsReady:(id)a4 createCaptureInfo:(BOOL)a5 completionWithCaptureInfo:(id)a6;
+- (XBApplicationController)initWithMainDisplayConfiguration:(id)configuration applicationProvider:(id)provider launchRequestProvider:(id)requestProvider configureVolumeMaintenance:(BOOL)maintenance;
+- (id)_launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info;
+- (id)findRecentlyUsedOfApplications:(id)applications;
+- (void)_captureOrUpdateLaunchImagesForApplications:(id)applications firstImageIsReady:(id)ready createCaptureInfo:(BOOL)info completionWithCaptureInfo:(id)captureInfo;
 - (void)_deleteLegacyCachesSnapshotPathsIfNeeded;
 - (void)_removeAllGeneratedLaunchImagesAndSnapshots;
-- (void)_removeLaunchImagesMatchingPredicate:(id)a3 forApplications:(id)a4 forgettingApps:(BOOL)a5;
-- (void)captureOrUpdateLaunchImagesForApplications:(id)a3 firstImageIsReady:(id)a4 completion:(id)a5;
+- (void)_removeLaunchImagesMatchingPredicate:(id)predicate forApplications:(id)applications forgettingApps:(BOOL)apps;
+- (void)captureOrUpdateLaunchImagesForApplications:(id)applications firstImageIsReady:(id)ready completion:(id)completion;
 - (void)dealloc;
 - (void)deleteAllSnapshotsIfScreenSizeChanged;
 - (void)performPostMigrationLaunchImageGeneration;
-- (void)removeCachedLaunchImagesForApplications:(id)a3 forgettingApps:(BOOL)a4;
+- (void)removeCachedLaunchImagesForApplications:(id)applications forgettingApps:(BOOL)apps;
 @end
 
 @implementation XBApplicationController
@@ -23,35 +23,35 @@ void __54__XBApplicationController__updateStatusBarOrientation__block_invoke(uin
   *(*(a1 + 32) + 8) = v3;
 }
 
-- (XBApplicationController)initWithMainDisplayConfiguration:(id)a3 applicationProvider:(id)a4 launchRequestProvider:(id)a5 configureVolumeMaintenance:(BOOL)a6
+- (XBApplicationController)initWithMainDisplayConfiguration:(id)configuration applicationProvider:(id)provider launchRequestProvider:(id)requestProvider configureVolumeMaintenance:(BOOL)maintenance
 {
-  v6 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  maintenanceCopy = maintenance;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  requestProviderCopy = requestProvider;
   v19.receiver = self;
   v19.super_class = XBApplicationController;
   v15 = [(XBApplicationController *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mainDisplayConfiguration, a3);
+    objc_storeStrong(&v15->_mainDisplayConfiguration, configuration);
     if (![(FBSDisplayConfiguration *)v16->_mainDisplayConfiguration isMainDisplay]|| [(FBSDisplayConfiguration *)v16->_mainDisplayConfiguration isExternal])
     {
       [XBApplicationController initWithMainDisplayConfiguration:a2 applicationProvider:v16 launchRequestProvider:? configureVolumeMaintenance:?];
     }
 
-    objc_storeStrong(&v16->_applicationProvider, a4);
-    objc_storeStrong(&v16->_launchRequestProvider, a5);
+    objc_storeStrong(&v16->_applicationProvider, provider);
+    objc_storeStrong(&v16->_launchRequestProvider, requestProvider);
     v16->_statusBarOrientation = 0;
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v16 selector:sel__updateStatusBarOrientation name:*MEMORY[0x277D76658] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__updateStatusBarOrientation name:*MEMORY[0x277D76658] object:0];
 
     [(XBApplicationController *)v16 _updateStatusBarOrientation];
     [(XBApplicationController *)v16 _deleteLegacyCachesSnapshotPathsIfNeeded];
-    if (v6)
+    if (maintenanceCopy)
     {
-      [XBVolumeMaintainer configure:v13];
+      [XBVolumeMaintainer configure:providerCopy];
     }
   }
 
@@ -60,8 +60,8 @@ void __54__XBApplicationController__updateStatusBarOrientation__block_invoke(uin
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = XBApplicationController;
@@ -71,8 +71,8 @@ void __54__XBApplicationController__updateStatusBarOrientation__block_invoke(uin
 - (void)deleteAllSnapshotsIfScreenSizeChanged
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 stringForKey:@"XBRecentScreenSize"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults stringForKey:@"XBRecentScreenSize"];
   [(FBSDisplayConfiguration *)self->_mainDisplayConfiguration bounds];
   v14.width = v5;
   v14.height = v6;
@@ -94,17 +94,17 @@ void __54__XBApplicationController__updateStatusBarOrientation__block_invoke(uin
       [(XBApplicationController *)self _removeAllGeneratedLaunchImagesAndSnapshots];
     }
 
-    [v3 setObject:v7 forKey:@"XBRecentScreenSize"];
-    [v3 synchronize];
+    [standardUserDefaults setObject:v7 forKey:@"XBRecentScreenSize"];
+    [standardUserDefaults synchronize];
   }
 }
 
 - (void)performPostMigrationLaunchImageGeneration
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  if ([v3 BOOLForKey:@"XBCaptureLaunchImagesPostMigration"])
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"XBCaptureLaunchImagesPostMigration"])
   {
-    [v3 setObject:MEMORY[0x277CBEC28] forKey:@"XBCaptureLaunchImagesPostMigration"];
+    [standardUserDefaults setObject:MEMORY[0x277CBEC28] forKey:@"XBCaptureLaunchImagesPostMigration"];
     v4 = XBLogFileManifest();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -113,16 +113,16 @@ void __54__XBApplicationController__updateStatusBarOrientation__block_invoke(uin
     }
 
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
-    v6 = [(XBApplicationProviding *)self->_applicationProvider splashBoardSystemApplications];
+    splashBoardSystemApplications = [(XBApplicationProviding *)self->_applicationProvider splashBoardSystemApplications];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__XBApplicationController_performPostMigrationLaunchImageGeneration__block_invoke;
     block[3] = &unk_279CF9108;
-    v10 = v6;
+    v10 = splashBoardSystemApplications;
     v11 = SerialWithQoS;
-    v12 = self;
+    selfCopy = self;
     v7 = SerialWithQoS;
-    v8 = v6;
+    v8 = splashBoardSystemApplications;
     dispatch_async(v7, block);
   }
 }
@@ -212,22 +212,22 @@ void __68__XBApplicationController_performPostMigrationLaunchImageGeneration__bl
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = XBLegacyCachesSnapshotPathForNonSandboxedSystemApplicationsExists();
-  v4 = XBLogFileManifest();
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
+  allInstalledApplications = XBLogFileManifest();
+  v5 = os_log_type_enabled(allInstalledApplications, OS_LOG_TYPE_DEFAULT);
   if (v3)
   {
     if (v5)
     {
       *buf = 0;
-      _os_log_impl(&dword_26B5EF000, v4, OS_LOG_TYPE_DEFAULT, "Start purging legacy snapshots caches...", buf, 2u);
+      _os_log_impl(&dword_26B5EF000, allInstalledApplications, OS_LOG_TYPE_DEFAULT, "Start purging legacy snapshots caches...", buf, 2u);
     }
 
-    v4 = [(XBApplicationProviding *)self->_applicationProvider allInstalledApplications];
+    allInstalledApplications = [(XBApplicationProviding *)self->_applicationProvider allInstalledApplications];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v6 = [allInstalledApplications countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v6)
     {
       v8 = v6;
@@ -240,12 +240,12 @@ void __68__XBApplicationController_performPostMigrationLaunchImageGeneration__bl
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allInstalledApplications);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 dataContainerURL];
-          if (v12)
+          dataContainerURL = [v11 dataContainerURL];
+          if (dataContainerURL)
           {
             if (!XBDeleteLegacyCachesSnapshotPathForSandboxedApplicationIfNeeded(v11))
             {
@@ -258,9 +258,9 @@ void __68__XBApplicationController_performPostMigrationLaunchImageGeneration__bl
               goto LABEL_17;
             }
 
-            v14 = [v11 bundleIdentifier];
+            bundleIdentifier = [v11 bundleIdentifier];
             *buf = v19;
-            v25 = v14;
+            v25 = bundleIdentifier;
             v15 = v13;
             v16 = "Purging legacy caches of sandboxed app snapshots for: %{public}@";
             goto LABEL_16;
@@ -274,9 +274,9 @@ void __68__XBApplicationController_performPostMigrationLaunchImageGeneration__bl
           v13 = XBLogFileManifest();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v11 bundleIdentifier];
+            bundleIdentifier = [v11 bundleIdentifier];
             *buf = v19;
-            v25 = v14;
+            v25 = bundleIdentifier;
             v15 = v13;
             v16 = "Purging legacy caches of snapshots for non-sandboxed system app: %{public}@";
 LABEL_16:
@@ -291,7 +291,7 @@ LABEL_17:
 LABEL_18:
         }
 
-        v8 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v8 = [allInstalledApplications countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v8);
@@ -309,15 +309,15 @@ LABEL_18:
   else if (v5)
   {
     *buf = 0;
-    _os_log_impl(&dword_26B5EF000, v4, OS_LOG_TYPE_DEFAULT, "No legacy snapshots caches to purge", buf, 2u);
+    _os_log_impl(&dword_26B5EF000, allInstalledApplications, OS_LOG_TYPE_DEFAULT, "No legacy snapshots caches to purge", buf, 2u);
   }
 }
 
-- (id)findRecentlyUsedOfApplications:(id)a3
+- (id)findRecentlyUsedOfApplications:(id)applications
 {
-  v3 = a3;
-  v4 = [v3 indexesOfObjectsPassingTest:&__block_literal_global_2];
-  v5 = [v3 objectsAtIndexes:v4];
+  applicationsCopy = applications;
+  v4 = [applicationsCopy indexesOfObjectsPassingTest:&__block_literal_global_2];
+  v5 = [applicationsCopy objectsAtIndexes:v4];
 
   return v5;
 }
@@ -342,17 +342,17 @@ uint64_t __58__XBApplicationController_findRecentlyUsedOfApplications___block_in
   return v5;
 }
 
-- (void)removeCachedLaunchImagesForApplications:(id)a3 forgettingApps:(BOOL)a4
+- (void)removeCachedLaunchImagesForApplications:(id)applications forgettingApps:(BOOL)apps
 {
-  v6 = a3;
+  applicationsCopy = applications;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __82__XBApplicationController_removeCachedLaunchImagesForApplications_forgettingApps___block_invoke;
   activity_block[3] = &unk_279CF92C8;
   activity_block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = applicationsCopy;
+  appsCopy = apps;
+  v7 = applicationsCopy;
   _os_activity_initiate(&dword_26B5EF000, "XBInvalidate", OS_ACTIVITY_FLAG_IF_NONE_PRESENT, activity_block);
 }
 
@@ -363,16 +363,16 @@ void __82__XBApplicationController_removeCachedLaunchImagesForApplications_forge
   [*(a1 + 32) _removeLaunchImagesMatchingPredicate:v2 forApplications:*(a1 + 40) forgettingApps:*(a1 + 48)];
 }
 
-- (void)captureOrUpdateLaunchImagesForApplications:(id)a3 firstImageIsReady:(id)a4 completion:(id)a5
+- (void)captureOrUpdateLaunchImagesForApplications:(id)applications firstImageIsReady:(id)ready completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __99__XBApplicationController_captureOrUpdateLaunchImagesForApplications_firstImageIsReady_completion___block_invoke;
   v10[3] = &unk_279CF92F0;
-  v11 = v8;
-  v9 = v8;
-  [(XBApplicationController *)self _captureOrUpdateLaunchImagesForApplications:a3 firstImageIsReady:a4 createCaptureInfo:0 completionWithCaptureInfo:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(XBApplicationController *)self _captureOrUpdateLaunchImagesForApplications:applications firstImageIsReady:ready createCaptureInfo:0 completionWithCaptureInfo:v10];
 }
 
 uint64_t __99__XBApplicationController_captureOrUpdateLaunchImagesForApplications_firstImageIsReady_completion___block_invoke(uint64_t a1)
@@ -386,23 +386,23 @@ uint64_t __99__XBApplicationController_captureOrUpdateLaunchImagesForApplication
   return result;
 }
 
-- (void)_captureOrUpdateLaunchImagesForApplications:(id)a3 firstImageIsReady:(id)a4 createCaptureInfo:(BOOL)a5 completionWithCaptureInfo:(id)a6
+- (void)_captureOrUpdateLaunchImagesForApplications:(id)applications firstImageIsReady:(id)ready createCaptureInfo:(BOOL)info completionWithCaptureInfo:(id)captureInfo
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  applicationsCopy = applications;
+  readyCopy = ready;
+  captureInfoCopy = captureInfo;
   activity_block[0] = MEMORY[0x277D85DD0];
   activity_block[1] = 3221225472;
   activity_block[2] = __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_firstImageIsReady_createCaptureInfo_completionWithCaptureInfo___block_invoke;
   activity_block[3] = &unk_279CF9368;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v17 = v10;
-  v18 = self;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  infoCopy = info;
+  v19 = readyCopy;
+  v20 = captureInfoCopy;
+  v17 = applicationsCopy;
+  selfCopy = self;
+  v13 = captureInfoCopy;
+  v14 = readyCopy;
+  v15 = applicationsCopy;
   _os_activity_initiate(&dword_26B5EF000, "XBCapture", OS_ACTIVITY_FLAG_IF_NONE_PRESENT, activity_block);
 }
 
@@ -614,17 +614,17 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
   [v7 _synchronizeDataStoreWithCompletion:v8];
 }
 
-- (id)_launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4
+- (id)_launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D75CF0] sharedInstance];
-  v10 = [v9 currentStyle];
+  applicationCopy = application;
+  infoCopy = info;
+  mEMORY[0x277D75CF0] = [MEMORY[0x277D75CF0] sharedInstance];
+  currentStyle = [mEMORY[0x277D75CF0] currentStyle];
 
-  v36 = [v7 xb_userInterfaceStyleForRequestedUserInterfaceStyle:v10];
+  v36 = [applicationCopy xb_userInterfaceStyleForRequestedUserInterfaceStyle:currentStyle];
   statusBarOrientation = self->_statusBarOrientation;
-  v11 = [v7 bundleIdentifier];
-  v12 = [MEMORY[0x277CBEB18] array];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = self->_mainDisplayConfiguration;
   if (!v13)
   {
@@ -634,16 +634,16 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
   [(FBSDisplayConfiguration *)v13 bounds];
   v15 = v14;
   v17 = v16;
-  v33 = v11;
-  v34 = v8;
+  v33 = bundleIdentifier;
+  v34 = infoCopy;
   if ([(FBSDisplayConfiguration *)v13 isMainDisplay])
   {
-    v38 = [v8 defaultGroupIdentifier];
+    defaultGroupIdentifier = [infoCopy defaultGroupIdentifier];
   }
 
   else
   {
-    v38 = 0;
+    defaultGroupIdentifier = 0;
   }
 
   v18 = 0;
@@ -652,7 +652,7 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
   {
     v20 = _launchRequestsForApplication_withCompatibilityInfo__orientations[v18];
     v21 = XBInterfaceOrientationMaskForInterfaceOrientationPair(v20);
-    if ([v7 supportsInterfaceOrientation:v20])
+    if ([applicationCopy supportsInterfaceOrientation:v20])
     {
       v22 = (v21 & v19) == 0;
     }
@@ -666,7 +666,7 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
     {
       v35 = v19;
       v23 = v13;
-      v24 = [v7 statusBarHiddenForInterfaceOrientation:v20 onDisplay:v13];
+      v24 = [applicationCopy statusBarHiddenForInterfaceOrientation:v20 onDisplay:v13];
       v25 = 0;
       v26 = v24 ^ 1u;
       v27 = 1;
@@ -674,23 +674,23 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
       {
         v28 = v27;
         v29 = _launchRequestsForApplication_withCompatibilityInfo__allUserInterfaceStyles[v25];
-        if ([v7 xb_supportsUserInterfaceStyle:{v29, v33, v34}])
+        if ([applicationCopy xb_supportsUserInterfaceStyle:{v29, v33, v34}])
         {
           v30 = objc_alloc_init(XBLaunchStateRequest);
           [(XBLaunchStateRequest *)v30 setDisplayConfiguration:v23];
-          [(XBLaunchStateRequest *)v30 setGroupID:v38];
+          [(XBLaunchStateRequest *)v30 setGroupID:defaultGroupIdentifier];
           [(XBLaunchStateRequest *)v30 setReferenceSize:v15, v17];
           [(XBLaunchStateRequest *)v30 setStatusBarState:v26];
           [(XBLaunchStateRequest *)v30 setInterfaceOrientation:v20];
           [(XBLaunchStateRequest *)v30 setUserInterfaceStyle:v29];
           if (v20 == statusBarOrientation && v29 == v36)
           {
-            [v12 insertObject:v30 atIndex:0];
+            [array insertObject:v30 atIndex:0];
           }
 
           else
           {
-            [v12 addObject:v30];
+            [array addObject:v30];
           }
         }
 
@@ -707,7 +707,7 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
   }
 
   while (v18 != 4);
-  if (![v12 count])
+  if (![array count])
   {
     v31 = XBLogCapture();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -716,37 +716,37 @@ void __133__XBApplicationController__captureOrUpdateLaunchImagesForApplications_
     }
   }
 
-  return v12;
+  return array;
 }
 
 - (void)_removeAllGeneratedLaunchImagesAndSnapshots
 {
   v4 = +[XBApplicationSnapshotPredicate predicate];
   [v4 setContentTypeMask:3];
-  v3 = [(XBApplicationProviding *)self->_applicationProvider allInstalledApplications];
-  [(XBApplicationController *)self _removeLaunchImagesMatchingPredicate:v4 forApplications:v3 forgettingApps:0];
+  allInstalledApplications = [(XBApplicationProviding *)self->_applicationProvider allInstalledApplications];
+  [(XBApplicationController *)self _removeLaunchImagesMatchingPredicate:v4 forApplications:allInstalledApplications forgettingApps:0];
 }
 
-- (void)_removeLaunchImagesMatchingPredicate:(id)a3 forApplications:(id)a4 forgettingApps:(BOOL)a5
+- (void)_removeLaunchImagesMatchingPredicate:(id)predicate forApplications:(id)applications forgettingApps:(BOOL)apps
 {
-  v5 = a5;
+  appsCopy = apps;
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  applicationsCopy = applications;
   v9 = XBLogFileManifest();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 descriptionWithMultilinePrefix:@"\t"];
+    v10 = [predicateCopy descriptionWithMultilinePrefix:@"\t"];
     *buf = 67109378;
-    v15 = v5;
+    v15 = appsCopy;
     v16 = 2114;
     v17 = v10;
     _os_log_impl(&dword_26B5EF000, v9, OS_LOG_TYPE_DEFAULT, "_removeLaunchImagesMatchingPredicate:forApplications:forgettingApps: called\nforgettingApps: %d\npredicate:\n%{public}@", buf, 0x12u);
   }
 
-  v13 = v7;
-  v11 = v7;
-  v12 = v8;
+  v13 = predicateCopy;
+  v11 = predicateCopy;
+  v12 = applicationsCopy;
   BSDispatchMain();
 }
 

@@ -1,34 +1,34 @@
 @interface IDSKTOptInStatusMessage
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
 
 @implementation IDSKTOptInStatusMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = IDSKTOptInStatusMessage;
-  v4 = [(IDSKTOptInStatusMessage *)&v12 copyWithZone:a3];
-  v5 = [(IDSKTOptInStatusMessage *)self hardwareVersion];
-  [v4 setHardwareVersion:v5];
+  v4 = [(IDSKTOptInStatusMessage *)&v12 copyWithZone:zone];
+  hardwareVersion = [(IDSKTOptInStatusMessage *)self hardwareVersion];
+  [v4 setHardwareVersion:hardwareVersion];
 
-  v6 = [(IDSKTOptInStatusMessage *)self osVersion];
-  [v4 setOsVersion:v6];
+  osVersion = [(IDSKTOptInStatusMessage *)self osVersion];
+  [v4 setOsVersion:osVersion];
 
-  v7 = [(IDSKTOptInStatusMessage *)self isOptIn];
-  [v4 setIsOptIn:v7];
+  isOptIn = [(IDSKTOptInStatusMessage *)self isOptIn];
+  [v4 setIsOptIn:isOptIn];
 
-  v8 = [(IDSKTOptInStatusMessage *)self services];
-  [v4 setServices:v8];
+  services = [(IDSKTOptInStatusMessage *)self services];
+  [v4 setServices:services];
 
-  v9 = [(IDSKTOptInStatusMessage *)self responseStatus];
-  [v4 setResponseStatus:v9];
+  responseStatus = [(IDSKTOptInStatusMessage *)self responseStatus];
+  [v4 setResponseStatus:responseStatus];
 
-  v10 = [(IDSKTOptInStatusMessage *)self responseMessage];
-  [v4 setResponseMessage:v10];
+  responseMessage = [(IDSKTOptInStatusMessage *)self responseMessage];
+  [v4 setResponseMessage:responseMessage];
 
   return v4;
 }
@@ -47,18 +47,18 @@
 {
   v9.receiver = self;
   v9.super_class = IDSKTOptInStatusMessage;
-  v3 = [(IDSKTOptInStatusMessage *)&v9 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSKTOptInStatusMessage *)&v9 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSKTOptInStatusMessage *)self hardwareVersion];
-  if (v5)
+  hardwareVersion = [(IDSKTOptInStatusMessage *)self hardwareVersion];
+  if (hardwareVersion)
   {
-    CFDictionarySetValue(Mutable, @"hardware-version", v5);
+    CFDictionarySetValue(Mutable, @"hardware-version", hardwareVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -66,10 +66,10 @@
     sub_1009151DC();
   }
 
-  v6 = [(IDSKTOptInStatusMessage *)self osVersion];
-  if (v6)
+  osVersion = [(IDSKTOptInStatusMessage *)self osVersion];
+  if (osVersion)
   {
-    CFDictionarySetValue(Mutable, @"os-version", v6);
+    CFDictionarySetValue(Mutable, @"os-version", osVersion);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -77,10 +77,10 @@
     sub_100915264();
   }
 
-  v7 = [(IDSKTOptInStatusMessage *)self services];
-  if (v7)
+  services = [(IDSKTOptInStatusMessage *)self services];
+  if (services)
   {
-    CFDictionarySetValue(Mutable, @"services", v7);
+    CFDictionarySetValue(Mutable, @"services", services);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -95,8 +95,8 @@
 {
   v7.receiver = self;
   v7.super_class = IDSKTOptInStatusMessage;
-  v2 = [(IDSKTOptInStatusMessage *)&v7 additionalMessageHeaders];
-  Mutable = [v2 mutableCopy];
+  additionalMessageHeaders = [(IDSKTOptInStatusMessage *)&v7 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
@@ -104,11 +104,11 @@
   }
 
   v4 = _IDSKeyTransparencyOptInOutVersionNumber();
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  if (v5)
+  if (stringValue)
   {
-    CFDictionarySetValue(Mutable, @"x-kt-opt-version", v5);
+    CFDictionarySetValue(Mutable, @"x-kt-opt-version", stringValue);
   }
 
   return Mutable;

@@ -1,43 +1,43 @@
 @interface DMCInstallProfileQuestionViewController
-- (DMCInstallProfileQuestionViewController)initWithFieldCollection:(id)a3;
-- (DMCInstallProfileQuestionViewController)initWithStyle:(int64_t)a3;
-- (DMCInstallProfileQuestionViewController)initWithUserInput:(id)a3;
+- (DMCInstallProfileQuestionViewController)initWithFieldCollection:(id)collection;
+- (DMCInstallProfileQuestionViewController)initWithStyle:(int64_t)style;
+- (DMCInstallProfileQuestionViewController)initWithUserInput:(id)input;
 - (DMCProfileQuestionsControllerDelegate)questionsDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)_addActionForError:(unint64_t)a3 title:(id)a4 toAlert:(id)a5;
-- (void)_configureQuestionField:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)_addActionForError:(unint64_t)error title:(id)title toAlert:(id)alert;
+- (void)_configureQuestionField:(id)field;
 - (void)_continueOrFinish;
 - (void)_continueWithCurrentField;
-- (void)_didFinishPasscodePreflightWithError:(id)a3;
-- (void)_didFinishPreflightWithError:(id)a3;
+- (void)_didFinishPasscodePreflightWithError:(id)error;
+- (void)_didFinishPreflightWithError:(id)error;
 - (void)_finishInput;
-- (void)_handleError:(unint64_t)a3;
+- (void)_handleError:(unint64_t)error;
 - (void)_preflightCurrentPayload;
 - (void)_processResponseAndContinue;
-- (void)_retryCurrentPasswordFieldWithError:(id)a3;
+- (void)_retryCurrentPasswordFieldWithError:(id)error;
 - (void)_retryWithCurrentField;
 - (void)_setup;
-- (void)_showAlertForError:(id)a3;
-- (void)_showNavButtonsAnimated:(BOOL)a3;
+- (void)_showAlertForError:(id)error;
+- (void)_showNavButtonsAnimated:(BOOL)animated;
 - (void)_showProgressIndicator;
-- (void)_tellDelegateDidFinishWithUserInputResponses:(id)a3;
+- (void)_tellDelegateDidFinishWithUserInputResponses:(id)responses;
 - (void)_textFieldDidChange;
 - (void)_updateNavigationBar;
-- (void)profileConnectionDidFinishPreflightWithError:(id)a3;
-- (void)setQuestionsDelegate:(id)a3;
-- (void)updateWithUserInput:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)profileConnectionDidFinishPreflightWithError:(id)error;
+- (void)setQuestionsDelegate:(id)delegate;
+- (void)updateWithUserInput:(id)input;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation DMCInstallProfileQuestionViewController
 
-- (DMCInstallProfileQuestionViewController)initWithStyle:(int64_t)a3
+- (DMCInstallProfileQuestionViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = DMCInstallProfileQuestionViewController;
-  v3 = [(DMCProfileTableViewController *)&v6 initWithStyle:a3];
+  v3 = [(DMCProfileTableViewController *)&v6 initWithStyle:style];
   v4 = v3;
   if (v3)
   {
@@ -47,15 +47,15 @@
   return v4;
 }
 
-- (DMCInstallProfileQuestionViewController)initWithUserInput:(id)a3
+- (DMCInstallProfileQuestionViewController)initWithUserInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v9.receiver = self;
   v9.super_class = DMCInstallProfileQuestionViewController;
   v5 = [(DMCProfileTableViewController *)&v9 initWithStyle:2];
   if (v5)
   {
-    v6 = [[DMCFieldCollection alloc] initWithUserInput:v4];
+    v6 = [[DMCFieldCollection alloc] initWithUserInput:inputCopy];
     fieldCollection = v5->_fieldCollection;
     v5->_fieldCollection = v6;
 
@@ -65,16 +65,16 @@
   return v5;
 }
 
-- (DMCInstallProfileQuestionViewController)initWithFieldCollection:(id)a3
+- (DMCInstallProfileQuestionViewController)initWithFieldCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = DMCInstallProfileQuestionViewController;
   v6 = [(DMCProfileTableViewController *)&v9 initWithStyle:2];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fieldCollection, a3);
+    objc_storeStrong(&v6->_fieldCollection, collection);
     [(DMCInstallProfileQuestionViewController *)v7 _setup];
   }
 
@@ -86,28 +86,28 @@
   v5.receiver = self;
   v5.super_class = DMCInstallProfileQuestionViewController;
   [(DMCProfileTableViewController *)&v5 updateExtendedLayoutIncludesOpaqueBars];
-  v3 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v3 setHidesBackButton:1];
+  navigationItem = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 
-  v4 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v4 setBackButtonTitle:&stru_2859FB650];
+  navigationItem2 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem2 setBackButtonTitle:&stru_2859FB650];
 
   [(DMCInstallProfileQuestionViewController *)self _showNavButtonsAnimated:0];
   [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DMCInstallProfileQuestionViewController;
-  [(DMCInstallProfileQuestionViewController *)&v5 viewDidAppear:a3];
-  v4 = [(DMCInstallProfileQuestionViewController *)self textField];
-  [v4 becomeFirstResponder];
+  [(DMCInstallProfileQuestionViewController *)&v5 viewDidAppear:appear];
+  textField = [(DMCInstallProfileQuestionViewController *)self textField];
+  [textField becomeFirstResponder];
 }
 
-- (void)setQuestionsDelegate:(id)a3
+- (void)setQuestionsDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_questionsDelegate);
 
   if (WeakRetained != obj)
@@ -117,77 +117,77 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(DMCFieldCollection *)self->_fieldCollection currentField:a3];
-  v5 = [v4 fieldDescription];
+  v4 = [(DMCFieldCollection *)self->_fieldCollection currentField:view];
+  fieldDescription = [v4 fieldDescription];
 
-  return v5;
+  return fieldDescription;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(DMCFieldCollection *)self->_fieldCollection currentField:a3];
-  v5 = [v4 finePrint];
+  v4 = [(DMCFieldCollection *)self->_fieldCollection currentField:view];
+  finePrint = [v4 finePrint];
 
-  return v5;
+  return finePrint;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"MCProfileQuestionCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"MCProfileQuestionCell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1000 reuseIdentifier:@"MCProfileQuestionCell"];
   }
 
-  if (![v6 row])
+  if (![pathCopy row])
   {
     [v7 setTextFieldOffset:0.0];
     [v7 setSelectionStyle:0];
-    v8 = [v7 editableTextField];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel__textFieldDidChange name:*MEMORY[0x277D770B0] object:0];
+    editableTextField = [v7 editableTextField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__textFieldDidChange name:*MEMORY[0x277D770B0] object:0];
 
-    [(DMCInstallProfileQuestionViewController *)self _configureQuestionField:v8];
-    [(DMCInstallProfileQuestionViewController *)self setTextField:v8];
+    [(DMCInstallProfileQuestionViewController *)self _configureQuestionField:editableTextField];
+    [(DMCInstallProfileQuestionViewController *)self setTextField:editableTextField];
   }
 
   return v7;
 }
 
-- (void)_configureQuestionField:(id)a3
+- (void)_configureQuestionField:(id)field
 {
   fieldCollection = self->_fieldCollection;
-  v4 = a3;
-  v7 = [(DMCFieldCollection *)fieldCollection currentField];
-  [v4 setSecureTextEntry:{objc_msgSend(v7, "isPassword")}];
-  [v4 setKeyboardType:{objc_msgSend(v7, "keyboardType")}];
-  [v4 setAutocapitalizationType:{objc_msgSend(v7, "capitalizationType")}];
-  [v4 setAutocorrectionType:1];
-  [v4 setClearButtonMode:3];
-  v5 = [v7 defaultValue];
-  [v4 setText:v5];
+  fieldCopy = field;
+  currentField = [(DMCFieldCollection *)fieldCollection currentField];
+  [fieldCopy setSecureTextEntry:{objc_msgSend(currentField, "isPassword")}];
+  [fieldCopy setKeyboardType:{objc_msgSend(currentField, "keyboardType")}];
+  [fieldCopy setAutocapitalizationType:{objc_msgSend(currentField, "capitalizationType")}];
+  [fieldCopy setAutocorrectionType:1];
+  [fieldCopy setClearButtonMode:3];
+  defaultValue = [currentField defaultValue];
+  [fieldCopy setText:defaultValue];
 
-  v6 = [v7 placeholderValue];
-  [v4 setPlaceholder:v6];
+  placeholderValue = [currentField placeholderValue];
+  [fieldCopy setPlaceholder:placeholderValue];
 }
 
 - (void)_textFieldDidChange
 {
-  v13 = [(DMCFieldCollection *)self->_fieldCollection currentField];
-  if ([v13 isRequired])
+  currentField = [(DMCFieldCollection *)self->_fieldCollection currentField];
+  if ([currentField isRequired])
   {
-    v3 = [(DMCInstallProfileQuestionViewController *)self textField];
-    v4 = [v3 text];
-    v5 = [v4 length];
+    textField = [(DMCInstallProfileQuestionViewController *)self textField];
+    text = [textField text];
+    v5 = [text length];
 
-    v6 = [v13 minimumLength];
-    if (v6)
+    minimumLength = [currentField minimumLength];
+    if (minimumLength)
     {
-      v7 = [v13 minimumLength];
-      v8 = v5 >= [v7 integerValue];
+      minimumLength2 = [currentField minimumLength];
+      v8 = v5 >= [minimumLength2 integerValue];
     }
 
     else
@@ -196,60 +196,60 @@
     }
 
     v9 = v5 != 0;
-    v10 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-    v11 = [v10 rightBarButtonItem];
-    [v11 setEnabled:v9 & v8];
+    navigationItem = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v9 & v8];
 
-    v12 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-    DMCSendNavUIUpdatedNotification(v12);
+    navigationItem2 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+    DMCSendNavUIUpdatedNotification(navigationItem2);
   }
 }
 
 - (void)_preflightCurrentPayload
 {
   [(DMCInstallProfileQuestionViewController *)self _showProgressIndicator];
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [(DMCFieldCollection *)self->_fieldCollection responseDictionariesForCurrentPayload];
-  [v4 preflightUserInputResponses:v3 forPayloadIndex:{-[DMCFieldCollection currentPayloadIndex](self->_fieldCollection, "currentPayloadIndex")}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  responseDictionariesForCurrentPayload = [(DMCFieldCollection *)self->_fieldCollection responseDictionariesForCurrentPayload];
+  [mEMORY[0x277D262A0] preflightUserInputResponses:responseDictionariesForCurrentPayload forPayloadIndex:{-[DMCFieldCollection currentPayloadIndex](self->_fieldCollection, "currentPayloadIndex")}];
 }
 
-- (void)profileConnectionDidFinishPreflightWithError:(id)a3
+- (void)profileConnectionDidFinishPreflightWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(DMCProfileTableViewController *)self hideProgressInNavBarShowBackButton:0];
   if (self->_waitingForPasscodePreflight)
   {
     self->_waitingForPasscodePreflight = 0;
-    [(DMCInstallProfileQuestionViewController *)self _didFinishPasscodePreflightWithError:v4];
+    [(DMCInstallProfileQuestionViewController *)self _didFinishPasscodePreflightWithError:errorCopy];
   }
 
   else
   {
-    [(DMCInstallProfileQuestionViewController *)self _didFinishPreflightWithError:v4];
+    [(DMCInstallProfileQuestionViewController *)self _didFinishPreflightWithError:errorCopy];
   }
 }
 
-- (void)_didFinishPasscodePreflightWithError:(id)a3
+- (void)_didFinishPasscodePreflightWithError:(id)error
 {
-  v10 = a3;
-  if (v10)
+  errorCopy = error;
+  if (errorCopy)
   {
     previousResponseValue = self->_previousResponseValue;
     self->_previousResponseValue = 0;
 
-    [(DMCInstallProfileQuestionViewController *)self _retryCurrentPasswordFieldWithError:v10];
+    [(DMCInstallProfileQuestionViewController *)self _retryCurrentPasswordFieldWithError:errorCopy];
   }
 
   else
   {
     [(DMCInstallProfileQuestionViewController *)self _showNavButtonsAnimated:1];
     [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
-    v5 = [(DMCFieldCollection *)self->_fieldCollection currentField];
-    v6 = [v5 retypeDescription];
-    v7 = v6;
-    if (v6)
+    currentField = [(DMCFieldCollection *)self->_fieldCollection currentField];
+    retypeDescription = [currentField retypeDescription];
+    v7 = retypeDescription;
+    if (retypeDescription)
     {
-      v8 = v6;
+      v8 = retypeDescription;
     }
 
     else
@@ -257,26 +257,26 @@
       v8 = &stru_2859FB650;
     }
 
-    [v5 setFieldDescription:v8];
+    [currentField setFieldDescription:v8];
 
-    v9 = [(DMCInstallProfileQuestionViewController *)self tableView];
-    [v9 reloadData];
+    tableView = [(DMCInstallProfileQuestionViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)_didFinishPreflightWithError:(id)a3
+- (void)_didFinishPreflightWithError:(id)error
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v4 userInfo];
-    v6 = [v5 objectForKey:*MEMORY[0x277D25CB0]];
+    userInfo = [errorCopy userInfo];
+    v6 = [userInfo objectForKey:*MEMORY[0x277D25CB0]];
     if ([v6 isEqualToString:*MEMORY[0x277D25CB8]])
     {
-      v7 = [(DMCFieldCollection *)self->_fieldCollection currentFieldIsSinglePasswordField];
+      currentFieldIsSinglePasswordField = [(DMCFieldCollection *)self->_fieldCollection currentFieldIsSinglePasswordField];
 
-      if (v7)
+      if (currentFieldIsSinglePasswordField)
       {
         [(DMCInstallProfileQuestionViewController *)self _retryCurrentPasswordFieldWithError:v8];
         goto LABEL_8;
@@ -298,10 +298,10 @@
 LABEL_8:
 }
 
-- (void)updateWithUserInput:(id)a3
+- (void)updateWithUserInput:(id)input
 {
-  v4 = a3;
-  v5 = [[DMCFieldCollection alloc] initWithUserInput:v4];
+  inputCopy = input;
+  v5 = [[DMCFieldCollection alloc] initWithUserInput:inputCopy];
 
   fieldCollection = self->_fieldCollection;
   self->_fieldCollection = v5;
@@ -311,17 +311,17 @@ LABEL_8:
 
 - (void)_processResponseAndContinue
 {
-  v14 = [(DMCFieldCollection *)self->_fieldCollection currentField];
-  v3 = [(DMCInstallProfileQuestionViewController *)self textField];
-  v4 = [v3 text];
+  currentField = [(DMCFieldCollection *)self->_fieldCollection currentField];
+  textField = [(DMCInstallProfileQuestionViewController *)self textField];
+  text = [textField text];
 
-  if ([v14 needsRetype])
+  if ([currentField needsRetype])
   {
     if (self->_previousResponseValue)
     {
-      if ([v4 isEqualToString:?])
+      if ([text isEqualToString:?])
       {
-        v5 = [v14 isDevicePasscodeField];
+        isDevicePasscodeField = [currentField isDevicePasscodeField];
         previousResponseValue = self->_previousResponseValue;
         self->_previousResponseValue = 0;
 
@@ -331,17 +331,17 @@ LABEL_8:
       v10 = self->_previousResponseValue;
       self->_previousResponseValue = 0;
 
-      if ([v14 isDevicePasscodeField])
+      if ([currentField isDevicePasscodeField])
       {
-        [v14 setUserResponse:0];
+        [currentField setUserResponse:0];
       }
 
-      v11 = [v14 mismatchDescription];
+      mismatchDescription = [currentField mismatchDescription];
 LABEL_18:
-      v12 = v11;
-      if (v11)
+      v12 = mismatchDescription;
+      if (mismatchDescription)
       {
-        v13 = v11;
+        v13 = mismatchDescription;
       }
 
       else
@@ -349,38 +349,38 @@ LABEL_18:
         v13 = &stru_2859FB650;
       }
 
-      [v14 setFieldDescription:v13];
+      [currentField setFieldDescription:v13];
 
       [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
-      v7 = [(DMCInstallProfileQuestionViewController *)self tableView];
-      [v7 reloadData];
+      tableView = [(DMCInstallProfileQuestionViewController *)self tableView];
+      [tableView reloadData];
       goto LABEL_22;
     }
 
-    v8 = [v4 copy];
+    v8 = [text copy];
     v9 = self->_previousResponseValue;
     self->_previousResponseValue = v8;
 
-    if (![v14 isDevicePasscodeField])
+    if (![currentField isDevicePasscodeField])
     {
-      v11 = [v14 retypeDescription];
+      mismatchDescription = [currentField retypeDescription];
       goto LABEL_18;
     }
 
-    [v14 setUserResponse:v4];
-    v5 = 0;
+    [currentField setUserResponse:text];
+    isDevicePasscodeField = 0;
     self->_waitingForPasscodePreflight = 1;
   }
 
   else
   {
-    v5 = 0;
+    isDevicePasscodeField = 0;
   }
 
 LABEL_6:
-  if (self->_waitingForPasscodePreflight || (v5 & 1) != 0)
+  if (self->_waitingForPasscodePreflight || (isDevicePasscodeField & 1) != 0)
   {
-    if (v5)
+    if (isDevicePasscodeField)
     {
       goto LABEL_9;
     }
@@ -388,7 +388,7 @@ LABEL_6:
 
   else
   {
-    [v14 setUserResponse:v4];
+    [currentField setUserResponse:text];
     if (![(DMCFieldCollection *)self->_fieldCollection currentFieldIsLastInPayload])
     {
 LABEL_9:
@@ -398,8 +398,8 @@ LABEL_9:
   }
 
   [(DMCInstallProfileQuestionViewController *)self _preflightCurrentPayload];
-  v7 = [(DMCInstallProfileQuestionViewController *)self view];
-  [v7 endEditing:1];
+  tableView = [(DMCInstallProfileQuestionViewController *)self view];
+  [tableView endEditing:1];
 LABEL_22:
 
 LABEL_23:
@@ -407,119 +407,119 @@ LABEL_23:
 
 - (void)_showProgressIndicator
 {
-  v3 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v3 setLeftBarButtonItem:0 animated:0];
+  navigationItem = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0 animated:0];
 
-  v4 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:0 animated:0];
+  navigationItem2 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:0 animated:0];
 
   [(DMCProfileTableViewController *)self showProgressInNavBar];
 }
 
-- (void)_showNavButtonsAnimated:(BOOL)a3
+- (void)_showNavButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_alloc(MEMORY[0x277D751E0]);
   v6 = DMCEnrollmentLocalizedString(@"DMC_GENERAL_NEXT");
   v11 = [v5 initWithTitle:v6 style:0 target:self action:sel__processResponseAndContinue];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelInput];
-  v8 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v11 animated:v3];
+  navigationItem = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v11 animated:animatedCopy];
 
-  v9 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v9 setLeftBarButtonItem:v7 animated:v3];
+  navigationItem2 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v7 animated:animatedCopy];
 
-  v10 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v10);
+  navigationItem3 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem3);
 }
 
 - (void)_updateNavigationBar
 {
-  v12 = [(DMCFieldCollection *)self->_fieldCollection currentField];
-  if (-[DMCFieldCollection currentFieldIsFinalField](self->_fieldCollection, "currentFieldIsFinalField") && (![v12 needsRetype] || self->_previousResponseValue))
+  currentField = [(DMCFieldCollection *)self->_fieldCollection currentField];
+  if (-[DMCFieldCollection currentFieldIsFinalField](self->_fieldCollection, "currentFieldIsFinalField") && (![currentField needsRetype] || self->_previousResponseValue))
   {
-    v3 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-    v4 = [v3 rightBarButtonItem];
-    [v4 setStyle:2];
+    navigationItem = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setStyle:2];
   }
 
-  if ([v12 isRequired])
+  if ([currentField isRequired])
   {
-    v5 = [v12 defaultValue];
-    v6 = [v5 length];
+    defaultValue = [currentField defaultValue];
+    v6 = [defaultValue length];
 
     if (!v6)
     {
-      v7 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-      v8 = [v7 rightBarButtonItem];
-      [v8 setEnabled:0];
+      navigationItem2 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+      rightBarButtonItem2 = [navigationItem2 rightBarButtonItem];
+      [rightBarButtonItem2 setEnabled:0];
     }
   }
 
-  v9 = [v12 title];
-  v10 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  [v10 setTitle:v9];
+  title = [currentField title];
+  navigationItem3 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  [navigationItem3 setTitle:title];
 
-  v11 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
-  DMCSendNavUIUpdatedNotification(v11);
+  navigationItem4 = [(DMCInstallProfileQuestionViewController *)self navigationItem];
+  DMCSendNavUIUpdatedNotification(navigationItem4);
 }
 
-- (void)_tellDelegateDidFinishWithUserInputResponses:(id)a3
+- (void)_tellDelegateDidFinishWithUserInputResponses:(id)responses
 {
-  v4 = a3;
-  v5 = [(DMCInstallProfileQuestionViewController *)self questionsDelegate];
-  [v5 questionsController:self didFinishWithResponses:v4];
+  responsesCopy = responses;
+  questionsDelegate = [(DMCInstallProfileQuestionViewController *)self questionsDelegate];
+  [questionsDelegate questionsController:self didFinishWithResponses:responsesCopy];
 }
 
 - (void)_continueWithCurrentField
 {
   [(DMCInstallProfileQuestionViewController *)self _showNavButtonsAnimated:1];
   [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
-  v3 = [(DMCInstallProfileQuestionViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(DMCInstallProfileQuestionViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_retryWithCurrentField
 {
   [(DMCInstallProfileQuestionViewController *)self _showNavButtonsAnimated:1];
   [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
-  v3 = [(DMCInstallProfileQuestionViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(DMCInstallProfileQuestionViewController *)self tableView];
+  [tableView reloadData];
 
-  v4 = [(DMCInstallProfileQuestionViewController *)self tableView];
-  [v4 layoutIfNeeded];
+  tableView2 = [(DMCInstallProfileQuestionViewController *)self tableView];
+  [tableView2 layoutIfNeeded];
 
-  v5 = [(DMCInstallProfileQuestionViewController *)self textField];
-  [v5 becomeFirstResponder];
+  textField = [(DMCInstallProfileQuestionViewController *)self textField];
+  [textField becomeFirstResponder];
 }
 
-- (void)_retryCurrentPasswordFieldWithError:(id)a3
+- (void)_retryCurrentPasswordFieldWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   [(DMCInstallProfileQuestionViewController *)self _showNavButtonsAnimated:1];
   [(DMCInstallProfileQuestionViewController *)self _updateNavigationBar];
-  v4 = [(DMCFieldCollection *)self->_fieldCollection currentField];
-  v5 = [v8 localizedDescription];
-  if (v5)
+  currentField = [(DMCFieldCollection *)self->_fieldCollection currentField];
+  localizedDescription = [errorCopy localizedDescription];
+  if (localizedDescription)
   {
-    [v4 setFieldDescription:v5];
+    [currentField setFieldDescription:localizedDescription];
   }
 
-  v6 = [v8 localizedRecoverySuggestion];
-  if (v6)
+  localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
+  if (localizedRecoverySuggestion)
   {
-    [v4 setFinePrint:v6];
+    [currentField setFinePrint:localizedRecoverySuggestion];
   }
 
-  v7 = [(DMCInstallProfileQuestionViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(DMCInstallProfileQuestionViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_finishInput
 {
-  v3 = [(DMCFieldCollection *)self->_fieldCollection userInputResponses];
-  [(DMCInstallProfileQuestionViewController *)self _tellDelegateDidFinishWithUserInputResponses:v3];
+  userInputResponses = [(DMCFieldCollection *)self->_fieldCollection userInputResponses];
+  [(DMCInstallProfileQuestionViewController *)self _tellDelegateDidFinishWithUserInputResponses:userInputResponses];
 }
 
 - (void)_continueOrFinish
@@ -535,25 +535,25 @@ LABEL_23:
     [(DMCFieldCollection *)self->_fieldCollection moveToNextField];
     [(DMCInstallProfileQuestionViewController *)self _continueWithCurrentField];
     v4 = [[DMCInstallProfileQuestionViewController alloc] initWithFieldCollection:self->_fieldCollection];
-    v3 = [(DMCInstallProfileQuestionViewController *)self questionsDelegate];
-    [(DMCInstallProfileQuestionViewController *)v4 setQuestionsDelegate:v3];
+    questionsDelegate = [(DMCInstallProfileQuestionViewController *)self questionsDelegate];
+    [(DMCInstallProfileQuestionViewController *)v4 setQuestionsDelegate:questionsDelegate];
 
     [(UIViewController *)self dmc_pushViewController:v4 animated:1];
   }
 }
 
-- (void)_showAlertForError:(id)a3
+- (void)_showAlertForError:(id)error
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
-  v6 = [v5 localizedDescription];
-  v7 = [v5 localizedRecoverySuggestion];
+  errorCopy = error;
+  localizedDescription = [errorCopy localizedDescription];
+  localizedRecoverySuggestion = [errorCopy localizedRecoverySuggestion];
   v8 = 1;
-  v16 = [v4 alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v16 = [v4 alertControllerWithTitle:localizedDescription message:localizedRecoverySuggestion preferredStyle:1];
 
-  v9 = [v5 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v10 = [v9 objectForKey:*MEMORY[0x277D25CB0]];
+  v10 = [userInfo objectForKey:*MEMORY[0x277D25CB0]];
 
   if ([v10 isEqualToString:*MEMORY[0x277D25CC8]])
   {
@@ -594,10 +594,10 @@ LABEL_7:
   [(UIViewController *)self dmc_presentAlert:v16 completion:0];
 }
 
-- (void)_addActionForError:(unint64_t)a3 title:(id)a4 toAlert:(id)a5
+- (void)_addActionForError:(unint64_t)error title:(id)title toAlert:(id)alert
 {
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  alertCopy = alert;
   objc_initWeak(&location, self);
   v10 = MEMORY[0x277D750F8];
   v12[0] = MEMORY[0x277D85DD0];
@@ -605,9 +605,9 @@ LABEL_7:
   v12[2] = __76__DMCInstallProfileQuestionViewController__addActionForError_title_toAlert___block_invoke;
   v12[3] = &unk_278EE7DE0;
   objc_copyWeak(v13, &location);
-  v13[1] = a3;
-  v11 = [v10 actionWithTitle:v8 style:a3 == 2 handler:v12];
-  [v9 addAction:v11];
+  v13[1] = error;
+  v11 = [v10 actionWithTitle:titleCopy style:error == 2 handler:v12];
+  [alertCopy addAction:v11];
 
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -636,13 +636,13 @@ void __76__DMCInstallProfileQuestionViewController__addActionForError_title_toAl
   }
 }
 
-- (void)_handleError:(unint64_t)a3
+- (void)_handleError:(unint64_t)error
 {
-  if (a3 <= 1)
+  if (error <= 1)
   {
-    if (a3)
+    if (error)
     {
-      if (a3 == 1)
+      if (error == 1)
       {
 
         [(DMCInstallProfileQuestionViewController *)self _continueOrFinish];
@@ -655,9 +655,9 @@ void __76__DMCInstallProfileQuestionViewController__addActionForError_title_toAl
     goto LABEL_11;
   }
 
-  if (a3 != 2)
+  if (error != 2)
   {
-    if (a3 != 3)
+    if (error != 3)
     {
       return;
     }

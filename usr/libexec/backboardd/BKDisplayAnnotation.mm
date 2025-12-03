@@ -1,24 +1,24 @@
 @interface BKDisplayAnnotation
-+ (BKDisplayAnnotation)annotationWithEllipseSize:(CGSize)a3;
-+ (BKDisplayAnnotation)annotationWithRectangleSize:(CGSize)a3;
-+ (BKDisplayAnnotation)annotationWithString:(id)a3;
++ (BKDisplayAnnotation)annotationWithEllipseSize:(CGSize)size;
++ (BKDisplayAnnotation)annotationWithRectangleSize:(CGSize)size;
++ (BKDisplayAnnotation)annotationWithString:(id)string;
 + (BKDisplayAnnotation)new;
-+ (id)subannotationWithString:(id)a3;
++ (id)subannotationWithString:(id)string;
 - (BKDisplayAnnotation)init;
 - (BKDisplayAnnotationController)annotationController;
 - (BKNamespaceNode)namespaceNode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)modifyStyleSheet:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setLocation:(id)a3;
-- (void)setRenderer:(id)a3;
-- (void)setShapeSize:(CGSize)a3;
-- (void)setString:(id)a3;
-- (void)setStyleModifier:(id)a3;
+- (void)modifyStyleSheet:(id)sheet;
+- (void)setContent:(id)content;
+- (void)setLocation:(id)location;
+- (void)setRenderer:(id)renderer;
+- (void)setShapeSize:(CGSize)size;
+- (void)setString:(id)string;
+- (void)setStyleModifier:(id)modifier;
 @end
 
 @implementation BKDisplayAnnotation
@@ -37,57 +37,57 @@
   return WeakRetained;
 }
 
-- (void)setStyleModifier:(id)a3
+- (void)setStyleModifier:(id)modifier
 {
-  [(BKDisplayAnnotationStyleSheet *)self->_styleSheet setStyleModifier:a3];
+  [(BKDisplayAnnotationStyleSheet *)self->_styleSheet setStyleModifier:modifier];
   renderer = self->_renderer;
 
   [(BKDisplayAnnotationRenderer *)renderer styleSheetDidChange];
 }
 
-- (void)modifyStyleSheet:(id)a3
+- (void)modifyStyleSheet:(id)sheet
 {
-  (*(a3 + 2))(a3, self->_styleSheet);
+  (*(sheet + 2))(sheet, self->_styleSheet);
   renderer = self->_renderer;
 
   [(BKDisplayAnnotationRenderer *)renderer styleSheetDidChange];
 }
 
-- (void)setShapeSize:(CGSize)a3
+- (void)setShapeSize:(CGSize)size
 {
-  v4 = [BKDisplayAnnotationShapeContent contentWithSize:a3.width, a3.height];
+  v4 = [BKDisplayAnnotationShapeContent contentWithSize:size.width, size.height];
   [(BKDisplayAnnotation *)self setContent:v4];
 }
 
-- (void)setString:(id)a3
+- (void)setString:(id)string
 {
   content = self->_content;
-  v7 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(BKDisplayAnnotationContent *)self->_content setString:v7];
-    v5 = v7;
+    [(BKDisplayAnnotationContent *)self->_content setString:stringCopy];
+    v5 = stringCopy;
   }
 
   else
   {
-    v6 = [BKDisplayAnnotationStringContent contentWithString:v7];
+    v6 = [BKDisplayAnnotationStringContent contentWithString:stringCopy];
 
     [(BKDisplayAnnotation *)self setContent:v6];
     v5 = v6;
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   location = self->_location;
-  if (location != v4)
+  if (location != locationCopy)
   {
-    v9 = v4;
-    v6 = [(BKDisplayAnnotationLocation *)location isEqual:v4];
-    v4 = v9;
+    v9 = locationCopy;
+    v6 = [(BKDisplayAnnotationLocation *)location isEqual:locationCopy];
+    locationCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(BKDisplayAnnotationLocation *)v9 copy];
@@ -95,16 +95,16 @@
       self->_location = v7;
 
       [(BKDisplayAnnotationRenderer *)self->_renderer locationDidChange];
-      v4 = v9;
+      locationCopy = v9;
     }
   }
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v6 = a3;
+  contentCopy = content;
   content = self->_content;
-  if (content != v6)
+  if (content != contentCopy)
   {
     if (content)
     {
@@ -119,7 +119,7 @@
         v15 = 2114;
         v16 = v11;
         v17 = 2048;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = @"BKDisplayAnnotation.m";
         v21 = 1024;
@@ -135,33 +135,33 @@
       JUMPOUT(0x10009823CLL);
     }
 
-    v12 = v6;
-    objc_storeStrong(&self->_content, a3);
+    v12 = contentCopy;
+    objc_storeStrong(&self->_content, content);
     [(BKDisplayAnnotationRenderer *)self->_renderer styleSheetDidChange];
-    v6 = v12;
+    contentCopy = v12;
   }
 }
 
-- (void)setRenderer:(id)a3
+- (void)setRenderer:(id)renderer
 {
-  v5 = a3;
-  if (self->_renderer != v5)
+  rendererCopy = renderer;
+  if (self->_renderer != rendererCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_renderer, a3);
+    v6 = rendererCopy;
+    objc_storeStrong(&self->_renderer, renderer);
     [(BKDisplayAnnotationRenderer *)self->_renderer setAnnotation:self];
-    v5 = v6;
+    rendererCopy = v6;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     content = self->_content;
-    v6 = [v4 content];
-    v7 = [(BKDisplayAnnotationContent *)content isEqual:v6];
+    content = [equalCopy content];
+    v7 = [(BKDisplayAnnotationContent *)content isEqual:content];
   }
 
   else
@@ -172,29 +172,29 @@
   return v7;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKDisplayAnnotation *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_content withName:@"content"];
-  v6 = [v4 appendObject:self->_section withName:@"section" skipIfNil:1];
+  succinctDescriptionBuilder = [(BKDisplayAnnotation *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_content withName:@"content"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_section withName:@"section" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKDisplayAnnotation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKDisplayAnnotation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKDisplayAnnotation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKDisplayAnnotation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)_init
@@ -231,7 +231,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKDisplayAnnotation.m";
     v17 = 1024;
@@ -260,7 +260,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKDisplayAnnotation.m";
     v17 = 1024;
@@ -276,12 +276,12 @@
   return result;
 }
 
-+ (BKDisplayAnnotation)annotationWithRectangleSize:(CGSize)a3
++ (BKDisplayAnnotation)annotationWithRectangleSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [[a1 alloc] _init];
-  [v5 setShapeSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _init = [[self alloc] _init];
+  [_init setShapeSize:{width, height}];
   v6 = objc_alloc_init(BKDisplayAnnotationStyleSheet);
   v7 = +[BKDisplayAnnotationStyle rectangleStyle];
   [(BKDisplayAnnotationStyleSheet *)v6 setBaseStyle:v7];
@@ -289,17 +289,17 @@
   v8 = +[BKDisplayAnnotationStyle minimalStyle];
   [(BKDisplayAnnotationStyleSheet *)v6 setStyleModifier:v8];
 
-  [v5 setStyleSheet:v6];
+  [_init setStyleSheet:v6];
 
-  return v5;
+  return _init;
 }
 
-+ (BKDisplayAnnotation)annotationWithEllipseSize:(CGSize)a3
++ (BKDisplayAnnotation)annotationWithEllipseSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [[a1 alloc] _init];
-  [v5 setShapeSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  _init = [[self alloc] _init];
+  [_init setShapeSize:{width, height}];
   v6 = objc_alloc_init(BKDisplayAnnotationStyleSheet);
   v7 = +[BKDisplayAnnotationStyle ellipseStyle];
   [(BKDisplayAnnotationStyleSheet *)v6 setBaseStyle:v7];
@@ -307,25 +307,25 @@
   v8 = +[BKDisplayAnnotationStyle minimalStyle];
   [(BKDisplayAnnotationStyleSheet *)v6 setStyleModifier:v8];
 
-  [v5 setStyleSheet:v6];
+  [_init setStyleSheet:v6];
 
-  return v5;
+  return _init;
 }
 
-+ (id)subannotationWithString:(id)a3
++ (id)subannotationWithString:(id)string
 {
-  v3 = [a1 annotationWithString:a3];
+  v3 = [self annotationWithString:string];
   v4 = objc_alloc_init(BKDisplayAnnotationNullRenderer);
   [v3 setRenderer:v4];
 
   return v3;
 }
 
-+ (BKDisplayAnnotation)annotationWithString:(id)a3
++ (BKDisplayAnnotation)annotationWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _init];
-  [v5 setString:v4];
+  stringCopy = string;
+  _init = [[self alloc] _init];
+  [_init setString:stringCopy];
 
   v6 = objc_alloc_init(BKDisplayAnnotationStyleSheet);
   v7 = +[BKDisplayAnnotationStyle textStyle];
@@ -334,9 +334,9 @@
   v8 = +[BKDisplayAnnotationStyle minimalStyle];
   [(BKDisplayAnnotationStyleSheet *)v6 setStyleModifier:v8];
 
-  [v5 setStyleSheet:v6];
+  [_init setStyleSheet:v6];
 
-  return v5;
+  return _init;
 }
 
 @end

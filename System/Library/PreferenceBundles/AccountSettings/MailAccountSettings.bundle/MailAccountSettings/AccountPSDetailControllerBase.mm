@@ -1,23 +1,23 @@
 @interface AccountPSDetailControllerBase
-+ (id)normalizeAccountProperties:(id)a3 withAccountClass:(Class)a4;
++ (id)normalizeAccountProperties:(id)properties withAccountClass:(Class)class;
 - (Class)accountClass;
-- (id)existingAccountForAccountValues:(id)a3;
-- (id)fixAccountInputValues:(id)a3;
-- (id)setOfKeysForAlteredValuesInDictionary:(id)a3 originalDictionary:(id)a4;
-- (int64_t)validateAccount:(id)a3 withFallbacks:(BOOL)a4;
-- (void)_presentAlertForAccount:(id)a3 accountValidator:(id)a4 error:(id)a5;
-- (void)_promptUserForWebLoginForAccount:(id)a3 accountValidator:(id)a4 error:(id)a5;
-- (void)_redirectToRecoveryURL:(id)a3;
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5;
+- (id)existingAccountForAccountValues:(id)values;
+- (id)fixAccountInputValues:(id)values;
+- (id)setOfKeysForAlteredValuesInDictionary:(id)dictionary originalDictionary:(id)originalDictionary;
+- (int64_t)validateAccount:(id)account withFallbacks:(BOOL)fallbacks;
+- (void)_presentAlertForAccount:(id)account accountValidator:(id)validator error:(id)error;
+- (void)_promptUserForWebLoginForAccount:(id)account accountValidator:(id)validator error:(id)error;
+- (void)_redirectToRecoveryURL:(id)l;
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l;
 - (void)cancelAccountValidation;
 - (void)dealloc;
-- (void)displaySSLAlertForAccount:(id)a3 accountValidator:(id)a4;
+- (void)displaySSLAlertForAccount:(id)account accountValidator:(id)validator;
 - (void)displaySaveAccountAnywaysAlertSheet;
 - (void)doneButtonClickedForExistingAccount;
 - (void)doneButtonClickedForNewAccount;
-- (void)doneButtonTapped:(id)a3;
-- (void)handleSSLAlertForAccount:(id)a3 accountValidator:(id)a4 attemptWithoutSSL:(BOOL)a5;
-- (void)setViewsEnabled:(BOOL)a3;
+- (void)doneButtonTapped:(id)tapped;
+- (void)handleSSLAlertForAccount:(id)account accountValidator:(id)validator attemptWithoutSSL:(BOOL)l;
+- (void)setViewsEnabled:(BOOL)enabled;
 - (void)suspend;
 - (void)viewDidLoad;
 @end
@@ -35,8 +35,8 @@
     sub_7965C();
   }
 
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:@"values"];
+  userInfo = [v3 userInfo];
+  v5 = [userInfo objectForKey:@"values"];
   v6 = v5;
   if (v5)
   {
@@ -45,7 +45,7 @@
     self->_accountValues = v7;
   }
 
-  v9 = [v4 objectForKey:@"originalValues"];
+  v9 = [userInfo objectForKey:@"originalValues"];
 
   if (v9)
   {
@@ -54,9 +54,9 @@
     self->_originalAccountValues = v10;
   }
 
-  v12 = [(AccountPSDetailControllerBase *)self account];
+  account = [(AccountPSDetailControllerBase *)self account];
 
-  if (v12)
+  if (account)
   {
     if (!self->_accountValues)
     {
@@ -64,10 +64,10 @@
       v14 = self->_accountValues;
       self->_accountValues = v13;
 
-      v15 = [(AccountPSDetailControllerBase *)self account];
+      account2 = [(AccountPSDetailControllerBase *)self account];
       v16 = *&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__specifiers];
-      v17 = [(AccountPSDetailControllerBase *)self accountValues];
-      [v15 copyAccountPropertiesForSpecifiers:v16 intoDictionary:v17];
+      accountValues = [(AccountPSDetailControllerBase *)self accountValues];
+      [account2 copyAccountPropertiesForSpecifiers:v16 intoDictionary:accountValues];
     }
 
     if (!self->_originalAccountValues)
@@ -76,20 +76,20 @@
       v19 = self->_originalAccountValues;
       self->_originalAccountValues = v18;
 
-      v20 = [(AccountPSDetailControllerBase *)self account];
+      account3 = [(AccountPSDetailControllerBase *)self account];
       v21 = *&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__specifiers];
-      v22 = [(AccountPSDetailControllerBase *)self originalAccountValues];
-      [v20 copyAccountPropertiesForSpecifiers:v21 intoDictionary:v22];
+      originalAccountValues = [(AccountPSDetailControllerBase *)self originalAccountValues];
+      [account3 copyAccountPropertiesForSpecifiers:v21 intoDictionary:originalAccountValues];
     }
   }
 
-  v23 = [(AccountPSDetailControllerBase *)self navigationItem];
-  v24 = [v23 title];
+  navigationItem = [(AccountPSDetailControllerBase *)self navigationItem];
+  title = [navigationItem title];
   initialTitle = self->_initialTitle;
-  self->_initialTitle = v24;
+  self->_initialTitle = title;
 
-  v26 = [(AccountPSDetailControllerBase *)self navigationItem];
-  [v26 setHidesBackButton:1];
+  navigationItem2 = [(AccountPSDetailControllerBase *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 }
 
 - (void)dealloc
@@ -100,11 +100,11 @@
   [(AccountPSDetailControllerBase *)&v3 dealloc];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   [(AccountPSDetailControllerBase *)self setTaskCompletionAssertionEnabled:1];
-  v4 = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v4 resignFirstResponder];
+  firstResponder = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   if (self->_account)
   {
@@ -133,16 +133,16 @@
 
 - (Class)accountClass
 {
-  v2 = [(AccountPSDetailControllerBase *)self account];
+  account = [(AccountPSDetailControllerBase *)self account];
   v3 = objc_opt_class();
 
   return v3;
 }
 
-- (int64_t)validateAccount:(id)a3 withFallbacks:(BOOL)a4
+- (int64_t)validateAccount:(id)account withFallbacks:(BOOL)fallbacks
 {
-  v4 = a4;
-  v6 = a3;
+  fallbacksCopy = fallbacks;
+  accountCopy = account;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_18DAC;
@@ -151,32 +151,32 @@
   v7 = +[EFScheduler mainThreadScheduler];
   [v7 performBlock:v16];
 
-  v8 = [(AccountPSDetailControllerBase *)self accountValidator];
+  accountValidator = [(AccountPSDetailControllerBase *)self accountValidator];
 
-  if (!v8)
+  if (!accountValidator)
   {
     v9 = objc_alloc_init([objc_opt_class() accountValidatorClass]);
     [(AccountPSDetailControllerBase *)self setAccountValidator:v9];
   }
 
-  v10 = [(AccountPSDetailControllerBase *)self accountValidator];
+  accountValidator2 = [(AccountPSDetailControllerBase *)self accountValidator];
 
   v11 = *(self + 184);
-  if (v10)
+  if (accountValidator2)
   {
     *(self + 184) = v11 | 1;
-    v12 = [(AccountPSDetailControllerBase *)self accountValidator];
-    [v12 setDelegate:self];
+    accountValidator3 = [(AccountPSDetailControllerBase *)self accountValidator];
+    [accountValidator3 setDelegate:self];
 
     [(AccountPSDetailControllerBase *)self accountValidator];
-    if (v4)
+    if (fallbacksCopy)
       v13 = {;
-      [v13 validateAccount:v6 useSSL:1];
+      [v13 validateAccount:accountCopy useSSL:1];
     }
 
     else
       v13 = {;
-      [v13 validateAccountWithoutFallbacks:v6];
+      [v13 validateAccountWithoutFallbacks:accountCopy];
     }
 
     *(self + 184) |= 2u;
@@ -192,37 +192,37 @@
   return v14;
 }
 
-- (id)setOfKeysForAlteredValuesInDictionary:(id)a3 originalDictionary:(id)a4
+- (id)setOfKeysForAlteredValuesInDictionary:(id)dictionary originalDictionary:(id)originalDictionary
 {
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  originalDictionaryCopy = originalDictionary;
   v29 = objc_alloc_init(NSMutableSet);
   v7 = [NSSet alloc];
-  v8 = [v5 allKeys];
-  v27 = [v7 initWithArray:v8];
+  allKeys = [dictionaryCopy allKeys];
+  v27 = [v7 initWithArray:allKeys];
 
   v9 = [NSMutableSet alloc];
-  v10 = [v6 allKeys];
-  v11 = [v9 initWithArray:v10];
+  allKeys2 = [originalDictionaryCopy allKeys];
+  v11 = [v9 initWithArray:allKeys2];
 
   v28 = v11;
   [v11 intersectSet:v27];
   v12 = [NSMutableSet alloc];
-  v13 = [v6 allKeys];
-  v14 = [v12 initWithArray:v13];
+  allKeys3 = [originalDictionaryCopy allKeys];
+  v14 = [v12 initWithArray:allKeys3];
 
   v26 = v14;
   [v14 unionSet:v27];
   [v14 minusSet:v28];
-  v15 = [v14 allObjects];
-  [v29 addObjectsFromArray:v15];
+  allObjects = [v14 allObjects];
+  [v29 addObjectsFromArray:allObjects];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v16 = [v28 allObjects];
-  v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  allObjects2 = [v28 allObjects];
+  v17 = [allObjects2 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v17)
   {
     v18 = *v31;
@@ -232,16 +232,16 @@
       {
         if (*v31 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allObjects2);
         }
 
         v20 = *(*(&v30 + 1) + 8 * i);
-        v21 = [v5 objectForKey:v20];
+        v21 = [dictionaryCopy objectForKey:v20];
 
         if (v21)
         {
-          v22 = [v6 objectForKey:v20];
-          v23 = [v5 objectForKey:v20];
+          v22 = [originalDictionaryCopy objectForKey:v20];
+          v23 = [dictionaryCopy objectForKey:v20];
           v24 = [v22 isEqual:v23];
 
           if ((v24 & 1) == 0)
@@ -251,7 +251,7 @@
         }
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v17 = [allObjects2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v17);
@@ -260,16 +260,16 @@
   return v29;
 }
 
-- (void)setViewsEnabled:(BOOL)a3
+- (void)setViewsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = OBJC_IVAR___PSListController__table;
-  if (!a3)
+  if (!enabled)
   {
-    v6 = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-    if ([v6 resignFirstResponder])
+    firstResponder = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+    if ([firstResponder resignFirstResponder])
     {
-      v7 = v6;
+      v7 = firstResponder;
     }
 
     else
@@ -281,7 +281,7 @@
     self->_lastFirstResponder = v7;
   }
 
-  [*&self->ACUIViewController_opaque[v5] setUserInteractionEnabled:v3];
+  [*&self->ACUIViewController_opaque[v5] setUserInteractionEnabled:enabledCopy];
   v9 = [*&self->ACUIViewController_opaque[OBJC_IVAR___PSListController__specifiers] count];
   if (v9)
   {
@@ -294,12 +294,12 @@
 
       if (v14)
       {
-        [v14 setUserInteractionEnabled:v3];
+        [v14 setUserInteractionEnabled:enabledCopy];
       }
     }
   }
 
-  if (v3)
+  if (enabledCopy)
   {
     v15 = self->_lastFirstResponder;
     if (v15)
@@ -310,11 +310,11 @@
   }
 }
 
-- (id)fixAccountInputValues:(id)a3
+- (id)fixAccountInputValues:(id)values
 {
-  v4 = a3;
-  v5 = [(AccountPSDetailControllerBase *)self accountClass];
-  v6 = [objc_opt_class() normalizeAccountProperties:v4 withAccountClass:v5];
+  valuesCopy = values;
+  accountClass = [(AccountPSDetailControllerBase *)self accountClass];
+  v6 = [objc_opt_class() normalizeAccountProperties:valuesCopy withAccountClass:accountClass];
   v7 = MailAccountHostname;
   v8 = [v6 objectForKey:MailAccountHostname];
   v9 = v8;
@@ -325,19 +325,19 @@
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v12 = [v9 substringFromIndex:v10 + 1];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
 
       v14 = [v9 substringToIndex:v11];
 
       [v6 setObject:v14 forKey:v7];
-      v15 = [NSNumber numberWithInteger:v13];
+      v15 = [NSNumber numberWithInteger:integerValue];
       [v6 setObject:v15 forKey:MailAccountPortNumber];
 
       v9 = v14;
     }
   }
 
-  if ([(objc_class *)v5 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)accountClass isSubclassOfClass:objc_opt_class()])
   {
     v16 = [v6 objectForKey:MFMailAccountUsername];
 
@@ -363,28 +363,28 @@
   return v6;
 }
 
-- (id)existingAccountForAccountValues:(id)a3
+- (id)existingAccountForAccountValues:(id)values
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:MailAccountHostname];
-  if (![v5 length])
+  valuesCopy = values;
+  hostname2 = [valuesCopy objectForKey:MailAccountHostname];
+  if (![hostname2 length])
   {
-    v6 = [(AccountPSDetailControllerBase *)self account];
-    v7 = [v6 hostname];
+    account = [(AccountPSDetailControllerBase *)self account];
+    hostname = [account hostname];
 
-    v5 = v7;
+    hostname2 = hostname;
   }
 
-  v8 = [v4 objectForKey:MFMailAccountUsername];
-  v9 = [(AccountPSDetailControllerBase *)self accountClass];
-  v10 = v9;
-  if (!v5)
+  v8 = [valuesCopy objectForKey:MFMailAccountUsername];
+  accountClass = [(AccountPSDetailControllerBase *)self accountClass];
+  v10 = accountClass;
+  if (!hostname2)
   {
-    v5 = [(objc_class *)v9 hostname];
+    hostname2 = [(objc_class *)accountClass hostname];
   }
 
   v11 = NSStringFromClass(v10);
-  v12 = [(objc_class *)v10 existingAccountWithType:v11 hostname:v5 username:v8];
+  v12 = [(objc_class *)v10 existingAccountWithType:v11 hostname:hostname2 username:v8];
 
   return v12;
 }
@@ -404,16 +404,16 @@
     return;
   }
 
-  v3 = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
+  accountValuesAfterFailedValidation = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
 
-  if (!v3 || ([(AccountPSDetailControllerBase *)self accountValues], v4 = objc_claimAutoreleasedReturnValue(), [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation], v5 = objc_claimAutoreleasedReturnValue(), [(AccountPSDetailControllerBase *)self setOfKeysForAlteredValuesInDictionary:v4 originalDictionary:v5], v8 = objc_claimAutoreleasedReturnValue(), v5, v4, !v8))
+  if (!accountValuesAfterFailedValidation || ([(AccountPSDetailControllerBase *)self accountValues], v4 = objc_claimAutoreleasedReturnValue(), [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation], v5 = objc_claimAutoreleasedReturnValue(), [(AccountPSDetailControllerBase *)self setOfKeysForAlteredValuesInDictionary:v4 originalDictionary:v5], v8 = objc_claimAutoreleasedReturnValue(), v5, v4, !v8))
   {
     v8 = 0;
     goto LABEL_13;
   }
 
-  v6 = [(objc_class *)[(AccountPSDetailControllerBase *)self accountClass] propertiesWhichRequireValidation];
-  v7 = [v6 intersectsSet:v8];
+  propertiesWhichRequireValidation = [(objc_class *)[(AccountPSDetailControllerBase *)self accountClass] propertiesWhichRequireValidation];
+  v7 = [propertiesWhichRequireValidation intersectsSet:v8];
 
   if (!v7)
   {
@@ -428,13 +428,13 @@ LABEL_14:
 
 - (void)doneButtonClickedForExistingAccount
 {
-  v3 = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
+  accountValuesAfterFailedValidation = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
 
-  if (v3)
+  if (accountValuesAfterFailedValidation)
   {
-    v4 = [(AccountPSDetailControllerBase *)self accountValues];
-    v5 = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
-    v6 = [(AccountPSDetailControllerBase *)self setOfKeysForAlteredValuesInDictionary:v4 originalDictionary:v5];
+    accountValues = [(AccountPSDetailControllerBase *)self accountValues];
+    accountValuesAfterFailedValidation2 = [(AccountPSDetailControllerBase *)self accountValuesAfterFailedValidation];
+    v6 = [(AccountPSDetailControllerBase *)self setOfKeysForAlteredValuesInDictionary:accountValues originalDictionary:accountValuesAfterFailedValidation2];
 
     if ([v6 count])
     {
@@ -442,11 +442,11 @@ LABEL_14:
     }
   }
 
-  v7 = [(AccountPSDetailControllerBase *)self account];
-  [v7 removeValueInAccountPropertiesForKey:MFHealAccountDateLastFetched];
+  account = [(AccountPSDetailControllerBase *)self account];
+  [account removeValueInAccountPropertiesForKey:MFHealAccountDateLastFetched];
 
-  v8 = [(AccountPSDetailControllerBase *)self account];
-  [v8 removeValueInAccountPropertiesForKey:MFHealAccountShouldShowAlert];
+  account2 = [(AccountPSDetailControllerBase *)self account];
+  [account2 removeValueInAccountPropertiesForKey:MFHealAccountShouldShowAlert];
 
   if ((*(self + 184) & 2) != 0)
   {
@@ -458,9 +458,9 @@ LABEL_14:
   {
     [(AccountPSDetailControllerBase *)self setViewsEnabled:1];
     v9 = [(AccountPSDetailControllerBase *)self setOfKeysForAlteredValuesInDictionary:self->_accountValues originalDictionary:self->_originalAccountValues];
-    v10 = [(AccountPSDetailControllerBase *)self account];
-    v11 = [objc_opt_class() propertiesWhichRequireValidation];
-    v12 = [v11 intersectsSet:v9];
+    account3 = [(AccountPSDetailControllerBase *)self account];
+    propertiesWhichRequireValidation = [objc_opt_class() propertiesWhichRequireValidation];
+    v12 = [propertiesWhichRequireValidation intersectsSet:v9];
 
     if (v12)
     {
@@ -473,9 +473,9 @@ LABEL_14:
           v14 = MFLogGeneral();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(AccountPSDetailControllerBase *)self account];
+            account4 = [(AccountPSDetailControllerBase *)self account];
             v19 = 138412290;
-            v20 = v15;
+            v20 = account4;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "#Warning Reset password because host was changed, account %@ ", &v19, 0xCu);
           }
         }
@@ -498,8 +498,8 @@ LABEL_14:
       v16 = ;
       v17 = [(AccountPSDetailControllerBase *)self fixAccountInputValues:v16];
 
-      v18 = [(AccountPSDetailControllerBase *)self account];
-      [v18 setAccountPropertiesWithDictionary:v17];
+      account5 = [(AccountPSDetailControllerBase *)self account];
+      [account5 setAccountPropertiesWithDictionary:v17];
 
       [(AccountPSDetailControllerBase *)self saveAndDismiss];
     }
@@ -527,10 +527,10 @@ LABEL_14:
   [(AccountPSDetailControllerBase *)self showConfirmationWithButtons:v9 title:0 message:v4 destructive:0 completion:v10];
 }
 
-- (void)displaySSLAlertForAccount:(id)a3 accountValidator:(id)a4
+- (void)displaySSLAlertForAccount:(id)account accountValidator:(id)validator
 {
-  v24 = a3;
-  v23 = a4;
+  accountCopy = account;
+  validatorCopy = validator;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SETUP_WITHOUT_SSL_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -544,9 +544,9 @@ LABEL_14:
   v28[2] = sub_1A34C;
   v28[3] = &unk_B8F00;
   v28[4] = self;
-  v13 = v24;
+  v13 = accountCopy;
   v29 = v13;
-  v14 = v23;
+  v14 = validatorCopy;
   v30 = v14;
   v15 = [UIAlertAction actionWithTitle:v12 style:1 handler:v28];
   [v10 addAction:v15];
@@ -574,25 +574,25 @@ LABEL_14:
   [(AccountPSDetailControllerBase *)self setTaskCompletionAssertionEnabled:0];
 }
 
-- (void)handleSSLAlertForAccount:(id)a3 accountValidator:(id)a4 attemptWithoutSSL:(BOOL)a5
+- (void)handleSSLAlertForAccount:(id)account accountValidator:(id)validator attemptWithoutSSL:(BOOL)l
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
-  if (v5)
+  lCopy = l;
+  accountCopy = account;
+  validatorCopy = validator;
+  if (lCopy)
   {
-    [v11 applySettingsAsDefault:self->_originalConnectionSettings];
+    [accountCopy applySettingsAsDefault:self->_originalConnectionSettings];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"VERIFYING_ACCOUNT" value:&stru_B9FC8 table:@"AccountPreferences"];
     [(AccountPSDetailControllerBase *)self startValidationWithPrompt:v10];
 
     [(AccountPSDetailControllerBase *)self setTaskCompletionAssertionEnabled:1];
-    [v8 validateAccount:v11 useSSL:0];
+    [validatorCopy validateAccount:accountCopy useSSL:0];
   }
 
   else
   {
-    [(AccountPSDetailControllerBase *)self handleInvalidAccount:v11];
+    [(AccountPSDetailControllerBase *)self handleInvalidAccount:accountCopy];
     [(AccountPSDetailControllerBase *)self setAccountValuesAfterFailedValidation:self->_accountValues];
     [(AccountPSDetailControllerBase *)self stopValidationWithPrompt:self->_initialTitle showButtons:1];
     [(AccountPSDetailControllerBase *)self setViewsEnabled:1];
@@ -613,42 +613,42 @@ LABEL_14:
   *(self + 184) &= ~2u;
 }
 
-- (void)accountValidator:(id)a3 finishedValidationOfAccount:(id)a4 usedSSL:(BOOL)a5
+- (void)accountValidator:(id)validator finishedValidationOfAccount:(id)account usedSSL:(BOOL)l
 {
-  v5 = a5;
-  v28 = a3;
-  v8 = a4;
+  lCopy = l;
+  validatorCopy = validator;
+  accountCopy = account;
   *(self + 184) &= ~1u;
   v9 = +[MFNetworkController sharedInstance];
-  if ([v28 accountIsValid])
+  if ([validatorCopy accountIsValid])
   {
-    [(AccountPSDetailControllerBase *)self handleValidAccount:v8];
+    [(AccountPSDetailControllerBase *)self handleValidAccount:accountCopy];
     goto LABEL_27;
   }
 
-  v10 = [v28 error];
-  if ([v9 isNetworkUp] & v5) != 1 || (v11 = objc_msgSend(v10, "code"), v12 = objc_msgSend(v10, "code"), v13 = objc_msgSend(v10, "code"), v14 = objc_msgSend(v10, "code"), v15 = objc_msgSend(v10, "code"), v11 == &stru_3D8.reserved1) || v12 == &stru_3D8.reserved1 + 3 || v13 == &stru_3D8.reserved2 || v14 == &stru_3D8.offset || v15 == &stru_3D8.reserved2 + 3 || objc_msgSend(v10, "code") == &stru_3D8.align + 3 || !objc_msgSend(objc_opt_class(), "isSSLEditable") || (objc_msgSend(v8, "shouldEnableAfterError:", v10))
+  error = [validatorCopy error];
+  if ([v9 isNetworkUp] & lCopy) != 1 || (v11 = objc_msgSend(error, "code"), v12 = objc_msgSend(error, "code"), v13 = objc_msgSend(error, "code"), v14 = objc_msgSend(error, "code"), v15 = objc_msgSend(error, "code"), v11 == &stru_3D8.reserved1) || v12 == &stru_3D8.reserved1 + 3 || v13 == &stru_3D8.reserved2 || v14 == &stru_3D8.offset || v15 == &stru_3D8.reserved2 + 3 || objc_msgSend(error, "code") == &stru_3D8.align + 3 || !objc_msgSend(objc_opt_class(), "isSSLEditable") || (objc_msgSend(accountCopy, "shouldEnableAfterError:", error))
   {
-    v16 = [v10 code];
-    if (v16 == &stru_3D8.offset)
+    code = [error code];
+    if (code == &stru_3D8.offset)
     {
       v18 = MFLookupLocalizedString();
-      v19 = [v8 hostname];
-      v20 = [NSString stringWithFormat:v18, v19];
-      [v10 setLocalizedDescription:v20];
+      hostname = [accountCopy hostname];
+      v20 = [NSString stringWithFormat:v18, hostname];
+      [error setLocalizedDescription:v20];
     }
 
-    else if (v16 == (&stru_3D8.align + 3))
+    else if (code == (&stru_3D8.align + 3))
     {
       v18 = MFLookupLocalizedString();
-      v19 = [v8 displayName];
-      v20 = [NSString stringWithFormat:v18, v19];
-      [v10 setLocalizedDescription:v20];
+      hostname = [accountCopy displayName];
+      v20 = [NSString stringWithFormat:v18, hostname];
+      [error setLocalizedDescription:v20];
     }
 
     else
     {
-      if (v16 != (&stru_3D8.reserved2 + 2))
+      if (code != (&stru_3D8.reserved2 + 2))
       {
         goto LABEL_19;
       }
@@ -656,13 +656,13 @@ LABEL_14:
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"ACCOUNT_IN_USE" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-      v19 = [v8 displayName];
-      v20 = [NSString stringWithFormat:v18, v19];
-      [v10 setLocalizedDescription:v20];
+      hostname = [accountCopy displayName];
+      v20 = [NSString stringWithFormat:v18, hostname];
+      [error setLocalizedDescription:v20];
     }
 
 LABEL_19:
-    if ([v8 shouldEnableAfterError:v10])
+    if ([accountCopy shouldEnableAfterError:error])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -673,7 +673,7 @@ LABEL_19:
         v23 = [NSBundle bundleForClass:objc_opt_class()];
         v24 = [v23 localizedStringForKey:@"GMAIL" value:&stru_B9FC8 table:@"AccountPreferences"];
         v25 = [NSString stringWithFormat:v22, v24];
-        [v10 setLocalizedDescription:v25];
+        [error setLocalizedDescription:v25];
       }
     }
 
@@ -683,46 +683,46 @@ LABEL_19:
     [(AccountPSDetailControllerBase *)self stopValidationWithPrompt:v27 showButtons:1];
 
     [(AccountPSDetailControllerBase *)self setViewsEnabled:1];
-    if ([v10 code] == &stru_3D8.reserved2 + 3)
+    if ([error code] == &stru_3D8.reserved2 + 3)
     {
-      [(AccountPSDetailControllerBase *)self _promptUserForWebLoginForAccount:v8 accountValidator:v28 error:v10];
+      [(AccountPSDetailControllerBase *)self _promptUserForWebLoginForAccount:accountCopy accountValidator:validatorCopy error:error];
     }
 
     else
     {
-      [(AccountPSDetailControllerBase *)self _presentAlertForAccount:v8 accountValidator:v28 error:v10];
+      [(AccountPSDetailControllerBase *)self _presentAlertForAccount:accountCopy accountValidator:validatorCopy error:error];
     }
 
     [(AccountPSDetailControllerBase *)self setTaskCompletionAssertionEnabled:0];
-    [(AccountPSDetailControllerBase *)self handleInvalidAccount:v8];
+    [(AccountPSDetailControllerBase *)self handleInvalidAccount:accountCopy];
     goto LABEL_26;
   }
 
-  [(AccountPSDetailControllerBase *)self displaySSLAlertForAccount:v8 accountValidator:v28];
+  [(AccountPSDetailControllerBase *)self displaySSLAlertForAccount:accountCopy accountValidator:validatorCopy];
 LABEL_26:
 
 LABEL_27:
 }
 
-- (void)_promptUserForWebLoginForAccount:(id)a3 accountValidator:(id)a4 error:(id)a5
+- (void)_promptUserForWebLoginForAccount:(id)account accountValidator:(id)validator error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 userInfo];
-  v12 = [v11 objectForKey:MFRequestedWebLoginURLKey];
+  accountCopy = account;
+  validatorCopy = validator;
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v12 = [userInfo objectForKey:MFRequestedWebLoginURLKey];
 
-  if (!v12 || (v14 = _NSConcreteStackBlock, v15 = 3221225472, v16 = sub_1AC18, v17 = &unk_B8F28, v18 = self, v19 = v8, v13 = [v19 promptUserForWebLoginWithURL:v12 shouldConfirm:1 completionHandler:&v14], v19, (v13 & 1) == 0))
+  if (!v12 || (v14 = _NSConcreteStackBlock, v15 = 3221225472, v16 = sub_1AC18, v17 = &unk_B8F28, v18 = self, v19 = accountCopy, v13 = [v19 promptUserForWebLoginWithURL:v12 shouldConfirm:1 completionHandler:&v14], v19, (v13 & 1) == 0))
   {
-    [(AccountPSDetailControllerBase *)self _presentAlertForAccount:v8 accountValidator:v9 error:v10, v14, v15, v16, v17, v18];
+    [(AccountPSDetailControllerBase *)self _presentAlertForAccount:accountCopy accountValidator:validatorCopy error:errorCopy, v14, v15, v16, v17, v18];
   }
 }
 
-- (void)_presentAlertForAccount:(id)a3 accountValidator:(id)a4 error:(id)a5
+- (void)_presentAlertForAccount:(id)account accountValidator:(id)validator error:(id)error
 {
-  v6 = a5;
-  v7 = [v6 recoveryAttempter];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 localizedRecoverySuggestion], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  errorCopy = error;
+  recoveryAttempter = [errorCopy recoveryAttempter];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([errorCopy localizedRecoverySuggestion], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"CANCEL" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -737,9 +737,9 @@ LABEL_27:
     v11 = 1;
   }
 
-  v12 = [v6 mf_shortDescription];
-  v13 = [v6 localizedDescription];
-  v14 = [UIAlertController alertControllerWithTitle:v12 message:v13 preferredStyle:1];
+  mf_shortDescription = [errorCopy mf_shortDescription];
+  localizedDescription = [errorCopy localizedDescription];
+  v14 = [UIAlertController alertControllerWithTitle:mf_shortDescription message:localizedDescription preferredStyle:1];
 
   v15 = [UIAlertAction actionWithTitle:v10 style:1 handler:0];
   [v14 addAction:v15];
@@ -751,8 +751,8 @@ LABEL_27:
     v17[2] = sub_1B020;
     v17[3] = &unk_B8F00;
     v17[4] = self;
-    v18 = v7;
-    v19 = v6;
+    v18 = recoveryAttempter;
+    v19 = errorCopy;
     v16 = [UIAlertAction actionWithTitle:v8 style:0 handler:v17];
     [v14 addAction:v16];
   }
@@ -760,30 +760,30 @@ LABEL_27:
   [(AccountPSDetailControllerBase *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_redirectToRecoveryURL:(id)a3
+- (void)_redirectToRecoveryURL:(id)l
 {
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v3;
+    v5 = lCopy;
     v4 = +[UIApplication sharedApplication];
     [v4 openURL:v5 options:&__NSDictionary0__struct completionHandler:0];
 
-    v3 = v5;
+    lCopy = v5;
   }
 }
 
-+ (id)normalizeAccountProperties:(id)a3 withAccountClass:(Class)a4
++ (id)normalizeAccountProperties:(id)properties withAccountClass:(Class)class
 {
-  v5 = a3;
+  propertiesCopy = properties;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_1B200;
   v11 = &unk_B8F50;
-  v13 = a4;
+  classCopy = class;
   v6 = objc_alloc_init(NSMutableDictionary);
   v12 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v8];
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:&v8];
   if (![v6 count])
   {
 

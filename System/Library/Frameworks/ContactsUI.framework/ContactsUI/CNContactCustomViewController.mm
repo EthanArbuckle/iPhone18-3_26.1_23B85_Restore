@@ -1,26 +1,26 @@
 @interface CNContactCustomViewController
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (CNContactCustomViewController)initWithConfiguration:(id)a3;
-- (void)copy:(id)a3;
-- (void)didLongPressWithGestureRecognizer:(id)a3;
-- (void)performActionWithSender:(id)a3;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (CNContactCustomViewController)initWithConfiguration:(id)configuration;
+- (void)copy:(id)copy;
+- (void)didLongPressWithGestureRecognizer:(id)recognizer;
+- (void)performActionWithSender:(id)sender;
 - (void)performDisclosureAction;
 - (void)viewDidLoad;
 @end
 
 @implementation CNContactCustomViewController
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v4 = [(CNContactCustomViewConfiguration *)self->_configuration body];
-  v5 = [v4 string];
-  [v6 setString:v5];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  body = [(CNContactCustomViewConfiguration *)self->_configuration body];
+  string = [body string];
+  [generalPasteboard setString:string];
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v4 = [(CNContactCustomViewController *)self view:a3];
+  v4 = [(CNContactCustomViewController *)self view:interaction];
   [v4 frame];
   v6 = v5;
   v8 = v7;
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (void)didLongPressWithGestureRecognizer:(id)a3
+- (void)didLongPressWithGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(CNContactCustomViewController *)self view];
-  [v4 locationInView:v5];
+  recognizerCopy = recognizer;
+  view = [(CNContactCustomViewController *)self view];
+  [recognizerCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -50,12 +50,12 @@
   [(UIEditMenuInteraction *)self->_editMenuInteraction presentEditMenuWithConfiguration:v10];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  senderCopy = sender;
   objc_opt_class();
-  v5 = v4;
+  v5 = senderCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -72,9 +72,9 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v17 = self;
-  v8 = [(CNContactCustomViewConfiguration *)self->_configuration actions];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  actions = [(CNContactCustomViewConfiguration *)self->_configuration actions];
+  v9 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -85,22 +85,22 @@
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v7 currentTitle];
-        v15 = [v13 title];
-        v16 = [v14 isEqualToString:v15];
+        currentTitle = [v7 currentTitle];
+        title = [v13 title];
+        v16 = [currentTitle isEqualToString:title];
 
         if (v16)
         {
-          [v13 performActionWithSender:v17];
+          [v13 performActionWithSender:selfCopy];
           goto LABEL_14;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -115,63 +115,63 @@ LABEL_14:
 
 - (void)performDisclosureAction
 {
-  v3 = [(CNContactCustomViewConfiguration *)self->_configuration trailingDisclosureAction];
-  [v3 performActionWithSender:self];
+  trailingDisclosureAction = [(CNContactCustomViewConfiguration *)self->_configuration trailingDisclosureAction];
+  [trailingDisclosureAction performActionWithSender:self];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   v96[1] = *MEMORY[0x1E69E9840];
   v89.receiver = self;
   v89.super_class = CNContactCustomViewController;
   [(CNContactCustomViewController *)&v89 viewDidLoad];
-  v74 = [(CNContactCustomViewController *)v2 view];
+  view = [(CNContactCustomViewController *)selfCopy view];
   v3 = objc_alloc_init(MEMORY[0x1E69DCF90]);
   [v3 setAxis:0];
   [v3 setAlignment:3];
   [v3 setDistribution:0];
   [v3 setSpacing:8.0];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(CNContactCustomViewConfiguration *)v2->_configuration titleIconSymbolName];
+  titleIconSymbolName = [(CNContactCustomViewConfiguration *)selfCopy->_configuration titleIconSymbolName];
 
-  v78 = v2;
-  if (v4)
+  v78 = selfCopy;
+  if (titleIconSymbolName)
   {
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [(CNContactCustomViewConfiguration *)v2->_configuration titleIconSymbolName];
+    titleIconSymbolName2 = [(CNContactCustomViewConfiguration *)selfCopy->_configuration titleIconSymbolName];
     v7 = MEMORY[0x1E69DCAD8];
     v8 = MEMORY[0x1E69DB878];
     [MEMORY[0x1E69DB878] systemFontSize];
     v9 = [v8 systemFontOfSize:?];
     v10 = [v7 configurationWithFont:v9];
-    v11 = [v5 systemImageNamed:v6 withConfiguration:v10];
+    v11 = [v5 systemImageNamed:titleIconSymbolName2 withConfiguration:v10];
 
     v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
-    v13 = [(CNContactCustomViewConfiguration *)v2->_configuration titleIconColor];
+    titleIconColor = [(CNContactCustomViewConfiguration *)selfCopy->_configuration titleIconColor];
 
-    if (v13)
+    if (titleIconColor)
     {
-      v14 = [(CNContactCustomViewConfiguration *)v2->_configuration titleIconColor];
-      [v12 setTintColor:v14];
+      titleIconColor2 = [(CNContactCustomViewConfiguration *)selfCopy->_configuration titleIconColor];
+      [v12 setTintColor:titleIconColor2];
     }
 
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v3 addArrangedSubview:v12];
     v15 = MEMORY[0x1E696ACD8];
-    v16 = [v12 widthAnchor];
-    v17 = [v12 heightAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    widthAnchor = [v12 widthAnchor];
+    heightAnchor = [v12 heightAnchor];
+    v18 = [widthAnchor constraintEqualToAnchor:heightAnchor];
     v96[0] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:1];
     [v15 activateConstraints:v19];
 
-    v2 = v78;
+    selfCopy = v78;
   }
 
   v20 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v21 = [(CNContactCustomViewConfiguration *)v2->_configuration title];
-  [v20 setAttributedText:v21];
+  title = [(CNContactCustomViewConfiguration *)selfCopy->_configuration title];
+  [v20 setAttributedText:title];
 
   [v20 setNumberOfLines:0];
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -186,13 +186,13 @@ LABEL_14:
   [v24 setAlignment:1];
   [v24 setSpacing:8.0];
   [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v25 = [(CNContactCustomViewConfiguration *)v2->_configuration body];
+  body = [(CNContactCustomViewConfiguration *)selfCopy->_configuration body];
 
-  if (v25)
+  if (body)
   {
     v26 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-    v27 = [(CNContactCustomViewConfiguration *)v2->_configuration body];
-    [v26 setAttributedText:v27];
+    body2 = [(CNContactCustomViewConfiguration *)selfCopy->_configuration body];
+    [v26 setAttributedText:body2];
 
     [v26 setNumberOfLines:0];
     [v24 addArrangedSubview:v26];
@@ -210,20 +210,20 @@ LABEL_14:
   [v31 setAlignment:3];
   [v31 setDistribution:0];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(CNContactCustomViewConfiguration *)v2->_configuration trailingDisclosureSystemImageName];
+  trailingDisclosureSystemImageName = [(CNContactCustomViewConfiguration *)selfCopy->_configuration trailingDisclosureSystemImageName];
 
-  if (v32)
+  if (trailingDisclosureSystemImageName)
   {
     v33 = objc_alloc_init(MEMORY[0x1E69DC738]);
-    v34 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v33 setTintColor:v34];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [v33 setTintColor:systemBlueColor];
 
     v35 = MEMORY[0x1E69DCAB8];
-    v36 = [(CNContactCustomViewConfiguration *)v2->_configuration trailingDisclosureSystemImageName];
-    v37 = [v35 systemImageNamed:v36];
+    trailingDisclosureSystemImageName2 = [(CNContactCustomViewConfiguration *)selfCopy->_configuration trailingDisclosureSystemImageName];
+    v37 = [v35 systemImageNamed:trailingDisclosureSystemImageName2];
     [v33 setImage:v37 forState:0];
 
-    [v33 addTarget:v2 action:sel_performDisclosureAction forControlEvents:64];
+    [v33 addTarget:selfCopy action:sel_performDisclosureAction forControlEvents:64];
     [v31 addArrangedSubview:v33];
   }
 
@@ -246,7 +246,7 @@ LABEL_14:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = [(CNContactCustomViewConfiguration *)v2->_configuration actions];
+  obj = [(CNContactCustomViewConfiguration *)selfCopy->_configuration actions];
   v81 = [obj countByEnumeratingWithState:&v85 objects:v92 count:16];
   if (v81)
   {
@@ -262,26 +262,26 @@ LABEL_14:
 
         v43 = *(*(&v85 + 1) + 8 * i);
         v44 = objc_alloc_init(MEMORY[0x1E69DC738]);
-        v45 = [v43 title];
-        [v44 setTitle:v45 forState:0];
+        title2 = [v43 title];
+        [v44 setTitle:title2 forState:0];
 
-        v46 = [MEMORY[0x1E69DC888] systemBlueColor];
-        [v44 setTitleColor:v46 forState:0];
+        systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+        [v44 setTitleColor:systemBlueColor2 forState:0];
 
         [v44 addTarget:v78 action:sel_performActionWithSender_ forControlEvents:64];
         v47 = objc_alloc_init(MEMORY[0x1E69DD250]);
         [v47 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v48 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-        [v47 setBackgroundColor:v48];
+        systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+        [v47 setBackgroundColor:systemGroupedBackgroundColor];
 
         [v79 addArrangedSubview:v47];
         v83 = MEMORY[0x1E696ACD8];
-        v49 = [v47 heightAnchor];
-        v50 = [v49 constraintEqualToConstant:1.0];
+        heightAnchor2 = [v47 heightAnchor];
+        v50 = [heightAnchor2 constraintEqualToConstant:1.0];
         v91[0] = v50;
-        v51 = [v47 widthAnchor];
-        v52 = [v79 widthAnchor];
-        v53 = [v51 constraintEqualToAnchor:v52];
+        widthAnchor2 = [v47 widthAnchor];
+        widthAnchor3 = [v79 widthAnchor];
+        v53 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
         v91[1] = v53;
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:2];
         [v83 activateConstraints:v54];
@@ -298,23 +298,23 @@ LABEL_14:
   v55 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v79 addArrangedSubview:v55];
 
-  [v74 addSubview:v79];
+  [view addSubview:v79];
   v77 = MEMORY[0x1E696ACD8];
-  v56 = [v79 leadingAnchor];
-  v84 = [v74 leadingAnchor];
-  v82 = [v56 constraintEqualToAnchor:v84];
+  leadingAnchor = [v79 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v82 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v90[0] = v82;
-  v80 = [v79 trailingAnchor];
-  v57 = [v74 trailingAnchor];
-  v58 = [v80 constraintEqualToAnchor:v57];
+  trailingAnchor = [v79 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v58 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v90[1] = v58;
-  v59 = [v79 topAnchor];
-  v60 = [v74 topAnchor];
-  v61 = [v59 constraintEqualToAnchor:v60];
+  topAnchor = [v79 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[2] = v61;
-  v62 = [v79 bottomAnchor];
-  v63 = [v74 bottomAnchor];
-  v64 = [v62 constraintEqualToAnchor:v63];
+  bottomAnchor = [v79 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v64 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v90[3] = v64;
   v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:4];
   [v77 activateConstraints:v65];
@@ -332,16 +332,16 @@ LABEL_14:
   }
 }
 
-- (CNContactCustomViewController)initWithConfiguration:(id)a3
+- (CNContactCustomViewController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = CNContactCustomViewController;
   v6 = [(CNContactCustomViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = v7;
   }
 

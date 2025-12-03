@@ -1,88 +1,88 @@
 @interface CKChatControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)_accessibilitySpeakThisElementsAndStrings;
-- (id)_axDescriptionForMessageEffectIdentifier:(id)a3;
-- (id)_copyActionForChatItem:(id)a3 shouldUseTopMostChatItemIfAggregateChatItem:(BOOL)a4;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)_axDescriptionForMessageEffectIdentifier:(id)identifier;
+- (id)_copyActionForChatItem:(id)item shouldUseTopMostChatItemIfAggregateChatItem:(BOOL)chatItem;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (id)editingToolbarItems;
-- (unint64_t)_axLayoutIntentForTarget:(id)a3 inBalloonView:(id)a4;
+- (unint64_t)_axLayoutIntentForTarget:(id)target inBalloonView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityReloadElementRelations:(BOOL)a3;
+- (void)_accessibilityReloadElementRelations:(BOOL)relations;
 - (void)_dealloc;
-- (void)_showPhotoPickerWithSourceType:(int64_t)a3;
-- (void)_showVCalViewerForMediaObject:(id)a3;
-- (void)dismissInlineReplyController:(BOOL)a3;
-- (void)dragManagerDidBeginDragging:(id)a3;
-- (void)dragManagerDidEndDragging:(id)a3;
-- (void)messageEntryViewSendButtonHit:(id)a3;
-- (void)sendSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5;
-- (void)setEffectPickerWindow:(id)a3;
-- (void)showInlineReplyControllerForChatItem:(id)a3 presentKeyboard:(BOOL)a4;
-- (void)transcriptCollectionViewController:(id)a3 willBeginImpactEffectAnimationWithSendAnimationContext:(id)a4;
+- (void)_showPhotoPickerWithSourceType:(int64_t)type;
+- (void)_showVCalViewerForMediaObject:(id)object;
+- (void)dismissInlineReplyController:(BOOL)controller;
+- (void)dragManagerDidBeginDragging:(id)dragging;
+- (void)dragManagerDidEndDragging:(id)dragging;
+- (void)messageEntryViewSendButtonHit:(id)hit;
+- (void)sendSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker;
+- (void)setEffectPickerWindow:(id)window;
+- (void)showInlineReplyControllerForChatItem:(id)item presentKeyboard:(BOOL)keyboard;
+- (void)transcriptCollectionViewController:(id)controller willBeginImpactEffectAnimationWithSendAnimationContext:(id)context;
 @end
 
 @implementation CKChatControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"editingToolbarItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"setEffectPickerWindow:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"transcriptCollectionViewController: willBeginImpactEffectAnimationWithSendAnimationContext:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"CKActionMenuItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatController" isKindOfClass:@"CKCoreChatController"];
-  [v3 validateClass:@"CKCoreChatController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"sender" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"subject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMHandle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isiMessage" withFullSignature:{"B", 0, 0, 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"dragManagerDidBeginDragging:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"dropInteraction: sessionDidUpdate:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"dragManagerDidEndDragging:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"selectedBalloonForTarget:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"_selectedBalloonFromTouchForDropSession:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"sendSticker: withDragTarget: draggedSticker:" withFullSignature:{"v", "@", "@", "@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"nicknameBanner" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionView" isKindOfClass:@"UICollectionView"];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"showInlineReplyControllerForChatItem:presentKeyboard:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"dismissInlineReplyController:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"inlineReplyController" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CKSendAnimationContextProtocol" hasRequiredInstanceMethod:@"impactIdentifier"];
-  [v3 validateProtocol:@"CKSendAnimationContextProtocol" hasRequiredInstanceMethod:@"throwBalloonViews"];
-  [v3 validateClass:@"CKAttachmentMessagePartChatItem"];
-  [v3 validateClass:@"IMMessage"];
-  [v3 validateClass:@"IMHandle"];
-  [v3 validateClass:@"CKAdaptivePresentationController"];
-  [v3 validateClass:@"CKAdaptivePresentationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKAdaptivePresentationController" hasInstanceMethod:@"presentedViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserDragControllerTarget"];
-  [v3 validateClass:@"CKBrowserDragControllerTarget" hasInstanceMethod:@"screenCoordinate" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"becomeFirstResponder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"targetFirstResponder" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CKMacToolbarController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKMessagesController" hasInstanceMethod:@"macToolbarController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"entryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryContentView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessageEntryRichTextView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CKMessagesController" hasProperty:@"conversationListController" withType:"@"];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"CKCoreChatController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"CKChatController" hasProperty:@"delegate" withType:"@"];
-  [v3 validateClass:@"CKChatController" hasProperty:@"entryView" withType:"@"];
-  [v3 validateClass:@"CKMessageEntryView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"CKMessageEntryContentView" hasProperty:@"textView" withType:"@"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"toolbarItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKChatController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"_copyActionForChatItem:shouldUseTopMostChatItemIfAggregateChatItem:" withFullSignature:{"@", "@", "B", 0}];
-  [v3 validateClass:@"UIAction" hasProperty:@"handler" withType:"@?"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"editingToolbarItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"setEffectPickerWindow:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"transcriptCollectionViewController: willBeginImpactEffectAnimationWithSendAnimationContext:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKActionMenuItem" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatController" isKindOfClass:@"CKCoreChatController"];
+  [validationsCopy validateClass:@"CKCoreChatController" hasInstanceMethod:@"collectionViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"message" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"isFromMe" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"sender" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"subject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMHandle" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMMessage" hasInstanceMethod:@"__ck_isiMessage" withFullSignature:{"B", 0, 0, 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"dragManagerDidBeginDragging:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"dropInteraction: sessionDidUpdate:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"dragManagerDidEndDragging:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"selectedBalloonForTarget:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"_selectedBalloonFromTouchForDropSession:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"sendSticker: withDragTarget: draggedSticker:" withFullSignature:{"v", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"nicknameBanner" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionView" isKindOfClass:@"UICollectionView"];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"showInlineReplyControllerForChatItem:presentKeyboard:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"dismissInlineReplyController:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"inlineReplyController" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CKSendAnimationContextProtocol" hasRequiredInstanceMethod:@"impactIdentifier"];
+  [validationsCopy validateProtocol:@"CKSendAnimationContextProtocol" hasRequiredInstanceMethod:@"throwBalloonViews"];
+  [validationsCopy validateClass:@"CKAttachmentMessagePartChatItem"];
+  [validationsCopy validateClass:@"IMMessage"];
+  [validationsCopy validateClass:@"IMHandle"];
+  [validationsCopy validateClass:@"CKAdaptivePresentationController"];
+  [validationsCopy validateClass:@"CKAdaptivePresentationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKAdaptivePresentationController" hasInstanceMethod:@"presentedViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserDragControllerTarget"];
+  [validationsCopy validateClass:@"CKBrowserDragControllerTarget" hasInstanceMethod:@"screenCoordinate" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"becomeFirstResponder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"targetFirstResponder" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CKMacToolbarController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKMessagesController" hasInstanceMethod:@"macToolbarController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"entryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryRichTextView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CKMessagesController" hasProperty:@"conversationListController" withType:"@"];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"CKCoreChatController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"CKChatController" hasProperty:@"delegate" withType:"@"];
+  [validationsCopy validateClass:@"CKChatController" hasProperty:@"entryView" withType:"@"];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasProperty:@"textView" withType:"@"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"toolbarItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKChatController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"_copyActionForChatItem:shouldUseTopMostChatItemIfAggregateChatItem:" withFullSignature:{"@", "@", "B", 0}];
+  [validationsCopy validateClass:@"UIAction" hasProperty:@"handler" withType:"@?"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -133,9 +133,9 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
   [(CKChatControllerAccessibility *)self _accessibilityReloadElementRelations:0];
 }
 
-- (void)_accessibilityReloadElementRelations:(BOOL)a3
+- (void)_accessibilityReloadElementRelations:(BOOL)relations
 {
-  v3 = a3;
+  relationsCopy = relations;
   v5 = [(CKChatControllerAccessibility *)self safeValueForKey:@"delegate"];
   NSClassFromString(&cfstr_Ckmessagescont_0.isa);
   if (objc_opt_isKindOfClass())
@@ -173,7 +173,7 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
     UIAccessibilityUnrelateAllElements();
   }
 
-  if (v3)
+  if (relationsCopy)
   {
     v12 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v9}];
     [v7 _setAccessibilityLinkedUIElements:v12];
@@ -188,15 +188,15 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
   }
 }
 
-- (void)messageEntryViewSendButtonHit:(id)a3
+- (void)messageEntryViewSendButtonHit:(id)hit
 {
   v3.receiver = self;
   v3.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v3 messageEntryViewSendButtonHit:a3];
+  [(CKChatControllerAccessibility *)&v3 messageEntryViewSendButtonHit:hit];
   MEMORY[0x29C2D0530](*MEMORY[0x29EDC7448]);
 }
 
-- (void)_showPhotoPickerWithSourceType:(int64_t)a3
+- (void)_showPhotoPickerWithSourceType:(int64_t)type
 {
   v5 = MEMORY[0x29C2D04B0](self, a2);
   v6 = [v5 stringByAppendingPathComponent:@"System/Library/PrivateFrameworks/PhotoLibrary.framework"];
@@ -209,12 +209,12 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
 
   v8.receiver = self;
   v8.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v8 _showPhotoPickerWithSourceType:a3];
+  [(CKChatControllerAccessibility *)&v8 _showPhotoPickerWithSourceType:type];
 }
 
-- (void)_showVCalViewerForMediaObject:(id)a3
+- (void)_showVCalViewerForMediaObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x29C2D04B0]();
   v6 = [v5 stringByAppendingPathComponent:@"System/Library/PrivateFrameworks/CalendarUI.framework"];
 
@@ -226,17 +226,17 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
 
   v8.receiver = self;
   v8.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v8 _showVCalViewerForMediaObject:v4];
+  [(CKChatControllerAccessibility *)&v8 _showVCalViewerForMediaObject:objectCopy];
 }
 
 - (id)editingToolbarItems
 {
   v5.receiver = self;
   v5.super_class = CKChatControllerAccessibility;
-  v3 = [(CKChatControllerAccessibility *)&v5 editingToolbarItems];
-  [(CKChatControllerAccessibility *)self _axUpdateEditingToolbarItems:v3];
+  editingToolbarItems = [(CKChatControllerAccessibility *)&v5 editingToolbarItems];
+  [(CKChatControllerAccessibility *)self _axUpdateEditingToolbarItems:editingToolbarItems];
 
-  return v3;
+  return editingToolbarItems;
 }
 
 - (id)_accessibilitySpeakThisElementsAndStrings
@@ -245,35 +245,35 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 _accessibilitySpeakThisElementsAndStrings];
+    _accessibilitySpeakThisElementsAndStrings = [v3 _accessibilitySpeakThisElementsAndStrings];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKChatControllerAccessibility;
-    v5 = [(CKChatControllerAccessibility *)&v8 _accessibilitySpeakThisElementsAndStrings];
+    _accessibilitySpeakThisElementsAndStrings = [(CKChatControllerAccessibility *)&v8 _accessibilitySpeakThisElementsAndStrings];
   }
 
-  v6 = v5;
+  v6 = _accessibilitySpeakThisElementsAndStrings;
 
   return v6;
 }
 
-- (void)setEffectPickerWindow:(id)a3
+- (void)setEffectPickerWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = CKChatControllerAccessibility;
-  v3 = a3;
-  [(CKChatControllerAccessibility *)&v4 setEffectPickerWindow:v3];
-  [v3 setAccessibilityViewIsModal:{1, v4.receiver, v4.super_class}];
+  windowCopy = window;
+  [(CKChatControllerAccessibility *)&v4 setEffectPickerWindow:windowCopy];
+  [windowCopy setAccessibilityViewIsModal:{1, v4.receiver, v4.super_class}];
 }
 
-- (void)dragManagerDidBeginDragging:(id)a3
+- (void)dragManagerDidBeginDragging:(id)dragging
 {
   v5.receiver = self;
   v5.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v5 dragManagerDidBeginDragging:a3];
+  [(CKChatControllerAccessibility *)&v5 dragManagerDidBeginDragging:dragging];
   v4 = accessibilityLocalizedString(@"sticker.drag.begin");
   UIAccessibilitySpeakAndDoNotBeInterrupted();
 
@@ -281,10 +281,10 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
   [(CKChatControllerAccessibility *)self _axSetCurrentLayoutIntent:0];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  updateCopy = update;
   v8 = [(CKChatControllerAccessibility *)self safeValueForKey:@"collectionViewController"];
   LOBYTE(v45) = 0;
   objc_opt_class();
@@ -293,7 +293,7 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
 
   if (v10)
   {
-    v32 = v6;
+    v32 = interactionCopy;
     v51 = 0;
     objc_opt_class();
     v45 = 0;
@@ -307,9 +307,9 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
     v40 = __66__CKChatControllerAccessibility_dropInteraction_sessionDidUpdate___block_invoke;
     v41 = &unk_29F2B09A8;
     v44 = &v45;
-    v42 = self;
-    v31 = v7;
-    v11 = v7;
+    selfCopy = self;
+    v31 = updateCopy;
+    v11 = updateCopy;
     v43 = v11;
     AXPerformSafeBlock();
     v12 = v46[5];
@@ -328,7 +328,7 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
     v48 = __Block_byref_object_copy__5;
     v49 = __Block_byref_object_dispose__5;
     v50 = 0;
-    v14 = [v10 visibleCells];
+    visibleCells = [v10 visibleCells];
     v34[0] = MEMORY[0x29EDCA5F8];
     v34[1] = 3221225472;
     v34[2] = __66__CKChatControllerAccessibility_dropInteraction_sessionDidUpdate___block_invoke_2;
@@ -337,12 +337,12 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
     v15 = v13;
     v36 = v15;
     v37 = &v45;
-    [v14 enumerateObjectsUsingBlock:v34];
+    [visibleCells enumerateObjectsUsingBlock:v34];
     v16 = v46[5];
-    v17 = [(CKChatControllerAccessibility *)self _axCurrentTargetBalloonView];
+    _axCurrentTargetBalloonView = [(CKChatControllerAccessibility *)self _axCurrentTargetBalloonView];
 
     v18 = v46[5];
-    if (v16 == v17)
+    if (v16 == _axCurrentTargetBalloonView)
     {
       if (v18)
       {
@@ -362,11 +362,11 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
       [(CKChatControllerAccessibility *)self _axSetCurrentLayoutIntent:v19];
       v20 = accessibilityLocalizedString(@"sticker.drag.hovering");
       v21 = _axLocalizedStringForLayoutIntent(v19);
-      v29 = [v46[5] accessibilityLabel];
+      accessibilityLabel = [v46[5] accessibilityLabel];
       v22 = __UIAXStringForVariables();
 
       UIAccessibilitySpeak();
-      [(CKChatControllerAccessibility *)self _axSetCurrentTargetBalloonView:v46[5], v21, v29, @"__AXStringForVariablesSentinel"];
+      [(CKChatControllerAccessibility *)self _axSetCurrentTargetBalloonView:v46[5], v21, accessibilityLabel, @"__AXStringForVariablesSentinel"];
     }
 
     else
@@ -379,15 +379,15 @@ uint64_t __75__CKChatControllerAccessibility__accessibilityLoadAccessibilityInfo
     v23 = [(CKChatControllerAccessibility *)&v33 dropInteraction:v32 sessionDidUpdate:v11];
 
     _Block_object_dispose(&v45, 8);
-    v7 = v31;
-    v6 = v32;
+    updateCopy = v31;
+    interactionCopy = v32;
   }
 
   else
   {
     v52.receiver = self;
     v52.super_class = CKChatControllerAccessibility;
-    v23 = [(CKChatControllerAccessibility *)&v52 dropInteraction:v6 sessionDidUpdate:v7];
+    v23 = [(CKChatControllerAccessibility *)&v52 dropInteraction:interactionCopy sessionDidUpdate:updateCopy];
   }
 
   return v23;
@@ -431,11 +431,11 @@ uint64_t __66__CKChatControllerAccessibility_dropInteraction_sessionDidUpdate___
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_copyActionForChatItem:(id)a3 shouldUseTopMostChatItemIfAggregateChatItem:(BOOL)a4
+- (id)_copyActionForChatItem:(id)item shouldUseTopMostChatItemIfAggregateChatItem:(BOOL)chatItem
 {
   v15.receiver = self;
   v15.super_class = CKChatControllerAccessibility;
-  v4 = [(CKChatControllerAccessibility *)&v15 _copyActionForChatItem:a3 shouldUseTopMostChatItemIfAggregateChatItem:a4];
+  v4 = [(CKChatControllerAccessibility *)&v15 _copyActionForChatItem:item shouldUseTopMostChatItemIfAggregateChatItem:chatItem];
   v5 = [v4 safeValueForKey:@"handler"];
   if (v5)
   {
@@ -443,9 +443,9 @@ uint64_t __66__CKChatControllerAccessibility_dropInteraction_sessionDidUpdate___
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x29EDC7908];
-      v7 = [v4 title];
-      v8 = [v4 image];
-      v9 = [v4 identifier];
+      title = [v4 title];
+      image = [v4 image];
+      identifier = [v4 identifier];
       v12[0] = MEMORY[0x29EDCA5F8];
       v12[1] = 3221225472;
       v12[2] = __100__CKChatControllerAccessibility__copyActionForChatItem_shouldUseTopMostChatItemIfAggregateChatItem___block_invoke;
@@ -453,7 +453,7 @@ uint64_t __66__CKChatControllerAccessibility_dropInteraction_sessionDidUpdate___
       v13 = v4;
       v14 = v5;
       v10 = v4;
-      v4 = [v6 actionWithTitle:v7 image:v8 identifier:v9 handler:v12];
+      v4 = [v6 actionWithTitle:title image:image identifier:identifier handler:v12];
     }
   }
 
@@ -475,24 +475,24 @@ void __100__CKChatControllerAccessibility__copyActionForChatItem_shouldUseTopMos
   UIAccessibilityPostNotification(v1, v2);
 }
 
-- (void)dragManagerDidEndDragging:(id)a3
+- (void)dragManagerDidEndDragging:(id)dragging
 {
   v4.receiver = self;
   v4.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v4 dragManagerDidEndDragging:a3];
+  [(CKChatControllerAccessibility *)&v4 dragManagerDidEndDragging:dragging];
   v3 = accessibilityLocalizedString(@"sticker.drag.done");
   UIAccessibilitySpeakAndDoNotBeInterrupted();
 }
 
-- (void)sendSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5
+- (void)sendSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stickerCopy = sticker;
+  targetCopy = target;
+  draggedStickerCopy = draggedSticker;
   v20.receiver = self;
   v20.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v20 sendSticker:v8 withDragTarget:v9 draggedSticker:v10];
-  if (v9)
+  [(CKChatControllerAccessibility *)&v20 sendSticker:stickerCopy withDragTarget:targetCopy draggedSticker:draggedStickerCopy];
+  if (targetCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -500,7 +500,7 @@ void __100__CKChatControllerAccessibility__copyActionForChatItem_shouldUseTopMos
     v17 = __Block_byref_object_copy__5;
     v18 = __Block_byref_object_dispose__5;
     v19 = 0;
-    v13 = v9;
+    v13 = targetCopy;
     AXPerformSafeBlock();
     v11 = v15[5];
 
@@ -520,25 +520,25 @@ uint64_t __75__CKChatControllerAccessibility_sendSticker_withDragTarget_draggedS
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_axDescriptionForMessageEffectIdentifier:(id)a3
+- (id)_axDescriptionForMessageEffectIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
   {
     v4 = @"impact.effect.message.impact";
   }
 
-  else if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
+  else if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
   {
     v4 = @"impact.effect.message.loud";
   }
 
-  else if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
+  else if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
   {
     v4 = @"impact.effect.message.gentle";
   }
 
-  else if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
+  else if ([identifierCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
   {
     v4 = @"impact.effect.message.focus";
   }
@@ -556,13 +556,13 @@ uint64_t __75__CKChatControllerAccessibility_sendSticker_withDragTarget_draggedS
   return v8;
 }
 
-- (unint64_t)_axLayoutIntentForTarget:(id)a3 inBalloonView:(id)a4
+- (unint64_t)_axLayoutIntentForTarget:(id)target inBalloonView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  viewCopy = view;
   v8 = [(CKChatControllerAccessibility *)self safeValueForKeyPath:@"collectionViewController.collectionView"];
-  v9 = [v8 window];
-  [v6 locationInView:v9];
+  window = [v8 window];
+  [targetCopy locationInView:window];
   v11 = v10;
   v13 = v12;
 
@@ -651,36 +651,36 @@ LABEL_15:
   return v33;
 }
 
-- (void)transcriptCollectionViewController:(id)a3 willBeginImpactEffectAnimationWithSendAnimationContext:(id)a4
+- (void)transcriptCollectionViewController:(id)controller willBeginImpactEffectAnimationWithSendAnimationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v16 transcriptCollectionViewController:v6 willBeginImpactEffectAnimationWithSendAnimationContext:v7];
+  [(CKChatControllerAccessibility *)&v16 transcriptCollectionViewController:controllerCopy willBeginImpactEffectAnimationWithSendAnimationContext:contextCopy];
   objc_opt_class();
-  v8 = [v7 safeValueForKey:@"impactIdentifier"];
+  v8 = [contextCopy safeValueForKey:@"impactIdentifier"];
   v9 = __UIAccessibilityCastAsClass();
 
   if (v9)
   {
     objc_opt_class();
-    v10 = [v7 safeValueForKey:@"throwBalloonViews"];
+    v10 = [contextCopy safeValueForKey:@"throwBalloonViews"];
     v11 = __UIAccessibilityCastAsClass();
 
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
     v13 = [(CKChatControllerAccessibility *)self _axDescriptionForMessageEffectIdentifier:v9];
-    v15 = [v12 accessibilityLabel];
+    accessibilityLabel = [firstObject accessibilityLabel];
     v14 = __UIAXStringForVariables();
     UIAccessibilitySpeakAndDoNotBeInterrupted();
   }
 }
 
-- (void)showInlineReplyControllerForChatItem:(id)a3 presentKeyboard:(BOOL)a4
+- (void)showInlineReplyControllerForChatItem:(id)item presentKeyboard:(BOOL)keyboard
 {
-  v4 = a4;
+  keyboardCopy = keyboard;
   v6 = *MEMORY[0x29EDC7EE8];
-  v7 = a3;
+  itemCopy = item;
   v8 = UIAccessibilityFocusedElement(v6);
   [(CKChatControllerAccessibility *)self _axSetFocusedChatItemElement:v8];
   v9 = [(CKChatControllerAccessibility *)self safeValueForKeyPath:@"collectionViewController.collectionView"];
@@ -689,7 +689,7 @@ LABEL_15:
   [v10 setAccessibilityElementsHidden:1];
   v11.receiver = self;
   v11.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v11 showInlineReplyControllerForChatItem:v7 presentKeyboard:v4];
+  [(CKChatControllerAccessibility *)&v11 showInlineReplyControllerForChatItem:itemCopy presentKeyboard:keyboardCopy];
 
   AXPerformBlockOnMainThreadAfterDelay();
 }
@@ -701,14 +701,14 @@ void __86__CKChatControllerAccessibility_showInlineReplyControllerForChatItem_pr
   UIAccessibilityPostNotification(v0, v1);
 }
 
-- (void)dismissInlineReplyController:(BOOL)a3
+- (void)dismissInlineReplyController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v5 = [(CKChatControllerAccessibility *)self safeValueForKey:@"inlineReplyController"];
 
   v10.receiver = self;
   v10.super_class = CKChatControllerAccessibility;
-  [(CKChatControllerAccessibility *)&v10 dismissInlineReplyController:v3];
+  [(CKChatControllerAccessibility *)&v10 dismissInlineReplyController:controllerCopy];
   v6 = [(CKChatControllerAccessibility *)self safeValueForKeyPath:@"collectionViewController.collectionView"];
   [v6 setAccessibilityElementsHidden:0];
   v7 = [(CKChatControllerAccessibility *)self safeValueForKey:@"nicknameBanner"];
@@ -716,8 +716,8 @@ void __86__CKChatControllerAccessibility_showInlineReplyControllerForChatItem_pr
   if (v5)
   {
     v8 = *MEMORY[0x29EDC7F10];
-    v9 = [(CKChatControllerAccessibility *)self _axFocusedChatItemElement];
-    UIAccessibilityPostNotification(v8, v9);
+    _axFocusedChatItemElement = [(CKChatControllerAccessibility *)self _axFocusedChatItemElement];
+    UIAccessibilityPostNotification(v8, _axFocusedChatItemElement);
 
     [(CKChatControllerAccessibility *)self _axSetFocusedChatItemElement:0];
   }

@@ -1,7 +1,7 @@
 @interface PSUICellularPlanDetailController
 - (PSUICellularPlanDetailController)init;
 - (id)specifiers;
-- (void)_cellularPlanChanged:(id)a3;
+- (void)_cellularPlanChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -14,8 +14,8 @@
   v2 = [(PSUICellularPlanDetailController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__cellularPlanChanged_ name:@"PSUICellularPlanChanged" object:0];
   }
 
   return v2;
@@ -23,8 +23,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUICellularPlanDetailController;
@@ -38,12 +38,12 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PSUICellularPlanDetailController *)self getLogger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICellularPlanDetailController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 136315138;
       v19 = "[PSUICellularPlanDetailController specifiers]";
-      _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", &v18, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", &v18, 0xCu);
     }
 
     v6 = objc_opt_new();
@@ -65,8 +65,8 @@
       self->_subscriptionContextMenus = v12;
     }
 
-    v14 = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus specifiers];
-    [v6 addObjectsFromArray:v14];
+    specifiers = [(PSUISubscriptionContextMenusGroup *)self->_subscriptionContextMenus specifiers];
+    [v6 addObjectsFromArray:specifiers];
 
     [MEMORY[0x277D4D878] logSpecifiers:v6 origin:@"[PSUICellularPlanDetailController specifiers] end"];
     v15 = *(&self->super.super.super.super.super.isa + v3);
@@ -80,7 +80,7 @@
   return v4;
 }
 
-- (void)_cellularPlanChanged:(id)a3
+- (void)_cellularPlanChanged:(id)changed
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

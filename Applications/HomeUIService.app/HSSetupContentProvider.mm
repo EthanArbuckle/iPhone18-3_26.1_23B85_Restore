@@ -1,8 +1,8 @@
 @interface HSSetupContentProvider
 + (NSDictionary)stringToStepMap;
-+ (id)contentForStep:(int64_t)a3 coordinator:(id)a4 config:(id)a5;
-+ (id)stringForHSProxCardSetupUIStep:(int64_t)a3;
-+ (int64_t)hsProxCardSetupUIStepForString:(id)a3;
++ (id)contentForStep:(int64_t)step coordinator:(id)coordinator config:(id)config;
++ (id)stringForHSProxCardSetupUIStep:(int64_t)step;
++ (int64_t)hsProxCardSetupUIStepForString:(id)string;
 @end
 
 @implementation HSSetupContentProvider
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000565A4;
   block[3] = &unk_1000C6ED0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6760 != -1)
   {
     dispatch_once(&qword_1000E6760, block);
@@ -24,40 +24,40 @@
   return v2;
 }
 
-+ (id)stringForHSProxCardSetupUIStep:(int64_t)a3
++ (id)stringForHSProxCardSetupUIStep:(int64_t)step
 {
-  v4 = [a1 stepToStringMap];
-  v5 = [NSNumber numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  stepToStringMap = [self stepToStringMap];
+  v5 = [NSNumber numberWithInteger:step];
+  v6 = [stepToStringMap objectForKeyedSubscript:v5];
 
   return v6;
 }
 
-+ (int64_t)hsProxCardSetupUIStepForString:(id)a3
++ (int64_t)hsProxCardSetupUIStepForString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 stringToStepMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  stringCopy = string;
+  stringToStepMap = [self stringToStepMap];
+  v6 = [stringToStepMap objectForKeyedSubscript:stringCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (id)contentForStep:(int64_t)a3 coordinator:(id)a4 config:(id)a5
++ (id)contentForStep:(int64_t)step coordinator:(id)coordinator config:(id)config
 {
-  v7 = a4;
-  v8 = a5;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = sub_100056898();
-  v10 = [NSNumber numberWithInteger:a3];
+  v10 = [NSNumber numberWithInteger:step];
   v11 = [v9 objectForKeyedSubscript:v10];
   if (!v11)
   {
@@ -66,12 +66,12 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 viewControllerForCoordinator:v7 config:v8];
+    v12 = [v11 viewControllerForCoordinator:coordinatorCopy config:configCopy];
   }
 
   else
   {
-    v12 = [[v11 alloc] initWithCoordinator:v7 config:v8];
+    v12 = [[v11 alloc] initWithCoordinator:coordinatorCopy config:configCopy];
   }
 
   v13 = v12;

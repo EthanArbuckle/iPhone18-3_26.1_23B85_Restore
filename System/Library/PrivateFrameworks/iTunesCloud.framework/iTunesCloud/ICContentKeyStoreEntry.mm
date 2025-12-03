@@ -1,6 +1,6 @@
 @interface ICContentKeyStoreEntry
-- (ICContentKeyStoreEntry)initWithDictionaryRepresentation:(id)a3;
-- (ICContentKeyStoreEntry)initWithIdentifier:(id)a3;
+- (ICContentKeyStoreEntry)initWithDictionaryRepresentation:(id)representation;
+- (ICContentKeyStoreEntry)initWithIdentifier:(id)identifier;
 - (id)dictionaryRepresentation;
 @end
 
@@ -47,26 +47,26 @@
   return v13;
 }
 
-- (ICContentKeyStoreEntry)initWithDictionaryRepresentation:(id)a3
+- (ICContentKeyStoreEntry)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"identifier"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"identifier"];
   v6 = [(ICContentKeyStoreEntry *)self initWithIdentifier:v5];
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"key"];
+    v7 = [representationCopy objectForKeyedSubscript:@"key"];
     keyData = v6->_keyData;
     v6->_keyData = v7;
 
     v9 = MEMORY[0x1E695DF00];
-    v10 = [v4 objectForKeyedSubscript:@"renewalDate"];
+    v10 = [representationCopy objectForKeyedSubscript:@"renewalDate"];
     [v10 doubleValue];
     v11 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
     renewalDate = v6->_renewalDate;
     v6->_renewalDate = v11;
 
-    v13 = [v4 objectForKeyedSubscript:@"expirationDate"];
+    v13 = [representationCopy objectForKeyedSubscript:@"expirationDate"];
     v14 = v13;
     if (v13)
     {
@@ -77,34 +77,34 @@
       v6->_expirationDate = v16;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"failureCount"];
+    v18 = [representationCopy objectForKeyedSubscript:@"failureCount"];
     v6->_failureCount = [v18 unsignedIntValue];
 
-    v19 = [v4 objectForKeyedSubscript:@"dsid"];
+    v19 = [representationCopy objectForKeyedSubscript:@"dsid"];
     accountDSID = v6->_accountDSID;
     v6->_accountDSID = v19;
 
-    v21 = [v4 objectForKeyedSubscript:@"adamID"];
+    v21 = [representationCopy objectForKeyedSubscript:@"adamID"];
     adamID = v6->_adamID;
     v6->_adamID = v21;
 
-    v23 = [v4 objectForKeyedSubscript:@"keyServerProtocolType"];
+    v23 = [representationCopy objectForKeyedSubscript:@"keyServerProtocolType"];
     v6->_keyServerProtocolType = [v23 integerValue];
   }
 
   return v6;
 }
 
-- (ICContentKeyStoreEntry)initWithIdentifier:(id)a3
+- (ICContentKeyStoreEntry)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = ICContentKeyStoreEntry;
   v6 = [(ICContentKeyStoreEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;

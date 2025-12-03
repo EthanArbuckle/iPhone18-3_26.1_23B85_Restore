@@ -1,8 +1,8 @@
 @interface _UICustomDiscreteFeedback
-+ (id)customDiscreteFeedbackWithEventType:(unint64_t)a3 systemSoundID:(unsigned int)a4;
-- (BOOL)isEqual:(id)a3;
-- (_UICustomDiscreteFeedback)initWithDictionaryRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)customDiscreteFeedbackWithEventType:(unint64_t)type systemSoundID:(unsigned int)d;
+- (BOOL)isEqual:(id)equal;
+- (_UICustomDiscreteFeedback)initWithDictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)_effectiveEventType;
 - (unsigned)_effectiveSystemSoundID;
@@ -38,49 +38,49 @@
   return systemSoundID;
 }
 
-+ (id)customDiscreteFeedbackWithEventType:(unint64_t)a3 systemSoundID:(unsigned int)a4
++ (id)customDiscreteFeedbackWithEventType:(unint64_t)type systemSoundID:(unsigned int)d
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS____UICustomDiscreteFeedback;
   v6 = objc_msgSendSuper2(&v8, sel_discreteFeedbackForType_, 0);
-  *(v6 + 152) = a3;
-  *(v6 + 144) = a4;
+  *(v6 + 152) = type;
+  *(v6 + 144) = d;
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UICustomDiscreteFeedback;
-  result = [(_UIDiscreteFeedback *)&v5 copyWithZone:a3];
+  result = [(_UIDiscreteFeedback *)&v5 copyWithZone:zone];
   *(result + 19) = self->_eventType;
   *(result + 36) = self->_systemSoundID;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UICustomDiscreteFeedback;
-  v5 = [(_UIDiscreteFeedback *)&v7 isEqual:v4]&& self->_eventType == v4[19] && self->_systemSoundID == *(v4 + 36);
+  v5 = [(_UIDiscreteFeedback *)&v7 isEqual:equalCopy]&& self->_eventType == equalCopy[19] && self->_systemSoundID == *(equalCopy + 36);
 
   return v5;
 }
 
-- (_UICustomDiscreteFeedback)initWithDictionaryRepresentation:(id)a3
+- (_UICustomDiscreteFeedback)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = _UICustomDiscreteFeedback;
-  v5 = [(_UIDiscreteFeedback *)&v10 initWithDictionaryRepresentation:v4];
+  v5 = [(_UIDiscreteFeedback *)&v10 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventType"];
+    v6 = [representationCopy objectForKeyedSubscript:@"eventType"];
     v5->_eventType = [v6 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"systemSoundID"];
+    v7 = [representationCopy objectForKeyedSubscript:@"systemSoundID"];
     v5->_systemSoundID = [v7 intValue];
 
     v8 = v5;
@@ -94,8 +94,8 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = _UICustomDiscreteFeedback;
-  v3 = [(_UIDiscreteFeedback *)&v9 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(_UIDiscreteFeedback *)&v9 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v10[0] = @"eventType";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_eventType];

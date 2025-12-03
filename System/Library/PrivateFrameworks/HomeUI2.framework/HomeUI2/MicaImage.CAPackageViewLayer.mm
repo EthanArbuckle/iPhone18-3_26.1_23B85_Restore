@@ -1,7 +1,7 @@
 @interface MicaImage.CAPackageViewLayer
 - (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)init;
-- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithCoder:(id)a3;
-- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithLayer:(id)a3;
+- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithCoder:(id)coder;
+- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2544DE5A8();
 }
 
@@ -22,7 +22,7 @@
   return [(MicaImage.CAPackageViewLayer *)&v5 init];
 }
 
-- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithLayer:(id)a3
+- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -39,14 +39,14 @@
   return v6;
 }
 
-- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithCoder:(id)a3
+- (_TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.isa + OBJC_IVAR____TtCV7HomeUI29MicaImageP33_268EDE8465BB49740E8AD9859354D22018CAPackageViewLayer_packageLayer) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(MicaImage.CAPackageViewLayer *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(MicaImage.CAPackageViewLayer *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

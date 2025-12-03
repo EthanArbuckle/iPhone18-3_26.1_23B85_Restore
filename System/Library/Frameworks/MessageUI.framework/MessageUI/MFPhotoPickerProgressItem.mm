@@ -20,8 +20,8 @@
   [v4 appendString:v8];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(MFPhotoPickerProgressItem *)self exportSession];
-  v11 = [v9 stringWithFormat:@"exportSession: %@", v10];
+  exportSession = [(MFPhotoPickerProgressItem *)self exportSession];
+  v11 = [v9 stringWithFormat:@"exportSession: %@", exportSession];
   [v4 appendString:v11];
 
   v12 = [v4 copy];

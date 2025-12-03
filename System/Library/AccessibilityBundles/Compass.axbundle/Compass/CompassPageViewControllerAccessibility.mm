@@ -1,46 +1,46 @@
 @interface CompassPageViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CompassPageViewControllerAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAnnounceDegreesIfNeeded:(double)a3;
-- (void)setCrosshairLevelForData:(id)a3;
+- (void)_axAnnounceDegreesIfNeeded:(double)needed;
+- (void)setCrosshairLevelForData:(id)data;
 @end
 
 @implementation CompassPageViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CompassPageViewController" hasInstanceMethod:@"setCrosshairLevelForData:" withFullSignature:{"v", "{?=ddd}", 0}];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceMethod:@"_updateDegreesLabel:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CompassController" hasInstanceVariable:@"_compassPageController" withType:"CompassPageViewController"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_coordinatesLabel" withType:"CompassCopyableLabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_directionLabel" withType:"UILabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesLabel" withType:"UILabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesSymbolLabel" withType:"UILabel"];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_compassView" withType:"CompassView"];
-  [v3 validateClass:@"CompassView" hasInstanceVariable:@"_compassBackground" withType:"CompassBackgroundView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceMethod:@"setCrosshairLevelForData:" withFullSignature:{"v", "{?=ddd}", 0}];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceMethod:@"_updateDegreesLabel:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CompassController" hasInstanceVariable:@"_compassPageController" withType:"CompassPageViewController"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_coordinatesLabel" withType:"CompassCopyableLabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_directionLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_degreesSymbolLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_compassView" withType:"CompassView"];
+  [validationsCopy validateClass:@"CompassView" hasInstanceVariable:@"_compassBackground" withType:"CompassBackgroundView"];
   objc_opt_class();
-  [v3 validateClass:@"CompassBackgroundView" hasInstanceVariable:@"_currentOffset" withType:__ax_verbose_encode_with_type_encoding_group_class()];
-  [v3 validateClass:@"CompassPageViewController" hasInstanceVariable:@"_currentCompassAngle" withType:"d"];
+  [validationsCopy validateClass:@"CompassBackgroundView" hasInstanceVariable:@"_currentOffset" withType:__ax_verbose_encode_with_type_encoding_group_class()];
+  [validationsCopy validateClass:@"CompassPageViewController" hasInstanceVariable:@"_currentCompassAngle" withType:"d"];
 }
 
-- (void)_axAnnounceDegreesIfNeeded:(double)a3
+- (void)_axAnnounceDegreesIfNeeded:(double)needed
 {
-  if (a3 >= 0.0 && (a3 + 1.0 < 2.22044605e-16 || vabdd_f64(*&_axAnnounceDegreesIfNeeded__LastAnnouncedLocation, a3) > 10.0 && CFAbsoluteTimeGetCurrent() - *&_axAnnounceDegreesIfNeeded__LastTimeLocationWasAnnounced > 2.0))
+  if (needed >= 0.0 && (needed + 1.0 < 2.22044605e-16 || vabdd_f64(*&_axAnnounceDegreesIfNeeded__LastAnnouncedLocation, needed) > 10.0 && CFAbsoluteTimeGetCurrent() - *&_axAnnounceDegreesIfNeeded__LastTimeLocationWasAnnounced > 2.0))
   {
-    _axAnnounceDegreesIfNeeded__LastAnnouncedLocation = *&a3;
+    _axAnnounceDegreesIfNeeded__LastAnnouncedLocation = *&needed;
     _axAnnounceDegreesIfNeeded__LastTimeLocationWasAnnounced = CFAbsoluteTimeGetCurrent();
     v5 = [(CompassPageViewControllerAccessibility *)self safeValueForKey:@"_degreesLabel"];
-    v12 = [v5 accessibilityLabel];
+    accessibilityLabel = [v5 accessibilityLabel];
 
     v6 = [(CompassPageViewControllerAccessibility *)self safeValueForKey:@"_degreesSymbolLabel"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel2 = [v6 accessibilityLabel];
 
     v8 = [(CompassPageViewControllerAccessibility *)self safeValueForKey:@"_directionLabel"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel3 = [v8 accessibilityLabel];
 
-    v10 = [v12 stringByAppendingString:v7];
+    v10 = [accessibilityLabel stringByAppendingString:accessibilityLabel2];
     v11 = __UIAXStringForVariables();
     UIAccessibilitySpeakIfNotSpeaking();
   }
@@ -64,11 +64,11 @@
   [v3 setAccessibilityIdentifier:@"compassPageView"];
 }
 
-- (void)setCrosshairLevelForData:(id)a3
+- (void)setCrosshairLevelForData:(id)data
 {
   v17.receiver = self;
   v17.super_class = CompassPageViewControllerAccessibility;
-  [(CompassPageViewControllerAccessibility *)&v17 setCrosshairLevelForData:a3.var0, a3.var1, a3.var2];
+  [(CompassPageViewControllerAccessibility *)&v17 setCrosshairLevelForData:data.var0, data.var1, data.var2];
   v4 = [(CompassPageViewControllerAccessibility *)self safeValueForKey:@"_compassView"];
   v5 = [v4 safeValueForKey:@"_compassBackground"];
   v6 = [v5 safeValueForKey:@"_currentOffset"];

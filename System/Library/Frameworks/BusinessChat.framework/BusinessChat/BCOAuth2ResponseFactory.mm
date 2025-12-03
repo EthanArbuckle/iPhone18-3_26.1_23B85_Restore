@@ -1,18 +1,18 @@
 @interface BCOAuth2ResponseFactory
-+ (id)makeResponseObjectWithDictionary:(id)a3 version:(int64_t)a4;
-+ (id)makeResponseObjectWithRedirectURI:(id)a3;
++ (id)makeResponseObjectWithDictionary:(id)dictionary version:(int64_t)version;
++ (id)makeResponseObjectWithRedirectURI:(id)i;
 @end
 
 @implementation BCOAuth2ResponseFactory
 
-+ (id)makeResponseObjectWithDictionary:(id)a3 version:(int64_t)a4
++ (id)makeResponseObjectWithDictionary:(id)dictionary version:(int64_t)version
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a4 < 2)
+  dictionaryCopy = dictionary;
+  if (version < 2)
   {
     v6 = [BCNativeOAuth2Response alloc];
-    v7 = v5;
+    v7 = dictionaryCopy;
     if (v6)
     {
       v36.receiver = v6;
@@ -30,8 +30,8 @@
         }
 
         v10 = [v7 objectForKeyedSubscript:@"errors"];
-        v11 = [MEMORY[0x277CBEB68] null];
-        if (v10 == v11)
+        null = [MEMORY[0x277CBEB68] null];
+        if (v10 == null)
         {
           v12 = 0;
         }
@@ -42,8 +42,8 @@
         }
 
         v13 = [v7 objectForKeyedSubscript:@"token"];
-        v14 = [MEMORY[0x277CBEB68] null];
-        if (v13 == v14)
+        null2 = [MEMORY[0x277CBEB68] null];
+        if (v13 == null2)
         {
           v15 = 0;
         }
@@ -54,8 +54,8 @@
         }
 
         v16 = [v7 objectForKeyedSubscript:@"status"];
-        v17 = [MEMORY[0x277CBEB68] null];
-        if (v16 == v17)
+        null3 = [MEMORY[0x277CBEB68] null];
+        if (v16 == null3)
         {
           v18 = 0;
         }
@@ -119,7 +119,7 @@
 
   else
   {
-    v6 = [[BCServerSideOAuth2Response alloc] _initWithDictionary:v5];
+    v6 = [[BCServerSideOAuth2Response alloc] _initWithDictionary:dictionaryCopy];
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -127,10 +127,10 @@
   return v6;
 }
 
-+ (id)makeResponseObjectWithRedirectURI:(id)a3
++ (id)makeResponseObjectWithRedirectURI:(id)i
 {
-  v3 = a3;
-  v4 = [[BCServerSideOAuth2Response alloc] initWithRedirectURI:v3];
+  iCopy = i;
+  v4 = [[BCServerSideOAuth2Response alloc] initWithRedirectURI:iCopy];
 
   return v4;
 }

@@ -11,7 +11,7 @@
   ObjectType = swift_getObjectType();
   LOBYTE(v10[0]) = 4;
   v5 = *(v3 + 40);
-  v6 = self;
+  selfCopy = self;
   v5(v12, v10, ObjectType, v3);
   v10[8] = v12[8];
   v10[9] = v12[9];

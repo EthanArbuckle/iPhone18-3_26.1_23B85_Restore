@@ -1,17 +1,17 @@
 @interface MSDLanguageAndRegionHelper
 + (id)sharedInstance;
-- (BOOL)_isCurrentDeviceLanguage:(id)a3 andRegion:(id)a4;
-- (BOOL)_isCurrentDevicePreferredLanguage:(id)a3 andRegion:(id)a4;
+- (BOOL)_isCurrentDeviceLanguage:(id)language andRegion:(id)region;
+- (BOOL)_isCurrentDevicePreferredLanguage:(id)language andRegion:(id)region;
 - (BOOL)isSiriEnabled;
-- (id)_preferredLocalizedLanguageCodeFromArray:(id)a3;
-- (id)_systemLocalizedLanguageCodeFromArray:(id)a3;
+- (id)_preferredLocalizedLanguageCodeFromArray:(id)array;
+- (id)_systemLocalizedLanguageCodeFromArray:(id)array;
 - (id)getCurrentDeviceLanguage;
 - (id)getCurrentDevicePreferredLanguage;
 - (id)getCurrentDeviceRegion;
 - (id)getCurrentLocaleCode;
 - (id)getSiriLanguage;
-- (int)setDeviceLanguage:(id)a3 andRegion:(id)a4 matchToSystemLanguage:(BOOL)a5;
-- (int)setSiriLanguage:(id)a3;
+- (int)setDeviceLanguage:(id)language andRegion:(id)region matchToSystemLanguage:(BOOL)systemLanguage;
+- (int)setSiriLanguage:(id)language;
 @end
 
 @implementation MSDLanguageAndRegionHelper
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (int)setDeviceLanguage:(id)a3 andRegion:(id)a4 matchToSystemLanguage:(BOOL)a5
+- (int)setDeviceLanguage:(id)language andRegion:(id)region matchToSystemLanguage:(BOOL)systemLanguage
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  systemLanguageCopy = systemLanguage;
+  languageCopy = language;
+  regionCopy = region;
+  v10 = languageCopy;
   v11 = sub_100063A54();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (systemLanguageCopy)
   {
     if (v12)
     {
@@ -48,7 +48,7 @@
     v13 = [NSArray arrayWithObjects:&v26 count:1];
     v14 = [(MSDLanguageAndRegionHelper *)self _systemLocalizedLanguageCodeFromArray:v13];
 
-    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDeviceLanguage:v14 andRegion:v9];
+    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDeviceLanguage:v14 andRegion:regionCopy];
   }
 
   else
@@ -59,7 +59,7 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Comparing to any localized language variant", &v20, 2u);
     }
 
-    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDevicePreferredLanguage:v10 andRegion:v9];
+    v15 = [(MSDLanguageAndRegionHelper *)self _isCurrentDevicePreferredLanguage:v10 andRegion:regionCopy];
     v14 = v10;
   }
 
@@ -71,7 +71,7 @@
     v22 = 2114;
     v23 = v14;
     v24 = 2114;
-    v25 = v9;
+    v25 = regionCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting device language to %{public}@ (%{public}@) and region code to %{public}@.", &v20, 0x20u);
   }
 
@@ -85,7 +85,7 @@
       v22 = 2114;
       v23 = v14;
       v24 = 2114;
-      v25 = v9;
+      v25 = regionCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Device already has language %{public}@ (%{public}@) and region %{public}@", &v20, 0x20u);
     }
 
@@ -94,7 +94,7 @@
 
   else
   {
-    [IPSettingsUtilities setRegion:v9];
+    [IPSettingsUtilities setRegion:regionCopy];
     [IPSettingsUtilities setLanguage:v14];
     v18 = 0;
   }
@@ -113,31 +113,31 @@
 - (id)getCurrentDevicePreferredLanguage
 {
   v2 = +[NSLocale preferredLanguages];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)getCurrentDeviceRegion
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 countryCode];
+  countryCode = [v2 countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (id)getCurrentLocaleCode
 {
-  v3 = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
-  v4 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-  v5 = [NSString stringWithFormat:@"%@_%@", v3, v4];
+  getCurrentDevicePreferredLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
+  getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+  v5 = [NSString stringWithFormat:@"%@_%@", getCurrentDevicePreferredLanguage, getCurrentDeviceRegion];
 
   return v5;
 }
 
-- (int)setSiriLanguage:(id)a3
+- (int)setSiriLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   if (![(MSDLanguageAndRegionHelper *)self isSiriEnabled])
   {
     v5 = sub_100063A54();
@@ -154,19 +154,19 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v4;
+    v20 = languageCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Setting Siri language to %{public}@", buf, 0xCu);
   }
 
-  v7 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
+  getSiriLanguage = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
 
-  if (v7 == v4)
+  if (getSiriLanguage == languageCopy)
   {
     v10 = sub_100063A54();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v4;
+      v20 = languageCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Device already has a Siri language of %{public}@", buf, 0xCu);
     }
 
@@ -183,7 +183,7 @@
     v17[3] = &unk_100169B70;
     v10 = v8;
     v18 = v10;
-    [v9 setLanguage:v4 withCompletion:v17];
+    [v9 setLanguage:languageCopy withCompletion:v17];
 
     v11 = dispatch_time(0, 10000000000);
     if (dispatch_semaphore_wait(v10, v11))
@@ -195,9 +195,9 @@
       }
     }
 
-    v13 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
+    getSiriLanguage2 = [(MSDLanguageAndRegionHelper *)self getSiriLanguage];
 
-    if (v13 == v4)
+    if (getSiriLanguage2 == languageCopy)
     {
       v15 = 0;
     }
@@ -207,7 +207,7 @@
       v14 = sub_100063A54();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        sub_1000EB02C(v4, self, v14);
+        sub_1000EB02C(languageCopy, self, v14);
       }
 
       v15 = 1;
@@ -220,30 +220,30 @@
 - (id)getSiriLanguage
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
-  return v3;
+  return languageCode;
 }
 
 - (BOOL)isSiriEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
-- (BOOL)_isCurrentDeviceLanguage:(id)a3 andRegion:(id)a4
+- (BOOL)_isCurrentDeviceLanguage:(id)language andRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceLanguage];
-  v9 = [v8 isEqualToString:v7];
+  regionCopy = region;
+  languageCopy = language;
+  getCurrentDeviceLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceLanguage];
+  v9 = [getCurrentDeviceLanguage isEqualToString:languageCopy];
 
   if (v9)
   {
-    v10 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-    v11 = [v10 isEqualToString:v6];
+    getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+    v11 = [getCurrentDeviceRegion isEqualToString:regionCopy];
   }
 
   else
@@ -254,17 +254,17 @@
   return v11;
 }
 
-- (BOOL)_isCurrentDevicePreferredLanguage:(id)a3 andRegion:(id)a4
+- (BOOL)_isCurrentDevicePreferredLanguage:(id)language andRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
-  v9 = [v8 isEqualToString:v7];
+  regionCopy = region;
+  languageCopy = language;
+  getCurrentDevicePreferredLanguage = [(MSDLanguageAndRegionHelper *)self getCurrentDevicePreferredLanguage];
+  v9 = [getCurrentDevicePreferredLanguage isEqualToString:languageCopy];
 
   if (v9)
   {
-    v10 = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
-    v11 = [v10 isEqualToString:v6];
+    getCurrentDeviceRegion = [(MSDLanguageAndRegionHelper *)self getCurrentDeviceRegion];
+    v11 = [getCurrentDeviceRegion isEqualToString:regionCopy];
   }
 
   else
@@ -275,20 +275,20 @@
   return v11;
 }
 
-- (id)_systemLocalizedLanguageCodeFromArray:(id)a3
+- (id)_systemLocalizedLanguageCodeFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSLocale systemLanguages];
-  v5 = [NSBundle preferredLocalizationsFromArray:v4 forPreferences:v3];
+  v5 = [NSBundle preferredLocalizationsFromArray:v4 forPreferences:arrayCopy];
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (id)_preferredLocalizedLanguageCodeFromArray:(id)a3
+- (id)_preferredLocalizedLanguageCodeFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
@@ -310,8 +310,8 @@
         }
 
         v10 = [NSLocale localeWithLocaleIdentifier:*(*(&v16 + 1) + 8 * i)];
-        v11 = [v10 languageIdentifier];
-        [v4 addObject:v11];
+        languageIdentifier = [v10 languageIdentifier];
+        [v4 addObject:languageIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -321,10 +321,10 @@
   }
 
   v12 = [v4 copy];
-  v13 = [NSBundle preferredLocalizationsFromArray:v12 forPreferences:v3];
-  v14 = [v13 firstObject];
+  v13 = [NSBundle preferredLocalizationsFromArray:v12 forPreferences:arrayCopy];
+  firstObject = [v13 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface NCSupplementaryViewPrototypeRecipeContentTintingViewController
 - (NCSupplementaryViewPrototypeRecipeContentTintingViewController)init;
-- (id)_initWithGroupingIdentifier:(id)a3 stackSubordinate:(BOOL)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_enumerateStack:(id)a3;
-- (void)_setTextColor:(id)a3;
-- (void)_setTintColor:(id)a3;
+- (id)_initWithGroupingIdentifier:(id)identifier stackSubordinate:(BOOL)subordinate;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_enumerateStack:(id)stack;
+- (void)_setTextColor:(id)color;
+- (void)_setTintColor:(id)color;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 @end
 
 @implementation NCSupplementaryViewPrototypeRecipeContentTintingViewController
@@ -17,29 +17,29 @@
 - (NCSupplementaryViewPrototypeRecipeContentTintingViewController)init
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [v3 stringWithFormat:@"color-config-%@", v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [v3 stringWithFormat:@"color-config-%@", uUIDString];
 
   v7 = [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)self _initWithGroupingIdentifier:v6 stackSubordinate:0];
   return v7;
 }
 
-- (id)_initWithGroupingIdentifier:(id)a3 stackSubordinate:(BOOL)a4
+- (id)_initWithGroupingIdentifier:(id)identifier stackSubordinate:(BOOL)subordinate
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = NCSupplementaryViewPrototypeRecipeContentTintingViewController;
   v7 = [(NCSupplementaryViewPrototypeRecipeViewController *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_stackSubordinate = a4;
+    v7->_stackSubordinate = subordinate;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __111__NCSupplementaryViewPrototypeRecipeContentTintingViewController__initWithGroupingIdentifier_stackSubordinate___block_invoke;
     v10[3] = &unk_278372B98;
-    v11 = v6;
+    v11 = identifierCopy;
     [(NCSupplementaryViewPrototypeRecipeViewController *)v8 updateConfiguration:v10];
   }
 
@@ -74,13 +74,13 @@ void __111__NCSupplementaryViewPrototypeRecipeContentTintingViewController__init
   [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)self setView:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row] && objc_msgSend(v7, "row") != 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] && objc_msgSend(pathCopy, "row") != 1)
   {
-    v13 = [v6 dequeueReusableCellWithIdentifier:@"add-stack"];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:@"add-stack"];
     v14 = v13;
     if (v13)
     {
@@ -94,39 +94,39 @@ void __111__NCSupplementaryViewPrototypeRecipeContentTintingViewController__init
 
     v9 = v15;
 
-    v30 = [v9 textLabel];
-    [v30 setText:@"Add stack"];
+    textLabel = [v9 textLabel];
+    [textLabel setText:@"Add stack"];
 
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v28];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v9 setBackgroundColor:clearColor];
   }
 
   else
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"color-well"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"color-well"];
     if (v8)
     {
       v9 = v8;
-      v10 = [v8 contentView];
-      v11 = [v10 subviews];
-      v12 = [v11 firstObject];
+      contentView = [v8 contentView];
+      subviews = [contentView subviews];
+      firstObject = [subviews firstObject];
 
-      [v12 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+      [firstObject removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
     }
 
     else
     {
       v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"color-well"];
       v16 = objc_alloc(MEMORY[0x277D75368]);
-      v17 = [v9 contentView];
-      [v17 frame];
-      v12 = [v16 initWithFrame:{CGRectGetMaxX(v45) + -50.0, 0.0, 50.0, 50.0}];
+      contentView2 = [v9 contentView];
+      [contentView2 frame];
+      firstObject = [v16 initWithFrame:{CGRectGetMaxX(v45) + -50.0, 0.0, 50.0, 50.0}];
 
-      v18 = [v9 contentView];
-      [v18 addSubview:v12];
+      contentView3 = [v9 contentView];
+      [contentView3 addSubview:firstObject];
     }
 
-    v19 = [v7 row];
+    v19 = [pathCopy row];
     v20 = v19 == 0;
     v21 = @"Text Color";
     if (!v19)
@@ -135,23 +135,23 @@ void __111__NCSupplementaryViewPrototypeRecipeContentTintingViewController__init
     }
 
     v22 = v21;
-    v23 = [v9 textLabel];
-    [v23 setText:v22];
+    textLabel2 = [v9 textLabel];
+    [textLabel2 setText:v22];
 
-    [v12 setTitle:v22];
-    v24 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-    v25 = v24;
+    [firstObject setTitle:v22];
+    configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+    v25 = configuration;
     if (v19)
     {
-      [v24 textColor];
+      [configuration textColor];
     }
 
     else
     {
-      [v24 tintColor];
+      [configuration tintColor];
     }
     v26 = ;
-    [v12 setSelectedColor:v26];
+    [firstObject setSelectedColor:v26];
 
     objc_initWeak(&location, self);
     v27 = MEMORY[0x277D750C8];
@@ -160,24 +160,24 @@ void __111__NCSupplementaryViewPrototypeRecipeContentTintingViewController__init
     v38 = __98__NCSupplementaryViewPrototypeRecipeContentTintingViewController_tableView_cellForRowAtIndexPath___block_invoke;
     v39 = &unk_278370538;
     objc_copyWeak(&v41, &location);
-    v28 = v12;
-    v40 = v28;
+    clearColor = firstObject;
+    v40 = clearColor;
     v42 = v20;
     v29 = [v27 actionWithTitle:v22 image:0 identifier:0 handler:&v36];
-    [v28 addAction:v29 forControlEvents:{4096, v36, v37, v38, v39}];
+    [clearColor addAction:v29 forControlEvents:{4096, v36, v37, v38, v39}];
 
     objc_destroyWeak(&v41);
     objc_destroyWeak(&location);
   }
 
   [v9 setSelectionStyle:0];
-  v31 = [MEMORY[0x277D75348] clearColor];
-  [v9 setBackgroundColor:v31];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v9 setBackgroundColor:clearColor2];
 
-  v32 = [v9 textLabel];
-  v33 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v34 = [v33 textColor];
-  [v32 setTextColor:v34];
+  textLabel3 = [v9 textLabel];
+  configuration2 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration2 textColor];
+  [textLabel3 setTextColor:textColor];
 
   return v9;
 }
@@ -208,16 +208,16 @@ void __98__NCSupplementaryViewPrototypeRecipeContentTintingViewController_tableV
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:{@"header", a4}];
+  v5 = [view dequeueReusableHeaderFooterViewWithIdentifier:{@"header", section}];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"header"];
   }
 
   [(NSPointerArray *)self->_weakStackViewControllers unui_compact];
-  v6 = [v5 textLabel];
+  textLabel = [v5 textLabel];
   v7 = MEMORY[0x277CCACA8];
   v8 = &stru_282FE84F8;
   if (!self->_stackSubordinate && [(NSPointerArray *)self->_weakStackViewControllers count])
@@ -226,30 +226,30 @@ void __98__NCSupplementaryViewPrototypeRecipeContentTintingViewController_tableV
   }
 
   v9 = [v7 stringWithFormat:@"Color Configuration%@", v8];
-  [v6 setText:v9];
+  [textLabel setText:v9];
 
-  v10 = [v5 textLabel];
-  v11 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v12 = [v11 textColor];
-  [v10 setTextColor:v12];
+  textLabel2 = [v5 textLabel];
+  configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor = [configuration textColor];
+  [textLabel2 setTextColor:textColor];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
   v5 = MEMORY[0x277D75348];
-  v6 = a3;
-  v7 = [v5 clearColor];
-  [v6 setBackgroundColor:v7];
+  viewCopy = view;
+  clearColor = [v5 clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v4 = a4;
-  if ([v4 row] == 2)
+  pathCopy = path;
+  if ([pathCopy row] == 2)
   {
-    v5 = v4;
+    v5 = pathCopy;
   }
 
   else
@@ -262,53 +262,53 @@ void __98__NCSupplementaryViewPrototypeRecipeContentTintingViewController_tableV
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  if ([a4 row] == 2)
+  if ([path row] == 2)
   {
     v5 = 3;
     do
     {
       v6 = [NCSupplementaryViewPrototypeRecipeContentTintingViewController alloc];
-      v7 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-      v8 = [v7 groupingIdentifier];
-      v9 = [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)v6 _initWithGroupingIdentifier:v8 stackSubordinate:1];
+      configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+      groupingIdentifier = [configuration groupingIdentifier];
+      v9 = [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)v6 _initWithGroupingIdentifier:groupingIdentifier stackSubordinate:1];
 
-      v10 = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
-      v11 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-      v12 = [v11 groupingIdentifier];
+      delegate = [(NCSupplementaryViewPrototypeRecipeViewController *)self delegate];
+      configuration2 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+      groupingIdentifier2 = [configuration2 groupingIdentifier];
 
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_tableView_didSelectRowAtIndexPath___block_invoke;
       v18[3] = &unk_278372BC0;
-      v13 = v12;
+      v13 = groupingIdentifier2;
       v19 = v13;
-      v20 = self;
+      selfCopy = self;
       [v9 updateConfiguration:v18];
-      [v9 setDelegate:v10];
-      [v10 requestsInsertForPrototypeRecipeViewController:v9];
-      [v10 notificationListBaseComponentDidSignificantUserInteraction:self];
+      [v9 setDelegate:delegate];
+      [delegate requestsInsertForPrototypeRecipeViewController:v9];
+      [delegate notificationListBaseComponentDidSignificantUserInteraction:self];
       weakStackViewControllers = self->_weakStackViewControllers;
       if (weakStackViewControllers)
       {
-        v15 = weakStackViewControllers;
+        weakObjectsPointerArray = weakStackViewControllers;
       }
 
       else
       {
-        v15 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+        weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
       }
 
       v16 = self->_weakStackViewControllers;
-      self->_weakStackViewControllers = v15;
+      self->_weakStackViewControllers = weakObjectsPointerArray;
 
       [(NSPointerArray *)self->_weakStackViewControllers addPointer:v9];
       v17 = [MEMORY[0x277CBEAA8] now];
       [(NCSupplementaryViewPrototypeRecipeViewController *)self setDateModified:v17];
 
       [(UITableView *)self->_tableView reloadData];
-      [v10 requestsUpdatePositionIfNeededForPrototypeRecipeViewController:self];
+      [delegate requestsUpdatePositionIfNeededForPrototypeRecipeViewController:self];
 
       --v5;
     }
@@ -332,16 +332,16 @@ void __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_table
   [v4 setTextColor:v7];
 }
 
-- (void)_setTextColor:(id)a3
+- (void)_setTextColor:(id)color
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(UITableView *)self->_tableView visibleCells];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  visibleCells = [(UITableView *)self->_tableView visibleCells];
+  v6 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -353,35 +353,35 @@ void __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_table
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleCells);
         }
 
-        v10 = [*(*(&v23 + 1) + 8 * v9) textLabel];
-        v11 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-        v12 = [v11 textColor];
-        [v10 setTextColor:v12];
+        textLabel = [*(*(&v23 + 1) + 8 * v9) textLabel];
+        configuration = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+        textColor = [configuration textColor];
+        [textLabel setTextColor:textColor];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
   }
 
   v13 = [(UITableView *)self->_tableView headerViewForSection:0];
-  v14 = [v13 textLabel];
-  v15 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
-  v16 = [v15 textColor];
-  [v14 setTextColor:v16];
+  textLabel2 = [v13 textLabel];
+  configuration2 = [(NCSupplementaryViewPrototypeRecipeViewController *)self configuration];
+  textColor2 = [configuration2 textColor];
+  [textLabel2 setTextColor:textColor2];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __80__NCSupplementaryViewPrototypeRecipeContentTintingViewController__setTextColor___block_invoke;
   v21[3] = &unk_278372B98;
-  v17 = v4;
+  v17 = colorCopy;
   v22 = v17;
   [(NCSupplementaryViewPrototypeRecipeViewController *)self updateConfiguration:v21];
   v19[0] = MEMORY[0x277D85DD0];
@@ -393,14 +393,14 @@ void __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_table
   [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)self _enumerateStack:v19];
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__NCSupplementaryViewPrototypeRecipeContentTintingViewController__setTintColor___block_invoke;
   v9[3] = &unk_278372B98;
-  v5 = v4;
+  v5 = colorCopy;
   v10 = v5;
   [(NCSupplementaryViewPrototypeRecipeViewController *)self updateConfiguration:v9];
   v7[0] = MEMORY[0x277D85DD0];
@@ -412,9 +412,9 @@ void __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_table
   [(NCSupplementaryViewPrototypeRecipeContentTintingViewController *)self _enumerateStack:v7];
 }
 
-- (void)_enumerateStack:(id)a3
+- (void)_enumerateStack:(id)stack
 {
-  v6 = a3;
+  stackCopy = stack;
   [(NSPointerArray *)self->_weakStackViewControllers unui_compact];
   if ([(NSPointerArray *)self->_weakStackViewControllers count])
   {
@@ -424,7 +424,7 @@ void __100__NCSupplementaryViewPrototypeRecipeContentTintingViewController_table
       v5 = [(NSPointerArray *)self->_weakStackViewControllers pointerAtIndex:v4];
       if (v5)
       {
-        v6[2](v6, v5);
+        stackCopy[2](stackCopy, v5);
       }
 
       ++v4;

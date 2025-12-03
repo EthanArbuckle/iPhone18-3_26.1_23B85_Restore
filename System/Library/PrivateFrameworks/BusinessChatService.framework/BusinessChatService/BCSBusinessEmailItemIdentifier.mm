@@ -1,106 +1,106 @@
 @interface BCSBusinessEmailItemIdentifier
-- (BCSBusinessEmailItemIdentifier)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesItemIdentifying:(id)a3;
+- (BCSBusinessEmailItemIdentifier)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSObject)itemIdentifier;
 - (NSString)pirKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithEmail:(void *)a1;
-- (void)initWithEmail:(void *)a3 fullDomain:(void *)a4 topLevelDomain:;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithEmail:(void *)email;
+- (void)initWithEmail:(void *)email fullDomain:(void *)domain topLevelDomain:;
 @end
 
 @implementation BCSBusinessEmailItemIdentifier
 
-- (void)initWithEmail:(void *)a1
+- (void)initWithEmail:(void *)email
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (email)
   {
-    v12.receiver = a1;
+    v12.receiver = email;
     v12.super_class = BCSBusinessEmailItemIdentifier;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    email = objc_msgSendSuper2(&v12, sel_init);
+    if (email)
     {
-      v4 = [v3 lowercaseString];
-      v5 = a1[3];
-      a1[3] = v4;
+      lowercaseString = [v3 lowercaseString];
+      v5 = email[3];
+      email[3] = lowercaseString;
 
-      v6 = [a1 _truncatedHashForString:a1[3]];
-      a1[6] = v6;
+      v6 = [email _truncatedHashForString:email[3]];
+      email[6] = v6;
       v7 = [MEMORY[0x277CCABB0] numberWithLongLong:v6];
       v13[0] = v7;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-      v9 = a1[7];
-      a1[7] = v8;
+      v9 = email[7];
+      email[7] = v8;
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return a1;
+  return email;
 }
 
-- (void)initWithEmail:(void *)a3 fullDomain:(void *)a4 topLevelDomain:
+- (void)initWithEmail:(void *)email fullDomain:(void *)domain topLevelDomain:
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  emailCopy = email;
+  domainCopy = domain;
+  if (self)
   {
-    v26.receiver = a1;
+    v26.receiver = self;
     v26.super_class = BCSBusinessEmailItemIdentifier;
-    a1 = objc_msgSendSuper2(&v26, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v26, sel_init);
+    if (self)
     {
-      v10 = [v7 lowercaseString];
-      v11 = a1[3];
-      a1[3] = v10;
+      lowercaseString = [v7 lowercaseString];
+      v11 = self[3];
+      self[3] = lowercaseString;
 
-      v12 = [v8 lowercaseString];
-      v13 = a1[4];
-      a1[4] = v12;
+      lowercaseString2 = [emailCopy lowercaseString];
+      v13 = self[4];
+      self[4] = lowercaseString2;
 
-      v14 = [v9 lowercaseString];
-      v15 = a1[5];
-      a1[5] = v14;
+      lowercaseString3 = [domainCopy lowercaseString];
+      v15 = self[5];
+      self[5] = lowercaseString3;
 
-      v16 = [a1 _truncatedHashForString:a1[3]];
-      a1[6] = v16;
+      v16 = [self _truncatedHashForString:self[3]];
+      self[6] = v16;
       v17 = MEMORY[0x277CBEB18];
       v18 = [MEMORY[0x277CCABB0] numberWithLongLong:v16];
       v27[0] = v18;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
       v20 = [v17 arrayWithArray:v19];
 
-      if (v8)
+      if (emailCopy)
       {
-        v21 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(a1, "_truncatedHashForString:", a1[4])}];
+        v21 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(self, "_truncatedHashForString:", self[4])}];
         [v20 addObject:v21];
       }
 
-      if (v9)
+      if (domainCopy)
       {
-        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(a1, "_truncatedHashForString:", a1[5])}];
+        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(self, "_truncatedHashForString:", self[5])}];
         [v20 addObject:v22];
       }
 
-      v23 = a1[7];
-      a1[7] = v20;
+      v23 = self[7];
+      self[7] = v20;
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BCSBusinessEmailItemIdentifier *)self matchesItemIdentifying:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BCSBusinessEmailItemIdentifier *)self matchesItemIdentifying:equalCopy];
 
   return v5;
 }
@@ -115,47 +115,47 @@
 - (NSObject)itemIdentifier
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(BCSBusinessEmailItemIdentifier *)self truncatedHash];
+  truncatedHash = [(BCSBusinessEmailItemIdentifier *)self truncatedHash];
 
-  return [v2 numberWithLongLong:v3];
+  return [v2 numberWithLongLong:truncatedHash];
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
+  identifyingCopy = identifying;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v5 = [v4 type];
-  if (v5 != [(BCSBusinessEmailItemIdentifier *)self type])
+  type = [identifyingCopy type];
+  if (type != [(BCSBusinessEmailItemIdentifier *)self type])
   {
     goto LABEL_10;
   }
 
-  v6 = [v4 itemIdentifier];
-  v7 = [(BCSBusinessEmailItemIdentifier *)self itemIdentifier];
-  v8 = [v6 isEqual:v7];
+  itemIdentifier = [identifyingCopy itemIdentifier];
+  itemIdentifier2 = [(BCSBusinessEmailItemIdentifier *)self itemIdentifier];
+  v8 = [itemIdentifier isEqual:itemIdentifier2];
 
   if (!v8)
   {
     goto LABEL_10;
   }
 
-  if (![v4 conformsToProtocol:&unk_285466448])
+  if (![identifyingCopy conformsToProtocol:&unk_285466448])
   {
     goto LABEL_10;
   }
 
-  v9 = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
+  truncatedHashes = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
 
-  if (v9)
+  if (truncatedHashes)
   {
-    v10 = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
-    v11 = [v4 truncatedHashes];
-    v12 = [v10 isEqualToArray:v11];
+    truncatedHashes2 = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
+    truncatedHashes3 = [identifyingCopy truncatedHashes];
+    v12 = [truncatedHashes2 isEqualToArray:truncatedHashes3];
 
     if (!v12)
     {
@@ -163,9 +163,9 @@
     }
   }
 
-  v13 = [v4 truncatedHashes];
+  truncatedHashes4 = [identifyingCopy truncatedHashes];
 
-  if (!v13 || ([v4 truncatedHashes], v14 = objc_claimAutoreleasedReturnValue(), -[BCSBusinessEmailItemIdentifier truncatedHashes](self, "truncatedHashes"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToArray:", v15), v15, v14, v16))
+  if (!truncatedHashes4 || ([identifyingCopy truncatedHashes], v14 = objc_claimAutoreleasedReturnValue(), -[BCSBusinessEmailItemIdentifier truncatedHashes](self, "truncatedHashes"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToArray:", v15), v15, v14, v16))
   {
     v17 = 1;
   }
@@ -246,14 +246,14 @@ LABEL_8:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     *(v5 + 48) = [(BCSBusinessEmailItemIdentifier *)self truncatedHash];
-    v6 = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
-    v7 = [v6 copyWithZone:a3];
+    truncatedHashes = [(BCSBusinessEmailItemIdentifier *)self truncatedHashes];
+    v7 = [truncatedHashes copyWithZone:zone];
     v8 = *(v5 + 56);
     *(v5 + 56) = v7;
 
@@ -288,21 +288,21 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   email = self->_email;
-  v5 = a3;
-  [v5 encodeObject:email forKey:@"Email"];
-  [v5 encodeObject:self->_fullDomain forKey:@"FullDomain"];
-  [v5 encodeObject:self->_topLevelDomain forKey:@"TopLevelDomain"];
+  coderCopy = coder;
+  [coderCopy encodeObject:email forKey:@"Email"];
+  [coderCopy encodeObject:self->_fullDomain forKey:@"FullDomain"];
+  [coderCopy encodeObject:self->_topLevelDomain forKey:@"TopLevelDomain"];
 }
 
-- (BCSBusinessEmailItemIdentifier)initWithCoder:(id)a3
+- (BCSBusinessEmailItemIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Email"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FullDomain"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TopLevelDomain"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Email"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FullDomain"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TopLevelDomain"];
 
   v8 = [(BCSBusinessEmailItemIdentifier *)self initWithEmail:v5 fullDomain:v6 topLevelDomain:v7];
   return v8;

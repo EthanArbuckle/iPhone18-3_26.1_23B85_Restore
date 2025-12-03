@@ -3,7 +3,7 @@
 - (BOOL)openPipeFromApp;
 - (BOOL)openPipeToApp;
 - (id)description;
-- (void)_acceptSocketCB:(__CFSocket *)a3 acceptedSock:(int)a4;
+- (void)_acceptSocketCB:(__CFSocket *)b acceptedSock:(int)sock;
 - (void)_registerListenSocket;
 - (void)dealloc;
 - (void)shuttingDownSession;
@@ -159,7 +159,7 @@ LABEL_31:
     goto LABEL_20;
   }
 
-  v3 = self;
+  selfCopy = self;
   self = *p_listenSockRls;
   if (*p_listenSockRls)
   {
@@ -168,8 +168,8 @@ LABEL_31:
     *p_listenSockRls = 0;
   }
 
-  p_listenSockRef = &v3->_listenSockRef;
-  if ((&v3->_listenSockRef & 7) != 0)
+  p_listenSockRef = &selfCopy->_listenSockRef;
+  if ((&selfCopy->_listenSockRef & 7) != 0)
   {
     goto LABEL_20;
   }
@@ -182,8 +182,8 @@ LABEL_31:
     *p_listenSockRef = 0;
   }
 
-  p_listenSock = &v3->_listenSock;
-  if ((&v3->_listenSock & 3) != 0)
+  p_listenSock = &selfCopy->_listenSock;
+  if ((&selfCopy->_listenSock & 3) != 0)
   {
     goto LABEL_20;
   }
@@ -195,8 +195,8 @@ LABEL_31:
     *p_listenSock = -1;
   }
 
-  p_sockRls = &v3->_sockRls;
-  if ((&v3->_sockRls & 7) != 0)
+  p_sockRls = &selfCopy->_sockRls;
+  if ((&selfCopy->_sockRls & 7) != 0)
   {
     goto LABEL_20;
   }
@@ -209,8 +209,8 @@ LABEL_31:
     *p_sockRls = 0;
   }
 
-  p_sockRef = &v3->_sockRef;
-  if ((&v3->_sockRef & 7) != 0)
+  p_sockRef = &selfCopy->_sockRef;
+  if ((&selfCopy->_sockRef & 7) != 0)
   {
     goto LABEL_20;
   }
@@ -223,7 +223,7 @@ LABEL_31:
     *p_sockRef = 0;
   }
 
-  p_sock = &v3->_sock;
+  p_sock = &selfCopy->_sock;
   if ((p_sock & 3) != 0)
   {
 LABEL_20:
@@ -323,7 +323,7 @@ LABEL_11:
   CFRunLoopAddSource(Main, *p_listenSockRls, kCFRunLoopDefaultMode);
 }
 
-- (void)_acceptSocketCB:(__CFSocket *)a3 acceptedSock:(int)a4
+- (void)_acceptSocketCB:(__CFSocket *)b acceptedSock:(int)sock
 {
   v12 = 1;
   context.version = 0;
@@ -334,8 +334,8 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  self->_sock = a4;
-  v6 = CFSocketCreateWithNative(0, a4, 9uLL, sub_100010FC8, &context);
+  self->_sock = sock;
+  v6 = CFSocketCreateWithNative(0, sock, 9uLL, sub_100010FC8, &context);
   if (((self + 64) & 7) != 0)
   {
     goto LABEL_14;
@@ -355,7 +355,7 @@ LABEL_11:
   v11 = 0x20000;
   setsockopt(self->_sock, 0xFFFF, 4097, &v11, 4u);
   setsockopt(self->_sock, 0xFFFF, 4098, &v11, 4u);
-  ioctl(a4, 0x8004667EuLL, &v12);
+  ioctl(sock, 0x8004667EuLL, &v12);
   if (((self + 48) & 7) != 0 || (CFRunLoopSourceInvalidate(self->_listenSockRls), CFRelease(self->_listenSockRls), self->_listenSockRls = 0, ((self + 40) & 7) != 0) || (CFSocketInvalidate(self->_listenSockRef), CFRelease(self->_listenSockRef), self->_listenSockRef = 0, ((self + 32) & 3) != 0))
   {
 LABEL_14:

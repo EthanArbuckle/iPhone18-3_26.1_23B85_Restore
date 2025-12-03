@@ -8,17 +8,17 @@
 - (void)shouldFireInResponseToEvent:()BiomeContext triggerIdentifier:completion:
 {
   v11 = a5;
-  v7 = [a3 eventBody];
-  v8 = [v7 starting];
-  if (v8 == [a1 onEnable])
+  eventBody = [a3 eventBody];
+  starting = [eventBody starting];
+  if (starting == [self onEnable])
   {
     v10 = 1;
   }
 
   else
   {
-    v9 = [v7 starting];
-    v10 = v9 ^ [a1 onDisable];
+    starting2 = [eventBody starting];
+    v10 = starting2 ^ [self onDisable];
   }
 
   v11[2](v11, v10);
@@ -28,12 +28,12 @@
 {
   v3 = a3;
   v4 = BiomeLibrary();
-  v5 = [v4 SpringBoard];
-  v6 = [v5 WindowManagement];
-  v7 = [v6 StageManagerMode];
+  springBoard = [v4 SpringBoard];
+  windowManagement = [springBoard WindowManagement];
+  stageManagerMode = [windowManagement StageManagerMode];
 
-  v8 = [v7 DSLPublisher];
-  v9 = [v8 subscribeOn:v3];
+  dSLPublisher = [stageManagerMode DSLPublisher];
+  v9 = [dSLPublisher subscribeOn:v3];
 
   return v9;
 }

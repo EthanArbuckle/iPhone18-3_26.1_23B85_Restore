@@ -1,10 +1,10 @@
 @interface ImageCache
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation ImageCache
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   v3 = sub_1D818E454();
   v4 = *(v3 - 8);

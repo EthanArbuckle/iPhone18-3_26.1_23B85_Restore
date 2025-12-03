@@ -1,39 +1,39 @@
 @interface TUMomentsMessageSendRequest
-- (TUMomentsMessageSendRequest)initWithCoder:(id)a3;
-- (TUMomentsMessageSendRequest)initWithSessionUUID:(id)a3 conversationID:(id)a4 senderHandle:(id)a5 destinationHandles:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (TUMomentsMessageSendRequest)initWithCoder:(id)coder;
+- (TUMomentsMessageSendRequest)initWithSessionUUID:(id)d conversationID:(id)iD senderHandle:(id)handle destinationHandles:(id)handles;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUMomentsMessageSendRequest
 
-- (TUMomentsMessageSendRequest)initWithSessionUUID:(id)a3 conversationID:(id)a4 senderHandle:(id)a5 destinationHandles:(id)a6
+- (TUMomentsMessageSendRequest)initWithSessionUUID:(id)d conversationID:(id)iD senderHandle:(id)handle destinationHandles:(id)handles
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  handleCopy = handle;
+  handlesCopy = handles;
   v18.receiver = self;
   v18.super_class = TUMomentsMessageSendRequest;
   v15 = [(TUMomentsMessageSendRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_sessionUUID, a3);
-    objc_storeStrong(&v16->_conversationID, a4);
-    objc_storeStrong(&v16->_senderHandle, a5);
-    objc_storeStrong(&v16->_destinationHandles, a6);
+    objc_storeStrong(&v15->_sessionUUID, d);
+    objc_storeStrong(&v16->_conversationID, iD);
+    objc_storeStrong(&v16->_senderHandle, handle);
+    objc_storeStrong(&v16->_destinationHandles, handles);
   }
 
   return v16;
 }
 
-- (TUMomentsMessageSendRequest)initWithCoder:(id)a3
+- (TUMomentsMessageSendRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"conversationID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderHandle"];
-  v8 = [v4 decodeObjectForKey:@"destinationHandles"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conversationID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderHandle"];
+  v8 = [coderCopy decodeObjectForKey:@"destinationHandles"];
 
   if (v5)
   {
@@ -47,32 +47,32 @@
 
   if (v9 || v7 == 0 || v8 == 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TUMomentsMessageSendRequest *)self initWithSessionUUID:v5 conversationID:v6 senderHandle:v7 destinationHandles:v8];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUMomentsMessageSendRequest *)self sessionUUID];
-  [v4 encodeObject:v5 forKey:@"sessionUUID"];
+  coderCopy = coder;
+  sessionUUID = [(TUMomentsMessageSendRequest *)self sessionUUID];
+  [coderCopy encodeObject:sessionUUID forKey:@"sessionUUID"];
 
-  v6 = [(TUMomentsMessageSendRequest *)self conversationID];
-  [v4 encodeObject:v6 forKey:@"conversationID"];
+  conversationID = [(TUMomentsMessageSendRequest *)self conversationID];
+  [coderCopy encodeObject:conversationID forKey:@"conversationID"];
 
-  v7 = [(TUMomentsMessageSendRequest *)self senderHandle];
-  [v4 encodeObject:v7 forKey:@"senderHandle"];
+  senderHandle = [(TUMomentsMessageSendRequest *)self senderHandle];
+  [coderCopy encodeObject:senderHandle forKey:@"senderHandle"];
 
-  v8 = [(TUMomentsMessageSendRequest *)self destinationHandles];
-  [v4 encodeObject:v8 forKey:@"destinationHandles"];
+  destinationHandles = [(TUMomentsMessageSendRequest *)self destinationHandles];
+  [coderCopy encodeObject:destinationHandles forKey:@"destinationHandles"];
 }
 
 @end

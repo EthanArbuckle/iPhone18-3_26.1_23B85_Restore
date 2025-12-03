@@ -1,23 +1,23 @@
 @interface FCCompletedPaymentTransaction
-- (FCCompletedPaymentTransaction)initWithProductID:(id)a3 receipt:(id)a4 appleIDAccountDetails:(id)a5;
+- (FCCompletedPaymentTransaction)initWithProductID:(id)d receipt:(id)receipt appleIDAccountDetails:(id)details;
 @end
 
 @implementation FCCompletedPaymentTransaction
 
-- (FCCompletedPaymentTransaction)initWithProductID:(id)a3 receipt:(id)a4 appleIDAccountDetails:(id)a5
+- (FCCompletedPaymentTransaction)initWithProductID:(id)d receipt:(id)receipt appleIDAccountDetails:(id)details
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  receiptCopy = receipt;
+  detailsCopy = details;
   v15.receiver = self;
   v15.super_class = FCCompletedPaymentTransaction;
   v12 = [(FCCompletedPaymentTransaction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_receipt, a4);
-    objc_storeStrong(&v13->_productID, a3);
-    objc_storeStrong(&v13->_appleIDAccountDetails, a5);
+    objc_storeStrong(&v12->_receipt, receipt);
+    objc_storeStrong(&v13->_productID, d);
+    objc_storeStrong(&v13->_appleIDAccountDetails, details);
   }
 
   return v13;

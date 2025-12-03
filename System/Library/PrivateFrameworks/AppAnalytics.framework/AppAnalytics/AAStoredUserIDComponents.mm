@@ -1,12 +1,12 @@
 @interface AAStoredUserIDComponents
 - (AAStoredUserIDComponents)init;
-- (AAStoredUserIDComponents)initWithStartDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AAStoredUserIDComponents)initWithStartDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAStoredUserIDComponents
 
-- (AAStoredUserIDComponents)initWithStartDate:(id)a3
+- (AAStoredUserIDComponents)initWithStartDate:(id)date
 {
   v3 = sub_1B6AB8DB0();
   v4 = *(*(v3 - 8) + 64);
@@ -16,11 +16,11 @@
   return sub_1B6A913B0(v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  BridgedStoredUserIDComponents.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  BridgedStoredUserIDComponents.encode(with:)(coderCopy);
 }
 
 - (AAStoredUserIDComponents)init

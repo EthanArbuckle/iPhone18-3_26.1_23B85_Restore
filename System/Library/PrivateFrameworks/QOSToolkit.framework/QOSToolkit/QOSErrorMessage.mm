@@ -1,41 +1,41 @@
 @interface QOSErrorMessage
-- (QOSErrorMessage)initWithConfig:(id)a3 logger:(id)a4 metricsRecorder:(id)a5 defaultAlert:(id)a6;
-- (id)getLocalizedErrorMessageForItems:(id)a3 usingError:(id)a4;
-- (void)fetchLocalizedErrorMessageForItems:(id)a3 usingError:(id)a4 completionHandler:(id)a5;
+- (QOSErrorMessage)initWithConfig:(id)config logger:(id)logger metricsRecorder:(id)recorder defaultAlert:(id)alert;
+- (id)getLocalizedErrorMessageForItems:(id)items usingError:(id)error;
+- (void)fetchLocalizedErrorMessageForItems:(id)items usingError:(id)error completionHandler:(id)handler;
 @end
 
 @implementation QOSErrorMessage
 
-- (QOSErrorMessage)initWithConfig:(id)a3 logger:(id)a4 metricsRecorder:(id)a5 defaultAlert:(id)a6
+- (QOSErrorMessage)initWithConfig:(id)config logger:(id)logger metricsRecorder:(id)recorder defaultAlert:(id)alert
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  loggerCopy = logger;
+  recorderCopy = recorder;
+  alertCopy = alert;
   v30.receiver = self;
   v30.super_class = QOSErrorMessage;
   v14 = [(QOSErrorMessage *)&v30 init];
   if (v14)
   {
     v15 = [QOSConfigInternal alloc];
-    v16 = [v10 appTarget];
-    v17 = [v10 locale];
-    v18 = [(QOSConfigInternal *)v15 initWithAppTarget:v16 locale:v17];
+    appTarget = [configCopy appTarget];
+    locale = [configCopy locale];
+    v18 = [(QOSConfigInternal *)v15 initWithAppTarget:appTarget locale:locale];
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __70__QOSErrorMessage_initWithConfig_logger_metricsRecorder_defaultAlert___block_invoke;
     aBlock[3] = &unk_279AD7CE8;
-    v29 = v11;
+    v29 = loggerCopy;
     v19 = _Block_copy(aBlock);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __70__QOSErrorMessage_initWithConfig_logger_metricsRecorder_defaultAlert___block_invoke_2;
     v26[3] = &unk_279AD7D10;
-    v27 = v13;
+    v27 = alertCopy;
     v20 = _Block_copy(v26);
     v25 = 0;
-    v21 = [QOSErrorMessageInternal getObjcInstanceWithConfig:v18 error:&v25 logger:v19 metricsRecorder:v12 defaultAlert:v20];
+    v21 = [QOSErrorMessageInternal getObjcInstanceWithConfig:v18 error:&v25 logger:v19 metricsRecorder:recorderCopy defaultAlert:v20];
     v22 = v25;
     underlyingObject = v14->_underlyingObject;
     v14->_underlyingObject = v21;
@@ -55,38 +55,38 @@ QOSAlertMessageInternal *__70__QOSErrorMessage_initWithConfig_logger_metricsReco
   return v5;
 }
 
-- (id)getLocalizedErrorMessageForItems:(id)a3 usingError:(id)a4
+- (id)getLocalizedErrorMessageForItems:(id)items usingError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  errorCopy = error;
   v8 = objc_initWeak(&location, self);
-  v9 = [(QOSErrorMessage *)self underlyingObject];
-  v10 = [v9 getLocalizedErrorMessageForItems:v6 :v7];
+  underlyingObject = [(QOSErrorMessage *)self underlyingObject];
+  v10 = [underlyingObject getLocalizedErrorMessageForItems:itemsCopy :errorCopy];
 
   v11 = [QOSAlertMessage alloc];
-  v12 = [v10 title];
-  v13 = [v10 body];
-  v14 = [(QOSAlertMessage *)v11 initWithTitle:v12 body:v13];
+  title = [v10 title];
+  body = [v10 body];
+  v14 = [(QOSAlertMessage *)v11 initWithTitle:title body:body];
 
   objc_destroyWeak(&location);
 
   return v14;
 }
 
-- (void)fetchLocalizedErrorMessageForItems:(id)a3 usingError:(id)a4 completionHandler:(id)a5
+- (void)fetchLocalizedErrorMessageForItems:(id)items usingError:(id)error completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  errorCopy = error;
+  handlerCopy = handler;
   v11 = objc_initWeak(&location, self);
-  v12 = [(QOSErrorMessage *)self underlyingObject];
+  underlyingObject = [(QOSErrorMessage *)self underlyingObject];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __83__QOSErrorMessage_fetchLocalizedErrorMessageForItems_usingError_completionHandler___block_invoke;
   v14[3] = &unk_279AD7D60;
-  v13 = v10;
+  v13 = handlerCopy;
   v15 = v13;
-  [v12 fetchLocalizedErrorMessageForItems:v8 :v9 completionHandler:v14];
+  [underlyingObject fetchLocalizedErrorMessageForItems:itemsCopy :errorCopy completionHandler:v14];
 
   objc_destroyWeak(&location);
 }

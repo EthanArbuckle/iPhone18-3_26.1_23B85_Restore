@@ -6,14 +6,14 @@
 
 - (unint64_t)shuffle
 {
-  result = [a1 count];
+  result = [self count];
   if (result >= 2)
   {
     v3 = result;
     v4 = 0;
     do
     {
-      result = [a1 exchangeObjectAtIndex:v4 withObjectAtIndex:v4 + arc4random_uniform(v3)];
+      result = [self exchangeObjectAtIndex:v4 withObjectAtIndex:v4 + arc4random_uniform(v3)];
       ++v4;
       --v3;
     }

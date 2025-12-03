@@ -1,10 +1,10 @@
 @interface ContactFieldView.Coordinator
-- (id)viewControllerContainingContactField:(id)a3;
+- (id)viewControllerContainingContactField:(id)field;
 @end
 
 @implementation ContactFieldView.Coordinator
 
-- (id)viewControllerContainingContactField:(id)a3
+- (id)viewControllerContainingContactField:(id)field
 {
   v3 = sub_274467D98();
 

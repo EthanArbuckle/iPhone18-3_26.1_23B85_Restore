@@ -6,8 +6,8 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self workflow];
-  v4 = [v3 objectForKeyedSubscript:@"WFWorkflowNoInputBehavior"];
+  workflow = [(WFWorkflowMigration *)self workflow];
+  v4 = [workflow objectForKeyedSubscript:@"WFWorkflowNoInputBehavior"];
   v5 = objc_opt_class();
   v6 = WFEnforceClass_1501(v4, v5);
   v27 = [v6 mutableCopy];
@@ -55,9 +55,9 @@
     v21 = [v16 objectForKeyedSubscript:@"AllowMultipleSelection"];
     v22 = objc_opt_class();
     v23 = WFEnforceClass_1501(v21, v22);
-    v24 = [v23 BOOLValue];
+    bOOLValue = [v23 BOOLValue];
 
-    if (!v24)
+    if (!bOOLValue)
     {
       goto LABEL_15;
     }
@@ -91,8 +91,8 @@
 LABEL_15:
     [v16 setObject:v20 forKeyedSubscript:@"SerializedParameters"];
     [v27 setObject:v16 forKeyedSubscript:@"Parameters"];
-    v26 = [(WFWorkflowMigration *)self workflow];
-    [v26 setObject:v27 forKeyedSubscript:@"WFWorkflowNoInputBehavior"];
+    workflow2 = [(WFWorkflowMigration *)self workflow];
+    [workflow2 setObject:v27 forKeyedSubscript:@"WFWorkflowNoInputBehavior"];
 
     [(WFWorkflowMigration *)self finish];
     goto LABEL_16;

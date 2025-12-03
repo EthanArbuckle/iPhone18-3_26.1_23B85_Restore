@@ -1,17 +1,17 @@
 @interface BMWritingToolsComposeAndAdjust
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMWritingToolsComposeAndAdjust)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMWritingToolsComposeAndAdjust)initWithTimestamp:(id)a3 prompt:(id)a4 identifier:(id)a5 topic:(id)a6 userInterfaceLanguage:(id)a7 userSetRegionFormat:(id)a8 result:(int)a9 feature:(int)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMWritingToolsComposeAndAdjust)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMWritingToolsComposeAndAdjust)initWithTimestamp:(id)timestamp prompt:(id)prompt identifier:(id)identifier topic:(id)topic userInterfaceLanguage:(id)language userSetRegionFormat:(id)format result:(int)result feature:(int)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)timestamp;
 - (NSString)description;
 - (NSUUID)identifier;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMWritingToolsComposeAndAdjust
@@ -42,25 +42,25 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
-    v7 = [v5 timestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    timestamp = [(BMWritingToolsComposeAndAdjust *)self timestamp];
+    timestamp2 = [v5 timestamp];
+    v8 = timestamp2;
+    if (timestamp == timestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
-      v10 = [v5 timestamp];
-      v11 = [v9 isEqual:v10];
+      timestamp3 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
+      timestamp4 = [v5 timestamp];
+      v11 = [timestamp3 isEqual:timestamp4];
 
       if (!v11)
       {
@@ -68,18 +68,18 @@
       }
     }
 
-    v13 = [(BMWritingToolsComposeAndAdjust *)self prompt];
-    v14 = [v5 prompt];
-    v15 = v14;
-    if (v13 == v14)
+    prompt = [(BMWritingToolsComposeAndAdjust *)self prompt];
+    prompt2 = [v5 prompt];
+    v15 = prompt2;
+    if (prompt == prompt2)
     {
     }
 
     else
     {
-      v16 = [(BMWritingToolsComposeAndAdjust *)self prompt];
-      v17 = [v5 prompt];
-      v18 = [v16 isEqual:v17];
+      prompt3 = [(BMWritingToolsComposeAndAdjust *)self prompt];
+      prompt4 = [v5 prompt];
+      v18 = [prompt3 isEqual:prompt4];
 
       if (!v18)
       {
@@ -87,18 +87,18 @@
       }
     }
 
-    v19 = [(BMWritingToolsComposeAndAdjust *)self identifier];
-    v20 = [v5 identifier];
-    v21 = v20;
-    if (v19 == v20)
+    identifier = [(BMWritingToolsComposeAndAdjust *)self identifier];
+    identifier2 = [v5 identifier];
+    v21 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v22 = [(BMWritingToolsComposeAndAdjust *)self identifier];
-      v23 = [v5 identifier];
-      v24 = [v22 isEqual:v23];
+      identifier3 = [(BMWritingToolsComposeAndAdjust *)self identifier];
+      identifier4 = [v5 identifier];
+      v24 = [identifier3 isEqual:identifier4];
 
       if (!v24)
       {
@@ -106,18 +106,18 @@
       }
     }
 
-    v25 = [(BMWritingToolsComposeAndAdjust *)self topic];
-    v26 = [v5 topic];
-    v27 = v26;
-    if (v25 == v26)
+    topic = [(BMWritingToolsComposeAndAdjust *)self topic];
+    topic2 = [v5 topic];
+    v27 = topic2;
+    if (topic == topic2)
     {
     }
 
     else
     {
-      v28 = [(BMWritingToolsComposeAndAdjust *)self topic];
-      v29 = [v5 topic];
-      v30 = [v28 isEqual:v29];
+      topic3 = [(BMWritingToolsComposeAndAdjust *)self topic];
+      topic4 = [v5 topic];
+      v30 = [topic3 isEqual:topic4];
 
       if (!v30)
       {
@@ -125,18 +125,18 @@
       }
     }
 
-    v31 = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
-    v32 = [v5 userInterfaceLanguage];
-    v33 = v32;
-    if (v31 == v32)
+    userInterfaceLanguage = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
+    userInterfaceLanguage2 = [v5 userInterfaceLanguage];
+    v33 = userInterfaceLanguage2;
+    if (userInterfaceLanguage == userInterfaceLanguage2)
     {
     }
 
     else
     {
-      v34 = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
-      v35 = [v5 userInterfaceLanguage];
-      v36 = [v34 isEqual:v35];
+      userInterfaceLanguage3 = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
+      userInterfaceLanguage4 = [v5 userInterfaceLanguage];
+      v36 = [userInterfaceLanguage3 isEqual:userInterfaceLanguage4];
 
       if (!v36)
       {
@@ -144,18 +144,18 @@
       }
     }
 
-    v37 = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
-    v38 = [v5 userSetRegionFormat];
-    v39 = v38;
-    if (v37 == v38)
+    userSetRegionFormat = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
+    userSetRegionFormat2 = [v5 userSetRegionFormat];
+    v39 = userSetRegionFormat2;
+    if (userSetRegionFormat == userSetRegionFormat2)
     {
     }
 
     else
     {
-      v40 = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
-      v41 = [v5 userSetRegionFormat];
-      v42 = [v40 isEqual:v41];
+      userSetRegionFormat3 = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
+      userSetRegionFormat4 = [v5 userSetRegionFormat];
+      v42 = [userSetRegionFormat3 isEqual:userSetRegionFormat4];
 
       if (!v42)
       {
@@ -163,11 +163,11 @@
       }
     }
 
-    v43 = [(BMWritingToolsComposeAndAdjust *)self result];
-    if (v43 == [v5 result])
+    result = [(BMWritingToolsComposeAndAdjust *)self result];
+    if (result == [v5 result])
     {
-      v44 = [(BMWritingToolsComposeAndAdjust *)self feature];
-      v12 = v44 == [v5 feature];
+      feature = [(BMWritingToolsComposeAndAdjust *)self feature];
+      v12 = feature == [v5 feature];
 LABEL_30:
 
       goto LABEL_31;
@@ -220,12 +220,12 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v32[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
-  if (v3)
+  timestamp = [(BMWritingToolsComposeAndAdjust *)self timestamp];
+  if (timestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
-    [v5 timeIntervalSince1970];
+    timestamp2 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
+    [timestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -234,84 +234,84 @@ LABEL_31:
     v6 = 0;
   }
 
-  v7 = [(BMWritingToolsComposeAndAdjust *)self prompt];
-  v8 = [(BMWritingToolsComposeAndAdjust *)self identifier];
-  v9 = [v8 UUIDString];
+  prompt = [(BMWritingToolsComposeAndAdjust *)self prompt];
+  identifier = [(BMWritingToolsComposeAndAdjust *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  v30 = [(BMWritingToolsComposeAndAdjust *)self topic];
-  v10 = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
-  v11 = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
+  topic = [(BMWritingToolsComposeAndAdjust *)self topic];
+  userInterfaceLanguage = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
+  userSetRegionFormat = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWritingToolsComposeAndAdjust result](self, "result")}];
   v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMWritingToolsComposeAndAdjust feature](self, "feature")}];
   v31[0] = @"timestamp";
-  v14 = v6;
+  null = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v14;
-  v32[0] = v14;
+  v26 = null;
+  v32[0] = null;
   v31[1] = @"prompt";
-  v15 = v7;
-  if (!v7)
+  null2 = prompt;
+  if (!prompt)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v15;
-  v32[1] = v15;
+  v25 = null2;
+  v32[1] = null2;
   v31[2] = @"identifier";
-  v16 = v9;
-  if (!v9)
+  null3 = uUIDString;
+  if (!uUIDString)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v16;
-  v32[2] = v16;
+  v24 = null3;
+  v32[2] = null3;
   v31[3] = @"topic";
-  v17 = v30;
-  if (!v30)
+  null4 = topic;
+  if (!topic)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v29 = v6;
-  v32[3] = v17;
+  v32[3] = null4;
   v31[4] = @"userInterfaceLanguage";
-  v18 = v10;
-  if (!v10)
+  null5 = userInterfaceLanguage;
+  if (!userInterfaceLanguage)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v7;
-  v32[4] = v18;
+  v28 = prompt;
+  v32[4] = null5;
   v31[5] = @"userSetRegionFormat";
-  v19 = v11;
-  if (!v11)
+  null6 = userSetRegionFormat;
+  if (!userSetRegionFormat)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[5] = v19;
+  v32[5] = null6;
   v31[6] = @"result";
-  v20 = v12;
+  null7 = v12;
   if (!v12)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v20;
+  v32[6] = null7;
   v31[7] = @"feature";
-  v21 = v13;
+  null8 = v13;
   if (!v13)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[7] = v21;
+  v32[7] = null8;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:8];
   if (v13)
   {
@@ -322,7 +322,7 @@ LABEL_31:
 
 LABEL_33:
 
-    if (v11)
+    if (userSetRegionFormat)
     {
       goto LABEL_23;
     }
@@ -336,7 +336,7 @@ LABEL_33:
   }
 
 LABEL_22:
-  if (v11)
+  if (userSetRegionFormat)
   {
     goto LABEL_23;
   }
@@ -344,13 +344,13 @@ LABEL_22:
 LABEL_34:
 
 LABEL_23:
-  if (!v10)
+  if (!userInterfaceLanguage)
   {
   }
 
-  if (v30)
+  if (topic)
   {
-    if (v9)
+    if (uUIDString)
     {
       goto LABEL_27;
     }
@@ -359,7 +359,7 @@ LABEL_23:
   else
   {
 
-    if (v9)
+    if (uUIDString)
     {
 LABEL_27:
       if (v28)
@@ -397,11 +397,11 @@ LABEL_29:
   return v27;
 }
 
-- (BMWritingToolsComposeAndAdjust)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMWritingToolsComposeAndAdjust)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v104[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"timestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"timestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v86 = 0;
@@ -429,14 +429,14 @@ LABEL_6:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v86 = 0;
         goto LABEL_74;
       }
 
       v61 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v62 = a4;
+      errorCopy = error;
       v63 = *MEMORY[0x1E698F240];
       v103 = *MEMORY[0x1E696A578];
       v64 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 1970), NSString (ISO8601 format), or NSDate", objc_opt_class(), @"timestamp"];
@@ -446,8 +446,8 @@ LABEL_6:
       v16 = v64;
       v66 = [v65 initWithDomain:v63 code:2 userInfo:v15];
       v86 = 0;
-      a4 = 0;
-      *v62 = v66;
+      error = 0;
+      *errorCopy = v66;
       goto LABEL_73;
     }
 
@@ -459,7 +459,7 @@ LABEL_6:
   v86 = [v14 dateFromString:v7];
 
 LABEL_9:
-  v15 = [v6 objectForKeyedSubscript:@"prompt"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"prompt"];
   if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v16 = 0;
@@ -471,7 +471,7 @@ LABEL_9:
   {
     v16 = v15;
 LABEL_12:
-    v17 = [v6 objectForKeyedSubscript:@"identifier"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     if (!v17 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v83 = 0;
@@ -481,30 +481,30 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v85 = self;
+      selfCopy = self;
       v80 = v16;
       v24 = v17;
       v25 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v24];
       if (!v25)
       {
-        if (a4)
+        if (error)
         {
           v56 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v57 = a4;
+          errorCopy2 = error;
           v58 = *MEMORY[0x1E698F240];
           v99 = *MEMORY[0x1E696A578];
           v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"-initWithUUIDString: for %@ returned nil", @"identifier"];
           v100 = v59;
           v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
-          *v57 = [v56 initWithDomain:v58 code:2 userInfo:v60];
+          *errorCopy2 = [v56 initWithDomain:v58 code:2 userInfo:v60];
 
-          a4 = 0;
+          error = 0;
         }
 
         v30 = v24;
         v17 = v24;
         v16 = v80;
-        self = v85;
+        self = selfCopy;
         goto LABEL_71;
       }
 
@@ -512,10 +512,10 @@ LABEL_12:
 
       v83 = v26;
       v16 = v80;
-      self = v85;
+      self = selfCopy;
 LABEL_15:
-      v18 = [v6 objectForKeyedSubscript:@"topic"];
-      v74 = a4;
+      v18 = [dictionaryCopy objectForKeyedSubscript:@"topic"];
+      errorCopy3 = error;
       v76 = v7;
       v77 = v18;
       if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -523,7 +523,7 @@ LABEL_15:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v82 = 0;
             v30 = v83;
@@ -541,8 +541,8 @@ LABEL_15:
           v16 = v38;
           v42 = [v41 initWithDomain:v40 code:2 userInfo:v20];
           v82 = 0;
-          a4 = 0;
-          *v74 = v42;
+          error = 0;
+          *errorCopy3 = v42;
 LABEL_69:
 
           v7 = v76;
@@ -560,13 +560,13 @@ LABEL_70:
         v82 = 0;
       }
 
-      v20 = [v6 objectForKeyedSubscript:@"userInterfaceLanguage"];
+      v20 = [dictionaryCopy objectForKeyedSubscript:@"userInterfaceLanguage"];
       if (v20 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v81 = 0;
             goto LABEL_69;
@@ -583,8 +583,8 @@ LABEL_70:
           v16 = v43;
           v47 = [v46 initWithDomain:v45 code:2 userInfo:v21];
           v81 = 0;
-          a4 = 0;
-          *v74 = v47;
+          error = 0;
+          *errorCopy3 = v47;
           goto LABEL_68;
         }
 
@@ -598,14 +598,14 @@ LABEL_70:
         v81 = 0;
       }
 
-      v21 = [v6 objectForKeyedSubscript:@"userSetRegionFormat"];
-      v84 = self;
+      v21 = [dictionaryCopy objectForKeyedSubscript:@"userSetRegionFormat"];
+      errorCopy4 = self;
       if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v78 = 0;
             goto LABEL_67;
@@ -619,11 +619,11 @@ LABEL_70:
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v92 forKeys:&v91 count:1];
           v50 = [v48 initWithDomain:v49 code:2 userInfo:v22];
           v78 = 0;
-          a4 = 0;
-          *v74 = v50;
+          error = 0;
+          *errorCopy3 = v50;
 LABEL_66:
 
-          self = v84;
+          self = errorCopy4;
 LABEL_67:
           v16 = v79;
 LABEL_68:
@@ -639,7 +639,7 @@ LABEL_68:
         v78 = 0;
       }
 
-      v22 = [v6 objectForKeyedSubscript:@"result"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"result"];
       if (v22 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -653,7 +653,7 @@ LABEL_68:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v23 = 0;
               goto LABEL_66;
@@ -667,8 +667,8 @@ LABEL_68:
             v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v90 forKeys:&v89 count:1];
             v68 = [v72 initWithDomain:v67 code:2 userInfo:v51];
             v23 = 0;
-            a4 = 0;
-            *v74 = v68;
+            error = 0;
+            *errorCopy3 = v68;
             goto LABEL_65;
           }
 
@@ -683,7 +683,7 @@ LABEL_68:
         v23 = 0;
       }
 
-      v51 = [v6 objectForKeyedSubscript:@"feature"];
+      v51 = [dictionaryCopy objectForKeyedSubscript:@"feature"];
       if (v51 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -697,7 +697,7 @@ LABEL_68:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
               v73 = objc_alloc(MEMORY[0x1E696ABC0]);
               v71 = *MEMORY[0x1E698F240];
@@ -705,11 +705,11 @@ LABEL_68:
               v69 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"feature"];
               v88 = v69;
               v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-              *v74 = [v73 initWithDomain:v71 code:2 userInfo:v70];
+              *errorCopy3 = [v73 initWithDomain:v71 code:2 userInfo:v70];
             }
 
             v52 = 0;
-            a4 = 0;
+            error = 0;
             goto LABEL_65;
           }
 
@@ -724,14 +724,14 @@ LABEL_68:
         v52 = 0;
       }
 
-      a4 = -[BMWritingToolsComposeAndAdjust initWithTimestamp:prompt:identifier:topic:userInterfaceLanguage:userSetRegionFormat:result:feature:](v84, "initWithTimestamp:prompt:identifier:topic:userInterfaceLanguage:userSetRegionFormat:result:feature:", v86, v79, v83, v82, v81, v78, __PAIR64__([v52 intValue], objc_msgSend(v23, "intValue")));
-      v84 = a4;
+      error = -[BMWritingToolsComposeAndAdjust initWithTimestamp:prompt:identifier:topic:userInterfaceLanguage:userSetRegionFormat:result:feature:](errorCopy4, "initWithTimestamp:prompt:identifier:topic:userInterfaceLanguage:userSetRegionFormat:result:feature:", v86, v79, v83, v82, v81, v78, __PAIR64__([v52 intValue], objc_msgSend(v23, "intValue")));
+      errorCopy4 = error;
 LABEL_65:
 
       goto LABEL_66;
     }
 
-    if (!a4)
+    if (!error)
     {
 LABEL_72:
 
@@ -740,7 +740,7 @@ LABEL_72:
 
     v32 = v16;
     v33 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v75 = a4;
+    errorCopy5 = error;
     v34 = *MEMORY[0x1E698F240];
     v97 = *MEMORY[0x1E696A578];
     v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"identifier"];
@@ -748,18 +748,18 @@ LABEL_72:
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
     v36 = v33;
     v16 = v32;
-    *v75 = [v36 initWithDomain:v34 code:2 userInfo:v35];
+    *errorCopy5 = [v36 initWithDomain:v34 code:2 userInfo:v35];
 
-    a4 = 0;
+    error = 0;
 LABEL_71:
 
     goto LABEL_72;
   }
 
-  if (a4)
+  if (error)
   {
     v27 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v28 = a4;
+    errorCopy6 = error;
     v29 = *MEMORY[0x1E698F240];
     v101 = *MEMORY[0x1E696A578];
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"prompt"];
@@ -767,8 +767,8 @@ LABEL_71:
     v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
     v31 = [v27 initWithDomain:v29 code:2 userInfo:v30];
     v16 = 0;
-    a4 = 0;
-    *v28 = v31;
+    error = 0;
+    *errorCopy6 = v31;
     goto LABEL_71;
   }
 
@@ -777,21 +777,21 @@ LABEL_73:
 
 LABEL_74:
   v54 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMWritingToolsComposeAndAdjust *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_hasRaw_timestamp)
   {
     raw_timestamp = self->_raw_timestamp;
@@ -829,9 +829,9 @@ LABEL_74:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMWritingToolsComposeAndAdjust;
   v5 = [(BMEventBase *)&v39 init];
@@ -840,12 +840,12 @@ LABEL_74:
     goto LABEL_74;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_72;
       }
@@ -856,18 +856,18 @@ LABEL_74:
       while (1)
       {
         LOBYTE(v40) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v40) & 0x7F) << v7;
@@ -884,9 +884,9 @@ LABEL_74:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_72;
       }
@@ -927,18 +927,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v40) = 0;
-          v31 = [v4 position] + 1;
-          if (v31 >= [v4 position] && (v32 = objc_msgSend(v4, "position") + 1, v32 <= objc_msgSend(v4, "length")))
+          v31 = [fromCopy position] + 1;
+          if (v31 >= [fromCopy position] && (v32 = objc_msgSend(fromCopy, "position") + 1, v32 <= objc_msgSend(fromCopy, "length")))
           {
-            v33 = [v4 data];
-            [v33 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (LOBYTE(v40) & 0x7F) << v29;
@@ -955,7 +955,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v20 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v20 > 3)
         {
 LABEL_62:
           LODWORD(v20) = 0;
@@ -983,18 +983,18 @@ LABEL_58:
         while (1)
         {
           LOBYTE(v40) = 0;
-          v21 = [v4 position] + 1;
-          if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+          v21 = [fromCopy position] + 1;
+          if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
           {
-            v23 = [v4 data];
-            [v23 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v20 |= (LOBYTE(v40) & 0x7F) << v18;
@@ -1011,7 +1011,7 @@ LABEL_58:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v20 > 2)
+        if (([fromCopy hasError] & 1) != 0 || v20 > 2)
         {
 LABEL_66:
           LODWORD(v20) = 0;
@@ -1022,8 +1022,8 @@ LABEL_66:
 
       *(&v5->super.super.isa + v34) = v20;
 LABEL_71:
-      v36 = [v4 position];
-      if (v36 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_72;
       }
@@ -1060,18 +1060,18 @@ LABEL_71:
       {
         v5->_hasRaw_timestamp = 1;
         v40 = 0.0;
-        v25 = [v4 position] + 8;
-        if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+        v25 = [fromCopy position] + 8;
+        if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
         {
-          v35 = [v4 data];
-          [v35 getBytes:&v40 range:{objc_msgSend(v4, "position"), 8}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_raw_timestamp = v40;
@@ -1096,7 +1096,7 @@ LABEL_46:
   }
 
 LABEL_72:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_73:
     v37 = 0;
@@ -1114,38 +1114,38 @@ LABEL_74:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMWritingToolsComposeAndAdjust *)self timestamp];
-  v5 = [(BMWritingToolsComposeAndAdjust *)self prompt];
-  v6 = [(BMWritingToolsComposeAndAdjust *)self identifier];
-  v7 = [(BMWritingToolsComposeAndAdjust *)self topic];
-  v8 = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
-  v9 = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
+  timestamp = [(BMWritingToolsComposeAndAdjust *)self timestamp];
+  prompt = [(BMWritingToolsComposeAndAdjust *)self prompt];
+  identifier = [(BMWritingToolsComposeAndAdjust *)self identifier];
+  topic = [(BMWritingToolsComposeAndAdjust *)self topic];
+  userInterfaceLanguage = [(BMWritingToolsComposeAndAdjust *)self userInterfaceLanguage];
+  userSetRegionFormat = [(BMWritingToolsComposeAndAdjust *)self userSetRegionFormat];
   v10 = BMWritingToolsComposeAndAdjustResultAsString([(BMWritingToolsComposeAndAdjust *)self result]);
   v11 = BMWritingToolsComposeAndAdjustFeatureAsString([(BMWritingToolsComposeAndAdjust *)self feature]);
-  v12 = [v3 initWithFormat:@"BMWritingToolsComposeAndAdjust with timestamp: %@, prompt: %@, identifier: %@, topic: %@, userInterfaceLanguage: %@, userSetRegionFormat: %@, result: %@, feature: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  v12 = [v3 initWithFormat:@"BMWritingToolsComposeAndAdjust with timestamp: %@, prompt: %@, identifier: %@, topic: %@, userInterfaceLanguage: %@, userSetRegionFormat: %@, result: %@, feature: %@", timestamp, prompt, identifier, topic, userInterfaceLanguage, userSetRegionFormat, v10, v11];
 
   return v12;
 }
 
-- (BMWritingToolsComposeAndAdjust)initWithTimestamp:(id)a3 prompt:(id)a4 identifier:(id)a5 topic:(id)a6 userInterfaceLanguage:(id)a7 userSetRegionFormat:(id)a8 result:(int)a9 feature:(int)a10
+- (BMWritingToolsComposeAndAdjust)initWithTimestamp:(id)timestamp prompt:(id)prompt identifier:(id)identifier topic:(id)topic userInterfaceLanguage:(id)language userSetRegionFormat:(id)format result:(int)result feature:(int)self0
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v27 = a7;
-  v20 = a8;
+  timestampCopy = timestamp;
+  promptCopy = prompt;
+  identifierCopy = identifier;
+  topicCopy = topic;
+  languageCopy = language;
+  formatCopy = format;
   v28.receiver = self;
   v28.super_class = BMWritingToolsComposeAndAdjust;
   v21 = [(BMEventBase *)&v28 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v16)
+    if (timestampCopy)
     {
       v21->_hasRaw_timestamp = 1;
-      [v16 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -1155,12 +1155,12 @@ LABEL_74:
     }
 
     v21->_raw_timestamp = v22;
-    objc_storeStrong(&v21->_prompt, a4);
-    if (v18)
+    objc_storeStrong(&v21->_prompt, prompt);
+    if (identifierCopy)
     {
       v29[0] = 0;
       v29[1] = 0;
-      [v18 getUUIDBytes:v29];
+      [identifierCopy getUUIDBytes:v29];
       v23 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:v29 length:16];
       raw_identifier = v21->_raw_identifier;
       v21->_raw_identifier = v23;
@@ -1172,11 +1172,11 @@ LABEL_74:
       v21->_raw_identifier = 0;
     }
 
-    objc_storeStrong(&v21->_topic, a6);
-    objc_storeStrong(&v21->_userInterfaceLanguage, a7);
-    objc_storeStrong(&v21->_userSetRegionFormat, a8);
-    v21->_result = a9;
-    v21->_feature = a10;
+    objc_storeStrong(&v21->_topic, topic);
+    objc_storeStrong(&v21->_userInterfaceLanguage, language);
+    objc_storeStrong(&v21->_userSetRegionFormat, format);
+    v21->_result = result;
+    v21->_feature = feature;
   }
 
   v25 = *MEMORY[0x1E69E9840];
@@ -1209,9 +1209,9 @@ LABEL_74:
   return v10;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1219,8 +1219,8 @@ LABEL_74:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMWritingToolsComposeAndAdjust alloc] initByReadFrom:v7];
     v4 = v8;

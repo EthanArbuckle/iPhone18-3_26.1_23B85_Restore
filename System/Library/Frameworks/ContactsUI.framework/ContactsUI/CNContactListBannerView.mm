@@ -1,25 +1,25 @@
 @interface CNContactListBannerView
 + (id)descriptorForRequiredKeys;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)displaysContactInfo;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CNContactListBannerView)init;
 - (CNContactListBannerViewDelegate)delegate;
 - (double)avatarLeadingMargin;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
 - (void)activatePendingConstraints;
-- (void)cellWasLongPressed:(id)a3;
-- (void)cellWasSingleTapped:(id)a3;
+- (void)cellWasLongPressed:(id)pressed;
+- (void)cellWasSingleTapped:(id)tapped;
 - (void)configureDragInteraction;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)dealloc;
-- (void)menuDidHide:(id)a3;
-- (void)setAvatarView:(id)a3;
-- (void)setContactListStyleApplier:(id)a3;
-- (void)setMeContact:(id)a3 footnoteTitle:(id)a4 footnoteValue:(id)a5;
-- (void)setTopSeparatorWithInset:(double)a3 andLength:(double)a4;
+- (void)menuDidHide:(id)hide;
+- (void)setAvatarView:(id)view;
+- (void)setContactListStyleApplier:(id)applier;
+- (void)setMeContact:(id)contact footnoteTitle:(id)title footnoteValue:(id)value;
+- (void)setTopSeparatorWithInset:(double)inset andLength:(double)length;
 - (void)showMenu;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateFontRelatedConstraints;
 @end
 
@@ -91,8 +91,8 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
     v2->_footnoteContainer = v12;
 
     [(UIView *)v2->_footnoteContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v2->_footnoteContainer setBackgroundColor:v14];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v2->_footnoteContainer setBackgroundColor:clearColor];
 
     [v9 addSubview:v2->_footnoteContainer];
     v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -122,26 +122,26 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
     v71[5] = v9;
     v65 = v9;
     v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:v70 count:6];
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v67 = [MEMORY[0x1E696ACD8] constraintWithItem:v2 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     LODWORD(v21) = 1132068864;
     [v67 setPriority:v21];
-    [(NSArray *)v20 addObject:v67];
+    [(NSArray *)array addObject:v67];
     v22 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_avatarViewContainer attribute:10 relatedBy:0 toItem:v2 attribute:10 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v22];
+    [(NSArray *)array addObject:v22];
 
     v23 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_avatarViewContainer attribute:8 relatedBy:-1 toItem:v2 attribute:8 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v23];
+    [(NSArray *)array addObject:v23];
 
     v24 = MEMORY[0x1E696ACD8];
     v25 = v2->_avatarViewContainer;
-    v26 = [(CNContactListBannerView *)v2 layoutMarginsGuide];
+    layoutMarginsGuide = [(CNContactListBannerView *)v2 layoutMarginsGuide];
     [(CNContactListBannerView *)v2 avatarLeadingMargin];
-    v28 = [v24 constraintWithItem:v25 attribute:5 relatedBy:0 toItem:v26 attribute:5 multiplier:1.0 constant:v27];
+    v28 = [v24 constraintWithItem:v25 attribute:5 relatedBy:0 toItem:layoutMarginsGuide attribute:5 multiplier:1.0 constant:v27];
     avatarViewContainerLeadingConstraint = v2->_avatarViewContainerLeadingConstraint;
     v2->_avatarViewContainerLeadingConstraint = v28;
 
-    [(NSArray *)v20 addObject:v2->_avatarViewContainerLeadingConstraint];
+    [(NSArray *)array addObject:v2->_avatarViewContainerLeadingConstraint];
     LODWORD(v30) = 1132068864;
     [(UIView *)v2->_avatarViewContainer setContentHuggingPriority:1 forAxis:v30];
     LODWORD(v31) = 1148846080;
@@ -153,71 +153,71 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
     v66 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_avatarViewContainer attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     LODWORD(v34) = 1132068864;
     [v66 setPriority:v34];
-    [(NSArray *)v20 addObject:v66];
+    [(NSArray *)array addObject:v66];
     v35 = [MEMORY[0x1E696ACD8] constraintWithItem:v9 attribute:10 relatedBy:0 toItem:v2 attribute:10 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v35];
+    [(NSArray *)array addObject:v35];
 
     v36 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_titleLabel attribute:3 relatedBy:1 toItem:v2 attribute:3 multiplier:1.0 constant:10.0];
-    [(NSArray *)v20 addObject:v36];
+    [(NSArray *)array addObject:v36];
 
     LODWORD(v37) = 1148846080;
     [(UILabel *)v2->_titleLabel setContentCompressionResistancePriority:1 forAxis:v37];
     v38 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_titleLabel attribute:5 relatedBy:0 toItem:v2->_avatarViewContainer attribute:6 multiplier:1.0 constant:10.0];
-    [(NSArray *)v20 addObject:v38];
+    [(NSArray *)array addObject:v38];
 
     v39 = MEMORY[0x1E696ACD8];
     v40 = v2->_titleLabel;
-    v41 = [(CNContactListBannerView *)v2 layoutMarginsGuide];
-    v42 = [v39 constraintWithItem:v40 attribute:6 relatedBy:-1 toItem:v41 attribute:6 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v42];
+    layoutMarginsGuide2 = [(CNContactListBannerView *)v2 layoutMarginsGuide];
+    v42 = [v39 constraintWithItem:v40 attribute:6 relatedBy:-1 toItem:layoutMarginsGuide2 attribute:6 multiplier:1.0 constant:0.0];
+    [(NSArray *)array addObject:v42];
 
     v43 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[title]" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v43];
+    [(NSArray *)array addObjectsFromArray:v43];
 
     v44 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[title]|" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v44];
+    [(NSArray *)array addObjectsFromArray:v44];
 
     v45 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_footnoteLabel attribute:12 relatedBy:0 toItem:v2->_titleLabel attribute:11 multiplier:1.0 constant:0.0];
     footnoteTitleToTitleVerticalConstraint = v2->_footnoteTitleToTitleVerticalConstraint;
     v2->_footnoteTitleToTitleVerticalConstraint = v45;
 
-    [(NSArray *)v20 addObject:v2->_footnoteTitleToTitleVerticalConstraint];
+    [(NSArray *)array addObject:v2->_footnoteTitleToTitleVerticalConstraint];
     v47 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_footnoteLabel attribute:4 relatedBy:-1 toItem:v2 attribute:4 multiplier:1.0 constant:-10.0];
-    [(NSArray *)v20 addObject:v47];
+    [(NSArray *)array addObject:v47];
 
     v48 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[footnoteTitle]" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v48];
+    [(NSArray *)array addObjectsFromArray:v48];
 
     v49 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:[footnoteValue]|" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v49];
+    [(NSArray *)array addObjectsFromArray:v49];
 
     v50 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_footnoteValueLabel attribute:10 relatedBy:0 toItem:v2->_footnoteLabel attribute:10 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v50];
+    [(NSArray *)array addObject:v50];
 
     v51 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_footnoteLabel attribute:6 relatedBy:0 toItem:v2->_footnoteValueLabel attribute:5 multiplier:1.0 constant:0.0];
     footnoteTitleToValueHorizontalSpaceConstraint = v2->_footnoteTitleToValueHorizontalSpaceConstraint;
     v2->_footnoteTitleToValueHorizontalSpaceConstraint = v51;
 
-    [(NSArray *)v20 addObject:v2->_footnoteTitleToValueHorizontalSpaceConstraint];
+    [(NSArray *)array addObject:v2->_footnoteTitleToValueHorizontalSpaceConstraint];
     LODWORD(v53) = 1144750080;
     [(UILabel *)v2->_footnoteLabel setContentHuggingPriority:0 forAxis:v53];
     v54 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[footnoteTitle]|" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v54];
+    [(NSArray *)array addObjectsFromArray:v54];
 
     v55 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->_footnoteContainer attribute:5 relatedBy:0 toItem:v2->_avatarViewContainer attribute:6 multiplier:1.0 constant:10.0];
-    [(NSArray *)v20 addObject:v55];
+    [(NSArray *)array addObject:v55];
 
     v56 = MEMORY[0x1E696ACD8];
     v57 = v2->_footnoteContainer;
-    v58 = [(CNContactListBannerView *)v2 layoutMarginsGuide];
-    v59 = [v56 constraintWithItem:v57 attribute:6 relatedBy:0 toItem:v58 attribute:6 multiplier:1.0 constant:0.0];
-    [(NSArray *)v20 addObject:v59];
+    layoutMarginsGuide3 = [(CNContactListBannerView *)v2 layoutMarginsGuide];
+    v59 = [v56 constraintWithItem:v57 attribute:6 relatedBy:0 toItem:layoutMarginsGuide3 attribute:6 multiplier:1.0 constant:0.0];
+    [(NSArray *)array addObject:v59];
 
     v60 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[footnoteContainer]|" options:0 metrics:0 views:v64];
-    [(NSArray *)v20 addObjectsFromArray:v60];
+    [(NSArray *)array addObjectsFromArray:v60];
 
     constraintsPendingActivation = v2->_constraintsPendingActivation;
-    v2->_constraintsPendingActivation = v20;
+    v2->_constraintsPendingActivation = array;
 
     v62 = v2;
   }
@@ -227,33 +227,33 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
 
 - (BOOL)displaysContactInfo
 {
-  v2 = [(CNContactListBannerView *)self meContact];
-  v3 = v2 != 0;
+  meContact = [(CNContactListBannerView *)self meContact];
+  v3 = meContact != 0;
 
   return v3;
 }
 
 - (void)updateFontRelatedConstraints
 {
-  v3 = [(CNContactListBannerView *)self contactListStyleApplier];
-  v4 = [(CNContactListBannerView *)self titleLabel];
-  [v3 applyContactListStyleToBannerTitle:v4 primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
+  contactListStyleApplier = [(CNContactListBannerView *)self contactListStyleApplier];
+  titleLabel = [(CNContactListBannerView *)self titleLabel];
+  [contactListStyleApplier applyContactListStyleToBannerTitle:titleLabel primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
 
-  v5 = [(CNContactListBannerView *)self contactListStyleApplier];
-  v6 = [(CNContactListBannerView *)self footnoteLabel];
-  [v5 applyContactListStyleToBannerFootnote:v6 primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
+  contactListStyleApplier2 = [(CNContactListBannerView *)self contactListStyleApplier];
+  footnoteLabel = [(CNContactListBannerView *)self footnoteLabel];
+  [contactListStyleApplier2 applyContactListStyleToBannerFootnote:footnoteLabel primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
 
-  v7 = [(CNContactListBannerView *)self contactListStyleApplier];
-  v8 = [(CNContactListBannerView *)self footnoteValueLabel];
-  [v7 applyContactListStyleToBannerFootnote:v8 primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
+  contactListStyleApplier3 = [(CNContactListBannerView *)self contactListStyleApplier];
+  footnoteValueLabel = [(CNContactListBannerView *)self footnoteValueLabel];
+  [contactListStyleApplier3 applyContactListStyleToBannerFootnote:footnoteValueLabel primaryAppearance:{-[CNContactListBannerView displaysContactInfo](self, "displaysContactInfo")}];
 
-  v9 = [(CNContactListBannerView *)self footnoteLabel];
-  v10 = [v9 font];
-  [v10 _scaledValueForValue:20.0];
+  footnoteLabel2 = [(CNContactListBannerView *)self footnoteLabel];
+  font = [footnoteLabel2 font];
+  [font _scaledValueForValue:20.0];
   v12 = v11;
 
-  v13 = [(CNContactListBannerView *)self footnoteTitleToTitleVerticalConstraint];
-  [v13 setConstant:v12];
+  footnoteTitleToTitleVerticalConstraint = [(CNContactListBannerView *)self footnoteTitleToTitleVerticalConstraint];
+  [footnoteTitleToTitleVerticalConstraint setConstant:v12];
 
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
@@ -265,20 +265,20 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
     v14 = 1;
   }
 
-  v15 = [(CNContactListBannerView *)self titleLabel];
-  [v15 setNumberOfLines:v14];
+  titleLabel2 = [(CNContactListBannerView *)self titleLabel];
+  [titleLabel2 setNumberOfLines:v14];
 }
 
 - (void)activatePendingConstraints
 {
-  v3 = [(CNContactListBannerView *)self constraintsPendingActivation];
-  v4 = [v3 count];
+  constraintsPendingActivation = [(CNContactListBannerView *)self constraintsPendingActivation];
+  v4 = [constraintsPendingActivation count];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD8];
-    v6 = [(CNContactListBannerView *)self constraintsPendingActivation];
-    [v5 activateConstraints:v6];
+    constraintsPendingActivation2 = [(CNContactListBannerView *)self constraintsPendingActivation];
+    [v5 activateConstraints:constraintsPendingActivation2];
 
     v7 = MEMORY[0x1E695E0F0];
 
@@ -290,11 +290,11 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
 {
   if ([MEMORY[0x1E69DC988] isEnabledByDefault])
   {
-    v3 = [(CNContactListBannerView *)self meContact];
+    meContact = [(CNContactListBannerView *)self meContact];
 
-    v4 = [(CNContactListBannerView *)self dragInteraction];
-    v8 = v4;
-    if (v3)
+    dragInteraction = [(CNContactListBannerView *)self dragInteraction];
+    v8 = dragInteraction;
+    if (meContact)
     {
 
       if (!v8)
@@ -302,12 +302,12 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
         v5 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:self];
         [(CNContactListBannerView *)self setDragInteraction:v5];
 
-        v6 = [(CNContactListBannerView *)self dragInteraction];
-        [(CNContactListBannerView *)self addInteraction:v6];
+        dragInteraction2 = [(CNContactListBannerView *)self dragInteraction];
+        [(CNContactListBannerView *)self addInteraction:dragInteraction2];
       }
 
-      v4 = [(CNContactListBannerView *)self dragInteraction];
-      v8 = v4;
+      dragInteraction = [(CNContactListBannerView *)self dragInteraction];
+      v8 = dragInteraction;
       v7 = 1;
     }
 
@@ -316,7 +316,7 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
       v7 = 0;
     }
 
-    [v4 setEnabled:v7];
+    [dragInteraction setEnabled:v7];
   }
 }
 
@@ -327,21 +327,21 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
   return WeakRetained;
 }
 
-- (void)cellWasSingleTapped:(id)a3
+- (void)cellWasSingleTapped:(id)tapped
 {
-  v4 = [(CNContactListBannerView *)self meContact];
+  meContact = [(CNContactListBannerView *)self meContact];
 
-  if (v4)
+  if (meContact)
   {
-    v6 = [(CNContactListBannerView *)self delegate];
-    v5 = [(CNContactListBannerView *)self meContact];
-    [v6 bannerView:self wasSelectedToPresentMeContact:v5];
+    delegate = [(CNContactListBannerView *)self delegate];
+    meContact2 = [(CNContactListBannerView *)self meContact];
+    [delegate bannerView:self wasSelectedToPresentMeContact:meContact2];
   }
 }
 
-- (void)cellWasLongPressed:(id)a3
+- (void)cellWasLongPressed:(id)pressed
 {
-  if ([a3 state] == 1 && -[CNContactListBannerView becomeFirstResponder](self, "becomeFirstResponder"))
+  if ([pressed state] == 1 && -[CNContactListBannerView becomeFirstResponder](self, "becomeFirstResponder"))
   {
 
     [(CNContactListBannerView *)self showMenu];
@@ -350,36 +350,36 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
 
 - (void)showMenu
 {
-  v4 = [MEMORY[0x1E69DCC68] sharedMenuController];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
   [(CNContactListBannerView *)self bounds];
-  [v4 setTargetRect:self inView:?];
-  [v4 setMenuVisible:1 animated:1];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_menuDidHide_ name:*MEMORY[0x1E69DE0E0] object:v4];
+  [mEMORY[0x1E69DCC68] setTargetRect:self inView:?];
+  [mEMORY[0x1E69DCC68] setMenuVisible:1 animated:1];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_menuDidHide_ name:*MEMORY[0x1E69DE0E0] object:mEMORY[0x1E69DCC68]];
 }
 
-- (void)menuDidHide:(id)a3
+- (void)menuDidHide:(id)hide
 {
   [(CNContactListBannerView *)self resignFirstResponder];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(CNContactListBannerView *)self footnoteValueLabel];
-  v5 = [v3 text];
+  footnoteValueLabel = [(CNContactListBannerView *)self footnoteValueLabel];
+  text = [footnoteValueLabel text];
 
-  if (v5)
+  if (text)
   {
-    v4 = [MEMORY[0x1E69DCD50] generalPasteboard];
-    [v4 setString:v5];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+    [generalPasteboard setString:text];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
     return 1;
   }
@@ -391,12 +391,12 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
   return [CNContactListBannerView canPerformAction:sel_canPerformAction_withSender_ withSender:?];
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [(CNContactListBannerView *)self meContact:a3];
-  v6 = [(CNContactListBannerView *)self contactStore];
-  v7 = [CNUIDraggingContacts dragItemForContact:v5 withContactStore:v6];
+  v5 = [(CNContactListBannerView *)self meContact:interaction];
+  contactStore = [(CNContactListBannerView *)self contactStore];
+  v7 = [CNUIDraggingContacts dragItemForContact:v5 withContactStore:contactStore];
   v10[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
 
@@ -405,63 +405,63 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
 
 - (double)avatarLeadingMargin
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (!v5)
   {
     return 0.0;
   }
 
-  v6 = [(CNContactListBannerView *)self contactListStyleApplier];
-  v7 = [v6 contactListStyle];
-  v8 = [(CNContactListBannerView *)self traitCollection];
-  v9 = [v7 listAppearanceForTraitCollection:v8];
+  contactListStyleApplier = [(CNContactListBannerView *)self contactListStyleApplier];
+  contactListStyle = [contactListStyleApplier contactListStyle];
+  traitCollection = [(CNContactListBannerView *)self traitCollection];
+  v9 = [contactListStyle listAppearanceForTraitCollection:traitCollection];
 
-  v10 = [(CNContactListBannerView *)self contactListStyleApplier];
-  v11 = [v10 contactListStyle];
-  [v11 meBannerAvatarLeadingInsetForListAppearance:v9];
+  contactListStyleApplier2 = [(CNContactListBannerView *)self contactListStyleApplier];
+  contactListStyle2 = [contactListStyleApplier2 contactListStyle];
+  [contactListStyle2 meBannerAvatarLeadingInsetForListAppearance:v9];
   v13 = v12;
 
   return v13;
 }
 
-- (void)setTopSeparatorWithInset:(double)a3 andLength:(double)a4
+- (void)setTopSeparatorWithInset:(double)inset andLength:(double)length
 {
   if (!self->_topSeparator)
   {
-    v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v8 = [v7 featureFlags];
-    v9 = [v8 isFeatureEnabled:29];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    v9 = [featureFlags isFeatureEnabled:29];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [MEMORY[0x1E6979398] layer];
+      layer = [MEMORY[0x1E6979398] layer];
       topSeparator = self->_topSeparator;
-      self->_topSeparator = v10;
+      self->_topSeparator = layer;
 
       v12 = +[CNUIColorRepository contactStyleDefaultSeparatorColor];
       -[CALayer setBackgroundColor:](self->_topSeparator, "setBackgroundColor:", [v12 CGColor]);
     }
   }
 
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 scale];
-  [(CALayer *)self->_topSeparator setFrame:a3, 0.0, a4, 1.0 / v14];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  [(CALayer *)self->_topSeparator setFrame:inset, 0.0, length, 1.0 / v14];
 
-  v15 = [(CNContactListBannerView *)self layer];
-  [v15 addSublayer:self->_topSeparator];
+  layer2 = [(CNContactListBannerView *)self layer];
+  [layer2 addSublayer:self->_topSeparator];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CNContactListBannerView;
-  v4 = a3;
-  [(CNContactListBannerView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CNContactListBannerView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CNContactListBannerView *)self traitCollection:v8.receiver];
-  v6 = [v4 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  v6 = [changeCopy hasDifferentColorAppearanceComparedToTraitCollection:v5];
 
   if (v6)
   {
@@ -473,33 +473,33 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
   [(NSLayoutConstraint *)self->_avatarViewContainerLeadingConstraint setConstant:?];
 }
 
-- (void)setMeContact:(id)a3 footnoteTitle:(id)a4 footnoteValue:(id)a5
+- (void)setMeContact:(id)contact footnoteTitle:(id)title footnoteValue:(id)value
 {
-  v23 = a4;
-  v9 = a5;
-  [(CNContactListBannerView *)self setMeContact:a3];
+  titleCopy = title;
+  valueCopy = value;
+  [(CNContactListBannerView *)self setMeContact:contact];
   v10 = *MEMORY[0x1E6996568];
-  v11 = (*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v23);
-  v12 = v23;
+  v11 = (*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], titleCopy);
+  v12 = titleCopy;
   if (v11)
   {
     v5 = CNContactsUIBundle();
     v12 = [v5 localizedStringForKey:@"MY_CARD" value:&stru_1F0CE7398 table:@"Localized"];
   }
 
-  v13 = [(CNContactListBannerView *)self footnoteLabel];
-  [v13 setText:v12];
+  footnoteLabel = [(CNContactListBannerView *)self footnoteLabel];
+  [footnoteLabel setText:v12];
 
   if (v11)
   {
   }
 
-  v14 = [(CNContactListBannerView *)self footnoteValueLabel];
-  [v14 setText:v9];
+  footnoteValueLabel = [(CNContactListBannerView *)self footnoteValueLabel];
+  [footnoteValueLabel setText:valueCopy];
 
-  v15 = (*(v10 + 16))(v10, v9);
-  v16 = [(CNContactListBannerView *)self longPress];
-  [v16 setEnabled:v15 ^ 1u];
+  v15 = (*(v10 + 16))(v10, valueCopy);
+  longPress = [(CNContactListBannerView *)self longPress];
+  [longPress setEnabled:v15 ^ 1u];
 
   if (v15)
   {
@@ -511,22 +511,22 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
     v17 = -5.0;
   }
 
-  v18 = [(CNContactListBannerView *)self footnoteTitleToValueHorizontalSpaceConstraint];
-  [v18 setConstant:v17];
+  footnoteTitleToValueHorizontalSpaceConstraint = [(CNContactListBannerView *)self footnoteTitleToValueHorizontalSpaceConstraint];
+  [footnoteTitleToValueHorizontalSpaceConstraint setConstant:v17];
 
   if ([(CNContactListBannerView *)self displaysContactInfo])
   {
-    v19 = [(CNContactListBannerView *)self formatter];
-    v20 = [(CNContactListBannerView *)self meContact];
-    v21 = [v19 stringFromContact:v20];
-    v22 = [(CNContactListBannerView *)self titleLabel];
-    [v22 setText:v21];
+    formatter = [(CNContactListBannerView *)self formatter];
+    meContact = [(CNContactListBannerView *)self meContact];
+    v21 = [formatter stringFromContact:meContact];
+    titleLabel = [(CNContactListBannerView *)self titleLabel];
+    [titleLabel setText:v21];
   }
 
   else
   {
-    v19 = [(CNContactListBannerView *)self titleLabel];
-    [v19 setText:0];
+    formatter = [(CNContactListBannerView *)self titleLabel];
+    [formatter setText:0];
   }
 
   [(CNContactListBannerView *)self updateFontRelatedConstraints];
@@ -534,33 +534,33 @@ void __52__CNContactListBannerView_descriptorForRequiredKeys__block_invoke()
   [(CNContactListBannerView *)self configureDragInteraction];
 }
 
-- (void)setAvatarView:(id)a3
+- (void)setAvatarView:(id)view
 {
-  firstValue = a3;
+  firstValue = view;
   [(UIView *)self->_avatarView removeFromSuperview];
-  objc_storeStrong(&self->_avatarView, a3);
+  objc_storeStrong(&self->_avatarView, view);
   if (firstValue)
   {
     [firstValue setTranslatesAutoresizingMaskIntoConstraints:0];
     v5 = _NSDictionaryOfVariableBindings(&cfstr_Avatarview.isa, firstValue, 0);
-    v6 = [(CNContactListBannerView *)self avatarViewContainer];
-    [v6 addSubview:firstValue];
+    avatarViewContainer = [(CNContactListBannerView *)self avatarViewContainer];
+    [avatarViewContainer addSubview:firstValue];
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|[avatarView(avatarSize)]|" options:0 metrics:&unk_1F0D4BB38 views:v5];
-    [v7 addObjectsFromArray:v8];
+    [array addObjectsFromArray:v8];
 
     v9 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(verticalMargin)-[avatarView(avatarSize)]-(verticalMargin)-|" options:0 metrics:&unk_1F0D4BB38 views:v5];
-    [v7 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v7];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory])
   {
     [(UILabel *)self->_titleLabel setPreferredMaxLayoutWidth:floor(width + -40.0 + -20.0)];
@@ -570,9 +570,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = [(CNContactListBannerView *)self avatarView];
+  avatarView = [(CNContactListBannerView *)self avatarView];
 
-  if (!v6)
+  if (!avatarView)
   {
     goto LABEL_5;
   }
@@ -585,17 +585,17 @@ LABEL_6:
   return result;
 }
 
-- (void)setContactListStyleApplier:(id)a3
+- (void)setContactListStyleApplier:(id)applier
 {
-  objc_storeStrong(&self->_contactListStyleApplier, a3);
+  objc_storeStrong(&self->_contactListStyleApplier, applier);
 
   [(CNContactListBannerView *)self applyStyle];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNContactListBannerView;

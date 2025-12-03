@@ -1,20 +1,20 @@
 @interface HDDatabaseLegacyJournalFile
-+ (id)_loadJournalEntry:(uint64_t)a1;
-+ (uint64_t)_processOkemoJournalWithVersion:(uint64_t)a1 fileHandle:(void *)a2 mapping:(uint64_t)a3 size:(uint64_t)a4 headerLength:(uint64_t)a5 profile:(void *)a6 error:(uint64_t)a7 handler:(void *)a8;
-- (BOOL)appendData:(id)a3 entryClass:(Class)a4 error:(id *)a5;
-- (BOOL)createAndOpenForWritingWithError:(id *)a3;
-- (BOOL)flushDataToDisk:(id *)a3;
-- (BOOL)openForReadingWithError:(id *)a3;
-- (BOOL)removeWithError:(id *)a3;
++ (id)_loadJournalEntry:(uint64_t)entry;
++ (uint64_t)_processOkemoJournalWithVersion:(uint64_t)version fileHandle:(void *)handle mapping:(uint64_t)mapping size:(uint64_t)size headerLength:(uint64_t)length profile:(void *)profile error:(uint64_t)error handler:(void *)handler;
+- (BOOL)appendData:(id)data entryClass:(Class)class error:(id *)error;
+- (BOOL)createAndOpenForWritingWithError:(id *)error;
+- (BOOL)flushDataToDisk:(id *)disk;
+- (BOOL)openForReadingWithError:(id *)error;
+- (BOOL)removeWithError:(id *)error;
 - (HDDatabaseLegacyJournalFile)init;
-- (HDDatabaseLegacyJournalFile)initWithURL:(id)a3;
+- (HDDatabaseLegacyJournalFile)initWithURL:(id)l;
 - (NSString)description;
 - (NSString)journalPath;
 - (double)modificationTime;
 - (id)_fullPath;
 - (int64_t)size;
-- (unsigned)enumerateEntriesWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
-- (unsigned)readVersionWithError:(id *)a3;
+- (unsigned)enumerateEntriesWithProfile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler;
+- (unsigned)readVersionWithError:(id *)error;
 - (void)close;
 - (void)dealloc;
 @end
@@ -31,16 +31,16 @@
   return 0;
 }
 
-- (HDDatabaseLegacyJournalFile)initWithURL:(id)a3
+- (HDDatabaseLegacyJournalFile)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = HDDatabaseLegacyJournalFile;
   v6 = [(HDDatabaseLegacyJournalFile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v7->_version = 0;
   }
 
@@ -58,36 +58,36 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
-  v5 = [(HDDatabaseLegacyJournalFile *)self isOpen];
+  _fullPath = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
+  isOpen = [(HDDatabaseLegacyJournalFile *)self isOpen];
   v6 = @"closed";
-  if (v5)
+  if (isOpen)
   {
     v6 = @"open";
   }
 
-  v7 = [v3 stringWithFormat:@"%@ (%@)", v4, v6];
+  v7 = [v3 stringWithFormat:@"%@ (%@)", _fullPath, v6];
 
   return v7;
 }
 
 - (id)_fullPath
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] path];
+    self = [self[1] path];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)journalPath
 {
-  v2 = [(NSURL *)self->_URL path];
-  v3 = [v2 stringByDeletingLastPathComponent];
+  path = [(NSURL *)self->_URL path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  return v3;
+  return stringByDeletingLastPathComponent;
 }
 
 - (int64_t)size
@@ -111,27 +111,27 @@
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] distantPast];
-    [v5 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (BOOL)openForReadingWithError:(id *)a3
+- (BOOL)openForReadingWithError:(id *)error
 {
   if ([(HDDatabaseLegacyJournalFile *)self isOpen])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HDDatabaseLegacyJournalFile.m" lineNumber:101 description:{@"Cannot open %@ because it is already open", self}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDDatabaseLegacyJournalFile.m" lineNumber:101 description:{@"Cannot open %@ because it is already open", self}];
   }
 
-  v6 = [(HDDatabaseLegacyJournalFile *)self name];
-  v7 = [(HDDatabaseLegacyJournalFile *)self journalPath];
-  v8 = v6;
+  name = [(HDDatabaseLegacyJournalFile *)self name];
+  journalPath = [(HDDatabaseLegacyJournalFile *)self journalPath];
+  v8 = name;
   objc_opt_self();
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  v9 = [journalPath stringByAppendingPathComponent:v8];
 
   v10 = MEMORY[0x277CCA9F8];
   v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
@@ -141,7 +141,7 @@
 
   if (!v12)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:102 description:@"Error opening journal file" underlyingError:v13];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:102 description:@"Error opening journal file" underlyingError:v13];
   }
 
   if (v12)
@@ -161,17 +161,17 @@
   [(NSFileHandle *)v3 closeFile];
 }
 
-- (BOOL)removeWithError:(id *)a3
+- (BOOL)removeWithError:(id *)error
 {
   [(NSURL *)self->_URL removeAllCachedResourceValues];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
-  LOBYTE(a3) = [v5 removeItemAtPath:v6 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _fullPath = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
+  LOBYTE(error) = [defaultManager removeItemAtPath:_fullPath error:error];
 
-  return a3;
+  return error;
 }
 
-- (unsigned)readVersionWithError:(id *)a3
+- (unsigned)readVersionWithError:(id *)error
 {
   p_version = &self->_version;
   version = self->_version;
@@ -182,11 +182,11 @@
 
   if (![(HDDatabaseLegacyJournalFile *)self isOpen])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Cannot read journal version if journal file is not open"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Cannot read journal version if journal file is not open"];
     return 0;
   }
 
-  if (![(NSFileHandle *)self->_fileHandle seekToOffset:0 error:a3])
+  if (![(NSFileHandle *)self->_fileHandle seekToOffset:0 error:error])
   {
     return 0;
   }
@@ -202,40 +202,40 @@
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 description:@"Failed to read journal version" underlyingError:v9];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Failed to read journal version" underlyingError:v9];
     version = 0;
   }
 
   return version;
 }
 
-- (unsigned)enumerateEntriesWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
+- (unsigned)enumerateEntriesWithProfile:(id)profile transaction:(id)transaction error:(id *)error handler:(id)handler
 {
   v76 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
+  profileCopy = profile;
+  handlerCopy = handler;
   if ([(HDDatabaseLegacyJournalFile *)self isOpen])
   {
-    v11 = [(HDDatabaseLegacyJournalFile *)self readVersionWithError:a5];
+    v11 = [(HDDatabaseLegacyJournalFile *)self readVersionWithError:error];
     if (v11)
     {
       v12 = v11;
-      v13 = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
+      _fullPath = [(HDDatabaseLegacyJournalFile *)&self->super.isa _fullPath];
       fileHandle = self->_fileHandle;
-      v15 = v13;
-      v16 = v9;
+      v15 = _fullPath;
+      v16 = profileCopy;
       v17 = fileHandle;
-      v18 = v10;
+      v18 = handlerCopy;
       v19 = objc_opt_self();
-      if ([(NSFileHandle *)v17 seekToOffset:4 error:a5])
+      if ([(NSFileHandle *)v17 seekToOffset:4 error:error])
       {
         memset(&v63, 0, sizeof(v63));
-        v20 = [(NSFileHandle *)v17 fileDescriptor];
-        if ((fstat(v20, &v63) & 0x80000000) == 0)
+        fileDescriptor = [(NSFileHandle *)v17 fileDescriptor];
+        if ((fstat(fileDescriptor, &v63) & 0x80000000) == 0)
         {
           v61 = v18;
           v62 = v16;
-          v21 = mmap(0, v63.st_size, 1, 2, v20, 0);
+          v21 = mmap(0, v63.st_size, 1, 2, fileDescriptor, 0);
           if (v21 == -1)
           {
             _HKInitializeLogging();
@@ -318,23 +318,23 @@
               {
                 v37 = objc_alloc(MEMORY[0x277CBEB28]);
                 v51 = [v37 initWithCapacity:v65];
-                v38 = [v51 mutableBytes];
+                mutableBytes = [v51 mutableBytes];
                 v64 = v36;
-                v39 = [(NSFileHandle *)v33 hk_readValue:v38 ofSize:v65 error:&v64];
+                v39 = [(NSFileHandle *)v33 hk_readValue:mutableBytes ofSize:v65 error:&v64];
                 v40 = v64;
 
                 v50 = v40;
                 if (v39)
                 {
                   v25 = v58;
-                  v26 = [HDDatabaseLegacyJournalFile _processOkemoJournalWithVersion:v52 fileHandle:v33 mapping:v58 size:st_size headerLength:v65 + 5 profile:v55 error:a5 handler:v54];
+                  v26 = [HDDatabaseLegacyJournalFile _processOkemoJournalWithVersion:v52 fileHandle:v33 mapping:v58 size:st_size headerLength:v65 + 5 profile:v55 error:error handler:v54];
                   v18 = v61;
                   v16 = v62;
                 }
 
                 else
                 {
-                  [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Unable to read build number from journal file" underlyingError:v40];
+                  [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Unable to read build number from journal file" underlyingError:v40];
                   v26 = 2;
                   v18 = v61;
                   v16 = v62;
@@ -348,7 +348,7 @@
 
               else
               {
-                [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Unable to read build length from journal file" underlyingError:v36];
+                [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Unable to read build length from journal file" underlyingError:v36];
                 v26 = 2;
                 v42 = v36;
                 v18 = v61;
@@ -382,7 +382,7 @@
           else
           {
             v25 = v58;
-            v26 = [HDDatabaseLegacyJournalFile _processOkemoJournalWithVersion:v59 fileHandle:v58 mapping:st_size size:4 headerLength:v60 profile:a5 error:v24 handler:?];
+            v26 = [HDDatabaseLegacyJournalFile _processOkemoJournalWithVersion:v59 fileHandle:v58 mapping:st_size size:4 headerLength:v60 profile:error error:v24 handler:?];
             v18 = v61;
           }
 
@@ -403,7 +403,7 @@ LABEL_29:
         v30 = __error();
         v49 = v29;
         v18 = v28;
-        [v27 hk_assignError:a5 code:102 format:{@"Journal file fstat failed: %d: %s", v49, strerror(*v30)}];
+        [v27 hk_assignError:error code:102 format:{@"Journal file fstat failed: %d: %s", v49, strerror(*v30)}];
       }
 
       v26 = 0;
@@ -417,7 +417,7 @@ LABEL_32:
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Journal is not open"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Journal is not open"];
     v26 = 0;
   }
 
@@ -427,7 +427,7 @@ LABEL_33:
   return v26;
 }
 
-+ (id)_loadJournalEntry:(uint64_t)a1
++ (id)_loadJournalEntry:(uint64_t)entry
 {
   v13 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -444,9 +444,9 @@ LABEL_33:
     if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_FAULT))
     {
       v9 = v6;
-      v10 = [v3 error];
+      error = [v3 error];
       v11 = 138543362;
-      v12 = v10;
+      v12 = error;
       _os_log_fault_impl(&dword_228986000, v9, OS_LOG_TYPE_FAULT, "Error occurred while decoding journal entry: %{public}@", &v11, 0xCu);
     }
   }
@@ -472,18 +472,18 @@ uint64_t __92__HDDatabaseLegacyJournalFile__processJournalFile_profile_fileHandl
   return v3;
 }
 
-+ (uint64_t)_processOkemoJournalWithVersion:(uint64_t)a1 fileHandle:(void *)a2 mapping:(uint64_t)a3 size:(uint64_t)a4 headerLength:(uint64_t)a5 profile:(void *)a6 error:(uint64_t)a7 handler:(void *)a8
++ (uint64_t)_processOkemoJournalWithVersion:(uint64_t)version fileHandle:(void *)handle mapping:(uint64_t)mapping size:(uint64_t)size headerLength:(uint64_t)length profile:(void *)profile error:(uint64_t)error handler:(void *)handler
 {
-  v10 = a2;
-  v11 = a6;
-  v12 = a8;
+  handleCopy = handle;
+  profileCopy = profile;
+  handlerCopy = handler;
   objc_opt_self();
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 3;
-  v15 = v10;
-  v16 = v12;
+  v15 = handleCopy;
+  v16 = handlerCopy;
   HKWithAutoreleasePool();
   v13 = *(v18 + 6);
 
@@ -798,15 +798,15 @@ LABEL_46:
   return 1;
 }
 
-- (BOOL)createAndOpenForWritingWithError:(id *)a3
+- (BOOL)createAndOpenForWritingWithError:(id *)error
 {
   v4 = [MEMORY[0x277CCA9B8] hk_error:3328 description:@"HDDatabaseLegacyJournalFile does not support writing"];
   if (v4)
   {
-    if (a3)
+    if (error)
     {
       v5 = v4;
-      *a3 = v4;
+      *error = v4;
     }
 
     else
@@ -818,15 +818,15 @@ LABEL_46:
   return v4 == 0;
 }
 
-- (BOOL)appendData:(id)a3 entryClass:(Class)a4 error:(id *)a5
+- (BOOL)appendData:(id)data entryClass:(Class)class error:(id *)error
 {
   v6 = [MEMORY[0x277CCA9B8] hk_error:3328 description:@"HDDatabaseLegacyJournalFile does not support writing"];
   if (v6)
   {
-    if (a5)
+    if (error)
     {
       v7 = v6;
-      *a5 = v6;
+      *error = v6;
     }
 
     else
@@ -838,15 +838,15 @@ LABEL_46:
   return v6 == 0;
 }
 
-- (BOOL)flushDataToDisk:(id *)a3
+- (BOOL)flushDataToDisk:(id *)disk
 {
   v4 = [MEMORY[0x277CCA9B8] hk_error:3328 description:@"HDDatabaseLegacyJournalFile does not support writing"];
   if (v4)
   {
-    if (a3)
+    if (disk)
     {
       v5 = v4;
-      *a3 = v4;
+      *disk = v4;
     }
 
     else

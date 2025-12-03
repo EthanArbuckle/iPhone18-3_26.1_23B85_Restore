@@ -1,5 +1,5 @@
 @interface PLCloudFeedAssetsEntry
-- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)a3;
+- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)library;
 - (void)willSave;
 @end
 
@@ -10,31 +10,31 @@
   v7.receiver = self;
   v7.super_class = PLCloudFeedAssetsEntry;
   [(PLCloudFeedEntry *)&v7 willSave];
-  v3 = [(PLCloudFeedAssetsEntry *)self managedObjectContext];
+  managedObjectContext = [(PLCloudFeedAssetsEntry *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLCloudFeedAssetsEntry *)self changedValues];
-    v5 = [v4 objectForKeyedSubscript:@"entryAssets"];
+    changedValues = [(PLCloudFeedAssetsEntry *)self changedValues];
+    v5 = [changedValues objectForKeyedSubscript:@"entryAssets"];
 
     if (v5)
     {
-      v6 = [v3 delayedSaveActions];
-      [v6 recordCloudFeedAssetsEntryForAssetUpdate:self];
+      delayedSaveActions = [managedObjectContext delayedSaveActions];
+      [delayedSaveActions recordCloudFeedAssetsEntryForAssetUpdate:self];
     }
   }
 }
 
-- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)a3
+- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)library
 {
   v8.receiver = self;
   v8.super_class = PLCloudFeedAssetsEntry;
-  v4 = [(PLCloudFeedEntry *)&v8 shouldBeRemovedFromPhotoLibrary:a3];
-  v5 = [(PLCloudFeedAssetsEntry *)self entryType];
-  if ((v4 & 1) == 0 && v5 != 4)
+  v4 = [(PLCloudFeedEntry *)&v8 shouldBeRemovedFromPhotoLibrary:library];
+  entryType = [(PLCloudFeedAssetsEntry *)self entryType];
+  if ((v4 & 1) == 0 && entryType != 4)
   {
-    v6 = [(PLCloudFeedAssetsEntry *)self entryAssets];
-    v4 = [v6 count] == 0;
+    entryAssets = [(PLCloudFeedAssetsEntry *)self entryAssets];
+    v4 = [entryAssets count] == 0;
   }
 
   return v4;

@@ -9,10 +9,10 @@
   acceptedTermsInfo = self->_acceptedTermsInfo;
   if (!acceptedTermsInfo)
   {
-    v4 = [(AAResponse *)self httpResponse];
-    v5 = [v4 ak_acceptedTermsInfo];
+    httpResponse = [(AAResponse *)self httpResponse];
+    ak_acceptedTermsInfo = [httpResponse ak_acceptedTermsInfo];
     v6 = self->_acceptedTermsInfo;
-    self->_acceptedTermsInfo = v5;
+    self->_acceptedTermsInfo = ak_acceptedTermsInfo;
 
     acceptedTermsInfo = self->_acceptedTermsInfo;
   }

@@ -1,41 +1,41 @@
 @interface MFNanoBridgeSettingsUnifiedMailbox
-- (BOOL)isEqual:(id)a3;
-- (MFNanoBridgeSettingsUnifiedMailbox)initWithCoder:(id)a3;
-- (MFNanoBridgeSettingsUnifiedMailbox)initWithType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MFNanoBridgeSettingsUnifiedMailbox)initWithCoder:(id)coder;
+- (MFNanoBridgeSettingsUnifiedMailbox)initWithType:(int64_t)type;
 - (id)displayName;
 - (id)icon;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFNanoBridgeSettingsUnifiedMailbox
 
-- (MFNanoBridgeSettingsUnifiedMailbox)initWithType:(int64_t)a3
+- (MFNanoBridgeSettingsUnifiedMailbox)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MFNanoBridgeSettingsUnifiedMailbox;
   result = [(MFNanoBridgeSettingsUnifiedMailbox *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [NSNumber numberWithInteger:self->_type];
-  [v5 encodeObject:v4 forKey:@"kNSCodingKeyType"];
+  [coderCopy encodeObject:v4 forKey:@"kNSCodingKeyType"];
 }
 
-- (MFNanoBridgeSettingsUnifiedMailbox)initWithCoder:(id)a3
+- (MFNanoBridgeSettingsUnifiedMailbox)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(MFNanoBridgeSettingsUnifiedMailbox *)self initWithType:v6];
+  v7 = [(MFNanoBridgeSettingsUnifiedMailbox *)self initWithType:unsignedIntegerValue];
   return v7;
 }
 
@@ -70,14 +70,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MFNanoBridgeSettingsUnifiedMailbox;
-  if ([(MFNanoBridgeSettingsMailbox *)&v7 isEqual:v4])
+  if ([(MFNanoBridgeSettingsMailbox *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4 type] == self->_type;
+    v5 = [equalCopy type] == self->_type;
   }
 
   else

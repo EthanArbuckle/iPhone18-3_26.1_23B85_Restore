@@ -32,8 +32,8 @@
     if (!v14[5] || v8[5])
     {
       v3 = MEMORY[0x1E695DF30];
-      v4 = [(FCHCRecordExistenceExpectation *)self recordID];
-      [v3 raise:*MEMORY[0x1E695D920] format:{@"record should exist in database: %@", v4}];
+      recordID = [(FCHCRecordExistenceExpectation *)self recordID];
+      [v3 raise:*MEMORY[0x1E695D920] format:{@"record should exist in database: %@", recordID}];
 LABEL_8:
     }
   }
@@ -44,8 +44,8 @@ LABEL_8:
     if (v14[5] || ([v8[5] fc_isCKUnknownItemError] & 1) == 0)
     {
       v5 = MEMORY[0x1E695DF30];
-      v4 = [(FCHCRecordExistenceExpectation *)self recordID];
-      [v5 raise:*MEMORY[0x1E695D920] format:{@"record should not exist in database: %@", v4}];
+      recordID = [(FCHCRecordExistenceExpectation *)self recordID];
+      [v5 raise:*MEMORY[0x1E695D920] format:{@"record should not exist in database: %@", recordID}];
       goto LABEL_8;
     }
   }

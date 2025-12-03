@@ -1,19 +1,19 @@
 @interface SearchUIAppColorGenerator
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4;
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler;
 @end
 
 @implementation SearchUIAppColorGenerator
 
-- (void)generateUIColorsIsDark:(BOOL)a3 completionHandler:(id)a4
+- (void)generateUIColorsIsDark:(BOOL)dark completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__SearchUIAppColorGenerator_generateUIColorsIsDark_completionHandler___block_invoke;
   v7[3] = &unk_1E85B2720;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v7];
 }
 

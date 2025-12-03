@@ -1,25 +1,25 @@
 @interface _VUISBIconProgressPausedTransition
-+ (id)newTransitionToPaused:(BOOL)a3;
-- (id)_initToPaused:(BOOL)a3;
++ (id)newTransitionToPaused:(BOOL)paused;
+- (id)_initToPaused:(BOOL)paused;
 - (void)_updateElapsedTimeFromFraction;
 - (void)_updateTimingFunction;
-- (void)_updateView:(id)a3;
+- (void)_updateView:(id)view;
 - (void)dealloc;
-- (void)updateToPaused:(BOOL)a3;
-- (void)updateView:(id)a3 withElapsedTime:(double)a4;
+- (void)updateToPaused:(BOOL)paused;
+- (void)updateView:(id)view withElapsedTime:(double)time;
 @end
 
 @implementation _VUISBIconProgressPausedTransition
 
-+ (id)newTransitionToPaused:(BOOL)a3
++ (id)newTransitionToPaused:(BOOL)paused
 {
-  v3 = a3;
-  v4 = [a1 alloc];
+  pausedCopy = paused;
+  v4 = [self alloc];
 
-  return [v4 _initToPaused:v3];
+  return [v4 _initToPaused:pausedCopy];
 }
 
-- (id)_initToPaused:(BOOL)a3
+- (id)_initToPaused:(BOOL)paused
 {
   v7.receiver = self;
   v7.super_class = _VUISBIconProgressPausedTransition;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_toPaused = a3;
+    v4->_toPaused = paused;
     v4->_duration = 0.5;
     [(_VUISBIconProgressPausedTransition *)v4 _updateTimingFunction];
   }
@@ -42,11 +42,11 @@
   [(_VUISBIconProgressPausedTransition *)&v3 dealloc];
 }
 
-- (void)updateToPaused:(BOOL)a3
+- (void)updateToPaused:(BOOL)paused
 {
-  if (self->_toPaused != a3)
+  if (self->_toPaused != paused)
   {
-    self->_toPaused = a3;
+    self->_toPaused = paused;
     self->_fraction = 1.0 - self->_fraction;
     [(_VUISBIconProgressPausedTransition *)self _updateTimingFunction];
 
@@ -54,9 +54,9 @@
   }
 }
 
-- (void)updateView:(id)a3 withElapsedTime:(double)a4
+- (void)updateView:(id)view withElapsedTime:(double)time
 {
-  v6 = self->_totalElapsedTime + a4;
+  v6 = self->_totalElapsedTime + time;
   self->_totalElapsedTime = v6;
   duration = self->_duration;
   v8 = 1.0;
@@ -70,10 +70,10 @@
 
   self->_fraction = v8;
 
-  [(_VUISBIconProgressPausedTransition *)self _updateView:a3];
+  [(_VUISBIconProgressPausedTransition *)self _updateView:view];
 }
 
-- (void)_updateView:(id)a3
+- (void)_updateView:(id)view
 {
   fraction = self->_fraction;
   if (!self->_toPaused)
@@ -81,15 +81,15 @@
     fraction = 1.0 - fraction;
   }
 
-  [a3 setPauseRadiusFraction:fraction];
-  if ([(_VUISBIconProgressPausedTransition *)self isCompleteWithView:a3])
+  [view setPauseRadiusFraction:fraction];
+  if ([(_VUISBIconProgressPausedTransition *)self isCompleteWithView:view])
   {
-    [a3 setDisplayingPaused:self->_toPaused];
+    [view setDisplayingPaused:self->_toPaused];
   }
 
-  [a3 circleBoundingRect];
+  [view circleBoundingRect];
 
-  [a3 setNeedsDisplayInRect:?];
+  [view setNeedsDisplayInRect:?];
 }
 
 - (void)_updateTimingFunction

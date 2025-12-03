@@ -1,27 +1,27 @@
 @interface CKPCSKeyToRemove
-- (BOOL)isEqual:(id)a3;
-- (CKPCSKeyToRemove)initWithCoder:(id)a3;
-- (CKPCSKeyToRemove)initWithKeyID:(id)a3 keyType:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKPCSKeyToRemove)initWithCoder:(id)coder;
+- (CKPCSKeyToRemove)initWithKeyID:(id)d keyType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKPCSKeyToRemove
 
-- (CKPCSKeyToRemove)initWithKeyID:(id)a3 keyType:(int64_t)a4
+- (CKPCSKeyToRemove)initWithKeyID:(id)d keyType:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = CKPCSKeyToRemove;
   v8 = [(CKPCSKeyToRemove *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pcsKeyID, a3);
-    v9->_keyType = a4;
+    objc_storeStrong(&v8->_pcsKeyID, d);
+    v9->_keyType = type;
   }
 
   return v9;
@@ -44,14 +44,14 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && (objc_msgSend_pcsKeyID(self, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_pcsKeyID(v4, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v9, v13, v12), v12, v9, isEqual))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && (objc_msgSend_pcsKeyID(self, v7, v8), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend_pcsKeyID(equalCopy, v10, v11), v12 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v9, v13, v12), v12, v9, isEqual))
   {
     v17 = objc_msgSend_keyType(self, v15, v16);
-    v20 = v17 == objc_msgSend_keyType(v4, v18, v19);
+    v20 = v17 == objc_msgSend_keyType(equalCopy, v18, v19);
   }
 
   else
@@ -93,7 +93,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_pcsKeyID(self, v5, v6);
@@ -104,30 +104,30 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   v6 = objc_msgSend_pcsKeyID(self, v4, v5);
-  objc_msgSend_encodeObject_forKey_(v12, v7, v6, @"PCSKeyID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"PCSKeyID");
 
   v10 = objc_msgSend_keyType(self, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(v12, v11, v10, @"KeyType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v11, v10, @"KeyType");
 }
 
-- (CKPCSKeyToRemove)initWithCoder:(id)a3
+- (CKPCSKeyToRemove)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CKPCSKeyToRemove;
   v5 = [(CKPCSKeyToRemove *)&v12 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"PCSKeyID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"PCSKeyID");
     pcsKeyID = v5->_pcsKeyID;
     v5->_pcsKeyID = v8;
 
-    v5->_keyType = objc_msgSend_decodeIntegerForKey_(v4, v10, @"KeyType");
+    v5->_keyType = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"KeyType");
   }
 
   return v5;

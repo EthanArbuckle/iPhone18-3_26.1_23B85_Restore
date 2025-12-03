@@ -1,20 +1,20 @@
 @interface MPModelLibraryPinnedEntityChangeOperation
 - (BOOL)_canAppendPin;
 - (BOOL)_canMovePin;
-- (BOOL)_validateRequestIdentifiers:(id)a3 class:(Class)a4;
-- (id)_errorFromICError:(id)a3;
-- (void)_runRequestWithMediaLibrary:(id)a3 identifiers:(id)a4 persistentID:(int64_t)a5 class:(Class)a6;
+- (BOOL)_validateRequestIdentifiers:(id)identifiers class:(Class)class;
+- (id)_errorFromICError:(id)error;
+- (void)_runRequestWithMediaLibrary:(id)library identifiers:(id)identifiers persistentID:(int64_t)d class:(Class)class;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryPinnedEntityChangeOperation
 
-- (id)_errorFromICError:(id)a3
+- (id)_errorFromICError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69E4198]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E69E4198]];
 
   if (!v6)
   {
@@ -22,11 +22,11 @@
     goto LABEL_18;
   }
 
-  v7 = [v4 code];
+  code = [errorCopy code];
   v8 = 0;
-  if (v7 <= -8404)
+  if (code <= -8404)
   {
-    if (v7 == -8406)
+    if (code == -8406)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = @"local update failed";
@@ -34,9 +34,9 @@
       goto LABEL_17;
     }
 
-    if (v7 != -8405)
+    if (code != -8405)
     {
-      if (v7 != -8404)
+      if (code != -8404)
       {
         goto LABEL_18;
       }
@@ -50,9 +50,9 @@
     goto LABEL_14;
   }
 
-  if (v7 <= -8402)
+  if (code <= -8402)
   {
-    if (v7 == -8403)
+    if (code == -8403)
     {
       v9 = MEMORY[0x1E696ABC0];
       v10 = @"cannot add more pins";
@@ -63,7 +63,7 @@
     goto LABEL_14;
   }
 
-  if (v7 == -8400)
+  if (code == -8400)
   {
 LABEL_14:
     v9 = MEMORY[0x1E696ABC0];
@@ -72,7 +72,7 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (v7 != -8401)
+  if (code != -8401)
   {
     goto LABEL_18;
   }
@@ -87,9 +87,9 @@ LABEL_18:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v4;
+    v17 = errorCopy;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ finished with IC error=%{public}@, MP error =%{public}@", &v14, 0x20u);
@@ -106,8 +106,8 @@ LABEL_18:
   v15 = 0x2020000000;
   v16 = 0;
   v3 = MEMORY[0x1E69B34E0];
-  v4 = [(MPAsyncOperation *)self userIdentity];
-  v5 = [v3 musicLibraryForUserAccount:v4];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v5 = [v3 musicLibraryForUserAccount:userIdentity];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -121,11 +121,11 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = v14[3];
-      v10 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
+      position = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
       *buf = 67109376;
       v18 = v9;
       v19 = 1024;
-      v20 = v10;
+      v20 = position;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_ERROR, "Cannot move pin - currentPinCount=%d, requestPosition=%d", buf, 0xEu);
     }
 
@@ -155,8 +155,8 @@ void __56__MPModelLibraryPinnedEntityChangeOperation__canMovePin__block_invoke(u
   v14 = 0x2020000000;
   v15 = 0;
   v2 = MEMORY[0x1E69B34E0];
-  v3 = [(MPAsyncOperation *)self userIdentity];
-  v4 = [v2 musicLibraryForUserAccount:v3];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v4 = [v2 musicLibraryForUserAccount:userIdentity];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -165,16 +165,16 @@ void __56__MPModelLibraryPinnedEntityChangeOperation__canMovePin__block_invoke(u
   v11[4] = &v12;
   [v4 databaseConnectionAllowingWrites:0 withBlock:v11];
   v5 = v13[3];
-  v6 = [v4 sagaMaximumLibraryPinCount];
-  if (v5 >= v6)
+  sagaMaximumLibraryPinCount = [v4 sagaMaximumLibraryPinCount];
+  if (v5 >= sagaMaximumLibraryPinCount)
   {
     v7 = os_log_create("com.apple.amp.mediaplayer", "Pinning");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 sagaMaximumLibraryPinCount];
+      sagaMaximumLibraryPinCount2 = [v4 sagaMaximumLibraryPinCount];
       v9 = v13[3];
       *buf = 67109376;
-      v17 = v8;
+      v17 = sagaMaximumLibraryPinCount2;
       v18 = 1024;
       v19 = v9;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "Cannot add pin - sagaMaximumLibraryPinCount=%d, currentPinCount=%d", buf, 0xEu);
@@ -182,7 +182,7 @@ void __56__MPModelLibraryPinnedEntityChangeOperation__canMovePin__block_invoke(u
   }
 
   _Block_object_dispose(&v12, 8);
-  return v5 < v6;
+  return v5 < sagaMaximumLibraryPinCount;
 }
 
 void __58__MPModelLibraryPinnedEntityChangeOperation__canAppendPin__block_invoke(uint64_t a1, void *a2)
@@ -191,18 +191,18 @@ void __58__MPModelLibraryPinnedEntityChangeOperation__canAppendPin__block_invoke
   *(*(*(a1 + 32) + 8) + 24) = [v3 int64ValueForFirstRowAndColumn];
 }
 
-- (BOOL)_validateRequestIdentifiers:(id)a3 class:(Class)a4
+- (BOOL)_validateRequestIdentifiers:(id)identifiers class:(Class)class
 {
-  v5 = a3;
-  v6 = [v5 library];
-  v7 = [v6 persistentID];
+  identifiersCopy = identifiers;
+  library = [identifiersCopy library];
+  persistentID = [library persistentID];
 
-  if (!v7)
+  if (!persistentID)
   {
-    if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+    if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
     {
-      v9 = [v5 personalizedStore];
-      if ([v9 cloudID])
+      personalizedStore = [identifiersCopy personalizedStore];
+      if ([personalizedStore cloudID])
       {
         v8 = 1;
 LABEL_21:
@@ -210,56 +210,56 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v11 = [v5 universalStore];
-      if (![v11 adamID])
+      universalStore = [identifiersCopy universalStore];
+      if (![universalStore adamID])
       {
-        v12 = [v5 universalStore];
-        v13 = [v12 subscriptionAdamID];
+        universalStore2 = [identifiersCopy universalStore];
+        subscriptionAdamID = [universalStore2 subscriptionAdamID];
         goto LABEL_19;
       }
     }
 
     else
     {
-      if ([(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+      if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
       {
-        v9 = [v5 personalizedStore];
-        v10 = [v9 cloudAlbumID];
+        personalizedStore = [identifiersCopy personalizedStore];
+        cloudAlbumID = [personalizedStore cloudAlbumID];
       }
 
       else
       {
-        if (![(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+        if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
         {
-          if (![(objc_class *)a4 isSubclassOfClass:objc_opt_class()])
+          if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
           {
             v8 = 0;
             goto LABEL_22;
           }
 
-          v9 = [v5 universalStore];
-          v11 = [v9 globalPlaylistID];
-          if (![v11 length])
+          personalizedStore = [identifiersCopy universalStore];
+          universalStore = [personalizedStore globalPlaylistID];
+          if (![universalStore length])
           {
-            v12 = [v5 personalizedStore];
-            v13 = [v12 cloudID];
+            universalStore2 = [identifiersCopy personalizedStore];
+            subscriptionAdamID = [universalStore2 cloudID];
             goto LABEL_19;
           }
 
           goto LABEL_16;
         }
 
-        v9 = [v5 personalizedStore];
-        v10 = [v9 cloudArtistID];
+        personalizedStore = [identifiersCopy personalizedStore];
+        cloudAlbumID = [personalizedStore cloudArtistID];
       }
 
-      v11 = v10;
-      if (![v10 length])
+      universalStore = cloudAlbumID;
+      if (![cloudAlbumID length])
       {
-        v12 = [v5 universalStore];
-        v13 = [v12 adamID];
+        universalStore2 = [identifiersCopy universalStore];
+        subscriptionAdamID = [universalStore2 adamID];
 LABEL_19:
-        v8 = v13 != 0;
+        v8 = subscriptionAdamID != 0;
 
         goto LABEL_20;
       }
@@ -278,49 +278,49 @@ LABEL_22:
   return v8;
 }
 
-- (void)_runRequestWithMediaLibrary:(id)a3 identifiers:(id)a4 persistentID:(int64_t)a5 class:(Class)a6
+- (void)_runRequestWithMediaLibrary:(id)library identifiers:(id)identifiers persistentID:(int64_t)d class:(Class)class
 {
   v89[1] = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v10 = a4;
+  libraryCopy = library;
+  identifiersCopy = identifiers;
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
   v86 = __Block_byref_object_copy__31249;
   v87 = __Block_byref_object_dispose__31250;
   v88 = 0;
-  if (a5)
+  if (d)
   {
-    if ([(objc_class *)a6 isSubclassOfClass:objc_opt_class()])
+    if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
     {
-      v11 = [v10 personalizedStore];
-      v12 = [v11 cloudID];
+      personalizedStore = [identifiersCopy personalizedStore];
+      cloudID = [personalizedStore cloudID];
 
       v13 = [MEMORY[0x1E695DFD8] setWithObjects:{@"isInMyLibrary", @"storeSagaID", 0}];
-      v14 = [v65 itemWithPersistentID:a5 verifyExistence:0];
-      v15 = v14;
+      v14 = [libraryCopy itemWithPersistentID:d verifyExistence:0];
+      cloudAlbumID = v14;
       if (v14)
       {
         v16 = [v14 valuesForProperties:v13];
         v17 = [v16 objectForKey:@"isInMyLibrary"];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
         v19 = [v16 objectForKey:@"storeSagaID"];
-        v20 = [v19 longLongValue];
+        longLongValue = [v19 longLongValue];
 
-        if (v18)
+        if (bOOLValue)
         {
-          if (v12)
+          if (cloudID)
           {
             v21 = 1;
           }
 
           else
           {
-            v21 = v20 == 0;
+            v21 = longLongValue == 0;
           }
 
-          v23 = !v21 || v12 == v20;
+          v23 = !v21 || cloudID == longLongValue;
 
           v24 = 0;
           if (v23)
@@ -367,38 +367,38 @@ LABEL_42:
       goto LABEL_47;
     }
 
-    if ([(objc_class *)a6 isSubclassOfClass:objc_opt_class()])
+    if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
     {
-      v33 = [v10 personalizedStore];
-      v15 = [v33 cloudAlbumID];
+      personalizedStore2 = [identifiersCopy personalizedStore];
+      cloudAlbumID = [personalizedStore2 cloudAlbumID];
 
-      v34 = [v65 collectionInLibraryWithPersistentID:a5 groupingType:1];
+      v34 = [libraryCopy collectionInLibraryWithPersistentID:d groupingType:1];
       if (v34)
       {
         v13 = [MEMORY[0x1E695DFD8] setWithObject:@"albumCloudLibraryID"];
         v16 = [v34 valuesForProperties:v13];
         v24 = [v16 objectForKey:@"albumCloudLibraryID"];
-        if (![v15 length] && objc_msgSend(v24, "length") || (objc_msgSend(v15, "isEqualToString:", v24) & 1) != 0)
+        if (![cloudAlbumID length] && objc_msgSend(v24, "length") || (objc_msgSend(cloudAlbumID, "isEqualToString:", v24) & 1) != 0)
         {
           v50 = 4;
 LABEL_66:
           v64 = v50;
 
-          v20 = 0;
+          longLongValue = 0;
 LABEL_67:
-          v51 = [(MPAsyncOperation *)self userIdentity];
-          v30 = [MPCloudController controllerWithUserIdentity:v51];
+          userIdentity = [(MPAsyncOperation *)self userIdentity];
+          v30 = [MPCloudController controllerWithUserIdentity:userIdentity];
 
-          v52 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request operation];
-          if (v52 > 1)
+          operation = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request operation];
+          if (operation > 1)
           {
-            if (v52 != 2)
+            if (operation != 2)
             {
-              if (v52 == 3)
+              if (operation == 3)
               {
                 if ((v64 - 1) >= 2)
                 {
-                  v56 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
+                  defaultAction = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
                   if (v64 == 3)
                   {
                     v76[0] = MEMORY[0x1E69E9820];
@@ -406,7 +406,7 @@ LABEL_67:
                     v76[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_8;
                     v76[3] = &unk_1E767D2A0;
                     v76[4] = self;
-                    [v30 updatePinnedLibraryArtistWithPersistentID:a5 cloudArtistID:v24 defaultAction:v56 completion:v76];
+                    [v30 updatePinnedLibraryArtistWithPersistentID:d cloudArtistID:v24 defaultAction:defaultAction completion:v76];
                   }
 
                   else
@@ -416,19 +416,19 @@ LABEL_67:
                     v75[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_9;
                     v75[3] = &unk_1E767D2A0;
                     v75[4] = self;
-                    [v30 updatePinnedLibraryAlbumWithPersistentID:a5 cloudAlbumID:v24 defaultAction:v56 completion:v75];
+                    [v30 updatePinnedLibraryAlbumWithPersistentID:d cloudAlbumID:v24 defaultAction:defaultAction completion:v75];
                   }
                 }
 
                 else
                 {
-                  v53 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
+                  defaultAction2 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
                   v77[0] = MEMORY[0x1E69E9820];
                   v77[1] = 3221225472;
                   v77[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_7;
                   v77[3] = &unk_1E767D2A0;
                   v77[4] = self;
-                  [v30 updatePinnedLibraryEntityWithPersistentID:a5 cloudID:v20 type:v64 defaultAction:v53 completion:v77];
+                  [v30 updatePinnedLibraryEntityWithPersistentID:d cloudID:longLongValue type:v64 defaultAction:defaultAction2 completion:v77];
                 }
               }
 
@@ -439,7 +439,7 @@ LABEL_67:
             {
               if ((v64 - 1) >= 2)
               {
-                v63 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
+                position = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
                 if (v64 == 3)
                 {
                   v73[0] = MEMORY[0x1E69E9820];
@@ -447,7 +447,7 @@ LABEL_67:
                   v73[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_11;
                   v73[3] = &unk_1E767D2A0;
                   v73[4] = self;
-                  [v30 movePinnedArtistWithPersistentID:a5 cloudArtistID:v24 toPosition:v63 completion:v73];
+                  [v30 movePinnedArtistWithPersistentID:d cloudArtistID:v24 toPosition:position completion:v73];
                 }
 
                 else
@@ -457,19 +457,19 @@ LABEL_67:
                   v72[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_12;
                   v72[3] = &unk_1E767D2A0;
                   v72[4] = self;
-                  [v30 movePinnedAlbumWithPersistentID:a5 cloudAlbumID:v24 toPosition:v63 completion:v72];
+                  [v30 movePinnedAlbumWithPersistentID:d cloudAlbumID:v24 toPosition:position completion:v72];
                 }
               }
 
               else
               {
-                v55 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
+                position2 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request position];
                 v74[0] = MEMORY[0x1E69E9820];
                 v74[1] = 3221225472;
                 v74[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_10;
                 v74[3] = &unk_1E767D2A0;
                 v74[4] = self;
-                [v30 movePinnedEntityWithPersistentID:a5 cloudID:v20 type:v64 toPosition:v55 completion:v74];
+                [v30 movePinnedEntityWithPersistentID:d cloudID:longLongValue type:v64 toPosition:position2 completion:v74];
               }
 
               goto LABEL_21;
@@ -482,9 +482,9 @@ LABEL_67:
 
           else
           {
-            if (v52)
+            if (operation)
             {
-              if (v52 == 1)
+              if (operation == 1)
               {
                 if ((v64 - 1) >= 2)
                 {
@@ -495,7 +495,7 @@ LABEL_67:
                     v79[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_5;
                     v79[3] = &unk_1E767D2A0;
                     v79[4] = self;
-                    [v30 removePinnedArtistWithPersistentID:a5 cloudArtistID:v24 completion:v79];
+                    [v30 removePinnedArtistWithPersistentID:d cloudArtistID:v24 completion:v79];
                   }
 
                   else
@@ -505,7 +505,7 @@ LABEL_67:
                     v78[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_6;
                     v78[3] = &unk_1E767D2A0;
                     v78[4] = self;
-                    [v30 removePinnedAlbumWithPersistentID:a5 cloudAlbumID:v24 completion:v78];
+                    [v30 removePinnedAlbumWithPersistentID:d cloudAlbumID:v24 completion:v78];
                   }
                 }
 
@@ -516,7 +516,7 @@ LABEL_67:
                   v79[7] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_4;
                   v79[8] = &unk_1E767D2A0;
                   v79[9] = self;
-                  [v30 removePinnedEntityWithPersistentID:a5 cloudID:v20 type:? completion:?];
+                  [v30 removePinnedEntityWithPersistentID:d cloudID:longLongValue type:? completion:?];
                 }
               }
 
@@ -527,7 +527,7 @@ LABEL_67:
             {
               if ((v64 - 1) >= 2)
               {
-                v62 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
+                defaultAction3 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
                 if (v64 == 3)
                 {
                   v81[0] = MEMORY[0x1E69E9820];
@@ -535,7 +535,7 @@ LABEL_67:
                   v81[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_2;
                   v81[3] = &unk_1E767D2A0;
                   v81[4] = self;
-                  [v30 pinLibraryArtistWithPersistentID:a5 cloudArtistID:v24 defaultAction:v62 completion:v81];
+                  [v30 pinLibraryArtistWithPersistentID:d cloudArtistID:v24 defaultAction:defaultAction3 completion:v81];
                 }
 
                 else
@@ -545,19 +545,19 @@ LABEL_67:
                   v80[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_3;
                   v80[3] = &unk_1E767D2A0;
                   v80[4] = self;
-                  [v30 pinLibraryAlbumWithPersistentID:a5 cloudAlbumID:v24 defaultAction:v62 completion:v80];
+                  [v30 pinLibraryAlbumWithPersistentID:d cloudAlbumID:v24 defaultAction:defaultAction3 completion:v80];
                 }
               }
 
               else
               {
-                v54 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
+                defaultAction4 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request defaultAction];
                 v82[0] = MEMORY[0x1E69E9820];
                 v82[1] = 3221225472;
                 v82[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke;
                 v82[3] = &unk_1E767D2A0;
                 v82[4] = self;
-                [v30 pinLibraryEntityWithPersistentID:a5 cloudID:v20 type:v64 defaultAction:v54 completion:v82];
+                [v30 pinLibraryEntityWithPersistentID:d cloudID:longLongValue type:v64 defaultAction:defaultAction4 completion:v82];
               }
 
 LABEL_21:
@@ -586,14 +586,14 @@ LABEL_21:
 
     else
     {
-      if (![(objc_class *)a6 isSubclassOfClass:objc_opt_class()])
+      if (![(objc_class *)class isSubclassOfClass:objc_opt_class()])
       {
-        if (-[objc_class isSubclassOfClass:](a6, "isSubclassOfClass:", objc_opt_class()) && ([v10 personalizedStore], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "cloudID"), v43, objc_msgSend(v65, "playlistWithPersistentID:", a5), (v45 = objc_claimAutoreleasedReturnValue()) != 0))
+        if (-[objc_class isSubclassOfClass:](class, "isSubclassOfClass:", objc_opt_class()) && ([identifiersCopy personalizedStore], v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "cloudID"), v43, objc_msgSend(libraryCopy, "playlistWithPersistentID:", d), (v45 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v13 = [MEMORY[0x1E695DFD8] setWithObjects:{@"isInMyLibrary", @"storeCloudID", 0}];
           v16 = [v45 valuesForProperties:v13];
           v46 = [v16 objectForKey:@"storeCloudID"];
-          v20 = [v46 longLongValue];
+          longLongValue = [v46 longLongValue];
 
           if (v44)
           {
@@ -602,10 +602,10 @@ LABEL_21:
 
           else
           {
-            v47 = v20 == 0;
+            v47 = longLongValue == 0;
           }
 
-          v49 = !v47 || v44 == v20;
+          v49 = !v47 || v44 == longLongValue;
 
           v24 = 0;
           if (v49)
@@ -625,16 +625,16 @@ LABEL_21:
         goto LABEL_42;
       }
 
-      v38 = [v10 personalizedStore];
-      v15 = [v38 cloudArtistID];
+      personalizedStore3 = [identifiersCopy personalizedStore];
+      cloudAlbumID = [personalizedStore3 cloudArtistID];
 
-      v34 = [v65 collectionInLibraryWithPersistentID:a5 groupingType:3];
+      v34 = [libraryCopy collectionInLibraryWithPersistentID:d groupingType:3];
       if (v34)
       {
         v13 = [MEMORY[0x1E695DFD8] setWithObject:@"albumArtistCloudUniversalLibraryID"];
         v16 = [v34 valuesForProperties:v13];
         v24 = [v16 objectForKey:@"albumArtistCloudUniversalLibraryID"];
-        if (![v15 length] && objc_msgSend(v24, "length") || (objc_msgSend(v15, "isEqualToString:", v24) & 1) != 0)
+        if (![cloudAlbumID length] && objc_msgSend(v24, "length") || (objc_msgSend(cloudAlbumID, "isEqualToString:", v24) & 1) != 0)
         {
           v50 = 3;
           goto LABEL_66;
@@ -664,13 +664,13 @@ LABEL_40:
     }
 
     self->_canRerunRequest = 0;
-    v29 = [(MPAsyncOperation *)self userIdentity];
-    v30 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:v29];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v30 = [MPStoreLibraryPersonalizationRequest libraryViewWithUserIdentity:userIdentity2];
 
     v31 = objc_alloc_init(MPStoreLibraryMappingRequestOperation);
     [(MPStoreLibraryMappingRequestOperation *)v31 setLibraryView:v30];
-    [(MPStoreLibraryMappingRequestOperation *)v31 setModelClass:a6];
-    v89[0] = v10;
+    [(MPStoreLibraryMappingRequestOperation *)v31 setModelClass:class];
+    v89[0] = identifiersCopy;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:1];
     [(MPStoreLibraryMappingRequestOperation *)v31 setIdentifierSets:v32];
 
@@ -679,10 +679,10 @@ LABEL_40:
     v66[2] = __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrary_identifiers_persistentID_class___block_invoke_32;
     v66[3] = &unk_1E767B178;
     v66[4] = self;
-    v67 = v10;
-    v68 = v65;
+    v67 = identifiersCopy;
+    v68 = libraryCopy;
     v69 = &v83;
-    v70 = a6;
+    classCopy = class;
     [(MPStoreLibraryMappingRequestOperation *)v31 setResponseHandler:v66];
     [(NSOperationQueue *)self->_operationQueue addOperation:v31];
 
@@ -984,9 +984,9 @@ void __104__MPModelLibraryPinnedEntityChangeOperation__runRequestWithMediaLibrar
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_ERROR, "Not running library pinning operation as feature is not enabled", &v25, 2u);
     }
 
-    v7 = 0;
+    identifiers = 0;
     v6 = 0;
-    v5 = 0;
+    entity = 0;
     v12 = @"feature not enabled";
 LABEL_24:
 
@@ -994,14 +994,14 @@ LABEL_24:
     if (v10)
     {
 LABEL_25:
-      v14 = v10;
+      userIdentity = v10;
       responseHandler = self->_responseHandler;
       if (responseHandler)
       {
-        responseHandler[2](responseHandler, v14);
+        responseHandler[2](responseHandler, userIdentity);
       }
 
-      [(MPAsyncOperation *)self finishWithError:v14];
+      [(MPAsyncOperation *)self finishWithError:userIdentity];
       goto LABEL_33;
     }
 
@@ -1020,20 +1020,20 @@ LABEL_25:
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_ERROR, "Not running library pinning operation as the request=%{public}@ is not valid", &v25, 0xCu);
     }
 
-    v7 = 0;
+    identifiers = 0;
     v6 = 0;
-    v5 = 0;
+    entity = 0;
     v12 = @"missing parameters to run request";
     goto LABEL_24;
   }
 
-  v5 = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request entity];
+  entity = [(MPModelLibraryPinnedEntityChangeRequest *)self->_request entity];
   v6 = objc_opt_class();
-  v7 = [v5 identifiers];
+  identifiers = [entity identifiers];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v5 anyObject];
+    anyObject = [entity anyObject];
     v6 = objc_opt_class();
   }
 
@@ -1054,13 +1054,13 @@ LABEL_25:
     }
   }
 
-  if (!v7 || ![(MPModelLibraryPinnedEntityChangeOperation *)self _validateRequestIdentifiers:v7 class:v6])
+  if (!identifiers || ![(MPModelLibraryPinnedEntityChangeOperation *)self _validateRequestIdentifiers:identifiers class:v6])
   {
     v11 = os_log_create("com.apple.amp.mediaplayer", "Pinning");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v25 = 138543362;
-      v26 = v7;
+      v26 = identifiers;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_ERROR, "Not running library pinning operation as there are no valid identifiers=%{public}@", &v25, 0xCu);
     }
 
@@ -1070,8 +1070,8 @@ LABEL_25:
 
 LABEL_28:
   self->_canRerunRequest = 1;
-  v16 = [(MPModelLibraryPinnedEntityChangeRequest *)v7 library];
-  v17 = [v16 persistentID];
+  library = [(MPModelLibraryPinnedEntityChangeRequest *)identifiers library];
+  persistentID = [library persistentID];
 
   if (!self->_operationQueue)
   {
@@ -1082,8 +1082,8 @@ LABEL_28:
     [(NSOperationQueue *)self->_operationQueue setMaxConcurrentOperationCount:1];
     [(NSOperationQueue *)self->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryPinnedEntityChangeOperation.operationQueue"];
     v20 = self->_operationQueue;
-    v21 = [MEMORY[0x1E696AF00] currentThread];
-    -[NSOperationQueue setQualityOfService:](v20, "setQualityOfService:", [v21 qualityOfService]);
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    -[NSOperationQueue setQualityOfService:](v20, "setQualityOfService:", [currentThread qualityOfService]);
   }
 
   v22 = os_log_create("com.apple.amp.mediaplayer", "Pinning_Oversize");
@@ -1093,13 +1093,13 @@ LABEL_28:
     v25 = 138543618;
     v26 = v23;
     v27 = 2114;
-    v28 = v7;
+    v28 = identifiers;
     _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "Running library pinning operation for %{public}@, identifiers=%{public}@", &v25, 0x16u);
   }
 
-  v14 = [(MPAsyncOperation *)self userIdentity];
-  v24 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v14];
-  [(MPModelLibraryPinnedEntityChangeOperation *)self _runRequestWithMediaLibrary:v24 identifiers:v7 persistentID:v17 class:v6];
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v24 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
+  [(MPModelLibraryPinnedEntityChangeOperation *)self _runRequestWithMediaLibrary:v24 identifiers:identifiers persistentID:persistentID class:v6];
 
 LABEL_33:
 }

@@ -1,32 +1,32 @@
 @interface CLSPublicEventCache
-- (BOOL)getCachedServiceVersion:(id *)a3 forEventSourceService:(int64_t)a4 error:(id *)a5;
-- (BOOL)getScheduledCacheInvalidationDate:(id *)a3 forEventSourceService:(int64_t)a4 error:(id *)a5;
-- (BOOL)insertBatchesOfPublicEventsByTimeLocationIdentifier:(id)a3 forTimeLocationTuples:(id)a4;
-- (BOOL)setLatestVersionScheduledInvalidationDate:(id)a3 forEventSourceService:(int64_t)a4 error:(id *)a5;
-- (BOOL)setNewCachedServiceVersion:(id)a3 forEventSourceService:(int64_t)a4 error:(id *)a5;
-- (id)_fetchRequestForLatestServerVersionForEventSourceService:(int64_t)a3;
-- (id)predicateForTimeLocationTuple:(id)a3;
-- (id)publicEventFromManagedObject:(id)a3;
-- (id)publicEventsForMuid:(unint64_t)a3;
-- (id)publicEventsForTimeLocationTuple:(id)a3;
+- (BOOL)getCachedServiceVersion:(id *)version forEventSourceService:(int64_t)service error:(id *)error;
+- (BOOL)getScheduledCacheInvalidationDate:(id *)date forEventSourceService:(int64_t)service error:(id *)error;
+- (BOOL)insertBatchesOfPublicEventsByTimeLocationIdentifier:(id)identifier forTimeLocationTuples:(id)tuples;
+- (BOOL)setLatestVersionScheduledInvalidationDate:(id)date forEventSourceService:(int64_t)service error:(id *)error;
+- (BOOL)setNewCachedServiceVersion:(id)version forEventSourceService:(int64_t)service error:(id *)error;
+- (id)_fetchRequestForLatestServerVersionForEventSourceService:(int64_t)service;
+- (id)predicateForTimeLocationTuple:(id)tuple;
+- (id)publicEventFromManagedObject:(id)object;
+- (id)publicEventsForMuid:(unint64_t)muid;
+- (id)publicEventsForTimeLocationTuple:(id)tuple;
 - (id)readAllEvents;
-- (unint64_t)eventCountForEventSourceService:(int64_t)a3 error:(id *)a4;
-- (unint64_t)numberOftimeLocationTuplesForTimeLocationTuple:(id)a3;
-- (void)_updateManagedEvent:(id)a3 withEvent:(id)a4 inContext:(id)a5;
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3;
+- (unint64_t)eventCountForEventSourceService:(int64_t)service error:(id *)error;
+- (unint64_t)numberOftimeLocationTuplesForTimeLocationTuple:(id)tuple;
+- (void)_updateManagedEvent:(id)event withEvent:(id)withEvent inContext:(id)context;
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp;
 @end
 
 @implementation CLSPublicEventCache
 
-- (id)_fetchRequestForLatestServerVersionForEventSourceService:(int64_t)a3
+- (id)_fetchRequestForLatestServerVersionForEventSourceService:(int64_t)service
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBE428];
   v5 = +[CLSManagedPublicEventServerVersion entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
 
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"sourceService == %d", a3];
-  [v6 setPredicate:v7];
+  service = [MEMORY[0x277CCAC30] predicateWithFormat:@"sourceService == %d", service];
+  [v6 setPredicate:service];
 
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"dateOfLastCachedVersion" ascending:0];
   v11[0] = v8;
@@ -38,10 +38,10 @@
   return v6;
 }
 
-- (BOOL)setLatestVersionScheduledInvalidationDate:(id)a3 forEventSourceService:(int64_t)a4 error:(id *)a5
+- (BOOL)setLatestVersionScheduledInvalidationDate:(id)date forEventSourceService:(int64_t)service error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CLSDBCache *)self managedObjectContext];
+  dateCopy = date;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -57,18 +57,18 @@
   v14[2] = __93__CLSPublicEventCache_setLatestVersionScheduledInvalidationDate_forEventSourceService_error___block_invoke;
   v14[3] = &unk_2788A89A8;
   v14[4] = self;
-  v19 = a4;
-  v10 = v9;
+  serviceCopy = service;
+  v10 = managedObjectContext;
   v15 = v10;
   v17 = &v20;
   v18 = &v26;
-  v11 = v8;
+  v11 = dateCopy;
   v16 = v11;
   [v10 performBlockAndWait:v14];
   v12 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v12 = *(v27 + 24);
   }
 
@@ -122,11 +122,11 @@ void __93__CLSPublicEventCache_setLatestVersionScheduledInvalidationDate_forEven
   }
 }
 
-- (BOOL)getScheduledCacheInvalidationDate:(id *)a3 forEventSourceService:(int64_t)a4 error:(id *)a5
+- (BOOL)getScheduledCacheInvalidationDate:(id *)date forEventSourceService:(int64_t)service error:(id *)error
 {
-  if (a3)
+  if (date)
   {
-    v9 = [(CLSDBCache *)self managedObjectContext];
+    managedObjectContext = [(CLSDBCache *)self managedObjectContext];
     v29 = 0;
     v30 = &v29;
     v31 = 0x3032000000;
@@ -148,18 +148,18 @@ void __93__CLSPublicEventCache_setLatestVersionScheduledInvalidationDate_forEven
     v13[2] = __85__CLSPublicEventCache_getScheduledCacheInvalidationDate_forEventSourceService_error___block_invoke;
     v13[3] = &unk_2788A8980;
     v13[4] = self;
-    v18 = a4;
-    v10 = v9;
+    serviceCopy = service;
+    v10 = managedObjectContext;
     v14 = v10;
     v15 = &v29;
     v16 = &v23;
     v17 = &v19;
     [v10 performBlockAndWait:v13];
-    *a3 = v24[5];
+    *date = v24[5];
     v11 = *(v20 + 24);
-    if (a5 && (v20[3] & 1) == 0)
+    if (error && (v20[3] & 1) == 0)
     {
-      *a5 = v30[5];
+      *error = v30[5];
       v11 = *(v20 + 24);
     }
 
@@ -169,10 +169,10 @@ void __93__CLSPublicEventCache_setLatestVersionScheduledInvalidationDate_forEven
     _Block_object_dispose(&v29, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"CLSErrorDomain" code:-1 localizedDescription:@"getScheduledCacheInvalidationDate does not accept NULL date"];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -204,37 +204,37 @@ void __85__CLSPublicEventCache_getScheduledCacheInvalidationDate_forEventSourceS
   }
 }
 
-- (BOOL)setNewCachedServiceVersion:(id)a3 forEventSourceService:(int64_t)a4 error:(id *)a5
+- (BOOL)setNewCachedServiceVersion:(id)version forEventSourceService:(int64_t)service error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  versionCopy = version;
   v29 = 0;
-  v9 = [(CLSPublicEventCache *)self getCachedServiceVersion:&v29 forEventSourceService:a4 error:a5];
+  v9 = [(CLSPublicEventCache *)self getCachedServiceVersion:&v29 forEventSourceService:service error:error];
   v10 = v29;
   if (v9)
   {
-    v11 = [v8 versionString];
-    v12 = [v10 isEqualToString:v11];
+    versionString = [versionCopy versionString];
+    v12 = [v10 isEqualToString:versionString];
 
     if (v12)
     {
       v13 = +[CLSLogging sharedLogging];
-      v14 = [v13 loggingConnection];
+      loggingConnection = [v13 loggingConnection];
 
       v15 = 1;
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
         *&buf[4] = v10;
         *&buf[12] = 2048;
-        *&buf[14] = a4;
-        _os_log_impl(&dword_22F907000, v14, OS_LOG_TYPE_INFO, "Already found cached version %@ for source service %lld", buf, 0x16u);
+        *&buf[14] = service;
+        _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_INFO, "Already found cached version %@ for source service %lld", buf, 0x16u);
       }
     }
 
     else
     {
-      v16 = [(CLSDBCache *)self managedObjectContext];
+      managedObjectContext = [(CLSDBCache *)self managedObjectContext];
       v25 = 0;
       v26 = &v25;
       v27 = 0x2020000000;
@@ -249,17 +249,17 @@ void __85__CLSPublicEventCache_getScheduledCacheInvalidationDate_forEventSourceS
       v18[1] = 3221225472;
       v18[2] = __78__CLSPublicEventCache_setNewCachedServiceVersion_forEventSourceService_error___block_invoke;
       v18[3] = &unk_2788A89A8;
-      v14 = v16;
-      v19 = v14;
+      loggingConnection = managedObjectContext;
+      v19 = loggingConnection;
       v23 = buf;
-      v24 = a4;
-      v20 = v8;
-      v21 = self;
+      serviceCopy = service;
+      v20 = versionCopy;
+      selfCopy = self;
       v22 = &v25;
-      [v14 performBlockAndWait:v18];
-      if (a5)
+      [loggingConnection performBlockAndWait:v18];
+      if (error)
       {
-        *a5 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
       v15 = *(v26 + 24);
@@ -301,11 +301,11 @@ void __78__CLSPublicEventCache_setNewCachedServiceVersion_forEventSourceService_
   objc_storeStrong((*(*(a1 + 64) + 8) + 40), v10);
 }
 
-- (BOOL)getCachedServiceVersion:(id *)a3 forEventSourceService:(int64_t)a4 error:(id *)a5
+- (BOOL)getCachedServiceVersion:(id *)version forEventSourceService:(int64_t)service error:(id *)error
 {
-  if (a3)
+  if (version)
   {
-    v9 = [(CLSDBCache *)self managedObjectContext];
+    managedObjectContext = [(CLSDBCache *)self managedObjectContext];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -321,17 +321,17 @@ void __78__CLSPublicEventCache_setNewCachedServiceVersion_forEventSourceService_
     v13[2] = __75__CLSPublicEventCache_getCachedServiceVersion_forEventSourceService_error___block_invoke;
     v13[3] = &unk_2788A8958;
     v13[4] = self;
-    v17 = a4;
-    v10 = v9;
+    serviceCopy = service;
+    v10 = managedObjectContext;
     v14 = v10;
     v15 = &v19;
-    v18 = a3;
+    versionCopy = version;
     v16 = &v25;
     [v10 performBlockAndWait:v13];
     v11 = *(v26 + 24);
-    if (a5 && (v26[3] & 1) == 0)
+    if (error && (v26[3] & 1) == 0)
     {
-      *a5 = v20[5];
+      *error = v20[5];
       v11 = *(v26 + 24);
     }
 
@@ -339,10 +339,10 @@ void __78__CLSPublicEventCache_setNewCachedServiceVersion_forEventSourceService_
     _Block_object_dispose(&v25, 8);
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"CLSErrorDomain" code:-1 localizedDescription:@"getCachedServiceVersion does not accept NULL version"];
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -370,9 +370,9 @@ void __75__CLSPublicEventCache_getCachedServiceVersion_forEventSourceService_err
   }
 }
 
-- (unint64_t)eventCountForEventSourceService:(int64_t)a3 error:(id *)a4
+- (unint64_t)eventCountForEventSourceService:(int64_t)service error:(id *)error
 {
-  v6 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -387,16 +387,16 @@ void __75__CLSPublicEventCache_getCachedServiceVersion_forEventSourceService_err
   v10[1] = 3221225472;
   v10[2] = __61__CLSPublicEventCache_eventCountForEventSourceService_error___block_invoke;
   v10[3] = &unk_2788A8928;
-  v14 = a3;
+  serviceCopy = service;
   v12 = &v21;
-  v7 = v6;
+  v7 = managedObjectContext;
   v11 = v7;
   v13 = &v15;
   [v7 performBlockAndWait:v10];
   v8 = v22[3];
-  if (a4 && v8 == 0x7FFFFFFFFFFFFFFFLL)
+  if (error && v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v8 = v22[3];
   }
 
@@ -427,16 +427,16 @@ void __61__CLSPublicEventCache_eventCountForEventSourceService_error___block_inv
 - (id)readAllEvents
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __36__CLSPublicEventCache_readAllEvents__block_invoke;
   v10[3] = &unk_2788A8900;
-  v11 = v4;
-  v12 = self;
+  v11 = managedObjectContext;
+  selfCopy = self;
   v5 = v3;
   v13 = v5;
-  v6 = v4;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v10];
   v7 = v13;
   v8 = v5;
@@ -530,23 +530,23 @@ void __36__CLSPublicEventCache_readAllEvents__block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)numberOftimeLocationTuplesForTimeLocationTuple:(id)a3
+- (unint64_t)numberOftimeLocationTuplesForTimeLocationTuple:(id)tuple
 {
-  v4 = a3;
+  tupleCopy = tuple;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = tupleCopy;
   v11 = v6;
   v13 = &v14;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   [v7 performBlockAndWait:v10];
   v8 = v15[3];
@@ -571,17 +571,17 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
   *(*(*(a1 + 56) + 8) + 24) = v7;
 }
 
-- (id)publicEventFromManagedObject:(id)a3
+- (id)publicEventFromManagedObject:(id)object
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 performers];
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  objectCopy = object;
+  performers = [objectCopy performers];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(performers, "count")}];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v4;
+  obj = performers;
   v6 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v6)
   {
@@ -598,9 +598,9 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
 
         v10 = *(*(&v51 + 1) + 8 * i);
         v11 = [CLSPublicEventPerformer alloc];
-        v12 = [v10 localizedName];
-        v13 = [v10 iTunesIdentifier];
-        v14 = [(CLSPublicEventPerformer *)v11 initWithLocalizedName:v12 iTunesIdentifier:v13];
+        localizedName = [v10 localizedName];
+        iTunesIdentifier = [v10 iTunesIdentifier];
+        v14 = [(CLSPublicEventPerformer *)v11 initWithLocalizedName:localizedName iTunesIdentifier:iTunesIdentifier];
 
         [v5 addObject:v14];
       }
@@ -613,14 +613,14 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
 
   v44 = v5;
 
-  v45 = v3;
-  v15 = [v3 categories];
-  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v15, "count")}];
+  v45 = objectCopy;
+  categories = [objectCopy categories];
+  v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(categories, "count")}];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v17 = v15;
+  v17 = categories;
   v18 = [v17 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v18)
   {
@@ -637,17 +637,17 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
 
         v22 = *(*(&v47 + 1) + 8 * j);
         v23 = [CLSPublicEventCategory alloc];
-        v24 = [v22 category];
-        v25 = [(CLSPublicEventCategory *)v23 initWithCategory:v24];
+        category = [v22 category];
+        v25 = [(CLSPublicEventCategory *)v23 initWithCategory:category];
 
-        v26 = [v22 localizedName];
-        [(CLSPublicEventCategory *)v25 setLocalizedName:v26];
+        localizedName2 = [v22 localizedName];
+        [(CLSPublicEventCategory *)v25 setLocalizedName:localizedName2];
 
-        v27 = [v22 localizedSubcategories];
-        v28 = v27;
-        if (v27)
+        localizedSubcategories = [v22 localizedSubcategories];
+        v28 = localizedSubcategories;
+        if (localizedSubcategories)
         {
-          v29 = [v27 componentsSeparatedByString:@"_#_"];
+          v29 = [localizedSubcategories componentsSeparatedByString:@"_#_"];
         }
 
         else
@@ -668,31 +668,31 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
 
   v30 = objc_alloc_init(CLSPublicEvent);
   -[CLSPublicEvent setMuid:](v30, "setMuid:", [v45 muid]);
-  v31 = [v45 identifier];
-  [(CLSPublicEvent *)v30 setIdentifier:v31];
+  identifier = [v45 identifier];
+  [(CLSPublicEvent *)v30 setIdentifier:identifier];
 
-  v32 = [v45 name];
-  [(CLSPublicEvent *)v30 setName:v32];
+  name = [v45 name];
+  [(CLSPublicEvent *)v30 setName:name];
 
   v33 = objc_alloc(MEMORY[0x277CCA970]);
-  v34 = [v45 localStartDate];
-  v35 = [v45 localEndDate];
-  v36 = [v33 initWithStartDate:v34 endDate:v35];
+  localStartDate = [v45 localStartDate];
+  localEndDate = [v45 localEndDate];
+  v36 = [v33 initWithStartDate:localStartDate endDate:localEndDate];
   [(CLSPublicEvent *)v30 setLocalDateInterval:v36];
 
   [v45 localStartTime];
   [(CLSPublicEvent *)v30 setLocalStartTime:?];
   [v45 localEndTime];
   [(CLSPublicEvent *)v30 setLocalEndTime:?];
-  v37 = [v45 timeZone];
-  [(CLSPublicEvent *)v30 setTimeZone:v37];
+  timeZone = [v45 timeZone];
+  [(CLSPublicEvent *)v30 setTimeZone:timeZone];
 
   [(CLSPublicEvent *)v30 setCategories:v16];
   [(CLSPublicEvent *)v30 setPerformers:v44];
   -[CLSPublicEvent setExpectedAttendance:](v30, "setExpectedAttendance:", [v45 expectedAttendance]);
   -[CLSPublicEvent setBusinessItemMuid:](v30, "setBusinessItemMuid:", [v45 businessItemMuid]);
-  v38 = [v45 businessItemPlaceID];
-  [(CLSPublicEvent *)v30 setBusinessItemPlaceID:v38];
+  businessItemPlaceID = [v45 businessItemPlaceID];
+  [(CLSPublicEvent *)v30 setBusinessItemPlaceID:businessItemPlaceID];
 
   [v45 businessItemLatitude];
   v40 = v39;
@@ -705,24 +705,24 @@ void __70__CLSPublicEventCache_numberOftimeLocationTuplesForTimeLocationTuple___
   return v30;
 }
 
-- (id)publicEventsForTimeLocationTuple:(id)a3
+- (id)publicEventsForTimeLocationTuple:(id)tuple
 {
-  v4 = a3;
+  tupleCopy = tuple;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__7241;
   v18 = __Block_byref_object_dispose__7242;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__CLSPublicEventCache_publicEventsForTimeLocationTuple___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = tupleCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -827,20 +827,20 @@ void __56__CLSPublicEventCache_publicEventsForTimeLocationTuple___block_invoke(u
   }
 }
 
-- (id)publicEventsForMuid:(unint64_t)a3
+- (id)publicEventsForMuid:(unint64_t)muid
 {
   v5 = [MEMORY[0x277CBEB58] set];
-  v6 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__CLSPublicEventCache_publicEventsForMuid___block_invoke;
   v12[3] = &unk_2788A88B0;
-  v16 = a3;
-  v13 = v6;
-  v14 = self;
+  muidCopy = muid;
+  v13 = managedObjectContext;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v6;
+  v8 = managedObjectContext;
   [v8 performBlockAndWait:v12];
   v9 = v15;
   v10 = v7;
@@ -910,53 +910,53 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateManagedEvent:(id)a3 withEvent:(id)a4 inContext:(id)a5
+- (void)_updateManagedEvent:(id)event withEvent:(id)withEvent inContext:(id)context
 {
   v82 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 setMuid:{objc_msgSend(v8, "muid")}];
-  v10 = [v8 identifier];
-  [v7 setIdentifier:v10];
+  eventCopy = event;
+  withEventCopy = withEvent;
+  contextCopy = context;
+  [eventCopy setMuid:{objc_msgSend(withEventCopy, "muid")}];
+  identifier = [withEventCopy identifier];
+  [eventCopy setIdentifier:identifier];
 
-  v11 = [v8 name];
-  [v7 setName:v11];
+  name = [withEventCopy name];
+  [eventCopy setName:name];
 
-  v12 = [v8 localDateInterval];
-  v13 = [v12 startDate];
-  [v7 setLocalStartDate:v13];
+  localDateInterval = [withEventCopy localDateInterval];
+  startDate = [localDateInterval startDate];
+  [eventCopy setLocalStartDate:startDate];
 
-  v59 = v12;
-  v14 = [v12 endDate];
-  [v7 setLocalEndDate:v14];
+  v59 = localDateInterval;
+  endDate = [localDateInterval endDate];
+  [eventCopy setLocalEndDate:endDate];
 
-  [v8 localStartTime];
-  [v7 setLocalStartTime:?];
-  [v8 localEndTime];
-  [v7 setLocalEndTime:?];
-  v15 = [v8 timeZone];
-  [v7 setTimeZoneOffset:{objc_msgSend(v15, "secondsFromGMT")}];
+  [withEventCopy localStartTime];
+  [eventCopy setLocalStartTime:?];
+  [withEventCopy localEndTime];
+  [eventCopy setLocalEndTime:?];
+  timeZone = [withEventCopy timeZone];
+  [eventCopy setTimeZoneOffset:{objc_msgSend(timeZone, "secondsFromGMT")}];
 
-  [v7 setExpectedAttendance:{objc_msgSend(v8, "expectedAttendance")}];
-  [v7 setBusinessItemMuid:{objc_msgSend(v8, "businessItemMuid")}];
-  v16 = [v8 businessItemPlaceID];
-  [v7 setBusinessItemPlaceID:v16];
+  [eventCopy setExpectedAttendance:{objc_msgSend(withEventCopy, "expectedAttendance")}];
+  [eventCopy setBusinessItemMuid:{objc_msgSend(withEventCopy, "businessItemMuid")}];
+  businessItemPlaceID = [withEventCopy businessItemPlaceID];
+  [eventCopy setBusinessItemPlaceID:businessItemPlaceID];
 
-  [v8 businessItemCoordinates];
-  [v7 setBusinessItemLatitude:?];
-  [v8 businessItemCoordinates];
-  [v7 setBusinessItemLongitude:v17];
-  [v7 setSourceService:{objc_msgSend(v8, "sourceService")}];
-  v61 = v8;
-  [v7 setSupportsEventExperience:{objc_msgSend(v8, "supportsEventExperience")}];
+  [withEventCopy businessItemCoordinates];
+  [eventCopy setBusinessItemLatitude:?];
+  [withEventCopy businessItemCoordinates];
+  [eventCopy setBusinessItemLongitude:v17];
+  [eventCopy setSourceService:{objc_msgSend(withEventCopy, "sourceService")}];
+  v61 = withEventCopy;
+  [eventCopy setSupportsEventExperience:{objc_msgSend(withEventCopy, "supportsEventExperience")}];
   v76 = 0u;
   v77 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v60 = v7;
-  v18 = [v7 categories];
-  v19 = [v18 countByEnumeratingWithState:&v74 objects:v81 count:16];
+  v60 = eventCopy;
+  categories = [eventCopy categories];
+  v19 = [categories countByEnumeratingWithState:&v74 objects:v81 count:16];
   if (v19)
   {
     v20 = v19;
@@ -967,26 +967,26 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
       {
         if (*v75 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(categories);
         }
 
-        [v9 deleteObject:*(*(&v74 + 1) + 8 * i)];
+        [contextCopy deleteObject:*(*(&v74 + 1) + 8 * i)];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v74 objects:v81 count:16];
+      v20 = [categories countByEnumeratingWithState:&v74 objects:v81 count:16];
     }
 
     while (v20);
   }
 
-  v23 = [v61 categories];
-  v24 = [v23 count];
+  categories2 = [v61 categories];
+  v24 = [categories2 count];
   v25 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:v24];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v26 = v23;
+  v26 = categories2;
   v27 = [v26 countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v27)
   {
@@ -1004,18 +1004,18 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
         v31 = *(*(&v70 + 1) + 8 * j);
         v32 = MEMORY[0x277CBE408];
         v33 = +[CLSManagedPublicEventCategory entityName];
-        v34 = [v32 insertNewObjectForEntityForName:v33 inManagedObjectContext:v9];
+        v34 = [v32 insertNewObjectForEntityForName:v33 inManagedObjectContext:contextCopy];
 
-        v35 = [v31 category];
-        [v34 setCategory:v35];
+        category = [v31 category];
+        [v34 setCategory:category];
 
-        v36 = [v31 localizedName];
-        [v34 setLocalizedName:v36];
+        localizedName = [v31 localizedName];
+        [v34 setLocalizedName:localizedName];
 
-        v37 = [v31 localizedSubcategories];
-        if ([v37 count])
+        localizedSubcategories = [v31 localizedSubcategories];
+        if ([localizedSubcategories count])
         {
-          v38 = [v37 componentsJoinedByString:@"_#_"];
+          v38 = [localizedSubcategories componentsJoinedByString:@"_#_"];
         }
 
         else
@@ -1041,8 +1041,8 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v39 = [v60 performers];
-  v40 = [v39 countByEnumeratingWithState:&v66 objects:v79 count:16];
+  performers = [v60 performers];
+  v40 = [performers countByEnumeratingWithState:&v66 objects:v79 count:16];
   if (v40)
   {
     v41 = v40;
@@ -1053,26 +1053,26 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
       {
         if (*v67 != v42)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(performers);
         }
 
-        [v9 deleteObject:*(*(&v66 + 1) + 8 * k)];
+        [contextCopy deleteObject:*(*(&v66 + 1) + 8 * k)];
       }
 
-      v41 = [v39 countByEnumeratingWithState:&v66 objects:v79 count:16];
+      v41 = [performers countByEnumeratingWithState:&v66 objects:v79 count:16];
     }
 
     while (v41);
   }
 
-  v44 = [v61 performers];
-  v45 = [v44 count];
+  performers2 = [v61 performers];
+  v45 = [performers2 count];
   v46 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:v45];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v47 = v44;
+  v47 = performers2;
   v48 = [v47 countByEnumeratingWithState:&v62 objects:v78 count:16];
   if (v48)
   {
@@ -1090,13 +1090,13 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
         v52 = *(*(&v62 + 1) + 8 * m);
         v53 = MEMORY[0x277CBE408];
         v54 = +[CLSManagedPublicEventPerformer entityName];
-        v55 = [v53 insertNewObjectForEntityForName:v54 inManagedObjectContext:v9];
+        v55 = [v53 insertNewObjectForEntityForName:v54 inManagedObjectContext:contextCopy];
 
-        v56 = [v52 localizedName];
-        [v55 setLocalizedName:v56];
+        localizedName2 = [v52 localizedName];
+        [v55 setLocalizedName:localizedName2];
 
-        v57 = [v52 iTunesIdentifier];
-        [v55 setITunesIdentifier:v57];
+        iTunesIdentifier = [v52 iTunesIdentifier];
+        [v55 setITunesIdentifier:iTunesIdentifier];
 
         [v46 addObject:v55];
       }
@@ -1110,30 +1110,30 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
   [v60 setPerformers:v46];
 }
 
-- (BOOL)insertBatchesOfPublicEventsByTimeLocationIdentifier:(id)a3 forTimeLocationTuples:(id)a4
+- (BOOL)insertBatchesOfPublicEventsByTimeLocationIdentifier:(id)identifier forTimeLocationTuples:(id)tuples
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  tuplesCopy = tuples;
+  if (identifierCopy)
   {
-    if ([v6 count])
+    if ([identifierCopy count])
     {
-      v8 = [v7 count];
-      v9 = [v6 count];
+      v8 = [tuplesCopy count];
+      v9 = [identifierCopy count];
       if (v8 != v9)
       {
         v10 = v9;
         v11 = +[CLSLogging sharedLogging];
-        v12 = [v11 loggingConnection];
+        loggingConnection = [v11 loggingConnection];
 
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218240;
           *&buf[4] = v10;
           *&buf[12] = 2048;
           *&buf[14] = v8;
-          _os_log_error_impl(&dword_22F907000, v12, OS_LOG_TYPE_ERROR, "[PublicEventCache] Number of event batches (%lu) does not match number of time location tuples (%lu). Inserting partial batch.", buf, 0x16u);
+          _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "[PublicEventCache] Number of event batches (%lu) does not match number of time location tuples (%lu). Inserting partial batch.", buf, 0x16u);
         }
       }
 
@@ -1141,16 +1141,16 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
       v26 = 0;
-      v13 = [(CLSDBCache *)self managedObjectContext];
+      managedObjectContext = [(CLSDBCache *)self managedObjectContext];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __97__CLSPublicEventCache_insertBatchesOfPublicEventsByTimeLocationIdentifier_forTimeLocationTuples___block_invoke;
       v19[3] = &unk_2788A8888;
-      v20 = v7;
-      v21 = v6;
-      v14 = v13;
+      v20 = tuplesCopy;
+      v21 = identifierCopy;
+      v14 = managedObjectContext;
       v22 = v14;
-      v23 = self;
+      selfCopy = self;
       v24 = buf;
       [v14 performBlockAndWait:v19];
       v15 = *(*&buf[8] + 24);
@@ -1167,12 +1167,12 @@ void __43__CLSPublicEventCache_publicEventsForMuid___block_invoke(uint64_t a1)
   else
   {
     v16 = +[CLSLogging sharedLogging];
-    v17 = [v16 loggingConnection];
+    loggingConnection2 = [v16 loggingConnection];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F907000, v17, OS_LOG_TYPE_ERROR, "[PublicEventCache] Unexpectedly have nil publicEventBatches to insert.", buf, 2u);
+      _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "[PublicEventCache] Unexpectedly have nil publicEventBatches to insert.", buf, 2u);
     }
 
     v15 = 0;
@@ -1305,43 +1305,43 @@ uint64_t __97__CLSPublicEventCache_insertBatchesOfPublicEventsByTimeLocationIden
   return result;
 }
 
-- (id)predicateForTimeLocationTuple:(id)a3
+- (id)predicateForTimeLocationTuple:(id)tuple
 {
   v20 = 0;
   v21 = 0;
   v18 = 0;
   v19 = 0;
   v3 = MEMORY[0x277CBFBC8];
-  v4 = a3;
+  tupleCopy = tuple;
   v5 = [v3 alloc];
-  [v4 coordinates];
+  [tupleCopy coordinates];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v5 initWithCenter:v11 radius:v7 identifier:{v9, 20.0}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v5 initWithCenter:uUIDString radius:v7 identifier:{v9, 20.0}];
 
   CLSCalculateRangeCoordinateForRegion(v12, &v21, &v20, &v19, &v18);
   v13 = MEMORY[0x277CCAC30];
-  v14 = [v4 startDate];
-  v15 = [v4 endDate];
+  startDate = [tupleCopy startDate];
+  endDate = [tupleCopy endDate];
 
-  v16 = [v13 predicateWithFormat:@"startDate >= %@ && endDate <= %@ && %f <= latitude && latitude <= %f && %f <= longitude && longitude <= %f", v14, v15, v21, v19, v20, v18];
+  v16 = [v13 predicateWithFormat:@"startDate >= %@ && endDate <= %@ && %f <= latitude && latitude <= %f && %f <= longitude && longitude <= %f", startDate, endDate, v21, v19, v20, v18];
 
   return v16;
 }
 
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp
 {
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__CLSPublicEventCache_invalidateCacheItemsBeforeDateWithTimestamp___block_invoke;
   v7[3] = &unk_2788A8860;
-  v9 = a3;
+  timestampCopy = timestamp;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = managedObjectContext;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 

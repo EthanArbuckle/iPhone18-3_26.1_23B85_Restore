@@ -16,14 +16,14 @@
 {
   v6 = a4;
   v7 = a3;
-  [a1 ic_enumerateAttachmentsInContext:v7 range:0 usingBlock:{objc_msgSend(a1, "length"), v6}];
+  [self ic_enumerateAttachmentsInContext:v7 range:0 usingBlock:{objc_msgSend(self, "length"), v6}];
 }
 
 - (void)ic_enumerateAttachmentsInContext:()Shared range:options:usingBlock:
 {
   v12 = a3;
   v13 = a7;
-  v22.location = [a1 ic_range];
+  v22.location = [self ic_range];
   v22.length = v14;
   v21.location = a4;
   v21.length = a5;
@@ -36,14 +36,14 @@
   v20 = v13;
   v16 = v13;
   v17 = v12;
-  [a1 enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
+  [self enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
 }
 
 - (void)ic_enumerateInlineAttachmentsInContext:()Shared range:options:usingBlock:
 {
   v12 = a3;
   v13 = a7;
-  v22.location = [a1 ic_range];
+  v22.location = [self ic_range];
   v22.length = v14;
   v21.location = a4;
   v21.length = a5;
@@ -56,21 +56,21 @@
   v20 = v13;
   v16 = v13;
   v17 = v12;
-  [a1 enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
+  [self enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
 }
 
 - (id)abstractAttachmentsInContext:()Shared range:options:
 {
   v10 = MEMORY[0x277CBEB18];
   v11 = a3;
-  v12 = [v10 array];
+  array = [v10 array];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__NSAttributedString_Shared__abstractAttachmentsInContext_range_options___block_invoke;
   v16[3] = &unk_278195550;
-  v17 = v12;
-  v13 = v12;
-  [a1 ic_enumerateAbstractAttachmentsInContext:v11 range:a4 options:a5 usingBlock:{a6, v16}];
+  v17 = array;
+  v13 = array;
+  [self ic_enumerateAbstractAttachmentsInContext:v11 range:a4 options:a5 usingBlock:{a6, v16}];
 
   v14 = [MEMORY[0x277CBEA60] arrayWithArray:v13];
 
@@ -81,7 +81,7 @@
 {
   v12 = a3;
   v13 = a7;
-  v22.location = [a1 ic_range];
+  v22.location = [self ic_range];
   v22.length = v14;
   v21.location = a4;
   v21.length = a5;
@@ -94,14 +94,14 @@
   v20 = v13;
   v16 = v13;
   v17 = v12;
-  [a1 enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
+  [self enumerateAttribute:@"NSAttachment" inRange:v15.location options:v15.length usingBlock:{a6, v18}];
 }
 
 - (id)ic_attributedStringByRefreshingParagraphStyleUUIDs
 {
-  v1 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:a1];
+  v1 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:self];
   v2 = ICTTAttributeNameParagraphStyle;
-  v3 = [v1 ic_range];
+  ic_range = [v1 ic_range];
   v5 = v4;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -109,7 +109,7 @@
   v9[3] = &unk_2781980E0;
   v10 = v1;
   v6 = v1;
-  [v6 enumerateAttribute:v2 inRange:v3 options:v5 usingBlock:{0, v9}];
+  [v6 enumerateAttribute:v2 inRange:ic_range options:v5 usingBlock:{0, v9}];
   v7 = [v6 copy];
 
   return v7;
@@ -121,7 +121,7 @@
   v10 = a3;
   v11 = a5;
   v12 = a6;
-  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:a1];
+  v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithAttributedString:self];
   v14 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = [v13 length];
@@ -167,13 +167,13 @@
         }
 
         v23 = *(*(&v54 + 1) + 8 * v22);
-        v24 = [v23 rangeValue];
+        rangeValue = [v23 rangeValue];
         v26 = v25;
         v27 = [v18 objectForKeyedSubscript:v23];
         v28 = v27;
         if (v12 && v27)
         {
-          v29 = [v53 attributesAtIndex:v24 effectiveRange:0];
+          v29 = [v53 attributesAtIndex:rangeValue effectiveRange:0];
           v30 = [v29 mutableCopy];
 
           v31 = v12[2](v12, v30, v28);
@@ -186,34 +186,34 @@
             v34 = ICDynamicCast();
 
             v35 = ICTTAttributeNameParagraphStyle;
-            v37 = [v32 ic_range];
+            ic_range = [v32 ic_range];
             if (v34)
             {
-              [v32 addAttribute:v35 value:v34 range:{v37, v36}];
+              [v32 addAttribute:v35 value:v34 range:{ic_range, v36}];
             }
 
             else
             {
-              [v32 removeAttribute:v35 range:{v37, v36}];
+              [v32 removeAttribute:v35 range:{ic_range, v36}];
             }
 
             objc_opt_class();
             v38 = [v30 objectForKeyedSubscript:v47];
             v39 = ICDynamicCast();
 
-            v41 = [v32 ic_range];
+            ic_range2 = [v32 ic_range];
             if (v39)
             {
-              [v32 addAttribute:v47 value:v39 range:{v41, v40}];
+              [v32 addAttribute:v47 value:v39 range:{ic_range2, v40}];
             }
 
             else
             {
-              [v32 removeAttribute:v47 range:{v41, v40}];
+              [v32 removeAttribute:v47 range:{ic_range2, v40}];
             }
 
             v42 = [v32 copy];
-            [v53 replaceCharactersInRange:v24 withAttributedString:{v26, v42}];
+            [v53 replaceCharactersInRange:rangeValue withAttributedString:{v26, v42}];
 
             v21 = v48;
             v18 = v49;
@@ -241,14 +241,14 @@
 - (id)ic_attributedStringWithOnlyAdaptiveImageAttributeIfNecessary
 {
   v2 = *MEMORY[0x277D74058];
-  v3 = [a1 ic_range];
-  if ([a1 ic_containsAttribute:v2 inRange:{v3, v4}])
+  ic_range = [self ic_range];
+  if ([self ic_containsAttribute:v2 inRange:{ic_range, v4}])
   {
     v5 = objc_alloc(MEMORY[0x277CCAB48]);
-    v6 = [a1 string];
-    v7 = [v5 initWithString:v6];
+    string = [self string];
+    v7 = [v5 initWithString:string];
 
-    v8 = [a1 ic_range];
+    ic_range2 = [self ic_range];
     v10 = v9;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -256,7 +256,7 @@
     v14[3] = &unk_278197B70;
     v15 = v7;
     v11 = v7;
-    [a1 enumerateAttribute:v2 inRange:v8 options:v10 usingBlock:{0, v14}];
+    [self enumerateAttribute:v2 inRange:ic_range2 options:v10 usingBlock:{0, v14}];
     v12 = [objc_alloc(MEMORY[0x277CCA898]) initWithAttributedString:v11];
   }
 
@@ -272,11 +272,11 @@
 {
   v4 = a3;
   v5 = objc_alloc(MEMORY[0x277CCAB48]);
-  v6 = [a1 string];
-  v7 = [v5 initWithString:v6];
+  string = [self string];
+  v7 = [v5 initWithString:string];
 
   v8 = *MEMORY[0x277D74058];
-  v9 = [a1 ic_range];
+  ic_range = [self ic_range];
   v11 = v10;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -284,8 +284,8 @@
   v22[3] = &unk_278197B70;
   v12 = v7;
   v23 = v12;
-  [a1 enumerateAttribute:v8 inRange:v9 options:v11 usingBlock:{0, v22}];
-  v13 = [a1 length];
+  [self enumerateAttribute:v8 inRange:ic_range options:v11 usingBlock:{0, v22}];
+  v13 = [self length];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __59__NSAttributedString_Shared__ic_searchableStringInContext___block_invoke_2;
@@ -294,7 +294,7 @@
   v14 = v12;
   v21 = v14;
   v15 = v4;
-  [a1 enumerateAttribute:@"NSAttachment" inRange:0 options:v13 usingBlock:{2, v19}];
+  [self enumerateAttribute:@"NSAttachment" inRange:0 options:v13 usingBlock:{2, v19}];
   v16 = v21;
   v17 = v14;
 

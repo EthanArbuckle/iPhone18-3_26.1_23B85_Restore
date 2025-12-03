@@ -1,30 +1,30 @@
 @interface SharingEntryProfileInformationInputSignal.AuthorizationObserver
 - (_TtCC8Profiles41SharingEntryProfileInformationInputSignalP33_E10E3388A4AD6554C4BB6D43AFDF1EC821AuthorizationObserver)init;
-- (void)sharingRecipientAuthorizationStore:(id)a3 didAddSharingAuthorizations:(id)a4;
-- (void)sharingRecipientAuthorizationStore:(id)a3 didRemoveSharingAuthorizations:(id)a4;
-- (void)sharingRecipientAuthorizationWasRevokedForStore:(id)a3;
+- (void)sharingRecipientAuthorizationStore:(id)store didAddSharingAuthorizations:(id)authorizations;
+- (void)sharingRecipientAuthorizationStore:(id)store didRemoveSharingAuthorizations:(id)authorizations;
+- (void)sharingRecipientAuthorizationWasRevokedForStore:(id)store;
 @end
 
 @implementation SharingEntryProfileInformationInputSignal.AuthorizationObserver
 
-- (void)sharingRecipientAuthorizationWasRevokedForStore:(id)a3
+- (void)sharingRecipientAuthorizationWasRevokedForStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
+  storeCopy = store;
+  selfCopy = self;
   sub_29E4C55D8();
 }
 
-- (void)sharingRecipientAuthorizationStore:(id)a3 didAddSharingAuthorizations:(id)a4
+- (void)sharingRecipientAuthorizationStore:(id)store didAddSharingAuthorizations:(id)authorizations
 {
-  v5 = a3;
-  v6 = self;
+  storeCopy = store;
+  selfCopy = self;
   sub_29E4C55D8();
 }
 
-- (void)sharingRecipientAuthorizationStore:(id)a3 didRemoveSharingAuthorizations:(id)a4
+- (void)sharingRecipientAuthorizationStore:(id)store didRemoveSharingAuthorizations:(id)authorizations
 {
-  v5 = a3;
-  v6 = self;
+  storeCopy = store;
+  selfCopy = self;
   sub_29E4C5684();
 }
 

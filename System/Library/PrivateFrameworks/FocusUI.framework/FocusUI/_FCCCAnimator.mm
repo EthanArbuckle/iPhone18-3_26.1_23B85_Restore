@@ -1,18 +1,18 @@
 @interface _FCCCAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _FCCCAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v4 = MEMORY[0x277D75D18];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35___FCCCAnimator_animateTransition___block_invoke;
   v8[3] = &unk_27901A470;
-  v9 = v3;
+  v9 = transitionCopy;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35___FCCCAnimator_animateTransition___block_invoke_2;

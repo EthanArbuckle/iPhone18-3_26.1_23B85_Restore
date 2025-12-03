@@ -1,29 +1,29 @@
 @interface MIIPAPatcherManifest
-+ (id)_arrayFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7;
-+ (id)_manifestErrorForKey:(id)a3 sub:(id)a4 index:(int64_t)a5 expected:(id)a6 value:(id)a7;
-+ (id)_manifestFromPlistRepresentationV1:(id)a3 withError:(id *)a4;
-+ (id)_numberFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7;
-+ (id)_stringFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7;
-+ (id)_targetsFromPlistRepresentationV1:(id)a3 withError:(id *)a4;
-+ (id)manifestFromFileURL:(id)a3 fmRead:(id)a4 withError:(id *)a5;
-+ (id)manifestFromFileURL:(id)a3 withError:(id *)a4;
-+ (id)manifestFromPlistRepresentation:(id)a3 withError:(id *)a4;
-- (BOOL)writeToFileURL:(id)a3 withError:(id *)a4;
-- (MIIPAPatcherManifest)initWithCommandLineArgs:(id)a3 targets:(id)a4 toolVersion:(id)a5 toolArch:(id)a6 toolBuiltWithSDKVersion:(id)a7 toolBuiltWithXcodeVersion:(id)a8 hostVersion:(id)a9;
++ (id)_arrayFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error;
++ (id)_manifestErrorForKey:(id)key sub:(id)sub index:(int64_t)index expected:(id)expected value:(id)value;
++ (id)_manifestFromPlistRepresentationV1:(id)v1 withError:(id *)error;
++ (id)_numberFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error;
++ (id)_stringFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error;
++ (id)_targetsFromPlistRepresentationV1:(id)v1 withError:(id *)error;
++ (id)manifestFromFileURL:(id)l fmRead:(id)read withError:(id *)error;
++ (id)manifestFromFileURL:(id)l withError:(id *)error;
++ (id)manifestFromPlistRepresentation:(id)representation withError:(id *)error;
+- (BOOL)writeToFileURL:(id)l withError:(id *)error;
+- (MIIPAPatcherManifest)initWithCommandLineArgs:(id)args targets:(id)targets toolVersion:(id)version toolArch:(id)arch toolBuiltWithSDKVersion:(id)kVersion toolBuiltWithXcodeVersion:(id)xcodeVersion hostVersion:(id)hostVersion;
 - (id)plistRepresentation;
 @end
 
 @implementation MIIPAPatcherManifest
 
-- (MIIPAPatcherManifest)initWithCommandLineArgs:(id)a3 targets:(id)a4 toolVersion:(id)a5 toolArch:(id)a6 toolBuiltWithSDKVersion:(id)a7 toolBuiltWithXcodeVersion:(id)a8 hostVersion:(id)a9
+- (MIIPAPatcherManifest)initWithCommandLineArgs:(id)args targets:(id)targets toolVersion:(id)version toolArch:(id)arch toolBuiltWithSDKVersion:(id)kVersion toolBuiltWithXcodeVersion:(id)xcodeVersion hostVersion:(id)hostVersion
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v16 = a8;
-  v17 = a9;
+  argsCopy = args;
+  targetsCopy = targets;
+  versionCopy = version;
+  archCopy = arch;
+  kVersionCopy = kVersion;
+  xcodeVersionCopy = xcodeVersion;
+  hostVersionCopy = hostVersion;
   v27.receiver = self;
   v27.super_class = MIIPAPatcherManifest;
   v18 = [(MIIPAPatcherManifest *)&v27 init];
@@ -39,23 +39,23 @@
     }
 
     objc_storeStrong(&v18->_manifestVersion, qword_1000A95D8);
-    objc_storeStrong(&v18->_commandLineArgs, a3);
-    objc_storeStrong(&v18->_targets, a4);
-    objc_storeStrong(&v18->_toolVersion, a5);
-    objc_storeStrong(&v18->_toolArch, a6);
-    objc_storeStrong(&v18->_toolBuiltWithSDKVersion, a7);
-    objc_storeStrong(&v18->_toolBuiltWithXcodeVersion, a8);
-    objc_storeStrong(&v18->_hostVersion, a9);
+    objc_storeStrong(&v18->_commandLineArgs, args);
+    objc_storeStrong(&v18->_targets, targets);
+    objc_storeStrong(&v18->_toolVersion, version);
+    objc_storeStrong(&v18->_toolArch, arch);
+    objc_storeStrong(&v18->_toolBuiltWithSDKVersion, kVersion);
+    objc_storeStrong(&v18->_toolBuiltWithXcodeVersion, xcodeVersion);
+    objc_storeStrong(&v18->_hostVersion, hostVersion);
   }
 
   return v18;
 }
 
-+ (id)manifestFromPlistRepresentation:(id)a3 withError:(id *)a4
++ (id)manifestFromPlistRepresentation:(id)representation withError:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   objc_opt_class();
-  v7 = v6;
+  v7 = representationCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -69,9 +69,9 @@
   if (v8)
   {
     v19 = 0;
-    v9 = [a1 _manifestFromPlistRepresentationV1:v7 withError:&v19];
+    v9 = [self _manifestFromPlistRepresentationV1:v7 withError:&v19];
     v10 = v19;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -94,7 +94,7 @@
     v10 = [NSError errorWithDomain:@"com.apple.MIIPAPatcher" code:7 userInfo:v16];
 
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -103,7 +103,7 @@
   if (!v9)
   {
     v17 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_10:
@@ -111,19 +111,19 @@ LABEL_10:
   return v9;
 }
 
-+ (id)manifestFromFileURL:(id)a3 withError:(id *)a4
++ (id)manifestFromFileURL:(id)l withError:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = +[MIIPAPatcherFileManager defaultManager];
-  v8 = [a1 manifestFromFileURL:v6 fmRead:v7 withError:a4];
+  v8 = [self manifestFromFileURL:lCopy fmRead:v7 withError:error];
 
   return v8;
 }
 
-+ (id)manifestFromFileURL:(id)a3 fmRead:(id)a4 withError:(id *)a5
++ (id)manifestFromFileURL:(id)l fmRead:(id)read withError:(id *)error
 {
   v13 = 0;
-  v6 = [a4 plistRepresentationFromFileURL:a3 withError:&v13];
+  v6 = [read plistRepresentationFromFileURL:l withError:&v13];
   v7 = v13;
   if (v6)
   {
@@ -132,7 +132,7 @@ LABEL_10:
     v9 = v12;
 
     v7 = v9;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -141,7 +141,7 @@ LABEL_10:
   else
   {
     v8 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -150,7 +150,7 @@ LABEL_10:
   if (!v8)
   {
     v10 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
 LABEL_7:
@@ -161,15 +161,15 @@ LABEL_7:
 - (id)plistRepresentation
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(MIIPAPatcherManifest *)self targets];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  targets = [(MIIPAPatcherManifest *)self targets];
+  v5 = [v3 initWithCapacity:{objc_msgSend(targets, "count")}];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(MIIPAPatcherManifest *)self targets];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  targets2 = [(MIIPAPatcherManifest *)self targets];
+  v7 = [targets2 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
@@ -180,68 +180,68 @@ LABEL_7:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(targets2);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * i) plistRepresentation];
-        [v5 addObject:v11];
+        plistRepresentation = [*(*(&v22 + 1) + 8 * i) plistRepresentation];
+        [v5 addObject:plistRepresentation];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v8 = [targets2 countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v8);
   }
 
   v26[0] = @"version";
-  v12 = [(MIIPAPatcherManifest *)self manifestVersion];
-  v27[0] = v12;
+  manifestVersion = [(MIIPAPatcherManifest *)self manifestVersion];
+  v27[0] = manifestVersion;
   v26[1] = @"commandLineArgs";
-  v13 = [(MIIPAPatcherManifest *)self commandLineArgs];
-  v27[1] = v13;
+  commandLineArgs = [(MIIPAPatcherManifest *)self commandLineArgs];
+  v27[1] = commandLineArgs;
   v26[2] = @"targets";
   v14 = [v5 copy];
   v27[2] = v14;
   v26[3] = @"toolVersion";
-  v15 = [(MIIPAPatcherManifest *)self toolVersion];
-  v27[3] = v15;
+  toolVersion = [(MIIPAPatcherManifest *)self toolVersion];
+  v27[3] = toolVersion;
   v26[4] = @"toolArch";
-  v16 = [(MIIPAPatcherManifest *)self toolArch];
-  v27[4] = v16;
+  toolArch = [(MIIPAPatcherManifest *)self toolArch];
+  v27[4] = toolArch;
   v26[5] = @"toolBuiltWithSDKVersion";
-  v17 = [(MIIPAPatcherManifest *)self toolBuiltWithSDKVersion];
-  v27[5] = v17;
+  toolBuiltWithSDKVersion = [(MIIPAPatcherManifest *)self toolBuiltWithSDKVersion];
+  v27[5] = toolBuiltWithSDKVersion;
   v26[6] = @"toolBuiltWithXcodeVersion";
-  v18 = [(MIIPAPatcherManifest *)self toolBuiltWithXcodeVersion];
-  v27[6] = v18;
+  toolBuiltWithXcodeVersion = [(MIIPAPatcherManifest *)self toolBuiltWithXcodeVersion];
+  v27[6] = toolBuiltWithXcodeVersion;
   v26[7] = @"hostVersion";
-  v19 = [(MIIPAPatcherManifest *)self hostVersion];
-  v27[7] = v19;
+  hostVersion = [(MIIPAPatcherManifest *)self hostVersion];
+  v27[7] = hostVersion;
   v20 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:8];
 
   return v20;
 }
 
-- (BOOL)writeToFileURL:(id)a3 withError:(id *)a4
+- (BOOL)writeToFileURL:(id)l withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIIPAPatcherManifest *)self plistRepresentation];
-  v8 = [(MIIPAPatcherManifest *)self fmWrite];
-  LOBYTE(a4) = [v8 writePlistRepresentation:v7 format:0 toFileURL:v6 mode:384 withError:a4];
+  lCopy = l;
+  plistRepresentation = [(MIIPAPatcherManifest *)self plistRepresentation];
+  fmWrite = [(MIIPAPatcherManifest *)self fmWrite];
+  LOBYTE(error) = [fmWrite writePlistRepresentation:plistRepresentation format:0 toFileURL:lCopy mode:384 withError:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)_manifestErrorForKey:(id)a3 sub:(id)a4 index:(int64_t)a5 expected:(id)a6 value:(id)a7
++ (id)_manifestErrorForKey:(id)key sub:(id)sub index:(int64_t)index expected:(id)expected value:(id)value
 {
-  v25 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = &stru_100092CF8;
-  if (v11)
+  keyCopy = key;
+  subCopy = sub;
+  expectedCopy = expected;
+  valueCopy = value;
+  index = &stru_100092CF8;
+  if (subCopy)
   {
-    v15 = v11;
+    v15 = subCopy;
   }
 
   else
@@ -250,16 +250,16 @@ LABEL_7:
   }
 
   v16 = v15;
-  if ((a5 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v14 = [NSString stringWithFormat:@" at index %lu", a5];
+    index = [NSString stringWithFormat:@" at index %lu", index];
   }
 
   v26[0] = NSLocalizedDescriptionKey;
   v17 = [NSString alloc];
   v18 = objc_opt_class();
   v19 = NSStringFromClass(v18);
-  v20 = [v17 initWithFormat:@"Invalid manifest %@key [%@]%@. Expected [%@], got [%@].", v16, v25, v14, v12, v19];
+  v20 = [v17 initWithFormat:@"Invalid manifest %@key [%@]%@. Expected [%@], got [%@].", v16, keyCopy, index, expectedCopy, v19];
   v27[0] = v20;
   v27[1] = &off_10009B6B0;
   v26[1] = @"line";
@@ -272,11 +272,11 @@ LABEL_7:
   return v23;
 }
 
-+ (id)_arrayFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7
++ (id)_arrayFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [a3 objectForKeyedSubscript:v12];
+  keyCopy = key;
+  subCopy = sub;
+  v14 = [representation objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   v15 = v14;
   if (objc_opt_isKindOfClass())
@@ -289,19 +289,19 @@ LABEL_7:
     v16 = 0;
   }
 
-  if (a7 && !v16)
+  if (error && !v16)
   {
-    *a7 = [a1 _manifestErrorForKey:v12 sub:v13 index:a6 expected:@"NSArray" value:v15];
+    *error = [self _manifestErrorForKey:keyCopy sub:subCopy index:index expected:@"NSArray" value:v15];
   }
 
   return v16;
 }
 
-+ (id)_stringFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7
++ (id)_stringFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [a3 objectForKeyedSubscript:v12];
+  keyCopy = key;
+  subCopy = sub;
+  v14 = [representation objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   v15 = v14;
   if (objc_opt_isKindOfClass())
@@ -314,19 +314,19 @@ LABEL_7:
     v16 = 0;
   }
 
-  if (a7 && !v16)
+  if (error && !v16)
   {
-    *a7 = [a1 _manifestErrorForKey:v12 sub:v13 index:a6 expected:@"NSString" value:v15];
+    *error = [self _manifestErrorForKey:keyCopy sub:subCopy index:index expected:@"NSString" value:v15];
   }
 
   return v16;
 }
 
-+ (id)_numberFromPlistRepresentation:(id)a3 key:(id)a4 sub:(id)a5 index:(unint64_t)a6 withError:(id *)a7
++ (id)_numberFromPlistRepresentation:(id)representation key:(id)key sub:(id)sub index:(unint64_t)index withError:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [a3 objectForKeyedSubscript:v12];
+  keyCopy = key;
+  subCopy = sub;
+  v14 = [representation objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   v15 = v14;
   if (objc_opt_isKindOfClass())
@@ -339,27 +339,27 @@ LABEL_7:
     v16 = 0;
   }
 
-  if (a7 && !v16)
+  if (error && !v16)
   {
-    *a7 = [a1 _manifestErrorForKey:v12 sub:v13 index:a6 expected:@"NSNumber" value:v15];
+    *error = [self _manifestErrorForKey:keyCopy sub:subCopy index:index expected:@"NSNumber" value:v15];
   }
 
   return v16;
 }
 
-+ (id)_manifestFromPlistRepresentationV1:(id)a3 withError:(id *)a4
++ (id)_manifestFromPlistRepresentationV1:(id)v1 withError:(id *)error
 {
-  v6 = a3;
+  v1Copy = v1;
   v32 = 0;
-  v7 = [a1 _numberFromPlistRepresentation:v6 key:@"version" sub:0 index:-1 withError:&v32];
+  v7 = [self _numberFromPlistRepresentation:v1Copy key:@"version" sub:0 index:-1 withError:&v32];
   v8 = v32;
   v9 = v8;
   obj = v7;
   if (v7)
   {
-    v21 = a4;
+    errorCopy = error;
     v31 = v8;
-    v10 = [a1 _arrayFromPlistRepresentation:v6 key:@"commandLineArgs" sub:0 index:-1 withError:&v31];
+    v10 = [self _arrayFromPlistRepresentation:v1Copy key:@"commandLineArgs" sub:0 index:-1 withError:&v31];
     v11 = v31;
 
     if (v10)
@@ -368,19 +368,19 @@ LABEL_7:
       if (sub_100010AB8(v10))
       {
         v30 = v11;
-        v12 = [a1 _arrayFromPlistRepresentation:v6 key:@"targets" sub:0 index:-1 withError:&v30];
+        v12 = [self _arrayFromPlistRepresentation:v1Copy key:@"targets" sub:0 index:-1 withError:&v30];
         v9 = v30;
 
         if (v12)
         {
           v29 = v9;
-          v13 = [a1 _targetsFromPlistRepresentationV1:v12 withError:&v29];
+          v13 = [self _targetsFromPlistRepresentationV1:v12 withError:&v29];
           v11 = v29;
 
           if (v13)
           {
             v28 = v11;
-            v14 = [a1 _stringFromPlistRepresentation:v6 key:@"toolVersion" sub:0 index:-1 withError:&v28];
+            v14 = [self _stringFromPlistRepresentation:v1Copy key:@"toolVersion" sub:0 index:-1 withError:&v28];
             v9 = v28;
 
             if (!v14)
@@ -392,37 +392,37 @@ LABEL_7:
 
             v22 = v14;
             v27 = v9;
-            v15 = [a1 _stringFromPlistRepresentation:v6 key:@"toolArch" sub:0 index:-1 withError:&v27];
+            v15 = [self _stringFromPlistRepresentation:v1Copy key:@"toolArch" sub:0 index:-1 withError:&v27];
             v11 = v27;
 
             if (v15)
             {
               v26 = v11;
-              v14 = [a1 _stringFromPlistRepresentation:v6 key:@"toolBuiltWithSDKVersion" sub:0 index:-1 withError:&v26];
+              v14 = [self _stringFromPlistRepresentation:v1Copy key:@"toolBuiltWithSDKVersion" sub:0 index:-1 withError:&v26];
               v9 = v26;
 
               if (v14)
               {
                 v25 = v9;
-                v7 = [a1 _stringFromPlistRepresentation:v6 key:@"toolBuiltWithXcodeVersion" sub:0 index:-1 withError:&v25];
+                v7 = [self _stringFromPlistRepresentation:v1Copy key:@"toolBuiltWithXcodeVersion" sub:0 index:-1 withError:&v25];
                 v11 = v25;
 
                 if (v7)
                 {
                   v24 = v11;
-                  v16 = [a1 _stringFromPlistRepresentation:v6 key:@"hostVersion" sub:0 index:-1 withError:&v24];
+                  v16 = [self _stringFromPlistRepresentation:v1Copy key:@"hostVersion" sub:0 index:-1 withError:&v24];
                   v9 = v24;
 
                   if (v16)
                   {
-                    a4 = [[MIIPAPatcherManifest alloc] initWithCommandLineArgs:v10 targets:v13 toolVersion:v22 toolArch:v15 toolBuiltWithSDKVersion:v14 toolBuiltWithXcodeVersion:v7 hostVersion:v16];
-                    objc_storeStrong(a4 + 2, obj);
+                    error = [[MIIPAPatcherManifest alloc] initWithCommandLineArgs:v10 targets:v13 toolVersion:v22 toolArch:v15 toolBuiltWithSDKVersion:v14 toolBuiltWithXcodeVersion:v7 hostVersion:v16];
+                    objc_storeStrong(error + 2, obj);
                     goto LABEL_24;
                   }
 
 LABEL_22:
-                  a4 = v21;
-                  if (v21)
+                  error = errorCopy;
+                  if (errorCopy)
                   {
                     goto LABEL_23;
                   }
@@ -459,8 +459,8 @@ LABEL_15:
 
       else
       {
-        v17 = [v6 objectForKeyedSubscript:@"commandLineArgs"];
-        v9 = [a1 _manifestErrorForKey:@"commandLineArgs" sub:0 index:-1 expected:@"NSArray<NSString>" value:v17];
+        v17 = [v1Copy objectForKeyedSubscript:@"commandLineArgs"];
+        v9 = [self _manifestErrorForKey:@"commandLineArgs" sub:0 index:-1 expected:@"NSArray<NSString>" value:v17];
 
         v13 = 0;
         v12 = 0;
@@ -483,7 +483,7 @@ LABEL_15:
   v22 = 0;
   v15 = 0;
   v14 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -491,23 +491,23 @@ LABEL_15:
 LABEL_23:
   v18 = v9;
   v16 = 0;
-  v19 = a4;
-  a4 = 0;
-  *v19 = v9;
+  errorCopy2 = error;
+  error = 0;
+  *errorCopy2 = v9;
 LABEL_24:
 
-  return a4;
+  return error;
 }
 
-+ (id)_targetsFromPlistRepresentationV1:(id)a3 withError:(id *)a4
++ (id)_targetsFromPlistRepresentationV1:(id)v1 withError:(id *)error
 {
-  v6 = a3;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v1Copy = v1;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v1Copy, "count")}];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v6;
+  obj = v1Copy;
   v36 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   v8 = 0;
   if (!v36)
@@ -519,8 +519,8 @@ LABEL_24:
   v38 = 0;
   v32 = _kCFBundleShortVersionStringKey;
   v31 = v7;
-  v35 = a1;
-  v30 = a4;
+  selfCopy = self;
+  errorCopy = error;
   while (2)
   {
     v9 = 0;
@@ -539,14 +539,14 @@ LABEL_24:
 
         v12 = v38;
 LABEL_38:
-        v26 = [a1 _manifestErrorForKey:@"targets" sub:@"target " index:v12 expected:@"NSDictionary" value:v11];
+        v26 = [self _manifestErrorForKey:@"targets" sub:@"target " index:v12 expected:@"NSDictionary" value:v11];
 
         v20 = 0;
         v8 = v26;
 LABEL_39:
-        a4 = v30;
+        error = errorCopy;
         v7 = v31;
-        if (!v30)
+        if (!errorCopy)
         {
           goto LABEL_42;
         }
@@ -561,7 +561,7 @@ LABEL_39:
       }
 
       v45 = v8;
-      v13 = [a1 _stringFromPlistRepresentation:v11 key:kCFBundleVersionKey sub:@"target " index:v38 withError:&v45];
+      v13 = [self _stringFromPlistRepresentation:v11 key:kCFBundleVersionKey sub:@"target " index:v38 withError:&v45];
       v14 = v45;
 
       v39 = v13;
@@ -580,7 +580,7 @@ LABEL_21:
       }
 
       v44 = v14;
-      v15 = [a1 _stringFromPlistRepresentation:v11 key:v32 sub:@"target " index:v38 withError:&v44];
+      v15 = [self _stringFromPlistRepresentation:v11 key:v32 sub:@"target " index:v38 withError:&v44];
       v8 = v44;
 
       if (!v15)
@@ -597,7 +597,7 @@ LABEL_18:
       }
 
       v43 = v8;
-      v13 = [a1 _stringFromPlistRepresentation:v11 key:kCFBundleIdentifierKey sub:@"target " index:v38 withError:&v43];
+      v13 = [self _stringFromPlistRepresentation:v11 key:kCFBundleIdentifierKey sub:@"target " index:v38 withError:&v43];
       v14 = v43;
 
       if (!v13)
@@ -615,7 +615,7 @@ LABEL_18:
       }
 
       v42 = v14;
-      v17 = [a1 _arrayFromPlistRepresentation:v11 key:@"UISupportedDevices" sub:0 index:v38 withError:&v42];
+      v17 = [self _arrayFromPlistRepresentation:v11 key:@"UISupportedDevices" sub:0 index:v38 withError:&v42];
       v8 = v42;
 
       if (!v17)
@@ -628,7 +628,7 @@ LABEL_18:
       if ((sub_100010AB8(v17) & 1) == 0)
       {
         v23 = [v11 objectForKeyedSubscript:@"UISupportedDevices"];
-        v24 = [a1 _manifestErrorForKey:@"UISupportedDevices" sub:@"target " index:v38 expected:@"NSArray<NSString>" value:v23];
+        v24 = [self _manifestErrorForKey:@"UISupportedDevices" sub:@"target " index:v38 expected:@"NSArray<NSString>" value:v23];
 
         v22 = v23;
         v14 = v24;
@@ -642,7 +642,7 @@ LABEL_18:
       v14 = v8;
 LABEL_26:
       v41 = v14;
-      v19 = [a1 _stringFromPlistRepresentation:v11 key:@"infoPlistHash" sub:@"target " index:v38 withError:&v41];
+      v19 = [self _stringFromPlistRepresentation:v11 key:@"infoPlistHash" sub:@"target " index:v38 withError:&v41];
       v8 = v41;
 
       if (!v19)
@@ -652,7 +652,7 @@ LABEL_26:
       }
 
       v40 = v8;
-      v21 = [a1 _stringFromPlistRepresentation:v11 key:@"infoPlistHashAlgorithm" sub:@"target " index:v38 withError:&v40];
+      v21 = [self _stringFromPlistRepresentation:v11 key:@"infoPlistHashAlgorithm" sub:@"target " index:v38 withError:&v40];
       v29 = v40;
 
       if (v21)
@@ -689,12 +689,12 @@ LABEL_22:
       }
 
       v9 = v9 + 1;
-      a1 = v35;
+      self = selfCopy;
     }
 
     while (v36 != v9);
     v25 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
-    a4 = v30;
+    error = errorCopy;
     v7 = v31;
     v36 = v25;
     if (v25)
@@ -708,13 +708,13 @@ LABEL_22:
 LABEL_35:
 
   v20 = [v7 copy];
-  if (a4)
+  if (error)
   {
 LABEL_40:
     if (!v20)
     {
       v27 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 

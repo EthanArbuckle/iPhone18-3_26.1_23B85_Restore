@@ -1,14 +1,14 @@
 @interface NCInsetGroupedButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation NCInsetGroupedButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCInsetGroupedButton" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCInsetGroupedButton" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCInsetGroupedButton" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCInsetGroupedButton" hasInstanceVariable:@"_subtitleLabel" withType:"UILabel"];
 }
 
 @end

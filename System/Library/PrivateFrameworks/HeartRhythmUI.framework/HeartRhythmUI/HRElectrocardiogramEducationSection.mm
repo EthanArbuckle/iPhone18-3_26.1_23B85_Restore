@@ -1,31 +1,31 @@
 @interface HRElectrocardiogramEducationSection
 - (BOOL)_hasOnboardedBefore;
-- (HRElectrocardiogramEducationSection)initWithHealthStore:(id)a3 forSinglePlayer:(BOOL)a4 activeAlgorithmVersion:(id)a5;
-- (id)_cellTitleForEducationRow:(unint64_t)a3;
-- (id)_viewControllerForEducationRow:(unint64_t)a3;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
+- (HRElectrocardiogramEducationSection)initWithHealthStore:(id)store forSinglePlayer:(BOOL)player activeAlgorithmVersion:(id)version;
+- (id)_cellTitleForEducationRow:(unint64_t)row;
+- (id)_viewControllerForEducationRow:(unint64_t)row;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
 - (id)fetchActiveECGAlgorithmVersion;
 - (unint64_t)numberOfRowsInSection;
 - (void)_hasOnboardedBefore;
 - (void)fetchActiveECGAlgorithmVersion;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HRElectrocardiogramEducationSection
 
-- (HRElectrocardiogramEducationSection)initWithHealthStore:(id)a3 forSinglePlayer:(BOOL)a4 activeAlgorithmVersion:(id)a5
+- (HRElectrocardiogramEducationSection)initWithHealthStore:(id)store forSinglePlayer:(BOOL)player activeAlgorithmVersion:(id)version
 {
-  v9 = a3;
-  v10 = a5;
+  storeCopy = store;
+  versionCopy = version;
   v14.receiver = self;
   v14.super_class = HRElectrocardiogramEducationSection;
   v11 = [(HRElectrocardiogramEducationSection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_store, a3);
-    v12->_forSinglePlayer = a4;
-    objc_storeStrong(&v12->_activeAlgorithmVersion, a5);
+    objc_storeStrong(&v11->_store, store);
+    v12->_forSinglePlayer = player;
+    objc_storeStrong(&v12->_activeAlgorithmVersion, version);
   }
 
   return v12;
@@ -41,16 +41,16 @@
 
   else
   {
-    v5 = [(HRElectrocardiogramEducationSection *)self store];
-    v6 = [v5 profileIdentifier];
-    v7 = [v6 type];
+    store = [(HRElectrocardiogramEducationSection *)self store];
+    profileIdentifier = [store profileIdentifier];
+    type = [profileIdentifier type];
 
-    if (v7 == 1)
+    if (type == 1)
     {
       v8 = MEMORY[0x277CCD380];
-      v9 = [(HRElectrocardiogramEducationSection *)self store];
+      store2 = [(HRElectrocardiogramEducationSection *)self store];
       v13 = 0;
-      v3 = [v8 versionWithHealthStore:v9 error:&v13];
+      v3 = [v8 versionWithHealthStore:store2 error:&v13];
       v10 = v13;
 
       if (v10)
@@ -86,27 +86,27 @@
   }
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"UITableViewCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"UITableViewCell"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"UITableViewCell"];
-    v7 = [v6 textLabel];
-    [v7 setAdjustsFontForContentSizeCategory:1];
+    textLabel = [v6 textLabel];
+    [textLabel setAdjustsFontForContentSizeCategory:1];
 
-    v8 = [v6 textLabel];
-    [v8 setNumberOfLines:0];
+    textLabel2 = [v6 textLabel];
+    [textLabel2 setNumberOfLines:0];
 
     [v6 setAccessoryType:1];
   }
 
-  v9 = [(HRElectrocardiogramEducationSection *)self _cellTitleForEducationRow:a3];
-  v10 = [v6 textLabel];
-  [v10 setText:v9];
+  v9 = [(HRElectrocardiogramEducationSection *)self _cellTitleForEducationRow:index];
+  textLabel3 = [v6 textLabel];
+  [textLabel3 setText:v9];
 
-  v11 = [v6 detailTextLabel];
-  [v11 setText:0];
+  detailTextLabel = [v6 detailTextLabel];
+  [detailTextLabel setText:0];
 
   v12 = [@"Education" stringByAppendingFormat:@".Cell.%@", v9];
   v13 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:1 suffix:v12];
@@ -115,22 +115,22 @@
   return v6;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v9 = a4;
-  v7 = [(HRElectrocardiogramEducationSection *)self _viewControllerForEducationRow:a3];
+  controllerCopy = controller;
+  v7 = [(HRElectrocardiogramEducationSection *)self _viewControllerForEducationRow:index];
   if (v7)
   {
-    v8 = [v9 topViewController];
-    [v8 showAdaptively:v7 sender:0 animated:1];
+    topViewController = [controllerCopy topViewController];
+    [topViewController showAdaptively:v7 sender:0 animated:1];
   }
 }
 
-- (id)_cellTitleForEducationRow:(unint64_t)a3
+- (id)_cellTitleForEducationRow:(unint64_t)row
 {
-  if (a3 > 1)
+  if (row > 1)
   {
-    if (a3 == 2)
+    if (row == 2)
     {
       if ([(HRElectrocardiogramEducationSection *)self _hasOnboardedBefore])
       {
@@ -145,7 +145,7 @@
 
     else
     {
-      if (a3 != 3)
+      if (row != 3)
       {
         goto LABEL_13;
       }
@@ -154,9 +154,9 @@
     }
   }
 
-  else if (a3)
+  else if (row)
   {
-    if (a3 != 1)
+    if (row != 1)
     {
       goto LABEL_13;
     }
@@ -175,19 +175,19 @@ LABEL_13:
   return self;
 }
 
-- (id)_viewControllerForEducationRow:(unint64_t)a3
+- (id)_viewControllerForEducationRow:(unint64_t)row
 {
   v4 = 0;
-  if (a3 > 1)
+  if (row > 1)
   {
-    if (a3 == 2)
+    if (row == 2)
     {
       v7 = HROnboardingElectrocardiogramFeatureLimitationsViewController;
     }
 
     else
     {
-      if (a3 != 3)
+      if (row != 3)
       {
         goto LABEL_14;
       }
@@ -198,7 +198,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!row)
   {
     v7 = HROnboardingElectrocardiogramExplanationViewController;
 LABEL_11:
@@ -206,13 +206,13 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (row == 1)
   {
-    v5 = [(HRElectrocardiogramEducationSection *)self fetchActiveECGAlgorithmVersion];
-    v6 = v5;
-    if (v5)
+    fetchActiveECGAlgorithmVersion = [(HRElectrocardiogramEducationSection *)self fetchActiveECGAlgorithmVersion];
+    v6 = fetchActiveECGAlgorithmVersion;
+    if (fetchActiveECGAlgorithmVersion)
     {
-      v4 = +[HRElectrocardiogramOnboardingManager electrocardiogramPossibleResultsViewControllerForAlgorithmVersion:forOnboarding:](HRElectrocardiogramOnboardingManager, "electrocardiogramPossibleResultsViewControllerForAlgorithmVersion:forOnboarding:", [v5 integerValue], 0);
+      v4 = +[HRElectrocardiogramOnboardingManager electrocardiogramPossibleResultsViewControllerForAlgorithmVersion:forOnboarding:](HRElectrocardiogramOnboardingManager, "electrocardiogramPossibleResultsViewControllerForAlgorithmVersion:forOnboarding:", [fetchActiveECGAlgorithmVersion integerValue], 0);
     }
 
     else
@@ -231,8 +231,8 @@ LABEL_14:
 {
   v3 = objc_alloc(MEMORY[0x277CCD460]);
   v4 = *MEMORY[0x277CCC010];
-  v5 = [(HRElectrocardiogramEducationSection *)self store];
-  v6 = [v3 initWithFeatureIdentifier:v4 healthStore:v5];
+  store = [(HRElectrocardiogramEducationSection *)self store];
+  v6 = [v3 initWithFeatureIdentifier:v4 healthStore:store];
 
   v12 = 0;
   v7 = [v6 featureStatusWithError:&v12];
@@ -247,9 +247,9 @@ LABEL_14:
     }
   }
 
-  v10 = [v7 isOnboardingRecordPresent];
+  isOnboardingRecordPresent = [v7 isOnboardingRecordPresent];
 
-  return v10;
+  return isOnboardingRecordPresent;
 }
 
 - (void)fetchActiveECGAlgorithmVersion
@@ -258,7 +258,7 @@ LABEL_14:
   v2 = 136446466;
   v3 = "[HRElectrocardiogramEducationSection fetchActiveECGAlgorithmVersion]";
   v4 = 2114;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2521E7000, a2, OS_LOG_TYPE_ERROR, "[%{public}s] Failed to fetch algorithm version: %{public}@", &v2, 0x16u);
 }
 
@@ -266,7 +266,7 @@ LABEL_14:
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_error_impl(&dword_2521E7000, log, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to get feature status with error: %@", &v3, 0x16u);

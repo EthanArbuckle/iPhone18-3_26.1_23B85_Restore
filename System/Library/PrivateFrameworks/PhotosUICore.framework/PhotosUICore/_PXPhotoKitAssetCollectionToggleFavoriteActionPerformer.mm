@@ -1,15 +1,15 @@
 @interface _PXPhotoKitAssetCollectionToggleFavoriteActionPerformer
-+ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)a3;
++ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)reference;
 @end
 
 @implementation _PXPhotoKitAssetCollectionToggleFavoriteActionPerformer
 
-+ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)a3
++ (BOOL)_targetFavoriteStateForAssetCollectionReference:(id)reference
 {
-  v3 = [a3 assetCollection];
-  if ([v3 px_isMemory])
+  assetCollection = [reference assetCollection];
+  if ([assetCollection px_isMemory])
   {
-    v4 = [v3 isFavorite] ^ 1;
+    v4 = [assetCollection isFavorite] ^ 1;
   }
 
   else

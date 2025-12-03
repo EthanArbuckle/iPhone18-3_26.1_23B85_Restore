@@ -7,8 +7,8 @@
 - (id)source
 {
   v3 = [BMCoreDuetMediaUsageSource alloc];
-  v4 = [(BMMediaUsageStream *)self identifier];
-  v5 = [(BMCoreDuetMediaUsageSource *)v3 initWithIdentifier:v4];
+  identifier = [(BMMediaUsageStream *)self identifier];
+  v5 = [(BMCoreDuetMediaUsageSource *)v3 initWithIdentifier:identifier];
 
   return v5;
 }

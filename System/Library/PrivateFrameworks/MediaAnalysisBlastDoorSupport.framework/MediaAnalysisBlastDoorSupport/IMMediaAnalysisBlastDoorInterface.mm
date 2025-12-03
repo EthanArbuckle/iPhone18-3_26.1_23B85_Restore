@@ -1,8 +1,8 @@
 @interface IMMediaAnalysisBlastDoorInterface
 - (IMMediaAnalysisBlastDoorInterface)init;
-- (id)generateImagePreviewForFileURL:(id)a3 maxPixelDimension:(float)a4 scale:(float)a5 error:(id *)a6;
-- (void)generateMetadataforAttachmentWithfileURL:(id)a3 resultHandler:(id)a4;
-- (void)generateMoviePreviewForAttachmentWithFileURL:(id)a3 maxPixelDimension:(float)a4 minThumbnailPxSize:(CGSize)a5 scale:(float)a6 resultHandler:(id)a7;
+- (id)generateImagePreviewForFileURL:(id)l maxPixelDimension:(float)dimension scale:(float)scale error:(id *)error;
+- (void)generateMetadataforAttachmentWithfileURL:(id)l resultHandler:(id)handler;
+- (void)generateMoviePreviewForAttachmentWithFileURL:(id)l maxPixelDimension:(float)dimension minThumbnailPxSize:(CGSize)size scale:(float)scale resultHandler:(id)handler;
 @end
 
 @implementation IMMediaAnalysisBlastDoorInterface
@@ -24,35 +24,35 @@
   return v2;
 }
 
-- (id)generateImagePreviewForFileURL:(id)a3 maxPixelDimension:(float)a4 scale:(float)a5 error:(id *)a6
+- (id)generateImagePreviewForFileURL:(id)l maxPixelDimension:(float)dimension scale:(float)scale error:(id *)error
 {
-  v10 = a3;
-  v11 = [(IMMediaAnalysisBlastDoorInterface *)self interface];
-  *&v12 = a4;
-  *&v13 = a5;
-  v14 = [v11 generateImagePreviewForFileURL:v10 maxPixelDimension:a6 scale:v12 error:v13];
+  lCopy = l;
+  interface = [(IMMediaAnalysisBlastDoorInterface *)self interface];
+  *&v12 = dimension;
+  *&v13 = scale;
+  v14 = [interface generateImagePreviewForFileURL:lCopy maxPixelDimension:error scale:v12 error:v13];
 
   return v14;
 }
 
-- (void)generateMoviePreviewForAttachmentWithFileURL:(id)a3 maxPixelDimension:(float)a4 minThumbnailPxSize:(CGSize)a5 scale:(float)a6 resultHandler:(id)a7
+- (void)generateMoviePreviewForAttachmentWithFileURL:(id)l maxPixelDimension:(float)dimension minThumbnailPxSize:(CGSize)size scale:(float)scale resultHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a7;
-  v14 = a3;
-  v17 = [(IMMediaAnalysisBlastDoorInterface *)self interface];
-  *&v15 = a4;
-  *&v16 = a6;
-  [v17 generateMoviePreviewForAttachmentWithFileURL:v14 maxPixelDimension:v13 minThumbnailPxSize:v15 scale:width resultHandler:{height, v16}];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  lCopy = l;
+  interface = [(IMMediaAnalysisBlastDoorInterface *)self interface];
+  *&v15 = dimension;
+  *&v16 = scale;
+  [interface generateMoviePreviewForAttachmentWithFileURL:lCopy maxPixelDimension:handlerCopy minThumbnailPxSize:v15 scale:width resultHandler:{height, v16}];
 }
 
-- (void)generateMetadataforAttachmentWithfileURL:(id)a3 resultHandler:(id)a4
+- (void)generateMetadataforAttachmentWithfileURL:(id)l resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IMMediaAnalysisBlastDoorInterface *)self interface];
-  [v8 generateMetadataforAttachmentWithfileURL:v7 resultHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  interface = [(IMMediaAnalysisBlastDoorInterface *)self interface];
+  [interface generateMetadataforAttachmentWithfileURL:lCopy resultHandler:handlerCopy];
 }
 
 @end

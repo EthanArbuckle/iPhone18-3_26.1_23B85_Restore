@@ -1,5 +1,5 @@
 @interface STKBaseSound
-- (STKBaseSound)initWithDuration:(double)a3;
+- (STKBaseSound)initWithDuration:(double)duration;
 - (void)_sync_playSound;
 - (void)_sync_stopSound;
 - (void)dealloc;
@@ -9,7 +9,7 @@
 
 @implementation STKBaseSound
 
-- (STKBaseSound)initWithDuration:(double)a3
+- (STKBaseSound)initWithDuration:(double)duration
 {
   v17 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_duration = a3;
+    v4->_duration = duration;
     v4->_playsOnce = BSFloatLessThanOrEqualToFloat();
     v6 = STKCommonLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -27,7 +27,7 @@
       *buf = 134218496;
       v12 = v5;
       v13 = 2048;
-      v14 = a3;
+      durationCopy = duration;
       v15 = 1024;
       v16 = playsOnce;
       _os_log_impl(&dword_262BB4000, v6, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Created sound with duration: %f, playsOnce: %d", buf, 0x1Cu);
@@ -45,7 +45,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_262BB4000, v3, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Dealloc.", buf, 0xCu);
   }
 
@@ -82,7 +82,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_262BB4000, v3, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Playing sound.", buf, 0xCu);
     }
 
@@ -95,7 +95,7 @@
       {
         duration = self->_duration;
         *buf = 134218240;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2048;
         v17 = duration;
         _os_log_impl(&dword_262BB4000, v4, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Scheduling sound stop timer with interval duration: %f.", buf, 0x16u);
@@ -150,7 +150,7 @@ void __31__STKBaseSound__sync_playSound__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_262BB4000, v3, OS_LOG_TYPE_DEFAULT, "<STKSound:%p> - Stopping sound explicitly.", &v6, 0xCu);
     }
 

@@ -4,26 +4,26 @@
 - ($1AB5FA073B851C12C2339EC22442E995)_lastAccelerationUpdate;
 - (AXMTVisionKitEyeTracker)init;
 - (AXMTVisionKitEyeTrackerDelegate)delegate;
-- (CGPoint)_interfaceOrientedScreenPointForNormalizedDeviceOrientedPoint:(CGPoint)a3;
-- (CGPoint)_normalizeRawPoint:(CGPoint)a3;
-- (CGRect)_orientAVMetadataFaceBoundingBoxForCurrentOrientation:(CGRect)a3;
+- (CGPoint)_interfaceOrientedScreenPointForNormalizedDeviceOrientedPoint:(CGPoint)point;
+- (CGPoint)_normalizeRawPoint:(CGPoint)point;
+- (CGRect)_orientAVMetadataFaceBoundingBoxForCurrentOrientation:(CGRect)orientation;
 - (CGSize)_deviceOrientedScreenSize;
 - (CGSize)_screenSizeInCM;
 - (CGVector)_cameraOffsetInCM;
 - (CGVector)_deviceOrientedCameraOffset;
-- (double)_calculateMaxBoundingAreaBoxForFOV:(float)a3;
-- (double)_calculateMinBoundingAreaBoxForFOV:(float)a3;
-- (double)_minDistBetweenAngleA:(double)a3 angleB:(double)a4;
-- (id)_detectCriticalErrorsForFace:(id)a3;
-- (id)_detectNonCriticalErrorsForFace:(id)a3;
-- (id)_initializeScreenGazeRequestForFaceMetadata:(id)a3;
+- (double)_calculateMaxBoundingAreaBoxForFOV:(float)v;
+- (double)_calculateMinBoundingAreaBoxForFOV:(float)v;
+- (double)_minDistBetweenAngleA:(double)a angleB:(double)b;
+- (id)_detectCriticalErrorsForFace:(id)face;
+- (id)_detectNonCriticalErrorsForFace:(id)face;
+- (id)_initializeScreenGazeRequestForFaceMetadata:(id)metadata;
 - (void)_computeScreenAndCameraPositions;
 - (void)_notifyDelegateFaceLost;
-- (void)axmtUtilities_accelerometerDataUpdated:(id)a3;
+- (void)axmtUtilities_accelerometerDataUpdated:(id)updated;
 - (void)dealloc;
-- (void)didUpdateFieldOfView:(float)a3;
-- (void)failedToTrackFaceWithError:(id)a3;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 metadata:(id)a4;
+- (void)didUpdateFieldOfView:(float)view;
+- (void)failedToTrackFaceWithError:(id)error;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata;
 - (void)recalibrateFace;
 @end
 
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (id)_initializeScreenGazeRequestForFaceMetadata:(id)a3
+- (id)_initializeScreenGazeRequestForFaceMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_alloc_init(VNDetectScreenGazeRequest);
   [v5 setRevision:2];
   if (AXDeviceIsPad())
@@ -94,7 +94,7 @@
   }
 
   [v5 setTemporalSmoothingFrameCount:1];
-  [v4 bounds];
+  [metadataCopy bounds];
   [(AXMTVisionKitEyeTracker *)self _orientAVMetadataFaceBoundingBoxForCurrentOrientation:?];
   v8 = [VNFaceObservation faceObservationWithRequestRevision:0 boundingBox:0 roll:0 yaw:0 pitch:?];
   v24 = v8;
@@ -109,16 +109,16 @@
 
 - (void)_computeScreenAndCameraPositions
 {
-  v3 = [MGCopyAnswer() intValue];
-  v4 = [MGCopyAnswer() intValue];
-  v5 = [MGCopyAnswer() intValue];
+  intValue = [MGCopyAnswer() intValue];
+  intValue2 = [MGCopyAnswer() intValue];
+  intValue3 = [MGCopyAnswer() intValue];
   [MGCopyAnswer() floatValue];
   v7 = v6;
-  v8 = v5 / v3 * 25.4;
-  v9 = v4 / v3 * 25.4;
+  v8 = intValue3 / intValue * 25.4;
+  v9 = intValue2 / intValue * 25.4;
   v10 = MGCopyAnswer();
-  v11 = [v10 firstObject];
-  [v11 floatValue];
+  firstObject = [v10 firstObject];
+  [firstObject floatValue];
   v13 = v12;
 
   v14 = -1.0;
@@ -137,11 +137,11 @@
     v19 = 136316418;
     v20 = "[AXMTVisionKitEyeTracker _computeScreenAndCameraPositions]";
     v21 = 1024;
-    v22 = v3;
+    v22 = intValue;
     v23 = 1024;
-    v24 = v4;
+    v24 = intValue2;
     v25 = 1024;
-    v26 = v5;
+    v26 = intValue3;
     v27 = 2048;
     v28 = v7;
     v29 = 2112;
@@ -156,9 +156,9 @@
   }
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 metadata:(id)a4
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer metadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
@@ -175,7 +175,7 @@
   v71[3] = &unk_1000490C0;
   v71[4] = v72;
   v71[5] = &v73;
-  [v6 enumerateObjectsUsingBlock:v71];
+  [metadataCopy enumerateObjectsUsingBlock:v71];
   if (v74[5])
   {
     v7 = [(AXMTVisionKitEyeTracker *)self _detectCriticalErrorsForFace:?];
@@ -188,9 +188,9 @@ LABEL_35:
     }
 
     v16 = [(AXMTVisionKitEyeTracker *)self _initializeScreenGazeRequestForFaceMetadata:v74[5]];
-    v65 = [[VNImageRequestHandler alloc] initWithCMSampleBuffer:a3 orientation:objc_msgSend(objc_opt_class() options:{"_imageOrientationForGazeRequest"), 0}];
+    v65 = [[VNImageRequestHandler alloc] initWithCMSampleBuffer:buffer orientation:objc_msgSend(objc_opt_class() options:{"_imageOrientationForGazeRequest"), 0}];
     v64 = v16;
-    if (!a3)
+    if (!buffer)
     {
       v39 = AXSSLogForCategory();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -209,18 +209,18 @@ LABEL_35:
 
     if (v18)
     {
-      v19 = [v16 results];
-      if ([v19 count])
+      results = [v16 results];
+      if ([results count])
       {
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v20 = v19;
+        v20 = results;
         v21 = [v20 countByEnumeratingWithState:&v66 objects:v79 count:16];
         if (v21)
         {
-          v22 = 0;
+          delegate2 = 0;
           v23 = *v67;
           v24 = 2.22507386e-308;
           do
@@ -241,7 +241,7 @@ LABEL_35:
               {
                 v31 = v26;
 
-                v22 = v31;
+                delegate2 = v31;
                 v24 = v30;
               }
             }
@@ -251,20 +251,20 @@ LABEL_35:
 
           while (v21);
 
-          if (v22)
+          if (delegate2)
           {
-            v32 = [v22 faceScreenGaze];
-            [v32 screenGazeRawOutputInCentimeters];
+            faceScreenGaze = [delegate2 faceScreenGaze];
+            [faceScreenGaze screenGazeRawOutputInCentimeters];
             [(AXMTVisionKitEyeTracker *)self _normalizeRawPoint:?];
             [(AXMTVisionKitEyeTracker *)self _interfaceOrientedScreenPointForNormalizedDeviceOrientedPoint:?];
             v34 = v33;
             v36 = v35;
             v37 = [(AXMTVisionKitEyeTracker *)self _detectNonCriticalErrorsForFace:v74[5]];
-            v38 = [(AXMTVisionKitEyeTracker *)self delegate];
-            [v38 visionKitEyeTracker:self detectedGaze:v37 withNonCriticalError:{v34, v36}];
+            delegate = [(AXMTVisionKitEyeTracker *)self delegate];
+            [delegate visionKitEyeTracker:self detectedGaze:v37 withNonCriticalError:{v34, v36}];
 
 LABEL_26:
-            v19 = v20;
+            results = v20;
 LABEL_33:
 
             v39 = v63;
@@ -305,8 +305,8 @@ LABEL_34:
     }
 
     v20 = [NSError errorWithDomain:AXSSMotionTrackingErrorDomain code:0 userInfo:0];
-    v22 = [(AXMTVisionKitEyeTracker *)self delegate];
-    [v22 visionKitEyeTrackerLostFace:self error:v20];
+    delegate2 = [(AXMTVisionKitEyeTracker *)self delegate];
+    [delegate2 visionKitEyeTrackerLostFace:self error:v20];
     goto LABEL_26;
   }
 
@@ -324,9 +324,9 @@ LABEL_36:
 
 - (void)_notifyDelegateFaceLost
 {
-  v4 = [(AXMTVisionKitEyeTracker *)self delegate];
+  delegate = [(AXMTVisionKitEyeTracker *)self delegate];
   v3 = [NSError errorWithDomain:AXSSMotionTrackingErrorDomain code:1 userInfo:0];
-  [v4 visionKitEyeTrackerLostFace:self error:v3];
+  [delegate visionKitEyeTrackerLostFace:self error:v3];
 }
 
 - (void)recalibrateFace
@@ -346,9 +346,9 @@ LABEL_36:
   [(AXMTVisionKitEyeTracker *)self set_lastAccelerationUpdate:1.79769313e308, 1.79769313e308, 1.79769313e308];
 }
 
-- (id)_detectCriticalErrorsForFace:(id)a3
+- (id)_detectCriticalErrorsForFace:(id)face
 {
-  [a3 bounds];
+  [face bounds];
   v7 = v3;
   v8 = v4;
   v9 = v5;
@@ -374,7 +374,7 @@ LABEL_36:
       v22 = 2112;
       v23 = v18;
       v24 = 2048;
-      v25 = [v19 currentDeviceOrientation];
+      currentDeviceOrientation = [v19 currentDeviceOrientation];
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s: faceBounds is out of bounds! face bounds: %@, orientation: %ld", &v20, 0x20u);
     }
 
@@ -384,19 +384,19 @@ LABEL_36:
   return v15;
 }
 
-- (id)_detectNonCriticalErrorsForFace:(id)a3
+- (id)_detectNonCriticalErrorsForFace:(id)face
 {
-  v4 = a3;
-  if ([v4 hasYawAngle])
+  faceCopy = face;
+  if ([faceCopy hasYawAngle])
   {
-    v5 = [(AXMTVisionKitEyeTracker *)self _baselineYaw];
+    _baselineYaw = [(AXMTVisionKitEyeTracker *)self _baselineYaw];
 
-    if (v5)
+    if (_baselineYaw)
     {
-      v6 = [(AXMTVisionKitEyeTracker *)self _baselineYaw];
-      [v6 doubleValue];
+      _baselineYaw2 = [(AXMTVisionKitEyeTracker *)self _baselineYaw];
+      [_baselineYaw2 doubleValue];
       v8 = v7;
-      [v4 yawAngle];
+      [faceCopy yawAngle];
       [(AXMTVisionKitEyeTracker *)self _minDistBetweenAngleA:v8 angleB:v9];
       v11 = v10;
 
@@ -412,13 +412,13 @@ LABEL_36:
       v13 = AXSSLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        [v4 yawAngle];
+        [faceCopy yawAngle];
         *buf = 134217984;
         *&buf[4] = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "using baseline yaw: %f", buf, 0xCu);
       }
 
-      [v4 yawAngle];
+      [faceCopy yawAngle];
       v15 = [NSNumber numberWithDouble:?];
       [(AXMTVisionKitEyeTracker *)self set_baselineYaw:v15];
     }
@@ -426,33 +426,33 @@ LABEL_36:
 
   v12 = 0;
 LABEL_9:
-  if ([v4 hasPitchAngle])
+  if ([faceCopy hasPitchAngle])
   {
-    v16 = [(AXMTVisionKitEyeTracker *)self _baselinePitch];
-    v17 = v16 == 0;
+    _baselinePitch = [(AXMTVisionKitEyeTracker *)self _baselinePitch];
+    v17 = _baselinePitch == 0;
 
     if (v17)
     {
       v25 = AXSSLogForCategory();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        [v4 pitchAngle];
+        [faceCopy pitchAngle];
         *buf = 134217984;
         *&buf[4] = v26;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "using baseline pitch: %f", buf, 0xCu);
       }
 
-      [v4 pitchAngle];
+      [faceCopy pitchAngle];
       v27 = [NSNumber numberWithDouble:?];
       [(AXMTVisionKitEyeTracker *)self set_baselinePitch:v27];
     }
 
     else
     {
-      v18 = [(AXMTVisionKitEyeTracker *)self _baselinePitch];
-      [v18 doubleValue];
+      _baselinePitch2 = [(AXMTVisionKitEyeTracker *)self _baselinePitch];
+      [_baselinePitch2 doubleValue];
       v20 = v19;
-      [v4 pitchAngle];
+      [faceCopy pitchAngle];
       [(AXMTVisionKitEyeTracker *)self _minDistBetweenAngleA:v20 angleB:v21];
       v23 = v22 > 20.0;
 
@@ -466,28 +466,28 @@ LABEL_9:
 
   v24 = 0;
 LABEL_17:
-  v28 = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
-  v29 = v28 == 0;
+  _baselineFaceBounds = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
+  v29 = _baselineFaceBounds == 0;
 
   if (v29)
   {
     v30 = AXSSLogForCategory();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
-      [v4 bounds];
+      [faceCopy bounds];
       v31 = NSStringFromRect(v85);
       *buf = 138412290;
       *&buf[4] = v31;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "using baseline bounding box: %@", buf, 0xCu);
     }
 
-    [v4 bounds];
+    [faceCopy bounds];
     v32 = [NSValue valueWithRect:?];
     [(AXMTVisionKitEyeTracker *)self set_baselineFaceBounds:v32];
   }
 
   v33 = mach_absolute_time();
-  v34 = [(AXMTVisionKitEyeTracker *)self _lastTimePoseRecorded];
+  _lastTimePoseRecorded = [(AXMTVisionKitEyeTracker *)self _lastTimePoseRecorded];
   v77 = 0;
   v78 = &v77;
   v79 = 0x2020000000;
@@ -511,25 +511,25 @@ LABEL_17:
     __break(1u);
   }
 
-  if (v35(v33 - v34) / 1000000000.0 > 1.0)
+  if (v35(v33 - _lastTimePoseRecorded) / 1000000000.0 > 1.0)
   {
     v36 = AXSSLogForCategory();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      [v4 bounds];
+      [faceCopy bounds];
       v37 = NSStringFromRect(v86);
       v38 = -1.0;
-      if ([v4 hasYawAngle])
+      if ([faceCopy hasYawAngle])
       {
-        [v4 yawAngle];
+        [faceCopy yawAngle];
         v38 = v39;
       }
 
-      v40 = [v4 hasPitchAngle];
+      hasPitchAngle = [faceCopy hasPitchAngle];
       v41 = -1.0;
-      if (v40)
+      if (hasPitchAngle)
       {
-        [v4 pitchAngle];
+        [faceCopy pitchAngle];
       }
 
       *buf = 138412802;
@@ -544,10 +544,10 @@ LABEL_17:
     [(AXMTVisionKitEyeTracker *)self set_lastTimePoseRecorded:mach_absolute_time()];
   }
 
-  v42 = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
-  [v42 rectValue];
+  _baselineFaceBounds2 = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
+  [_baselineFaceBounds2 rectValue];
   v44 = v43;
-  [v4 bounds];
+  [faceCopy bounds];
   if (vabdd_f64(v44, v45) > 0.1)
   {
 
@@ -556,10 +556,10 @@ LABEL_17:
     goto LABEL_37;
   }
 
-  v46 = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
-  [v46 rectValue];
+  _baselineFaceBounds3 = [(AXMTVisionKitEyeTracker *)self _baselineFaceBounds];
+  [_baselineFaceBounds3 rectValue];
   v48 = v47;
-  [v4 bounds];
+  [faceCopy bounds];
   v50 = vabdd_f64(v48, v49) > 0.1;
 
   v51 = v12 | v24;
@@ -598,9 +598,9 @@ LABEL_37:
 
   [(AXMTVisionKitEyeTracker *)self fieldOfView];
   v53 = v52;
-  [v4 bounds];
+  [faceCopy bounds];
   v55 = v54;
-  [v4 bounds];
+  [faceCopy bounds];
   v57 = v56;
   LODWORD(v58) = v53;
   [(AXMTVisionKitEyeTracker *)self _calculateMinBoundingAreaBoxForFOV:v58];
@@ -646,10 +646,10 @@ LABEL_46:
   return v66;
 }
 
-- (double)_calculateMinBoundingAreaBoxForFOV:(float)a3
+- (double)_calculateMinBoundingAreaBoxForFOV:(float)v
 {
-  v3 = a3 * -0.00225022 + 0.225222;
-  v4 = v3 > 0.0 && a3 > 0.0;
+  v3 = v * -0.00225022 + 0.225222;
+  v4 = v3 > 0.0 && v > 0.0;
   result = 0.04;
   if (v4)
   {
@@ -659,10 +659,10 @@ LABEL_46:
   return result;
 }
 
-- (double)_calculateMaxBoundingAreaBoxForFOV:(float)a3
+- (double)_calculateMaxBoundingAreaBoxForFOV:(float)v
 {
-  v3 = a3 * -0.00457768 + 0.477992;
-  v4 = v3 > 0.0 && a3 > 0.0;
+  v3 = v * -0.00457768 + 0.477992;
+  v4 = v3 > 0.0 && v > 0.0;
   result = 0.1;
   if (v4)
   {
@@ -672,9 +672,9 @@ LABEL_46:
   return result;
 }
 
-- (double)_minDistBetweenAngleA:(double)a3 angleB:(double)a4
+- (double)_minDistBetweenAngleA:(double)a angleB:(double)b
 {
-  result = vabdd_f64(a3, a4);
+  result = vabdd_f64(a, b);
   if (360.0 - result < result)
   {
     return 360.0 - result;
@@ -683,20 +683,20 @@ LABEL_46:
   return result;
 }
 
-- (void)failedToTrackFaceWithError:(id)a3
+- (void)failedToTrackFaceWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(AXMTVisionKitEyeTracker *)self delegate];
+  errorCopy = error;
+  delegate = [(AXMTVisionKitEyeTracker *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AXMTVisionKitEyeTracker *)self delegate];
-    [v6 visionKitEyeTrackerLostFace:self error:v7];
+    delegate2 = [(AXMTVisionKitEyeTracker *)self delegate];
+    [delegate2 visionKitEyeTrackerLostFace:self error:errorCopy];
   }
 }
 
-- (void)didUpdateFieldOfView:(float)a3
+- (void)didUpdateFieldOfView:(float)view
 {
   v5 = AXSSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -704,24 +704,24 @@ LABEL_46:
     v7 = 136315394;
     v8 = "[AXMTVisionKitEyeTracker didUpdateFieldOfView:]";
     v9 = 2048;
-    v10 = a3;
+    viewCopy = view;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s: %f", &v7, 0x16u);
   }
 
-  *&v6 = a3;
+  *&v6 = view;
   [(AXMTVisionKitEyeTracker *)self setFieldOfView:v6];
 }
 
-- (CGRect)_orientAVMetadataFaceBoundingBoxForCurrentOrientation:(CGRect)a3
+- (CGRect)_orientAVMetadataFaceBoundingBoxForCurrentOrientation:(CGRect)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v6 = 1.0 - (a3.origin.y + a3.size.height);
+  height = orientation.size.height;
+  width = orientation.size.width;
+  x = orientation.origin.x;
+  v6 = 1.0 - (orientation.origin.y + orientation.size.height);
   v7 = +[AXMTUtilities sharedInstance];
-  v8 = [v7 currentDeviceOrientation];
+  currentDeviceOrientation = [v7 currentDeviceOrientation];
 
-  if (v8 == 2)
+  if (currentDeviceOrientation == 2)
   {
     v6 = 1.0 - (height + v6);
     v12 = width;
@@ -729,7 +729,7 @@ LABEL_46:
     v11 = x;
   }
 
-  else if (v8 == 4)
+  else if (currentDeviceOrientation == 4)
   {
     v12 = height;
     v11 = v6;
@@ -739,7 +739,7 @@ LABEL_46:
   else
   {
     v9 = x + width;
-    if (v8 == 3)
+    if (currentDeviceOrientation == 3)
     {
       v10 = height + v6;
       v6 = 1.0 - v9;
@@ -764,10 +764,10 @@ LABEL_46:
   return result;
 }
 
-- (CGPoint)_normalizeRawPoint:(CGPoint)a3
+- (CGPoint)_normalizeRawPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTVisionKitEyeTracker *)self _deviceOrientedCameraOffset];
   v7 = v6;
   v9 = v8;
@@ -782,19 +782,19 @@ LABEL_46:
 - (CGVector)_deviceOrientedCameraOffset
 {
   v3 = +[AXMTUtilities sharedInstance];
-  v4 = [v3 currentDeviceOrientation];
+  currentDeviceOrientation = [v3 currentDeviceOrientation];
 
   [(AXMTVisionKitEyeTracker *)self _cameraOffsetInCM];
   v7 = v6;
   v8 = v5;
-  if (v4 == 4)
+  if (currentDeviceOrientation == 4)
   {
     [(AXMTVisionKitEyeTracker *)self _screenSizeInCM];
     v9 = v7;
     v7 = v13 - v8;
   }
 
-  else if (v4 == 3)
+  else if (currentDeviceOrientation == 3)
   {
     [(AXMTVisionKitEyeTracker *)self _screenSizeInCM];
     v9 = v12 - v7;
@@ -804,7 +804,7 @@ LABEL_46:
   else
   {
     v9 = v5;
-    if (v4 == 2)
+    if (currentDeviceOrientation == 2)
     {
       [(AXMTVisionKitEyeTracker *)self _screenSizeInCM];
       v9 = v10 - v8;
@@ -823,9 +823,9 @@ LABEL_46:
 - (CGSize)_deviceOrientedScreenSize
 {
   v3 = +[AXMTUtilities sharedInstance];
-  v4 = [v3 currentDeviceOrientation];
+  currentDeviceOrientation = [v3 currentDeviceOrientation];
 
-  if ((v4 - 3) < 2)
+  if ((currentDeviceOrientation - 3) < 2)
   {
     [(AXMTVisionKitEyeTracker *)self _screenSizeInCM];
     v8 = v7;
@@ -845,10 +845,10 @@ LABEL_46:
   return result;
 }
 
-- (CGPoint)_interfaceOrientedScreenPointForNormalizedDeviceOrientedPoint:(CGPoint)a3
+- (CGPoint)_interfaceOrientedScreenPointForNormalizedDeviceOrientedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = +[AXMTUtilities sharedInstance];
   [v5 screenBoundsAccountingForPhysicalDeviceOrientation];
   v7 = v6;
@@ -871,12 +871,12 @@ LABEL_46:
   return result;
 }
 
-- (void)axmtUtilities_accelerometerDataUpdated:(id)a3
+- (void)axmtUtilities_accelerometerDataUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   [(AXMTVisionKitEyeTracker *)self _currentAcceleration];
   [(AXMTVisionKitEyeTracker *)self set_lastAccelerationUpdate:?];
-  [v4 acceleration];
+  [updatedCopy acceleration];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -897,16 +897,16 @@ LABEL_46:
 + (unsigned)_imageOrientationForGazeRequest
 {
   v2 = +[AXMTUtilities sharedInstance];
-  v3 = [v2 currentDeviceOrientation];
+  currentDeviceOrientation = [v2 currentDeviceOrientation];
 
-  if ((v3 - 2) > 2)
+  if ((currentDeviceOrientation - 2) > 2)
   {
     return 6;
   }
 
   else
   {
-    return dword_100034578[(v3 - 2)];
+    return dword_100034578[(currentDeviceOrientation - 2)];
   }
 }
 

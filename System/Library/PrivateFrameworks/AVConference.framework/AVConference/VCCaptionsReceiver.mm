@@ -1,11 +1,11 @@
 @interface VCCaptionsReceiver
-- (VCCaptionsReceiver)initWithDelegate:(id)a3;
+- (VCCaptionsReceiver)initWithDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation VCCaptionsReceiver
 
-- (VCCaptionsReceiver)initWithDelegate:(id)a3
+- (VCCaptionsReceiver)initWithDelegate:(id)delegate
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_delegate, a3);
+    objc_storeWeak(&v4->_delegate, delegate);
     VCCaptionsDecoder_Create(&v5->_captionsDecoder);
   }
 

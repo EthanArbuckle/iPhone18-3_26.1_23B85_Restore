@@ -2,10 +2,10 @@
 - (AAUISpecifierProviderDelegate)delegate;
 - (ACAccount)account;
 - (BOOL)_shouldShowDeviceEnrollmentsSpecifier;
-- (BOOL)_showSpecifierForDataclass:(id)a3;
+- (BOOL)_showSpecifierForDataclass:(id)dataclass;
 - (BOOL)isRegularWatchPairing;
-- (BOOL)shouldShowSpecifierForServiceType:(id)a3;
-- (ICSDataclassSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 homeViewModel:(id)a5 manageStorageAppsListViewModel:(id)a6;
+- (BOOL)shouldShowSpecifierForServiceType:(id)type;
+- (ICSDataclassSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter homeViewModel:(id)model manageStorageAppsListViewModel:(id)viewModel;
 - (NSArray)specifiers;
 - (id)_buildAppGroupHeaderSpecifiers;
 - (id)_buildAppSpecifiers;
@@ -14,54 +14,54 @@
 - (id)_buildKeychainSpecifier;
 - (id)_buildPhotosSpecifier;
 - (id)_buildUbiquitySpecifier;
-- (id)_dataclassState:(id)a3;
+- (id)_dataclassState:(id)state;
 - (id)_loadCalendarSpecifierProvider;
-- (id)_loadSpecifierProviderWithClassName:(id)a3 inBundle:(id)a4;
-- (id)_specifierForDataclass:(id)a3;
-- (id)_specifierForDataclass:(id)a3 fromProvisionedSpecifiers:(id)a4;
-- (id)_specifierForDataclass:(id)a3 withCustomDetailClass:(Class)a4;
+- (id)_loadSpecifierProviderWithClassName:(id)name inBundle:(id)bundle;
+- (id)_specifierForDataclass:(id)dataclass;
+- (id)_specifierForDataclass:(id)dataclass fromProvisionedSpecifiers:(id)specifiers;
+- (id)_specifierForDataclass:(id)dataclass withCustomDetailClass:(Class)class;
 - (id)_specifierForMessagesDataclass;
 - (id)_specifiersForAppListVC;
 - (id)_specifiersForProvisionedDataclasses;
 - (id)getICloudMailSpecifier;
-- (id)loadBundle:(id)a3 atPath:(id)a4;
-- (id)specifierForDataclass:(id)a3;
-- (id)specifierForServiceType:(id)a3;
-- (id)valueForServiceSpecifier:(id)a3;
-- (void)_decorateDataclassSpecifier:(id)a3 forDataclass:(id)a4;
-- (void)_decorateLiverpoolSpecifier:(id)a3 forBundleId:(id)a4;
-- (void)_decorateServiceSpecifier:(id)a3 forService:(id)a4;
+- (id)loadBundle:(id)bundle atPath:(id)path;
+- (id)specifierForDataclass:(id)dataclass;
+- (id)specifierForServiceType:(id)type;
+- (id)valueForServiceSpecifier:(id)specifier;
+- (void)_decorateDataclassSpecifier:(id)specifier forDataclass:(id)dataclass;
+- (void)_decorateLiverpoolSpecifier:(id)specifier forBundleId:(id)id;
+- (void)_decorateServiceSpecifier:(id)specifier forService:(id)service;
 - (void)_initiateServiceAuthHandler;
 - (void)_initiateSpecifiers;
 - (void)_loadCalendarSpecifierProvider;
-- (void)_performUpdateIfNeededOnSpecifier:(id)a3 forDataclass:(id)a4;
-- (void)_showDeviceEnrollmentView:(id)a3;
+- (void)_performUpdateIfNeededOnSpecifier:(id)specifier forDataclass:(id)dataclass;
+- (void)_showDeviceEnrollmentView:(id)view;
 - (void)cleanupDataclassSpecifiers;
 - (void)dealloc;
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4;
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated;
 - (void)reloadSpecifiers;
-- (void)setDelegate:(id)a3;
-- (void)setValue:(id)a3 forServiceSpecifier:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setValue:(id)value forServiceSpecifier:(id)specifier;
 @end
 
 @implementation ICSDataclassSpecifierProvider
 
-- (ICSDataclassSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4 homeViewModel:(id)a5 manageStorageAppsListViewModel:(id)a6
+- (ICSDataclassSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter homeViewModel:(id)model manageStorageAppsListViewModel:(id)viewModel
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  presenterCopy = presenter;
+  modelCopy = model;
+  viewModelCopy = viewModel;
   v31.receiver = self;
   v31.super_class = ICSDataclassSpecifierProvider;
   v15 = [(ICSDataclassSpecifierProvider *)&v31 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountManager, a3);
-    objc_storeWeak(&v16->_listController, v12);
-    objc_storeStrong(&v16->_homeViewModel, a5);
-    objc_storeStrong(&v16->_manageStorageAppsListViewModel, a6);
+    objc_storeStrong(&v15->_accountManager, manager);
+    objc_storeWeak(&v16->_listController, presenterCopy);
+    objc_storeStrong(&v16->_homeViewModel, model);
+    objc_storeStrong(&v16->_manageStorageAppsListViewModel, viewModel);
     v17 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277CB8A08], *MEMORY[0x277CB8A58], *MEMORY[0x277CB89C8], *MEMORY[0x277CB89C0], *MEMORY[0x277CB8920], 0}];
     mainViewDataclasses = v16->_mainViewDataclasses;
     v16->_mainViewDataclasses = v17;
@@ -72,16 +72,16 @@
     v16->_accountWorkQueue = v20;
 
     objc_initWeak(&location, v16);
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v23 = +[_TtC14iCloudSettings30ManageStorageAppsListViewModel ViewModelDidUpdateNotificationName];
     manageStorageAppsListViewModel = v16->_manageStorageAppsListViewModel;
-    v25 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeViewModel_manageStorageAppsListViewModel___block_invoke;
     v28[3] = &unk_27A666378;
     objc_copyWeak(&v29, &location);
-    v26 = [v22 addObserverForName:v23 object:manageStorageAppsListViewModel queue:v25 usingBlock:v28];
+    v26 = [defaultCenter addObserverForName:v23 object:manageStorageAppsListViewModel queue:mainQueue usingBlock:v28];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
@@ -110,8 +110,8 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICSDataclassSpecifierProvider;
@@ -120,15 +120,15 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 
 - (ACAccount)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
   [(ICSDataclassSpecifierProvider *)self _initiateServiceAuthHandler];
 
   [(ICSDataclassSpecifierProvider *)self _initiateSpecifiers];
@@ -149,9 +149,9 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 
 - (void)_initiateSpecifiers
 {
-  v3 = [(ICSDataclassSpecifierProvider *)self getICloudMailSpecifier];
+  getICloudMailSpecifier = [(ICSDataclassSpecifierProvider *)self getICloudMailSpecifier];
   mailSpecifierProvider = self->_mailSpecifierProvider;
-  self->_mailSpecifierProvider = v3;
+  self->_mailSpecifierProvider = getICloudMailSpecifier;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(AAUISpecifierProvider *)self->_mailSpecifierProvider setDelegate:WeakRetained];
@@ -175,9 +175,9 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 
   if (_os_feature_enabled_impl())
   {
-    v15 = [(ICSDataclassSpecifierProvider *)self _loadCalendarSpecifierProvider];
+    _loadCalendarSpecifierProvider = [(ICSDataclassSpecifierProvider *)self _loadCalendarSpecifierProvider];
     calendarSpecifierProvider = self->_calendarSpecifierProvider;
-    self->_calendarSpecifierProvider = v15;
+    self->_calendarSpecifierProvider = _loadCalendarSpecifierProvider;
   }
 
   else
@@ -252,26 +252,26 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
   [WeakRetained reloadSpecifiersForProvider:self oldSpecifiers:v4 animated:0];
 }
 
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = [v5 cellType];
-  if (v6 == 6)
+  specifierCopy = specifier;
+  cellType = [specifierCopy cellType];
+  if (cellType == 6)
   {
-    [v5 removePropertyForKey:*MEMORY[0x277D401A8]];
+    [specifierCopy removePropertyForKey:*MEMORY[0x277D401A8]];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  [WeakRetained reloadSpecifier:v5 animated:v6 != 6];
+  [WeakRetained reloadSpecifier:specifierCopy animated:cellType != 6];
 }
 
-- (BOOL)_showSpecifierForDataclass:(id)a3
+- (BOOL)_showSpecifierForDataclass:(id)dataclass
 {
   v4 = MEMORY[0x277CEC7A0];
-  v5 = a3;
-  v6 = [v4 sharedManager];
-  v7 = [(ICSDataclassSpecifierProvider *)self account];
-  v8 = [v6 shouldShowDataclass:v5 forAccount:v7];
+  dataclassCopy = dataclass;
+  sharedManager = [v4 sharedManager];
+  account = [(ICSDataclassSpecifierProvider *)self account];
+  v8 = [sharedManager shouldShowDataclass:dataclassCopy forAccount:account];
 
   return v8;
 }
@@ -280,46 +280,46 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 {
   if ((-[ICSDataclassSpecifierProvider _showSpecifierForDataclass:](self, "_showSpecifierForDataclass:", *MEMORY[0x277CB89D0]) || -[ICSDataclassSpecifierProvider _showSpecifierForDataclass:](self, "_showSpecifierForDataclass:", *MEMORY[0x277CB8A38])) && (-[AAUISpecifierProvider specifiers](self->_photoStreamSpecifierProvider, "specifiers"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 count], v3, v4))
   {
-    v5 = [(AAUISpecifierProvider *)self->_photoStreamSpecifierProvider specifiers];
-    v6 = [v5 firstObject];
+    specifiers = [(AAUISpecifierProvider *)self->_photoStreamSpecifierProvider specifiers];
+    firstObject = [specifiers firstObject];
 
-    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v6 forDataclass:*MEMORY[0x277CB8A08]];
+    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:firstObject forDataclass:*MEMORY[0x277CB8A08]];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (id)_buildHealthDataSpecifier
 {
-  v3 = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
-  v4 = [v3 count];
+  specifiers = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
+  v4 = [specifiers count];
 
   if (v4)
   {
-    v5 = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
-    v6 = [v5 firstObject];
+    specifiers2 = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
+    firstObject = [specifiers2 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
 - (id)_buildUbiquitySpecifier
 {
-  v3 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider ubiquityLinklistSpecifier];
-  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v3 forDataclass:*MEMORY[0x277CB8A58]];
+  ubiquityLinklistSpecifier = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider ubiquityLinklistSpecifier];
+  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:ubiquityLinklistSpecifier forDataclass:*MEMORY[0x277CB8A58]];
   if ([(ICSDataclassSpecifierProvider *)self _showSpecifierForDataclass:*MEMORY[0x277CB91D8]])
   {
-    v4 = v3 == 0;
+    v4 = ubiquityLinklistSpecifier == 0;
   }
 
   else
@@ -334,7 +334,7 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
 
   else
   {
-    v5 = v3;
+    v5 = ubiquityLinklistSpecifier;
   }
 
   return v5;
@@ -345,38 +345,38 @@ void __111__ICSDataclassSpecifierProvider_initWithAccountManager_presenter_homeV
   v3 = *MEMORY[0x277CB89C8];
   if (!-[ICSDataclassSpecifierProvider _showSpecifierForDataclass:](self, "_showSpecifierForDataclass:", *MEMORY[0x277CB89C8]) || (-[AAUISpecifierProvider specifiers](self->_mailSpecifierProvider, "specifiers"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5))
   {
-    v7 = 0;
+    firstObject = 0;
     goto LABEL_10;
   }
 
   if ([MEMORY[0x277CECA48] isAccountDataclassListRedesignEnabled])
   {
-    v6 = [(ICSDataclassSpecifierProvider *)self account];
-    if ([v6 aa_isAccountClass:*MEMORY[0x277CEC688]])
+    account = [(ICSDataclassSpecifierProvider *)self account];
+    if ([account aa_isAccountClass:*MEMORY[0x277CEC688]])
     {
     }
 
     else
     {
-      v8 = [(ICSDataclassSpecifierProvider *)self account];
-      v9 = [v8 aa_isManagedAppleID];
+      account2 = [(ICSDataclassSpecifierProvider *)self account];
+      aa_isManagedAppleID = [account2 aa_isManagedAppleID];
 
-      if (!v9)
+      if (!aa_isManagedAppleID)
       {
-        v7 = [(ICSDataclassSpecifierProvider *)self specifierForDataclass:v3];
+        firstObject = [(ICSDataclassSpecifierProvider *)self specifierForDataclass:v3];
         goto LABEL_9;
       }
     }
   }
 
-  v10 = [(AAUISpecifierProvider *)self->_mailSpecifierProvider specifiers];
-  v7 = [v10 firstObject];
+  specifiers = [(AAUISpecifierProvider *)self->_mailSpecifierProvider specifiers];
+  firstObject = [specifiers firstObject];
 
 LABEL_9:
-  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v7 forDataclass:v3];
+  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:firstObject forDataclass:v3];
 LABEL_10:
 
-  return v7;
+  return firstObject;
 }
 
 - (id)_buildKeychainSpecifier
@@ -384,18 +384,18 @@ LABEL_10:
   v3 = *MEMORY[0x277CB89C0];
   if (-[ICSDataclassSpecifierProvider _showSpecifierForDataclass:](self, "_showSpecifierForDataclass:", *MEMORY[0x277CB89C0]) && (-[ICSKeychainSpecifierProvider specifiers](self->_keychainSpecifierProvider, "specifiers"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, v5))
   {
-    v6 = [(ICSKeychainSpecifierProvider *)self->_keychainSpecifierProvider specifiers];
-    v7 = [v6 firstObject];
+    specifiers = [(ICSKeychainSpecifierProvider *)self->_keychainSpecifierProvider specifiers];
+    firstObject = [specifiers firstObject];
 
-    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v7 forDataclass:v3];
+    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:firstObject forDataclass:v3];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (id)_specifierForMessagesDataclass
@@ -446,11 +446,11 @@ LABEL_10:
   v7 = [v4 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:-1 edit:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v9 = [WeakRetained traitCollection];
-  v10 = [v9 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [WeakRetained traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
   [v7 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  if (v10)
+  if (pe_isSettingsFeatureDescriptionCellSupported)
   {
     [v7 setObject:@"com.apple.application-icon.icloud-apps" forKeyedSubscript:*MEMORY[0x277D3FFD8]];
     [v7 setIdentifier:@"AppsUsingiCloud"];
@@ -513,8 +513,8 @@ LABEL_10:
   }
 
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(ICSDataclassSpecifierProvider *)self _specifiersForProvisionedDataclasses];
-  if ([v5 count])
+  _specifiersForProvisionedDataclasses = [(ICSDataclassSpecifierProvider *)self _specifiersForProvisionedDataclasses];
+  if ([_specifiersForProvisionedDataclasses count])
   {
     v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"APPS_GROUP_0"];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -523,19 +523,19 @@ LABEL_10:
 
     if (isKindOfClass)
     {
-      v9 = [(ICSDataclassSpecifierProvider *)self _buildAppGroupHeaderSpecifiers];
-      [v4 addObjectsFromArray:v9];
+      _buildAppGroupHeaderSpecifiers = [(ICSDataclassSpecifierProvider *)self _buildAppGroupHeaderSpecifiers];
+      [v4 addObjectsFromArray:_buildAppGroupHeaderSpecifiers];
     }
 
     else
     {
-      v10 = [(ICSDataclassSpecifierProvider *)self account];
-      if ([v10 aa_isAccountClass:*MEMORY[0x277CEC688]])
+      account = [(ICSDataclassSpecifierProvider *)self account];
+      if ([account aa_isAccountClass:*MEMORY[0x277CEC688]])
       {
-        v11 = [(ICSDataclassSpecifierProvider *)self account];
-        v12 = [v11 aa_isManagedAppleID];
+        account2 = [(ICSDataclassSpecifierProvider *)self account];
+        aa_isManagedAppleID = [account2 aa_isManagedAppleID];
 
-        if (!v12)
+        if (!aa_isManagedAppleID)
         {
           goto LABEL_11;
         }
@@ -546,8 +546,8 @@ LABEL_10:
       }
 
       v13 = MEMORY[0x277D3FAD8];
-      v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v14 = [v9 localizedStringForKey:@"SYNC_WITH_ICLOUD_GROUP_NAME" value:&stru_288487370 table:@"Localizable-AppleID"];
+      _buildAppGroupHeaderSpecifiers = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+      v14 = [_buildAppGroupHeaderSpecifiers localizedStringForKey:@"SYNC_WITH_ICLOUD_GROUP_NAME" value:&stru_288487370 table:@"Localizable-AppleID"];
       v15 = [v13 groupSpecifierWithID:@"SYNC WITH ICLOUD" name:v14];
 
       v6 = v15;
@@ -559,51 +559,51 @@ LABEL_11:
 
   if ([(ICSDataclassSpecifierProvider *)self isRegularWatchPairing])
   {
-    v16 = 0;
+    _buildPhotosSpecifier = 0;
   }
 
   else
   {
-    v16 = [(ICSDataclassSpecifierProvider *)self _buildPhotosSpecifier];
-    if (v16)
+    _buildPhotosSpecifier = [(ICSDataclassSpecifierProvider *)self _buildPhotosSpecifier];
+    if (_buildPhotosSpecifier)
     {
-      [v4 addObject:v16];
+      [v4 addObject:_buildPhotosSpecifier];
     }
   }
 
   if (self->_ubiquitySpecifierProvider)
   {
-    v17 = [(ICSDataclassSpecifierProvider *)self _buildUbiquitySpecifier];
-    if (v17)
+    _buildUbiquitySpecifier = [(ICSDataclassSpecifierProvider *)self _buildUbiquitySpecifier];
+    if (_buildUbiquitySpecifier)
     {
-      [v4 addObject:v17];
+      [v4 addObject:_buildUbiquitySpecifier];
     }
   }
 
-  v18 = [(ICSDataclassSpecifierProvider *)self _buildEmailSpecifier];
-  if (v18)
+  _buildEmailSpecifier = [(ICSDataclassSpecifierProvider *)self _buildEmailSpecifier];
+  if (_buildEmailSpecifier)
   {
-    [v4 addObject:v18];
+    [v4 addObject:_buildEmailSpecifier];
   }
 
   if (![(ICSDataclassSpecifierProvider *)self isRegularWatchPairing])
   {
-    v19 = [(ICSDataclassSpecifierProvider *)self _buildKeychainSpecifier];
+    _buildKeychainSpecifier = [(ICSDataclassSpecifierProvider *)self _buildKeychainSpecifier];
 
-    if (v19)
+    if (_buildKeychainSpecifier)
     {
-      [v4 addObject:v19];
-      v16 = v19;
+      [v4 addObject:_buildKeychainSpecifier];
+      _buildPhotosSpecifier = _buildKeychainSpecifier;
     }
 
     else
     {
-      v16 = 0;
+      _buildPhotosSpecifier = 0;
     }
   }
 
   v20 = *MEMORY[0x277CB89F8];
-  v21 = [v5 specifierForID:*MEMORY[0x277CB89F8]];
+  v21 = [_specifiersForProvisionedDataclasses specifierForID:*MEMORY[0x277CB89F8]];
 
   if (v21)
   {
@@ -614,7 +614,7 @@ LABEL_11:
   if (![(ICSDataclassSpecifierProvider *)self isRegularWatchPairing])
   {
     v22 = *MEMORY[0x277CB89D8];
-    v23 = [v5 specifierForID:*MEMORY[0x277CB89D8]];
+    v23 = [_specifiersForProvisionedDataclasses specifierForID:*MEMORY[0x277CB89D8]];
 
     if (v23)
     {
@@ -629,22 +629,22 @@ LABEL_11:
     }
   }
 
-  v24 = [MEMORY[0x277CEC7A0] sharedManager];
+  mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
   v25 = *MEMORY[0x277CB89A0];
-  v26 = [(ICSDataclassSpecifierProvider *)self account];
-  v27 = [v24 shouldShowDataclass:v25 forAccount:v26];
+  account3 = [(ICSDataclassSpecifierProvider *)self account];
+  v27 = [mEMORY[0x277CEC7A0] shouldShowDataclass:v25 forAccount:account3];
 
   if (!v27)
   {
     goto LABEL_39;
   }
 
-  v28 = [MEMORY[0x277CEC7A0] sharedManager];
-  v29 = [v28 appIsNeitherInstalledOrPlaceholder:v25];
+  mEMORY[0x277CEC7A0]2 = [MEMORY[0x277CEC7A0] sharedManager];
+  v29 = [mEMORY[0x277CEC7A0]2 appIsNeitherInstalledOrPlaceholder:v25];
 
   if (!v29)
   {
-    v31 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:v25 fromProvisionedSpecifiers:v5];
+    v31 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:v25 fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
     if (v31)
     {
@@ -658,38 +658,38 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v30 = [(ICSDataclassSpecifierProvider *)self _buildHealthDataSpecifier];
+  _buildHealthDataSpecifier = [(ICSDataclassSpecifierProvider *)self _buildHealthDataSpecifier];
 
-  if (!v30)
+  if (!_buildHealthDataSpecifier)
   {
     goto LABEL_38;
   }
 
-  [v4 addObject:v30];
-  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v30 forDataclass:v25];
-  v21 = v30;
+  [v4 addObject:_buildHealthDataSpecifier];
+  [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:_buildHealthDataSpecifier forDataclass:v25];
+  v21 = _buildHealthDataSpecifier;
 LABEL_39:
   if (![(ICSDataclassSpecifierProvider *)self isRegularWatchPairing])
   {
     if (_os_feature_enabled_impl() && (-[ICSDataclassSpecifierProvider account](self, "account"), v32 = objc_claimAutoreleasedReturnValue(), v33 = [v32 aa_isAccountClass:*MEMORY[0x277CEC688]], v32, v33))
     {
-      v34 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
-      v35 = [v34 count];
+      specifiers = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
+      v35 = [specifiers count];
 
       if (v35)
       {
-        v36 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
-        [v4 addObjectsFromArray:v36];
+        specifiers2 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
+        [v4 addObjectsFromArray:specifiers2];
 
-        v37 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
-        v38 = [v37 count];
+        specifiers3 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
+        v38 = [specifiers3 count];
 
         if (v38)
         {
-          v39 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
-          v40 = [v39 firstObject];
+          specifiers4 = [(AAUISpecifierProvider *)self->_calendarSpecifierProvider specifiers];
+          firstObject = [specifiers4 firstObject];
 
-          [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v40 forDataclass:*MEMORY[0x277CB8958]];
+          [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:firstObject forDataclass:*MEMORY[0x277CB8958]];
         }
       }
 
@@ -698,7 +698,7 @@ LABEL_39:
 
     else
     {
-      v41 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8958] fromProvisionedSpecifiers:v5];
+      v41 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8958] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
       if (v41)
       {
@@ -718,14 +718,14 @@ LABEL_39:
       [v4 addObject:v42];
     }
 
-    v43 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8968] fromProvisionedSpecifiers:v5];
+    v43 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8968] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
     if (v43)
     {
       [v4 addObject:v43];
     }
 
-    v21 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A18] fromProvisionedSpecifiers:v5];
+    v21 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A18] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
     if (v21)
     {
@@ -733,42 +733,42 @@ LABEL_39:
     }
   }
 
-  v44 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8928] fromProvisionedSpecifiers:v5];
+  v44 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8928] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v44)
   {
     [v4 addObject:v44];
   }
 
-  v45 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89F0] fromProvisionedSpecifiers:v5];
+  v45 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89F0] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v45)
   {
     [v4 addObject:v45];
   }
 
-  v46 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A50] fromProvisionedSpecifiers:v5];
+  v46 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A50] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v46)
   {
     [v4 addObject:v46];
   }
 
-  v47 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89A8] fromProvisionedSpecifiers:v5];
+  v47 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89A8] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v47)
   {
     [v4 addObject:v47];
   }
 
-  v48 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8990] fromProvisionedSpecifiers:v5];
+  v48 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8990] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v48)
   {
     [v4 addObject:v48];
   }
 
-  v49 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A40] fromProvisionedSpecifiers:v5];
+  v49 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A40] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v49)
   {
@@ -784,35 +784,35 @@ LABEL_39:
     [v4 addObject:v51];
   }
 
-  v52 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A48] fromProvisionedSpecifiers:v5];
+  v52 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A48] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v52)
   {
     [v4 addObject:v52];
   }
 
-  v53 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8998] fromProvisionedSpecifiers:v5];
+  v53 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8998] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v53)
   {
     [v4 addObject:v53];
   }
 
-  v54 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89E0] fromProvisionedSpecifiers:v5];
+  v54 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89E0] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v54)
   {
     [v4 addObject:v54];
   }
 
-  v55 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A00] fromProvisionedSpecifiers:v5];
+  v55 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB8A00] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v55)
   {
     [v4 addObject:v55];
   }
 
-  v56 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89B0] fromProvisionedSpecifiers:v5];
+  v56 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:*MEMORY[0x277CB89B0] fromProvisionedSpecifiers:_specifiersForProvisionedDataclasses];
 
   if (v56)
   {
@@ -831,21 +831,21 @@ LABEL_81:
 
 - (BOOL)_shouldShowDeviceEnrollmentsSpecifier
 {
-  v3 = [(ICSDataclassSpecifierProvider *)self account];
-  v4 = [v3 aa_isAccountClass:*MEMORY[0x277CEC688]];
+  account = [(ICSDataclassSpecifierProvider *)self account];
+  v4 = [account aa_isAccountClass:*MEMORY[0x277CEC688]];
 
   if (v4)
   {
-    v5 = [(ICSDataclassSpecifierProvider *)self account];
-    v6 = [v5 provisionedDataclasses];
+    account2 = [(ICSDataclassSpecifierProvider *)self account];
+    provisionedDataclasses = [account2 provisionedDataclasses];
     v7 = *MEMORY[0x277CB8980];
-    v8 = [v6 containsObject:*MEMORY[0x277CB8980]];
+    v8 = [provisionedDataclasses containsObject:*MEMORY[0x277CB8980]];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CEC7A0] sharedManager];
-      v10 = [(ICSDataclassSpecifierProvider *)self account];
-      v11 = [v9 shouldShowDataclass:v7 forAccount:v10];
+      mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
+      account3 = [(ICSDataclassSpecifierProvider *)self account];
+      v11 = [mEMORY[0x277CEC7A0] shouldShowDataclass:v7 forAccount:account3];
 
       if (v11)
       {
@@ -893,30 +893,30 @@ LABEL_81:
   return 0;
 }
 
-- (id)_specifierForDataclass:(id)a3 fromProvisionedSpecifiers:(id)a4
+- (id)_specifierForDataclass:(id)dataclass fromProvisionedSpecifiers:(id)specifiers
 {
-  v6 = a3;
-  v7 = [a4 specifierForID:v6];
+  dataclassCopy = dataclass;
+  v7 = [specifiers specifierForID:dataclassCopy];
   if (v7)
   {
-    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v7 forDataclass:v6];
+    [(ICSDataclassSpecifierProvider *)self _decorateDataclassSpecifier:v7 forDataclass:dataclassCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)_decorateDataclassSpecifier:(id)a3 forDataclass:(id)a4
+- (void)_decorateDataclassSpecifier:(id)specifier forDataclass:(id)dataclass
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(ICSDataclassSpecifierProvider *)self manageStorageAppsListViewModel];
-  v8 = [v7 expandedSubTitleForDataclass:v6];
+  specifierCopy = specifier;
+  dataclassCopy = dataclass;
+  manageStorageAppsListViewModel = [(ICSDataclassSpecifierProvider *)self manageStorageAppsListViewModel];
+  v8 = [manageStorageAppsListViewModel expandedSubTitleForDataclass:dataclassCopy];
 
-  if (([v6 isEqualToString:*MEMORY[0x277CB8A08]] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB8960]) & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB89F8]) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB89C0]))
+  if (([dataclassCopy isEqualToString:*MEMORY[0x277CB8A08]] & 1) != 0 || (objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB8960]) & 1) != 0 || (objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB89F8]) & 1) != 0 || objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB89C0]))
   {
-    v9 = [(ICSDataclassSpecifierProvider *)self homeViewModel];
-    v10 = [v9 expandedSubTitleForDataclass:v6];
+    homeViewModel = [(ICSDataclassSpecifierProvider *)self homeViewModel];
+    v10 = [homeViewModel expandedSubTitleForDataclass:dataclassCopy];
 
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"SUBTITLE_ON" value:&stru_288487370 table:@"Localizable-iCloud"];
@@ -970,42 +970,42 @@ LABEL_11:
 LABEL_12:
   v18 = objc_opt_class();
   v19 = *MEMORY[0x277D3FE58];
-  [v20 setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  if ([v20 cellType] == 2 && ((objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB89C8]) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CB89A0])))
+  [specifierCopy setObject:v18 forKeyedSubscript:*MEMORY[0x277D3FE58]];
+  if ([specifierCopy cellType] == 2 && ((objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB89C8]) & 1) != 0 || objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB89A0])))
   {
-    [v20 setObject:objc_opt_class() forKeyedSubscript:v19];
+    [specifierCopy setObject:objc_opt_class() forKeyedSubscript:v19];
   }
 
   if (v16)
   {
-    [v20 setObject:v16 forKeyedSubscript:*MEMORY[0x277D40160]];
+    [specifierCopy setObject:v16 forKeyedSubscript:*MEMORY[0x277D40160]];
   }
 }
 
-- (void)_decorateLiverpoolSpecifier:(id)a3 forBundleId:(id)a4
+- (void)_decorateLiverpoolSpecifier:(id)specifier forBundleId:(id)id
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ICSDataclassSpecifierProvider *)self manageStorageAppsListViewModel];
-  v8 = [v7 expandedSubTitleForLiverpoolBundleId:v6];
+  specifierCopy = specifier;
+  idCopy = id;
+  manageStorageAppsListViewModel = [(ICSDataclassSpecifierProvider *)self manageStorageAppsListViewModel];
+  v8 = [manageStorageAppsListViewModel expandedSubTitleForLiverpoolBundleId:idCopy];
 
   if (v8)
   {
-    [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x277D40160]];
+    [specifierCopy setObject:v8 forKeyedSubscript:*MEMORY[0x277D40160]];
   }
 
-  [v9 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
+  [specifierCopy setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
 }
 
-- (void)_decorateServiceSpecifier:(id)a3 forService:(id)a4
+- (void)_decorateServiceSpecifier:(id)specifier forService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  v9 = [(ICSDataclassSpecifierProvider *)self homeViewModel];
-  v8 = [v9 expandedSubTitleForService:v6];
+  serviceCopy = service;
+  specifierCopy = specifier;
+  [specifierCopy setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
+  homeViewModel = [(ICSDataclassSpecifierProvider *)self homeViewModel];
+  v8 = [homeViewModel expandedSubTitleForService:serviceCopy];
 
-  [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D40160]];
+  [specifierCopy setObject:v8 forKeyedSubscript:*MEMORY[0x277D40160]];
 }
 
 - (NSArray)specifiers
@@ -1013,9 +1013,9 @@ LABEL_12:
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(ICSDataclassSpecifierProvider *)self _specifiersForAppListVC];
+    _specifiersForAppListVC = [(ICSDataclassSpecifierProvider *)self _specifiersForAppListVC];
     v5 = self->_specifiers;
-    self->_specifiers = v4;
+    self->_specifiers = _specifiersForAppListVC;
 
     specifiers = self->_specifiers;
   }
@@ -1032,49 +1032,49 @@ LABEL_12:
     v4 = objc_opt_new();
     if (!self->_appSpecifiers)
     {
-      v5 = [(ICSDataclassSpecifierProvider *)self _buildAppSpecifiers];
-      [v4 addObjectsFromArray:v5];
+      _buildAppSpecifiers = [(ICSDataclassSpecifierProvider *)self _buildAppSpecifiers];
+      [v4 addObjectsFromArray:_buildAppSpecifiers];
     }
 
-    v6 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
-    v7 = [v6 count];
+    specifiers = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
+    v7 = [specifiers count];
 
     if (v7)
     {
-      v8 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
+      specifiers2 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __56__ICSDataclassSpecifierProvider__specifiersForAppListVC__block_invoke;
       v33[3] = &unk_27A666170;
       v33[4] = self;
-      [v8 enumerateObjectsUsingBlock:v33];
+      [specifiers2 enumerateObjectsUsingBlock:v33];
 
-      v9 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
-      [v4 addObjectsFromArray:v9];
+      specifiers3 = [(ICSUbiquitySpecifierProvider *)self->_ubiquitySpecifierProvider specifiers];
+      [v4 addObjectsFromArray:specifiers3];
     }
 
-    v10 = [(ICSDataclassSpecifierProvider *)self account];
-    v11 = [v10 aa_isAccountClass:*MEMORY[0x277CEC688]];
+    account = [(ICSDataclassSpecifierProvider *)self account];
+    v11 = [account aa_isAccountClass:*MEMORY[0x277CEC688]];
 
     if (v11)
     {
-      v12 = [(AAUISpecifierProvider *)self->_hmeSpecifierProvider specifiers];
-      if ([v12 count])
+      specifiers4 = [(AAUISpecifierProvider *)self->_hmeSpecifierProvider specifiers];
+      if ([specifiers4 count])
       {
-        v13 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-        [v4 addObject:v13];
+        emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        [v4 addObject:emptyGroupSpecifier];
 
-        [v4 addObjectsFromArray:v12];
+        [v4 addObjectsFromArray:specifiers4];
       }
     }
 
-    v14 = [(AAUISpecifierProvider *)self->_otherSpecifierProvider specifiers];
-    v15 = [v14 count];
+    specifiers5 = [(AAUISpecifierProvider *)self->_otherSpecifierProvider specifiers];
+    v15 = [specifiers5 count];
 
     if (v15)
     {
-      v16 = [(AAUISpecifierProvider *)self->_otherSpecifierProvider specifiers];
-      [v4 addObjectsFromArray:v16];
+      specifiers6 = [(AAUISpecifierProvider *)self->_otherSpecifierProvider specifiers];
+      [v4 addObjectsFromArray:specifiers6];
     }
 
     v31 = 0u;
@@ -1132,14 +1132,14 @@ void __56__ICSDataclassSpecifierProvider__specifiersForAppListVC__block_invoke(u
 {
   v26 = *MEMORY[0x277D85DE8];
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [(ICSDataclassSpecifierProvider *)self account];
-  v4 = [v3 provisionedDataclasses];
+  account = [(ICSDataclassSpecifierProvider *)self account];
+  provisionedDataclasses = [account provisionedDataclasses];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v4;
+  v5 = provisionedDataclasses;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v6)
   {
@@ -1155,9 +1155,9 @@ void __56__ICSDataclassSpecifierProvider__specifiersForAppListVC__block_invoke(u
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [MEMORY[0x277CEC7A0] sharedManager];
-        v12 = [(ICSDataclassSpecifierProvider *)self account];
-        v13 = [v11 shouldShowDataclass:v10 forAccount:v12];
+        mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
+        account2 = [(ICSDataclassSpecifierProvider *)self account];
+        v13 = [mEMORY[0x277CEC7A0] shouldShowDataclass:v10 forAccount:account2];
 
         if (v13)
         {
@@ -1188,22 +1188,22 @@ void __56__ICSDataclassSpecifierProvider__specifiersForAppListVC__block_invoke(u
   return v18;
 }
 
-- (id)specifierForDataclass:(id)a3
+- (id)specifierForDataclass:(id)dataclass
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x277CB89D0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277CB8A38]))
+  dataclassCopy = dataclass;
+  if (([dataclassCopy isEqualToString:*MEMORY[0x277CB89D0]] & 1) != 0 || objc_msgSend(dataclassCopy, "isEqualToString:", *MEMORY[0x277CB8A38]))
   {
-    v5 = [(AAUISpecifierProvider *)self->_photoStreamSpecifierProvider specifiers];
-    v6 = [v5 count];
+    specifiers = [(AAUISpecifierProvider *)self->_photoStreamSpecifierProvider specifiers];
+    v6 = [specifiers count];
 
     if (v6)
     {
       photoStreamSpecifierProvider = self->_photoStreamSpecifierProvider;
 LABEL_5:
       WeakRetained = [photoStreamSpecifierProvider specifiers];
-      v9 = [WeakRetained firstObject];
+      firstObject = [WeakRetained firstObject];
 LABEL_6:
-      v10 = v9;
+      v10 = firstObject;
 
       goto LABEL_18;
     }
@@ -1212,15 +1212,15 @@ LABEL_6:
   }
 
   v11 = *MEMORY[0x277CB89A0];
-  if ([v4 isEqualToString:*MEMORY[0x277CB89A0]])
+  if ([dataclassCopy isEqualToString:*MEMORY[0x277CB89A0]])
   {
-    v12 = [MEMORY[0x277CEC7A0] sharedManager];
-    v13 = [v12 appIsNeitherInstalledOrPlaceholder:v11];
+    mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
+    v13 = [mEMORY[0x277CEC7A0] appIsNeitherInstalledOrPlaceholder:v11];
 
     if (v13)
     {
-      v14 = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
-      v15 = [v14 count];
+      specifiers2 = [(AAUISpecifierProvider *)self->_healthDataSpecifierProvider specifiers];
+      v15 = [specifiers2 count];
 
       if (v15)
       {
@@ -1234,10 +1234,10 @@ LABEL_6:
 
   else
   {
-    if ([v4 isEqualToString:*MEMORY[0x277CB89C0]])
+    if ([dataclassCopy isEqualToString:*MEMORY[0x277CB89C0]])
     {
-      v16 = [(ICSKeychainSpecifierProvider *)self->_keychainSpecifierProvider specifiers];
-      v17 = [v16 count];
+      specifiers3 = [(ICSKeychainSpecifierProvider *)self->_keychainSpecifierProvider specifiers];
+      v17 = [specifiers3 count];
 
       if (v17)
       {
@@ -1250,60 +1250,60 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    if (![v4 isEqualToString:*MEMORY[0x277CB89F8]])
+    if (![dataclassCopy isEqualToString:*MEMORY[0x277CB89F8]])
     {
-      if (![v4 isEqualToString:*MEMORY[0x277CB89D8]])
+      if (![dataclassCopy isEqualToString:*MEMORY[0x277CB89D8]])
       {
         WeakRetained = objc_loadWeakRetained(&self->_listController);
-        v9 = [WeakRetained specifierForDataclass:v4];
+        firstObject = [WeakRetained specifierForDataclass:dataclassCopy];
         goto LABEL_6;
       }
 
-      v18 = [(ICSDataclassSpecifierProvider *)self _specifierForMessagesDataclass];
+      _specifierForMessagesDataclass = [(ICSDataclassSpecifierProvider *)self _specifierForMessagesDataclass];
       goto LABEL_17;
     }
   }
 
-  v18 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:v4];
+  _specifierForMessagesDataclass = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:dataclassCopy];
 LABEL_17:
-  v10 = v18;
+  v10 = _specifierForMessagesDataclass;
 LABEL_18:
 
   return v10;
 }
 
-- (void)_performUpdateIfNeededOnSpecifier:(id)a3 forDataclass:(id)a4
+- (void)_performUpdateIfNeededOnSpecifier:(id)specifier forDataclass:(id)dataclass
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [(ICSDataclassSpecifierProvider *)self account];
-  v8 = [v7 aa_serverDisabledDataclass:v6];
+  specifierCopy = specifier;
+  dataclassCopy = dataclass;
+  account = [(ICSDataclassSpecifierProvider *)self account];
+  v8 = [account aa_serverDisabledDataclass:dataclassCopy];
 
   if (v8)
   {
-    v9 = [v21 cellType];
+    cellType = [specifierCopy cellType];
     v10 = 0x277D3FB00;
-    if (v9 != 2)
+    if (cellType != 2)
     {
       v10 = 0x277D3FB08;
     }
 
     v11 = *v10;
-    [v21 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v21 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
+    [specifierCopy setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
+    [specifierCopy setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"MANAGED_BY_APPLE_ID" value:&stru_288487370 table:@"Localizable-AppleID"];
-    [v21 setProperty:v13 forKey:*MEMORY[0x277D40160]];
+    [specifierCopy setProperty:v13 forKey:*MEMORY[0x277D40160]];
   }
 
-  v14 = [v21 name];
-  v15 = [v14 isEqualToString:@"AppsUsingiCloudHeader"];
+  name = [specifierCopy name];
+  v15 = [name isEqualToString:@"AppsUsingiCloudHeader"];
 
   if ((v15 & 1) == 0)
   {
     v16 = MEMORY[0x277CCABB0];
-    v17 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v17);
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
     v19 = *MEMORY[0x277D76F30];
     if (!IsAccessibilityCategory)
     {
@@ -1311,41 +1311,41 @@ LABEL_18:
     }
 
     v20 = [v16 numberWithDouble:v19];
-    [v21 setProperty:v20 forKey:*MEMORY[0x277D40140]];
+    [specifierCopy setProperty:v20 forKey:*MEMORY[0x277D40140]];
   }
 }
 
-- (id)_specifierForDataclass:(id)a3
+- (id)_specifierForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:v4 withCustomDetailClass:objc_opt_class()];
+  dataclassCopy = dataclass;
+  v5 = [(ICSDataclassSpecifierProvider *)self _specifierForDataclass:dataclassCopy withCustomDetailClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)_specifierForDataclass:(id)a3 withCustomDetailClass:(Class)a4
+- (id)_specifierForDataclass:(id)dataclass withCustomDetailClass:(Class)class
 {
   v6 = MEMORY[0x277D3FAD8];
-  v7 = a3;
-  v8 = [(ICSDataclassSpecifierProvider *)self account];
-  v9 = [v6 acui_linkListCellSpecifierForDataclass:v7 account:v8 target:self set:0 get:sel__dataclassState_ detail:a4];
+  dataclassCopy = dataclass;
+  account = [(ICSDataclassSpecifierProvider *)self account];
+  v9 = [v6 acui_linkListCellSpecifierForDataclass:dataclassCopy account:account target:self set:0 get:sel__dataclassState_ detail:class];
 
-  [v9 setObject:v7 forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  [v9 setObject:dataclassCopy forKeyedSubscript:*MEMORY[0x277D3FFB8]];
   [v9 setObject:self->_accountManager forKeyedSubscript:@"icloudAccountManager"];
 
   return v9;
 }
 
-- (id)_dataclassState:(id)a3
+- (id)_dataclassState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained specifierProvider:self dataclassSwitchStateForSpecifier:v4];
+  v6 = [WeakRetained specifierProvider:self dataclassSwitchStateForSpecifier:stateCopy];
 
-  LODWORD(v4) = [v6 BOOLValue];
+  LODWORD(stateCopy) = [v6 BOOLValue];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = v7;
-  if (v4)
+  if (stateCopy)
   {
     v9 = @"ON";
   }
@@ -1360,10 +1360,10 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)shouldShowSpecifierForServiceType:(id)a3
+- (BOOL)shouldShowSpecifierForServiceType:(id)type
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if (([MEMORY[0x277CEC7B8] isMultiUserMode] & 1) != 0 || (-[ICSDataclassSpecifierProvider account](self, "account"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "aa_isAccountClass:", *MEMORY[0x277CEC688]), v5, !v6))
   {
 LABEL_8:
@@ -1371,9 +1371,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(ICSServiceAuthHandler *)self->_serviceAuthHandler serviceOwnersManager];
-  v8 = [objc_opt_class() supportedServices];
-  v9 = [v8 containsObject:v4];
+  serviceOwnersManager = [(ICSServiceAuthHandler *)self->_serviceAuthHandler serviceOwnersManager];
+  supportedServices = [objc_opt_class() supportedServices];
+  v9 = [supportedServices containsObject:typeCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -1381,7 +1381,7 @@ LABEL_8:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = typeCopy;
       _os_log_impl(&dword_275819000, v11, OS_LOG_TYPE_DEFAULT, "Could not find a service owner for %@", &v14, 0xCu);
     }
 
@@ -1395,23 +1395,23 @@ LABEL_9:
   return v10;
 }
 
-- (id)specifierForServiceType:(id)a3
+- (id)specifierForServiceType:(id)type
 {
-  v4 = a3;
-  if ([(ICSDataclassSpecifierProvider *)self shouldShowSpecifierForServiceType:v4])
+  typeCopy = type;
+  if ([(ICSDataclassSpecifierProvider *)self shouldShowSpecifierForServiceType:typeCopy])
   {
     v5 = MEMORY[0x277D3FAD8];
     v6 = AALocalizedStringForServiceType();
     v7 = [v5 preferenceSpecifierNamed:v6 target:self set:sel_setValue_forServiceSpecifier_ get:sel_valueForServiceSpecifier_ detail:0 cell:6 edit:0];
 
-    if ([v4 isEqualToString:*MEMORY[0x277CED1B0]])
+    if ([typeCopy isEqualToString:*MEMORY[0x277CED1B0]])
     {
       [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
       v8 = +[_TtC14iCloudSettings19ICSIconBundleIdKeys GameCenterIconKey];
       [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277D40008]];
     }
 
-    [v7 setProperty:v4 forKey:@"com.apple.appleaccount.ServiceType"];
+    [v7 setProperty:typeCopy forKey:@"com.apple.appleaccount.ServiceType"];
   }
 
   else
@@ -1422,30 +1422,30 @@ LABEL_9:
   return v7;
 }
 
-- (void)setValue:(id)a3 forServiceSpecifier:(id)a4
+- (void)setValue:(id)value forServiceSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [v7 propertyForKey:@"com.apple.appleaccount.ServiceType"];
+  v8 = [specifierCopy propertyForKey:@"com.apple.appleaccount.ServiceType"];
   WeakRetained = objc_loadWeakRetained(&self->_listController);
-  v10 = [WeakRetained activeSpecifier];
+  activeSpecifier = [WeakRetained activeSpecifier];
 
-  if (!v10)
+  if (!activeSpecifier)
   {
     v11 = objc_loadWeakRetained(&self->_listController);
-    [v11 startSpinnerInSpecifier:v7];
+    [v11 startSpinnerInSpecifier:specifierCopy];
 
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_invoke;
     v18 = &unk_27A666488;
-    v19 = self;
-    v20 = v7;
+    selfCopy = self;
+    v20 = specifierCopy;
     v12 = _Block_copy(&v15);
-    v13 = [v6 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
     serviceAuthHandler = self->_serviceAuthHandler;
-    if (v13)
+    if (bOOLValue)
     {
       [(ICSServiceAuthHandler *)serviceAuthHandler signInAccountForService:v8 completion:v12];
     }
@@ -1470,11 +1470,11 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
   }
 }
 
-- (id)valueForServiceSpecifier:(id)a3
+- (id)valueForServiceSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"com.apple.appleaccount.ServiceType"];
-  v5 = [(ICSServiceAuthHandler *)self->_serviceAuthHandler serviceOwnersManager];
-  v6 = [v5 accountForService:v4];
+  v4 = [specifier propertyForKey:@"com.apple.appleaccount.ServiceType"];
+  serviceOwnersManager = [(ICSServiceAuthHandler *)self->_serviceAuthHandler serviceOwnersManager];
+  v6 = [serviceOwnersManager accountForService:v4];
 
   if (v6)
   {
@@ -1540,15 +1540,15 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
   return v5;
 }
 
-- (id)loadBundle:(id)a3 atPath:(id)a4
+- (id)loadBundle:(id)bundle atPath:(id)path
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  pathCopy = path;
   v7 = MEMORY[0x277C84CF0]();
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  v8 = [v7 stringByAppendingPathComponent:pathCopy];
 
-  v9 = [v8 stringByAppendingPathComponent:v5];
+  v9 = [v8 stringByAppendingPathComponent:bundleCopy];
   v10 = [MEMORY[0x277CCA8D8] bundleWithPath:v9];
   if (([v10 isLoaded] & 1) == 0)
   {
@@ -1556,7 +1556,7 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = bundleCopy;
       _os_log_impl(&dword_275819000, v11, OS_LOG_TYPE_DEFAULT, "%@ not loaded. Loading...", &v14, 0xCu);
     }
 
@@ -1568,12 +1568,12 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
   return v10;
 }
 
-- (id)_loadSpecifierProviderWithClassName:(id)a3 inBundle:(id)a4
+- (id)_loadSpecifierProviderWithClassName:(id)name inBundle:(id)bundle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = NSClassFromString(v6);
+  nameCopy = name;
+  bundleCopy = bundle;
+  v8 = NSClassFromString(nameCopy);
   if ([(objc_class *)v8 conformsToProtocol:&unk_2884BC2B8])
   {
     v9 = [v8 alloc];
@@ -1588,11 +1588,11 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543874;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = nameCopy;
       v20 = 2114;
-      v21 = v7;
+      v21 = bundleCopy;
       _os_log_error_impl(&dword_275819000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load %{public}@ from bundle: %{public}@", &v16, 0x20u);
     }
 
@@ -1604,7 +1604,7 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
   return v12;
 }
 
-- (void)_showDeviceEnrollmentView:(id)a3
+- (void)_showDeviceEnrollmentView:(id)view
 {
   accountManager = self->_accountManager;
   WeakRetained = objc_loadWeakRetained(&self->_listController);
@@ -1622,7 +1622,7 @@ void __62__ICSDataclassSpecifierProvider_setValue_forServiceSpecifier___block_in
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   v3 = *MEMORY[0x277D85DE8];

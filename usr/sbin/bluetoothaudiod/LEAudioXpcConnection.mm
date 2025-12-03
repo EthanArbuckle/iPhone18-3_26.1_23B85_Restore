@@ -1,9 +1,9 @@
 @interface LEAudioXpcConnection
 - (LEAudioXpcConnection)init;
-- (LEAudioXpcConnection)initWithConnection:(id)a3;
-- (id)_objectForKey:(const char *)a3 dict:(id)a4 optional:(BOOL)a5 converters:(id)a6;
-- (void)_handleEvent:(id)a3;
-- (void)_sendMsg:(id)a3 isReply:(BOOL)a4;
+- (LEAudioXpcConnection)initWithConnection:(id)connection;
+- (id)_objectForKey:(const char *)key dict:(id)dict optional:(BOOL)optional converters:(id)converters;
+- (void)_handleEvent:(id)event;
+- (void)_sendMsg:(id)msg isReply:(BOOL)reply;
 @end
 
 @implementation LEAudioXpcConnection
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (LEAudioXpcConnection)initWithConnection:(id)a3
+- (LEAudioXpcConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = LEAudioXpcConnection;
   v6 = [(LEAudioXpcConnection *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = [NSString stringWithFormat:@"com.apple.%@", objc_opt_class()];
     [v8 UTF8String];
     v9 = os_transaction_create();
@@ -40,9 +40,9 @@
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(LEAudioXpcConnection *)v7 connection];
+      connection = [(LEAudioXpcConnection *)v7 connection];
       *buf = 138412290;
-      v22 = v15;
+      v22 = connection;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Started XPC session: %@", buf, 0xCu);
     }
 
@@ -60,14 +60,14 @@
   return v7;
 }
 
-- (void)_sendMsg:(id)a3 isReply:(BOOL)a4
+- (void)_sendMsg:(id)msg isReply:(BOOL)reply
 {
-  v4 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  msgCopy = msg;
   v7 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (replyCopy)
     {
       v8 = @"reply";
     }
@@ -78,7 +78,7 @@
     }
 
     v9 = v7;
-    v10 = [v6 description];
+    v10 = [msgCopy description];
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
@@ -86,51 +86,51 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Sending XPC %@: %@", &v12, 0x16u);
   }
 
-  v11 = [(LEAudioXpcConnection *)self connection];
-  xpc_connection_send_message(v11, v6);
+  connection = [(LEAudioXpcConnection *)self connection];
+  xpc_connection_send_message(connection, msgCopy);
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  if (xpc_get_type(v4) == &_xpc_type_dictionary)
+  eventCopy = event;
+  if (xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
     v6 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [v4 description];
+      v8 = [eventCopy description];
       v14 = 138412290;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Received XPC message: %@", &v14, 0xCu);
     }
 
-    v9 = [(LEAudioXpcConnection *)self watchdog];
-    [v9 beginTransaction];
+    watchdog = [(LEAudioXpcConnection *)self watchdog];
+    [watchdog beginTransaction];
 
-    [(LEAudioXpcConnection *)self handleMsg:v4];
-    v10 = [(LEAudioXpcConnection *)self watchdog];
-    [v10 endTransaction];
+    [(LEAudioXpcConnection *)self handleMsg:eventCopy];
+    watchdog2 = [(LEAudioXpcConnection *)self watchdog];
+    [watchdog2 endTransaction];
   }
 
-  else if (xpc_get_type(v4) == &_xpc_type_error)
+  else if (xpc_get_type(eventCopy) == &_xpc_type_error)
   {
     v11 = qword_1000A9FE0;
-    if (v4 == &_xpc_error_connection_invalid)
+    if (eventCopy == &_xpc_error_connection_invalid)
     {
       if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [(LEAudioXpcConnection *)self connection];
+        connection = [(LEAudioXpcConnection *)self connection];
         v14 = 138412290;
-        v15 = v13;
+        v15 = connection;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Ended XPC session: %@", &v14, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005EE68(v11, v4);
+      sub_10005EE68(v11, eventCopy);
     }
   }
 
@@ -139,20 +139,20 @@
     v5 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
-      sub_10005EDD0(v5, v4);
+      sub_10005EDD0(v5, eventCopy);
     }
   }
 }
 
-- (id)_objectForKey:(const char *)a3 dict:(id)a4 optional:(BOOL)a5 converters:(id)a6
+- (id)_objectForKey:(const char *)key dict:(id)dict optional:(BOOL)optional converters:(id)converters
 {
-  v8 = a6;
-  v9 = xpc_dictionary_get_value(a4, a3);
+  convertersCopy = converters;
+  v9 = xpc_dictionary_get_value(dict, key);
   v10 = v9;
   if (v9)
   {
     v11 = [NSValue valueWithPointer:xpc_get_type(v9)];
-    v12 = [v8 objectForKeyedSubscript:v11];
+    v12 = [convertersCopy objectForKeyedSubscript:v11];
     v13 = (v12)[2](v12, v10);
   }
 

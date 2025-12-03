@@ -1,35 +1,35 @@
 @interface CHClientStroke
-+ (id)encodedStrokeIdentifierWithIdentifier:(int64_t)a3;
-+ (id)encodedStrokeIdentifierWithStrokeIdentifier:(id)a3;
-+ (id)strokesFromDrawing:(id)a3 classification:(int64_t)a4;
++ (id)encodedStrokeIdentifierWithIdentifier:(int64_t)identifier;
++ (id)encodedStrokeIdentifierWithStrokeIdentifier:(id)identifier;
++ (id)strokesFromDrawing:(id)drawing classification:(int64_t)classification;
 - (CGRect)boundingBox;
-- (CHClientStroke)initWithAllPoints:(CHClientStrokePoint *)a3 pointCount:(int64_t)a4 type:(int64_t)a5;
-- (CHClientStroke)initWithArray:(id)a3 channels:(id)a4 withTimeOffset:(double)a5 type:(int64_t)a6;
-- (CHClientStrokePoint)pointAtIndex:(SEL)a3;
+- (CHClientStroke)initWithAllPoints:(CHClientStrokePoint *)points pointCount:(int64_t)count type:(int64_t)type;
+- (CHClientStroke)initWithArray:(id)array channels:(id)channels withTimeOffset:(double)offset type:(int64_t)type;
+- (CHClientStrokePoint)pointAtIndex:(SEL)index;
 - (CHEncodedStrokeIdentifier)encodedStrokeIdentifier;
 - (NSString)description;
 - (double)_strokePathLength;
-- (id)newStrokeWithTransformation:(id)a3;
+- (id)newStrokeWithTransformation:(id)transformation;
 - (id)newStrokeWithoutTransformation;
 - (void)_expandPointsArrayIfNeeded;
-- (void)addAllPoints:(CHClientStrokePoint *)a3 count:(int64_t)a4;
-- (void)addPoint:(CHClientStrokePoint *)a3;
+- (void)addAllPoints:(CHClientStrokePoint *)points count:(int64_t)count;
+- (void)addPoint:(CHClientStrokePoint *)point;
 - (void)dealloc;
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4;
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4;
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block;
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block;
 @end
 
 @implementation CHClientStroke
 
-- (CHClientStroke)initWithArray:(id)a3 channels:(id)a4 withTimeOffset:(double)a5 type:(int64_t)a6
+- (CHClientStroke)initWithArray:(id)array channels:(id)channels withTimeOffset:(double)offset type:(int64_t)type
 {
   v187 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  arrayCopy = array;
+  channelsCopy = channels;
+  if (channelsCopy)
   {
-    v14 = v9;
-    objc_msgSend_valueForKey_(v9, v10, @"x", v11, v12, v13);
+    v14 = channelsCopy;
+    objc_msgSend_valueForKey_(channelsCopy, v10, @"x", v11, v12, v13);
   }
 
   else
@@ -96,13 +96,13 @@
 
   v174 = v14;
 
-  v102 = objc_msgSend_count(v8, v97, v98, v99, v100, v101);
+  v102 = objc_msgSend_count(arrayCopy, v97, v98, v99, v100, v101);
   v180 = malloc_type_calloc(v102, 0x30uLL, 0x1000040EED21634uLL);
   v182 = 0u;
   v183 = 0u;
   v184 = 0u;
   v185 = 0u;
-  obj = v8;
+  obj = arrayCopy;
   v105 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v103, &v182, v186, 16, v104);
   if (v105)
   {
@@ -186,7 +186,7 @@ LABEL_20:
           v116 = &v180[48 * v112];
           *v116 = v132;
           v116[1] = v144;
-          v116[2] = v114 + a5;
+          v116[2] = v114 + offset;
           v116[3] = v146;
           v116[4] = v145;
           v116[5] = v161;
@@ -208,19 +208,19 @@ LABEL_20:
 LABEL_40:
 
   v169 = [CHClientStroke alloc];
-  v172 = objc_msgSend_initWithAllPoints_pointCount_type_(v169, v170, v180, v112, a6, v171);
+  v172 = objc_msgSend_initWithAllPoints_pointCount_type_(v169, v170, v180, v112, type, v171);
   free(v180);
 
   return v172;
 }
 
-- (CHClientStroke)initWithAllPoints:(CHClientStrokePoint *)a3 pointCount:(int64_t)a4 type:(int64_t)a5
+- (CHClientStroke)initWithAllPoints:(CHClientStrokePoint *)points pointCount:(int64_t)count type:(int64_t)type
 {
   if (qword_1EA84CDA8 != -1)
   {
-    v18 = self;
+    selfCopy = self;
     dispatch_once(&qword_1EA84CDA8, &unk_1EF1BC2D0);
-    self = v18;
+    self = selfCopy;
   }
 
   v21.receiver = self;
@@ -232,7 +232,7 @@ LABEL_40:
     v10 = *(MEMORY[0x1E695F050] + 16);
     *(v8 + 88) = *MEMORY[0x1E695F050];
     *(v8 + 104) = v10;
-    *(v8 + 7) = a5;
+    *(v8 + 7) = type;
     *(v8 + 8) = 1;
     v11 = *(v8 + 10);
     *(v8 + 10) = 0;
@@ -246,7 +246,7 @@ LABEL_40:
     v13 = v9;
     v20 = v13;
     dispatch_sync(v12, block);
-    objc_msgSend_addAllPoints_count_(v13, v14, a3, a4, v15, v16);
+    objc_msgSend_addAllPoints_count_(v13, v14, points, count, v15, v16);
   }
 
   return v9;
@@ -277,24 +277,24 @@ LABEL_40:
   [(CHClientStroke *)&v4 dealloc];
 }
 
-+ (id)strokesFromDrawing:(id)a3 classification:(int64_t)a4
++ (id)strokesFromDrawing:(id)drawing classification:(int64_t)classification
 {
-  v71 = a4;
+  classificationCopy = classification;
   v72[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  drawingCopy = drawing;
   v10 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
-  if (objc_msgSend_strokeCount(v4, v11, v12, v13, v14, v15))
+  if (objc_msgSend_strokeCount(drawingCopy, v11, v12, v13, v14, v15))
   {
     v21 = 0;
     do
     {
-      v35 = objc_msgSend_array(MEMORY[0x1E695DF70], v16, v17, v18, v19, v20, v71);
-      if (objc_msgSend_pointCountForStrokeIndex_(v4, v36, v21, v37, v38, v39))
+      v35 = objc_msgSend_array(MEMORY[0x1E695DF70], v16, v17, v18, v19, v20, classificationCopy);
+      if (objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v36, v21, v37, v38, v39))
       {
         v43 = 0;
         do
         {
-          objc_msgSend_pointForStrokeIndex_pointIndex_(v4, v40, v21, v43, v41, v42);
+          objc_msgSend_pointForStrokeIndex_pointIndex_(drawingCopy, v40, v21, v43, v41, v42);
           v45 = v44;
           v51 = objc_msgSend_numberWithDouble_(MEMORY[0x1E696AD98], v46, v47, v48, v49, v50);
           v72[0] = v51;
@@ -306,23 +306,23 @@ LABEL_40:
           ++v43;
         }
 
-        while (v43 < objc_msgSend_pointCountForStrokeIndex_(v4, v66, v21, v67, v68, v69));
+        while (v43 < objc_msgSend_pointCountForStrokeIndex_(drawingCopy, v66, v21, v67, v68, v69));
       }
 
       v22 = [CHClientStroke alloc];
-      v25 = objc_msgSend_initWithArray_channels_withTimeOffset_type_(v22, v23, v35, 0, v71, v24, 0.0);
+      v25 = objc_msgSend_initWithArray_channels_withTimeOffset_type_(v22, v23, v35, 0, classificationCopy, v24, 0.0);
       objc_msgSend_addObject_(v10, v26, v25, v27, v28, v29);
 
       ++v21;
     }
 
-    while (v21 < objc_msgSend_strokeCount(v4, v30, v31, v32, v33, v34));
+    while (v21 < objc_msgSend_strokeCount(drawingCopy, v30, v31, v32, v33, v34));
   }
 
   return v10;
 }
 
-- (CHClientStrokePoint)pointAtIndex:(SEL)a3
+- (CHClientStrokePoint)pointAtIndex:(SEL)index
 {
   v4 = *&self->var0.y + 48 * a4;
   v5 = *(v4 + 16);
@@ -332,31 +332,31 @@ LABEL_40:
   return self;
 }
 
-- (void)addAllPoints:(CHClientStrokePoint *)a3 count:(int64_t)a4
+- (void)addAllPoints:(CHClientStrokePoint *)points count:(int64_t)count
 {
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v13 = v6;
     v14 = v7;
-    v8 = a4;
+    countCopy = count;
     do
     {
-      v11 = *&a3->var1;
-      v12[0] = a3->var0;
+      v11 = *&points->var1;
+      v12[0] = points->var0;
       v12[1] = v11;
-      v12[2] = *&a3->var3;
-      objc_msgSend_addPoint_(self, a2, v12, a4, v4, v5);
-      ++a3;
-      --v8;
+      v12[2] = *&points->var3;
+      objc_msgSend_addPoint_(self, a2, v12, count, v4, v5);
+      ++points;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 }
 
-- (void)addPoint:(CHClientStrokePoint *)a3
+- (void)addPoint:(CHClientStrokePoint *)point
 {
-  objc_msgSend_boundingBox(self, a2, a3, v3, v4, v5);
+  objc_msgSend_boundingBox(self, a2, point, v3, v4, v5);
   if (CGRectIsNull(v27))
   {
     v13 = 24;
@@ -367,14 +367,14 @@ LABEL_40:
     v13 = 32;
   }
 
-  *(&self->super.isa + v13) = *&a3->var1;
+  *(&self->super.isa + v13) = *&point->var1;
   objc_msgSend__expandPointsArrayIfNeeded(self, v8, v9, v10, v11, v12);
   pointsCount = self->_pointsCount;
   objc_msgSend_setPointsCount_(self, v15, pointsCount + 1, v16, v17, v18);
   v23 = &self->_points[pointsCount];
-  var0 = a3->var0;
-  v25 = *&a3->var3;
-  *&v23->var1 = *&a3->var1;
+  var0 = point->var0;
+  v25 = *&point->var3;
+  *&v23->var1 = *&point->var1;
   *&v23->var3 = v25;
   v23->var0 = var0;
 
@@ -408,20 +408,20 @@ LABEL_40:
   self->_points = v30;
 }
 
-+ (id)encodedStrokeIdentifierWithStrokeIdentifier:(id)a3
++ (id)encodedStrokeIdentifierWithStrokeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [CHEncodedStrokeIdentifier alloc];
-  v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v5, v3, 1, 0, v6);
+  v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], v5, identifierCopy, 1, 0, v6);
 
   v12 = objc_msgSend_initWithData_(v4, v8, v7, v9, v10, v11);
 
   return v12;
 }
 
-+ (id)encodedStrokeIdentifierWithIdentifier:(int64_t)a3
++ (id)encodedStrokeIdentifierWithIdentifier:(int64_t)identifier
 {
-  v6 = objc_msgSend_strokeIdentifierWithIdentifier_(CHClientStroke, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_strokeIdentifierWithIdentifier_(CHClientStroke, a2, identifier, v3, v4, v5);
   v11 = objc_msgSend_encodedStrokeIdentifierWithStrokeIdentifier_(CHClientStroke, v7, v6, v8, v9, v10);
 
   return v11;
@@ -447,25 +447,25 @@ LABEL_40:
   return encodedStrokeIdentifier;
 }
 
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12 = objc_msgSend_pointsCount(self, v7, v8, v9, v10, v11);
   if (v12 >= 1)
   {
     v17 = v12;
     v26 = 0;
     objc_msgSend_pointAtIndex_(self, v13, 0, v14, v15, v16);
-    v6[2](v6, &v26, 0.0, 0.0, 0.0);
+    blockCopy[2](blockCopy, &v26, 0.0, 0.0, 0.0);
     if (v17 != 1 && (v26 & 1) == 0)
     {
       for (i = 1; i != v17; ++i)
       {
         v26 = 0;
-        if (i == v17 - 1 || !(i % (a3 / 0.00416666667)))
+        if (i == v17 - 1 || !(i % (timestep / 0.00416666667)))
         {
           objc_msgSend_pointAtIndex_(self, v18, i, v19, v20, v21, 0, 0, 0, 0, 0, 0);
-          v6[2](v6, &v26, v23, v24, v25);
+          blockCopy[2](blockCopy, &v26, v23, v24, v25);
           if (v26)
           {
             break;
@@ -495,20 +495,20 @@ LABEL_40:
   return v12;
 }
 
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v12 = objc_msgSend_pointsCount(self, v7, v8, v9, v10, v11);
   v50 = 0;
   objc_msgSend__strokePathLength(self, v13, v14, v15, v16, v17);
   v19 = v18;
   objc_msgSend_pointAtIndex_(self, v20, 0, v21, v22, v23);
-  v28 = (v6[2])(v6, &v50, 0.0, 0.0, 0.0);
+  v28 = (blockCopy[2])(blockCopy, &v50, 0.0, 0.0, 0.0);
   v29 = 0.0;
   v28.n128_u64[0] = 0;
   v49 = v28;
   v30 = v50;
-  if ((v50 & 1) != 0 || v19 < a3 || v12 < 2)
+  if ((v50 & 1) != 0 || v19 < step || v12 < 2)
   {
 LABEL_13:
     if ((v30 & 1) == 0 && v12 >= 2)
@@ -516,7 +516,7 @@ LABEL_13:
       objc_msgSend_pointAtIndex_(self, v24, v12 - 1, v25, v26, v27);
       if (v49.n128_f64[0] != 0.0 || v29 != 0.0)
       {
-        (v6[2])(v6, &v50);
+        (blockCopy[2])(blockCopy, &v50);
       }
     }
   }
@@ -535,19 +535,19 @@ LABEL_13:
       v40 = sqrtf(vaddv_f32(vmul_f32(v39, v39)));
       v31 = v31 + v40;
       v41 = v50;
-      if ((v50 & 1) == 0 && v31 >= a3)
+      if ((v50 & 1) == 0 && v31 >= step)
       {
         v42 = 0.0;
         do
         {
-          v43 = (v40 - (v31 - a3)) / v40;
+          v43 = (v40 - (v31 - step)) / v40;
           v44 = v43;
           v37 = vmla_n_f32(v37, vsub_f32(v38, v37), v44);
           v45 = vcvtq_f64_f32(v37);
           v42 = v42 + v43 * (0.0 - v42);
           v29 = v45.f64[1];
           v49 = v45;
-          (v6[2])(v6, &v50);
+          (blockCopy[2])(blockCopy, &v50);
           v46 = vsub_f32(v37, v38);
           v47 = sqrtf(vaddv_f32(vmul_f32(v46, v46)));
           v31 = v47;
@@ -560,7 +560,7 @@ LABEL_13:
           v40 = v47;
         }
 
-        while (v31 >= a3);
+        while (v31 >= step);
       }
 
       if (v41)
@@ -577,9 +577,9 @@ LABEL_13:
   }
 }
 
-- (id)newStrokeWithTransformation:(id)a3
+- (id)newStrokeWithTransformation:(id)transformation
 {
-  v4 = a3;
+  transformationCopy = transformation;
   v10 = objc_msgSend_pointsCount(self, v5, v6, v7, v8, v9);
   v11 = malloc_type_calloc(v10, 0x30uLL, 0x1000040EED21634uLL);
   v12 = v11;
@@ -593,7 +593,7 @@ LABEL_13:
       v16 = &self->_points[v13];
       v23 = *&v16->var3;
       v24 = *&v16->var1;
-      *(v15 - 2) = v4[2](v4, v16->var0.x, v16->var0.y);
+      *(v15 - 2) = transformationCopy[2](transformationCopy, v16->var0.x, v16->var0.y);
       *(v15 - 1) = v17;
       *v15 = v24;
       *(v15 + 1) = v23;

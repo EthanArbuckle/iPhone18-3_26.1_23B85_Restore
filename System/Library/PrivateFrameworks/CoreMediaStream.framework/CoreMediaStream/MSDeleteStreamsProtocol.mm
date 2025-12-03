@@ -1,9 +1,9 @@
 @interface MSDeleteStreamsProtocol
-- (MSDeleteStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4;
-- (void)_coreProtocolDidFailAuthenticationError:(id)a3;
-- (void)_coreProtocolDidFinishResponse:(id)a3 error:(id)a4;
+- (MSDeleteStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l;
+- (void)_coreProtocolDidFailAuthenticationError:(id)error;
+- (void)_coreProtocolDidFinishResponse:(id)response error:(id)error;
 - (void)_resetConnectionVariables;
-- (void)sendDeletionRequestForAssetCollections:(id)a3;
+- (void)sendDeletionRequestForAssetCollections:(id)collections;
 @end
 
 @implementation MSDeleteStreamsProtocol
@@ -15,31 +15,31 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_coreProtocolDidFailAuthenticationError:(id)a3
+- (void)_coreProtocolDidFailAuthenticationError:(id)error
 {
-  v4 = a3;
-  v5 = [(MSStreamsProtocol *)self delegate];
-  [v5 deleteProtocol:self didReceiveAuthenticationError:v4];
+  errorCopy = error;
+  delegate = [(MSStreamsProtocol *)self delegate];
+  [delegate deleteProtocol:self didReceiveAuthenticationError:errorCopy];
 }
 
-- (void)_coreProtocolDidFinishResponse:(id)a3 error:(id)a4
+- (void)_coreProtocolDidFinishResponse:(id)response error:(id)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  responseCopy = response;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v40 = objc_opt_class();
       v41 = v40;
-      v42 = [(MSStreamsProtocol *)self personID];
+      personID = [(MSStreamsProtocol *)self personID];
       *buf = 138543874;
       v67 = v40;
       v68 = 2112;
-      v69 = v42;
+      v69 = personID;
       v70 = 2114;
-      v71 = v7;
+      v71 = errorCopy;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Delete request has failed. Error: %{public}@", buf, 0x20u);
     }
 
@@ -73,26 +73,26 @@
     }
 
     [(MSDeleteStreamsProtocol *)self _resetConnectionVariables];
-    v14 = [(MSStreamsProtocol *)self delegate];
-    [v14 deleteProtocol:self didFinishSuccessfulCollections:0 failedCollections:v8 error:v7];
+    delegate = [(MSStreamsProtocol *)self delegate];
+    [delegate deleteProtocol:self didFinishSuccessfulCollections:0 failedCollections:v8 error:errorCopy];
   }
 
   else
   {
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSMutableArray count](self->_collectionsInFlight, "count")}];
-    v47 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v48 = v6;
-    v15 = v6;
+    v48 = responseCopy;
+    v15 = responseCopy;
     v16 = [v15 countByEnumeratingWithState:&v55 objects:v64 count:16];
     if (v16)
     {
       v17 = v16;
       v18 = *v56;
-      v50 = self;
+      selfCopy = self;
       v49 = v15;
       do
       {
@@ -121,16 +121,16 @@
               {
                 v30 = objc_opt_class();
                 v31 = v30;
-                v32 = [(MSStreamsProtocol *)self personID];
+                personID2 = [(MSStreamsProtocol *)self personID];
                 *buf = 138543874;
                 v67 = v30;
                 v68 = 2112;
-                v69 = v32;
+                v69 = personID2;
                 v70 = 2114;
                 v71 = v21;
                 _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@ - %@ Delete response contains unknown file hash %{public}@", buf, 0x20u);
 
-                self = v50;
+                self = selfCopy;
                 v15 = v49;
               }
             }
@@ -139,17 +139,17 @@
             {
               v27 = objc_opt_class();
               v28 = v27;
-              v29 = [(MSStreamsProtocol *)self personID];
+              personID3 = [(MSStreamsProtocol *)self personID];
               *buf = 138543874;
               v67 = v27;
               v15 = v49;
               v68 = 2112;
-              v69 = v29;
+              v69 = personID3;
               v70 = 2114;
               v71 = v20;
               _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Delete response is missing the delete result. %{public}@", buf, 0x20u);
 
-              self = v50;
+              self = selfCopy;
             }
           }
 
@@ -157,17 +157,17 @@
           {
             v24 = objc_opt_class();
             v25 = v24;
-            v26 = [(MSStreamsProtocol *)self personID];
+            personID4 = [(MSStreamsProtocol *)self personID];
             *buf = 138543874;
             v67 = v24;
             v15 = v49;
             v68 = 2112;
-            v69 = v26;
+            v69 = personID4;
             v70 = 2114;
             v71 = v20;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ Delete response is missing a hash: %{public}@", buf, 0x20u);
 
-            self = v50;
+            self = selfCopy;
           }
         }
 
@@ -177,20 +177,20 @@
       while (v17);
     }
 
-    v14 = v47;
-    v7 = 0;
+    delegate = array;
+    errorCopy = 0;
     if ([(NSMutableArray *)self->_collectionsInFlight count])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v43 = objc_opt_class();
         v44 = v43;
-        v45 = [(MSStreamsProtocol *)self personID];
+        personID5 = [(MSStreamsProtocol *)self personID];
         collectionsInFlight = self->_collectionsInFlight;
         *buf = 138543874;
         v67 = v43;
         v68 = 2112;
-        v69 = v45;
+        v69 = personID5;
         v70 = 2114;
         v71 = collectionsInFlight;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - %@ These asset collections did not receive a delete response: %{public}@", buf, 0x20u);
@@ -215,7 +215,7 @@
               objc_enumerationMutation(v33);
             }
 
-            [v47 addObject:*(*(&v51 + 1) + 8 * k)];
+            [array addObject:*(*(&v51 + 1) + 8 * k)];
           }
 
           v35 = [(NSMutableArray *)v33 countByEnumeratingWithState:&v51 objects:v63 count:16];
@@ -226,30 +226,30 @@
     }
 
     [(MSDeleteStreamsProtocol *)self _resetConnectionVariables];
-    v38 = [(MSStreamsProtocol *)self delegate];
-    [v38 deleteProtocol:self didFinishSuccessfulCollections:v8 failedCollections:v47 error:0];
+    delegate2 = [(MSStreamsProtocol *)self delegate];
+    [delegate2 deleteProtocol:self didFinishSuccessfulCollections:v8 failedCollections:array error:0];
 
-    v6 = v48;
+    responseCopy = v48;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDeletionRequestForAssetCollections:(id)a3
+- (void)sendDeletionRequestForAssetCollections:(id)collections
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  collectionsCopy = collections;
+  if ([collectionsCopy count])
   {
-    v5 = self;
+    selfCopy = self;
     [(NSMutableArray *)self->_collectionsInFlight removeAllObjects];
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v4;
-    obj = v4;
+    v20 = collectionsCopy;
+    obj = collectionsCopy;
     v7 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (!v7)
     {
@@ -269,14 +269,14 @@
         }
 
         v11 = *(*(&v22 + 1) + 8 * v10);
-        v12 = [MEMORY[0x277CBEB38] dictionary];
-        v13 = [v11 masterAssetHash];
-        if (v13)
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        masterAssetHash = [v11 masterAssetHash];
+        if (masterAssetHash)
         {
-          [(NSMutableArray *)v5->_collectionsInFlight addObject:v11];
-          [v12 setObject:v13 forKey:@"fileHash"];
-          v14 = [MEMORY[0x277CCACA8] MSMakeUUID];
-          [v12 setObject:v14 forKey:@"UUID"];
+          [(NSMutableArray *)selfCopy->_collectionsInFlight addObject:v11];
+          [dictionary setObject:masterAssetHash forKey:@"fileHash"];
+          mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+          [dictionary setObject:mSMakeUUID forKey:@"UUID"];
 LABEL_9:
 
           goto LABEL_11;
@@ -289,13 +289,13 @@ LABEL_9:
           v27 = v15;
           v28 = 2112;
           v29 = v11;
-          v14 = v15;
+          mSMakeUUID = v15;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@ - Asset collection has no master file hash: %@", buf, 0x16u);
           goto LABEL_9;
         }
 
 LABEL_11:
-        [v6 addObject:v12];
+        [v6 addObject:dictionary];
 
         ++v10;
       }
@@ -307,12 +307,12 @@ LABEL_11:
       {
 LABEL_15:
 
-        [(MSStreamsProtocol *)v5 _refreshAuthTokenForContext:&v5->_context];
-        v17 = [(MSStreamsProtocol *)v5 deleteURL];
+        [(MSStreamsProtocol *)selfCopy _refreshAuthTokenForContext:&selfCopy->_context];
+        deleteURL = [(MSStreamsProtocol *)selfCopy deleteURL];
         v18 = MSPURLConnectionProperties();
-        MSDSPCSendDeletionRequestAsync(&v5->_context._super.owner, v17, v18, v6);
+        MSDSPCSendDeletionRequestAsync(&selfCopy->_context._super.owner, deleteURL, v18, v6);
 
-        v4 = v20;
+        collectionsCopy = v20;
         break;
       }
     }
@@ -321,17 +321,17 @@ LABEL_15:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (MSDeleteStreamsProtocol)initWithPersonID:(id)a3 baseURL:(id)a4
+- (MSDeleteStreamsProtocol)initWithPersonID:(id)d baseURL:(id)l
 {
-  v6 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = MSDeleteStreamsProtocol;
-  v7 = [(MSStreamsProtocol *)&v12 initWithPersonID:v6 baseURL:a4];
+  v7 = [(MSStreamsProtocol *)&v12 initWithPersonID:dCopy baseURL:l];
   v8 = v7;
   if (v7)
   {
     v7->_context._super.owner = v7;
-    v7->_context._super.personID = v6;
+    v7->_context._super.personID = dCopy;
     v8->_context._super.deviceInfo = [(MSStreamsProtocol *)v8 deviceInfoDict];
     v8->_context._super.connectionTimeout = 0.0;
     v8->_context.finishedCallback = _protocolDidFinish_3362;

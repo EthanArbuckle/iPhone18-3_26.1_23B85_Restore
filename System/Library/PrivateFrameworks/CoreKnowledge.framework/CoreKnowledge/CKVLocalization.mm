@@ -1,31 +1,31 @@
 @interface CKVLocalization
 + (id)defaultLocalization;
-+ (id)supportedLanguageCodeFromLocale:(id)a3;
-+ (id)supportedNSLocaleFromLanguageCode:(id)a3;
-+ (int64_t)supportedLocaleFromLanguageCode:(id)a3;
-- (BOOL)_locateMorphunAssetForLocale:(id)a3 outAssetPath:(id *)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLocalization:(id)a3;
++ (id)supportedLanguageCodeFromLocale:(id)locale;
++ (id)supportedNSLocaleFromLanguageCode:(id)code;
++ (int64_t)supportedLocaleFromLanguageCode:(id)code;
+- (BOOL)_locateMorphunAssetForLocale:(id)locale outAssetPath:(id *)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLocalization:(id)localization;
 - (CKVLocalization)init;
-- (CKVLocalization)initWithCoder:(id)a3;
-- (CKVLocalization)initWithSiriLanguageCode:(id)a3;
+- (CKVLocalization)initWithCoder:(id)coder;
+- (CKVLocalization)initWithSiriLanguageCode:(id)code;
 - (id)allLanguageCodes;
 - (id)dictationLanguageCodes;
 - (id)siriLanguageCode;
-- (int64_t)locateMorphunAssetForSiriLanguage:(id *)a3 error:(id *)a4;
+- (int64_t)locateMorphunAssetForSiriLanguage:(id *)language error:(id *)error;
 - (void)refresh;
 @end
 
 @implementation CKVLocalization
 
-- (BOOL)_locateMorphunAssetForLocale:(id)a3 outAssetPath:(id *)a4 error:(id *)a5
+- (BOOL)_locateMorphunAssetForLocale:(id)locale outAssetPath:(id *)path error:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![MEMORY[0x1E69B2870] isLocaleEmbedded:v7])
+  localeCopy = locale;
+  if (![MEMORY[0x1E69B2870] isLocaleEmbedded:localeCopy])
   {
     v51 = 0;
-    v10 = [MEMORY[0x1E69B2870] getAssetPathForLocale:v7 withError:&v51];
+    v10 = [MEMORY[0x1E69B2870] getAssetPathForLocale:localeCopy withError:&v51];
     v11 = v51;
     v12 = v11;
     if (v10)
@@ -34,22 +34,22 @@
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
       {
         v39 = v13;
-        v40 = [v7 localeIdentifier];
+        localeIdentifier = [localeCopy localeIdentifier];
         *buf = 136315650;
         v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
         v56 = 2112;
-        v57 = v40;
+        v57 = localeIdentifier;
         v58 = 2112;
         v59 = v10;
         _os_log_debug_impl(&dword_1C8683000, v39, OS_LOG_TYPE_DEBUG, "%s Resolved asset path for locale (%@) %@", buf, 0x20u);
 
-        if (!a4)
+        if (!path)
         {
           goto LABEL_13;
         }
       }
 
-      else if (!a4)
+      else if (!path)
       {
 LABEL_13:
         v9 = 1;
@@ -61,7 +61,7 @@ LABEL_15:
       }
 
       v14 = v10;
-      *a4 = v10;
+      *path = v10;
       goto LABEL_13;
     }
 
@@ -71,11 +71,11 @@ LABEL_15:
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
       {
         v42 = v15;
-        v43 = [v7 localeIdentifier];
+        localeIdentifier2 = [localeCopy localeIdentifier];
         *buf = 136315394;
         v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
         v56 = 2112;
-        v57 = v43;
+        v57 = localeIdentifier2;
         _os_log_debug_impl(&dword_1C8683000, v42, OS_LOG_TYPE_DEBUG, "%s Locale: %@ is unsupported by MorphunAssets - proceeding without asset path", buf, 0x16u);
       }
 
@@ -90,26 +90,26 @@ LABEL_15:
       v19 = MEMORY[0x1E696ABC0];
       v52 = *MEMORY[0x1E696A578];
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [v7 localeIdentifier];
-      v22 = [v20 stringWithFormat:@"Previous attempt to request Morphun asset failed for locale: %@ attempts: %u", v21, self->_assetRequestCount];
+      localeIdentifier3 = [localeCopy localeIdentifier];
+      v22 = [v20 stringWithFormat:@"Previous attempt to request Morphun asset failed for locale: %@ attempts: %u", localeIdentifier3, self->_assetRequestCount];
       v53 = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
       v24 = [v19 errorWithDomain:@"com.apple.siri.vocabulary.localization" code:2 userInfo:v23];
       KVSetAndReportError();
 
-      LODWORD(v21) = self->_assetRequestCount;
+      LODWORD(localeIdentifier3) = self->_assetRequestCount;
       v25 = CKLogContextVocabulary;
       v26 = os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO);
-      if (v21 == 2)
+      if (localeIdentifier3 == 2)
       {
         if (v26)
         {
           v27 = v25;
-          v28 = [v7 localeIdentifier];
+          localeIdentifier4 = [localeCopy localeIdentifier];
           *buf = 136315394;
           v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
           v56 = 2112;
-          v57 = v28;
+          v57 = localeIdentifier4;
           _os_log_impl(&dword_1C8683000, v27, OS_LOG_TYPE_INFO, "%s Issuing a non-blocking MorphunAssets download request for locale: %@", buf, 0x16u);
         }
 
@@ -118,18 +118,18 @@ LABEL_15:
         v48[1] = 3221225472;
         v48[2] = __67__CKVLocalization__locateMorphunAssetForLocale_outAssetPath_error___block_invoke;
         v48[3] = &unk_1E831E4B8;
-        v49 = v7;
+        v49 = localeCopy;
         [v29 onDemandDownloadForLocale:v49 withProgress:0 withCompletion:v48];
       }
 
       else if (v26)
       {
         v37 = v25;
-        v38 = [v7 localeIdentifier];
+        localeIdentifier5 = [localeCopy localeIdentifier];
         *buf = 136315394;
         v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
         v56 = 2112;
-        v57 = v38;
+        v57 = localeIdentifier5;
         _os_log_impl(&dword_1C8683000, v37, OS_LOG_TYPE_INFO, "%s MorphunAssets download attempts exhausted for locale: %@", buf, 0x16u);
       }
 
@@ -143,17 +143,17 @@ LABEL_15:
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
     {
       v32 = v31;
-      v33 = [v7 localeIdentifier];
+      localeIdentifier6 = [localeCopy localeIdentifier];
       *buf = 136315650;
       v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
       v56 = 2112;
-      v57 = v33;
+      v57 = localeIdentifier6;
       v58 = 1024;
       LODWORD(v59) = 60;
       _os_log_impl(&dword_1C8683000, v32, OS_LOG_TYPE_INFO, "%s Issuing a blocking MorphunAssets download request for locale: %@ with timeout of %d s", buf, 0x1Cu);
     }
 
-    v16 = [MEMORY[0x1E69B2870] blockingOnDemandDownloadForLocale:v7 withTimeout:v30 withProgress:0];
+    v16 = [MEMORY[0x1E69B2870] blockingOnDemandDownloadForLocale:localeCopy withTimeout:v30 withProgress:0];
 
     if (v16)
     {
@@ -168,11 +168,11 @@ LABEL_26:
       }
 
       v45 = v34;
-      v46 = [v7 localeIdentifier];
+      localeIdentifier7 = [localeCopy localeIdentifier];
       *buf = 136315650;
       v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
       v56 = 2112;
-      v57 = v46;
+      v57 = localeIdentifier7;
       v58 = 2112;
       v59 = v16;
       v47 = "%s MorphunAssets download request failed for locale: %@ error: %@";
@@ -181,14 +181,14 @@ LABEL_26:
     else
     {
       v50 = 0;
-      v10 = [MEMORY[0x1E69B2870] getAssetPathForLocale:v7 withError:&v50];
+      v10 = [MEMORY[0x1E69B2870] getAssetPathForLocale:localeCopy withError:&v50];
       v16 = v50;
       if (v10)
       {
-        if (a4)
+        if (path)
         {
           v41 = v10;
-          *a4 = v10;
+          *path = v10;
         }
 
         v9 = 1;
@@ -202,11 +202,11 @@ LABEL_26:
       }
 
       v45 = v44;
-      v46 = [v7 localeIdentifier];
+      localeIdentifier7 = [localeCopy localeIdentifier];
       *buf = 136315650;
       v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
       v56 = 2112;
-      v57 = v46;
+      v57 = localeIdentifier7;
       v58 = 2112;
       v59 = v16;
       v47 = "%s Failed to get asset path for locale: %@ after download. error: %@";
@@ -221,11 +221,11 @@ LABEL_26:
   if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
   {
     v35 = v8;
-    v36 = [v7 localeIdentifier];
+    localeIdentifier8 = [localeCopy localeIdentifier];
     *buf = 136315394;
     v55 = "[CKVLocalization _locateMorphunAssetForLocale:outAssetPath:error:]";
     v56 = 2112;
-    v57 = v36;
+    v57 = localeIdentifier8;
     _os_log_debug_impl(&dword_1C8683000, v35, OS_LOG_TYPE_DEBUG, "%s Locale %@ is embedded.", buf, 0x16u);
   }
 
@@ -262,7 +262,7 @@ void __67__CKVLocalization__locateMorphunAssetForLocale_outAssetPath_error___blo
   }
 }
 
-- (int64_t)locateMorphunAssetForSiriLanguage:(id *)a3 error:(id *)a4
+- (int64_t)locateMorphunAssetForSiriLanguage:(id *)language error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -282,12 +282,12 @@ void __67__CKVLocalization__locateMorphunAssetForLocale_outAssetPath_error___blo
   v8[4] = self;
   v8[5] = &v9;
   v8[6] = &v15;
-  v8[7] = a4;
+  v8[7] = error;
   dispatch_sync(queue, v8);
   v6 = v16[3];
-  if (a3 && v6)
+  if (language && v6)
   {
-    *a3 = v10[5];
+    *language = v10[5];
     v6 = v16[3];
   }
 
@@ -352,13 +352,13 @@ LABEL_6:
 - (id)allLanguageCodes
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(CKVLocalization *)self dictationLanguageCodes];
-  v5 = [v3 setWithSet:v4];
+  dictationLanguageCodes = [(CKVLocalization *)self dictationLanguageCodes];
+  v5 = [v3 setWithSet:dictationLanguageCodes];
 
-  v6 = [(CKVLocalization *)self siriLanguageCode];
-  if (v6)
+  siriLanguageCode = [(CKVLocalization *)self siriLanguageCode];
+  if (siriLanguageCode)
   {
-    [v5 addObject:v6];
+    [v5 addObject:siriLanguageCode];
   }
 
   return v5;
@@ -484,50 +484,50 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isEqualToLocalization:(id)a3
+- (BOOL)isEqualToLocalization:(id)localization
 {
-  v4 = a3;
-  v5 = [(CKVLocalization *)self siriLanguageCode];
-  v6 = [v4 siriLanguageCode];
+  localizationCopy = localization;
+  siriLanguageCode = [(CKVLocalization *)self siriLanguageCode];
+  siriLanguageCode2 = [localizationCopy siriLanguageCode];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(localizationCopy) = [siriLanguageCode isEqual:siriLanguageCode2];
+  return localizationCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVLocalization *)self isEqualToLocalization:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CKVLocalization *)self isEqualToLocalization:v5];
   }
 
   return v6;
 }
 
-- (CKVLocalization)initWithCoder:(id)a3
+- (CKVLocalization)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"l"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"l"];
 
   if (v5)
   {
     self = [(CKVLocalization *)self initWithSiriLanguageCode:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (CKVLocalization)init
@@ -536,15 +536,15 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
   objc_exception_throw(v2);
 }
 
-- (CKVLocalization)initWithSiriLanguageCode:(id)a3
+- (CKVLocalization)initWithSiriLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v13.receiver = self;
   v13.super_class = CKVLocalization;
   v5 = [(CKVLocalization *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     siriLanguageCode = v5->_siriLanguageCode;
     v5->_siriLanguageCode = v6;
 
@@ -562,7 +562,7 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)supportedLanguageCodeFromLocale:(id)a3
++ (id)supportedLanguageCodeFromLocale:(id)locale
 {
   if (KVLocaleTypeFromNSLocale())
   {
@@ -578,11 +578,11 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (int64_t)supportedLocaleFromLanguageCode:(id)a3
++ (int64_t)supportedLocaleFromLanguageCode:(id)code
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  codeCopy = code;
+  v4 = [codeCopy stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   v5 = KVLocaleTypeFromName();
 
   if (!v5)
@@ -593,7 +593,7 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
       v8 = 136315394;
       v9 = "+[CKVLocalization supportedLocaleFromLanguageCode:]";
       v10 = 2112;
-      v11 = v3;
+      v11 = codeCopy;
       _os_log_error_impl(&dword_1C8683000, v6, OS_LOG_TYPE_ERROR, "%s Unsupported language code (%@)", &v8, 0x16u);
     }
   }
@@ -601,10 +601,10 @@ void __41__CKVLocalization_dictationLanguageCodes__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)supportedNSLocaleFromLanguageCode:(id)a3
++ (id)supportedNSLocaleFromLanguageCode:(id)code
 {
-  v3 = a3;
-  v4 = [objc_opt_class() supportedLocaleFromLanguageCode:v3];
+  codeCopy = code;
+  v4 = [objc_opt_class() supportedLocaleFromLanguageCode:codeCopy];
 
   return MEMORY[0x1EEE185F0](v4);
 }

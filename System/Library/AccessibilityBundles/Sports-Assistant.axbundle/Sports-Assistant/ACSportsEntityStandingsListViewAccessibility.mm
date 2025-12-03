@@ -1,15 +1,15 @@
 @interface ACSportsEntityStandingsListViewAccessibility
 - (id)accessibilityElements;
-- (void)configureDomainObjectView:(id)a3 withDomainObject:(id)a4 beforeDomainObject:(id)a5 afterDomainObject:(id)a6 league:(id)a7 index:(unint64_t)a8;
+- (void)configureDomainObjectView:(id)view withDomainObject:(id)object beforeDomainObject:(id)domainObject afterDomainObject:(id)afterDomainObject league:(id)league index:(unint64_t)index;
 @end
 
 @implementation ACSportsEntityStandingsListViewAccessibility
 
-- (void)configureDomainObjectView:(id)a3 withDomainObject:(id)a4 beforeDomainObject:(id)a5 afterDomainObject:(id)a6 league:(id)a7 index:(unint64_t)a8
+- (void)configureDomainObjectView:(id)view withDomainObject:(id)object beforeDomainObject:(id)domainObject afterDomainObject:(id)afterDomainObject league:(id)league index:(unint64_t)index
 {
   v9.receiver = self;
   v9.super_class = ACSportsEntityStandingsListViewAccessibility;
-  [(ACSportsEntityStandingsListViewAccessibility *)&v9 configureDomainObjectView:a3 withDomainObject:a4 beforeDomainObject:a5 afterDomainObject:a6 league:a7 index:a8];
+  [(ACSportsEntityStandingsListViewAccessibility *)&v9 configureDomainObjectView:view withDomainObject:object beforeDomainObject:domainObject afterDomainObject:afterDomainObject league:league index:index];
   [(ACSportsEntityStandingsListViewAccessibility *)self _accessibilityRemoveValueForKey:@"AXStandingsElements"];
 }
 
@@ -18,7 +18,7 @@
   v3 = [(ACSportsEntityStandingsListViewAccessibility *)self _accessibilityValueForKey:@"AXStandingsElements"];
   if (!v3)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v5 = [(ACSportsEntityStandingsListViewAccessibility *)self safeValueForKey:@"snippetColumns"];
     v6 = [(ACSportsEntityStandingsListViewAccessibility *)self safeValueForKey:@"domainObjectViews"];
     v10 = MEMORY[0x29EDCA5F8];
@@ -26,7 +26,7 @@
     v12 = __69__ACSportsEntityStandingsListViewAccessibility_accessibilityElements__block_invoke;
     v13 = &unk_29F2FA7C8;
     v14 = v5;
-    v7 = v4;
+    v7 = array;
     v15 = v7;
     v8 = v5;
     [v6 enumerateObjectsWithOptions:2 usingBlock:&v10];

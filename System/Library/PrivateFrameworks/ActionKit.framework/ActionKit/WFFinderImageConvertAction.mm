@@ -1,34 +1,34 @@
 @interface WFFinderImageConvertAction
 - (id)contextualAction;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFFinderImageConvertAction
 
 - (id)contextualAction
 {
-  v3 = [(WFFinderImageConvertAction *)self runningDelegate];
+  runningDelegate = [(WFFinderImageConvertAction *)self runningDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFFinderImageConvertAction *)self runningDelegate];
-    v6 = [v5 currentRunningContextForAction:self];
+    runningDelegate2 = [(WFFinderImageConvertAction *)self runningDelegate];
+    v6 = [runningDelegate2 currentRunningContextForAction:self];
 
-    v7 = [v6 contextualAction];
+    contextualAction = [v6 contextualAction];
   }
 
   else
   {
-    v7 = 0;
+    contextualAction = 0;
   }
 
-  return v7;
+  return contextualAction;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = [(WFFinderImageConvertAction *)self parameterValueForKey:@"WFFileFormat" ofClass:objc_opt_class()];
   v6 = [(WFFinderImageConvertAction *)self parameterValueForKey:@"WFSize" ofClass:objc_opt_class()];
   v7 = [(WFFinderImageConvertAction *)self parameterValueForKey:@"WFPreserveMetadata" ofClass:objc_opt_class()];
@@ -41,13 +41,13 @@
   v15[2] = __57__WFFinderImageConvertAction_runAsynchronouslyWithInput___block_invoke;
   v15[3] = &unk_278C21E70;
   v15[4] = self;
-  v12 = [v10 resizeImages:v4 toSize:v11 completion:v15];
+  v12 = [v10 resizeImages:inputCopy toSize:v11 completion:v15];
 
-  v13 = [(WFFinderImageConvertAction *)self progress];
-  [v13 setTotalUnitCount:1];
+  progress = [(WFFinderImageConvertAction *)self progress];
+  [progress setTotalUnitCount:1];
 
-  v14 = [(WFFinderImageConvertAction *)self progress];
-  [v14 addChild:v12 withPendingUnitCount:1];
+  progress2 = [(WFFinderImageConvertAction *)self progress];
+  [progress2 addChild:v12 withPendingUnitCount:1];
 }
 
 void __57__WFFinderImageConvertAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, uint64_t a2, void *a3)

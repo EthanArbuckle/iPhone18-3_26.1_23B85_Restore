@@ -1,13 +1,13 @@
 @interface PlayLiveServiceIntent
-- (PlayLiveServiceIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (PlayLiveServiceIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (PlayLiveServiceIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (PlayLiveServiceIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation PlayLiveServiceIntent
 
-- (PlayLiveServiceIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (PlayLiveServiceIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_269854A94();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return PlayLiveServiceIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return PlayLiveServiceIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (PlayLiveServiceIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (PlayLiveServiceIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_269854A94();
   sub_269854A94();
-  if (a5)
+  if (name)
   {
     sub_2698549E4();
   }

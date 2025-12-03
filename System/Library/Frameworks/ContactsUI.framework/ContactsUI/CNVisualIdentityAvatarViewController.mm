@@ -2,34 +2,34 @@
 + (id)descriptorForRequiredKeys;
 + (id)log;
 - (BOOL)shouldDisplayPrimaryAvatarImage;
-- (CGRect)avatarFrameForFocusedAvatarInView:(id)a3;
-- (CGSize)estimatedSizeThatFits:(CGSize)a3;
+- (CGRect)avatarFrameForFocusedAvatarInView:(id)view;
+- (CGSize)estimatedSizeThatFits:(CGSize)fits;
 - (CGSize)previousSize;
 - (CGSize)primaryAvatarSize;
-- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)a3 primaryAvatarProvider:(id)a4 avatarImageRendererSettings:(id)a5;
-- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)a3 primaryAvatarProvider:(id)a4 avatarImageRendererSettings:(id)a5 avatarLayoutType:(unint64_t)a6;
+- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)identity primaryAvatarProvider:(id)provider avatarImageRendererSettings:(id)settings;
+- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)identity primaryAvatarProvider:(id)provider avatarImageRendererSettings:(id)settings avatarLayoutType:(unint64_t)type;
 - (UIImage)badgeImage;
 - (id)containingCellView;
 - (id)layerForPrimaryAvatar;
 - (id)primaryAvatarLayer;
 - (int64_t)itemCount;
 - (void)beginDropAppearance;
-- (void)contactDidChange:(id)a3;
+- (void)contactDidChange:(id)change;
 - (void)createPrimaryAvatarLayerIfNeeded;
 - (void)dealloc;
 - (void)endDropAppearance;
-- (void)layoutAvatarsWithIdentifiers:(id)a3 shouldAnimateRemoval:(BOOL)a4;
+- (void)layoutAvatarsWithIdentifiers:(id)identifiers shouldAnimateRemoval:(BOOL)removal;
 - (void)layoutPrimaryAvatar;
 - (void)loadView;
 - (void)logSublayersContent;
 - (void)removeAllSublayers;
 - (void)removeBadgeTapGestureRecognizer;
-- (void)setBadgeImage:(id)a3;
-- (void)setBadgeStyleSettings:(id)a3;
-- (void)setBadgeTarget:(id)a3 action:(SEL)a4;
-- (void)setBadgeViewImage:(id)a3;
-- (void)setIsPerformingTransition:(BOOL)a3;
-- (void)setMediaContextBadge:(id)a3;
+- (void)setBadgeImage:(id)image;
+- (void)setBadgeStyleSettings:(id)settings;
+- (void)setBadgeTarget:(id)target action:(SEL)action;
+- (void)setBadgeViewImage:(id)image;
+- (void)setIsPerformingTransition:(BOOL)transition;
+- (void)setMediaContextBadge:(id)badge;
 - (void)updateAvatarSublayersAndAddToView;
 - (void)updateBadgeCropStyle;
 - (void)updateBadgeImageViewBackgroundColor;
@@ -39,15 +39,15 @@
 - (void)updateBadgeTintColor;
 - (void)updateBadgeViewFrame;
 - (void)updateContactChangesNotifierRegistration;
-- (void)updateImageForLayerItem:(id)a3 atIndex:(int64_t)a4 includePlaceholder:(BOOL)a5 animated:(BOOL)a6;
+- (void)updateImageForLayerItem:(id)item atIndex:(int64_t)index includePlaceholder:(BOOL)placeholder animated:(BOOL)animated;
 - (void)updateImageForPrimaryAvatar;
 - (void)updateMediaContextBadgeFrame;
 - (void)updateMediaContextBadgeImage;
 - (void)updatePrimaryAvatar;
-- (void)updateViewForContact:(id)a3;
+- (void)updateViewForContact:(id)contact;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)visualIdentityDidUpdate:(id)a3 shouldAnimateRemoval:(BOOL)a4;
+- (void)visualIdentityDidUpdate:(id)update shouldAnimateRemoval:(BOOL)removal;
 @end
 
 @implementation CNVisualIdentityAvatarViewController
@@ -63,28 +63,28 @@
 
 - (id)primaryAvatarLayer
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-  v4 = [v3 layer];
+  avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+  layer = [avatarLayerItem layer];
 
   if (![(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage])
   {
-    v5 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v6 = [v5 avatarLayerItems];
-    v7 = [v6 firstObject];
-    v8 = [v7 layer];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    avatarLayerItems = [avatarLayoutManager avatarLayerItems];
+    firstObject = [avatarLayerItems firstObject];
+    layer2 = [firstObject layer];
 
-    v4 = v8;
+    layer = layer2;
   }
 
-  return v4;
+  return layer;
 }
 
-- (CGSize)estimatedSizeThatFits:(CGSize)a3
+- (CGSize)estimatedSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-  if (v6 <= 0)
+  height = fits.height;
+  width = fits.width;
+  itemCount = [(CNVisualIdentityAvatarViewController *)self itemCount];
+  if (itemCount <= 0)
   {
     v13 = *MEMORY[0x1E695F060];
     v14 = *(MEMORY[0x1E695F060] + 8);
@@ -92,18 +92,18 @@
 
   else
   {
-    v7 = v6;
-    v8 = [(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage];
-    v9 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v10 = v9;
-    if (v8)
+    v7 = itemCount;
+    shouldDisplayPrimaryAvatarImage = [(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    v10 = avatarLayoutManager;
+    if (shouldDisplayPrimaryAvatarImage)
     {
-      [v9 avatarFrameInBounds:v7 forItemCount:{0.0, 0.0, width, height}];
+      [avatarLayoutManager avatarFrameInBounds:v7 forItemCount:{0.0, 0.0, width, height}];
     }
 
     else
     {
-      [v9 adHocAvatarFrameInBounds:v7 forItemCount:{0.0, 0.0, width, height}];
+      [avatarLayoutManager adHocAvatarFrameInBounds:v7 forItemCount:{0.0, 0.0, width, height}];
     }
 
     v13 = v11;
@@ -119,8 +119,8 @@
 
 - (CGSize)primaryAvatarSize
 {
-  v2 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-  [v2 frame];
+  avatarAlternativeImageView = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+  [avatarAlternativeImageView frame];
   v4 = v3;
   v6 = v5;
 
@@ -131,11 +131,11 @@
   return result;
 }
 
-- (CGRect)avatarFrameForFocusedAvatarInView:(id)a3
+- (CGRect)avatarFrameForFocusedAvatarInView:(id)view
 {
-  v4 = a3;
-  v5 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  [v5 avatarFrameForFocusedAvatarInView:v4];
+  viewCopy = view;
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  [avatarLayoutManager avatarFrameForFocusedAvatarInView:viewCopy];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -152,29 +152,29 @@
   return result;
 }
 
-- (void)visualIdentityDidUpdate:(id)a3 shouldAnimateRemoval:(BOOL)a4
+- (void)visualIdentityDidUpdate:(id)update shouldAnimateRemoval:(BOOL)removal
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v7 = [v6 layoutType];
+  removalCopy = removal;
+  updateCopy = update;
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  layoutType = [avatarLayoutManager layoutType];
 
-  [(CNVisualIdentityAvatarViewController *)self setVisualIdentity:v12];
-  if (v7 == 3)
+  [(CNVisualIdentityAvatarViewController *)self setVisualIdentity:updateCopy];
+  if (layoutType == 3)
   {
-    v8 = [v12 contacts];
-    v9 = [v8 _cn_map:*MEMORY[0x1E695C408]];
-    [(CNVisualIdentityAvatarViewController *)self layoutAvatarsWithIdentifiers:v9 shouldAnimateRemoval:v4];
+    contacts = [updateCopy contacts];
+    v9 = [contacts _cn_map:*MEMORY[0x1E695C408]];
+    [(CNVisualIdentityAvatarViewController *)self layoutAvatarsWithIdentifiers:v9 shouldAnimateRemoval:removalCopy];
   }
 
   else
   {
-    v10 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+    primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-    if (v10)
+    if (primaryAvatarProvider)
     {
-      v11 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-      [v11 updatePrimaryAvatarForVisualIdentity:v12];
+      primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+      [primaryAvatarProvider2 updatePrimaryAvatarForVisualIdentity:updateCopy];
     }
 
     [(CNVisualIdentityAvatarViewController *)self layoutAvatars];
@@ -189,28 +189,28 @@
       [(CNVisualIdentityAvatarViewController *)self updateBadgeViewFrame];
     }
 
-    v8 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-    [v8 setImage:0];
+    contacts = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+    [contacts setImage:0];
   }
 }
 
 - (BOOL)shouldDisplayPrimaryAvatarImage
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+  primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-  if (v3)
+  if (primaryAvatarProvider)
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-    v5 = [v4 primaryAvatarShouldDisplay];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+    primaryAvatarShouldDisplay = [primaryAvatarProvider2 primaryAvatarShouldDisplay];
   }
 
   else
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    v5 = [v4 hasImageDataAvailable];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    primaryAvatarShouldDisplay = [primaryAvatarProvider2 hasImageDataAvailable];
   }
 
-  v6 = v5;
+  v6 = primaryAvatarShouldDisplay;
 
   return v6;
 }
@@ -237,51 +237,51 @@
 
 - (id)layerForPrimaryAvatar
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+  primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-  if (v3)
+  if (primaryAvatarProvider)
   {
-    v4 = 0;
+    layer = 0;
   }
 
   else
   {
     [(CNVisualIdentityAvatarViewController *)self createPrimaryAvatarLayerIfNeeded];
-    v5 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-    v4 = [v5 layer];
+    avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+    layer = [avatarLayerItem layer];
   }
 
-  return v4;
+  return layer;
 }
 
 - (int64_t)itemCount
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v4 = [v3 maxAvatarCount];
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  maxAvatarCount = [avatarLayoutManager maxAvatarCount];
 
-  v5 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-  v6 = [v5 contacts];
-  v7 = [v6 count];
+  visualIdentity = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+  contacts = [visualIdentity contacts];
+  v7 = [contacts count];
 
-  if (v4 >= v7)
+  if (maxAvatarCount >= v7)
   {
     return v7;
   }
 
   else
   {
-    return v4;
+    return maxAvatarCount;
   }
 }
 
-- (void)updateImageForLayerItem:(id)a3 atIndex:(int64_t)a4 includePlaceholder:(BOOL)a5 animated:(BOOL)a6
+- (void)updateImageForLayerItem:(id)item atIndex:(int64_t)index includePlaceholder:(BOOL)placeholder animated:(BOOL)animated
 {
-  v7 = a5;
+  placeholderCopy = placeholder;
   v56 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-  v12 = [v11 contacts];
-  v13 = [v12 objectAtIndexedSubscript:a4];
+  itemCopy = item;
+  visualIdentity = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+  contacts = [visualIdentity contacts];
+  v13 = [contacts objectAtIndexedSubscript:index];
 
   v46 = 0;
   v47 = &v46;
@@ -289,11 +289,11 @@
   v49 = __Block_byref_object_copy__16484;
   v50 = __Block_byref_object_dispose__16485;
   v51 = 0;
-  v14 = [v10 layer];
-  [v14 size];
+  layer = [itemCopy layer];
+  [layer size];
   v16 = v15;
-  v17 = [v10 layer];
-  [v17 size];
+  layer2 = [itemCopy layer];
+  [layer2 size];
   v19 = v18;
 
   v20 = v16;
@@ -305,12 +305,12 @@
     v33 = [objc_opt_class() log];
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
-      v34 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-      v35 = [(CNVisualIdentityAvatarViewController *)self containingCellView];
+      itemCount = [(CNVisualIdentityAvatarViewController *)self itemCount];
+      containingCellView = [(CNVisualIdentityAvatarViewController *)self containingCellView];
       *buf = 134218242;
-      v53 = v34;
+      v53 = itemCount;
       v54 = 2114;
-      v55 = v35;
+      v55 = containingCellView;
       _os_log_impl(&dword_199A75000, v33, OS_LOG_TYPE_INFO, "Skipping image update for layer with size zero, itemCount: %lu, containingCell:%{public}@", buf, 0x16u);
     }
 
@@ -329,13 +329,13 @@
     }
 
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v10);
-    v27 = [v13 identifier];
-    [v10 setIdentifier:v27];
+    objc_initWeak(&location, itemCopy);
+    identifier = [v13 identifier];
+    [itemCopy setIdentifier:identifier];
 
-    v28 = [(CNVisualIdentityAvatarViewController *)self avatarProvider];
-    v29 = [(CNVisualIdentityAvatarViewController *)self traitCollection];
-    v30 = [v29 userInterfaceStyle];
+    avatarProvider = [(CNVisualIdentityAvatarViewController *)self avatarProvider];
+    traitCollection = [(CNVisualIdentityAvatarViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v36 = MEMORY[0x1E69E9820];
     v37 = 3221225472;
     v38 = __100__CNVisualIdentityAvatarViewController_updateImageForLayerItem_atIndex_includePlaceholder_animated___block_invoke;
@@ -344,12 +344,12 @@
     objc_copyWeak(&v43, &location);
     v41 = &v46;
     v40 = v13;
-    v44 = a6;
-    v31 = [v28 avatarImageForContact:v40 withSize:v7 includePlaceholder:v30 userInterfaceStyle:&v36 imageHandler:{v21, v23}];
-    [v10 setAvatarImageRendererToken:{v31, v36, v37, v38, v39}];
+    animatedCopy = animated;
+    v31 = [avatarProvider avatarImageForContact:v40 withSize:placeholderCopy includePlaceholder:userInterfaceStyle userInterfaceStyle:&v36 imageHandler:{v21, v23}];
+    [itemCopy setAvatarImageRendererToken:{v31, v36, v37, v38, v39}];
 
-    v32 = [v10 avatarImageRendererToken];
-    objc_storeWeak(v47 + 5, v32);
+    avatarImageRendererToken = [itemCopy avatarImageRendererToken];
+    objc_storeWeak(v47 + 5, avatarImageRendererToken);
 
     objc_destroyWeak(&v43);
     objc_destroyWeak(&v42);
@@ -473,64 +473,64 @@ LABEL_18:
 
 - (void)layoutPrimaryAvatar
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+  primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-  v23 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v4 = [(CNVisualIdentityAvatarViewController *)self contentView];
-  [v23 avatarFrameForFocusedAvatarInView:v4];
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+  [avatarLayoutManager avatarFrameForFocusedAvatarInView:contentView];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v3)
+  if (primaryAvatarProvider)
   {
-    v13 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-    v14 = [v13 viewForPrimaryAvatar];
-    [v14 setFrame:{v6, v8, v10, v12}];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+    viewForPrimaryAvatar = [primaryAvatarProvider2 viewForPrimaryAvatar];
+    [viewForPrimaryAvatar setFrame:{v6, v8, v10, v12}];
   }
 
   else
   {
-    v15 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-    v16 = [v15 layer];
-    [v16 setFrame:{v6, v8, v10, v12}];
+    avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+    layer = [avatarLayerItem layer];
+    [layer setFrame:{v6, v8, v10, v12}];
 
     v17 = MEMORY[0x1E69DC728];
-    v23 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-    v4 = [v23 layer];
-    [v4 frame];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+    contentView = [avatarLayoutManager layer];
+    [contentView frame];
     v19 = v18;
-    v13 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-    v14 = [v13 layer];
-    [v14 frame];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+    viewForPrimaryAvatar = [primaryAvatarProvider2 layer];
+    [viewForPrimaryAvatar frame];
     v20 = [v17 bezierPathWithOvalInRect:{0.0, 0.0, v19}];
-    v21 = [v20 CGPath];
-    v22 = [(CNVisualIdentityAvatarViewController *)self avatarClippingLayer];
-    [v22 setPath:v21];
+    cGPath = [v20 CGPath];
+    avatarClippingLayer = [(CNVisualIdentityAvatarViewController *)self avatarClippingLayer];
+    [avatarClippingLayer setPath:cGPath];
   }
 }
 
 - (void)updateImageForPrimaryAvatar
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+  primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-  if (!v3 && ![(CNVisualIdentityAvatarViewController *)self usingDropAppearance])
+  if (!primaryAvatarProvider && ![(CNVisualIdentityAvatarViewController *)self usingDropAppearance])
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-    v5 = [v4 layer];
+    avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+    layer = [avatarLayerItem layer];
 
-    v6 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    v7 = [(CNVisualIdentityAvatarViewController *)self renderingQueue];
+    visualIdentity = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    renderingQueue = [(CNVisualIdentityAvatarViewController *)self renderingQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __67__CNVisualIdentityAvatarViewController_updateImageForPrimaryAvatar__block_invoke;
     v10[3] = &unk_1E74E6EE8;
-    v11 = v6;
-    v12 = self;
-    v13 = v5;
-    v8 = v5;
-    v9 = v6;
-    [v7 performBlock:v10];
+    v11 = visualIdentity;
+    selfCopy = self;
+    v13 = layer;
+    v8 = layer;
+    v9 = visualIdentity;
+    [renderingQueue performBlock:v10];
   }
 }
 
@@ -609,13 +609,13 @@ LABEL_9:
 
 - (void)createPrimaryAvatarLayerIfNeeded
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+  avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
 
-  if (!v3)
+  if (!avatarLayerItem)
   {
     v8 = objc_alloc_init(MEMORY[0x1E6979398]);
-    v4 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    [v8 setZPosition:{(objc_msgSend(v4, "maxAvatarCount") + 1)}];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    [v8 setZPosition:{(objc_msgSend(avatarLayoutManager, "maxAvatarCount") + 1)}];
 
     [v8 setContentsGravity:*MEMORY[0x1E6979DF0]];
     v5 = [objc_alloc(MEMORY[0x1E6996AA8]) initWithLayer:v8];
@@ -624,8 +624,8 @@ LABEL_9:
     v6 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [(CNVisualIdentityAvatarViewController *)self setAvatarClippingLayer:v6];
 
-    v7 = [(CNVisualIdentityAvatarViewController *)self avatarClippingLayer];
-    [v8 setMask:v7];
+    avatarClippingLayer = [(CNVisualIdentityAvatarViewController *)self avatarClippingLayer];
+    [v8 setMask:avatarClippingLayer];
   }
 }
 
@@ -636,37 +636,37 @@ LABEL_9:
     return;
   }
 
-  v3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+  primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-  if (v3)
+  if (primaryAvatarProvider)
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-    v5 = [v4 viewForPrimaryAvatar];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+    viewForPrimaryAvatar = [primaryAvatarProvider2 viewForPrimaryAvatar];
 
-    v6 = [v5 superview];
-    v7 = [(CNVisualIdentityAvatarViewController *)self view];
+    superview = [viewForPrimaryAvatar superview];
+    view = [(CNVisualIdentityAvatarViewController *)self view];
 
-    if (v6 != v7)
+    if (superview != view)
     {
-      v8 = [(CNVisualIdentityAvatarViewController *)self view];
-      v9 = [(CNVisualIdentityAvatarViewController *)self contentView];
-      [v8 insertSubview:v5 belowSubview:v9];
+      view2 = [(CNVisualIdentityAvatarViewController *)self view];
+      contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+      [view2 insertSubview:viewForPrimaryAvatar belowSubview:contentView];
 LABEL_7:
     }
   }
 
   else
   {
-    v5 = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
-    v10 = [v5 superlayer];
-    v11 = [(CNVisualIdentityAvatarViewController *)self view];
-    v12 = [v11 layer];
+    viewForPrimaryAvatar = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
+    superlayer = [viewForPrimaryAvatar superlayer];
+    view3 = [(CNVisualIdentityAvatarViewController *)self view];
+    layer = [view3 layer];
 
-    if (v10 != v12)
+    if (superlayer != layer)
     {
-      v8 = [(CNVisualIdentityAvatarViewController *)self contentView];
-      v9 = [v8 layer];
-      [v9 addSublayer:v5];
+      view2 = [(CNVisualIdentityAvatarViewController *)self contentView];
+      contentView = [view2 layer];
+      [contentView addSublayer:viewForPrimaryAvatar];
       goto LABEL_7;
     }
   }
@@ -678,62 +678,62 @@ LABEL_7:
 
 - (void)updateAvatarSublayersAndAddToView
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v4 = [v3 avatarLayerItems];
-  v5 = [v4 count];
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  avatarLayerItems = [avatarLayoutManager avatarLayerItems];
+  v5 = [avatarLayerItems count];
 
-  v6 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v7 = [v6 avatarLayerItems];
-  v8 = [v7 count];
+  avatarLayoutManager2 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  avatarLayerItems2 = [avatarLayoutManager2 avatarLayerItems];
+  v8 = [avatarLayerItems2 count];
 
   if (v8)
   {
     v9 = 0;
     do
     {
-      v10 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v11 = [v10 avatarLayerItems];
-      v12 = [v11 objectAtIndexedSubscript:v9];
+      avatarLayoutManager3 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems3 = [avatarLayoutManager3 avatarLayerItems];
+      v12 = [avatarLayerItems3 objectAtIndexedSubscript:v9];
 
-      v13 = [v12 layer];
-      v14 = [v13 superlayer];
+      layer = [v12 layer];
+      superlayer = [layer superlayer];
 
-      if (!v14)
+      if (!superlayer)
       {
-        v15 = [(CNVisualIdentityAvatarViewController *)self contentView];
-        v16 = [v15 layer];
-        v17 = [v12 layer];
-        [v16 addSublayer:v17];
+        contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+        layer2 = [contentView layer];
+        layer3 = [v12 layer];
+        [layer2 addSublayer:layer3];
       }
 
-      [(CNVisualIdentityAvatarViewController *)self updateImageForLayerItem:v12 atIndex:v9 includePlaceholder:v5 == 1 animated:v14 == 0];
+      [(CNVisualIdentityAvatarViewController *)self updateImageForLayerItem:v12 atIndex:v9 includePlaceholder:v5 == 1 animated:superlayer == 0];
 
       ++v9;
-      v18 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v19 = [v18 avatarLayerItems];
-      v20 = [v19 count];
+      avatarLayoutManager4 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems4 = [avatarLayoutManager4 avatarLayerItems];
+      v20 = [avatarLayerItems4 count];
     }
 
     while (v9 < v20);
   }
 }
 
-- (void)layoutAvatarsWithIdentifiers:(id)a3 shouldAnimateRemoval:(BOOL)a4
+- (void)layoutAvatarsWithIdentifiers:(id)identifiers shouldAnimateRemoval:(BOOL)removal
 {
-  v4 = a4;
+  removalCopy = removal;
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   if ([(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage]|| [(CNVisualIdentityAvatarViewController *)self usingDropAppearance])
   {
     v7 = [objc_opt_class() log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-      v9 = [(CNVisualIdentityAvatarViewController *)self containingCellView];
+      itemCount = [(CNVisualIdentityAvatarViewController *)self itemCount];
+      containingCellView = [(CNVisualIdentityAvatarViewController *)self containingCellView];
       v61 = 134218242;
-      v62 = v8;
+      v62 = itemCount;
       v63 = 2114;
-      v64 = v9;
+      v64 = containingCellView;
       _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_INFO, "Laying out avatars with primary avatar image, itemCount: %lu, containingCell:%{public}@", &v61, 0x16u);
     }
 
@@ -745,15 +745,15 @@ LABEL_7:
 
     else
     {
-      v10 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v11 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-      v12 = [(CNVisualIdentityAvatarViewController *)self contentView];
-      [v10 updateAvatarLayersWithPrimaryAvatarForItemCount:v11 inView:v12];
+      avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      itemCount2 = [(CNVisualIdentityAvatarViewController *)self itemCount];
+      contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+      [avatarLayoutManager updateAvatarLayersWithPrimaryAvatarForItemCount:itemCount2 inView:contentView];
 
       [(CNVisualIdentityAvatarViewController *)self updateAvatarSublayersAndAddToView];
       [(CNVisualIdentityAvatarViewController *)self updatePrimaryAvatar];
-      v13 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-      [v13 layoutPrimaryAvatar];
+      primaryAvatarProvider = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+      [primaryAvatarProvider layoutPrimaryAvatar];
     }
   }
 
@@ -762,73 +762,73 @@ LABEL_7:
     v14 = [objc_opt_class() log];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-      v16 = [(CNVisualIdentityAvatarViewController *)self containingCellView];
+      itemCount3 = [(CNVisualIdentityAvatarViewController *)self itemCount];
+      containingCellView2 = [(CNVisualIdentityAvatarViewController *)self containingCellView];
       v61 = 134218242;
-      v62 = v15;
+      v62 = itemCount3;
       v63 = 2114;
-      v64 = v16;
+      v64 = containingCellView2;
       _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_INFO, "Laying out avatars with no primary avatar image, itemCount: %lu, containingCell:%{public}@", &v61, 0x16u);
     }
 
-    v17 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+    primaryAvatarProvider2 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
 
-    if (v17)
+    if (primaryAvatarProvider2)
     {
-      v18 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
-      v19 = [v18 viewForPrimaryAvatar];
-      [v19 removeFromSuperview];
+      primaryAvatarProvider3 = [(CNVisualIdentityAvatarViewController *)self primaryAvatarProvider];
+      viewForPrimaryAvatar = [primaryAvatarProvider3 viewForPrimaryAvatar];
+      [viewForPrimaryAvatar removeFromSuperview];
     }
 
     else
     {
-      v20 = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
-      [v20 removeFromSuperlayer];
+      layerForPrimaryAvatar = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
+      [layerForPrimaryAvatar removeFromSuperlayer];
 
-      v18 = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
-      [v18 setContents:0];
+      primaryAvatarProvider3 = [(CNVisualIdentityAvatarViewController *)self layerForPrimaryAvatar];
+      [primaryAvatarProvider3 setContents:0];
     }
 
-    v21 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v22 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-    v23 = [(CNVisualIdentityAvatarViewController *)self contentView];
-    [v21 updateAvatarLayersForItemCount:v22 inView:v23 identifiers:v6 shouldAnimateRemoval:v4];
+    avatarLayoutManager2 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    itemCount4 = [(CNVisualIdentityAvatarViewController *)self itemCount];
+    contentView2 = [(CNVisualIdentityAvatarViewController *)self contentView];
+    [avatarLayoutManager2 updateAvatarLayersForItemCount:itemCount4 inView:contentView2 identifiers:identifiersCopy shouldAnimateRemoval:removalCopy];
 
     [(CNVisualIdentityAvatarViewController *)self updateAvatarSublayersAndAddToView];
   }
 
-  v24 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-  v25 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-  v26 = v25;
-  if (v24 == 1)
+  itemCount5 = [(CNVisualIdentityAvatarViewController *)self itemCount];
+  avatarAlternativeImageView = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+  avatarAlternativeImageView6 = avatarAlternativeImageView;
+  if (itemCount5 == 1)
   {
 
-    if (!v26)
+    if (!avatarAlternativeImageView6)
     {
       v27 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
       [(CNVisualIdentityAvatarViewController *)self setAvatarAlternativeImageView:v27];
 
-      v28 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-      [v28 setContentMode:2];
+      avatarAlternativeImageView2 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+      [avatarAlternativeImageView2 setContentMode:2];
 
       v29 = objc_alloc_init(MEMORY[0x1E69794A0]);
       [(CNVisualIdentityAvatarViewController *)self setAvatarAlternativeImageViewClippingLayer:v29];
 
-      v30 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageViewClippingLayer];
-      v31 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-      v32 = [v31 layer];
-      [v32 setMask:v30];
+      avatarAlternativeImageViewClippingLayer = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageViewClippingLayer];
+      avatarAlternativeImageView3 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+      layer = [avatarAlternativeImageView3 layer];
+      [layer setMask:avatarAlternativeImageViewClippingLayer];
     }
 
-    v33 = [(CNVisualIdentityAvatarViewController *)self contentView];
-    v34 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-    [v33 addSubview:v34];
+    contentView3 = [(CNVisualIdentityAvatarViewController *)self contentView];
+    avatarAlternativeImageView4 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+    [contentView3 addSubview:avatarAlternativeImageView4];
 
     if ([(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage])
     {
-      v35 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-      v36 = [v35 layer];
-      [v36 frame];
+      avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+      layer2 = [avatarLayerItem layer];
+      [layer2 frame];
       v38 = v37;
       v40 = v39;
       v42 = v41;
@@ -837,47 +837,47 @@ LABEL_7:
 
     else
     {
-      v35 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v36 = [v35 avatarLayerItems];
-      v45 = [v36 firstObject];
-      v46 = [v45 layer];
-      [v46 frame];
+      avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      layer2 = [avatarLayerItem avatarLayerItems];
+      firstObject = [layer2 firstObject];
+      layer3 = [firstObject layer];
+      [layer3 frame];
       v38 = v47;
       v40 = v48;
       v42 = v49;
       v44 = v50;
     }
 
-    v51 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-    [v51 setFrame:{v38, v40, v42, v44}];
+    avatarAlternativeImageView5 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+    [avatarAlternativeImageView5 setFrame:{v38, v40, v42, v44}];
 
     v52 = MEMORY[0x1E69DC728];
-    v26 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-    v53 = [v26 layer];
-    [v53 frame];
+    avatarAlternativeImageView6 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+    layer4 = [avatarAlternativeImageView6 layer];
+    [layer4 frame];
     v55 = v54;
-    v56 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
-    v57 = [v56 layer];
-    [v57 frame];
+    avatarAlternativeImageView7 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageView];
+    layer5 = [avatarAlternativeImageView7 layer];
+    [layer5 frame];
     v58 = [v52 bezierPathWithOvalInRect:{0.0, 0.0, v55}];
-    v59 = [v58 CGPath];
-    v60 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageViewClippingLayer];
-    [v60 setPath:v59];
+    cGPath = [v58 CGPath];
+    avatarAlternativeImageViewClippingLayer2 = [(CNVisualIdentityAvatarViewController *)self avatarAlternativeImageViewClippingLayer];
+    [avatarAlternativeImageViewClippingLayer2 setPath:cGPath];
   }
 
   else
   {
-    [v25 removeFromSuperview];
+    [avatarAlternativeImageView removeFromSuperview];
   }
 }
 
 - (void)logSublayersContent
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(CNVisualIdentityAvatarViewController *)self contentView];
-  v3 = [v2 layer];
-  v4 = [v3 sublayers];
-  v5 = [v4 _cn_map:&__block_literal_global_42];
+  contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+  layer = [contentView layer];
+  sublayers = [layer sublayers];
+  v5 = [sublayers _cn_map:&__block_literal_global_42];
 
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -903,8 +903,8 @@ id __59__CNVisualIdentityAvatarViewController_logSublayersContent__block_invoke(
 
 - (id)containingCellView
 {
-  v2 = [(CNVisualIdentityAvatarViewController *)self view];
-  if (v2)
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  if (view)
   {
     do
     {
@@ -920,48 +920,48 @@ id __59__CNVisualIdentityAvatarViewController_logSublayersContent__block_invoke(
         break;
       }
 
-      v3 = [v2 superview];
+      superview = [view superview];
 
-      v2 = v3;
+      view = superview;
     }
 
-    while (v3);
+    while (superview);
   }
 
-  return v2;
+  return view;
 }
 
-- (void)updateViewForContact:(id)a3
+- (void)updateViewForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   [(CNVisualIdentityAvatarViewController *)self setPendingViewUpdate:0];
   if ([(CNVisualIdentityAvatarViewController *)self itemCount]== 1)
   {
-    v5 = [v4 imageData];
-    v6 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    [v6 setImageData:v5];
+    imageData = [contactCopy imageData];
+    visualIdentity = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    [visualIdentity setImageData:imageData];
 
-    [v4 cropRect];
+    [contactCopy cropRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    [v15 setCropRect:{v8, v10, v12, v14}];
+    visualIdentity2 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    [visualIdentity2 setCropRect:{v8, v10, v12, v14}];
 
-    v16 = [v4 thumbnailImageData];
-    v17 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    [v17 setThumbnailImageData:v16];
+    thumbnailImageData = [contactCopy thumbnailImageData];
+    visualIdentity3 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    [visualIdentity3 setThumbnailImageData:thumbnailImageData];
 
-    v18 = [v4 fullscreenImageData];
-    v19 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    [v19 setFullscreenImageData:v18];
+    fullscreenImageData = [contactCopy fullscreenImageData];
+    visualIdentity4 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    [visualIdentity4 setFullscreenImageData:fullscreenImageData];
 
     if ([(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage])
     {
-      v20 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v21 = [v20 avatarLayerItems];
-      v22 = [v21 count];
+      avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems = [avatarLayoutManager avatarLayerItems];
+      v22 = [avatarLayerItems count];
 
       if (v22 == 1)
       {
@@ -981,45 +981,45 @@ id __59__CNVisualIdentityAvatarViewController_logSublayersContent__block_invoke(
 
   else
   {
-    v24 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v25 = [v24 avatarLayerItems];
-    v26 = [v25 count];
+    avatarLayoutManager2 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    avatarLayerItems2 = [avatarLayoutManager2 avatarLayerItems];
+    v26 = [avatarLayerItems2 count];
 
     if (!v26)
     {
       goto LABEL_13;
     }
 
-    v27 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-    v28 = [v27 contacts];
+    visualIdentity5 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+    contacts = [visualIdentity5 contacts];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __61__CNVisualIdentityAvatarViewController_updateViewForContact___block_invoke;
     v38[3] = &unk_1E74E7880;
-    v39 = v4;
-    v23 = [v28 _cn_indexOfFirstObjectPassingTest:v38];
+    v39 = contactCopy;
+    v23 = [contacts _cn_indexOfFirstObjectPassingTest:v38];
   }
 
-  v29 = [(CNVisualIdentityAvatarViewController *)self view];
-  v30 = [v29 window];
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  window = [view window];
 
-  if (v30)
+  if (window)
   {
     if (v23 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v31 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v32 = [v31 avatarLayerItems];
-      v33 = [v32 count];
+      avatarLayoutManager3 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems3 = [avatarLayoutManager3 avatarLayerItems];
+      v33 = [avatarLayerItems3 count];
 
       if (v23 < v33)
       {
-        v34 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-        v35 = [v34 avatarLayerItems];
-        v36 = [v35 objectAtIndexedSubscript:v23];
+        avatarLayoutManager4 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+        avatarLayerItems4 = [avatarLayoutManager4 avatarLayerItems];
+        v36 = [avatarLayerItems4 objectAtIndexedSubscript:v23];
 
         [(CNVisualIdentityAvatarViewController *)self updateImageForLayerItem:v36 atIndex:v23 includePlaceholder:0 animated:0];
-        v37 = [(CNVisualIdentityAvatarViewController *)self view];
-        [v37 setNeedsLayout];
+        view2 = [(CNVisualIdentityAvatarViewController *)self view];
+        [view2 setNeedsLayout];
       }
     }
   }
@@ -1038,9 +1038,9 @@ uint64_t __61__CNVisualIdentityAvatarViewController_updateViewForContact___block
   return v6;
 }
 
-- (void)contactDidChange:(id)a3
+- (void)contactDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ([(CNVisualIdentityAvatarViewController *)self isPerformingTransition])
   {
     objc_initWeak(&location, self);
@@ -1049,7 +1049,7 @@ uint64_t __61__CNVisualIdentityAvatarViewController_updateViewForContact___block
     v5[2] = __57__CNVisualIdentityAvatarViewController_contactDidChange___block_invoke;
     v5[3] = &unk_1E74E6D30;
     objc_copyWeak(&v7, &location);
-    v6 = v4;
+    v6 = changeCopy;
     [(CNVisualIdentityAvatarViewController *)self setPendingViewUpdate:v5];
 
     objc_destroyWeak(&v7);
@@ -1058,7 +1058,7 @@ uint64_t __61__CNVisualIdentityAvatarViewController_updateViewForContact___block
 
   else
   {
-    [(CNVisualIdentityAvatarViewController *)self updateViewForContact:v4];
+    [(CNVisualIdentityAvatarViewController *)self updateViewForContact:changeCopy];
   }
 }
 
@@ -1070,14 +1070,14 @@ void __57__CNVisualIdentityAvatarViewController_contactDidChange___block_invoke(
 
 - (void)updateContactChangesNotifierRegistration
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
-  v4 = [v3 contacts];
+  visualIdentity = [(CNVisualIdentityAvatarViewController *)self visualIdentity];
+  contacts = [visualIdentity contacts];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegistration__block_invoke;
   v5[3] = &unk_1E74E6AD0;
   v5[4] = self;
-  [v4 _cn_each:v5];
+  [contacts _cn_each:v5];
 }
 
 void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegistration__block_invoke(uint64_t a1, void *a2)
@@ -1095,19 +1095,19 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   [v5 registerObserver:v6 forContact:v3 keysToFetch:v9];
 }
 
-- (void)setIsPerformingTransition:(BOOL)a3
+- (void)setIsPerformingTransition:(BOOL)transition
 {
-  if (self->_isPerformingTransition != a3)
+  if (self->_isPerformingTransition != transition)
   {
-    self->_isPerformingTransition = a3;
-    if (!a3)
+    self->_isPerformingTransition = transition;
+    if (!transition)
     {
-      v4 = [(CNVisualIdentityAvatarViewController *)self pendingViewUpdate];
+      pendingViewUpdate = [(CNVisualIdentityAvatarViewController *)self pendingViewUpdate];
 
-      if (v4)
+      if (pendingViewUpdate)
       {
-        v5 = [(CNVisualIdentityAvatarViewController *)self pendingViewUpdate];
-        v5[2]();
+        pendingViewUpdate2 = [(CNVisualIdentityAvatarViewController *)self pendingViewUpdate];
+        pendingViewUpdate2[2]();
       }
     }
   }
@@ -1115,16 +1115,16 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 
 - (void)updateMediaContextBadgeFrame
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+  mediaContextBadgeView = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
 
-  if (v3)
+  if (mediaContextBadgeView)
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self contentView];
-    v5 = [v4 effectiveUserInterfaceLayoutDirection];
+    contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+    effectiveUserInterfaceLayoutDirection = [contentView effectiveUserInterfaceLayoutDirection];
 
-    v6 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v7 = [(CNVisualIdentityAvatarViewController *)self contentView];
-    [v6 avatarFrameForFocusedAvatarInView:v7];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    contentView2 = [(CNVisualIdentityAvatarViewController *)self contentView];
+    [avatarLayoutManager avatarFrameForFocusedAvatarInView:contentView2];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -1132,78 +1132,78 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 
     if (![(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage])
     {
-      v16 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v17 = [(CNVisualIdentityAvatarViewController *)self contentView];
-      [v16 adHocAvatarFrameInView:v17 forItemCount:{-[CNVisualIdentityAvatarViewController itemCount](self, "itemCount")}];
+      avatarLayoutManager2 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      contentView3 = [(CNVisualIdentityAvatarViewController *)self contentView];
+      [avatarLayoutManager2 adHocAvatarFrameInView:contentView3 forItemCount:{-[CNVisualIdentityAvatarViewController itemCount](self, "itemCount")}];
       v9 = v18;
       v13 = v19;
 
-      if (v5 != 1)
+      if (effectiveUserInterfaceLayoutDirection != 1)
       {
         v9 = v9 + v13 * 0.15;
       }
     }
 
     v20 = MEMORY[0x1E6996AB0];
-    v30 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
-    [v20 avatarBadgeRectForAvatarInRect:objc_msgSend(v30 badgeType:"badgeType") isRTL:{v5 == 1, v9, v11, v13, v15}];
+    mediaContextBadge = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
+    [v20 avatarBadgeRectForAvatarInRect:objc_msgSend(mediaContextBadge badgeType:"badgeType") isRTL:{effectiveUserInterfaceLayoutDirection == 1, v9, v11, v13, v15}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    v29 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-    [v29 setFrame:{v22, v24, v26, v28}];
+    mediaContextBadgeView2 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+    [mediaContextBadgeView2 setFrame:{v22, v24, v26, v28}];
   }
 }
 
 - (void)updateMediaContextBadgeImage
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
-  v4 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  [v4 setMediaContextBadge:v3];
+  mediaContextBadge = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  [avatarLayoutManager setMediaContextBadge:mediaContextBadge];
 
-  v5 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
+  mediaContextBadge2 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
 
-  v6 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-  v7 = v6;
-  if (v5)
+  mediaContextBadgeView = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+  avatarProvider = mediaContextBadgeView;
+  if (mediaContextBadge2)
   {
 
-    if (!v7)
+    if (!avatarProvider)
     {
       v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
       v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
       [(CNVisualIdentityAvatarViewController *)self setMediaContextBadgeView:v9];
 
-      v10 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+      badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
 
-      v11 = [(CNVisualIdentityAvatarViewController *)self view];
-      v12 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-      if (v10)
+      view = [(CNVisualIdentityAvatarViewController *)self view];
+      mediaContextBadgeView2 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+      if (badgeImageView)
       {
-        v13 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-        [v11 insertSubview:v12 belowSubview:v13];
+        badgeImageView2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+        [view insertSubview:mediaContextBadgeView2 belowSubview:badgeImageView2];
       }
 
       else
       {
-        [v11 addSubview:v12];
+        [view addSubview:mediaContextBadgeView2];
       }
     }
 
     [(CNVisualIdentityAvatarViewController *)self updateMediaContextBadgeFrame];
-    v7 = [(CNVisualIdentityAvatarViewController *)self avatarProvider];
-    v14 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
-    v15 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-    [v15 bounds];
-    v18 = [v7 imageForAvatarAccessoryView:v14 withSize:{v16, v17}];
-    v19 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-    [v19 setImage:v18];
+    avatarProvider = [(CNVisualIdentityAvatarViewController *)self avatarProvider];
+    mediaContextBadge3 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
+    mediaContextBadgeView3 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+    [mediaContextBadgeView3 bounds];
+    v18 = [avatarProvider imageForAvatarAccessoryView:mediaContextBadge3 withSize:{v16, v17}];
+    mediaContextBadgeView4 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+    [mediaContextBadgeView4 setImage:v18];
   }
 
   else
   {
-    [v6 setImage:0];
+    [mediaContextBadgeView setImage:0];
   }
 
   [(CNVisualIdentityAvatarViewController *)self layoutAvatars];
@@ -1211,106 +1211,106 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   [(CNVisualIdentityAvatarViewController *)self updateBadgeViewFrame];
 }
 
-- (void)setMediaContextBadge:(id)a3
+- (void)setMediaContextBadge:(id)badge
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_mediaContextBadge] & 1) == 0)
+  badgeCopy = badge;
+  if (([badgeCopy isEqual:self->_mediaContextBadge] & 1) == 0)
   {
-    objc_storeStrong(&self->_mediaContextBadge, a3);
+    objc_storeStrong(&self->_mediaContextBadge, badge);
     [(CNVisualIdentityAvatarViewController *)self updateMediaContextBadgeImage];
   }
 }
 
 - (UIImage)badgeImage
 {
-  v2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  v3 = [v2 image];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  image = [badgeImageView image];
 
-  return v3;
+  return image;
 }
 
 - (void)updateBadgeViewFrame
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self view];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection] == 1;
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  v4 = [view effectiveUserInterfaceLayoutDirection] == 1;
 
   v5 = MEMORY[0x1E6996AB0];
-  v6 = [(CNVisualIdentityAvatarViewController *)self view];
-  [(CNVisualIdentityAvatarViewController *)self avatarFrameForFocusedAvatarInView:v6];
+  view2 = [(CNVisualIdentityAvatarViewController *)self view];
+  [(CNVisualIdentityAvatarViewController *)self avatarFrameForFocusedAvatarInView:view2];
   [v5 avatarBadgeRectForAvatarInRect:1 badgeType:v4 isRTL:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView setFrame:{v8, v10, v12, v14}];
 
   [(CNVisualIdentityAvatarViewController *)self updateBadgeImageViewPosition];
 }
 
 - (void)removeBadgeTapGestureRecognizer
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  v4 = [(CNVisualIdentityAvatarViewController *)self badgeTapGestureRecognizer];
-  [v3 removeGestureRecognizer:v4];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  badgeTapGestureRecognizer = [(CNVisualIdentityAvatarViewController *)self badgeTapGestureRecognizer];
+  [badgeImageView removeGestureRecognizer:badgeTapGestureRecognizer];
 
   [(CNVisualIdentityAvatarViewController *)self setBadgeTapGestureRecognizer:0];
 }
 
-- (void)setBadgeTarget:(id)a3 action:(SEL)a4
+- (void)setBadgeTarget:(id)target action:(SEL)action
 {
   v6 = MEMORY[0x1E69DD060];
-  v7 = a3;
-  v10 = [[v6 alloc] initWithTarget:v7 action:a4];
+  targetCopy = target;
+  v10 = [[v6 alloc] initWithTarget:targetCopy action:action];
 
-  v8 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v8 addGestureRecognizer:v10];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView addGestureRecognizer:v10];
 
-  v9 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v9 setUserInteractionEnabled:1];
+  badgeImageView2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView2 setUserInteractionEnabled:1];
 
   [(CNVisualIdentityAvatarViewController *)self setBadgeTapGestureRecognizer:v10];
 }
 
-- (void)setBadgeViewImage:(id)a3
+- (void)setBadgeViewImage:(id)image
 {
-  v4 = a3;
-  v5 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  imageCopy = image;
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
 
-  if (!v5)
+  if (!badgeImageView)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(CNVisualIdentityAvatarViewController *)self setBadgeImageView:v6];
 
-    v7 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-    [v7 setClipsToBounds:1];
+    badgeImageView2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+    [badgeImageView2 setClipsToBounds:1];
   }
 
-  v8 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+  mediaContextBadgeView = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
 
-  v9 = [(CNVisualIdentityAvatarViewController *)self view];
-  v10 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  if (v8)
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  badgeImageView3 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  if (mediaContextBadgeView)
   {
-    v11 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-    [v9 insertSubview:v10 aboveSubview:v11];
+    mediaContextBadgeView2 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+    [view insertSubview:badgeImageView3 aboveSubview:mediaContextBadgeView2];
   }
 
   else
   {
-    [v9 addSubview:v10];
+    [view addSubview:badgeImageView3];
   }
 
-  v12 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v12 setImage:v4];
+  badgeImageView4 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView4 setImage:imageCopy];
 
   [(CNVisualIdentityAvatarViewController *)self updateBadgeViewFrame];
 }
 
-- (void)setBadgeImage:(id)a3
+- (void)setBadgeImage:(id)image
 {
-  if (a3)
+  if (image)
   {
     [(CNVisualIdentityAvatarViewController *)self setBadgeViewImage:?];
 
@@ -1319,51 +1319,51 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 
   else
   {
-    v4 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-    [v4 setImage:0];
+    badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+    [badgeImageView setImage:0];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v5 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-    [v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    badgeImageView2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+    [badgeImageView2 setBackgroundColor:clearColor];
   }
 }
 
 - (void)updateBadgeImageViewPosition
 {
-  v4 = [(CNVisualIdentityAvatarViewController *)self view];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  LOBYTE(v4) = [(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage];
-  v6 = [(CNVisualIdentityAvatarViewController *)self view];
-  [(CNVisualIdentityAvatarViewController *)self avatarFrameForFocusedAvatarInView:v6];
+  LOBYTE(view) = [(CNVisualIdentityAvatarViewController *)self shouldDisplayPrimaryAvatarImage];
+  view2 = [(CNVisualIdentityAvatarViewController *)self view];
+  [(CNVisualIdentityAvatarViewController *)self avatarFrameForFocusedAvatarInView:view2];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  if ((v4 & 1) == 0 && [(CNVisualIdentityAvatarViewController *)self itemCount]>= 2)
+  if ((view & 1) == 0 && [(CNVisualIdentityAvatarViewController *)self itemCount]>= 2)
   {
-    v15 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-    v16 = [(CNVisualIdentityAvatarViewController *)self contentView];
-    [v15 adHocAvatarFrameInView:v16 forItemCount:{-[CNVisualIdentityAvatarViewController itemCount](self, "itemCount")}];
+    avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+    contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+    [avatarLayoutManager adHocAvatarFrameInView:contentView forItemCount:{-[CNVisualIdentityAvatarViewController itemCount](self, "itemCount")}];
     v8 = v17;
     v12 = v18;
   }
 
   v19 = MEMORY[0x1E6996AB0];
-  v44 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v44 frame];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView frame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
-  v29 = [v28 cnuiBadgePosition];
-  v30 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
-  if (v30)
+  badgeStyleSettings = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
+  cnuiBadgePosition = [badgeStyleSettings cnuiBadgePosition];
+  mediaContextBadge = [(CNVisualIdentityAvatarViewController *)self mediaContextBadge];
+  if (mediaContextBadge)
   {
-    v2 = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
-    [v2 frame];
+    mediaContextBadgeView = [(CNVisualIdentityAvatarViewController *)self mediaContextBadgeView];
+    [mediaContextBadgeView frame];
   }
 
   else
@@ -1374,62 +1374,62 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
     v34 = *(MEMORY[0x1E695F058] + 24);
   }
 
-  [v19 frameForBadgeWithFrame:v29 onAvatarFrame:v5 == 1 withPosition:v21 mediaContextFrame:v23 isRTL:{v25, v27, v8, v10, v12, v14, v31, v32, v33, v34}];
+  [v19 frameForBadgeWithFrame:cnuiBadgePosition onAvatarFrame:effectiveUserInterfaceLayoutDirection == 1 withPosition:v21 mediaContextFrame:v23 isRTL:{v25, v27, v8, v10, v12, v14, v31, v32, v33, v34}];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
-  v43 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v43 setFrame:{v36, v38, v40, v42}];
+  badgeImageView2 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView2 setFrame:{v36, v38, v40, v42}];
 
-  if (v30)
+  if (mediaContextBadge)
   {
   }
 }
 
 - (void)updateBadgeImageViewContentMode
 {
-  v5 = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
-  v3 = [v5 contentMode];
-  v4 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v4 setContentMode:v3];
+  badgeStyleSettings = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
+  contentMode = [badgeStyleSettings contentMode];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView setContentMode:contentMode];
 }
 
 - (void)updateBadgeImageViewBackgroundColor
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self badgeImage];
+  badgeImage = [(CNVisualIdentityAvatarViewController *)self badgeImage];
 
-  if (v3)
+  if (badgeImage)
   {
-    v6 = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
-    v4 = [v6 backgroundColor];
-    v5 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-    [v5 setBackgroundColor:v4];
+    badgeStyleSettings = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
+    backgroundColor = [badgeStyleSettings backgroundColor];
+    badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+    [badgeImageView setBackgroundColor:backgroundColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v4 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-    [v4 setBackgroundColor:v6];
+    badgeStyleSettings = [MEMORY[0x1E69DC888] clearColor];
+    backgroundColor = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+    [backgroundColor setBackgroundColor:badgeStyleSettings];
   }
 }
 
 - (void)updateBadgeCropStyle
 {
   v3 = MEMORY[0x1E6996AB0];
-  v6 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  v4 = [v6 layer];
-  v5 = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
-  [v3 cropAvatarBadgeLayer:v4 withCropStyle:{objc_msgSend(v5, "cropStyle")}];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  layer = [badgeImageView layer];
+  badgeStyleSettings = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
+  [v3 cropAvatarBadgeLayer:layer withCropStyle:{objc_msgSend(badgeStyleSettings, "cropStyle")}];
 }
 
 - (void)updateBadgeTintColor
 {
-  v5 = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
-  v3 = [v5 color];
-  v4 = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
-  [v4 setTintColor:v3];
+  badgeStyleSettings = [(CNVisualIdentityAvatarViewController *)self badgeStyleSettings];
+  color = [badgeStyleSettings color];
+  badgeImageView = [(CNVisualIdentityAvatarViewController *)self badgeImageView];
+  [badgeImageView setTintColor:color];
 }
 
 - (void)updateBadgeStyling
@@ -1442,15 +1442,15 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   [(CNVisualIdentityAvatarViewController *)self updateBadgeImageViewContentMode];
 }
 
-- (void)setBadgeStyleSettings:(id)a3
+- (void)setBadgeStyleSettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (![(CNBadgingAvatarBadgeStyleSettings *)self->_badgeStyleSettings isEqual:?])
   {
-    objc_storeStrong(&self->_badgeStyleSettings, a3);
-    v5 = [(CNVisualIdentityAvatarViewController *)self badgeImage];
+    objc_storeStrong(&self->_badgeStyleSettings, settings);
+    badgeImage = [(CNVisualIdentityAvatarViewController *)self badgeImage];
 
-    if (v5)
+    if (badgeImage)
     {
       [(CNVisualIdentityAvatarViewController *)self updateBadgeStyling];
     }
@@ -1459,30 +1459,30 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 
 - (void)removeAllSublayers
 {
-  v3 = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
-  v4 = [v3 layer];
-  [v4 removeFromSuperlayer];
+  avatarLayerItem = [(CNVisualIdentityAvatarViewController *)self avatarLayerItem];
+  layer = [avatarLayerItem layer];
+  [layer removeFromSuperlayer];
 
-  v5 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-  v6 = [v5 avatarLayerItems];
-  v7 = [v6 count];
+  avatarLayoutManager = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+  avatarLayerItems = [avatarLayoutManager avatarLayerItems];
+  v7 = [avatarLayerItems count];
 
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v10 = [v9 avatarLayerItems];
-      v11 = [v10 objectAtIndexedSubscript:v8];
+      avatarLayoutManager2 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems2 = [avatarLayoutManager2 avatarLayerItems];
+      v11 = [avatarLayerItems2 objectAtIndexedSubscript:v8];
 
-      v12 = [v11 layer];
-      [v12 removeFromSuperlayer];
+      layer2 = [v11 layer];
+      [layer2 removeFromSuperlayer];
 
       ++v8;
-      v13 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
-      v14 = [v13 avatarLayerItems];
-      v15 = [v14 count];
+      avatarLayoutManager3 = [(CNVisualIdentityAvatarViewController *)self avatarLayoutManager];
+      avatarLayerItems3 = [avatarLayoutManager3 avatarLayerItems];
+      v15 = [avatarLayerItems3 count];
     }
 
     while (v8 < v15);
@@ -1495,8 +1495,8 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   v14.receiver = self;
   v14.super_class = CNVisualIdentityAvatarViewController;
   [(CNVisualIdentityAvatarViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(CNVisualIdentityAvatarViewController *)self view];
-  [v3 frame];
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
@@ -1506,12 +1506,12 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
     v11 = [objc_opt_class() log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(CNVisualIdentityAvatarViewController *)self itemCount];
-      v13 = [(CNVisualIdentityAvatarViewController *)self containingCellView];
+      itemCount = [(CNVisualIdentityAvatarViewController *)self itemCount];
+      containingCellView = [(CNVisualIdentityAvatarViewController *)self containingCellView];
       *buf = 134218242;
-      v16 = v12;
+      v16 = itemCount;
       v17 = 2114;
-      v18 = v13;
+      v18 = containingCellView;
       _os_log_debug_impl(&dword_199A75000, v11, OS_LOG_TYPE_DEBUG, "Skipping layout - no change in view size, itemCount:%lu, containingCell:%{public}@", buf, 0x16u);
     }
 
@@ -1542,21 +1542,21 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   v11.super_class = CNVisualIdentityAvatarViewController;
   [(CNVisualIdentityAvatarViewController *)&v11 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DD250]);
-  v4 = [(CNVisualIdentityAvatarViewController *)self view];
-  [v4 bounds];
+  view = [(CNVisualIdentityAvatarViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   [(CNVisualIdentityAvatarViewController *)self setContentView:v5];
 
-  v6 = [(CNVisualIdentityAvatarViewController *)self contentView];
-  [v6 setAutoresizingMask:18];
+  contentView = [(CNVisualIdentityAvatarViewController *)self contentView];
+  [contentView setAutoresizingMask:18];
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  v8 = [(CNVisualIdentityAvatarViewController *)self contentView];
-  [v8 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  contentView2 = [(CNVisualIdentityAvatarViewController *)self contentView];
+  [contentView2 setBackgroundColor:clearColor];
 
-  v9 = [(CNVisualIdentityAvatarViewController *)self view];
-  v10 = [(CNVisualIdentityAvatarViewController *)self contentView];
-  [v9 addSubview:v10];
+  view2 = [(CNVisualIdentityAvatarViewController *)self view];
+  contentView3 = [(CNVisualIdentityAvatarViewController *)self contentView];
+  [view2 addSubview:contentView3];
 
   [(CNVisualIdentityAvatarViewController *)self updateContactChangesNotifierRegistration];
 }
@@ -1564,8 +1564,8 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 - (void)loadView
 {
   v3 = [CNVisualIdentityAvatarContainerView alloc];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [(CNVisualIdentityAvatarContainerView *)v3 initWithFrame:?];
 
   [(CNVisualIdentityAvatarContainerView *)v5 setDelegate:self];
@@ -1575,20 +1575,20 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
 - (void)dealloc
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v4 = [v3 contactChangesNotifier];
-  [v4 unregisterObserver:self forContact:0];
+  contactChangesNotifier = [v3 contactChangesNotifier];
+  [contactChangesNotifier unregisterObserver:self forContact:0];
 
   v5.receiver = self;
   v5.super_class = CNVisualIdentityAvatarViewController;
   [(CNVisualIdentityAvatarViewController *)&v5 dealloc];
 }
 
-- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)a3 primaryAvatarProvider:(id)a4 avatarImageRendererSettings:(id)a5 avatarLayoutType:(unint64_t)a6
+- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)identity primaryAvatarProvider:(id)provider avatarImageRendererSettings:(id)settings avatarLayoutType:(unint64_t)type
 {
-  v7 = [(CNVisualIdentityAvatarViewController *)self initWithVisualIdentity:a3 primaryAvatarProvider:a4 avatarImageRendererSettings:a5];
+  v7 = [(CNVisualIdentityAvatarViewController *)self initWithVisualIdentity:identity primaryAvatarProvider:provider avatarImageRendererSettings:settings];
   if (v7)
   {
-    v8 = [[CNVisualIdentityAvatarLayoutManager alloc] initWithLayoutType:a6];
+    v8 = [[CNVisualIdentityAvatarLayoutManager alloc] initWithLayoutType:type];
     avatarLayoutManager = v7->_avatarLayoutManager;
     v7->_avatarLayoutManager = v8;
 
@@ -1598,19 +1598,19 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
   return v7;
 }
 
-- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)a3 primaryAvatarProvider:(id)a4 avatarImageRendererSettings:(id)a5
+- (CNVisualIdentityAvatarViewController)initWithVisualIdentity:(id)identity primaryAvatarProvider:(id)provider avatarImageRendererSettings:(id)settings
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  providerCopy = provider;
+  settingsCopy = settings;
   v26.receiver = self;
   v26.super_class = CNVisualIdentityAvatarViewController;
   v12 = [(CNVisualIdentityAvatarViewController *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_visualIdentity, a3);
-    v14 = [[CNVisualIdentityContactAvatarProvider alloc] initWithSettings:v11];
+    objc_storeStrong(&v12->_visualIdentity, identity);
+    v14 = [[CNVisualIdentityContactAvatarProvider alloc] initWithSettings:settingsCopy];
     avatarProvider = v13->_avatarProvider;
     v13->_avatarProvider = v14;
 
@@ -1618,16 +1618,16 @@ void __80__CNVisualIdentityAvatarViewController_updateContactChangesNotifierRegi
     avatarLayoutManager = v13->_avatarLayoutManager;
     v13->_avatarLayoutManager = v16;
 
-    objc_storeStrong(&v13->_primaryAvatarProvider, a4);
+    objc_storeStrong(&v13->_primaryAvatarProvider, provider);
     v18 = +[CNUIContactsEnvironment currentEnvironment];
-    v19 = [v18 defaultSchedulerProvider];
-    v20 = [v19 newSerialSchedulerWithName:@"com.apple.contactsui.visualIdentityAvatarView.renderingQueue"];
+    defaultSchedulerProvider = [v18 defaultSchedulerProvider];
+    v20 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.contactsui.visualIdentityAvatarView.renderingQueue"];
     renderingQueue = v13->_renderingQueue;
     v13->_renderingQueue = v20;
 
-    v22 = [v19 mainThreadScheduler];
+    mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
     callbackQueue = v13->_callbackQueue;
-    v13->_callbackQueue = v22;
+    v13->_callbackQueue = mainThreadScheduler;
 
     v24 = v13;
   }

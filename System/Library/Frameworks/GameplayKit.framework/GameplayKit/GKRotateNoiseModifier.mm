@@ -1,6 +1,6 @@
 @interface GKRotateNoiseModifier
 - (GKRotateNoiseModifier)init;
-- (GKRotateNoiseModifier)initWithInputModuleCount:(unint64_t)a3;
+- (GKRotateNoiseModifier)initWithInputModuleCount:(unint64_t)count;
 - (GKRotateNoiseModifier)initWithRadians:(GKRotateNoiseModifier *)self;
 - (double)valueAt:(GKRotateNoiseModifier *)self;
 - (id)cloneModule;
@@ -16,7 +16,7 @@
   return [(GKRotateNoiseModifier *)self initWithRadians:v3];
 }
 
-- (GKRotateNoiseModifier)initWithInputModuleCount:(unint64_t)a3
+- (GKRotateNoiseModifier)initWithInputModuleCount:(unint64_t)count
 {
   v4[0] = 0;
   v4[1] = 0;

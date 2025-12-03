@@ -1,20 +1,20 @@
 @interface ITAttentionAwareIdleTimer
 - (ITAttentionAwareIdleTimer)init;
-- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)a3 delegate:(id)a4;
-- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)a3 delegate:(id)a4 calloutQueue:(id)a5;
+- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate;
+- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate calloutQueue:(id)queue;
 - (ITAttentionAwarenessContext)_context;
 - (ITIdleTimerDelegate)delegate;
 - (ITIdleTimerDescriptor)descriptor;
 - (id)_access_generateConfiguration;
-- (id)_configurationWithIdentifier:(id)a3 descriptor:(id)a4 context:(id)a5;
-- (id)_initWithConfigurationIdentifier:(id)a3 delegate:(id)a4 calloutQueue:(id)a5 client:(id)a6;
-- (id)_timeoutDictionaryForTimeouts:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_configurationWithIdentifier:(id)identifier descriptor:(id)descriptor context:(id)context;
+- (id)_initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate calloutQueue:(id)queue client:(id)client;
+- (id)_timeoutDictionaryForTimeouts:(id)timeouts;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_prototypeSettingsChanged;
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(id)a4 forContext:(id)a5;
-- (void)clientDidReset:(id)a3 forUserAttentionEvent:(id)a4 withContext:(id)a5;
+- (void)client:(id)client attentionLostTimeoutDidExpire:(id)expire forContext:(id)context;
+- (void)clientDidReset:(id)reset forUserAttentionEvent:(id)event withContext:(id)context;
 - (void)reset;
 @end
 
@@ -32,38 +32,38 @@
 
 - (ITAttentionAwareIdleTimer)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ITAttentionAwareIdleTimer.m" lineNumber:49 description:@"wrong initializer"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ITAttentionAwareIdleTimer.m" lineNumber:49 description:@"wrong initializer"];
 
   return 0;
 }
 
-- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)a3 delegate:(id)a4
+- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v8 = BSDispatchQueueCreateWithQualityOfService();
-  v9 = [(ITAttentionAwareIdleTimer *)self initWithConfigurationIdentifier:v7 delegate:v6 calloutQueue:v8];
+  v9 = [(ITAttentionAwareIdleTimer *)self initWithConfigurationIdentifier:identifierCopy delegate:delegateCopy calloutQueue:v8];
 
   return v9;
 }
 
-- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)a3 delegate:(id)a4 calloutQueue:(id)a5
+- (ITAttentionAwareIdleTimer)initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate calloutQueue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[ITAttentionAwarenessClient alloc] initWithCalloutQueue:v8];
-  v12 = [(ITAttentionAwareIdleTimer *)self _initWithConfigurationIdentifier:v10 delegate:v9 calloutQueue:v8 client:v11];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  v11 = [[ITAttentionAwarenessClient alloc] initWithCalloutQueue:queueCopy];
+  v12 = [(ITAttentionAwareIdleTimer *)self _initWithConfigurationIdentifier:identifierCopy delegate:delegateCopy calloutQueue:queueCopy client:v11];
 
   return v12;
 }
 
-- (id)_initWithConfigurationIdentifier:(id)a3 delegate:(id)a4 calloutQueue:(id)a5 client:(id)a6
+- (id)_initWithConfigurationIdentifier:(id)identifier delegate:(id)delegate calloutQueue:(id)queue client:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  clientCopy = client;
   v19.receiver = self;
   v19.super_class = ITAttentionAwareIdleTimer;
   v12 = [(ITAttentionAwareIdleTimer *)&v19 init];
@@ -71,12 +71,12 @@
   if (v12)
   {
     v12->_accessLock = 0;
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     configurationIdentifier = v13->_configurationIdentifier;
     v13->_configurationIdentifier = v14;
 
-    objc_storeWeak(&v13->_delegate, v10);
-    objc_storeStrong(&v13->_access_client, a6);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_access_client, client);
     [(ITAttentionAwarenessClient *)v13->_access_client setDelegate:v13];
     v16 = +[ITAttentionAwarenessDomain rootSettings];
     settings = v13->_settings;
@@ -101,71 +101,71 @@
 - (void)reset
 {
   OUTLINED_FUNCTION_1_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(ITAttentionAwareIdleTimer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(ITAttentionAwareIdleTimer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(ITAttentionAwareIdleTimer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(ITAttentionAwareIdleTimer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(ITAttentionAwareIdleTimer *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_access_descriptor withName:@"descriptor"];
+  succinctDescriptionBuilder = [(ITAttentionAwareIdleTimer *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_access_descriptor withName:@"descriptor"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)_configurationWithIdentifier:(id)a3 descriptor:(id)a4 context:(id)a5
+- (id)_configurationWithIdentifier:(id)identifier descriptor:(id)descriptor context:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 attentionMaintenanceEventMask];
-  v13 = [v10 attentionRecoveryEventMask];
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  contextCopy = context;
+  attentionMaintenanceEventMask = [descriptorCopy attentionMaintenanceEventMask];
+  attentionRecoveryEventMask = [descriptorCopy attentionRecoveryEventMask];
   v14 = objc_alloc_init(MEMORY[0x277CEF768]);
-  v38 = v9;
-  [v14 setIdentifier:v9];
-  [v14 setEventMask:v12];
-  if ((v12 & 0x80) == 0 && (v13 & 0x80) != 0)
+  v38 = identifierCopy;
+  [v14 setIdentifier:identifierCopy];
+  [v14 setEventMask:attentionMaintenanceEventMask];
+  if ((attentionMaintenanceEventMask & 0x80) == 0 && (attentionRecoveryEventMask & 0x80) != 0)
   {
     [ITAttentionAwareIdleTimer _configurationWithIdentifier:descriptor:context:];
   }
 
-  else if (!v13)
+  else if (!attentionRecoveryEventMask)
   {
     goto LABEL_5;
   }
 
-  [v14 setAttentionLostEventMask:v13];
+  [v14 setAttentionLostEventMask:attentionRecoveryEventMask];
 LABEL_5:
-  v15 = [v10 timeouts];
-  if (![v15 count])
+  timeouts = [descriptorCopy timeouts];
+  if (![timeouts count])
   {
-    [(ITAttentionAwareIdleTimer *)v15 _configurationWithIdentifier:a2 descriptor:self context:v10];
+    [(ITAttentionAwareIdleTimer *)timeouts _configurationWithIdentifier:a2 descriptor:self context:descriptorCopy];
   }
 
-  if ((v12 & 0x80) != 0)
+  if ((attentionMaintenanceEventMask & 0x80) != 0)
   {
-    [v10 attentionSamplingPeriod];
+    [descriptorCopy attentionSamplingPeriod];
     v17 = v16;
     [v14 setSamplingInterval:?];
-    [v10 attentionSamplingStartDelay];
+    [descriptorCopy attentionSamplingStartDelay];
     v19 = v18;
     if (v18 > 0.0)
     {
@@ -183,20 +183,20 @@ LABEL_5:
     }
   }
 
-  v21 = [(ITAttentionAwareIdleTimer *)self _timeoutDictionaryForTimeouts:v15];
-  [v14 setTag:v11];
+  v21 = [(ITAttentionAwareIdleTimer *)self _timeoutDictionaryForTimeouts:timeouts];
+  [v14 setTag:contextCopy];
   [v14 setAttentionLostTimeoutDictionary:v21];
-  v22 = [v21 allKeys];
-  v23 = [v22 firstObject];
-  [v23 doubleValue];
+  allKeys = [v21 allKeys];
+  firstObject = [allKeys firstObject];
+  [firstObject doubleValue];
   v25 = v24;
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v26 = [v21 allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v39 objects:v43 count:16];
+  allKeys2 = [v21 allKeys];
+  v27 = [allKeys2 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v27)
   {
     v28 = v27;
@@ -207,7 +207,7 @@ LABEL_5:
       {
         if (*v40 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys2);
         }
 
         [*(*(&v39 + 1) + 8 * i) doubleValue];
@@ -217,7 +217,7 @@ LABEL_5:
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v28 = [allKeys2 countByEnumeratingWithState:&v39 objects:v43 count:16];
     }
 
     while (v28);
@@ -257,16 +257,16 @@ LABEL_5:
   return v14;
 }
 
-- (id)_timeoutDictionaryForTimeouts:(id)a3
+- (id)_timeoutDictionaryForTimeouts:(id)timeouts
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  timeoutsCopy = timeouts;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = timeoutsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -307,38 +307,38 @@ LABEL_5:
   self->_nonSampledAttentionLostTimeoutEnable = [(ITAttentionAwarenessSettings *)self->_settings nonSampledAttentionLostTimeoutEnable];
 }
 
-- (void)client:(id)a3 attentionLostTimeoutDidExpire:(id)a4 forContext:(id)a5
+- (void)client:(id)client attentionLostTimeoutDidExpire:(id)expire forContext:(id)context
 {
-  v10 = a4;
-  v7 = a5;
+  expireCopy = expire;
+  contextCopy = context;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_recursive_lock_lock_with_options();
-  v8 = [v7 isEqual:self->_access_context];
+  v8 = [contextCopy isEqual:self->_access_context];
 
   if (v8)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained idleTimer:self attentionLostTimeoutDidExpire:v10];
+    [WeakRetained idleTimer:self attentionLostTimeoutDidExpire:expireCopy];
   }
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)clientDidReset:(id)a3 forUserAttentionEvent:(id)a4 withContext:(id)a5
+- (void)clientDidReset:(id)reset forUserAttentionEvent:(id)event withContext:(id)context
 {
-  v13 = a4;
-  v7 = a5;
+  eventCopy = event;
+  contextCopy = context;
   os_unfair_lock_assert_not_owner(&self->_accessLock);
   os_unfair_recursive_lock_lock_with_options();
-  v8 = [v7 isEqual:self->_access_context];
+  v8 = [contextCopy isEqual:self->_access_context];
 
   if (v8)
   {
-    [v13 timestamp];
+    [eventCopy timestamp];
     v10 = v9;
-    v11 = [v13 eventMask];
+    eventMask = [eventCopy eventMask];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained idleTimerDidReset:self forUserAttention:v11 at:v10];
+    [WeakRetained idleTimerDidReset:self forUserAttention:eventMask at:v10];
   }
 
   os_unfair_recursive_lock_unlock();

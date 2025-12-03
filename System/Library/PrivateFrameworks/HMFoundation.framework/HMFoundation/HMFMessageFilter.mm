@@ -1,16 +1,16 @@
 @interface HMFMessageFilter
 + (id)logCategory;
-+ (id)policyOfClass:(Class)a3 fromPolicies:(id)a4;
-+ (id)requiredPolicyOfClass:(Class)a3 fromPolicies:(id)a4 error:(id *)a5;
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5;
++ (id)policyOfClass:(Class)class fromPolicies:(id)policies;
++ (id)requiredPolicyOfClass:(Class)class fromPolicies:(id)policies error:(id *)error;
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error;
 @end
 
 @implementation HMFMessageFilter
 
-+ (int64_t)filterMessage:(id)a3 withPolicies:(id)a4 error:(id *)a5
++ (int64_t)filterMessage:(id)message withPolicies:(id)policies error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  policiesCopy = policies;
   v9 = MEMORY[0x277CBEAD8];
   v10 = *MEMORY[0x277CBE658];
   v11 = MEMORY[0x277CCACA8];
@@ -22,15 +22,15 @@
   objc_exception_throw(v14);
 }
 
-+ (id)policyOfClass:(Class)a3 fromPolicies:(id)a4
++ (id)policyOfClass:(Class)class fromPolicies:(id)policies
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a4;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  policiesCopy = policies;
+  v5 = [policiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -41,7 +41,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(policiesCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -52,7 +52,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [policiesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -70,34 +70,34 @@ LABEL_11:
   return v10;
 }
 
-+ (id)requiredPolicyOfClass:(Class)a3 fromPolicies:(id)a4 error:(id *)a5
++ (id)requiredPolicyOfClass:(Class)class fromPolicies:(id)policies error:(id *)error
 {
-  v8 = [a1 policyOfClass:a3 fromPolicies:a4];
+  v8 = [self policyOfClass:class fromPolicies:policies];
   v9 = v8;
   if (v8)
   {
     v10 = v8;
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = MEMORY[0x277CCA9B8];
     v13 = MEMORY[0x277CCACA8];
     v14 = objc_opt_class();
-    if (v14 == a1)
+    if (v14 == self)
     {
       v15 = @"filter";
     }
 
     else
     {
-      v15 = NSStringFromClass(a1);
+      v15 = NSStringFromClass(self);
     }
 
-    v16 = [v13 stringWithFormat:@"%@ required by %@ is missing", a3, v15];
-    *a5 = [v12 hmfErrorWithCode:2 reason:v16];
+    v16 = [v13 stringWithFormat:@"%@ required by %@ is missing", class, v15];
+    *error = [v12 hmfErrorWithCode:2 reason:v16];
 
-    if (v14 != a1)
+    if (v14 != self)
     {
     }
   }

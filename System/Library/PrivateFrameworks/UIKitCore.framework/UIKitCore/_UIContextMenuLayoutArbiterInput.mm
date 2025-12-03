@@ -6,7 +6,7 @@
 - (CGSize)preferredPreviewSize;
 - (UIEdgeInsets)preferredEdgeInsets;
 - (_UIContextMenuLayoutArbiterInput)init;
-- (void)setPreferredAnchor:(id *)a3;
+- (void)setPreferredAnchor:(id *)anchor;
 @end
 
 @implementation _UIContextMenuLayoutArbiterInput
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (void)setPreferredAnchor:(id *)a3
+- (void)setPreferredAnchor:(id *)anchor
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var2;
-  self->_preferredAnchor.gravity = a3->var4;
+  v3 = *&anchor->var0;
+  v4 = *&anchor->var2;
+  self->_preferredAnchor.gravity = anchor->var4;
   *&self->_preferredAnchor.attachmentOffset = v4;
   *&self->_preferredAnchor.attachment = v3;
 }

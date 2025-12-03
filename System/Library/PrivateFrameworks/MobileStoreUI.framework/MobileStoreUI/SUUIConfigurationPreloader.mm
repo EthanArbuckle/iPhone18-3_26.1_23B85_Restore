@@ -1,9 +1,9 @@
 @interface SUUIConfigurationPreloader
 - (BOOL)hasExistingConfigurationCache;
 - (SUUIConfigurationPreloader)init;
-- (SUUIConfigurationPreloader)initWithConfigurationCachePath:(id)a3;
-- (void)finishPreloadingConfiguration:(id)a3 error:(id)a4;
-- (void)preloadConfigurationForPurpose:(int64_t)a3 withCompletionBlock:(id)a4;
+- (SUUIConfigurationPreloader)initWithConfigurationCachePath:(id)path;
+- (void)finishPreloadingConfiguration:(id)configuration error:(id)error;
+- (void)preloadConfigurationForPurpose:(int64_t)purpose withCompletionBlock:(id)block;
 @end
 
 @implementation SUUIConfigurationPreloader
@@ -18,22 +18,22 @@
 
 - (BOOL)hasExistingConfigurationCache
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(SUUIConfigurationPreloader *)self configurationCachePath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  configurationCachePath = [(SUUIConfigurationPreloader *)self configurationCachePath];
+  v5 = [defaultManager fileExistsAtPath:configurationCachePath];
 
   return v5;
 }
 
-- (SUUIConfigurationPreloader)initWithConfigurationCachePath:(id)a3
+- (SUUIConfigurationPreloader)initWithConfigurationCachePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = SUUIConfigurationPreloader;
   v5 = [(SUUIConfigurationPreloader *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     configurationCachePath = v5->_configurationCachePath;
     v5->_configurationCachePath = v6;
 
@@ -50,43 +50,43 @@
   return v5;
 }
 
-- (void)preloadConfigurationForPurpose:(int64_t)a3 withCompletionBlock:(id)a4
+- (void)preloadConfigurationForPurpose:(int64_t)purpose withCompletionBlock:(id)block
 {
-  v7 = a4;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [SUUIConfigurationPreloader preloadConfigurationForPurpose:a2 withCompletionBlock:self];
   }
 
-  v8 = [(SUUIConfigurationPreloader *)self loadedConfiguration];
+  loadedConfiguration = [(SUUIConfigurationPreloader *)self loadedConfiguration];
 
-  if (v8)
+  if (loadedConfiguration)
   {
-    v9 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __81__SUUIConfigurationPreloader_preloadConfigurationForPurpose_withCompletionBlock___block_invoke_3;
     v21[3] = &unk_2798F5D58;
     v21[4] = self;
-    v22 = v7;
-    [v9 addOperationWithBlock:v21];
+    v22 = blockCopy;
+    [mainQueue addOperationWithBlock:v21];
   }
 
-  else if (a3 || ![(SUUIConfigurationPreloader *)self hasExistingConfigurationCache])
+  else if (purpose || ![(SUUIConfigurationPreloader *)self hasExistingConfigurationCache])
   {
-    v10 = [(SUUIConfigurationPreloader *)self completionBlocks];
-    v11 = [v7 copy];
+    completionBlocks = [(SUUIConfigurationPreloader *)self completionBlocks];
+    v11 = [blockCopy copy];
     v12 = _Block_copy(v11);
-    [v10 addObject:v12];
+    [completionBlocks addObject:v12];
 
-    v13 = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
+    pendingReloadOperation = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
 
-    if (!v13)
+    if (!pendingReloadOperation)
     {
-      v14 = [(SUUIConfigurationPreloader *)self newReloadConfigurationOperation];
-      [(SUUIConfigurationPreloader *)self setPendingReloadOperation:v14];
+      newReloadConfigurationOperation = [(SUUIConfigurationPreloader *)self newReloadConfigurationOperation];
+      [(SUUIConfigurationPreloader *)self setPendingReloadOperation:newReloadConfigurationOperation];
 
-      if (a3 == 2)
+      if (purpose == 2)
       {
         v15 = [MEMORY[0x277D69C90] contextWithBagType:0];
         v16 = SSVDefaultUserAgent();
@@ -102,12 +102,12 @@
       v23[2] = __81__SUUIConfigurationPreloader_preloadConfigurationForPurpose_withCompletionBlock___block_invoke;
       v23[3] = &unk_2798FAA60;
       objc_copyWeak(&v24, &location);
-      v18 = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
-      [v18 setOutputBlock:v23];
+      pendingReloadOperation2 = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
+      [pendingReloadOperation2 setOutputBlock:v23];
 
-      v19 = [(SUUIConfigurationPreloader *)self workQueue];
-      v20 = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
-      [v19 addOperation:v20];
+      workQueue = [(SUUIConfigurationPreloader *)self workQueue];
+      pendingReloadOperation3 = [(SUUIConfigurationPreloader *)self pendingReloadOperation];
+      [workQueue addOperation:pendingReloadOperation3];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -116,7 +116,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEC10], 0);
+    (*(blockCopy + 2))(blockCopy, MEMORY[0x277CBEC10], 0);
   }
 }
 
@@ -146,19 +146,19 @@ void __81__SUUIConfigurationPreloader_preloadConfigurationForPurpose_withComplet
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)finishPreloadingConfiguration:(id)a3 error:(id)a4
+- (void)finishPreloadingConfiguration:(id)configuration error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(SUUIConfigurationPreloader *)self setLoadedConfiguration:v6];
+  configurationCopy = configuration;
+  errorCopy = error;
+  [(SUUIConfigurationPreloader *)self setLoadedConfiguration:configurationCopy];
   [(SUUIConfigurationPreloader *)self setPendingReloadOperation:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(SUUIConfigurationPreloader *)self completionBlocks];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  completionBlocks = [(SUUIConfigurationPreloader *)self completionBlocks];
+  v9 = [completionBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -170,21 +170,21 @@ void __81__SUUIConfigurationPreloader_preloadConfigurationForPurpose_withComplet
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(completionBlocks);
         }
 
         (*(*(*(&v14 + 1) + 8 * v12++) + 16))();
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [completionBlocks countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(SUUIConfigurationPreloader *)self completionBlocks];
-  [v13 removeAllObjects];
+  completionBlocks2 = [(SUUIConfigurationPreloader *)self completionBlocks];
+  [completionBlocks2 removeAllObjects];
 }
 
 - (void)preloadConfigurationForPurpose:(uint64_t)a1 withCompletionBlock:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,6 +1,6 @@
 @interface KNAnimationUtilsDefaultsTracker
 - (KNAnimationUtilsDefaultsTracker)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation KNAnimationUtilsDefaultsTracker
@@ -68,12 +68,12 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (qword_280A3B1F8 == a6)
+  if (qword_280A3B1F8 == context)
   {
 
-    objc_msgSend_updateDefaultsValues(KNAnimationUtils, a2, a3, a4, a5);
+    objc_msgSend_updateDefaultsValues(KNAnimationUtils, a2, path, object, change);
   }
 
   else
@@ -82,7 +82,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = KNAnimationUtilsDefaultsTracker;
-    [(KNAnimationUtilsDefaultsTracker *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(KNAnimationUtilsDefaultsTracker *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 

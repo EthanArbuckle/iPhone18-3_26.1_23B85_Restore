@@ -11,12 +11,12 @@
 + (id)dataWithRandomBytesOfSize:()NRUtils
 {
   v4 = [MEMORY[0x1E695DF88] dataWithLength:?];
-  v5 = [v4 bytes];
-  v6 = v5;
+  bytes = [v4 bytes];
+  v6 = bytes;
   v7 = a3 >> 2;
   if (a3 >= 4)
   {
-    v8 = v5;
+    v8 = bytes;
     v9 = a3 >> 2;
     do
     {
@@ -60,9 +60,9 @@
 
 - (id)toUUID
 {
-  if ([a1 length] == 16)
+  if ([self length] == 16)
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(a1, "bytes")}];
+    v2 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:{objc_msgSend(self, "bytes")}];
   }
 
   else
@@ -78,10 +78,10 @@
   if (a3)
   {
     v4 = result;
-    v5 = [result bytes];
+    bytes = [result bytes];
     v6 = [v4 length];
 
-    return CC_SHA256(v5, v6, a3);
+    return CC_SHA256(bytes, v6, a3);
   }
 
   return result;
@@ -90,7 +90,7 @@
 - (id)NRSHA256
 {
   v5 = *MEMORY[0x1E69E9840];
-  [a1 NRSHA256:v4];
+  [self NRSHA256:v4];
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:v4 length:32];
   v2 = *MEMORY[0x1E69E9840];
 

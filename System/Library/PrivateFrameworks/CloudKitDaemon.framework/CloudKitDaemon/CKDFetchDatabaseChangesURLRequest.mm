@@ -1,9 +1,9 @@
 @interface CKDFetchDatabaseChangesURLRequest
-- (CKDFetchDatabaseChangesURLRequest)initWithOperation:(id)a3 previousServerChangeTokenData:(id)a4;
+- (CKDFetchDatabaseChangesURLRequest)initWithOperation:(id)operation previousServerChangeTokenData:(id)data;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDFetchDatabaseChangesURLRequest
@@ -52,12 +52,12 @@
   return v25;
 }
 
-- (CKDFetchDatabaseChangesURLRequest)initWithOperation:(id)a3 previousServerChangeTokenData:(id)a4
+- (CKDFetchDatabaseChangesURLRequest)initWithOperation:(id)operation previousServerChangeTokenData:(id)data
 {
-  v7 = a4;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = CKDFetchDatabaseChangesURLRequest;
-  v8 = [(CKDURLRequest *)&v18 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v18 initWithOperation:operation];
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -76,28 +76,28 @@
     encryptedDataResetDeletedZoneIDs = v8->_encryptedDataResetDeletedZoneIDs;
     v8->_encryptedDataResetDeletedZoneIDs = v15;
 
-    objc_storeStrong(&v8->_previousServerChangeTokenData, a4);
+    objc_storeStrong(&v8->_previousServerChangeTokenData, data);
     v8->_status = 0;
   }
 
   return v8;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v9.receiver = self;
   v9.super_class = CKDFetchDatabaseChangesURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v9 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_previousServerChangeTokenData(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"changeToken");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"changeToken");
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
   v149 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!objc_msgSend_hasZoneRetrieveChangesResponse(v4, v5, v6))
+  objectCopy = object;
+  if (!objc_msgSend_hasZoneRetrieveChangesResponse(objectCopy, v5, v6))
   {
     v108 = 0;
     goto LABEL_62;
@@ -105,7 +105,7 @@
 
   v135 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v139 = objc_msgSend_container(self, v7, v8);
-  v11 = objc_msgSend_zoneRetrieveChangesResponse(v4, v9, v10);
+  v11 = objc_msgSend_zoneRetrieveChangesResponse(objectCopy, v9, v10);
   v142 = 0u;
   v143 = 0u;
   v144 = 0u;
@@ -122,7 +122,7 @@
   v138 = *v143;
   *&v17 = 138412290;
   v132 = v17;
-  v133 = v4;
+  v133 = objectCopy;
   while (2)
   {
     v19 = 0;
@@ -140,7 +140,7 @@
 
         v18 = v109;
 LABEL_48:
-        v4 = v133;
+        objectCopy = v133;
         goto LABEL_49;
       }
 
@@ -296,7 +296,7 @@ LABEL_42:
     }
 
     while (v137 != v19);
-    v4 = v133;
+    objectCopy = v133;
     v137 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v142, v148, 16);
     if (v137)
     {

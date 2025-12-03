@@ -1,19 +1,19 @@
 @interface _VFXShadableCompilationIssue
-+ (id)issueWithShadable:(id)a3 entryPoint:(id)a4 effectiveModifier:(id)a5 message:(id)a6 line:(int64_t)a7 type:(unint64_t)a8;
++ (id)issueWithShadable:(id)shadable entryPoint:(id)point effectiveModifier:(id)modifier message:(id)message line:(int64_t)line type:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation _VFXShadableCompilationIssue
 
-+ (id)issueWithShadable:(id)a3 entryPoint:(id)a4 effectiveModifier:(id)a5 message:(id)a6 line:(int64_t)a7 type:(unint64_t)a8
++ (id)issueWithShadable:(id)shadable entryPoint:(id)point effectiveModifier:(id)modifier message:(id)message line:(int64_t)line type:(unint64_t)type
 {
   v14 = objc_alloc_init(_VFXShadableCompilationIssue);
-  v14->_shadableIdentifier = a3;
-  v14->_entryPoint = a4;
-  v14->_effectiveModifier = a5;
-  v14->_message = a6;
-  v14->_type = a8;
-  v14->_line = a7;
+  v14->_shadableIdentifier = shadable;
+  v14->_entryPoint = point;
+  v14->_effectiveModifier = modifier;
+  v14->_message = message;
+  v14->_type = type;
+  v14->_line = line;
   return v14;
 }
 

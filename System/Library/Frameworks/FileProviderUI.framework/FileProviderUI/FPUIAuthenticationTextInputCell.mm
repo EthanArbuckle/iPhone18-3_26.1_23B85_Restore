@@ -1,6 +1,6 @@
 @interface FPUIAuthenticationTextInputCell
-- (BOOL)_isLargeTextTraitCollection:(id)a3;
-- (FPUIAuthenticationTextInputCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)_isLargeTextTraitCollection:(id)collection;
+- (FPUIAuthenticationTextInputCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UILabel)label;
 - (UITextField)textField;
 - (void)prepareForReuse;
@@ -9,12 +9,12 @@
 
 @implementation FPUIAuthenticationTextInputCell
 
-- (FPUIAuthenticationTextInputCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (FPUIAuthenticationTextInputCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47[5] = *MEMORY[0x277D85DE8];
   v45.receiver = self;
   v45.super_class = FPUIAuthenticationTextInputCell;
-  v4 = [(FPUIAuthenticationTextInputCell *)&v45 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(FPUIAuthenticationTextInputCell *)&v45 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v44 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
@@ -41,36 +41,36 @@
     v4->_stackView = v7;
     v9 = v7;
 
-    v10 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
-    [v10 addSubview:v9];
+    contentView = [(FPUIAuthenticationTextInputCell *)v4 contentView];
+    [contentView addSubview:v9];
 
-    v41 = [v6 widthAnchor];
-    v40 = [v41 constraintGreaterThanOrEqualToConstant:100.0];
+    widthAnchor = [v6 widthAnchor];
+    v40 = [widthAnchor constraintGreaterThanOrEqualToConstant:100.0];
     v47[0] = v40;
     v36 = v9;
-    v38 = [(UIStackView *)v9 leadingAnchor];
-    v39 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
-    v37 = [v39 layoutMarginsGuide];
-    v35 = [v37 leadingAnchor];
-    v34 = [v38 constraintEqualToAnchor:v35];
+    leadingAnchor = [(UIStackView *)v9 leadingAnchor];
+    contentView2 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v47[1] = v34;
-    v33 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
-    v32 = [v33 layoutMarginsGuide];
-    v31 = [v32 bottomAnchor];
-    v30 = [(UIStackView *)v9 bottomAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30 constant:0.5];
+    contentView3 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide2 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v9 bottomAnchor];
+    v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.5];
     v47[2] = v29;
-    v28 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
-    v11 = [v28 layoutMarginsGuide];
-    v12 = [v11 trailingAnchor];
-    v13 = [(UIStackView *)v9 trailingAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13 constant:8.0];
+    contentView4 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v9 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:8.0];
     v47[3] = v14;
-    v15 = [(UIStackView *)v9 topAnchor];
-    v16 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
-    v17 = [v16 layoutMarginsGuide];
-    v18 = [v17 topAnchor];
-    v19 = [v15 constraintEqualToAnchor:v18 constant:0.5];
+    topAnchor = [(UIStackView *)v9 topAnchor];
+    contentView5 = [(FPUIAuthenticationTextInputCell *)v4 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide4 topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.5];
     v47[4] = v19;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:5];
 
@@ -111,15 +111,15 @@
 
 - (void)updateForChangedContentSizeCategory
 {
-  v3 = [(FPUIAuthenticationTextInputCell *)self traitCollection];
-  v4 = [(FPUIAuthenticationTextInputCell *)self _isLargeTextTraitCollection:v3];
+  traitCollection = [(FPUIAuthenticationTextInputCell *)self traitCollection];
+  v4 = [(FPUIAuthenticationTextInputCell *)self _isLargeTextTraitCollection:traitCollection];
 
   stackView = self->_stackView;
 
   [(UIStackView *)stackView setAxis:v4];
 }
 
-- (BOOL)_isLargeTextTraitCollection:(id)a3
+- (BOOL)_isLargeTextTraitCollection:(id)collection
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D767F8];
@@ -130,11 +130,11 @@
   v14 = v4;
   v15 = *MEMORY[0x277D76818];
   v5 = MEMORY[0x277CBEA60];
-  v6 = a3;
+  collectionCopy = collection;
   v7 = [v5 arrayWithObjects:&v11 count:5];
-  v8 = [v6 preferredContentSizeCategory];
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
 
-  LOBYTE(v5) = [v7 containsObject:v8];
+  LOBYTE(v5) = [v7 containsObject:preferredContentSizeCategory];
   v9 = *MEMORY[0x277D85DE8];
   return v5;
 }

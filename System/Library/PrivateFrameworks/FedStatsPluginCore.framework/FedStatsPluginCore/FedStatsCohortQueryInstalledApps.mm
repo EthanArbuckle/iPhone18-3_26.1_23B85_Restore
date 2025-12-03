@@ -1,9 +1,9 @@
 @interface FedStatsCohortQueryInstalledApps
 + (id)cohortInstance;
 + (void)initialize;
-- (BOOL)_isSupportedIntentMediaApp:(id)a3 :(id)a4 :(id)a5;
+- (BOOL)_isSupportedIntentMediaApp:(id)app :(id)a4 :(id)a5;
 - (FedStatsCohortQueryInstalledApps)init;
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4;
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error;
 - (void)applyFilteringForMediaDomain;
 - (void)lsAppRecords;
 - (void)lsPluginKitExtensions;
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [MEMORY[0x277CBEB98] setWithArray:&unk_285E17A40];
     v3 = INTENT_MEDIA_SUPPORTED_CATEGORIES;
@@ -65,11 +65,11 @@
   return v2;
 }
 
-- (id)cohortKeyForParameters:(id)a3 possibleError:(id *)a4
+- (id)cohortKeyForParameters:(id)parameters possibleError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [FedStatsPluginError errorWithCode:300 description:@"Invalid call to FedStatsCohortQueryInstalledApps#.cohortKeyForParameters"];
+    *error = [FedStatsPluginError errorWithCode:300 description:@"Invalid call to FedStatsCohortQueryInstalledApps#.cohortKeyForParameters"];
   }
 
   return 0;
@@ -77,7 +77,7 @@
 
 + (id)cohortInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -92,7 +92,7 @@
     _os_log_impl(&dword_24AB24000, v3, OS_LOG_TYPE_INFO, "FedStatsCohortQueryInstalledApps#resolveDomainToBundleIds start.", &v12, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(FedStatsCohortQueryInstalledApps *)self lsAppRecords];
   [(FedStatsCohortQueryInstalledApps *)self lsPluginKitExtensions];
   [(FedStatsCohortQueryInstalledApps *)self applyFilteringForMediaDomain];
@@ -105,8 +105,8 @@
     _os_log_impl(&dword_24AB24000, v5, OS_LOG_TYPE_INFO, "FedStatsCohortQueryInstalledApps#resolveDomainToBundleIds resolved domain to bundle ids: %@", &v12, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSinceDate:v4];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   v9 = v8;
 
   v10 = +[FedStatsPluginLog logger];
@@ -124,50 +124,50 @@
 {
   v32 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CC1E70] enumeratorWithOptions:0];
-  v4 = [v3 nextObject];
-  if (v4)
+  nextObject = [v3 nextObject];
+  if (nextObject)
   {
-    v6 = v4;
+    v6 = nextObject;
     v7 = 0x278FF7000uLL;
     *&v5 = 138412802;
     v24 = v5;
     v25 = v3;
     do
     {
-      v8 = [v6 bundleIdentifier];
-      if (v8)
+      bundleIdentifier = [v6 bundleIdentifier];
+      if (bundleIdentifier)
       {
         v9 = MEMORY[0x277CBEB98];
-        v10 = [v6 supportedIntentMediaCategories];
-        v11 = [v9 setWithArray:v10];
+        supportedIntentMediaCategories = [v6 supportedIntentMediaCategories];
+        logger2 = [v9 setWithArray:supportedIntentMediaCategories];
 
-        v12 = [v6 supportedIntents];
-        if ([(FedStatsCohortQueryInstalledApps *)self _isSupportedIntentMediaApp:v8])
+        supportedIntents = [v6 supportedIntents];
+        if ([(FedStatsCohortQueryInstalledApps *)self _isSupportedIntentMediaApp:bundleIdentifier])
         {
           v13 = [InstalledApp alloc];
-          v14 = [v6 supportedIntentMediaCategories];
+          supportedIntentMediaCategories2 = [v6 supportedIntentMediaCategories];
           [v6 localizedName];
-          v15 = self;
+          selfCopy = self;
           v17 = v16 = v7;
-          v18 = [(InstalledApp *)v13 initWithBundleIdentifier:v8 supportedMediaCategories:v14 supportedIntents:v12 appName:v17];
+          v18 = [(InstalledApp *)v13 initWithBundleIdentifier:bundleIdentifier supportedMediaCategories:supportedIntentMediaCategories2 supportedIntents:supportedIntents appName:v17];
 
           v7 = v16;
-          self = v15;
+          self = selfCopy;
 
-          v19 = [(NSDictionary *)v15->_domainToInstalledApps objectForKeyedSubscript:@"media"];
+          v19 = [(NSDictionary *)selfCopy->_domainToInstalledApps objectForKeyedSubscript:@"media"];
           [v19 addObject:v18];
 
-          v20 = [*(v7 + 1776) logger];
-          if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+          logger = [*(v7 + 1776) logger];
+          if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v6 supportedIntentMediaCategories];
+            supportedIntentMediaCategories3 = [v6 supportedIntentMediaCategories];
             *buf = v24;
-            v27 = v8;
+            v27 = bundleIdentifier;
             v28 = 2112;
-            v29 = v12;
+            v29 = supportedIntents;
             v30 = 2112;
-            v31 = v22;
-            _os_log_debug_impl(&dword_24AB24000, v20, OS_LOG_TYPE_DEBUG, "bundle record: %@ has supported intent %@ and supported media categories: %@", buf, 0x20u);
+            v31 = supportedIntentMediaCategories3;
+            _os_log_debug_impl(&dword_24AB24000, logger, OS_LOG_TYPE_DEBUG, "bundle record: %@ has supported intent %@ and supported media categories: %@", buf, 0x20u);
           }
 
           v3 = v25;
@@ -176,21 +176,21 @@
 
       else
       {
-        v11 = [*(v7 + 1776) logger];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        logger2 = [*(v7 + 1776) logger];
+        if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v27 = v6;
-          _os_log_error_impl(&dword_24AB24000, v11, OS_LOG_TYPE_ERROR, "Error enumerating app records; app record: %@ has nil bundle identifier", buf, 0xCu);
+          _os_log_error_impl(&dword_24AB24000, logger2, OS_LOG_TYPE_ERROR, "Error enumerating app records; app record: %@ has nil bundle identifier", buf, 0xCu);
         }
       }
 
-      v21 = [v3 nextObject];
+      nextObject2 = [v3 nextObject];
 
-      v6 = v21;
+      v6 = nextObject2;
     }
 
-    while (v21);
+    while (nextObject2);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -199,23 +199,23 @@
 - (void)lsPluginKitExtensions
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [INTENT_MEDIA_SUPPORTED_INTENTS allObjects];
+  allObjects = [INTENT_MEDIA_SUPPORTED_INTENTS allObjects];
   v4 = *MEMORY[0x277CD3858];
   v5 = *MEMORY[0x277CD3828];
   v13[0] = *MEMORY[0x277CCA0F8];
   v13[1] = v5;
   v14[0] = v4;
-  v14[1] = v3;
+  v14[1] = allObjects;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__FedStatsCohortQueryInstalledApps_lsPluginKitExtensions__block_invoke;
   v10[3] = &unk_278FF7928;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v8 = v6;
-  [v7 enumeratePluginsMatchingQuery:v8 withBlock:v10];
+  [defaultWorkspace enumeratePluginsMatchingQuery:v8 withBlock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -281,12 +281,12 @@ void __57__FedStatsCohortQueryInstalledApps_lsPluginKitExtensions__block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isSupportedIntentMediaApp:(id)a3 :(id)a4 :(id)a5
+- (BOOL)_isSupportedIntentMediaApp:(id)app :(id)a4 :(id)a5
 {
-  v7 = a3;
+  appCopy = app;
   v8 = a4;
   v9 = a5;
-  if ([v7 isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"com.apple.podcasts"))
+  if ([appCopy isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(appCopy, "isEqualToString:", @"com.apple.podcasts"))
   {
     v10 = 1;
   }
@@ -320,8 +320,8 @@ void __57__FedStatsCohortQueryInstalledApps_lsPluginKitExtensions__block_invoke(
 
 - (void)applyFilteringForMediaDomain
 {
-  v2 = [(FedStatsCohortQueryInstalledApps *)self domainToInstalledApps];
-  v6 = [v2 objectForKeyedSubscript:@"media"];
+  domainToInstalledApps = [(FedStatsCohortQueryInstalledApps *)self domainToInstalledApps];
+  v6 = [domainToInstalledApps objectForKeyedSubscript:@"media"];
 
   v3 = [v6 objectsPassingTest:&__block_literal_global_1];
   v4 = [v3 objectsPassingTest:&__block_literal_global_115];

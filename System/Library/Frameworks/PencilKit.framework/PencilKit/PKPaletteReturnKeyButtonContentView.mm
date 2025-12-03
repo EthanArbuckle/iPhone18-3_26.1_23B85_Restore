@@ -1,19 +1,19 @@
 @interface PKPaletteReturnKeyButtonContentView
-- (PKPaletteReturnKeyButtonContentView)initWithFrame:(CGRect)a3;
+- (PKPaletteReturnKeyButtonContentView)initWithFrame:(CGRect)frame;
 - (void)_updateUI;
-- (void)setLayoutOrientation:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setUseCompactLayout:(BOOL)a3;
+- (void)setLayoutOrientation:(int64_t)orientation;
+- (void)setText:(id)text;
+- (void)setUseCompactLayout:(BOOL)layout;
 @end
 
 @implementation PKPaletteReturnKeyButtonContentView
 
-- (PKPaletteReturnKeyButtonContentView)initWithFrame:(CGRect)a3
+- (PKPaletteReturnKeyButtonContentView)initWithFrame:(CGRect)frame
 {
   v41[6] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = PKPaletteReturnKeyButtonContentView;
-  v3 = [(PKPaletteReturnKeyButtonContentView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteReturnKeyButtonContentView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -56,36 +56,36 @@
     v3->_imageView = v11;
 
     [(UIImageView *)v3->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v3->_imageView setTintColor:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v3->_imageView setTintColor:whiteColor];
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_imageView];
-    v14 = [(TUICandidateLabel *)v3->_label widthAnchor];
-    v15 = [v14 constraintEqualToConstant:0.0];
+    widthAnchor = [(TUICandidateLabel *)v3->_label widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:0.0];
     labelWidthConstraint = v3->_labelWidthConstraint;
     v3->_labelWidthConstraint = v15;
 
-    v17 = [(TUICandidateLabel *)v3->_label heightAnchor];
-    v18 = [v17 constraintEqualToConstant:0.0];
+    heightAnchor = [(TUICandidateLabel *)v3->_label heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:0.0];
     labelHeightConstraint = v3->_labelHeightConstraint;
     v3->_labelHeightConstraint = v18;
 
     v29 = MEMORY[0x1E696ACD8];
-    v34 = [(PKPaletteReturnKeyButtonContentView *)v3 centerXAnchor];
-    v33 = [(UIStackView *)v3->_stackView centerXAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    centerXAnchor = [(PKPaletteReturnKeyButtonContentView *)v3 centerXAnchor];
+    centerXAnchor2 = [(UIStackView *)v3->_stackView centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v41[0] = v32;
-    v31 = [(PKPaletteReturnKeyButtonContentView *)v3 centerYAnchor];
-    v30 = [(UIStackView *)v3->_stackView centerYAnchor];
-    v20 = [v31 constraintEqualToAnchor:v30];
+    centerYAnchor = [(PKPaletteReturnKeyButtonContentView *)v3 centerYAnchor];
+    centerYAnchor2 = [(UIStackView *)v3->_stackView centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v41[1] = v20;
-    v21 = [(PKPaletteReturnKeyButtonContentView *)v3 widthAnchor];
-    v22 = [(UIStackView *)v3->_stackView widthAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    widthAnchor2 = [(PKPaletteReturnKeyButtonContentView *)v3 widthAnchor];
+    widthAnchor3 = [(UIStackView *)v3->_stackView widthAnchor];
+    v23 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v41[2] = v23;
-    v24 = [(PKPaletteReturnKeyButtonContentView *)v3 heightAnchor];
-    v25 = [(UIStackView *)v3->_stackView heightAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    heightAnchor2 = [(PKPaletteReturnKeyButtonContentView *)v3 heightAnchor];
+    heightAnchor3 = [(UIStackView *)v3->_stackView heightAnchor];
+    v26 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v41[3] = v26;
     v41[4] = v3->_labelWidthConstraint;
     v41[5] = v3->_labelHeightConstraint;
@@ -98,11 +98,11 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = self->_text;
-  v6 = v4;
+  v6 = textCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -131,20 +131,20 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setLayoutOrientation:(int64_t)a3
+- (void)setLayoutOrientation:(int64_t)orientation
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
-    self->_layoutOrientation = a3;
+    self->_layoutOrientation = orientation;
     [(PKPaletteReturnKeyButtonContentView *)self _updateUI];
   }
 }
 
-- (void)setUseCompactLayout:(BOOL)a3
+- (void)setUseCompactLayout:(BOOL)layout
 {
-  if (self->_useCompactLayout != a3)
+  if (self->_useCompactLayout != layout)
   {
-    self->_useCompactLayout = a3;
+    self->_useCompactLayout = layout;
     [(PKPaletteReturnKeyButtonContentView *)self _updateUI];
   }
 }
@@ -152,18 +152,18 @@ LABEL_9:
 - (void)_updateUI
 {
   [(TUICandidateLabel *)self->_label setHidden:[(PKPaletteReturnKeyButtonContentView *)self useCompactLayout]];
-  v3 = [(PKPaletteReturnKeyButtonContentView *)self text];
-  [(TUICandidateLabel *)self->_label setText:v3];
+  text = [(PKPaletteReturnKeyButtonContentView *)self text];
+  [(TUICandidateLabel *)self->_label setText:text];
 
   [(TUICandidateLabel *)self->_label setLayoutOrientation:[(PKPaletteReturnKeyButtonContentView *)self layoutOrientation]];
   v4 = objc_opt_class();
-  v5 = [(PKPaletteReturnKeyButtonContentView *)self text];
-  v6 = [(TUICandidateLabel *)self->_label font];
-  [v4 lineWidthForText:v5 font:v6 layoutOrientation:{-[PKPaletteReturnKeyButtonContentView layoutOrientation](self, "layoutOrientation")}];
+  text2 = [(PKPaletteReturnKeyButtonContentView *)self text];
+  font = [(TUICandidateLabel *)self->_label font];
+  [v4 lineWidthForText:text2 font:font layoutOrientation:{-[PKPaletteReturnKeyButtonContentView layoutOrientation](self, "layoutOrientation")}];
   v8 = v7;
 
-  v9 = [(PKPaletteReturnKeyButtonContentView *)self layoutOrientation];
-  if (v9)
+  layoutOrientation = [(PKPaletteReturnKeyButtonContentView *)self layoutOrientation];
+  if (layoutOrientation)
   {
     v10 = 36.0;
   }
@@ -173,12 +173,12 @@ LABEL_9:
     v10 = v8;
   }
 
-  if (!v9)
+  if (!layoutOrientation)
   {
     v8 = 36.0;
   }
 
-  [(UIStackView *)self->_stackView setAxis:v9 != 0];
+  [(UIStackView *)self->_stackView setAxis:layoutOrientation != 0];
   [(NSLayoutConstraint *)self->_labelWidthConstraint setConstant:v10];
   labelHeightConstraint = self->_labelHeightConstraint;
 

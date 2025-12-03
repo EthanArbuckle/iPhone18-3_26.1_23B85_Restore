@@ -1,6 +1,6 @@
 @interface HMMTRHAPService
-+ (id)chipPluginServiceForCharacteristic:(id)a3;
-- (HMMTRHAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7 endpoint:(id)a8;
++ (id)chipPluginServiceForCharacteristic:(id)characteristic;
+- (HMMTRHAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services endpoint:(id)endpoint;
 - (unint64_t)serviceProperties;
 @end
 
@@ -10,43 +10,43 @@
 {
   v5.receiver = self;
   v5.super_class = HMMTRHAPService;
-  v3 = [(HAPService *)&v5 serviceProperties];
-  return v3 | [(HMMTRHAPService *)self overriddenAsPrimary];
+  serviceProperties = [(HAPService *)&v5 serviceProperties];
+  return serviceProperties | [(HMMTRHAPService *)self overriddenAsPrimary];
 }
 
-- (HMMTRHAPService)initWithType:(id)a3 instanceID:(id)a4 parsedCharacteristics:(id)a5 serviceProperties:(unint64_t)a6 linkedServices:(id)a7 endpoint:(id)a8
+- (HMMTRHAPService)initWithType:(id)type instanceID:(id)d parsedCharacteristics:(id)characteristics serviceProperties:(unint64_t)properties linkedServices:(id)services endpoint:(id)endpoint
 {
-  v15 = a8;
+  endpointCopy = endpoint;
   v19.receiver = self;
   v19.super_class = HMMTRHAPService;
-  v16 = [(HAPService *)&v19 initWithType:a3 instanceID:a4 parsedCharacteristics:a5 serviceProperties:a6 linkedServices:a7];
+  v16 = [(HAPService *)&v19 initWithType:type instanceID:d parsedCharacteristics:characteristics serviceProperties:properties linkedServices:services];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_endpoint, a8);
+    objc_storeStrong(&v16->_endpoint, endpoint);
   }
 
   return v17;
 }
 
-+ (id)chipPluginServiceForCharacteristic:(id)a3
++ (id)chipPluginServiceForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [v3 service];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 service];
+    service2 = [characteristicCopy service];
   }
 
   else
   {
-    v6 = 0;
+    service2 = 0;
   }
 
-  return v6;
+  return service2;
 }
 
 @end

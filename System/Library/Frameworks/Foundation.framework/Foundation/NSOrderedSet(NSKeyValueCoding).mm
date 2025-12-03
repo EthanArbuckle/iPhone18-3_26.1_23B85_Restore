@@ -28,13 +28,13 @@
     v14 = 0;
   }
 
-  v6 = [a1 count];
+  v6 = [self count];
   if (v6)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+      v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
       if (v9)
       {
         LODWORD(v12) = 0;
@@ -51,11 +51,11 @@
 
 - (uint64_t)_avgForKeyPath:()NSKeyValueCoding
 {
-  result = [a1 count];
+  result = [self count];
   if (result)
   {
     v6 = result;
-    v7 = [a1 _sumForKeyPath:a3];
+    v7 = [self _sumForKeyPath:a3];
     v8 = [NSDecimalNumber numberWithUnsignedInteger:v6];
 
     return [v7 decimalNumberByDividingBy:v8];
@@ -66,14 +66,14 @@
 
 - (NSNumber)_countForKeyPath:()NSKeyValueCoding
 {
-  v1 = [a1 count];
+  v1 = [self count];
 
   return [NSNumber numberWithInteger:v1];
 }
 
 - (void)_maxForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
     return 0;
@@ -83,7 +83,7 @@
   v7 = 0;
   for (i = 0; i != v6; ++i)
   {
-    v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+    v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
     if (v9)
     {
       v10 = v9;
@@ -99,7 +99,7 @@
 
 - (void)_minForKeyPath:()NSKeyValueCoding
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
     return 0;
@@ -109,7 +109,7 @@
   v7 = 0;
   for (i = 0; i != v6; ++i)
   {
-    v9 = [a1 _valueForKeyPath:a3 ofObjectAtIndex:i];
+    v9 = [self _valueForKeyPath:a3 ofObjectAtIndex:i];
     if (v9)
     {
       v10 = v9;
@@ -130,20 +130,20 @@
   if (v5 && (v6 = v5, [a3 characterAtIndex:0] == 64) && (v7 = objc_msgSend(a3, "_newSubstringWithRange:zone:", 1, v6 - 1, 0)) != 0)
   {
     v8 = v7;
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = NSOrderedSet_0;
     v9 = objc_msgSendSuper2(&v17, sel_valueForKey_, v7);
   }
 
   else
   {
-    v10 = NSAllocateObjectArray([a1 count]);
+    v10 = NSAllocateObjectArray([self count]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v11 = 0;
-    v12 = [a1 countByEnumeratingWithState:&v19 objects:v18 count:16];
+    v12 = [self countByEnumeratingWithState:&v19 objects:v18 count:16];
     if (v12)
     {
       v13 = *v20;
@@ -154,7 +154,7 @@
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v15 = [*(*(&v19 + 1) + 8 * v14) valueForKey:a3];
@@ -167,7 +167,7 @@
         }
 
         while (v12 != v14);
-        v12 = [a1 countByEnumeratingWithState:&v19 objects:v18 count:16];
+        v12 = [self countByEnumeratingWithState:&v19 objects:v18 count:16];
       }
 
       while (v12);
@@ -187,7 +187,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (result)
   {
     v8 = result;
@@ -199,14 +199,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) setValue:a3 forKey:a4];
       }
 
       while (v8 != v10);
-      result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
       v8 = result;
     }
 
@@ -246,7 +246,7 @@
             {
 
               v23 = v10;
-              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), a1, v10), 0}];
+              v24 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"[<%@ %p> valueForKeyPath:]: this class does not implement the %@ operation.", objc_opt_class(), self, v10), 0}];
               objc_exception_throw(v24);
             }
           }
@@ -263,7 +263,7 @@
         v10 = [a3 _newSubstringWithRange:1 zone:{v6 - 1, 0}];
       }
 
-      v27.receiver = a1;
+      v27.receiver = self;
       v27.super_class = NSOrderedSet_0;
       v21 = objc_msgSendSuper2(&v27, sel_valueForKey_, v10);
 LABEL_11:
@@ -272,7 +272,7 @@ LABEL_11:
     }
   }
 
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = NSOrderedSet_0;
   return objc_msgSendSuper2(&v26, sel_valueForKeyPath_, a3);
 }

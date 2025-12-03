@@ -1,51 +1,51 @@
 @interface Browse_NAN
-- (Browse_NAN)initWithQueue:(id)a3;
-- (void)_ingestPrinter:(id)a3 txt:(id)a4 dataSession:(id)a5;
-- (void)activatedConnection:(id)a3 forEndpoint:(id)a4;
+- (Browse_NAN)initWithQueue:(id)queue;
+- (void)_ingestPrinter:(id)printer txt:(id)txt dataSession:(id)session;
+- (void)activatedConnection:(id)connection forEndpoint:(id)endpoint;
 - (void)cancel;
 - (void)start;
-- (void)startDataSession:(id)a3;
+- (void)startDataSession:(id)session;
 @end
 
 @implementation Browse_NAN
 
-- (Browse_NAN)initWithQueue:(id)a3
+- (Browse_NAN)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = Browse_NAN;
   v6 = [(Browse_NAN *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
   }
 
   return v7;
 }
 
-- (void)_ingestPrinter:(id)a3 txt:(id)a4 dataSession:(id)a5
+- (void)_ingestPrinter:(id)printer txt:(id)txt dataSession:(id)session
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[NANBrowse_Entity alloc] initWithURL:v12 txt:v8 dataSession:v9];
+  printerCopy = printer;
+  txtCopy = txt;
+  sessionCopy = session;
+  v10 = [[NANBrowse_Entity alloc] initWithURL:printerCopy txt:txtCopy dataSession:sessionCopy];
   if (v10)
   {
-    v11 = [(Browse_Implementation *)self addEntity];
-    (v11)[2](v11, v10);
+    addEntity = [(Browse_Implementation *)self addEntity];
+    (addEntity)[2](addEntity, v10);
   }
 }
 
-- (void)activatedConnection:(id)a3 forEndpoint:(id)a4
+- (void)activatedConnection:(id)connection forEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  endpointCopy = endpoint;
   memset(&v21[1], 0, 24);
   v22 = 0;
-  if (v6)
+  if (connectionCopy)
   {
-    [v6 peerAddress];
+    [connectionCopy peerAddress];
   }
 
   memset(v27, 0, sizeof(v27));
@@ -55,9 +55,9 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v24 = v6;
+      v24 = connectionCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NAN data path for %@/%@ - couldn't create peer address string", buf, 0x16u);
     }
   }
@@ -77,8 +77,8 @@
 
     v11 = [NSString stringWithUTF8String:v27];
     v12 = [NSNumber numberWithUnsignedShort:v10];
-    v13 = [v7 textInfo];
-    v14 = [v13 objectForKeyedSubscript:@"rp"];
+    textInfo = [endpointCopy textInfo];
+    v14 = [textInfo objectForKeyedSubscript:@"rp"];
     v8 = PKURLWithComponents(@"ipp", v11, v12, v14);
 
     if (v8)
@@ -93,7 +93,7 @@
       v16 = v15;
       v19 = v16;
       objc_copyWeak(v21, buf);
-      v20 = v6;
+      v20 = connectionCopy;
       [PKPrinterBonjourEndpoint resolveWithURL:v18 timeout:v17 completionHandler:30.0];
 
       objc_destroyWeak(v21);
@@ -115,15 +115,15 @@
   }
 }
 
-- (void)startDataSession:(id)a3
+- (void)startDataSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = objc_opt_new();
   [v5 setDispatchQueue:self->_queue];
-  v6 = [NSString stringWithFormat:@"com.apple.printing.nan<%p>", v4];
-  [v5 setLabel:v6];
+  sessionCopy = [NSString stringWithFormat:@"com.apple.printing.nan<%p>", sessionCopy];
+  [v5 setLabel:sessionCopy];
 
-  [v5 setPeerEndpoint:v4];
+  [v5 setPeerEndpoint:sessionCopy];
   [v5 setTerminationHandler:&stru_1000A29D0];
   [v5 setTrafficFlags:0];
   v7 = _PKLogCategory(PKLogCategoryDiscovery[0]);
@@ -142,7 +142,7 @@
   v8 = v5;
   v11 = v8;
   objc_copyWeak(&v13, buf);
-  v9 = v4;
+  v9 = sessionCopy;
   v12 = v9;
   [v8 activateWithCompletion:v10];
 

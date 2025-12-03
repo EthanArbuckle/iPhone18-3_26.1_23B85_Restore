@@ -1,63 +1,63 @@
 @interface SCATDriver
 - (BOOL)_canAutomaticallyPauseScanner;
-- (BOOL)_fireSelectActionWithCount:(unint64_t)a3 preferrsMenuOnFirstPress:(BOOL)a4;
+- (BOOL)_fireSelectActionWithCount:(unint64_t)count preferrsMenuOnFirstPress:(BOOL)press;
 - (BOOL)_handleActivateAction;
 - (BOOL)_handleSelectAction;
 - (BOOL)_handleSelectAndResumeAutoscanningAction;
-- (BOOL)_shouldFocusToEscapeParentGroup:(id)a3 elementManager:(id)a4;
-- (BOOL)actionHandler:(id)a3 shouldActImmediatelyOnActionCount:(unint64_t)a4;
-- (BOOL)handleInputAction:(id)a3;
+- (BOOL)_shouldFocusToEscapeParentGroup:(id)group elementManager:(id)manager;
+- (BOOL)actionHandler:(id)handler shouldActImmediatelyOnActionCount:(unint64_t)count;
+- (BOOL)handleInputAction:(id)action;
 - (BOOL)isActiveScannerDriver;
 - (BOOL)isGroupingEnabled;
 - (BOOL)isSpeakingFocusContext;
-- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)a3;
+- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)cycles;
 - (NSString)description;
 - (SCATDriver)init;
-- (SCATDriver)initWithDelegate:(id)a3;
+- (SCATDriver)initWithDelegate:(id)delegate;
 - (SCATDriverDelegate)delegate;
 - (SCATElementManager)activeElementManager;
-- (id)_drillOutFocusContextForParentGroupOfFocusContext:(id)a3;
-- (id)_focusContextAdjacentToSource:(int)a3 direction:(int64_t)a4 fromContext:(id)a5 checkedSources:(unint64_t)a6;
-- (id)_focusContextForSource:(int)a3 inDirection:(int64_t)a4 currentContext:(id)a5;
-- (id)_focusContextFromPrimaryContext:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5;
+- (id)_drillOutFocusContextForParentGroupOfFocusContext:(id)context;
+- (id)_focusContextAdjacentToSource:(int)source direction:(int64_t)direction fromContext:(id)context checkedSources:(unint64_t)sources;
+- (id)_focusContextForSource:(int)source inDirection:(int64_t)direction currentContext:(id)context;
+- (id)_focusContextFromPrimaryContext:(id)context inDirection:(int64_t)direction didWrap:(BOOL *)wrap;
 - (id)firstFocusContext;
-- (id)nextFocusContextFromContext:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5;
+- (id)nextFocusContextFromContext:(id)context inDirection:(int64_t)direction didWrap:(BOOL *)wrap;
 - (id)selectActionHandler;
 - (id)selectAndResumeAutoscanningActionHandler;
-- (int)_preferredBehaviorForSelectCount:(unint64_t)a3 focusContext:(id)a4;
+- (int)_preferredBehaviorForSelectCount:(unint64_t)count focusContext:(id)context;
 - (void)_cancelIdleTimer;
-- (void)_didTransitionToPhase:(int)a3;
+- (void)_didTransitionToPhase:(int)phase;
 - (void)_resetIdleTimer;
-- (void)_sendItemScanInformation:(BOOL)a3;
+- (void)_sendItemScanInformation:(BOOL)information;
 - (void)_setupDeviceMonitor;
-- (void)_stepToNextFocusContextInDirection:(int64_t)a3;
-- (void)actionHandlerDidFireAction:(id)a3;
-- (void)beginScanningWithFocusContext:(id)a3;
-- (void)continueScanningWithFocusContext:(id)a3;
+- (void)_stepToNextFocusContextInDirection:(int64_t)direction;
+- (void)actionHandlerDidFireAction:(id)action;
+- (void)beginScanningWithFocusContext:(id)context;
+- (void)continueScanningWithFocusContext:(id)context;
 - (void)dealloc;
 - (void)endScanning;
-- (void)handleDrillInOnGroup:(id)a3 elementManager:(id)a4;
-- (void)handleDrillOutOnGroup:(id)a3 elementManager:(id)a4;
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4;
-- (void)outputManager:(id)a3 willSpeakFocusContext:(id)a4;
+- (void)handleDrillInOnGroup:(id)group elementManager:(id)manager;
+- (void)handleDrillOutOnGroup:(id)group elementManager:(id)manager;
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context;
+- (void)outputManager:(id)manager willSpeakFocusContext:(id)context;
 - (void)pauseScanning;
 - (void)resumeScanning;
-- (void)selectItemWithIndex:(int64_t)a3;
-- (void)setFocusContext:(id)a3;
+- (void)selectItemWithIndex:(int64_t)index;
+- (void)setFocusContext:(id)context;
 @end
 
 @implementation SCATDriver
 
-- (SCATDriver)initWithDelegate:(id)a3
+- (SCATDriver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SCATDriver;
   v5 = [(SCATDriver *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_phase = 0;
     v7 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
     idleTimer = v6->_idleTimer;
@@ -87,96 +87,96 @@
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
   v5 = [NSNumber numberWithBool:[(SCATDriver *)self hasIdleTimeExpired]];
-  v6 = [(SCATDriver *)self activeElementManager];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
   v7 = [NSNumber numberWithBool:[(SCATDriver *)self isActiveScannerDriver]];
-  v8 = [(SCATDriver *)self focusContext];
-  v9 = [NSString stringWithFormat:@"%@<%p>. idleTimeExpired:%@ ActiveManager:(%@) isActiveDriver:%@ FocusContext:(%@)", v4, self, v5, v6, v7, v8];
+  focusContext = [(SCATDriver *)self focusContext];
+  v9 = [NSString stringWithFormat:@"%@<%p>. idleTimeExpired:%@ ActiveManager:(%@) isActiveDriver:%@ FocusContext:(%@)", v4, self, v5, activeElementManager, v7, focusContext];
 
   return v9;
 }
 
-- (void)setFocusContext:(id)a3
+- (void)setFocusContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   p_focusContext = &self->_focusContext;
-  if (self->_focusContext != v5)
+  if (self->_focusContext != contextCopy)
   {
-    v27 = v5;
-    v7 = [(SCATDriver *)self delegate];
+    v27 = contextCopy;
+    delegate = [(SCATDriver *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(SCATDriver *)self delegate];
-      [v9 driver:self willFocusOnContext:v27];
+      delegate2 = [(SCATDriver *)self delegate];
+      [delegate2 driver:self willFocusOnContext:v27];
     }
 
-    v10 = [(SCATFocusContext *)v27 elementManager];
+    elementManager = [(SCATFocusContext *)v27 elementManager];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(SCATFocusContext *)v27 elementManager];
-      [v12 driver:self willFocusOnContext:v27];
+      elementManager2 = [(SCATFocusContext *)v27 elementManager];
+      [elementManager2 driver:self willFocusOnContext:v27];
     }
 
-    v13 = [(SCATDriver *)self delegate];
+    delegate3 = [(SCATDriver *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(SCATDriver *)self delegate];
-      [v15 driver:self willUnfocusFromContext:self->_focusContext];
+      delegate4 = [(SCATDriver *)self delegate];
+      [delegate4 driver:self willUnfocusFromContext:self->_focusContext];
     }
 
-    v16 = [(SCATFocusContext *)*p_focusContext elementManager];
+    elementManager3 = [(SCATFocusContext *)*p_focusContext elementManager];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(SCATFocusContext *)self->_focusContext elementManager];
-      [v18 driver:self willUnfocusFromContext:self->_focusContext];
+      elementManager4 = [(SCATFocusContext *)self->_focusContext elementManager];
+      [elementManager4 driver:self willUnfocusFromContext:self->_focusContext];
     }
 
-    v19 = [(SCATFocusContext *)*p_focusContext element];
-    if ([v19 scatIndicatesOwnFocus] && (objc_opt_respondsToSelector() & 1) != 0)
+    element = [(SCATFocusContext *)*p_focusContext element];
+    if ([element scatIndicatesOwnFocus] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v19 scatDidBecomeFocused:0];
+      [element scatDidBecomeFocused:0];
     }
 
-    v20 = [(SCATDriver *)self delegate];
+    delegate5 = [(SCATDriver *)self delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(SCATDriver *)self delegate];
-      [v22 driver:self didFocusOnContext:v27 oldContext:self->_focusContext];
+      delegate6 = [(SCATDriver *)self delegate];
+      [delegate6 driver:self didFocusOnContext:v27 oldContext:self->_focusContext];
     }
 
-    v23 = [(SCATFocusContext *)v27 elementManager];
+    elementManager5 = [(SCATFocusContext *)v27 elementManager];
     v24 = objc_opt_respondsToSelector();
 
     if (v24)
     {
-      v25 = [(SCATFocusContext *)v27 elementManager];
-      [v25 driver:self didFocusOnContext:v27 oldContext:self->_focusContext];
+      elementManager6 = [(SCATFocusContext *)v27 elementManager];
+      [elementManager6 driver:self didFocusOnContext:v27 oldContext:self->_focusContext];
     }
 
-    objc_storeStrong(&self->_focusContext, a3);
-    v26 = [(SCATFocusContext *)v27 element];
-    if ([v26 scatIndicatesOwnFocus] && (objc_opt_respondsToSelector() & 1) != 0)
+    objc_storeStrong(&self->_focusContext, context);
+    element2 = [(SCATFocusContext *)v27 element];
+    if ([element2 scatIndicatesOwnFocus] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v26 scatDidBecomeFocused:1];
+      [element2 scatDidBecomeFocused:1];
     }
 
-    v5 = v27;
+    contextCopy = v27;
   }
 }
 
 - (SCATElementManager)activeElementManager
 {
-  v3 = [(SCATDriver *)self delegate];
-  v4 = [v3 activeElementManagerForDriver:self];
+  delegate = [(SCATDriver *)self delegate];
+  v4 = [delegate activeElementManagerForDriver:self];
 
   return v4;
 }
@@ -184,85 +184,85 @@
 - (BOOL)isGroupingEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchGroupElementsEnabled];
+  assistiveTouchGroupElementsEnabled = [v2 assistiveTouchGroupElementsEnabled];
 
-  return v3;
+  return assistiveTouchGroupElementsEnabled;
 }
 
 - (id)selectActionHandler
 {
   v2 = +[SCATScannerManager sharedManager];
-  v3 = [v2 selectActionHandler];
+  selectActionHandler = [v2 selectActionHandler];
 
-  return v3;
+  return selectActionHandler;
 }
 
 - (id)selectAndResumeAutoscanningActionHandler
 {
   v2 = +[SCATScannerManager sharedManager];
-  v3 = [v2 selectAndResumeAutoscanningActionHandler];
+  selectAndResumeAutoscanningActionHandler = [v2 selectAndResumeAutoscanningActionHandler];
 
-  return v3;
+  return selectAndResumeAutoscanningActionHandler;
 }
 
 - (BOOL)isActiveScannerDriver
 {
-  v2 = self;
-  v3 = [(SCATDriver *)self delegate];
-  v4 = [v3 activeScannerDriver];
-  LOBYTE(v2) = [(SCATDriver *)v2 isEqual:v4];
+  selfCopy = self;
+  delegate = [(SCATDriver *)self delegate];
+  activeScannerDriver = [delegate activeScannerDriver];
+  LOBYTE(selfCopy) = [(SCATDriver *)selfCopy isEqual:activeScannerDriver];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)beginScanningWithFocusContext:(id)a3
+- (void)beginScanningWithFocusContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v4 = +[NSDate now];
   [(SCATDriver *)self setActionStartTime:v4];
 
   if ([(SCATDriver *)self _canTransitionToPhase:1])
   {
     [(SCATDriver *)self _willTransitionToPhase:1];
-    v5 = v6;
-    if (!v6)
+    firstFocusContext = contextCopy;
+    if (!contextCopy)
     {
-      v5 = [(SCATDriver *)self firstFocusContext];
+      firstFocusContext = [(SCATDriver *)self firstFocusContext];
     }
 
-    v6 = v5;
-    [v5 setFirstInSequence:1];
-    [(SCATDriver *)self setFocusContext:v6];
+    contextCopy = firstFocusContext;
+    [firstFocusContext setFirstInSequence:1];
+    [(SCATDriver *)self setFocusContext:contextCopy];
     [(SCATDriver *)self _didTransitionToPhase:1];
     [(SCATDriver *)self _sendItemScanInformation:1];
   }
 }
 
-- (void)continueScanningWithFocusContext:(id)a3
+- (void)continueScanningWithFocusContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   if (self->_phase != 1)
   {
     _AXAssert();
-    v4 = v5;
+    contextCopy = v5;
   }
 
-  if (!v4)
+  if (!contextCopy)
   {
     _AXAssert();
-    v4 = v5;
+    contextCopy = v5;
   }
 
   if (self->_phase == 1)
   {
-    [v4 suppressAudioOutput];
+    [contextCopy suppressAudioOutput];
     [(SCATDriver *)self setFocusContext:v5];
   }
 
   else
   {
-    [(SCATDriver *)self beginScanningWithFocusContext:v4];
+    [(SCATDriver *)self beginScanningWithFocusContext:contextCopy];
   }
 }
 
@@ -297,47 +297,47 @@
   }
 }
 
-- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)a3
+- (BOOL)pauseScanningForPointPickerNumberOfCycles:(unint64_t)cycles
 {
-  v5 = [(SCATDriver *)self _canAutomaticallyPauseScanner];
-  if (v5)
+  _canAutomaticallyPauseScanner = [(SCATDriver *)self _canAutomaticallyPauseScanner];
+  if (_canAutomaticallyPauseScanner)
   {
-    v5 = [(SCATDriver *)self hasIdleTimeExpired];
-    if (v5)
+    _canAutomaticallyPauseScanner = [(SCATDriver *)self hasIdleTimeExpired];
+    if (_canAutomaticallyPauseScanner)
     {
-      v6 = [(SCATDriver *)self delegate];
-      v7 = [v6 minimumPointPickerNumberOfCyclesForDriver:self];
+      delegate = [(SCATDriver *)self delegate];
+      v7 = [delegate minimumPointPickerNumberOfCyclesForDriver:self];
 
-      if (v7 <= a3)
+      if (v7 <= cycles)
       {
         [(SCATDriver *)self pauseScanning];
-        LOBYTE(v5) = 1;
+        LOBYTE(_canAutomaticallyPauseScanner) = 1;
       }
 
       else
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(_canAutomaticallyPauseScanner) = 0;
       }
     }
   }
 
-  return v5;
+  return _canAutomaticallyPauseScanner;
 }
 
-- (int)_preferredBehaviorForSelectCount:(unint64_t)a3 focusContext:(id)a4
+- (int)_preferredBehaviorForSelectCount:(unint64_t)count focusContext:(id)context
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 != 2)
+  contextCopy = context;
+  v6 = contextCopy;
+  if (count != 2)
   {
-    if (a3 != 1)
+    if (count != 1)
     {
       v10 = 0;
       goto LABEL_9;
     }
 
-    v7 = [v5 element];
-    v8 = [v7 scatSupportsAction:2010];
+    element = [contextCopy element];
+    v8 = [element scatSupportsAction:2010];
 
     if (v8)
     {
@@ -355,9 +355,9 @@
   v10 = 2;
 LABEL_9:
   v11 = +[AXSettings sharedInstance];
-  v12 = [v11 switchControlHasEmptyTopLevelMenu];
+  switchControlHasEmptyTopLevelMenu = [v11 switchControlHasEmptyTopLevelMenu];
 
-  if (v12)
+  if (switchControlHasEmptyTopLevelMenu)
   {
     v9 = 1;
   }
@@ -372,27 +372,27 @@ LABEL_12:
   return v9;
 }
 
-- (id)_focusContextForSource:(int)a3 inDirection:(int64_t)a4 currentContext:(id)a5
+- (id)_focusContextForSource:(int)source inDirection:(int64_t)direction currentContext:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v15 = 0;
-  if (a3)
+  if (source)
   {
-    v9 = [(SCATDriver *)self _drillOutFocusContextForParentGroupOfFocusContext:v8];
+    v9 = [(SCATDriver *)self _drillOutFocusContextForParentGroupOfFocusContext:contextCopy];
     goto LABEL_15;
   }
 
-  v10 = [(SCATDriver *)self activeElementManager];
-  if ([v8 selectBehavior] != 4)
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  if ([contextCopy selectBehavior] != 4)
   {
-    if (a4 == 1)
+    if (direction == 1)
     {
-      [v10 lastElementWithOptions:&v15];
+      [activeElementManager lastElementWithOptions:&v15];
     }
 
     else
     {
-      [v10 firstElementWithOptions:&v15];
+      [activeElementManager firstElementWithOptions:&v15];
     }
     v13 = ;
     if (v13)
@@ -405,16 +405,16 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v11 = [v8 element];
-  v12 = v11;
-  if (a4 == 1)
+  element = [contextCopy element];
+  v12 = element;
+  if (direction == 1)
   {
-    [v11 lastChild];
+    [element lastChild];
   }
 
   else
   {
-    [v11 firstChild];
+    [element firstChild];
   }
   v13 = ;
 
@@ -424,7 +424,7 @@ LABEL_13:
   }
 
 LABEL_10:
-  v9 = [SCATFocusContext focusContextWithElement:v13 elementManager:v10 selectBehavior:0 options:v15];
+  v9 = [SCATFocusContext focusContextWithElement:v13 elementManager:activeElementManager selectBehavior:0 options:v15];
 LABEL_14:
 
 LABEL_15:
@@ -432,34 +432,34 @@ LABEL_15:
   return v9;
 }
 
-- (id)_focusContextAdjacentToSource:(int)a3 direction:(int64_t)a4 fromContext:(id)a5 checkedSources:(unint64_t)a6
+- (id)_focusContextAdjacentToSource:(int)source direction:(int64_t)direction fromContext:(id)context checkedSources:(unint64_t)sources
 {
-  v8 = *&a3;
-  v10 = a5;
-  v11 = [(SCATDriver *)self _nextFocusSourceFromSource:v8 inDirection:a4];
-  v12 = [(SCATDriver *)self _focusContextForSource:v11 inDirection:a4 currentContext:v10];
+  v8 = *&source;
+  contextCopy = context;
+  v11 = [(SCATDriver *)self _nextFocusSourceFromSource:v8 inDirection:direction];
+  v12 = [(SCATDriver *)self _focusContextForSource:v11 inDirection:direction currentContext:contextCopy];
   v13 = v12;
-  if (a6 <= 1 && !v12)
+  if (sources <= 1 && !v12)
   {
-    v13 = [(SCATDriver *)self _focusContextAdjacentToSource:v11 direction:a4 fromContext:v10 checkedSources:a6 + 1];
+    v13 = [(SCATDriver *)self _focusContextAdjacentToSource:v11 direction:direction fromContext:contextCopy checkedSources:sources + 1];
   }
 
   return v13;
 }
 
-- (id)_drillOutFocusContextForParentGroupOfFocusContext:(id)a3
+- (id)_drillOutFocusContextForParentGroupOfFocusContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 element];
-  v6 = [v5 parentGroup];
+  contextCopy = context;
+  element = [contextCopy element];
+  parentGroup = [element parentGroup];
 
-  v7 = [v4 elementManager];
-  LODWORD(self) = [(SCATDriver *)self _shouldFocusToEscapeParentGroup:v6 elementManager:v7];
+  elementManager = [contextCopy elementManager];
+  LODWORD(self) = [(SCATDriver *)self _shouldFocusToEscapeParentGroup:parentGroup elementManager:elementManager];
 
   if (self)
   {
-    v8 = [v4 elementManager];
-    v9 = [SCATFocusContext focusContextWithElement:v6 elementManager:v8 selectBehavior:4 options:0];
+    elementManager2 = [contextCopy elementManager];
+    v9 = [SCATFocusContext focusContextWithElement:parentGroup elementManager:elementManager2 selectBehavior:4 options:0];
   }
 
   else
@@ -470,30 +470,30 @@ LABEL_15:
   return v9;
 }
 
-- (id)_focusContextFromPrimaryContext:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5
+- (id)_focusContextFromPrimaryContext:(id)context inDirection:(int64_t)direction didWrap:(BOOL *)wrap
 {
   v18 = 0;
   v17 = 0;
-  v7 = a3;
-  v8 = [v7 elementManager];
-  v9 = [v7 element];
-  v10 = [v8 siblingOfElement:v9 inDirection:a4 didWrap:&v17 options:&v18];
+  contextCopy = context;
+  elementManager = [contextCopy elementManager];
+  element = [contextCopy element];
+  v10 = [elementManager siblingOfElement:element inDirection:direction didWrap:&v17 options:&v18];
 
-  v11 = [v7 elementManager];
+  elementManager2 = [contextCopy elementManager];
 
   if (v10)
   {
-    v12 = [SCATFocusContext focusContextWithElement:v10 elementManager:v11 selectBehavior:0 options:v18];
+    v12 = [SCATFocusContext focusContextWithElement:v10 elementManager:elementManager2 selectBehavior:0 options:v18];
     v13 = +[SCATScannerManager sharedManager];
-    v14 = [v13 menu];
+    menu = [v13 menu];
 
-    if ([v14 isVisible])
+    if ([menu isVisible])
     {
-      v15 = [v14 element];
-      [v12 setMenuElement:v15];
+      element2 = [menu element];
+      [v12 setMenuElement:element2];
     }
 
-    if (a5)
+    if (wrap)
     {
       goto LABEL_5;
     }
@@ -502,29 +502,29 @@ LABEL_15:
   else
   {
     v12 = 0;
-    if (a5)
+    if (wrap)
     {
 LABEL_5:
-      *a5 = v17;
+      *wrap = v17;
     }
   }
 
   return v12;
 }
 
-- (id)nextFocusContextFromContext:(id)a3 inDirection:(int64_t)a4 didWrap:(BOOL *)a5
+- (id)nextFocusContextFromContext:(id)context inDirection:(int64_t)direction didWrap:(BOOL *)wrap
 {
-  v8 = a3;
+  contextCopy = context;
   v9 = SWCHLogElementNav();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_1001285F8(v8);
+    sub_1001285F8(contextCopy);
   }
 
-  v10 = [(SCATDriver *)self _focusedElementManagerForContext:v8];
+  v10 = [(SCATDriver *)self _focusedElementManagerForContext:contextCopy];
   if (v10)
   {
-    v11 = [(SCATDriver *)self _sourceForFocusContext:v8];
+    v11 = [(SCATDriver *)self _sourceForFocusContext:contextCopy];
     v26[0] = 0;
     if (v11)
     {
@@ -533,7 +533,7 @@ LABEL_5:
 
     else
     {
-      v12 = [(SCATDriver *)self _focusContextFromPrimaryContext:v8 inDirection:a4 didWrap:v26];
+      v12 = [(SCATDriver *)self _focusContextFromPrimaryContext:contextCopy inDirection:direction didWrap:v26];
       v16 = SWCHLogElementNav();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
@@ -541,10 +541,10 @@ LABEL_5:
       }
     }
 
-    v17 = [v8 element];
-    v18 = [v12 menuElement];
+    element = [contextCopy element];
+    menuElement = [v12 menuElement];
 
-    if (v17 == v18)
+    if (element == menuElement)
     {
       v19 = SWCHLogElementNav();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -553,27 +553,27 @@ LABEL_5:
       }
     }
 
-    v20 = v17 != v18;
+    v20 = element != menuElement;
     if (v12)
     {
       v15 = v26[0];
       if ((v26[0] & v20) == 0)
       {
-        v14 = v12;
+        firstFocusContext = v12;
         goto LABEL_26;
       }
     }
 
-    v14 = [(SCATDriver *)self _focusContextAdjacentToSource:v11 direction:a4 fromContext:v8 checkedSources:0];
+    firstFocusContext = [(SCATDriver *)self _focusContextAdjacentToSource:v11 direction:direction fromContext:contextCopy checkedSources:0];
 
     v21 = SWCHLogElementNav();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      sub_100128744(v14);
+      sub_100128744(firstFocusContext);
     }
 
     v15 = v26[0];
-    if (!v14)
+    if (!firstFocusContext)
     {
       goto LABEL_23;
     }
@@ -584,30 +584,30 @@ LABEL_5:
     v13 = SWCHLogElementNav();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001287D0(v8);
+      sub_1001287D0(contextCopy);
     }
 
-    v14 = [(SCATDriver *)self firstFocusContext];
+    firstFocusContext = [(SCATDriver *)self firstFocusContext];
     v15 = 0;
-    if (!v14)
+    if (!firstFocusContext)
     {
 LABEL_23:
       v22 = SWCHLogElementNav();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *v26 = 138543362;
-        *&v26[4] = v8;
+        *&v26[4] = contextCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "siblingElement was nil for context:%{public}@. will scan first context instead", v26, 0xCu);
       }
 
-      v14 = [(SCATDriver *)self firstFocusContext];
+      firstFocusContext = [(SCATDriver *)self firstFocusContext];
     }
   }
 
 LABEL_26:
   if ((v15 & 1) == 0)
   {
-    if (!a5)
+    if (!wrap)
     {
       goto LABEL_29;
     }
@@ -625,25 +625,25 @@ LABEL_26:
   v25 = +[HNDAccessibilityManager sharedManager];
   [v25 refreshElements];
 
-  if (a5)
+  if (wrap)
   {
 LABEL_28:
-    *a5 = v15 & 1;
+    *wrap = v15 & 1;
   }
 
 LABEL_29:
 
-  return v14;
+  return firstFocusContext;
 }
 
 - (id)firstFocusContext
 {
-  v2 = [(SCATDriver *)self activeElementManager];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
   v6 = 0;
-  v3 = [v2 firstElementWithOptions:&v6];
+  v3 = [activeElementManager firstElementWithOptions:&v6];
   if (v3)
   {
-    v4 = [SCATFocusContext focusContextWithElement:v3 elementManager:v2 selectBehavior:0 options:v6];
+    v4 = [SCATFocusContext focusContextWithElement:v3 elementManager:activeElementManager selectBehavior:0 options:v6];
   }
 
   else
@@ -654,53 +654,53 @@ LABEL_29:
   return v4;
 }
 
-- (void)_stepToNextFocusContextInDirection:(int64_t)a3
+- (void)_stepToNextFocusContextInDirection:(int64_t)direction
 {
   v5 = +[NSDate now];
   [(SCATDriver *)self setActionStartTime:v5];
 
-  v6 = [(SCATDriver *)self focusContext];
-  v7 = [(SCATDriver *)self _focusedElementManagerForContext:v6];
+  focusContext = [(SCATDriver *)self focusContext];
+  v7 = [(SCATDriver *)self _focusedElementManagerForContext:focusContext];
 
-  v8 = [(SCATDriver *)self focusContext];
-  v9 = [v8 elementManager];
+  focusContext2 = [(SCATDriver *)self focusContext];
+  elementManager = [focusContext2 elementManager];
 
-  if ([v7 isEqual:v9])
+  if ([v7 isEqual:elementManager])
   {
     v21 = 0;
-    v10 = [(SCATDriver *)self focusContext];
-    v11 = [(SCATDriver *)self nextFocusContextFromContext:v10 inDirection:a3 didWrap:&v21];
+    focusContext3 = [(SCATDriver *)self focusContext];
+    firstFocusContext = [(SCATDriver *)self nextFocusContextFromContext:focusContext3 inDirection:direction didWrap:&v21];
 
     if (v21 == 1)
     {
-      [(SCATDriver *)self _didWrapInDirection:a3];
+      [(SCATDriver *)self _didWrapInDirection:direction];
     }
   }
 
   else
   {
-    v11 = [(SCATDriver *)self firstFocusContext];
+    firstFocusContext = [(SCATDriver *)self firstFocusContext];
   }
 
   v12 = +[SCATScannerManager sharedManager];
-  v13 = [v12 menu];
-  v14 = [v13 isVisible];
+  menu = [v12 menu];
+  isVisible = [menu isVisible];
 
-  if (v14)
+  if (isVisible)
   {
     v15 = +[SCATScannerManager sharedManager];
-    v16 = [v15 menu];
-    v17 = [v16 element];
-    [v11 setMenuElement:v17];
+    menu2 = [v15 menu];
+    element = [menu2 element];
+    [firstFocusContext setMenuElement:element];
   }
 
-  [(SCATDriver *)self _willStepToNextFocusContext:v11 inDirection:a3];
-  if (v11)
+  [(SCATDriver *)self _willStepToNextFocusContext:firstFocusContext inDirection:direction];
+  if (firstFocusContext)
   {
-    [(SCATDriver *)self setFocusContext:v11];
-    v18 = [v11 elementManager];
-    v19 = [v11 element];
-    v20 = [v18 indexOfElementInCurrentScanCycle:v19];
+    [(SCATDriver *)self setFocusContext:firstFocusContext];
+    elementManager2 = [firstFocusContext elementManager];
+    element2 = [firstFocusContext element];
+    v20 = [elementManager2 indexOfElementInCurrentScanCycle:element2];
 
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -710,69 +710,69 @@ LABEL_29:
   }
 }
 
-- (void)handleDrillInOnGroup:(id)a3 elementManager:(id)a4
+- (void)handleDrillInOnGroup:(id)group elementManager:(id)manager
 {
-  v11 = a3;
-  v6 = a4;
+  groupCopy = group;
+  managerCopy = manager;
   v7 = +[NSDate now];
   [(SCATDriver *)self setActionStartTime:v7];
 
-  if (!v6)
+  if (!managerCopy)
   {
-    v8 = [(SCATDriver *)self focusContext];
-    v6 = [v8 elementManager];
+    focusContext = [(SCATDriver *)self focusContext];
+    managerCopy = [focusContext elementManager];
   }
 
-  v9 = [v11 firstChild];
-  v10 = [SCATFocusContext focusContextWithElement:v9 elementManager:v6 selectBehavior:0 options:0];
+  firstChild = [groupCopy firstChild];
+  v10 = [SCATFocusContext focusContextWithElement:firstChild elementManager:managerCopy selectBehavior:0 options:0];
   [v10 setFirstInSequence:1];
   [(SCATDriver *)self willDrillIntoGroup];
   [(SCATDriver *)self setFocusContext:v10];
   [(SCATDriver *)self _sendItemScanInformation:1];
 }
 
-- (void)handleDrillOutOnGroup:(id)a3 elementManager:(id)a4
+- (void)handleDrillOutOnGroup:(id)group elementManager:(id)manager
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  managerCopy = manager;
   v7 = +[NSDate now];
   [(SCATDriver *)self setActionStartTime:v7];
 
-  if (!v6)
+  if (!managerCopy)
   {
-    v8 = [(SCATDriver *)self focusContext];
-    v6 = [v8 elementManager];
+    focusContext = [(SCATDriver *)self focusContext];
+    managerCopy = [focusContext elementManager];
   }
 
-  v9 = [v6 focusContextAfterDrillOutOnGroup:v10];
+  v9 = [managerCopy focusContextAfterDrillOutOnGroup:groupCopy];
   [v9 setFirstInSequence:1];
   [(SCATDriver *)self willDrillOutOfGroup];
   [(SCATDriver *)self setFocusContext:v9];
   [(SCATDriver *)self _sendItemScanInformation:1];
 }
 
-- (BOOL)handleInputAction:(id)a3
+- (BOOL)handleInputAction:(id)action
 {
-  v4 = a3;
-  if ([v4 action] != 103 && objc_msgSend(v4, "action") != 109)
+  actionCopy = action;
+  if ([actionCopy action] != 103 && objc_msgSend(actionCopy, "action") != 109)
   {
-    v5 = [(SCATDriver *)self selectActionHandler];
-    [v5 cancelPendingAction];
+    selectActionHandler = [(SCATDriver *)self selectActionHandler];
+    [selectActionHandler cancelPendingAction];
   }
 
-  v6 = [(SCATDriver *)self focusContext];
-  v7 = [v6 element];
+  focusContext = [(SCATDriver *)self focusContext];
+  element = [focusContext element];
 
-  v8 = [(SCATDriver *)self activeElementManager];
-  v9 = [v8 handleInputAction:v4 withElement:v7];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  v9 = [activeElementManager handleInputAction:actionCopy withElement:element];
 
   if (!v9)
   {
-    v11 = [v4 action];
+    action = [actionCopy action];
     v10 = 0;
-    if (v11 <= 103)
+    if (action <= 103)
     {
-      switch(v11)
+      switch(action)
       {
         case 'd':
           if ([(SCATDriver *)self _handleActivateAction])
@@ -782,7 +782,7 @@ LABEL_29:
 
           break;
         case 'f':
-          v12 = [(SCATDriver *)self _handleRunAction];
+          _handleRunAction = [(SCATDriver *)self _handleRunAction];
           goto LABEL_23;
         case 'g':
           break;
@@ -790,39 +790,39 @@ LABEL_29:
           goto LABEL_24;
       }
 
-      v12 = [(SCATDriver *)self _handleSelectAction];
+      _handleRunAction = [(SCATDriver *)self _handleSelectAction];
     }
 
-    else if (v11 > 105)
+    else if (action > 105)
     {
-      if (v11 == 106)
+      if (action == 106)
       {
-        v12 = [(SCATDriver *)self _handleStopAction];
+        _handleRunAction = [(SCATDriver *)self _handleStopAction];
       }
 
       else
       {
-        if (v11 != 109)
+        if (action != 109)
         {
           goto LABEL_24;
         }
 
-        v12 = [(SCATDriver *)self _handleSelectAndResumeAutoscanningAction];
+        _handleRunAction = [(SCATDriver *)self _handleSelectAndResumeAutoscanningAction];
       }
     }
 
-    else if (v11 == 104)
+    else if (action == 104)
     {
-      v12 = [(SCATDriver *)self _handleStepNextAction];
+      _handleRunAction = [(SCATDriver *)self _handleStepNextAction];
     }
 
     else
     {
-      v12 = [(SCATDriver *)self _handleStepPreviousAction];
+      _handleRunAction = [(SCATDriver *)self _handleStepPreviousAction];
     }
 
 LABEL_23:
-    v10 = v12;
+    v10 = _handleRunAction;
     goto LABEL_24;
   }
 
@@ -836,34 +836,34 @@ LABEL_24:
 
 - (BOOL)_handleActivateAction
 {
-  v3 = [(SCATDriver *)self focusContext];
-  v4 = [v3 element];
+  focusContext = [(SCATDriver *)self focusContext];
+  element = [focusContext element];
 
-  if (!v4)
+  if (!element)
   {
     goto LABEL_10;
   }
 
-  if ([v4 isGroup])
+  if ([element isGroup])
   {
-    v5 = [(SCATDriver *)self focusContext];
-    v6 = [v5 selectBehavior];
+    focusContext2 = [(SCATDriver *)self focusContext];
+    selectBehavior = [focusContext2 selectBehavior];
 
-    if (v6 == 4)
+    if (selectBehavior == 4)
     {
-      [(SCATDriver *)self handleDrillOutOnGroup:v4 elementManager:0];
+      [(SCATDriver *)self handleDrillOutOnGroup:element elementManager:0];
       goto LABEL_8;
     }
 
-    if (v6 == 3)
+    if (selectBehavior == 3)
     {
-      [(SCATDriver *)self handleDrillInOnGroup:v4 elementManager:0];
+      [(SCATDriver *)self handleDrillInOnGroup:element elementManager:0];
 LABEL_8:
       v8 = 1;
       goto LABEL_11;
     }
 
-    v10 = [(SCATDriver *)self focusContext];
+    focusContext3 = [(SCATDriver *)self focusContext];
     _AXLogWithFacility();
 
 LABEL_10:
@@ -872,34 +872,34 @@ LABEL_10:
   }
 
   v7 = +[SCATScannerManager sharedManager];
-  v8 = [v7 activateElement:v4];
+  v8 = [v7 activateElement:element];
 
 LABEL_11:
   return v8;
 }
 
-- (BOOL)_fireSelectActionWithCount:(unint64_t)a3 preferrsMenuOnFirstPress:(BOOL)a4
+- (BOOL)_fireSelectActionWithCount:(unint64_t)count preferrsMenuOnFirstPress:(BOOL)press
 {
-  v7 = [(SCATDriver *)self focusContext];
+  focusContext = [(SCATDriver *)self focusContext];
   p_superclass = &OBJC_METACLASS___SCATFocusContext.superclass;
   v9 = +[SCATScannerManager sharedManager];
-  v10 = [v7 element];
-  v11 = [v9 menu];
-  v12 = [v11 element];
-  v13 = v12;
-  if (v10 == v12)
+  element = [focusContext element];
+  menu = [v9 menu];
+  element2 = [menu element];
+  v13 = element2;
+  if (element == element2)
   {
-    v14 = [v9 menu];
-    v15 = [v14 isVisible];
+    menu2 = [v9 menu];
+    isVisible = [menu2 isVisible];
 
     p_superclass = (&OBJC_METACLASS___SCATFocusContext + 8);
-    if (v15)
+    if (isVisible)
     {
-      v16 = [v9 menu];
-      [v16 hideWithCompletion:0];
+      menu3 = [v9 menu];
+      [menu3 hideWithCompletion:0];
 
-      v17 = +[HNDAccessibilityManager sharedManager];
-      [v17 refreshElements];
+      element4 = +[HNDAccessibilityManager sharedManager];
+      [element4 refreshElements];
 LABEL_5:
 
       goto LABEL_41;
@@ -910,26 +910,26 @@ LABEL_5:
   {
   }
 
-  v18 = [(SCATDriver *)self _preferredBehaviorForSelectCount:a3 focusContext:v7];
-  v19 = [v7 selectBehavior];
-  if (!v7)
+  v18 = [(SCATDriver *)self _preferredBehaviorForSelectCount:count focusContext:focusContext];
+  selectBehavior = [focusContext selectBehavior];
+  if (!focusContext)
   {
 LABEL_34:
-    v24 = 0;
+    _handleSelectAction = 0;
     goto LABEL_42;
   }
 
-  if (v19 == 3 && v18 == 2)
+  if (selectBehavior == 3 && v18 == 2)
   {
     v21 = 2;
   }
 
   else
   {
-    v21 = v19;
+    v21 = selectBehavior;
   }
 
-  if (((v18 == 1) & ~a4 & (v19 == 2)) != 0)
+  if (((v18 == 1) & ~press & (selectBehavior == 2)) != 0)
   {
     v22 = 1;
   }
@@ -945,15 +945,15 @@ LABEL_34:
     {
       if (v22 == 3)
       {
-        v23 = [v7 element];
-        if (([v23 isGroup] & 1) == 0)
+        element3 = [focusContext element];
+        if (([element3 isGroup] & 1) == 0)
         {
           _AXAssert();
         }
 
-        if ([v23 isGroup])
+        if ([element3 isGroup])
         {
-          [(SCATDriver *)self handleDrillInOnGroup:v23 elementManager:0];
+          [(SCATDriver *)self handleDrillInOnGroup:element3 elementManager:0];
           goto LABEL_40;
         }
 
@@ -968,15 +968,15 @@ LABEL_34:
 
       if (v22 == 4)
       {
-        v23 = [v7 element];
-        if (([v23 isGroup] & 1) == 0)
+        element3 = [focusContext element];
+        if (([element3 isGroup] & 1) == 0)
         {
           _AXAssert();
         }
 
-        if ([v23 isGroup])
+        if ([element3 isGroup])
         {
-          [(SCATDriver *)self handleDrillOutOnGroup:v23 elementManager:0];
+          [(SCATDriver *)self handleDrillOutOnGroup:element3 elementManager:0];
 LABEL_40:
 
           goto LABEL_41;
@@ -997,14 +997,14 @@ LABEL_39:
       goto LABEL_33;
     }
 
-    v17 = [v7 element];
-    v25 = [p_superclass + 74 sharedManager];
-    v26 = [v25 menu];
-    [v26 presentWithElement:v17];
+    element4 = [focusContext element];
+    sharedManager = [p_superclass + 74 sharedManager];
+    menu4 = [sharedManager menu];
+    [menu4 presentWithElement:element4];
 
-    if ([v17 scatIsAXElement])
+    if ([element4 scatIsAXElement])
     {
-      [v17 setNativeFocus];
+      [element4 setNativeFocus];
       UIAccessibilityPostNotification(0x41Du, 0);
     }
 
@@ -1021,53 +1021,53 @@ LABEL_33:
   if ([(SCATDriver *)self _handleActivateAction])
   {
 LABEL_41:
-    v24 = 1;
+    _handleSelectAction = 1;
     goto LABEL_42;
   }
 
-  v24 = [(SCATDriver *)self _handleSelectAction];
+  _handleSelectAction = [(SCATDriver *)self _handleSelectAction];
 LABEL_42:
 
-  return v24;
+  return _handleSelectAction;
 }
 
 - (BOOL)_handleSelectAction
 {
-  v3 = [(SCATDriver *)self selectActionHandler];
-  [v3 notifyDidReceiveAction:self];
+  selectActionHandler = [(SCATDriver *)self selectActionHandler];
+  [selectActionHandler notifyDidReceiveAction:self];
 
   return 1;
 }
 
 - (BOOL)_handleSelectAndResumeAutoscanningAction
 {
-  v3 = [(SCATDriver *)self selectAndResumeAutoscanningActionHandler];
-  [v3 notifyDidReceiveAction:self];
+  selectAndResumeAutoscanningActionHandler = [(SCATDriver *)self selectAndResumeAutoscanningActionHandler];
+  [selectAndResumeAutoscanningActionHandler notifyDidReceiveAction:self];
 
   return 1;
 }
 
 - (BOOL)isSpeakingFocusContext
 {
-  v2 = [(SCATDriver *)self currentSpeechFocusContext];
-  v3 = v2 != 0;
+  currentSpeechFocusContext = [(SCATDriver *)self currentSpeechFocusContext];
+  v3 = currentSpeechFocusContext != 0;
 
   return v3;
 }
 
-- (void)outputManager:(id)a3 willSpeakFocusContext:(id)a4
+- (void)outputManager:(id)manager willSpeakFocusContext:(id)context
 {
-  [(SCATDriver *)self setCurrentSpeechFocusContext:a4];
+  [(SCATDriver *)self setCurrentSpeechFocusContext:context];
 
   [(SCATDriver *)self _cancelIdleTimer];
 }
 
-- (void)outputManager:(id)a3 didSpeakFocusContext:(id)a4
+- (void)outputManager:(id)manager didSpeakFocusContext:(id)context
 {
-  v5 = a4;
-  v6 = [(SCATDriver *)self currentSpeechFocusContext];
+  contextCopy = context;
+  currentSpeechFocusContext = [(SCATDriver *)self currentSpeechFocusContext];
 
-  if (v6 == v5)
+  if (currentSpeechFocusContext == contextCopy)
   {
     [(SCATDriver *)self setCurrentSpeechFocusContext:0];
 
@@ -1077,50 +1077,50 @@ LABEL_42:
 
 - (void)_cancelIdleTimer
 {
-  v2 = [(SCATDriver *)self idleTimer];
-  [v2 cancel];
+  idleTimer = [(SCATDriver *)self idleTimer];
+  [idleTimer cancel];
 }
 
 - (void)_resetIdleTimer
 {
   self->_hasIdleTimeExpired = 0;
-  v3 = [(SCATDriver *)self idleTimer];
-  [v3 cancel];
+  idleTimer = [(SCATDriver *)self idleTimer];
+  [idleTimer cancel];
 
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 assistiveTouchScanTimeoutEnabled];
+  assistiveTouchScanTimeoutEnabled = [v4 assistiveTouchScanTimeoutEnabled];
 
-  if (v5)
+  if (assistiveTouchScanTimeoutEnabled)
   {
     v6 = +[AXSettings sharedInstance];
     [v6 assistiveTouchScanTimeout];
     v8 = v7;
 
-    v9 = [(SCATDriver *)self idleTimer];
+    idleTimer2 = [(SCATDriver *)self idleTimer];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100022458;
     v10[3] = &unk_1001D3488;
     v10[4] = self;
-    [v9 afterDelay:v10 processBlock:v8];
+    [idleTimer2 afterDelay:v10 processBlock:v8];
   }
 }
 
 - (BOOL)_canAutomaticallyPauseScanner
 {
-  v2 = [(SCATDriver *)self activeElementManager];
-  v3 = [v2 shouldKeepScannerAwake];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  shouldKeepScannerAwake = [activeElementManager shouldKeepScannerAwake];
 
-  return v3 ^ 1;
+  return shouldKeepScannerAwake ^ 1;
 }
 
-- (BOOL)_shouldFocusToEscapeParentGroup:(id)a3 elementManager:(id)a4
+- (BOOL)_shouldFocusToEscapeParentGroup:(id)group elementManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [(SCATDriver *)self isGroupingEnabled])
+  groupCopy = group;
+  managerCopy = manager;
+  if (groupCopy && [(SCATDriver *)self isGroupingEnabled])
   {
-    v8 = [v6 isRootGroup] ^ 1;
+    v8 = [groupCopy isRootGroup] ^ 1;
   }
 
   else
@@ -1131,16 +1131,16 @@ LABEL_42:
   return v8;
 }
 
-- (void)_didTransitionToPhase:(int)a3
+- (void)_didTransitionToPhase:(int)phase
 {
   phase = self->_phase;
-  self->_phase = a3;
-  if (a3)
+  self->_phase = phase;
+  if (phase)
   {
-    if (a3 == 1)
+    if (phase == 1)
     {
       [(SCATDriver *)self _resetIdleTimer];
-      v7 = [(SCATDriver *)self delegate];
+      delegate = [(SCATDriver *)self delegate];
       v8 = objc_opt_respondsToSelector();
 
       if ((v8 & 1) == 0)
@@ -1148,19 +1148,19 @@ LABEL_42:
         return;
       }
 
-      v11 = [(SCATDriver *)self delegate];
-      [v11 driverDidBecomeActive:self didChange:phase != 1];
+      delegate2 = [(SCATDriver *)self delegate];
+      [delegate2 driverDidBecomeActive:self didChange:phase != 1];
     }
 
     else
     {
-      if (a3 != 2)
+      if (phase != 2)
       {
         return;
       }
 
       [(SCATDriver *)self _cancelIdleTimer];
-      v5 = [(SCATDriver *)self delegate];
+      delegate3 = [(SCATDriver *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if ((v6 & 1) == 0)
@@ -1168,15 +1168,15 @@ LABEL_42:
         return;
       }
 
-      v11 = [(SCATDriver *)self delegate];
-      [v11 driverDidPause:self];
+      delegate2 = [(SCATDriver *)self delegate];
+      [delegate2 driverDidPause:self];
     }
   }
 
   else
   {
     [(SCATDriver *)self _cancelIdleTimer];
-    v9 = [(SCATDriver *)self delegate];
+    delegate4 = [(SCATDriver *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -1184,34 +1184,34 @@ LABEL_42:
       return;
     }
 
-    v11 = [(SCATDriver *)self delegate];
-    [v11 driverDidBecomeInactive:self];
+    delegate2 = [(SCATDriver *)self delegate];
+    [delegate2 driverDidBecomeInactive:self];
   }
 }
 
-- (BOOL)actionHandler:(id)a3 shouldActImmediatelyOnActionCount:(unint64_t)a4
+- (BOOL)actionHandler:(id)handler shouldActImmediatelyOnActionCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(SCATDriver *)self selectActionHandler];
-  v8 = [v6 isEqual:v7];
+  handlerCopy = handler;
+  selectActionHandler = [(SCATDriver *)self selectActionHandler];
+  v8 = [handlerCopy isEqual:selectActionHandler];
 
   if (!v8)
   {
     return 1;
   }
 
-  v9 = [(SCATDriver *)self focusContext];
-  v10 = [v9 selectBehavior];
+  focusContext = [(SCATDriver *)self focusContext];
+  selectBehavior = [focusContext selectBehavior];
 
-  v11 = [(SCATDriver *)self focusContext];
-  v12 = [v11 waitsForSelectAction];
+  focusContext2 = [(SCATDriver *)self focusContext];
+  waitsForSelectAction = [focusContext2 waitsForSelectAction];
 
-  if (a4 != 1 || (v12 & 1) == 0)
+  if (count != 1 || (waitsForSelectAction & 1) == 0)
   {
-    if (v10 == 2)
+    if (selectBehavior == 2)
     {
       v14 = +[SCATScannerManager sharedManager];
-      v13 = [v14 immediateSelectActionCount] == a4;
+      v13 = [v14 immediateSelectActionCount] == count;
 
       return v13;
     }
@@ -1222,18 +1222,18 @@ LABEL_42:
   return 0;
 }
 
-- (void)actionHandlerDidFireAction:(id)a3
+- (void)actionHandlerDidFireAction:(id)action
 {
-  v7 = a3;
-  v4 = [(SCATDriver *)self selectActionHandler];
-  if ([v7 isEqual:v4])
+  actionCopy = action;
+  selectActionHandler = [(SCATDriver *)self selectActionHandler];
+  if ([actionCopy isEqual:selectActionHandler])
   {
   }
 
   else
   {
-    v5 = [(SCATDriver *)self selectAndResumeAutoscanningActionHandler];
-    v6 = [v7 isEqual:v5];
+    selectAndResumeAutoscanningActionHandler = [(SCATDriver *)self selectAndResumeAutoscanningActionHandler];
+    v6 = [actionCopy isEqual:selectAndResumeAutoscanningActionHandler];
 
     if (!v6)
     {
@@ -1241,18 +1241,18 @@ LABEL_42:
     }
   }
 
-  -[SCATDriver _fireSelectActionWithCount:preferrsMenuOnFirstPress:](self, "_fireSelectActionWithCount:preferrsMenuOnFirstPress:", [v7 actionCount], objc_msgSend(v7, "shouldShowMenuOnFirstSelectAction"));
+  -[SCATDriver _fireSelectActionWithCount:preferrsMenuOnFirstPress:](self, "_fireSelectActionWithCount:preferrsMenuOnFirstPress:", [actionCopy actionCount], objc_msgSend(actionCopy, "shouldShowMenuOnFirstSelectAction"));
 LABEL_5:
 }
 
-- (void)selectItemWithIndex:(int64_t)a3
+- (void)selectItemWithIndex:(int64_t)index
 {
-  v5 = [(SCATDriver *)self activeElementManager];
-  v6 = [v5 elementForIndexInCurrentScanCycle:a3];
+  activeElementManager = [(SCATDriver *)self activeElementManager];
+  v6 = [activeElementManager elementForIndexInCurrentScanCycle:index];
   v7 = v6;
   if (!v6)
   {
-    if (!-[SCATDriver isGroupingEnabled](self, "isGroupingEnabled") || ([v5 numberOfItemsInCurrentScanCycle], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue") - 1, v10, v11 != a3) || (objc_msgSend(v5, "elementForIndexInCurrentScanCycle:", a3 - 1), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!-[SCATDriver isGroupingEnabled](self, "isGroupingEnabled") || ([activeElementManager numberOfItemsInCurrentScanCycle], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "integerValue") - 1, v10, v11 != index) || (objc_msgSend(activeElementManager, "elementForIndexInCurrentScanCycle:", index - 1), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v7 = SWCHLogElementNav();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1264,7 +1264,7 @@ LABEL_5:
     }
   }
 
-  v8 = [SCATFocusContext focusContextWithElement:v7 elementManager:v5 selectBehavior:0 options:0];
+  v8 = [SCATFocusContext focusContextWithElement:v7 elementManager:activeElementManager selectBehavior:0 options:0];
   v9 = v8;
   if (v6)
   {
@@ -1314,14 +1314,14 @@ LABEL_14:
   [(AXDeviceMonitor *)v7 begin];
 }
 
-- (void)_sendItemScanInformation:(BOOL)a3
+- (void)_sendItemScanInformation:(BOOL)information
 {
   if (AXDeviceSupportsTadmor())
   {
-    v5 = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
-    v6 = [v5 anyObject];
+    copyDevices = [(AXDeviceMonitor *)self->_deviceMonitor copyDevices];
+    anyObject = [copyDevices anyObject];
 
-    if (!v6)
+    if (!anyObject)
     {
       v12 = SWCHLogElementNav();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -1332,27 +1332,27 @@ LABEL_14:
       goto LABEL_24;
     }
 
-    v7 = IOHIDDeviceCopyMatchingElements(v6, &off_1001E5750, 0);
-    v8 = [(SCATDriver *)self focusContext];
-    v9 = [v8 element];
-    v34 = [v9 scatCanScrollInAtLeastOneDirection];
+    v7 = IOHIDDeviceCopyMatchingElements(anyObject, &off_1001E5750, 0);
+    focusContext = [(SCATDriver *)self focusContext];
+    element = [focusContext element];
+    scatCanScrollInAtLeastOneDirection = [element scatCanScrollInAtLeastOneDirection];
 
-    v10 = [(SCATDriver *)self focusContext];
-    v11 = [v10 element];
-    device = v6;
-    if ([v11 scatIsKeyboardKey])
+    focusContext2 = [(SCATDriver *)self focusContext];
+    element2 = [focusContext2 element];
+    device = anyObject;
+    if ([element2 scatIsKeyboardKey])
     {
     }
 
     else
     {
-      v13 = [(SCATDriver *)self focusContext];
-      v14 = [v13 menuElement];
-      v15 = [v14 scatIsKeyboardKey];
+      focusContext3 = [(SCATDriver *)self focusContext];
+      menuElement = [focusContext3 menuElement];
+      scatIsKeyboardKey = [menuElement scatIsKeyboardKey];
 
-      if (!v15)
+      if (!scatIsKeyboardKey)
       {
-        if (a3 || !self->_currentItemSeed)
+        if (information || !self->_currentItemSeed)
         {
           do
           {
@@ -1364,16 +1364,16 @@ LABEL_14:
           self->_currentItemIndex = 0;
         }
 
-        v18 = [(SCATDriver *)self focusContext];
-        v19 = [v18 elementManager];
-        v20 = [v19 numberOfItemsInCurrentScanCycle];
-        v16 = [v20 integerValue];
+        focusContext4 = [(SCATDriver *)self focusContext];
+        elementManager = [focusContext4 elementManager];
+        numberOfItemsInCurrentScanCycle = [elementManager numberOfItemsInCurrentScanCycle];
+        integerValue = [numberOfItemsInCurrentScanCycle integerValue];
 
         goto LABEL_14;
       }
     }
 
-    v16 = 0;
+    integerValue = 0;
     self->_currentItemSeed = 0;
     self->_currentItemIndex = 0;
 LABEL_14:
@@ -1397,15 +1397,15 @@ LABEL_14:
           }
 
           v25 = *(*(&v35 + 1) + 8 * i);
-          v26 = [(SCATDriver *)self actionStartTime];
-          [v26 timeIntervalSinceNow];
+          actionStartTime = [(SCATDriver *)self actionStartTime];
+          [actionStartTime timeIntervalSinceNow];
           v28 = fabs(v27);
 
           v29 = malloc_type_malloc(6uLL, 0x100004077774924uLL);
           *v29 = self->_currentItemIndex;
-          v29[1] = v16;
+          v29[1] = integerValue;
           v29[2] = self->_currentItemSeed;
-          v29[3] = v34;
+          v29[3] = scatCanScrollInAtLeastOneDirection;
           v29[4] = v28;
           v29[5] = ((v28 - v28) * 255.0);
           v30 = mach_absolute_time();

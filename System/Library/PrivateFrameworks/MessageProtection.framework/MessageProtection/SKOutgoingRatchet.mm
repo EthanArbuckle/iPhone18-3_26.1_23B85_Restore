@@ -2,7 +2,7 @@
 + (id)generate;
 - (BOOL)ratchetForward;
 - (id)currentSubscriptionKeys;
-- (id)sealMessage:(id)a3 authenticating:(id)a4 error:(id *)a5;
+- (id)sealMessage:(id)message authenticating:(id)authenticating error:(id *)error;
 @end
 
 @implementation SKOutgoingRatchet
@@ -17,17 +17,17 @@
 
 - (BOOL)ratchetForward
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SKOutgoingRatchet.ratchetForward()();
 
   return v3;
 }
 
-- (id)sealMessage:(id)a3 authenticating:(id)a4 error:(id *)a5
+- (id)sealMessage:(id)message authenticating:(id)authenticating error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  messageCopy = message;
+  authenticatingCopy = authenticating;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
@@ -43,7 +43,7 @@
 
 - (id)currentSubscriptionKeys
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SKOutgoingRatchet.currentSubscriptionKeys()();
 
   return v3;

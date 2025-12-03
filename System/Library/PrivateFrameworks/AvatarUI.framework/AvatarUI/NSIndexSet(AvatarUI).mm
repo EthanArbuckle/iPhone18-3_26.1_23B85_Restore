@@ -6,8 +6,8 @@
 
 - (uint64_t)closestIndexToIndex:()AvatarUI greaterIndexesFirst:
 {
-  v7 = [a1 indexGreaterThanOrEqualToIndex:?];
-  v8 = [a1 indexLessThanOrEqualToIndex:a3];
+  v7 = [self indexGreaterThanOrEqualToIndex:?];
+  v8 = [self indexLessThanOrEqualToIndex:a3];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;

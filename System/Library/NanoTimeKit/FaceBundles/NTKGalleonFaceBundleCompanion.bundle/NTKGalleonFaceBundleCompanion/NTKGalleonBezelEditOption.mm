@@ -1,6 +1,6 @@
 @interface NTKGalleonBezelEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (unint64_t)bezelStyle;
@@ -18,7 +18,7 @@
   return objc_msgSend__value(self, v3, v4, v5);
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   if (NTKHasRegionalGeoRestrictions())
   {
@@ -31,16 +31,16 @@
   }
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278B9EDC0[a3];
+    return off_278B9EDC0[value];
   }
 }
 

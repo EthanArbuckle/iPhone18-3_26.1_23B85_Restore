@@ -3,7 +3,7 @@
 - (CGPoint)plottedLocation;
 - (UITouch)touch;
 - (id)description;
-- (void)setStockValue:(id *)a3;
+- (void)setStockValue:(id *)value;
 @end
 
 @implementation HUDTouchInfo
@@ -12,15 +12,15 @@
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_touch);
-  v5 = [v3 stringWithFormat:@"HUDTouchInfo %p with touch = %@", self, WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"HUDTouchInfo %p with touch = %@", self, WeakRetained];
 
-  return v5;
+  return weakRetained;
 }
 
-- (void)setStockValue:(id *)a3
+- (void)setStockValue:(id *)value
 {
-  v3 = *&a3->var0;
-  self->_stockValue.volume = a3->var2;
+  v3 = *&value->var0;
+  self->_stockValue.volume = value->var2;
   *&self->_stockValue.unixTime = v3;
 }
 

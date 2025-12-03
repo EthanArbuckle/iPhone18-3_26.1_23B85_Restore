@@ -1,9 +1,9 @@
 @interface ALAssetsLibraryPrivate
-- (ALAssetsLibraryPrivate)initWithAssetsLibrary:(id)a3;
+- (ALAssetsLibraryPrivate)initWithAssetsLibrary:(id)library;
 - (PLPhotoLibrary)photoLibrary;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)registerAlbum:(id)a3 assetGroupPrivate:(id)a4;
+- (void)photoLibraryDidChange:(id)change;
+- (void)registerAlbum:(id)album assetGroupPrivate:(id)private;
 @end
 
 @implementation ALAssetsLibraryPrivate
@@ -22,23 +22,23 @@
   [(ALAssetsLibraryPrivate *)&v3 dealloc];
 }
 
-- (void)registerAlbum:(id)a3 assetGroupPrivate:(id)a4
+- (void)registerAlbum:(id)album assetGroupPrivate:(id)private
 {
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(ALAssetsLibraryPrivate *)self photoLibrary];
+    photoLibrary = [(ALAssetsLibraryPrivate *)self photoLibrary];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_invoke;
     v9[3] = &unk_278A07878;
     v9[4] = self;
-    v9[5] = a3;
-    [(PLPhotoLibrary *)v7 performBlockAndWait:v9];
+    v9[5] = album;
+    [(PLPhotoLibrary *)photoLibrary performBlockAndWait:v9];
   }
 
   assetGroupInternals = self->_assetGroupInternals;
   objc_sync_enter(assetGroupInternals);
-  [(NSHashTable *)self->_assetGroupInternals addObject:a4];
+  [(NSHashTable *)self->_assetGroupInternals addObject:private];
   objc_sync_exit(assetGroupInternals);
 }
 
@@ -51,14 +51,14 @@ uint64_t __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_in
   return [v2 setObject:v3 forKey:v4];
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [change userInfo];
+  if (userInfo)
   {
-    v5 = v4;
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    v5 = userInfo;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v40 = [MEMORY[0x277CBEB58] set];
     v58 = 0u;
     v59 = 0u;
@@ -79,10 +79,10 @@ uint64_t __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_in
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v58 + 1) + 8 * i) groupURL];
-          if (v10)
+          groupURL = [*(*(&v58 + 1) + 8 * i) groupURL];
+          if (groupURL)
           {
-            [v40 addObject:v10];
+            [v40 addObject:groupURL];
           }
         }
 
@@ -112,10 +112,10 @@ uint64_t __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_in
           }
 
           v16 = *(*(&v54 + 1) + 8 * j);
-          v17 = [v16 groupURL];
-          if (v17)
+          groupURL2 = [v16 groupURL];
+          if (groupURL2)
           {
-            [v11 addObject:v17];
+            [v11 addObject:groupURL2];
           }
 
           if ([v16 conformsToProtocol:&unk_2849B1E10])
@@ -188,10 +188,10 @@ uint64_t __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_in
             objc_enumerationMutation(v26);
           }
 
-          v30 = [*(*(&v45 + 1) + 8 * m) assetURL];
-          if (v30)
+          assetURL = [*(*(&v45 + 1) + 8 * m) assetURL];
+          if (assetURL)
           {
-            [v25 addObject:v30];
+            [v25 addObject:assetURL];
           }
         }
 
@@ -203,29 +203,29 @@ uint64_t __58__ALAssetsLibraryPrivate_registerAlbum_assetGroupPrivate___block_in
 
     if ([v40 count])
     {
-      [v39 setObject:v40 forKey:@"ALAssetLibraryInsertedAssetGroupsKey"];
+      [dictionary setObject:v40 forKey:@"ALAssetLibraryInsertedAssetGroupsKey"];
     }
 
     if ([v11 count])
     {
-      [v39 setObject:v11 forKey:@"ALAssetLibraryUpdatedAssetGroupsKey"];
+      [dictionary setObject:v11 forKey:@"ALAssetLibraryUpdatedAssetGroupsKey"];
     }
 
     if ([v18 count])
     {
-      [v39 setObject:v18 forKey:@"ALAssetLibraryDeletedAssetGroupsKey"];
+      [dictionary setObject:v18 forKey:@"ALAssetLibraryDeletedAssetGroupsKey"];
     }
 
     if ([v25 count])
     {
-      [v39 setObject:v25 forKey:@"ALAssetLibraryUpdatedAssetsKey"];
+      [dictionary setObject:v25 forKey:@"ALAssetLibraryUpdatedAssetsKey"];
     }
 
-    v4 = v39;
+    userInfo = dictionary;
   }
 
-  v31 = v4;
-  if ([v4 count])
+  v31 = userInfo;
+  if ([userInfo count])
   {
     +[ALAssetRepresentationPrivate _clearFileDescriptorQueue];
     if ([objc_msgSend(v31 objectForKey:{@"ALAssetLibraryUpdatedAssetGroupsKey", "count"}])
@@ -292,15 +292,15 @@ uint64_t __48__ALAssetsLibraryPrivate_photoLibraryDidChange___block_invoke(uint6
   if (!self->_photoLibrary)
   {
     self->_photoLibrary = +[ALAssetsLibrary _library];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_photoLibraryDidChange_ name:*MEMORY[0x277D3ADC8] object:self->_photoLibrary];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_photoLibraryDidChange_ name:*MEMORY[0x277D3ADC8] object:self->_photoLibrary];
   }
 
   objc_sync_exit(self);
   return self->_photoLibrary;
 }
 
-- (ALAssetsLibraryPrivate)initWithAssetsLibrary:(id)a3
+- (ALAssetsLibraryPrivate)initWithAssetsLibrary:(id)library
 {
   v7.receiver = self;
   v7.super_class = ALAssetsLibraryPrivate;
@@ -308,7 +308,7 @@ uint64_t __48__ALAssetsLibraryPrivate_photoLibraryDidChange___block_invoke(uint6
   v5 = v4;
   if (v4)
   {
-    [(ALAssetsLibraryPrivate *)v4 setAssetsLibrary:a3];
+    [(ALAssetsLibraryPrivate *)v4 setAssetsLibrary:library];
     v5->_assetGroupInternals = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v5->_groupURLSByAlbumOID = objc_opt_new();
     v5->_isValid = 1;

@@ -1,31 +1,31 @@
 @interface HMDNetworkRouterController
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDHAPAccessory)accessory;
-- (HMDNetworkRouterController)initWithAccessory:(id)a3 service:(id)a4 workQueue:(id)a5;
+- (HMDNetworkRouterController)initWithAccessory:(id)accessory service:(id)service workQueue:(id)queue;
 - (HMDService)routerService;
 - (NSString)wiFiSSID;
 - (unint64_t)hash;
 - (void)_handleAccessoryConnected;
-- (void)_handleCharacteristicChanges:(id)a3;
-- (void)_handleCharacteristicsChangedPayload:(id)a3;
+- (void)_handleCharacteristicChanges:(id)changes;
+- (void)_handleCharacteristicsChangedPayload:(id)payload;
 - (void)_handleNetworkAccessViolationUpdate;
-- (void)_writeClientConfigurationControlRequest:(id)a3 operationName:(id)a4 completion:(id)a5;
-- (void)_writeTLVWithValueInResponse:(id)a3 characteristicType:(id)a4 operationName:(id)a5 completion:(id)a6;
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 completion:(id)a5;
-- (void)_writeValueIfDifferent:(id)a3 characteristicType:(id)a4 operationName:(id)a5 completion:(id)a6;
-- (void)addClientConfiguration:(id)a3 completion:(id)a4;
+- (void)_writeClientConfigurationControlRequest:(id)request operationName:(id)name completion:(id)completion;
+- (void)_writeTLVWithValueInResponse:(id)response characteristicType:(id)type operationName:(id)name completion:(id)completion;
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic completion:(id)completion;
+- (void)_writeValueIfDifferent:(id)different characteristicType:(id)type operationName:(id)name completion:(id)completion;
+- (void)addClientConfiguration:(id)configuration completion:(id)completion;
 - (void)configure;
-- (void)fetchAccessViolationsWithCompletion:(id)a3;
-- (void)getClientStatusWithIdentifier:(id)a3 completion:(id)a4;
-- (void)getClientStatusWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)handleAccessoryConfiguredNotification:(id)a3;
-- (void)handleCharacteristicsChangedNotification:(id)a3;
-- (void)readClientConfigurationWithClientIdentifier:(id)a3 completion:(id)a4;
-- (void)removeClientConfigurationWithClientIdentifier:(id)a3 completion:(id)a4;
-- (void)resetAccessViolationForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)updateClientConfiguration:(id)a3 completion:(id)a4;
-- (void)writeManagedNetworkEnable:(BOOL)a3 completion:(id)a4;
+- (void)fetchAccessViolationsWithCompletion:(id)completion;
+- (void)getClientStatusWithIdentifier:(id)identifier completion:(id)completion;
+- (void)getClientStatusWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)handleAccessoryConfiguredNotification:(id)notification;
+- (void)handleCharacteristicsChangedNotification:(id)notification;
+- (void)readClientConfigurationWithClientIdentifier:(id)identifier completion:(id)completion;
+- (void)removeClientConfigurationWithClientIdentifier:(id)identifier completion:(id)completion;
+- (void)resetAccessViolationForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)updateClientConfiguration:(id)configuration completion:(id)completion;
+- (void)writeManagedNetworkEnable:(BOOL)enable completion:(id)completion;
 @end
 
 @implementation HMDNetworkRouterController
@@ -44,29 +44,29 @@
   return WeakRetained;
 }
 
-- (void)handleAccessoryConfiguredNotification:(id)a3
+- (void)handleAccessoryConfiguredNotification:(id)notification
 {
-  v4 = [(HMDNetworkRouterController *)self workQueue];
+  workQueue = [(HMDNetworkRouterController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDNetworkRouterController_handleAccessoryConfiguredNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)handleCharacteristicsChangedNotification:(id)a3
+- (void)handleCharacteristicsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterController *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDNetworkRouterController *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification___block_invoke(uint64_t a1)
@@ -79,11 +79,11 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
 - (void)_handleAccessoryConnected
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterController *)self accessory];
+  accessory = [(HMDNetworkRouterController *)self accessory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = accessory;
   }
 
   else
@@ -102,8 +102,8 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
     v23 = 0u;
     v24 = 0u;
     v20 = v25 = 0u;
-    v7 = [v20 characteristics];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    characteristics = [v20 characteristics];
+    v8 = [characteristics countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v8)
     {
       v9 = v8;
@@ -114,12 +114,12 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(characteristics);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 characteristicType];
-          v14 = [v13 isEqualToString:@"0000021F-0000-1000-8000-0026BB765291"];
+          characteristicType = [v12 characteristicType];
+          v14 = [characteristicType isEqualToString:@"0000021F-0000-1000-8000-0026BB765291"];
 
           if (v14)
           {
@@ -127,7 +127,7 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v9 = [characteristics countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v9);
@@ -144,7 +144,7 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -160,17 +160,17 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCharacteristicsChangedPayload:(id)a3
+- (void)_handleCharacteristicsChangedPayload:(id)payload
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  payloadCopy = payload;
+  workQueue = [(HMDNetworkRouterController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
+  v6 = [payloadCopy hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
   if ([v6 count])
   {
-    v19 = v4;
+    v19 = payloadCopy;
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
     v20 = 0u;
     v21 = 0u;
@@ -194,8 +194,8 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
-          v14 = [(HMDNetworkRouterController *)self accessory];
-          v15 = [v13 accessory];
+          accessory = [(HMDNetworkRouterController *)self accessory];
+          accessory2 = [v13 accessory];
           v16 = HMFEqualObjects();
 
           if (v16)
@@ -215,21 +215,21 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
 
     [(HMDNetworkRouterController *)self _handleCharacteristicChanges:v7];
     v6 = v18;
-    v4 = v19;
+    payloadCopy = v19;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCharacteristicChanges:(id)a3
+- (void)_handleCharacteristicChanges:(id)changes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changesCopy = changes;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [changesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -241,11 +241,11 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changesCopy);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) type];
-        v10 = [v9 isEqualToString:@"0000021F-0000-1000-8000-0026BB765291"];
+        type = [*(*(&v12 + 1) + 8 * v8) type];
+        v10 = [type isEqualToString:@"0000021F-0000-1000-8000-0026BB765291"];
 
         if (v10)
         {
@@ -256,7 +256,7 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [changesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -268,11 +268,11 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
 - (void)_handleNetworkAccessViolationUpdate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterController *)self accessory];
+  accessory = [(HMDNetworkRouterController *)self accessory];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = accessory;
   }
 
   else
@@ -285,7 +285,7 @@ void __71__HMDNetworkRouterController_handleCharacteristicsChangedNotification__
   if (!v5)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -305,14 +305,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [v5 home];
-  v7 = [v6 routerClientManager];
-  v8 = [v7 started];
+  home = [v5 home];
+  routerClientManager = [home routerClientManager];
+  started = [routerClientManager started];
 
-  if ((v8 & 1) == 0)
+  if ((started & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -492,22 +492,22 @@ void __65__HMDNetworkRouterController__handleNetworkAccessViolationUpdate__block
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeValue:(id)a3 forCharacteristic:(id)a4 completion:(id)a5
+- (void)_writeValue:(id)value forCharacteristic:(id)characteristic completion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:a4 value:a3 authorizationData:0 type:0];
-  v10 = [(HMDNetworkRouterController *)self accessory];
+  completionCopy = completion;
+  v9 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:characteristic value:value authorizationData:0 type:0];
+  accessory = [(HMDNetworkRouterController *)self accessory];
   v17[0] = v9;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  v12 = [(HMDNetworkRouterController *)self workQueue];
+  workQueue = [(HMDNetworkRouterController *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion___block_invoke;
   v15[3] = &unk_278683820;
-  v16 = v8;
-  v13 = v8;
-  [v10 writeCharacteristicValues:v11 source:1170 queue:v12 completionHandler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [accessory writeCharacteristicValues:v11 source:1170 queue:workQueue completionHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -518,20 +518,20 @@ void __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_writeTLVWithValueInResponse:(id)a3 characteristicType:(id)a4 operationName:(id)a5 completion:(id)a6
+- (void)_writeTLVWithValueInResponse:(id)response characteristicType:(id)type operationName:(id)name completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  responseCopy = response;
+  typeCopy = type;
+  nameCopy = name;
+  completionCopy = completion;
   v32 = 0;
-  v14 = [v10 serializeWithError:&v32];
+  v14 = [responseCopy serializeWithError:&v32];
   v15 = v32;
   if (v14)
   {
-    v16 = [(HMDNetworkRouterController *)self routerService];
-    v17 = [v16 findCharacteristicWithType:v11];
+    routerService = [(HMDNetworkRouterController *)self routerService];
+    v17 = [routerService findCharacteristicWithType:typeCopy];
 
     if (v17)
     {
@@ -540,16 +540,16 @@ void __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion__
       v28[2] = __103__HMDNetworkRouterController__writeTLVWithValueInResponse_characteristicType_operationName_completion___block_invoke;
       v28[3] = &unk_27867E6D0;
       v28[4] = self;
-      v29 = v12;
+      v29 = nameCopy;
       v30 = v14;
-      v31 = v13;
+      v31 = completionCopy;
       [(HMDNetworkRouterController *)self _writeValue:v30 forCharacteristic:v17 completion:v28];
     }
 
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -557,13 +557,13 @@ void __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion__
         *buf = 138543618;
         v34 = v25;
         v35 = 2112;
-        v36 = v12;
+        v36 = nameCopy;
         _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Characteristic not found for operation %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v22);
       v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      (*(v13 + 2))(v13, v26, 0);
+      (*(completionCopy + 2))(completionCopy, v26, 0);
 
       v17 = 0;
     }
@@ -572,7 +572,7 @@ void __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion__
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -580,17 +580,17 @@ void __71__HMDNetworkRouterController__writeValue_forCharacteristic_completion__
       *buf = 138544130;
       v34 = v21;
       v35 = 2112;
-      v36 = v10;
+      v36 = responseCopy;
       v37 = 2112;
       v38 = v15;
       v39 = 2112;
-      v40 = v12;
+      v40 = nameCopy;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to serialize TLV: %@ with error: %@ for operation %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v18);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v13 + 2))(v13, v17, 0);
+    (*(completionCopy + 2))(completionCopy, v17, 0);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -670,25 +670,25 @@ LABEL_8:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeValueIfDifferent:(id)a3 characteristicType:(id)a4 operationName:(id)a5 completion:(id)a6
+- (void)_writeValueIfDifferent:(id)different characteristicType:(id)type operationName:(id)name completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDNetworkRouterController *)self routerService];
-  v15 = [v14 findCharacteristicWithType:v11];
+  differentCopy = different;
+  typeCopy = type;
+  nameCopy = name;
+  completionCopy = completion;
+  routerService = [(HMDNetworkRouterController *)self routerService];
+  v15 = [routerService findCharacteristicWithType:typeCopy];
 
   if (v15)
   {
-    v16 = [v15 value];
-    v17 = [v16 isEqual:v10];
+    value = [v15 value];
+    v17 = [value isEqual:differentCopy];
 
     if (v17)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -696,14 +696,14 @@ LABEL_8:
         *buf = 138543874;
         v33 = v21;
         v34 = 2112;
-        v35 = v12;
+        v35 = nameCopy;
         v36 = 2112;
-        v37 = v10;
+        v37 = differentCopy;
         _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Omitting %@ write with value %@, cached value matches", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v18);
-      v13[2](v13, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -713,9 +713,9 @@ LABEL_8:
       v28[2] = __97__HMDNetworkRouterController__writeValueIfDifferent_characteristicType_operationName_completion___block_invoke;
       v28[3] = &unk_27867E6D0;
       v28[4] = self;
-      v29 = v12;
-      v30 = v10;
-      v31 = v13;
+      v29 = nameCopy;
+      v30 = differentCopy;
+      v31 = completionCopy;
       [(HMDNetworkRouterController *)self _writeValue:v30 forCharacteristic:v15 completion:v28];
     }
   }
@@ -723,7 +723,7 @@ LABEL_8:
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -731,13 +731,13 @@ LABEL_8:
       *buf = 138543618;
       v33 = v25;
       v34 = 2112;
-      v35 = v12;
+      v35 = nameCopy;
       _os_log_impl(&dword_229538000, v24, OS_LOG_TYPE_ERROR, "%{public}@Characteristic not found for operation %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
     v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (v13)[2](v13, v26);
+    (completionCopy)[2](completionCopy, v26);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -813,14 +813,14 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_writeClientConfigurationControlRequest:(id)a3 operationName:(id)a4 completion:(id)a5
+- (void)_writeClientConfigurationControlRequest:(id)request operationName:(id)name completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -828,9 +828,9 @@ LABEL_8:
     *buf = 138543874;
     v24 = v14;
     v25 = 2112;
-    v26 = v8;
+    v26 = requestCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = nameCopy;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Writing client configuration request %@ for %@", buf, 0x20u);
   }
 
@@ -839,14 +839,14 @@ LABEL_8:
   v19[1] = 3221225472;
   v19[2] = __95__HMDNetworkRouterController__writeClientConfigurationControlRequest_operationName_completion___block_invoke;
   v19[3] = &unk_278687428;
-  v19[4] = v12;
-  v20 = v9;
-  v21 = v8;
-  v22 = v10;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  [(HMDNetworkRouterController *)v12 _writeTLVWithValueInResponse:v16 characteristicType:@"0000020C-0000-1000-8000-0026BB765291" operationName:v17 completion:v19];
+  v19[4] = selfCopy;
+  v20 = nameCopy;
+  v21 = requestCopy;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  v16 = requestCopy;
+  v17 = nameCopy;
+  [(HMDNetworkRouterController *)selfCopy _writeTLVWithValueInResponse:v16 characteristicType:@"0000020C-0000-1000-8000-0026BB765291" operationName:v17 completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1008,20 +1008,20 @@ void __95__HMDNetworkRouterController__writeClientConfigurationControlRequest_op
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetAccessViolationForClientIdentifier:(id)a3 completion:(id)a4
+- (void)resetAccessViolationForClientIdentifier:(id)identifier completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = accessViolationControlWithType(2);
-  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:v6];
+  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:identifierCopy];
   v10 = [HMDNetworkRouterClientIdentifierList alloc];
   v11 = [MEMORY[0x277CBEB18] arrayWithObject:v9];
   v12 = [(HMDNetworkRouterClientIdentifierList *)v10 initWithClientIdentifiers:v11];
   [v8 setClientIdentifierList:v12];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -1040,20 +1040,20 @@ void __95__HMDNetworkRouterController__writeClientConfigurationControlRequest_op
   v19[1] = 3221225472;
   v19[2] = __81__HMDNetworkRouterController_resetAccessViolationForClientIdentifier_completion___block_invoke;
   v19[3] = &unk_27867E6A8;
-  v20 = v7;
-  v17 = v7;
-  [(HMDNetworkRouterController *)v14 _writeTLVWithValueInResponse:v8 characteristicType:@"0000021F-0000-1000-8000-0026BB765291" operationName:@"Reset Access Violation" completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [(HMDNetworkRouterController *)selfCopy _writeTLVWithValueInResponse:v8 characteristicType:@"0000021F-0000-1000-8000-0026BB765291" operationName:@"Reset Access Violation" completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchAccessViolationsWithCompletion:(id)a3
+- (void)fetchAccessViolationsWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = accessViolationControlWithType(1);
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1073,10 +1073,10 @@ void __95__HMDNetworkRouterController__writeClientConfigurationControlRequest_op
   v12[2] = __66__HMDNetworkRouterController_fetchAccessViolationsWithCompletion___block_invoke;
   v12[3] = &unk_27867E680;
   v13 = @"Get Access Violation List";
-  v14 = v4;
-  v12[4] = v7;
-  v10 = v4;
-  [(HMDNetworkRouterController *)v7 _writeTLVWithValueInResponse:v5 characteristicType:@"0000021F-0000-1000-8000-0026BB765291" operationName:@"Get Access Violation List" completion:v12];
+  v14 = completionCopy;
+  v12[4] = selfCopy;
+  v10 = completionCopy;
+  [(HMDNetworkRouterController *)selfCopy _writeTLVWithValueInResponse:v5 characteristicType:@"0000021F-0000-1000-8000-0026BB765291" operationName:@"Get Access Violation List" completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1146,63 +1146,63 @@ void __66__HMDNetworkRouterController_fetchAccessViolationsWithCompletion___bloc
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClientConfigurationWithClientIdentifier:(id)a3 completion:(id)a4
+- (void)removeClientConfigurationWithClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = clientControlWithOperationType(4);
-  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:v7];
+  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:identifierCopy];
 
-  v10 = [v8 operations];
-  v11 = [v10 firstObject];
-  v12 = [v11 configuration];
-  [v12 setClientIdentifier:v9];
+  operations = [v8 operations];
+  firstObject = [operations firstObject];
+  configuration = [firstObject configuration];
+  [configuration setClientIdentifier:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __87__HMDNetworkRouterController_removeClientConfigurationWithClientIdentifier_completion___block_invoke;
   v14[3] = &unk_27867E658;
-  v15 = v6;
-  v13 = v6;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(HMDNetworkRouterController *)self _writeClientConfigurationControlRequest:v8 operationName:@"Remove Client Configuration" completion:v14];
 }
 
-- (void)updateClientConfiguration:(id)a3 completion:(id)a4
+- (void)updateClientConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v8 = clientControlWithOperationType(5);
-  v9 = [v8 operations];
-  v10 = [v9 firstObject];
-  [v10 setConfiguration:v7];
+  operations = [v8 operations];
+  firstObject = [operations firstObject];
+  [firstObject setConfiguration:configurationCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__HMDNetworkRouterController_updateClientConfiguration_completion___block_invoke;
   v12[3] = &unk_27867E658;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(HMDNetworkRouterController *)self _writeClientConfigurationControlRequest:v8 operationName:@"Update Client Configuration" completion:v12];
 }
 
-- (void)readClientConfigurationWithClientIdentifier:(id)a3 completion:(id)a4
+- (void)readClientConfigurationWithClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = clientControlWithOperationType(2);
-  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:v7];
+  v9 = [objc_alloc(MEMORY[0x277CFEC98]) initWithValue:identifierCopy];
 
-  v10 = [v8 operations];
-  v11 = [v10 firstObject];
-  v12 = [v11 configuration];
-  [v12 setClientIdentifier:v9];
+  operations = [v8 operations];
+  firstObject = [operations firstObject];
+  configuration = [firstObject configuration];
+  [configuration setClientIdentifier:v9];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __85__HMDNetworkRouterController_readClientConfigurationWithClientIdentifier_completion___block_invoke;
   v14[3] = &unk_27867E658;
-  v15 = v6;
-  v13 = v6;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(HMDNetworkRouterController *)self _writeClientConfigurationControlRequest:v8 operationName:@"Read Client Configuration" completion:v14];
 }
 
@@ -1214,21 +1214,21 @@ void __85__HMDNetworkRouterController_readClientConfigurationWithClientIdentifie
   (*(v4 + 16))(v4, v5, v6);
 }
 
-- (void)addClientConfiguration:(id)a3 completion:(id)a4
+- (void)addClientConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v8 = clientControlWithOperationType(3);
-  v9 = [v8 operations];
-  v10 = [v9 firstObject];
-  [v10 setConfiguration:v7];
+  operations = [v8 operations];
+  firstObject = [operations firstObject];
+  [firstObject setConfiguration:configurationCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__HMDNetworkRouterController_addClientConfiguration_completion___block_invoke;
   v12[3] = &unk_27867E658;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(HMDNetworkRouterController *)self _writeClientConfigurationControlRequest:v8 operationName:@"Add Client Configuration" completion:v12];
 }
 
@@ -1257,12 +1257,12 @@ void __64__HMDNetworkRouterController_addClientConfiguration_completion___block_
   }
 }
 
-- (void)getClientStatusWithIdentifier:(id)a3 completion:(id)a4
+- (void)getClientStatusWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = [HMDNetworkRouterClientStatusIdentifierList alloc];
-  v9 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
+  v9 = [MEMORY[0x277CBEB18] arrayWithObject:identifierCopy];
 
   v10 = [(HMDNetworkRouterClientStatusIdentifierList *)v8 initWithClientStatusIdentifiers:v9];
   v12[0] = MEMORY[0x277D85DD0];
@@ -1270,8 +1270,8 @@ void __64__HMDNetworkRouterController_addClientConfiguration_completion___block_
   v12[2] = __71__HMDNetworkRouterController_getClientStatusWithIdentifier_completion___block_invoke;
   v12[3] = &unk_27867E630;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = completionCopy;
+  v11 = completionCopy;
   [(HMDNetworkRouterController *)self getClientStatusWithIdentifiers:v10 completion:v12];
 }
 
@@ -1322,15 +1322,15 @@ void __71__HMDNetworkRouterController_getClientStatusWithIdentifier_completion__
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getClientStatusWithIdentifiers:(id)a3 completion:(id)a4
+- (void)getClientStatusWithIdentifiers:(id)identifiers completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = [[HMDNetworkRouterClientStatusControlOperation alloc] initWithOperation:1];
-  v9 = [[HMDNetworkRouterClientStatusControl alloc] initWithOperation:v8 clientStatusIdentifierList:v6];
+  v9 = [[HMDNetworkRouterClientStatusControl alloc] initWithOperation:v8 clientStatusIdentifierList:identifiersCopy];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1349,11 +1349,11 @@ void __71__HMDNetworkRouterController_getClientStatusWithIdentifier_completion__
   v16[1] = 3221225472;
   v16[2] = __72__HMDNetworkRouterController_getClientStatusWithIdentifiers_completion___block_invoke;
   v16[3] = &unk_27867E680;
-  v16[4] = v11;
+  v16[4] = selfCopy;
   v17 = @"Get Client Status";
-  v18 = v7;
-  v14 = v7;
-  [(HMDNetworkRouterController *)v11 _writeTLVWithValueInResponse:v9 characteristicType:@"0000020D-0000-1000-8000-0026BB765291" operationName:@"Get Client Status" completion:v16];
+  v18 = completionCopy;
+  v14 = completionCopy;
+  [(HMDNetworkRouterController *)selfCopy _writeTLVWithValueInResponse:v9 characteristicType:@"0000020D-0000-1000-8000-0026BB765291" operationName:@"Get Client Status" completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1424,9 +1424,9 @@ LABEL_10:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeManagedNetworkEnable:(BOOL)a3 completion:(id)a4
+- (void)writeManagedNetworkEnable:(BOOL)enable completion:(id)completion
 {
-  if (a3)
+  if (enable)
   {
     v4 = &unk_283E73AF0;
   }
@@ -1436,24 +1436,24 @@ LABEL_10:
     v4 = &unk_283E73B08;
   }
 
-  [(HMDNetworkRouterController *)self _writeValueIfDifferent:v4 characteristicType:@"00000215-0000-1000-8000-0026BB765291" operationName:@"Setting Managed Network Enable" completion:a4];
+  [(HMDNetworkRouterController *)self _writeValueIfDifferent:v4 characteristicType:@"00000215-0000-1000-8000-0026BB765291" operationName:@"Setting Managed Network Enable" completion:completion];
 }
 
 - (NSString)wiFiSSID
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterController *)self routerService];
-  v4 = [v3 getConfiguredName];
+  routerService = [(HMDNetworkRouterController *)self routerService];
+  getConfiguredName = [routerService getConfiguredName];
 
-  if (v4 && [v4 length])
+  if (getConfiguredName && [getConfiguredName length])
   {
-    v5 = v4;
+    v5 = getConfiguredName;
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -1474,17 +1474,17 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(HMDNetworkRouterController *)self routerService];
-  v3 = [v2 uuid];
-  v4 = [v3 hash];
+  routerService = [(HMDNetworkRouterController *)self routerService];
+  uuid = [routerService uuid];
+  v4 = [uuid hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -1494,13 +1494,13 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDNetworkRouterController *)self routerService];
-      v7 = [v6 uuid];
-      v8 = [(HMDNetworkRouterController *)v5 routerService];
+      v5 = equalCopy;
+      routerService = [(HMDNetworkRouterController *)self routerService];
+      uuid = [routerService uuid];
+      routerService2 = [(HMDNetworkRouterController *)v5 routerService];
 
-      v9 = [v8 uuid];
-      v10 = [v7 isEqual:v9];
+      uuid2 = [routerService2 uuid];
+      v10 = [uuid isEqual:uuid2];
     }
 
     else
@@ -1515,31 +1515,31 @@ LABEL_10:
 - (void)configure
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterController *)self accessory];
-  if (v3)
+  accessory = [(HMDNetworkRouterController *)self accessory];
+  if (accessory)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_handleCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v3];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleCharacteristicsChangedNotification_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:accessory];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:v3];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_handleAccessoryConfiguredNotification_ name:@"HMDAccessoryConnectedNotification" object:accessory];
 
-    if ([v3 isReachable])
+    if ([accessory isReachable])
     {
-      v6 = [(HMDNetworkRouterController *)self workQueue];
+      workQueue = [(HMDNetworkRouterController *)self workQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __39__HMDNetworkRouterController_configure__block_invoke;
       block[3] = &unk_27868A728;
       block[4] = self;
-      dispatch_async(v6, block);
+      dispatch_async(workQueue, block);
     }
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1555,20 +1555,20 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDNetworkRouterController)initWithAccessory:(id)a3 service:(id)a4 workQueue:(id)a5
+- (HMDNetworkRouterController)initWithAccessory:(id)accessory service:(id)service workQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = HMDNetworkRouterController;
   v11 = [(HMDNetworkRouterController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_accessory, v8);
-    objc_storeWeak(&v12->_routerService, v9);
-    objc_storeStrong(&v12->_workQueue, a5);
+    objc_storeWeak(&v11->_accessory, accessoryCopy);
+    objc_storeWeak(&v12->_routerService, serviceCopy);
+    objc_storeStrong(&v12->_workQueue, queue);
   }
 
   return v12;

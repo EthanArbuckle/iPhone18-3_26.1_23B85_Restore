@@ -1,24 +1,24 @@
 @interface CAMElapsedTimeView
 + (id)elapsedTimeFormatter;
-- (CAMElapsedTimeView)initWithFrame:(CGRect)a3;
-- (CAMElapsedTimeView)initWithLayoutStyle:(int64_t)a3;
+- (CAMElapsedTimeView)initWithFrame:(CGRect)frame;
+- (CAMElapsedTimeView)initWithLayoutStyle:(int64_t)style;
 - (CAMElapsedTimeViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (void)_commonCAMElapsedTimeViewInitializationWithLayoutStyle:(int64_t)a3;
+- (void)_commonCAMElapsedTimeViewInitializationWithLayoutStyle:(int64_t)style;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_setStartTime:(id)a3;
+- (void)_setStartTime:(id)time;
 - (void)_startPausedAnimation;
 - (void)_stopPausedAnimation;
-- (void)_updateBackgroundViewAnimated:(BOOL)a3;
+- (void)_updateBackgroundViewAnimated:(BOOL)animated;
 - (void)_updateFont;
 - (void)_updateText;
 - (void)dealloc;
 - (void)endTimer;
 - (void)layoutSubviews;
 - (void)resetTimer;
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setTimerPaused:(BOOL)a3;
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setTimerPaused:(BOOL)paused;
 - (void)startTimer;
 @end
 
@@ -49,35 +49,35 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   return [v2 setAllowedUnits:224];
 }
 
-- (void)_commonCAMElapsedTimeViewInitializationWithLayoutStyle:(int64_t)a3
+- (void)_commonCAMElapsedTimeViewInitializationWithLayoutStyle:(int64_t)style
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  self->_layoutStyle = a3;
+  self->_layoutStyle = style;
   v4 = objc_alloc(MEMORY[0x1E69DCC10]);
   v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   timeLabel = self->__timeLabel;
   self->__timeLabel = v5;
 
   v7 = self->__timeLabel;
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v7 setTextColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v7 setTextColor:whiteColor];
 
   [(UILabel *)self->__timeLabel setTextAlignment:1];
   v9 = self->__timeLabel;
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v9 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v9 setBackgroundColor:clearColor];
 
   [(CAMElapsedTimeView *)self _updateFont];
   v11 = objc_alloc_init(MEMORY[0x1E69DD250]);
   backgroundView = self->__backgroundView;
   self->__backgroundView = v11;
 
-  v13 = [(UIView *)self->__backgroundView layer];
-  [v13 setCornerRadius:5.0];
+  layer = [(UIView *)self->__backgroundView layer];
+  [layer setCornerRadius:5.0];
 
   v14 = *MEMORY[0x1E69796E8];
-  v15 = [(UIView *)self->__backgroundView layer];
-  [v15 setCornerCurve:v14];
+  layer2 = [(UIView *)self->__backgroundView layer];
+  [layer2 setCornerCurve:v14];
 
   [(CAMElapsedTimeView *)self _updateBackgroundViewAnimated:0];
   [(CAMElapsedTimeView *)self addSubview:self->__backgroundView];
@@ -88,15 +88,15 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   v17 = [(CAMElapsedTimeView *)self registerForTraitChanges:v16 withAction:sel__preferredContentSizeCategoryDidChange];
 }
 
-- (CAMElapsedTimeView)initWithFrame:(CGRect)a3
+- (CAMElapsedTimeView)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMElapsedTimeView *)self initWithLayoutStyle:v5];
+  return [(CAMElapsedTimeView *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMElapsedTimeView)initWithLayoutStyle:(int64_t)a3
+- (CAMElapsedTimeView)initWithLayoutStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = CAMElapsedTimeView;
@@ -104,7 +104,7 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   v5 = v4;
   if (v4)
   {
-    [(CAMElapsedTimeView *)v4 _commonCAMElapsedTimeViewInitializationWithLayoutStyle:a3];
+    [(CAMElapsedTimeView *)v4 _commonCAMElapsedTimeViewInitializationWithLayoutStyle:style];
     v6 = v5;
   }
 
@@ -122,11 +122,11 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   [(CAMElapsedTimeView *)&v4 dealloc];
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMElapsedTimeView *)self _updateFont];
   }
 }
@@ -157,19 +157,19 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMElapsedTimeView *)self _timeLabel];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  _timeLabel = [(CAMElapsedTimeView *)self _timeLabel];
+  [_timeLabel setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CAMElapsedTimeView *)self _backgroundView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  _backgroundView = [(CAMElapsedTimeView *)self _backgroundView];
+  [_backgroundView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_updateFont
 {
-  v3 = [(CAMElapsedTimeView *)self traitCollection];
-  v5 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CAMElapsedTimeView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v4 = [CAMFont cameraTimerFontForContentSize:v5 layoutStyle:[(CAMElapsedTimeView *)self layoutStyle]];
+  v4 = [CAMFont cameraTimerFontForContentSize:preferredContentSizeCategory layoutStyle:[(CAMElapsedTimeView *)self layoutStyle]];
   [(UILabel *)self->__timeLabel setFont:v4];
 }
 
@@ -185,17 +185,17 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
 {
   [(NSDate *)self->_startTime timeIntervalSinceNow];
   v4 = 0.0 - v3;
-  v5 = [objc_opt_class() elapsedTimeFormatter];
-  v9 = [v5 stringFromTimeInterval:v4];
+  elapsedTimeFormatter = [objc_opt_class() elapsedTimeFormatter];
+  v9 = [elapsedTimeFormatter stringFromTimeInterval:v4];
 
-  v6 = [(UILabel *)self->__timeLabel text];
-  v7 = [v6 isEqualToString:v9];
+  text = [(UILabel *)self->__timeLabel text];
+  v7 = [text isEqualToString:v9];
 
   if ((v7 & 1) == 0)
   {
     [(UILabel *)self->__timeLabel setText:v9];
-    v8 = [(CAMElapsedTimeView *)self delegate];
-    [v8 elapasedTimeViewTextChanged:self];
+    delegate = [(CAMElapsedTimeView *)self delegate];
+    [delegate elapasedTimeViewTextChanged:self];
   }
 }
 
@@ -208,12 +208,12 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
     if (self->_pausedTime)
     {
       v4 = [MEMORY[0x1E695DF00] now];
-      v5 = [(CAMElapsedTimeView *)self pausedTime];
-      [v4 timeIntervalSinceDate:v5];
+      pausedTime = [(CAMElapsedTimeView *)self pausedTime];
+      [v4 timeIntervalSinceDate:pausedTime];
       v7 = v6;
 
-      v8 = [(CAMElapsedTimeView *)self startTime];
-      v9 = [v8 dateByAddingTimeInterval:v7];
+      startTime = [(CAMElapsedTimeView *)self startTime];
+      v9 = [startTime dateByAddingTimeInterval:v7];
       [(CAMElapsedTimeView *)self _setStartTime:v9];
 
       pausedTime = self->_pausedTime;
@@ -236,16 +236,16 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   v13 = self->__updateTimer;
   self->__updateTimer = v12;
 
-  v14 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v14 addTimer:self->__updateTimer forMode:*MEMORY[0x1E695D918]];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop addTimer:self->__updateTimer forMode:*MEMORY[0x1E695D918]];
 
-  v15 = [MEMORY[0x1E695DFD0] currentRunLoop];
-  [v15 addTimer:self->__updateTimer forMode:*MEMORY[0x1E69DE760]];
+  currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  [currentRunLoop2 addTimer:self->__updateTimer forMode:*MEMORY[0x1E69DE760]];
 }
 
-- (void)_setStartTime:(id)a3
+- (void)_setStartTime:(id)time
 {
-  objc_storeStrong(&self->_startTime, a3);
+  objc_storeStrong(&self->_startTime, time);
 
   [(CAMElapsedTimeView *)self _updateText];
 }
@@ -271,12 +271,12 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   [(CAMElapsedTimeView *)self startTimer];
 }
 
-- (void)setTimerPaused:(BOOL)a3
+- (void)setTimerPaused:(BOOL)paused
 {
-  v3 = a3;
-  if ([(CAMElapsedTimeView *)self isTimerPaused]!= a3)
+  pausedCopy = paused;
+  if ([(CAMElapsedTimeView *)self isTimerPaused]!= paused)
   {
-    if (v3)
+    if (pausedCopy)
     {
       v5 = [MEMORY[0x1E695DF00] now];
       pausedTime = self->_pausedTime;
@@ -300,8 +300,8 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
 
 - (void)_startPausedAnimation
 {
-  v2 = [(CAMElapsedTimeView *)self _backgroundView];
-  v6 = [v2 layer];
+  _backgroundView = [(CAMElapsedTimeView *)self _backgroundView];
+  layer = [_backgroundView layer];
 
   v3 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v3 setFromValue:&unk_1F16C8AC8];
@@ -313,27 +313,27 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   [v3 setAutoreverses:1];
   LODWORD(v5) = 2139095040;
   [v3 setRepeatCount:v5];
-  [v6 addAnimation:v3 forKey:@"opacity"];
+  [layer addAnimation:v3 forKey:@"opacity"];
 }
 
 - (void)_stopPausedAnimation
 {
-  v2 = [(CAMElapsedTimeView *)self _backgroundView];
-  v11 = [v2 layer];
+  _backgroundView = [(CAMElapsedTimeView *)self _backgroundView];
+  layer = [_backgroundView layer];
 
-  v3 = [v11 animationForKey:@"opacity"];
+  v3 = [layer animationForKey:@"opacity"];
 
   if (v3)
   {
-    v4 = [v11 presentationLayer];
-    if (v4)
+    presentationLayer = [layer presentationLayer];
+    if (presentationLayer)
     {
-      v5 = v4;
+      v5 = presentationLayer;
     }
 
     else
     {
-      v5 = v11;
+      v5 = layer;
     }
 
     v6 = v5;
@@ -349,56 +349,56 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
     v10 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
     [v7 setTimingFunction:v10];
 
-    [v11 removeAnimationForKey:@"opacity"];
-    [v11 addAnimation:v7 forKey:@"opacity"];
+    [layer removeAnimationForKey:@"opacity"];
+    [layer addAnimation:v7 forKey:@"opacity"];
   }
 }
 
-- (void)setBackgroundStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)setBackgroundStyle:(int64_t)style animated:(BOOL)animated
 {
-  if (self->_backgroundStyle != a3)
+  if (self->_backgroundStyle != style)
   {
-    self->_backgroundStyle = a3;
-    [(CAMElapsedTimeView *)self _updateBackgroundViewAnimated:a4];
+    self->_backgroundStyle = style;
+    [(CAMElapsedTimeView *)self _updateBackgroundViewAnimated:animated];
   }
 }
 
-- (void)_updateBackgroundViewAnimated:(BOOL)a3
+- (void)_updateBackgroundViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMElapsedTimeView *)self backgroundStyle];
-  v6 = 0;
-  if (v5 > 1)
+  animatedCopy = animated;
+  backgroundStyle = [(CAMElapsedTimeView *)self backgroundStyle];
+  systemDarkGrayColor = 0;
+  if (backgroundStyle > 1)
   {
-    if (v5 == 2)
+    if (backgroundStyle == 2)
     {
-      v6 = [MEMORY[0x1E69DC888] systemDarkGrayColor];
+      systemDarkGrayColor = [MEMORY[0x1E69DC888] systemDarkGrayColor];
     }
 
-    else if (v5 == 3)
+    else if (backgroundStyle == 3)
     {
-      v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.3];
+      systemDarkGrayColor = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.3];
     }
   }
 
-  else if (v5)
+  else if (backgroundStyle)
   {
-    if (v5 == 1)
+    if (backgroundStyle == 1)
     {
-      v6 = CAMRedColor();
+      systemDarkGrayColor = CAMRedColor();
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
+    systemDarkGrayColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   v9[1] = 3221225472;
   v9[0] = MEMORY[0x1E69E9820];
   v9[2] = __52__CAMElapsedTimeView__updateBackgroundViewAnimated___block_invoke;
   v9[3] = &unk_1E76F7960;
-  if (v3)
+  if (animatedCopy)
   {
     v7 = 0.5;
   }
@@ -409,8 +409,8 @@ uint64_t __42__CAMElapsedTimeView_elapsedTimeFormatter__block_invoke()
   }
 
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = systemDarkGrayColor;
+  v8 = systemDarkGrayColor;
   [CAMView animateIfNeededWithDuration:0 usingSpringWithDamping:v9 initialSpringVelocity:0 options:v7 animations:1.0 completion:0.0];
 }
 

@@ -2,9 +2,9 @@
 - (void)_reportCountryCodeOverride;
 - (void)_reportCountryCodeSource;
 - (void)_reportFeatureStatusByFeature;
-- (void)_reportFeatureStatusForFeature:(id)a3 healthStore:(id)a4;
+- (void)_reportFeatureStatusForFeature:(id)feature healthStore:(id)store;
 - (void)_reportRegionAvailabilityByFeature;
-- (void)_reportRegionAvailabilityForFeature:(id)a3 healthStore:(id)a4;
+- (void)_reportRegionAvailabilityForFeature:(id)feature healthStore:(id)store;
 - (void)_reportRequirementSatisfactionOverridesByFeature;
 - (void)run;
 @end
@@ -38,11 +38,11 @@
 
 - (void)_reportRequirementSatisfactionOverridesByFeature
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x277D85DE8];
   [(HDDiagnosticOperation *)self appendString:@"Requirement Satisfaction Overrides"];
-  [(HDDiagnosticOperation *)v2 appendStrongSeparator];
-  [(HDDiagnosticOperation *)v2 appendNewline];
+  [(HDDiagnosticOperation *)selfCopy appendStrongSeparator];
+  [(HDDiagnosticOperation *)selfCopy appendNewline];
   HKAllFeatureIdentifiers();
   v34 = 0u;
   v35 = 0u;
@@ -56,7 +56,7 @@
 
   v3 = 0;
   v24 = *v35;
-  v23 = v2;
+  v23 = selfCopy;
   do
   {
     for (i = 0; i != v25; ++i)
@@ -68,12 +68,12 @@
 
       v5 = *(*(&v34 + 1) + 8 * i);
       v6 = [objc_alloc(MEMORY[0x277CCD410]) initWithFeatureIdentifier:v5];
-      v7 = [v6 overriddenRequirementIdentifiers];
-      if ([v7 count])
+      overriddenRequirementIdentifiers = [v6 overriddenRequirementIdentifiers];
+      if ([overriddenRequirementIdentifiers count])
       {
         v27 = i;
-        [(HDDiagnosticOperation *)v2 appendString:v5];
-        [(HDDiagnosticOperation *)v2 appendSeparator];
+        [(HDDiagnosticOperation *)selfCopy appendString:v5];
+        [(HDDiagnosticOperation *)selfCopy appendSeparator];
         v8 = [objc_alloc(MEMORY[0x277CCDA90]) initWithColumnTitles:0];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
@@ -82,8 +82,8 @@
         v26 = v8;
         v33 = v26;
         v9 = MEMORY[0x25307B760](v32);
-        v10 = [v7 allObjects];
-        v11 = [v10 sortedArrayUsingSelector:sel_compare_];
+        allObjects = [overriddenRequirementIdentifiers allObjects];
+        v11 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
         v30 = 0u;
         v31 = 0u;
@@ -125,9 +125,9 @@
           while (v14);
         }
 
-        v20 = [v26 formattedTable];
-        v2 = v23;
-        [(HDDiagnosticOperation *)v23 appendString:v20];
+        formattedTable = [v26 formattedTable];
+        selfCopy = v23;
+        [(HDDiagnosticOperation *)v23 appendString:formattedTable];
 
         [(HDDiagnosticOperation *)v23 appendNewline];
         v3 = 1;
@@ -142,8 +142,8 @@
   if ((v3 & 1) == 0)
   {
 LABEL_21:
-    [(HDDiagnosticOperation *)v2 appendString:@"<none>"];
-    [(HDDiagnosticOperation *)v2 appendNewline];
+    [(HDDiagnosticOperation *)selfCopy appendString:@"<none>"];
+    [(HDDiagnosticOperation *)selfCopy appendNewline];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -205,13 +205,13 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportFeatureStatusForFeature:(id)a3 healthStore:(id)a4
+- (void)_reportFeatureStatusForFeature:(id)feature healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  [(HDDiagnosticOperation *)self appendString:v6];
+  featureCopy = feature;
+  storeCopy = store;
+  [(HDDiagnosticOperation *)self appendString:featureCopy];
   [(HDDiagnosticOperation *)self appendSeparator];
-  if ([v6 isEqualToString:*MEMORY[0x277CCBFF0]])
+  if ([featureCopy isEqualToString:*MEMORY[0x277CCBFF0]])
   {
     [(HDDiagnosticOperation *)self appendString:@"<redacted>"];
     [(HDDiagnosticOperation *)self appendNewline];
@@ -219,21 +219,21 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:v6 healthStore:v7 countryCodeSource:1];
+    v8 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureIdentifier:featureCopy healthStore:storeCopy countryCodeSource:1];
     v14 = 0;
     v9 = [v8 featureStatusWithError:&v14];
     v10 = v14;
     v11 = v10;
     if (v9)
     {
-      v12 = [objc_alloc(MEMORY[0x277CCD410]) initWithFeatureIdentifier:v6];
+      v12 = [objc_alloc(MEMORY[0x277CCD410]) initWithFeatureIdentifier:featureCopy];
       v13 = HKPrettyPrintedFeatureStatus();
       [(HDDiagnosticOperation *)self appendString:v13];
     }
 
     else
     {
-      [(HDDiagnosticOperation *)self appendFormat:@"Error evaluating feature status for %@: %@", v6, v10];
+      [(HDDiagnosticOperation *)self appendFormat:@"Error evaluating feature status for %@: %@", featureCopy, v10];
       [(HDDiagnosticOperation *)self appendNewline];
     }
   }
@@ -246,17 +246,17 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
   [(HDDiagnosticOperation *)self appendStrongSeparator];
   [(HDDiagnosticOperation *)self appendNewline];
   v3 = HKPreferredRegulatoryDomainProvider();
-  v4 = [v3 currentEstimate];
+  currentEstimate = [v3 currentEstimate];
   [(HDDiagnosticOperation *)self appendString:@"HKRegulatoryDomainEstimate"];
-  if (v4)
+  if (currentEstimate)
   {
-    v5 = [v4 ISOCode];
-    [v4 provenance];
+    iSOCode = [currentEstimate ISOCode];
+    [currentEstimate provenance];
     v6 = NSStringFromHKOnboardingCompletionCountryCodeProvenance();
-    [(HDDiagnosticOperation *)self appendFormat:@"%@ (%@)", v5, v6];
+    [(HDDiagnosticOperation *)self appendFormat:@"%@ (%@)", iSOCode, v6];
 
-    v7 = [v4 timestamp];
-    [(HDDiagnosticOperation *)self appendFormat:@"Retrieved: %@", v7];
+    timestamp = [currentEstimate timestamp];
+    [(HDDiagnosticOperation *)self appendFormat:@"Retrieved: %@", timestamp];
   }
 
   else
@@ -266,14 +266,14 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
 
   [(HDDiagnosticOperation *)self appendNewline];
   [(HDDiagnosticOperation *)self appendSeparator];
-  v8 = [MEMORY[0x277D443A8] currentEstimates];
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
   [(HDDiagnosticOperation *)self appendString:@"RDEstimate.currentEstimates"];
   [(HDDiagnosticOperation *)self appendNewline];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v8;
+  v9 = currentEstimates;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -348,13 +348,13 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportRegionAvailabilityForFeature:(id)a3 healthStore:(id)a4
+- (void)_reportRegionAvailabilityForFeature:(id)feature healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  [(HDDiagnosticOperation *)self appendString:v6];
+  featureCopy = feature;
+  storeCopy = store;
+  [(HDDiagnosticOperation *)self appendString:featureCopy];
   [(HDDiagnosticOperation *)self appendSeparator];
-  v8 = [v7 featureAvailabilityProvidingForFeatureIdentifier:v6];
+  v8 = [storeCopy featureAvailabilityProvidingForFeatureIdentifier:featureCopy];
 
   v13 = 0;
   v9 = [v8 regionAvailabilityWithError:&v13];
@@ -362,13 +362,13 @@ void __86__HDFeatureStatusDiagnosticOperation__reportRequirementSatisfactionOver
   v11 = v10;
   if (v9)
   {
-    v12 = [v9 prettyPrintedDescription];
-    [(HDDiagnosticOperation *)self appendString:v12];
+    prettyPrintedDescription = [v9 prettyPrintedDescription];
+    [(HDDiagnosticOperation *)self appendString:prettyPrintedDescription];
   }
 
   else
   {
-    [(HDDiagnosticOperation *)self appendFormat:@"Error evaluating region availability for %@: %@", v6, v10];
+    [(HDDiagnosticOperation *)self appendFormat:@"Error evaluating region availability for %@: %@", featureCopy, v10];
     [(HDDiagnosticOperation *)self appendNewline];
   }
 }

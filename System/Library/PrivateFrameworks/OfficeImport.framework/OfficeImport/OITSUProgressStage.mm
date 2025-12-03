@@ -1,14 +1,14 @@
 @interface OITSUProgressStage
-- (OITSUProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 inContext:(id)a5;
+- (OITSUProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps inContext:(id)context;
 - (double)overallProgress;
-- (id)initRootStageInContext:(id)a3;
+- (id)initRootStageInContext:(id)context;
 - (void)dealloc;
-- (void)setProgress:(double)a3;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation OITSUProgressStage
 
-- (id)initRootStageInContext:(id)a3
+- (id)initRootStageInContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = OITSUProgressStage;
@@ -18,28 +18,28 @@
     *(result + 8) = xmmword_25D6FA730;
     *(result + 5) = 0x3FF0000000000000;
     *(result + 6) = 0;
-    *(result + 7) = a3;
+    *(result + 7) = context;
   }
 
   return result;
 }
 
-- (OITSUProgressStage)initWithSteps:(double)a3 takingSteps:(double)a4 inContext:(id)a5
+- (OITSUProgressStage)initWithSteps:(double)steps takingSteps:(double)takingSteps inContext:(id)context
 {
   v12.receiver = self;
   v12.super_class = OITSUProgressStage;
   v8 = [(OITSUProgressStage *)&v12 init];
   if (v8)
   {
-    v9 = [a5 currentStage];
-    v8->m_parentStage = v9;
+    currentStage = [context currentStage];
+    v8->m_parentStage = currentStage;
     v8->m_currentPosition = 0.0;
-    v8->m_totalSteps = a3;
-    v8->m_stepsInParent = a4;
-    [(OITSUProgressStage *)v9 currentPosition];
+    v8->m_totalSteps = steps;
+    v8->m_stepsInParent = takingSteps;
+    [(OITSUProgressStage *)currentStage currentPosition];
     v8->m_startInParent = v10;
     v8->m_nextSubStageParentSize = 1.0;
-    v8->m_context = a5;
+    v8->m_context = context;
   }
 
   return v8;
@@ -53,13 +53,13 @@
   [(OITSUProgressStage *)&v3 dealloc];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v3 = self;
+  selfCopy = self;
   m_totalSteps = self->m_totalSteps;
-  if (a3 - m_totalSteps <= 0.0000001)
+  if (progress - m_totalSteps <= 0.0000001)
   {
-    if (a3 - m_totalSteps <= 0.0)
+    if (progress - m_totalSteps <= 0.0)
     {
       goto LABEL_6;
     }
@@ -73,39 +73,39 @@
     }
 
     while (self);
-    m_totalSteps = v3->m_totalSteps;
+    m_totalSteps = selfCopy->m_totalSteps;
   }
 
-  a3 = m_totalSteps;
+  progress = m_totalSteps;
 LABEL_6:
-  m_currentPosition = v3->m_currentPosition;
-  if (m_currentPosition - a3 <= 0.0 || m_currentPosition - a3 > 0.0000001)
+  m_currentPosition = selfCopy->m_currentPosition;
+  if (m_currentPosition - progress <= 0.0 || m_currentPosition - progress > 0.0000001)
   {
-    v7 = a3;
+    progressCopy = progress;
   }
 
   else
   {
-    v7 = v3->m_currentPosition;
+    progressCopy = selfCopy->m_currentPosition;
   }
 
-  if (m_currentPosition != v7)
+  if (m_currentPosition != progressCopy)
   {
-    v3->m_currentPosition = v7;
-    m_parentStage = v3->m_parentStage;
+    selfCopy->m_currentPosition = progressCopy;
+    m_parentStage = selfCopy->m_parentStage;
     if (m_parentStage)
     {
-      v9 = v3->m_startInParent + v7 / m_totalSteps * v3->m_stepsInParent;
+      v9 = selfCopy->m_startInParent + progressCopy / m_totalSteps * selfCopy->m_stepsInParent;
 
       [(OITSUProgressStage *)m_parentStage setProgress:v9];
     }
 
     else
     {
-      m_context = v3->m_context;
-      [(OITSUProgressStage *)v3 overallProgress];
+      m_context = selfCopy->m_context;
+      [(OITSUProgressStage *)selfCopy overallProgress];
 
-      [(OITSUProgressContext *)m_context reportProgress:v7 overallProgress:v11];
+      [(OITSUProgressContext *)m_context reportProgress:progressCopy overallProgress:v11];
     }
   }
 }

@@ -1,8 +1,8 @@
 @interface ATXModeRoutineFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
-- (id)_provideFeaturesWithLocationEvent:(id)a3;
+- (id)_provideFeaturesWithLocationEvent:(id)event;
 - (id)provideFeatures;
-- (void)_processNewLocationEvent:(id)a3;
+- (void)_processNewLocationEvent:(id)event;
 - (void)beginListening;
 - (void)stopListening;
 @end
@@ -18,9 +18,9 @@
   v15 = __Block_byref_object_dispose__9;
   v16 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Location];
-  v5 = [v4 Semantic];
-  v6 = [v5 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C808 lastN:&unk_28733C808 reversed:0];
+  location = [v3 Location];
+  semantic = [location Semantic];
+  v6 = [semantic atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C808 lastN:&unk_28733C808 reversed:0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -66,13 +66,13 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_provideFeaturesWithLocationEvent:(id)a3
+- (id)_provideFeaturesWithLocationEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 starting])
+  eventCopy = event;
+  if ([eventCopy starting])
   {
-    v4 = [v3 userSpecificPlaceType] == 1;
+    v4 = [eventCopy userSpecificPlaceType] == 1;
   }
 
   else
@@ -80,9 +80,9 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
     v4 = 0;
   }
 
-  if ([v3 starting])
+  if ([eventCopy starting])
   {
-    v5 = [v3 userSpecificPlaceType] == 2;
+    v5 = [eventCopy userSpecificPlaceType] == 2;
   }
 
   else
@@ -90,9 +90,9 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
     v5 = 0;
   }
 
-  if ([v3 starting])
+  if ([eventCopy starting])
   {
-    v6 = [v3 userSpecificPlaceType] == 4;
+    v6 = [eventCopy userSpecificPlaceType] == 4;
   }
 
   else
@@ -100,9 +100,9 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
     v6 = 0;
   }
 
-  if ([v3 starting])
+  if ([eventCopy starting])
   {
-    v7 = [v3 userSpecificPlaceType] == 3;
+    v7 = [eventCopy userSpecificPlaceType] == 3;
   }
 
   else
@@ -134,11 +134,11 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
   return v8;
 }
 
-- (void)_processNewLocationEvent:(id)a3
+- (void)_processNewLocationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ATXModeRoutineFeaturizer *)self _provideFeaturesWithLocationEvent:v4];
+  v5 = [(ATXModeRoutineFeaturizer *)self _provideFeaturesWithLocationEvent:eventCopy];
 
   [WeakRetained featurizer:self didUpdateFeatures:v5];
 }
@@ -166,10 +166,10 @@ uint64_t __43__ATXModeRoutineFeaturizer_provideFeatures__block_invoke_12(uint64_
   self->_scheduler = v7;
 
   v9 = BiomeLibrary();
-  v10 = [v9 Location];
-  v11 = [v10 Semantic];
-  v12 = [v11 atx_DSLPublisher];
-  v13 = [v12 subscribeOn:self->_scheduler];
+  location = [v9 Location];
+  semantic = [location Semantic];
+  atx_DSLPublisher = [semantic atx_DSLPublisher];
+  v13 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __42__ATXModeRoutineFeaturizer_beginListening__block_invoke_21;

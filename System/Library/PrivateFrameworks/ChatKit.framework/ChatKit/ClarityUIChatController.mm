@@ -2,19 +2,19 @@
 + (Class)transcriptControllerClass;
 - (CKComposition)composition;
 - (UIEdgeInsets)navigationBarInsetsWithoutPalette;
-- (_TtC7ChatKit23ClarityUIChatController)initWithConversation:(id)a3;
-- (_TtC7ChatKit23ClarityUIChatController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (void)sendCompositionWithNotification:(id)a3;
-- (void)setComposition:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)transcriptCollectionViewController:(id)a3 balloonView:(id)a4 doubleTappedItemAtIndexPath:(id)a5;
-- (void)transcriptCollectionViewController:(id)a3 balloonView:(id)a4 tappedForChatItem:(id)a5;
-- (void)transcriptCollectionViewController:(id)a3 didScroll:(CGPoint)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC7ChatKit23ClarityUIChatController)initWithConversation:(id)conversation;
+- (_TtC7ChatKit23ClarityUIChatController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (void)sendCompositionWithNotification:(id)notification;
+- (void)setComposition:(id)composition;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)transcriptCollectionViewController:(id)controller balloonView:(id)view doubleTappedItemAtIndexPath:(id)path;
+- (void)transcriptCollectionViewController:(id)controller balloonView:(id)view tappedForChatItem:(id)item;
+- (void)transcriptCollectionViewController:(id)controller didScroll:(CGPoint)scroll;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ClarityUIChatController
@@ -25,49 +25,49 @@
   v4.super_class = type metadata accessor for ClarityUIChatController();
   v2 = v4.receiver;
   [(CKChatController *)&v4 viewDidLoad];
-  v3 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (qword_1EAD51E58 != -1)
   {
     swift_once();
   }
 
-  [v3 addObserver:v2 selector:? name:? object:?];
+  [defaultCenter addObserver:v2 selector:? name:? object:?];
 
   [*&v2[OBJC_IVAR____TtC7ChatKit23ClarityUIChatController_synthesizer] setUsesApplicationAudioSession_];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909016F8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_19090182C(a3);
+  selfCopy = self;
+  sub_19090182C(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClarityUIChatController();
   v4 = v7.receiver;
-  [(CKChatController *)&v7 viewDidDisappear:v3];
-  v5 = [objc_opt_self() sharedInstance];
-  v6 = [v4 conversation];
-  [v5 removeConversation_];
+  [(CKChatController *)&v7 viewDidDisappear:disappearCopy];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  conversation = [v4 conversation];
+  [sharedInstance removeConversation_];
 }
 
-- (void)sendCompositionWithNotification:(id)a3
+- (void)sendCompositionWithNotification:(id)notification
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D50F60();
-  v8 = self;
+  selfCopy = self;
   sub_190901A40();
 
   (*(v5 + 8))(v7, v4);
@@ -86,19 +86,19 @@
   return result;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ClarityUIChatController();
   v6 = v9.receiver;
-  [(CKChatController *)&v9 setEditing:v5 animated:v4];
-  v7 = [v6 navigationController];
-  if (v7)
+  [(CKChatController *)&v9 setEditing:editingCopy animated:animatedCopy];
+  navigationController = [v6 navigationController];
+  if (navigationController)
   {
-    v8 = v7;
-    [v7 setToolbarHidden:1 animated:0];
+    v8 = navigationController;
+    [navigationController setToolbarHidden:1 animated:0];
   }
 }
 
@@ -106,26 +106,26 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ClarityUIChatController();
-  v2 = [(CKChatController *)&v4 composition];
+  composition = [(CKChatController *)&v4 composition];
 
-  return v2;
+  return composition;
 }
 
-- (void)setComposition:(id)a3
+- (void)setComposition:(id)composition
 {
   v5 = type metadata accessor for ClarityUIChatController();
   v10.receiver = self;
   v10.super_class = v5;
-  v6 = a3;
-  v7 = self;
-  v8 = [(CKChatController *)&v10 composition];
-  v9.receiver = v7;
+  compositionCopy = composition;
+  selfCopy = self;
+  composition = [(CKChatController *)&v10 composition];
+  v9.receiver = selfCopy;
   v9.super_class = v5;
-  [(CKChatController *)&v9 setComposition:v6];
-  sub_190902038(v8);
+  [(CKChatController *)&v9 setComposition:compositionCopy];
+  sub_190902038(composition);
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   sub_1902188FC(0, &qword_1EAD56AD8);
   v4 = sub_190D57160();
@@ -140,25 +140,25 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)transcriptCollectionViewController:(id)a3 didScroll:(CGPoint)a4
+- (void)transcriptCollectionViewController:(id)controller didScroll:(CGPoint)scroll
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
-  sub_190902600(v7, x, y);
+  y = scroll.y;
+  x = scroll.x;
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_190902600(controllerCopy, x, y);
 }
 
-- (void)transcriptCollectionViewController:(id)a3 balloonView:(id)a4 tappedForChatItem:(id)a5
+- (void)transcriptCollectionViewController:(id)controller balloonView:(id)view tappedForChatItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1909032D4(v10);
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  selfCopy = self;
+  sub_1909032D4(itemCopy);
 }
 
-- (void)transcriptCollectionViewController:(id)a3 balloonView:(id)a4 doubleTappedItemAtIndexPath:(id)a5
+- (void)transcriptCollectionViewController:(id)controller balloonView:(id)view doubleTappedItemAtIndexPath:(id)path
 {
   v5 = sub_190D51C00();
   v6 = *(v5 - 8);
@@ -168,17 +168,17 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (_TtC7ChatKit23ClarityUIChatController)initWithConversation:(id)a3
+- (_TtC7ChatKit23ClarityUIChatController)initWithConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = sub_190903414(v3);
+  conversationCopy = conversation;
+  v4 = sub_190903414(conversationCopy);
 
   return v4;
 }
 
-- (_TtC7ChatKit23ClarityUIChatController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7ChatKit23ClarityUIChatController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_190D56F10();
     v7 = v6;
@@ -190,8 +190,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_190902F5C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_190902F5C(v5, v7, bundle);
 }
 
 @end

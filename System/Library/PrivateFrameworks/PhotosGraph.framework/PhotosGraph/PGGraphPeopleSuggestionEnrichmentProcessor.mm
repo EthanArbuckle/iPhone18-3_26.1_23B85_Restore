@@ -1,25 +1,25 @@
 @interface PGGraphPeopleSuggestionEnrichmentProcessor
-- (void)_performPeopleSuggestionForHomeWithManager:(id)a3 progressReporter:(id)a4;
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6;
+- (void)_performPeopleSuggestionForHomeWithManager:(id)manager progressReporter:(id)reporter;
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter;
 @end
 
 @implementation PGGraphPeopleSuggestionEnrichmentProcessor
 
-- (void)_performPeopleSuggestionForHomeWithManager:(id)a3 progressReporter:(id)a4
+- (void)_performPeopleSuggestionForHomeWithManager:(id)manager progressReporter:(id)reporter
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v42 = a4;
-  [v5 photoLibrary];
-  v44 = v43 = v5;
-  v6 = [v5 suggestedPersonsForHome];
-  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
+  managerCopy = manager;
+  reporterCopy = reporter;
+  [managerCopy photoLibrary];
+  v44 = v43 = managerCopy;
+  suggestedPersonsForHome = [managerCopy suggestedPersonsForHome];
+  v7 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(suggestedPersonsForHome, "count")}];
+  v8 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(suggestedPersonsForHome, "count")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v9 = v6;
+  v9 = suggestedPersonsForHome;
   v10 = [v9 countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v10)
   {
@@ -51,25 +51,25 @@
 
   if ([v7 count])
   {
-    v16 = [v44 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [v44 librarySpecificFetchOptions];
     v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"suggestedForClientType", 0];
-    [v16 setInternalPredicate:v17];
+    [librarySpecificFetchOptions setInternalPredicate:v17];
 
     v18 = MEMORY[0x277CD9938];
-    v19 = [v7 allObjects];
-    v20 = [v18 fetchPersonsWithLocalIdentifiers:v19 options:v16];
+    allObjects = [v7 allObjects];
+    v20 = [v18 fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
     v41 = v20;
     v21 = [v20 count];
-    v22 = [v44 librarySpecificFetchOptions];
+    librarySpecificFetchOptions2 = [v44 librarySpecificFetchOptions];
     v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d && NOT (%K IN %@)", @"suggestedForClientType", 1, @"personUUID", v8];
-    [v22 setInternalPredicate:v23];
+    [librarySpecificFetchOptions2 setInternalPredicate:v23];
 
-    v39 = v22;
-    v24 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v22];
+    v39 = librarySpecificFetchOptions2;
+    v24 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions2];
     v25 = [v24 count];
     v40 = v21;
-    v26 = v42;
+    v26 = reporterCopy;
     if (v21 | v25)
     {
       v46[0] = MEMORY[0x277D85DD0];
@@ -84,29 +84,29 @@
       if ((v27 & 1) == 0)
       {
         v29 = +[PGLogging sharedLogging];
-        v30 = [v29 loggingConnection];
+        loggingConnection = [v29 loggingConnection];
 
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v54 = v28;
-          _os_log_error_impl(&dword_22F0FC000, v30, OS_LOG_TYPE_ERROR, "Failed to persist people suggestion for home: %@", buf, 0xCu);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to persist people suggestion for home: %@", buf, 0xCu);
         }
       }
     }
 
-    v31 = [v42 throughputReportBlock];
+    throughputReportBlock = [reporterCopy throughputReportBlock];
 
-    if (v31)
+    if (throughputReportBlock)
     {
-      v32 = [v42 throughputReportBlock];
-      v32[2](v32, v25 + v40, 0);
+      throughputReportBlock2 = [reporterCopy throughputReportBlock];
+      throughputReportBlock2[2](throughputReportBlock2, v25 + v40, 0);
     }
 
     v33 = +[PGLogging sharedLogging];
-    v34 = [v33 loggingConnection];
+    loggingConnection2 = [v33 loggingConnection];
 
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_DEFAULT))
     {
       v35 = [v7 count];
       *buf = 134218496;
@@ -115,7 +115,7 @@
       v56 = v40;
       v57 = 2048;
       v58 = v25;
-      _os_log_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_DEFAULT, "Suggesting %lu persons for client home (newly persisted: %lu, newly removed: %lu).", buf, 0x20u);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_DEFAULT, "Suggesting %lu persons for client home (newly persisted: %lu, newly removed: %lu).", buf, 0x20u);
     }
 
     v36 = v43;
@@ -124,16 +124,16 @@
   else
   {
     v37 = +[PGLogging sharedLogging];
-    v16 = [v37 loggingConnection];
+    librarySpecificFetchOptions = [v37 loggingConnection];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_DEFAULT, "Found no persons to suggest for client home.", buf, 2u);
+      _os_log_impl(&dword_22F0FC000, librarySpecificFetchOptions, OS_LOG_TYPE_DEFAULT, "Found no persons to suggest for client home.", buf, 2u);
     }
 
-    v26 = v42;
-    v36 = v5;
+    v26 = reporterCopy;
+    v36 = managerCopy;
   }
 
   v38 = *MEMORY[0x277D85DE8];
@@ -211,15 +211,15 @@ void __106__PGGraphPeopleSuggestionEnrichmentProcessor__performPeopleSuggestionF
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = [v9 enrichmentLoggingConnection];
-  v13 = os_signpost_id_generate(v12);
-  v14 = v12;
+  managerCopy = manager;
+  reporterCopy = reporter;
+  inventoryCopy = inventory;
+  enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+  v13 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v14 = enrichmentLoggingConnection;
   v15 = v14;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
@@ -230,12 +230,12 @@ void __106__PGGraphPeopleSuggestionEnrichmentProcessor__performPeopleSuggestionF
   info = 0;
   mach_timebase_info(&info);
   v16 = mach_absolute_time();
-  v17 = [v11 isResumingFullAnalysis];
+  isResumingFullAnalysis = [inventoryCopy isResumingFullAnalysis];
 
-  if (v17)
+  if (isResumingFullAnalysis)
   {
-    [(PGGraphPeopleSuggestionEnrichmentProcessor *)self _performPeopleSuggestionForHomeWithManager:v9 progressReporter:v10];
-    [(PGGraphPeopleSuggestionEnrichmentProcessor *)self _performPeopleSuggestionForSharedLibraryWithManager:v9 progressReporter:v10];
+    [(PGGraphPeopleSuggestionEnrichmentProcessor *)self _performPeopleSuggestionForHomeWithManager:managerCopy progressReporter:reporterCopy];
+    [(PGGraphPeopleSuggestionEnrichmentProcessor *)self _performPeopleSuggestionForSharedLibraryWithManager:managerCopy progressReporter:reporterCopy];
     v18 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;

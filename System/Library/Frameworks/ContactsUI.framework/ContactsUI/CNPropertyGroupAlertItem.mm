@@ -1,20 +1,20 @@
 @interface CNPropertyGroupAlertItem
-+ (id)emptyValueForLabel:(id)a3;
-- (BOOL)isEquivalentToItem:(id)a3 whenEditing:(BOOL)a4;
-- (BOOL)isValidValue:(id)a3;
++ (id)emptyValueForLabel:(id)label;
+- (BOOL)isEquivalentToItem:(id)item whenEditing:(BOOL)editing;
+- (BOOL)isValidValue:(id)value;
 - (id)_toneManager;
 - (id)_vibrationManager;
 - (id)description;
 - (id)displayLabel;
-- (id)displayStringForValue:(id)a3;
+- (id)displayStringForValue:(id)value;
 - (id)labeledValue;
-- (id)replacementForInvalidValue:(id)a3;
-- (void)setLabeledValue:(id)a3;
+- (id)replacementForInvalidValue:(id)value;
+- (void)setLabeledValue:(id)value;
 @end
 
 @implementation CNPropertyGroupAlertItem
 
-+ (id)emptyValueForLabel:(id)a3
++ (id)emptyValueForLabel:(id)label
 {
   v3 = objc_alloc_init(MEMORY[0x1E695CD18]);
 
@@ -41,9 +41,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedVibrationManager];
+  sharedVibrationManager = [v2 sharedVibrationManager];
 
-  return v4;
+  return sharedVibrationManager;
 }
 
 - (id)_toneManager
@@ -66,35 +66,35 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedToneManager];
+  sharedToneManager = [v2 sharedToneManager];
 
-  return v4;
+  return sharedToneManager;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CNPropertyGroupItem *)self property];
-  v6 = [(CNPropertyGroupAlertItem *)self labeledValue];
-  v7 = [v6 value];
-  v8 = [v3 stringWithFormat:@"<%@ %p> [%@] %@", v4, self, v5, v7];
+  property = [(CNPropertyGroupItem *)self property];
+  labeledValue = [(CNPropertyGroupAlertItem *)self labeledValue];
+  value = [labeledValue value];
+  v8 = [v3 stringWithFormat:@"<%@ %p> [%@] %@", v4, self, property, value];
 
   return v8;
 }
 
-- (BOOL)isEquivalentToItem:(id)a3 whenEditing:(BOOL)a4
+- (BOOL)isEquivalentToItem:(id)item whenEditing:(BOOL)editing
 {
-  v5 = a3;
-  v6 = [(CNPropertyGroupItem *)self property];
-  v7 = [v5 property];
-  if ([v6 isEqualToString:v7])
+  itemCopy = item;
+  property = [(CNPropertyGroupItem *)self property];
+  property2 = [itemCopy property];
+  if ([property isEqualToString:property2])
   {
-    v8 = [(CNPropertyGroupAlertItem *)self labeledValue];
-    v9 = [v8 value];
-    v10 = [v5 labeledValue];
-    v11 = [v10 value];
-    v12 = [v9 isEqual:v11];
+    labeledValue = [(CNPropertyGroupAlertItem *)self labeledValue];
+    value = [labeledValue value];
+    labeledValue2 = [itemCopy labeledValue];
+    value2 = [labeledValue2 value];
+    v12 = [value isEqual:value2];
   }
 
   else
@@ -105,58 +105,58 @@
   return v12;
 }
 
-- (id)replacementForInvalidValue:(id)a3
+- (id)replacementForInvalidValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 sound];
-  v6 = [v4 vibration];
-  if (v4)
+  valueCopy = value;
+  sound = [valueCopy sound];
+  vibration = [valueCopy vibration];
+  if (valueCopy)
   {
-    if (v5)
+    if (sound)
     {
-      v7 = [(CNPropertyGroupAlertItem *)self _toneManager];
-      v8 = [v4 sound];
-      v9 = [v7 toneWithIdentifierIsValid:v8];
+      _toneManager = [(CNPropertyGroupAlertItem *)self _toneManager];
+      sound2 = [valueCopy sound];
+      v9 = [_toneManager toneWithIdentifierIsValid:sound2];
 
       if ((v9 & 1) == 0)
       {
 
-        v5 = 0;
+        sound = 0;
       }
     }
 
-    if (v6)
+    if (vibration)
     {
-      v10 = [(CNPropertyGroupAlertItem *)self _vibrationManager];
-      v11 = [v4 vibration];
-      v12 = [v10 vibrationWithIdentifierIsValid:v11];
+      _vibrationManager = [(CNPropertyGroupAlertItem *)self _vibrationManager];
+      vibration2 = [valueCopy vibration];
+      v12 = [_vibrationManager vibrationWithIdentifierIsValid:vibration2];
 
       if ((v12 & 1) == 0)
       {
 
-        v6 = 0;
+        vibration = 0;
       }
     }
   }
 
-  v13 = [objc_alloc(MEMORY[0x1E695CD18]) initWithSound:v5 vibration:v6 ignoreMute:{objc_msgSend(v4, "ignoreMute")}];
+  v13 = [objc_alloc(MEMORY[0x1E695CD18]) initWithSound:sound vibration:vibration ignoreMute:{objc_msgSend(valueCopy, "ignoreMute")}];
 
   return v13;
 }
 
-- (BOOL)isValidValue:(id)a3
+- (BOOL)isValidValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy)
   {
-    v6 = [v4 sound];
+    sound = [valueCopy sound];
 
-    if (v6)
+    if (sound)
     {
-      v7 = [(CNPropertyGroupAlertItem *)self _toneManager];
-      v8 = [v5 sound];
-      v9 = [v7 toneWithIdentifierIsValid:v8];
+      _toneManager = [(CNPropertyGroupAlertItem *)self _toneManager];
+      sound2 = [v5 sound];
+      v9 = [_toneManager toneWithIdentifierIsValid:sound2];
     }
 
     else
@@ -164,13 +164,13 @@
       v9 = 1;
     }
 
-    v10 = [v5 vibration];
+    vibration = [v5 vibration];
 
-    if (v10)
+    if (vibration)
     {
-      v11 = [(CNPropertyGroupAlertItem *)self _vibrationManager];
-      v12 = [v5 vibration];
-      v9 &= [v11 vibrationWithIdentifierIsValid:v12];
+      _vibrationManager = [(CNPropertyGroupAlertItem *)self _vibrationManager];
+      vibration2 = [v5 vibration];
+      v9 &= [_vibrationManager vibrationWithIdentifierIsValid:vibration2];
     }
   }
 
@@ -182,24 +182,24 @@
   return v9;
 }
 
-- (id)displayStringForValue:(id)a3
+- (id)displayStringForValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  valueCopy = value;
+  v5 = valueCopy;
+  if (!valueCopy)
   {
     goto LABEL_25;
   }
 
-  v6 = [v4 sound];
-  if (v6)
+  sound = [valueCopy sound];
+  if (sound)
   {
     v7 = MEMORY[0x1E696AEC0];
     v8 = CNContactsUIBundle();
     v9 = [v8 localizedStringForKey:@"ALERT_SOUND_LABEL_AND_VALUE" value:&stru_1F0CE7398 table:@"Localized"];
-    v10 = [(CNPropertyGroupAlertItem *)self _toneManager];
-    v11 = [v5 sound];
-    v12 = [v10 nameForToneIdentifier:v11];
+    _toneManager = [(CNPropertyGroupAlertItem *)self _toneManager];
+    sound2 = [v5 sound];
+    v12 = [_toneManager nameForToneIdentifier:sound2];
     v13 = [v7 stringWithFormat:v9, v12];
   }
 
@@ -208,15 +208,15 @@
     v13 = 0;
   }
 
-  v14 = [v5 vibration];
-  if (v14)
+  vibration = [v5 vibration];
+  if (vibration)
   {
     v15 = MEMORY[0x1E696AEC0];
     v16 = CNContactsUIBundle();
     v17 = [v16 localizedStringForKey:@"ALERT_VIBRATION_LABEL_AND_VALUE" value:&stru_1F0CE7398 table:@"Localized"];
-    v18 = [(CNPropertyGroupAlertItem *)self _vibrationManager];
-    v19 = [v5 vibration];
-    v20 = [v18 nameOfVibrationWithIdentifier:v19];
+    _vibrationManager = [(CNPropertyGroupAlertItem *)self _vibrationManager];
+    vibration2 = [v5 vibration];
+    v20 = [_vibrationManager nameOfVibrationWithIdentifier:vibration2];
     v21 = [v15 stringWithFormat:v17, v20];
   }
 
@@ -236,11 +236,11 @@
     v23 = 0;
   }
 
-  v24 = [MEMORY[0x1E696AD60] string];
-  v25 = v24;
+  string = [MEMORY[0x1E696AD60] string];
+  v25 = string;
   if (v13)
   {
-    [v24 appendString:v13];
+    [string appendString:v13];
   }
 
   if (v21)
@@ -277,8 +277,8 @@ LABEL_25:
 
 - (id)displayLabel
 {
-  v2 = [(CNPropertyGroupItem *)self property];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E695C1E0]];
+  property = [(CNPropertyGroupItem *)self property];
+  v3 = [property isEqualToString:*MEMORY[0x1E695C1E0]];
 
   v4 = CNContactsUIBundle();
   v5 = v4;
@@ -297,19 +297,19 @@ LABEL_25:
   return v7;
 }
 
-- (void)setLabeledValue:(id)a3
+- (void)setLabeledValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CNPropertyGroupItem *)self group];
-  [v5 setLabeledValue:v4];
+  valueCopy = value;
+  group = [(CNPropertyGroupItem *)self group];
+  [group setLabeledValue:valueCopy];
 }
 
 - (id)labeledValue
 {
-  v2 = [(CNPropertyGroupItem *)self group];
-  v3 = [v2 labeledValue];
+  group = [(CNPropertyGroupItem *)self group];
+  labeledValue = [group labeledValue];
 
-  return v3;
+  return labeledValue;
 }
 
 @end

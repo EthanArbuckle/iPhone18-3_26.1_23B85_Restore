@@ -1,27 +1,27 @@
 @interface IDSKeyTransparencyRegistrationDataSource
-- (BOOL)iCloudAccountDoesMatchAccountForIdentifier:(id)a3;
-- (BOOL)isPhoneOnlyRegisteredForService:(id)a3;
+- (BOOL)iCloudAccountDoesMatchAccountForIdentifier:(id)identifier;
+- (BOOL)isPhoneOnlyRegisteredForService:(id)service;
 - (BOOL)isiCloudSignedIn;
-- (id)_dependentRegistrationPropertyForKey:(id)a3 serviceIdentifier:(id)a4 pushToken:(id)a5;
+- (id)_dependentRegistrationPropertyForKey:(id)key serviceIdentifier:(id)identifier pushToken:(id)token;
 - (id)currentLocalKeyTransparencyEligibleServiceIdentifiers;
-- (id)currentLocalKeyTransparencyEnrolledURIsForServiceIdentifier:(id)a3;
-- (id)trustedRemoteKeyTransparencySignatureForServiceIdentifier:(id)a3 pushToken:(id)a4;
-- (int64_t)expectedRemoteKeyTransparencyEligibilityForServiceIdentifier:(id)a3 pushToken:(id)a4;
+- (id)currentLocalKeyTransparencyEnrolledURIsForServiceIdentifier:(id)identifier;
+- (id)trustedRemoteKeyTransparencySignatureForServiceIdentifier:(id)identifier pushToken:(id)token;
+- (int64_t)expectedRemoteKeyTransparencyEligibilityForServiceIdentifier:(id)identifier pushToken:(id)token;
 @end
 
 @implementation IDSKeyTransparencyRegistrationDataSource
 
-- (id)_dependentRegistrationPropertyForKey:(id)a3 serviceIdentifier:(id)a4 pushToken:(id)a5
+- (id)_dependentRegistrationPropertyForKey:(id)key serviceIdentifier:(id)identifier pushToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  keyCopy = key;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  v10 = tokenCopy;
   v11 = 0;
-  if (v7 && v8 && v9)
+  if (keyCopy && identifierCopy && tokenCopy)
   {
     v12 = +[IDSDServiceController sharedInstance];
-    v13 = [v12 serviceWithIdentifier:v8];
+    v13 = [v12 serviceWithIdentifier:identifierCopy];
 
     v14 = +[IDSDAccountController sharedInstance];
     v15 = [v14 appleIDAccountOnService:v13];
@@ -72,14 +72,14 @@ LABEL_14:
     }
 
     v23 = [v17 objectForKey:IDSDevicePropertyPrivateDeviceData];
-    v11 = [v23 objectForKey:v7];
+    v11 = [v23 objectForKey:keyCopy];
 
     v24 = +[IDSFoundationLog KeyTransparency];
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       v26 = @"YES";
       *buf = 138413314;
-      v34 = v8;
+      v34 = identifierCopy;
       if (!v17)
       {
         v26 = @"NO";
@@ -90,7 +90,7 @@ LABEL_14:
       v37 = 2112;
       v38 = v26;
       v39 = 2112;
-      v40 = v7;
+      v40 = keyCopy;
       v41 = 2112;
       v42 = v11;
       _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Returning dependent registration property for key { serviceIdentifier: %@, pushToken: %@, foundCandidate: %@, key: %@, value: %@ }", buf, 0x34u);
@@ -100,20 +100,20 @@ LABEL_14:
   return v11;
 }
 
-- (id)trustedRemoteKeyTransparencySignatureForServiceIdentifier:(id)a3 pushToken:(id)a4
+- (id)trustedRemoteKeyTransparencySignatureForServiceIdentifier:(id)identifier pushToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v8 = im_primary_base_queue();
   dispatch_assert_queue_V2(v8);
 
-  v9 = [(IDSKeyTransparencyRegistrationDataSource *)self _dependentRegistrationPropertyForKey:IDSPrivateDeviceDataServiceSignatures serviceIdentifier:v6 pushToken:v7];
+  v9 = [(IDSKeyTransparencyRegistrationDataSource *)self _dependentRegistrationPropertyForKey:IDSPrivateDeviceDataServiceSignatures serviceIdentifier:identifierCopy pushToken:tokenCopy];
   v10 = &IDSRegistrationControlErrorDomain_ptr;
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
 LABEL_19:
-    v22 = 0;
+    signature = 0;
     goto LABEL_20;
   }
 
@@ -140,8 +140,8 @@ LABEL_19:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = [(IDSProtoKeyTransparencyTrustedServiceSignatures *)v13 serviceSignatures];
-  v16 = [v15 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  serviceSignatures = [(IDSProtoKeyTransparencyTrustedServiceSignatures *)v13 serviceSignatures];
+  v16 = [serviceSignatures countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v16)
   {
     v17 = v16;
@@ -153,20 +153,20 @@ LABEL_19:
       {
         if (*v28 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(serviceSignatures);
         }
 
         v20 = *(*(&v27 + 1) + 8 * i);
-        v21 = [v20 serviceIdentifier];
-        v22 = [v20 signature];
-        if (v21 && [v6 isEqualToString:v21])
+        serviceIdentifier = [v20 serviceIdentifier];
+        signature = [v20 signature];
+        if (serviceIdentifier && [identifierCopy isEqualToString:serviceIdentifier])
         {
 
           goto LABEL_28;
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v17 = [serviceSignatures countByEnumeratingWithState:&v27 objects:v39 count:16];
       if (v17)
       {
         continue;
@@ -175,7 +175,7 @@ LABEL_19:
       break;
     }
 
-    v22 = 0;
+    signature = 0;
 LABEL_28:
     v10 = &IDSRegistrationControlErrorDomain_ptr;
     v13 = v26;
@@ -183,52 +183,52 @@ LABEL_28:
 
   else
   {
-    v22 = 0;
+    signature = 0;
   }
 
 LABEL_20:
-  v23 = [v10[240] KeyTransparency];
-  if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+  keyTransparency = [v10[240] KeyTransparency];
+  if (os_log_type_enabled(keyTransparency, OS_LOG_TYPE_DEFAULT))
   {
     v24 = @"YES";
     *buf = 138413058;
-    v32 = v6;
+    v32 = identifierCopy;
     if (!v9)
     {
       v24 = @"NO";
     }
 
     v33 = 2112;
-    v34 = v7;
+    v34 = tokenCopy;
     v35 = 2112;
     v36 = v24;
     v37 = 2112;
-    v38 = v22;
-    _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Returning KT signature for device { serviceIdentifier: %@, pushToken: %@, KTLoggableDataSignaturesString: %@, KTLoggableDataSignature: %@ }", buf, 0x2Au);
+    v38 = signature;
+    _os_log_impl(&_mh_execute_header, keyTransparency, OS_LOG_TYPE_DEFAULT, "Returning KT signature for device { serviceIdentifier: %@, pushToken: %@, KTLoggableDataSignaturesString: %@, KTLoggableDataSignature: %@ }", buf, 0x2Au);
   }
 
-  return v22;
+  return signature;
 }
 
-- (int64_t)expectedRemoteKeyTransparencyEligibilityForServiceIdentifier:(id)a3 pushToken:(id)a4
+- (int64_t)expectedRemoteKeyTransparencyEligibilityForServiceIdentifier:(id)identifier pushToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
   v8 = im_primary_base_queue();
   dispatch_assert_queue_V2(v8);
 
-  if (([v6 isEqualToString:IDSiMessageKeyTransparencyService] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", IDSFaceTimeMultiKeyTransparencyService) & 1) != 0 || objc_msgSend(v6, "isEqualToString:", IDSMultiplex1KeyTransparencyService))
+  if (([identifierCopy isEqualToString:IDSiMessageKeyTransparencyService] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", IDSFaceTimeMultiKeyTransparencyService) & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", IDSMultiplex1KeyTransparencyService))
   {
-    v9 = [(IDSKeyTransparencyRegistrationDataSource *)self _dependentRegistrationPropertyForKey:IDSPrivateDeviceDataKeyTransparencyFlags serviceIdentifier:v6 pushToken:v7];
+    v9 = [(IDSKeyTransparencyRegistrationDataSource *)self _dependentRegistrationPropertyForKey:IDSPrivateDeviceDataKeyTransparencyFlags serviceIdentifier:identifierCopy pushToken:tokenCopy];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = +[IDSFoundationLog KeyTransparency];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         v14 = 138412802;
-        v15 = v6;
+        v15 = identifierCopy;
         v16 = 2112;
-        v17 = v7;
+        v17 = tokenCopy;
         v18 = 2112;
         v19 = v9;
         _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Key transparency flags { serviceIdentifier: %@, pushToken: %@, keyTransparencyFlagsString: %@ }", &v14, 0x20u);
@@ -246,9 +246,9 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138413058;
-      v15 = v6;
+      v15 = identifierCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = tokenCopy;
       v18 = 2112;
       v19 = v9;
       v20 = 2048;
@@ -265,16 +265,16 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)iCloudAccountDoesMatchAccountForIdentifier:(id)a3
+- (BOOL)iCloudAccountDoesMatchAccountForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[IDSDServiceController sharedInstance];
-  v29 = v3;
-  v14 = [v4 serviceWithIdentifier:v3];
+  v29 = identifierCopy;
+  registration2 = [v4 serviceWithIdentifier:identifierCopy];
 
   v5 = +[IDSDAccountController sharedInstance];
-  v28 = v14;
-  v6 = [v5 appleIDAccountOnService:v14];
+  v28 = registration2;
+  v6 = [v5 appleIDAccountOnService:registration2];
 
   v7 = [IDSSystemAccountAdapter alloc];
   v8 = im_primary_queue();
@@ -283,22 +283,22 @@ LABEL_20:
   v30 = 0;
   v10 = [(IDSSystemAccountAdapter *)v9 iCloudSystemAccountWithError:&v30];
   v11 = v30;
-  v12 = [v10 DSID];
-  v13 = v12;
-  LODWORD(v14) = 0;
-  if (v6 && v12)
+  dSID = [v10 DSID];
+  v13 = dSID;
+  LODWORD(registration2) = 0;
+  if (v6 && dSID)
   {
-    v15 = [v6 registration];
-    if ([v15 registrationStatus] <= 4 && objc_msgSend(v6, "registrationStatus") < 2)
+    registration = [v6 registration];
+    if ([registration registrationStatus] <= 4 && objc_msgSend(v6, "registrationStatus") < 2)
     {
-      LODWORD(v14) = 0;
+      LODWORD(registration2) = 0;
     }
 
     else
     {
-      v16 = [v6 dsID];
-      v17 = [v10 DSID];
-      LODWORD(v14) = [v16 isEqualToString:v17];
+      dsID = [v6 dsID];
+      dSID2 = [v10 DSID];
+      LODWORD(registration2) = [dsID isEqualToString:dSID2];
     }
   }
 
@@ -307,7 +307,7 @@ LABEL_20:
   {
     v27 = v13;
     v19 = v11;
-    if (v14)
+    if (registration2)
     {
       v20 = @"YES";
     }
@@ -317,13 +317,13 @@ LABEL_20:
       v20 = @"NO";
     }
 
-    v21 = [v6 loginID];
-    v22 = [v6 dsID];
+    loginID = [v6 loginID];
+    dsID2 = [v6 dsID];
     [v6 registrationStatus];
     _IDSStringFromIDSRegistrationStatus();
-    v23 = v26 = v14;
-    v14 = [v6 registration];
-    v24 = [v14 registrationStatus];
+    v23 = v26 = registration2;
+    registration2 = [v6 registration];
+    registrationStatus = [registration2 registrationStatus];
     *buf = 138414082;
     v32 = v29;
     v33 = 2112;
@@ -335,19 +335,19 @@ LABEL_20:
     v37 = 2112;
     v38 = v11;
     v39 = 2112;
-    v40 = v21;
+    v40 = loginID;
     v41 = 2112;
-    v42 = v22;
+    v42 = dsID2;
     v43 = 2112;
     v44 = v23;
     v45 = 2048;
-    v46 = v24;
+    v46 = registrationStatus;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Checked for iCloud account mismatch { serviceIdentifier: %@, iCloudAccountDoesMatchServiceAccount: %@, iCloudAccount: %@, iCloudAccountError: %@, serviceLoginID: %@, serviceDSID: %@, serviceAccountRegistrationStatus: %@, serviceRegistrationStatus: %ld }", buf, 0x52u);
 
-    LOBYTE(v14) = v26;
+    LOBYTE(registration2) = v26;
   }
 
-  return v14;
+  return registration2;
 }
 
 - (id)currentLocalKeyTransparencyEligibleServiceIdentifiers
@@ -383,12 +383,12 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)isPhoneOnlyRegisteredForService:(id)a3
+- (BOOL)isPhoneOnlyRegisteredForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = +[IDSDServiceController sharedInstance];
-  v22 = v3;
-  v5 = [v4 serviceWithIdentifier:v3];
+  v22 = serviceCopy;
+  v5 = [v4 serviceWithIdentifier:serviceCopy];
 
   v6 = +[IDSDAccountController sharedInstance];
   v7 = [v6 accountsOnService:v5];
@@ -414,13 +414,13 @@ LABEL_20:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 registration];
-        if ([v15 registrationType])
+        registration = [v14 registration];
+        if ([registration registrationType])
         {
-          v16 = [v14 registration];
-          v17 = [v16 registrationStatus];
+          registration2 = [v14 registration];
+          registrationStatus = [registration2 registrationStatus];
 
-          if (v17 == 8)
+          if (registrationStatus == 8)
           {
             goto LABEL_15;
           }
@@ -430,11 +430,11 @@ LABEL_20:
         {
         }
 
-        v18 = [v14 registration];
-        if (![v18 registrationType])
+        registration3 = [v14 registration];
+        if (![registration3 registrationType])
         {
-          v19 = [v14 registration];
-          v20 = [v19 registrationStatus] == 8;
+          registration4 = [v14 registration];
+          v20 = [registration4 registrationStatus] == 8;
 
           v11 |= v20;
         }
@@ -455,11 +455,11 @@ LABEL_15:
   return v11 & 1;
 }
 
-- (id)currentLocalKeyTransparencyEnrolledURIsForServiceIdentifier:(id)a3
+- (id)currentLocalKeyTransparencyEnrolledURIsForServiceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[IDSDServiceController sharedInstance];
-  v5 = [v4 serviceWithIdentifier:v3];
+  v5 = [v4 serviceWithIdentifier:identifierCopy];
 
   v6 = +[IDSDAccountController sharedInstance];
   v7 = [v6 accountsOnService:v5];
@@ -484,9 +484,9 @@ LABEL_15:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) registration];
-        v15 = [v14 keyTransparencyEnrolledURIs];
-        [v8 addObjectsFromArray:v15];
+        registration = [*(*(&v19 + 1) + 8 * i) registration];
+        keyTransparencyEnrolledURIs = [registration keyTransparencyEnrolledURIs];
+        [v8 addObjectsFromArray:keyTransparencyEnrolledURIs];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -499,15 +499,15 @@ LABEL_15:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v24 = v3;
+    v24 = identifierCopy;
     v25 = 2112;
     v26 = v8;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Returning key transparency enrolled URIs { serviceIdentifier: %@, enrolledURIs: %@ }", buf, 0x16u);
   }
 
-  v17 = [v8 allObjects];
+  allObjects = [v8 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
 - (BOOL)isiCloudSignedIn

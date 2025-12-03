@@ -6,7 +6,7 @@
 
 - (void)sharedPreferencesChangedExternally
 {
-  v2 = self;
+  selfCopy = self;
   SavedLocationsManager.sharedPreferencesChangedExternally()();
 }
 

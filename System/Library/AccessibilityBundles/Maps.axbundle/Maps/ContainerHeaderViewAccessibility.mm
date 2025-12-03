@@ -1,5 +1,5 @@
 @interface ContainerHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_initViews;
 - (void)didMoveToWindow;
@@ -7,11 +7,11 @@
 
 @implementation ContainerHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ContainerHeaderView" hasInstanceMethod:@"_initViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ContainerHeaderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ContainerHeaderView" hasInstanceMethod:@"_initViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ContainerHeaderView" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

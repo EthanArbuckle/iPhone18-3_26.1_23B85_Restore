@@ -1,7 +1,7 @@
 @interface _CDFileUtility
 - (_CDFileUtility)init;
-- (id)fileHandlerUtiity:(void *)a3 withBundleId:(void *)a4 withMetaData:;
-- (void)writeJSON:(void *)a3 withFileHandle:;
+- (id)fileHandlerUtiity:(void *)utiity withBundleId:(void *)id withMetaData:;
+- (void)writeJSON:(void *)n withFileHandle:;
 @end
 
 @implementation _CDFileUtility
@@ -13,18 +13,18 @@
   return [(_CDFileUtility *)&v3 init];
 }
 
-- (id)fileHandlerUtiity:(void *)a3 withBundleId:(void *)a4 withMetaData:
+- (id)fileHandlerUtiity:(void *)utiity withBundleId:(void *)id withMetaData:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  utiityCopy = utiity;
+  idCopy = id;
+  if (self)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [v7 stream];
-    v12 = [v11 name];
+    stream = [v7 stream];
+    name = [stream name];
 
-    if (!v12)
+    if (!name)
     {
       v20 = +[_CDLogging dataCollectionChannel];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -37,17 +37,17 @@
       goto LABEL_17;
     }
 
-    [v10 setObject:v12 forKeyedSubscript:@"eventStream"];
-    v13 = [v7 startDate];
-    v14 = [v7 endDate];
-    if (v13)
+    [v10 setObject:name forKeyedSubscript:@"eventStream"];
+    startDate = [v7 startDate];
+    endDate = [v7 endDate];
+    if (startDate)
     {
       v15 = MEMORY[0x1E696AD98];
-      [v13 timeIntervalSince1970];
+      [startDate timeIntervalSince1970];
       v16 = [v15 numberWithDouble:?];
       OUTLINED_FUNCTION_5_6();
 
-      if (v14)
+      if (endDate)
       {
         goto LABEL_5;
       }
@@ -56,25 +56,25 @@
     else
     {
       [v10 setObject:@"null" forKeyedSubscript:@"startDate"];
-      if (v14)
+      if (endDate)
       {
 LABEL_5:
         v17 = MEMORY[0x1E696AD98];
-        [v14 timeIntervalSince1970];
+        [endDate timeIntervalSince1970];
         v18 = [v17 numberWithDouble:?];
         OUTLINED_FUNCTION_5_6();
 
-        if (v13)
+        if (startDate)
         {
-          [v14 timeIntervalSinceDate:v13];
+          [endDate timeIntervalSinceDate:startDate];
           v19 = [MEMORY[0x1E696AD98] numberWithDouble:?];
           OUTLINED_FUNCTION_5_6();
 
 LABEL_13:
-          [v10 setObject:v8 forKeyedSubscript:@"bundleID"];
-          if (v9)
+          [v10 setObject:utiityCopy forKeyedSubscript:@"bundleID"];
+          if (idCopy)
           {
-            v22 = [v9 copy];
+            v22 = [idCopy copy];
             OUTLINED_FUNCTION_5_6();
           }
 
@@ -105,11 +105,11 @@ LABEL_18:
   return v21;
 }
 
-- (void)writeJSON:(void *)a3 withFileHandle:
+- (void)writeJSON:(void *)n withFileHandle:
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (a1)
+  nCopy = n;
+  if (self)
   {
     v6 = MEMORY[0x1E696ACB0];
     v7 = [a2 copy];
@@ -130,9 +130,9 @@ LABEL_18:
 
     else
     {
-      [v5 writeData:v8];
+      [nCopy writeData:v8];
       v10 = [@" "];
-      [v5 writeData:v10];
+      [nCopy writeData:v10];
     }
   }
 

@@ -1,15 +1,15 @@
 @interface SUUIRedeemViewController
 - (SUUIRedeemViewCameraOverrideDelegate)cameraDelegate;
-- (SUUIRedeemViewController)initWithRedeemCategory:(int64_t)a3;
+- (SUUIRedeemViewController)initWithRedeemCategory:(int64_t)category;
 - (void)_presentLegacyRedeem;
-- (void)_presentModernRedeemWithURL:(id)a3;
-- (void)_redeemURLWithCompletion:(id)a3;
-- (void)_setChildViewController:(id)a3;
+- (void)_presentModernRedeemWithURL:(id)l;
+- (void)_redeemURLWithCompletion:(id)completion;
+- (void)_setChildViewController:(id)controller;
 - (void)_setup;
 - (void)_setupNavigationItem;
 - (void)_startActivityIndicator;
 - (void)_stopActivityIndicator;
-- (void)clientInterfaceDidFinishLoading:(id)a3;
+- (void)clientInterfaceDidFinishLoading:(id)loading;
 - (void)loadView;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -17,7 +17,7 @@
 
 @implementation SUUIRedeemViewController
 
-- (SUUIRedeemViewController)initWithRedeemCategory:(int64_t)a3
+- (SUUIRedeemViewController)initWithRedeemCategory:(int64_t)category
 {
   v5 = objc_alloc_init(MEMORY[0x277D75D28]);
   v8.receiver = self;
@@ -26,7 +26,7 @@
 
   if (v6)
   {
-    v6->_category = a3;
+    v6->_category = category;
     [(SUUIRedeemViewController *)v6 _setup];
   }
 
@@ -44,9 +44,9 @@
 - (void)_setupNavigationItem
 {
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonAction];
-  v3 = [(SUUIRedeemViewController *)self topViewController];
-  v4 = [v3 navigationItem];
-  [v4 setLeftBarButtonItem:v5];
+  topViewController = [(SUUIRedeemViewController *)self topViewController];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 }
 
 - (void)loadView
@@ -54,9 +54,9 @@
   v5.receiver = self;
   v5.super_class = SUUIRedeemViewController;
   [(SUUIRedeemViewController *)&v5 loadView];
-  v3 = [(SUUIRedeemViewController *)self view];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUUIRedeemViewController *)self view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 }
 
 - (void)viewDidLoad
@@ -111,10 +111,10 @@ void __39__SUUIRedeemViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   v5.receiver = self;
   v5.super_class = SUUIRedeemViewController;
   [(SUUIRedeemViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(SUUIRedeemViewController *)self activityIndicator];
-  v4 = [(SUUIRedeemViewController *)self view];
-  [v4 center];
-  [v3 setCenter:?];
+  activityIndicator = [(SUUIRedeemViewController *)self activityIndicator];
+  view = [(SUUIRedeemViewController *)self view];
+  [view center];
+  [activityIndicator setCenter:?];
 }
 
 - (void)_presentLegacyRedeem
@@ -122,53 +122,53 @@ void __39__SUUIRedeemViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   [(SUUIRedeemViewController *)self _stopActivityIndicator];
   v8 = [[SUUIRedeemViewControllerLegacy alloc] initWithRedeemCategory:[(SUUIRedeemViewController *)self category]];
   [(SUUIRedeemViewControllerLegacy *)v8 setAttempsAutomaticRedeem:[(SUUIRedeemViewController *)self attempsAutomaticRedeem]];
-  v3 = [(SUUIRedeemViewController *)self cameraDelegate];
-  [(SUUIRedeemViewControllerLegacy *)v8 setCameraDelegate:v3];
+  cameraDelegate = [(SUUIRedeemViewController *)self cameraDelegate];
+  [(SUUIRedeemViewControllerLegacy *)v8 setCameraDelegate:cameraDelegate];
 
-  v4 = [(SUUIRedeemViewController *)self initialCode];
-  [(SUUIRedeemViewControllerLegacy *)v8 setInitialCode:v4];
+  initialCode = [(SUUIRedeemViewController *)self initialCode];
+  [(SUUIRedeemViewControllerLegacy *)v8 setInitialCode:initialCode];
 
-  v5 = [(SUUIRedeemViewController *)self clientContext];
-  [(SUUIRedeemViewControllerLegacy *)v8 setClientContext:v5];
+  clientContext = [(SUUIRedeemViewController *)self clientContext];
+  [(SUUIRedeemViewControllerLegacy *)v8 setClientContext:clientContext];
 
   [(SUUIRedeemViewControllerLegacy *)v8 setCameraRedeemVisible:[(SUUIRedeemViewController *)self cameraRedeemVisible]];
-  v6 = [(SUUIRedeemViewController *)self operationQueue];
-  [(SUUIRedeemViewControllerLegacy *)v8 setOperationQueue:v6];
+  operationQueue = [(SUUIRedeemViewController *)self operationQueue];
+  [(SUUIRedeemViewControllerLegacy *)v8 setOperationQueue:operationQueue];
 
-  v7 = [(SUUIRedeemViewController *)self redeemConfiguration];
-  [(SUUIRedeemViewControllerLegacy *)v8 setRedeemConfiguration:v7];
+  redeemConfiguration = [(SUUIRedeemViewController *)self redeemConfiguration];
+  [(SUUIRedeemViewControllerLegacy *)v8 setRedeemConfiguration:redeemConfiguration];
 
   [(SUUIRedeemViewControllerLegacy *)v8 setShouldPerformInitialOperationOnAppear:[(SUUIRedeemViewController *)self shouldPerformInitialOperationOnAppear]];
   [(SUUIRedeemViewController *)self _setChildViewController:v8];
 }
 
-- (void)_presentModernRedeemWithURL:(id)a3
+- (void)_presentModernRedeemWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SUUIRedeemViewController *)self initialCode];
+  lCopy = l;
+  initialCode = [(SUUIRedeemViewController *)self initialCode];
 
-  if (v5)
+  if (initialCode)
   {
-    v6 = [(SUUIRedeemViewController *)self initialCode];
-    v7 = [v4 URLByAppendingQueryParameter:@"code" value:v6];
+    initialCode2 = [(SUUIRedeemViewController *)self initialCode];
+    v7 = [lCopy URLByAppendingQueryParameter:@"code" value:initialCode2];
 
-    v4 = v7;
+    lCopy = v7;
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CDD340]) initWithAccountURL:v4];
-  v9 = [v8 view];
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  [v9 setBackgroundColor:v10];
+  v8 = [objc_alloc(MEMORY[0x277CDD340]) initWithAccountURL:lCopy];
+  view = [v8 view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   objc_storeStrong(&self->_embeddedViewController, v8);
   v11 = [objc_alloc(MEMORY[0x277D7FE20]) initWithChildViewController:v8];
-  v12 = [v11 view];
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  [v12 setBackgroundColor:v13];
+  view2 = [v11 view];
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  [view2 setBackgroundColor:whiteColor2];
 
-  v14 = [(SUUIRedeemViewController *)self navigationController];
+  navigationController = [(SUUIRedeemViewController *)self navigationController];
 
-  if (v14)
+  if (navigationController)
   {
     [(SUUIRedeemViewController *)self _setChildViewController:v11];
   }
@@ -176,9 +176,9 @@ void __39__SUUIRedeemViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   else
   {
     v15 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v11];
-    v16 = [v15 view];
-    v17 = [MEMORY[0x277D75348] whiteColor];
-    [v16 setBackgroundColor:v17];
+    view3 = [v15 view];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [view3 setBackgroundColor:whiteColor3];
 
     [(SUUIRedeemViewController *)self _setChildViewController:v15];
   }
@@ -204,9 +204,9 @@ void __56__SUUIRedeemViewController__presentModernRedeemWithURL___block_invoke(u
   }
 }
 
-- (void)_redeemURLWithCompletion:(id)a3
+- (void)_redeemURLWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = [MEMORY[0x277D69C90] contextWithBagType:0];
   v5 = [objc_alloc(MEMORY[0x277D7FCF8]) initWithBagContext:v4];
   objc_initWeak(&location, v5);
@@ -214,12 +214,12 @@ void __56__SUUIRedeemViewController__presentModernRedeemWithURL___block_invoke(u
   v8[1] = 3221225472;
   v8[2] = __53__SUUIRedeemViewController__redeemURLWithCompletion___block_invoke;
   v8[3] = &unk_2798F8D20;
-  v6 = v3;
+  v6 = completionCopy;
   v9 = v6;
   objc_copyWeak(&v10, &location);
   [v5 setCompletionBlock:v8];
-  v7 = [MEMORY[0x277D7FD20] mainQueue];
-  [v7 addOperation:v5];
+  mainQueue = [MEMORY[0x277D7FD20] mainQueue];
+  [mainQueue addOperation:v5];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -239,19 +239,19 @@ void __53__SUUIRedeemViewController__redeemURLWithCompletion___block_invoke(uint
   }
 }
 
-- (void)clientInterfaceDidFinishLoading:(id)a3
+- (void)clientInterfaceDidFinishLoading:(id)loading
 {
   v19 = *MEMORY[0x277D85DE8];
   self->_finishedLoading = 1;
-  v3 = [(SUUIRedeemViewController *)self embeddedViewController];
-  v4 = [v3 navigationItem];
+  embeddedViewController = [(SUUIRedeemViewController *)self embeddedViewController];
+  navigationItem = [embeddedViewController navigationItem];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 leftBarButtonItems];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  leftBarButtonItems = [navigationItem leftBarButtonItems];
+  v6 = [leftBarButtonItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -266,16 +266,16 @@ void __53__SUUIRedeemViewController__redeemURLWithCompletion___block_invoke(uint
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(leftBarButtonItems);
         }
 
         if ([*(*(&v14 + 1) + 8 * v10) tag] == 999)
         {
-          v12 = [v4 leftBarButtonItems];
-          v13 = [v12 mutableCopy];
+          leftBarButtonItems2 = [navigationItem leftBarButtonItems];
+          v13 = [leftBarButtonItems2 mutableCopy];
 
           [v13 removeObjectAtIndex:v11];
-          [v4 setLeftBarButtonItems:v13 animated:1];
+          [navigationItem setLeftBarButtonItems:v13 animated:1];
 
           goto LABEL_11;
         }
@@ -285,7 +285,7 @@ void __53__SUUIRedeemViewController__redeemURLWithCompletion___block_invoke(uint
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [leftBarButtonItems countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -298,42 +298,42 @@ void __53__SUUIRedeemViewController__redeemURLWithCompletion___block_invoke(uint
 LABEL_11:
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v9 = a3;
+  controllerCopy = controller;
   [(SUUIRedeemViewController *)self setNavigationBarHidden:1];
-  [v9 willMoveToParentViewController:self];
-  v4 = [v9 view];
-  v5 = [(SUUIRedeemViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  [controllerCopy willMoveToParentViewController:self];
+  view = [controllerCopy view];
+  view2 = [(SUUIRedeemViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v6 = [v9 view];
-  [v6 setAutoresizingMask:18];
+  view3 = [controllerCopy view];
+  [view3 setAutoresizingMask:18];
 
-  v7 = [(SUUIRedeemViewController *)self view];
-  v8 = [v9 view];
-  [v7 addSubview:v8];
+  view4 = [(SUUIRedeemViewController *)self view];
+  view5 = [controllerCopy view];
+  [view4 addSubview:view5];
 
-  [(SUUIRedeemViewController *)self addChildViewController:v9];
-  [v9 didMoveToParentViewController:self];
+  [(SUUIRedeemViewController *)self addChildViewController:controllerCopy];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (void)_startActivityIndicator
 {
   v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
   [v4 startAnimating];
-  v3 = [(SUUIRedeemViewController *)self view];
-  [v3 addSubview:v4];
+  view = [(SUUIRedeemViewController *)self view];
+  [view addSubview:v4];
 
   [(SUUIRedeemViewController *)self setActivityIndicator:v4];
 }
 
 - (void)_stopActivityIndicator
 {
-  v3 = [(SUUIRedeemViewController *)self activityIndicator];
-  [v3 stopAnimating];
-  [v3 removeFromSuperview];
+  activityIndicator = [(SUUIRedeemViewController *)self activityIndicator];
+  [activityIndicator stopAnimating];
+  [activityIndicator removeFromSuperview];
   [(SUUIRedeemViewController *)self setActivityIndicator:0];
 }
 

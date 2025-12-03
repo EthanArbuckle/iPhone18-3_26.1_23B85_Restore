@@ -1,8 +1,8 @@
 @interface DirectionsElevationSummaryCollectionViewCell
-- (DirectionsElevationSummaryCollectionViewCell)initWithFrame:(CGRect)a3;
+- (DirectionsElevationSummaryCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityIdentifier;
 - (void)_updateLabels;
-- (void)setRoute:(id)a3;
+- (void)setRoute:(id)route;
 @end
 
 @implementation DirectionsElevationSummaryCollectionViewCell
@@ -16,15 +16,15 @@
 
 - (void)_updateLabels
 {
-  v3 = [(GEOComposedRoute *)self->_route elevationProfile];
+  elevationProfile = [(GEOComposedRoute *)self->_route elevationProfile];
 
-  if (v3)
+  if (elevationProfile)
   {
-    v4 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v5 = [v4 sumElevationGainCm] * 0.01;
+    elevationProfile2 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v5 = [elevationProfile2 sumElevationGainCm] * 0.01;
 
-    v6 = [(GEOComposedRoute *)self->_route elevationProfile];
-    v7 = [v6 sumElevationLossCm] * 0.01;
+    elevationProfile3 = [(GEOComposedRoute *)self->_route elevationProfile];
+    v7 = [elevationProfile3 sumElevationLossCm] * 0.01;
   }
 
   else
@@ -36,26 +36,26 @@
   v8 = sub_1007993AC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = self;
+    selfCopy = self;
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(DirectionsElevationSummaryCollectionViewCell *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(DirectionsElevationSummaryCollectionViewCell *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_10;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_10:
 
     *buf = 138412290;
-    v23 = v14;
+    v23 = selfCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ | Will update labels for gain/loss", buf, 0xCu);
   }
 
@@ -69,44 +69,44 @@ LABEL_10:
   [(DirectionsElevationLabelSummaryView *)labelSummaryView setAscent:v18 descent:v21];
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v6 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     [(DirectionsElevationSummaryCollectionViewCell *)self _updateLabels];
-    v5 = v6;
+    routeCopy = v6;
   }
 }
 
-- (DirectionsElevationSummaryCollectionViewCell)initWithFrame:(CGRect)a3
+- (DirectionsElevationSummaryCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v61.receiver = self;
   v61.super_class = DirectionsElevationSummaryCollectionViewCell;
-  v3 = [(DirectionsElevationSummaryCollectionViewCell *)&v61 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DirectionsElevationSummaryCollectionViewCell *)&v61 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
     [(DirectionsElevationSummaryCollectionViewCell *)v3 setBackgroundColor:v4];
 
     v5 = +[UIColor clearColor];
-    v6 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    [v6 setBackgroundColor:v5];
+    contentView = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    [contentView setBackgroundColor:v5];
 
     v60 = objc_alloc_init(NSMutableArray);
     v7 = [DirectionsElevationLabelSummaryView alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v11 = [(DirectionsElevationLabelSummaryView *)v7 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(DirectionsElevationLabelSummaryView *)v7 initWithFrame:CGRectZero.origin.x, y, width, height];
     labelSummaryView = v3->_labelSummaryView;
-    v3->_labelSummaryView = v11;
+    v3->_labelSummaryView = height;
 
     [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    [v13 addSubview:v3->_labelSummaryView];
+    contentView2 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_labelSummaryView];
 
     v14 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v14 setAccessibilityIdentifier:@"TitleLabel"];
@@ -142,8 +142,8 @@ LABEL_10:
     [v14 setContentCompressionResistancePriority:1 forAxis:v24];
     LODWORD(v25) = 1148829696;
     [v14 setContentCompressionResistancePriority:0 forAxis:v25];
-    v26 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    [v26 addSubview:v14];
+    contentView3 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    [contentView3 addSubview:v14];
 
     v27 = sub_10000FA08(v3);
     if (v27 == 5)
@@ -176,39 +176,39 @@ LABEL_10:
       v30 = 12.0;
     }
 
-    v58 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView topAnchor];
-    v59 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v57 = [v59 topAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57 constant:v28];
+    topAnchor = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView topAnchor];
+    contentView4 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v56 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v28];
     v62[0] = v56;
-    v54 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView leadingAnchor];
-    v55 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v53 = [v55 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:v30];
+    leadingAnchor = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView leadingAnchor];
+    contentView5 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    leadingAnchor2 = [contentView5 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v30];
     v62[1] = v52;
-    v51 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v50 = [v51 trailingAnchor];
-    v49 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView trailingAnchor];
-    v48 = [v50 constraintGreaterThanOrEqualToAnchor:v49 constant:v30];
+    contentView6 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    trailingAnchor = [contentView6 trailingAnchor];
+    trailingAnchor2 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView trailingAnchor];
+    v48 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:v30];
     v62[2] = v48;
-    v47 = [v14 topAnchor];
-    v46 = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView bottomAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46 constant:5.0];
+    topAnchor3 = [v14 topAnchor];
+    bottomAnchor = [(DirectionsElevationLabelSummaryView *)v3->_labelSummaryView bottomAnchor];
+    v45 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:5.0];
     v62[3] = v45;
-    v43 = [v14 leadingAnchor];
-    v44 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v42 = [v44 leadingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:v30];
+    leadingAnchor3 = [v14 leadingAnchor];
+    contentView7 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    leadingAnchor4 = [contentView7 leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v30];
     v62[4] = v41;
-    v40 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v31 = [v40 trailingAnchor];
-    v32 = [v14 trailingAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:v30];
+    contentView8 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    trailingAnchor3 = [contentView8 trailingAnchor];
+    trailingAnchor4 = [v14 trailingAnchor];
+    v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:v30];
     v62[5] = v33;
-    v34 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
-    v35 = [v34 bottomAnchor];
-    v36 = [v14 bottomAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36 constant:v29];
+    contentView9 = [(DirectionsElevationSummaryCollectionViewCell *)v3 contentView];
+    bottomAnchor2 = [contentView9 bottomAnchor];
+    bottomAnchor3 = [v14 bottomAnchor];
+    v37 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:v29];
     v62[6] = v37;
     v38 = [NSArray arrayWithObjects:v62 count:7];
     [v60 addObjectsFromArray:v38];

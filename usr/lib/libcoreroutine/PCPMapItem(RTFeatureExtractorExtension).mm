@@ -9,17 +9,17 @@
   v4 = MEMORY[0x277D3F8A8];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 name];
-  [v6 setPlaceName:v7];
+  name = [v5 name];
+  [v6 setPlaceName:name];
 
-  v8 = [v5 category];
-  [v6 setCategory:v8];
+  category = [v5 category];
+  [v6 setCategory:category];
 
   [v6 setPlaceType:{objc_msgSend(v5, "mapItemPlaceType")}];
   [v6 setPlaceSource:{objc_msgSend(v5, "source")}];
-  v9 = [v5 muid];
+  muid = [v5 muid];
 
-  [v6 setMapItemMUID:v9];
+  [v6 setMapItemMUID:muid];
   return v6;
 }
 

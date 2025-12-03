@@ -1,6 +1,6 @@
 @interface SGErrorMetrics
 + (id)instance;
-+ (void)recordInteractionIgnoredWithReason:(SGMInteractionIgnoredReason_)a3;
++ (void)recordInteractionIgnoredWithReason:(SGMInteractionIgnoredReason_)reason;
 - (SGErrorMetrics)init;
 @end
 
@@ -20,22 +20,22 @@
   return v2;
 }
 
-+ (void)recordInteractionIgnoredWithReason:(SGMInteractionIgnoredReason_)a3
++ (void)recordInteractionIgnoredWithReason:(SGMInteractionIgnoredReason_)reason
 {
-  v4 = [a1 instance];
-  v5 = [v4 badInteractionIgnored];
-  [v5 trackEventWithScalar:1 reason:a3.var0];
+  instance = [self instance];
+  badInteractionIgnored = [instance badInteractionIgnored];
+  [badInteractionIgnored trackEventWithScalar:1 reason:reason.var0];
 
   v11 = objc_opt_new();
-  [v11 setReason:a3.var0];
-  v6 = [MEMORY[0x1E69C5B48] sharedInstance];
-  [v6 trackScalarForMessage:v11];
+  [v11 setReason:reason.var0];
+  mEMORY[0x1E69C5B48] = [MEMORY[0x1E69C5B48] sharedInstance];
+  [mEMORY[0x1E69C5B48] trackScalarForMessage:v11];
 
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8 = [v11 key];
   v9 = [v7 initWithFormat:@"%@.%@", @"com.apple.Proactive.CoreSuggestions", v8];
 
-  v10 = [v11 dictionaryRepresentation];
+  dictionaryRepresentation = [v11 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 

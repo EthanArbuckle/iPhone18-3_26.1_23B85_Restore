@@ -1,15 +1,15 @@
 @interface DebugFormatConsoleViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)doPanGestureWithGesture:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)doPanGestureWithGesture:(id)gesture;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatConsoleViewController
 
-- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC8NewsFeed32DebugFormatConsoleViewController_consoleHeight;
   *v3 = 0;
@@ -27,34 +27,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6123AEC();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6123ED4();
 }
 
-- (void)doPanGestureWithGesture:(id)a3
+- (void)doPanGestureWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D612436C(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_1D612436C(gestureCopy);
 }
 
-- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed32DebugFormatConsoleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   LOBYTE(self) = sub_1D6124A5C();
 
   return self & 1;

@@ -2,7 +2,7 @@
 - (WBSPageContextDataFetcherDelegate)delegate;
 - (WKWebView)webView;
 - (void)clearExtractedSchemaData;
-- (void)fetchSchemaDataForWebView:(id)a3;
+- (void)fetchSchemaDataForWebView:(id)view;
 @end
 
 @implementation WBSPageContextDataFetcher
@@ -16,16 +16,16 @@
   }
 }
 
-- (void)fetchSchemaDataForWebView:(id)a3
+- (void)fetchSchemaDataForWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__WBSPageContextDataFetcher_fetchSchemaDataForWebView___block_invoke;
   v6[3] = &unk_1E82864E0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = viewCopy;
   v7 = v5;
   [WBSSchemaDataExtractor fetchDataFromWebView:v5 completionHandler:v6];
 

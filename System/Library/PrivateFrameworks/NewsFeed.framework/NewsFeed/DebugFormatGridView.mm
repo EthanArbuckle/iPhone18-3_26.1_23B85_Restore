@@ -1,12 +1,12 @@
 @interface DebugFormatGridView
-- (_TtC8NewsFeed19DebugFormatGridView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed19DebugFormatGridView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DebugFormatGridView
 
-- (_TtC8NewsFeed19DebugFormatGridView)initWithCoder:(id)a3
+- (_TtC8NewsFeed19DebugFormatGridView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed19DebugFormatGridView_scale) = 0x3FF0000000000000;
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed19DebugFormatGridView_contentSize);
@@ -24,20 +24,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6A8F67C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v9.receiver;
-  [(DebugFormatGridView *)&v9 traitCollectionDidChange:v4];
+  [(DebugFormatGridView *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v5[OBJC_IVAR____TtC8NewsFeed19DebugFormatGridView_gridLayer];
-  v7 = [objc_opt_self() systemGrayColor];
-  v8 = [v7 CGColor];
+  systemGrayColor = [objc_opt_self() systemGrayColor];
+  cGColor = [systemGrayColor CGColor];
 
   [v6 setStrokeColor_];
 }

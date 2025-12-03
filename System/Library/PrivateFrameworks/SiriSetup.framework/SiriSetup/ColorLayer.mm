@@ -1,8 +1,8 @@
 @interface ColorLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
 - (_TtC9SiriSetup10ColorLayer)init;
-- (_TtC9SiriSetup10ColorLayer)initWithLayer:(id)a3;
-- (id)actionForKey:(id)a3;
+- (_TtC9SiriSetup10ColorLayer)initWithLayer:(id)layer;
+- (id)actionForKey:(id)key;
 - (void)display;
 @end
 
@@ -21,7 +21,7 @@
   return [(ColorLayer *)&v7 init];
 }
 
-- (_TtC9SiriSetup10ColorLayer)initWithLayer:(id)a3
+- (_TtC9SiriSetup10ColorLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_269057C04();
@@ -42,7 +42,7 @@
   return v8;
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
   v4 = sub_269057954();
   v6 = v5;
@@ -56,7 +56,7 @@
   else
   {
     v8 = sub_269057DE4();
-    v9 = a3;
+    keyCopy = key;
 
     if (v8)
     {
@@ -68,7 +68,7 @@
     {
       v11.receiver = swift_getObjCClassFromMetadata();
       v11.super_class = &OBJC_METACLASS____TtC9SiriSetup10ColorLayer;
-      v10 = objc_msgSendSuper2(&v11, sel_needsDisplayForKey_, v9);
+      v10 = objc_msgSendSuper2(&v11, sel_needsDisplayForKey_, keyCopy);
 
       return v10;
     }
@@ -77,15 +77,15 @@
 
 - (void)display
 {
-  v2 = self;
+  selfCopy = self;
   sub_269053AA8();
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
   v4 = sub_269057954();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_269054038(v4, v6);
 
   return v8;

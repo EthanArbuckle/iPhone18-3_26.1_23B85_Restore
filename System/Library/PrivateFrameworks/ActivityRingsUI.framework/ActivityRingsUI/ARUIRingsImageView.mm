@@ -1,42 +1,42 @@
 @interface ARUIRingsImageView
-- (ARUIRingsImageView)initWithRingGroup:(id)a3;
-- (ARUIRingsImageView)initWithRingGroup:(id)a3 renderer:(id)a4;
+- (ARUIRingsImageView)initWithRingGroup:(id)group;
+- (ARUIRingsImageView)initWithRingGroup:(id)group renderer:(id)renderer;
 - (void)_renderImage;
 - (void)_updateRenderContext;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ARUIRingsImageView
 
-- (ARUIRingsImageView)initWithRingGroup:(id)a3
+- (ARUIRingsImageView)initWithRingGroup:(id)group
 {
-  v4 = a3;
-  v5 = [[ARUIRingsImageView alloc] initWithRingGroup:v4 renderer:0];
+  groupCopy = group;
+  v5 = [[ARUIRingsImageView alloc] initWithRingGroup:groupCopy renderer:0];
 
   return v5;
 }
 
-- (ARUIRingsImageView)initWithRingGroup:(id)a3 renderer:(id)a4
+- (ARUIRingsImageView)initWithRingGroup:(id)group renderer:(id)renderer
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  rendererCopy = renderer;
   v12.receiver = self;
   v12.super_class = ARUIRingsImageView;
   v9 = [(ARUIRingsImageView *)&v12 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v9)
   {
-    [v7 setDelegate:v9];
-    objc_storeStrong(&v9->_ringGroup, a3);
-    v10 = v8;
-    if (!v8)
+    [groupCopy setDelegate:v9];
+    objc_storeStrong(&v9->_ringGroup, group);
+    v10 = rendererCopy;
+    if (!rendererCopy)
     {
       v10 = objc_alloc_init(ARUIRenderer);
     }
 
     objc_storeStrong(&v9->_renderer, v10);
-    if (!v8)
+    if (!rendererCopy)
     {
     }
 
@@ -47,19 +47,19 @@
   return v9;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ARUIRingsImageView;
-  [(ARUIRingsImageView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ARUIRingsImageView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ARUIRingsImageView *)self _updateRenderContext];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = ARUIRingsImageView;
-  [(ARUIRingsImageView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ARUIRingsImageView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(ARUIRingsImageView *)self _updateRenderContext];
 }
 
@@ -92,9 +92,9 @@
 - (void)_renderImage
 {
   renderer = self->_renderer;
-  v4 = [(ARUIRingGroup *)self->_ringGroup rings];
-  v5 = [(ARUIRingGroup *)self->_ringGroup spriteSheet];
-  v6 = [(ARUIRenderer *)renderer snapshotRings:v4 spriteSheet:v5 withContext:self->_renderContext];
+  rings = [(ARUIRingGroup *)self->_ringGroup rings];
+  spriteSheet = [(ARUIRingGroup *)self->_ringGroup spriteSheet];
+  v6 = [(ARUIRenderer *)renderer snapshotRings:rings spriteSheet:spriteSheet withContext:self->_renderContext];
 
   [(ARUIRingsImageView *)self setImage:v6];
 }

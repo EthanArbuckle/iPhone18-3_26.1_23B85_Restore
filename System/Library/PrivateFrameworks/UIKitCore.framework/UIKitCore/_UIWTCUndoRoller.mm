@@ -1,51 +1,51 @@
 @interface _UIWTCUndoRoller
 - (NSAttributedString)rolledReplacement;
-- (_UIWTCUndoRoller)initWithEvaluatedText:(id)a3 offset:(unint64_t)a4;
-- (void)replaceRange:(_NSRange)a3 withText:(id)a4;
+- (_UIWTCUndoRoller)initWithEvaluatedText:(id)text offset:(unint64_t)offset;
+- (void)replaceRange:(_NSRange)range withText:(id)text;
 @end
 
 @implementation _UIWTCUndoRoller
 
-- (_UIWTCUndoRoller)initWithEvaluatedText:(id)a3 offset:(unint64_t)a4
+- (_UIWTCUndoRoller)initWithEvaluatedText:(id)text offset:(unint64_t)offset
 {
-  v7 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = _UIWTCUndoRoller;
   v8 = [(_UIWTCUndoRoller *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_evaluatedText, a3);
-    v9->_offset = a4;
+    objc_storeStrong(&v8->_evaluatedText, text);
+    v9->_offset = offset;
   }
 
   return v9;
 }
 
-- (void)replaceRange:(_NSRange)a3 withText:(id)a4
+- (void)replaceRange:(_NSRange)range withText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
   if (!self->_hasFouled)
   {
     if (!self->_rolledReplacement)
     {
-      v13 = v7;
+      v13 = textCopy;
       v8 = [(NSAttributedString *)self->_evaluatedText mutableCopy];
       rolledReplacement = self->_rolledReplacement;
       self->_rolledReplacement = v8;
 
-      v7 = v13;
+      textCopy = v13;
     }
 
     offset = self->_offset;
-    if (location >= offset && (v11 = location + length - offset, v14 = v7, v12 = [(NSMutableAttributedString *)self->_rolledReplacement length], v7 = v14, v11 <= v12))
+    if (location >= offset && (v11 = location + length - offset, v14 = textCopy, v12 = [(NSMutableAttributedString *)self->_rolledReplacement length], textCopy = v14, v11 <= v12))
     {
       if (!self->_hasFouled)
       {
         [(NSMutableAttributedString *)self->_rolledReplacement replaceCharactersInRange:location - self->_offset withAttributedString:length, v14];
-        v7 = v14;
+        textCopy = v14;
       }
     }
 

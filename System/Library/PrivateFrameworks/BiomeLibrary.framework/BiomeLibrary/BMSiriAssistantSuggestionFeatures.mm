@@ -1,38 +1,38 @@
 @interface BMSiriAssistantSuggestionFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriAssistantSuggestionFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriAssistantSuggestionFeatures)initWithSuggestionDetails:(id)a3 appUsageFeatures:(id)a4 deviceFeatures:(id)a5 environmentFeatures:(id)a6 icloudFeatures:(id)a7 temporalFeatures:(id)a8 engagementLabels:(id)a9 userSegmentation:(id)a10 loggingType:(int)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriAssistantSuggestionFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriAssistantSuggestionFeatures)initWithSuggestionDetails:(id)details appUsageFeatures:(id)features deviceFeatures:(id)deviceFeatures environmentFeatures:(id)environmentFeatures icloudFeatures:(id)icloudFeatures temporalFeatures:(id)temporalFeatures engagementLabels:(id)labels userSegmentation:(id)self0 loggingType:(int)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriAssistantSuggestionFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
-    v7 = [v5 suggestionDetails];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    suggestionDetails = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
+    suggestionDetails2 = [v5 suggestionDetails];
+    v8 = suggestionDetails2;
+    if (suggestionDetails == suggestionDetails2)
     {
     }
 
     else
     {
-      v9 = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
-      v10 = [v5 suggestionDetails];
-      v11 = [v9 isEqual:v10];
+      suggestionDetails3 = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
+      suggestionDetails4 = [v5 suggestionDetails];
+      v11 = [suggestionDetails3 isEqual:suggestionDetails4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
-    v14 = [v5 appUsageFeatures];
-    v15 = v14;
-    if (v13 == v14)
+    appUsageFeatures = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
+    appUsageFeatures2 = [v5 appUsageFeatures];
+    v15 = appUsageFeatures2;
+    if (appUsageFeatures == appUsageFeatures2)
     {
     }
 
     else
     {
-      v16 = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
-      v17 = [v5 appUsageFeatures];
-      v18 = [v16 isEqual:v17];
+      appUsageFeatures3 = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
+      appUsageFeatures4 = [v5 appUsageFeatures];
+      v18 = [appUsageFeatures3 isEqual:appUsageFeatures4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
-    v20 = [v5 deviceFeatures];
-    v21 = v20;
-    if (v19 == v20)
+    deviceFeatures = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
+    deviceFeatures2 = [v5 deviceFeatures];
+    v21 = deviceFeatures2;
+    if (deviceFeatures == deviceFeatures2)
     {
     }
 
     else
     {
-      v22 = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
-      v23 = [v5 deviceFeatures];
-      v24 = [v22 isEqual:v23];
+      deviceFeatures3 = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
+      deviceFeatures4 = [v5 deviceFeatures];
+      v24 = [deviceFeatures3 isEqual:deviceFeatures4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
-    v26 = [v5 environmentFeatures];
-    v27 = v26;
-    if (v25 == v26)
+    environmentFeatures = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
+    environmentFeatures2 = [v5 environmentFeatures];
+    v27 = environmentFeatures2;
+    if (environmentFeatures == environmentFeatures2)
     {
     }
 
     else
     {
-      v28 = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
-      v29 = [v5 environmentFeatures];
-      v30 = [v28 isEqual:v29];
+      environmentFeatures3 = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
+      environmentFeatures4 = [v5 environmentFeatures];
+      v30 = [environmentFeatures3 isEqual:environmentFeatures4];
 
       if (!v30)
       {
@@ -97,18 +97,18 @@
       }
     }
 
-    v31 = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
-    v32 = [v5 icloudFeatures];
-    v33 = v32;
-    if (v31 == v32)
+    icloudFeatures = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
+    icloudFeatures2 = [v5 icloudFeatures];
+    v33 = icloudFeatures2;
+    if (icloudFeatures == icloudFeatures2)
     {
     }
 
     else
     {
-      v34 = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
-      v35 = [v5 icloudFeatures];
-      v36 = [v34 isEqual:v35];
+      icloudFeatures3 = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
+      icloudFeatures4 = [v5 icloudFeatures];
+      v36 = [icloudFeatures3 isEqual:icloudFeatures4];
 
       if (!v36)
       {
@@ -116,18 +116,18 @@
       }
     }
 
-    v37 = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
-    v38 = [v5 temporalFeatures];
-    v39 = v38;
-    if (v37 == v38)
+    temporalFeatures = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
+    temporalFeatures2 = [v5 temporalFeatures];
+    v39 = temporalFeatures2;
+    if (temporalFeatures == temporalFeatures2)
     {
     }
 
     else
     {
-      v40 = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
-      v41 = [v5 temporalFeatures];
-      v42 = [v40 isEqual:v41];
+      temporalFeatures3 = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
+      temporalFeatures4 = [v5 temporalFeatures];
+      v42 = [temporalFeatures3 isEqual:temporalFeatures4];
 
       if (!v42)
       {
@@ -135,18 +135,18 @@
       }
     }
 
-    v43 = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
-    v44 = [v5 engagementLabels];
-    v45 = v44;
-    if (v43 == v44)
+    engagementLabels = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
+    engagementLabels2 = [v5 engagementLabels];
+    v45 = engagementLabels2;
+    if (engagementLabels == engagementLabels2)
     {
     }
 
     else
     {
-      v46 = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
-      v47 = [v5 engagementLabels];
-      v48 = [v46 isEqual:v47];
+      engagementLabels3 = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
+      engagementLabels4 = [v5 engagementLabels];
+      v48 = [engagementLabels3 isEqual:engagementLabels4];
 
       if (!v48)
       {
@@ -154,18 +154,18 @@
       }
     }
 
-    v49 = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
-    v50 = [v5 userSegmentation];
-    v51 = v50;
-    if (v49 == v50)
+    userSegmentation = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
+    userSegmentation2 = [v5 userSegmentation];
+    v51 = userSegmentation2;
+    if (userSegmentation == userSegmentation2)
     {
     }
 
     else
     {
-      v52 = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
-      v53 = [v5 userSegmentation];
-      v54 = [v52 isEqual:v53];
+      userSegmentation3 = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
+      userSegmentation4 = [v5 userSegmentation];
+      v54 = [userSegmentation3 isEqual:userSegmentation4];
 
       if (!v54)
       {
@@ -177,8 +177,8 @@ LABEL_34:
       }
     }
 
-    v56 = [(BMSiriAssistantSuggestionFeatures *)self loggingType];
-    v12 = v56 == [v5 loggingType];
+    loggingType = [(BMSiriAssistantSuggestionFeatures *)self loggingType];
+    v12 = loggingType == [v5 loggingType];
     goto LABEL_34;
   }
 
@@ -191,122 +191,122 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v41[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
-  v4 = [v3 jsonDictionary];
+  suggestionDetails = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
+  jsonDictionary = [suggestionDetails jsonDictionary];
 
-  v5 = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
-  v6 = [v5 jsonDictionary];
+  appUsageFeatures = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
+  jsonDictionary2 = [appUsageFeatures jsonDictionary];
 
-  v7 = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
-  v8 = [v7 jsonDictionary];
+  deviceFeatures = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
+  jsonDictionary3 = [deviceFeatures jsonDictionary];
 
-  v9 = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
-  v10 = [v9 jsonDictionary];
+  environmentFeatures = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
+  jsonDictionary4 = [environmentFeatures jsonDictionary];
 
-  v11 = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
-  v12 = [v11 jsonDictionary];
+  icloudFeatures = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
+  jsonDictionary5 = [icloudFeatures jsonDictionary];
 
-  v13 = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
-  v39 = [v13 jsonDictionary];
+  temporalFeatures = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
+  jsonDictionary6 = [temporalFeatures jsonDictionary];
 
-  v14 = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
-  v15 = [v14 jsonDictionary];
+  engagementLabels = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
+  jsonDictionary7 = [engagementLabels jsonDictionary];
 
-  v16 = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
-  v17 = [v16 jsonDictionary];
+  userSegmentation = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
+  jsonDictionary8 = [userSegmentation jsonDictionary];
 
   v18 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSiriAssistantSuggestionFeatures loggingType](self, "loggingType")}];
   v40[0] = @"suggestionDetails";
-  v19 = v4;
-  if (!v4)
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v34 = v19;
-  v41[0] = v19;
+  v34 = null;
+  v41[0] = null;
   v40[1] = @"appUsageFeatures";
-  v20 = v6;
-  if (!v6)
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v33 = v20;
-  v41[1] = v20;
+  v33 = null2;
+  v41[1] = null2;
   v40[2] = @"deviceFeatures";
-  v21 = v8;
-  if (!v8)
+  null3 = jsonDictionary3;
+  if (!jsonDictionary3)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v38 = v4;
-  v32 = v21;
-  v41[2] = v21;
+  v38 = jsonDictionary;
+  v32 = null3;
+  v41[2] = null3;
   v40[3] = @"environmentFeatures";
-  v22 = v10;
-  if (!v10)
+  null4 = jsonDictionary4;
+  if (!jsonDictionary4)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37 = v6;
-  v31 = v22;
-  v41[3] = v22;
+  v37 = jsonDictionary2;
+  v31 = null4;
+  v41[3] = null4;
   v40[4] = @"icloudFeatures";
-  v23 = v12;
-  if (!v12)
+  null5 = jsonDictionary5;
+  if (!jsonDictionary5)
   {
-    v23 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v36 = v8;
-  v41[4] = v23;
+  v36 = jsonDictionary3;
+  v41[4] = null5;
   v40[5] = @"temporalFeatures";
-  v24 = v39;
-  if (!v39)
+  null6 = jsonDictionary6;
+  if (!jsonDictionary6)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[5] = v24;
+  v41[5] = null6;
   v40[6] = @"engagementLabels";
-  v25 = v15;
-  if (!v15)
+  null7 = jsonDictionary7;
+  if (!jsonDictionary7)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v12;
-  v41[6] = v25;
+  v26 = jsonDictionary5;
+  v41[6] = null7;
   v40[7] = @"userSegmentation";
-  v27 = v17;
-  if (!v17)
+  null8 = jsonDictionary8;
+  if (!jsonDictionary8)
   {
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[7] = v27;
+  v41[7] = null8;
   v40[8] = @"loggingType";
-  v28 = v18;
+  null9 = v18;
   if (!v18)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v41[8] = v28;
+  v41[8] = null9;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:9];
   if (v18)
   {
-    if (v17)
+    if (jsonDictionary8)
     {
       goto LABEL_21;
     }
 
 LABEL_35:
 
-    if (v15)
+    if (jsonDictionary7)
     {
       goto LABEL_22;
     }
@@ -314,13 +314,13 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!v17)
+  if (!jsonDictionary8)
   {
     goto LABEL_35;
   }
 
 LABEL_21:
-  if (v15)
+  if (jsonDictionary7)
   {
     goto LABEL_22;
   }
@@ -328,7 +328,7 @@ LABEL_21:
 LABEL_36:
 
 LABEL_22:
-  if (!v39)
+  if (!jsonDictionary6)
   {
   }
 
@@ -336,7 +336,7 @@ LABEL_22:
   {
   }
 
-  if (!v10)
+  if (!jsonDictionary4)
   {
   }
 
@@ -376,37 +376,37 @@ LABEL_31:
   return v35;
 }
 
-- (BMSiriAssistantSuggestionFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriAssistantSuggestionFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v122[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"suggestionDetails"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"suggestionDetails"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"appUsageFeatures"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appUsageFeatures"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"deviceFeatures"];
-      v96 = self;
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"deviceFeatures"];
+      selfCopy = self;
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v24 = 0;
 LABEL_110:
-            self = v96;
+            self = selfCopy;
             goto LABEL_111;
           }
 
           v91 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v95 = a4;
+          errorCopy = error;
           v43 = v9;
           v44 = *MEMORY[0x1E698F240];
           v117 = *MEMORY[0x1E696A578];
@@ -423,7 +423,7 @@ LABEL_110:
           v49 = v44;
           v9 = v43;
           v24 = 0;
-          *v95 = [v91 initWithDomain:v49 code:2 userInfo:v12];
+          *errorCopy = [v91 initWithDomain:v49 code:2 userInfo:v12];
           goto LABEL_109;
         }
 
@@ -433,10 +433,10 @@ LABEL_110:
         v28 = v102;
         if (v28)
         {
-          if (a4)
+          if (error)
           {
             v28 = v28;
-            *a4 = v28;
+            *error = v28;
           }
 
           v24 = 0;
@@ -453,8 +453,8 @@ LABEL_110:
         v93 = 0;
       }
 
-      v12 = [v6 objectForKeyedSubscript:@"environmentFeatures"];
-      v13 = a4;
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"environmentFeatures"];
+      errorCopy2 = error;
       v92 = v8;
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -473,10 +473,10 @@ LABEL_110:
         {
           v36 = v34;
           v27 = v93;
-          if (v13)
+          if (errorCopy2)
           {
             v35 = v35;
-            *v13 = v35;
+            *errorCopy2 = v35;
           }
 
           v24 = 0;
@@ -486,14 +486,14 @@ LABEL_110:
         }
 
 LABEL_13:
-        v14 = [v6 objectForKeyedSubscript:@"icloudFeatures"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"icloudFeatures"];
         v86 = v9;
         if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v24 = 0;
               v10 = v89;
@@ -510,7 +510,7 @@ LABEL_107:
             v114 = v87;
             v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
             v24 = 0;
-            *v13 = [v56 initWithDomain:v84 code:2 userInfo:v15];
+            *errorCopy2 = [v56 initWithDomain:v84 code:2 userInfo:v15];
             goto LABEL_116;
           }
 
@@ -521,10 +521,10 @@ LABEL_107:
           if (v42)
           {
             v27 = v93;
-            if (a4)
+            if (error)
             {
               v42 = v42;
-              *a4 = v42;
+              *error = v42;
             }
 
             v24 = 0;
@@ -538,7 +538,7 @@ LABEL_107:
           v87 = 0;
         }
 
-        v15 = [v6 objectForKeyedSubscript:@"temporalFeatures"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"temporalFeatures"];
         if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v78 = v15;
@@ -557,10 +557,10 @@ LABEL_107:
           {
             v83 = v50;
             v27 = v93;
-            if (v13)
+            if (errorCopy2)
             {
               v51 = v51;
-              *v13 = v51;
+              *errorCopy2 = v51;
             }
 
             v24 = 0;
@@ -571,9 +571,9 @@ LABEL_107:
           v78 = v15;
           v79 = v20;
 
-          a4 = v13;
+          error = errorCopy2;
 LABEL_19:
-          v16 = [v6 objectForKeyedSubscript:@"engagementLabels"];
+          v16 = [dictionaryCopy objectForKeyedSubscript:@"engagementLabels"];
           v83 = v16;
           if (v16 && (v17 = v16, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
@@ -581,7 +581,7 @@ LABEL_19:
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
               v20 = v79;
-              if (!v13)
+              if (!errorCopy2)
               {
                 v24 = 0;
                 v10 = v89;
@@ -599,7 +599,7 @@ LABEL_19:
               v63 = v77;
               v76 = v62;
               v24 = 0;
-              *v13 = [v61 initWithDomain:v63 code:2 userInfo:?];
+              *errorCopy2 = [v61 initWithDomain:v63 code:2 userInfo:?];
               v10 = v89;
               v27 = v93;
               goto LABEL_103;
@@ -614,10 +614,10 @@ LABEL_19:
             {
               v76 = v54;
               v27 = v93;
-              if (v13)
+              if (errorCopy2)
               {
                 v55 = v55;
-                *v13 = v55;
+                *errorCopy2 = v55;
               }
 
               v24 = 0;
@@ -627,7 +627,7 @@ LABEL_19:
 
             v73 = v14;
 
-            a4 = v13;
+            error = errorCopy2;
           }
 
           else
@@ -636,14 +636,14 @@ LABEL_19:
             v81 = 0;
           }
 
-          v18 = [v6 objectForKeyedSubscript:@"userSegmentation"];
+          v18 = [dictionaryCopy objectForKeyedSubscript:@"userSegmentation"];
           v76 = v18;
           if (v18 && (v19 = v18, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!a4)
+              if (!error)
               {
                 v24 = 0;
                 v10 = v89;
@@ -662,7 +662,7 @@ LABEL_19:
               v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
               v66 = [v64 initWithDomain:v65 code:2 userInfo:v22];
               v24 = 0;
-              *a4 = v66;
+              *error = v66;
               v10 = v89;
               v27 = v93;
               v20 = v79;
@@ -679,10 +679,10 @@ LABEL_19:
             {
               v27 = v93;
               v14 = v73;
-              if (v13)
+              if (errorCopy2)
               {
                 v57 = v57;
-                *v13 = v57;
+                *errorCopy2 = v57;
               }
 
               v24 = 0;
@@ -698,7 +698,7 @@ LABEL_19:
           }
 
           v14 = v73;
-          v21 = [v6 objectForKeyedSubscript:@"loggingType"];
+          v21 = [dictionaryCopy objectForKeyedSubscript:@"loggingType"];
           if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
@@ -712,7 +712,7 @@ LABEL_19:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (v13)
+                if (errorCopy2)
                 {
                   v80 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v74 = *MEMORY[0x1E698F240];
@@ -720,7 +720,7 @@ LABEL_19:
                   v69 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"loggingType"];
                   v106 = v69;
                   v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v106 forKeys:&v105 count:1];
-                  *v13 = [v80 initWithDomain:v74 code:2 userInfo:v70];
+                  *errorCopy2 = [v80 initWithDomain:v74 code:2 userInfo:v70];
                 }
 
                 v22 = 0;
@@ -742,8 +742,8 @@ LABEL_19:
 
           LODWORD(v72) = [v22 intValue];
           v10 = v89;
-          v24 = [(BMSiriAssistantSuggestionFeatures *)v96 initWithSuggestionDetails:v92 appUsageFeatures:v89 deviceFeatures:v93 environmentFeatures:v90 icloudFeatures:v87 temporalFeatures:v20 engagementLabels:v81 userSegmentation:v75 loggingType:v72];
-          v96 = v24;
+          v24 = [(BMSiriAssistantSuggestionFeatures *)selfCopy initWithSuggestionDetails:v92 appUsageFeatures:v89 deviceFeatures:v93 environmentFeatures:v90 icloudFeatures:v87 temporalFeatures:v20 engagementLabels:v81 userSegmentation:v75 loggingType:v72];
+          selfCopy = v24;
 LABEL_101:
 
           v27 = v93;
@@ -756,7 +756,7 @@ LABEL_104:
           goto LABEL_105;
         }
 
-        if (a4)
+        if (error)
         {
           v85 = objc_alloc(MEMORY[0x1E696ABC0]);
           v82 = *MEMORY[0x1E698F240];
@@ -767,7 +767,7 @@ LABEL_104:
           v59 = v85;
           v83 = v58;
           v24 = 0;
-          *v13 = [v59 initWithDomain:v82 code:2 userInfo:?];
+          *errorCopy2 = [v59 initWithDomain:v82 code:2 userInfo:?];
           v10 = v89;
           v27 = v93;
 LABEL_105:
@@ -783,7 +783,7 @@ LABEL_116:
         goto LABEL_106;
       }
 
-      if (a4)
+      if (error)
       {
         v88 = objc_alloc(MEMORY[0x1E696ABC0]);
         v52 = *MEMORY[0x1E698F240];
@@ -793,7 +793,7 @@ LABEL_116:
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v116 forKeys:&v115 count:1];
         v53 = [v88 initWithDomain:v52 code:2 userInfo:v14];
         v24 = 0;
-        *a4 = v53;
+        *error = v53;
         v10 = v89;
         v27 = v93;
 LABEL_108:
@@ -824,10 +824,10 @@ LABEL_109:
         goto LABEL_7;
       }
 
-      if (a4)
+      if (error)
       {
         v26 = v26;
-        *a4 = v26;
+        *error = v26;
       }
 
       v24 = 0;
@@ -838,10 +838,10 @@ LABEL_111:
       goto LABEL_112;
     }
 
-    if (a4)
+    if (error)
     {
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v94 = a4;
+      errorCopy3 = error;
       v38 = v9;
       v39 = *MEMORY[0x1E698F240];
       v119 = *MEMORY[0x1E696A578];
@@ -852,7 +852,7 @@ LABEL_111:
       v9 = v38;
       v41 = [v37 initWithDomain:v40 code:2 userInfo:v11];
       v24 = 0;
-      *v94 = v41;
+      *errorCopy3 = v41;
       goto LABEL_52;
     }
 
@@ -871,10 +871,10 @@ LABEL_112:
     v23 = v104;
     if (v23)
     {
-      if (a4)
+      if (error)
       {
         v23 = v23;
-        *a4 = v23;
+        *error = v23;
       }
 
       v24 = 0;
@@ -884,7 +884,7 @@ LABEL_112:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v29 = objc_alloc(MEMORY[0x1E696ABC0]);
     v30 = *MEMORY[0x1E698F240];
@@ -896,7 +896,7 @@ LABEL_112:
     v9 = v31;
     v33 = [v29 initWithDomain:v32 code:2 userInfo:v31];
     v24 = 0;
-    *a4 = v33;
+    *error = v33;
     goto LABEL_112;
   }
 
@@ -911,67 +911,67 @@ LABEL_113:
 {
   v3 = objc_opt_new();
   [(BMSiriAssistantSuggestionFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_suggestionDetails)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesSuggestionDetails *)self->_suggestionDetails writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesSuggestionDetails *)self->_suggestionDetails writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_appUsageFeatures)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self->_appUsageFeatures writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesAppUsageFeatures *)self->_appUsageFeatures writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_deviceFeatures)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self->_deviceFeatures writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesDeviceFeatures *)self->_deviceFeatures writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_environmentFeatures)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self->_environmentFeatures writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesEnvironmentFeatures *)self->_environmentFeatures writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_icloudFeatures)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesiCloudFeatures *)self->_icloudFeatures writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesiCloudFeatures *)self->_icloudFeatures writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_temporalFeatures)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self->_temporalFeatures writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesTemporalFeatures *)self->_temporalFeatures writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_engagementLabels)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesEngagementLabels *)self->_engagementLabels writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesEngagementLabels *)self->_engagementLabels writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
   if (self->_userSegmentation)
   {
     PBDataWriterPlaceMark();
-    [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self->_userSegmentation writeTo:v4];
+    [(BMSiriAssistantSuggestionFeaturesUserSegmentation *)self->_userSegmentation writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -979,9 +979,9 @@ LABEL_113:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v29.receiver = self;
   v29.super_class = BMSiriAssistantSuggestionFeatures;
   v5 = [(BMEventBase *)&v29 init];
@@ -990,12 +990,12 @@ LABEL_113:
     goto LABEL_74;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1006,18 +1006,18 @@ LABEL_113:
       while (1)
       {
         LOBYTE(v30) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v30 & 0x7F) << v7;
@@ -1034,9 +1034,9 @@ LABEL_113:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1055,7 +1055,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesDeviceFeatures alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesDeviceFeatures alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1074,7 +1074,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesEnvironmentFeatures alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1096,7 +1096,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesSuggestionDetails alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesSuggestionDetails alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1115,7 +1115,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeatures alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesAppUsageFeatures alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1138,7 +1138,7 @@ LABEL_16:
             goto LABEL_73;
           }
 
-          v23 = [[BMSiriAssistantSuggestionFeaturesiCloudFeatures alloc] initByReadFrom:v4];
+          v23 = [[BMSiriAssistantSuggestionFeaturesiCloudFeatures alloc] initByReadFrom:fromCopy];
           if (!v23)
           {
             goto LABEL_73;
@@ -1157,7 +1157,7 @@ LABEL_16:
             goto LABEL_73;
           }
 
-          v23 = [[BMSiriAssistantSuggestionFeaturesTemporalFeatures alloc] initByReadFrom:v4];
+          v23 = [[BMSiriAssistantSuggestionFeaturesTemporalFeatures alloc] initByReadFrom:fromCopy];
           if (!v23)
           {
             goto LABEL_73;
@@ -1180,7 +1180,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesEngagementLabels alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesEngagementLabels alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1196,7 +1196,7 @@ LABEL_16:
               goto LABEL_73;
             }
 
-            v23 = [[BMSiriAssistantSuggestionFeaturesUserSegmentation alloc] initByReadFrom:v4];
+            v23 = [[BMSiriAssistantSuggestionFeaturesUserSegmentation alloc] initByReadFrom:fromCopy];
             if (!v23)
             {
               goto LABEL_73;
@@ -1216,18 +1216,18 @@ LABEL_63:
             while (1)
             {
               LOBYTE(v30) = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v30 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v30 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 |= (v30 & 0x7F) << v16;
@@ -1243,7 +1243,7 @@ LABEL_63:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v18 > 2)
+            if (([fromCopy hasError] & 1) != 0 || v18 > 2)
             {
 LABEL_70:
               LODWORD(v18) = 0;
@@ -1260,13 +1260,13 @@ LABEL_70:
       }
 
 LABEL_64:
-      v26 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v26 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_73:
     v27 = 0;
@@ -1284,45 +1284,45 @@ LABEL_74:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
-  v5 = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
-  v6 = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
-  v7 = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
-  v8 = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
-  v9 = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
-  v10 = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
-  v11 = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
+  suggestionDetails = [(BMSiriAssistantSuggestionFeatures *)self suggestionDetails];
+  appUsageFeatures = [(BMSiriAssistantSuggestionFeatures *)self appUsageFeatures];
+  deviceFeatures = [(BMSiriAssistantSuggestionFeatures *)self deviceFeatures];
+  environmentFeatures = [(BMSiriAssistantSuggestionFeatures *)self environmentFeatures];
+  icloudFeatures = [(BMSiriAssistantSuggestionFeatures *)self icloudFeatures];
+  temporalFeatures = [(BMSiriAssistantSuggestionFeatures *)self temporalFeatures];
+  engagementLabels = [(BMSiriAssistantSuggestionFeatures *)self engagementLabels];
+  userSegmentation = [(BMSiriAssistantSuggestionFeatures *)self userSegmentation];
   v12 = BMSiriAssistantSuggestionFeaturesLoggingTypeAsString([(BMSiriAssistantSuggestionFeatures *)self loggingType]);
-  v13 = [v3 initWithFormat:@"BMSiriAssistantSuggestionFeatures with suggestionDetails: %@, appUsageFeatures: %@, deviceFeatures: %@, environmentFeatures: %@, icloudFeatures: %@, temporalFeatures: %@, engagementLabels: %@, userSegmentation: %@, loggingType: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  v13 = [v3 initWithFormat:@"BMSiriAssistantSuggestionFeatures with suggestionDetails: %@, appUsageFeatures: %@, deviceFeatures: %@, environmentFeatures: %@, icloudFeatures: %@, temporalFeatures: %@, engagementLabels: %@, userSegmentation: %@, loggingType: %@", suggestionDetails, appUsageFeatures, deviceFeatures, environmentFeatures, icloudFeatures, temporalFeatures, engagementLabels, userSegmentation, v12];
 
   return v13;
 }
 
-- (BMSiriAssistantSuggestionFeatures)initWithSuggestionDetails:(id)a3 appUsageFeatures:(id)a4 deviceFeatures:(id)a5 environmentFeatures:(id)a6 icloudFeatures:(id)a7 temporalFeatures:(id)a8 engagementLabels:(id)a9 userSegmentation:(id)a10 loggingType:(int)a11
+- (BMSiriAssistantSuggestionFeatures)initWithSuggestionDetails:(id)details appUsageFeatures:(id)features deviceFeatures:(id)deviceFeatures environmentFeatures:(id)environmentFeatures icloudFeatures:(id)icloudFeatures temporalFeatures:(id)temporalFeatures engagementLabels:(id)labels userSegmentation:(id)self0 loggingType:(int)self1
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v21 = a9;
-  v18 = a10;
+  detailsCopy = details;
+  featuresCopy = features;
+  deviceFeaturesCopy = deviceFeatures;
+  environmentFeaturesCopy = environmentFeatures;
+  icloudFeaturesCopy = icloudFeatures;
+  temporalFeaturesCopy = temporalFeatures;
+  labelsCopy = labels;
+  segmentationCopy = segmentation;
   v28.receiver = self;
   v28.super_class = BMSiriAssistantSuggestionFeatures;
   v19 = [(BMEventBase *)&v28 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v19->_suggestionDetails, a3);
-    objc_storeStrong(&v19->_appUsageFeatures, a4);
-    objc_storeStrong(&v19->_deviceFeatures, a5);
-    objc_storeStrong(&v19->_environmentFeatures, a6);
-    objc_storeStrong(&v19->_icloudFeatures, a7);
-    objc_storeStrong(&v19->_temporalFeatures, a8);
-    objc_storeStrong(&v19->_engagementLabels, a9);
-    objc_storeStrong(&v19->_userSegmentation, a10);
-    v19->_loggingType = a11;
+    objc_storeStrong(&v19->_suggestionDetails, details);
+    objc_storeStrong(&v19->_appUsageFeatures, features);
+    objc_storeStrong(&v19->_deviceFeatures, deviceFeatures);
+    objc_storeStrong(&v19->_environmentFeatures, environmentFeatures);
+    objc_storeStrong(&v19->_icloudFeatures, icloudFeatures);
+    objc_storeStrong(&v19->_temporalFeatures, temporalFeatures);
+    objc_storeStrong(&v19->_engagementLabels, labels);
+    objc_storeStrong(&v19->_userSegmentation, segmentation);
+    v19->_loggingType = type;
   }
 
   return v19;
@@ -1463,9 +1463,9 @@ id __44__BMSiriAssistantSuggestionFeatures_columns__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1473,8 +1473,8 @@ id __44__BMSiriAssistantSuggestionFeatures_columns__block_invoke(uint64_t a1, vo
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriAssistantSuggestionFeatures alloc] initByReadFrom:v7];
     v4 = v8;

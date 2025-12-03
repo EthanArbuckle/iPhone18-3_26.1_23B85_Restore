@@ -1,30 +1,30 @@
 @interface HUEnergySettingsItemModule
-- (HUEnergySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUEnergySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (void)_buildItemProviders;
-- (void)subscriptionChanged:(id)a3;
+- (void)subscriptionChanged:(id)changed;
 @end
 
 @implementation HUEnergySettingsItemModule
 
-- (HUEnergySettingsItemModule)initWithItemUpdater:(id)a3 home:(id)a4
+- (HUEnergySettingsItemModule)initWithItemUpdater:(id)updater home:(id)home
 {
-  v7 = a4;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HUEnergySettingsItemModule;
-  v8 = [(HFItemModule *)&v13 initWithItemUpdater:a3];
+  v8 = [(HFItemModule *)&v13 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     v10 = +[HUHomeEnergyManagerHelper tccApps];
     [(HUEnergySettingsItemModule *)v9 setTccApps:v10];
 
     [(HUEnergySettingsItemModule *)v9 _buildItemProviders];
     [(HUEnergySettingsItemModule *)v9 setHasSentUtilityAnalytics:0];
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v9 selector:sel_subscriptionChanged_ name:@"hasUtilitySubscriptionDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel_subscriptionChanged_ name:@"hasUtilitySubscriptionDidChange" object:0];
   }
 
   return v9;
@@ -65,16 +65,16 @@
   v11 = [v10 initWithResultsBlock:v26];
   [(HUEnergySettingsItemModule *)self setGridForecastItem:v11];
 
-  v12 = [(HUEnergySettingsItemModule *)self tccApps];
-  v13 = [v12 na_map:&__block_literal_global_243];
+  tccApps = [(HUEnergySettingsItemModule *)self tccApps];
+  v13 = [tccApps na_map:&__block_literal_global_243];
   [(HUEnergySettingsItemModule *)self setEkAppsItems:v13];
 
-  v14 = [(HUEnergySettingsItemModule *)self connectUtilityItem];
-  v31[0] = v14;
-  v15 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
-  v31[1] = v15;
-  v16 = [(HUEnergySettingsItemModule *)self gridForecastItem];
-  v31[2] = v16;
+  connectUtilityItem = [(HUEnergySettingsItemModule *)self connectUtilityItem];
+  v31[0] = connectUtilityItem;
+  utilityDetailsItem = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
+  v31[1] = utilityDetailsItem;
+  gridForecastItem = [(HUEnergySettingsItemModule *)self gridForecastItem];
+  v31[2] = gridForecastItem;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
 
   v18 = objc_alloc(MEMORY[0x277D14B40]);
@@ -84,8 +84,8 @@
 
   v21 = objc_alloc(MEMORY[0x277D14B40]);
   v22 = MEMORY[0x277CBEB98];
-  v23 = [(HUEnergySettingsItemModule *)self ekAppsItems];
-  v24 = [v22 setWithArray:v23];
+  ekAppsItems = [(HUEnergySettingsItemModule *)self ekAppsItems];
+  v24 = [v22 setWithArray:ekAppsItems];
   v25 = [v21 initWithItems:v24];
   [(HUEnergySettingsItemModule *)self setStaticEKAppsItemProvider:v25];
 
@@ -531,41 +531,41 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUEnergySettingsItemModule *)self staticItemProvider];
-  v5 = [(HUEnergySettingsItemModule *)self staticEKAppsItemProvider];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  staticItemProvider = [(HUEnergySettingsItemModule *)self staticItemProvider];
+  staticEKAppsItemProvider = [(HUEnergySettingsItemModule *)self staticEKAppsItemProvider];
+  v6 = [v3 setWithObjects:{staticItemProvider, staticEKAppsItemProvider, 0}];
 
   return v6;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUEnergySettingsItemModule *)self gridForecastItem];
-  v7 = [v4 containsObject:v6];
+  gridForecastItem = [(HUEnergySettingsItemModule *)self gridForecastItem];
+  v7 = [itemsCopy containsObject:gridForecastItem];
 
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEnergySettingsShowGridSectionIdentifier"];
-    v9 = [(HUEnergySettingsItemModule *)self gridForecastItem];
-    v49[0] = v9;
+    gridForecastItem2 = [(HUEnergySettingsItemModule *)self gridForecastItem];
+    v49[0] = gridForecastItem2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:1];
     [v8 setItems:v10];
 
     v11 = _HULocalizedStringWithDefaultValue(@"HUEnergySettingsShow_LearnMore_Footer", @"HUEnergySettingsShow_LearnMore_Footer", 1);
     v18 = HULocalizedStringWithFormat(@"HUEnergySettingsShow_Footer", @"%@", v12, v13, v14, v15, v16, v17, v11);
     v19 = MEMORY[0x277CCA898];
-    v20 = [MEMORY[0x277CBEBC0] hu_gridForecastLearnMoreURL];
-    v21 = [v19 hf_attributedLinkStringForString:v18 linkString:v11 linkURL:v20];
+    hu_gridForecastLearnMoreURL = [MEMORY[0x277CBEBC0] hu_gridForecastLearnMoreURL];
+    v21 = [v19 hf_attributedLinkStringForString:v18 linkString:v11 linkURL:hu_gridForecastLearnMoreURL];
 
     [v8 setAttributedFooterTitle:v21];
     [v5 addObject:v8];
   }
 
-  v22 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
-  v23 = [v4 containsObject:v22];
+  utilityDetailsItem = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
+  v23 = [itemsCopy containsObject:utilityDetailsItem];
 
   if (v23)
   {
@@ -573,27 +573,27 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
     v25 = _HULocalizedStringWithDefaultValue(@"HUEnergySettingsUtilitySection_Header", @"HUEnergySettingsUtilitySection_Header", 1);
     [v24 setHeaderTitle:v25];
 
-    v26 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
-    v27 = [v26 latestResults];
-    v28 = [v27 objectForKeyedSubscript:@"show-connect-utility-item"];
-    v29 = [v28 BOOLValue];
+    utilityDetailsItem2 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
+    latestResults = [utilityDetailsItem2 latestResults];
+    v28 = [latestResults objectForKeyedSubscript:@"show-connect-utility-item"];
+    bOOLValue = [v28 BOOLValue];
 
-    v30 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
-    v31 = v30;
-    if (v29)
+    utilityDetailsItem3 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
+    v31 = utilityDetailsItem3;
+    if (bOOLValue)
     {
-      v48[0] = v30;
-      v32 = [(HUEnergySettingsItemModule *)self connectUtilityItem];
-      v48[1] = v32;
+      v48[0] = utilityDetailsItem3;
+      connectUtilityItem = [(HUEnergySettingsItemModule *)self connectUtilityItem];
+      v48[1] = connectUtilityItem;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
       [v24 setItems:v33];
 
-      v34 = [(HUEnergySettingsItemModule *)self connectUtilityItem];
-      v35 = [v34 latestResults];
-      v36 = [v35 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-      v37 = [v36 BOOLValue];
+      connectUtilityItem2 = [(HUEnergySettingsItemModule *)self connectUtilityItem];
+      latestResults2 = [connectUtilityItem2 latestResults];
+      v36 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+      bOOLValue2 = [v36 BOOLValue];
 
-      if (v37)
+      if (bOOLValue2)
       {
         v38 = _HULocalizedStringWithDefaultValue(@"HUEnergySettingsConnectUtilitySignInFooter", @"HUEnergySettingsConnectUtilitySignInFooter", 1);
         [v24 setFooterTitle:v38];
@@ -608,7 +608,7 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
 
     else
     {
-      v47 = v30;
+      v47 = utilityDetailsItem3;
       v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v47 count:1];
       [v24 setItems:v39];
     }
@@ -616,9 +616,9 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
     [v5 addObject:v24];
   }
 
-  v40 = [(HUEnergySettingsItemModule *)self staticEKAppsItemProvider];
-  v41 = [v40 items];
-  v42 = [v4 intersectsSet:v41];
+  staticEKAppsItemProvider = [(HUEnergySettingsItemModule *)self staticEKAppsItemProvider];
+  items = [staticEKAppsItemProvider items];
+  v42 = [itemsCopy intersectsSet:items];
 
   if (v42)
   {
@@ -626,8 +626,8 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
     v44 = _HULocalizedStringWithDefaultValue(@"HUEnergySettingsEnergyKitSection_Header", @"HUEnergySettingsEnergyKitSection_Header", 1);
     [v43 setHeaderTitle:v44];
 
-    v45 = [(HUEnergySettingsItemModule *)self ekAppsItems];
-    [v43 setItems:v45];
+    ekAppsItems = [(HUEnergySettingsItemModule *)self ekAppsItems];
+    [v43 setItems:ekAppsItems];
 
     [v5 addObject:v43];
   }
@@ -635,16 +635,16 @@ id __49__HUEnergySettingsItemModule__buildItemProviders__block_invoke_7(uint64_t
   return v5;
 }
 
-- (void)subscriptionChanged:(id)a3
+- (void)subscriptionChanged:(id)changed
 {
   v5 = MEMORY[0x277D14788];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
-  v8 = [v6 setWithObject:v7];
+  utilityDetailsItem = [(HUEnergySettingsItemModule *)self utilityDetailsItem];
+  v8 = [v6 setWithObject:utilityDetailsItem];
   v11 = [v5 requestToUpdateItems:v8 senderSelector:a2];
 
-  v9 = [(HFItemModule *)self itemUpdater];
-  v10 = [v9 performItemUpdateRequest:v11];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v10 = [itemUpdater performItemUpdateRequest:v11];
 }
 
 @end

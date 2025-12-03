@@ -1,34 +1,34 @@
 @interface MTSubscribeUtil
-+ (BOOL)isSubscribedToPodcastWithFeedUrl:(id)a3;
-+ (BOOL)isSubscribedToPodcastWithStorePlatformDictionary:(id)a3;
-+ (BOOL)isSubscribedToPodcastWithUuid:(id)a3;
-+ (id)_identifierForDictionary:(id)a3;
-+ (void)subscribeToPodcastWithAdamID:(id)a3 completion:(id)a4;
-+ (void)subscribeToPodcastWithFeedUrl:(id)a3 completion:(id)a4;
-+ (void)subscribeToPodcastWithStorePlatformDictionary:(id)a3 completion:(id)a4;
-+ (void)unsubscribeToPodcastWithStorePlatformDictionary:(id)a3;
++ (BOOL)isSubscribedToPodcastWithFeedUrl:(id)url;
++ (BOOL)isSubscribedToPodcastWithStorePlatformDictionary:(id)dictionary;
++ (BOOL)isSubscribedToPodcastWithUuid:(id)uuid;
++ (id)_identifierForDictionary:(id)dictionary;
++ (void)subscribeToPodcastWithAdamID:(id)d completion:(id)completion;
++ (void)subscribeToPodcastWithFeedUrl:(id)url completion:(id)completion;
++ (void)subscribeToPodcastWithStorePlatformDictionary:(id)dictionary completion:(id)completion;
++ (void)unsubscribeToPodcastWithStorePlatformDictionary:(id)dictionary;
 @end
 
 @implementation MTSubscribeUtil
 
-+ (BOOL)isSubscribedToPodcastWithUuid:(id)a3
++ (BOOL)isSubscribedToPodcastWithUuid:(id)uuid
 {
-  v3 = a3;
-  if ([v3 length])
+  uuidCopy = uuid;
+  if ([uuidCopy length])
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
     v4 = +[MTDB sharedInstance];
-    v5 = [v4 mainOrPrivateContext];
+    mainOrPrivateContext = [v4 mainOrPrivateContext];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10005DFE8;
     v9[3] = &unk_1004D87E8;
-    v10 = v3;
-    v6 = v5;
+    v10 = uuidCopy;
+    v6 = mainOrPrivateContext;
     v11 = v6;
     v12 = &v13;
     [v6 performBlockAndWait:v9];
@@ -45,16 +45,16 @@
   return v7 & 1;
 }
 
-+ (BOOL)isSubscribedToPodcastWithFeedUrl:(id)a3
++ (BOOL)isSubscribedToPodcastWithFeedUrl:(id)url
 {
-  v4 = a3;
-  if ([v4 length])
+  urlCopy = url;
+  if ([urlCopy length])
   {
     v5 = +[MTDB sharedInstance];
-    v6 = [v5 mainOrPrivateContext];
-    v7 = [MTPodcast podcastUuidForFeedUrlString:v4 ctx:v6];
+    mainOrPrivateContext = [v5 mainOrPrivateContext];
+    v7 = [MTPodcast podcastUuidForFeedUrlString:urlCopy ctx:mainOrPrivateContext];
 
-    v8 = [a1 isSubscribedToPodcastWithUuid:v7];
+    v8 = [self isSubscribedToPodcastWithUuid:v7];
   }
 
   else
@@ -65,16 +65,16 @@
   return v8;
 }
 
-+ (BOOL)isSubscribedToPodcastWithStorePlatformDictionary:(id)a3
++ (BOOL)isSubscribedToPodcastWithStorePlatformDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 _identifierForDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [self _identifierForDictionary:dictionaryCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mainOrPrivateContext = [v6 mainOrPrivateContext];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -82,7 +82,7 @@
   v11[3] = &unk_1004D87E8;
   v8 = v5;
   v12 = v8;
-  v9 = v7;
+  v9 = mainOrPrivateContext;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
@@ -92,10 +92,10 @@
   return v6;
 }
 
-+ (void)subscribeToPodcastWithFeedUrl:(id)a3 completion:(id)a4
++ (void)subscribeToPodcastWithFeedUrl:(id)url completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  urlCopy = url;
+  completionCopy = completion;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -105,27 +105,27 @@
   v23 = 0x2020000000;
   v24 = 0;
   v7 = +[MTDB sharedInstance];
-  v8 = [v7 mainOrPrivateContext];
+  mainOrPrivateContext = [v7 mainOrPrivateContext];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10005E564;
   v16[3] = &unk_1004D8810;
-  v9 = v5;
+  v9 = urlCopy;
   v17 = v9;
-  v10 = v8;
+  v10 = mainOrPrivateContext;
   v18 = v10;
   v19 = &v25;
   v20 = &v21;
   [v10 performBlockAndWait:v16];
   if (*(v26 + 24) == 1)
   {
-    if (v6)
+    if (completionCopy)
     {
       v11 = *(v22 + 24);
       v12 = v11 ^ 1;
 LABEL_8:
-      v6[2](v6, v12, v11);
+      completionCopy[2](completionCopy, v12, v11);
     }
   }
 
@@ -136,11 +136,11 @@ LABEL_8:
     v13[2] = sub_10005E684;
     v13[3] = &unk_1004D8520;
     v14 = v9;
-    v15 = v6;
+    v15 = completionCopy;
     dispatch_async(&_dispatch_main_q, v13);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     v12 = 0;
     v11 = 2;
@@ -151,34 +151,34 @@ LABEL_8:
   _Block_object_dispose(&v25, 8);
 }
 
-+ (void)subscribeToPodcastWithAdamID:(id)a3 completion:(id)a4
++ (void)subscribeToPodcastWithAdamID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = objc_alloc_init(MTAddPodcastParams);
-  v8 = [v6 longLongValue];
+  longLongValue = [dCopy longLongValue];
 
-  [(MTAddPodcastParams *)v7 setStoreCollectionId:v8];
+  [(MTAddPodcastParams *)v7 setStoreCollectionId:longLongValue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005E880;
   v11[3] = &unk_1004D8838;
-  v12 = v5;
-  v9 = v5;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [(MTAddPodcastParams *)v7 setCompletion:v11];
   v10 = +[MTSubscriptionManager sharedInstance];
   [v10 subscribeToPodcastWithParams:v7];
 }
 
-+ (void)subscribeToPodcastWithStorePlatformDictionary:(id)a3 completion:(id)a4
++ (void)subscribeToPodcastWithStorePlatformDictionary:(id)dictionary completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MTSubscribeUtil _identifierForDictionary:v5];
-  v8 = [v5 objectForKeyedSubscript:@"isNotSubscribeable"];
-  v9 = [v8 BOOLValue];
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  v7 = [MTSubscribeUtil _identifierForDictionary:dictionaryCopy];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"isNotSubscribeable"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (!v9)
+  if (!bOOLValue)
   {
     v30 = 0;
     v31 = &v30;
@@ -189,7 +189,7 @@ LABEL_8:
     v28 = 0x2020000000;
     v29 = 0;
     v10 = +[MTDB sharedInstance];
-    v11 = [v10 mainOrPrivateContext];
+    mainOrPrivateContext = [v10 mainOrPrivateContext];
 
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -197,26 +197,26 @@ LABEL_8:
     v21[3] = &unk_1004D8810;
     v12 = v7;
     v22 = v12;
-    v13 = v11;
+    v13 = mainOrPrivateContext;
     v23 = v13;
     v24 = &v30;
     v25 = &v26;
     [v13 performBlockAndWait:v21];
     if (*(v31 + 24) == 1)
     {
-      if (v6)
+      if (completionCopy)
       {
         v14 = *(v27 + 24);
         v15 = v14 ^ 1;
 LABEL_11:
-        v6[2](v6, v15, v14);
+        completionCopy[2](completionCopy, v15, v14);
       }
     }
 
     else
     {
-      v16 = [v12 feedUrl];
-      v17 = [v16 length];
+      feedUrl = [v12 feedUrl];
+      v17 = [feedUrl length];
 
       if (v17)
       {
@@ -225,11 +225,11 @@ LABEL_11:
         v18[2] = sub_10005EC68;
         v18[3] = &unk_1004D8520;
         v19 = v12;
-        v20 = v6;
+        v20 = completionCopy;
         dispatch_async(&_dispatch_main_q, v18);
       }
 
-      else if (v6)
+      else if (completionCopy)
       {
         v15 = 0;
         v14 = 2;
@@ -242,42 +242,42 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0, 3);
+    completionCopy[2](completionCopy, 0, 3);
   }
 
 LABEL_13:
 }
 
-+ (void)unsubscribeToPodcastWithStorePlatformDictionary:(id)a3
++ (void)unsubscribeToPodcastWithStorePlatformDictionary:(id)dictionary
 {
-  v3 = [a1 _identifierForDictionary:a3];
+  v3 = [self _identifierForDictionary:dictionary];
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 privateQueueContext];
+  privateQueueContext = [v4 privateQueueContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005EE84;
   v8[3] = &unk_1004D8798;
   v9 = v3;
-  v10 = v5;
-  v6 = v5;
+  v10 = privateQueueContext;
+  v6 = privateQueueContext;
   v7 = v3;
   [v6 performBlockAndWait:v8];
 }
 
-+ (id)_identifierForDictionary:(id)a3
++ (id)_identifierForDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:AMSLookupPropertyItemIdentifier];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:AMSLookupPropertyItemIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
     v6 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 longLongValue]);
-    v7 = [v6 stringValue];
-    v8 = [v7 isEqualToString:v5];
+    stringValue = [v6 stringValue];
+    v8 = [stringValue isEqualToString:v5];
 
     v4 = v5;
     if (v8)
@@ -293,7 +293,7 @@ LABEL_13:
     v4 = 0;
   }
 
-  v9 = [v3 objectForKey:@"feedUrl"];
+  v9 = [dictionaryCopy objectForKey:@"feedUrl"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

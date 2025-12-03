@@ -1,53 +1,53 @@
 @interface CAMDescriptionOverlayView
-- (BOOL)_contentSizeCategory:(id)a3 exceedsMaximum:(id)a4;
-- (BOOL)_determineIfDisplayZoomed:(id)a3;
+- (BOOL)_contentSizeCategory:(id)category exceedsMaximum:(id)maximum;
+- (BOOL)_determineIfDisplayZoomed:(id)zoomed;
 - (BOOL)isAcknowledgmentButtonHighlighted;
 - (BOOL)isDetailButtonHighlighted;
 - (BOOL)isVisible;
-- (CAMDescriptionOverlayView)initWithFrame:(CGRect)a3;
+- (CAMDescriptionOverlayView)initWithFrame:(CGRect)frame;
 - (CAMDescriptionOverlayViewDelegate)delegate;
 - (CGRect)textViewFrame;
 - (CGRect)viewportFrame;
-- (double)_additionalSpacingForContentSize:(id)a3;
+- (double)_additionalSpacingForContentSize:(id)size;
 - (double)additionalSpacing;
-- (id)_buttonTitleTransformerForTextStyle:(id)a3;
-- (id)attributedDescriptionTextUsingNarrowWidth:(BOOL)a3;
+- (id)_buttonTitleTransformerForTextStyle:(id)style;
+- (id)attributedDescriptionTextUsingNarrowWidth:(BOOL)width;
 - (id)currentContentSize;
 - (id)traitCollection;
-- (void)_handleAcknowledgmentButtonTapped:(id)a3;
-- (void)_handleDetailButtonTapped:(id)a3;
-- (void)_handleTextViewFrame:(id)a3;
-- (void)_layoutBlackoutMaskForFrame:(CGRect)a3 inFrame:(CGRect)a4;
-- (void)_setTextViewFrame:(CGRect)a3;
-- (void)_updateFontsUsingNarrowWidth:(BOOL)a3;
-- (void)_updateTextUsingNarrowWidth:(BOOL)a3;
+- (void)_handleAcknowledgmentButtonTapped:(id)tapped;
+- (void)_handleDetailButtonTapped:(id)tapped;
+- (void)_handleTextViewFrame:(id)frame;
+- (void)_layoutBlackoutMaskForFrame:(CGRect)frame inFrame:(CGRect)inFrame;
+- (void)_setTextViewFrame:(CGRect)frame;
+- (void)_updateFontsUsingNarrowWidth:(BOOL)width;
+- (void)_updateTextUsingNarrowWidth:(BOOL)width;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAcknowledgmentButtonHighlighted:(BOOL)a3;
-- (void)setBlackoutFrameVisible:(BOOL)a3;
-- (void)setDetailButtonHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setViewportFrame:(CGRect)a3;
-- (void)setVisible:(BOOL)a3 animationDuration:(double)a4 completion:(id)a5;
+- (void)setAcknowledgmentButtonHighlighted:(BOOL)highlighted;
+- (void)setBlackoutFrameVisible:(BOOL)visible;
+- (void)setDetailButtonHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setViewportFrame:(CGRect)frame;
+- (void)setVisible:(BOOL)visible animationDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation CAMDescriptionOverlayView
 
-- (CAMDescriptionOverlayView)initWithFrame:(CGRect)a3
+- (CAMDescriptionOverlayView)initWithFrame:(CGRect)frame
 {
   v61[1] = *MEMORY[0x1E69E9840];
   v60.receiver = self;
   v60.super_class = CAMDescriptionOverlayView;
-  v3 = [(CAMDescriptionOverlayView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMDescriptionOverlayView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     goto LABEL_23;
   }
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
   v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.4];
-  v7 = v5;
+  v7 = whiteColor2;
   v8 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.4];
   v59 = CAMYellowColor();
   v58 = [v59 colorWithAlphaComponent:0.4];
@@ -67,15 +67,15 @@
   v3->__primaryVibrancyEffectView = v16;
 
   [(CAMDescriptionOverlayView *)v3 addSubview:v3->__primaryVibrancyEffectView];
-  v18 = [(CAMDescriptionOverlayView *)v3 isTitleMultiline];
+  isTitleMultiline = [(CAMDescriptionOverlayView *)v3 isTitleMultiline];
   v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
   titleLabel = v3->__titleLabel;
   v3->__titleLabel = v19;
 
-  [(UILabel *)v3->__titleLabel setTextColor:v4];
+  [(UILabel *)v3->__titleLabel setTextColor:whiteColor];
   [(UILabel *)v3->__titleLabel setTextAlignment:4];
-  [(UILabel *)v3->__titleLabel setNumberOfLines:!v18];
-  if (v18)
+  [(UILabel *)v3->__titleLabel setNumberOfLines:!isTitleMultiline];
+  if (isTitleMultiline)
   {
     v21 = 0;
   }
@@ -86,7 +86,7 @@
   }
 
   [(UILabel *)v3->__titleLabel setLineBreakMode:v21];
-  [(UILabel *)v3->__titleLabel setAdjustsFontSizeToFitWidth:!v18];
+  [(UILabel *)v3->__titleLabel setAdjustsFontSizeToFitWidth:!isTitleMultiline];
   v22 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v12, v13, v14, v15}];
   descriptionTitleLabel = v3->__descriptionTitleLabel;
   v3->__descriptionTitleLabel = v22;
@@ -123,28 +123,28 @@
   v57 = v8;
   [(UILabel *)v3->__infoLabel setTextColor:v8];
   [(UILabel *)v3->__infoLabel setTextAlignment:4];
-  v32 = [(CAMDescriptionOverlayView *)v3 buttonStyle];
-  if (!v32)
+  buttonStyle = [(CAMDescriptionOverlayView *)v3 buttonStyle];
+  if (!buttonStyle)
   {
     v34 = MEMORY[0x1E69DDD40];
     goto LABEL_9;
   }
 
   v33 = 0;
-  if (v32 == 1)
+  if (buttonStyle == 1)
   {
     v34 = MEMORY[0x1E69DDCF8];
 LABEL_9:
     v33 = *v34;
   }
 
-  v35 = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
-  [v35 setContentInsets:{4.0, 12.0, 4.0, 12.0}];
-  [v35 setCornerStyle:4];
+  tintedGlassButtonConfiguration = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
+  [tintedGlassButtonConfiguration setContentInsets:{4.0, 12.0, 4.0, 12.0}];
+  [tintedGlassButtonConfiguration setCornerStyle:4];
   v36 = [(CAMDescriptionOverlayView *)v3 _buttonTitleTransformerForTextStyle:v33];
-  [v35 setTitleTextAttributesTransformer:v36];
+  [tintedGlassButtonConfiguration setTitleTextAttributesTransformer:v36];
 
-  v37 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v35 primaryAction:0];
+  v37 = [MEMORY[0x1E69DC738] buttonWithConfiguration:tintedGlassButtonConfiguration primaryAction:0];
   detailButton = v3->__detailButton;
   v3->__detailButton = v37;
 
@@ -152,15 +152,15 @@ LABEL_9:
   [(UIButton *)v3->__detailButton setTitleColor:v59 forState:0];
   [(UIButton *)v3->__detailButton setTitleColor:v58 forState:1];
   [(UIButton *)v3->__detailButton addTarget:v3 action:sel__handleDetailButtonTapped_ forControlEvents:64];
-  v39 = [(CAMDescriptionOverlayView *)v3 detailText];
+  detailText = [(CAMDescriptionOverlayView *)v3 detailText];
 
-  v40 = [(CAMDescriptionOverlayView *)v3 buttonStyle];
+  buttonStyle2 = [(CAMDescriptionOverlayView *)v3 buttonStyle];
   v54 = v33;
-  if (v40)
+  if (buttonStyle2)
   {
-    if (v40 == 1)
+    if (buttonStyle2 == 1)
     {
-      v41 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v35 primaryAction:0];
+      v41 = [MEMORY[0x1E69DC738] buttonWithConfiguration:tintedGlassButtonConfiguration primaryAction:0];
       acknowledgmentButton = v3->__acknowledgmentButton;
       v3->__acknowledgmentButton = v41;
 
@@ -170,27 +170,27 @@ LABEL_9:
 
   else
   {
-    if (v39)
+    if (detailText)
     {
-      v43 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     }
 
     else
     {
-      v43 = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
-      [v43 setCornerStyle:4];
-      [v43 setButtonSize:3];
+      plainButtonConfiguration = [MEMORY[0x1E69DC740] tintedGlassButtonConfiguration];
+      [plainButtonConfiguration setCornerStyle:4];
+      [plainButtonConfiguration setButtonSize:3];
     }
 
-    [v43 setContentInsets:{4.0, 4.0, 4.0, 4.0, v33}];
+    [plainButtonConfiguration setContentInsets:{4.0, 4.0, 4.0, 4.0, v33}];
     v44 = [(CAMDescriptionOverlayView *)v3 _buttonTitleTransformerForTextStyle:v33];
-    [v43 setTitleTextAttributesTransformer:v44];
+    [plainButtonConfiguration setTitleTextAttributesTransformer:v44];
 
-    v45 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v43 primaryAction:0];
+    v45 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     v46 = v3->__acknowledgmentButton;
     v3->__acknowledgmentButton = v45;
 
-    if (!v39)
+    if (!detailText)
     {
       [(UIButton *)v3->__acknowledgmentButton setTintColor:v58];
     }
@@ -199,16 +199,16 @@ LABEL_9:
   [(UIButton *)v3->__acknowledgmentButton setTitleColor:v59 forState:0, v54];
   [(UIButton *)v3->__acknowledgmentButton setTitleColor:v58 forState:1];
   [(UIButton *)v3->__acknowledgmentButton addTarget:v3 action:sel__handleAcknowledgmentButtonTapped_ forControlEvents:64];
-  v47 = [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v3->__primaryVibrancyEffectView contentView];
-  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v47 addSubview:v3->__titleLabel];
-  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v47 addSubview:v3->__descriptionTitleLabel];
-  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v47 addSubview:v3->__infoTitleLabel];
-  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v47 addSubview:v3->__infoLabel];
+  contentView = [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v3->__primaryVibrancyEffectView contentView];
+  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)contentView addSubview:v3->__titleLabel];
+  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)contentView addSubview:v3->__descriptionTitleLabel];
+  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)contentView addSubview:v3->__infoTitleLabel];
+  [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)contentView addSubview:v3->__infoLabel];
   [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v3->__primaryVibrancyEffectView addSubview:v3->__detailButton];
   [(CAMPortraitModeDescriptionOverlayPrimaryVibrancyEffectView *)v3->__primaryVibrancyEffectView addSubview:v3->__acknowledgmentButton];
-  v48 = [(CAMDescriptionOverlayView *)v3 detailTextShouldHaveVibrancyEffect];
-  v49 = v47;
-  if (!v48)
+  detailTextShouldHaveVibrancyEffect = [(CAMDescriptionOverlayView *)v3 detailTextShouldHaveVibrancyEffect];
+  v49 = contentView;
+  if (!detailTextShouldHaveVibrancyEffect)
   {
     v49 = v3->__primaryVibrancyEffectView;
   }
@@ -224,9 +224,9 @@ LABEL_23:
   return v3;
 }
 
-- (id)_buttonTitleTransformerForTextStyle:(id)a3
+- (id)_buttonTitleTransformerForTextStyle:(id)style
 {
-  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a3 addingSymbolicTraits:0 options:3];
+  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:0 options:3];
   v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:0.0];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -253,12 +253,12 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   v5.receiver = self;
   v5.super_class = CAMDescriptionOverlayView;
   [(CAMDescriptionOverlayView *)&v5 didMoveToWindow];
-  v3 = [(CAMDescriptionOverlayView *)self window];
-  v4 = [v3 screen];
-  [(CAMDescriptionOverlayView *)self _setIsDisplayZoomed:[(CAMDescriptionOverlayView *)self _determineIfDisplayZoomed:v4]];
+  window = [(CAMDescriptionOverlayView *)self window];
+  screen = [window screen];
+  [(CAMDescriptionOverlayView *)self _setIsDisplayZoomed:[(CAMDescriptionOverlayView *)self _determineIfDisplayZoomed:screen]];
 }
 
-- (void)_updateFontsUsingNarrowWidth:(BOOL)a3
+- (void)_updateFontsUsingNarrowWidth:(BOOL)width
 {
   v4 = *MEMORY[0x1E69DDDB8];
   v5 = *MEMORY[0x1E69DDDC8];
@@ -304,60 +304,60 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   v27 = v37 = v8;
   [v27 setFont:v22];
 
-  v28 = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
-  [v28 setFont:v23];
+  _descriptionTitleLabel = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
+  [_descriptionTitleLabel setFont:v23];
 
-  v29 = [(CAMDescriptionOverlayView *)self _descriptionLabel];
-  [v29 setFont:v24];
+  _descriptionLabel = [(CAMDescriptionOverlayView *)self _descriptionLabel];
+  [_descriptionLabel setFont:v24];
 
-  v30 = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
-  [v30 setFont:v25];
+  _infoTitleLabel = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
+  [_infoTitleLabel setFont:v25];
 
-  v31 = [(CAMDescriptionOverlayView *)self _infoLabel];
-  [v31 setFont:v26];
+  _infoLabel = [(CAMDescriptionOverlayView *)self _infoLabel];
+  [_infoLabel setFont:v26];
 
-  v32 = [(CAMDescriptionOverlayView *)self _titleLabel];
-  [v32 setAdjustsFontForContentSizeCategory:1];
+  _titleLabel = [(CAMDescriptionOverlayView *)self _titleLabel];
+  [_titleLabel setAdjustsFontForContentSizeCategory:1];
 
-  v33 = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
-  [v33 setAdjustsFontForContentSizeCategory:1];
+  _descriptionTitleLabel2 = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
+  [_descriptionTitleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v34 = [(CAMDescriptionOverlayView *)self _descriptionLabel];
-  [v34 setAdjustsFontForContentSizeCategory:1];
+  _descriptionLabel2 = [(CAMDescriptionOverlayView *)self _descriptionLabel];
+  [_descriptionLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v35 = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
-  [v35 setAdjustsFontForContentSizeCategory:1];
+  _infoTitleLabel2 = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
+  [_infoTitleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v36 = [(CAMDescriptionOverlayView *)self _infoLabel];
-  [v36 setAdjustsFontForContentSizeCategory:1];
+  _infoLabel2 = [(CAMDescriptionOverlayView *)self _infoLabel];
+  [_infoLabel2 setAdjustsFontForContentSizeCategory:1];
 }
 
-- (void)_updateTextUsingNarrowWidth:(BOOL)a3
+- (void)_updateTextUsingNarrowWidth:(BOOL)width
 {
-  v3 = a3;
+  widthCopy = width;
   v16 = [(CAMDescriptionOverlayView *)self attributedDescriptionTextUsingNarrowWidth:?];
-  v5 = [(CAMDescriptionOverlayView *)self infoTitleTextUsingNarrowWidth:v3];
-  v6 = [(CAMDescriptionOverlayView *)self infoTextUsingNarrowWidth:v3];
-  v7 = [(CAMDescriptionOverlayView *)self titleTextUsingNarrowWidth:v3];
-  v8 = [(CAMDescriptionOverlayView *)self detailText];
-  v9 = [(CAMDescriptionOverlayView *)self acknowledgmentTextUsingNarrowWidth:v3];
-  v10 = [(CAMDescriptionOverlayView *)self _titleLabel];
-  [v10 setText:v7];
+  v5 = [(CAMDescriptionOverlayView *)self infoTitleTextUsingNarrowWidth:widthCopy];
+  v6 = [(CAMDescriptionOverlayView *)self infoTextUsingNarrowWidth:widthCopy];
+  v7 = [(CAMDescriptionOverlayView *)self titleTextUsingNarrowWidth:widthCopy];
+  detailText = [(CAMDescriptionOverlayView *)self detailText];
+  v9 = [(CAMDescriptionOverlayView *)self acknowledgmentTextUsingNarrowWidth:widthCopy];
+  _titleLabel = [(CAMDescriptionOverlayView *)self _titleLabel];
+  [_titleLabel setText:v7];
 
-  v11 = [(CAMDescriptionOverlayView *)self _detailButton];
-  [v11 setTitle:v8 forState:0];
+  _detailButton = [(CAMDescriptionOverlayView *)self _detailButton];
+  [_detailButton setTitle:detailText forState:0];
 
-  v12 = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
-  [v12 setTitle:v9 forState:0];
+  _acknowledgmentButton = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
+  [_acknowledgmentButton setTitle:v9 forState:0];
 
-  v13 = [(CAMDescriptionOverlayView *)self _descriptionLabel];
-  [v13 setAttributedText:v16];
+  _descriptionLabel = [(CAMDescriptionOverlayView *)self _descriptionLabel];
+  [_descriptionLabel setAttributedText:v16];
 
-  v14 = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
-  [v14 setText:v5];
+  _infoTitleLabel = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
+  [_infoTitleLabel setText:v5];
 
-  v15 = [(CAMDescriptionOverlayView *)self _infoLabel];
-  [v15 setText:v6];
+  _infoLabel = [(CAMDescriptionOverlayView *)self _infoLabel];
+  [_infoLabel setText:v6];
 }
 
 - (void)layoutSubviews
@@ -381,88 +381,88 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   v250 = v13;
   [(CAMDescriptionOverlayView *)self _updateFontsUsingNarrowWidth:v8 < 414.0];
   [(CAMDescriptionOverlayView *)self _updateTextUsingNarrowWidth:v8 < 414.0];
-  v275 = [(CAMDescriptionOverlayView *)self _blurEffectView];
-  v274 = [(CAMDescriptionOverlayView *)self _primaryVibrancyEffectView];
-  v15 = [(CAMDescriptionOverlayView *)self _titleLabel];
-  v16 = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
-  v17 = [(CAMDescriptionOverlayView *)self _descriptionLabel];
-  v18 = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
-  v19 = [(CAMDescriptionOverlayView *)self _infoLabel];
-  v20 = [(CAMDescriptionOverlayView *)self _detailButton];
-  v21 = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
-  v273 = v15;
-  v22 = [v15 font];
-  v272 = v16;
-  v23 = [v16 font];
-  v289 = v17;
-  v24 = [v17 font];
-  v292 = v18;
-  v25 = [v18 font];
-  v288 = v19;
-  v26 = [v19 font];
-  v294 = v20;
-  v27 = [v20 titleLabel];
-  v28 = [v27 font];
+  _blurEffectView = [(CAMDescriptionOverlayView *)self _blurEffectView];
+  _primaryVibrancyEffectView = [(CAMDescriptionOverlayView *)self _primaryVibrancyEffectView];
+  _titleLabel = [(CAMDescriptionOverlayView *)self _titleLabel];
+  _descriptionTitleLabel = [(CAMDescriptionOverlayView *)self _descriptionTitleLabel];
+  _descriptionLabel = [(CAMDescriptionOverlayView *)self _descriptionLabel];
+  _infoTitleLabel = [(CAMDescriptionOverlayView *)self _infoTitleLabel];
+  _infoLabel = [(CAMDescriptionOverlayView *)self _infoLabel];
+  _detailButton = [(CAMDescriptionOverlayView *)self _detailButton];
+  _acknowledgmentButton = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
+  v273 = _titleLabel;
+  font = [_titleLabel font];
+  v272 = _descriptionTitleLabel;
+  font2 = [_descriptionTitleLabel font];
+  v289 = _descriptionLabel;
+  font3 = [_descriptionLabel font];
+  v292 = _infoTitleLabel;
+  font4 = [_infoTitleLabel font];
+  v288 = _infoLabel;
+  font5 = [_infoLabel font];
+  v294 = _detailButton;
+  titleLabel = [_detailButton titleLabel];
+  font6 = [titleLabel font];
 
-  v293 = v21;
-  v29 = [v21 titleLabel];
-  v30 = [v29 font];
+  v293 = _acknowledgmentButton;
+  titleLabel2 = [_acknowledgmentButton titleLabel];
+  font7 = [titleLabel2 font];
 
-  [v22 descender];
+  [font descender];
   UIFloorToViewScale();
   v32 = v31;
-  [v23 descender];
+  [font2 descender];
   UIFloorToViewScale();
   v231 = v33;
-  [v24 descender];
+  [font3 descender];
   UIFloorToViewScale();
   v276 = v34;
-  [v25 descender];
+  [font4 descender];
   UIFloorToViewScale();
   v226 = v35;
-  [v26 descender];
+  [font5 descender];
   UIFloorToViewScale();
   rect = v36;
-  [v28 descender];
+  [font6 descender];
   UIFloorToViewScale();
   v217 = v37;
-  [v30 descender];
+  [font7 descender];
   UIFloorToViewScale();
   v246 = v38;
-  v261 = v22;
-  [v22 lineHeight];
+  v261 = font;
+  [font lineHeight];
   UICeilToViewScale();
   v40 = v39;
-  v260 = v23;
-  [v23 lineHeight];
+  v260 = font2;
+  [font2 lineHeight];
   UICeilToViewScale();
   v224 = v41;
-  v259 = v24;
-  [v24 lineHeight];
+  v259 = font3;
+  [font3 lineHeight];
   UICeilToViewScale();
   v237 = v42;
-  v258 = v25;
-  [v25 lineHeight];
+  v258 = font4;
+  [font4 lineHeight];
   UICeilToViewScale();
   v225 = v43;
-  v257 = v26;
-  [v26 lineHeight];
+  v257 = font5;
+  [font5 lineHeight];
   UICeilToViewScale();
   v239 = v44;
-  v256 = v28;
-  [v28 lineHeight];
+  v256 = font6;
+  [font6 lineHeight];
   UICeilToViewScale();
   v216 = v45;
-  v255 = v30;
-  [v30 lineHeight];
+  v255 = font7;
+  [font7 lineHeight];
   UICeilToViewScale();
   v245 = v46;
-  v47 = [(CAMDescriptionOverlayView *)self orientation];
+  orientation = [(CAMDescriptionOverlayView *)self orientation];
   v301 = 0u;
   v302 = 0u;
-  v48 = v47 - 3;
+  v48 = orientation - 3;
   v300 = 0u;
-  CAMOrientationTransform(v47, &v300);
+  CAMOrientationTransform(orientation, &v300);
   if (v48 >= 2)
   {
     v49 = v10;
@@ -521,17 +521,17 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
     v57 = v10 + -20.0;
   }
 
-  v58 = [(CAMDescriptionOverlayView *)self isTitleMultiline];
+  isTitleMultiline = [(CAMDescriptionOverlayView *)self isTitleMultiline];
   v59 = *MEMORY[0x1E695EFF8];
   v60 = *(MEMORY[0x1E695EFF8] + 8);
-  [v273 textRectForBounds:!v58 limitedToNumberOfLines:{*MEMORY[0x1E695EFF8], v60, v56, v49}];
+  [v273 textRectForBounds:!isTitleMultiline limitedToNumberOfLines:{*MEMORY[0x1E695EFF8], v60, v56, v49}];
   [v289 textRectForBounds:0 limitedToNumberOfLines:{v59, v60, v57, v49}];
   v241 = v60;
   v243 = v59;
   v281 = v49;
   [v288 textRectForBounds:0 limitedToNumberOfLines:{v59, v60, v57, v49}];
   [v272 intrinsicContentSize];
-  [v18 intrinsicContentSize];
+  [_infoTitleLabel intrinsicContentSize];
   v286 = v10;
   [v294 intrinsicContentSize];
   [v293 intrinsicContentSize];
@@ -563,7 +563,7 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   v290 = v74;
   UICeilToViewScale();
   v76 = v75;
-  v77 = [(CAMDescriptionOverlayView *)self detailText];
+  detailText = [(CAMDescriptionOverlayView *)self detailText];
 
   if ([(CAMDescriptionOverlayView *)self buttonStyle])
   {
@@ -574,14 +574,14 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   else
   {
     v236 = 45.0;
-    if (!v77)
+    if (!detailText)
     {
       v76 = 45.0;
     }
 
     v279 = v76;
     v78 = v290;
-    if (!v77)
+    if (!detailText)
     {
       v78 = v53;
     }
@@ -604,9 +604,9 @@ id __65__CAMDescriptionOverlayView__buttonTitleTransformerForTextStyle___block_i
   v306.size.height = rect_16;
   v85 = v83 + CGRectGetMaxY(v306) - (v262 - v233) + 30.0;
   v86 = v51[3];
-  v87 = [v272 text];
+  text = [v272 text];
   v277 = v81;
-  if (v87)
+  if (text)
   {
 
 LABEL_30:
@@ -617,12 +617,12 @@ LABEL_30:
     v234 = v307.origin.y;
     v307.size.height = rect_24;
     v85 = v83 + v224 + v231 + CGRectGetMaxY(v307) + 2.0;
-    v91 = v18;
+    v91 = _infoTitleLabel;
     goto LABEL_31;
   }
 
-  v88 = [v272 text];
-  v89 = [v88 isEqualToString:&stru_1F1660A30];
+  text2 = [v272 text];
+  v89 = [text2 isEqualToString:&stru_1F1660A30];
 
   if (v89)
   {
@@ -631,7 +631,7 @@ LABEL_30:
 
   rect_24 = v86;
   v234 = v81;
-  v91 = v18;
+  v91 = _infoTitleLabel;
   v90 = v286;
 LABEL_31:
   v308.size.width = v227;
@@ -640,18 +640,18 @@ LABEL_31:
   v232 = v85 - v80;
   v308.size.height = v269;
   v92 = v79 + CGRectGetMaxY(v308);
-  v93 = [v272 text];
+  text3 = [v272 text];
   v248 = v53;
-  if ([v93 length])
+  if ([text3 length])
   {
   }
 
   else
   {
-    v94 = [v289 text];
-    v95 = [v94 length];
+    text4 = [v289 text];
+    v95 = [text4 length];
 
-    v91 = v18;
+    v91 = _infoTitleLabel;
     if (!v95)
     {
       goto LABEL_35;
@@ -661,9 +661,9 @@ LABEL_31:
   v85 = v83 + v92 + 25.0;
 LABEL_35:
   v96 = rect + v239;
-  v97 = [v91 text];
+  text5 = [v91 text];
   v263 = v86;
-  if (v97)
+  if (text5)
   {
 
 LABEL_38:
@@ -677,8 +677,8 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v98 = [v91 text];
-  v99 = [v98 isEqualToString:&stru_1F1660A30];
+  text6 = [v91 text];
+  v99 = [text6 isEqualToString:&stru_1F1660A30];
 
   if (v99)
   {
@@ -695,9 +695,9 @@ LABEL_39:
   v228 = v85 - v96;
   v310.size.height = v271;
   MaxY = CGRectGetMaxY(v310);
-  v102 = v18;
-  v103 = [v18 text];
-  if ([v103 length])
+  v102 = _infoTitleLabel;
+  text7 = [_infoTitleLabel text];
+  if ([text7 length])
   {
 
     v104 = v283;
@@ -705,10 +705,10 @@ LABEL_39:
 
   else
   {
-    v105 = [v288 text];
-    v106 = [v105 length];
+    text8 = [v288 text];
+    v106 = [text8 length];
 
-    v102 = v18;
+    v102 = _infoTitleLabel;
     v104 = v283;
     if (!v106)
     {
@@ -728,7 +728,7 @@ LABEL_43:
   [v293 contentRectForBounds:{v243, v241, v290, v279}];
   [v293 titleRectForContentRect:?];
   v113 = v112;
-  if (v77)
+  if (detailText)
   {
     v114 = v286;
     v311.origin.x = (v286 - v104) * 0.5;
@@ -754,7 +754,7 @@ LABEL_43:
   }
 
   v117 = v116;
-  [v294 setHidden:v77 == 0];
+  [v294 setHidden:detailText == 0];
   v118 = v108 - v113 - v230;
   v312.origin.x = v235;
   v312.origin.y = y;
@@ -794,19 +794,19 @@ LABEL_43:
   [v294 setFrame:?];
   [v293 frameForAlignmentRect:{(v114 - v290) * 0.5, v123, v290, v279}];
   [v293 setFrame:?];
-  [v275 setFrame:{v254, v253, v252, v251}];
+  [_blurEffectView setFrame:{v254, v253, v252, v251}];
   v299[0] = v300;
   v299[1] = v301;
   v299[2] = v302;
-  [v274 setTransform:v299];
-  [v274 setCenter:{v250, v249}];
-  [v274 setBounds:{v107, v277, v114, v281}];
-  v125 = [(CAMDescriptionOverlayView *)self _blackoutView];
-  [v125 setFrame:{v254, v253, v252, v251}];
+  [_primaryVibrancyEffectView setTransform:v299];
+  [_primaryVibrancyEffectView setCenter:{v250, v249}];
+  [_primaryVibrancyEffectView setBounds:{v107, v277, v114, v281}];
+  _blackoutView = [(CAMDescriptionOverlayView *)self _blackoutView];
+  [_blackoutView setFrame:{v254, v253, v252, v251}];
 
-  v126 = [(CAMDescriptionOverlayView *)self _blackoutMask];
+  _blackoutMask = [(CAMDescriptionOverlayView *)self _blackoutMask];
 
-  if (v126)
+  if (_blackoutMask)
   {
     [(CAMDescriptionOverlayView *)self _layoutBlackoutMaskForFrame:v221 inFrame:v220, v219, v218, v254, v253, v252, v251];
   }
@@ -817,8 +817,8 @@ LABEL_43:
   v131 = v130;
   v133 = v132;
   v135 = v134;
-  v291 = [v273 window];
-  [v273 convertRect:v291 toView:{v129, v131, v133, v135}];
+  window = [v273 window];
+  [v273 convertRect:window toView:{v129, v131, v133, v135}];
   v287 = [v127 valueWithCGRect:?];
   v305[0] = v287;
   v136 = MEMORY[0x1E696B098];
@@ -827,8 +827,8 @@ LABEL_43:
   v140 = v139;
   v142 = v141;
   v144 = v143;
-  v285 = [v272 window];
-  [v272 convertRect:v285 toView:{v138, v140, v142, v144}];
+  window2 = [v272 window];
+  [v272 convertRect:window2 toView:{v138, v140, v142, v144}];
   v282 = [v136 valueWithCGRect:?];
   v305[1] = v282;
   v145 = MEMORY[0x1E696B098];
@@ -837,8 +837,8 @@ LABEL_43:
   v149 = v148;
   v151 = v150;
   v153 = v152;
-  v280 = [v289 window];
-  [v289 convertRect:v280 toView:{v147, v149, v151, v153}];
+  window3 = [v289 window];
+  [v289 convertRect:window3 toView:{v147, v149, v151, v153}];
   v278 = [v145 valueWithCGRect:?];
   v305[2] = v278;
   v154 = MEMORY[0x1E696B098];
@@ -847,8 +847,8 @@ LABEL_43:
   v158 = v157;
   v160 = v159;
   v162 = v161;
-  v163 = [v102 window];
-  [v102 convertRect:v163 toView:{v156, v158, v160, v162}];
+  window4 = [v102 window];
+  [v102 convertRect:window4 toView:{v156, v158, v160, v162}];
   v164 = [v154 valueWithCGRect:?];
   v305[3] = v164;
   v165 = MEMORY[0x1E696B098];
@@ -857,8 +857,8 @@ LABEL_43:
   v169 = v168;
   v171 = v170;
   v173 = v172;
-  v174 = [v288 window];
-  [v288 convertRect:v174 toView:{v167, v169, v171, v173}];
+  window5 = [v288 window];
+  [v288 convertRect:window5 toView:{v167, v169, v171, v173}];
   v175 = [v165 valueWithCGRect:?];
   v305[4] = v175;
   v176 = MEMORY[0x1E696B098];
@@ -867,8 +867,8 @@ LABEL_43:
   v180 = v179;
   v182 = v181;
   v184 = v183;
-  v185 = [v294 window];
-  [v294 convertRect:v185 toView:{v178, v180, v182, v184}];
+  window6 = [v294 window];
+  [v294 convertRect:window6 toView:{v178, v180, v182, v184}];
   v186 = [v176 valueWithCGRect:?];
   v305[5] = v186;
   v187 = MEMORY[0x1E696B098];
@@ -877,8 +877,8 @@ LABEL_43:
   v191 = v190;
   v193 = v192;
   v195 = v194;
-  v196 = [v293 window];
-  [v293 convertRect:v196 toView:{v189, v191, v193, v195}];
+  window7 = [v293 window];
+  [v293 convertRect:window7 toView:{v189, v191, v193, v195}];
   v197 = [v187 valueWithCGRect:?];
   v305[6] = v197;
   v198 = [MEMORY[0x1E695DEC8] arrayWithObjects:v305 count:7];
@@ -897,8 +897,8 @@ LABEL_43:
   {
     v205 = v204;
     v206 = *v296;
-    v208 = v274;
-    v207 = v275;
+    v208 = _primaryVibrancyEffectView;
+    v207 = _blurEffectView;
     v210 = v272;
     v209 = v273;
     do
@@ -956,8 +956,8 @@ LABEL_43:
 
   else
   {
-    v208 = v274;
-    v207 = v275;
+    v208 = _primaryVibrancyEffectView;
+    v207 = _blurEffectView;
     v210 = v272;
     v209 = v273;
   }
@@ -965,19 +965,19 @@ LABEL_43:
   [(CAMDescriptionOverlayView *)self _setTextViewFrame:v199, v200, v201, v202];
 }
 
-- (void)_handleTextViewFrame:(id)a3
+- (void)_handleTextViewFrame:(id)frame
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [(CAMDescriptionOverlayView *)self textViewFrame];
   [WeakRetained descriptionOverlayViewSetTextViewFrame:self textViewFrame:?];
 }
 
-- (void)_setTextViewFrame:(CGRect)a3
+- (void)_setTextViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CAMDescriptionOverlayView *)self textViewFrame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -993,20 +993,20 @@ LABEL_43:
 
 - (BOOL)isDetailButtonHighlighted
 {
-  v2 = [(CAMDescriptionOverlayView *)self _detailButton];
-  v3 = [v2 isHighlighted];
+  _detailButton = [(CAMDescriptionOverlayView *)self _detailButton];
+  isHighlighted = [_detailButton isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setDetailButtonHighlighted:(BOOL)a3
+- (void)setDetailButtonHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(CAMDescriptionOverlayView *)self _detailButton];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  _detailButton = [(CAMDescriptionOverlayView *)self _detailButton];
+  [_detailButton setHighlighted:highlightedCopy];
 }
 
-- (void)_handleDetailButtonTapped:(id)a3
+- (void)_handleDetailButtonTapped:(id)tapped
 {
   [(CAMDescriptionOverlayView *)self detailButtonTapped];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1015,34 +1015,34 @@ LABEL_43:
 
 - (BOOL)isAcknowledgmentButtonHighlighted
 {
-  v2 = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
-  v3 = [v2 isHighlighted];
+  _acknowledgmentButton = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
+  isHighlighted = [_acknowledgmentButton isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setAcknowledgmentButtonHighlighted:(BOOL)a3
+- (void)setAcknowledgmentButtonHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  _acknowledgmentButton = [(CAMDescriptionOverlayView *)self _acknowledgmentButton];
+  [_acknowledgmentButton setHighlighted:highlightedCopy];
 }
 
-- (void)_handleAcknowledgmentButtonTapped:(id)a3
+- (void)_handleAcknowledgmentButtonTapped:(id)tapped
 {
   [(CAMDescriptionOverlayView *)self acknowledgementButtonTapped];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained descriptionOverlayViewDidAcknowledge:self];
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    if (a4)
+    if (animated)
     {
       [(CAMDescriptionOverlayView *)self layoutIfNeeded];
-      self->_orientation = a3;
+      self->_orientation = orientation;
       [(CAMDescriptionOverlayView *)self setNeedsLayout];
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
@@ -1054,21 +1054,21 @@ LABEL_43:
 
     else
     {
-      self->_orientation = a3;
+      self->_orientation = orientation;
 
       [(CAMDescriptionOverlayView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setViewportFrame:(CGRect)a3
+- (void)setViewportFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_viewportFrame = &self->_viewportFrame;
-  if (!CGRectEqualToRect(a3, self->_viewportFrame))
+  if (!CGRectEqualToRect(frame, self->_viewportFrame))
   {
     p_viewportFrame->origin.x = x;
     p_viewportFrame->origin.y = y;
@@ -1079,16 +1079,16 @@ LABEL_43:
   }
 }
 
-- (void)_layoutBlackoutMaskForFrame:(CGRect)a3 inFrame:(CGRect)a4
+- (void)_layoutBlackoutMaskForFrame:(CGRect)frame inFrame:(CGRect)inFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = inFrame.size.height;
+  width = inFrame.size.width;
+  y = inFrame.origin.y;
+  x = inFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   Mutable = CGPathCreateMutable();
   v16.origin.x = x;
   v16.origin.y = y;
@@ -1100,32 +1100,32 @@ LABEL_43:
   v17.size.width = v9;
   v17.size.height = v8;
   CGPathAddRect(Mutable, 0, v17);
-  v14 = [(CAMDescriptionOverlayView *)self _blackoutMask];
-  [v14 setPath:Mutable];
+  _blackoutMask = [(CAMDescriptionOverlayView *)self _blackoutMask];
+  [_blackoutMask setPath:Mutable];
 
   CGPathRelease(Mutable);
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(CAMDescriptionOverlayView *)self _titleLabel];
-  [v2 alpha];
+  _titleLabel = [(CAMDescriptionOverlayView *)self _titleLabel];
+  [_titleLabel alpha];
   v4 = v3;
 
   return v4 == 1.0;
 }
 
-- (void)setVisible:(BOOL)a3 animationDuration:(double)a4 completion:(id)a5
+- (void)setVisible:(BOOL)visible animationDuration:(double)duration completion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
-  if ([(CAMDescriptionOverlayView *)self isVisible]!= v6)
+  visibleCopy = visible;
+  completionCopy = completion;
+  if ([(CAMDescriptionOverlayView *)self isVisible]!= visibleCopy)
   {
-    v9 = [(CAMDescriptionOverlayView *)self delegate];
-    [v9 descriptionOverlayView:self willBecomeVisible:v6];
+    delegate = [(CAMDescriptionOverlayView *)self delegate];
+    [delegate descriptionOverlayView:self willBecomeVisible:visibleCopy];
   }
 
-  if (v6)
+  if (visibleCopy)
   {
     v10 = 1.0;
   }
@@ -1135,7 +1135,7 @@ LABEL_43:
     v10 = 0.0;
   }
 
-  if (v6)
+  if (visibleCopy)
   {
     v11 = [MEMORY[0x1E69DC730] effectWithStyle:2];
   }
@@ -1153,16 +1153,16 @@ LABEL_43:
   v12 = v11;
   v19 = v12;
   v20 = v10;
-  v21 = v6;
-  v22 = v6;
+  v21 = visibleCopy;
+  v22 = visibleCopy;
   v13 = _Block_copy(aBlock);
   v14 = v13;
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     (*(v13 + 2))(v13);
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1173,8 +1173,8 @@ LABEL_43:
     v16[1] = 3221225472;
     v16[2] = __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion___block_invoke_2;
     v16[3] = &unk_1E76F97A0;
-    v17 = v8;
-    [v15 animateWithDuration:6 delay:v14 options:v16 animations:a4 completion:0.0];
+    v17 = completionCopy;
+    [v15 animateWithDuration:6 delay:v14 options:v16 animations:duration completion:0.0];
   }
 }
 
@@ -1234,12 +1234,12 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
   return result;
 }
 
-- (void)setBlackoutFrameVisible:(BOOL)a3
+- (void)setBlackoutFrameVisible:(BOOL)visible
 {
-  if (self->_blackoutFrameVisible != a3)
+  if (self->_blackoutFrameVisible != visible)
   {
-    self->_blackoutFrameVisible = a3;
-    if (a3)
+    self->_blackoutFrameVisible = visible;
+    if (visible)
     {
       v4 = objc_alloc_init(MEMORY[0x1E69794A0]);
       blackoutMask = self->__blackoutMask;
@@ -1251,13 +1251,13 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
       blackoutView = self->__blackoutView;
       self->__blackoutView = v7;
 
-      v9 = [MEMORY[0x1E69DC888] blackColor];
-      [(UIView *)self->__blackoutView setBackgroundColor:v9];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      [(UIView *)self->__blackoutView setBackgroundColor:blackColor];
 
       [(UIView *)self->__blackoutView setUserInteractionEnabled:0];
       v10 = self->__blackoutMask;
-      v11 = [(UIView *)self->__blackoutView layer];
-      [v11 setMask:v10];
+      layer = [(UIView *)self->__blackoutView layer];
+      [layer setMask:v10];
 
       v12 = self->__blackoutView;
 
@@ -1280,9 +1280,9 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
   }
 }
 
-- (id)attributedDescriptionTextUsingNarrowWidth:(BOOL)a3
+- (id)attributedDescriptionTextUsingNarrowWidth:(BOOL)width
 {
-  v3 = [(CAMDescriptionOverlayView *)self descriptionTextUsingNarrowWidth:a3];
+  v3 = [(CAMDescriptionOverlayView *)self descriptionTextUsingNarrowWidth:width];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3];
@@ -1298,34 +1298,34 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
 
 - (id)currentContentSize
 {
-  v2 = [(CAMDescriptionOverlayView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(CAMDescriptionOverlayView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  return v3;
+  return preferredContentSizeCategory;
 }
 
 - (double)additionalSpacing
 {
-  v3 = [(CAMDescriptionOverlayView *)self currentContentSize];
-  [(CAMDescriptionOverlayView *)self _additionalSpacingForContentSize:v3];
+  currentContentSize = [(CAMDescriptionOverlayView *)self currentContentSize];
+  [(CAMDescriptionOverlayView *)self _additionalSpacingForContentSize:currentContentSize];
   v5 = v4;
 
   return v5;
 }
 
-- (double)_additionalSpacingForContentSize:(id)a3
+- (double)_additionalSpacingForContentSize:(id)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v4 = 0.0;
-  if (([v3 isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0)
+  if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC68]] & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC88]) & 1) == 0 && (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC78]) & 1) == 0)
   {
     v5 = *MEMORY[0x1E69DDC70];
-    if (([v3 isEqualToString:*MEMORY[0x1E69DDC70]] & 1) == 0)
+    if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC70]] & 1) == 0)
     {
       v4 = 5.0;
-      if (([v3 isEqualToString:v5] & 1) == 0)
+      if (([sizeCopy isEqualToString:v5] & 1) == 0)
       {
-        if (([v3 isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC40]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC38]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC28]) & 1) != 0 || (v4 = 0.0, objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69DDC20])))
+        if (([sizeCopy isEqualToString:*MEMORY[0x1E69DDC60]] & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC58]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC50]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC40]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC38]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC30]) & 1) != 0 || (objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC28]) & 1) != 0 || (v4 = 0.0, objc_msgSend(sizeCopy, "isEqualToString:", *MEMORY[0x1E69DDC20])))
         {
           v4 = 10.0;
         }
@@ -1340,18 +1340,18 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
 {
   v14.receiver = self;
   v14.super_class = CAMDescriptionOverlayView;
-  v3 = [(CAMDescriptionOverlayView *)&v14 traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  v5 = [(CAMDescriptionOverlayView *)self _isDisplayZoomed];
+  traitCollection = [(CAMDescriptionOverlayView *)&v14 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  _isDisplayZoomed = [(CAMDescriptionOverlayView *)self _isDisplayZoomed];
   v6 = MEMORY[0x1E69DDC70];
-  if (!v5)
+  if (!_isDisplayZoomed)
   {
     v6 = MEMORY[0x1E69DDC60];
   }
 
   v7 = *v6;
-  v8 = v3;
-  v9 = [(CAMDescriptionOverlayView *)self _contentSizeCategory:v4 exceedsMaximum:v7];
+  v8 = traitCollection;
+  v9 = [(CAMDescriptionOverlayView *)self _contentSizeCategory:preferredContentSizeCategory exceedsMaximum:v7];
   v10 = v8;
   if (v9)
   {
@@ -1366,7 +1366,7 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
   return v10;
 }
 
-- (BOOL)_contentSizeCategory:(id)a3 exceedsMaximum:(id)a4
+- (BOOL)_contentSizeCategory:(id)category exceedsMaximum:(id)maximum
 {
   v21[12] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69DDC88];
@@ -1388,31 +1388,31 @@ uint64_t __69__CAMDescriptionOverlayView_setVisible_animationDuration_completion
   v21[10] = *MEMORY[0x1E69DDC28];
   v21[11] = v10;
   v11 = MEMORY[0x1E695DEC8];
-  v12 = a4;
-  v13 = a3;
+  maximumCopy = maximum;
+  categoryCopy = category;
   v14 = [v11 arrayWithObjects:v21 count:12];
-  v15 = [v14 indexOfObject:v13];
+  v15 = [v14 indexOfObject:categoryCopy];
 
-  v16 = [v14 indexOfObject:v12];
+  v16 = [v14 indexOfObject:maximumCopy];
   v19 = v15 != 0x7FFFFFFFFFFFFFFFLL && v16 != 0x7FFFFFFFFFFFFFFFLL && v15 > v16;
 
   return v19;
 }
 
-- (BOOL)_determineIfDisplayZoomed:(id)a3
+- (BOOL)_determineIfDisplayZoomed:(id)zoomed
 {
-  v3 = a3;
-  [v3 bounds];
+  zoomedCopy = zoomed;
+  [zoomedCopy bounds];
   v5 = v4;
-  [v3 bounds];
+  [zoomedCopy bounds];
   if (v5 < v6)
   {
     v5 = v6;
   }
 
-  [v3 scale];
+  [zoomedCopy scale];
   v8 = v7 * v5;
-  [v3 nativeBounds];
+  [zoomedCopy nativeBounds];
   v10 = v9;
 
   return v8 / v10 < 1.0;

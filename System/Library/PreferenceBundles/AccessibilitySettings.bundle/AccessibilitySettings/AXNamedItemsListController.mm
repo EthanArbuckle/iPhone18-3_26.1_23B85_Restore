@@ -1,29 +1,29 @@
 @interface AXNamedItemsListController
 - (AXNamedItemsListController)init;
-- (BOOL)_isNamedItemSpecifierAtIndexPath:(id)a3 tableView:(id)a4;
-- (BOOL)isNamedItemSpecifier:(id)a3;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (id)_itemName:(id)a3;
-- (id)nameForItem:(id)a3;
-- (id)namedItemForSpecifier:(id)a3;
+- (BOOL)_isNamedItemSpecifierAtIndexPath:(id)path tableView:(id)view;
+- (BOOL)isNamedItemSpecifier:(id)specifier;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (id)_itemName:(id)name;
+- (id)nameForItem:(id)item;
+- (id)namedItemForSpecifier:(id)specifier;
 - (id)namedItemSpecifiers;
-- (id)setName:(id)a3 forItem:(id)a4;
+- (id)setName:(id)name forItem:(id)item;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
 - (id)valueInSettings;
 - (void)_saveItems;
-- (void)_setItemName:(id)a3 specifier:(id)a4;
+- (void)_setItemName:(id)name specifier:(id)specifier;
 - (void)_updateEditButton;
 - (void)_updateIndexesOnSpecifiers;
 - (void)handleExternalSettingsChange;
-- (void)setEditable:(BOOL)a3;
-- (void)setSettingsGetter:(SEL)a3;
-- (void)setValueInSettings:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setEditable:(BOOL)editable;
+- (void)setSettingsGetter:(SEL)getter;
+- (void)setValueInSettings:(id)settings;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXNamedItemsListController
@@ -75,21 +75,21 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSettingsGetter:(SEL)a3
+- (void)setSettingsGetter:(SEL)getter
 {
-  if (a3)
+  if (getter)
   {
-    v4 = a3;
+    getterCopy = getter;
   }
 
   else
   {
-    v4 = 0;
+    getterCopy = 0;
   }
 
-  self->_settingsGetter = v4;
-  v5 = [(AXNamedItemsListController *)self valueInSettings];
-  [(AXNamedItemsListController *)self setCachedResults:v5];
+  self->_settingsGetter = getterCopy;
+  valueInSettings = [(AXNamedItemsListController *)self valueInSettings];
+  [(AXNamedItemsListController *)self setCachedResults:valueInSettings];
 }
 
 - (id)specifiers
@@ -98,9 +98,9 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
   v4 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(AXNamedItemsListController *)self namedItemSpecifiers];
+    namedItemSpecifiers = [(AXNamedItemsListController *)self namedItemSpecifiers];
     v6 = *&self->AXUISettingsBaseListController_opaque[v3];
-    *&self->AXUISettingsBaseListController_opaque[v3] = v5;
+    *&self->AXUISettingsBaseListController_opaque[v3] = namedItemSpecifiers;
 
     v4 = *&self->AXUISettingsBaseListController_opaque[v3];
   }
@@ -113,17 +113,17 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
   v6.receiver = self;
   v6.super_class = AXNamedItemsListController;
   [(AXNamedItemsListController *)&v6 viewDidLoad];
-  v3 = [(AXNamedItemsListController *)self table];
+  table = [(AXNamedItemsListController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXUISettingsEditableTextCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXNamedItemsListController;
-  [(AXNamedItemsListController *)&v4 viewWillAppear:a3];
+  [(AXNamedItemsListController *)&v4 viewWillAppear:appear];
   if (![(AXNamedItemsListController *)self settingsGetter])
   {
     [(AXNamedItemsListController *)self handleExternalSettingsChange];
@@ -148,11 +148,11 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setValueInSettings:(id)a3
+- (void)setValueInSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = +[AXSettings sharedInstance];
-  [v5 performSelector:-[AXNamedItemsListController settingsSetter](self withObject:{"settingsSetter"), v4}];
+  [v5 performSelector:-[AXNamedItemsListController settingsSetter](self withObject:{"settingsSetter"), settingsCopy}];
 }
 
 - (void)handleExternalSettingsChange
@@ -161,8 +161,8 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] visibleCells];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  visibleCells = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] visibleCells];
+  v4 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -173,12 +173,12 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 specifier];
-        if ([(AXNamedItemsListController *)self isNamedItemSpecifier:v9])
+        specifier = [v8 specifier];
+        if ([(AXNamedItemsListController *)self isNamedItemSpecifier:specifier])
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
@@ -188,12 +188,12 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
             continue;
           }
 
-          v9 = [v8 nameTextField];
-          [v9 resignFirstResponder];
+          specifier = [v8 nameTextField];
+          [specifier resignFirstResponder];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -204,8 +204,8 @@ void __34__AXNamedItemsListController_init__block_invoke(uint64_t a1)
 
   [(AXNamedItemsListController *)self reloadSpecifiers];
   [(AXNamedItemsListController *)self _updateEditButton];
-  v12 = [(AXNamedItemsListController *)self valueInSettings];
-  [(AXNamedItemsListController *)self setCachedResults:v12];
+  valueInSettings = [(AXNamedItemsListController *)self valueInSettings];
+  [(AXNamedItemsListController *)self setCachedResults:valueInSettings];
 }
 
 - (id)namedItemSpecifiers
@@ -278,17 +278,17 @@ LABEL_6:
   }
 }
 
-- (BOOL)isNamedItemSpecifier:(id)a3
+- (BOOL)isNamedItemSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"NamedItemIndex"];
+  v3 = [specifier propertyForKey:@"NamedItemIndex"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)namedItemForSpecifier:(id)a3
+- (id)namedItemForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"NamedItemIndex"];
+  v4 = [specifier propertyForKey:@"NamedItemIndex"];
   v5 = v4;
   if (v4)
   {
@@ -305,27 +305,27 @@ LABEL_6:
 
 - (void)_updateEditButton
 {
-  v3 = [(AXNamedItemsListController *)self _shouldShowEditButton];
-  if ((v3 & 1) == 0)
+  _shouldShowEditButton = [(AXNamedItemsListController *)self _shouldShowEditButton];
+  if ((_shouldShowEditButton & 1) == 0)
   {
     [(AXNamedItemsListController *)self setEditable:0];
   }
 
-  [(AXNamedItemsListController *)self setEditingButtonHidden:v3 ^ 1 animated:1];
+  [(AXNamedItemsListController *)self setEditingButtonHidden:_shouldShowEditButton ^ 1 animated:1];
 }
 
-- (void)_setItemName:(id)a3 specifier:(id)a4
+- (void)_setItemName:(id)name specifier:(id)specifier
 {
-  v18 = a3;
-  v6 = a4;
+  nameCopy = name;
+  specifierCopy = specifier;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v18 stringByTrimmingCharactersInSet:v7];
+  v8 = [nameCopy stringByTrimmingCharactersInSet:v7];
   v9 = [v8 length];
 
   if (!v9)
   {
     v14 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table];
-    v15 = [(AXNamedItemsListController *)self indexPathForSpecifier:v6];
+    v15 = [(AXNamedItemsListController *)self indexPathForSpecifier:specifierCopy];
 
     v12 = [v14 cellForRowAtIndexPath:v15];
 
@@ -335,23 +335,23 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v6 propertyForKey:@"NamedItemIndex"];
+  v10 = [specifierCopy propertyForKey:@"NamedItemIndex"];
 
-  v11 = [v10 unsignedIntegerValue];
-  if (v11 >= [(NSMutableArray *)self->_namedItems count])
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  if (unsignedIntegerValue >= [(NSMutableArray *)self->_namedItems count])
   {
-    v16 = v11;
+    v16 = unsignedIntegerValue;
     namedItems = self->_namedItems;
     _AXAssert();
   }
 
-  if (v11 < [(NSMutableArray *)self->_namedItems count:v16])
+  if (unsignedIntegerValue < [(NSMutableArray *)self->_namedItems count:v16])
   {
-    v12 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:v11];
-    v13 = [(AXNamedItemsListController *)self setName:v18 forItem:v12];
+    v12 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:unsignedIntegerValue];
+    v13 = [(AXNamedItemsListController *)self setName:nameCopy forItem:v12];
     if (v13 != v12)
     {
-      [(NSMutableArray *)self->_namedItems replaceObjectAtIndex:v11 withObject:v13];
+      [(NSMutableArray *)self->_namedItems replaceObjectAtIndex:unsignedIntegerValue withObject:v13];
     }
 
     [(AXNamedItemsListController *)self _saveItems];
@@ -362,12 +362,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_itemName:(id)a3
+- (id)_itemName:(id)name
 {
-  v4 = [a3 propertyForKey:@"NamedItemIndex"];
-  v5 = [v4 unsignedIntegerValue];
+  v4 = [name propertyForKey:@"NamedItemIndex"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:v5];
+  v6 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:unsignedIntegerValue];
   v7 = [(AXNamedItemsListController *)self nameForItem:v6];
 
   return v7;
@@ -421,36 +421,36 @@ LABEL_10:
   [(AXNamedItemsListController *)self setShouldIgnoreNextSettingsUpdate:0];
 }
 
-- (BOOL)_isNamedItemSpecifierAtIndexPath:(id)a3 tableView:(id)a4
+- (BOOL)_isNamedItemSpecifierAtIndexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 section];
-  if (v8 >= [v7 numberOfSections] || (v9 = objc_msgSend(v6, "row"), v9 >= objc_msgSend(v7, "numberOfRowsInSection:", objc_msgSend(v6, "section"))))
+  pathCopy = path;
+  viewCopy = view;
+  section = [pathCopy section];
+  if (section >= [viewCopy numberOfSections] || (v9 = objc_msgSend(pathCopy, "row"), v9 >= objc_msgSend(viewCopy, "numberOfRowsInSection:", objc_msgSend(pathCopy, "section"))))
   {
     v11 = 0;
   }
 
   else
   {
-    v10 = [(AXNamedItemsListController *)self specifierAtIndex:[(AXNamedItemsListController *)self indexForIndexPath:v6]];
+    v10 = [(AXNamedItemsListController *)self specifierAtIndex:[(AXNamedItemsListController *)self indexForIndexPath:pathCopy]];
     v11 = [(AXNamedItemsListController *)self isNamedItemSpecifier:v10];
   }
 
   return v11;
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
   v4.receiver = self;
   v4.super_class = AXNamedItemsListController;
-  [(AXNamedItemsListController *)&v4 setEditable:a3];
+  [(AXNamedItemsListController *)&v4 setEditable:editable];
   [(AXNamedItemsListController *)self _saveItems];
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = [(AXNamedItemsListController *)self _isNamedItemSpecifierAtIndexPath:a4 tableView:a3];
+  v5 = [(AXNamedItemsListController *)self _isNamedItemSpecifierAtIndexPath:path tableView:view];
   if (v5)
   {
     LOBYTE(v5) = [(NSMutableArray *)self->_namedItems count]> 1;
@@ -459,20 +459,20 @@ LABEL_10:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v19 = [(AXNamedItemsListController *)self tableView:a3 cellForRowAtIndexPath:a5];
+    v19 = [(AXNamedItemsListController *)self tableView:view cellForRowAtIndexPath:path];
     [v19 endEditing:1];
-    v7 = [v19 specifier];
-    if ([(AXNamedItemsListController *)self isNamedItemSpecifier:v7])
+    specifier = [v19 specifier];
+    if ([(AXNamedItemsListController *)self isNamedItemSpecifier:specifier])
     {
-      v8 = [v7 propertyForKey:@"NamedItemIndex"];
-      v9 = [v8 unsignedIntegerValue];
+      v8 = [specifier propertyForKey:@"NamedItemIndex"];
+      unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-      [(NSMutableArray *)self->_namedItems removeObjectAtIndex:v9];
-      v10 = [(AXNamedItemsListController *)self indexOfSpecifier:v7];
+      [(NSMutableArray *)self->_namedItems removeObjectAtIndex:unsignedIntegerValue];
+      v10 = [(AXNamedItemsListController *)self indexOfSpecifier:specifier];
       v11 = OBJC_IVAR___PSListController__specifiers;
       v12 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] count];
       v13 = v10 + 1;
@@ -485,14 +485,14 @@ LABEL_10:
           if ([(AXNamedItemsListController *)self isNamedItemSpecifier:v15])
           {
             v16 = [v15 propertyForKey:@"NamedItemIndex"];
-            v17 = [v16 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v16 unsignedIntegerValue];
 
-            if (!v17)
+            if (!unsignedIntegerValue2)
             {
               _AXAssert();
             }
 
-            v18 = [NSNumber numberWithUnsignedInteger:v17 - 1];
+            v18 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue2 - 1];
             [v15 setProperty:v18 forKey:@"NamedItemIndex"];
           }
 
@@ -503,7 +503,7 @@ LABEL_10:
       }
 
       [(AXNamedItemsListController *)self beginUpdates];
-      [(AXNamedItemsListController *)self removeSpecifier:v7 animated:1];
+      [(AXNamedItemsListController *)self removeSpecifier:specifier animated:1];
       [(AXNamedItemsListController *)self endUpdates];
       [(AXNamedItemsListController *)self _saveItems];
       if (![(AXNamedItemsListController *)self _shouldShowEditButton])
@@ -514,22 +514,22 @@ LABEL_10:
   }
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a5;
-  v8 = [(AXNamedItemsListController *)self indexForIndexPath:a4];
+  indexPathCopy = indexPath;
+  v8 = [(AXNamedItemsListController *)self indexForIndexPath:path];
   v20 = [(AXNamedItemsListController *)self specifierAtIndex:v8];
   v9 = [v20 propertyForKey:@"NamedItemIndex"];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [(AXNamedItemsListController *)self indexForIndexPath:v7];
+  v11 = [(AXNamedItemsListController *)self indexForIndexPath:indexPathCopy];
   v12 = [(AXNamedItemsListController *)self specifierAtIndex:v11];
   v13 = [v12 propertyForKey:@"NamedItemIndex"];
-  v14 = [v13 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v13 unsignedIntegerValue];
 
-  v15 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:v10];
-  [(NSMutableArray *)self->_namedItems removeObjectAtIndex:v10];
-  [(NSMutableArray *)self->_namedItems insertObject:v15 atIndex:v14];
+  v15 = [(NSMutableArray *)self->_namedItems objectAtIndexedSubscript:unsignedIntegerValue];
+  [(NSMutableArray *)self->_namedItems removeObjectAtIndex:unsignedIntegerValue];
+  [(NSMutableArray *)self->_namedItems insertObject:v15 atIndex:unsignedIntegerValue2];
   v16 = OBJC_IVAR___PSListController__specifiers;
   v17 = [*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
   v18 = [*&self->AXUISettingsBaseListController_opaque[v16] objectAtIndexedSubscript:v8];
@@ -541,35 +541,35 @@ LABEL_10:
   [(AXNamedItemsListController *)self _updateIndexesOnSpecifiers];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v4.receiver = self;
   v4.super_class = AXNamedItemsListController;
-  [(AXNamedItemsListController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(AXNamedItemsListController *)&v4 tableView:view didSelectRowAtIndexPath:path];
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a4;
-  v9 = a5;
-  if (![(AXNamedItemsListController *)self _isNamedItemSpecifierAtIndexPath:v9 tableView:a3])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (![(AXNamedItemsListController *)self _isNamedItemSpecifierAtIndexPath:indexPathCopy tableView:view])
   {
-    v10 = v8;
+    v10 = pathCopy;
 
-    v9 = v10;
+    indexPathCopy = v10;
   }
 
-  return v9;
+  return indexPathCopy;
 }
 
-- (id)nameForItem:(id)a3
+- (id)nameForItem:(id)item
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)setName:(id)a3 forItem:(id)a4
+- (id)setName:(id)name forItem:(id)item
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

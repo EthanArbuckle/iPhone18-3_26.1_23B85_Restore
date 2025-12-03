@@ -1,56 +1,56 @@
 @interface _MTLSharedEvent
 - (NSString)label;
-- (_MTLSharedEvent)initWithOptions:(int64_t)a3;
-- (_MTLSharedEvent)initWithSharedEventHandle:(id)a3;
+- (_MTLSharedEvent)initWithOptions:(int64_t)options;
+- (_MTLSharedEvent)initWithSharedEventHandle:(id)handle;
 - (id)newSharedEventHandle;
 - (id)retainedLabel;
-- (unsigned)encodeConditionalEventAbortCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3;
-- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4;
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4;
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5;
+- (unsigned)encodeConditionalEventAbortCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args;
+- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value;
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value;
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation _MTLSharedEvent
 
-- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4
+- (unsigned)encodeKernelSignalEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value
 {
-  a3->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
-  a3->var3 = a4;
+  args->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
+  args->var3 = value;
   return 4;
 }
 
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value
 {
-  a3->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
-  a3->var3 = a4;
+  args->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
+  args->var3 = value;
   return 5;
 }
 
-- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3 value:(unint64_t)a4 timeout:(unsigned int)a5
+- (unsigned)encodeKernelWaitEventCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args value:(unint64_t)value timeout:(unsigned int)timeout
 {
-  a3->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
-  a3->var3 = a4;
-  if (a5 >= 0xFFFF)
+  args->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
+  args->var3 = value;
+  if (timeout >= 0xFFFF)
   {
-    v5 = -1;
+    timeoutCopy = -1;
   }
 
   else
   {
-    v5 = a5;
+    timeoutCopy = timeout;
   }
 
-  a3->var2 = v5;
+  args->var2 = timeoutCopy;
   return 11;
 }
 
-- (unsigned)encodeConditionalEventAbortCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)a3
+- (unsigned)encodeConditionalEventAbortCommandArgs:(IOAccelKernelCommandSignalOrWaitEventArgs *)args
 {
-  a3->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
-  a3->var3 = 0;
-  a3->var2 = 0;
+  args->var0 = *(&self->super.super.isa + *MEMORY[0x1E696CE18]);
+  args->var3 = 0;
+  args->var2 = 0;
   return 13;
 }
 
@@ -61,26 +61,26 @@
   [(IOSurfaceSharedEvent *)&v3 dealloc];
 }
 
-- (_MTLSharedEvent)initWithSharedEventHandle:(id)a3
+- (_MTLSharedEvent)initWithSharedEventHandle:(id)handle
 {
   v6.receiver = self;
   v6.super_class = _MTLSharedEvent;
-  v4 = -[IOSurfaceSharedEvent initWithMachPort:](&v6, sel_initWithMachPort_, [a3 eventPort]);
+  v4 = -[IOSurfaceSharedEvent initWithMachPort:](&v6, sel_initWithMachPort_, [handle eventPort]);
   if (v4)
   {
-    v4->_label = [objc_msgSend(a3 "label")];
+    v4->_label = [objc_msgSend(handle "label")];
     v4->_labelLock._os_unfair_lock_opaque = 0;
-    v4->_labelTraceID = [a3 labelTraceID];
+    v4->_labelTraceID = [handle labelTraceID];
   }
 
   return v4;
 }
 
-- (_MTLSharedEvent)initWithOptions:(int64_t)a3
+- (_MTLSharedEvent)initWithOptions:(int64_t)options
 {
   v4.receiver = self;
   v4.super_class = _MTLSharedEvent;
-  result = [(IOSurfaceSharedEvent *)&v4 initWithOptions:a3];
+  result = [(IOSurfaceSharedEvent *)&v4 initWithOptions:options];
   if (result)
   {
     result->_labelLock._os_unfair_lock_opaque = 0;
@@ -106,22 +106,22 @@
 
 - (NSString)label
 {
-  v2 = [(_MTLSharedEvent *)self retainedLabel];
+  retainedLabel = [(_MTLSharedEvent *)self retainedLabel];
 
-  return v2;
+  return retainedLabel;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   if (MTLTraceEnabledSPI() && **MEMORY[0x1E69A8488])
   {
     v5 = *(&self->super.super.isa + *MEMORY[0x1E696CE20]);
     labelTraceID = self->_labelTraceID;
-    [a3 cStringUsingEncoding:1];
+    [label cStringUsingEncoding:1];
     self->_labelTraceID = IOAccelDeviceTraceObjectLabel();
   }
 
-  v7 = [a3 copy];
+  v7 = [label copy];
   os_unfair_lock_lock(&self->_labelLock);
   label = self->_label;
   self->_label = v7;

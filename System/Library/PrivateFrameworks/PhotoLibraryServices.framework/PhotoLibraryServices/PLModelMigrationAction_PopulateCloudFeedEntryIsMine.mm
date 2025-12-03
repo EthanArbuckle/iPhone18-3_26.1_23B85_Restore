@@ -1,19 +1,19 @@
 @interface PLModelMigrationAction_PopulateCloudFeedEntryIsMine
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (void)_migrateEntriesWithFetchRequest:(id)a3 moc:(id)a4 progress:(id)a5 result:(int64_t *)a6;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (void)_migrateEntriesWithFetchRequest:(id)request moc:(id)moc progress:(id)progress result:(int64_t *)result;
 @end
 
 @implementation PLModelMigrationAction_PopulateCloudFeedEntryIsMine
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v77 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v39 = 1;
   v7 = +[PLCloudFeedEntry fetchRequest];
   [v7 setIncludesSubentities:1];
   v38 = 0;
-  v8 = [v6 countForFetchRequest:v7 error:&v38];
+  v8 = [contextCopy countForFetchRequest:v7 error:&v38];
   v9 = v38;
   v10 = PLMigrationGetLog();
   v11 = v10;
@@ -23,9 +23,9 @@
 
     if (v12)
     {
-      v13 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v13)
+      if (logger)
       {
         v75 = 0u;
         v76 = 0u;
@@ -95,9 +95,9 @@
 
     if (v17)
     {
-      v18 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v18)
+      if (logger2)
       {
         v75 = 0u;
         v76 = 0u;
@@ -172,12 +172,12 @@
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
     [v30 setRelationshipKeyPathsForPrefetching:v31];
 
-    [(PLModelMigrationAction_PopulateCloudFeedEntryIsMine *)self _migrateEntriesWithFetchRequest:v30 moc:v6 progress:v29 result:&v39];
-    if (v39 != 1 || (+[PLCloudFeedCommentsEntry fetchRequest](PLCloudFeedCommentsEntry, "fetchRequest"), v32 = objc_claimAutoreleasedReturnValue(), v40[0] = @"entryComments", v40[1] = @"entryLikeComments", [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "setRelationshipKeyPathsForPrefetching:", v33), v33, -[PLModelMigrationAction_PopulateCloudFeedEntryIsMine _migrateEntriesWithFetchRequest:moc:progress:result:](self, "_migrateEntriesWithFetchRequest:moc:progress:result:", v32, v6, v29, &v39), v32, v39 != 1) || (+[PLCloudFeedEntry fetchRequest](PLCloudFeedEntry, "fetchRequest"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "setIncludesSubentities:", 0), objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"entryType!= %d AND entryType!= %d", 1, 2), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "setPredicate:", v35), v35, -[PLModelMigrationAction_PopulateCloudFeedEntryIsMine _migrateEntriesWithFetchRequest:moc:progress:result:](self, "_migrateEntriesWithFetchRequest:moc:progress:result:", v34, v6, v29, &v39), v34, v39 != 1))
+    [(PLModelMigrationAction_PopulateCloudFeedEntryIsMine *)self _migrateEntriesWithFetchRequest:v30 moc:contextCopy progress:v29 result:&v39];
+    if (v39 != 1 || (+[PLCloudFeedCommentsEntry fetchRequest](PLCloudFeedCommentsEntry, "fetchRequest"), v32 = objc_claimAutoreleasedReturnValue(), v40[0] = @"entryComments", v40[1] = @"entryLikeComments", [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "setRelationshipKeyPathsForPrefetching:", v33), v33, -[PLModelMigrationAction_PopulateCloudFeedEntryIsMine _migrateEntriesWithFetchRequest:moc:progress:result:](self, "_migrateEntriesWithFetchRequest:moc:progress:result:", v32, contextCopy, v29, &v39), v32, v39 != 1) || (+[PLCloudFeedEntry fetchRequest](PLCloudFeedEntry, "fetchRequest"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "setIncludesSubentities:", 0), objc_msgSend(MEMORY[0x1E696AE18], "predicateWithFormat:", @"entryType!= %d AND entryType!= %d", 1, 2), v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "setPredicate:", v35), v35, -[PLModelMigrationAction_PopulateCloudFeedEntryIsMine _migrateEntriesWithFetchRequest:moc:progress:result:](self, "_migrateEntriesWithFetchRequest:moc:progress:result:", v34, contextCopy, v29, &v39), v34, v39 != 1))
     {
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
@@ -188,12 +188,12 @@
   return v25;
 }
 
-- (void)_migrateEntriesWithFetchRequest:(id)a3 moc:(id)a4 progress:(id)a5 result:(int64_t *)a6
+- (void)_migrateEntriesWithFetchRequest:(id)request moc:(id)moc progress:(id)progress result:(int64_t *)result
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
+  mocCopy = moc;
+  progressCopy = progress;
+  requestCopy = request;
   v13 = [PLEnumerateAndSaveController alloc];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
@@ -201,30 +201,30 @@
   v35[1] = 3221225472;
   v35[2] = __107__PLModelMigrationAction_PopulateCloudFeedEntryIsMine__migrateEntriesWithFetchRequest_moc_progress_result___block_invoke;
   v35[3] = &unk_1E7575B30;
-  v16 = v10;
+  v16 = mocCopy;
   v36 = v16;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __107__PLModelMigrationAction_PopulateCloudFeedEntryIsMine__migrateEntriesWithFetchRequest_moc_progress_result___block_invoke_2;
   v33[3] = &unk_1E756C738;
-  v17 = v11;
+  v17 = progressCopy;
   v34 = v17;
-  v18 = [(PLEnumerateAndSaveController *)v13 initWithName:v15 fetchRequest:v12 context:v16 options:0 generateContextBlock:v35 didFetchObjectIDsBlock:0 processResultBlock:v33];
+  v18 = [(PLEnumerateAndSaveController *)v13 initWithName:v15 fetchRequest:requestCopy context:v16 options:0 generateContextBlock:v35 didFetchObjectIDsBlock:0 processResultBlock:v33];
 
   v32 = 0;
   LOBYTE(v15) = [(PLEnumerateAndSaveController *)v18 processObjectsWithError:&v32];
   v19 = v32;
   if ((v15 & 1) == 0)
   {
-    *a6 = 3;
+    *result = 3;
     v20 = PLMigrationGetLog();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
 
     if (v21)
     {
-      v22 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v22)
+      if (logger)
       {
         memset(buf, 0, sizeof(buf));
         v23 = PLMigrationGetLog();

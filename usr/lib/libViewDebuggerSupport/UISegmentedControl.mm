@@ -1,6 +1,6 @@
 @interface UISegmentedControl
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 - (BOOL)__dbg_hasValidSelectedSegmentIndex;
 - (BOOL)__dbg_isEnabledForSelectedSegment;
 - (CGSize)__dbg_contentOffsetForSelectedSegment;
@@ -75,60 +75,60 @@
   return v9;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"contentOffsetForInspectedSegment"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"contentOffsetForInspectedSegment"])
   {
-    [v9 __dbg_contentOffsetForSelectedSegment];
+    [objectCopy __dbg_contentOffsetForSelectedSegment];
     valuePtr = v10;
     v32[0] = v11;
     v12 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
     *v12 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
     v12[1] = CFNumberCreate(0, kCFNumberCGFloatType, v32);
-    a6 = CFArrayCreate(0, v12, 2, &kCFTypeArrayCallBacks);
+    error = CFArrayCreate(0, v12, 2, &kCFTypeArrayCallBacks);
     CFRelease(*v12);
     CFRelease(v12[1]);
     free(v12);
     goto LABEL_14;
   }
 
-  if ([v8 isEqualToString:@"imageForInspectedSegment"])
+  if ([nameCopy isEqualToString:@"imageForInspectedSegment"])
   {
-    if ([v9 selectedSegmentIndex] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([objectCopy selectedSegmentIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a6 = 0;
+      error = 0;
       goto LABEL_14;
     }
 
-    v13 = [v9 imageForSegmentAtIndex:{objc_msgSend(v9, "selectedSegmentIndex")}];
+    __dbg_titleForSelectedSegment = [objectCopy imageForSegmentAtIndex:{objc_msgSend(objectCopy, "selectedSegmentIndex")}];
     goto LABEL_13;
   }
 
-  if ([v8 isEqualToString:@"isEnabledForInspectedSegment"])
+  if ([nameCopy isEqualToString:@"isEnabledForInspectedSegment"])
   {
-    v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 __dbg_isEnabledForSelectedSegment]);
+    __dbg_titleForSelectedSegment = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [objectCopy __dbg_isEnabledForSelectedSegment]);
 LABEL_13:
-    a6 = v13;
+    error = __dbg_titleForSelectedSegment;
     goto LABEL_14;
   }
 
-  if ([v8 isEqualToString:@"titleForInspectedSegment"])
+  if ([nameCopy isEqualToString:@"titleForInspectedSegment"])
   {
-    v13 = [v9 __dbg_titleForSelectedSegment];
+    __dbg_titleForSelectedSegment = [objectCopy __dbg_titleForSelectedSegment];
     goto LABEL_13;
   }
 
-  if ([v8 isEqualToString:@"widthForInspectedSegment"])
+  if ([nameCopy isEqualToString:@"widthForInspectedSegment"])
   {
-    [v9 __dbg_widthForSelectedSegment];
-    v13 = [NSNumber numberWithDouble:?];
+    [objectCopy __dbg_widthForSelectedSegment];
+    __dbg_titleForSelectedSegment = [NSNumber numberWithDouble:?];
     goto LABEL_13;
   }
 
-  v15 = v9;
-  v16 = v8;
+  v15 = objectCopy;
+  v16 = nameCopy;
   if (![v16 length])
   {
     goto LABEL_29;
@@ -144,31 +144,31 @@ LABEL_13:
   {
     if ([v16 length] < 2)
     {
-      v21 = [v16 uppercaseString];
+      uppercaseString = [v16 uppercaseString];
     }
 
     else
     {
       v18 = [v16 substringToIndex:1];
-      v19 = [v18 uppercaseString];
+      uppercaseString2 = [v18 uppercaseString];
       v20 = [v16 substringFromIndex:1];
-      v21 = [v19 stringByAppendingString:v20];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v20];
     }
 
-    v22 = [@"is" stringByAppendingString:v21];
+    v22 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v22);
     v17 = (objc_opt_respondsToSelector() & 1) != 0 ? v22 : 0;
   }
 
   if (v17)
   {
-    a6 = [v15 valueForKey:v17];
+    error = [v15 valueForKey:v17];
   }
 
   else
   {
 LABEL_29:
-    if (a6)
+    if (error)
     {
       v23 = v16;
       if (v15)
@@ -202,10 +202,10 @@ LABEL_29:
       v28 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v27];
 
       v29 = v28;
-      *a6 = v28;
+      *error = v28;
 
       v17 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -216,7 +216,7 @@ LABEL_29:
 
 LABEL_14:
 
-  return a6;
+  return error;
 }
 
 - (BOOL)__dbg_hasValidSelectedSegmentIndex
@@ -226,8 +226,8 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(UISegmentedControl *)self selectedSegmentIndex];
-  return v3 < [(UISegmentedControl *)self numberOfSegments];
+  selectedSegmentIndex = [(UISegmentedControl *)self selectedSegmentIndex];
+  return selectedSegmentIndex < [(UISegmentedControl *)self numberOfSegments];
 }
 
 - (CGSize)__dbg_contentOffsetForSelectedSegment
@@ -250,15 +250,15 @@ LABEL_14:
 
 - (BOOL)__dbg_isEnabledForSelectedSegment
 {
-  v3 = [(UISegmentedControl *)self __dbg_hasValidSelectedSegmentIndex];
-  if (v3)
+  __dbg_hasValidSelectedSegmentIndex = [(UISegmentedControl *)self __dbg_hasValidSelectedSegmentIndex];
+  if (__dbg_hasValidSelectedSegmentIndex)
   {
-    v4 = [(UISegmentedControl *)self selectedSegmentIndex];
+    selectedSegmentIndex = [(UISegmentedControl *)self selectedSegmentIndex];
 
-    LOBYTE(v3) = [(UISegmentedControl *)self isEnabledForSegmentAtIndex:v4];
+    LOBYTE(__dbg_hasValidSelectedSegmentIndex) = [(UISegmentedControl *)self isEnabledForSegmentAtIndex:selectedSegmentIndex];
   }
 
-  return v3;
+  return __dbg_hasValidSelectedSegmentIndex;
 }
 
 - (id)__dbg_titleForSelectedSegment
@@ -278,9 +278,9 @@ LABEL_14:
     return 0.0;
   }
 
-  v3 = [(UISegmentedControl *)self selectedSegmentIndex];
+  selectedSegmentIndex = [(UISegmentedControl *)self selectedSegmentIndex];
 
-  [(UISegmentedControl *)self widthForSegmentAtIndex:v3];
+  [(UISegmentedControl *)self widthForSegmentAtIndex:selectedSegmentIndex];
   return result;
 }
 

@@ -1,8 +1,8 @@
 @interface KTEligibilityStatusResult
-+ (id)statusResultWithFailureWithElement:(id)a3 error:(id)a4;
-+ (id)statusResultWithFailureWithElement:(id)a3 error:(id)a4 dateStored:(id)a5;
-+ (id)statusResultWithSuccessWithElement:(id)a3;
-+ (id)statusResultWithSuccessWithElement:(id)a3 dateStored:(id)a4;
++ (id)statusResultWithFailureWithElement:(id)element error:(id)error;
++ (id)statusResultWithFailureWithElement:(id)element error:(id)error dateStored:(id)stored;
++ (id)statusResultWithSuccessWithElement:(id)element;
++ (id)statusResultWithSuccessWithElement:(id)element dateStored:(id)stored;
 - (NSDate)dateStored;
 - (NSString)description;
 - (_TtC13transparencyd25KTEligibilityStatusResult)init;
@@ -33,7 +33,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100130444();
 
   v3 = String._bridgeToObjectiveC()();
@@ -41,7 +41,7 @@
   return v3;
 }
 
-+ (id)statusResultWithSuccessWithElement:(id)a3
++ (id)statusResultWithSuccessWithElement:(id)element
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v4 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
@@ -70,7 +70,7 @@
   return v15;
 }
 
-+ (id)statusResultWithSuccessWithElement:(id)a3 dateStored:(id)a4
++ (id)statusResultWithSuccessWithElement:(id)element dateStored:(id)stored
 {
   v5 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
   v6 = *(*(v5 - 8) + 64);
@@ -80,7 +80,7 @@
   v11 = &v23 - v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  if (a4)
+  if (stored)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = type metadata accessor for Date();
@@ -115,7 +115,7 @@
   return v21;
 }
 
-+ (id)statusResultWithFailureWithElement:(id)a3 error:(id)a4 dateStored:(id)a5
++ (id)statusResultWithFailureWithElement:(id)element error:(id)error dateStored:(id)stored
 {
   v7 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
   v8 = *(*(v7 - 8) + 64);
@@ -123,7 +123,7 @@
   v10 = &v19 - v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (a5)
+  if (stored)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = type metadata accessor for Date();
@@ -136,20 +136,20 @@
     (*(*(v15 - 8) + 56))(v10, 1, 1, v15);
   }
 
-  v16 = a4;
-  v17 = sub_1001432B8(v11, v13, v16, v10);
+  errorCopy = error;
+  v17 = sub_1001432B8(v11, v13, errorCopy, v10);
 
   sub_1000057C4(v10, &qword_100383FB0, &unk_1002D6690);
 
   return v17;
 }
 
-+ (id)statusResultWithFailureWithElement:(id)a3 error:(id)a4
++ (id)statusResultWithFailureWithElement:(id)element error:(id)error
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a4;
-  v9 = sub_1001435FC(v5, v7, v8);
+  errorCopy = error;
+  v9 = sub_1001435FC(v5, v7, errorCopy);
 
   return v9;
 }

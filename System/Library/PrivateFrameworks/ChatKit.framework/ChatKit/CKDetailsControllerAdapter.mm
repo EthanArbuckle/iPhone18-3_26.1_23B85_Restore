@@ -1,71 +1,71 @@
 @interface CKDetailsControllerAdapter
 - (BOOL)isDetailsNavigationControllerDetached;
-- (CKDetailsControllerAdapter)initWithConversation:(id)a3 delegate:(id)a4 customDetailsController:(id)a5;
+- (CKDetailsControllerAdapter)initWithConversation:(id)conversation delegate:(id)delegate customDetailsController:(id)controller;
 - (CKDetailsControllerAdapterDelegate)delegate;
 - (UINavigationControllerDelegate)customDetails;
-- (id)detailsControllerBusinessPrivacyInfoPresentingViewController:(id)a3;
-- (id)presentingViewControllerForAlertsFromDetailsController:(id)a3;
-- (void)configureDetailsControllerForSearch:(id)a3 searchViewController:(id)a4;
-- (void)detailsController:(id)a3 shouldComposeConversationWithRecipientAddresses:(id)a4;
-- (void)detailsController:(id)a3 wantsToStageComposition:(id)a4;
-- (void)detailsControllerDidDismiss:(id)a3;
-- (void)detailsControllerDidSelectStopSharingLocation:(id)a3;
-- (void)detailsControllerWantsToPresentKTContactVerificationUI:(id)a3;
-- (void)detailsControllerWantsToPresentReportToAppleUI:(id)a3;
-- (void)detailsControllerWillDismiss:(id)a3;
-- (void)didSelectDeleteAndBlockFromDetailsController:(id)a3;
-- (void)didSelectLeaveGroupFromDetailsController:(id)a3;
-- (void)didSelectRemoveParticipantFromDetailsController:(id)a3 participantHandle:(id)a4;
+- (id)detailsControllerBusinessPrivacyInfoPresentingViewController:(id)controller;
+- (id)presentingViewControllerForAlertsFromDetailsController:(id)controller;
+- (void)configureDetailsControllerForSearch:(id)search searchViewController:(id)controller;
+- (void)detailsController:(id)controller shouldComposeConversationWithRecipientAddresses:(id)addresses;
+- (void)detailsController:(id)controller wantsToStageComposition:(id)composition;
+- (void)detailsControllerDidDismiss:(id)dismiss;
+- (void)detailsControllerDidSelectStopSharingLocation:(id)location;
+- (void)detailsControllerWantsToPresentKTContactVerificationUI:(id)i;
+- (void)detailsControllerWantsToPresentReportToAppleUI:(id)i;
+- (void)detailsControllerWillDismiss:(id)dismiss;
+- (void)didSelectDeleteAndBlockFromDetailsController:(id)controller;
+- (void)didSelectLeaveGroupFromDetailsController:(id)controller;
+- (void)didSelectRemoveParticipantFromDetailsController:(id)controller participantHandle:(id)handle;
 - (void)dismissDetailsNavigationController;
-- (void)dismissDetailsNavigationControllerWithCompletion:(id)a3;
+- (void)dismissDetailsNavigationControllerWithCompletion:(id)completion;
 - (void)dismissDetailsViewAndShowConversationList;
-- (void)stageDetailsFindMyCompositionWithShareType:(int64_t)a3;
+- (void)stageDetailsFindMyCompositionWithShareType:(int64_t)type;
 - (void)stageLocationRequest;
 @end
 
 @implementation CKDetailsControllerAdapter
 
-- (CKDetailsControllerAdapter)initWithConversation:(id)a3 delegate:(id)a4 customDetailsController:(id)a5
+- (CKDetailsControllerAdapter)initWithConversation:(id)conversation delegate:(id)delegate customDetailsController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  conversationCopy = conversation;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v30.receiver = self;
   v30.super_class = CKDetailsControllerAdapter;
   v12 = [(CKDetailsControllerAdapter *)&v30 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_conversation, a3);
-    objc_storeWeak(&v13->_delegate, v10);
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    if ([v14 isBIAEnabled] && (objc_msgSend(v9, "isBusinessConversation") & 1) != 0)
+    objc_storeStrong(&v12->_conversation, conversation);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    if ([mEMORY[0x1E69A8070] isBIAEnabled] && (objc_msgSend(conversationCopy, "isBusinessConversation") & 1) != 0)
     {
-      v15 = 1;
+      isChatBot = 1;
     }
 
     else
     {
-      v15 = [v9 isChatBot];
+      isChatBot = [conversationCopy isChatBot];
     }
 
-    v13->_useBusinessDetails = v15;
+    v13->_useBusinessDetails = isChatBot;
 
     v13->_addMemberPopoverPresented = 0;
-    v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v17 = [v16 isModernDetailsViewEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isModernDetailsViewEnabled = [mEMORY[0x1E69A8070]2 isModernDetailsViewEnabled];
 
-    if (v17)
+    if (isModernDetailsViewEnabled)
     {
-      if (v11)
+      if (controllerCopy)
       {
-        [(CKDetailsControllerAdapter *)v13 setCustomDetails:v11];
+        [(CKDetailsControllerAdapter *)v13 setCustomDetails:controllerCopy];
         goto LABEL_15;
       }
 
       if (![(CKDetailsControllerAdapter *)v13 useBusinessDetails])
       {
-        v27 = [CKModernDetailsControllerFactory detailsControllerWithConversation:v9 delegate:v13];
+        v27 = [CKModernDetailsControllerFactory detailsControllerWithConversation:conversationCopy delegate:v13];
         modernDetails = v13->_modernDetails;
         v13->_modernDetails = v27;
 
@@ -77,8 +77,8 @@
     else if (![(CKDetailsControllerAdapter *)v13 useBusinessDetails])
     {
       v18 = [CKDetailsController alloc];
-      v19 = [(CKDetailsControllerAdapter *)v13 conversation];
-      v20 = [(CKDetailsController *)v18 initWithConversation:v19];
+      conversation = [(CKDetailsControllerAdapter *)v13 conversation];
+      v20 = [(CKDetailsController *)v18 initWithConversation:conversation];
       legacyDetails = v13->_legacyDetails;
       v13->_legacyDetails = v20;
 
@@ -90,8 +90,8 @@ LABEL_14:
     }
 
     v23 = [CKBusinessDetailsController alloc];
-    v24 = [(CKDetailsControllerAdapter *)v13 conversation];
-    v25 = [(CKBusinessDetailsController *)v23 initWithConversation:v24 detailsControllerDelegate:v13];
+    conversation2 = [(CKDetailsControllerAdapter *)v13 conversation];
+    v25 = [(CKBusinessDetailsController *)v23 initWithConversation:conversation2 detailsControllerDelegate:v13];
     businessDetails = v13->_businessDetails;
     v13->_businessDetails = v25;
 
@@ -104,106 +104,106 @@ LABEL_15:
   return v13;
 }
 
-- (void)stageDetailsFindMyCompositionWithShareType:(int64_t)a3
+- (void)stageDetailsFindMyCompositionWithShareType:(int64_t)type
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  [v4 detailsAdapterStageFindMyCompositionWithShareType:a3];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterStageFindMyCompositionWithShareType:type];
 }
 
 - (void)stageLocationRequest
 {
-  v2 = [(CKDetailsControllerAdapter *)self delegate];
-  [v2 detailsAdapterStageLocationRequestComposition];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterStageLocationRequestComposition];
 }
 
-- (void)detailsControllerWillDismiss:(id)a3
+- (void)detailsControllerWillDismiss:(id)dismiss
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  [v4 detailsAdapterWillDismiss:self];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterWillDismiss:self];
 }
 
-- (void)detailsControllerDidDismiss:(id)a3
+- (void)detailsControllerDidDismiss:(id)dismiss
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  [v4 detailsAdapterDidDismiss:self];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterDidDismiss:self];
 }
 
-- (void)dismissDetailsNavigationControllerWithCompletion:(id)a3
+- (void)dismissDetailsNavigationControllerWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
+  completionCopy = completion;
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKDetailsControllerAdapter *)self delegate];
-    [v6 dismissDetailsNavigationControllerWithCompletion:v7];
+    delegate2 = [(CKDetailsControllerAdapter *)self delegate];
+    [delegate2 dismissDetailsNavigationControllerWithCompletion:completionCopy];
   }
 }
 
 - (void)dismissDetailsViewAndShowConversationList
 {
-  v2 = [(CKDetailsControllerAdapter *)self delegate];
-  [v2 dismissDetailsViewAndShowConversationList];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate dismissDetailsViewAndShowConversationList];
 }
 
 - (BOOL)isDetailsNavigationControllerDetached
 {
-  v2 = [(CKDetailsControllerAdapter *)self delegate];
-  v3 = [v2 isDetailsNavigationControllerDetached];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  isDetailsNavigationControllerDetached = [delegate isDetailsNavigationControllerDetached];
 
-  return v3;
+  return isDetailsNavigationControllerDetached;
 }
 
-- (id)detailsControllerBusinessPrivacyInfoPresentingViewController:(id)a3
+- (id)detailsControllerBusinessPrivacyInfoPresentingViewController:(id)controller
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  v5 = [v4 detailsAdapterBusinessPrivacyInfoPresentingViewController:self];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  v5 = [delegate detailsAdapterBusinessPrivacyInfoPresentingViewController:self];
 
   return v5;
 }
 
-- (void)detailsControllerWantsToPresentKTContactVerificationUI:(id)a3
+- (void)detailsControllerWantsToPresentKTContactVerificationUI:(id)i
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  [v4 detailsAdapterWantsToPresentKTContactVerificationUI:self];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterWantsToPresentKTContactVerificationUI:self];
 }
 
-- (void)detailsController:(id)a3 wantsToStageComposition:(id)a4
+- (void)detailsController:(id)controller wantsToStageComposition:(id)composition
 {
-  v5 = a4;
-  v6 = [(CKDetailsControllerAdapter *)self delegate];
-  [v6 detailsAdapter:self wantsToStageComposition:v5];
+  compositionCopy = composition;
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapter:self wantsToStageComposition:compositionCopy];
 }
 
-- (void)detailsControllerDidSelectStopSharingLocation:(id)a3
+- (void)detailsControllerDidSelectStopSharingLocation:(id)location
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
-  [v4 detailsAdapterDidSelectStopSharingLocation:self];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate detailsAdapterDidSelectStopSharingLocation:self];
 }
 
-- (void)detailsController:(id)a3 shouldComposeConversationWithRecipientAddresses:(id)a4
+- (void)detailsController:(id)controller shouldComposeConversationWithRecipientAddresses:(id)addresses
 {
-  v8 = a4;
-  v5 = [(CKDetailsControllerAdapter *)self delegate];
+  addressesCopy = addresses;
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKDetailsControllerAdapter *)self delegate];
-    [v7 detailsAdapter:self shouldComposeConversationWithRecipientAddresses:v8];
+    delegate2 = [(CKDetailsControllerAdapter *)self delegate];
+    [delegate2 detailsAdapter:self shouldComposeConversationWithRecipientAddresses:addressesCopy];
   }
 }
 
-- (id)presentingViewControllerForAlertsFromDetailsController:(id)a3
+- (id)presentingViewControllerForAlertsFromDetailsController:(id)controller
 {
-  v4 = [(CKDetailsControllerAdapter *)self delegate];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKDetailsControllerAdapter *)self delegate];
-    v7 = [v6 presentingViewControllerForAlertsFromDetailsAdapter:self];
+    delegate2 = [(CKDetailsControllerAdapter *)self delegate];
+    v7 = [delegate2 presentingViewControllerForAlertsFromDetailsAdapter:self];
   }
 
   else
@@ -214,38 +214,38 @@ LABEL_15:
   return v7;
 }
 
-- (void)detailsControllerWantsToPresentReportToAppleUI:(id)a3
+- (void)detailsControllerWantsToPresentReportToAppleUI:(id)i
 {
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isModernDetailsViewEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernDetailsViewEnabled = [mEMORY[0x1E69A8070] isModernDetailsViewEnabled];
 
-  if (v5)
+  if (isModernDetailsViewEnabled)
   {
-    v6 = [(CKDetailsControllerAdapter *)self modernDetails];
-    [CKKeyTransparencyErrorUtilities showReportToAppleUIFromViewController:v6];
+    modernDetails = [(CKDetailsControllerAdapter *)self modernDetails];
+    [CKKeyTransparencyErrorUtilities showReportToAppleUIFromViewController:modernDetails];
   }
 }
 
-- (void)configureDetailsControllerForSearch:(id)a3 searchViewController:(id)a4
+- (void)configureDetailsControllerForSearch:(id)search searchViewController:(id)controller
 {
-  v9 = a4;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isModernDetailsViewEnabled];
+  controllerCopy = controller;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernDetailsViewEnabled = [mEMORY[0x1E69A8070] isModernDetailsViewEnabled];
 
-  if (v6)
+  if (isModernDetailsViewEnabled)
   {
-    v7 = [(CKDetailsControllerAdapter *)self modernDetails];
-    [v9 willMoveToParentViewController:v7];
+    modernDetails = [(CKDetailsControllerAdapter *)self modernDetails];
+    [controllerCopy willMoveToParentViewController:modernDetails];
 
-    v8 = [(CKDetailsControllerAdapter *)self modernDetails];
-    [v8 addChildViewController:v9];
+    modernDetails2 = [(CKDetailsControllerAdapter *)self modernDetails];
+    [modernDetails2 addChildViewController:controllerCopy];
   }
 }
 
 - (void)dismissDetailsNavigationController
 {
-  v2 = [(CKDetailsControllerAdapter *)self delegate];
-  [v2 dismissDetailsNavigationControllerWithCompletion:0];
+  delegate = [(CKDetailsControllerAdapter *)self delegate];
+  [delegate dismissDetailsNavigationControllerWithCompletion:0];
 }
 
 - (CKDetailsControllerAdapterDelegate)delegate
@@ -262,25 +262,25 @@ LABEL_15:
   return WeakRetained;
 }
 
-- (void)didSelectRemoveParticipantFromDetailsController:(id)a3 participantHandle:(id)a4
+- (void)didSelectRemoveParticipantFromDetailsController:(id)controller participantHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_190AE4304(v6, v7);
+  controllerCopy = controller;
+  handleCopy = handle;
+  selfCopy = self;
+  sub_190AE4304(controllerCopy, handleCopy);
 }
 
-- (void)didSelectLeaveGroupFromDetailsController:(id)a3
+- (void)didSelectLeaveGroupFromDetailsController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_190AE4DA0(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_190AE4DA0(controllerCopy);
 }
 
-- (void)didSelectDeleteAndBlockFromDetailsController:(id)a3
+- (void)didSelectDeleteAndBlockFromDetailsController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_190AE5D24();
 }
 

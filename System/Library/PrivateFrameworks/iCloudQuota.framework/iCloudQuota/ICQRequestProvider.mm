@@ -1,50 +1,50 @@
 @interface ICQRequestProvider
-+ (BOOL)_keyIsEligibleForURLStringReplacement:(id)a3;
-+ (BOOL)attemptSetRequest:(id)a3 toPostWithJSONDict:(id)a4;
-+ (id)_newAccountBagKeyForOldKey:(id)a3;
-+ (id)_urlReplacementDictionaryForKey:(id)a3 withOfferID:(id)a4 withNotificationID:(id)a5;
-+ (void)addEntriesToPostDictionary:(id)a3 forStub:(id)a4;
-- (BOOL)willUseNewKey:(id)a3 offerID:(id)a4 notificationID:(id)a5;
-- (ICQRequestProvider)initWithAccount:(id)a3;
-- (id)_bagURLForKey:(id)a3 withOfferID:(id)a4 withNotificationID:(id)a5;
++ (BOOL)_keyIsEligibleForURLStringReplacement:(id)replacement;
++ (BOOL)attemptSetRequest:(id)request toPostWithJSONDict:(id)dict;
++ (id)_newAccountBagKeyForOldKey:(id)key;
++ (id)_urlReplacementDictionaryForKey:(id)key withOfferID:(id)d withNotificationID:(id)iD;
++ (void)addEntriesToPostDictionary:(id)dictionary forStub:(id)stub;
+- (BOOL)willUseNewKey:(id)key offerID:(id)d notificationID:(id)iD;
+- (ICQRequestProvider)initWithAccount:(id)account;
+- (id)_bagURLForKey:(id)key withOfferID:(id)d withNotificationID:(id)iD;
 - (id)_stringTimeOfLastBackup;
-- (id)_urlForQuotaKey:(id)a3 offerID:(id)a4 notificationID:(id)a5;
+- (id)_urlForQuotaKey:(id)key offerID:(id)d notificationID:(id)iD;
 - (id)getBackupDeviceUUID;
-- (id)httpMethodForKey:(id)a3 offerID:(id)a4 notificationID:(id)a5;
-- (id)urlForQuotaKey:(id)a3 offerStub:(id)a4 notificationID:(id)a5;
-- (id)urlForUpdateOfferWithContext:(id)a3;
+- (id)httpMethodForKey:(id)key offerID:(id)d notificationID:(id)iD;
+- (id)urlForQuotaKey:(id)key offerStub:(id)stub notificationID:(id)d;
+- (id)urlForUpdateOfferWithContext:(id)context;
 - (void)_stringTimeOfLastBackup;
-- (void)addBasicAndCloudBackupHeadersToRequest:(id)a3;
-- (void)addBasicHeadersToRequest:(id)a3;
-- (void)addCommonHeadersToRequest:(id)a3;
+- (void)addBasicAndCloudBackupHeadersToRequest:(id)request;
+- (void)addBasicHeadersToRequest:(id)request;
+- (void)addCommonHeadersToRequest:(id)request;
 @end
 
 @implementation ICQRequestProvider
 
-- (ICQRequestProvider)initWithAccount:(id)a3
+- (ICQRequestProvider)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(ICQRequestProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)urlForQuotaKey:(id)a3 offerStub:(id)a4 notificationID:(id)a5
+- (id)urlForQuotaKey:(id)key offerStub:(id)stub notificationID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"quotaOfferReset"])
+  keyCopy = key;
+  dCopy = d;
+  stubCopy = stub;
+  if ([keyCopy isEqualToString:@"quotaOfferReset"])
   {
     v11 = MEMORY[0x277CBEBC0];
-    v12 = [v10 offerResetURL];
+    offerResetURL = [stubCopy offerResetURL];
 
-    v13 = [v11 URLWithString:v12];
+    v13 = [v11 URLWithString:offerResetURL];
 
     if (!v13)
     {
@@ -59,52 +59,52 @@
 
   else
   {
-    v15 = [v10 offerId];
+    offerId = [stubCopy offerId];
 
-    v13 = [(ICQRequestProvider *)self _urlForQuotaKey:v8 offerID:v15 notificationID:v9];
+    v13 = [(ICQRequestProvider *)self _urlForQuotaKey:keyCopy offerID:offerId notificationID:dCopy];
   }
 
   return v13;
 }
 
-- (id)urlForUpdateOfferWithContext:(id)a3
+- (id)urlForUpdateOfferWithContext:(id)context
 {
-  v4 = [a3 offerId];
-  v5 = [(ICQRequestProvider *)self _urlForQuotaKey:@"quotaUpdateOfferURL" offerID:v4 notificationID:0];
+  offerId = [context offerId];
+  v5 = [(ICQRequestProvider *)self _urlForQuotaKey:@"quotaUpdateOfferURL" offerID:offerId notificationID:0];
 
   return v5;
 }
 
-- (id)_urlForQuotaKey:(id)a3 offerID:(id)a4 notificationID:(id)a5
+- (id)_urlForQuotaKey:(id)key offerID:(id)d notificationID:(id)iD
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  dCopy = d;
+  iDCopy = iD;
   v11 = _ICQGetLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412802;
-    v26 = v8;
+    v26 = keyCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = dCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = iDCopy;
     _os_log_impl(&dword_275572000, v11, OS_LOG_TYPE_DEFAULT, "Creating URL for quota key %@ with offerID %@ with notificationID %@.", &v25, 0x20u);
   }
 
-  v12 = [(ICQRequestProvider *)self _bagURLForKey:v8 withOfferID:v9 withNotificationID:v10];
+  v12 = [(ICQRequestProvider *)self _bagURLForKey:keyCopy withOfferID:dCopy withNotificationID:iDCopy];
   if (!v12)
   {
     v13 = _ICQGetLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412802;
-      v26 = v8;
+      v26 = keyCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = iDCopy;
       _os_log_impl(&dword_275572000, v13, OS_LOG_TYPE_DEFAULT, "Failed to create URL string for quota key %@ with offerID %@ with notificationID %@.", &v25, 0x20u);
     }
 
@@ -112,7 +112,7 @@
   }
 
   v13 = v12;
-  if ([ICQRequestProvider _keyIsEligibleForURLStringReplacement:v8])
+  if ([ICQRequestProvider _keyIsEligibleForURLStringReplacement:keyCopy])
   {
     v14 = _ICQGetLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -121,7 +121,7 @@
       _os_log_impl(&dword_275572000, v14, OS_LOG_TYPE_DEFAULT, "Replacing words in URL string.", &v25, 2u);
     }
 
-    v15 = [ICQRequestProvider _urlReplacementDictionaryForKey:v8 withOfferID:v9 withNotificationID:v10];
+    v15 = [ICQRequestProvider _urlReplacementDictionaryForKey:keyCopy withOfferID:dCopy withNotificationID:iDCopy];
     v16 = [_ICQHelperFunctions replaceWordsIn:v13 with:v15];
 
     v13 = v16;
@@ -133,11 +133,11 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v25 = 138412802;
-      v26 = v8;
+      v26 = keyCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = iDCopy;
       _os_log_impl(&dword_275572000, v17, OS_LOG_TYPE_DEFAULT, "Failed to create URL string for quota key %@ with offerID %@ with notificationID %@. Missing offerID!", &v25, 0x20u);
     }
 
@@ -154,11 +154,11 @@ LABEL_14:
     if (v20)
     {
       v25 = 138412802;
-      v26 = v8;
+      v26 = keyCopy;
       v27 = 2112;
-      v28 = v9;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = iDCopy;
       _os_log_impl(&dword_275572000, v19, OS_LOG_TYPE_DEFAULT, "Created URL for quota key %@ with offerID %@ with notificationID %@.", &v25, 0x20u);
     }
 
@@ -173,7 +173,7 @@ LABEL_14:
       v25 = 138412802;
       v26 = v13;
       v27 = 2112;
-      v28 = v8;
+      v28 = keyCopy;
       v29 = 2112;
       v30 = account;
       _os_log_impl(&dword_275572000, v19, OS_LOG_TYPE_DEFAULT, "invalid URL string %@ for quota key %@ account %@", &v25, 0x20u);
@@ -186,57 +186,57 @@ LABEL_23:
   return v18;
 }
 
-- (void)addBasicHeadersToRequest:(id)a3
+- (void)addBasicHeadersToRequest:(id)request
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
-  [v4 ak_addClientInfoHeader];
-  v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v6 = [v5 abbreviation];
-  [v4 setValue:v6 forHTTPHeaderField:@"X-MMe-Timezone"];
+  requestCopy = request;
+  [requestCopy aa_addBasicAuthorizationHeaderWithAccount:self->_account preferUsingPassword:0];
+  [requestCopy ak_addClientInfoHeader];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  abbreviation = [systemTimeZone abbreviation];
+  [requestCopy setValue:abbreviation forHTTPHeaderField:@"X-MMe-Timezone"];
 
   v7 = MEMORY[0x277CBEAF8];
-  v8 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v18[0] = v8;
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  v18[0] = _deviceLanguage;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
   v10 = [v7 minimizedLanguagesFromLanguages:v9];
   v11 = [v10 componentsJoinedByString:{@", "}];
 
   if (v11)
   {
-    [v4 setValue:v11 forHTTPHeaderField:@"Accept-Language"];
+    [requestCopy setValue:v11 forHTTPHeaderField:@"Accept-Language"];
   }
 
-  [v4 ak_addCountryHeader];
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
-  v13 = [v12 _numberingSystem];
-  [v4 setValue:v13 forHTTPHeaderField:@"X-Apple-Locale-Numbering-System"];
+  [requestCopy ak_addCountryHeader];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  _numberingSystem = [currentLocale _numberingSystem];
+  [requestCopy setValue:_numberingSystem forHTTPHeaderField:@"X-Apple-Locale-Numbering-System"];
 
   v14 = [_ICQHelperFunctions standardDateFormat:3];
-  [v4 setValue:v14 forHTTPHeaderField:@"X-Apple-Locale-Date-Format-Long"];
+  [requestCopy setValue:v14 forHTTPHeaderField:@"X-Apple-Locale-Date-Format-Long"];
 
   v15 = [_ICQHelperFunctions standardDateFormat:1];
-  [v4 setValue:v15 forHTTPHeaderField:@"X-Apple-Locale-Date-Format-Short"];
+  [requestCopy setValue:v15 forHTTPHeaderField:@"X-Apple-Locale-Date-Format-Short"];
 
   v16 = MGCopyAnswer();
   if (v16)
   {
-    [v4 setValue:v16 forHTTPHeaderField:@"X-Mme-Device-Id"];
+    [requestCopy setValue:v16 forHTTPHeaderField:@"X-Mme-Device-Id"];
   }
 
   if (+[_ICQHelperFunctions isSolariumFeatureFlagEnabled])
   {
-    [v4 setValue:@"solarium" forHTTPHeaderField:@"X-Apple-iCloudUI-Feature"];
+    [requestCopy setValue:@"solarium" forHTTPHeaderField:@"X-Apple-iCloudUI-Feature"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addBasicAndCloudBackupHeadersToRequest:(id)a3
+- (void)addBasicAndCloudBackupHeadersToRequest:(id)request
 {
-  v4 = a3;
-  [(ICQRequestProvider *)self addBasicHeadersToRequest:v4];
+  requestCopy = request;
+  [(ICQRequestProvider *)self addBasicHeadersToRequest:requestCopy];
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -264,21 +264,21 @@ LABEL_23:
   if ((v5() & 1) == 0)
   {
     v6 = +[ICQDaemonOfferManager ckBackupDeviceID];
-    [v4 setValue:v6 forHTTPHeaderField:@"X-Apple-Cloud-Bkp-Id"];
+    [requestCopy setValue:v6 forHTTPHeaderField:@"X-Apple-Cloud-Bkp-Id"];
 
-    v7 = [(ICQRequestProvider *)self _stringTimeOfLastBackup];
-    [v4 setValue:v7 forHTTPHeaderField:@"X-Apple-Cloud-Bkp-Time"];
+    _stringTimeOfLastBackup = [(ICQRequestProvider *)self _stringTimeOfLastBackup];
+    [requestCopy setValue:_stringTimeOfLastBackup forHTTPHeaderField:@"X-Apple-Cloud-Bkp-Time"];
   }
 }
 
-- (void)addCommonHeadersToRequest:(id)a3
+- (void)addCommonHeadersToRequest:(id)request
 {
-  v5 = a3;
-  [(ICQRequestProvider *)self addBasicAndCloudBackupHeadersToRequest:v5];
-  v4 = [(ICQRequestProvider *)self getBackupDeviceUUID];
-  [v5 setValue:v4 forHTTPHeaderField:@"X-Client-Backup-UUID"];
+  requestCopy = request;
+  [(ICQRequestProvider *)self addBasicAndCloudBackupHeadersToRequest:requestCopy];
+  getBackupDeviceUUID = [(ICQRequestProvider *)self getBackupDeviceUUID];
+  [requestCopy setValue:getBackupDeviceUUID forHTTPHeaderField:@"X-Client-Backup-UUID"];
 
-  [v5 ak_addAnisetteHeaders];
+  [requestCopy ak_addAnisetteHeaders];
 }
 
 - (id)getBackupDeviceUUID
@@ -331,14 +331,14 @@ void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_bagURLForKey:(id)a3 withOfferID:(id)a4 withNotificationID:(id)a5
+- (id)_bagURLForKey:(id)key withOfferID:(id)d withNotificationID:(id)iD
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  keyCopy = key;
   v8 = [(ACAccount *)self->_account propertiesForDataclass:@"com.apple.Dataclass.Quota"];
-  if (v7 == @"quotaRefreshOfferDetailsURL")
+  if (keyCopy == @"quotaRefreshOfferDetailsURL")
   {
-    if (a4)
+    if (d)
     {
       v9 = @"acseGatewayV1Offer";
     }
@@ -351,7 +351,7 @@ void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke(uint64_t a1)
 
   else
   {
-    v9 = [ICQRequestProvider _newAccountBagKeyForOldKey:v7];
+    v9 = [ICQRequestProvider _newAccountBagKeyForOldKey:keyCopy];
   }
 
   v10 = [v8 objectForKey:v9];
@@ -372,13 +372,13 @@ void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke(uint64_t a1)
 
   else
   {
-    v13 = v7;
+    v13 = keyCopy;
     if (v12)
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = keyCopy;
       _os_log_impl(&dword_275572000, v11, OS_LOG_TYPE_DEFAULT, "Using old key %@ to get url from account bag.", &v17, 0xCu);
-      v13 = v7;
+      v13 = keyCopy;
     }
   }
 
@@ -389,12 +389,12 @@ void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (BOOL)willUseNewKey:(id)a3 offerID:(id)a4 notificationID:(id)a5
+- (BOOL)willUseNewKey:(id)key offerID:(id)d notificationID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"quotaOfferReset"])
+  keyCopy = key;
+  dCopy = d;
+  iDCopy = iD;
+  if ([keyCopy isEqualToString:@"quotaOfferReset"])
   {
     LOBYTE(v11) = 0;
   }
@@ -402,27 +402,27 @@ void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke(uint64_t a1)
   else
   {
     v12 = [(ACAccount *)self->_account propertiesForDataclass:@"com.apple.Dataclass.Quota"];
-    v13 = [v12 objectForKey:v8];
+    v13 = [v12 objectForKey:keyCopy];
 
-    v14 = [(ICQRequestProvider *)self _bagURLForKey:v8 withOfferID:v9 withNotificationID:v10];
+    v14 = [(ICQRequestProvider *)self _bagURLForKey:keyCopy withOfferID:dCopy withNotificationID:iDCopy];
     v11 = [v13 isEqualToString:v14] ^ 1;
   }
 
   return v11;
 }
 
-- (id)httpMethodForKey:(id)a3 offerID:(id)a4 notificationID:(id)a5
+- (id)httpMethodForKey:(id)key offerID:(id)d notificationID:(id)iD
 {
-  v8 = a3;
-  if (-[ICQRequestProvider willUseNewKey:offerID:notificationID:](self, "willUseNewKey:offerID:notificationID:", v8, a4, a5) && ([v8 isEqualToString:@"quotaFetchOffersURL"] & 1) == 0)
+  keyCopy = key;
+  if (-[ICQRequestProvider willUseNewKey:offerID:notificationID:](self, "willUseNewKey:offerID:notificationID:", keyCopy, d, iD) && ([keyCopy isEqualToString:@"quotaFetchOffersURL"] & 1) == 0)
   {
-    if ([v8 isEqualToString:@"quotaRefreshOfferDetailsURL"])
+    if ([keyCopy isEqualToString:@"quotaRefreshOfferDetailsURL"])
     {
       v9 = @"GET";
       goto LABEL_4;
     }
 
-    if ([v8 isEqualToString:@"quotaUpdateOfferURL"])
+    if ([keyCopy isEqualToString:@"quotaUpdateOfferURL"])
     {
       v9 = @"PUT";
       goto LABEL_4;
@@ -435,10 +435,10 @@ LABEL_4:
   return v9;
 }
 
-+ (id)_urlReplacementDictionaryForKey:(id)a3 withOfferID:(id)a4 withNotificationID:(id)a5
++ (id)_urlReplacementDictionaryForKey:(id)key withOfferID:(id)d withNotificationID:(id)iD
 {
-  v6 = a4;
-  v7 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v8 = objc_opt_new();
   v9 = MGCopyAnswer();
   if (v9)
@@ -446,40 +446,40 @@ LABEL_4:
     [v8 setObject:v9 forKeyedSubscript:@"{udId}"];
   }
 
-  if (v6)
+  if (dCopy)
   {
-    [v8 setObject:v6 forKeyedSubscript:@"{offerId}"];
+    [v8 setObject:dCopy forKeyedSubscript:@"{offerId}"];
   }
 
   else
   {
-    if (v7)
+    if (iDCopy)
     {
-      v10 = v7;
+      uUIDString = iDCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x277CCAD78] UUID];
-      v10 = [v11 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    [v8 setObject:v10 forKeyedSubscript:@"{notificationId}"];
+    [v8 setObject:uUIDString forKeyedSubscript:@"{notificationId}"];
   }
 
   return v8;
 }
 
-+ (BOOL)_keyIsEligibleForURLStringReplacement:(id)a3
++ (BOOL)_keyIsEligibleForURLStringReplacement:(id)replacement
 {
   v3 = _keyIsEligibleForURLStringReplacement__onceToken;
-  v4 = a3;
+  replacementCopy = replacement;
   if (v3 != -1)
   {
     +[ICQRequestProvider _keyIsEligibleForURLStringReplacement:];
   }
 
-  v5 = [_keyIsEligibleForURLStringReplacement__eligibleKeys containsObject:v4];
+  v5 = [_keyIsEligibleForURLStringReplacement__eligibleKeys containsObject:replacementCopy];
 
   return v5;
 }
@@ -499,16 +499,16 @@ void __60__ICQRequestProvider__keyIsEligibleForURLStringReplacement___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_newAccountBagKeyForOldKey:(id)a3
++ (id)_newAccountBagKeyForOldKey:(id)key
 {
   v3 = _newAccountBagKeyForOldKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     +[ICQRequestProvider _newAccountBagKeyForOldKey:];
   }
 
-  v5 = [_newAccountBagKeyForOldKey__newAccountBagKeys objectForKeyedSubscript:v4];
+  v5 = [_newAccountBagKeyForOldKey__newAccountBagKeys objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -527,15 +527,15 @@ void __49__ICQRequestProvider__newAccountBagKeyForOldKey___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)attemptSetRequest:(id)a3 toPostWithJSONDict:(id)a4
++ (BOOL)attemptSetRequest:(id)request toPostWithJSONDict:(id)dict
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v5 setHTTPMethod:@"POST"];
-  [v5 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+  requestCopy = request;
+  dictCopy = dict;
+  [requestCopy setHTTPMethod:@"POST"];
+  [requestCopy setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v13 = 0;
-  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v6 options:1 error:&v13];
+  v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictCopy options:1 error:&v13];
   v8 = v13;
   if (v8)
   {
@@ -550,34 +550,34 @@ void __49__ICQRequestProvider__newAccountBagKeyForOldKey___block_invoke()
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ICQLink addPOSTParams:v6 toRequest:v10];
+      [ICQLink addPOSTParams:dictCopy toRequest:v10];
     }
   }
 
   else
   {
-    [v5 setHTTPBody:v7];
+    [requestCopy setHTTPBody:v7];
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v8 == 0;
 }
 
-+ (void)addEntriesToPostDictionary:(id)a3 forStub:(id)a4
++ (void)addEntriesToPostDictionary:(id)dictionary forStub:(id)stub
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dictionaryCopy = dictionary;
+  stubCopy = stub;
+  v7 = stubCopy;
+  if (stubCopy)
   {
-    v8 = [v6 offerId];
-    v9 = [v7 conditionsWhenChosen];
-    v10 = [v7 offerResetPayload];
-    if (v8)
+    offerId = [stubCopy offerId];
+    conditionsWhenChosen = [v7 conditionsWhenChosen];
+    offerResetPayload = [v7 offerResetPayload];
+    if (offerId)
     {
-      [v5 setObject:v8 forKey:@"offerId"];
-      if (v9)
+      [dictionaryCopy setObject:offerId forKey:@"offerId"];
+      if (conditionsWhenChosen)
       {
         goto LABEL_4;
       }
@@ -592,13 +592,13 @@ void __49__ICQRequestProvider__newAccountBagKeyForOldKey___block_invoke()
         _os_log_impl(&dword_275572000, v13, OS_LOG_TYPE_DEFAULT, "request: stub missing offerId", buf, 2u);
       }
 
-      if (v9)
+      if (conditionsWhenChosen)
       {
 LABEL_4:
-        v11 = [v9 isPhotosCloudEnabled];
-        v12 = [v9 isPhotosOptimizeEnabled];
+        isPhotosCloudEnabled = [conditionsWhenChosen isPhotosCloudEnabled];
+        isPhotosOptimizeEnabled = [conditionsWhenChosen isPhotosOptimizeEnabled];
 
-        if (!v10)
+        if (!offerResetPayload)
         {
           goto LABEL_22;
         }
@@ -617,25 +617,25 @@ LABEL_4:
 
   else
   {
-    v8 = 0;
-    v10 = 0;
+    offerId = 0;
+    offerResetPayload = 0;
   }
 
-  v11 = +[ICQDaemonOfferConditions isPhotosCloudEnabled];
-  v12 = +[ICQDaemonOfferConditions isPhotosOptimizeEnabled];
-  if (!v10)
+  isPhotosCloudEnabled = +[ICQDaemonOfferConditions isPhotosCloudEnabled];
+  isPhotosOptimizeEnabled = +[ICQDaemonOfferConditions isPhotosOptimizeEnabled];
+  if (!offerResetPayload)
   {
     goto LABEL_22;
   }
 
 LABEL_14:
-  v27 = v10;
-  v28 = v8;
+  v27 = offerResetPayload;
+  v28 = offerId;
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = v10;
+  v15 = offerResetPayload;
   v16 = [v15 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v16)
   {
@@ -652,7 +652,7 @@ LABEL_14:
 
         v20 = *(*(&v29 + 1) + 8 * i);
         v21 = [v15 objectForKeyedSubscript:{v20, v27, v28, v29}];
-        [v5 setObject:v21 forKey:v20];
+        [dictionaryCopy setObject:v21 forKey:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -661,10 +661,10 @@ LABEL_14:
     while (v17);
   }
 
-  v10 = v27;
-  v8 = v28;
+  offerResetPayload = v27;
+  offerId = v28;
 LABEL_22:
-  if (v11)
+  if (isPhotosCloudEnabled)
   {
     v22 = @"true";
   }
@@ -674,8 +674,8 @@ LABEL_22:
     v22 = @"false";
   }
 
-  [v5 setObject:v22 forKey:{@"iCPLEnabled", v27, v28}];
-  if (v12)
+  [dictionaryCopy setObject:v22 forKey:{@"iCPLEnabled", v27, v28}];
+  if (isPhotosOptimizeEnabled)
   {
     v23 = @"true";
   }
@@ -685,13 +685,13 @@ LABEL_22:
     v23 = @"false";
   }
 
-  [v5 setObject:v23 forKey:@"optimizeEnabled"];
+  [dictionaryCopy setObject:v23 forKey:@"optimizeEnabled"];
   v24 = +[ICQAppLaunchLinkTracker shared];
-  v25 = [v24 allDaysSinceLastShown];
+  allDaysSinceLastShown = [v24 allDaysSinceLastShown];
 
-  if (v25)
+  if (allDaysSinceLastShown)
   {
-    [v5 setObject:v25 forKey:@"appLaunch"];
+    [dictionaryCopy setObject:allDaysSinceLastShown forKey:@"appLaunch"];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -708,19 +708,19 @@ LABEL_22:
     v6 = v10;
     if (v6)
     {
-      v7 = _ICQGetLogSystem();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      dateOfLastBackup = _ICQGetLogSystem();
+      if (os_log_type_enabled(dateOfLastBackup, OS_LOG_TYPE_ERROR))
       {
         [ICQRequestProvider _stringTimeOfLastBackup];
       }
 
-      v8 = 0;
+      icq_serverFriendlyString = 0;
     }
 
     else
     {
-      v7 = [v5 dateOfLastBackup];
-      v8 = [v7 icq_serverFriendlyString];
+      dateOfLastBackup = [v5 dateOfLastBackup];
+      icq_serverFriendlyString = [dateOfLastBackup icq_serverFriendlyString];
     }
   }
 
@@ -732,10 +732,10 @@ LABEL_22:
       [(ICQRequestProvider *)v6 _stringTimeOfLastBackup];
     }
 
-    v8 = 0;
+    icq_serverFriendlyString = 0;
   }
 
-  return v8;
+  return icq_serverFriendlyString;
 }
 
 void __41__ICQRequestProvider_getBackupDeviceUUID__block_invoke_cold_1()

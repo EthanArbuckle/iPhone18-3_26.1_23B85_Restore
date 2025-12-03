@@ -1,70 +1,70 @@
 @interface NoteHTMLEditorView
 + (id)baseHTMLString;
-- (BOOL)_webView:(id)a3 focusShouldStartInputSession:(id)a4;
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)_webView:(id)view focusShouldStartInputSession:(id)session;
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isFirstResponder;
 - (ICSelectorDelayer)updateContentDelayer;
-- (NoteHTMLEditorView)initWithCoder:(id)a3;
-- (NoteHTMLEditorView)initWithFrame:(CGRect)a3;
+- (NoteHTMLEditorView)initWithCoder:(id)coder;
+- (NoteHTMLEditorView)initWithFrame:(CGRect)frame;
 - (NoteHTMLEditorViewActionDelegate)actionDelegate;
 - (NoteHTMLEditorViewDelegate)delegate;
 - (NoteHTMLEditorViewLayoutDelegate)layoutDelegate;
 - (UIViewPrintFormatter)viewPrintFormatter;
 - (WebArchive)webArchive;
 - (double)textZoomFactor;
-- (id)attachmentInfoDictionaryForAttachmentPresentation:(id)a3;
-- (id)contextMenuConfigurationForElement:(id)a3 presentation:(id)a4;
-- (id)jsonStringFromDictionaryOrArray:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)attachmentInfoDictionaryForAttachmentPresentation:(id)presentation;
+- (id)contextMenuConfigurationForElement:(id)element presentation:(id)presentation;
+- (id)jsonStringFromDictionaryOrArray:(id)array;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (id)webViewConfiguration;
-- (int64_t)_webView:(id)a3 dataOwnerForDragSession:(id)a4;
-- (int64_t)_webView:(id)a3 dataOwnerForDropSession:(id)a4;
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5;
-- (void)_webView:(id)a3 didInsertAttachment:(id)a4 withSource:(id)a5;
-- (void)_webView:(id)a3 didStartInputSession:(id)a4;
+- (int64_t)_webView:(id)view dataOwnerForDragSession:(id)session;
+- (int64_t)_webView:(id)view dataOwnerForDropSession:(id)session;
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler;
+- (void)_webView:(id)view didInsertAttachment:(id)attachment withSource:(id)source;
+- (void)_webView:(id)view didStartInputSession:(id)session;
 - (void)adoptEditableState;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)copyNoteHTMLToPasteboard;
-- (void)didReceiveScriptMessage:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)getRectForSelectionWithCompletion:(id)a3;
-- (void)insertBulletedList:(id)a3;
-- (void)insertDashedList:(id)a3;
-- (void)insertHTMLString:(id)a3;
-- (void)insertImage:(id)a3;
-- (void)insertLinkWithURL:(id)a3 title:(id)a4;
-- (void)insertLinksWithURLs:(id)a3 titles:(id)a4;
-- (void)insertOrderedList:(id)a3;
-- (void)loadAttachmentContentForURLSchemeTask:(id)a3;
+- (void)didReceiveScriptMessage:(id)message;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)getRectForSelectionWithCompletion:(id)completion;
+- (void)insertBulletedList:(id)list;
+- (void)insertDashedList:(id)list;
+- (void)insertHTMLString:(id)string;
+- (void)insertImage:(id)image;
+- (void)insertLinkWithURL:(id)l title:(id)title;
+- (void)insertLinksWithURLs:(id)ls titles:(id)titles;
+- (void)insertOrderedList:(id)list;
+- (void)loadAttachmentContentForURLSchemeTask:(id)task;
 - (void)removeScriptHandlers;
-- (void)removeStyle:(id)a3;
-- (void)replaceContentIDs:(id)a3;
-- (void)replaceSelectionWithAttachmentPresentation:(id)a3;
-- (void)scrollSelectionToVisible:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEnableAttachments:(BOOL)a3;
-- (void)setEnableShiftNewlinesInSmartLists:(BOOL)a3;
-- (void)setEnableSmartLists:(BOOL)a3;
-- (void)setHtmlString:(id)a3 attachments:(id)a4;
+- (void)removeStyle:(id)style;
+- (void)replaceContentIDs:(id)ds;
+- (void)replaceSelectionWithAttachmentPresentation:(id)presentation;
+- (void)scrollSelectionToVisible:(BOOL)visible;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setEditable:(BOOL)editable;
+- (void)setEditing:(BOOL)editing;
+- (void)setEnableAttachments:(BOOL)attachments;
+- (void)setEnableShiftNewlinesInSmartLists:(BOOL)lists;
+- (void)setEnableSmartLists:(BOOL)lists;
+- (void)setHtmlString:(id)string attachments:(id)attachments;
 - (void)setSelectionToEnd;
 - (void)setSelectionToStart;
-- (void)setSourceURLForAttachmentIdentifier:(id)a3;
-- (void)setTextZoomFactor:(double)a3;
+- (void)setSourceURLForAttachmentIdentifier:(id)identifier;
+- (void)setTextZoomFactor:(double)factor;
 - (void)setupWebView;
 - (void)startEditing;
-- (void)stopEditingWithCompletion:(id)a3;
-- (void)undoablyRemoveAttachmentPresentations:(id)a3 undoManager:(id)a4;
-- (void)undoablyReplaceSelectionWithAttachmentPresentations:(id)a3 undoManager:(id)a4;
+- (void)stopEditingWithCompletion:(id)completion;
+- (void)undoablyRemoveAttachmentPresentations:(id)presentations undoManager:(id)manager;
+- (void)undoablyReplaceSelectionWithAttachmentPresentations:(id)presentations undoManager:(id)manager;
 - (void)updateContent;
 - (void)updateDataDetectors;
 - (void)updateDataOwnerForCopyAndPaste;
 - (void)updateWebViewEditability;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webViewWebContentProcessDidTerminate:(id)a3;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webViewWebContentProcessDidTerminate:(id)terminate;
 @end
 
 @implementation NoteHTMLEditorView
@@ -78,11 +78,11 @@
   return v4;
 }
 
-- (NoteHTMLEditorView)initWithFrame:(CGRect)a3
+- (NoteHTMLEditorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NoteHTMLEditorView;
-  v3 = [(NoteHTMLEditorView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NoteHTMLEditorView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -92,11 +92,11 @@
   return v4;
 }
 
-- (NoteHTMLEditorView)initWithCoder:(id)a3
+- (NoteHTMLEditorView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NoteHTMLEditorView;
-  v3 = [(NoteHTMLEditorView *)&v6 initWithCoder:a3];
+  v3 = [(NoteHTMLEditorView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -108,10 +108,10 @@
 
 - (void)removeScriptHandlers
 {
-  v4 = [(NoteHTMLEditorView *)self webView];
-  v2 = [v4 configuration];
-  v3 = [v2 userContentController];
-  [v3 removeAllScriptMessageHandlers];
+  webView = [(NoteHTMLEditorView *)self webView];
+  configuration = [webView configuration];
+  userContentController = [configuration userContentController];
+  [userContentController removeAllScriptMessageHandlers];
 }
 
 - (void)setupWebView
@@ -123,96 +123,96 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NoteHTMLEditorView *)self webViewConfiguration];
-  v13 = [(NoteWKWebView *)v3 initWithFrame:v12 configuration:v5, v7, v9, v11];
+  webViewConfiguration = [(NoteHTMLEditorView *)self webViewConfiguration];
+  v13 = [(NoteWKWebView *)v3 initWithFrame:webViewConfiguration configuration:v5, v7, v9, v11];
   [(NoteHTMLEditorView *)self setWebView:v13];
 
-  v14 = [(NoteHTMLEditorView *)self webView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  v16 = [(NoteHTMLEditorView *)self webView];
-  [v16 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  webView2 = [(NoteHTMLEditorView *)self webView];
+  [webView2 setBackgroundColor:clearColor];
 
-  v17 = [(NoteHTMLEditorView *)self webView];
-  [v17 setOpaque:0];
+  webView3 = [(NoteHTMLEditorView *)self webView];
+  [webView3 setOpaque:0];
 
-  v18 = [(NoteHTMLEditorView *)self webView];
-  [v18 setAllowsLinkPreview:1];
+  webView4 = [(NoteHTMLEditorView *)self webView];
+  [webView4 setAllowsLinkPreview:1];
 
-  v19 = [(NoteHTMLEditorView *)self webView];
-  v20 = [v19 scrollView];
-  [v20 setShowsHorizontalScrollIndicator:0];
+  webView5 = [(NoteHTMLEditorView *)self webView];
+  scrollView = [webView5 scrollView];
+  [scrollView setShowsHorizontalScrollIndicator:0];
 
-  v21 = [(NoteHTMLEditorView *)self webView];
-  v22 = [v21 scrollView];
-  [v22 setAlwaysBounceHorizontal:0];
+  webView6 = [(NoteHTMLEditorView *)self webView];
+  scrollView2 = [webView6 scrollView];
+  [scrollView2 setAlwaysBounceHorizontal:0];
 
-  v23 = [(NoteHTMLEditorView *)self webView];
-  v24 = [v23 scrollView];
-  [v24 setDirectionalLockEnabled:1];
+  webView7 = [(NoteHTMLEditorView *)self webView];
+  scrollView3 = [webView7 scrollView];
+  [scrollView3 setDirectionalLockEnabled:1];
 
-  v25 = [(NoteHTMLEditorView *)self webView];
-  [v25 _setInputDelegate:self];
+  webView8 = [(NoteHTMLEditorView *)self webView];
+  [webView8 _setInputDelegate:self];
 
-  v26 = [(NoteHTMLEditorView *)self webView];
-  [v26 setUIDelegate:self];
+  webView9 = [(NoteHTMLEditorView *)self webView];
+  [webView9 setUIDelegate:self];
 
-  v27 = [(NoteHTMLEditorView *)self webView];
-  [v27 setNavigationDelegate:self];
+  webView10 = [(NoteHTMLEditorView *)self webView];
+  [webView10 setNavigationDelegate:self];
 
-  v28 = [(NoteHTMLEditorView *)self webView];
-  [v28 setNoteHTMLEditorView:self];
+  webView11 = [(NoteHTMLEditorView *)self webView];
+  [webView11 setNoteHTMLEditorView:self];
 
-  v29 = [(NoteHTMLEditorView *)self webView];
-  [(NoteHTMLEditorView *)self addSubview:v29];
+  webView12 = [(NoteHTMLEditorView *)self webView];
+  [(NoteHTMLEditorView *)self addSubview:webView12];
 
   v30 = MEMORY[0x1E696AD68];
   v31 = [MEMORY[0x1E695DFF8] URLWithString:@"about:blank"];
   v32 = [v30 requestWithURL:v31];
 
   [v32 _setNonAppInitiated:1];
-  v33 = [(NoteHTMLEditorView *)self webView];
+  webView13 = [(NoteHTMLEditorView *)self webView];
   v34 = MEMORY[0x1E696AEC0];
   v35 = _noteStyleSheet();
   v36 = [v34 stringWithFormat:@"<!DOCTYPE html><html>    <head>        <meta name=viewport content=initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0 />        <style>            %@        </style>    </head>    <body id=editor>    </body></html>", v35];
   v61 = v32;
-  v37 = [v33 loadSimulatedRequest:v32 responseHTMLString:v36];
+  v37 = [webView13 loadSimulatedRequest:v32 responseHTMLString:v36];
 
   if ([MEMORY[0x1E69DC938] ic_isVision])
   {
-    v38 = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
+    selfCopy = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
   }
 
   else
   {
-    v38 = self;
+    selfCopy = self;
   }
 
-  v39 = v38;
-  v50 = v38;
+  v39 = selfCopy;
+  v50 = selfCopy;
   v52 = MEMORY[0x1E696ACD8];
-  v60 = [(NoteHTMLEditorView *)self webView];
-  v58 = [v60 leadingAnchor];
-  v59 = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
-  v57 = [v59 leadingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  webView14 = [(NoteHTMLEditorView *)self webView];
+  leadingAnchor = [webView14 leadingAnchor];
+  safeAreaLayoutGuide = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v62[0] = v56;
-  v55 = [(NoteHTMLEditorView *)self webView];
-  v53 = [v55 trailingAnchor];
-  v54 = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
-  v51 = [v54 trailingAnchor];
-  v40 = [v53 constraintEqualToAnchor:v51];
+  webView15 = [(NoteHTMLEditorView *)self webView];
+  trailingAnchor = [webView15 trailingAnchor];
+  safeAreaLayoutGuide2 = [(NoteHTMLEditorView *)self safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v62[1] = v40;
-  v41 = [(NoteHTMLEditorView *)self webView];
-  v42 = [v41 topAnchor];
-  v43 = [(NoteHTMLEditorView *)v39 topAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  webView16 = [(NoteHTMLEditorView *)self webView];
+  topAnchor = [webView16 topAnchor];
+  topAnchor2 = [(NoteHTMLEditorView *)v39 topAnchor];
+  v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v62[2] = v44;
-  v45 = [(NoteHTMLEditorView *)self webView];
-  v46 = [v45 bottomAnchor];
-  v47 = [(NoteHTMLEditorView *)v39 bottomAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  webView17 = [(NoteHTMLEditorView *)self webView];
+  bottomAnchor = [webView17 bottomAnchor];
+  bottomAnchor2 = [(NoteHTMLEditorView *)v39 bottomAnchor];
+  v48 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v62[3] = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:4];
   [v52 activateConstraints:v49];
@@ -230,8 +230,8 @@
   [v3 _setAdditionalSupportedImageTypes:v5];
 
   [v3 _setAllowsJavaScriptMarkup:0];
-  v6 = [MEMORY[0x1E69853B8] nonPersistentDataStore];
-  [v3 setWebsiteDataStore:v6];
+  nonPersistentDataStore = [MEMORY[0x1E69853B8] nonPersistentDataStore];
+  [v3 setWebsiteDataStore:nonPersistentDataStore];
 
   [v3 _setAllowUniversalAccessFromFileURLs:0];
   [v3 _setAttachmentElementEnabled:1];
@@ -248,17 +248,17 @@
   v7 = objc_alloc_init(MEMORY[0x1E6985338]);
   [v3 setPreferences:v7];
 
-  v8 = [v3 preferences];
-  [v8 setJavaScriptCanOpenWindowsAutomatically:0];
+  preferences = [v3 preferences];
+  [preferences setJavaScriptCanOpenWindowsAutomatically:0];
 
-  v9 = [v3 preferences];
-  [v9 _setColorFilterEnabled:1];
+  preferences2 = [v3 preferences];
+  [preferences2 _setColorFilterEnabled:1];
 
-  v10 = [v3 preferences];
-  [v10 _setJavaScriptCanAccessClipboard:1];
+  preferences3 = [v3 preferences];
+  [preferences3 _setJavaScriptCanAccessClipboard:1];
 
-  v11 = [v3 preferences];
-  [v11 _setEditableLinkBehavior:3];
+  preferences4 = [v3 preferences];
+  [preferences4 _setEditableLinkBehavior:3];
 
   v12 = [[NoteHTMLEditorViewURLSchemeHandler alloc] initWithNoteHMLEditorView:self];
   [(NoteHTMLEditorView *)self setUrlSchemeHandler:v12];
@@ -266,61 +266,61 @@
   v13 = [[NoteHTMLEditorViewScriptMessageHandler alloc] initWithNoteHMLEditorView:self];
   [(NoteHTMLEditorView *)self setScriptMessageHandler:v13];
 
-  v14 = [(NoteHTMLEditorView *)self urlSchemeHandler];
-  [v3 setURLSchemeHandler:v14 forURLScheme:@"cid"];
+  urlSchemeHandler = [(NoteHTMLEditorView *)self urlSchemeHandler];
+  [v3 setURLSchemeHandler:urlSchemeHandler forURLScheme:@"cid"];
 
   v15 = [objc_alloc(MEMORY[0x1E6985358]) initWithSource:&cfstr_VarNotewkwebvi injectionTime:1 forMainFrameOnly:1];
-  v16 = [v3 userContentController];
-  [v16 addUserScript:v15];
+  userContentController = [v3 userContentController];
+  [userContentController addUserScript:v15];
 
-  v17 = [v3 userContentController];
-  v18 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v17 addScriptMessageHandler:v18 name:@"textDidChange"];
+  userContentController2 = [v3 userContentController];
+  scriptMessageHandler = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController2 addScriptMessageHandler:scriptMessageHandler name:@"textDidChange"];
 
-  v19 = [v3 userContentController];
-  v20 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v19 addScriptMessageHandler:v20 name:@"attachmentsDidChange"];
+  userContentController3 = [v3 userContentController];
+  scriptMessageHandler2 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController3 addScriptMessageHandler:scriptMessageHandler2 name:@"attachmentsDidChange"];
 
-  v21 = [v3 userContentController];
-  v22 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v21 addScriptMessageHandler:v22 name:@"titleDidChange"];
+  userContentController4 = [v3 userContentController];
+  scriptMessageHandler3 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController4 addScriptMessageHandler:scriptMessageHandler3 name:@"titleDidChange"];
 
-  v23 = [v3 userContentController];
-  v24 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v23 addScriptMessageHandler:v24 name:@"selectionDidChange"];
+  userContentController5 = [v3 userContentController];
+  scriptMessageHandler4 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController5 addScriptMessageHandler:scriptMessageHandler4 name:@"selectionDidChange"];
 
-  v25 = [v3 userContentController];
-  v26 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v25 addScriptMessageHandler:v26 name:@"clickedAttachment"];
+  userContentController6 = [v3 userContentController];
+  scriptMessageHandler5 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController6 addScriptMessageHandler:scriptMessageHandler5 name:@"clickedAttachment"];
 
-  v27 = [v3 userContentController];
-  v28 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v27 addScriptMessageHandler:v28 name:@"doubleClickedAttachment"];
+  userContentController7 = [v3 userContentController];
+  scriptMessageHandler6 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController7 addScriptMessageHandler:scriptMessageHandler6 name:@"doubleClickedAttachment"];
 
-  v29 = [v3 userContentController];
-  v30 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v29 addScriptMessageHandler:v30 name:@"editorDidBlur"];
+  userContentController8 = [v3 userContentController];
+  scriptMessageHandler7 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController8 addScriptMessageHandler:scriptMessageHandler7 name:@"editorDidBlur"];
 
-  v31 = [v3 userContentController];
-  v32 = [(NoteHTMLEditorView *)self scriptMessageHandler];
-  [v31 addScriptMessageHandler:v32 name:@"anchorTouchesDidEnd"];
+  userContentController9 = [v3 userContentController];
+  scriptMessageHandler8 = [(NoteHTMLEditorView *)self scriptMessageHandler];
+  [userContentController9 addScriptMessageHandler:scriptMessageHandler8 name:@"anchorTouchesDidEnd"];
 
   return v3;
 }
 
 - (UIViewPrintFormatter)viewPrintFormatter
 {
-  v2 = [(NoteHTMLEditorView *)self webView];
-  v3 = [v2 viewPrintFormatter];
+  webView = [(NoteHTMLEditorView *)self webView];
+  viewPrintFormatter = [webView viewPrintFormatter];
 
-  return v3;
+  return viewPrintFormatter;
 }
 
 - (WebArchive)webArchive
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(NoteHTMLEditorView *)self htmlString];
-  v4 = [v3 dataUsingEncoding:4];
+  htmlString = [(NoteHTMLEditorView *)self htmlString];
+  v4 = [htmlString dataUsingEncoding:4];
 
   v5 = objc_alloc(MEMORY[0x1E69E2F80]);
   v6 = [MEMORY[0x1E695DFF8] URLWithString:@"file:///index.html"];
@@ -328,8 +328,8 @@
   v37 = [v5 initWithData:v4 URL:v6 MIMEType:@"text/html" textEncodingName:@"utf-8" frameName:0];
 
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [(NoteHTMLEditorView *)self attachmentContentIDs];
-  v42 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  attachmentContentIDs = [(NoteHTMLEditorView *)self attachmentContentIDs];
+  v42 = [v7 initWithCapacity:{objc_msgSend(attachmentContentIDs, "count")}];
 
   v49 = 0u;
   v50 = 0u;
@@ -355,13 +355,13 @@
 
         v13 = *(*(&v47 + 1) + 8 * i);
         v14 = [MEMORY[0x1E696AEC0] ic_newURLForContentID:v13 percentEscaped:0];
-        v15 = [(NoteHTMLEditorView *)self delegate];
+        delegate = [(NoteHTMLEditorView *)self delegate];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [(NoteHTMLEditorView *)self delegate];
-          v18 = [v17 noteHTMLEditorView:self fileURLForAttachmentWithContentID:v13];
+          delegate2 = [(NoteHTMLEditorView *)self delegate];
+          v18 = [delegate2 noteHTMLEditorView:self fileURLForAttachmentWithContentID:v13];
 
           if (v18)
           {
@@ -369,32 +369,32 @@
             [v18 pathExtension];
             v21 = v20 = v11;
             v22 = [v19 typeWithFilenameExtension:v21];
-            v23 = [v22 identifier];
+            identifier = [v22 identifier];
 
-            if (v23)
+            if (identifier)
             {
-              v24 = [*(v20 + 3136) typeWithIdentifier:v23];
-              v25 = [v24 preferredMIMEType];
+              v24 = [*(v20 + 3136) typeWithIdentifier:identifier];
+              preferredMIMEType = [v24 preferredMIMEType];
             }
 
             else
             {
-              v25 = [v39 preferredMIMEType];
+              preferredMIMEType = [v39 preferredMIMEType];
             }
 
             v29 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v18];
             v31 = objc_alloc(MEMORY[0x1E69E2F80]);
             v32 = v29;
             v33 = v14;
-            v34 = v25;
+            v34 = preferredMIMEType;
             goto LABEL_18;
           }
         }
 
-        v26 = [(NoteHTMLEditorView *)self delegate];
+        delegate3 = [(NoteHTMLEditorView *)self delegate];
         v27 = objc_opt_respondsToSelector();
 
-        if ((v27 & 1) == 0 || (-[NoteHTMLEditorView delegate](self, "delegate"), v28 = objc_claimAutoreleasedReturnValue(), [v28 noteHTMLEditorView:self attachmentPresentationForContentID:v13], v23 = objc_claimAutoreleasedReturnValue(), v28, !v23))
+        if ((v27 & 1) == 0 || (-[NoteHTMLEditorView delegate](self, "delegate"), v28 = objc_claimAutoreleasedReturnValue(), [v28 noteHTMLEditorView:self attachmentPresentationForContentID:v13], identifier = objc_claimAutoreleasedReturnValue(), v28, !identifier))
         {
           v18 = [MEMORY[0x1E696ABC0] errorWithDomain:v40 code:4 userInfo:0];
           v30 = 0;
@@ -404,15 +404,15 @@
         v45 = 0;
         v46 = 0;
         v44 = 0;
-        [v23 getPresentationData:&v46 mimeType:&v45 error:&v44];
-        v25 = v46;
+        [identifier getPresentationData:&v46 mimeType:&v45 error:&v44];
+        preferredMIMEType = v46;
         v29 = v45;
         v18 = v44;
         v30 = 0;
-        if (v25 && v29)
+        if (preferredMIMEType && v29)
         {
           v31 = objc_alloc(MEMORY[0x1E69E2F80]);
-          v32 = v25;
+          v32 = preferredMIMEType;
           v33 = v14;
           v34 = v29;
 LABEL_18:
@@ -441,17 +441,17 @@ LABEL_20:
 
 - (double)textZoomFactor
 {
-  v2 = [(NoteHTMLEditorView *)self webView];
-  [v2 _textZoomFactor];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView _textZoomFactor];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTextZoomFactor:(double)a3
+- (void)setTextZoomFactor:(double)factor
 {
-  v4 = [(NoteHTMLEditorView *)self webView];
-  [v4 _setTextZoomFactor:a3];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView _setTextZoomFactor:factor];
 }
 
 - (ICSelectorDelayer)updateContentDelayer
@@ -469,40 +469,40 @@ LABEL_20:
   return updateContentDelayer;
 }
 
-- (void)setHtmlString:(id)a3 attachments:(id)a4
+- (void)setHtmlString:(id)string attachments:(id)attachments
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NoteHTMLEditorView *)self webView];
-  v9 = [v8 isLoading];
+  stringCopy = string;
+  attachmentsCopy = attachments;
+  webView = [(NoteHTMLEditorView *)self webView];
+  isLoading = [webView isLoading];
 
-  if (v9)
+  if (isLoading)
   {
-    [(NoteHTMLEditorView *)self setHtmlStringToLoad:v6];
-    [(NoteHTMLEditorView *)self setAttachmentsToLoad:v7];
-    v10 = [v7 valueForKeyPath:@"cidURL.resourceSpecifier"];
+    [(NoteHTMLEditorView *)self setHtmlStringToLoad:stringCopy];
+    [(NoteHTMLEditorView *)self setAttachmentsToLoad:attachmentsCopy];
+    v10 = [attachmentsCopy valueForKeyPath:@"cidURL.resourceSpecifier"];
     [(NoteHTMLEditorView *)self setAttachmentContentIDs:v10];
 
-    -[NoteHTMLEditorView setHasAttachments:](self, "setHasAttachments:", [v7 count] != 0);
+    -[NoteHTMLEditorView setHasAttachments:](self, "setHasAttachments:", [attachmentsCopy count] != 0);
     goto LABEL_56;
   }
 
   htmlString = self->_htmlString;
-  if (!htmlString || -[NSString isEqualToString:](htmlString, "isEqualToString:", &stru_1F4F94F00) || ([v6 isEqualToString:self->_htmlString] & 1) == 0)
+  if (!htmlString || -[NSString isEqualToString:](htmlString, "isEqualToString:", &stru_1F4F94F00) || ([stringCopy isEqualToString:self->_htmlString] & 1) == 0)
   {
-    v56 = self;
+    selfCopy = self;
     [(NoteHTMLEditorView *)self updateDataOwnerForCopyAndPaste];
-    v55 = v6;
-    v53 = [v6 ic_htmlStringEscapingQuotesAndLineBreaks];
+    v55 = stringCopy;
+    ic_htmlStringEscapingQuotesAndLineBreaks = [stringCopy ic_htmlStringEscapingQuotesAndLineBreaks];
     v12 = 0x1E695D000uLL;
-    v62 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
+    v62 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(attachmentsCopy, "count")}];
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v54 = v7;
-    obj = v7;
+    v54 = attachmentsCopy;
+    obj = attachmentsCopy;
     v63 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (!v63)
     {
@@ -526,26 +526,26 @@ LABEL_20:
         v15 = *(*(&v70 + 1) + 8 * i);
         v16 = objc_alloc_init(*(v12 + 3984));
         url = [v15 fileURL];
-        v17 = [(__CFURL *)url pathExtension];
-        v18 = [v15 mimeType];
-        if ([v18 length])
+        pathExtension = [(__CFURL *)url pathExtension];
+        mimeType = [v15 mimeType];
+        if ([mimeType length])
         {
-          v19 = [MEMORY[0x1E6982C40] typeWithMIMEType:v18];
-          v20 = [v19 identifier];
+          v19 = [MEMORY[0x1E6982C40] typeWithMIMEType:mimeType];
+          identifier = [v19 identifier];
         }
 
         else
         {
-          v20 = 0;
+          identifier = 0;
         }
 
-        v66 = v17;
-        if ([v17 length])
+        v66 = pathExtension;
+        if ([pathExtension length])
         {
-          v21 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v17];
-          v22 = [v21 identifier];
+          v21 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
+          identifier2 = [v21 identifier];
 
-          if (v22)
+          if (identifier2)
           {
             goto LABEL_24;
           }
@@ -553,19 +553,19 @@ LABEL_20:
 
         else
         {
-          v22 = 0;
+          identifier2 = 0;
         }
 
-        if (v20)
+        if (identifier)
         {
-          v23 = [MEMORY[0x1E6982C40] typeWithIdentifier:v20];
+          v23 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier];
           v24 = [v23 isEqual:v61];
 
           if (v24 && (v25 = CGImageSourceCreateWithURL(url, 0)) != 0)
           {
             v26 = v25;
             v27 = CGImageSourceGetType(v25);
-            v22 = v27;
+            identifier2 = v27;
             if (v27)
             {
               v28 = v27;
@@ -576,16 +576,16 @@ LABEL_20:
 
           else
           {
-            v22 = 0;
+            identifier2 = 0;
           }
 
           goto LABEL_28;
         }
 
 LABEL_24:
-        if (!v20)
+        if (!identifier)
         {
-          if (!v22)
+          if (!identifier2)
           {
             goto LABEL_37;
           }
@@ -594,7 +594,7 @@ LABEL_24:
         }
 
 LABEL_28:
-        v29 = [MEMORY[0x1E6982C40] typeWithIdentifier:v20];
+        v29 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier];
         v64 = v29;
         if ([v29 conformsToType:v65])
         {
@@ -604,18 +604,18 @@ LABEL_36:
           goto LABEL_46;
         }
 
-        if (!v22)
+        if (!identifier2)
         {
 
-          v22 = 0;
+          identifier2 = 0;
           goto LABEL_37;
         }
 
 LABEL_31:
-        v30 = [MEMORY[0x1E6982C40] typeWithIdentifier:v22];
+        v30 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier2];
         v31 = [v30 conformsToType:v65];
 
-        if (v20)
+        if (identifier)
         {
 
           if (v31)
@@ -633,26 +633,26 @@ LABEL_37:
         v69 = 0;
         [(__CFURL *)url getResourceValue:&v69 forKey:v58 error:0];
         v32 = v69;
-        v33 = [v15 fileURL];
-        v34 = [v33 lastPathComponent];
-        v35 = [v34 stringByReplacingOccurrencesOfString:@" withString:@"\];
+        fileURL = [v15 fileURL];
+        lastPathComponent = [fileURL lastPathComponent];
+        v35 = [lastPathComponent stringByReplacingOccurrencesOfString:@" withString:@"\];
 
-        if (v22)
+        if (identifier2)
         {
-          v36 = v22;
+          identifier3 = identifier2;
         }
 
-        else if (v20)
+        else if (identifier)
         {
-          v36 = v20;
+          identifier3 = identifier;
         }
 
         else
         {
-          v36 = [v61 identifier];
+          identifier3 = [v61 identifier];
         }
 
-        v37 = v36;
+        v37 = identifier3;
         if ([v32 longLongValue] < 1)
         {
           v38 = &stru_1F4F94F00;
@@ -671,12 +671,12 @@ LABEL_37:
         v12 = 0x1E695D000;
         v13 = v59;
 LABEL_46:
-        v39 = [v15 cidURL];
-        v40 = [v39 absoluteString];
+        cidURL = [v15 cidURL];
+        absoluteString = [cidURL absoluteString];
 
-        if (v40)
+        if (absoluteString)
         {
-          [v62 setObject:v16 forKeyedSubscript:v40];
+          [v62 setObject:v16 forKeyedSubscript:absoluteString];
         }
       }
 
@@ -685,12 +685,12 @@ LABEL_46:
       {
 LABEL_50:
 
-        v41 = v56;
-        v42 = [(NoteHTMLEditorView *)v56 jsonStringFromDictionaryOrArray:v62];
-        objc_storeStrong(&v56->_htmlString, a3);
-        if (v53)
+        v41 = selfCopy;
+        v42 = [(NoteHTMLEditorView *)selfCopy jsonStringFromDictionaryOrArray:v62];
+        objc_storeStrong(&selfCopy->_htmlString, string);
+        if (ic_htmlStringEscapingQuotesAndLineBreaks)
         {
-          v43 = v53;
+          v43 = ic_htmlStringEscapingQuotesAndLineBreaks;
         }
 
         else
@@ -699,37 +699,37 @@ LABEL_50:
         }
 
         v44 = [obj valueForKeyPath:@"cidURL.resourceSpecifier"];
-        [(NoteHTMLEditorView *)v56 setAttachmentContentIDs:v44];
+        [(NoteHTMLEditorView *)selfCopy setAttachmentContentIDs:v44];
 
-        -[NoteHTMLEditorView setHasAttachments:](v56, "setHasAttachments:", [obj count] != 0);
-        [(NoteHTMLEditorView *)v56 setEnableSmartLists:+[ICTextStyle autoListInsertionEnabled]];
-        v45 = [(NoteHTMLEditorView *)v56 delegate];
+        -[NoteHTMLEditorView setHasAttachments:](selfCopy, "setHasAttachments:", [obj count] != 0);
+        [(NoteHTMLEditorView *)selfCopy setEnableSmartLists:+[ICTextStyle autoListInsertionEnabled]];
+        delegate = [(NoteHTMLEditorView *)selfCopy delegate];
         v46 = objc_opt_respondsToSelector();
 
         if (v46)
         {
-          v47 = [(NoteHTMLEditorView *)v56 delegate];
-          v48 = [v47 allowsAttachmentsInNoteHTMLEditorView:v56];
+          delegate2 = [(NoteHTMLEditorView *)selfCopy delegate];
+          v48 = [delegate2 allowsAttachmentsInNoteHTMLEditorView:selfCopy];
 
-          v41 = v56;
-          [(NoteHTMLEditorView *)v56 setEnableAttachments:v48];
+          v41 = selfCopy;
+          [(NoteHTMLEditorView *)selfCopy setEnableAttachments:v48];
         }
 
-        v49 = [(NoteHTMLEditorView *)v41 webView];
-        v50 = [v49 findInteraction];
-        [v50 dismissFindNavigator];
+        webView2 = [(NoteHTMLEditorView *)v41 webView];
+        findInteraction = [webView2 findInteraction];
+        [findInteraction dismissFindNavigator];
 
-        v51 = [(NoteHTMLEditorView *)v41 webView];
+        webView3 = [(NoteHTMLEditorView *)v41 webView];
         v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.setHTMLContentWithAttachmentInfos(%@, %@)", v43, v42];;
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __48__NoteHTMLEditorView_setHtmlString_attachments___block_invoke;
         v68[3] = &unk_1E846BC70;
         v68[4] = v41;
-        [v51 evaluateJavaScript:v52 completionHandler:v68];
+        [webView3 evaluateJavaScript:v52 completionHandler:v68];
 
-        v7 = v54;
-        v6 = v55;
+        attachmentsCopy = v54;
+        stringCopy = v55;
         break;
       }
     }
@@ -758,141 +758,141 @@ void __48__NoteHTMLEditorView_setHtmlString_attachments___block_invoke_2()
   [v0 postNotificationName:@"SiriNoteTextViewSizeDidChangeNotification" object:0];
 }
 
-- (void)setEnableAttachments:(BOOL)a3
+- (void)setEnableAttachments:(BOOL)attachments
 {
-  v3 = a3;
-  v6 = [(NoteHTMLEditorView *)self webView];
+  attachmentsCopy = attachments;
+  webView = [(NoteHTMLEditorView *)self webView];
   v4 = @"false";
-  if (v3)
+  if (attachmentsCopy)
   {
     v4 = @"true";
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"setEnableAttachments(%@)", v4];;
-  [v6 ic_evaluateJavaScript:v5];
+  [webView ic_evaluateJavaScript:v5];
 }
 
-- (void)setEnableSmartLists:(BOOL)a3
+- (void)setEnableSmartLists:(BOOL)lists
 {
-  v3 = a3;
-  v6 = [(NoteHTMLEditorView *)self webView];
+  listsCopy = lists;
+  webView = [(NoteHTMLEditorView *)self webView];
   v4 = @"false";
-  if (v3)
+  if (listsCopy)
   {
     v4 = @"true";
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"setEnableSmartLists(%@)", v4];;
-  [v6 ic_evaluateJavaScript:v5];
+  [webView ic_evaluateJavaScript:v5];
 }
 
-- (void)setEnableShiftNewlinesInSmartLists:(BOOL)a3
+- (void)setEnableShiftNewlinesInSmartLists:(BOOL)lists
 {
-  v3 = a3;
-  v6 = [(NoteHTMLEditorView *)self webView];
+  listsCopy = lists;
+  webView = [(NoteHTMLEditorView *)self webView];
   v4 = @"false";
-  if (v3)
+  if (listsCopy)
   {
     v4 = @"true";
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"setEnableShiftNewLinesInSmartLists(%@)", v4];;
-  [v6 ic_evaluateJavaScript:v5];
+  [webView ic_evaluateJavaScript:v5];
 }
 
-- (void)insertHTMLString:(id)a3
+- (void)insertHTMLString:(id)string
 {
-  v6 = [a3 ic_htmlStringEscapingQuotesAndLineBreaks];
-  v4 = [(NoteHTMLEditorView *)self webView];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertHTML(\"%@\"", v6];
-  [v4 ic_evaluateJavaScript:v5];
+  ic_htmlStringEscapingQuotesAndLineBreaks = [string ic_htmlStringEscapingQuotesAndLineBreaks];
+  webView = [(NoteHTMLEditorView *)self webView];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertHTML(\"%@\"", ic_htmlStringEscapingQuotesAndLineBreaks];
+  [webView ic_evaluateJavaScript:v5];
 }
 
-- (void)insertLinkWithURL:(id)a3 title:(id)a4
+- (void)insertLinkWithURL:(id)l title:(id)title
 {
-  v6 = a4;
-  v7 = [a3 absoluteString];
-  v8 = [v7 ic_htmlStringEscapingQuotesAndLineBreaks];
+  titleCopy = title;
+  absoluteString = [l absoluteString];
+  ic_htmlStringEscapingQuotesAndLineBreaks = [absoluteString ic_htmlStringEscapingQuotesAndLineBreaks];
 
-  v9 = [v6 ic_htmlStringEscapingQuotesAndLineBreaks];
+  ic_htmlStringEscapingQuotesAndLineBreaks2 = [titleCopy ic_htmlStringEscapingQuotesAndLineBreaks];
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertLink(%@, %@)", v8, v9];;
-  v11 = [(NoteHTMLEditorView *)self webView];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertLink(%@, %@)", ic_htmlStringEscapingQuotesAndLineBreaks, ic_htmlStringEscapingQuotesAndLineBreaks2];;
+  webView = [(NoteHTMLEditorView *)self webView];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__NoteHTMLEditorView_insertLinkWithURL_title___block_invoke;
   v12[3] = &unk_1E846BC70;
   v12[4] = self;
-  [v11 evaluateJavaScript:v10 completionHandler:v12];
+  [webView evaluateJavaScript:v10 completionHandler:v12];
 }
 
-- (void)insertLinksWithURLs:(id)a3 titles:(id)a4
+- (void)insertLinksWithURLs:(id)ls titles:(id)titles
 {
-  v6 = a4;
-  v7 = [a3 valueForKey:@"absoluteString"];
+  titlesCopy = titles;
+  v7 = [ls valueForKey:@"absoluteString"];
   v8 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v7];
-  v9 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v6];
+  v9 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:titlesCopy];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertLinks(%@, %@)", v8, v9];;
-  v11 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__NoteHTMLEditorView_insertLinksWithURLs_titles___block_invoke;
   v12[3] = &unk_1E846BC70;
   v12[4] = self;
-  [v11 evaluateJavaScript:v10 completionHandler:v12];
+  [webView evaluateJavaScript:v10 completionHandler:v12];
 }
 
 - (void)copyNoteHTMLToPasteboard
 {
-  v2 = [(NoteHTMLEditorView *)self webView];
-  [v2 ic_evaluateJavaScript:@"notewkwebview.copyNoteHTMLToPasteboard()"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.copyNoteHTMLToPasteboard()"];
 }
 
-- (id)attachmentInfoDictionaryForAttachmentPresentation:(id)a3
+- (id)attachmentInfoDictionaryForAttachmentPresentation:(id)presentation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [v3 filename];
-  v6 = [v5 pathExtension];
+  presentationCopy = presentation;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  filename = [presentationCopy filename];
+  pathExtension = [filename pathExtension];
 
-  v7 = [v3 mimeType];
-  if ([v7 length])
+  mimeType = [presentationCopy mimeType];
+  if ([mimeType length])
   {
-    v8 = [MEMORY[0x1E6982C40] typeWithMIMEType:v7];
-    v9 = [v8 identifier];
+    v8 = [MEMORY[0x1E6982C40] typeWithMIMEType:mimeType];
+    identifier = [v8 identifier];
   }
 
   else
   {
-    v9 = 0;
+    identifier = 0;
   }
 
-  if ([v6 length])
+  if ([pathExtension length])
   {
-    v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:v6];
-    v11 = [v10 identifier];
+    v10 = [MEMORY[0x1E6982C40] typeWithFilenameExtension:pathExtension];
+    identifier2 = [v10 identifier];
   }
 
   else
   {
-    v11 = 0;
+    identifier2 = 0;
   }
 
-  v12 = [v3 contentIDURL];
-  v13 = [v12 absoluteString];
-  [v4 setObject:v13 forKeyedSubscript:@"contentIDURL"];
+  contentIDURL = [presentationCopy contentIDURL];
+  absoluteString = [contentIDURL absoluteString];
+  [dictionary setObject:absoluteString forKeyedSubscript:@"contentIDURL"];
 
   v14 = MEMORY[0x1E6982E30];
-  if (!v9)
+  if (!identifier)
   {
-    if (v11)
+    if (identifier2)
     {
 LABEL_13:
-      v15 = [MEMORY[0x1E6982C40] typeWithIdentifier:v11];
+      v15 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier2];
       v16 = [v15 conformsToType:*v14];
 
-      if (v9)
+      if (identifier)
       {
 
         if (v16)
@@ -906,86 +906,86 @@ LABEL_13:
         goto LABEL_15;
       }
 
-      v26 = v6;
+      v26 = pathExtension;
       v17 = 0;
 LABEL_20:
-      v18 = [v3 dataSizeNumber];
-      v19 = [v3 filename];
-      v20 = [v19 lastPathComponent];
-      v21 = [v20 stringByReplacingOccurrencesOfString:@" withString:@"\];
+      dataSizeNumber = [presentationCopy dataSizeNumber];
+      filename2 = [presentationCopy filename];
+      lastPathComponent = [filename2 lastPathComponent];
+      v21 = [lastPathComponent stringByReplacingOccurrencesOfString:@" withString:@"\];
 
       if (v17)
       {
-        if (v9)
+        if (identifier)
         {
-          v22 = v9;
+          identifier3 = identifier;
         }
 
         else
         {
-          v22 = [*MEMORY[0x1E6982D60] identifier];
+          identifier3 = [*MEMORY[0x1E6982D60] identifier];
         }
       }
 
       else
       {
-        v22 = v11;
+        identifier3 = identifier2;
       }
 
-      v23 = v22;
-      if ([v18 longLongValue] < 1)
+      v23 = identifier3;
+      if ([dataSizeNumber longLongValue] < 1)
       {
         v24 = &stru_1F4F94F00;
       }
 
       else
       {
-        v24 = [MEMORY[0x1E696AAF0] stringFromByteCount:objc_msgSend(v18 countStyle:{"longLongValue"), 0}];
+        v24 = [MEMORY[0x1E696AAF0] stringFromByteCount:objc_msgSend(dataSizeNumber countStyle:{"longLongValue"), 0}];
       }
 
-      [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"image"];
-      [v4 setObject:v21 forKeyedSubscript:@"title"];
-      [v4 setObject:v24 forKeyedSubscript:@"subtitle"];
-      [v4 setObject:v23 forKeyedSubscript:@"type"];
+      [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"image"];
+      [dictionary setObject:v21 forKeyedSubscript:@"title"];
+      [dictionary setObject:v24 forKeyedSubscript:@"subtitle"];
+      [dictionary setObject:v23 forKeyedSubscript:@"type"];
 
-      v6 = v26;
+      pathExtension = v26;
       goto LABEL_29;
     }
 
-    v26 = v6;
+    v26 = pathExtension;
 LABEL_19:
     v17 = 1;
     goto LABEL_20;
   }
 
-  v12 = [MEMORY[0x1E6982C40] typeWithIdentifier:v9];
-  if (![v12 conformsToType:*v14])
+  contentIDURL = [MEMORY[0x1E6982C40] typeWithIdentifier:identifier];
+  if (![contentIDURL conformsToType:*v14])
   {
-    if (v11)
+    if (identifier2)
     {
       goto LABEL_13;
     }
 
-    v26 = v6;
+    v26 = pathExtension;
 
     goto LABEL_19;
   }
 
 LABEL_15:
-  [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"image"];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"image"];
 LABEL_29:
 
-  return v4;
+  return dictionary;
 }
 
-- (id)jsonStringFromDictionaryOrArray:(id)a3
+- (id)jsonStringFromDictionaryOrArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v9 = 0;
-    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v9];
+    v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:arrayCopy options:0 error:&v9];
     v5 = v9;
     if (v5)
     {
@@ -1004,7 +1004,7 @@ LABEL_29:
     v4 = os_log_create("com.apple.notes", "HTML");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      [(NoteHTMLEditorView *)v3 jsonStringFromDictionaryOrArray:v4];
+      [(NoteHTMLEditorView *)arrayCopy jsonStringFromDictionaryOrArray:v4];
     }
 
     v7 = 0;
@@ -1014,26 +1014,26 @@ LABEL_29:
   return v7;
 }
 
-- (void)replaceSelectionWithAttachmentPresentation:(id)a3
+- (void)replaceSelectionWithAttachmentPresentation:(id)presentation
 {
-  v7 = [(NoteHTMLEditorView *)self attachmentInfoDictionaryForAttachmentPresentation:a3];
+  v7 = [(NoteHTMLEditorView *)self attachmentInfoDictionaryForAttachmentPresentation:presentation];
   v4 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v7];
-  v5 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertAttachment(%@)", v4];;
-  [v5 ic_evaluateJavaScript:v6];
+  [webView ic_evaluateJavaScript:v6];
 }
 
-- (void)undoablyReplaceSelectionWithAttachmentPresentations:(id)a3 undoManager:(id)a4
+- (void)undoablyReplaceSelectionWithAttachmentPresentations:(id)presentations undoManager:(id)manager
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  presentationsCopy = presentations;
+  managerCopy = manager;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(presentationsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = presentationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1065,26 +1065,26 @@ LABEL_29:
     while (v11);
   }
 
-  v15 = [v7 prepareWithInvocationTarget:self];
-  [v15 undoablyRemoveAttachmentPresentations:v9 undoManager:v7];
+  v15 = [managerCopy prepareWithInvocationTarget:self];
+  [v15 undoablyRemoveAttachmentPresentations:v9 undoManager:managerCopy];
 
   v16 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v8];
-  v17 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.insertAttachments(%@)", v16];;
-  [v17 ic_evaluateJavaScript:v18];
+  [webView ic_evaluateJavaScript:v18];
 }
 
-- (void)undoablyRemoveAttachmentPresentations:(id)a3 undoManager:(id)a4
+- (void)undoablyRemoveAttachmentPresentations:(id)presentations undoManager:(id)manager
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  presentationsCopy = presentations;
+  managerCopy = manager;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(presentationsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = presentationsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1116,25 +1116,25 @@ LABEL_29:
     while (v11);
   }
 
-  v15 = [v7 prepareWithInvocationTarget:self];
-  [v15 undoablyReplaceSelectionWithAttachmentPresentations:v9 undoManager:v7];
+  v15 = [managerCopy prepareWithInvocationTarget:self];
+  [v15 undoablyReplaceSelectionWithAttachmentPresentations:v9 undoManager:managerCopy];
 
   v16 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v8];
-  v17 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.removeAttachments(%@)", v16];;
-  [v17 ic_evaluateJavaScript:v18];
+  [webView ic_evaluateJavaScript:v18];
 }
 
-- (void)replaceContentIDs:(id)a3
+- (void)replaceContentIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v4];
-  v6 = [(NoteHTMLEditorView *)self attachmentContentIDs];
-  v7 = [v6 copy];
+  dsCopy = ds;
+  v5 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:dsCopy];
+  attachmentContentIDs = [(NoteHTMLEditorView *)self attachmentContentIDs];
+  v7 = [attachmentContentIDs copy];
 
   v8 = MEMORY[0x1E695DF70];
-  v9 = [(NoteHTMLEditorView *)self attachmentContentIDs];
-  v10 = [v8 arrayWithArray:v9];
+  attachmentContentIDs2 = [(NoteHTMLEditorView *)self attachmentContentIDs];
+  v10 = [v8 arrayWithArray:attachmentContentIDs2];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1142,11 +1142,11 @@ LABEL_29:
   v17[3] = &unk_1E846BC98;
   v18 = v10;
   v11 = v10;
-  [v4 enumerateKeysAndObjectsUsingBlock:v17];
+  [dsCopy enumerateKeysAndObjectsUsingBlock:v17];
 
   [(NoteHTMLEditorView *)self setAttachmentContentIDs:v11];
   v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.replaceAttachmentContentIDs(%@)", v5];;
-  v13 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __40__NoteHTMLEditorView_replaceContentIDs___block_invoke_2;
@@ -1154,7 +1154,7 @@ LABEL_29:
   v15[4] = self;
   v16 = v7;
   v14 = v7;
-  [v13 evaluateJavaScript:v12 completionHandler:v15];
+  [webView evaluateJavaScript:v12 completionHandler:v15];
 }
 
 void __40__NoteHTMLEditorView_replaceContentIDs___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1213,16 +1213,16 @@ void __40__NoteHTMLEditorView_replaceContentIDs___block_invoke_2(uint64_t a1, ui
   }
 }
 
-- (void)setSourceURLForAttachmentIdentifier:(id)a3
+- (void)setSourceURLForAttachmentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
-  v5 = [v4 firstObject];
+  firstObject = [identifierCopy firstObject];
   v6 = ICDynamicCast();
 
   v7 = [MEMORY[0x1E695DFF8] URLWithString:v6];
   objc_opt_class();
-  v8 = [v4 lastObject];
+  lastObject = [identifierCopy lastObject];
   v9 = ICDynamicCast();
 
   if (v7)
@@ -1246,20 +1246,20 @@ void __40__NoteHTMLEditorView_replaceContentIDs___block_invoke_2(uint64_t a1, ui
 
   else
   {
-    v11 = [(NoteHTMLEditorView *)self attachmentContentIDs];
-    v23 = [v11 copy];
+    attachmentContentIDs = [(NoteHTMLEditorView *)self attachmentContentIDs];
+    v23 = [attachmentContentIDs copy];
 
-    v12 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:v4];
+    v12 = [(NoteHTMLEditorView *)self jsonStringFromDictionaryOrArray:identifierCopy];
     v13 = MEMORY[0x1E695DF70];
-    v14 = [(NoteHTMLEditorView *)self attachmentContentIDs];
-    v15 = [v13 arrayWithArray:v14];
+    attachmentContentIDs2 = [(NoteHTMLEditorView *)self attachmentContentIDs];
+    v15 = [v13 arrayWithArray:attachmentContentIDs2];
 
-    v16 = [v7 resourceSpecifier];
-    v17 = v16;
-    if (v16)
+    resourceSpecifier = [v7 resourceSpecifier];
+    v17 = resourceSpecifier;
+    if (resourceSpecifier)
     {
-      v18 = [v7 scheme];
-      v19 = [v18 isEqualToString:@"cid"];
+      scheme = [v7 scheme];
+      v19 = [scheme isEqualToString:@"cid"];
 
       if (v19)
       {
@@ -1269,7 +1269,7 @@ void __40__NoteHTMLEditorView_replaceContentIDs___block_invoke_2(uint64_t a1, ui
 
     [(NoteHTMLEditorView *)self setAttachmentContentIDs:v15];
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"notewkwebview.setSourceURLForAttachmentIdentifier(%@)", v12];;
-    v21 = [(NoteHTMLEditorView *)self webView];
+    webView = [(NoteHTMLEditorView *)self webView];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __58__NoteHTMLEditorView_setSourceURLForAttachmentIdentifier___block_invoke;
@@ -1277,7 +1277,7 @@ void __40__NoteHTMLEditorView_replaceContentIDs___block_invoke_2(uint64_t a1, ui
     v24[4] = self;
     v25 = v23;
     v22 = v23;
-    [v21 evaluateJavaScript:v20 completionHandler:v24];
+    [webView evaluateJavaScript:v20 completionHandler:v24];
   }
 }
 
@@ -1296,13 +1296,13 @@ void __58__NoteHTMLEditorView_setSourceURLForAttachmentIdentifier___block_invoke
   }
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = NoteHTMLEditorView;
-  v3 = a3;
-  [(NoteHTMLEditorView *)&v11 buildMenuWithBuilder:v3];
+  builderCopy = builder;
+  [(NoteHTMLEditorView *)&v11 buildMenuWithBuilder:builderCopy];
   v4 = __ICLocalizedFrameworkStringWithDefaultValue_impl(@"INSERT_PHOTO", @"Insert Photo", @"Localizable", 1);
   v5 = MEMORY[0x1E69DC8B0];
   v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"camera", v11.receiver, v11.super_class}];
@@ -1313,8 +1313,8 @@ void __58__NoteHTMLEditorView_setSourceURLForAttachmentIdentifier___block_invoke
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10 = [v8 menuWithTitle:&stru_1F4F94F00 image:0 identifier:0 options:1 children:v9];
 
-  [v3 insertChildMenu:v10 atEndOfMenuForIdentifier:*MEMORY[0x1E69DE190]];
-  [v3 replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE208] fromChildrenBlock:&__block_literal_global_240];
+  [builderCopy insertChildMenu:v10 atEndOfMenuForIdentifier:*MEMORY[0x1E69DE190]];
+  [builderCopy replaceChildrenOfMenuForIdentifier:*MEMORY[0x1E69DE208] fromChildrenBlock:&__block_literal_global_240];
 }
 
 id __43__NoteHTMLEditorView_buildMenuWithBuilder___block_invoke(uint64_t a1, void *a2)
@@ -1332,12 +1332,12 @@ id __43__NoteHTMLEditorView_buildMenuWithBuilder___block_invoke(uint64_t a1, voi
 
 - (void)updateDataDetectors
 {
-  v3 = [(NoteHTMLEditorView *)self isEditing];
-  v4 = [(NoteHTMLEditorView *)self webView];
-  v5 = v4;
-  if (v3)
+  isEditing = [(NoteHTMLEditorView *)self isEditing];
+  webView = [(NoteHTMLEditorView *)self webView];
+  v5 = webView;
+  if (isEditing)
   {
-    [v4 _removeDataDetectedLinks:0];
+    [webView _removeDataDetectedLinks:0];
   }
 
   else
@@ -1347,7 +1347,7 @@ id __43__NoteHTMLEditorView_buildMenuWithBuilder___block_invoke(uint64_t a1, voi
     v6[2] = __41__NoteHTMLEditorView_updateDataDetectors__block_invoke;
     v6[3] = &unk_1E8468BA0;
     v6[4] = self;
-    [v4 _detectDataWithTypes:-1 completionHandler:v6];
+    [webView _detectDataWithTypes:-1 completionHandler:v6];
   }
 }
 
@@ -1357,22 +1357,22 @@ void __41__NoteHTMLEditorView_updateDataDetectors__block_invoke(uint64_t a1)
   [v1 ic_evaluateJavaScript:@"notewkwebview.updateAnchorListeners();"];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  self->_editable = a3;
-  v4 = [(NoteHTMLEditorView *)self webView];
-  v5 = [v4 isLoading];
+  self->_editable = editable;
+  webView = [(NoteHTMLEditorView *)self webView];
+  isLoading = [webView isLoading];
 
-  if ((v5 & 1) == 0)
+  if ((isLoading & 1) == 0)
   {
 
     [(NoteHTMLEditorView *)self adoptEditableState];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  self->_editing = a3;
+  self->_editing = editing;
   [(NoteHTMLEditorView *)self updateDataDetectors];
 
   [(NoteHTMLEditorView *)self updateWebViewEditability];
@@ -1382,32 +1382,32 @@ void __41__NoteHTMLEditorView_updateDataDetectors__block_invoke(uint64_t a1)
 {
   if (self->_editing)
   {
-    v3 = 1;
+    isFindNavigatorVisible = 1;
   }
 
   else
   {
-    v4 = [(NoteHTMLEditorView *)self webView];
-    v5 = [v4 findInteraction];
-    v3 = [v5 isFindNavigatorVisible];
+    webView = [(NoteHTMLEditorView *)self webView];
+    findInteraction = [webView findInteraction];
+    isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
   }
 
-  v6 = [(NoteHTMLEditorView *)self webView];
-  v7 = [v6 _isEditable];
+  webView2 = [(NoteHTMLEditorView *)self webView];
+  _isEditable = [webView2 _isEditable];
 
-  if (v3 != v7)
+  if (isFindNavigatorVisible != _isEditable)
   {
-    v8 = [(NoteHTMLEditorView *)self webView];
-    [v8 _setEditable:v3];
+    webView3 = [(NoteHTMLEditorView *)self webView];
+    [webView3 _setEditable:isFindNavigatorVisible];
   }
 }
 
 - (void)adoptEditableState
 {
-  v3 = [(NoteHTMLEditorView *)self isEditable];
-  v4 = [(NoteHTMLEditorView *)self webView];
-  v6 = v4;
-  if (v3)
+  isEditable = [(NoteHTMLEditorView *)self isEditable];
+  webView = [(NoteHTMLEditorView *)self webView];
+  v6 = webView;
+  if (isEditable)
   {
     v5 = @"notewkwebview.enableEditor()";
   }
@@ -1417,15 +1417,15 @@ void __41__NoteHTMLEditorView_updateDataDetectors__block_invoke(uint64_t a1)
     v5 = @"notewkwebview.disableEditor()";
   }
 
-  [v4 ic_evaluateJavaScript:v5];
+  [webView ic_evaluateJavaScript:v5];
 }
 
 - (void)startEditing
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  v4 = [v3 isLoading];
+  webView = [(NoteHTMLEditorView *)self webView];
+  isLoading = [webView isLoading];
 
-  if (v4)
+  if (isLoading)
   {
 
     [(NoteHTMLEditorView *)self setStartEditingAfterLoad:1];
@@ -1434,24 +1434,24 @@ void __41__NoteHTMLEditorView_updateDataDetectors__block_invoke(uint64_t a1)
   else
   {
     [(NoteHTMLEditorView *)self setEditing:1];
-    v5 = [(NoteHTMLEditorView *)self webView];
-    [v5 ic_evaluateJavaScript:@"notewkwebview.startEditing()"];
+    webView2 = [(NoteHTMLEditorView *)self webView];
+    [webView2 ic_evaluateJavaScript:@"notewkwebview.startEditing()"];
   }
 }
 
-- (void)stopEditingWithCompletion:(id)a3
+- (void)stopEditingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(NoteHTMLEditorView *)self setEditing:0];
-  v5 = [(NoteHTMLEditorView *)self webView];
+  webView = [(NoteHTMLEditorView *)self webView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__NoteHTMLEditorView_stopEditingWithCompletion___block_invoke;
   v7[3] = &unk_1E846BD08;
   v8 = @"notewkwebview.stopEditing()";
-  v9 = v4;
-  v6 = v4;
-  [v5 evaluateJavaScript:@"notewkwebview.stopEditing()" completionHandler:v7];
+  v9 = completionCopy;
+  v6 = completionCopy;
+  [webView evaluateJavaScript:@"notewkwebview.stopEditing()" completionHandler:v7];
 }
 
 void __48__NoteHTMLEditorView_stopEditingWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1478,31 +1478,31 @@ void __48__NoteHTMLEditorView_stopEditingWithCompletion___block_invoke(uint64_t 
 {
   if ([(NoteHTMLEditorView *)self updatingContent])
   {
-    v7 = [(NoteHTMLEditorView *)self updateContentDelayer];
-    [v7 requestFire];
+    updateContentDelayer = [(NoteHTMLEditorView *)self updateContentDelayer];
+    [updateContentDelayer requestFire];
   }
 
   else
   {
-    v3 = [(NoteHTMLEditorView *)self delegate];
+    delegate = [(NoteHTMLEditorView *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(NoteHTMLEditorView *)self delegate];
-      [v5 noteHTMLEditorViewWillChange:self];
+      delegate2 = [(NoteHTMLEditorView *)self delegate];
+      [delegate2 noteHTMLEditorViewWillChange:self];
     }
 
     [(NoteHTMLEditorView *)self setUpdatingContent:1];
     objc_initWeak(&location, self);
-    v6 = [(NoteHTMLEditorView *)self webView];
+    webView = [(NoteHTMLEditorView *)self webView];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __35__NoteHTMLEditorView_updateContent__block_invoke;
     v8[3] = &unk_1E846BD30;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    [v6 evaluateJavaScript:@"getHTMLContentAndAttachmentContentIDURLs();" completionHandler:v8];
+    [webView evaluateJavaScript:@"getHTMLContentAndAttachmentContentIDURLs();" completionHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -1632,53 +1632,53 @@ void __35__NoteHTMLEditorView_updateContent__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)insertImage:(id)a3
+- (void)insertImage:(id)image
 {
-  v4 = [(NoteHTMLEditorView *)self actionDelegate];
-  [v4 insertImageInNoteHTMLEditorView:self];
+  actionDelegate = [(NoteHTMLEditorView *)self actionDelegate];
+  [actionDelegate insertImageInNoteHTMLEditorView:self];
 }
 
-- (void)insertBulletedList:(id)a3
+- (void)insertBulletedList:(id)list
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  [v3 ic_evaluateJavaScript:@"notewkwebview.insertBulletedList();"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.insertBulletedList();"];
 }
 
-- (void)insertDashedList:(id)a3
+- (void)insertDashedList:(id)list
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  [v3 ic_evaluateJavaScript:@"notewkwebview.insertDashedList();"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.insertDashedList();"];
 }
 
-- (void)insertOrderedList:(id)a3
+- (void)insertOrderedList:(id)list
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  [v3 ic_evaluateJavaScript:@"notewkwebview.insertNumberedList();"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.insertNumberedList();"];
 }
 
-- (void)removeStyle:(id)a3
+- (void)removeStyle:(id)style
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  [v3 ic_evaluateJavaScript:@"notewkwebview.removeStyle();"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.removeStyle();"];
 }
 
-- (void)scrollSelectionToVisible:(BOOL)a3
+- (void)scrollSelectionToVisible:(BOOL)visible
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  [v3 ic_evaluateJavaScript:@"notewkwebview.scrollSelectionToVisible()"];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView ic_evaluateJavaScript:@"notewkwebview.scrollSelectionToVisible()"];
 }
 
-- (void)getRectForSelectionWithCompletion:(id)a3
+- (void)getRectForSelectionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NoteHTMLEditorView *)self webView];
+  completionCopy = completion;
+  webView = [(NoteHTMLEditorView *)self webView];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__NoteHTMLEditorView_getRectForSelectionWithCompletion___block_invoke;
   v7[3] = &unk_1E846BD58;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluateJavaScript:@"notewkwebview.getSelectionRects()" completionHandler:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [webView evaluateJavaScript:@"notewkwebview.getSelectionRects()" completionHandler:v7];
 }
 
 void __56__NoteHTMLEditorView_getRectForSelectionWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1776,22 +1776,22 @@ void __56__NoteHTMLEditorView_getRectForSelectionWithCompletion___block_invoke(u
 
 - (void)setSelectionToStart
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  v4 = [v3 isLoading];
+  webView = [(NoteHTMLEditorView *)self webView];
+  isLoading = [webView isLoading];
 
-  if ((v4 & 1) == 0)
+  if ((isLoading & 1) == 0)
   {
-    v5 = [(NoteHTMLEditorView *)self webView];
-    [v5 ic_evaluateJavaScript:@"notewkwebview.setSelectionToStart();"];
+    webView2 = [(NoteHTMLEditorView *)self webView];
+    [webView2 ic_evaluateJavaScript:@"notewkwebview.setSelectionToStart();"];
   }
 }
 
 - (void)setSelectionToEnd
 {
-  v3 = [(NoteHTMLEditorView *)self webView];
-  v4 = [v3 isLoading];
+  webView = [(NoteHTMLEditorView *)self webView];
+  isLoading = [webView isLoading];
 
-  if (v4)
+  if (isLoading)
   {
 
     [(NoteHTMLEditorView *)self setSetSelectionToEndAfterLoad:1];
@@ -1799,28 +1799,28 @@ void __56__NoteHTMLEditorView_getRectForSelectionWithCompletion___block_invoke(u
 
   else
   {
-    v5 = [(NoteHTMLEditorView *)self webView];
-    [v5 ic_evaluateJavaScript:@"notewkwebview.setSelectionToEnd();"];
+    webView2 = [(NoteHTMLEditorView *)self webView];
+    [webView2 ic_evaluateJavaScript:@"notewkwebview.setSelectionToEnd();"];
   }
 }
 
 - (BOOL)isFirstResponder
 {
-  v2 = [(NoteHTMLEditorView *)self webView];
-  v3 = [v2 isFirstResponder];
+  webView = [(NoteHTMLEditorView *)self webView];
+  isFirstResponder = [webView isFirstResponder];
 
-  return v3;
+  return isFirstResponder;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_insertImage_ == a3)
+  senderCopy = sender;
+  if (sel_insertImage_ == action)
   {
     if ([(NoteHTMLEditorView *)self isEditing])
     {
-      v8 = [(NoteHTMLEditorView *)self actionDelegate];
-      v7 = [v8 canInsertImagesInNoteHTMLEditorView:self];
+      actionDelegate = [(NoteHTMLEditorView *)self actionDelegate];
+      v7 = [actionDelegate canInsertImagesInNoteHTMLEditorView:self];
 
       goto LABEL_9;
     }
@@ -1830,7 +1830,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (sel_strikethrough_ == a3)
+  if (sel_strikethrough_ == action)
   {
     if ([(NoteHTMLEditorView *)self isEditing])
     {
@@ -1843,36 +1843,36 @@ LABEL_8:
 
   v10.receiver = self;
   v10.super_class = NoteHTMLEditorView;
-  v7 = [(NoteHTMLEditorView *)&v10 canPerformAction:a3 withSender:v6];
+  v7 = [(NoteHTMLEditorView *)&v10 canPerformAction:action withSender:senderCopy];
 LABEL_9:
 
   return v7;
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ([(NoteHTMLEditorView *)self canPerformAction:a3 withSender:v6])
+  senderCopy = sender;
+  if ([(NoteHTMLEditorView *)self canPerformAction:action withSender:senderCopy])
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = NoteHTMLEditorView;
-    v7 = [(NoteHTMLEditorView *)&v10 targetForAction:a3 withSender:v6];
+    selfCopy = [(NoteHTMLEditorView *)&v10 targetForAction:action withSender:senderCopy];
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
-  v6 = [v5 isEqual:self];
+  nextFocusedItem = [context nextFocusedItem];
+  v6 = [nextFocusedItem isEqual:self];
 
   if (v6)
   {
@@ -1881,54 +1881,54 @@ LABEL_9:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  [v4 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   if (v3 != 0.0)
   {
-    [v4 contentOffset];
-    [v4 setContentOffset:0.0];
+    [scrollCopy contentOffset];
+    [scrollCopy setContentOffset:0.0];
   }
 }
 
-- (BOOL)_webView:(id)a3 focusShouldStartInputSession:(id)a4
+- (BOOL)_webView:(id)view focusShouldStartInputSession:(id)session
 {
-  v5 = a4;
-  v6 = [(NoteHTMLEditorView *)self delegate];
+  sessionCopy = session;
+  delegate = [(NoteHTMLEditorView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(NoteHTMLEditorView *)self delegate];
-    v9 = [v8 noteHTMLEditorViewShouldBeginEditing:self isUserInitiated:{objc_msgSend(v5, "isUserInitiated")}];
+    delegate2 = [(NoteHTMLEditorView *)self delegate];
+    isEditable = [delegate2 noteHTMLEditorViewShouldBeginEditing:self isUserInitiated:{objc_msgSend(sessionCopy, "isUserInitiated")}];
   }
 
   else
   {
-    v9 = [(NoteHTMLEditorView *)self isEditable];
+    isEditable = [(NoteHTMLEditorView *)self isEditable];
   }
 
-  return v9;
+  return isEditable;
 }
 
-- (void)_webView:(id)a3 didStartInputSession:(id)a4
+- (void)_webView:(id)view didStartInputSession:(id)session
 {
-  [a4 setAccessoryViewShouldNotShow:1];
+  [session setAccessoryViewShouldNotShow:1];
   [(NoteHTMLEditorView *)self setEditing:1];
-  v5 = [(NoteHTMLEditorView *)self delegate];
+  delegate = [(NoteHTMLEditorView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(NoteHTMLEditorView *)self delegate];
-    [v7 noteHTMLEditorViewDidBeginEditing:self];
+    delegate2 = [(NoteHTMLEditorView *)self delegate];
+    [delegate2 noteHTMLEditorViewDidBeginEditing:self];
   }
 }
 
-- (int64_t)_webView:(id)a3 dataOwnerForDragSession:(id)a4
+- (int64_t)_webView:(id)view dataOwnerForDragSession:(id)session
 {
-  v5 = [(NoteHTMLEditorView *)self delegate:a3];
+  v5 = [(NoteHTMLEditorView *)self delegate:view];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -1936,8 +1936,8 @@ LABEL_9:
     return 1;
   }
 
-  v7 = [(NoteHTMLEditorView *)self delegate];
-  v8 = [v7 isNoteManagedForNoteHTMLEditorView:self];
+  delegate = [(NoteHTMLEditorView *)self delegate];
+  v8 = [delegate isNoteManagedForNoteHTMLEditorView:self];
 
   if (v8)
   {
@@ -1950,9 +1950,9 @@ LABEL_9:
   }
 }
 
-- (int64_t)_webView:(id)a3 dataOwnerForDropSession:(id)a4
+- (int64_t)_webView:(id)view dataOwnerForDropSession:(id)session
 {
-  v5 = [(NoteHTMLEditorView *)self delegate:a3];
+  v5 = [(NoteHTMLEditorView *)self delegate:view];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -1960,8 +1960,8 @@ LABEL_9:
     return 1;
   }
 
-  v7 = [(NoteHTMLEditorView *)self delegate];
-  v8 = [v7 isNoteManagedForNoteHTMLEditorView:self];
+  delegate = [(NoteHTMLEditorView *)self delegate];
+  v8 = [delegate isNoteManagedForNoteHTMLEditorView:self];
 
   if (v8)
   {
@@ -1974,16 +1974,16 @@ LABEL_9:
   }
 }
 
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers
 {
-  v5 = a4;
-  v6 = [(NoteHTMLEditorView *)self delegate];
+  providersCopy = providers;
+  delegate = [(NoteHTMLEditorView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
-  if ((v7 & 1) == 0 || (-[NoteHTMLEditorView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 noteHTMLEditorView:self canAddAttachmentItemProviders:v5], v8, v9)) && (-[NoteHTMLEditorView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, (v11))
+  if ((v7 & 1) == 0 || (-[NoteHTMLEditorView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 noteHTMLEditorView:self canAddAttachmentItemProviders:providersCopy], v8, v9)) && (-[NoteHTMLEditorView delegate](self, "delegate"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_respondsToSelector(), v10, (v11))
   {
-    v12 = [(NoteHTMLEditorView *)self delegate];
-    [v12 noteHTMLEditorView:self addAttachmentItemProviders:v5];
+    delegate2 = [(NoteHTMLEditorView *)self delegate];
+    [delegate2 noteHTMLEditorView:self addAttachmentItemProviders:providersCopy];
 
     v13 = 1;
   }
@@ -1996,14 +1996,14 @@ LABEL_9:
   return v13;
 }
 
-- (void)_webView:(id)a3 didInsertAttachment:(id)a4 withSource:(id)a5
+- (void)_webView:(id)view didInsertAttachment:(id)attachment withSource:(id)source
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if ([v8 length])
+  attachmentCopy = attachment;
+  sourceCopy = source;
+  if ([sourceCopy length])
   {
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:sourceCopy];
   }
 
   else
@@ -2011,21 +2011,21 @@ LABEL_9:
     v9 = 0;
   }
 
-  v10 = [v9 scheme];
-  v11 = [v10 isEqualToString:@"cid"];
+  scheme = [v9 scheme];
+  v11 = [scheme isEqualToString:@"cid"];
 
   if (v11)
   {
-    v12 = [v9 resourceSpecifier];
-    v13 = [(NoteHTMLEditorView *)self delegate];
-    v14 = [v13 noteHTMLEditorView:self attachmentPresentationForContentID:v12];
+    resourceSpecifier = [v9 resourceSpecifier];
+    delegate = [(NoteHTMLEditorView *)self delegate];
+    v14 = [delegate noteHTMLEditorView:self attachmentPresentationForContentID:resourceSpecifier];
 
     if (v14)
     {
       v15 = objc_alloc(MEMORY[0x1E696AC38]);
-      v16 = [v14 dataFileURL];
+      dataFileURL = [v14 dataFileURL];
       v36 = 0;
-      v17 = [v15 initWithURL:v16 options:0 error:&v36];
+      v17 = [v15 initWithURL:dataFileURL options:0 error:&v36];
       v18 = v36;
 
       if (v18 || !v17)
@@ -2033,11 +2033,11 @@ LABEL_9:
         v20 = os_log_create("com.apple.notes", "HTML");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v32 = [v14 dataFileURL];
+          dataFileURL2 = [v14 dataFileURL];
           *buf = 138412802;
-          v38 = v12;
+          v38 = resourceSpecifier;
           v39 = 2112;
-          v40 = v32;
+          v40 = dataFileURL2;
           v41 = 2112;
           v42 = v18;
           _os_log_error_impl(&dword_1D4171000, v20, OS_LOG_TYPE_ERROR, "Could not create file wrapper for content ID %@ and URL: %@ – %@", buf, 0x20u);
@@ -2046,14 +2046,14 @@ LABEL_9:
 
       else
       {
-        v19 = [v14 mimeType];
+        mimeType = [v14 mimeType];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __62__NoteHTMLEditorView__webView_didInsertAttachment_withSource___block_invoke;
         v33[3] = &unk_1E846BD80;
         v34 = v14;
-        v35 = v12;
-        [v7 setFileWrapper:v17 contentType:v19 completion:v33];
+        v35 = resourceSpecifier;
+        [attachmentCopy setFileWrapper:v17 contentType:mimeType completion:v33];
 
         v20 = v34;
       }
@@ -2062,23 +2062,23 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  v21 = [(NoteHTMLEditorView *)self delegate];
+  delegate2 = [(NoteHTMLEditorView *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(NoteHTMLEditorView *)self delegate];
-    v24 = [v7 info];
-    v25 = [v24 fileWrapper];
-    v26 = [v7 info];
-    v27 = [v26 contentType];
-    v12 = [v23 noteHTMLEditorView:self createAttachmentPresentationWithFileWrapper:v25 mimeType:v27];
+    delegate3 = [(NoteHTMLEditorView *)self delegate];
+    info = [attachmentCopy info];
+    fileWrapper = [info fileWrapper];
+    info2 = [attachmentCopy info];
+    contentType = [info2 contentType];
+    resourceSpecifier = [delegate3 noteHTMLEditorView:self createAttachmentPresentationWithFileWrapper:fileWrapper mimeType:contentType];
 
-    v28 = [v12 contentIDURL];
-    v29 = [v28 absoluteString];
+    contentIDURL = [resourceSpecifier contentIDURL];
+    absoluteString = [contentIDURL absoluteString];
 
-    v30 = [v7 uniqueIdentifier];
-    v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v29, v30, 0}];
+    uniqueIdentifier = [attachmentCopy uniqueIdentifier];
+    v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:{absoluteString, uniqueIdentifier, 0}];
     [(NoteHTMLEditorView *)self performSelector:sel_setSourceURLForAttachmentIdentifier_ withObject:v31 afterDelay:0.0];
 
 LABEL_16:
@@ -2098,69 +2098,69 @@ void __62__NoteHTMLEditorView__webView_didInsertAttachment_withSource___block_in
   }
 }
 
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler
 {
-  v18 = a4;
-  v7 = a5;
-  v8 = [v18 _activatedElementInfo];
-  if ([v8 type] == 1)
+  elementCopy = element;
+  handlerCopy = handler;
+  _activatedElementInfo = [elementCopy _activatedElementInfo];
+  if ([_activatedElementInfo type] == 1)
   {
-    v9 = [v8 imageURL];
+    imageURL = [_activatedElementInfo imageURL];
   }
 
-  else if ([v8 type] == 2)
+  else if ([_activatedElementInfo type] == 2)
   {
     v10 = MEMORY[0x1E695DFF8];
-    v11 = [v8 ID];
-    v9 = [v10 URLWithString:v11];
+    v11 = [_activatedElementInfo ID];
+    imageURL = [v10 URLWithString:v11];
   }
 
   else
   {
-    v9 = 0;
+    imageURL = 0;
   }
 
-  v12 = [v9 scheme];
-  v13 = [v12 isEqualToString:@"cid"];
+  scheme = [imageURL scheme];
+  v13 = [scheme isEqualToString:@"cid"];
 
   if (v13)
   {
-    v14 = [v9 resourceSpecifier];
+    resourceSpecifier = [imageURL resourceSpecifier];
   }
 
   else
   {
-    v14 = 0;
+    resourceSpecifier = 0;
   }
 
-  v15 = [(NoteHTMLEditorView *)self delegate];
-  v16 = [v15 noteHTMLEditorView:self attachmentPresentationForContentID:v14];
+  delegate = [(NoteHTMLEditorView *)self delegate];
+  v16 = [delegate noteHTMLEditorView:self attachmentPresentationForContentID:resourceSpecifier];
 
   if (v16)
   {
-    v17 = [(NoteHTMLEditorView *)self contextMenuConfigurationForElement:v18 presentation:v16];
-    v7[2](v7, v17);
+    v17 = [(NoteHTMLEditorView *)self contextMenuConfigurationForElement:elementCopy presentation:v16];
+    handlerCopy[2](handlerCopy, v17);
   }
 
   else
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action decisionHandler:(id)handler
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [v16 request];
-  v9 = [v8 URL];
+  actionCopy = action;
+  handlerCopy = handler;
+  request = [actionCopy request];
+  v9 = [request URL];
 
-  v10 = [v9 absoluteString];
-  if ([v10 isEqualToString:@"about:blank"])
+  absoluteString = [v9 absoluteString];
+  if ([absoluteString isEqualToString:@"about:blank"])
   {
-    v11 = [v16 navigationType];
+    navigationType = [actionCopy navigationType];
 
-    if (v11 == -1)
+    if (navigationType == -1)
     {
       v12 = 1;
       goto LABEL_9;
@@ -2173,38 +2173,38 @@ void __62__NoteHTMLEditorView__webView_didInsertAttachment_withSource___block_in
 
   if (([(NoteHTMLEditorView *)self performActionForDataDetectedInURL:v9]& 1) == 0)
   {
-    v13 = [(NoteHTMLEditorView *)self delegate];
+    delegate = [(NoteHTMLEditorView *)self delegate];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(NoteHTMLEditorView *)self delegate];
-      [v15 noteHTMLEditorView:self openURL:v9];
+      delegate2 = [(NoteHTMLEditorView *)self delegate];
+      [delegate2 noteHTMLEditorView:self openURL:v9];
     }
   }
 
   v12 = 0;
 LABEL_9:
-  v7[2](v7, v12);
+  handlerCopy[2](handlerCopy, v12);
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v5 = [(NoteHTMLEditorView *)self htmlStringToLoad:a3];
+  v5 = [(NoteHTMLEditorView *)self htmlStringToLoad:view];
 
   if (v5)
   {
-    v6 = [(NoteHTMLEditorView *)self htmlStringToLoad];
-    v7 = [(NoteHTMLEditorView *)self attachmentsToLoad];
+    htmlStringToLoad = [(NoteHTMLEditorView *)self htmlStringToLoad];
+    attachmentsToLoad = [(NoteHTMLEditorView *)self attachmentsToLoad];
     [(NoteHTMLEditorView *)self setHtmlStringToLoad:0];
     [(NoteHTMLEditorView *)self setAttachmentsToLoad:0];
-    [(NoteHTMLEditorView *)self setHtmlString:v6 attachments:v7];
+    [(NoteHTMLEditorView *)self setHtmlString:htmlStringToLoad attachments:attachmentsToLoad];
   }
 
   [(NoteHTMLEditorView *)self adoptEditableState];
-  v8 = [(NoteHTMLEditorView *)self webView];
-  v9 = [v8 scrollView];
-  [v9 setDelegate:self];
+  webView = [(NoteHTMLEditorView *)self webView];
+  scrollView = [webView scrollView];
+  [scrollView setDelegate:self];
 
   [(NoteHTMLEditorView *)self setEnableShiftNewlinesInSmartLists:0];
   if ([(NoteHTMLEditorView *)self setSelectionToEndAfterLoad])
@@ -2221,46 +2221,46 @@ LABEL_9:
   }
 }
 
-- (void)webViewWebContentProcessDidTerminate:(id)a3
+- (void)webViewWebContentProcessDidTerminate:(id)terminate
 {
   htmlString = self->_htmlString;
   self->_htmlString = 0;
 
   [(NoteHTMLEditorView *)self setAttachmentContentIDs:0];
-  v5 = [(NoteHTMLEditorView *)self webView];
-  [v5 removeFromSuperview];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView removeFromSuperview];
 
   [(NoteHTMLEditorView *)self setupWebView];
-  v6 = [(NoteHTMLEditorView *)self delegate];
+  delegate = [(NoteHTMLEditorView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(NoteHTMLEditorView *)self delegate];
-    [v8 noteHTMLEditorViewNeedsContentReload:self];
+    delegate2 = [(NoteHTMLEditorView *)self delegate];
+    [delegate2 noteHTMLEditorViewNeedsContentReload:self];
   }
 }
 
-- (void)didReceiveScriptMessage:(id)a3
+- (void)didReceiveScriptMessage:(id)message
 {
   v59 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"textDidChange"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v6 = [name isEqualToString:@"textDidChange"];
 
   if (!v6)
   {
-    v8 = [v4 name];
-    v9 = [v8 isEqualToString:@"attachmentsDidChange"];
+    name2 = [messageCopy name];
+    v9 = [name2 isEqualToString:@"attachmentsDidChange"];
 
     if (v9)
     {
       objc_opt_class();
-      v10 = [v4 body];
+      body = [messageCopy body];
       v11 = ICDynamicCast();
 
       objc_opt_class();
-      v12 = [v4 body];
+      body2 = [messageCopy body];
       v13 = ICDynamicCast();
 
       if (v13)
@@ -2271,7 +2271,7 @@ LABEL_9:
       if (v11)
       {
         v48 = v13;
-        v50 = v4;
+        v50 = messageCopy;
         v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
         v52 = 0u;
         v53 = 0u;
@@ -2296,10 +2296,10 @@ LABEL_9:
 
               v20 = *(*(&v52 + 1) + 8 * v19);
               v21 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v20];
-              v22 = [v21 resourceSpecifier];
-              if (v22)
+              resourceSpecifier = [v21 resourceSpecifier];
+              if (resourceSpecifier)
               {
-                [v14 addObject:v22];
+                [v14 addObject:resourceSpecifier];
               }
 
               else
@@ -2326,57 +2326,57 @@ LABEL_9:
         [(NoteHTMLEditorView *)self setAttachmentContentIDs:v14];
         -[NoteHTMLEditorView setHasAttachments:](self, "setHasAttachments:", [v14 count] != 0);
 
-        v4 = v50;
+        messageCopy = v50;
         v13 = v48;
         v11 = v49;
       }
 
       else
       {
-        v37 = [(NoteHTMLEditorView *)self updateContentDelayer];
-        [v37 requestFire];
+        updateContentDelayer = [(NoteHTMLEditorView *)self updateContentDelayer];
+        [updateContentDelayer requestFire];
       }
     }
 
     else
     {
-      v24 = [v4 name];
-      v25 = [v24 isEqualToString:@"titleDidChange"];
+      name3 = [messageCopy name];
+      v25 = [name3 isEqualToString:@"titleDidChange"];
 
       if (v25)
       {
         objc_opt_class();
-        v26 = [v4 body];
+        body3 = [messageCopy body];
         v27 = ICDynamicCast();
 
-        v28 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-        v29 = [v27 stringByTrimmingCharactersInSet:v28];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+        v29 = [v27 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-        v7 = [v29 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+        delegate = [v29 stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
-        [(NoteHTMLEditorView *)self setTitle:v7];
+        [(NoteHTMLEditorView *)self setTitle:delegate];
         goto LABEL_3;
       }
 
-      v30 = [v4 name];
-      v31 = [v30 isEqualToString:@"selectionDidChange"];
+      name4 = [messageCopy name];
+      v31 = [name4 isEqualToString:@"selectionDidChange"];
 
       if (!v31)
       {
-        v38 = [v4 name];
-        v39 = [v38 isEqualToString:@"editorDidBlur"];
+        name5 = [messageCopy name];
+        v39 = [name5 isEqualToString:@"editorDidBlur"];
 
         if (v39)
         {
           [(NoteHTMLEditorView *)self setEditing:0];
-          v7 = [(NoteHTMLEditorView *)self delegate];
-          [v7 noteHTMLEditorViewDidEndEditing:self];
+          delegate = [(NoteHTMLEditorView *)self delegate];
+          [delegate noteHTMLEditorViewDidEndEditing:self];
         }
 
         else
         {
-          v40 = [v4 name];
-          v41 = [v40 isEqualToString:@"anchorTouchesDidEnd"];
+          name6 = [messageCopy name];
+          v41 = [name6 isEqualToString:@"anchorTouchesDidEnd"];
 
           if (v41)
           {
@@ -2390,8 +2390,8 @@ LABEL_9:
             goto LABEL_27;
           }
 
-          v43 = [v4 name];
-          v44 = [v43 isEqualToString:@"clickedAttachment"];
+          name7 = [messageCopy name];
+          v44 = [name7 isEqualToString:@"clickedAttachment"];
 
           if (!v44)
           {
@@ -2399,47 +2399,47 @@ LABEL_9:
           }
 
           objc_opt_class();
-          v45 = [v4 body];
-          v7 = ICDynamicCast();
+          body4 = [messageCopy body];
+          delegate = ICDynamicCast();
 
-          v46 = [v7 scheme];
-          v47 = [v46 lowercaseString];
-          [v47 isEqualToString:@"cid"];
+          scheme = [delegate scheme];
+          lowercaseString = [scheme lowercaseString];
+          [lowercaseString isEqualToString:@"cid"];
         }
 
         goto LABEL_3;
       }
 
       objc_opt_class();
-      v32 = [v4 body];
+      body5 = [messageCopy body];
       v11 = ICDynamicCast();
 
       objc_opt_class();
       v33 = [v11 objectForKeyedSubscript:@"selectionLength"];
       v13 = ICDynamicCast();
 
-      v34 = [v13 integerValue];
+      integerValue = [v13 integerValue];
       objc_opt_class();
       v35 = [v11 objectForKeyedSubscript:@"listStyle"];
       v36 = ICDynamicCast();
 
-      [(NoteHTMLEditorView *)self setSelectionLength:v34];
+      [(NoteHTMLEditorView *)self setSelectionLength:integerValue];
       -[NoteHTMLEditorView setListStyle:](self, "setListStyle:", [v36 characterAtIndex:0]);
     }
 
     goto LABEL_27;
   }
 
-  v7 = [(NoteHTMLEditorView *)self updateContentDelayer];
-  [v7 requestFire];
+  delegate = [(NoteHTMLEditorView *)self updateContentDelayer];
+  [delegate requestFire];
 LABEL_3:
 
 LABEL_27:
 }
 
-- (void)loadAttachmentContentForURLSchemeTask:(id)a3
+- (void)loadAttachmentContentForURLSchemeTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E696AAE0];
   v12[0] = MEMORY[0x1E69E9820];
@@ -2447,16 +2447,16 @@ LABEL_27:
   v12[2] = __60__NoteHTMLEditorView_loadAttachmentContentForURLSchemeTask___block_invoke;
   v12[3] = &unk_1E846A288;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = taskCopy;
   v13 = v6;
   v7 = [v5 blockOperationWithBlock:v12];
-  v8 = [v6 request];
-  v9 = [v8 URL];
-  v10 = [v9 absoluteString];
-  [v7 setName:v10];
+  request = [v6 request];
+  v9 = [request URL];
+  absoluteString = [v9 absoluteString];
+  [v7 setName:absoluteString];
 
-  v11 = [MEMORY[0x1E696ADC8] mainQueue];
-  [v11 addOperation:v7];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+  [mainQueue addOperation:v7];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2550,20 +2550,20 @@ void __60__NoteHTMLEditorView_loadAttachmentContentForURLSchemeTask___block_invo
   }
 }
 
-- (id)contextMenuConfigurationForElement:(id)a3 presentation:(id)a4
+- (id)contextMenuConfigurationForElement:(id)element presentation:(id)presentation
 {
-  v6 = a4;
-  v7 = [a3 _activatedElementInfo];
+  presentationCopy = presentation;
+  _activatedElementInfo = [element _activatedElementInfo];
   v8 = MEMORY[0x1E69DC8D8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__NoteHTMLEditorView_contextMenuConfigurationForElement_presentation___block_invoke_2;
   v13[3] = &unk_1E846BE18;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
-  v9 = v7;
-  v10 = v6;
+  v14 = presentationCopy;
+  v15 = _activatedElementInfo;
+  selfCopy = self;
+  v9 = _activatedElementInfo;
+  v10 = presentationCopy;
   v11 = [v8 configurationWithIdentifier:0 previewProvider:&__block_literal_global_345 actionProvider:v13];
 
   return v11;
@@ -2647,13 +2647,13 @@ void __70__NoteHTMLEditorView_contextMenuConfigurationForElement_presentation___
 
 - (void)updateDataOwnerForCopyAndPaste
 {
-  v3 = [(NoteHTMLEditorView *)self delegate];
+  delegate = [(NoteHTMLEditorView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(NoteHTMLEditorView *)self delegate];
-    v6 = [v5 isNoteManagedForNoteHTMLEditorView:self];
+    delegate2 = [(NoteHTMLEditorView *)self delegate];
+    v6 = [delegate2 isNoteManagedForNoteHTMLEditorView:self];
 
     if (v6)
     {
@@ -2673,11 +2673,11 @@ void __70__NoteHTMLEditorView_contextMenuConfigurationForElement_presentation___
 
   [(NoteHTMLEditorView *)self _setDataOwnerForCopy:v7];
   [(NoteHTMLEditorView *)self _setDataOwnerForPaste:v7];
-  v8 = [(NoteHTMLEditorView *)self webView];
-  [v8 _setDataOwnerForCopy:v7];
+  webView = [(NoteHTMLEditorView *)self webView];
+  [webView _setDataOwnerForCopy:v7];
 
-  v9 = [(NoteHTMLEditorView *)self webView];
-  [v9 _setDataOwnerForPaste:v7];
+  webView2 = [(NoteHTMLEditorView *)self webView];
+  [webView2 _setDataOwnerForPaste:v7];
 }
 
 - (NoteHTMLEditorViewDelegate)delegate

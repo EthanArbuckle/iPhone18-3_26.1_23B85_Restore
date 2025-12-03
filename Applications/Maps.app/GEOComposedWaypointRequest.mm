@@ -1,29 +1,29 @@
 @interface GEOComposedWaypointRequest
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (GEOComposedWaypointRequest)init;
-- (GEOComposedWaypointRequest)initWithComposedWaypoint:(id)a3;
+- (GEOComposedWaypointRequest)initWithComposedWaypoint:(id)waypoint;
 - (MKMapItem)mapItemForLocationComparison;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)waypointName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6;
-- (id)waypointIconWithScale:(double)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
-- (void)recordRAPInformation:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler;
+- (id)waypointIconWithScale:(double)scale;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
+- (void)recordRAPInformation:(id)information;
 @end
 
 @implementation GEOComposedWaypointRequest
 
-- (void)recordRAPInformation:(id)a3
+- (void)recordRAPInformation:(id)information
 {
-  v7 = a3;
-  v4 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
-  if (v4)
+  informationCopy = information;
+  geoMapItem = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
+  if (geoMapItem)
   {
-    v5 = [GEOMapItemStorage mapItemStorageForGEOMapItem:v4 forUseType:0];
-    [v7 setPlaceMapItemStorage:v5];
+    v5 = [GEOMapItemStorage mapItemStorageForGEOMapItem:geoMapItem forUseType:0];
+    [informationCopy setPlaceMapItemStorage:v5];
   }
 
   if (([(GEOComposedWaypoint *)self->_waypoint isCurrentLocation]& 1) != 0)
@@ -41,35 +41,35 @@
     v6 = 3;
   }
 
-  [v7 setOrigin:v6];
+  [informationCopy setOrigin:v6];
 LABEL_8:
 }
 
-- (id)loadComposedWaypointWithTraits:(id)a3 clientResolvedCompletionHandler:(id)a4 completionHandler:(id)a5 networkActivityHandler:(id)a6
+- (id)loadComposedWaypointWithTraits:(id)traits clientResolvedCompletionHandler:(id)handler completionHandler:(id)completionHandler networkActivityHandler:(id)activityHandler
 {
-  if (a5)
+  if (completionHandler)
   {
     waypoint = self->_waypoint;
-    v8 = a5;
+    completionHandlerCopy = completionHandler;
     v9 = [Result resultWithValue:waypoint];
-    (*(a5 + 2))(v8, v9);
+    (*(completionHandler + 2))(completionHandlerCopy, v9);
   }
 
   return 0;
 }
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MKMapItem *)self->_mapItem _geoMapItem];
-    v7 = [v5[2] _geoMapItem];
-    v8 = v7;
+    v5 = requestCopy;
+    _geoMapItem = [(MKMapItem *)self->_mapItem _geoMapItem];
+    _geoMapItem2 = [v5[2] _geoMapItem];
+    v8 = _geoMapItem2;
     IsEqualToMapItemForPurpose = 0;
-    if (v6 && v7)
+    if (_geoMapItem && _geoMapItem2)
     {
       IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
     }
@@ -85,11 +85,11 @@ LABEL_8:
 
 - (NSString)waypointName
 {
-  v2 = [(GEOComposedWaypoint *)self->_waypoint name];
-  v3 = v2;
-  if (v2)
+  name = [(GEOComposedWaypoint *)self->_waypoint name];
+  v3 = name;
+  if (name)
   {
-    v4 = v2;
+    v4 = name;
   }
 
   else
@@ -102,10 +102,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
-  v4 = [(GEOComposedWaypoint *)self->_waypoint mkMapItem];
-  v5 = [MKMapItem _maps_markerImageForMapItem:v4 scale:2 size:0 useMarkerFallback:a3];
+  mkMapItem = [(GEOComposedWaypoint *)self->_waypoint mkMapItem];
+  v5 = [MKMapItem _maps_markerImageForMapItem:mkMapItem scale:2 size:0 useMarkerFallback:scale];
 
   return v5;
 }
@@ -114,13 +114,13 @@ LABEL_8:
 {
   if (!self->_mapItem)
   {
-    v3 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
+    geoMapItem = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
 
-    if (v3)
+    if (geoMapItem)
     {
       v4 = [MKMapItem alloc];
-      v5 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
-      v6 = [v4 initWithGeoMapItem:v5 isPlaceHolderPlace:0];
+      geoMapItem2 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
+      v6 = [v4 initWithGeoMapItem:geoMapItem2 isPlaceHolderPlace:0];
       mapItem = self->_mapItem;
       self->_mapItem = v6;
     }
@@ -133,16 +133,16 @@ LABEL_8:
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(GEOComposedWaypoint *)self->_waypoint latLng];
+  latLng = [(GEOComposedWaypoint *)self->_waypoint latLng];
 
   waypoint = self->_waypoint;
-  if (v3)
+  if (latLng)
   {
-    v5 = [(GEOComposedWaypoint *)waypoint latLng];
-    [v5 lat];
+    latLng2 = [(GEOComposedWaypoint *)waypoint latLng];
+    [latLng2 lat];
     v7 = v6;
-    v8 = [(GEOComposedWaypoint *)self->_waypoint latLng];
-    [v8 lng];
+    latLng3 = [(GEOComposedWaypoint *)self->_waypoint latLng];
+    [latLng3 lng];
     v10 = CLLocationCoordinate2DMake(v7, v9);
     latitude = v10.latitude;
     longitude = v10.longitude;
@@ -150,12 +150,12 @@ LABEL_8:
 
   else
   {
-    v13 = [(GEOComposedWaypoint *)waypoint geoMapItem];
+    geoMapItem = [(GEOComposedWaypoint *)waypoint geoMapItem];
 
-    if (v13)
+    if (geoMapItem)
     {
-      v14 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
-      [v14 coordinate];
+      geoMapItem2 = [(GEOComposedWaypoint *)self->_waypoint geoMapItem];
+      [geoMapItem2 coordinate];
       latitude = v15;
       longitude = v16;
     }
@@ -174,17 +174,17 @@ LABEL_8:
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
   waypoint = self->_waypoint;
-  v5 = a3;
-  v6 = [(GEOComposedWaypoint *)waypoint shortDescription];
-  (*(a3 + 2))(v5, @"waypoint", v6);
+  blockCopy = block;
+  shortDescription = [(GEOComposedWaypoint *)waypoint shortDescription];
+  (*(block + 2))(blockCopy, @"waypoint", shortDescription);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C2040C;
@@ -192,8 +192,8 @@ LABEL_8:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(GEOComposedWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(GEOComposedWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -227,7 +227,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C2065C;
@@ -235,8 +235,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(GEOComposedWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(GEOComposedWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -268,9 +268,9 @@ LABEL_9:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   waypoint = self->_waypoint;
 
   return [v4 initWithComposedWaypoint:waypoint];
@@ -286,15 +286,15 @@ LABEL_9:
   return 0;
 }
 
-- (GEOComposedWaypointRequest)initWithComposedWaypoint:(id)a3
+- (GEOComposedWaypointRequest)initWithComposedWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   v9.receiver = self;
   v9.super_class = GEOComposedWaypointRequest;
   v5 = [(GEOComposedWaypointRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [waypointCopy copy];
     waypoint = v5->_waypoint;
     v5->_waypoint = v6;
   }

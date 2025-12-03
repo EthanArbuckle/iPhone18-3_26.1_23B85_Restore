@@ -1,28 +1,28 @@
 @interface _UISwipePropertyAnimator
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addViewsToAnimateAdditively:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addViewsToAnimateAdditively:(id)additively;
 @end
 
 @implementation _UISwipePropertyAnimator
 
-- (void)addViewsToAnimateAdditively:(id)a3
+- (void)addViewsToAnimateAdditively:(id)additively
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  additivelyCopy = additively;
+  if ([additivelyCopy count])
   {
     if (!self->_viewsToAnimateAdditively)
     {
-      v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       viewsToAnimateAdditively = self->_viewsToAnimateAdditively;
-      self->_viewsToAnimateAdditively = v5;
+      self->_viewsToAnimateAdditively = weakObjectsHashTable;
     }
 
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v4;
+    v7 = additivelyCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -50,11 +50,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _UISwipePropertyAnimator;
-  v4 = [(UIViewPropertyAnimator *)&v8 copyWithZone:a3];
+  v4 = [(UIViewPropertyAnimator *)&v8 copyWithZone:zone];
   if (v4)
   {
     v5 = [(NSHashTable *)self->_viewsToAnimateAdditively copy];

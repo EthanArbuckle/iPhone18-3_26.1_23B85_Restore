@@ -3,54 +3,54 @@
 - (BOOL)canBeginStackCollapseTransition;
 - (BOOL)canDragIn;
 - (BOOL)canDragOut;
-- (BOOL)canHandleDropSession:(id)a3;
+- (BOOL)canHandleDropSession:(id)session;
 - (BOOL)isCameraRoll;
 - (BOOL)isTrashBinViewController;
-- (BOOL)prepareForDismissingForced:(BOOL)a3;
+- (BOOL)prepareForDismissingForced:(BOOL)forced;
 - (BOOL)shouldShowSectionHeaders;
 - (BOOL)updateSpec;
 - (BOOL)wantsGlobalFooter;
 - (PHFetchResult)assetCollectionAssets;
-- (PUPhotosAlbumViewController)initWithAlbumSpec:(id)a3 photoLibrary:(id)a4;
-- (PUPhotosAlbumViewController)initWithSpec:(id)a3;
-- (PUPhotosAlbumViewController)initWithSpec:(id)a3 photoLibrary:(id)a4;
+- (PUPhotosAlbumViewController)initWithAlbumSpec:(id)spec photoLibrary:(id)library;
+- (PUPhotosAlbumViewController)initWithSpec:(id)spec;
+- (PUPhotosAlbumViewController)initWithSpec:(id)spec photoLibrary:(id)library;
 - (double)globalHeaderHeight;
-- (double)sectionedGridLayout:(id)a3 accessibilitySectionHeaderHeightForVisualSection:(int64_t)a4;
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4;
-- (id)_collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
+- (double)sectionedGridLayout:(id)layout accessibilitySectionHeaderHeightForVisualSection:(int64_t)section;
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section;
+- (id)_collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
 - (id)_globalHeaderTitle;
-- (id)localizedTitleForAssets:(id)a3;
+- (id)localizedTitleForAssets:(id)assets;
 - (id)newGridLayout;
 - (id)px_navigationDestination;
-- (id)sessionInfoForTransferredAssets:(id)a3;
+- (id)sessionInfoForTransferredAssets:(id)assets;
 - (int64_t)cellFillMode;
 - (int64_t)oneUpPresentationOrigin;
 - (unint64_t)additionalOneUpViewControllerOptions;
-- (unint64_t)routingOptionsForDestination:(id)a3;
-- (void)_collectionView:(id)a3 performDropWithCoordinator:(id)a4;
+- (unint64_t)routingOptionsForDestination:(id)destination;
+- (void)_collectionView:(id)view performDropWithCoordinator:(id)coordinator;
 - (void)_countAssetTypesIfNeeded;
-- (void)_getDataForVisualSection:(int64_t)a3 hasActionButton:(BOOL *)a4 locations:(id *)a5 title:(id *)a6 startDate:(id *)a7 endDate:(id *)a8;
-- (void)_performAddDropWithSession:(id)a3;
-- (void)_performMoveDropWithCoordinator:(id)a3;
-- (void)_setAlbumSpec:(id)a3;
+- (void)_getDataForVisualSection:(int64_t)section hasActionButton:(BOOL *)button locations:(id *)locations title:(id *)title startDate:(id *)date endDate:(id *)endDate;
+- (void)_performAddDropWithSession:(id)session;
+- (void)_performMoveDropWithCoordinator:(id)coordinator;
+- (void)_setAlbumSpec:(id)spec;
 - (void)_updateSectionHeadersIfNeeded;
-- (void)configureGlobalFooterView:(id)a3;
-- (void)configureGlobalHeaderView:(id)a3;
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5;
-- (void)didTapHeaderView:(id)a3;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (void)configureGlobalFooterView:(id)view;
+- (void)configureGlobalHeaderView:(id)view;
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path;
+- (void)didTapHeaderView:(id)view;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 - (void)handleAddFromAction;
-- (void)handleAddToAlbum:(id)a3 pickedAssets:(id)a4;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)photosDataSource:(id)a3 didReceivePhotoLibraryChange:(id)a4;
-- (void)setAlbum:(id)a3 existingFetchResult:(id)a4;
-- (void)setAssetCollection:(id)a3;
-- (void)setAssetCollection:(id)a3 fetchResultContainingAssetCollection:(id)a4 filterPredicate:(id)a5 existingFetchResults:(id)a6;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSessionInfo:(id)a3;
+- (void)handleAddToAlbum:(id)album pickedAssets:(id)assets;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)photosDataSource:(id)source didReceivePhotoLibraryChange:(id)change;
+- (void)setAlbum:(id)album existingFetchResult:(id)result;
+- (void)setAssetCollection:(id)collection;
+- (void)setAssetCollection:(id)collection fetchResultContainingAssetCollection:(id)assetCollection filterPredicate:(id)predicate existingFetchResults:(id)results;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setSessionInfo:(id)info;
 - (void)updateLayoutMetrics;
 - (void)updateTitle;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -58,10 +58,10 @@
 
 - (id)px_navigationDestination
 {
-  v2 = [(PUPhotosAlbumViewController *)self assetCollection];
-  if (v2)
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  if (assetCollection)
   {
-    v3 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:v2 revealMode:0];
+    v3 = [objc_alloc(MEMORY[0x1E69C3930]) initWithObject:assetCollection revealMode:0];
   }
 
   else
@@ -72,41 +72,41 @@
   return v3;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v7 = a5;
-  v8 = [v11 asset];
-  v9 = [v11 assetCollection];
-  if ([v11 type] != 7)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  asset = [destinationCopy asset];
+  assetCollection = [destinationCopy assetCollection];
+  if ([destinationCopy type] != 7)
   {
     [(PUPhotosAlbumViewController *)self setEditing:0];
-    [(PUPhotosGridViewController *)self navigateToRevealPhoto:v8 inAssetContainer:v9 animated:0];
+    [(PUPhotosGridViewController *)self navigateToRevealPhoto:asset inAssetContainer:assetCollection animated:0];
     goto LABEL_5;
   }
 
-  v10 = [v11 revealMode];
+  revealMode = [destinationCopy revealMode];
   [(PUPhotosAlbumViewController *)self setEditing:0];
-  [(PUPhotosGridViewController *)self navigateToRevealPhoto:v8 inAssetContainer:v9 animated:0];
-  if (v10 != 2)
+  [(PUPhotosGridViewController *)self navigateToRevealPhoto:asset inAssetContainer:assetCollection animated:0];
+  if (revealMode != 2)
   {
 LABEL_5:
-    [(PUPhotosGridViewController *)self navigateToPhoto:v8 inAssetContainer:v9 animated:0];
+    [(PUPhotosGridViewController *)self navigateToPhoto:asset inAssetContainer:assetCollection animated:0];
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v4 = a3;
-  if ([v4 type] == 7)
+  destinationCopy = destination;
+  if ([destinationCopy type] == 7)
   {
-    v5 = [(PUPhotosGridViewController *)self photosDataSource];
-    v6 = [v4 assetUUID];
-    v7 = [(PUPhotosGridViewController *)self photosDataSource];
-    v8 = [v7 indexPathForLastAsset];
-    v9 = [v5 indexPathForAssetWithUUID:v6 orBurstIdentifier:0 hintIndexPath:v8 hintCollection:0];
+    photosDataSource = [(PUPhotosGridViewController *)self photosDataSource];
+    assetUUID = [destinationCopy assetUUID];
+    photosDataSource2 = [(PUPhotosGridViewController *)self photosDataSource];
+    indexPathForLastAsset = [photosDataSource2 indexPathForLastAsset];
+    v9 = [photosDataSource indexPathForAssetWithUUID:assetUUID orBurstIdentifier:0 hintIndexPath:indexPathForLastAsset hintCollection:0];
     v10 = v9 != 0;
   }
 
@@ -118,82 +118,82 @@ LABEL_5:
   return v10;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  dropCopy = drop;
   v8 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = interactionCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = dropCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "dropInteraction: %@ performDrop: %@", &v9, 0x16u);
   }
 
-  [(PUPhotosAlbumViewController *)self _performAddDropWithSession:v7];
+  [(PUPhotosAlbumViewController *)self _performAddDropWithSession:dropCopy];
 }
 
-- (void)_collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)_collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
   v8 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = viewCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = coordinatorCopy;
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "_collectionView: %@ performDropWithCoordinator: %@", &v12, 0x16u);
   }
 
-  v9 = [v7 proposal];
-  v10 = [v9 operation];
+  proposal = [coordinatorCopy proposal];
+  operation = [proposal operation];
 
-  if (v10 == 3)
+  if (operation == 3)
   {
-    [(PUPhotosAlbumViewController *)self _performMoveDropWithCoordinator:v7];
+    [(PUPhotosAlbumViewController *)self _performMoveDropWithCoordinator:coordinatorCopy];
   }
 
   else
   {
-    v11 = [v7 session];
-    [(PUPhotosAlbumViewController *)self _performAddDropWithSession:v11];
+    session = [coordinatorCopy session];
+    [(PUPhotosAlbumViewController *)self _performAddDropWithSession:session];
   }
 }
 
-- (id)_collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)_collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
   v11 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v28 = 138412802;
-    v29 = v8;
+    v29 = viewCopy;
     v30 = 2112;
-    v31 = v9;
+    v31 = updateCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = pathCopy;
     _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEBUG, "_collectionView: %@ dropSessionDidUpdate:%@ withDestinationIndexPath: %@", &v28, 0x20u);
   }
 
-  v12 = [(PUPhotosAlbumViewController *)self collectionView];
-  [v9 locationInView:v12];
+  collectionView = [(PUPhotosAlbumViewController *)self collectionView];
+  [updateCopy locationInView:collectionView];
   v14 = v13;
   v16 = v15;
 
   v17 = [(PUPhotosGridViewController *)self itemIndexPathAtPoint:0 outClosestMatch:v14, v16];
-  v18 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v19 = [v18 canPerformEditOperation:5];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v19 = [assetCollection canPerformEditOperation:5];
 
-  if (v19 && [v8 hasActiveDrag] && (objc_msgSend(v9, "items"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21 == 1) && v17)
+  if (v19 && [viewCopy hasActiveDrag] && (objc_msgSend(updateCopy, "items"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "count"), v20, v21 == 1) && v17)
   {
     v22 = objc_alloc(MEMORY[0x1E69DC838]);
     v23 = 3;
@@ -202,9 +202,9 @@ LABEL_5:
 
   else
   {
-    v25 = [v8 hasActiveDrag];
+    hasActiveDrag = [viewCopy hasActiveDrag];
     v22 = objc_alloc(MEMORY[0x1E69DC838]);
-    if (v25)
+    if (hasActiveDrag)
     {
       v23 = 0;
     }
@@ -222,40 +222,40 @@ LABEL_5:
   return v26;
 }
 
-- (void)_performMoveDropWithCoordinator:(id)a3
+- (void)_performMoveDropWithCoordinator:(id)coordinator
 {
   v85 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v6 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v84 = v5;
+    v84 = coordinatorCopy;
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEBUG, "_performMoveDropWithCoordinator: %@", buf, 0xCu);
   }
 
-  v7 = [v5 session];
-  v8 = [(PUPhotosAlbumViewController *)self collectionView];
-  [v7 locationInView:v8];
+  session = [coordinatorCopy session];
+  collectionView = [(PUPhotosAlbumViewController *)self collectionView];
+  [session locationInView:collectionView];
   v10 = v9;
   v12 = v11;
 
   v60 = [(PUPhotosGridViewController *)self itemIndexPathAtPoint:0 outClosestMatch:v10, v12];
-  v13 = [v5 items];
+  items = [coordinatorCopy items];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = 3221225472;
   v80[2] = __63__PUPhotosAlbumViewController__performMoveDropWithCoordinator___block_invoke;
   v80[3] = &unk_1E7B7C478;
   v80[4] = self;
   v80[5] = a2;
-  v14 = [v13 _pl_map:v80];
+  v14 = [items _pl_map:v80];
 
-  v15 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v16 = [(PUPhotosAlbumViewController *)self assetCollectionAssets];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollectionAssets = [(PUPhotosAlbumViewController *)self assetCollectionAssets];
   v17 = MEMORY[0x1E695DFA8];
-  v54 = v16;
-  v18 = [v16 fetchedObjects];
-  v19 = [v17 setWithArray:v18];
+  v54 = assetCollectionAssets;
+  fetchedObjects = [assetCollectionAssets fetchedObjects];
+  v19 = [v17 setWithArray:fetchedObjects];
 
   v58 = v14;
   v20 = [MEMORY[0x1E695DFD8] setWithArray:v14];
@@ -283,8 +283,8 @@ LABEL_5:
         }
 
         v26 = *(*(&v76 + 1) + 8 * v25);
-        v27 = [(PUPhotosGridViewController *)self photosDataSource];
-        v28 = [v27 indexPathForAsset:v26 inCollection:v15];
+        photosDataSource = [(PUPhotosGridViewController *)self photosDataSource];
+        v28 = [photosDataSource indexPathForAsset:v26 inCollection:assetCollection];
 
         [v21 addObject:v28];
         ++v25;
@@ -298,18 +298,18 @@ LABEL_5:
   }
 
   v57 = v21;
-  v52 = self;
+  selfCopy = self;
 
-  v29 = [v60 item];
-  v53 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v29, objc_msgSend(v58, "count")}];
+  item = [v60 item];
+  v53 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{item, objc_msgSend(v58, "count")}];
   v56 = [MEMORY[0x1E696AC88] px_indexPathsForItems:v53 inSection:{objc_msgSend(v60, "section")}];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v30 = v5;
-  v31 = [v5 items];
-  v32 = [v31 countByEnumeratingWithState:&v72 objects:v81 count:16];
+  v30 = coordinatorCopy;
+  items2 = [coordinatorCopy items];
+  v32 = [items2 countByEnumeratingWithState:&v72 objects:v81 count:16];
   if (v32)
   {
     v33 = v32;
@@ -321,31 +321,31 @@ LABEL_5:
       {
         if (*v73 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(items2);
         }
 
         v36 = *(*(&v72 + 1) + 8 * v35);
-        v37 = [MEMORY[0x1E696AC88] indexPathForItem:v29 inSection:{objc_msgSend(v60, "section")}];
-        v38 = [v36 dragItem];
-        v39 = [v30 dropItem:v38 toItemAtIndexPath:v37];
+        v37 = [MEMORY[0x1E696AC88] indexPathForItem:item inSection:{objc_msgSend(v60, "section")}];
+        dragItem = [v36 dragItem];
+        v39 = [v30 dropItem:dragItem toItemAtIndexPath:v37];
 
-        ++v29;
+        ++item;
         ++v35;
       }
 
       while (v33 != v35);
-      v33 = [v31 countByEnumeratingWithState:&v72 objects:v81 count:16];
+      v33 = [items2 countByEnumeratingWithState:&v72 objects:v81 count:16];
     }
 
     while (v33);
   }
 
-  v40 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __63__PUPhotosAlbumViewController__performMoveDropWithCoordinator___block_invoke_2;
   v66[3] = &unk_1E7B7EA98;
-  v41 = v15;
+  v41 = assetCollection;
   v67 = v41;
   v55 = v54;
   v68 = v55;
@@ -356,25 +356,25 @@ LABEL_5:
   v44 = v53;
   v71 = v44;
   v65 = 0;
-  v45 = [v40 performChangesAndWait:v66 error:&v65];
+  v45 = [px_deprecated_appPhotoLibrary performChangesAndWait:v66 error:&v65];
   v46 = v65;
 
   if (v45)
   {
-    v47 = [(PUPhotosGridViewController *)v52 photosDataSource];
-    [v47 refetchResultsForAssetCollection:v41];
+    photosDataSource2 = [(PUPhotosGridViewController *)selfCopy photosDataSource];
+    [photosDataSource2 refetchResultsForAssetCollection:v41];
 
-    v48 = [(PUPhotosAlbumViewController *)v52 collectionView];
+    collectionView2 = [(PUPhotosAlbumViewController *)selfCopy collectionView];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __63__PUPhotosAlbumViewController__performMoveDropWithCoordinator___block_invoke_282;
     v61[3] = &unk_1E7B809F0;
-    v62 = v48;
+    v62 = collectionView2;
     v49 = v57;
     v63 = v57;
     v50 = v56;
     v64 = v56;
-    v51 = v48;
+    v51 = collectionView2;
     [v51 performBatchUpdates:v61 completion:0];
   }
 
@@ -449,32 +449,32 @@ uint64_t __63__PUPhotosAlbumViewController__performMoveDropWithCoordinator___blo
   return [v2 insertItemsAtIndexPaths:v3];
 }
 
-- (void)_performAddDropWithSession:(id)a3
+- (void)_performAddDropWithSession:(id)session
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v5 = PLDragAndDropGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = sessionCopy;
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEBUG, "_performAddDropWithCoordinator: %@", buf, 0xCu);
   }
 
-  v6 = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
   objc_initWeak(buf, self);
-  v7 = [MEMORY[0x1E69C3618] defaultManager];
+  defaultManager = [MEMORY[0x1E69C3618] defaultManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__PUPhotosAlbumViewController__performAddDropWithSession___block_invoke;
   v10[3] = &unk_1E7B7C450;
   objc_copyWeak(&v14, buf);
-  v8 = v6;
+  v8 = assetCollection;
   v11 = v8;
-  v9 = v4;
+  v9 = sessionCopy;
   v12 = v9;
-  v13 = self;
-  [v7 fetchAssetsFromDrop:v9 importIfNeeded:1 completion:v10];
+  selfCopy = self;
+  [defaultManager fetchAssetsFromDrop:v9 importIfNeeded:1 completion:v10];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -578,21 +578,21 @@ void __58__PUPhotosAlbumViewController__performAddDropWithSession___block_invoke
   }
 }
 
-- (BOOL)canHandleDropSession:(id)a3
+- (BOOL)canHandleDropSession:(id)session
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   if ([(PUPhotosAlbumViewController *)self isCameraRoll])
   {
-    v5 = [v4 localDragSession];
+    localDragSession = [sessionCopy localDragSession];
 
-    if (v5)
+    if (localDragSession)
     {
       v13 = 0u;
       v14 = 0u;
       v12 = 0u;
-      v6 = [v4 items];
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      items = [sessionCopy items];
+      v7 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         v8 = *v12;
@@ -602,7 +602,7 @@ void __58__PUPhotosAlbumViewController__performAddDropWithSession___block_invoke
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(items);
             }
 
             if (PXDragItemNeedsImport())
@@ -612,7 +612,7 @@ void __58__PUPhotosAlbumViewController__performAddDropWithSession___block_invoke
             }
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v7 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v7)
           {
             continue;
@@ -628,8 +628,8 @@ void __58__PUPhotosAlbumViewController__performAddDropWithSession___block_invoke
 
   if ([(PUPhotosAlbumViewController *)self canDragIn])
   {
-    v6 = [MEMORY[0x1E69C3618] supportedTypeIdentifiers];
-    LOBYTE(v7) = [v4 hasItemsConformingToTypeIdentifiers:v6];
+    items = [MEMORY[0x1E69C3618] supportedTypeIdentifiers];
+    LOBYTE(v7) = [sessionCopy hasItemsConformingToTypeIdentifiers:items];
 LABEL_16:
 
     goto LABEL_17;
@@ -645,103 +645,103 @@ LABEL_17:
 {
   v5.receiver = self;
   v5.super_class = PUPhotosAlbumViewController;
-  v3 = [(PUPhotosGridViewController *)&v5 canDragIn];
-  return ([(PUPhotosAlbumViewController *)self isCameraRoll]| v3) & 1;
+  canDragIn = [(PUPhotosGridViewController *)&v5 canDragIn];
+  return ([(PUPhotosAlbumViewController *)self isCameraRoll]| canDragIn) & 1;
 }
 
 - (BOOL)canDragOut
 {
-  v3 = [MEMORY[0x1E69C3498] sharedInstance];
-  v4 = [v3 alwaysAllowDragsWithinUserAlbums];
+  mEMORY[0x1E69C3498] = [MEMORY[0x1E69C3498] sharedInstance];
+  alwaysAllowDragsWithinUserAlbums = [mEMORY[0x1E69C3498] alwaysAllowDragsWithinUserAlbums];
 
-  v5 = [(PUPhotosGridViewController *)self sessionInfo];
-  v6 = [v5 isSelectingAssets];
+  sessionInfo = [(PUPhotosGridViewController *)self sessionInfo];
+  isSelectingAssets = [sessionInfo isSelectingAssets];
 
-  v7 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v8 = [v7 canPerformEditOperation:5];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v8 = [assetCollection canPerformEditOperation:5];
 
-  v9 = [MEMORY[0x1E69C3498] sharedInstance];
-  v10 = [v9 dragOutEnabled] | v4 & v8;
+  mEMORY[0x1E69C3498]2 = [MEMORY[0x1E69C3498] sharedInstance];
+  v10 = [mEMORY[0x1E69C3498]2 dragOutEnabled] | alwaysAllowDragsWithinUserAlbums & v8;
 
-  return ![(PUPhotosAlbumViewController *)self isTrashBinViewController]& (v6 ^ 1) & v10;
+  return ![(PUPhotosAlbumViewController *)self isTrashBinViewController]& (isSelectingAssets ^ 1) & v10;
 }
 
-- (void)photosDataSource:(id)a3 didReceivePhotoLibraryChange:(id)a4
+- (void)photosDataSource:(id)source didReceivePhotoLibraryChange:(id)change
 {
-  v5 = a4;
-  v6 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v7 = [v5 changeDetailsForObject:v6];
+  changeCopy = change;
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v7 = [changeCopy changeDetailsForObject:assetCollection];
 
-  v9 = [v7 objectAfterChanges];
+  objectAfterChanges = [v7 objectAfterChanges];
 
-  v8 = v9;
-  if (v9)
+  v8 = objectAfterChanges;
+  if (objectAfterChanges)
   {
-    [(PUPhotosAlbumViewController *)self setAssetCollection:v9];
-    v8 = v9;
+    [(PUPhotosAlbumViewController *)self setAssetCollection:objectAfterChanges];
+    v8 = objectAfterChanges;
   }
 }
 
-- (void)didTapHeaderView:(id)a3
+- (void)didTapHeaderView:(id)view
 {
-  v4 = [a3 sectionIndex];
-  v5 = [(PUPhotosGridViewController *)self collectionListFetchResult];
-  v6 = [v5 objectAtIndex:v4];
+  sectionIndex = [view sectionIndex];
+  collectionListFetchResult = [(PUPhotosGridViewController *)self collectionListFetchResult];
+  v6 = [collectionListFetchResult objectAtIndex:sectionIndex];
 
   [(PUPhotosGridViewController *)self navigateToPhotosDetailsForAssetCollection:v6];
 }
 
-- (double)sectionedGridLayout:(id)a3 accessibilitySectionHeaderHeightForVisualSection:(int64_t)a4
+- (double)sectionedGridLayout:(id)layout accessibilitySectionHeaderHeightForVisualSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  layoutCopy = layout;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v9 = [(PUPhotosAlbumViewController *)self _albumSpec];
-    v10 = [v9 gridSpec];
-    [v10 sectionHeaderInsets];
+    _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+    gridSpec = [_albumSpec gridSpec];
+    [gridSpec sectionHeaderInsets];
     v12 = v11;
     v14 = v13;
 
-    v15 = [v9 fullMomentsSectionHeaderStyle];
+    fullMomentsSectionHeaderStyle = [_albumSpec fullMomentsSectionHeaderStyle];
     v30 = 0;
     v28 = 0;
     v29 = 0;
     v26 = 0;
     v27 = 0;
-    [(PUPhotosAlbumViewController *)self _getDataForVisualSection:a4 hasActionButton:&v30 locations:&v29 title:&v28 startDate:&v27 endDate:&v26];
+    [(PUPhotosAlbumViewController *)self _getDataForVisualSection:section hasActionButton:&v30 locations:&v29 title:&v28 startDate:&v27 endDate:&v26];
     v16 = v29;
     v17 = v28;
     v18 = v27;
     v19 = v26;
-    v20 = [MEMORY[0x1E69C38E8] sharedMetrics];
-    v21 = [v6 collectionView];
-    [v21 bounds];
-    [v20 accessibilitySectionHeaderHeightForStyle:v15 width:v30 actionButton:v30 ^ 1u disclosure:v17 title:v18 startDate:v19 endDate:CGRectGetWidth(v31) - v12 - v14 locations:v16 actionButtonSpec:0];
+    mEMORY[0x1E69C38E8] = [MEMORY[0x1E69C38E8] sharedMetrics];
+    collectionView = [layoutCopy collectionView];
+    [collectionView bounds];
+    [mEMORY[0x1E69C38E8] accessibilitySectionHeaderHeightForStyle:fullMomentsSectionHeaderStyle width:v30 actionButton:v30 ^ 1u disclosure:v17 title:v18 startDate:v19 endDate:CGRectGetWidth(v31) - v12 - v14 locations:v16 actionButtonSpec:0];
     v23 = v22;
   }
 
   else
   {
-    [(PUPhotosAlbumViewController *)self sectionedGridLayout:v6 sectionHeaderHeightForVisualSection:a4];
+    [(PUPhotosAlbumViewController *)self sectionedGridLayout:layoutCopy sectionHeaderHeightForVisualSection:section];
     v23 = v24;
   }
 
   return v23;
 }
 
-- (double)sectionedGridLayout:(id)a3 sectionHeaderHeightForVisualSection:(int64_t)a4
+- (double)sectionedGridLayout:(id)layout sectionHeaderHeightForVisualSection:(int64_t)section
 {
-  v6 = [(PUPhotosAlbumViewController *)self _albumSpec];
-  v7 = [v6 fullMomentsSectionHeaderStyle];
+  _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+  fullMomentsSectionHeaderStyle = [_albumSpec fullMomentsSectionHeaderStyle];
   v24 = 0;
   v22 = 0;
   v23 = 0;
   v20 = 0;
   v21 = 0;
-  [(PUPhotosAlbumViewController *)self _getDataForVisualSection:a4 hasActionButton:&v24 locations:&v23 title:&v22 startDate:&v21 endDate:&v20];
+  [(PUPhotosAlbumViewController *)self _getDataForVisualSection:section hasActionButton:&v24 locations:&v23 title:&v22 startDate:&v21 endDate:&v20];
   v8 = v23;
   v9 = v22;
   v10 = v21;
@@ -759,51 +759,51 @@ LABEL_17:
 
   v14 = !v13;
   v15 = [v8 count] != 0;
-  v16 = [MEMORY[0x1E69C38E8] sharedMetrics];
-  [v16 sectionHeaderHeightForStyle:v7 hasTitle:v9 != 0 hasDates:v14 hasLocation:v15];
+  mEMORY[0x1E69C38E8] = [MEMORY[0x1E69C38E8] sharedMetrics];
+  [mEMORY[0x1E69C38E8] sectionHeaderHeightForStyle:fullMomentsSectionHeaderStyle hasTitle:v9 != 0 hasDates:v14 hasLocation:v15];
   v18 = v17;
 
   return v18;
 }
 
-- (BOOL)prepareForDismissingForced:(BOOL)a3
+- (BOOL)prepareForDismissingForced:(BOOL)forced
 {
   v4.receiver = self;
   v4.super_class = PUPhotosAlbumViewController;
-  return [(PUPhotosGridViewController *)&v4 prepareForDismissingForced:a3];
+  return [(PUPhotosGridViewController *)&v4 prepareForDismissingForced:forced];
 }
 
 - (void)handleAddFromAction
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:579 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:579 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
 
-- (void)handleAddToAlbum:(id)a3 pickedAssets:(id)a4
+- (void)handleAddToAlbum:(id)album pickedAssets:(id)assets
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 canPerformEditOperation:3] & 1) == 0)
+  albumCopy = album;
+  assetsCopy = assets;
+  if (([albumCopy canPerformEditOperation:3] & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:562 description:{@"Attempting to edit a non-editable album: %@", v7}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:562 description:{@"Attempting to edit a non-editable album: %@", albumCopy}];
   }
 
-  if ([v8 count])
+  if ([assetsCopy count])
   {
-    v9 = [(PUPhotosGridViewController *)self assetsInAssetCollection:v7];
-    v10 = [v9 photoLibrary];
+    v9 = [(PUPhotosGridViewController *)self assetsInAssetCollection:albumCopy];
+    photoLibrary = [v9 photoLibrary];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __61__PUPhotosAlbumViewController_handleAddToAlbum_pickedAssets___block_invoke;
     v13[3] = &unk_1E7B809F0;
-    v14 = v8;
-    v15 = v7;
+    v14 = assetsCopy;
+    v15 = albumCopy;
     v16 = v9;
     v11 = v9;
-    [v10 performChanges:v13 completionHandler:0];
+    [photoLibrary performChanges:v13 completionHandler:0];
   }
 }
 
@@ -825,8 +825,8 @@ void __61__PUPhotosAlbumViewController_handleAddToAlbum_pickedAssets___block_inv
 {
   if (![(PUPhotosAlbumViewController *)self _isCountingAssetTypes]&& ![(PUPhotosAlbumViewController *)self _hasAccurateCounts])
   {
-    v3 = [(PUPhotosGridViewController *)self photosDataSource];
-    if ([v3 estimatedPhotosCount] || objc_msgSend(v3, "estimatedVideosCount"))
+    photosDataSource = [(PUPhotosGridViewController *)self photosDataSource];
+    if ([photosDataSource estimatedPhotosCount] || objc_msgSend(photosDataSource, "estimatedVideosCount"))
     {
       [(PUPhotosAlbumViewController *)self _setHasAccurateCounts:1];
       if ([(PUPhotosGridViewController *)self isContentViewInSyncWithModel])
@@ -838,19 +838,19 @@ void __61__PUPhotosAlbumViewController_handleAddToAlbum_pickedAssets___block_inv
     else
     {
       [(PUPhotosAlbumViewController *)self _setCountingAssetTypes:1];
-      v4 = [MEMORY[0x1E695DF70] array];
-      if ([v3 numberOfSections] >= 1)
+      array = [MEMORY[0x1E695DF70] array];
+      if ([photosDataSource numberOfSections] >= 1)
       {
         v5 = 0;
         do
         {
-          v6 = [v3 assetsInSection:v5];
-          [v4 addObject:v6];
+          v6 = [photosDataSource assetsInSection:v5];
+          [array addObject:v6];
 
           ++v5;
         }
 
-        while (v5 < [v3 numberOfSections]);
+        while (v5 < [photosDataSource numberOfSections]);
       }
 
       objc_initWeak(&location, self);
@@ -859,8 +859,8 @@ void __61__PUPhotosAlbumViewController_handleAddToAlbum_pickedAssets___block_inv
       block[1] = 3221225472;
       block[2] = __55__PUPhotosAlbumViewController__countAssetTypesIfNeeded__block_invoke;
       block[3] = &unk_1E7B80610;
-      v10 = v4;
-      v8 = v4;
+      v10 = array;
+      v8 = array;
       objc_copyWeak(&v11, &location);
       dispatch_async(v7, block);
 
@@ -923,17 +923,17 @@ void __55__PUPhotosAlbumViewController__countAssetTypesIfNeeded__block_invoke_2(
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUPhotosAlbumViewController;
-  [(PUPhotosGridViewController *)&v4 viewDidAppear:a3];
+  [(PUPhotosGridViewController *)&v4 viewDidAppear:appear];
   [(PUPhotosAlbumViewController *)self _countAssetTypesIfNeeded];
 }
 
 - (int64_t)oneUpPresentationOrigin
 {
-  v3 = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
   v4 = PXOneUpPresentationOriginForAssetCollection();
 
   if (!v4)
@@ -950,31 +950,31 @@ void __55__PUPhotosAlbumViewController__countAssetTypesIfNeeded__block_invoke_2(
 {
   v7.receiver = self;
   v7.super_class = PUPhotosAlbumViewController;
-  v3 = [(PUPhotosGridViewController *)&v7 additionalOneUpViewControllerOptions];
-  v4 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v5 = [v4 assetCollectionSubtype];
+  additionalOneUpViewControllerOptions = [(PUPhotosGridViewController *)&v7 additionalOneUpViewControllerOptions];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollectionSubtype = [assetCollection assetCollectionSubtype];
 
-  if (v5 == 1000000201 || v5 == 205)
+  if (assetCollectionSubtype == 1000000201 || assetCollectionSubtype == 205)
   {
-    v3 |= 0x2000uLL;
+    additionalOneUpViewControllerOptions |= 0x2000uLL;
   }
 
-  return v3;
+  return additionalOneUpViewControllerOptions;
 }
 
 - (int64_t)cellFillMode
 {
   v7.receiver = self;
   v7.super_class = PUPhotosAlbumViewController;
-  v3 = [(PUPhotosGridViewController *)&v7 cellFillMode];
-  v4 = [(PUPhotosAlbumViewController *)self _albumSpec];
-  v5 = v4;
-  if (v4)
+  cellFillMode = [(PUPhotosGridViewController *)&v7 cellFillMode];
+  _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+  v5 = _albumSpec;
+  if (_albumSpec)
   {
-    v3 = [v4 cellFillMode];
+    cellFillMode = [_albumSpec cellFillMode];
   }
 
-  return v3;
+  return cellFillMode;
 }
 
 - (BOOL)allowSelectAllButton
@@ -992,25 +992,25 @@ void __55__PUPhotosAlbumViewController__countAssetTypesIfNeeded__block_invoke_2(
 
 - (BOOL)isCameraRoll
 {
-  v2 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v3 = [v2 assetCollectionSubtype];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollectionSubtype = [assetCollection assetCollectionSubtype];
 
-  return v3 == 209;
+  return assetCollectionSubtype == 209;
 }
 
 - (BOOL)isTrashBinViewController
 {
-  v2 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v3 = [v2 assetCollectionSubtype] == 1000000201;
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v3 = [assetCollection assetCollectionSubtype] == 1000000201;
 
   return v3;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = PUPhotosAlbumViewController;
-  [(PUPhotosGridViewController *)&v5 setEditing:a3 animated:a4];
+  [(PUPhotosGridViewController *)&v5 setEditing:editing animated:animated];
   [(PUPhotosAlbumViewController *)self updateTitle];
 }
 
@@ -1018,106 +1018,106 @@ void __55__PUPhotosAlbumViewController__countAssetTypesIfNeeded__block_invoke_2(
 {
   if ([(PUPhotosAlbumViewController *)self isEditing])
   {
-    v5 = [(PUPhotosAlbumViewController *)self navigationItem];
-    [v5 setTitleView:0];
+    navigationItem = [(PUPhotosAlbumViewController *)self navigationItem];
+    [navigationItem setTitleView:0];
   }
 
   else
   {
-    v5 = [(PUPhotosAlbumViewController *)self assetCollection];
-    v3 = [v5 localizedTitle];
-    [(PUPhotosAlbumViewController *)self setTitle:v3];
-    v4 = [(PUPhotosAlbumViewController *)self navigationItem];
-    [v4 setTitleView:0];
+    navigationItem = [(PUPhotosAlbumViewController *)self assetCollection];
+    localizedTitle = [navigationItem localizedTitle];
+    [(PUPhotosAlbumViewController *)self setTitle:localizedTitle];
+    navigationItem2 = [(PUPhotosAlbumViewController *)self navigationItem];
+    [navigationItem2 setTitleView:0];
   }
 }
 
-- (void)configureGlobalFooterView:(id)a3
+- (void)configureGlobalFooterView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 viewModel];
+  viewCopy = view;
+  viewModel = [viewCopy viewModel];
 
-  if (!v5)
+  if (!viewModel)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C4508]);
-    [v4 setViewModel:v6];
+    [viewCopy setViewModel:v6];
   }
 
   if ([(PUPhotosAlbumViewController *)self wantsGlobalFooter])
   {
-    v7 = [(PUPhotosGridViewController *)self photosDataSource];
-    v8 = [v7 estimatedPhotosCount];
-    v9 = [v7 estimatedVideosCount];
-    v10 = [v7 estimatedOtherCount];
-    v11 = v10;
-    if (!v8 && !v9 && !v10)
+    photosDataSource = [(PUPhotosGridViewController *)self photosDataSource];
+    estimatedPhotosCount = [photosDataSource estimatedPhotosCount];
+    estimatedVideosCount = [photosDataSource estimatedVideosCount];
+    estimatedOtherCount = [photosDataSource estimatedOtherCount];
+    v11 = estimatedOtherCount;
+    if (!estimatedPhotosCount && !estimatedVideosCount && !estimatedOtherCount)
     {
-      if (-[PUPhotosAlbumViewController _hasAccurateCounts](self, "_hasAccurateCounts") && [v7 numberOfSections] >= 1)
+      if (-[PUPhotosAlbumViewController _hasAccurateCounts](self, "_hasAccurateCounts") && [photosDataSource numberOfSections] >= 1)
       {
-        v8 = 0;
-        v9 = 0;
+        estimatedPhotosCount = 0;
+        estimatedVideosCount = 0;
         v11 = 0;
         v12 = 0;
         do
         {
-          v13 = [v7 assetsInSection:v12];
+          v13 = [photosDataSource assetsInSection:v12];
           v14 = [v13 countOfAssetsWithMediaType:1];
           v15 = [v13 countOfAssetsWithMediaType:2];
-          v8 += v14;
-          v9 += v15;
+          estimatedPhotosCount += v14;
+          estimatedVideosCount += v15;
           v11 = v11 - (v14 + v15) + [v13 count];
 
           ++v12;
         }
 
-        while (v12 < [v7 numberOfSections]);
+        while (v12 < [photosDataSource numberOfSections]);
       }
 
       else
       {
         v11 = 0;
-        v9 = 0;
-        v8 = 0;
+        estimatedVideosCount = 0;
+        estimatedPhotosCount = 0;
       }
     }
 
-    v18 = [(PUPhotosAlbumViewController *)self assetCollection];
-    if ([v18 pendingItemsCount])
+    assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+    if ([assetCollection pendingItemsCount])
     {
-      [v18 pendingItemsType];
+      [assetCollection pendingItemsType];
       v17 = PLProgressDescription();
-      v16 = 0;
+      globalFooterSubtitle = 0;
     }
 
-    else if (v8 || v9 || v11)
+    else if (estimatedPhotosCount || estimatedVideosCount || v11)
     {
       v17 = PLLocalizedCountDescription();
-      v16 = [(PUPhotosAlbumViewController *)self globalFooterSubtitle];
+      globalFooterSubtitle = [(PUPhotosAlbumViewController *)self globalFooterSubtitle];
     }
 
     else
     {
-      v16 = 0;
+      globalFooterSubtitle = 0;
       v17 = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    globalFooterSubtitle = 0;
     v17 = 0;
   }
 
-  v19 = [v4 viewModel];
+  viewModel2 = [viewCopy viewModel];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke;
   v22[3] = &unk_1E7B7C400;
   v23 = v17;
-  v24 = v16;
-  v20 = v16;
+  v24 = globalFooterSubtitle;
+  v20 = globalFooterSubtitle;
   v21 = v17;
-  [v19 performChanges:v22];
+  [viewModel2 performChanges:v22];
 }
 
 void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(uint64_t a1, void *a2)
@@ -1128,11 +1128,11 @@ void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(
   [v4 setSubtitle1:*(a1 + 40)];
 }
 
-- (void)configureGlobalHeaderView:(id)a3
+- (void)configureGlobalHeaderView:(id)view
 {
-  v4 = a3;
-  v5 = [(PUPhotosAlbumViewController *)self _globalHeaderTitle];
-  [v4 setTitle:v5];
+  viewCopy = view;
+  _globalHeaderTitle = [(PUPhotosAlbumViewController *)self _globalHeaderTitle];
+  [viewCopy setTitle:_globalHeaderTitle];
 }
 
 - (double)globalHeaderHeight
@@ -1140,13 +1140,13 @@ void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(
   v3 = 0.0;
   if ([(PUPhotosAlbumViewController *)self isTrashBinViewController])
   {
-    v4 = [(PUPhotosAlbumViewController *)self _globalHeaderTitle];
-    v5 = [(PUPhotosAlbumViewController *)self _existingView];
-    [v5 frame];
+    _globalHeaderTitle = [(PUPhotosAlbumViewController *)self _globalHeaderTitle];
+    _existingView = [(PUPhotosAlbumViewController *)self _existingView];
+    [_existingView frame];
     v7 = v6;
     v9 = v8;
 
-    [MEMORY[0x1E69C38E0] sizeThatFits:v4 forTitle:{v7, v9}];
+    [MEMORY[0x1E69C38E0] sizeThatFits:_globalHeaderTitle forTitle:{v7, v9}];
     v3 = v10;
   }
 
@@ -1157,8 +1157,8 @@ void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(
 {
   if ([(PUPhotosAlbumViewController *)self isTrashBinViewController])
   {
-    v3 = [(PHAssetCollection *)self->_assetCollection photoLibrary];
-    if ([v3 isCloudPhotoLibraryEnabled])
+    photoLibrary = [(PHAssetCollection *)self->_assetCollection photoLibrary];
+    if ([photoLibrary isCloudPhotoLibraryEnabled])
     {
       PXLocalizedStringWithCount();
     }
@@ -1178,28 +1178,28 @@ void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(
   return v4;
 }
 
-- (void)configureSupplementaryView:(id)a3 ofKind:(id)a4 forIndexPath:(id)a5
+- (void)configureSupplementaryView:(id)view ofKind:(id)kind forIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"PUFullMomentsHeader"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:@"PUFullMomentsHeader"])
   {
-    v11 = v8;
-    v12 = [v10 section];
+    v11 = viewCopy;
+    section = [pathCopy section];
 
     v31 = 0;
     v29 = 0;
     v30 = 0;
     v27 = 0;
     v28 = 0;
-    [(PUPhotosAlbumViewController *)self _getDataForVisualSection:v12 hasActionButton:&v31 locations:&v30 title:&v29 startDate:&v28 endDate:&v27];
+    [(PUPhotosAlbumViewController *)self _getDataForVisualSection:section hasActionButton:&v31 locations:&v30 title:&v29 startDate:&v28 endDate:&v27];
     v13 = v30;
     v14 = v29;
     v15 = v28;
     v16 = v27;
-    v17 = [(PUPhotosAlbumViewController *)self _albumSpec];
-    [v11 setStyle:{objc_msgSend(v17, "fullMomentsSectionHeaderStyle")}];
+    _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+    [v11 setStyle:{objc_msgSend(_albumSpec, "fullMomentsSectionHeaderStyle")}];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_forIndexPath___block_invoke;
@@ -1211,26 +1211,26 @@ void __57__PUPhotosAlbumViewController_configureGlobalFooterView___block_invoke(
     v18 = v16;
     v19 = v15;
     v21 = v14;
-    v10 = v11;
-    [v10 performBatchUpdateOfDateDependentPropertiesWithBlock:v22];
-    [v10 setSectionIndex:v12];
-    v20 = [(PUPhotosGridViewController *)self gridSpec];
-    [v20 sectionHeaderInsets];
-    [v10 setContentInsets:?];
+    pathCopy = v11;
+    [pathCopy performBatchUpdateOfDateDependentPropertiesWithBlock:v22];
+    [pathCopy setSectionIndex:section];
+    gridSpec = [(PUPhotosGridViewController *)self gridSpec];
+    [gridSpec sectionHeaderInsets];
+    [pathCopy setContentInsets:?];
 
-    [v17 fullMomentsLevelSectionHeaderHighlightInset];
-    [v10 setHighlightInsets:?];
-    [v10 setDelegate:self];
-    [v10 setShowsActionButton:v31];
-    [v10 setAllowsPhotosDetailsInteraction:1];
-    [v10 setSectionLocations:v13];
+    [_albumSpec fullMomentsLevelSectionHeaderHighlightInset];
+    [pathCopy setHighlightInsets:?];
+    [pathCopy setDelegate:self];
+    [pathCopy setShowsActionButton:v31];
+    [pathCopy setAllowsPhotosDetailsInteraction:1];
+    [pathCopy setSectionLocations:v13];
   }
 
   else
   {
     v32.receiver = self;
     v32.super_class = PUPhotosAlbumViewController;
-    [(PUPhotosGridViewController *)&v32 configureSupplementaryView:v8 ofKind:v9 forIndexPath:v10];
+    [(PUPhotosGridViewController *)&v32 configureSupplementaryView:viewCopy ofKind:kindCopy forIndexPath:pathCopy];
   }
 }
 
@@ -1244,50 +1244,50 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   return [v2 setSectionStartDate:v3 endDate:v4];
 }
 
-- (void)_getDataForVisualSection:(int64_t)a3 hasActionButton:(BOOL *)a4 locations:(id *)a5 title:(id *)a6 startDate:(id *)a7 endDate:(id *)a8
+- (void)_getDataForVisualSection:(int64_t)section hasActionButton:(BOOL *)button locations:(id *)locations title:(id *)title startDate:(id *)date endDate:(id *)endDate
 {
-  v25 = [(PUPhotosGridViewController *)self assetCollectionForSectionHeaderAtIndex:a3];
-  *a6 = [v25 localizedTitle];
-  *a5 = [v25 localizedLocationNames];
-  *a4 = 0;
-  v14 = [v25 startDate];
-  v15 = [v25 endDate];
-  v16 = v15;
-  if (!v14 || !v15)
+  v25 = [(PUPhotosGridViewController *)self assetCollectionForSectionHeaderAtIndex:section];
+  *title = [v25 localizedTitle];
+  *locations = [v25 localizedLocationNames];
+  *button = 0;
+  startDate = [v25 startDate];
+  endDate = [v25 endDate];
+  v16 = endDate;
+  if (!startDate || !endDate)
   {
     v17 = [(PUPhotosGridViewController *)self assetsInAssetCollection:v25];
-    v18 = [v17 lastObject];
+    lastObject = [v17 lastObject];
 
-    v19 = [v18 creationDate];
+    creationDate = [lastObject creationDate];
 
-    if (v18)
+    if (lastObject)
     {
       v20 = [(PUPhotosGridViewController *)self assetsInAssetCollection:v25];
-      v21 = [v20 firstObject];
+      firstObject = [v20 firstObject];
 
-      v22 = [v21 creationDate];
+      creationDate2 = [firstObject creationDate];
 
-      v14 = v22;
+      startDate = creationDate2;
     }
 
-    v16 = v19;
+    v16 = creationDate;
   }
 
-  v23 = v14;
-  *a7 = v14;
+  v23 = startDate;
+  *date = startDate;
   v24 = v16;
-  *a8 = v16;
+  *endDate = v16;
 }
 
-- (void)_setAlbumSpec:(id)a3
+- (void)_setAlbumSpec:(id)spec
 {
-  v5 = a3;
-  if (self->__albumSpec != v5)
+  specCopy = spec;
+  if (self->__albumSpec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__albumSpec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->__albumSpec, spec);
     [(PUPhotosAlbumViewController *)self updateLayoutMetrics];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
@@ -1295,11 +1295,11 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
 {
   v9.receiver = self;
   v9.super_class = PUPhotosAlbumViewController;
-  v3 = [(PUPhotosGridViewController *)&v9 updateSpec];
-  v4 = [(PUPhotosAlbumViewController *)self traitCollection];
-  if ([v4 horizontalSizeClass] && objc_msgSend(v4, "verticalSizeClass"))
+  updateSpec = [(PUPhotosGridViewController *)&v9 updateSpec];
+  traitCollection = [(PUPhotosAlbumViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] && objc_msgSend(traitCollection, "verticalSizeClass"))
   {
-    [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:v4];
+    [PUInterfaceManager shouldUsePhoneLayoutWithTraitCollection:traitCollection];
     v5 = objc_opt_class();
     v6 = objc_opt_class();
     if (v6 == objc_opt_class() || v6 == objc_opt_class())
@@ -1312,16 +1312,16 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
       v7 = objc_alloc_init(v5);
       [(PUPhotosAlbumViewController *)self _setAlbumSpec:v7];
 
-      v3 = 1;
+      updateSpec = 1;
     }
   }
 
   else
   {
-    v3 = 0;
+    updateSpec = 0;
   }
 
-  return v3;
+  return updateSpec;
 }
 
 - (void)updateLayoutMetrics
@@ -1329,9 +1329,9 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   v5.receiver = self;
   v5.super_class = PUPhotosAlbumViewController;
   [(PUPhotosGridViewController *)&v5 updateLayoutMetrics];
-  v3 = [(PUPhotosAlbumViewController *)self _albumSpec];
-  v4 = [(PUPhotosAlbumViewController *)self collectionViewLayout];
-  [v3 configureCollectionViewGridLayout:v4];
+  _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+  collectionViewLayout = [(PUPhotosAlbumViewController *)self collectionViewLayout];
+  [_albumSpec configureCollectionViewGridLayout:collectionViewLayout];
 }
 
 - (void)_updateSectionHeadersIfNeeded
@@ -1339,8 +1339,8 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   if (self->_needsUpdateFlags.sectionHeadersEnabled)
   {
     self->_needsUpdateFlags.sectionHeadersEnabled = 0;
-    v4 = [(PUPhotosGridViewController *)self gridLayout];
-    [v4 setSectionHeadersEnabled:{-[PUPhotosAlbumViewController shouldShowSectionHeaders](self, "shouldShowSectionHeaders")}];
+    gridLayout = [(PUPhotosGridViewController *)self gridLayout];
+    [gridLayout setSectionHeadersEnabled:{-[PUPhotosAlbumViewController shouldShowSectionHeaders](self, "shouldShowSectionHeaders")}];
   }
 }
 
@@ -1348,75 +1348,75 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
 {
   v8.receiver = self;
   v8.super_class = PUPhotosAlbumViewController;
-  v4 = [(PUPhotosGridViewController *)&v8 newGridLayout];
+  newGridLayout = [(PUPhotosGridViewController *)&v8 newGridLayout];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"[gridLayout isKindOfClass:[PUSectionedGridLayout class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAlbumViewController.m" lineNumber:242 description:{@"Invalid parameter not satisfying: %@", @"[gridLayout isKindOfClass:[PUSectionedGridLayout class]]"}];
   }
 
-  [v4 setSectionHeaderElementKind:@"PUFullMomentsHeader"];
-  v5 = [(PUPhotosAlbumViewController *)self _albumSpec];
-  [v5 configureCollectionViewGridLayout:v4];
+  [newGridLayout setSectionHeaderElementKind:@"PUFullMomentsHeader"];
+  _albumSpec = [(PUPhotosAlbumViewController *)self _albumSpec];
+  [_albumSpec configureCollectionViewGridLayout:newGridLayout];
 
-  return v4;
+  return newGridLayout;
 }
 
 - (BOOL)canBeginStackCollapseTransition
 {
-  v2 = [(PUPhotosGridViewController *)self gridSpec];
-  v3 = [v2 usesStackPopTransition];
+  gridSpec = [(PUPhotosGridViewController *)self gridSpec];
+  usesStackPopTransition = [gridSpec usesStackPopTransition];
 
-  return v3;
+  return usesStackPopTransition;
 }
 
 - (BOOL)wantsGlobalFooter
 {
-  v3 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v4 = [v3 pendingItemsCount];
-  v5 = [(PUPhotosAlbumViewController *)self _hasAccurateCounts];
-  v6 = v4 <= 0;
-  v7 = v4 > 0;
-  if (v6 && v5)
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  pendingItemsCount = [assetCollection pendingItemsCount];
+  _hasAccurateCounts = [(PUPhotosAlbumViewController *)self _hasAccurateCounts];
+  v6 = pendingItemsCount <= 0;
+  hasScrollableContent = pendingItemsCount > 0;
+  if (v6 && _hasAccurateCounts)
   {
-    v7 = [(PUPhotosGridViewController *)self hasScrollableContent];
+    hasScrollableContent = [(PUPhotosGridViewController *)self hasScrollableContent];
   }
 
-  return v7;
+  return hasScrollableContent;
 }
 
 - (BOOL)shouldShowSectionHeaders
 {
-  v3 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v4 = [v3 assetCollectionType];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollectionType = [assetCollection assetCollectionType];
 
-  if (v4 == 2)
+  if (assetCollectionType == 2)
   {
     return 0;
   }
 
-  v6 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v7 = [v6 assetCollectionSubtype];
+  assetCollection2 = [(PUPhotosAlbumViewController *)self assetCollection];
+  assetCollectionSubtype = [assetCollection2 assetCollectionSubtype];
 
   v5 = 0;
-  if ((v7 > 6 || ((1 << v7) & 0x58) == 0) && v7 != 101)
+  if ((assetCollectionSubtype > 6 || ((1 << assetCollectionSubtype) & 0x58) == 0) && assetCollectionSubtype != 101)
   {
-    v8 = [(PUPhotosGridViewController *)self sessionInfo];
-    if (v8)
+    sessionInfo = [(PUPhotosGridViewController *)self sessionInfo];
+    if (sessionInfo)
     {
-      v9 = [(PUPhotosGridViewController *)self sessionInfo];
-      v10 = [v9 targetAlbum];
-      if (v10)
+      sessionInfo2 = [(PUPhotosGridViewController *)self sessionInfo];
+      targetAlbum = [sessionInfo2 targetAlbum];
+      if (targetAlbum)
       {
         v5 = 0;
       }
 
       else
       {
-        v11 = [(PUPhotosGridViewController *)self sessionInfo];
-        v12 = [v11 targetAlbumName];
-        v5 = v12 == 0;
+        sessionInfo3 = [(PUPhotosGridViewController *)self sessionInfo];
+        targetAlbumName = [sessionInfo3 targetAlbumName];
+        v5 = targetAlbumName == 0;
       }
     }
 
@@ -1429,66 +1429,66 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   return v5;
 }
 
-- (id)sessionInfoForTransferredAssets:(id)a3
+- (id)sessionInfoForTransferredAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v5 = [PUAlbumPickerSessionInfo alloc];
-  v6 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v7 = [(PUAlbumPickerSessionInfo *)v5 initWithSourceAlbum:v6 transferredAssets:v4];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v7 = [(PUAlbumPickerSessionInfo *)v5 initWithSourceAlbum:assetCollection transferredAssets:assetsCopy];
 
   return v7;
 }
 
-- (id)localizedTitleForAssets:(id)a3
+- (id)localizedTitleForAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v6 = [v5 localizedTitle];
+  assetsCopy = assets;
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  localizedTitle = [assetCollection localizedTitle];
 
-  if (!v6)
+  if (!localizedTitle)
   {
     v8.receiver = self;
     v8.super_class = PUPhotosAlbumViewController;
-    v6 = [(PUPhotosGridViewController *)&v8 localizedTitleForAssets:v4];
+    localizedTitle = [(PUPhotosGridViewController *)&v8 localizedTitleForAssets:assetsCopy];
   }
 
-  return v6;
+  return localizedTitle;
 }
 
 - (PHFetchResult)assetCollectionAssets
 {
-  v3 = [(PUPhotosAlbumViewController *)self assetCollection];
-  v4 = [(PUPhotosGridViewController *)self assetsInAssetCollection:v3];
+  assetCollection = [(PUPhotosAlbumViewController *)self assetCollection];
+  v4 = [(PUPhotosGridViewController *)self assetsInAssetCollection:assetCollection];
 
   return v4;
 }
 
-- (void)setAssetCollection:(id)a3 fetchResultContainingAssetCollection:(id)a4 filterPredicate:(id)a5 existingFetchResults:(id)a6
+- (void)setAssetCollection:(id)collection fetchResultContainingAssetCollection:(id)assetCollection filterPredicate:(id)predicate existingFetchResults:(id)results
 {
-  v20 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (self->_assetCollection != v20 || (-[PUPhotosGridViewController photosDataSource](self, "photosDataSource"), v14 = objc_claimAutoreleasedReturnValue(), [v14 filterPredicate], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15 != v12))
+  collectionCopy = collection;
+  assetCollectionCopy = assetCollection;
+  predicateCopy = predicate;
+  resultsCopy = results;
+  if (self->_assetCollection != collectionCopy || (-[PUPhotosGridViewController photosDataSource](self, "photosDataSource"), v14 = objc_claimAutoreleasedReturnValue(), [v14 filterPredicate], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15 != predicateCopy))
   {
-    objc_storeStrong(&self->_assetCollection, a3);
-    v16 = [(PUPhotosGridViewController *)self photosDataSource];
+    objc_storeStrong(&self->_assetCollection, collection);
+    photosDataSource = [(PUPhotosGridViewController *)self photosDataSource];
 
-    if (v16)
+    if (photosDataSource)
     {
-      v17 = [(PUPhotosGridViewController *)self photosDataSource];
-      [v17 setCollectionListFetchResult:v11];
+      photosDataSource2 = [(PUPhotosGridViewController *)self photosDataSource];
+      [photosDataSource2 setCollectionListFetchResult:assetCollectionCopy];
 
-      v18 = [(PUPhotosGridViewController *)self photosDataSource];
-      [v18 setFilterPredicate:v12];
+      photosDataSource3 = [(PUPhotosGridViewController *)self photosDataSource];
+      [photosDataSource3 setFilterPredicate:predicateCopy];
     }
 
     else
     {
-      v18 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:v11 options:2];
-      [v18 setExistingAssetCollectionFetchResults:v13];
-      [v18 setFilterPredicate:v12];
-      v19 = [objc_alloc(MEMORY[0x1E69C3870]) initWithPhotosDataSourceConfiguration:v18];
+      photosDataSource3 = [objc_alloc(MEMORY[0x1E69C3878]) initWithCollectionListFetchResult:assetCollectionCopy options:2];
+      [photosDataSource3 setExistingAssetCollectionFetchResults:resultsCopy];
+      [photosDataSource3 setFilterPredicate:predicateCopy];
+      v19 = [objc_alloc(MEMORY[0x1E69C3870]) initWithPhotosDataSourceConfiguration:photosDataSource3];
       [(PUPhotosGridViewController *)self setPhotosDataSource:v19];
     }
 
@@ -1508,19 +1508,19 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   }
 }
 
-- (void)setAssetCollection:(id)a3
+- (void)setAssetCollection:(id)collection
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_assetCollection != v5)
+  collectionCopy = collection;
+  if (self->_assetCollection != collectionCopy)
   {
-    objc_storeStrong(&self->_assetCollection, a3);
+    objc_storeStrong(&self->_assetCollection, collection);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PUPhotosAlbumViewController *)self collectionView];
-    v7 = [v6 indexPathsForVisibleSupplementaryElementsOfKind:@"PUFullMomentsHeader"];
+    collectionView = [(PUPhotosAlbumViewController *)self collectionView];
+    v7 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:@"PUFullMomentsHeader"];
 
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
@@ -1538,8 +1538,8 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
-          v13 = [(PUPhotosAlbumViewController *)self collectionView];
-          v14 = [v13 supplementaryViewForElementKind:@"PUFullMomentsHeader" atIndexPath:v12];
+          collectionView2 = [(PUPhotosAlbumViewController *)self collectionView];
+          v14 = [collectionView2 supplementaryViewForElementKind:@"PUFullMomentsHeader" atIndexPath:v12];
 
           [(PUPhotosAlbumViewController *)self configureSupplementaryView:v14 ofKind:@"PUFullMomentsHeader" forIndexPath:v12];
           ++v11;
@@ -1556,34 +1556,34 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   }
 }
 
-- (void)setAlbum:(id)a3 existingFetchResult:(id)a4
+- (void)setAlbum:(id)album existingFetchResult:(id)result
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  albumCopy = album;
+  resultCopy = result;
   v9 = MEMORY[0x1E6978840];
-  v10 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v11 = [v9 pl_fetchResultContainingAssetContainer:v7 photoLibrary:v10];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v11 = [v9 pl_fetchResultContainingAssetContainer:albumCopy photoLibrary:px_deprecated_appPhotoLibrary];
 
-  v12 = [(PUPhotosAlbumViewController *)self filterPredicateForAlbum:v7];
-  v13 = [v11 firstObject];
-  objc_storeStrong(&self->_album, a3);
+  v12 = [(PUPhotosAlbumViewController *)self filterPredicateForAlbum:albumCopy];
+  firstObject = [v11 firstObject];
+  objc_storeStrong(&self->_album, album);
   v14 = 0;
-  if (v8 && v13)
+  if (resultCopy && firstObject)
   {
-    v15 = v13;
-    v16[0] = v8;
+    v15 = firstObject;
+    v16[0] = resultCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   }
 
-  [(PUPhotosAlbumViewController *)self setAssetCollection:v13 fetchResultContainingAssetCollection:v11 filterPredicate:v12 existingFetchResults:v14];
+  [(PUPhotosAlbumViewController *)self setAssetCollection:firstObject fetchResultContainingAssetCollection:v11 filterPredicate:v12 existingFetchResults:v14];
 }
 
-- (void)setSessionInfo:(id)a3
+- (void)setSessionInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = PUPhotosAlbumViewController;
-  [(PUPhotosGridViewController *)&v4 setSessionInfo:a3];
+  [(PUPhotosGridViewController *)&v4 setSessionInfo:info];
   [(PUPhotosAlbumViewController *)self _invalideSectionHeaders];
   [(PUPhotosAlbumViewController *)self _updateSectionHeadersIfNeeded];
 }
@@ -1593,42 +1593,42 @@ uint64_t __78__PUPhotosAlbumViewController_configureSupplementaryView_ofKind_for
   v6.receiver = self;
   v6.super_class = PUPhotosAlbumViewController;
   [(PUPhotosGridViewController *)&v6 viewDidLoad];
-  v3 = [(PUPhotosAlbumViewController *)self collectionView];
+  collectionView = [(PUPhotosAlbumViewController *)self collectionView];
   v4 = +[PUInterfaceManager currentTheme];
-  v5 = [v4 photoCollectionViewBackgroundColor];
-  [v3 setBackgroundColor:v5];
+  photoCollectionViewBackgroundColor = [v4 photoCollectionViewBackgroundColor];
+  [collectionView setBackgroundColor:photoCollectionViewBackgroundColor];
 
-  [v3 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUFullMomentsHeader" withReuseIdentifier:@"PUFullMomentsHeader"];
+  [collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUFullMomentsHeader" withReuseIdentifier:@"PUFullMomentsHeader"];
 }
 
-- (PUPhotosAlbumViewController)initWithAlbumSpec:(id)a3 photoLibrary:(id)a4
+- (PUPhotosAlbumViewController)initWithAlbumSpec:(id)spec photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 gridSpec];
-  v9 = [(PUPhotosAlbumViewController *)self initWithSpec:v8 photoLibrary:v7];
+  specCopy = spec;
+  libraryCopy = library;
+  gridSpec = [specCopy gridSpec];
+  v9 = [(PUPhotosAlbumViewController *)self initWithSpec:gridSpec photoLibrary:libraryCopy];
 
   if (v9)
   {
-    [(PUPhotosAlbumViewController *)v9 _setAlbumSpec:v6];
+    [(PUPhotosAlbumViewController *)v9 _setAlbumSpec:specCopy];
   }
 
   return v9;
 }
 
-- (PUPhotosAlbumViewController)initWithSpec:(id)a3 photoLibrary:(id)a4
+- (PUPhotosAlbumViewController)initWithSpec:(id)spec photoLibrary:(id)library
 {
   v5.receiver = self;
   v5.super_class = PUPhotosAlbumViewController;
-  return [(PUPhotosGridViewController *)&v5 initWithSpec:a3 photoLibrary:a4];
+  return [(PUPhotosGridViewController *)&v5 initWithSpec:spec photoLibrary:library];
 }
 
-- (PUPhotosAlbumViewController)initWithSpec:(id)a3
+- (PUPhotosAlbumViewController)initWithSpec:(id)spec
 {
   v4 = MEMORY[0x1E69789A8];
-  v5 = a3;
-  v6 = [v4 px_deprecated_appPhotoLibrary];
-  v7 = [(PUPhotosAlbumViewController *)self initWithSpec:v5 photoLibrary:v6];
+  specCopy = spec;
+  px_deprecated_appPhotoLibrary = [v4 px_deprecated_appPhotoLibrary];
+  v7 = [(PUPhotosAlbumViewController *)self initWithSpec:specCopy photoLibrary:px_deprecated_appPhotoLibrary];
 
   return v7;
 }

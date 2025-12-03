@@ -1,6 +1,6 @@
 @interface HKFeatureAvailabilityRequirementHealthAppIsNotHidden
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (id)requiredEntitlements;
 - (unint64_t)hash;
 @end
@@ -21,18 +21,18 @@
   return v4;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [a3 behavior];
-  v6 = [v4 numberWithInt:{objc_msgSend(v5, "healthAppHidden") ^ 1}];
+  behavior = [source behavior];
+  v6 = [v4 numberWithInt:{objc_msgSend(behavior, "healthAppHidden") ^ 1}];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

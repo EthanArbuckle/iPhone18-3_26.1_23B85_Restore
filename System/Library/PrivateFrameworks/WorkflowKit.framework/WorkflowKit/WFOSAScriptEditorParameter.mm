@@ -1,5 +1,5 @@
 @interface WFOSAScriptEditorParameter
-- (WFOSAScriptEditorParameter)initWithDefinition:(id)a3;
+- (WFOSAScriptEditorParameter)initWithDefinition:(id)definition;
 - (WFOSAScriptEditorParameterDelegate)delegate;
 - (id)defaultSerializedRepresentation;
 @end
@@ -17,20 +17,20 @@
 {
   v6.receiver = self;
   v6.super_class = WFOSAScriptEditorParameter;
-  v2 = [(WFParameter *)&v6 defaultSerializedRepresentation];
+  defaultSerializedRepresentation = [(WFParameter *)&v6 defaultSerializedRepresentation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    localize = defaultSerializedRepresentation;
 LABEL_5:
-    v4 = v3;
+    v4 = localize;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 localize];
+    localize = [defaultSerializedRepresentation localize];
     goto LABEL_5;
   }
 
@@ -40,16 +40,16 @@ LABEL_7:
   return v4;
 }
 
-- (WFOSAScriptEditorParameter)initWithDefinition:(id)a3
+- (WFOSAScriptEditorParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFOSAScriptEditorParameter;
-  v5 = [(WFParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"LanguageName"];
+    v6 = [definitionCopy objectForKey:@"LanguageName"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

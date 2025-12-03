@@ -1,26 +1,26 @@
 @interface _SKUIClickThroughWindow
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _SKUIClickThroughWindow
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_SKUIClickThroughWindow *)self interactionView];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  interactionView = [(_SKUIClickThroughWindow *)self interactionView];
 
-  if (v8)
+  if (interactionView)
   {
-    v9 = [(_SKUIClickThroughWindow *)self interactionView];
-    [(_SKUIClickThroughWindow *)self convertPoint:v9 toView:x, y];
+    interactionView2 = [(_SKUIClickThroughWindow *)self interactionView];
+    [(_SKUIClickThroughWindow *)self convertPoint:interactionView2 toView:x, y];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(_SKUIClickThroughWindow *)self interactionView];
-    v15 = [v14 pointInside:v7 withEvent:{v11, v13}];
+    interactionView3 = [(_SKUIClickThroughWindow *)self interactionView];
+    v15 = [interactionView3 pointInside:eventCopy withEvent:{v11, v13}];
   }
 
   else
@@ -31,11 +31,11 @@
   return v15;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _SKUIClickThroughWindow;
-  v5 = [(_SKUIClickThroughWindow *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(_SKUIClickThroughWindow *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

@@ -1,5 +1,5 @@
 @interface CMContinuityCaptureSidecarServer
-- (CMContinuityCaptureSidecarServer)initWithRequest:(id)a3;
+- (CMContinuityCaptureSidecarServer)initWithRequest:(id)request;
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock;
 - (ContinuityCaptureTaskDelegate)delegate;
 - (NSUUID)sessionUUID;
@@ -8,13 +8,13 @@
 - (unint64_t)currentSessionID;
 - (void)_activate;
 - (void)_cancel;
-- (void)_resetRequest:(id)a3;
+- (void)_resetRequest:(id)request;
 - (void)activate;
 - (void)cancel;
-- (void)resetRequest:(id)a3;
-- (void)setCurrentSessionID:(unint64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setupMediaSidecarStreamForIdentifier:(id)a3 type:(int64_t)a4 completion:(id)a5;
+- (void)resetRequest:(id)request;
+- (void)setCurrentSessionID:(unint64_t)d;
+- (void)setDelegate:(id)delegate;
+- (void)setupMediaSidecarStreamForIdentifier:(id)identifier type:(int64_t)type completion:(id)completion;
 - (void)setupSidecarStreams;
 - (void)teardownSidecarStreams;
 @end
@@ -28,57 +28,57 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CMContinuityCaptureSidecarServer;
-  v4 = a3;
-  [(CMContinuityCaptureSidecarTransportBase *)&v5 setTaskDelegate:v4];
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  [(CMContinuityCaptureSidecarTransportBase *)&v5 setTaskDelegate:delegateCopy];
+  objc_storeWeak(&self->_delegate, delegateCopy);
 }
 
 - (CMContinuityCaptureTimeSyncClock)timeSyncClock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_timeSyncClock;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_timeSyncClock;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (int64_t)currentTransport
 {
-  v3 = [(CMContinuityCaptureSidecarTransportBase *)self device];
-  objc_sync_enter(v3);
-  v4 = [(CMContinuityCaptureSidecarTransportBase *)self device];
-  v5 = [v4 activeStreams];
-  if ([v5 count])
+  device = [(CMContinuityCaptureSidecarTransportBase *)self device];
+  objc_sync_enter(device);
+  device2 = [(CMContinuityCaptureSidecarTransportBase *)self device];
+  activeStreams = [device2 activeStreams];
+  if ([activeStreams count])
   {
-    v6 = [(CMContinuityCaptureSidecarTransportBase *)self device];
-    v7 = [v6 activeStreams];
-    v8 = [v7 firstObject];
+    device3 = [(CMContinuityCaptureSidecarTransportBase *)self device];
+    activeStreams2 = [device3 activeStreams];
+    firstObject = [activeStreams2 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  objc_sync_exit(v3);
-  if (v8)
+  objc_sync_exit(device);
+  if (firstObject)
   {
-    v9 = [v8 stream];
-    v10 = [v9 transport];
+    stream = [firstObject stream];
+    transport = [stream transport];
 
-    if (v10 == 2)
+    if (transport == 2)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = v10 == 1;
+      v11 = transport == 1;
     }
   }
 
@@ -92,45 +92,45 @@
 
 - (unint64_t)currentSessionID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  currentSessionID = v2->_currentSessionID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentSessionID = selfCopy->_currentSessionID;
+  objc_sync_exit(selfCopy);
 
   return currentSessionID;
 }
 
-- (void)setCurrentSessionID:(unint64_t)a3
+- (void)setCurrentSessionID:(unint64_t)d
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_currentSessionID = a3;
+  obj->_currentSessionID = d;
   objc_sync_exit(obj);
 }
 
 - (NSUUID)sessionUUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_sessionUUID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_sessionUUID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_resetRequest:(id)a3
+- (void)_resetRequest:(id)request
 {
-  v8 = a3;
-  v5 = [(CMContinuityCaptureSidecarServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v8)
+  if (requestCopy)
   {
     device = self->_device;
-    v7 = [v8 device];
-    [(CMContinuityCaptureTransportSidecarDevice *)device resetDevice:v7];
+    device = [requestCopy device];
+    [(CMContinuityCaptureTransportSidecarDevice *)device resetDevice:device];
 
-    objc_storeStrong(&self->_activeRequest, a3);
+    objc_storeStrong(&self->_activeRequest, request);
     [(CMContinuityCaptureSidecarServer *)self _activate];
   }
 
@@ -140,19 +140,19 @@
   }
 }
 
-- (void)resetRequest:(id)a3
+- (void)resetRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v5 = [(CMContinuityCaptureSidecarServer *)self queue];
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__CMContinuityCaptureSidecarServer_resetRequest___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -183,13 +183,13 @@ void __49__CMContinuityCaptureSidecarServer_resetRequest___block_invoke(uint64_t
 - (void)activate
 {
   objc_initWeak(&location, self);
-  v3 = [(CMContinuityCaptureSidecarServer *)self queue];
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__CMContinuityCaptureSidecarServer_activate__block_invoke;
   v4[3] = &unk_278D5C080;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -208,14 +208,14 @@ void __44__CMContinuityCaptureSidecarServer_activate__block_invoke(uint64_t a1)
 
 - (void)_activate
 {
-  v3 = [(CMContinuityCaptureSidecarServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCaptureSidecarServer _activate]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v7, 0x16u);
@@ -223,23 +223,23 @@ void __44__CMContinuityCaptureSidecarServer_activate__block_invoke(uint64_t a1)
 
   if (self->_activeRequest)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [MEMORY[0x277CCAD78] UUID];
-    [(CMContinuityCaptureSidecarServer *)v6 _activate];
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [(CMContinuityCaptureSidecarServer *)uUID _activate];
   }
 }
 
 - (void)cancel
 {
   objc_initWeak(&location, self);
-  v3 = [(CMContinuityCaptureSidecarServer *)self queue];
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __42__CMContinuityCaptureSidecarServer_cancel__block_invoke;
   v4[3] = &unk_278D5C080;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -258,14 +258,14 @@ void __42__CMContinuityCaptureSidecarServer_cancel__block_invoke(uint64_t a1)
 
 - (void)_cancel
 {
-  v3 = [(CMContinuityCaptureSidecarServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureSidecarServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CMContinuityCaptureSidecarServer _cancel]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v6, 0x16u);
@@ -276,12 +276,12 @@ void __42__CMContinuityCaptureSidecarServer_cancel__block_invoke(uint64_t a1)
   self->_activeRequest = 0;
 }
 
-- (void)setupMediaSidecarStreamForIdentifier:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)setupMediaSidecarStreamForIdentifier:(id)identifier type:(int64_t)type completion:(id)completion
 {
   activeRequest = self->_activeRequest;
-  v8 = a5;
-  v9 = a3;
-  [(SidecarRequest *)activeRequest openStreamForType:a4 flags:2 identifier:v9 processUniqueID:CMContinuityCaptureGetMediaProcessUniqueID(0) completion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  [(SidecarRequest *)activeRequest openStreamForType:type flags:2 identifier:identifierCopy processUniqueID:CMContinuityCaptureGetMediaProcessUniqueID(0) completion:completionCopy];
 }
 
 - (void)setupSidecarStreams
@@ -294,17 +294,17 @@ void __42__CMContinuityCaptureSidecarServer_cancel__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ ActivateRequest", buf, 0xCu);
   }
 
-  v4 = [(SidecarRequest *)self->_activeRequest session];
+  session = [(SidecarRequest *)self->_activeRequest session];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__CMContinuityCaptureSidecarServer_setupSidecarStreams__block_invoke;
   v5[3] = &unk_278D5CD58;
   objc_copyWeak(&v6, &location);
-  [(CMContinuityCaptureSidecarTransportBase *)self createTimeSyncClockForSession:v4 completion:v5];
+  [(CMContinuityCaptureSidecarTransportBase *)self createTimeSyncClockForSession:session completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -351,24 +351,24 @@ void __55__CMContinuityCaptureSidecarServer_setupSidecarStreams__block_invoke(ui
   [(CMContinuityCaptureSidecarTransportBase *)&v5 teardownSidecarStreams];
 }
 
-- (CMContinuityCaptureSidecarServer)initWithRequest:(id)a3
+- (CMContinuityCaptureSidecarServer)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v7 = dispatch_queue_create("com.apple.continuity-capture-server", v6);
 
-  if (!v5)
+  if (!requestCopy)
   {
     v11 = 0;
 LABEL_9:
-    v14 = 0;
+    selfCopy2 = 0;
     goto LABEL_7;
   }
 
   v8 = [CMContinuityCaptureTransportSidecarDevice alloc];
-  v9 = [v5 device];
+  device = [requestCopy device];
   v10 = +[CMContinuityCaptureCapabilities capabilitiesForCurrentDevice];
-  v11 = [(CMContinuityCaptureTransportSidecarDevice *)v8 initWithSidecarDevice:v9 capabilities:v10 remote:0];
+  v11 = [(CMContinuityCaptureTransportSidecarDevice *)v8 initWithSidecarDevice:device capabilities:v10 remote:0];
 
   if (!v11)
   {
@@ -384,30 +384,30 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  objc_storeStrong(&v12->_activeRequest, a3);
+  objc_storeStrong(&v12->_activeRequest, request);
   objc_storeStrong(&self->_device, v11);
   objc_storeStrong(&self->_queue, v7);
   v13 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = v11;
     _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ created with device %{public}@", &v16, 0x16u);
   }
 
   self = self;
-  v14 = self;
+  selfCopy2 = self;
 LABEL_7:
 
-  return v14;
+  return selfCopy2;
 }
 
 - (uint64_t)_activate
 {
   v3 = a2[13];
-  a2[13] = a1;
+  a2[13] = self;
 
   objc_sync_exit(a2);
   return [a2 setupSidecarStreams];

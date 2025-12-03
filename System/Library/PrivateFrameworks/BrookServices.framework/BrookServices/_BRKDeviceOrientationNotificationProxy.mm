@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (_BRKDeviceOrientationNotificationProxy)init;
 - (void)_logCurrentState;
-- (void)_postChangeNotification:(id)a3;
+- (void)_postChangeNotification:(id)notification;
 @end
 
 @implementation _BRKDeviceOrientationNotificationProxy
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (void)_postChangeNotification:(id)a3
+- (void)_postChangeNotification:(id)notification
 {
   v4 = BRKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -43,8 +43,8 @@
   }
 
   [(_BRKDeviceOrientationNotificationProxy *)self _logCurrentState];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"BRKDeviceOrientationDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"BRKDeviceOrientationDidChangeNotification" object:0];
 }
 
 - (void)_logCurrentState

@@ -1,31 +1,31 @@
 @interface TTSSchemaTTSSynthesisEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (TTSSchemaTTSSynthesisEnded)initWithDictionary:(id)a3;
-- (TTSSchemaTTSSynthesisEnded)initWithJSON:(id)a3;
+- (TTSSchemaTTSSynthesisEnded)initWithDictionary:(id)dictionary;
+- (TTSSchemaTTSSynthesisEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)errorCodesAtIndex:(unint64_t)a3;
+- (int)errorCodesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addErrorCodes:(int)a3;
-- (void)setHasPromptCount:(BOOL)a3;
-- (void)setHasSynthesisLatencyInSecond:(BOOL)a3;
-- (void)setHasSynthesisRealTimeFactor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addErrorCodes:(int)codes;
+- (void)setHasPromptCount:(BOOL)count;
+- (void)setHasSynthesisLatencyInSecond:(BOOL)second;
+- (void)setHasSynthesisRealTimeFactor:(BOOL)factor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TTSSchemaTTSSynthesisEnded
 
-- (TTSSchemaTTSSynthesisEnded)initWithDictionary:(id)a3
+- (TTSSchemaTTSSynthesisEnded)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = TTSSchemaTTSSynthesisEnded;
   v5 = [(TTSSchemaTTSSynthesisEnded *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"synthesizedAudioDurationInSecond"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"synthesizedAudioDurationInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(TTSSchemaTTSSynthesisEnded *)v5 setSynthesizedAudioDurationInSecond:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"synthesisLatencyInSecond"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"synthesisLatencyInSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
       [(TTSSchemaTTSSynthesisEnded *)v5 setSynthesisLatencyInSecond:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"synthesisRealTimeFactor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"synthesisRealTimeFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,14 +49,14 @@
       [(TTSSchemaTTSSynthesisEnded *)v5 setSynthesisRealTimeFactor:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"promptCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"promptCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[TTSSchemaTTSSynthesisEnded setPromptCount:](v5, "setPromptCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"errorCodes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"errorCodes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,30 +111,30 @@
   return v5;
 }
 
-- (TTSSchemaTTSSynthesisEnded)initWithJSON:(id)a3
+- (TTSSchemaTTSSynthesisEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(TTSSchemaTTSSynthesisEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(TTSSchemaTTSSynthesisEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(TTSSchemaTTSSynthesisEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -147,19 +147,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_errorCodes count])
   {
-    v4 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"errorCodes"];
+    errorCodes = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
+    v5 = [errorCodes copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"errorCodes"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[TTSSchemaTTSSynthesisEnded promptCount](self, "promptCount")}];
-    [v3 setObject:v10 forKeyedSubscript:@"promptCount"];
+    [dictionary setObject:v10 forKeyedSubscript:@"promptCount"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -182,7 +182,7 @@ LABEL_5:
   v11 = MEMORY[0x1E696AD98];
   [(TTSSchemaTTSSynthesisEnded *)self synthesisLatencyInSecond];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"synthesisLatencyInSecond"];
+  [dictionary setObject:v12 forKeyedSubscript:@"synthesisLatencyInSecond"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -200,7 +200,7 @@ LABEL_13:
   v13 = MEMORY[0x1E696AD98];
   [(TTSSchemaTTSSynthesisEnded *)self synthesisRealTimeFactor];
   v14 = [v13 numberWithFloat:?];
-  [v3 setObject:v14 forKeyedSubscript:@"synthesisRealTimeFactor"];
+  [dictionary setObject:v14 forKeyedSubscript:@"synthesisRealTimeFactor"];
 
   if (*&self->_has)
   {
@@ -208,13 +208,13 @@ LABEL_7:
     v7 = MEMORY[0x1E696AD98];
     [(TTSSchemaTTSSynthesisEnded *)self synthesizedAudioDurationInSecond];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"synthesizedAudioDurationInSecond"];
+    [dictionary setObject:v8 forKeyedSubscript:@"synthesizedAudioDurationInSecond"];
   }
 
 LABEL_8:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -348,16 +348,16 @@ LABEL_8:
   return v13 ^ v8 ^ v18 ^ v23 ^ [(NSArray *)self->_errorCodes hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -366,14 +366,14 @@ LABEL_8:
   if (*&has)
   {
     synthesizedAudioDurationInSecond = self->_synthesizedAudioDurationInSecond;
-    [v4 synthesizedAudioDurationInSecond];
+    [equalCopy synthesizedAudioDurationInSecond];
     if (synthesizedAudioDurationInSecond != v8)
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -382,14 +382,14 @@ LABEL_8:
     if (v9)
     {
       synthesisLatencyInSecond = self->_synthesisLatencyInSecond;
-      [v4 synthesisLatencyInSecond];
+      [equalCopy synthesisLatencyInSecond];
       if (synthesisLatencyInSecond != v11)
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v12 = (*&has >> 2) & 1;
@@ -398,28 +398,28 @@ LABEL_8:
       if (v12)
       {
         synthesisRealTimeFactor = self->_synthesisRealTimeFactor;
-        [v4 synthesisRealTimeFactor];
+        [equalCopy synthesisRealTimeFactor];
         if (synthesisRealTimeFactor != v14)
         {
           goto LABEL_22;
         }
 
         has = self->_has;
-        v6 = v4[32];
+        v6 = equalCopy[32];
       }
 
       v15 = (*&has >> 3) & 1;
       if (v15 == ((v6 >> 3) & 1))
       {
-        if (!v15 || (promptCount = self->_promptCount, promptCount == [v4 promptCount]))
+        if (!v15 || (promptCount = self->_promptCount, promptCount == [equalCopy promptCount]))
         {
-          v17 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
-          v18 = [v4 errorCodes];
-          v19 = v18;
-          if ((v17 != 0) != (v18 == 0))
+          errorCodes = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
+          errorCodes2 = [equalCopy errorCodes];
+          v19 = errorCodes2;
+          if ((errorCodes != 0) != (errorCodes2 == 0))
           {
-            v20 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
-            if (!v20)
+            errorCodes3 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
+            if (!errorCodes3)
             {
 
 LABEL_25:
@@ -427,10 +427,10 @@ LABEL_25:
               goto LABEL_23;
             }
 
-            v21 = v20;
-            v22 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
-            v23 = [v4 errorCodes];
-            v24 = [v22 isEqual:v23];
+            v21 = errorCodes3;
+            errorCodes4 = [(TTSSchemaTTSSynthesisEnded *)self errorCodes];
+            errorCodes5 = [equalCopy errorCodes];
+            v24 = [errorCodes4 isEqual:errorCodes5];
 
             if (v24)
             {
@@ -453,10 +453,10 @@ LABEL_23:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -531,23 +531,23 @@ LABEL_6:
   }
 }
 
-- (int)errorCodesAtIndex:(unint64_t)a3
+- (int)errorCodesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_errorCodes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_errorCodes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addErrorCodes:(int)a3
+- (void)addErrorCodes:(int)codes
 {
-  v3 = *&a3;
+  v3 = *&codes;
   errorCodes = self->_errorCodes;
   if (!errorCodes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_errorCodes;
-    self->_errorCodes = v6;
+    self->_errorCodes = array;
 
     errorCodes = self->_errorCodes;
   }
@@ -556,9 +556,9 @@ LABEL_6:
   [(NSArray *)errorCodes addObject:v8];
 }
 
-- (void)setHasPromptCount:(BOOL)a3
+- (void)setHasPromptCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -571,9 +571,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSynthesisRealTimeFactor:(BOOL)a3
+- (void)setHasSynthesisRealTimeFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 4;
   }
@@ -586,9 +586,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSynthesisLatencyInSecond:(BOOL)a3
+- (void)setHasSynthesisLatencyInSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 2;
   }

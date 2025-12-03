@@ -1,16 +1,16 @@
 @interface CHTitleQuery
-- (CHTitleQuery)initWithRecognitionSession:(id)a3;
+- (CHTitleQuery)initWithRecognitionSession:(id)session;
 - (void)q_updateQueryResult;
 @end
 
 @implementation CHTitleQuery
 
-- (CHTitleQuery)initWithRecognitionSession:(id)a3
+- (CHTitleQuery)initWithRecognitionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = CHTitleQuery;
-  v5 = [(CHQuery *)&v13 initWithRecognitionSession:v4];
+  v5 = [(CHQuery *)&v13 initWithRecognitionSession:sessionCopy];
   v11 = v5;
   if (v5)
   {

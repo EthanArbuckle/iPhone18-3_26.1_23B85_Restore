@@ -12,7 +12,7 @@
   {
     if (self->inputLensModelParams)
     {
-      v4 = [(CILensModelApply *)self kernel];
+      kernel = [(CILensModelApply *)self kernel];
       [(CIImage *)self->inputImage extent];
       v6 = v5;
       v8 = v7;
@@ -20,7 +20,7 @@
       v12 = v11;
       v13[0] = self->inputImage;
       v13[1] = [(CIImage *)self->inputLensModelParams imageByClampingToExtent];
-      return [v4 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v13, 2), v6, v8, v10, v12}];
+      return [kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v13, 2), v6, v8, v10, v12}];
     }
   }
 

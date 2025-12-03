@@ -1,52 +1,52 @@
 @interface MRDGroupSessionJoinRequest
-- (MRDGroupSessionJoinRequest)initWithIdentifier:(id)a3 identity:(id)a4 oobKeys:(id)a5;
-- (MRDGroupSessionJoinRequest)initWithProtobuf:(id)a3;
+- (MRDGroupSessionJoinRequest)initWithIdentifier:(id)identifier identity:(id)identity oobKeys:(id)keys;
+- (MRDGroupSessionJoinRequest)initWithProtobuf:(id)protobuf;
 - (_MRGroupSessionJoinRequestProtobuf)protobuf;
 - (id)redactedDescription;
 @end
 
 @implementation MRDGroupSessionJoinRequest
 
-- (MRDGroupSessionJoinRequest)initWithIdentifier:(id)a3 identity:(id)a4 oobKeys:(id)a5
+- (MRDGroupSessionJoinRequest)initWithIdentifier:(id)identifier identity:(id)identity oobKeys:(id)keys
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  identityCopy = identity;
+  keysCopy = keys;
   v15.receiver = self;
   v15.super_class = MRDGroupSessionJoinRequest;
   v12 = [(MRDGroupSessionJoinRequest *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_identity, a4);
-    objc_storeStrong(&v13->_oobKeys, a5);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_identity, identity);
+    objc_storeStrong(&v13->_oobKeys, keys);
   }
 
   return v13;
 }
 
-- (MRDGroupSessionJoinRequest)initWithProtobuf:(id)a3
+- (MRDGroupSessionJoinRequest)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = MRDGroupSessionJoinRequest;
   v5 = [(MRDGroupSessionJoinRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 copy];
+    identifier = [protobufCopy identifier];
+    v7 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
     v9 = [MRUserIdentity alloc];
-    v10 = [v4 identity];
-    v11 = [v9 initWithProtobuf:v10];
+    identity = [protobufCopy identity];
+    v11 = [v9 initWithProtobuf:identity];
     identity = v5->_identity;
     v5->_identity = v11;
 
-    v13 = [v4 oobKeys];
-    v14 = [v13 copy];
+    oobKeys = [protobufCopy oobKeys];
+    v14 = [oobKeys copy];
     oobKeys = v5->_oobKeys;
     v5->_oobKeys = v14;
   }
@@ -57,16 +57,16 @@
 - (_MRGroupSessionJoinRequestProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRGroupSessionJoinRequestProtobuf);
-  v4 = [(MRDGroupSessionJoinRequest *)self identifier];
-  v5 = [v4 copy];
+  identifier = [(MRDGroupSessionJoinRequest *)self identifier];
+  v5 = [identifier copy];
   [v3 setIdentifier:v5];
 
-  v6 = [(MRDGroupSessionJoinRequest *)self identity];
-  v7 = [v6 protobuf];
-  [v3 setIdentity:v7];
+  identity = [(MRDGroupSessionJoinRequest *)self identity];
+  protobuf = [identity protobuf];
+  [v3 setIdentity:protobuf];
 
-  v8 = [(MRDGroupSessionJoinRequest *)self oobKeys];
-  v9 = [v8 mutableCopy];
+  oobKeys = [(MRDGroupSessionJoinRequest *)self oobKeys];
+  v9 = [oobKeys mutableCopy];
   [v3 setOobKeys:v9];
 
   return v3;

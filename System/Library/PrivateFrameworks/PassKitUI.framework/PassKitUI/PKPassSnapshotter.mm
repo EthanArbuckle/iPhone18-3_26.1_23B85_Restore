@@ -1,17 +1,17 @@
 @interface PKPassSnapshotter
 + (PKPassSnapshotter)sharedInstance;
 + (void)purgeCache;
-+ (void)purgeCacheOfPassSnapshotsWithUinqueID:(id)a3;
-- (BOOL)_cachedImageWithKey:(id)a3 completion:(id)a4;
++ (void)purgeCacheOfPassSnapshotsWithUinqueID:(id)d;
+- (BOOL)_cachedImageWithKey:(id)key completion:(id)completion;
 - (PKPassSnapshotter)init;
 - (id)passLibrary;
-- (void)_cacheItem:(id)a3 withKey:(id)a4;
-- (void)_performSnapshot:(id)a3 size:(CGSize)a4 cacheKey:(id)a5 completion:(id)a6;
-- (void)_prepareSnapshotViewWithPass:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 cacheKey:(id)a6 completion:(id)a7;
-- (void)_snapshotWithPass:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 withCache:(BOOL)a6 completion:(id)a7;
+- (void)_cacheItem:(id)item withKey:(id)key;
+- (void)_performSnapshot:(id)snapshot size:(CGSize)size cacheKey:(id)key completion:(id)completion;
+- (void)_prepareSnapshotViewWithPass:(id)pass size:(CGSize)size suppressedContent:(unint64_t)content cacheKey:(id)key completion:(id)completion;
+- (void)_snapshotWithPass:(id)pass size:(CGSize)size suppressedContent:(unint64_t)content withCache:(BOOL)cache completion:(id)completion;
 - (void)dealloc;
-- (void)snapshotWithUniqueID:(id)a3 manifestHash:(id)a4 size:(CGSize)a5 completion:(id)a6;
-- (void)snapshotWithUniqueID:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 completion:(id)a6;
+- (void)snapshotWithUniqueID:(id)d manifestHash:(id)hash size:(CGSize)size completion:(id)completion;
+- (void)snapshotWithUniqueID:(id)d size:(CGSize)size suppressedContent:(unint64_t)content completion:(id)completion;
 @end
 
 @implementation PKPassSnapshotter
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __35__PKPassSnapshotter_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_604 != -1)
   {
     dispatch_once(&_MergedGlobals_604, block);
@@ -62,11 +62,11 @@ void __35__PKPassSnapshotter_sharedInstance__block_invoke(uint64_t a1)
     currentSnapshotKeys = v2->_currentSnapshotKeys;
     v2->_currentSnapshotKeys = v9;
 
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
 
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v2->_scale = v13;
   }
 
@@ -88,7 +88,7 @@ void __35__PKPassSnapshotter_sharedInstance__block_invoke(uint64_t a1)
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = self;
+  selfCopy = self;
   v5 = [(NSMutableArray *)self->_currentSnapshotKeys copy];
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v6)
@@ -125,7 +125,7 @@ void __35__PKPassSnapshotter_sharedInstance__block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v13.receiver = v12;
+  v13.receiver = selfCopy;
   v13.super_class = PKPassSnapshotter;
   [(PKPassSnapshotter *)&v13 dealloc];
 }
@@ -204,9 +204,9 @@ void __28__PKPassSnapshotter_dealloc__block_invoke_48(uint64_t a1)
   passLibrary = self->_passLibrary;
   if (!passLibrary)
   {
-    v4 = [MEMORY[0x1E69B8A58] sharedInstance];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
     v5 = self->_passLibrary;
-    self->_passLibrary = v4;
+    self->_passLibrary = mEMORY[0x1E69B8A58];
 
     passLibrary = self->_passLibrary;
   }
@@ -214,25 +214,25 @@ void __28__PKPassSnapshotter_dealloc__block_invoke_48(uint64_t a1)
   return passLibrary;
 }
 
-- (void)snapshotWithUniqueID:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 completion:(id)a6
+- (void)snapshotWithUniqueID:(id)d size:(CGSize)size suppressedContent:(unint64_t)content completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__PKPassSnapshotter_snapshotWithUniqueID_size_suppressedContent_completion___block_invoke;
   v16[3] = &unk_1E801EC18;
   v16[4] = self;
-  v17 = v11;
+  v17 = dCopy;
   v19 = width;
   v20 = height;
-  v21 = a5;
-  v18 = v12;
-  v14 = v12;
-  v15 = v11;
+  contentCopy = content;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = dCopy;
   dispatch_async(queue, v16);
 }
 
@@ -244,14 +244,14 @@ void __76__PKPassSnapshotter_snapshotWithUniqueID_size_suppressedContent_complet
   [*(a1 + 32) _snapshotWithPass:v3 size:*(a1 + 72) suppressedContent:1 withCache:*(a1 + 48) completion:{*(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)snapshotWithUniqueID:(id)a3 manifestHash:(id)a4 size:(CGSize)a5 completion:(id)a6
+- (void)snapshotWithUniqueID:(id)d manifestHash:(id)hash size:(CGSize)size completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  v13 = _CacheKey(v11, a4, 1911, width, height);
+  dCopy = d;
+  completionCopy = completion;
+  v13 = _CacheKey(dCopy, hash, 1911, width, height);
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,7 +260,7 @@ void __76__PKPassSnapshotter_snapshotWithUniqueID_size_suppressedContent_complet
     _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Snapshot request for %{public}@", buf, 0xCu);
   }
 
-  if (![(PKPassSnapshotter *)self _cachedImageWithKey:v13 completion:v12])
+  if (![(PKPassSnapshotter *)self _cachedImageWithKey:v13 completion:completionCopy])
   {
     queue = self->_queue;
     v16[0] = MEMORY[0x1E69E9820];
@@ -268,11 +268,11 @@ void __76__PKPassSnapshotter_snapshotWithUniqueID_size_suppressedContent_complet
     v16[2] = __71__PKPassSnapshotter_snapshotWithUniqueID_manifestHash_size_completion___block_invoke;
     v16[3] = &unk_1E801EC18;
     v16[4] = self;
-    v17 = v11;
+    v17 = dCopy;
     v19 = width;
     v20 = height;
     v21 = 1911;
-    v18 = v12;
+    v18 = completionCopy;
     dispatch_async(queue, v16);
   }
 }
@@ -297,16 +297,16 @@ void __31__PKPassSnapshotter_purgeCache__block_invoke()
   [v0 removeAllObjects];
 }
 
-+ (void)purgeCacheOfPassSnapshotsWithUinqueID:(id)a3
++ (void)purgeCacheOfPassSnapshotsWithUinqueID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _SnapshotCacheQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PKPassSnapshotter_purgeCacheOfPassSnapshotsWithUinqueID___block_invoke;
   block[3] = &unk_1E8010970;
-  v7 = v3;
-  v5 = v3;
+  v7 = dCopy;
+  v5 = dCopy;
   dispatch_sync(v4, block);
 }
 
@@ -325,30 +325,30 @@ void __59__PKPassSnapshotter_purgeCacheOfPassSnapshotsWithUinqueID___block_invok
   [v4 removeObjectsForKeys:v5];
 }
 
-- (void)_snapshotWithPass:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 withCache:(BOOL)a6 completion:(id)a7
+- (void)_snapshotWithPass:(id)pass size:(CGSize)size suppressedContent:(unint64_t)content withCache:(BOOL)cache completion:(id)completion
 {
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a7;
-  v15 = [v13 uniqueID];
-  v16 = [v13 manifestHash];
-  v17 = _CacheKey(v15, v16, a5, width, height);
+  cacheCopy = cache;
+  height = size.height;
+  width = size.width;
+  passCopy = pass;
+  completionCopy = completion;
+  uniqueID = [passCopy uniqueID];
+  manifestHash = [passCopy manifestHash];
+  v17 = _CacheKey(uniqueID, manifestHash, content, width, height);
 
-  if (!v8 || ![(PKPassSnapshotter *)self _cachedImageWithKey:v17 completion:v14])
+  if (!cacheCopy || ![(PKPassSnapshotter *)self _cachedImageWithKey:v17 completion:completionCopy])
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __83__PKPassSnapshotter__snapshotWithPass_size_suppressedContent_withCache_completion___block_invoke;
     v18[3] = &unk_1E801EC68;
-    v19 = v13;
-    v20 = self;
+    v19 = passCopy;
+    selfCopy = self;
     v21 = v17;
     v23 = width;
     v24 = height;
-    v25 = a5;
-    v22 = v14;
+    contentCopy = content;
+    v22 = completionCopy;
     [v19 loadContentAsyncWithCompletion:v18];
   }
 }
@@ -426,23 +426,23 @@ uint64_t __83__PKPassSnapshotter__snapshotWithPass_size_suppressedContent_withCa
   return result;
 }
 
-- (void)_prepareSnapshotViewWithPass:(id)a3 size:(CGSize)a4 suppressedContent:(unint64_t)a5 cacheKey:(id)a6 completion:(id)a7
+- (void)_prepareSnapshotViewWithPass:(id)pass size:(CGSize)size suppressedContent:(unint64_t)content cacheKey:(id)key completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [[PKPassView alloc] initWithPass:v15 content:5];
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  completionCopy = completion;
+  passCopy = pass;
+  v16 = [[PKPassView alloc] initWithPass:passCopy content:5];
 
-  [(PKPassView *)v16 setSuppressedContent:a5];
-  v17 = [MEMORY[0x1E69DC888] clearColor];
-  [(PKPassView *)v16 setBackgroundColor:v17];
+  [(PKPassView *)v16 setSuppressedContent:content];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PKPassView *)v16 setBackgroundColor:clearColor];
 
   [(PKPassView *)v16 setOpaque:0];
   [(PKPassView *)v16 setModallyPresented:1];
   [(PKPassView *)v16 layoutIfNeeded];
-  v18 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __93__PKPassSnapshotter__prepareSnapshotViewWithPass_size_suppressedContent_cacheKey_completion___block_invoke;
@@ -451,24 +451,24 @@ uint64_t __83__PKPassSnapshotter__snapshotWithPass_size_suppressedContent_withCa
   v23 = v16;
   v26 = width;
   v27 = height;
-  v24 = v13;
-  v25 = v14;
-  v19 = v14;
-  v20 = v13;
+  v24 = keyCopy;
+  v25 = completionCopy;
+  v19 = completionCopy;
+  v20 = keyCopy;
   v21 = v16;
-  [v18 _performBlockAfterCATransactionCommits:v22];
+  [mEMORY[0x1E69DC668] _performBlockAfterCATransactionCommits:v22];
 }
 
-- (void)_performSnapshot:(id)a3 size:(CGSize)a4 cacheKey:(id)a5 completion:(id)a6
+- (void)_performSnapshot:(id)snapshot size:(CGSize)size cacheKey:(id)key completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  snapshotCopy = snapshot;
+  keyCopy = key;
+  completionCopy = completion;
   v14 = objc_autoreleasePoolPush();
-  v15 = [v11 snapshotOfPassView];
-  v16 = CGImageRetain([v15 CGImage]);
+  snapshotOfPassView = [snapshotCopy snapshotOfPassView];
+  v16 = CGImageRetain([snapshotOfPassView CGImage]);
   dispatch_semaphore_signal(self->_snapshotSem);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -478,13 +478,13 @@ uint64_t __83__PKPassSnapshotter__snapshotWithPass_size_suppressedContent_withCa
   v26 = width;
   v27 = height;
   v28 = v16;
-  v22 = v15;
-  v23 = self;
-  v18 = v12;
+  v22 = snapshotOfPassView;
+  selfCopy = self;
+  v18 = keyCopy;
   v24 = v18;
-  v19 = v13;
+  v19 = completionCopy;
   v25 = v19;
-  v20 = v15;
+  v20 = snapshotOfPassView;
   dispatch_async(queue, block);
 
   objc_autoreleasePoolPop(v14);
@@ -580,20 +580,20 @@ void __63__PKPassSnapshotter__performSnapshot_size_cacheKey_completion___block_i
   }
 }
 
-- (void)_cacheItem:(id)a3 withKey:(id)a4
+- (void)_cacheItem:(id)item withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  keyCopy = key;
   v8 = _SnapshotCacheQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__PKPassSnapshotter__cacheItem_withKey___block_invoke;
   block[3] = &unk_1E8010A88;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = keyCopy;
+  selfCopy = self;
+  v9 = keyCopy;
+  v10 = itemCopy;
   dispatch_sync(v8, block);
 }
 
@@ -674,27 +674,27 @@ void __40__PKPassSnapshotter__cacheItem_withKey___block_invoke_59(uint64_t a1)
   }
 }
 
-- (BOOL)_cachedImageWithKey:(id)a3 completion:(id)a4
+- (BOOL)_cachedImageWithKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = [v7 copy];
+  v8 = [completionCopy copy];
 
   v9 = _SnapshotCacheQueue();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __52__PKPassSnapshotter__cachedImageWithKey_completion___block_invoke;
   v13[3] = &unk_1E8014B30;
-  v14 = v6;
-  v15 = self;
+  v14 = keyCopy;
+  selfCopy = self;
   v16 = v8;
   v17 = &v18;
   v10 = v8;
-  v11 = v6;
+  v11 = keyCopy;
   dispatch_sync(v9, v13);
 
   LOBYTE(v8) = *(v19 + 24);

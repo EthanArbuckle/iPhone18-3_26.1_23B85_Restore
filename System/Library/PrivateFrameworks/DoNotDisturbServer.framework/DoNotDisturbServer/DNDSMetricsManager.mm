@@ -2,19 +2,19 @@
 - (DNDSMetricsManager)init;
 - (id)_dateForYesterday;
 - (id)_dateFormatter;
-- (id)_metricsDayStringForDate:(id)a3;
-- (id)_metricsMonthStringForDate:(id)a3;
-- (id)_metricsWeekStringForDate:(id)a3;
+- (id)_metricsDayStringForDate:(id)date;
+- (id)_metricsMonthStringForDate:(id)date;
+- (id)_metricsWeekStringForDate:(id)date;
 - (id)_startOfLastMonth;
 - (id)_startOfLastWeek;
-- (id)_startOfMonthWithDate:(id)a3;
-- (id)_startOfWeekWithDate:(id)a3;
-- (void)_aggregateMetricsWithEnabled:(BOOL)a3 manuallyEnabled:(BOOL)a4 numberOfNewSessions:(int)a5 numberOfNewManualSessions:(int)a6 controlCenterPhone:(BOOL)a7 controlCenterWatch:(BOOL)a8 type:(id)a9 mode:(id)a10 dayOfWeek:(id)a11;
+- (id)_startOfMonthWithDate:(id)date;
+- (id)_startOfWeekWithDate:(id)date;
+- (void)_aggregateMetricsWithEnabled:(BOOL)enabled manuallyEnabled:(BOOL)manuallyEnabled numberOfNewSessions:(int)sessions numberOfNewManualSessions:(int)manualSessions controlCenterPhone:(BOOL)phone controlCenterWatch:(BOOL)watch type:(id)type mode:(id)self0 dayOfWeek:(id)self1;
 - (void)_sendDailyHeartbeatIfNeeded;
 - (void)_sendMonthlyHeartbeatIfNeeded;
 - (void)_sendWeeklyHeartbeatIfNeeded;
-- (void)_writeMetricsToStore:(id)a3;
-- (void)assertionTaken:(id)a3 withClientDetails:(id)a4 lockState:(unint64_t)a5;
+- (void)_writeMetricsToStore:(id)store;
+- (void)assertionTaken:(id)taken withClientDetails:(id)details lockState:(unint64_t)state;
 - (void)sendMetricsHeartbeatsIfNeeded;
 @end
 
@@ -42,11 +42,11 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
 
 - (void)_sendDailyHeartbeatIfNeeded
 {
-  v3 = [(DNDSMetricsRecord *)self->_metricsRecord lastDailyHeartbeat];
-  v4 = [(DNDSMetricsManager *)self _calendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 startOfDayForDate:v5];
-  v7 = [v3 compare:v6];
+  lastDailyHeartbeat = [(DNDSMetricsRecord *)self->_metricsRecord lastDailyHeartbeat];
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [_calendar startOfDayForDate:date];
+  v7 = [lastDailyHeartbeat compare:v6];
 
   if (v7 == -1)
   {
@@ -57,11 +57,11 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
       _os_log_impl(&dword_24912E000, v8, OS_LOG_TYPE_DEFAULT, "Sending daily metrics heartbeat", buf, 2u);
     }
 
-    v9 = [(DNDSMetricsManager *)self _dateForYesterday];
-    v10 = [(DNDSMetricsManager *)self _metricsDayStringForDate:v9];
+    _dateForYesterday = [(DNDSMetricsManager *)self _dateForYesterday];
+    v10 = [(DNDSMetricsManager *)self _metricsDayStringForDate:_dateForYesterday];
     v11 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:1 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-    v12 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
-    v13 = [v12 objectForKey:v10];
+    metricsByDay = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
+    v13 = [metricsByDay objectForKey:v10];
     v14 = [DNDSDailyHeartbeatMetricsRecord newWithDictionaryRepresentation:v13 context:v11];
 
     if (v14)
@@ -71,15 +71,15 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
     }
 
     metricsRecord = self->_metricsRecord;
-    v16 = [MEMORY[0x277CBEAA8] date];
-    [(DNDSMutableMetricsRecord *)metricsRecord setLastDailyHeartbeat:v16];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(DNDSMutableMetricsRecord *)metricsRecord setLastDailyHeartbeat:date2];
 
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v18 = [MEMORY[0x277CBEAA8] date];
-    v19 = [(DNDSMetricsManager *)self _metricsDayStringForDate:v18];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    v19 = [(DNDSMetricsManager *)self _metricsDayStringForDate:date3];
 
-    v20 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
-    v21 = [v20 objectForKey:v19];
+    metricsByDay2 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
+    v21 = [metricsByDay2 objectForKey:v19];
 
     if (v21)
     {
@@ -93,10 +93,10 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
 
 - (void)_sendWeeklyHeartbeatIfNeeded
 {
-  v3 = [(DNDSMetricsRecord *)self->_metricsRecord lastWeeklyHeartbeat];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(DNDSMetricsManager *)self _startOfWeekWithDate:v4];
-  v6 = [v3 compare:v5];
+  lastWeeklyHeartbeat = [(DNDSMetricsRecord *)self->_metricsRecord lastWeeklyHeartbeat];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [(DNDSMetricsManager *)self _startOfWeekWithDate:date];
+  v6 = [lastWeeklyHeartbeat compare:v5];
 
   if (v6 == -1)
   {
@@ -107,11 +107,11 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
       _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Sending weekly metrics heartbeat", buf, 2u);
     }
 
-    v8 = [(DNDSMetricsManager *)self _startOfLastWeek];
-    v9 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:v8];
+    _startOfLastWeek = [(DNDSMetricsManager *)self _startOfLastWeek];
+    v9 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:_startOfLastWeek];
     v10 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:1 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-    v11 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
-    v12 = [v11 objectForKey:v9];
+    metricsByWeek = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
+    v12 = [metricsByWeek objectForKey:v9];
     v13 = [(DNDSHeartbeatMetricsRecord *)DNDSWeeklyHeartbeatMetricsRecord newWithDictionaryRepresentation:v12 context:v10];
 
     if (v13)
@@ -121,15 +121,15 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
     }
 
     metricsRecord = self->_metricsRecord;
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [(DNDSMutableMetricsRecord *)metricsRecord setLastWeeklyHeartbeat:v15];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(DNDSMutableMetricsRecord *)metricsRecord setLastWeeklyHeartbeat:date2];
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [MEMORY[0x277CBEAA8] date];
-    v18 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:v17];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    v18 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:date3];
 
-    v19 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
-    v20 = [v19 objectForKey:v18];
+    metricsByWeek2 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
+    v20 = [metricsByWeek2 objectForKey:v18];
 
     if (v20)
     {
@@ -143,10 +143,10 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
 
 - (void)_sendMonthlyHeartbeatIfNeeded
 {
-  v3 = [(DNDSMetricsRecord *)self->_metricsRecord lastMonthlyHeartbeat];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(DNDSMetricsManager *)self _startOfMonthWithDate:v4];
-  v6 = [v3 compare:v5];
+  lastMonthlyHeartbeat = [(DNDSMetricsRecord *)self->_metricsRecord lastMonthlyHeartbeat];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [(DNDSMetricsManager *)self _startOfMonthWithDate:date];
+  v6 = [lastMonthlyHeartbeat compare:v5];
 
   if (v6 == -1)
   {
@@ -157,11 +157,11 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
       _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Sending monthly metrics heartbeat", buf, 2u);
     }
 
-    v8 = [(DNDSMetricsManager *)self _startOfLastMonth];
-    v9 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:v8];
+    _startOfLastMonth = [(DNDSMetricsManager *)self _startOfLastMonth];
+    v9 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:_startOfLastMonth];
     v10 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:1 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-    v11 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
-    v12 = [v11 objectForKey:v9];
+    metricsByMonth = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
+    v12 = [metricsByMonth objectForKey:v9];
     v13 = [(DNDSHeartbeatMetricsRecord *)DNDSMonthlyHeartbeatMetricsRecord newWithDictionaryRepresentation:v12 context:v10];
 
     if (v13)
@@ -171,15 +171,15 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
     }
 
     metricsRecord = self->_metricsRecord;
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [(DNDSMutableMetricsRecord *)metricsRecord setLastMonthlyHeartbeat:v15];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(DNDSMutableMetricsRecord *)metricsRecord setLastMonthlyHeartbeat:date2];
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v17 = [MEMORY[0x277CBEAA8] date];
-    v18 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:v17];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    v18 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:date3];
 
-    v19 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
-    v20 = [v19 objectForKey:v18];
+    metricsByMonth2 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
+    v20 = [metricsByMonth2 objectForKey:v18];
 
     if (v20)
     {
@@ -202,8 +202,8 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x277CBEBC0] dnds_metricsBackingStoreFileURL];
-    v6 = [DNDSMetricsRecord backingStoreWithFileURL:v5];
+    dnds_metricsBackingStoreFileURL = [MEMORY[0x277CBEBC0] dnds_metricsBackingStoreFileURL];
+    v6 = [DNDSMetricsRecord backingStoreWithFileURL:dnds_metricsBackingStoreFileURL];
     metricsBackingStore = v2->_metricsBackingStore;
     v2->_metricsBackingStore = v6;
 
@@ -225,28 +225,28 @@ uint64_t __51__DNDSMetricsManager_sendMetricsHeartbeatsIfNeeded__block_invoke(ui
     v2->_calendar = v14;
 
     v16 = v2->_calendar;
-    v17 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [(NSCalendar *)v16 setTimeZone:v17];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [(NSCalendar *)v16 setTimeZone:systemTimeZone];
   }
 
   return v2;
 }
 
-- (void)assertionTaken:(id)a3 withClientDetails:(id)a4 lockState:(unint64_t)a5
+- (void)assertionTaken:(id)taken withClientDetails:(id)details lockState:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  takenCopy = taken;
+  detailsCopy = details;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_invoke;
   v13[3] = &unk_278F8AA28;
-  v14 = v9;
-  v15 = v8;
-  v16 = self;
-  v17 = a5;
-  v11 = v8;
-  v12 = v9;
+  v14 = detailsCopy;
+  v15 = takenCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v11 = takenCopy;
+  v12 = detailsCopy;
   dispatch_async(queue, v13);
 }
 
@@ -350,15 +350,15 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
   return v10;
 }
 
-- (void)_aggregateMetricsWithEnabled:(BOOL)a3 manuallyEnabled:(BOOL)a4 numberOfNewSessions:(int)a5 numberOfNewManualSessions:(int)a6 controlCenterPhone:(BOOL)a7 controlCenterWatch:(BOOL)a8 type:(id)a9 mode:(id)a10 dayOfWeek:(id)a11
+- (void)_aggregateMetricsWithEnabled:(BOOL)enabled manuallyEnabled:(BOOL)manuallyEnabled numberOfNewSessions:(int)sessions numberOfNewManualSessions:(int)manualSessions controlCenterPhone:(BOOL)phone controlCenterWatch:(BOOL)watch type:(id)type mode:(id)self0 dayOfWeek:(id)self1
 {
-  v70 = a8;
-  v67 = a7;
-  v62 = a3;
-  v63 = a4;
-  v13 = a9;
-  v14 = a10;
-  v81 = a11;
+  watchCopy = watch;
+  phoneCopy = phone;
+  enabledCopy = enabled;
+  manuallyEnabledCopy = manuallyEnabled;
+  typeCopy = type;
+  modeCopy = mode;
+  weekCopy = week;
   v15 = DNDSLogMetrics;
   if (os_log_type_enabled(DNDSLogMetrics, OS_LOG_TYPE_DEFAULT))
   {
@@ -366,21 +366,21 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
     _os_log_impl(&dword_24912E000, v15, OS_LOG_TYPE_DEFAULT, "Updating aggregated metrics", buf, 2u);
   }
 
-  v64 = [v13 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"];
-  v66 = [v13 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"];
-  v68 = [v13 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"];
-  v69 = [v13 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"];
-  v71 = [v13 isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"];
-  v78 = [v14 isEqualToString:@"com.apple.donotdisturb.mode.driving"];
-  v79 = v14;
-  v74 = [v14 isEqualToString:*MEMORY[0x277D622D0]];
+  v64 = [typeCopy isEqualToString:@"com.apple.donotdisturb.kit.lifetime.one-hour"];
+  v66 = [typeCopy isEqualToString:@"com.apple.donotdisturb.kit.lifetime.evening"];
+  v68 = [typeCopy isEqualToString:@"com.apple.donotdisturb.kit.lifetime.morning"];
+  v69 = [typeCopy isEqualToString:@"com.apple.donotdisturb.kit.lifetime.location"];
+  v71 = [typeCopy isEqualToString:@"com.apple.donotdisturb.kit.lifetime.event"];
+  v78 = [modeCopy isEqualToString:@"com.apple.donotdisturb.mode.driving"];
+  v79 = modeCopy;
+  v74 = [modeCopy isEqualToString:*MEMORY[0x277D622D0]];
   v16 = [[DNDSBackingStoreDictionaryContext alloc] initWithDestination:1 partitionType:1 redactSensitiveData:0 contactProvider:0 applicationIdentifierMapper:0];
-  v17 = [MEMORY[0x277CBEAA8] date];
-  v18 = [(DNDSMetricsManager *)self _metricsDayStringForDate:v17];
+  date = [MEMORY[0x277CBEAA8] date];
+  v18 = [(DNDSMetricsManager *)self _metricsDayStringForDate:date];
 
-  v77 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
+  metricsByDay = [(DNDSMetricsRecord *)self->_metricsRecord metricsByDay];
   v80 = v18;
-  v19 = [v77 valueForKey:v18];
+  v19 = [metricsByDay valueForKey:v18];
   v20 = [DNDSDailyHeartbeatMetricsRecord newWithDictionaryRepresentation:v19 context:v16];
   v21 = [v20 mutableCopy];
 
@@ -390,12 +390,12 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
     v22 = objc_alloc_init(DNDSMutableDailyHeartbeatMetricsRecord);
   }
 
-  v23 = [MEMORY[0x277CBEAA8] date];
-  v24 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:v23];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v24 = [(DNDSMetricsManager *)self _metricsWeekStringForDate:date2];
 
-  v75 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
+  metricsByWeek = [(DNDSMetricsRecord *)self->_metricsRecord metricsByWeek];
   v76 = v24;
-  v25 = [v75 valueForKey:v24];
+  v25 = [metricsByWeek valueForKey:v24];
   v26 = [(DNDSHeartbeatMetricsRecord *)DNDSWeeklyHeartbeatMetricsRecord newWithDictionaryRepresentation:v25 context:v16];
   v27 = [v26 mutableCopy];
 
@@ -404,12 +404,12 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
     v27 = objc_alloc_init(DNDSMutableWeeklyHeartbeatMetricsRecord);
   }
 
-  v28 = [MEMORY[0x277CBEAA8] date];
-  v29 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:v28];
+  date3 = [MEMORY[0x277CBEAA8] date];
+  v29 = [(DNDSMetricsManager *)self _metricsMonthStringForDate:date3];
 
-  v72 = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
+  metricsByMonth = [(DNDSMetricsRecord *)self->_metricsRecord metricsByMonth];
   v73 = v29;
-  v30 = [v72 valueForKey:v29];
+  v30 = [metricsByMonth valueForKey:v29];
   v31 = [(DNDSHeartbeatMetricsRecord *)DNDSMonthlyHeartbeatMetricsRecord newWithDictionaryRepresentation:v30 context:v16];
   v32 = [v31 mutableCopy];
 
@@ -418,8 +418,8 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
     v32 = objc_alloc_init(DNDSMutableMonthlyHeartbeatMetricsRecord);
   }
 
-  v33 = self;
-  if (v62)
+  selfCopy = self;
+  if (enabledCopy)
   {
     [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setEnabled:1];
     [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setEnabled:1];
@@ -427,7 +427,7 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
   }
 
   v34 = v16;
-  if (v63)
+  if (manuallyEnabledCopy)
   {
     [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setManuallyEnabled:1];
     [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setManuallyEnabled:1];
@@ -435,43 +435,43 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
   }
 
   v35 = MEMORY[0x277CCABB0];
-  v36 = [(DNDSHeartbeatMetricsRecord *)v22 numberOfSessions];
-  v37 = [v35 numberWithInt:{objc_msgSend(v36, "intValue") + a5}];
+  numberOfSessions = [(DNDSHeartbeatMetricsRecord *)v22 numberOfSessions];
+  v37 = [v35 numberWithInt:{objc_msgSend(numberOfSessions, "intValue") + sessions}];
   [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setNumberOfSessions:v37];
 
   v38 = MEMORY[0x277CCABB0];
-  v39 = [(DNDSHeartbeatMetricsRecord *)v27 numberOfSessions];
-  v40 = [v38 numberWithInt:{objc_msgSend(v39, "intValue") + a5}];
+  numberOfSessions2 = [(DNDSHeartbeatMetricsRecord *)v27 numberOfSessions];
+  v40 = [v38 numberWithInt:{objc_msgSend(numberOfSessions2, "intValue") + sessions}];
   [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setNumberOfSessions:v40];
 
   v41 = MEMORY[0x277CCABB0];
-  v42 = [(DNDSHeartbeatMetricsRecord *)v32 numberOfSessions];
-  v43 = [v41 numberWithInt:{objc_msgSend(v42, "intValue") + a5}];
+  numberOfSessions3 = [(DNDSHeartbeatMetricsRecord *)v32 numberOfSessions];
+  v43 = [v41 numberWithInt:{objc_msgSend(numberOfSessions3, "intValue") + sessions}];
   [(DNDSMutableMonthlyHeartbeatMetricsRecord *)v32 setNumberOfSessions:v43];
 
   v44 = MEMORY[0x277CCABB0];
-  v45 = [(DNDSHeartbeatMetricsRecord *)v22 numberOfManualSessions];
-  v46 = [v44 numberWithInt:{objc_msgSend(v45, "intValue") + a6}];
+  numberOfManualSessions = [(DNDSHeartbeatMetricsRecord *)v22 numberOfManualSessions];
+  v46 = [v44 numberWithInt:{objc_msgSend(numberOfManualSessions, "intValue") + manualSessions}];
   [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setNumberOfManualSessions:v46];
 
   v47 = MEMORY[0x277CCABB0];
-  v48 = [(DNDSHeartbeatMetricsRecord *)v27 numberOfManualSessions];
-  v49 = [v47 numberWithInt:{objc_msgSend(v48, "intValue") + a6}];
+  numberOfManualSessions2 = [(DNDSHeartbeatMetricsRecord *)v27 numberOfManualSessions];
+  v49 = [v47 numberWithInt:{objc_msgSend(numberOfManualSessions2, "intValue") + manualSessions}];
   [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setNumberOfManualSessions:v49];
 
   v50 = MEMORY[0x277CCABB0];
-  v51 = [(DNDSHeartbeatMetricsRecord *)v32 numberOfManualSessions];
-  v52 = [v50 numberWithInt:{objc_msgSend(v51, "intValue") + a6}];
+  numberOfManualSessions3 = [(DNDSHeartbeatMetricsRecord *)v32 numberOfManualSessions];
+  v52 = [v50 numberWithInt:{objc_msgSend(numberOfManualSessions3, "intValue") + manualSessions}];
   [(DNDSMutableMonthlyHeartbeatMetricsRecord *)v32 setNumberOfManualSessions:v52];
 
-  if (v67)
+  if (phoneCopy)
   {
     [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setEnabledFromControlCenterPhone:1];
     [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setEnabledFromControlCenterPhone:1];
     [(DNDSMutableMonthlyHeartbeatMetricsRecord *)v32 setEnabledFromControlCenterPhone:1];
   }
 
-  if (v70)
+  if (watchCopy)
   {
     [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setEnabledFromControlCenterWatch:1];
     [(DNDSMutableWeeklyHeartbeatMetricsRecord *)v27 setEnabledFromControlCenterWatch:1];
@@ -527,29 +527,29 @@ id __65__DNDSMetricsManager_assertionTaken_withClientDetails_lockState___block_i
     [(DNDSMutableMonthlyHeartbeatMetricsRecord *)v32 setEnabledSleepMode:1];
   }
 
-  [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setDayOfWeek:v81];
-  v53 = [(DNDSMetricsRecord *)v33->_metricsRecord metricsByDay];
-  v54 = [v53 mutableCopy];
+  [(DNDSMutableDailyHeartbeatMetricsRecord *)v22 setDayOfWeek:weekCopy];
+  metricsByDay2 = [(DNDSMetricsRecord *)selfCopy->_metricsRecord metricsByDay];
+  v54 = [metricsByDay2 mutableCopy];
 
   v55 = [(DNDSDailyHeartbeatMetricsRecord *)v22 dictionaryRepresentationWithContext:v16];
   [v54 setValue:v55 forKey:v80];
 
-  [(DNDSMutableMetricsRecord *)v33->_metricsRecord setMetricsByDay:v54];
-  v56 = [(DNDSMetricsRecord *)v33->_metricsRecord metricsByWeek];
-  v57 = [v56 mutableCopy];
+  [(DNDSMutableMetricsRecord *)selfCopy->_metricsRecord setMetricsByDay:v54];
+  metricsByWeek2 = [(DNDSMetricsRecord *)selfCopy->_metricsRecord metricsByWeek];
+  v57 = [metricsByWeek2 mutableCopy];
 
   v58 = [(DNDSHeartbeatMetricsRecord *)v27 dictionaryRepresentationWithContext:v16];
   [v57 setValue:v58 forKey:v76];
 
-  [(DNDSMutableMetricsRecord *)v33->_metricsRecord setMetricsByWeek:v57];
-  v59 = [(DNDSMetricsRecord *)v33->_metricsRecord metricsByMonth];
-  v60 = [v59 mutableCopy];
+  [(DNDSMutableMetricsRecord *)selfCopy->_metricsRecord setMetricsByWeek:v57];
+  metricsByMonth2 = [(DNDSMetricsRecord *)selfCopy->_metricsRecord metricsByMonth];
+  v60 = [metricsByMonth2 mutableCopy];
 
   v61 = [(DNDSHeartbeatMetricsRecord *)v32 dictionaryRepresentationWithContext:v34];
   [v60 setValue:v61 forKey:v73];
 
-  [(DNDSMutableMetricsRecord *)v33->_metricsRecord setMetricsByMonth:v60];
-  [(DNDSMetricsManager *)v33 _writeMetricsToStore:v33->_metricsRecord];
+  [(DNDSMutableMetricsRecord *)selfCopy->_metricsRecord setMetricsByMonth:v60];
+  [(DNDSMetricsManager *)selfCopy _writeMetricsToStore:selfCopy->_metricsRecord];
 }
 
 id __49__DNDSMetricsManager__sendDailyHeartbeatIfNeeded__block_invoke(uint64_t a1)
@@ -708,12 +708,12 @@ id __51__DNDSMetricsManager__sendMonthlyHeartbeatIfNeeded__block_invoke(uint64_t
   return v11;
 }
 
-- (void)_writeMetricsToStore:(id)a3
+- (void)_writeMetricsToStore:(id)store
 {
   v16 = *MEMORY[0x277D85DE8];
   metricsBackingStore = self->_metricsBackingStore;
   v13 = 0;
-  v4 = [(DNDSBackingStore *)metricsBackingStore writeRecord:a3 error:&v13];
+  v4 = [(DNDSBackingStore *)metricsBackingStore writeRecord:store error:&v13];
   v5 = v13;
   if (v4)
   {
@@ -760,32 +760,32 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_metricsDayStringForDate:(id)a3
+- (id)_metricsDayStringForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DNDSMetricsManager *)self _dateFormatter];
-  [v5 setDateStyle:3];
-  [v5 setTimeStyle:0];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  _dateFormatter = [(DNDSMetricsManager *)self _dateFormatter];
+  [_dateFormatter setDateStyle:3];
+  [_dateFormatter setTimeStyle:0];
+  v6 = [_dateFormatter stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)_metricsWeekStringForDate:(id)a3
+- (id)_metricsWeekStringForDate:(id)date
 {
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(DNDSMetricsManager *)self _startOfWeekWithDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [(DNDSMetricsManager *)self _startOfWeekWithDate:date];
   v6 = [(DNDSMetricsManager *)self _metricsDayStringForDate:v5];
 
   return v6;
 }
 
-- (id)_metricsMonthStringForDate:(id)a3
+- (id)_metricsMonthStringForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DNDSMetricsManager *)self _dateFormatter];
-  [v5 setLocalizedDateFormatFromTemplate:@"MMMMYYYY"];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  _dateFormatter = [(DNDSMetricsManager *)self _dateFormatter];
+  [_dateFormatter setLocalizedDateFormatFromTemplate:@"MMMMYYYY"];
+  v6 = [_dateFormatter stringFromDate:dateCopy];
 
   return v6;
 }
@@ -794,64 +794,64 @@ LABEL_8:
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v3 setDay:-1];
-  v4 = [(DNDSMetricsManager *)self _calendar];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [v4 dateByAddingComponents:v3 toDate:v5 options:1];
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v6 = [_calendar dateByAddingComponents:v3 toDate:date options:1];
 
   return v6;
 }
 
-- (id)_startOfWeekWithDate:(id)a3
+- (id)_startOfWeekWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DNDSMetricsManager *)self _calendar];
-  v6 = [v5 components:540 fromDate:v4];
+  dateCopy = date;
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  v6 = [_calendar components:540 fromDate:dateCopy];
 
   [v6 setDay:{objc_msgSend(v6, "day") - objc_msgSend(v6, "weekday") + 1}];
-  v7 = [(DNDSMetricsManager *)self _calendar];
-  v8 = [v7 dateFromComponents:v6];
+  _calendar2 = [(DNDSMetricsManager *)self _calendar];
+  v8 = [_calendar2 dateFromComponents:v6];
 
   return v8;
 }
 
 - (id)_startOfLastWeek
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(DNDSMetricsManager *)self _startOfWeekWithDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(DNDSMetricsManager *)self _startOfWeekWithDate:date];
 
-  v5 = [(DNDSMetricsManager *)self _calendar];
-  v6 = [v5 components:540 fromDate:v4];
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  v6 = [_calendar components:540 fromDate:v4];
 
   [v6 setDay:{objc_msgSend(v6, "day") - 7}];
-  v7 = [(DNDSMetricsManager *)self _calendar];
-  v8 = [v7 dateFromComponents:v6];
+  _calendar2 = [(DNDSMetricsManager *)self _calendar];
+  v8 = [_calendar2 dateFromComponents:v6];
 
   return v8;
 }
 
-- (id)_startOfMonthWithDate:(id)a3
+- (id)_startOfMonthWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DNDSMetricsManager *)self _calendar];
-  v6 = [v5 components:12 fromDate:v4];
+  dateCopy = date;
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  v6 = [_calendar components:12 fromDate:dateCopy];
 
-  v7 = [(DNDSMetricsManager *)self _calendar];
-  v8 = [v7 dateFromComponents:v6];
+  _calendar2 = [(DNDSMetricsManager *)self _calendar];
+  v8 = [_calendar2 dateFromComponents:v6];
 
   return v8;
 }
 
 - (id)_startOfLastMonth
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(DNDSMetricsManager *)self _startOfMonthWithDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [(DNDSMetricsManager *)self _startOfMonthWithDate:date];
 
-  v5 = [(DNDSMetricsManager *)self _calendar];
-  v6 = [v5 components:12 fromDate:v4];
+  _calendar = [(DNDSMetricsManager *)self _calendar];
+  v6 = [_calendar components:12 fromDate:v4];
 
   [v6 setMonth:{objc_msgSend(v6, "month") - 1}];
-  v7 = [(DNDSMetricsManager *)self _calendar];
-  v8 = [v7 dateFromComponents:v6];
+  _calendar2 = [(DNDSMetricsManager *)self _calendar];
+  v8 = [_calendar2 dateFromComponents:v6];
 
   return v8;
 }

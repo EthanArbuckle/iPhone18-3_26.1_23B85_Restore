@@ -1,33 +1,33 @@
 @interface SSUIServiceOptionsAssetMetadata
-- (SSUIServiceOptionsAssetMetadata)initWithBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SSUIServiceOptionsAssetMetadata)initWithBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SSUIServiceOptionsAssetMetadata
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(SSUIServiceOptionsAssetMetadata *)self assetDescription];
-  [v4 setAssetDescription:v5];
+  assetDescription = [(SSUIServiceOptionsAssetMetadata *)self assetDescription];
+  [v4 setAssetDescription:assetDescription];
 
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SSUIServiceOptionsAssetMetadata *)self assetDescription];
-  [v4 encodeCollection:v5 forKey:@"SSUIServiceMetadataKey"];
+  coderCopy = coder;
+  assetDescription = [(SSUIServiceOptionsAssetMetadata *)self assetDescription];
+  [coderCopy encodeCollection:assetDescription forKey:@"SSUIServiceMetadataKey"];
 }
 
-- (SSUIServiceOptionsAssetMetadata)initWithBSXPCCoder:(id)a3
+- (SSUIServiceOptionsAssetMetadata)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SSUIServiceOptionsAssetMetadata *)self init];
   v6 = objc_opt_class();
-  v7 = [v4 decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"SSUIServiceMetadataKey"];
+  v7 = [coderCopy decodeCollectionOfClass:v6 containingClass:objc_opt_class() forKey:@"SSUIServiceMetadataKey"];
 
   assetDescription = v5->_assetDescription;
   v5->_assetDescription = v7;

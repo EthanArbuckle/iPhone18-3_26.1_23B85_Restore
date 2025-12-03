@@ -1,45 +1,45 @@
 @interface REMCDAssignment
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
 + (id)recordTypes;
-- (BOOL)isConnectedToAccountObject:(id)a3;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (BOOL)isConnectedToAccountObject:(id)object;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)newlyCreatedRecord;
 - (id)parentCloudObject;
 - (id)recordType;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
 - (void)cleanUpAfterLocalObjectMerge;
 - (void)fixBrokenReferences;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
 @end
 
 @implementation REMCDAssignment
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDAssignment *)self reminder];
-  v6 = [v5 isConnectedToAccountObject:v4];
+  objectCopy = object;
+  reminder = [(REMCDAssignment *)self reminder];
+  v6 = [reminder isConnectedToAccountObject:objectCopy];
 
   return v6;
 }
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v3 = [(REMCDAssignment *)self reminder];
-  if (v3)
+  reminder = [(REMCDAssignment *)self reminder];
+  if (reminder)
   {
-    v4 = [(REMCDAssignment *)self reminder];
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    reminder2 = [(REMCDAssignment *)self reminder];
+    effectiveMinimumSupportedVersion = [reminder2 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v5 = kREMSupportedVersionUnset;
+    effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
 + (id)recordTypes
@@ -49,25 +49,25 @@
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDAssignment.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDAssignment.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDAssignment.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDAssignment.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
@@ -79,20 +79,20 @@
   return v2;
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDAssignment.mergeData(from:accountID:)(v9, v11);
+  REMCDAssignment.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDAssignment.newlyCreatedRecord()();
 
   return v3;
@@ -100,30 +100,30 @@
 
 - (id)parentCloudObject
 {
-  v2 = [(REMCDAssignment *)self reminder];
+  reminder = [(REMCDAssignment *)self reminder];
 
-  return v2;
+  return reminder;
 }
 
 - (void)fixBrokenReferences
 {
-  v2 = self;
+  selfCopy = self;
   REMCDAssignment.fixBrokenReferences()();
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = self;
+  predicateCopy = predicate;
+  selfCopy = self;
   v6 = _sSo15REMCDAssignmentC7reminddE26existingLocalObjectToMerge4withSo11REMCDObjectCSgSo11NSPredicateCSg_tF_0();
 
   return v6;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
+  objectCopy = object;
+  selfCopy = self;
   LOBYTE(self) = _sSo15REMCDAssignmentC7reminddE5merge15withLocalObjectSbSo11REMCDObjectC_tF_0();
 
   return self & 1;
@@ -131,7 +131,7 @@
 
 - (void)cleanUpAfterLocalObjectMerge
 {
-  v2 = self;
+  selfCopy = self;
   REMCDAssignment.cleanUpAfterLocalObjectMerge()();
 }
 

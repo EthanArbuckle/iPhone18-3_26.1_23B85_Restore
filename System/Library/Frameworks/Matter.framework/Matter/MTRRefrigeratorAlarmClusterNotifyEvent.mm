@@ -1,6 +1,6 @@
 @interface MTRRefrigeratorAlarmClusterNotifyEvent
 - (MTRRefrigeratorAlarmClusterNotifyEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRRefrigeratorAlarmClusterNotifyEvent);
-  v5 = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self active];
-  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setActive:v5];
+  active = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self active];
+  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setActive:active];
 
-  v6 = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self inactive];
-  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setInactive:v6];
+  inactive = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self inactive];
+  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setInactive:inactive];
 
-  v7 = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self state];
-  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setState:v7];
+  state = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self state];
+  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setState:state];
 
-  v8 = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self mask];
-  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setMask:v8];
+  mask = [(MTRRefrigeratorAlarmClusterNotifyEvent *)self mask];
+  [(MTRRefrigeratorAlarmClusterNotifyEvent *)v4 setMask:mask];
 
   return v4;
 }

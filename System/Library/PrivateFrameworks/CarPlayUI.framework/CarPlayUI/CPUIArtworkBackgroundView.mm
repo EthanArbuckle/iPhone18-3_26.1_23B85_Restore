@@ -1,32 +1,32 @@
 @interface CPUIArtworkBackgroundView
-- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithCoder:(id)a3;
-- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithCoder:(id)coder;
+- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)scheduleAnimationPauseTimer;
-- (void)setPaused:(BOOL)a3;
-- (void)updateWithImage:(id)a3 animated:(BOOL)a4;
+- (void)setPaused:(BOOL)paused;
+- (void)updateWithImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation CPUIArtworkBackgroundView
 
-- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_metalView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_renderer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_animationPauseTimer) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CPUIArtworkBackgroundView();
-  v7 = [(CPUIArtworkBackgroundView *)&v9 initWithFrame:x, y, width, height];
+  height = [(CPUIArtworkBackgroundView *)&v9 initWithFrame:x, y, width, height];
   CPUIArtworkBackgroundView.buildBackgroundView()();
 
-  return v7;
+  return height;
 }
 
-- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithCoder:(id)a3
+- (_TtC9CarPlayUI25CPUIArtworkBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_metalView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_renderer) = 0;
@@ -39,7 +39,7 @@
 - (void)dealloc
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_animationPauseTimer);
-  v4 = self;
+  selfCopy = self;
   if (v3)
   {
     [v3 invalidate];
@@ -50,30 +50,30 @@
   [(CPUIArtworkBackgroundView *)&v5 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5 = OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_metalView;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9CarPlayUI25CPUIArtworkBackgroundView_metalView);
-  v7 = self;
+  selfCopy = self;
   [v6 setEnableSetNeedsDisplay_];
   [*(&self->super.super.super.isa + v5) setPaused_];
 }
 
-- (void)updateWithImage:(id)a3 animated:(BOOL)a4
+- (void)updateWithImage:(id)image animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  v9 = v8;
-  v10 = v8;
-  v12.value.super.isa = a3;
-  v12.is_nil = a4;
+  imageCopy = image;
+  selfCopy = self;
+  v9 = selfCopy;
+  v10 = selfCopy;
+  v12.value.super.isa = image;
+  v12.is_nil = animated;
   CPUIArtworkBackgroundView.update(image:animated:)(v12, v9);
 }
 
 - (void)scheduleAnimationPauseTimer
 {
-  v2 = self;
+  selfCopy = self;
   CPUIArtworkBackgroundView.scheduleAnimationPauseTimer()();
 }
 

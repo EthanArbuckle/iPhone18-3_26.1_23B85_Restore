@@ -1,17 +1,17 @@
 @interface MTLIOAccelAccelerationStructure
-- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)a3 offset:(unint64_t)a4;
-- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
+- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)buffer offset:(unint64_t)offset;
+- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index;
 - (unint64_t)gpuHandle;
-- (void)copyPropertiesFromBuffer:(id)a3;
+- (void)copyPropertiesFromBuffer:(id)buffer;
 - (void)dealloc;
 @end
 
 @implementation MTLIOAccelAccelerationStructure
 
-- (void)copyPropertiesFromBuffer:(id)a3
+- (void)copyPropertiesFromBuffer:(id)buffer
 {
-  v4 = a3 + 32;
-  v5 = *(a3 + 30);
+  v4 = buffer + 32;
+  v5 = *(buffer + 30);
   v6 = *(v4 + 27);
   *&self->super._anon_50[160] = v5;
   *&self->super._anon_50[168] = v6;
@@ -21,32 +21,32 @@
   *&self->super._anon_50[88] = *(v4 + 17);
 }
 
-- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)a3 offset:(unint64_t)a4
+- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)buffer offset:(unint64_t)offset
 {
   v8.receiver = self;
   v8.super_class = MTLIOAccelAccelerationStructure;
   v6 = [(MTLIOAccelResource *)&v8 initWithResource:?];
   if (v6)
   {
-    v6->_buffer = a3;
-    v6->_bufferOffset = a4;
-    [(MTLIOAccelAccelerationStructure *)v6 copyPropertiesFromBuffer:a3];
+    v6->_buffer = buffer;
+    v6->_bufferOffset = offset;
+    [(MTLIOAccelAccelerationStructure *)v6 copyPropertiesFromBuffer:buffer];
   }
 
   return v6;
 }
 
-- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (MTLIOAccelAccelerationStructure)initWithBuffer:(id)buffer offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
   v10.receiver = self;
   v10.super_class = MTLIOAccelAccelerationStructure;
   v8 = [(MTLIOAccelResource *)&v10 initWithResource:?];
   if (v8)
   {
-    v8->_buffer = a3;
-    v8->_bufferOffset = a4;
-    v8->_resourceIndex = a5;
-    [(MTLIOAccelAccelerationStructure *)v8 copyPropertiesFromBuffer:a3];
+    v8->_buffer = buffer;
+    v8->_bufferOffset = offset;
+    v8->_resourceIndex = index;
+    [(MTLIOAccelAccelerationStructure *)v8 copyPropertiesFromBuffer:buffer];
   }
 
   return v8;
@@ -64,9 +64,9 @@
 {
   if (([(MTLDevice *)[(MTLIOAccelResource *)self device] requiresRaytracingEmulation]& 1) != 0)
   {
-    v3 = [(MTLIOAccelAccelerationStructure *)self buffer];
+    buffer = [(MTLIOAccelAccelerationStructure *)self buffer];
 
-    return [(MTLBuffer *)v3 gpuAddress];
+    return [(MTLBuffer *)buffer gpuAddress];
   }
 
   else

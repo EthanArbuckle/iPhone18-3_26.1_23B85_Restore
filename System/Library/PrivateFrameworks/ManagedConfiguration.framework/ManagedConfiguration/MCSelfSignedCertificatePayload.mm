@@ -1,23 +1,23 @@
 @interface MCSelfSignedCertificatePayload
-- (MCSelfSignedCertificatePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCSelfSignedCertificatePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)persistentResourceID;
 - (id)stubDictionary;
 - (id)subtitle1Description;
-- (id)validateExtendedKeyUsage:(id)a3;
+- (id)validateExtendedKeyUsage:(id)usage;
 - (id)verboseDescription;
 @end
 
 @implementation MCSelfSignedCertificatePayload
 
-- (id)validateExtendedKeyUsage:(id)a3
+- (id)validateExtendedKeyUsage:(id)usage
 {
   v32 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  usageCopy = usage;
+  v4 = [usageCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v4)
   {
     v18 = 0;
@@ -33,7 +33,7 @@ LABEL_3:
   {
     if (*v27 != v6)
     {
-      objc_enumerationMutation(v3);
+      objc_enumerationMutation(usageCopy);
     }
 
     v9 = *(*(&v26 + 1) + 8 * v8);
@@ -115,7 +115,7 @@ LABEL_20:
 LABEL_21:
     if (++v8 == v5)
     {
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v5 = [usageCopy countByEnumeratingWithState:&v26 objects:v31 count:16];
       v18 = 0;
       if (!v5)
       {
@@ -142,18 +142,18 @@ LABEL_29:
   return v18;
 }
 
-- (MCSelfSignedCertificatePayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCSelfSignedCertificatePayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v51.receiver = self;
   v51.super_class = MCSelfSignedCertificatePayload;
-  v10 = [(MCCertificatePayload *)&v51 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCCertificatePayload *)&v51 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
     v50 = 0;
-    v11 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"HardwareBound" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v50];
+    v11 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"HardwareBound" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v50];
     v12 = v50;
     if (v12)
     {
@@ -164,10 +164,10 @@ LABEL_4:
 LABEL_5:
       v14 = [(MCPayload *)v10 malformedPayloadErrorWithError:v11];
       v15 = v14;
-      if (a5)
+      if (error)
       {
         v16 = v14;
-        *a5 = v15;
+        *error = v15;
       }
 
       v17 = _MCLogObjects;
@@ -176,11 +176,11 @@ LABEL_5:
         v18 = v17;
         v19 = objc_opt_class();
         v20 = v19;
-        v21 = [v15 MCVerboseDescription];
+        mCVerboseDescription = [v15 MCVerboseDescription];
         *buf = 138543618;
         v53 = v19;
         v54 = 2114;
-        v55 = v21;
+        v55 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -189,7 +189,7 @@ LABEL_5:
     }
 
     v10->_isHardwareBound = [v11 BOOLValue];
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
 LABEL_10:
 
@@ -197,7 +197,7 @@ LABEL_10:
     }
 
     v49 = 0;
-    v24 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"KeyType" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v49];
+    v24 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"KeyType" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v49];
     v13 = v49;
     keyType = v10->_keyType;
     v10->_keyType = v24;
@@ -214,7 +214,7 @@ LABEL_10:
     }
 
     v48 = 0;
-    v26 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"KeySize" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v48];
+    v26 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"KeySize" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" missingDataCode:1002 missingDataErrorString:@"ERROR_PROFILE_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v48];
     v27 = v48;
     if (v27)
     {
@@ -233,7 +233,7 @@ LABEL_29:
     v44 = v26;
     v10->_keySize = [v26 unsignedIntegerValue];
     v47 = 0;
-    v28 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"KeyUsage" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v47];
+    v28 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"KeyUsage" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v47];
     v29 = v47;
     if (v29)
     {
@@ -242,9 +242,9 @@ LABEL_29:
 
     if (v28)
     {
-      v30 = [v28 unsignedIntValue];
-      v10->_keyUsage = v30;
-      if ((v30 & 0xFFFFFFFA) != 0)
+      unsignedIntValue = [v28 unsignedIntValue];
+      v10->_keyUsage = unsignedIntValue;
+      if ((unsignedIntValue & 0xFFFFFFFA) != 0)
       {
         v29 = [MCPayload badFieldTypeErrorWithField:@"KeyUsage"];
 LABEL_18:
@@ -263,7 +263,7 @@ LABEL_27:
 
     v43 = v28;
     v46 = 0;
-    v31 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"ExtendedKeyUsage" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v46];
+    v31 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"ExtendedKeyUsage" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v46];
     v27 = v46;
     extendedKeyUsage = v10->_extendedKeyUsage;
     v10->_extendedKeyUsage = v31;
@@ -281,7 +281,7 @@ LABEL_27:
     }
 
     v45 = 0;
-    v34 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"Lifetime" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v45];
+    v34 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"Lifetime" type:objc_opt_class() errorDomain:@"MCProfileErrorDomain" invalidDataCode:1003 invalidDataErrorString:@"ERROR_PROFILE_FIELD_INVALID_P_FIELD" outError:&v45];
     v35 = v45;
     if (v35)
     {
@@ -290,15 +290,15 @@ LABEL_27:
 
     if (v34)
     {
-      v36 = [v34 unsignedIntegerValue];
+      unsignedIntegerValue = [v34 unsignedIntegerValue];
     }
 
     else
     {
-      v36 = 315576000;
+      unsignedIntegerValue = 315576000;
     }
 
-    v10->_lifetime = v36;
+    v10->_lifetime = unsignedIntegerValue;
     if (v10->_isHardwareBound)
     {
       if (![(NSString *)v10->_keyType isEqualToString:@"ECSECPrimeRandom"])
@@ -355,17 +355,17 @@ LABEL_50:
     }
 
 LABEL_54:
-    if ([v8 count])
+    if ([dictionaryCopy count])
     {
       v40 = _MCLogObjects;
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
       {
         v41 = v40;
-        v42 = [(MCPayload *)v10 friendlyName];
+        friendlyName = [(MCPayload *)v10 friendlyName];
         *buf = 138543618;
-        v53 = v42;
+        v53 = friendlyName;
         v54 = 2114;
-        v55 = v8;
+        v55 = dictionaryCopy;
         _os_log_impl(&dword_1A795B000, v41, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
       }
     }
@@ -384,11 +384,11 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = MCSelfSignedCertificatePayload;
-  v3 = [(MCCertificatePayload *)&v6 stubDictionary];
+  stubDictionary = [(MCCertificatePayload *)&v6 stubDictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_isHardwareBound];
-  [v3 setObject:v4 forKey:@"HardwareBound"];
+  [stubDictionary setObject:v4 forKey:@"HardwareBound"];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -396,8 +396,8 @@ LABEL_11:
   v3 = MEMORY[0x1E696AD60];
   v10.receiver = self;
   v10.super_class = MCSelfSignedCertificatePayload;
-  v4 = [(MCCertificatePayload *)&v10 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCCertificatePayload *)&v10 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   if (self->_isHardwareBound)
   {
@@ -410,10 +410,10 @@ LABEL_11:
   }
 
   [v5 appendFormat:@"Hardware bound : %@\n", v6];
-  v7 = [(MCCertificatePayload *)self copyCertificate];
-  if (v7)
+  copyCertificate = [(MCCertificatePayload *)self copyCertificate];
+  if (copyCertificate)
   {
-    v8 = v7;
+    v8 = copyCertificate;
     [v5 appendFormat:@"Identity       : Present\n"];
     CFRelease(v8);
   }
@@ -428,19 +428,19 @@ LABEL_11:
 
 - (id)subtitle1Description
 {
-  v3 = [(MCCertificatePayload *)self issuer];
-  v4 = v3;
-  if (v3)
+  issuer = [(MCCertificatePayload *)self issuer];
+  v4 = issuer;
+  if (issuer)
   {
-    v5 = v3;
+    v5 = issuer;
   }
 
   else
   {
-    v6 = [(MCPayload *)self profile];
-    v7 = [v6 isStub];
+    profile = [(MCPayload *)self profile];
+    isStub = [profile isStub];
 
-    if (v7)
+    if (isStub)
     {
       v8 = @"ISSUED_BY_MISSING";
     }
@@ -460,10 +460,10 @@ LABEL_11:
 
 - (id)persistentResourceID
 {
-  v2 = [(MCCertificatePayload *)self certificatePersistentID];
-  v3 = [v2 MCHexString];
+  certificatePersistentID = [(MCCertificatePayload *)self certificatePersistentID];
+  mCHexString = [certificatePersistentID MCHexString];
 
-  return v3;
+  return mCHexString;
 }
 
 @end

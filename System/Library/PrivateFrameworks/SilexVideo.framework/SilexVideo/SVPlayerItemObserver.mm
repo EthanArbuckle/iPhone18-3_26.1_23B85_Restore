@@ -1,21 +1,21 @@
 @interface SVPlayerItemObserver
 - (AVPlayerItem)item;
-- (SVPlayerItemObserver)initWithPlayer:(id)a3;
-- (void)setItem:(id)a3;
+- (SVPlayerItemObserver)initWithPlayer:(id)player;
+- (void)setItem:(id)item;
 @end
 
 @implementation SVPlayerItemObserver
 
-- (SVPlayerItemObserver)initWithPlayer:(id)a3
+- (SVPlayerItemObserver)initWithPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   v19.receiver = self;
   v19.super_class = SVPlayerItemObserver;
   v6 = [(SVPlayerItemObserver *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_player, a3);
+    objc_storeStrong(&v6->_player, player);
     objc_initWeak(&location, v7);
     v8 = [SVKeyValueObserver alloc];
     v13 = MEMORY[0x277D85DD0];
@@ -23,12 +23,12 @@
     v15 = __39__SVPlayerItemObserver_initWithPlayer___block_invoke;
     v16 = &unk_279BC5D60;
     objc_copyWeak(&v17, &location);
-    v9 = [(SVKeyValueObserver *)v8 initWithKeyPath:@"currentItem" ofObject:v5 withOptions:1 change:&v13];
+    v9 = [(SVKeyValueObserver *)v8 initWithKeyPath:@"currentItem" ofObject:playerCopy withOptions:1 change:&v13];
     observer = v7->_observer;
     v7->_observer = v9;
 
-    v11 = [v5 currentItem];
-    objc_storeWeak(&v7->_item, v11);
+    currentItem = [playerCopy currentItem];
+    objc_storeWeak(&v7->_item, currentItem);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -44,22 +44,22 @@ void __39__SVPlayerItemObserver_initWithPlayer___block_invoke(uint64_t a1, uint6
   [WeakRetained setItem:v5];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  obj = a3;
+  obj = item;
   WeakRetained = objc_loadWeakRetained(&self->_item);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_item, obj);
-    v6 = [(SVPlayerItemObserver *)self changeBlock];
+    changeBlock = [(SVPlayerItemObserver *)self changeBlock];
 
     v5 = obj;
-    if (v6)
+    if (changeBlock)
     {
-      v7 = [(SVPlayerItemObserver *)self changeBlock];
-      (v7)[2](v7, self);
+      changeBlock2 = [(SVPlayerItemObserver *)self changeBlock];
+      (changeBlock2)[2](changeBlock2, self);
 
       v5 = obj;
     }

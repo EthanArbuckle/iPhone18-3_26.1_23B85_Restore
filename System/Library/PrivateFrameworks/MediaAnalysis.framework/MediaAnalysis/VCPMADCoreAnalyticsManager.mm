@@ -2,14 +2,14 @@
 + (id)sharedAuxiliaryManager;
 + (id)sharedManager;
 - (VCPMADCoreAnalyticsManager)init;
-- (id)fetchSessionEvent:(id)a3;
-- (id)valueForField:(id)a3 andEvent:(id)a4;
-- (void)accumulateDoubleValue:(double)a3 forField:(id)a4 andEvent:(id)a5;
-- (void)accumulateInt64Value:(int64_t)a3 forField:(id)a4 andEvent:(id)a5;
+- (id)fetchSessionEvent:(id)event;
+- (id)valueForField:(id)field andEvent:(id)event;
+- (void)accumulateDoubleValue:(double)value forField:(id)field andEvent:(id)event;
+- (void)accumulateInt64Value:(int64_t)value forField:(id)field andEvent:(id)event;
 - (void)dealloc;
 - (void)flush;
-- (void)sendSessionEvent:(id)a3;
-- (void)setValue:(id)a3 forField:(id)a4 andEvent:(id)a5;
+- (void)sendSessionEvent:(id)event;
+- (void)setValue:(id)value forField:(id)field andEvent:(id)event;
 @end
 
 @implementation VCPMADCoreAnalyticsManager
@@ -26,9 +26,9 @@
     managementQueue = v2->_managementQueue;
     v2->_managementQueue = v4;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     sessionAnalytics = v2->_sessionAnalytics;
-    v2->_sessionAnalytics = v6;
+    v2->_sessionAnalytics = dictionary;
 
     v2->_singleAnalyticsSentCount = 0;
     v2->_sessionAnalyticsSentCount = 0;
@@ -75,16 +75,16 @@ VCPMADCoreAnalyticsManager *__52__VCPMADCoreAnalyticsManager_sharedAuxiliaryMana
   [(VCPMADCoreAnalyticsManager *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forField:(id)a4 andEvent:(id)a5
+- (void)setValue:(id)value forField:(id)field andEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  valueCopy = value;
+  fieldCopy = field;
+  eventCopy = event;
+  v11 = eventCopy;
+  if (eventCopy)
   {
-    if (v9)
+    if (fieldCopy)
     {
       managementQueue = self->_managementQueue;
       v16[0] = MEMORY[0x1E69E9820];
@@ -92,9 +92,9 @@ VCPMADCoreAnalyticsManager *__52__VCPMADCoreAnalyticsManager_sharedAuxiliaryMana
       v16[2] = __57__VCPMADCoreAnalyticsManager_setValue_forField_andEvent___block_invoke;
       v16[3] = &unk_1E834D048;
       v16[4] = self;
-      v17 = v10;
-      v18 = v8;
-      v19 = v9;
+      v17 = eventCopy;
+      v18 = valueCopy;
+      v19 = fieldCopy;
       dispatch_sync(managementQueue, v16);
 
       goto LABEL_11;
@@ -150,13 +150,13 @@ void __57__VCPMADCoreAnalyticsManager_setValue_forField_andEvent___block_invoke(
   [v6 setValue:a1[6] forKey:a1[7]];
 }
 
-- (void)accumulateInt64Value:(int64_t)a3 forField:(id)a4 andEvent:(id)a5
+- (void)accumulateInt64Value:(int64_t)value forField:(id)field andEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v9)
+  fieldCopy = field;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (!eventCopy)
   {
     if (MediaAnalysisLogLevel() < 4 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -173,7 +173,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!fieldCopy)
   {
     if (MediaAnalysisLogLevel() < 4 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
@@ -189,7 +189,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (value)
   {
     managementQueue = self->_managementQueue;
     v16[0] = MEMORY[0x1E69E9820];
@@ -197,9 +197,9 @@ LABEL_14:
     v16[2] = __69__VCPMADCoreAnalyticsManager_accumulateInt64Value_forField_andEvent___block_invoke;
     v16[3] = &unk_1E8351DC0;
     v16[4] = self;
-    v17 = v9;
-    v18 = v8;
-    v19 = a3;
+    v17 = eventCopy;
+    v18 = fieldCopy;
+    valueCopy = value;
     dispatch_sync(managementQueue, v16);
 
     goto LABEL_15;
@@ -210,7 +210,7 @@ LABEL_14:
     *buf = 138412546;
     v21 = v10;
     v22 = 2112;
-    v23 = v8;
+    v23 = fieldCopy;
     v12 = MEMORY[0x1E69E9C10];
     v13 = "[CoreAnalyticManager] Ignore 0-accumulation for event %@ field %@";
     v14 = OS_LOG_TYPE_DEBUG;
@@ -251,17 +251,17 @@ void __69__VCPMADCoreAnalyticsManager_accumulateInt64Value_forField_andEvent___b
   [v8 setValue:v9 forKey:a1[6]];
 }
 
-- (void)accumulateDoubleValue:(double)a3 forField:(id)a4 andEvent:(id)a5
+- (void)accumulateDoubleValue:(double)value forField:(id)field andEvent:(id)event
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  fieldCopy = field;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (eventCopy)
   {
-    if (v8)
+    if (fieldCopy)
     {
-      if (a3 != 0.0)
+      if (value != 0.0)
       {
         managementQueue = self->_managementQueue;
         v16[0] = MEMORY[0x1E69E9820];
@@ -269,9 +269,9 @@ void __69__VCPMADCoreAnalyticsManager_accumulateInt64Value_forField_andEvent___b
         v16[2] = __70__VCPMADCoreAnalyticsManager_accumulateDoubleValue_forField_andEvent___block_invoke;
         v16[3] = &unk_1E8351DC0;
         v16[4] = self;
-        v17 = v9;
-        v18 = v8;
-        v19 = a3;
+        v17 = eventCopy;
+        v18 = fieldCopy;
+        valueCopy = value;
         dispatch_sync(managementQueue, v16);
 
         goto LABEL_15;
@@ -282,7 +282,7 @@ void __69__VCPMADCoreAnalyticsManager_accumulateInt64Value_forField_andEvent___b
         *buf = 138412546;
         v21 = v10;
         v22 = 2112;
-        v23 = v8;
+        v23 = fieldCopy;
         v11 = MEMORY[0x1E69E9C10];
         v12 = "[CoreAnalyticManager] Ignore 0-accumulation for event %@ field %@";
         v13 = OS_LOG_TYPE_DEBUG;
@@ -349,10 +349,10 @@ void __70__VCPMADCoreAnalyticsManager_accumulateDoubleValue_forField_andEvent___
   [v8 setValue:v11 forKey:*(a1 + 48)];
 }
 
-- (id)valueForField:(id)a3 andEvent:(id)a4
+- (id)valueForField:(id)field andEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -365,11 +365,11 @@ void __70__VCPMADCoreAnalyticsManager_accumulateDoubleValue_forField_andEvent___
   v13[2] = __53__VCPMADCoreAnalyticsManager_valueForField_andEvent___block_invoke;
   v13[3] = &unk_1E834D2D8;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
+  v14 = eventCopy;
+  v15 = fieldCopy;
   v16 = &v17;
-  v9 = v6;
-  v10 = v7;
+  v9 = fieldCopy;
+  v10 = eventCopy;
   dispatch_sync(managementQueue, v13);
   v11 = v18[5];
 
@@ -401,11 +401,11 @@ void __53__VCPMADCoreAnalyticsManager_valueForField_andEvent___block_invoke(void
   }
 }
 
-- (void)sendSessionEvent:(id)a3
+- (void)sendSessionEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
     managementQueue = self->_managementQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -413,7 +413,7 @@ void __53__VCPMADCoreAnalyticsManager_valueForField_andEvent___block_invoke(void
     v7[2] = __47__VCPMADCoreAnalyticsManager_sendSessionEvent___block_invoke;
     v7[3] = &unk_1E834D238;
     v7[4] = self;
-    v8 = v4;
+    v8 = eventCopy;
     dispatch_sync(managementQueue, v7);
   }
 
@@ -449,9 +449,9 @@ void __47__VCPMADCoreAnalyticsManager_sendSessionEvent___block_invoke(uint64_t a
   }
 }
 
-- (id)fetchSessionEvent:(id)a3
+- (id)fetchSessionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -464,9 +464,9 @@ void __47__VCPMADCoreAnalyticsManager_sendSessionEvent___block_invoke(uint64_t a
   block[2] = __48__VCPMADCoreAnalyticsManager_fetchSessionEvent___block_invoke;
   block[3] = &unk_1E834CE28;
   block[4] = self;
-  v10 = v4;
+  v10 = eventCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = eventCopy;
   dispatch_sync(managementQueue, block);
   v7 = v13[5];
 

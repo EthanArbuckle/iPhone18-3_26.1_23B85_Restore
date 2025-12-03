@@ -7,12 +7,12 @@
 - (void)_main_notifyDelegateOfUnlockStatus;
 - (void)_main_resetAndCleanupConnection;
 - (void)_main_setupConnection;
-- (void)_main_updateIsPasscodeLocked:(BOOL)a3;
-- (void)_main_updateWristState:(int64_t)a3;
+- (void)_main_updateIsPasscodeLocked:(BOOL)locked;
+- (void)_main_updateWristState:(int64_t)state;
 - (void)_setupUnlockConnection;
 - (void)activate;
 - (void)cancel;
-- (void)unlockConnection:(id)a3 remoteDeviceDidNotifyState:(id)a4;
+- (void)unlockConnection:(id)connection remoteDeviceDidNotifyState:(id)state;
 @end
 
 @implementation WOWorkoutDevicePairedWatchController
@@ -32,7 +32,7 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
 
 - (BOOL)isUnlockedAndOnWrist
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
   v14 = 0;
   v15 = &v14;
@@ -41,8 +41,8 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
   v18 = 0;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v7 = [(WOWorkoutDevicePairedWatchController *)v20 _main_calculateUnlockedAndOnWristState];
-    *(v15 + 24) = v7;
+    _main_calculateUnlockedAndOnWristState = [(WOWorkoutDevicePairedWatchController *)selfCopy _main_calculateUnlockedAndOnWristState];
+    *(v15 + 24) = _main_calculateUnlockedAndOnWristState;
   }
 
   else
@@ -56,7 +56,7 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
     v11 = __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_invoke;
     v12 = &unk_277D889C0;
     v13[1] = &v14;
-    v13[0] = MEMORY[0x277D82BE0](v20);
+    v13[0] = MEMORY[0x277D82BE0](selfCopy);
     dispatch_sync(queue, &v8);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(v13, 0);
@@ -114,11 +114,11 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
 
 - (void)activate
 {
-  v8 = self;
+  selfCopy = self;
   location[3] = a2;
   obj = MEMORY[0x277D82BE0](self);
   objc_sync_enter(obj);
-  if (v8->_client)
+  if (selfCopy->_client)
   {
     _HKInitializeLogging();
     location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -132,23 +132,23 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
     }
 
     objc_storeStrong(location, 0);
-    [(SFClient *)v8->_client invalidate];
-    objc_storeStrong(&v8->_client, 0);
+    [(SFClient *)selfCopy->_client invalidate];
+    objc_storeStrong(&selfCopy->_client, 0);
   }
 
-  [(WOWorkoutDevicePairedWatchController *)v8 _setupUnlockConnection];
+  [(WOWorkoutDevicePairedWatchController *)selfCopy _setupUnlockConnection];
   objc_sync_exit(obj);
   MEMORY[0x277D82BD8](obj);
 }
 
 - (void)cancel
 {
-  v12 = self;
+  selfCopy = self;
   v11[3] = a2;
   obj = MEMORY[0x277D82BE0](self);
   objc_sync_enter(obj);
-  [(SFClient *)v12->_client invalidate];
-  objc_storeStrong(&v12->_client, 0);
+  [(SFClient *)selfCopy->_client invalidate];
+  objc_storeStrong(&selfCopy->_client, 0);
   objc_sync_exit(obj);
   MEMORY[0x277D82BD8](obj);
   v3 = MEMORY[0x277D85CD0];
@@ -159,7 +159,7 @@ void __62__WOWorkoutDevicePairedWatchController__setupUnlockConnection__block_in
   v8 = 0;
   v9 = __46__WOWorkoutDevicePairedWatchController_cancel__block_invoke;
   v10 = &unk_277D88890;
-  v11[0] = MEMORY[0x277D82BE0](v12);
+  v11[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v11, 0);
@@ -174,12 +174,12 @@ uint64_t __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_
 
 - (void)_setupUnlockConnection
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  obj = MEMORY[0x277D82BE0](v23);
+  obj = MEMORY[0x277D82BE0](selfCopy);
   objc_sync_enter(obj);
-  if (v23->_client)
+  if (selfCopy->_client)
   {
     _HKInitializeLogging();
     v21 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -193,11 +193,11 @@ uint64_t __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_
     }
 
     objc_storeStrong(&v21, 0);
-    [(SFClient *)v23->_client invalidate];
-    objc_storeStrong(&v23->_client, 0);
+    [(SFClient *)selfCopy->_client invalidate];
+    objc_storeStrong(&selfCopy->_client, 0);
   }
 
-  if (v23->_client)
+  if (selfCopy->_client)
   {
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -216,8 +216,8 @@ uint64_t __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277D54C30]);
-    client = v23->_client;
-    v23->_client = v5;
+    client = selfCopy->_client;
+    selfCopy->_client = v5;
     MEMORY[0x277D82BD8](client);
     v12 = MEMORY[0x277D85DD0];
     v13 = -1073741824;
@@ -226,8 +226,8 @@ uint64_t __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_
     v16 = &unk_277D88A10;
     objc_copyWeak(&v17, location);
     v18 = _Block_copy(&v12);
-    [(SFClient *)v23->_client getPairedWatchWristStateWithCompletionHandler:v18];
-    [(SFClient *)v23->_client monitorPairedWatchWristStateWithCompletionHandler:v18];
+    [(SFClient *)selfCopy->_client getPairedWatchWristStateWithCompletionHandler:v18];
+    [(SFClient *)selfCopy->_client monitorPairedWatchWristStateWithCompletionHandler:v18];
     objc_storeStrong(&v18, 0);
     objc_destroyWeak(&v17);
   }
@@ -239,20 +239,20 @@ uint64_t __60__WOWorkoutDevicePairedWatchController_isUnlockedAndOnWrist__block_
 
 - (void)_main_setupConnection
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   v6 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
   v7 = v6;
   dispatch_assert_queue_V2(v7);
   MEMORY[0x277D82BD8](v7);
-  objc_initWeak(location, v16);
+  objc_initWeak(location, selfCopy);
   v8 = objc_alloc(MEMORY[0x277D37C50]);
-  v5 = [v8 initWithDelegate:v16];
-  connection = v16->_connection;
-  v16->_connection = v5;
+  v5 = [v8 initWithDelegate:selfCopy];
+  connection = selfCopy->_connection;
+  selfCopy->_connection = v5;
   MEMORY[0x277D82BD8](connection);
-  v4 = v16->_connection;
+  v4 = selfCopy->_connection;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
@@ -336,15 +336,15 @@ void __61__WOWorkoutDevicePairedWatchController__main_setupConnection__block_inv
   [(WOWorkoutDevicePairedWatchController *)self _resetValues];
 }
 
-- (void)_main_updateWristState:(int64_t)a3
+- (void)_main_updateWristState:(int64_t)state
 {
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   v5 = v4;
   dispatch_assert_queue_V2(v5);
   MEMORY[0x277D82BD8](v5);
-  self->_wristState = a3;
-  if (a3)
+  self->_wristState = state;
+  if (state)
   {
     if (!self->_connection)
     {
@@ -361,14 +361,14 @@ void __61__WOWorkoutDevicePairedWatchController__main_setupConnection__block_inv
   [(WOWorkoutDevicePairedWatchController *)self _main_notifyDelegateOfUnlockStatus];
 }
 
-- (void)_main_updateIsPasscodeLocked:(BOOL)a3
+- (void)_main_updateIsPasscodeLocked:(BOOL)locked
 {
   v6 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   v7 = v6;
   dispatch_assert_queue_V2(v7);
   MEMORY[0x277D82BD8](v7);
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:locked];
   isPasscodeLockedValue = self->_isPasscodeLockedValue;
   self->_isPasscodeLockedValue = v4;
   MEMORY[0x277D82BD8](isPasscodeLockedValue);
@@ -401,7 +401,7 @@ void __61__WOWorkoutDevicePairedWatchController__main_setupConnection__block_inv
 - (void)_main_logState
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v9 = MEMORY[0x277D85CD0];
   v2 = MEMORY[0x277D85CD0];
@@ -415,11 +415,11 @@ void __61__WOWorkoutDevicePairedWatchController__main_setupConnection__block_inv
   {
     log = v13[0];
     type = v12;
-    v8 = SFPairedWatchWristStateToString(v14->_wristState);
+    v8 = SFPairedWatchWristStateToString(selfCopy->_wristState);
     v4 = MEMORY[0x277D82BE0](v8);
     v11 = v4;
-    isPasscodeLockedValue = v14->_isPasscodeLockedValue;
-    if ([(WOWorkoutDevicePairedWatchController *)v14 _main_calculateUnlockedAndOnWristState])
+    isPasscodeLockedValue = selfCopy->_isPasscodeLockedValue;
+    if ([(WOWorkoutDevicePairedWatchController *)selfCopy _main_calculateUnlockedAndOnWristState])
     {
       v3 = @"YES";
     }
@@ -446,20 +446,20 @@ void __61__WOWorkoutDevicePairedWatchController__main_setupConnection__block_inv
   v4 = v3;
   dispatch_assert_queue_V2(v4);
   MEMORY[0x277D82BD8](v4);
-  v5 = [(WOWorkoutDevicePairedWatchController *)self delegate];
-  [(WOWorkoutDevicePairedWatchControllerDelegate *)v5 workoutDevicePairedWatchControllerDidUpdateStatus:[(WOWorkoutDevicePairedWatchController *)self _main_calculateUnlockedAndOnWristState]];
-  MEMORY[0x277D82BD8](v5);
+  delegate = [(WOWorkoutDevicePairedWatchController *)self delegate];
+  [(WOWorkoutDevicePairedWatchControllerDelegate *)delegate workoutDevicePairedWatchControllerDidUpdateStatus:[(WOWorkoutDevicePairedWatchController *)self _main_calculateUnlockedAndOnWristState]];
+  MEMORY[0x277D82BD8](delegate);
 }
 
-- (void)unlockConnection:(id)a3 remoteDeviceDidNotifyState:(id)a4
+- (void)unlockConnection:(id)connection remoteDeviceDidNotifyState:(id)state
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  objc_initWeak(&v15, v18);
+  objc_storeStrong(&v16, state);
+  objc_initWeak(&v15, selfCopy);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;

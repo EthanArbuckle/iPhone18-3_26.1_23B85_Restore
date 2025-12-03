@@ -1,14 +1,14 @@
 @interface PXPhotosDynamicHeaderLayoutUtilities
-+ (double)headerMinimumHeightForReferenceSize:(CGSize)a3;
++ (double)headerMinimumHeightForReferenceSize:(CGSize)size;
 - (PXPhotosDynamicHeaderLayoutUtilities)init;
 @end
 
 @implementation PXPhotosDynamicHeaderLayoutUtilities
 
-+ (double)headerMinimumHeightForReferenceSize:(CGSize)a3
++ (double)headerMinimumHeightForReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   sub_1A43ACA40();
   PhotosDynamicHeaderSpec.headerHeight(for:)(width, height);
   return result;

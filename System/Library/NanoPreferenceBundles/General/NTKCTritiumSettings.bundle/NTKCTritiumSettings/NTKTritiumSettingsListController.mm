@@ -1,15 +1,15 @@
 @interface NTKTritiumSettingsListController
 - (NTKTritiumSettingsListController)init;
 - (id)createAppGroupSpecifier;
-- (id)createHeaderSpecifiers:(BOOL)a3;
-- (id)getAllComplicationsPrivate:(id)a3;
-- (id)getSpecificComplicationPrivate:(id)a3;
+- (id)createHeaderSpecifiers:(BOOL)specifiers;
+- (id)getAllComplicationsPrivate:(id)private;
+- (id)getSpecificComplicationPrivate:(id)private;
 - (id)specifiers;
 - (void)dealloc;
 - (void)reloadSpecifiers;
-- (void)setAllComplicationsPrivate:(id)a3 specifier:(id)a4;
-- (void)setSpecificComplicationPrivate:(id)a3 specifier:(id)a4;
-- (void)specifiersUpdated:(id)a3;
+- (void)setAllComplicationsPrivate:(id)private specifier:(id)specifier;
+- (void)setSpecificComplicationPrivate:(id)private specifier:(id)specifier;
+- (void)specifiersUpdated:(id)updated;
 @end
 
 @implementation NTKTritiumSettingsListController
@@ -51,9 +51,9 @@
   [(NTKTritiumSettingsListController *)&v4 dealloc];
 }
 
-- (void)specifiersUpdated:(id)a3
+- (void)specifiersUpdated:(id)updated
 {
-  v4 = [a3 copy];
+  v4 = [updated copy];
   loadedAppSpecifiers = self->_loadedAppSpecifiers;
   self->_loadedAppSpecifiers = v4;
 
@@ -64,15 +64,15 @@
 {
   v3 = objc_opt_new();
   v4 = +[NTKTritiumDefaults sharedInstance];
-  v5 = [v4 allBundleIDsPrivateInTritium];
+  allBundleIDsPrivateInTritium = [v4 allBundleIDsPrivateInTritium];
 
-  v6 = [(NTKTritiumSettingsListController *)self createHeaderSpecifiers:v5];
+  v6 = [(NTKTritiumSettingsListController *)self createHeaderSpecifiers:allBundleIDsPrivateInTritium];
   [v3 addObjectsFromArray:v6];
 
-  if ((v5 & 1) == 0)
+  if ((allBundleIDsPrivateInTritium & 1) == 0)
   {
-    v7 = [(NTKTritiumSettingsListController *)self createAppGroupSpecifier];
-    [v3 addObject:v7];
+    createAppGroupSpecifier = [(NTKTritiumSettingsListController *)self createAppGroupSpecifier];
+    [v3 addObject:createAppGroupSpecifier];
 
     if (self->_loadedAppSpecifiers)
     {
@@ -105,13 +105,13 @@
   v3 = +[NTKTritiumDefaults sharedInstance];
   [v3 reload];
 
-  v4 = [(NTKTritiumSettingsListController *)self specifiers];
+  specifiers = [(NTKTritiumSettingsListController *)self specifiers];
   v5.receiver = self;
   v5.super_class = NTKTritiumSettingsListController;
   [(NTKTritiumSettingsListController *)&v5 reloadSpecifiers];
 }
 
-- (id)createHeaderSpecifiers:(BOOL)a3
+- (id)createHeaderSpecifiers:(BOOL)specifiers
 {
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"TRITIUM_SETTINGS_SHOW_COMPLICATION_DATA" value:&stru_84C0 table:@"NTKTritiumSettings"];
@@ -119,7 +119,7 @@
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"setAllComplicationsPrivate:specifier:" get:"getAllComplicationsPrivate:" detail:0 cell:6 edit:0];
   [v7 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
   v8 = [PSSpecifier groupSpecifierWithName:&stru_84C0];
-  if (!a3)
+  if (!specifiers)
   {
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"TRITIUM_SETTINGS_DESCRIPTION" value:&stru_84C0 table:@"NTKTritiumSettings"];
@@ -144,18 +144,18 @@
   return v4;
 }
 
-- (void)setAllComplicationsPrivate:(id)a3 specifier:(id)a4
+- (void)setAllComplicationsPrivate:(id)private specifier:(id)specifier
 {
-  v5 = a3;
+  privateCopy = private;
   v6 = +[NTKTritiumDefaults sharedInstance];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [privateCopy BOOLValue];
 
-  [v6 setAllBundleIDsPrivateInTritium:v7 ^ 1];
+  [v6 setAllBundleIDsPrivateInTritium:bOOLValue ^ 1];
 
   [(NTKTritiumSettingsListController *)self reloadSpecifiers];
 }
 
-- (id)getAllComplicationsPrivate:(id)a3
+- (id)getAllComplicationsPrivate:(id)private
 {
   v3 = +[NTKTritiumDefaults sharedInstance];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 allBundleIDsPrivateInTritium] ^ 1);
@@ -163,24 +163,24 @@
   return v4;
 }
 
-- (void)setSpecificComplicationPrivate:(id)a3 specifier:(id)a4
+- (void)setSpecificComplicationPrivate:(id)private specifier:(id)specifier
 {
-  v5 = a4;
-  v6 = a3;
+  specifierCopy = specifier;
+  privateCopy = private;
   v9 = +[NTKTritiumDefaults sharedInstance];
-  v7 = [v5 userInfo];
+  userInfo = [specifierCopy userInfo];
 
-  v8 = [NSSet setWithObject:v7];
-  LODWORD(v5) = [v6 BOOLValue];
+  v8 = [NSSet setWithObject:userInfo];
+  LODWORD(specifierCopy) = [privateCopy BOOLValue];
 
-  [v9 setBundleIDs:v8 privateInTritium:v5 ^ 1];
+  [v9 setBundleIDs:v8 privateInTritium:specifierCopy ^ 1];
 }
 
-- (id)getSpecificComplicationPrivate:(id)a3
+- (id)getSpecificComplicationPrivate:(id)private
 {
-  v3 = [a3 userInfo];
+  userInfo = [private userInfo];
   v4 = +[NTKTritiumDefaults sharedInstance];
-  v5 = [v4 isBundleIdPrivateInTritium:v3];
+  v5 = [v4 isBundleIdPrivateInTritium:userInfo];
 
   if (v5)
   {

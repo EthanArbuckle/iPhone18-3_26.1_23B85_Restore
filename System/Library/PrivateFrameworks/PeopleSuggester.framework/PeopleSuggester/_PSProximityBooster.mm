@@ -1,6 +1,6 @@
 @interface _PSProximityBooster
 - (_PSProximityBooster)init;
-- (id)suggestionsByBoostingNearbySuggestions:(id)a3;
+- (id)suggestionsByBoostingNearbySuggestions:(id)suggestions;
 - (void)startMonitoringProximity;
 - (void)stopMonitoringProximity;
 @end
@@ -37,23 +37,23 @@
 
 - (void)startMonitoringProximity
 {
-  v2 = [(_PSProximityBooster *)self peopleDiscovery];
-  [v2 activateWithCompletion:&__block_literal_global_30];
+  peopleDiscovery = [(_PSProximityBooster *)self peopleDiscovery];
+  [peopleDiscovery activateWithCompletion:&__block_literal_global_30];
 }
 
 - (void)stopMonitoringProximity
 {
-  v2 = [(_PSProximityBooster *)self peopleDiscovery];
-  [v2 invalidate];
+  peopleDiscovery = [(_PSProximityBooster *)self peopleDiscovery];
+  [peopleDiscovery invalidate];
 }
 
-- (id)suggestionsByBoostingNearbySuggestions:(id)a3
+- (id)suggestionsByBoostingNearbySuggestions:(id)suggestions
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v6 = [(_PSProximityBooster *)self peopleDiscovery];
-  v7 = [v6 dispatchQueue];
+  peopleDiscovery = [(_PSProximityBooster *)self peopleDiscovery];
+  dispatchQueue = [peopleDiscovery dispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62___PSProximityBooster_suggestionsByBoostingNearbySuggestions___block_invoke;
@@ -61,17 +61,17 @@
   block[4] = self;
   v42 = v5;
   v56 = v42;
-  dispatch_sync(v7, block);
+  dispatch_sync(dispatchQueue, block);
 
-  v41 = [v4 mutableCopy];
+  v41 = [suggestionsCopy mutableCopy];
   obj = [MEMORY[0x1E695DFA8] set];
-  v45 = v4;
+  v45 = suggestionsCopy;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v8 = [v4 reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v51 objects:v64 count:16];
+  reverseObjectEnumerator = [suggestionsCopy reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v51 objects:v64 count:16];
   if (v9)
   {
     v10 = v9;
@@ -82,43 +82,43 @@
       {
         if (*v52 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v13 = *(*(&v51 + 1) + 8 * i);
-        v14 = [v13 recipients];
-        v15 = [v14 count];
+        recipients = [v13 recipients];
+        v15 = [recipients count];
 
         if (v15 == 1)
         {
-          v16 = [v13 recipients];
-          v17 = [v16 firstObject];
+          recipients2 = [v13 recipients];
+          firstObject = [recipients2 firstObject];
 
-          v18 = [v17 contact];
-          v19 = [v18 identifier];
+          contact = [firstObject contact];
+          identifier = [contact identifier];
 
-          if (v19 && [v42 containsObject:v19])
+          if (identifier && [v42 containsObject:identifier])
           {
             [v41 removeObject:v13];
             [v41 insertObject:v13 atIndex:0];
-            v20 = [v13 reason];
-            [v20 stringByAppendingString:@" - "];
-            v22 = v21 = v8;
+            reason = [v13 reason];
+            [reason stringByAppendingString:@" - "];
+            v22 = v21 = reverseObjectEnumerator;
             v23 = [v22 stringByAppendingString:@"Proximity Boosted"];
             [v13 setReason:v23];
 
-            v24 = [v13 reasonType];
-            v25 = [v24 stringByAppendingString:@" - "];
+            reasonType = [v13 reasonType];
+            v25 = [reasonType stringByAppendingString:@" - "];
             v26 = [v25 stringByAppendingString:@"Proximity Boosted"];
             [v13 setReasonType:v26];
 
-            v8 = v21;
-            [obj addObject:v19];
+            reverseObjectEnumerator = v21;
+            [obj addObject:identifier];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v51 objects:v64 count:16];
+      v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v51 objects:v64 count:16];
     }
 
     while (v10);

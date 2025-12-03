@@ -23,19 +23,19 @@
   v4 = v2;
   v61 = v4;
   v48 = _Block_copy(aBlock);
-  [a1 visibleRect];
+  [self visibleRect];
   v48[2](v48, @"visible");
-  [a1 adaptiveVisibleRect];
+  [self adaptiveVisibleRect];
   v48[2](v48, @"adaptiveVisibleRect");
-  [a1 salientContentRect];
+  [self salientContentRect];
   v48[2](v48, @"saliency");
-  [a1 inactiveRect];
+  [self inactiveRect];
   v48[2](v48, @"inactiveRect");
-  [a1 adaptiveInactiveTopRect];
+  [self adaptiveInactiveTopRect];
   v48[2](v48, @"adaptiveInactiveTopRect");
-  [a1 spatialVisibleRect];
+  [self spatialVisibleRect];
   v48[2](v48, @"spatialVisibleRect");
-  [a1 spatialAdaptiveVisibleRect];
+  [self spatialAdaptiveVisibleRect];
   v48[2](v48, @"spatialAdaptiveVisibleRect");
   v76 = v64[1];
   v77 = CGRectOffset(v76, -v76.origin.x, -v76.origin.y);
@@ -60,8 +60,8 @@
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v9 = [v4 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
+    allKeys = [v4 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v56 objects:v72 count:16];
     if (v10)
     {
       v11 = *v57;
@@ -71,7 +71,7 @@
         {
           if (*v57 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v56 + 1) + 8 * i);
@@ -91,7 +91,7 @@
           [v4 setObject:v23 forKeyedSubscript:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v56 objects:v72 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v56 objects:v72 count:16];
       }
 
       while (v10);
@@ -103,8 +103,8 @@
   v75.height = v8;
   UIGraphicsBeginImageContextWithOptions(v75, 1, 0.0);
   c = UIGraphicsGetCurrentContext();
-  v25 = [MEMORY[0x1E69DC888] whiteColor];
-  [v25 setFill];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [whiteColor setFill];
 
   v80.origin.x = x * v7;
   v80.origin.y = rect;
@@ -115,8 +115,8 @@
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v26 = [v4 allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v52 objects:v71 count:16];
+  allKeys2 = [v4 allKeys];
+  v27 = [allKeys2 countByEnumeratingWithState:&v52 objects:v71 count:16];
   if (v27)
   {
     v28 = *v53;
@@ -129,7 +129,7 @@
       {
         if (*v53 != v28)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys2);
         }
 
         v32 = *(*(&v52 + 1) + 8 * j);
@@ -165,7 +165,7 @@
         }
       }
 
-      v27 = [v26 countByEnumeratingWithState:&v52 objects:v71 count:16];
+      v27 = [allKeys2 countByEnumeratingWithState:&v52 objects:v71 count:16];
     }
 
     while (v27);

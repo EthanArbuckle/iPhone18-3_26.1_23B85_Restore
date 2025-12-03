@@ -1,45 +1,45 @@
 @interface ICTextFindingResult
 - (_NSRange)range;
-- (id)framesForHighlightInTextView:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)scrollToVisibleInTextView:(id)a3;
-- (void)selectInTextView:(id)a3;
+- (id)framesForHighlightInTextView:(id)view;
+- (int64_t)compare:(id)compare;
+- (void)scrollToVisibleInTextView:(id)view;
+- (void)selectInTextView:(id)view;
 @end
 
 @implementation ICTextFindingResult
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(ICTextFindingResult *)self range];
-  v6 = [v4 range];
+  compareCopy = compare;
+  range = [(ICTextFindingResult *)self range];
+  range2 = [compareCopy range];
 
-  if (v5 < v6)
+  if (range < range2)
   {
     return -1;
   }
 
   else
   {
-    return v5 != v6;
+    return range != range2;
   }
 }
 
-- (id)framesForHighlightInTextView:(id)a3
+- (id)framesForHighlightInTextView:(id)view
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(ICTextFindingResult *)self range];
+  viewCopy = view;
+  array = [MEMORY[0x277CBEB18] array];
+  range = [(ICTextFindingResult *)self range];
   v8 = v7;
-  [v4 textContainerInset];
+  [viewCopy textContainerInset];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
   if (ICInternalSettingsIsTextKit2Enabled())
   {
-    v17 = [v4 textLayoutManager];
-    v18 = [v17 ic_textRangeForRange:{v6, v8}];
+    textLayoutManager = [viewCopy textLayoutManager];
+    v18 = [textLayoutManager ic_textRangeForRange:{range, v8}];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke;
@@ -48,34 +48,34 @@
     v33 = v12;
     v34 = v14;
     v35 = v16;
-    v31 = v5;
-    [v17 enumerateTextSegmentsInRange:v18 type:0 options:1 usingBlock:v30];
+    v31 = array;
+    [textLayoutManager enumerateTextSegmentsInRange:v18 type:0 options:1 usingBlock:v30];
   }
 
   else
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICTextFindingResult framesForHighlightInTextView:]" simulateCrash:1 showAlert:0 format:@"Unsupported use of TextKit1."];
-    v19 = [v4 layoutManager];
-    [v19 ensureLayoutForGlyphRange:{0, v6 + v8}];
+    layoutManager = [viewCopy layoutManager];
+    [layoutManager ensureLayoutForGlyphRange:{0, range + v8}];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke_2;
     v21[3] = &unk_2781AF718;
-    v24 = v6;
+    v24 = range;
     v25 = v8;
-    v22 = v19;
+    v22 = layoutManager;
     v26 = v10;
     v27 = v12;
     v28 = v14;
     v29 = v16;
-    v23 = v5;
-    v17 = v19;
-    [v17 enumerateLineFragmentsForGlyphRange:v6 usingBlock:{v8, v21}];
+    v23 = array;
+    textLayoutManager = layoutManager;
+    [textLayoutManager enumerateLineFragmentsForGlyphRange:range usingBlock:{v8, v21}];
 
     v18 = v22;
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke(uint64_t a1, double a2, double a3)
@@ -115,17 +115,17 @@ void __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke_3(uin
   [*(a1 + 32) addObject:v4];
 }
 
-- (void)selectInTextView:(id)a3
+- (void)selectInTextView:(id)view
 {
-  v6 = a3;
-  v4 = [(ICTextFindingResult *)self range];
-  [v6 setSelectedRange:{v4, v5}];
+  viewCopy = view;
+  range = [(ICTextFindingResult *)self range];
+  [viewCopy setSelectedRange:{range, v5}];
 }
 
-- (void)scrollToVisibleInTextView:(id)a3
+- (void)scrollToVisibleInTextView:(id)view
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if ([(ICTextFindingResult *)self isAttachmentResult])
   {
     x = *MEMORY[0x277CBF398];
@@ -136,7 +136,7 @@ void __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke_3(uin
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(ICTextFindingResult *)self framesForHighlightInTextView:v4, 0];
+    v9 = [(ICTextFindingResult *)self framesForHighlightInTextView:viewCopy, 0];
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -176,13 +176,13 @@ void __52__ICTextFindingResult_framesForHighlightInTextView___block_invoke_3(uin
       while (v11);
     }
 
-    [v4 ic_scrollRectToVisible:1 animated:0 completionHandler:{x, y, width, height}];
+    [viewCopy ic_scrollRectToVisible:1 animated:0 completionHandler:{x, y, width, height}];
   }
 
   else
   {
-    v18 = [(ICTextFindingResult *)self range];
-    [v4 scrollRangeToVisible:{v18, v19}];
+    range = [(ICTextFindingResult *)self range];
+    [viewCopy scrollRangeToVisible:{range, v19}];
   }
 }
 

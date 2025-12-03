@@ -1,13 +1,13 @@
 @interface CoreCECPhysicalDevice
-+ (id)physicalDeviceTreeWithLogicalDevices:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)physicalDeviceTreeWithLogicalDevices:(id)devices;
+- (BOOL)isEqual:(id)equal;
 - (CoreCECPhysicalDevice)init;
-- (CoreCECPhysicalDevice)initWithLogicalDevice:(id)a3;
-- (CoreCECPhysicalDevice)initWithPhysicalAddress:(unsigned __int16)a3;
+- (CoreCECPhysicalDevice)initWithLogicalDevice:(id)device;
+- (CoreCECPhysicalDevice)initWithPhysicalAddress:(unsigned __int16)address;
 - (id)description;
 - (id)propertyList;
-- (int64_t)compare:(id)a3;
-- (void)addChild:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)addChild:(id)child;
 - (void)dealloc;
 @end
 
@@ -49,8 +49,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(CoreCECPhysicalDevice *)self logicalDevices];
-  v7 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  logicalDevices = [(CoreCECPhysicalDevice *)self logicalDevices];
+  v7 = [(NSSet *)logicalDevices countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -62,14 +62,14 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(logicalDevices);
         }
 
         [v5 appendFormat:@" %u", objc_msgSend(*(*(&v13 + 1) + 8 * v10++), "logicalAddress")];
       }
 
       while (v8 != v10);
-      v8 = [(NSSet *)v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [(NSSet *)logicalDevices countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);
@@ -81,7 +81,7 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -89,18 +89,18 @@
     return 0;
   }
 
-  v5 = [(CoreCECPhysicalDevice *)self physicalAddress];
-  return v5 == [a3 physicalAddress];
+  physicalAddress = [(CoreCECPhysicalDevice *)self physicalAddress];
+  return physicalAddress == [equal physicalAddress];
 }
 
-- (CoreCECPhysicalDevice)initWithPhysicalAddress:(unsigned __int16)a3
+- (CoreCECPhysicalDevice)initWithPhysicalAddress:(unsigned __int16)address
 {
-  if (CECPhysicalAddressIsValid(a3))
+  if (CECPhysicalAddressIsValid(address))
   {
     result = [(CoreCECPhysicalDevice *)self init];
     if (result)
     {
-      result->_physicalAddress = a3;
+      result->_physicalAddress = address;
     }
   }
 
@@ -113,40 +113,40 @@
   return result;
 }
 
-- (CoreCECPhysicalDevice)initWithLogicalDevice:(id)a3
+- (CoreCECPhysicalDevice)initWithLogicalDevice:(id)device
 {
-  v4 = -[CoreCECPhysicalDevice initWithPhysicalAddress:](self, "initWithPhysicalAddress:", [a3 physicalAddress]);
+  v4 = -[CoreCECPhysicalDevice initWithPhysicalAddress:](self, "initWithPhysicalAddress:", [device physicalAddress]);
   v5 = v4;
   if (v4)
   {
-    [(CoreCECPhysicalDevice *)v4 addLogicalDevice:a3];
+    [(CoreCECPhysicalDevice *)v4 addLogicalDevice:device];
   }
 
   return v5;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
   if (([(NSMutableArray *)self->_children containsObject:?]& 1) == 0)
   {
-    [(NSMutableArray *)self->_children addObject:a3];
+    [(NSMutableArray *)self->_children addObject:child];
     [(NSMutableArray *)self->_children sortUsingSelector:sel_compare_];
 
-    [a3 setParent:self];
+    [child setParent:self];
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [(CoreCECPhysicalDevice *)self physicalAddress];
-  v5 = [a3 physicalAddress];
+  physicalAddress = [(CoreCECPhysicalDevice *)self physicalAddress];
+  physicalAddress2 = [compare physicalAddress];
   v6 = -1;
-  if (v4 >= v5)
+  if (physicalAddress >= physicalAddress2)
   {
     v6 = 1;
   }
 
-  if (v4 == v5)
+  if (physicalAddress == physicalAddress2)
   {
     return 0;
   }
@@ -157,7 +157,7 @@
   }
 }
 
-+ (id)physicalDeviceTreeWithLogicalDevices:(id)a3
++ (id)physicalDeviceTreeWithLogicalDevices:(id)devices
 {
   v37 = *MEMORY[0x277D85DE8];
   v26 = [[CoreCECPhysicalDevice alloc] initWithPhysicalAddress:0];
@@ -166,7 +166,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v5 = [devices countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v5)
   {
     v6 = v5;
@@ -177,7 +177,7 @@
       {
         if (*v32 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
@@ -200,7 +200,7 @@
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v6 = [devices countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v6);
@@ -226,8 +226,8 @@
         }
 
         v17 = *(*(&v27 + 1) + 8 * j);
-        v18 = [(CoreCECPhysicalDevice *)v17 physicalAddress];
-        if (v18)
+        physicalAddress = [(CoreCECPhysicalDevice *)v17 physicalAddress];
+        if (physicalAddress)
         {
           v19 = 15;
           do
@@ -236,9 +236,9 @@
             v19 *= 16;
           }
 
-          while ((v20 & v18) == 0);
-          v21 = v18 & ~v20;
-          if ((v18 & ~v20) != 0)
+          while ((v20 & physicalAddress) == 0);
+          v21 = physicalAddress & ~v20;
+          if ((physicalAddress & ~v20) != 0)
           {
             do
             {
@@ -290,13 +290,13 @@ LABEL_29:
 - (id)propertyList
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCACA8];
   v7[0] = CECPhysicalAddressStringWithAddress(self->_physicalAddress);
-  [v3 setValue:objc_msgSend(v4 forKey:{"stringWithUTF8String:", v7), @"physical address"}];
-  [v3 setValue:-[NSArray valueForKey:](-[CoreCECPhysicalDevice children](self forKey:{"children"), "valueForKey:", @"propertyList", @"children"}];
-  [v3 setValue:objc_msgSend(-[NSSet valueForKey:](-[CoreCECPhysicalDevice logicalDevices](self forKey:{"logicalDevices"), "valueForKey:", @"logicalAddress", "allObjects"), @"logical addresses"}];
-  result = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  [dictionary setValue:objc_msgSend(v4 forKey:{"stringWithUTF8String:", v7), @"physical address"}];
+  [dictionary setValue:-[NSArray valueForKey:](-[CoreCECPhysicalDevice children](self forKey:{"children"), "valueForKey:", @"propertyList", @"children"}];
+  [dictionary setValue:objc_msgSend(-[NSSet valueForKey:](-[CoreCECPhysicalDevice logicalDevices](self forKey:{"logicalDevices"), "valueForKey:", @"logicalAddress", "allObjects"), @"logical addresses"}];
+  result = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
   v6 = *MEMORY[0x277D85DE8];
   return result;
 }

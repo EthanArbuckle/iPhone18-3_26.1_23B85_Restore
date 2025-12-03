@@ -1,7 +1,7 @@
 @interface ScheduleOccurrenceSectionTableViewHeaderView
 - (UILabel)textLabel;
-- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 @end
 
 @implementation ScheduleOccurrenceSectionTableViewHeaderView
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -29,7 +29,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (identifier)
   {
     v4 = sub_269D9A630();
   }
@@ -45,7 +45,7 @@
   return v6;
 }
 
-- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI44ScheduleOccurrenceSectionTableViewHeaderView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

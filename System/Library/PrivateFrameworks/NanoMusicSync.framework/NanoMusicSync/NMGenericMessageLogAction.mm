@@ -1,28 +1,28 @@
 @interface NMGenericMessageLogAction
-+ (id)logActionWithMessage:(id)a3;
-- (NMGenericMessageLogAction)initWithMessage:(id)a3;
++ (id)logActionWithMessage:(id)message;
+- (NMGenericMessageLogAction)initWithMessage:(id)message;
 @end
 
 @implementation NMGenericMessageLogAction
 
-+ (id)logActionWithMessage:(id)a3
++ (id)logActionWithMessage:(id)message
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMessage:v4];
+  messageCopy = message;
+  v5 = [[self alloc] initWithMessage:messageCopy];
 
   return v5;
 }
 
-- (NMGenericMessageLogAction)initWithMessage:(id)a3
+- (NMGenericMessageLogAction)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = NMGenericMessageLogAction;
   v6 = [(NMGenericMessageLogAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;

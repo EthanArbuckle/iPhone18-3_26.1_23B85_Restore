@@ -1,12 +1,12 @@
 @interface LSDefaultApplicationQueryDatabaseDefaultAppEvaluator
-- (id)URLOfDefaultAppForCategory:(unint64_t)a3;
+- (id)URLOfDefaultAppForCategory:(unint64_t)category;
 @end
 
 @implementation LSDefaultApplicationQueryDatabaseDefaultAppEvaluator
 
-- (id)URLOfDefaultAppForCategory:(unint64_t)a3
+- (id)URLOfDefaultAppForCategory:(unint64_t)category
 {
-  v3 = LSGetDefaultAppCategoryInfoForCategory(a3);
+  v3 = LSGetDefaultAppCategoryInfoForCategory(category);
   v4 = [LSClaimBinding alloc];
   v6 = *(v3 + 1);
   v5 = (v3 + 8);
@@ -15,14 +15,14 @@
   v8 = v12;
   if (v7)
   {
-    v9 = [(LSClaimBinding *)v7 bundleRecord];
-    v10 = [v9 URL];
+    bundleRecord = [(LSClaimBinding *)v7 bundleRecord];
+    v10 = [bundleRecord URL];
   }
 
   else
   {
-    v9 = _LSDefaultLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    bundleRecord = _LSDefaultLog();
+    if (os_log_type_enabled(bundleRecord, OS_LOG_TYPE_ERROR))
     {
       [LSDefaultApplicationQueryDatabaseDefaultAppEvaluator URLOfDefaultAppForCategory:v5];
     }

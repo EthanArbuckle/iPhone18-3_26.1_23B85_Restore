@@ -1,14 +1,14 @@
 @interface SBActivationSettings
 - (BOOL)_settingsAreValidToMoveContentToNewScene;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBActivationSettings)init;
-- (id)copyActivationSettingsPassingFilter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)copyActivationSettingsPassingFilter:(id)filter;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)succinctDescription;
-- (void)applyActivationSettings:(id)a3;
+- (void)applyActivationSettings:(id)settings;
 - (void)dealloc;
 @end
 
@@ -39,23 +39,23 @@
   [(SBActivationSettings *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 applyActivationSettings:self];
   return v4;
 }
 
-- (id)copyActivationSettingsPassingFilter:(id)a3
+- (id)copyActivationSettingsPassingFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = objc_alloc_init(SBActivationSettings);
   settings = self->_settings;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __60__SBActivationSettings_copyActivationSettingsPassingFilter___block_invoke;
   v18[3] = &unk_2783BDF78;
-  v7 = v4;
+  v7 = filterCopy;
   v20 = v7;
   v8 = v5;
   v19 = v8;
@@ -102,18 +102,18 @@ uint64_t __60__SBActivationSettings_copyActivationSettingsPassingFilter___block_
   return MEMORY[0x2821F9730](v7);
 }
 
-- (void)applyActivationSettings:(id)a3
+- (void)applyActivationSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    [(BSMutableSettings *)self->_settings applySettings:*(a3 + 1)];
+    [(BSMutableSettings *)self->_settings applySettings:*(settings + 1)];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -123,7 +123,7 @@ uint64_t __60__SBActivationSettings_copyActivationSettingsPassingFilter___block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BSMutableSettings *)self->_settings isEqual:v4->_settings];
+      v5 = [(BSMutableSettings *)self->_settings isEqual:equalCopy->_settings];
     }
 
     else
@@ -137,24 +137,24 @@ uint64_t __60__SBActivationSettings_copyActivationSettingsPassingFilter___block_
 
 - (id)succinctDescription
 {
-  v2 = [(SBActivationSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBActivationSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBActivationSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBActivationSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBActivationSettings *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBActivationSettings *)self succinctDescriptionBuilder];
   settings = self->_settings;
   if (settings && ([(BSMutableSettings *)settings isEmpty]& 1) == 0)
   {
@@ -162,29 +162,29 @@ uint64_t __60__SBActivationSettings_copyActivationSettingsPassingFilter___block_
     v9[1] = 3221225472;
     v9[2] = __62__SBActivationSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_2783A92D8;
-    v10 = v5;
-    v11 = self;
-    [v10 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+    v10 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v10 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   }
 
   else
   {
-    v7 = [v5 appendObject:@"(empty)" withName:0];
+    v7 = [succinctDescriptionBuilder appendObject:@"(empty)" withName:0];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 > 0x4B)
+  if (setting > 0x4B)
   {
     return 0;
   }
 
   else
   {
-    return off_2783BDFC0[a3];
+    return off_2783BDFC0[setting];
   }
 }
 

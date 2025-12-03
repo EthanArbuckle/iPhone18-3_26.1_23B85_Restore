@@ -1,17 +1,17 @@
 @interface __NSPlaceholderURL
 - (__NSPlaceholderURL)init;
-- (__NSPlaceholderURL)initWithDataRepresentation:(id)a3 relativeToURL:(id)a4;
-- (__NSPlaceholderURL)initWithScheme:(id)a3 host:(id)a4 path:(id)a5;
-- (__NSPlaceholderURL)initWithString:(id)a3 relativeToURL:(id)a4 encodingInvalidCharacters:(BOOL)a5;
-- (id)_initFileURLWithPath:(id)a3 cachingResourceValuesForKeys:(id)a4 error:(id *)a5;
-- (id)initAbsoluteURLWithDataRepresentation:(id)a3 relativeToURL:(id)a4;
-- (id)initByResolvingAliasFileAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7;
-- (id)initFileURLWithFileSystemRepresentation:(const char *)a3 isDirectory:(BOOL)a4 relativeToURL:(id)a5;
-- (id)initFileURLWithPath:(id)a3;
-- (id)initFileURLWithPath:(id)a3 isDirectory:(BOOL)a4;
-- (id)initFileURLWithPath:(id)a3 isDirectory:(BOOL)a4 relativeToURL:(id)a5;
-- (id)initFileURLWithPath:(id)a3 relativeToURL:(id)a4;
+- (__NSPlaceholderURL)initWithDataRepresentation:(id)representation relativeToURL:(id)l;
+- (__NSPlaceholderURL)initWithScheme:(id)scheme host:(id)host path:(id)path;
+- (__NSPlaceholderURL)initWithString:(id)string relativeToURL:(id)l encodingInvalidCharacters:(BOOL)characters;
+- (id)_initFileURLWithPath:(id)path cachingResourceValuesForKeys:(id)keys error:(id *)error;
+- (id)initAbsoluteURLWithDataRepresentation:(id)representation relativeToURL:(id)l;
+- (id)initByResolvingAliasFileAtURL:(id)l options:(unint64_t)options error:(id *)error;
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error;
+- (id)initFileURLWithFileSystemRepresentation:(const char *)representation isDirectory:(BOOL)directory relativeToURL:(id)l;
+- (id)initFileURLWithPath:(id)path;
+- (id)initFileURLWithPath:(id)path isDirectory:(BOOL)directory;
+- (id)initFileURLWithPath:(id)path isDirectory:(BOOL)directory relativeToURL:(id)l;
+- (id)initFileURLWithPath:(id)path relativeToURL:(id)l;
 @end
 
 @implementation __NSPlaceholderURL
@@ -24,36 +24,36 @@
   return [(NSURL *)&v3 init];
 }
 
-- (__NSPlaceholderURL)initWithString:(id)a3 relativeToURL:(id)a4 encodingInvalidCharacters:(BOOL)a5
+- (__NSPlaceholderURL)initWithString:(id)string relativeToURL:(id)l encodingInvalidCharacters:(BOOL)characters
 {
-  if (!a3)
+  if (!string)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v7);
   }
 
-  v5 = [MEMORY[0x1E695DFF8] _urlWithString:a3 relativeToURL:a4 encodingInvalidCharacters:a5];
+  v5 = [MEMORY[0x1E695DFF8] _urlWithString:string relativeToURL:l encodingInvalidCharacters:characters];
 
   return v5;
 }
 
-- (__NSPlaceholderURL)initWithScheme:(id)a3 host:(id)a4 path:(id)a5
+- (__NSPlaceholderURL)initWithScheme:(id)scheme host:(id)host path:(id)path
 {
-  if (([a5 isAbsolutePath] & 1) == 0)
+  if (([path isAbsolutePath] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: path %@ is not absolute.", _NSMethodExceptionProem(self, a2), a5), 0}];
+    v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: path %@ is not absolute.", _NSMethodExceptionProem(self, a2), path), 0}];
     objc_exception_throw(v16);
   }
 
-  if (!a3)
+  if (!scheme)
   {
     return 0;
   }
 
-  if (a4)
+  if (host)
   {
-    v10 = [a4 stringByAddingPercentEscapes];
-    if (!v10)
+    stringByAddingPercentEscapes = [host stringByAddingPercentEscapes];
+    if (!stringByAddingPercentEscapes)
     {
       return 0;
     }
@@ -61,50 +61,50 @@
 
   else
   {
-    v10 = &stru_1EEEFDF90;
+    stringByAddingPercentEscapes = &stru_1EEEFDF90;
   }
 
-  v11 = [a5 standardizedURLPath];
-  if (!v11)
+  standardizedURLPath = [path standardizedURLPath];
+  if (!standardizedURLPath)
   {
     return 0;
   }
 
-  v12 = v11;
+  v12 = standardizedURLPath;
   v13 = objc_alloc_init(NSURLComponents);
-  [(NSURLComponents *)v13 setScheme:a3];
+  [(NSURLComponents *)v13 setScheme:scheme];
 
-  v14 = [NSString stringWithFormat:@"%@://%@%@", a3, v10, v12];
+  v14 = [NSString stringWithFormat:@"%@://%@%@", scheme, stringByAddingPercentEscapes, v12];
 
   return [(__NSPlaceholderURL *)self initWithString:v14];
 }
 
-- (__NSPlaceholderURL)initWithDataRepresentation:(id)a3 relativeToURL:(id)a4
+- (__NSPlaceholderURL)initWithDataRepresentation:(id)representation relativeToURL:(id)l
 {
-  v4 = [MEMORY[0x1E695DFF8] _urlWithDataRepresentation:a3 relativeToURL:a4 isAbsolute:0];
+  v4 = [MEMORY[0x1E695DFF8] _urlWithDataRepresentation:representation relativeToURL:l isAbsolute:0];
 
   return v4;
 }
 
-- (id)initAbsoluteURLWithDataRepresentation:(id)a3 relativeToURL:(id)a4
+- (id)initAbsoluteURLWithDataRepresentation:(id)representation relativeToURL:(id)l
 {
-  v4 = [MEMORY[0x1E695DFF8] _urlWithDataRepresentation:a3 relativeToURL:a4 isAbsolute:1];
+  v4 = [MEMORY[0x1E695DFF8] _urlWithDataRepresentation:representation relativeToURL:l isAbsolute:1];
 
   return v4;
 }
 
-- (id)initFileURLWithPath:(id)a3
+- (id)initFileURLWithPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v6);
   }
 
-  result = [a3 length];
+  result = [path length];
   if (result)
   {
-    v5 = [MEMORY[0x1E695DFF8] _fileURLWithPath:a3 relativeToURL:0];
+    v5 = [MEMORY[0x1E695DFF8] _fileURLWithPath:path relativeToURL:0];
 
     return v5;
   }
@@ -112,19 +112,19 @@
   return result;
 }
 
-- (id)initFileURLWithPath:(id)a3 isDirectory:(BOOL)a4
+- (id)initFileURLWithPath:(id)path isDirectory:(BOOL)directory
 {
-  if (!a3)
+  if (!path)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
   }
 
-  v4 = a4;
-  result = [a3 length];
+  directoryCopy = directory;
+  result = [path length];
   if (result)
   {
-    v7 = [MEMORY[0x1E695DFF8] _fileURLWithPath:a3 isDirectory:v4 relativeToURL:0];
+    v7 = [MEMORY[0x1E695DFF8] _fileURLWithPath:path isDirectory:directoryCopy relativeToURL:0];
 
     return v7;
   }
@@ -132,18 +132,18 @@
   return result;
 }
 
-- (id)initFileURLWithPath:(id)a3 relativeToURL:(id)a4
+- (id)initFileURLWithPath:(id)path relativeToURL:(id)l
 {
-  if (!a3)
+  if (!path)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
   }
 
-  result = [a3 length];
+  result = [path length];
   if (result)
   {
-    v7 = [MEMORY[0x1E695DFF8] _fileURLWithPath:a3 relativeToURL:a4];
+    v7 = [MEMORY[0x1E695DFF8] _fileURLWithPath:path relativeToURL:l];
 
     return v7;
   }
@@ -151,19 +151,19 @@
   return result;
 }
 
-- (id)initFileURLWithPath:(id)a3 isDirectory:(BOOL)a4 relativeToURL:(id)a5
+- (id)initFileURLWithPath:(id)path isDirectory:(BOOL)directory relativeToURL:(id)l
 {
-  if (!a3)
+  if (!path)
   {
     v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v10);
   }
 
-  v6 = a4;
-  result = [a3 length];
+  directoryCopy = directory;
+  result = [path length];
   if (result)
   {
-    v9 = [MEMORY[0x1E695DFF8] _fileURLWithPath:a3 isDirectory:v6 relativeToURL:a5];
+    v9 = [MEMORY[0x1E695DFF8] _fileURLWithPath:path isDirectory:directoryCopy relativeToURL:l];
 
     return v9;
   }
@@ -171,72 +171,72 @@
   return result;
 }
 
-- (id)initFileURLWithFileSystemRepresentation:(const char *)a3 isDirectory:(BOOL)a4 relativeToURL:(id)a5
+- (id)initFileURLWithFileSystemRepresentation:(const char *)representation isDirectory:(BOOL)directory relativeToURL:(id)l
 {
-  v6 = a4;
-  v8 = [NSString stringWithCString:a3 encoding:4];
+  directoryCopy = directory;
+  v8 = [NSString stringWithCString:representation encoding:4];
 
-  return [(__NSPlaceholderURL *)self initFileURLWithPath:v8 isDirectory:v6 relativeToURL:a5];
+  return [(__NSPlaceholderURL *)self initFileURLWithPath:v8 isDirectory:directoryCopy relativeToURL:l];
 }
 
-- (id)initByResolvingBookmarkData:(id)a3 options:(unint64_t)a4 relativeToURL:(id)a5 bookmarkDataIsStale:(BOOL *)a6 error:(id *)a7
+- (id)initByResolvingBookmarkData:(id)data options:(unint64_t)options relativeToURL:(id)l bookmarkDataIsStale:(BOOL *)stale error:(id *)error
 {
-  v12 = [a5 _cfurl];
-  if (v12 == &___immutablePlaceholderSwiftURL)
+  _cfurl = [l _cfurl];
+  if (_cfurl == &___immutablePlaceholderSwiftURL)
   {
     v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: object was not initialized", _NSMethodExceptionProem(&___immutablePlaceholderSwiftURL, a2)), 0}];
     objc_exception_throw(v16);
   }
 
-  v13 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], a3, a4, v12, 0, a6, a7);
+  v13 = MEMORY[0x1865CEBC0](*MEMORY[0x1E695E480], data, options, _cfurl, 0, stale, error);
   v14 = v13;
-  if (a7 && !v13 && *a7)
+  if (error && !v13 && *error)
   {
-    *a7 = *a7;
+    *error = *error;
   }
 
   return v14;
 }
 
-- (id)initByResolvingAliasFileAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)initByResolvingAliasFileAtURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v6 = MEMORY[0x1865CFA00](*MEMORY[0x1E695E480], a3, a4, 0);
+  v6 = MEMORY[0x1865CFA00](*MEMORY[0x1E695E480], l, options, 0);
   v7 = v6;
-  if (a5 && !v6 && *a5)
+  if (error && !v6 && *error)
   {
-    *a5 = *a5;
+    *error = *error;
   }
 
   return v7;
 }
 
-- (id)_initFileURLWithPath:(id)a3 cachingResourceValuesForKeys:(id)a4 error:(id *)a5
+- (id)_initFileURLWithPath:(id)path cachingResourceValuesForKeys:(id)keys error:(id *)error
 {
-  if (!a3)
+  if (!path)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: nil string parameter", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v9);
   }
 
-  result = [a3 length];
+  result = [path length];
   if (result)
   {
-    if (([a3 isAbsolutePath] & 1) == 0)
+    if (([path isAbsolutePath] & 1) == 0)
     {
-      [a3 stringByStandardizingPath];
+      [path stringByStandardizingPath];
     }
 
     result = _CFURLCreateWithFileSystemPathCachingResourcePropertiesForKeys();
     if (!result)
     {
-      if (a5)
+      if (error)
       {
-        result = *a5;
-        if (*a5)
+        result = *error;
+        if (*error)
         {
           v8 = result;
           result = 0;
-          *a5 = v8;
+          *error = v8;
         }
       }
 

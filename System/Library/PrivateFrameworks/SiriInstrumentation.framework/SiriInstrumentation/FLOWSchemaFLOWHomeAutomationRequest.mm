@@ -1,30 +1,30 @@
 @interface FLOWSchemaFLOWHomeAutomationRequest
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationRequest)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeAutomationRequest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeAutomationRequest)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeAutomationRequest)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHomeAutomationRequestErrorReason:(id)a3;
-- (void)setHasHomeAutomationRequestDuration:(BOOL)a3;
-- (void)setHasHomeAutomationRequestOutcome:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHomeAutomationRequestErrorReason:(id)reason;
+- (void)setHasHomeAutomationRequestDuration:(BOOL)duration;
+- (void)setHasHomeAutomationRequestOutcome:(BOOL)outcome;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeAutomationRequest
 
-- (FLOWSchemaFLOWHomeAutomationRequest)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeAutomationRequest)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = FLOWSchemaFLOWHomeAutomationRequest;
   v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"homeAutomationRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,21 +32,21 @@
       [(FLOWSchemaFLOWHomeAutomationRequest *)v5 setHomeAutomationRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"homeAutomationRequestType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequestType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequest setHomeAutomationRequestType:](v5, "setHomeAutomationRequestType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"homeAutomationRequestOutcome"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequestOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequest setHomeAutomationRequestOutcome:](v5, "setHomeAutomationRequestOutcome:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"homeAutomationRequestErrorReason"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequestErrorReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,14 +89,14 @@
       v8 = v23;
     }
 
-    v18 = [v4 objectForKeyedSubscript:{@"homeAutomationRequestDuration", v23, v24, v25}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"homeAutomationRequestDuration", v23, v24, v25}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeAutomationRequest setHomeAutomationRequestDuration:](v5, "setHomeAutomationRequestDuration:", [v18 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"homeAutomationRequestMetadata"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"homeAutomationRequestMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,30 +110,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeAutomationRequest)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeAutomationRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeAutomationRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeAutomationRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeAutomationRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -146,49 +146,49 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[FLOWSchemaFLOWHomeAutomationRequest homeAutomationRequestDuration](self, "homeAutomationRequestDuration")}];
-    [v3 setObject:v4 forKeyedSubscript:@"homeAutomationRequestDuration"];
+    [dictionary setObject:v4 forKeyedSubscript:@"homeAutomationRequestDuration"];
   }
 
   if (self->_homeAutomationRequestErrorReasons)
   {
-    v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"homeAutomationRequestErrorReason"];
+    homeAutomationRequestErrorReasons = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
+    v6 = [homeAutomationRequestErrorReasons copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"homeAutomationRequestErrorReason"];
   }
 
   if (self->_homeAutomationRequestId)
   {
-    v7 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+    dictionaryRepresentation = [homeAutomationRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"homeAutomationRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"homeAutomationRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"homeAutomationRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"homeAutomationRequestId"];
     }
   }
 
   if (self->_homeAutomationRequestMetadata)
   {
-    v10 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    homeAutomationRequestMetadata = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+    dictionaryRepresentation2 = [homeAutomationRequestMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"homeAutomationRequestMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"homeAutomationRequestMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"homeAutomationRequestMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"homeAutomationRequestMetadata"];
     }
   }
 
@@ -206,7 +206,7 @@
       v15 = off_1E78D5180[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"homeAutomationRequestOutcome"];
+    [dictionary setObject:v15 forKeyedSubscript:@"homeAutomationRequestOutcome"];
     has = self->_has;
   }
 
@@ -223,12 +223,12 @@
       v17 = off_1E78D5198[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"homeAutomationRequestType"];
+    [dictionary setObject:v17 forKeyedSubscript:@"homeAutomationRequestType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -270,28 +270,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(FLOWSchemaFLOWHomeAutomationRequestMetadata *)self->_homeAutomationRequestMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
-  v6 = [v4 homeAutomationRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+  homeAutomationRequestId2 = [equalCopy homeAutomationRequestId];
+  if ((homeAutomationRequestId != 0) == (homeAutomationRequestId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
-  if (v7)
+  homeAutomationRequestId3 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+  if (homeAutomationRequestId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
-    v10 = [v4 homeAutomationRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = homeAutomationRequestId3;
+    homeAutomationRequestId4 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+    homeAutomationRequestId5 = [equalCopy homeAutomationRequestId];
+    v11 = [homeAutomationRequestId4 isEqual:homeAutomationRequestId5];
 
     if (!v11)
     {
@@ -304,7 +304,7 @@ LABEL_6:
   }
 
   has = self->_has;
-  v13 = v4[48];
+  v13 = equalCopy[48];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_27;
@@ -313,13 +313,13 @@ LABEL_6:
   if (*&has)
   {
     homeAutomationRequestType = self->_homeAutomationRequestType;
-    if (homeAutomationRequestType != [v4 homeAutomationRequestType])
+    if (homeAutomationRequestType != [equalCopy homeAutomationRequestType])
     {
       goto LABEL_27;
     }
 
     has = self->_has;
-    v13 = v4[48];
+    v13 = equalCopy[48];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -331,26 +331,26 @@ LABEL_6:
   if (v15)
   {
     homeAutomationRequestOutcome = self->_homeAutomationRequestOutcome;
-    if (homeAutomationRequestOutcome != [v4 homeAutomationRequestOutcome])
+    if (homeAutomationRequestOutcome != [equalCopy homeAutomationRequestOutcome])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
-  v6 = [v4 homeAutomationRequestErrorReasons];
-  if ((v5 != 0) == (v6 == 0))
+  homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
+  homeAutomationRequestId2 = [equalCopy homeAutomationRequestErrorReasons];
+  if ((homeAutomationRequestId != 0) == (homeAutomationRequestId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
-  if (v17)
+  homeAutomationRequestErrorReasons = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
+  if (homeAutomationRequestErrorReasons)
   {
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
-    v20 = [v4 homeAutomationRequestErrorReasons];
-    v21 = [v19 isEqual:v20];
+    v18 = homeAutomationRequestErrorReasons;
+    homeAutomationRequestErrorReasons2 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestErrorReasons];
+    homeAutomationRequestErrorReasons3 = [equalCopy homeAutomationRequestErrorReasons];
+    v21 = [homeAutomationRequestErrorReasons2 isEqual:homeAutomationRequestErrorReasons3];
 
     if (!v21)
     {
@@ -363,7 +363,7 @@ LABEL_6:
   }
 
   v22 = (*&self->_has >> 2) & 1;
-  if (v22 != ((v4[48] >> 2) & 1))
+  if (v22 != ((equalCopy[48] >> 2) & 1))
   {
     goto LABEL_27;
   }
@@ -371,23 +371,23 @@ LABEL_6:
   if (v22)
   {
     homeAutomationRequestDuration = self->_homeAutomationRequestDuration;
-    if (homeAutomationRequestDuration != [v4 homeAutomationRequestDuration])
+    if (homeAutomationRequestDuration != [equalCopy homeAutomationRequestDuration])
     {
       goto LABEL_27;
     }
   }
 
-  v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
-  v6 = [v4 homeAutomationRequestMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+  homeAutomationRequestId2 = [equalCopy homeAutomationRequestMetadata];
+  if ((homeAutomationRequestId != 0) == (homeAutomationRequestId2 == 0))
   {
 LABEL_26:
 
     goto LABEL_27;
   }
 
-  v24 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
-  if (!v24)
+  homeAutomationRequestMetadata = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+  if (!homeAutomationRequestMetadata)
   {
 
 LABEL_30:
@@ -395,10 +395,10 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  v25 = v24;
-  v26 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
-  v27 = [v4 homeAutomationRequestMetadata];
-  v28 = [v26 isEqual:v27];
+  v25 = homeAutomationRequestMetadata;
+  homeAutomationRequestMetadata2 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+  homeAutomationRequestMetadata3 = [equalCopy homeAutomationRequestMetadata];
+  v28 = [homeAutomationRequestMetadata2 isEqual:homeAutomationRequestMetadata3];
 
   if (v28)
   {
@@ -412,15 +412,15 @@ LABEL_28:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+  toCopy = to;
+  homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
 
-  if (v5)
+  if (homeAutomationRequestId)
   {
-    v6 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+    homeAutomationRequestId2 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -469,18 +469,18 @@ LABEL_28:
     PBDataWriterWriteUint32Field();
   }
 
-  v13 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+  homeAutomationRequestMetadata = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
 
-  if (v13)
+  if (homeAutomationRequestMetadata)
   {
-    v14 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+    homeAutomationRequestMetadata2 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasHomeAutomationRequestDuration:(BOOL)a3
+- (void)setHasHomeAutomationRequestDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -493,27 +493,27 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addHomeAutomationRequestErrorReason:(id)a3
+- (void)addHomeAutomationRequestErrorReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   homeAutomationRequestErrorReasons = self->_homeAutomationRequestErrorReasons;
-  v8 = v4;
+  v8 = reasonCopy;
   if (!homeAutomationRequestErrorReasons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_homeAutomationRequestErrorReasons;
-    self->_homeAutomationRequestErrorReasons = v6;
+    self->_homeAutomationRequestErrorReasons = array;
 
-    v4 = v8;
+    reasonCopy = v8;
     homeAutomationRequestErrorReasons = self->_homeAutomationRequestErrorReasons;
   }
 
-  [(NSArray *)homeAutomationRequestErrorReasons addObject:v4];
+  [(NSArray *)homeAutomationRequestErrorReasons addObject:reasonCopy];
 }
 
-- (void)setHasHomeAutomationRequestOutcome:(BOOL)a3
+- (void)setHasHomeAutomationRequestOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 2;
   }
@@ -526,26 +526,26 @@ LABEL_28:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWHomeAutomationRequest;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  homeAutomationRequestId = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestId];
+  v7 = [homeAutomationRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWHomeAutomationRequest *)self deleteHomeAutomationRequestId];
   }
 
-  v9 = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  homeAutomationRequestMetadata = [(FLOWSchemaFLOWHomeAutomationRequest *)self homeAutomationRequestMetadata];
+  v10 = [homeAutomationRequestMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWHomeAutomationRequest *)self deleteHomeAutomationRequestMetadata];
   }

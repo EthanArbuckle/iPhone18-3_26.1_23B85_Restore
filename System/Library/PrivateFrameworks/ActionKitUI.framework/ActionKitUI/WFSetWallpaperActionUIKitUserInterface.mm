@@ -1,53 +1,53 @@
 @interface WFSetWallpaperActionUIKitUserInterface
 - (BOOL)isiPad;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4;
-- (void)showPreviewForConfiguration:(id)a3 selectedPoster:(id)a4 completionHandler:(id)a5;
-- (void)showPreviewWithInput:(id)a3 key:(id)a4 wallpaperLocation:(int64_t)a5 completionHandler:(id)a6;
-- (void)wallpaperPreviewViewControllerCancelButtonPressed:(id)a3;
-- (void)wallpaperPreviewViewControllerSetButtonPressed:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response;
+- (void)showPreviewForConfiguration:(id)configuration selectedPoster:(id)poster completionHandler:(id)handler;
+- (void)showPreviewWithInput:(id)input key:(id)key wallpaperLocation:(int64_t)location completionHandler:(id)handler;
+- (void)wallpaperPreviewViewControllerCancelButtonPressed:(id)pressed;
+- (void)wallpaperPreviewViewControllerSetButtonPressed:(id)pressed;
 @end
 
 @implementation WFSetWallpaperActionUIKitUserInterface
 
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response
 {
-  v9 = a4;
-  v5 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
+  responseCopy = response;
+  completionHandler = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
 
-  v6 = v9;
-  if (v5)
+  v6 = responseCopy;
+  if (completionHandler)
   {
-    if ([v9 entryPointResult])
+    if ([responseCopy entryPointResult])
     {
-      v7 = 0;
+      userCancelledError = 0;
     }
 
     else
     {
-      v7 = [MEMORY[0x277CCA9B8] userCancelledError];
+      userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
     }
 
-    v8 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v7);
+    completionHandler2 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, userCancelledError);
 
-    v6 = v9;
+    v6 = responseCopy;
   }
 }
 
-- (void)wallpaperPreviewViewControllerSetButtonPressed:(id)a3
+- (void)wallpaperPreviewViewControllerSetButtonPressed:(id)pressed
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
-  v5 = [(WFSetWallpaperActionUIKitUserInterface *)self locations];
+  pressedCopy = pressed;
+  objc_initWeak(&location, pressedCopy);
+  locations = [(WFSetWallpaperActionUIKitUserInterface *)self locations];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __89__WFSetWallpaperActionUIKitUserInterface_wallpaperPreviewViewControllerSetButtonPressed___block_invoke;
   v6[3] = &unk_278C37310;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  [v4 setWallpaperForLocations:v5 completionHandler:v6];
+  [pressedCopy setWallpaperForLocations:locations completionHandler:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -75,16 +75,16 @@ void __89__WFSetWallpaperActionUIKitUserInterface_wallpaperPreviewViewController
   [WeakRetained dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)wallpaperPreviewViewControllerCancelButtonPressed:(id)a3
+- (void)wallpaperPreviewViewControllerCancelButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __92__WFSetWallpaperActionUIKitUserInterface_wallpaperPreviewViewControllerCancelButtonPressed___block_invoke;
   v6[3] = &unk_278C375A0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = pressedCopy;
+  selfCopy = self;
+  v5 = pressedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -108,44 +108,44 @@ void __92__WFSetWallpaperActionUIKitUserInterface_wallpaperPreviewViewController
 
 - (BOOL)isiPad
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  v3 = [v2 idiom] == 1;
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  v3 = [currentDevice idiom] == 1;
 
   return v3;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   if (![(WFSetWallpaperActionUIKitUserInterface *)self isiPad])
   {
-    v4 = [(WFActionUserInterface *)self delegate];
-    [v4 actionUserInterface:self setSupportedInterfaceOrientations:30];
+    delegate = [(WFActionUserInterface *)self delegate];
+    [delegate actionUserInterface:self setSupportedInterfaceOrientations:30];
   }
 
-  v5 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
+  completionHandler = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
-    (v6)[2](v6, v7);
+    completionHandler2 = [(WFSetWallpaperActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFSetWallpaperActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__WFSetWallpaperActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSetWallpaperActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -160,35 +160,35 @@ uint64_t __82__WFSetWallpaperActionUIKitUserInterface_cancelPresentationWithComp
   return v4();
 }
 
-- (void)showPreviewWithInput:(id)a3 key:(id)a4 wallpaperLocation:(int64_t)a5 completionHandler:(id)a6
+- (void)showPreviewWithInput:(id)input key:(id)key wallpaperLocation:(int64_t)location completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v12)
+  inputCopy = input;
+  keyCopy = key;
+  handlerCopy = handler;
+  if (!keyCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFSetWallpaperActionUIKitUserInterface.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSetWallpaperActionUIKitUserInterface.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
-    if (a5)
+    if (location)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFSetWallpaperActionUIKitUserInterface.m" lineNumber:96 description:@"You must have a valid wallpaper location to set a wallpaper"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSetWallpaperActionUIKitUserInterface.m" lineNumber:96 description:@"You must have a valid wallpaper location to set a wallpaper"];
 
     goto LABEL_3;
   }
 
-  if (!a5)
+  if (!location)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(WFSetWallpaperActionUIKitUserInterface *)self setCompletionHandler:v13];
+  [(WFSetWallpaperActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   v14 = MEMORY[0x277CCAAC8];
   v15 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v20[0] = MEMORY[0x277D85DD0];
@@ -196,10 +196,10 @@ LABEL_3:
   v20[2] = __103__WFSetWallpaperActionUIKitUserInterface_showPreviewWithInput_key_wallpaperLocation_completionHandler___block_invoke;
   v20[3] = &unk_278C372E8;
   v20[4] = self;
-  v21 = v12;
-  v22 = a5;
-  v16 = v12;
-  v17 = [v14 wf_securelyUnarchiveObjectWithData:v11 allowedClasses:v15 completionHandler:v20];
+  v21 = keyCopy;
+  locationCopy = location;
+  v16 = keyCopy;
+  v17 = [v14 wf_securelyUnarchiveObjectWithData:inputCopy allowedClasses:v15 completionHandler:v20];
 }
 
 void __103__WFSetWallpaperActionUIKitUserInterface_showPreviewWithInput_key_wallpaperLocation_completionHandler___block_invoke(void *a1, void *a2)
@@ -350,12 +350,12 @@ void __103__WFSetWallpaperActionUIKitUserInterface_showPreviewWithInput_key_wall
   }
 }
 
-- (void)showPreviewForConfiguration:(id)a3 selectedPoster:(id)a4 completionHandler:(id)a5
+- (void)showPreviewForConfiguration:(id)configuration selectedPoster:(id)poster completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(WFSetWallpaperActionUIKitUserInterface *)self setCompletionHandler:v10];
+  configurationCopy = configuration;
+  posterCopy = poster;
+  handlerCopy = handler;
+  [(WFSetWallpaperActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -379,13 +379,13 @@ void __103__WFSetWallpaperActionUIKitUserInterface_showPreviewWithInput_key_wall
   v17[1] = 3221225472;
   v17[2] = __103__WFSetWallpaperActionUIKitUserInterface_showPreviewForConfiguration_selectedPoster_completionHandler___block_invoke;
   v17[3] = &unk_278C37270;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v10;
-  v14 = v8;
-  v15 = v10;
-  v16 = v9;
+  v18 = posterCopy;
+  v19 = configurationCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v14 = configurationCopy;
+  v15 = handlerCopy;
+  v16 = posterCopy;
   [v13 fetchPosterConfigurationsForExtension:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" completion:v17];
 }
 

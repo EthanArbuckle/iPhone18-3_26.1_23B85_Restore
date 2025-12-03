@@ -1,5 +1,5 @@
 @interface AudioNotification
-+ (void)sendLiveRecordingOffNotificationWithInterrupt:(unsigned __int8)a3;
++ (void)sendLiveRecordingOffNotificationWithInterrupt:(unsigned __int8)interrupt;
 + (void)sendLiveRecordingOnNotification;
 @end
 
@@ -38,9 +38,9 @@ LABEL_6:
   }
 }
 
-+ (void)sendLiveRecordingOffNotificationWithInterrupt:(unsigned __int8)a3
++ (void)sendLiveRecordingOffNotificationWithInterrupt:(unsigned __int8)interrupt
 {
-  if (a3)
+  if (interrupt)
   {
     byte_10010E470 = 1;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

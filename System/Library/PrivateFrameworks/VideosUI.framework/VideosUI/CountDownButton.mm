@@ -6,7 +6,7 @@
 
 - (void)configureWithLayoutProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3BE77F8();
 }
 

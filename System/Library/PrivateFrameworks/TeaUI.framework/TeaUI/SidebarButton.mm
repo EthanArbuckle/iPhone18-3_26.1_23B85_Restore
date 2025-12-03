@@ -1,14 +1,14 @@
 @interface SidebarButton
 - (CGSize)intrinsicContentSize;
 - (NSString)accessibilityLabel;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation SidebarButton
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8026058();
   v4 = v3;
   v6 = v5;
@@ -22,7 +22,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8026124();
   v4 = v3;
 
@@ -39,14 +39,14 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_1D8190F14();
   }
 
-  v4 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_54();
 }
 

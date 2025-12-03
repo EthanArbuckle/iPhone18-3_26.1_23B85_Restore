@@ -1,41 +1,41 @@
 @interface UIPrinterBrowserViewController
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (UIPrinterBrowserOwner)ownerPanelViewController;
-- (UIPrinterBrowserViewController)initWithOwnerViewController:(id)a3 printInfo:(id)a4 printPanelViewController:(id)a5;
-- (id)discoveredPrinterWithUUID:(id)a3;
-- (id)printerAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (UIPrinterBrowserViewController)initWithOwnerViewController:(id)controller printInfo:(id)info printPanelViewController:(id)viewController;
+- (id)discoveredPrinterWithUUID:(id)d;
+- (id)printerAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)addPrinter:(id)a3 moreComing:(BOOL)a4;
+- (void)addPrinter:(id)printer moreComing:(BOOL)coming;
 - (void)adjustPopoverSize;
 - (void)dealloc;
 - (void)iCloudPrintersListChanged;
 - (void)loadView;
-- (void)printerInfoButtonTapped:(id)a3;
-- (void)removePrinter:(id)a3 moreGoing:(BOOL)a4;
+- (void)printerInfoButtonTapped:(id)tapped;
+- (void)removePrinter:(id)printer moreGoing:(BOOL)going;
 - (void)searchTimeout;
-- (void)selectPrinter:(id)a3;
+- (void)selectPrinter:(id)printer;
 - (void)showCancelButton;
 - (void)startPrinterBrowser;
 - (void)stopPrinterBrowser;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)updateSearchingState;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIPrinterBrowserViewController
 
-- (UIPrinterBrowserViewController)initWithOwnerViewController:(id)a3 printInfo:(id)a4 printPanelViewController:(id)a5
+- (UIPrinterBrowserViewController)initWithOwnerViewController:(id)controller printInfo:(id)info printPanelViewController:(id)viewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  infoCopy = info;
+  viewControllerCopy = viewController;
   v22.receiver = self;
   v22.super_class = UIPrinterBrowserViewController;
   v11 = [(UIPrinterBrowserViewController *)&v22 initWithStyle:2];
@@ -46,29 +46,29 @@
     [(UIPrinterBrowserViewController *)v11 setTitle:v13];
 
     v14 = *MEMORY[0x277D76F30];
-    v15 = [(UIPrinterBrowserViewController *)v11 tableView];
-    [v15 setRowHeight:v14];
+    tableView = [(UIPrinterBrowserViewController *)v11 tableView];
+    [tableView setRowHeight:v14];
 
-    [(UIPrinterBrowserViewController *)v11 setOwnerPanelViewController:v8];
-    [(UIPrinterBrowserViewController *)v11 setPrintPanelViewController:v10];
-    v16 = [v9 copy];
+    [(UIPrinterBrowserViewController *)v11 setOwnerPanelViewController:controllerCopy];
+    [(UIPrinterBrowserViewController *)v11 setPrintPanelViewController:viewControllerCopy];
+    v16 = [infoCopy copy];
     [(UIPrinterBrowserViewController *)v11 setPrintInfoForBrowser:v16];
 
-    v17 = [MEMORY[0x277CBEB18] array];
-    [(UIPrinterBrowserViewController *)v11 setICloudPrinters:v17];
+    array = [MEMORY[0x277CBEB18] array];
+    [(UIPrinterBrowserViewController *)v11 setICloudPrinters:array];
 
-    v18 = [MEMORY[0x277CBEB18] array];
-    [(UIPrinterBrowserViewController *)v11 setAvailablePrinters:v18];
+    array2 = [MEMORY[0x277CBEB18] array];
+    [(UIPrinterBrowserViewController *)v11 setAvailablePrinters:array2];
 
-    v19 = [MEMORY[0x277CBEB18] array];
-    [(UIPrinterBrowserViewController *)v11 setFilteredOutPrinters:v19];
+    array3 = [MEMORY[0x277CBEB18] array];
+    [(UIPrinterBrowserViewController *)v11 setFilteredOutPrinters:array3];
 
-    -[UIPrinterBrowserViewController setShouldFilterPrinters:](v11, "setShouldFilterPrinters:", [v8 filtersPrinters]);
+    -[UIPrinterBrowserViewController setShouldFilterPrinters:](v11, "setShouldFilterPrinters:", [controllerCopy filtersPrinters]);
     [(UIPrinterBrowserViewController *)v11 setMaximumPopoverHeight:1.79769313e308];
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 addObserver:v11 selector:sel_stopPrinterBrowser name:*MEMORY[0x277D76660] object:0];
-    [v20 addObserver:v11 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
-    [v20 addObserver:v11 selector:sel_iCloudPrintersListChanged name:@"com.apple.printkit.iCloudPrintersChanged.notification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel_stopPrinterBrowser name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v11 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    [defaultCenter addObserver:v11 selector:sel_iCloudPrintersListChanged name:@"com.apple.printkit.iCloudPrintersChanged.notification" object:0];
   }
 
   return v11;
@@ -76,15 +76,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(UIPrinterBrowserViewController *)self printerBrowser];
+  printerBrowser = [(UIPrinterBrowserViewController *)self printerBrowser];
 
-  if (v4)
+  if (printerBrowser)
   {
-    v5 = [(UIPrinterBrowserViewController *)self printerBrowser];
-    [v5 setDelegate:0];
+    printerBrowser2 = [(UIPrinterBrowserViewController *)self printerBrowser];
+    [printerBrowser2 setDelegate:0];
 
     [(UIPrinterBrowserViewController *)self setPrinterBrowser:0];
   }
@@ -94,57 +94,57 @@
   [(UIPrinterBrowserViewController *)&v6 dealloc];
 }
 
-- (void)selectPrinter:(id)a3
+- (void)selectPrinter:(id)printer
 {
-  v4 = a3;
-  v5 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  [v5 setPrinter:v4];
+  printerCopy = printer;
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  [ownerPanelViewController setPrinter:printerCopy];
 }
 
-- (void)printerInfoButtonTapped:(id)a3
+- (void)printerInfoButtonTapped:(id)tapped
 {
-  v8 = [a3 printer];
+  printer = [tapped printer];
   v4 = [UIPrinterUtilityTableViewController alloc];
-  v5 = [(UIPrinterBrowserViewController *)self printPanelViewController];
-  v6 = [(UIPrinterUtilityTableViewController *)v4 initWithPrinter:v8 printPanelViewController:v5];
+  printPanelViewController = [(UIPrinterBrowserViewController *)self printPanelViewController];
+  v6 = [(UIPrinterUtilityTableViewController *)v4 initWithPrinter:printer printPanelViewController:printPanelViewController];
 
-  v7 = [(UIPrinterBrowserViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:1];
+  navigationController = [(UIPrinterBrowserViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)adjustPopoverSize
 {
-  v3 = [(UIPrinterBrowserViewController *)self popoverPresentationController];
+  popoverPresentationController = [(UIPrinterBrowserViewController *)self popoverPresentationController];
 
-  if (v3)
+  if (popoverPresentationController)
   {
-    v4 = [(UIPrinterBrowserViewController *)self tableView];
-    if ([v4 numberOfSections] <= 0)
+    tableView = [(UIPrinterBrowserViewController *)self tableView];
+    if ([tableView numberOfSections] <= 0)
     {
       v8 = *(MEMORY[0x277CBF3A0] + 24);
     }
 
     else
     {
-      v5 = [(UIPrinterBrowserViewController *)self tableView];
-      v6 = [(UIPrinterBrowserViewController *)self tableView];
-      [v5 rectForSection:{objc_msgSend(v6, "numberOfSections") - 1}];
+      tableView2 = [(UIPrinterBrowserViewController *)self tableView];
+      tableView3 = [(UIPrinterBrowserViewController *)self tableView];
+      [tableView2 rectForSection:{objc_msgSend(tableView3, "numberOfSections") - 1}];
       v8 = v7;
     }
 
-    v9 = [(UIPrinterBrowserViewController *)self navigationController];
-    v20 = [v9 viewControllers];
+    navigationController = [(UIPrinterBrowserViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
 
-    if ([v20 count] < 2)
+    if ([viewControllers count] < 2)
     {
       v17 = 320.0;
     }
 
     else
     {
-      v10 = [v20 objectAtIndex:{objc_msgSend(v20, "count") - 2}];
-      v11 = [v10 view];
-      [v11 frame];
+      v10 = [viewControllers objectAtIndex:{objc_msgSend(viewControllers, "count") - 2}];
+      view = [v10 view];
+      [view frame];
       v13 = v12;
 
       if (v8 < v13)
@@ -152,8 +152,8 @@
         v8 = v13;
       }
 
-      v14 = [v10 view];
-      [v14 frame];
+      view2 = [v10 view];
+      [view2 frame];
       v16 = v15;
 
       v17 = fmax(v16, 320.0);
@@ -185,27 +185,27 @@
 
 - (void)startPrinterBrowser
 {
-  v3 = [(UIPrinterBrowserViewController *)self printerBrowser];
+  printerBrowser = [(UIPrinterBrowserViewController *)self printerBrowser];
 
-  if (!v3)
+  if (!printerBrowser)
   {
-    v4 = [(UIPrinterBrowserViewController *)self printInfoForBrowser];
-    v5 = [v4 dictionaryRepresentation];
+    printInfoForBrowser = [(UIPrinterBrowserViewController *)self printInfoForBrowser];
+    dictionaryRepresentation = [printInfoForBrowser dictionaryRepresentation];
 
-    v6 = [MEMORY[0x277D410B0] browserWithDelegate:self infoDictionary:v5];
+    v6 = [MEMORY[0x277D410B0] browserWithDelegate:self infoDictionary:dictionaryRepresentation];
     [(UIPrinterBrowserViewController *)self setPrinterBrowser:v6];
 
     [(UIPrinterBrowserViewController *)self setPrintersSearchState:1];
     [(UIPrinterBrowserViewController *)self updateSearchingState];
   }
 
-  v7 = [MEMORY[0x277D41090] iCloudPrinters];
+  iCloudPrinters = [MEMORY[0x277D41090] iCloudPrinters];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__UIPrinterBrowserViewController_startPrinterBrowser__block_invoke;
   v9[3] = &unk_279A9BEB8;
   v9[4] = self;
-  [v7 enumerateObjectsUsingBlock:v9];
+  [iCloudPrinters enumerateObjectsUsingBlock:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__UIPrinterBrowserViewController_startPrinterBrowser__block_invoke_3;
@@ -242,19 +242,19 @@ void __53__UIPrinterBrowserViewController_startPrinterBrowser__block_invoke_3(ui
 
 - (void)stopPrinterBrowser
 {
-  v3 = [(UIPrinterBrowserViewController *)self printerBrowser];
+  printerBrowser = [(UIPrinterBrowserViewController *)self printerBrowser];
 
-  if (v3)
+  if (printerBrowser)
   {
-    v4 = [(UIPrinterBrowserViewController *)self printerBrowser];
-    [v4 setDelegate:0];
+    printerBrowser2 = [(UIPrinterBrowserViewController *)self printerBrowser];
+    [printerBrowser2 setDelegate:0];
 
     [(UIPrinterBrowserViewController *)self setPrinterBrowser:0];
-    v5 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    [v5 removeAllObjects];
+    iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    [iCloudPrinters removeAllObjects];
 
-    v6 = [(UIPrinterBrowserViewController *)self availablePrinters];
-    [v6 removeAllObjects];
+    availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+    [availablePrinters removeAllObjects];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -284,16 +284,16 @@ uint64_t __52__UIPrinterBrowserViewController_stopPrinterBrowser__block_invoke(u
 
 - (void)searchTimeout
 {
-  v3 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-  if ([v3 count])
+  iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+  if ([iCloudPrinters count])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(UIPrinterBrowserViewController *)self availablePrinters];
-    v4 = 2 * ([v5 count] == 0);
+    availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+    v4 = 2 * ([availablePrinters count] == 0);
   }
 
   [(UIPrinterBrowserViewController *)self setPrintersSearchState:v4];
@@ -305,17 +305,17 @@ uint64_t __52__UIPrinterBrowserViewController_stopPrinterBrowser__block_invoke(u
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
   if ([(UIPrinterBrowserViewController *)self printersSearchState]== 1)
   {
-    v21 = [MEMORY[0x277D75390] loadingConfiguration];
+    loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = v4;
+    iCloudPrinters = v4;
     v6 = @"Looking for Printers…";
 LABEL_3:
     v7 = [v4 localizedStringForKey:v6 value:v6 table:@"Localizable"];
-    [v21 setText:v7];
+    [loadingConfiguration setText:v7];
 
 LABEL_7:
     goto LABEL_10;
@@ -323,46 +323,46 @@ LABEL_7:
 
   if ([(UIPrinterBrowserViewController *)self printersSearchState]== 2)
   {
-    v5 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    if ([v5 count])
+    iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    if ([iCloudPrinters count])
     {
-      v21 = 0;
+      loadingConfiguration = 0;
       goto LABEL_7;
     }
 
-    v8 = [(UIPrinterBrowserViewController *)self availablePrinters];
-    v9 = [v8 count];
+    availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+    v9 = [availablePrinters count];
 
     if (!v9)
     {
-      v21 = [MEMORY[0x277D75390] emptyConfiguration];
+      loadingConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
       v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v5 = v4;
+      iCloudPrinters = v4;
       v6 = @"No AirPrint Printers Found";
       goto LABEL_3;
     }
   }
 
-  v21 = 0;
+  loadingConfiguration = 0;
 LABEL_10:
-  v10 = [(UIPrinterBrowserViewController *)self printPanelViewController];
-  [v10 contentInsetForPreviewWithHeight:0.0];
+  printPanelViewController = [(UIPrinterBrowserViewController *)self printPanelViewController];
+  [printPanelViewController contentInsetForPreviewWithHeight:0.0];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(UIPrinterBrowserViewController *)self view];
-  [v19 safeAreaInsets];
-  [v21 setDirectionalLayoutMargins:{v12, v14 + v20, v16, v18}];
+  view = [(UIPrinterBrowserViewController *)self view];
+  [view safeAreaInsets];
+  [loadingConfiguration setDirectionalLayoutMargins:{v12, v14 + v20, v16, v18}];
 
-  [(UIPrinterBrowserViewController *)self setContentUnavailableConfiguration:v21];
+  [(UIPrinterBrowserViewController *)self setContentUnavailableConfiguration:loadingConfiguration];
 }
 
 - (void)updateSearchingState
 {
-  v3 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-  if ([v3 count])
+  iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+  if ([iCloudPrinters count])
   {
 
 LABEL_4:
@@ -370,8 +370,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(UIPrinterBrowserViewController *)self availablePrinters];
-  v5 = [v4 count];
+  availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+  v5 = [availablePrinters count];
 
   if (v5)
   {
@@ -400,51 +400,51 @@ LABEL_6:
     [(UIPrinterBrowserViewController *)self performSelector:sel_searchTimeout withObject:0 afterDelay:5.0];
   }
 
-  v8 = [(UIPrinterBrowserViewController *)self tableView];
-  [v8 setBounces:v6 ^ 1u];
+  tableView = [(UIPrinterBrowserViewController *)self tableView];
+  [tableView setBounces:v6 ^ 1u];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v15.receiver = self;
   v15.super_class = UIPrinterBrowserViewController;
-  [(UIPrinterBrowserViewController *)&v15 viewIsAppearing:a3];
-  v4 = [(UIPrinterBrowserViewController *)self printPanelViewController];
-  [v4 contentInsetForPreviewWithHeight:0.0];
+  [(UIPrinterBrowserViewController *)&v15 viewIsAppearing:appearing];
+  printPanelViewController = [(UIPrinterBrowserViewController *)self printPanelViewController];
+  [printPanelViewController contentInsetForPreviewWithHeight:0.0];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIPrinterBrowserViewController *)self tableView];
-  [v13 setContentInset:{v6, v8, v10, v12}];
+  tableView = [(UIPrinterBrowserViewController *)self tableView];
+  [tableView setContentInset:{v6, v8, v10, v12}];
 
-  v14 = [(UIPrinterBrowserViewController *)self printerBrowser];
+  printerBrowser = [(UIPrinterBrowserViewController *)self printerBrowser];
 
-  if (!v14)
+  if (!printerBrowser)
   {
     [(UIPrinterBrowserViewController *)self startPrinterBrowser];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = UIPrinterBrowserViewController;
-  [(UIPrinterBrowserViewController *)&v8 viewDidDisappear:a3];
-  v4 = [(UIPrinterBrowserViewController *)self lockedPrinter];
+  [(UIPrinterBrowserViewController *)&v8 viewDidDisappear:disappear];
+  lockedPrinter = [(UIPrinterBrowserViewController *)self lockedPrinter];
 
-  if (v4)
+  if (lockedPrinter)
   {
-    v5 = [(UIPrinterBrowserViewController *)self lockedPrinter];
-    [v5 cancelUnlock];
+    lockedPrinter2 = [(UIPrinterBrowserViewController *)self lockedPrinter];
+    [lockedPrinter2 cancelUnlock];
 
     [(UIPrinterBrowserViewController *)self setLockedPrinter:0];
   }
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_updateSearchingState object:0];
   [(UIPrinterBrowserViewController *)self stopPrinterBrowser];
-  v6 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  [v6 printerBrowserViewDidDisappear];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  [ownerPanelViewController printerBrowserViewDidDisappear];
 
   [(UIPrinterBrowserViewController *)self setPrintersSearchState:0];
   block[0] = MEMORY[0x277D85DD0];
@@ -455,27 +455,27 @@ LABEL_6:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  LOBYTE(a3) = [v4 shouldAutorotateToInterfaceOrientation:a3];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  LOBYTE(orientation) = [ownerPanelViewController shouldAutorotateToInterfaceOrientation:orientation];
 
-  return a3;
+  return orientation;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  v3 = [v2 supportedInterfaceOrientations];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  supportedInterfaceOrientations = [ownerPanelViewController supportedInterfaceOrientations];
 
-  return v3;
+  return supportedInterfaceOrientations;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = UIPrinterBrowserViewController;
-  [(UIPrinterBrowserViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(UIPrinterBrowserViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__UIPrinterBrowserViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
@@ -500,13 +500,13 @@ uint64_t __85__UIPrinterBrowserViewController_viewWillTransitionToSize_withTrans
   return [v12 setNeedsUpdateContentUnavailableConfiguration];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-  v5 = [v4 count];
+  iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+  v5 = [iCloudPrinters count];
 
-  v6 = [(UIPrinterBrowserViewController *)self availablePrinters];
-  v7 = [v6 count];
+  availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+  v7 = [availablePrinters count];
 
   v8 = v5 != 0;
   v9 = 1;
@@ -531,26 +531,26 @@ uint64_t __85__UIPrinterBrowserViewController_viewWillTransitionToSize_withTrans
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v7 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!section)
   {
-    v4 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    if ([v4 count])
+    iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    if ([iCloudPrinters count])
     {
-      v10 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-      v9 = [v10 count];
+      iCloudPrinters2 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+      v9 = [iCloudPrinters2 count];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  v8 = [(UIPrinterBrowserViewController *)self availablePrinters];
-  v9 = [v8 count];
+  availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+  v9 = [availablePrinters count];
 
-  if (!a4)
+  if (!section)
   {
     goto LABEL_6;
   }
@@ -560,16 +560,16 @@ LABEL_7:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-  v6 = [v5 count];
+  iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+  v6 = [iCloudPrinters count];
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = v7;
-    if (a4)
+    if (section)
     {
       v9 = @"Other Printers";
     }
@@ -590,19 +590,19 @@ LABEL_7:
   return v10;
 }
 
-- (id)printerAtIndexPath:(id)a3
+- (id)printerAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  if ([v4 section] || (-[UIPrinterBrowserViewController iCloudPrinters](self, "iCloudPrinters"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, !v9))
+  pathCopy = path;
+  v5 = [pathCopy row];
+  if ([pathCopy section] || (-[UIPrinterBrowserViewController iCloudPrinters](self, "iCloudPrinters"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, !v9))
   {
-    v6 = [(UIPrinterBrowserViewController *)self availablePrinters];
-    if (v5 < [v6 count])
+    availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
+    if (v5 < [availablePrinters count])
     {
-      v7 = [(UIPrinterBrowserViewController *)self availablePrinters];
+      availablePrinters2 = [(UIPrinterBrowserViewController *)self availablePrinters];
 LABEL_7:
-      v10 = v7;
-      v11 = [v7 objectAtIndexedSubscript:v5];
+      v10 = availablePrinters2;
+      v11 = [availablePrinters2 objectAtIndexedSubscript:v5];
 
       goto LABEL_9;
     }
@@ -610,10 +610,10 @@ LABEL_7:
 
   else
   {
-    v6 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    if (v5 < [v6 count])
+    availablePrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    if (v5 < [availablePrinters count])
     {
-      v7 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+      availablePrinters2 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
       goto LABEL_7;
     }
   }
@@ -623,50 +623,50 @@ LABEL_9:
 
   if (!v11)
   {
-    v12 = [v4 section];
-    v13 = [v4 row];
-    v14 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    v15 = [v14 count];
-    v16 = [(UIPrinterBrowserViewController *)self availablePrinters];
-    NSLog(&cfstr_InvalidPrinter.isa, v12, v13, v15, [v16 count]);
+    section = [pathCopy section];
+    v13 = [pathCopy row];
+    iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    v15 = [iCloudPrinters count];
+    availablePrinters3 = [(UIPrinterBrowserViewController *)self availablePrinters];
+    NSLog(&cfstr_InvalidPrinter.isa, section, v13, v15, [availablePrinters3 count]);
   }
 
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PrinterBrowserTableViewCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PrinterBrowserTableViewCell"];
   if (!v7)
   {
     v7 = [[UIPrinterTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"PrinterBrowserTableViewCell"];
   }
 
-  v8 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  v9 = [v8 printer];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  printer = [ownerPanelViewController printer];
 
-  v10 = [(UIPrinterBrowserViewController *)self printerAtIndexPath:v6];
+  v10 = [(UIPrinterBrowserViewController *)self printerAtIndexPath:pathCopy];
 
   [(UIPrinterTableViewCell *)v7 setPrinter:v10];
-  v11 = [v10 name];
-  v12 = [v9 name];
-  if ([v11 isEqualToString:v12])
+  name = [v10 name];
+  name2 = [printer name];
+  if ([name isEqualToString:name2])
   {
     [(UIPrinterTableViewCell *)v7 setPrinterSelected:1];
   }
 
   else
   {
-    v13 = [v10 uuid];
-    v14 = [v9 uuid];
-    -[UIPrinterTableViewCell setPrinterSelected:](v7, "setPrinterSelected:", [v13 isEqualToString:v14]);
+    uuid = [v10 uuid];
+    uuid2 = [printer uuid];
+    -[UIPrinterTableViewCell setPrinterSelected:](v7, "setPrinterSelected:", [uuid isEqualToString:uuid2]);
   }
 
   [(UIPrinterTableViewCell *)v7 setDelegate:self];
-  v15 = [(UIPrinterBrowserViewController *)self lockedPrinter];
+  lockedPrinter = [(UIPrinterBrowserViewController *)self lockedPrinter];
 
-  if (v15)
+  if (lockedPrinter)
   {
     v16 = 4;
   }
@@ -691,28 +691,28 @@ LABEL_9:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPrinterBrowserViewController *)self printerAtIndexPath:v7];
-  v9 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(UIPrinterBrowserViewController *)self printerAtIndexPath:pathCopy];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
   if ([v8 accessState] == 1)
   {
     [(UIPrinterBrowserViewController *)self setLockedPrinter:v8];
-    v10 = [v6 cellForRowAtIndexPath:v7];
+    v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
     [v10 setPrinterState:4];
-    v11 = [(UIPrinterBrowserViewController *)self lockedPrinter];
+    lockedPrinter = [(UIPrinterBrowserViewController *)self lockedPrinter];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __68__UIPrinterBrowserViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v22[3] = &unk_279A9BF08;
     v22[4] = self;
-    v23 = v9;
+    v23 = ownerPanelViewController;
     v24 = v10;
-    v25 = v6;
-    v12 = v10;
-    [v11 unlockWithCompletionHandler:v22];
+    v25 = viewCopy;
+    navigationController4 = v10;
+    [lockedPrinter unlockWithCompletionHandler:v22];
 
 LABEL_3:
     goto LABEL_12;
@@ -720,32 +720,32 @@ LABEL_3:
 
   if (![v8 accessState] || objc_msgSend(v8, "accessState") == 2)
   {
-    [v9 setPrinter:v8];
+    [ownerPanelViewController setPrinter:v8];
     if (objc_opt_respondsToSelector())
     {
-      [v9 setUserSelectedPrinter:1];
+      [ownerPanelViewController setUserSelectedPrinter:1];
     }
 
-    v13 = [(UIPrinterBrowserViewController *)self navigationController];
-    v14 = [v13 viewControllers];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    navigationController = [(UIPrinterBrowserViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v15 = [viewControllers objectAtIndexedSubscript:0];
 
     if (v15 == self)
     {
-      [v9 dismissAnimated:1];
+      [ownerPanelViewController dismissAnimated:1];
       goto LABEL_12;
     }
 
-    v16 = [(UIPrinterBrowserViewController *)self navigationController];
-    v17 = [v16 viewControllers];
-    v18 = [(UIPrinterBrowserViewController *)self navigationController];
-    v19 = [v18 viewControllers];
-    v20 = [v17 objectAtIndexedSubscript:{objc_msgSend(v19, "count") - 1}];
+    navigationController2 = [(UIPrinterBrowserViewController *)self navigationController];
+    viewControllers2 = [navigationController2 viewControllers];
+    navigationController3 = [(UIPrinterBrowserViewController *)self navigationController];
+    viewControllers3 = [navigationController3 viewControllers];
+    v20 = [viewControllers2 objectAtIndexedSubscript:{objc_msgSend(viewControllers3, "count") - 1}];
 
     if (v20 == self)
     {
-      v12 = [(UIPrinterBrowserViewController *)self navigationController];
-      v21 = [v12 popViewControllerAnimated:1];
+      navigationController4 = [(UIPrinterBrowserViewController *)self navigationController];
+      v21 = [navigationController4 popViewControllerAnimated:1];
       goto LABEL_3;
     }
   }
@@ -809,17 +809,17 @@ void __68__UIPrinterBrowserViewController_tableView_didSelectRowAtIndexPath___bl
   }
 }
 
-- (void)addPrinter:(id)a3 moreComing:(BOOL)a4
+- (void)addPrinter:(id)printer moreComing:(BOOL)coming
 {
-  v6 = a3;
+  printerCopy = printer;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__UIPrinterBrowserViewController_addPrinter_moreComing___block_invoke;
   block[3] = &unk_279A9BF50;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = printerCopy;
+  comingCopy = coming;
+  v7 = printerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -971,16 +971,16 @@ uint64_t __56__UIPrinterBrowserViewController_addPrinter_moreComing___block_invo
   return v7;
 }
 
-- (void)removePrinter:(id)a3 moreGoing:(BOOL)a4
+- (void)removePrinter:(id)printer moreGoing:(BOOL)going
 {
-  v5 = a3;
+  printerCopy = printer;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__UIPrinterBrowserViewController_removePrinter_moreGoing___block_invoke;
   v7[3] = &unk_279A9BF78;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = printerCopy;
+  v6 = printerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1061,33 +1061,33 @@ LABEL_11:
 - (void)showCancelButton
 {
   v3 = objc_alloc(MEMORY[0x277D751E0]);
-  v6 = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
-  v4 = [v3 initWithBarButtonSystemItem:1 target:v6 action:sel_cancelPrinting];
-  v5 = [(UIPrinterBrowserViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  ownerPanelViewController = [(UIPrinterBrowserViewController *)self ownerPanelViewController];
+  v4 = [v3 initWithBarButtonSystemItem:1 target:ownerPanelViewController action:sel_cancelPrinting];
+  navigationItem = [(UIPrinterBrowserViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 }
 
-- (id)discoveredPrinterWithUUID:(id)a3
+- (id)discoveredPrinterWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+  dCopy = d;
+  iCloudPrinters = [(UIPrinterBrowserViewController *)self iCloudPrinters];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __60__UIPrinterBrowserViewController_discoveredPrinterWithUUID___block_invoke;
   v19[3] = &unk_279A9BFA0;
-  v6 = v4;
+  v6 = dCopy;
   v20 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v19];
+  v7 = [iCloudPrinters indexOfObjectPassingTest:v19];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(UIPrinterBrowserViewController *)self availablePrinters];
+    availablePrinters = [(UIPrinterBrowserViewController *)self availablePrinters];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __60__UIPrinterBrowserViewController_discoveredPrinterWithUUID___block_invoke_2;
     v17 = &unk_279A9BFA0;
     v18 = v6;
-    v9 = [v8 indexOfObjectPassingTest:&v14];
+    v9 = [availablePrinters indexOfObjectPassingTest:&v14];
 
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1100,13 +1100,13 @@ LABEL_11:
       v10 = [v12 objectAtIndex:v9];
     }
 
-    v11 = v18;
+    iCloudPrinters2 = v18;
   }
 
   else
   {
-    v11 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
-    v10 = [v11 objectAtIndex:v7];
+    iCloudPrinters2 = [(UIPrinterBrowserViewController *)self iCloudPrinters];
+    v10 = [iCloudPrinters2 objectAtIndex:v7];
   }
 
   return v10;

@@ -1,18 +1,18 @@
 @interface VCPFlowFeatureExtractor
-- (id)initModule:(int)a3 config:(id)a4 cancel:(id)a5;
-- (int)bindWithBuffers:(__CVBuffer *)a3 imgFeature:(id *)a4;
-- (int)extractFeatureFromImage:(__CVBuffer *)a3 toFeature:(id *)a4 callback:(id)a5;
-- (int)setFeatureShape:(id *)a3 height:(int)a4 width:(int)a5 level:(int)a6;
+- (id)initModule:(int)module config:(id)config cancel:(id)cancel;
+- (int)bindWithBuffers:(__CVBuffer *)buffers imgFeature:(id *)feature;
+- (int)extractFeatureFromImage:(__CVBuffer *)image toFeature:(id *)feature callback:(id)callback;
+- (int)setFeatureShape:(id *)shape height:(int)height width:(int)width level:(int)level;
 @end
 
 @implementation VCPFlowFeatureExtractor
 
-- (id)initModule:(int)a3 config:(id)a4 cancel:(id)a5
+- (id)initModule:(int)module config:(id)config cancel:(id)cancel
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ((*(v9 + 2))(v9) & 1) != 0)
+  configCopy = config;
+  cancelCopy = cancel;
+  v10 = cancelCopy;
+  if (cancelCopy && ((*(cancelCopy + 2))(cancelCopy) & 1) != 0)
   {
     v11 = 0;
   }
@@ -21,11 +21,11 @@
   {
     v18.receiver = self;
     v18.super_class = VCPFlowFeatureExtractor;
-    v12 = [(VCPEspressoModel *)&v18 initModelWithName:@"feature_extraction" andConfig:v8];
+    v12 = [(VCPEspressoModel *)&v18 initModelWithName:@"feature_extraction" andConfig:configCopy];
     v11 = v12;
     if (v12)
     {
-      v12->_numLevels = a3;
+      v12->_numLevels = module;
       inputBlobName = v12->_inputBlobName;
       v12->_inputBlobName = @"t_0";
 
@@ -49,7 +49,7 @@
   return v16;
 }
 
-- (int)bindWithBuffers:(__CVBuffer *)a3 imgFeature:(id *)a4
+- (int)bindWithBuffers:(__CVBuffer *)buffers imgFeature:(id *)feature
 {
   v12 = *MEMORY[0x1E69E9840];
   [(NSString *)self->_inputBlobName UTF8String];
@@ -108,10 +108,10 @@ LABEL_14:
   return v6;
 }
 
-- (int)extractFeatureFromImage:(__CVBuffer *)a3 toFeature:(id *)a4 callback:(id)a5
+- (int)extractFeatureFromImage:(__CVBuffer *)image toFeature:(id *)feature callback:(id)callback
 {
-  v8 = a5;
-  v9 = [(VCPFlowFeatureExtractor *)self bindWithBuffers:a3 imgFeature:a4];
+  callbackCopy = callback;
+  v9 = [(VCPFlowFeatureExtractor *)self bindWithBuffers:image imgFeature:feature];
   if (v9)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -120,12 +120,12 @@ LABEL_14:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Feature extractor: fail to bind buffers", buf, 2u);
     }
 
-    v8[2](v8);
+    callbackCopy[2](callbackCopy);
   }
 
   else
   {
-    v11 = v8;
+    v11 = callbackCopy;
     if (espresso_plan_submit())
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -157,15 +157,15 @@ uint64_t __70__VCPFlowFeatureExtractor_extractFeatureFromImage_toFeature_callbac
   return (*(*(a1 + 32) + 16))();
 }
 
-- (int)setFeatureShape:(id *)a3 height:(int)a4 width:(int)a5 level:(int)a6
+- (int)setFeatureShape:(id *)shape height:(int)height width:(int)width level:(int)level
 {
-  v6 = a6;
-  v10 = [(NSArray *)self->_featureChannels objectAtIndexedSubscript:a6];
-  a3->var0 = [v10 intValue];
+  levelCopy = level;
+  v10 = [(NSArray *)self->_featureChannels objectAtIndexedSubscript:level];
+  shape->var0 = [v10 intValue];
 
-  v11 = 1 << (v6 - 1);
-  a3->var1 = (v11 + a4) >> v6;
-  a3->var2 = (v11 + a5) >> v6;
+  v11 = 1 << (levelCopy - 1);
+  shape->var1 = (v11 + height) >> levelCopy;
+  shape->var2 = (v11 + width) >> levelCopy;
   return 0;
 }
 

@@ -1,5 +1,5 @@
 @interface CMCaptureUserNotification
-+ (CMCaptureUserNotification)notificationWithTimeout:(double)a3 flags:(unint64_t)a4 dictionary:(id)a5 error:(id *)a6;
++ (CMCaptureUserNotification)notificationWithTimeout:(double)timeout flags:(unint64_t)flags dictionary:(id)dictionary error:(id *)error;
 - (id)initForSubclass;
 @end
 
@@ -12,12 +12,12 @@
   return [(CMCaptureUserNotification *)&v3 init];
 }
 
-+ (CMCaptureUserNotification)notificationWithTimeout:(double)a3 flags:(unint64_t)a4 dictionary:(id)a5 error:(id *)a6
++ (CMCaptureUserNotification)notificationWithTimeout:(double)timeout flags:(unint64_t)flags dictionary:(id)dictionary error:(id *)error
 {
   v10 = *MEMORY[0x1E695EE58];
-  if ([a5 objectForKeyedSubscript:*MEMORY[0x1E695EE58]])
+  if ([dictionary objectForKeyedSubscript:*MEMORY[0x1E695EE58]])
   {
-    v11 = [&stru_1F216A3D0 stringByAppendingFormat:@"\n%@", objc_msgSend(a5, "objectForKeyedSubscript:", v10)];
+    v11 = [&stru_1F216A3D0 stringByAppendingFormat:@"\n%@", objc_msgSend(dictionary, "objectForKeyedSubscript:", v10)];
   }
 
   else
@@ -26,9 +26,9 @@
   }
 
   v12 = *MEMORY[0x1E695EE60];
-  if ([a5 objectForKeyedSubscript:*MEMORY[0x1E695EE60]])
+  if ([dictionary objectForKeyedSubscript:*MEMORY[0x1E695EE60]])
   {
-    v11 = -[__CFString stringByAppendingFormat:](v11, "stringByAppendingFormat:", @"\n%@", [a5 objectForKeyedSubscript:v12]);
+    v11 = -[__CFString stringByAppendingFormat:](v11, "stringByAppendingFormat:", @"\n%@", [dictionary objectForKeyedSubscript:v12]);
   }
 
   if ([(__CFString *)v11 length])
@@ -38,7 +38,7 @@
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  return [[DirectUserNotification alloc] initNotificationWithTimeout:a4 flags:a5 dictionary:a6 error:a3];
+  return [[DirectUserNotification alloc] initNotificationWithTimeout:flags flags:dictionary dictionary:error error:timeout];
 }
 
 @end

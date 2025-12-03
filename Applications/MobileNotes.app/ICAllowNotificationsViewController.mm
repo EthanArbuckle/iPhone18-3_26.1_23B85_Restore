@@ -10,7 +10,7 @@
 - (UILabel)titleLabel;
 - (UIStackView)buttonStackView;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)continuePressed:(id)a3;
+- (void)continuePressed:(id)pressed;
 - (void)updateViewConstraints;
 - (void)viewDidLoad;
 @end
@@ -64,9 +64,9 @@
 
     else
     {
-      v9 = [v6 ic_numberingSystemIsDevanagari];
-      v7 = v9 ^ 1;
-      if (v9)
+      ic_numberingSystemIsDevanagari = [v6 ic_numberingSystemIsDevanagari];
+      v7 = ic_numberingSystemIsDevanagari ^ 1;
+      if (ic_numberingSystemIsDevanagari)
       {
         v8 = @"_devanagari";
       }
@@ -93,9 +93,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     return 2;
   }
@@ -110,14 +110,14 @@
   v8.receiver = self;
   v8.super_class = ICAllowNotificationsViewController;
   [(ICAllowNotificationsViewController *)&v8 viewDidLoad];
-  v3 = [objc_opt_class() imageName];
-  v4 = [UIImage imageNamed:v3];
-  v5 = [(ICAllowNotificationsViewController *)self imageView];
-  [v5 setImage:v4];
+  imageName = [objc_opt_class() imageName];
+  v4 = [UIImage imageNamed:imageName];
+  imageView = [(ICAllowNotificationsViewController *)self imageView];
+  [imageView setImage:v4];
 
   v6 = [UIFont ic_preferredFontForStyle:UIFontTextStyleLargeTitle withFontWeight:UIFontWeightBold];
-  v7 = [(ICAllowNotificationsViewController *)self titleLabel];
-  [v7 setFont:v6];
+  titleLabel = [(ICAllowNotificationsViewController *)self titleLabel];
+  [titleLabel setFont:v6];
 }
 
 - (void)updateViewConstraints
@@ -127,71 +127,71 @@
   [(ICAllowNotificationsViewController *)&v17 updateViewConstraints];
   if (+[UIDevice ic_isVision])
   {
-    v3 = [(ICAllowNotificationsViewController *)self continueButtonWidthConstraint];
-    [v3 setActive:1];
+    continueButtonWidthConstraint = [(ICAllowNotificationsViewController *)self continueButtonWidthConstraint];
+    [continueButtonWidthConstraint setActive:1];
 
-    v4 = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
-    [v4 setActive:1];
+    hiddenButtonWidthConstraint = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
+    [hiddenButtonWidthConstraint setActive:1];
 
-    v5 = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
-    [NSLayoutConstraint deactivateConstraints:v5];
+    buttonMarginConstraints = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
+    [NSLayoutConstraint deactivateConstraints:buttonMarginConstraints];
     v6 = 36.0;
   }
 
   else
   {
-    v7 = [(ICAllowNotificationsViewController *)self ic_windowScene];
-    v8 = [v7 traitCollection];
-    v9 = [v8 ic_hasCompactWidth];
+    ic_windowScene = [(ICAllowNotificationsViewController *)self ic_windowScene];
+    traitCollection = [ic_windowScene traitCollection];
+    ic_hasCompactWidth = [traitCollection ic_hasCompactWidth];
 
-    v10 = [(ICAllowNotificationsViewController *)self continueButtonWidthConstraint];
-    v11 = v10;
-    if (v9)
+    continueButtonWidthConstraint2 = [(ICAllowNotificationsViewController *)self continueButtonWidthConstraint];
+    v11 = continueButtonWidthConstraint2;
+    if (ic_hasCompactWidth)
     {
-      [v10 setActive:0];
+      [continueButtonWidthConstraint2 setActive:0];
 
-      v12 = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
-      [v12 setActive:0];
+      hiddenButtonWidthConstraint2 = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
+      [hiddenButtonWidthConstraint2 setActive:0];
 
-      v5 = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
-      [NSLayoutConstraint activateConstraints:v5];
+      buttonMarginConstraints = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
+      [NSLayoutConstraint activateConstraints:buttonMarginConstraints];
       v6 = 24.0;
     }
 
     else
     {
-      [v10 setActive:1];
+      [continueButtonWidthConstraint2 setActive:1];
 
-      v13 = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
-      [v13 setActive:1];
+      hiddenButtonWidthConstraint3 = [(ICAllowNotificationsViewController *)self hiddenButtonWidthConstraint];
+      [hiddenButtonWidthConstraint3 setActive:1];
 
-      v5 = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
-      [NSLayoutConstraint deactivateConstraints:v5];
+      buttonMarginConstraints = [(ICAllowNotificationsViewController *)self buttonMarginConstraints];
+      [NSLayoutConstraint deactivateConstraints:buttonMarginConstraints];
       v6 = 74.0;
     }
   }
 
-  v14 = [(ICAllowNotificationsViewController *)self leadingLabelMarginConstraint];
-  [v14 setConstant:v6];
+  leadingLabelMarginConstraint = [(ICAllowNotificationsViewController *)self leadingLabelMarginConstraint];
+  [leadingLabelMarginConstraint setConstant:v6];
 
-  v15 = [(ICAllowNotificationsViewController *)self trailingLabelMarginConstraint];
-  [v15 setConstant:v6];
+  trailingLabelMarginConstraint = [(ICAllowNotificationsViewController *)self trailingLabelMarginConstraint];
+  [trailingLabelMarginConstraint setConstant:v6];
 
-  v16 = [(ICAllowNotificationsViewController *)self view];
-  [v16 setAccessibilityViewIsModal:1];
+  view = [(ICAllowNotificationsViewController *)self view];
+  [view setAccessibilityViewIsModal:1];
 }
 
-- (void)continuePressed:(id)a3
+- (void)continuePressed:(id)pressed
 {
-  v4 = [(ICAllowNotificationsViewController *)self continueButton];
-  [v4 setEnabled:0];
+  continueButton = [(ICAllowNotificationsViewController *)self continueButton];
+  [continueButton setEnabled:0];
 
-  v5 = [(ICAllowNotificationsViewController *)self completionHandler];
+  completionHandler = [(ICAllowNotificationsViewController *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(ICAllowNotificationsViewController *)self completionHandler];
-    v6[2]();
+    completionHandler2 = [(ICAllowNotificationsViewController *)self completionHandler];
+    completionHandler2[2]();
   }
 }
 

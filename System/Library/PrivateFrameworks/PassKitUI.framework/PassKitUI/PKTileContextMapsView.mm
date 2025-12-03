@@ -1,11 +1,11 @@
 @interface PKTileContextMapsView
-+ (id)createForMapsPlaceID:(id)a3 caption:(id)a4;
++ (id)createForMapsPlaceID:(id)d caption:(id)caption;
 - (PKTileContextMapsView)init;
 @end
 
 @implementation PKTileContextMapsView
 
-+ (id)createForMapsPlaceID:(id)a3 caption:(id)a4
++ (id)createForMapsPlaceID:(id)d caption:(id)caption
 {
   v4 = sub_1BE052434();
   v6 = v5;

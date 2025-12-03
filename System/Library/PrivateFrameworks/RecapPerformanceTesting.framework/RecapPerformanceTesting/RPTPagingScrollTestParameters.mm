@@ -1,40 +1,40 @@
 @interface RPTPagingScrollTestParameters
 - (CGRect)scrollingBounds;
-- (RPTPagingScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 amplitude:(double)a6 direction:(int64_t)a7 iterationDuration:(double)a8 useFlicks:(BOOL)a9 completionHandler:(id)a10;
+- (RPTPagingScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction iterationDuration:(double)duration useFlicks:(BOOL)flicks completionHandler:(id)self0;
 - (id)composerBlock;
 - (pair<CGPoint,)initialAndFinalPositions;
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6;
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration;
 @end
 
 @implementation RPTPagingScrollTestParameters
 
-- (RPTPagingScrollTestParameters)initWithTestName:(id)a3 iterations:(unint64_t)a4 scrollingBounds:(CGRect)a5 amplitude:(double)a6 direction:(int64_t)a7 iterationDuration:(double)a8 useFlicks:(BOOL)a9 completionHandler:(id)a10
+- (RPTPagingScrollTestParameters)initWithTestName:(id)name iterations:(unint64_t)iterations scrollingBounds:(CGRect)bounds amplitude:(double)amplitude direction:(int64_t)direction iterationDuration:(double)duration useFlicks:(BOOL)flicks completionHandler:(id)self0
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v21 = a3;
-  v22 = a10;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nameCopy = name;
+  handlerCopy = handler;
   v39.receiver = self;
   v39.super_class = RPTPagingScrollTestParameters;
   v23 = [(RPTPagingScrollTestParameters *)&v39 init];
   if (v23)
   {
-    v24 = [v21 copy];
+    v24 = [nameCopy copy];
     testName = v23->_testName;
     v23->_testName = v24;
 
-    v23->_iterations = a4;
+    v23->_iterations = iterations;
     v23->_scrollingBounds.origin.x = x;
     v23->_scrollingBounds.origin.y = y;
     v23->_scrollingBounds.size.width = width;
     v23->_scrollingBounds.size.height = height;
-    v23->_amplitude = a6;
-    v23->_useFlicks = a9;
-    v23->_direction = a7;
-    v23->_iterationDuration = a8;
-    v26 = MEMORY[0x2667162B0](v22);
+    v23->_amplitude = amplitude;
+    v23->_useFlicks = flicks;
+    v23->_direction = direction;
+    v23->_iterationDuration = duration;
+    v26 = MEMORY[0x2667162B0](handlerCopy);
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v26;
 
@@ -42,20 +42,20 @@
     conversion = v23->_conversion;
     v23->_conversion = v28;
 
-    v30 = [MEMORY[0x277D75128] sharedApplication];
-    v31 = [v30 windows];
-    v32 = [v31 firstObject];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    windows = [mEMORY[0x277D75128] windows];
+    firstObject = [windows firstObject];
 
-    v33 = [RPTCoordinateSpaceConverter converterFromWindow:v32];
+    v33 = [RPTCoordinateSpaceConverter converterFromWindow:firstObject];
     v34 = v23->_conversion;
     v23->_conversion = v33;
 
-    if (a7 == 6 || a7 == 5)
+    if (direction == 6 || direction == 5)
     {
-      v35 = [MEMORY[0x277D75128] sharedApplication];
-      v36 = [v35 userInterfaceLayoutDirection];
+      mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
       v37 = 1;
-      if (v36)
+      if (userInterfaceLayoutDirection)
       {
         v37 = 2;
       }
@@ -65,7 +65,7 @@
 
     else
     {
-      v23->_realDirection = a7;
+      v23->_realDirection = direction;
     }
   }
 
@@ -100,37 +100,37 @@ void __46__RPTPagingScrollTestParameters_composerBlock__block_invoke(uint64_t a1
   }
 }
 
-- (void)scrollWithComposer:(id)a3 fromPoint:(CGPoint)a4 toPoint:(CGPoint)a5 duration:(double)a6
+- (void)scrollWithComposer:(id)composer fromPoint:(CGPoint)point toPoint:(CGPoint)toPoint duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  v30 = a3;
-  if (-[RPTPagingScrollTestParameters useFlicks](self, "useFlicks") && ([v30 interactionOptions], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "prefersPointer"), v12, (v13 & 1) == 0))
+  y = toPoint.y;
+  x = toPoint.x;
+  v9 = point.y;
+  v10 = point.x;
+  composerCopy = composer;
+  if (-[RPTPagingScrollTestParameters useFlicks](self, "useFlicks") && ([composerCopy interactionOptions], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "prefersPointer"), v12, (v13 & 1) == 0))
   {
-    v22 = [(RPTPagingScrollTestParameters *)self conversion];
-    [v22 convertPoint:{v10, v9}];
+    conversion = [(RPTPagingScrollTestParameters *)self conversion];
+    [conversion convertPoint:{v10, v9}];
     v24 = v23;
     v26 = v25;
-    v27 = [(RPTPagingScrollTestParameters *)self conversion];
-    [v27 convertPoint:{x, y}];
-    [v30 sendFlickWithStartPoint:v24 endPoint:v26 duration:{v28, v29, 0.5}];
+    conversion2 = [(RPTPagingScrollTestParameters *)self conversion];
+    [conversion2 convertPoint:{x, y}];
+    [composerCopy sendFlickWithStartPoint:v24 endPoint:v26 duration:{v28, v29, 0.5}];
 
-    [v30 advanceTime:a6 + -0.5];
+    [composerCopy advanceTime:duration + -0.5];
   }
 
   else
   {
-    v14 = [(RPTPagingScrollTestParameters *)self conversion];
-    [v14 convertPoint:{v10, v9}];
+    conversion3 = [(RPTPagingScrollTestParameters *)self conversion];
+    [conversion3 convertPoint:{v10, v9}];
     v16 = v15;
     v18 = v17;
-    v19 = [(RPTPagingScrollTestParameters *)self conversion];
-    [v19 convertVector:{x - v10, y - v9}];
-    [v30 pointerOrFingerScrollAt:v16 byDelta:v18 duration:{v20, v21, a6}];
+    conversion4 = [(RPTPagingScrollTestParameters *)self conversion];
+    [conversion4 convertVector:{x - v10, y - v9}];
+    [composerCopy pointerOrFingerScrollAt:v16 byDelta:v18 duration:{v20, v21, duration}];
 
-    [v30 advanceTime:0.2];
+    [composerCopy advanceTime:0.2];
   }
 }
 
@@ -139,11 +139,11 @@ void __46__RPTPagingScrollTestParameters_composerBlock__block_invoke(uint64_t a1
   [(RPTPagingScrollTestParameters *)self scrollingBounds];
   Midpoint = RPTCGRectGetMidpoint(v3, v4, v5, v6);
   v9 = v8;
-  v10 = [(RPTPagingScrollTestParameters *)self realDirection];
+  realDirection = [(RPTPagingScrollTestParameters *)self realDirection];
   [(RPTPagingScrollTestParameters *)self scrollingBounds];
-  if (v10 > 2)
+  if (realDirection > 2)
   {
-    if (v10 == 4)
+    if (realDirection == 4)
     {
       v9 = CGRectGetMinY(*&v11) + 1.5;
       [(RPTPagingScrollTestParameters *)self amplitude];
@@ -152,7 +152,7 @@ void __46__RPTPagingScrollTestParameters_composerBlock__block_invoke(uint64_t a1
 
     else
     {
-      if (v10 != 3)
+      if (realDirection != 3)
       {
         goto LABEL_7;
       }
@@ -166,7 +166,7 @@ void __46__RPTPagingScrollTestParameters_composerBlock__block_invoke(uint64_t a1
     goto LABEL_11;
   }
 
-  if (v10 != 2)
+  if (realDirection != 2)
   {
 LABEL_7:
     Midpoint = CGRectGetMaxX(*&v11) + -1.5;

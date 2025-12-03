@@ -2,10 +2,10 @@
 + (_TtC7ChatKit14CKSceneManager)shared;
 - (NSString)debugDescription;
 - (_TtC7ChatKit14CKSceneManager)init;
-- (id)getDelegateFor:(id)a3;
+- (id)getDelegateFor:(id)for;
 - (id)getScenes;
-- (void)addScene:(id)a3 withDelegate:(id)a4;
-- (void)removeScene:(id)a3;
+- (void)addScene:(id)scene withDelegate:(id)delegate;
+- (void)removeScene:(id)scene;
 @end
 
 @implementation CKSceneManager
@@ -33,7 +33,7 @@
 - (id)getScenes
 {
   swift_beginAccess();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_190D52690();
   sub_190C231BC(v4);
 
@@ -43,45 +43,45 @@
   return v5;
 }
 
-- (void)addScene:(id)a3 withDelegate:(id)a4
+- (void)addScene:(id)scene withDelegate:(id)delegate
 {
   swift_beginAccess();
   swift_unknownObjectRetain_n();
-  v7 = a3;
-  v8 = self;
-  sub_190C81B08(a4, v7);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_190C81B08(delegate, sceneCopy);
   swift_endAccess();
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeScene:(id)a3
+- (void)removeScene:(id)scene
 {
   swift_beginAccess();
-  v5 = a3;
-  v6 = self;
-  sub_190C81934(v5);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_190C81934(sceneCopy);
   swift_endAccess();
 
   swift_unknownObjectRelease();
 }
 
-- (id)getDelegateFor:(id)a3
+- (id)getDelegateFor:(id)for
 {
   v5 = OBJC_IVAR____TtC7ChatKit14CKSceneManager_sceneToDelegateMap;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  v7 = a3;
-  v8 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_190D52690();
-  v9 = sub_190C80CDC(v7, v6);
+  v9 = sub_190C80CDC(forCopy, v6);
 
   return v9;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C81460();
 
   v3 = sub_190D56ED0();

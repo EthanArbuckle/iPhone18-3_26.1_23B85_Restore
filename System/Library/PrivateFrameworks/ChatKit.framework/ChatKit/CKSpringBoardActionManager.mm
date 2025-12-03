@@ -3,11 +3,11 @@
 - (CKContactsSearchManager)contactsSearchManager;
 - (CKSpringBoardActionManager)init;
 - (NSArray)conversationCache;
-- (void)chatStateChanged:(id)a3;
-- (void)contactsSearchManager:(id)a3 finishedSearchingWithResults:(id)a4;
+- (void)chatStateChanged:(id)changed;
+- (void)contactsSearchManager:(id)manager finishedSearchingWithResults:(id)results;
 - (void)dealloc;
 - (void)updateShortcutItems;
-- (void)updateShortcutItemsWithConversations:(id)a3;
+- (void)updateShortcutItemsWithConversations:(id)conversations;
 @end
 
 @implementation CKSpringBoardActionManager
@@ -41,17 +41,17 @@ void __44__CKSpringBoardActionManager_sharedInstance__block_invoke()
   v2 = [(CKSpringBoardActionManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationJoinStateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationJoinStateDidChangeNotification" object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationParticipantsDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationParticipantsDidChangeNotification" object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_chatStateChanged_ name:*MEMORY[0x1E69A5700] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_chatStateChanged_ name:*MEMORY[0x1E69A5700] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationListFinishedLoadingNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_chatStateChanged_ name:@"CKConversationListFinishedLoadingNotification" object:0];
 
     v2->shouldHideGroupsDonations = 1;
   }
@@ -61,8 +61,8 @@ void __44__CKSpringBoardActionManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKContactsSearchManager *)self->_contactsSearchManager setDelegate:0];
   v4.receiver = self;
@@ -88,17 +88,17 @@ void __44__CKSpringBoardActionManager_sharedInstance__block_invoke()
   return contactsSearchManager;
 }
 
-- (void)contactsSearchManager:(id)a3 finishedSearchingWithResults:(id)a4
+- (void)contactsSearchManager:(id)manager finishedSearchingWithResults:(id)results
 {
-  v30 = self;
+  selfCopy = self;
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a4;
-  v5 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v7)
   {
@@ -123,9 +123,9 @@ void __44__CKSpringBoardActionManager_sharedInstance__block_invoke()
         {
           v12 = v11;
           v13 = +[CKConversationList sharedConversationList];
-          v14 = [v12 conversationGUID];
+          conversationGUID = [v12 conversationGUID];
 
-          v15 = [v13 conversationForExistingChatWithGUID:v14];
+          v15 = [v13 conversationForExistingChatWithGUID:conversationGUID];
           v16 = 0;
 LABEL_27:
 
@@ -149,10 +149,10 @@ LABEL_27:
           goto LABEL_30;
         }
 
-        v14 = [MEMORY[0x1E695DF70] array];
-        v17 = [MEMORY[0x1E69A5A80] sharedInstance];
-        v18 = [MEMORY[0x1E69A5C90] iMessageService];
-        v13 = [v17 __ck_defaultAccountForService:v18];
+        conversationGUID = [MEMORY[0x1E695DF70] array];
+        mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+        iMessageService = [MEMORY[0x1E69A5C90] iMessageService];
+        v13 = [mEMORY[0x1E69A5A80] __ck_defaultAccountForService:iMessageService];
 
         v36 = 0u;
         v37 = 0u;
@@ -173,7 +173,7 @@ LABEL_27:
                 objc_enumerationMutation(v16);
               }
 
-              v23 = [*(*(&v34 + 1) + 8 * i) rawAddress];
+              rawAddress = [*(*(&v34 + 1) + 8 * i) rawAddress];
               v24 = IMStripFormattingFromAddress();
 
               if (v24)
@@ -183,12 +183,12 @@ LABEL_27:
                 {
 
                   v15 = 0;
-                  v14 = v16;
+                  conversationGUID = v16;
                   goto LABEL_26;
                 }
 
                 v26 = v25;
-                [v14 addObject:v25];
+                [conversationGUID addObject:v25];
               }
             }
 
@@ -202,10 +202,10 @@ LABEL_27:
           }
         }
 
-        if (v14)
+        if (conversationGUID)
         {
           v27 = +[CKConversationList sharedConversationList];
-          v15 = [v27 conversationForHandles:v14 displayName:0 joinedChatsOnly:1 create:0];
+          v15 = [v27 conversationForHandles:conversationGUID displayName:0 joinedChatsOnly:1 create:0];
 
 LABEL_26:
           v9 = v31;
@@ -222,11 +222,11 @@ LABEL_28:
 
         if (v15)
         {
-          [v5 addObject:v15];
+          [array addObject:v15];
         }
 
 LABEL_30:
-        v28 = [v5 count];
+        v28 = [array count];
 
         if (v28 == 3)
         {
@@ -246,7 +246,7 @@ LABEL_30:
 
 LABEL_35:
 
-  [(CKSpringBoardActionManager *)v30 updateShortcutItemsWithConversations:v5];
+  [(CKSpringBoardActionManager *)selfCopy updateShortcutItemsWithConversations:array];
 }
 
 - (NSArray)conversationCache
@@ -255,17 +255,17 @@ LABEL_35:
   conversationCache = self->_conversationCache;
   if (!conversationCache)
   {
-    v28 = self;
+    selfCopy = self;
     v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v4 = +[CKConversationList sharedConversationList];
-    v5 = [v4 conversations];
+    conversations = [v4 conversations];
 
-    obj = v5;
-    v6 = [v5 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    obj = conversations;
+    v6 = [conversations countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v6)
     {
       v7 = v6;
@@ -286,29 +286,29 @@ LABEL_35:
           if ((([v10 isGroupConversation] & 1) != 0 || objc_msgSend(v10, "isBusinessConversation")) && (objc_msgSend(v10, "hasLeft") & 1) == 0)
           {
             v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            v12 = [v10 chat];
-            v13 = [v12 guid];
-            v14 = [v13 copy];
+            chat = [v10 chat];
+            guid = [chat guid];
+            v14 = [guid copy];
 
             v33 = v14;
             [v11 setObject:v14 forKey:@"CKConversationGUIDKey"];
-            v15 = [v10 displayName];
-            v16 = [v15 copy];
+            displayName = [v10 displayName];
+            v16 = [displayName copy];
 
             if ([v16 length])
             {
               [v11 setObject:v16 forKey:@"CKConversationDisplayNameKey"];
             }
 
-            v17 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
             v34 = 0u;
             v35 = 0u;
             v36 = 0u;
             v37 = 0u;
-            v18 = [v10 chat];
-            v19 = [v18 participants];
+            chat2 = [v10 chat];
+            participants = [chat2 participants];
 
-            v20 = [v19 countByEnumeratingWithState:&v34 objects:v42 count:16];
+            v20 = [participants countByEnumeratingWithState:&v34 objects:v42 count:16];
             if (v20)
             {
               v21 = v20;
@@ -319,22 +319,22 @@ LABEL_35:
                 {
                   if (*v35 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(participants);
                   }
 
-                  v24 = [*(*(&v34 + 1) + 8 * i) name];
-                  v25 = [v24 copy];
+                  name = [*(*(&v34 + 1) + 8 * i) name];
+                  v25 = [name copy];
 
-                  [v17 addObject:v25];
+                  [array addObject:v25];
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v34 objects:v42 count:16];
+                v21 = [participants countByEnumeratingWithState:&v34 objects:v42 count:16];
               }
 
               while (v21);
             }
 
-            [v11 setObject:v17 forKey:@"CKConversationEntityNamesKey"];
+            [v11 setObject:array forKey:@"CKConversationEntityNamesKey"];
             [(NSArray *)v30 addObject:v11];
 
             v8 = v29;
@@ -351,16 +351,16 @@ LABEL_35:
       while (v7);
     }
 
-    v26 = v28->_conversationCache;
-    v28->_conversationCache = v30;
+    v26 = selfCopy->_conversationCache;
+    selfCopy->_conversationCache = v30;
 
-    conversationCache = v28->_conversationCache;
+    conversationCache = selfCopy->_conversationCache;
   }
 
   return conversationCache;
 }
 
-- (void)chatStateChanged:(id)a3
+- (void)chatStateChanged:(id)changed
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__refreshConversationCache object:0];
 
@@ -369,15 +369,15 @@ LABEL_35:
 
 - (void)updateShortcutItems
 {
-  v2 = self;
+  selfCopy = self;
   CKSpringBoardActionManager.updateShortcutItems()();
 }
 
-- (void)updateShortcutItemsWithConversations:(id)a3
+- (void)updateShortcutItemsWithConversations:(id)conversations
 {
   sub_1902188FC(0, &qword_1EAD466B0);
   v4 = sub_190D57180();
-  v5 = self;
+  selfCopy = self;
   _sSo26CKSpringBoardActionManagerC7ChatKitE19updateShortcutItems13conversationsySaySo14CKConversationCG_tF_0(v4);
 }
 

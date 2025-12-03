@@ -6,30 +6,30 @@
 
 - (double)desiredCLAccuracy
 {
-  v2 = [(SAGetRequestOrigin *)self desiredAccuracy];
-  if ([v2 isEqualToString:SAGetRequestOriginAccuracyBestValue])
+  desiredAccuracy = [(SAGetRequestOrigin *)self desiredAccuracy];
+  if ([desiredAccuracy isEqualToString:SAGetRequestOriginAccuracyBestValue])
   {
     v3 = &kCLLocationAccuracyBest;
   }
 
-  else if ([v2 isEqualToString:SAGetRequestOriginAccuracyNearestTenMetersValue])
+  else if ([desiredAccuracy isEqualToString:SAGetRequestOriginAccuracyNearestTenMetersValue])
   {
     v3 = &kCLLocationAccuracyNearestTenMeters;
   }
 
-  else if ([v2 isEqualToString:SAGetRequestOriginAccuracyHundredMetersValue])
+  else if ([desiredAccuracy isEqualToString:SAGetRequestOriginAccuracyHundredMetersValue])
   {
     v3 = &kCLLocationAccuracyHundredMeters;
   }
 
-  else if ([v2 isEqualToString:SAGetRequestOriginAccuracyKilometerValue])
+  else if ([desiredAccuracy isEqualToString:SAGetRequestOriginAccuracyKilometerValue])
   {
     v3 = &kCLLocationAccuracyKilometer;
   }
 
   else
   {
-    [v2 isEqualToString:SAGetRequestOriginAccuracyThreeKilometersValue];
+    [desiredAccuracy isEqualToString:SAGetRequestOriginAccuracyThreeKilometersValue];
     v3 = &kCLLocationAccuracyThreeKilometers;
   }
 

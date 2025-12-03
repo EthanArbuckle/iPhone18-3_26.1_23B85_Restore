@@ -1,48 +1,48 @@
 @interface SAWithYouDetector
-+ (id)convertSAWithYouLongScanContextToString:(unint64_t)a3;
-+ (id)convertSAWithYouStatusToString:(unint64_t)a3;
-- (BOOL)_deviceIsWatch:(id)a3;
-- (BOOL)_enoughTimeHasPassedSinceInitializationToMarkNotWithYouForDeviceUUID:(id)a3;
++ (id)convertSAWithYouLongScanContextToString:(unint64_t)string;
++ (id)convertSAWithYouStatusToString:(unint64_t)string;
+- (BOOL)_deviceIsWatch:(id)watch;
+- (BOOL)_enoughTimeHasPassedSinceInitializationToMarkNotWithYouForDeviceUUID:(id)d;
 - (BOOL)_isOnlyMonitoringLeashOnlyDevices;
-- (BOOL)_isRecentEnoughAdvertisement:(id)a3 forCurrentDate:(id)a4;
-- (BOOL)_isStatusBitSetForRelatedDeviceWithShiftIndex:(unint64_t)a3 fromAdvertisement:(id)a4;
+- (BOOL)_isRecentEnoughAdvertisement:(id)advertisement forCurrentDate:(id)date;
+- (BOOL)_isStatusBitSetForRelatedDeviceWithShiftIndex:(unint64_t)index fromAdvertisement:(id)advertisement;
 - (BOOL)allRelevantDevicesToFindAreFound;
 - (BOOL)allSAEnabledDevicesAreFound;
-- (BOOL)isExtraDeviceFound:(id)a3 onDate:(id)a4;
+- (BOOL)isExtraDeviceFound:(id)found onDate:(id)date;
 - (BOOL)isPeriodicScansAllowed;
 - (SABluetoothScanRequestProtocol)bluetoothScanner;
 - (SALocationRequestProtocol)locationRequester;
-- (SAWithYouDetector)initWithBluetoothScanner:(id)a3 locationRequester:(id)a4 deviceRecord:(id)a5 clock:(id)a6 analytics:(id)a7;
-- (double)_maxAgeOfWithYouAdvertisementForDeviceUUID:(id)a3;
-- (unint64_t)_finalizeToBeVerifiedStatus:(unint64_t)a3;
-- (void)_deviceWithUUID:(id)a3 isWithYouDuringLongScanOnAdvertisement:(id)a4;
-- (void)_notifyAllClientsOfWithYouStatusUpdate:(unint64_t)a3 forDeviceWithUUID:(id)a4;
-- (void)_scheduleNextAlarmForScanAfterDate:(id)a3;
-- (void)_updateAllWithYouStatusOnScanEndedEvent:(id)a3;
-- (void)_updateLastWithYouDateAndLocation:(id)a3 forCurrentDate:(id)a4;
-- (void)_updateWithYouStatusIfNecessaryOnAdvertisement:(id)a3;
-- (void)_updateWithYouStatusIfNecessaryOnConnectionEvent:(id)a3;
-- (void)_updateWithYouStatusOfRelatedDevices:(id)a3;
-- (void)_updateWithYouStatusOnAdvBufferEmptyEvent:(id)a3;
-- (void)didChangeTravelTypeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5;
+- (SAWithYouDetector)initWithBluetoothScanner:(id)scanner locationRequester:(id)requester deviceRecord:(id)record clock:(id)clock analytics:(id)analytics;
+- (double)_maxAgeOfWithYouAdvertisementForDeviceUUID:(id)d;
+- (unint64_t)_finalizeToBeVerifiedStatus:(unint64_t)status;
+- (void)_deviceWithUUID:(id)d isWithYouDuringLongScanOnAdvertisement:(id)advertisement;
+- (void)_notifyAllClientsOfWithYouStatusUpdate:(unint64_t)update forDeviceWithUUID:(id)d;
+- (void)_scheduleNextAlarmForScanAfterDate:(id)date;
+- (void)_updateAllWithYouStatusOnScanEndedEvent:(id)event;
+- (void)_updateLastWithYouDateAndLocation:(id)location forCurrentDate:(id)date;
+- (void)_updateWithYouStatusIfNecessaryOnAdvertisement:(id)advertisement;
+- (void)_updateWithYouStatusIfNecessaryOnConnectionEvent:(id)event;
+- (void)_updateWithYouStatusOfRelatedDevices:(id)devices;
+- (void)_updateWithYouStatusOnAdvBufferEmptyEvent:(id)event;
+- (void)didChangeTravelTypeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints;
 - (void)forceUpdateWithYouStatus;
-- (void)forceUpdateWithYouStatusToFindDevices:(id)a3 withContext:(unint64_t)a4;
-- (void)ingestTAEvent:(id)a3;
+- (void)forceUpdateWithYouStatusToFindDevices:(id)devices withContext:(unint64_t)context;
+- (void)ingestTAEvent:(id)event;
 - (void)requestScanIfNeeded;
 - (void)resetAllWithYouStatusAndScanStates;
 - (void)resumePeriodicScan;
-- (void)updateExtraDeviceInformation:(id)a3;
+- (void)updateExtraDeviceInformation:(id)information;
 @end
 
 @implementation SAWithYouDetector
 
-- (SAWithYouDetector)initWithBluetoothScanner:(id)a3 locationRequester:(id)a4 deviceRecord:(id)a5 clock:(id)a6 analytics:(id)a7
+- (SAWithYouDetector)initWithBluetoothScanner:(id)scanner locationRequester:(id)requester deviceRecord:(id)record clock:(id)clock analytics:(id)analytics
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  scannerCopy = scanner;
+  requesterCopy = requester;
+  recordCopy = record;
+  clockCopy = clock;
+  analyticsCopy = analytics;
   v39.receiver = self;
   v39.super_class = SAWithYouDetector;
   v17 = [(SAWithYouDetector *)&v39 init];
@@ -53,25 +53,25 @@
   }
 
   v19 = 0;
-  if (v14 && v12 && v15)
+  if (recordCopy && scannerCopy && clockCopy)
   {
-    [(SAWithYouDetector *)v17 setClock:v15];
-    [(SAWithYouDetector *)v18 setBluetoothScanner:v12];
-    [(SAWithYouDetector *)v18 setLocationRequester:v13];
+    [(SAWithYouDetector *)v17 setClock:clockCopy];
+    [(SAWithYouDetector *)v18 setBluetoothScanner:scannerCopy];
+    [(SAWithYouDetector *)v18 setLocationRequester:requesterCopy];
     v20 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     [(SAWithYouDetector *)v18 setClients:v20];
 
-    [(SAWithYouDetector *)v18 setDeviceRecord:v14];
+    [(SAWithYouDetector *)v18 setDeviceRecord:recordCopy];
     [(SAWithYouDetector *)v18 setLongScanIsOngoing:0];
     [(SAWithYouDetector *)v18 setRequestedShortScan:0];
     [(SAWithYouDetector *)v18 setLastStartOfScan:0];
     [(SAWithYouDetector *)v18 setLastEndOfScan:0];
     v21 = objc_alloc(MEMORY[0x277CBEAA8]);
-    v22 = [(SAWithYouDetector *)v18 clock];
-    v23 = [v22 getCurrentTime];
-    v24 = [v21 initWithTimeInterval:v23 sinceDate:30.0];
-    [v15 setupAlarmFireAt:v24 forClient:v18];
-    v25 = v38 = v16;
+    clock = [(SAWithYouDetector *)v18 clock];
+    getCurrentTime = [clock getCurrentTime];
+    v24 = [v21 initWithTimeInterval:getCurrentTime sinceDate:30.0];
+    [clockCopy setupAlarmFireAt:v24 forClient:v18];
+    v25 = v38 = analyticsCopy;
     [(SAWithYouDetector *)v18 setNextScheduledAlarm:v25];
 
     [(SAWithYouDetector *)v18 setLastLongScanRequest:0];
@@ -81,12 +81,12 @@
     nextOpportunisticScanDate = v18->_nextOpportunisticScanDate;
     v18->_nextOpportunisticScanDate = 0;
 
-    v27 = [(SAWithYouDetector *)v18 clock];
-    v28 = [v27 getCurrentTime];
+    clock2 = [(SAWithYouDetector *)v18 clock];
+    getCurrentTime2 = [clock2 getCurrentTime];
     initializationTime = v18->_initializationTime;
-    v18->_initializationTime = v28;
+    v18->_initializationTime = getCurrentTime2;
 
-    v16 = v38;
+    analyticsCopy = v38;
     v30 = objc_alloc_init(MEMORY[0x277CBEB58]);
     relevantDevicesToFindDuringLongScan = v18->_relevantDevicesToFindDuringLongScan;
     v18->_relevantDevicesToFindDuringLongScan = v30;
@@ -100,7 +100,7 @@
     v18->_lastRelevantDeviceFoundTime = 0;
 
     v18->_lastLongScanContext = 0;
-    objc_storeStrong(&v18->_analytics, a7);
+    objc_storeStrong(&v18->_analytics, analytics);
     v18->_extraFoundHELECount = 0;
     v18->_extraFoundNonHELECount = 0;
     lastExtraHELEFoundTime = v18->_lastExtraHELEFoundTime;
@@ -123,10 +123,10 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-  v4 = [v3 allObjects];
+  relevantDevicesToFindDuringLongScan = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+  allObjects = [relevantDevicesToFindDuringLongScan allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v26 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -138,12 +138,12 @@ LABEL_6:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+        v11 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:v9];
 
         if (!v11)
         {
@@ -167,7 +167,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v26 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v16 objects:v26 count:16];
       if (v6)
       {
         continue;
@@ -200,10 +200,10 @@ LABEL_15:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(SAWithYouDetector *)self deviceRecord];
-  v4 = [v3 getAllUUIDs];
+  deviceRecord = [(SAWithYouDetector *)self deviceRecord];
+  getAllUUIDs = [deviceRecord getAllUUIDs];
 
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v30 count:16];
+  v5 = [getAllUUIDs countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,17 +215,17 @@ LABEL_15:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(getAllUUIDs);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
-        v10 = [(SAWithYouDetector *)self deviceRecord];
-        v11 = [v10 getSADevice:v9];
+        deviceRecord2 = [(SAWithYouDetector *)self deviceRecord];
+        v11 = [deviceRecord2 getSADevice:v9];
         if (v11)
         {
           v12 = v11;
-          v13 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-          v14 = [v13 objectForKeyedSubscript:v9];
+          foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+          v14 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:v9];
 
           if (!v14)
           {
@@ -254,7 +254,7 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v30 count:16];
+      v6 = [getAllUUIDs countByEnumeratingWithState:&v20 objects:v30 count:16];
       if (v6)
       {
         continue;
@@ -287,10 +287,10 @@ LABEL_18:
   {
     [(SAWithYouDetector *)self setLongScanIsOngoing:1];
     [(SAWithYouDetector *)self setRequestedShortScan:1];
-    v3 = [(SAWithYouDetector *)self _isOnlyMonitoringLeashOnlyDevices];
+    _isOnlyMonitoringLeashOnlyDevices = [(SAWithYouDetector *)self _isOnlyMonitoringLeashOnlyDevices];
     v4 = TASALog;
     v5 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (_isOnlyMonitoringLeashOnlyDevices)
     {
       if (v5)
       {
@@ -302,9 +302,9 @@ LABEL_18:
       }
 
       v6 = objc_alloc(MEMORY[0x277D73428]);
-      v7 = [(SAWithYouDetector *)self clock];
-      v8 = [v7 getCurrentTime];
-      WeakRetained = [v6 initWithState:1 date:v8];
+      clock = [(SAWithYouDetector *)self clock];
+      getCurrentTime = [clock getCurrentTime];
+      WeakRetained = [v6 initWithState:1 date:getCurrentTime];
 
       [(SAWithYouDetector *)self _updateAllWithYouStatusOnScanEndedEvent:WeakRetained];
     }
@@ -328,40 +328,40 @@ LABEL_18:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceUpdateWithYouStatusToFindDevices:(id)a3 withContext:(unint64_t)a4
+- (void)forceUpdateWithYouStatusToFindDevices:(id)devices withContext:(unint64_t)context
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  devicesCopy = devices;
   v7 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
     v8 = v7;
-    v9 = [SAWithYouDetector convertSAWithYouLongScanContextToString:a4];
+    v9 = [SAWithYouDetector convertSAWithYouLongScanContextToString:context];
     buf = 68289539;
     v39 = 2082;
     v40 = "";
     v41 = 2113;
-    v42 = v6;
+    v42 = devicesCopy;
     v43 = 2081;
-    v44 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     _os_log_impl(&dword_2656EA000, v8, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#sa #withyou force update to find devices, device list:%{private}@, context:%{private}s}", &buf, 0x26u);
   }
 
-  [(SAWithYouDetector *)self setLastLongScanContext:a4];
+  [(SAWithYouDetector *)self setLastLongScanContext:context];
   if ([(SAWithYouDetector *)self _isOnlyMonitoringLeashOnlyDevices])
   {
     goto LABEL_4;
   }
 
   [(SAWithYouDetector *)self forceUpdateWithYouStatusWithShortScan:1];
-  v11 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-  [v11 addObjectsFromArray:v6];
+  relevantDevicesToFindDuringLongScan = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+  [relevantDevicesToFindDuringLongScan addObjectsFromArray:devicesCopy];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = v6;
+  v12 = devicesCopy;
   v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v13)
   {
@@ -379,20 +379,20 @@ LABEL_18:
         v17 = *(*(&v33 + 1) + 8 * i);
         if (([(SADeviceRecord *)self->_deviceRecord getConnectionState:v17, v33]& 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          v18 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-          [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v17 forCurrentDate:v18];
+          getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+          [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v17 forCurrentDate:getCurrentTime];
 
-          v19 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-          v20 = [v19 objectForKeyedSubscript:v17];
+          foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+          v20 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:v17];
 
           if (!v20)
           {
-            v21 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-            v22 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-            [v22 setObject:v21 forKeyedSubscript:v17];
+            getCurrentTime2 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+            foundDevicesDuringCurrentScan2 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+            [foundDevicesDuringCurrentScan2 setObject:getCurrentTime2 forKeyedSubscript:v17];
 
-            v23 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-            [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:v23];
+            getCurrentTime3 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+            [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:getCurrentTime3];
           }
         }
       }
@@ -407,15 +407,15 @@ LABEL_18:
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
     v25 = v24;
-    v26 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-    v27 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+    relevantDevicesToFindDuringLongScan2 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+    foundDevicesDuringCurrentScan3 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
     buf = 68289539;
     v39 = 2082;
     v40 = "";
     v41 = 2113;
-    v42 = v26;
+    v42 = relevantDevicesToFindDuringLongScan2;
     v43 = 2113;
-    v44 = v27;
+    uTF8String = foundDevicesDuringCurrentScan3;
     _os_log_impl(&dword_2656EA000, v25, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#sa #withyou devices to find, devices to find:%{private}@, devices found:%{private}@}", &buf, 0x26u);
   }
 
@@ -438,8 +438,8 @@ LABEL_4:
 
   if ([(SAWithYouDetector *)self isFindingRelevantDevices]&& [(SAWithYouDetector *)self longScanIsOngoing])
   {
-    v28 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-    [v28 removeAllObjects];
+    relevantDevicesToFindDuringLongScan3 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+    [relevantDevicesToFindDuringLongScan3 removeAllObjects];
 
     v29 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -450,13 +450,13 @@ LABEL_4:
       _os_log_impl(&dword_2656EA000, v29, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou no more tracked devices to find while long scan is ongoing, requesting to stop long aggressive scan}", &buf, 0x12u);
     }
 
-    v30 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-    [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:v30];
+    getCurrentTime4 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:getCurrentTime4];
 
     [(SAWithYouDetector *)self setIsFindingRelevantDevices:0];
     [(SAWithYouDetector *)self setLongScanIsOngoing:0];
-    v31 = [(SAWithYouDetector *)self bluetoothScanner];
-    [v31 stopLongAggressiveScan];
+    bluetoothScanner = [(SAWithYouDetector *)self bluetoothScanner];
+    [bluetoothScanner stopLongAggressiveScan];
   }
 
 LABEL_5:
@@ -533,14 +533,14 @@ LABEL_12:
 
 - (BOOL)isPeriodicScansAllowed
 {
-  v3 = [(SAWithYouDetector *)self isNotifyWhileTravelingEnabled];
-  if (v3)
+  isNotifyWhileTravelingEnabled = [(SAWithYouDetector *)self isNotifyWhileTravelingEnabled];
+  if (isNotifyWhileTravelingEnabled)
   {
 
-    LOBYTE(v3) = [(SAWithYouDetector *)self isPeriodicScansNeeded];
+    LOBYTE(isNotifyWhileTravelingEnabled) = [(SAWithYouDetector *)self isPeriodicScansNeeded];
   }
 
-  return v3;
+  return isNotifyWhileTravelingEnabled;
 }
 
 - (void)resumePeriodicScan
@@ -550,12 +550,12 @@ LABEL_12:
   [(SAWithYouDetector *)self requestScanIfNeeded];
 }
 
-- (void)_notifyAllClientsOfWithYouStatusUpdate:(unint64_t)a3 forDeviceWithUUID:(id)a4
+- (void)_notifyAllClientsOfWithYouStatusUpdate:(unint64_t)update forDeviceWithUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SAWithYouDetector *)self statusForDeviceWithUUID:v6];
-  [(SADeviceRecord *)self->_deviceRecord updatedWithYouStatusFrom:v7 to:a3 forDeviceWithUUID:v6];
+  dCopy = d;
+  v7 = [(SAWithYouDetector *)self statusForDeviceWithUUID:dCopy];
+  [(SADeviceRecord *)self->_deviceRecord updatedWithYouStatusFrom:v7 to:update forDeviceWithUUID:dCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -576,7 +576,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) updatedWithYouStatusFrom:v7 to:a3 forDeviceWithUUID:{v6, v14}];
+        [*(*(&v14 + 1) + 8 * v12++) updatedWithYouStatusFrom:v7 to:update forDeviceWithUUID:{dCopy, v14}];
       }
 
       while (v10 != v12);
@@ -589,29 +589,29 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithYouStatusIfNecessaryOnConnectionEvent:(id)a3
+- (void)_updateWithYouStatusIfNecessaryOnConnectionEvent:(id)event
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   deviceRecord = self->_deviceRecord;
-  v6 = [v4 identifier];
-  v7 = [(SADeviceRecord *)deviceRecord getSADevice:v6];
+  identifier = [eventCopy identifier];
+  v7 = [(SADeviceRecord *)deviceRecord getSADevice:identifier];
 
   if (v7)
   {
-    v8 = [v4 identifier];
-    v9 = [(SAWithYouDetector *)self statusForDeviceWithUUID:v8];
+    identifier2 = [eventCopy identifier];
+    v9 = [(SAWithYouDetector *)self statusForDeviceWithUUID:identifier2];
 
-    v10 = [v4 state];
-    if ((v10 - 2) >= 2)
+    state = [eventCopy state];
+    if ((state - 2) >= 2)
     {
-      if (v10 != 1)
+      if (state != 1)
       {
         goto LABEL_12;
       }
 
-      v14 = [v4 identifier];
-      v15 = [(SAWithYouDetector *)self _deviceIsWatch:v14];
+      identifier3 = [eventCopy identifier];
+      v15 = [(SAWithYouDetector *)self _deviceIsWatch:identifier3];
 
       if (v15)
       {
@@ -626,9 +626,9 @@ LABEL_12:
 
     else
     {
-      v11 = [v4 identifier];
-      v12 = [v4 date];
-      [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v11 forCurrentDate:v12];
+      identifier4 = [eventCopy identifier];
+      date = [eventCopy date];
+      [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:identifier4 forCurrentDate:date];
 
       v13 = 1;
     }
@@ -639,7 +639,7 @@ LABEL_12:
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v4 identifier];
+        identifier5 = [eventCopy identifier];
         v19 = [SAWithYouDetector convertSAWithYouStatusToString:v9];
         v20 = [SAWithYouDetector convertSAWithYouStatusToString:v13];
         v23[0] = 68289795;
@@ -647,7 +647,7 @@ LABEL_12:
         v24 = 2082;
         v25 = "";
         v26 = 2113;
-        v27 = v18;
+        v27 = identifier5;
         v28 = 2113;
         v29 = v19;
         v30 = 2113;
@@ -655,8 +655,8 @@ LABEL_12:
         _os_log_impl(&dword_2656EA000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou status updated connection state changed, uuid:%{private}@, oldStatus:%{private}@, newStatus:%{private}@}", v23, 0x30u);
       }
 
-      v21 = [v4 identifier];
-      [(SAWithYouDetector *)self _notifyAllClientsOfWithYouStatusUpdate:v13 forDeviceWithUUID:v21];
+      identifier6 = [eventCopy identifier];
+      [(SAWithYouDetector *)self _notifyAllClientsOfWithYouStatusUpdate:v13 forDeviceWithUUID:identifier6];
     }
   }
 
@@ -665,13 +665,13 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (double)_maxAgeOfWithYouAdvertisementForDeviceUUID:(id)a3
+- (double)_maxAgeOfWithYouAdvertisementForDeviceUUID:(id)d
 {
   deviceRecord = self->_deviceRecord;
-  v5 = a3;
-  v6 = [(SADeviceRecord *)deviceRecord getSADevice:v5];
-  v7 = [v6 deviceType];
-  v8 = [(SADeviceRecord *)self->_deviceRecord getMonitoringSessionState:v5];
+  dCopy = d;
+  v6 = [(SADeviceRecord *)deviceRecord getSADevice:dCopy];
+  deviceType = [v6 deviceType];
+  v8 = [(SADeviceRecord *)self->_deviceRecord getMonitoringSessionState:dCopy];
 
   if (![v6 isAppleAudioAccessory])
   {
@@ -680,7 +680,7 @@ LABEL_12:
 
   if (v8 > 4 || ((1 << v8) & 0x1A) == 0)
   {
-    if (v7 == 16)
+    if (deviceType == 16)
     {
       v10 = 120.0;
       goto LABEL_10;
@@ -697,61 +697,61 @@ LABEL_10:
   return v10;
 }
 
-- (void)_updateLastWithYouDateAndLocation:(id)a3 forCurrentDate:(id)a4
+- (void)_updateLastWithYouDateAndLocation:(id)location forCurrentDate:(id)date
 {
   deviceRecord = self->_deviceRecord;
-  v7 = a3;
-  [(SADeviceRecord *)deviceRecord updateLastWithYouDate:a4 forDeviceWithUUID:v7];
-  [(SADeviceRecord *)self->_deviceRecord updateLastWithYouLocation:0 forDeviceWithUUID:v7];
+  locationCopy = location;
+  [(SADeviceRecord *)deviceRecord updateLastWithYouDate:date forDeviceWithUUID:locationCopy];
+  [(SADeviceRecord *)self->_deviceRecord updateLastWithYouLocation:0 forDeviceWithUUID:locationCopy];
 }
 
-- (BOOL)_isRecentEnoughAdvertisement:(id)a3 forCurrentDate:(id)a4
+- (BOOL)_isRecentEnoughAdvertisement:(id)advertisement forCurrentDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 scanDate];
-  [v6 timeIntervalSinceDate:v8];
+  dateCopy = date;
+  advertisementCopy = advertisement;
+  scanDate = [advertisementCopy scanDate];
+  [dateCopy timeIntervalSinceDate:scanDate];
   v10 = v9;
 
-  v11 = [v7 uuid];
+  uuid = [advertisementCopy uuid];
 
-  [(SAWithYouDetector *)self _maxAgeOfWithYouAdvertisementForDeviceUUID:v11];
-  LOBYTE(v7) = v10 <= v12;
+  [(SAWithYouDetector *)self _maxAgeOfWithYouAdvertisementForDeviceUUID:uuid];
+  LOBYTE(advertisementCopy) = v10 <= v12;
 
-  return v7;
+  return advertisementCopy;
 }
 
-- (BOOL)isExtraDeviceFound:(id)a3 onDate:(id)a4
+- (BOOL)isExtraDeviceFound:(id)found onDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[SAWithYouDetector isFindingRelevantDevices](self, "isFindingRelevantDevices") || (-[SAWithYouDetector relevantDevicesToFindDuringLongScan](self, "relevantDevicesToFindDuringLongScan"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v6], v8, (v9 & 1) != 0))
+  foundCopy = found;
+  dateCopy = date;
+  if (-[SAWithYouDetector isFindingRelevantDevices](self, "isFindingRelevantDevices") || (-[SAWithYouDetector relevantDevicesToFindDuringLongScan](self, "relevantDevicesToFindDuringLongScan"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:foundCopy], v8, (v9 & 1) != 0))
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [(SAWithYouDetector *)self lastStartOfScan];
-    v12 = [v11 dateByAddingTimeInterval:7.0];
+    lastStartOfScan = [(SAWithYouDetector *)self lastStartOfScan];
+    v12 = [lastStartOfScan dateByAddingTimeInterval:7.0];
 
-    v13 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
+    lastRelevantDeviceFoundTime = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
 
-    if (v13)
+    if (lastRelevantDeviceFoundTime)
     {
-      v14 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
-      v15 = [v12 laterDate:v14];
+      lastRelevantDeviceFoundTime2 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
+      v15 = [v12 laterDate:lastRelevantDeviceFoundTime2];
 
       v12 = v15;
     }
 
-    if ([v12 compare:v7] == -1)
+    if ([v12 compare:dateCopy] == -1)
     {
-      v16 = [(SAWithYouDetector *)self deviceRecord];
-      v17 = [v16 getMonitoringSessionState:v6];
+      deviceRecord = [(SAWithYouDetector *)self deviceRecord];
+      v17 = [deviceRecord getMonitoringSessionState:foundCopy];
 
-      v18 = [(SAWithYouDetector *)self deviceRecord];
-      v19 = [v18 getScenarioClass:v6];
+      deviceRecord2 = [(SAWithYouDetector *)self deviceRecord];
+      v19 = [deviceRecord2 getScenarioClass:foundCopy];
 
       v10 = v17 == 2 && (v19 & 0xFFFFFFFFFFFFFFFELL) == 2;
     }
@@ -765,54 +765,54 @@ LABEL_10:
   return v10;
 }
 
-- (void)updateExtraDeviceInformation:(id)a3
+- (void)updateExtraDeviceInformation:(id)information
 {
-  v11 = a3;
-  v4 = [(SAWithYouDetector *)self deviceRecord];
-  v5 = [v4 getSADevice:v11];
-  v6 = [v5 deviceType];
+  informationCopy = information;
+  deviceRecord = [(SAWithYouDetector *)self deviceRecord];
+  v5 = [deviceRecord getSADevice:informationCopy];
+  deviceType = [v5 deviceType];
 
-  if (v6 == 16)
+  if (deviceType == 16)
   {
     [(SAWithYouDetector *)self setExtraFoundHELECount:[(SAWithYouDetector *)self extraFoundHELECount]+ 1];
-    v7 = [(SAWithYouDetector *)self lastExtraHELEFoundTime];
-    v8 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-    v9 = [v8 objectForKeyedSubscript:v11];
-    v10 = [v7 laterDate:v9];
+    lastExtraHELEFoundTime = [(SAWithYouDetector *)self lastExtraHELEFoundTime];
+    foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+    v9 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:informationCopy];
+    v10 = [lastExtraHELEFoundTime laterDate:v9];
     [(SAWithYouDetector *)self setLastExtraHELEFoundTime:v10];
   }
 
   else
   {
     [(SAWithYouDetector *)self setExtraFoundNonHELECount:[(SAWithYouDetector *)self extraFoundNonHELECount]+ 1];
-    v7 = [(SAWithYouDetector *)self lastExtraNonHELEFoundTime];
-    v8 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-    v9 = [v8 objectForKeyedSubscript:v11];
-    v10 = [v7 laterDate:v9];
+    lastExtraHELEFoundTime = [(SAWithYouDetector *)self lastExtraNonHELEFoundTime];
+    foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+    v9 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:informationCopy];
+    v10 = [lastExtraHELEFoundTime laterDate:v9];
     [(SAWithYouDetector *)self setLastExtraNonHELEFoundTime:v10];
   }
 }
 
-- (void)_deviceWithUUID:(id)a3 isWithYouDuringLongScanOnAdvertisement:(id)a4
+- (void)_deviceWithUUID:(id)d isWithYouDuringLongScanOnAdvertisement:(id)advertisement
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  advertisementCopy = advertisement;
+  foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+  v9 = [foundDevicesDuringCurrentScan objectForKeyedSubscript:dCopy];
 
   if (!v9)
   {
-    v10 = [(SAWithYouDetector *)self lastStartOfScan];
-    if (!v10)
+    lastStartOfScan = [(SAWithYouDetector *)self lastStartOfScan];
+    if (!lastStartOfScan)
     {
       goto LABEL_4;
     }
 
-    v11 = v10;
-    v12 = [v7 getDate];
-    v13 = [(SAWithYouDetector *)self lastStartOfScan];
-    [v12 timeIntervalSinceDate:v13];
+    v11 = lastStartOfScan;
+    getDate = [advertisementCopy getDate];
+    lastStartOfScan2 = [(SAWithYouDetector *)self lastStartOfScan];
+    [getDate timeIntervalSinceDate:lastStartOfScan2];
     v15 = v14;
 
     if (v15 >= 0.0)
@@ -826,22 +826,22 @@ LABEL_4:
         v36 = 2082;
         v37 = "";
         v38 = 2113;
-        v39 = v6;
+        v39 = dCopy;
         _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#sa #withyou found new device, uuid:%{private}@}", &v34, 0x1Cu);
       }
 
-      v17 = [v7 getDate];
-      v18 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-      [v18 setObject:v17 forKeyedSubscript:v6];
+      getDate2 = [advertisementCopy getDate];
+      foundDevicesDuringCurrentScan2 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+      [foundDevicesDuringCurrentScan2 setObject:getDate2 forKeyedSubscript:dCopy];
 
-      v19 = [v7 uuid];
-      v20 = [v7 getDate];
-      v21 = [(SAWithYouDetector *)self isExtraDeviceFound:v19 onDate:v20];
+      uuid = [advertisementCopy uuid];
+      getDate3 = [advertisementCopy getDate];
+      v21 = [(SAWithYouDetector *)self isExtraDeviceFound:uuid onDate:getDate3];
 
       if (v21)
       {
-        v22 = [v7 uuid];
-        [(SAWithYouDetector *)self updateExtraDeviceInformation:v22];
+        uuid2 = [advertisementCopy uuid];
+        [(SAWithYouDetector *)self updateExtraDeviceInformation:uuid2];
       }
     }
 
@@ -849,24 +849,24 @@ LABEL_4:
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
     {
       v24 = v23;
-      v25 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-      v26 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+      relevantDevicesToFindDuringLongScan = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+      foundDevicesDuringCurrentScan3 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
       v34 = 68289539;
       v35 = 0;
       v36 = 2082;
       v37 = "";
       v38 = 2113;
-      v39 = v25;
+      v39 = relevantDevicesToFindDuringLongScan;
       v40 = 2113;
-      v41 = v26;
+      v41 = foundDevicesDuringCurrentScan3;
       _os_log_impl(&dword_2656EA000, v24, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#sa #withyou devices to find, devices to find:%{private}@, devices found:%{private}@}", &v34, 0x26u);
     }
 
-    v27 = [(SAWithYouDetector *)self allSAEnabledDevicesAreFound];
+    allSAEnabledDevicesAreFound = [(SAWithYouDetector *)self allSAEnabledDevicesAreFound];
     if ([(SAWithYouDetector *)self isFindingRelevantDevices]&& [(SAWithYouDetector *)self allRelevantDevicesToFindAreFound])
     {
-      v28 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-      [v28 removeAllObjects];
+      relevantDevicesToFindDuringLongScan2 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+      [relevantDevicesToFindDuringLongScan2 removeAllObjects];
 
       v29 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -878,14 +878,14 @@ LABEL_4:
         _os_log_impl(&dword_2656EA000, v29, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou no more devices to find while long scan is ongoing, recording time of last device found for metrics}", &v34, 0x12u);
       }
 
-      v30 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:v30];
+      getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:getCurrentTime];
 
       [(SAWithYouDetector *)self setIsFindingRelevantDevices:0];
       [(SAWithYouDetector *)self setLongScanIsOngoing:0];
     }
 
-    else if (!v27)
+    else if (!allSAEnabledDevicesAreFound)
     {
       goto LABEL_19;
     }
@@ -901,8 +901,8 @@ LABEL_4:
     }
 
     [(SAWithYouDetector *)self setLongScanIsOngoing:0];
-    v32 = [(SAWithYouDetector *)self bluetoothScanner];
-    [v32 stopLongAggressiveScan];
+    bluetoothScanner = [(SAWithYouDetector *)self bluetoothScanner];
+    [bluetoothScanner stopLongAggressiveScan];
   }
 
 LABEL_19:
@@ -910,40 +910,40 @@ LABEL_19:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithYouStatusIfNecessaryOnAdvertisement:(id)a3
+- (void)_updateWithYouStatusIfNecessaryOnAdvertisement:(id)advertisement
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuid];
-  if (v5)
+  advertisementCopy = advertisement;
+  uuid = [advertisementCopy uuid];
+  if (uuid)
   {
-    v6 = v5;
+    v6 = uuid;
     deviceRecord = self->_deviceRecord;
-    v8 = [v4 uuid];
-    v9 = [(SADeviceRecord *)deviceRecord getSADevice:v8];
+    uuid2 = [advertisementCopy uuid];
+    v9 = [(SADeviceRecord *)deviceRecord getSADevice:uuid2];
 
     if (v9)
     {
-      v10 = [v4 uuid];
-      v11 = [v4 scanDate];
-      [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v10 forCurrentDate:v11];
+      uuid3 = [advertisementCopy uuid];
+      scanDate = [advertisementCopy scanDate];
+      [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:uuid3 forCurrentDate:scanDate];
 
-      v12 = [v4 uuid];
-      LOBYTE(v11) = [(SAWithYouDetector *)self _deviceIsWatch:v12];
+      uuid4 = [advertisementCopy uuid];
+      LOBYTE(scanDate) = [(SAWithYouDetector *)self _deviceIsWatch:uuid4];
 
-      if ((v11 & 1) == 0)
+      if ((scanDate & 1) == 0)
       {
-        v13 = [v4 uuid];
-        v14 = [(SAWithYouDetector *)self statusForDeviceWithUUID:v13];
+        uuid5 = [advertisementCopy uuid];
+        v14 = [(SAWithYouDetector *)self statusForDeviceWithUUID:uuid5];
 
-        v15 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        v16 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:v4 forCurrentDate:v15];
+        getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        v16 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:advertisementCopy forCurrentDate:getCurrentTime];
 
         v17 = v16;
         if ([(SAWithYouDetector *)self longScanIsOngoing]&& v16)
         {
-          v18 = [v4 uuid];
-          [(SAWithYouDetector *)self _deviceWithUUID:v18 isWithYouDuringLongScanOnAdvertisement:v4];
+          uuid6 = [advertisementCopy uuid];
+          [(SAWithYouDetector *)self _deviceWithUUID:uuid6 isWithYouDuringLongScanOnAdvertisement:advertisementCopy];
         }
 
         if (v17 && v14 != v17)
@@ -952,7 +952,7 @@ LABEL_19:
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
           {
             v20 = v19;
-            v21 = [v4 uuid];
+            uuid7 = [advertisementCopy uuid];
             v22 = [SAWithYouDetector convertSAWithYouStatusToString:v14];
             v23 = [SAWithYouDetector convertSAWithYouStatusToString:1];
             v26[0] = 68289795;
@@ -960,7 +960,7 @@ LABEL_19:
             v27 = 2082;
             v28 = "";
             v29 = 2113;
-            v30 = v21;
+            v30 = uuid7;
             v31 = 2113;
             v32 = v22;
             v33 = 2113;
@@ -968,11 +968,11 @@ LABEL_19:
             _os_log_impl(&dword_2656EA000, v20, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou status updated observed advertisement, uuid:%{private}@, oldStatus:%{private}@, newStatus:%{private}@}", v26, 0x30u);
           }
 
-          v24 = [v4 uuid];
-          [(SAWithYouDetector *)self _notifyAllClientsOfWithYouStatusUpdate:1 forDeviceWithUUID:v24];
+          uuid8 = [advertisementCopy uuid];
+          [(SAWithYouDetector *)self _notifyAllClientsOfWithYouStatusUpdate:1 forDeviceWithUUID:uuid8];
         }
 
-        [(SAWithYouDetector *)self _updateWithYouStatusOfRelatedDevices:v4];
+        [(SAWithYouDetector *)self _updateWithYouStatusOfRelatedDevices:advertisementCopy];
       }
     }
   }
@@ -980,13 +980,13 @@ LABEL_19:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithYouStatusOfRelatedDevices:(id)a3
+- (void)_updateWithYouStatusOfRelatedDevices:(id)devices
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   deviceRecord = self->_deviceRecord;
-  v6 = [v4 uuid];
-  v7 = [(SADeviceRecord *)deviceRecord getRelatedDevices:v6];
+  uuid = [devicesCopy uuid];
+  v7 = [(SADeviceRecord *)deviceRecord getRelatedDevices:uuid];
 
   if (v7)
   {
@@ -998,13 +998,13 @@ LABEL_19:
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_FAULT))
       {
         v30 = v29;
-        v31 = [v4 uuid];
+        uuid2 = [devicesCopy uuid];
         *buf = 68289539;
         v35 = 0;
         v36 = 2082;
         v37 = "";
         v38 = 2113;
-        v39 = v31;
+        v39 = uuid2;
         v40 = 2049;
         v41 = v10;
         _os_log_impl(&dword_2656EA000, v30, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#sa #withyou detected a device with more than maximum allowable related beacons, uuid:%{private}@, count:%{private}ld}", buf, 0x26u);
@@ -1019,31 +1019,31 @@ LABEL_19:
       do
       {
         v12 = [v7 objectAtIndexedSubscript:{v11, v33}];
-        v13 = [(SAWithYouDetector *)self deviceRecord];
-        v14 = [v4 uuid];
-        v15 = [v13 getSADevice:v14];
-        v16 = [v15 partIdentifier];
+        deviceRecord = [(SAWithYouDetector *)self deviceRecord];
+        uuid3 = [devicesCopy uuid];
+        v15 = [deviceRecord getSADevice:uuid3];
+        partIdentifier = [v15 partIdentifier];
 
-        v17 = [(SAWithYouDetector *)self deviceRecord];
-        v18 = [v17 getSADevice:v12];
-        v19 = [v18 partIdentifier];
+        deviceRecord2 = [(SAWithYouDetector *)self deviceRecord];
+        v18 = [deviceRecord2 getSADevice:v12];
+        partIdentifier2 = [v18 partIdentifier];
 
-        if ([(SAWithYouDetector *)self _isValidPartID:v16]&& [(SAWithYouDetector *)self _isValidPartID:v19]&& v19 != v16)
+        if ([(SAWithYouDetector *)self _isValidPartID:partIdentifier]&& [(SAWithYouDetector *)self _isValidPartID:partIdentifier2]&& partIdentifier2 != partIdentifier)
         {
-          v20 = v19 <= v16 ? v19 - v16 + 3 : v19 + ~v16;
-          if ([(SAWithYouDetector *)self _isStatusBitSetForRelatedDeviceWithShiftIndex:v20 fromAdvertisement:v4])
+          v20 = partIdentifier2 <= partIdentifier ? partIdentifier2 - partIdentifier + 3 : partIdentifier2 + ~partIdentifier;
+          if ([(SAWithYouDetector *)self _isStatusBitSetForRelatedDeviceWithShiftIndex:v20 fromAdvertisement:devicesCopy])
           {
-            v21 = [v4 scanDate];
-            [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v12 forCurrentDate:v21];
+            scanDate = [devicesCopy scanDate];
+            [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v12 forCurrentDate:scanDate];
 
             v22 = [(SAWithYouDetector *)self statusForDeviceWithUUID:v12];
-            v23 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-            v24 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:v4 forCurrentDate:v23];
+            getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+            v24 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:devicesCopy forCurrentDate:getCurrentTime];
 
-            [(SADeviceRecord *)self->_deviceRecord updateLatestAdvertisement:v4 forDeviceWithUUID:v12];
+            [(SADeviceRecord *)self->_deviceRecord updateLatestAdvertisement:devicesCopy forDeviceWithUUID:v12];
             if ([(SAWithYouDetector *)self longScanIsOngoing]&& v24)
             {
-              [(SAWithYouDetector *)self _deviceWithUUID:v12 isWithYouDuringLongScanOnAdvertisement:v4];
+              [(SAWithYouDetector *)self _deviceWithUUID:v12 isWithYouDuringLongScanOnAdvertisement:devicesCopy];
             }
 
             if (v24 && v22 != v24)
@@ -1082,15 +1082,15 @@ LABEL_19:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isStatusBitSetForRelatedDeviceWithShiftIndex:(unint64_t)a3 fromAdvertisement:(id)a4
+- (BOOL)_isStatusBitSetForRelatedDeviceWithShiftIndex:(unint64_t)index fromAdvertisement:(id)advertisement
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = v5;
-  if (a3 < 3)
+  advertisementCopy = advertisement;
+  v6 = advertisementCopy;
+  if (index < 3)
   {
-    v9 = dword_26571E588[a3];
-    v8 = ([v5 status] >> v9) & 1;
+    v9 = dword_26571E588[index];
+    v8 = ([advertisementCopy status] >> v9) & 1;
   }
 
   else
@@ -1112,31 +1112,31 @@ LABEL_19:
   return v8;
 }
 
-- (unint64_t)_finalizeToBeVerifiedStatus:(unint64_t)a3
+- (unint64_t)_finalizeToBeVerifiedStatus:(unint64_t)status
 {
-  v3 = 1;
-  if (a3 != 3)
+  statusCopy = 1;
+  if (status != 3)
   {
-    v3 = a3;
+    statusCopy = status;
   }
 
-  if (a3 == 4)
+  if (status == 4)
   {
     return 2;
   }
 
   else
   {
-    return v3;
+    return statusCopy;
   }
 }
 
-- (BOOL)_enoughTimeHasPassedSinceInitializationToMarkNotWithYouForDeviceUUID:(id)a3
+- (BOOL)_enoughTimeHasPassedSinceInitializationToMarkNotWithYouForDeviceUUID:(id)d
 {
   deviceRecord = self->_deviceRecord;
-  v5 = a3;
-  v6 = [(SADeviceRecord *)deviceRecord getSADevice:v5];
-  v7 = [(SADeviceRecord *)self->_deviceRecord getMonitoringSessionState:v5];
+  dCopy = d;
+  v6 = [(SADeviceRecord *)deviceRecord getSADevice:dCopy];
+  v7 = [(SADeviceRecord *)self->_deviceRecord getMonitoringSessionState:dCopy];
 
   if (![v6 isAppleAudioAccessory])
   {
@@ -1158,30 +1158,30 @@ LABEL_10:
 
   v9 = 360.0;
 LABEL_7:
-  v10 = [(SAWithYouDetector *)self clock];
-  v11 = [v10 getCurrentTime];
-  v12 = [(SAWithYouDetector *)self initializationTime];
-  [v11 timeIntervalSinceDate:v12];
+  clock = [(SAWithYouDetector *)self clock];
+  getCurrentTime = [clock getCurrentTime];
+  initializationTime = [(SAWithYouDetector *)self initializationTime];
+  [getCurrentTime timeIntervalSinceDate:initializationTime];
   v14 = v13 >= v9;
 
 LABEL_11:
   return v14;
 }
 
-- (void)_updateAllWithYouStatusOnScanEndedEvent:(id)a3
+- (void)_updateAllWithYouStatusOnScanEndedEvent:(id)event
 {
   v64 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v4 = [v43 date];
-  [(SAWithYouDetector *)self setLastEndOfScan:v4];
+  eventCopy = event;
+  date = [eventCopy date];
+  [(SAWithYouDetector *)self setLastEndOfScan:date];
 
-  v5 = [(SADeviceRecord *)self->_deviceRecord getAllUUIDs];
+  getAllUUIDs = [(SADeviceRecord *)self->_deviceRecord getAllUUIDs];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v48 objects:v63 count:16];
-  v42 = v5;
+  v6 = [getAllUUIDs countByEnumeratingWithState:&v48 objects:v63 count:16];
+  v42 = getAllUUIDs;
   if (v6)
   {
     v7 = v6;
@@ -1193,7 +1193,7 @@ LABEL_11:
       {
         if (*v49 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(getAllUUIDs);
         }
 
         v10 = *(*(&v48 + 1) + 8 * v9);
@@ -1207,8 +1207,8 @@ LABEL_11:
           {
             if ((v12 & 0xFFFFFFFFFFFFFFFELL) == 2)
             {
-              v14 = [v43 date];
-              [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v10 forCurrentDate:v14];
+              date2 = [eventCopy date];
+              [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v10 forCurrentDate:date2];
 
               v17 = 1;
             }
@@ -1240,15 +1240,15 @@ LABEL_11:
               goto LABEL_23;
             }
 
-            v19 = [(SAWithYouDetector *)self lastStartOfScan];
+            lastStartOfScan = [(SAWithYouDetector *)self lastStartOfScan];
 
             v16 = v13;
-            if (v19)
+            if (lastStartOfScan)
             {
               v20 = [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v10];
-              v21 = [v20 scanDate];
-              v22 = [(SAWithYouDetector *)self lastStartOfScan];
-              [v21 timeIntervalSinceDate:v22];
+              scanDate = [v20 scanDate];
+              lastStartOfScan2 = [(SAWithYouDetector *)self lastStartOfScan];
+              [scanDate timeIntervalSinceDate:lastStartOfScan2];
               if (v23 >= 0.0)
               {
               }
@@ -1256,11 +1256,11 @@ LABEL_11:
               else
               {
                 v24 = [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v10];
-                [v43 date];
+                [eventCopy date];
                 v25 = v41 = v20;
                 v40 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:v24 forCurrentDate:v25];
 
-                v5 = v42;
+                getAllUUIDs = v42;
                 if (!v40)
                 {
                   v16 = 2;
@@ -1295,7 +1295,7 @@ LABEL_24:
                 v62 = v30;
                 _os_log_impl(&dword_2656EA000, v28, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou status updated end of scan, uuid:%{private}@, oldStatus:%{private}@, newStatus:%{private}@}", buf, 0x30u);
 
-                v5 = v42;
+                getAllUUIDs = v42;
               }
 
               [(SAWithYouDetector *)self _notifyAllClientsOfWithYouStatusUpdate:v17 forDeviceWithUUID:v10];
@@ -1304,8 +1304,8 @@ LABEL_24:
             goto LABEL_31;
           }
 
-          v15 = [v43 date];
-          [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v10 forCurrentDate:v15];
+          date3 = [eventCopy date];
+          [(SAWithYouDetector *)self _updateLastWithYouDateAndLocation:v10 forCurrentDate:date3];
 
           goto LABEL_14;
         }
@@ -1315,18 +1315,18 @@ LABEL_31:
       }
 
       while (v7 != v9);
-      v31 = [v5 countByEnumeratingWithState:&v48 objects:v63 count:16];
+      v31 = [getAllUUIDs countByEnumeratingWithState:&v48 objects:v63 count:16];
       v7 = v31;
     }
 
     while (v31);
   }
 
-  v32 = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
-  [v32 removeAllObjects];
+  foundDevicesDuringCurrentScan = [(SAWithYouDetector *)self foundDevicesDuringCurrentScan];
+  [foundDevicesDuringCurrentScan removeAllObjects];
 
-  v33 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-  [v33 removeAllObjects];
+  relevantDevicesToFindDuringLongScan = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+  [relevantDevicesToFindDuringLongScan removeAllObjects];
 
   [(SAWithYouDetector *)self setIsFindingRelevantDevices:0];
   if ([(SAWithYouDetector *)self longScanIsOngoing]|| [(SAWithYouDetector *)self requestedShortScan])
@@ -1361,7 +1361,7 @@ LABEL_31:
       while (v36);
     }
 
-    v5 = v42;
+    getAllUUIDs = v42;
   }
 
   [(SAWithYouDetector *)self requestScanIfNeeded];
@@ -1369,21 +1369,21 @@ LABEL_31:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithYouStatusOnAdvBufferEmptyEvent:(id)a3
+- (void)_updateWithYouStatusOnAdvBufferEmptyEvent:(id)event
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAWithYouDetector *)self previousBufferEmptyTime];
+  eventCopy = event;
+  previousBufferEmptyTime = [(SAWithYouDetector *)self previousBufferEmptyTime];
 
-  if (!v5)
+  if (!previousBufferEmptyTime)
   {
-    v30 = [v4 date];
-    [(SAWithYouDetector *)self setPreviousBufferEmptyTime:v30];
+    date = [eventCopy date];
+    [(SAWithYouDetector *)self setPreviousBufferEmptyTime:date];
 
     goto LABEL_28;
   }
 
-  v32 = v4;
+  v32 = eventCopy;
   [(SADeviceRecord *)self->_deviceRecord getAllUUIDs];
   v34 = 0u;
   v35 = 0u;
@@ -1412,25 +1412,25 @@ LABEL_31:
       if (v11)
       {
         v12 = [(SADeviceRecord *)self->_deviceRecord getSADevice:v10];
-        v13 = [v12 deviceType];
+        deviceType = [v12 deviceType];
 
-        if (v13 == 16)
+        if (deviceType == 16)
         {
           v14 = [(SAWithYouDetector *)self statusForDeviceWithUUID:v10];
-          v15 = [(SAWithYouDetector *)self previousBufferEmptyTime];
-          v16 = [(SAWithYouDetector *)self lastEndOfScan];
+          previousBufferEmptyTime2 = [(SAWithYouDetector *)self previousBufferEmptyTime];
+          lastEndOfScan = [(SAWithYouDetector *)self lastEndOfScan];
 
-          if (v16)
+          if (lastEndOfScan)
           {
-            v17 = [(SAWithYouDetector *)self previousBufferEmptyTime];
-            v18 = [(SAWithYouDetector *)self lastEndOfScan];
-            v19 = [v17 laterDate:v18];
+            previousBufferEmptyTime3 = [(SAWithYouDetector *)self previousBufferEmptyTime];
+            lastEndOfScan2 = [(SAWithYouDetector *)self lastEndOfScan];
+            v19 = [previousBufferEmptyTime3 laterDate:lastEndOfScan2];
 
-            v15 = v19;
+            previousBufferEmptyTime2 = v19;
           }
 
           v20 = [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v10];
-          if (v20 && (v21 = v20, [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v10], v22 = objc_claimAutoreleasedReturnValue(), v23 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:v22 forCurrentDate:v15], v22, v21, v23))
+          if (v20 && (v21 = v20, [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v10], v22 = objc_claimAutoreleasedReturnValue(), v23 = [(SAWithYouDetector *)self _isRecentEnoughAdvertisement:v22 forCurrentDate:previousBufferEmptyTime2], v22, v21, v23))
           {
             v24 = 1;
 LABEL_18:
@@ -1484,37 +1484,37 @@ LABEL_18:
 
   while (v7);
 LABEL_26:
-  v4 = v32;
-  v29 = [v32 date];
-  [(SAWithYouDetector *)self setPreviousBufferEmptyTime:v29];
+  eventCopy = v32;
+  date2 = [v32 date];
+  [(SAWithYouDetector *)self setPreviousBufferEmptyTime:date2];
 
 LABEL_28:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleNextAlarmForScanAfterDate:(id)a3
+- (void)_scheduleNextAlarmForScanAfterDate:(id)date
 {
-  v12 = a3;
+  dateCopy = date;
   if ([(SAWithYouDetector *)self isPeriodicScansAllowed])
   {
-    v4 = [(SAWithYouDetector *)self nextScheduledAlarm];
+    nextScheduledAlarm = [(SAWithYouDetector *)self nextScheduledAlarm];
 
-    if (v4)
+    if (nextScheduledAlarm)
     {
-      v5 = [(SAWithYouDetector *)self clock];
-      v6 = [(SAWithYouDetector *)self nextScheduledAlarm];
-      [v5 cancelAlarmWithUUID:v6];
+      clock = [(SAWithYouDetector *)self clock];
+      nextScheduledAlarm2 = [(SAWithYouDetector *)self nextScheduledAlarm];
+      [clock cancelAlarmWithUUID:nextScheduledAlarm2];
 
       [(SAWithYouDetector *)self setNextScheduledAlarm:0];
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:v12 sinceDate:300.0];
-    v8 = [(SAWithYouDetector *)self isInVehicularTravel];
+    v7 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeInterval:dateCopy sinceDate:300.0];
+    isInVehicularTravel = [(SAWithYouDetector *)self isInVehicularTravel];
     v9 = v7;
-    if (!v8)
+    if (!isInVehicularTravel)
     {
-      v10 = [(SAWithYouDetector *)self clock];
-      v11 = [v10 setupAlarmFireAt:v7 forClient:self];
+      clock2 = [(SAWithYouDetector *)self clock];
+      v11 = [clock2 setupAlarmFireAt:v7 forClient:self];
       [(SAWithYouDetector *)self setNextScheduledAlarm:v11];
 
       v9 = 0;
@@ -1529,52 +1529,52 @@ LABEL_28:
   }
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
-  v43 = a3;
+  eventCopy = event;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SAWithYouDetector *)self _updateWithYouStatusIfNecessaryOnAdvertisement:v43];
+      [(SAWithYouDetector *)self _updateWithYouStatusIfNecessaryOnAdvertisement:eventCopy];
       goto LABEL_27;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v43;
+      v4 = eventCopy;
       if ([v4 state] == 1)
       {
-        v5 = [(SAWithYouDetector *)self lastLongScanRequest];
+        lastLongScanRequest = [(SAWithYouDetector *)self lastLongScanRequest];
 
-        if (v5)
+        if (lastLongScanRequest)
         {
           v6 = v4;
           if ([(SAWithYouDetector *)self isFindingRelevantDevices])
           {
-            v7 = [v6 date];
-            [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:v7];
+            date = [v6 date];
+            [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:date];
 
-            v8 = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
-            [v8 removeAllObjects];
+            relevantDevicesToFindDuringLongScan = [(SAWithYouDetector *)self relevantDevicesToFindDuringLongScan];
+            [relevantDevicesToFindDuringLongScan removeAllObjects];
 
             [(SAWithYouDetector *)self setIsFindingRelevantDevices:0];
           }
 
-          v9 = [v6 date];
-          v10 = [(SAWithYouDetector *)self lastLongScanRequest];
-          [v9 timeIntervalSinceDate:v10];
+          date2 = [v6 date];
+          lastLongScanRequest2 = [(SAWithYouDetector *)self lastLongScanRequest];
+          [date2 timeIntervalSinceDate:lastLongScanRequest2];
           v12 = v11;
 
-          v13 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
-          if (v13)
+          lastRelevantDeviceFoundTime = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
+          if (lastRelevantDeviceFoundTime)
           {
-            v14 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
-            v15 = [(SAWithYouDetector *)self lastLongScanRequest];
-            [v14 timeIntervalSinceDate:v15];
+            lastRelevantDeviceFoundTime2 = [(SAWithYouDetector *)self lastRelevantDeviceFoundTime];
+            lastLongScanRequest3 = [(SAWithYouDetector *)self lastLongScanRequest];
+            [lastRelevantDeviceFoundTime2 timeIntervalSinceDate:lastLongScanRequest3];
             v17 = v16;
           }
 
@@ -1583,29 +1583,29 @@ LABEL_28:
             v17 = 0.0;
           }
 
-          v25 = [(SAWithYouDetector *)self lastExtraHELEFoundTime];
-          v26 = [(SAWithYouDetector *)self lastLongScanRequest];
-          [v25 timeIntervalSinceDate:v26];
+          lastExtraHELEFoundTime = [(SAWithYouDetector *)self lastExtraHELEFoundTime];
+          lastLongScanRequest4 = [(SAWithYouDetector *)self lastLongScanRequest];
+          [lastExtraHELEFoundTime timeIntervalSinceDate:lastLongScanRequest4];
           v28 = v27;
 
-          v29 = [(SAWithYouDetector *)self lastExtraNonHELEFoundTime];
-          v30 = [(SAWithYouDetector *)self lastLongScanRequest];
-          [v29 timeIntervalSinceDate:v30];
+          lastExtraNonHELEFoundTime = [(SAWithYouDetector *)self lastExtraNonHELEFoundTime];
+          lastLongScanRequest5 = [(SAWithYouDetector *)self lastLongScanRequest];
+          [lastExtraNonHELEFoundTime timeIntervalSinceDate:lastLongScanRequest5];
           v32 = v31;
 
           [(SAWithYouDetector *)self sendScanContextToCoreAnalytics:2 isPartOfLongScan:1 scanDuration:[(SAWithYouDetector *)self extraFoundHELECount] relevantOnlyScanDuration:[(SAWithYouDetector *)self extraFoundNonHELECount] foundExtraHELECount:[(SAWithYouDetector *)self lastLongScanContext] extraHELEScanDuration:v12 foundExtraNonHELECount:v17 extraNonHELEScanDuration:v28 longScanContext:v32];
-          v33 = [(SAWithYouDetector *)self analytics];
-          [v33 addScanDuration:v12];
+          analytics = [(SAWithYouDetector *)self analytics];
+          [analytics addScanDuration:v12];
 
-          v34 = [(SAWithYouDetector *)self analytics];
-          v35 = v34;
+          analytics2 = [(SAWithYouDetector *)self analytics];
+          v35 = analytics2;
           v36 = 6.0;
           if (v17 >= 6.0)
           {
             v36 = v17;
           }
 
-          [v34 addScanDurationForFindingRelevantItemsOnly:v36];
+          [analytics2 addScanDurationForFindingRelevantItemsOnly:v36];
 
           [(SAWithYouDetector *)self setLastLongScanRequest:0];
           [(SAWithYouDetector *)self setLastRelevantDeviceFoundTime:0];
@@ -1621,8 +1621,8 @@ LABEL_28:
 
       if ([v4 state] == 2)
       {
-        v18 = [v4 date];
-        v19 = [v18 dateByAddingTimeInterval:-1.0];
+        date3 = [v4 date];
+        v19 = [date3 dateByAddingTimeInterval:-1.0];
         [(SAWithYouDetector *)self setLastStartOfScan:v19];
 
 LABEL_17:
@@ -1637,7 +1637,7 @@ LABEL_17:
         goto LABEL_27;
       }
 
-      v4 = v43;
+      v4 = eventCopy;
       if ([v4 systemStateType] != 15)
       {
         if ([v4 systemStateType] != 11 || !objc_msgSend(v4, "isOn"))
@@ -1645,12 +1645,12 @@ LABEL_17:
           goto LABEL_26;
         }
 
-        v18 = [(SAWithYouDetector *)self clock];
+        date3 = [(SAWithYouDetector *)self clock];
         v20 = objc_alloc(MEMORY[0x277CBEAA8]);
-        v21 = [(SAWithYouDetector *)self clock];
-        v22 = [v21 getCurrentTime];
-        v23 = [v20 initWithTimeInterval:v22 sinceDate:30.0];
-        v24 = [v18 setupAlarmFireAt:v23 forClient:self];
+        clock = [(SAWithYouDetector *)self clock];
+        getCurrentTime = [clock getCurrentTime];
+        v23 = [v20 initWithTimeInterval:getCurrentTime sinceDate:30.0];
+        v24 = [date3 setupAlarmFireAt:v23 forClient:self];
         [(SAWithYouDetector *)self setNextScheduledAlarm:v24];
 
         goto LABEL_17;
@@ -1664,17 +1664,17 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  [(SAWithYouDetector *)self _updateWithYouStatusIfNecessaryOnConnectionEvent:v43];
+  [(SAWithYouDetector *)self _updateWithYouStatusIfNecessaryOnConnectionEvent:eventCopy];
 LABEL_27:
   if ([(SAWithYouDetector *)self isInVehicularTravel])
   {
-    v37 = [(SAWithYouDetector *)self nextOpportunisticScanDate];
-    if (v37)
+    nextOpportunisticScanDate = [(SAWithYouDetector *)self nextOpportunisticScanDate];
+    if (nextOpportunisticScanDate)
     {
-      v38 = v37;
-      v39 = [v43 getDate];
-      v40 = [(SAWithYouDetector *)self nextOpportunisticScanDate];
-      [v39 timeIntervalSinceDate:v40];
+      v38 = nextOpportunisticScanDate;
+      getDate = [eventCopy getDate];
+      nextOpportunisticScanDate2 = [(SAWithYouDetector *)self nextOpportunisticScanDate];
+      [getDate timeIntervalSinceDate:nextOpportunisticScanDate2];
       v42 = v41;
 
       if (v42 >= 0.0)
@@ -1687,21 +1687,21 @@ LABEL_27:
 
 - (void)requestScanIfNeeded
 {
-  v3 = [(SAWithYouDetector *)self deviceRecord];
-  v4 = [v3 getAllUUIDs];
-  v5 = [v4 count];
+  deviceRecord = [(SAWithYouDetector *)self deviceRecord];
+  getAllUUIDs = [deviceRecord getAllUUIDs];
+  v5 = [getAllUUIDs count];
 
   if (v5)
   {
-    v14 = [(SAWithYouDetector *)self lastEndOfScan];
-    if (!v14)
+    lastEndOfScan = [(SAWithYouDetector *)self lastEndOfScan];
+    if (!lastEndOfScan)
     {
       goto LABEL_5;
     }
 
-    v6 = [(SAWithYouDetector *)self clock];
-    v7 = [v6 getCurrentTime];
-    [v7 timeIntervalSinceDate:v14];
+    clock = [(SAWithYouDetector *)self clock];
+    getCurrentTime = [clock getCurrentTime];
+    [getCurrentTime timeIntervalSinceDate:lastEndOfScan];
     v9 = v8;
 
     if (v9 < 300.0)
@@ -1712,16 +1712,16 @@ LABEL_27:
     else
     {
 LABEL_5:
-      v11 = [(SAWithYouDetector *)self clock];
-      v12 = [v11 getCurrentTime];
+      clock2 = [(SAWithYouDetector *)self clock];
+      getCurrentTime2 = [clock2 getCurrentTime];
 
       v10 = 1;
-      v14 = v12;
+      lastEndOfScan = getCurrentTime2;
     }
 
     if ([(SAWithYouDetector *)self isPeriodicScansAllowed])
     {
-      [(SAWithYouDetector *)self _scheduleNextAlarmForScanAfterDate:v14];
+      [(SAWithYouDetector *)self _scheduleNextAlarmForScanAfterDate:lastEndOfScan];
       if (!v10)
       {
         goto LABEL_15;
@@ -1742,8 +1742,8 @@ LABEL_15:
     [(SAWithYouDetector *)self forceUpdateWithYouStatusWithShortScan:0];
     if (![(SAWithYouDetector *)self isInVehicularTravel])
     {
-      v13 = [(SAWithYouDetector *)self locationRequester];
-      [v13 requestLocationForType:0];
+      locationRequester = [(SAWithYouDetector *)self locationRequester];
+      [locationRequester requestLocationForType:0];
     }
 
     goto LABEL_15;
@@ -1752,49 +1752,49 @@ LABEL_15:
   [(SAWithYouDetector *)self setNextOpportunisticScanDate:0];
 }
 
-- (BOOL)_deviceIsWatch:(id)a3
+- (BOOL)_deviceIsWatch:(id)watch
 {
-  v3 = [(SADeviceRecord *)self->_deviceRecord getSADevice:a3];
+  v3 = [(SADeviceRecord *)self->_deviceRecord getSADevice:watch];
   v4 = [v3 deviceType] == 8;
 
   return v4;
 }
 
-+ (id)convertSAWithYouStatusToString:(unint64_t)a3
++ (id)convertSAWithYouStatusToString:(unint64_t)string
 {
-  if (a3 - 1 > 3)
+  if (string - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B9C710[a3 - 1];
+    return off_279B9C710[string - 1];
   }
 }
 
-+ (id)convertSAWithYouLongScanContextToString:(unint64_t)a3
++ (id)convertSAWithYouLongScanContextToString:(unint64_t)string
 {
-  if (a3 - 1 > 9)
+  if (string - 1 > 9)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B9C730[a3 - 1];
+    return off_279B9C730[string - 1];
   }
 }
 
-- (void)didChangeTravelTypeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5
+- (void)didChangeTravelTypeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints
 {
   v20 = *MEMORY[0x277D85DE8];
   v8 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [SATravelTypeClassifier convertSATravelTypeToString:a3];
-    v11 = [SATravelTypeClassifier convertSATravelTypeToString:a4];
+    v10 = [SATravelTypeClassifier convertSATravelTypeToString:from];
+    v11 = [SATravelTypeClassifier convertSATravelTypeToString:to];
     v13[0] = 68289539;
     v13[1] = 0;
     v14 = 2082;
@@ -1806,7 +1806,7 @@ LABEL_15:
     _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #withyou travel type change, from:%{private}@, to:%{private}@}", v13, 0x26u);
   }
 
-  if (a4 == 2)
+  if (to == 2)
   {
     [(SAWithYouDetector *)self setIsInVehicularTravel:0];
     if ([(SAWithYouDetector *)self isPeriodicScansAllowed])
@@ -1815,7 +1815,7 @@ LABEL_15:
     }
   }
 
-  else if (a4 == 1)
+  else if (to == 1)
   {
     [(SAWithYouDetector *)self setIsInVehicularTravel:1];
   }

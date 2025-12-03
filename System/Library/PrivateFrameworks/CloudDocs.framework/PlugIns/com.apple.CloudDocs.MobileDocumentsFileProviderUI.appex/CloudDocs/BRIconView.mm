@@ -1,31 +1,31 @@
 @interface BRIconView
-- (void)setIconVariant:(int)a3;
+- (void)setIconVariant:(int)variant;
 @end
 
 @implementation BRIconView
 
-- (void)setIconVariant:(int)a3
+- (void)setIconVariant:(int)variant
 {
-  if (self->_iconVariant != a3)
+  if (self->_iconVariant != variant)
   {
     v13 = v3;
     v10 = @"HeaderIcon-large";
-    if (a3 != 63)
+    if (variant != 63)
     {
       v10 = 0;
     }
 
-    if (((1 << a3) & 0x1000002) != 0)
+    if (((1 << variant) & 0x1000002) != 0)
     {
       v10 = @"HeaderIcon-regular";
     }
 
-    if (((1 << a3) & 0x100008001) != 0)
+    if (((1 << variant) & 0x100008001) != 0)
     {
       v10 = @"HeaderIcon-compact";
     }
 
-    if (a3 <= 0x3F)
+    if (variant <= 0x3F)
     {
       v11 = v10;
     }

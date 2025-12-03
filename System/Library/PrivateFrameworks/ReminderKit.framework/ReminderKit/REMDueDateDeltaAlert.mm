@@ -1,47 +1,47 @@
 @interface REMDueDateDeltaAlert
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isContentEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (REMDueDateDeltaAlert)initWithCoder:(id)a3;
-- (REMDueDateDeltaAlert)initWithIdentifier:(id)a3 reminderID:(id)a4 accountID:(id)a5 dueDateDelta:(id)a6 creationDate:(id)a7 acknowledgedDate:(id)a8 minimumSupportedAppVersion:(int64_t)a9;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isContentEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (REMDueDateDeltaAlert)initWithCoder:(id)coder;
+- (REMDueDateDeltaAlert)initWithIdentifier:(id)identifier reminderID:(id)d accountID:(id)iD dueDateDelta:(id)delta creationDate:(id)date acknowledgedDate:(id)acknowledgedDate minimumSupportedAppVersion:(int64_t)version;
 - (REMObjectID)remObjectID;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMDueDateDeltaAlert
 
-- (REMDueDateDeltaAlert)initWithIdentifier:(id)a3 reminderID:(id)a4 accountID:(id)a5 dueDateDelta:(id)a6 creationDate:(id)a7 acknowledgedDate:(id)a8 minimumSupportedAppVersion:(int64_t)a9
+- (REMDueDateDeltaAlert)initWithIdentifier:(id)identifier reminderID:(id)d accountID:(id)iD dueDateDelta:(id)delta creationDate:(id)date acknowledgedDate:(id)acknowledgedDate minimumSupportedAppVersion:(int64_t)version
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  deltaCopy = delta;
+  dateCopy = date;
+  acknowledgedDateCopy = acknowledgedDate;
   v25.receiver = self;
   v25.super_class = REMDueDateDeltaAlert;
   v19 = [(REMDueDateDeltaAlert *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_reminderID, a4);
-    objc_storeStrong(&v20->_accountID, a5);
-    objc_storeStrong(&v20->_dueDateDelta, a6);
-    objc_storeStrong(&v20->_creationDate, a7);
-    objc_storeStrong(&v20->_acknowledgedDate, a8);
-    v20->_minimumSupportedAppVersion = a9;
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_reminderID, d);
+    objc_storeStrong(&v20->_accountID, iD);
+    objc_storeStrong(&v20->_dueDateDelta, delta);
+    objc_storeStrong(&v20->_creationDate, date);
+    objc_storeStrong(&v20->_acknowledgedDate, acknowledgedDate);
+    v20->_minimumSupportedAppVersion = version;
   }
 
   return v20;
 }
 
-- (REMDueDateDeltaAlert)initWithCoder:(id)a3
+- (REMDueDateDeltaAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = REMDueDateDeltaAlert;
   v5 = [(REMDueDateDeltaAlert *)&v28 init];
@@ -50,11 +50,11 @@
     goto LABEL_8;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dueDateDelta"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reminderID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dueDateDelta"];
   v11 = v10;
   if (!v6)
   {
@@ -140,11 +140,11 @@ LABEL_24:
   v5->_dueDateDelta = v11;
   v21 = v11;
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acknowledgedDate"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acknowledgedDate"];
   acknowledgedDate = v5->_acknowledgedDate;
   v5->_acknowledgedDate = v22;
 
-  v5->_minimumSupportedAppVersion = [v4 decodeIntegerForKey:@"minimumSupportedAppVersion"];
+  v5->_minimumSupportedAppVersion = [coderCopy decodeIntegerForKey:@"minimumSupportedAppVersion"];
 LABEL_8:
   v24 = v5;
 LABEL_25:
@@ -152,33 +152,33 @@ LABEL_25:
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMDueDateDeltaAlert *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(REMDueDateDeltaAlert *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(REMDueDateDeltaAlert *)self reminderID];
-  [v4 encodeObject:v6 forKey:@"reminderID"];
+  reminderID = [(REMDueDateDeltaAlert *)self reminderID];
+  [coderCopy encodeObject:reminderID forKey:@"reminderID"];
 
-  v7 = [(REMDueDateDeltaAlert *)self accountID];
-  [v4 encodeObject:v7 forKey:@"accountID"];
+  accountID = [(REMDueDateDeltaAlert *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v8 = [(REMDueDateDeltaAlert *)self dueDateDelta];
-  [v4 encodeObject:v8 forKey:@"dueDateDelta"];
+  dueDateDelta = [(REMDueDateDeltaAlert *)self dueDateDelta];
+  [coderCopy encodeObject:dueDateDelta forKey:@"dueDateDelta"];
 
-  v9 = [(REMDueDateDeltaAlert *)self creationDate];
-  [v4 encodeObject:v9 forKey:@"creationDate"];
+  creationDate = [(REMDueDateDeltaAlert *)self creationDate];
+  [coderCopy encodeObject:creationDate forKey:@"creationDate"];
 
-  v10 = [(REMDueDateDeltaAlert *)self acknowledgedDate];
-  [v4 encodeObject:v10 forKey:@"acknowledgedDate"];
+  acknowledgedDate = [(REMDueDateDeltaAlert *)self acknowledgedDate];
+  [coderCopy encodeObject:acknowledgedDate forKey:@"acknowledgedDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -193,28 +193,28 @@ LABEL_25:
   return v7;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMDueDateDeltaAlert *)self identifier];
-      v8 = [(REMDueDateDeltaAlert *)v6 identifier];
-      v9 = v8;
-      if (v7 == v8)
+      identifier = [(REMDueDateDeltaAlert *)self identifier];
+      identifier2 = [(REMDueDateDeltaAlert *)v6 identifier];
+      v9 = identifier2;
+      if (identifier == identifier2)
       {
       }
 
       else
       {
-        v10 = [(REMDueDateDeltaAlert *)self identifier];
-        v11 = [(REMDueDateDeltaAlert *)v6 identifier];
-        v12 = [v10 isEqual:v11];
+        identifier3 = [(REMDueDateDeltaAlert *)self identifier];
+        identifier4 = [(REMDueDateDeltaAlert *)v6 identifier];
+        v12 = [identifier3 isEqual:identifier4];
 
         if (!v12)
         {
@@ -222,18 +222,18 @@ LABEL_25:
         }
       }
 
-      v14 = [(REMDueDateDeltaAlert *)self reminderID];
-      v15 = [(REMDueDateDeltaAlert *)v6 reminderID];
-      v16 = v15;
-      if (v14 == v15)
+      reminderID = [(REMDueDateDeltaAlert *)self reminderID];
+      reminderID2 = [(REMDueDateDeltaAlert *)v6 reminderID];
+      v16 = reminderID2;
+      if (reminderID == reminderID2)
       {
       }
 
       else
       {
-        v17 = [(REMDueDateDeltaAlert *)self reminderID];
-        v18 = [(REMDueDateDeltaAlert *)v6 reminderID];
-        v19 = [v17 isEqual:v18];
+        reminderID3 = [(REMDueDateDeltaAlert *)self reminderID];
+        reminderID4 = [(REMDueDateDeltaAlert *)v6 reminderID];
+        v19 = [reminderID3 isEqual:reminderID4];
 
         if (!v19)
         {
@@ -241,18 +241,18 @@ LABEL_25:
         }
       }
 
-      v20 = [(REMDueDateDeltaAlert *)self accountID];
-      v21 = [(REMDueDateDeltaAlert *)v6 accountID];
-      v22 = v21;
-      if (v20 == v21)
+      accountID = [(REMDueDateDeltaAlert *)self accountID];
+      accountID2 = [(REMDueDateDeltaAlert *)v6 accountID];
+      v22 = accountID2;
+      if (accountID == accountID2)
       {
       }
 
       else
       {
-        v23 = [(REMDueDateDeltaAlert *)self accountID];
-        v24 = [(REMDueDateDeltaAlert *)v6 accountID];
-        v25 = [v23 isEqual:v24];
+        accountID3 = [(REMDueDateDeltaAlert *)self accountID];
+        accountID4 = [(REMDueDateDeltaAlert *)v6 accountID];
+        v25 = [accountID3 isEqual:accountID4];
 
         if (!v25)
         {
@@ -260,18 +260,18 @@ LABEL_25:
         }
       }
 
-      v26 = [(REMDueDateDeltaAlert *)self dueDateDelta];
-      v27 = [(REMDueDateDeltaAlert *)v6 dueDateDelta];
-      v28 = v27;
-      if (v26 == v27)
+      dueDateDelta = [(REMDueDateDeltaAlert *)self dueDateDelta];
+      dueDateDelta2 = [(REMDueDateDeltaAlert *)v6 dueDateDelta];
+      v28 = dueDateDelta2;
+      if (dueDateDelta == dueDateDelta2)
       {
       }
 
       else
       {
-        v29 = [(REMDueDateDeltaAlert *)self dueDateDelta];
-        v30 = [(REMDueDateDeltaAlert *)v6 dueDateDelta];
-        v31 = [v29 isEqual:v30];
+        dueDateDelta3 = [(REMDueDateDeltaAlert *)self dueDateDelta];
+        dueDateDelta4 = [(REMDueDateDeltaAlert *)v6 dueDateDelta];
+        v31 = [dueDateDelta3 isEqual:dueDateDelta4];
 
         if (!v31)
         {
@@ -279,18 +279,18 @@ LABEL_25:
         }
       }
 
-      v32 = [(REMDueDateDeltaAlert *)self creationDate];
-      v33 = [(REMDueDateDeltaAlert *)v6 creationDate];
-      v34 = v33;
-      if (v32 == v33)
+      creationDate = [(REMDueDateDeltaAlert *)self creationDate];
+      creationDate2 = [(REMDueDateDeltaAlert *)v6 creationDate];
+      v34 = creationDate2;
+      if (creationDate == creationDate2)
       {
       }
 
       else
       {
-        v35 = [(REMDueDateDeltaAlert *)self creationDate];
-        v36 = [(REMDueDateDeltaAlert *)v6 creationDate];
-        v37 = [v35 isEqual:v36];
+        creationDate3 = [(REMDueDateDeltaAlert *)self creationDate];
+        creationDate4 = [(REMDueDateDeltaAlert *)v6 creationDate];
+        v37 = [creationDate3 isEqual:creationDate4];
 
         if (!v37)
         {
@@ -298,18 +298,18 @@ LABEL_25:
         }
       }
 
-      v39 = [(REMDueDateDeltaAlert *)self acknowledgedDate];
-      v40 = [(REMDueDateDeltaAlert *)v6 acknowledgedDate];
-      if (v39 == v40)
+      acknowledgedDate = [(REMDueDateDeltaAlert *)self acknowledgedDate];
+      acknowledgedDate2 = [(REMDueDateDeltaAlert *)v6 acknowledgedDate];
+      if (acknowledgedDate == acknowledgedDate2)
       {
         v13 = 1;
       }
 
       else
       {
-        v41 = [(REMDueDateDeltaAlert *)self acknowledgedDate];
-        v42 = [(REMDueDateDeltaAlert *)v6 acknowledgedDate];
-        v13 = [v41 isEqual:v42];
+        acknowledgedDate3 = [(REMDueDateDeltaAlert *)self acknowledgedDate];
+        acknowledgedDate4 = [(REMDueDateDeltaAlert *)v6 acknowledgedDate];
+        v13 = [acknowledgedDate3 isEqual:acknowledgedDate4];
       }
 
       goto LABEL_23;
@@ -330,8 +330,8 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v2 = [(REMDueDateDeltaAlert *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(REMDueDateDeltaAlert *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -340,20 +340,20 @@ LABEL_24:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMDueDateDeltaAlert *)self identifier];
-  v6 = [(REMDueDateDeltaAlert *)self reminderID];
-  v7 = [(REMDueDateDeltaAlert *)self dueDateDelta];
-  v8 = [(REMDueDateDeltaAlert *)self acknowledgedDate];
-  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@, reminderID: %@, delta: %@, ackdate: %@>", v4, self, v5, v6, v7, v8];
+  identifier = [(REMDueDateDeltaAlert *)self identifier];
+  reminderID = [(REMDueDateDeltaAlert *)self reminderID];
+  dueDateDelta = [(REMDueDateDeltaAlert *)self dueDateDelta];
+  acknowledgedDate = [(REMDueDateDeltaAlert *)self acknowledgedDate];
+  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@, reminderID: %@, delta: %@, ackdate: %@>", v4, self, identifier, reminderID, dueDateDelta, acknowledgedDate];
 
   return v9;
 }
 
 - (REMObjectID)remObjectID
 {
-  v2 = [(REMDueDateDeltaAlert *)self identifier];
+  identifier = [(REMDueDateDeltaAlert *)self identifier];
   v3 = +[REMDueDateDeltaAlert cdEntityName];
-  v4 = [REMObjectID objectIDWithUUID:v2 entityName:v3];
+  v4 = [REMObjectID objectIDWithUUID:identifier entityName:v3];
 
   return v4;
 }
@@ -366,17 +366,17 @@ LABEL_24:
     +[(REMDueDateDeltaAlert *)v3];
   }
 
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [a1 objectIDWithUUID:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v5 = [self objectIDWithUUID:uUID];
 
   return v5;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

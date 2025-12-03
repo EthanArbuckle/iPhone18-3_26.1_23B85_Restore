@@ -2,7 +2,7 @@
 - (PKPaletteToolPickerEdgeView)init;
 - (void)_updateUI;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPaletteToolPickerEdgeView
@@ -23,16 +23,16 @@
     v3->_gradientLayer = v4;
 
     [(CAGradientLayer *)v3->_gradientLayer setGeometryFlipped:1];
-    v6 = [(PKPaletteToolPickerEdgeView *)v3 layer];
-    [v6 insertSublayer:v3->_gradientLayer atIndex:0];
+    layer = [(PKPaletteToolPickerEdgeView *)v3 layer];
+    [layer insertSublayer:v3->_gradientLayer atIndex:0];
 
     v7 = objc_alloc_init(MEMORY[0x1E6979380]);
     maskLayer = v3->_maskLayer;
     v3->_maskLayer = v7;
 
     [(CAGradientLayer *)v3->_maskLayer setGeometryFlipped:1];
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    v10 = [v9 colorWithAlphaComponent:1.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v10 = [blackColor colorWithAlphaComponent:1.0];
 
     v11 = [v10 colorWithAlphaComponent:0.0];
     v15[0] = [v10 CGColor];
@@ -50,21 +50,21 @@
 - (void)_updateUI
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    v3 = [v2 userInterfaceStyle] == 2;
+    traitCollection = [self traitCollection];
+    v3 = [traitCollection userInterfaceStyle] == 2;
 
-    v4 = [MEMORY[0x1E69DC888] blackColor];
-    v5 = [v4 colorWithAlphaComponent:dbl_1C801D170[v3]];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v5 = [blackColor colorWithAlphaComponent:dbl_1C801D170[v3]];
 
     v6 = [v5 colorWithAlphaComponent:0.0];
     v26[0] = [v5 CGColor];
     v26[1] = [v6 CGColor];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-    [*(a1 + 408) setColors:v7];
+    [*(self + 408) setColors:v7];
 
-    v8 = *(a1 + 432);
+    v8 = *(self + 432);
     if (v8)
     {
       v9 = 0.0;
@@ -125,21 +125,21 @@
       v14 = 0.75;
     }
 
-    [*(a1 + 408) setStartPoint:{v10, v9}];
-    [*(a1 + 408) setEndPoint:{v12, v11}];
-    [*(a1 + 416) setStartPoint:{v13, v14}];
-    [*(a1 + 416) setEndPoint:{v11, v12}];
+    [*(self + 408) setStartPoint:{v10, v9}];
+    [*(self + 408) setEndPoint:{v12, v11}];
+    [*(self + 416) setStartPoint:{v13, v14}];
+    [*(self + 416) setEndPoint:{v11, v12}];
     v15 = -1.0;
-    if (!*(a1 + 424))
+    if (!*(self + 424))
     {
       v15 = 1.0;
     }
 
     CATransform3DMakeScale(&v25, v15, 1.0, 1.0);
-    v16 = *(a1 + 408);
+    v16 = *(self + 408);
     v24 = v25;
     [v16 setTransform:&v24];
-    v17 = *(a1 + 408);
+    v17 = *(self + 408);
     if (v17)
     {
       [v17 transform];
@@ -150,7 +150,7 @@
       memset(&v24, 0, sizeof(v24));
     }
 
-    if (*(a1 + 425))
+    if (*(self + 425))
     {
       v18 = 1.0;
     }
@@ -161,7 +161,7 @@
     }
 
     CATransform3DScale(&v23, &v24, 1.0, v18, 1.0);
-    v19 = *(a1 + 408);
+    v19 = *(self + 408);
     v24 = v23;
     [v19 setTransform:&v24];
     if (v8 == 1)
@@ -175,7 +175,7 @@
     }
 
     CATransform3DMakeScale(&v22, v20, 1.0, 1.0);
-    v21 = *(a1 + 416);
+    v21 = *(self + 416);
     v24 = v22;
     [v21 setTransform:&v24];
   }
@@ -192,17 +192,17 @@
   [(CAGradientLayer *)self->_maskLayer setFrame:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PKPaletteToolPickerEdgeView;
-  v4 = a3;
-  [(PKPaletteToolPickerEdgeView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PKPaletteToolPickerEdgeView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PKPaletteToolPickerEdgeView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PKPaletteToolPickerEdgeView *)self _updateUI];
   }

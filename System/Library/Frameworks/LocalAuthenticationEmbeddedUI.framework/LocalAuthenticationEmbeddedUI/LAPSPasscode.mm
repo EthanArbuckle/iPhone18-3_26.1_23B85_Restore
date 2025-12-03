@@ -1,36 +1,36 @@
 @interface LAPSPasscode
 + (id)emptyPasscode;
-- (BOOL)isEqual:(id)a3;
-- (LAPSPasscode)initWithLocalizedPasscode:(id)a3 type:(id)a4;
-- (LAPSPasscode)initWithPasscode:(id)a3;
-- (LAPSPasscode)initWithPasscode:(id)a3 type:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LAPSPasscode)initWithLocalizedPasscode:(id)passcode type:(id)type;
+- (LAPSPasscode)initWithPasscode:(id)passcode;
+- (LAPSPasscode)initWithPasscode:(id)passcode type:(id)type;
 - (id)externalizePasscode;
 - (void)externalizePasscode;
 @end
 
 @implementation LAPSPasscode
 
-- (LAPSPasscode)initWithPasscode:(id)a3
+- (LAPSPasscode)initWithPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [LAPSPasscodeType typeAllowingString:v4];
-  v6 = [(LAPSPasscode *)self initWithPasscode:v4 type:v5];
+  passcodeCopy = passcode;
+  v5 = [LAPSPasscodeType typeAllowingString:passcodeCopy];
+  v6 = [(LAPSPasscode *)self initWithPasscode:passcodeCopy type:v5];
 
   return v6;
 }
 
-- (LAPSPasscode)initWithLocalizedPasscode:(id)a3 type:(id)a4
+- (LAPSPasscode)initWithLocalizedPasscode:(id)passcode type:(id)type
 {
-  v6 = a3;
+  passcodeCopy = passcode;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke;
   v12[3] = &unk_278A65B10;
-  v13 = v6;
-  v7 = v6;
-  v8 = a4;
+  v13 = passcodeCopy;
+  v7 = passcodeCopy;
+  typeCopy = type;
   v9 = __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke(v12);
-  v10 = [(LAPSPasscode *)self initWithPasscode:v9 type:v8];
+  v10 = [(LAPSPasscode *)self initWithPasscode:v9 type:typeCopy];
 
   return v10;
 }
@@ -100,20 +100,20 @@ id __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke(uint64_t a1)
 
 + (id)emptyPasscode
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[LAPSPasscodeType noneType];
   v4 = [v2 initWithPasscode:&stru_284B7B4C0 type:v3];
 
   return v4;
 }
 
-- (LAPSPasscode)initWithPasscode:(id)a3 type:(id)a4
+- (LAPSPasscode)initWithPasscode:(id)passcode type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v7 allowsString:v6] & 1) == 0)
+  passcodeCopy = passcode;
+  typeCopy = type;
+  if (([typeCopy allowsString:passcodeCopy] & 1) == 0)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Passcode type %@, does not allow string", v7];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Passcode type %@, does not allow string", typeCopy];
     v12 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v12);
   }
@@ -124,9 +124,9 @@ id __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke(uint64_t a1)
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (passcodeCopy)
     {
-      v10 = v6;
+      v10 = passcodeCopy;
     }
 
     else
@@ -135,7 +135,7 @@ id __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke(uint64_t a1)
     }
 
     objc_storeStrong(&v8->_passcode, v10);
-    objc_storeStrong(&v9->_type, a4);
+    objc_storeStrong(&v9->_type, type);
   }
 
   return v9;
@@ -144,14 +144,14 @@ id __47__LAPSPasscode_initWithLocalizedPasscode_type___block_invoke(uint64_t a1)
 - (id)externalizePasscode
 {
   v3 = objc_alloc_init(MEMORY[0x277CD4790]);
-  v4 = [(LAPSPasscode *)self data];
-  v5 = [v3 setCredential:v4 type:-9];
+  data = [(LAPSPasscode *)self data];
+  v5 = [v3 setCredential:data type:-9];
 
   if (v5)
   {
-    v6 = [(LAPSPasscode *)self data];
+    data2 = [(LAPSPasscode *)self data];
     v14 = 0;
-    v7 = [v3 setCredential:v6 type:-1 error:&v14];
+    v7 = [v3 setCredential:data2 type:-1 error:&v14];
     v8 = v14;
 
     if (v7)
@@ -185,22 +185,22 @@ LABEL_3:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LAPSPasscode *)self passcode];
-    v7 = [v5 passcode];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    passcode = [(LAPSPasscode *)self passcode];
+    passcode2 = [v5 passcode];
+    v8 = [passcode isEqualToString:passcode2];
 
     if (v8)
     {
-      v9 = [(LAPSPasscode *)self type];
-      v10 = [v5 type];
-      v11 = [v9 isEqual:v10];
+      type = [(LAPSPasscode *)self type];
+      type2 = [v5 type];
+      v11 = [type isEqual:type2];
     }
 
     else
@@ -221,7 +221,7 @@ LABEL_3:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_238BCD000, a2, OS_LOG_TYPE_ERROR, "Could not authenticate using credential %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

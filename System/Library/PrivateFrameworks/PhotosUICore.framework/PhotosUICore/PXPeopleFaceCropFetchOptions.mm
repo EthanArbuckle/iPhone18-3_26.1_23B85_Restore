@@ -1,19 +1,19 @@
 @interface PXPeopleFaceCropFetchOptions
-+ (id)_cornerStyleStringForCornerStyle:(int64_t)a3;
-+ (id)_cropFactorStringForCropFactor:(int64_t)a3;
-+ (id)_deliveryModeStringForDeliveryMode:(int64_t)a3;
++ (id)_cornerStyleStringForCornerStyle:(int64_t)style;
++ (id)_cropFactorStringForCropFactor:(int64_t)factor;
++ (id)_deliveryModeStringForDeliveryMode:(int64_t)mode;
 + (int64_t)recommendedCornerStyleForCurrentAppConfiguration;
-- (BOOL)areFetchParametersEqualtoFetchParametersOfOptions:(id)a3;
+- (BOOL)areFetchParametersEqualtoFetchParametersOfOptions:(id)options;
 - (CGSize)clientTargetSize;
 - (CGSize)targetPixelSize;
 - (NSString)cacheKey;
 - (PHPhotoLibrary)photoLibrary;
-- (PXPeopleFaceCropFetchOptions)initWithFace:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5;
-- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)a3 face:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6;
-- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXPeopleFaceCropFetchOptions)initWithFace:(id)face targetSize:(CGSize)size displayScale:(double)scale;
+- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)person face:(id)face targetSize:(CGSize)size displayScale:(double)scale;
+- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_commonInitWithPerson:(id)a3 face:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6;
+- (void)_commonInitWithPerson:(id)person face:(id)face targetSize:(CGSize)size displayScale:(double)scale;
 @end
 
 @implementation PXPeopleFaceCropFetchOptions
@@ -43,13 +43,13 @@
   v3 = [(PXPeopleFaceCropFetchOptions *)&v27 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(PXPeopleFaceCropFetchOptions *)self person];
-  v6 = [v5 localIdentifier];
-  [v4 appendFormat:@":\nperson: %@, \n", v6];
+  person = [(PXPeopleFaceCropFetchOptions *)self person];
+  localIdentifier = [person localIdentifier];
+  [v4 appendFormat:@":\nperson: %@, \n", localIdentifier];
 
-  v7 = [(PXPeopleFaceCropFetchOptions *)self face];
-  v8 = [v7 localIdentifier];
-  [v4 appendFormat:@"face: %@, \n", v8];
+  face = [(PXPeopleFaceCropFetchOptions *)self face];
+  localIdentifier2 = [face localIdentifier];
+  [v4 appendFormat:@"face: %@, \n", localIdentifier2];
 
   [(PXPeopleFaceCropFetchOptions *)self clientTargetSize];
   v9 = NSStringFromCGSize(v29);
@@ -69,9 +69,9 @@
   v12 = v11;
   [v4 appendFormat:@"wantsFlippedContentsRect: %@\n", v12];
 
-  v13 = [(PXPeopleFaceCropFetchOptions *)self asset];
-  v14 = [v13 localIdentifier];
-  [v4 appendFormat:@"asset: %@, \n", v14];
+  asset = [(PXPeopleFaceCropFetchOptions *)self asset];
+  localIdentifier3 = [asset localIdentifier];
+  [v4 appendFormat:@"asset: %@, \n", localIdentifier3];
 
   v15 = [PXPeopleFaceCropFetchOptions _cropFactorStringForCropFactor:[(PXPeopleFaceCropFetchOptions *)self cropFactor]];
   [v4 appendFormat:@"cropFactor: %@, \n", v15];
@@ -137,55 +137,55 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v6 = [(PXPeopleFaceCropFetchOptions *)self person];
-  if (v6 && (v7 = v6, [(PXPeopleFaceCropFetchOptions *)self face], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  person = [(PXPeopleFaceCropFetchOptions *)self person];
+  if (person && (v7 = person, [(PXPeopleFaceCropFetchOptions *)self face], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [PXPeopleFaceCropFetchOptions allocWithZone:a3];
-    v10 = [(PXPeopleFaceCropFetchOptions *)self person];
-    v11 = [(PXPeopleFaceCropFetchOptions *)self face];
+    v9 = [PXPeopleFaceCropFetchOptions allocWithZone:zone];
+    person2 = [(PXPeopleFaceCropFetchOptions *)self person];
+    face = [(PXPeopleFaceCropFetchOptions *)self face];
     [(PXPeopleFaceCropFetchOptions *)self clientTargetSize];
     v13 = v12;
     v15 = v14;
     [(PXPeopleFaceCropFetchOptions *)self displayScale];
-    v17 = [(PXPeopleFaceCropFetchOptions *)v9 initWithPerson:v10 face:v11 targetSize:v13 displayScale:v15, v16];
+    v17 = [(PXPeopleFaceCropFetchOptions *)v9 initWithPerson:person2 face:face targetSize:v13 displayScale:v15, v16];
   }
 
   else
   {
-    v18 = [(PXPeopleFaceCropFetchOptions *)self person];
+    person3 = [(PXPeopleFaceCropFetchOptions *)self person];
 
-    if (v18)
+    if (person3)
     {
-      v19 = [PXPeopleFaceCropFetchOptions allocWithZone:a3];
-      v10 = [(PXPeopleFaceCropFetchOptions *)self person];
+      v19 = [PXPeopleFaceCropFetchOptions allocWithZone:zone];
+      person2 = [(PXPeopleFaceCropFetchOptions *)self person];
       [(PXPeopleFaceCropFetchOptions *)self clientTargetSize];
       v21 = v20;
       v23 = v22;
       [(PXPeopleFaceCropFetchOptions *)self displayScale];
-      v25 = [(PXPeopleFaceCropFetchOptions *)v19 initWithPerson:v10 targetSize:v21 displayScale:v23, v24];
+      v25 = [(PXPeopleFaceCropFetchOptions *)v19 initWithPerson:person2 targetSize:v21 displayScale:v23, v24];
     }
 
     else
     {
-      v26 = [(PXPeopleFaceCropFetchOptions *)self face];
+      face2 = [(PXPeopleFaceCropFetchOptions *)self face];
 
-      if (!v26)
+      if (!face2)
       {
-        v35 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v35 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:130 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:130 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
 
-      v27 = [PXPeopleFaceCropFetchOptions allocWithZone:a3];
-      v10 = [(PXPeopleFaceCropFetchOptions *)self face];
+      v27 = [PXPeopleFaceCropFetchOptions allocWithZone:zone];
+      person2 = [(PXPeopleFaceCropFetchOptions *)self face];
       [(PXPeopleFaceCropFetchOptions *)self clientTargetSize];
       v29 = v28;
       v31 = v30;
       [(PXPeopleFaceCropFetchOptions *)self displayScale];
-      v25 = [(PXPeopleFaceCropFetchOptions *)v27 initWithFace:v10 targetSize:v29 displayScale:v31, v32];
+      v25 = [(PXPeopleFaceCropFetchOptions *)v27 initWithFace:person2 targetSize:v29 displayScale:v31, v32];
     }
 
     v17 = v25;
@@ -194,8 +194,8 @@
   [(PXPeopleFaceCropFetchOptions *)v17 setCropFactor:[(PXPeopleFaceCropFetchOptions *)self cropFactor]];
   [(PXPeopleFaceCropFetchOptions *)v17 setCornerStyle:[(PXPeopleFaceCropFetchOptions *)self cornerStyle]];
   [(PXPeopleFaceCropFetchOptions *)v17 setWantsFlippedContentsRect:[(PXPeopleFaceCropFetchOptions *)self wantsFlippedContentsRect]];
-  v33 = [(PXPeopleFaceCropFetchOptions *)self asset];
-  [(PXPeopleFaceCropFetchOptions *)v17 setAsset:v33];
+  asset = [(PXPeopleFaceCropFetchOptions *)self asset];
+  [(PXPeopleFaceCropFetchOptions *)v17 setAsset:asset];
 
   [(PXPeopleFaceCropFetchOptions *)v17 setDeliveryMode:[(PXPeopleFaceCropFetchOptions *)self deliveryMode]];
   [(PXPeopleFaceCropFetchOptions *)v17 setIsSynchronous:[(PXPeopleFaceCropFetchOptions *)self isSynchronous]];
@@ -207,50 +207,50 @@
 
 - (NSString)cacheKey
 {
-  v4 = [(PXPeopleFaceCropFetchOptions *)self person];
-  v5 = [(PXPeopleFaceCropFetchOptions *)self face];
-  if (!(v4 | v5))
+  person = [(PXPeopleFaceCropFetchOptions *)self person];
+  face = [(PXPeopleFaceCropFetchOptions *)self face];
+  if (!(person | face))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"person || face"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"person || face"}];
   }
 
-  v6 = [v4 localIdentifier];
-  if (![v6 length])
+  localIdentifier = [person localIdentifier];
+  if (![localIdentifier length])
   {
-    v7 = [v5 localIdentifier];
+    localIdentifier2 = [face localIdentifier];
 
-    v6 = v7;
+    localIdentifier = localIdentifier2;
   }
 
-  return v6;
+  return localIdentifier;
 }
 
 - (PHPhotoLibrary)photoLibrary
 {
-  v3 = [(PXPeopleFaceCropFetchOptions *)self person];
-  v4 = v3;
-  if (v3)
+  person = [(PXPeopleFaceCropFetchOptions *)self person];
+  v4 = person;
+  if (person)
   {
-    v5 = [v3 photoLibrary];
+    photoLibrary = [person photoLibrary];
   }
 
   else
   {
-    v6 = [(PXPeopleFaceCropFetchOptions *)self face];
-    v5 = [v6 photoLibrary];
+    face = [(PXPeopleFaceCropFetchOptions *)self face];
+    photoLibrary = [face photoLibrary];
   }
 
-  return v5;
+  return photoLibrary;
 }
 
-- (BOOL)areFetchParametersEqualtoFetchParametersOfOptions:(id)a3
+- (BOOL)areFetchParametersEqualtoFetchParametersOfOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(PXPeopleFaceCropFetchOptions *)self clientTargetSize];
   v6 = v5;
   v8 = v7;
-  [v4 clientTargetSize];
+  [optionsCopy clientTargetSize];
   if (v6 != v10 || v8 != v9)
   {
     goto LABEL_19;
@@ -258,34 +258,34 @@
 
   [(PXPeopleFaceCropFetchOptions *)self displayScale];
   v13 = v12;
-  [v4 displayScale];
+  [optionsCopy displayScale];
   if (v13 != v14)
   {
     goto LABEL_19;
   }
 
-  v15 = [(PXPeopleFaceCropFetchOptions *)self cropFactor];
-  if (v15 != [v4 cropFactor])
+  cropFactor = [(PXPeopleFaceCropFetchOptions *)self cropFactor];
+  if (cropFactor != [optionsCopy cropFactor])
   {
     goto LABEL_19;
   }
 
-  v16 = [(PXPeopleFaceCropFetchOptions *)self cornerStyle];
-  if (v16 != [v4 cornerStyle])
+  cornerStyle = [(PXPeopleFaceCropFetchOptions *)self cornerStyle];
+  if (cornerStyle != [optionsCopy cornerStyle])
   {
     goto LABEL_19;
   }
 
-  v17 = [(PXPeopleFaceCropFetchOptions *)self person];
-  v18 = [v4 person];
-  v19 = v18;
-  if (v17 == v18)
+  person = [(PXPeopleFaceCropFetchOptions *)self person];
+  person2 = [optionsCopy person];
+  v19 = person2;
+  if (person == person2)
   {
   }
 
   else
   {
-    v20 = [v17 isEqual:v18];
+    v20 = [person isEqual:person2];
 
     if ((v20 & 1) == 0)
     {
@@ -293,16 +293,16 @@
     }
   }
 
-  v21 = [(PXPeopleFaceCropFetchOptions *)self face];
-  v22 = [v4 face];
-  v23 = v22;
-  if (v21 == v22)
+  face = [(PXPeopleFaceCropFetchOptions *)self face];
+  face2 = [optionsCopy face];
+  v23 = face2;
+  if (face == face2)
   {
   }
 
   else
   {
-    v24 = [v21 isEqual:v22];
+    v24 = [face isEqual:face2];
 
     if ((v24 & 1) == 0)
     {
@@ -310,22 +310,22 @@
     }
   }
 
-  v25 = [(PXPeopleFaceCropFetchOptions *)self asset];
-  v26 = [v4 asset];
-  v27 = v26;
-  if (v25 == v26)
+  asset = [(PXPeopleFaceCropFetchOptions *)self asset];
+  asset2 = [optionsCopy asset];
+  v27 = asset2;
+  if (asset == asset2)
   {
 
     goto LABEL_22;
   }
 
-  v28 = [v25 isEqual:v26];
+  v28 = [asset isEqual:asset2];
 
   if (v28)
   {
 LABEL_22:
-    v31 = [(PXPeopleFaceCropFetchOptions *)self wantsFlippedContentsRect];
-    v29 = v31 ^ [v4 wantsFlippedContentsRect] ^ 1;
+    wantsFlippedContentsRect = [(PXPeopleFaceCropFetchOptions *)self wantsFlippedContentsRect];
+    v29 = wantsFlippedContentsRect ^ [optionsCopy wantsFlippedContentsRect] ^ 1;
     goto LABEL_20;
   }
 
@@ -336,12 +336,12 @@ LABEL_20:
   return v29;
 }
 
-- (void)_commonInitWithPerson:(id)a3 face:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6
+- (void)_commonInitWithPerson:(id)person face:(id)face targetSize:(CGSize)size displayScale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  personCopy = person;
+  faceCopy = face;
   if (height <= 0.0)
   {
     PXAssertGetLog();
@@ -352,40 +352,40 @@ LABEL_20:
     PXAssertGetLog();
   }
 
-  if (a6 < 1.0)
+  if (scale < 1.0)
   {
     PXAssertGetLog();
   }
 
   self->_clientTargetSize.width = width;
   self->_clientTargetSize.height = height;
-  self->_displayScale = a6;
-  self->_targetPixelSize.width = width * a6;
-  self->_targetPixelSize.height = height * a6;
+  self->_displayScale = scale;
+  self->_targetPixelSize.width = width * scale;
+  self->_targetPixelSize.height = height * scale;
   self->_cropFactor = 0;
   self->_cornerStyle = +[PXPeopleFaceCropFetchOptions recommendedCornerStyleForCurrentAppConfiguration];
   self->_wantsFlippedContentsRect = 0;
   person = self->_person;
-  self->_person = v11;
-  v14 = v11;
+  self->_person = personCopy;
+  v14 = personCopy;
 
   face = self->_face;
-  self->_face = v12;
+  self->_face = faceCopy;
 
   self->_deliveryMode = 0;
   self->_shouldCacheResult = 1;
 }
 
-- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)a3 face:(id)a4 targetSize:(CGSize)a5 displayScale:(double)a6
+- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)person face:(id)face targetSize:(CGSize)size displayScale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v12)
+  height = size.height;
+  width = size.width;
+  personCopy = person;
+  faceCopy = face;
+  v14 = faceCopy;
+  if (personCopy)
   {
-    if (v13)
+    if (faceCopy)
     {
       goto LABEL_3;
     }
@@ -393,8 +393,8 @@ LABEL_20:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"person"}];
 
     if (v14)
     {
@@ -402,20 +402,20 @@ LABEL_20:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"face"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"face"}];
 
 LABEL_3:
-  v15 = [v12 photoLibrary];
-  v16 = [v14 photoLibrary];
-  v17 = v16;
-  if (v15 == v16)
+  photoLibrary = [personCopy photoLibrary];
+  photoLibrary2 = [v14 photoLibrary];
+  v17 = photoLibrary2;
+  if (photoLibrary == photoLibrary2)
   {
   }
 
   else
   {
-    v18 = [v15 isEqual:v16];
+    v18 = [photoLibrary isEqual:photoLibrary2];
 
     if ((v18 & 1) == 0)
     {
@@ -429,21 +429,21 @@ LABEL_3:
   v20 = v19;
   if (v19)
   {
-    [(PXPeopleFaceCropFetchOptions *)v19 _commonInitWithPerson:v12 face:v14 targetSize:width displayScale:height, a6];
+    [(PXPeopleFaceCropFetchOptions *)v19 _commonInitWithPerson:personCopy face:v14 targetSize:width displayScale:height, scale];
   }
 
   return v20;
 }
 
-- (PXPeopleFaceCropFetchOptions)initWithFace:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5
+- (PXPeopleFaceCropFetchOptions)initWithFace:(id)face targetSize:(CGSize)size displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  faceCopy = face;
+  if (!faceCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"face"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"face"}];
   }
 
   v15.receiver = self;
@@ -452,21 +452,21 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    [(PXPeopleFaceCropFetchOptions *)v11 _commonInitWithPerson:0 face:v10 targetSize:width displayScale:height, a5];
+    [(PXPeopleFaceCropFetchOptions *)v11 _commonInitWithPerson:0 face:faceCopy targetSize:width displayScale:height, scale];
   }
 
   return v12;
 }
 
-- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5
+- (PXPeopleFaceCropFetchOptions)initWithPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  personCopy = person;
+  if (!personCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropFetchOptions.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v15.receiver = self;
@@ -475,48 +475,48 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    [(PXPeopleFaceCropFetchOptions *)v11 _commonInitWithPerson:v10 face:0 targetSize:width displayScale:height, a5];
+    [(PXPeopleFaceCropFetchOptions *)v11 _commonInitWithPerson:personCopy face:0 targetSize:width displayScale:height, scale];
   }
 
   return v12;
 }
 
-+ (id)_deliveryModeStringForDeliveryMode:(int64_t)a3
++ (id)_deliveryModeStringForDeliveryMode:(int64_t)mode
 {
-  if (a3 > 2)
+  if (mode > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77359F0[a3];
+    return off_1E77359F0[mode];
   }
 }
 
-+ (id)_cornerStyleStringForCornerStyle:(int64_t)a3
++ (id)_cornerStyleStringForCornerStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77359D8[a3];
+    return off_1E77359D8[style];
   }
 }
 
-+ (id)_cropFactorStringForCropFactor:(int64_t)a3
++ (id)_cropFactorStringForCropFactor:(int64_t)factor
 {
-  if (a3 > 3)
+  if (factor > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E77359B8[a3];
+    return off_1E77359B8[factor];
   }
 }
 

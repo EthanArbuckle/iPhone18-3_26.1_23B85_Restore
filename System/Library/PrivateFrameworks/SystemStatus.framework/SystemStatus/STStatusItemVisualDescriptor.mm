@@ -1,114 +1,114 @@
 @interface STStatusItemVisualDescriptor
 + (id)_defaultVisualDescriptors;
-+ (id)visualDescriptorForStatusItemWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (STStatusItemVisualDescriptor)initWithCoder:(id)a3;
-- (STStatusItemVisualDescriptor)initWithPlistRepresentation:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)visualDescriptorForStatusItemWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (STStatusItemVisualDescriptor)initWithCoder:(id)coder;
+- (STStatusItemVisualDescriptor)initWithPlistRepresentation:(id)representation;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusItemVisualDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STStatusItemVisualDescriptor *)self packageName];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  packageName = [(STStatusItemVisualDescriptor *)self packageName];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __40__STStatusItemVisualDescriptor_isEqual___block_invoke;
   v30[3] = &unk_1E85DDD28;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
-  v8 = [v5 appendString:v6 counterpart:v30];
+  v8 = [v5 appendString:packageName counterpart:v30];
 
-  v9 = [(STStatusItemVisualDescriptor *)self systemImageName];
+  systemImageName = [(STStatusItemVisualDescriptor *)self systemImageName];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __40__STStatusItemVisualDescriptor_isEqual___block_invoke_2;
   v28[3] = &unk_1E85DDD28;
   v10 = v7;
   v29 = v10;
-  v11 = [v5 appendString:v9 counterpart:v28];
+  v11 = [v5 appendString:systemImageName counterpart:v28];
 
-  v12 = [(STStatusItemVisualDescriptor *)self imageName];
+  imageName = [(STStatusItemVisualDescriptor *)self imageName];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __40__STStatusItemVisualDescriptor_isEqual___block_invoke_3;
   v26[3] = &unk_1E85DDD28;
   v13 = v10;
   v27 = v13;
-  v14 = [v5 appendString:v12 counterpart:v26];
+  v14 = [v5 appendString:imageName counterpart:v26];
 
-  v15 = [(STStatusItemVisualDescriptor *)self textLabel];
+  textLabel = [(STStatusItemVisualDescriptor *)self textLabel];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __40__STStatusItemVisualDescriptor_isEqual___block_invoke_4;
   v24[3] = &unk_1E85DDD28;
   v16 = v13;
   v25 = v16;
-  v17 = [v5 appendString:v15 counterpart:v24];
+  v17 = [v5 appendString:textLabel counterpart:v24];
 
-  v18 = [(STStatusItemVisualDescriptor *)self isCallToAction];
+  isCallToAction = [(STStatusItemVisualDescriptor *)self isCallToAction];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __40__STStatusItemVisualDescriptor_isEqual___block_invoke_5;
   v22[3] = &unk_1E85DDD50;
   v23 = v16;
   v19 = v16;
-  v20 = [v5 appendBool:v18 counterpart:v22];
-  LOBYTE(v18) = [v5 isEqual];
+  v20 = [v5 appendBool:isCallToAction counterpart:v22];
+  LOBYTE(isCallToAction) = [v5 isEqual];
 
-  return v18;
+  return isCallToAction;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STStatusItemVisualDescriptor *)self packageName];
-  v5 = [v3 appendString:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  packageName = [(STStatusItemVisualDescriptor *)self packageName];
+  v5 = [builder appendString:packageName];
 
-  v6 = [(STStatusItemVisualDescriptor *)self systemImageName];
-  v7 = [v3 appendString:v6];
+  systemImageName = [(STStatusItemVisualDescriptor *)self systemImageName];
+  v7 = [builder appendString:systemImageName];
 
-  v8 = [(STStatusItemVisualDescriptor *)self imageName];
-  v9 = [v3 appendString:v8];
+  imageName = [(STStatusItemVisualDescriptor *)self imageName];
+  v9 = [builder appendString:imageName];
 
-  v10 = [(STStatusItemVisualDescriptor *)self textLabel];
-  v11 = [v3 appendString:v10];
+  textLabel = [(STStatusItemVisualDescriptor *)self textLabel];
+  v11 = [builder appendString:textLabel];
 
-  v12 = [v3 appendBool:{-[STStatusItemVisualDescriptor isCallToAction](self, "isCallToAction")}];
-  v13 = [v3 hash];
+  v12 = [builder appendBool:{-[STStatusItemVisualDescriptor isCallToAction](self, "isCallToAction")}];
+  v13 = [builder hash];
 
   return v13;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusItemVisualDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusItemVisualDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemVisualDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusItemVisualDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemVisualDescriptor *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusItemVisualDescriptor *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 id __80__STStatusItemVisualDescriptor__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke(uint64_t a1)
@@ -132,33 +132,33 @@ id __80__STStatusItemVisualDescriptor__descriptionBuilderWithMultilinePrefix_for
   return [*(a1 + 32) appendBool:objc_msgSend(*(a1 + 40) withName:"isCallToAction") ifEqualTo:{@"callToAction", 1}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(STStatusItemVisualDescriptor *)self packageName];
-  [v8 encodeObject:v4 forKey:@"packageName"];
+  coderCopy = coder;
+  packageName = [(STStatusItemVisualDescriptor *)self packageName];
+  [coderCopy encodeObject:packageName forKey:@"packageName"];
 
-  v5 = [(STStatusItemVisualDescriptor *)self systemImageName];
-  [v8 encodeObject:v5 forKey:@"systemImageName"];
+  systemImageName = [(STStatusItemVisualDescriptor *)self systemImageName];
+  [coderCopy encodeObject:systemImageName forKey:@"systemImageName"];
 
-  v6 = [(STStatusItemVisualDescriptor *)self imageName];
-  [v8 encodeObject:v6 forKey:@"imageName"];
+  imageName = [(STStatusItemVisualDescriptor *)self imageName];
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
 
-  v7 = [(STStatusItemVisualDescriptor *)self textLabel];
-  [v8 encodeObject:v7 forKey:@"textLabel"];
+  textLabel = [(STStatusItemVisualDescriptor *)self textLabel];
+  [coderCopy encodeObject:textLabel forKey:@"textLabel"];
 
-  [v8 encodeBool:-[STStatusItemVisualDescriptor isCallToAction](self forKey:{"isCallToAction"), @"callToAction"}];
+  [coderCopy encodeBool:-[STStatusItemVisualDescriptor isCallToAction](self forKey:{"isCallToAction"), @"callToAction"}];
 }
 
-- (STStatusItemVisualDescriptor)initWithCoder:(id)a3
+- (STStatusItemVisualDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"packageName"];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:@"systemImageName"];
-  v8 = [v4 decodeObjectOfClass:v5 forKey:@"imageName"];
-  v9 = [v4 decodeObjectOfClass:v5 forKey:@"textLabel"];
-  v10 = [v4 decodeBoolForKey:@"callToAction"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"packageName"];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:@"systemImageName"];
+  v8 = [coderCopy decodeObjectOfClass:v5 forKey:@"imageName"];
+  v9 = [coderCopy decodeObjectOfClass:v5 forKey:@"textLabel"];
+  v10 = [coderCopy decodeBoolForKey:@"callToAction"];
 
   v21.receiver = self;
   v21.super_class = STStatusItemVisualDescriptor;
@@ -187,24 +187,24 @@ id __80__STStatusItemVisualDescriptor__descriptionBuilderWithMultilinePrefix_for
   return v11;
 }
 
-- (STStatusItemVisualDescriptor)initWithPlistRepresentation:(id)a3
+- (STStatusItemVisualDescriptor)initWithPlistRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v14.receiver = self;
   v14.super_class = STStatusItemVisualDescriptor;
   v5 = [(STStatusItemVisualDescriptor *)&v14 init];
   if (v5)
   {
-    v6 = [v4 bs_safeDictionaryForKey:@"SystemImage"];
+    v6 = [representationCopy bs_safeDictionaryForKey:@"SystemImage"];
     v7 = [v6 bs_safeStringForKey:@"InternalSymbolName"];
     systemImageName = v5->_systemImageName;
     v5->_systemImageName = v7;
 
-    v9 = [v4 bs_safeStringForKey:@"TextLabel"];
+    v9 = [representationCopy bs_safeStringForKey:@"TextLabel"];
     textLabel = v5->_textLabel;
     v5->_textLabel = v9;
 
-    v5->_callToAction = [v4 bs_BOOLForKey:@"IsCallToAction"];
+    v5->_callToAction = [representationCopy bs_BOOLForKey:@"IsCallToAction"];
     if (!v5->_textLabel && !v5->_systemImageName && !v5->_imageName && !v5->_packageName)
     {
       v11 = STSystemStatusLogBundleLoading();
@@ -219,21 +219,21 @@ id __80__STStatusItemVisualDescriptor__descriptionBuilderWithMultilinePrefix_for
   return v5;
 }
 
-+ (id)visualDescriptorForStatusItemWithIdentifier:(id)a3
++ (id)visualDescriptorForStatusItemWithIdentifier:(id)identifier
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__STStatusItemVisualDescriptor_BuiltIns__visualDescriptorForStatusItemWithIdentifier___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = _MergedGlobals_1_0;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&_MergedGlobals_1_0, block);
   }
 
-  v5 = [qword_1ED7F5C78 objectForKey:v4];
+  v5 = [qword_1ED7F5C78 objectForKey:identifierCopy];
 
   return v5;
 }
@@ -249,49 +249,49 @@ uint64_t __86__STStatusItemVisualDescriptor_BuiltIns__visualDescriptorForStatusI
 
 + (id)_defaultVisualDescriptors
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = objc_opt_new();
   [v3 setSystemImageName:@"airplane"];
-  [v2 setObject:v3 forKey:@"com.apple.systemstatus.status-item.AirplaneMode"];
+  [dictionary setObject:v3 forKey:@"com.apple.systemstatus.status-item.AirplaneMode"];
 
   v4 = objc_opt_new();
   [v4 setSystemImageName:@"airplayvideo"];
-  [v2 setObject:v4 forKey:@"com.apple.systemstatus.status-item.AirPlay"];
+  [dictionary setObject:v4 forKey:@"com.apple.systemstatus.status-item.AirPlay"];
 
   v5 = objc_opt_new();
   [v5 setSystemImageName:@"alarm.fill"];
-  [v2 setObject:v5 forKey:@"com.apple.systemstatus.status-item.Alarm"];
+  [dictionary setObject:v5 forKey:@"com.apple.systemstatus.status-item.Alarm"];
 
   v6 = objc_opt_new();
   [v6 setSystemImageName:@"carplay"];
-  [v2 setObject:v6 forKey:@"com.apple.systemstatus.status-item.CarPlay"];
+  [dictionary setObject:v6 forKey:@"com.apple.systemstatus.status-item.CarPlay"];
 
   v7 = objc_opt_new();
   [v7 setSystemImageName:@"display.trianglebadge.exclamationmark"];
-  [v2 setObject:v7 forKey:@"com.apple.systemstatus.status-item.DisplayWarning"];
+  [dictionary setObject:v7 forKey:@"com.apple.systemstatus.status-item.DisplayWarning"];
 
   v8 = objc_opt_new();
   [v8 setSystemImageName:@"drop.triangle.fill"];
   [v8 setImageName:@"LiquidDetection"];
-  [v2 setObject:v8 forKey:@"com.apple.systemstatus.status-item.LiquidDetection"];
+  [dictionary setObject:v8 forKey:@"com.apple.systemstatus.status-item.LiquidDetection"];
 
   v9 = objc_opt_new();
   [v9 setSystemImageName:@"lock.rotation"];
-  [v2 setObject:v9 forKey:@"com.apple.systemstatus.status-item.RotationLock"];
+  [dictionary setObject:v9 forKey:@"com.apple.systemstatus.status-item.RotationLock"];
 
   v10 = objc_opt_new();
   [v10 setImageName:@"Student"];
-  [v2 setObject:v10 forKey:@"com.apple.systemstatus.status-item.Student"];
+  [dictionary setObject:v10 forKey:@"com.apple.systemstatus.status-item.Student"];
 
   v11 = objc_opt_new();
   [v11 setSystemImageName:@"teletype"];
-  [v2 setObject:v11 forKey:@"com.apple.systemstatus.status-item.TTY"];
+  [dictionary setObject:v11 forKey:@"com.apple.systemstatus.status-item.TTY"];
 
   v12 = objc_opt_new();
   [v12 setImageName:@"VPN"];
-  [v2 setObject:v12 forKey:@"com.apple.systemstatus.status-item.VPN"];
+  [dictionary setObject:v12 forKey:@"com.apple.systemstatus.status-item.VPN"];
 
-  return v2;
+  return dictionary;
 }
 
 @end

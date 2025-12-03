@@ -1,91 +1,91 @@
 @interface PGSingleMomentMemoryGenerator
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5;
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8;
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block;
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph;
 @end
 
 @implementation PGSingleMomentMemoryGenerator
 
-- (id)titleGeneratorForTriggeredMemory:(id)a3 withKeyAsset:(id)a4 curatedAssets:(id)a5 extendedCuratedAssets:(id)a6 titleGenerationContext:(id)a7 inGraph:(id)a8
+- (id)titleGeneratorForTriggeredMemory:(id)memory withKeyAsset:(id)asset curatedAssets:(id)assets extendedCuratedAssets:(id)curatedAssets titleGenerationContext:(id)context inGraph:(id)graph
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [v14 triggerTypes];
-  v21 = [v20 containsIndex:4];
+  memoryCopy = memory;
+  assetCopy = asset;
+  assetsCopy = assets;
+  curatedAssetsCopy = curatedAssets;
+  contextCopy = context;
+  graphCopy = graph;
+  triggerTypes = [memoryCopy triggerTypes];
+  v21 = [triggerTypes containsIndex:4];
 
   if (v21)
   {
     v22 = objc_alloc(MEMORY[0x277CCA970]);
-    v23 = [v14 creationDate];
-    v24 = [v22 initWithStartDate:v23 duration:0.0];
+    creationDate = [memoryCopy creationDate];
+    anyNode = [v22 initWithStartDate:creationDate duration:0.0];
 
     v25 = [PGTitleGenerator alloc];
-    v26 = [v14 memoryMomentNodes];
-    v27 = [v26 set];
-    v28 = [(PGTitleGenerator *)v25 initWithMomentNodes:v27 referenceDateInterval:v24 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:1 titleGenerationContext:v18];
+    memoryMomentNodes = [memoryCopy memoryMomentNodes];
+    v27 = [memoryMomentNodes set];
+    v28 = [(PGTitleGenerator *)v25 initWithMomentNodes:v27 referenceDateInterval:anyNode keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:1 titleGenerationContext:contextCopy];
 
 LABEL_5:
     goto LABEL_7;
   }
 
-  v29 = [v14 triggerTypes];
-  v30 = [v29 containsIndex:11];
+  triggerTypes2 = [memoryCopy triggerTypes];
+  v30 = [triggerTypes2 containsIndex:11];
 
   if (v30)
   {
     v31 = MEMORY[0x277D27690];
-    v32 = [v14 creationDate];
-    v33 = [v31 yearFromDate:v32];
+    creationDate2 = [memoryCopy creationDate];
+    v33 = [v31 yearFromDate:creationDate2];
 
-    v34 = [v14 memoryMomentNodes];
-    v24 = [v34 anyNode];
+    memoryMomentNodes2 = [memoryCopy memoryMomentNodes];
+    anyNode = [memoryMomentNodes2 anyNode];
 
     v35 = MEMORY[0x277D27690];
-    v36 = [v24 universalStartDate];
-    v37 = [v35 yearFromDate:v36];
+    universalStartDate = [anyNode universalStartDate];
+    v37 = [v35 yearFromDate:universalStartDate];
 
-    v28 = [[PGThrowbackThursdayMemoryTitleGenerator alloc] initWithMomentNode:v24 numberOfYearsAgo:v33 - v37 titleGenerationContext:v18];
+    v28 = [[PGThrowbackThursdayMemoryTitleGenerator alloc] initWithMomentNode:anyNode numberOfYearsAgo:v33 - v37 titleGenerationContext:contextCopy];
     goto LABEL_5;
   }
 
   v39.receiver = self;
   v39.super_class = PGSingleMomentMemoryGenerator;
-  v28 = [(PGMemoryGenerator *)&v39 titleGeneratorForTriggeredMemory:v14 withKeyAsset:v15 curatedAssets:v16 extendedCuratedAssets:v17 titleGenerationContext:v18 inGraph:v19];
+  v28 = [(PGMemoryGenerator *)&v39 titleGeneratorForTriggeredMemory:memoryCopy withKeyAsset:assetCopy curatedAssets:assetsCopy extendedCuratedAssets:curatedAssetsCopy titleGenerationContext:contextCopy inGraph:graphCopy];
 LABEL_7:
 
   return v28;
 }
 
-- (id)generatePotentialMemoriesForProcessingWindow:(id)a3 graph:(id)a4 progressBlock:(id)a5
+- (id)generatePotentialMemoriesForProcessingWindow:(id)window graph:(id)graph progressBlock:(id)block
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  graphCopy = graph;
   v8 = MEMORY[0x277CBEB18];
-  v9 = a3;
+  windowCopy = window;
   v10 = objc_alloc_init(v8);
-  v11 = [(PGMemoryGenerator *)self memoryGenerationContext];
-  v12 = [v11 momentNodesForProcessingWindow:v9 inGraph:v7];
+  memoryGenerationContext = [(PGMemoryGenerator *)self memoryGenerationContext];
+  v12 = [memoryGenerationContext momentNodesForProcessingWindow:windowCopy inGraph:graphCopy];
 
-  v13 = [v12 interestingForMemoriesSubset];
+  interestingForMemoriesSubset = [v12 interestingForMemoriesSubset];
 
-  v14 = [v13 momentNodesWithMinimumNumberOfExtendedCuratedAssets:13];
+  v14 = [interestingForMemoriesSubset momentNodesWithMinimumNumberOfExtendedCuratedAssets:13];
 
   if ([v14 count])
   {
-    v15 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:16 inGraph:v7];
-    v16 = [v15 momentNodes];
-    v17 = [v14 collectionBySubtracting:v16];
+    v15 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:16 inGraph:graphCopy];
+    momentNodes = [v15 momentNodes];
+    v17 = [v14 collectionBySubtracting:momentNodes];
 
-    v18 = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
-    v19 = [v18 momentNodesWithBlockedFeature];
+    momentNodesWithBlockedFeatureCache = [(PGMemoryGenerator *)self momentNodesWithBlockedFeatureCache];
+    momentNodesWithBlockedFeature = [momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeature];
 
-    v20 = [v17 collectionBySubtracting:v19];
+    v20 = [v17 collectionBySubtracting:momentNodesWithBlockedFeature];
 
-    v21 = [(PGMemoryGenerator *)self memoryGenerationContext];
-    v22 = [v21 momentNodesAtSensitiveLocationsInGraph:v7];
+    memoryGenerationContext2 = [(PGMemoryGenerator *)self memoryGenerationContext];
+    v22 = [memoryGenerationContext2 momentNodesAtSensitiveLocationsInGraph:graphCopy];
 
     v14 = [v20 collectionBySubtracting:v22];
 

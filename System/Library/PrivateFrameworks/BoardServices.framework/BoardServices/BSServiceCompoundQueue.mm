@@ -1,21 +1,21 @@
 @interface BSServiceCompoundQueue
-+ (id)queueWithDispatchQueue:(id)a3 targetQueue:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)queueWithDispatchQueue:(id)queue targetQueue:(id)targetQueue;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)_performAsync:(id)a3 withHandoff:(id)a4;
-- (void)_xpcReplyQueue_performReply:(id)a3;
-- (void)performAfter:(double)a3 withBlock:(id)a4;
-- (void)performAsync:(id)a3;
+- (void)_performAsync:(id)async withHandoff:(id)handoff;
+- (void)_xpcReplyQueue_performReply:(id)reply;
+- (void)performAfter:(double)after withBlock:(id)block;
+- (void)performAsync:(id)async;
 @end
 
 @implementation BSServiceCompoundQueue
 
-+ (id)queueWithDispatchQueue:(id)a3 targetQueue:(id)a4
++ (id)queueWithDispatchQueue:(id)queue targetQueue:(id)targetQueue
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  queueCopy = queue;
+  targetQueueCopy = targetQueue;
+  v10 = queueCopy;
   if (!v10)
   {
     v23 = MEMORY[0x1E696AEC0];
@@ -33,7 +33,7 @@
       *&v59[12] = 2114;
       *&v59[14] = v29;
       v60 = 2048;
-      v61 = a1;
+      selfCopy4 = self;
       v62 = 2114;
       v63 = @"BSServiceQueue.m";
       v64 = 1024;
@@ -54,13 +54,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v31 = MEMORY[0x1E696AEC0];
-    v32 = [v10 classForCoder];
-    if (!v32)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v32 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v33 = NSStringFromClass(v32);
+    v33 = NSStringFromClass(classForCoder);
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
     v36 = [v31 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"dispatchQueue", v33, v35];
@@ -75,7 +75,7 @@
       *&v59[12] = 2114;
       *&v59[14] = v39;
       v60 = 2048;
-      v61 = a1;
+      selfCopy4 = self;
       v62 = 2114;
       v63 = @"BSServiceQueue.m";
       v64 = 1024;
@@ -92,7 +92,7 @@
     JUMPOUT(0x19A855E2CLL);
   }
 
-  v11 = v9;
+  v11 = targetQueueCopy;
   if (!v11)
   {
     v41 = MEMORY[0x1E696AEC0];
@@ -110,7 +110,7 @@
       *&v59[12] = 2114;
       *&v59[14] = v47;
       v60 = 2048;
-      v61 = a1;
+      selfCopy4 = self;
       v62 = 2114;
       v63 = @"BSServiceQueue.m";
       v64 = 1024;
@@ -131,13 +131,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v49 = MEMORY[0x1E696AEC0];
-    v50 = [v11 classForCoder];
-    if (!v50)
+    classForCoder2 = [v11 classForCoder];
+    if (!classForCoder2)
     {
-      v50 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v51 = NSStringFromClass(v50);
+    v51 = NSStringFromClass(classForCoder2);
     v52 = objc_opt_class();
     v53 = NSStringFromClass(v52);
     v54 = [v49 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"targetQueue", v51, v53];
@@ -152,7 +152,7 @@
       *&v59[12] = 2114;
       *&v59[14] = v57;
       v60 = 2048;
-      v61 = a1;
+      selfCopy4 = self;
       v62 = 2114;
       v63 = @"BSServiceQueue.m";
       v64 = 1024;
@@ -202,8 +202,8 @@
     if (v19)
     {
       v19[1] = v15;
-      objc_storeStrong(v19 + 2, a3);
-      objc_storeStrong(v20 + 3, a4);
+      objc_storeStrong(v19 + 2, queue);
+      objc_storeStrong(v20 + 3, targetQueue);
     }
   }
 
@@ -217,15 +217,15 @@
   return v20;
 }
 
-- (void)_performAsync:(id)a3 withHandoff:(id)a4
+- (void)_performAsync:(id)async withHandoff:(id)handoff
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  asyncCopy = async;
+  handoffCopy = handoff;
+  v8 = handoffCopy;
+  if (asyncCopy)
   {
     dispatchQueue = self->_dispatchQueue;
-    if (v7)
+    if (handoffCopy)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -233,7 +233,7 @@
       v13[3] = &unk_1E7520B68;
       v13[4] = self;
       v10 = &v15;
-      v15 = v6;
+      v15 = asyncCopy;
       v14 = v8;
       [(BSServiceDispatchQueue *)dispatchQueue _performAsync:v13 withHandoff:v14];
     }
@@ -246,27 +246,27 @@
       v11[3] = &unk_1E7520648;
       v11[4] = self;
       v10 = &v12;
-      v12 = v6;
+      v12 = asyncCopy;
       [(BSServiceDispatchQueue *)dispatchQueue performAsync:v11];
     }
   }
 }
 
-- (void)_xpcReplyQueue_performReply:(id)a3
+- (void)_xpcReplyQueue_performReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(BSServiceDispatchQueue *)self->_dispatchQueue assertBarrierOnQueue];
-  if (v4)
+  if (replyCopy)
   {
-    [(BSServiceQueue *)self->_targetQueue performAsync:v4];
+    [(BSServiceQueue *)self->_targetQueue performAsync:replyCopy];
   }
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  asyncCopy = async;
+  v5 = asyncCopy;
+  if (asyncCopy)
   {
     dispatchQueue = self->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -274,16 +274,16 @@
     v7[2] = __39__BSServiceCompoundQueue_performAsync___block_invoke;
     v7[3] = &unk_1E7520648;
     v7[4] = self;
-    v8 = v4;
+    v8 = asyncCopy;
     [(BSServiceDispatchQueue *)dispatchQueue performAsync:v7];
   }
 }
 
-- (void)performAfter:(double)a3 withBlock:(id)a4
+- (void)performAfter:(double)after withBlock:(id)block
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  blockCopy = block;
+  v7 = blockCopy;
+  if (blockCopy)
   {
     dispatchQueue = self->_dispatchQueue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -291,15 +291,15 @@
     v9[2] = __49__BSServiceCompoundQueue_performAfter_withBlock___block_invoke;
     v9[3] = &unk_1E7520648;
     v9[4] = self;
-    v10 = v6;
-    [(BSServiceDispatchQueue *)dispatchQueue performAfter:v9 withBlock:a3];
+    v10 = blockCopy;
+    [(BSServiceDispatchQueue *)dispatchQueue performAfter:v9 withBlock:after];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -307,9 +307,9 @@
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && [(BSServiceDispatchQueue *)self->_dispatchQueue isEqual:v4->_dispatchQueue])
+    if (v5 == objc_opt_class() && [(BSServiceDispatchQueue *)self->_dispatchQueue isEqual:equalCopy->_dispatchQueue])
     {
-      v6 = [(BSServiceQueue *)self->_targetQueue isEqual:v4->_targetQueue];
+      v6 = [(BSServiceQueue *)self->_targetQueue isEqual:equalCopy->_targetQueue];
     }
 
     else
@@ -326,9 +326,9 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_dispatchQueue withName:@"dispatchQueue"];
   v5 = [v3 appendObject:self->_targetQueue withName:@"targetQueue"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

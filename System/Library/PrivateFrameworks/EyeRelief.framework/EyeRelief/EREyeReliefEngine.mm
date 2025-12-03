@@ -1,17 +1,17 @@
 @interface EREyeReliefEngine
-+ (float)_countReductionForInactiveTime:(double)a3 forSamplingInterval:(double)a4;
-- (BOOL)cancelWithError:(id *)a3;
-- (BOOL)invalidateWithError:(id *)a3;
-- (id)_initFromUserDefaults:(BOOL)a3;
-- (void)_processDistanceEvent:(id)a3;
-- (void)processInactivity:(double)a3 forSamplingInterval:(double)a4;
-- (void)processInterventionOutcome:(int64_t)a3;
-- (void)takeDistanceSampleWithCompletion:(id)a3;
++ (float)_countReductionForInactiveTime:(double)time forSamplingInterval:(double)interval;
+- (BOOL)cancelWithError:(id *)error;
+- (BOOL)invalidateWithError:(id *)error;
+- (id)_initFromUserDefaults:(BOOL)defaults;
+- (void)_processDistanceEvent:(id)event;
+- (void)processInactivity:(double)inactivity forSamplingInterval:(double)interval;
+- (void)processInterventionOutcome:(int64_t)outcome;
+- (void)takeDistanceSampleWithCompletion:(id)completion;
 @end
 
 @implementation EREyeReliefEngine
 
-- (id)_initFromUserDefaults:(BOOL)a3
+- (id)_initFromUserDefaults:(BOOL)defaults
 {
   v13.receiver = self;
   v13.super_class = EREyeReliefEngine;
@@ -22,7 +22,7 @@
     attentionAwarenessClient = v4->_attentionAwarenessClient;
     v4->_attentionAwarenessClient = v5;
 
-    if (a3)
+    if (defaults)
     {
       v7 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.EyeRelief"];
       userDefaults = v4->_userDefaults;
@@ -49,9 +49,9 @@
   return v4;
 }
 
-- (void)processInterventionOutcome:(int64_t)a3
+- (void)processInterventionOutcome:(int64_t)outcome
 {
-  if (a3 == 2)
+  if (outcome == 2)
   {
     [(EREyeReliefEngine *)self tooCloseCount];
     *&v6 = fmaxf(v5 + -1.0, 0.0);
@@ -62,46 +62,46 @@
     v9 = [v7 stringWithFormat:@"User moved device back, reduced count to %f", v8];
     [ERLogging log:v9 withType:0];
 
-    v10 = [(EREyeReliefEngine *)self userDefaults];
+    userDefaults = [(EREyeReliefEngine *)self userDefaults];
     [(EREyeReliefEngine *)self tooCloseCount];
-    [v10 setFloat:@"TooCloseCount" forKey:?];
+    [userDefaults setFloat:@"TooCloseCount" forKey:?];
   }
 }
 
-- (void)processInactivity:(double)a3 forSamplingInterval:(double)a4
+- (void)processInactivity:(double)inactivity forSamplingInterval:(double)interval
 {
-  [objc_opt_class() _countReductionForInactiveTime:a3 forSamplingInterval:a4];
+  [objc_opt_class() _countReductionForInactiveTime:inactivity forSamplingInterval:interval];
   v7 = v6;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sampling was inactive for %f, will reduce count by %f", *&a3, v6];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sampling was inactive for %f, will reduce count by %f", *&inactivity, v6];
   [ERLogging log:v8 withType:0];
 
   [(EREyeReliefEngine *)self tooCloseCount];
   *&v10 = fmaxf(v9 - v7, 0.0);
   [(EREyeReliefEngine *)self setTooCloseCount:v10];
   [(EREyeReliefEngine *)self setInterventionType:0];
-  v11 = [(EREyeReliefEngine *)self userDefaults];
+  userDefaults = [(EREyeReliefEngine *)self userDefaults];
   [(EREyeReliefEngine *)self tooCloseCount];
-  [v11 setFloat:@"TooCloseCount" forKey:?];
+  [userDefaults setFloat:@"TooCloseCount" forKey:?];
 }
 
-- (void)takeDistanceSampleWithCompletion:(id)a3
+- (void)takeDistanceSampleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_transaction_create();
   objc_initWeak(&location, self);
-  v6 = [(EREyeReliefEngine *)self attentionAwarenessClient];
+  attentionAwarenessClient = [(EREyeReliefEngine *)self attentionAwarenessClient];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__EREyeReliefEngine_takeDistanceSampleWithCompletion___block_invoke;
   v16[3] = &unk_278FD7DC8;
-  v7 = v4;
+  v7 = completionCopy;
   v18 = v7;
   objc_copyWeak(&v19, &location);
   v8 = v5;
   v17 = v8;
-  [v6 setInterruptHandler:v16];
+  [attentionAwarenessClient setInterruptHandler:v16];
 
-  v9 = [(EREyeReliefEngine *)self attentionAwarenessClient];
+  attentionAwarenessClient2 = [(EREyeReliefEngine *)self attentionAwarenessClient];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__EREyeReliefEngine_takeDistanceSampleWithCompletion___block_invoke_2;
@@ -111,7 +111,7 @@
   v14 = v10;
   v11 = v8;
   v13 = v11;
-  [v9 pollWithCompletion:v12];
+  [attentionAwarenessClient2 pollWithCompletion:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v19);
@@ -149,28 +149,28 @@ void __54__EREyeReliefEngine_takeDistanceSampleWithCompletion___block_invoke_2(u
   }
 }
 
-- (BOOL)invalidateWithError:(id *)a3
+- (BOOL)invalidateWithError:(id *)error
 {
-  v4 = [(EREyeReliefEngine *)self attentionAwarenessClient];
-  LOBYTE(a3) = [v4 invalidateWithError:a3];
+  attentionAwarenessClient = [(EREyeReliefEngine *)self attentionAwarenessClient];
+  LOBYTE(error) = [attentionAwarenessClient invalidateWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)cancelWithError:(id *)a3
+- (BOOL)cancelWithError:(id *)error
 {
-  v4 = [(EREyeReliefEngine *)self attentionAwarenessClient];
-  LOBYTE(a3) = [v4 cancelWithError:a3];
+  attentionAwarenessClient = [(EREyeReliefEngine *)self attentionAwarenessClient];
+  LOBYTE(error) = [attentionAwarenessClient cancelWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)_processDistanceEvent:(id)a3
+- (void)_processDistanceEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = MEMORY[0x277CCACA8];
-  v20 = v4;
-  if (v4)
+  v20 = eventCopy;
+  if (eventCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Processing distance sample"];
     [ERLogging log:v6 withType:0];
@@ -218,17 +218,17 @@ LABEL_12:
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shield intervention threshold reached"];
       [ERLogging log:v19 withType:0];
 
-      v17 = self;
+      selfCopy2 = self;
       v18 = 1;
     }
 
     else
     {
-      v17 = self;
+      selfCopy2 = self;
       v18 = 0;
     }
 
-    [(EREyeReliefEngine *)v17 setInterventionType:v18];
+    [(EREyeReliefEngine *)selfCopy2 setInterventionType:v18];
     goto LABEL_16;
   }
 
@@ -239,12 +239,12 @@ LABEL_12:
 LABEL_16:
 }
 
-+ (float)_countReductionForInactiveTime:(double)a3 forSamplingInterval:(double)a4
++ (float)_countReductionForInactiveTime:(double)time forSamplingInterval:(double)interval
 {
   result = 0.0;
-  if (a3 >= a4)
+  if (time >= interval)
   {
-    v6 = a3 / a4;
+    v6 = time / interval;
     result = floorf(v6);
     if (result > 4.0)
     {

@@ -3,8 +3,8 @@
 - (CKDAKSLockMonitor)init;
 - (CKDLockListener)listener;
 - (void)_onqueueRecheck;
-- (void)connectTo:(id)a3;
-- (void)handleNotification:(const char *)a3;
+- (void)connectTo:(id)to;
+- (void)handleNotification:(const char *)notification;
 - (void)notifyListener;
 - (void)recheck;
 @end
@@ -39,7 +39,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = cf;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Got error querying lock state: %@", buf, 0x16u);
@@ -53,14 +53,14 @@
     v11 = 1;
   }
 
-  v12 = [(CKDAKSLockMonitor *)self locked];
+  locked = [(CKDAKSLockMonitor *)self locked];
   self->_locked = v11;
   if (![(CKDAKSLockMonitor *)self locked])
   {
     self->_unlockedSinceBoot = 1;
   }
 
-  if (v12 != [(CKDAKSLockMonitor *)self locked])
+  if (locked != [(CKDAKSLockMonitor *)self locked])
   {
     v13 = dispatch_get_global_queue(0, 0);
     block[0] = _NSConcreteStackBlock;
@@ -79,19 +79,19 @@
   return WeakRetained;
 }
 
-- (void)connectTo:(id)a3
+- (void)connectTo:(id)to
 {
-  objc_storeWeak(&self->_listener, a3);
+  objc_storeWeak(&self->_listener, to);
 
   [(CKDAKSLockMonitor *)self notifyListener];
 }
 
 - (void)notifyListener
 {
-  v3 = [(CKDAKSLockMonitor *)self listener];
-  if (v3)
+  listener = [(CKDAKSLockMonitor *)self listener];
+  if (listener)
   {
-    v4 = v3;
+    v4 = listener;
     if ([(CKDAKSLockMonitor *)self locked])
     {
       [v4 locked];
@@ -102,13 +102,13 @@
       [v4 unlocked];
     }
 
-    v3 = v4;
+    listener = v4;
   }
 }
 
-- (void)handleNotification:(const char *)a3
+- (void)handleNotification:(const char *)notification
 {
-  if (!strcmp(a3, "com.apple.mobile.keybagd.lock_status"))
+  if (!strcmp(notification, "com.apple.mobile.keybagd.lock_status"))
   {
 
     [(CKDAKSLockMonitor *)self recheck];

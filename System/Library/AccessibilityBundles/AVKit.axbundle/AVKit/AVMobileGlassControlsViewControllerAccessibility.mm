@@ -1,30 +1,30 @@
 @interface AVMobileGlassControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3;
-- (void)flashControlsWithDuration:(double)a3;
-- (void)toggleVisibility:(id)a3;
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated;
+- (void)flashControlsWithDuration:(double)duration;
+- (void)toggleVisibility:(id)visibility;
 @end
 
 @implementation AVMobileGlassControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"toggleVisibility:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"flashControlsWithDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_temporarilyVisible" withType:"B"];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_view" withType:"AVMobileGlassControlsView"];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_needsControlsVisibilityStateUpdate" withType:"B"];
-  [v3 validateClass:@"AVMobileGlassControlsView" hasInstanceMethod:@"playbackControlsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceVariable:@"_playPauseButton" withType:"AVMobileGlassPlaybackControlButton"];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_visibilityTimer" withType:"NSTimer"];
-  [v3 validateClass:@"AVPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"_updateControlsVisibilityStateIfNeededAnimated:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasProperty:@"playerController" withType:"@"];
-  [v3 validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"playPauseButtonShowsPlayIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"backwardSecondaryButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"forwardSecondaryButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"toggleVisibility:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"flashControlsWithDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_temporarilyVisible" withType:"B"];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_view" withType:"AVMobileGlassControlsView"];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_needsControlsVisibilityStateUpdate" withType:"B"];
+  [validationsCopy validateClass:@"AVMobileGlassControlsView" hasInstanceMethod:@"playbackControlsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceVariable:@"_playPauseButton" withType:"AVMobileGlassPlaybackControlButton"];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceVariable:@"_visibilityTimer" withType:"NSTimer"];
+  [validationsCopy validateClass:@"AVPlayerController" hasInstanceMethod:@"isPlaying" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"_updateControlsVisibilityStateIfNeededAnimated:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasProperty:@"playerController" withType:"@"];
+  [validationsCopy validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"playPauseButtonShowsPlayIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"backwardSecondaryButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassPlaybackControlsView" hasInstanceMethod:@"forwardSecondaryButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -72,13 +72,13 @@ id __94__AVMobileGlassControlsViewControllerAccessibility__accessibilityLoadAcce
   return v6;
 }
 
-- (void)toggleVisibility:(id)a3
+- (void)toggleVisibility:(id)visibility
 {
-  v4 = a3;
+  visibilityCopy = visibility;
   v5 = [(AVMobileGlassControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   v15.receiver = self;
   v15.super_class = AVMobileGlassControlsViewControllerAccessibility;
-  [(AVMobileGlassControlsViewControllerAccessibility *)&v15 toggleVisibility:v4];
+  [(AVMobileGlassControlsViewControllerAccessibility *)&v15 toggleVisibility:visibilityCopy];
 
   v6 = [(AVMobileGlassControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   if (v5 != v6)
@@ -111,11 +111,11 @@ id __94__AVMobileGlassControlsViewControllerAccessibility__accessibilityLoadAcce
   }
 }
 
-- (void)flashControlsWithDuration:(double)a3
+- (void)flashControlsWithDuration:(double)duration
 {
   v6.receiver = self;
   v6.super_class = AVMobileGlassControlsViewControllerAccessibility;
-  [(AVMobileGlassControlsViewControllerAccessibility *)&v6 flashControlsWithDuration:a3];
+  [(AVMobileGlassControlsViewControllerAccessibility *)&v6 flashControlsWithDuration:duration];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning() || _UIAccessibilityFullKeyboardAccessEnabled())
   {
     v4 = [(AVMobileGlassControlsViewControllerAccessibility *)self safeValueForKey:@"_visibilityTimer"];
@@ -125,9 +125,9 @@ id __94__AVMobileGlassControlsViewControllerAccessibility__accessibilityLoadAcce
   }
 }
 
-- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)a3
+- (void)_updateControlsVisibilityStateIfNeededAnimated:(id)animated
 {
-  v4 = a3;
+  animatedCopy = animated;
   v5 = [(AVMobileGlassControlsViewControllerAccessibility *)self safeBoolForKey:@"_needsControlsVisibilityStateUpdate"];
   v6 = [(AVMobileGlassControlsViewControllerAccessibility *)self safeBoolForKey:@"_temporarilyVisible"];
   if (v5 && (v6 & 1) == 0)
@@ -139,7 +139,7 @@ id __94__AVMobileGlassControlsViewControllerAccessibility__accessibilityLoadAcce
 
   v9.receiver = self;
   v9.super_class = AVMobileGlassControlsViewControllerAccessibility;
-  [(AVMobileGlassControlsViewControllerAccessibility *)&v9 _updateControlsVisibilityStateIfNeededAnimated:v4];
+  [(AVMobileGlassControlsViewControllerAccessibility *)&v9 _updateControlsVisibilityStateIfNeededAnimated:animatedCopy];
 }
 
 void __80__AVMobileGlassControlsViewControllerAccessibility_accessibilityPerformMagicTap__block_invoke(uint64_t a1)

@@ -1,10 +1,10 @@
 @interface CPLSyncSession
-+ (id)detachedSyncSessionWithScheduler:(id)a3 configuration:(id)a4 scopeFilter:(id)a5;
-+ (void)setScopeIdentifierToAutomaticallyExcludeFromMingling:(id)a3;
-- (BOOL)isAfterDate:(id)a3;
-- (BOOL)isBeforeDate:(id)a3;
-- (BOOL)isInLessThanTimeInterval:(double)a3;
-- (BOOL)isInMoreThanTimeInverval:(double)a3;
++ (id)detachedSyncSessionWithScheduler:(id)scheduler configuration:(id)configuration scopeFilter:(id)filter;
++ (void)setScopeIdentifierToAutomaticallyExcludeFromMingling:(id)mingling;
+- (BOOL)isAfterDate:(id)date;
+- (BOOL)isBeforeDate:(id)date;
+- (BOOL)isInLessThanTimeInterval:(double)interval;
+- (BOOL)isInMoreThanTimeInverval:(double)inverval;
 - (BOOL)isJustInCaseSession;
 - (BOOL)needsToAcquireRescheduler;
 - (BOOL)shouldBeDiscretionary;
@@ -13,7 +13,7 @@
 - (BOOL)shouldDefer;
 - (CPLBackgroundActivity)detachedActivity;
 - (CPLEngineScheduler)scheduler;
-- (CPLSyncSession)initWithSequenceNumber:(unint64_t)a3 expectedDate:(id)a4 scheduler:(id)a5 configuration:(id)a6 scopeFilter:(id)a7;
+- (CPLSyncSession)initWithSequenceNumber:(unint64_t)number expectedDate:(id)date scheduler:(id)scheduler configuration:(id)configuration scopeFilter:(id)filter;
 - (CPLSyncSessionRescheduler)rescheduler;
 - (CPLSyncSessionRuntimeCharacteristics)runtimeCharacteristics;
 - (NSArray)currentSessionInformation;
@@ -21,38 +21,38 @@
 - (NSString)description;
 - (NSString)whenItWillStartDescription;
 - (double)estimatedRemainingTime;
-- (id)addDeferHandler:(id)a3;
-- (id)makeThroughputReporterForCategory:(id)a3;
+- (id)addDeferHandler:(id)handler;
+- (id)makeThroughputReporterForCategory:(id)category;
 - (id)popSessionInformation;
 - (int64_t)activityState;
 - (unint64_t)currentState;
 - (void)_unwatchPredictor;
-- (void)_updatePrediction:(id)a3;
+- (void)_updatePrediction:(id)prediction;
 - (void)_watchOrUnwatchPredictorIfNecessary;
 - (void)_watchPredictor;
-- (void)deferWithBlock:(id)a3;
+- (void)deferWithBlock:(id)block;
 - (void)dropExpectedDate;
 - (void)engineIsClosing;
-- (void)excludeScopeIdentifierFromMingling:(id)a3;
-- (void)excludeScopeIdentifierFromPushToTransport:(id)a3;
-- (void)includeScopeIdentifierInMingling:(id)a3;
-- (void)includeScopeIdentifierInPushToTransport:(id)a3;
+- (void)excludeScopeIdentifierFromMingling:(id)mingling;
+- (void)excludeScopeIdentifierFromPushToTransport:(id)transport;
+- (void)includeScopeIdentifierInMingling:(id)mingling;
+- (void)includeScopeIdentifierInPushToTransport:(id)transport;
 - (void)noteClientNeedsToPullIfNecessary;
-- (void)noteSyncSessionInformation:(id)a3 arguments:(char *)a4;
-- (void)noteSyncSessionMovedToState:(unint64_t)a3;
-- (void)predictor:(id)a3 changedPrediction:(id)a4;
-- (void)removeDeferHandler:(id)a3;
-- (void)requestSyncStateAtEndOfSyncSession:(unint64_t)a3 reschedule:(BOOL)a4 proposedRescheduleDate:(id)a5;
+- (void)noteSyncSessionInformation:(id)information arguments:(char *)arguments;
+- (void)noteSyncSessionMovedToState:(unint64_t)state;
+- (void)predictor:(id)predictor changedPrediction:(id)prediction;
+- (void)removeDeferHandler:(id)handler;
+- (void)requestSyncStateAtEndOfSyncSession:(unint64_t)session reschedule:(BOOL)reschedule proposedRescheduleDate:(id)date;
 - (void)resetNoteClientNeedsToPull;
 - (void)sessionIsDone;
 - (void)sessionWillStart;
 - (void)sessionWontHappen;
-- (void)setDetachedActivity:(id)a3;
-- (void)setIsJustInCaseSession:(BOOL)a3;
-- (void)setRescheduler:(id)a3;
-- (void)setupWithConfiguration:(id)a3;
-- (void)throughputReporter:(id)a3 addedItemCount:(unint64_t)a4;
-- (void)throughputReporterDidFinish:(id)a3;
+- (void)setDetachedActivity:(id)activity;
+- (void)setIsJustInCaseSession:(BOOL)session;
+- (void)setRescheduler:(id)rescheduler;
+- (void)setupWithConfiguration:(id)configuration;
+- (void)throughputReporter:(id)reporter addedItemCount:(unint64_t)count;
+- (void)throughputReporterDidFinish:(id)finish;
 @end
 
 @implementation CPLSyncSession
@@ -85,9 +85,9 @@
       v6 = &stru_1F57BD298;
     }
 
-    v7 = [(CPLSyncSession *)self isJustInCaseSession];
+    isJustInCaseSession = [(CPLSyncSession *)self isJustInCaseSession];
     v8 = @" (just-in-case)";
-    if (!v7)
+    if (!isJustInCaseSession)
     {
       v8 = &stru_1F57BD298;
     }
@@ -100,7 +100,7 @@
 
 - (BOOL)isJustInCaseSession
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -109,16 +109,16 @@
   v5[1] = 3221225472;
   v6 = __37__CPLSyncSession_isJustInCaseSession__block_invoke;
   v7 = &unk_1E861A850;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)shouldDefer
@@ -137,7 +137,7 @@
   v7[1] = 3221225472;
   v8 = __29__CPLSyncSession_shouldDefer__block_invoke;
   v9 = &unk_1E8620288;
-  v10 = self;
+  selfCopy = self;
   v11 = &v19;
   v12 = &v13;
   v3 = v7;
@@ -148,18 +148,18 @@
   v4 = v14[5];
   if (v4)
   {
-    v5 = [v4 shouldDefer];
+    shouldDefer = [v4 shouldDefer];
   }
 
   else
   {
-    v5 = *(v20 + 24);
+    shouldDefer = *(v20 + 24);
   }
 
   _Block_object_dispose(&v13, 8);
 
   _Block_object_dispose(&v19, 8);
-  return v5 & 1;
+  return shouldDefer & 1;
 }
 
 void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
@@ -205,7 +205,7 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
     v7[1] = 3221225472;
     v8 = __43__CPLSyncSession_needsToAcquireRescheduler__block_invoke;
     v9 = &unk_1E861A850;
-    v10 = self;
+    selfCopy = self;
     v11 = &v12;
     v4 = v7;
     os_unfair_lock_lock(&self->_lock);
@@ -231,7 +231,7 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   v6[1] = 3221225472;
   v7 = __34__CPLSyncSession_detachedActivity__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -246,9 +246,9 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
 
 - (BOOL)shouldBeDiscretionary
 {
-  v3 = [(CPLSyncSession *)self rescheduler];
+  rescheduler = [(CPLSyncSession *)self rescheduler];
 
-  if (v3)
+  if (rescheduler)
   {
     return 1;
   }
@@ -273,7 +273,7 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   v6[1] = 3221225472;
   v7 = __29__CPLSyncSession_rescheduler__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -288,7 +288,7 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
 
 - (BOOL)shouldBeTemporarilyNonDiscretionary
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -297,16 +297,16 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   v5[1] = 3221225472;
   v6 = __53__CPLSyncSession_shouldBeTemporarilyNonDiscretionary__block_invoke;
   v7 = &unk_1E861A850;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (CPLEngineScheduler)scheduler
@@ -316,9 +316,9 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   return WeakRetained;
 }
 
-- (void)throughputReporterDidFinish:(id)a3
+- (void)throughputReporterDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -329,7 +329,7 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   v8[1] = 3221225472;
   v9 = __46__CPLSyncSession_throughputReporterDidFinish___block_invoke;
   v10 = &unk_1E861A850;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   v5 = v8;
   os_unfair_lock_lock(&self->_lock);
@@ -337,8 +337,8 @@ void __29__CPLSyncSession_shouldDefer__block_invoke(void *a1)
   os_unfair_lock_unlock(&self->_lock);
 
   v6 = v14[5];
-  v7 = [v4 metrics];
-  [v6 reportThroughputWorkForMetrics:v7 itemCount:0 done:1];
+  metrics = [finishCopy metrics];
+  [v6 reportThroughputWorkForMetrics:metrics itemCount:0 done:1];
 
   _Block_object_dispose(&v13, 8);
 }
@@ -360,9 +360,9 @@ void __46__CPLSyncSession_throughputReporterDidFinish___block_invoke(uint64_t a1
   }
 }
 
-- (void)throughputReporter:(id)a3 addedItemCount:(unint64_t)a4
+- (void)throughputReporter:(id)reporter addedItemCount:(unint64_t)count
 {
-  v6 = a3;
+  reporterCopy = reporter;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -373,7 +373,7 @@ void __46__CPLSyncSession_throughputReporterDidFinish___block_invoke(uint64_t a1
   v10[1] = 3221225472;
   v11 = __52__CPLSyncSession_throughputReporter_addedItemCount___block_invoke;
   v12 = &unk_1E861A850;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v7 = v10;
   os_unfair_lock_lock(&self->_lock);
@@ -381,8 +381,8 @@ void __46__CPLSyncSession_throughputReporterDidFinish___block_invoke(uint64_t a1
   os_unfair_lock_unlock(&self->_lock);
 
   v8 = v16[5];
-  v9 = [v6 metrics];
-  [v8 reportThroughputWorkForMetrics:v9 itemCount:a4 done:0];
+  metrics = [reporterCopy metrics];
+  [v8 reportThroughputWorkForMetrics:metrics itemCount:count done:0];
 
   _Block_object_dispose(&v15, 8);
 }
@@ -404,10 +404,10 @@ void __52__CPLSyncSession_throughputReporter_addedItemCount___block_invoke(uint6
   }
 }
 
-- (id)makeThroughputReporterForCategory:(id)a3
+- (id)makeThroughputReporterForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [[CPLSyncThroughputReporter alloc] initWithCategory:v4 parentReport:0];
+  categoryCopy = category;
+  v5 = [[CPLSyncThroughputReporter alloc] initWithCategory:categoryCopy parentReport:0];
 
   [(CPLSyncThroughputReporter *)v5 setDelegate:self];
 
@@ -426,7 +426,7 @@ void __52__CPLSyncSession_throughputReporter_addedItemCount___block_invoke(uint6
   v6[1] = 3221225472;
   v7 = __43__CPLSyncSession_currentSessionInformation__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -461,7 +461,7 @@ uint64_t __43__CPLSyncSession_currentSessionInformation__block_invoke(uint64_t a
   v6[1] = 3221225472;
   v7 = __39__CPLSyncSession_popSessionInformation__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -492,7 +492,7 @@ void __39__CPLSyncSession_popSessionInformation__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v7 = __30__CPLSyncSession_currentState__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -504,17 +504,17 @@ void __39__CPLSyncSession_popSessionInformation__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)noteSyncSessionMovedToState:(unint64_t)a3
+- (void)noteSyncSessionMovedToState:(unint64_t)state
 {
   v28 = *MEMORY[0x1E69E9840];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [(CPLSyncSession *)self isJustInCaseSession];
-  if (a3 < 5 && v5)
+  isJustInCaseSession = [(CPLSyncSession *)self isJustInCaseSession];
+  if (state < 5 && isJustInCaseSession)
   {
-    v7 = 0x17u >> a3;
+    v7 = 0x17u >> state;
   }
 
   else
@@ -527,9 +527,9 @@ void __39__CPLSyncSession_popSessionInformation__block_invoke(uint64_t a1)
   v14 = __46__CPLSyncSession_noteSyncSessionMovedToState___block_invoke;
   v15 = &unk_1E861BB28;
   v19 = v7 & 1;
-  v16 = self;
+  selfCopy = self;
   v17 = &v20;
-  v18 = a3;
+  stateCopy = state;
   v8 = v13;
   os_unfair_lock_lock(&self->_lock);
   v14(v8);
@@ -544,9 +544,9 @@ void __39__CPLSyncSession_popSessionInformation__block_invoke(uint64_t a1)
         v9 = __CPLSchedulerOSLogDomain();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [CPLEngineSyncManager shortDescriptionForState:a3];
+          v10 = [CPLEngineSyncManager shortDescriptionForState:state];
           *buf = 138412546;
-          v25 = self;
+          selfCopy3 = self;
           v26 = 2112;
           v27 = v10;
           _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Temporarily running %@ non-discretionary for %@", buf, 0x16u);
@@ -561,9 +561,9 @@ LABEL_15:
       v9 = __CPLSchedulerOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [CPLEngineSyncManager shortDescriptionForState:a3];
+        v11 = [CPLEngineSyncManager shortDescriptionForState:state];
         *buf = 138412546;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
         v27 = v11;
         _os_log_impl(&dword_1DC05A000, v9, OS_LOG_TYPE_DEFAULT, "Reverting %@ to discretionary for %@", buf, 0x16u);
@@ -589,15 +589,15 @@ uint64_t __46__CPLSyncSession_noteSyncSessionMovedToState___block_invoke(uint64_
   return result;
 }
 
-- (void)noteSyncSessionInformation:(id)a3 arguments:(char *)a4
+- (void)noteSyncSessionInformation:(id)information arguments:(char *)arguments
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v6 arguments:a4];
+  informationCopy = information;
+  v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:informationCopy arguments:arguments];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v11 = __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invoke;
   v12 = &unk_1E861B290;
-  v13 = self;
+  selfCopy = self;
   v8 = v7;
   v14 = v8;
   v9 = v10;
@@ -624,20 +624,20 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
   return [v2 addObject:v6];
 }
 
-- (void)predictor:(id)a3 changedPrediction:(id)a4
+- (void)predictor:(id)predictor changedPrediction:(id)prediction
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  predictorCopy = predictor;
+  predictionCopy = prediction;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v8 = __CPLSchedulerOSLogDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v7;
+      v20 = predictionCopy;
       _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Updating prediction for %@ to %{public}@", buf, 0x16u);
     }
   }
@@ -646,8 +646,8 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
   v12[1] = 3221225472;
   v13 = __46__CPLSyncSession_predictor_changedPrediction___block_invoke;
   v14 = &unk_1E861B290;
-  v15 = self;
-  v9 = v7;
+  selfCopy2 = self;
+  v9 = predictionCopy;
   v16 = v9;
   v10 = v12;
   os_unfair_lock_lock(&self->_lock);
@@ -682,11 +682,11 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
   return v3;
 }
 
-- (void)excludeScopeIdentifierFromMingling:(id)a3
+- (void)excludeScopeIdentifierFromMingling:(id)mingling
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling containsObject:v4]& 1) == 0)
+  minglingCopy = mingling;
+  if (([(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling containsObject:minglingCopy]& 1) == 0)
   {
     if (!self->_scopeIdentifiersExcludedFromMingling)
     {
@@ -701,14 +701,14 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412546;
-        v10 = self;
+        selfCopy = self;
         v11 = 2114;
-        v12 = v4;
+        v12 = minglingCopy;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "%@ will exclude %{public}@ from mingling", &v9, 0x16u);
       }
     }
 
-    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling addObject:v4];
+    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling addObject:minglingCopy];
   }
 
   [(CPLSyncSession *)self requestSyncStateAtEndOfSyncSession:4 reschedule:0];
@@ -716,11 +716,11 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)includeScopeIdentifierInMingling:(id)a3
+- (void)includeScopeIdentifierInMingling:(id)mingling
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling containsObject:v4])
+  minglingCopy = mingling;
+  if ([(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling containsObject:minglingCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -728,24 +728,24 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138412546;
-        v8 = self;
+        selfCopy = self;
         v9 = 2114;
-        v10 = v4;
+        v10 = minglingCopy;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "%@ will finally include %{public}@ in mingling", &v7, 0x16u);
       }
     }
 
-    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling removeObject:v4];
+    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromMingling removeObject:minglingCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)excludeScopeIdentifierFromPushToTransport:(id)a3
+- (void)excludeScopeIdentifierFromPushToTransport:(id)transport
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport containsObject:v4]& 1) == 0)
+  transportCopy = transport;
+  if (([(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport containsObject:transportCopy]& 1) == 0)
   {
     if (!self->_scopeIdentifiersExcludedFromPushToTransport)
     {
@@ -760,27 +760,27 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412546;
-        v10 = self;
+        selfCopy = self;
         v11 = 2114;
-        v12 = v4;
+        v12 = transportCopy;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "%@ will exclude %{public}@ from push-to-transport", &v9, 0x16u);
       }
     }
 
-    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport addObject:v4];
+    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport addObject:transportCopy];
   }
 
-  [(CPLSyncSession *)self excludeScopeIdentifierFromMingling:v4];
+  [(CPLSyncSession *)self excludeScopeIdentifierFromMingling:transportCopy];
   [(CPLSyncSession *)self requestSyncStateAtEndOfSyncSession:4 reschedule:0];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)includeScopeIdentifierInPushToTransport:(id)a3
+- (void)includeScopeIdentifierInPushToTransport:(id)transport
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport containsObject:v4])
+  transportCopy = transport;
+  if ([(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport containsObject:transportCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -788,31 +788,31 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138412546;
-        v8 = self;
+        selfCopy = self;
         v9 = 2114;
-        v10 = v4;
+        v10 = transportCopy;
         _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEFAULT, "%@ will finally include %{public}@ in push-to-transport", &v7, 0x16u);
       }
     }
 
-    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport removeObject:v4];
+    [(NSMutableSet *)self->_scopeIdentifiersExcludedFromPushToTransport removeObject:transportCopy];
   }
 
-  [(CPLSyncSession *)self includeScopeIdentifierInMingling:v4];
+  [(CPLSyncSession *)self includeScopeIdentifierInMingling:transportCopy];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupWithConfiguration:(id)a3
+- (void)setupWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  self->_allowsLocalConflictResolutionWhenOverQuota = [v4 allowsLocalConflictResolutionWhenOverQuota];
-  self->_allowsLocalConflictResolution = [v4 allowsLocalConflictResolution];
-  self->_maximumComputeStatesToUploadPerBatch = [v4 maximumComputeStatesToUploadPerBatch];
-  self->_isComputeStateTaskUploadEnabled = [v4 isComputeStateTaskUploadEnabled];
-  v5 = [v4 shouldCheckEPPCapability];
+  configurationCopy = configuration;
+  self->_allowsLocalConflictResolutionWhenOverQuota = [configurationCopy allowsLocalConflictResolutionWhenOverQuota];
+  self->_allowsLocalConflictResolution = [configurationCopy allowsLocalConflictResolution];
+  self->_maximumComputeStatesToUploadPerBatch = [configurationCopy maximumComputeStatesToUploadPerBatch];
+  self->_isComputeStateTaskUploadEnabled = [configurationCopy isComputeStateTaskUploadEnabled];
+  shouldCheckEPPCapability = [configurationCopy shouldCheckEPPCapability];
 
-  self->_shouldCheckEPPCapability = v5;
+  self->_shouldCheckEPPCapability = shouldCheckEPPCapability;
 }
 
 - (double)estimatedRemainingTime
@@ -825,7 +825,7 @@ uint64_t __55__CPLSyncSession_noteSyncSessionInformation_arguments___block_invok
   v6[1] = 3221225472;
   v7 = __40__CPLSyncSession_estimatedRemainingTime__block_invoke;
   v8 = &unk_1E861F818;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -852,10 +852,10 @@ double __40__CPLSyncSession_estimatedRemainingTime__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeDeferHandler:(id)a3
+- (void)removeDeferHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -867,14 +867,14 @@ double __40__CPLSyncSession_estimatedRemainingTime__block_invoke(uint64_t a1)
     v6[1] = 3221225472;
     v7 = __37__CPLSyncSession_removeDeferHandler___block_invoke;
     v8 = &unk_1E861A850;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
     v5 = v6;
     os_unfair_lock_lock(&self->_lock);
     v7(v5);
     os_unfair_lock_unlock(&self->_lock);
 
-    [v12[5] removeDeferHandler:v4];
+    [v12[5] removeDeferHandler:handlerCopy];
     _Block_object_dispose(&v11, 8);
   }
 }
@@ -891,9 +891,9 @@ void __37__CPLSyncSession_removeDeferHandler___block_invoke(uint64_t a1)
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v2);
 }
 
-- (id)addDeferHandler:(id)a3
+- (id)addDeferHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -904,14 +904,14 @@ void __37__CPLSyncSession_removeDeferHandler___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v9 = __34__CPLSyncSession_addDeferHandler___block_invoke;
   v10 = &unk_1E861A850;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   v5 = v8;
   os_unfair_lock_lock(&self->_lock);
   v9(v5);
   os_unfair_lock_unlock(&self->_lock);
 
-  v6 = [v14[5] addDeferHandler:v4];
+  v6 = [v14[5] addDeferHandler:handlerCopy];
   _Block_object_dispose(&v13, 8);
 
   return v6;
@@ -946,7 +946,7 @@ void __34__CPLSyncSession_addDeferHandler___block_invoke(uint64_t a1)
     v6[1] = 3221225472;
     v7 = __50__CPLSyncSession_shouldConsiderRequestingMoreTime__block_invoke;
     v8 = &unk_1E861F818;
-    v9 = self;
+    selfCopy = self;
     v10 = &v11;
     v4 = v6;
     os_unfair_lock_lock(&self->_lock);
@@ -972,15 +972,15 @@ void *__50__CPLSyncSession_shouldConsiderRequestingMoreTime__block_invoke(uint64
   return result;
 }
 
-- (void)setDetachedActivity:(id)a3
+- (void)setDetachedActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __38__CPLSyncSession_setDetachedActivity___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = activityCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_lock);
@@ -1002,7 +1002,7 @@ uint64_t __38__CPLSyncSession_setDetachedActivity___block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v5 = __44__CPLSyncSession_resetNoteClientNeedsToPull__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_lock);
   v5(v3);
@@ -1019,7 +1019,7 @@ uint64_t __38__CPLSyncSession_setDetachedActivity___block_invoke(uint64_t a1)
   v5[1] = 3221225472;
   v6 = __50__CPLSyncSession_noteClientNeedsToPullIfNecessary__block_invoke;
   v7 = &unk_1E861F818;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v3 = v5;
   os_unfair_lock_lock(&self->_lock);
@@ -1058,7 +1058,7 @@ uint64_t __50__CPLSyncSession_noteClientNeedsToPullIfNecessary__block_invoke(uin
   v6[1] = 3221225472;
   v7 = __40__CPLSyncSession_runtimeCharacteristics__block_invoke;
   v8 = &unk_1E861A850;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -1081,10 +1081,10 @@ uint64_t __40__CPLSyncSession_runtimeCharacteristics__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setRescheduler:(id)a3
+- (void)setRescheduler:(id)rescheduler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reschedulerCopy = rescheduler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1093,8 +1093,8 @@ uint64_t __40__CPLSyncSession_runtimeCharacteristics__block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v10 = __33__CPLSyncSession_setRescheduler___block_invoke;
   v11 = &unk_1E861F868;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = reschedulerCopy;
   v13 = v5;
   v14 = &v15;
   v6 = v9;
@@ -1108,7 +1108,7 @@ uint64_t __40__CPLSyncSession_runtimeCharacteristics__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_DEFAULT, "Removing just-in-case from %@ as it has been associated with a rescheduler", buf, 0xCu);
     }
   }
@@ -1149,8 +1149,8 @@ uint64_t __33__CPLSyncSession_setRescheduler___block_invoke(uint64_t a1)
 
   if (self->_watchingPredictor && self->_detachedActivity)
   {
-    v4 = [(CPLSyncSessionPredictor *)self->_predictor currentPrediction];
-    [(CPLSyncSession *)self _updatePrediction:v4];
+    currentPrediction = [(CPLSyncSessionPredictor *)self->_predictor currentPrediction];
+    [(CPLSyncSession *)self _updatePrediction:currentPrediction];
   }
 }
 
@@ -1172,13 +1172,13 @@ uint64_t __33__CPLSyncSession_setRescheduler___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updatePrediction:(id)a3
+- (void)_updatePrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   rescheduler = self->_rescheduler;
   if (rescheduler)
   {
-    [(CPLSyncSessionRescheduler *)rescheduler updateSyncSessionPrediction:v4];
+    [(CPLSyncSessionRescheduler *)rescheduler updateSyncSessionPrediction:predictionCopy];
   }
 
   else
@@ -1186,7 +1186,7 @@ uint64_t __33__CPLSyncSession_setRescheduler___block_invoke(uint64_t a1)
     detachedActivity = self->_detachedActivity;
     if (detachedActivity)
     {
-      [(CPLBackgroundActivity *)detachedActivity updatePrediction:v4];
+      [(CPLBackgroundActivity *)detachedActivity updatePrediction:predictionCopy];
     }
   }
 
@@ -1210,10 +1210,10 @@ uint64_t __33__CPLSyncSession_setRescheduler___block_invoke(uint64_t a1)
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v15 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:281 description:{@"%@ called on a detached sync session", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:281 description:{@"%@ called on a detached sync session", v15}];
 
     abort();
   }
@@ -1221,10 +1221,10 @@ uint64_t __33__CPLSyncSession_setRescheduler___block_invoke(uint64_t a1)
   expectedDate = self->_expectedDate;
   if (!expectedDate)
   {
-    v7 = [(CPLSyncSessionRescheduler *)self->_rescheduler goodConditionsDescription];
-    if (v7)
+    goodConditionsDescription = [(CPLSyncSessionRescheduler *)self->_rescheduler goodConditionsDescription];
+    if (goodConditionsDescription)
     {
-      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"when conditions are good (%@)", v7];
+      v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"when conditions are good (%@)", goodConditionsDescription];
     }
 
     else
@@ -1269,15 +1269,15 @@ LABEL_13:
       {
         v8 = NSStringFromSelector(a2);
         *buf = 138412290;
-        v17 = v8;
+        selfCopy = v8;
         _os_log_impl(&dword_1DC05A000, v7, OS_LOG_TYPE_ERROR, "%@ called on a detached sync session", buf, 0xCu);
       }
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v11 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:v10 lineNumber:272 description:{@"%@ called on a detached sync session", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:272 description:{@"%@ called on a detached sync session", v11}];
 
     abort();
   }
@@ -1288,7 +1288,7 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v4, OS_LOG_TYPE_DEFAULT, "%@ won't happen in this life: engine is closing", buf, 0xCu);
     }
   }
@@ -1297,7 +1297,7 @@ LABEL_13:
   v12[1] = 3221225472;
   v13 = __33__CPLSyncSession_engineIsClosing__block_invoke;
   v14 = &unk_1E861A940;
-  v15 = self;
+  selfCopy2 = self;
   v5 = v12;
   os_unfair_lock_lock(&self->_lock);
   v13(v5);
@@ -1323,7 +1323,7 @@ uint64_t __33__CPLSyncSession_engineIsClosing__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "%@ won't happen", buf, 0xCu);
     }
   }
@@ -1332,7 +1332,7 @@ uint64_t __33__CPLSyncSession_engineIsClosing__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v7 = __35__CPLSyncSession_sessionWontHappen__block_invoke;
   v8 = &unk_1E861A940;
-  v9 = self;
+  selfCopy2 = self;
   v4 = v6;
   os_unfair_lock_lock(&self->_lock);
   v7(v4);
@@ -1358,7 +1358,7 @@ uint64_t __35__CPLSyncSession_sessionWontHappen__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v3, OS_LOG_TYPE_DEFAULT, "%@ is done", buf, 0xCu);
     }
   }
@@ -1367,7 +1367,7 @@ uint64_t __35__CPLSyncSession_sessionWontHappen__block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v7 = __31__CPLSyncSession_sessionIsDone__block_invoke;
   v8 = &unk_1E861A940;
-  v9 = self;
+  selfCopy2 = self;
   v4 = v6;
   os_unfair_lock_lock(&self->_lock);
   v7(v4);
@@ -1384,10 +1384,10 @@ uint64_t __31__CPLSyncSession_sessionIsDone__block_invoke(uint64_t a1)
   return [v2 _unwatchPredictor];
 }
 
-- (void)deferWithBlock:(id)a3
+- (void)deferWithBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  blockCopy = block;
   if ([(CPLSyncSession *)self isDetached])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -1397,15 +1397,15 @@ uint64_t __31__CPLSyncSession_sessionIsDone__block_invoke(uint64_t a1)
       {
         v12 = NSStringFromSelector(a2);
         *buf = 138412290;
-        v22 = v12;
+        selfCopy = v12;
         _os_log_impl(&dword_1DC05A000, v11, OS_LOG_TYPE_ERROR, "%@ called on a detached sync session", buf, 0xCu);
       }
     }
 
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v15 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:v14 lineNumber:246 description:{@"%@ called on a detached sync session", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v14 lineNumber:246 description:{@"%@ called on a detached sync session", v15}];
 
     abort();
   }
@@ -1416,7 +1416,7 @@ uint64_t __31__CPLSyncSession_sessionIsDone__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, "Deferring %@", buf, 0xCu);
     }
   }
@@ -1428,8 +1428,8 @@ uint64_t __31__CPLSyncSession_sessionIsDone__block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v17 = __33__CPLSyncSession_deferWithBlock___block_invoke;
   v18 = &unk_1E861AA50;
-  v19 = self;
-  v8 = v5;
+  selfCopy2 = self;
+  v8 = blockCopy;
   v20 = v8;
   v9 = v16;
   os_unfair_lock_lock(&self->_lock);
@@ -1445,7 +1445,7 @@ uint64_t __31__CPLSyncSession_sessionIsDone__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v5 = __34__CPLSyncSession_sessionWillStart__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_lock);
   v5(v3);
@@ -1471,7 +1471,7 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isInLessThanTimeInterval:(double)a3
+- (BOOL)isInLessThanTimeInterval:(double)interval
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(CPLSyncSession *)self isDetached])
@@ -1488,20 +1488,20 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v13 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:227 description:{@"%@ called on a detached sync session", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:227 description:{@"%@ called on a detached sync session", v13}];
 
     abort();
   }
 
-  v6 = [(CPLSyncSession *)self isInLessThanTimeInterval:a3];
+  v6 = [(CPLSyncSession *)self isInLessThanTimeInterval:interval];
   v7 = *MEMORY[0x1E69E9840];
   return !v6;
 }
 
-- (BOOL)isInMoreThanTimeInverval:(double)a3
+- (BOOL)isInMoreThanTimeInverval:(double)inverval
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(CPLSyncSession *)self isDetached])
@@ -1518,10 +1518,10 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v14 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:216 description:{@"%@ called on a detached sync session", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:216 description:{@"%@ called on a detached sync session", v14}];
 
     abort();
   }
@@ -1530,7 +1530,7 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   if (expectedDate)
   {
     [(NSDate *)expectedDate timeIntervalSinceNow];
-    result = v7 > a3;
+    result = v7 > inverval;
   }
 
   else
@@ -1542,10 +1542,10 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isBeforeDate:(id)a3
+- (BOOL)isBeforeDate:(id)date
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dateCopy = date;
   if ([(CPLSyncSession *)self isDetached])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -1560,24 +1560,24 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
       }
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v13 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:211 description:{@"%@ called on a detached sync session", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v12 lineNumber:211 description:{@"%@ called on a detached sync session", v13}];
 
     abort();
   }
 
-  v6 = [(CPLSyncSession *)self isAfterDate:v5];
+  v6 = [(CPLSyncSession *)self isAfterDate:dateCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return !v6;
 }
 
-- (BOOL)isAfterDate:(id)a3
+- (BOOL)isAfterDate:(id)date
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dateCopy = date;
   if ([(CPLSyncSession *)self isDetached])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -1592,10 +1592,10 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLSyncSession.m"];
     v14 = NSStringFromSelector(a2);
-    [v12 handleFailureInMethod:a2 object:self file:v13 lineNumber:201 description:{@"%@ called on a detached sync session", v14}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v13 lineNumber:201 description:{@"%@ called on a detached sync session", v14}];
 
     abort();
   }
@@ -1603,7 +1603,7 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   expectedDate = self->_expectedDate;
   if (expectedDate)
   {
-    v7 = [(NSDate *)expectedDate compare:v5]== NSOrderedDescending;
+    v7 = [(NSDate *)expectedDate compare:dateCopy]== NSOrderedDescending;
   }
 
   else
@@ -1615,42 +1615,42 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)requestSyncStateAtEndOfSyncSession:(unint64_t)a3 reschedule:(BOOL)a4 proposedRescheduleDate:(id)a5
+- (void)requestSyncStateAtEndOfSyncSession:(unint64_t)session reschedule:(BOOL)reschedule proposedRescheduleDate:(id)date
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (self->_requiredStateAtEndOfSyncSession > a3)
+  rescheduleCopy = reschedule;
+  dateCopy = date;
+  date = dateCopy;
+  if (self->_requiredStateAtEndOfSyncSession > session)
   {
-    self->_requiredStateAtEndOfSyncSession = a3;
-    if (v5)
+    self->_requiredStateAtEndOfSyncSession = session;
+    if (rescheduleCopy)
     {
       self->_shouldRescheduleASyncSession = 1;
-      if (!v8)
+      if (!dateCopy)
       {
-        v9 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
       }
 
       proposedRescheduleDate = self->_proposedRescheduleDate;
-      v13 = v9;
+      v13 = date;
       if (proposedRescheduleDate)
       {
-        v11 = [(NSDate *)proposedRescheduleDate earlierDate:v9];
+        v11 = [(NSDate *)proposedRescheduleDate earlierDate:date];
       }
 
       else
       {
-        v11 = v9;
+        v11 = date;
       }
 
       v12 = self->_proposedRescheduleDate;
       self->_proposedRescheduleDate = v11;
 
-      v9 = v13;
+      date = v13;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](dateCopy, date);
 }
 
 - (int64_t)activityState
@@ -1669,7 +1669,7 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v8 = __31__CPLSyncSession_activityState__block_invoke;
   v9 = &unk_1E8620288;
-  v10 = self;
+  selfCopy = self;
   v11 = &v19;
   v12 = &v13;
   v3 = v7;
@@ -1680,18 +1680,18 @@ void __34__CPLSyncSession_sessionWillStart__block_invoke(uint64_t a1)
   v4 = v14[5];
   if (v4)
   {
-    v5 = [v4 activityState];
+    activityState = [v4 activityState];
   }
 
   else
   {
-    v5 = v20[3];
+    activityState = v20[3];
   }
 
   _Block_object_dispose(&v13, 8);
 
   _Block_object_dispose(&v19, 8);
-  return v5;
+  return activityState;
 }
 
 void __31__CPLSyncSession_activityState__block_invoke(void *a1)
@@ -1717,9 +1717,9 @@ void __31__CPLSyncSession_activityState__block_invoke(void *a1)
   }
 }
 
-- (void)setIsJustInCaseSession:(BOOL)a3
+- (void)setIsJustInCaseSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v27 = *MEMORY[0x1E69E9840];
   v21 = 0;
   v22 = &v21;
@@ -1733,8 +1733,8 @@ void __31__CPLSyncSession_activityState__block_invoke(void *a1)
   v10[1] = 3221225472;
   v11 = __41__CPLSyncSession_setIsJustInCaseSession___block_invoke;
   v12 = &unk_1E861BB00;
-  v16 = a3;
-  v13 = self;
+  sessionCopy2 = session;
+  selfCopy = self;
   v14 = &v21;
   v15 = &v17;
   v5 = v10;
@@ -1744,7 +1744,7 @@ void __31__CPLSyncSession_activityState__block_invoke(void *a1)
 
   if (*(v22 + 24) == 1)
   {
-    if (v3)
+    if (sessionCopy)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -1752,7 +1752,7 @@ void __31__CPLSyncSession_activityState__block_invoke(void *a1)
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v26 = self;
+          selfCopy4 = self;
           v7 = "Marking %@ as just-in-case session";
 LABEL_9:
           _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_DEFAULT, v7, buf, 0xCu);
@@ -1769,7 +1769,7 @@ LABEL_9:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = self;
+        selfCopy4 = self;
         v7 = "Removing just-in-case from %@";
         goto LABEL_9;
       }
@@ -1784,7 +1784,7 @@ LABEL_10:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Automatically reverting %@ to discretionary", buf, 0xCu);
     }
   }
@@ -1828,12 +1828,12 @@ uint64_t __41__CPLSyncSession_setIsJustInCaseSession___block_invoke(uint64_t res
   return result;
 }
 
-- (CPLSyncSession)initWithSequenceNumber:(unint64_t)a3 expectedDate:(id)a4 scheduler:(id)a5 configuration:(id)a6 scopeFilter:(id)a7
+- (CPLSyncSession)initWithSequenceNumber:(unint64_t)number expectedDate:(id)date scheduler:(id)scheduler configuration:(id)configuration scopeFilter:(id)filter
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  schedulerCopy = scheduler;
+  configurationCopy = configuration;
+  filterCopy = filter;
   v30.receiver = self;
   v30.super_class = CPLSyncSession;
   v17 = [(CPLSyncSession *)&v30 init];
@@ -1841,50 +1841,50 @@ uint64_t __41__CPLSyncSession_setIsJustInCaseSession___block_invoke(uint64_t res
   if (v17)
   {
     v17->_lock._os_unfair_lock_opaque = 0;
-    v17->_sequenceNumber = a3;
-    objc_storeStrong(&v17->_expectedDate, a4);
-    objc_storeWeak(&v18->_scheduler, v14);
-    objc_storeStrong(&v18->_scopeFilter, a7);
+    v17->_sequenceNumber = number;
+    objc_storeStrong(&v17->_expectedDate, date);
+    objc_storeWeak(&v18->_scheduler, schedulerCopy);
+    objc_storeStrong(&v18->_scopeFilter, filter);
     WeakRetained = objc_loadWeakRetained(&v18->_scheduler);
-    v20 = [WeakRetained predictor];
+    predictor = [WeakRetained predictor];
     predictor = v18->_predictor;
-    v18->_predictor = v20;
+    v18->_predictor = predictor;
 
     v18->_requiredStateAtEndOfSyncSession = 14;
-    v22 = [v14 engineLibrary];
-    v23 = [v22 libraryIdentifier];
+    engineLibrary = [schedulerCopy engineLibrary];
+    libraryIdentifier = [engineLibrary libraryIdentifier];
 
-    if (([v23 isEqualToString:@"SystemLibrary"] & 1) == 0)
+    if (([libraryIdentifier isEqualToString:@"SystemLibrary"] & 1) == 0)
     {
       v24 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v25 = [v14 engineLibrary];
-      v26 = [v25 clientAppBundleIdentifier];
-      v27 = [v24 initWithFormat:@" <%@>", v26];
+      engineLibrary2 = [schedulerCopy engineLibrary];
+      clientAppBundleIdentifier = [engineLibrary2 clientAppBundleIdentifier];
+      v27 = [v24 initWithFormat:@" <%@>", clientAppBundleIdentifier];
       descriptionSuffix = v18->_descriptionSuffix;
       v18->_descriptionSuffix = v27;
     }
 
-    [(CPLSyncSession *)v18 setupWithConfiguration:v15];
+    [(CPLSyncSession *)v18 setupWithConfiguration:configurationCopy];
   }
 
   return v18;
 }
 
-+ (void)setScopeIdentifierToAutomaticallyExcludeFromMingling:(id)a3
++ (void)setScopeIdentifierToAutomaticallyExcludeFromMingling:(id)mingling
 {
-  v3 = [a3 copy];
+  v3 = [mingling copy];
   v4 = _scopeIdentifierToAutomaticallyExcludeFromMingling;
   _scopeIdentifierToAutomaticallyExcludeFromMingling = v3;
 
   MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)detachedSyncSessionWithScheduler:(id)a3 configuration:(id)a4 scopeFilter:(id)a5
++ (id)detachedSyncSessionWithScheduler:(id)scheduler configuration:(id)configuration scopeFilter:(id)filter
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CPLSyncSession alloc] initWithSequenceNumber:-1 expectedDate:0 scheduler:v9 configuration:v8 scopeFilter:v7];
+  filterCopy = filter;
+  configurationCopy = configuration;
+  schedulerCopy = scheduler;
+  v10 = [[CPLSyncSession alloc] initWithSequenceNumber:-1 expectedDate:0 scheduler:schedulerCopy configuration:configurationCopy scopeFilter:filterCopy];
 
   return v10;
 }

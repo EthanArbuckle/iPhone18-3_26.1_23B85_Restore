@@ -1,19 +1,19 @@
 @interface CAMDelayTestHarness
-- (CAMDelayTestHarness)initWithTestName:(id)a3 secondsDelay:(int64_t)a4;
+- (CAMDelayTestHarness)initWithTestName:(id)name secondsDelay:(int64_t)delay;
 - (void)startTesting;
 @end
 
 @implementation CAMDelayTestHarness
 
-- (CAMDelayTestHarness)initWithTestName:(id)a3 secondsDelay:(int64_t)a4
+- (CAMDelayTestHarness)initWithTestName:(id)name secondsDelay:(int64_t)delay
 {
   v9.receiver = self;
   v9.super_class = CAMDelayTestHarness;
-  v5 = [(CAMPerformanceTestHarness *)&v9 initWithTestName:a3];
+  v5 = [(CAMPerformanceTestHarness *)&v9 initWithTestName:name];
   v6 = v5;
   if (v5)
   {
-    v5->__delay = a4;
+    v5->__delay = delay;
     v7 = v5;
   }
 

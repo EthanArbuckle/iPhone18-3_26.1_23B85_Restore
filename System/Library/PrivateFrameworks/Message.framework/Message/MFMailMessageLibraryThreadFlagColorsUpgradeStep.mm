@@ -1,16 +1,16 @@
 @interface MFMailMessageLibraryThreadFlagColorsUpgradeStep
-+ (id)_threadsTableSchemaWithMessagesTable:(id)a3 conversationsTable:(id)a4 threadScopesTable:(id)a5;
-+ (int)runWithConnection:(id)a3;
++ (id)_threadsTableSchemaWithMessagesTable:(id)table conversationsTable:(id)conversationsTable threadScopesTable:(id)scopesTable;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation MFMailMessageLibraryThreadFlagColorsUpgradeStep
 
-+ (id)_threadsTableSchemaWithMessagesTable:(id)a3 conversationsTable:(id)a4 threadScopesTable:(id)a5
++ (id)_threadsTableSchemaWithMessagesTable:(id)table conversationsTable:(id)conversationsTable threadScopesTable:(id)scopesTable
 {
   v51[23] = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v42 = a4;
-  v43 = a5;
+  tableCopy = table;
+  conversationsTableCopy = conversationsTable;
+  scopesTableCopy = scopesTable;
   v7 = objc_alloc(MEMORY[0x1E699B958]);
   v41 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"scope" nullable:0];
   v51[0] = v41;
@@ -86,10 +86,10 @@
   v22 = v21;
   v46 = v22;
   v23 = _Block_copy(v45);
-  v23[2](v23, @"scope", v43);
-  v23[2](v23, @"conversation", v42);
-  (*(v22 + 2))(v22, @"newest_read_message", v44, 3);
-  (*(v22 + 2))(v22, @"display_message", v44, 3);
+  v23[2](v23, @"scope", scopesTableCopy);
+  v23[2](v23, @"conversation", conversationsTableCopy);
+  (*(v22 + 2))(v22, @"newest_read_message", tableCopy, 3);
+  (*(v22 + 2))(v22, @"display_message", tableCopy, 3);
   v24 = v20;
 
   v25 = *MEMORY[0x1E69E9840];
@@ -103,17 +103,17 @@ void __125__MFMailMessageLibraryThreadFlagColorsUpgradeStep__threadsTableSchemaW
   [v7 setAsForeignKeyForTable:v8 onDelete:a4 onUpdate:0];
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  if (([v4 columnExists:@"flag_color" inTable:@"messages" type:0] & 1) == 0 && ((objc_msgSend(v4, "executeStatementString:errorMessage:", @"ALTER TABLE messages ADD COLUMN flag_color INTEGER", @"Adding messages.flag_color") & 1) == 0 || !objc_msgSend(v4, "executeStatementString:errorMessage:", @"CREATE INDEX IF NOT EXISTS messages_mailbox_conversation_id_flag_color_date_received_index ON messages(mailbox, conversation_id, flag_color, date_received)", @"Creating messages_mailbox_conversation_id_flag_color_date_received_index") || !objc_msgSend(v4, "executeStatementString:errorMessage:", @"UPDATE messages SET flag_color = ((flags & (7 << 41)) >> 41) WHERE (flags & 16) != 0", @"Setting flag_color")))
+  connectionCopy = connection;
+  if (([connectionCopy columnExists:@"flag_color" inTable:@"messages" type:0] & 1) == 0 && ((objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"ALTER TABLE messages ADD COLUMN flag_color INTEGER", @"Adding messages.flag_color") & 1) == 0 || !objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"CREATE INDEX IF NOT EXISTS messages_mailbox_conversation_id_flag_color_date_received_index ON messages(mailbox, conversation_id, flag_color, date_received)", @"Creating messages_mailbox_conversation_id_flag_color_date_received_index") || !objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"UPDATE messages SET flag_color = ((flags & (7 << 41)) >> 41) WHERE (flags & 16) != 0", @"Setting flag_color")))
   {
     goto LABEL_17;
   }
 
-  if (([v4 columnExists:@"has_red_flag" inTable:@"threads" type:0] & 1) == 0)
+  if (([connectionCopy columnExists:@"has_red_flag" inTable:@"threads" type:0] & 1) == 0)
   {
-    if (([v4 executeStatementString:@"DROP TABLE threads" errorMessage:@"Dropping threads"] & 1) != 0 && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DROP TABLE thread_flag_colors", @"Dropping thread_flag_colors") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_mailboxes", @"Clearing thread_mailboxes") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_senders", @"Clearing thread_senders") && objc_msgSend(v4, "executeStatementString:errorMessage:", @"DELETE FROM thread_recipients", @"Clearing thread_recipients"))
+    if (([connectionCopy executeStatementString:@"DROP TABLE threads" errorMessage:@"Dropping threads"] & 1) != 0 && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DROP TABLE thread_flag_colors", @"Dropping thread_flag_colors") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_mailboxes", @"Clearing thread_mailboxes") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_senders", @"Clearing thread_senders") && objc_msgSend(connectionCopy, "executeStatementString:errorMessage:", @"DELETE FROM thread_recipients", @"Clearing thread_recipients"))
     {
       v6 = objc_alloc(MEMORY[0x1E699B958]);
       v7 = [v6 initWithName:@"messages" rowIDType:2 columns:MEMORY[0x1E695E0F0]];
@@ -121,11 +121,11 @@ void __125__MFMailMessageLibraryThreadFlagColorsUpgradeStep__threadsTableSchemaW
       v9 = [v8 initWithName:@"conversations" rowIDType:2 rowIDAlias:@"conversation_id" columns:MEMORY[0x1E695E0F0]];
       v10 = objc_alloc(MEMORY[0x1E699B958]);
       v11 = [v10 initWithName:@"thread_scopes" rowIDType:2 columns:MEMORY[0x1E695E0F0]];
-      v12 = [a1 _threadsTableSchemaWithMessagesTable:v7 conversationsTable:v9 threadScopesTable:v11];
+      v12 = [self _threadsTableSchemaWithMessagesTable:v7 conversationsTable:v9 threadScopesTable:v11];
       v13 = [v12 definitionWithDatabaseName:0];
-      if ([v4 executeStatementString:v13 errorMessage:@"Creating new threads"])
+      if ([connectionCopy executeStatementString:v13 errorMessage:@"Creating new threads"])
       {
-        v14 = [v4 executeStatementString:@"UPDATE thread_scopes SET needs_update = 1" errorMessage:@"Resetting thread_scopes"];
+        v14 = [connectionCopy executeStatementString:@"UPDATE thread_scopes SET needs_update = 1" errorMessage:@"Resetting thread_scopes"];
 
         if (v14)
         {

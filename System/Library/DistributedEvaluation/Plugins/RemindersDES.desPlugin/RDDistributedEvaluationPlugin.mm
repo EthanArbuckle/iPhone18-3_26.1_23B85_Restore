@@ -1,15 +1,15 @@
 @interface RDDistributedEvaluationPlugin
 - (RDDistributedEvaluationPlugin)init;
-- (void)performEvaluation:(id)a3;
+- (void)performEvaluation:(id)evaluation;
 @end
 
 @implementation RDDistributedEvaluationPlugin
 
-- (void)performEvaluation:(id)a3
+- (void)performEvaluation:(id)evaluation
 {
-  v4 = a3;
-  v5 = self;
-  sub_2D2C(v4);
+  evaluationCopy = evaluation;
+  selfCopy = self;
+  sub_2D2C(evaluationCopy);
 }
 
 - (RDDistributedEvaluationPlugin)init

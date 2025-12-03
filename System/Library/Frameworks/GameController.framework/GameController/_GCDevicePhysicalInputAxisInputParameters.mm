@@ -1,13 +1,13 @@
 @interface _GCDevicePhysicalInputAxisInputParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputAxisInputParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)canWrap;
 - (uint64_t)isAnalog;
 - (uint64_t)setAnalog:(uint64_t)result;
 - (uint64_t)setCanWrap:(uint64_t)result;
 - (uint64_t)sources;
-- (void)setSources:(void *)a1;
+- (void)setSources:(void *)sources;
 @end
 
 @implementation _GCDevicePhysicalInputAxisInputParameters
@@ -22,23 +22,23 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDevicePhysicalInputAxisInputParameters;
-  v4 = [(_GCDevicePhysicalInputViewParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputViewParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 2, self->_sources);
   *(v4 + 8) = self->_analog;
   *(v4 + 9) = self->_canWrap;
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputAxisInputParameters;
-  v6 = [(_GCDevicePhysicalInputViewParameters *)&v8 isEqual:v4]&& ((sources = self->_sources, sources == v4[2]) || [(NSSet *)sources isEqual:?]) && self->_analog == *(v4 + 8) && self->_canWrap == *(v4 + 9);
+  v6 = [(_GCDevicePhysicalInputViewParameters *)&v8 isEqual:equalCopy]&& ((sources = self->_sources, sources == equalCopy[2]) || [(NSSet *)sources isEqual:?]) && self->_analog == *(equalCopy + 8) && self->_canWrap == *(equalCopy + 9);
 
   return v6;
 }
@@ -55,9 +55,9 @@
 
 - (uint64_t)isAnalog
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -70,9 +70,9 @@
 
 - (uint64_t)canWrap
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 9);
+    v1 = *(self + 9);
   }
 
   else
@@ -83,11 +83,11 @@
   return v1 & 1;
 }
 
-- (void)setSources:(void *)a1
+- (void)setSources:(void *)sources
 {
-  if (a1)
+  if (sources)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 16);
+    objc_setProperty_nonatomic_copy(sources, newValue, newValue, 16);
   }
 }
 

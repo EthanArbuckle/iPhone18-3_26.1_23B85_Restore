@@ -1,16 +1,16 @@
 @interface Client
-- (void)messagesComposeDidFinishWithDidSend:(BOOL)a3 reply:(id)a4;
+- (void)messagesComposeDidFinishWithDidSend:(BOOL)send reply:(id)reply;
 @end
 
 @implementation Client
 
-- (void)messagesComposeDidFinishWithDidSend:(BOOL)a3 reply:(id)a4
+- (void)messagesComposeDidFinishWithDidSend:(BOOL)send reply:(id)reply
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E526880, &qword_2410E60E8);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v15 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(reply);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = sub_2410DF350();
@@ -19,7 +19,7 @@
   *(v14 + 16) = 0;
   *(v14 + 24) = 0;
   *(v14 + 32) = self;
-  *(v14 + 40) = a3;
+  *(v14 + 40) = send;
   *(v14 + 48) = sub_2410D9A08;
   *(v14 + 56) = v12;
 

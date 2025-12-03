@@ -1,14 +1,14 @@
 @interface MapsSuggestionsCommuteWindowServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MapsSuggestionsCommuteWindowServer)initWithResourceDepot:(id)a3 conditions:(id)a4 engine:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MapsSuggestionsCommuteWindowServer)initWithResourceDepot:(id)depot conditions:(id)conditions engine:(id)engine;
 @end
 
 @implementation MapsSuggestionsCommuteWindowServer
 
-- (MapsSuggestionsCommuteWindowServer)initWithResourceDepot:(id)a3 conditions:(id)a4 engine:(id)a5
+- (MapsSuggestionsCommuteWindowServer)initWithResourceDepot:(id)depot conditions:(id)conditions engine:(id)engine
 {
-  v8 = a3;
-  v9 = a5;
+  depotCopy = depot;
+  engineCopy = engine;
   v21.receiver = self;
   v21.super_class = MapsSuggestionsCommuteWindowServer;
   v10 = [(MapsSuggestionsCommuteWindowServer *)&v21 init];
@@ -19,7 +19,7 @@
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_resourceDepot, a3);
+    objc_storeStrong(&v10->_resourceDepot, depot);
     v14 = objc_alloc_init(NSMutableArray);
     peers = v10->_peers;
     v10->_peers = v14;
@@ -29,7 +29,7 @@
     v10->_listener = v16;
 
     [(NSXPCListener *)v10->_listener setDelegate:v10];
-    objc_storeStrong(&v10->_doomEngineWrapper, a5);
+    objc_storeStrong(&v10->_doomEngineWrapper, engine);
     [(NSXPCListener *)v10->_listener resume];
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -42,22 +42,22 @@
   return v10;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = GEOFindOrCreateLog();
   v9 = v8;
-  if (v7)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v30 = v7;
+      v30 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
-    v10 = [[MapsSuggestionsCommuteWindowXPCPeer alloc] initWithXPCConnection:v7 resourceDepot:self->_resourceDepot conditions:0 doomEngine:self->_doomEngineWrapper];
+    v10 = [[MapsSuggestionsCommuteWindowXPCPeer alloc] initWithXPCConnection:connectionCopy resourceDepot:self->_resourceDepot conditions:0 doomEngine:self->_doomEngineWrapper];
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -68,9 +68,9 @@
     v28 = v9;
     dispatch_sync(queue, block);
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsCommuteWindowProxy];
-    [v7 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    [v7 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v9);
     v22[0] = _NSConcreteStackBlock;
@@ -79,7 +79,7 @@
     v22[3] = &unk_100065110;
     objc_copyWeak(&v24, buf);
     objc_copyWeak(&v25, &location);
-    v13 = v7;
+    v13 = connectionCopy;
     v23 = v13;
     [v13 setInvalidationHandler:v22];
     v18[0] = _NSConcreteStackBlock;
@@ -122,7 +122,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a newConnection", buf, 0x26u);
   }
 
-  return v7 != 0;
+  return connectionCopy != 0;
 }
 
 @end

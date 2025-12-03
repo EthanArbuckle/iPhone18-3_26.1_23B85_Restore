@@ -1,14 +1,14 @@
 @interface HDRacePreviousRouteSchemaProvider
-+ (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-+ (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
++ (id)databaseEntitiesForProtectionClass:(int64_t)class;
++ (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation HDRacePreviousRouteSchemaProvider
 
-+ (id)databaseEntitiesForProtectionClass:(int64_t)a3
++ (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
   v6[4] = *MEMORY[0x277D85DE8];
-  if (a3 == 2)
+  if (class == 2)
   {
     v6[0] = objc_opt_class();
     v6[1] = objc_opt_class();
@@ -27,15 +27,15 @@
   return v3;
 }
 
-+ (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
++ (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  if (a3 == 2)
+  if (class == 2)
   {
-    v5 = a4;
+    migratorCopy = migrator;
     objc_opt_self();
-    [v5 addMigrationForSchema:@"RacePreviousRoute" toVersion:11 foreignKeyStatus:0 handler:&__block_literal_global_9];
+    [migratorCopy addMigrationForSchema:@"RacePreviousRoute" toVersion:11 foreignKeyStatus:0 handler:&__block_literal_global_9];
 
-    v6 = v5;
+    v6 = migratorCopy;
     objc_opt_self();
     [v6 addMigrationForSchema:@"RacePreviousRoute" toVersion:12 foreignKeyStatus:0 handler:&__block_literal_global_328];
 

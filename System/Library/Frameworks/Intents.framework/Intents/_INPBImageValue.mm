@@ -1,33 +1,33 @@
 @interface _INPBImageValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBImageValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBImageValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsRenderingMode:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsRenderingMode:(id)mode;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setData:(id)a3;
-- (void)setHasRenderingMode:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasWidth:(BOOL)a3;
-- (void)setProxyServiceIdentifier:(id)a3;
-- (void)setRenderingMode:(int)a3;
-- (void)setType:(int)a3;
-- (void)setUri:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setData:(id)data;
+- (void)setHasRenderingMode:(BOOL)mode;
+- (void)setHasType:(BOOL)type;
+- (void)setHasWidth:(BOOL)width;
+- (void)setProxyServiceIdentifier:(id)identifier;
+- (void)setRenderingMode:(int)mode;
+- (void)setType:(int)type;
+- (void)setUri:(id)uri;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBImageValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_data)
   {
-    v4 = [(_INPBImageValue *)self data];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"data"];
+    data = [(_INPBImageValue *)self data];
+    v5 = [data copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"data"];
   }
 
   if ([(_INPBImageValue *)self hasHeight])
@@ -35,68 +35,68 @@
     v6 = MEMORY[0x1E696AD98];
     [(_INPBImageValue *)self height];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"height"];
+    [dictionary setObject:v7 forKeyedSubscript:@"height"];
   }
 
   if (self->_proxyServiceIdentifier)
   {
-    v8 = [(_INPBImageValue *)self proxyServiceIdentifier];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"proxyServiceIdentifier"];
+    proxyServiceIdentifier = [(_INPBImageValue *)self proxyServiceIdentifier];
+    v9 = [proxyServiceIdentifier copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"proxyServiceIdentifier"];
   }
 
   if ([(_INPBImageValue *)self hasRenderingMode])
   {
-    v10 = [(_INPBImageValue *)self renderingMode];
-    if (v10 >= 3)
+    renderingMode = [(_INPBImageValue *)self renderingMode];
+    if (renderingMode >= 3)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", renderingMode];
     }
 
     else
     {
-      v11 = off_1E7283BD0[v10];
+      v11 = off_1E7283BD0[renderingMode];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"renderingMode"];
+    [dictionary setObject:v11 forKeyedSubscript:@"renderingMode"];
   }
 
   if ([(_INPBImageValue *)self hasType])
   {
-    v12 = [(_INPBImageValue *)self type];
-    if (v12 >= 5)
+    type = [(_INPBImageValue *)self type];
+    if (type >= 5)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v13 = off_1E7283BE8[v12];
+      v13 = off_1E7283BE8[type];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"type"];
+    [dictionary setObject:v13 forKeyedSubscript:@"type"];
   }
 
   if (self->_uri)
   {
     v14 = [(_INPBImageValue *)self uri];
     v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"uri"];
+    [dictionary setObject:v15 forKeyedSubscript:@"uri"];
   }
 
-  v16 = [(_INPBImageValue *)self valueMetadata];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBImageValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
   if ([(_INPBImageValue *)self hasWidth])
   {
     v18 = MEMORY[0x1E696AD98];
     [(_INPBImageValue *)self width];
     v19 = [v18 numberWithDouble:?];
-    [v3 setObject:v19 forKeyedSubscript:@"width"];
+    [dictionary setObject:v19 forKeyedSubscript:@"width"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -194,28 +194,28 @@
   return v9 ^ v3 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(_INPBImageValue *)self data];
-  v6 = [v4 data];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBImageValue *)self data];
+  data2 = [equalCopy data];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(_INPBImageValue *)self data];
-  if (v7)
+  data3 = [(_INPBImageValue *)self data];
+  if (data3)
   {
-    v8 = v7;
-    v9 = [(_INPBImageValue *)self data];
-    v10 = [v4 data];
-    v11 = [v9 isEqual:v10];
+    v8 = data3;
+    data4 = [(_INPBImageValue *)self data];
+    data5 = [equalCopy data];
+    v11 = [data4 isEqual:data5];
 
     if (!v11)
     {
@@ -227,18 +227,18 @@
   {
   }
 
-  v12 = [(_INPBImageValue *)self hasHeight];
-  if (v12 != [v4 hasHeight])
+  hasHeight = [(_INPBImageValue *)self hasHeight];
+  if (hasHeight != [equalCopy hasHeight])
   {
     goto LABEL_34;
   }
 
   if ([(_INPBImageValue *)self hasHeight])
   {
-    if ([v4 hasHeight])
+    if ([equalCopy hasHeight])
     {
       height = self->_height;
-      [v4 height];
+      [equalCopy height];
       if (height != v14)
       {
         goto LABEL_34;
@@ -246,20 +246,20 @@
     }
   }
 
-  v5 = [(_INPBImageValue *)self proxyServiceIdentifier];
-  v6 = [v4 proxyServiceIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBImageValue *)self proxyServiceIdentifier];
+  data2 = [equalCopy proxyServiceIdentifier];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_33;
   }
 
-  v15 = [(_INPBImageValue *)self proxyServiceIdentifier];
-  if (v15)
+  proxyServiceIdentifier = [(_INPBImageValue *)self proxyServiceIdentifier];
+  if (proxyServiceIdentifier)
   {
-    v16 = v15;
-    v17 = [(_INPBImageValue *)self proxyServiceIdentifier];
-    v18 = [v4 proxyServiceIdentifier];
-    v19 = [v17 isEqual:v18];
+    v16 = proxyServiceIdentifier;
+    proxyServiceIdentifier2 = [(_INPBImageValue *)self proxyServiceIdentifier];
+    proxyServiceIdentifier3 = [equalCopy proxyServiceIdentifier];
+    v19 = [proxyServiceIdentifier2 isEqual:proxyServiceIdentifier3];
 
     if (!v19)
     {
@@ -271,45 +271,45 @@
   {
   }
 
-  v20 = [(_INPBImageValue *)self hasRenderingMode];
-  if (v20 != [v4 hasRenderingMode])
+  hasRenderingMode = [(_INPBImageValue *)self hasRenderingMode];
+  if (hasRenderingMode != [equalCopy hasRenderingMode])
   {
     goto LABEL_34;
   }
 
   if ([(_INPBImageValue *)self hasRenderingMode])
   {
-    if ([v4 hasRenderingMode])
+    if ([equalCopy hasRenderingMode])
     {
       renderingMode = self->_renderingMode;
-      if (renderingMode != [v4 renderingMode])
+      if (renderingMode != [equalCopy renderingMode])
       {
         goto LABEL_34;
       }
     }
   }
 
-  v22 = [(_INPBImageValue *)self hasType];
-  if (v22 != [v4 hasType])
+  hasType = [(_INPBImageValue *)self hasType];
+  if (hasType != [equalCopy hasType])
   {
     goto LABEL_34;
   }
 
   if ([(_INPBImageValue *)self hasType])
   {
-    if ([v4 hasType])
+    if ([equalCopy hasType])
     {
       type = self->_type;
-      if (type != [v4 type])
+      if (type != [equalCopy type])
       {
         goto LABEL_34;
       }
     }
   }
 
-  v5 = [(_INPBImageValue *)self uri];
-  v6 = [v4 uri];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBImageValue *)self uri];
+  data2 = [equalCopy uri];
+  if ((data != 0) == (data2 == 0))
   {
     goto LABEL_33;
   }
@@ -319,7 +319,7 @@
   {
     v25 = v24;
     v26 = [(_INPBImageValue *)self uri];
-    v27 = [v4 uri];
+    v27 = [equalCopy uri];
     v28 = [v26 isEqual:v27];
 
     if (!v28)
@@ -332,22 +332,22 @@
   {
   }
 
-  v5 = [(_INPBImageValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  data = [(_INPBImageValue *)self valueMetadata];
+  data2 = [equalCopy valueMetadata];
+  if ((data != 0) == (data2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v29 = [(_INPBImageValue *)self valueMetadata];
-  if (v29)
+  valueMetadata = [(_INPBImageValue *)self valueMetadata];
+  if (valueMetadata)
   {
-    v30 = v29;
-    v31 = [(_INPBImageValue *)self valueMetadata];
-    v32 = [v4 valueMetadata];
-    v33 = [v31 isEqual:v32];
+    v30 = valueMetadata;
+    valueMetadata2 = [(_INPBImageValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v33 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (!v33)
     {
@@ -359,10 +359,10 @@ LABEL_33:
   {
   }
 
-  v36 = [(_INPBImageValue *)self hasWidth];
-  if (v36 == [v4 hasWidth])
+  hasWidth = [(_INPBImageValue *)self hasWidth];
+  if (hasWidth == [equalCopy hasWidth])
   {
-    if (!-[_INPBImageValue hasWidth](self, "hasWidth") || ![v4 hasWidth] || (width = self->_width, objc_msgSend(v4, "width"), width == v38))
+    if (!-[_INPBImageValue hasWidth](self, "hasWidth") || ![equalCopy hasWidth] || (width = self->_width, objc_msgSend(equalCopy, "width"), width == v38))
     {
       v34 = 1;
       goto LABEL_35;
@@ -376,10 +376,10 @@ LABEL_35:
   return v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBImageValue allocWithZone:](_INPBImageValue init];
-  v6 = [(NSData *)self->_data copyWithZone:a3];
+  v6 = [(NSData *)self->_data copyWithZone:zone];
   [(_INPBImageValue *)v5 setData:v6];
 
   if ([(_INPBImageValue *)self hasHeight])
@@ -388,7 +388,7 @@ LABEL_35:
     [(_INPBImageValue *)v5 setHeight:?];
   }
 
-  v7 = [(NSString *)self->_proxyServiceIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_proxyServiceIdentifier copyWithZone:zone];
   [(_INPBImageValue *)v5 setProxyServiceIdentifier:v7];
 
   if ([(_INPBImageValue *)self hasRenderingMode])
@@ -401,10 +401,10 @@ LABEL_35:
     [(_INPBImageValue *)v5 setType:[(_INPBImageValue *)self type]];
   }
 
-  v8 = [(NSString *)self->_uri copyWithZone:a3];
+  v8 = [(NSString *)self->_uri copyWithZone:zone];
   [(_INPBImageValue *)v5 setUri:v8];
 
-  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v9 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBImageValue *)v5 setValueMetadata:v9];
 
   if ([(_INPBImageValue *)self hasWidth])
@@ -416,36 +416,36 @@ LABEL_35:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBImageValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBImageValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBImageValue)initWithCoder:(id)a3
+- (_INPBImageValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBImageValue *)self initWithData:v6];
+    self = [(_INPBImageValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v16 = a3;
-  v4 = [(_INPBImageValue *)self data];
+  toCopy = to;
+  data = [(_INPBImageValue *)self data];
 
-  if (v4)
+  if (data)
   {
     data = self->_data;
     PBDataWriterWriteDataField();
@@ -457,9 +457,9 @@ LABEL_35:
     PBDataWriterWriteDoubleField();
   }
 
-  v7 = [(_INPBImageValue *)self proxyServiceIdentifier];
+  proxyServiceIdentifier = [(_INPBImageValue *)self proxyServiceIdentifier];
 
-  if (v7)
+  if (proxyServiceIdentifier)
   {
     proxyServiceIdentifier = self->_proxyServiceIdentifier;
     PBDataWriterWriteStringField();
@@ -485,11 +485,11 @@ LABEL_35:
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBImageValue *)self valueMetadata];
+  valueMetadata = [(_INPBImageValue *)self valueMetadata];
 
-  if (v13)
+  if (valueMetadata)
   {
-    v14 = [(_INPBImageValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBImageValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -500,9 +500,9 @@ LABEL_35:
   }
 }
 
-- (void)setHasWidth:(BOOL)a3
+- (void)setHasWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 8;
   }
@@ -515,39 +515,39 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setUri:(id)a3
+- (void)setUri:(id)uri
 {
-  v4 = [a3 copy];
+  v4 = [uri copy];
   uri = self->_uri;
   self->_uri = v4;
 
   MEMORY[0x1EEE66BB8](v4, uri);
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Data"])
+  else if ([typeCopy isEqualToString:@"Data"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"URL"])
+  else if ([typeCopy isEqualToString:@"URL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Bundle"])
+  else if ([typeCopy isEqualToString:@"Bundle"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Proxy"])
+  else if ([typeCopy isEqualToString:@"Proxy"])
   {
     v4 = 4;
   }
@@ -560,9 +560,9 @@ LABEL_35:
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -575,10 +575,10 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -586,24 +586,24 @@ LABEL_35:
   else
   {
     *&self->_has = has | 4;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 
-- (int)StringAsRenderingMode:(id)a3
+- (int)StringAsRenderingMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Automatic"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Automatic"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AlwaysOriginal"])
+  else if ([modeCopy isEqualToString:@"AlwaysOriginal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AlwaysTemplate"])
+  else if ([modeCopy isEqualToString:@"AlwaysTemplate"])
   {
     v4 = 2;
   }
@@ -616,9 +616,9 @@ LABEL_35:
   return v4;
 }
 
-- (void)setHasRenderingMode:(BOOL)a3
+- (void)setHasRenderingMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -631,10 +631,10 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setRenderingMode:(int)a3
+- (void)setRenderingMode:(int)mode
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (mode == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -642,22 +642,22 @@ LABEL_35:
   else
   {
     *&self->_has = has | 2;
-    self->_renderingMode = a3;
+    self->_renderingMode = mode;
   }
 }
 
-- (void)setProxyServiceIdentifier:(id)a3
+- (void)setProxyServiceIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   proxyServiceIdentifier = self->_proxyServiceIdentifier;
   self->_proxyServiceIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, proxyServiceIdentifier);
 }
 
-- (void)setData:(id)a3
+- (void)setData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   data = self->_data;
   self->_data = v4;
 

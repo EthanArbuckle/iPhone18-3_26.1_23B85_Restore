@@ -1,20 +1,20 @@
 @interface TabDocument
-+ (id)blankTabTitleWithLibraryType:(id)a3 controlledByAutomation:(BOOL)a4;
-+ (id)tabDocumentForWKWebView:(id)a3;
-+ (id)urlForExternalURL:(id)a3 forPrivateBrowsing:(BOOL)a4;
++ (id)blankTabTitleWithLibraryType:(id)type controlledByAutomation:(BOOL)automation;
++ (id)tabDocumentForWKWebView:(id)view;
++ (id)urlForExternalURL:(id)l forPrivateBrowsing:(BOOL)browsing;
 - (ActionPanelActivityItemProvider)activityItemProvider;
-- (BOOL)_handleTwoFingerTapOnLinkWithContext:(uint64_t)a1;
+- (BOOL)_handleTwoFingerTapOnLinkWithContext:(uint64_t)context;
 - (BOOL)_isDeallocating;
-- (BOOL)_loadServiceWorkerOpenedURLIntent:(_BOOL8)a1;
-- (BOOL)_loadWebClip:(id *)a1;
-- (BOOL)_showICSControllerForPath:(void *)a3 sourceURL:(void *)a4 beforeDismissHandler:;
+- (BOOL)_loadServiceWorkerOpenedURLIntent:(_BOOL8)intent;
+- (BOOL)_loadWebClip:(id *)clip;
+- (BOOL)_showICSControllerForPath:(void *)path sourceURL:(void *)l beforeDismissHandler:;
 - (BOOL)_tryRetain;
-- (BOOL)_webView:(id)a3 fileUploadPanelContentIsManagedWithInitiatingFrame:(id)a4;
-- (BOOL)_webView:(id)a3 focusRequiresStrongPasswordAssistance:(id)a4;
-- (BOOL)_webView:(id)a3 gestureRecognizerCanBePreventedByTouchEvents:(id)a4;
-- (BOOL)_webView:(id)a3 gestureRecognizerCouldPinch:(id)a4;
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4;
-- (BOOL)_webViewCanBecomeFocused:(id)a3;
+- (BOOL)_webView:(id)view fileUploadPanelContentIsManagedWithInitiatingFrame:(id)frame;
+- (BOOL)_webView:(id)view focusRequiresStrongPasswordAssistance:(id)assistance;
+- (BOOL)_webView:(id)view gestureRecognizerCanBePreventedByTouchEvents:(id)events;
+- (BOOL)_webView:(id)view gestureRecognizerCouldPinch:(id)pinch;
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers;
+- (BOOL)_webViewCanBecomeFocused:(id)focused;
 - (BOOL)allowsBrowsingAssistant;
 - (BOOL)atLeastOneOtherTabPlayingAudio;
 - (BOOL)browserHasMultipleProfiles;
@@ -24,8 +24,8 @@
 - (BOOL)canOverrideStatusBar;
 - (BOOL)canShowPageFormatMenu;
 - (BOOL)createFluidProgressState;
-- (BOOL)formAutoFillControllerCanPrefillForm:(id)a3;
-- (BOOL)formAutoFillControllerDidUserDeclineAutomaticStrongPasswordForCurrentDomain:(id)a3;
+- (BOOL)formAutoFillControllerCanPrefillForm:(id)form;
+- (BOOL)formAutoFillControllerDidUserDeclineAutomaticStrongPasswordForCurrentDomain:(id)domain;
 - (BOOL)hasFailedURL;
 - (BOOL)hasQuickLookContent;
 - (BOOL)hideFindOnPage;
@@ -37,7 +37,7 @@
 - (BOOL)isLoadingStartPage;
 - (BOOL)isPageReloaded;
 - (BOOL)isReaderAvailable;
-- (BOOL)isReusableForURL:(id)a3 webClipURL:(id)a4;
+- (BOOL)isReusableForURL:(id)l webClipURL:(id)rL;
 - (BOOL)isSearchPage;
 - (BOOL)isSecure;
 - (BOOL)isShowingErrorPage;
@@ -46,24 +46,24 @@
 - (BOOL)isShowingReadingListArchive;
 - (BOOL)isShowingStartPageOverriddenByExtension;
 - (BOOL)isShowingSystemStartPage;
-- (BOOL)linkPreviewHelper:(id)a3 supportsAction:(int64_t)a4 forURL:(id)a5;
-- (BOOL)mustShowBarsForBackForwardListItem:(id)a3;
-- (BOOL)pageLoadErrorControllerShouldHandleCertificateError:(id)a3;
-- (BOOL)pageLoadErrorControllerShouldReloadAfterError:(id)a3;
-- (BOOL)printControllerCanPresentPrintUI:(id)a3;
-- (BOOL)printControllerShouldPrintReader:(id)a3;
+- (BOOL)linkPreviewHelper:(id)helper supportsAction:(int64_t)action forURL:(id)l;
+- (BOOL)mustShowBarsForBackForwardListItem:(id)item;
+- (BOOL)pageLoadErrorControllerShouldHandleCertificateError:(id)error;
+- (BOOL)pageLoadErrorControllerShouldReloadAfterError:(id)error;
+- (BOOL)printControllerCanPresentPrintUI:(id)i;
+- (BOOL)printControllerShouldPrintReader:(id)reader;
 - (BOOL)privacyReportShouldSeparateBlockedTrackers;
-- (BOOL)sfWebViewCanFindNextOrPrevious:(id)a3;
-- (BOOL)sfWebViewShouldFillStringForFind:(id)a3;
-- (BOOL)shouldBlockAppSuggestionBanner:(id)a3;
-- (BOOL)shouldGrantPermissionsOnUserGestureForWebExtensionContext:(id)a3;
+- (BOOL)sfWebViewCanFindNextOrPrevious:(id)previous;
+- (BOOL)sfWebViewShouldFillStringForFind:(id)find;
+- (BOOL)shouldBlockAppSuggestionBanner:(id)banner;
+- (BOOL)shouldGrantPermissionsOnUserGestureForWebExtensionContext:(id)context;
 - (BOOL)shouldShowReaderOnActivate;
-- (BOOL)shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:(id)a3;
-- (BOOL)supportsAdvancedPrivacyProtectionsForURL:(id)a3;
+- (BOOL)shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:(id)l;
+- (BOOL)supportsAdvancedPrivacyProtectionsForURL:(id)l;
 - (BrowserController)browserController;
 - (CGPoint)getLastWindowTapLocation;
 - (CGPoint)scrollPoint;
-- (CGRect)sourceRectForPopoverActionPicker:(id)a3;
+- (CGRect)sourceRectForPopoverActionPicker:(id)picker;
 - (CGSize)tabViewSize;
 - (History)history;
 - (LPLinkMetadata)linkMetadataForSharing;
@@ -98,17 +98,17 @@
 - (SFWebExtensionsController)webExtensionsController;
 - (STBlockingViewController)associatedBlockingViewController;
 - (TabDocument)init;
-- (TabDocument)initWithBrowserController:(id)a3;
-- (TabDocument)initWithHibernatedTab:(id)a3;
-- (TabDocument)initWithTabGroupTab:(id)a3 privateBrowsingEnabled:(BOOL)a4 hibernated:(BOOL)a5 bookmark:(id)a6 browserController:(id)a7;
-- (TabDocument)initWithTabStateData:(id)a3 hibernated:(BOOL)a4 browserController:(id)a5;
-- (TabDocument)initWithTitle:(id)a3 URL:(id)a4 UUID:(id)a5 privateBrowsingEnabled:(BOOL)a6 controlledByAutomation:(BOOL)a7 hibernated:(BOOL)a8 bookmark:(id)a9 browserController:(id)a10 relatedWebView:(id)a11;
-- (TabDocument)initWithTitle:(id)a3 URL:(id)a4 UUID:(id)a5 privateBrowsingEnabled:(BOOL)a6 hibernated:(BOOL)a7 bookmark:(id)a8 browserController:(id)a9;
+- (TabDocument)initWithBrowserController:(id)controller;
+- (TabDocument)initWithHibernatedTab:(id)tab;
+- (TabDocument)initWithTabGroupTab:(id)tab privateBrowsingEnabled:(BOOL)enabled hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)controller;
+- (TabDocument)initWithTabStateData:(id)data hibernated:(BOOL)hibernated browserController:(id)controller;
+- (TabDocument)initWithTitle:(id)title URL:(id)l UUID:(id)d privateBrowsingEnabled:(BOOL)enabled controlledByAutomation:(BOOL)automation hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)self0 relatedWebView:(id)self1;
+- (TabDocument)initWithTitle:(id)title URL:(id)l UUID:(id)d privateBrowsingEnabled:(BOOL)enabled hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)controller;
 - (TabDocument)parentTabDocumentForBackClosesSpawnedTab;
 - (TabDocument)retain;
 - (TabDocumentDelegate)delegate;
 - (TabDocumentView)view;
-- (UIEdgeInsets)_webView:(id)a3 finalObscuredInsetsForScrollView:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6;
+- (UIEdgeInsets)_webView:(id)view finalObscuredInsetsForScrollView:(id)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (UIFindInteraction)findInteraction;
 - (UnifiedTabBarItem)currentUnifiedTabBarItem;
 - (WBProfile)profile;
@@ -121,7 +121,7 @@
 - (WBSWebExtensionWindow)webExtensionWindow;
 - (WKBackForwardListItem)currentBackForwardListItem;
 - (_BYTE)_loadingStateForWebExtensionsMayHaveChanged;
-- (_BYTE)loadWebClip:(_BYTE *)a1 userDriven:(void *)a2;
+- (_BYTE)loadWebClip:(_BYTE *)clip userDriven:(void *)driven;
 - (_SFInjectedJavaScriptController)activityJSController;
 - (_SFPerSitePreferencesVendor)perSitePreferencesVendor;
 - (_SFSafariSharingExtensionController)sharingExtensionController;
@@ -129,289 +129,289 @@
 - (_SFWebView)activeWebView;
 - (_SFWebView)frontWebView;
 - (_WKSessionState)sessionState;
-- (double)_convertRectFromDocumentToWebView:(double)a3;
+- (double)_convertRectFromDocumentToWebView:(double)view;
 - (double)pageZoomFactor;
 - (id)URLForStatePersisting;
-- (id)URLStringForPrintController:(id)a3;
-- (id)_actionForSwitchingToTabPlayingAudio:(id *)a1;
-- (id)_addTitlePrefixToString:(id *)a1;
-- (id)_backListWithLimit:(uint64_t)a1;
+- (id)URLStringForPrintController:(id)controller;
+- (id)_actionForSwitchingToTabPlayingAudio:(id *)audio;
+- (id)_addTitlePrefixToString:(id *)string;
+- (id)_backListWithLimit:(uint64_t)limit;
 - (id)_blankTabTitle;
 - (id)_contentBlockerStatisticsStore;
 - (id)_debugOverrideTitle;
-- (id)_fileURLNavigationResultForURL:(void *)a1;
-- (id)_forwardListWithLimit:(uint64_t)a1;
-- (id)_initWithBrowserController:(id)a3 configuration:(id)a4;
-- (id)_initWithTitle:(void *)a3 URL:(void *)a4 UUID:(uint64_t)a5 privateBrowsingEnabled:(uint64_t)a6 controlledByAutomation:(void *)a7 bookmark:(void *)a8 browserController:(void *)a9 createDocumentView:;
-- (id)_loadRequest:(uint64_t)a1 userDriven:(void *)a2 shouldOpenExternalURLs:(uint64_t)a3;
-- (id)_loadRequest:(uint64_t)a3 userDriven:(uint64_t)a4 shouldOpenExternalURLs:(void *)a5 eventAttribution:(char)a6 skipSyncableTabUpdates:;
-- (id)_loadURL:(uint64_t)a3 userDriven:(void *)a4 eventAttribution:(char)a5 skipSyncableTabUpdates:;
-- (id)_loadURLInternal:(uint64_t)a3 userDriven:;
-- (id)_loadURLInternal:(uint64_t)a3 userDriven:(void *)a4 eventAttribution:(char)a5 skipSyncableTabUpdates:;
+- (id)_fileURLNavigationResultForURL:(void *)l;
+- (id)_forwardListWithLimit:(uint64_t)limit;
+- (id)_initWithBrowserController:(id)controller configuration:(id)configuration;
+- (id)_initWithTitle:(void *)title URL:(void *)l UUID:(uint64_t)d privateBrowsingEnabled:(uint64_t)enabled controlledByAutomation:(void *)automation bookmark:(void *)bookmark browserController:(void *)controller createDocumentView:;
+- (id)_loadRequest:(uint64_t)request userDriven:(uint64_t)driven shouldOpenExternalURLs:(void *)ls eventAttribution:(char)attribution skipSyncableTabUpdates:;
+- (id)_loadRequest:(uint64_t)request userDriven:(void *)driven shouldOpenExternalURLs:(uint64_t)ls;
+- (id)_loadURL:(uint64_t)l userDriven:(void *)driven eventAttribution:(char)attribution skipSyncableTabUpdates:;
+- (id)_loadURLInternal:(uint64_t)internal userDriven:;
+- (id)_loadURLInternal:(uint64_t)internal userDriven:(void *)driven eventAttribution:(char)attribution skipSyncableTabUpdates:;
 - (id)_loadedTitle;
 - (id)_localAttributes;
-- (id)_menuElementForBackForwardListItem:(void *)a1;
+- (id)_menuElementForBackForwardListItem:(void *)item;
 - (id)_muteToggleMenuElement;
-- (id)_muteToggleMenuElementForOtherTabsWithCount:(id *)a1;
-- (id)_presentingViewControllerForWebView:(id)a3;
-- (id)_readingListArchiveNextPageLinkForRequest:(void *)a3 targetFrame:;
+- (id)_muteToggleMenuElementForOtherTabsWithCount:(id *)count;
+- (id)_presentingViewControllerForWebView:(id)view;
+- (id)_readingListArchiveNextPageLinkForRequest:(void *)request targetFrame:;
 - (id)_removeParentChildTabDocumentRelations;
-- (id)_requestBySettingAdvancedPrivacyProtectionsFlag:(void *)a1;
-- (id)_resultOfLoadingRequest:(uint64_t)a3 inMainFrame:(int)a4 userInitiated:;
+- (id)_requestBySettingAdvancedPrivacyProtectionsFlag:(void *)flag;
+- (id)_resultOfLoadingRequest:(uint64_t)request inMainFrame:(int)frame userInitiated:;
 - (id)_startedLoadingResources;
 - (id)_stoppedLoadingResources;
 - (id)_tabDocumentsSharingWebProcess;
 - (id)_titleForStatePersistingForTabGroupTab;
 - (id)_titleForStatePersistingForTabStateData;
-- (id)_titleIncludeLoading:(int)a3 allowURLStringFallback:;
-- (id)_titleIncludeLoading:(int)a3 allowURLStringFallback:(int)a4 allowUntitled:;
-- (id)_webView:(id)a3 adjustedDataInteractionItemProvidersForItemProvider:(id)a4 representingObjects:(id)a5 additionalData:(id)a6;
-- (id)_webView:(id)a3 alternateURLFromImage:(id)a4 userInfo:(id *)a5;
-- (id)_webView:(id)a3 contextMenuContentPreviewForElement:(id)a4;
-- (id)_webViewAdditionalContextForStrongPasswordAssistance:(id)a3;
-- (id)backListMenuWithLimit:(int)a3;
+- (id)_titleIncludeLoading:(int)loading allowURLStringFallback:;
+- (id)_titleIncludeLoading:(int)loading allowURLStringFallback:(int)fallback allowUntitled:;
+- (id)_webView:(id)view adjustedDataInteractionItemProvidersForItemProvider:(id)provider representingObjects:(id)objects additionalData:(id)data;
+- (id)_webView:(id)view alternateURLFromImage:(id)image userInfo:(id *)info;
+- (id)_webView:(id)view contextMenuContentPreviewForElement:(id)element;
+- (id)_webViewAdditionalContextForStrongPasswordAssistance:(id)assistance;
+- (id)backListMenuWithLimit:(int)limit;
 - (id)createTabDocumentView;
 - (id)createWebViewConfiguration;
 - (id)currentFluidProgressStateSource;
-- (id)currentHostForScribbleController:(id)a3;
-- (id)currentSavedAccountContextForFormAutoFillController:(id)a3;
-- (id)customUserVisibleStringForReadingListBookmarkURL:(id)a3;
-- (id)formAutoFillControllerURLForFormAutoFill:(id)a3;
-- (id)forwardListMenuWithLimit:(int)a3;
-- (id)initForBackgroundLoadingWithBrowserController:(id)a3 relatedWebView:(id)a4 webViewToCloneSessionStorageFrom:(id)a5;
-- (id)itemForTabCollectionView:(id)a3;
-- (id)linkPreviewHelper:(id)a3 previewViewControllerForURL:(id)a4;
-- (id)linkPreviewHelper:(id)a3 resultOfLoadingURL:(id)a4;
-- (id)loadRequest:(id)a3 userDriven:(BOOL)a4;
-- (id)loadURL:(id)a3 userDriven:(BOOL)a4;
-- (id)loadURL:(uint64_t)a3 userDriven:(char)a4 skipSyncableTabUpdates:;
-- (id)loadingDialogPageTitleForPrintController:(id)a3;
+- (id)currentHostForScribbleController:(id)controller;
+- (id)currentSavedAccountContextForFormAutoFillController:(id)controller;
+- (id)customUserVisibleStringForReadingListBookmarkURL:(id)l;
+- (id)formAutoFillControllerURLForFormAutoFill:(id)fill;
+- (id)forwardListMenuWithLimit:(int)limit;
+- (id)initForBackgroundLoadingWithBrowserController:(id)controller relatedWebView:(id)view webViewToCloneSessionStorageFrom:(id)from;
+- (id)itemForTabCollectionView:(id)view;
+- (id)linkPreviewHelper:(id)helper previewViewControllerForURL:(id)l;
+- (id)linkPreviewHelper:(id)helper resultOfLoadingURL:(id)l;
+- (id)loadRequest:(id)request userDriven:(BOOL)driven;
+- (id)loadURL:(id)l userDriven:(BOOL)driven;
+- (id)loadURL:(uint64_t)l userDriven:(char)driven skipSyncableTabUpdates:;
+- (id)loadingDialogPageTitleForPrintController:(id)controller;
 - (id)makeBookmark;
-- (id)openInTabGroupMenuWithNewTabGroupName:(id)a3 URL:(id)a4 descendantCount:(int64_t)a5 handler:(id)a6;
-- (id)overlayContainerViewForScribbleController:(id)a3;
-- (id)overrideUndoManagerForSFWebView:(id)a3;
-- (id)pageLoadErrorControllerGetSecIdentityPreferencesController:(id)a3;
-- (id)pageTitleForPrintController:(id)a3;
-- (id)parentTabForWebExtensionContext:(id)a3;
+- (id)openInTabGroupMenuWithNewTabGroupName:(id)name URL:(id)l descendantCount:(int64_t)count handler:(id)handler;
+- (id)overlayContainerViewForScribbleController:(id)controller;
+- (id)overrideUndoManagerForSFWebView:(id)view;
+- (id)pageLoadErrorControllerGetSecIdentityPreferencesController:(id)controller;
+- (id)pageTitleForPrintController:(id)controller;
+- (id)parentTabForWebExtensionContext:(id)context;
 - (id)pdfView;
-- (id)pendingURLForWebExtensionContext:(id)a3;
+- (id)pendingURLForWebExtensionContext:(id)context;
 - (id)permissionDialogThrottler;
-- (id)presentingViewControllerForAction:(id)a3;
-- (id)presentingViewControllerForPrintController:(id)a3;
-- (id)previewViewControllerForURL:(id)a3;
+- (id)presentingViewControllerForAction:(id)action;
+- (id)presentingViewControllerForPrintController:(id)controller;
+- (id)previewViewControllerForURL:(id)l;
 - (id)profileIdentifier;
 - (id)quickLookDocumentForCurrentBackForwardListItem;
 - (id)readerPageArchiveURL;
-- (id)readerURLForReaderController:(id)a3;
-- (id)resultOfLoadingURL:(id)a3;
-- (id)resultOfLoadingURL:(int)a3 userInitiated:;
-- (id)safariApplicationVersionForTranslationContext:(id)a3;
-- (id)sfWebView:(id)a3 didStartDownload:(id)a4;
-- (id)suggestedFileNameForQuickLookDocument:(id)a3;
-- (id)tabDocumentForPreviewURL:(void *)a3 relatedToWebView:;
-- (id)tabEntityUUIDForView:(id)a3;
+- (id)readerURLForReaderController:(id)controller;
+- (id)resultOfLoadingURL:(id)l;
+- (id)resultOfLoadingURL:(int)l userInitiated:;
+- (id)safariApplicationVersionForTranslationContext:(id)context;
+- (id)sfWebView:(id)view didStartDownload:(id)download;
+- (id)suggestedFileNameForQuickLookDocument:(id)document;
+- (id)tabDocumentForPreviewURL:(void *)l relatedToWebView:;
+- (id)tabEntityUUIDForView:(id)view;
 - (id)tabUpdateBlock;
 - (id)titleForSharing;
-- (id)titleForWebExtensionContext:(id)a3;
-- (id)translationConsentAlertHelperViewControllerToPresentDetailsFrom:(id)a3;
-- (id)urlForWebExtensionContext:(id)a3;
-- (id)webViewForWebExtensionContext:(id)a3;
-- (id)windowForWebExtensionContext:(id)a3;
+- (id)titleForWebExtensionContext:(id)context;
+- (id)translationConsentAlertHelperViewControllerToPresentDetailsFrom:(id)from;
+- (id)urlForWebExtensionContext:(id)context;
+- (id)webViewForWebExtensionContext:(id)context;
+- (id)windowForWebExtensionContext:(id)context;
 - (int)readingListBookmarkID;
-- (int64_t)_webView:(id)a3 decidePolicyForFocusedElement:(id)a4;
-- (int64_t)dialogController:(id)a3 presentationPolicyForDialog:(id)a4;
+- (int64_t)_webView:(id)view decidePolicyForFocusedElement:(id)element;
+- (int64_t)dialogController:(id)controller presentationPolicyForDialog:(id)dialog;
 - (int64_t)pageStatus;
-- (uint64_t)_analyticsRecorderShouldIgnoreURLWithNavigationPolicy:(void *)a3 forNavigationAction:;
-- (uint64_t)_canShowDownloadWithoutPrompting:(uint64_t)a1;
-- (uint64_t)_createNewDocumentViewIfNecessaryForURL:(uint64_t)a1;
-- (uint64_t)_isNewDocumentViewNecessaryForURL:(void *)a1;
+- (uint64_t)_analyticsRecorderShouldIgnoreURLWithNavigationPolicy:(void *)policy forNavigationAction:;
+- (uint64_t)_canShowDownloadWithoutPrompting:(uint64_t)prompting;
+- (uint64_t)_createNewDocumentViewIfNecessaryForURL:(uint64_t)l;
+- (uint64_t)_isNewDocumentViewNecessaryForURL:(void *)l;
 - (uint64_t)_isShowingNativePage;
-- (uint64_t)_loadBookmark:(uint64_t)a1;
-- (uint64_t)_loadNextFallbackURLWithWebClip:(void *)a3 navigation:;
-- (uint64_t)_loadSearchResultForQuery:(id *)a1;
-- (uint64_t)_loadURL:(void *)a3 fromBookmark:;
-- (uint64_t)_loadUserTypedAddress:(uint64_t)a1;
+- (uint64_t)_loadBookmark:(uint64_t)bookmark;
+- (uint64_t)_loadNextFallbackURLWithWebClip:(void *)clip navigation:;
+- (uint64_t)_loadSearchResultForQuery:(id *)query;
+- (uint64_t)_loadURL:(void *)l fromBookmark:;
+- (uint64_t)_loadUserTypedAddress:(uint64_t)address;
 - (uint64_t)_setUpNavigationBarItem;
 - (uint64_t)_shouldCleanUpAfterRedirectToExternalApp;
 - (uint64_t)_shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:(uint64_t)result;
-- (uint64_t)_shouldUpdateUsageTrackingWhenTransitioningToState:(uint64_t)a1;
+- (uint64_t)_shouldUpdateUsageTrackingWhenTransitioningToState:(uint64_t)state;
 - (uint64_t)_suppressReloadToPreventLoadingJavaScriptIfNecessary;
 - (uint64_t)_terminateWebProcessAndReloadIfActive:(uint64_t)result;
-- (uint64_t)_trySwitchingToPinnedTabOnNavigationToURL:(uint64_t)a1;
-- (uint64_t)_usageStateIfTabDocumentIsCurrent:(uint64_t)a1;
+- (uint64_t)_trySwitchingToPinnedTabOnNavigationToURL:(uint64_t)l;
+- (uint64_t)_usageStateIfTabDocumentIsCurrent:(uint64_t)current;
 - (uint64_t)isPageEligibileToShowNotSecureWarning;
-- (uint64_t)pageLoadStatusForNavigationError:(uint64_t)a1;
-- (unint64_t)_webView:(id)a3 willUpdateDataInteractionOperationToOperation:(unint64_t)a4 forSession:(id)a5;
-- (unint64_t)indexInWindowForWebExtensionContext:(id)a3;
+- (uint64_t)pageLoadStatusForNavigationError:(uint64_t)error;
+- (unint64_t)_webView:(id)view willUpdateDataInteractionOperationToOperation:(unint64_t)operation forSession:(id)session;
+- (unint64_t)indexInWindowForWebExtensionContext:(id)context;
 - (unint64_t)numberOfOtherUnmutedTabsPlayingAudio;
 - (unint64_t)webPageID;
 - (void)_URLForWebExtensionsMayHaveChanged;
-- (void)_activeParticipantsDidUpdateInTabWithUUID:(id *)a1;
+- (void)_activeParticipantsDidUpdateInTabWithUUID:(id *)d;
 - (void)_addNoFeedAppSupportAlert;
 - (void)_attemptDeferredDropNavigation;
 - (void)_authenticateForAutoFillIfNeeded;
 - (void)_cancelFaviconUpdate;
-- (void)_checkForAppLinkWithCompletion:(uint64_t)a1;
+- (void)_checkForAppLinkWithCompletion:(uint64_t)completion;
 - (void)_checkForHighlight;
-- (void)_clearAppBannerIfNotCurrentStoreBannerDeferringRemoval:(uint64_t)a1;
+- (void)_clearAppBannerIfNotCurrentStoreBannerDeferringRemoval:(uint64_t)removal;
 - (void)_clearCachedCanonicalURL;
 - (void)_clearLibraryType;
 - (void)_clearNavigationSource;
-- (void)_closeTabDocumentAnimated:(BOOL)a3;
-- (void)_commitPreviewedViewControllerInSafari:(id *)a1;
-- (void)_completeRedirectToExternalNavigationResult:(uint64_t)a3 fromOriginalRequest:(uint64_t)a4 dialogResult:;
-- (void)_createBrowserReaderViewIfNeeded:(uint64_t)a1;
-- (void)_createDocumentViewRelatedTo:(void *)a1 webViewToCloneSessionStorageFrom:(void *)a2 websiteDataStore:(void *)a3 deferrableUserScriptsShouldWaitUntilNotification:(void *)a4;
-- (void)_createDocumentViewWithConfiguration:(uint64_t)a1;
-- (void)_destroyDocumentViewAllowingDeferral:(uint64_t)a1;
-- (void)_detectWebpageLocaleWithTextSamples:(void *)a3 url:;
-- (void)_determineResultOfLoadingRequest:(uint64_t)a3 inMainFrame:(int)a4 userInitiated:(void *)a5 completionHandler:;
+- (void)_closeTabDocumentAnimated:(BOOL)animated;
+- (void)_commitPreviewedViewControllerInSafari:(id *)safari;
+- (void)_completeRedirectToExternalNavigationResult:(uint64_t)result fromOriginalRequest:(uint64_t)request dialogResult:;
+- (void)_createBrowserReaderViewIfNeeded:(uint64_t)needed;
+- (void)_createDocumentViewRelatedTo:(void *)to webViewToCloneSessionStorageFrom:(void *)from websiteDataStore:(void *)store deferrableUserScriptsShouldWaitUntilNotification:(void *)notification;
+- (void)_createDocumentViewWithConfiguration:(uint64_t)configuration;
+- (void)_destroyDocumentViewAllowingDeferral:(uint64_t)deferral;
+- (void)_detectWebpageLocaleWithTextSamples:(void *)samples url:;
+- (void)_determineResultOfLoadingRequest:(uint64_t)request inMainFrame:(int)frame userInitiated:(void *)initiated completionHandler:;
 - (void)_didCancelSummarizationAlertToReset;
-- (void)_didCommitPreviewViewController:(uint64_t)a1;
-- (void)_didDecideNavigationPolicy:(void *)a3 forNavigationAction:;
-- (void)_didDecideNavigationPolicy:(void *)a3 forNavigationResponse:;
+- (void)_didCommitPreviewViewController:(uint64_t)controller;
+- (void)_didDecideNavigationPolicy:(void *)policy forNavigationAction:;
+- (void)_didDecideNavigationPolicy:(void *)policy forNavigationResponse:;
 - (void)_didFinishLoading;
-- (void)_didFinishNavigation:(uint64_t)a1;
+- (void)_didFinishNavigation:(uint64_t)navigation;
 - (void)_didOKSummarizationAlertToReset;
 - (void)_didUserInitiatedReload;
-- (void)_disablePrivateRelaySetting:(uint64_t)a1;
+- (void)_disablePrivateRelaySetting:(uint64_t)setting;
 - (void)_dismissSiriReaderMediaSession;
-- (void)_displayAttributionBannerForHighlight:(unsigned __int8 *)a1;
-- (void)_donateCurrentNavigationWithNavigationResponse:(id *)a1;
+- (void)_displayAttributionBannerForHighlight:(unsigned __int8 *)highlight;
+- (void)_donateCurrentNavigationWithNavigationResponse:(id *)response;
 - (void)_donateCurrentPageLoad;
-- (void)_donateTextAllowingDonationWithoutReaderText:(id *)a1;
+- (void)_donateTextAllowingDonationWithoutReaderText:(id *)text;
 - (void)_donateTextSoon;
 - (void)_fireOnUpdatedExtensionEvent;
 - (void)_fireOnUpdatedExtensionEventSoon;
-- (void)_getAuthenticationForAutoFillController:(void *)a3 withCompletion:;
-- (void)_goBackAllowingNewTabToSpawnIfNeeded:(char)a3 shouldDismissReader:;
-- (void)_goForwardAllowingNewTabToSpawnIfNeeded:(char)a3 shouldDismissReader:;
-- (void)_goToBackForwardListItem:(char)a3 shouldDismissReader:;
-- (void)_handleNavigationIntent:(void *)a3 completion:;
+- (void)_getAuthenticationForAutoFillController:(void *)controller withCompletion:;
+- (void)_goBackAllowingNewTabToSpawnIfNeeded:(char)needed shouldDismissReader:;
+- (void)_goForwardAllowingNewTabToSpawnIfNeeded:(char)needed shouldDismissReader:;
+- (void)_goToBackForwardListItem:(char)item shouldDismissReader:;
+- (void)_handleNavigationIntent:(void *)intent completion:;
 - (void)_hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary;
-- (void)_internalWebView:(void *)a3 decidePolicyForNavigationAction:(void *)a4 preferences:(void *)a5 decisionHandler:;
-- (void)_internalWebView:(void *)a3 decidePolicyForNavigationAction:(void *)a4 withResult:(uint64_t)a5 preferences:(void *)a6 decisionHandler:;
+- (void)_internalWebView:(void *)view decidePolicyForNavigationAction:(void *)action preferences:(void *)preferences decisionHandler:;
+- (void)_internalWebView:(void *)view decidePolicyForNavigationAction:(void *)action withResult:(uint64_t)result preferences:(void *)preferences decisionHandler:;
 - (void)_loadActivityItemProviderIfNeeded;
 - (void)_loadDeferredURLIfNeeded;
-- (void)_loadExternalURL:(void *)a3 withIntent:;
-- (void)_loadQueuedNavigation:(void *)a1;
+- (void)_loadExternalURL:(void *)l withIntent:;
+- (void)_loadQueuedNavigation:(void *)navigation;
 - (void)_loadingControllerDidStartLoading;
-- (void)_loadingControllerDidStopLoadingWithError:(uint64_t)a1;
-- (void)_loadingControllerEstimatedProgressChangedTo:(uint64_t)a1;
-- (void)_loadingControllerWillLoadRequest:(uint64_t)a3 webView:(int)a4 userDriven:;
+- (void)_loadingControllerDidStopLoadingWithError:(uint64_t)error;
+- (void)_loadingControllerEstimatedProgressChangedTo:(uint64_t)to;
+- (void)_loadingControllerWillLoadRequest:(uint64_t)request webView:(int)view userDriven:;
 - (void)_notifyDidUpdateTabCollectionItem;
-- (void)_notifyImpressionAnalyticsRecorderIfNeededTabDocumentDidBecomeActive:(uint64_t)a1;
-- (void)_openAppLinkInApp:(void *)a3 fromOriginalRequest:(uint64_t)a4 updateAppLinkStrategy:(void *)a5 webBrowserState:(void *)a6 completionHandler:;
-- (void)_presentDialogToAllowDownload:(void *)a3 initiatingSecurityOrigin:(uint64_t)a4 allowViewAction:(void *)a5 completionHandler:;
-- (void)_presentTranslationConsentAlertWithType:(void *)a3 completionHandler:;
-- (void)_presentViewControllerAnimatedForSummarizationContent:(uint64_t)a1;
-- (void)_queueAlertForRedirectToExternalNavigationResult:(void *)a3 fromOriginalRequest:(void *)a4 navigationAction:(char)a5 isMainFrame:(uint64_t)a6 promptPolicy:(void *)a7 userAction:;
+- (void)_notifyImpressionAnalyticsRecorderIfNeededTabDocumentDidBecomeActive:(uint64_t)active;
+- (void)_openAppLinkInApp:(void *)app fromOriginalRequest:(uint64_t)request updateAppLinkStrategy:(void *)strategy webBrowserState:(void *)state completionHandler:;
+- (void)_presentDialogToAllowDownload:(void *)download initiatingSecurityOrigin:(uint64_t)origin allowViewAction:(void *)action completionHandler:;
+- (void)_presentTranslationConsentAlertWithType:(void *)type completionHandler:;
+- (void)_presentViewControllerAnimatedForSummarizationContent:(uint64_t)content;
+- (void)_queueAlertForRedirectToExternalNavigationResult:(void *)result fromOriginalRequest:(void *)request navigationAction:(char)action isMainFrame:(uint64_t)frame promptPolicy:(void *)policy userAction:;
 - (void)_reconfigureLibraryItemView;
-- (void)_redirectToExternalNavigationResult:(void *)a3 fromOriginalRequest:(void *)a4 navigationAction:(uint64_t)a5 promptPolicy:(uint64_t)a6 isMainFrame:(void *)a7 userAction:;
-- (void)_reloadFromOrigin:(uint64_t)a1;
-- (void)_searchEngineControllerDidFinishPopulating:(id)a3;
+- (void)_redirectToExternalNavigationResult:(void *)result fromOriginalRequest:(void *)request navigationAction:(uint64_t)action promptPolicy:(uint64_t)policy isMainFrame:(void *)frame userAction:;
+- (void)_reloadFromOrigin:(uint64_t)origin;
+- (void)_searchEngineControllerDidFinishPopulating:(id)populating;
 - (void)_sessionStateWithoutParentItem;
-- (void)_setAppBannerWhenPainted:(uint64_t)a1;
-- (void)_setDeferredNavigationURL:(void *)a3 title:;
-- (void)_setIcon:(int)a3 isMonogram:;
-- (void)_setReaderArticleSummary:(uint64_t)a1;
+- (void)_setAppBannerWhenPainted:(uint64_t)painted;
+- (void)_setDeferredNavigationURL:(void *)l title:;
+- (void)_setIcon:(int)icon isMonogram:;
+- (void)_setReaderArticleSummary:(uint64_t)summary;
 - (void)_setUp;
-- (void)_showDownload:(void *)a3 path:;
-- (void)_showFinanceKitOrderPreviewControllerWithURL:(void *)a3 dismissalHandler:;
-- (void)_showPassBookControllerForPasses:(uint64_t)a1;
+- (void)_showDownload:(void *)download path:;
+- (void)_showFinanceKitOrderPreviewControllerWithURL:(void *)l dismissalHandler:;
+- (void)_showPassBookControllerForPasses:(uint64_t)passes;
 - (void)_showPerSitePreferencesPopoverViewControllerIfPossible;
 - (void)_showPrivateBrowsingPrivacyProtectionsBannerForReload;
 - (void)_startAppBannerRemovalTimer;
-- (void)_terminateWebProcessIfNeededAndShowCrashBanner:(void *)a3 thenDo:;
+- (void)_terminateWebProcessIfNeededAndShowCrashBanner:(void *)banner thenDo:;
 - (void)_terminateWebProcessThenDoUnresponsiveWebProcessBlock;
 - (void)_titleForWebExtensionsMayHaveChanged;
-- (void)_translationAvailabilityDidChange:(id)a3;
-- (void)_translationContextStateDidChange:(id)a3;
-- (void)_unresponsiveWebProcessTimerFired:(id)a3;
+- (void)_translationAvailabilityDidChange:(id)change;
+- (void)_translationContextStateDidChange:(id)change;
+- (void)_unresponsiveWebProcessTimerFired:(id)fired;
 - (void)_updateActiveExtensionsIfNecessary;
-- (void)_updateAudioUI:(id)a3;
+- (void)_updateAudioUI:(id)i;
 - (void)_updateBarItemsWithCurrentMediaState;
-- (void)_updateFallbackURLsForUserTypedAddress:(char)a3 userExplicitlyRequestedAsHTTP:;
-- (void)_updateFindCompletionProviderWithNumberOfMatches:(void *)a3 forString:;
-- (void)_updateMaxVisibleHeightPercentageUserDriven:(id *)a1;
+- (void)_updateFallbackURLsForUserTypedAddress:(char)address userExplicitlyRequestedAsHTTP:;
+- (void)_updateFindCompletionProviderWithNumberOfMatches:(void *)matches forString:;
+- (void)_updateMaxVisibleHeightPercentageUserDriven:(id *)driven;
 - (void)_updateNavigationBarItem;
-- (void)_updatePageLoadDonorWithNavigationPolicy:(void *)a3 inMainFrameForNavigationAction:;
+- (void)_updatePageLoadDonorWithNavigationPolicy:(void *)policy inMainFrameForNavigationAction:;
 - (void)_updatePageZoomWithPreference;
-- (void)_updateSnapshotForWebClip:(void *)a1;
+- (void)_updateSnapshotForWebClip:(void *)clip;
 - (void)_updateSnapshotIfNeeded;
 - (void)_updateTabBarFavicon;
-- (void)_updateUsageTrackingInformationIfNecessaryToState:(uint64_t)a1;
-- (void)_voiceSearchAvailabilityDidChange:(id)a3;
-- (void)_webView:(id)a3 authenticationChallenge:(id)a4 shouldAllowLegacyTLS:(id)a5;
-- (void)_webView:(id)a3 checkUserMediaPermissionForURL:(id)a4 mainFrameURL:(id)a5 frameIdentifier:(unint64_t)a6 decisionHandler:(id)a7;
-- (void)_webView:(id)a3 contentRuleListWithIdentifier:(id)a4 performedAction:(id)a5 forURL:(id)a6;
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5;
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4;
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5;
-- (void)_webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6 completionHandler:(id)a7;
-- (void)_webView:(id)a3 dataInteractionOperationWasHandled:(BOOL)a4 forSession:(id)a5 itemProviders:(id)a6;
-- (void)_webView:(id)a3 decideDatabaseQuotaForSecurityOrigin:(id)a4 currentQuota:(unint64_t)a5 currentOriginUsage:(unint64_t)a6 currentDatabaseUsage:(unint64_t)a7 expectedUsage:(unint64_t)a8 decisionHandler:(id)a9;
-- (void)_webView:(id)a3 decidePolicyForSOAuthorizationLoadWithCurrentPolicy:(int64_t)a4 forExtension:(id)a5 completionHandler:(id)a6;
-- (void)_webView:(id)a3 didAdjustVisibilityWithSelectors:(id)a4;
-- (void)_webView:(id)a3 didChangeLookalikeCharactersFromURL:(id)a4 toURL:(id)a5;
-- (void)_webView:(id)a3 didChangeSafeAreaShouldAffectObscuredInsets:(BOOL)a4;
-- (void)_webView:(id)a3 didCommitLoadWithRequest:(id)a4 inFrame:(id)a5;
-- (void)_webView:(id)a3 didFailLoadDueToNetworkConnectionIntegrityWithURL:(id)a4;
-- (void)_webView:(id)a3 didFinishLoadForQuickLookDocumentInMainFrame:(id)a4;
-- (void)_webView:(id)a3 didGeneratePageLoadTiming:(id)a4;
-- (void)_webView:(id)a3 didNegotiateModernTLSForURL:(id)a4;
-- (void)_webView:(id)a3 didStartInputSession:(id)a4;
-- (void)_webView:(id)a3 didStartLoadForQuickLookDocumentInMainFrameWithFileName:(id)a4 uti:(id)a5;
-- (void)_webView:(id)a3 hasVideoInPictureInPictureDidChange:(BOOL)a4;
-- (void)_webView:(id)a3 logDiagnosticMessage:(id)a4 description:(id)a5;
-- (void)_webView:(id)a3 logDiagnosticMessage:(id)a4 description:(id)a5 valueDictionary:(id)a6;
-- (void)_webView:(id)a3 logDiagnosticMessageWithDomain:(id)a4 domain:(int64_t)a5;
-- (void)_webView:(id)a3 logDiagnosticMessageWithEnhancedPrivacy:(id)a4 description:(id)a5;
-- (void)_webView:(id)a3 logDiagnosticMessageWithResult:(id)a4 description:(id)a5 result:(int64_t)a6;
-- (void)_webView:(id)a3 logDiagnosticMessageWithValue:(id)a4 description:(id)a5 value:(id)a6;
-- (void)_webView:(id)a3 mediaCaptureStateDidChange:(unint64_t)a4;
-- (void)_webView:(id)a3 mouseDidMoveOverElement:(id)a4 withFlags:(int64_t)a5 userInfo:(id)a6;
-- (void)_webView:(id)a3 navigation:(id)a4 didSameDocumentNavigation:(int64_t)a5;
-- (void)_webView:(id)a3 printFrame:(id)a4;
-- (void)_webView:(id)a3 queryPermission:(id)a4 forOrigin:(id)a5 completionHandler:(id)a6;
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)_webView:(id)a3 requestGeolocationAuthorizationForURL:(id)a4 frame:(id)a5 decisionHandler:(id)a6;
-- (void)_webView:(id)a3 requestStorageAccessPanelForDomain:(id)a4 underCurrentDomain:(id)a5 completionHandler:(id)a6;
-- (void)_webView:(id)a3 requestUserMediaAuthorizationForDevices:(unint64_t)a4 url:(id)a5 mainFrameURL:(id)a6 decisionHandler:(id)a7;
-- (void)_webView:(id)a3 requestWebAuthenticationConditionalMediationRegistrationForUser:(id)a4 completionHandler:(id)a5;
-- (void)_webView:(id)a3 shouldGoToBackForwardListItem:(id)a4 inPageCache:(BOOL)a5 completionHandler:(id)a6;
-- (void)_webView:(id)a3 storeAppHighlight:(id)a4 inNewGroup:(BOOL)a5 requestOriginatedInApp:(BOOL)a6;
-- (void)_webView:(id)a3 takeFocus:(int64_t)a4;
-- (void)_webView:(id)a3 willSnapshotBackForwardListItem:(id)a4;
-- (void)_webView:(id)a3 willStartInputSession:(id)a4;
-- (void)_webView:(id)a3 willSubmitFormValues:(id)a4 userObject:(id)a5 submissionHandler:(id)a6;
-- (void)_webView:(std::__shared_weak_count *)a1 willSubmitFormValues:userObject:submissionHandler:;
-- (void)_webView:(uint64_t)a1 willSubmitFormValues:userObject:submissionHandler:;
-- (void)_webViewDidBeginNavigationGesture:(id)a3;
-- (void)_webViewDidDisableInspectorBrowserDomain:(id)a3;
-- (void)_webViewDidEnableInspectorBrowserDomain:(id)a3;
-- (void)_webViewDidEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4;
-- (void)_webViewDidEnterElementFullscreen:(id)a3;
-- (void)_webViewDidEnterFullscreen:(id)a3;
-- (void)_webViewDidExitElementFullscreen:(id)a3;
-- (void)_webViewDidExitFullscreen:(id)a3;
-- (void)_webViewFullscreenMayReturnToInline:(id)a3;
-- (void)_webViewWebProcessDidCrash:(id)a3;
-- (void)_webViewWillEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4;
-- (void)_webViewWillEnterElementFullscreen:(id)a3;
-- (void)_webViewWillEnterFullscreen:(id)a3;
-- (void)_webViewWillExitElementFullscreen:(id)a3;
-- (void)_willCommitPreviewViewController:(id *)a1;
-- (void)activateForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)addAppHighlightCreatingLink:(BOOL)a3;
-- (void)addMediaSuspensionReason:(unint64_t)a3;
-- (void)addPassesViewControllerDidFinish:(id)a3;
-- (void)animateElement:(id)a3 toBarItem:(int64_t)a4;
+- (void)_updateUsageTrackingInformationIfNecessaryToState:(uint64_t)state;
+- (void)_voiceSearchAvailabilityDidChange:(id)change;
+- (void)_webView:(id)view authenticationChallenge:(id)challenge shouldAllowLegacyTLS:(id)s;
+- (void)_webView:(id)view checkUserMediaPermissionForURL:(id)l mainFrameURL:(id)rL frameIdentifier:(unint64_t)identifier decisionHandler:(id)handler;
+- (void)_webView:(id)view contentRuleListWithIdentifier:(id)identifier performedAction:(id)action forURL:(id)l;
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler;
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element;
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator;
+- (void)_webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features completionHandler:(id)handler;
+- (void)_webView:(id)view dataInteractionOperationWasHandled:(BOOL)handled forSession:(id)session itemProviders:(id)providers;
+- (void)_webView:(id)view decideDatabaseQuotaForSecurityOrigin:(id)origin currentQuota:(unint64_t)quota currentOriginUsage:(unint64_t)usage currentDatabaseUsage:(unint64_t)databaseUsage expectedUsage:(unint64_t)expectedUsage decisionHandler:(id)handler;
+- (void)_webView:(id)view decidePolicyForSOAuthorizationLoadWithCurrentPolicy:(int64_t)policy forExtension:(id)extension completionHandler:(id)handler;
+- (void)_webView:(id)view didAdjustVisibilityWithSelectors:(id)selectors;
+- (void)_webView:(id)view didChangeLookalikeCharactersFromURL:(id)l toURL:(id)rL;
+- (void)_webView:(id)view didChangeSafeAreaShouldAffectObscuredInsets:(BOOL)insets;
+- (void)_webView:(id)view didCommitLoadWithRequest:(id)request inFrame:(id)frame;
+- (void)_webView:(id)view didFailLoadDueToNetworkConnectionIntegrityWithURL:(id)l;
+- (void)_webView:(id)view didFinishLoadForQuickLookDocumentInMainFrame:(id)frame;
+- (void)_webView:(id)view didGeneratePageLoadTiming:(id)timing;
+- (void)_webView:(id)view didNegotiateModernTLSForURL:(id)l;
+- (void)_webView:(id)view didStartInputSession:(id)session;
+- (void)_webView:(id)view didStartLoadForQuickLookDocumentInMainFrameWithFileName:(id)name uti:(id)uti;
+- (void)_webView:(id)view hasVideoInPictureInPictureDidChange:(BOOL)change;
+- (void)_webView:(id)view logDiagnosticMessage:(id)message description:(id)description;
+- (void)_webView:(id)view logDiagnosticMessage:(id)message description:(id)description valueDictionary:(id)dictionary;
+- (void)_webView:(id)view logDiagnosticMessageWithDomain:(id)domain domain:(int64_t)a5;
+- (void)_webView:(id)view logDiagnosticMessageWithEnhancedPrivacy:(id)privacy description:(id)description;
+- (void)_webView:(id)view logDiagnosticMessageWithResult:(id)result description:(id)description result:(int64_t)a6;
+- (void)_webView:(id)view logDiagnosticMessageWithValue:(id)value description:(id)description value:(id)a6;
+- (void)_webView:(id)view mediaCaptureStateDidChange:(unint64_t)change;
+- (void)_webView:(id)view mouseDidMoveOverElement:(id)element withFlags:(int64_t)flags userInfo:(id)info;
+- (void)_webView:(id)view navigation:(id)navigation didSameDocumentNavigation:(int64_t)documentNavigation;
+- (void)_webView:(id)view printFrame:(id)frame;
+- (void)_webView:(id)view queryPermission:(id)permission forOrigin:(id)origin completionHandler:(id)handler;
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change;
+- (void)_webView:(id)view requestGeolocationAuthorizationForURL:(id)l frame:(id)frame decisionHandler:(id)handler;
+- (void)_webView:(id)view requestStorageAccessPanelForDomain:(id)domain underCurrentDomain:(id)currentDomain completionHandler:(id)handler;
+- (void)_webView:(id)view requestUserMediaAuthorizationForDevices:(unint64_t)devices url:(id)url mainFrameURL:(id)l decisionHandler:(id)handler;
+- (void)_webView:(id)view requestWebAuthenticationConditionalMediationRegistrationForUser:(id)user completionHandler:(id)handler;
+- (void)_webView:(id)view shouldGoToBackForwardListItem:(id)item inPageCache:(BOOL)cache completionHandler:(id)handler;
+- (void)_webView:(id)view storeAppHighlight:(id)highlight inNewGroup:(BOOL)group requestOriginatedInApp:(BOOL)app;
+- (void)_webView:(id)view takeFocus:(int64_t)focus;
+- (void)_webView:(id)view willSnapshotBackForwardListItem:(id)item;
+- (void)_webView:(id)view willStartInputSession:(id)session;
+- (void)_webView:(id)view willSubmitFormValues:(id)values userObject:(id)object submissionHandler:(id)handler;
+- (void)_webView:(std::__shared_weak_count *)view willSubmitFormValues:userObject:submissionHandler:;
+- (void)_webView:(uint64_t)view willSubmitFormValues:userObject:submissionHandler:;
+- (void)_webViewDidBeginNavigationGesture:(id)gesture;
+- (void)_webViewDidDisableInspectorBrowserDomain:(id)domain;
+- (void)_webViewDidEnableInspectorBrowserDomain:(id)domain;
+- (void)_webViewDidEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item;
+- (void)_webViewDidEnterElementFullscreen:(id)fullscreen;
+- (void)_webViewDidEnterFullscreen:(id)fullscreen;
+- (void)_webViewDidExitElementFullscreen:(id)fullscreen;
+- (void)_webViewDidExitFullscreen:(id)fullscreen;
+- (void)_webViewFullscreenMayReturnToInline:(id)inline;
+- (void)_webViewWebProcessDidCrash:(id)crash;
+- (void)_webViewWillEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item;
+- (void)_webViewWillEnterElementFullscreen:(id)fullscreen;
+- (void)_webViewWillEnterFullscreen:(id)fullscreen;
+- (void)_webViewWillExitElementFullscreen:(id)fullscreen;
+- (void)_willCommitPreviewViewController:(id *)controller;
+- (void)activateForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)addAppHighlightCreatingLink:(BOOL)link;
+- (void)addMediaSuspensionReason:(unint64_t)reason;
+- (void)addPassesViewControllerDidFinish:(id)finish;
+- (void)animateElement:(id)element toBarItem:(int64_t)item;
 - (void)animateProgressForCompletedDocument;
 - (void)applyHighlightFromNotesIfNeeded;
 - (void)beginSuppressingProgressAnimation;
-- (void)browsingAssistantController:(id)a3 didUpdateContentOptionsForURL:(id)a4;
-- (void)browsingAssistantControllerDidUpdateUserConsentState:(id)a3;
+- (void)browsingAssistantController:(id)controller didUpdateContentOptionsForURL:(id)l;
+- (void)browsingAssistantControllerDidUpdateUserConsentState:(id)state;
 - (void)clearBackForwardList;
 - (void)clearBackForwardListKeepingCurrentItem;
 - (void)clearBrowserController;
@@ -421,212 +421,212 @@
 - (void)clearReaderScrollInformation;
 - (void)clearReaderView;
 - (void)clearTabReuseURL;
-- (void)closeForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)commitPreviewViewController:(id)a3;
+- (void)closeForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)commitPreviewViewController:(id)controller;
 - (void)createBrowserReaderViewIfNeeded;
-- (void)createReaderWebViewForReaderController:(id)a3;
-- (void)dataForQuickLookDocument:(id)a3 completionHandler:(id)a4;
+- (void)createReaderWebViewForReaderController:(id)controller;
+- (void)dataForQuickLookDocument:(id)document completionHandler:(id)handler;
 - (void)dealloc;
 - (void)decreasePageZoomSetting;
-- (void)detectWebpageLocaleForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)dialogController:(id)a3 didDismissDialog:(id)a4;
-- (void)dialogController:(id)a3 dismissViewController:(id)a4 withAdditionalAnimations:(id)a5;
-- (void)dialogController:(id)a3 presentViewController:(id)a4 withAdditionalAnimations:(id)a5;
-- (void)dialogController:(id)a3 willPresentDialog:(id)a4;
+- (void)detectWebpageLocaleForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)dialogController:(id)controller didDismissDialog:(id)dialog;
+- (void)dialogController:(id)controller dismissViewController:(id)viewController withAdditionalAnimations:(id)animations;
+- (void)dialogController:(id)controller presentViewController:(id)viewController withAdditionalAnimations:(id)animations;
+- (void)dialogController:(id)controller willPresentDialog:(id)dialog;
 - (void)didActivateReader;
-- (void)didAutoDetectSiteSpecificSearchProviderWithOriginatingURL:(id)a3 searchURLTemplate:(id)a4;
-- (void)didFindAppBannerWithContent:(id)a3;
-- (void)didFindSummarizationRestrictionsForReaderController:(id)a3;
-- (void)didReplaceTabDocument:(id)a3;
-- (void)dismissAppSuggestionBanner:(id)a3;
-- (void)dismissAutoFillInternalFeedbackActivityForFormAutoFillController:(id)a3 immediately:(BOOL)a4;
-- (void)dismissSiriReaderMediaSessionImmediately:(BOOL)a3;
-- (void)dispatchNavigationIntent:(id)a3;
-- (void)displayAttributionBannerForHighlightIfNeeded:(id)a3;
+- (void)didAutoDetectSiteSpecificSearchProviderWithOriginatingURL:(id)l searchURLTemplate:(id)template;
+- (void)didFindAppBannerWithContent:(id)content;
+- (void)didFindSummarizationRestrictionsForReaderController:(id)controller;
+- (void)didReplaceTabDocument:(id)document;
+- (void)dismissAppSuggestionBanner:(id)banner;
+- (void)dismissAutoFillInternalFeedbackActivityForFormAutoFillController:(id)controller immediately:(BOOL)immediately;
+- (void)dismissSiriReaderMediaSessionImmediately:(BOOL)immediately;
+- (void)dispatchNavigationIntent:(id)intent;
+- (void)displayAttributionBannerForHighlightIfNeeded:(id)needed;
 - (void)displayNewTabOverridePageIfNecessary;
-- (void)donateCurrentNavigationWithNavigationResponse:(id)a3;
+- (void)donateCurrentNavigationWithNavigationResponse:(id)response;
 - (void)donateSameDocumentNavigationIfNecessary;
-- (void)downloadDidFail:(id)a3;
-- (void)downloadDidFinish:(id)a3;
-- (void)downloadDidStart:(id)a3;
-- (void)downloadShouldContinueAfterReceivingResponse:(id)a3 decisionHandler:(id)a4;
-- (void)duplicateUsingConfiguration:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)endSuppressingProgressAnimationAnimated:(BOOL)a3;
+- (void)downloadDidFail:(id)fail;
+- (void)downloadDidFinish:(id)finish;
+- (void)downloadDidStart:(id)start;
+- (void)downloadShouldContinueAfterReceivingResponse:(id)response decisionHandler:(id)handler;
+- (void)duplicateUsingConfiguration:(id)configuration forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)endSuppressingProgressAnimationAnimated:(BOOL)animated;
 - (void)evictFromTabReuse;
-- (void)fetchCanonicalURLWithCompletionHandler:(id)a3;
-- (void)fetchMetadataForBookmark:(id)a3 completion:(id)a4;
-- (void)filteredArticleTextDidBecomeReadyForReaderController:(id)a3;
-- (void)findOnPageCompletionProvider:(id)a3 setStringToComplete:(id)a4;
+- (void)fetchCanonicalURLWithCompletionHandler:(id)handler;
+- (void)fetchMetadataForBookmark:(id)bookmark completion:(id)completion;
+- (void)filteredArticleTextDidBecomeReadyForReaderController:(id)controller;
+- (void)findOnPageCompletionProvider:(id)provider setStringToComplete:(id)complete;
 - (void)fluidProgressRocketAnimationDidComplete;
-- (void)formAutoFillControllerDidFocusSensitiveFormField:(id)a3;
-- (void)formAutoFillControllerGetAuthenticationForAutoFill:(id)a3 completion:(id)a4;
-- (void)formAutoFillControllerUserChoseToUseGeneratedPassword:(id)a3;
-- (void)getApplicationManifestWithCompletionHandler:(id)a3;
-- (void)goBackAllowingNewTabToSpawnIfNeeded:(BOOL)a3;
-- (void)goBackForWebExtensionContext:(id)a3 completionHandler:(id)a4;
+- (void)formAutoFillControllerDidFocusSensitiveFormField:(id)field;
+- (void)formAutoFillControllerGetAuthenticationForAutoFill:(id)fill completion:(id)completion;
+- (void)formAutoFillControllerUserChoseToUseGeneratedPassword:(id)password;
+- (void)getApplicationManifestWithCompletionHandler:(id)handler;
+- (void)goBackAllowingNewTabToSpawnIfNeeded:(BOOL)needed;
+- (void)goBackForWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)goBackToParentTab;
-- (void)goForwardAllowingNewTabToSpawnIfNeeded:(BOOL)a3;
-- (void)goForwardForWebExtensionContext:(id)a3 completionHandler:(id)a4;
-- (void)goToBackForwardListItem:(id)a3;
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4;
+- (void)goForwardAllowingNewTabToSpawnIfNeeded:(BOOL)needed;
+- (void)goForwardForWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)goToBackForwardListItem:(id)item;
+- (void)handleNavigationIntent:(id)intent completion:(id)completion;
 - (void)hibernate;
-- (void)hideBannerForHighlightIdentifier:(id)a3;
+- (void)hideBannerForHighlightIdentifier:(id)identifier;
 - (void)history;
 - (void)increasePageZoomSetting;
 - (void)indexTabToCoreSpotlight;
 - (void)invalidateUserActivity;
-- (void)keyboardWillHide:(id)a3;
-- (void)linkPreviewHelper:(id)a3 addURLToReadingList:(id)a4;
-- (void)linkPreviewHelper:(id)a3 commitPreviewViewControllerForAction:(int64_t)a4 withTabOrder:(int64_t)a5;
-- (void)linkPreviewHelper:(id)a3 didProduceNavigationIntent:(id)a4 forAction:(int64_t)a5;
-- (void)linkPreviewHelper:(id)a3 redirectToExternalNavigationResult:(id)a4;
-- (void)linkPreviewHelperWillBeginDownload:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)linkPreviewHelper:(id)helper addURLToReadingList:(id)list;
+- (void)linkPreviewHelper:(id)helper commitPreviewViewControllerForAction:(int64_t)action withTabOrder:(int64_t)order;
+- (void)linkPreviewHelper:(id)helper didProduceNavigationIntent:(id)intent forAction:(int64_t)action;
+- (void)linkPreviewHelper:(id)helper redirectToExternalNavigationResult:(id)result;
+- (void)linkPreviewHelperWillBeginDownload:(id)download;
 - (void)linkPreviewHelperWillDisableLinkPreview;
-- (void)loadCloudTab:(id)a3;
-- (void)loadTestURL:(id)a3 withInjectedBundle:(BOOL)a4 withCallback:(id)a5 pagesNeedingMemoryWarningSent:(id)a6;
-- (void)loadURL:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)loadURL:(id)a3 title:(id)a4 skipSyncableTabUpdates:(BOOL)a5;
-- (void)loadingController:(id)a3 willLoadRequest:(id)a4 webView:(id)a5 userDriven:(BOOL)a6;
-- (void)loadingControllerWillStartUserDrivenLoad:(id)a3;
-- (void)mediaStateDidChangeNeedsDelay:(uint64_t)a1;
+- (void)loadCloudTab:(id)tab;
+- (void)loadTestURL:(id)l withInjectedBundle:(BOOL)bundle withCallback:(id)callback pagesNeedingMemoryWarningSent:(id)sent;
+- (void)loadURL:(id)l forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)loadURL:(id)l title:(id)title skipSyncableTabUpdates:(BOOL)updates;
+- (void)loadingController:(id)controller willLoadRequest:(id)request webView:(id)view userDriven:(BOOL)driven;
+- (void)loadingControllerWillStartUserDrivenLoad:(id)load;
+- (void)mediaStateDidChangeNeedsDelay:(uint64_t)delay;
 - (void)mute;
 - (void)muteMediaCapture;
 - (void)muteOtherTabs;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pageContextDataFetcherDidFinishFetching:(id)a3 forURL:(id)a4 withError:(id)a5;
-- (void)pageLoadErrorController:(id)a3 allowLegacyTLSConnectionForURL:(id)a4 navigateToURL:(id)a5;
-- (void)pageLoadErrorController:(id)a3 loadFailedRequestAfterError:(id)a4;
-- (void)pageLoadErrorController:(id)a3 presentViewController:(id)a4;
-- (void)pageLoadErrorControllerClosePage:(id)a3;
-- (void)pageLoadErrorControllerDidAddAlert:(id)a3;
-- (void)pageLoadErrorControllerReloadUsingHTTPSOnlyBypass:(id)a3;
-- (void)pageLoadErrorControllerReloadWithoutPrivateRelay:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pageContextDataFetcherDidFinishFetching:(id)fetching forURL:(id)l withError:(id)error;
+- (void)pageLoadErrorController:(id)controller allowLegacyTLSConnectionForURL:(id)l navigateToURL:(id)rL;
+- (void)pageLoadErrorController:(id)controller loadFailedRequestAfterError:(id)error;
+- (void)pageLoadErrorController:(id)controller presentViewController:(id)viewController;
+- (void)pageLoadErrorControllerClosePage:(id)page;
+- (void)pageLoadErrorControllerDidAddAlert:(id)alert;
+- (void)pageLoadErrorControllerReloadUsingHTTPSOnlyBypass:(id)bypass;
+- (void)pageLoadErrorControllerReloadWithoutPrivateRelay:(id)relay;
 - (void)prepareToContinueUserActivity;
 - (void)prepareToUseReader;
-- (void)presentAutoFillInternalFeedbackToastForFormAutoFillController:(id)a3 diagnosticsDataWithoutPageContents:(id)a4;
+- (void)presentAutoFillInternalFeedbackToastForFormAutoFillController:(id)controller diagnosticsDataWithoutPageContents:(id)contents;
 - (void)presentNextDialogIfNeeded;
-- (void)readerController:(id)a3 didClickLinkInReaderWithRequest:(id)a4;
-- (void)readerController:(id)a3 didClickLinkRequestingNewWindowInReaderWithRequest:(id)a4;
-- (void)readerController:(id)a3 didDeactivateReaderWithMode:(unint64_t)a4;
-- (void)readerController:(id)a3 didDetermineAdditionalTextSamples:(id)a4 dueTo:(int64_t)a5;
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5;
-- (void)readerController:(id)a3 didEncounterErrorForSummarization:(id)a4;
-- (void)readerController:(id)a3 didExtractArticleText:(id)a4 withMetadata:(id)a5;
-- (void)readerController:(id)a3 didFinishOnDemandSummarization:(id)a4;
-- (void)readerController:(id)a3 didTwoFingerTapLinkInReaderWithContext:(id)a4;
+- (void)readerController:(id)controller didClickLinkInReaderWithRequest:(id)request;
+- (void)readerController:(id)controller didClickLinkRequestingNewWindowInReaderWithRequest:(id)request;
+- (void)readerController:(id)controller didDeactivateReaderWithMode:(unint64_t)mode;
+- (void)readerController:(id)controller didDetermineAdditionalTextSamples:(id)samples dueTo:(int64_t)to;
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to;
+- (void)readerController:(id)controller didEncounterErrorForSummarization:(id)summarization;
+- (void)readerController:(id)controller didExtractArticleText:(id)text withMetadata:(id)metadata;
+- (void)readerController:(id)controller didFinishOnDemandSummarization:(id)summarization;
+- (void)readerController:(id)controller didTwoFingerTapLinkInReaderWithContext:(id)context;
 - (void)release;
-- (void)reloadDisablingAdvancedPrivateBrowsingPrivacyProtections:(BOOL)a3;
-- (void)reloadDisablingContentBlockers:(BOOL)a3;
-- (void)reloadEnablingDowngradedPrivateRelay:(BOOL)a3;
-- (void)reloadFromOrigin:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
+- (void)reloadDisablingAdvancedPrivateBrowsingPrivacyProtections:(BOOL)protections;
+- (void)reloadDisablingContentBlockers:(BOOL)blockers;
+- (void)reloadEnablingDowngradedPrivateRelay:(BOOL)relay;
+- (void)reloadFromOrigin:(BOOL)origin forWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)reloadFromOriginUserInitiated;
 - (void)reloadUserInitiated;
-- (void)removeMediaSuspensionReason:(unint64_t)a3;
+- (void)removeMediaSuspensionReason:(unint64_t)reason;
 - (void)resetPageZoomSetting;
 - (void)resetPendingAutoFillInternalFeedbackToastDismissalTimer;
 - (void)resetTabViewItems;
 - (void)restoreAllHighlightsData;
-- (void)restoreScrollPositionWithCloudTab:(id)a3;
-- (void)restoreSessionState:(id)a3 andNavigate:(BOOL)a4 fromSafariViewService:(BOOL)a5;
-- (void)restoreStateFromTab:(id)a3;
-- (void)saveWebArchiveToPath:(id)a3 completion:(id)a4;
+- (void)restoreScrollPositionWithCloudTab:(id)tab;
+- (void)restoreSessionState:(id)state andNavigate:(BOOL)navigate fromSafariViewService:(BOOL)service;
+- (void)restoreStateFromTab:(id)tab;
+- (void)saveWebArchiveToPath:(id)path completion:(id)completion;
 - (void)select;
-- (void)setActive:(BOOL)a3;
-- (void)setAllowsRemoteInspection:(BOOL)a3;
-- (void)setAppSuggestionBanner:(id)a3 isPinned:(BOOL)a4;
-- (void)setAudioState:(int)a3 needsDelay:;
-- (void)setBrowserController:(id)a3 afterTabGroupReuse:(BOOL)a4;
-- (void)setChangedPropertiesForOnUpdatedWebExtensionEvent:(unint64_t)a3;
-- (void)setClosed:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInitialURLForStatePersisting:(id)a3 title:(id)a4;
-- (void)setIsBlank:(BOOL)a3;
-- (void)setMediaStateIcon:(uint64_t)a1;
-- (void)setMuted:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
+- (void)setActive:(BOOL)active;
+- (void)setAllowsRemoteInspection:(BOOL)inspection;
+- (void)setAppSuggestionBanner:(id)banner isPinned:(BOOL)pinned;
+- (void)setAudioState:(int)state needsDelay:;
+- (void)setBrowserController:(id)controller afterTabGroupReuse:(BOOL)reuse;
+- (void)setChangedPropertiesForOnUpdatedWebExtensionEvent:(unint64_t)event;
+- (void)setClosed:(BOOL)closed;
+- (void)setDelegate:(id)delegate;
+- (void)setInitialURLForStatePersisting:(id)persisting title:(id)title;
+- (void)setIsBlank:(BOOL)blank;
+- (void)setMediaStateIcon:(uint64_t)icon;
+- (void)setMuted:(BOOL)muted forWebExtensionContext:(id)context completionHandler:(id)handler;
 - (void)setNeedsNewTabSnapshot;
-- (void)setPageZoomFactor:(double)a3;
-- (void)setParentTabDocumentForBackClosesSpawnedTab:(id)a3;
-- (void)setPinned:(BOOL)a3;
-- (void)setPinned:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setQuickLookDocumentForCurrentBackForwardListItem:(uint64_t)a1;
-- (void)setReaderModeActive:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setReadingListBookmark:(id)a3;
-- (void)setSelected:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)setShareParticipants:(id)a3;
-- (void)setShowingContinuous:(BOOL)a3;
-- (void)setShowingReader:(BOOL)a3;
-- (void)setSourceApplicationBundleIdentifierForNextCommit:(id)a3;
-- (void)setSuppressWebExtensionEvents:(BOOL)a3;
-- (void)setSuppressingProgressAnimationForNavigationGesture:(BOOL)a3;
-- (void)setUnifiedTabBarItem:(uint64_t)a1;
-- (void)setUnread:(BOOL)a3;
-- (void)setUpBackClosesSpawnedTabWithParent:(id)a3;
-- (void)setUuid:(id)a3;
-- (void)setWebClip:(uint64_t)a1;
-- (void)setZoomFactor:(double)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5;
-- (void)sfScribbleController:(id)a3 presentAlert:(id)a4;
-- (void)sfScribbleControllerDidEndScribbling:(id)a3;
-- (void)sfScribbleControllerDidStartScribbling:(id)a3;
-- (void)sfScribbleControllerDidUpdateHiddenElementCount:(id)a3;
-- (void)sfWebViewDidChangeSafeAreaInsets:(id)a3;
-- (void)sfWebViewDidDismissFindOnPage:(id)a3;
-- (void)showDownload:(id)a3;
+- (void)setPageZoomFactor:(double)factor;
+- (void)setParentTabDocumentForBackClosesSpawnedTab:(id)tab;
+- (void)setPinned:(BOOL)pinned;
+- (void)setPinned:(BOOL)pinned forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setQuickLookDocumentForCurrentBackForwardListItem:(uint64_t)item;
+- (void)setReaderModeActive:(BOOL)active forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setReadingListBookmark:(id)bookmark;
+- (void)setSelected:(BOOL)selected forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)setShareParticipants:(id)participants;
+- (void)setShowingContinuous:(BOOL)continuous;
+- (void)setShowingReader:(BOOL)reader;
+- (void)setSourceApplicationBundleIdentifierForNextCommit:(id)commit;
+- (void)setSuppressWebExtensionEvents:(BOOL)events;
+- (void)setSuppressingProgressAnimationForNavigationGesture:(BOOL)gesture;
+- (void)setUnifiedTabBarItem:(uint64_t)item;
+- (void)setUnread:(BOOL)unread;
+- (void)setUpBackClosesSpawnedTabWithParent:(id)parent;
+- (void)setUuid:(id)uuid;
+- (void)setWebClip:(uint64_t)clip;
+- (void)setZoomFactor:(double)factor forWebExtensionContext:(id)context completionHandler:(id)handler;
+- (void)sfScribbleController:(id)controller presentAlert:(id)alert;
+- (void)sfScribbleControllerDidEndScribbling:(id)scribbling;
+- (void)sfScribbleControllerDidStartScribbling:(id)scribbling;
+- (void)sfScribbleControllerDidUpdateHiddenElementCount:(id)count;
+- (void)sfWebViewDidChangeSafeAreaInsets:(id)insets;
+- (void)sfWebViewDidDismissFindOnPage:(id)page;
+- (void)showDownload:(id)download;
 - (void)showFindOnPage;
-- (void)snapshotForWebClipIcon:(id)a3;
-- (void)snapshotWithSize:(CGSize)a3 options:(unint64_t)a4 completion:(id)a5;
+- (void)snapshotForWebClipIcon:(id)icon;
+- (void)snapshotWithSize:(CGSize)size options:(unint64_t)options completion:(id)completion;
 - (void)statusBarIndicatorTapped;
 - (void)stopAdvertisingProactiveActivityContent;
 - (void)stopLoading;
 - (void)stopLoadingUserInitiated;
-- (void)tabGroupManager:(id)a3 didUpadateActiveParticipants:(id)a4 inTabWithUUID:(id)a5;
+- (void)tabGroupManager:(id)manager didUpadateActiveParticipants:(id)participants inTabWithUUID:(id)d;
 - (void)toggleGlobalMediaStateMuted;
 - (void)toggleMediaStateMuted;
 - (void)toggleReader;
 - (void)touchIconFetcher;
-- (void)translationContext:(id)a3 shouldReportProgressInUnifiedField:(BOOL)a4;
-- (void)translationContext:(id)a3 showTranslationErrorAlertWithTitle:(id)a4 message:(id)a5;
-- (void)translationContext:(id)a3 urlForCurrentPageWithCompletionHandler:(id)a4;
-- (void)translationContextReloadPageInOriginalLanguage:(id)a3;
-- (void)translationContextWillRequestTranslatingWebpage:(id)a3;
-- (void)unfreezeAfterNavigationGesture:(BOOL)a3;
+- (void)translationContext:(id)context shouldReportProgressInUnifiedField:(BOOL)field;
+- (void)translationContext:(id)context showTranslationErrorAlertWithTitle:(id)title message:(id)message;
+- (void)translationContext:(id)context urlForCurrentPageWithCompletionHandler:(id)handler;
+- (void)translationContextReloadPageInOriginalLanguage:(id)language;
+- (void)translationContextWillRequestTranslatingWebpage:(id)webpage;
+- (void)unfreezeAfterNavigationGesture:(BOOL)gesture;
 - (void)unhibernate;
 - (void)unmute;
 - (void)unmuteOtherTabs;
 - (void)updateAccessibilityIdentifier;
-- (void)updateAncestryToChildOfTopLevelAncestorRelatedTab:(id)a3;
-- (void)updateAncestryWithParentTab:(id)a3;
+- (void)updateAncestryToChildOfTopLevelAncestorRelatedTab:(id)tab;
+- (void)updateAncestryWithParentTab:(id)tab;
 - (void)updateGlobalMediaStateIcon;
 - (void)updateLockedBrowsingState;
 - (void)updateMenuButtonShowsBadge;
-- (void)updateReadingListItemPreviewText:(id)a3;
+- (void)updateReadingListItemPreviewText:(id)text;
 - (void)updateShowsSiriReaderPlayingIcon;
 - (void)updateTabIcon;
-- (void)updateTabIconWithDelay:(double)a3;
+- (void)updateTabIconWithDelay:(double)delay;
 - (void)updateTabTitle;
-- (void)updateThemeColorAndUnderPageBackground:(BOOL)a3;
+- (void)updateThemeColorAndUnderPageBackground:(BOOL)background;
 - (void)updateUsageTrackingInformationAfterLinkPreviewDismissal;
-- (void)updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:(BOOL)a3;
+- (void)updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:(BOOL)current;
 - (void)updateUserActivity;
 - (void)updateUsesDarkTheme;
-- (void)userDeclinedAutomaticStrongPasswordForCurrentDomainOnTabWithUUID:(id)a3;
+- (void)userDeclinedAutomaticStrongPasswordForCurrentDomainOnTabWithUUID:(id)d;
 - (void)validateExtensionToolbarItems;
 - (void)validateWebClip;
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didCommitNavigation:(id)a4;
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didFinishNavigation:(id)a4;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4;
-- (void)webView:(id)a3 navigationAction:(id)a4 didBecomeDownload:(id)a5;
-- (void)webView:(id)a3 navigationResponse:(id)a4 didBecomeDownload:(id)a5;
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6;
-- (void)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6;
-- (void)webView:(id)a3 runJavaScriptTextInputPanelWithPrompt:(id)a4 defaultText:(id)a5 initiatedByFrame:(id)a6 completionHandler:(id)a7;
-- (void)webView:(id)a3 shouldLoadIconWithParameters:(id)a4 completionHandler:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didCommitNavigation:(id)navigation;
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didFinishNavigation:(id)navigation;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation;
+- (void)webView:(id)view navigationAction:(id)action didBecomeDownload:(id)download;
+- (void)webView:(id)view navigationResponse:(id)response didBecomeDownload:(id)download;
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler;
+- (void)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler;
+- (void)webView:(id)view runJavaScriptTextInputPanelWithPrompt:(id)prompt defaultText:(id)text initiatedByFrame:(id)frame completionHandler:(id)handler;
+- (void)webView:(id)view shouldLoadIconWithParameters:(id)parameters completionHandler:(id)handler;
 - (void)webViewDidChangeSize;
-- (void)webViewDidClose:(id)a3;
+- (void)webViewDidClose:(id)close;
 - (void)webViewDidIncreaseZoom;
 - (void)webViewWillChangeSize;
 - (void)willClose;
@@ -638,18 +638,18 @@
 - (WBSUserDefinedContentBlockerManager)normalBrowsingUserDefinedContentBlockerManager
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 userDefinedContentBlockerManager];
+  userDefinedContentBlockerManager = [v2 userDefinedContentBlockerManager];
 
-  return v3;
+  return userDefinedContentBlockerManager;
 }
 
 - (id)_blankTabTitle
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_class();
-    v3 = [a1 libraryType];
-    v4 = [v2 blankTabTitleWithLibraryType:v3 controlledByAutomation:{objc_msgSend(a1, "isControlledByAutomation")}];
+    libraryType = [self libraryType];
+    v4 = [v2 blankTabTitleWithLibraryType:libraryType controlledByAutomation:{objc_msgSend(self, "isControlledByAutomation")}];
   }
 
   else
@@ -688,9 +688,9 @@
 - (WBSPrivateBrowsingUserDefinedContentBlockerManager)privateBrowsingUserDefinedContentBlockerManager
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 userDefinedContentBlockerManagerForPrivateBrowsing];
+  userDefinedContentBlockerManagerForPrivateBrowsing = [v2 userDefinedContentBlockerManagerForPrivateBrowsing];
 
-  return v3;
+  return userDefinedContentBlockerManagerForPrivateBrowsing;
 }
 
 - (void)release
@@ -742,9 +742,9 @@
 
 - (void)_setUp
 {
-  v3 = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
-  *(a2 + 665) = v3;
-  *(a2 + 664) = v3;
+  isLockdownModeEnabledForSafari = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
+  *(a2 + 665) = isLockdownModeEnabledForSafari;
+  *(a2 + 664) = isLockdownModeEnabledForSafari;
   v4 = objc_alloc_init(MEMORY[0x277D4A070]);
   v5 = *(a2 + 1416);
   *(a2 + 1416) = v4;
@@ -752,30 +752,30 @@
 
 - (id)_loadedTitle
 {
-  if (a1)
+  if (self)
   {
-    if ([a1[105] length])
+    if ([self[105] length])
     {
-      v2 = a1[105];
+      title = self[105];
     }
 
     else
     {
-      v2 = [a1[21] title];
+      title = [self[21] title];
     }
 
-    v3 = v2;
-    if ([v2 length])
+    v3 = title;
+    if ([title length])
     {
-      v4 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      v5 = [v4 BOOLForKey:@"DebugOverrideTabTitleWithMatchingBookmark"];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      v5 = [safari_browserDefaults BOOLForKey:@"DebugOverrideTabTitleWithMatchingBookmark"];
 
       if (v5)
       {
-        v6 = [(TabDocument *)a1 _debugOverrideTitle];
-        if ([v6 length])
+        _debugOverrideTitle = [(TabDocument *)self _debugOverrideTitle];
+        if ([_debugOverrideTitle length])
         {
-          v7 = v6;
+          v7 = _debugOverrideTitle;
         }
 
         else
@@ -812,15 +812,15 @@
 
 - (NSString)tabTitle
 {
-  v2 = self;
+  selfCopy = self;
   if ([(TabDocument *)self isHibernated])
   {
-    v2 = v2->_loadingController;
+    selfCopy = selfCopy->_loadingController;
   }
 
-  v3 = [(TabDocument *)v2 title];
+  title = [(TabDocument *)selfCopy title];
 
-  return v3;
+  return title;
 }
 
 - (TabDocument)init
@@ -830,13 +830,13 @@
   v2 = [(TabDocument *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     renderingProgressEventObservers = v2->_renderingProgressEventObservers;
-    v2->_renderingProgressEventObservers = v3;
+    v2->_renderingProgressEventObservers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     navigationObservers = v2->_navigationObservers;
-    v2->_navigationObservers = v5;
+    v2->_navigationObservers = weakObjectsHashTable2;
 
     v7 = v2;
   }
@@ -888,9 +888,9 @@ LABEL_10:
 - (_SFPerSitePreferencesVendor)perSitePreferencesVendor
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained perSitePreferencesVendor];
+  perSitePreferencesVendor = [WeakRetained perSitePreferencesVendor];
 
-  return v3;
+  return perSitePreferencesVendor;
 }
 
 - (BrowserController)browserController
@@ -915,7 +915,7 @@ LABEL_10:
 
 - (void)updateTabTitle
 {
-  v9 = [(TabDocumentCollectionItem *)self->_tabCollectionItem title];
+  title = [(TabDocumentCollectionItem *)self->_tabCollectionItem title];
   if (self->_displayingStandaloneImage)
   {
     v3 = 0;
@@ -929,15 +929,15 @@ LABEL_10:
   v4 = [(TabDocument *)&self->super.isa _addTitlePrefixToString:v3];
 
   [(TabDocumentCollectionItem *)self->_tabCollectionItem setTitle:v4];
-  v5 = [(TabDocument *)self tabBarTitle];
-  v6 = [(TabDocument *)&self->super.isa _addTitlePrefixToString:v5];
+  tabBarTitle = [(TabDocument *)self tabBarTitle];
+  v6 = [(TabDocument *)&self->super.isa _addTitlePrefixToString:tabBarTitle];
 
   [(TabBarItem *)self->_tabBarItem setTitle:v6];
   [(UnifiedTabBarItem *)self->_unifiedTabBarItem setTitle:v6];
   [(TabDocument *)&self->super.isa _reconfigureLibraryItemView];
   linkPreviewViewController = self->_linkPreviewViewController;
-  v8 = [(TabDocument *)self URLString];
-  [(LinkPreviewViewController *)linkPreviewViewController updatePreviewLoadingUIWithURLString:v8];
+  uRLString = [(TabDocument *)self URLString];
+  [(LinkPreviewViewController *)linkPreviewViewController updatePreviewLoadingUIWithURLString:uRLString];
 
   [(TabDocument *)self _titleForWebExtensionsMayHaveChanged];
   [(TabDocument *)&self->super.isa _URLForWebExtensionsMayHaveChanged];
@@ -951,100 +951,100 @@ LABEL_10:
 {
   if (self->_webView && ([(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator UIShouldReflectCommittedURLInsteadOfCurrentURL]& 1) != 0)
   {
-    v3 = [(_SFWebView *)self->_webView _committedURL];
+    _committedURL = [(_SFWebView *)self->_webView _committedURL];
   }
 
   else
   {
-    v3 = [(LoadingController *)self->_loadingController URL];
+    _committedURL = [(LoadingController *)self->_loadingController URL];
   }
 
-  v4 = v3;
-  if (!v3)
+  sourceURL = _committedURL;
+  if (!_committedURL)
   {
     activeDownload = self->_activeDownload;
     if (activeDownload)
     {
-      v4 = [(_SFDownload *)activeDownload sourceURL];
+      sourceURL = [(_SFDownload *)activeDownload sourceURL];
     }
 
     else
     {
-      v4 = 0;
+      sourceURL = 0;
     }
   }
 
-  v6 = [(TabDocument *)self customUserVisibleStringForReadingListBookmarkURL:v4];
-  if (!v6)
+  safari_userVisibleStringConsideringLongURLs = [(TabDocument *)self customUserVisibleStringForReadingListBookmarkURL:sourceURL];
+  if (!safari_userVisibleStringConsideringLongURLs)
   {
-    v6 = [v4 safari_userVisibleStringConsideringLongURLs];
+    safari_userVisibleStringConsideringLongURLs = [sourceURL safari_userVisibleStringConsideringLongURLs];
   }
 
-  return v6;
+  return safari_userVisibleStringConsideringLongURLs;
 }
 
 - (void)_reconfigureLibraryItemView
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 124);
-    v4 = [WeakRetained libraryController];
+    WeakRetained = objc_loadWeakRetained(self + 124);
+    libraryController = [WeakRetained libraryController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [a1 uuidString];
-      [v4 reconfigureTabCellWithUUIDString:v3];
+      uuidString = [self uuidString];
+      [libraryController reconfigureTabCellWithUUIDString:uuidString];
     }
   }
 }
 
 - (void)_titleForWebExtensionsMayHaveChanged
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1 tabTitle];
-    if (v4 != a1[182] && ([v4 isEqualToString:?] & 1) == 0)
+    tabTitle = [self tabTitle];
+    if (tabTitle != self[182] && ([tabTitle isEqualToString:?] & 1) == 0)
     {
-      v2 = [v4 copy];
-      v3 = a1[182];
-      a1[182] = v2;
+      v2 = [tabTitle copy];
+      v3 = self[182];
+      self[182] = v2;
 
-      [a1 setChangedPropertiesForOnUpdatedWebExtensionEvent:{objc_msgSend(a1, "changedPropertiesForOnUpdatedWebExtensionEvent") | 1}];
+      [self setChangedPropertiesForOnUpdatedWebExtensionEvent:{objc_msgSend(self, "changedPropertiesForOnUpdatedWebExtensionEvent") | 1}];
     }
   }
 }
 
 - (void)_URLForWebExtensionsMayHaveChanged
 {
-  if (a1)
+  if (self)
   {
-    obj = [a1 urlForExtensions];
-    v2 = a1[183];
+    obj = [self urlForExtensions];
+    v2 = self[183];
     if ((WBSIsEqual() & 1) == 0)
     {
-      objc_storeStrong(a1 + 183, obj);
-      [a1 setChangedPropertiesForOnUpdatedWebExtensionEvent:{objc_msgSend(a1, "changedPropertiesForOnUpdatedWebExtensionEvent") | 2}];
-      [a1 validateExtensionToolbarItems];
+      objc_storeStrong(self + 183, obj);
+      [self setChangedPropertiesForOnUpdatedWebExtensionEvent:{objc_msgSend(self, "changedPropertiesForOnUpdatedWebExtensionEvent") | 2}];
+      [self validateExtensionToolbarItems];
     }
   }
 }
 
 - (void)_notifyDidUpdateTabCollectionItem
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    [WeakRetained tabDocumentDidUpdateTabCollectionItem:a1];
+    WeakRetained = objc_loadWeakRetained((self + 1248));
+    [WeakRetained tabDocumentDidUpdateTabCollectionItem:self];
   }
 }
 
 - (SFWebExtensionsController)webExtensionsController
 {
   v3 = +[Application sharedApplication];
-  v4 = [(_SFBrowserConfiguration *)self->_configuration isPrivateBrowsingEnabled];
-  v5 = [(TabDocument *)self profile];
-  v6 = [v3 webExtensionsControllerForTabWithPrivateBrowsingEnabled:v4 profile:v5];
+  isPrivateBrowsingEnabled = [(_SFBrowserConfiguration *)self->_configuration isPrivateBrowsingEnabled];
+  profile = [(TabDocument *)self profile];
+  v6 = [v3 webExtensionsControllerForTabWithPrivateBrowsingEnabled:isPrivateBrowsingEnabled profile:profile];
 
   return v6;
 }
@@ -1052,9 +1052,9 @@ LABEL_10:
 - (WBProfile)profile
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained effectiveProfile];
+  effectiveProfile = [WeakRetained effectiveProfile];
 
-  return v3;
+  return effectiveProfile;
 }
 
 - (id)tabUpdateBlock
@@ -1188,8 +1188,8 @@ void __29__TabDocument_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
       [v2 setNavigationBarItem:*(v1 + 280)];
     }
 
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v1 selector:sel__voiceSearchAvailabilityDidChange_ name:*MEMORY[0x277D29198] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v1 selector:sel__voiceSearchAvailabilityDidChange_ name:*MEMORY[0x277D29198] object:0];
 
     return [v1 _voiceSearchAvailabilityDidChange:0];
   }
@@ -1199,65 +1199,65 @@ void __29__TabDocument_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
 
 - (void)_updateNavigationBarItem
 {
-  if (!a1 || !*(a1 + 280))
+  if (!self || !*(self + 280))
   {
     return;
   }
 
-  v2 = [a1 URL];
+  v2 = [self URL];
   v35 = v2;
   if ([v2 safari_isSafariWebExtensionURL])
   {
-    v3 = 0;
+    uRLString = 0;
   }
 
   else
   {
-    v3 = [a1 URLString];
+    uRLString = [self URLString];
   }
 
-  v34 = [MEMORY[0x277CDB8A8] sharedInstance];
-  v4 = [v34 defaultSearchEngineIfPopulatedForPrivateBrowsing:{objc_msgSend(a1, "isPrivateBrowsingEnabled")}];
+  mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+  v4 = [mEMORY[0x277CDB8A8] defaultSearchEngineIfPopulatedForPrivateBrowsing:{objc_msgSend(self, "isPrivateBrowsingEnabled")}];
   v33 = v4;
   if (!v4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277CDBA28];
-    [v5 removeObserver:a1 name:*MEMORY[0x277CDBA28] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:a1 selector:sel__searchEngineControllerDidFinishPopulating_ name:v6 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__searchEngineControllerDidFinishPopulating_ name:v6 object:0];
   }
 
-  if ([*(a1 + 48) UIShouldReflectCommittedURLInsteadOfCurrentURL])
+  if ([*(self + 48) UIShouldReflectCommittedURLInsteadOfCurrentURL])
   {
-    [*(a1 + 1064) _committedURL];
+    [*(self + 1064) _committedURL];
   }
 
   else
   {
-    [*(a1 + 168) URL];
+    [*(self + 168) URL];
   }
   v32 = ;
   v8 = [v4 userVisibleQueryFromSearchURL:v32];
-  if (*(a1 + 192) || (objc_opt_respondsToSelector() & 1) == 0)
+  if (*(self + 192) || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v10 = 0;
   }
 
   else
   {
-    v9 = [*(a1 + 1064) _safeBrowsingWarning];
-    v10 = v9 != 0;
+    _safeBrowsingWarning = [*(self + 1064) _safeBrowsingWarning];
+    v10 = _safeBrowsingWarning != 0;
   }
 
-  [*(a1 + 280) setOverrideBarStyleForSecurityWarning:v10];
+  [*(self + 280) setOverrideBarStyleForSecurityWarning:v10];
   v38 = 0;
-  v36 = [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:133 forDisplayOnly:0 simplifiedStringOffset:&v38];
+  v36 = [uRLString safari_simplifiedUserVisibleURLStringWithSimplifications:133 forDisplayOnly:0 simplifiedStringOffset:&v38];
   v37 = 0;
-  v11 = [v3 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:&v37];
-  *(a1 + 974) = 0;
-  if (*(a1 + 192))
+  v11 = [uRLString safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:1 simplifiedStringOffset:&v37];
+  *(self + 974) = 0;
+  if (*(self + 192))
   {
     v12 = _WBSLocalizedString();
     goto LABEL_17;
@@ -1278,7 +1278,7 @@ void __29__TabDocument_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
         {
           v13 = v11;
           v18 = v36;
-          v16 = 0;
+          safari_isEligibleToShowNotSecureWarning = 0;
           v17 = 0;
           if (v37 <= v38)
           {
@@ -1299,7 +1299,7 @@ void __29__TabDocument_tabUpdateBlock__block_invoke(uint64_t a1, void *a2)
         }
 
         v31 = v8;
-        *(a1 + 974) = 1;
+        *(self + 974) = 1;
         v13 = v31;
         v14 = 0;
         goto LABEL_21;
@@ -1334,8 +1334,8 @@ LABEL_18:
     }
 
 LABEL_21:
-    v15 = [a1 expectedOrCurrentURL];
-    v16 = [v15 safari_isEligibleToShowNotSecureWarning];
+    expectedOrCurrentURL = [self expectedOrCurrentURL];
+    safari_isEligibleToShowNotSecureWarning = [expectedOrCurrentURL safari_isEligibleToShowNotSecureWarning];
 
     v17 = 1;
     v18 = v8;
@@ -1352,7 +1352,7 @@ LABEL_25:
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   if (v13 == v11)
   {
-    v16 = 0;
+    safari_isEligibleToShowNotSecureWarning = 0;
     v17 = 0;
     if (v37 > v38)
     {
@@ -1367,7 +1367,7 @@ LABEL_25:
 
   else
   {
-    v16 = 0;
+    safari_isEligibleToShowNotSecureWarning = 0;
     v17 = 0;
     if (v11)
     {
@@ -1376,29 +1376,29 @@ LABEL_25:
   }
 
 LABEL_33:
-  if (!v16)
+  if (!safari_isEligibleToShowNotSecureWarning)
   {
 LABEL_36:
-    [*(a1 + 280) setSecurityAnnotation:0 hasFocusedInputFieldOnCurrentPage:*(a1 + 736)];
+    [*(self + 280) setSecurityAnnotation:0 hasFocusedInputFieldOnCurrentPage:*(self + 736)];
     v20 = 0;
     goto LABEL_37;
   }
 
 LABEL_34:
-  if (![(TabDocument *)a1 isPageEligibileToShowNotSecureWarning])
+  if (![(TabDocument *)self isPageEligibileToShowNotSecureWarning])
   {
     goto LABEL_36;
   }
 
   v20 = 1;
-  [*(a1 + 280) setSecurityAnnotation:1 hasFocusedInputFieldOnCurrentPage:*(a1 + 736)];
+  [*(self + 280) setSecurityAnnotation:1 hasFocusedInputFieldOnCurrentPage:*(self + 736)];
 LABEL_37:
-  if ([a1 isBlank])
+  if ([self isBlank])
   {
     v21 = 0;
   }
 
-  else if (*(a1 + 664))
+  else if (*(self + 664))
   {
     v21 = 1;
   }
@@ -1408,8 +1408,8 @@ LABEL_37:
     v21 = 2;
   }
 
-  [*(a1 + 280) setLockdownModeAnnotation:v21];
-  if ((v16 & v20) == 1)
+  [*(self + 280) setLockdownModeAnnotation:v21];
+  if ((safari_isEligibleToShowNotSecureWarning & v20) == 1)
   {
     v22 = v11;
 
@@ -1423,7 +1423,7 @@ LABEL_37:
     v23 = v17;
   }
 
-  if (*(a1 + 192))
+  if (*(self + 192))
   {
     v24 = 1;
   }
@@ -1443,38 +1443,38 @@ LABEL_37:
     v25 = [v36 length] == 0;
   }
 
-  [*(a1 + 280) setShowsSearchIndicator:v25];
-  [*(a1 + 280) setText:v13 textWhenExpanded:v18 startIndex:v14];
-  [*(a1 + 280) setShowsSearchTermsWhenExpanded:v23];
-  v26 = [a1 URL];
-  [*(a1 + 280) setShowsStopReloadButtons:v26 != 0];
+  [*(self + 280) setShowsSearchIndicator:v25];
+  [*(self + 280) setText:v13 textWhenExpanded:v18 startIndex:v14];
+  [*(self + 280) setShowsSearchTermsWhenExpanded:v23];
+  v26 = [self URL];
+  [*(self + 280) setShowsStopReloadButtons:v26 != 0];
 
-  [*(a1 + 280) setShowsPageFormatButton:{objc_msgSend(a1, "canShowPageFormatMenu")}];
-  v27 = *(a1 + 280);
-  if (*(a1 + 192))
+  [*(self + 280) setShowsPageFormatButton:{objc_msgSend(self, "canShowPageFormatMenu")}];
+  v27 = *(self + 280);
+  if (*(self + 192))
   {
-    v28 = 0;
+    isReaderAvailable = 0;
   }
 
   else
   {
-    v28 = [a1 isReaderAvailable];
+    isReaderAvailable = [self isReaderAvailable];
   }
 
-  [v27 setShowsReaderButton:v28 showsAvailabilityText:0];
-  v29 = *(a1 + 280);
-  if (*(a1 + 192))
+  [v27 setShowsReaderButton:isReaderAvailable showsAvailabilityText:0];
+  v29 = *(self + 280);
+  if (*(self + 192))
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = [*(a1 + 1056) detectionNotificationLevel] == 1;
+    v30 = [*(self + 1056) detectionNotificationLevel] == 1;
   }
 
   [v29 setShowsTranslationButton:v30 showsAvailabilityText:0];
-  [*(a1 + 1272) updatePreviewLoadingUIWithURLString:v3];
+  [*(self + 1272) updatePreviewLoadingUIWithURLString:uRLString];
 }
 
 - (BOOL)canShowPageFormatMenu
@@ -1516,9 +1516,9 @@ LABEL_37:
   cachedView = self->_cachedView;
   if (!cachedView)
   {
-    v4 = [(TabDocument *)self createTabDocumentView];
+    createTabDocumentView = [(TabDocument *)self createTabDocumentView];
     v5 = self->_cachedView;
-    self->_cachedView = v4;
+    self->_cachedView = createTabDocumentView;
 
     [(TabDocument *)self updateAccessibilityIdentifier];
     [(TabDocumentView *)self->_cachedView setReaderWebView:self->_readerWebView];
@@ -1542,8 +1542,8 @@ LABEL_37:
   v14[6] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v13[0] = @"UUID";
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  v14[0] = v4;
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v14[0] = uUIDString;
   v13[1] = @"IsPrivate";
   if ([(TabDocument *)self isPrivateBrowsingEnabled])
   {
@@ -1599,8 +1599,8 @@ LABEL_37:
   v11 = WBSMakeAccessibilityIdentifier();
   [(TabDocumentView *)self->_cachedView setAccessibilityIdentifier:v11];
 
-  v12 = [WeakRetained rootViewController];
-  [v12 updateAccessibilityIdentifier];
+  rootViewController = [WeakRetained rootViewController];
+  [rootViewController updateAccessibilityIdentifier];
 }
 
 - (BOOL)isSecure
@@ -1611,18 +1611,18 @@ LABEL_37:
   }
 
   v4 = [(LoadingController *)self->_loadingController URL];
-  v5 = [(_SFWebView *)self->_webView _committedURL];
-  v3 = [v4 isEqual:v5];
+  _committedURL = [(_SFWebView *)self->_webView _committedURL];
+  v3 = [v4 isEqual:_committedURL];
 
   return v3;
 }
 
 - (BOOL)isShowingManagedNewTabPage
 {
-  v3 = [MEMORY[0x277D49A60] sharedController];
-  v4 = [v3 managedNewTabPageState];
+  mEMORY[0x277D49A60] = [MEMORY[0x277D49A60] sharedController];
+  managedNewTabPageState = [mEMORY[0x277D49A60] managedNewTabPageState];
 
-  if (v4 == 1)
+  if (managedNewTabPageState == 1)
   {
 
     return [(TabDocument *)self isShowingSystemStartPage];
@@ -1630,25 +1630,25 @@ LABEL_37:
 
   else
   {
-    if (v4 == 2)
+    if (managedNewTabPageState == 2)
     {
-      v11 = [(TabDocument *)self webExtensionsController];
-      v12 = [MEMORY[0x277D49A60] sharedController];
-      v13 = [v12 managedNewTabPageExtensionComposedIdentifier];
-      v14 = [v11 webExtensionForComposedIdentifier:v13];
+      webExtensionsController = [(TabDocument *)self webExtensionsController];
+      mEMORY[0x277D49A60]2 = [MEMORY[0x277D49A60] sharedController];
+      managedNewTabPageExtensionComposedIdentifier = [mEMORY[0x277D49A60]2 managedNewTabPageExtensionComposedIdentifier];
+      v14 = [webExtensionsController webExtensionForComposedIdentifier:managedNewTabPageExtensionComposedIdentifier];
 
       v15 = [(TabDocument *)self URL];
-      v16 = [v14 newTabOverridePageURL];
-      v10 = [v15 safari_isEqualToURL:v16];
+      newTabOverridePageURL = [v14 newTabOverridePageURL];
+      v10 = [v15 safari_isEqualToURL:newTabOverridePageURL];
     }
 
-    else if (v4 == 3)
+    else if (managedNewTabPageState == 3)
     {
       v5 = [(TabDocument *)self URL];
       v6 = MEMORY[0x277CBEBC0];
-      v7 = [MEMORY[0x277D49A60] sharedController];
-      v8 = [v7 managedNewTabPageHomepageURLString];
-      v9 = [v6 URLWithString:v8];
+      mEMORY[0x277D49A60]3 = [MEMORY[0x277D49A60] sharedController];
+      managedNewTabPageHomepageURLString = [mEMORY[0x277D49A60]3 managedNewTabPageHomepageURLString];
+      v9 = [v6 URLWithString:managedNewTabPageHomepageURLString];
       v10 = [v5 safari_isEqualToURL:v9];
     }
 
@@ -1663,11 +1663,11 @@ LABEL_37:
 
 - (BOOL)isShowingErrorPage
 {
-  v3 = [(TabDocument *)self hasQuickLookContent];
-  if (!v3)
+  hasQuickLookContent = [(TabDocument *)self hasQuickLookContent];
+  if (!hasQuickLookContent)
   {
-    v4 = [(_SFWebView *)self->_webView _unreachableURL];
-    if (v4)
+    _unreachableURL = [(_SFWebView *)self->_webView _unreachableURL];
+    if (_unreachableURL)
     {
       v5 = 1;
 LABEL_9:
@@ -1678,10 +1678,10 @@ LABEL_9:
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(_SFWebView *)self->_webView _safeBrowsingWarning];
-    v5 = v6 != 0;
+    _safeBrowsingWarning = [(_SFWebView *)self->_webView _safeBrowsingWarning];
+    v5 = _safeBrowsingWarning != 0;
 
-    if (v3)
+    if (hasQuickLookContent)
     {
       return v5;
     }
@@ -1690,10 +1690,10 @@ LABEL_9:
   }
 
   v5 = 0;
-  if (!v3)
+  if (!hasQuickLookContent)
   {
 LABEL_8:
-    v4 = 0;
+    _unreachableURL = 0;
     goto LABEL_9;
   }
 
@@ -1702,8 +1702,8 @@ LABEL_8:
 
 - (BOOL)hasQuickLookContent
 {
-  v2 = [(TabDocument *)self quickLookDocument];
-  v3 = v2 != 0;
+  quickLookDocument = [(TabDocument *)self quickLookDocument];
+  v3 = quickLookDocument != 0;
 
   return v3;
 }
@@ -1715,18 +1715,18 @@ LABEL_8:
   if (!quickLookDocumentCheckCompleted && !quickLookDocument)
   {
     self->_quickLookDocumentCheckCompleted = 1;
-    v5 = [(SFQuickLookDocumentWriter *)self->_quickLookDocumentWriter quickLookDocument];
+    quickLookDocument = [(SFQuickLookDocumentWriter *)self->_quickLookDocumentWriter quickLookDocument];
     v6 = self->_quickLookDocument;
-    self->_quickLookDocument = v5;
+    self->_quickLookDocument = quickLookDocument;
 
     v7 = self->_quickLookDocument;
     if (!v7 || ([(TabDocument *)self setQuickLookDocumentForCurrentBackForwardListItem:v7], (v8 = self->_quickLookDocument) == 0))
     {
       if ([(TabDocument *)self isPDFDocument])
       {
-        v9 = [(TabDocument *)self suggestedFilenameForDisplayedPDF];
+        suggestedFilenameForDisplayedPDF = [(TabDocument *)self suggestedFilenameForDisplayedPDF];
         v10 = objc_alloc(MEMORY[0x277D28D20]);
-        v11 = [v10 initWithFileName:v9 mimeType:0 uti:*MEMORY[0x277CC2108] needsQuickLookDocumentView:0];
+        v11 = [v10 initWithFileName:suggestedFilenameForDisplayedPDF mimeType:0 uti:*MEMORY[0x277CC2108] needsQuickLookDocumentView:0];
         v12 = self->_quickLookDocument;
         self->_quickLookDocument = v11;
       }
@@ -1734,16 +1734,16 @@ LABEL_8:
       v8 = self->_quickLookDocument;
       if (!v8)
       {
-        v13 = [(TabDocument *)self quickLookDocumentForCurrentBackForwardListItem];
+        quickLookDocumentForCurrentBackForwardListItem = [(TabDocument *)self quickLookDocumentForCurrentBackForwardListItem];
         v14 = self->_quickLookDocument;
-        self->_quickLookDocument = v13;
+        self->_quickLookDocument = quickLookDocumentForCurrentBackForwardListItem;
 
         v8 = self->_quickLookDocument;
       }
     }
 
-    v15 = [(TabDocument *)self urlForSharing];
-    [(SFQuickLookDocument *)v8 setSourceURL:v15];
+    urlForSharing = [(TabDocument *)self urlForSharing];
+    [(SFQuickLookDocument *)v8 setSourceURL:urlForSharing];
 
     [(SFQuickLookDocument *)self->_quickLookDocument setDocumentSource:self];
     quickLookDocument = self->_quickLookDocument;
@@ -1754,19 +1754,19 @@ LABEL_8:
 
 - (id)quickLookDocumentForCurrentBackForwardListItem
 {
-  if (a1)
+  if (self)
   {
-    v1 = [*(a1 + 1064) backForwardList];
-    v2 = [v1 currentItem];
-    v3 = [v2 _sf_quickLookDocument];
+    backForwardList = [*(self + 1064) backForwardList];
+    currentItem = [backForwardList currentItem];
+    _sf_quickLookDocument = [currentItem _sf_quickLookDocument];
   }
 
   else
   {
-    v3 = 0;
+    _sf_quickLookDocument = 0;
   }
 
-  return v3;
+  return _sf_quickLookDocument;
 }
 
 - (NSURL)urlForSharing
@@ -1780,10 +1780,10 @@ LABEL_8:
     v3 = v5;
   }
 
-  v6 = [(TabDocument *)self titleForSharing];
-  if (v6)
+  titleForSharing = [(TabDocument *)self titleForSharing];
+  if (titleForSharing)
   {
-    [v3 _setTitle:v6];
+    [v3 _setTitle:titleForSharing];
   }
 
   return v3;
@@ -1850,20 +1850,20 @@ LABEL_8:
       self->_userActivity = v11;
     }
 
-    v13 = [v3 dictionaryRepresentationForUserActivityUserInfo];
-    [(NSUserActivity *)self->_userActivity setUserInfo:v13];
+    dictionaryRepresentationForUserActivityUserInfo = [v3 dictionaryRepresentationForUserActivityUserInfo];
+    [(NSUserActivity *)self->_userActivity setUserInfo:dictionaryRepresentationForUserActivityUserInfo];
 
-    v14 = [v3 title];
-    [(NSUserActivity *)self->_userActivity setTitle:v14];
+    title = [v3 title];
+    [(NSUserActivity *)self->_userActivity setTitle:title];
 
     [(NSUserActivity *)self->_userActivity setWebpageURL:v6];
-    v15 = [(TabDocument *)self searchableItemAttributes];
-    [(NSUserActivity *)self->_userActivity setContentAttributeSet:v15];
+    searchableItemAttributes = [(TabDocument *)self searchableItemAttributes];
+    [(NSUserActivity *)self->_userActivity setContentAttributeSet:searchableItemAttributes];
 
-    v16 = [(TabDocument *)self searchableItemAttributes];
-    LOBYTE(v15) = v16 == 0;
+    searchableItemAttributes2 = [(TabDocument *)self searchableItemAttributes];
+    LOBYTE(searchableItemAttributes) = searchableItemAttributes2 == 0;
 
-    if ((v15 & 1) == 0)
+    if ((searchableItemAttributes & 1) == 0)
     {
       [(NSUserActivity *)self->_userActivity _updateForwardToCoreSpotlightIndexer:1];
       self->_forwardActivityToCoreSpotlight = 1;
@@ -1877,10 +1877,10 @@ LABEL_8:
       v18 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v25 = [(TabDocument *)self searchableItemAttributes];
-        v26 = [v25 relatedUniqueIdentifier];
+        searchableItemAttributes3 = [(TabDocument *)self searchableItemAttributes];
+        relatedUniqueIdentifier = [searchableItemAttributes3 relatedUniqueIdentifier];
         v27 = 138478083;
-        v28 = v26;
+        v28 = relatedUniqueIdentifier;
         v29 = 2113;
         v30 = v6;
         _os_log_debug_impl(&dword_215819000, v18, OS_LOG_TYPE_DEBUG, "Sending NSUserActivity through CoreSpotlight; relatedUniqueIdentifier '%{private}@' and URL '%{private}@'", &v27, 0x16u);
@@ -1888,14 +1888,14 @@ LABEL_8:
     }
 
     v19 = +[Application sharedApplication];
-    v20 = [v19 systemNoteTakingController];
+    systemNoteTakingController = [v19 systemNoteTakingController];
 
-    [v20 insertCanonicalURLIfAvailableForUserActivity:self->_userActivity];
-    v21 = [(NSUserActivity *)self->_userActivity userInfo];
-    v22 = [v21 mutableCopy];
+    [systemNoteTakingController insertCanonicalURLIfAvailableForUserActivity:self->_userActivity];
+    userInfo = [(NSUserActivity *)self->_userActivity userInfo];
+    v22 = [userInfo mutableCopy];
 
-    v23 = [(NSUserActivity *)self->_userActivity _uniqueIdentifier];
-    [v22 setObject:v23 forKeyedSubscript:@"uniqueIdentifier"];
+    _uniqueIdentifier = [(NSUserActivity *)self->_userActivity _uniqueIdentifier];
+    [v22 setObject:_uniqueIdentifier forKeyedSubscript:@"uniqueIdentifier"];
 
     v24 = [v22 copy];
     [(NSUserActivity *)self->_userActivity setUserInfo:v24];
@@ -1938,9 +1938,9 @@ LABEL_8:
   }
 
   lastSiriReaderSessionIdentifier = self->_lastSiriReaderSessionIdentifier;
-  v5 = [MEMORY[0x277D28D50] sharedVoiceUtilities];
-  v6 = [v5 activeSiriReaderSessionIdentifier];
-  LODWORD(lastSiriReaderSessionIdentifier) = [(NSString *)lastSiriReaderSessionIdentifier isEqualToString:v6];
+  mEMORY[0x277D28D50] = [MEMORY[0x277D28D50] sharedVoiceUtilities];
+  activeSiriReaderSessionIdentifier = [mEMORY[0x277D28D50] activeSiriReaderSessionIdentifier];
+  LODWORD(lastSiriReaderSessionIdentifier) = [(NSString *)lastSiriReaderSessionIdentifier isEqualToString:activeSiriReaderSessionIdentifier];
 
   if (!lastSiriReaderSessionIdentifier)
   {
@@ -1948,16 +1948,16 @@ LABEL_8:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained siriReaderPlaybackStateForActiveTab];
+  siriReaderPlaybackStateForActiveTab = [WeakRetained siriReaderPlaybackStateForActiveTab];
 
-  return v8 == 1;
+  return siriReaderPlaybackStateForActiveTab == 1;
 }
 
 - (void)webViewDidChangeSize
 {
   [(TabDocument *)&self->super.isa _updateMaxVisibleHeightPercentageUserDriven:?];
-  v3 = [(TabDocument *)self readerContext];
-  [v3 webViewWillChangeSize];
+  readerContext = [(TabDocument *)self readerContext];
+  [readerContext webViewWillChangeSize];
 }
 
 - (void)updateShowsSiriReaderPlayingIcon
@@ -1991,8 +1991,8 @@ uint64_t __47__TabDocument_updateShowsSiriReaderPlayingIcon__block_invoke(uint64
     self->_suppressCrashBanner = 0;
     self->_hibernated = 0;
     v4 = [(TabDocument *)self URL];
-    v5 = [(TabDocument *)self createWebViewConfiguration];
-    [(TabDocument *)self _createDocumentViewWithConfiguration:v5];
+    createWebViewConfiguration = [(TabDocument *)self createWebViewConfiguration];
+    [(TabDocument *)self _createDocumentViewWithConfiguration:createWebViewConfiguration];
     if (self->_savedSessionState)
     {
       goto LABEL_8;
@@ -2000,12 +2000,12 @@ uint64_t __47__TabDocument_updateShowsSiriReaderPlayingIcon__block_invoke(uint64
 
     if (![(TabDocument *)self isBlank])
     {
-      v6 = [(WBTab *)self->_tabGroupTab localAttributes];
-      v7 = [v6 sessionStateData];
+      localAttributes = [(WBTab *)self->_tabGroupTab localAttributes];
+      sessionStateData = [localAttributes sessionStateData];
 
-      if ([v7 length])
+      if ([sessionStateData length])
       {
-        v8 = [objc_alloc(MEMORY[0x277CE38A0]) initWithData:v7];
+        v8 = [objc_alloc(MEMORY[0x277CE38A0]) initWithData:sessionStateData];
         savedSessionState = self->_savedSessionState;
         self->_savedSessionState = v8;
       }
@@ -2022,7 +2022,7 @@ LABEL_8:
       v11[2] = __26__TabDocument_unhibernate__block_invoke;
       v11[3] = &unk_2781D61F8;
       v12 = v4;
-      v13 = self;
+      selfCopy = self;
       [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v11 thenDo:?];
     }
 
@@ -2037,63 +2037,63 @@ LABEL_8:
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v3 = objc_alloc_init(MEMORY[0x277CE3858]);
-  v4 = [WeakRetained processPool];
-  [v3 setProcessPool:v4];
+  processPool = [WeakRetained processPool];
+  [v3 setProcessPool:processPool];
 
   [v3 setShowsSystemScreenTimeBlockingView:0];
-  v49 = [WeakRetained wkPreferences];
+  wkPreferences = [WeakRetained wkPreferences];
   if ([MEMORY[0x277D49A08] isWAPEnabled])
   {
-    v5 = [(TabDocument *)self profileIdentifier];
-    v6 = [v5 isEqualToString:{*MEMORY[0x277D49BD8], WeakRetained}];
+    profileIdentifier = [(TabDocument *)self profileIdentifier];
+    v6 = [profileIdentifier isEqualToString:{*MEMORY[0x277D49BD8], WeakRetained}];
 
     if (v6)
     {
-      v7 = [v49 copy];
+      v7 = [wkPreferences copy];
 
       [v7 _setNotificationsEnabled:1];
       [v7 _setPushAPIEnabled:1];
       [v7 _setNotificationEventEnabled:1];
-      v49 = v7;
+      wkPreferences = v7;
       [v7 _setAppBadgeEnabled:1];
     }
   }
 
-  [v3 setPreferences:{v49, WeakRetained}];
+  [v3 setPreferences:{wkPreferences, WeakRetained}];
   if (self->_webClip)
   {
     [v3 setIgnoresViewportScaleLimits:1];
-    v8 = [v3 preferences];
-    [v8 _setStandalone:1];
+    preferences = [v3 preferences];
+    [preferences _setStandalone:1];
   }
 
   if ([(TabDocument *)self isPrivateBrowsingEnabled])
   {
-    v9 = [MEMORY[0x277CE3830] safari_privateBrowsingUserContentController];
+    safari_privateBrowsingUserContentController = [MEMORY[0x277CE3830] safari_privateBrowsingUserContentController];
   }
 
   else
   {
-    v10 = [(TabDocument *)self webExtensionsController];
-    v9 = [v10 userContentController];
+    webExtensionsController = [(TabDocument *)self webExtensionsController];
+    safari_privateBrowsingUserContentController = [webExtensionsController userContentController];
 
-    v11 = [(TabDocument *)self history];
-    v12 = [v11 visitedLinkStore];
-    [v3 _setVisitedLinkStore:v12];
+    history = [(TabDocument *)self history];
+    visitedLinkStore = [history visitedLinkStore];
+    [v3 _setVisitedLinkStore:visitedLinkStore];
   }
 
-  [v3 setUserContentController:v9];
+  [v3 setUserContentController:safari_privateBrowsingUserContentController];
   v15 = _SFApplicationNameForUserAgent();
   [v3 setApplicationNameForUserAgent:v15];
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v14 = [v13 valueForKey:*MEMORY[0x277D291B8]];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v14 = [standardUserDefaults valueForKey:*MEMORY[0x277D291B8]];
   LODWORD(v15) = [v14 BOOLValue];
 
-  v16 = [v13 valueForKey:*MEMORY[0x277D292A0]];
-  v17 = [v16 BOOLValue];
+  v16 = [standardUserDefaults valueForKey:*MEMORY[0x277D292A0]];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     v15 = v15 | 2;
   }
@@ -2116,29 +2116,29 @@ LABEL_8:
   }
 
   [v3 _setMediaDataLoadsAutomatically:v19];
-  v20 = [v13 valueForKey:*MEMORY[0x277D29240]];
+  v20 = [standardUserDefaults valueForKey:*MEMORY[0x277D29240]];
   [v3 _setMainContentUserGestureOverrideEnabled:{objc_msgSend(v20, "BOOLValue")}];
 
-  v21 = [v13 valueForKey:*MEMORY[0x277D29258]];
+  v21 = [standardUserDefaults valueForKey:*MEMORY[0x277D29258]];
   [v3 setAllowsInlineMediaPlayback:{objc_msgSend(v21, "BOOLValue")}];
 
-  v22 = [v13 valueForKey:*MEMORY[0x277D29218]];
+  v22 = [standardUserDefaults valueForKey:*MEMORY[0x277D29218]];
   [v3 _setInlineMediaPlaybackRequiresPlaysInlineAttribute:{objc_msgSend(v22, "BOOLValue")}];
 
-  v23 = [v13 valueForKey:*MEMORY[0x277D29220]];
+  v23 = [standardUserDefaults valueForKey:*MEMORY[0x277D29220]];
   [v3 _setInvisibleAutoplayNotPermitted:{objc_msgSend(v23, "BOOLValue")}];
 
   [v3 _setApplePayEnabled:1];
   [v3 setIgnoresViewportScaleLimits:1];
   [v3 _setNeedsStorageAccessFromFileURLsQuirk:0];
   [v3 _setDragLiftDelay:2];
-  v24 = [(TabDocument *)self configuration];
-  [v3 _setControlledByAutomation:{objc_msgSend(v24, "isControlledByAutomation")}];
+  configuration = [(TabDocument *)self configuration];
+  [v3 _setControlledByAutomation:{objc_msgSend(configuration, "isControlledByAutomation")}];
 
   v25 = +[Application sharedApplication];
-  v26 = [v25 systemNoteTakingController];
+  systemNoteTakingController = [v25 systemNoteTakingController];
 
-  if ([v26 isNoteTakingSupportedWithPrivateBrowsing:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([systemNoteTakingController isNoteTakingSupportedWithPrivateBrowsing:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [v3 _setAppHighlightsEnabled:1];
   }
@@ -2146,68 +2146,68 @@ LABEL_8:
   if ([(_SFBrowserConfiguration *)self->_configuration usesPersistentDataStore])
   {
     v27 = MEMORY[0x277CE3868];
-    v28 = [(TabDocument *)self profileIdentifier];
-    v29 = [v27 safari_dataStoreForProfileWithIdentifier:v28];
-    [v3 setWebsiteDataStore:v29];
+    profileIdentifier2 = [(TabDocument *)self profileIdentifier];
+    automationController = [v27 safari_dataStoreForProfileWithIdentifier:profileIdentifier2];
+    [v3 setWebsiteDataStore:automationController];
 LABEL_22:
 
     goto LABEL_24;
   }
 
-  v30 = [(TabDocument *)self isControlledByAutomation];
+  isControlledByAutomation = [(TabDocument *)self isControlledByAutomation];
   v31 = MEMORY[0x277CE3868];
-  if (v30)
+  if (isControlledByAutomation)
   {
-    v28 = +[Application sharedApplication];
-    v29 = [v28 automationController];
-    v32 = [v29 automationSession];
-    v33 = [v32 sessionIdentifier];
-    v34 = [v31 safari_dataStoreForAutomationSessionWithIdentifier:v33];
+    profileIdentifier2 = +[Application sharedApplication];
+    automationController = [profileIdentifier2 automationController];
+    automationSession = [automationController automationSession];
+    sessionIdentifier = [automationSession sessionIdentifier];
+    v34 = [v31 safari_dataStoreForAutomationSessionWithIdentifier:sessionIdentifier];
     [v3 setWebsiteDataStore:v34];
 
     goto LABEL_22;
   }
 
-  v28 = [MEMORY[0x277CE3868] safari_nonPersistentDataStore];
-  [v3 setWebsiteDataStore:v28];
+  profileIdentifier2 = [MEMORY[0x277CE3868] safari_nonPersistentDataStore];
+  [v3 setWebsiteDataStore:profileIdentifier2];
 LABEL_24:
 
-  [v3 _setLegacyEncryptedMediaAPIEnabled:{objc_msgSend(v13, "BOOLForKey:", *MEMORY[0x277D29238])}];
-  v35 = [v3 websiteDataStore];
-  v36 = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
-  [v35 _setResourceLoadStatisticsEnabled:{objc_msgSend(v36, "webui_trackerProtectionEnabled")}];
+  [v3 _setLegacyEncryptedMediaAPIEnabled:{objc_msgSend(standardUserDefaults, "BOOLForKey:", *MEMORY[0x277D29238])}];
+  websiteDataStore = [v3 websiteDataStore];
+  mEMORY[0x277CBAB38] = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
+  [websiteDataStore _setResourceLoadStatisticsEnabled:{objc_msgSend(mEMORY[0x277CBAB38], "webui_trackerProtectionEnabled")}];
 
-  v37 = [v3 preferences];
+  preferences2 = [v3 preferences];
   v38 = objc_opt_respondsToSelector();
 
   if (v38)
   {
-    v39 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v40 = [v39 safari_warnAboutFraudulentWebsites];
-    v41 = [v3 preferences];
-    [v41 _setSafeBrowsingEnabled:v40];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    safari_warnAboutFraudulentWebsites = [safari_browserDefaults safari_warnAboutFraudulentWebsites];
+    preferences3 = [v3 preferences];
+    [preferences3 _setSafeBrowsingEnabled:safari_warnAboutFraudulentWebsites];
   }
 
   [v3 _setSystemPreviewEnabled:1];
-  v42 = [(TabDocument *)self webExtensionsController];
-  v43 = [v42 webKitController];
-  [v3 _setWebExtensionController:v43];
+  webExtensionsController2 = [(TabDocument *)self webExtensionsController];
+  webKitController = [webExtensionsController2 webKitController];
+  [v3 _setWebExtensionController:webKitController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v13 safari_doubleForKey:@"DebugSampledPageTopColorMaxDifference" defaultValue:*MEMORY[0x277D4A8D8]];
+    [standardUserDefaults safari_doubleForKey:@"DebugSampledPageTopColorMaxDifference" defaultValue:*MEMORY[0x277D4A8D8]];
     [v3 _setSampledPageTopColorMaxDifference:?];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v13 safari_doubleForKey:@"DebugSampledPageTopColorMinHeight" defaultValue:*MEMORY[0x277D4A8E0]];
+    [standardUserDefaults safari_doubleForKey:@"DebugSampledPageTopColorMinHeight" defaultValue:*MEMORY[0x277D4A8E0]];
     [v3 _setSampledPageTopColorMinHeight:?];
   }
 
-  v44 = [v3 defaultWebpagePreferences];
+  defaultWebpagePreferences = [v3 defaultWebpagePreferences];
   v45 = _SFApplicationNameForDesktopUserAgent();
-  [v44 _setApplicationNameForUserAgentWithModernCompatibility:v45];
+  [defaultWebpagePreferences _setApplicationNameForUserAgentWithModernCompatibility:v45];
 
   return v3;
 }
@@ -2223,18 +2223,18 @@ LABEL_24:
 
   else
   {
-    v5 = [(TabDocument *)self profile];
-    v6 = [v5 identifier];
+    profile = [(TabDocument *)self profile];
+    identifier = [profile identifier];
     v7 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v5 title];
-      [(TabDocument *)v8 history:v6];
+      title = [profile title];
+      [(TabDocument *)title history:identifier];
     }
 
     v9 = +[Application sharedApplication];
-    v10 = [v9 historyController];
-    v11 = [v10 historyForProfileIdentifier:v6 loadIfNeeded:1];
+    historyController = [v9 historyController];
+    v11 = [historyController historyForProfileIdentifier:identifier loadIfNeeded:1];
     v12 = self->_history;
     self->_history = v11;
 
@@ -2262,18 +2262,18 @@ LABEL_24:
 
 - (id)profileIdentifier
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v2 = [WeakRetained effectiveProfileIdentifier];
+    WeakRetained = objc_loadWeakRetained((self + 992));
+    effectiveProfileIdentifier = [WeakRetained effectiveProfileIdentifier];
   }
 
   else
   {
-    v2 = 0;
+    effectiveProfileIdentifier = 0;
   }
 
-  return v2;
+  return effectiveProfileIdentifier;
 }
 
 - (_SFInjectedJavaScriptController)activityJSController
@@ -2293,15 +2293,15 @@ LABEL_24:
 
 - (void)_updateActiveExtensionsIfNecessary
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   if ([MEMORY[0x277D49A08] isInternalInstall])
   {
-    v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v3 = [v2 BOOLForKey:@"DebugHideAllExtensionButtons"];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v3 = [safari_browserDefaults BOOLForKey:@"DebugHideAllExtensionButtons"];
 
     if (v3)
     {
@@ -2309,14 +2309,14 @@ LABEL_24:
     }
   }
 
-  v4 = [a1 webExtensionsController];
-  [*(a1 + 280) setNeedsExtensionBadge:{objc_msgSend(v4, "hasUpdatedToolbarItemBadgeTextInTab:", a1)}];
-  v5 = [a1 urlForExtensions];
-  if ([v5 safari_isSafariWebExtensionURL])
+  webExtensionsController = [self webExtensionsController];
+  [*(self + 280) setNeedsExtensionBadge:{objc_msgSend(webExtensionsController, "hasUpdatedToolbarItemBadgeTextInTab:", self)}];
+  urlForExtensions = [self urlForExtensions];
+  if ([urlForExtensions safari_isSafariWebExtensionURL])
   {
     v6 = objc_alloc(MEMORY[0x277CCAD78]);
-    v7 = [v5 host];
-    v8 = [v6 initWithUUIDString:v7];
+    host = [urlForExtensions host];
+    v8 = [v6 initWithUUIDString:host];
   }
 
   else
@@ -2324,30 +2324,30 @@ LABEL_24:
     v8 = 0;
   }
 
-  v9 = [v4 enabledExtensions];
+  enabledExtensions = [webExtensionsController enabledExtensions];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke;
   v28[3] = &unk_2781DB088;
-  v10 = v4;
+  v10 = webExtensionsController;
   v29 = v10;
-  v30 = a1;
-  v11 = v5;
+  selfCopy = self;
+  v11 = urlForExtensions;
   v31 = v11;
   v12 = v8;
   v32 = v12;
-  v13 = [v9 safari_mapAndFilterObjectsUsingBlock:v28];
+  v13 = [enabledExtensions safari_mapAndFilterObjectsUsingBlock:v28];
 
   v14 = [v13 count];
-  WeakRetained = objc_loadWeakRetained((a1 + 992));
-  v26 = [a1 contentBlockerManager];
-  if ([a1 isPrivateBrowsingEnabled])
+  WeakRetained = objc_loadWeakRetained((self + 992));
+  contentBlockerManager = [self contentBlockerManager];
+  if ([self isPrivateBrowsingEnabled])
   {
-    v16 = [v10 enabledExtensions];
-    if (![v16 count])
+    enabledExtensions2 = [v10 enabledExtensions];
+    if (![enabledExtensions2 count])
     {
-      v17 = [v26 enabledExtensions];
-      v18 = v17 != 0;
+      enabledExtensions3 = [contentBlockerManager enabledExtensions];
+      v18 = enabledExtensions3 != 0;
 LABEL_15:
 
       goto LABEL_16;
@@ -2356,19 +2356,19 @@ LABEL_15:
 
   else
   {
-    v16 = [v10 extensions];
-    if (![v16 count])
+    enabledExtensions2 = [v10 extensions];
+    if (![enabledExtensions2 count])
     {
-      v17 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      if ([v17 BOOLForKey:*MEMORY[0x277D4A210]])
+      enabledExtensions3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      if ([enabledExtensions3 BOOLForKey:*MEMORY[0x277D4A210]])
       {
         v18 = 1;
       }
 
       else
       {
-        v24 = [v26 extensions];
-        v18 = [v24 count] != 0;
+        extensions = [contentBlockerManager extensions];
+        v18 = [extensions count] != 0;
       }
 
       goto LABEL_15;
@@ -2378,7 +2378,7 @@ LABEL_15:
   v18 = 1;
 LABEL_16:
 
-  v19 = [WeakRetained tabBarManager];
+  tabBarManager = [WeakRetained tabBarManager];
   if (v18)
   {
     if ([WeakRetained hasDedicatedExtensionsButton])
@@ -2388,16 +2388,16 @@ LABEL_16:
 
     else
     {
-      v21 = [v19 inlineTabBar];
-      if (([v21 usesMoreMenu] & 1) != 0 || *(a1 + 970) != 1)
+      inlineTabBar = [tabBarManager inlineTabBar];
+      if (([inlineTabBar usesMoreMenu] & 1) != 0 || *(self + 970) != 1)
       {
         v20 = 0;
       }
 
       else
       {
-        v25 = [*(a1 + 280) text];
-        v20 = [v25 length] == 0;
+        text = [*(self + 280) text];
+        v20 = [text length] == 0;
       }
     }
   }
@@ -2418,14 +2418,14 @@ LABEL_16:
     v27[1] = 3221225472;
     v27[2] = __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke_2;
     v27[3] = &unk_2781DB0B0;
-    v27[4] = a1;
+    v27[4] = self;
     v22 = [v13 safari_mapAndFilterObjectsUsingBlock:v27];
   }
 
   v23 = [objc_alloc(MEMORY[0x277D28EC8]) initWithActiveExtensionCount:v14 alwaysShowMultipleExtensionsButton:v20 buttons:v22 extensionsController:v10];
-  [*(a1 + 280) setExtensionButtonConfiguration:v23];
+  [*(self + 280) setExtensionButtonConfiguration:v23];
 
-  [*(a1 + 280) setExtensionsAreActive:v14 != 0];
+  [*(self + 280) setExtensionsAreActive:v14 != 0];
 }
 
 - (void)validateExtensionToolbarItems
@@ -2437,19 +2437,19 @@ LABEL_16:
 
 - (SFContentBlockerManager)contentBlockerManager
 {
-  v3 = [(_SFBrowserConfiguration *)self->_configuration isPrivateBrowsingEnabled];
+  isPrivateBrowsingEnabled = [(_SFBrowserConfiguration *)self->_configuration isPrivateBrowsingEnabled];
   v4 = +[Application sharedApplication];
   v5 = v4;
-  if (v3)
+  if (isPrivateBrowsingEnabled)
   {
     v6 = [v4 contentBlockerManagerForProfileServerID:*MEMORY[0x277D49BD8]];
   }
 
   else
   {
-    v7 = [(TabDocument *)self profile];
-    v8 = [v7 identifierForExtensions];
-    v6 = [v5 contentBlockerManagerForProfileServerID:v8];
+    profile = [(TabDocument *)self profile];
+    identifierForExtensions = [profile identifierForExtensions];
+    v6 = [v5 contentBlockerManagerForProfileServerID:identifierForExtensions];
   }
 
   return v6;
@@ -2457,19 +2457,19 @@ LABEL_16:
 
 - (void)updateMenuButtonShowsBadge
 {
-  v3 = [MEMORY[0x277CDB7A8] sharedManager];
-  LODWORD(v9) = [v3 hasUnviewedDownloads];
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  LODWORD(v9) = [mEMORY[0x277CDB7A8] hasUnviewedDownloads];
 
-  v4 = [(TabDocument *)self webExtensionsController];
-  v5 = [v4 hasUpdatedToolbarItemBadgeTextInTab:self];
+  webExtensionsController = [(TabDocument *)self webExtensionsController];
+  v5 = [webExtensionsController hasUpdatedToolbarItemBadgeTextInTab:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v7 = [WeakRetained tabBarManager];
-  v8 = [v7 displayMode];
+  tabBarManager = [WeakRetained tabBarManager];
+  displayMode = [tabBarManager displayMode];
   v9 = v9;
 
   unifiedTabBarItem = self->_unifiedTabBarItem;
-  if (v8 == 2)
+  if (displayMode == 2)
   {
     [(SFUnifiedTabBarItem *)unifiedTabBarItem setShowsBadgeOnExtensionsButton:v5 & 1];
   }
@@ -2502,8 +2502,8 @@ LABEL_16:
 {
   if (self && [(_SFBrowserConfiguration *)self->_configuration allowsUserActivityFeedback]&& ([(TabDocument *)self _isShowingNativePage]& 1) == 0)
   {
-    v3 = [MEMORY[0x277D4A060] sharedInstance];
-    [v3 setTabNeedsSpotlightDonation:self];
+    mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+    [mEMORY[0x277D4A060] setTabNeedsSpotlightDonation:self];
   }
 }
 
@@ -2517,9 +2517,9 @@ LABEL_16:
       return 1;
     }
 
-    v2 = [v1[133] _safeBrowsingWarning];
+    _safeBrowsingWarning = [v1[133] _safeBrowsingWarning];
 
-    if (v2)
+    if (_safeBrowsingWarning)
     {
       return 1;
     }
@@ -2536,40 +2536,40 @@ LABEL_16:
 
 - (BOOL)hideFindOnPage
 {
-  v3 = [(TabDocument *)self isShowingFindOnPage];
-  if (v3)
+  isShowingFindOnPage = [(TabDocument *)self isShowingFindOnPage];
+  if (isShowingFindOnPage)
   {
-    v4 = [(TabDocument *)self findInteraction];
-    [v4 dismissFindNavigator];
+    findInteraction = [(TabDocument *)self findInteraction];
+    [findInteraction dismissFindNavigator];
   }
 
-  return v3;
+  return isShowingFindOnPage;
 }
 
 - (BOOL)isShowingFindOnPage
 {
-  v2 = [(TabDocument *)self findInteraction];
-  v3 = [v2 isFindNavigatorVisible];
+  findInteraction = [(TabDocument *)self findInteraction];
+  isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
 
-  return v3;
+  return isFindNavigatorVisible;
 }
 
 - (UIFindInteraction)findInteraction
 {
-  v2 = [(TabDocument *)self activeWebView];
-  v3 = [v2 findInteraction];
+  activeWebView = [(TabDocument *)self activeWebView];
+  findInteraction = [activeWebView findInteraction];
 
-  return v3;
+  return findInteraction;
 }
 
 - (void)updateGlobalMediaStateIcon
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
-  v8 = [v4 tabsWithSound];
+  browserWindowController = [WeakRetained browserWindowController];
+  tabsWithSound = [browserWindowController tabsWithSound];
 
-  LODWORD(WeakRetained) = [v8 safari_containsObjectPassingTest:&__block_literal_global_487];
-  v5 = [v8 count];
+  LODWORD(WeakRetained) = [tabsWithSound safari_containsObjectPassingTest:&__block_literal_global_487];
+  v5 = [tabsWithSound count];
   v6 = 5;
   if (!WeakRetained)
   {
@@ -2630,13 +2630,13 @@ LABEL_16:
 
 - (void)_fireOnUpdatedExtensionEventSoon
 {
-  if (a1)
+  if (self)
   {
-    [a1[101] invalidate];
-    v2 = a1[101];
-    a1[101] = 0;
+    [self[101] invalidate];
+    v2 = self[101];
+    self[101] = 0;
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v3 = MEMORY[0x277CBEBB8];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -2644,8 +2644,8 @@ LABEL_16:
     v6[3] = &unk_2781DA668;
     objc_copyWeak(&v7, &location);
     v4 = [v3 scheduledTimerWithTimeInterval:0 repeats:v6 block:0.1];
-    v5 = a1[101];
-    a1[101] = v4;
+    v5 = self[101];
+    self[101] = v4;
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -2676,9 +2676,9 @@ LABEL_16:
     libraryType = self->_libraryType;
     if (!libraryType)
     {
-      v17 = [MEMORY[0x277D28F20] favoritesFavicon];
+      favoritesFavicon = [MEMORY[0x277D28F20] favoritesFavicon];
 LABEL_23:
-      [(TabDocument *)self _setIcon:v17 isMonogram:0];
+      [(TabDocument *)self _setIcon:favoritesFavicon isMonogram:0];
 
       goto LABEL_24;
     }
@@ -2686,48 +2686,48 @@ LABEL_23:
     v8 = libraryType;
     if ([(NSString *)v8 isEqualToString:@"BookmarksCollection"])
     {
-      v9 = [MEMORY[0x277D28F20] bookmarksFavicon];
+      bookmarksFavicon = [MEMORY[0x277D28F20] bookmarksFavicon];
     }
 
     else if ([(NSString *)v8 isEqualToString:@"CloudTabsCollection"])
     {
-      v9 = [MEMORY[0x277D28F20] fallbackFavicon];
+      bookmarksFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
     }
 
     else if ([(NSString *)v8 isEqualToString:@"HistoryCollection"])
     {
-      v9 = [MEMORY[0x277D28F20] historyFavicon];
+      bookmarksFavicon = [MEMORY[0x277D28F20] historyFavicon];
     }
 
     else if ([(NSString *)v8 isEqualToString:@"ReadingListCollection"])
     {
-      v9 = [MEMORY[0x277D28F20] readingListFavicon];
+      bookmarksFavicon = [MEMORY[0x277D28F20] readingListFavicon];
     }
 
     else
     {
       if (![(NSString *)v8 isEqualToString:@"SharedWithYouCollection"])
       {
-        v17 = 0;
+        favoritesFavicon = 0;
         goto LABEL_22;
       }
 
-      v9 = [MEMORY[0x277D28F20] sharedWithYouFavicon];
+      bookmarksFavicon = [MEMORY[0x277D28F20] sharedWithYouFavicon];
     }
 
-    v17 = v9;
+    favoritesFavicon = bookmarksFavicon;
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  v4 = [v3 absoluteString];
-  v5 = [v4 isEqualToString:@"about:blank"];
+  absoluteString = [v3 absoluteString];
+  v5 = [absoluteString isEqualToString:@"about:blank"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D28F20] fallbackFavicon];
-    [(TabDocument *)self _setIcon:v6 isMonogram:0];
+    fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
+    [(TabDocument *)self _setIcon:fallbackFavicon isMonogram:0];
   }
 
   else
@@ -2736,13 +2736,13 @@ LABEL_22:
     {
       objc_initWeak(&location, self);
       v13 = [objc_alloc(MEMORY[0x277D4A730]) initWithURL:v3 iconSize:2 fallbackType:+[TabIconAndTitleView defaultTabIconSize]()];
-      v14 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+      mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __28__TabDocument_updateTabIcon__block_invoke;
       v18[3] = &unk_2781DA690;
       objc_copyWeak(&v19, &location);
-      v15 = [v14 registerRequest:v13 priority:2 responseHandler:v18];
+      v15 = [mEMORY[0x277D28F58] registerRequest:v13 priority:2 responseHandler:v18];
       faviconToken = self->_faviconToken;
       self->_faviconToken = v15;
 
@@ -2751,12 +2751,12 @@ LABEL_22:
       goto LABEL_24;
     }
 
-    v10 = [(TabDocument *)self webExtensionsController];
-    v11 = [v3 host];
-    v6 = [v10 webExtensionForBaseURIHost:v11];
+    webExtensionsController = [(TabDocument *)self webExtensionsController];
+    host = [v3 host];
+    fallbackFavicon = [webExtensionsController webExtensionForBaseURIHost:host];
 
-    v12 = [v6 icon];
-    [(TabDocument *)self _setIcon:v12 isMonogram:0];
+    icon = [fallbackFavicon icon];
+    [(TabDocument *)self _setIcon:icon isMonogram:0];
   }
 
 LABEL_24:
@@ -2764,21 +2764,21 @@ LABEL_24:
 
 - (void)_cancelFaviconUpdate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 576));
-    if (([WeakRetained isValid] & 1) != 0 || *(a1 + 560))
+    WeakRetained = objc_loadWeakRetained((self + 576));
+    if (([WeakRetained isValid] & 1) != 0 || *(self + 560))
     {
-      v2 = *(a1 + 552);
-      *(a1 + 552) = 0;
+      v2 = *(self + 552);
+      *(self + 552) = 0;
     }
 
     [WeakRetained invalidate];
-    v3 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-    [v3 cancelRequestWithToken:*(a1 + 560)];
+    mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    [mEMORY[0x277D28F58] cancelRequestWithToken:*(self + 560)];
 
-    v4 = *(a1 + 560);
-    *(a1 + 560) = 0;
+    v4 = *(self + 560);
+    *(self + 560) = 0;
   }
 }
 
@@ -2813,11 +2813,11 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
   [(LoadingController *)self->_loadingController setDelegate:0];
   [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator removeObserver:self forKeyPath:@"UIShouldReflectCommittedURLInsteadOfCurrentURL" context:kTabDocumentObserverContext];
   [(TabDocument *)self willClose];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   [(WBSFluidProgressController *)self->_fluidProgressController setWindowDelegate:0];
   [(WBSFluidProgressController *)self->_fluidProgressController setDelegate:0];
@@ -2847,17 +2847,17 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
 - (void)willClose
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabDocumentPlayingPIPVideo];
+  tabDocumentPlayingPIPVideo = [WeakRetained tabDocumentPlayingPIPVideo];
 
-  if (v3 == self)
+  if (tabDocumentPlayingPIPVideo == self)
   {
     [WeakRetained setTabDocumentPlayingPIPVideo:0];
   }
 
   if (!self->_beingReleased && !self->_suppressWebExtensionEvents)
   {
-    v4 = [(TabDocument *)self webExtensionsController];
-    [v4 didCloseTab:self windowIsClosing:0];
+    webExtensionsController = [(TabDocument *)self webExtensionsController];
+    [webExtensionsController didCloseTab:self windowIsClosing:0];
   }
 
   [(_SFCalendarEventDetector *)self->_calendarEventDetector cancelCheckForConfirmationPage];
@@ -2886,10 +2886,10 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
 
   if (([WeakRetained isBackgrounded] & 1) == 0)
   {
-    v9 = [(_SFReaderController *)self->_readerContext readerURL];
-    v10 = [MEMORY[0x277D28D50] sharedVoiceUtilities];
-    v11 = [v10 activeSiriReaderSessionURL];
-    v12 = [v9 isEqual:v11];
+    readerURL = [(_SFReaderController *)self->_readerContext readerURL];
+    mEMORY[0x277D28D50] = [MEMORY[0x277D28D50] sharedVoiceUtilities];
+    activeSiriReaderSessionURL = [mEMORY[0x277D28D50] activeSiriReaderSessionURL];
+    v12 = [readerURL isEqual:activeSiriReaderSessionURL];
 
     if (v12)
     {
@@ -2913,8 +2913,8 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
     v9 = 0u;
     v6 = 0u;
     v7 = 0u;
-    v2 = [v1[65] allObjects];
-    v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+    allObjects = [v1[65] allObjects];
+    v3 = [allObjects countByEnumeratingWithState:&v6 objects:v10 count:16];
     if (v3)
     {
       v4 = *v7;
@@ -2925,14 +2925,14 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
         {
           if (*v7 != v4)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v6 + 1) + 8 * v5++) setParentTabDocumentForBackClosesSpawnedTab:0];
         }
 
         while (v3 != v5);
-        v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
+        v3 = [allObjects countByEnumeratingWithState:&v6 objects:v10 count:16];
       }
 
       while (v3);
@@ -2949,12 +2949,12 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
   WeakRetained = objc_loadWeakRetained(&self->_parentTabDocumentForBackClosesSpawnedTab);
   if (WeakRetained && (-[TabDocument _backForwardList](self, "_backForwardList"), v4 = objc_claimAutoreleasedReturnValue(), [v4 backList], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4, v6 <= 1))
   {
-    v8 = [(TabDocument *)self _backForwardList];
-    v9 = [v8 backItem];
-    v10 = [v9 URL];
-    v11 = [WeakRetained _backForwardList];
-    v12 = [v11 currentItem];
-    v13 = [v12 URL];
+    _backForwardList = [(TabDocument *)self _backForwardList];
+    backItem = [_backForwardList backItem];
+    v10 = [backItem URL];
+    _backForwardList2 = [WeakRetained _backForwardList];
+    currentItem = [_backForwardList2 currentItem];
+    v13 = [currentItem URL];
     v7 = [v10 isEqual:v13];
   }
 
@@ -2972,71 +2972,71 @@ uint64_t __30__TabDocument_NonARC__release__block_invoke()
   self->_pageLoadStatistics = 0;
 }
 
-+ (id)urlForExternalURL:(id)a3 forPrivateBrowsing:(BOOL)a4
++ (id)urlForExternalURL:(id)l forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 safari_isXWebSearchURL])
+  browsingCopy = browsing;
+  lCopy = l;
+  if ([lCopy safari_isXWebSearchURL])
   {
-    v6 = [SearchQueryBuilder searchQueryBuilderWithXWebSearchURL:v5 forPrivateBrowsing:v4];
-    v7 = [v6 searchURL];
+    v6 = [SearchQueryBuilder searchQueryBuilderWithXWebSearchURL:lCopy forPrivateBrowsing:browsingCopy];
+    searchURL = [v6 searchURL];
 
     goto LABEL_5;
   }
 
-  v7 = v5;
-  if ([v5 safari_isSafariSpecificURL])
+  searchURL = lCopy;
+  if ([lCopy safari_isSafariSpecificURL])
   {
-    [v5 safari_URLByNormalizingSafariSpecificURL];
-    v7 = v6 = v5;
+    [lCopy safari_URLByNormalizingSafariSpecificURL];
+    searchURL = v6 = lCopy;
 LABEL_5:
 
-    if (v7 != v5)
+    if (searchURL != lCopy)
     {
       goto LABEL_7;
     }
   }
 
   v8 = MEMORY[0x277CBEBC0];
-  v9 = [v5 safari_userVisibleString];
-  v10 = [v8 safari_URLWithUserTypedString:v9];
+  safari_userVisibleString = [lCopy safari_userVisibleString];
+  v10 = [v8 safari_URLWithUserTypedString:safari_userVisibleString];
 
-  v7 = v10;
+  searchURL = v10;
 LABEL_7:
-  v11 = [v7 scheme];
-  v12 = [v11 isEqualToString:@"com-apple-mobilesafari-tab"];
+  scheme = [searchURL scheme];
+  v12 = [scheme isEqualToString:@"com-apple-mobilesafari-tab"];
 
   if (!v12)
   {
     goto LABEL_18;
   }
 
-  v13 = [v7 resourceSpecifier];
-  v14 = [v13 componentsSeparatedByString:@"?"];
+  resourceSpecifier = [searchURL resourceSpecifier];
+  v14 = [resourceSpecifier componentsSeparatedByString:@"?"];
 
   if ([v14 count] <= 2 && objc_msgSend(v14, "count"))
   {
     v15 = [v14 objectAtIndex:0];
-    v16 = [v15 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v15 stringByRemovingPercentEncoding];
 
-    v17 = [MEMORY[0x277CBEBC0] URLWithString:v16];
+    v17 = [MEMORY[0x277CBEBC0] URLWithString:stringByRemovingPercentEncoding];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 scheme];
-      if ([v19 isEqualToString:@"http"])
+      scheme2 = [v17 scheme];
+      if ([scheme2 isEqualToString:@"http"])
       {
 
 LABEL_14:
-        v22 = v7;
+        v22 = searchURL;
 LABEL_16:
 
-        v7 = v18;
+        searchURL = v18;
         goto LABEL_17;
       }
 
-      v20 = [v18 scheme];
-      v21 = [v20 isEqualToString:@"https"];
+      scheme3 = [v18 scheme];
+      v21 = [scheme3 isEqualToString:@"https"];
 
       if (v21)
       {
@@ -3045,7 +3045,7 @@ LABEL_16:
     }
 
     v22 = v18;
-    v18 = v7;
+    v18 = searchURL;
     goto LABEL_16;
   }
 
@@ -3053,34 +3053,34 @@ LABEL_17:
 
 LABEL_18:
 
-  return v7;
+  return searchURL;
 }
 
-- (TabDocument)initWithBrowserController:(id)a3
+- (TabDocument)initWithBrowserController:(id)controller
 {
-  v4 = a3;
-  v5 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:", 0, 0, 0, [v4 isPrivateBrowsingEnabled], objc_msgSend(v4, "isControlledByAutomation"), 0, 0, v4, 0);
+  controllerCopy = controller;
+  v5 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:", 0, 0, 0, [controllerCopy isPrivateBrowsingEnabled], objc_msgSend(controllerCopy, "isControlledByAutomation"), 0, 0, controllerCopy, 0);
 
   return v5;
 }
 
-- (id)initForBackgroundLoadingWithBrowserController:(id)a3 relatedWebView:(id)a4 webViewToCloneSessionStorageFrom:(id)a5
+- (id)initForBackgroundLoadingWithBrowserController:(id)controller relatedWebView:(id)view webViewToCloneSessionStorageFrom:(id)from
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 isPrivateBrowsingEnabled];
-  v12 = [v8 isControlledByAutomation];
+  controllerCopy = controller;
+  viewCopy = view;
+  fromCopy = from;
+  isPrivateBrowsingEnabled = [controllerCopy isPrivateBrowsingEnabled];
+  isControlledByAutomation = [controllerCopy isControlledByAutomation];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWebView_webViewToCloneSessionStorageFrom___block_invoke;
   v17[3] = &unk_2781D6AC0;
-  v18 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = viewCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = fromCopy;
   v20 = v14;
-  v15 = [(TabDocument *)v18 _initWithTitle:0 URL:0 UUID:v11 privateBrowsingEnabled:v12 controlledByAutomation:0 bookmark:v8 browserController:v17 createDocumentView:?];
+  v15 = [(TabDocument *)selfCopy _initWithTitle:0 URL:0 UUID:isPrivateBrowsingEnabled privateBrowsingEnabled:isControlledByAutomation controlledByAutomation:0 bookmark:controllerCopy browserController:v17 createDocumentView:?];
 
   return v15;
 }
@@ -3095,67 +3095,67 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
   [TabDocument _createDocumentViewRelatedTo:v1 webViewToCloneSessionStorageFrom:v2 websiteDataStore:v3 deferrableUserScriptsShouldWaitUntilNotification:v4];
 }
 
-- (void)_createDocumentViewRelatedTo:(void *)a1 webViewToCloneSessionStorageFrom:(void *)a2 websiteDataStore:(void *)a3 deferrableUserScriptsShouldWaitUntilNotification:(void *)a4
+- (void)_createDocumentViewRelatedTo:(void *)to webViewToCloneSessionStorageFrom:(void *)from websiteDataStore:(void *)store deferrableUserScriptsShouldWaitUntilNotification:(void *)notification
 {
-  v15 = a2;
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  fromCopy = from;
+  storeCopy = store;
+  notificationCopy = notification;
+  if (to)
   {
-    v9 = [a1 createWebViewConfiguration];
-    v10 = v9;
-    if (v15)
+    createWebViewConfiguration = [to createWebViewConfiguration];
+    v10 = createWebViewConfiguration;
+    if (fromCopy)
     {
-      [v9 _setRelatedWebView:?];
-      v11 = [v15 configuration];
-      v12 = [v11 processPool];
-      [v10 setProcessPool:v12];
+      [createWebViewConfiguration _setRelatedWebView:?];
+      configuration = [fromCopy configuration];
+      processPool = [configuration processPool];
+      [v10 setProcessPool:processPool];
 
-      v13 = [v15 configuration];
-      v14 = [v13 websiteDataStore];
-      [v10 setWebsiteDataStore:v14];
+      configuration2 = [fromCopy configuration];
+      websiteDataStore = [configuration2 websiteDataStore];
+      [v10 setWebsiteDataStore:websiteDataStore];
     }
 
-    else if (v8)
+    else if (notificationCopy)
     {
-      [v9 setWebsiteDataStore:v8];
+      [createWebViewConfiguration setWebsiteDataStore:notificationCopy];
     }
 
-    [v10 _setWebViewToCloneSessionStorageFrom:v7];
-    [(TabDocument *)a1 _createDocumentViewWithConfiguration:v10];
+    [v10 _setWebViewToCloneSessionStorageFrom:storeCopy];
+    [(TabDocument *)to _createDocumentViewWithConfiguration:v10];
   }
 }
 
-- (id)_initWithTitle:(void *)a3 URL:(void *)a4 UUID:(uint64_t)a5 privateBrowsingEnabled:(uint64_t)a6 controlledByAutomation:(void *)a7 bookmark:(void *)a8 browserController:(void *)a9 createDocumentView:
+- (id)_initWithTitle:(void *)title URL:(void *)l UUID:(uint64_t)d privateBrowsingEnabled:(uint64_t)enabled controlledByAutomation:(void *)automation bookmark:(void *)bookmark browserController:(void *)controller createDocumentView:
 {
   v16 = a2;
-  v51 = a3;
-  v49 = a4;
-  v50 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (a1)
+  titleCopy = title;
+  lCopy = l;
+  automationCopy = automation;
+  bookmarkCopy = bookmark;
+  controllerCopy = controller;
+  if (self)
   {
-    v19 = [a1 init];
+    v19 = [self init];
     if (v19)
     {
       v47 = v16;
-      if (v18)
+      if (controllerCopy)
       {
-        v20 = [MEMORY[0x277CCAD78] UUID];
+        uUID = [MEMORY[0x277CCAD78] UUID];
       }
 
       else
       {
-        v20 = [v49 copy];
+        uUID = [lCopy copy];
       }
 
       v21 = *(v19 + 1376);
-      *(v19 + 1376) = v20;
+      *(v19 + 1376) = uUID;
 
       v48 = [TabDocument blankTabTitleWithLibraryType:0 controlledByAutomation:0];
       v22 = objc_alloc(MEMORY[0x277D7B560]);
-      v23 = [*(v19 + 1376) UUIDString];
+      uUIDString = [*(v19 + 1376) UUIDString];
       if ([v16 length])
       {
         v24 = v16;
@@ -3166,17 +3166,17 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
         v24 = v48;
       }
 
-      v25 = [v17 tabController];
-      v26 = [v25 deviceIdentifier];
-      v27 = [v22 initWithUUID:v23 title:v24 url:v51 deviceIdentifier:v26 isPrivateBrowsing:a5];
+      tabController = [bookmarkCopy tabController];
+      deviceIdentifier = [tabController deviceIdentifier];
+      v27 = [v22 initWithUUID:uUIDString title:v24 url:titleCopy deviceIdentifier:deviceIdentifier isPrivateBrowsing:d];
       v28 = *(v19 + 1384);
       *(v19 + 1384) = v27;
 
       v16 = v47;
-      [v19 setBrowserController:v17 afterTabGroupReuse:0];
+      [v19 setBrowserController:bookmarkCopy afterTabGroupReuse:0];
       v29 = objc_alloc(MEMORY[0x277CDB768]);
-      v30 = [v17 rootViewController];
-      v31 = [v29 initWithPrivateBrowsingEnabled:a5 traitEnvironment:v30 controlledByAutomation:a6];
+      rootViewController = [bookmarkCopy rootViewController];
+      v31 = [v29 initWithPrivateBrowsingEnabled:d traitEnvironment:rootViewController controlledByAutomation:enabled];
       v32 = *(v19 + 1264);
       *(v19 + 1264) = v31;
 
@@ -3185,17 +3185,17 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
       *(v19 + 168) = v33;
 
       [*(v19 + 168) setDelegate:v19];
-      [v19 setReadingListBookmark:v50];
-      *(v19 + 975) = v18 == 0;
-      if (v18)
+      [v19 setReadingListBookmark:automationCopy];
+      *(v19 + 975) = controllerCopy == 0;
+      if (controllerCopy)
       {
-        v18[2](v18);
+        controllerCopy[2](controllerCopy);
       }
 
       else
       {
         [*(v19 + 168) setTitle:v47];
-        [*(v19 + 168) setURL:v51];
+        [*(v19 + 168) setURL:titleCopy];
       }
 
       *(v19 + 1168) = 0xBFF0000000000000;
@@ -3205,10 +3205,10 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
       *(v19 + 1104) = v35;
 
       [*(v19 + 1104) setUUID:*(v19 + 1376)];
-      v37 = [MEMORY[0x277D28C70] sharedFeatureManager];
-      v38 = [v37 showRectangularTabsInSeparateBar];
+      mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+      showRectangularTabsInSeparateBar = [mEMORY[0x277D28C70] showRectangularTabsInSeparateBar];
 
-      if (v38)
+      if (showRectangularTabsInSeparateBar)
       {
         v39 = objc_alloc_init(TabBarItem);
         v40 = *(v19 + 1096);
@@ -3217,8 +3217,8 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
         [*(v19 + 1096) setUUID:*(v19 + 1376)];
       }
 
-      v41 = [v19 browserController];
-      [*(v19 + 1104) setMenuButtonConfigurator:v41];
+      browserController = [v19 browserController];
+      [*(v19 + 1104) setMenuButtonConfigurator:browserController];
 
       [v19 resetTabViewItems];
       v42 = *(v19 + 1136);
@@ -3231,28 +3231,28 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
       v45 = *(v19 + 1160);
       *(v19 + 1160) = v43;
 
-      a1 = v19;
+      self = v19;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (TabDocument)initWithTitle:(id)a3 URL:(id)a4 UUID:(id)a5 privateBrowsingEnabled:(BOOL)a6 hibernated:(BOOL)a7 bookmark:(id)a8 browserController:(id)a9
+- (TabDocument)initWithTitle:(id)title URL:(id)l UUID:(id)d privateBrowsingEnabled:(BOOL)enabled hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)controller
 {
-  v10 = a7;
-  v11 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:", v15, v16, v17, v11, [v19 isControlledByAutomation], v10, v18, v19, 0);
+  hibernatedCopy = hibernated;
+  enabledCopy = enabled;
+  titleCopy = title;
+  lCopy = l;
+  dCopy = d;
+  bookmarkCopy = bookmark;
+  controllerCopy = controller;
+  v20 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:controlledByAutomation:hibernated:bookmark:browserController:relatedWebView:", titleCopy, lCopy, dCopy, enabledCopy, [controllerCopy isControlledByAutomation], hibernatedCopy, bookmarkCopy, controllerCopy, 0);
 
   return v20;
 }
@@ -3290,18 +3290,18 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
   return v6;
 }
 
-- (void)setInitialURLForStatePersisting:(id)a3 title:(id)a4
+- (void)setInitialURLForStatePersisting:(id)persisting title:(id)title
 {
-  v7 = a3;
-  v6 = a4;
-  [(LoadingController *)self->_loadingController setTitle:v6];
-  [(LoadingController *)self->_loadingController setURL:v7];
+  persistingCopy = persisting;
+  titleCopy = title;
+  [(LoadingController *)self->_loadingController setTitle:titleCopy];
+  [(LoadingController *)self->_loadingController setURL:persistingCopy];
 }
 
-- (void)_destroyDocumentViewAllowingDeferral:(uint64_t)a1
+- (void)_destroyDocumentViewAllowingDeferral:(uint64_t)deferral
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (deferral)
   {
     if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
     {
@@ -3312,96 +3312,96 @@ void __109__TabDocument_initForBackgroundLoadingWithBrowserController_relatedWeb
       }
     }
 
-    if (*(a1 + 1064))
+    if (*(deferral + 1064))
     {
       v3 = WBS_LOG_CHANNEL_PREFIXPageLoading();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
       {
-        v4 = *(a1 + 1064);
+        v4 = *(deferral + 1064);
         v11 = 134218240;
-        v12 = a1;
+        deferralCopy = deferral;
         v13 = 2048;
         v14 = v4;
         _os_log_impl(&dword_215819000, v3, OS_LOG_TYPE_DEFAULT, "TabDocument %p: destroying web view %p", &v11, 0x16u);
       }
 
-      if (*(a1 + 1064))
+      if (*(deferral + 1064))
       {
         v5 = +[Application sharedApplication];
-        v6 = [v5 systemNoteTakingController];
+        systemNoteTakingController = [v5 systemNoteTakingController];
 
-        [v6 removeObserver:a1 forKeyPath:*MEMORY[0x277D4A900] context:kTabDocumentObserverContext];
+        [systemNoteTakingController removeObserver:deferral forKeyPath:*MEMORY[0x277D4A900] context:kTabDocumentObserverContext];
       }
     }
 
-    [a1 clearReaderView];
-    [a1 updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:0];
-    [*(a1 + 1280) invalidate];
-    v7 = *(a1 + 1280);
-    *(a1 + 1280) = 0;
+    [deferral clearReaderView];
+    [deferral updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:0];
+    [*(deferral + 1280) invalidate];
+    v7 = *(deferral + 1280);
+    *(deferral + 1280) = 0;
 
-    v8 = [*(a1 + 1064) _remoteObjectRegistry];
-    [v8 unregisterExportedObject:a1 interface:*(a1 + 64)];
+    _remoteObjectRegistry = [*(deferral + 1064) _remoteObjectRegistry];
+    [_remoteObjectRegistry unregisterExportedObject:deferral interface:*(deferral + 64)];
 
-    v9 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    v9 = *(deferral + 64);
+    *(deferral + 64) = 0;
 
-    v10 = [*(a1 + 1064) _remoteObjectRegistry];
-    [v10 unregisterExportedObject:a1 interface:*(a1 + 72)];
-    [(TabDocument *)v10 _destroyDocumentViewAllowingDeferral:a1, (a1 + 1064)];
+    _remoteObjectRegistry2 = [*(deferral + 1064) _remoteObjectRegistry];
+    [_remoteObjectRegistry2 unregisterExportedObject:deferral interface:*(deferral + 72)];
+    [(TabDocument *)_remoteObjectRegistry2 _destroyDocumentViewAllowingDeferral:deferral, (deferral + 1064)];
   }
 }
 
-- (id)_titleIncludeLoading:(int)a3 allowURLStringFallback:(int)a4 allowUntitled:
+- (id)_titleIncludeLoading:(int)loading allowURLStringFallback:(int)fallback allowUntitled:
 {
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 192);
+    v5 = *(self + 192);
     if (v5)
     {
-      v6 = [v5 safari_userVisibleHost];
+      safari_userVisibleHost = [v5 safari_userVisibleHost];
       goto LABEL_19;
     }
 
-    v6 = [(TabDocument *)a1 _loadedTitle];
-    if (![v6 length])
+    safari_userVisibleHost = [(TabDocument *)self _loadedTitle];
+    if (![safari_userVisibleHost length])
     {
-      if (([*(a1 + 1064) isLoading] & a2 & 1) != 0 || (WeakRetained = objc_loadWeakRetained((a1 + 992)), objc_msgSend(WeakRetained, "userActivityController"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "tabDocumentPendingUserActivityPayload"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, WeakRetained, v12 == a1))
+      if (([*(self + 1064) isLoading] & a2 & 1) != 0 || (WeakRetained = objc_loadWeakRetained((self + 992)), objc_msgSend(WeakRetained, "userActivityController"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "tabDocumentPendingUserActivityPayload"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, WeakRetained, v12 == self))
       {
-        v17 = _WBSLocalizedString();
+        displayName = _WBSLocalizedString();
 LABEL_18:
 
-        v6 = v17;
+        safari_userVisibleHost = displayName;
         goto LABEL_19;
       }
 
-      v13 = [*(a1 + 1064) _committedURL];
-      if ([v13 safari_isSafariWebExtensionURL])
+      _committedURL = [*(self + 1064) _committedURL];
+      if ([_committedURL safari_isSafariWebExtensionURL])
       {
-        v14 = [a1 webExtensionsController];
-        v15 = [v13 host];
-        v16 = [v14 webExtensionForBaseURIHost:v15];
-        v17 = [v16 displayName];
+        webExtensionsController = [self webExtensionsController];
+        host = [_committedURL host];
+        v16 = [webExtensionsController webExtensionForBaseURIHost:host];
+        displayName = [v16 displayName];
       }
 
       else
       {
-        if (!a3 || ([a1 URLString], v18 = objc_claimAutoreleasedReturnValue(), (v14 = v18) == 0))
+        if (!loading || ([self URLString], v18 = objc_claimAutoreleasedReturnValue(), (webExtensionsController = v18) == 0))
         {
-          if (a4)
+          if (fallback)
           {
-            v17 = [(TabDocument *)a1 _blankTabTitle];
+            displayName = [(TabDocument *)self _blankTabTitle];
           }
 
           else
           {
-            v17 = &stru_2827BF158;
+            displayName = &stru_2827BF158;
           }
 
           goto LABEL_17;
         }
 
-        v17 = [v18 safari_simplifiedUserVisibleURLStringWithSimplifications:URLSimplificationOptionsForTabTitle forDisplayOnly:1 simplifiedStringOffset:0];
+        displayName = [v18 safari_simplifiedUserVisibleURLStringWithSimplifications:URLSimplificationOptionsForTabTitle forDisplayOnly:1 simplifiedStringOffset:0];
       }
 
 LABEL_17:
@@ -3411,57 +3411,57 @@ LABEL_17:
 
   else
   {
-    v6 = 0;
+    safari_userVisibleHost = 0;
   }
 
 LABEL_19:
 
-  return v6;
+  return safari_userVisibleHost;
 }
 
 - (id)_debugOverrideTitle
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 URL];
+    v2 = [self URL];
     if (WBSIsEqual())
     {
-      v1 = v1[106];
+      selfCopy = selfCopy[106];
     }
 
     else
     {
-      objc_storeStrong(v1 + 107, v2);
-      v3 = v1[106];
-      v1[106] = 0;
+      objc_storeStrong(selfCopy + 107, v2);
+      v3 = selfCopy[106];
+      selfCopy[106] = 0;
 
-      v4 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v5 = [v2 absoluteString];
-      v6 = [v4 listWithID:0 skipOffset:0 includeHidden:0 includeDescendantsAsChildren:1 filteredUsingString:v5];
+      mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      absoluteString = [v2 absoluteString];
+      v6 = [mainBookmarkCollection listWithID:0 skipOffset:0 includeHidden:0 includeDescendantsAsChildren:1 filteredUsingString:absoluteString];
 
       if ([v6 bookmarkCount])
       {
         v7 = [v6 bookmarkAtIndex:0];
-        v8 = [v7 title];
-        v9 = v1[106];
-        v1[106] = v8;
+        title = [v7 title];
+        v9 = selfCopy[106];
+        selfCopy[106] = title;
       }
 
-      v1 = v1[106];
+      selfCopy = selfCopy[106];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-+ (id)blankTabTitleWithLibraryType:(id)a3 controlledByAutomation:(BOOL)a4
++ (id)blankTabTitleWithLibraryType:(id)type controlledByAutomation:(BOOL)automation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy)
   {
-    startPageTitleForCollectionType(v4);
+    startPageTitleForCollectionType(typeCopy);
   }
 
   else
@@ -3473,57 +3473,57 @@ LABEL_19:
   return v6;
 }
 
-- (id)_addTitlePrefixToString:(id *)a1
+- (id)_addTitlePrefixToString:(id *)string
 {
   v3 = a2;
-  if (a1)
+  if (string)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v5 = [v4 BOOLForKey:@"DebugShowTabMetadata"];
-    v6 = [v4 BOOLForKey:*MEMORY[0x277D4A1A0]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v5 = [standardUserDefaults BOOLForKey:@"DebugShowTabMetadata"];
+    v6 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D4A1A0]];
     if ((v5 | v6))
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v5)
       {
-        v8 = a1[133];
+        v8 = string[133];
         v9 = v8;
         if (v8)
         {
           v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"p%d", objc_msgSend(v8, "_webProcessIdentifier")];
-          [v7 addObject:v10];
+          [array addObject:v10];
         }
 
         else
         {
-          [v7 addObject:@"p?"];
+          [array addObject:@"p?"];
         }
       }
 
       if (v6)
       {
-        WeakRetained = objc_loadWeakRetained(a1 + 124);
-        v13 = [WeakRetained tabController];
-        v14 = [v13 tabOrderManager];
+        WeakRetained = objc_loadWeakRetained(string + 124);
+        tabController = [WeakRetained tabController];
+        tabOrderManager = [tabController tabOrderManager];
 
-        v15 = [a1 identifier];
-        v16 = [v14 simplifiedIdentifierForDisplayInTabTitle:v15];
+        identifier = [string identifier];
+        v16 = [tabOrderManager simplifiedIdentifierForDisplayInTabTitle:identifier];
 
-        v17 = [a1 ancestorTabIdentifiers];
+        ancestorTabIdentifiers = [string ancestorTabIdentifiers];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __39__TabDocument__addTitlePrefixToString___block_invoke;
         v25[3] = &unk_2781DAC00;
-        v18 = v14;
+        v18 = tabOrderManager;
         v26 = v18;
-        v19 = [v17 safari_mapObjectsUsingBlock:v25];
+        v19 = [ancestorTabIdentifiers safari_mapObjectsUsingBlock:v25];
 
         v20 = [v19 componentsJoinedByString:{@", "}];
         v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"t%@ {%@}", v16, v20];
-        [v7 addObject:v21];
+        [array addObject:v21];
       }
 
-      v22 = [v7 componentsJoinedByString:@" "];
+      v22 = [array componentsJoinedByString:@" "];
 
       v11 = v3;
       v3 = v22;
@@ -3547,7 +3547,7 @@ LABEL_19:
   return v23;
 }
 
-- (void)updateTabIconWithDelay:(double)a3
+- (void)updateTabIconWithDelay:(double)delay
 {
   objc_initWeak(&location, self);
   [(TabDocument *)self _cancelFaviconUpdate];
@@ -3557,7 +3557,7 @@ LABEL_19:
   v7[2] = __38__TabDocument_updateTabIconWithDelay___block_invoke;
   v7[3] = &unk_2781DA668;
   objc_copyWeak(&v8, &location);
-  v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v7 block:a3];
+  v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v7 block:delay];
   objc_storeWeak(&self->_updateFaviconTimer, v6);
 
   objc_destroyWeak(&v8);
@@ -3572,30 +3572,30 @@ void __38__TabDocument_updateTabIconWithDelay___block_invoke(uint64_t a1)
 
 - (void)updateUsesDarkTheme
 {
-  v8 = [(TabDocument *)self configuration];
-  v3 = [v8 traitEnvironment];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceStyle];
-  v6 = [(_SFReaderController *)self->_readerContext configurationManager];
-  [v6 setDarkModeEnabled:v5 == 2];
+  configuration = [(TabDocument *)self configuration];
+  traitEnvironment = [configuration traitEnvironment];
+  traitCollection = [traitEnvironment traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  configurationManager = [(_SFReaderController *)self->_readerContext configurationManager];
+  [configurationManager setDarkModeEnabled:userInterfaceStyle == 2];
 
   [(_SFReaderController *)self->_readerContext sendConfigurationToWebProcess];
   if (!self->_hibernated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v7 = [WeakRetained tabCollectionViewProvider];
-    [v7 invalidateSnapshotForTab:self];
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    [tabCollectionViewProvider invalidateSnapshotForTab:self];
   }
 }
 
-- (void)_setIcon:(int)a3 isMonogram:
+- (void)_setIcon:(int)icon isMonogram:
 {
   v9 = a2;
-  if (a1)
+  if (self)
   {
-    [*(a1 + 1096) setIcon:v9];
-    [*(a1 + 1104) setIcon:v9];
-    if (a3)
+    [*(self + 1096) setIcon:v9];
+    [*(self + 1104) setIcon:v9];
+    if (icon)
     {
       v5 = 0;
     }
@@ -3605,13 +3605,13 @@ void __38__TabDocument_updateTabIconWithDelay___block_invoke(uint64_t a1)
       v5 = v9;
     }
 
-    [*(a1 + 1112) setIcon:v5];
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v7 = [WeakRetained tabCollectionViewProvider];
-    v8 = [v7 iconPool];
-    [v8 iconDidChangeForIdentifier:*(a1 + 1376)];
+    [*(self + 1112) setIcon:v5];
+    WeakRetained = objc_loadWeakRetained((self + 992));
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    iconPool = [tabCollectionViewProvider iconPool];
+    [iconPool iconDidChangeForIdentifier:*(self + 1376)];
 
-    [(TabDocument *)a1 _updateTabBarFavicon];
+    [(TabDocument *)self _updateTabBarFavicon];
   }
 }
 
@@ -3638,63 +3638,63 @@ void __28__TabDocument_updateTabIcon__block_invoke(uint64_t a1, void *a2)
 
 - (void)_updateTabBarFavicon
 {
-  if (a1 && *(a1 + 990) == 1)
+  if (self && *(self + 990) == 1)
   {
-    v5 = [*(a1 + 1112) icon];
-    if ((*(a1 + 970) & 1) != 0 || [*(a1 + 280) showsSearchIndicator])
+    icon = [*(self + 1112) icon];
+    if ((*(self + 970) & 1) != 0 || [*(self + 280) showsSearchIndicator])
     {
       v2 = [MEMORY[0x277D755B8] systemImageNamed:@"magnifyingglass"];
 
-      v5 = v2;
+      icon = v2;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v4 = [WeakRetained tabBarManager];
-    [v4 setActiveFavicon:v5];
+    WeakRetained = objc_loadWeakRetained((self + 992));
+    tabBarManager = [WeakRetained tabBarManager];
+    [tabBarManager setActiveFavicon:icon];
   }
 }
 
-- (void)webView:(id)a3 shouldLoadIconWithParameters:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view shouldLoadIconWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v9 = [(TabDocument *)self URL];
-  if (!v9 || [v7 iconType] || (objc_msgSend(v7, "attributes"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"mask"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  if (!v9 || [parametersCopy iconType] || (objc_msgSend(parametersCopy, "attributes"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "objectForKeyedSubscript:", @"mask"), v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v12 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-    v13 = [v12 faviconProvider];
+    mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    faviconProvider = [mEMORY[0x277D28F58] faviconProvider];
 
-    v14 = [(TabDocument *)self isPrivateBrowsingEnabled];
-    v15 = [v7 size];
+    isPrivateBrowsingEnabled = [(TabDocument *)self isPrivateBrowsingEnabled];
+    v15 = [parametersCopy size];
     [v15 floatValue];
     v17 = v16;
-    v18 = [v7 size];
+    v18 = [parametersCopy size];
     [v18 floatValue];
     v20 = v19;
 
     v21 = self->_originalURL;
-    v22 = [v7 url];
+    v22 = [parametersCopy url];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __70__TabDocument_webView_shouldLoadIconWithParameters_completionHandler___block_invoke;
     v26[3] = &unk_2781DA728;
     v27 = v9;
     v28 = v22;
-    v31 = v8;
-    v23 = v13;
+    v31 = handlerCopy;
+    v23 = faviconProvider;
     v29 = v23;
     v24 = v21;
     v30 = v24;
     v32 = v17;
     v33 = v20;
-    v34 = v14;
+    v34 = isPrivateBrowsingEnabled;
     v25 = v22;
-    [v23 shouldIconDataBeSavedForIconWithPageURL:v27 originalPageURL:v24 iconURL:v25 size:v14 isPrivate:v26 completionHandler:{v17, v20}];
+    [v23 shouldIconDataBeSavedForIconWithPageURL:v27 originalPageURL:v24 iconURL:v25 size:isPrivateBrowsingEnabled isPrivate:v26 completionHandler:{v17, v20}];
   }
 }
 
@@ -3754,91 +3754,91 @@ void __70__TabDocument_webView_shouldLoadIconWithParameters_completionHandler___
   }
 }
 
-- (void)_searchEngineControllerDidFinishPopulating:(id)a3
+- (void)_searchEngineControllerDidFinishPopulating:(id)populating
 {
   [(TabDocument *)self _updateNavigationBarItem];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CDBA28] object:0];
 }
 
 - (uint64_t)isPageEligibileToShowNotSecureWarning
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 expectedOrCurrentURL];
-    if (([v2 safari_isEligibleToShowNotSecureWarning] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v1[133], "_negotiatedLegacyTLS"))
+    expectedOrCurrentURL = [self expectedOrCurrentURL];
+    if (([expectedOrCurrentURL safari_isEligibleToShowNotSecureWarning] & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(selfCopy[133], "_negotiatedLegacyTLS"))
     {
-      v3 = [v1[133] _committedURL];
-      v4 = [v3 host];
-      v5 = [v4 safari_highLevelDomainFromHost];
-      v6 = [v1 expectedOrCurrentURL];
-      v7 = [v6 host];
-      v8 = [v7 safari_highLevelDomainFromHost];
-      if ([v5 isEqualToString:v8])
+      _committedURL = [selfCopy[133] _committedURL];
+      host = [_committedURL host];
+      safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+      expectedOrCurrentURL2 = [selfCopy expectedOrCurrentURL];
+      host2 = [expectedOrCurrentURL2 host];
+      safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
+      if ([safari_highLevelDomainFromHost isEqualToString:safari_highLevelDomainFromHost2])
       {
-        if ([v1[35] showsSecurityAnnotation])
+        if ([selfCopy[35] showsSecurityAnnotation])
         {
-          if (v1[123])
+          if (selfCopy[123])
           {
-            LOBYTE(v1) = 1;
+            LOBYTE(selfCopy) = 1;
           }
 
           else
           {
-            LOBYTE(v1) = *(v1 + 721);
+            LOBYTE(selfCopy) = *(selfCopy + 721);
           }
         }
 
         else
         {
-          v9 = v1[91];
-          v10 = [v1 expectedOrCurrentURL];
-          if ([v9 isEqual:v10])
+          v9 = selfCopy[91];
+          expectedOrCurrentURL3 = [selfCopy expectedOrCurrentURL];
+          if ([v9 isEqual:expectedOrCurrentURL3])
           {
-            if (v1[123])
+            if (selfCopy[123])
             {
-              LOBYTE(v1) = 1;
+              LOBYTE(selfCopy) = 1;
             }
 
             else
             {
-              LOBYTE(v1) = *(v1 + 721);
+              LOBYTE(selfCopy) = *(selfCopy + 721);
             }
           }
 
           else
           {
-            LOBYTE(v1) = 0;
+            LOBYTE(selfCopy) = 0;
           }
         }
       }
 
       else
       {
-        LOBYTE(v1) = 0;
+        LOBYTE(selfCopy) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v1) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v1 & 1;
+  return selfCopy & 1;
 }
 
-- (void)_translationAvailabilityDidChange:(id)a3
+- (void)_translationAvailabilityDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__TabDocument__translationAvailabilityDidChange___block_invoke;
   v6[3] = &unk_2781D61F8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -3864,10 +3864,10 @@ void __49__TabDocument__translationAvailabilityDidChange___block_invoke(uint64_t
   }
 }
 
-- (void)_voiceSearchAvailabilityDidChange:(id)a3
+- (void)_voiceSearchAvailabilityDidChange:(id)change
 {
-  v4 = [MEMORY[0x277D28EB8] sharedManager];
-  -[SFNavigationBarItem setShowsVoiceSearchButton:](self->_navigationBarItem, "setShowsVoiceSearchButton:", [v4 availability] != 0);
+  mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+  -[SFNavigationBarItem setShowsVoiceSearchButton:](self->_navigationBarItem, "setShowsVoiceSearchButton:", [mEMORY[0x277D28EB8] availability] != 0);
 }
 
 - (SFBrowserDocumentTrackerInfo)trackerInfo
@@ -3879,8 +3879,8 @@ void __49__TabDocument__translationAvailabilityDidChange___block_invoke(uint64_t
     v5 = self->_trackerInfo;
     self->_trackerInfo = v4;
 
-    v6 = [(SFBrowserDocumentTrackerInfo *)self->_trackerInfo queryParameterFilteringDataQueue];
-    [v6 setDelegate:self];
+    queryParameterFilteringDataQueue = [(SFBrowserDocumentTrackerInfo *)self->_trackerInfo queryParameterFilteringDataQueue];
+    [queryParameterFilteringDataQueue setDelegate:self];
 
     trackerInfo = self->_trackerInfo;
   }
@@ -3888,9 +3888,9 @@ void __49__TabDocument__translationAvailabilityDidChange___block_invoke(uint64_t
   return trackerInfo;
 }
 
-- (id)itemForTabCollectionView:(id)a3
+- (id)itemForTabCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3907,18 +3907,18 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [v4 isStandalone];
+  isStandalone = [viewCopy isStandalone];
   unifiedTabBarItem = self->_unifiedTabBarItem;
-  if (v6)
+  if (isStandalone)
   {
-    v8 = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
+    secondaryItem = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
     goto LABEL_9;
   }
 
 LABEL_8:
-  v8 = unifiedTabBarItem;
+  secondaryItem = unifiedTabBarItem;
 LABEL_9:
-  v9 = v8;
+  v9 = secondaryItem;
 
   return v9;
 }
@@ -3949,19 +3949,19 @@ LABEL_9:
 
 - (id)_localAttributes
 {
-  v1 = a1;
+  selfCopy = self;
   v22[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 824) == 1)
+    if (*(self + 824) == 1)
     {
       v21[0] = @"url";
-      v2 = [a1[104] absoluteString];
-      v3 = v2;
+      absoluteString = [self[104] absoluteString];
+      v3 = absoluteString;
       v4 = &stru_2827BF158;
-      if (v2)
+      if (absoluteString)
       {
-        v5 = v2;
+        v5 = absoluteString;
       }
 
       else
@@ -3971,9 +3971,9 @@ LABEL_9:
 
       v21[1] = @"title";
       v22[0] = v5;
-      if (v1[105])
+      if (selfCopy[105])
       {
-        v4 = v1[105];
+        v4 = selfCopy[105];
       }
 
       v22[1] = v4;
@@ -3986,30 +3986,30 @@ LABEL_9:
     }
 
     v6 = objc_alloc(MEMORY[0x277D7B530]);
-    v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(v1 + 146)];
-    v18 = [(TabDocument *)v1 _sessionStateWithoutParentItem];
-    v7 = [v18 data];
-    v8 = [v1 ancestorTabIdentifiers];
-    v9 = *(v1 + 713);
-    v10 = v1[149];
-    v11 = [v1 readingListBookmarkID];
-    v12 = *(v1 + 955);
-    v13 = *(v1 + 956);
-    v14 = [v1[170] uuid];
-    v15 = [v14 UUIDString];
+    v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(selfCopy + 146)];
+    _sessionStateWithoutParentItem = [(TabDocument *)selfCopy _sessionStateWithoutParentItem];
+    data = [_sessionStateWithoutParentItem data];
+    ancestorTabIdentifiers = [selfCopy ancestorTabIdentifiers];
+    v9 = *(selfCopy + 713);
+    v10 = selfCopy[149];
+    readingListBookmarkID = [selfCopy readingListBookmarkID];
+    v12 = *(selfCopy + 955);
+    v13 = *(selfCopy + 956);
+    uuid = [selfCopy[170] uuid];
+    uUIDString = [uuid UUIDString];
     LOBYTE(v17) = v13;
-    v1 = [v6 initWithLastVisitTime:v19 sessionStateData:v7 ancestorTabUUIDs:v8 displayingStandaloneImage:v9 readerViewTopScrollOffset:v11 readingListBookmarkID:v12 openedFromLink:v10 showingReader:v17 queuedNavigation:v20 webClipIDString:v15];
+    selfCopy = [v6 initWithLastVisitTime:v19 sessionStateData:data ancestorTabUUIDs:ancestorTabIdentifiers displayingStandaloneImage:v9 readerViewTopScrollOffset:readingListBookmarkID readingListBookmarkID:v12 openedFromLink:v10 showingReader:v17 queuedNavigation:v20 webClipIDString:uUIDString];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_sessionStateWithoutParentItem
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 147);
+    WeakRetained = objc_loadWeakRetained(self + 147);
 
     if (WeakRetained)
     {
@@ -4017,57 +4017,57 @@ LABEL_9:
       v6[1] = v6;
       v6[2] = 0x2020000000;
       v7 = 0;
-      v3 = v1[133];
+      v3 = selfCopy[133];
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __45__TabDocument__sessionStateWithoutParentItem__block_invoke;
       v5[3] = &unk_2781DA7C8;
-      v5[4] = v1;
+      v5[4] = selfCopy;
       v5[5] = v6;
-      v1 = [v3 _sessionStateWithFilter:v5];
+      selfCopy = [v3 _sessionStateWithFilter:v5];
       _Block_object_dispose(v6, 8);
     }
 
     else
     {
-      v1 = [v1 sessionState];
+      selfCopy = [selfCopy sessionState];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_titleForStatePersistingForTabGroupTab
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(TabDocument *)a1 _titleIncludeLoading:0 allowURLStringFallback:0 allowUntitled:?];
-    if (![v2 length] && objc_msgSend(a1[133], "isLoading"))
+    v2 = [(TabDocument *)self _titleIncludeLoading:0 allowURLStringFallback:0 allowUntitled:?];
+    if (![v2 length] && objc_msgSend(self[133], "isLoading"))
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 124);
-      v4 = [WeakRetained tabController];
-      v5 = [v4 existingPersistedTitleForTabDocument:a1];
+      WeakRetained = objc_loadWeakRetained(self + 124);
+      tabController = [WeakRetained tabController];
+      v5 = [tabController existingPersistedTitleForTabDocument:self];
 
       v2 = v5;
     }
 
     if (![v2 length])
     {
-      v6 = [a1 URL];
+      v6 = [self URL];
       if (v6)
       {
-        v7 = [a1 URL];
-        v8 = [v7 safari_userVisibleHostWithoutWWWSubdomain];
+        v7 = [self URL];
+        safari_userVisibleHostWithoutWWWSubdomain = [v7 safari_userVisibleHostWithoutWWWSubdomain];
 
         v2 = v7;
       }
 
       else
       {
-        v8 = [(TabDocument *)a1 _blankTabTitle];
+        safari_userVisibleHostWithoutWWWSubdomain = [(TabDocument *)self _blankTabTitle];
       }
 
-      v2 = v8;
+      v2 = safari_userVisibleHostWithoutWWWSubdomain;
     }
   }
 
@@ -4079,21 +4079,21 @@ LABEL_9:
   return v2;
 }
 
-- (id)openInTabGroupMenuWithNewTabGroupName:(id)a3 URL:(id)a4 descendantCount:(int64_t)a5 handler:(id)a6
+- (id)openInTabGroupMenuWithNewTabGroupName:(id)name URL:(id)l descendantCount:(int64_t)count handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  nameCopy = name;
+  lCopy = l;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v14 = [WeakRetained tabController];
+  tabController = [WeakRetained tabController];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __81__TabDocument_openInTabGroupMenuWithNewTabGroupName_URL_descendantCount_handler___block_invoke;
   v18[3] = &unk_2781D7260;
-  v15 = v12;
+  v15 = handlerCopy;
   v18[4] = self;
   v19 = v15;
-  v16 = [v14 openInTabGroupMenuWithNewTabGroupName:v10 URL:v11 descendantCount:a5 handler:v18];
+  v16 = [tabController openInTabGroupMenuWithNewTabGroupName:nameCopy URL:lCopy descendantCount:count handler:v18];
 
   return v16;
 }
@@ -4106,55 +4106,55 @@ void __81__TabDocument_openInTabGroupMenuWithNewTabGroupName_URL_descendantCount
   [v2 removeSingleBlankTabFromActiveTabGroup];
 }
 
-- (void)setBrowserController:(id)a3 afterTabGroupReuse:(BOOL)a4
+- (void)setBrowserController:(id)controller afterTabGroupReuse:(BOOL)reuse
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v7 = WeakRetained;
-  if (!a4)
+  if (!reuse)
   {
-    v8 = [WeakRetained tabController];
-    [v8 willLoseOwnershipOfTab:self];
+    tabController = [WeakRetained tabController];
+    [tabController willLoseOwnershipOfTab:self];
   }
 
   objc_storeWeak(&self->_browserController, obj);
   [(TabDocument *)self setDelegate:obj];
-  v9 = [obj loadProgressObserver];
-  objc_storeWeak(&self->_loadProgressObserver, v9);
+  loadProgressObserver = [obj loadProgressObserver];
+  objc_storeWeak(&self->_loadProgressObserver, loadProgressObserver);
 
-  v10 = [obj tabController];
-  [v10 didGainOwnershipOfTab:self];
+  tabController2 = [obj tabController];
+  [tabController2 didGainOwnershipOfTab:self];
 
-  v11 = [v7 tabGroupManager];
-  [v11 removeTabGroupObserver:self];
+  tabGroupManager = [v7 tabGroupManager];
+  [tabGroupManager removeTabGroupObserver:self];
 
-  v12 = [obj tabGroupManager];
-  [v12 addTabGroupObserver:self];
+  tabGroupManager2 = [obj tabGroupManager];
+  [tabGroupManager2 addTabGroupObserver:self];
 
-  v13 = [(WBTab *)self->_tabGroupTab uuid];
-  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:v13];
+  uuid = [(WBTab *)self->_tabGroupTab uuid];
+  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:uuid];
 }
 
-- (void)_activeParticipantsDidUpdateInTabWithUUID:(id *)a1
+- (void)_activeParticipantsDidUpdateInTabWithUUID:(id *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1[173] uuid];
-    v5 = [v3 isEqualToString:v4];
+    uuid = [d[173] uuid];
+    v5 = [v3 isEqualToString:uuid];
 
     if (v5)
     {
-      objc_initWeak(&location, a1);
-      WeakRetained = objc_loadWeakRetained(a1 + 124);
-      v7 = [WeakRetained tabGroupManager];
-      v8 = a1[173];
+      objc_initWeak(&location, d);
+      WeakRetained = objc_loadWeakRetained(d + 124);
+      tabGroupManager = [WeakRetained tabGroupManager];
+      v8 = d[173];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __57__TabDocument__activeParticipantsDidUpdateInTabWithUUID___block_invoke;
       v9[3] = &unk_2781DB3E8;
       objc_copyWeak(&v10, &location);
-      [v7 getActiveParticipantsInTab:v8 completionHandler:v9];
+      [tabGroupManager getActiveParticipantsInTab:v8 completionHandler:v9];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -4162,9 +4162,9 @@ void __81__TabDocument_openInTabGroupMenuWithNewTabGroupName_URL_descendantCount
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained != obj)
   {
@@ -4183,9 +4183,9 @@ void __81__TabDocument_openInTabGroupMenuWithNewTabGroupName_URL_descendantCount
   }
 }
 
-- (void)setParentTabDocumentForBackClosesSpawnedTab:(id)a3
+- (void)setParentTabDocumentForBackClosesSpawnedTab:(id)tab
 {
-  WeakRetained = a3;
+  WeakRetained = tab;
   if ([WeakRetained isBlank])
   {
 
@@ -4207,19 +4207,19 @@ void __81__TabDocument_openInTabGroupMenuWithNewTabGroupName_URL_descendantCount
   {
     if (WeakRetained)
     {
-      v7 = [WeakRetained _backForwardList];
-      v8 = [v7 currentItem];
+      _backForwardList = [WeakRetained _backForwardList];
+      currentItem = [_backForwardList currentItem];
       parentTabItem = self->_parentTabItem;
-      self->_parentTabItem = v8;
+      self->_parentTabItem = currentItem;
 
-      v10 = [WeakRetained webView];
-      [v10 _saveBackForwardSnapshotForItem:self->_parentTabItem];
+      webView = [WeakRetained webView];
+      [webView _saveBackForwardSnapshotForItem:self->_parentTabItem];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __59__TabDocument_setParentTabDocumentForBackClosesSpawnedTab___block_invoke;
       v15[3] = &unk_2781DA778;
       v15[4] = self;
-      v11 = [v10 _sessionStateWithFilter:v15];
+      v11 = [webView _sessionStateWithFilter:v15];
       v12 = [(_SFWebView *)self->_webView _restoreSessionState:v11 andNavigate:0];
       [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator reflectCommittedURLIfPossible];
 
@@ -4229,8 +4229,8 @@ LABEL_8:
     }
 
 LABEL_7:
-    v13 = [(TabDocument *)&self->super.isa _sessionStateWithoutParentItem];
-    [(TabDocument *)self restoreSessionState:v13 andNavigate:0];
+    _sessionStateWithoutParentItem = [(TabDocument *)&self->super.isa _sessionStateWithoutParentItem];
+    [(TabDocument *)self restoreSessionState:_sessionStateWithoutParentItem andNavigate:0];
 
     v14 = self->_parentTabItem;
     self->_parentTabItem = 0;
@@ -4242,29 +4242,29 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)setUpBackClosesSpawnedTabWithParent:(id)a3
+- (void)setUpBackClosesSpawnedTabWithParent:(id)parent
 {
-  v4 = a3;
-  v5 = [v4 _backForwardList];
-  v6 = [v5 currentItem];
+  parentCopy = parent;
+  _backForwardList = [parentCopy _backForwardList];
+  currentItem = [_backForwardList currentItem];
   parentTabItem = self->_parentTabItem;
-  self->_parentTabItem = v6;
+  self->_parentTabItem = currentItem;
 
-  v8 = [v4 webView];
-  [v8 _saveBackForwardSnapshotForItem:self->_parentTabItem];
-  v9 = [(_SFWebView *)self->_webView backForwardList];
-  v10 = [v9 currentItem];
+  webView = [parentCopy webView];
+  [webView _saveBackForwardSnapshotForItem:self->_parentTabItem];
+  backForwardList = [(_SFWebView *)self->_webView backForwardList];
+  currentItem2 = [backForwardList currentItem];
 
   v11 = [(_SFWebView *)self->_webView URL];
   if (v11)
   {
-    v12 = [(_SFWebView *)self->_webView backForwardList];
-    v13 = [v12 backItem];
+    backForwardList2 = [(_SFWebView *)self->_webView backForwardList];
+    backItem = [backForwardList2 backItem];
   }
 
   else
   {
-    v13 = 0;
+    backItem = 0;
   }
 
   webView = self->_webView;
@@ -4272,13 +4272,13 @@ LABEL_9:
   v20 = 3221225472;
   v21 = __51__TabDocument_setUpBackClosesSpawnedTabWithParent___block_invoke;
   v22 = &unk_2781DA7A0;
-  v15 = v13;
+  v15 = backItem;
   v23 = v15;
-  v16 = v10;
+  v16 = currentItem2;
   v24 = v16;
   v17 = [(_SFWebView *)webView _sessionStateWithFilter:&v19];
   v18 = [(_SFWebView *)self->_webView _restoreSessionState:v17 andNavigate:0, v19, v20, v21, v22];
-  objc_storeWeak(&self->_parentTabDocumentForBackClosesSpawnedTab, v4);
+  objc_storeWeak(&self->_parentTabDocumentForBackClosesSpawnedTab, parentCopy);
 }
 
 uint64_t __51__TabDocument_setUpBackClosesSpawnedTabWithParent___block_invoke(uint64_t a1, void *a2)
@@ -4315,17 +4315,17 @@ uint64_t __45__TabDocument__sessionStateWithoutParentItem__block_invoke(uint64_t
   return result;
 }
 
-- (TabDocument)initWithTitle:(id)a3 URL:(id)a4 UUID:(id)a5 privateBrowsingEnabled:(BOOL)a6 controlledByAutomation:(BOOL)a7 hibernated:(BOOL)a8 bookmark:(id)a9 browserController:(id)a10 relatedWebView:(id)a11
+- (TabDocument)initWithTitle:(id)title URL:(id)l UUID:(id)d privateBrowsingEnabled:(BOOL)enabled controlledByAutomation:(BOOL)automation hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)self0 relatedWebView:(id)self1
 {
-  v12 = a7;
-  v13 = a6;
-  v27 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  if (a8)
+  automationCopy = automation;
+  enabledCopy = enabled;
+  titleCopy = title;
+  lCopy = l;
+  dCopy = d;
+  bookmarkCopy = bookmark;
+  controllerCopy = controller;
+  viewCopy = view;
+  if (hibernated)
   {
     v22 = 0;
   }
@@ -4337,14 +4337,14 @@ uint64_t __45__TabDocument__sessionStateWithoutParentItem__block_invoke(uint64_t
     v28[1] = 3221225472;
     v28[2] = __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlledByAutomation_hibernated_bookmark_browserController_relatedWebView___block_invoke;
     v28[3] = &unk_2781D61F8;
-    v26 = &v29;
-    v29 = self;
+    v26 = &selfCopy;
+    selfCopy = self;
     v25 = &v30;
-    v30 = v21;
+    v30 = viewCopy;
   }
 
-  v23 = [(TabDocument *)self _initWithTitle:v27 URL:v17 UUID:v18 privateBrowsingEnabled:v13 controlledByAutomation:v12 bookmark:v19 browserController:v20 createDocumentView:v22];
-  if (!a8)
+  v23 = [(TabDocument *)self _initWithTitle:titleCopy URL:lCopy UUID:dCopy privateBrowsingEnabled:enabledCopy controlledByAutomation:automationCopy bookmark:bookmarkCopy browserController:controllerCopy createDocumentView:v22];
+  if (!hibernated)
   {
   }
 
@@ -4360,46 +4360,46 @@ void __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlled
   [TabDocument _createDocumentViewRelatedTo:v1 webViewToCloneSessionStorageFrom:v2 websiteDataStore:0 deferrableUserScriptsShouldWaitUntilNotification:v3];
 }
 
-- (TabDocument)initWithTabStateData:(id)a3 hibernated:(BOOL)a4 browserController:(id)a5
+- (TabDocument)initWithTabStateData:(id)data hibernated:(BOOL)hibernated browserController:(id)controller
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-  v11 = [v10 bookmarkWithID:{objc_msgSend(v8, "readingListBookmarkID")}];
+  hibernatedCopy = hibernated;
+  dataCopy = data;
+  controllerCopy = controller;
+  mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+  v11 = [mainBookmarkCollection bookmarkWithID:{objc_msgSend(dataCopy, "readingListBookmarkID")}];
 
   v12 = MEMORY[0x277CBEBC0];
-  v13 = [v8 url];
+  v13 = [dataCopy url];
   v14 = [v12 safari_URLWithDataAsString:v13];
 
-  v15 = [v8 title];
+  title = [dataCopy title];
   v16 = objc_alloc(MEMORY[0x277CCAD78]);
-  v17 = [v8 UUIDString];
-  v18 = [v16 initWithUUIDString:v17];
-  v19 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:hibernated:bookmark:browserController:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:hibernated:bookmark:browserController:", v15, v14, v18, [v8 privateBrowsing], v6, v11, v9);
+  uUIDString = [dataCopy UUIDString];
+  v18 = [v16 initWithUUIDString:uUIDString];
+  v19 = -[TabDocument initWithTitle:URL:UUID:privateBrowsingEnabled:hibernated:bookmark:browserController:](self, "initWithTitle:URL:UUID:privateBrowsingEnabled:hibernated:bookmark:browserController:", title, v14, v18, [dataCopy privateBrowsing], hibernatedCopy, v11, controllerCopy);
 
   if (v19)
   {
-    if (v6)
+    if (hibernatedCopy)
     {
-      [v8 lastViewedTime];
+      [dataCopy lastViewedTime];
       [(TabDocument *)v19 setLastViewedTime:?];
     }
 
-    -[TabDocument setShouldRestoreReader:](v19, "setShouldRestoreReader:", [v8 showingReader]);
-    -[TabDocument setReaderViewTopScrollOffset:](v19, "setReaderViewTopScrollOffset:", [v8 readerViewTopScrollOffset]);
-    -[TabDocument setWasOpenedFromLink:](v19, "setWasOpenedFromLink:", [v8 wasOpenedFromLink]);
-    -[TabDocument setDisplayingStandaloneImage:](v19, "setDisplayingStandaloneImage:", [v8 displayingStandaloneImage]);
-    v20 = [v8 url];
+    -[TabDocument setShouldRestoreReader:](v19, "setShouldRestoreReader:", [dataCopy showingReader]);
+    -[TabDocument setReaderViewTopScrollOffset:](v19, "setReaderViewTopScrollOffset:", [dataCopy readerViewTopScrollOffset]);
+    -[TabDocument setWasOpenedFromLink:](v19, "setWasOpenedFromLink:", [dataCopy wasOpenedFromLink]);
+    -[TabDocument setDisplayingStandaloneImage:](v19, "setDisplayingStandaloneImage:", [dataCopy displayingStandaloneImage]);
+    v20 = [dataCopy url];
     -[TabDocument setIsBlank:](v19, "setIsBlank:", [v20 length] == 0);
 
-    v21 = [v8 sessionStateData];
+    sessionStateData = [dataCopy sessionStateData];
 
-    if (v21)
+    if (sessionStateData)
     {
       v22 = objc_alloc(MEMORY[0x277CE38A0]);
-      v23 = [v8 sessionStateData];
-      v24 = [v22 initWithData:v23];
+      sessionStateData2 = [dataCopy sessionStateData];
+      v24 = [v22 initWithData:sessionStateData2];
 
       if (v24)
       {
@@ -4407,7 +4407,7 @@ void __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlled
       }
     }
 
-    else if (!v6)
+    else if (!hibernatedCopy)
     {
       v25 = [(TabDocument *)v19 loadURL:v14 userDriven:1];
     }
@@ -4418,54 +4418,54 @@ void __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlled
   return v19;
 }
 
-- (TabDocument)initWithTabGroupTab:(id)a3 privateBrowsingEnabled:(BOOL)a4 hibernated:(BOOL)a5 bookmark:(id)a6 browserController:(id)a7
+- (TabDocument)initWithTabGroupTab:(id)tab privateBrowsingEnabled:(BOOL)enabled hibernated:(BOOL)hibernated bookmark:(id)bookmark browserController:(id)controller
 {
-  v9 = a5;
-  v10 = a4;
-  v13 = a3;
-  v40 = a6;
-  v39 = a7;
-  v14 = [v13 url];
+  hibernatedCopy = hibernated;
+  enabledCopy = enabled;
+  tabCopy = tab;
+  bookmarkCopy = bookmark;
+  controllerCopy = controller;
+  v14 = [tabCopy url];
   if (v14)
   {
-    v15 = [v13 title];
+    title = [tabCopy title];
   }
 
   else
   {
-    v15 = 0;
+    title = 0;
   }
 
   v16 = objc_alloc(MEMORY[0x277CCAD78]);
-  v17 = [v13 uuid];
-  v18 = [v16 initWithUUIDString:v17];
-  v19 = [(TabDocument *)self initWithTitle:v15 URL:v14 UUID:v18 privateBrowsingEnabled:v10 hibernated:v9 bookmark:v40 browserController:v39];
+  uuid = [tabCopy uuid];
+  v18 = [v16 initWithUUIDString:uuid];
+  v19 = [(TabDocument *)self initWithTitle:title URL:v14 UUID:v18 privateBrowsingEnabled:enabledCopy hibernated:hibernatedCopy bookmark:bookmarkCopy browserController:controllerCopy];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_tabGroupTab, a3);
+    objc_storeStrong(&v19->_tabGroupTab, tab);
     [(TabDocument *)v19 setIsBlank:v14 == 0];
-    v20 = [v13 localAttributes];
-    v21 = [v20 ancestorTabUUIDs];
-    v22 = [v21 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_189_1];
+    localAttributes = [tabCopy localAttributes];
+    ancestorTabUUIDs = [localAttributes ancestorTabUUIDs];
+    v22 = [ancestorTabUUIDs safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_189_1];
     ancestorUUIDs = v19->_ancestorUUIDs;
     v19->_ancestorUUIDs = v22;
 
-    -[TabDocument setDisplayingStandaloneImage:](v19, "setDisplayingStandaloneImage:", [v20 isDisplayingStandaloneImage]);
-    -[TabDocument setWasOpenedFromLink:](v19, "setWasOpenedFromLink:", [v20 wasOpenedFromLink]);
-    [v20 readerViewTopScrollOffset];
+    -[TabDocument setDisplayingStandaloneImage:](v19, "setDisplayingStandaloneImage:", [localAttributes isDisplayingStandaloneImage]);
+    -[TabDocument setWasOpenedFromLink:](v19, "setWasOpenedFromLink:", [localAttributes wasOpenedFromLink]);
+    [localAttributes readerViewTopScrollOffset];
     [(TabDocument *)v19 setReaderViewTopScrollOffset:v24];
-    -[TabDocument setShouldRestoreReader:](v19, "setShouldRestoreReader:", [v20 isShowingReader]);
-    if (v9)
+    -[TabDocument setShouldRestoreReader:](v19, "setShouldRestoreReader:", [localAttributes isShowingReader]);
+    if (hibernatedCopy)
     {
-      v25 = [v20 lastVisitTime];
-      [v25 timeIntervalSinceReferenceDate];
+      lastVisitTime = [localAttributes lastVisitTime];
+      [lastVisitTime timeIntervalSinceReferenceDate];
       [(TabDocument *)v19 setLastViewedTime:?];
     }
 
     v26 = objc_alloc(MEMORY[0x277CCAD78]);
-    v27 = [v20 webClipIDString];
-    v28 = [v26 initWithUUIDString:v27];
+    webClipIDString = [localAttributes webClipIDString];
+    v28 = [v26 initWithUUIDString:webClipIDString];
 
     if (v28)
     {
@@ -4473,20 +4473,20 @@ void __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlled
       [(TabDocument *)v19 setWebClip:v29];
     }
 
-    -[TabDocument setPinned:](v19, "setPinned:", [v13 isPinned]);
-    v30 = [v13 pinnedURL];
-    v31 = [v30 copy];
+    -[TabDocument setPinned:](v19, "setPinned:", [tabCopy isPinned]);
+    pinnedURL = [tabCopy pinnedURL];
+    v31 = [pinnedURL copy];
     pinnedURL = v19->_pinnedURL;
     v19->_pinnedURL = v31;
 
-    v33 = [v13 pinnedTitle];
-    v34 = [v33 copy];
+    pinnedTitle = [tabCopy pinnedTitle];
+    v34 = [pinnedTitle copy];
     pinnedTitle = v19->_pinnedTitle;
     v19->_pinnedTitle = v34;
 
-    if ([v13 isShared])
+    if ([tabCopy isShared])
     {
-      v36 = [v13 isMarkedAsRead] ^ 1;
+      v36 = [tabCopy isMarkedAsRead] ^ 1;
     }
 
     else
@@ -4496,7 +4496,7 @@ void __137__TabDocument_initWithTitle_URL_UUID_privateBrowsingEnabled_controlled
 
     [(TabDocument *)v19 setUnread:v36];
     v19->_shouldDonatePageLoad = 1;
-    [(TabDocument *)v19 restoreStateFromTab:v13];
+    [(TabDocument *)v19 restoreStateFromTab:tabCopy];
     v37 = v19;
   }
 
@@ -4511,56 +4511,56 @@ id __96__TabDocument_initWithTabGroupTab_privateBrowsingEnabled_hibernated_bookm
   return v3;
 }
 
-- (void)setWebClip:(uint64_t)a1
+- (void)setWebClip:(uint64_t)clip
 {
   v8 = a2;
-  if (a1)
+  if (clip)
   {
-    v4 = [*(a1 + 1360) uuid];
-    v5 = [v8 uuid];
+    uuid = [*(clip + 1360) uuid];
+    uuid2 = [v8 uuid];
     v6 = WBSIsEqual();
 
     if ((v6 & 1) == 0)
     {
-      objc_storeStrong((a1 + 1360), a2);
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
-      [WeakRetained tabDocumentDidChangeWebClip:a1];
+      objc_storeStrong((clip + 1360), a2);
+      WeakRetained = objc_loadWeakRetained((clip + 1248));
+      [WeakRetained tabDocumentDidChangeWebClip:clip];
     }
   }
 }
 
-- (TabDocument)initWithHibernatedTab:(id)a3
+- (TabDocument)initWithHibernatedTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   v5 = [(TabDocument *)self init];
   if (v5)
   {
-    v6 = [v4 wbTab];
+    wbTab = [tabCopy wbTab];
     tabGroupTab = v5->_tabGroupTab;
-    v5->_tabGroupTab = v6;
+    v5->_tabGroupTab = wbTab;
 
-    v8 = [v4 url];
-    v9 = [v4 isBlank];
-    if (v9)
+    v8 = [tabCopy url];
+    isBlank = [tabCopy isBlank];
+    if (isBlank)
     {
-      v10 = 0;
+      title = 0;
     }
 
     else
     {
-      v10 = [v4 title];
+      title = [tabCopy title];
     }
 
-    v11 = [v4 uuid];
+    uuid = [tabCopy uuid];
     uuid = v5->_uuid;
-    v5->_uuid = v11;
+    v5->_uuid = uuid;
 
-    v13 = [v4 browserController];
-    [(TabDocument *)v5 setBrowserController:v13 afterTabGroupReuse:0];
+    browserController = [tabCopy browserController];
+    [(TabDocument *)v5 setBrowserController:browserController afterTabGroupReuse:0];
     v14 = objc_alloc(MEMORY[0x277CDB768]);
-    v15 = [v4 isPrivateBrowsingEnabled];
-    v16 = [v13 rootViewController];
-    v17 = [v14 initWithPrivateBrowsingEnabled:v15 traitEnvironment:v16 controlledByAutomation:{objc_msgSend(v13, "isControlledByAutomation")}];
+    isPrivateBrowsingEnabled = [tabCopy isPrivateBrowsingEnabled];
+    rootViewController = [browserController rootViewController];
+    v17 = [v14 initWithPrivateBrowsingEnabled:isPrivateBrowsingEnabled traitEnvironment:rootViewController controlledByAutomation:{objc_msgSend(browserController, "isControlledByAutomation")}];
     configuration = v5->_configuration;
     v5->_configuration = v17;
 
@@ -4570,53 +4570,53 @@ id __96__TabDocument_initWithTabGroupTab_privateBrowsingEnabled_hibernated_bookm
     v5->_loadingController = v19;
 
     [(LoadingController *)v5->_loadingController setDelegate:v5];
-    [(LoadingController *)v5->_loadingController setTitle:v10];
+    [(LoadingController *)v5->_loadingController setTitle:title];
     [(LoadingController *)v5->_loadingController setURL:v8];
     [(TabDocument *)v5 _setUp];
-    v21 = [v4 unifiedTabBarItem];
+    unifiedTabBarItem = [tabCopy unifiedTabBarItem];
     unifiedTabBarItem = v5->_unifiedTabBarItem;
-    v5->_unifiedTabBarItem = v21;
+    v5->_unifiedTabBarItem = unifiedTabBarItem;
 
-    v23 = [v4 tabBarItem];
+    tabBarItem = [tabCopy tabBarItem];
     tabBarItem = v5->_tabBarItem;
-    v5->_tabBarItem = v23;
+    v5->_tabBarItem = tabBarItem;
 
-    v25 = [v4 tabCollectionItem];
+    tabCollectionItem = [tabCopy tabCollectionItem];
     tabCollectionItem = v5->_tabCollectionItem;
-    v5->_tabCollectionItem = v25;
+    v5->_tabCollectionItem = tabCollectionItem;
 
-    v27 = [v4 cachedNavigationBarItem];
+    cachedNavigationBarItem = [tabCopy cachedNavigationBarItem];
 
-    if (v27)
+    if (cachedNavigationBarItem)
     {
-      v28 = [v4 cachedNavigationBarItem];
+      cachedNavigationBarItem2 = [tabCopy cachedNavigationBarItem];
       navigationBarItem = v5->_navigationBarItem;
-      v5->_navigationBarItem = v28;
+      v5->_navigationBarItem = cachedNavigationBarItem2;
 
       [(TabDocument *)v5 _setUpNavigationBarItem];
     }
 
-    [v4 idForWebExtensions];
+    [tabCopy idForWebExtensions];
     v5->_idForWebExtensions = v30;
     [(TabDocument *)v5 setChangedPropertiesForOnUpdatedWebExtensionEvent:0];
-    [(TabDocument *)v5 setIsBlank:v9];
-    v31 = [v4 ancestorUUIDs];
+    [(TabDocument *)v5 setIsBlank:isBlank];
+    ancestorUUIDs = [tabCopy ancestorUUIDs];
     ancestorUUIDs = v5->_ancestorUUIDs;
-    v5->_ancestorUUIDs = v31;
+    v5->_ancestorUUIDs = ancestorUUIDs;
 
-    v33 = [(WBTab *)v5->_tabGroupTab localAttributes];
-    v5->_displayingStandaloneImage = [v33 isDisplayingStandaloneImage];
-    v5->_wasOpenedFromLink = [v33 wasOpenedFromLink];
-    [v33 readerViewTopScrollOffset];
+    localAttributes = [(WBTab *)v5->_tabGroupTab localAttributes];
+    v5->_displayingStandaloneImage = [localAttributes isDisplayingStandaloneImage];
+    v5->_wasOpenedFromLink = [localAttributes wasOpenedFromLink];
+    [localAttributes readerViewTopScrollOffset];
     v5->_readerViewTopScrollOffset = v34;
-    v5->_shouldRestoreReader = [v33 isShowingReader];
-    v35 = [v33 lastVisitTime];
-    [v35 timeIntervalSinceReferenceDate];
+    v5->_shouldRestoreReader = [localAttributes isShowingReader];
+    lastVisitTime = [localAttributes lastVisitTime];
+    [lastVisitTime timeIntervalSinceReferenceDate];
     v5->_lastViewedTime = v36;
 
     v37 = objc_alloc(MEMORY[0x277CCAD78]);
-    v38 = [v33 webClipIDString];
-    v39 = [v37 initWithUUIDString:v38];
+    webClipIDString = [localAttributes webClipIDString];
+    v39 = [v37 initWithUUIDString:webClipIDString];
 
     if (v39)
     {
@@ -4624,22 +4624,22 @@ id __96__TabDocument_initWithTabGroupTab_privateBrowsingEnabled_hibernated_bookm
       [(TabDocument *)v5 setWebClip:v40];
     }
 
-    -[TabDocument setPinned:](v5, "setPinned:", [v4 isPinned]);
-    v41 = [v4 pinnedURL];
-    v42 = [v41 copy];
+    -[TabDocument setPinned:](v5, "setPinned:", [tabCopy isPinned]);
+    pinnedURL = [tabCopy pinnedURL];
+    v42 = [pinnedURL copy];
     pinnedURL = v5->_pinnedURL;
     v5->_pinnedURL = v42;
 
-    v44 = [v4 pinnedTitle];
-    v45 = [v44 copy];
+    pinnedTitle = [tabCopy pinnedTitle];
+    v45 = [pinnedTitle copy];
     pinnedTitle = v5->_pinnedTitle;
     v5->_pinnedTitle = v45;
 
-    v47 = [v4 shareParticipants];
+    shareParticipants = [tabCopy shareParticipants];
     shareParticipants = v5->_shareParticipants;
-    v5->_shareParticipants = v47;
+    v5->_shareParticipants = shareParticipants;
 
-    v5->_unread = [v4 isUnread];
+    v5->_unread = [tabCopy isUnread];
     v5->_shouldDonatePageLoad = 1;
     [(TabDocument *)v5 restoreStateFromTab:v5->_tabGroupTab];
     v49 = v5;
@@ -4648,29 +4648,29 @@ id __96__TabDocument_initWithTabGroupTab_privateBrowsingEnabled_hibernated_bookm
   return v5;
 }
 
-- (void)setUnifiedTabBarItem:(uint64_t)a1
+- (void)setUnifiedTabBarItem:(uint64_t)item
 {
   v4 = a2;
-  if (a1)
+  if (item)
   {
-    v5 = *(a1 + 1104);
+    v5 = *(item + 1104);
     if (v5 != v4)
     {
       v11 = v4;
-      v6 = [v5 title];
-      [v11 setTitle:v6];
-      v7 = (a1 + 1104);
+      title = [v5 title];
+      [v11 setTitle:title];
+      v7 = (item + 1104);
 
-      v8 = [*(a1 + 1104) icon];
-      [v11 setIcon:v8];
+      icon = [*(item + 1104) icon];
+      [v11 setIcon:icon];
 
-      [v11 setUUID:*(a1 + 1376)];
-      [v11 setNavigationBarItem:*(a1 + 280)];
-      [v11 setPinned:*(a1 + 951)];
-      v9 = [*(a1 + 1104) navigationBarItem];
-      v10 = *(a1 + 280);
+      [v11 setUUID:*(item + 1376)];
+      [v11 setNavigationBarItem:*(item + 280)];
+      [v11 setPinned:*(item + 951)];
+      navigationBarItem = [*(item + 1104) navigationBarItem];
+      v10 = *(item + 280);
 
-      if (v9 == v10)
+      if (navigationBarItem == v10)
       {
         [*v7 setNavigationBarItem:0];
       }
@@ -4684,45 +4684,45 @@ id __96__TabDocument_initWithTabGroupTab_privateBrowsingEnabled_hibernated_bookm
 - (UnifiedTabBarItem)currentUnifiedTabBarItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabBarManager];
-  v5 = [v4 displayMode];
+  tabBarManager = [WeakRetained tabBarManager];
+  displayMode = [tabBarManager displayMode];
 
   unifiedTabBarItem = self->_unifiedTabBarItem;
-  if (v5 == 2)
+  if (displayMode == 2)
   {
-    v7 = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
+    secondaryItem = [(UnifiedTabBarItem *)unifiedTabBarItem secondaryItem];
   }
 
   else
   {
-    v7 = unifiedTabBarItem;
+    secondaryItem = unifiedTabBarItem;
   }
 
-  return v7;
+  return secondaryItem;
 }
 
-- (void)updateThemeColorAndUnderPageBackground:(BOOL)a3
+- (void)updateThemeColorAndUnderPageBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [(TabDocument *)self activeWebView];
-  v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  if ([v6 BOOLForKey:*MEMORY[0x277D29000]])
+  activeWebView = [(TabDocument *)self activeWebView];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  if ([safari_browserDefaults BOOLForKey:*MEMORY[0x277D29000]])
   {
 
     goto LABEL_4;
   }
 
-  v7 = [WeakRetained tabBarManager];
-  v8 = [v7 displayMode];
+  tabBarManager = [WeakRetained tabBarManager];
+  displayMode = [tabBarManager displayMode];
 
-  if (v8 == 2)
+  if (displayMode == 2)
   {
 LABEL_4:
-    v9 = [WeakRetained rootViewController];
-    v10 = [v9 isInYttriumState];
+    rootViewController = [WeakRetained rootViewController];
+    isInYttriumState = [rootViewController isInYttriumState];
 
-    if ((v10 & 1) == 0)
+    if ((isInYttriumState & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -4730,36 +4730,36 @@ LABEL_4:
 
   if (![(TabDocument *)self isShowingSystemStartPage]&& ![(TabDocument *)self isPDFDocument]&& ([(_SFBrowserConfiguration *)self->_configuration isControlledByAutomation]& 1) == 0 && ![(TabDocument *)self inElementFullscreen])
   {
-    v13 = [WeakRetained rootViewController];
-    if ([v13 usingLoweredBar])
+    rootViewController2 = [WeakRetained rootViewController];
+    if ([rootViewController2 usingLoweredBar])
     {
       v14 = 0;
     }
 
     else
     {
-      v15 = [(_SFBrowserConfiguration *)self->_configuration traitEnvironment];
-      v16 = [v15 traitCollection];
-      v14 = [v16 userInterfaceStyle] == 2;
+      traitEnvironment = [(_SFBrowserConfiguration *)self->_configuration traitEnvironment];
+      traitCollection = [traitEnvironment traitCollection];
+      v14 = [traitCollection userInterfaceStyle] == 2;
     }
 
-    v11 = [MEMORY[0x277D4A868] updateThemeColorForWebView:v5 darkModeEnabled:v14 allowFallbackColors:1 updateUnderPageBackgroundColor:v3];
+    v11 = [MEMORY[0x277D4A868] updateThemeColorForWebView:activeWebView darkModeEnabled:v14 allowFallbackColors:1 updateUnderPageBackgroundColor:backgroundCopy];
     goto LABEL_10;
   }
 
 LABEL_9:
-  [v5 setUnderPageBackgroundColor:0];
+  [activeWebView setUnderPageBackgroundColor:0];
   v11 = 0;
 LABEL_10:
   themeColor = self->_themeColor;
   self->_themeColor = v11;
 }
 
-- (void)setIsBlank:(BOOL)a3
+- (void)setIsBlank:(BOOL)blank
 {
-  if (self->_isBlank != a3)
+  if (self->_isBlank != blank)
   {
-    self->_isBlank = a3;
+    self->_isBlank = blank;
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
     if (self->_isBlank)
     {
@@ -4776,31 +4776,31 @@ LABEL_10:
     [(SFNavigationBarItem *)self->_navigationBarItem setShowsStopReloadButtons:v4];
     if (self->_hasBeenInserted)
     {
-      v5 = [WeakRetained tabController];
-      [v5 updateLocalTabGroupTitle];
+      tabController = [WeakRetained tabController];
+      [tabController updateLocalTabGroupTitle];
     }
   }
 }
 
 - (void)_clearLibraryType
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1320);
+    v2 = *(self + 1320);
     if (v2)
     {
-      *(a1 + 1320) = 0;
+      *(self + 1320) = 0;
       v3 = v2;
 
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
-      [WeakRetained tabDocument:a1 didClearLibraryType:v3];
+      WeakRetained = objc_loadWeakRetained((self + 1248));
+      [WeakRetained tabDocument:self didClearLibraryType:v3];
     }
   }
 }
 
-- (void)unfreezeAfterNavigationGesture:(BOOL)a3
+- (void)unfreezeAfterNavigationGesture:(BOOL)gesture
 {
-  if (!a3)
+  if (!gesture)
   {
     [(TabDocument *)self setSuppressingProgressAnimationForNavigationGesture:0];
   }
@@ -4811,18 +4811,18 @@ LABEL_10:
   if (!self->_closed && !self->_hibernated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v3 = [WeakRetained tabCollectionViewProvider];
-    [v3 invalidateSnapshotForTab:self];
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    [tabCollectionViewProvider invalidateSnapshotForTab:self];
   }
 }
 
 - (void)_updateSnapshotIfNeeded
 {
-  if (a1 && (*(a1 + 954) & 1) == 0 && (*(a1 + 975) & 1) == 0 && (*(a1 + 990) & 1) == 0)
+  if (self && (*(self + 954) & 1) == 0 && (*(self + 975) & 1) == 0 && (*(self + 990) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v1 = [WeakRetained tabCollectionViewProvider];
-    [v1 updateSnapshotsForTabHoverPreviewIfNeeded];
+    WeakRetained = objc_loadWeakRetained((self + 992));
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    [tabCollectionViewProvider updateSnapshotsForTabHoverPreviewIfNeeded];
   }
 }
 
@@ -4837,22 +4837,22 @@ LABEL_10:
   return *(&self->super.isa + v2);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(TabBarItem *)self->_tabBarItem setActive:?];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     [(TabDocument *)self setLastViewedTime:?];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v5 = [WeakRetained tabController];
-    [v5 saveTabDocumentUserActivitySoon:self];
+    tabController = [WeakRetained tabController];
+    [tabController saveTabDocumentUserActivitySoon:self];
 
     if (self->_active)
     {
-      v6 = [MEMORY[0x277D499B8] sharedLogger];
-      [v6 reportTabUpdatedWithUpdateType:7];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:7];
 
       if (self->_closed)
       {
@@ -4863,7 +4863,7 @@ LABEL_10:
         }
       }
 
-      v8 = [(TabDocument *)self navigationBarItem];
+      navigationBarItem = [(TabDocument *)self navigationBarItem];
       if (self->_hibernated)
       {
         [(TabDocument *)self unhibernate];
@@ -4897,21 +4897,21 @@ LABEL_10:
 - (void)_loadDeferredURLIfNeeded
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1 && *(a1 + 824) == 1)
+  if (self && *(self + 824) == 1)
   {
-    v2 = *(a1 + 832);
-    v3 = *(a1 + 832);
-    *(a1 + 832) = 0;
+    v2 = *(self + 832);
+    v3 = *(self + 832);
+    *(self + 832) = 0;
 
-    v4 = *(a1 + 840);
-    *(a1 + 840) = 0;
+    v4 = *(self + 840);
+    *(self + 840) = 0;
 
-    *(a1 + 824) = 0;
+    *(self + 824) = 0;
     v5 = WBS_LOG_CHANNEL_PREFIXPageLoading();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 134218499;
-      v8 = a1;
+      selfCopy = self;
       v9 = 2160;
       v10 = 1752392040;
       v11 = 2117;
@@ -4919,32 +4919,32 @@ LABEL_10:
       _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_INFO, "Apply deferred navigation: (document: %p) %{sensitive, mask.hash}@", &v7, 0x20u);
     }
 
-    v6 = [(TabDocument *)a1 loadURL:v2 userDriven:0 skipSyncableTabUpdates:*(a1 + 709)];
+    v6 = [(TabDocument *)self loadURL:v2 userDriven:0 skipSyncableTabUpdates:*(self + 709)];
   }
 }
 
-- (void)_notifyImpressionAnalyticsRecorderIfNeededTabDocumentDidBecomeActive:(uint64_t)a1
+- (void)_notifyImpressionAnalyticsRecorderIfNeededTabDocumentDidBecomeActive:(uint64_t)active
 {
-  if (a1)
+  if (active)
   {
-    v3 = *(a1 + 784);
+    v3 = *(active + 784);
     if (v3)
     {
-      *(a1 + 784) = v3 & 0xFE;
+      *(active + 784) = v3 & 0xFE;
 LABEL_12:
-      *(a1 + 776) = 0;
+      *(active + 776) = 0;
       return;
     }
 
-    if ((*(a1 + 784) & 2) != 0 && (a2 & 1) == 0)
+    if ((*(active + 784) & 2) != 0 && (a2 & 1) == 0)
     {
-      *(a1 + 784) = v3 & 0xFC;
-      WeakRetained = objc_loadWeakRetained((a1 + 992));
-      v5 = [WeakRetained tabController];
-      v6 = [v5 activeTabDocument];
-      *(a1 + 784) = *(a1 + 784) & 0xFB | (4 * (v6 != a1));
+      *(active + 784) = v3 & 0xFC;
+      WeakRetained = objc_loadWeakRetained((active + 992));
+      tabController = [WeakRetained tabController];
+      activeTabDocument = [tabController activeTabDocument];
+      *(active + 784) = *(active + 784) & 0xFB | (4 * (activeTabDocument != active));
 
-      if ((*(a1 + 784) & 4) != 0)
+      if ((*(active + 784) & 4) != 0)
       {
         return;
       }
@@ -4952,13 +4952,13 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    if ((*(a1 + 784) & 4) != 0 && (a2 & 1) == 0)
+    if ((*(active + 784) & 4) != 0 && (a2 & 1) == 0)
     {
-      *(a1 + 784) = v3 & 0xFA;
+      *(active + 784) = v3 & 0xFA;
 LABEL_11:
-      v7 = [MEMORY[0x277D4A808] sharedRecorder];
-      v8 = [*(a1 + 1064) URL];
-      [v7 didActualizeImpressionForURL:v8 provenance:*(a1 + 776)];
+      mEMORY[0x277D4A808] = [MEMORY[0x277D4A808] sharedRecorder];
+      v8 = [*(active + 1064) URL];
+      [mEMORY[0x277D4A808] didActualizeImpressionForURL:v8 provenance:*(active + 776)];
 
       goto LABEL_12;
     }
@@ -4972,40 +4972,40 @@ LABEL_11:
   [(TabDocument *)self updateUserActivity];
 }
 
-- (void)_closeTabDocumentAnimated:(BOOL)a3
+- (void)_closeTabDocumentAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained closeTabDocument:self animated:v3];
+  [WeakRetained closeTabDocument:self animated:animatedCopy];
 
-  v6 = [MEMORY[0x277D4A060] sharedInstance];
-  [v6 setTabNeedsSpotlightDeletion:self];
+  mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+  [mEMORY[0x277D4A060] setTabNeedsSpotlightDeletion:self];
 }
 
-- (void)didReplaceTabDocument:(id)a3
+- (void)didReplaceTabDocument:(id)document
 {
-  v13 = a3;
-  v4 = [v13 unifiedTabBarItem];
-  [(TabDocument *)self setUnifiedTabBarItem:v4];
+  documentCopy = document;
+  unifiedTabBarItem = [documentCopy unifiedTabBarItem];
+  [(TabDocument *)self setUnifiedTabBarItem:unifiedTabBarItem];
 
-  [(TabDocument *)v13 setUnifiedTabBarItem:?];
+  [(TabDocument *)documentCopy setUnifiedTabBarItem:?];
   [(TabDocument *)self _updateBarItemsWithCurrentMediaState];
-  [(TabDocument *)self setPinned:*(v13 + 951)];
-  objc_storeStrong(&self->_pinnedTitle, v13[143]);
-  objc_storeStrong(&self->_pinnedURL, v13[144]);
+  [(TabDocument *)self setPinned:*(documentCopy + 951)];
+  objc_storeStrong(&self->_pinnedTitle, documentCopy[143]);
+  objc_storeStrong(&self->_pinnedURL, documentCopy[144]);
   self->_suppressWebExtensionEvents = 0;
-  [v13 idForWebExtensions];
+  [documentCopy idForWebExtensions];
   self->_idForWebExtensions = v5;
-  v6 = [v13 previousURLForWebExtensionOnUpdatedEvent];
+  previousURLForWebExtensionOnUpdatedEvent = [documentCopy previousURLForWebExtensionOnUpdatedEvent];
   previousURLForWebExtensionOnUpdatedEvent = self->_previousURLForWebExtensionOnUpdatedEvent;
-  self->_previousURLForWebExtensionOnUpdatedEvent = v6;
+  self->_previousURLForWebExtensionOnUpdatedEvent = previousURLForWebExtensionOnUpdatedEvent;
 
-  v8 = [v13 previousTitleForWebExtensionOnUpdatedEvent];
-  v9 = [v8 copy];
+  previousTitleForWebExtensionOnUpdatedEvent = [documentCopy previousTitleForWebExtensionOnUpdatedEvent];
+  v9 = [previousTitleForWebExtensionOnUpdatedEvent copy];
   previousTitleForWebExtensionOnUpdatedEvent = self->_previousTitleForWebExtensionOnUpdatedEvent;
   self->_previousTitleForWebExtensionOnUpdatedEvent = v9;
 
-  self->_previousLoadingCompleteStateForWebExtensionOnUpdatedEvent = [v13 previousLoadingCompleteStateForWebExtensionOnUpdatedEvent];
+  self->_previousLoadingCompleteStateForWebExtensionOnUpdatedEvent = [documentCopy previousLoadingCompleteStateForWebExtensionOnUpdatedEvent];
   [(TabDocument *)self _loadingStateForWebExtensionsMayHaveChanged];
   speculativeLoadNavigationResponse = self->_speculativeLoadNavigationResponse;
   if (speculativeLoadNavigationResponse)
@@ -5016,67 +5016,67 @@ LABEL_11:
   }
 }
 
-- (void)_donateCurrentNavigationWithNavigationResponse:(id *)a1
+- (void)_donateCurrentNavigationWithNavigationResponse:(id *)response
 {
   v3 = a2;
-  if (a1)
+  if (response)
   {
-    if (([a1 isPrivateBrowsingEnabled] & 1) == 0)
+    if (([response isPrivateBrowsingEnabled] & 1) == 0)
     {
       v4 = [v3 URL];
-      v5 = [a1 URL];
+      v5 = [response URL];
       v6 = [v4 isEqual:v5];
 
       if (v6)
       {
-        v7 = [a1[11] loadedUsingDesktopUserAgent];
-        v8 = [a1[133] _wasPrivateRelayed];
-        v9 = [v3 statusCode];
+        loadedUsingDesktopUserAgent = [response[11] loadedUsingDesktopUserAgent];
+        _wasPrivateRelayed = [response[133] _wasPrivateRelayed];
+        statusCode = [v3 statusCode];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __62__TabDocument__donateCurrentNavigationWithNavigationResponse___block_invoke;
         block[3] = &unk_2781DB488;
-        block[4] = a1;
+        block[4] = response;
         v11 = v3;
-        v12 = v7 ^ 1u;
-        v14 = v8;
-        v13 = v9;
+        v12 = loadedUsingDesktopUserAgent ^ 1u;
+        v14 = _wasPrivateRelayed;
+        v13 = statusCode;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
     }
   }
 }
 
-- (void)setShowingReader:(BOOL)a3
+- (void)setShowingReader:(BOOL)reader
 {
-  if (self->_showingReader != a3)
+  if (self->_showingReader != reader)
   {
-    v3 = a3;
-    self->_showingReader = a3;
+    readerCopy = reader;
+    self->_showingReader = reader;
     [(SFNavigationBarItem *)self->_navigationBarItem setReaderButtonSelected:?];
     [(SFDialogController *)self->_dialogController owningTabWillClose];
-    [(_SFReaderController *)self->_readerContext setReaderIsActive:v3];
-    if (v3)
+    [(_SFReaderController *)self->_readerContext setReaderIsActive:readerCopy];
+    if (readerCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v5 = [WeakRetained processPool];
-      SafariShared::ReaderAvailabilityController::updateReaderOrTranslationLastActivated(v5, v6);
+      processPool = [WeakRetained processPool];
+      SafariShared::ReaderAvailabilityController::updateReaderOrTranslationLastActivated(processPool, v6);
     }
   }
 }
 
-- (void)addAppHighlightCreatingLink:(BOOL)a3
+- (void)addAppHighlightCreatingLink:(BOOL)link
 {
-  v3 = a3;
+  linkCopy = link;
   v5 = +[Application sharedApplication];
-  v15 = [v5 systemNoteTakingController];
+  systemNoteTakingController = [v5 systemNoteTakingController];
 
-  v6 = [(TabDocument *)self webView];
-  v7 = [v6 _selectionAttributes];
+  webView = [(TabDocument *)self webView];
+  _selectionAttributes = [webView _selectionAttributes];
 
-  if ((v7 & 2) != 0)
+  if ((_selectionAttributes & 2) != 0)
   {
-    v13 = [(TabDocument *)self webView];
+    webView2 = [(TabDocument *)self webView];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
@@ -5084,23 +5084,23 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v9 = [(TabDocument *)self webView];
-    [v9 _addAppHighlightInNewGroup:objc_msgSend(v15 originatedInApp:{"isNotesPIPVisible") ^ 1, !v3}];
+    webView3 = [(TabDocument *)self webView];
+    [webView3 _addAppHighlightInNewGroup:objc_msgSend(systemNoteTakingController originatedInApp:{"isNotesPIPVisible") ^ 1, !linkCopy}];
   }
 
   else
   {
     v8 = objc_alloc(MEMORY[0x277CC1EF0]);
-    v9 = [v8 initWithActivityType:*MEMORY[0x277CCA850]];
-    v10 = [(TabDocument *)self urlForSharing];
-    [v9 setWebpageURL:v10];
+    webView3 = [v8 initWithActivityType:*MEMORY[0x277CCA850]];
+    urlForSharing = [(TabDocument *)self urlForSharing];
+    [webView3 setWebpageURL:urlForSharing];
 
-    v11 = [(TabDocument *)self title];
-    [v9 setTitle:v11];
+    title = [(TabDocument *)self title];
+    [webView3 setTitle:title];
 
-    LODWORD(v11) = [v15 isNotesPIPVisible];
-    v12 = [(TabDocument *)self webView];
-    [v15 saveHighlightsData:0 selectedText:0 selectedImage:0 newGroup:v11 ^ 1 originatedInApp:!v3 webView:v12 userActivity:v9];
+    LODWORD(title) = [systemNoteTakingController isNotesPIPVisible];
+    webView4 = [(TabDocument *)self webView];
+    [systemNoteTakingController saveHighlightsData:0 selectedText:0 selectedImage:0 newGroup:title ^ 1 originatedInApp:!linkCopy webView:webView4 userActivity:webView3];
   }
 
 LABEL_6:
@@ -5111,13 +5111,13 @@ LABEL_6:
   if (self->_userActivityFromNotes)
   {
     v3 = +[Application sharedApplication];
-    v4 = [v3 systemNoteTakingController];
+    systemNoteTakingController = [v3 systemNoteTakingController];
 
-    if ([v4 isNoteTakingSupportedWithPrivateBrowsing:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}])
+    if ([systemNoteTakingController isNoteTakingSupportedWithPrivateBrowsing:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}])
     {
       userActivityFromNotes = self->_userActivityFromNotes;
-      v6 = [(TabDocument *)self webView];
-      [v4 applyHighlightInUserActivity:userActivityFromNotes webView:v6];
+      webView = [(TabDocument *)self webView];
+      [systemNoteTakingController applyHighlightInUserActivity:userActivityFromNotes webView:webView];
     }
 
     else
@@ -5135,40 +5135,40 @@ LABEL_6:
 - (void)restoreAllHighlightsData
 {
   v3 = +[Application sharedApplication];
-  v4 = [v3 systemNoteTakingController];
+  systemNoteTakingController = [v3 systemNoteTakingController];
 
-  if ([v4 isNotesPIPVisible])
+  if ([systemNoteTakingController isNotesPIPVisible])
   {
     v5 = self->_userActivityFromNotes;
     if (!v5)
     {
       v6 = objc_alloc(MEMORY[0x277CC1EF0]);
       v7 = [v6 initWithActivityType:*MEMORY[0x277CCA850]];
-      v8 = [(TabDocument *)self urlForSharing];
-      if ([v8 safari_isHTTPFamilyURL])
+      urlForSharing = [(TabDocument *)self urlForSharing];
+      if ([urlForSharing safari_isHTTPFamilyURL])
       {
-        [(NSUserActivity *)v7 setWebpageURL:v8];
+        [(NSUserActivity *)v7 setWebpageURL:urlForSharing];
       }
 
-      v9 = [(TabDocument *)self title];
-      [(NSUserActivity *)v7 setTitle:v9];
+      title = [(TabDocument *)self title];
+      [(NSUserActivity *)v7 setTitle:title];
 
       v5 = v7;
     }
 
-    v10 = [(_SFWebView *)self->_webView backForwardList];
-    v11 = [v10 currentItem];
+    backForwardList = [(_SFWebView *)self->_webView backForwardList];
+    currentItem = [backForwardList currentItem];
     backForwardListItemForCurrentNoteTakingCheck = self->_backForwardListItemForCurrentNoteTakingCheck;
-    self->_backForwardListItemForCurrentNoteTakingCheck = v11;
+    self->_backForwardListItemForCurrentNoteTakingCheck = currentItem;
 
     objc_initWeak(&location, self);
-    v13 = [(TabDocument *)self isPrivateBrowsingEnabled];
+    isPrivateBrowsingEnabled = [(TabDocument *)self isPrivateBrowsingEnabled];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __39__TabDocument_restoreAllHighlightsData__block_invoke;
     v14[3] = &unk_2781DA7F0;
     objc_copyWeak(&v15, &location);
-    [v4 fetchHighlightsForUserActivity:v5 privateBrowsing:v13 completion:v14];
+    [systemNoteTakingController fetchHighlightsForUserActivity:v5 privateBrowsing:isPrivateBrowsingEnabled completion:v14];
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
@@ -5214,47 +5214,47 @@ void __39__TabDocument_restoreAllHighlightsData__block_invoke(uint64_t a1, void 
 LABEL_10:
 }
 
-- (void)_loadingControllerWillLoadRequest:(uint64_t)a3 webView:(int)a4 userDriven:
+- (void)_loadingControllerWillLoadRequest:(uint64_t)request webView:(int)view userDriven:
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    *(a1 + 712) = 0;
-    *(a1 + 1240) = 0;
-    [*(a1 + 288) owningWebViewWillNavigate];
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v7 = [WeakRetained userActivityController];
-    v8 = [v7 tabDocumentPendingUserActivityPayload];
+    *(self + 712) = 0;
+    *(self + 1240) = 0;
+    [*(self + 288) owningWebViewWillNavigate];
+    WeakRetained = objc_loadWeakRetained((self + 992));
+    userActivityController = [WeakRetained userActivityController];
+    tabDocumentPendingUserActivityPayload = [userActivityController tabDocumentPendingUserActivityPayload];
 
-    if (v8 == a1)
+    if (tabDocumentPendingUserActivityPayload == self)
     {
-      [v7 setTabDocumentPendingUserActivityPayload:0];
+      [userActivityController setTabDocumentPendingUserActivityPayload:0];
     }
 
-    v9 = *(a1 + 1288);
+    v9 = *(self + 1288);
     if (v9)
     {
       [v9 startedPageLoad];
     }
 
     v10 = [v12 URL];
-    v11 = [v10 _webkit_scriptIfJavaScriptURL];
+    _webkit_scriptIfJavaScriptURL = [v10 _webkit_scriptIfJavaScriptURL];
 
-    if (!v11)
+    if (!_webkit_scriptIfJavaScriptURL)
     {
-      *(a1 + 711) = 0;
-      *(a1 + 707) = a4;
-      *(a1 + 708) = 0;
-      *(a1 + 718) = a4;
-      [(TabDocument *)a1 _clearLibraryType];
+      *(self + 711) = 0;
+      *(self + 707) = view;
+      *(self + 708) = 0;
+      *(self + 718) = view;
+      [(TabDocument *)self _clearLibraryType];
     }
 
-    if (*(a1 + 1368) && a4)
+    if (*(self + 1368) && view)
     {
-      [a1 clearTabReuseURL];
+      [self clearTabReuseURL];
     }
 
-    if (*(a1 + 990) == 1 && a4)
+    if (*(self + 990) == 1 && view)
     {
       [WeakRetained setWantsUnifiedFieldFocused:0];
     }
@@ -5264,17 +5264,17 @@ LABEL_10:
 - (void)_loadingControllerDidStartLoading
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    *(a1 + 711) = 0;
-    [*(a1 + 1304) clearFailedRequest];
-    [a1 updateTabTitle];
-    [(TabDocument *)a1 _updateNavigationBarItem];
+    *(self + 711) = 0;
+    [*(self + 1304) clearFailedRequest];
+    [self updateTabTitle];
+    [(TabDocument *)self _updateNavigationBarItem];
     v9 = 0u;
     v10 = 0u;
     v7 = 0u;
     v8 = 0u;
-    v2 = *(a1 + 264);
+    v2 = *(self + 264);
     v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v3)
     {
@@ -5292,7 +5292,7 @@ LABEL_10:
           v6 = *(*(&v7 + 1) + 8 * v5);
           if (objc_opt_respondsToSelector())
           {
-            [v6 tabDocumentDidStartLoading:{a1, v7}];
+            [v6 tabDocumentDidStartLoading:{self, v7}];
           }
 
           ++v5;
@@ -5307,83 +5307,83 @@ LABEL_10:
   }
 }
 
-- (void)_loadingControllerEstimatedProgressChangedTo:(uint64_t)a1
+- (void)_loadingControllerEstimatedProgressChangedTo:(uint64_t)to
 {
-  if (a1)
+  if (to)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 1256));
-    [WeakRetained updateProgressWithResource:a1];
+    WeakRetained = objc_loadWeakRetained((to + 1256));
+    [WeakRetained updateProgressWithResource:to];
 
-    [*(a1 + 176) updateFluidProgressWithProgressStateSource:a1];
+    [*(to + 176) updateFluidProgressWithProgressStateSource:to];
     v4 = 0;
-    v5 = *(a1 + 977);
+    v5 = *(to + 977);
     if (a2 > 0.0 && a2 < 1.0)
     {
-      v4 = *(a1 + 1000) != 0;
+      v4 = *(to + 1000) != 0;
     }
 
-    *(a1 + 977) = v4;
-    [*(a1 + 280) setStopReloadButtonShowsStop:?];
-    if (v5 != *(a1 + 977))
+    *(to + 977) = v4;
+    [*(to + 280) setStopReloadButtonShowsStop:?];
+    if (v5 != *(to + 977))
     {
-      v7 = objc_loadWeakRetained((a1 + 1248));
-      [v7 tabDocumentDidChangeCanStopLoadingState:a1];
+      v7 = objc_loadWeakRetained((to + 1248));
+      [v7 tabDocumentDidChangeCanStopLoadingState:to];
     }
   }
 }
 
-- (void)_didDecideNavigationPolicy:(void *)a3 forNavigationAction:
+- (void)_didDecideNavigationPolicy:(void *)policy forNavigationAction:
 {
-  v5 = a3;
-  if (a1)
+  policyCopy = policy;
+  if (self)
   {
-    v21 = v5;
-    v6 = [v5 targetFrame];
-    v7 = v6;
-    if (v6)
+    v21 = policyCopy;
+    targetFrame = [policyCopy targetFrame];
+    v7 = targetFrame;
+    if (targetFrame)
     {
-      v8 = v6;
+      sourceFrame = targetFrame;
     }
 
     else
     {
-      v8 = [v21 sourceFrame];
+      sourceFrame = [v21 sourceFrame];
     }
 
-    v9 = v8;
+    v9 = sourceFrame;
 
     if ([v9 isMainFrame])
     {
-      v10 = *(a1 + 1056);
-      v11 = [*(a1 + 1064) backForwardList];
-      v12 = [v11 currentItem];
-      [v10 owningWebViewDidDecidePolicy:a2 forNavigationAction:v21 currentBackForwardListItem:v12];
+      v10 = *(self + 1056);
+      backForwardList = [*(self + 1064) backForwardList];
+      currentItem = [backForwardList currentItem];
+      [v10 owningWebViewDidDecidePolicy:a2 forNavigationAction:v21 currentBackForwardListItem:currentItem];
 
       if (![v21 navigationType])
       {
-        [a1 setNextLoadComesFromSearchPage:{objc_msgSend(a1, "isSearchPage")}];
+        [self setNextLoadComesFromSearchPage:{objc_msgSend(self, "isSearchPage")}];
       }
 
-      [(TabDocument *)a1 _updatePageLoadDonorWithNavigationPolicy:a2 inMainFrameForNavigationAction:v21];
-      *(a1 + 784) &= ~4u;
-      v13 = [(TabDocument *)a1 _analyticsRecorderShouldIgnoreURLWithNavigationPolicy:a2 forNavigationAction:v21];
-      v14 = *(a1 + 784) & 0xFC;
+      [(TabDocument *)self _updatePageLoadDonorWithNavigationPolicy:a2 inMainFrameForNavigationAction:v21];
+      *(self + 784) &= ~4u;
+      v13 = [(TabDocument *)self _analyticsRecorderShouldIgnoreURLWithNavigationPolicy:a2 forNavigationAction:v21];
+      v14 = *(self + 784) & 0xFC;
       if (v13)
       {
-        *(a1 + 784) = v14 | 1;
-        *(a1 + 776) = 0;
+        *(self + 784) = v14 | 1;
+        *(self + 776) = 0;
       }
 
       else
       {
-        *(a1 + 784) = v14 | 2;
-        *(a1 + 786) = 0;
+        *(self + 784) = v14 | 2;
+        *(self + 786) = 0;
         if (![v21 navigationType])
         {
-          if (*(a1 + 872))
+          if (*(self + 872))
           {
-            v15 = [MEMORY[0x277CBEAA8] date];
-            [v15 timeIntervalSinceDate:*(a1 + 872)];
+            date = [MEMORY[0x277CBEAA8] date];
+            [date timeIntervalSinceDate:*(self + 872)];
             v17 = v16;
 
             v18 = v17 < 10.0;
@@ -5394,24 +5394,24 @@ LABEL_10:
             v18 = 0;
           }
 
-          v19 = [MEMORY[0x277D499B8] sharedLogger];
-          [a1 pageZoomFactor];
+          mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+          [self pageZoomFactor];
           *&v20 = v20;
-          [v19 didActivateLinkWithZoomScale:v18 recentlyZoomedIn:v20];
+          [mEMORY[0x277D499B8] didActivateLinkWithZoomScale:v18 recentlyZoomedIn:v20];
         }
       }
     }
 
-    v5 = v21;
+    policyCopy = v21;
   }
 }
 
-- (void)_updatePageLoadDonorWithNavigationPolicy:(void *)a3 inMainFrameForNavigationAction:
+- (void)_updatePageLoadDonorWithNavigationPolicy:(void *)policy inMainFrameForNavigationAction:
 {
-  v11 = a3;
-  if (a1)
+  policyCopy = policy;
+  if (self)
   {
-    if (!a2 || ([a1 committedURL], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "request"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "URL"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v5, (v8 & 1) != 0) || (v9 = objc_msgSend(v11, "navigationType"), v9 - 2 < 3))
+    if (!a2 || ([self committedURL], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(policyCopy, "request"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "URL"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "isEqual:", v7), v7, v6, v5, (v8 & 1) != 0) || (v9 = objc_msgSend(policyCopy, "navigationType"), v9 - 2 < 3))
     {
       v10 = 0;
       goto LABEL_8;
@@ -5422,15 +5422,15 @@ LABEL_10:
 LABEL_6:
       v10 = 1;
 LABEL_8:
-      *(a1 + 904) = v10;
+      *(self + 904) = v10;
       goto LABEL_9;
     }
 
     if (v9 == -1)
     {
-      if (([v11 _isUserInitiated] & 1) == 0 && (*(a1 + 905) & 1) == 0)
+      if (([policyCopy _isUserInitiated] & 1) == 0 && (*(self + 905) & 1) == 0)
       {
-        v10 = [*(a1 + 48) navigationSource] == 0;
+        v10 = [*(self + 48) navigationSource] == 0;
         goto LABEL_8;
       }
 
@@ -5441,18 +5441,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (uint64_t)_analyticsRecorderShouldIgnoreURLWithNavigationPolicy:(void *)a3 forNavigationAction:
+- (uint64_t)_analyticsRecorderShouldIgnoreURLWithNavigationPolicy:(void *)policy forNavigationAction:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  policyCopy = policy;
+  v6 = policyCopy;
+  if (self)
   {
-    if (a2 && ([v5 navigationType] & 0xFFFFFFFFFFFFFFFELL) != 2)
+    if (a2 && ([policyCopy navigationType] & 0xFFFFFFFFFFFFFFFELL) != 2)
     {
-      v8 = [a1 committedURL];
-      v9 = [v6 request];
-      v10 = [v9 URL];
-      v7 = [v8 isEqual:v10];
+      committedURL = [self committedURL];
+      request = [v6 request];
+      v10 = [request URL];
+      v7 = [committedURL isEqual:v10];
     }
 
     else
@@ -5471,11 +5471,11 @@ LABEL_9:
 
 - (unint64_t)webPageID
 {
-  v2 = [(TabDocument *)self webView];
-  v3 = [v2 _handle];
-  v4 = [v3 _webPageID];
+  webView = [(TabDocument *)self webView];
+  _handle = [webView _handle];
+  _webPageID = [_handle _webPageID];
 
-  return v4;
+  return _webPageID;
 }
 
 - (void)animateProgressForCompletedDocument
@@ -5498,9 +5498,9 @@ LABEL_9:
     self->_fluidProgressState = v3;
 
     v5 = self->_fluidProgressState;
-    v6 = [(TabDocument *)self expectedOrCurrentURL];
-    v7 = [v6 safari_originalDataAsString];
-    [(WBSFluidProgressState *)v5 setLoadURL:v7];
+    expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+    safari_originalDataAsString = [expectedOrCurrentURL safari_originalDataAsString];
+    [(WBSFluidProgressState *)v5 setLoadURL:safari_originalDataAsString];
   }
 
   return 1;
@@ -5512,12 +5512,12 @@ LABEL_9:
   self->_fluidProgressState = 0;
 }
 
-- (void)setSuppressingProgressAnimationForNavigationGesture:(BOOL)a3
+- (void)setSuppressingProgressAnimationForNavigationGesture:(BOOL)gesture
 {
-  if (self->_suppressingProgressAnimationForNavigationGesture != a3)
+  if (self->_suppressingProgressAnimationForNavigationGesture != gesture)
   {
-    self->_suppressingProgressAnimationForNavigationGesture = a3;
-    if (a3)
+    self->_suppressingProgressAnimationForNavigationGesture = gesture;
+    if (gesture)
     {
       [(TabDocument *)self beginSuppressingProgressAnimation];
     }
@@ -5541,7 +5541,7 @@ LABEL_9:
   self->_progressAnimationSuppressedCount = progressAnimationSuppressedCount + 1;
 }
 
-- (void)endSuppressingProgressAnimationAnimated:(BOOL)a3
+- (void)endSuppressingProgressAnimationAnimated:(BOOL)animated
 {
   progressAnimationSuppressedCount = self->_progressAnimationSuppressedCount;
   if (progressAnimationSuppressedCount)
@@ -5550,7 +5550,7 @@ LABEL_9:
     self->_progressAnimationSuppressedCount = v4;
     if (!v4)
     {
-      [(WBSFluidProgressController *)self->_fluidProgressController setProgressAnimationSuppressed:0 forProgressStateSource:self animated:a3];
+      [(WBSFluidProgressController *)self->_fluidProgressController setProgressAnimationSuppressed:0 forProgressStateSource:self animated:animated];
     }
   }
 }
@@ -5589,35 +5589,35 @@ LABEL_9:
   return v4;
 }
 
-- (id)customUserVisibleStringForReadingListBookmarkURL:(id)a3
+- (id)customUserVisibleStringForReadingListBookmarkURL:(id)l
 {
-  v4 = a3;
-  if ([v4 isFileURL] && -[TabDocument readingListBookmarkID](self, "readingListBookmarkID"))
+  lCopy = l;
+  if ([lCopy isFileURL] && -[TabDocument readingListBookmarkID](self, "readingListBookmarkID"))
   {
-    v5 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    v6 = [v5 bookmarkWithID:{-[TabDocument readingListBookmarkID](self, "readingListBookmarkID")}];
-    v7 = [v6 address];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    v6 = [mainBookmarkCollection bookmarkWithID:{-[TabDocument readingListBookmarkID](self, "readingListBookmarkID")}];
+    address = [v6 address];
   }
 
   else
   {
-    v7 = 0;
+    address = 0;
   }
 
-  return v7;
+  return address;
 }
 
-- (void)fetchCanonicalURLWithCompletionHandler:(id)a3
+- (void)fetchCanonicalURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TabDocument *)self isShowingStartPageOverriddenByExtension];
-  if ([(TabDocument *)self isBlank]|| v5)
+  handlerCopy = handler;
+  isShowingStartPageOverriddenByExtension = [(TabDocument *)self isShowingStartPageOverriddenByExtension];
+  if ([(TabDocument *)self isBlank]|| isShowingStartPageOverriddenByExtension)
   {
     cachedCanonicalURL = self->_cachedCanonicalURL;
     self->_cachedCanonicalURL = 0;
 
-    v7 = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
-    v4[2](v4, v7);
+    cachedCanonicalURLOrURLForSharing = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
+    handlerCopy[2](handlerCopy, cachedCanonicalURLOrURLForSharing);
   }
 
   else
@@ -5630,7 +5630,7 @@ LABEL_9:
     v9[3] = &unk_2781DA818;
     objc_copyWeak(&v11, &location);
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     [v8 fetchSharingLinkWithCompletionHandler:v9];
 
     objc_destroyWeak(&v11);
@@ -5654,15 +5654,15 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   cachedCanonicalURL = self->_cachedCanonicalURL;
   if (cachedCanonicalURL)
   {
-    v3 = cachedCanonicalURL;
+    urlForSharing = cachedCanonicalURL;
   }
 
   else
   {
-    v3 = [(TabDocument *)self urlForSharing];
+    urlForSharing = [(TabDocument *)self urlForSharing];
   }
 
-  return v3;
+  return urlForSharing;
 }
 
 - (id)URLForStatePersisting
@@ -5670,15 +5670,15 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   deferredNavigationURL = self->_deferredNavigationURL;
   if (deferredNavigationURL)
   {
-    v3 = deferredNavigationURL;
+    uRLForStatePersisting = deferredNavigationURL;
   }
 
   else
   {
-    v3 = [(LoadingController *)self->_loadingController URLForStatePersisting];
+    uRLForStatePersisting = [(LoadingController *)self->_loadingController URLForStatePersisting];
   }
 
-  return v3;
+  return uRLForStatePersisting;
 }
 
 - (void)clearTabReuseURL
@@ -5690,20 +5690,20 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
 - (void)clearBrowserController
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  [v4 willLoseOwnershipOfTab:self];
+  tabController = [WeakRetained tabController];
+  [tabController willLoseOwnershipOfTab:self];
 
   objc_storeWeak(&self->_browserController, 0);
 }
 
-- (void)setUuid:(id)a3
+- (void)setUuid:(id)uuid
 {
-  v11 = a3;
-  v4 = [MEMORY[0x277D4A060] sharedInstance];
-  [v4 setTabNeedsSpotlightDeletion:self];
+  uuidCopy = uuid;
+  mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+  [mEMORY[0x277D4A060] setTabNeedsSpotlightDeletion:self];
 
   v5 = self->_uuid;
-  v6 = [v11 copy];
+  v6 = [uuidCopy copy];
   uuid = self->_uuid;
   self->_uuid = v6;
 
@@ -5711,11 +5711,11 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   [(UnifiedTabBarItem *)self->_unifiedTabBarItem setUUID:self->_uuid];
   [(TabDocumentCollectionItem *)self->_tabCollectionItem setUUID:self->_uuid];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v9 = [WeakRetained tabController];
-  [v9 tabDocumentDidUpdateUUID:self previousUUID:v5];
+  tabController = [WeakRetained tabController];
+  [tabController tabDocumentDidUpdateUUID:self previousUUID:v5];
 
-  v10 = [(WBTab *)self->_tabGroupTab uuid];
-  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:v10];
+  uuid = [(WBTab *)self->_tabGroupTab uuid];
+  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:uuid];
 
   [(TabDocument *)self indexTabToCoreSpotlight];
   if ((WBSIsEqual() & 1) == 0)
@@ -5738,14 +5738,14 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   return v5;
 }
 
-- (void)setQuickLookDocumentForCurrentBackForwardListItem:(uint64_t)a1
+- (void)setQuickLookDocumentForCurrentBackForwardListItem:(uint64_t)item
 {
   v5 = a2;
-  if (a1)
+  if (item)
   {
-    v3 = [*(a1 + 1064) backForwardList];
-    v4 = [v3 currentItem];
-    [v4 _sf_setQuickLookDocument:v5];
+    backForwardList = [*(item + 1064) backForwardList];
+    currentItem = [backForwardList currentItem];
+    [currentItem _sf_setQuickLookDocument:v5];
   }
 }
 
@@ -5775,19 +5775,19 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   return v3;
 }
 
-- (id)loadRequest:(id)a3 userDriven:(BOOL)a4
+- (id)loadRequest:(id)request userDriven:(BOOL)driven
 {
-  v4 = [TabDocument _loadRequest:a3 userDriven:a4 shouldOpenExternalURLs:?];
+  v4 = [TabDocument _loadRequest:request userDriven:driven shouldOpenExternalURLs:?];
 
   return v4;
 }
 
-- (id)_loadRequest:(uint64_t)a1 userDriven:(void *)a2 shouldOpenExternalURLs:(uint64_t)a3
+- (id)_loadRequest:(uint64_t)request userDriven:(void *)driven shouldOpenExternalURLs:(uint64_t)ls
 {
-  v5 = a2;
-  if (a1)
+  drivenCopy = driven;
+  if (request)
   {
-    v6 = [(TabDocument *)a1 _loadRequest:v5 userDriven:a3 shouldOpenExternalURLs:0 eventAttribution:0 skipSyncableTabUpdates:0];
+    v6 = [(TabDocument *)request _loadRequest:drivenCopy userDriven:ls shouldOpenExternalURLs:0 eventAttribution:0 skipSyncableTabUpdates:0];
   }
 
   else
@@ -5798,29 +5798,29 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
   return v6;
 }
 
-- (id)_loadRequest:(uint64_t)a3 userDriven:(uint64_t)a4 shouldOpenExternalURLs:(void *)a5 eventAttribution:(char)a6 skipSyncableTabUpdates:
+- (id)_loadRequest:(uint64_t)request userDriven:(uint64_t)driven shouldOpenExternalURLs:(void *)ls eventAttribution:(char)attribution skipSyncableTabUpdates:
 {
   v11 = a2;
-  v12 = a5;
-  if (a1)
+  lsCopy = ls;
+  if (self)
   {
-    *(a1 + 709) = a6;
+    *(self + 709) = attribution;
     v13 = [v11 safari_requestBySettingIsUserInitiated:1];
 
-    v14 = [(TabDocument *)a1 _requestBySettingAdvancedPrivacyProtectionsFlag:v13];
+    v14 = [(TabDocument *)self _requestBySettingAdvancedPrivacyProtectionsFlag:v13];
 
     v15 = [v14 URL];
-    v16 = [v15 isEqual:*(a1 + 920)];
+    v16 = [v15 isEqual:*(self + 920)];
 
     if ((v16 & 1) == 0)
     {
-      v17 = *(a1 + 920);
-      *(a1 + 920) = 0;
+      v17 = *(self + 920);
+      *(self + 920) = 0;
     }
 
-    v18 = [a1 webExtensionsController];
+    webExtensionsController = [self webExtensionsController];
     v19 = [v14 URL];
-    v20 = [v18 canonicalURLForWebExtensionURL:v19];
+    v20 = [webExtensionsController canonicalURLForWebExtensionURL:v19];
 
     if (v20)
     {
@@ -5835,33 +5835,33 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
     }
 
     v22 = [v11 URL];
-    [(TabDocument *)a1 _createNewDocumentViewIfNecessaryForURL:v22];
+    [(TabDocument *)self _createNewDocumentViewIfNecessaryForURL:v22];
 
-    v23 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    v23 = *(self + 128);
+    *(self + 128) = 0;
 
-    *(a1 + 136) = 1;
-    if (a3)
+    *(self + 136) = 1;
+    if (request)
     {
-      v24 = [*(a1 + 288) presentedDialog];
-      v25 = [v24 completionHandlerBlocksWebProcess];
+      presentedDialog = [*(self + 288) presentedDialog];
+      completionHandlerBlocksWebProcess = [presentedDialog completionHandlerBlocksWebProcess];
     }
 
     else
     {
-      v25 = 0;
+      completionHandlerBlocksWebProcess = 0;
     }
 
-    v26 = [a1 webExtensionsController];
+    webExtensionsController2 = [self webExtensionsController];
     v27 = [v11 URL];
-    v28 = [v26 webExtensionForURL:v27];
+    v28 = [webExtensionsController2 webExtensionForURL:v27];
 
     if (!v28 || ([v28 extensionsController], v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "extension"), v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v29, "extensionIsEnabled:", v30), v30, v29, (v31 & 1) != 0))
     {
-      v32 = *(a1 + 1064);
-      if (!v32 || !(v25 & 1 | (([v32 _webProcessIsResponsive] & 1) == 0)))
+      v32 = *(self + 1064);
+      if (!v32 || !(completionHandlerBlocksWebProcess & 1 | (([v32 _webProcessIsResponsive] & 1) == 0)))
       {
-        a1 = [*(a1 + 168) loadRequest:v11 userDriven:a3 shouldOpenExternalURLs:a4 eventAttribution:v12];
+        self = [*(self + 168) loadRequest:v11 userDriven:request shouldOpenExternalURLs:driven eventAttribution:lsCopy];
         goto LABEL_17;
       }
 
@@ -5869,29 +5869,29 @@ void __54__TabDocument_fetchCanonicalURLWithCompletionHandler___block_invoke(uin
       v34[1] = 3221225472;
       v34[2] = __102__TabDocument__loadRequest_userDriven_shouldOpenExternalURLs_eventAttribution_skipSyncableTabUpdates___block_invoke;
       v34[3] = &unk_2781DA840;
-      v34[4] = a1;
+      v34[4] = self;
       v35 = v11;
-      v37 = a3;
-      v38 = a4;
-      v36 = v12;
-      [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v34 thenDo:?];
+      requestCopy = request;
+      drivenCopy = driven;
+      v36 = lsCopy;
+      [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v34 thenDo:?];
     }
 
-    a1 = 0;
+    self = 0;
 LABEL_17:
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_requestBySettingAdvancedPrivacyProtectionsFlag:(void *)a1
+- (id)_requestBySettingAdvancedPrivacyProtectionsFlag:(void *)flag
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (flag)
   {
     v5 = [v3 URL];
-    v6 = [a1 supportsAdvancedPrivacyProtectionsForURL:v5];
+    v6 = [flag supportsAdvancedPrivacyProtectionsForURL:v5];
 
     v7 = [v4 safari_requestBySettingAdvancedPrivacyProtectionsFlagIsEnabled:v6];
 
@@ -5906,13 +5906,13 @@ LABEL_17:
   return v7;
 }
 
-- (uint64_t)_createNewDocumentViewIfNecessaryForURL:(uint64_t)a1
+- (uint64_t)_createNewDocumentViewIfNecessaryForURL:(uint64_t)l
 {
   v3 = a2;
-  if (a1 && ([(TabDocument *)a1 _isNewDocumentViewNecessaryForURL:v3]& 1) != 0)
+  if (l && ([(TabDocument *)l _isNewDocumentViewNecessaryForURL:v3]& 1) != 0)
   {
-    v4 = [a1 webExtensionsController];
-    v5 = [v4 webExtensionForURL:v3];
+    webExtensionsController = [l webExtensionsController];
+    v5 = [webExtensionsController webExtensionForURL:v3];
 
     if (v5)
     {
@@ -5921,26 +5921,26 @@ LABEL_17:
 
     else
     {
-      [a1 createWebViewConfiguration];
+      [l createWebViewConfiguration];
     }
     v7 = ;
 
-    v8 = [a1 webView];
-    v9 = [v8 _sessionState];
+    webView = [l webView];
+    _sessionState = [webView _sessionState];
 
-    [TabDocument _destroyDocumentViewAllowingDeferral:a1];
-    [(TabDocument *)a1 _createDocumentViewWithConfiguration:v7];
-    if (*(a1 + 928) == 1)
+    [TabDocument _destroyDocumentViewAllowingDeferral:l];
+    [(TabDocument *)l _createDocumentViewWithConfiguration:v7];
+    if (*(l + 928) == 1)
     {
-      v10 = v9;
-      v11 = *(a1 + 936);
-      *(a1 + 936) = v10;
+      v10 = _sessionState;
+      webView2 = *(l + 936);
+      *(l + 936) = v10;
     }
 
     else
     {
-      v11 = [a1 webView];
-      v12 = [v11 _restoreSessionState:v9 andNavigate:0];
+      webView2 = [l webView];
+      v12 = [webView2 _restoreSessionState:_sessionState andNavigate:0];
     }
 
     v6 = 1;
@@ -5954,12 +5954,12 @@ LABEL_17:
   return v6;
 }
 
-- (void)_terminateWebProcessIfNeededAndShowCrashBanner:(void *)a3 thenDo:
+- (void)_terminateWebProcessIfNeededAndShowCrashBanner:(void *)banner thenDo:
 {
-  v5 = a3;
-  if (a1)
+  bannerCopy = banner;
+  if (self)
   {
-    if (*(a1 + 440))
+    if (*(self + 440))
     {
       v6 = WBS_LOG_CHANNEL_PREFIXPageLoading();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -5968,10 +5968,10 @@ LABEL_17:
       }
     }
 
-    v7 = [*(a1 + 288) presentedDialog];
-    v8 = [v7 completionHandlerBlocksWebProcess];
+    presentedDialog = [*(self + 288) presentedDialog];
+    completionHandlerBlocksWebProcess = [presentedDialog completionHandlerBlocksWebProcess];
 
-    if (v8)
+    if (completionHandlerBlocksWebProcess)
     {
       v9 = WBS_LOG_CHANNEL_PREFIXPageLoading();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -5979,52 +5979,52 @@ LABEL_17:
         [TabDocument _terminateWebProcessIfNeededAndShowCrashBanner:thenDo:];
       }
 
-      v10 = _Block_copy(v5);
-      v11 = *(a1 + 440);
-      *(a1 + 440) = v10;
+      v10 = _Block_copy(bannerCopy);
+      v11 = *(self + 440);
+      *(self + 440) = v10;
 
-      *(a1 + 737) = a2 ^ 1;
-      [(TabDocument *)a1 _terminateWebProcessThenDoUnresponsiveWebProcessBlock];
+      *(self + 737) = a2 ^ 1;
+      [(TabDocument *)self _terminateWebProcessThenDoUnresponsiveWebProcessBlock];
     }
 
     else
     {
-      v12 = *(a1 + 1064);
+      v12 = *(self + 1064);
       if (v12 && ![v12 _webProcessIsResponsive])
       {
-        v13 = _Block_copy(v5);
-        v14 = *(a1 + 440);
-        *(a1 + 440) = v13;
+        v13 = _Block_copy(bannerCopy);
+        v14 = *(self + 440);
+        *(self + 440) = v13;
 
-        *(a1 + 737) = a2 ^ 1;
-        [*(a1 + 432) invalidate];
-        v15 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:a1 target:sel__unresponsiveWebProcessTimerFired_ selector:0 userInfo:0 repeats:0.3];
-        v16 = *(a1 + 432);
-        *(a1 + 432) = v15;
+        *(self + 737) = a2 ^ 1;
+        [*(self + 432) invalidate];
+        v15 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__unresponsiveWebProcessTimerFired_ selector:0 userInfo:0 repeats:0.3];
+        v16 = *(self + 432);
+        *(self + 432) = v15;
       }
 
       else
       {
-        v5[2](v5);
+        bannerCopy[2](bannerCopy);
       }
     }
   }
 }
 
-- (void)_updateSnapshotForWebClip:(void *)a1
+- (void)_updateSnapshotForWebClip:(void *)clip
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (clip)
   {
     if ([v3 iconIsScreenShotBased])
     {
-      v5 = [v4 iconImage];
-      [v5 scale];
+      iconImage = [v4 iconImage];
+      [iconImage scale];
       v7 = v6;
 
-      v8 = [MEMORY[0x277D759A0] mainScreen];
-      [v8 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v10 = v9;
 
       if (v7 != v10 || ([v4 iconIsPrerendered] & 1) == 0)
@@ -6034,7 +6034,7 @@ LABEL_17:
         v11[2] = __41__TabDocument__updateSnapshotForWebClip___block_invoke;
         v11[3] = &unk_2781DA868;
         v12 = v4;
-        [a1 snapshotForWebClipIcon:v11];
+        [clip snapshotForWebClipIcon:v11];
       }
     }
   }
@@ -6051,32 +6051,32 @@ void __41__TabDocument__updateSnapshotForWebClip___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)snapshotForWebClipIcon:(id)a3
+- (void)snapshotForWebClipIcon:(id)icon
 {
-  v11 = a3;
+  iconCopy = icon;
   [MEMORY[0x277CC1E60] _applicationIconCanvasSize];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
 
-  [(TabDocument *)self snapshotWithSize:0 options:v11 completion:v5 / v10, v7 / v10];
+  [(TabDocument *)self snapshotWithSize:0 options:iconCopy completion:v5 / v10, v7 / v10];
 }
 
-- (void)snapshotWithSize:(CGSize)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)snapshotWithSize:(CGSize)size options:(unint64_t)options completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__TabDocument_snapshotWithSize_options_completion___block_invoke;
   v12[3] = &unk_2781DA890;
-  v13 = v9;
-  v11 = v9;
-  [WeakRetained snapshotTabDocument:self size:a4 | 0x80 options:v12 completion:{width, height}];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [WeakRetained snapshotTabDocument:self size:options | 0x80 options:v12 completion:{width, height}];
 }
 
 void __51__TabDocument_snapshotWithSize_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -6086,34 +6086,34 @@ void __51__TabDocument_snapshotWithSize_options_completion___block_invoke(uint64
   (*(v2 + 16))(v2);
 }
 
-- (void)dispatchNavigationIntent:(id)a3
+- (void)dispatchNavigationIntent:(id)intent
 {
-  v8 = a3;
-  v4 = [(TabDocument *)self uuid];
-  [v8 setSourceTabUUID:v4];
+  intentCopy = intent;
+  uuid = [(TabDocument *)self uuid];
+  [intentCopy setSourceTabUUID:uuid];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained UUID];
-  [v8 setSourceWindowUUID:v6];
+  uUID = [WeakRetained UUID];
+  [intentCopy setSourceWindowUUID:uUID];
 
   v7 = +[Application sharedApplication];
-  [v7 handleNavigationIntent:v8 completion:0];
+  [v7 handleNavigationIntent:intentCopy completion:0];
 }
 
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4
+- (void)handleNavigationIntent:(id)intent completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__TabDocument_handleNavigationIntent_completion___block_invoke;
   v14[3] = &unk_2781DA8B8;
   objc_copyWeak(&v17, &location);
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = intentCopy;
+  v16 = completionCopy;
+  v8 = completionCopy;
+  v9 = intentCopy;
   v10 = _Block_copy(v14);
   v10[2](v10, v11, v12, v13);
 
@@ -6127,56 +6127,56 @@ void __49__TabDocument_handleNavigationIntent_completion___block_invoke(void **a
   [(TabDocument *)WeakRetained _handleNavigationIntent:a1[5] completion:?];
 }
 
-- (void)_handleNavigationIntent:(void *)a3 completion:
+- (void)_handleNavigationIntent:(void *)intent completion:
 {
   v31 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  intentCopy = intent;
+  if (!self)
   {
     goto LABEL_41;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 992));
-  v8 = [WeakRetained tabController];
-  v9 = [v8 activeTabDocument];
+  WeakRetained = objc_loadWeakRetained((self + 992));
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  if (v9 == a1)
+  if (activeTabDocument == self)
   {
-    [a1 setActive:1];
+    [self setActive:1];
   }
 
   else
   {
-    [a1 unhibernate];
+    [self unhibernate];
   }
 
   v10 = WBS_LOG_CHANNEL_PREFIXPageLoading();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 privacyPreservingDescription];
-    v12 = *(a1 + 1064);
+    privacyPreservingDescription = [v5 privacyPreservingDescription];
+    v12 = *(self + 1064);
     v25 = 134218498;
-    v26 = a1;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v11;
+    v28 = privacyPreservingDescription;
     v29 = 2048;
     v30 = v12;
     _os_log_impl(&dword_215819000, v10, OS_LOG_TYPE_DEFAULT, "TabDocument %p: loading intent %{public}@, web view: %p", &v25, 0x20u);
   }
 
-  if (![v5 policy] && objc_msgSend(a1, "isActive"))
+  if (![v5 policy] && objc_msgSend(self, "isActive"))
   {
     [WeakRetained setFavoritesState:0 animated:1];
   }
 
-  *(a1 + 776) = [v5 provenance];
-  *(a1 + 786) = [v5 type] == 10;
-  v13 = *(a1 + 978);
-  *(a1 + 978) = 0;
-  v14 = [v5 highlight];
-  v15 = *(a1 + 336);
-  *(a1 + 336) = v14;
+  *(self + 776) = [v5 provenance];
+  *(self + 786) = [v5 type] == 10;
+  v13 = *(self + 978);
+  *(self + 978) = 0;
+  highlight = [v5 highlight];
+  v15 = *(self + 336);
+  *(self + 336) = highlight;
 
   if ([v5 policy])
   {
@@ -6188,129 +6188,129 @@ void __49__TabDocument_handleNavigationIntent_completion___block_invoke(void **a
     v16 = [v5 isChildIntent] ^ 1;
   }
 
-  *(a1 + 744) = v16;
-  *(a1 + 745) = 0;
-  v17 = [v5 type];
+  *(self + 744) = v16;
+  *(self + 745) = 0;
+  type = [v5 type];
   v18 = 0;
-  if (v17 > 5)
+  if (type > 5)
   {
-    if (v17 <= 7)
+    if (type <= 7)
     {
-      if (v17 != 6)
+      if (type != 6)
       {
-        v19 = [v5 webClip];
-        v20 = [(TabDocument *)a1 _loadWebClip:v19];
+        webClip = [v5 webClip];
+        v20 = [(TabDocument *)self _loadWebClip:webClip];
         goto LABEL_34;
       }
     }
 
     else
     {
-      if (v17 == 8)
+      if (type == 8)
       {
-        v18 = [(TabDocument *)a1 _loadServiceWorkerOpenedURLIntent:v5];
+        v18 = [(TabDocument *)self _loadServiceWorkerOpenedURLIntent:v5];
         goto LABEL_38;
       }
 
-      if (v17 == 9)
+      if (type == 9)
       {
-        v23 = [v5 externalURLSourceApplicationIsSpotlight];
-        v24 = v23;
-        [*(a1 + 1064) setObscuringContents:v23 & v13];
-        *(a1 + 978) = v24;
-        v19 = [v5 URL];
-        [(TabDocument *)a1 _loadExternalURL:v19 withIntent:v5];
+        externalURLSourceApplicationIsSpotlight = [v5 externalURLSourceApplicationIsSpotlight];
+        v24 = externalURLSourceApplicationIsSpotlight;
+        [*(self + 1064) setObscuringContents:externalURLSourceApplicationIsSpotlight & v13];
+        *(self + 978) = v24;
+        webClip = [v5 URL];
+        [(TabDocument *)self _loadExternalURL:webClip withIntent:v5];
         goto LABEL_36;
       }
 
-      if (v17 != 10)
+      if (type != 10)
       {
         goto LABEL_38;
       }
     }
 
-    v19 = [v5 URL];
-    v21 = [a1 loadURL:v19 userDriven:1];
+    webClip = [v5 URL];
+    v21 = [self loadURL:webClip userDriven:1];
     v18 = v21 != 0;
 
 LABEL_37:
     goto LABEL_38;
   }
 
-  if (v17 <= 1)
+  if (type <= 1)
   {
-    if (!v17)
+    if (!type)
     {
-      v19 = [v5 bookmark];
-      v20 = [(TabDocument *)a1 _loadBookmark:v19];
+      webClip = [v5 bookmark];
+      v20 = [(TabDocument *)self _loadBookmark:webClip];
       goto LABEL_34;
     }
 
-    if (v17 != 1)
+    if (type != 1)
     {
       goto LABEL_38;
     }
 
-    v19 = [v5 cloudTab];
-    [a1 loadCloudTab:v19];
+    webClip = [v5 cloudTab];
+    [self loadCloudTab:webClip];
 LABEL_36:
     v18 = 1;
     goto LABEL_37;
   }
 
-  switch(v17)
+  switch(type)
   {
     case 2:
-      v19 = [v5 URL];
+      webClip = [v5 URL];
       v18 = 1;
-      v22 = [a1 loadURL:v19 userDriven:1];
+      v22 = [self loadURL:webClip userDriven:1];
       goto LABEL_37;
     case 4:
-      v19 = [v5 text];
-      v20 = [(TabDocument *)a1 _loadUserTypedAddress:v19];
+      webClip = [v5 text];
+      v20 = [(TabDocument *)self _loadUserTypedAddress:webClip];
       goto LABEL_34;
     case 5:
-      v19 = [v5 text];
-      v20 = [(TabDocument *)a1 _loadSearchResultForQuery:v19];
+      webClip = [v5 text];
+      v20 = [(TabDocument *)self _loadSearchResultForQuery:webClip];
 LABEL_34:
       v18 = v20;
       goto LABEL_37;
   }
 
 LABEL_38:
-  if (v6)
+  if (intentCopy)
   {
-    v6[2](v6, v18 & ~*(a1 + 745) & 1);
+    intentCopy[2](intentCopy, v18 & ~*(self + 745) & 1);
   }
 
 LABEL_41:
 }
 
-- (uint64_t)_loadBookmark:(uint64_t)a1
+- (uint64_t)_loadBookmark:(uint64_t)bookmark
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (bookmark)
   {
-    v5 = [(WebBookmark *)v3 safari_bestCurrentURL];
+    safari_bestCurrentURL = [(WebBookmark *)v3 safari_bestCurrentURL];
     if ([v4 isReadingListItem])
     {
-      v6 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-      v7 = [v6 isNetworkReachable];
+      mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+      isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
 
-      if (v5)
+      if (safari_bestCurrentURL)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = v7;
+        v8 = isNetworkReachable;
       }
 
       if ((v8 & 1) == 0)
       {
-        v10 = *(a1 + 1304);
+        v10 = *(bookmark + 1304);
         v11 = _WBSLocalizedString();
         v12 = _WBSLocalizedString();
         [v10 addAlertWithTitle:v11 bodyText:v12];
@@ -6318,66 +6318,66 @@ LABEL_41:
         goto LABEL_12;
       }
 
-      if (v5)
+      if (safari_bestCurrentURL)
       {
-        v9 = [MEMORY[0x277D499B8] sharedLogger];
-        [v9 didOpenReadingListItemWithReachableNetwork:v7 isContinuousTransition:0];
+        mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+        [mEMORY[0x277D499B8] didOpenReadingListItemWithReachableNetwork:isNetworkReachable isContinuousTransition:0];
       }
     }
 
-    if (([(TabDocument *)a1 _trySwitchingToPinnedTabOnNavigationToURL:v5]& 1) == 0)
+    if (([(TabDocument *)bookmark _trySwitchingToPinnedTabOnNavigationToURL:safari_bestCurrentURL]& 1) == 0)
     {
-      [(TabDocument *)a1 _loadURL:v5 fromBookmark:v4];
-      a1 = 1;
+      [(TabDocument *)bookmark _loadURL:safari_bestCurrentURL fromBookmark:v4];
+      bookmark = 1;
 LABEL_13:
 
       goto LABEL_14;
     }
 
 LABEL_12:
-    a1 = 0;
+    bookmark = 0;
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  return a1;
+  return bookmark;
 }
 
-- (uint64_t)_loadUserTypedAddress:(uint64_t)a1
+- (uint64_t)_loadUserTypedAddress:(uint64_t)address
 {
   v3 = a2;
-  if (a1)
+  if (address)
   {
     if ((gTestFileURLs & 1) == 0)
     {
       v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-      v5 = [v4 isFileURL];
+      isFileURL = [v4 isFileURL];
 
-      if (v5)
+      if (isFileURL)
       {
-        [*(a1 + 1304) addDisallowedFileURLAlert];
+        [*(address + 1304) addDisallowedFileURLAlert];
 LABEL_7:
-        a1 = 0;
+        address = 0;
         goto LABEL_8;
       }
     }
 
     if ([v3 safari_isJavaScriptURLString])
     {
-      [*(a1 + 1304) addDisallowedUseOfJavaScriptAlert];
+      [*(address + 1304) addDisallowedUseOfJavaScriptAlert];
       goto LABEL_7;
     }
 
-    [a1 setReadingListBookmark:0];
-    *(a1 + 955) = 0;
-    *(a1 + 709) = 0;
+    [address setReadingListBookmark:0];
+    *(address + 955) = 0;
+    *(address + 709) = 0;
     v7 = WBSUnifiedFieldInputTypeForString();
     if ((v7 - 1) >= 2)
     {
       if (!v7 || v7 == 3)
       {
-        a1 = [(TabDocument *)a1 _loadSearchResultForQuery:v3];
+        address = [(TabDocument *)address _loadSearchResultForQuery:v3];
         goto LABEL_8;
       }
 
@@ -6385,42 +6385,42 @@ LABEL_7:
     }
 
     v8 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-    v9 = [v8 safari_isSafariWebExtensionURL];
-    v10 = [a1 webView];
-    v11 = [v10 _committedURL];
-    v12 = [v11 safari_isSafariWebExtensionURL];
+    safari_isSafariWebExtensionURL = [v8 safari_isSafariWebExtensionURL];
+    webView = [address webView];
+    _committedURL = [webView _committedURL];
+    safari_isSafariWebExtensionURL2 = [_committedURL safari_isSafariWebExtensionURL];
 
-    if (!(v9 & 1 | ((v12 & 1) == 0)))
+    if (!(safari_isSafariWebExtensionURL & 1 | ((safari_isSafariWebExtensionURL2 & 1) == 0)))
     {
-      [TabDocument _destroyDocumentViewAllowingDeferral:a1];
-      v13 = [a1 createWebViewConfiguration];
-      [(TabDocument *)a1 _createDocumentViewWithConfiguration:v13];
+      [TabDocument _destroyDocumentViewAllowingDeferral:address];
+      createWebViewConfiguration = [address createWebViewConfiguration];
+      [(TabDocument *)address _createDocumentViewWithConfiguration:createWebViewConfiguration];
     }
 
-    -[TabDocument _updateFallbackURLsForUserTypedAddress:userExplicitlyRequestedAsHTTP:](a1, v3, [v8 safari_hasScheme:@"http"]);
-    a1 = [(TabDocument *)a1 _loadNextFallbackURLWithWebClip:0 navigation:?];
+    -[TabDocument _updateFallbackURLsForUserTypedAddress:userExplicitlyRequestedAsHTTP:](address, v3, [v8 safari_hasScheme:@"http"]);
+    address = [(TabDocument *)address _loadNextFallbackURLWithWebClip:0 navigation:?];
   }
 
 LABEL_8:
 
-  return a1;
+  return address;
 }
 
-- (uint64_t)_loadSearchResultForQuery:(id *)a1
+- (uint64_t)_loadSearchResultForQuery:(id *)query
 {
   v3 = a2;
-  if (a1)
+  if (query)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 124);
+    WeakRetained = objc_loadWeakRetained(query + 124);
     [WeakRetained updateSearchEngineIfNeeded];
-    v5 = [v3 _web_stringByTrimmingWhitespace];
+    _web_stringByTrimmingWhitespace = [v3 _web_stringByTrimmingWhitespace];
 
-    v6 = +[SearchQueryBuilder searchQueryBuilderWithQuery:forPrivateBrowsing:](SearchQueryBuilder, "searchQueryBuilderWithQuery:forPrivateBrowsing:", v5, [a1 isPrivateBrowsingEnabled]);
-    v7 = [v6 searchURL];
-    if (v7 && ([(TabDocument *)a1 _trySwitchingToPinnedTabOnNavigationToURL:v7]& 1) == 0)
+    v6 = +[SearchQueryBuilder searchQueryBuilderWithQuery:forPrivateBrowsing:](SearchQueryBuilder, "searchQueryBuilderWithQuery:forPrivateBrowsing:", _web_stringByTrimmingWhitespace, [query isPrivateBrowsingEnabled]);
+    searchURL = [v6 searchURL];
+    if (searchURL && ([(TabDocument *)query _trySwitchingToPinnedTabOnNavigationToURL:searchURL]& 1) == 0)
     {
       v8 = 1;
-      v9 = [a1 loadURL:v7 userDriven:1];
+      v9 = [query loadURL:searchURL userDriven:1];
     }
 
     else
@@ -6428,11 +6428,11 @@ LABEL_8:
       v8 = 0;
     }
 
-    v10 = [WeakRetained rootViewController];
-    v11 = [v10 tipsCoordinator];
-    [v11 invalidateWebSearchTip];
+    rootViewController = [WeakRetained rootViewController];
+    tipsCoordinator = [rootViewController tipsCoordinator];
+    [tipsCoordinator invalidateWebSearchTip];
 
-    v3 = v5;
+    v3 = _web_stringByTrimmingWhitespace;
   }
 
   else
@@ -6443,23 +6443,23 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)_loadWebClip:(id *)a1
+- (BOOL)_loadWebClip:(id *)clip
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (clip && v3)
   {
-    v6 = [v3 pageURL];
+    pageURL = [v3 pageURL];
     if ([v4 fullScreen])
     {
-      v7 = [a1[170] uuid];
-      v8 = [v4 uuid];
+      uuid = [clip[170] uuid];
+      uuid2 = [v4 uuid];
       v9 = WBSIsEqual();
 
       if (v9)
       {
-        if ([a1 inWebClipScope])
+        if ([clip inWebClipScope])
         {
           v5 = 1;
 LABEL_9:
@@ -6470,11 +6470,11 @@ LABEL_9:
 
       else
       {
-        [(TabDocument *)a1 setWebClip:v4];
+        [(TabDocument *)clip setWebClip:v4];
       }
     }
 
-    v10 = [a1 loadURL:v6 userDriven:1];
+    v10 = [clip loadURL:pageURL userDriven:1];
     v5 = v10 != 0;
 
     goto LABEL_9;
@@ -6485,60 +6485,60 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)_loadServiceWorkerOpenedURLIntent:(_BOOL8)a1
+- (BOOL)_loadServiceWorkerOpenedURLIntent:(_BOOL8)intent
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (intent)
   {
-    [v3 setUsedTabDocument:a1];
+    [v3 setUsedTabDocument:intent];
     v5 = [v4 URL];
-    v6 = [a1 loadURL:v5 userDriven:1];
-    a1 = v6 != 0;
+    v6 = [intent loadURL:v5 userDriven:1];
+    intent = v6 != 0;
   }
 
-  return a1;
+  return intent;
 }
 
-- (void)_loadExternalURL:(void *)a3 withIntent:
+- (void)_loadExternalURL:(void *)l withIntent:
 {
   v17 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  lCopy = l;
+  v6 = lCopy;
+  if (self)
   {
-    v7 = [v5 externalOptions];
-    v8 = +[TabDocument urlForExternalURL:forPrivateBrowsing:](TabDocument, "urlForExternalURL:forPrivateBrowsing:", v17, [a1 isPrivateBrowsingEnabled]);
-    objc_storeStrong((a1 + 1296), v8);
-    v9 = [v6 eventAttribution];
-    v10 = [(TabDocument *)a1 _loadURL:v8 userDriven:1 eventAttribution:v9 skipSyncableTabUpdates:0];
+    externalOptions = [lCopy externalOptions];
+    v8 = +[TabDocument urlForExternalURL:forPrivateBrowsing:](TabDocument, "urlForExternalURL:forPrivateBrowsing:", v17, [self isPrivateBrowsingEnabled]);
+    objc_storeStrong((self + 1296), v8);
+    eventAttribution = [v6 eventAttribution];
+    v10 = [(TabDocument *)self _loadURL:v8 userDriven:1 eventAttribution:eventAttribution skipSyncableTabUpdates:0];
 
-    objc_storeStrong((a1 + 1368), v8);
-    v11 = [v7 safari_stringForKey:*MEMORY[0x277D76690]];
+    objc_storeStrong((self + 1368), v8);
+    v11 = [externalOptions safari_stringForKey:*MEMORY[0x277D76690]];
     if ([v11 isEqualToString:@"com.apple.SafariViewService"])
     {
-      *(a1 + 957) = [v7 safari_BOOLForKey:*MEMORY[0x277D290C0]];
-      v12 = [v7 safari_stringForKey:*MEMORY[0x277D290D0]];
-      v13 = *(a1 + 1424);
-      *(a1 + 1424) = v12;
+      *(self + 957) = [externalOptions safari_BOOLForKey:*MEMORY[0x277D290C0]];
+      v12 = [externalOptions safari_stringForKey:*MEMORY[0x277D290D0]];
+      v13 = *(self + 1424);
+      *(self + 1424) = v12;
 
-      v14 = [v7 safari_dataForKey:*MEMORY[0x277D290C8]];
+      v14 = [externalOptions safari_dataForKey:*MEMORY[0x277D290C8]];
       if (v14)
       {
         v15 = [objc_alloc(MEMORY[0x277CE38A0]) initWithData:v14];
         if (v15)
         {
-          [a1 restoreSessionState:v15 andNavigate:1 fromSafariViewService:1];
+          [self restoreSessionState:v15 andNavigate:1 fromSafariViewService:1];
         }
       }
     }
 
     else
     {
-      objc_storeStrong((a1 + 1424), v11);
+      objc_storeStrong((self + 1424), v11);
       v16 = v11;
-      v14 = *(a1 + 1216);
-      *(a1 + 1216) = v16;
+      v14 = *(self + 1216);
+      *(self + 1216) = v16;
     }
   }
 }
@@ -6550,8 +6550,8 @@ LABEL_10:
     if (objc_opt_respondsToSelector())
     {
       v3 = MEMORY[0x277D75D70];
-      v4 = [(UIWebClip *)self->_webClip identifier];
-      LOBYTE(v3) = [v3 webClipWithIdentifierExists:v4];
+      identifier = [(UIWebClip *)self->_webClip identifier];
+      LOBYTE(v3) = [v3 webClipWithIdentifierExists:identifier];
 
       if ((v3 & 1) == 0)
       {
@@ -6562,19 +6562,19 @@ LABEL_10:
   }
 }
 
-- (id)loadURL:(id)a3 userDriven:(BOOL)a4
+- (id)loadURL:(id)l userDriven:(BOOL)driven
 {
-  v4 = [(TabDocument *)self loadURL:a3 userDriven:a4 skipSyncableTabUpdates:0];
+  v4 = [(TabDocument *)self loadURL:l userDriven:driven skipSyncableTabUpdates:0];
 
   return v4;
 }
 
-- (id)loadURL:(uint64_t)a3 userDriven:(char)a4 skipSyncableTabUpdates:
+- (id)loadURL:(uint64_t)l userDriven:(char)driven skipSyncableTabUpdates:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [(TabDocument *)a1 _loadURL:v7 userDriven:a3 eventAttribution:0 skipSyncableTabUpdates:a4];
+    v8 = [(TabDocument *)self _loadURL:v7 userDriven:l eventAttribution:0 skipSyncableTabUpdates:driven];
   }
 
   else
@@ -6585,14 +6585,14 @@ LABEL_10:
   return v8;
 }
 
-- (id)_loadURL:(uint64_t)a3 userDriven:(void *)a4 eventAttribution:(char)a5 skipSyncableTabUpdates:
+- (id)_loadURL:(uint64_t)l userDriven:(void *)driven eventAttribution:(char)attribution skipSyncableTabUpdates:
 {
   v9 = a2;
-  v10 = a4;
-  if (a1)
+  drivenCopy = driven;
+  if (self)
   {
-    [a1 setReadingListBookmark:0];
-    v11 = [(TabDocument *)a1 _loadURLInternal:v9 userDriven:a3 eventAttribution:v10 skipSyncableTabUpdates:a5];
+    [self setReadingListBookmark:0];
+    v11 = [(TabDocument *)self _loadURLInternal:v9 userDriven:l eventAttribution:drivenCopy skipSyncableTabUpdates:attribution];
   }
 
   else
@@ -6603,35 +6603,35 @@ LABEL_10:
   return v11;
 }
 
-- (void)loadURL:(id)a3 title:(id)a4 skipSyncableTabUpdates:(BOOL)a5
+- (void)loadURL:(id)l title:(id)title skipSyncableTabUpdates:(BOOL)updates
 {
-  v10 = a3;
-  v8 = a4;
+  lCopy = l;
+  titleCopy = title;
   if (self->_active && !self->_hibernated)
   {
-    v9 = [(TabDocument *)self loadURL:v10 userDriven:0 skipSyncableTabUpdates:a5];
+    v9 = [(TabDocument *)self loadURL:lCopy userDriven:0 skipSyncableTabUpdates:updates];
   }
 
   else
   {
-    self->_skipSyncableTabUpdates = a5;
-    [(TabDocument *)self _setDeferredNavigationURL:v10 title:v8];
+    self->_skipSyncableTabUpdates = updates;
+    [(TabDocument *)self _setDeferredNavigationURL:lCopy title:titleCopy];
   }
 }
 
-- (void)_setDeferredNavigationURL:(void *)a3 title:
+- (void)_setDeferredNavigationURL:(void *)l title:
 {
   v21 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  lCopy = l;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
+    WeakRetained = objc_loadWeakRetained((self + 992));
     v9 = WBS_LOG_CHANNEL_PREFIXPageLoading();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v15 = 134218499;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2160;
       v18 = 1752392040;
       v19 = 2117;
@@ -6639,88 +6639,88 @@ LABEL_10:
       _os_log_impl(&dword_215819000, v9, OS_LOG_TYPE_INFO, "Store deferred navigation: (document: %p) %{sensitive, mask.hash}@", &v15, 0x20u);
     }
 
-    *(a1 + 824) = 1;
-    objc_storeStrong((a1 + 832), a2);
-    v10 = [v7 copy];
-    v11 = *(a1 + 840);
-    *(a1 + 840) = v10;
+    *(self + 824) = 1;
+    objc_storeStrong((self + 832), a2);
+    v10 = [lCopy copy];
+    v11 = *(self + 840);
+    *(self + 840) = v10;
 
-    *(a1 + 984) = 0;
-    v12 = [WeakRetained tabCollectionViewProvider];
-    v13 = [a1 uuid];
-    [v12 removeSnapshotForTabWithUUID:v13];
+    *(self + 984) = 0;
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    uuid = [self uuid];
+    [tabCollectionViewProvider removeSnapshotForTabWithUUID:uuid];
 
-    [*(a1 + 168) setTitle:v7];
-    [*(a1 + 168) setURL:v6];
-    [a1 updateTabTitle];
-    [a1 updateTabIcon];
-    v14 = [WeakRetained tabController];
-    [v14 updateWBTabWithTab:a1 notify:0 persist:0];
+    [*(self + 168) setTitle:lCopy];
+    [*(self + 168) setURL:v6];
+    [self updateTabTitle];
+    [self updateTabIcon];
+    tabController = [WeakRetained tabController];
+    [tabController updateWBTabWithTab:self notify:0 persist:0];
 
-    [a1 hibernate];
+    [self hibernate];
   }
 }
 
-- (id)_loadURLInternal:(uint64_t)a3 userDriven:(void *)a4 eventAttribution:(char)a5 skipSyncableTabUpdates:
+- (id)_loadURLInternal:(uint64_t)internal userDriven:(void *)driven eventAttribution:(char)attribution skipSyncableTabUpdates:
 {
   v9 = a2;
-  v10 = a4;
-  if (a1)
+  drivenCopy = driven;
+  if (self)
   {
-    *(a1 + 824) = 0;
-    v11 = *(a1 + 832);
-    *(a1 + 832) = 0;
+    *(self + 824) = 0;
+    v11 = *(self + 832);
+    *(self + 832) = 0;
 
     v12 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:v9];
-    if (*(a1 + 1288))
+    if (*(self + 1288))
     {
-      [a1 clearPageLoadStatistics];
+      [self clearPageLoadStatistics];
     }
 
-    [a1 setSuppressingProgressAnimationForNavigationGesture:0];
-    v13 = *(a1 + 312);
-    *(a1 + 312) = 0;
+    [self setSuppressingProgressAnimationForNavigationGesture:0];
+    v13 = *(self + 312);
+    *(self + 312) = 0;
 
     v14 = [MEMORY[0x277D75D70] webClipWithURL:v9];
     if (v14)
     {
-      v15 = [TabDocument loadWebClip:a1 userDriven:v14];
+      v15 = [TabDocument loadWebClip:self userDriven:v14];
     }
 
     else
     {
-      if ([a1 shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:v9])
+      if ([self shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:v9])
       {
-        v16 = [MEMORY[0x277D28F40] builder];
-        [v16 setPrefersOpenInNewTabReusingExistingBlankTabIfPossible:1];
-        v17 = [v16 navigationIntentWithURL:v9];
-        [a1 dispatchNavigationIntent:v17];
+        builder = [MEMORY[0x277D28F40] builder];
+        [builder setPrefersOpenInNewTabReusingExistingBlankTabIfPossible:1];
+        v17 = [builder navigationIntentWithURL:v9];
+        [self dispatchNavigationIntent:v17];
 
-        *(a1 + 745) = 1;
-        a1 = 0;
+        *(self + 745) = 1;
+        self = 0;
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v15 = [(TabDocument *)a1 _loadRequest:v12 userDriven:a3 shouldOpenExternalURLs:*(a1 + 1296) != 0 eventAttribution:v10 skipSyncableTabUpdates:a5];
+      v15 = [(TabDocument *)self _loadRequest:v12 userDriven:internal shouldOpenExternalURLs:*(self + 1296) != 0 eventAttribution:drivenCopy skipSyncableTabUpdates:attribution];
     }
 
-    a1 = v15;
+    self = v15;
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-- (id)_loadURLInternal:(uint64_t)a3 userDriven:
+- (id)_loadURLInternal:(uint64_t)internal userDriven:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(TabDocument *)a1 _loadURLInternal:v5 userDriven:a3 eventAttribution:0 skipSyncableTabUpdates:0];
+    v6 = [(TabDocument *)self _loadURLInternal:v5 userDriven:internal eventAttribution:0 skipSyncableTabUpdates:0];
   }
 
   else
@@ -6731,44 +6731,44 @@ LABEL_11:
   return v6;
 }
 
-- (_BYTE)loadWebClip:(_BYTE *)a1 userDriven:(void *)a2
+- (_BYTE)loadWebClip:(_BYTE *)clip userDriven:(void *)driven
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a2;
-  if (a1)
+  drivenCopy = driven;
+  if (clip)
   {
     if (objc_opt_respondsToSelector())
     {
       v4 = WBS_LOG_CHANNEL_PREFIXWebClips();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
-        v5 = [v3 identifier];
+        identifier = [drivenCopy identifier];
         *buf = 138543618;
-        v15 = v5;
+        v15 = identifier;
         v16 = 2048;
-        v17 = [v3 bundleVersion];
+        bundleVersion = [drivenCopy bundleVersion];
         _os_log_impl(&dword_215819000, v4, OS_LOG_TYPE_INFO, "Loading UIWebClip with identifier %{public}@'; version: %lu", buf, 0x16u);
       }
     }
 
-    a1[709] = 0;
-    a1[743] = 1;
-    v6 = [v3 pageURL];
-    v7 = [v6 absoluteString];
+    clip[709] = 0;
+    clip[743] = 1;
+    pageURL = [drivenCopy pageURL];
+    absoluteString = [pageURL absoluteString];
 
-    [(TabDocument *)a1 _updateFallbackURLsForUserTypedAddress:v7 userExplicitlyRequestedAsHTTP:0];
+    [(TabDocument *)clip _updateFallbackURLsForUserTypedAddress:absoluteString userExplicitlyRequestedAsHTTP:0];
     v13 = 0;
-    v8 = [(TabDocument *)a1 _loadNextFallbackURLWithWebClip:v3 navigation:&v13];
+    v8 = [(TabDocument *)clip _loadNextFallbackURLWithWebClip:drivenCopy navigation:&v13];
     v9 = v13;
     v10 = v8 == 0;
     if (v8)
     {
-      a1 = v9;
+      clip = v9;
     }
 
     else
     {
-      a1 = 0;
+      clip = 0;
     }
 
     if (v10)
@@ -6782,60 +6782,60 @@ LABEL_11:
     }
   }
 
-  return a1;
+  return clip;
 }
 
-- (uint64_t)_loadURL:(void *)a3 fromBookmark:
+- (uint64_t)_loadURL:(void *)l fromBookmark:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  lCopy = l;
+  v7 = lCopy;
+  if (self)
   {
-    v8 = [v6 address];
-    v9 = [v8 safari_scriptIfJavaScriptURLString];
+    address = [lCopy address];
+    safari_scriptIfJavaScriptURLString = [address safari_scriptIfJavaScriptURLString];
 
-    if (v9)
+    if (safari_scriptIfJavaScriptURLString)
     {
-      [*(a1 + 1064) evaluateJavaScript:v9 completionHandler:0];
+      [*(self + 1064) evaluateJavaScript:safari_scriptIfJavaScriptURLString completionHandler:0];
     }
 
     else
     {
       if (!v5)
       {
-        a1 = 0;
+        self = 0;
         goto LABEL_5;
       }
 
-      v11 = [(TabDocument *)a1 _loadURLInternal:v5 userDriven:1];
+      v11 = [(TabDocument *)self _loadURLInternal:v5 userDriven:1];
       if ([v7 isReadingListItem])
       {
-        [a1 setReadingListBookmark:v7];
+        [self setReadingListBookmark:v7];
       }
 
       else
       {
-        [a1 setReadingListBookmark:0];
-        objc_storeStrong((a1 + 312), a3);
+        [self setReadingListBookmark:0];
+        objc_storeStrong((self + 312), l);
       }
     }
 
-    a1 = 1;
+    self = 1;
 LABEL_5:
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_trySwitchingToPinnedTabOnNavigationToURL:(uint64_t)a1
+- (uint64_t)_trySwitchingToPinnedTabOnNavigationToURL:(uint64_t)l
 {
   v3 = a2;
-  if (a1 && *(a1 + 744) == 1)
+  if (l && *(l + 744) == 1)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v5 = [WeakRetained tabController];
-    v6 = [v5 trySwitchingToPinnedTabOnNavigationToURL:v3];
+    WeakRetained = objc_loadWeakRetained((l + 992));
+    tabController = [WeakRetained tabController];
+    v6 = [tabController trySwitchingToPinnedTabOnNavigationToURL:v3];
   }
 
   else
@@ -6846,31 +6846,31 @@ LABEL_5:
   return v6;
 }
 
-- (void)loadCloudTab:(id)a3
+- (void)loadCloudTab:(id)tab
 {
-  v6 = a3;
-  v4 = [v6 url];
+  tabCopy = tab;
+  v4 = [tabCopy url];
   v5 = [(TabDocument *)self loadURL:v4 userDriven:1];
 
-  [(TabDocument *)self restoreScrollPositionWithCloudTab:v6];
+  [(TabDocument *)self restoreScrollPositionWithCloudTab:tabCopy];
 }
 
-- (void)restoreScrollPositionWithCloudTab:(id)a3
+- (void)restoreScrollPositionWithCloudTab:(id)tab
 {
-  v8 = a3;
+  tabCopy = tab;
   [(TabDocument *)self clearReaderScrollInformation];
-  if ([v8 isShowingReader])
+  if ([tabCopy isShowingReader])
   {
     self->_shouldRestoreReader = 1;
     v4 = MEMORY[0x277CBEAC0];
-    v5 = [v8 readerScrollPositionDictionary];
-    v6 = [v4 dictionaryWithDictionary:v5];
+    readerScrollPositionDictionary = [tabCopy readerScrollPositionDictionary];
+    v6 = [v4 dictionaryWithDictionary:readerScrollPositionDictionary];
     initialArticleScrollDictionaryForCloudTab = self->_initialArticleScrollDictionaryForCloudTab;
     self->_initialArticleScrollDictionaryForCloudTab = v6;
   }
 }
 
-- (void)goBackAllowingNewTabToSpawnIfNeeded:(BOOL)a3
+- (void)goBackAllowingNewTabToSpawnIfNeeded:(BOOL)needed
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -6878,7 +6878,7 @@ LABEL_5:
   aBlock[2] = __51__TabDocument_goBackAllowingNewTabToSpawnIfNeeded___block_invoke;
   aBlock[3] = &unk_2781DA8E0;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  neededCopy = needed;
   v4 = _Block_copy(aBlock);
   v4[2](v4, 1);
 
@@ -6892,19 +6892,19 @@ void __51__TabDocument_goBackAllowingNewTabToSpawnIfNeeded___block_invoke(uint64
   [(TabDocument *)WeakRetained _goBackAllowingNewTabToSpawnIfNeeded:a2 shouldDismissReader:?];
 }
 
-- (void)_goBackAllowingNewTabToSpawnIfNeeded:(char)a3 shouldDismissReader:
+- (void)_goBackAllowingNewTabToSpawnIfNeeded:(char)needed shouldDismissReader:
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 712) = 1;
-    *(a1 + 710) = a3;
+    *(self + 712) = 1;
+    *(self + 710) = needed;
     v3[0] = MEMORY[0x277D85DD0];
     v3[1] = 3221225472;
     v3[2] = __72__TabDocument__goBackAllowingNewTabToSpawnIfNeeded_shouldDismissReader___block_invoke;
     v3[3] = &unk_2781D6638;
-    v3[4] = a1;
+    v3[4] = self;
     v4 = a2;
-    [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v3 thenDo:?];
+    [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v3 thenDo:?];
   }
 }
 
@@ -6965,7 +6965,7 @@ LABEL_12:
   [WeakRetained tabDocumentShouldCloseAndSwitchToParentTab:self];
 }
 
-- (void)goForwardAllowingNewTabToSpawnIfNeeded:(BOOL)a3
+- (void)goForwardAllowingNewTabToSpawnIfNeeded:(BOOL)needed
 {
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -6973,7 +6973,7 @@ LABEL_12:
   aBlock[2] = __54__TabDocument_goForwardAllowingNewTabToSpawnIfNeeded___block_invoke;
   aBlock[3] = &unk_2781DA8E0;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  neededCopy = needed;
   v4 = _Block_copy(aBlock);
   v4[2](v4, 1);
 
@@ -6987,19 +6987,19 @@ void __54__TabDocument_goForwardAllowingNewTabToSpawnIfNeeded___block_invoke(uin
   [(TabDocument *)WeakRetained _goForwardAllowingNewTabToSpawnIfNeeded:a2 shouldDismissReader:?];
 }
 
-- (void)_goForwardAllowingNewTabToSpawnIfNeeded:(char)a3 shouldDismissReader:
+- (void)_goForwardAllowingNewTabToSpawnIfNeeded:(char)needed shouldDismissReader:
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 712) = 1;
-    *(a1 + 710) = a3;
+    *(self + 712) = 1;
+    *(self + 710) = needed;
     v3[0] = MEMORY[0x277D85DD0];
     v3[1] = 3221225472;
     v3[2] = __75__TabDocument__goForwardAllowingNewTabToSpawnIfNeeded_shouldDismissReader___block_invoke;
     v3[3] = &unk_2781D6638;
-    v3[4] = a1;
+    v3[4] = self;
     v4 = a2;
-    [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v3 thenDo:?];
+    [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v3 thenDo:?];
   }
 }
 
@@ -7051,11 +7051,11 @@ LABEL_10:
   if (result)
   {
     v1 = result;
-    v2 = [result expectedOrCurrentURL];
-    v3 = [v2 absoluteString];
-    v4 = [v3 safari_isJavaScriptURLString];
+    expectedOrCurrentURL = [result expectedOrCurrentURL];
+    absoluteString = [expectedOrCurrentURL absoluteString];
+    safari_isJavaScriptURLString = [absoluteString safari_isJavaScriptURLString];
 
-    if (v4)
+    if (safari_isJavaScriptURLString)
     {
       [*(v1 + 1304) addDisallowedUseOfJavaScriptAlert];
       return 1;
@@ -7070,26 +7070,26 @@ LABEL_10:
   return result;
 }
 
-- (void)_reloadFromOrigin:(uint64_t)a1
+- (void)_reloadFromOrigin:(uint64_t)origin
 {
-  if (a1 && ([(TabDocument *)a1 _suppressReloadToPreventLoadingJavaScriptIfNecessary]& 1) == 0)
+  if (origin && ([(TabDocument *)origin _suppressReloadToPreventLoadingJavaScriptIfNecessary]& 1) == 0)
   {
-    if ([*(a1 + 304) isScribbling])
+    if ([*(origin + 304) isScribbling])
     {
-      [*(a1 + 304) endScribblingAndSaveChanges:0];
+      [*(origin + 304) endScribblingAndSaveChanges:0];
     }
 
-    *(a1 + 1224) = 4;
+    *(origin + 1224) = 4;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __33__TabDocument__reloadFromOrigin___block_invoke;
     v6[3] = &unk_2781D6638;
-    v6[4] = a1;
+    v6[4] = origin;
     v7 = a2;
-    [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v6 thenDo:?];
-    v4 = [a1 expectedOrCurrentURL];
-    v5 = *(a1 + 920);
-    *(a1 + 920) = v4;
+    [(TabDocument *)origin _terminateWebProcessIfNeededAndShowCrashBanner:v6 thenDo:?];
+    expectedOrCurrentURL = [origin expectedOrCurrentURL];
+    v5 = *(origin + 920);
+    *(origin + 920) = expectedOrCurrentURL;
   }
 }
 
@@ -7105,19 +7105,19 @@ LABEL_10:
 
 - (void)_didUserInitiatedReload
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CBEAA8] date];
-    [a1[138] setLastReloadDate:v2];
+    date = [MEMORY[0x277CBEAA8] date];
+    [self[138] setLastReloadDate:date];
 
-    v3 = [a1 expectedOrCurrentURL];
-    v4 = [v3 safari_isSafariWebExtensionURL];
+    expectedOrCurrentURL = [self expectedOrCurrentURL];
+    safari_isSafariWebExtensionURL = [expectedOrCurrentURL safari_isSafariWebExtensionURL];
 
-    if ((v4 & 1) == 0)
+    if ((safari_isSafariWebExtensionURL & 1) == 0)
     {
-      [(TabDocument *)a1 _hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary];
+      [(TabDocument *)self _hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary];
 
-      [(TabDocument *)a1 _showPrivateBrowsingPrivacyProtectionsBannerForReload];
+      [(TabDocument *)self _showPrivateBrowsingPrivacyProtectionsBannerForReload];
     }
   }
 }
@@ -7134,40 +7134,40 @@ LABEL_10:
 
 - (void)_hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary
 {
-  if (a1 && *(a1 + 1208))
+  if (self && *(self + 1208))
   {
-    *(a1 + 376) = 0;
-    if ([a1 isActive])
+    *(self + 376) = 0;
+    if ([self isActive])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 992));
+      WeakRetained = objc_loadWeakRetained((self + 992));
       [WeakRetained showPrivateBrowsingPrivacyProtectionsBanner:0];
     }
 
-    v3 = *(a1 + 1208);
-    *(a1 + 1208) = 0;
+    v3 = *(self + 1208);
+    *(self + 1208) = 0;
   }
 }
 
 - (void)_showPrivateBrowsingPrivacyProtectionsBannerForReload
 {
-  if (a1)
+  if (self)
   {
     v2 = [MEMORY[0x277CBEAA8] now];
-    [v2 timeIntervalSinceDate:*(a1 + 384)];
+    [v2 timeIntervalSinceDate:*(self + 384)];
     v4 = v3;
 
     if (v4 > 60.0)
     {
-      *(a1 + 376) = 0;
+      *(self + 376) = 0;
       return;
     }
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 safari_enableAdvancedPrivacyProtections:{objc_msgSend(a1, "isPrivateBrowsingEnabled")}];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6 = [standardUserDefaults safari_enableAdvancedPrivacyProtections:{objc_msgSend(self, "isPrivateBrowsingEnabled")}];
 
-    if (*(a1 + 376) == 1)
+    if (*(self + 376) == 1)
     {
-      v7 = *(a1 + 377);
+      v7 = *(self + 377);
       if (!v6)
       {
         return;
@@ -7183,29 +7183,29 @@ LABEL_10:
       }
     }
 
-    if (!(v7 & 1 | ((*(a1 + 949) & 1) == 0)))
+    if (!(v7 & 1 | ((*(self + 949) & 1) == 0)))
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v8 = objc_alloc_init(MEMORY[0x277D28D10]);
-      v9 = *(a1 + 1208);
-      *(a1 + 1208) = v8;
+      v9 = *(self + 1208);
+      *(self + 1208) = v8;
 
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__block_invoke;
       v13[3] = &unk_2781D67C8;
       objc_copyWeak(&v14, &location);
-      [*(a1 + 1208) setReducePrivacyProtectionsActionHandler:v13];
+      [*(self + 1208) setReducePrivacyProtectionsActionHandler:v13];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__block_invoke_2;
       v11[3] = &unk_2781D67C8;
       objc_copyWeak(&v12, &location);
-      [*(a1 + 1208) setDismissButtonHandler:v11];
-      WeakRetained = objc_loadWeakRetained((a1 + 992));
-      [WeakRetained showPrivateBrowsingPrivacyProtectionsBanner:*(a1 + 1208)];
+      [*(self + 1208) setDismissButtonHandler:v11];
+      WeakRetained = objc_loadWeakRetained((self + 992));
+      [WeakRetained showPrivateBrowsingPrivacyProtectionsBanner:*(self + 1208)];
 
-      *(a1 + 377) = 1;
+      *(self + 377) = 1;
       objc_destroyWeak(&v12);
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -7215,35 +7215,35 @@ LABEL_10:
 
 - (BOOL)isPageReloaded
 {
-  v2 = self;
-  v3 = [(TabDocument *)self expectedOrCurrentURL];
-  LOBYTE(v2) = [v3 isEqual:v2->_lastReloadedURL];
+  selfCopy = self;
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+  LOBYTE(selfCopy) = [expectedOrCurrentURL isEqual:selfCopy->_lastReloadedURL];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setPageZoomFactor:(double)a3
+- (void)setPageZoomFactor:(double)factor
 {
   if (([(SFScribbleController *)self->_sfScribbleController isScribbling]& 1) == 0)
   {
-    v7 = [(TabDocument *)self webView];
-    [v7 _viewScale];
+    webView = [(TabDocument *)self webView];
+    [webView _viewScale];
     v6 = v5;
 
-    if (v6 < a3)
+    if (v6 < factor)
     {
       [(TabDocument *)self webViewDidIncreaseZoom];
     }
 
-    v8 = [(TabDocument *)self webView];
-    [v8 _setViewScale:a3];
+    webView2 = [(TabDocument *)self webView];
+    [webView2 _setViewScale:factor];
   }
 }
 
 - (double)pageZoomFactor
 {
-  v2 = [(TabDocument *)self webView];
-  [v2 _viewScale];
+  webView = [(TabDocument *)self webView];
+  [webView _viewScale];
   v4 = v3;
 
   return v4;
@@ -7256,13 +7256,13 @@ LABEL_10:
     objc_initWeak(&location, val);
     WeakRetained = objc_loadWeakRetained(val + 156);
     v3 = [WeakRetained pageZoomPreferenceManagerForTabDocument:val];
-    v4 = [val URLForPerSitePreferences];
+    uRLForPerSitePreferences = [val URLForPerSitePreferences];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __44__TabDocument__updatePageZoomWithPreference__block_invoke;
     v5[3] = &unk_2781DA930;
     objc_copyWeak(&v6, &location);
-    [v3 getPageZoomFactorForURL:v4 usingBlock:v5];
+    [v3 getPageZoomFactorForURL:uRLForPerSitePreferences usingBlock:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -7295,14 +7295,14 @@ void __44__TabDocument__updatePageZoomWithPreference__block_invoke_2(uint64_t a1
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [WeakRetained pageZoomPreferenceManagerForTabDocument:self];
-  v5 = [(TabDocument *)self URLForPerSitePreferences];
+  uRLForPerSitePreferences = [(TabDocument *)self URLForPerSitePreferences];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__TabDocument_increasePageZoomSetting__block_invoke;
   v6[3] = &unk_2781DA958;
   v6[4] = self;
   objc_copyWeak(&v7, &location);
-  [v4 zoomInOnURL:v5 completionHandler:v6];
+  [v4 zoomInOnURL:uRLForPerSitePreferences completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -7340,13 +7340,13 @@ void __38__TabDocument_increasePageZoomSetting__block_invoke_2(uint64_t a1)
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [WeakRetained pageZoomPreferenceManagerForTabDocument:self];
-  v5 = [(TabDocument *)self URLForPerSitePreferences];
+  uRLForPerSitePreferences = [(TabDocument *)self URLForPerSitePreferences];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__TabDocument_decreasePageZoomSetting__block_invoke;
   v6[3] = &unk_2781DA980;
   objc_copyWeak(&v7, &location);
-  [v4 zoomOutOnURL:v5 completionHandler:v6];
+  [v4 zoomOutOnURL:uRLForPerSitePreferences completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -7383,13 +7383,13 @@ void __38__TabDocument_decreasePageZoomSetting__block_invoke_2(uint64_t a1)
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v4 = [WeakRetained pageZoomPreferenceManagerForTabDocument:self];
-  v5 = [(TabDocument *)self URLForPerSitePreferences];
+  uRLForPerSitePreferences = [(TabDocument *)self URLForPerSitePreferences];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__TabDocument_resetPageZoomSetting__block_invoke;
   v6[3] = &unk_2781DA980;
   objc_copyWeak(&v7, &location);
-  [v4 resetZoomLevelOnURL:v5 completionHandler:v6];
+  [v4 resetZoomLevelOnURL:uRLForPerSitePreferences completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -7443,24 +7443,24 @@ void __35__TabDocument_resetPageZoomSetting__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)reloadEnablingDowngradedPrivateRelay:(BOOL)a3
+- (void)reloadEnablingDowngradedPrivateRelay:(BOOL)relay
 {
   if (([(TabDocument *)self _suppressReloadToPreventLoadingJavaScriptIfNecessary]& 1) == 0)
   {
-    if (!a3)
+    if (!relay)
     {
-      v5 = [MEMORY[0x277D4A008] sharedManager];
-      v6 = [(TabDocument *)self expectedOrCurrentURL];
-      [v5 clearPrivateRelayFailClosedExceptionIfNecessaryForURL:v6];
+      mEMORY[0x277D4A008] = [MEMORY[0x277D4A008] sharedManager];
+      expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+      [mEMORY[0x277D4A008] clearPrivateRelayFailClosedExceptionIfNecessaryForURL:expectedOrCurrentURL];
     }
 
-    [(TabDocument *)self _disablePrivateRelaySetting:a3];
+    [(TabDocument *)self _disablePrivateRelaySetting:relay];
 
     [(TabDocument *)self _reloadFromOrigin:?];
   }
 }
 
-- (void)reloadDisablingContentBlockers:(BOOL)a3
+- (void)reloadDisablingContentBlockers:(BOOL)blockers
 {
   if (([(TabDocument *)self _suppressReloadToPreventLoadingJavaScriptIfNecessary]& 1) == 0)
   {
@@ -7469,30 +7469,30 @@ void __35__TabDocument_resetPageZoomSetting__block_invoke_2(uint64_t a1)
     urlToReloadForcingContentBlockers = self->_urlToReloadForcingContentBlockers;
     self->_urlToReloadForcingContentBlockers = v5;
 
-    self->_disableContentBlockersWhenReloading = a3;
+    self->_disableContentBlockersWhenReloading = blockers;
 
     [(TabDocument *)self _reloadFromOrigin:?];
   }
 }
 
-- (BOOL)supportsAdvancedPrivacyProtectionsForURL:(id)a3
+- (BOOL)supportsAdvancedPrivacyProtectionsForURL:(id)l
 {
-  v4 = a3;
-  if ([v4 safari_isSafariWebExtensionURL])
+  lCopy = l;
+  if ([lCopy safari_isSafariWebExtensionURL])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v5 = [v6 safari_enableAdvancedPrivacyProtections:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v5 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
   }
 
   return v5;
 }
 
-- (void)reloadDisablingAdvancedPrivateBrowsingPrivacyProtections:(BOOL)a3
+- (void)reloadDisablingAdvancedPrivateBrowsingPrivacyProtections:(BOOL)protections
 {
   if (([(TabDocument *)self _suppressReloadToPreventLoadingJavaScriptIfNecessary]& 1) == 0)
   {
@@ -7500,7 +7500,7 @@ void __35__TabDocument_resetPageZoomSetting__block_invoke_2(uint64_t a1)
     urlToReloadForAdvancedPrivateBrowsingPrivacyProtections = self->_urlToReloadForAdvancedPrivateBrowsingPrivacyProtections;
     self->_urlToReloadForAdvancedPrivateBrowsingPrivacyProtections = v5;
 
-    self->_disableAdvancedPrivateBrowsingPrivacyProtectionsWhenReloading = a3;
+    self->_disableAdvancedPrivateBrowsingPrivacyProtectionsWhenReloading = protections;
 
     [(TabDocument *)self _reloadFromOrigin:?];
   }
@@ -7527,20 +7527,20 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
 
 - (void)_showPerSitePreferencesPopoverViewControllerIfPossible
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 URLForPerSitePreferences];
-    v9 = [v2 safari_userVisibleHostWithoutWWWSubdomain];
+    uRLForPerSitePreferences = [self URLForPerSitePreferences];
+    safari_userVisibleHostWithoutWWWSubdomain = [uRLForPerSitePreferences safari_userVisibleHostWithoutWWWSubdomain];
 
-    if ([v9 length])
+    if ([safari_userVisibleHostWithoutWWWSubdomain length])
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 124);
+      WeakRetained = objc_loadWeakRetained(self + 124);
       v4 = objc_alloc(MEMORY[0x277CDB848]);
-      v5 = [a1 perSitePreferencesVendor];
-      v6 = [v4 initWithBrowserDocument:a1 perSitePreferencesVendor:v5];
+      perSitePreferencesVendor = [self perSitePreferencesVendor];
+      v6 = [v4 initWithBrowserDocument:self perSitePreferencesVendor:perSitePreferencesVendor];
 
-      v7 = [v6 view];
-      [v7 setAccessibilityIdentifier:@"PerSitePreferencesPopoverView"];
+      view = [v6 view];
+      [view setAccessibilityIdentifier:@"PerSitePreferencesPopoverView"];
 
       v8 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
       [v8 setModalPresentationStyle:2];
@@ -7551,8 +7551,8 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
 
 - (BOOL)privacyReportShouldSeparateBlockedTrackers
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  LOBYTE(self) = [v3 safari_enableAdvancedPrivacyProtections:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  LOBYTE(self) = [standardUserDefaults safari_enableAdvancedPrivacyProtections:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
 
   return self;
 }
@@ -7560,55 +7560,55 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
 - (BOOL)browserHasMultipleProfiles
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained hasMultipleProfiles];
+  hasMultipleProfiles = [WeakRetained hasMultipleProfiles];
 
-  return v3;
+  return hasMultipleProfiles;
 }
 
 - (NSSet)allBrowserProfileIdentifiers
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabGroupManager];
-  v4 = [v3 allProfileIdentifiers];
+  tabGroupManager = [WeakRetained tabGroupManager];
+  allProfileIdentifiers = [tabGroupManager allProfileIdentifiers];
 
-  return v4;
+  return allProfileIdentifiers;
 }
 
 - (NSSet)allBrowserHistories
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 historiesForProfiles];
+  historiesForProfiles = [v2 historiesForProfiles];
 
-  return v3;
+  return historiesForProfiles;
 }
 
 - (BOOL)canHideToolbar
 {
-  v2 = [MEMORY[0x277D28C70] sharedFeatureManager];
-  v3 = [v2 tabDocumentCanHideToolbar];
+  mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+  tabDocumentCanHideToolbar = [mEMORY[0x277D28C70] tabDocumentCanHideToolbar];
 
-  return v3;
+  return tabDocumentCanHideToolbar;
 }
 
 - (NSURL)URLForPerSitePreferences
 {
-  v3 = [(TabDocument *)self committedURL];
-  v4 = [(TabDocument *)self customUserVisibleStringForReadingListBookmarkURL:v3];
+  committedURL = [(TabDocument *)self committedURL];
+  v4 = [(TabDocument *)self customUserVisibleStringForReadingListBookmarkURL:committedURL];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
 
-    v3 = v5;
+    committedURL = v5;
   }
 
-  if (!v3 || ([v3 safari_isHTTPFamilyURL] & 1) == 0 && -[TabDocument isShowingErrorPage](self, "isShowingErrorPage"))
+  if (!committedURL || ([committedURL safari_isHTTPFamilyURL] & 1) == 0 && -[TabDocument isShowingErrorPage](self, "isShowingErrorPage"))
   {
     v6 = [(TabDocument *)self URL];
 
-    v3 = v6;
+    committedURL = v6;
   }
 
-  return v3;
+  return committedURL;
 }
 
 - (SFScribbleController)sfScribbleController
@@ -7626,40 +7626,40 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
   return sfScribbleController;
 }
 
-- (void)setReadingListBookmark:(id)a3
+- (void)setReadingListBookmark:(id)bookmark
 {
-  v10 = a3;
-  v5 = [(WebBookmark *)self->_readingListBookmark identifier];
+  bookmarkCopy = bookmark;
+  identifier = [(WebBookmark *)self->_readingListBookmark identifier];
   p_readingListBookmark = &self->_readingListBookmark;
-  if (v5 != [v10 identifier] || (-[WebBookmark dateLastViewed](*p_readingListBookmark, "dateLastViewed"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "dateLastViewed"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (v7 == 0) ^ (v8 != 0), v8, v7, (v9 & 1) == 0))
+  if (identifier != [bookmarkCopy identifier] || (-[WebBookmark dateLastViewed](*p_readingListBookmark, "dateLastViewed"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(bookmarkCopy, "dateLastViewed"), v8 = objc_claimAutoreleasedReturnValue(), v9 = (v7 == 0) ^ (v8 != 0), v8, v7, (v9 & 1) == 0))
   {
-    objc_storeStrong(&self->_readingListBookmark, a3);
+    objc_storeStrong(&self->_readingListBookmark, bookmark);
     [(TabDocument *)self setShowingContinuous:[(WebBookmark *)*p_readingListBookmark isReadingListItem]];
   }
 }
 
-- (void)setShowingContinuous:(BOOL)a3
+- (void)setShowingContinuous:(BOOL)continuous
 {
-  if (self->_showingContinuous != a3)
+  if (self->_showingContinuous != continuous)
   {
-    self->_showingContinuous = a3;
+    self->_showingContinuous = continuous;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained tabDocumentDidUpdateShowingContinuous:self];
   }
 }
 
-- (id)backListMenuWithLimit:(int)a3
+- (id)backListMenuWithLimit:(int)limit
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = [(TabDocument *)self _backListWithLimit:a3];
+  v4 = [(TabDocument *)self _backListWithLimit:limit];
   if (-[TabDocument canGoBackToParentTab](self, "canGoBackToParentTab") && [v4 count] == 1)
   {
     objc_initWeak(&location, self);
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = MEMORY[0x277CCACA8];
     v7 = _WBSLocalizedString();
-    v8 = [v5 title];
-    v9 = [v6 stringWithFormat:v7, v8];
+    title = [firstObject title];
+    v9 = [v6 stringWithFormat:v7, title];
 
     v10 = MEMORY[0x277D750C8];
     v17[0] = MEMORY[0x277D85DD0];
@@ -7668,9 +7668,9 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
     v17[3] = &unk_2781D6528;
     objc_copyWeak(&v18, &location);
     v11 = [v10 actionWithTitle:v9 image:0 identifier:0 handler:v17];
-    v12 = [(WKBackForwardListItem *)v5 safari_urlForDisplay];
-    v13 = [v12 safari_stringForListDisplay];
-    [v11 setSubtitle:v13];
+    safari_urlForDisplay = [(WKBackForwardListItem *)firstObject safari_urlForDisplay];
+    safari_stringForListDisplay = [safari_urlForDisplay safari_stringForListDisplay];
+    [v11 setSubtitle:safari_stringForListDisplay];
 
     v20[0] = v11;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
@@ -7692,22 +7692,22 @@ void __68__TabDocument__showPrivateBrowsingPrivacyProtectionsBannerForReload__bl
   return v14;
 }
 
-- (id)_backListWithLimit:(uint64_t)a1
+- (id)_backListWithLimit:(uint64_t)limit
 {
-  if (a1)
+  if (limit)
   {
-    v3 = [*(a1 + 1064) backForwardList];
-    v4 = [v3 backList];
+    backForwardList = [*(limit + 1064) backForwardList];
+    backList = [backForwardList backList];
 
-    v5 = [v4 count];
+    v5 = [backList count];
     if (v5 <= a2)
     {
-      v6 = v4;
+      v6 = backList;
     }
 
     else
     {
-      v6 = [v4 subarrayWithRange:{v5 - a2, a2}];
+      v6 = [backList subarrayWithRange:{v5 - a2, a2}];
     }
 
     v7 = v6;
@@ -7735,14 +7735,14 @@ id __37__TabDocument_backListMenuWithLimit___block_invoke_2(uint64_t a1, void *a
   return v2;
 }
 
-- (id)_menuElementForBackForwardListItem:(void *)a1
+- (id)_menuElementForBackForwardListItem:(void *)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, item);
     v4 = MEMORY[0x277D750C8];
-    v5 = [v3 title];
+    title = [v3 title];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __50__TabDocument__menuElementForBackForwardListItem___block_invoke;
@@ -7750,32 +7750,32 @@ id __37__TabDocument_backListMenuWithLimit___block_invoke_2(uint64_t a1, void *a
     objc_copyWeak(&v21, &location);
     v6 = v3;
     v20 = v6;
-    v7 = [v4 actionWithTitle:v5 image:0 identifier:0 handler:v19];
+    v7 = [v4 actionWithTitle:title image:0 identifier:0 handler:v19];
 
-    v8 = [(WKBackForwardListItem *)v6 safari_urlForDisplay];
-    v9 = [v8 safari_stringForListDisplay];
-    [v7 setSubtitle:v9];
+    safari_urlForDisplay = [(WKBackForwardListItem *)v6 safari_urlForDisplay];
+    safari_stringForListDisplay = [safari_urlForDisplay safari_stringForListDisplay];
+    [v7 setSubtitle:safari_stringForListDisplay];
 
     v10 = [v6 URL];
-    LODWORD(v9) = [v10 safari_isSafariWebExtensionURL];
+    LODWORD(safari_stringForListDisplay) = [v10 safari_isSafariWebExtensionURL];
 
-    if (v9)
+    if (safari_stringForListDisplay)
     {
-      v11 = [a1 webExtensionsController];
+      webExtensionsController = [item webExtensionsController];
       v12 = [v6 URL];
-      v13 = [v12 host];
-      v14 = [v11 webExtensionForBaseURIHost:v13];
+      host = [v12 host];
+      v14 = [webExtensionsController webExtensionForBaseURIHost:host];
 
-      v15 = [v14 displayName];
-      v16 = [v6 title];
-      if ([v16 isEqualToString:v15])
+      displayName = [v14 displayName];
+      title2 = [v6 title];
+      if ([title2 isEqualToString:displayName])
       {
         v17 = &stru_2827BF158;
       }
 
       else
       {
-        v17 = v15;
+        v17 = displayName;
       }
 
       [v7 setSubtitle:v17];
@@ -7793,9 +7793,9 @@ id __37__TabDocument_backListMenuWithLimit___block_invoke_2(uint64_t a1, void *a
   return v7;
 }
 
-- (id)forwardListMenuWithLimit:(int)a3
+- (id)forwardListMenuWithLimit:(int)limit
 {
-  v4 = [(TabDocument *)self _forwardListWithLimit:a3];
+  v4 = [(TabDocument *)self _forwardListWithLimit:limit];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__TabDocument_forwardListMenuWithLimit___block_invoke;
@@ -7806,21 +7806,21 @@ id __37__TabDocument_backListMenuWithLimit___block_invoke_2(uint64_t a1, void *a
   return v5;
 }
 
-- (id)_forwardListWithLimit:(uint64_t)a1
+- (id)_forwardListWithLimit:(uint64_t)limit
 {
-  if (a1)
+  if (limit)
   {
-    v3 = [*(a1 + 1064) backForwardList];
-    v4 = [v3 forwardList];
+    backForwardList = [*(limit + 1064) backForwardList];
+    forwardList = [backForwardList forwardList];
 
-    if ([v4 count] <= a2)
+    if ([forwardList count] <= a2)
     {
-      v5 = v4;
+      v5 = forwardList;
     }
 
     else
     {
-      v5 = [v4 subarrayWithRange:{0, a2}];
+      v5 = [forwardList subarrayWithRange:{0, a2}];
     }
 
     v6 = v5;
@@ -7869,36 +7869,36 @@ void __50__TabDocument__menuElementForBackForwardListItem___block_invoke(uint64_
   }
 }
 
-- (void)_clearAppBannerIfNotCurrentStoreBannerDeferringRemoval:(uint64_t)a1
+- (void)_clearAppBannerIfNotCurrentStoreBannerDeferringRemoval:(uint64_t)removal
 {
-  if (a1)
+  if (removal)
   {
-    [*(a1 + 368) invalidate];
-    v4 = *(a1 + 368);
-    *(a1 + 368) = 0;
+    [*(removal + 368) invalidate];
+    v4 = *(removal + 368);
+    *(removal + 368) = 0;
 
-    v5 = *(a1 + 360);
-    if (v5 != *(a1 + 352))
+    v5 = *(removal + 360);
+    if (v5 != *(removal + 352))
     {
-      *(a1 + 360) = 0;
+      *(removal + 360) = 0;
     }
 
-    v6 = *(a1 + 1200);
-    if (v6 && v6 != *(a1 + 352))
+    v6 = *(removal + 1200);
+    if (v6 && v6 != *(removal + 352))
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
+      WeakRetained = objc_loadWeakRetained((removal + 1248));
       v8 = WeakRetained;
-      if ((*(a1 + 959) & 1) == 0 && ((a2 & 1) != 0 || (v12 = WeakRetained, v10 = [WeakRetained tabDocumentShouldDeferAppBannerRemoval:a1], v8 = v12, v10)))
+      if ((*(removal + 959) & 1) == 0 && ((a2 & 1) != 0 || (v12 = WeakRetained, v10 = [WeakRetained tabDocumentShouldDeferAppBannerRemoval:removal], v8 = v12, v10)))
       {
-        *(a1 + 959) = 1;
+        *(removal + 959) = 1;
       }
 
       else
       {
         v11 = v8;
-        [v8 removeAppBannerFromTabDocument:a1 animated:0];
-        v9 = *(a1 + 1200);
-        *(a1 + 1200) = 0;
+        [v8 removeAppBannerFromTabDocument:removal animated:0];
+        v9 = *(removal + 1200);
+        *(removal + 1200) = 0;
 
         v8 = v11;
       }
@@ -7906,45 +7906,45 @@ void __50__TabDocument__menuElementForBackForwardListItem___block_invoke(uint64_
   }
 }
 
-- (void)_setAppBannerWhenPainted:(uint64_t)a1
+- (void)_setAppBannerWhenPainted:(uint64_t)painted
 {
   v4 = a2;
-  if (a1)
+  if (painted)
   {
     v9 = v4;
-    if (*(a1 + 716))
+    if (*(painted + 716))
     {
-      [*(a1 + 368) invalidate];
-      v5 = *(a1 + 368);
-      *(a1 + 368) = 0;
+      [*(painted + 368) invalidate];
+      v5 = *(painted + 368);
+      *(painted + 368) = 0;
 
       v4 = v9;
-      if (*(a1 + 1200) == v9)
+      if (*(painted + 1200) == v9)
       {
         goto LABEL_11;
       }
 
-      if (*(a1 + 959) == 1)
+      if (*(painted + 959) == 1)
       {
         [v9 setInitiallyBehindNavigationBar:0];
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
+      WeakRetained = objc_loadWeakRetained((painted + 1248));
       v7 = WeakRetained;
-      if (*(a1 + 1200))
+      if (*(painted + 1200))
       {
-        [WeakRetained removeAppBannerFromTabDocument:a1 animated:0];
+        [WeakRetained removeAppBannerFromTabDocument:painted animated:0];
       }
 
-      objc_storeStrong((a1 + 1200), a2);
-      [v7 tabDocumentDidCompleteCheckForAppBanner:a1];
+      objc_storeStrong((painted + 1200), a2);
+      [v7 tabDocumentDidCompleteCheckForAppBanner:painted];
     }
 
     else
     {
       v8 = v4;
-      v7 = *(a1 + 360);
-      *(a1 + 360) = v8;
+      v7 = *(painted + 360);
+      *(painted + 360) = v8;
     }
 
     v4 = v9;
@@ -7968,8 +7968,8 @@ LABEL_11:
     v4 = *(val + 46);
     *(val + 46) = v3;
 
-    v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 addTimer:*(val + 46) forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:*(val + 46) forMode:*MEMORY[0x277CBE738]];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -8031,13 +8031,13 @@ void __42__TabDocument__startAppBannerRemovalTimer__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_completeRedirectToExternalNavigationResult:(uint64_t)a3 fromOriginalRequest:(uint64_t)a4 dialogResult:
+- (void)_completeRedirectToExternalNavigationResult:(uint64_t)result fromOriginalRequest:(uint64_t)request dialogResult:
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [(TabDocument *)a1 _shouldCleanUpAfterRedirectToExternalApp]^ 1;
-    if (a4 == 2)
+    v6 = [(TabDocument *)self _shouldCleanUpAfterRedirectToExternalApp]^ 1;
+    if (request == 2)
     {
       LOBYTE(v6) = 1;
     }
@@ -8046,46 +8046,46 @@ void __42__TabDocument__startAppBannerRemovalTimer__block_invoke(uint64_t a1)
     {
       if (([v12 appliesOneTimeUserInitiatedActionPolicy] & 1) == 0)
       {
-        v7 = a1[153];
-        a1[153] = v7 | 2;
-        if (a4)
+        v7 = self[153];
+        self[153] = v7 | 2;
+        if (request)
         {
-          a1[153] = v7 | 6;
+          self[153] = v7 | 6;
         }
       }
     }
 
-    else if ([a1 canGoBack])
+    else if ([self canGoBack])
     {
-      [a1 goBack];
+      [self goBack];
     }
 
-    else if (!a4)
+    else if (!request)
     {
-      [a1 _closeTabDocumentAnimated:0];
+      [self _closeTabDocumentAnimated:0];
     }
 
-    v8 = [v12 appLink];
-    v9 = v8;
-    if (a4 == 1 && v8)
+    appLink = [v12 appLink];
+    v9 = appLink;
+    if (request == 1 && appLink)
     {
-      [v8 disableTemporarily];
+      [appLink disableTemporarily];
       v10 = [v9 url];
-      v11 = -[TabDocument _loadURLInternal:userDriven:](a1, v10, [v12 loadWasUserDriven]);
+      v11 = -[TabDocument _loadURLInternal:userDriven:](self, v10, [v12 loadWasUserDriven]);
     }
   }
 }
 
 - (void)_addNoFeedAppSupportAlert
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1304);
+    v1 = *(self + 1304);
     v3[0] = MEMORY[0x277D85DD0];
     v3[1] = 3221225472;
     v3[2] = __40__TabDocument__addNoFeedAppSupportAlert__block_invoke;
     v3[3] = &unk_2781D63F8;
-    v3[4] = a1;
+    v3[4] = self;
     v2 = [MEMORY[0x277D28C48] noFeedAppDialogWithCompletionHandler:v3];
     [v1 addDialog:v2];
   }
@@ -8105,15 +8105,15 @@ void __40__TabDocument__addNoFeedAppSupportAlert__block_invoke(uint64_t a1, int 
   }
 }
 
-- (void)_queueAlertForRedirectToExternalNavigationResult:(void *)a3 fromOriginalRequest:(void *)a4 navigationAction:(char)a5 isMainFrame:(uint64_t)a6 promptPolicy:(void *)a7 userAction:
+- (void)_queueAlertForRedirectToExternalNavigationResult:(void *)result fromOriginalRequest:(void *)request navigationAction:(char)action isMainFrame:(uint64_t)frame promptPolicy:(void *)policy userAction:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (a1)
+  resultCopy = result;
+  requestCopy = request;
+  policyCopy = policy;
+  if (self)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     aBlock = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOriginalRequest_navigationAction_isMainFrame_promptPolicy_userAction___block_invoke;
@@ -8121,18 +8121,18 @@ void __40__TabDocument__addNoFeedAppSupportAlert__block_invoke(uint64_t a1, int 
     objc_copyWeak(&v31, &location);
     v17 = v13;
     v27 = v17;
-    v22 = v14;
+    v22 = resultCopy;
     v28 = v22;
-    v29 = v15;
-    v32 = a5;
-    v30 = v16;
+    v29 = requestCopy;
+    actionCopy = action;
+    v30 = policyCopy;
     v18 = _Block_copy(&aBlock);
     if (([v17 externalApplicationCategory] | 2) == 2)
     {
-      a1[153] |= 8uLL;
-      v19 = a6;
-      v20 = a1[163];
-      v21 = [MEMORY[0x277D28C48] redirectDialogWithNavigationResult:v17 promptPolicy:v19 completionHandler:v18];
+      self[153] |= 8uLL;
+      frameCopy = frame;
+      v20 = self[163];
+      v21 = [MEMORY[0x277D28C48] redirectDialogWithNavigationResult:v17 promptPolicy:frameCopy completionHandler:v18];
       [v20 addDialog:v21];
     }
 
@@ -8176,37 +8176,37 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
   }
 }
 
-- (void)_redirectToExternalNavigationResult:(void *)a3 fromOriginalRequest:(void *)a4 navigationAction:(uint64_t)a5 promptPolicy:(uint64_t)a6 isMainFrame:(void *)a7 userAction:
+- (void)_redirectToExternalNavigationResult:(void *)result fromOriginalRequest:(void *)request navigationAction:(uint64_t)action promptPolicy:(uint64_t)policy isMainFrame:(void *)frame userAction:
 {
   v51[1] = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (a1)
+  resultCopy = result;
+  requestCopy = request;
+  frameCopy = frame;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    if ([WeakRetained tabDocumentCanRedirectToExternalApplication:a1])
+    WeakRetained = objc_loadWeakRetained((self + 1248));
+    if ([WeakRetained tabDocumentCanRedirectToExternalApplication:self])
     {
-      if (*(a1 + 1224) != 8)
+      if (*(self + 1224) != 8)
       {
-        v35 = objc_loadWeakRetained((a1 + 992));
-        v18 = [MEMORY[0x277D75128] sharedApplication];
-        if ([v18 isSuspended] & 1) != 0 || !objc_msgSend(a1, "isActive") || (objc_msgSend(v35, "isPrivateBrowsingEnabled"))
+        v35 = objc_loadWeakRetained((self + 992));
+        mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+        if ([mEMORY[0x277D75128] isSuspended] & 1) != 0 || !objc_msgSend(self, "isActive") || (objc_msgSend(v35, "isPrivateBrowsingEnabled"))
         {
-          v19 = 1;
+          isShowingTabView = 1;
         }
 
         else
         {
-          v33 = [v35 tabCollectionViewProvider];
-          v19 = [v33 isShowingTabView];
+          tabCollectionViewProvider = [v35 tabCollectionViewProvider];
+          isShowingTabView = [tabCollectionViewProvider isShowingTabView];
         }
 
-        if ([v13 shouldPromptWithPolicy:a5 telephonyNavigationPolicy:*(a1 + 392) userAction:v16 inBackgroundOrPrivateBrowsing:v19 inLockdownMode:*(a1 + 664)])
+        if ([v13 shouldPromptWithPolicy:action telephonyNavigationPolicy:*(self + 392) userAction:frameCopy inBackgroundOrPrivateBrowsing:isShowingTabView inLockdownMode:*(self + 664)])
         {
-          [(TabDocument *)a1 _queueAlertForRedirectToExternalNavigationResult:v13 fromOriginalRequest:v14 navigationAction:v15 isMainFrame:a6 promptPolicy:a5 userAction:v16];
-          [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:a1];
+          [(TabDocument *)self _queueAlertForRedirectToExternalNavigationResult:v13 fromOriginalRequest:resultCopy navigationAction:requestCopy isMainFrame:policy promptPolicy:action userAction:frameCopy];
+          [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:self];
         }
 
         else
@@ -8214,15 +8214,15 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
           v20 = [v13 URL];
           if ([v13 appliesOneTimeUserInitiatedActionPolicy])
           {
-            [v16 consume];
+            [frameCopy consume];
           }
 
-          v21 = [v13 externalApplicationCategory];
-          if (!v21 || v21 == 2)
+          externalApplicationCategory = [v13 externalApplicationCategory];
+          if (!externalApplicationCategory || externalApplicationCategory == 2)
           {
-            v23 = [v13 appLink];
+            appLink = [v13 appLink];
             v24 = [*MEMORY[0x277D76620] canOpenURL:v20];
-            if (v23)
+            if (appLink)
             {
               v25 = 1;
             }
@@ -8234,7 +8234,7 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
 
             if (v25)
             {
-              v26 = *(a1 + 1296);
+              v26 = *(self + 1296);
               if (v26)
               {
                 [v26 absoluteString];
@@ -8242,18 +8242,18 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
 
               else
               {
-                [v14 valueForHTTPHeaderField:@"Referer"];
+                [resultCopy valueForHTTPHeaderField:@"Referer"];
               }
               v27 = ;
-              v28 = *(a1 + 1296);
-              *(a1 + 1296) = 0;
+              v28 = *(self + 1296);
+              *(self + 1296) = 0;
 
-              *(a1 + 958) = 0;
-              v29 = *(a1 + 1216);
-              *(a1 + 1216) = 0;
+              *(self + 958) = 0;
+              v29 = *(self + 1216);
+              *(self + 1216) = 0;
 
-              *(a1 + 717) = 0;
-              if (v23)
+              *(self + 717) = 0;
+              if (appLink)
               {
                 v50 = *MEMORY[0x277D66E78];
                 v51[0] = MEMORY[0x277CBEC38];
@@ -8262,10 +8262,10 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
                 v41[1] = 3221225472;
                 v41[2] = __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequest_navigationAction_promptPolicy_isMainFrame_userAction___block_invoke_3;
                 v41[3] = &unk_2781D75E0;
-                v41[4] = a1;
+                v41[4] = self;
                 v42 = v13;
-                v43 = v14;
-                [(TabDocument *)a1 _openAppLinkInApp:v23 fromOriginalRequest:v43 updateAppLinkStrategy:0 webBrowserState:v30 completionHandler:v41];
+                v43 = resultCopy;
+                [(TabDocument *)self _openAppLinkInApp:appLink fromOriginalRequest:v43 updateAppLinkStrategy:0 webBrowserState:v30 completionHandler:v41];
               }
 
               else
@@ -8282,43 +8282,43 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
                   v34 = 0;
                 }
 
-                v32 = [MEMORY[0x277CC1E80] defaultWorkspace];
-                v31 = [v13 externalApplication];
+                defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+                externalApplication = [v13 externalApplication];
                 v36[0] = MEMORY[0x277D85DD0];
                 v36[1] = 3221225472;
                 v36[2] = __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequest_navigationAction_promptPolicy_isMainFrame_userAction___block_invoke_4;
                 v36[3] = &unk_2781DAA48;
-                v37 = v15;
-                v38 = a1;
+                v37 = requestCopy;
+                selfCopy = self;
                 v39 = v13;
-                v40 = v14;
-                [v32 _sf_openURL:v20 inApplication:v31 withOptions:v34 completionHandler:v36];
+                v40 = resultCopy;
+                [defaultWorkspace _sf_openURL:v20 inApplication:externalApplication withOptions:v34 completionHandler:v36];
               }
             }
 
             else
             {
-              if (a6)
+              if (policy)
               {
-                [*(a1 + 1304) addInvalidURLAlert];
+                [*(self + 1304) addInvalidURLAlert];
               }
 
-              [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:a1];
+              [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:self];
             }
           }
 
-          else if (v21 == 1 && (*(a1 + 720) & 1) == 0)
+          else if (externalApplicationCategory == 1 && (*(self + 720) & 1) == 0)
           {
-            *(a1 + 720) = 1;
-            v22 = *(a1 + 392);
+            *(self + 720) = 1;
+            v22 = *(self + 392);
             v44[0] = MEMORY[0x277D85DD0];
             v44[1] = 3221225472;
             v44[2] = __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequest_navigationAction_promptPolicy_isMainFrame_userAction___block_invoke;
             v44[3] = &unk_2781DAA48;
-            v44[4] = a1;
+            v44[4] = self;
             v45 = v20;
             v46 = v13;
-            v47 = v14;
+            v47 = resultCopy;
             [v22 handleNavigationToURL:v45 completionHandler:v44];
           }
         }
@@ -8327,7 +8327,7 @@ void __137__TabDocument__queueAlertForRedirectToExternalNavigationResult_fromOri
 
     else
     {
-      [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:a1];
+      [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:self];
     }
   }
 }
@@ -8389,15 +8389,15 @@ uint64_t __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequ
   return result;
 }
 
-- (void)_openAppLinkInApp:(void *)a3 fromOriginalRequest:(uint64_t)a4 updateAppLinkStrategy:(void *)a5 webBrowserState:(void *)a6 completionHandler:
+- (void)_openAppLinkInApp:(void *)app fromOriginalRequest:(uint64_t)request updateAppLinkStrategy:(void *)strategy webBrowserState:(void *)state completionHandler:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a1)
+  appCopy = app;
+  strategyCopy = strategy;
+  stateCopy = state;
+  if (self)
   {
-    v14 = [v11 valueForHTTPHeaderField:@"Referer"];
+    v14 = [appCopy valueForHTTPHeaderField:@"Referer"];
     if (v14)
     {
       v15 = [MEMORY[0x277CBEBC0] safari_URLWithDataAsString:v14];
@@ -8405,13 +8405,13 @@ uint64_t __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequ
 
     else
     {
-      v15 = *(a1 + 1296);
+      v15 = *(self + 1296);
     }
 
     v16 = v15;
     if (objc_opt_respondsToSelector())
     {
-      [*(a1 + 1064) _willOpenAppLink];
+      [*(self + 1064) _willOpenAppLink];
     }
 
     v18[0] = 0;
@@ -8419,13 +8419,13 @@ uint64_t __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequ
     v18[2] = 0x3032000000;
     v18[3] = __Block_byref_object_copy__11;
     v18[4] = __Block_byref_object_dispose__11;
-    v19 = _Block_copy(v13);
+    v19 = _Block_copy(stateCopy);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __109__TabDocument__openAppLinkInApp_fromOriginalRequest_updateAppLinkStrategy_webBrowserState_completionHandler___block_invoke;
     v17[3] = &unk_2781DACC8;
     v17[4] = v18;
-    [v10 openExternallyWithWebBrowserState:v12 referrerURL:v16 completionHandler:v17];
+    [v10 openExternallyWithWebBrowserState:strategyCopy referrerURL:v16 completionHandler:v17];
     _Block_object_dispose(v18, 8);
   }
 }
@@ -8442,71 +8442,71 @@ void __124__TabDocument__redirectToExternalNavigationResult_fromOriginalRequest_
   }
 }
 
-- (id)_readingListArchiveNextPageLinkForRequest:(void *)a3 targetFrame:
+- (id)_readingListArchiveNextPageLinkForRequest:(void *)request targetFrame:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  requestCopy = request;
+  if (self)
   {
-    if (![a1 currentPageLoadedFromReadingList])
+    if (![self currentPageLoadedFromReadingList])
     {
 LABEL_5:
-      a1 = 0;
+      self = 0;
       goto LABEL_9;
     }
 
-    v7 = [v6 request];
-    v8 = [v7 URL];
+    request = [requestCopy request];
+    v8 = [request URL];
     if ([v8 isFileURL])
     {
-      v9 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-      v10 = [v9 isNetworkReachable];
+      mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+      isNetworkReachable = [mEMORY[0x277CEC5B8] isNetworkReachable];
 
-      if (v10)
+      if (isNetworkReachable)
       {
         goto LABEL_5;
       }
 
-      v11 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v7 = [v11 bookmarkWithID:{objc_msgSend(a1, "readingListBookmarkID")}];
+      mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      request = [mainBookmarkCollection bookmarkWithID:{objc_msgSend(self, "readingListBookmarkID")}];
 
       v8 = [v5 URL];
-      a1 = [v7 webarchivePathForNextPageURL:v8];
+      self = [request webarchivePathForNextPageURL:v8];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_9:
 
-  return a1;
+  return self;
 }
 
-- (id)_fileURLNavigationResultForURL:(void *)a1
+- (id)_fileURLNavigationResultForURL:(void *)l
 {
   v3 = a2;
-  if (a1)
+  if (l)
   {
-    v4 = [a1 readingListBookmarkID];
-    a1 = 0;
-    if ((gTestFileURLs & 1) == 0 && !v4)
+    readingListBookmarkID = [l readingListBookmarkID];
+    l = 0;
+    if ((gTestFileURLs & 1) == 0 && !readingListBookmarkID)
     {
       if ([v3 isFileURL])
       {
-        a1 = [MEMORY[0x277CDB820] resultOfType:4 withURL:v3];
+        l = [MEMORY[0x277CDB820] resultOfType:4 withURL:v3];
       }
 
       else
       {
-        a1 = 0;
+        l = 0;
       }
     }
   }
 
-  return a1;
+  return l;
 }
 
 - (uint64_t)_shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:(uint64_t)result
@@ -8523,8 +8523,8 @@ LABEL_9:
       {
         if ([MEMORY[0x277D49A08] hasInternalContent])
         {
-          v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v7 = [v6 BOOLForKey:@"RedirectToExternalAppsDisallowed"];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v7 = [standardUserDefaults BOOLForKey:@"RedirectToExternalAppsDisallowed"];
         }
 
         else
@@ -8552,27 +8552,27 @@ LABEL_9:
   return result;
 }
 
-- (id)_resultOfLoadingRequest:(uint64_t)a3 inMainFrame:(int)a4 userInitiated:
+- (id)_resultOfLoadingRequest:(uint64_t)request inMainFrame:(int)frame userInitiated:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     v9 = [v7 URL];
-    v10 = [(TabDocument *)a1 _fileURLNavigationResultForURL:v9];
+    v10 = [(TabDocument *)self _fileURLNavigationResultForURL:v9];
 
     if (!v10)
     {
-      v11 = [(TabDocument *)a1 _shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:a4];
+      v11 = [(TabDocument *)self _shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:frame];
       v12 = MEMORY[0x277CDB820];
-      v13 = a1[178];
+      v13 = self[178];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __65__TabDocument__resultOfLoadingRequest_inMainFrame_userInitiated___block_invoke;
       v15[3] = &unk_2781DAA70;
       v16 = v8;
-      v17 = a1;
-      v10 = [v12 resultOfLoadingRequest:v16 isMainFrame:a3 disallowRedirectToExternalApps:v11 preferredApplicationBundleIdentifier:v13 redirectDecisionHandler:v15];
+      selfCopy = self;
+      v10 = [v12 resultOfLoadingRequest:v16 isMainFrame:request disallowRedirectToExternalApps:v11 preferredApplicationBundleIdentifier:v13 redirectDecisionHandler:v15];
     }
   }
 
@@ -8595,38 +8595,38 @@ uint64_t __65__TabDocument__resultOfLoadingRequest_inMainFrame_userInitiated___b
   return v7;
 }
 
-- (void)_determineResultOfLoadingRequest:(uint64_t)a3 inMainFrame:(int)a4 userInitiated:(void *)a5 completionHandler:
+- (void)_determineResultOfLoadingRequest:(uint64_t)request inMainFrame:(int)frame userInitiated:(void *)initiated completionHandler:
 {
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  initiatedCopy = initiated;
+  if (self)
   {
     v11 = [v9 URL];
-    v12 = [(TabDocument *)a1 _fileURLNavigationResultForURL:v11];
+    v12 = [(TabDocument *)self _fileURLNavigationResultForURL:v11];
 
     if (v12)
     {
-      v10[2](v10, v12);
+      initiatedCopy[2](initiatedCopy, v12);
     }
 
     else
     {
-      v13 = [(TabDocument *)a1 _shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:a4];
-      v14 = *(a1 + 786);
-      v20 = [a1 committedURL];
-      v15 = [*(a1 + 88) loadedUsingDesktopUserAgent];
+      v13 = [(TabDocument *)self _shouldDisallowRedirectToExternalAppsForUserInitiatedRequest:frame];
+      v14 = *(self + 786);
+      committedURL = [self committedURL];
+      loadedUsingDesktopUserAgent = [*(self + 88) loadedUsingDesktopUserAgent];
       v16 = v14 | v13;
       v17 = MEMORY[0x277CDB820];
-      v18 = *(a1 + 1424);
+      v18 = *(self + 1424);
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __92__TabDocument__determineResultOfLoadingRequest_inMainFrame_userInitiated_completionHandler___block_invoke;
       v21[3] = &unk_2781DAA98;
       v22 = v9;
-      v19 = v20;
+      v19 = committedURL;
       v23 = v19;
-      v24 = v15;
-      [v17 determineResultOfLoadingRequest:v22 isMainFrame:a3 disallowRedirectToExternalApps:v16 & 1 preferredApplicationBundleIdentifier:v18 redirectDecisionHandler:v21 completionHandler:v10];
+      v24 = loadedUsingDesktopUserAgent;
+      [v17 determineResultOfLoadingRequest:v22 isMainFrame:request disallowRedirectToExternalApps:v16 & 1 preferredApplicationBundleIdentifier:v18 redirectDecisionHandler:v21 completionHandler:initiatedCopy];
     }
   }
 }
@@ -8641,20 +8641,20 @@ uint64_t __92__TabDocument__determineResultOfLoadingRequest_inMainFrame_userInit
   return v6;
 }
 
-- (id)resultOfLoadingURL:(id)a3
+- (id)resultOfLoadingURL:(id)l
 {
-  v3 = [(TabDocument *)self resultOfLoadingURL:a3 userInitiated:0];
+  v3 = [(TabDocument *)self resultOfLoadingURL:l userInitiated:0];
 
   return v3;
 }
 
-- (id)resultOfLoadingURL:(int)a3 userInitiated:
+- (id)resultOfLoadingURL:(int)l userInitiated:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:v5];
-    v7 = [(TabDocument *)a1 _resultOfLoadingRequest:v6 inMainFrame:1 userInitiated:a3];
+    v7 = [(TabDocument *)self _resultOfLoadingRequest:v6 inMainFrame:1 userInitiated:l];
   }
 
   else
@@ -8665,13 +8665,13 @@ uint64_t __92__TabDocument__determineResultOfLoadingRequest_inMainFrame_userInit
   return v7;
 }
 
-- (void)_showFinanceKitOrderPreviewControllerWithURL:(void *)a3 dismissalHandler:
+- (void)_showFinanceKitOrderPreviewControllerWithURL:(void *)l dismissalHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  lCopy = l;
+  if (self)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v14 = 0;
     v15 = &v14;
     v16 = 0x2050000000;
@@ -8695,7 +8695,7 @@ uint64_t __92__TabDocument__determineResultOfLoadingRequest_inMainFrame_userInit
     v9[2] = __77__TabDocument__showFinanceKitOrderPreviewControllerWithURL_dismissalHandler___block_invoke;
     v9[3] = &unk_2781DAAC0;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
+    v10 = lCopy;
     [v7 saveOrderAtURL:v5 completion:v9];
 
     objc_destroyWeak(&v11);
@@ -8742,37 +8742,37 @@ void __77__TabDocument__showFinanceKitOrderPreviewControllerWithURL_dismissalHan
   [v1 addAlertWithTitle:v2 bodyText:v3];
 }
 
-- (void)_showPassBookControllerForPasses:(uint64_t)a1
+- (void)_showPassBookControllerForPasses:(uint64_t)passes
 {
   v5 = a2;
-  if (a1)
+  if (passes)
   {
     v3 = [objc_alloc(getPKAddPassesViewControllerClass()) initWithPasses:v5 fromPresentationSource:0];
-    [v3 setDelegate:a1];
+    [v3 setDelegate:passes];
     if (v3)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
-      [WeakRetained tabDocument:a1 presentViewControllerAnimated:v3];
+      WeakRetained = objc_loadWeakRetained((passes + 1248));
+      [WeakRetained tabDocument:passes presentViewControllerAnimated:v3];
     }
   }
 }
 
-- (BOOL)_showICSControllerForPath:(void *)a3 sourceURL:(void *)a4 beforeDismissHandler:
+- (BOOL)_showICSControllerForPath:(void *)path sourceURL:(void *)l beforeDismissHandler:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  pathCopy = path;
+  lCopy = l;
+  if (self)
   {
-    v10 = [objc_alloc(MEMORY[0x277CDB7E8]) initWithFilePath:v7 sourceURL:v8];
+    v10 = [objc_alloc(MEMORY[0x277CDB7E8]) initWithFilePath:v7 sourceURL:pathCopy];
     v11 = v10;
     v12 = v10 != 0;
     if (v10)
     {
       [v10 setModalPresentationStyle:2];
-      [v11 setBeforeDismissHandler:v9];
-      WeakRetained = objc_loadWeakRetained((a1 + 1248));
-      [WeakRetained tabDocument:a1 presentViewControllerAnimated:v11];
+      [v11 setBeforeDismissHandler:lCopy];
+      WeakRetained = objc_loadWeakRetained((self + 1248));
+      [WeakRetained tabDocument:self presentViewControllerAnimated:v11];
     }
   }
 
@@ -8784,19 +8784,19 @@ void __77__TabDocument__showFinanceKitOrderPreviewControllerWithURL_dismissalHan
   return v12;
 }
 
-- (void)showDownload:(id)a3
+- (void)showDownload:(id)download
 {
-  v4 = a3;
-  v5 = [v4 completedFileURL];
-  if (v5)
+  downloadCopy = download;
+  completedFileURL = [downloadCopy completedFileURL];
+  if (completedFileURL)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __28__TabDocument_showDownload___block_invoke;
     v7[3] = &unk_2781D6AC0;
     v7[4] = self;
-    v8 = v4;
-    v9 = v5;
+    v8 = downloadCopy;
+    v9 = completedFileURL;
     [v9 safari_accessingSecurityScopedResource:v7];
   }
 
@@ -8808,7 +8808,7 @@ void __77__TabDocument__showFinanceKitOrderPreviewControllerWithURL_dismissalHan
       [TabDocument showDownload:];
     }
 
-    [(TabDocument *)self _showDownload:v4 path:0];
+    [(TabDocument *)self _showDownload:downloadCopy path:0];
   }
 }
 
@@ -8820,31 +8820,31 @@ void __28__TabDocument_showDownload___block_invoke(uint64_t a1)
   [(TabDocument *)v1 _showDownload:v2 path:v3];
 }
 
-- (void)_showDownload:(void *)a3 path:
+- (void)_showDownload:(void *)download path:
 {
   v56 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  downloadCopy = download;
+  if (self)
   {
-    v7 = [v5 fileType];
-    v8 = [v5 sourceURL];
-    v9 = [v5 userInitiatedAction];
-    v10 = [v9 isConsumed];
+    fileType = [v5 fileType];
+    sourceURL = [v5 sourceURL];
+    userInitiatedAction = [v5 userInitiatedAction];
+    isConsumed = [userInitiatedAction isConsumed];
 
-    if ((v10 & 1) == 0)
+    if ((isConsumed & 1) == 0)
     {
-      v11 = [v5 userInitiatedAction];
-      [v11 consume];
+      userInitiatedAction2 = [v5 userInitiatedAction];
+      [userInitiatedAction2 consume];
     }
 
-    *(a1 + 708) = 1;
-    if (v7 == 2)
+    *(self + 708) = 1;
+    if (fileType == 2)
     {
       goto LABEL_59;
     }
 
-    if (v7 == 6)
+    if (fileType == 6)
     {
       v47 = 0;
       v48 = &v47;
@@ -8865,38 +8865,38 @@ void __28__TabDocument_showDownload___block_invoke(uint64_t a1)
       v13 = v12;
       _Block_object_dispose(&v47, 8);
       v14 = objc_alloc_init(v12);
-      v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6 isDirectory:0];
+      v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:downloadCopy isDirectory:0];
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
       v46[2] = __34__TabDocument__showDownload_path___block_invoke;
       v46[3] = &unk_2781DAAE8;
-      v46[4] = a1;
+      v46[4] = self;
       [v14 _addWatchFaceAtURL:v15 shouldValidate:0 completionHandler:v46];
 
       goto LABEL_59;
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __34__TabDocument__showDownload_path___block_invoke_287;
     aBlock[3] = &unk_2781D6840;
     objc_copyWeak(&v44, &location);
     v16 = _Block_copy(aBlock);
-    if (v7 > 4)
+    if (fileType > 4)
     {
-      if (v7 == 5)
+      if (fileType == 5)
       {
-        v29 = [v5 explicitlySaved];
-        if (!v6 || (v18 = [objc_alloc(MEMORY[0x277CDB780]) initWithFilePath:v6 sourceURL:v8 deleteFileWhenDone:v29 ^ 1u beforeDismissHandler:v16]) == 0)
+        explicitlySaved = [v5 explicitlySaved];
+        if (!downloadCopy || (v18 = [objc_alloc(MEMORY[0x277CDB780]) initWithFilePath:downloadCopy sourceURL:sourceURL deleteFileWhenDone:explicitlySaved ^ 1u beforeDismissHandler:v16]) == 0)
         {
-          if ((v29 & 1) == 0)
+          if ((explicitlySaved & 1) == 0)
           {
             [v5 removeFromDisk];
           }
 
 LABEL_16:
-          [*(a1 + 1304) addDownloadFailedAlertWithDescription:0];
+          [*(self + 1304) addDownloadFailedAlertWithDescription:0];
 LABEL_58:
 
           objc_destroyWeak(&v44);
@@ -8906,17 +8906,17 @@ LABEL_59:
           goto LABEL_60;
         }
 
-        WeakRetained = objc_loadWeakRetained((a1 + 1248));
-        [WeakRetained tabDocument:a1 presentViewControllerAnimated:v18];
+        WeakRetained = objc_loadWeakRetained((self + 1248));
+        [WeakRetained tabDocument:self presentViewControllerAnimated:v18];
 
 LABEL_57:
         goto LABEL_58;
       }
 
-      if (v7 == 7)
+      if (fileType == 7)
       {
-        v18 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v6 isDirectory:0];
-        [(TabDocument *)a1 _showFinanceKitOrderPreviewControllerWithURL:v18 dismissalHandler:v16];
+        v18 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:downloadCopy isDirectory:0];
+        [(TabDocument *)self _showFinanceKitOrderPreviewControllerWithURL:v18 dismissalHandler:v16];
         if (([v5 explicitlySaved] & 1) == 0)
         {
           [v5 removeFromDisk];
@@ -8926,7 +8926,7 @@ LABEL_57:
       }
 
 LABEL_21:
-      v18 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+      v18 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:downloadCopy];
       if (([v5 explicitlySaved] & 1) == 0)
       {
         [v5 removeFromDisk];
@@ -8934,21 +8934,21 @@ LABEL_21:
 
       if (v18)
       {
-        v19 = [MEMORY[0x277D262A0] sharedConnection];
-        v20 = [v6 lastPathComponent];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        lastPathComponent = [downloadCopy lastPathComponent];
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
         v39[2] = __34__TabDocument__showDownload_path___block_invoke_294;
         v39[3] = &unk_2781DAB38;
-        v39[4] = a1;
-        [v19 queueFileDataForAcceptance:v18 originalFileName:v20 forBundleID:0 completion:v39];
+        v39[4] = self;
+        [mEMORY[0x277D262A0] queueFileDataForAcceptance:v18 originalFileName:lastPathComponent forBundleID:0 completion:v39];
 
-        v21 = [a1 URL];
-        LODWORD(v19) = v21 == 0;
+        v21 = [self URL];
+        LODWORD(mEMORY[0x277D262A0]) = v21 == 0;
 
-        if (v19)
+        if (mEMORY[0x277D262A0])
         {
-          [a1 _closeTabDocumentAnimated:0];
+          [self _closeTabDocumentAnimated:0];
         }
       }
 
@@ -8960,17 +8960,17 @@ LABEL_21:
           [TabDocument _showDownload:path:];
         }
 
-        [*(a1 + 1304) addInvalidProfileAlert];
+        [*(self + 1304) addInvalidProfileAlert];
       }
 
       goto LABEL_57;
     }
 
-    if (v7 != 3)
+    if (fileType != 3)
     {
-      if (v7 == 4)
+      if (fileType == 4)
       {
-        if (v6 && [(TabDocument *)a1 _showICSControllerForPath:v6 sourceURL:v8 beforeDismissHandler:v16])
+        if (downloadCopy && [(TabDocument *)self _showICSControllerForPath:downloadCopy sourceURL:sourceURL beforeDismissHandler:v16])
         {
           goto LABEL_58;
         }
@@ -8988,7 +8988,7 @@ LABEL_21:
     }
 
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v38 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v6 isDirectory:0];
+    v38 = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:downloadCopy isDirectory:0];
     v23 = [v5 uti];
     v36 = v23;
     if (v23 && ([MEMORY[0x277CE1CB8] typeWithIdentifier:v23], (v24 = objc_claimAutoreleasedReturnValue()) != 0))
@@ -9035,7 +9035,7 @@ LABEL_43:
             [TabDocument _showDownload:path:];
           }
 
-          [*(a1 + 1304) addDownloadFailedAlertWithDescription:0];
+          [*(self + 1304) addDownloadFailedAlertWithDescription:0];
           v16[2](v16);
         }
 
@@ -9048,7 +9048,7 @@ LABEL_43:
             _os_log_impl(&dword_215819000, v33, OS_LOG_TYPE_INFO, "PassBook passes download succeeded, showing passbook adding passes view controller.", buf, 2u);
           }
 
-          [(TabDocument *)a1 _showPassBookControllerForPasses:v22];
+          [(TabDocument *)self _showPassBookControllerForPasses:v22];
         }
 
         if (([v5 explicitlySaved] & 1) == 0)
@@ -9165,47 +9165,47 @@ void __34__TabDocument__showDownload_path___block_invoke_294(uint64_t a1, uint64
   }
 }
 
-- (uint64_t)_canShowDownloadWithoutPrompting:(uint64_t)a1
+- (uint64_t)_canShowDownloadWithoutPrompting:(uint64_t)prompting
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (prompting)
   {
-    if ([v3 fileType] == 1 || objc_msgSend(v4, "fileType") == 6 || (WeakRetained = objc_loadWeakRetained((a1 + 1248)), v6 = objc_msgSend(WeakRetained, "tabDocument:canShowDownload:", a1, v4), WeakRetained, (v6 & 1) == 0))
+    if ([v3 fileType] == 1 || objc_msgSend(v4, "fileType") == 6 || (WeakRetained = objc_loadWeakRetained((prompting + 1248)), v6 = objc_msgSend(WeakRetained, "tabDocument:canShowDownload:", prompting, v4), WeakRetained, (v6 & 1) == 0))
     {
-      LOBYTE(a1) = 0;
+      LOBYTE(prompting) = 0;
     }
 
     else
     {
-      v7 = [v4 userInitiatedAction];
-      v8 = v7;
-      if (v7)
+      userInitiatedAction = [v4 userInitiatedAction];
+      v8 = userInitiatedAction;
+      if (userInitiatedAction)
       {
-        if (v7 == *(a1 + 400))
+        if (userInitiatedAction == *(prompting + 400))
         {
-          LOBYTE(a1) = [v7 isConsumed] ^ 1;
+          LOBYTE(prompting) = [userInitiatedAction isConsumed] ^ 1;
         }
 
         else
         {
-          LOBYTE(a1) = 0;
+          LOBYTE(prompting) = 0;
         }
       }
 
       else
       {
-        LOBYTE(a1) = *(a1 + 708) ^ 1;
+        LOBYTE(prompting) = *(prompting + 708) ^ 1;
       }
     }
   }
 
-  return a1 & 1;
+  return prompting & 1;
 }
 
-- (void)downloadDidStart:(id)a3
+- (void)downloadDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (self->_elementInfoToAnimateForNextDownload)
   {
     v5 = *MEMORY[0x277D76620];
@@ -9232,10 +9232,10 @@ void __32__TabDocument_downloadDidStart___block_invoke(uint64_t a1)
   *(v2 + 688) = 0;
 }
 
-- (void)downloadDidFail:(id)a3
+- (void)downloadDidFail:(id)fail
 {
   downloadReflectedInFluidProgress = self->_downloadReflectedInFluidProgress;
-  if (self->_activeDownload == a3 || downloadReflectedInFluidProgress == a3)
+  if (self->_activeDownload == fail || downloadReflectedInFluidProgress == fail)
   {
     self->_downloadReflectedInFluidProgress = 0;
 
@@ -9244,40 +9244,40 @@ void __32__TabDocument_downloadDidStart___block_invoke(uint64_t a1)
   }
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   activeDownload = self->_activeDownload;
-  if (activeDownload == v4)
+  if (activeDownload == finishCopy)
   {
     self->_activeDownload = 0;
 
-    v6 = [MEMORY[0x277CDB7A8] sharedManager];
-    v7 = [v6 shouldExcludeDownloadFromList:v4];
+    mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+    v7 = [mEMORY[0x277CDB7A8] shouldExcludeDownloadFromList:finishCopy];
 
     if (v7)
     {
-      if ([(TabDocument *)self _canShowDownloadWithoutPrompting:v4])
+      if ([(TabDocument *)self _canShowDownloadWithoutPrompting:finishCopy])
       {
-        [(TabDocument *)self showDownload:v4];
+        [(TabDocument *)self showDownload:finishCopy];
       }
 
-      else if ([(_SFDownload *)v4 fileType]!= 2)
+      else if ([(_SFDownload *)finishCopy fileType]!= 2)
       {
         objc_initWeak(&location, self);
         v8 = MEMORY[0x277D28C48];
-        v9 = [(_SFDownload *)v4 fileType];
-        v10 = [(_SFDownload *)v4 wkDownload];
-        v11 = [v10 originatingFrame];
-        v12 = [v11 securityOrigin];
+        fileType = [(_SFDownload *)finishCopy fileType];
+        wkDownload = [(_SFDownload *)finishCopy wkDownload];
+        originatingFrame = [wkDownload originatingFrame];
+        securityOrigin = [originatingFrame securityOrigin];
         v13 = [(_SFWebView *)self->_webView URL];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __33__TabDocument_downloadDidFinish___block_invoke;
         v15[3] = &unk_2781DAB60;
         objc_copyWeak(&v17, &location);
-        v16 = v4;
-        v14 = [v8 downloadBlockedDialogWithFileType:v9 initiatingSecurityOrigin:v12 presentingURL:v13 completionHandler:v15];
+        v16 = finishCopy;
+        v14 = [v8 downloadBlockedDialogWithFileType:fileType initiatingSecurityOrigin:securityOrigin presentingURL:v13 completionHandler:v15];
 
         [(SFDialogController *)self->_dialogController presentDialog:v14];
         objc_destroyWeak(&v17);
@@ -9301,23 +9301,23 @@ void __33__TabDocument_downloadDidFinish___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)_presentDialogToAllowDownload:(void *)a3 initiatingSecurityOrigin:(uint64_t)a4 allowViewAction:(void *)a5 completionHandler:
+- (void)_presentDialogToAllowDownload:(void *)download initiatingSecurityOrigin:(uint64_t)origin allowViewAction:(void *)action completionHandler:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  downloadCopy = download;
+  actionCopy = action;
+  if (self)
   {
     v12 = MEMORY[0x277D28C48];
-    v13 = *(a1 + 1064);
+    v13 = *(self + 1064);
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __104__TabDocument__presentDialogToAllowDownload_initiatingSecurityOrigin_allowViewAction_completionHandler___block_invoke;
     v18 = &unk_2781DAB88;
     v19 = v9;
-    v20 = v11;
-    v14 = [v12 allowDownloadDialogWithDownload:v19 initiatingSecurityOrigin:v10 navigatedWebView:v13 allowViewAction:a4 completionHandler:&v15];
-    [*(a1 + 288) presentDialog:{v14, v15, v16, v17, v18}];
+    v20 = actionCopy;
+    v14 = [v12 allowDownloadDialogWithDownload:v19 initiatingSecurityOrigin:downloadCopy navigatedWebView:v13 allowViewAction:origin completionHandler:&v15];
+    [*(self + 288) presentDialog:{v14, v15, v16, v17, v18}];
   }
 }
 
@@ -9346,16 +9346,16 @@ uint64_t __104__TabDocument__presentDialogToAllowDownload_initiatingSecurityOrig
   return v8();
 }
 
-- (void)downloadShouldContinueAfterReceivingResponse:(id)a3 decisionHandler:(id)a4
+- (void)downloadShouldContinueAfterReceivingResponse:(id)response decisionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CDB7A8] sharedManager];
-  if ([v7 suppressesPrompt] & 1) != 0 || (objc_msgSend(v9, "downloads"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", v7), v10, (v11))
+  responseCopy = response;
+  handlerCopy = handler;
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  if ([responseCopy suppressesPrompt] & 1) != 0 || (objc_msgSend(mEMORY[0x277CDB7A8], "downloads"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "containsObject:", responseCopy), v10, (v11))
   {
     v12 = 1;
 LABEL_4:
-    v8[2](v8, v12);
+    handlerCopy[2](handlerCopy, v12);
     goto LABEL_5;
   }
 
@@ -9365,12 +9365,12 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v9 shouldExcludeDownloadFromList:v7])
+  if ([mEMORY[0x277CDB7A8] shouldExcludeDownloadFromList:responseCopy])
   {
-    v8[2](v8, 1);
-    objc_storeStrong(&self->_downloadReflectedInFluidProgress, a3);
-    [v7 setFluidProgressController:self->_fluidProgressController];
-    [(WBSFluidProgressController *)self->_fluidProgressController startFluidProgressWithProgressStateSource:v7];
+    handlerCopy[2](handlerCopy, 1);
+    objc_storeStrong(&self->_downloadReflectedInFluidProgress, response);
+    [responseCopy setFluidProgressController:self->_fluidProgressController];
+    [(WBSFluidProgressController *)self->_fluidProgressController startFluidProgressWithProgressStateSource:responseCopy];
   }
 
   else
@@ -9380,8 +9380,8 @@ LABEL_4:
     v13[2] = __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHandler___block_invoke;
     v13[3] = &unk_2781DABB0;
     v13[4] = self;
-    v14 = v8;
-    [(TabDocument *)self _presentDialogToAllowDownload:v7 initiatingSecurityOrigin:0 allowViewAction:0 completionHandler:v13];
+    v14 = handlerCopy;
+    [(TabDocument *)self _presentDialogToAllowDownload:responseCopy initiatingSecurityOrigin:0 allowViewAction:0 completionHandler:v13];
   }
 
 LABEL_5:
@@ -9409,10 +9409,10 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
   }
 }
 
-- (void)setClosed:(BOOL)a3
+- (void)setClosed:(BOOL)closed
 {
-  self->_closed = a3;
-  if (a3)
+  self->_closed = closed;
+  if (closed)
   {
     [(_SFDownload *)self->_downloadReflectedInFluidProgress cancel];
   }
@@ -9423,45 +9423,45 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
   [(TabDocument *)&self->super.isa invalidateUserActivity];
 }
 
-- (void)setMediaStateIcon:(uint64_t)a1
+- (void)setMediaStateIcon:(uint64_t)icon
 {
-  if (a1)
+  if (icon)
   {
-    v4 = *(a1 + 504);
-    if (v4 != a2 || *(a1 + 496) == 1)
+    v4 = *(icon + 504);
+    if (v4 != a2 || *(icon + 496) == 1)
     {
       if ((a2 - 1) > 1)
       {
         if ((v4 - 3) >= 0xFFFFFFFFFFFFFFFELL)
         {
           v7 = +[MediaCaptureStatusBarManager sharedManager];
-          [v7 recordingDocumentDidEndMediaCapture:a1];
+          [v7 recordingDocumentDidEndMediaCapture:icon];
         }
       }
 
       else if ((v4 - 1) >= 2)
       {
         v6 = +[MediaCaptureStatusBarManager sharedManager];
-        [v6 recordingDocumentDidBeginMediaCapture:a1 audioOnly:a2 == 1];
+        [v6 recordingDocumentDidBeginMediaCapture:icon audioOnly:a2 == 1];
       }
 
-      *(a1 + 504) = a2;
-      [(TabDocument *)a1 _updateBarItemsWithCurrentMediaState];
-      WeakRetained = objc_loadWeakRetained((a1 + 992));
+      *(icon + 504) = a2;
+      [(TabDocument *)icon _updateBarItemsWithCurrentMediaState];
+      WeakRetained = objc_loadWeakRetained((icon + 992));
       if (WeakRetained)
       {
-        [WeakRetained tabDocumentDidChangeMediaState:a1 needsUpdateGlobalAudioState:*(a1 + 496)];
-        v5 = [a1 navigationBarItem];
-        [v5 setMediaStateIcon:a2];
+        [WeakRetained tabDocumentDidChangeMediaState:icon needsUpdateGlobalAudioState:*(icon + 496)];
+        navigationBarItem = [icon navigationBarItem];
+        [navigationBarItem setMediaStateIcon:a2];
       }
 
-      *(a1 + 496) = 0;
-      [(TabDocument *)a1 _notifyDidUpdateTabCollectionItem];
+      *(icon + 496) = 0;
+      [(TabDocument *)icon _notifyDidUpdateTabCollectionItem];
     }
   }
 }
 
-- (void)dismissAppSuggestionBanner:(id)a3
+- (void)dismissAppSuggestionBanner:(id)banner
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained removeAppBannerFromTabDocument:self animated:1];
@@ -9470,19 +9470,19 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
   self->_storeBanner = 0;
 }
 
-- (void)setAppSuggestionBanner:(id)a3 isPinned:(BOOL)a4
+- (void)setAppSuggestionBanner:(id)banner isPinned:(BOOL)pinned
 {
-  v4 = a4;
+  pinnedCopy = pinned;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained setAppBannerPinnedToTop:v4 forTabDocument:self];
+  [WeakRetained setAppBannerPinnedToTop:pinnedCopy forTabDocument:self];
 }
 
-- (BOOL)shouldBlockAppSuggestionBanner:(id)a3
+- (BOOL)shouldBlockAppSuggestionBanner:(id)banner
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained isPrivateBrowsingEnabled];
+  isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
-  return v4 ^ 1;
+  return isPrivateBrowsingEnabled ^ 1;
 }
 
 - (void)prepareToContinueUserActivity
@@ -9493,48 +9493,48 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
   [(SFNavigationBarItem *)navigationBarItem setCustomPlaceholderText:?];
 }
 
-+ (id)tabDocumentForWKWebView:(id)a3
++ (id)tabDocumentForWKWebView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = webViewToTabDocumentMap();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:viewCopy];
 
   return v5;
 }
 
-- (id)_initWithBrowserController:(id)a3 configuration:(id)a4
+- (id)_initWithBrowserController:(id)controller configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isPrivateBrowsingEnabled];
-  v9 = [v6 isControlledByAutomation];
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  isPrivateBrowsingEnabled = [controllerCopy isPrivateBrowsingEnabled];
+  isControlledByAutomation = [controllerCopy isControlledByAutomation];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__TabDocument__initWithBrowserController_configuration___block_invoke;
   v13[3] = &unk_2781D61F8;
-  v14 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = configurationCopy;
   v15 = v10;
-  v11 = [(TabDocument *)v14 _initWithTitle:0 URL:0 UUID:v8 privateBrowsingEnabled:v9 controlledByAutomation:0 bookmark:v6 browserController:v13 createDocumentView:?];
+  v11 = [(TabDocument *)selfCopy _initWithTitle:0 URL:0 UUID:isPrivateBrowsingEnabled privateBrowsingEnabled:isControlledByAutomation controlledByAutomation:0 bookmark:controllerCopy browserController:v13 createDocumentView:?];
 
   return v11;
 }
 
-- (void)_createDocumentViewWithConfiguration:(uint64_t)a1
+- (void)_createDocumentViewWithConfiguration:(uint64_t)configuration
 {
   v59 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (configuration)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v5 = [a1 configuration];
-    v6 = [v5 traitEnvironment];
+    WeakRetained = objc_loadWeakRetained((configuration + 992));
+    configuration = [configuration configuration];
+    traitEnvironment = [configuration traitEnvironment];
 
-    v7 = [v6 traitCollection];
-    if ([v7 userInterfaceStyle] == 2)
+    traitCollection = [traitEnvironment traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
-      v8 = [v6 traitCollection];
-      v9 = [v8 userInterfaceIdiom] == 6;
+      traitCollection2 = [traitEnvironment traitCollection];
+      v9 = [traitCollection2 userInterfaceIdiom] == 6;
     }
 
     else
@@ -9544,168 +9544,168 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
 
     [v3 _setDrawsBackground:v9];
     v10 = objc_alloc(MEMORY[0x277CDB918]);
-    v11 = [MEMORY[0x277D759A0] mainScreen];
-    [v11 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v12 = [v10 initWithFrame:v3 configuration:?];
-    v13 = *(a1 + 1064);
-    *(a1 + 1064) = v12;
+    v13 = *(configuration + 1064);
+    *(configuration + 1064) = v12;
 
     v14 = WBS_LOG_CHANNEL_PREFIXPageLoading();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = *(a1 + 1064);
+      v15 = *(configuration + 1064);
       v55 = 134218240;
-      v56 = a1;
+      configurationCopy = configuration;
       v57 = 2048;
       v58 = v15;
       _os_log_impl(&dword_215819000, v14, OS_LOG_TYPE_DEFAULT, "TabDocument %p: created web view %p", &v55, 0x16u);
     }
 
     v16 = webViewToTabDocumentMap();
-    [v16 setObject:a1 forKey:*(a1 + 1064)];
+    [v16 setObject:configuration forKey:*(configuration + 1064)];
 
-    [*(a1 + 224) setReaderWebView:*(a1 + 1432)];
-    [*(a1 + 224) setWebView:*(a1 + 1064)];
-    [*(a1 + 1064) setAllowsLinkPreview:1];
-    [*(a1 + 1064) _setObservedRenderingProgressEvents:335];
-    [*(a1 + 168) setWebView:*(a1 + 1064)];
-    [*(a1 + 1064) setNavigationDelegate:a1];
-    [*(a1 + 1064) setUIDelegate:a1];
-    [*(a1 + 1064) setDelegate:a1];
-    [*(a1 + 1064) _setFullscreenDelegate:a1];
-    [*(a1 + 1064) _setInputDelegate:a1];
-    v17 = *(a1 + 1064);
-    v18 = [a1 history];
-    [v17 _setHistoryDelegate:v18];
+    [*(configuration + 224) setReaderWebView:*(configuration + 1432)];
+    [*(configuration + 224) setWebView:*(configuration + 1064)];
+    [*(configuration + 1064) setAllowsLinkPreview:1];
+    [*(configuration + 1064) _setObservedRenderingProgressEvents:335];
+    [*(configuration + 168) setWebView:*(configuration + 1064)];
+    [*(configuration + 1064) setNavigationDelegate:configuration];
+    [*(configuration + 1064) setUIDelegate:configuration];
+    [*(configuration + 1064) setDelegate:configuration];
+    [*(configuration + 1064) _setFullscreenDelegate:configuration];
+    [*(configuration + 1064) _setInputDelegate:configuration];
+    v17 = *(configuration + 1064);
+    history = [configuration history];
+    [v17 _setHistoryDelegate:history];
 
-    [*(a1 + 1064) _setIconLoadingDelegate:a1];
-    [*(a1 + 1064) _setDiagnosticLoggingDelegate:a1];
+    [*(configuration + 1064) _setIconLoadingDelegate:configuration];
+    [*(configuration + 1064) _setDiagnosticLoggingDelegate:configuration];
     if (objc_opt_respondsToSelector())
     {
-      [*(a1 + 1064) _setAppHighlightDelegate:a1];
+      [*(configuration + 1064) _setAppHighlightDelegate:configuration];
     }
 
-    [*(a1 + 1064) _setFindInteractionEnabled:1];
-    [*(a1 + 1064) setAccessibilityIdentifier:@"WebView"];
-    [*(a1 + 1064) setInspectable:{objc_msgSend(a1, "allowsRemoteInspection")}];
+    [*(configuration + 1064) _setFindInteractionEnabled:1];
+    [*(configuration + 1064) setAccessibilityIdentifier:@"WebView"];
+    [*(configuration + 1064) setInspectable:{objc_msgSend(configuration, "allowsRemoteInspection")}];
     v19 = _SFCustomUserAgentStringIfNeeded();
     if (v19)
     {
-      [*(a1 + 1064) setCustomUserAgent:v19];
+      [*(configuration + 1064) setCustomUserAgent:v19];
     }
 
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"URL" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"estimatedProgress" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"_networkRequestsInProgress" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"hasOnlySecureContent" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"_negotiatedLegacyTLS" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"title" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"canGoBack" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"canGoForward" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"_webProcessIsResponsive" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"loading" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"themeColor" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"underPageBackgroundColor" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"_sampledPageTopColor" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1064) addObserver:a1 forKeyPath:@"_isPlayingAudio" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"URL" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"estimatedProgress" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"_networkRequestsInProgress" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"hasOnlySecureContent" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"_negotiatedLegacyTLS" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"title" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"canGoBack" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"canGoForward" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"_webProcessIsResponsive" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"loading" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"themeColor" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"underPageBackgroundColor" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"_sampledPageTopColor" options:0 context:kTabDocumentObserverContext];
+    [*(configuration + 1064) addObserver:configuration forKeyPath:@"_isPlayingAudio" options:0 context:kTabDocumentObserverContext];
     if ([MEMORY[0x277D49A08] isSolariumEnabled])
     {
-      [*(a1 + 1064) addObserver:a1 forKeyPath:@"_sampledTopFixedPositionContentColor" options:0 context:kTabDocumentObserverContext];
+      [*(configuration + 1064) addObserver:configuration forKeyPath:@"_sampledTopFixedPositionContentColor" options:0 context:kTabDocumentObserverContext];
     }
 
-    [*(a1 + 1064) _setBackgroundExtendsBeyondPage:1];
-    v20 = [objc_alloc(MEMORY[0x277CDB7C8]) initWithWebView:*(a1 + 1064) delegate:a1];
-    v21 = *(a1 + 1280);
-    *(a1 + 1280) = v20;
+    [*(configuration + 1064) _setBackgroundExtendsBeyondPage:1];
+    v20 = [objc_alloc(MEMORY[0x277CDB7C8]) initWithWebView:*(configuration + 1064) delegate:configuration];
+    v21 = *(configuration + 1280);
+    *(configuration + 1280) = v20;
 
-    v22 = [objc_alloc(MEMORY[0x277CDB878]) initWithWebView:*(a1 + 1064)];
-    v23 = *(a1 + 296);
-    *(a1 + 296) = v22;
+    v22 = [objc_alloc(MEMORY[0x277CDB878]) initWithWebView:*(configuration + 1064)];
+    v23 = *(configuration + 296);
+    *(configuration + 296) = v22;
 
-    [*(a1 + 296) setDelegate:a1];
-    [*(a1 + 296) setWebViewUIDelegate:a1];
-    v24 = [v6 traitCollection];
-    v25 = [v24 userInterfaceStyle];
-    v26 = [*(a1 + 296) configurationManager];
-    [v26 setDarkModeEnabled:v25 == 2];
+    [*(configuration + 296) setDelegate:configuration];
+    [*(configuration + 296) setWebViewUIDelegate:configuration];
+    traitCollection3 = [traitEnvironment traitCollection];
+    userInterfaceStyle = [traitCollection3 userInterfaceStyle];
+    configurationManager = [*(configuration + 296) configurationManager];
+    [configurationManager setDarkModeEnabled:userInterfaceStyle == 2];
 
     v27 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_282862DC0];
-    v28 = *(a1 + 64);
-    *(a1 + 64) = v27;
+    v28 = *(configuration + 64);
+    *(configuration + 64) = v27;
 
-    v29 = [*(a1 + 1064) _remoteObjectRegistry];
-    [v29 registerExportedObject:a1 interface:*(a1 + 64)];
+    _remoteObjectRegistry = [*(configuration + 1064) _remoteObjectRegistry];
+    [_remoteObjectRegistry registerExportedObject:configuration interface:*(configuration + 64)];
 
     v30 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_282862A00];
-    v31 = *(a1 + 72);
-    *(a1 + 72) = v30;
+    v31 = *(configuration + 72);
+    *(configuration + 72) = v30;
 
-    v32 = [*(a1 + 1064) _remoteObjectRegistry];
-    [v32 registerExportedObject:a1 interface:*(a1 + 72)];
+    _remoteObjectRegistry2 = [*(configuration + 1064) _remoteObjectRegistry];
+    [_remoteObjectRegistry2 registerExportedObject:configuration interface:*(configuration + 72)];
 
     v33 = objc_alloc(MEMORY[0x277CDB838]);
-    v34 = *(a1 + 1064);
-    v35 = [v3 websiteDataStore];
-    v36 = [v35 safari_secIdentitiesCache];
-    v37 = [v33 initWithWebView:v34 secIdentitiesCache:v36];
-    v38 = *(a1 + 1304);
-    *(a1 + 1304) = v37;
+    v34 = *(configuration + 1064);
+    websiteDataStore = [v3 websiteDataStore];
+    safari_secIdentitiesCache = [websiteDataStore safari_secIdentitiesCache];
+    v37 = [v33 initWithWebView:v34 secIdentitiesCache:safari_secIdentitiesCache];
+    v38 = *(configuration + 1304);
+    *(configuration + 1304) = v37;
 
-    [*(a1 + 1304) setDelegate:a1];
-    [*(a1 + 1304) setDialogPresenter:a1];
+    [*(configuration + 1304) setDelegate:configuration];
+    [*(configuration + 1304) setDialogPresenter:configuration];
     v39 = objc_alloc(MEMORY[0x277CDB890]);
-    v40 = *(a1 + 1064);
-    v41 = [a1 activityJSController];
-    v42 = [a1 perSitePreferencesVendor];
-    v43 = [v42 requestDesktopSitePreferenceManager];
-    v44 = [v39 initWithWebView:v40 activityJSController:v41 perSitePreferenceManager:v43];
-    v45 = *(a1 + 88);
-    *(a1 + 88) = v44;
+    v40 = *(configuration + 1064);
+    activityJSController = [configuration activityJSController];
+    perSitePreferencesVendor = [configuration perSitePreferencesVendor];
+    requestDesktopSitePreferenceManager = [perSitePreferencesVendor requestDesktopSitePreferenceManager];
+    v44 = [v39 initWithWebView:v40 activityJSController:activityJSController perSitePreferenceManager:requestDesktopSitePreferenceManager];
+    v45 = *(configuration + 88);
+    *(configuration + 88) = v44;
 
-    [*(a1 + 88) setTryUsingMobileIfPossible:{objc_msgSend(WeakRetained, "isShowingInOneThirdMode")}];
-    v46 = [*(a1 + 1064) URL];
-    [*(a1 + 88) setSupportsAdvancedPrivacyProtections:{objc_msgSend(a1, "supportsAdvancedPrivacyProtectionsForURL:", v46)}];
+    [*(configuration + 88) setTryUsingMobileIfPossible:{objc_msgSend(WeakRetained, "isShowingInOneThirdMode")}];
+    v46 = [*(configuration + 1064) URL];
+    [*(configuration + 88) setSupportsAdvancedPrivacyProtections:{objc_msgSend(configuration, "supportsAdvancedPrivacyProtectionsForURL:", v46)}];
 
-    [*(a1 + 672) setReloadOptionsController:*(a1 + 88)];
-    v47 = [objc_alloc(MEMORY[0x277CDB778]) initWithWebView:*(a1 + 1064)];
-    v48 = *(a1 + 96);
-    *(a1 + 96) = v47;
+    [*(configuration + 672) setReloadOptionsController:*(configuration + 88)];
+    v47 = [objc_alloc(MEMORY[0x277CDB778]) initWithWebView:*(configuration + 1064)];
+    v48 = *(configuration + 96);
+    *(configuration + 96) = v47;
 
     v49 = objc_alloc_init(MEMORY[0x277D28C50]);
-    v50 = *(a1 + 288);
-    *(a1 + 288) = v49;
+    v50 = *(configuration + 288);
+    *(configuration + 288) = v49;
 
-    [*(a1 + 288) setDelegate:a1];
-    [*(a1 + 288) setDialogPresenter:*(a1 + 1064)];
-    [*(a1 + 288) setViewControllerPresenter:a1];
+    [*(configuration + 288) setDelegate:configuration];
+    [*(configuration + 288) setDialogPresenter:*(configuration + 1064)];
+    [*(configuration + 288) setViewControllerPresenter:configuration];
     v51 = objc_alloc_init(MEMORY[0x277CDB868]);
-    v52 = *(a1 + 1400);
-    *(a1 + 1400) = v51;
+    v52 = *(configuration + 1400);
+    *(configuration + 1400) = v51;
 
-    [*(a1 + 1400) setDelegate:a1];
-    [*(a1 + 1400) setWebView:*(a1 + 1064)];
-    [*(a1 + 1400) setReaderController:*(a1 + 296)];
-    [*(a1 + 1400) setDialogPresenter:a1];
-    [a1 updateAccessibilityIdentifier];
+    [*(configuration + 1400) setDelegate:configuration];
+    [*(configuration + 1400) setWebView:*(configuration + 1064)];
+    [*(configuration + 1400) setReaderController:*(configuration + 296)];
+    [*(configuration + 1400) setDialogPresenter:configuration];
+    [configuration updateAccessibilityIdentifier];
     v53 = +[Application sharedApplication];
-    v54 = [v53 systemNoteTakingController];
+    systemNoteTakingController = [v53 systemNoteTakingController];
 
-    [v54 addObserver:a1 forKeyPath:*MEMORY[0x277D4A900] options:0 context:kTabDocumentObserverContext];
+    [systemNoteTakingController addObserver:configuration forKeyPath:*MEMORY[0x277D4A900] options:0 context:kTabDocumentObserverContext];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (kTabDocumentObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  if (kTabDocumentObserverContext == context)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
     v12 = objc_loadWeakRetained(&self->_delegate);
-    if (self->_webView == v10 || self->_readerWebView == v10)
+    if (self->_webView == objectCopy || self->_readerWebView == objectCopy)
     {
-      if ([v9 isEqualToString:@"loading"])
+      if ([pathCopy isEqualToString:@"loading"])
       {
         if ([(_SFWebView *)self->_webView isLoading])
         {
@@ -9744,7 +9744,7 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
         goto LABEL_37;
       }
 
-      if ([v9 isEqualToString:@"URL"])
+      if ([pathCopy isEqualToString:@"URL"])
       {
         [(TabDocument *)self _updateNavigationBarItem];
         [(TabDocument *)self updateTabIconWithDelay:0.1];
@@ -9752,14 +9752,14 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
         goto LABEL_37;
       }
 
-      if ([v9 isEqualToString:@"estimatedProgress"])
+      if ([pathCopy isEqualToString:@"estimatedProgress"])
       {
         [(_SFWebView *)self->_webView estimatedProgress];
         [(TabDocument *)self _loadingControllerEstimatedProgressChangedTo:v24];
         goto LABEL_37;
       }
 
-      if ([v9 isEqualToString:@"_networkRequestsInProgress"])
+      if ([pathCopy isEqualToString:@"_networkRequestsInProgress"])
       {
         if ([(_SFWebView *)self->_webView _networkRequestsInProgress])
         {
@@ -9774,18 +9774,18 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
         goto LABEL_37;
       }
 
-      if (([v9 isEqualToString:@"hasOnlySecureContent"] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"_negotiatedLegacyTLS") & 1) == 0)
+      if (([pathCopy isEqualToString:@"hasOnlySecureContent"] & 1) == 0 && (objc_msgSend(pathCopy, "isEqualToString:", @"_negotiatedLegacyTLS") & 1) == 0)
       {
-        if ([v9 isEqualToString:@"title"])
+        if ([pathCopy isEqualToString:@"title"])
         {
           [v12 tabDocumentDidUpdateTitle:self];
           [(TabDocument *)self updateTabTitle];
           goto LABEL_37;
         }
 
-        if (([v9 isEqualToString:@"canGoBack"] & 1) == 0 && !objc_msgSend(v9, "isEqualToString:", @"canGoForward"))
+        if (([pathCopy isEqualToString:@"canGoBack"] & 1) == 0 && !objc_msgSend(pathCopy, "isEqualToString:", @"canGoForward"))
         {
-          if ([v9 isEqualToString:@"_webProcessIsResponsive"])
+          if ([pathCopy isEqualToString:@"_webProcessIsResponsive"])
           {
             if ([(_SFWebView *)self->_webView _webProcessIsResponsive]&& [(NSTimer *)self->_unresponsiveWebProcessTimer isValid])
             {
@@ -9798,12 +9798,12 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
             }
           }
 
-          else if (([v9 isEqualToString:@"themeColor"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"underPageBackgroundColor") & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"_sampledPageTopColor") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"_sampledTopFixedPositionContentColor"))
+          else if (([pathCopy isEqualToString:@"themeColor"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"underPageBackgroundColor") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"_sampledPageTopColor") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"_sampledTopFixedPositionContentColor"))
           {
             [v12 tabDocumentDidUpdateThemeColor:self];
           }
 
-          else if ([v9 isEqualToString:@"_isPlayingAudio"])
+          else if ([pathCopy isEqualToString:@"_isPlayingAudio"])
           {
             if ([(TabDocument *)self isPlayingAudio])
             {
@@ -9835,34 +9835,34 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
 
     else
     {
-      if (self->_URLSpoofingMitigator != v10)
+      if (self->_URLSpoofingMitigator != objectCopy)
       {
         v13 = +[Application sharedApplication];
-        v14 = [v13 systemNoteTakingController];
+        systemNoteTakingController = [v13 systemNoteTakingController];
 
-        if (v14 == v10 && [v9 isEqualToString:*MEMORY[0x277D4A900]])
+        if (systemNoteTakingController == objectCopy && [pathCopy isEqualToString:*MEMORY[0x277D4A900]])
         {
           v15 = +[Application sharedApplication];
-          v16 = [v15 systemNoteTakingController];
-          v17 = [v16 isNotesPIPVisible];
+          systemNoteTakingController2 = [v15 systemNoteTakingController];
+          isNotesPIPVisible = [systemNoteTakingController2 isNotesPIPVisible];
 
           v18 = WBS_LOG_CHANNEL_PREFIXContinuity();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             v19 = @"not visible";
-            if (v17)
+            if (isNotesPIPVisible)
             {
               v19 = @"visible";
             }
 
             v27 = 134218242;
-            v28 = self;
+            selfCopy = self;
             v29 = 2112;
             v30 = v19;
             _os_log_impl(&dword_215819000, v18, OS_LOG_TYPE_INFO, "TabDocument: %p Notes PIP becomes %@", &v27, 0x16u);
           }
 
-          if (v17)
+          if (isNotesPIPVisible)
           {
             [(TabDocument *)self restoreAllHighlightsData];
           }
@@ -9871,7 +9871,7 @@ void __76__TabDocument_downloadShouldContinueAfterReceivingResponse_decisionHand
         goto LABEL_37;
       }
 
-      if (![v9 isEqualToString:@"UIShouldReflectCommittedURLInsteadOfCurrentURL"])
+      if (![pathCopy isEqualToString:@"UIShouldReflectCommittedURLInsteadOfCurrentURL"])
       {
 LABEL_37:
 
@@ -9886,62 +9886,62 @@ LABEL_37:
 LABEL_38:
 }
 
-- (void)setAudioState:(int)a3 needsDelay:
+- (void)setAudioState:(int)state needsDelay:
 {
-  if (a1 && *(a1 + 488) != a2)
+  if (self && *(self + 488) != a2)
   {
-    *(a1 + 488) = a2;
-    *(a1 + 496) = 1;
+    *(self + 488) = a2;
+    *(self + 496) = 1;
     if (a2)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     else
     {
-      v6 = 0;
+      date = 0;
     }
 
-    [a1 setAudioStartTimestamp:v6];
+    [self setAudioStartTimestamp:date];
     if (a2)
     {
     }
 
-    [(TabDocument *)a1 mediaStateDidChangeNeedsDelay:a3];
+    [(TabDocument *)self mediaStateDidChangeNeedsDelay:state];
   }
 }
 
-- (void)_loadingControllerDidStopLoadingWithError:(uint64_t)a1
+- (void)_loadingControllerDidStopLoadingWithError:(uint64_t)error
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [*(a1 + 1064) isLoading];
-    if ((v4 & 1) == 0)
+    isLoading = [*(error + 1064) isLoading];
+    if ((isLoading & 1) == 0)
     {
-      *(a1 + 707) = 0;
-      *(a1 + 979) = 0;
+      *(error + 707) = 0;
+      *(error + 979) = 0;
     }
 
-    *(a1 + 711) = 1;
-    [a1 updateTabTitle];
-    [(TabDocument *)a1 _updateNavigationBarItem];
-    if (([a1 isShowingErrorPage] & 1) == 0)
+    *(error + 711) = 1;
+    [error updateTabTitle];
+    [(TabDocument *)error _updateNavigationBarItem];
+    if (([error isShowingErrorPage] & 1) == 0)
     {
-      v5 = [(TabDocument *)a1 pageLoadStatusForNavigationError:v3];
-      v6 = [MEMORY[0x277D499B8] sharedLogger];
-      [v6 didFinishPageLoadWithPageLoadStatus:v5];
+      v5 = [(TabDocument *)error pageLoadStatusForNavigationError:v3];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] didFinishPageLoadWithPageLoadStatus:v5];
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    [WeakRetained tabDocument:a1 didFinishLoadingWithError:v3 != 0];
+    WeakRetained = objc_loadWeakRetained((error + 1248));
+    [WeakRetained tabDocument:error didFinishLoadingWithError:v3 != 0];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [*(a1 + 264) copy];
+    v8 = [*(error + 264) copy];
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
@@ -9959,7 +9959,7 @@ LABEL_38:
           v12 = *(*(&v17 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            [v12 tabDocumentDidFinishLoading:a1];
+            [v12 tabDocumentDidFinishLoading:error];
           }
 
           ++v11;
@@ -9974,34 +9974,34 @@ LABEL_38:
 
     if (v3)
     {
-      [*(a1 + 1304) handleFrameLoadError:v3];
-      [*(a1 + 176) cancelFluidProgressWithProgressStateSource:a1];
-      if (v4)
+      [*(error + 1304) handleFrameLoadError:v3];
+      [*(error + 176) cancelFluidProgressWithProgressStateSource:error];
+      if (isLoading)
       {
-        [*(a1 + 176) startFluidProgressWithProgressStateSource:a1];
-        [*(a1 + 1064) estimatedProgress];
-        [(TabDocument *)a1 _loadingControllerEstimatedProgressChangedTo:v13];
+        [*(error + 176) startFluidProgressWithProgressStateSource:error];
+        [*(error + 1064) estimatedProgress];
+        [(TabDocument *)error _loadingControllerEstimatedProgressChangedTo:v13];
       }
 
-      v14 = objc_loadWeakRetained((a1 + 1256));
-      [v14 didFailLoadingResource:a1];
+      v14 = objc_loadWeakRetained((error + 1256));
+      [v14 didFailLoadingResource:error];
 
-      v15 = [*(a1 + 1280) testController];
-      v16 = v15;
-      if (v15)
+      testController = [*(error + 1280) testController];
+      v16 = testController;
+      if (testController)
       {
-        [v15 autoFillController:*(a1 + 1280) didFailFormMetadataForTesting:v3];
+        [testController autoFillController:*(error + 1280) didFailFormMetadataForTesting:v3];
       }
     }
   }
 }
 
-- (uint64_t)pageLoadStatusForNavigationError:(uint64_t)a1
+- (uint64_t)pageLoadStatusForNavigationError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (error && v3)
   {
     if ([v3 _web_errorIsInDomain:*MEMORY[0x277CCA738]] && (objc_msgSend(v4, "code") == -999 || objc_msgSend(v4, "code") == -1012))
     {
@@ -10032,63 +10032,63 @@ LABEL_38:
   return v3;
 }
 
-- (void)_updateFallbackURLsForUserTypedAddress:(char)a3 userExplicitlyRequestedAsHTTP:
+- (void)_updateFallbackURLsForUserTypedAddress:(char)address userExplicitlyRequestedAsHTTP:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = *(a1 + 128);
-    *(a1 + 128) = v6;
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = *(self + 128);
+    *(self + 128) = array;
 
-    *(a1 + 136) = a3 ^ 1;
+    *(self + 136) = address ^ 1;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __84__TabDocument__updateFallbackURLsForUserTypedAddress_userExplicitlyRequestedAsHTTP___block_invoke;
     v10[3] = &unk_2781DABD8;
-    v10[4] = a1;
+    v10[4] = self;
     [MEMORY[0x277CBEBC0] safari_enumeratePossibleURLsForUserTypedString:v5 withBlock:v10];
-    if ([*(a1 + 128) count] >= 2)
+    if ([*(self + 128) count] >= 2)
     {
-      v8 = *(a1 + 128);
-      v9 = [v8 firstObject];
-      [v8 addObject:v9];
+      v8 = *(self + 128);
+      firstObject = [v8 firstObject];
+      [v8 addObject:firstObject];
     }
   }
 }
 
-- (uint64_t)_loadNextFallbackURLWithWebClip:(void *)a3 navigation:
+- (uint64_t)_loadNextFallbackURLWithWebClip:(void *)clip navigation:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 128) firstObject];
-    if (v6 && ([(TabDocument *)a1 _trySwitchingToPinnedTabOnNavigationToURL:v6]& 1) == 0)
+    firstObject = [*(self + 128) firstObject];
+    if (firstObject && ([(TabDocument *)self _trySwitchingToPinnedTabOnNavigationToURL:firstObject]& 1) == 0)
     {
-      [*(a1 + 128) removeObjectAtIndex:0];
-      v8 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:v6];
-      v9 = [(TabDocument *)a1 _requestBySettingAdvancedPrivacyProtectionsFlag:v8];
+      [*(self + 128) removeObjectAtIndex:0];
+      v8 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:firstObject];
+      v9 = [(TabDocument *)self _requestBySettingAdvancedPrivacyProtectionsFlag:v8];
 
       objc_setAssociatedObject(v9, kWebClipToNSURLRequestAssociationKey, v5, 1);
-      v10 = *(a1 + 1064);
-      if (v10 && (![v10 _webProcessIsResponsive] || (objc_msgSend(*(a1 + 288), "presentedDialog"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "completionHandlerBlocksWebProcess"), v11, (v12 & 1) != 0)))
+      v10 = *(self + 1064);
+      if (v10 && (![v10 _webProcessIsResponsive] || (objc_msgSend(*(self + 288), "presentedDialog"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "completionHandlerBlocksWebProcess"), v11, (v12 & 1) != 0)))
       {
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __58__TabDocument__loadNextFallbackURLWithWebClip_navigation___block_invoke;
         v15[3] = &unk_2781D61F8;
-        v15[4] = a1;
+        v15[4] = self;
         v16 = v9;
-        [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v15 thenDo:?];
+        [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v15 thenDo:?];
       }
 
       else
       {
-        v13 = [*(a1 + 168) loadRequest:v9 userDriven:1];
-        if (a3)
+        v13 = [*(self + 168) loadRequest:v9 userDriven:1];
+        if (clip)
         {
           v13 = v13;
-          *a3 = v13;
+          *clip = v13;
         }
       }
 
@@ -10124,10 +10124,10 @@ LABEL_38:
   [(WBSFluidProgressController *)fluidProgressController cancelFluidProgressWithProgressStateSource:self];
 }
 
-- (void)goToBackForwardListItem:(id)a3
+- (void)goToBackForwardListItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -10135,7 +10135,7 @@ LABEL_38:
     aBlock[2] = __39__TabDocument_goToBackForwardListItem___block_invoke;
     aBlock[3] = &unk_2781DAB60;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = itemCopy;
     v5 = _Block_copy(aBlock);
     v5[2](v5, 1);
 
@@ -10150,45 +10150,45 @@ void __39__TabDocument_goToBackForwardListItem___block_invoke(uint64_t a1, char 
   [(TabDocument *)WeakRetained _goToBackForwardListItem:a2 shouldDismissReader:?];
 }
 
-- (void)_goToBackForwardListItem:(char)a3 shouldDismissReader:
+- (void)_goToBackForwardListItem:(char)item shouldDismissReader:
 {
   v5 = a2;
   v6 = v5;
-  if (a1 && v5)
+  if (self && v5)
   {
-    *(a1 + 712) = 1;
-    *(a1 + 710) = a3;
+    *(self + 712) = 1;
+    *(self + 710) = item;
     v7 = +[Application sharedApplication];
     v8 = [v6 URL];
-    [v7 checkExtendedLaunchPageLoad:v8 forTabDocument:a1];
+    [v7 checkExtendedLaunchPageLoad:v8 forTabDocument:self];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __60__TabDocument__goToBackForwardListItem_shouldDismissReader___block_invoke;
     v9[3] = &unk_2781D61F8;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v6;
-    [(TabDocument *)a1 _terminateWebProcessIfNeededAndShowCrashBanner:v9 thenDo:?];
+    [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v9 thenDo:?];
   }
 }
 
 - (void)clearBackForwardListKeepingCurrentItem
 {
-  v2 = [(_SFWebView *)self->_webView backForwardList];
-  [v2 _clear];
+  backForwardList = [(_SFWebView *)self->_webView backForwardList];
+  [backForwardList _clear];
 }
 
 - (void)clearBackForwardList
 {
-  v2 = [(_SFWebView *)self->_webView backForwardList];
-  [v2 _removeAllItems];
+  backForwardList = [(_SFWebView *)self->_webView backForwardList];
+  [backForwardList _removeAllItems];
 }
 
 - (void)hibernate
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 134217984;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_215819000, a2, OS_LOG_TYPE_ERROR, "TabDocument %p is hibernating even though it has queued work to perform after terminating an unresponsive web process.", &v2, 0xCu);
 }
 
@@ -10227,38 +10227,38 @@ void __26__TabDocument_unhibernate__block_invoke(uint64_t a1)
 {
   if (self->_hibernated)
   {
-    v2 = self->_savedSessionState;
+    _sessionState = self->_savedSessionState;
   }
 
   else
   {
-    v2 = [(_SFWebView *)self->_webView _sessionState];
+    _sessionState = [(_SFWebView *)self->_webView _sessionState];
   }
 
-  return v2;
+  return _sessionState;
 }
 
-- (void)restoreSessionState:(id)a3 andNavigate:(BOOL)a4 fromSafariViewService:(BOOL)a5
+- (void)restoreSessionState:(id)state andNavigate:(BOOL)navigate fromSafariViewService:(BOOL)service
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  v10 = v9;
+  serviceCopy = service;
+  navigateCopy = navigate;
+  stateCopy = state;
+  v10 = stateCopy;
   if (self->_hibernated)
   {
-    objc_storeStrong(&self->_savedSessionState, a3);
+    objc_storeStrong(&self->_savedSessionState, state);
   }
 
   else
   {
     v11 = 1;
-    if (v5)
+    if (serviceCopy)
     {
       v11 = 2;
     }
 
     self->_sessionStateRestorationSource = v11;
-    if (v6)
+    if (navigateCopy)
     {
       self->_externalAppRedirectState = 4;
     }
@@ -10268,55 +10268,55 @@ void __26__TabDocument_unhibernate__block_invoke(uint64_t a1)
     v12[2] = __69__TabDocument_restoreSessionState_andNavigate_fromSafariViewService___block_invoke;
     v12[3] = &unk_2781D63D0;
     v12[4] = self;
-    v13 = v9;
-    v14 = v6;
+    v13 = stateCopy;
+    v14 = navigateCopy;
     [(TabDocument *)self _terminateWebProcessIfNeededAndShowCrashBanner:v12 thenDo:?];
   }
 }
 
-- (void)_loadQueuedNavigation:(void *)a1
+- (void)_loadQueuedNavigation:(void *)navigation
 {
   v3 = a2;
-  if (a1)
+  if (navigation)
   {
     v4 = MEMORY[0x277CBEBC0];
     v12 = v3;
-    v5 = [v3 localAttributes];
-    v6 = [v5 queuedNavigation];
-    v7 = [v6 objectForKeyedSubscript:@"url"];
+    localAttributes = [v3 localAttributes];
+    queuedNavigation = [localAttributes queuedNavigation];
+    v7 = [queuedNavigation objectForKeyedSubscript:@"url"];
     v8 = [v4 URLWithString:v7];
 
-    v9 = [v12 localAttributes];
-    v10 = [v9 queuedNavigation];
-    v11 = [v10 objectForKeyedSubscript:@"title"];
+    localAttributes2 = [v12 localAttributes];
+    queuedNavigation2 = [localAttributes2 queuedNavigation];
+    v11 = [queuedNavigation2 objectForKeyedSubscript:@"title"];
 
-    [a1 loadURL:v8 title:v11 skipSyncableTabUpdates:0];
+    [navigation loadURL:v8 title:v11 skipSyncableTabUpdates:0];
     v3 = v12;
   }
 }
 
-- (void)restoreStateFromTab:(id)a3
+- (void)restoreStateFromTab:(id)tab
 {
-  v22 = a3;
-  v5 = [v22 localAttributes];
-  v6 = [v5 sessionStateData];
+  tabCopy = tab;
+  localAttributes = [tabCopy localAttributes];
+  sessionStateData = [localAttributes sessionStateData];
 
-  if (v6)
+  if (sessionStateData)
   {
-    v7 = [objc_alloc(MEMORY[0x277CE38A0]) initWithData:v6];
+    v7 = [objc_alloc(MEMORY[0x277CE38A0]) initWithData:sessionStateData];
     if (v7)
     {
-      v8 = [v22 localAttributes];
-      v9 = [v8 queuedNavigation];
-      [(TabDocument *)self restoreSessionState:v7 andNavigate:v9 == 0];
+      localAttributes2 = [tabCopy localAttributes];
+      queuedNavigation = [localAttributes2 queuedNavigation];
+      [(TabDocument *)self restoreSessionState:v7 andNavigate:queuedNavigation == 0];
     }
 
-    v10 = [v22 localAttributes];
-    v11 = [v10 queuedNavigation];
+    localAttributes3 = [tabCopy localAttributes];
+    queuedNavigation2 = [localAttributes3 queuedNavigation];
 
-    if (v11)
+    if (queuedNavigation2)
     {
-      [(TabDocument *)self _loadQueuedNavigation:v22];
+      [(TabDocument *)self _loadQueuedNavigation:tabCopy];
     }
 
     goto LABEL_6;
@@ -10324,74 +10324,74 @@ void __26__TabDocument_unhibernate__block_invoke(uint64_t a1)
 
   if (!self->_hibernated)
   {
-    v12 = [v22 localAttributes];
-    v13 = [v12 queuedNavigation];
+    localAttributes4 = [tabCopy localAttributes];
+    queuedNavigation3 = [localAttributes4 queuedNavigation];
 
-    if (!v13)
+    if (!queuedNavigation3)
     {
-      v7 = [v22 url];
-      v21 = [v22 title];
-      [(TabDocument *)self loadURL:v7 title:v21 skipSyncableTabUpdates:0];
+      v7 = [tabCopy url];
+      title = [tabCopy title];
+      [(TabDocument *)self loadURL:v7 title:title skipSyncableTabUpdates:0];
 
 LABEL_6:
       goto LABEL_10;
     }
 
-    [(TabDocument *)self _loadQueuedNavigation:v22];
+    [(TabDocument *)self _loadQueuedNavigation:tabCopy];
   }
 
 LABEL_10:
-  -[TabDocument setPinned:](self, "setPinned:", [v22 isPinned]);
-  v14 = [v22 pinnedTitle];
-  v15 = [v14 copy];
+  -[TabDocument setPinned:](self, "setPinned:", [tabCopy isPinned]);
+  pinnedTitle = [tabCopy pinnedTitle];
+  v15 = [pinnedTitle copy];
   pinnedTitle = self->_pinnedTitle;
   self->_pinnedTitle = v15;
 
-  v17 = [v22 pinnedURL];
-  v18 = [v17 copy];
+  pinnedURL = [tabCopy pinnedURL];
+  v18 = [pinnedURL copy];
   pinnedURL = self->_pinnedURL;
   self->_pinnedURL = v18;
 
-  objc_storeStrong(&self->_tabGroupTab, a3);
-  v20 = [(WBTab *)self->_tabGroupTab uuid];
-  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:v20];
+  objc_storeStrong(&self->_tabGroupTab, tab);
+  uuid = [(WBTab *)self->_tabGroupTab uuid];
+  [(TabDocument *)&self->super.isa _activeParticipantsDidUpdateInTabWithUUID:uuid];
 }
 
-- (BOOL)mustShowBarsForBackForwardListItem:(id)a3
+- (BOOL)mustShowBarsForBackForwardListItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (self->_parentTabItem)
   {
-    v6 = 1;
+    safari_navigationSnapshotRequiresBars = 1;
   }
 
   else
   {
-    v6 = [(WKBackForwardListItem *)v4 safari_navigationSnapshotRequiresBars];
+    safari_navigationSnapshotRequiresBars = [(WKBackForwardListItem *)itemCopy safari_navigationSnapshotRequiresBars];
   }
 
-  return v6;
+  return safari_navigationSnapshotRequiresBars;
 }
 
 - (BOOL)hasFailedURL
 {
-  v2 = [(_SFWebView *)self->_webView _unreachableURL];
-  v3 = v2 != 0;
+  _unreachableURL = [(_SFWebView *)self->_webView _unreachableURL];
+  v3 = _unreachableURL != 0;
 
   return v3;
 }
 
-- (void)setAllowsRemoteInspection:(BOOL)a3
+- (void)setAllowsRemoteInspection:(BOOL)inspection
 {
-  if (self->_allowsInspectionWhenUnlocked != a3)
+  if (self->_allowsInspectionWhenUnlocked != inspection)
   {
-    self->_allowsInspectionWhenUnlocked = a3;
-    v5 = [(TabDocument *)self allowsRemoteInspection];
-    [(_SFWebView *)self->_webView setInspectable:v5];
+    self->_allowsInspectionWhenUnlocked = inspection;
+    allowsRemoteInspection = [(TabDocument *)self allowsRemoteInspection];
+    [(_SFWebView *)self->_webView setInspectable:allowsRemoteInspection];
     readerWebView = self->_readerWebView;
 
-    [(_SFWebView *)readerWebView setInspectable:v5];
+    [(_SFWebView *)readerWebView setInspectable:allowsRemoteInspection];
   }
 }
 
@@ -10403,20 +10403,20 @@ LABEL_10:
   [(SFDialogController *)dialogController presentNextDialogIfNeeded];
 }
 
-- (void)_getAuthenticationForAutoFillController:(void *)a3 withCompletion:
+- (void)_getAuthenticationForAutoFillController:(void *)controller withCompletion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  controllerCopy = controller;
+  if (self)
   {
-    v7 = [v5 authenticationContext];
+    authenticationContext = [v5 authenticationContext];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___block_invoke;
     v8[3] = &unk_2781DB2D8;
-    v10 = v6;
+    v10 = controllerCopy;
     v9 = v5;
-    [v7 authenticateForClient:v9 userInitiated:1 completion:v8];
+    [authenticationContext authenticateForClient:v9 userInitiated:1 completion:v8];
   }
 }
 
@@ -10427,17 +10427,17 @@ id __39__TabDocument__addTitlePrefixToString___block_invoke(uint64_t a1, uint64_
   return v2;
 }
 
-- (void)dataForQuickLookDocument:(id)a3 completionHandler:(id)a4
+- (void)dataForQuickLookDocument:(id)document completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__TabDocument_dataForQuickLookDocument_completionHandler___block_invoke;
   block[3] = &unk_2781DAC50;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -10460,27 +10460,27 @@ void __58__TabDocument_dataForQuickLookDocument_completionHandler___block_invoke
   }
 }
 
-- (id)suggestedFileNameForQuickLookDocument:(id)a3
+- (id)suggestedFileNameForQuickLookDocument:(id)document
 {
-  v3 = [(_SFWebView *)self->_webView _sf_suggestedFilename];
+  _sf_suggestedFilename = [(_SFWebView *)self->_webView _sf_suggestedFilename];
 
-  return v3;
+  return _sf_suggestedFilename;
 }
 
-- (void)loadTestURL:(id)a3 withInjectedBundle:(BOOL)a4 withCallback:(id)a5 pagesNeedingMemoryWarningSent:(id)a6
+- (void)loadTestURL:(id)l withInjectedBundle:(BOOL)bundle withCallback:(id)callback pagesNeedingMemoryWarningSent:(id)sent
 {
-  v7 = a4;
-  v17 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:a3];
+  bundleCopy = bundle;
+  callbackCopy = callback;
+  sentCopy = sent;
+  v11 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:l];
   [(TabDocument *)self clearPageLoadStatistics];
-  v12 = [[PageLoadTestStatistics alloc] initWithInjectedBundle:v7 withCallback:v17];
+  v12 = [[PageLoadTestStatistics alloc] initWithInjectedBundle:bundleCopy withCallback:callbackCopy];
   pageLoadStatistics = self->_pageLoadStatistics;
   self->_pageLoadStatistics = v12;
 
   if (!self->_pageLoadTest)
   {
-    v14 = [[PageLoadTest alloc] initWithTabDocument:self pagesNeedingMemoryWarningSent:v10];
+    v14 = [[PageLoadTest alloc] initWithTabDocument:self pagesNeedingMemoryWarningSent:sentCopy];
     pageLoadTest = self->_pageLoadTest;
     self->_pageLoadTest = v14;
   }
@@ -10495,8 +10495,8 @@ void __58__TabDocument_dataForQuickLookDocument_completionHandler___block_invoke
   if (!sharingExtensionController)
   {
     v4 = objc_alloc(MEMORY[0x277CDB898]);
-    v5 = [(TabDocument *)self webView];
-    v6 = [v4 initWithWebView:v5];
+    webView = [(TabDocument *)self webView];
+    v6 = [v4 initWithWebView:webView];
     v7 = self->_sharingExtensionController;
     self->_sharingExtensionController = v6;
 
@@ -10506,19 +10506,19 @@ void __58__TabDocument_dataForQuickLookDocument_completionHandler___block_invoke
   return sharingExtensionController;
 }
 
-- (void)saveWebArchiveToPath:(id)a3 completion:(id)a4
+- (void)saveWebArchiveToPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  completionCopy = completion;
   webView = self->_webView;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__TabDocument_saveWebArchiveToPath_completion___block_invoke;
   v11[3] = &unk_2781DAC78;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = pathCopy;
+  v13 = completionCopy;
+  v9 = pathCopy;
+  v10 = completionCopy;
   [(_SFWebView *)webView _getWebArchiveDataWithCompletionHandler:v11];
 }
 
@@ -10548,14 +10548,14 @@ void __47__TabDocument_saveWebArchiveToPath_completion___block_invoke(uint64_t a
   }
 }
 
-- (void)setSourceApplicationBundleIdentifierForNextCommit:(id)a3
+- (void)setSourceApplicationBundleIdentifierForNextCommit:(id)commit
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  commitCopy = commit;
+  v4 = [commitCopy copy];
   sourceApplicationBundleIdentifierForNextCommit = self->_sourceApplicationBundleIdentifierForNextCommit;
   self->_sourceApplicationBundleIdentifierForNextCommit = v4;
 
-  if (v6)
+  if (commitCopy)
   {
     self->_sourceApplicationIsValid = 1;
   }
@@ -10564,31 +10564,31 @@ void __47__TabDocument_saveWebArchiveToPath_completion___block_invoke(uint64_t a
 - (NSUUID)ownerUUID
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained UUID];
+  uUID = [WeakRetained UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (SFTabStateData)tabStateData
 {
   v3 = objc_alloc_init(MEMORY[0x277D28DC0]);
-  v4 = [(TabDocument *)self URLForStatePersisting];
-  v5 = [v4 safari_originalDataAsString];
-  v6 = v5;
+  uRLForStatePersisting = [(TabDocument *)self URLForStatePersisting];
+  safari_originalDataAsString = [uRLForStatePersisting safari_originalDataAsString];
+  v6 = safari_originalDataAsString;
   v7 = &stru_2827BF158;
-  if (v5)
+  if (safari_originalDataAsString)
   {
-    v7 = v5;
+    v7 = safari_originalDataAsString;
   }
 
   v8 = v7;
 
-  v9 = [(TabDocument *)self uuid];
-  v10 = [v9 UUIDString];
-  [v3 setUUIDString:v10];
+  uuid = [(TabDocument *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [v3 setUUIDString:uUIDString];
 
-  v11 = [(TabDocument *)&self->super.isa _titleForStatePersistingForTabStateData];
-  [v3 setTitle:v11];
+  _titleForStatePersistingForTabStateData = [(TabDocument *)&self->super.isa _titleForStatePersistingForTabStateData];
+  [v3 setTitle:_titleForStatePersistingForTabStateData];
 
   [v3 setUrl:v8];
   if (self->_hasDeferredNavigation)
@@ -10599,20 +10599,20 @@ void __47__TabDocument_saveWebArchiveToPath_completion___block_invoke(uint64_t a
     [v3 setShowingReader:0];
     [v3 setReaderViewTopScrollOffset:0];
     [v3 setDisplayingStandaloneImage:0];
-    v12 = 0;
+    wasOpenedFromLink = 0;
   }
 
   else
   {
-    v13 = [v4 isFileURL];
-    v14 = v8;
-    if (v13)
+    isFileURL = [uRLForStatePersisting isFileURL];
+    uRLString = v8;
+    if (isFileURL)
     {
-      v14 = [(TabDocument *)self URLString];
+      uRLString = [(TabDocument *)self URLString];
     }
 
-    [v3 setUserVisibleURL:v14];
-    if (v13)
+    [v3 setUserVisibleURL:uRLString];
+    if (isFileURL)
     {
     }
 
@@ -10621,29 +10621,29 @@ void __47__TabDocument_saveWebArchiveToPath_completion___block_invoke(uint64_t a
     [v3 setReadingListBookmarkID:{-[TabDocument readingListBookmarkID](self, "readingListBookmarkID")}];
     if (self->_hibernated)
     {
-      v15 = [(TabDocument *)self shouldRestoreReader];
+      shouldRestoreReader = [(TabDocument *)self shouldRestoreReader];
     }
 
     else
     {
-      v15 = [(TabDocument *)self isShowingReader];
+      shouldRestoreReader = [(TabDocument *)self isShowingReader];
     }
 
-    [v3 setShowingReader:v15];
+    [v3 setShowingReader:shouldRestoreReader];
     [v3 setReaderViewTopScrollOffset:{-[TabDocument readerViewTopScrollOffset](self, "readerViewTopScrollOffset")}];
     [v3 setDisplayingStandaloneImage:{-[TabDocument isDisplayingStandaloneImage](self, "isDisplayingStandaloneImage")}];
-    v12 = [(TabDocument *)self wasOpenedFromLink];
+    wasOpenedFromLink = [(TabDocument *)self wasOpenedFromLink];
   }
 
-  [v3 setWasOpenedFromLink:v12];
+  [v3 setWasOpenedFromLink:wasOpenedFromLink];
   [v3 setPrivateBrowsing:{-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")}];
-  v16 = [(TabDocument *)&self->super.isa _sessionStateWithoutParentItem];
-  v17 = [v16 data];
-  [v3 setSessionStateData:v17];
+  _sessionStateWithoutParentItem = [(TabDocument *)&self->super.isa _sessionStateWithoutParentItem];
+  data = [_sessionStateWithoutParentItem data];
+  [v3 setSessionStateData:data];
 
-  v18 = [(TabDocument *)self ownerUUID];
-  v19 = [v18 UUIDString];
-  [v3 setOwningBrowserWindowUUIDString:v19];
+  ownerUUID = [(TabDocument *)self ownerUUID];
+  uUIDString2 = [ownerUUID UUIDString];
+  [v3 setOwningBrowserWindowUUIDString:uUIDString2];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [v3 setOrderIndex:{objc_msgSend(WeakRetained, "orderIndexForTab:", self)}];
@@ -10659,15 +10659,15 @@ void __47__TabDocument_saveWebArchiveToPath_completion___block_invoke(uint64_t a
   }
 
   [v3 setSkipUpdate:v21];
-  v22 = [v3 sessionStateData];
-  [v3 setUncompressedSessionStateDataSize:{objc_msgSend(v22, "length")}];
+  sessionStateData = [v3 sessionStateData];
+  [v3 setUncompressedSessionStateDataSize:{objc_msgSend(sessionStateData, "length")}];
 
-  v23 = [(TabDocument *)self tabGroupTab];
-  v24 = [v23 tabGroupUUID];
-  [v3 setTabGroupUUID:v24];
+  tabGroupTab = [(TabDocument *)self tabGroupTab];
+  tabGroupUUID = [tabGroupTab tabGroupUUID];
+  [v3 setTabGroupUUID:tabGroupUUID];
 
-  v25 = [(TabDocument *)self profileIdentifier];
-  [v3 setProfileIdentifier:v25];
+  profileIdentifier = [(TabDocument *)self profileIdentifier];
+  [v3 setProfileIdentifier:profileIdentifier];
 
   [(TabDocument *)self setPersistWhenHibernated:0];
 
@@ -10715,23 +10715,23 @@ void __109__TabDocument__openAppLinkInApp_fromOriginalRequest_updateAppLinkStrat
   *(v2 + 40) = 0;
 }
 
-- (void)_checkForAppLinkWithCompletion:(uint64_t)a1
+- (void)_checkForAppLinkWithCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
-    v4 = [*(a1 + 1064) URL];
-    if ([v4 safari_isHTTPFamilyURL] && !objc_msgSend(a1, "isShowingErrorPage"))
+    v4 = [*(completion + 1064) URL];
+    if ([v4 safari_isHTTPFamilyURL] && !objc_msgSend(completion, "isShowingErrorPage"))
     {
-      v6 = [*(a1 + 1064) backForwardList];
-      v7 = [v6 currentItem];
-      v8 = *(a1 + 320);
-      *(a1 + 320) = v7;
+      backForwardList = [*(completion + 1064) backForwardList];
+      currentItem = [backForwardList currentItem];
+      v8 = *(completion + 320);
+      *(completion + 320) = currentItem;
 
-      v9 = *(a1 + 958);
-      v10 = *(a1 + 1216);
+      v9 = *(completion + 958);
+      v10 = *(completion + 1216);
       v11 = [objc_alloc(MEMORY[0x277D4A6F0]) initWithURL:v4];
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, completion);
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __46__TabDocument__checkForAppLinkWithCompletion___block_invoke;
@@ -10751,8 +10751,8 @@ void __109__TabDocument__openAppLinkInApp_fromOriginalRequest_updateAppLinkStrat
 
     else
     {
-      v5 = *(a1 + 320);
-      *(a1 + 320) = 0;
+      v5 = *(completion + 320);
+      *(completion + 320) = 0;
 
       (*(v3 + 2))(v3, 0);
     }
@@ -10868,62 +10868,62 @@ void __46__TabDocument__checkForAppLinkWithCompletion___block_invoke_3(uint64_t 
 
 - (id)_contentBlockerStatisticsStore
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = [a1 isPrivateBrowsingEnabled];
-    v3 = *(v1 + 640);
-    if (v2)
+    selfCopy = self;
+    isPrivateBrowsingEnabled = [self isPrivateBrowsingEnabled];
+    v3 = *(selfCopy + 640);
+    if (isPrivateBrowsingEnabled)
     {
       if (!v3)
       {
         v4 = objc_alloc_init(MEMORY[0x277D49EE8]);
-        v5 = *(v1 + 640);
-        *(v1 + 640) = v4;
+        profileIdentifier = *(selfCopy + 640);
+        *(selfCopy + 640) = v4;
 LABEL_7:
 
-        v3 = *(v1 + 640);
+        v3 = *(selfCopy + 640);
       }
     }
 
     else if (!v3)
     {
       v6 = MEMORY[0x277D49EF0];
-      v5 = [(TabDocument *)v1 profileIdentifier];
-      v7 = [v6 storeForProfileWithIdentifier:v5];
-      v8 = *(v1 + 640);
-      *(v1 + 640) = v7;
+      profileIdentifier = [(TabDocument *)selfCopy profileIdentifier];
+      v7 = [v6 storeForProfileWithIdentifier:profileIdentifier];
+      v8 = *(selfCopy + 640);
+      *(selfCopy + 640) = v7;
 
       goto LABEL_7;
     }
 
-    a1 = v3;
+    self = v3;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_displayAttributionBannerForHighlight:(unsigned __int8 *)a1
+- (void)_displayAttributionBannerForHighlight:(unsigned __int8 *)highlight
 {
   v3 = a2;
-  if (a1)
+  if (highlight)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, highlight);
     v4 = [objc_alloc(MEMORY[0x277D28C88]) initWithHighlight:v3];
-    v5 = [v3 identifier];
+    identifier = [v3 identifier];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53__TabDocument__displayAttributionBannerForHighlight___block_invoke;
     v9[3] = &unk_2781DAD68;
     objc_copyWeak(&v11, &location);
-    v6 = v5;
+    v6 = identifier;
     v10 = v6;
     [v4 setCloseActionHandler:v9];
-    [v4 setInitiallyBehindNavigationBar:a1[958]];
-    [(TabDocument *)a1 _setAppBannerWhenPainted:v4];
+    [v4 setInitiallyBehindNavigationBar:highlight[958]];
+    [(TabDocument *)highlight _setAppBannerWhenPainted:v4];
     v7 = +[Application sharedApplication];
-    v8 = [v7 highlightManager];
-    [v8 setPresenter:a1 forHighlightIdentifier:v6];
+    highlightManager = [v7 highlightManager];
+    [highlightManager setPresenter:highlight forHighlightIdentifier:v6];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -10946,72 +10946,72 @@ void __53__TabDocument__displayAttributionBannerForHighlight___block_invoke(uint
 
 - (void)_checkForHighlight
 {
-  if (!a1 || ([a1 isPrivateBrowsingEnabled] & 1) != 0)
+  if (!self || ([self isPrivateBrowsingEnabled] & 1) != 0)
   {
     return;
   }
 
-  v12 = [*(a1 + 1064) URL];
+  v12 = [*(self + 1064) URL];
   v2 = +[Application sharedApplication];
-  v3 = [v2 highlightManager];
+  highlightManager = [v2 highlightManager];
 
-  if (![v12 safari_isHTTPFamilyURL] || (objc_msgSend(a1, "isShowingErrorPage") & 1) != 0)
+  if (![v12 safari_isHTTPFamilyURL] || (objc_msgSend(self, "isShowingErrorPage") & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 highlights];
-  if ([v5 count])
+  highlights = [highlightManager highlights];
+  if ([highlights count])
   {
   }
 
   else
   {
-    v6 = [v3 isFetchingHighlights];
+    isFetchingHighlights = [highlightManager isFetchingHighlights];
 
-    if ((v6 & 1) == 0)
+    if ((isFetchingHighlights & 1) == 0)
     {
 LABEL_6:
-      v4 = *(a1 + 328);
-      *(a1 + 328) = 0;
+      safari_highlight = *(self + 328);
+      *(self + 328) = 0;
       goto LABEL_7;
     }
   }
 
-  v7 = [*(a1 + 1064) backForwardList];
-  v8 = [v7 currentItem];
-  v4 = [v8 safari_highlight];
+  backForwardList = [*(self + 1064) backForwardList];
+  currentItem = [backForwardList currentItem];
+  safari_highlight = [currentItem safari_highlight];
 
-  if (v4)
+  if (safari_highlight)
   {
-    [(TabDocument *)a1 _displayAttributionBannerForHighlight:v4];
+    [(TabDocument *)self _displayAttributionBannerForHighlight:safari_highlight];
   }
 
   else
   {
-    v9 = [*(a1 + 1064) backForwardList];
-    v10 = [v9 currentItem];
-    v11 = *(a1 + 328);
-    *(a1 + 328) = v10;
+    backForwardList2 = [*(self + 1064) backForwardList];
+    currentItem2 = [backForwardList2 currentItem];
+    v11 = *(self + 328);
+    *(self + 328) = currentItem2;
 
-    [v3 updateHighlightForAttributionPresenter:a1];
+    [highlightManager updateHighlightForAttributionPresenter:self];
   }
 
 LABEL_7:
 }
 
-- (void)displayAttributionBannerForHighlightIfNeeded:(id)a3
+- (void)displayAttributionBannerForHighlightIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if (![(TabDocument *)self isPrivateBrowsingEnabled])
   {
-    v5 = [(_SFWebView *)self->_webView backForwardList];
-    v6 = [v5 currentItem];
+    backForwardList = [(_SFWebView *)self->_webView backForwardList];
+    currentItem = [backForwardList currentItem];
     backForwardListItemForCurrentHighlightBannerCheck = self->_backForwardListItemForCurrentHighlightBannerCheck;
 
-    if (v6 == backForwardListItemForCurrentHighlightBannerCheck)
+    if (currentItem == backForwardListItemForCurrentHighlightBannerCheck)
     {
-      if (!v4 || (self->_appBanner || self->_appBannerPendingFirstPaint) && !self->_appBannerRemovalWasDeferred)
+      if (!neededCopy || (self->_appBanner || self->_appBannerPendingFirstPaint) && !self->_appBannerRemovalWasDeferred)
       {
         v11 = self->_backForwardListItemForCurrentHighlightBannerCheck;
         self->_backForwardListItemForCurrentHighlightBannerCheck = 0;
@@ -11020,17 +11020,17 @@ LABEL_7:
       else
       {
         objc_initWeak(&location, self);
-        v8 = [v4 identifier];
-        v9 = [MEMORY[0x277D28C90] sharedTracker];
+        identifier = [neededCopy identifier];
+        mEMORY[0x277D28C90] = [MEMORY[0x277D28C90] sharedTracker];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invoke;
         v12[3] = &unk_2781DAD90;
         objc_copyWeak(&v15, &location);
-        v10 = v8;
+        v10 = identifier;
         v13 = v10;
-        v14 = v4;
-        [v9 isBannerBlockedForHighlight:v10 completion:v12];
+        v14 = neededCopy;
+        [mEMORY[0x277D28C90] isBannerBlockedForHighlight:v10 completion:v12];
 
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -11082,21 +11082,21 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
 
 - (WKBackForwardListItem)currentBackForwardListItem
 {
-  v2 = [(_SFWebView *)self->_webView backForwardList];
-  v3 = [v2 currentItem];
+  backForwardList = [(_SFWebView *)self->_webView backForwardList];
+  currentItem = [backForwardList currentItem];
 
-  return v3;
+  return currentItem;
 }
 
-- (void)hideBannerForHighlightIdentifier:(id)a3
+- (void)hideBannerForHighlightIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SFPinnableBanner *)self->_appBanner highlight];
-    v5 = [v4 identifier];
-    v6 = [v11 isEqualToString:v5];
+    highlight = [(SFPinnableBanner *)self->_appBanner highlight];
+    identifier = [highlight identifier];
+    v6 = [identifierCopy isEqualToString:identifier];
 
     if (v6)
     {
@@ -11106,43 +11106,43 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
       appBanner = self->_appBanner;
       self->_appBanner = 0;
 
-      v9 = [(_SFWebView *)self->_webView backForwardList];
-      v10 = [v9 currentItem];
-      [v10 safari_setHighlight:0];
+      backForwardList = [(_SFWebView *)self->_webView backForwardList];
+      currentItem = [backForwardList currentItem];
+      [currentItem safari_setHighlight:0];
     }
   }
 }
 
-- (void)_webView:(id)a3 mouseDidMoveOverElement:(id)a4 withFlags:(int64_t)a5 userInfo:(id)a6
+- (void)_webView:(id)view mouseDidMoveOverElement:(id)element withFlags:(int64_t)flags userInfo:(id)info
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v11)
+  viewCopy = view;
+  elementCopy = element;
+  infoCopy = info;
+  if (infoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v13 = [WeakRetained rootViewController];
-      v14 = [v13 statusBarView];
+      rootViewController = [WeakRetained rootViewController];
+      statusBarView = [rootViewController statusBarView];
 
-      v15 = [v11 safari_URLForKey:*MEMORY[0x277CDB9D8]];
-      v16 = [v11 objectForKeyedSubscript:*MEMORY[0x277CDB9C8]];
-      v17 = [v11 objectForKeyedSubscript:*MEMORY[0x277CDB9D0]];
+      v15 = [infoCopy safari_URLForKey:*MEMORY[0x277CDB9D8]];
+      v16 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CDB9C8]];
+      v17 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CDB9D0]];
       v18 = objc_alloc(MEMORY[0x277D28CA8]);
       v19 = [(TabDocument *)self URL];
-      v20 = [v18 initWithHoveredLinkURL:v15 forCurrentURL:v19 modifierFlags:a5 frame:v16 targetFrame:v17];
-      [v14 setStatusMessage:v20];
+      v20 = [v18 initWithHoveredLinkURL:v15 forCurrentURL:v19 modifierFlags:flags frame:v16 targetFrame:v17];
+      [statusBarView setStatusMessage:v20];
     }
   }
 }
 
-- (void)addPassesViewControllerDidFinish:(id)a3
+- (void)addPassesViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self dismissViewControllerAnimated:v4];
+  [WeakRetained tabDocument:self dismissViewControllerAnimated:finishCopy];
 
   v6 = [(TabDocument *)self URL];
   if (v6)
@@ -11156,41 +11156,41 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
   }
 }
 
-- (void)_webView:(id)a3 storeAppHighlight:(id)a4 inNewGroup:(BOOL)a5 requestOriginatedInApp:(BOOL)a6
+- (void)_webView:(id)view storeAppHighlight:(id)highlight inNewGroup:(BOOL)group requestOriginatedInApp:(BOOL)app
 {
-  v6 = a6;
-  v7 = a5;
-  v20 = a3;
-  v10 = a4;
+  appCopy = app;
+  groupCopy = group;
+  viewCopy = view;
+  highlightCopy = highlight;
   v11 = +[Application sharedApplication];
-  v12 = [v11 systemNoteTakingController];
+  systemNoteTakingController = [v11 systemNoteTakingController];
 
   v13 = objc_alloc(MEMORY[0x277CC1EF0]);
   v14 = [v13 initWithActivityType:*MEMORY[0x277CCA850]];
-  v15 = [(NSUserActivity *)self->_userActivity title];
-  [v14 setTitle:v15];
+  title = [(NSUserActivity *)self->_userActivity title];
+  [v14 setTitle:title];
 
-  v16 = [(NSUserActivity *)self->_userActivity webpageURL];
-  [v14 setWebpageURL:v16];
+  webpageURL = [(NSUserActivity *)self->_userActivity webpageURL];
+  [v14 setWebpageURL:webpageURL];
 
-  v17 = [v10 highlight];
-  v18 = [v10 text];
-  v19 = [v10 image];
-  [v12 saveHighlightsData:v17 selectedText:v18 selectedImage:v19 newGroup:v7 originatedInApp:v6 webView:v20 userActivity:v14];
+  highlight = [highlightCopy highlight];
+  text = [highlightCopy text];
+  image = [highlightCopy image];
+  [systemNoteTakingController saveHighlightsData:highlight selectedText:text selectedImage:image newGroup:groupCopy originatedInApp:appCopy webView:viewCopy userActivity:v14];
 }
 
-- (void)sfWebViewDidChangeSafeAreaInsets:(id)a3
+- (void)sfWebViewDidChangeSafeAreaInsets:(id)insets
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentDidChangeSafeAreaInsets:self];
 }
 
-- (void)sfWebViewDidDismissFindOnPage:(id)a3
+- (void)sfWebViewDidDismissFindOnPage:(id)page
 {
   if ([(TabDocument *)self isPrivateBrowsingEnabled])
   {
     v4 = persistedFindInteractionSearchText;
-    v5 = [(_SFWebView *)self->_webView findInteraction];
+    findInteraction = [(_SFWebView *)self->_webView findInteraction];
     if (v4)
     {
       v6 = v4;
@@ -11201,8 +11201,8 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
       v6 = &stru_2827BF158;
     }
 
-    v11 = v5;
-    [v5 setSearchText:v6];
+    v11 = findInteraction;
+    [findInteraction setSearchText:v6];
 
     [MEMORY[0x277D754E8] _setGlobalFindBuffer:persistedFindInteractionSearchText];
     v7 = MEMORY[0x277CE3850];
@@ -11221,44 +11221,44 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
 
   else
   {
-    v12 = [(_SFWebView *)self->_webView findInteraction];
-    v9 = [v12 searchText];
+    findInteraction2 = [(_SFWebView *)self->_webView findInteraction];
+    searchText = [findInteraction2 searchText];
     v10 = persistedFindInteractionSearchText;
-    persistedFindInteractionSearchText = v9;
+    persistedFindInteractionSearchText = searchText;
   }
 }
 
-- (id)sfWebView:(id)a3 didStartDownload:(id)a4
+- (id)sfWebView:(id)view didStartDownload:(id)download
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
-  v7 = [v6 downloadFromWKDownload:v5 userInitiatedAction:self->_lastUserInitiatedAction];
-  v8 = [MEMORY[0x277CDB7A8] sharedManager];
-  [v7 setDelegate:v8];
-  [v8 deferAddingDownloadWhenStarted:v7];
+  downloadCopy = download;
+  mEMORY[0x277CDB7A0] = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
+  v7 = [mEMORY[0x277CDB7A0] downloadFromWKDownload:downloadCopy userInitiatedAction:self->_lastUserInitiatedAction];
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  [v7 setDelegate:mEMORY[0x277CDB7A8]];
+  [mEMORY[0x277CDB7A8] deferAddingDownloadWhenStarted:v7];
   objc_storeStrong(&self->_activeDownload, v7);
 
   return v7;
 }
 
-- (id)overrideUndoManagerForSFWebView:(id)a3
+- (id)overrideUndoManagerForSFWebView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if ([WeakRetained overridesUndoManagerForClosedTabs])
   {
-    v4 = [WeakRetained tabController];
-    v5 = [v4 undoManager];
+    tabController = [WeakRetained tabController];
+    undoManager = [tabController undoManager];
   }
 
   else
   {
-    v5 = 0;
+    undoManager = 0;
   }
 
-  return v5;
+  return undoManager;
 }
 
-- (BOOL)sfWebViewShouldFillStringForFind:(id)a3
+- (BOOL)sfWebViewShouldFillStringForFind:(id)find
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -11274,7 +11274,7 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
   return v5;
 }
 
-- (BOOL)sfWebViewCanFindNextOrPrevious:(id)a3
+- (BOOL)sfWebViewCanFindNextOrPrevious:(id)previous
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -11298,16 +11298,16 @@ void __60__TabDocument_displayAttributionBannerForHighlightIfNeeded___block_invo
 
 - (BOOL)canOverrideStatusBar
 {
-  v2 = self;
-  v3 = [(TabDocument *)self browserController];
-  v4 = [v3 tabCollectionViewProvider];
-  v5 = [v4 tabThumbnailCollectionView];
+  selfCopy = self;
+  browserController = [(TabDocument *)self browserController];
+  tabCollectionViewProvider = [browserController tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
-  v6 = [v2 isActive];
-  if (v6)
+  isActive = [selfCopy isActive];
+  if (isActive)
   {
-    v2 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v2 applicationState] != 2)
+    selfCopy = [MEMORY[0x277D75128] sharedApplication];
+    if ([selfCopy applicationState] != 2)
     {
       v8 = 0;
 LABEL_9:
@@ -11316,10 +11316,10 @@ LABEL_9:
     }
   }
 
-  v7 = v5;
+  v7 = tabThumbnailCollectionView;
   v8 = [v7 presentationState] != 1 && objc_msgSend(v7, "presentationState") != 2;
 
-  if (v6)
+  if (isActive)
   {
     goto LABEL_9;
   }
@@ -11393,31 +11393,31 @@ LABEL_10:
 
 - (BOOL)atLeastOneOtherTabPlayingAudio
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
-  v5 = [v4 tabsWithSound];
+  browserWindowController = [WeakRetained browserWindowController];
+  tabsWithSound = [browserWindowController tabsWithSound];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__TabDocument_atLeastOneOtherTabPlayingAudio__block_invoke;
   v7[3] = &unk_2781D6F98;
-  v7[4] = v2;
-  LOBYTE(v2) = [v5 safari_containsObjectPassingTest:v7];
+  v7[4] = selfCopy;
+  LOBYTE(selfCopy) = [tabsWithSound safari_containsObjectPassingTest:v7];
 
-  return v2;
+  return selfCopy;
 }
 
 - (unint64_t)numberOfOtherUnmutedTabsPlayingAudio
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
-  v5 = [v4 tabsWithSound];
+  browserWindowController = [WeakRetained browserWindowController];
+  tabsWithSound = [browserWindowController tabsWithSound];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke;
   v9[3] = &unk_2781DADB8;
   v9[4] = self;
-  v6 = [v5 indexesOfObjectsPassingTest:v9];
+  v6 = [tabsWithSound indexesOfObjectsPassingTest:v9];
   v7 = [v6 count];
 
   return v7;
@@ -11444,14 +11444,14 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
 {
   v15 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
+  browserWindowController = [WeakRetained browserWindowController];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 tabsWithSound];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tabsWithSound = [browserWindowController tabsWithSound];
+  v6 = [tabsWithSound countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -11462,7 +11462,7 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tabsWithSound);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -11475,7 +11475,7 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [tabsWithSound countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -11486,14 +11486,14 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
 {
   v15 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
+  browserWindowController = [WeakRetained browserWindowController];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 tabsWithSound];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  tabsWithSound = [browserWindowController tabsWithSound];
+  v6 = [tabsWithSound countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -11504,7 +11504,7 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tabsWithSound);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -11517,7 +11517,7 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
       }
 
       while (v6 != v8);
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [tabsWithSound countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -11527,18 +11527,18 @@ uint64_t __51__TabDocument_numberOfOtherUnmutedTabsPlayingAudio__block_invoke(ui
 - (NSString)tabGroupUUID
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 tabGroups];
+  tabController = [WeakRetained tabController];
+  tabGroups = [tabController tabGroups];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__TabDocument_tabGroupUUID__block_invoke;
   v9[3] = &unk_2781DAE08;
   v9[4] = self;
-  v6 = [v5 safari_firstObjectPassingTest:v9];
+  v6 = [tabGroups safari_firstObjectPassingTest:v9];
 
-  v7 = [v6 uuid];
+  uuid = [v6 uuid];
 
-  return v7;
+  return uuid;
 }
 
 uint64_t __27__TabDocument_tabGroupUUID__block_invoke(uint64_t a1, void *a2)
@@ -11563,169 +11563,169 @@ uint64_t __27__TabDocument_tabGroupUUID__block_invoke_2(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)mediaStateDidChangeNeedsDelay:(uint64_t)a1
+- (void)mediaStateDidChangeNeedsDelay:(uint64_t)delay
 {
-  if (!a1)
+  if (!delay)
   {
     return;
   }
 
-  [*(a1 + 512) invalidate];
-  v4 = *(a1 + 512);
-  *(a1 + 512) = 0;
+  [*(delay + 512) invalidate];
+  v4 = *(delay + 512);
+  *(delay + 512) = 0;
 
-  v5 = *(a1 + 480);
+  v5 = *(delay + 480);
   if ((v5 & 2) != 0)
   {
-    v8 = a1;
+    delayCopy5 = delay;
     v9 = 2;
   }
 
   else if (v5)
   {
-    v8 = a1;
+    delayCopy5 = delay;
     v9 = 1;
   }
 
   else if ((v5 & 8) != 0)
   {
-    v8 = a1;
+    delayCopy5 = delay;
     v9 = 4;
   }
 
   else if ((v5 & 4) != 0)
   {
-    v8 = a1;
+    delayCopy5 = delay;
     v9 = 3;
   }
 
   else
   {
-    if (*(a1 + 488))
+    if (*(delay + 488))
     {
       if (a2)
       {
-        v6 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:a1 target:sel__updateAudioUI_ selector:0 userInfo:0 repeats:1.75];
-        v7 = *(a1 + 512);
-        *(a1 + 512) = v6;
+        v6 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:delay target:sel__updateAudioUI_ selector:0 userInfo:0 repeats:1.75];
+        v7 = *(delay + 512);
+        *(delay + 512) = v6;
 
-        v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-        [v10 addTimer:*(a1 + 512) forMode:*MEMORY[0x277CBE738]];
+        currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+        [currentRunLoop addTimer:*(delay + 512) forMode:*MEMORY[0x277CBE738]];
       }
 
       else
       {
 
-        [a1 _updateAudioUI:0];
+        [delay _updateAudioUI:0];
       }
 
       return;
     }
 
-    v8 = a1;
+    delayCopy5 = delay;
     v9 = 0;
   }
 
-  [(TabDocument *)v8 setMediaStateIcon:v9];
+  [(TabDocument *)delayCopy5 setMediaStateIcon:v9];
 }
 
-- (void)addMediaSuspensionReason:(unint64_t)a3
+- (void)addMediaSuspensionReason:(unint64_t)reason
 {
-  if (a3)
+  if (reason)
   {
     mediaSuspensionReasons = self->_mediaSuspensionReasons;
     if (!mediaSuspensionReasons)
     {
-      v6 = [(TabDocument *)self webView];
-      [v6 _suspendAllMediaPlayback];
+      webView = [(TabDocument *)self webView];
+      [webView _suspendAllMediaPlayback];
 
       [(TabDocument *)self dismissSiriReaderMediaSessionImmediately:0];
       mediaSuspensionReasons = self->_mediaSuspensionReasons;
     }
 
-    self->_mediaSuspensionReasons = mediaSuspensionReasons | a3;
+    self->_mediaSuspensionReasons = mediaSuspensionReasons | reason;
   }
 }
 
-- (void)removeMediaSuspensionReason:(unint64_t)a3
+- (void)removeMediaSuspensionReason:(unint64_t)reason
 {
-  if (a3)
+  if (reason)
   {
-    v3 = (self->_mediaSuspensionReasons & ~a3) == 0;
-    self->_mediaSuspensionReasons &= ~a3;
+    v3 = (self->_mediaSuspensionReasons & ~reason) == 0;
+    self->_mediaSuspensionReasons &= ~reason;
     if (v3)
     {
-      v4 = [(TabDocument *)self webView];
-      [v4 _resumeAllMediaPlayback];
+      webView = [(TabDocument *)self webView];
+      [webView _resumeAllMediaPlayback];
     }
   }
 }
 
-- (BOOL)_handleTwoFingerTapOnLinkWithContext:(uint64_t)a1
+- (BOOL)_handleTwoFingerTapOnLinkWithContext:(uint64_t)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v5 = [v3 navigationAction];
-    v6 = [v5 request];
-    v7 = [v6 URL];
+    WeakRetained = objc_loadWeakRetained((context + 992));
+    navigationAction = [v3 navigationAction];
+    request = [navigationAction request];
+    v7 = [request URL];
 
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 BOOLForKey:*MEMORY[0x277D29270]];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D29270]];
 
     v10 = [WeakRetained loadURLInNewTab:v7 inBackground:v9];
-    v11 = [MEMORY[0x277D499B8] sharedLogger];
-    v12 = [WeakRetained tabCollectionViewProvider];
-    [v11 didOpenNewTabWithURLWithTrigger:5 tabCollectionViewType:{objc_msgSend(v12, "visibleTabCollectionViewType")}];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    [mEMORY[0x277D499B8] didOpenNewTabWithURLWithTrigger:5 tabCollectionViewType:{objc_msgSend(tabCollectionViewProvider, "visibleTabCollectionViewType")}];
 
     if (v9)
     {
-      v13 = [v3 webView];
-      v14 = [v3 navigationAction];
-      v15 = [WeakRetained tabCollectionViewProvider];
-      v16 = [v15 hasTabBar];
+      webView = [v3 webView];
+      navigationAction2 = [v3 navigationAction];
+      tabCollectionViewProvider2 = [WeakRetained tabCollectionViewProvider];
+      hasTabBar = [tabCollectionViewProvider2 hasTabBar];
 
-      if ((v16 & 1) == 0)
+      if ((hasTabBar & 1) == 0)
       {
-        [v14 _clickLocationInRootViewCoordinates];
+        [navigationAction2 _clickLocationInRootViewCoordinates];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __52__TabDocument__handleTwoFingerTapOnLinkWithContext___block_invoke;
         v18[3] = &unk_2781DAE30;
-        v18[4] = a1;
-        [v13 _requestActivatedElementAtPosition:v18 completionBlock:?];
+        v18[4] = context;
+        [webView _requestActivatedElementAtPosition:v18 completionBlock:?];
       }
     }
   }
 
-  return a1 != 0;
+  return context != 0;
 }
 
 - (NSArray)mediaStateMuteButtonMenuElements
 {
   v25[2] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
-  v5 = [v4 tabsWithSound];
+  browserWindowController = [WeakRetained browserWindowController];
+  tabsWithSound = [browserWindowController tabsWithSound];
 
-  if ([v5 count])
+  if ([tabsWithSound count])
   {
-    v6 = [v5 count];
-    v7 = [v5 containsObject:self];
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(TabDocument *)&self->super.isa _muteToggleMenuElement];
-    [v8 safari_addObjectUnlessNil:v9];
+    v6 = [tabsWithSound count];
+    v7 = [tabsWithSound containsObject:self];
+    array = [MEMORY[0x277CBEB18] array];
+    _muteToggleMenuElement = [(TabDocument *)&self->super.isa _muteToggleMenuElement];
+    [array safari_addObjectUnlessNil:_muteToggleMenuElement];
     v10 = v6 - v7;
 
     v11 = [(TabDocument *)&self->super.isa _muteToggleMenuElementForOtherTabsWithCount:v10];
-    [v8 safari_addObjectUnlessNil:v11];
+    [array safari_addObjectUnlessNil:v11];
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     if (v10)
     {
       v13 = MEMORY[0x277D750C8];
-      v14 = [v5 count];
+      v14 = [tabsWithSound count];
       v15 = MEMORY[0x277CCACA8];
       v16 = _WBSLocalizedString();
       v17 = [v15 localizedStringWithFormat:v16, v14];
@@ -11733,20 +11733,20 @@ uint64_t __27__TabDocument_tabGroupUUID__block_invoke_2(uint64_t a1, void *a2)
       v18 = [v13 actionWithTitle:v17 image:0 identifier:0 handler:&__block_literal_global_492];
 
       [v18 setAttributes:1];
-      [v12 addObject:v18];
+      [array2 addObject:v18];
 
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __47__TabDocument_mediaStateMuteButtonMenuElements__block_invoke_2;
       v24[3] = &unk_2781DAE58;
       v24[4] = self;
-      v19 = [v5 safari_mapObjectsUsingBlock:v24];
-      [v12 addObjectsFromArray:v19];
+      v19 = [tabsWithSound safari_mapObjectsUsingBlock:v24];
+      [array2 addObjectsFromArray:v19];
     }
 
-    v20 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v8];
+    v20 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
     v25[0] = v20;
-    v21 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v12];
+    v21 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array2];
     v25[1] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
   }
@@ -11761,40 +11761,40 @@ uint64_t __27__TabDocument_tabGroupUUID__block_invoke_2(uint64_t a1, void *a2)
 
 - (id)_muteToggleMenuElement
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[138] mediaStateIcon];
-    if ((v2 - 7) >= 0xFFFFFFFFFFFFFFFELL)
+    mediaStateIcon = [self[138] mediaStateIcon];
+    if ((mediaStateIcon - 7) >= 0xFFFFFFFFFFFFFFFELL)
     {
-      v3 = v2;
+      v3 = mediaStateIcon;
       v4 = SFTitleForTogglingMediaStateIcon();
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __37__TabDocument__muteToggleMenuElement__block_invoke;
       v6[3] = &unk_2781DAE80;
-      v6[4] = v1;
+      v6[4] = selfCopy;
       v6[5] = v3;
-      v1 = [MEMORY[0x277D750C8] actionWithTitle:v4 image:0 identifier:0 handler:v6];
+      selfCopy = [MEMORY[0x277D750C8] actionWithTitle:v4 image:0 identifier:0 handler:v6];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)_muteToggleMenuElementForOtherTabsWithCount:(id *)a1
+- (id)_muteToggleMenuElementForOtherTabsWithCount:(id *)count
 {
-  v2 = a1;
-  if (a1)
+  countCopy = count;
+  if (count)
   {
-    if ([a1 atLeastOneOtherTabPlayingAudio])
+    if ([count atLeastOneOtherTabPlayingAudio])
     {
-      v4 = [v2[138] globalMediaStateIcon];
+      globalMediaStateIcon = [countCopy[138] globalMediaStateIcon];
       if (a2 > 1)
       {
         SFMultipleOtherTabsTitleForTogglingMediaStateIcon();
@@ -11809,18 +11809,18 @@ uint64_t __27__TabDocument_tabGroupUUID__block_invoke_2(uint64_t a1, void *a2)
       v7[1] = 3221225472;
       v7[2] = __59__TabDocument__muteToggleMenuElementForOtherTabsWithCount___block_invoke;
       v7[3] = &unk_2781DAE80;
-      v7[4] = v2;
-      v7[5] = v4;
-      v2 = [MEMORY[0x277D750C8] actionWithTitle:v5 image:0 identifier:0 handler:v7];
+      v7[4] = countCopy;
+      v7[5] = globalMediaStateIcon;
+      countCopy = [MEMORY[0x277D750C8] actionWithTitle:v5 image:0 identifier:0 handler:v7];
     }
 
     else
     {
-      v2 = 0;
+      countCopy = 0;
     }
   }
 
-  return v2;
+  return countCopy;
 }
 
 id __47__TabDocument_mediaStateMuteButtonMenuElements__block_invoke_2(uint64_t a1, void *a2)
@@ -11830,15 +11830,15 @@ id __47__TabDocument_mediaStateMuteButtonMenuElements__block_invoke_2(uint64_t a
   return v2;
 }
 
-- (id)_actionForSwitchingToTabPlayingAudio:(id *)a1
+- (id)_actionForSwitchingToTabPlayingAudio:(id *)audio
 {
   v3 = a2;
-  if (a1)
+  if (audio)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, audio);
     v4 = MEMORY[0x277D750C8];
-    v5 = [v3 title];
-    v6 = [v3 icon];
+    title = [v3 title];
+    icon = [v3 icon];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__TabDocument__actionForSwitchingToTabPlayingAudio___block_invoke;
@@ -11846,13 +11846,13 @@ id __47__TabDocument_mediaStateMuteButtonMenuElements__block_invoke_2(uint64_t a
     objc_copyWeak(&v15, &location);
     v7 = v3;
     v14 = v7;
-    v8 = [v4 actionWithTitle:v5 image:v6 identifier:0 handler:v13];
+    v8 = [v4 actionWithTitle:title image:icon identifier:0 handler:v13];
 
-    WeakRetained = objc_loadWeakRetained(a1 + 124);
-    v10 = [WeakRetained tabController];
-    v11 = [v10 activeTabDocument];
+    WeakRetained = objc_loadWeakRetained(audio + 124);
+    tabController = [WeakRetained tabController];
+    activeTabDocument = [tabController activeTabDocument];
 
-    if (v11 == v7)
+    if (activeTabDocument == v7)
     {
       [v8 setState:1];
     }
@@ -11908,16 +11908,16 @@ void __52__TabDocument__actionForSwitchingToTabPlayingAudio___block_invoke(uint6
   [v2 setActiveAudioPlayingTabWithUUID:v3 tabGroupUUID:v4];
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationAction:(id)a4 preferences:(id)a5 decisionHandler:(id)a6
+- (void)webView:(id)view decidePolicyForNavigationAction:(id)action preferences:(id)preferences decisionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  actionCopy = action;
+  preferencesCopy = preferences;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v14 = [v11 targetFrame];
-  if (v14 && ([v11 targetFrame], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isMainFrame"), v15, v14, !v16))
+  targetFrame = [actionCopy targetFrame];
+  if (targetFrame && ([actionCopy targetFrame], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isMainFrame"), v15, targetFrame, !v16))
   {
     v20 = 0;
   }
@@ -11930,7 +11930,7 @@ void __52__TabDocument__actionForSwitchingToTabPlayingAudio___block_invoke(uint6
     {
       concurrentNavigationActionPolicyDecisions = self->_concurrentNavigationActionPolicyDecisions;
       *buf = 134218240;
-      v30 = self;
+      selfCopy = self;
       v31 = 2048;
       v32 = concurrentNavigationActionPolicyDecisions;
       _os_log_impl(&dword_215819000, v17, OS_LOG_TYPE_INFO, "(%p) Concurrent navigation action policy decisions: %zd", buf, 0x16u);
@@ -11944,7 +11944,7 @@ void __52__TabDocument__actionForSwitchingToTabPlayingAudio___block_invoke(uint6
         [TabDocument webView:v19 decidePolicyForNavigationAction:? preferences:? decisionHandler:?];
       }
 
-      [v10 _killWebContentProcessAndResetState];
+      [viewCopy _killWebContentProcessAndResetState];
     }
 
     v20 = 1;
@@ -11955,12 +11955,12 @@ void __52__TabDocument__actionForSwitchingToTabPlayingAudio___block_invoke(uint6
   v23[2] = __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke;
   v23[3] = &unk_2781DAEA8;
   objc_copyWeak(&v26, &location);
-  v21 = v11;
+  v21 = actionCopy;
   v24 = v21;
-  v22 = v13;
+  v22 = handlerCopy;
   v25 = v22;
   v27 = v20;
-  [(TabDocument *)self _internalWebView:v10 decidePolicyForNavigationAction:v21 preferences:v12 decisionHandler:v23];
+  [(TabDocument *)self _internalWebView:viewCopy decidePolicyForNavigationAction:v21 preferences:preferencesCopy decisionHandler:v23];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
@@ -12004,26 +12004,26 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
   }
 }
 
-- (void)_internalWebView:(void *)a3 decidePolicyForNavigationAction:(void *)a4 preferences:(void *)a5 decisionHandler:
+- (void)_internalWebView:(void *)view decidePolicyForNavigationAction:(void *)action preferences:(void *)preferences decisionHandler:
 {
   v93 = a2;
-  v9 = a3;
-  v90 = a4;
-  v92 = a5;
-  if (a1)
+  viewCopy = view;
+  actionCopy = action;
+  preferencesCopy = preferences;
+  if (self)
   {
-    v89 = [v9 request];
-    v91 = [v89 URL];
-    v10 = [v9 navigationType];
-    objc_initWeak(location, a1);
-    if ((*(a1 + 1224) & 8) != 0 || *(a1 + 720) == 1)
+    request = [viewCopy request];
+    v91 = [request URL];
+    navigationType = [viewCopy navigationType];
+    objc_initWeak(location, self);
+    if ((*(self + 1224) & 8) != 0 || *(self + 720) == 1)
     {
-      v11 = [v9 targetFrame];
-      v12 = [v11 isMainFrame];
+      targetFrame = [viewCopy targetFrame];
+      isMainFrame = [targetFrame isMainFrame];
 
-      if (v12)
+      if (isMainFrame)
       {
-        v13 = *(a1 + 544);
+        v13 = *(self + 544);
         if (v13)
         {
           (*(v13 + 16))(v13, 0);
@@ -12034,29 +12034,29 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
         aBlock[2] = __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke;
         aBlock[3] = &unk_2781DAED0;
         objc_copyWeak(&v124, location);
-        v123 = v92;
+        v123 = preferencesCopy;
         v120 = v93;
-        v121 = v9;
-        v122 = v90;
+        v121 = viewCopy;
+        v122 = actionCopy;
         v14 = _Block_copy(aBlock);
-        v15 = *(a1 + 544);
-        *(a1 + 544) = v14;
+        v15 = *(self + 544);
+        *(self + 544) = v14;
 
         objc_destroyWeak(&v124);
         goto LABEL_93;
       }
     }
 
-    v16 = [v9 targetFrame];
-    v86 = v16;
-    if (v16)
+    targetFrame2 = [viewCopy targetFrame];
+    v86 = targetFrame2;
+    if (targetFrame2)
     {
-      v17 = [v16 isMainFrame];
+      isMainFrame2 = [targetFrame2 isMainFrame];
     }
 
     else
     {
-      v17 = 1;
+      isMainFrame2 = 1;
     }
 
     v112[0] = MEMORY[0x277D85DD0];
@@ -12064,35 +12064,35 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
     v112[2] = __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke_2;
     v112[3] = &unk_2781DAF20;
     objc_copyWeak(v117, location);
-    v84 = v92;
+    v84 = preferencesCopy;
     v116 = v84;
-    v18 = v9;
+    v18 = viewCopy;
     v113 = v18;
-    v118 = v17;
+    v118 = isMainFrame2;
     v19 = v91;
     v114 = v19;
-    v117[1] = v10;
+    v117[1] = navigationType;
     v85 = v93;
     v115 = v85;
     v88 = _Block_copy(v112);
-    v20 = [v18 _userInitiatedAction];
-    v21 = *(a1 + 400);
-    *(a1 + 400) = v20;
+    _userInitiatedAction = [v18 _userInitiatedAction];
+    v21 = *(self + 400);
+    *(self + 400) = _userInitiatedAction;
 
-    v22 = (*(a1 + 707) & 1) == 0 && (*(a1 + 955) & 1) == 0 && *(a1 + 1240) == 0;
-    [*(a1 + 48) setNavigationSource:v22];
+    v22 = (*(self + 707) & 1) == 0 && (*(self + 955) & 1) == 0 && *(self + 1240) == 0;
+    [*(self + 48) setNavigationSource:v22];
     if ([v18 _syntheticClickType] == 2)
     {
-      v87 = [objc_alloc(MEMORY[0x277CDB8D0]) initWithWebView:v85 navigationAction:v18];
-      if ([(TabDocument *)a1 _handleTwoFingerTapOnLinkWithContext:v87])
+      builder = [objc_alloc(MEMORY[0x277CDB8D0]) initWithWebView:v85 navigationAction:v18];
+      if ([(TabDocument *)self _handleTwoFingerTapOnLinkWithContext:builder])
       {
         goto LABEL_17;
       }
     }
 
-    if (v10 < 2)
+    if (navigationType < 2)
     {
-      v23 = v17;
+      v23 = isMainFrame2;
     }
 
     else
@@ -12102,13 +12102,13 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
 
     if (v23 == 1)
     {
-      v87 = [MEMORY[0x277D28F40] builder];
-      [v87 setNavigationType:v10];
-      v24 = [v87 navigationIntentWithURL:v19];
-      if ([v24 policy] == 6)
+      builder = [MEMORY[0x277D28F40] builder];
+      [builder setNavigationType:navigationType];
+      absoluteString = [builder navigationIntentWithURL:v19];
+      if ([absoluteString policy] == 6)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 1248));
-        v26 = [WeakRetained tabDocumentCanDownloadFile:a1];
+        WeakRetained = objc_loadWeakRetained((self + 1248));
+        v26 = [WeakRetained tabDocumentCanDownloadFile:self];
 
         if (v26)
         {
@@ -12119,10 +12119,10 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
           v105[1] = 3221225472;
           v105[2] = __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke_504;
           v105[3] = &unk_2781DAF48;
-          v106 = v24;
-          v107 = a1;
+          v106 = absoluteString;
+          selfCopy = self;
           v108 = v85;
-          v109 = v89;
+          v109 = request;
           v110 = v18;
           v111 = v88;
           [v108 _requestActivatedElementAtPosition:v105 completionBlock:{v28, v30}];
@@ -12136,11 +12136,11 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
         goto LABEL_44;
       }
 
-      if ([v24 policy])
+      if ([absoluteString policy])
       {
-        if ([v24 opensInNewTab])
+        if ([absoluteString opensInNewTab])
         {
-          v31 = [v24 shouldOrderToForeground] ^ 1;
+          v31 = [absoluteString shouldOrderToForeground] ^ 1;
         }
 
         else
@@ -12148,7 +12148,7 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
           v31 = 0;
         }
 
-        if ([v24 policy] == 5)
+        if ([absoluteString policy] == 5)
         {
           v33 = 1;
         }
@@ -12167,14 +12167,14 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
           v102[1] = 3221225472;
           v102[2] = __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke_2_505;
           v102[3] = &unk_2781DAF70;
-          v103 = v24;
-          v104 = a1;
+          v103 = absoluteString;
+          selfCopy2 = self;
           [v85 _requestActivatedElementAtPosition:v102 completionBlock:{v35, v37}];
         }
 
         else
         {
-          [a1 dispatchNavigationIntent:v24];
+          [self dispatchNavigationIntent:absoluteString];
         }
 
         (*(v88 + 2))(v88, 0);
@@ -12182,15 +12182,15 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
       }
     }
 
-    if (v17 && [v18 safari_isEligibleToSpawnNewTabFromPinnedTab] && objc_msgSend(a1, "shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:", v19))
+    if (isMainFrame2 && [v18 safari_isEligibleToSpawnNewTabFromPinnedTab] && objc_msgSend(self, "shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:", v19))
     {
-      v87 = [MEMORY[0x277D28F40] builder];
-      [v87 setNavigationType:v10];
-      [v87 setPrefersOpenInNewTabReusingExistingBlankTabIfPossible:1];
-      v32 = [v87 navigationIntentWithURL:v19];
+      builder = [MEMORY[0x277D28F40] builder];
+      [builder setNavigationType:navigationType];
+      [builder setPrefersOpenInNewTabReusingExistingBlankTabIfPossible:1];
+      v32 = [builder navigationIntentWithURL:v19];
       if ([v32 policy])
       {
-        [a1 dispatchNavigationIntent:v32];
+        [self dispatchNavigationIntent:v32];
         (*(v88 + 2))(v88, 0);
 
         goto LABEL_92;
@@ -12199,23 +12199,23 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
 
     if ([v18 _isUserInitiated])
     {
-      *(a1 + 1240) = 0;
-      *(a1 + 978) = 0;
+      *(self + 1240) = 0;
+      *(self + 978) = 0;
     }
 
-    v87 = objc_loadWeakRetained((a1 + 992));
-    if ([*(a1 + 1304) crashesSinceLastSuccessfulLoad])
+    builder = objc_loadWeakRetained((self + 992));
+    if ([*(self + 1304) crashesSinceLastSuccessfulLoad])
     {
-      v38 = [v18 targetFrame];
-      if ([v38 isMainFrame])
+      targetFrame3 = [v18 targetFrame];
+      if ([targetFrame3 isMainFrame])
       {
-        v39 = [v18 targetFrame];
-        v40 = [v39 request];
-        v41 = [v40 URL];
+        targetFrame4 = [v18 targetFrame];
+        request2 = [targetFrame4 request];
+        v41 = [request2 URL];
 
         if (v41)
         {
-          [v87 setShowingCrashBanner:0 animated:1];
+          [builder setShowingCrashBanner:0 animated:1];
         }
       }
 
@@ -12224,7 +12224,7 @@ void __83__TabDocument_webView_decidePolicyForNavigationAction_preferences_decis
       }
     }
 
-    if (!v89)
+    if (!request)
     {
 LABEL_17:
       (*(v88 + 2))(v88, 0);
@@ -12237,26 +12237,26 @@ LABEL_93:
       goto LABEL_94;
     }
 
-    v42 = *(a1 + 707);
-    *(a1 + 905) = v42;
+    v42 = *(self + 707);
+    *(self + 905) = v42;
     if ((v42 & 1) == 0)
     {
-      *(a1 + 707) = v10 != -1;
+      *(self + 707) = navigationType != -1;
     }
 
-    if (v17 && (([v19 safari_isHTTPFamilyURL] & 1) != 0 || objc_msgSend(v19, "safari_hasScheme:", @"ftp")) && objc_msgSend(v19, "safari_hasUserOrPassword"))
+    if (isMainFrame2 && (([v19 safari_isHTTPFamilyURL] & 1) != 0 || objc_msgSend(v19, "safari_hasScheme:", @"ftp")) && objc_msgSend(v19, "safari_hasUserOrPassword"))
     {
-      v43 = [v19 safari_URLByDeletingUserAndPassword];
-      if (v43)
+      safari_URLByDeletingUserAndPassword = [v19 safari_URLByDeletingUserAndPassword];
+      if (safari_URLByDeletingUserAndPassword)
       {
         if (objc_opt_respondsToSelector())
         {
           v44 = MEMORY[0x277CBABA0];
-          v45 = [v19 safari_URLByDeletingUserAndPassword];
-          v46 = [v44 safari_nonAppInitiatedRequestWithURL:v45];
-          [v90 _setAlternateRequest:v46];
+          safari_URLByDeletingUserAndPassword2 = [v19 safari_URLByDeletingUserAndPassword];
+          v46 = [v44 safari_nonAppInitiatedRequestWithURL:safari_URLByDeletingUserAndPassword2];
+          [actionCopy _setAlternateRequest:v46];
 
-          (*(v84 + 2))(v84, 1, v90);
+          (*(v84 + 2))(v84, 1, actionCopy);
         }
 
         else
@@ -12273,11 +12273,11 @@ LABEL_93:
       goto LABEL_17;
     }
 
-    v47 = [a1 readingListBookmarkID];
-    v48 = [v19 sf_isOfflineReadingListURL];
-    if (v47)
+    readingListBookmarkID = [self readingListBookmarkID];
+    sf_isOfflineReadingListURL = [v19 sf_isOfflineReadingListURL];
+    if (readingListBookmarkID)
     {
-      v49 = v48;
+      v49 = sf_isOfflineReadingListURL;
     }
 
     else
@@ -12287,66 +12287,66 @@ LABEL_93:
 
     if (v49 == 1)
     {
-      v50 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v24 = [v50 bookmarkWithID:v47];
+      mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      absoluteString = [mainBookmarkCollection bookmarkWithID:readingListBookmarkID];
 
-      if (([v24 isFullArchiveAvailable] & 1) == 0)
+      if (([absoluteString isFullArchiveAvailable] & 1) == 0)
       {
         (*(v88 + 2))(v88, 0);
         v54 = MEMORY[0x277CBEBC0];
-        v55 = [v24 address];
-        v56 = [v54 safari_URLWithDataAsString:v55];
-        v57 = [a1 loadURL:v56 userDriven:*(a1 + 707)];
+        address = [absoluteString address];
+        v56 = [v54 safari_URLWithDataAsString:address];
+        v57 = [self loadURL:v56 userDriven:*(self + 707)];
 
 LABEL_44:
         goto LABEL_92;
       }
     }
 
-    if (*(a1 + 1368) && v10 != -1)
+    if (*(self + 1368) && navigationType != -1)
     {
-      [a1 clearTabReuseURL];
+      [self clearTabReuseURL];
     }
 
     if ([v18 _sf_shouldAskAboutInsecureFormSubmission])
     {
-      v52 = *(a1 + 1304);
-      v43 = _WBSLocalizedString();
-      [v52 addFormAlertWithTitle:v43 decisionHandler:v88];
+      v52 = *(self + 1304);
+      safari_URLByDeletingUserAndPassword = _WBSLocalizedString();
+      [v52 addFormAlertWithTitle:safari_URLByDeletingUserAndPassword decisionHandler:v88];
 LABEL_91:
 
       goto LABEL_92;
     }
 
-    if (v10 == 4)
+    if (navigationType == 4)
     {
-      v53 = *(a1 + 1304);
-      v43 = WBSLocalizedStringWithValue(@"Are you sure you want to submit this form again?", v51);
-      [v53 addFormAlertWithTitle:v43 decisionHandler:v88];
+      v53 = *(self + 1304);
+      safari_URLByDeletingUserAndPassword = WBSLocalizedStringWithValue(@"Are you sure you want to submit this form again?", v51);
+      [v53 addFormAlertWithTitle:safari_URLByDeletingUserAndPassword decisionHandler:v88];
       goto LABEL_91;
     }
 
-    v58 = [v18 _isUserInitiated];
-    if (v10)
+    _isUserInitiated = [v18 _isUserInitiated];
+    if (navigationType)
     {
       v59 = 0;
     }
 
     else
     {
-      v59 = v17;
+      v59 = isMainFrame2;
     }
 
     if (v59 == 1)
     {
       v82 = +[(WBSParsecDSession *)UniversalSearchSession];
-      v60 = [a1 browserController];
-      v83 = [v60 activeSearchEngine];
+      browserController = [self browserController];
+      activeSearchEngine = [browserController activeSearchEngine];
 
-      v61 = [v87 idOfParsecQueryOriginatingFromSearchSuggestion];
-      if (v61)
+      idOfParsecQueryOriginatingFromSearchSuggestion = [builder idOfParsecQueryOriginatingFromSearchSuggestion];
+      if (idOfParsecQueryOriginatingFromSearchSuggestion)
       {
-        v62 = v58;
+        v62 = _isUserInitiated;
       }
 
       else
@@ -12356,14 +12356,14 @@ LABEL_91:
 
       if (v62 == 1)
       {
-        v63 = [a1 committedURL];
-        if ([v83 urlIsValidSearch:v63])
+        committedURL = [self committedURL];
+        if ([activeSearchEngine urlIsValidSearch:committedURL])
         {
-          v64 = [v83 urlIsValidSearch:v19];
+          v64 = [activeSearchEngine urlIsValidSearch:v19];
 
           if ((v64 & 1) == 0)
           {
-            [v82 sendCBAEngagementFeedback:v19 query:v61];
+            [v82 sendCBAEngagementFeedback:v19 query:idOfParsecQueryOriginatingFromSearchSuggestion];
           }
         }
 
@@ -12372,71 +12372,71 @@ LABEL_91:
         }
       }
 
-      [v87 clearParsecQueryOriginatingFromSearchSuggestion];
-      v65 = [v18 targetFrame];
-      v66 = [(TabDocument *)a1 _readingListArchiveNextPageLinkForRequest:v89 targetFrame:v65];
+      [builder clearParsecQueryOriginatingFromSearchSuggestion];
+      targetFrame5 = [v18 targetFrame];
+      v66 = [(TabDocument *)self _readingListArchiveNextPageLinkForRequest:request targetFrame:targetFrame5];
 
       if (v66)
       {
         (*(v88 + 2))(v88, 0);
         v67 = [MEMORY[0x277CBEBC0] fileURLWithPath:v66 isDirectory:0];
-        v68 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-        v69 = [v68 bookmarkWithID:{objc_msgSend(a1, "readingListBookmarkID")}];
-        [(TabDocument *)a1 _loadURL:v67 fromBookmark:v69];
+        mainBookmarkCollection2 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+        v69 = [mainBookmarkCollection2 bookmarkWithID:{objc_msgSend(self, "readingListBookmarkID")}];
+        [(TabDocument *)self _loadURL:v67 fromBookmark:v69];
 
         goto LABEL_92;
       }
     }
 
-    if (v17)
+    if (isMainFrame2)
     {
-      v70 = [v18 _originalURL];
-      v71 = *(a1 + 568);
-      *(a1 + 568) = v70;
+      _originalURL = [v18 _originalURL];
+      v71 = *(self + 568);
+      *(self + 568) = _originalURL;
 
-      v24 = [*(a1 + 568) absoluteString];
-      if (v58)
+      absoluteString = [*(self + 568) absoluteString];
+      if (_isUserInitiated)
       {
-        v72 = [(WebBookmark *)*(a1 + 312) safari_bestCurrentURL];
-        v73 = [v72 absoluteString];
-        v74 = [v73 isEqualToString:v24];
+        safari_bestCurrentURL = [(WebBookmark *)*(self + 312) safari_bestCurrentURL];
+        absoluteString2 = [safari_bestCurrentURL absoluteString];
+        v74 = [absoluteString2 isEqualToString:absoluteString];
 
         if ((v74 & 1) == 0)
         {
-          v75 = *(a1 + 312);
-          *(a1 + 312) = 0;
+          v75 = *(self + 312);
+          *(self + 312) = 0;
         }
 
-        v76 = [(WebBookmark *)*(a1 + 1232) safari_bestCurrentURL];
-        v77 = [v76 absoluteString];
-        v78 = [v77 isEqualToString:v24];
+        safari_bestCurrentURL2 = [(WebBookmark *)*(self + 1232) safari_bestCurrentURL];
+        absoluteString3 = [safari_bestCurrentURL2 absoluteString];
+        v78 = [absoluteString3 isEqualToString:absoluteString];
 
         if ((v78 & 1) == 0)
         {
-          [a1 setReadingListBookmark:0];
+          [self setReadingListBookmark:0];
         }
       }
 
-      else if (v10 == 2)
+      else if (navigationType == 2)
       {
-        v79 = *(a1 + 312);
-        *(a1 + 312) = 0;
+        v79 = *(self + 312);
+        *(self + 312) = 0;
       }
 
-      if ([(TabDocument *)a1 _isNewDocumentViewNecessaryForURL:v19])
+      if ([(TabDocument *)self _isNewDocumentViewNecessaryForURL:v19])
       {
         (*(v84 + 2))(v84, 0, 0);
-        v80 = [a1 loadRequest:v89 userDriven:*(a1 + 707)];
+        v80 = [self loadRequest:request userDriven:*(self + 707)];
         goto LABEL_44;
       }
     }
 
-    if ((*(a1 + 610) & 1) == 0 && (*(a1 + 611) & 1) == 0 && ((v58 ^ 1) & 1) == 0 && ((v17 ^ 1) & 1) == 0)
+    if ((*(self + 610) & 1) == 0 && (*(self + 611) & 1) == 0 && ((_isUserInitiated ^ 1) & 1) == 0 && ((isMainFrame2 ^ 1) & 1) == 0)
     {
-      [(TabDocument *)a1 _hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary];
+      [(TabDocument *)self _hidePrivateBrowsingPrivacyProtectionsBannerIfNecessary];
     }
 
-    v81 = *(a1 + 707);
+    v81 = *(self + 707);
     v94[0] = MEMORY[0x277D85DD0];
     v94[1] = 3221225472;
     v94[2] = __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferences_decisionHandler___block_invoke_3_518;
@@ -12446,9 +12446,9 @@ LABEL_91:
     v101 = v81;
     v95 = v85;
     v96 = v18;
-    v97 = v90;
+    v97 = actionCopy;
     v99 = v88;
-    [(TabDocument *)a1 _determineResultOfLoadingRequest:v89 inMainFrame:v17 userInitiated:(v58 | v81) & 1 completionHandler:v94];
+    [(TabDocument *)self _determineResultOfLoadingRequest:request inMainFrame:isMainFrame2 userInitiated:(_isUserInitiated | v81) & 1 completionHandler:v94];
 
     objc_destroyWeak(&v100);
     goto LABEL_92;
@@ -12969,29 +12969,29 @@ void __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferen
   [*(a1 + 40) dispatchNavigationIntent:*(a1 + 32)];
 }
 
-- (uint64_t)_isNewDocumentViewNecessaryForURL:(void *)a1
+- (uint64_t)_isNewDocumentViewNecessaryForURL:(void *)l
 {
   v3 = a2;
-  if (!a1)
+  if (!l)
   {
     goto LABEL_7;
   }
 
-  if (a1[170])
+  if (l[170])
   {
-    v4 = [a1 webView];
-    v5 = [v4 configuration];
-    v6 = [v5 preferences];
-    v7 = [v6 _isStandalone];
+    webView = [l webView];
+    configuration = [webView configuration];
+    preferences = [configuration preferences];
+    _isStandalone = [preferences _isStandalone];
 
-    if ((v7 & 1) == 0)
+    if ((_isStandalone & 1) == 0)
     {
       v10 = 1;
       goto LABEL_13;
     }
   }
 
-  if (([a1 isShowingErrorPage] & 1) != 0 || (-[TabDocument resultOfLoadingURL:userInitiated:](a1, v3, 1), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "type"), v8, v9 <= 4) && ((1 << v9) & 0x19) != 0)
+  if (([l isShowingErrorPage] & 1) != 0 || (-[TabDocument resultOfLoadingURL:userInitiated:](l, v3, 1), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "type"), v8, v9 <= 4) && ((1 << v9) & 0x19) != 0)
   {
 LABEL_7:
     v10 = 0;
@@ -12999,26 +12999,26 @@ LABEL_7:
 
   else
   {
-    v11 = [a1 webExtensionsController];
-    v12 = [v11 canonicalURLForWebExtensionURL:v3];
+    webExtensionsController = [l webExtensionsController];
+    v12 = [webExtensionsController canonicalURLForWebExtensionURL:v3];
 
-    v13 = [a1 webView];
-    v14 = [v13 _requiredWebExtensionBaseURL];
+    webView2 = [l webView];
+    _requiredWebExtensionBaseURL = [webView2 _requiredWebExtensionBaseURL];
 
-    v15 = [v14 safari_isSafariWebExtensionURL];
-    v16 = [v12 safari_isSafariWebExtensionURL];
-    if ((v15 & v16) == 1)
+    safari_isSafariWebExtensionURL = [_requiredWebExtensionBaseURL safari_isSafariWebExtensionURL];
+    safari_isSafariWebExtensionURL2 = [v12 safari_isSafariWebExtensionURL];
+    if ((safari_isSafariWebExtensionURL & safari_isSafariWebExtensionURL2) == 1)
     {
-      v17 = [v14 host];
-      v18 = [v12 host];
-      v19 = [v17 isEqualToString:v18];
+      host = [_requiredWebExtensionBaseURL host];
+      host2 = [v12 host];
+      v19 = [host isEqualToString:host2];
 
       v10 = v19 ^ 1;
     }
 
     else
     {
-      v10 = v15 | v16;
+      v10 = safari_isSafariWebExtensionURL | safari_isSafariWebExtensionURL2;
     }
   }
 
@@ -13043,57 +13043,57 @@ void __92__TabDocument__internalWebView_decidePolicyForNavigationAction_preferen
   }
 }
 
-- (void)_internalWebView:(void *)a3 decidePolicyForNavigationAction:(void *)a4 withResult:(uint64_t)a5 preferences:(void *)a6 decisionHandler:
+- (void)_internalWebView:(void *)view decidePolicyForNavigationAction:(void *)action withResult:(uint64_t)result preferences:(void *)preferences decisionHandler:
 {
   v51 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a1)
+  viewCopy = view;
+  actionCopy = action;
+  preferencesCopy = preferences;
+  if (self)
   {
-    v13 = [v10 targetFrame];
-    v14 = v13;
-    if (v13)
+    targetFrame = [viewCopy targetFrame];
+    v14 = targetFrame;
+    if (targetFrame)
     {
-      v15 = [v13 isMainFrame];
+      isMainFrame = [targetFrame isMainFrame];
     }
 
     else
     {
-      v15 = 1;
+      isMainFrame = 1;
     }
 
-    v16 = [v10 _isUserInitiated];
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    if (((v15 | v16) & 1) == 0 && [v11 isRedirectToAppleServices])
+    _isUserInitiated = [viewCopy _isUserInitiated];
+    WeakRetained = objc_loadWeakRetained((self + 1248));
+    if (((isMainFrame | _isUserInitiated) & 1) == 0 && [actionCopy isRedirectToAppleServices])
     {
-      v12[2](v12, 0);
+      preferencesCopy[2](preferencesCopy, 0);
 LABEL_52:
 
       goto LABEL_53;
     }
 
-    v17 = [v10 request];
-    v50 = [v17 URL];
-    v18 = [v11 type];
+    request = [viewCopy request];
+    v50 = [request URL];
+    type = [actionCopy type];
     v19 = 0;
-    if (v18 > 1)
+    if (type > 1)
     {
-      if (v18 == 2)
+      if (type == 2)
       {
-        v12[2](v12, 0);
-        v20 = [v11 URL];
-        v21 = [(TabDocument *)a1 _loadURLInternal:v20 userDriven:1];
+        preferencesCopy[2](preferencesCopy, 0);
+        v20 = [actionCopy URL];
+        v21 = [(TabDocument *)self _loadURLInternal:v20 userDriven:1];
 
 LABEL_51:
         goto LABEL_52;
       }
 
-      if (v18 != 3)
+      if (type != 3)
       {
-        if (v18 == 4)
+        if (type == 4)
         {
-          [*(a1 + 1304) addDisallowedFileURLAlert];
+          [*(self + 1304) addDisallowedFileURLAlert];
 LABEL_49:
           v19 = 0;
           goto LABEL_50;
@@ -13102,22 +13102,22 @@ LABEL_49:
         goto LABEL_50;
       }
 
-      v22 = *(a1 + 979);
-      v12[2](v12, 0);
-      if (!v15 || ![v10 _shouldOpenExternalSchemes])
+      v22 = *(self + 979);
+      preferencesCopy[2](preferencesCopy, 0);
+      if (!isMainFrame || ![viewCopy _shouldOpenExternalSchemes])
       {
         goto LABEL_51;
       }
 
-      *(a1 + 980) = v22;
-      v23 = [v10 sourceFrame];
+      *(self + 980) = v22;
+      sourceFrame = [viewCopy sourceFrame];
       v24 = v51;
-      v25 = [v23 webView];
+      webView = [sourceFrame webView];
 
-      v48 = v25;
-      if (v25)
+      v48 = webView;
+      if (webView)
       {
-        v26 = v25 == v51;
+        v26 = webView == v51;
       }
 
       else
@@ -13141,24 +13141,24 @@ LABEL_49:
         LODWORD(v46) = 0;
       }
 
-      v40 = [v24 _committedURL];
+      _committedURL = [v24 _committedURL];
 
-      if ((HIDWORD(v46) & ((v40 != 0) | v46)) == 1)
+      if ((HIDWORD(v46) & ((_committedURL != 0) | v46)) == 1)
       {
         v41 = [TabDocument tabDocumentForWKWebView:v48];
-        [v41 loadWindowDotOpenExternalNavigationResult:v11 fromOriginalRequest:v17];
+        [v41 loadWindowDotOpenExternalNavigationResult:actionCopy fromOriginalRequest:request];
 
-        [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:a1];
+        [WeakRetained tabDocumentDidCancelRedirectToExternalApplication:self];
       }
 
       else
       {
-        if (v16)
+        if (_isUserInitiated)
         {
           v42 = 2;
         }
 
-        else if (*(a1 + 1296))
+        else if (*(self + 1296))
         {
           v42 = 2;
         }
@@ -13168,71 +13168,71 @@ LABEL_49:
           v42 = 3;
         }
 
-        if (*(a1 + 743) == 1)
+        if (*(self + 743) == 1)
         {
-          if (!*(a1 + 664))
+          if (!*(self + 664))
           {
             v42 = 0;
           }
 
-          *(a1 + 743) = 0;
+          *(self + 743) = 0;
         }
 
-        v45 = [v10 _userInitiatedAction];
-        [(TabDocument *)a1 _redirectToExternalNavigationResult:v11 fromOriginalRequest:v17 navigationAction:v10 promptPolicy:v42 isMainFrame:1 userAction:v45];
+        _userInitiatedAction = [viewCopy _userInitiatedAction];
+        [(TabDocument *)self _redirectToExternalNavigationResult:actionCopy fromOriginalRequest:request navigationAction:viewCopy promptPolicy:v42 isMainFrame:1 userAction:_userInitiatedAction];
       }
 
-      *(a1 + 980) = 0;
+      *(self + 980) = 0;
       v44 = v48;
 LABEL_72:
 
       goto LABEL_51;
     }
 
-    if (!v18)
+    if (!type)
     {
-      v29 = [v11 URL];
-      v30 = [v29 safari_hasFeedScheme];
+      v29 = [actionCopy URL];
+      safari_hasFeedScheme = [v29 safari_hasFeedScheme];
 
-      if (v30)
+      if (safari_hasFeedScheme)
       {
-        [(TabDocument *)a1 _addNoFeedAppSupportAlert];
+        [(TabDocument *)self _addNoFeedAppSupportAlert];
       }
 
       else
       {
-        v31 = [v11 URL];
-        v32 = [v31 _webkit_isJavaScriptURL];
+        v31 = [actionCopy URL];
+        _webkit_isJavaScriptURL = [v31 _webkit_isJavaScriptURL];
 
-        if (v32)
+        if (_webkit_isJavaScriptURL)
         {
-          [*(a1 + 1304) addDisallowedUseOfJavaScriptAlert];
+          [*(self + 1304) addDisallowedUseOfJavaScriptAlert];
         }
 
-        else if (v15)
+        else if (isMainFrame)
         {
-          [*(a1 + 1304) addInvalidURLAlert];
+          [*(self + 1304) addInvalidURLAlert];
         }
       }
 
       goto LABEL_49;
     }
 
-    if (v18 != 1)
+    if (type != 1)
     {
 LABEL_50:
-      v12[2](v12, v19);
+      preferencesCopy[2](preferencesCopy, v19);
       goto LABEL_51;
     }
 
-    if (!v15)
+    if (!isMainFrame)
     {
       goto LABEL_46;
     }
 
-    if ([WeakRetained tabDocumentIsBackgroundPreloading:a1] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(MEMORY[0x277CBEBC0], "_web_willPerformSOKerberosAuthorizationWithURL:", v50))
+    if ([WeakRetained tabDocumentIsBackgroundPreloading:self] && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(MEMORY[0x277CBEBC0], "_web_willPerformSOKerberosAuthorizationWithURL:", v50))
     {
-      if ([WeakRetained tabDocumentShouldHandleAuthentication:a1])
+      if ([WeakRetained tabDocumentShouldHandleAuthentication:self])
       {
         goto LABEL_51;
       }
@@ -13240,7 +13240,7 @@ LABEL_50:
       goto LABEL_49;
     }
 
-    v33 = v16 ^ 1;
+    v33 = _isUserInitiated ^ 1;
     if (!v14)
     {
       v33 = 1;
@@ -13248,10 +13248,10 @@ LABEL_50:
 
     if ((v33 & 1) == 0)
     {
-      [WeakRetained willStartLoadFromUserTap:a1];
+      [WeakRetained willStartLoadFromUserTap:self];
     }
 
-    if (![v10 _shouldOpenAppLinks])
+    if (![viewCopy _shouldOpenAppLinks])
     {
 LABEL_46:
       v19 = 3;
@@ -13262,19 +13262,19 @@ LABEL_46:
     aBlock[1] = 3221225472;
     aBlock[2] = __103__TabDocument__internalWebView_decidePolicyForNavigationAction_withResult_preferences_decisionHandler___block_invoke;
     aBlock[3] = &unk_2781DAFE8;
-    aBlock[4] = a1;
-    v49 = v12;
+    aBlock[4] = self;
+    v49 = preferencesCopy;
     v64 = v49;
-    v61 = v10;
+    v61 = viewCopy;
     v34 = v50;
     v62 = v34;
-    v65 = v16;
-    v63 = v17;
-    v66 = v15;
+    v65 = _isUserInitiated;
+    v63 = request;
+    v66 = isMainFrame;
     v35 = _Block_copy(aBlock);
-    if (*(a1 + 1296))
+    if (*(self + 1296))
     {
-      if (([v34 isEqual:?] & 1) != 0 || (v36 = *(a1 + 1216)) != 0 && (objc_msgSend(v36, "isEqualToString:", @"com.apple.springboard") & 1) == 0)
+      if (([v34 isEqual:?] & 1) != 0 || (v36 = *(self + 1216)) != 0 && (objc_msgSend(v36, "isEqualToString:", @"com.apple.springboard") & 1) == 0)
       {
         v49[2](v49, 3);
 LABEL_62:
@@ -13283,7 +13283,7 @@ LABEL_62:
         goto LABEL_72;
       }
 
-      v37 = [objc_alloc(MEMORY[0x277D4A6F0]) initWithURL:*(a1 + 1296)];
+      v37 = [objc_alloc(MEMORY[0x277D4A6F0]) initWithURL:*(self + 1296)];
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
       v53[2] = __103__TabDocument__internalWebView_decidePolicyForNavigationAction_withResult_preferences_decisionHandler___block_invoke_4;
@@ -13481,50 +13481,50 @@ void __103__TabDocument__internalWebView_decidePolicyForNavigationAction_withRes
   }
 }
 
-- (void)_didDecideNavigationPolicy:(void *)a3 forNavigationResponse:
+- (void)_didDecideNavigationPolicy:(void *)policy forNavigationResponse:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  policyCopy = policy;
+  v6 = policyCopy;
+  if (self)
   {
     if (a2 == 1)
     {
-      v18 = v5;
-      v7 = [v5 isForMainFrame];
+      v18 = policyCopy;
+      isForMainFrame = [policyCopy isForMainFrame];
       v6 = v18;
-      if (v7)
+      if (isForMainFrame)
       {
-        v8 = [v18 _frame];
-        v9 = [v8 webView];
-        v10 = a1[133];
+        _frame = [v18 _frame];
+        webView = [_frame webView];
+        v10 = self[133];
 
         v6 = v18;
-        if (v9 == v10)
+        if (webView == v10)
         {
-          v11 = [v18 _sf_explicitSuggestedFilename];
-          v12 = a1[95];
-          a1[95] = v11;
+          _sf_explicitSuggestedFilename = [v18 _sf_explicitSuggestedFilename];
+          v12 = self[95];
+          self[95] = _sf_explicitSuggestedFilename;
 
-          v13 = [a1 isPrivate];
+          isPrivate = [self isPrivate];
           v6 = v18;
-          if ((v13 & 1) == 0)
+          if ((isPrivate & 1) == 0)
           {
-            v14 = [v18 response];
+            response = [v18 response];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v15 = [v18 response];
-              v16 = [v15 URL];
-              v17 = [v16 safari_isHTTPFamilyURL];
+              response2 = [v18 response];
+              v16 = [response2 URL];
+              safari_isHTTPFamilyURL = [v16 safari_isHTTPFamilyURL];
 
               v6 = v18;
-              if (!v17)
+              if (!safari_isHTTPFamilyURL)
               {
                 goto LABEL_10;
               }
 
-              v14 = [v18 response];
-              [a1 donateCurrentNavigationWithNavigationResponse:v14];
+              response = [v18 response];
+              [self donateCurrentNavigationWithNavigationResponse:response];
             }
 
             v6 = v18;
@@ -13537,19 +13537,19 @@ void __103__TabDocument__internalWebView_decidePolicyForNavigationAction_withRes
 LABEL_10:
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  responseCopy = response;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__TabDocument_webView_decidePolicyForNavigationResponse_decisionHandler___block_invoke;
   aBlock[3] = &unk_2781DB038;
   aBlock[4] = self;
-  v11 = v9;
+  v11 = responseCopy;
   v79 = v11;
-  v12 = v10;
+  v12 = handlerCopy;
   v80 = v12;
   v13 = _Block_copy(aBlock);
   v76 = 0;
@@ -13579,15 +13579,15 @@ LABEL_10:
       self->_isDecidingNavigationResponsePolicyForMainFrameDownload = 1;
     }
 
-    v62 = v8;
-    v63 = [v11 response];
+    v62 = viewCopy;
+    response = [v11 response];
     v72[0] = MEMORY[0x277D85DD0];
     v72[1] = 3221225472;
     v72[2] = __73__TabDocument_webView_decidePolicyForNavigationResponse_decisionHandler___block_invoke_2;
     v72[3] = &unk_2781DB038;
     v17 = v11;
     v73 = v17;
-    v74 = self;
+    selfCopy = self;
     v75 = v13;
     v18 = _Block_copy(v72);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -13595,37 +13595,37 @@ LABEL_10:
 
     if ((v20 & 1) == 0)
     {
-      v8 = v62;
+      viewCopy = v62;
       v18[2](v18, 0);
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    v21 = [v17 isForMainFrame];
-    v61 = [v63 MIMEType];
-    if ([v61 isEqualToString:@"application/rdf+xml"] & 1) != 0 || (objc_msgSend(v61, "isEqualToString:", @"application/rss+xml") & 1) != 0 || (objc_msgSend(v61, "isEqualToString:", @"application/atom+xml"))
+    isForMainFrame = [v17 isForMainFrame];
+    mIMEType = [response MIMEType];
+    if ([mIMEType isEqualToString:@"application/rdf+xml"] & 1) != 0 || (objc_msgSend(mIMEType, "isEqualToString:", @"application/rss+xml") & 1) != 0 || (objc_msgSend(mIMEType, "isEqualToString:", @"application/atom+xml"))
     {
     }
 
     else
     {
-      v29 = [v61 isEqualToString:@"application/syndication+xml"];
+      v29 = [mIMEType isEqualToString:@"application/syndication+xml"];
 
       if (!v29)
       {
-        v60 = [v63 suggestedFilename];
-        v55 = [v60 safari_filenameByFixingIllegalCharacters];
-        v30 = [v55 safari_lastPathComponentWithoutZipExtension];
+        suggestedFilename = [response suggestedFilename];
+        safari_filenameByFixingIllegalCharacters = [suggestedFilename safari_filenameByFixingIllegalCharacters];
+        safari_lastPathComponentWithoutZipExtension = [safari_filenameByFixingIllegalCharacters safari_lastPathComponentWithoutZipExtension];
 
-        v59 = v30;
-        v31 = v30;
-        v8 = v62;
-        v56 = [v31 pathExtension];
-        obj = [v56 caseInsensitiveCompare:@"swf"];
+        v59 = safari_lastPathComponentWithoutZipExtension;
+        v31 = safari_lastPathComponentWithoutZipExtension;
+        viewCopy = v62;
+        pathExtension = [v31 pathExtension];
+        obj = [pathExtension caseInsensitiveCompare:@"swf"];
 
-        v32 = [v61 caseInsensitiveCompare:@"application/x-shockwave-flash"];
-        if (v21)
+        v32 = [mIMEType caseInsensitiveCompare:@"application/x-shockwave-flash"];
+        if (isForMainFrame)
         {
           v33 = 0;
         }
@@ -13647,7 +13647,7 @@ LABEL_26:
 
         if (!v77 || (v33 & 1) != 0 || v77 == 3 && ![getPKAddPassesViewControllerClass() canAddPasses])
         {
-          if (v21)
+          if (isForMainFrame)
           {
             [(_SFPageLoadErrorController *)self->_pageLoadErrorController addDownloadFailedAlertWithDescription:0];
           }
@@ -13657,34 +13657,34 @@ LABEL_26:
         }
 
         v57 = MEMORY[0x277CDB788];
-        v35 = [v17 _request];
-        v36 = [v17 _sf_suggestedFilename];
+        _request = [v17 _request];
+        _sf_suggestedFilename = [v17 _sf_suggestedFilename];
         v37 = v57;
-        objb = v35;
-        v58 = v36;
-        v38 = [v37 provisionalDownloadWithMIMEType:v61 request:v35 response:v63 filename:v36 uti:v15 userInitiatedAction:self->_lastUserInitiatedAction];
+        objb = _request;
+        v58 = _sf_suggestedFilename;
+        v38 = [v37 provisionalDownloadWithMIMEType:mIMEType request:_request response:response filename:_sf_suggestedFilename uti:v15 userInitiatedAction:self->_lastUserInitiatedAction];
 
         obja = v38;
         [v38 setNavigatedWebView:v62];
-        v54 = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
+        mEMORY[0x277CDB7A0] = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
         objc_storeStrong(&self->_activeDownload, v38);
         if (v38)
         {
-          v47 = [MEMORY[0x277CDB7A8] sharedManager];
-          [v38 setDelegate:v47];
-          [v47 deferAddingDownloadWhenStarted:v38];
+          mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+          [v38 setDelegate:mEMORY[0x277CDB7A8]];
+          [mEMORY[0x277CDB7A8] deferAddingDownloadWhenStarted:v38];
           if ((v16 - 2) > 2)
           {
             v49 = v62;
             v23 = v38;
             if (objc_opt_respondsToSelector())
             {
-              v41 = [v17 _navigationInitiatingFrame];
-              v42 = [v41 webView];
-              v43 = v42;
-              if (v42)
+              _navigationInitiatingFrame = [v17 _navigationInitiatingFrame];
+              webView = [_navigationInitiatingFrame webView];
+              v43 = webView;
+              if (webView)
               {
-                v44 = v42;
+                v44 = webView;
               }
 
               else
@@ -13695,7 +13695,7 @@ LABEL_26:
               v45 = v44;
 
               v46 = v45;
-              v8 = v62;
+              viewCopy = v62;
             }
 
             else
@@ -13704,7 +13704,7 @@ LABEL_26:
             }
 
             v50 = v46;
-            [v54 setPendingDownload:obja forWebView:?];
+            [mEMORY[0x277CDB7A0] setPendingDownload:obja forWebView:?];
             v18[2](v18, 2);
           }
 
@@ -13713,10 +13713,10 @@ LABEL_26:
             [v38 setSuppressesPrompt:1];
             if (objc_opt_respondsToSelector())
             {
-              v39 = [v17 _navigationInitiatingFrame];
-              v48 = [v39 securityOrigin];
+              _navigationInitiatingFrame2 = [v17 _navigationInitiatingFrame];
+              securityOrigin = [_navigationInitiatingFrame2 securityOrigin];
 
-              v40 = v48;
+              v40 = securityOrigin;
             }
 
             else
@@ -13730,15 +13730,15 @@ LABEL_26:
             v64[3] = &unk_2781DB060;
             v65 = v62;
             v66 = v17;
-            v67 = v54;
+            v67 = mEMORY[0x277CDB7A0];
             v68 = obja;
-            v69 = self;
+            selfCopy2 = self;
             v70 = v18;
             v71 = v16;
             v50 = v40;
             [(TabDocument *)self _presentDialogToAllowDownload:v68 initiatingSecurityOrigin:v40 allowViewAction:v16 != 2 completionHandler:v64];
 
-            v8 = v62;
+            viewCopy = v62;
             v23 = obja;
           }
         }
@@ -13756,37 +13756,37 @@ LABEL_24:
       }
     }
 
-    if ((v21 & 1) == 0)
+    if ((isForMainFrame & 1) == 0)
     {
-      v8 = v62;
+      viewCopy = v62;
       v18[2](v18, 0);
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v8 = v62;
-    v22 = [v17 _request];
-    v23 = [v22 URL];
+    viewCopy = v62;
+    _request2 = [v17 _request];
+    v23 = [_request2 URL];
 
-    v24 = [v23 scheme];
-    v25 = [v24 compare:@"http" options:1];
+    scheme = [v23 scheme];
+    v25 = [scheme compare:@"http" options:1];
 
-    v26 = [v23 absoluteString];
+    absoluteString = [v23 absoluteString];
     if (v25)
     {
-      v59 = [@"feed:" stringByAppendingString:v26];
+      v59 = [@"feed:" stringByAppendingString:absoluteString];
     }
 
     else
     {
-      v27 = [v26 substringFromIndex:5];
+      v27 = [absoluteString substringFromIndex:5];
       v59 = [@"feed:" stringByAppendingString:v27];
     }
 
-    v54 = [MEMORY[0x277CBEBC0] URLWithString:v59];
+    mEMORY[0x277CDB7A0] = [MEMORY[0x277CBEBC0] URLWithString:v59];
     v18[2](v18, 0);
-    v28 = [(TabDocument *)self _loadURLInternal:v54 userDriven:1];
+    v28 = [(TabDocument *)self _loadURLInternal:mEMORY[0x277CDB7A0] userDriven:1];
     goto LABEL_23;
   }
 
@@ -13912,34 +13912,34 @@ LABEL_25:
   }
 }
 
-- (void)webView:(id)a3 navigationAction:(id)a4 didBecomeDownload:(id)a5
+- (void)webView:(id)view navigationAction:(id)action didBecomeDownload:(id)download
 {
-  v6 = a5;
-  v5 = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
-  [v5 downloadDidStart:v6];
+  downloadCopy = download;
+  mEMORY[0x277CDB7A0] = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
+  [mEMORY[0x277CDB7A0] downloadDidStart:downloadCopy];
 }
 
-- (void)webView:(id)a3 navigationResponse:(id)a4 didBecomeDownload:(id)a5
+- (void)webView:(id)view navigationResponse:(id)response didBecomeDownload:(id)download
 {
-  v6 = a5;
-  v5 = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
-  [v5 downloadDidStart:v6];
+  downloadCopy = download;
+  mEMORY[0x277CDB7A0] = [MEMORY[0x277CDB7A0] sharedDownloadDispatcher];
+  [mEMORY[0x277CDB7A0] downloadDidStart:downloadCopy];
 }
 
-- (void)webView:(id)a3 didStartProvisionalNavigation:(id)a4
+- (void)webView:(id)view didStartProvisionalNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
+  viewCopy = view;
+  navigationCopy = navigation;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   biomeWebpageIdentifier = self->_biomeWebpageIdentifier;
-  self->_biomeWebpageIdentifier = v8;
+  self->_biomeWebpageIdentifier = uUID;
 
   lastLoadError = self->_lastLoadError;
   self->_lastLoadError = 0;
 
-  v11 = [v6 _unreachableURL];
+  _unreachableURL = [viewCopy _unreachableURL];
 
-  if (!v11)
+  if (!_unreachableURL)
   {
     lastLoadErrorForFormatMenu = self->_lastLoadErrorForFormatMenu;
     self->_lastLoadErrorForFormatMenu = 0;
@@ -13959,20 +13959,20 @@ LABEL_25:
 
   self->_haveRestoredCompletionList = 0;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v17 = [WeakRetained tabController];
-  [v17 saveTabDocumentUserActivitySoon:self];
+  tabController = [WeakRetained tabController];
+  [tabController saveTabDocumentUserActivitySoon:self];
 
   [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator didStartProvisionalNavigationWithUserInitiatedAction:self->_lastUserInitiatedAction];
   if (self->_pageLoadStatistics)
   {
-    v22 = [v7 _request];
-    v23 = [v22 URL];
-    v24 = [v23 absoluteString];
-    v25 = [v24 isEqualToString:@"about:blank"];
+    _request = [navigationCopy _request];
+    v23 = [_request URL];
+    absoluteString = [v23 absoluteString];
+    v25 = [absoluteString isEqualToString:@"about:blank"];
 
     if ((v25 & 1) == 0)
     {
-      [(PageLoadTestStatistics *)self->_pageLoadStatistics startedNavigation:v7];
+      [(PageLoadTestStatistics *)self->_pageLoadStatistics startedNavigation:navigationCopy];
     }
   }
 
@@ -13995,14 +13995,14 @@ LABEL_25:
     self->_translationContext = v19;
 
     [(WBSTranslationContext *)self->_translationContext setFluidProgressController:self->_fluidProgressController];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:self selector:sel__translationContextStateDidChange_ name:*MEMORY[0x277D4A9A0] object:self->_translationContext];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__translationContextStateDidChange_ name:*MEMORY[0x277D4A9A0] object:self->_translationContext];
   }
 
   [(TabDocument *)self updateAccessibilityIdentifier];
   [(_SFFormAutoFillController *)self->_autoFillController offerToSaveUnsubmittedFormDataIfNeededWithCompletionHandler:&__block_literal_global_543];
   [(TabDocument *)self _updateActiveExtensionsIfNecessary];
-  if (self->_loadWasUserDriven && ([v7 _isUserInitiated] & 1) != 0 || self->_lastUserInitiatedAction)
+  if (self->_loadWasUserDriven && ([navigationCopy _isUserInitiated] & 1) != 0 || self->_lastUserInitiatedAction)
   {
     [(WBSPermissionDialogThrottler *)self->_permissionDialogThrottler willPerformUserInitiatedNavigation];
   }
@@ -14061,20 +14061,20 @@ id __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke_2(uint64_t
   return v8;
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v18 = a4;
-  v7 = a5;
-  [(TabDocument *)self _didFinishNavigation:v18];
-  [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator didFailProvisionalNavigationWithError:v7];
-  v8 = [(SFBrowserDocumentTrackerInfo *)self->_trackerInfo queryParameterFilteringDataQueue];
-  [v8 clearPendingData];
+  navigationCopy = navigation;
+  errorCopy = error;
+  [(TabDocument *)self _didFinishNavigation:navigationCopy];
+  [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator didFailProvisionalNavigationWithError:errorCopy];
+  queryParameterFilteringDataQueue = [(SFBrowserDocumentTrackerInfo *)self->_trackerInfo queryParameterFilteringDataQueue];
+  [queryParameterFilteringDataQueue clearPendingData];
 
-  v9 = [v7 code];
-  if (-[NSMutableArray count](self->_fallbackURLs, "count") && ((v10 = [v7 _web_errorIsInDomain:*MEMORY[0x277CCA738]], (v9 & 0xFFFFFFFFFFFFFFFELL) == 0xFFFFFFFFFFFFFC14) ? (v11 = v10) : (v11 = 0), v11 == 1))
+  code = [errorCopy code];
+  if (-[NSMutableArray count](self->_fallbackURLs, "count") && ((v10 = [errorCopy _web_errorIsInDomain:*MEMORY[0x277CCA738]], (code & 0xFFFFFFFFFFFFFFFELL) == 0xFFFFFFFFFFFFFC14) ? (v11 = v10) : (v11 = 0), v11 == 1))
   {
-    v12 = [v18 _request];
-    suggestedFilenameForNextCommit = objc_getAssociatedObject(v12, kWebClipToNSURLRequestAssociationKey);
+    _request = [navigationCopy _request];
+    suggestedFilenameForNextCommit = objc_getAssociatedObject(_request, kWebClipToNSURLRequestAssociationKey);
 
     [(TabDocument *)self _loadNextFallbackURLWithWebClip:0 navigation:?];
   }
@@ -14085,20 +14085,20 @@ id __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke_2(uint64_t
     [(_SFWebView *)self->_webView setObscuringContents:0];
     self->_contentIsReadyForSnapshot = 1;
     [(TabDocument *)self updateAccessibilityIdentifier];
-    objc_storeStrong(&self->_lastLoadError, a5);
-    objc_storeStrong(&self->_lastLoadErrorForFormatMenu, a5);
+    objc_storeStrong(&self->_lastLoadError, error);
+    objc_storeStrong(&self->_lastLoadErrorForFormatMenu, error);
     [(TabDocument *)self _didFinishLoading];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v15 = [WeakRetained tabController];
-    [v15 saveTabDocumentUserActivitySoon:self];
+    tabController = [WeakRetained tabController];
+    [tabController saveTabDocumentUserActivitySoon:self];
 
-    v16 = [MEMORY[0x277D499B8] sharedLogger];
-    [v16 reportTabUpdatedWithUpdateType:0];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:0];
 
     pageLoadStatistics = self->_pageLoadStatistics;
     if (pageLoadStatistics)
     {
-      [(PageLoadTestStatistics *)pageLoadStatistics failedNavigation:v18 withError:v7];
+      [(PageLoadTestStatistics *)pageLoadStatistics failedNavigation:navigationCopy withError:errorCopy];
     }
 
     self->_shouldResetPrintSuppressionOnNextCommit = 0;
@@ -14108,64 +14108,64 @@ id __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke_2(uint64_t
   }
 }
 
-- (void)_didFinishNavigation:(uint64_t)a1
+- (void)_didFinishNavigation:(uint64_t)navigation
 {
   v3 = a2;
-  if (a1)
+  if (navigation)
   {
     v7 = v3;
-    if (*(a1 + 928) == 1 && *(a1 + 936))
+    if (*(navigation + 928) == 1 && *(navigation + 936))
     {
-      v4 = [a1 webView];
-      v5 = [v4 _restoreSessionState:*(a1 + 936) andNavigate:0];
+      webView = [navigation webView];
+      v5 = [webView _restoreSessionState:*(navigation + 936) andNavigate:0];
     }
 
-    *(a1 + 928) = 0;
-    v6 = *(a1 + 936);
-    *(a1 + 936) = 0;
+    *(navigation + 928) = 0;
+    v6 = *(navigation + 936);
+    *(navigation + 936) = 0;
 
     v3 = v7;
   }
 }
 
-- (void)_webView:(id)a3 contentRuleListWithIdentifier:(id)a4 performedAction:(id)a5 forURL:(id)a6
+- (void)_webView:(id)view contentRuleListWithIdentifier:(id)identifier performedAction:(id)action forURL:(id)l
 {
-  v13 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (([v9 blockedLoad] & 1) != 0 || objc_msgSend(v9, "blockedCookies"))
+  viewCopy = view;
+  actionCopy = action;
+  lCopy = l;
+  if (([actionCopy blockedLoad] & 1) != 0 || objc_msgSend(actionCopy, "blockedCookies"))
   {
-    v11 = [(TabDocument *)self _contentBlockerStatisticsStore];
-    v12 = [v13 URL];
-    [v11 recordThirdPartyResourceBlocked:v10 onFirstParty:v12 completionHandler:0];
+    _contentBlockerStatisticsStore = [(TabDocument *)self _contentBlockerStatisticsStore];
+    v12 = [viewCopy URL];
+    [_contentBlockerStatisticsStore recordThirdPartyResourceBlocked:lCopy onFirstParty:v12 completionHandler:0];
   }
 }
 
-- (void)_webView:(id)a3 decidePolicyForSOAuthorizationLoadWithCurrentPolicy:(int64_t)a4 forExtension:(id)a5 completionHandler:(id)a6
+- (void)_webView:(id)view decidePolicyForSOAuthorizationLoadWithCurrentPolicy:(int64_t)policy forExtension:(id)extension completionHandler:(id)handler
 {
-  v8 = a6;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   LODWORD(self) = [WeakRetained tabDocumentShouldHandleAuthentication:self];
 
-  v8[2](v8, self ^ 1);
+  handlerCopy[2](handlerCopy, self ^ 1);
 }
 
-- (void)_webView:(id)a3 didGeneratePageLoadTiming:(id)a4
+- (void)_webView:(id)view didGeneratePageLoadTiming:(id)timing
 {
-  v6 = a4;
+  timingCopy = timing;
   pageLoadStatistics = self->_pageLoadStatistics;
   if (pageLoadStatistics)
   {
-    [(PageLoadTestStatistics *)pageLoadStatistics didGeneratePageLoadTiming:v6];
+    [(PageLoadTestStatistics *)pageLoadStatistics didGeneratePageLoadTiming:timingCopy];
   }
 }
 
 - (void)_donateTextSoon
 {
-  if (a1 && [a1[158] allowsUserActivityFeedback] && (-[TabDocument _isShowingNativePage](a1) & 1) == 0)
+  if (self && [self[158] allowsUserActivityFeedback] && (-[TabDocument _isShowingNativePage](self) & 1) == 0)
   {
-    objc_initWeak(&location, a1);
-    [a1[53] invalidate];
+    objc_initWeak(&location, self);
+    [self[53] invalidate];
     v2 = MEMORY[0x277CBEBB8];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -14173,8 +14173,8 @@ id __49__TabDocument__updateActiveExtensionsIfNecessary__block_invoke_2(uint64_t
     v5[3] = &unk_2781DA668;
     objc_copyWeak(&v6, &location);
     v3 = [v2 scheduledTimerWithTimeInterval:0 repeats:v5 block:5.0];
-    v4 = a1[53];
-    a1[53] = v3;
+    v4 = self[53];
+    self[53] = v3;
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -14187,11 +14187,11 @@ void __30__TabDocument__donateTextSoon__block_invoke(uint64_t a1)
   [(TabDocument *)WeakRetained _donateTextAllowingDonationWithoutReaderText:?];
 }
 
-- (void)_donateTextAllowingDonationWithoutReaderText:(id *)a1
+- (void)_donateTextAllowingDonationWithoutReaderText:(id *)text
 {
-  if (a1 && a1[53])
+  if (text && text[53])
   {
-    if (![a1[158] allowsUserActivityFeedback] || -[TabDocument _isShowingNativePage](a1))
+    if (![text[158] allowsUserActivityFeedback] || -[TabDocument _isShowingNativePage](text))
     {
       v4 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -14202,7 +14202,7 @@ void __30__TabDocument__donateTextSoon__block_invoke(uint64_t a1)
       v5 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        [a1[133] URL];
+        [text[133] URL];
         objc_claimAutoreleasedReturnValue();
         [TabDocument _donateTextAllowingDonationWithoutReaderText:];
       }
@@ -14210,37 +14210,37 @@ void __30__TabDocument__donateTextSoon__block_invoke(uint64_t a1)
 
     else
     {
-      v6 = [a1[37] unfilteredArticleText];
-      v5 = v6;
-      if ((a2 & 1) != 0 || v6 || ![a1[37] isReaderAvailable])
+      unfilteredArticleText = [text[37] unfilteredArticleText];
+      v5 = unfilteredArticleText;
+      if ((a2 & 1) != 0 || unfilteredArticleText || ![text[37] isReaderAvailable])
       {
-        [a1[53] invalidate];
-        v8 = a1[53];
-        a1[53] = 0;
+        [text[53] invalidate];
+        v8 = text[53];
+        text[53] = 0;
 
-        if ([a1 isSecure])
+        if ([text isSecure])
         {
-          v9 = [a1[37] doesPageUseSearchEngineOptimizationMetadata];
+          doesPageUseSearchEngineOptimizationMetadata = [text[37] doesPageUseSearchEngineOptimizationMetadata];
         }
 
         else
         {
-          v9 = 1;
+          doesPageUseSearchEngineOptimizationMetadata = 1;
         }
 
-        v10 = [a1 personalizationData];
-        v11 = [v10 copy];
+        personalizationData = [text personalizationData];
+        v11 = [personalizationData copy];
 
-        v12 = [a1 personalizationData];
-        [v12 clearData];
+        personalizationData2 = [text personalizationData];
+        [personalizationData2 clearData];
 
-        v13 = [MEMORY[0x277D4A060] sharedInstance];
-        v14 = a1[133];
-        v15 = [(TabDocument *)a1 profileIdentifier];
-        v16 = v15;
-        if (v15)
+        mEMORY[0x277D4A060] = [MEMORY[0x277D4A060] sharedInstance];
+        v14 = text[133];
+        profileIdentifier = [(TabDocument *)text profileIdentifier];
+        v16 = profileIdentifier;
+        if (profileIdentifier)
         {
-          v17 = v15;
+          v17 = profileIdentifier;
         }
 
         else
@@ -14248,7 +14248,7 @@ void __30__TabDocument__donateTextSoon__block_invoke(uint64_t a1)
           v17 = *MEMORY[0x277D49BD8];
         }
 
-        [v13 donateTextInWebView:v14 extractedReaderText:v5 canDonateFullPageText:v9 profileIdentifier:v17 personalizationData:v11 extractInnerText:&__block_literal_global_553];
+        [mEMORY[0x277D4A060] donateTextInWebView:v14 extractedReaderText:v5 canDonateFullPageText:doesPageUseSearchEngineOptimizationMetadata profileIdentifier:v17 personalizationData:v11 extractInnerText:&__block_literal_global_553];
       }
 
       else
@@ -14265,22 +14265,22 @@ void __30__TabDocument__donateTextSoon__block_invoke(uint64_t a1)
 
 - (BOOL)isFrecentlyVisitedSite
 {
-  v3 = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
+  cachedCanonicalURLOrURLForSharing = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
   v4 = +[Application sharedApplication];
-  v5 = [v4 historyController];
-  v6 = [(TabDocument *)self profileIdentifier];
-  v7 = [v5 frequentlyVisitedSitesControllerForProfileIdentifier:v6 loadIfNeeded:0];
+  historyController = [v4 historyController];
+  profileIdentifier = [(TabDocument *)self profileIdentifier];
+  v7 = [historyController frequentlyVisitedSitesControllerForProfileIdentifier:profileIdentifier loadIfNeeded:0];
 
-  v8 = [v7 frequentlyVisitedSites];
+  frequentlyVisitedSites = [v7 frequentlyVisitedSites];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__TabDocument_isFrecentlyVisitedSite__block_invoke;
   v11[3] = &unk_2781DB0F8;
-  v9 = v3;
+  v9 = cachedCanonicalURLOrURLForSharing;
   v12 = v9;
-  LOBYTE(v5) = [v8 safari_containsObjectPassingTest:v11];
+  LOBYTE(historyController) = [frequentlyVisitedSites safari_containsObjectPassingTest:v11];
 
-  return v5;
+  return historyController;
 }
 
 uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, void *a2)
@@ -14295,19 +14295,19 @@ uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, voi
 - (id)makeBookmark
 {
   v3 = MEMORY[0x277D7B5A0];
-  v4 = [(TabDocument *)self titleForNewBookmark];
-  v5 = [v3 _trimmedTitle:v4];
+  titleForNewBookmark = [(TabDocument *)self titleForNewBookmark];
+  v5 = [v3 _trimmedTitle:titleForNewBookmark];
 
-  v6 = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
-  if (v6)
+  cachedCanonicalURLOrURLForSharing = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
+  if (cachedCanonicalURLOrURLForSharing)
   {
     v7 = objc_alloc(MEMORY[0x277D7B5A0]);
-    v8 = [v6 absoluteString];
-    v9 = [v7 initWithTitle:v5 address:v8 collectionType:0];
+    absoluteString = [cachedCanonicalURLOrURLForSharing absoluteString];
+    v9 = [v7 initWithTitle:v5 address:absoluteString collectionType:0];
 
     [v9 setAddedLocally:1];
-    v10 = [MEMORY[0x277D7B590] sharedWebFilterSettings];
-    [v9 setWebFilterStatus:{objc_msgSend(v10, "webFilterStatusForURL:", v6)}];
+    mEMORY[0x277D7B590] = [MEMORY[0x277D7B590] sharedWebFilterSettings];
+    [v9 setWebFilterStatus:{objc_msgSend(mEMORY[0x277D7B590], "webFilterStatusForURL:", cachedCanonicalURLOrURLForSharing)}];
 
     v11 = [MEMORY[0x277CBEAA8] now];
     [v9 setDateAdded:v11];
@@ -14326,53 +14326,53 @@ uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, voi
   if (self && [(_SFBrowserConfiguration *)self->_configuration allowsUserActivityFeedback]&& ![(TabDocument *)self _isShowingNativePage])
   {
     v4 = objc_alloc_init(MEMORY[0x277D4A078]);
-    v6 = [(NSUUID *)self->_uuid UUIDString];
-    [v4 setUuidString:v6];
+    uUIDString = [(NSUUID *)self->_uuid UUIDString];
+    [v4 setUuidString:uUIDString];
 
     v7 = [(TabDocument *)self url];
     [v4 setUrl:v7];
 
-    v8 = [(TabDocument *)self title];
-    [v4 setTitle:v8];
+    title = [(TabDocument *)self title];
+    [v4 setTitle:title];
 
-    v9 = [(TabDocument *)self profileIdentifier];
-    [v4 setProfileIdentifier:v9];
+    profileIdentifier = [(TabDocument *)self profileIdentifier];
+    [v4 setProfileIdentifier:profileIdentifier];
 
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_lastViewedTime];
     [v4 setLastVisitedDate:v10];
 
-    v3 = [(WBTab *)self->_tabGroupTab tabGroupUUID];
-    [v4 setTabGroupUUID:v3];
+    tabGroupUUID = [(WBTab *)self->_tabGroupTab tabGroupUUID];
+    [v4 setTabGroupUUID:tabGroupUUID];
   }
 
   else
   {
-    v3 = [MEMORY[0x277D4A060] sharedInstance];
-    [v3 setTabNeedsSpotlightDeletion:self];
+    tabGroupUUID = [MEMORY[0x277D4A060] sharedInstance];
+    [tabGroupUUID setTabNeedsSpotlightDeletion:self];
     v4 = 0;
   }
 
   return v4;
 }
 
-- (void)webView:(id)a3 didCommitNavigation:(id)a4
+- (void)webView:(id)view didCommitNavigation:(id)navigation
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v47 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   self->_didCommitCurrentNavigation = 1;
-  v49 = v6;
-  v7 = [(TabDocument *)self trackerInfo];
-  [v7 documentDidCommitNavigation];
+  v49 = viewCopy;
+  trackerInfo = [(TabDocument *)self trackerInfo];
+  [trackerInfo documentDidCommitNavigation];
 
-  [v6 setOpaque:1];
+  [viewCopy setOpaque:1];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v50 = [v6 URL];
+  v50 = [viewCopy URL];
   if (!self->_disableContentBlockersWhenReloading)
   {
-    v8 = [(TabDocument *)self sfScribbleController];
-    v9 = [v50 host];
-    [v8 updateUserDefinedContentBlockerWithHost:v9];
+    sfScribbleController = [(TabDocument *)self sfScribbleController];
+    host = [v50 host];
+    [sfScribbleController updateUserDefinedContentBlockerWithHost:host];
   }
 
   [(TabDocument *)self setIsBlank:[(TabDocument *)self isShowingStartPageOverriddenByExtension]];
@@ -14390,7 +14390,7 @@ uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, voi
   touchIconFetcher = self->_touchIconFetcher;
   self->_touchIconFetcher = 0;
 
-  -[_SFReloadOptionsController setEffectiveContentMode:](self->_reloadOptionsController, "setEffectiveContentMode:", [v47 effectiveContentMode]);
+  -[_SFReloadOptionsController setEffectiveContentMode:](self->_reloadOptionsController, "setEffectiveContentMode:", [navigationCopy effectiveContentMode]);
   [(NSTimer *)self->_donateTextTimer invalidate];
   donateTextTimer = self->_donateTextTimer;
   self->_donateTextTimer = 0;
@@ -14424,8 +14424,8 @@ uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, voi
     }
   }
 
-  v16 = [(TabDocument *)self shouldActivateReaderWhenAvailable];
-  if (!v16)
+  shouldActivateReaderWhenAvailable = [(TabDocument *)self shouldActivateReaderWhenAvailable];
+  if (!shouldActivateReaderWhenAvailable)
   {
     if (![v15 isShowingReader] || !self->_active)
     {
@@ -14433,12 +14433,12 @@ uint64_t __37__TabDocument_isFrecentlyVisitedSite__block_invoke(uint64_t a1, voi
     }
 
 LABEL_19:
-    [v15 hideReaderForTabDocument:self animated:v16 deactivationMode:0];
+    [v15 hideReaderForTabDocument:self animated:shouldActivateReaderWhenAvailable deactivationMode:0];
     goto LABEL_20;
   }
 
-  v17 = [v15 nextContinuousItemDocument];
-  v18 = v17 == self;
+  nextContinuousItemDocument = [v15 nextContinuousItemDocument];
+  v18 = nextContinuousItemDocument == self;
 
   if (v18)
   {
@@ -14447,8 +14447,8 @@ LABEL_19:
 
   if ([v15 readerShouldBeShownIfPossible])
   {
-    v19 = [(_SFWebView *)self->_readerWebView _webProcessIdentifier];
-    if (v19 == [(_SFWebView *)self->_webView _webProcessIdentifier])
+    _webProcessIdentifier = [(_SFWebView *)self->_readerWebView _webProcessIdentifier];
+    if (_webProcessIdentifier == [(_SFWebView *)self->_webView _webProcessIdentifier])
     {
       [v15 setReaderViewStale:{objc_msgSend(v15, "isShowingReader")}];
       goto LABEL_20;
@@ -14476,24 +14476,24 @@ LABEL_20:
   self->_displayingStandaloneMedia = [(_SFWebView *)self->_webView _isDisplayingStandaloneMediaDocument];
   self->_hasDoneReaderAvailabilityDetection = 0;
   [(WBSTranslationContext *)self->_translationContext owningWebViewDidCommitNavigationWithURL:v50 completionHandler:0];
-  v20 = [(TabDocument *)self readingListBookmarkID];
-  v45 = [(_SFWebView *)self->_webView backForwardList];
-  v48 = [v45 currentItem];
-  if (v20 && ![(WKBackForwardListItem *)v48 safari_bookmarkID])
+  readingListBookmarkID = [(TabDocument *)self readingListBookmarkID];
+  backForwardList = [(_SFWebView *)self->_webView backForwardList];
+  currentItem = [backForwardList currentItem];
+  if (readingListBookmarkID && ![(WKBackForwardListItem *)currentItem safari_bookmarkID])
   {
-    [(WKBackForwardListItem *)v48 safari_setBookmarkID:v20];
+    [(WKBackForwardListItem *)currentItem safari_setBookmarkID:readingListBookmarkID];
   }
 
   if (self->_highlightFromNavigation)
   {
-    [v48 safari_setHighlight:?];
+    [currentItem safari_setHighlight:?];
     highlightFromNavigation = self->_highlightFromNavigation;
     self->_highlightFromNavigation = 0;
   }
 
   self->_wasLoadedWithLockdownModeEnabled = self->_pendingNavigationWillLoadWithLockdownModeEnabled;
-  v22 = [(TabDocument *)self readingListBookmarkID];
-  if (self->_active && v22)
+  readingListBookmarkID2 = [(TabDocument *)self readingListBookmarkID];
+  if (self->_active && readingListBookmarkID2)
   {
     [v15 markReadingListBookmark:self->_readingListBookmark asRead:1 postNotification:1];
   }
@@ -14522,20 +14522,20 @@ LABEL_20:
 
   if ([(TabDocument *)self isPDFDocument])
   {
-    v26 = [MEMORY[0x277D499B8] sharedLogger];
-    [v26 didLoadTabContent:0];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didLoadTabContent:0];
   }
 
   else if ([(TabDocument *)self hasQuickLookContent])
   {
-    v26 = [MEMORY[0x277D499B8] sharedLogger];
-    [v26 didLoadTabContent:1];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didLoadTabContent:1];
   }
 
   else
   {
-    v26 = [MEMORY[0x277D499B8] sharedLogger];
-    [v26 didLoadTabContent:2];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] didLoadTabContent:2];
   }
 
   if (([v15 isReaderViewStale] & 1) == 0)
@@ -14545,11 +14545,11 @@ LABEL_20:
 
   [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator didCommitNavigation];
   [(TabDocument *)self _updateNavigationBarItem];
-  v27 = [v15 tabController];
-  [v27 saveTabDocumentUserActivitySoon:self];
+  tabController = [v15 tabController];
+  [tabController saveTabDocumentUserActivitySoon:self];
 
-  v28 = [MEMORY[0x277D499B8] sharedLogger];
-  [v28 reportTabUpdatedWithUpdateType:0];
+  mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8]2 reportTabUpdatedWithUpdateType:0];
 
   storeBanner = self->_storeBanner;
   self->_storeBanner = 0;
@@ -14572,8 +14572,8 @@ LABEL_20:
   }
 
   [(TabDocument *)self _clearCachedCanonicalURL];
-  v31 = [v50 safari_userVisibleHostWithoutWWWSubdomain];
-  if (([v31 isEqualToString:self->_domainWhereUserDeclinedAutomaticStrongPassword] & 1) == 0)
+  safari_userVisibleHostWithoutWWWSubdomain = [v50 safari_userVisibleHostWithoutWWWSubdomain];
+  if (([safari_userVisibleHostWithoutWWWSubdomain isEqualToString:self->_domainWhereUserDeclinedAutomaticStrongPassword] & 1) == 0)
   {
     domainWhereUserDeclinedAutomaticStrongPassword = self->_domainWhereUserDeclinedAutomaticStrongPassword;
     self->_domainWhereUserDeclinedAutomaticStrongPassword = 0;
@@ -14631,9 +14631,9 @@ LABEL_20:
   }
 
   v40 = [v50 safari_URLByReplacingSchemeWithString:*MEMORY[0x277CDB9F0]];
-  v41 = [MEMORY[0x277D28D50] sharedVoiceUtilities];
-  v42 = [v41 activeSiriReaderSessionURL];
-  if ([v40 isEqual:v42])
+  mEMORY[0x277D28D50] = [MEMORY[0x277D28D50] sharedVoiceUtilities];
+  activeSiriReaderSessionURL = [mEMORY[0x277D28D50] activeSiriReaderSessionURL];
+  if ([v40 isEqual:activeSiriReaderSessionURL])
   {
     v43 = [v50 safari_isEqualToURL:self->_previousWebPageURLBeforeNavigation];
 
@@ -14674,62 +14674,62 @@ void __43__TabDocument_webView_didCommitNavigation___block_invoke_2(uint64_t a1,
 
 - (void)_donateCurrentPageLoad
 {
-  if (a1 && *(a1 + 904) == 1)
+  if (self && *(self + 904) == 1)
   {
-    v2 = [a1 isSearchPage];
-    v3 = [*(a1 + 88) loadedUsingDesktopUserAgent];
-    v4 = *(a1 + 776);
-    v5 = [MEMORY[0x277D49E30] sharedManager];
-    [v5 donatePageLoadWithUserAgent:v3 ^ 1u wasSearch:v2 wasPrivateBrowsing:objc_msgSend(a1 wasActualized:"isPrivateBrowsingEnabled") provenance:{objc_msgSend(a1, "nextLoadComesFromSearchPage"), v4}];
+    isSearchPage = [self isSearchPage];
+    loadedUsingDesktopUserAgent = [*(self + 88) loadedUsingDesktopUserAgent];
+    v4 = *(self + 776);
+    mEMORY[0x277D49E30] = [MEMORY[0x277D49E30] sharedManager];
+    [mEMORY[0x277D49E30] donatePageLoadWithUserAgent:loadedUsingDesktopUserAgent ^ 1u wasSearch:isSearchPage wasPrivateBrowsing:objc_msgSend(self wasActualized:"isPrivateBrowsingEnabled") provenance:{objc_msgSend(self, "nextLoadComesFromSearchPage"), v4}];
   }
 }
 
-- (void)userDeclinedAutomaticStrongPasswordForCurrentDomainOnTabWithUUID:(id)a3
+- (void)userDeclinedAutomaticStrongPasswordForCurrentDomainOnTabWithUUID:(id)d
 {
-  v8 = a3;
-  v4 = [(TabDocument *)self committedURL];
-  v5 = [v4 safari_userVisibleHostWithoutWWWSubdomain];
+  dCopy = d;
+  committedURL = [(TabDocument *)self committedURL];
+  safari_userVisibleHostWithoutWWWSubdomain = [committedURL safari_userVisibleHostWithoutWWWSubdomain];
 
-  v6 = [(TabDocument *)self uuid];
-  v7 = [v8 isEqual:v6];
+  uuid = [(TabDocument *)self uuid];
+  v7 = [dCopy isEqual:uuid];
 
   if (v7)
   {
-    objc_storeStrong(&self->_domainWhereUserDeclinedAutomaticStrongPassword, v5);
+    objc_storeStrong(&self->_domainWhereUserDeclinedAutomaticStrongPassword, safari_userVisibleHostWithoutWWWSubdomain);
   }
 }
 
-- (void)_willCommitPreviewViewController:(id *)a1
+- (void)_willCommitPreviewViewController:(id *)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     v12 = v3;
     [v3 willCommitPreviewedWebView];
-    v4 = [v12 previewTabDocument];
-    v5 = [v4 webView];
+    previewTabDocument = [v12 previewTabDocument];
+    webView = [previewTabDocument webView];
 
-    [v5 _setAddsVisitedLinks:1];
-    v6 = [v5 _unreachableURL];
+    [webView _setAddsVisitedLinks:1];
+    _unreachableURL = [webView _unreachableURL];
 
-    if (v6)
+    if (_unreachableURL)
     {
-      [a1[163] webViewDidCommitErrorPagePreview:v5];
+      [controller[163] webViewDidCommitErrorPagePreview:webView];
     }
 
     else
     {
-      v7 = [v5 URL];
+      v7 = [webView URL];
       if (v7)
       {
-        v8 = [a1 isPrivateBrowsingEnabled];
+        isPrivateBrowsingEnabled = [controller isPrivateBrowsingEnabled];
 
-        if ((v8 & 1) == 0)
+        if ((isPrivateBrowsingEnabled & 1) == 0)
         {
-          v9 = [a1 history];
-          v10 = [v9 visitedLinkStore];
-          v11 = [v5 URL];
-          [v10 addVisitedLinkWithURL:v11];
+          history = [controller history];
+          visitedLinkStore = [history visitedLinkStore];
+          v11 = [webView URL];
+          [visitedLinkStore addVisitedLinkWithURL:v11];
         }
       }
     }
@@ -14738,44 +14738,44 @@ void __43__TabDocument_webView_didCommitNavigation___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_didCommitPreviewViewController:(uint64_t)a1
+- (void)_didCommitPreviewViewController:(uint64_t)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     v6 = v3;
-    v4 = [v3 previewTabDocument];
-    v5 = [v4 webView];
+    previewTabDocument = [v3 previewTabDocument];
+    webView = [previewTabDocument webView];
 
-    [v5 _setAllowsMediaDocumentInlinePlayback:0];
+    [webView _setAllowsMediaDocumentInlinePlayback:0];
     v3 = v6;
   }
 }
 
-- (id)tabDocumentForPreviewURL:(void *)a3 relatedToWebView:
+- (id)tabDocumentForPreviewURL:(void *)l relatedToWebView:
 {
-  v4 = a3;
-  if (a1)
+  lCopy = l;
+  if (self)
   {
-    v5 = [a1 createWebViewConfiguration];
-    [v5 _setRelatedWebView:v4];
-    v6 = [v4 configuration];
-    v7 = [v6 websiteDataStore];
-    [v5 setWebsiteDataStore:v7];
+    createWebViewConfiguration = [self createWebViewConfiguration];
+    [createWebViewConfiguration _setRelatedWebView:lCopy];
+    configuration = [lCopy configuration];
+    websiteDataStore = [configuration websiteDataStore];
+    [createWebViewConfiguration setWebsiteDataStore:websiteDataStore];
 
     v8 = objc_alloc(objc_opt_class());
-    WeakRetained = objc_loadWeakRetained(a1 + 124);
-    v10 = [v8 _initWithBrowserController:WeakRetained configuration:v5];
+    WeakRetained = objc_loadWeakRetained(self + 124);
+    v10 = [v8 _initWithBrowserController:WeakRetained configuration:createWebViewConfiguration];
 
-    [v10 setNextLoadComesFromSearchPage:{objc_msgSend(a1, "isSearchPage")}];
-    v11 = [v10 webView];
-    [v11 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    [v11 _setAddsVisitedLinks:0];
-    [v11 _setAllowsMediaDocumentInlinePlayback:1];
-    v12 = [a1 sessionState];
-    [v10 restoreSessionState:v12 andNavigate:0];
-    v13 = objc_loadWeakRetained(a1 + 156);
-    [v13 tabDocument:a1 didCreatePreviewDocument:v10];
+    [v10 setNextLoadComesFromSearchPage:{objc_msgSend(self, "isSearchPage")}];
+    webView = [v10 webView];
+    [webView setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+    [webView _setAddsVisitedLinks:0];
+    [webView _setAllowsMediaDocumentInlinePlayback:1];
+    sessionState = [self sessionState];
+    [v10 restoreSessionState:sessionState andNavigate:0];
+    v13 = objc_loadWeakRetained(self + 156);
+    [v13 tabDocument:self didCreatePreviewDocument:v10];
   }
 
   else
@@ -14786,38 +14786,38 @@ void __43__TabDocument_webView_didCommitNavigation___block_invoke_2(uint64_t a1,
   return v10;
 }
 
-- (BOOL)_webView:(id)a3 gestureRecognizerCouldPinch:(id)a4
+- (BOOL)_webView:(id)view gestureRecognizerCouldPinch:(id)pinch
 {
-  v5 = a4;
+  pinchCopy = pinch;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v7 = [WeakRetained tabCollectionViewProvider];
-  v8 = [v7 tabSwitcherViewController];
-  v9 = [v8 pinchGestureRecognizer];
+  tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+  tabSwitcherViewController = [tabCollectionViewProvider tabSwitcherViewController];
+  pinchGestureRecognizer = [tabSwitcherViewController pinchGestureRecognizer];
 
-  if (v9 == v5)
+  if (pinchGestureRecognizer == pinchCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v10 = [WeakRetained tabViewPinchRecognizer];
-    v11 = v10 == v5;
+    tabViewPinchRecognizer = [WeakRetained tabViewPinchRecognizer];
+    v11 = tabViewPinchRecognizer == pinchCopy;
   }
 
   return v11;
 }
 
-- (BOOL)_webView:(id)a3 gestureRecognizerCanBePreventedByTouchEvents:(id)a4
+- (BOOL)_webView:(id)view gestureRecognizerCanBePreventedByTouchEvents:(id)events
 {
-  v4 = a4;
+  eventsCopy = events;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   if ([MEMORY[0x277D49A08] isPasswordsAppInstalled])
   {
@@ -14827,34 +14827,34 @@ void __43__TabDocument_webView_didCommitNavigation___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)_webView:(id)a3 contextMenuConfigurationForElement:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view contextMenuConfigurationForElement:(id)element completionHandler:(id)handler
 {
-  v9 = a5;
-  v8 = [MEMORY[0x277CDB800] contextMenuConfigurationForWebView:a3 elementInfo:a4 handler:self];
-  v9[2](v9, v8);
+  handlerCopy = handler;
+  v8 = [MEMORY[0x277CDB800] contextMenuConfigurationForWebView:view elementInfo:element handler:self];
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (id)_webView:(id)a3 contextMenuContentPreviewForElement:(id)a4
+- (id)_webView:(id)view contextMenuContentPreviewForElement:(id)element
 {
-  v4 = [MEMORY[0x277CDB800] contextMenuContentPreviewForWebView:a3 elementInfo:a4 handler:self];
+  v4 = [MEMORY[0x277CDB800] contextMenuContentPreviewForWebView:view elementInfo:element handler:self];
 
   return v4;
 }
 
-- (void)_webView:(id)a3 contextMenuForElement:(id)a4 willCommitWithAnimator:(id)a5
+- (void)_webView:(id)view contextMenuForElement:(id)element willCommitWithAnimator:(id)animator
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 previewViewController];
+  viewCopy = view;
+  animatorCopy = animator;
+  previewViewController = [animatorCopy previewViewController];
   objc_opt_class();
-  [v7 setPreferredCommitStyle:objc_opt_isKindOfClass() & 1];
+  [animatorCopy setPreferredCommitStyle:objc_opt_isKindOfClass() & 1];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___block_invoke;
   v10[3] = &unk_2781D60B8;
-  v9 = v6;
+  v9 = viewCopy;
   v11 = v9;
-  [v7 addAnimations:v10];
+  [animatorCopy addAnimations:v10];
 }
 
 void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___block_invoke(uint64_t a1)
@@ -14863,7 +14863,7 @@ void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___b
   [v1 commitPreviewViewController];
 }
 
-- (void)_webView:(id)a3 contextMenuDidEndForElement:(id)a4
+- (void)_webView:(id)view contextMenuDidEndForElement:(id)element
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentDidDimissPreviewedDocument:self];
@@ -14876,74 +14876,74 @@ void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___b
   [WeakRetained tabDocumentDidDimissPreviewedDocument:self];
 }
 
-- (id)linkPreviewHelper:(id)a3 previewViewControllerForURL:(id)a4
+- (id)linkPreviewHelper:(id)helper previewViewControllerForURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 webView];
-  v10 = [(TabDocument *)&self->super.isa tabDocumentForPreviewURL:v9 relatedToWebView:v8];
+  helperCopy = helper;
+  lCopy = l;
+  webView = [helperCopy webView];
+  v10 = [(TabDocument *)&self->super.isa tabDocumentForPreviewURL:v9 relatedToWebView:webView];
 
   v11 = [[LinkPreviewViewController alloc] initWithTabDocument:v10];
-  v12 = [(TabDocument *)self view];
-  v13 = [v12 geometryProvider];
-  [v13 obscuredScrollViewInsetsForTabDocumentView:v12 unobscuredSafeAreaInsets:0];
+  view = [(TabDocument *)self view];
+  geometryProvider = [view geometryProvider];
+  [geometryProvider obscuredScrollViewInsetsForTabDocumentView:view unobscuredSafeAreaInsets:0];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(LinkPreviewViewController *)v11 browserView];
-  [v22 setObscuredInsets:{v15, v17, v19, v21}];
+  browserView = [(LinkPreviewViewController *)v11 browserView];
+  [browserView setObscuredInsets:{v15, v17, v19, v21}];
 
-  v23 = [v10 webExtensionsController];
-  [v23 didOpenTab:v10];
+  webExtensionsController = [v10 webExtensionsController];
+  [webExtensionsController didOpenTab:v10];
 
-  v24 = [(TabDocument *)self supportsAdvancedPrivacyProtectionsForURL:v7];
-  v25 = [v10 reloadOptionsController];
-  [v25 setSupportsAdvancedPrivacyProtections:v24];
+  v24 = [(TabDocument *)self supportsAdvancedPrivacyProtectionsForURL:lCopy];
+  reloadOptionsController = [v10 reloadOptionsController];
+  [reloadOptionsController setSupportsAdvancedPrivacyProtections:v24];
 
   if ([(_SFReloadOptionsController *)self->_reloadOptionsController loadedUsingDesktopUserAgent])
   {
-    v26 = [v10 reloadOptionsController];
-    [v26 requestDesktopSiteWithURL:v7];
+    reloadOptionsController2 = [v10 reloadOptionsController];
+    [reloadOptionsController2 requestDesktopSiteWithURL:lCopy];
   }
 
   else
   {
-    v27 = [v10 loadURL:v7 userDriven:1];
+    v27 = [v10 loadURL:lCopy userDriven:1];
   }
 
-  v28 = [(LinkPreviewViewController *)v11 previewHeader];
-  [v6 setActiveLinkPreviewHeader:v28];
+  previewHeader = [(LinkPreviewViewController *)v11 previewHeader];
+  [helperCopy setActiveLinkPreviewHeader:previewHeader];
 
   return v11;
 }
 
-- (void)linkPreviewHelper:(id)a3 commitPreviewViewControllerForAction:(int64_t)a4 withTabOrder:(int64_t)a5
+- (void)linkPreviewHelper:(id)helper commitPreviewViewControllerForAction:(int64_t)action withTabOrder:(int64_t)order
 {
-  v17 = a3;
-  v8 = [v17 previewContentViewController];
-  v9 = v8;
-  if (a4 == 2)
+  helperCopy = helper;
+  previewContentViewController = [helperCopy previewContentViewController];
+  v9 = previewContentViewController;
+  if (action == 2)
   {
-    [(TabDocument *)&self->super.isa _commitPreviewedViewControllerInSafari:v8];
+    [(TabDocument *)&self->super.isa _commitPreviewedViewControllerInSafari:previewContentViewController];
   }
 
-  else if (a4 == 3)
+  else if (action == 3)
   {
-    if (a5 != 1)
+    if (order != 1)
     {
-      v10 = [v8 previewTabDocument];
-      [v10 setUpBackClosesSpawnedTabWithParent:self];
+      previewTabDocument = [previewContentViewController previewTabDocument];
+      [previewTabDocument setUpBackClosesSpawnedTabWithParent:self];
     }
 
     [(TabDocument *)&self->super.isa _willCommitPreviewViewController:v9];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (a5 == 2)
+    if (order == 2)
     {
       v12 = 1;
     }
 
-    else if (a5)
+    else if (order)
     {
       v12 = 0;
     }
@@ -14958,35 +14958,35 @@ void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___b
     if ([MEMORY[0x277D28F38] defaultTabOrder] == 2)
     {
       v13 = objc_loadWeakRetained(&self->_browserController);
-      v14 = [v13 tabCollectionViewProvider];
-      v15 = [v14 hasTabBar];
+      tabCollectionViewProvider = [v13 tabCollectionViewProvider];
+      hasTabBar = [tabCollectionViewProvider hasTabBar];
 
-      if ((v15 & 1) == 0)
+      if ((hasTabBar & 1) == 0)
       {
-        v16 = [v17 elementInfo];
-        [(TabDocument *)self animateElement:v16 toBarItem:8];
+        elementInfo = [helperCopy elementInfo];
+        [(TabDocument *)self animateElement:elementInfo toBarItem:8];
       }
     }
   }
 }
 
-- (void)_commitPreviewedViewControllerInSafari:(id *)a1
+- (void)_commitPreviewedViewControllerInSafari:(id *)safari
 {
   v4 = a2;
-  if (a1)
+  if (safari)
   {
-    [(TabDocument *)a1 _willCommitPreviewViewController:v4];
-    WeakRetained = objc_loadWeakRetained(a1 + 156);
-    [WeakRetained tabDocumentCommitPreviewedDocument:a1];
+    [(TabDocument *)safari _willCommitPreviewViewController:v4];
+    WeakRetained = objc_loadWeakRetained(safari + 156);
+    [WeakRetained tabDocumentCommitPreviewedDocument:safari];
 
-    [(TabDocument *)a1 _didCommitPreviewViewController:v4];
+    [(TabDocument *)safari _didCommitPreviewViewController:v4];
   }
 }
 
-- (BOOL)linkPreviewHelper:(id)a3 supportsAction:(int64_t)a4 forURL:(id)a5
+- (BOOL)linkPreviewHelper:(id)helper supportsAction:(int64_t)action forURL:(id)l
 {
-  v6 = a5;
-  if (a4)
+  lCopy = l;
+  if (action)
   {
     v7 = 1;
   }
@@ -14996,7 +14996,7 @@ void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___b
     v8 = +[FeatureManager sharedFeatureManager];
     if ([v8 isReadingListAvailable])
     {
-      v7 = [MEMORY[0x277D7B558] supportsURL:v6];
+      v7 = [MEMORY[0x277D7B558] supportsURL:lCopy];
     }
 
     else
@@ -15008,62 +15008,62 @@ void __69__TabDocument__webView_contextMenuForElement_willCommitWithAnimator___b
   return v7;
 }
 
-- (id)linkPreviewHelper:(id)a3 resultOfLoadingURL:(id)a4
+- (id)linkPreviewHelper:(id)helper resultOfLoadingURL:(id)l
 {
-  v4 = [(TabDocument *)self resultOfLoadingURL:a4];
+  v4 = [(TabDocument *)self resultOfLoadingURL:l];
 
   return v4;
 }
 
-- (void)linkPreviewHelper:(id)a3 redirectToExternalNavigationResult:(id)a4
+- (void)linkPreviewHelper:(id)helper redirectToExternalNavigationResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = MEMORY[0x277CBABA0];
-  v9 = v5;
-  v7 = [v5 URL];
+  v9 = resultCopy;
+  v7 = [resultCopy URL];
   v8 = [v6 safari_nonAppInitiatedRequestWithURL:v7];
   [(TabDocument *)self _redirectToExternalNavigationResult:v9 fromOriginalRequest:v8 navigationAction:0 promptPolicy:0 isMainFrame:1 userAction:0];
 }
 
-- (void)linkPreviewHelper:(id)a3 didProduceNavigationIntent:(id)a4 forAction:(int64_t)a5
+- (void)linkPreviewHelper:(id)helper didProduceNavigationIntent:(id)intent forAction:(int64_t)action
 {
-  v13 = a3;
-  v8 = a4;
-  [(TabDocument *)self dispatchNavigationIntent:v8];
-  if (a5 == 3 && [MEMORY[0x277D28F38] defaultTabOrder] == 2)
+  helperCopy = helper;
+  intentCopy = intent;
+  [(TabDocument *)self dispatchNavigationIntent:intentCopy];
+  if (action == 3 && [MEMORY[0x277D28F38] defaultTabOrder] == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v10 = [WeakRetained tabCollectionViewProvider];
-    v11 = [v10 hasTabBar];
+    tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+    hasTabBar = [tabCollectionViewProvider hasTabBar];
 
-    if ((v11 & 1) == 0)
+    if ((hasTabBar & 1) == 0)
     {
-      v12 = [v13 elementInfo];
-      [(TabDocument *)self animateElement:v12 toBarItem:8];
+      elementInfo = [helperCopy elementInfo];
+      [(TabDocument *)self animateElement:elementInfo toBarItem:8];
     }
   }
 }
 
-- (void)linkPreviewHelperWillBeginDownload:(id)a3
+- (void)linkPreviewHelperWillBeginDownload:(id)download
 {
-  v4 = [a3 elementInfo];
+  elementInfo = [download elementInfo];
   [(TabDocument *)self animateElementToDownloadsBarItemSoon:?];
 }
 
-- (void)linkPreviewHelper:(id)a3 addURLToReadingList:(id)a4
+- (void)linkPreviewHelper:(id)helper addURLToReadingList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  helperCopy = helper;
+  listCopy = list;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__TabDocument_linkPreviewHelper_addURLToReadingList___block_invoke;
   v11[3] = &unk_2781D6AC0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = helperCopy;
+  v13 = listCopy;
+  selfCopy = self;
+  v9 = listCopy;
+  v10 = helperCopy;
   [WeakRetained showReadingListAutomaticArchiveAlertIfNeededWithCompletion:v11];
 }
 
@@ -15097,21 +15097,21 @@ void __53__TabDocument_linkPreviewHelper_addURLToReadingList___block_invoke(uint
   [WeakRetained tabDocumentWillDisableLinkPreview];
 }
 
-- (id)previewViewControllerForURL:(id)a3
+- (id)previewViewControllerForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = MEMORY[0x277CDB800];
   webView = self->_webView;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v8 = [WeakRetained scene];
-  v9 = [v8 keyWindow];
-  [v9 bounds];
-  v10 = [v5 previewViewControllerWebView:webView windowBounds:v4 url:self handler:?];
+  scene = [WeakRetained scene];
+  keyWindow = [scene keyWindow];
+  [keyWindow bounds];
+  v10 = [v5 previewViewControllerWebView:webView windowBounds:lCopy url:self handler:?];
 
   return v10;
 }
 
-- (void)commitPreviewViewController:(id)a3
+- (void)commitPreviewViewController:(id)controller
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -15133,8 +15133,8 @@ void __43__TabDocument_commitPreviewViewController___block_invoke(uint64_t a1)
   if (!webClipMetadataFetcher)
   {
     v4 = objc_alloc(MEMORY[0x277CDB908]);
-    v5 = [(TabDocument *)self activityJSController];
-    v6 = [v4 initWithInjectedJavascriptController:v5];
+    activityJSController = [(TabDocument *)self activityJSController];
+    v6 = [v4 initWithInjectedJavascriptController:activityJSController];
     v7 = self->_webClipMetadataFetcher;
     self->_webClipMetadataFetcher = v6;
 
@@ -15144,11 +15144,11 @@ void __43__TabDocument_commitPreviewViewController___block_invoke(uint64_t a1)
   return webClipMetadataFetcher;
 }
 
-- (void)getApplicationManifestWithCompletionHandler:(id)a3
+- (void)getApplicationManifestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   applicationManifestFetcher = self->_applicationManifestFetcher;
-  v8 = v4;
+  v8 = handlerCopy;
   if (!applicationManifestFetcher)
   {
     v6 = [objc_alloc(MEMORY[0x277D4A700]) initWithWebView:self->_webView];
@@ -15156,90 +15156,90 @@ void __43__TabDocument_commitPreviewViewController___block_invoke(uint64_t a1)
     self->_applicationManifestFetcher = v6;
 
     applicationManifestFetcher = self->_applicationManifestFetcher;
-    v4 = v8;
+    handlerCopy = v8;
   }
 
-  [(WBSApplicationManifestFetcher *)applicationManifestFetcher getApplicationManifestWithCompletionHandler:v4];
+  [(WBSApplicationManifestFetcher *)applicationManifestFetcher getApplicationManifestWithCompletionHandler:handlerCopy];
 }
 
-- (void)webView:(id)a3 didFinishNavigation:(id)a4
+- (void)webView:(id)view didFinishNavigation:(id)navigation
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  navigationCopy = navigation;
   objc_initWeak(location, self);
-  v59 = v7;
+  v59 = navigationCopy;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [(TabDocument *)self _didFinishNavigation:v7];
+  [(TabDocument *)self _didFinishNavigation:navigationCopy];
   *&self->_isNavigatingViaNormalReload = 0;
   [(_SFWebView *)self->_webView setObscuringContents:0];
   self->_contentIsReadyForSnapshot = 1;
-  v8 = [(TabDocument *)self expectedOrCurrentURL];
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
   urlForDisplayedContent = self->_urlForDisplayedContent;
-  self->_urlForDisplayedContent = v8;
+  self->_urlForDisplayedContent = expectedOrCurrentURL;
 
   [(_SFPageLoadErrorController *)self->_pageLoadErrorController scheduleResetCrashCount];
   [(TabDocument *)self _didFinishLoading];
   self->_shouldDismissReaderInReponseToSameDocumentNavigation = 0;
   [(WBSFluidProgressController *)self->_fluidProgressController finishFluidProgressWithProgressStateSource:self];
-  v10 = [WeakRetained tabController];
-  [v10 saveTabDocumentUserActivitySoon:self];
+  tabController = [WeakRetained tabController];
+  [tabController saveTabDocumentUserActivitySoon:self];
 
   v11 = 0x277D49000uLL;
-  v12 = [MEMORY[0x277D499B8] sharedLogger];
-  [v12 reportTabUpdatedWithUpdateType:0];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:0];
 
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __43__TabDocument_webView_didFinishNavigation___block_invoke;
   v67[3] = &unk_2781D6840;
   objc_copyWeak(&v68, location);
-  [v6 _doAfterNextPresentationUpdate:v67];
+  [viewCopy _doAfterNextPresentationUpdate:v67];
   [(TabDocument *)self updateAccessibilityIdentifier];
   kdebug_trace();
   pageLoadStatistics = self->_pageLoadStatistics;
   if (pageLoadStatistics)
   {
-    [(PageLoadTestStatistics *)pageLoadStatistics finishedNavigation:v7];
+    [(PageLoadTestStatistics *)pageLoadStatistics finishedNavigation:navigationCopy];
   }
 
-  v14 = [v7 _request];
-  v15 = objc_getAssociatedObject(v14, kWebClipToNSURLRequestAssociationKey);
+  _request = [navigationCopy _request];
+  v15 = objc_getAssociatedObject(_request, kWebClipToNSURLRequestAssociationKey);
 
-  v58 = [(TabDocument *)self urlForSharing];
+  urlForSharing = [(TabDocument *)self urlForSharing];
   if (v15)
   {
     if (![v15 configurationIsManaged] || (objc_msgSend(v15, "iconImagePath"), v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
     {
       [(TabDocument *)self _updateSnapshotForWebClip:v15];
-      v17 = [(TabDocument *)self webClipMetadataFetcher];
+      webClipMetadataFetcher = [(TabDocument *)self webClipMetadataFetcher];
       v64[0] = MEMORY[0x277D85DD0];
       v64[1] = 3221225472;
       v64[2] = __43__TabDocument_webView_didFinishNavigation___block_invoke_2;
       v64[3] = &unk_2781DB120;
       v65 = v15;
-      v66 = v58;
-      [v17 fetchMetadataWithConsumer:v64];
+      v66 = urlForSharing;
+      [webClipMetadataFetcher fetchMetadataWithConsumer:v64];
     }
   }
 
-  v18 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  v19 = [v18 touchIconCache];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  touchIconCache = [mEMORY[0x277D28F58] touchIconCache];
 
-  v20 = [(WebBookmark *)self->_bookmarkForIconFetching address];
-  v56 = v20;
-  if (v20)
+  address = [(WebBookmark *)self->_bookmarkForIconFetching address];
+  v56 = address;
+  if (address)
   {
-    v21 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:v20];
+    v21 = [MEMORY[0x277CBEBC0] safari_URLWithUserTypedString:address];
     if (v21)
     {
       v57 = v21;
-      v22 = [v21 host];
-      v55 = v19;
-      v23 = [v22 safari_domainFromHost];
-      v24 = [(_SFWebView *)self->_webView _committedURL];
-      v25 = [v24 host];
-      v26 = [v25 safari_domainFromHost];
-      if (![v23 isEqualToString:v26])
+      host = [v21 host];
+      v55 = touchIconCache;
+      safari_domainFromHost = [host safari_domainFromHost];
+      _committedURL = [(_SFWebView *)self->_webView _committedURL];
+      host2 = [_committedURL host];
+      safari_domainFromHost2 = [host2 safari_domainFromHost];
+      if (![safari_domainFromHost isEqualToString:safari_domainFromHost2])
       {
 
         v30 = v59;
@@ -15254,14 +15254,14 @@ LABEL_17:
         goto LABEL_20;
       }
 
-      v27 = [v19 shouldRequestTouchIconForWebPageNavigationFromBookmarkInteractionForURL:v57];
+      v27 = [touchIconCache shouldRequestTouchIconForWebPageNavigationFromBookmarkInteractionForURL:v57];
 
       if (v27)
       {
         bookmarkForIconFetching = self->_bookmarkForIconFetching;
         self->_bookmarkForIconFetching = 0;
 
-        v19 = v55;
+        touchIconCache = v55;
         [(TabDocument *)self touchIconFetcher];
         v29 = v11 = 0x277D49000;
         v61[0] = MEMORY[0x277D85DD0];
@@ -15272,12 +15272,12 @@ LABEL_17:
         v63 = v57;
         [v29 fetchTouchIconURLsWithCompletion:v61];
 
-        v22 = v62;
+        host = v62;
         v30 = v59;
         goto LABEL_17;
       }
 
-      v19 = v55;
+      touchIconCache = v55;
       v11 = 0x277D49000uLL;
       if (!v59)
       {
@@ -15288,7 +15288,7 @@ LABEL_17:
     else
     {
       v57 = 0;
-      if (!v7)
+      if (!navigationCopy)
       {
         goto LABEL_22;
       }
@@ -15298,7 +15298,7 @@ LABEL_17:
   else
   {
     v57 = 0;
-    if (!v7)
+    if (!navigationCopy)
     {
       goto LABEL_22;
     }
@@ -15307,9 +15307,9 @@ LABEL_17:
 LABEL_20:
   if ([MEMORY[0x277D28F58] hasSharedSiteMetadataManager])
   {
-    v31 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-    v32 = [v31 linkPresentationMetadataProvider];
-    [v32 updateMetadataIfNeededUsingWebView:v6];
+    mEMORY[0x277D28F58]2 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+    linkPresentationMetadataProvider = [mEMORY[0x277D28F58]2 linkPresentationMetadataProvider];
+    [linkPresentationMetadataProvider updateMetadataIfNeededUsingWebView:viewCopy];
   }
 
 LABEL_22:
@@ -15322,41 +15322,41 @@ LABEL_22:
       v35 = self->_pageContextDataFetcher;
       self->_pageContextDataFetcher = v34;
 
-      v36 = [(TabDocument *)self webView];
-      [(WBSPageContextDataFetcher *)self->_pageContextDataFetcher setWebView:v36];
+      webView = [(TabDocument *)self webView];
+      [(WBSPageContextDataFetcher *)self->_pageContextDataFetcher setWebView:webView];
 
       [(WBSPageContextDataFetcher *)self->_pageContextDataFetcher setDelegate:self];
       [(WBSPageContextDataFetcher *)self->_pageContextDataFetcher setOwnerUUID:self->_uuid];
       pageContextDataFetcher = self->_pageContextDataFetcher;
     }
 
-    v37 = [(TabDocument *)self webView];
-    [(WBSPageContextDataFetcher *)pageContextDataFetcher fetchSchemaDataForWebView:v37];
+    webView2 = [(TabDocument *)self webView];
+    [(WBSPageContextDataFetcher *)pageContextDataFetcher fetchSchemaDataForWebView:webView2];
   }
 
   if (![(TabDocument *)self isPrivateBrowsingEnabled])
   {
     reloadOptionsController = self->_reloadOptionsController;
-    v39 = [v6 URL];
+    v39 = [viewCopy URL];
     [(_SFReloadOptionsController *)reloadOptionsController logCompletedPageloadToDifferentialPrivacy:v39];
   }
 
   if ([(TabDocument *)self isPDFDocument])
   {
     quickLookDocument = self->_quickLookDocument;
-    v41 = [(TabDocument *)self suggestedFilenameForDisplayedPDF];
-    [(SFQuickLookDocument *)quickLookDocument setFileNameForPDFDocument:v41];
+    suggestedFilenameForDisplayedPDF = [(TabDocument *)self suggestedFilenameForDisplayedPDF];
+    [(SFQuickLookDocument *)quickLookDocument setFileNameForPDFDocument:suggestedFilenameForDisplayedPDF];
   }
 
-  v42 = [*(v11 + 2488) sharedLogger];
-  v43 = [WeakRetained sidebarUIProxy];
-  [v42 didRequestPageShowingSideBar:{objc_msgSend(v43, "isShowingSidebar")}];
+  sharedLogger = [*(v11 + 2488) sharedLogger];
+  sidebarUIProxy = [WeakRetained sidebarUIProxy];
+  [sharedLogger didRequestPageShowingSideBar:{objc_msgSend(sidebarUIProxy, "isShowingSidebar")}];
 
   [(TabDocument *)&self->super.isa _donateTextSoon];
-  v44 = [MEMORY[0x277D49EA8] sharedManager];
-  v45 = [v6 URL];
-  v46 = [v45 host];
-  [v44 clearCertificateBypassesForHostIfNecessary:v46 withTrust:{objc_msgSend(v6, "serverTrust")}];
+  mEMORY[0x277D49EA8] = [MEMORY[0x277D49EA8] sharedManager];
+  v45 = [viewCopy URL];
+  host3 = [v45 host];
+  [mEMORY[0x277D49EA8] clearCertificateBypassesForHostIfNecessary:host3 withTrust:{objc_msgSend(viewCopy, "serverTrust")}];
 
   v47 = [MEMORY[0x277CBEAA8] now];
   dateOfLastFinishedNavigation = self->_dateOfLastFinishedNavigation;
@@ -15368,11 +15368,11 @@ LABEL_22:
 
   if (!self->_shouldKeepIgnoredSiriSuggestedSitesOnLoad && ![(TabDocument *)self isPrivateBrowsingEnabled])
   {
-    v51 = [MEMORY[0x277D49F90] sharedController];
+    mEMORY[0x277D49F90] = [MEMORY[0x277D49F90] sharedController];
     v52 = [(TabDocument *)self URL];
-    v53 = [v52 host];
-    v54 = [(TabDocument *)self profileIdentifier];
-    [v51 removeIgnoredSiriSuggestedSitesWithURLHost:v53 inProfile:v54];
+    host4 = [v52 host];
+    profileIdentifier = [(TabDocument *)self profileIdentifier];
+    [mEMORY[0x277D49F90] removeIgnoredSiriSuggestedSitesWithURLHost:host4 inProfile:profileIdentifier];
   }
 
   self->_shouldKeepIgnoredSiriSuggestedSitesOnLoad = 0;
@@ -15391,34 +15391,34 @@ void __43__TabDocument_webView_didFinishNavigation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)webView:(id)a3 didFailNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailNavigation:(id)navigation withError:(id)error
 {
-  v17 = a4;
-  v7 = a5;
-  [(TabDocument *)self _didFinishNavigation:v17];
+  navigationCopy = navigation;
+  errorCopy = error;
+  [(TabDocument *)self _didFinishNavigation:navigationCopy];
   [(_SFWebView *)self->_webView setObscuringContents:0];
   self->_contentIsReadyForSnapshot = 1;
   [(TabDocument *)self updateAccessibilityIdentifier];
-  v8 = [(TabDocument *)self expectedOrCurrentURL];
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
   urlForDisplayedContent = self->_urlForDisplayedContent;
-  self->_urlForDisplayedContent = v8;
+  self->_urlForDisplayedContent = expectedOrCurrentURL;
 
-  if ([v7 code] != 204 || (objc_msgSend(v7, "domain"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CE3918]), v10, (v11 & 1) == 0))
+  if ([errorCopy code] != 204 || (objc_msgSend(errorCopy, "domain"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x277CE3918]), v10, (v11 & 1) == 0))
   {
-    objc_storeStrong(&self->_lastLoadError, a5);
-    objc_storeStrong(&self->_lastLoadErrorForFormatMenu, a5);
+    objc_storeStrong(&self->_lastLoadError, error);
+    objc_storeStrong(&self->_lastLoadErrorForFormatMenu, error);
     [(TabDocument *)self _didFinishLoading];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v13 = [WeakRetained tabController];
-    [v13 saveTabDocumentUserActivitySoon:self];
+    tabController = [WeakRetained tabController];
+    [tabController saveTabDocumentUserActivitySoon:self];
 
-    v14 = [MEMORY[0x277D499B8] sharedLogger];
-    [v14 reportTabUpdatedWithUpdateType:0];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:0];
 
     pageLoadStatistics = self->_pageLoadStatistics;
     if (pageLoadStatistics)
     {
-      [(PageLoadTestStatistics *)pageLoadStatistics failedNavigation:v17 withError:v7];
+      [(PageLoadTestStatistics *)pageLoadStatistics failedNavigation:navigationCopy withError:errorCopy];
     }
 
     suggestedFilenameForNextCommit = self->_suggestedFilenameForNextCommit;
@@ -15426,29 +15426,29 @@ void __43__TabDocument_webView_didFinishNavigation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 protectionSpace];
-  v10 = [v9 authenticationMethod];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CBAB00]];
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v11 = [authenticationMethod isEqualToString:*MEMORY[0x277CBAB00]];
 
   if (v11)
   {
-    if (-[TabDocument isControlledByAutomation](self, "isControlledByAutomation") && (+[Application sharedApplication](Application, "sharedApplication"), v12 = objc_claimAutoreleasedReturnValue(), [v12 automationController], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "automationSession"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "configuration"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "acceptInsecureCertificates"), v15, v14, v13, v12, v16) || (objc_msgSend(MEMORY[0x277D49EA8], "sharedManager"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "protectionSpace"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v22, "didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:inPrivateBrowsing:", v23, -[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")), v23, v22, v24))
+    if (-[TabDocument isControlledByAutomation](self, "isControlledByAutomation") && (+[Application sharedApplication](Application, "sharedApplication"), v12 = objc_claimAutoreleasedReturnValue(), [v12 automationController], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "automationSession"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "configuration"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "acceptInsecureCertificates"), v15, v14, v13, v12, v16) || (objc_msgSend(MEMORY[0x277D49EA8], "sharedManager"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(challengeCopy, "protectionSpace"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v22, "didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:inPrivateBrowsing:", v23, -[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled")), v23, v22, v24))
     {
       v25 = MEMORY[0x277CBAB80];
-      v19 = [v7 protectionSpace];
-      v26 = [v25 credentialForTrust:{objc_msgSend(v19, "serverTrust")}];
-      v8[2](v8, 0, v26);
+      protectionSpace2 = [challengeCopy protectionSpace];
+      v26 = [v25 credentialForTrust:{objc_msgSend(protectionSpace2, "serverTrust")}];
+      handlerCopy[2](handlerCopy, 0, v26);
 
 LABEL_16:
       goto LABEL_17;
     }
 
-    v28 = [v7 protectionSpace];
-    [(_SFPageLoadErrorController *)self->_pageLoadErrorController setProtectionSpaceForInvalidCertificateBypass:v28];
+    protectionSpace3 = [challengeCopy protectionSpace];
+    [(_SFPageLoadErrorController *)self->_pageLoadErrorController setProtectionSpaceForInvalidCertificateBypass:protectionSpace3];
 
     v27 = 3;
   }
@@ -15460,34 +15460,34 @@ LABEL_16:
 
     if (v18)
     {
-      v19 = [v7 protectionSpace];
-      if ([v19 _sf_canAuthenticate])
+      protectionSpace2 = [challengeCopy protectionSpace];
+      if ([protectionSpace2 _sf_canAuthenticate])
       {
-        v20 = [v19 authenticationMethod];
-        v21 = [v20 isEqualToString:*MEMORY[0x277CBAAC8]];
+        authenticationMethod2 = [protectionSpace2 authenticationMethod];
+        v21 = [authenticationMethod2 isEqualToString:*MEMORY[0x277CBAAC8]];
 
         if (v21)
         {
-          [(_SFPageLoadErrorController *)self->_pageLoadErrorController handleClientCertificateAuthenticationChallenge:v7 completionHandler:v8];
+          [(_SFPageLoadErrorController *)self->_pageLoadErrorController handleClientCertificateAuthenticationChallenge:challengeCopy completionHandler:handlerCopy];
         }
 
         else
         {
           dialogController = self->_dialogController;
           v30 = MEMORY[0x277D28C48];
-          v31 = [(_SFWebView *)self->_webView _committedURL];
+          _committedURL = [(_SFWebView *)self->_webView _committedURL];
           v36[0] = MEMORY[0x277D85DD0];
           v36[1] = 3221225472;
           v36[2] = __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionHandler___block_invoke;
           v36[3] = &unk_2781DB170;
-          v37 = v8;
-          v32 = [v30 authenticationDialogWithAuthenticationChallenge:v7 committedURL:v31 completionHandler:v36];
+          v37 = handlerCopy;
+          v32 = [v30 authenticationDialogWithAuthenticationChallenge:challengeCopy committedURL:_committedURL completionHandler:v36];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionHandler___block_invoke_2;
           v34[3] = &unk_2781D61F8;
           v34[4] = self;
-          v35 = v7;
+          v35 = challengeCopy;
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionHandler___block_invoke_3;
@@ -15499,7 +15499,7 @@ LABEL_16:
 
       else
       {
-        v8[2](v8, 3, 0);
+        handlerCopy[2](handlerCopy, 3, 0);
       }
 
       goto LABEL_16;
@@ -15508,7 +15508,7 @@ LABEL_16:
     v27 = 2;
   }
 
-  v8[2](v8, v27, 0);
+  handlerCopy[2](handlerCopy, v27, 0);
 LABEL_17:
 }
 
@@ -15544,58 +15544,58 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
   return [v4 updateTabTitle];
 }
 
-- (void)_webView:(id)a3 authenticationChallenge:(id)a4 shouldAllowLegacyTLS:(id)a5
+- (void)_webView:(id)view authenticationChallenge:(id)challenge shouldAllowLegacyTLS:(id)s
 {
-  v28 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  challengeCopy = challenge;
+  sCopy = s;
   v10 = +[Application sharedApplication];
-  v11 = [v10 legacyTLSHostManager];
-  v12 = [v8 protectionSpace];
-  v13 = [v12 host];
-  v14 = [v11 isLegacyTLSAllowedForHost:v13];
+  legacyTLSHostManager = [v10 legacyTLSHostManager];
+  protectionSpace = [challengeCopy protectionSpace];
+  host = [protectionSpace host];
+  v14 = [legacyTLSHostManager isLegacyTLSAllowedForHost:host];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [v8 protectionSpace];
-    v16 = [v15 safari_URL];
-    v17 = [v16 absoluteString];
-    v18 = [v28 _unreachableURL];
-    v19 = [v18 absoluteString];
-    v20 = [v17 isEqualToString:v19];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    safari_URL = [protectionSpace2 safari_URL];
+    absoluteString = [safari_URL absoluteString];
+    _unreachableURL = [viewCopy _unreachableURL];
+    absoluteString2 = [_unreachableURL absoluteString];
+    v20 = [absoluteString isEqualToString:absoluteString2];
 
     if ((v20 & 1) == 0)
     {
       pageLoadErrorController = self->_pageLoadErrorController;
-      v22 = [v8 protectionSpace];
-      v23 = [v22 safari_URL];
+      protectionSpace3 = [challengeCopy protectionSpace];
+      safari_URL2 = [protectionSpace3 safari_URL];
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v25 = [WeakRetained tabController];
-      v26 = [v25 activeTabDocument];
-      v27 = [v26 URL];
-      [(_SFPageLoadErrorController *)pageLoadErrorController handleLegacyTLSWithFailingURL:v23 clickThroughURL:v27 authenticationChallenge:v8];
+      tabController = [WeakRetained tabController];
+      activeTabDocument = [tabController activeTabDocument];
+      v27 = [activeTabDocument URL];
+      [(_SFPageLoadErrorController *)pageLoadErrorController handleLegacyTLSWithFailingURL:safari_URL2 clickThroughURL:v27 authenticationChallenge:challengeCopy];
     }
   }
 
-  v9[2](v9, v14);
+  sCopy[2](sCopy, v14);
 }
 
-- (void)_webView:(id)a3 didNegotiateModernTLSForURL:(id)a4
+- (void)_webView:(id)view didNegotiateModernTLSForURL:(id)l
 {
-  v7 = a4;
+  lCopy = l;
   v4 = +[Application sharedApplication];
-  v5 = [v4 legacyTLSHostManager];
-  v6 = [v7 host];
-  [v5 clearLegacyTLSForHostIfPresent:v6];
+  legacyTLSHostManager = [v4 legacyTLSHostManager];
+  host = [lCopy host];
+  [legacyTLSHostManager clearLegacyTLSForHostIfPresent:host];
 }
 
-- (void)_webView:(id)a3 navigation:(id)a4 didSameDocumentNavigation:(int64_t)a5
+- (void)_webView:(id)view navigation:(id)navigation didSameDocumentNavigation:(int64_t)documentNavigation
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v36 = v7;
-  [(_SFFormAutoFillController *)self->_autoFillController offerToSaveUnsubmittedFormDataIfNeededInWebView:v7 fromSameDocumentNavigationOfType:a5 completionHandler:&__block_literal_global_579];
+  v36 = viewCopy;
+  [(_SFFormAutoFillController *)self->_autoFillController offerToSaveUnsubmittedFormDataIfNeededInWebView:viewCopy fromSameDocumentNavigationOfType:documentNavigation completionHandler:&__block_literal_global_579];
   if (([(_SFWebView *)self->_webView isLoading]& 1) == 0)
   {
     [(WBSFluidProgressController *)self->_fluidProgressController cancelFluidProgressWithProgressStateSource:self];
@@ -15633,26 +15633,26 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
     while (v9);
   }
 
-  v13 = [(TabDocument *)self browserController];
-  v37 = [v13 activeSearchEngine];
+  browserController = [(TabDocument *)self browserController];
+  activeSearchEngine = [browserController activeSearchEngine];
 
-  v14 = [(TabDocument *)self committedURL];
-  v15 = [v37 urlIsValidSearch:v14];
-  if (a5 == 1)
+  committedURL = [(TabDocument *)self committedURL];
+  v15 = [activeSearchEngine urlIsValidSearch:committedURL];
+  if (documentNavigation == 1)
   {
     v16 = v15;
     v17 = +[(WBSParsecDSession *)UniversalSearchSession];
-    v18 = [WeakRetained idOfParsecQueryOriginatingFromSearchSuggestion];
-    if (v18)
+    idOfParsecQueryOriginatingFromSearchSuggestion = [WeakRetained idOfParsecQueryOriginatingFromSearchSuggestion];
+    if (idOfParsecQueryOriginatingFromSearchSuggestion)
     {
-      v19 = [(_SFWebView *)self->_webView backForwardList];
-      v20 = [v19 backItem];
-      v21 = [v20 URL];
-      v22 = [v37 urlIsValidSearch:v21];
+      backForwardList = [(_SFWebView *)self->_webView backForwardList];
+      backItem = [backForwardList backItem];
+      v21 = [backItem URL];
+      v22 = [activeSearchEngine urlIsValidSearch:v21];
 
       if (!(v16 & 1 | ((v22 & 1) == 0)))
       {
-        [v17 sendCBAEngagementFeedback:v14 query:v18];
+        [v17 sendCBAEngagementFeedback:committedURL query:idOfParsecQueryOriginatingFromSearchSuggestion];
       }
     }
 
@@ -15661,11 +15661,11 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
 
   if ([(TabDocument *)self isSearchPage]&& ![(TabDocument *)self isPrivateBrowsingEnabled])
   {
-    v23 = [MEMORY[0x277CDB8A8] sharedInstance];
-    v24 = [v23 userVisibleQueryFromSearchURL:v14 allowQueryThatLooksLikeURL:1];
+    mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+    v24 = [mEMORY[0x277CDB8A8] userVisibleQueryFromSearchURL:committedURL allowQueryThatLooksLikeURL:1];
 
     v25 = +[RecentWebSearchesController sharedController];
-    [v25 addRecentSearch:v24 fromURL:v14];
+    [v25 addRecentSearch:v24 fromURL:committedURL];
   }
 
   sameDocumentNavigationToHistoryVisitCorrelator = self->_sameDocumentNavigationToHistoryVisitCorrelator;
@@ -15677,7 +15677,7 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
     [(WBSHistory *)self->_history addAttributes:1 toVisit:v28];
   }
 
-  if ([WeakRetained isShowingReader] && a5 && self->_active && self->_shouldDismissReaderInReponseToSameDocumentNavigation)
+  if ([WeakRetained isShowingReader] && documentNavigation && self->_active && self->_shouldDismissReaderInReponseToSameDocumentNavigation)
   {
     [WeakRetained hideReaderForTabDocument:self animated:0 deactivationMode:0];
     [(TabDocument *)self clearReaderContext];
@@ -15693,20 +15693,20 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
   [(TabDocument *)self _checkForAppLinkWithCompletion:v39];
   [(TabDocument *)self applyHighlightFromNotesIfNeeded];
   [(TabDocument *)self _clearCachedCanonicalURL];
-  v29 = [(TabDocument *)self expectedOrCurrentURL];
-  if (a5 == 2)
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+  if (documentNavigation == 2)
   {
-    if (([(NSURL *)self->_originalURL isEqual:v29]& 1) == 0)
+    if (([(NSURL *)self->_originalURL isEqual:expectedOrCurrentURL]& 1) == 0)
     {
-      v30 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-      v31 = [v30 faviconProvider];
-      [v31 linkIconFromPageURL:self->_originalURL toCurrentPageURL:v29 isPrivate:-[TabDocument isPrivateBrowsingEnabled](self completionHandler:{"isPrivateBrowsingEnabled"), 0}];
+      mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+      faviconProvider = [mEMORY[0x277D28F58] faviconProvider];
+      [faviconProvider linkIconFromPageURL:self->_originalURL toCurrentPageURL:expectedOrCurrentURL isPrivate:-[TabDocument isPrivateBrowsingEnabled](self completionHandler:{"isPrivateBrowsingEnabled"), 0}];
     }
   }
 
-  else if ((a5 - 1) > 1)
+  else if ((documentNavigation - 1) > 1)
   {
-    if (!a5)
+    if (!documentNavigation)
     {
       goto LABEL_37;
     }
@@ -15714,18 +15714,18 @@ uint64_t __75__TabDocument_webView_didReceiveAuthenticationChallenge_completionH
     goto LABEL_34;
   }
 
-  if (([(NSURL *)self->_originalURL isEqual:v29]& 1) == 0)
+  if (([(NSURL *)self->_originalURL isEqual:expectedOrCurrentURL]& 1) == 0)
   {
     [(TabDocument *)self donateSameDocumentNavigationIfNecessary];
   }
 
 LABEL_34:
-  v32 = [(WBSBrowsingAssistantController *)self->_assistantController result];
-  if (v32)
+  result = [(WBSBrowsingAssistantController *)self->_assistantController result];
+  if (result)
   {
-    v33 = [(WBSBrowsingAssistantController *)self->_assistantController result];
-    v34 = [v33 pageURL];
-    v35 = [v34 isEqual:v14];
+    result2 = [(WBSBrowsingAssistantController *)self->_assistantController result];
+    pageURL = [result2 pageURL];
+    v35 = [pageURL isEqual:committedURL];
 
     if ((v35 & 1) == 0)
     {
@@ -15744,31 +15744,31 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
   }
 }
 
-- (void)_webView:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)_webView:(id)view renderingProgressDidChange:(unint64_t)change
 {
-  v4 = a4;
+  changeCopy = change;
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ((v4 & 4) != 0)
+  viewCopy = view;
+  if ((changeCopy & 4) != 0)
   {
     [(WBSFluidProgressController *)self->_fluidProgressController startRocketEffectWithProgressStateSource:self];
   }
 
-  if (v4)
+  if (changeCopy)
   {
     self->_didFirstLayout = 1;
     [(_SFFormAutoFillController *)self->_autoFillController prefillFormsSoonIfNeeded];
   }
 
-  if ((v4 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
     linkPreviewViewController = self->_linkPreviewViewController;
-    v8 = [(TabDocument *)self URLString];
-    [(LinkPreviewViewController *)linkPreviewViewController updatePreviewLoadingUIWithURLString:v8];
+    uRLString = [(TabDocument *)self URLString];
+    [(LinkPreviewViewController *)linkPreviewViewController updatePreviewLoadingUIWithURLString:uRLString];
 
-    v9 = [(TabDocument *)self expectedOrCurrentURL];
+    expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
     urlForDisplayedContent = self->_urlForDisplayedContent;
-    self->_urlForDisplayedContent = v9;
+    self->_urlForDisplayedContent = expectedOrCurrentURL;
 
     [(TabDocument *)self _updateNavigationBarItem];
     v31 = 0u;
@@ -15803,7 +15803,7 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
     }
   }
 
-  if ((v4 & 0x100) != 0)
+  if ((changeCopy & 0x100) != 0)
   {
     didFirstMeaningfulPaint = self->_didFirstMeaningfulPaint;
     *&self->_didFirstMeaningfulPaint = 257;
@@ -15843,7 +15843,7 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((v4 & 0x40) != 0)
+  if ((changeCopy & 0x40) != 0)
   {
     [(_SFWebView *)self->_webView setObscuringContents:0];
     self->_didFirstPaint = 1;
@@ -15870,7 +15870,7 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
     }
   }
 
-  if ((v4 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
     [(_SFWebView *)self->_webView setPlaceholderImage:0];
   }
@@ -15878,10 +15878,10 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
   [(TabDocument *)self updateAccessibilityIdentifier];
 }
 
-- (void)_webViewWebProcessDidCrash:(id)a3
+- (void)_webViewWebProcessDidCrash:(id)crash
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  crashCopy = crash;
   if (self->_closed)
   {
     goto LABEL_25;
@@ -15913,9 +15913,9 @@ void __61__TabDocument__webView_navigation_didSameDocumentNavigation___block_inv
 
   else
   {
-    v9 = [(_SFWebView *)self->_webView backForwardList];
-    v10 = [v9 currentItem];
-    v7 = [v10 URL];
+    backForwardList = [(_SFWebView *)self->_webView backForwardList];
+    currentItem = [backForwardList currentItem];
+    v7 = [currentItem URL];
 
     v8 = MEMORY[0x277CCA9B8];
     if (!v7)
@@ -15937,8 +15937,8 @@ LABEL_10:
   }
 
   pageLoadErrorController = self->_pageLoadErrorController;
-  v15 = [(TabDocument *)self URLString];
-  LODWORD(pageLoadErrorController) = [(_SFPageLoadErrorController *)pageLoadErrorController updateCrashesAndShowCrashError:v13 URLString:v15];
+  uRLString = [(TabDocument *)self URLString];
+  LODWORD(pageLoadErrorController) = [(_SFPageLoadErrorController *)pageLoadErrorController updateCrashesAndShowCrashError:v13 URLString:uRLString];
 
   if (pageLoadErrorController)
   {
@@ -15956,12 +15956,12 @@ LABEL_10:
 
       if (!self->_unresponsiveWebProcessBlock)
       {
-        v16 = [v4 _committedURL];
-        v17 = [v16 isEqual:v7];
+        _committedURL = [crashCopy _committedURL];
+        v17 = [_committedURL isEqual:v7];
 
         if (v17)
         {
-          v18 = [v4 reload];
+          reload = [crashCopy reload];
         }
 
         else
@@ -15980,10 +15980,10 @@ LABEL_10:
 LABEL_25:
 }
 
-- (void)_webView:(id)a3 didStartLoadForQuickLookDocumentInMainFrameWithFileName:(id)a4 uti:(id)a5
+- (void)_webView:(id)view didStartLoadForQuickLookDocumentInMainFrameWithFileName:(id)name uti:(id)uti
 {
-  v12 = a4;
-  v7 = a5;
+  nameCopy = name;
+  utiCopy = uti;
   v8 = objc_alloc(MEMORY[0x277D28D28]);
   if (self->_suggestedFilenameForNextCommit)
   {
@@ -15992,15 +15992,15 @@ LABEL_25:
 
   else
   {
-    suggestedFilenameForNextCommit = v12;
+    suggestedFilenameForNextCommit = nameCopy;
   }
 
-  v10 = [v8 initWithFileName:suggestedFilenameForNextCommit uti:v7];
+  v10 = [v8 initWithFileName:suggestedFilenameForNextCommit uti:utiCopy];
   quickLookDocumentWriter = self->_quickLookDocumentWriter;
   self->_quickLookDocumentWriter = v10;
 }
 
-- (void)_webView:(id)a3 didFinishLoadForQuickLookDocumentInMainFrame:(id)a4
+- (void)_webView:(id)view didFinishLoadForQuickLookDocumentInMainFrame:(id)frame
 {
   quickLookDocumentWriter = self->_quickLookDocumentWriter;
   v5[0] = MEMORY[0x277D85DD0];
@@ -16008,7 +16008,7 @@ LABEL_25:
   v5[2] = __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___block_invoke;
   v5[3] = &unk_2781D72B0;
   v5[4] = self;
-  [(SFQuickLookDocumentWriter *)quickLookDocumentWriter writeDataAndClose:a4 completionHandler:v5];
+  [(SFQuickLookDocumentWriter *)quickLookDocumentWriter writeDataAndClose:frame completionHandler:v5];
 }
 
 void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___block_invoke(uint64_t a1)
@@ -16017,7 +16017,7 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
   [WeakRetained updateInterface];
 }
 
-- (void)_webViewDidBeginNavigationGesture:(id)a3
+- (void)_webViewDidBeginNavigationGesture:(id)gesture
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -16056,13 +16056,13 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
   }
 }
 
-- (void)_webViewWillEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4
+- (void)_webViewWillEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  gestureCopy = gesture;
+  itemCopy = item;
   self->_shouldDismissReaderInReponseToSameDocumentNavigation = 1;
-  if (v7 && [(TabDocument *)self canGoBackToParentTab])
+  if (itemCopy && [(TabDocument *)self canGoBackToParentTab])
   {
     self->_gestureRequiresGoBackToParentTab = 1;
   }
@@ -16088,7 +16088,7 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
         v12 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v12 tabDocumentWillEndNavigationGesture:self withNavigationToBackForwardListItem:{v7, v13}];
+          [v12 tabDocumentWillEndNavigationGesture:self withNavigationToBackForwardListItem:{itemCopy, v13}];
         }
       }
 
@@ -16099,10 +16099,10 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
   }
 }
 
-- (void)_webViewDidEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4
+- (void)_webViewDidEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -16125,7 +16125,7 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 tabDocumentDidEndNavigationGesture:self withNavigationToBackForwardListItem:{v5, v13}];
+          [v10 tabDocumentDidEndNavigationGesture:self withNavigationToBackForwardListItem:{itemCopy, v13}];
         }
 
         ++v9;
@@ -16138,7 +16138,7 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
     while (v7);
   }
 
-  if (v5)
+  if (itemCopy)
   {
     if (self->_gestureRequiresGoBackToParentTab)
     {
@@ -16148,88 +16148,88 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
 
     else
     {
-      v11 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-      v12 = [v11 bookmarkWithID:-[WKBackForwardListItem safari_bookmarkID](v5)];
+      mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+      v12 = [mainBookmarkCollection bookmarkWithID:-[WKBackForwardListItem safari_bookmarkID](itemCopy)];
       [(TabDocument *)self setReadingListBookmark:v12];
     }
   }
 }
 
-- (void)_webView:(id)a3 willSnapshotBackForwardListItem:(id)a4
+- (void)_webView:(id)view willSnapshotBackForwardListItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  -[WKBackForwardListItem safari_setNavigationSnapshotRequiresBars:](v6, [WeakRetained canHideBars] ^ 1);
+  -[WKBackForwardListItem safari_setNavigationSnapshotRequiresBars:](itemCopy, [WeakRetained canHideBars] ^ 1);
 }
 
-- (void)_webView:(id)a3 shouldGoToBackForwardListItem:(id)a4 inPageCache:(BOOL)a5 completionHandler:(id)a6
+- (void)_webView:(id)view shouldGoToBackForwardListItem:(id)item inPageCache:(BOOL)cache completionHandler:(id)handler
 {
-  v7 = a5;
-  v12 = a4;
-  v9 = a6;
-  v10 = [v12 URL];
-  v11 = [v10 safari_isJavaScriptURL];
+  cacheCopy = cache;
+  itemCopy = item;
+  handlerCopy = handler;
+  v10 = [itemCopy URL];
+  safari_isJavaScriptURL = [v10 safari_isJavaScriptURL];
 
-  if ((v11 & 1) == 0)
+  if ((safari_isJavaScriptURL & 1) == 0)
   {
-    [(WBSTranslationContext *)self->_translationContext owningWebViewWillNavigateToBackForwardListItem:v12 inPageCache:v7];
+    [(WBSTranslationContext *)self->_translationContext owningWebViewWillNavigateToBackForwardListItem:itemCopy inPageCache:cacheCopy];
     self->_isNavigatingViaBackForwardList = 1;
   }
 
-  v9[2](v9, v11 ^ 1u);
+  handlerCopy[2](handlerCopy, safari_isJavaScriptURL ^ 1u);
 }
 
-- (void)_webView:(id)a3 didCommitLoadWithRequest:(id)a4 inFrame:(id)a5
+- (void)_webView:(id)view didCommitLoadWithRequest:(id)request inFrame:(id)frame
 {
   if (!self->_disableContentBlockersWhenReloading)
   {
-    v5 = [(TabDocument *)self sfScribbleController:a3];
+    v5 = [(TabDocument *)self sfScribbleController:view];
     [v5 scheduleValidationForHiddenElementsIfNeeded];
   }
 }
 
-- (void)_webView:(id)a3 didFailLoadDueToNetworkConnectionIntegrityWithURL:(id)a4
+- (void)_webView:(id)view didFailLoadDueToNetworkConnectionIntegrityWithURL:(id)l
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(TabDocument *)self _contentBlockerStatisticsStore];
-  v8 = [v9 URL];
-  [v7 recordThirdPartyResourceBlocked:v6 onFirstParty:v8 completionHandler:0];
+  viewCopy = view;
+  lCopy = l;
+  _contentBlockerStatisticsStore = [(TabDocument *)self _contentBlockerStatisticsStore];
+  v8 = [viewCopy URL];
+  [_contentBlockerStatisticsStore recordThirdPartyResourceBlocked:lCopy onFirstParty:v8 completionHandler:0];
 }
 
-- (void)_webView:(id)a3 didChangeLookalikeCharactersFromURL:(id)a4 toURL:(id)a5
+- (void)_webView:(id)view didChangeLookalikeCharactersFromURL:(id)l toURL:(id)rL
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(TabDocument *)self trackerInfo];
-  v9 = [v8 queryParameterFilteringDataQueue];
-  [v9 addPendingDataWithAdjustedURL:v7 originalURL:v10];
+  lCopy = l;
+  rLCopy = rL;
+  trackerInfo = [(TabDocument *)self trackerInfo];
+  queryParameterFilteringDataQueue = [trackerInfo queryParameterFilteringDataQueue];
+  [queryParameterFilteringDataQueue addPendingDataWithAdjustedURL:rLCopy originalURL:lCopy];
 }
 
-- (void)_webView:(id)a3 requestUserMediaAuthorizationForDevices:(unint64_t)a4 url:(id)a5 mainFrameURL:(id)a6 decisionHandler:(id)a7
+- (void)_webView:(id)view requestUserMediaAuthorizationForDevices:(unint64_t)devices url:(id)url mainFrameURL:(id)l decisionHandler:(id)handler
 {
-  v14 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [MEMORY[0x277CDB8F8] sharedController];
-  [v13 requestUserMediaAuthorizationForDevices:a4 url:v14 mainFrameURL:v11 decisionHandler:v12 dialogPresenter:self];
+  urlCopy = url;
+  lCopy = l;
+  handlerCopy = handler;
+  mEMORY[0x277CDB8F8] = [MEMORY[0x277CDB8F8] sharedController];
+  [mEMORY[0x277CDB8F8] requestUserMediaAuthorizationForDevices:devices url:urlCopy mainFrameURL:lCopy decisionHandler:handlerCopy dialogPresenter:self];
 }
 
-- (void)_webView:(id)a3 checkUserMediaPermissionForURL:(id)a4 mainFrameURL:(id)a5 frameIdentifier:(unint64_t)a6 decisionHandler:(id)a7
+- (void)_webView:(id)view checkUserMediaPermissionForURL:(id)l mainFrameURL:(id)rL frameIdentifier:(unint64_t)identifier decisionHandler:(id)handler
 {
-  v13 = a4;
-  v10 = a5;
-  v11 = a7;
-  v12 = [MEMORY[0x277CDB8F8] sharedController];
-  [v12 checkUserMediaPermissionForURL:v13 mainFrameURL:v10 frameIdentifier:a6 decisionHandler:v11];
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
+  mEMORY[0x277CDB8F8] = [MEMORY[0x277CDB8F8] sharedController];
+  [mEMORY[0x277CDB8F8] checkUserMediaPermissionForURL:lCopy mainFrameURL:rLCopy frameIdentifier:identifier decisionHandler:handlerCopy];
 }
 
-- (void)_webView:(id)a3 mediaCaptureStateDidChange:(unint64_t)a4
+- (void)_webView:(id)view mediaCaptureStateDidChange:(unint64_t)change
 {
-  v7 = a3;
-  if (self && self->_mediaCaptureState != a4)
+  viewCopy = view;
+  if (self && self->_mediaCaptureState != change)
   {
-    self->_mediaCaptureState = a4;
+    self->_mediaCaptureState = change;
     [(TabDocument *)self mediaStateDidChangeNeedsDelay:?];
   }
 
@@ -16237,9 +16237,9 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
   [v6 updateShouldLockPrivateBrowsingWithTimerIfNecessary];
 }
 
-- (void)_updateAudioUI:(id)a3
+- (void)_updateAudioUI:(id)i
 {
-  v6 = a3;
+  iCopy = i;
   audioState = self->_audioState;
   if (audioState == 2)
   {
@@ -16260,42 +16260,42 @@ void __69__TabDocument__webView_didFinishLoadForQuickLookDocumentInMainFrame___b
 LABEL_6:
 }
 
-- (void)_webView:(id)a3 queryPermission:(id)a4 forOrigin:(id)a5 completionHandler:(id)a6
+- (void)_webView:(id)view queryPermission:(id)permission forOrigin:(id)origin completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [a5 safari_hostName];
-  if ([v8 isEqualToString:@"geolocation"])
+  permissionCopy = permission;
+  handlerCopy = handler;
+  safari_hostName = [origin safari_hostName];
+  if ([permissionCopy isEqualToString:@"geolocation"])
   {
-    v11 = [MEMORY[0x277CDB7E0] sharedManager];
+    mEMORY[0x277CDB7E0] = [MEMORY[0x277CDB7E0] sharedManager];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __68__TabDocument__webView_queryPermission_forOrigin_completionHandler___block_invoke;
     v17[3] = &unk_2781DB198;
-    v18 = v9;
-    [v11 getGeolocationSettingForDomain:v10 completionHandler:v17];
+    v18 = handlerCopy;
+    [mEMORY[0x277CDB7E0] getGeolocationSettingForDomain:safari_hostName completionHandler:v17];
     v12 = &v18;
   }
 
   else
   {
-    if (([v8 isEqualToString:@"camera"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"microphone") & 1) == 0)
+    if (([permissionCopy isEqualToString:@"camera"] & 1) == 0 && (objc_msgSend(permissionCopy, "isEqualToString:", @"microphone") & 1) == 0)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
       goto LABEL_7;
     }
 
-    v13 = [MEMORY[0x277CDB8F8] sharedController];
+    mEMORY[0x277CDB8F8] = [MEMORY[0x277CDB8F8] sharedController];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __68__TabDocument__webView_queryPermission_forOrigin_completionHandler___block_invoke_2;
     v14[3] = &unk_2781DB1C0;
-    v15 = v8;
-    v16 = v9;
-    [v13 getPermissionForOrigin:v10 topLevelOrigin:v10 completionHandler:v14];
+    v15 = permissionCopy;
+    v16 = handlerCopy;
+    [mEMORY[0x277CDB8F8] getPermissionForOrigin:safari_hostName topLevelOrigin:safari_hostName completionHandler:v14];
     v12 = &v15;
 
-    v11 = v16;
+    mEMORY[0x277CDB7E0] = v16;
   }
 
 LABEL_7:
@@ -16329,10 +16329,10 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
   return v5(v3, v4);
 }
 
-- (void)webView:(id)a3 runJavaScriptAlertPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6
+- (void)webView:(id)view runJavaScriptAlertPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler
 {
-  v14 = a4;
-  v8 = a6;
+  messageCopy = message;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained tabDocumentCanShowJavaScriptAlertConfirmOrTextInput:self];
 
@@ -16341,28 +16341,28 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
     if ([(TabDocument *)self isControlledByAutomation])
     {
       v11 = +[Application sharedApplication];
-      v12 = [v11 automationController];
-      [v12 tabDocument:self runJavaScriptAlertPanelWithMessage:v14 completionHandler:v8];
+      automationController = [v11 automationController];
+      [automationController tabDocument:self runJavaScriptAlertPanelWithMessage:messageCopy completionHandler:handlerCopy];
     }
 
     else
     {
       dialogController = self->_dialogController;
-      v11 = [MEMORY[0x277D28C48] javaScriptAlertDialogWithMessage:v14 completionHandler:v8];
+      v11 = [MEMORY[0x277D28C48] javaScriptAlertDialogWithMessage:messageCopy completionHandler:handlerCopy];
       [(SFDialogController *)dialogController presentDialog:v11];
     }
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)webView:(id)a3 runJavaScriptConfirmPanelWithMessage:(id)a4 initiatedByFrame:(id)a5 completionHandler:(id)a6
+- (void)webView:(id)view runJavaScriptConfirmPanelWithMessage:(id)message initiatedByFrame:(id)frame completionHandler:(id)handler
 {
-  v14 = a4;
-  v8 = a6;
+  messageCopy = message;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained tabDocumentCanShowJavaScriptAlertConfirmOrTextInput:self];
 
@@ -16371,29 +16371,29 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
     if ([(TabDocument *)self isControlledByAutomation])
     {
       v11 = +[Application sharedApplication];
-      v12 = [v11 automationController];
-      [v12 tabDocument:self runJavaScriptConfirmPanelWithMessage:v14 completionHandler:v8];
+      automationController = [v11 automationController];
+      [automationController tabDocument:self runJavaScriptConfirmPanelWithMessage:messageCopy completionHandler:handlerCopy];
     }
 
     else
     {
       dialogController = self->_dialogController;
-      v11 = [MEMORY[0x277D28C48] javaScriptConfirmDialogWithMessage:v14 completionHandler:v8];
+      v11 = [MEMORY[0x277D28C48] javaScriptConfirmDialogWithMessage:messageCopy completionHandler:handlerCopy];
       [(SFDialogController *)dialogController presentDialog:v11];
     }
   }
 
   else
   {
-    v8[2](v8, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)webView:(id)a3 runJavaScriptTextInputPanelWithPrompt:(id)a4 defaultText:(id)a5 initiatedByFrame:(id)a6 completionHandler:(id)a7
+- (void)webView:(id)view runJavaScriptTextInputPanelWithPrompt:(id)prompt defaultText:(id)text initiatedByFrame:(id)frame completionHandler:(id)handler
 {
-  v17 = a4;
-  v10 = a5;
-  v11 = a7;
+  promptCopy = prompt;
+  textCopy = text;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v13 = [WeakRetained tabDocumentCanShowJavaScriptAlertConfirmOrTextInput:self];
 
@@ -16402,29 +16402,29 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
     if ([(TabDocument *)self isControlledByAutomation])
     {
       v14 = +[Application sharedApplication];
-      v15 = [v14 automationController];
-      [v15 tabDocument:self runJavaScriptTextInputPanelWithPrompt:v17 defaultText:v10 completionHandler:v11];
+      automationController = [v14 automationController];
+      [automationController tabDocument:self runJavaScriptTextInputPanelWithPrompt:promptCopy defaultText:textCopy completionHandler:handlerCopy];
     }
 
     else
     {
       dialogController = self->_dialogController;
-      v14 = [MEMORY[0x277D28C48] javaScriptPromptDialogWithMessage:v17 defaultText:v10 completionHandler:v11];
+      v14 = [MEMORY[0x277D28C48] javaScriptPromptDialogWithMessage:promptCopy defaultText:textCopy completionHandler:handlerCopy];
       [(SFDialogController *)dialogController presentDialog:v14];
     }
   }
 
   else
   {
-    v11[2](v11, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_webView:(id)a3 requestStorageAccessPanelForDomain:(id)a4 underCurrentDomain:(id)a5 completionHandler:(id)a6
+- (void)_webView:(id)view requestStorageAccessPanelForDomain:(id)domain underCurrentDomain:(id)currentDomain completionHandler:(id)handler
 {
-  v17 = a4;
-  v9 = a5;
-  v10 = a6;
+  domainCopy = domain;
+  currentDomainCopy = currentDomain;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v12 = [WeakRetained tabDocumentCanShowJavaScriptAlertConfirmOrTextInput:self];
 
@@ -16432,26 +16432,26 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
   {
     dialogController = self->_dialogController;
     v14 = MEMORY[0x277D28C48];
-    v15 = [(TabDocument *)self webExtensionsController];
-    v16 = [v14 requestStorageAccessDialogForDomain:v17 underCurrentDomain:v9 extensionsController:v15 completionHandler:v10];
+    webExtensionsController = [(TabDocument *)self webExtensionsController];
+    v16 = [v14 requestStorageAccessDialogForDomain:domainCopy underCurrentDomain:currentDomainCopy extensionsController:webExtensionsController completionHandler:handlerCopy];
     [(SFDialogController *)dialogController presentDialog:v16];
   }
 
   else
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)_webView:(id)a3 createWebViewWithConfiguration:(id)a4 forNavigationAction:(id)a5 windowFeatures:(id)a6 completionHandler:(id)a7
+- (void)_webView:(id)view createWebViewWithConfiguration:(id)configuration forNavigationAction:(id)action windowFeatures:(id)features completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a7;
-  if ([v11 _shouldOpenAppLinks])
+  configurationCopy = configuration;
+  actionCopy = action;
+  handlerCopy = handler;
+  if ([actionCopy _shouldOpenAppLinks])
   {
-    v13 = [v11 request];
-    v14 = [v13 URL];
+    request = [actionCopy request];
+    v14 = [request URL];
 
     if ([v14 safari_isHTTPFamilyURL])
     {
@@ -16459,14 +16459,14 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
       if ([v15 synchronouslyDecideOpenStrategy] == 3 && !self->_wasLoadedWithLockdownModeEnabled)
       {
         [v15 openExternally];
-        v12[2](v12, 0);
+        handlerCopy[2](handlerCopy, 0);
 
         goto LABEL_21;
       }
     }
   }
 
-  if ([v11 _isUserInitiated])
+  if ([actionCopy _isUserInitiated])
   {
     v16 = 1;
   }
@@ -16477,18 +16477,18 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
     v16 = [WeakRetained popUpPolicyForTabDocument:self];
   }
 
-  v18 = [v11 _userInitiatedAction];
-  v19 = [v18 isConsumed];
+  _userInitiatedAction = [actionCopy _userInitiatedAction];
+  isConsumed = [_userInitiatedAction isConsumed];
 
-  if (v19)
+  if (isConsumed)
   {
     v16 = 2;
   }
 
   else if (v16 == 1)
   {
-    v20 = [v11 _userInitiatedAction];
-    [v20 consume];
+    _userInitiatedAction2 = [actionCopy _userInitiatedAction];
+    [_userInitiatedAction2 consume];
 
     v16 = 1;
   }
@@ -16499,13 +16499,13 @@ uint64_t __68__TabDocument__webView_queryPermission_forOrigin_completionHandler_
   aBlock[2] = __108__TabDocument__webView_createWebViewWithConfiguration_forNavigationAction_windowFeatures_completionHandler___block_invoke;
   aBlock[3] = &unk_2781DB1E8;
   aBlock[4] = self;
-  v35 = v11;
+  v35 = actionCopy;
   v39 = v16;
-  v22 = v12;
+  v22 = handlerCopy;
   v38 = v22;
   v14 = v21;
   v36 = v14;
-  v37 = v10;
+  v37 = configurationCopy;
   v23 = _Block_copy(aBlock);
   v24 = v23;
   if (v16)
@@ -16602,22 +16602,22 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (void)_webView:(id)a3 takeFocus:(int64_t)a4
+- (void)_webView:(id)view takeFocus:(int64_t)focus
 {
-  v10 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v7 = [WeakRetained rootViewController];
-  v8 = [v7 usingUnifiedBar];
+  rootViewController = [WeakRetained rootViewController];
+  usingUnifiedBar = [rootViewController usingUnifiedBar];
 
-  if (v8)
+  if (usingUnifiedBar)
   {
-    [v10 resignFirstResponder];
-    v9 = [MEMORY[0x277D75518] focusSystemForEnvironment:v10];
+    [viewCopy resignFirstResponder];
+    v9 = [MEMORY[0x277D75518] focusSystemForEnvironment:viewCopy];
     if (objc_opt_respondsToSelector())
     {
-      if (a4)
+      if (focus)
       {
-        if (a4 == 1)
+        if (focus == 1)
         {
           [v9 _safari_moveFocusToNextGroup];
         }
@@ -16636,24 +16636,24 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (BOOL)_webViewCanBecomeFocused:(id)a3
+- (BOOL)_webViewCanBecomeFocused:(id)focused
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained favoritesAreEmbedded];
+  favoritesAreEmbedded = [WeakRetained favoritesAreEmbedded];
 
-  return v4 ^ 1;
+  return favoritesAreEmbedded ^ 1;
 }
 
-- (void)webViewDidClose:(id)a3
+- (void)webViewDidClose:(id)close
 {
-  v7 = [TabDocument tabDocumentForWKWebView:a3];
+  v7 = [TabDocument tabDocumentForWKWebView:close];
   if (v7)
   {
     if (![(TabDocument *)self isShowingFindOnPage])
     {
-      v4 = [(SFDialogController *)self->_dialogController presentedDialog];
+      presentedDialog = [(SFDialogController *)self->_dialogController presentedDialog];
 
-      if (!v4 && !self->_isDisplayingTelephonyPrompt)
+      if (!presentedDialog && !self->_isDisplayingTelephonyPrompt)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v6 = [WeakRetained tabDocumentCanCloseWindow:self];
@@ -16667,13 +16667,13 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (void)_webViewFullscreenMayReturnToInline:(id)a3
+- (void)_webViewFullscreenMayReturnToInline:(id)inline
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained prepareForTabDocumentWebViewFullscreenMayReturnToInline:self];
 }
 
-- (void)_webViewWillEnterFullscreen:(id)a3
+- (void)_webViewWillEnterFullscreen:(id)fullscreen
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -16712,7 +16712,7 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (void)_webViewDidEnterFullscreen:(id)a3
+- (void)_webViewDidEnterFullscreen:(id)fullscreen
 {
   v18 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -16766,7 +16766,7 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (void)_webViewDidExitFullscreen:(id)a3
+- (void)_webViewDidExitFullscreen:(id)fullscreen
 {
   v18 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -16820,63 +16820,63 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   }
 }
 
-- (double)_convertRectFromDocumentToWebView:(double)a3
+- (double)_convertRectFromDocumentToWebView:(double)view
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v10 = [*(a1 + 1064) scrollView];
-  [v10 zoomScale];
+  scrollView = [*(self + 1064) scrollView];
+  [scrollView zoomScale];
   v12 = v11;
 
-  v13 = [*(a1 + 1064) scrollView];
-  [v13 convertRect:*(a1 + 1064) toView:{a2 * v12, a3 * v12, a4 * v12, a5 * v12}];
+  scrollView2 = [*(self + 1064) scrollView];
+  [scrollView2 convertRect:*(self + 1064) toView:{a2 * v12, view * v12, a4 * v12, a5 * v12}];
   v15 = v14;
 
   return v15;
 }
 
-- (void)animateElement:(id)a3 toBarItem:(int64_t)a4
+- (void)animateElement:(id)element toBarItem:(int64_t)item
 {
-  v19 = a3;
-  v6 = [v19 image];
-  if (v6)
+  elementCopy = element;
+  image = [elementCopy image];
+  if (image)
   {
-    [v19 boundingRect];
+    [elementCopy boundingRect];
     v11 = [(TabDocument *)self _convertRectFromDocumentToWebView:v7, v8, v9, v10];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    [WeakRetained animateLinkImage:objc_msgSend(v6 fromRect:"CGImage") inView:self->_webView toBarItem:{a4, v11, v13, v15, v17}];
+    [WeakRetained animateLinkImage:objc_msgSend(image fromRect:"CGImage") inView:self->_webView toBarItem:{item, v11, v13, v15, v17}];
   }
 }
 
-- (id)_webView:(id)a3 alternateURLFromImage:(id)a4 userInfo:(id *)a5
+- (id)_webView:(id)view alternateURLFromImage:(id)image userInfo:(id *)info
 {
-  v6 = a4;
-  v7 = [MEMORY[0x277CDB870] sharedController];
-  v8 = [v7 getActionForImageSynchronously:v6 userInfo:a5];
-  v9 = [v8 urlThatCanBeOpened];
+  imageCopy = image;
+  mEMORY[0x277CDB870] = [MEMORY[0x277CDB870] sharedController];
+  v8 = [mEMORY[0x277CDB870] getActionForImageSynchronously:imageCopy userInfo:info];
+  urlThatCanBeOpened = [v8 urlThatCanBeOpened];
 
-  return v9;
+  return urlThatCanBeOpened;
 }
 
-- (id)presentingViewControllerForAction:(id)a3
+- (id)presentingViewControllerForAction:(id)action
 {
-  v3 = [(TabDocument *)self browserController];
-  v4 = [v3 viewControllerToPresentFrom];
+  browserController = [(TabDocument *)self browserController];
+  viewControllerToPresentFrom = [browserController viewControllerToPresentFrom];
 
-  return v4;
+  return viewControllerToPresentFrom;
 }
 
-- (CGRect)sourceRectForPopoverActionPicker:(id)a3
+- (CGRect)sourceRectForPopoverActionPicker:(id)picker
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CDB870] sharedController];
-  v6 = [v5 elementForAction:v4];
+  pickerCopy = picker;
+  mEMORY[0x277CDB870] = [MEMORY[0x277CDB870] sharedController];
+  v6 = [mEMORY[0x277CDB870] elementForAction:pickerCopy];
   [v6 boundingRect];
   v11 = [(TabDocument *)self _convertRectFromDocumentToWebView:v7, v8, v9, v10];
   v13 = v12;
@@ -16894,47 +16894,47 @@ uint64_t __108__TabDocument__webView_createWebViewWithConfiguration_forNavigatio
   return result;
 }
 
-- (id)_presentingViewControllerForWebView:(id)a3
+- (id)_presentingViewControllerForWebView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  if (v6 == self)
+  if (activeTabDocument == self)
   {
-    v7 = [WeakRetained viewControllerToPresentFrom];
+    viewControllerToPresentFrom = [WeakRetained viewControllerToPresentFrom];
   }
 
   else
   {
-    v7 = 0;
+    viewControllerToPresentFrom = 0;
   }
 
-  return v7;
+  return viewControllerToPresentFrom;
 }
 
-- (void)_webView:(id)a3 decideDatabaseQuotaForSecurityOrigin:(id)a4 currentQuota:(unint64_t)a5 currentOriginUsage:(unint64_t)a6 currentDatabaseUsage:(unint64_t)a7 expectedUsage:(unint64_t)a8 decisionHandler:(id)a9
+- (void)_webView:(id)view decideDatabaseQuotaForSecurityOrigin:(id)origin currentQuota:(unint64_t)quota currentOriginUsage:(unint64_t)usage currentDatabaseUsage:(unint64_t)databaseUsage expectedUsage:(unint64_t)expectedUsage decisionHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a9;
+  originCopy = origin;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = [WeakRetained tabDocumentCanShowJavaScriptAlertConfirmOrTextInput:self];
 
   if (v17)
   {
-    v18 = [v14 safari_userVisibleName];
+    safari_userVisibleName = [originCopy safari_userVisibleName];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __144__TabDocument__webView_decideDatabaseQuotaForSecurityOrigin_currentQuota_currentOriginUsage_currentDatabaseUsage_expectedUsage_decisionHandler___block_invoke;
     v19[3] = &unk_2781DB210;
-    v20 = v15;
-    v21 = a5;
-    [WebsiteDataUtilities getDatabaseQuotaForOrigin:v18 currentQuota:a5 currentOriginUsage:a6 currentDatabaseUsage:a7 expectedUsage:a8 dialogPresenter:self completionHandler:v19];
+    v20 = handlerCopy;
+    quotaCopy = quota;
+    [WebsiteDataUtilities getDatabaseQuotaForOrigin:safari_userVisibleName currentQuota:quota currentOriginUsage:usage currentDatabaseUsage:databaseUsage expectedUsage:expectedUsage dialogPresenter:self completionHandler:v19];
   }
 
   else
   {
-    (*(v15 + 2))(v15, a5);
+    (*(handlerCopy + 2))(handlerCopy, quota);
   }
 }
 
@@ -16949,21 +16949,21 @@ uint64_t __144__TabDocument__webView_decideDatabaseQuotaForSecurityOrigin_curren
   return (*(v3 + 16))(v3, a2);
 }
 
-- (void)_webView:(id)a3 printFrame:(id)a4
+- (void)_webView:(id)view printFrame:(id)frame
 {
-  v5 = a4;
+  frameCopy = frame;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained presentPrintControllerForTabDocument:self frame:v5 initiatedByWebContent:1];
+  [WeakRetained presentPrintControllerForTabDocument:self frame:frameCopy initiatedByWebContent:1];
 }
 
-- (unint64_t)_webView:(id)a3 willUpdateDataInteractionOperationToOperation:(unint64_t)a4 forSession:(id)a5
+- (unint64_t)_webView:(id)view willUpdateDataInteractionOperationToOperation:(unint64_t)operation forSession:(id)session
 {
-  v7 = a5;
-  v8 = [v7 localDragSession];
-  if (v8)
+  sessionCopy = session;
+  localDragSession = [sessionCopy localDragSession];
+  if (localDragSession)
   {
     WeakRetained = objc_loadWeakRetained(&self->_webKitDragSession);
-    v10 = v8 != WeakRetained;
+    v10 = localDragSession != WeakRetained;
   }
 
   else
@@ -16971,31 +16971,31 @@ uint64_t __144__TabDocument__webView_decideDatabaseQuotaForSecurityOrigin_curren
     v10 = 1;
   }
 
-  if (a4 <= 1 && v10 && [MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:v7])
+  if (operation <= 1 && v10 && [MEMORY[0x277D28F40] canCreateNavigationIntentForDropSession:sessionCopy])
   {
-    a4 = 2;
+    operation = 2;
   }
 
-  return a4;
+  return operation;
 }
 
-- (BOOL)_webView:(id)a3 performDataInteractionOperationWithItemProviders:(id)a4
+- (BOOL)_webView:(id)view performDataInteractionOperationWithItemProviders:(id)providers
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providersCopy = providers;
   v8 = self->_deferredDropNavigationIntentGeneration + 1;
   self->_deferredDropNavigationIntentGeneration = v8;
-  v9 = [MEMORY[0x277D28F40] builder];
+  builder = [MEMORY[0x277D28F40] builder];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__TabDocument__webView_performDataInteractionOperationWithItemProviders___block_invoke;
   v13[3] = &unk_2781DB238;
   v13[4] = self;
   v13[5] = v8;
-  [v9 buildNavigationIntentForItemProviders:v7 completionHandler:v13];
+  [builder buildNavigationIntentForItemProviders:providersCopy completionHandler:v13];
 
   readerWebView = self->_readerWebView;
-  if (readerWebView == v6)
+  if (readerWebView == viewCopy)
   {
     deferredDropWasHandledByWebKit = self->_deferredDropWasHandledByWebKit;
     self->_deferredDropWasHandledByWebKit = MEMORY[0x277CBEC28];
@@ -17003,7 +17003,7 @@ uint64_t __144__TabDocument__webView_decideDatabaseQuotaForSecurityOrigin_curren
     [(TabDocument *)self _attemptDeferredDropNavigation];
   }
 
-  return readerWebView == v6;
+  return readerWebView == viewCopy;
 }
 
 void __73__TabDocument__webView_performDataInteractionOperationWithItemProviders___block_invoke(uint64_t a1, void *a2)
@@ -17019,68 +17019,68 @@ void __73__TabDocument__webView_performDataInteractionOperationWithItemProviders
 
 - (void)_attemptDeferredDropNavigation
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 464);
+    v2 = *(self + 464);
     if (v2)
     {
-      if (*(a1 + 448))
+      if (*(self + 448))
       {
         if (([v2 BOOLValue] & 1) == 0)
         {
-          WeakRetained = objc_loadWeakRetained((a1 + 992));
-          [WeakRetained dispatchNavigationIntent:*(a1 + 448)];
+          WeakRetained = objc_loadWeakRetained((self + 992));
+          [WeakRetained dispatchNavigationIntent:*(self + 448)];
         }
 
-        v4 = *(a1 + 448);
-        *(a1 + 448) = 0;
+        v4 = *(self + 448);
+        *(self + 448) = 0;
 
-        v5 = *(a1 + 464);
-        *(a1 + 464) = 0;
+        v5 = *(self + 464);
+        *(self + 464) = 0;
       }
     }
   }
 }
 
-- (void)_webView:(id)a3 dataInteractionOperationWasHandled:(BOOL)a4 forSession:(id)a5 itemProviders:(id)a6
+- (void)_webView:(id)view dataInteractionOperationWasHandled:(BOOL)handled forSession:(id)session itemProviders:(id)providers
 {
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:handled];
   deferredDropWasHandledByWebKit = self->_deferredDropWasHandledByWebKit;
   self->_deferredDropWasHandledByWebKit = v7;
 
   [(TabDocument *)self _attemptDeferredDropNavigation];
 }
 
-- (id)_webView:(id)a3 adjustedDataInteractionItemProvidersForItemProvider:(id)a4 representingObjects:(id)a5 additionalData:(id)a6
+- (id)_webView:(id)view adjustedDataInteractionItemProvidersForItemProvider:(id)provider representingObjects:(id)objects additionalData:(id)data
 {
   v44 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v31 = a4;
-  v27 = a5;
-  v28 = a6;
-  v29 = [v27 safari_firstObjectPassingTest:&__block_literal_global_636];
+  viewCopy = view;
+  providerCopy = provider;
+  objectsCopy = objects;
+  dataCopy = data;
+  v29 = [objectsCopy safari_firstObjectPassingTest:&__block_literal_global_636];
   if (v29)
   {
-    v10 = [MEMORY[0x277D28F40] builderWithModifierFlags:{0, v25}];
+    v10 = [MEMORY[0x277D28F40] builderWithModifierFlags:{0, viewCopy}];
     v30 = [v10 navigationIntentWithURL:v29];
 
-    v11 = [(TabDocument *)self uuid];
-    [v30 setSourceTabUUID:v11];
+    uuid = [(TabDocument *)self uuid];
+    [v30 setSourceTabUUID:uuid];
 
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v13 = [WeakRetained UUID];
-    [v30 setSourceWindowUUID:v13];
+    uUID = [WeakRetained UUID];
+    [v30 setSourceWindowUUID:uUID];
 
-    v33 = v31;
+    v33 = providerCopy;
     v14 = [MEMORY[0x277CC1EF0] _sf_windowCreationActivityWithNavigationIntent:v30];
     v15 = objc_alloc_init(MEMORY[0x277CCAA88]);
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v16 = [v33 registeredContentTypes];
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    registeredContentTypes = [v33 registeredContentTypes];
+    obj = registeredContentTypes;
+    v17 = [registeredContentTypes countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v17)
     {
       v18 = *v38;
@@ -17102,17 +17102,17 @@ void __73__TabDocument__webView_performDataInteractionOperationWithItemProviders
             v14 = 0;
           }
 
-          v22 = [v21 identifier];
+          identifier = [v21 identifier];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __111__TabDocument__webView_adjustedDataInteractionItemProvidersForItemProvider_representingObjects_additionalData___block_invoke_2;
           v34[3] = &unk_2781DB260;
           v35 = v33;
           v36 = v21;
-          [v15 registerItemForTypeIdentifier:v22 loadHandler:v34];
+          [v15 registerItemForTypeIdentifier:identifier loadHandler:v34];
         }
 
-        v16 = obj;
+        registeredContentTypes = obj;
         v17 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
       }
 
@@ -17125,8 +17125,8 @@ void __73__TabDocument__webView_performDataInteractionOperationWithItemProviders
 
   else
   {
-    v41 = v31;
-    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:{1, v25}];
+    v41 = providerCopy;
+    v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:{1, viewCopy}];
   }
 
   return v23;
@@ -17150,86 +17150,86 @@ void __111__TabDocument__webView_adjustedDataInteractionItemProvidersForItemProv
   [v7 loadItemForTypeIdentifier:v8 options:v6 completionHandler:v9];
 }
 
-- (void)_webView:(id)a3 requestGeolocationAuthorizationForURL:(id)a4 frame:(id)a5 decisionHandler:(id)a6
+- (void)_webView:(id)view requestGeolocationAuthorizationForURL:(id)l frame:(id)frame decisionHandler:(id)handler
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [MEMORY[0x277CDB7E0] sharedManager];
-  [v11 requestPermissionForURL:v12 frame:v9 dialogPresenter:self browserPersona:0 completionHandler:v10];
+  lCopy = l;
+  frameCopy = frame;
+  handlerCopy = handler;
+  mEMORY[0x277CDB7E0] = [MEMORY[0x277CDB7E0] sharedManager];
+  [mEMORY[0x277CDB7E0] requestPermissionForURL:lCopy frame:frameCopy dialogPresenter:self browserPersona:0 completionHandler:handlerCopy];
 }
 
-- (BOOL)_webView:(id)a3 fileUploadPanelContentIsManagedWithInitiatingFrame:(id)a4
+- (BOOL)_webView:(id)view fileUploadPanelContentIsManagedWithInitiatingFrame:(id)frame
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v4 request];
-  v7 = [v6 URL];
-  v8 = [v7 safari_URLByNormalizingBlobURL];
-  v9 = [v5 isURLManaged:v8];
+  frameCopy = frame;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  request = [frameCopy request];
+  v7 = [request URL];
+  safari_URLByNormalizingBlobURL = [v7 safari_URLByNormalizingBlobURL];
+  v9 = [mEMORY[0x277D262A0] isURLManaged:safari_URLByNormalizingBlobURL];
 
   return v9;
 }
 
-- (void)_webView:(id)a3 didChangeSafeAreaShouldAffectObscuredInsets:(BOOL)a4
+- (void)_webView:(id)view didChangeSafeAreaShouldAffectObscuredInsets:(BOOL)insets
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentDidChangeSafeAreaShouldAffectObscuredInsets:self];
 }
 
-- (void)_webView:(id)a3 requestWebAuthenticationConditionalMediationRegistrationForUser:(id)a4 completionHandler:(id)a5
+- (void)_webView:(id)view requestWebAuthenticationConditionalMediationRegistrationForUser:(id)user completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CDB7D8] sharedController];
-  v10 = [(TabDocument *)self tabIDForAutoFill];
-  v11 = [(TabDocument *)self committedURL];
+  userCopy = user;
+  handlerCopy = handler;
+  mEMORY[0x277CDB7D8] = [MEMORY[0x277CDB7D8] sharedController];
+  tabIDForAutoFill = [(TabDocument *)self tabIDForAutoFill];
+  committedURL = [(TabDocument *)self committedURL];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __106__TabDocument__webView_requestWebAuthenticationConditionalMediationRegistrationForUser_completionHandler___block_invoke;
   v13[3] = &unk_2781D6380;
-  v12 = v8;
+  v12 = handlerCopy;
   v14 = v12;
-  [v9 canAutomaticallyRegisterPasskeyForUsername:v7 inTabWithID:v10 currentURL:v11 completionHandler:v13];
+  [mEMORY[0x277CDB7D8] canAutomaticallyRegisterPasskeyForUsername:userCopy inTabWithID:tabIDForAutoFill currentURL:committedURL completionHandler:v13];
 }
 
-- (void)_webView:(id)a3 hasVideoInPictureInPictureDidChange:(BOOL)a4
+- (void)_webView:(id)view hasVideoInPictureInPictureDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained tabDocument:self didChangePIPState:v4];
+  [WeakRetained tabDocument:self didChangePIPState:changeCopy];
 
   [(TabDocument *)self updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:[(TabDocument *)self isActive]];
-  v7 = [MEMORY[0x277D499B8] sharedLogger];
-  [v7 reportPictureInPictureEvent:v4 ^ 1];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportPictureInPictureEvent:changeCopy ^ 1];
 }
 
-- (void)_webView:(id)a3 willStartInputSession:(id)a4
+- (void)_webView:(id)view willStartInputSession:(id)session
 {
-  v6 = a4;
-  v5 = [objc_alloc(MEMORY[0x277CDB7D0]) initWithFormInputSession:v6];
-  if (![v6 requiresStrongPasswordAssistance] || (-[_SFFormAutoFillController prepareForShowingAutomaticStrongPasswordWithInputSession:](self->_autoFillController, "prepareForShowingAutomaticStrongPasswordWithInputSession:", v5), (objc_msgSend(MEMORY[0x277D49A08], "isPasswordsAppInstalled") & 1) != 0))
+  sessionCopy = session;
+  v5 = [objc_alloc(MEMORY[0x277CDB7D0]) initWithFormInputSession:sessionCopy];
+  if (![sessionCopy requiresStrongPasswordAssistance] || (-[_SFFormAutoFillController prepareForShowingAutomaticStrongPasswordWithInputSession:](self->_autoFillController, "prepareForShowingAutomaticStrongPasswordWithInputSession:", v5), (objc_msgSend(MEMORY[0x277D49A08], "isPasswordsAppInstalled") & 1) != 0))
   {
     [(_SFFormAutoFillController *)self->_autoFillController fieldWillFocusWithInputSession:v5];
   }
 }
 
-- (void)_webView:(id)a3 didStartInputSession:(id)a4
+- (void)_webView:(id)view didStartInputSession:(id)session
 {
-  v5 = a4;
-  if (![v5 requiresStrongPasswordAssistance] || (objc_msgSend(MEMORY[0x277D49A08], "isPasswordsAppInstalled") & 1) != 0)
+  sessionCopy = session;
+  if (![sessionCopy requiresStrongPasswordAssistance] || (objc_msgSend(MEMORY[0x277D49A08], "isPasswordsAppInstalled") & 1) != 0)
   {
     [(_SFFormAutoFillController *)self->_autoFillController fieldDidFocus];
   }
 }
 
-- (BOOL)_webView:(id)a3 focusRequiresStrongPasswordAssistance:(id)a4
+- (BOOL)_webView:(id)view focusRequiresStrongPasswordAssistance:(id)assistance
 {
-  v5 = a4;
-  v6 = [objc_alloc(MEMORY[0x277CDB7D0]) initWithFocusedElement:v5];
-  v7 = [(_SFFormAutoFillController *)self->_autoFillController shouldShowPasswordManagementAppOnboardingViews];
+  assistanceCopy = assistance;
+  v6 = [objc_alloc(MEMORY[0x277CDB7D0]) initWithFocusedElement:assistanceCopy];
+  shouldShowPasswordManagementAppOnboardingViews = [(_SFFormAutoFillController *)self->_autoFillController shouldShowPasswordManagementAppOnboardingViews];
   autoFillController = self->_autoFillController;
-  if (v7)
+  if (shouldShowPasswordManagementAppOnboardingViews)
   {
     v9 = [(_SFFormAutoFillController *)autoFillController beginAutomaticPasswordInteractionWithInputSession:v6];
     v10 = 1;
@@ -17244,23 +17244,23 @@ void __111__TabDocument__webView_adjustedDataInteractionItemProvidersForItemProv
   return v10;
 }
 
-- (id)_webViewAdditionalContextForStrongPasswordAssistance:(id)a3
+- (id)_webViewAdditionalContextForStrongPasswordAssistance:(id)assistance
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CDB958];
-  v3 = [(TabDocument *)self uuid];
-  v4 = [v3 UUIDString];
-  v8[0] = v4;
+  uuid = [(TabDocument *)self uuid];
+  uUIDString = [uuid UUIDString];
+  v8[0] = uUIDString;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   return v5;
 }
 
-- (void)_webView:(id)a3 willSubmitFormValues:(id)a4 userObject:(id)a5 submissionHandler:(id)a6
+- (void)_webView:(id)view willSubmitFormValues:(id)values userObject:(id)object submissionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  valuesCopy = values;
+  objectCopy = object;
+  handlerCopy = handler;
   operator new();
 }
 
@@ -17271,10 +17271,10 @@ void *__74__TabDocument__webView_willSubmitFormValues_userObject_submissionHandl
   return (*(*v1 + 16))(v1);
 }
 
-- (int64_t)_webView:(id)a3 decidePolicyForFocusedElement:(id)a4
+- (int64_t)_webView:(id)view decidePolicyForFocusedElement:(id)element
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  elementCopy = element;
   [Application postTestNotificationName:@"WebFormElementDidFocusNotification" object:self];
   if (self->_locked)
   {
@@ -17295,7 +17295,7 @@ LABEL_2:
 
   else
   {
-    if ([(_SFFormAutoFillController *)self->_autoFillController elementIsBeingFocusedForStreamlinedLogin:v7])
+    if ([(_SFFormAutoFillController *)self->_autoFillController elementIsBeingFocusedForStreamlinedLogin:elementCopy])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if ([WeakRetained tabDocumentCanBeginInputSessionForStreamlinedLogin:self])
@@ -17312,8 +17312,8 @@ LABEL_2:
     else
     {
       WeakRetained = [(LoadingController *)self->_loadingController URL];
-      v10 = [v6 _committedURL];
-      if ([WeakRetained isEqual:v10])
+      _committedURL = [viewCopy _committedURL];
+      if ([WeakRetained isEqual:_committedURL])
       {
         v8 = 0;
       }
@@ -17330,16 +17330,16 @@ LABEL_15:
   return v8;
 }
 
-- (void)_webViewDidEnableInspectorBrowserDomain:(id)a3
+- (void)_webViewDidEnableInspectorBrowserDomain:(id)domain
 {
-  v10 = a3;
+  domainCopy = domain;
   webExtensionsStateObserver = self->_webExtensionsStateObserver;
   if (!webExtensionsStateObserver)
   {
     v5 = objc_alloc(MEMORY[0x277D4A800]);
     webView = self->_webView;
-    v7 = [(TabDocument *)self webExtensionsController];
-    v8 = [v5 initWithWebView:webView extensionsController:v7];
+    webExtensionsController = [(TabDocument *)self webExtensionsController];
+    v8 = [v5 initWithWebView:webView extensionsController:webExtensionsController];
     v9 = self->_webExtensionsStateObserver;
     self->_webExtensionsStateObserver = v8;
 
@@ -17349,7 +17349,7 @@ LABEL_15:
   [(WBSSafariExtensionStateObserver *)webExtensionsStateObserver startObservingExtensionStateChanges];
 }
 
-- (void)_webViewDidDisableInspectorBrowserDomain:(id)a3
+- (void)_webViewDidDisableInspectorBrowserDomain:(id)domain
 {
   webExtensionsStateObserver = self->_webExtensionsStateObserver;
   if (webExtensionsStateObserver)
@@ -17370,46 +17370,46 @@ LABEL_15:
   return [v2 isAvailableInCurrentLocale];
 }
 
-- (void)browsingAssistantController:(id)a3 didUpdateContentOptionsForURL:(id)a4
+- (void)browsingAssistantController:(id)controller didUpdateContentOptionsForURL:(id)l
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TabDocument *)self committedURL];
+  controllerCopy = controller;
+  lCopy = l;
+  committedURL = [(TabDocument *)self committedURL];
   v8 = WBSIsEqual();
 
   if (v8)
   {
-    v9 = [v12 result];
-    v10 = [v9 contentOptions];
+    result = [controllerCopy result];
+    contentOptions = [result contentOptions];
 
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    [WeakRetained tabDocument:self didReceiveAssistantContentOptions:v10];
+    [WeakRetained tabDocument:self didReceiveAssistantContentOptions:contentOptions];
 
-    [(SFNavigationBarItem *)self->_navigationBarItem updateContentOptions:v10];
+    [(SFNavigationBarItem *)self->_navigationBarItem updateContentOptions:contentOptions];
   }
 }
 
-- (void)browsingAssistantControllerDidUpdateUserConsentState:(id)a3
+- (void)browsingAssistantControllerDidUpdateUserConsentState:(id)state
 {
   if ([(TabDocument *)self allowsBrowsingAssistant])
   {
     assistantController = self->_assistantController;
     v6 = [(TabDocument *)self url];
-    v5 = [(WBSTranslationContext *)self->_translationContext webpageLocale];
-    [(WBSBrowsingAssistantController *)assistantController checkForAssistantContentFromPegasusForURL:v6 locale:v5];
+    webpageLocale = [(WBSTranslationContext *)self->_translationContext webpageLocale];
+    [(WBSBrowsingAssistantController *)assistantController checkForAssistantContentFromPegasusForURL:v6 locale:webpageLocale];
   }
 }
 
-- (void)loadingController:(id)a3 willLoadRequest:(id)a4 webView:(id)a5 userDriven:(BOOL)a6
+- (void)loadingController:(id)controller willLoadRequest:(id)request webView:(id)view userDriven:(BOOL)driven
 {
-  v6 = a6;
-  v11 = a4;
-  v9 = a5;
-  [(TabDocument *)self _loadingControllerWillLoadRequest:v11 webView:v10 userDriven:v6];
+  drivenCopy = driven;
+  requestCopy = request;
+  viewCopy = view;
+  [(TabDocument *)self _loadingControllerWillLoadRequest:requestCopy webView:v10 userDriven:drivenCopy];
   [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator willStartNewBrowserChromeInitiatedNavigation];
 }
 
-- (void)loadingControllerWillStartUserDrivenLoad:(id)a3
+- (void)loadingControllerWillStartUserDrivenLoad:(id)load
 {
   *&self->_loadWasUserDriven = 1;
   self->_shouldResetPrintSuppressionOnNextCommit = 1;
@@ -17417,55 +17417,55 @@ LABEL_15:
   [(WBSURLSpoofingMitigator *)self->_URLSpoofingMitigator willStartNewBrowserChromeInitiatedNavigation];
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessage:(id)a4 description:(id)a5
+- (void)_webView:(id)view logDiagnosticMessage:(id)message description:(id)description
 {
-  v8 = a4;
-  v6 = a5;
-  v7 = [MEMORY[0x277D499B8] sharedLogger];
-  [v7 logDiagnosticMessageWithKey:v8 diagnosticMessage:v6];
+  messageCopy = message;
+  descriptionCopy = description;
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] logDiagnosticMessageWithKey:messageCopy diagnosticMessage:descriptionCopy];
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessageWithResult:(id)a4 description:(id)a5 result:(int64_t)a6
+- (void)_webView:(id)view logDiagnosticMessageWithResult:(id)result description:(id)description result:(int64_t)a6
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277D499B8] sharedLogger];
-  [v9 logDiagnosticMessageWithKey:v10 diagnosticMessage:v8 result:a6];
+  resultCopy = result;
+  descriptionCopy = description;
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] logDiagnosticMessageWithKey:resultCopy diagnosticMessage:descriptionCopy result:a6];
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessageWithValue:(id)a4 description:(id)a5 value:(id)a6
+- (void)_webView:(id)view logDiagnosticMessageWithValue:(id)value description:(id)description value:(id)a6
 {
-  v11 = a4;
-  v8 = a5;
+  valueCopy = value;
+  descriptionCopy = description;
   v9 = a6;
-  v10 = [MEMORY[0x277D499B8] sharedLogger];
-  [v10 logDiagnosticMessageWithKey:v11 diagnosticMessage:v8 value:v9];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] logDiagnosticMessageWithKey:valueCopy diagnosticMessage:descriptionCopy value:v9];
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessageWithEnhancedPrivacy:(id)a4 description:(id)a5
+- (void)_webView:(id)view logDiagnosticMessageWithEnhancedPrivacy:(id)privacy description:(id)description
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled") || ([MEMORY[0x277D49E30] sharedManager], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "donateForDiagnosticLoggingKey:value:webPageLoadedOverPrivateRelay:", v8, v9, objc_msgSend(v12, "_wasPrivateRelayed")), v10, (v11 & 1) == 0))
+  viewCopy = view;
+  privacyCopy = privacy;
+  descriptionCopy = description;
+  if (-[TabDocument isPrivateBrowsingEnabled](self, "isPrivateBrowsingEnabled") || ([MEMORY[0x277D49E30] sharedManager], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "donateForDiagnosticLoggingKey:value:webPageLoadedOverPrivateRelay:", privacyCopy, descriptionCopy, objc_msgSend(viewCopy, "_wasPrivateRelayed")), v10, (v11 & 1) == 0))
   {
     WBSLogWithDifferentialPrivacy();
   }
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessage:(id)a4 description:(id)a5 valueDictionary:(id)a6
+- (void)_webView:(id)view logDiagnosticMessage:(id)message description:(id)description valueDictionary:(id)dictionary
 {
-  v11 = a4;
-  v8 = a5;
-  v9 = a6;
-  v10 = [MEMORY[0x277D499B8] sharedLogger];
-  [v10 didReceiveAnalyticsEventFromWebKitWithName:v11 description:v8 payload:v9];
+  messageCopy = message;
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didReceiveAnalyticsEventFromWebKitWithName:messageCopy description:descriptionCopy payload:dictionaryCopy];
 }
 
-- (void)_webView:(id)a3 logDiagnosticMessageWithDomain:(id)a4 domain:(int64_t)a5
+- (void)_webView:(id)view logDiagnosticMessageWithDomain:(id)domain domain:(int64_t)a5
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  domainCopy = domain;
   if (!a5)
   {
     ct_green_tea_logger_create_static();
@@ -17477,51 +17477,51 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = 136315138;
-        v11 = [v6 UTF8String];
+        uTF8String = [domainCopy UTF8String];
         _os_log_impl(&dword_215819000, v9, OS_LOG_TYPE_INFO, "%s", &v10, 0xCu);
       }
     }
   }
 }
 
-- (void)didAutoDetectSiteSpecificSearchProviderWithOriginatingURL:(id)a3 searchURLTemplate:(id)a4
+- (void)didAutoDetectSiteSpecificSearchProviderWithOriginatingURL:(id)l searchURLTemplate:(id)template
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+  lCopy = l;
+  templateCopy = template;
+  v7 = [MEMORY[0x277CBEBC0] URLWithString:templateCopy];
   if (v7)
   {
-    v8 = [(TabDocument *)self browserController];
-    v9 = [v8 activeSearchEngine];
-    v10 = [v9 urlIsValidSearch:v7];
+    browserController = [(TabDocument *)self browserController];
+    activeSearchEngine = [browserController activeSearchEngine];
+    v10 = [activeSearchEngine urlIsValidSearch:v7];
 
     if (v10)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v12 = [WeakRetained rootViewController];
-      v13 = [v12 tipsCoordinator];
-      [v13 donatePerformSearchFromDefaultSearchEngineWebPageEvent];
+      rootViewController = [WeakRetained rootViewController];
+      tipsCoordinator = [rootViewController tipsCoordinator];
+      [tipsCoordinator donatePerformSearchFromDefaultSearchEngineWebPageEvent];
     }
   }
 
   if ([(_SFBrowserConfiguration *)self->_configuration allowsSiteSpecificSearch])
   {
-    v14 = [MEMORY[0x277D4A028] sharedController];
-    v15 = [objc_alloc(MEMORY[0x277D49FB8]) initWithString:v6];
-    v16 = [v17 absoluteString];
-    [v14 setSearchURLTemplateFromForm:v15 forSourcePageURLString:v16 completionHandler:0];
+    mEMORY[0x277D4A028] = [MEMORY[0x277D4A028] sharedController];
+    v15 = [objc_alloc(MEMORY[0x277D49FB8]) initWithString:templateCopy];
+    absoluteString = [lCopy absoluteString];
+    [mEMORY[0x277D4A028] setSearchURLTemplateFromForm:v15 forSourcePageURLString:absoluteString completionHandler:0];
   }
 }
 
-- (void)didFindAppBannerWithContent:(id)a3
+- (void)didFindAppBannerWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   if (!self->_storeBannersAreDisabled)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v6 = [WeakRetained isPrivateBrowsingEnabled];
+    isPrivateBrowsingEnabled = [WeakRetained isPrivateBrowsingEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((isPrivateBrowsingEnabled & 1) == 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -17579,25 +17579,25 @@ void __43__TabDocument_didFindAppBannerWithContent___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)findOnPageCompletionProvider:(id)a3 setStringToComplete:(id)a4
+- (void)findOnPageCompletionProvider:(id)provider setStringToComplete:(id)complete
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFTextSearchMatchesCounter *)self->_findMatchesCounter queryString];
-  v9 = [v8 isEqualToString:v7];
+  providerCopy = provider;
+  completeCopy = complete;
+  queryString = [(SFTextSearchMatchesCounter *)self->_findMatchesCounter queryString];
+  v9 = [queryString isEqualToString:completeCopy];
 
   if ((v9 & 1) == 0)
   {
-    objc_storeWeak(&self->_findCompletionProvider, v6);
-    v10 = [(TabDocument *)self findInteraction];
-    v11 = [v10 _configuredSearchOptions];
-    if (-[SFTextSearchMatchesCounter canSkipCountingMatchesForQueryString:wordMatchMethod:](self->_findMatchesCounter, "canSkipCountingMatchesForQueryString:wordMatchMethod:", v7, [v11 wordMatchMethod]))
+    objc_storeWeak(&self->_findCompletionProvider, providerCopy);
+    findInteraction = [(TabDocument *)self findInteraction];
+    _configuredSearchOptions = [findInteraction _configuredSearchOptions];
+    if (-[SFTextSearchMatchesCounter canSkipCountingMatchesForQueryString:wordMatchMethod:](self->_findMatchesCounter, "canSkipCountingMatchesForQueryString:wordMatchMethod:", completeCopy, [_configuredSearchOptions wordMatchMethod]))
     {
-      v12 = -[FindOnPageCompletionItem initWithString:numberOfMatches:forQueryID:]([FindOnPageCompletionItem alloc], "initWithString:numberOfMatches:forQueryID:", v7, 0, [v6 parsecQueryID]);
+      v12 = -[FindOnPageCompletionItem initWithString:numberOfMatches:forQueryID:]([FindOnPageCompletionItem alloc], "initWithString:numberOfMatches:forQueryID:", completeCopy, 0, [providerCopy parsecQueryID]);
       v27[0] = v12;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-      [v6 setCompletions:v13 forString:v7];
+      [providerCopy setCompletions:v13 forString:completeCopy];
     }
 
     else if ([(SFTextSearchMatchesCounter *)self->_findMatchesCounter searchTookTooLong])
@@ -17620,14 +17620,14 @@ void __43__TabDocument_didFindAppBannerWithContent___block_invoke(uint64_t a1, v
       v22 = __64__TabDocument_findOnPageCompletionProvider_setStringToComplete___block_invoke;
       v23 = &unk_2781DB2B0;
       objc_copyWeak(&v25, buf);
-      v16 = v7;
+      v16 = completeCopy;
       v24 = v16;
       v17 = [v15 initWithQueryString:v16 completionHandler:&v20];
       findMatchesCounter = self->_findMatchesCounter;
       self->_findMatchesCounter = v17;
 
       v19 = [(TabDocument *)self activeWebView:v20];
-      [v19 performTextSearchWithQueryString:v16 usingOptions:v11 resultAggregator:self->_findMatchesCounter];
+      [v19 performTextSearchWithQueryString:v16 usingOptions:_configuredSearchOptions resultAggregator:self->_findMatchesCounter];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(buf);
@@ -17641,19 +17641,19 @@ void __64__TabDocument_findOnPageCompletionProvider_setStringToComplete___block_
   [(TabDocument *)WeakRetained _updateFindCompletionProviderWithNumberOfMatches:a2 forString:*(a1 + 32)];
 }
 
-- (void)_updateFindCompletionProviderWithNumberOfMatches:(void *)a3 forString:
+- (void)_updateFindCompletionProviderWithNumberOfMatches:(void *)matches forString:
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  matchesCopy = matches;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 152));
+    WeakRetained = objc_loadWeakRetained((self + 152));
     if (WeakRetained)
     {
-      v7 = -[FindOnPageCompletionItem initWithString:numberOfMatches:forQueryID:]([FindOnPageCompletionItem alloc], "initWithString:numberOfMatches:forQueryID:", v5, a2, [WeakRetained parsecQueryID]);
+      v7 = -[FindOnPageCompletionItem initWithString:numberOfMatches:forQueryID:]([FindOnPageCompletionItem alloc], "initWithString:numberOfMatches:forQueryID:", matchesCopy, a2, [WeakRetained parsecQueryID]);
       v9[0] = v7;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-      [WeakRetained setCompletions:v8 forString:v5];
+      [WeakRetained setCompletions:v8 forString:matchesCopy];
     }
   }
 }
@@ -17666,25 +17666,25 @@ void __64__TabDocument_findOnPageCompletionProvider_setStringToComplete___block_
 
 - (BOOL)canFindOnPage
 {
-  v2 = [(TabDocument *)self activeWebView];
-  v3 = [v2 _findInteractionEnabled];
+  activeWebView = [(TabDocument *)self activeWebView];
+  _findInteractionEnabled = [activeWebView _findInteractionEnabled];
 
-  return v3;
+  return _findInteractionEnabled;
 }
 
 - (void)showFindOnPage
 {
-  v2 = [(TabDocument *)self activeWebView];
-  [v2 find:0];
+  activeWebView = [(TabDocument *)self activeWebView];
+  [activeWebView find:0];
 }
 
-- (UIEdgeInsets)_webView:(id)a3 finalObscuredInsetsForScrollView:(id)a4 withVelocity:(CGPoint)a5 targetContentOffset:(CGPoint *)a6
+- (UIEdgeInsets)_webView:(id)view finalObscuredInsetsForScrollView:(id)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a4;
+  y = velocity.y;
+  x = velocity.x;
+  scrollViewCopy = scrollView;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained finalObscuredInsetsForScrollView:v10 withVelocity:a6 targetContentOffset:{x, y}];
+  [WeakRetained finalObscuredInsetsForScrollView:scrollViewCopy withVelocity:offset targetContentOffset:{x, y}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -17701,59 +17701,59 @@ void __64__TabDocument_findOnPageCompletionProvider_setStringToComplete___block_
   return result;
 }
 
-- (BOOL)formAutoFillControllerCanPrefillForm:(id)a3
+- (BOOL)formAutoFillControllerCanPrefillForm:(id)form
 {
-  v4 = [(TabDocument *)self didFirstLayout];
-  if (v4)
+  didFirstLayout = [(TabDocument *)self didFirstLayout];
+  if (didFirstLayout)
   {
 
-    LOBYTE(v4) = [(TabDocument *)self didFinishDocumentLoad];
+    LOBYTE(didFirstLayout) = [(TabDocument *)self didFinishDocumentLoad];
   }
 
-  return v4;
+  return didFirstLayout;
 }
 
-- (id)formAutoFillControllerURLForFormAutoFill:(id)a3
+- (id)formAutoFillControllerURLForFormAutoFill:(id)fill
 {
   v3 = [(TabDocument *)self URL];
 
   return v3;
 }
 
-- (id)currentSavedAccountContextForFormAutoFillController:(id)a3
+- (id)currentSavedAccountContextForFormAutoFillController:(id)controller
 {
-  v3 = [(TabDocument *)self profileIdentifier];
-  if ([v3 isEqualToString:*MEMORY[0x277D49BD8]])
+  profileIdentifier = [(TabDocument *)self profileIdentifier];
+  if ([profileIdentifier isEqualToString:*MEMORY[0x277D49BD8]])
   {
-    v4 = [MEMORY[0x277D49B30] defaultContext];
+    defaultContext = [MEMORY[0x277D49B30] defaultContext];
   }
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277D49B30]) initWithSafariProfileIdentifier:v3];
+    defaultContext = [objc_alloc(MEMORY[0x277D49B30]) initWithSafariProfileIdentifier:profileIdentifier];
   }
 
-  v5 = v4;
+  v5 = defaultContext;
 
   return v5;
 }
 
-- (BOOL)formAutoFillControllerDidUserDeclineAutomaticStrongPasswordForCurrentDomain:(id)a3
+- (BOOL)formAutoFillControllerDidUserDeclineAutomaticStrongPasswordForCurrentDomain:(id)domain
 {
-  v4 = [(TabDocument *)self committedURL];
-  v5 = [v4 safari_userVisibleHostWithoutWWWSubdomain];
+  committedURL = [(TabDocument *)self committedURL];
+  safari_userVisibleHostWithoutWWWSubdomain = [committedURL safari_userVisibleHostWithoutWWWSubdomain];
 
-  LOBYTE(v4) = [v5 isEqualToString:self->_domainWhereUserDeclinedAutomaticStrongPassword];
-  return v4;
+  LOBYTE(committedURL) = [safari_userVisibleHostWithoutWWWSubdomain isEqualToString:self->_domainWhereUserDeclinedAutomaticStrongPassword];
+  return committedURL;
 }
 
-- (void)formAutoFillControllerUserChoseToUseGeneratedPassword:(id)a3
+- (void)formAutoFillControllerUserChoseToUseGeneratedPassword:(id)password
 {
   domainWhereUserDeclinedAutomaticStrongPassword = self->_domainWhereUserDeclinedAutomaticStrongPassword;
   self->_domainWhereUserDeclinedAutomaticStrongPassword = 0;
 }
 
-- (void)formAutoFillControllerDidFocusSensitiveFormField:(id)a3
+- (void)formAutoFillControllerDidFocusSensitiveFormField:(id)field
 {
   hasFocusedInputFieldOnCurrentPage = self->_hasFocusedInputFieldOnCurrentPage;
   self->_hasFocusedInputFieldOnCurrentPage = 1;
@@ -17763,21 +17763,21 @@ void __64__TabDocument_findOnPageCompletionProvider_setStringToComplete___block_
   }
 }
 
-- (void)formAutoFillControllerGetAuthenticationForAutoFill:(id)a3 completion:(id)a4
+- (void)formAutoFillControllerGetAuthenticationForAutoFill:(id)fill completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fillCopy = fill;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [WeakRetained tabDocumentCanDisplayModalUI:self];
 
   if (v9)
   {
-    [(TabDocument *)self _getAuthenticationForAutoFillController:v6 withCompletion:v7];
+    [(TabDocument *)self _getAuthenticationForAutoFillController:fillCopy withCompletion:completionCopy];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     autoFillAuthenticationCompletionBlock = self->_autoFillAuthenticationCompletionBlock;
     self->_autoFillAuthenticationCompletionBlock = v10;
 
@@ -17798,18 +17798,18 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
   (*(v3 + 16))(v3, a2, v4);
 }
 
-- (void)presentAutoFillInternalFeedbackToastForFormAutoFillController:(id)a3 diagnosticsDataWithoutPageContents:(id)a4
+- (void)presentAutoFillInternalFeedbackToastForFormAutoFillController:(id)controller diagnosticsDataWithoutPageContents:(id)contents
 {
-  v5 = a4;
+  contentsCopy = contents;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained presentAutoFillInternalFeedbackToastWithDiagnosticsDataWithoutPageContents:v5];
+  [WeakRetained presentAutoFillInternalFeedbackToastWithDiagnosticsDataWithoutPageContents:contentsCopy];
 }
 
-- (void)dismissAutoFillInternalFeedbackActivityForFormAutoFillController:(id)a3 immediately:(BOOL)a4
+- (void)dismissAutoFillInternalFeedbackActivityForFormAutoFillController:(id)controller immediately:(BOOL)immediately
 {
-  v4 = a4;
+  immediatelyCopy = immediately;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained dismissAutoFillInternalFeedbackToastImmediately:v4];
+  [WeakRetained dismissAutoFillInternalFeedbackToastImmediately:immediatelyCopy];
 }
 
 - (void)resetPendingAutoFillInternalFeedbackToastDismissalTimer
@@ -17818,7 +17818,7 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
   [WeakRetained resetPendingAutoFillInternalFeedbackToastDismissalTimer];
 }
 
-- (BOOL)printControllerShouldPrintReader:(id)a3
+- (BOOL)printControllerShouldPrintReader:(id)reader
 {
   if (self->_showingReader)
   {
@@ -17828,12 +17828,12 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v6 = [WeakRetained presentedActivityViewController];
+    presentedActivityViewController = [WeakRetained presentedActivityViewController];
 
-    if (v6)
+    if (presentedActivityViewController)
     {
-      v7 = [v6 customizationController];
-      showingReader = [v7 selectedContentType] == 2;
+      customizationController = [presentedActivityViewController customizationController];
+      showingReader = [customizationController selectedContentType] == 2;
     }
 
     else
@@ -17845,9 +17845,9 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
   return showingReader;
 }
 
-- (BOOL)printControllerCanPresentPrintUI:(id)a3
+- (BOOL)printControllerCanPresentPrintUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   if (self->_shouldSuppressDialogsThatBlockWebProcessForProvisionalNavigation || [(TabDocument *)self shouldObscureForDigitalHealth])
   {
     v5 = 0;
@@ -17862,39 +17862,39 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
   return v5;
 }
 
-- (id)presentingViewControllerForPrintController:(id)a3
+- (id)presentingViewControllerForPrintController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained viewControllerToPresentFrom];
+  viewControllerToPresentFrom = [WeakRetained viewControllerToPresentFrom];
 
-  return v4;
+  return viewControllerToPresentFrom;
 }
 
-- (id)URLStringForPrintController:(id)a3
+- (id)URLStringForPrintController:(id)controller
 {
-  v3 = [(TabDocument *)self URLString];
+  uRLString = [(TabDocument *)self URLString];
 
-  return v3;
+  return uRLString;
 }
 
-- (id)pageTitleForPrintController:(id)a3
+- (id)pageTitleForPrintController:(id)controller
 {
-  v3 = [(TabDocument *)self titleForSharing];
+  titleForSharing = [(TabDocument *)self titleForSharing];
 
-  return v3;
+  return titleForSharing;
 }
 
-- (id)loadingDialogPageTitleForPrintController:(id)a3
+- (id)loadingDialogPageTitleForPrintController:(id)controller
 {
-  v3 = [(TabDocument *)self titleForNewBookmark];
+  titleForNewBookmark = [(TabDocument *)self titleForNewBookmark];
 
-  return v3;
+  return titleForNewBookmark;
 }
 
-- (int64_t)dialogController:(id)a3 presentationPolicyForDialog:(id)a4
+- (int64_t)dialogController:(id)controller presentationPolicyForDialog:(id)dialog
 {
-  v5 = a4;
-  v6 = [v5 completionHandlerBlocksWebProcess] ^ 1;
+  dialogCopy = dialog;
+  v6 = [dialogCopy completionHandlerBlocksWebProcess] ^ 1;
   if (!self)
   {
     LOBYTE(v6) = 1;
@@ -17906,7 +17906,7 @@ void __70__TabDocument__getAuthenticationForAutoFillController_withCompletion___
     goto LABEL_14;
   }
 
-  if ([v5 presentationStyle] != 1)
+  if ([dialogCopy presentationStyle] != 1)
   {
     goto LABEL_7;
   }
@@ -17920,9 +17920,9 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v9 = [v5 shouldIgnoreGlobalModalUIDisplayPolicy];
+  shouldIgnoreGlobalModalUIDisplayPolicy = [dialogCopy shouldIgnoreGlobalModalUIDisplayPolicy];
 
-  if (v9)
+  if (shouldIgnoreGlobalModalUIDisplayPolicy)
   {
     v8 = 0;
   }
@@ -17937,14 +17937,14 @@ LABEL_14:
   return v8;
 }
 
-- (void)dialogController:(id)a3 willPresentDialog:(id)a4
+- (void)dialogController:(id)controller willPresentDialog:(id)dialog
 {
   self->_showingInlineDialog = 1;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentWillShowInlineDialog:self];
 }
 
-- (void)dialogController:(id)a3 didDismissDialog:(id)a4
+- (void)dialogController:(id)controller didDismissDialog:(id)dialog
 {
   self->_showingInlineDialog = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -17954,13 +17954,13 @@ LABEL_14:
 - (CGPoint)getLastWindowTapLocation
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 browserWindowController];
+  browserWindowController = [v2 browserWindowController];
 
   v4 = +[Application sharedApplication];
-  v5 = [v4 primaryBrowserController];
+  primaryBrowserController = [v4 primaryBrowserController];
 
-  v6 = [v3 uiDelegateForBrowserController:v5];
-  [v6 browserControllerWindowLastTapLocation:v5];
+  v6 = [browserWindowController uiDelegateForBrowserController:primaryBrowserController];
+  [v6 browserControllerWindowLastTapLocation:primaryBrowserController];
   v8 = v7;
   v10 = v9;
 
@@ -17971,48 +17971,48 @@ LABEL_14:
   return result;
 }
 
-- (void)dialogController:(id)a3 presentViewController:(id)a4 withAdditionalAnimations:(id)a5
+- (void)dialogController:(id)controller presentViewController:(id)viewController withAdditionalAnimations:(id)animations
 {
-  v9 = a4;
-  v7 = a5;
+  viewControllerCopy = viewController;
+  animationsCopy = animations;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self presentViewControllerAnimated:v9];
+  [WeakRetained tabDocument:self presentViewControllerAnimated:viewControllerCopy];
 
-  [v9 _sf_animateAlongsideTransitionOrPerform:v7];
+  [viewControllerCopy _sf_animateAlongsideTransitionOrPerform:animationsCopy];
 }
 
-- (void)dialogController:(id)a3 dismissViewController:(id)a4 withAdditionalAnimations:(id)a5
+- (void)dialogController:(id)controller dismissViewController:(id)viewController withAdditionalAnimations:(id)animations
 {
-  v9 = a4;
-  v7 = a5;
+  viewControllerCopy = viewController;
+  animationsCopy = animations;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self dismissViewControllerAnimated:v9];
+  [WeakRetained tabDocument:self dismissViewControllerAnimated:viewControllerCopy];
 
-  [v9 _sf_animateAlongsideTransitionOrPerform:v7];
+  [viewControllerCopy _sf_animateAlongsideTransitionOrPerform:animationsCopy];
 }
 
-- (void)pageLoadErrorControllerDidAddAlert:(id)a3
+- (void)pageLoadErrorControllerDidAddAlert:(id)alert
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentDidAddAlert:self];
 }
 
-- (BOOL)pageLoadErrorControllerShouldHandleCertificateError:(id)a3
+- (BOOL)pageLoadErrorControllerShouldHandleCertificateError:(id)error
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained tabDocumentShouldHandleCertificateError:v3];
+  LOBYTE(selfCopy) = [WeakRetained tabDocumentShouldHandleCertificateError:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)pageLoadErrorController:(id)a3 loadFailedRequestAfterError:(id)a4
+- (void)pageLoadErrorController:(id)controller loadFailedRequestAfterError:(id)error
 {
-  v6 = [a3 failedRequest];
+  failedRequest = [controller failedRequest];
   v5 = [TabDocument loadRequest:"loadRequest:userDriven:" userDriven:?];
 }
 
-- (id)pageLoadErrorControllerGetSecIdentityPreferencesController:(id)a3
+- (id)pageLoadErrorControllerGetSecIdentityPreferencesController:(id)controller
 {
   if (!self->_secIdentityPreferencesController)
   {
@@ -18035,58 +18035,58 @@ LABEL_14:
   return v6;
 }
 
-- (void)pageLoadErrorControllerClosePage:(id)a3
+- (void)pageLoadErrorControllerClosePage:(id)page
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  [v4 closeTab:self animated:1];
+  tabController = [WeakRetained tabController];
+  [tabController closeTab:self animated:1];
 }
 
-- (void)pageLoadErrorControllerReloadUsingHTTPSOnlyBypass:(id)a3
+- (void)pageLoadErrorControllerReloadUsingHTTPSOnlyBypass:(id)bypass
 {
   v4 = [(TabDocument *)self URL];
-  v5 = [v4 host];
-  v6 = [v5 safari_highLevelDomainFromHost];
+  host = [v4 host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
   highLevelDomainForHTTPSOnlyBypass = self->_highLevelDomainForHTTPSOnlyBypass;
-  self->_highLevelDomainForHTTPSOnlyBypass = v6;
+  self->_highLevelDomainForHTTPSOnlyBypass = safari_highLevelDomainFromHost;
 
   [(TabDocument *)self reload];
 }
 
-- (void)pageLoadErrorControllerReloadWithoutPrivateRelay:(id)a3
+- (void)pageLoadErrorControllerReloadWithoutPrivateRelay:(id)relay
 {
-  v4 = [MEMORY[0x277D4A008] sharedManager];
-  v5 = [(TabDocument *)self expectedOrCurrentURL];
-  [v4 rememberPrivateRelayFailClosedExceptionForURL:v5];
+  mEMORY[0x277D4A008] = [MEMORY[0x277D4A008] sharedManager];
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+  [mEMORY[0x277D4A008] rememberPrivateRelayFailClosedExceptionForURL:expectedOrCurrentURL];
 
   [(TabDocument *)self reloadEnablingDowngradedPrivateRelay:1];
 }
 
-- (void)pageLoadErrorController:(id)a3 presentViewController:(id)a4
+- (void)pageLoadErrorController:(id)controller presentViewController:(id)viewController
 {
-  v5 = a4;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self presentViewControllerAnimated:v5];
+  [WeakRetained tabDocument:self presentViewControllerAnimated:viewControllerCopy];
 }
 
-- (BOOL)pageLoadErrorControllerShouldReloadAfterError:(id)a3
+- (BOOL)pageLoadErrorControllerShouldReloadAfterError:(id)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained isSuspendedOrSuspending];
+  isSuspendedOrSuspending = [WeakRetained isSuspendedOrSuspending];
 
-  return v4 ^ 1;
+  return isSuspendedOrSuspending ^ 1;
 }
 
-- (void)pageLoadErrorController:(id)a3 allowLegacyTLSConnectionForURL:(id)a4 navigateToURL:(id)a5
+- (void)pageLoadErrorController:(id)controller allowLegacyTLSConnectionForURL:(id)l navigateToURL:(id)rL
 {
-  v12 = a4;
-  v7 = a5;
+  lCopy = l;
+  rLCopy = rL;
   v8 = +[Application sharedApplication];
-  v9 = [v8 legacyTLSHostManager];
-  v10 = [v12 host];
-  [v9 allowLegacyTLSForHost:v10];
+  legacyTLSHostManager = [v8 legacyTLSHostManager];
+  host = [lCopy host];
+  [legacyTLSHostManager allowLegacyTLSForHost:host];
 
-  v11 = [(TabDocument *)self loadURL:v7 userDriven:1];
+  v11 = [(TabDocument *)self loadURL:rLCopy userDriven:1];
 }
 
 - (void)clearReaderScrollInformation
@@ -18097,16 +18097,16 @@ LABEL_14:
   self->_readerViewTopScrollOffset = 0;
 }
 
-- (void)updateReadingListItemPreviewText:(id)a3
+- (void)updateReadingListItemPreviewText:(id)text
 {
-  v9 = a3;
-  v4 = [(TabDocument *)self readingListBookmarkID];
-  v5 = [(TabDocument *)self titleForNewBookmark];
+  textCopy = text;
+  readingListBookmarkID = [(TabDocument *)self readingListBookmarkID];
+  titleForNewBookmark = [(TabDocument *)self titleForNewBookmark];
   v6 = [(TabDocument *)self URL];
-  v7 = [v6 absoluteString];
+  absoluteString = [v6 absoluteString];
 
-  v8 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-  [(WebBookmarkCollection *)v8 updateReadingListBookmarkWithID:v4 setTitle:v5 address:v7 previewText:v9 thumbnailURL:0 siteName:0];
+  mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+  [(WebBookmarkCollection *)mainBookmarkCollection updateReadingListBookmarkWithID:readingListBookmarkID setTitle:titleForNewBookmark address:absoluteString previewText:textCopy thumbnailURL:0 siteName:0];
 }
 
 - (void)didActivateReader
@@ -18117,27 +18117,27 @@ LABEL_14:
     [WeakRetained setReaderShouldBeShownIfPossible:1];
   }
 
-  v3 = [WeakRetained tabController];
-  [v3 saveTabDocumentUserActivitySoon:self];
+  tabController = [WeakRetained tabController];
+  [tabController saveTabDocumentUserActivitySoon:self];
 
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 reportTabUpdatedWithUpdateType:9];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:9];
 }
 
-- (void)_detectWebpageLocaleWithTextSamples:(void *)a3 url:
+- (void)_detectWebpageLocaleWithTextSamples:(void *)samples url:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  samplesCopy = samples;
+  if (self)
   {
-    objc_initWeak(&location, a1);
-    v7 = a1[132];
+    objc_initWeak(&location, self);
+    v7 = self[132];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __55__TabDocument__detectWebpageLocaleWithTextSamples_url___block_invoke;
     v8[3] = &unk_2781D6CA0;
     objc_copyWeak(&v10, &location);
-    v9 = v6;
+    v9 = samplesCopy;
     [v7 setWebpageLocaleWithExtractedTextSamples:v5 url:v9 completionHandler:v8];
 
     objc_destroyWeak(&v10);
@@ -18179,23 +18179,23 @@ void __55__TabDocument__detectWebpageLocaleWithTextSamples_url___block_invoke_2(
   }
 }
 
-- (void)readerController:(id)a3 didDetermineAdditionalTextSamples:(id)a4 dueTo:(int64_t)a5
+- (void)readerController:(id)controller didDetermineAdditionalTextSamples:(id)samples dueTo:(int64_t)to
 {
   translationContext = self->_translationContext;
-  v8 = [a4 textSamples];
+  textSamples = [samples textSamples];
   v7 = [(TabDocument *)self URL];
-  [(WBSTranslationContext *)translationContext setWebpageLocaleWithExtractedTextSamples:v8 url:v7 completionHandler:0];
+  [(WBSTranslationContext *)translationContext setWebpageLocaleWithExtractedTextSamples:textSamples url:v7 completionHandler:0];
 }
 
-- (void)readerController:(id)a3 didDetermineReaderAvailability:(id)a4 dueTo:(int64_t)a5
+- (void)readerController:(id)controller didDetermineReaderAvailability:(id)availability dueTo:(int64_t)to
 {
-  v7 = a4;
-  v8 = [v7 isReaderAvailable];
+  availabilityCopy = availability;
+  isReaderAvailable = [availabilityCopy isReaderAvailable];
   self->_hasDoneReaderAvailabilityDetection = 1;
-  v9 = [MEMORY[0x277D499B8] sharedLogger];
-  [v9 didDetermineReaderAvailability:v8];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didDetermineReaderAvailability:isReaderAvailable];
 
-  if (a5 == 2)
+  if (to == 2)
   {
     goto LABEL_42;
   }
@@ -18203,11 +18203,11 @@ void __55__TabDocument__detectWebpageLocaleWithTextSamples_url___block_invoke_2(
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if ([WeakRetained isReaderViewStale])
   {
-    v11 = [WeakRetained nextContinuousItemDocument];
+    nextContinuousItemDocument = [WeakRetained nextContinuousItemDocument];
 
-    if (v11 != self)
+    if (nextContinuousItemDocument != self)
     {
-      if (v8)
+      if (isReaderAvailable)
       {
         [(_SFReaderController *)self->_readerContext loadNewArticle];
       }
@@ -18240,7 +18240,7 @@ void __55__TabDocument__detectWebpageLocaleWithTextSamples_url___block_invoke_2(
   if (self->_active)
   {
     shouldRestoreReader = self->_shouldRestoreReader;
-    if ((v8 & 1) == 0)
+    if ((isReaderAvailable & 1) == 0)
     {
       goto LABEL_18;
     }
@@ -18249,10 +18249,10 @@ void __55__TabDocument__detectWebpageLocaleWithTextSamples_url___block_invoke_2(
   else
   {
     shouldRestoreReader = 0;
-    if ((v8 & 1) == 0)
+    if ((isReaderAvailable & 1) == 0)
     {
 LABEL_18:
-      if (a5 == 1 && [(TabDocument *)self isShowingReader])
+      if (to == 1 && [(TabDocument *)self isShowingReader])
       {
         goto LABEL_28;
       }
@@ -18273,8 +18273,8 @@ LABEL_18:
   if (self->_active)
   {
     [WeakRetained setShowingReader:1 animated:1];
-    v15 = [MEMORY[0x277D499B8] sharedLogger];
-    [v15 didActivateReaderWithTrigger:2];
+    mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+    [mEMORY[0x277D499B8]2 didActivateReaderWithTrigger:2];
   }
 
   if (!shouldRestoreReader)
@@ -18285,14 +18285,14 @@ LABEL_18:
 LABEL_26:
   self->_shouldRestoreReader = 0;
 LABEL_28:
-  v16 = [v7 textSamples];
-  [(TabDocument *)self _detectWebpageLocaleWithTextSamples:v16 url:v12];
+  textSamples = [availabilityCopy textSamples];
+  [(TabDocument *)self _detectWebpageLocaleWithTextSamples:textSamples url:v12];
 
   v17 = +[Application sharedApplication];
-  v18 = [v17 systemNoteTakingController];
+  systemNoteTakingController = [v17 systemNoteTakingController];
 
-  v19 = [v7 canonicalURL];
-  [v18 cacheCanonicalURL:v19 forWebPageURL:v12];
+  canonicalURL = [availabilityCopy canonicalURL];
+  [systemNoteTakingController cacheCanonicalURL:canonicalURL forWebPageURL:v12];
 
   [(TabDocument *)self restoreAllHighlightsData];
   if (!self->_assistantController)
@@ -18306,14 +18306,14 @@ LABEL_28:
 
   if (![(TabDocument *)self isPrivateBrowsingEnabled])
   {
-    v22 = [(NSUUID *)self->_biomeWebpageIdentifier UUIDString];
-    [(WBSBrowsingAssistantController *)self->_assistantController setWebpageIdentifier:v22];
+    uUIDString = [(NSUUID *)self->_biomeWebpageIdentifier UUIDString];
+    [(WBSBrowsingAssistantController *)self->_assistantController setWebpageIdentifier:uUIDString];
 
-    v23 = [(NSUUID *)self->_biomeWebpageIdentifier UUIDString];
-    [(SFNavigationBarItem *)self->_navigationBarItem setWebpageIdentifier:v23];
+    uUIDString2 = [(NSUUID *)self->_biomeWebpageIdentifier UUIDString];
+    [(SFNavigationBarItem *)self->_navigationBarItem setWebpageIdentifier:uUIDString2];
   }
 
-  if (v8)
+  if (isReaderAvailable)
   {
     [(WBSBrowsingAssistantController *)self->_assistantController didFindLocalContentWithOptions:32 forURL:v12];
   }
@@ -18321,16 +18321,16 @@ LABEL_28:
   [(WBSBrowsingAssistantController *)self->_assistantController setCachedReaderArticleTitle:0];
   if (self->_active)
   {
-    v24 = [(TabDocument *)self URLForPerSitePreferences];
-    v25 = [v24 safari_userVisibleHostWithoutWWWSubdomain];
+    uRLForPerSitePreferences = [(TabDocument *)self URLForPerSitePreferences];
+    safari_userVisibleHostWithoutWWWSubdomain = [uRLForPerSitePreferences safari_userVisibleHostWithoutWWWSubdomain];
 
-    if (![v25 length] || a5 == 1 && self->_lastReaderDeactivationMode == 1)
+    if (![safari_userVisibleHostWithoutWWWSubdomain length] || to == 1 && self->_lastReaderDeactivationMode == 1)
     {
-      v26 = [(TabDocument *)self navigationBarItem];
-      [v26 setShowsReaderButton:v8 showsAvailabilityText:v8];
+      navigationBarItem = [(TabDocument *)self navigationBarItem];
+      [navigationBarItem setShowsReaderButton:isReaderAvailable showsAvailabilityText:isReaderAvailable];
 
       v27 = objc_loadWeakRetained(&self->_delegate);
-      [v27 tabDocument:self didDetectReaderAvailability:v8];
+      [v27 tabDocument:self didDetectReaderAvailability:isReaderAvailable];
     }
 
     else
@@ -18341,11 +18341,11 @@ LABEL_28:
       aBlock[2] = __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___block_invoke;
       aBlock[3] = &unk_2781DA8E0;
       objc_copyWeak(&v32, &location);
-      v33 = v8;
+      v33 = isReaderAvailable;
       v28 = _Block_copy(aBlock);
-      v29 = [(TabDocument *)self perSitePreferencesVendor];
-      v30 = [v29 automaticReaderActivationManager];
-      [v30 getAutomaticReaderEnabledForDomain:v25 usingBlock:v28];
+      perSitePreferencesVendor = [(TabDocument *)self perSitePreferencesVendor];
+      automaticReaderActivationManager = [perSitePreferencesVendor automaticReaderActivationManager];
+      [automaticReaderActivationManager getAutomaticReaderEnabledForDomain:safari_userVisibleHostWithoutWWWSubdomain usingBlock:v28];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(&location);
@@ -18410,11 +18410,11 @@ void __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___b
   }
 }
 
-- (void)readerController:(id)a3 didDeactivateReaderWithMode:(unint64_t)a4
+- (void)readerController:(id)controller didDeactivateReaderWithMode:(unint64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v6 = ![(TabDocument *)self shouldActivateReaderWhenAvailable];
-  if (a4 != 1)
+  if (mode != 1)
   {
     LOBYTE(v6) = 1;
   }
@@ -18425,21 +18425,21 @@ void __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___b
   }
 
   [WeakRetained setReaderViewStale:0];
-  v7 = [WeakRetained tabController];
-  [v7 saveTabDocumentUserActivitySoon:self];
+  tabController = [WeakRetained tabController];
+  [tabController saveTabDocumentUserActivitySoon:self];
 
-  v8 = [MEMORY[0x277D499B8] sharedLogger];
-  [v8 reportTabUpdatedWithUpdateType:10];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] reportTabUpdatedWithUpdateType:10];
 
-  self->_lastReaderDeactivationMode = a4;
+  self->_lastReaderDeactivationMode = mode;
 }
 
-- (void)readerController:(id)a3 didClickLinkInReaderWithRequest:(id)a4
+- (void)readerController:(id)controller didClickLinkInReaderWithRequest:(id)request
 {
-  v12 = a4;
-  v5 = [v12 URL];
-  v6 = [MEMORY[0x277D28F40] builder];
-  v7 = [v6 navigationIntentWithURL:v5];
+  requestCopy = request;
+  v5 = [requestCopy URL];
+  builder = [MEMORY[0x277D28F40] builder];
+  v7 = [builder navigationIntentWithURL:v5];
 
   if ([v7 policy])
   {
@@ -18455,49 +18455,49 @@ void __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___b
       [WeakRetained hideReaderForTabDocument:self animated:1 deactivationMode:0];
     }
 
-    v10 = [v12 URL];
+    v10 = [requestCopy URL];
     v11 = [(TabDocument *)self loadURL:v10 userDriven:1];
   }
 }
 
-- (void)readerController:(id)a3 didClickLinkRequestingNewWindowInReaderWithRequest:(id)a4
+- (void)readerController:(id)controller didClickLinkRequestingNewWindowInReaderWithRequest:(id)request
 {
-  v10 = a4;
-  v5 = [v10 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   v6 = [(TabDocument *)self resultOfLoadingURL:v5];
   if ([v6 type] == 3)
   {
-    v7 = [(TabDocument *)self loadRequest:v10 userDriven:1];
+    v7 = [(TabDocument *)self loadRequest:requestCopy userDriven:1];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D28F40] builder];
-    [v8 setPrefersOpenInNewTab:1];
-    [v8 setPreferredTabOrder:1];
-    v9 = [v8 navigationIntentWithURL:v5];
+    builder = [MEMORY[0x277D28F40] builder];
+    [builder setPrefersOpenInNewTab:1];
+    [builder setPreferredTabOrder:1];
+    v9 = [builder navigationIntentWithURL:v5];
     [(TabDocument *)self dispatchNavigationIntent:v9];
   }
 }
 
-- (void)readerController:(id)a3 didTwoFingerTapLinkInReaderWithContext:(id)a4
+- (void)readerController:(id)controller didTwoFingerTapLinkInReaderWithContext:(id)context
 {
-  v9 = a3;
-  v6 = a4;
-  if (![(TabDocument *)self _handleTwoFingerTapOnLinkWithContext:v6])
+  controllerCopy = controller;
+  contextCopy = context;
+  if (![(TabDocument *)self _handleTwoFingerTapOnLinkWithContext:contextCopy])
   {
-    v7 = [v6 navigationAction];
-    v8 = [v7 request];
-    [(TabDocument *)self readerController:v9 didClickLinkInReaderWithRequest:v8];
+    navigationAction = [contextCopy navigationAction];
+    request = [navigationAction request];
+    [(TabDocument *)self readerController:controllerCopy didClickLinkInReaderWithRequest:request];
   }
 }
 
-- (void)readerController:(id)a3 didExtractArticleText:(id)a4 withMetadata:(id)a5
+- (void)readerController:(id)controller didExtractArticleText:(id)text withMetadata:(id)metadata
 {
-  v7 = a5;
-  v8 = a4;
+  metadataCopy = metadata;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self didExtractArticleText:v8 withMetadata:v7];
+  [WeakRetained tabDocument:self didExtractArticleText:textCopy withMetadata:metadataCopy];
 
   if (self->_donateTextTimer)
   {
@@ -18506,20 +18506,20 @@ void __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___b
   }
 }
 
-- (void)filteredArticleTextDidBecomeReadyForReaderController:(id)a3
+- (void)filteredArticleTextDidBecomeReadyForReaderController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained filteredArticleTextDidBecomeReadyInTabDocument:self];
 }
 
-- (void)_presentViewControllerAnimatedForSummarizationContent:(uint64_t)a1
+- (void)_presentViewControllerAnimatedForSummarizationContent:(uint64_t)content
 {
   v3 = a2;
-  if (a1)
+  if (content)
   {
     v5 = v3;
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    [WeakRetained tabDocument:a1 presentViewControllerAnimated:v5];
+    WeakRetained = objc_loadWeakRetained((content + 1248));
+    [WeakRetained tabDocument:content presentViewControllerAnimated:v5];
 
     v3 = v5;
   }
@@ -18527,23 +18527,23 @@ void __69__TabDocument_readerController_didDetermineReaderAvailability_dueTo___b
 
 - (void)_didOKSummarizationAlertToReset
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    [WeakRetained tabDocumentDidOKSummarizationAlertToReset:a1];
+    WeakRetained = objc_loadWeakRetained((self + 1248));
+    [WeakRetained tabDocumentDidOKSummarizationAlertToReset:self];
   }
 }
 
 - (void)_didCancelSummarizationAlertToReset
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 1248));
-    [WeakRetained tabDocumentDidCancelSummarization:a1];
+    WeakRetained = objc_loadWeakRetained((self + 1248));
+    [WeakRetained tabDocumentDidCancelSummarization:self];
   }
 }
 
-- (void)didFindSummarizationRestrictionsForReaderController:(id)a3
+- (void)didFindSummarizationRestrictionsForReaderController:(id)controller
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -18573,7 +18573,7 @@ void __67__TabDocument_didFindSummarizationRestrictionsForReaderController___blo
   [(TabDocument *)*(a1 + 32) _presentViewControllerAnimatedForSummarizationContent:v5];
 }
 
-- (void)readerController:(id)a3 didEncounterErrorForSummarization:(id)a4
+- (void)readerController:(id)controller didEncounterErrorForSummarization:(id)summarization
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -18603,13 +18603,13 @@ void __66__TabDocument_readerController_didEncounterErrorForSummarization___bloc
   [(TabDocument *)*(a1 + 32) _presentViewControllerAnimatedForSummarizationContent:v5];
 }
 
-- (void)readerController:(id)a3 didFinishOnDemandSummarization:(id)a4
+- (void)readerController:(id)controller didFinishOnDemandSummarization:(id)summarization
 {
-  v5 = a4;
-  if ([v5 isSafe])
+  summarizationCopy = summarization;
+  if ([summarizationCopy isSafe])
   {
-    v6 = [v5 summary];
-    [(TabDocument *)self _setReaderArticleSummary:v6];
+    summary = [summarizationCopy summary];
+    [(TabDocument *)self _setReaderArticleSummary:summary];
   }
 
   else
@@ -18619,24 +18619,24 @@ void __66__TabDocument_readerController_didEncounterErrorForSummarization___bloc
     v7[2] = __63__TabDocument_readerController_didFinishOnDemandSummarization___block_invoke;
     v7[3] = &unk_2781D61F8;
     v7[4] = self;
-    v8 = v5;
+    v8 = summarizationCopy;
     dispatch_async(MEMORY[0x277D85CD0], v7);
   }
 }
 
-- (void)_setReaderArticleSummary:(uint64_t)a1
+- (void)_setReaderArticleSummary:(uint64_t)summary
 {
   v3 = a2;
-  if (a1)
+  if (summary)
   {
-    v4 = *(a1 + 296);
+    v4 = *(summary + 296);
     v5 = _WBSLocalizedString();
     v6 = _WBSLocalizedString();
-    v7 = [*(a1 + 1088) tableOfContentsTitles];
-    v8 = [*(a1 + 1088) tableOfContentsPaths];
-    v9 = [*(a1 + 1088) tableOfContentsTrailingTexts];
-    LODWORD(v11) = [*(a1 + 1088) tableOfContentsType];
-    [v4 setArticleSummary:v3 withSummaryHeader:v5 tableOfContentsHeader:v6 readerURLString:&stru_2827BF158 titles:v7 paths:v8 trailingText:v9 tableOfContentsType:v11 attribution:0];
+    tableOfContentsTitles = [*(summary + 1088) tableOfContentsTitles];
+    tableOfContentsPaths = [*(summary + 1088) tableOfContentsPaths];
+    tableOfContentsTrailingTexts = [*(summary + 1088) tableOfContentsTrailingTexts];
+    LODWORD(v11) = [*(summary + 1088) tableOfContentsType];
+    [v4 setArticleSummary:v3 withSummaryHeader:v5 tableOfContentsHeader:v6 readerURLString:&stru_2827BF158 titles:tableOfContentsTitles paths:tableOfContentsPaths trailingText:tableOfContentsTrailingTexts tableOfContentsType:v11 attribution:0];
 
     v10 = WBS_LOG_CHANNEL_PREFIXBrowsingAssistant();
     [TabDocument _setReaderArticleSummary:v10];
@@ -18719,17 +18719,17 @@ void __63__TabDocument_readerController_didFinishOnDemandSummarization___block_i
   }
 
   v3 = [(TabDocument *)self URL];
-  v4 = [v3 isFileURL];
+  isFileURL = [v3 isFileURL];
 
-  return v4;
+  return isFileURL;
 }
 
 - (id)readerPageArchiveURL
 {
   if ([(TabDocument *)self readingListBookmarkID])
   {
-    v3 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    v4 = [v3 bookmarkWithID:{-[TabDocument readingListBookmarkID](self, "readingListBookmarkID")}];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    v4 = [mainBookmarkCollection bookmarkWithID:{-[TabDocument readingListBookmarkID](self, "readingListBookmarkID")}];
 
     v8 = 0;
     v5 = [v4 webarchivePathInReaderForm:1 fileExists:&v8];
@@ -18769,90 +18769,90 @@ void __63__TabDocument_readerController_didFinishOnDemandSummarization___block_i
   [(TabDocument *)self didActivateReader];
 }
 
-- (void)_createBrowserReaderViewIfNeeded:(uint64_t)a1
+- (void)_createBrowserReaderViewIfNeeded:(uint64_t)needed
 {
   v3 = a2;
-  if (a1 && !*(a1 + 1432))
+  if (needed && !*(needed + 1432))
   {
     v29 = v3;
     v4 = objc_alloc_init(MEMORY[0x277CE3858]);
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v6 = [WeakRetained processPool];
-    [v4 setProcessPool:v6];
+    WeakRetained = objc_loadWeakRetained((needed + 992));
+    processPool = [WeakRetained processPool];
+    [v4 setProcessPool:processPool];
 
-    [v4 _setRelatedWebView:*(a1 + 1064)];
-    [v4 _setAlternateWebViewForNavigationGestures:*(a1 + 1064)];
+    [v4 _setRelatedWebView:*(needed + 1064)];
+    [v4 _setAlternateWebViewForNavigationGestures:*(needed + 1064)];
     [v4 _setGroupIdentifier:*MEMORY[0x277CDB9E8]];
-    v7 = [*(a1 + 1064) configuration];
-    v8 = [v7 websiteDataStore];
-    [v4 setWebsiteDataStore:v8];
+    configuration = [*(needed + 1064) configuration];
+    websiteDataStore = [configuration websiteDataStore];
+    [v4 setWebsiteDataStore:websiteDataStore];
 
     v9 = _SFApplicationNameForUserAgent();
     [v4 setApplicationNameForUserAgent:v9];
 
     [v4 _setNeedsStorageAccessFromFileURLsQuirk:0];
-    v10 = [MEMORY[0x277CE3830] safari_readerUserContentController];
-    [v4 setUserContentController:v10];
+    safari_readerUserContentController = [MEMORY[0x277CE3830] safari_readerUserContentController];
+    [v4 setUserContentController:safari_readerUserContentController];
 
     v11 = objc_alloc(MEMORY[0x277CDB918]);
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v13 = [v11 initWithFrame:v4 configuration:?];
-    v14 = *(a1 + 1432);
-    *(a1 + 1432) = v13;
+    v14 = *(needed + 1432);
+    *(needed + 1432) = v13;
 
     v15 = webViewToTabDocumentMap();
-    [v15 setObject:a1 forKey:*(a1 + 1432)];
+    [v15 setObject:needed forKey:*(needed + 1432)];
 
-    [*(a1 + 224) setReaderWebView:*(a1 + 1432)];
-    [*(a1 + 224) setWebView:*(a1 + 1064)];
+    [*(needed + 224) setReaderWebView:*(needed + 1432)];
+    [*(needed + 224) setWebView:*(needed + 1064)];
     v16 = _SFCustomUserAgentStringIfNeeded();
     if (v16)
     {
-      [*(a1 + 1432) _setCustomUserAgent:v16];
+      [*(needed + 1432) _setCustomUserAgent:v16];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [*(a1 + 1432) _grantAccessToAssetServices];
+      [*(needed + 1432) _grantAccessToAssetServices];
     }
 
-    [*(a1 + 1432) _setBackgroundExtendsBeyondPage:1];
-    [*(a1 + 1432) setNavigationDelegate:*(a1 + 296)];
-    [*(a1 + 1432) setUIDelegate:*(a1 + 296)];
-    [*(a1 + 1432) setAllowsLinkPreview:1];
-    [*(a1 + 1432) _setFindInteractionEnabled:1];
-    [*(a1 + 1432) setAccessibilityIdentifier:@"ReaderView"];
-    [*(a1 + 1432) setInspectable:{objc_msgSend(a1, "allowsRemoteInspection")}];
-    [*(a1 + 1432) addObserver:a1 forKeyPath:@"_isPlayingAudio" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 1432) addObserver:a1 forKeyPath:@"underPageBackgroundColor" options:0 context:kTabDocumentObserverContext];
-    [*(a1 + 296) didCreateReaderWebView:*(a1 + 1432)];
-    v17 = *(a1 + 296);
-    v18 = *(a1 + 1192);
-    v19 = [v17 configurationManager];
-    v20 = [v19 configurationToSendToWebPage];
-    [v17 setReaderInitialTopScrollOffset:v18 configuration:v20 isViewingArchive:objc_msgSend(a1 scrollOffsetDictionary:{"isShowingReadingListArchive"), *(a1 + 184)}];
+    [*(needed + 1432) _setBackgroundExtendsBeyondPage:1];
+    [*(needed + 1432) setNavigationDelegate:*(needed + 296)];
+    [*(needed + 1432) setUIDelegate:*(needed + 296)];
+    [*(needed + 1432) setAllowsLinkPreview:1];
+    [*(needed + 1432) _setFindInteractionEnabled:1];
+    [*(needed + 1432) setAccessibilityIdentifier:@"ReaderView"];
+    [*(needed + 1432) setInspectable:{objc_msgSend(needed, "allowsRemoteInspection")}];
+    [*(needed + 1432) addObserver:needed forKeyPath:@"_isPlayingAudio" options:0 context:kTabDocumentObserverContext];
+    [*(needed + 1432) addObserver:needed forKeyPath:@"underPageBackgroundColor" options:0 context:kTabDocumentObserverContext];
+    [*(needed + 296) didCreateReaderWebView:*(needed + 1432)];
+    v17 = *(needed + 296);
+    v18 = *(needed + 1192);
+    configurationManager = [v17 configurationManager];
+    configurationToSendToWebPage = [configurationManager configurationToSendToWebPage];
+    [v17 setReaderInitialTopScrollOffset:v18 configuration:configurationToSendToWebPage isViewingArchive:objc_msgSend(needed scrollOffsetDictionary:{"isShowingReadingListArchive"), *(needed + 184)}];
 
-    [a1 clearReaderScrollInformation];
-    v21 = [*(a1 + 296) readerURL];
-    if ([v21 sf_isOfflineReadingListURL])
+    [needed clearReaderScrollInformation];
+    readerURL = [*(needed + 296) readerURL];
+    if ([readerURL sf_isOfflineReadingListURL])
     {
-      v22 = *(a1 + 1432);
+      v22 = *(needed + 1432);
       v23 = MEMORY[0x277CBEBC0];
-      v24 = [MEMORY[0x277D7B5A8] readingListArchivesDirectoryPath];
-      v25 = [v23 fileURLWithPath:v24];
-      v26 = [v22 loadFileURL:v21 allowingReadAccessToURL:v25];
+      readingListArchivesDirectoryPath = [MEMORY[0x277D7B5A8] readingListArchivesDirectoryPath];
+      v25 = [v23 fileURLWithPath:readingListArchivesDirectoryPath];
+      v26 = [v22 loadFileURL:readerURL allowingReadAccessToURL:v25];
     }
 
     else
     {
-      v27 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:v21];
-      v24 = [(TabDocument *)a1 _requestBySettingAdvancedPrivacyProtectionsFlag:v27];
+      v27 = [MEMORY[0x277CBABA0] safari_nonAppInitiatedRequestWithURL:readerURL];
+      readingListArchivesDirectoryPath = [(TabDocument *)needed _requestBySettingAdvancedPrivacyProtectionsFlag:v27];
 
-      v28 = [*(a1 + 1432) loadRequest:v24];
+      v28 = [*(needed + 1432) loadRequest:readingListArchivesDirectoryPath];
     }
 
-    [(UIResponder *)*(a1 + 1432) safari_becomeFirstResponderIfNeeded];
+    [(UIResponder *)*(needed + 1432) safari_becomeFirstResponderIfNeeded];
     v3 = v29;
   }
 }
@@ -18870,23 +18870,23 @@ void __41__TabDocument_collectReadingListItemInfo__block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)readerURLForReaderController:(id)a3
+- (id)readerURLForReaderController:(id)controller
 {
   if ([(TabDocument *)self isShowingReadingListArchive])
   {
-    v4 = [(TabDocument *)self readerPageArchiveURL];
+    readerPageArchiveURL = [(TabDocument *)self readerPageArchiveURL];
   }
 
   else
   {
-    v5 = [(TabDocument *)self urlForSharing];
-    v4 = [v5 safari_URLByReplacingSchemeWithString:*MEMORY[0x277CDB9F0]];
+    urlForSharing = [(TabDocument *)self urlForSharing];
+    readerPageArchiveURL = [urlForSharing safari_URLByReplacingSchemeWithString:*MEMORY[0x277CDB9F0]];
   }
 
-  return v4;
+  return readerPageArchiveURL;
 }
 
-- (void)createReaderWebViewForReaderController:(id)a3
+- (void)createReaderWebViewForReaderController:(id)controller
 {
   [(TabDocument *)self prepareToUseReader];
 
@@ -18908,19 +18908,19 @@ void __41__TabDocument_collectReadingListItemInfo__block_invoke(uint64_t a1, voi
   return permissionDialogThrottler;
 }
 
-- (void)fetchMetadataForBookmark:(id)a3 completion:(id)a4
+- (void)fetchMetadataForBookmark:(id)bookmark completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke;
   block[3] = &unk_2781DB3A0;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = bookmarkCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = bookmarkCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -18973,12 +18973,12 @@ void __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke_2(uint
 
 - (void)_terminateWebProcessThenDoUnresponsiveWebProcessBlock
 {
-  *a1 = 134217984;
-  *(a1 + 4) = a2;
-  OUTLINED_FUNCTION_0_2(&dword_215819000, a2, a3, "Killed an unresponsive web process shared by %lu tabs", a1);
+  *self = 134217984;
+  *(self + 4) = a2;
+  OUTLINED_FUNCTION_0_2(&dword_215819000, a2, a3, "Killed an unresponsive web process shared by %lu tabs", self);
 }
 
-- (void)_unresponsiveWebProcessTimerFired:(id)a3
+- (void)_unresponsiveWebProcessTimerFired:(id)fired
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WBS_LOG_CHANNEL_PREFIXPageLoading();
@@ -18986,11 +18986,11 @@ void __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke_2(uint
   {
     webView = self->_webView;
     v7 = 134218496;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
     v10 = webView;
     v11 = 1024;
-    v12 = [(_SFWebView *)webView _webProcessIsResponsive];
+    _webProcessIsResponsive = [(_SFWebView *)webView _webProcessIsResponsive];
     _os_log_impl(&dword_215819000, v4, OS_LOG_TYPE_DEFAULT, "TabDocument %p: unresponsive web process timer fired. webview=%p, responsive=%d", &v7, 0x1Cu);
   }
 
@@ -19008,22 +19008,22 @@ void __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke_2(uint
 - (id)_tabDocumentsSharingWebProcess
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 1064);
+    v1 = *(self + 1064);
     if (v1)
     {
-      v2 = [v1 _webProcessIdentifier];
-      v13 = [MEMORY[0x277CBEB18] array];
+      _webProcessIdentifier = [v1 _webProcessIdentifier];
+      array = [MEMORY[0x277CBEB18] array];
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
       v3 = +[Application sharedApplication];
-      v4 = [v3 browserControllers];
+      browserControllers = [v3 browserControllers];
 
-      obj = v4;
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      obj = browserControllers;
+      v5 = [browserControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         v6 = *v17;
@@ -19036,18 +19036,18 @@ void __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke_2(uint
               objc_enumerationMutation(obj);
             }
 
-            v8 = [*(*(&v16 + 1) + 8 * i) tabController];
-            v9 = [v8 allTabDocuments];
+            tabController = [*(*(&v16 + 1) + 8 * i) tabController];
+            allTabDocuments = [tabController allTabDocuments];
             v14[0] = MEMORY[0x277D85DD0];
             v14[1] = 3221225472;
             v14[2] = __45__TabDocument__tabDocumentsSharingWebProcess__block_invoke;
             v14[3] = &__block_descriptor_36_e21_B16__0__TabDocument_8l;
-            v15 = v2;
-            v10 = [v9 safari_filterObjectsUsingBlock:v14];
-            [v13 addObjectsFromArray:v10];
+            v15 = _webProcessIdentifier;
+            v10 = [allTabDocuments safari_filterObjectsUsingBlock:v14];
+            [array addObjectsFromArray:v10];
           }
 
-          v4 = obj;
+          browserControllers = obj;
           v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
@@ -19057,16 +19057,16 @@ void __51__TabDocument_fetchMetadataForBookmark_completion___block_invoke_2(uint
 
     else
     {
-      v13 = MEMORY[0x277CBEBF8];
+      array = MEMORY[0x277CBEBF8];
     }
   }
 
   else
   {
-    v13 = 0;
+    array = 0;
   }
 
-  return v13;
+  return array;
 }
 
 BOOL __45__TabDocument__tabDocumentsSharingWebProcess__block_invoke(uint64_t a1, void *a2)
@@ -19077,24 +19077,24 @@ BOOL __45__TabDocument__tabDocumentsSharingWebProcess__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (uint64_t)_shouldUpdateUsageTrackingWhenTransitioningToState:(uint64_t)a1
+- (uint64_t)_shouldUpdateUsageTrackingWhenTransitioningToState:(uint64_t)state
 {
-  v3 = a1;
-  if (a1)
+  stateCopy = state;
+  if (state)
   {
-    v5 = [MEMORY[0x277D7B590] sharedWebFilterSettings];
-    v6 = [v3 expectedOrCurrentURL];
-    if ([v3 isPrivateBrowsingEnabled] & 1) != 0 || (objc_msgSend(v3, "isShowingErrorPage"))
+    mEMORY[0x277D7B590] = [MEMORY[0x277D7B590] sharedWebFilterSettings];
+    expectedOrCurrentURL = [stateCopy expectedOrCurrentURL];
+    if ([stateCopy isPrivateBrowsingEnabled] & 1) != 0 || (objc_msgSend(stateCopy, "isShowingErrorPage"))
     {
-      v3 = 0;
+      stateCopy = 0;
 LABEL_20:
 
-      return v3;
+      return stateCopy;
     }
 
-    WeakRetained = objc_loadWeakRetained((v3 + 1248));
-    v8 = [WeakRetained tabDocumentIsBackgroundPreloading:v3];
-    if (v6)
+    WeakRetained = objc_loadWeakRetained((stateCopy + 1248));
+    v8 = [WeakRetained tabDocumentIsBackgroundPreloading:stateCopy];
+    if (expectedOrCurrentURL)
     {
       v9 = v8;
     }
@@ -19106,22 +19106,22 @@ LABEL_20:
 
     if (v9)
     {
-      v3 = 0;
+      stateCopy = 0;
     }
 
     else
     {
-      v10 = [v5 isWebFilterEnabled];
-      if (v10 && ([v5 userSettings], v2 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v2, "contentFilterListsAllowURL:", v6)))
+      isWebFilterEnabled = [mEMORY[0x277D7B590] isWebFilterEnabled];
+      if (isWebFilterEnabled && ([mEMORY[0x277D7B590] userSettings], v2 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v2, "contentFilterListsAllowURL:", expectedOrCurrentURL)))
       {
-        v3 = 0;
+        stateCopy = 0;
       }
 
       else
       {
-        if (*(v3 + 232) == a2)
+        if (*(stateCopy + 232) == a2)
         {
-          v11 = [v6 isEqual:*(v3 + 240)];
+          v11 = [expectedOrCurrentURL isEqual:*(stateCopy + 240)];
         }
 
         else
@@ -19129,8 +19129,8 @@ LABEL_20:
           v11 = 0;
         }
 
-        v3 = v11 ^ 1u;
-        if (!v10)
+        stateCopy = v11 ^ 1u;
+        if (!isWebFilterEnabled)
         {
           goto LABEL_19;
         }
@@ -19142,87 +19142,87 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  return v3;
+  return stateCopy;
 }
 
-- (uint64_t)_usageStateIfTabDocumentIsCurrent:(uint64_t)a1
+- (uint64_t)_usageStateIfTabDocumentIsCurrent:(uint64_t)current
 {
-  v2 = a1;
-  if (a1)
+  currentCopy = current;
+  if (current)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
+    WeakRetained = objc_loadWeakRetained((current + 992));
     v5 = WeakRetained;
     if (a2 && ([WeakRetained isSuspendedOrSuspending] & 1) == 0)
     {
-      v2 = 2;
+      currentCopy = 2;
     }
 
     else
     {
-      v6 = [v5 tabDocumentPlayingPIPVideo];
-      v2 = 2 * (v6 == v2);
+      tabDocumentPlayingPIPVideo = [v5 tabDocumentPlayingPIPVideo];
+      currentCopy = 2 * (tabDocumentPlayingPIPVideo == currentCopy);
     }
   }
 
-  return v2;
+  return currentCopy;
 }
 
-- (void)_updateUsageTrackingInformationIfNecessaryToState:(uint64_t)a1
+- (void)_updateUsageTrackingInformationIfNecessaryToState:(uint64_t)state
 {
-  if (a1 && [(TabDocument *)a1 _shouldUpdateUsageTrackingWhenTransitioningToState:a2])
+  if (state && [(TabDocument *)state _shouldUpdateUsageTrackingWhenTransitioningToState:a2])
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    v4 = [a1 expectedOrCurrentURL];
-    v5 = [(TabDocument *)a1 profileIdentifier];
-    if (*(a1 + 240) && ([v4 isEqual:?] & 1) == 0)
+    WeakRetained = objc_loadWeakRetained((state + 992));
+    expectedOrCurrentURL = [state expectedOrCurrentURL];
+    profileIdentifier = [(TabDocument *)state profileIdentifier];
+    if (*(state + 240) && ([expectedOrCurrentURL isEqual:?] & 1) == 0)
     {
-      v6 = [WeakRetained digitalHealthManager];
-      v7 = *(a1 + 240);
-      v8 = [a1 sourceApplicationBundleIdentifier];
-      [v6 updateUsageTrackingForURL:v7 withBundleIdentifier:v8 profileIdentifier:v5 toState:0];
+      digitalHealthManager = [WeakRetained digitalHealthManager];
+      v7 = *(state + 240);
+      sourceApplicationBundleIdentifier = [state sourceApplicationBundleIdentifier];
+      [digitalHealthManager updateUsageTrackingForURL:v7 withBundleIdentifier:sourceApplicationBundleIdentifier profileIdentifier:profileIdentifier toState:0];
     }
 
-    *(a1 + 232) = a2;
-    objc_storeStrong((a1 + 240), v4);
-    v9 = [WeakRetained digitalHealthManager];
-    v10 = [a1 sourceApplicationBundleIdentifier];
-    [v9 updateUsageTrackingForURL:v4 withBundleIdentifier:v10 profileIdentifier:v5 toState:a2];
+    *(state + 232) = a2;
+    objc_storeStrong((state + 240), expectedOrCurrentURL);
+    digitalHealthManager2 = [WeakRetained digitalHealthManager];
+    sourceApplicationBundleIdentifier2 = [state sourceApplicationBundleIdentifier];
+    [digitalHealthManager2 updateUsageTrackingForURL:expectedOrCurrentURL withBundleIdentifier:sourceApplicationBundleIdentifier2 profileIdentifier:profileIdentifier toState:a2];
   }
 }
 
-- (void)updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:(BOOL)a3
+- (void)updateUsageTrackingInformationIfNecessaryGivenDocumentIsCurrent:(BOOL)current
 {
-  v4 = [(TabDocument *)self _usageStateIfTabDocumentIsCurrent:a3];
+  v4 = [(TabDocument *)self _usageStateIfTabDocumentIsCurrent:current];
 
   [(TabDocument *)self _updateUsageTrackingInformationIfNecessaryToState:v4];
 }
 
 - (void)updateUsageTrackingInformationAfterLinkPreviewDismissal
 {
-  v3 = [(TabDocument *)self browserController];
-  v4 = [v3 tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 isEqual:self];
+  browserController = [(TabDocument *)self browserController];
+  tabController = [browserController tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  v6 = [activeTabDocument isEqual:self];
 
   v7 = [(TabDocument *)self _usageStateIfTabDocumentIsCurrent:v6];
 
   [(TabDocument *)self _updateUsageTrackingInformationIfNecessaryToState:v7];
 }
 
-- (void)_webViewWillEnterElementFullscreen:(id)a3
+- (void)_webViewWillEnterElementFullscreen:(id)fullscreen
 {
   [(SFPinnableBanner *)self->_appBanner setHidden:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained tabDocumentDidUpdateThemeColor:self];
 }
 
-- (void)_webViewDidEnterElementFullscreen:(id)a3
+- (void)_webViewDidEnterElementFullscreen:(id)fullscreen
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained updatePullToRefreshIsEnabled];
 }
 
-- (void)_webViewWillExitElementFullscreen:(id)a3
+- (void)_webViewWillExitElementFullscreen:(id)fullscreen
 {
   [(SFPinnableBanner *)self->_appBanner setHidden:0];
   self->_exitingElementFullscreen = 1;
@@ -19231,12 +19231,12 @@ LABEL_19:
   [(TabDocumentView *)cachedView setWebViewGeometryNeedsUpdate];
 }
 
-- (void)_webViewDidExitElementFullscreen:(id)a3
+- (void)_webViewDidExitElementFullscreen:(id)fullscreen
 {
   self->_exitingElementFullscreen = 0;
   [(TabDocumentView *)self->_cachedView setWebViewGeometryNeedsUpdate];
-  v4 = [(TabDocument *)self browserController];
-  [v4 restoreInterfaceAfterElementFullscreen];
+  browserController = [(TabDocument *)self browserController];
+  [browserController restoreInterfaceAfterElementFullscreen];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained updatePullToRefreshIsEnabled];
@@ -19245,49 +19245,49 @@ LABEL_19:
   [v6 tabDocumentDidUpdateThemeColor:self];
 }
 
-- (void)updateAncestryWithParentTab:(id)a3
+- (void)updateAncestryWithParentTab:(id)tab
 {
-  v11 = a3;
-  v4 = [v11 uuid];
-  if (v4)
+  tabCopy = tab;
+  uuid = [tabCopy uuid];
+  if (uuid)
   {
-    v5 = [v11 ancestorUUIDs];
-    v6 = v5;
+    ancestorUUIDs = [tabCopy ancestorUUIDs];
+    v6 = ancestorUUIDs;
     v7 = MEMORY[0x277CBEBF8];
-    if (v5)
+    if (ancestorUUIDs)
     {
-      v7 = v5;
+      v7 = ancestorUUIDs;
     }
 
     v8 = v7;
 
-    v9 = [v8 arrayByAddingObject:v4];
+    v9 = [v8 arrayByAddingObject:uuid];
     ancestorUUIDs = self->_ancestorUUIDs;
     self->_ancestorUUIDs = v9;
   }
 }
 
-- (void)updateAncestryToChildOfTopLevelAncestorRelatedTab:(id)a3
+- (void)updateAncestryToChildOfTopLevelAncestorRelatedTab:(id)tab
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  tabCopy = tab;
+  v5 = tabCopy;
+  if (tabCopy)
   {
-    v6 = [v4 ancestorUUIDs];
-    v7 = [v6 firstObject];
-    v8 = v7;
-    if (v7)
+    ancestorUUIDs = [tabCopy ancestorUUIDs];
+    firstObject = [ancestorUUIDs firstObject];
+    v8 = firstObject;
+    if (firstObject)
     {
-      v9 = v7;
+      uuid = firstObject;
     }
 
     else
     {
-      v9 = [v5 uuid];
+      uuid = [v5 uuid];
     }
 
-    v10 = v9;
+    v10 = uuid;
 
     v13[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
@@ -19298,10 +19298,10 @@ LABEL_19:
 
 - (NSString)identifier
 {
-  v2 = [(TabDocument *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(TabDocument *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
@@ -19313,28 +19313,28 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)windowIdentifier
 {
-  v2 = [(TabDocument *)self ownerUUID];
-  v3 = [v2 UUIDString];
+  ownerUUID = [(TabDocument *)self ownerUUID];
+  uUIDString = [ownerUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  if (self->_pinned != a3)
+  if (self->_pinned != pinned)
   {
-    v4 = a3;
-    self->_pinned = a3;
+    pinnedCopy = pinned;
+    self->_pinned = pinned;
     [(TabBarItem *)self->_tabBarItem setPinned:?];
-    [(UnifiedTabBarItem *)self->_unifiedTabBarItem setPinned:v4];
-    [(TabDocumentCollectionItem *)self->_tabCollectionItem setPinned:v4];
-    if (v4)
+    [(UnifiedTabBarItem *)self->_unifiedTabBarItem setPinned:pinnedCopy];
+    [(TabDocumentCollectionItem *)self->_tabCollectionItem setPinned:pinnedCopy];
+    if (pinnedCopy)
     {
       v6 = [(TabDocument *)self URL];
       pinnedURL = self->_pinnedURL;
       self->_pinnedURL = v6;
 
-      v8 = [(TabDocument *)self title];
+      title = [(TabDocument *)self title];
     }
 
     else
@@ -19342,11 +19342,11 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
       v9 = self->_pinnedURL;
       self->_pinnedURL = 0;
 
-      v8 = 0;
+      title = 0;
     }
 
     pinnedTitle = self->_pinnedTitle;
-    self->_pinnedTitle = v8;
+    self->_pinnedTitle = title;
 
     [(TabDocument *)self _notifyDidUpdateTabCollectionItem];
 
@@ -19354,10 +19354,10 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (BOOL)shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:(id)a3
+- (BOOL)shouldSpawnNewTabOnNavigationFromPinnedTabWithDestinationURL:(id)l
 {
-  v4 = a3;
-  if (-[TabDocument isPinned](self, "isPinned") && ([v4 safari_isBlobURL] & 1) == 0)
+  lCopy = l;
+  if (-[TabDocument isPinned](self, "isPinned") && ([lCopy safari_isBlobURL] & 1) == 0)
   {
     if (self->_isBlank)
     {
@@ -19366,15 +19366,15 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v7 = [(TabDocument *)self committedURL];
-      v8 = v7;
-      if (v7)
+      committedURL = [(TabDocument *)self committedURL];
+      v8 = committedURL;
+      if (committedURL)
       {
-        v9 = [v7 host];
-        v10 = [v9 safari_highLevelDomainFromHost];
+        host = [committedURL host];
+        safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
 
-        v11 = [v4 host];
-        v12 = [v11 safari_highLevelDomainFromHost];
+        host2 = [lCopy host];
+        safari_highLevelDomainFromHost2 = [host2 safari_highLevelDomainFromHost];
 
         v5 = WBSIsEqual() ^ 1;
       }
@@ -19394,14 +19394,14 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)setUnread:(BOOL)a3
+- (void)setUnread:(BOOL)unread
 {
-  if (self->_unread != a3)
+  if (self->_unread != unread)
   {
-    v3 = a3;
-    self->_unread = a3;
+    unreadCopy = unread;
+    self->_unread = unread;
     [(TabBarItem *)self->_tabBarItem setUnread:?];
-    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setUnread:v3];
+    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setUnread:unreadCopy];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
     [WeakRetained updateTabOverviewButton];
 
@@ -19412,17 +19412,17 @@ id __37__TabDocument_ancestorTabIdentifiers__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v7 = a3;
+  participantsCopy = participants;
   if (![(NSArray *)self->_shareParticipants isEqualToArray:?])
   {
-    v4 = [v7 copy];
+    v4 = [participantsCopy copy];
     shareParticipants = self->_shareParticipants;
     self->_shareParticipants = v4;
 
-    [(TabBarItem *)self->_tabBarItem setShareParticipants:v7];
-    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setShareParticipants:v7];
+    [(TabBarItem *)self->_tabBarItem setShareParticipants:participantsCopy];
+    [(SFUnifiedTabBarItem *)self->_unifiedTabBarItem setShareParticipants:participantsCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained tabDocumentDidUpdateTabCollectionItem:self];
 
@@ -19458,21 +19458,21 @@ void __57__TabDocument__activeParticipantsDidUpdateInTabWithUUID___block_invoke_
   }
 }
 
-- (void)tabGroupManager:(id)a3 didUpadateActiveParticipants:(id)a4 inTabWithUUID:(id)a5
+- (void)tabGroupManager:(id)manager didUpadateActiveParticipants:(id)participants inTabWithUUID:(id)d
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(WBTab *)self->_tabGroupTab uuid];
-  v9 = [v7 isEqualToString:v8];
+  participantsCopy = participants;
+  dCopy = d;
+  uuid = [(WBTab *)self->_tabGroupTab uuid];
+  v9 = [dCopy isEqualToString:uuid];
 
   if (v9)
   {
-    v10 = [v11 allObjects];
-    [(TabDocument *)self setShareParticipants:v10];
+    allObjects = [participantsCopy allObjects];
+    [(TabDocument *)self setShareParticipants:allObjects];
   }
 }
 
-- (void)translationContextReloadPageInOriginalLanguage:(id)a3
+- (void)translationContextReloadPageInOriginalLanguage:(id)language
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -19482,16 +19482,16 @@ void __57__TabDocument__activeParticipantsDidUpdateInTabWithUUID___block_invoke_
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)translationContext:(id)a3 urlForCurrentPageWithCompletionHandler:(id)a4
+- (void)translationContext:(id)context urlForCurrentPageWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__TabDocument_translationContext_urlForCurrentPageWithCompletionHandler___block_invoke;
   v7[3] = &unk_2781DB410;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -19502,24 +19502,24 @@ void __73__TabDocument_translationContext_urlForCurrentPageWithCompletionHandler
   (*(v1 + 16))(v1);
 }
 
-- (id)safariApplicationVersionForTranslationContext:(id)a3
+- (id)safariApplicationVersionForTranslationContext:(id)context
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 safari_normalizedVersion];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  safari_normalizedVersion = [mainBundle safari_normalizedVersion];
 
-  return v4;
+  return safari_normalizedVersion;
 }
 
-- (void)translationContext:(id)a3 showTranslationErrorAlertWithTitle:(id)a4 message:(id)a5
+- (void)translationContext:(id)context showTranslationErrorAlertWithTitle:(id)title message:(id)message
 {
-  v6 = a5;
+  messageCopy = message;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__TabDocument_translationContext_showTranslationErrorAlertWithTitle_message___block_invoke;
   v8[3] = &unk_2781D61F8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = messageCopy;
+  v7 = messageCopy;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
@@ -19535,63 +19535,63 @@ void __77__TabDocument_translationContext_showTranslationErrorAlertWithTitle_mes
   }
 }
 
-- (void)translationContext:(id)a3 shouldReportProgressInUnifiedField:(BOOL)a4
+- (void)translationContext:(id)context shouldReportProgressInUnifiedField:(BOOL)field
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__TabDocument_translationContext_shouldReportProgressInUnifiedField___block_invoke;
   v4[3] = &unk_2781D6638;
   v4[4] = self;
-  v5 = a4;
+  fieldCopy = field;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (void)_updateMaxVisibleHeightPercentageUserDriven:(id *)a1
+- (void)_updateMaxVisibleHeightPercentageUserDriven:(id *)driven
 {
-  if (a1)
+  if (driven)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 124);
-    v4 = [WeakRetained scene];
-    v5 = [v4 activationState];
+    WeakRetained = objc_loadWeakRetained(driven + 124);
+    scene = [WeakRetained scene];
+    activationState = [scene activationState];
 
-    if (!v5)
+    if (!activationState)
     {
-      v6 = [a1[133] scrollView];
-      [v6 contentSize];
+      scrollView = [driven[133] scrollView];
+      [scrollView contentSize];
       v8 = v7;
-      v9 = [WeakRetained rootViewController];
-      if ([v9 toolbarPlacement] == 1)
+      rootViewController = [WeakRetained rootViewController];
+      if ([rootViewController toolbarPlacement] == 1)
       {
-        v10 = [v9 view];
-        [v10 bounds];
+        view = [rootViewController view];
+        [view bounds];
         Height = CGRectGetHeight(v20);
-        [v10 bounds];
-        [v9 obscuredInsetsForRect:v10 inCoordinateSpace:?];
-        [v10 convertPoint:v6 toView:{0.0, Height - v12}];
+        [view bounds];
+        [rootViewController obscuredInsetsForRect:view inCoordinateSpace:?];
+        [view convertPoint:scrollView toView:{0.0, Height - v12}];
         v14 = v13;
       }
 
       else
       {
-        [v6 contentOffset];
+        [scrollView contentOffset];
         v16 = v15;
-        [a1[133] frame];
+        [driven[133] frame];
         v14 = v16 + v17;
       }
 
-      [a1[132] updateMaxVisibleHeightPercentageIfNeeded:a2 userDriven:v14 / v8];
+      [driven[132] updateMaxVisibleHeightPercentageIfNeeded:a2 userDriven:v14 / v8];
     }
   }
 }
 
-- (void)translationContextWillRequestTranslatingWebpage:(id)a3
+- (void)translationContextWillRequestTranslatingWebpage:(id)webpage
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained processPool];
-  SafariShared::ReaderAvailabilityController::updateReaderOrTranslationLastActivated(v3, v4);
+  processPool = [WeakRetained processPool];
+  SafariShared::ReaderAvailabilityController::updateReaderOrTranslationLastActivated(processPool, v4);
 }
 
-- (void)_translationContextStateDidChange:(id)a3
+- (void)_translationContextStateDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -19643,40 +19643,40 @@ void __73__TabDocument__presentTranslationConsentAlertWithType_completionHandler
   *(v2 + 40) = 0;
 }
 
-- (id)translationConsentAlertHelperViewControllerToPresentDetailsFrom:(id)a3
+- (id)translationConsentAlertHelperViewControllerToPresentDetailsFrom:(id)from
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained viewControllerToPresentFrom];
+  viewControllerToPresentFrom = [WeakRetained viewControllerToPresentFrom];
 
-  return v4;
+  return viewControllerToPresentFrom;
 }
 
 - (void)webViewWillChangeSize
 {
-  v2 = [(TabDocument *)self readerContext];
-  [v2 webViewWillChangeSize];
+  readerContext = [(TabDocument *)self readerContext];
+  [readerContext webViewWillChangeSize];
 }
 
 - (void)webViewDidIncreaseZoom
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastWebViewIncreaseZoomDate = self->_lastWebViewIncreaseZoomDate;
-  self->_lastWebViewIncreaseZoomDate = v3;
+  self->_lastWebViewIncreaseZoomDate = date;
 }
 
-- (void)setChangedPropertiesForOnUpdatedWebExtensionEvent:(unint64_t)a3
+- (void)setChangedPropertiesForOnUpdatedWebExtensionEvent:(unint64_t)event
 {
-  if (!self->_suppressWebExtensionEvents && self->_changedPropertiesForOnUpdatedWebExtensionEvent != a3)
+  if (!self->_suppressWebExtensionEvents && self->_changedPropertiesForOnUpdatedWebExtensionEvent != event)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v6 = [WeakRetained tabController];
-    v7 = [v6 hiddenPrivateTabDocumentWhenShowingPrivateBrowsingExplanationText];
-    v8 = [(TabDocument *)self isEqual:v7];
+    tabController = [WeakRetained tabController];
+    hiddenPrivateTabDocumentWhenShowingPrivateBrowsingExplanationText = [tabController hiddenPrivateTabDocumentWhenShowingPrivateBrowsingExplanationText];
+    v8 = [(TabDocument *)self isEqual:hiddenPrivateTabDocumentWhenShowingPrivateBrowsingExplanationText];
 
     if ((v8 & 1) == 0)
     {
-      self->_changedPropertiesForOnUpdatedWebExtensionEvent = a3;
-      if (a3)
+      self->_changedPropertiesForOnUpdatedWebExtensionEvent = event;
+      if (event)
       {
 
         [(TabDocument *)&self->super.isa _fireOnUpdatedExtensionEventSoon];
@@ -19692,12 +19692,12 @@ void __73__TabDocument__presentTranslationConsentAlertWithType_completionHandler
   }
 }
 
-- (void)setSuppressWebExtensionEvents:(BOOL)a3
+- (void)setSuppressWebExtensionEvents:(BOOL)events
 {
-  if (self->_suppressWebExtensionEvents != a3)
+  if (self->_suppressWebExtensionEvents != events)
   {
-    self->_suppressWebExtensionEvents = a3;
-    if (a3)
+    self->_suppressWebExtensionEvents = events;
+    if (events)
     {
       [(NSTimer *)self->_fireOnUpdatedWebExtensionEventTimer invalidate];
       fireOnUpdatedWebExtensionEventTimer = self->_fireOnUpdatedWebExtensionEventTimer;
@@ -19725,30 +19725,30 @@ void __47__TabDocument__fireOnUpdatedExtensionEventSoon__block_invoke(uint64_t a
 
 - (void)_fireOnUpdatedExtensionEvent
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[134];
-    [a1 setChangedPropertiesForOnUpdatedWebExtensionEvent:0];
-    v3 = [a1 webExtensionsController];
-    [v3 fireOnUpdatedEventForTab:a1 withChangedProperties:v2];
+    v2 = self[134];
+    [self setChangedPropertiesForOnUpdatedWebExtensionEvent:0];
+    webExtensionsController = [self webExtensionsController];
+    [webExtensionsController fireOnUpdatedEventForTab:self withChangedProperties:v2];
   }
 }
 
-- (id)windowForWebExtensionContext:(id)a3
+- (id)windowForWebExtensionContext:(id)context
 {
-  v3 = [(TabDocument *)self webExtensionWindow];
+  webExtensionWindow = [(TabDocument *)self webExtensionWindow];
 
-  return v3;
+  return webExtensionWindow;
 }
 
-- (unint64_t)indexInWindowForWebExtensionContext:(id)a3
+- (unint64_t)indexInWindowForWebExtensionContext:(id)context
 {
-  v4 = [(TabDocument *)self webExtensionWindow];
-  v5 = v4;
-  if (v4)
+  webExtensionWindow = [(TabDocument *)self webExtensionWindow];
+  v5 = webExtensionWindow;
+  if (webExtensionWindow)
   {
-    v6 = [v4 webExtensionTabs];
-    v7 = [v6 indexOfObjectIdenticalTo:self];
+    webExtensionTabs = [webExtensionWindow webExtensionTabs];
+    v7 = [webExtensionTabs indexOfObjectIdenticalTo:self];
   }
 
   else
@@ -19759,55 +19759,55 @@ void __47__TabDocument__fireOnUpdatedExtensionEventSoon__block_invoke(uint64_t a
   return v7;
 }
 
-- (id)parentTabForWebExtensionContext:(id)a3
+- (id)parentTabForWebExtensionContext:(id)context
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 originatingTabForTab:self];
+  tabController = [WeakRetained tabController];
+  v6 = [tabController originatingTabForTab:self];
 
   return v6;
 }
 
-- (id)webViewForWebExtensionContext:(id)a3
+- (id)webViewForWebExtensionContext:(id)context
 {
-  v3 = [(TabDocument *)self webViewForExtensions];
+  webViewForExtensions = [(TabDocument *)self webViewForExtensions];
 
-  return v3;
+  return webViewForExtensions;
 }
 
-- (id)titleForWebExtensionContext:(id)a3
+- (id)titleForWebExtensionContext:(id)context
 {
-  v3 = [(TabDocument *)self tabTitle];
+  tabTitle = [(TabDocument *)self tabTitle];
 
-  return v3;
+  return tabTitle;
 }
 
-- (void)setPinned:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setPinned:(BOOL)pinned forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  [(TabDocument *)self setPinned:v5];
-  v7[2](v7, 0);
+  pinnedCopy = pinned;
+  handlerCopy = handler;
+  [(TabDocument *)self setPinned:pinnedCopy];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setReaderModeActive:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setReaderModeActive:(BOOL)active forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a3;
-  v7 = a5;
-  if ([(TabDocument *)self isInReaderMode]!= v5)
+  activeCopy = active;
+  handlerCopy = handler;
+  if ([(TabDocument *)self isInReaderMode]!= activeCopy)
   {
     [(TabDocument *)self toggleReader];
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setMuted:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setMuted:(BOOL)muted forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v9 = a4;
-  v8 = a5;
-  if (v6)
+  mutedCopy = muted;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (mutedCopy)
   {
     [(TabDocument *)self mute];
   }
@@ -19817,45 +19817,45 @@ void __47__TabDocument__fireOnUpdatedExtensionEventSoon__block_invoke(uint64_t a
     [(TabDocument *)self unmute];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setZoomFactor:(double)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setZoomFactor:(double)factor forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v7 = a5;
-  [(TabDocument *)self setZoomFactor:a3];
-  v7[2](v7, 0);
+  handlerCopy = handler;
+  [(TabDocument *)self setZoomFactor:factor];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (id)urlForWebExtensionContext:(id)a3
+- (id)urlForWebExtensionContext:(id)context
 {
-  v3 = [(TabDocument *)self urlForExtensions];
+  urlForExtensions = [(TabDocument *)self urlForExtensions];
 
-  return v3;
+  return urlForExtensions;
 }
 
-- (id)pendingURLForWebExtensionContext:(id)a3
+- (id)pendingURLForWebExtensionContext:(id)context
 {
-  v3 = [(TabDocument *)self pendingURLForWebExtensions];
+  pendingURLForWebExtensions = [(TabDocument *)self pendingURLForWebExtensions];
 
-  return v3;
+  return pendingURLForWebExtensions;
 }
 
-- (void)detectWebpageLocaleForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)detectWebpageLocaleForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(TabDocument *)self translationContext];
+  handlerCopy = handler;
+  translationContext = [(TabDocument *)self translationContext];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionHandler___block_invoke;
   aBlock[3] = &unk_2781D6EE0;
-  v7 = v6;
+  v7 = translationContext;
   v26 = v7;
-  v8 = v5;
+  v8 = handlerCopy;
   v27 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v7 state];
-  if (v10 != 5 && v10)
+  state = [v7 state];
+  if (state != 5 && state)
   {
     v9[2](v9);
   }
@@ -19868,8 +19868,8 @@ void __47__TabDocument__fireOnUpdatedExtensionEventSoon__block_invoke(uint64_t a
     v22 = __Block_byref_object_copy__707;
     v23 = __Block_byref_object_dispose__708;
     v24 = 0;
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    v12 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v13 = *MEMORY[0x277D4A9A0];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -19877,7 +19877,7 @@ void __47__TabDocument__fireOnUpdatedExtensionEventSoon__block_invoke(uint64_t a
     v16[3] = &unk_2781DB460;
     v18 = &v19;
     v17 = v9;
-    v14 = [v11 addObserverForName:v13 object:v7 queue:v12 usingBlock:v16];
+    v14 = [defaultCenter addObserverForName:v13 object:v7 queue:mainQueue usingBlock:v16];
     v15 = v20[5];
     v20[5] = v14;
 
@@ -19923,20 +19923,20 @@ uint64_t __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionH
   return v5();
 }
 
-- (void)loadURL:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)loadURL:(id)l forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v7 = a5;
-  [(TabDocument *)self loadURL:v8];
-  v7[2](v7, 0);
+  lCopy = l;
+  handlerCopy = handler;
+  [(TabDocument *)self loadURL:lCopy];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)reloadFromOrigin:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)reloadFromOrigin:(BOOL)origin forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v9 = a4;
-  v8 = a5;
-  if (v6)
+  originCopy = origin;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (originCopy)
   {
     [(TabDocument *)self reloadFromOrigin];
   }
@@ -19946,68 +19946,68 @@ uint64_t __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionH
     [(TabDocument *)self reload];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)goBackForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)goBackForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(TabDocument *)self goBack];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)goForwardForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)goForwardForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(TabDocument *)self goForward];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)activateForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)activateForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(TabDocument *)self select];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)setSelected:(BOOL)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)setSelected:(BOOL)selected forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v9 = a4;
-  v8 = a5;
-  if (v6)
+  selectedCopy = selected;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (selectedCopy)
   {
     [(TabDocument *)self select];
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)duplicateUsingConfiguration:(id)a3 forWebExtensionContext:(id)a4 completionHandler:(id)a5
+- (void)duplicateUsingConfiguration:(id)configuration forWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v9 = a5;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v7 = [WeakRetained tabController];
-  v8 = [v7 duplicateTab:self];
-  v9[2](v9, v8, 0);
+  tabController = [WeakRetained tabController];
+  v8 = [tabController duplicateTab:self];
+  handlerCopy[2](handlerCopy, v8, 0);
 }
 
-- (void)closeForWebExtensionContext:(id)a3 completionHandler:(id)a4
+- (void)closeForWebExtensionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   [(TabDocument *)self close];
-  v5[2](v5, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (BOOL)shouldGrantPermissionsOnUserGestureForWebExtensionContext:(id)a3
+- (BOOL)shouldGrantPermissionsOnUserGestureForWebExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D49A58] sharedController];
-  v6 = [(TabDocument *)self urlForExtensions];
-  v7 = [v6 host];
-  v8 = [MEMORY[0x277D4A898] webExtensionForWebKitExtensionContext:v4];
-  v9 = [v8 composedIdentifier];
-  v10 = [v5 domainIsDenied:v7 forComposedIdentifier:v9];
+  contextCopy = context;
+  mEMORY[0x277D49A58] = [MEMORY[0x277D49A58] sharedController];
+  urlForExtensions = [(TabDocument *)self urlForExtensions];
+  host = [urlForExtensions host];
+  v8 = [MEMORY[0x277D4A898] webExtensionForWebKitExtensionContext:contextCopy];
+  composedIdentifier = [v8 composedIdentifier];
+  v10 = [mEMORY[0x277D49A58] domainIsDenied:host forComposedIdentifier:composedIdentifier];
 
   return v10 ^ 1;
 }
@@ -20016,15 +20016,15 @@ uint64_t __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionH
 {
   if ([(TabDocument *)self isLoading])
   {
-    v3 = [(TabDocument *)self urlForExtensions];
+    urlForExtensions = [(TabDocument *)self urlForExtensions];
   }
 
   else
   {
-    v3 = 0;
+    urlForExtensions = 0;
   }
 
-  return v3;
+  return urlForExtensions;
 }
 
 - (BOOL)isFrontmost
@@ -20092,8 +20092,8 @@ uint64_t __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionH
   if ((v3 & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v4 = [WeakRetained tabController];
-    [v4 setActiveTabDocument:self];
+    tabController = [WeakRetained tabController];
+    [tabController setActiveTabDocument:self];
   }
 }
 
@@ -20126,24 +20126,24 @@ uint64_t __75__TabDocument_detectWebpageLocaleForWebExtensionContext_completionH
 - (void)evictFromTabReuse
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabController];
-  [v3 evictTabDocument:self];
+  tabController = [WeakRetained tabController];
+  [tabController evictTabDocument:self];
 }
 
-- (void)donateCurrentNavigationWithNavigationResponse:(id)a3
+- (void)donateCurrentNavigationWithNavigationResponse:(id)response
 {
-  v7 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained speculativeLoadDocument];
+  speculativeLoadDocument = [WeakRetained speculativeLoadDocument];
 
-  if (v6 == self)
+  if (speculativeLoadDocument == self)
   {
-    objc_storeStrong(&self->_speculativeLoadNavigationResponse, a3);
+    objc_storeStrong(&self->_speculativeLoadNavigationResponse, response);
   }
 
   else if (self->_shouldDonateResponseForCurrentNavigation)
   {
-    [(TabDocument *)&self->super.isa _donateCurrentNavigationWithNavigationResponse:v7];
+    [(TabDocument *)&self->super.isa _donateCurrentNavigationWithNavigationResponse:responseCopy];
   }
 }
 
@@ -20173,17 +20173,17 @@ void __62__TabDocument__donateCurrentNavigationWithNavigationResponse___block_in
 
 - (BOOL)isSearchPage
 {
-  v3 = [MEMORY[0x277D4A808] sharedRecorder];
-  v4 = [(TabDocument *)self webView];
-  v5 = [v4 URL];
-  v6 = [v3 searchProviderForURL:v5];
+  mEMORY[0x277D4A808] = [MEMORY[0x277D4A808] sharedRecorder];
+  webView = [(TabDocument *)self webView];
+  v5 = [webView URL];
+  v6 = [mEMORY[0x277D4A808] searchProviderForURL:v5];
 
   return v6 != 0;
 }
 
-- (void)dismissSiriReaderMediaSessionImmediately:(BOOL)a3
+- (void)dismissSiriReaderMediaSessionImmediately:(BOOL)immediately
 {
-  if (a3)
+  if (immediately)
   {
 
     [(TabDocument *)self _dismissSiriReaderMediaSession];
@@ -20191,10 +20191,10 @@ void __62__TabDocument__donateCurrentNavigationWithNavigationResponse___block_in
 
   else
   {
-    v4 = [MEMORY[0x277D28D50] sharedVoiceUtilities];
-    v5 = [v4 activeSiriReaderSessionIdentifier];
+    mEMORY[0x277D28D50] = [MEMORY[0x277D28D50] sharedVoiceUtilities];
+    activeSiriReaderSessionIdentifier = [mEMORY[0x277D28D50] activeSiriReaderSessionIdentifier];
 
-    if (v5 && (WBSIsEqual() & 1) != 0)
+    if (activeSiriReaderSessionIdentifier && (WBSIsEqual() & 1) != 0)
     {
       [(TabDocument *)self _dismissSiriReaderMediaSession];
     }
@@ -20203,10 +20203,10 @@ void __62__TabDocument__donateCurrentNavigationWithNavigationResponse___block_in
 
 - (void)_dismissSiriReaderMediaSession
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277D28D50] sharedVoiceUtilities];
-    v3 = [v2 activeSiriReaderSessionIdentifier];
+    mEMORY[0x277D28D50] = [MEMORY[0x277D28D50] sharedVoiceUtilities];
+    activeSiriReaderSessionIdentifier = [mEMORY[0x277D28D50] activeSiriReaderSessionIdentifier];
 
     v15 = 0;
     v16 = &v15;
@@ -20227,15 +20227,15 @@ void __62__TabDocument__donateCurrentNavigationWithNavigationResponse___block_in
     v5 = v4;
     _Block_object_dispose(&v15, 8);
     v6 = objc_alloc_init(v4);
-    objc_initWeak(location, *(a1 + 280));
+    objc_initWeak(location, *(self + 280));
     v7 = dispatch_get_global_queue(9, 0);
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__TabDocument__dismissSiriReaderMediaSession__block_invoke;
     v10[3] = &unk_2781DB4D8;
     v11 = v6;
-    v12 = v3;
-    v8 = v3;
+    v12 = activeSiriReaderSessionIdentifier;
+    v8 = activeSiriReaderSessionIdentifier;
     v9 = v6;
     objc_copyWeak(&v13, location);
     dispatch_async(v7, v10);
@@ -20291,21 +20291,21 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
   if ([(TabDocument *)self isPrivateBrowsingEnabled])
   {
     v3 = +[Application sharedApplication];
-    v4 = [v3 isPrivateBrowsingLocked];
+    isPrivateBrowsingLocked = [v3 isPrivateBrowsingLocked];
   }
 
   else
   {
-    v4 = 0;
+    isPrivateBrowsingLocked = 0;
   }
 
-  if (self->_locked != v4)
+  if (self->_locked != isPrivateBrowsingLocked)
   {
-    self->_locked = v4;
-    v5 = [(TabDocument *)self allowsRemoteInspection];
-    [(_SFWebView *)self->_webView setInspectable:v5];
-    [(_SFWebView *)self->_readerWebView setInspectable:v5];
-    if (v4)
+    self->_locked = isPrivateBrowsingLocked;
+    allowsRemoteInspection = [(TabDocument *)self allowsRemoteInspection];
+    [(_SFWebView *)self->_webView setInspectable:allowsRemoteInspection];
+    [(_SFWebView *)self->_readerWebView setInspectable:allowsRemoteInspection];
+    if (isPrivateBrowsingLocked)
     {
       [(_SFWebView *)self->_webView closeAllMediaPresentationsWithCompletionHandler:&__block_literal_global_722];
       [(_SFWebView *)self->_webView pauseAllMediaPlaybackWithCompletionHandler:0];
@@ -20328,17 +20328,17 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
   }
 }
 
-- (void)pageContextDataFetcherDidFinishFetching:(id)a3 forURL:(id)a4 withError:(id)a5
+- (void)pageContextDataFetcherDidFinishFetching:(id)fetching forURL:(id)l withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  fetchingCopy = fetching;
+  lCopy = l;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = WBS_LOG_CHANNEL_PREFIXSiriIntelligence();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [v10 safari_privacyPreservingDescription];
+      [errorCopy safari_privacyPreservingDescription];
       objc_claimAutoreleasedReturnValue();
       [TabDocument pageContextDataFetcherDidFinishFetching:forURL:withError:];
     }
@@ -20346,14 +20346,14 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 
   else
   {
-    v12 = [(TabDocument *)self webView];
-    v13 = [v12 URL];
-    v14 = [v9 safari_isEqualToURL:v13];
+    webView = [(TabDocument *)self webView];
+    v13 = [webView URL];
+    v14 = [lCopy safari_isEqualToURL:v13];
 
     if (v14)
     {
-      v15 = [(TabDocument *)self _backForwardList];
-      v16 = [v15 currentItem];
+      _backForwardList = [(TabDocument *)self _backForwardList];
+      currentItem = [_backForwardList currentItem];
 
       if (self)
       {
@@ -20365,26 +20365,26 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
         v17 = 0;
       }
 
-      v18 = [v8 filteredSchemaData];
-      v19 = v18;
+      filteredSchemaData = [fetchingCopy filteredSchemaData];
+      v19 = filteredSchemaData;
       if (!v17)
       {
         calendarEventDetector = self->_calendarEventDetector;
-        v21 = [v18 objectForKeyedSubscript:@"containsSchemaOrg"];
+        v21 = [filteredSchemaData objectForKeyedSubscript:@"containsSchemaOrg"];
         [(_SFCalendarEventDetector *)calendarEventDetector containsCalendarEventForPageWithSchemaOrgMarkup:v21 != 0];
       }
 
-      v22 = [(TabDocument *)self _backForwardList];
-      v23 = [v22 currentItem];
+      _backForwardList2 = [(TabDocument *)self _backForwardList];
+      currentItem2 = [_backForwardList2 currentItem];
 
-      if (v23 == v16)
+      if (currentItem2 == currentItem)
       {
         v24 = MEMORY[0x277CDB8F0];
-        v25 = [(TabDocument *)self profileIdentifier];
-        v26 = v25;
-        if (v25)
+        profileIdentifier = [(TabDocument *)self profileIdentifier];
+        v26 = profileIdentifier;
+        if (profileIdentifier)
         {
-          v27 = v25;
+          v27 = profileIdentifier;
         }
 
         else
@@ -20404,21 +20404,21 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 - (LPLinkMetadata)linkMetadataForSharing
 {
   v3 = MEMORY[0x277D4A788];
-  v4 = [(TabDocument *)self urlForSharing];
-  v5 = [(TabDocument *)self webView];
-  v6 = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
-  v7 = [v6 linkPresentationIconCache];
-  v8 = [v3 linkMetadataForURL:v4 webView:v5 iconCache:v7];
+  urlForSharing = [(TabDocument *)self urlForSharing];
+  webView = [(TabDocument *)self webView];
+  mEMORY[0x277D28F58] = [MEMORY[0x277D28F58] sharedSiteMetadataManager];
+  linkPresentationIconCache = [mEMORY[0x277D28F58] linkPresentationIconCache];
+  v8 = [v3 linkMetadataForURL:urlForSharing webView:webView iconCache:linkPresentationIconCache];
 
   return v8;
 }
 
 - (NSString)addressForNewBookmark
 {
-  v2 = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
-  v3 = [v2 safari_originalDataAsString];
+  cachedCanonicalURLOrURLForSharing = [(TabDocument *)self cachedCanonicalURLOrURLForSharing];
+  safari_originalDataAsString = [cachedCanonicalURLOrURLForSharing safari_originalDataAsString];
 
-  return v3;
+  return safari_originalDataAsString;
 }
 
 - (WBSCloudTab)cloudTab
@@ -20426,28 +20426,28 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
   v3 = [(TabDocument *)self URL];
   if ([v3 isFileURL])
   {
-    v4 = [(TabDocument *)self URLString];
-    v5 = [v4 safari_bestURLForUserTypedString];
+    uRLString = [(TabDocument *)self URLString];
+    safari_bestURLForUserTypedString = [uRLString safari_bestURLForUserTypedString];
   }
 
   else
   {
-    v5 = [(TabDocument *)self URL];
+    safari_bestURLForUserTypedString = [(TabDocument *)self URL];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277D49ED0]) initWithURL:v5];
+  v6 = [objc_alloc(MEMORY[0x277D49ED0]) initWithURL:safari_bestURLForUserTypedString];
   [v6 setUuid:self->_uuid];
-  v7 = [(TabDocument *)self titleForCloudTab];
-  [v6 setTitle:v7];
+  titleForCloudTab = [(TabDocument *)self titleForCloudTab];
+  [v6 setTitle:titleForCloudTab];
 
   [v6 setShowingReader:self->_showingReader];
-  v8 = [(_SFReaderController *)self->_readerContext scrollPositionInformation];
-  [v6 setReaderScrollPosition:v8];
+  scrollPositionInformation = [(_SFReaderController *)self->_readerContext scrollPositionInformation];
+  [v6 setReaderScrollPosition:scrollPositionInformation];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained windowState];
-  v11 = [v10 sceneID];
-  [v6 setSceneID:v11];
+  windowState = [WeakRetained windowState];
+  sceneID = [windowState sceneID];
+  [v6 setSceneID:sceneID];
 
   [v6 setLastViewedTime:self->_lastViewedTime];
   v12 = [objc_alloc(MEMORY[0x277D49EB8]) initWithParameters:v6];
@@ -20455,10 +20455,10 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
   return v12;
 }
 
-- (BOOL)isReusableForURL:(id)a3 webClipURL:(id)a4
+- (BOOL)isReusableForURL:(id)l webClipURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v8 = [(TabDocument *)self URL];
   v9 = v8;
   if (v8)
@@ -20468,22 +20468,22 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 
   else
   {
-    v11 = [(TabDocument *)self _backForwardList];
-    v12 = [v11 currentItem];
-    v10 = [v12 URL];
+    _backForwardList = [(TabDocument *)self _backForwardList];
+    currentItem = [_backForwardList currentItem];
+    v10 = [currentItem URL];
   }
 
-  v13 = [v10 _webkit_URLByRemovingFragment];
+  _webkit_URLByRemovingFragment = [v10 _webkit_URLByRemovingFragment];
 
-  v14 = [(NSURL *)self->_tabReuseURL _webkit_URLByRemovingFragment];
-  if ([v13 isEqual:v6] & 1) != 0 || (objc_msgSend(v14, "isEqual:", v6))
+  _webkit_URLByRemovingFragment2 = [(NSURL *)self->_tabReuseURL _webkit_URLByRemovingFragment];
+  if ([_webkit_URLByRemovingFragment isEqual:lCopy] & 1) != 0 || (objc_msgSend(_webkit_URLByRemovingFragment2, "isEqual:", lCopy))
   {
     v15 = 1;
   }
 
-  else if (v7)
+  else if (rLCopy)
   {
-    v15 = [v13 isEqual:v7];
+    v15 = [_webkit_URLByRemovingFragment isEqual:rLCopy];
   }
 
   else
@@ -20497,16 +20497,16 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 - (NSString)currentSearchQuery
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained activeSearchEngine];
-  v5 = [(_SFWebView *)self->_webView _unreachableURL];
-  v6 = v5;
-  if (!v5)
+  activeSearchEngine = [WeakRetained activeSearchEngine];
+  _unreachableURL = [(_SFWebView *)self->_webView _unreachableURL];
+  committedURL = _unreachableURL;
+  if (!_unreachableURL)
   {
-    v6 = [(TabDocument *)self committedURL];
+    committedURL = [(TabDocument *)self committedURL];
   }
 
-  v7 = [v4 userVisibleQueryFromSearchURL:v6];
-  if (!v5)
+  v7 = [activeSearchEngine userVisibleQueryFromSearchURL:committedURL];
+  if (!_unreachableURL)
   {
   }
 
@@ -20516,131 +20516,131 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 - (NSString)currentSearchQueryAllowingQueryThatLooksLikeURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained activeSearchEngine];
-  v5 = [(_SFWebView *)self->_webView _unreachableURL];
-  v6 = v5;
-  if (!v5)
+  activeSearchEngine = [WeakRetained activeSearchEngine];
+  _unreachableURL = [(_SFWebView *)self->_webView _unreachableURL];
+  committedURL = _unreachableURL;
+  if (!_unreachableURL)
   {
-    v6 = [(TabDocument *)self committedURL];
+    committedURL = [(TabDocument *)self committedURL];
   }
 
-  v7 = [v4 userVisibleQueryFromSearchURL:v6 allowQueryThatLooksLikeURL:1];
-  if (!v5)
+  v7 = [activeSearchEngine userVisibleQueryFromSearchURL:committedURL allowQueryThatLooksLikeURL:1];
+  if (!_unreachableURL)
   {
   }
 
   return v7;
 }
 
-- (id)currentHostForScribbleController:(id)a3
+- (id)currentHostForScribbleController:(id)controller
 {
-  v3 = [(TabDocument *)self expectedOrCurrentURL];
-  v4 = [v3 host];
+  expectedOrCurrentURL = [(TabDocument *)self expectedOrCurrentURL];
+  host = [expectedOrCurrentURL host];
 
-  return v4;
+  return host;
 }
 
-- (void)sfScribbleControllerDidEndScribbling:(id)a3
+- (void)sfScribbleControllerDidEndScribbling:(id)scribbling
 {
-  v5 = [(TabDocument *)self navigationBarItem];
-  [v5 setOverlayConfiguration:0];
+  navigationBarItem = [(TabDocument *)self navigationBarItem];
+  [navigationBarItem setOverlayConfiguration:0];
 
-  v6 = [(TabDocument *)self navigationBarItem];
-  [v6 setOverlayNarrowConfiguration:0];
+  navigationBarItem2 = [(TabDocument *)self navigationBarItem];
+  [navigationBarItem2 setOverlayNarrowConfiguration:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained pageFormatMenuController];
-  [v4 dismissMenu];
+  pageFormatMenuController = [WeakRetained pageFormatMenuController];
+  [pageFormatMenuController dismissMenu];
 
   v8 = objc_loadWeakRetained(&self->_delegate);
   [v8 tabDocumentDidUpdateIsScribbling:self];
 }
 
-- (void)sfScribbleControllerDidStartScribbling:(id)a3
+- (void)sfScribbleControllerDidStartScribbling:(id)scribbling
 {
-  v12 = a3;
+  scribblingCopy = scribbling;
   self->_hasEnteredScribbleMode = 1;
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didEnableScribble];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didEnableScribble];
 
-  v5 = [v12 urlFieldOverlayConfiguration];
-  v6 = [(TabDocument *)self navigationBarItem];
-  [v6 setOverlayConfiguration:v5];
+  urlFieldOverlayConfiguration = [scribblingCopy urlFieldOverlayConfiguration];
+  navigationBarItem = [(TabDocument *)self navigationBarItem];
+  [navigationBarItem setOverlayConfiguration:urlFieldOverlayConfiguration];
 
-  v7 = [v12 urlFieldOverlayNarrowConfiguration];
-  v8 = [(TabDocument *)self navigationBarItem];
-  [v8 setOverlayNarrowConfiguration:v7];
+  urlFieldOverlayNarrowConfiguration = [scribblingCopy urlFieldOverlayNarrowConfiguration];
+  navigationBarItem2 = [(TabDocument *)self navigationBarItem];
+  [navigationBarItem2 setOverlayNarrowConfiguration:urlFieldOverlayNarrowConfiguration];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained pageFormatMenuController];
-  [v10 dismissMenu];
+  pageFormatMenuController = [WeakRetained pageFormatMenuController];
+  [pageFormatMenuController dismissMenu];
 
   v11 = objc_loadWeakRetained(&self->_delegate);
   [v11 tabDocumentDidUpdateIsScribbling:self];
 }
 
-- (void)sfScribbleControllerDidUpdateHiddenElementCount:(id)a3
+- (void)sfScribbleControllerDidUpdateHiddenElementCount:(id)count
 {
-  v11 = a3;
-  v4 = [(TabDocument *)self navigationBarItem];
-  [v4 setHasHiddenElements:{objc_msgSend(v11, "hiddenElementCount") != 0}];
-  if ([v11 isScribbling])
+  countCopy = count;
+  navigationBarItem = [(TabDocument *)self navigationBarItem];
+  [navigationBarItem setHasHiddenElements:{objc_msgSend(countCopy, "hiddenElementCount") != 0}];
+  if ([countCopy isScribbling])
   {
-    v5 = [v11 urlFieldOverlayConfiguration];
-    v6 = [(TabDocument *)self navigationBarItem];
-    [v6 setOverlayConfiguration:v5];
+    urlFieldOverlayConfiguration = [countCopy urlFieldOverlayConfiguration];
+    navigationBarItem2 = [(TabDocument *)self navigationBarItem];
+    [navigationBarItem2 setOverlayConfiguration:urlFieldOverlayConfiguration];
 
-    v7 = [v11 urlFieldOverlayNarrowConfiguration];
-    v8 = [(TabDocument *)self navigationBarItem];
-    [v8 setOverlayNarrowConfiguration:v7];
+    urlFieldOverlayNarrowConfiguration = [countCopy urlFieldOverlayNarrowConfiguration];
+    navigationBarItem3 = [(TabDocument *)self navigationBarItem];
+    [navigationBarItem3 setOverlayNarrowConfiguration:urlFieldOverlayNarrowConfiguration];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v10 = [WeakRetained pageFormatMenuController];
-  [v10 reloadBrowsingAssistantIfNeeded];
+  pageFormatMenuController = [WeakRetained pageFormatMenuController];
+  [pageFormatMenuController reloadBrowsingAssistantIfNeeded];
 }
 
-- (void)sfScribbleController:(id)a3 presentAlert:(id)a4
+- (void)sfScribbleController:(id)controller presentAlert:(id)alert
 {
-  v5 = a4;
+  alertCopy = alert;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabDocument:self presentViewControllerAnimated:v5];
+  [WeakRetained tabDocument:self presentViewControllerAnimated:alertCopy];
 }
 
-- (id)overlayContainerViewForScribbleController:(id)a3
+- (id)overlayContainerViewForScribbleController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained rootViewController];
-  v5 = [v4 documentAndTopBarsContainerView];
+  rootViewController = [WeakRetained rootViewController];
+  documentAndTopBarsContainerView = [rootViewController documentAndTopBarsContainerView];
 
-  return v5;
+  return documentAndTopBarsContainerView;
 }
 
 - (NSArray)normalBrowsingUserContentControllers
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 cachedUserContentControllersForAllProfiles];
+  cachedUserContentControllersForAllProfiles = [v2 cachedUserContentControllersForAllProfiles];
 
-  return v3;
+  return cachedUserContentControllersForAllProfiles;
 }
 
 - (WBSScribbleQuirksManager)scribbleQuirksManager
 {
   v2 = +[Application sharedApplication];
-  v3 = [v2 scribbleQuirksManager];
+  scribbleQuirksManager = [v2 scribbleQuirksManager];
 
-  return v3;
+  return scribbleQuirksManager;
 }
 
-- (void)_webView:(id)a3 didAdjustVisibilityWithSelectors:(id)a4
+- (void)_webView:(id)view didAdjustVisibilityWithSelectors:(id)selectors
 {
-  v4 = [(TabDocument *)self sfScribbleController:a3];
+  v4 = [(TabDocument *)self sfScribbleController:view];
   [v4 updateCountForElementsHiddenByPaintingAvoidance];
 }
 
-- (id)tabEntityUUIDForView:(id)a3
+- (id)tabEntityUUIDForView:(id)view
 {
-  if (self->_cachedView == a3 && self->_active)
+  if (self->_cachedView == view && self->_active)
   {
     v4 = self->_uuid;
   }
@@ -20690,45 +20690,45 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
   return WeakRetained;
 }
 
-- (void)_webView:(std::__shared_weak_count *)a1 willSubmitFormValues:userObject:submissionHandler:
+- (void)_webView:(std::__shared_weak_count *)view willSubmitFormValues:userObject:submissionHandler:
 {
-  a1->__vftable = &unk_2827BB258;
-  std::__shared_weak_count::~__shared_weak_count(a1);
+  view->__vftable = &unk_2827BB258;
+  std::__shared_weak_count::~__shared_weak_count(view);
 
   JUMPOUT(0x216074930);
 }
 
-- (void)_webView:(uint64_t)a1 willSubmitFormValues:userObject:submissionHandler:
+- (void)_webView:(uint64_t)view willSubmitFormValues:userObject:submissionHandler:
 {
-  if ((*(a1 + 32) & 1) == 0 && ([MEMORY[0x277D49A08] hasInternalContent] & 1) == 0)
+  if ((*(view + 32) & 1) == 0 && ([MEMORY[0x277D49A08] hasInternalContent] & 1) == 0)
   {
-    (*(*(a1 + 24) + 16))();
+    (*(*(view + 24) + 16))();
   }
 
-  v2 = *(a1 + 24);
+  v2 = *(view + 24);
 }
 
-- (id)_titleIncludeLoading:(int)a3 allowURLStringFallback:
+- (id)_titleIncludeLoading:(int)loading allowURLStringFallback:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(TabDocument *)a1 _titleIncludeLoading:a2 allowURLStringFallback:a3 allowUntitled:1];
+    self = [(TabDocument *)self _titleIncludeLoading:a2 allowURLStringFallback:loading allowUntitled:1];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateBarItemsWithCurrentMediaState
 {
-  if (a1)
+  if (self)
   {
-    [a1 updateMenuButtonShowsBadge];
-    [*(a1 + 1096) setMediaStateIcon:*(a1 + 504)];
-    [*(a1 + 1104) setMediaStateIcon:*(a1 + 504)];
-    [*(a1 + 1112) setMediaStateIcon:*(a1 + 504)];
+    [self updateMenuButtonShowsBadge];
+    [*(self + 1096) setMediaStateIcon:*(self + 504)];
+    [*(self + 1104) setMediaStateIcon:*(self + 504)];
+    [*(self + 1112) setMediaStateIcon:*(self + 504)];
 
-    [(TabDocument *)a1 _reconfigureLibraryItemView];
+    [(TabDocument *)self _reconfigureLibraryItemView];
   }
 }
 
@@ -20752,23 +20752,23 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 
 - (void)_loadActivityItemProviderIfNeeded
 {
-  if (a1 && !*(a1 + 536))
+  if (self && !*(self + 536))
   {
-    v2 = [[ActionPanelActivityItemProvider alloc] initWithTabDocument:a1];
-    v3 = *(a1 + 536);
-    *(a1 + 536) = v2;
+    v2 = [[ActionPanelActivityItemProvider alloc] initWithTabDocument:self];
+    v3 = *(self + 536);
+    *(self + 536) = v2;
   }
 }
 
 - (void)_clearCachedCanonicalURL
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 528);
-    *(a1 + 528) = 0;
+    v2 = *(self + 528);
+    *(self + 528) = 0;
 
-    v3 = *(a1 + 536);
-    *(a1 + 536) = 0;
+    v3 = *(self + 536);
+    *(self + 536) = 0;
   }
 }
 
@@ -20782,100 +20782,100 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
 
 - (id)_titleForStatePersistingForTabStateData
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[105];
+    v2 = self[105];
     if (v2)
     {
-      v1 = v2;
+      selfCopy = v2;
     }
 
     else
     {
-      v3 = [a1[21] titleForStatePersisting];
-      v4 = v3;
-      if (v3)
+      titleForStatePersisting = [self[21] titleForStatePersisting];
+      v4 = titleForStatePersisting;
+      if (titleForStatePersisting)
       {
-        v5 = v3;
+        v5 = titleForStatePersisting;
       }
 
       else
       {
-        v5 = [(TabDocument *)v1 _titleIncludeLoading:1 allowURLStringFallback:0 allowUntitled:?];
+        v5 = [(TabDocument *)selfCopy _titleIncludeLoading:1 allowURLStringFallback:0 allowUntitled:?];
       }
 
-      v1 = v5;
+      selfCopy = v5;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_disablePrivateRelaySetting:(uint64_t)a1
+- (void)_disablePrivateRelaySetting:(uint64_t)setting
 {
-  if (a1)
+  if (setting)
   {
-    v4 = [a1 URL];
-    v5 = *(a1 + 600);
-    *(a1 + 600) = v4;
+    v4 = [setting URL];
+    v5 = *(setting + 600);
+    *(setting + 600) = v4;
 
-    *(a1 + 608) = a2;
-    *(a1 + 948) = a2;
+    *(setting + 608) = a2;
+    *(setting + 948) = a2;
   }
 }
 
 - (uint64_t)_shouldCleanUpAfterRedirectToExternalApp
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [*(a1 + 1064) _committedURL];
-    if (v2)
+    _committedURL = [*(self + 1064) _committedURL];
+    if (_committedURL)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v1 = [*(v1 + 1064) _webProcessIdentifier] != 0;
+      selfCopy = [*(selfCopy + 1064) _webProcessIdentifier] != 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_clearNavigationSource
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1296);
-    *(a1 + 1296) = 0;
+    v2 = *(self + 1296);
+    *(self + 1296) = 0;
 
-    *(a1 + 958) = 0;
-    v3 = *(a1 + 1216);
-    *(a1 + 1216) = 0;
+    *(self + 958) = 0;
+    v3 = *(self + 1216);
+    *(self + 1216) = 0;
 
-    *(a1 + 717) = 0;
+    *(self + 717) = 0;
   }
 }
 
 - (void)_didFinishLoading
 {
-  if (a1)
+  if (self)
   {
-    [(TabDocument *)a1 _loadingControllerEstimatedProgressChangedTo:?];
-    [(TabDocument *)a1 _loadingControllerDidStopLoadingWithError:?];
-    v2 = *(a1 + 1488);
-    *(a1 + 1488) = 0;
+    [(TabDocument *)self _loadingControllerEstimatedProgressChangedTo:?];
+    [(TabDocument *)self _loadingControllerDidStopLoadingWithError:?];
+    v2 = *(self + 1488);
+    *(self + 1488) = 0;
 
-    *(a1 + 709) = 0;
+    *(self + 709) = 0;
   }
 }
 
 - (void)_authenticateForAutoFillIfNeeded
 {
-  if (a1 && *(a1 + 160))
+  if (self && *(self + 160))
   {
     v2 = WBS_LOG_CHANNEL_PREFIXAutoFillAuthentication();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -20884,9 +20884,9 @@ void __45__TabDocument__dismissSiriReaderMediaSession__block_invoke_2(uint64_t a
       _os_log_impl(&dword_215819000, v2, OS_LOG_TYPE_INFO, "Retrying AutoFill authentication", v4, 2u);
     }
 
-    [(TabDocument *)a1 _getAuthenticationForAutoFillController:*(a1 + 160) withCompletion:?];
-    v3 = *(a1 + 160);
-    *(a1 + 160) = 0;
+    [(TabDocument *)self _getAuthenticationForAutoFillController:*(self + 160) withCompletion:?];
+    v3 = *(self + 160);
+    *(self + 160) = 0;
   }
 }
 
@@ -20912,24 +20912,24 @@ void __73__TabDocument_webView_decidePolicyForNavigationResponse_decisionHandler
 
 - (void)touchIconFetcher
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[15];
+    selfCopy = self;
+    v3 = self[15];
     if (!v3)
     {
-      v4 = [[TouchIconFetcher alloc] initWithWebView:a1[133]];
-      v5 = v2[15];
-      v2[15] = v4;
+      v4 = [[TouchIconFetcher alloc] initWithWebView:self[133]];
+      v5 = selfCopy[15];
+      selfCopy[15] = v4;
 
-      v3 = v2[15];
+      v3 = selfCopy[15];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)_terminateWebProcessAndReloadIfActive:(uint64_t)result
@@ -20958,19 +20958,19 @@ void __73__TabDocument_webView_decidePolicyForNavigationResponse_decisionHandler
   return result;
 }
 
-- (void)_presentTranslationConsentAlertWithType:(void *)a3 completionHandler:
+- (void)_presentTranslationConsentAlertWithType:(void *)type completionHandler:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (self)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__TabDocument__presentTranslationConsentAlertWithType_completionHandler___block_invoke;
     block[3] = &unk_2781D6B60;
-    block[4] = a1;
+    block[4] = self;
     v9 = a2;
-    v8 = v5;
+    v8 = typeCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -21115,7 +21115,7 @@ void __34__TabDocument__showDownload_path___block_invoke_294_cold_1()
 - (void)history
 {
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_215819000, log, OS_LOG_TYPE_DEBUG, "Tab created with profile '%@' (%{public}@)", buf, 0x16u);

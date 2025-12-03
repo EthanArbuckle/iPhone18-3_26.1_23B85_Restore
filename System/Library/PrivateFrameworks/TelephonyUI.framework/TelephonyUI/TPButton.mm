@@ -3,17 +3,17 @@
 - (void)_animationDidEnd;
 - (void)_animationWillBegin;
 - (void)layoutSubviews;
-- (void)setBlursBackground:(BOOL)a3;
-- (void)setButtonColor:(int)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setUsesOverlayBlendingForContents:(BOOL)a3;
+- (void)setBlursBackground:(BOOL)background;
+- (void)setButtonColor:(int)color;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setUsesOverlayBlendingForContents:(BOOL)contents;
 @end
 
 @implementation TPButton
 
-- (void)setButtonColor:(int)a3
+- (void)setButtonColor:(int)color
 {
-  if (self->_color != a3)
+  if (self->_color != color)
   {
     backdropView = self->_backdropView;
     if (backdropView)
@@ -22,7 +22,7 @@
     }
 
     v6 = 10092;
-    switch(a3)
+    switch(color)
     {
       case 0:
         v6 = 10091;
@@ -39,26 +39,26 @@
       case 4:
         break;
       case 6:
-        v7 = [MEMORY[0x1E69DC888] whiteColor];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
         goto LABEL_15;
       case 10:
         v6 = 2020;
         goto LABEL_13;
       case 12:
-        v7 = [MEMORY[0x1E69DC888] systemGreenColor];
+        whiteColor = [MEMORY[0x1E69DC888] systemGreenColor];
         goto LABEL_15;
       case 13:
-        v7 = [MEMORY[0x1E69DC888] systemGrayColor];
+        whiteColor = [MEMORY[0x1E69DC888] systemGrayColor];
         goto LABEL_15;
       case 14:
-        v7 = [MEMORY[0x1E69DC888] systemRedColor];
+        whiteColor = [MEMORY[0x1E69DC888] systemRedColor];
         goto LABEL_15;
       case 15:
-        v7 = [MEMORY[0x1E69DC888] blackColor];
+        whiteColor = [MEMORY[0x1E69DC888] blackColor];
 LABEL_15:
-        v10 = v7;
-        v11 = [v7 tpImageFromColor];
-        [(TPButton *)self setBackgroundImage:v11 forState:0];
+        v10 = whiteColor;
+        tpImageFromColor = [whiteColor tpImageFromColor];
+        [(TPButton *)self setBackgroundImage:tpImageFromColor forState:0];
 
         break;
       default:
@@ -74,14 +74,14 @@ LABEL_13:
         break;
     }
 
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [(TPButton *)self setTitleColor:v12 forState:0];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(TPButton *)self setTitleColor:whiteColor2 forState:0];
 
     v13 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.300000012];
     [(TPButton *)self setTitleColor:v13 forState:2];
   }
 
-  self->_color = a3;
+  self->_color = color;
 }
 
 - (CGSize)intrinsicContentSize
@@ -102,39 +102,39 @@ LABEL_13:
   [(TPButton *)self sendSubviewToBack:self->_backdropView];
   if (self->_usesOverlayBlendingForContents)
   {
-    v3 = [(TPButton *)self imageView];
-    [v3 setAlpha:0.400000006];
+    imageView = [(TPButton *)self imageView];
+    [imageView setAlpha:0.400000006];
 
-    v4 = [(TPButton *)self imageView];
-    v5 = [v4 layer];
+    imageView2 = [(TPButton *)self imageView];
+    layer = [imageView2 layer];
     v6 = *MEMORY[0x1E6979CE8];
     v7 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-    [v5 setCompositingFilter:v7];
+    [layer setCompositingFilter:v7];
 
-    v8 = [(TPButton *)self titleLabel];
-    [v8 setAlpha:0.400000006];
+    titleLabel = [(TPButton *)self titleLabel];
+    [titleLabel setAlpha:0.400000006];
 
-    v9 = [(TPButton *)self titleLabel];
-    v10 = [v9 layer];
+    titleLabel2 = [(TPButton *)self titleLabel];
+    layer2 = [titleLabel2 layer];
     v11 = [MEMORY[0x1E6979378] filterWithType:v6];
-    [v10 setCompositingFilter:v11];
+    [layer2 setCompositingFilter:v11];
   }
 }
 
-- (void)setBlursBackground:(BOOL)a3
+- (void)setBlursBackground:(BOOL)background
 {
-  if (self->_blursBackground != a3)
+  if (self->_blursBackground != background)
   {
     backdropView = self->_backdropView;
-    if (a3)
+    if (background)
     {
-      v6 = [(_UIBackdropView *)backdropView outputSettings];
-      v7 = [(_UIBackdropView *)self->_backdropView inputSettings];
-      [v6 computeOutputSettingsUsingModel:v7];
+      outputSettings = [(_UIBackdropView *)backdropView outputSettings];
+      inputSettings = [(_UIBackdropView *)self->_backdropView inputSettings];
+      [outputSettings computeOutputSettingsUsingModel:inputSettings];
 
       v8 = self->_backdropView;
-      v9 = [(_UIBackdropView *)v8 outputSettings];
-      [(_UIBackdropView *)v8 applySettings:v9];
+      outputSettings2 = [(_UIBackdropView *)v8 outputSettings];
+      [(_UIBackdropView *)v8 applySettings:outputSettings2];
     }
 
     else
@@ -145,17 +145,17 @@ LABEL_13:
     [(TPButton *)self sendSubviewToBack:self->_backdropView];
   }
 
-  self->_blursBackground = a3;
+  self->_blursBackground = background;
 }
 
-- (void)setUsesOverlayBlendingForContents:(BOOL)a3
+- (void)setUsesOverlayBlendingForContents:(BOOL)contents
 {
-  v3 = a3;
-  if (self->_usesOverlayBlendingForContents != a3)
+  contentsCopy = contents;
+  if (self->_usesOverlayBlendingForContents != contents)
   {
-    v5 = [(TPButton *)self imageView];
-    v6 = v5;
-    if (v3)
+    imageView = [(TPButton *)self imageView];
+    v6 = imageView;
+    if (contentsCopy)
     {
       v7 = 0.400000006;
     }
@@ -165,7 +165,7 @@ LABEL_13:
       v7 = 1.0;
     }
 
-    if (v3)
+    if (contentsCopy)
     {
       v8 = MEMORY[0x1E6979CE8];
     }
@@ -175,31 +175,31 @@ LABEL_13:
       v8 = MEMORY[0x1E6979CC0];
     }
 
-    [v5 setAlpha:v7];
+    [imageView setAlpha:v7];
 
-    v9 = [(TPButton *)self imageView];
-    v10 = [v9 layer];
+    imageView2 = [(TPButton *)self imageView];
+    layer = [imageView2 layer];
     v11 = *v8;
     v12 = [MEMORY[0x1E6979378] filterWithType:v11];
-    [v10 setCompositingFilter:v12];
+    [layer setCompositingFilter:v12];
 
-    v13 = [(TPButton *)self titleLabel];
-    [v13 setAlpha:v7];
+    titleLabel = [(TPButton *)self titleLabel];
+    [titleLabel setAlpha:v7];
 
-    v14 = [(TPButton *)self titleLabel];
-    v15 = [v14 layer];
+    titleLabel2 = [(TPButton *)self titleLabel];
+    layer2 = [titleLabel2 layer];
     v16 = [MEMORY[0x1E6979378] filterWithType:v11];
-    [v15 setCompositingFilter:v16];
+    [layer2 setCompositingFilter:v16];
   }
 
-  self->_usesOverlayBlendingForContents = v3;
+  self->_usesOverlayBlendingForContents = contentsCopy;
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = TPButton;
-  [(TPButton *)&v5 setImage:a3 forState:a4];
+  [(TPButton *)&v5 setImage:image forState:state];
   if (self->_backdropView)
   {
     [(TPButton *)self sendSubviewToBack:?];
@@ -217,10 +217,10 @@ LABEL_13:
 - (void)_animationDidEnd
 {
   [(_UIBackdropView *)self->_backdropView setComputesColorSettings:1];
-  v3 = [(TPButton *)self blursBackground];
+  blursBackground = [(TPButton *)self blursBackground];
   backdropView = self->_backdropView;
 
-  [(_UIBackdropView *)backdropView _setBlursBackground:v3];
+  [(_UIBackdropView *)backdropView _setBlursBackground:blursBackground];
 }
 
 @end

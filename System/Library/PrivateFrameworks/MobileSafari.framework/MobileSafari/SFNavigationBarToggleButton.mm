@@ -1,13 +1,13 @@
 @interface SFNavigationBarToggleButton
 + (CGSize)glyphSize;
 + (UIImage)formatMenuBottomOnlyImage;
-+ (id)pageMenuImageWithIntelligence:(BOOL)a3 usingMulticolorSymbol:(BOOL)a4;
-+ (id)readerImageWithSummary:(BOOL)a3 usingMulticolorSymbol:(BOOL)a4;
++ (id)pageMenuImageWithIntelligence:(BOOL)intelligence usingMulticolorSymbol:(BOOL)symbol;
++ (id)readerImageWithSummary:(BOOL)summary usingMulticolorSymbol:(BOOL)symbol;
 - (CGSize)intrinsicContentSize;
-- (SFNavigationBarToggleButton)initWithImage:(id)a3 forInputMode:(unint64_t)a4;
+- (SFNavigationBarToggleButton)initWithImage:(id)image forInputMode:(unint64_t)mode;
 - (UIView)pointerPreviewContainer;
 - (id)_createAccessoryImageView;
-- (id)_imageForAccessoryItem:(uint64_t)a1;
+- (id)_imageForAccessoryItem:(uint64_t)item;
 - (id)_leadingBottomView;
 - (id)_leadingTopView;
 - (id)_resolvedQuaternaryView;
@@ -15,31 +15,31 @@
 - (id)_resolvedTertiaryView;
 - (id)_trailingBottomView;
 - (id)_trailingTopView;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)preferredSymbolConfigurationForImageAtIndex:(uint64_t)a3 numberOfAccessories:;
-- (void)_colorForAccessoryItem:(void *)a1;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)preferredSymbolConfigurationForImageAtIndex:(uint64_t)index numberOfAccessories:;
+- (void)_colorForAccessoryItem:(void *)item;
 - (void)_updateDefaultStateImageView;
 - (void)_updateImageViews;
 - (void)_updateSelectedStateView;
 - (void)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setAccessoryItems:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setCornerRoundingMode:(int64_t)a3;
-- (void)setGlyphTintColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setInsetFromBackground:(double)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setMinimumSideMargin:(double)a3;
-- (void)setOverrideColor:(id)a3 forAccessory:(int64_t)a4;
-- (void)setPreferredSymbolConfiguration:(id)a3;
-- (void)setResizableBackgroundCornerRadius:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsBadge:(BOOL)a3;
-- (void)setUsesInsetFromBackground:(BOOL)a3;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setAccessoryItems:(id)items;
+- (void)setAccessoryView:(id)view;
+- (void)setCornerRoundingMode:(int64_t)mode;
+- (void)setGlyphTintColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setInsetFromBackground:(double)background;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setMinimumSideMargin:(double)margin;
+- (void)setOverrideColor:(id)color forAccessory:(int64_t)accessory;
+- (void)setPreferredSymbolConfiguration:(id)configuration;
+- (void)setResizableBackgroundCornerRadius:(double)radius;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsBadge:(BOOL)badge;
+- (void)setUsesInsetFromBackground:(BOOL)background;
 - (void)tintColorDidChange;
 @end
 
@@ -47,14 +47,14 @@
 
 - (void)_updateDefaultStateImageView
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if ([a1 tintAdjustmentMode] == 2 || (v2 = *(a1 + 912)) == 0)
+  if ([self tintAdjustmentMode] == 2 || (v2 = *(self + 912)) == 0)
   {
-    [a1 tintColor];
+    [self tintColor];
     objc_claimAutoreleasedReturnValue();
   }
 
@@ -66,18 +66,18 @@
   v4 = OUTLINED_FUNCTION_7();
   v7 = v5;
   [v4 setTintColor:v5];
-  [*(a1 + 768) setTintColor:v7];
-  if (![a1 isHighlighted])
+  [*(self + 768) setTintColor:v7];
+  if (![self isHighlighted])
   {
-    [a1 isSelected];
+    [self isSelected];
 LABEL_12:
     [OUTLINED_FUNCTION_7() setAlpha:?];
     goto LABEL_13;
   }
 
-  v6 = *(a1 + 851);
-  [a1 isSelected];
-  if ((v6 & 1) != 0 || ([a1 isSelected] & 1) == 0)
+  v6 = *(self + 851);
+  [self isSelected];
+  if ((v6 & 1) != 0 || ([self isSelected] & 1) == 0)
   {
     goto LABEL_12;
   }
@@ -93,7 +93,7 @@ LABEL_13:
 
 - (id)_createAccessoryImageView
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [v2 setUserInteractionEnabled:0];
@@ -103,7 +103,7 @@ LABEL_13:
     v5 = [v3 configurationByApplyingConfiguration:v4];
     [v2 setPreferredSymbolConfiguration:v5];
 
-    [a1 addSubview:v2];
+    [self addSubview:v2];
   }
 
   else
@@ -116,14 +116,14 @@ LABEL_13:
 
 - (void)_updateImageViews
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = [*(a1 + 864) count];
+  v2 = [*(self + 864) count];
   v3 = [OUTLINED_FUNCTION_2_0() count];
-  if (*(a1 + 800))
+  if (*(self + 800))
   {
     v4 = v3 + 1;
   }
@@ -133,17 +133,17 @@ LABEL_13:
     v4 = v3;
   }
 
-  v5 = [(SFNavigationBarToggleButton *)a1 preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
+  v5 = [(SFNavigationBarToggleButton *)self preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
   [OUTLINED_FUNCTION_4(760) setPreferredSymbolConfiguration:?];
 
-  v6 = [(SFNavigationBarToggleButton *)a1 preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
+  v6 = [(SFNavigationBarToggleButton *)self preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
   [OUTLINED_FUNCTION_4(768) setPreferredSymbolConfiguration:?];
 
   if (!v2)
   {
-    [*(a1 + 776) setImage:0];
+    [*(self + 776) setImage:0];
 LABEL_8:
-    [*(a1 + 784) setImage:0];
+    [*(self + 784) setImage:0];
     goto LABEL_9;
   }
 
@@ -159,7 +159,7 @@ LABEL_8:
   v14 = [(SFNavigationBarToggleButton *)v12 _colorForAccessoryItem:v13];
   [OUTLINED_FUNCTION_10(776) setTintColor:?];
 
-  v15 = [(SFNavigationBarToggleButton *)a1 preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
+  v15 = [(SFNavigationBarToggleButton *)self preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
   [OUTLINED_FUNCTION_4(776) setPreferredSymbolConfiguration:?];
 
   if (v2 == 1)
@@ -179,10 +179,10 @@ LABEL_8:
   v25 = [(SFNavigationBarToggleButton *)v23 _colorForAccessoryItem:v24];
   [OUTLINED_FUNCTION_10(784) setTintColor:?];
 
-  v26 = [(SFNavigationBarToggleButton *)a1 preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
+  v26 = [(SFNavigationBarToggleButton *)self preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
   [OUTLINED_FUNCTION_4(784) setPreferredSymbolConfiguration:?];
 
-  if (v2 >= 3 && !*(a1 + 800))
+  if (v2 >= 3 && !*(self + 800))
   {
     v27 = [OUTLINED_FUNCTION_2_0() objectAtIndexedSubscript:2];
     [v27 unsignedIntegerValue];
@@ -196,33 +196,33 @@ LABEL_8:
     v34 = [(SFNavigationBarToggleButton *)v32 _colorForAccessoryItem:v33];
     [OUTLINED_FUNCTION_4(792) setTintColor:?];
 
-    v35 = [(SFNavigationBarToggleButton *)a1 preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
+    v35 = [(SFNavigationBarToggleButton *)self preferredSymbolConfigurationForImageAtIndex:v4 numberOfAccessories:?];
     [OUTLINED_FUNCTION_6(792) setPreferredSymbolConfiguration:?];
 
     goto LABEL_10;
   }
 
 LABEL_9:
-  [*(a1 + 792) setImage:0];
+  [*(self + 792) setImage:0];
 LABEL_10:
-  v16 = [(SFNavigationBarToggleButton *)a1 _colorForAccessoryItem:?];
-  v17 = [a1 accessoryView];
-  [v17 setTintColor:v16];
+  v16 = [(SFNavigationBarToggleButton *)self _colorForAccessoryItem:?];
+  accessoryView = [self accessoryView];
+  [accessoryView setTintColor:v16];
 
-  [(SFNavigationBarToggleButton *)a1 _updateDefaultStateImageView];
+  [(SFNavigationBarToggleButton *)self _updateDefaultStateImageView];
 
-  [(SFNavigationBarToggleButton *)a1 _updateSelectedStateView];
+  [(SFNavigationBarToggleButton *)self _updateSelectedStateView];
 }
 
 - (void)_updateSelectedStateView
 {
-  if (a1)
+  if (self)
   {
-    v14 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [*(a1 + 816) setBackgroundColor:?];
-    if ([a1 isSelected])
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [*(self + 816) setBackgroundColor:?];
+    if ([self isSelected])
     {
-      v2 = *(a1 + 752);
+      v2 = *(self + 752);
     }
 
     else
@@ -230,7 +230,7 @@ LABEL_10:
       v2 = 0;
     }
 
-    if ([v14 sf_isDarkColor])
+    if ([systemBlueColor sf_isDarkColor])
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
@@ -241,7 +241,7 @@ LABEL_10:
     }
     v3 = ;
     v4 = [v3 colorWithAlphaComponent:(v2 & 1)];
-    [a1 setBackgroundColor:v4];
+    [self setBackgroundColor:v4];
 
     if (v2)
     {
@@ -250,39 +250,39 @@ LABEL_10:
 
     else
     {
-      v5 = *(a1 + 896);
+      v5 = *(self + 896);
     }
 
-    v6 = *(a1 + 808);
+    v6 = *(self + 808);
     if (v6 && v6[53] != v5)
     {
       v6[53] = v5;
       [v6 setNeedsLayout];
     }
 
-    if ([a1 isHighlighted])
+    if ([self isHighlighted])
     {
-      if (*(a1 + 851))
+      if (*(self + 851))
       {
-        v7 = 1;
+        isSelected = 1;
       }
 
       else
       {
-        v7 = [a1 isSelected];
+        isSelected = [self isSelected];
       }
     }
 
     else
     {
-      v7 = 0;
+      isSelected = 0;
     }
 
-    v8 = [a1 isSelected];
-    v9 = *(a1 + 816);
-    if (v8)
+    isSelected2 = [self isSelected];
+    v9 = *(self + 816);
+    if (isSelected2)
     {
-      if (v7)
+      if (isSelected)
       {
         v10 = 0.8;
       }
@@ -296,7 +296,7 @@ LABEL_10:
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
         [OUTLINED_FUNCTION_7() setAlpha:v10];
-        if ([v14 sf_isDarkColor])
+        if ([systemBlueColor sf_isDarkColor])
         {
           [MEMORY[0x1E69DC888] whiteColor];
         }
@@ -313,7 +313,7 @@ LABEL_10:
     else
     {
       v11 = 0.2;
-      if (!v7)
+      if (!isSelected)
       {
         v11 = 0.0;
       }
@@ -321,10 +321,10 @@ LABEL_10:
       [v9 setAlpha:v11];
     }
 
-    if ([a1 isSelected])
+    if ([self isSelected])
     {
-      v13 = [a1 traitCollection];
-      [v13 userInterfaceStyle];
+      traitCollection = [self traitCollection];
+      [traitCollection userInterfaceStyle];
     }
 
     [OUTLINED_FUNCTION_6(776) setOverrideUserInterfaceStyle:?];
@@ -342,20 +342,20 @@ LABEL_10:
   return result;
 }
 
-+ (id)pageMenuImageWithIntelligence:(BOOL)a3 usingMulticolorSymbol:(BOOL)a4
++ (id)pageMenuImageWithIntelligence:(BOOL)intelligence usingMulticolorSymbol:(BOOL)symbol
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (intelligence)
   {
-    v4 = a4;
+    symbolCopy = symbol;
     v5 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"apple.page.menu.badge.sparkles"];
-    if (v4)
+    if (symbolCopy)
     {
       v6 = MEMORY[0x1E69DCAD8];
       v7 = badgeTintColor();
       v13[0] = v7;
-      v8 = [MEMORY[0x1E69DC888] tintColor];
-      v13[1] = v8;
+      tintColor = [MEMORY[0x1E69DC888] tintColor];
+      v13[1] = tintColor;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
       v10 = [v6 configurationWithPaletteColors:v9];
       v11 = [v5 imageWithSymbolConfiguration:v10];
@@ -366,26 +366,26 @@ LABEL_10:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCAB8] _systemImageNamed:{@"apple.page.menu", a4}];
+    v5 = [MEMORY[0x1E69DCAB8] _systemImageNamed:{@"apple.page.menu", symbol}];
   }
 
   return v5;
 }
 
-+ (id)readerImageWithSummary:(BOOL)a3 usingMulticolorSymbol:(BOOL)a4
++ (id)readerImageWithSummary:(BOOL)summary usingMulticolorSymbol:(BOOL)symbol
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (summary)
   {
-    v4 = a4;
+    symbolCopy = symbol;
     v5 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"text.page.badge.sparkles"];
-    if (v4)
+    if (symbolCopy)
     {
       v6 = MEMORY[0x1E69DCAD8];
       v7 = badgeTintColor();
       v13[0] = v7;
-      v8 = [MEMORY[0x1E69DC888] tintColor];
-      v13[1] = v8;
+      tintColor = [MEMORY[0x1E69DC888] tintColor];
+      v13[1] = tintColor;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
       v10 = [v6 configurationWithPaletteColors:v9];
       v11 = [v5 imageWithSymbolConfiguration:v10];
@@ -396,7 +396,7 @@ LABEL_10:
 
   else
   {
-    v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"text.page", a4}];
+    v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:{@"text.page", symbol}];
   }
 
   return v5;
@@ -411,44 +411,44 @@ LABEL_10:
   return v4;
 }
 
-- (SFNavigationBarToggleButton)initWithImage:(id)a3 forInputMode:(unint64_t)a4
+- (SFNavigationBarToggleButton)initWithImage:(id)image forInputMode:(unint64_t)mode
 {
-  v6 = a3;
+  imageCopy = image;
   v10.receiver = self;
   v10.super_class = SFNavigationBarToggleButton;
   v7 = [(SFNavigationBarToggleButton *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    [(SFNavigationBarToggleButton *)v7 initWithImage:v6 forInputMode:a4];
+    [(SFNavigationBarToggleButton *)v7 initWithImage:imageCopy forInputMode:mode];
   }
 
   return v8;
 }
 
-- (void)setOverrideColor:(id)a3 forAccessory:(int64_t)a4
+- (void)setOverrideColor:(id)color forAccessory:(int64_t)accessory
 {
-  v10 = a3;
+  colorCopy = color;
   accessoryColorOverrides = self->_accessoryColorOverrides;
   if (!accessoryColorOverrides)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = self->_accessoryColorOverrides;
-    self->_accessoryColorOverrides = v7;
+    self->_accessoryColorOverrides = dictionary;
 
     accessoryColorOverrides = self->_accessoryColorOverrides;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [(NSMutableDictionary *)accessoryColorOverrides setObject:v10 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:accessory];
+  [(NSMutableDictionary *)accessoryColorOverrides setObject:colorCopy forKeyedSubscript:v9];
 }
 
-- (void)setAccessoryItems:(id)a3
+- (void)setAccessoryItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [itemsCopy copy];
     accessoryItems = self->_accessoryItems;
     self->_accessoryItems = v4;
 
@@ -458,29 +458,29 @@ LABEL_10:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_image, a3);
-    [(UIImageView *)self->_selectedStateImageView setImage:v5];
-    [(UIImageView *)self->_defaultStateImageView setImage:v5];
+    objc_storeStrong(&self->_image, image);
+    [(UIImageView *)self->_selectedStateImageView setImage:imageCopy];
+    [(UIImageView *)self->_defaultStateImageView setImage:imageCopy];
     [(SFNavigationBarToggleButton *)self setNeedsLayout];
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  if (accessoryView != v5)
+  if (accessoryView != viewCopy)
   {
-    v8 = v5;
-    if (v5)
+    v8 = viewCopy;
+    if (viewCopy)
     {
       v7 = [(NSArray *)self->_accessoryItems count];
-      v5 = v8;
+      viewCopy = v8;
       if (v7 > 1)
       {
         goto LABEL_7;
@@ -494,38 +494,38 @@ LABEL_10:
       [(UIView *)accessoryView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     [(SFNavigationBarToggleButton *)self setNeedsLayout];
-    v5 = v8;
+    viewCopy = v8;
   }
 
 LABEL_7:
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     [(SFNavigationBarToggleButton *)self _updateImageViews];
   }
 }
 
-- (void)setMinimumSideMargin:(double)a3
+- (void)setMinimumSideMargin:(double)margin
 {
-  if (self->_minimumSideMargin != a3)
+  if (self->_minimumSideMargin != margin)
   {
-    self->_minimumSideMargin = a3;
+    self->_minimumSideMargin = margin;
     [(SFNavigationBarToggleButton *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setShowsBadge:(BOOL)a3
+- (void)setShowsBadge:(BOOL)badge
 {
-  if (self->_showsBadge != a3)
+  if (self->_showsBadge != badge)
   {
-    self->_showsBadge = a3;
-    [(UIView *)self->_badgeView setHidden:!a3];
+    self->_showsBadge = badge;
+    [(UIView *)self->_badgeView setHidden:!badge];
   }
 }
 
@@ -534,7 +534,7 @@ LABEL_7:
   v99.receiver = self;
   v99.super_class = SFNavigationBarToggleButton;
   [(SFNavigationBarToggleButton *)&v99 layoutSubviews];
-  v3 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   [(SFNavigationBarToggleButton *)self bounds];
   x = v100.origin.x;
   y = v100.origin.y;
@@ -547,24 +547,24 @@ LABEL_7:
   v101.size.width = width;
   v101.size.height = height;
   rect_24 = CGRectGetHeight(v101);
-  v8 = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _leadingTopView];
-  v9 = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _leadingBottomView];
-  v10 = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _trailingTopView];
-  v11 = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _trailingBottomView];
+  _leadingTopView = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _leadingTopView];
+  _leadingBottomView = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _leadingBottomView];
+  _trailingTopView = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _trailingTopView];
+  _trailingBottomView = [(SFNavigationBarToggleButton *)&self->super.super.super.super.super.super.isa _trailingBottomView];
   v12 = *MEMORY[0x1E695F060];
   v13 = *(MEMORY[0x1E695F060] + 8);
-  [v8 sizeThatFits:{*MEMORY[0x1E695F060], v13}];
+  [_leadingTopView sizeThatFits:{*MEMORY[0x1E695F060], v13}];
   v15 = v14;
-  [v9 sizeThatFits:{v12, v13}];
+  [_leadingBottomView sizeThatFits:{v12, v13}];
   v17 = v16;
-  [v10 sizeThatFits:{v12, v13}];
+  [_trailingTopView sizeThatFits:{v12, v13}];
   v19 = v18;
-  [v11 sizeThatFits:{v12, v13}];
+  [_trailingBottomView sizeThatFits:{v12, v13}];
   v93 = fmax(v15, v17);
   rect_16 = width;
   v92 = fmax(v19, v20);
   v21 = 1.0;
-  if (!v10)
+  if (!_trailingTopView)
   {
     v21 = 0.0;
   }
@@ -581,7 +581,7 @@ LABEL_7:
   v35 = v31;
   if (self->_minimumSideMargin != 0.0)
   {
-    if (v3)
+    if (_sf_usesLeftToRightLayout)
     {
       v36 = v32;
       v32 = fmax(CGRectGetMinX(*(&v29 - 1)), self->_minimumSideMargin);
@@ -610,7 +610,7 @@ LABEL_7:
   [(UIImageView *)self->_defaultStateImageView setFrame:?];
   [(UIImageView *)self->_selectedStateImageView setFrame:v39, v41, v43, v45];
   v46 = fmax(v43, v93);
-  if (v9)
+  if (_leadingBottomView)
   {
     v46 = v93;
   }
@@ -629,9 +629,9 @@ LABEL_7:
     [(SFToggleBackgroundView *)self->_selectedStateMaskView setBounds:0.0, 0.0, v50, v47];
     UIRectGetCenter();
     [(SFToggleBackgroundView *)self->_selectedStateMaskView setCenter:?];
-    v52 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
     v53 = 12.0;
-    if (v52)
+    if (isSolariumEnabled)
     {
       v104.origin.x = rect;
       v104.origin.y = v98;
@@ -678,7 +678,7 @@ LABEL_7:
   v58 = v41;
   v59 = v43;
   v60 = v45;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v61 = CGRectGetMaxX(*&v57) + -5.0;
   }
@@ -689,13 +689,13 @@ LABEL_7:
   }
 
   [(UIView *)self->_badgeView setFrame:v61, v41, 5.0, 5.0];
-  [(UIImageView *)self->_defaultStateImageView setHidden:v9 != 0];
-  [(UIImageView *)self->_selectedStateImageView setHidden:v9 != 0];
+  [(UIImageView *)self->_defaultStateImageView setHidden:_leadingBottomView != 0];
+  [(UIImageView *)self->_selectedStateImageView setHidden:_leadingBottomView != 0];
   v62 = v39;
   v63 = v41;
   v64 = v43;
   v65 = v45;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v66 = CGRectGetMinX(*&v62);
   }
@@ -738,18 +738,18 @@ LABEL_7:
   v71 = v70;
   v73 = v72;
   v75 = v74;
-  [v8 setFrame:?];
+  [_leadingTopView setFrame:?];
   v111.origin.x = v69;
   v111.origin.y = v71;
   v111.size.width = v73;
   v111.size.height = v75;
   CGRectGetMaxY(v111);
-  [v9 setFrame:_SFRoundRectToPixels(v66)];
+  [_leadingBottomView setFrame:_SFRoundRectToPixels(v66)];
   v76 = v69;
   v77 = v71;
   v78 = v73;
   v79 = v75;
-  if (v3)
+  if (_sf_usesLeftToRightLayout)
   {
     v80 = CGRectGetMaxX(*&v76) + 1.0;
   }
@@ -763,13 +763,13 @@ LABEL_7:
   v83 = v82;
   v85 = v84;
   v87 = v86;
-  [v10 setFrame:?];
+  [_trailingTopView setFrame:?];
   v112.origin.x = v81;
   v112.origin.y = v83;
   v112.size.width = v85;
   v112.size.height = v87;
   CGRectGetMaxY(v112);
-  [v11 setFrame:_SFRoundRectToPixels(v80)];
+  [_trailingBottomView setFrame:_SFRoundRectToPixels(v80)];
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
     v113.origin.x = rect;
@@ -777,8 +777,8 @@ LABEL_7:
     v113.origin.y = v98;
     v113.size.width = rect_16;
     v88 = CGRectGetHeight(v113) * 0.5;
-    v89 = [(SFNavigationBarToggleButton *)self layer];
-    [v89 setCornerRadius:v88];
+    layer = [(SFNavigationBarToggleButton *)self layer];
+    [layer setCornerRadius:v88];
   }
 }
 
@@ -803,74 +803,74 @@ LABEL_7:
   return result;
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  obj = a3;
+  obj = color;
   if ((WBSIsEqual() & 1) == 0)
   {
     [(SFNavigationBarToggleButton *)obj setGlyphTintColor:self];
   }
 }
 
-- (void)setPreferredSymbolConfiguration:(id)a3
+- (void)setPreferredSymbolConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   preferredSymbolConfiguration = self->_preferredSymbolConfiguration;
-  if (preferredSymbolConfiguration != v5)
+  if (preferredSymbolConfiguration != configurationCopy)
   {
-    v8 = v5;
-    v7 = [(UIImageSymbolConfiguration *)preferredSymbolConfiguration isEqualToConfiguration:v5];
-    v5 = v8;
+    v8 = configurationCopy;
+    v7 = [(UIImageSymbolConfiguration *)preferredSymbolConfiguration isEqualToConfiguration:configurationCopy];
+    configurationCopy = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_preferredSymbolConfiguration, a3);
+      objc_storeStrong(&self->_preferredSymbolConfiguration, configuration);
       [(SFNavigationBarToggleButton *)self _updateImageViews];
-      v5 = v8;
+      configurationCopy = v8;
     }
   }
 }
 
-- (void)setResizableBackgroundCornerRadius:(double)a3
+- (void)setResizableBackgroundCornerRadius:(double)radius
 {
-  if (self->_resizableBackgroundCornerRadius != a3)
+  if (self->_resizableBackgroundCornerRadius != radius)
   {
-    self->_resizableBackgroundCornerRadius = a3;
+    self->_resizableBackgroundCornerRadius = radius;
     [(SFNavigationBarToggleButton *)self setNeedsLayout];
   }
 }
 
-- (void)setInsetFromBackground:(double)a3
+- (void)setInsetFromBackground:(double)background
 {
-  if (self->_insetFromBackground != a3)
+  if (self->_insetFromBackground != background)
   {
-    self->_insetFromBackground = a3;
+    self->_insetFromBackground = background;
     [(SFNavigationBarToggleButton *)self setNeedsLayout];
   }
 }
 
-- (void)setUsesInsetFromBackground:(BOOL)a3
+- (void)setUsesInsetFromBackground:(BOOL)background
 {
-  v3 = a3;
-  if (([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0 && self->_usesInsetFromBackground != v3)
+  backgroundCopy = background;
+  if (([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0 && self->_usesInsetFromBackground != backgroundCopy)
   {
-    self->_usesInsetFromBackground = v3;
+    self->_usesInsetFromBackground = backgroundCopy;
 
     [(SFNavigationBarToggleButton *)self setNeedsLayout];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v8.receiver = self;
   v8.super_class = SFNavigationBarToggleButton;
-  if ([(SFNavigationBarToggleButton *)&v8 isHighlighted]!= a3)
+  if ([(SFNavigationBarToggleButton *)&v8 isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = SFNavigationBarToggleButton;
-    [(SFNavigationBarToggleButton *)&v7 setHighlighted:v3];
+    [(SFNavigationBarToggleButton *)&v7 setHighlighted:highlightedCopy];
     v5 = 0.2;
-    if (v3)
+    if (highlightedCopy)
     {
       v5 = 0.0;
     }
@@ -884,16 +884,16 @@ LABEL_7:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v9.receiver = self;
   v9.super_class = SFNavigationBarToggleButton;
-  if ([(SFNavigationBarToggleButton *)&v9 isSelected]!= a3)
+  if ([(SFNavigationBarToggleButton *)&v9 isSelected]!= selected)
   {
     v8.receiver = self;
     v8.super_class = SFNavigationBarToggleButton;
-    [(SFNavigationBarToggleButton *)&v8 setSelected:v3];
+    [(SFNavigationBarToggleButton *)&v8 setSelected:selectedCopy];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43__SFNavigationBarToggleButton_setSelected___block_invoke;
@@ -901,7 +901,7 @@ LABEL_7:
     v7[4] = self;
     [MEMORY[0x1E69DD250] animateWithDuration:50659332 delay:v7 options:0 animations:0.25 completion:0.0];
     v5 = 0.195;
-    if (v3)
+    if (selectedCopy)
     {
       v5 = 0.205;
     }
@@ -916,9 +916,9 @@ LABEL_7:
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(SFNavigationBarToggleButton *)self superview:a3];
+  v5 = [(SFNavigationBarToggleButton *)self superview:interaction];
   WeakRetained = objc_loadWeakRetained(&self->_pointerPreviewContainer);
   v7 = WeakRetained;
   if (WeakRetained)
@@ -944,9 +944,9 @@ LABEL_7:
   if ([(SFNavigationBarToggleButton *)self isSelected])
   {
     v16 = MEMORY[0x1E69DCDC8];
-    v17 = [(SFNavigationBarToggleButton *)self superview];
+    superview = [(SFNavigationBarToggleButton *)self superview];
     [(SFToggleBackgroundView *)self->_selectedStateMaskView bounds];
-    [v17 convertRect:self->_selectedStateMaskView fromView:?];
+    [superview convertRect:self->_selectedStateMaskView fromView:?];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -981,7 +981,7 @@ LABEL_7:
   return v31;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
   self->_liftedForCursor = 1;
   v5[0] = MEMORY[0x1E69E9820];
@@ -989,10 +989,10 @@ LABEL_7:
   v5[2] = __75__SFNavigationBarToggleButton_pointerInteraction_willEnterRegion_animator___block_invoke;
   v5[3] = &unk_1E721B360;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, region}];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
   self->_liftedForCursor = 0;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1000,7 +1000,7 @@ LABEL_7:
   v5[2] = __74__SFNavigationBarToggleButton_pointerInteraction_willExitRegion_animator___block_invoke;
   v5[3] = &unk_1E721B360;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, region}];
 }
 
 - (UIView)pointerPreviewContainer
@@ -1010,9 +1010,9 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (id)_imageForAccessoryItem:(uint64_t)a1
+- (id)_imageForAccessoryItem:(uint64_t)item
 {
-  if (!a1)
+  if (!item)
   {
     goto LABEL_6;
   }
@@ -1025,7 +1025,7 @@ LABEL_7:
 
   if (a2 == 3)
   {
-    v4 = _SFImageForMediaStateIcon(*(a1 + 872));
+    v4 = _SFImageForMediaStateIcon(*(item + 872));
     v3 = [v4 imageWithRenderingMode:2];
 
     goto LABEL_10;
@@ -1046,60 +1046,60 @@ LABEL_10:
   return v3;
 }
 
-- (void)_colorForAccessoryItem:(void *)a1
+- (void)_colorForAccessoryItem:(void *)item
 {
-  v2 = a1;
-  if (a1)
+  itemCopy = item;
+  if (item)
   {
-    if (![a1 isSelected] || !objc_msgSend(MEMORY[0x1E69C8880], "isSolariumEnabled"))
+    if (![item isSelected] || !objc_msgSend(MEMORY[0x1E69C8880], "isSolariumEnabled"))
     {
-      v6 = v2[105];
+      v6 = itemCopy[105];
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:a2];
-      v4 = [v6 objectForKeyedSubscript:v7];
+      traitCollection = [v6 objectForKeyedSubscript:v7];
 
       switch(a2)
       {
         case 0:
         case 1:
-          if (v4)
+          if (traitCollection)
           {
             goto LABEL_15;
           }
 
-          v5 = [v2 glyphTintColor];
+          glyphTintColor = [itemCopy glyphTintColor];
           goto LABEL_16;
         case 2:
-          if (v4)
+          if (traitCollection)
           {
             goto LABEL_15;
           }
 
-          v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+          glyphTintColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
           goto LABEL_16;
         case 3:
-          if (v4)
+          if (traitCollection)
           {
 LABEL_15:
-            v5 = v4;
-            v4 = v5;
+            glyphTintColor = traitCollection;
+            traitCollection = glyphTintColor;
           }
 
           else
           {
-            v5 = SFColorForMediaStateIcon(v2[109], 1);
+            glyphTintColor = SFColorForMediaStateIcon(itemCopy[109], 1);
           }
 
           goto LABEL_16;
         case 4:
-          v5 = [MEMORY[0x1E69DC888] safari_scribbleThemeColor];
+          glyphTintColor = [MEMORY[0x1E69DC888] safari_scribbleThemeColor];
           goto LABEL_16;
         default:
           goto LABEL_17;
       }
     }
 
-    v4 = [v2 traitCollection];
-    if ([v4 userInterfaceStyle] == 1)
+    traitCollection = [itemCopy traitCollection];
+    if ([traitCollection userInterfaceStyle] == 1)
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
@@ -1108,13 +1108,13 @@ LABEL_15:
     {
       [MEMORY[0x1E69DC888] blackColor];
     }
-    v5 = ;
+    glyphTintColor = ;
 LABEL_16:
-    v2 = v5;
+    itemCopy = glyphTintColor;
 LABEL_17:
   }
 
-  return v2;
+  return itemCopy;
 }
 
 - (void)tintColorDidChange
@@ -1129,145 +1129,145 @@ LABEL_17:
 
 - (id)_leadingTopView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(SFNavigationBarToggleButton *)a1 _resolvedSecondaryView];
+    self = [(SFNavigationBarToggleButton *)self _resolvedSecondaryView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_leadingBottomView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [(SFNavigationBarToggleButton *)a1 _resolvedQuaternaryView];
+    selfCopy = self;
+    _resolvedQuaternaryView = [(SFNavigationBarToggleButton *)self _resolvedQuaternaryView];
 
-    if (v3)
+    if (_resolvedQuaternaryView)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [(SFNavigationBarToggleButton *)v2 _resolvedTertiaryView];
+      self = [(SFNavigationBarToggleButton *)selfCopy _resolvedTertiaryView];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_trailingTopView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = [(SFNavigationBarToggleButton *)a1 _resolvedQuaternaryView];
+    selfCopy = self;
+    _resolvedQuaternaryView = [(SFNavigationBarToggleButton *)self _resolvedQuaternaryView];
 
-    if (v3)
+    if (_resolvedQuaternaryView)
     {
-      a1 = [(SFNavigationBarToggleButton *)v2 _resolvedTertiaryView];
+      self = [(SFNavigationBarToggleButton *)selfCopy _resolvedTertiaryView];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_trailingBottomView
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(SFNavigationBarToggleButton *)a1 _resolvedQuaternaryView];
+    self = [(SFNavigationBarToggleButton *)self _resolvedQuaternaryView];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_resolvedSecondaryView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[97] image];
+    image = [self[97] image];
     OUTLINED_FUNCTION_5();
-    v1 = *(v1 + v3);
+    selfCopy = *(selfCopy + v3);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_resolvedTertiaryView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(SFNavigationBarToggleButton *)a1 _resolvedSecondaryView];
-    v3 = v1[100];
+    _resolvedSecondaryView = [(SFNavigationBarToggleButton *)self _resolvedSecondaryView];
+    v3 = selfCopy[100];
 
-    if (v2 == v3)
+    if (_resolvedSecondaryView == v3)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v4 = [v1[98] image];
+      image = [selfCopy[98] image];
       OUTLINED_FUNCTION_5();
-      v1 = *(v1 + v5);
+      selfCopy = *(selfCopy + v5);
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_resolvedQuaternaryView
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(SFNavigationBarToggleButton *)a1 _resolvedSecondaryView];
-    if (v2 == v1[100])
+    _resolvedSecondaryView = [(SFNavigationBarToggleButton *)self _resolvedSecondaryView];
+    if (_resolvedSecondaryView == selfCopy[100])
     {
-      v1 = 0;
+      selfCopy = 0;
 LABEL_4:
 
       goto LABEL_5;
     }
 
-    v4 = [(SFNavigationBarToggleButton *)v1 _resolvedTertiaryView];
-    v5 = v1[100];
+    _resolvedTertiaryView = [(SFNavigationBarToggleButton *)selfCopy _resolvedTertiaryView];
+    v5 = selfCopy[100];
 
-    if (v4 != v5)
+    if (_resolvedTertiaryView != v5)
     {
-      v2 = [v1[99] image];
+      _resolvedSecondaryView = [selfCopy[99] image];
       OUTLINED_FUNCTION_5();
-      v1 = *(v1 + v6);
+      selfCopy = *(selfCopy + v6);
       goto LABEL_4;
     }
 
-    v1 = 0;
+    selfCopy = 0;
   }
 
 LABEL_5:
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)preferredSymbolConfigurationForImageAtIndex:(uint64_t)a3 numberOfAccessories:
+- (id)preferredSymbolConfigurationForImageAtIndex:(uint64_t)index numberOfAccessories:
 {
-  if (a1)
+  if (self)
   {
     if (a2 > 1)
     {
@@ -1277,15 +1277,15 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    if (a3 == 2)
+    if (index == 2)
     {
       v3 = MEMORY[0x1E69DB878];
       v4 = *MEMORY[0x1E69DB970];
       v5 = 11.0;
 LABEL_6:
       v6 = [v3 systemFontOfSize:v5 weight:v4];
-      v7 = [MEMORY[0x1E69DCA40] defaultMetrics];
-      v8 = [v7 scaledFontForFont:v6];
+      defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
+      v8 = [defaultMetrics scaledFontForFont:v6];
 
       v9 = [MEMORY[0x1E69DCAD8] configurationWithFont:v8];
 LABEL_7:
@@ -1302,7 +1302,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v10 = *(a1 + 920);
+    v10 = *(self + 920);
   }
 
   else
@@ -1315,17 +1315,17 @@ LABEL_8:
   return v10;
 }
 
-- (void)setCornerRoundingMode:(int64_t)a3
+- (void)setCornerRoundingMode:(int64_t)mode
 {
-  if (self->_cornerRoundingMode != a3)
+  if (self->_cornerRoundingMode != mode)
   {
-    self->_cornerRoundingMode = a3;
+    self->_cornerRoundingMode = mode;
     selectedStateMaskView = self->_selectedStateMaskView;
     if (selectedStateMaskView)
     {
-      if (selectedStateMaskView->_cornerRoundingMode != a3)
+      if (selectedStateMaskView->_cornerRoundingMode != mode)
       {
-        selectedStateMaskView->_cornerRoundingMode = a3;
+        selectedStateMaskView->_cornerRoundingMode = mode;
         [(SFToggleBackgroundView *)selectedStateMaskView setNeedsLayout];
       }
     }
@@ -1440,17 +1440,17 @@ void __43__SFNavigationBarToggleButton_setSelected___block_invoke_2(uint64_t a1)
 
 - (void)intrinsicContentSize
 {
-  v24 = [(SFNavigationBarToggleButton *)a1 _leadingTopView];
-  v6 = [(SFNavigationBarToggleButton *)a1 _leadingBottomView];
-  v7 = [(SFNavigationBarToggleButton *)a1 _trailingTopView];
-  v8 = [(SFNavigationBarToggleButton *)a1 _trailingBottomView];
-  OUTLINED_FUNCTION_12(v24, v9);
+  _leadingTopView = [(SFNavigationBarToggleButton *)self _leadingTopView];
+  _leadingBottomView = [(SFNavigationBarToggleButton *)self _leadingBottomView];
+  _trailingTopView = [(SFNavigationBarToggleButton *)self _trailingTopView];
+  _trailingBottomView = [(SFNavigationBarToggleButton *)self _trailingBottomView];
+  OUTLINED_FUNCTION_12(_leadingTopView, v9);
   v11 = v10;
-  OUTLINED_FUNCTION_12(v6, v12);
+  OUTLINED_FUNCTION_12(_leadingBottomView, v12);
   v14 = v13;
-  OUTLINED_FUNCTION_12(v7, v15);
+  OUTLINED_FUNCTION_12(_trailingTopView, v15);
   v17 = v16;
-  OUTLINED_FUNCTION_12(v8, v18);
+  OUTLINED_FUNCTION_12(_trailingBottomView, v18);
   if (v11 <= v14)
   {
     v20 = v14;
@@ -1464,7 +1464,7 @@ void __43__SFNavigationBarToggleButton_setSelected___block_invoke_2(uint64_t a1)
   v21 = *a2;
   v22 = *a2 + fmax(v20, 30.34);
   v23 = fmax(v17, v19) + 1.0;
-  if (!v7)
+  if (!_trailingTopView)
   {
     v23 = 0.0;
   }

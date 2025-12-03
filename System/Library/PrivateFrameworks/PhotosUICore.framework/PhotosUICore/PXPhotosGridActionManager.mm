@@ -1,17 +1,17 @@
 @interface PXPhotosGridActionManager
 + (id)actionsWithActionPerformers;
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)supportsActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)supportsActionType:(id)type;
 - (PXPhotosGridActionManager)init;
-- (PXPhotosGridActionManager)initWithViewModel:(id)a3;
+- (PXPhotosGridActionManager)initWithViewModel:(id)model;
 - (PXPhotosGridActionPerformerInformationProviderDelegate)userInfoDelegate;
 - (PXPhotosViewModel)viewModel;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)activityTypeForActionType:(id)a3;
-- (id)barButtonItemForActionType:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)standardActionForActionType:(id)a3;
-- (void)_handleBarButtonItem:(id)a3;
+- (id)actionPerformerForActionType:(id)type;
+- (id)activityTypeForActionType:(id)type;
+- (id)barButtonItemForActionType:(id)type;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)standardActionForActionType:(id)type;
+- (void)_handleBarButtonItem:(id)item;
 @end
 
 @implementation PXPhotosGridActionManager
@@ -30,57 +30,57 @@
   return WeakRetained;
 }
 
-- (id)activityTypeForActionType:(id)a3
+- (id)activityTypeForActionType:(id)type
 {
-  v3 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:a3];
+  v3 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 activityType];
+    activityType = [v3 activityType];
   }
 
   else
   {
-    v5 = 0;
+    activityType = 0;
   }
 
-  return v5;
+  return activityType;
 }
 
-- (id)standardActionForActionType:(id)a3
+- (id)standardActionForActionType:(id)type
 {
-  v3 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:a3];
+  v3 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 menuElement];
+    menuElement = [v3 menuElement];
   }
 
   else
   {
-    v5 = 0;
+    menuElement = 0;
   }
 
-  return v5;
+  return menuElement;
 }
 
-- (void)_handleBarButtonItem:(id)a3
+- (void)_handleBarButtonItem:(id)item
 {
-  if (a3)
+  if (item)
   {
-    v4 = a3;
-    v5 = [(PXPhotosGridActionManager *)self actionTypeByBarButtonItem];
-    v7 = [v5 objectForKey:v4];
+    itemCopy = item;
+    actionTypeByBarButtonItem = [(PXPhotosGridActionManager *)self actionTypeByBarButtonItem];
+    v7 = [actionTypeByBarButtonItem objectForKey:itemCopy];
 
     v6 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:v7];
     [v6 performActionWithCompletionHandler:0];
   }
 }
 
-- (id)barButtonItemForActionType:(id)a3
+- (id)barButtonItemForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:v4];
+  typeCopy = type;
+  v5 = [(PXPhotosGridActionManager *)self actionPerformerForActionType:typeCopy];
   v6 = v5;
   if (v5)
   {
@@ -91,17 +91,17 @@
       v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v7 style:0 target:self action:sel__handleBarButtonItem_];
     }
 
-    v9 = [v8 title];
+    title = [v8 title];
 
-    if (!v9)
+    if (!title)
     {
       [v8 setTitle:v7];
     }
 
     if (v8)
     {
-      v10 = [(PXPhotosGridActionManager *)self actionTypeByBarButtonItem];
-      [v10 setObject:v4 forKey:v8];
+      actionTypeByBarButtonItem = [(PXPhotosGridActionManager *)self actionTypeByBarButtonItem];
+      [actionTypeByBarButtonItem setObject:typeCopy forKey:v8];
     }
   }
 
@@ -113,34 +113,34 @@
   return v8;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
-  v6 = a3;
-  v7 = [(PXPhotosGridActionManager *)self actionPerformersByType];
-  v8 = objc_alloc([v7 objectForKeyedSubscript:v6]);
-  v9 = [(PXPhotosGridActionManager *)self viewModel];
-  v10 = [v8 initWithViewModel:v9 actionType:v6];
+  typeCopy = type;
+  actionPerformersByType = [(PXPhotosGridActionManager *)self actionPerformersByType];
+  v8 = objc_alloc([actionPerformersByType objectForKeyedSubscript:typeCopy]);
+  viewModel = [(PXPhotosGridActionManager *)self viewModel];
+  v10 = [v8 initWithViewModel:viewModel actionType:typeCopy];
 
-  v11 = [v10 localizedTitleForUseCase:a4];
+  v11 = [v10 localizedTitleForUseCase:case];
 
   return v11;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  if ([(PXPhotosGridActionManager *)self canPerformActionType:v4])
+  typeCopy = type;
+  if ([(PXPhotosGridActionManager *)self canPerformActionType:typeCopy])
   {
-    v5 = [(PXPhotosGridActionManager *)self actionPerformersByType];
-    v6 = objc_alloc([v5 objectForKeyedSubscript:v4]);
-    v7 = [(PXPhotosGridActionManager *)self viewModel];
-    v8 = [v6 initWithViewModel:v7 actionType:v4];
+    actionPerformersByType = [(PXPhotosGridActionManager *)self actionPerformersByType];
+    v6 = objc_alloc([actionPerformersByType objectForKeyedSubscript:typeCopy]);
+    viewModel = [(PXPhotosGridActionManager *)self viewModel];
+    v8 = [v6 initWithViewModel:viewModel actionType:typeCopy];
 
-    v9 = [(PXActionManager *)self performerDelegate];
-    [v8 setDelegate:v9];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [v8 setDelegate:performerDelegate];
 
-    v10 = [(PXPhotosGridActionManager *)self userInfoDelegate];
-    [v8 setUserInfoDelegate:v10];
+    userInfoDelegate = [(PXPhotosGridActionManager *)self userInfoDelegate];
+    [v8 setUserInfoDelegate:userInfoDelegate];
   }
 
   else
@@ -151,31 +151,31 @@
   return v8;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PXPhotosGridActionManager *)self actionPerformersByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  actionPerformersByType = [(PXPhotosGridActionManager *)self actionPerformersByType];
+  v6 = [actionPerformersByType objectForKeyedSubscript:typeCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridActionManager *)self viewModel];
-  v6 = v5;
+  typeCopy = type;
+  viewModel = [(PXPhotosGridActionManager *)self viewModel];
+  v6 = viewModel;
   v7 = 0;
-  if (v4 && v5)
+  if (typeCopy && viewModel)
   {
-    if (-[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", v4) && ([v6 currentLens], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "allowsActionType:", v4), v8, v9) && (-[PXPhotosGridActionManager actionPerformersByType](self, "actionPerformersByType"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "objectForKeyedSubscript:", v4), v10, v11))
+    if (-[PXActionManager isActionTypeAllowed:](self, "isActionTypeAllowed:", typeCopy) && ([v6 currentLens], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "allowsActionType:", typeCopy), v8, v9) && (-[PXPhotosGridActionManager actionPerformersByType](self, "actionPerformersByType"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "objectForKeyedSubscript:", typeCopy), v10, v11))
     {
-      v7 = [v11 canPerformActionType:v4 withViewModel:v6];
+      v7 = [v11 canPerformActionType:typeCopy withViewModel:v6];
     }
 
     else
@@ -189,23 +189,23 @@
 
 - (PXPhotosGridActionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionManager.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PXPhotosGridActionManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionManager.m" lineNumber:194 description:{@"%s is not available as initializer", "-[PXPhotosGridActionManager init]"}];
 
   abort();
 }
 
-- (PXPhotosGridActionManager)initWithViewModel:(id)a3
+- (PXPhotosGridActionManager)initWithViewModel:(id)model
 {
   v14[36] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXPhotosGridActionManager;
   v5 = [(PXPhotosGridActionManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewModel, v4);
+    objc_storeWeak(&v5->_viewModel, modelCopy);
     v13[0] = *off_1E77220F0;
     v14[0] = objc_opt_class();
     v13[1] = *off_1E77220D8;
@@ -282,9 +282,9 @@
     actionPerformersByType = v6->_actionPerformersByType;
     v6->_actionPerformersByType = v7;
 
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     actionTypeByBarButtonItem = v6->_actionTypeByBarButtonItem;
-    v6->_actionTypeByBarButtonItem = v9;
+    v6->_actionTypeByBarButtonItem = weakToStrongObjectsMapTable;
   }
 
   return v6;

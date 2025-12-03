@@ -1,14 +1,14 @@
 @interface VCPProtoMovieAnimalResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieAnimalResult
@@ -19,74 +19,74 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieAnimalResult;
   v4 = [(VCPProtoMovieAnimalResult *)&v8 description];
-  v5 = [(VCPProtoMovieAnimalResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieAnimalResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_animalID];
-  [v3 setObject:v6 forKey:@"animalID"];
+  [dictionary setObject:v6 forKey:@"animalID"];
 
   bounds = self->_bounds;
   if (bounds)
   {
-    v8 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"bounds"];
+    dictionaryRepresentation2 = [(VCPProtoBounds *)bounds dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"bounds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteUint32Field();
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  v5[2] = self->_animalID;
-  [v5 setBounds:self->_bounds];
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  toCopy[2] = self->_animalID;
+  [toCopy setBounds:self->_bounds];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 8) = self->_animalID;
-  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:a3];
+  v8 = [(VCPProtoBounds *)self->_bounds copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_animalID == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_animalID == *(equalCopy + 2))
   {
     bounds = self->_bounds;
-    if (bounds | v4[2])
+    if (bounds | equalCopy[2])
     {
       v7 = [(VCPProtoBounds *)bounds isEqual:?];
     }
@@ -112,12 +112,12 @@
   return v4 ^ v3 ^ [(VCPProtoBounds *)self->_bounds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -138,11 +138,11 @@
     [(VCPProtoMovieAnimalResult *)self setTimeRange:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  self->_animalID = *(v4 + 2);
+  self->_animalID = *(fromCopy + 2);
   bounds = self->_bounds;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (bounds)
   {
     if (!v8)
@@ -163,16 +163,16 @@ LABEL_7:
     [(VCPProtoMovieAnimalResult *)self setBounds:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v14, 0, sizeof(v14));
-  CMTimeRangeMakeFromDictionary(&v14, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v14, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"animalId"];
   v6 = [v4 objectForKeyedSubscript:@"faceBounds"];
   v7 = v6;
@@ -207,11 +207,11 @@ LABEL_13:
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoMovieAnimalResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieAnimalResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -223,16 +223,16 @@ LABEL_13:
   v5 = CMTimeRangeCopyAsDictionary(&range, 0);
   v6 = [(__CFDictionary *)v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCPProtoMovieAnimalResult animalID](self, "animalID")}];
-  [v7 setObject:v8 forKeyedSubscript:@"animalId"];
+  [dictionary setObject:v8 forKeyedSubscript:@"animalId"];
 
-  v9 = [(VCPProtoMovieAnimalResult *)self bounds];
-  [v9 rectValue];
+  bounds = [(VCPProtoMovieAnimalResult *)self bounds];
+  [bounds rectValue];
   v10 = NSStringFromRect(v15);
-  [v7 setObject:v10 forKeyedSubscript:@"faceBounds"];
+  [dictionary setObject:v10 forKeyedSubscript:@"faceBounds"];
 
-  [v6 setObject:v7 forKeyedSubscript:@"attributes"];
+  [v6 setObject:dictionary forKeyedSubscript:@"attributes"];
 
   return v6;
 }

@@ -1,34 +1,34 @@
 @interface HMMTRUserAuthorizationForPairing
 + (id)logCategory;
-- (HMMTRUserAuthorizationForPairing)initWithUiDialogPresenter:(id)a3;
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4;
+- (HMMTRUserAuthorizationForPairing)initWithUiDialogPresenter:(id)presenter;
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler;
 @end
 
 @implementation HMMTRUserAuthorizationForPairing
 
-- (void)requestUserPermissionForBridgeAccessory:(id)a3 completionHandler:(id)a4
+- (void)requestUserPermissionForBridgeAccessory:(id)accessory completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 category];
-  v9 = [v8 isEqual:&unk_283EE8538];
+  accessoryCopy = accessory;
+  handlerCopy = handler;
+  category = [accessoryCopy category];
+  v9 = [category isEqual:&unk_283EE8538];
 
   if (v9)
   {
-    v10 = [(HMMTRUserAuthorizationForPairing *)self uiDialogPresenter];
-    v11 = [v6 name];
+    uiDialogPresenter = [(HMMTRUserAuthorizationForPairing *)self uiDialogPresenter];
+    name = [accessoryCopy name];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __94__HMMTRUserAuthorizationForPairing_requestUserPermissionForBridgeAccessory_completionHandler___block_invoke;
     v12[3] = &unk_2786F08F0;
     v12[4] = self;
-    v13 = v7;
-    [v10 requestUserPermissionForBridgeAccessory:v11 completionHandler:v12];
+    v13 = handlerCopy;
+    [uiDialogPresenter requestUserPermissionForBridgeAccessory:name completionHandler:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -93,16 +93,16 @@ void __94__HMMTRUserAuthorizationForPairing_requestUserPermissionForBridgeAccess
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRUserAuthorizationForPairing)initWithUiDialogPresenter:(id)a3
+- (HMMTRUserAuthorizationForPairing)initWithUiDialogPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v9.receiver = self;
   v9.super_class = HMMTRUserAuthorizationForPairing;
   v6 = [(HMMTRUserAuthorizationForPairing *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uiDialogPresenter, a3);
+    objc_storeStrong(&v6->_uiDialogPresenter, presenter);
   }
 
   return v7;

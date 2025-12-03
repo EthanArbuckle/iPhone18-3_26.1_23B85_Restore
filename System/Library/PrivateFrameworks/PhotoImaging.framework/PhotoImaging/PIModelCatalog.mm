@@ -2,8 +2,8 @@
 + (id)shared;
 - (NSDictionary)_metadataVersionInfo;
 - (NSString)_cleanupModelBundleURLString;
-- (void)set_cleanupModelBundleURLString:(id)a3;
-- (void)set_metadataVersionInfo:(id)a3;
+- (void)set_cleanupModelBundleURLString:(id)string;
+- (void)set_metadataVersionInfo:(id)info;
 @end
 
 @implementation PIModelCatalog
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (void)set_cleanupModelBundleURLString:(id)a3
+- (void)set_cleanupModelBundleURLString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = sub_1C78323A4();
     v6 = v5;
@@ -46,7 +46,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1C76977A0(v4, v6);
 }
 
@@ -65,9 +65,9 @@
   return v2;
 }
 
-- (void)set_metadataVersionInfo:(id)a3
+- (void)set_metadataVersionInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
     v4 = sub_1C7832384();
   }
@@ -77,7 +77,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1C76978CC(v4);
 }
 

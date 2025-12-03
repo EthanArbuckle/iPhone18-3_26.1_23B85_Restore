@@ -1,22 +1,22 @@
 @interface _CardDAVInitialActionsABLegacyDataSource
-- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 outTouchedDB:(BOOL *)a6;
-- (_CardDAVInitialActionsABLegacyDataSource)initWithAddressBook:(void *)a3;
-- (id)actionsForGroups:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 databaseHelper:(id)a6 inFolderWithURL:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 containerIsRestricted:(BOOL)a12 outTouchedDB:(BOOL *)a13;
+- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType outTouchedDB:(BOOL *)b;
+- (_CardDAVInitialActionsABLegacyDataSource)initWithAddressBook:(void *)book;
+- (id)actionsForGroups:(id)groups isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 containerIsRestricted:(BOOL)self2 outTouchedDB:(BOOL *)self3;
 - (void)dealloc;
-- (void)generateActionsForContacts:(id)a3 databaseHelper:(id)a4 inFolderWithURL:(id)a5 blacklistedUUIDs:(id)a6 blacklistedURLs:(id)a7 maxImageSize:(int64_t)a8 maxResourceSize:(int64_t)a9 outTouchedDB:(BOOL *)a10 reportingBlock:(id)a11;
-- (void)prepareToGenerateInitialActionsWithContext:(id)a3;
+- (void)generateActionsForContacts:(id)contacts databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)self0 reportingBlock:(id)self1;
+- (void)prepareToGenerateInitialActionsWithContext:(id)context;
 @end
 
 @implementation _CardDAVInitialActionsABLegacyDataSource
 
-- (_CardDAVInitialActionsABLegacyDataSource)initWithAddressBook:(void *)a3
+- (_CardDAVInitialActionsABLegacyDataSource)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _CardDAVInitialActionsABLegacyDataSource;
   v4 = [(_CardDAVInitialActionsABLegacyDataSource *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -30,10 +30,10 @@
   [(_CardDAVInitialActionsABLegacyDataSource *)&v3 dealloc];
 }
 
-- (void)prepareToGenerateInitialActionsWithContext:(id)a3
+- (void)prepareToGenerateInitialActionsWithContext:(id)context
 {
-  v4 = a3;
-  if ([v4 latestSequenceNumber])
+  contextCopy = context;
+  if ([contextCopy latestSequenceNumber])
   {
     v5 = DALoggingwithCategory();
     v6 = _CPLog_to_os_log_type[3];
@@ -45,34 +45,34 @@
   }
 
   [(_CardDAVInitialActionsABLegacyDataSource *)self addressBook];
-  [v4 setLatestSequenceNumber:ABAddressBookGetSequenceNumber()];
-  [v4 setChangeHistoryTruncated:1];
+  [contextCopy setLatestSequenceNumber:ABAddressBookGetSequenceNumber()];
+  [contextCopy setChangeHistoryTruncated:1];
 }
 
-- (void)generateActionsForContacts:(id)a3 databaseHelper:(id)a4 inFolderWithURL:(id)a5 blacklistedUUIDs:(id)a6 blacklistedURLs:(id)a7 maxImageSize:(int64_t)a8 maxResourceSize:(int64_t)a9 outTouchedDB:(BOOL *)a10 reportingBlock:(id)a11
+- (void)generateActionsForContacts:(id)contacts databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)size maxResourceSize:(int64_t)resourceSize outTouchedDB:(BOOL *)self0 reportingBlock:(id)self1
 {
-  v14 = a3;
-  v42 = a5;
-  v48 = a6;
-  v44 = a7;
-  v15 = a11;
+  contactsCopy = contacts;
+  lCopy = l;
+  dsCopy = ds;
+  lsCopy = ls;
+  blockCopy = block;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v16 = v14;
+  v16 = contactsCopy;
   v47 = [v16 countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (!v47)
   {
 
-    v19 = v42;
+    v19 = lCopy;
     goto LABEL_28;
   }
 
   v17 = 0;
   v46 = *v52;
   v18 = _CPLog_to_os_log_type[3];
-  v19 = v42;
+  v19 = lCopy;
   v45 = v18;
   obj = v16;
   do
@@ -89,12 +89,12 @@
       v50 = 0;
       -[_CardDAVInitialActionsABLegacyDataSource _fillOutExternalUUIDForRecordType:localId:changeType:outTouchedDB:](self, "_fillOutExternalUUIDForRecordType:localId:changeType:outTouchedDB:", 0, [v21 legacyIdentifier], 0, &v50);
       v22 = v50;
-      v23 = [v21 externalUUID];
-      v24 = [v21 externalIdentifier];
-      v25 = v24;
-      if (v24)
+      externalUUID = [v21 externalUUID];
+      externalIdentifier = [v21 externalIdentifier];
+      v25 = externalIdentifier;
+      if (externalIdentifier)
       {
-        v26 = [v24 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v19];
+        v26 = [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v19];
       }
 
       else
@@ -103,16 +103,16 @@
       }
 
       v17 |= v22;
-      if (([v48 containsObject:v23] & 1) != 0 || objc_msgSend(v44, "containsObject:", v26))
+      if (([dsCopy containsObject:externalUUID] & 1) != 0 || objc_msgSend(lsCopy, "containsObject:", v26))
       {
-        v27 = DALoggingwithCategory();
-        if (os_log_type_enabled(v27, v18))
+        eTag = DALoggingwithCategory();
+        if (os_log_type_enabled(eTag, v18))
         {
           *buf = 138412546;
-          v56 = v23;
+          v56 = externalUUID;
           v57 = 2112;
           v58 = v26;
-          _os_log_impl(&dword_0, v27, v18, "Not pushing person with uuid %@ href %@ because the server rejected it", buf, 0x16u);
+          _os_log_impl(&dword_0, eTag, v18, "Not pushing person with uuid %@ href %@ because the server rejected it", buf, 0x16u);
         }
 
 LABEL_14:
@@ -120,15 +120,15 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v27 = [v21 eTag];
-      if (v27)
+      eTag = [v21 eTag];
+      if (eTag)
       {
         goto LABEL_14;
       }
 
       buf[0] = 0;
       LOBYTE(v38) = 0;
-      v30 = +[CardDAVVCardItem itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:](CardDAVVCardItem, "itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:", [v21 asPerson], -[_CardDAVInitialActionsABLegacyDataSource addressBook](self, "addressBook"), buf, a8, a9, v42, v38);
+      v30 = +[CardDAVVCardItem itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:](CardDAVVCardItem, "itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:", [v21 asPerson], -[_CardDAVInitialActionsABLegacyDataSource addressBook](self, "addressBook"), buf, size, resourceSize, lCopy, v38);
       v40 = buf[0];
       v31 = [DAAction alloc];
       v41 = v30;
@@ -146,17 +146,17 @@ LABEL_14:
         v32 = [v31 initWithItemChangeType:0 changedItem:v30 serverId:0];
         v33 = [DACardDAVActionResult alloc];
         v34 = v32;
-        v35 = v23;
+        v35 = externalUUID;
         v36 = 0;
       }
 
       v28 = [(DACardDAVActionResult *)v33 initWithAction:v34 externalUUID:v35 externalURL:v36];
       v17 |= v40;
 
-      v19 = v42;
+      v19 = lCopy;
 LABEL_15:
 
-      v29 = v15[2](v15, v21, v28);
+      v29 = blockCopy[2](blockCopy, v21, v28);
       if (!v29)
       {
         v16 = obj;
@@ -178,23 +178,23 @@ LABEL_25:
 
   if (v17)
   {
-    *a10 = 1;
+    *b = 1;
   }
 
 LABEL_28:
 }
 
-- (id)actionsForGroups:(id)a3 isPrimaryAppleAccount:(BOOL)a4 isU18Account:(BOOL)a5 databaseHelper:(id)a6 inFolderWithURL:(id)a7 blacklistedUUIDs:(id)a8 blacklistedURLs:(id)a9 maxImageSize:(int64_t)a10 maxResourceSize:(int64_t)a11 containerIsRestricted:(BOOL)a12 outTouchedDB:(BOOL *)a13
+- (id)actionsForGroups:(id)groups isPrimaryAppleAccount:(BOOL)account isU18Account:(BOOL)u18Account databaseHelper:(id)helper inFolderWithURL:(id)l blacklistedUUIDs:(id)ds blacklistedURLs:(id)ls maxImageSize:(int64_t)self0 maxResourceSize:(int64_t)self1 containerIsRestricted:(BOOL)self2 outTouchedDB:(BOOL *)self3
 {
-  v15 = a4;
-  v16 = a3;
-  v40 = a7;
-  v44 = a8;
-  v41 = a9;
-  if (v15 && a12)
+  accountCopy = account;
+  groupsCopy = groups;
+  lCopy = l;
+  dsCopy = ds;
+  lsCopy = ls;
+  if (accountCopy && restricted)
   {
     v39 = &__NSArray0__struct;
-    v17 = v40;
+    v17 = lCopy;
   }
 
   else
@@ -204,15 +204,15 @@ LABEL_28:
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v38 = v16;
-    obj = v16;
+    v38 = groupsCopy;
+    obj = groupsCopy;
     v45 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
     v18 = 0;
     if (v45)
     {
       v43 = *v49;
       v19 = _CPLog_to_os_log_type[3];
-      v17 = v40;
+      v17 = lCopy;
       do
       {
         for (i = 0; i != v45; i = i + 1)
@@ -226,12 +226,12 @@ LABEL_28:
           v47 = 0;
           -[_CardDAVInitialActionsABLegacyDataSource _fillOutExternalUUIDForRecordType:localId:changeType:outTouchedDB:](self, "_fillOutExternalUUIDForRecordType:localId:changeType:outTouchedDB:", 1, [v21 legacyIdentifier], 0, &v47);
           v22 = v47;
-          v23 = [v21 externalUUID];
-          v24 = [v21 externalIdentifier];
-          v25 = v24;
-          if (v24)
+          externalUUID = [v21 externalUUID];
+          externalIdentifier = [v21 externalIdentifier];
+          v25 = externalIdentifier;
+          if (externalIdentifier)
           {
-            v26 = [v24 da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v17];
+            v26 = [externalIdentifier da_absoluteURLForChildLeastInfoRepresentationRelativeToParentURL:v17];
           }
 
           else
@@ -240,27 +240,27 @@ LABEL_28:
           }
 
           v18 |= v22;
-          if (([v44 containsObject:v23] & 1) != 0 || objc_msgSend(v41, "containsObject:", v26))
+          if (([dsCopy containsObject:externalUUID] & 1) != 0 || objc_msgSend(lsCopy, "containsObject:", v26))
           {
-            v27 = DALoggingwithCategory();
-            if (os_log_type_enabled(v27, v19))
+            eTag = DALoggingwithCategory();
+            if (os_log_type_enabled(eTag, v19))
             {
               *buf = 138412546;
-              v53 = v23;
+              v53 = externalUUID;
               v54 = 2112;
               v55 = v26;
-              _os_log_impl(&dword_0, v27, v19, "Not pushing group with uuid %@ href %@ because the server rejected it", buf, 0x16u);
+              _os_log_impl(&dword_0, eTag, v19, "Not pushing group with uuid %@ href %@ because the server rejected it", buf, 0x16u);
             }
           }
 
           else
           {
-            v27 = [v21 eTag];
-            if (!v27)
+            eTag = [v21 eTag];
+            if (!eTag)
             {
               buf[0] = 0;
               LOBYTE(v37) = 0;
-              v28 = +[CardDAVVCardItem itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:](CardDAVVCardItem, "itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:", [v21 asABGroup], -[_CardDAVInitialActionsABLegacyDataSource addressBook](self, "addressBook"), buf, a10, a11, v17, v37);
+              v28 = +[CardDAVVCardItem itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:](CardDAVVCardItem, "itemWithABRecord:addressBook:outNeedsDBSave:maxImageSize:maxResourceSize:inContainerWithURL:afterImageSyncFailed:", [v21 asABGroup], -[_CardDAVInitialActionsABLegacyDataSource addressBook](self, "addressBook"), buf, size, resourceSize, v17, v37);
               v18 = (buf[0] | v18 & 1) != 0;
               v29 = [DAAction alloc];
               if (v26)
@@ -277,14 +277,14 @@ LABEL_28:
                 v30 = [v29 initWithItemChangeType:0 changedItem:v28 serverId:0];
                 v31 = [DACardDAVActionResult alloc];
                 v32 = v30;
-                v33 = v23;
+                v33 = externalUUID;
                 v34 = 0;
               }
 
               v35 = [(DACardDAVActionResult *)v31 initWithAction:v32 externalUUID:v33 externalURL:v34];
               [v39 addObject:v35];
 
-              v17 = v40;
+              v17 = lCopy;
             }
           }
         }
@@ -297,28 +297,28 @@ LABEL_28:
 
     else
     {
-      v17 = v40;
+      v17 = lCopy;
     }
 
-    v16 = v38;
-    *a13 |= v18 & 1;
+    groupsCopy = v38;
+    *b |= v18 & 1;
   }
 
   return v39;
 }
 
-- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)a3 localId:(int)a4 changeType:(unint64_t)a5 outTouchedDB:(BOOL *)a6
+- (BOOL)_fillOutExternalUUIDForRecordType:(unsigned int)type localId:(int)id changeType:(unint64_t)changeType outTouchedDB:(BOOL *)b
 {
-  if (a5 > 1)
+  if (changeType > 1)
   {
     LOBYTE(GroupWithRecordID) = 1;
     return GroupWithRecordID;
   }
 
-  v9 = [(_CardDAVInitialActionsABLegacyDataSource *)self addressBook];
-  if (a3)
+  addressBook = [(_CardDAVInitialActionsABLegacyDataSource *)self addressBook];
+  if (type)
   {
-    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(v9, a4);
+    GroupWithRecordID = ABAddressBookGetGroupWithRecordID(addressBook, id);
     if (!GroupWithRecordID)
     {
       return GroupWithRecordID;
@@ -330,7 +330,7 @@ LABEL_28:
 
   else
   {
-    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(v9, a4);
+    GroupWithRecordID = ABAddressBookGetPersonWithRecordID(addressBook, id);
     if (!GroupWithRecordID)
     {
       return GroupWithRecordID;
@@ -349,7 +349,7 @@ LABEL_28:
 
   else
   {
-    *a6 = 1;
+    *b = 1;
     v15 = +[NSString da_newGUID];
     ABRecordSetValue(v11, v13, v15, 0);
   }

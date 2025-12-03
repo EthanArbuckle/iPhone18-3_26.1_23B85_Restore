@@ -8,7 +8,7 @@
 - (UIView)vehicleColorView;
 - (VehicleAppCell)appCell;
 - (VehicleBatteryView)vehicleBatteryView;
-- (VehicleDetailViewController)initWithVehicle:(id)a3 delegate:(id)a4;
+- (VehicleDetailViewController)initWithVehicle:(id)vehicle delegate:(id)delegate;
 - (VehicleDetailViewControllerDelegate)delegate;
 - (VehicleLabelCell)addNetworksCell;
 - (VehicleLabelCell)deleteCell;
@@ -17,29 +17,29 @@
 - (VehicleTitleDetailCell)licensePlateCell;
 - (VehicleTitleDetailCell)vehicleMakeCell;
 - (VehicleTitleDetailCell)vehicleModelCell;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_pressedEdit;
 - (void)_pressedOpen;
-- (void)_reloadAndSave:(BOOL)a3;
+- (void)_reloadAndSave:(BOOL)save;
 - (void)_saveIfAppropriate;
 - (void)_updateContent;
 - (void)confirmRemoveVehicle;
 - (void)dismiss;
-- (void)editVehicleViewController:(id)a3 didSelectColor:(id)a4 nickname:(id)a5 removedNetworks:(id)a6;
-- (void)editVehicleViewControllerDidSelectDone:(id)a3;
-- (void)networkPickerControllerDidSelectNetworks:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)editVehicleViewController:(id)controller didSelectColor:(id)color nickname:(id)nickname removedNetworks:(id)networks;
+- (void)editVehicleViewControllerDidSelectDone:(id)done;
+- (void)networkPickerControllerDidSelectNetworks:(id)networks;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation VehicleDetailViewController
@@ -51,22 +51,22 @@
   return WeakRetained;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (self->_deletingVehicle)
   {
     v5 = +[MKMapService sharedService];
-    v6 = [v4 vehicles];
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 count]);
-    v8 = [v7 stringValue];
-    [v5 captureUserAction:2112 onTarget:662 eventValue:v8];
+    vehicles = [updateCopy vehicles];
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vehicles count]);
+    stringValue = [v7 stringValue];
+    [v5 captureUserAction:2112 onTarget:662 eventValue:stringValue];
 
     v9 = +[MKMapService sharedService];
-    v10 = [v4 vehicles];
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 count]);
-    v12 = [v11 stringValue];
-    [v9 captureUserAction:2111 onTarget:660 eventValue:v12];
+    vehicles2 = [updateCopy vehicles];
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [vehicles2 count]);
+    stringValue2 = [v11 stringValue];
+    [v9 captureUserAction:2111 onTarget:660 eventValue:stringValue2];
 
     self->_deletingVehicle = 0;
   }
@@ -76,36 +76,36 @@
   v14[2] = sub_100D35FF8;
   v14[3] = &unk_101661A90;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = updateCopy;
+  v13 = updateCopy;
   dispatch_async(&_dispatch_main_q, v14);
 }
 
-- (void)editVehicleViewControllerDidSelectDone:(id)a3
+- (void)editVehicleViewControllerDidSelectDone:(id)done
 {
-  v5 = [(VehicleDetailViewController *)self navigationController];
-  v4 = [v5 popToViewController:self animated:1];
+  navigationController = [(VehicleDetailViewController *)self navigationController];
+  v4 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)editVehicleViewController:(id)a3 didSelectColor:(id)a4 nickname:(id)a5 removedNetworks:(id)a6
+- (void)editVehicleViewController:(id)controller didSelectColor:(id)color nickname:(id)nickname removedNetworks:(id)networks
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  colorCopy = color;
+  nicknameCopy = nickname;
+  networksCopy = networks;
   v12 = sub_100022C48();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = v11;
+    v13 = networksCopy;
     v14 = v13;
     if (v13)
     {
       if ([v13 count])
       {
         v31 = v12;
-        v32 = v11;
-        v33 = v10;
-        v34 = self;
-        v35 = v9;
+        v32 = networksCopy;
+        v33 = nicknameCopy;
+        selfCopy = self;
+        v35 = colorCopy;
         v15 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
         v36 = 0u;
         v37 = 0u;
@@ -175,10 +175,10 @@ LABEL_21:
             v28 = [v16 componentsJoinedByString:{@", "}];
             v29 = [NSString stringWithFormat:@"<%p> [%@]", v16, v28];
 
-            self = v34;
-            v9 = v35;
-            v11 = v32;
-            v10 = v33;
+            self = selfCopy;
+            colorCopy = v35;
+            networksCopy = v32;
+            nicknameCopy = v33;
             v14 = v30;
             v12 = v31;
             goto LABEL_24;
@@ -197,9 +197,9 @@ LABEL_21:
 LABEL_24:
 
     *buf = 138412802;
-    v41 = v9;
+    v41 = colorCopy;
     v42 = 2112;
-    v43 = v10;
+    v43 = nicknameCopy;
     v44 = 2112;
     v45 = v29;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "edit vehicle VC selected color: %@, nickname: %@, removedNetworks: %@", buf, 0x20u);
@@ -208,16 +208,16 @@ LABEL_24:
   [(VehicleDetailViewController *)self _reloadAndSave:1];
 }
 
-- (void)networkPickerControllerDidSelectNetworks:(id)a3
+- (void)networkPickerControllerDidSelectNetworks:(id)networks
 {
-  v4 = a3;
-  if ([v4 count])
+  networksCopy = networks;
+  if ([networksCopy count])
   {
-    v5 = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
-    v6 = v5;
-    if (v5)
+    preferredChargingNetworks = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
+    v6 = preferredChargingNetworks;
+    if (preferredChargingNetworks)
     {
-      v7 = v5;
+      v7 = preferredChargingNetworks;
     }
 
     else
@@ -230,15 +230,15 @@ LABEL_24:
     v9 = sub_100022C48();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = v4;
+      v10 = networksCopy;
       v11 = v10;
       if (v10)
       {
         if ([v10 count])
         {
           v52 = v9;
-          v54 = self;
-          v56 = v4;
+          selfCopy = self;
+          v56 = networksCopy;
           v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
           v58 = 0u;
           v59 = 0u;
@@ -308,8 +308,8 @@ LABEL_27:
               v25 = [v13 componentsJoinedByString:{@", "}];
               v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
-              v4 = v56;
-              self = v54;
+              networksCopy = v56;
+              self = selfCopy;
               v11 = v50;
               v9 = v52;
               goto LABEL_30;
@@ -328,18 +328,18 @@ LABEL_27:
 LABEL_30:
 
       v27 = v26;
-      v28 = [(VGVehicle *)self->_vehicle displayName];
-      v29 = [v8 allObjects];
-      v30 = v29;
-      if (v29)
+      displayName = [(VGVehicle *)self->_vehicle displayName];
+      allObjects = [v8 allObjects];
+      v30 = allObjects;
+      if (allObjects)
       {
-        if ([v29 count])
+        if ([allObjects count])
         {
-          v49 = v28;
+          v49 = displayName;
           v51 = v27;
           v53 = v9;
           v55 = v8;
-          v57 = v4;
+          v57 = networksCopy;
           v31 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v30 count]);
           v58 = 0u;
           v59 = 0u;
@@ -410,11 +410,11 @@ LABEL_49:
               v45 = [NSString stringWithFormat:@"<%p> [%@]", v32, v44];
 
               v8 = v55;
-              v4 = v57;
+              networksCopy = v57;
               v27 = v51;
               v9 = v53;
               v30 = v48;
-              v28 = v49;
+              displayName = v49;
               goto LABEL_52;
             }
           }
@@ -433,13 +433,13 @@ LABEL_52:
       *buf = 138412802;
       v63 = v27;
       v64 = 2112;
-      v65 = v28;
+      v65 = displayName;
       v66 = 2112;
       v67 = v45;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Network Picker VC did select networks: %@, will update vehicle: %@ (current networks: %@)", buf, 0x20u);
     }
 
-    v46 = [v8 setByAddingObjectsFromArray:v4];
+    v46 = [v8 setByAddingObjectsFromArray:networksCopy];
     [(VGVehicle *)self->_vehicle setPreferredChargingNetworks:v46];
     v47 = +[VGVirtualGarageService sharedService];
     [v47 virtualGarageSaveVehicle:self->_vehicle];
@@ -456,32 +456,32 @@ LABEL_52:
   }
 }
 
-- (void)_reloadAndSave:(BOOL)a3
+- (void)_reloadAndSave:(BOOL)save
 {
-  v3 = a3;
+  saveCopy = save;
   [(VehicleDetailViewController *)self _updateContent];
-  if (v3)
+  if (saveCopy)
   {
     [(VehicleDetailViewController *)self _saveIfAppropriate];
   }
 
   [(VehicleDetailViewController *)self setTableStructure:0];
-  v5 = [(VehicleDetailViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(VehicleDetailViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_pressedOpen
 {
-  v3 = [(VGVehicle *)self->_vehicle pairedAppIdentifier];
+  pairedAppIdentifier = [(VGVehicle *)self->_vehicle pairedAppIdentifier];
 
-  if (v3)
+  if (pairedAppIdentifier)
   {
     v4 = +[MKMapService sharedService];
     [v4 captureUserAction:2110 onTarget:662 eventValue:0];
 
     v8 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-    v5 = [(VGVehicle *)self->_vehicle pairedAppIdentifier];
-    [v8 openApplication:v5 withOptions:0 completion:0];
+    pairedAppIdentifier2 = [(VGVehicle *)self->_vehicle pairedAppIdentifier];
+    [v8 openApplication:pairedAppIdentifier2 withOptions:0 completion:0];
   }
 
   else
@@ -503,13 +503,13 @@ LABEL_52:
   [v3 captureUserAction:2120 onTarget:662 eventValue:0];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [(VehicleDetailViewController *)self traitCollection];
+  traitCollection = [(VehicleDetailViewController *)self traitCollection];
   v5 = [EditVehicleViewController alloc];
-  v6 = sub_1006D447C(v9, v4);
+  v6 = sub_1006D447C(v9, traitCollection);
   v7 = [(EditVehicleViewController *)v5 initWithColors:v6 vehicle:self->_vehicle delegate:self];
 
-  v8 = [(VehicleDetailViewController *)self navigationController];
-  [v8 pushViewController:v7 animated:1];
+  navigationController = [(VehicleDetailViewController *)self navigationController];
+  [navigationController pushViewController:v7 animated:1];
 }
 
 - (void)_saveIfAppropriate
@@ -524,18 +524,18 @@ LABEL_52:
 
 - (BOOL)_isMinimumViableVehicle
 {
-  v2 = [(VGVehicle *)self->_vehicle combinedDisplayName];
-  v3 = [v2 length] != 0;
+  combinedDisplayName = [(VGVehicle *)self->_vehicle combinedDisplayName];
+  v3 = [combinedDisplayName length] != 0;
 
   return v3;
 }
 
 - (void)confirmRemoveVehicle
 {
-  v3 = [(VehicleDetailViewController *)self title];
+  title = [(VehicleDetailViewController *)self title];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"[Virtual Garage] Remove Vehicle Alert" value:@"localized string not found" table:0];
-  v6 = [UIAlertController alertControllerWithTitle:v3 message:v5 preferredStyle:0];
+  v6 = [UIAlertController alertControllerWithTitle:title message:v5 preferredStyle:0];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[Virtual Garage] Remove Vehicle Alert Action" value:@"localized string not found" table:0];
@@ -557,45 +557,45 @@ LABEL_52:
 
 - (void)_updateContent
 {
-  v3 = [(VGVehicle *)self->_vehicle colorHex];
-  v4 = [UIColor _maps_colorFromHexRepresentation:v3];
+  colorHex = [(VGVehicle *)self->_vehicle colorHex];
+  v4 = [UIColor _maps_colorFromHexRepresentation:colorHex];
   v5 = v4;
   if (!v4)
   {
     v5 = +[UIColor systemBlueColor];
   }
 
-  v6 = [(VehicleDetailViewController *)self vehicleColorView];
-  [v6 setBackgroundColor:v5];
+  vehicleColorView = [(VehicleDetailViewController *)self vehicleColorView];
+  [vehicleColorView setBackgroundColor:v5];
 
   if (!v4)
   {
   }
 
-  v7 = [(VehicleDetailViewController *)self vehicleColorView];
-  v8 = [v7 backgroundColor];
+  vehicleColorView2 = [(VehicleDetailViewController *)self vehicleColorView];
+  backgroundColor = [vehicleColorView2 backgroundColor];
   v9 = +[UIColor whiteColor];
-  [v8 _maps_euclideanDistanceFromColor:v9];
+  [backgroundColor _maps_euclideanDistanceFromColor:v9];
   v11 = v10;
 
   if (v11 >= 0.1)
   {
     v12 = +[UIColor systemWhiteColor];
-    v13 = [(VehicleDetailViewController *)self vehicleIconView];
-    [v13 setTintColor:v12];
+    vehicleIconView = [(VehicleDetailViewController *)self vehicleIconView];
+    [vehicleIconView setTintColor:v12];
   }
 
   else
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
-    v13 = [(VehicleDetailViewController *)self traitCollection];
-    v14 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v12 compatibleWithTraitCollection:v13];
-    v15 = [(VehicleDetailViewController *)self vehicleIconView];
-    [v15 setTintColor:v14];
+    vehicleIconView = [(VehicleDetailViewController *)self traitCollection];
+    v14 = [UIColor colorNamed:@"TertiaryVehicleTint" inBundle:v12 compatibleWithTraitCollection:vehicleIconView];
+    vehicleIconView2 = [(VehicleDetailViewController *)self vehicleIconView];
+    [vehicleIconView2 setTintColor:v14];
   }
 
-  v16 = [(VGVehicle *)self->_vehicle displayName];
-  v17 = [v16 length];
+  displayName = [(VGVehicle *)self->_vehicle displayName];
+  v17 = [displayName length];
   vehicle = self->_vehicle;
   if (v17)
   {
@@ -608,54 +608,54 @@ LABEL_52:
   }
   v50 = ;
 
-  v19 = [(VehicleDetailViewController *)self vehicleNameLabel];
-  [v19 setText:v50];
+  vehicleNameLabel = [(VehicleDetailViewController *)self vehicleNameLabel];
+  [vehicleNameLabel setText:v50];
 
-  LODWORD(v19) = [(VGVehicle *)self->_vehicle isPureElectricVehicle];
-  v20 = [(VehicleDetailViewController *)self vehicleBatteryView];
-  [v20 setHidden:v19 ^ 1];
+  LODWORD(vehicleNameLabel) = [(VGVehicle *)self->_vehicle isPureElectricVehicle];
+  vehicleBatteryView = [(VehicleDetailViewController *)self vehicleBatteryView];
+  [vehicleBatteryView setHidden:vehicleNameLabel ^ 1];
 
   if ([(VGVehicle *)self->_vehicle isPureElectricVehicle])
   {
     v21 = self->_vehicle;
-    v22 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    [v22 setVehicle:v21];
+    vehicleBatteryView2 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    [vehicleBatteryView2 setVehicle:v21];
   }
 
-  v23 = [(VGVehicle *)self->_vehicle licensePlate];
-  v24 = [(VehicleDetailViewController *)self licensePlateCell];
-  v25 = [v24 detailLabel];
-  [v25 setText:v23];
+  licensePlate = [(VGVehicle *)self->_vehicle licensePlate];
+  licensePlateCell = [(VehicleDetailViewController *)self licensePlateCell];
+  detailLabel = [licensePlateCell detailLabel];
+  [detailLabel setText:licensePlate];
 
-  v26 = [(VGVehicle *)self->_vehicle manufacturer];
-  v27 = [(VehicleDetailViewController *)self vehicleMakeCell];
-  v28 = [v27 detailLabel];
-  [v28 setText:v26];
+  manufacturer = [(VGVehicle *)self->_vehicle manufacturer];
+  vehicleMakeCell = [(VehicleDetailViewController *)self vehicleMakeCell];
+  detailLabel2 = [vehicleMakeCell detailLabel];
+  [detailLabel2 setText:manufacturer];
 
-  v29 = [(VGVehicle *)self->_vehicle model];
-  v30 = [(VehicleDetailViewController *)self vehicleModelCell];
-  v31 = [v30 detailLabel];
-  [v31 setText:v29];
+  model = [(VGVehicle *)self->_vehicle model];
+  vehicleModelCell = [(VehicleDetailViewController *)self vehicleModelCell];
+  detailLabel3 = [vehicleModelCell detailLabel];
+  [detailLabel3 setText:model];
 
   [(VGVehicle *)self->_vehicle supportedConnectors];
   v32 = VGChargingConnectorTypeOptionsUnpacked();
   v33 = sub_100021DB0(v32, &stru_101651C50);
   v34 = [v33 componentsJoinedByString:{@", "}];
-  v35 = [(VehicleDetailViewController *)self editPlugsCell];
-  v36 = [v35 detailLabel];
-  [v36 setText:v34];
+  editPlugsCell = [(VehicleDetailViewController *)self editPlugsCell];
+  detailLabel4 = [editPlugsCell detailLabel];
+  [detailLabel4 setText:v34];
 
-  v37 = [(VGVehicle *)self->_vehicle licensePlate];
-  v38 = [v37 length];
+  licensePlate2 = [(VGVehicle *)self->_vehicle licensePlate];
+  v38 = [licensePlate2 length];
 
   v39 = +[NSBundle mainBundle];
   v40 = v39;
   if (v38)
   {
     v41 = [v39 localizedStringForKey:@"[Virtual Garage] Remove License Plate Number" value:@"localized string not found" table:0];
-    v42 = [(VehicleDetailViewController *)self editLicensePlateCell];
-    v43 = [v42 label];
-    [v43 setText:v41];
+    editLicensePlateCell = [(VehicleDetailViewController *)self editLicensePlateCell];
+    label = [editLicensePlateCell label];
+    [label setText:v41];
 
     +[UIColor systemRedColor];
   }
@@ -663,43 +663,43 @@ LABEL_52:
   else
   {
     v44 = [v39 localizedStringForKey:@"[Virtual Garage] Update License Plate Number" value:@"localized string not found" table:0];
-    v45 = [(VehicleDetailViewController *)self editLicensePlateCell];
-    v46 = [v45 label];
-    [v46 setText:v44];
+    editLicensePlateCell2 = [(VehicleDetailViewController *)self editLicensePlateCell];
+    label2 = [editLicensePlateCell2 label];
+    [label2 setText:v44];
 
     +[UIColor labelColor];
   }
   v47 = ;
-  v48 = [(VehicleDetailViewController *)self editLicensePlateCell];
-  v49 = [v48 label];
-  [v49 setTextColor:v47];
+  editLicensePlateCell3 = [(VehicleDetailViewController *)self editLicensePlateCell];
+  label3 = [editLicensePlateCell3 label];
+  [label3 setTextColor:v47];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v41 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v41 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v8 = [(VehicleDetailViewController *)self editPlugsCell];
+  editPlugsCell = [(VehicleDetailViewController *)self editPlugsCell];
 
-  if (v41 == v8)
+  if (v41 == editPlugsCell)
   {
     v14 = +[MKMapService sharedService];
     [v14 captureUserAction:438 onTarget:662 eventValue:0];
 
     v15 = [[VehicleConnectorListViewController alloc] initWithVehicle:self->_vehicle];
-    v16 = [(VehicleDetailViewController *)self navigationController];
-    [v16 pushViewController:v15 animated:1];
+    navigationController = [(VehicleDetailViewController *)self navigationController];
+    [navigationController pushViewController:v15 animated:1];
 
 LABEL_11:
     goto LABEL_18;
   }
 
-  v9 = [(VehicleDetailViewController *)self addNetworksCell];
+  addNetworksCell = [(VehicleDetailViewController *)self addNetworksCell];
 
-  if (v41 == v9)
+  if (v41 == addNetworksCell)
   {
     v17 = +[MKMapService sharedService];
     [v17 captureUserAction:453 onTarget:662 eventValue:0];
@@ -712,51 +712,51 @@ LABEL_11:
     }
 
     v20 = objc_alloc(*v19);
-    v21 = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
-    v15 = [v20 initWithExcludedNetworks:v21 delegate:self];
+    preferredChargingNetworks = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
+    v15 = [v20 initWithExcludedNetworks:preferredChargingNetworks delegate:self];
 
     v22 = [[UINavigationController alloc] initWithRootViewController:v15];
-    v23 = [(VehicleDetailViewController *)self topMostPresentedViewController];
-    [v23 presentViewController:v22 animated:1 completion:0];
+    topMostPresentedViewController = [(VehicleDetailViewController *)self topMostPresentedViewController];
+    [topMostPresentedViewController presentViewController:v22 animated:1 completion:0];
 
     goto LABEL_11;
   }
 
-  v10 = [(VehicleDetailViewController *)self licensePlateCell];
+  licensePlateCell = [(VehicleDetailViewController *)self licensePlateCell];
 
-  if (v41 == v10)
+  if (v41 == licensePlateCell)
   {
     v24 = +[MKMapService sharedService];
     [v24 captureUserAction:2125 onTarget:662 eventValue:0];
 
-    v25 = [(VehicleDetailViewController *)self _maps_mapsSceneDelegate];
-    v26 = [v25 appCoordinator];
-    v27 = [v26 baseActionCoordinator];
+    _maps_mapsSceneDelegate = [(VehicleDetailViewController *)self _maps_mapsSceneDelegate];
+    appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+    baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
     vehicle = self->_vehicle;
 LABEL_13:
-    [v27 presentLPRWithVehicle:vehicle scenario:1 presenter:self completionBlock:0];
+    [baseActionCoordinator presentLPRWithVehicle:vehicle scenario:1 presenter:self completionBlock:0];
 
     goto LABEL_18;
   }
 
-  v11 = [(VehicleDetailViewController *)self editLicensePlateCell];
+  editLicensePlateCell = [(VehicleDetailViewController *)self editLicensePlateCell];
 
-  if (v41 == v11)
+  if (v41 == editLicensePlateCell)
   {
-    v29 = [(VGVehicle *)self->_vehicle licensePlate];
-    v30 = [v29 length];
+    licensePlate = [(VGVehicle *)self->_vehicle licensePlate];
+    v30 = [licensePlate length];
 
     v31 = +[MKMapService sharedService];
     v32 = v31;
     if (v30)
     {
       v33 = [NSNumber numberWithUnsignedInteger:[(VehicleDetailViewController *)self vehicleCount]];
-      v34 = [v33 stringValue];
-      [v32 captureUserAction:2124 onTarget:660 eventValue:v34];
+      stringValue = [v33 stringValue];
+      [v32 captureUserAction:2124 onTarget:660 eventValue:stringValue];
 
-      v35 = [(VGVehicle *)self->_vehicle displayName];
-      v36 = [v35 length];
+      displayName = [(VGVehicle *)self->_vehicle displayName];
+      v36 = [displayName length];
 
       if (!v36)
       {
@@ -772,18 +772,18 @@ LABEL_13:
 
     [v31 captureUserAction:2115 onTarget:660 eventValue:0];
 
-    v39 = [(VehicleDetailViewController *)self _maps_mapsSceneDelegate];
-    v40 = [v39 appCoordinator];
-    v27 = [v40 baseActionCoordinator];
+    _maps_mapsSceneDelegate2 = [(VehicleDetailViewController *)self _maps_mapsSceneDelegate];
+    appCoordinator2 = [_maps_mapsSceneDelegate2 appCoordinator];
+    baseActionCoordinator = [appCoordinator2 baseActionCoordinator];
 
     vehicle = self->_vehicle;
     goto LABEL_13;
   }
 
-  v12 = [(VehicleDetailViewController *)self deleteCell];
+  deleteCell = [(VehicleDetailViewController *)self deleteCell];
 
   v13 = v41;
-  if (v41 != v12)
+  if (v41 != deleteCell)
   {
     goto LABEL_19;
   }
@@ -794,23 +794,23 @@ LABEL_18:
 LABEL_19:
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VehicleDetailViewController *)self tableStructure];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v9 = [tableStructure objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [v9 cells];
-  v11 = [v6 row];
+  cells = [v9 cells];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [cells objectAtIndexedSubscript:v11];
 
-  [v7 frame];
+  [viewCopy frame];
   Width = CGRectGetWidth(v21);
-  [v7 layoutMargins];
+  [viewCopy layoutMargins];
   v15 = v14;
-  [v7 layoutMargins];
+  [viewCopy layoutMargins];
   v17 = v16;
 
   [v12 cellHeightWithWidth:Width - (v15 + v17)];
@@ -819,78 +819,78 @@ LABEL_19:
   return v19;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(VehicleDetailViewController *)self tableStructure];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v7 = [tableStructure objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v8 = [v7 cells];
-  v9 = [v5 row];
+  cells = [v7 cells];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [cells objectAtIndexedSubscript:v9];
 
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(VehicleDetailViewController *)self tableStructure];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v6 = [tableStructure objectAtIndexedSubscript:section];
 
-  v7 = [v6 cells];
-  v8 = [v7 count];
+  cells = [v6 cells];
+  v8 = [cells count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VehicleDetailViewController *)self tableStructure];
-  v4 = [v3 count];
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v4 = [tableStructure count];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v5 = [(VehicleDetailViewController *)self tableStructure];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v6 = [tableStructure objectAtIndexedSubscript:section];
 
-  v7 = [v6 footerText];
+  footerText = [v6 footerText];
 
-  return v7;
+  return footerText;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = objc_alloc_init(UITableViewHeaderFooterView);
   v8 = +[UIListContentConfiguration prominentInsetGroupedHeaderConfiguration];
-  v9 = [(VehicleDetailViewController *)self tableView:v6 titleForHeaderInSection:a4];
+  v9 = [(VehicleDetailViewController *)self tableView:viewCopy titleForHeaderInSection:section];
 
   [v8 setText:v9];
   v10 = +[UIColor secondaryLabelColor];
-  v11 = [v8 textProperties];
-  [v11 setColor:v10];
+  textProperties = [v8 textProperties];
+  [textProperties setColor:v10];
 
   v12 = [UIFont _preferredFontForTextStyle:UIFontTextStyleSubheadline weight:UIFontWeightBold];
-  v13 = [v8 textProperties];
-  [v13 setFont:v12];
+  textProperties2 = [v8 textProperties];
+  [textProperties2 setFont:v12];
 
   [v7 setContentConfiguration:v8];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(VehicleDetailViewController *)self tableStructure];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableStructure = [(VehicleDetailViewController *)self tableStructure];
+  v6 = [tableStructure objectAtIndexedSubscript:section];
 
-  v7 = [v6 headerTitle];
+  headerTitle = [v6 headerTitle];
 
-  return v7;
+  return headerTitle;
 }
 
 - (void)dismiss
@@ -898,51 +898,51 @@ LABEL_19:
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:445 onTarget:662 eventValue:0];
 
-  v4 = [(VehicleDetailViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(VehicleDetailViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v6.receiver = self;
   v6.super_class = VehicleDetailViewController;
-  [(VehicleDetailViewController *)&v6 viewIsAppearing:a3];
+  [(VehicleDetailViewController *)&v6 viewIsAppearing:appearing];
   [(UIView *)self->_headerView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
   [(UIView *)self->_headerView setFrame:CGPointZero.x, CGPointZero.y, v4, v5];
   [(VehicleDetailViewController *)self _reloadAndSave:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = VehicleDetailViewController;
-  [(VehicleDetailViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(VehicleDetailViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(VehicleDetailViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(VehicleDetailViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = VehicleDetailViewController;
   [(VehicleDetailViewController *)&v9 viewWillAppear:?];
-  v5 = [(VehicleDetailViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(VehicleDetailViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 }
 
@@ -951,47 +951,47 @@ LABEL_19:
   v31.receiver = self;
   v31.super_class = VehicleDetailViewController;
   [(VehicleDetailViewController *)&v31 viewDidLoad];
-  v3 = [(VehicleDetailViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"VehicleDetailView"];
+  view = [(VehicleDetailViewController *)self view];
+  [view setAccessibilityIdentifier:@"VehicleDetailView"];
 
-  v4 = [(VehicleDetailViewController *)self view];
-  v5 = [(VehicleDetailViewController *)self tableView];
-  [v4 addSubview:v5];
+  view2 = [(VehicleDetailViewController *)self view];
+  tableView = [(VehicleDetailViewController *)self tableView];
+  [view2 addSubview:tableView];
 
-  v30 = [(VehicleDetailViewController *)self tableView];
-  v28 = [v30 leadingAnchor];
-  v29 = [(VehicleDetailViewController *)self view];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  tableView2 = [(VehicleDetailViewController *)self tableView];
+  leadingAnchor = [tableView2 leadingAnchor];
+  view3 = [(VehicleDetailViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[0] = v26;
-  v25 = [(VehicleDetailViewController *)self tableView];
-  v23 = [v25 trailingAnchor];
-  v24 = [(VehicleDetailViewController *)self view];
-  v22 = [v24 trailingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  tableView3 = [(VehicleDetailViewController *)self tableView];
+  trailingAnchor = [tableView3 trailingAnchor];
+  view4 = [(VehicleDetailViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v21;
-  v20 = [(VehicleDetailViewController *)self tableView];
-  v19 = [v20 topAnchor];
-  v6 = [(VehicleDetailViewController *)self view];
-  v7 = [v6 topAnchor];
-  v8 = [v19 constraintEqualToAnchor:v7];
+  tableView4 = [(VehicleDetailViewController *)self tableView];
+  topAnchor = [tableView4 topAnchor];
+  view5 = [(VehicleDetailViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[2] = v8;
-  v9 = [(VehicleDetailViewController *)self tableView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(VehicleDetailViewController *)self view];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  tableView5 = [(VehicleDetailViewController *)self tableView];
+  bottomAnchor = [tableView5 bottomAnchor];
+  view6 = [(VehicleDetailViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v13;
   v14 = [NSArray arrayWithObjects:v32 count:4];
   [NSLayoutConstraint activateConstraints:v14];
 
   v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismiss"];
-  v16 = [(VehicleDetailViewController *)self navigationItem];
-  [v16 setLeftBarButtonItem:v15];
+  navigationItem = [(VehicleDetailViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
-  v17 = [(VehicleDetailViewController *)self navigationItem];
-  v18 = [v17 leftBarButtonItem];
-  [v18 setAccessibilityIdentifier:@"DoneButton"];
+  navigationItem2 = [(VehicleDetailViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"DoneButton"];
 
   [(VehicleDetailViewController *)self _updateContent];
 }
@@ -1007,13 +1007,13 @@ LABEL_19:
 
     [(VehicleLabelCell *)self->_deleteCell setAccessibilityIdentifier:@"DeleteCell"];
     v6 = +[UIColor systemRedColor];
-    v7 = [(VehicleLabelCell *)self->_deleteCell label];
-    [v7 setTextColor:v6];
+    label = [(VehicleLabelCell *)self->_deleteCell label];
+    [label setTextColor:v6];
 
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"[Virtual Garage] Remove This Vehicle" value:@"localized string not found" table:0];
-    v10 = [(VehicleLabelCell *)self->_deleteCell label];
-    [v10 setText:v9];
+    label2 = [(VehicleLabelCell *)self->_deleteCell label];
+    [label2 setText:v9];
 
     deleteCell = self->_deleteCell;
   }
@@ -1034,8 +1034,8 @@ LABEL_19:
     [(VehicleTitleDetailCell *)self->_vehicleModelCell setSelectionStyle:0];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Virtual Garage] Model" value:@"localized string not found" table:0];
-    v8 = [(VehicleTitleDetailCell *)self->_vehicleModelCell titleLabel];
-    [v8 setText:v7];
+    titleLabel = [(VehicleTitleDetailCell *)self->_vehicleModelCell titleLabel];
+    [titleLabel setText:v7];
 
     vehicleModelCell = self->_vehicleModelCell;
   }
@@ -1056,8 +1056,8 @@ LABEL_19:
     [(VehicleTitleDetailCell *)self->_vehicleMakeCell setSelectionStyle:0];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Virtual Garage] Manufacturer" value:@"localized string not found" table:0];
-    v8 = [(VehicleTitleDetailCell *)self->_vehicleMakeCell titleLabel];
-    [v8 setText:v7];
+    titleLabel = [(VehicleTitleDetailCell *)self->_vehicleMakeCell titleLabel];
+    [titleLabel setText:v7];
 
     vehicleMakeCell = self->_vehicleMakeCell;
   }
@@ -1074,13 +1074,13 @@ LABEL_19:
     v5 = self->_appCell;
     self->_appCell = v4;
 
-    v6 = [(VGVehicle *)self->_vehicle applicationRecord];
-    [(VehicleAppCell *)self->_appCell setApplicationRecord:v6];
+    applicationRecord = [(VGVehicle *)self->_vehicle applicationRecord];
+    [(VehicleAppCell *)self->_appCell setApplicationRecord:applicationRecord];
 
     [(VehicleAppCell *)self->_appCell setAccessibilityIdentifier:@"AppCell"];
     [(VehicleAppCell *)self->_appCell setSelectionStyle:0];
-    v7 = [(VehicleAppCell *)self->_appCell openButton];
-    [v7 addTarget:self action:"_pressedOpen" forControlEvents:64];
+    openButton = [(VehicleAppCell *)self->_appCell openButton];
+    [openButton addTarget:self action:"_pressedOpen" forControlEvents:64];
 
     appCell = self->_appCell;
   }
@@ -1116,8 +1116,8 @@ LABEL_19:
     [(VehicleTitleDetailCell *)self->_licensePlateCell setAccessibilityIdentifier:@"LicensePlateCell"];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Virtual Garage] License Plate Number" value:@"localized string not found" table:0];
-    v8 = [(VehicleTitleDetailCell *)self->_licensePlateCell titleLabel];
-    [v8 setText:v7];
+    titleLabel = [(VehicleTitleDetailCell *)self->_licensePlateCell titleLabel];
+    [titleLabel setText:v7];
 
     licensePlateCell = self->_licensePlateCell;
   }
@@ -1137,8 +1137,8 @@ LABEL_19:
     [(VehicleTitleDetailCell *)self->_editPlugsCell setAccessibilityIdentifier:@"EditPlugsCell"];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Virtual Garage][Button] Plug Type" value:@"localized string not found" table:0];
-    v8 = [(VehicleTitleDetailCell *)self->_editPlugsCell titleLabel];
-    [v8 setText:v7];
+    titleLabel = [(VehicleTitleDetailCell *)self->_editPlugsCell titleLabel];
+    [titleLabel setText:v7];
 
     [(VehicleTitleDetailCell *)self->_editPlugsCell setAccessoryType:1];
     editPlugsCell = self->_editPlugsCell;
@@ -1159,12 +1159,12 @@ LABEL_19:
     [(VehicleLabelCell *)self->_addNetworksCell setAccessibilityIdentifier:@"AddNetworksCell"];
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:@"[Virtual Garage][Button] Add Network" value:@"localized string not found" table:0];
-    v8 = [(VehicleLabelCell *)self->_addNetworksCell label];
-    [v8 setText:v7];
+    label = [(VehicleLabelCell *)self->_addNetworksCell label];
+    [label setText:v7];
 
     v9 = +[UIColor systemBlueColor];
-    v10 = [(VehicleLabelCell *)self->_addNetworksCell label];
-    [v10 setTextColor:v9];
+    label2 = [(VehicleLabelCell *)self->_addNetworksCell label];
+    [label2 setTextColor:v9];
 
     [(VehicleLabelCell *)self->_addNetworksCell setAccessoryType:0];
     addNetworksCell = self->_addNetworksCell;
@@ -1255,33 +1255,33 @@ LABEL_19:
 
     [(UIView *)self->_vehicleColorView setAccessibilityIdentifier:@"VehicleColorView"];
     [(UIView *)self->_vehicleColorView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIView *)self->_vehicleColorView layer];
-    [v6 setCornerRadius:50.0];
+    layer = [(UIView *)self->_vehicleColorView layer];
+    [layer setCornerRadius:50.0];
 
     v7 = self->_vehicleColorView;
-    v8 = [(VehicleDetailViewController *)self vehicleIconView];
-    [(UIView *)v7 addSubview:v8];
+    vehicleIconView = [(VehicleDetailViewController *)self vehicleIconView];
+    [(UIView *)v7 addSubview:vehicleIconView];
 
     v20 = self->_vehicleColorView;
-    v27 = [(VehicleDetailViewController *)self vehicleIconView];
-    v26 = [v27 centerXAnchor];
-    v25 = [(UIView *)self->_vehicleColorView centerXAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    vehicleIconView2 = [(VehicleDetailViewController *)self vehicleIconView];
+    centerXAnchor = [vehicleIconView2 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_vehicleColorView centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v28[0] = v24;
-    v23 = [(VehicleDetailViewController *)self vehicleIconView];
-    v22 = [v23 centerYAnchor];
-    v21 = [(UIView *)self->_vehicleColorView centerYAnchor];
-    v19 = [v22 constraintEqualToAnchor:v21];
+    vehicleIconView3 = [(VehicleDetailViewController *)self vehicleIconView];
+    centerYAnchor = [vehicleIconView3 centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_vehicleColorView centerYAnchor];
+    v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v19;
-    v18 = [(VehicleDetailViewController *)self vehicleIconView];
-    v9 = [v18 widthAnchor];
-    v10 = [(UIView *)self->_vehicleColorView widthAnchor];
-    v11 = [v9 constraintLessThanOrEqualToAnchor:v10];
+    vehicleIconView4 = [(VehicleDetailViewController *)self vehicleIconView];
+    widthAnchor = [vehicleIconView4 widthAnchor];
+    widthAnchor2 = [(UIView *)self->_vehicleColorView widthAnchor];
+    v11 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v28[2] = v11;
-    v12 = [(VehicleDetailViewController *)self vehicleIconView];
-    v13 = [v12 heightAnchor];
-    v14 = [(UIView *)self->_vehicleColorView heightAnchor];
-    v15 = [v13 constraintLessThanOrEqualToAnchor:v14];
+    vehicleIconView5 = [(VehicleDetailViewController *)self vehicleIconView];
+    heightAnchor = [vehicleIconView5 heightAnchor];
+    heightAnchor2 = [(UIView *)self->_vehicleColorView heightAnchor];
+    v15 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
     v28[3] = v15;
     v16 = [NSArray arrayWithObjects:v28 count:4];
     [(UIView *)v20 addConstraints:v16];
@@ -1303,77 +1303,77 @@ LABEL_19:
 
     [(UIView *)self->_headerView setAccessibilityIdentifier:@"VehicleDetailHeader"];
     v6 = self->_headerView;
-    v7 = [(VehicleDetailViewController *)self vehicleColorView];
-    [(UIView *)v6 addSubview:v7];
+    vehicleColorView = [(VehicleDetailViewController *)self vehicleColorView];
+    [(UIView *)v6 addSubview:vehicleColorView];
 
     v8 = self->_headerView;
-    v9 = [(VehicleDetailViewController *)self vehicleNameLabel];
-    [(UIView *)v8 addSubview:v9];
+    vehicleNameLabel = [(VehicleDetailViewController *)self vehicleNameLabel];
+    [(UIView *)v8 addSubview:vehicleNameLabel];
 
     v10 = self->_headerView;
-    v11 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    [(UIView *)v10 addSubview:v11];
+    vehicleBatteryView = [(VehicleDetailViewController *)self vehicleBatteryView];
+    [(UIView *)v10 addSubview:vehicleBatteryView];
 
     v43 = self->_headerView;
-    v62 = [(VehicleDetailViewController *)self vehicleColorView];
-    v61 = [v62 centerXAnchor];
-    v60 = [(UIView *)self->_headerView centerXAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    vehicleColorView2 = [(VehicleDetailViewController *)self vehicleColorView];
+    centerXAnchor = [vehicleColorView2 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_headerView centerXAnchor];
+    v59 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v63[0] = v59;
-    v58 = [(VehicleDetailViewController *)self vehicleColorView];
-    v57 = [v58 topAnchor];
-    v56 = [(UIView *)self->_headerView topAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56 constant:32.0];
+    vehicleColorView3 = [(VehicleDetailViewController *)self vehicleColorView];
+    topAnchor = [vehicleColorView3 topAnchor];
+    topAnchor2 = [(UIView *)self->_headerView topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:32.0];
     v63[1] = v55;
-    v54 = [(VehicleDetailViewController *)self vehicleColorView];
-    v53 = [v54 widthAnchor];
-    v52 = [v53 constraintEqualToConstant:100.0];
+    vehicleColorView4 = [(VehicleDetailViewController *)self vehicleColorView];
+    widthAnchor = [vehicleColorView4 widthAnchor];
+    v52 = [widthAnchor constraintEqualToConstant:100.0];
     v63[2] = v52;
-    v51 = [(VehicleDetailViewController *)self vehicleColorView];
-    v50 = [v51 heightAnchor];
-    v49 = [v50 constraintEqualToConstant:100.0];
+    vehicleColorView5 = [(VehicleDetailViewController *)self vehicleColorView];
+    heightAnchor = [vehicleColorView5 heightAnchor];
+    v49 = [heightAnchor constraintEqualToConstant:100.0];
     v63[3] = v49;
-    v48 = [(VehicleDetailViewController *)self vehicleNameLabel];
-    v46 = [v48 topAnchor];
-    v47 = [(VehicleDetailViewController *)self vehicleColorView];
-    v45 = [v47 bottomAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45 constant:16.0];
+    vehicleNameLabel2 = [(VehicleDetailViewController *)self vehicleNameLabel];
+    topAnchor3 = [vehicleNameLabel2 topAnchor];
+    vehicleColorView6 = [(VehicleDetailViewController *)self vehicleColorView];
+    bottomAnchor = [vehicleColorView6 bottomAnchor];
+    v44 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
     v63[4] = v44;
-    v42 = [(VehicleDetailViewController *)self vehicleNameLabel];
-    v41 = [v42 leadingAnchor];
-    v40 = [(UIView *)self->_headerView leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40 constant:8.0];
+    vehicleNameLabel3 = [(VehicleDetailViewController *)self vehicleNameLabel];
+    leadingAnchor = [vehicleNameLabel3 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_headerView leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     v63[5] = v39;
-    v38 = [(VehicleDetailViewController *)self vehicleNameLabel];
-    v37 = [v38 trailingAnchor];
-    v36 = [(UIView *)self->_headerView trailingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:-8.0];
+    vehicleNameLabel4 = [(VehicleDetailViewController *)self vehicleNameLabel];
+    trailingAnchor = [vehicleNameLabel4 trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_headerView trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
     v63[6] = v35;
-    v34 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    v32 = [v34 topAnchor];
-    v33 = [(VehicleDetailViewController *)self vehicleNameLabel];
-    v31 = [v33 bottomAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:2.0];
+    vehicleBatteryView2 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    topAnchor4 = [vehicleBatteryView2 topAnchor];
+    vehicleNameLabel5 = [(VehicleDetailViewController *)self vehicleNameLabel];
+    bottomAnchor2 = [vehicleNameLabel5 bottomAnchor];
+    v30 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
     v63[7] = v30;
-    v29 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    v28 = [v29 centerXAnchor];
-    v27 = [(UIView *)self->_headerView centerXAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    vehicleBatteryView3 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    centerXAnchor3 = [vehicleBatteryView3 centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_headerView centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v63[8] = v26;
-    v25 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    v24 = [v25 leadingAnchor];
-    v23 = [(UIView *)self->_headerView leadingAnchor];
-    v22 = [v24 constraintGreaterThanOrEqualToAnchor:v23 constant:8.0];
+    vehicleBatteryView4 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    leadingAnchor3 = [vehicleBatteryView4 leadingAnchor];
+    leadingAnchor4 = [(UIView *)self->_headerView leadingAnchor];
+    v22 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:8.0];
     v63[9] = v22;
-    v21 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    v12 = [v21 trailingAnchor];
-    v13 = [(UIView *)self->_headerView trailingAnchor];
-    v14 = [v12 constraintLessThanOrEqualToAnchor:v13 constant:-8.0];
+    vehicleBatteryView5 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    trailingAnchor3 = [vehicleBatteryView5 trailingAnchor];
+    trailingAnchor4 = [(UIView *)self->_headerView trailingAnchor];
+    v14 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-8.0];
     v63[10] = v14;
-    v15 = [(VehicleDetailViewController *)self vehicleBatteryView];
-    v16 = [v15 bottomAnchor];
-    v17 = [(UIView *)self->_headerView bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:-24.0];
+    vehicleBatteryView6 = [(VehicleDetailViewController *)self vehicleBatteryView];
+    bottomAnchor3 = [vehicleBatteryView6 bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_headerView bottomAnchor];
+    v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-24.0];
     v63[11] = v18;
     v19 = [NSArray arrayWithObjects:v63 count:12];
     [(UIView *)v43 addConstraints:v19];
@@ -1397,8 +1397,8 @@ LABEL_19:
     [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITableView *)self->_tableView setDataSource:self];
     [(UITableView *)self->_tableView setDelegate:self];
-    v6 = [(VehicleDetailViewController *)self headerView];
-    [(UITableView *)self->_tableView setTableHeaderView:v6];
+    headerView = [(VehicleDetailViewController *)self headerView];
+    [(UITableView *)self->_tableView setTableHeaderView:headerView];
 
     [(UITableView *)self->_tableView setKeyboardDismissMode:1];
     tableView = self->_tableView;
@@ -1417,17 +1417,17 @@ LABEL_19:
     if (MapsFeature_IsEnabled_Alberta())
     {
       v6 = objc_opt_new();
-      v7 = [(VGVehicle *)self->_vehicle licensePlate];
-      v8 = [v7 length];
+      licensePlate = [(VGVehicle *)self->_vehicle licensePlate];
+      v8 = [licensePlate length];
 
       if (v8)
       {
-        v9 = [(VehicleDetailViewController *)self licensePlateCell];
-        [v6 addObject:v9];
+        licensePlateCell = [(VehicleDetailViewController *)self licensePlateCell];
+        [v6 addObject:licensePlateCell];
       }
 
-      v10 = [(VehicleDetailViewController *)self editLicensePlateCell];
-      [v6 addObject:v10];
+      editLicensePlateCell = [(VehicleDetailViewController *)self editLicensePlateCell];
+      [v6 addObject:editLicensePlateCell];
 
       v11 = [[VehicleDetailTableSection alloc] initWithCells:v6];
       v12 = +[NSBundle mainBundle];
@@ -1440,14 +1440,14 @@ LABEL_19:
 
     if ([(VGVehicle *)self->_vehicle isPureElectricVehicle]&& MapsFeature_IsEnabled_EVRoutingEnhancements())
     {
-      v14 = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
-      v15 = [v14 allObjects];
-      v50 = [v15 sortedArrayUsingComparator:&stru_101651BD0];
+      preferredChargingNetworks = [(VGVehicle *)self->_vehicle preferredChargingNetworks];
+      allObjects = [preferredChargingNetworks allObjects];
+      v50 = [allObjects sortedArrayUsingComparator:&stru_101651BD0];
 
       v49 = sub_100021DB0(v50, &stru_101651C10);
       v16 = [VehicleDetailTableSection alloc];
-      v17 = [(VehicleDetailViewController *)self addNetworksCell];
-      v18 = [v49 arrayByAddingObject:v17];
+      addNetworksCell = [(VehicleDetailViewController *)self addNetworksCell];
+      v18 = [v49 arrayByAddingObject:addNetworksCell];
       v19 = [(VehicleDetailTableSection *)v16 initWithCells:v18];
 
       v20 = +[NSBundle mainBundle];
@@ -1462,22 +1462,22 @@ LABEL_19:
     }
 
     v24 = objc_alloc_init(v4[297]);
-    v25 = [(VGVehicle *)self->_vehicle manufacturer];
-    v26 = [v25 length];
+    manufacturer = [(VGVehicle *)self->_vehicle manufacturer];
+    v26 = [manufacturer length];
 
     if (v26)
     {
-      v27 = [(VehicleDetailViewController *)self vehicleMakeCell];
-      [v24 addObject:v27];
+      vehicleMakeCell = [(VehicleDetailViewController *)self vehicleMakeCell];
+      [v24 addObject:vehicleMakeCell];
     }
 
-    v28 = [(VGVehicle *)self->_vehicle model];
-    v29 = [v28 length];
+    model = [(VGVehicle *)self->_vehicle model];
+    v29 = [model length];
 
     if (v29)
     {
-      v30 = [(VehicleDetailViewController *)self vehicleModelCell];
-      [v24 addObject:v30];
+      vehicleModelCell = [(VehicleDetailViewController *)self vehicleModelCell];
+      [v24 addObject:vehicleModelCell];
     }
 
     v31 = +[NSUserDefaults standardUserDefaults];
@@ -1485,8 +1485,8 @@ LABEL_19:
 
     if ([(VGVehicle *)self->_vehicle isPureElectricVehicle]&& v32)
     {
-      v33 = [(VehicleDetailViewController *)self editPlugsCell];
-      [v24 addObject:v33];
+      editPlugsCell = [(VehicleDetailViewController *)self editPlugsCell];
+      [v24 addObject:editPlugsCell];
     }
 
     if ([v24 count])
@@ -1499,13 +1499,13 @@ LABEL_19:
       [v5 addObject:v34];
     }
 
-    v37 = [(VGVehicle *)self->_vehicle applicationRecord];
+    applicationRecord = [(VGVehicle *)self->_vehicle applicationRecord];
 
-    if (v37)
+    if (applicationRecord)
     {
       v38 = [VehicleDetailTableSection alloc];
-      v39 = [(VehicleDetailViewController *)self appCell];
-      v52 = v39;
+      appCell = [(VehicleDetailViewController *)self appCell];
+      v52 = appCell;
       v40 = [NSArray arrayWithObjects:&v52 count:1];
       v41 = [(VehicleDetailTableSection *)v38 initWithCells:v40];
 
@@ -1513,8 +1513,8 @@ LABEL_19:
     }
 
     v42 = [VehicleDetailTableSection alloc];
-    v43 = [(VehicleDetailViewController *)self deleteCell];
-    v51 = v43;
+    deleteCell = [(VehicleDetailViewController *)self deleteCell];
+    v51 = deleteCell;
     v44 = [NSArray arrayWithObjects:&v51 count:1];
     v45 = [(VehicleDetailTableSection *)v42 initWithCells:v44];
     [v5 addObject:v45];
@@ -1529,24 +1529,24 @@ LABEL_19:
   return tableStructure;
 }
 
-- (VehicleDetailViewController)initWithVehicle:(id)a3 delegate:(id)a4
+- (VehicleDetailViewController)initWithVehicle:(id)vehicle delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  vehicleCopy = vehicle;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = VehicleDetailViewController;
   v8 = [(VehicleDetailViewController *)&v16 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [v6 copy];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [vehicleCopy copy];
     vehicle = v9->_vehicle;
     v9->_vehicle = v10;
 
     v12 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:2 target:v9 action:"_pressedEdit"];
-    v13 = [(VehicleDetailViewController *)v9 navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    navigationItem = [(VehicleDetailViewController *)v9 navigationItem];
+    [navigationItem setRightBarButtonItem:v12];
 
     v14 = +[VGVirtualGarageService sharedService];
     [v14 registerObserver:v9];

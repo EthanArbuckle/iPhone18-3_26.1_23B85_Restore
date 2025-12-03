@@ -1,5 +1,5 @@
 @interface ProductNoRatingsView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -16,9 +16,9 @@
   [v3 setFrame:{v4.receiver, v4.super_class}];
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension20ProductNoRatingsView_statusLabel) measurementsWithFitting:a4 in:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension20ProductNoRatingsView_statusLabel) measurementsWithFitting:in in:{fitting.width, fitting.height}];
   result.var3 = v7;
   result.var2 = v6;
   result.var1 = v5;

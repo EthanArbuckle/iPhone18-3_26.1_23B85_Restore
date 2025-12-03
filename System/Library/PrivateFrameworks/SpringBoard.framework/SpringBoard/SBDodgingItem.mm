@@ -1,30 +1,30 @@
 @interface SBDodgingItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)center;
 - (CGSize)containerSize;
 - (CGSize)size;
-- (SBDodgingItem)initWithUniqueIdentifier:(id)a3 view:(id)a4 delegate:(id)a5 dodgingResolverViewController:(id)a6;
+- (SBDodgingItem)initWithUniqueIdentifier:(id)identifier view:(id)view delegate:(id)delegate dodgingResolverViewController:(id)controller;
 - (SBDodgingItemDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation SBDodgingItem
 
-- (SBDodgingItem)initWithUniqueIdentifier:(id)a3 view:(id)a4 delegate:(id)a5 dodgingResolverViewController:(id)a6
+- (SBDodgingItem)initWithUniqueIdentifier:(id)identifier view:(id)view delegate:(id)delegate dodgingResolverViewController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  viewCopy = view;
+  delegateCopy = delegate;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = SBDodgingItem;
   v15 = [(SBDodgingItem *)&v19 init];
   if (v15)
   {
-    if (v11)
+    if (identifierCopy)
     {
-      if (v13)
+      if (delegateCopy)
       {
         goto LABEL_4;
       }
@@ -33,19 +33,19 @@
     else
     {
       [SBDodgingItem initWithUniqueIdentifier:a2 view:v15 delegate:? dodgingResolverViewController:?];
-      if (v13)
+      if (delegateCopy)
       {
 LABEL_4:
-        if (v14)
+        if (controllerCopy)
         {
 LABEL_5:
-          v16 = [v11 copy];
+          v16 = [identifierCopy copy];
           uniqueIdentifier = v15->_uniqueIdentifier;
           v15->_uniqueIdentifier = v16;
 
-          objc_storeStrong(&v15->_view, a4);
-          objc_storeWeak(&v15->_delegate, v13);
-          objc_storeStrong(&v15->_dodgingResolverViewController, a6);
+          objc_storeStrong(&v15->_view, view);
+          objc_storeWeak(&v15->_delegate, delegateCopy);
+          objc_storeStrong(&v15->_dodgingResolverViewController, controller);
           goto LABEL_6;
         }
 
@@ -56,7 +56,7 @@ LABEL_9:
     }
 
     [SBDodgingItem initWithUniqueIdentifier:a2 view:v15 delegate:? dodgingResolverViewController:?];
-    if (v14)
+    if (controllerCopy)
     {
       goto LABEL_5;
     }
@@ -69,7 +69,7 @@ LABEL_6:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   uniqueIdentifier = self->_uniqueIdentifier;
@@ -80,14 +80,14 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uniqueIdentifier];
-    v6 = [v5 isEqualToString:self->_uniqueIdentifier];
+    uniqueIdentifier = [equalCopy uniqueIdentifier];
+    v6 = [uniqueIdentifier isEqualToString:self->_uniqueIdentifier];
   }
 
   else

@@ -1,40 +1,40 @@
 @interface ML3DatabaseRow
 - (ML3DatabaseRow)init;
-- (ML3DatabaseRow)initWithParentResult:(id)a3;
-- (const)cStringForColumnIndex:(unint64_t)a3;
-- (const)cStringForColumnName:(id)a3;
-- (double)doubleForColumnName:(id)a3;
+- (ML3DatabaseRow)initWithParentResult:(id)result;
+- (const)cStringForColumnIndex:(unint64_t)index;
+- (const)cStringForColumnName:(id)name;
+- (double)doubleForColumnName:(id)name;
 - (id)arrayRepresentation;
-- (id)dataForColumnIndex:(unint64_t)a3;
-- (id)dataForColumnName:(id)a3;
+- (id)dataForColumnIndex:(unint64_t)index;
+- (id)dataForColumnName:(id)name;
 - (id)dictionaryRepresentation;
-- (id)numberForColumnIndex:(unint64_t)a3;
-- (id)numberForColumnName:(id)a3;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)stringForColumnIndex:(unint64_t)a3;
-- (id)stringForColumnName:(id)a3;
-- (id)valueForColumnIndex:(unint64_t)a3;
-- (id)valueForColumnName:(id)a3;
-- (int)intForColumnName:(id)a3;
-- (int64_t)int64ForColumnName:(id)a3;
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnIndex:(unint64_t)a5;
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnName:(id)a5;
+- (id)numberForColumnIndex:(unint64_t)index;
+- (id)numberForColumnName:(id)name;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)stringForColumnIndex:(unint64_t)index;
+- (id)stringForColumnName:(id)name;
+- (id)valueForColumnIndex:(unint64_t)index;
+- (id)valueForColumnName:(id)name;
+- (int)intForColumnName:(id)name;
+- (int64_t)int64ForColumnName:(id)name;
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnIndex:(unint64_t)index;
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnName:(id)name;
 @end
 
 @implementation ML3DatabaseRow
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v3 = [(ML3DatabaseRow *)self valueForColumnName:a3];
+  v3 = [(ML3DatabaseRow *)self valueForColumnName:subscript];
 
   return v3;
 }
 
 - (id)arrayRepresentation
 {
-  v4 = [(ML3DatabaseRow *)self columnCount];
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4];
-  if (v4)
+  columnCount = [(ML3DatabaseRow *)self columnCount];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:columnCount];
+  if (columnCount)
   {
     v6 = 0;
     v7 = 1;
@@ -44,8 +44,8 @@
       v9 = v8;
       if (!v8)
       {
-        v2 = [MEMORY[0x277CBEB68] null];
-        v9 = v2;
+        null = [MEMORY[0x277CBEB68] null];
+        v9 = null;
       }
 
       [v5 addObject:v9];
@@ -56,7 +56,7 @@
       v6 = v7;
     }
 
-    while (v4 > v7++);
+    while (columnCount > v7++);
   }
 
   return v5;
@@ -64,17 +64,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(ML3DatabaseRow *)self columnCount];
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v3];
-  v5 = [(ML3DatabaseResult *)self->_parentResult columnNameIndexMap];
+  columnCount = [(ML3DatabaseRow *)self columnCount];
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:columnCount];
+  columnNameIndexMap = [(ML3DatabaseResult *)self->_parentResult columnNameIndexMap];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke;
   v9[3] = &unk_278765418;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  selfCopy = self;
+  [columnNameIndexMap enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v6;
 
   return v6;
@@ -97,12 +97,12 @@ void __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)valueForColumnIndex:(unint64_t)a3
+- (id)valueForColumnIndex:(unint64_t)index
 {
-  v5 = sqlite3_column_type(self->_stmt, a3);
+  v5 = sqlite3_column_type(self->_stmt, index);
   if ((v5 - 1) < 2)
   {
-    v6 = [(ML3DatabaseRow *)self numberForColumnIndex:a3];
+    v6 = [(ML3DatabaseRow *)self numberForColumnIndex:index];
   }
 
   else if (v5 == 5)
@@ -114,12 +114,12 @@ void __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke(uint64_t a1, vo
   {
     if (v5 == 4)
     {
-      [(ML3DatabaseRow *)self dataForColumnIndex:a3];
+      [(ML3DatabaseRow *)self dataForColumnIndex:index];
     }
 
     else
     {
-      [(ML3DatabaseRow *)self stringForColumnIndex:a3];
+      [(ML3DatabaseRow *)self stringForColumnIndex:index];
     }
     v6 = ;
   }
@@ -127,46 +127,46 @@ void __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)valueForColumnName:(id)a3
+- (id)valueForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self valueForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self valueForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnIndex:(unint64_t)a5
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnIndex:(unint64_t)index
 {
-  v5 = a5;
-  if (a3)
+  indexCopy = index;
+  if (bytes)
   {
-    *a3 = sqlite3_column_blob(self->_stmt, a5);
+    *bytes = sqlite3_column_blob(self->_stmt, index);
   }
 
-  if (a4)
+  if (length)
   {
-    *a4 = sqlite3_column_bytes(self->_stmt, v5);
+    *length = sqlite3_column_bytes(self->_stmt, indexCopy);
   }
 }
 
-- (void)getBlobBytes:(const void *)a3 outLength:(int *)a4 forColumnName:(id)a5
+- (void)getBlobBytes:(const void *)bytes outLength:(int *)length forColumnName:(id)name
 {
-  v8 = a5;
-  [(ML3DatabaseRow *)self getBlobBytes:a3 outLength:a4 forColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:?]];
+  nameCopy = name;
+  [(ML3DatabaseRow *)self getBlobBytes:bytes outLength:length forColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:?]];
 }
 
-- (id)numberForColumnIndex:(unint64_t)a3
+- (id)numberForColumnIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = sqlite3_column_type(self->_stmt, a3);
+  indexCopy = index;
+  v5 = sqlite3_column_type(self->_stmt, index);
   if (v5 == 2)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:{sqlite3_column_double(self->_stmt, v3)}];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:{sqlite3_column_double(self->_stmt, indexCopy)}];
   }
 
   else if (v5 == 1)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{sqlite3_column_int64(self->_stmt, v3)}];
+    v6 = [MEMORY[0x277CCABB0] numberWithLongLong:{sqlite3_column_int64(self->_stmt, indexCopy)}];
   }
 
   else
@@ -177,96 +177,96 @@ void __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)numberForColumnName:(id)a3
+- (id)numberForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self numberForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self numberForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (id)stringForColumnIndex:(unint64_t)a3
+- (id)stringForColumnIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (sqlite3_column_type(self->_stmt, a3) == 5)
+  indexCopy = index;
+  if (sqlite3_column_type(self->_stmt, index) == 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{sqlite3_column_text(self->_stmt, v3)}];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{sqlite3_column_text(self->_stmt, indexCopy)}];
   }
 
   return v5;
 }
 
-- (id)stringForColumnName:(id)a3
+- (id)stringForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self stringForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self stringForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (const)cStringForColumnIndex:(unint64_t)a3
+- (const)cStringForColumnIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (sqlite3_column_type(self->_stmt, a3) == 5)
+  indexCopy = index;
+  if (sqlite3_column_type(self->_stmt, index) == 5)
   {
     return 0;
   }
 
   stmt = self->_stmt;
 
-  return sqlite3_column_text(stmt, v3);
+  return sqlite3_column_text(stmt, indexCopy);
 }
 
-- (const)cStringForColumnName:(id)a3
+- (const)cStringForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self cStringForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self cStringForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (int64_t)int64ForColumnName:(id)a3
+- (int64_t)int64ForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self int64ForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self int64ForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (int)intForColumnName:(id)a3
+- (int)intForColumnName:(id)name
 {
-  v4 = a3;
-  LODWORD(self) = [(ML3DatabaseRow *)self intForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  LODWORD(self) = [(ML3DatabaseRow *)self intForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return self;
 }
 
-- (double)doubleForColumnName:(id)a3
+- (double)doubleForColumnName:(id)name
 {
-  v4 = a3;
-  [(ML3DatabaseRow *)self doubleForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  [(ML3DatabaseRow *)self doubleForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
   v6 = v5;
 
   return v6;
 }
 
-- (id)dataForColumnIndex:(unint64_t)a3
+- (id)dataForColumnIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (sqlite3_column_type(self->_stmt, a3) == 5)
+  indexCopy = index;
+  if (sqlite3_column_type(self->_stmt, index) == 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = sqlite3_column_blob(self->_stmt, v3);
-    v7 = sqlite3_column_bytes(self->_stmt, v3);
+    v6 = sqlite3_column_blob(self->_stmt, indexCopy);
+    v7 = sqlite3_column_bytes(self->_stmt, indexCopy);
     v8 = malloc_type_malloc(v7, 0xD99209FDuLL);
     memcpy(v8, v6, v7);
     v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v8 length:v7];
@@ -275,26 +275,26 @@ void __42__ML3DatabaseRow_dictionaryRepresentation__block_invoke(uint64_t a1, vo
   return v5;
 }
 
-- (id)dataForColumnName:(id)a3
+- (id)dataForColumnName:(id)name
 {
-  v4 = a3;
-  v5 = [(ML3DatabaseRow *)self dataForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:v4]];
+  nameCopy = name;
+  v5 = [(ML3DatabaseRow *)self dataForColumnIndex:[(ML3DatabaseResult *)self->_parentResult indexForColumnName:nameCopy]];
 
   return v5;
 }
 
-- (ML3DatabaseRow)initWithParentResult:(id)a3
+- (ML3DatabaseRow)initWithParentResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = ML3DatabaseRow;
   v6 = [(ML3DatabaseRow *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentResult, a3);
-    v8 = [(ML3DatabaseResult *)v7->_parentResult _statement];
-    v7->_stmt = [v8 sqliteStatement];
+    objc_storeStrong(&v6->_parentResult, result);
+    _statement = [(ML3DatabaseResult *)v7->_parentResult _statement];
+    v7->_stmt = [_statement sqliteStatement];
   }
 
   return v7;

@@ -1,51 +1,51 @@
 @interface AVTHEIFImageEncoder
 + (id)HEICSSequenceEncoder;
 + (id)defaultHEICEncoder;
-- (id)dataFromImage:(id)a3;
+- (id)dataFromImage:(id)image;
 - (id)fileExtension;
-- (id)imageFromData:(id)a3 error:(id *)a4;
-- (id)imageFromURL:(id)a3 error:(id *)a4;
-- (id)initUsingHeicsSequence:(BOOL)a3;
+- (id)imageFromData:(id)data error:(id *)error;
+- (id)imageFromURL:(id)l error:(id *)error;
+- (id)initUsingHeicsSequence:(BOOL)sequence;
 @end
 
 @implementation AVTHEIFImageEncoder
 
 + (id)HEICSSequenceEncoder
 {
-  v2 = [[a1 alloc] initUsingHeicsSequence:1];
+  v2 = [[self alloc] initUsingHeicsSequence:1];
 
   return v2;
 }
 
 + (id)defaultHEICEncoder
 {
-  v2 = [[a1 alloc] initUsingHeicsSequence:0];
+  v2 = [[self alloc] initUsingHeicsSequence:0];
 
   return v2;
 }
 
-- (id)initUsingHeicsSequence:(BOOL)a3
+- (id)initUsingHeicsSequence:(BOOL)sequence
 {
   v5.receiver = self;
   v5.super_class = AVTHEIFImageEncoder;
   result = [(AVTHEIFImageEncoder *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = sequence;
   }
 
   return result;
 }
 
-- (id)imageFromURL:(id)a3 error:(id *)a4
+- (id)imageFromURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithContentsOfURL:v7 options:1 error:a4];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithContentsOfURL:lCopy options:1 error:error];
 
   if (v8)
   {
-    v9 = [(AVTHEIFImageEncoder *)self imageFromData:v8 error:a4];
+    v9 = [(AVTHEIFImageEncoder *)self imageFromData:v8 error:error];
   }
 
   else
@@ -56,39 +56,39 @@
   return v9;
 }
 
-- (id)imageFromData:(id)a3 error:(id *)a4
+- (id)imageFromData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if ([(AVTHEIFImageEncoder *)self useHEICSSequence])
   {
-    [MEMORY[0x1E69DCAB8] animatedImageWithHEICSRepresentation:v6];
+    [MEMORY[0x1E69DCAB8] animatedImageWithHEICSRepresentation:dataCopy];
   }
 
   else
   {
-    [MEMORY[0x1E69DCAB8] animatedImageWithHEICRepresentation:v6];
+    [MEMORY[0x1E69DCAB8] animatedImageWithHEICRepresentation:dataCopy];
   }
   v7 = ;
 
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = [MEMORY[0x1E698E338] errorWithCode:604 userInfo:0];
+    *error = [MEMORY[0x1E698E338] errorWithCode:604 userInfo:0];
   }
 
   return v7;
 }
 
-- (id)dataFromImage:(id)a3
+- (id)dataFromImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(AVTHEIFImageEncoder *)self useHEICSSequence])
   {
-    [v4 HEICSRepresentation];
+    [imageCopy HEICSRepresentation];
   }
 
   else
   {
-    [v4 HEICRepresentation];
+    [imageCopy HEICRepresentation];
   }
   v5 = ;
 

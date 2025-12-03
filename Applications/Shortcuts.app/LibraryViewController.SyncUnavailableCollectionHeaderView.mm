@@ -6,7 +6,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006C72C();
 }
 

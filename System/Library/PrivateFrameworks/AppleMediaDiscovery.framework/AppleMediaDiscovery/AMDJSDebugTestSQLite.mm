@@ -1,20 +1,20 @@
 @interface AMDJSDebugTestSQLite
-+ (id)getSchema:(id)a3;
++ (id)getSchema:(id)schema;
 + (id)getTestFetchDescriptors;
 + (id)getTestSchemaDict;
-+ (id)test:(id)a3 error:(id *)a4;
++ (id)test:(id)test error:(id *)error;
 @end
 
 @implementation AMDJSDebugTestSQLite
 
-+ (id)getSchema:(id)a3
++ (id)getSchema:(id)schema
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, schema);
   v10 = +[AMDSQLite getSharedInstance];
-  v14 = [v10 getDataSchema];
+  getDataSchema = [v10 getDataSchema];
   MEMORY[0x277D82BD8](v10);
   v13 = 0;
   v11 = [location[0] objectForKey:TEST_USE_TEST_SCHEMA];
@@ -22,14 +22,14 @@
   if (v11)
   {
     v7 = [AMDSQLiteSchema alloc];
-    v9 = [v16 getTestSchemaDict];
+    getTestSchemaDict = [selfCopy getTestSchemaDict];
     v12 = v13;
     v8 = [AMDSQLiteSchema initWithDict:v7 error:"initWithDict:error:"];
     objc_storeStrong(&v13, v12);
-    v3 = v14;
-    v14 = v8;
+    v3 = getDataSchema;
+    getDataSchema = v8;
     MEMORY[0x277D82BD8](v3);
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](getTestSchemaDict);
   }
 
   if (v13)
@@ -39,25 +39,25 @@
 
   else
   {
-    v4 = MEMORY[0x277D82BE0](v14);
+    v4 = MEMORY[0x277D82BE0](getDataSchema);
   }
 
   v6 = v4;
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&getDataSchema, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)test:(id)a3 error:(id *)a4
++ (id)test:(id)test error:(id *)error
 {
   v194[1] = *MEMORY[0x277D85DE8];
-  v173 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v171 = a4;
+  objc_storeStrong(location, test);
+  errorCopy = error;
   v170 = 0;
   v169 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v91 = [location[0] objectForKey:TEST_LOAD_DB];
@@ -65,10 +65,10 @@
   if (v91)
   {
     v89 = objc_alloc_init(AMDSQLite);
-    v168 = [(AMDSQLite *)v89 loadDb];
+    loadDb = [(AMDSQLite *)v89 loadDb];
     MEMORY[0x277D82BD8](v89);
-    [v169 setObject:v168 forKey:TEST_LOAD_DB];
-    objc_storeStrong(&v168, 0);
+    [v169 setObject:loadDb forKey:TEST_LOAD_DB];
+    objc_storeStrong(&loadDb, 0);
   }
 
   v88 = [location[0] objectForKey:TEST_SHARED_INSTANCE];
@@ -103,11 +103,11 @@
     MEMORY[0x277D82BD8](v8);
     v83 = v169;
     v82 = v170;
-    v85 = [v173 getTestSchemaDict];
+    getTestSchemaDict = [selfCopy getTestSchemaDict];
     v84 = [v82 updateSchema:? error:?];
     [v83 setObject:? forKey:?];
     MEMORY[0x277D82BD8](v84);
-    MEMORY[0x277D82BD8](v85);
+    MEMORY[0x277D82BD8](getTestSchemaDict);
   }
 
   v81 = [location[0] objectForKey:TEST_SET_ENABLE];
@@ -144,16 +144,16 @@
   }
 
   v76 = [AMDSQLiteSchema alloc];
-  v77 = [v173 getTestSchemaDict];
+  getTestSchemaDict2 = [selfCopy getTestSchemaDict];
   v166 = [AMDSQLiteSchema initWithDict:v76 error:"initWithDict:error:"];
-  MEMORY[0x277D82BD8](v77);
-  if (*v171)
+  MEMORY[0x277D82BD8](getTestSchemaDict2);
+  if (*errorCopy)
   {
     v193 = TEST_CREATE_TEST_TABLE;
-    v75 = [*v171 localizedDescription];
-    v194[0] = v75;
+    localizedDescription = [*errorCopy localizedDescription];
+    v194[0] = localizedDescription;
     v174 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v194 forKeys:&v193 count:1];
-    MEMORY[0x277D82BD8](v75);
+    MEMORY[0x277D82BD8](localizedDescription);
     v165 = 1;
   }
 
@@ -166,7 +166,7 @@
     v74 = [location[0] objectForKey:TEST_CREATE_TEST_TABLE];
     v164 = [v74 objectForKey:0x2852AF668];
     MEMORY[0x277D82BD8](v74);
-    v163 = [v170 createTable:v164 usingSchema:v166 error:v171];
+    v163 = [v170 createTable:v164 usingSchema:v166 error:errorCopy];
     [v169 setObject:v163 forKey:TEST_CREATE_TEST_TABLE];
     objc_storeStrong(&v163, 0);
     objc_storeStrong(&v164, 0);
@@ -190,9 +190,9 @@ LABEL_20:
       MEMORY[0x277D82BD8](v69);
       v71 = v170;
       v70 = v162;
-      v72 = [v170 getDataSchema];
+      getDataSchema = [v170 getDataSchema];
       v161 = [v71 createTable:v70 usingSchema:? error:?];
-      MEMORY[0x277D82BD8](v72);
+      MEMORY[0x277D82BD8](getDataSchema);
       [v169 setObject:v161 forKey:TEST_CREATE_TABLE];
       objc_storeStrong(&v161, 0);
       objc_storeStrong(&v162, 0);
@@ -205,12 +205,12 @@ LABEL_20:
       v67 = [location[0] objectForKey:TEST_SAVE_EVENTS];
       v160 = [AMDSQLite saveEvents:"saveEvents:error:" error:?];
       MEMORY[0x277D82BD8](v67);
-      if (*v171)
+      if (*errorCopy)
       {
         v65 = v169;
-        v66 = [*v171 localizedDescription];
+        localizedDescription2 = [*errorCopy localizedDescription];
         [v65 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v66);
+        MEMORY[0x277D82BD8](localizedDescription2);
       }
 
       else
@@ -232,16 +232,16 @@ LABEL_20:
     v17 = v170;
     v170 = v16;
     MEMORY[0x277D82BD8](v17);
-    v159 = [v173 getSchema:location[0]];
+    v159 = [selfCopy getSchema:location[0]];
     v158 = [location[0] objectForKey:TEST_FETCH_ROWS];
-    v157 = [[AMDFetchDescriptor alloc] initWithDict:v158 usingSchema:v159 error:v171];
-    if (*v171)
+    v157 = [[AMDFetchDescriptor alloc] initWithDict:v158 usingSchema:v159 error:errorCopy];
+    if (*errorCopy)
     {
       v191 = TEST_FETCH_ROWS;
-      v63 = [*v171 localizedDescription];
-      v192 = v63;
+      localizedDescription3 = [*errorCopy localizedDescription];
+      v192 = localizedDescription3;
       v174 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v192 forKeys:&v191 count:1];
-      MEMORY[0x277D82BD8](v63);
+      MEMORY[0x277D82BD8](localizedDescription3);
       v165 = 1;
     }
 
@@ -259,7 +259,7 @@ LABEL_20:
       }
 
       v155 = v62;
-      v154 = [v170 fetchRowsUsingSchema:v159 andDescriptor:v157 andPersist:v62 error:v171];
+      v154 = [v170 fetchRowsUsingSchema:v159 andDescriptor:v157 andPersist:v62 error:errorCopy];
       v61 = v169;
       v152 = 0;
       v150 = 0;
@@ -271,9 +271,9 @@ LABEL_20:
       else
       {
         v189 = @"failure";
-        v153 = [*v171 localizedDescription];
+        localizedDescription4 = [*errorCopy localizedDescription];
         v152 = 1;
-        v190 = v153;
+        v190 = localizedDescription4;
         v151 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v190 forKeys:&v189 count:1];
         v150 = 1;
         v60 = v151;
@@ -287,7 +287,7 @@ LABEL_20:
 
       if (v152)
       {
-        MEMORY[0x277D82BD8](v153);
+        MEMORY[0x277D82BD8](localizedDescription4);
       }
 
       objc_storeStrong(&v154, 0);
@@ -324,9 +324,9 @@ LABEL_42:
         else
         {
           v187 = @"failure";
-          v148 = [*v171 localizedDescription];
+          localizedDescription5 = [*errorCopy localizedDescription];
           v147 = 1;
-          v188 = v148;
+          v188 = localizedDescription5;
           v146 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v188 forKeys:&v187 count:1];
           v145 = 1;
           v55 = v146;
@@ -340,7 +340,7 @@ LABEL_42:
 
         if (v147)
         {
-          MEMORY[0x277D82BD8](v148);
+          MEMORY[0x277D82BD8](localizedDescription5);
         }
 
         objc_storeStrong(&v149, 0);
@@ -350,9 +350,9 @@ LABEL_42:
       MEMORY[0x277D82BD8](v54);
       if (v54)
       {
-        v144 = [v173 getSchema:location[0]];
+        v144 = [selfCopy getSchema:location[0]];
         v143 = [location[0] objectForKey:TEST_INSERT_JS];
-        v142 = [AMDSQLite insertRowsInternal:v143 usingSchema:v144 error:v171];
+        v142 = [AMDSQLite insertRowsInternal:v143 usingSchema:v144 error:errorCopy];
         v53 = v169;
         v140 = 0;
         v138 = 0;
@@ -364,9 +364,9 @@ LABEL_42:
         else
         {
           v185 = @"failure";
-          v141 = [*v171 localizedDescription];
+          localizedDescription6 = [*errorCopy localizedDescription];
           v140 = 1;
-          v186 = v141;
+          v186 = localizedDescription6;
           v139 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v186 forKeys:&v185 count:1];
           v138 = 1;
           v52 = v139;
@@ -380,7 +380,7 @@ LABEL_42:
 
         if (v140)
         {
-          MEMORY[0x277D82BD8](v141);
+          MEMORY[0x277D82BD8](localizedDescription6);
         }
 
         objc_storeStrong(&v142, 0);
@@ -393,7 +393,7 @@ LABEL_42:
       if (v51)
       {
         v137 = [location[0] objectForKey:TEST_DELETE_JS];
-        v136 = [AMDSQLite deleteRowsHandler:v137 error:v171];
+        v136 = [AMDSQLite deleteRowsHandler:v137 error:errorCopy];
         v50 = v169;
         v134 = 0;
         v132 = 0;
@@ -405,9 +405,9 @@ LABEL_42:
         else
         {
           v183 = @"failure";
-          v135 = [*v171 localizedDescription];
+          localizedDescription7 = [*errorCopy localizedDescription];
           v134 = 1;
-          v184 = v135;
+          v184 = localizedDescription7;
           v133 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v184 forKeys:&v183 count:1];
           v132 = 1;
           v49 = v133;
@@ -421,7 +421,7 @@ LABEL_42:
 
         if (v134)
         {
-          MEMORY[0x277D82BD8](v135);
+          MEMORY[0x277D82BD8](localizedDescription7);
         }
 
         objc_storeStrong(&v136, 0);
@@ -439,7 +439,7 @@ LABEL_42:
         v131 = [location[0] objectForKey:TEST_ADD_DESCRIPTORS];
         v130 = [v131 objectForKey:0x2852A86A8];
         v129 = [v131 objectForKey:@"fdConfig"];
-        v128 = [AMDFetchDescriptor refreshAggregationDescriptors:v129 forDomain:v130 error:v171];
+        v128 = [AMDFetchDescriptor refreshAggregationDescriptors:v129 forDomain:v130 error:errorCopy];
         v47 = v169;
         v126 = 0;
         v124 = 0;
@@ -451,9 +451,9 @@ LABEL_42:
         else
         {
           v181 = @"failure";
-          v127 = [*v171 localizedDescription];
+          localizedDescription8 = [*errorCopy localizedDescription];
           v126 = 1;
-          v182 = v127;
+          v182 = localizedDescription8;
           v125 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v182 forKeys:&v181 count:1];
           v124 = 1;
           v46 = v125;
@@ -467,7 +467,7 @@ LABEL_42:
 
         if (v126)
         {
-          MEMORY[0x277D82BD8](v127);
+          MEMORY[0x277D82BD8](localizedDescription8);
         }
 
         objc_storeStrong(&v128, 0);
@@ -481,7 +481,7 @@ LABEL_42:
       if (v45)
       {
         v123 = [location[0] objectForKey:TEST_REFRESH_ODTP];
-        v122 = [AMDSQLite refreshODTPForDomain:v123 error:v171];
+        v122 = [AMDSQLite refreshODTPForDomain:v123 error:errorCopy];
         v44 = v169;
         v120 = 0;
         v118 = 0;
@@ -493,9 +493,9 @@ LABEL_42:
         else
         {
           v179 = @"failure";
-          v121 = [*v171 localizedDescription];
+          localizedDescription9 = [*errorCopy localizedDescription];
           v120 = 1;
-          v180 = v121;
+          v180 = localizedDescription9;
           v119 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v180 forKeys:&v179 count:1];
           v118 = 1;
           v43 = v119;
@@ -509,7 +509,7 @@ LABEL_42:
 
         if (v120)
         {
-          MEMORY[0x277D82BD8](v121);
+          MEMORY[0x277D82BD8](localizedDescription9);
         }
 
         objc_storeStrong(&v122, 0);
@@ -521,7 +521,7 @@ LABEL_42:
       if (v42)
       {
         v117 = [location[0] objectForKey:TEST_REFRESH_ENTITY_TABLE];
-        v116 = [AMDSQLite refreshEntityTableForDomain:v117 error:v171];
+        v116 = [AMDSQLite refreshEntityTableForDomain:v117 error:errorCopy];
         v41 = v169;
         v114 = 0;
         v112 = 0;
@@ -533,9 +533,9 @@ LABEL_42:
         else
         {
           v177 = @"failure";
-          v115 = [*v171 localizedDescription];
+          localizedDescription10 = [*errorCopy localizedDescription];
           v114 = 1;
-          v178 = v115;
+          v178 = localizedDescription10;
           v113 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v178 forKeys:&v177 count:1];
           v112 = 1;
           v40 = v113;
@@ -549,7 +549,7 @@ LABEL_42:
 
         if (v114)
         {
-          MEMORY[0x277D82BD8](v115);
+          MEMORY[0x277D82BD8](localizedDescription10);
         }
 
         objc_storeStrong(&v116, 0);
@@ -567,7 +567,7 @@ LABEL_42:
         v111 = [location[0] objectForKey:TEST_FETCH_FEATURE];
         v110 = [v111 objectForKey:0x2852A86A8];
         v109 = [v111 objectForKey:@"featureName"];
-        v108 = [AMDSQLite getFeatureValueWithName:v109 inDomain:v110 withColumnName:0 skipRowset:0 error:v171];
+        v108 = [AMDSQLite getFeatureValueWithName:v109 inDomain:v110 withColumnName:0 skipRowset:0 error:errorCopy];
         if (v108)
         {
           v38 = v108;
@@ -593,12 +593,12 @@ LABEL_42:
         v25 = v170;
         v170 = v24;
         MEMORY[0x277D82BD8](v25);
-        v36 = [v170 getDataSchema];
-        v107 = [v36 getSchemaDict];
-        MEMORY[0x277D82BD8](v36);
-        if (v107)
+        getDataSchema2 = [v170 getDataSchema];
+        getSchemaDict = [getDataSchema2 getSchemaDict];
+        MEMORY[0x277D82BD8](getDataSchema2);
+        if (getSchemaDict)
         {
-          v35 = v107;
+          v35 = getSchemaDict;
         }
 
         else
@@ -607,7 +607,7 @@ LABEL_42:
         }
 
         [v169 setObject:v35 forKey:TEST_FETCH_SCHEMA];
-        objc_storeStrong(&v107, 0);
+        objc_storeStrong(&getSchemaDict, 0);
       }
 
       v34 = [location[0] objectForKey:TEST_UPDATE_DATA];
@@ -652,9 +652,9 @@ LABEL_42:
       MEMORY[0x277D82BD8](v30);
       if (v30)
       {
-        v98 = [v173 getSchema:location[0]];
+        v98 = [selfCopy getSchema:location[0]];
         v97 = [location[0] objectForKey:TEST_UPDATE_TABLES];
-        v96 = [AMDSQLite updateTablesInternal:v97 usingSchema:v98 error:v171];
+        v96 = [AMDSQLite updateTablesInternal:v97 usingSchema:v98 error:errorCopy];
         v29 = v169;
         v94 = 0;
         v92 = 0;
@@ -666,9 +666,9 @@ LABEL_42:
         else
         {
           v175 = @"failure";
-          v95 = [*v171 localizedDescription];
+          localizedDescription11 = [*errorCopy localizedDescription];
           v94 = 1;
-          v176 = v95;
+          v176 = localizedDescription11;
           v93 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v176 forKeys:&v175 count:1];
           v92 = 1;
           v28 = v93;
@@ -682,7 +682,7 @@ LABEL_42:
 
         if (v94)
         {
-          MEMORY[0x277D82BD8](v95);
+          MEMORY[0x277D82BD8](localizedDescription11);
         }
 
         objc_storeStrong(&v96, 0);

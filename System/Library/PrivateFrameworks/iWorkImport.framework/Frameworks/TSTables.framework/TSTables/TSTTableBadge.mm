@@ -1,18 +1,18 @@
 @interface TSTTableBadge
-+ (id)badgeWithType:(int)a3 color:(id)a4 viewScale:(double)a5 frame:(CGRect)a6;
++ (id)badgeWithType:(int)type color:(id)color viewScale:(double)scale frame:(CGRect)frame;
 - (CGRect)frame;
 - (double)p_commentBrightnessFactor;
-- (void)drawInContext:(CGContext *)a3;
-- (void)p_drawCellCommentBadgeInContext:(CGContext *)a3;
-- (void)p_drawCellErrorIndicatorInContext:(CGContext *)a3;
-- (void)p_drawCellWarningBadgeInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
+- (void)p_drawCellCommentBadgeInContext:(CGContext *)context;
+- (void)p_drawCellErrorIndicatorInContext:(CGContext *)context;
+- (void)p_drawCellWarningBadgeInContext:(CGContext *)context;
 @end
 
 @implementation TSTTableBadge
 
-- (void)p_drawCellErrorIndicatorInContext:(CGContext *)a3
+- (void)p_drawCellErrorIndicatorInContext:(CGContext *)context
 {
-  objc_msgSend_viewScale(self, a2, a3, v3, v4);
+  objc_msgSend_viewScale(self, a2, context, v3, v4);
   v8 = v7;
   objc_msgSend_frame(self, v9, v10, v11, v12);
   v20 = sub_221445528(v13, v14, v15, v16);
@@ -53,7 +53,7 @@
   v29 = sub_2214453B4(v28);
 
   memset(&v39, 0, sizeof(v39));
-  CGContextGetUserSpaceToDeviceSpaceTransform(&v39, a3);
+  CGContextGetUserSpaceToDeviceSpaceTransform(&v39, context);
   v37 = v39;
   memset(&v38, 0, sizeof(v38));
   CGAffineTransformInvert(&v38, &v37);
@@ -71,14 +71,14 @@
   v35 = v38.ty + v30 * v38.d + v38.b * v31;
   v36 = v38.tx + v30 * v38.c + v38.a * v31;
   TSURoundedSize();
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
-  CGContextTranslateCTM(a3, v36, v35);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  v34 = objc_msgSend_CGImageForSize_inContext_orContentsScaleProvider_(v29, v32, a3, 0, v33, v24, v26);
+  CGContextTranslateCTM(context, v36, v35);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  v34 = objc_msgSend_CGImageForSize_inContext_orContentsScaleProvider_(v29, v32, context, 0, v33, v24, v26);
   TSURectWithSize();
-  CGContextDrawImage(a3, v42, v34);
-  CGContextRestoreGState(a3);
+  CGContextDrawImage(context, v42, v34);
+  CGContextRestoreGState(context);
 }
 
 - (double)p_commentBrightnessFactor
@@ -93,9 +93,9 @@
   return result;
 }
 
-- (void)p_drawCellCommentBadgeInContext:(CGContext *)a3
+- (void)p_drawCellCommentBadgeInContext:(CGContext *)context
 {
-  objc_msgSend_frame(self, a2, a3, v3, v4);
+  objc_msgSend_frame(self, a2, context, v3, v4);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -112,22 +112,22 @@
   v43 = v24 * v42;
   objc_msgSend_alphaComponent(v65, v44, v45, v46, v47);
   v53 = objc_msgSend_initWithHue_saturation_brightness_alpha_(v25, v48, v49, v50, v51, v31, v37, v43, v52);
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v54 = sub_2214458D8(v8, v10, v12, v14);
   CGContextAddPathSafe();
   v59 = objc_msgSend_CGColor(v53, v55, v56, v57, v58);
-  CGContextSetStrokeColorWithColor(a3, v59);
-  CGContextSetLineWidth(a3, 0.5);
+  CGContextSetStrokeColorWithColor(context, v59);
+  CGContextSetLineWidth(context, 0.5);
   v64 = objc_msgSend_CGColor(v65, v60, v61, v62, v63);
-  CGContextSetFillColorWithColor(a3, v64);
-  CGContextDrawPath(a3, kCGPathFillStroke);
+  CGContextSetFillColorWithColor(context, v64);
+  CGContextDrawPath(context, kCGPathFillStroke);
   CGPathRelease(v54);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
-- (void)p_drawCellWarningBadgeInContext:(CGContext *)a3
+- (void)p_drawCellWarningBadgeInContext:(CGContext *)context
 {
-  v7 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, a2, a3, v3, v4);
+  v7 = objc_msgSend_sharedTableConfiguration(TSTConfiguration, a2, context, v3, v4);
   v12 = objc_msgSend_showsCellWarningIndicator(v7, v8, v9, v10, v11);
 
   if (v12)
@@ -143,55 +143,55 @@
     v24.size.width = width;
     v24.size.height = height;
     CGRectGetMinY(v24);
-    CGContextSaveGState(a3);
+    CGContextSaveGState(context);
     Mutable = CGPathCreateMutable();
     CGPathMoveToPointSafe();
     CGPathAddLineToPointSafe();
     CGPathAddLineToPointSafe();
     CGPathCloseSubpath(Mutable);
     CGContextAddPathSafe();
-    CGContextSetRGBFillColor(a3, 0.0700000003, 0.400000006, 0.99000001, 0.976000011);
-    CGContextFillPath(a3);
+    CGContextSetRGBFillColor(context, 0.0700000003, 0.400000006, 0.99000001, 0.976000011);
+    CGContextFillPath(context);
     CGPathRelease(Mutable);
 
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (id)badgeWithType:(int)a3 color:(id)a4 viewScale:(double)a5 frame:(CGRect)a6
++ (id)badgeWithType:(int)type color:(id)color viewScale:(double)scale frame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = *&a3;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v11 = *&type;
+  colorCopy = color;
   v13 = objc_alloc_init(TSTTableBadge);
   objc_msgSend_setBadgeType_(v13, v14, v11, v15, v16);
-  objc_msgSend_setColor_(v13, v17, v12, v18, v19);
+  objc_msgSend_setColor_(v13, v17, colorCopy, v18, v19);
 
-  objc_msgSend_setViewScale_(v13, v20, v21, v22, v23, a5);
+  objc_msgSend_setViewScale_(v13, v20, v21, v22, v23, scale);
   objc_msgSend_setFrame_(v13, v24, v25, v26, v27, x, y, width, height);
 
   return v13;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v7 = objc_msgSend_badgeType(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_badgeType(self, a2, context, v3, v4);
   switch(v7)
   {
     case 3:
 
-      MEMORY[0x2821F9670](self, sel_p_drawCellErrorIndicatorInContext_, a3, v8, v9);
+      MEMORY[0x2821F9670](self, sel_p_drawCellErrorIndicatorInContext_, context, v8, v9);
       break;
     case 2:
 
-      MEMORY[0x2821F9670](self, sel_p_drawCellWarningBadgeInContext_, a3, v8, v9);
+      MEMORY[0x2821F9670](self, sel_p_drawCellWarningBadgeInContext_, context, v8, v9);
       break;
     case 1:
 
-      MEMORY[0x2821F9670](self, sel_p_drawCellCommentBadgeInContext_, a3, v8, v9);
+      MEMORY[0x2821F9670](self, sel_p_drawCellCommentBadgeInContext_, context, v8, v9);
       break;
   }
 }

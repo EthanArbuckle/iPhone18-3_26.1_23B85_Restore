@@ -6,32 +6,32 @@
 
 - (id)pl_containingClickPresentationInteractionPresentingViewController
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    while (![v1 conformsToProtocol:&unk_2833BFE40])
+    while (![selfCopy conformsToProtocol:&unk_2833BFE40])
     {
-      v2 = [v1 parentViewController];
+      parentViewController = [selfCopy parentViewController];
 
-      v1 = v2;
-      if (!v2)
+      selfCopy = parentViewController;
+      if (!parentViewController)
       {
         goto LABEL_7;
       }
     }
 
-    v1 = v1;
-    v2 = v1;
+    selfCopy = selfCopy;
+    parentViewController = selfCopy;
   }
 
   else
   {
-    v2 = 0;
+    parentViewController = 0;
   }
 
 LABEL_7:
 
-  return v1;
+  return selfCopy;
 }
 
 @end

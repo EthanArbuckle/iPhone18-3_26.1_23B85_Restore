@@ -1,68 +1,68 @@
 @interface PTHandGesture
-+ (id)gestureTypeToString:(unsigned int)a3;
++ (id)gestureTypeToString:(unsigned int)string;
 - (CGRect)boundingBox;
-- (PTHandGesture)initWithType:(unsigned int)a3 chirality:(unsigned int)a4 boundingBox:(CGRect)a5 confidence:(id)a6 personID:(id)a7 handID:(id)a8;
-- (PTHandGesture)initWithVCPHandObservation:(id)a3;
+- (PTHandGesture)initWithType:(unsigned int)type chirality:(unsigned int)chirality boundingBox:(CGRect)box confidence:(id)confidence personID:(id)d handID:(id)iD;
+- (PTHandGesture)initWithVCPHandObservation:(id)observation;
 @end
 
 @implementation PTHandGesture
 
-- (PTHandGesture)initWithVCPHandObservation:(id)a3
+- (PTHandGesture)initWithVCPHandObservation:(id)observation
 {
-  v4 = a3;
+  observationCopy = observation;
   v25.receiver = self;
   v25.super_class = PTHandGesture;
   v5 = [(PTHandGesture *)&v25 init];
   if (v5)
   {
-    [v4 bounds];
+    [observationCopy bounds];
     v5->_boundingBox.origin.x = v6;
     v5->_boundingBox.origin.y = v7;
     v5->_boundingBox.size.width = v8;
     v5->_boundingBox.size.height = v9;
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "groupID")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(observationCopy, "groupID")}];
     personID = v5->_personID;
     v5->_personID = v10;
 
-    v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "handID")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(observationCopy, "handID")}];
     handID = v5->_handID;
     v5->_handID = v12;
 
     v14 = MEMORY[0x277CCABB0];
-    [v4 gestureConfidence];
+    [observationCopy gestureConfidence];
     v15 = [v14 numberWithFloat:?];
     confidence = v5->_confidence;
     v5->_confidence = v15;
 
-    v17 = [v4 keypoints];
+    keypoints = [observationCopy keypoints];
     handKeypoints = v5->_handKeypoints;
-    v5->_handKeypoints = v17;
+    v5->_handKeypoints = keypoints;
 
     v5->_type = 0;
-    v19 = [v4 gestureType] - 2;
+    v19 = [observationCopy gestureType] - 2;
     if (v19 <= 0xF && ((0xBCE1u >> v19) & 1) != 0)
     {
       v5->_type = dword_2244C5FA8[v19];
     }
 
-    v20 = [v4 chirality] + 1;
+    v20 = [observationCopy chirality] + 1;
     if (v20 <= 2)
     {
       v5->_handChirality = dword_2244C5FE8[v20];
     }
 
-    v21 = [v4 mitigationType];
-    if (v21 > 15)
+    mitigationType = [observationCopy mitigationType];
+    if (mitigationType > 15)
     {
-      if (v21 <= 63)
+      if (mitigationType <= 63)
       {
-        if (v21 == 16)
+        if (mitigationType == 16)
         {
           v22 = 5;
           goto LABEL_30;
         }
 
-        if (v21 == 32)
+        if (mitigationType == 32)
         {
           v22 = 6;
           goto LABEL_30;
@@ -71,7 +71,7 @@
 
       else
       {
-        switch(v21)
+        switch(mitigationType)
         {
           case 0x40:
             v22 = 7;
@@ -86,15 +86,15 @@
       }
     }
 
-    else if (v21 <= 1)
+    else if (mitigationType <= 1)
     {
-      if (!v21)
+      if (!mitigationType)
       {
         v22 = 0;
         goto LABEL_30;
       }
 
-      if (v21 == 1)
+      if (mitigationType == 1)
       {
         v22 = 1;
         goto LABEL_30;
@@ -103,7 +103,7 @@
 
     else
     {
-      switch(v21)
+      switch(mitigationType)
       {
         case 2:
           v22 = 2;
@@ -125,15 +125,15 @@ LABEL_30:
   return v5;
 }
 
-- (PTHandGesture)initWithType:(unsigned int)a3 chirality:(unsigned int)a4 boundingBox:(CGRect)a5 confidence:(id)a6 personID:(id)a7 handID:(id)a8
+- (PTHandGesture)initWithType:(unsigned int)type chirality:(unsigned int)chirality boundingBox:(CGRect)box confidence:(id)confidence personID:(id)d handID:(id)iD
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  confidenceCopy = confidence;
+  dCopy = d;
+  iDCopy = iD;
   v24.receiver = self;
   v24.super_class = PTHandGesture;
   v20 = [(PTHandGesture *)&v24 init];
@@ -141,30 +141,30 @@ LABEL_30:
   if (v20)
   {
     v20->_type = 0;
-    v20->_handChirality = a4;
-    objc_storeStrong(&v20->_confidence, a6);
+    v20->_handChirality = chirality;
+    objc_storeStrong(&v20->_confidence, confidence);
     v21->_boundingBox.origin.x = x;
     v21->_boundingBox.origin.y = y;
     v21->_boundingBox.size.width = width;
     v21->_boundingBox.size.height = height;
-    objc_storeStrong(&v21->_personID, a7);
-    objc_storeStrong(&v21->_handID, a8);
+    objc_storeStrong(&v21->_personID, d);
+    objc_storeStrong(&v21->_handID, iD);
     v22 = v21;
   }
 
   return v21;
 }
 
-+ (id)gestureTypeToString:(unsigned int)a3
++ (id)gestureTypeToString:(unsigned int)string
 {
-  if (a3 > 9)
+  if (string > 9)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_2785236C0[a3];
+    return off_2785236C0[string];
   }
 }
 

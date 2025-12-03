@@ -1,76 +1,76 @@
 @interface TPSTipStatusController
-- (BOOL)isContentNeverVisibleForIdentifier:(id)a3;
-- (BOOL)isContentViewedForIdentifier:(id)a3;
-- (BOOL)isContextualInfoLifetimeExpiredForIdentifier:(id)a3;
-- (BOOL)isDesiredOutcomePerformedForIdentifier:(id)a3;
-- (BOOL)isDesiredOutcomeTrackingEligibleForIdentifier:(id)a3;
-- (BOOL)isEligibilityTrackingNeedsRestartForIdentifier:(id)a3;
-- (BOOL)isExpiredForIdentifier:(id)a3;
-- (BOOL)isHintDismissedForIdentifier:(id)a3;
-- (BOOL)isHintDisplayedForIdentifier:(id)a3;
-- (BOOL)isHintIneligibleForIdentifier:(id)a3;
-- (BOOL)isHintIneligibleForReason:(int64_t)a3 identifier:(id)a4;
-- (BOOL)isLockScreenHintDisplayEligibleForIdentifier:(id)a3;
-- (BOOL)isOverrideFrequencyControlForIdentifier:(id)a3;
-- (BOOL)isOverrideHoldoutForIdentifier:(id)a3;
-- (BOOL)isPreconditionMatchedForIdentifier:(id)a3;
-- (BOOL)isTipAppDisplayEligibleForIdentifier:(id)a3;
+- (BOOL)isContentNeverVisibleForIdentifier:(id)identifier;
+- (BOOL)isContentViewedForIdentifier:(id)identifier;
+- (BOOL)isContextualInfoLifetimeExpiredForIdentifier:(id)identifier;
+- (BOOL)isDesiredOutcomePerformedForIdentifier:(id)identifier;
+- (BOOL)isDesiredOutcomeTrackingEligibleForIdentifier:(id)identifier;
+- (BOOL)isEligibilityTrackingNeedsRestartForIdentifier:(id)identifier;
+- (BOOL)isExpiredForIdentifier:(id)identifier;
+- (BOOL)isHintDismissedForIdentifier:(id)identifier;
+- (BOOL)isHintDisplayedForIdentifier:(id)identifier;
+- (BOOL)isHintIneligibleForIdentifier:(id)identifier;
+- (BOOL)isHintIneligibleForReason:(int64_t)reason identifier:(id)identifier;
+- (BOOL)isLockScreenHintDisplayEligibleForIdentifier:(id)identifier;
+- (BOOL)isOverrideFrequencyControlForIdentifier:(id)identifier;
+- (BOOL)isOverrideHoldoutForIdentifier:(id)identifier;
+- (BOOL)isPreconditionMatchedForIdentifier:(id)identifier;
+- (BOOL)isTipAppDisplayEligibleForIdentifier:(id)identifier;
 - (BOOL)unviewedContentAvailable;
 - (NSDictionary)tipStatusMap;
-- (TPSTipStatusController)initWithAppGroupDefaults:(id)a3;
-- (id)_tipStatusForIdentifier:(id)a3 addIfMissing:(BOOL)a4;
-- (id)clonedFromIdentifierForIdentifier:(id)a3;
-- (id)contentViewedDateForIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)correlationIdentifierForIdentifier:(id)a3;
-- (id)dateForTriggerRestartTrackingForIdentifier:(id)a3;
+- (TPSTipStatusController)initWithAppGroupDefaults:(id)defaults;
+- (id)_tipStatusForIdentifier:(id)identifier addIfMissing:(BOOL)missing;
+- (id)clonedFromIdentifierForIdentifier:(id)identifier;
+- (id)contentViewedDateForIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)correlationIdentifierForIdentifier:(id)identifier;
+- (id)dateForTriggerRestartTrackingForIdentifier:(id)identifier;
 - (id)debugDescription;
-- (id)firstHintDisplayDateForIdentifier:(id)a3;
-- (id)hintEligibleDateForIdentifier:(id)a3;
-- (id)hintNotDisplayedDueToFrequencyControlDatesForIdentifier:(id)a3;
-- (id)hintWouldHaveBeenDisplayedDateForIdentifier:(id)a3;
-- (id)lastDisplayContextForIdentifier:(id)a3;
-- (id)lastUsedVersionForIdentifier:(id)a3;
+- (id)firstHintDisplayDateForIdentifier:(id)identifier;
+- (id)hintEligibleDateForIdentifier:(id)identifier;
+- (id)hintNotDisplayedDueToFrequencyControlDatesForIdentifier:(id)identifier;
+- (id)hintWouldHaveBeenDisplayedDateForIdentifier:(id)identifier;
+- (id)lastDisplayContextForIdentifier:(id)identifier;
+- (id)lastUsedVersionForIdentifier:(id)identifier;
 - (id)reenrollHoldoutContent;
 - (id)reenrollPreconditionChangeContent;
-- (id)statusesForCorrelationIdentifier:(id)a3;
-- (id)userInfoForIdentifier:(id)a3;
-- (id)variantIdentifierForIdentifier:(id)a3;
-- (int)hintDisplayedCountForIdentifier:(id)a3;
-- (int64_t)hintIneligibleReasonForIdentifier:(id)a3;
+- (id)statusesForCorrelationIdentifier:(id)identifier;
+- (id)userInfoForIdentifier:(id)identifier;
+- (id)variantIdentifierForIdentifier:(id)identifier;
+- (int)hintDisplayedCountForIdentifier:(id)identifier;
+- (int64_t)hintIneligibleReasonForIdentifier:(id)identifier;
 - (int64_t)tipStatusCount;
-- (unint64_t)displayTypeForIdentifier:(id)a3;
-- (unint64_t)usageFlagsForIdentifier:(id)a3;
+- (unint64_t)displayTypeForIdentifier:(id)identifier;
+- (unint64_t)usageFlagsForIdentifier:(id)identifier;
 - (void)_reloadCacheData;
-- (void)addDesiredOutcomePerformedDateForIdentifier:(id)a3 date:(id)a4;
-- (void)addHintDisplayedForIdentifier:(id)a3 context:(id)a4;
-- (void)addHintNotDisplayedDueToFrequencyControlDateForIdentifier:(id)a3;
-- (void)addTipStatuses:(id)a3;
-- (void)clearSavedDateForIdentifier:(id)a3;
-- (void)donateDesiredOutcomePerformedForIdentifier:(id)a3 date:(id)a4;
+- (void)addDesiredOutcomePerformedDateForIdentifier:(id)identifier date:(id)date;
+- (void)addHintDisplayedForIdentifier:(id)identifier context:(id)context;
+- (void)addHintNotDisplayedDueToFrequencyControlDateForIdentifier:(id)identifier;
+- (void)addTipStatuses:(id)statuses;
+- (void)clearSavedDateForIdentifier:(id)identifier;
+- (void)donateDesiredOutcomePerformedForIdentifier:(id)identifier date:(id)date;
 - (void)removeAllTipStatus;
 - (void)removeCacheData;
-- (void)removeTipStatusWithIdentifiers:(id)a3;
-- (void)removeUserInfoForIdentifier:(id)a3;
-- (void)setAppGroupDefaults:(id)a3;
-- (void)syncWithIdentifiers:(id)a3;
+- (void)removeTipStatusWithIdentifiers:(id)identifiers;
+- (void)removeUserInfoForIdentifier:(id)identifier;
+- (void)setAppGroupDefaults:(id)defaults;
+- (void)syncWithIdentifiers:(id)identifiers;
 - (void)updateCacheData;
-- (void)updateClonedFromIdentifierForIdentifier:(id)a3 value:(id)a4;
-- (void)updateCorrelationIdentifierForIdentifier:(id)a3 value:(id)a4;
-- (void)updateDateForTriggerRestartTrackingForIdentifier:(id)a3 date:(id)a4;
-- (void)updateDisplayTypeForIdentifier:(id)a3 value:(unint64_t)a4;
-- (void)updateHintIneligibleForIdentifier:(id)a3 value:(int64_t)a4;
-- (void)updateLastUsedVersionForIdentifier:(id)a3 value:(id)a4;
-- (void)updateUserInfoForIdentifier:(id)a3 key:(id)a4 value:(id)a5;
-- (void)updateVariantIdentifierForIdentifier:(id)a3 value:(id)a4;
+- (void)updateClonedFromIdentifierForIdentifier:(id)identifier value:(id)value;
+- (void)updateCorrelationIdentifierForIdentifier:(id)identifier value:(id)value;
+- (void)updateDateForTriggerRestartTrackingForIdentifier:(id)identifier date:(id)date;
+- (void)updateDisplayTypeForIdentifier:(id)identifier value:(unint64_t)value;
+- (void)updateHintIneligibleForIdentifier:(id)identifier value:(int64_t)value;
+- (void)updateLastUsedVersionForIdentifier:(id)identifier value:(id)value;
+- (void)updateUserInfoForIdentifier:(id)identifier key:(id)key value:(id)value;
+- (void)updateVariantIdentifierForIdentifier:(id)identifier value:(id)value;
 @end
 
 @implementation TPSTipStatusController
 
-- (TPSTipStatusController)initWithAppGroupDefaults:(id)a3
+- (TPSTipStatusController)initWithAppGroupDefaults:(id)defaults
 {
-  v4 = a3;
-  if (v4)
+  defaultsCopy = defaults;
+  if (defaultsCopy)
   {
     v9.receiver = self;
     v9.super_class = TPSTipStatusController;
@@ -78,38 +78,38 @@
     v6 = v5;
     if (v5)
     {
-      [(TPSTipStatusController *)v5 setAppGroupDefaults:v4];
+      [(TPSTipStatusController *)v5 setAppGroupDefaults:defaultsCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSMutableDictionary *)self->_identifierToTipStatusMap copy];
   [v4 setIdentifierToTipStatusMap:v5];
 
   return v4;
 }
 
-- (void)setAppGroupDefaults:(id)a3
+- (void)setAppGroupDefaults:(id)defaults
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_appGroupDefaults, a3);
-  [(TPSTipStatusController *)v5 _reloadCacheData];
-  objc_sync_exit(v5);
+  defaultsCopy = defaults;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_appGroupDefaults, defaults);
+  [(TPSTipStatusController *)selfCopy _reloadCacheData];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_reloadCacheData
@@ -126,19 +126,19 @@
 
   if (!self->_identifierToTipStatusMap)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = self->_identifierToTipStatusMap;
-    self->_identifierToTipStatusMap = v10;
+    self->_identifierToTipStatusMap = dictionary;
   }
 }
 
 - (NSDictionary)tipStatusMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableDictionary *)v2->_identifierToTipStatusMap count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap count])
   {
-    v3 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:v2->_identifierToTipStatusMap];
+    v3 = [objc_alloc(MEMORY[0x1E695DF20]) initWithDictionary:selfCopy->_identifierToTipStatusMap];
   }
 
   else
@@ -146,37 +146,37 @@
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (int64_t)tipStatusCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_identifierToTipStatusMap count];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap count];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)_tipStatusForIdentifier:(id)a3 addIfMissing:(BOOL)a4
+- (id)_tipStatusForIdentifier:(id)identifier addIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v7->_identifierToTipStatusMap objectForKeyedSubscript:v6];
+  missingCopy = missing;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap objectForKeyedSubscript:identifierCopy];
   v9 = v8;
-  if (v4 && !v8)
+  if (missingCopy && !v8)
   {
-    if ([v6 length])
+    if ([identifierCopy length])
     {
-      v9 = [[TPSTipStatus alloc] initWithIdentifier:v6];
+      v9 = [[TPSTipStatus alloc] initWithIdentifier:identifierCopy];
       if (v9)
       {
-        [(NSMutableDictionary *)v7->_identifierToTipStatusMap setObject:v9 forKeyedSubscript:v6];
+        [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap setObject:v9 forKeyedSubscript:identifierCopy];
       }
     }
 
@@ -186,43 +186,43 @@
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)syncWithIdentifiers:(id)a3
+- (void)syncWithIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([v9 count])
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([identifiersCopy count])
   {
     v5 = MEMORY[0x1E695DFA8];
-    v6 = [(NSMutableDictionary *)v4->_identifierToTipStatusMap allKeys];
-    v7 = [v5 setWithArray:v6];
+    allKeys = [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap allKeys];
+    v7 = [v5 setWithArray:allKeys];
 
-    [v7 minusSet:v9];
-    v8 = [v7 allObjects];
-    [(TPSTipStatusController *)v4 updatePreconditionMatchedForIdentifiers:v8 value:0];
+    [v7 minusSet:identifiersCopy];
+    allObjects = [v7 allObjects];
+    [(TPSTipStatusController *)selfCopy updatePreconditionMatchedForIdentifiers:allObjects value:0];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addTipStatuses:(id)a3
+- (void)addTipStatuses:(id)statuses
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  statusesCopy = statuses;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__TPSTipStatusController_addTipStatuses___block_invoke;
   v6[3] = &unk_1E81019F0;
-  v6[4] = v5;
-  [v4 enumerateObjectsUsingBlock:v6];
-  [(TPSTipStatusController *)v5 updateCacheData];
-  objc_sync_exit(v5);
+  v6[4] = selfCopy;
+  [statusesCopy enumerateObjectsUsingBlock:v6];
+  [(TPSTipStatusController *)selfCopy updateCacheData];
+  objc_sync_exit(selfCopy);
 }
 
 void __41__TPSTipStatusController_addTipStatuses___block_invoke(uint64_t a1, void *a2)
@@ -238,24 +238,24 @@ void __41__TPSTipStatusController_addTipStatuses___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)statusesForCorrelationIdentifier:(id)a3
+- (id)statusesForCorrelationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_identifierToTipStatusMap allValues];
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap allValues];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__TPSTipStatusController_statusesForCorrelationIdentifier___block_invoke;
   v11[3] = &unk_1E8101A18;
-  v8 = v4;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v5;
+  v9 = array;
   v13 = v9;
-  [v7 enumerateObjectsUsingBlock:v11];
+  [allValues enumerateObjectsUsingBlock:v11];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -274,14 +274,14 @@ void __59__TPSTipStatusController_statusesForCorrelationIdentifier___block_invok
   }
 }
 
-- (void)removeTipStatusWithIdentifiers:(id)a3
+- (void)removeTipStatusWithIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_identifierToTipStatusMap removeObjectsForKeys:v5];
-  v4->_isDirty = 1;
-  objc_sync_exit(v4);
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap removeObjectsForKeys:identifiersCopy];
+  selfCopy->_isDirty = 1;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllTipStatus
@@ -295,21 +295,21 @@ void __59__TPSTipStatusController_statusesForCorrelationIdentifier___block_invok
 
 - (id)reenrollHoldoutContent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSMutableDictionary count](v2->_identifierToTipStatusMap, "count")}];
-  identifierToTipStatusMap = v2->_identifierToTipStatusMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSMutableDictionary count](selfCopy->_identifierToTipStatusMap, "count")}];
+  identifierToTipStatusMap = selfCopy->_identifierToTipStatusMap;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __48__TPSTipStatusController_reenrollHoldoutContent__block_invoke;
   v10 = &unk_1E8101A40;
   v5 = v3;
   v11 = v5;
-  v12 = v2;
+  v12 = selfCopy;
   [(NSMutableDictionary *)identifierToTipStatusMap enumerateKeysAndObjectsUsingBlock:&v7];
-  [(TPSTipStatusController *)v2 updateCacheData:v7];
+  [(TPSTipStatusController *)selfCopy updateCacheData:v7];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -337,21 +337,21 @@ void __48__TPSTipStatusController_reenrollHoldoutContent__block_invoke(uint64_t 
 
 - (id)reenrollPreconditionChangeContent
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSMutableDictionary count](v2->_identifierToTipStatusMap, "count")}];
-  identifierToTipStatusMap = v2->_identifierToTipStatusMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x1E695DFA8] setWithCapacity:{-[NSMutableDictionary count](selfCopy->_identifierToTipStatusMap, "count")}];
+  identifierToTipStatusMap = selfCopy->_identifierToTipStatusMap;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __59__TPSTipStatusController_reenrollPreconditionChangeContent__block_invoke;
   v10 = &unk_1E8101A40;
   v5 = v3;
   v11 = v5;
-  v12 = v2;
+  v12 = selfCopy;
   [(NSMutableDictionary *)identifierToTipStatusMap enumerateKeysAndObjectsUsingBlock:&v7];
-  [(TPSTipStatusController *)v2 updateCacheData:v7];
+  [(TPSTipStatusController *)selfCopy updateCacheData:v7];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -379,37 +379,37 @@ void __59__TPSTipStatusController_reenrollPreconditionChangeContent__block_invok
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isLockScreenHintDisplayEligibleForIdentifier:(id)a3
+- (BOOL)isLockScreenHintDisplayEligibleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(TPSTipStatusController *)v5 isContentNeverVisibleForIdentifier:v4])
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(TPSTipStatusController *)selfCopy isContentNeverVisibleForIdentifier:identifierCopy])
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
-  v7 = [v6 displayType];
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
+  displayType = [v6 displayType];
   if ([v6 isPreconditionMatched] && !objc_msgSend(v6, "hintIneligibleReason"))
   {
-    v10 = [v6 contentViewedDate];
-    if (!v10)
+    contentViewedDate = [v6 contentViewedDate];
+    if (!contentViewedDate)
     {
-      if (!v7)
+      if (!displayType)
       {
         v8 = 1;
         goto LABEL_10;
       }
 
-      if (v7 == 1)
+      if (displayType == 1)
       {
-        v11 = [v6 hintEligibleDate];
-        if (v11)
+        hintEligibleDate = [v6 hintEligibleDate];
+        if (hintEligibleDate)
         {
-          v12 = [v6 desiredOutcomePerformedDates];
-          v8 = [v12 count] == 0;
+          desiredOutcomePerformedDates = [v6 desiredOutcomePerformedDates];
+          v8 = [desiredOutcomePerformedDates count] == 0;
         }
 
         else
@@ -431,37 +431,37 @@ LABEL_10:
 LABEL_5:
 
 LABEL_7:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)isContextualInfoLifetimeExpiredForIdentifier:(id)a3
+- (BOOL)isContextualInfoLifetimeExpiredForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
-  v7 = [v6 isExpired];
-  if ((v6 == 0) | v7 & 1)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
+  isExpired = [v6 isExpired];
+  if ((v6 == 0) | isExpired & 1)
   {
-    v8 = (v6 != 0) | v7;
+    v8 = (v6 != 0) | isExpired;
   }
 
   else
   {
     v9 = MEMORY[0x1E695DF00];
-    v10 = [v6 contentViewedDate];
-    if ([v9 isDateExpired:v10 maxTimeInterval:-2160000.0])
+    contentViewedDate = [v6 contentViewedDate];
+    if ([v9 isDateExpired:contentViewedDate maxTimeInterval:-2160000.0])
     {
     }
 
     else
     {
       v11 = MEMORY[0x1E695DF00];
-      v12 = [v6 hintDisplayedDates];
-      v13 = [v12 firstObject];
-      LODWORD(v11) = [v11 isDateExpired:v13 maxTimeInterval:-2160000.0];
+      hintDisplayedDates = [v6 hintDisplayedDates];
+      firstObject = [hintDisplayedDates firstObject];
+      LODWORD(v11) = [v11 isDateExpired:firstObject maxTimeInterval:-2160000.0];
 
       if (!v11)
       {
@@ -472,63 +472,63 @@ LABEL_7:
 
     v8 = 1;
     [v6 setExpired:1];
-    v5->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
 LABEL_8:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8 & 1;
 }
 
-- (BOOL)isEligibilityTrackingNeedsRestartForIdentifier:(id)a3
+- (BOOL)isEligibilityTrackingNeedsRestartForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
-  v7 = [v6 hintEligibleDate];
-  v8 = [MEMORY[0x1E695DF00] isDateExpired:v7 maxTimeInterval:-2160000.0] && -[TPSTipStatusController isTriggerTrackingEligibleForIdentifier:checkForPrecondition:checkForEligibleDate:](v5, "isTriggerTrackingEligibleForIdentifier:checkForPrecondition:checkForEligibleDate:", v4, 0, 0);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
+  hintEligibleDate = [v6 hintEligibleDate];
+  v8 = [MEMORY[0x1E695DF00] isDateExpired:hintEligibleDate maxTimeInterval:-2160000.0] && -[TPSTipStatusController isTriggerTrackingEligibleForIdentifier:checkForPrecondition:checkForEligibleDate:](selfCopy, "isTriggerTrackingEligibleForIdentifier:checkForPrecondition:checkForEligibleDate:", identifierCopy, 0, 0);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v8;
 }
 
-- (BOOL)isContentNeverVisibleForIdentifier:(id)a3
+- (BOOL)isContentNeverVisibleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 hintDisplayedDates];
-    if ([v8 count])
+    hintDisplayedDates = [v6 hintDisplayedDates];
+    if ([hintDisplayedDates count])
     {
       LOBYTE(v9) = 0;
     }
 
     else
     {
-      v10 = [v7 hintDismissalDate];
-      if (v10)
+      hintDismissalDate = [v7 hintDismissalDate];
+      if (hintDismissalDate)
       {
         LOBYTE(v9) = 0;
       }
 
       else
       {
-        v11 = [v7 contentViewedDate];
-        if (v11)
+        contentViewedDate = [v7 contentViewedDate];
+        if (contentViewedDate)
         {
           LOBYTE(v9) = 0;
         }
 
         else
         {
-          v12 = [v7 desiredOutcomePerformedDates];
-          if ([v12 count])
+          desiredOutcomePerformedDates = [v7 desiredOutcomePerformedDates];
+          if ([desiredOutcomePerformedDates count])
           {
             LOBYTE(v9) = 0;
           }
@@ -547,44 +547,44 @@ LABEL_8:
     LOBYTE(v9) = 1;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v9;
 }
 
-- (BOOL)isTipAppDisplayEligibleForIdentifier:(id)a3
+- (BOOL)isTipAppDisplayEligibleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
   if ([v6 isPreconditionMatched] && (objc_msgSend(v6, "isUserKnew") & 1) == 0)
   {
-    v8 = [v6 hintEligibleDate];
-    if (v8)
+    hintEligibleDate = [v6 hintEligibleDate];
+    if (hintEligibleDate)
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v6 hintDisplayedDates];
-      if ([v9 count])
+      hintDisplayedDates = [v6 hintDisplayedDates];
+      if ([hintDisplayedDates count])
       {
         v7 = 1;
       }
 
       else
       {
-        v10 = [v6 hintDismissalDate];
-        if (v10)
+        hintDismissalDate = [v6 hintDismissalDate];
+        if (hintDismissalDate)
         {
           v7 = 1;
         }
 
         else
         {
-          v11 = [v6 contentViewedDate];
-          v7 = v11 != 0;
+          contentViewedDate = [v6 contentViewedDate];
+          v7 = contentViewedDate != 0;
         }
       }
     }
@@ -595,38 +595,38 @@ LABEL_8:
     v7 = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
-- (BOOL)isDesiredOutcomeTrackingEligibleForIdentifier:(id)a3
+- (BOOL)isDesiredOutcomeTrackingEligibleForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TPSTipStatusController *)v5 _tipStatusForIdentifier:v4 addIfMissing:0];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_10;
   }
 
-  v8 = [v6 hintDisplayedDates];
-  if ([v8 count])
+  hintDisplayedDates = [v6 hintDisplayedDates];
+  if ([hintDisplayedDates count])
   {
     goto LABEL_6;
   }
 
-  v9 = [v7 hintWouldHaveBeenDisplayedDate];
-  if (v9 || ([v7 contentViewedDate], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  hintWouldHaveBeenDisplayedDate = [v7 hintWouldHaveBeenDisplayedDate];
+  if (hintWouldHaveBeenDisplayedDate || ([v7 contentViewedDate], (hintWouldHaveBeenDisplayedDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v7 desiredOutcomePerformedDates];
-  v12 = [v11 count];
+  desiredOutcomePerformedDates = [v7 desiredOutcomePerformedDates];
+  v12 = [desiredOutcomePerformedDates count];
 
   if (v12)
   {
@@ -644,479 +644,479 @@ LABEL_10:
   v10 = [v7 isExpired] ^ 1;
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
-- (int64_t)hintIneligibleReasonForIdentifier:(id)a3
+- (int64_t)hintIneligibleReasonForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintIneligibleReason];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintIneligibleReason = [v3 hintIneligibleReason];
 
-  return v4;
+  return hintIneligibleReason;
 }
 
-- (BOOL)isHintIneligibleForIdentifier:(id)a3
+- (BOOL)isHintIneligibleForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isHintIneligible];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isHintIneligible = [v3 isHintIneligible];
 
-  return v4;
+  return isHintIneligible;
 }
 
-- (BOOL)isHintIneligibleForReason:(int64_t)a3 identifier:(id)a4
+- (BOOL)isHintIneligibleForReason:(int64_t)reason identifier:(id)identifier
 {
-  v5 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a4 addIfMissing:0];
-  LOBYTE(a3) = [v5 hintIneligibleReason] == a3;
+  v5 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  LOBYTE(reason) = [v5 hintIneligibleReason] == reason;
 
-  return a3;
+  return reason;
 }
 
-- (void)updateHintIneligibleForIdentifier:(id)a3 value:(int64_t)a4
+- (void)updateHintIneligibleForIdentifier:(id)identifier value:(int64_t)value
 {
-  v8 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(TPSTipStatusController *)v6 _tipStatusForIdentifier:v8 addIfMissing:a4 != 0];
-  if ([v7 hintIneligibleReason] != a4)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:value != 0];
+  if ([v7 hintIneligibleReason] != value)
   {
-    [v7 setHintIneligibleReason:a4];
-    if (a4)
+    [v7 setHintIneligibleReason:value];
+    if (value)
     {
       [v7 setHintEligibleDate:0];
-      if (a4 == 7)
+      if (value == 7)
       {
         [v7 setPreconditionMatched:0];
       }
     }
 
-    if (!v6->_isDirty && v7)
+    if (!selfCopy->_isDirty && v7)
     {
-      v6->_isDirty = 1;
+      selfCopy->_isDirty = 1;
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)dateForTriggerRestartTrackingForIdentifier:(id)a3
+- (id)dateForTriggerRestartTrackingForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 dateForTriggerRestartTracking];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  dateForTriggerRestartTracking = [v3 dateForTriggerRestartTracking];
 
-  return v4;
+  return dateForTriggerRestartTracking;
 }
 
-- (void)updateDateForTriggerRestartTrackingForIdentifier:(id)a3 date:(id)a4
+- (void)updateDateForTriggerRestartTrackingForIdentifier:(id)identifier date:(id)date
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v9 addIfMissing:v6 != 0];
-  [v8 setDateForTriggerRestartTracking:v6];
-  if (!v7->_isDirty && v8)
+  identifierCopy = identifier;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:dateCopy != 0];
+  [v8 setDateForTriggerRestartTracking:dateCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (unint64_t)displayTypeForIdentifier:(id)a3
+- (unint64_t)displayTypeForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 displayType];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  displayType = [v3 displayType];
 
-  return v4;
+  return displayType;
 }
 
-- (void)updateDisplayTypeForIdentifier:(id)a3 value:(unint64_t)a4
+- (void)updateDisplayTypeForIdentifier:(id)identifier value:(unint64_t)value
 {
-  v8 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(TPSTipStatusController *)v6 _tipStatusForIdentifier:v8 addIfMissing:a4 != 0];
-  [v7 setDisplayType:a4];
-  if (!v6->_isDirty && v7)
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:value != 0];
+  [v7 setDisplayType:value];
+  if (!selfCopy->_isDirty && v7)
   {
-    v6->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)variantIdentifierForIdentifier:(id)a3
+- (id)variantIdentifierForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 variantIdentifier];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  variantIdentifier = [v3 variantIdentifier];
 
-  return v4;
+  return variantIdentifier;
 }
 
-- (void)updateVariantIdentifierForIdentifier:(id)a3 value:(id)a4
+- (void)updateVariantIdentifierForIdentifier:(id)identifier value:(id)value
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v9 addIfMissing:1];
-  [v8 setVariantIdentifier:v6];
-  if (!v7->_isDirty && v8)
+  identifierCopy = identifier;
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  [v8 setVariantIdentifier:valueCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)correlationIdentifierForIdentifier:(id)a3
+- (id)correlationIdentifierForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 correlationIdentifier];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  correlationIdentifier = [v3 correlationIdentifier];
 
-  return v4;
+  return correlationIdentifier;
 }
 
-- (void)updateCorrelationIdentifierForIdentifier:(id)a3 value:(id)a4
+- (void)updateCorrelationIdentifierForIdentifier:(id)identifier value:(id)value
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v9 addIfMissing:1];
-  [v8 setCorrelationIdentifier:v6];
-  if (!v7->_isDirty && v8)
+  identifierCopy = identifier;
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  [v8 setCorrelationIdentifier:valueCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)clonedFromIdentifierForIdentifier:(id)a3
+- (id)clonedFromIdentifierForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 clonedFromIdentifier];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  clonedFromIdentifier = [v3 clonedFromIdentifier];
 
-  return v4;
+  return clonedFromIdentifier;
 }
 
-- (void)updateClonedFromIdentifierForIdentifier:(id)a3 value:(id)a4
+- (void)updateClonedFromIdentifierForIdentifier:(id)identifier value:(id)value
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v9 addIfMissing:1];
-  [v8 setClonedFromIdentifier:v6];
-  if (!v7->_isDirty && v8)
+  identifierCopy = identifier;
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  [v8 setClonedFromIdentifier:valueCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isPreconditionMatchedForIdentifier:(id)a3
+- (BOOL)isPreconditionMatchedForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isPreconditionMatched];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isPreconditionMatched = [v3 isPreconditionMatched];
 
-  return v4;
+  return isPreconditionMatched;
 }
 
-- (id)hintEligibleDateForIdentifier:(id)a3
+- (id)hintEligibleDateForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintEligibleDate];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintEligibleDate = [v3 hintEligibleDate];
 
-  return v4;
+  return hintEligibleDate;
 }
 
-- (id)hintWouldHaveBeenDisplayedDateForIdentifier:(id)a3
+- (id)hintWouldHaveBeenDisplayedDateForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintWouldHaveBeenDisplayedDate];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintWouldHaveBeenDisplayedDate = [v3 hintWouldHaveBeenDisplayedDate];
 
-  return v4;
+  return hintWouldHaveBeenDisplayedDate;
 }
 
-- (BOOL)isHintDisplayedForIdentifier:(id)a3
+- (BOOL)isHintDisplayedForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isHintDisplayed];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isHintDisplayed = [v3 isHintDisplayed];
 
-  return v4;
+  return isHintDisplayed;
 }
 
-- (int)hintDisplayedCountForIdentifier:(id)a3
+- (int)hintDisplayedCountForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintDisplayedDates];
-  v5 = [v4 count];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintDisplayedDates = [v3 hintDisplayedDates];
+  v5 = [hintDisplayedDates count];
 
   return v5;
 }
 
-- (void)addHintDisplayedForIdentifier:(id)a3 context:(id)a4
+- (void)addHintDisplayedForIdentifier:(id)identifier context:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v10 addIfMissing:1];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [v8 addHintDisplayedDate:v9];
+  identifierCopy = identifier;
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  date = [MEMORY[0x1E695DF00] date];
+  [v8 addHintDisplayedDate:date];
 
-  [v8 setLastDisplayContext:v6];
-  if (!v7->_isDirty && v8)
+  [v8 setLastDisplayContext:contextCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)firstHintDisplayDateForIdentifier:(id)a3
+- (id)firstHintDisplayDateForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintDisplayedDates];
-  v5 = [v4 firstObject];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintDisplayedDates = [v3 hintDisplayedDates];
+  firstObject = [hintDisplayedDates firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)addHintNotDisplayedDueToFrequencyControlDateForIdentifier:(id)a3
+- (void)addHintNotDisplayedDueToFrequencyControlDateForIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(TPSTipStatusController *)v4 _tipStatusForIdentifier:v7 addIfMissing:1];
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v5 addHintNotDisplayedDueToFrequencyControlDate:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  date = [MEMORY[0x1E695DF00] date];
+  [v5 addHintNotDisplayedDueToFrequencyControlDate:date];
 
-  if (!v4->_isDirty && v5)
+  if (!selfCopy->_isDirty && v5)
   {
-    v4->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)hintNotDisplayedDueToFrequencyControlDatesForIdentifier:(id)a3
+- (id)hintNotDisplayedDueToFrequencyControlDatesForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 hintNotDisplayedDueToFrequencyControlDates];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  hintNotDisplayedDueToFrequencyControlDates = [v3 hintNotDisplayedDueToFrequencyControlDates];
 
-  return v4;
+  return hintNotDisplayedDueToFrequencyControlDates;
 }
 
-- (BOOL)isHintDismissedForIdentifier:(id)a3
+- (BOOL)isHintDismissedForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isHintDismissed];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isHintDismissed = [v3 isHintDismissed];
 
-  return v4;
+  return isHintDismissed;
 }
 
-- (BOOL)isContentViewedForIdentifier:(id)a3
+- (BOOL)isContentViewedForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isContentViewed];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isContentViewed = [v3 isContentViewed];
 
-  return v4;
+  return isContentViewed;
 }
 
-- (id)contentViewedDateForIdentifier:(id)a3
+- (id)contentViewedDateForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 contentViewedDate];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  contentViewedDate = [v3 contentViewedDate];
 
-  return v4;
+  return contentViewedDate;
 }
 
-- (BOOL)isDesiredOutcomePerformedForIdentifier:(id)a3
+- (BOOL)isDesiredOutcomePerformedForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isDesiredOutcomePerformed];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isDesiredOutcomePerformed = [v3 isDesiredOutcomePerformed];
 
-  return v4;
+  return isDesiredOutcomePerformed;
 }
 
-- (void)donateDesiredOutcomePerformedForIdentifier:(id)a3 date:(id)a4
+- (void)donateDesiredOutcomePerformedForIdentifier:(id)identifier date:(id)date
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(TPSTipStatusController *)self _tipStatusForIdentifier:v16 addIfMissing:0];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v7 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifierCopy addIfMissing:0];
   v8 = v7;
   if (v7)
   {
     if ([v7 hintIneligibleReason] == 10)
     {
-      v9 = [v8 hintWouldHaveBeenDisplayedDate];
+      hintWouldHaveBeenDisplayedDate = [v8 hintWouldHaveBeenDisplayedDate];
     }
 
     else
     {
-      v10 = [v8 hintDisplayedDates];
-      v9 = [v10 lastObject];
+      hintDisplayedDates = [v8 hintDisplayedDates];
+      hintWouldHaveBeenDisplayedDate = [hintDisplayedDates lastObject];
     }
 
     v11 = +[TPSAnalyticsCommonDefines displayTypeStringForDisplayType:](TPSAnalyticsCommonDefines, "displayTypeStringForDisplayType:", [v8 displayType]);
-    v12 = [v8 correlationIdentifier];
-    v13 = [v8 overrideHoldout];
-    v14 = [v8 lastDisplayContext];
-    v15 = [TPSAnalyticsEventDesiredOutcomePerformed eventWithTipID:v16 correlationID:v12 displayType:v11 overrideHoldout:v13 lastDisplayedContext:v14 lastHintDisplayedDate:v9 desiredOutcomePerformedDate:v6];
+    correlationIdentifier = [v8 correlationIdentifier];
+    overrideHoldout = [v8 overrideHoldout];
+    lastDisplayContext = [v8 lastDisplayContext];
+    v15 = [TPSAnalyticsEventDesiredOutcomePerformed eventWithTipID:identifierCopy correlationID:correlationIdentifier displayType:v11 overrideHoldout:overrideHoldout lastDisplayedContext:lastDisplayContext lastHintDisplayedDate:hintWouldHaveBeenDisplayedDate desiredOutcomePerformedDate:dateCopy];
     [v15 log];
   }
 }
 
-- (void)addDesiredOutcomePerformedDateForIdentifier:(id)a3 date:(id)a4
+- (void)addDesiredOutcomePerformedDateForIdentifier:(id)identifier date:(id)date
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v11 addIfMissing:1];
-  v9 = [v8 desiredOutcomePerformedDates];
-  v10 = [v9 count];
+  identifierCopy = identifier;
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  desiredOutcomePerformedDates = [v8 desiredOutcomePerformedDates];
+  v10 = [desiredOutcomePerformedDates count];
 
   if (!v10)
   {
-    [(TPSTipStatusController *)v7 donateDesiredOutcomePerformedForIdentifier:v11 date:v6];
+    [(TPSTipStatusController *)selfCopy donateDesiredOutcomePerformedForIdentifier:identifierCopy date:dateCopy];
   }
 
-  [v8 addDesiredOutcomePerformedDate:v6];
-  if (!v7->_isDirty && v8)
+  [v8 addDesiredOutcomePerformedDate:dateCopy];
+  if (!selfCopy->_isDirty && v8)
   {
-    v7->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isExpiredForIdentifier:(id)a3
+- (BOOL)isExpiredForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 isExpired];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  isExpired = [v3 isExpired];
 
-  return v4;
+  return isExpired;
 }
 
-- (id)lastUsedVersionForIdentifier:(id)a3
+- (id)lastUsedVersionForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 lastUsedVersion];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  lastUsedVersion = [v3 lastUsedVersion];
 
-  return v4;
+  return lastUsedVersion;
 }
 
-- (void)updateLastUsedVersionForIdentifier:(id)a3 value:(id)a4
+- (void)updateLastUsedVersionForIdentifier:(id)identifier value:(id)value
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(TPSTipStatusController *)v7 _tipStatusForIdentifier:v11 addIfMissing:1];
-  v9 = [v8 lastUsedVersion];
-  v10 = [v9 isEqualToString:v6];
+  identifierCopy = identifier;
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  lastUsedVersion = [v8 lastUsedVersion];
+  v10 = [lastUsedVersion isEqualToString:valueCopy];
 
   if ((v10 & 1) == 0)
   {
-    [v8 setLastUsedVersion:v6];
-    v7->_isDirty = 1;
+    [v8 setLastUsedVersion:valueCopy];
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)isOverrideHoldoutForIdentifier:(id)a3
+- (BOOL)isOverrideHoldoutForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 overrideHoldout];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  overrideHoldout = [v3 overrideHoldout];
 
-  return v4;
+  return overrideHoldout;
 }
 
-- (BOOL)isOverrideFrequencyControlForIdentifier:(id)a3
+- (BOOL)isOverrideFrequencyControlForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 overrideFrequencyControl];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  overrideFrequencyControl = [v3 overrideFrequencyControl];
 
-  return v4;
+  return overrideFrequencyControl;
 }
 
-- (unint64_t)usageFlagsForIdentifier:(id)a3
+- (unint64_t)usageFlagsForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 usageFlags];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  usageFlags = [v3 usageFlags];
 
-  return v4;
+  return usageFlags;
 }
 
-- (id)lastDisplayContextForIdentifier:(id)a3
+- (id)lastDisplayContextForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 lastDisplayContext];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  lastDisplayContext = [v3 lastDisplayContext];
 
-  return v4;
+  return lastDisplayContext;
 }
 
-- (id)userInfoForIdentifier:(id)a3
+- (id)userInfoForIdentifier:(id)identifier
 {
-  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:a3 addIfMissing:0];
-  v4 = [v3 userInfo];
+  v3 = [(TPSTipStatusController *)self _tipStatusForIdentifier:identifier addIfMissing:0];
+  userInfo = [v3 userInfo];
 
-  return v4;
+  return userInfo;
 }
 
-- (void)clearSavedDateForIdentifier:(id)a3
+- (void)clearSavedDateForIdentifier:(id)identifier
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(TPSTipStatusController *)v4 _tipStatusForIdentifier:v7 addIfMissing:0];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:0];
   v6 = v5;
-  if (!v4->_isDirty && v5)
+  if (!selfCopy->_isDirty && v5)
   {
     [v5 setSavedDate:0];
-    v4->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateUserInfoForIdentifier:(id)a3 key:(id)a4 value:(id)a5
+- (void)updateUserInfoForIdentifier:(id)identifier key:(id)key value:(id)value
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(TPSTipStatusController *)v10 _tipStatusForIdentifier:v12 addIfMissing:1];
-  [v11 updateUserInfoValue:v9 forKey:v8];
-  if (!v10->_isDirty && v11)
+  identifierCopy = identifier;
+  keyCopy = key;
+  valueCopy = value;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v11 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
+  [v11 updateUserInfoValue:valueCopy forKey:keyCopy];
+  if (!selfCopy->_isDirty && v11)
   {
-    v10->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeUserInfoForIdentifier:(id)a3
+- (void)removeUserInfoForIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(TPSTipStatusController *)v4 _tipStatusForIdentifier:v6 addIfMissing:1];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(TPSTipStatusController *)selfCopy _tipStatusForIdentifier:identifierCopy addIfMissing:1];
   [v5 removeUserInfo];
-  if (!v4->_isDirty && v5)
+  if (!selfCopy->_isDirty && v5)
   {
-    v4->_isDirty = 1;
+    selfCopy->_isDirty = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)updateCacheData
@@ -1141,41 +1141,41 @@ LABEL_11:
     [(TPSTipStatusController *)v3 removeCacheData];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_identifierToTipStatusMap removeAllObjects];
-  v4->_isDirty = 1;
-  [(TPSTipStatusController *)v4 updateCacheData];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap removeAllObjects];
+  selfCopy->_isDirty = 1;
+  [(TPSTipStatusController *)selfCopy updateCacheData];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)debugDescription
 {
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@", self];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_identifierToTipStatusMap allValues];
-  v6 = [v5 debugDescription];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_identifierToTipStatusMap allValues];
+  v6 = [allValues debugDescription];
   [v3 appendFormat:@"\n %@ = %@\n", @"TipStatusIdentifierToTipStatusMap", v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)unviewedContentAvailable
 {
-  v2 = self;
-  v3 = [(TPSTipStatusController *)self tipStatusMap];
-  v4 = [v3 allKeys];
+  selfCopy = self;
+  tipStatusMap = [(TPSTipStatusController *)self tipStatusMap];
+  allKeys = [tipStatusMap allKeys];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__TPSTipStatusController_unviewedContentAvailable__block_invoke;
   v6[3] = &unk_1E81015A0;
-  v6[4] = v2;
-  LOBYTE(v2) = [v4 na_any:v6];
+  v6[4] = selfCopy;
+  LOBYTE(selfCopy) = [allKeys na_any:v6];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface TSAPdfTagInfo
-+ (id)tagPropertiesWithActualText:(id)a3 alternativeText:(id)a4 titleText:(id)a5;
-- (TSAPdfTagInfo)initWithTagType:(int)a3 tagProperties:(id)a4;
++ (id)tagPropertiesWithActualText:(id)text alternativeText:(id)alternativeText titleText:(id)titleText;
+- (TSAPdfTagInfo)initWithTagType:(int)type tagProperties:(id)properties;
 @end
 
 @implementation TSAPdfTagInfo
 
-- (TSAPdfTagInfo)initWithTagType:(int)a3 tagProperties:(id)a4
+- (TSAPdfTagInfo)initWithTagType:(int)type tagProperties:(id)properties
 {
-  v7 = a4;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = TSAPdfTagInfo;
   v8 = [(TSAPdfTagInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_tagType = a3;
-    objc_storeStrong(&v8->_tagProperties, a4);
+    v8->_tagType = type;
+    objc_storeStrong(&v8->_tagProperties, properties);
   }
 
   return v9;
 }
 
-+ (id)tagPropertiesWithActualText:(id)a3 alternativeText:(id)a4 titleText:(id)a5
++ (id)tagPropertiesWithActualText:(id)text alternativeText:(id)alternativeText titleText:(id)titleText
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  alternativeTextCopy = alternativeText;
+  titleTextCopy = titleText;
   v10 = objc_opt_new();
   v12 = v10;
-  if (v7)
+  if (textCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, v7, *MEMORY[0x277CBF5F8]);
+    objc_msgSend_setObject_forKeyedSubscript_(v10, v11, textCopy, *MEMORY[0x277CBF5F8]);
   }
 
-  if (v8)
+  if (alternativeTextCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v12, v11, v8, *MEMORY[0x277CBF600]);
+    objc_msgSend_setObject_forKeyedSubscript_(v12, v11, alternativeTextCopy, *MEMORY[0x277CBF600]);
   }
 
-  if (v9)
+  if (titleTextCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v12, v11, v9, *MEMORY[0x277CBF608]);
+    objc_msgSend_setObject_forKeyedSubscript_(v12, v11, titleTextCopy, *MEMORY[0x277CBF608]);
   }
 
   return v12;

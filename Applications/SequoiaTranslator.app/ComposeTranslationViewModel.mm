@@ -1,14 +1,14 @@
 @interface ComposeTranslationViewModel
-- (void)openTranslation:(id)a3;
+- (void)openTranslation:(id)translation;
 @end
 
 @implementation ComposeTranslationViewModel
 
-- (void)openTranslation:(id)a3
+- (void)openTranslation:(id)translation
 {
-  v3 = a3;
+  translationCopy = translation;
 
-  sub_1000693B4(v3);
+  sub_1000693B4(translationCopy);
 }
 
 @end

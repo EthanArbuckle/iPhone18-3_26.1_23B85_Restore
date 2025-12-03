@@ -9,7 +9,7 @@
   v36 = *MEMORY[0x277D85DE8];
   v10 = a3;
   v11 = a5;
-  v34.receiver = a1;
+  v34.receiver = self;
   v34.super_class = &off_28488E2B8;
   v12 = objc_msgSendSuper2(&v34, sel_init);
   if (v12)
@@ -20,16 +20,16 @@
     [v12 setIsConfident:a4];
     [v12 setDominantLanguage:v11];
     [v12 setIsFinal:a6];
-    v14 = [v12 dominantLanguage];
+    dominantLanguage = [v12 dominantLanguage];
 
-    if (!v14)
+    if (!dominantLanguage)
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v15 = [v10 allKeys];
-      v16 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      allKeys = [v10 allKeys];
+      v16 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v16)
       {
         v17 = v16;
@@ -42,7 +42,7 @@
           {
             if (*v31 != v19)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allKeys);
             }
 
             v22 = *(*(&v30 + 1) + 8 * i);
@@ -59,7 +59,7 @@
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+          v17 = [allKeys countByEnumeratingWithState:&v30 objects:v35 count:16];
         }
 
         while (v17);

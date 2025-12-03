@@ -1,17 +1,17 @@
 @interface VolumeScan
 + (id)volumeNames;
-- (BOOL)buildCheckOIDs:(unint64_t *)a3 oidCount:(unint64_t)a4 accessDenied:(char *)a5 canceled:(BOOL *)a6;
-- (VolumeScan)initWithVolumeUUID:(id)a3 rootPath:(id)a4;
-- (char)pathFromOID:(unint64_t)a3 pathBuffer:(char *)a4 pathBufferSize:(unint64_t)a5 fullPath:(BOOL)a6 error:(int *)a7;
-- (id)bulkResolveOIDData:(id)a3 error:(int *)a4;
-- (id)bulkResolveOIDs:(unint64_t *)a3 oidCount:(unint64_t)a4 error:(int *)a5;
-- (id)identifierForItem:(unint64_t)a3 name:(id)a4 parentID:(unint64_t)a5;
-- (id)processQueryScopes:(id)a3 usePersistentFileIDs:(BOOL)a4;
-- (id)resolveLiveFSHandleForPathFromMountPoint:(const char *)a3;
-- (id)scanAtLiveFSHandle:(id)a3 pathFromMountPoint:(id)a4 date:(id)a5 itemHandler:(id)a6 completionHandler:(id)a7;
-- (id)scanAtLiveFSHandle:(id)a3 pathFromMountPoint:(id)a4 withCriteria:(id)a5 itemHandler:(id)a6 completionHandler:(id)a7;
-- (unint64_t)parentFromOID:(unint64_t)a3 error:(int *)a4;
-- (void)cancelWithToken:(id)a3;
+- (BOOL)buildCheckOIDs:(unint64_t *)ds oidCount:(unint64_t)count accessDenied:(char *)denied canceled:(BOOL *)canceled;
+- (VolumeScan)initWithVolumeUUID:(id)d rootPath:(id)path;
+- (char)pathFromOID:(unint64_t)d pathBuffer:(char *)buffer pathBufferSize:(unint64_t)size fullPath:(BOOL)path error:(int *)error;
+- (id)bulkResolveOIDData:(id)data error:(int *)error;
+- (id)bulkResolveOIDs:(unint64_t *)ds oidCount:(unint64_t)count error:(int *)error;
+- (id)identifierForItem:(unint64_t)item name:(id)name parentID:(unint64_t)d;
+- (id)processQueryScopes:(id)scopes usePersistentFileIDs:(BOOL)ds;
+- (id)resolveLiveFSHandleForPathFromMountPoint:(const char *)point;
+- (id)scanAtLiveFSHandle:(id)handle pathFromMountPoint:(id)point date:(id)date itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)scanAtLiveFSHandle:(id)handle pathFromMountPoint:(id)point withCriteria:(id)criteria itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (unint64_t)parentFromOID:(unint64_t)d error:(int *)error;
+- (void)cancelWithToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -21,9 +21,9 @@
 {
   v2 = +[VolumeScan mountServiceClient];
   v3 = [v2 volumes:0];
-  v4 = [v3 allKeys];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
 - (void)dealloc
@@ -34,10 +34,10 @@
   [(VolumeScan *)&v3 dealloc];
 }
 
-- (VolumeScan)initWithVolumeUUID:(id)a3 rootPath:(id)a4
+- (VolumeScan)initWithVolumeUUID:(id)d rootPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  pathCopy = path;
   v75.receiver = self;
   v75.super_class = VolumeScan;
   v9 = [(VolumeScan *)&v75 init];
@@ -48,9 +48,9 @@
     goto LABEL_29;
   }
 
-  if (v7)
+  if (dCopy)
   {
-    objc_storeStrong(&v9->_volumeUUID, a3);
+    objc_storeStrong(&v9->_volumeUUID, d);
     v11 = +[VolumeScan mountServiceClient];
     if (!v11)
     {
@@ -72,7 +72,7 @@
     while (1)
     {
       v74 = 0;
-      v16 = [(VolumeScan *)v11 listenerForVolume:v7 error:&v74, v44];
+      v16 = [(VolumeScan *)v11 listenerForVolume:dCopy error:&v74, v44];
       v17 = v74;
       volumeListenerEndpoint = v10->_volumeListenerEndpoint;
       v10->_volumeListenerEndpoint = v16;
@@ -88,7 +88,7 @@
         *buf = v44;
         *&buf[4] = v15;
         *&buf[8] = 2112;
-        *&buf[10] = v7;
+        *&buf[10] = dCopy;
         *&buf[18] = 2112;
         *&buf[20] = v17;
         *&buf[28] = 2112;
@@ -138,11 +138,11 @@ LABEL_15:
         if (v20)
         {
           objc_storeStrong(&v10->_volumeSyncConnection, v20);
-          if (v8)
+          if (pathCopy)
           {
-            objc_storeStrong(&v10->_rootPath, a4);
-            v30 = v8;
-            v31 = strdup([v8 UTF8String]);
+            objc_storeStrong(&v10->_rootPath, path);
+            v30 = pathCopy;
+            v31 = strdup([pathCopy UTF8String]);
             v10->_rootPathUTF8String = v31;
             v10->_rootPathUTF8StringLength = strlen(v31);
           }
@@ -261,7 +261,7 @@ LABEL_29:
   return v20;
 }
 
-- (id)resolveLiveFSHandleForPathFromMountPoint:(const char *)a3
+- (id)resolveLiveFSHandleForPathFromMountPoint:(const char *)point
 {
   rootFileHandle = self->_rootFileHandle;
   if (!rootFileHandle)
@@ -269,7 +269,7 @@ LABEL_29:
     goto LABEL_5;
   }
 
-  if (a3 && (v6 = strlen(a3)) != 0)
+  if (point && (v6 = strlen(point)) != 0)
   {
     v7 = v6;
     if (v6 > 0x3FF)
@@ -283,7 +283,7 @@ LABEL_5:
     v28[1] = v28;
     v10 = v28 - ((v7 + 16) & 0xFFFFFFFFFFFFFFF0);
     bzero(v10, v7 + 1);
-    memcpy(v10, a3, v7 + 1);
+    memcpy(v10, point, v7 + 1);
     v11 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -367,41 +367,41 @@ LABEL_20:
   return v8;
 }
 
-- (id)scanAtLiveFSHandle:(id)a3 pathFromMountPoint:(id)a4 withCriteria:(id)a5 itemHandler:(id)a6 completionHandler:(id)a7
+- (id)scanAtLiveFSHandle:(id)handle pathFromMountPoint:(id)point withCriteria:(id)criteria itemHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v33 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  handleCopy = handle;
+  pointCopy = point;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (handleCopy)
   {
     goto LABEL_4;
   }
 
-  v12 = self->_rootFileHandle;
+  handleCopy = self->_rootFileHandle;
 
-  if (v12)
+  if (handleCopy)
   {
-    v13 = 0;
+    pointCopy = 0;
 LABEL_4:
-    v16 = [(VolumeScan *)self rootPath];
+    rootPath = [(VolumeScan *)self rootPath];
     v42[0] = _NSConcreteStackBlock;
     v42[1] = 3221225472;
     v42[2] = sub_10001E164;
     v42[3] = &unk_100035BB8;
-    v17 = v13;
+    v17 = pointCopy;
     v43 = v17;
-    v18 = v16;
+    v18 = rootPath;
     v44 = v18;
-    v32 = v14;
-    v45 = v14;
+    v32 = handlerCopy;
+    v45 = handlerCopy;
     v19 = objc_retainBlock(v42);
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_10001E458;
     v40[3] = &unk_100035668;
-    v41 = v15;
+    v41 = completionHandlerCopy;
     v20 = objc_retainBlock(v40);
     add = atomic_fetch_add(&dword_10003CAE8, 1u);
     v22 = getpid();
@@ -415,12 +415,12 @@ LABEL_4:
     v34[3] = &unk_100035C08;
     v26 = v24;
     v35 = v26;
-    v27 = v12;
+    v27 = handleCopy;
     v36 = v27;
     v28 = v23;
     v37 = v28;
-    v38 = v33;
-    v39 = self;
+    v38 = criteriaCopy;
+    selfCopy = self;
     sub_10001D1C4("search", liveItemQueue, v34);
     v29 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -431,13 +431,13 @@ LABEL_4:
     }
 
     v30 = v28;
-    v14 = v32;
+    handlerCopy = v32;
     goto LABEL_7;
   }
 
-  if (v15)
+  if (completionHandlerCopy)
   {
-    (*(v15 + 2))(v15, 2);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 2);
   }
 
   v27 = 0;
@@ -447,13 +447,13 @@ LABEL_7:
   return v30;
 }
 
-- (id)scanAtLiveFSHandle:(id)a3 pathFromMountPoint:(id)a4 date:(id)a5 itemHandler:(id)a6 completionHandler:(id)a7
+- (id)scanAtLiveFSHandle:(id)handle pathFromMountPoint:(id)point date:(id)date itemHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handleCopy = handle;
+  pointCopy = point;
+  dateCopy = date;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v33 = 0u;
   v32 = 0u;
   v31 = 0u;
@@ -469,15 +469,15 @@ LABEL_7:
   v23[1] = off_10003CAF8;
   v17 = 2;
   v24[1] = [NSArray arrayWithObjects:v23 count:2];
-  if (v14)
+  if (dateCopy)
   {
     *&v30 = LISearchObjModifiedAfter;
-    *&v25 = v14;
+    *&v25 = dateCopy;
     v17 = 3;
   }
 
   v18 = [NSDictionary dictionaryWithObjects:v24 forKeys:v29 count:v17];
-  v19 = [(VolumeScan *)self scanAtLiveFSHandle:v12 pathFromMountPoint:v13 withCriteria:v18 itemHandler:v15 completionHandler:v16];
+  v19 = [(VolumeScan *)self scanAtLiveFSHandle:handleCopy pathFromMountPoint:pointCopy withCriteria:v18 itemHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   for (i = 9; i != -1; --i)
   {
@@ -490,14 +490,14 @@ LABEL_7:
   return v19;
 }
 
-- (void)cancelWithToken:(id)a3
+- (void)cancelWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "start cancelWithToken: %@", buf, 0xCu);
   }
 
@@ -507,14 +507,14 @@ LABEL_7:
   v8[2] = sub_10001E9F8;
   v8[3] = &unk_1000356E0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = tokenCopy;
+  v7 = tokenCopy;
   dispatch_async(liveItemQueue, v8);
 }
 
-- (id)bulkResolveOIDData:(id)a3 error:(int *)a4
+- (id)bulkResolveOIDData:(id)data error:(int *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -533,14 +533,14 @@ LABEL_7:
   v13[3] = &unk_100035C80;
   v9 = v7;
   v14 = v9;
-  v10 = v6;
+  v10 = dataCopy;
   v15 = v10;
   v16 = &v18;
   v17 = &v22;
   sub_10001D1C4("resolve", liveItemQueue, v13);
-  if (a4)
+  if (error)
   {
-    *a4 = *(v19 + 6);
+    *error = *(v19 + 6);
   }
 
   v11 = v23[5];
@@ -551,36 +551,36 @@ LABEL_7:
   return v11;
 }
 
-- (id)bulkResolveOIDs:(unint64_t *)a3 oidCount:(unint64_t)a4 error:(int *)a5
+- (id)bulkResolveOIDs:(unint64_t *)ds oidCount:(unint64_t)count error:(int *)error
 {
-  v7 = [NSData dataWithBytes:a3 length:8 * a4];
-  v8 = [(VolumeScan *)self bulkResolveOIDData:v7 error:a5];
+  v7 = [NSData dataWithBytes:ds length:8 * count];
+  v8 = [(VolumeScan *)self bulkResolveOIDData:v7 error:error];
 
   return v8;
 }
 
-- (BOOL)buildCheckOIDs:(unint64_t *)a3 oidCount:(unint64_t)a4 accessDenied:(char *)a5 canceled:(BOOL *)a6
+- (BOOL)buildCheckOIDs:(unint64_t *)ds oidCount:(unint64_t)count accessDenied:(char *)denied canceled:(BOOL *)canceled
 {
-  v8 = a4;
-  v9 = a3;
+  countCopy = count;
+  dsCopy = ds;
   v18 = 0;
-  v11 = [NSData dataWithBytes:a3 length:8 * a4];
+  v11 = [NSData dataWithBytes:ds length:8 * count];
   v12 = [(VolumeScan *)self bulkResolveOIDData:v11 error:&v18];
   v13 = 0;
   if (!v18)
   {
-    if (a6 && *a6)
+    if (canceled && *canceled)
     {
-      memset(a5, 1, v8);
+      memset(denied, 1, countCopy);
       v13 = 0;
     }
 
     else
     {
-      for (; v8; --v8)
+      for (; countCopy; --countCopy)
       {
         bzero(v19, 0x400uLL);
-        v14 = *v9++;
+        v14 = *dsCopy++;
         v15 = sub_1000218D0(v12, v14, v19, 0, 0);
         if (sub_100020E18(v15))
         {
@@ -592,7 +592,7 @@ LABEL_7:
           v16 = 2;
         }
 
-        *a5++ = v16;
+        *denied++ = v16;
       }
 
       v13 = 1;
@@ -602,31 +602,31 @@ LABEL_7:
   return v13;
 }
 
-- (unint64_t)parentFromOID:(unint64_t)a3 error:(int *)a4
+- (unint64_t)parentFromOID:(unint64_t)d error:(int *)error
 {
-  v13 = a3;
+  dCopy = d;
   v12 = 0;
-  v5 = [(VolumeScan *)self bulkResolveOIDs:&v13 oidCount:1 error:&v12];
+  v5 = [(VolumeScan *)self bulkResolveOIDs:&dCopy oidCount:1 error:&v12];
   if (v12)
   {
     v6 = 0;
-    if (a4)
+    if (error)
     {
 LABEL_3:
-      *a4 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    v8 = [NSNumber numberWithUnsignedLongLong:v13];
+    v8 = [NSNumber numberWithUnsignedLongLong:dCopy];
     v9 = [v5 objectForKeyedSubscript:v8];
 
     if (v9)
     {
       v12 = 22;
       v10 = [v9 objectForKeyedSubscript:@"attributes"];
-      if ([v10 length] && (v11 = objc_msgSend(v10, "bytes")) != 0 && (~*(v11 + 2) & 0x300) == 0 && v11[8] == v13)
+      if ([v10 length] && (v11 = objc_msgSend(v10, "bytes")) != 0 && (~*(v11 + 2) & 0x300) == 0 && v11[8] == dCopy)
       {
         v6 = v11[9];
         v12 = 0;
@@ -644,7 +644,7 @@ LABEL_3:
       v12 = 2;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -653,14 +653,14 @@ LABEL_3:
   return v6;
 }
 
-- (char)pathFromOID:(unint64_t)a3 pathBuffer:(char *)a4 pathBufferSize:(unint64_t)a5 fullPath:(BOOL)a6 error:(int *)a7
+- (char)pathFromOID:(unint64_t)d pathBuffer:(char *)buffer pathBufferSize:(unint64_t)size fullPath:(BOOL)path error:(int *)error
 {
-  v19 = a3;
+  dCopy = d;
   v18 = 0;
-  if (a4 && a5 > 0x3FF)
+  if (buffer && size > 0x3FF)
   {
-    v8 = a6;
-    v11 = [(VolumeScan *)self bulkResolveOIDs:&v19 oidCount:1 error:&v18];
+    pathCopy = path;
+    v11 = [(VolumeScan *)self bulkResolveOIDs:&dCopy oidCount:1 error:&v18];
     v12 = v11;
     if (v18)
     {
@@ -669,76 +669,76 @@ LABEL_3:
 
     else
     {
-      if (v8)
+      if (pathCopy)
       {
         rootPathUTF8String = self->_rootPathUTF8String;
         rootPathUTF8StringLength = self->_rootPathUTF8StringLength;
-        v16 = a4;
+        bufferCopy2 = buffer;
       }
 
       else
       {
-        v16 = a4;
+        bufferCopy2 = buffer;
         rootPathUTF8String = 0;
         rootPathUTF8StringLength = 0;
       }
 
-      v13 = sub_1000218D0(v11, v19, v16, rootPathUTF8String, rootPathUTF8StringLength);
+      v13 = sub_1000218D0(v11, dCopy, bufferCopy2, rootPathUTF8String, rootPathUTF8StringLength);
       if (!v13)
       {
         v18 = 2;
       }
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = v18;
+      *error = v18;
     }
   }
 
   else
   {
     v13 = 0;
-    if (a7)
+    if (error)
     {
-      *a7 = 22;
+      *error = 22;
     }
   }
 
   return v13;
 }
 
-- (id)identifierForItem:(unint64_t)a3 name:(id)a4 parentID:(unint64_t)a5
+- (id)identifierForItem:(unint64_t)item name:(id)name parentID:(unint64_t)d
 {
-  v8 = a4;
-  if (a3 != 2 && !a5)
+  nameCopy = name;
+  if (item != 2 && !d)
   {
     v12 = 0;
-    v9 = [(VolumeScan *)self parentFromOID:a3 error:&v12];
+    v9 = [(VolumeScan *)self parentFromOID:item error:&v12];
     if (v12)
     {
       v10 = 0;
       goto LABEL_7;
     }
 
-    a5 = v9;
+    d = v9;
   }
 
-  v10 = [LiveFSIDHelper identifierForItem:a3 name:v8 parentID:a5];
+  v10 = [LiveFSIDHelper identifierForItem:item name:nameCopy parentID:d];
 LABEL_7:
 
   return v10;
 }
 
-- (id)processQueryScopes:(id)a3 usePersistentFileIDs:(BOOL)a4
+- (id)processQueryScopes:(id)scopes usePersistentFileIDs:(BOOL)ds
 {
-  v38 = a4;
-  v5 = a3;
+  dsCopy = ds;
+  scopesCopy = scopes;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v41 objects:v48 count:16];
+  v6 = [scopesCopy countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -750,14 +750,14 @@ LABEL_7:
   v8 = 0;
   v39 = 0;
   v9 = *v42;
-  v40 = v5;
+  v40 = scopesCopy;
   do
   {
     for (i = 0; i != v7; i = i + 1)
     {
       if (*v42 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(scopesCopy);
       }
 
       v11 = *(*(&v41 + 1) + 8 * i);
@@ -775,11 +775,11 @@ LABEL_7:
               if (v14)
               {
 LABEL_11:
-                v15 = self;
+                selfCopy = self;
                 v16 = v8;
-                v17 = [v14 UTF8String];
+                uTF8String = [v14 UTF8String];
                 memset(&v47, 0, sizeof(v47));
-                v18 = stat(v17, &v47);
+                v18 = stat(uTF8String, &v47);
                 v19 = logForCSLogCategoryDefault();
                 v20 = v19;
                 if (v18)
@@ -790,7 +790,7 @@ LABEL_11:
                     *buf = 67109634;
                     *v46 = v32;
                     *&v46[4] = 2080;
-                    *&v46[6] = v17;
+                    *&v46[6] = uTF8String;
                     *&v46[14] = 2112;
                     *&v46[16] = v11;
                     _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "error %d resolving query scope %s from %@", buf, 0x1Cu);
@@ -804,7 +804,7 @@ LABEL_11:
                   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 136315394;
-                    *v46 = v17;
+                    *v46 = uTF8String;
                     *&v46[8] = 2112;
                     *&v46[10] = v11;
                     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Adding Query Path: %s from: %@", buf, 0x16u);
@@ -822,8 +822,8 @@ LABEL_11:
                   }
                 }
 
-                self = v15;
-                v5 = v40;
+                self = selfCopy;
+                scopesCopy = v40;
 LABEL_48:
 
                 continue;
@@ -875,7 +875,7 @@ LABEL_46:
           v14 = v27;
         }
 
-        if (v38)
+        if (dsCopy)
         {
           if ([v14 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
           {
@@ -940,14 +940,14 @@ LABEL_44:
       }
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v41 objects:v48 count:16];
+    v7 = [scopesCopy countByEnumeratingWithState:&v41 objects:v48 count:16];
   }
 
   while (v7);
 LABEL_53:
-  v33 = [v39 allObjects];
+  allObjects = [v39 allObjects];
 
-  return v33;
+  return allObjects;
 }
 
 @end

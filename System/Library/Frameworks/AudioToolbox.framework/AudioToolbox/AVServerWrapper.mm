@@ -1,7 +1,7 @@
 @interface AVServerWrapper
 - (AVHapticServerInstance)serverInstance;
-- (AVServerWrapper)initWithServerInstance:(id)a3;
-- (BOOL)contains:(id)a3;
+- (AVServerWrapper)initWithServerInstance:(id)instance;
+- (BOOL)contains:(id)contains;
 @end
 
 @implementation AVServerWrapper
@@ -13,25 +13,25 @@
   return WeakRetained;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  v5 = [(AVServerWrapper *)self serverInstance];
-  LOBYTE(self) = v5 == v4;
+  containsCopy = contains;
+  serverInstance = [(AVServerWrapper *)self serverInstance];
+  LOBYTE(self) = serverInstance == containsCopy;
 
   return self;
 }
 
-- (AVServerWrapper)initWithServerInstance:(id)a3
+- (AVServerWrapper)initWithServerInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8.receiver = self;
   v8.super_class = AVServerWrapper;
   v5 = [(AVServerWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_serverInstance, v4);
+    objc_storeWeak(&v5->_serverInstance, instanceCopy);
   }
 
   return v6;

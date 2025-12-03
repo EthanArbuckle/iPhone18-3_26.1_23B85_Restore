@@ -1,12 +1,12 @@
 @interface BWNodeOutputMediaConfiguration
-- (BOOL)isDrivenByInputWithIndex:(unint64_t)a3;
+- (BOOL)isDrivenByInputWithIndex:(unint64_t)index;
 - (BWNodeOutputMediaConfiguration)init;
 - (NSArray)indexesOfInputsWhichDrivesThisOutput;
 - (int)indexOfInputWhichDrivesThisOutput;
-- (void)_setAssociatedAttachedMediaKey:(id)a3;
+- (void)_setAssociatedAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)setIndexOfInputWhichDrivesThisOutput:(int)a3;
-- (void)setIndexesOfInputsWhichDrivesThisOutput:(id)a3;
+- (void)setIndexOfInputWhichDrivesThisOutput:(int)output;
+- (void)setIndexesOfInputsWhichDrivesThisOutput:(id)output;
 @end
 
 @implementation BWNodeOutputMediaConfiguration
@@ -30,9 +30,9 @@
   v3 = [(NSArray *)self->_indexesOfInputsWhichDrivesThisOutput count];
   if (v3)
   {
-    v4 = [(NSArray *)self->_indexesOfInputsWhichDrivesThisOutput lastObject];
+    lastObject = [(NSArray *)self->_indexesOfInputsWhichDrivesThisOutput lastObject];
 
-    LODWORD(v3) = [v4 intValue];
+    LODWORD(v3) = [lastObject intValue];
   }
 
   return v3;
@@ -45,9 +45,9 @@
   [(BWNodeOutputMediaConfiguration *)&v3 dealloc];
 }
 
-- (void)_setAssociatedAttachedMediaKey:(id)a3
+- (void)_setAssociatedAttachedMediaKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -64,12 +64,12 @@ LABEL_8:
     objc_exception_throw([v7 exceptionWithName:v8 reason:v9 userInfo:0]);
   }
 
-  associatedAttachedMediaKey = [a3 copy];
+  associatedAttachedMediaKey = [key copy];
   self->_associatedAttachedMediaKey = associatedAttachedMediaKey;
   attachedMediaKeyOfInputWhichDrivesThisOutput = self->_attachedMediaKeyOfInputWhichDrivesThisOutput;
   if (!attachedMediaKeyOfInputWhichDrivesThisOutput)
   {
-    attachedMediaKeyOfInputWhichDrivesThisOutput = [a3 copy];
+    attachedMediaKeyOfInputWhichDrivesThisOutput = [key copy];
     self->_attachedMediaKeyOfInputWhichDrivesThisOutput = attachedMediaKeyOfInputWhichDrivesThisOutput;
     associatedAttachedMediaKey = self->_associatedAttachedMediaKey;
   }
@@ -77,9 +77,9 @@ LABEL_8:
   self->_performsAttachedMediaRemapping = ![(NSString *)associatedAttachedMediaKey isEqualToString:attachedMediaKeyOfInputWhichDrivesThisOutput];
 }
 
-- (void)setIndexOfInputWhichDrivesThisOutput:(int)a3
+- (void)setIndexOfInputWhichDrivesThisOutput:(int)output
 {
-  v3 = *&a3;
+  v3 = *&output;
 
   self->_indexesOfInputsWhichDrivesThisOutput = 0;
   if (v3)
@@ -89,12 +89,12 @@ LABEL_8:
   }
 }
 
-- (void)setIndexesOfInputsWhichDrivesThisOutput:(id)a3
+- (void)setIndexesOfInputsWhichDrivesThisOutput:(id)output
 {
   self->_indexesOfInputsWhichDrivesThisOutput = 0;
-  if (a3 && ([a3 count] == 1 && !objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", 0), "isEqual:", &unk_1F2244710) || objc_msgSend(a3, "count") >= 2))
+  if (output && ([output count] == 1 && !objc_msgSend(objc_msgSend(output, "objectAtIndexedSubscript:", 0), "isEqual:", &unk_1F2244710) || objc_msgSend(output, "count") >= 2))
   {
-    self->_indexesOfInputsWhichDrivesThisOutput = a3;
+    self->_indexesOfInputsWhichDrivesThisOutput = output;
   }
 }
 
@@ -105,15 +105,15 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isDrivenByInputWithIndex:(unint64_t)a3
+- (BOOL)isDrivenByInputWithIndex:(unint64_t)index
 {
   indexesOfInputsWhichDrivesThisOutput = self->_indexesOfInputsWhichDrivesThisOutput;
   if (!indexesOfInputsWhichDrivesThisOutput)
   {
-    return a3 == 0;
+    return index == 0;
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
 
   return [(NSArray *)indexesOfInputsWhichDrivesThisOutput containsObject:v4];
 }

@@ -1,41 +1,41 @@
 @interface AEAnnotationDragHTMLGenerator
-+ (id)truncatedAnnotationSelectedText:(id)a3;
-- (AEAnnotationDragHTMLGenerator)initWithAnnotation:(id)a3 propertyProvider:(id)a4;
++ (id)truncatedAnnotationSelectedText:(id)text;
+- (AEAnnotationDragHTMLGenerator)initWithAnnotation:(id)annotation propertyProvider:(id)provider;
 - (AEAnnotationDragPropertyProvider)propertyProvider;
-- (id)_excerptString:(BOOL)a3;
+- (id)_excerptString:(BOOL)string;
 - (id)_metadataString;
-- (id)_representativeText:(BOOL)a3;
+- (id)_representativeText:(BOOL)text;
 - (id)documentString;
 - (id)plainTextString;
 @end
 
 @implementation AEAnnotationDragHTMLGenerator
 
-+ (id)truncatedAnnotationSelectedText:(id)a3
++ (id)truncatedAnnotationSelectedText:(id)text
 {
-  v3 = [a3 annotationSelectedText];
+  annotationSelectedText = [text annotationSelectedText];
   v9 = 0;
-  [v3 tokenCountWithEnumerationOptions:3 maxTokenCount:200 outLimitLength:&v9];
+  [annotationSelectedText tokenCountWithEnumerationOptions:3 maxTokenCount:200 outLimitLength:&v9];
   v4 = v9;
   v5 = IMCommonCoreBundle();
   v6 = [v5 localizedStringForKey:@"[\\U2026]" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
-  v7 = [v3 stringByTruncatingToLength:v4 options:3 truncationString:v6];
+  v7 = [annotationSelectedText stringByTruncatingToLength:v4 options:3 truncationString:v6];
 
   return v7;
 }
 
-- (AEAnnotationDragHTMLGenerator)initWithAnnotation:(id)a3 propertyProvider:(id)a4
+- (AEAnnotationDragHTMLGenerator)initWithAnnotation:(id)annotation propertyProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  annotationCopy = annotation;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = AEAnnotationDragHTMLGenerator;
   v9 = [(AEAssetHTMLGenerator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_annotation, a3);
-    objc_storeWeak(&v10->_propertyProvider, v8);
+    objc_storeStrong(&v9->_annotation, annotation);
+    objc_storeWeak(&v10->_propertyProvider, providerCopy);
   }
 
   return v10;
@@ -43,56 +43,56 @@
 
 - (id)documentString
 {
-  v3 = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  annotation = [(AEAnnotationDragHTMLGenerator *)self annotation];
   v4 = [(AEAssetHTMLGenerator *)self templateStringForName:@"AEAnnotationShareDnD"];
-  v5 = [(AEAssetHTMLGenerator *)self styleSection];
-  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%STYLESECTION%% -->" withString:v5];
+  styleSection = [(AEAssetHTMLGenerator *)self styleSection];
+  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%STYLESECTION%% -->" withString:styleSection];
 
-  v6 = [(AEAssetHTMLGenerator *)self readingDirection];
-  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%READINGDIRECTION%% -->" withString:v6];
+  readingDirection = [(AEAssetHTMLGenerator *)self readingDirection];
+  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%READINGDIRECTION%% -->" withString:readingDirection];
 
-  v7 = [(AEAnnotationDragHTMLGenerator *)self _metadataString];
-  v8 = [v3 annotationNote];
+  _metadataString = [(AEAnnotationDragHTMLGenerator *)self _metadataString];
+  annotationNote = [annotation annotationNote];
   v9 = [(AEAnnotationDragHTMLGenerator *)self _excerptString:1];
   v10 = [(AEAnnotationDragHTMLGenerator *)self _representativeText:1];
-  if ([v10 length] && objc_msgSend(v3, "annotationIsUnderline"))
+  if ([v10 length] && objc_msgSend(annotation, "annotationIsUnderline"))
   {
     v11 = [NSString stringWithFormat:@"<span class=underline><span style=color:black>%@</span></span>", v10];;
 
     v10 = v11;
   }
 
-  if ([v7 length])
+  if ([_metadataString length])
   {
-    v12 = [v7 stringByAppendingString:@"\n"];
-    v13 = [v12 im_stringByReplacingNewLinesWithHTMLBreaks];
+    v12 = [_metadataString stringByAppendingString:@"\n"];
+    im_stringByReplacingNewLinesWithHTMLBreaks = [v12 im_stringByReplacingNewLinesWithHTMLBreaks];
 
-    v7 = v13;
+    _metadataString = im_stringByReplacingNewLinesWithHTMLBreaks;
   }
 
-  if ([v8 length])
+  if ([annotationNote length])
   {
-    v14 = [v8 stringByAppendingString:@"\n"];
-    v15 = [v14 im_stringByReplacingNewLinesWithHTMLBreaks];
+    v14 = [annotationNote stringByAppendingString:@"\n"];
+    im_stringByReplacingNewLinesWithHTMLBreaks2 = [v14 im_stringByReplacingNewLinesWithHTMLBreaks];
 
-    v8 = v15;
+    annotationNote = im_stringByReplacingNewLinesWithHTMLBreaks2;
   }
 
   if ([v10 length])
   {
     v16 = [v10 stringByAppendingString:@"\n"];
-    v17 = [v16 im_stringByReplacingNewLinesWithHTMLBreaks];
+    im_stringByReplacingNewLinesWithHTMLBreaks3 = [v16 im_stringByReplacingNewLinesWithHTMLBreaks];
 
-    v10 = v17;
+    v10 = im_stringByReplacingNewLinesWithHTMLBreaks3;
   }
 
-  v18 = -[AEAssetHTMLGenerator CSSClassForStyle:](self, "CSSClassForStyle:", [v3 annotationStyle]);
+  v18 = -[AEAssetHTMLGenerator CSSClassForStyle:](self, "CSSClassForStyle:", [annotation annotationStyle]);
   v19 = [v18 stringByAppendingString:@"Border"];
 
-  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONMETADATA%% -->" withString:v7];
+  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONMETADATA%% -->" withString:_metadataString];
   [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONMARKETCOLOR%% -->" withString:v19];
   [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONREPRESENTATIVETEXT%% -->" withString:v10];
-  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONNOTE%% -->" withString:v8];
+  [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONNOTE%% -->" withString:annotationNote];
   [v4 AEReplaceTemplatePlaceholder:@"<!-- %%ANNOTATIONEXCERPTTEXT%% -->" withString:v9];
 
   return v4;
@@ -100,13 +100,13 @@
 
 - (id)plainTextString
 {
-  v3 = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  annotation = [(AEAnnotationDragHTMLGenerator *)self annotation];
   v4 = [(AEAnnotationDragHTMLGenerator *)self _representativeText:0];
-  v5 = [v3 annotationNote];
+  annotationNote = [annotation annotationNote];
   v6 = [(AEAnnotationDragHTMLGenerator *)self _excerptString:0];
-  if ([v5 length])
+  if ([annotationNote length])
   {
-    v7 = [v4 stringByAppendingFormat:@"\n\n%@", v5];
+    v7 = [v4 stringByAppendingFormat:@"\n\n%@", annotationNote];
 
     v4 = v7;
   }
@@ -125,33 +125,33 @@
 {
   v3 = objc_alloc_init(NSDateFormatter);
   [v3 setDateStyle:3];
-  v4 = [(AEAnnotationDragHTMLGenerator *)self annotation];
-  v5 = [v4 annotationCreationDate];
-  v6 = [v3 stringFromDate:v5];
+  annotation = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  annotationCreationDate = [annotation annotationCreationDate];
+  v6 = [v3 stringFromDate:annotationCreationDate];
 
-  v7 = [(AEAnnotationDragHTMLGenerator *)self propertyProvider];
-  v8 = [(AEAnnotationDragHTMLGenerator *)self annotation];
-  v9 = [v7 pageNumberStringForAnnotation:v8];
+  propertyProvider = [(AEAnnotationDragHTMLGenerator *)self propertyProvider];
+  annotation2 = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  v9 = [propertyProvider pageNumberStringForAnnotation:annotation2];
 
-  v10 = [(AEAnnotationDragHTMLGenerator *)self annotation];
-  LOBYTE(v8) = objc_opt_respondsToSelector();
+  annotation3 = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  LOBYTE(annotation2) = objc_opt_respondsToSelector();
 
-  if (v8)
+  if (annotation2)
   {
-    v11 = [(AEAnnotationDragHTMLGenerator *)self annotation];
-    v12 = [v11 chapterTitle];
+    annotation4 = [(AEAnnotationDragHTMLGenerator *)self annotation];
+    chapterTitle = [annotation4 chapterTitle];
   }
 
   else
   {
-    v12 = 0;
+    chapterTitle = 0;
   }
 
-  if ([v12 length] && objc_msgSend(v9, "length"))
+  if ([chapterTitle length] && objc_msgSend(v9, "length"))
   {
     v13 = IMCommonCoreBundle();
     v14 = [v13 localizedStringForKey:@"%@ value:p. %@" table:{&stru_2D2930, @"BCCommonCoreLocalizable"}];
-    [NSString stringWithFormat:v14, v12, v9];
+    [NSString stringWithFormat:v14, chapterTitle, v9];
     v15 = LABEL_9:;
 
     goto LABEL_10;
@@ -165,9 +165,9 @@
     goto LABEL_9;
   }
 
-  if ([v12 length])
+  if ([chapterTitle length])
   {
-    v15 = v12;
+    v15 = chapterTitle;
   }
 
   else
@@ -186,14 +186,14 @@ LABEL_10:
   return v6;
 }
 
-- (id)_representativeText:(BOOL)a3
+- (id)_representativeText:(BOOL)text
 {
-  v4 = [(AEAnnotationDragHTMLGenerator *)self annotation];
-  v5 = [AEAnnotationDragHTMLGenerator truncatedAnnotationSelectedText:v4];
+  annotation = [(AEAnnotationDragHTMLGenerator *)self annotation];
+  v5 = [AEAnnotationDragHTMLGenerator truncatedAnnotationSelectedText:annotation];
 
   if ([v5 length])
   {
-    if (a3)
+    if (text)
     {
       [NSString stringWithFormat:@"&ldquo;%@&rdquo;", v5];
     }
@@ -210,38 +210,38 @@ LABEL_10:
   return v5;
 }
 
-- (id)_excerptString:(BOOL)a3
+- (id)_excerptString:(BOOL)string
 {
-  v3 = a3;
-  v4 = [(AEAnnotationDragHTMLGenerator *)self propertyProvider];
+  stringCopy = string;
+  propertyProvider = [(AEAnnotationDragHTMLGenerator *)self propertyProvider];
   v5 = IMCommonCoreBundle();
   v6 = [v5 localizedStringForKey:@"Excerpt from:" value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
 
-  v7 = [v4 bookTitle];
-  if ([v7 length])
+  bookTitle = [propertyProvider bookTitle];
+  if ([bookTitle length])
   {
-    v8 = [v6 stringByAppendingFormat:@"\n%@", v7];
+    v8 = [v6 stringByAppendingFormat:@"\n%@", bookTitle];
 
     v6 = v8;
   }
 
-  v9 = [v4 author];
-  if ([v9 length])
+  author = [propertyProvider author];
+  if ([author length])
   {
-    v10 = [v6 stringByAppendingFormat:@"\n%@", v9];
+    v10 = [v6 stringByAppendingFormat:@"\n%@", author];
 
     v6 = v10;
   }
 
-  v11 = [v4 storeURL];
-  v12 = v11;
-  if (v11)
+  storeURL = [propertyProvider storeURL];
+  v12 = storeURL;
+  if (storeURL)
   {
-    [v11 absoluteString];
-    if (v3)
+    [storeURL absoluteString];
+    if (stringCopy)
       v13 = {;
-      v14 = [v12 absoluteString];
-      v15 = [NSString stringWithFormat:@"<a href='%@'>%@</a>", v13, v14];
+      absoluteString = [v12 absoluteString];
+      v15 = [NSString stringWithFormat:@"<a href='%@'>%@</a>", v13, absoluteString];
     }
 
     else
@@ -257,11 +257,11 @@ LABEL_10:
   v18 = [v17 localizedStringForKey:@"This material may be protected by copyright." value:&stru_2D2930 table:@"BCCommonCoreLocalizable"];
   v19 = [v6 stringByAppendingFormat:@"\n%@", v18];
 
-  if (v3)
+  if (stringCopy)
   {
-    v20 = [v19 im_stringByReplacingNewLinesWithHTMLBreaks];
+    im_stringByReplacingNewLinesWithHTMLBreaks = [v19 im_stringByReplacingNewLinesWithHTMLBreaks];
 
-    v19 = v20;
+    v19 = im_stringByReplacingNewLinesWithHTMLBreaks;
   }
 
   return v19;

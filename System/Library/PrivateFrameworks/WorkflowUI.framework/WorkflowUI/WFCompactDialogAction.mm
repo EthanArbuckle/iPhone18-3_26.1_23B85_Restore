@@ -1,28 +1,28 @@
 @interface WFCompactDialogAction
-+ (id)actionForButton:(id)a3 handler:(id)a4;
++ (id)actionForButton:(id)button handler:(id)handler;
 - (UIButton)uiButton;
 - (void)invokeHandler;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation WFCompactDialogAction
 
-+ (id)actionForButton:(id)a3 handler:(id)a4
++ (id)actionForButton:(id)button handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  buttonCopy = button;
+  handlerCopy = handler;
+  if (!buttonCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFCompactDialogAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"dialogButton"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCompactDialogAction.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"dialogButton"}];
   }
 
   v10 = objc_opt_new();
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong((v10 + 16), a3);
-    v12 = [v9 copy];
+    objc_storeStrong((v10 + 16), button);
+    v12 = [handlerCopy copy];
     v13 = v11[5];
     v11[5] = v12;
   }
@@ -32,12 +32,12 @@
 
 - (void)invokeHandler
 {
-  v2 = [(WFCompactDialogAction *)self handler];
-  if (v2)
+  handler = [(WFCompactDialogAction *)self handler];
+  if (handler)
   {
-    v3 = v2;
-    v2[2]();
-    v2 = v3;
+    v3 = handler;
+    handler[2]();
+    handler = v3;
   }
 }
 
@@ -49,17 +49,17 @@
     goto LABEL_2;
   }
 
-  v5 = [(WFCompactDialogAction *)self appearanceProvider];
-  if (v5)
+  appearanceProvider = [(WFCompactDialogAction *)self appearanceProvider];
+  if (appearanceProvider)
   {
-    v6 = v5;
-    v7 = [(WFCompactDialogAction *)self appearanceProvider];
+    v6 = appearanceProvider;
+    appearanceProvider2 = [(WFCompactDialogAction *)self appearanceProvider];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(WFCompactDialogAction *)self appearanceProvider];
-      v10 = [v9 buttonForWFCompactDialogAction:self];
+      appearanceProvider3 = [(WFCompactDialogAction *)self appearanceProvider];
+      v10 = [appearanceProvider3 buttonForWFCompactDialogAction:self];
       v11 = self->_uiButton;
       self->_uiButton = v10;
 
@@ -79,12 +79,12 @@ LABEL_2:
   v13 = [MEMORY[0x277D750C8] actionWithHandler:v90];
   v14 = [v12 buttonWithType:0 primaryAction:v13];
 
-  v15 = [(WFCompactDialogAction *)self dialogButton];
-  v16 = [v15 title];
-  [(UIButton *)v14 setTitle:v16 forState:0];
+  dialogButton = [(WFCompactDialogAction *)self dialogButton];
+  title = [dialogButton title];
+  [(UIButton *)v14 setTitle:title forState:0];
 
-  v17 = [(WFCompactDialogAction *)self dialogButton];
-  if ([v17 style] == 1)
+  dialogButton2 = [(WFCompactDialogAction *)self dialogButton];
+  if ([dialogButton2 style] == 1)
   {
     v18 = MEMORY[0x277D74410];
   }
@@ -94,8 +94,8 @@ LABEL_2:
     v18 = MEMORY[0x277D74420];
   }
 
-  v19 = [(WFCompactDialogAction *)self dialogButton];
-  if ([v19 style] == 1)
+  dialogButton3 = [(WFCompactDialogAction *)self dialogButton];
+  if ([dialogButton3 style] == 1)
   {
     [MEMORY[0x277D75348] labelColor];
   }
@@ -107,33 +107,33 @@ LABEL_2:
   v20 = ;
   v21 = *v18;
 
-  v22 = [MEMORY[0x277D75520] defaultMetrics];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
   v23 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
-  v24 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+  universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
   v25 = MEMORY[0x277D74300];
   v26 = 19.0;
-  if ((v24 & 1) == 0)
+  if ((universalPreviewsEnabled & 1) == 0)
   {
     [v23 pointSize];
   }
 
   v73 = v23;
   v27 = [v25 systemFontOfSize:v26 weight:v21];
-  v28 = [v22 scaledFontForFont:v27];
-  v29 = [(UIButton *)v14 titleLabel];
-  [v29 setFont:v28];
+  v28 = [defaultMetrics scaledFontForFont:v27];
+  titleLabel = [(UIButton *)v14 titleLabel];
+  [titleLabel setFont:v28];
 
-  v30 = [(UIButton *)v14 titleLabel];
-  [v30 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(UIButton *)v14 titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
   v31 = *MEMORY[0x277D76838];
-  v32 = [(UIButton *)v14 titleLabel];
-  [v32 setMaximumContentSizeCategory:v31];
+  titleLabel3 = [(UIButton *)v14 titleLabel];
+  [titleLabel3 setMaximumContentSizeCategory:v31];
 
   [(UIButton *)v14 setTitleColor:v20 forState:0];
   v33 = *MEMORY[0x277CDA138];
-  v34 = [(UIButton *)v14 layer];
-  [v34 setCornerCurve:v33];
+  layer = [(UIButton *)v14 layer];
+  [layer setCornerCurve:v33];
 
   if ([MEMORY[0x277CBEBD0] universalPreviewsEnabled])
   {
@@ -145,18 +145,18 @@ LABEL_2:
     v35 = 25.0;
   }
 
-  v36 = [(UIButton *)v14 layer];
-  [v36 setCornerRadius:v35];
+  layer2 = [(UIButton *)v14 layer];
+  [layer2 setCornerRadius:v35];
 
-  v37 = [(UIButton *)v14 layer];
-  [v37 setMasksToBounds:1];
+  layer3 = [(UIButton *)v14 layer];
+  [layer3 setMasksToBounds:1];
 
   [(UIButton *)v14 setPointerStyleProvider:&__block_literal_global_14988];
-  v38 = [(WFCompactDialogAction *)self dialogButton];
-  v39 = [v38 style];
+  dialogButton4 = [(WFCompactDialogAction *)self dialogButton];
+  style = [dialogButton4 style];
 
   v74 = v20;
-  if (v39 == 1)
+  if (style == 1)
   {
     v72 = [MEMORY[0x277D75210] effectWithStyle:1200];
     v40 = [MEMORY[0x277D75D00] effectForBlurEffect:v72 style:6];
@@ -165,9 +165,9 @@ LABEL_2:
     [v41 setFrame:?];
     [v41 setAutoresizingMask:18];
     [v41 setUserInteractionEnabled:0];
-    v42 = [MEMORY[0x277D75348] blackColor];
-    v43 = [v41 contentView];
-    [v43 setBackgroundColor:v42];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    contentView = [v41 contentView];
+    [contentView setBackgroundColor:blackColor];
 
     [(UIButton *)v14 insertSubview:v41 atIndex:0];
     [(UIButton *)v14 setPointerInteractionEnabled:0];
@@ -212,10 +212,10 @@ LABEL_2:
 
   else
   {
-    v57 = [(WFCompactDialogAction *)self dialogButton];
-    v58 = [v57 style];
+    dialogButton5 = [(WFCompactDialogAction *)self dialogButton];
+    style2 = [dialogButton5 style];
 
-    if (v58 == 2)
+    if (style2 == 2)
     {
       [MEMORY[0x277D75348] systemRedColor];
     }
@@ -378,14 +378,14 @@ void __33__WFCompactDialogAction_uiButton__block_invoke_4(uint64_t a1)
   [v3 setAlpha:0.5];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_enabled = a3;
-  v5 = [(WFCompactDialogAction *)self uiButton];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_enabled = enabled;
+  uiButton = [(WFCompactDialogAction *)self uiButton];
+  [uiButton setEnabled:enabledCopy];
 
-  if (v3)
+  if (enabledCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -397,8 +397,8 @@ void __33__WFCompactDialogAction_uiButton__block_invoke_4(uint64_t a1)
 
   else
   {
-    v6 = [(WFCompactDialogAction *)self uiButton];
-    [v6 setAlpha:0.5];
+    uiButton2 = [(WFCompactDialogAction *)self uiButton];
+    [uiButton2 setAlpha:0.5];
   }
 }
 

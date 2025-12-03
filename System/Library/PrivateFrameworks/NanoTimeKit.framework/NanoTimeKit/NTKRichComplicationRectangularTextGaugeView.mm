@@ -1,12 +1,12 @@
 @interface NTKRichComplicationRectangularTextGaugeView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 + (BOOL)isMeteredProgressView;
 - (NTKRichComplicationRectangularTextGaugeView)init;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
-- (void)_handleTemplateUpdateWithReason:(int64_t)a3 headerViewData:(id)a4 headerImageProvider:(id)a5 headerTextProvider:(id)a6 bodyTextProvider:(id)a7 gaugeProvider:(id)a8;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
+- (void)_handleTemplateUpdateWithReason:(int64_t)reason headerViewData:(id)data headerImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider gaugeProvider:(id)gaugeProvider;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -14,7 +14,7 @@
 
 + (BOOL)isMeteredProgressView
 {
-  [a1 progressFillStyle];
+  [self progressFillStyle];
 
   CDRichComplicationProgressFillStyleIsMetered();
 }
@@ -26,23 +26,23 @@
   v2 = [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v15 init];
   if (v2)
   {
-    v3 = [objc_opt_class() progressFillStyle];
+    progressFillStyle = [objc_opt_class() progressFillStyle];
     v14 = 0;
     memset(v13, 0, sizeof(v13));
-    v4 = [(CDRichComplicationView *)v2 device];
-    ___LayoutConstants_block_invoke_30(v4, v13);
+    device = [(CDRichComplicationView *)v2 device];
+    ___LayoutConstants_block_invoke_30(device, v13);
 
     v5 = [(NTKRichComplicationRectangularBaseView *)v2 _createAndAddColoringLabelWithFontSize:1 weight:*(v13 + 1) usesTextProviderTintColoring:*MEMORY[0x277D74418]];
     bodyLabel = v2->_bodyLabel;
     v2->_bodyLabel = v5;
 
     [(CLKUIColoringLabel *)v2->_bodyLabel setNumberOfLines:1];
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v2->_bodyLabel setTextColor:v7];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v2->_bodyLabel setTextColor:whiteColor];
 
     v8 = [NTKRichComplicationLineProgressView alloc];
-    v9 = [(CDRichComplicationView *)v2 device];
-    v10 = [(NTKRichComplicationLineProgressView *)v8 initForFamily:11 device:v9 progressFillStyle:v3];
+    device2 = [(CDRichComplicationView *)v2 device];
+    v10 = [(NTKRichComplicationLineProgressView *)v8 initForFamily:11 device:device2 progressFillStyle:progressFillStyle];
     progressView = v2->_progressView;
     v2->_progressView = v10;
 
@@ -61,8 +61,8 @@
   v17 = 0;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(CDRichComplicationView *)self device];
-  ___LayoutConstants_block_invoke_30(v3, &v15);
+  device = [(CDRichComplicationView *)self device];
+  ___LayoutConstants_block_invoke_30(device, &v15);
 
   [(NTKRichComplicationRectangularTextGaugeView *)self bounds];
   v5 = v4;
@@ -72,13 +72,13 @@
   v10 = v5 + v8 * -2.0;
   [(CLKUIColoringLabel *)self->_bodyLabel sizeToFit];
   [(CLKUIColoringLabel *)self->_bodyLabel frame];
-  v11 = [(CLKUIColoringLabel *)self->_bodyLabel font];
-  [v11 ascender];
+  font = [(CLKUIColoringLabel *)self->_bodyLabel font];
+  [font ascender];
 
-  v12 = [(CLKUIColoringLabel *)self->_bodyLabel font];
-  [v12 lineHeight];
+  font2 = [(CLKUIColoringLabel *)self->_bodyLabel font];
+  [font2 lineHeight];
 
-  v13 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)self->_bodyLabel setFrame:?];
 
@@ -96,9 +96,9 @@
   [(NTKRichComplicationLineProgressView *)self->_progressView setFrame:v9, v7 - *(&v16 + 1) - *v14, v10];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -114,57 +114,57 @@
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v12 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v12;
-    v7 = [v6 headerLabelData];
-    v8 = [v6 bodyTextProvider];
+    v6 = templateCopy;
+    headerLabelData = [v6 headerLabelData];
+    bodyTextProvider = [v6 bodyTextProvider];
 
-    v9 = 0;
+    headerImageProvider = 0;
   }
 
   else
   {
-    v9 = [v12 headerImageProvider];
-    v8 = [v12 body1TextProvider];
-    v7 = 0;
+    headerImageProvider = [templateCopy headerImageProvider];
+    bodyTextProvider = [templateCopy body1TextProvider];
+    headerLabelData = 0;
   }
 
-  v10 = [v12 headerTextProvider];
-  v11 = [v12 gaugeProvider];
-  [(NTKRichComplicationRectangularTextGaugeView *)self _handleTemplateUpdateWithReason:a4 headerViewData:v7 headerImageProvider:v9 headerTextProvider:v10 bodyTextProvider:v8 gaugeProvider:v11];
+  headerTextProvider = [templateCopy headerTextProvider];
+  gaugeProvider = [templateCopy gaugeProvider];
+  [(NTKRichComplicationRectangularTextGaugeView *)self _handleTemplateUpdateWithReason:reason headerViewData:headerLabelData headerImageProvider:headerImageProvider headerTextProvider:headerTextProvider bodyTextProvider:bodyTextProvider gaugeProvider:gaugeProvider];
 }
 
-- (void)_handleTemplateUpdateWithReason:(int64_t)a3 headerViewData:(id)a4 headerImageProvider:(id)a5 headerTextProvider:(id)a6 bodyTextProvider:(id)a7 gaugeProvider:(id)a8
+- (void)_handleTemplateUpdateWithReason:(int64_t)reason headerViewData:(id)data headerImageProvider:(id)provider headerTextProvider:(id)textProvider bodyTextProvider:(id)bodyTextProvider gaugeProvider:(id)gaugeProvider
 {
-  v15 = a8;
-  v14 = a7;
-  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self _updateTemplateHeaderWithTextProvider:a6 imageProvider:a5 viewData:a4 reason:a3];
-  [(CLKUIColoringLabel *)self->_bodyLabel setTextProvider:v14];
+  gaugeProviderCopy = gaugeProvider;
+  bodyTextProviderCopy = bodyTextProvider;
+  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self _updateTemplateHeaderWithTextProvider:textProvider imageProvider:provider viewData:data reason:reason];
+  [(CLKUIColoringLabel *)self->_bodyLabel setTextProvider:bodyTextProviderCopy];
 
-  [(CDRichComplicationProgressView *)self->_progressView setGaugeProvider:v15];
+  [(CDRichComplicationProgressView *)self->_progressView setGaugeProvider:gaugeProviderCopy];
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularTextGaugeView;
-  v4 = a3;
-  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_bodyLabel);
+  blockCopy = block;
+  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_bodyLabel);
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularTextGaugeView;
   [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CLKUIColoringLabel *)self->_bodyLabel transitionToMonochromeWithFraction:0 style:a3];
-  [(CDRichComplicationProgressView *)self->_progressView transitionToMonochromeWithFraction:a3];
+  [(CLKUIColoringLabel *)self->_bodyLabel transitionToMonochromeWithFraction:0 style:fraction];
+  [(CDRichComplicationProgressView *)self->_progressView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

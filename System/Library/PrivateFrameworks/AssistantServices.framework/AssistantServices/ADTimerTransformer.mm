@@ -1,31 +1,31 @@
 @interface ADTimerTransformer
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5;
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4;
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command;
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation ADTimerTransformer
 
-- (id)aceCommandForSiriResponse:(id)a3 responseError:(id)a4 forRequestCommand:(id)a5
+- (id)aceCommandForSiriResponse:(id)response responseError:(id)error forRequestCommand:(id)command
 {
-  if (a4)
+  if (error)
   {
-    [a5 ad_aceResponseCommandGenericErrorRepresentation];
+    [command ad_aceResponseCommandGenericErrorRepresentation];
   }
 
   else
   {
-    [a5 _ad_timerResponseForResponse:a3];
+    [command _ad_timerResponseForResponse:response];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)getSiriRequestForClientBoundAceCommand:(id)a3 completionHandler:(id)a4
+- (void)getSiriRequestForClientBoundAceCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 _ad_timerRequestRepresentation];
-  (*(a4 + 2))(v6, v7);
+  handlerCopy = handler;
+  _ad_timerRequestRepresentation = [command _ad_timerRequestRepresentation];
+  (*(handler + 2))(handlerCopy, _ad_timerRequestRepresentation);
 }
 
 @end

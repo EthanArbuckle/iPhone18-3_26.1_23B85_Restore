@@ -1,34 +1,34 @@
 @interface DDEventsAction
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5;
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context;
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)localizedName;
 - (id)makeURL;
 - (id)notificationURL;
-- (void)performFromView:(id)a3;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDEventsAction
 
-+ (BOOL)actionAvailableForResult:(__DDResult *)a3 url:(id)a4 context:(id)a5
++ (BOOL)actionAvailableForResult:(__DDResult *)result url:(id)url context:(id)context
 {
   HasType = DDResultHasType();
   if (HasType)
   {
 
-    LOBYTE(HasType) = [a1 isAvailable];
+    LOBYTE(HasType) = [self isAvailable];
   }
 
   return HasType;
 }
 
-+ (id)actionsWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)actionsWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([a1 isAvailable])
+  lCopy = l;
+  contextCopy = context;
+  if ([self isAvailable])
   {
-    v10 = [(DDAction *)DDEventsAction actionWithURL:v8 result:a4 context:v9];
+    v10 = [(DDAction *)DDEventsAction actionWithURL:lCopy result:result context:contextCopy];
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   }
@@ -45,8 +45,8 @@
 
 - (id)localizedName
 {
-  v2 = [(DDEventsAction *)self notificationIconBundleIdentifier];
-  v3 = dd_applicationNameWithBundleIdentifier(v2);
+  notificationIconBundleIdentifier = [(DDEventsAction *)self notificationIconBundleIdentifier];
+  v3 = dd_applicationNameWithBundleIdentifier(notificationIconBundleIdentifier);
 
   if (v3)
   {
@@ -73,9 +73,9 @@
   v22[4] = @"CoreSpotlightUniqueIdentifier";
   v22[5] = @"DocumentLanguage";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:6];
-  v4 = [(DDAction *)self context];
+  context = [(DDAction *)self context];
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count") + 1}];
-  v6 = beginDateOfEventResults([(DDAction *)self associatedResults], v4, 0, 0, 0);
+  v6 = beginDateOfEventResults([(DDAction *)self associatedResults], context, 0, 0, 0);
   if (v6)
   {
     [v5 setObject:v6 forKeyedSubscript:@"event-start-date"];
@@ -101,7 +101,7 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v4 objectForKeyedSubscript:{v12, v17}];
+        v13 = [context objectForKeyedSubscript:{v12, v17}];
         [v5 setObject:v13 forKeyedSubscript:v12];
       }
 
@@ -127,9 +127,9 @@
 
   else
   {
-    v5 = [(DDEventsAction *)self makeURL];
+    makeURL = [(DDEventsAction *)self makeURL];
     v6 = self->_targetURL;
-    self->_targetURL = v5;
+    self->_targetURL = makeURL;
 
     targetURL = self->_targetURL;
   }
@@ -137,17 +137,17 @@
   return targetURL;
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = dispatch_get_global_queue(33, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__DDEventsAction_performFromView___block_invoke;
   v7[3] = &unk_278290BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = viewCopy;
+  v6 = viewCopy;
   dispatch_async(v5, v7);
 }
 

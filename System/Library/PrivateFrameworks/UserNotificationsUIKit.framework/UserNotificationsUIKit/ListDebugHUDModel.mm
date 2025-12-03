@@ -1,6 +1,6 @@
 @interface ListDebugHUDModel
 - (NCNotificationListView)listView;
-- (void)setListView:(id)a3;
+- (void)setListView:(id)view;
 @end
 
 @implementation ListDebugHUDModel
@@ -12,10 +12,10 @@
   return Strong;
 }
 
-- (void)setListView:(id)a3
+- (void)setListView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_21E90EC08();
   swift_unknownObjectWeakAssign();
   sub_21E8FDEF0();

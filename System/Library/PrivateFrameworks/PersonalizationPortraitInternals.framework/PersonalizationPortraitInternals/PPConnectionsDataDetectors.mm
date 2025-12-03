@@ -1,21 +1,21 @@
 @interface PPConnectionsDataDetectors
-+ (id)addressComponentValueWithLocationField:(unsigned __int8)a3 forDataDetectorsMatch:(id)a4 addressComponents:(id)a5;
++ (id)addressComponentValueWithLocationField:(unsigned __int8)field forDataDetectorsMatch:(id)match addressComponents:(id)components;
 @end
 
 @implementation PPConnectionsDataDetectors
 
-+ (id)addressComponentValueWithLocationField:(unsigned __int8)a3 forDataDetectorsMatch:(id)a4 addressComponents:(id)a5
++ (id)addressComponentValueWithLocationField:(unsigned __int8)field forDataDetectorsMatch:(id)match addressComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  fieldCopy = field;
+  matchCopy = match;
+  componentsCopy = components;
+  v9 = componentsCopy;
   v10 = 0;
-  if (v6 <= 4)
+  if (fieldCopy <= 4)
   {
-    if (v6 > 2)
+    if (fieldCopy > 2)
     {
-      if (v6 == 3)
+      if (fieldCopy == 3)
       {
         v11 = MEMORY[0x277CCA6E8];
       }
@@ -28,15 +28,15 @@
 
     else
     {
-      if (v6 == 1)
+      if (fieldCopy == 1)
       {
-        v12 = v7;
+        v12 = matchCopy;
 LABEL_18:
         v10 = v12;
         goto LABEL_19;
       }
 
-      if (v6 != 2)
+      if (fieldCopy != 2)
       {
         goto LABEL_19;
       }
@@ -45,13 +45,13 @@ LABEL_18:
     }
 
 LABEL_17:
-    v12 = [v8 objectForKeyedSubscript:*v11];
+    v12 = [componentsCopy objectForKeyedSubscript:*v11];
     goto LABEL_18;
   }
 
-  if (v6 <= 6)
+  if (fieldCopy <= 6)
   {
-    if (v6 == 5)
+    if (fieldCopy == 5)
     {
       v11 = MEMORY[0x277CCA6F0];
     }
@@ -64,9 +64,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v6 != 7)
+  if (fieldCopy != 7)
   {
-    if (v6 != 9)
+    if (fieldCopy != 9)
     {
       goto LABEL_19;
     }
@@ -75,7 +75,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v14 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCA6B0]];
+  v14 = [componentsCopy objectForKeyedSubscript:*MEMORY[0x277CCA6B0]];
   v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA6E0]];
   v10 = [PPConnectionsAddressFormatter formattedCityAndStateWithCity:v14 state:v15];
 

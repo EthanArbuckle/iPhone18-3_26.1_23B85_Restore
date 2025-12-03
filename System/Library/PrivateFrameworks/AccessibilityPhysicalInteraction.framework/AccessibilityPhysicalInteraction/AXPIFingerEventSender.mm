@@ -1,27 +1,27 @@
 @interface AXPIFingerEventSender
-- (AXPIFingerEventSender)initWithDisplayUUID:(id)a3;
-- (id)_assignFingerIdentifiersToTouches:(id)a3;
-- (void)_sendHandEvent:(unsigned int)a3 touchesByFingerIdentifier:(id)a4;
+- (AXPIFingerEventSender)initWithDisplayUUID:(id)d;
+- (id)_assignFingerIdentifiersToTouches:(id)touches;
+- (void)_sendHandEvent:(unsigned int)event touchesByFingerIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)performCancelWithTouches:(id)a3;
-- (void)performDownWithTouches:(id)a3;
-- (void)performMoveWithTouches:(id)a3;
-- (void)performUpWithTouches:(id)a3;
+- (void)performCancelWithTouches:(id)touches;
+- (void)performDownWithTouches:(id)touches;
+- (void)performMoveWithTouches:(id)touches;
+- (void)performUpWithTouches:(id)touches;
 @end
 
 @implementation AXPIFingerEventSender
 
-- (AXPIFingerEventSender)initWithDisplayUUID:(id)a3
+- (AXPIFingerEventSender)initWithDisplayUUID:(id)d
 {
   v31[9] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = AXPIFingerEventSender;
   v6 = [(AXPIFingerEventSender *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayUUID, a3);
+    objc_storeStrong(&v6->_displayUUID, d);
     v8 = dispatch_queue_create("AXPIFingerEventSendingQueue", 0);
     eventSendingQueue = v7->_eventSendingQueue;
     v7->_eventSendingQueue = v8;
@@ -62,11 +62,11 @@
     v31[8] = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:9];
 
-    if (v5)
+    if (dCopy)
     {
       v19 = [(NSDictionary *)v18 mutableCopy];
       [(NSDictionary *)v19 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"Built-In"];
-      [(NSDictionary *)v19 setObject:v5 forKeyedSubscript:@"displayUUID"];
+      [(NSDictionary *)v19 setObject:dCopy forKeyedSubscript:@"displayUUID"];
 
       v18 = v19;
     }
@@ -119,35 +119,35 @@ void __32__AXPIFingerEventSender_dealloc__block_invoke(uint64_t a1)
   *(v2 + 32) = 0;
 }
 
-- (void)performDownWithTouches:(id)a3
+- (void)performDownWithTouches:(id)touches
 {
-  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:a3];
+  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:touches];
   [(AXPIFingerEventSender *)self performDownWithTouchesByFingerIdentifier:v4];
 }
 
-- (void)performMoveWithTouches:(id)a3
+- (void)performMoveWithTouches:(id)touches
 {
-  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:a3];
+  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:touches];
   [(AXPIFingerEventSender *)self performMoveWithTouchesByFingerIdentifier:v4];
 }
 
-- (void)performUpWithTouches:(id)a3
+- (void)performUpWithTouches:(id)touches
 {
-  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:a3];
+  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:touches];
   [(AXPIFingerEventSender *)self performUpWithTouchesByFingerIdentifier:v4];
 }
 
-- (void)performCancelWithTouches:(id)a3
+- (void)performCancelWithTouches:(id)touches
 {
-  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:a3];
+  v4 = [(AXPIFingerEventSender *)self _assignFingerIdentifiersToTouches:touches];
   [(AXPIFingerEventSender *)self performCancelWithTouchesByFingerIdentifier:v4];
 }
 
-- (void)_sendHandEvent:(unsigned int)a3 touchesByFingerIdentifier:(id)a4
+- (void)_sendHandEvent:(unsigned int)event touchesByFingerIdentifier:(id)identifier
 {
-  v4 = *&a3;
-  v6 = a4;
-  if ([v6 count])
+  v4 = *&event;
+  identifierCopy = identifier;
+  if ([identifierCopy count])
   {
     v25 = 0;
     v26 = &v25;
@@ -155,27 +155,27 @@ void __32__AXPIFingerEventSender_dealloc__block_invoke(uint64_t a1)
     v28 = __Block_byref_object_copy_;
     v29 = __Block_byref_object_dispose_;
     v30 = 0;
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v7 openSessions];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    openSessions = [mEMORY[0x277D75128] openSessions];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __66__AXPIFingerEventSender__sendHandEvent_touchesByFingerIdentifier___block_invoke;
     v24[3] = &unk_278BE62E0;
     v24[4] = self;
     v24[5] = &v25;
-    [v8 enumerateObjectsUsingBlock:v24];
+    [openSessions enumerateObjectsUsingBlock:v24];
 
     v9 = v26[5];
     if (!v9)
     {
-      v10 = [MEMORY[0x277D759A0] mainScreen];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
       v11 = v26[5];
-      v26[5] = v10;
+      v26[5] = mainScreen;
 
       v9 = v26[5];
     }
 
-    v12 = v6;
+    v12 = identifierCopy;
     v13 = v9;
     v14 = [v12 count];
     if (v4 == 8 || v14)
@@ -187,7 +187,7 @@ void __32__AXPIFingerEventSender_dealloc__block_invoke(uint64_t a1)
       v37 = 0x3032000000;
       v38 = __Block_byref_object_copy_;
       v39 = __Block_byref_object_dispose_;
-      v40 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __AXPIEventRepresentationFromTouches_block_invoke;
@@ -198,8 +198,8 @@ void __32__AXPIFingerEventSender_dealloc__block_invoke(uint64_t a1)
       v33 = &v35;
       [v12 enumerateKeysAndObjectsUsingBlock:v31];
       v17 = v36[5];
-      v18 = [v15 handInfo];
-      [v18 setPaths:v17];
+      handInfo = [v15 handInfo];
+      [handInfo setPaths:v17];
 
       _Block_object_dispose(&v35, 8);
     }
@@ -217,20 +217,20 @@ void __32__AXPIFingerEventSender_dealloc__block_invoke(uint64_t a1)
         [v15 setAdditionalFlags:{objc_msgSend(v15, "additionalFlags") | 0x8000}];
       }
 
-      v19 = [(AXPIFingerEventSender *)self properties];
-      v20 = [v19 valueForKey:@"Built-In"];
+      properties = [(AXPIFingerEventSender *)self properties];
+      v20 = [properties valueForKey:@"Built-In"];
       [v15 setIsBuiltIn:{objc_msgSend(v20, "BOOLValue")}];
 
-      v21 = [(AXPIFingerEventSender *)self properties];
-      v22 = [v21 valueForKey:@"DisplayIntegrated"];
+      properties2 = [(AXPIFingerEventSender *)self properties];
+      v22 = [properties2 valueForKey:@"DisplayIntegrated"];
       [v15 setIsDisplayIntegrated:{objc_msgSend(v22, "BOOLValue")}];
 
-      v23 = [v15 newHIDEventRef];
-      if (v23)
+      newHIDEventRef = [v15 newHIDEventRef];
+      if (newHIDEventRef)
       {
         IOHIDEventSetSenderID();
-        [(HIDVirtualEventService *)self->_eventService dispatchEvent:v23];
-        CFRelease(v23);
+        [(HIDVirtualEventService *)self->_eventService dispatchEvent:newHIDEventRef];
+        CFRelease(newHIDEventRef);
       }
     }
 
@@ -287,16 +287,16 @@ LABEL_8:
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_assignFingerIdentifiersToTouches:(id)a3
+- (id)_assignFingerIdentifiersToTouches:(id)touches
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  touchesCopy = touches;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(touchesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = touchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

@@ -1,31 +1,31 @@
 @interface CARWallpaperPanel
-- (CARWallpaperPanel)initWithPanelController:(id)a3;
+- (CARWallpaperPanel)initWithPanelController:(id)controller;
 - (CGSize)cachedEffectiveSectionInsetLayoutSize;
 - (UIEdgeInsets)cachedEffectiveSectionInset;
 - (UIEdgeInsets)effectiveSectionHeaderInset;
 - (UIEdgeInsets)effectiveSectionInset;
 - (UIEdgeInsets)sectionInset;
-- (id)_newPreviewPanelForWallpaper:(id)a3;
+- (id)_newPreviewPanelForWallpaper:(id)wallpaper;
 - (id)cellSpecifier;
 - (id)specifierSections;
 - (unint64_t)numberOfRows;
-- (void)_vehicleDidChange:(id)a3;
+- (void)_vehicleDidChange:(id)change;
 - (void)invalidate;
 @end
 
 @implementation CARWallpaperPanel
 
-- (CARWallpaperPanel)initWithPanelController:(id)a3
+- (CARWallpaperPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CARWallpaperPanel;
-  v5 = [(CARSettingsPanel *)&v10 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v10 initWithPanelController:controllerCopy];
   if (v5)
   {
-    v6 = [v4 loadWallpaperPreferences];
+    loadWallpaperPreferences = [controllerCopy loadWallpaperPreferences];
     wallpaperPreferences = v5->_wallpaperPreferences;
-    v5->_wallpaperPreferences = v6;
+    v5->_wallpaperPreferences = loadWallpaperPreferences;
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v5 selector:"_vehicleDidChange:" name:@"CARSettingsPanelControllerVehicleDidChangeNotification" object:0];
@@ -65,28 +65,28 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARWallpaperPanel *)self sections];
+  sections = [(CARWallpaperPanel *)self sections];
 
-  if (!v3)
+  if (!sections)
   {
     v4 = objc_opt_new();
-    v5 = [(CARWallpaperPanel *)self wallpaperPreferences];
-    v6 = [v5 dataProvider];
-    v7 = [v6 wallpapers];
+    wallpaperPreferences = [(CARWallpaperPanel *)self wallpaperPreferences];
+    dataProvider = [wallpaperPreferences dataProvider];
+    wallpapers = [dataProvider wallpapers];
 
     objc_initWeak(&location, self);
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_1000088D0;
     v17 = &unk_1000DAF00;
-    v18 = self;
+    selfCopy = self;
     objc_copyWeak(&v20, &location);
     v8 = v4;
     v19 = v8;
-    [v7 enumerateObjectsUsingBlock:&v14];
+    [wallpapers enumerateObjectsUsingBlock:&v14];
     v9 = [CARSettingsCellSpecifierSection alloc];
-    v10 = [(CARSettingsCellSpecifierSection *)v9 initWithTitle:0 specifiers:v8, v14, v15, v16, v17, v18];
-    v22 = v10;
+    selfCopy = [(CARSettingsCellSpecifierSection *)v9 initWithTitle:0 specifiers:v8, v14, v15, v16, v17, selfCopy];
+    v22 = selfCopy;
     v11 = [NSArray arrayWithObjects:&v22 count:1];
     [(CARWallpaperPanel *)self setSections:v11];
 
@@ -94,17 +94,17 @@
     objc_destroyWeak(&location);
   }
 
-  v12 = [(CARWallpaperPanel *)self sections];
+  sections2 = [(CARWallpaperPanel *)self sections];
 
-  return v12;
+  return sections2;
 }
 
 - (unint64_t)numberOfRows
 {
-  v3 = [(CARWallpaperPanel *)self sections];
-  v4 = [v3 firstObject];
-  v5 = [v4 specifiers];
-  v6 = [v5 count];
+  sections = [(CARWallpaperPanel *)self sections];
+  firstObject = [sections firstObject];
+  specifiers = [firstObject specifiers];
+  v6 = [specifiers count];
 
   v7 = [(CARWallpaperPanel *)self numberOfColumns]+ v6 - 1;
   return v7 / [(CARWallpaperPanel *)self numberOfColumns];
@@ -112,11 +112,11 @@
 
 - (UIEdgeInsets)sectionInset
 {
-  v3 = [(CARWallpaperPanel *)self view];
-  [v3 safeAreaInsets];
+  view = [(CARWallpaperPanel *)self view];
+  [view safeAreaInsets];
   v5 = v4 + 4.0;
-  v6 = [(CARWallpaperPanel *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(CARWallpaperPanel *)self view];
+  [view2 safeAreaInsets];
   v8 = v7 + 4.0;
 
   v9 = 0.0;
@@ -132,8 +132,8 @@
 
 - (UIEdgeInsets)effectiveSectionInset
 {
-  v3 = [(CARWallpaperPanel *)self view];
-  [v3 bounds];
+  view = [(CARWallpaperPanel *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   height = CGSizeZero.height;
@@ -156,20 +156,20 @@
 
   else
   {
-    v10 = [(CARSettingsPanel *)self panelController];
-    v11 = [v10 carSession];
-    v12 = [v11 configuration];
-    v13 = [v12 screens];
-    v14 = [v13 bs_firstObjectPassingTest:&stru_1000DAF20];
+    panelController = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController carSession];
+    configuration = [carSession configuration];
+    screens = [configuration screens];
+    v14 = [screens bs_firstObjectPassingTest:&stru_1000DAF20];
 
-    v15 = [v14 currentViewArea];
-    [v15 safeFrame];
+    currentViewArea = [v14 currentViewArea];
+    [currentViewArea safeFrame];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(CARWallpaperPanel *)self view];
-    v21 = [v20 safeAreaLayoutGuide];
-    [v21 layoutFrame];
+    view2 = [(CARWallpaperPanel *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -190,8 +190,8 @@
       v40 = v38 - v39 - [(CARWallpaperPanel *)self numberOfColumns]* 8.0;
       v41 = v19 / v17;
       v42 = v41 * (v40 / [(CARWallpaperPanel *)self numberOfColumns]);
-      v43 = [(CARWallpaperPanel *)self numberOfRows];
-      v44 = [(CARWallpaperPanel *)self numberOfRows]* 8.0 + v42 * v43 + 32.0;
+      numberOfRows = [(CARWallpaperPanel *)self numberOfRows];
+      v44 = [(CARWallpaperPanel *)self numberOfRows]* 8.0 + v42 * numberOfRows + 32.0;
       v108.origin.x = v23;
       v108.origin.y = v25;
       v108.size.width = v27;
@@ -208,7 +208,7 @@
         }
 
         [(CARWallpaperPanel *)self sectionInset];
-        v50 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -223,8 +223,8 @@
         [(CARWallpaperPanel *)self sectionInset];
         v64 = v62 - v63 - [(CARWallpaperPanel *)self numberOfColumns]* 8.0;
         v65 = v41 * (v64 / [(CARWallpaperPanel *)self numberOfColumns]);
-        v66 = [(CARWallpaperPanel *)self numberOfRows];
-        v67 = [(CARWallpaperPanel *)self numberOfRows]* 8.0 + v65 * v66 + 32.0;
+        numberOfRows2 = [(CARWallpaperPanel *)self numberOfRows];
+        v67 = [(CARWallpaperPanel *)self numberOfRows]* 8.0 + v65 * numberOfRows2 + 32.0;
         v110.origin.x = v23;
         v110.origin.y = v25;
         v110.size.width = v27;
@@ -234,19 +234,19 @@
         v70 = v69;
         if (v67 >= v68)
         {
-          v71 = [(CARSettingsPanel *)self panelController];
-          v72 = [v71 carSession];
-          v73 = [v72 configuration];
-          [v73 rightHandDrive];
+          panelController2 = [(CARSettingsPanel *)self panelController];
+          carSession2 = [panelController2 carSession];
+          configuration2 = [carSession2 configuration];
+          [configuration2 rightHandDrive];
 
           [(CARWallpaperPanel *)self sectionInset];
         }
 
-        v50 = self;
+        selfCopy2 = self;
         v49 = v70;
       }
 
-      [(CARWallpaperPanel *)v50 setCachedEffectiveSectionInset:v49];
+      [(CARWallpaperPanel *)selfCopy2 setCachedEffectiveSectionInset:v49];
       v74 = sub_10001C784();
       if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
       {
@@ -257,16 +257,16 @@
         v76 = NSStringFromUIEdgeInsets(v111);
         [(CARWallpaperPanel *)self sectionInset];
         v77 = NSStringFromUIEdgeInsets(v112);
-        v92 = [v14 currentViewArea];
+        currentViewArea2 = [v14 currentViewArea];
         v93 = v14;
-        [v92 safeFrame];
+        [currentViewArea2 safeFrame];
         v78 = NSStringFromCGRect(v113);
-        v91 = [(CARWallpaperPanel *)self view];
-        v79 = [v91 safeAreaLayoutGuide];
-        [v79 layoutFrame];
+        view3 = [(CARWallpaperPanel *)self view];
+        safeAreaLayoutGuide2 = [view3 safeAreaLayoutGuide];
+        [safeAreaLayoutGuide2 layoutFrame];
         v80 = NSStringFromCGRect(v114);
-        v81 = [(CARWallpaperPanel *)self view];
-        [v81 safeAreaInsets];
+        view4 = [(CARWallpaperPanel *)self view];
+        [view4 safeAreaInsets];
         v82 = NSStringFromUIEdgeInsets(v115);
         *buf = 138413570;
         v95 = v75;
@@ -325,18 +325,18 @@
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
 
-- (id)_newPreviewPanelForWallpaper:(id)a3
+- (id)_newPreviewPanelForWallpaper:(id)wallpaper
 {
-  v4 = a3;
+  wallpaperCopy = wallpaper;
   v5 = [_TtC15CarPlaySettings24CARWallpaperPreviewPanel alloc];
-  v6 = [(CARWallpaperPanel *)self wallpaperPreferences];
-  v7 = [(CARSettingsPanel *)self panelController];
-  v8 = [(CARWallpaperPreviewPanel *)v5 initWithWallpaper:v4 wallpaperPreferences:v6 panelController:v7 completionHandler:&stru_1000DAF60];
+  wallpaperPreferences = [(CARWallpaperPanel *)self wallpaperPreferences];
+  panelController = [(CARSettingsPanel *)self panelController];
+  v8 = [(CARWallpaperPreviewPanel *)v5 initWithWallpaper:wallpaperCopy wallpaperPreferences:wallpaperPreferences panelController:panelController completionHandler:&stru_1000DAF60];
 
   return v8;
 }
 
-- (void)_vehicleDidChange:(id)a3
+- (void)_vehicleDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

@@ -1,170 +1,170 @@
 @interface NSSCompanionConnectionHandler
-- (NSSCompanionConnectionHandler)initWithConnection:(id)a3 delegate:(id)a4;
+- (NSSCompanionConnectionHandler)initWithConnection:(id)connection delegate:(id)delegate;
 - (void)cancelActiveLogFileTranfers;
-- (void)cancelDiagnosticLogTranfer:(id)a3 withCompletion:(id)a4;
-- (void)deleteDiagnosticLogFile:(id)a3 withResult:(id)a4;
-- (void)fetchBetaEnrollmentStatus:(id)a3;
-- (void)getAboutInfo:(id)a3;
-- (void)getAccountsInfoForAccountType:(id)a3 completionHandler:(id)a4;
-- (void)getDiagnosticLogFileFromGizmo:(id)a3 withResults:(id)a4;
-- (void)getDiagnosticLogsInfo:(id)a3;
-- (void)getLegalDocuments:(id)a3;
-- (void)getLocalesInfo:(id)a3;
-- (void)getProfilesInfo:(id)a3;
-- (void)getUsage:(id)a3;
-- (void)getWatchFaces:(id)a3;
-- (void)installProfile:(id)a3 replyHandler:(id)a4;
-- (void)purgeUsageBundle:(id)a3 replyHandler:(id)a4;
+- (void)cancelDiagnosticLogTranfer:(id)tranfer withCompletion:(id)completion;
+- (void)deleteDiagnosticLogFile:(id)file withResult:(id)result;
+- (void)fetchBetaEnrollmentStatus:(id)status;
+- (void)getAboutInfo:(id)info;
+- (void)getAccountsInfoForAccountType:(id)type completionHandler:(id)handler;
+- (void)getDiagnosticLogFileFromGizmo:(id)gizmo withResults:(id)results;
+- (void)getDiagnosticLogsInfo:(id)info;
+- (void)getLegalDocuments:(id)documents;
+- (void)getLocalesInfo:(id)info;
+- (void)getProfilesInfo:(id)info;
+- (void)getUsage:(id)usage;
+- (void)getWatchFaces:(id)faces;
+- (void)installProfile:(id)profile replyHandler:(id)handler;
+- (void)purgeUsageBundle:(id)bundle replyHandler:(id)handler;
 - (void)rebootDevice;
-- (void)recordSoftwareUpdateSpaceFailure:(id)a3 osBeingUpdatedTo:(id)a4 completion:(id)a5;
-- (void)removeProfileWithIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)retrieveAirplaneModeSettingsWithCompletionHandler:(id)a3;
-- (void)retrieveDiagnosticLogTransferProgress:(id)a3 withProgress:(id)a4;
-- (void)setAirplaneModeSettings:(id)a3 withCompletionHandler:(id)a4;
-- (void)setDeviceName:(id)a3;
-- (void)setWatchFaceIdentifier:(id)a3 forFocusModeIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)recordSoftwareUpdateSpaceFailure:(id)failure osBeingUpdatedTo:(id)to completion:(id)completion;
+- (void)removeProfileWithIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)retrieveAirplaneModeSettingsWithCompletionHandler:(id)handler;
+- (void)retrieveDiagnosticLogTransferProgress:(id)progress withProgress:(id)withProgress;
+- (void)setAirplaneModeSettings:(id)settings withCompletionHandler:(id)handler;
+- (void)setDeviceName:(id)name;
+- (void)setWatchFaceIdentifier:(id)identifier forFocusModeIdentifier:(id)modeIdentifier completionHandler:(id)handler;
 @end
 
 @implementation NSSCompanionConnectionHandler
 
-- (NSSCompanionConnectionHandler)initWithConnection:(id)a3 delegate:(id)a4
+- (NSSCompanionConnectionHandler)initWithConnection:(id)connection delegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = NSSCompanionConnectionHandler;
-  return [(NSSConnectionHandler *)&v5 initWithConnection:a3 delegate:a4];
+  return [(NSSConnectionHandler *)&v5 initWithConnection:connection delegate:delegate];
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"device-name"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 setDeviceName:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate setDeviceName:nameCopy];
   }
 
   else
   {
-    v5 = NSSLogForType();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    delegate = NSSLogForType();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *v6 = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Discarding request due to missing entitlement", v6, 2u);
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "Discarding request due to missing entitlement", v6, 2u);
     }
   }
 }
 
-- (void)getUsage:(id)a3
+- (void)getUsage:(id)usage
 {
   v4 = off_10003D9E0;
-  v5 = a3;
+  usageCopy = usage;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:v4])
   {
-    v6 = [(NSSConnectionHandler *)self delegate];
-    [v6 getUsage:v5];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getUsage:usageCopy];
   }
 
   else
   {
-    v6 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v5[2](v5, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    usageCopy[2](usageCopy, 0);
   }
 }
 
-- (void)retrieveAirplaneModeSettingsWithCompletionHandler:(id)a3
+- (void)retrieveAirplaneModeSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"airplanemode"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 retrieveAirplaneModeSettingsWithCompletionHandler:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate retrieveAirplaneModeSettingsWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)setAirplaneModeSettings:(id)a3 withCompletionHandler:(id)a4
+- (void)setAirplaneModeSettings:(id)settings withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"airplanemode"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 setAirplaneModeSettings:v8 withCompletionHandler:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate setAirplaneModeSettings:settingsCopy withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, 0, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, delegate);
   }
 }
 
-- (void)purgeUsageBundle:(id)a3 replyHandler:(id)a4
+- (void)purgeUsageBundle:(id)bundle replyHandler:(id)handler
 {
-  v9 = a3;
+  bundleCopy = bundle;
   v6 = off_10003D9E0;
-  v7 = a4;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:v6])
   {
-    v8 = [(NSSConnectionHandler *)self delegate];
-    [v8 purgeUsageBundle:v9 replyHandler:v7];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate purgeUsageBundle:bundleCopy replyHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v7[2](v7, v8);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, delegate);
   }
 }
 
-- (void)getDiagnosticLogFileFromGizmo:(id)a3 withResults:(id)a4
+- (void)getDiagnosticLogFileFromGizmo:(id)gizmo withResults:(id)results
 {
-  v8 = a3;
-  v6 = a4;
+  gizmoCopy = gizmo;
+  resultsCopy = results;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"diagnosticlogfile"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 getDiagnosticLogFileFromGizmo:v8 withResults:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getDiagnosticLogFileFromGizmo:gizmoCopy withResults:resultsCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, 0, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    resultsCopy[2](resultsCopy, 0, delegate);
   }
 }
 
-- (void)retrieveDiagnosticLogTransferProgress:(id)a3 withProgress:(id)a4
+- (void)retrieveDiagnosticLogTransferProgress:(id)progress withProgress:(id)withProgress
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSSConnectionHandler *)self delegate];
-  [v8 retrieveDiagnosticLogTransferProgress:v7 withProgress:v6];
+  withProgressCopy = withProgress;
+  progressCopy = progress;
+  delegate = [(NSSConnectionHandler *)self delegate];
+  [delegate retrieveDiagnosticLogTransferProgress:progressCopy withProgress:withProgressCopy];
 }
 
-- (void)cancelDiagnosticLogTranfer:(id)a3 withCompletion:(id)a4
+- (void)cancelDiagnosticLogTranfer:(id)tranfer withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tranferCopy = tranfer;
+  completionCopy = completion;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"cancellogtransfer"])
   {
-    v8 = [(NSSConnectionHandler *)self delegate];
-    [v8 cancelDiagnosticLogTranfer:v6 withCompletion:v7];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate cancelDiagnosticLogTranfer:tranferCopy withCompletion:completionCopy];
   }
 
   else
   {
-    v8 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
     v9 = NSSLogForType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v8;
+      v11 = delegate;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Cancel file transfer failed with error: %@", &v10, 0xCu);
     }
   }
@@ -174,8 +174,8 @@
 {
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"cancellogtransfers"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 cancelActiveLogFileTranfers];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate cancelActiveLogFileTranfers];
   }
 
   else
@@ -191,137 +191,137 @@
   }
 }
 
-- (void)getDiagnosticLogsInfo:(id)a3
+- (void)getDiagnosticLogsInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"diagnosticlogs"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getDiagnosticLogsInfo:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getDiagnosticLogsInfo:infoCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    (*(v4 + 2))(v4, 0, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    (*(infoCopy + 2))(infoCopy, 0, 0);
   }
 }
 
-- (void)deleteDiagnosticLogFile:(id)a3 withResult:(id)a4
+- (void)deleteDiagnosticLogFile:(id)file withResult:(id)result
 {
-  v8 = a3;
-  v6 = a4;
+  fileCopy = file;
+  resultCopy = result;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"diagnosticdelete"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 deleteDiagnosticLogFile:v8 withResult:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate deleteDiagnosticLogFile:fileCopy withResult:resultCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    resultCopy[2](resultCopy, delegate);
   }
 }
 
-- (void)getAboutInfo:(id)a3
+- (void)getAboutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"about"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getAboutInfo:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getAboutInfo:infoCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    infoCopy[2](infoCopy, 0);
   }
 }
 
-- (void)recordSoftwareUpdateSpaceFailure:(id)a3 osBeingUpdatedTo:(id)a4 completion:(id)a5
+- (void)recordSoftwareUpdateSpaceFailure:(id)failure osBeingUpdatedTo:(id)to completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  failureCopy = failure;
+  toCopy = to;
+  completionCopy = completion;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"about"])
   {
-    v10 = [(NSSConnectionHandler *)self delegate];
-    [v10 recordSoftwareUpdateSpaceFailure:v11 osBeingUpdatedTo:v8 completion:v9];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate recordSoftwareUpdateSpaceFailure:failureCopy osBeingUpdatedTo:toCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v9[2](v9, v10);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    completionCopy[2](completionCopy, delegate);
   }
 }
 
-- (void)getAccountsInfoForAccountType:(id)a3 completionHandler:(id)a4
+- (void)getAccountsInfoForAccountType:(id)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"accounts"]|| [(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"icloud"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 getAccountsInfoForAccountType:v8 completionHandler:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getAccountsInfoForAccountType:typeCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, 0, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, 0, delegate);
   }
 }
 
-- (void)getProfilesInfo:(id)a3
+- (void)getProfilesInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"profiles"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getProfilesInfo:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getProfilesInfo:infoCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    infoCopy[2](infoCopy, 0);
   }
 }
 
-- (void)installProfile:(id)a3 replyHandler:(id)a4
+- (void)installProfile:(id)profile replyHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  profileCopy = profile;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"profiles"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 installProfile:v8 replyHandler:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate installProfile:profileCopy replyHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, delegate);
   }
 }
 
-- (void)removeProfileWithIdentifier:(id)a3 replyHandler:(id)a4
+- (void)removeProfileWithIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"profiles"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 removeProfileWithIdentifier:v8 replyHandler:v6];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate removeProfileWithIdentifier:identifierCopy replyHandler:handlerCopy];
   }
 
   else
   {
-    v7 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v6[2](v6, v7);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, delegate);
   }
 }
 
@@ -329,8 +329,8 @@
 {
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"reboot"])
   {
-    v4 = [(NSSConnectionHandler *)self delegate];
-    [v4 rebootDevice];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate rebootDevice];
   }
 
   else
@@ -344,79 +344,79 @@
   }
 }
 
-- (void)getLegalDocuments:(id)a3
+- (void)getLegalDocuments:(id)documents
 {
-  v4 = a3;
+  documentsCopy = documents;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"legal"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getLegalDocuments:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getLegalDocuments:documentsCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    documentsCopy[2](documentsCopy, 0);
   }
 }
 
-- (void)getLocalesInfo:(id)a3
+- (void)getLocalesInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"locales"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getLocalesInfo:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getLocalesInfo:infoCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    infoCopy[2](infoCopy, 0);
   }
 }
 
-- (void)getWatchFaces:(id)a3
+- (void)getWatchFaces:(id)faces
 {
-  v4 = a3;
+  facesCopy = faces;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"watchfaces"])
   {
-    v5 = [(NSSConnectionHandler *)self delegate];
-    [v5 getWatchFaces:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate getWatchFaces:facesCopy];
   }
 
   else
   {
-    v5 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v4[2](v4, 0);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    facesCopy[2](facesCopy, 0);
   }
 }
 
-- (void)setWatchFaceIdentifier:(id)a3 forFocusModeIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setWatchFaceIdentifier:(id)identifier forFocusModeIdentifier:(id)modeIdentifier completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  handlerCopy = handler;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"watchfaces"])
   {
-    v10 = [(NSSConnectionHandler *)self delegate];
-    [v10 setWatchFaceIdentifier:v11 forFocusModeIdentifier:v8 completionHandler:v9];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate setWatchFaceIdentifier:identifierCopy forFocusModeIdentifier:modeIdentifierCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v10 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    v9[2](v9, v10);
+    delegate = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
+    handlerCopy[2](handlerCopy, delegate);
   }
 }
 
-- (void)fetchBetaEnrollmentStatus:(id)a3
+- (void)fetchBetaEnrollmentStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   if ([(NSSConnectionHandler *)self hasNanoSystemSettingsEntitlementKey:@"betaenrollment"])
   {
-    v7 = [(NSSConnectionHandler *)self delegate];
-    [v7 fetchBetaEnrollmentStatus:v4];
+    delegate = [(NSSConnectionHandler *)self delegate];
+    [delegate fetchBetaEnrollmentStatus:statusCopy];
   }
 
   else
@@ -430,7 +430,7 @@
     }
 
     v6 = [NSError errorWithDomain:@"NSSErrorDomain" code:1 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(statusCopy + 2))(statusCopy, 0, v6);
   }
 }
 

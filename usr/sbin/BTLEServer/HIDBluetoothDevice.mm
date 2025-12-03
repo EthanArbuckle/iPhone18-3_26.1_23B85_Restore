@@ -1,8 +1,8 @@
 @interface HIDBluetoothDevice
-+ (BOOL)reportsHaveMultipleReportIDs:(id)a3;
-+ (id)hidDeviceWithProperties:(id)a3 reports:(id)a4;
++ (BOOL)reportsHaveMultipleReportIDs:(id)ds;
++ (id)hidDeviceWithProperties:(id)properties reports:(id)reports;
 - (HIDBluetoothDevice)init;
-- (HIDBluetoothDevice)initWithProperties:(id)a3 reports:(id)a4;
+- (HIDBluetoothDevice)initWithProperties:(id)properties reports:(id)reports;
 - (id)allocHIDQueue;
 - (id)desiredConnectionParameters;
 - (void)dealloc;
@@ -15,35 +15,35 @@
 
 @implementation HIDBluetoothDevice
 
-+ (id)hidDeviceWithProperties:(id)a3 reports:(id)a4
++ (id)hidDeviceWithProperties:(id)properties reports:(id)reports
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"VendorIDSource"];
+  propertiesCopy = properties;
+  reportsCopy = reports;
+  v8 = [propertiesCopy objectForKeyedSubscript:@"VendorIDSource"];
   if ([v8 unsignedCharValue] != 1)
   {
 
     goto LABEL_10;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"VendorID"];
-  v10 = [v9 unsignedShortValue];
+  v9 = [propertiesCopy objectForKeyedSubscript:@"VendorID"];
+  unsignedShortValue = [v9 unsignedShortValue];
 
-  if (v10 == 76)
+  if (unsignedShortValue == 76)
   {
-    v11 = [v6 objectForKeyedSubscript:@"ProductID"];
-    v12 = [v11 unsignedShortValue];
+    v11 = [propertiesCopy objectForKeyedSubscript:@"ProductID"];
+    unsignedShortValue2 = [v11 unsignedShortValue];
 
-    if (v12 > 620)
+    if (unsignedShortValue2 > 620)
     {
-      if ((v12 - 788) >= 2)
+      if ((unsignedShortValue2 - 788) >= 2)
       {
-        if (v12 == 1106)
+        if (unsignedShortValue2 == 1106)
         {
-          v26 = [v6 objectForKeyedSubscript:@"Authenticated"];
-          v27 = [v26 BOOLValue];
+          v26 = [propertiesCopy objectForKeyedSubscript:@"Authenticated"];
+          bOOLValue = [v26 BOOLValue];
 
-          if (!v27)
+          if (!bOOLValue)
           {
             goto LABEL_10;
           }
@@ -52,7 +52,7 @@
           goto LABEL_30;
         }
 
-        if (v12 != 621)
+        if (unsignedShortValue2 != 621)
         {
           goto LABEL_10;
         }
@@ -61,16 +61,16 @@
 
     else
     {
-      if (v12 <= 545)
+      if (unsignedShortValue2 <= 545)
       {
-        if (v12 != 332)
+        if (unsignedShortValue2 != 332)
         {
-          if (v12 == 482)
+          if (unsignedShortValue2 == 482)
           {
-            v13 = [v6 objectForKeyedSubscript:@"Authenticated"];
-            v14 = [v13 BOOLValue];
+            v13 = [propertiesCopy objectForKeyedSubscript:@"Authenticated"];
+            bOOLValue2 = [v13 BOOLValue];
 
-            if (v14)
+            if (bOOLValue2)
             {
               v15 = off_1000BC8A0;
               goto LABEL_30;
@@ -80,10 +80,10 @@
           goto LABEL_10;
         }
 
-        v24 = [v6 objectForKeyedSubscript:@"Authenticated"];
-        v25 = [v24 BOOLValue];
+        v24 = [propertiesCopy objectForKeyedSubscript:@"Authenticated"];
+        bOOLValue3 = [v24 BOOLValue];
 
-        if ((v25 & 1) == 0)
+        if ((bOOLValue3 & 1) == 0)
         {
           goto LABEL_10;
         }
@@ -100,13 +100,13 @@ LABEL_30:
         goto LABEL_10;
       }
 
-      if (v12 == 546)
+      if (unsignedShortValue2 == 546)
       {
         v15 = off_1000BC890;
         goto LABEL_30;
       }
 
-      if (v12 != 614)
+      if (unsignedShortValue2 != 614)
       {
         goto LABEL_10;
       }
@@ -117,10 +117,10 @@ LABEL_30:
       goto LABEL_10;
     }
 
-    v22 = [v6 objectForKeyedSubscript:@"Authenticated"];
-    v23 = [v22 BOOLValue];
+    v22 = [propertiesCopy objectForKeyedSubscript:@"Authenticated"];
+    bOOLValue4 = [v22 BOOLValue];
 
-    if ((v23 & 1) == 0)
+    if ((bOOLValue4 & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -130,7 +130,7 @@ LABEL_30:
   }
 
 LABEL_10:
-  v16 = [a1 reportsHaveMultipleReportIDs:v7];
+  v16 = [self reportsHaveMultipleReportIDs:reportsCopy];
   v17 = off_1000BC8B8;
   if (!v16)
   {
@@ -140,7 +140,7 @@ LABEL_10:
   v18 = *v17;
   v19 = objc_opt_class();
 LABEL_13:
-  v20 = [[v19 alloc] initWithProperties:v6 reports:v7];
+  v20 = [[v19 alloc] initWithProperties:propertiesCopy reports:reportsCopy];
 
   return v20;
 }
@@ -185,11 +185,11 @@ LABEL_13:
   return 0;
 }
 
-- (HIDBluetoothDevice)initWithProperties:(id)a3 reports:(id)a4
+- (HIDBluetoothDevice)initWithProperties:(id)properties reports:(id)reports
 {
   v5.receiver = self;
   v5.super_class = HIDBluetoothDevice;
-  result = [(HIDBluetoothDevice *)&v5 init:a3];
+  result = [(HIDBluetoothDevice *)&v5 init:properties];
   if (result)
   {
     result->_state = 0;
@@ -244,14 +244,14 @@ LABEL_13:
   return v4;
 }
 
-+ (BOOL)reportsHaveMultipleReportIDs:(id)a3
++ (BOOL)reportsHaveMultipleReportIDs:(id)ds
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dsCopy = ds;
+  v4 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -262,7 +262,7 @@ LABEL_13:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = [*(*(&v10 + 1) + 8 * i) ID];
@@ -278,7 +278,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [dsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;

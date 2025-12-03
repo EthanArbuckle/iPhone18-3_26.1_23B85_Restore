@@ -12,9 +12,9 @@
   }
 
   v4 = +[MFNetworkController sharedInstance];
-  v5 = [v4 isOnWWAN];
+  isOnWWAN = [v4 isOnWWAN];
 
-  if (v5)
+  if (isOnWWAN)
   {
     v6 = 0x20000;
   }
@@ -24,8 +24,8 @@
     v6 = 0x100000;
   }
 
-  v7 = [(MFMimeTextAttachment *)self _displayedMimePart];
-  v3 = [v7 approximateRawSize] < v6;
+  _displayedMimePart = [(MFMimeTextAttachment *)self _displayedMimePart];
+  v3 = [_displayedMimePart approximateRawSize] < v6;
 
   return v3;
 }

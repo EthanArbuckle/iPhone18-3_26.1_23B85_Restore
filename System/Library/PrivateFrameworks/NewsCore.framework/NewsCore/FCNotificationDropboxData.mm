@@ -1,12 +1,12 @@
 @interface FCNotificationDropboxData
 - (FCNotificationDropboxData)init;
-- (FCNotificationDropboxData)initWithDictionary:(id)a3;
+- (FCNotificationDropboxData)initWithDictionary:(id)dictionary;
 - (NSString)baseURLString;
 - (NSString)deviceToken;
 - (NSString)notificationUserID;
 - (NSString)storefrontID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int)deviceDigestMode;
 @end
 
@@ -38,11 +38,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationDropboxData)initWithDictionary:(id)a3
+- (FCNotificationDropboxData)initWithDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dictionary"];
     *buf = 136315906;
@@ -62,7 +62,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -71,60 +71,60 @@
 
 - (NSString)baseURLString
 {
-  v2 = [(FCNotificationDropboxData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCNotificationDropboxDataBaseURLDictionaryKey"];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCNotificationDropboxDataBaseURLDictionaryKey"];
 
   return v3;
 }
 
 - (NSString)notificationUserID
 {
-  v2 = [(FCNotificationDropboxData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCNotificationDropboxDataNotificationUserIDDictionaryKey"];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCNotificationDropboxDataNotificationUserIDDictionaryKey"];
 
   return v3;
 }
 
 - (NSString)deviceToken
 {
-  v2 = [(FCNotificationDropboxData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCNotificationDropboxDataDeviceTokenDictionaryKey"];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCNotificationDropboxDataDeviceTokenDictionaryKey"];
 
   return v3;
 }
 
 - (NSString)storefrontID
 {
-  v2 = [(FCNotificationDropboxData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCNotificationDropboxDataStorefrontIDDictionaryKey"];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCNotificationDropboxDataStorefrontIDDictionaryKey"];
 
   return v3;
 }
 
 - (int)deviceDigestMode
 {
-  v2 = [(FCNotificationDropboxData *)self dictionary];
-  v3 = [v2 objectForKeyedSubscript:@"FCNotificationDropboxDataDeviceDigestModeKey"];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v3 = [dictionary objectForKeyedSubscript:@"FCNotificationDropboxDataDeviceDigestModeKey"];
 
-  LODWORD(v2) = [v3 intValue];
-  return v2;
+  LODWORD(dictionary) = [v3 intValue];
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [FCNotificationDropboxData allocWithZone:?];
-  v6 = [(FCNotificationDropboxData *)self dictionary];
-  v7 = [v6 copyWithZone:a3];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v7 = [dictionary copyWithZone:zone];
   v8 = [(FCNotificationDropboxData *)v5 initWithDictionary:v7];
 
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [FCMutableNotificationData allocWithZone:?];
-  v6 = [(FCNotificationDropboxData *)self dictionary];
-  v7 = [v6 mutableCopyWithZone:a3];
+  dictionary = [(FCNotificationDropboxData *)self dictionary];
+  v7 = [dictionary mutableCopyWithZone:zone];
   v8 = [(FCMutableNotificationData *)v5 initWithDictionary:v7];
 
   return v8;

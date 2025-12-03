@@ -22,12 +22,12 @@
 - (id)_UIKBStringWideAttributeValueForKey:()TIExtras
 {
   v4 = a3;
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 length];
+    v5 = [self length];
     v12 = 0;
     v13 = 0;
-    v6 = [a1 attribute:v4 atIndex:0 effectiveRange:&v12];
+    v6 = [self attribute:v4 atIndex:0 effectiveRange:&v12];
     v7 = v6;
     if (v5 == v13 && v12 == 0)
     {
@@ -55,8 +55,8 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 mutableCopy];
-    v6 = [a1 length];
+    v5 = [self mutableCopy];
+    v6 = [self length];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__NSAttributedString_TIExtras___ti_attributedStringByKeepingAttributes___block_invoke;
@@ -66,17 +66,17 @@
     v13 = v7;
     v14 = 0;
     v15 = v6;
-    [a1 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v11}];
+    [self enumerateAttributesInRange:0 options:v6 usingBlock:{0, v11}];
     v8 = v13;
-    v9 = v7;
+    selfCopy = v7;
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)_ti_attributedStringByRemovingAttributes:()TIExtras
@@ -85,8 +85,8 @@
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [a1 mutableCopy];
-    v6 = [a1 length];
+    selfCopy = [self mutableCopy];
+    v6 = [self length];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -106,7 +106,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [v5 removeAttribute:*(*(&v13 + 1) + 8 * i) range:{0, v6, v13}];
+          [selfCopy removeAttribute:*(*(&v13 + 1) + 8 * i) range:{0, v6, v13}];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -118,10 +118,10 @@
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_ti_attributedStringByAppendingAttributedString:()TIExtras
@@ -129,16 +129,16 @@
   v4 = a3;
   if ([v4 length])
   {
-    v5 = [a1 mutableCopy];
-    [v5 appendAttributedString:v4];
+    selfCopy = [self mutableCopy];
+    [selfCopy appendAttributedString:v4];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)_ti_attributedStringByAppendingString:()TIExtras
@@ -147,24 +147,24 @@
   if ([v4 length])
   {
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v6 = [a1 attributesAtIndex:objc_msgSend(a1 effectiveRange:{"length") - 1, 0}];
+    v6 = [self attributesAtIndex:objc_msgSend(self effectiveRange:{"length") - 1, 0}];
     v7 = [v5 initWithString:v4 attributes:v6];
 
-    v8 = [a1 mutableCopy];
-    [v8 appendAttributedString:v7];
+    selfCopy = [self mutableCopy];
+    [selfCopy appendAttributedString:v7];
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (uint64_t)_ti_attributedSubstringToIndex:()TIExtras
 {
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 < a3)
   {
     v6 = v5;
@@ -174,12 +174,12 @@
     [v7 raise:v8 format:{@"%@: Index %lu out of bounds; string length %lu", v9, a3, v6}];
   }
 
-  return [a1 attributedSubstringFromRange:{0, a3}];
+  return [self attributedSubstringFromRange:{0, a3}];
 }
 
 - (uint64_t)_ti_attributedSubstringFromIndex:()TIExtras
 {
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = v5 - a3;
   if (v5 < a3)
   {
@@ -190,13 +190,13 @@
     [v8 raise:v9 format:{@"%@: Index %lu out of bounds; string length %lu", v10, a3, v7}];
   }
 
-  return [a1 attributedSubstringFromRange:{a3, v6}];
+  return [self attributedSubstringFromRange:{a3, v6}];
 }
 
 - (id)_ti_stringByReplacingCharactersInRange:()TIExtras withString:
 {
   v8 = a5;
-  v9 = [a1 mutableCopy];
+  v9 = [self mutableCopy];
   [v9 replaceCharactersInRange:a3 withAttributedString:{a4, v8}];
 
   return v9;
@@ -214,27 +214,27 @@
     [v14 raise:v15 format:{@"%@: nil argument", v16}];
   }
 
-  v17 = [a1 mutableCopy];
+  v17 = [self mutableCopy];
   if ([v17 _ti_replaceOccurrencesOfString:v12 withString:v13 options:a5 range:{a6, a7}])
   {
-    v18 = v17;
+    selfCopy = v17;
   }
 
   else
   {
-    v18 = a1;
+    selfCopy = self;
   }
 
-  v19 = v18;
+  v19 = selfCopy;
 
-  return v18;
+  return selfCopy;
 }
 
 - (id)_ti_attributedStringWithIterator:()TIExtras
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
-  v6 = [a1 length];
+  v5 = [self mutableCopy];
+  v6 = [self length];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__NSAttributedString_TIExtras___ti_attributedStringWithIterator___block_invoke;
@@ -243,7 +243,7 @@
   v7 = v5;
   v13 = v7;
   v8 = v4;
-  [a1 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v12}];
+  [self enumerateAttributesInRange:0 options:v6 usingBlock:{0, v12}];
   v9 = v13;
   v10 = v7;
 
@@ -254,7 +254,7 @@
 {
   v8 = a4;
   v9 = a3;
-  v10 = [a1 _ti_attributedStringWithIterator:a5];
+  v10 = [self _ti_attributedStringWithIterator:a5];
   [v9 encodeObject:v10 forKey:v8];
 }
 
@@ -262,7 +262,7 @@
 {
   v8 = a4;
   v9 = a3;
-  v10 = [a1 _ti_attributedStringByKeepingAttributes:a5];
+  v10 = [self _ti_attributedStringByKeepingAttributes:a5];
   [v9 encodeObject:v10 forKey:v8];
 }
 
@@ -270,7 +270,7 @@
 {
   v8 = a4;
   v9 = a3;
-  v10 = [a1 _ti_attributedStringByRemovingAttributes:a5];
+  v10 = [self _ti_attributedStringByRemovingAttributes:a5];
   [v9 encodeObject:v10 forKey:v8];
 }
 

@@ -1,40 +1,40 @@
 @interface AMSUIAppearance
-+ (id)_accessoryButtonBackgroundColorWithDictionary:(id)a3;
-+ (id)_accessoryButtonColorWithDictionary:(id)a3;
-+ (id)_accessoryButtonFontWithDictionary:(id)a3;
-+ (id)_accessorySecondaryButtonBackgroundColorWithDictionary:(id)a3;
-+ (id)_accessorySecondaryButtonColorWithDictionary:(id)a3;
-+ (id)_accessorySecondaryButtonFontWithDictionary:(id)a3;
-+ (id)_backgroundColorWithDictionary:(id)a3;
-+ (id)_backgroundColorWithMetadataDictionary:(id)a3;
-+ (id)_backgroundImageWithDictionary:(id)a3;
-+ (id)_backgroundImageWithMetadataDictionary:(id)a3;
-+ (id)_defaultBackgroundColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_defaultButtonBackgroundColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_defaultButtonContentColorForStyle:(unint64_t)a3;
-+ (id)_defaultButtonIconColorForStyle:(unint64_t)a3;
-+ (id)_defaultButtonTextColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_defaultButtonTextFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_defaultImageViewColorForStyle:(unint64_t)a3;
-+ (id)_defaultMessageFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_defaultTitleFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4;
-+ (id)_footerButtonBackgroundColorWithDictionary:(id)a3;
-+ (id)_footerButtonColorWithDictionary:(id)a3;
-+ (id)_footerButtonFontWithDictionary:(id)a3;
-+ (id)_gradientImageWithDictionary:(id)a3;
-+ (id)_gradientLayerTypeForRawValue:(id)a3;
-+ (id)_imageSymbolConfigurationWithDictionary:(id)a3;
-+ (id)_imageTintColorWithDictionary:(id)a3;
-+ (id)_impressionAnimationIdentifierWithDictionary:(id)a3;
-+ (id)_messageFontWithDictionary:(id)a3;
-+ (id)_messageTextColorWithDictionary:(id)a3;
-+ (id)_separatorColorWithDictionary:(id)a3;
-+ (id)_titleFontWithDictionary:(id)a3;
-+ (id)_titleTextColorWithDictionary:(id)a3;
-+ (int64_t)_iconAnimationPlayCount:(id)a3;
-+ (int64_t)_primaryImageRenderingModeWithDictionary:(id)a3;
++ (id)_accessoryButtonBackgroundColorWithDictionary:(id)dictionary;
++ (id)_accessoryButtonColorWithDictionary:(id)dictionary;
++ (id)_accessoryButtonFontWithDictionary:(id)dictionary;
++ (id)_accessorySecondaryButtonBackgroundColorWithDictionary:(id)dictionary;
++ (id)_accessorySecondaryButtonColorWithDictionary:(id)dictionary;
++ (id)_accessorySecondaryButtonFontWithDictionary:(id)dictionary;
++ (id)_backgroundColorWithDictionary:(id)dictionary;
++ (id)_backgroundColorWithMetadataDictionary:(id)dictionary;
++ (id)_backgroundImageWithDictionary:(id)dictionary;
++ (id)_backgroundImageWithMetadataDictionary:(id)dictionary;
++ (id)_defaultBackgroundColorForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_defaultButtonBackgroundColorForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_defaultButtonContentColorForStyle:(unint64_t)style;
++ (id)_defaultButtonIconColorForStyle:(unint64_t)style;
++ (id)_defaultButtonTextColorForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_defaultButtonTextFontForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_defaultImageViewColorForStyle:(unint64_t)style;
++ (id)_defaultMessageFontForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_defaultTitleFontForStyle:(unint64_t)style withTraitCollection:(id)collection;
++ (id)_footerButtonBackgroundColorWithDictionary:(id)dictionary;
++ (id)_footerButtonColorWithDictionary:(id)dictionary;
++ (id)_footerButtonFontWithDictionary:(id)dictionary;
++ (id)_gradientImageWithDictionary:(id)dictionary;
++ (id)_gradientLayerTypeForRawValue:(id)value;
++ (id)_imageSymbolConfigurationWithDictionary:(id)dictionary;
++ (id)_imageTintColorWithDictionary:(id)dictionary;
++ (id)_impressionAnimationIdentifierWithDictionary:(id)dictionary;
++ (id)_messageFontWithDictionary:(id)dictionary;
++ (id)_messageTextColorWithDictionary:(id)dictionary;
++ (id)_separatorColorWithDictionary:(id)dictionary;
++ (id)_titleFontWithDictionary:(id)dictionary;
++ (id)_titleTextColorWithDictionary:(id)dictionary;
++ (int64_t)_iconAnimationPlayCount:(id)count;
++ (int64_t)_primaryImageRenderingModeWithDictionary:(id)dictionary;
 - (AMSUIAppearance)init;
-- (AMSUIAppearance)initWithDictionary:(id)a3;
+- (AMSUIAppearance)initWithDictionary:(id)dictionary;
 @end
 
 @implementation AMSUIAppearance
@@ -46,9 +46,9 @@
   return [(AMSUIAppearance *)&v3 init];
 }
 
-- (AMSUIAppearance)initWithDictionary:(id)a3
+- (AMSUIAppearance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(AMSUIAppearance *)self init];
   if (!v5)
   {
@@ -57,9 +57,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"subtitleFont"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"subtitleFont"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@ LABEL_11:
     messageFontDictionary = v5->__messageFontDictionary;
     v5->__messageFontDictionary = v7;
 
-    v10 = [v4 objectForKeyedSubscript:@"titleFont"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"titleFont"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,10 +98,10 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_accessoryButtonColorWithDictionary:(id)a3
++ (id)_accessoryButtonColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessoryButtonColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -120,7 +120,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessoryButtonColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,10 +136,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_accessoryButtonBackgroundColorWithDictionary:(id)a3
++ (id)_accessoryButtonBackgroundColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessoryButtonBackgroundColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonBackgroundColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -158,7 +158,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessoryButtonBackgroundColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonBackgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,10 +174,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_accessorySecondaryButtonBackgroundColorWithDictionary:(id)a3
++ (id)_accessorySecondaryButtonBackgroundColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonBackgroundColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonBackgroundColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,7 +196,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonBackgroundColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonBackgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -212,10 +212,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_accessorySecondaryButtonColorWithDictionary:(id)a3
++ (id)_accessorySecondaryButtonColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -234,7 +234,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -250,10 +250,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_accessoryButtonFontWithDictionary:(id)a3
++ (id)_accessoryButtonFontWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessoryButtonFont"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonFont"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -272,7 +272,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessoryButtonColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessoryButtonColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -288,10 +288,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_accessorySecondaryButtonFontWithDictionary:(id)a3
++ (id)_accessorySecondaryButtonFontWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonFont"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonFont"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -310,7 +310,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"accessorySecondaryButtonColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -326,10 +326,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_backgroundColorWithDictionary:(id)a3
++ (id)_backgroundColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"background"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"background"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -348,7 +348,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"backgroundColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -364,10 +364,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_backgroundColorWithMetadataDictionary:(id)a3
++ (id)_backgroundColorWithMetadataDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"backgroundType"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"backgroundType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -381,7 +381,7 @@ LABEL_12:
 
   if ([v5 isEqualToString:@"solid"])
   {
-    v6 = [v3 objectForKeyedSubscript:@"color"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"color"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -404,9 +404,9 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_backgroundImageWithDictionary:(id)a3
++ (id)_backgroundImageWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"background"];
+  v3 = [dictionary objectForKeyedSubscript:@"background"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -431,10 +431,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_backgroundImageWithMetadataDictionary:(id)a3
++ (id)_backgroundImageWithMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"backgroundType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"backgroundType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -448,7 +448,7 @@ LABEL_12:
 
   if ([v6 isEqualToString:@"gradient"])
   {
-    v7 = [a1 _gradientImageWithDictionary:v4];
+    v7 = [self _gradientImageWithDictionary:dictionaryCopy];
   }
 
   else
@@ -459,10 +459,10 @@ LABEL_12:
   return v7;
 }
 
-+ (id)_footerButtonBackgroundColorWithDictionary:(id)a3
++ (id)_footerButtonBackgroundColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"footerButtonBackgroundColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonBackgroundColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -481,7 +481,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"footerButtonBackgroundColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonBackgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -497,10 +497,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_footerButtonColorWithDictionary:(id)a3
++ (id)_footerButtonColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"footerButtonColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -519,7 +519,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"footerButtonColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -535,10 +535,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_footerButtonFontWithDictionary:(id)a3
++ (id)_footerButtonFontWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"footerButtonFont"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonFont"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -557,7 +557,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"footerButtonFont"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"footerButtonFont"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -573,9 +573,9 @@ LABEL_12:
   return v6;
 }
 
-+ (int64_t)_iconAnimationPlayCount:(id)a3
++ (int64_t)_iconAnimationPlayCount:(id)count
 {
-  v3 = [a3 objectForKeyedSubscript:@"iconAnimationPlayCount"];
+  v3 = [count objectForKeyedSubscript:@"iconAnimationPlayCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -589,20 +589,20 @@ LABEL_12:
 
   if (v4)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = -90;
+    integerValue = -90;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (id)_imageSymbolConfigurationWithDictionary:(id)a3
++ (id)_imageSymbolConfigurationWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"iconSymbolConfiguration"];
+  v3 = [dictionary objectForKeyedSubscript:@"iconSymbolConfiguration"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -627,10 +627,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)_imageTintColorWithDictionary:(id)a3
++ (id)_imageTintColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"imageTintColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"imageTintColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -649,7 +649,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"imageTintColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"imageTintColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -665,9 +665,9 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_impressionAnimationIdentifierWithDictionary:(id)a3
++ (id)_impressionAnimationIdentifierWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"impressionAnimationIdentifier"];
+  v3 = [dictionary objectForKeyedSubscript:@"impressionAnimationIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -682,10 +682,10 @@ LABEL_12:
   return v4;
 }
 
-+ (id)_messageFontWithDictionary:(id)a3
++ (id)_messageFontWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"subtitleFont"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"subtitleFont"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -704,7 +704,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"subtitleFont"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"subtitleFont"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -720,10 +720,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_messageTextColorWithDictionary:(id)a3
++ (id)_messageTextColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"subtitleColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"subtitleColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -742,7 +742,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"subtitleColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"subtitleColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -758,10 +758,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_separatorColorWithDictionary:(id)a3
++ (id)_separatorColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"separatorColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"separatorColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -780,7 +780,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"separatorColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"separatorColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -796,10 +796,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_titleFontWithDictionary:(id)a3
++ (id)_titleFontWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"titleFont"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"titleFont"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -818,7 +818,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"titleFont"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"titleFont"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -834,10 +834,10 @@ LABEL_12:
   return v6;
 }
 
-+ (id)_titleTextColorWithDictionary:(id)a3
++ (id)_titleTextColorWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"titleColor"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"titleColor"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -856,7 +856,7 @@ LABEL_12:
 
   else
   {
-    v7 = [v3 objectForKeyedSubscript:@"titleColor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"titleColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -872,9 +872,9 @@ LABEL_12:
   return v6;
 }
 
-+ (int64_t)_primaryImageRenderingModeWithDictionary:(id)a3
++ (int64_t)_primaryImageRenderingModeWithDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"primaryImageRenderingMode"];
+  v3 = [dictionary objectForKeyedSubscript:@"primaryImageRenderingMode"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -888,18 +888,18 @@ LABEL_12:
 
   if (v4)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (id)_gradientLayerTypeForRawValue:(id)a3
++ (id)_gradientLayerTypeForRawValue:(id)value
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E6979DA0];
@@ -911,20 +911,20 @@ LABEL_12:
   v11[2] = @"radial";
   v12[2] = *MEMORY[0x1E6979DB0];
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
+  valueCopy = value;
   v7 = [v5 dictionaryWithObjects:v12 forKeys:v11 count:3];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  v8 = [v7 objectForKeyedSubscript:valueCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-+ (id)_gradientImageWithDictionary:(id)a3
++ (id)_gradientImageWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6979380] layer];
-  v6 = [v4 objectForKeyedSubscript:@"gradientType"];
+  dictionaryCopy = dictionary;
+  layer = [MEMORY[0x1E6979380] layer];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"gradientType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -936,17 +936,17 @@ LABEL_12:
     v7 = 0;
   }
 
-  [v5 setFrame:{0.0, 0.0, 400.0, 400.0}];
+  [layer setFrame:{0.0, 0.0, 400.0, 400.0}];
   if (v7)
   {
-    v8 = [a1 _gradientLayerTypeForRawValue:v7];
+    v8 = [self _gradientLayerTypeForRawValue:v7];
     if (v8)
     {
-      [v5 setType:v8];
+      [layer setType:v8];
     }
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"colors"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"colors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -961,10 +961,10 @@ LABEL_12:
   if (v10 && [v10 count])
   {
     v11 = [v10 ams_mapWithTransformIgnoresNil:&__block_literal_global_1];
-    [v5 setColors:v11];
+    [layer setColors:v11];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"locations"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"locations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -978,10 +978,10 @@ LABEL_12:
 
   if (v13)
   {
-    [v5 setLocations:v13];
+    [layer setLocations:v13];
   }
 
-  v14 = [v4 objectForKeyedSubscript:@"startPoint"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"startPoint"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1000,10 +1000,10 @@ LABEL_12:
     v18 = v17;
     v19 = [v15 objectAtIndexedSubscript:1];
     [v19 doubleValue];
-    [v5 setStartPoint:{v18, v20}];
+    [layer setStartPoint:{v18, v20}];
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"endPoint"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"endPoint"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1022,14 +1022,14 @@ LABEL_12:
     v25 = v24;
     v26 = [v22 objectAtIndexedSubscript:1];
     [v26 doubleValue];
-    [v5 setEndPoint:{v25, v27}];
+    [layer setEndPoint:{v25, v27}];
   }
 
-  [v5 frame];
+  [layer frame];
   v34.width = v28;
   v34.height = v29;
   UIGraphicsBeginImageContext(v34);
-  [v5 renderInContext:UIGraphicsGetCurrentContext()];
+  [layer renderInContext:UIGraphicsGetCurrentContext()];
   v30 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v31 = [v30 resizableImageWithCapInsets:1 resizingMode:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
@@ -1045,30 +1045,30 @@ id __48__AMSUIAppearance__gradientImageWithDictionary___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)_defaultButtonBackgroundColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultButtonBackgroundColorForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v5 = a4;
-  if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", a3) && [v5 userInterfaceIdiom] == 6)
+  collectionCopy = collection;
+  if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", style) && [collectionCopy userInterfaceIdiom] == 6)
   {
-    v6 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
   else
   {
-    if ([AMSUIAppearance _isBannerStyle:a3]|| [AMSUIAppearance _isBubbleTipStyle:a3])
+    if ([AMSUIAppearance _isBannerStyle:style]|| [AMSUIAppearance _isBubbleTipStyle:style])
     {
-      v7 = [MEMORY[0x1E69DC888] systemBlueColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
       v8 = MEMORY[0x1E69DC888];
-      v9 = [v7 colorWithAlphaComponent:0.08];
-      v10 = [v7 colorWithAlphaComponent:0.18];
+      v9 = [systemBlueColor colorWithAlphaComponent:0.08];
+      v10 = [systemBlueColor colorWithAlphaComponent:0.18];
       v11 = [v8 ams_dynamicColorWithLightColor:v9 darkColor:v10];
 
       goto LABEL_14;
     }
 
-    if ([AMSUIAppearance _isBubbleTipStyle:a3])
+    if ([AMSUIAppearance _isBubbleTipStyle:style])
     {
-      v6 = [MEMORY[0x1E69DC888] systemBlueColor];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] systemBlueColor];
     }
 
     else
@@ -1079,33 +1079,33 @@ id __48__AMSUIAppearance__gradientImageWithDictionary___block_invoke(uint64_t a1
         goto LABEL_14;
       }
 
-      v6 = [MEMORY[0x1E69DC888] clearColor];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] clearColor];
     }
   }
 
-  v11 = v6;
+  v11 = secondarySystemBackgroundColor;
 LABEL_14:
 
   return v11;
 }
 
-+ (id)_defaultBackgroundColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultBackgroundColorForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v6 = a4;
-  if (a3 <= 2)
+  collectionCopy = collection;
+  if (style <= 2)
   {
-    if (a3)
+    if (style)
     {
-      if (a3 != 1)
+      if (style != 1)
       {
-        if (a3 != 2)
+        if (style != 2)
         {
           goto LABEL_22;
         }
 
         v8 = MEMORY[0x1E69DC888];
-        v9 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-        v10 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+        tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+        quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
         goto LABEL_19;
       }
     }
@@ -1113,79 +1113,79 @@ LABEL_14:
     else if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
     {
       v8 = MEMORY[0x1E69DC888];
-      v9 = [MEMORY[0x1E69DC888] ams_secondaryBackground];
-      v10 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+      tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] ams_secondaryBackground];
+      quaternarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
 LABEL_19:
-      v11 = v10;
-      v4 = [v8 ams_dynamicColorWithLightColor:v9 darkColor:v10];
+      v11 = quaternarySystemFillColor;
+      v4 = [v8 ams_dynamicColorWithLightColor:tertiarySystemBackgroundColor darkColor:quaternarySystemFillColor];
 
       goto LABEL_22;
     }
 
-    v7 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
     goto LABEL_21;
   }
 
-  if (a3 > 4)
+  if (style > 4)
   {
-    if (a3 == 5)
+    if (style == 5)
     {
-      v7 = [MEMORY[0x1E69DC888] ams_primaryBackground];
+      quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] ams_primaryBackground];
       goto LABEL_21;
     }
 
-    if (a3 != 6)
+    if (style != 6)
     {
       goto LABEL_22;
     }
   }
 
-  else if (a3 != 3)
+  else if (style != 3)
   {
     if (_os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) != 0)
     {
-      v7 = [MEMORY[0x1E69DC888] systemFillColor];
+      quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] systemFillColor];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+      quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
     }
 
     goto LABEL_21;
   }
 
-  v7 = [MEMORY[0x1E69DC888] ams_secondaryBackground];
+  quaternarySystemFillColor2 = [MEMORY[0x1E69DC888] ams_secondaryBackground];
 LABEL_21:
-  v4 = v7;
+  v4 = quaternarySystemFillColor2;
 LABEL_22:
 
   return v4;
 }
 
-+ (id)_defaultButtonContentColorForStyle:(unint64_t)a3
++ (id)_defaultButtonContentColorForStyle:(unint64_t)style
 {
-  if (a3 > 6)
+  if (style > 6)
   {
     goto LABEL_10;
   }
 
-  if (((1 << a3) & 0x4C) != 0 || ((1 << a3) & 0x12) != 0)
+  if (((1 << style) & 0x4C) != 0 || ((1 << style) & 0x12) != 0)
   {
     goto LABEL_4;
   }
 
-  if (a3 == 5)
+  if (style == 5)
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
   else
   {
 LABEL_10:
-    if (a3)
+    if (style)
     {
-      v3 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+      labelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
     }
 
     else
@@ -1193,74 +1193,74 @@ LABEL_10:
       if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
       {
 LABEL_4:
-        v3 = [MEMORY[0x1E69DC888] systemBlueColor];
+        labelColor = [MEMORY[0x1E69DC888] systemBlueColor];
         goto LABEL_5;
       }
 
-      v3 = 0;
+      labelColor = 0;
     }
   }
 
 LABEL_5:
 
-  return v3;
+  return labelColor;
 }
 
-+ (id)_defaultButtonTextColorForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultButtonTextColorForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v5 = a4;
-  if ([AMSUIAppearance _isBannerStyle:a3]|| [AMSUIAppearance _isBubbleTipStyle:a3])
+  collectionCopy = collection;
+  if ([AMSUIAppearance _isBannerStyle:style]|| [AMSUIAppearance _isBubbleTipStyle:style])
   {
-    if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", a3) && [v5 userInterfaceIdiom] == 6)
+    if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", style) && [collectionCopy userInterfaceIdiom] == 6)
     {
-      v6 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] systemBlueColor];
+      labelColor = [MEMORY[0x1E69DC888] systemBlueColor];
     }
   }
 
   else
   {
-    v6 = [AMSUIAppearance _defaultButtonContentColorForStyle:a3];
+    labelColor = [AMSUIAppearance _defaultButtonContentColorForStyle:style];
   }
 
-  v7 = v6;
+  v7 = labelColor;
 
   return v7;
 }
 
-+ (id)_defaultButtonIconColorForStyle:(unint64_t)a3
++ (id)_defaultButtonIconColorForStyle:(unint64_t)style
 {
-  if (a3 != 5 && (a3 || _os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) != 0))
+  if (style != 5 && (style || _os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) != 0))
   {
-    v4 = [AMSUIAppearance _defaultButtonContentColorForStyle:a3];
+    tertiaryLabelColor = [AMSUIAppearance _defaultButtonContentColorForStyle:style];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
 
-  return v4;
+  return tertiaryLabelColor;
 }
 
-+ (id)_defaultButtonTextFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultButtonTextFontForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [v5 userInterfaceIdiom];
+  collectionCopy = collection;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
   v7 = *MEMORY[0x1E69DDCF8];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  if (a3 > 6)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (style > 6)
   {
     goto LABEL_16;
   }
 
-  if (((1 << a3) & 0x4C) == 0)
+  if (((1 << style) & 0x4C) == 0)
   {
-    if (((1 << a3) & 0x12) != 0)
+    if (((1 << style) & 0x12) != 0)
     {
       if (!_os_feature_enabled_impl() || !_os_feature_enabled_impl())
       {
@@ -1270,7 +1270,7 @@ LABEL_5:
       goto LABEL_19;
     }
 
-    if (a3 == 5)
+    if (style == 5)
     {
       if (!_os_feature_enabled_impl() || !_os_feature_enabled_impl())
       {
@@ -1281,7 +1281,7 @@ LABEL_5:
     }
 
 LABEL_16:
-    if (a3)
+    if (style)
     {
       goto LABEL_32;
     }
@@ -1292,12 +1292,12 @@ LABEL_19:
       v10 = *MEMORY[0x1E69DDD28];
 
       v9 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB970]];
-      [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB990]];
+      [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB990]];
       v7 = v10;
       goto LABEL_31;
     }
 
-    if ([v5 userInterfaceIdiom] == 1)
+    if ([collectionCopy userInterfaceIdiom] == 1)
     {
       v12 = MEMORY[0x1E69DDD28];
 LABEL_30:
@@ -1311,18 +1311,18 @@ LABEL_27:
     goto LABEL_30;
   }
 
-  if (v6 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    if ([v5 userInterfaceIdiom] == 6)
+    if ([collectionCopy userInterfaceIdiom] == 6)
     {
       v11 = 0;
       goto LABEL_39;
     }
 
-    if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && a3 != 6)
+    if (_os_feature_enabled_impl() && _os_feature_enabled_impl() && style != 6)
     {
       v13 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB970]];
-      [v8 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69DB990]];
+      [dictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E69DB990]];
 
 LABEL_29:
       v12 = MEMORY[0x1E69DDD40];
@@ -1334,10 +1334,10 @@ LABEL_29:
 
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    if (a3 != 6)
+    if (style != 6)
     {
       v9 = [MEMORY[0x1E696AD98] numberWithDouble:*MEMORY[0x1E69DB958]];
-      [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB990]];
+      [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB990]];
 LABEL_31:
 
       goto LABEL_32;
@@ -1347,16 +1347,16 @@ LABEL_31:
   }
 
 LABEL_32:
-  v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:v5];
+  v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:collectionCopy];
   if (!_os_feature_enabled_impl() || !_os_feature_enabled_impl())
   {
     v15 = [v14 fontDescriptorWithSymbolicTraits:0x8000];
     goto LABEL_37;
   }
 
-  if ([v8 count])
+  if ([dictionary count])
   {
-    v15 = [v14 fontDescriptorByAddingAttributes:v8];
+    v15 = [v14 fontDescriptorByAddingAttributes:dictionary];
 LABEL_37:
     v16 = v15;
 
@@ -1370,47 +1370,47 @@ LABEL_39:
   return v11;
 }
 
-+ (id)_defaultImageViewColorForStyle:(unint64_t)a3
++ (id)_defaultImageViewColorForStyle:(unint64_t)style
 {
-  v3 = 0;
-  if (a3 <= 6)
+  secondaryLabelColor = 0;
+  if (style <= 6)
   {
-    if (((1 << a3) & 0x4C) != 0)
+    if (((1 << style) & 0x4C) != 0)
     {
-      v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     }
 
     else
     {
-      if (((1 << a3) & 3) != 0)
+      if (((1 << style) & 3) != 0)
       {
 LABEL_4:
-        v3 = [MEMORY[0x1E69DC888] labelColor];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] labelColor];
         goto LABEL_6;
       }
 
-      if (a3 == 4)
+      if (style == 4)
       {
         if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
         {
           goto LABEL_4;
         }
 
-        v3 = 0;
+        secondaryLabelColor = 0;
       }
     }
   }
 
 LABEL_6:
 
-  return v3;
+  return secondaryLabelColor;
 }
 
-+ (id)_defaultMessageFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultMessageFontForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  collectionCopy = collection;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v8 = MEMORY[0x1E69DDD80];
   if (IsAccessibilityCategory)
@@ -1418,7 +1418,7 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     if (_os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) != 0)
     {
@@ -1428,7 +1428,7 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
     {
@@ -1439,10 +1439,10 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  if (a3)
+  if (style)
   {
 LABEL_15:
-    if (!+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", a3) || [v5 userInterfaceIdiom] != 6)
+    if (!+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", style) || [collectionCopy userInterfaceIdiom] != 6)
     {
       goto LABEL_18;
     }
@@ -1457,41 +1457,41 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v5 userInterfaceIdiom] == 1)
+  if ([collectionCopy userInterfaceIdiom] == 1)
   {
     v8 = MEMORY[0x1E69DDD28];
   }
 
 LABEL_18:
   v9 = *v8;
-  v10 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:v5];
+  v10 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:collectionCopy];
   v11 = [MEMORY[0x1E69DB878] fontWithDescriptor:v10 size:0.0];
 
   return v11;
 }
 
-+ (id)_defaultTitleFontForStyle:(unint64_t)a3 withTraitCollection:(id)a4
++ (id)_defaultTitleFontForStyle:(unint64_t)style withTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  collectionCopy = collection;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD40] compatibleWithTraitCollection:v5];
+    v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD40] compatibleWithTraitCollection:collectionCopy];
     v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
     goto LABEL_26;
   }
 
   v8 = *MEMORY[0x1E69DDCF8];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", a3) && [v5 userInterfaceIdiom] == 6)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (+[AMSUIAppearance _isBubbleTipStyle:](AMSUIAppearance, "_isBubbleTipStyle:", style) && [collectionCopy userInterfaceIdiom] == 6)
   {
     v11 = *MEMORY[0x1E69DDD40];
 
     v12 = 0;
     v8 = v11;
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }
@@ -1500,7 +1500,7 @@ LABEL_18:
   else
   {
     v12 = 2;
-    if (a3)
+    if (style)
     {
       goto LABEL_8;
     }
@@ -1512,15 +1512,15 @@ LABEL_18:
   }
 
 LABEL_8:
-  if (![AMSUIAppearance _isBannerStyle:a3])
+  if (![AMSUIAppearance _isBannerStyle:style])
   {
-    if (a3 == 5)
+    if (style == 5)
     {
       v12 = v12 | 0x8000;
       goto LABEL_21;
     }
 
-    if (a3 != 6)
+    if (style != 6)
     {
       goto LABEL_21;
     }
@@ -1538,7 +1538,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
 LABEL_19:
     v13 = MEMORY[0x1E69DDD80];
@@ -1546,7 +1546,7 @@ LABEL_19:
   }
 
 LABEL_21:
-  v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v8 compatibleWithTraitCollection:v5];
+  v15 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:v8 compatibleWithTraitCollection:collectionCopy];
   v16 = v15;
   if (v12)
   {
@@ -1555,9 +1555,9 @@ LABEL_21:
     v16 = v17;
   }
 
-  if ([v10 count])
+  if ([dictionary count])
   {
-    v18 = [v16 fontDescriptorByAddingAttributes:v10];
+    v18 = [v16 fontDescriptorByAddingAttributes:dictionary];
 
     v16 = v18;
   }

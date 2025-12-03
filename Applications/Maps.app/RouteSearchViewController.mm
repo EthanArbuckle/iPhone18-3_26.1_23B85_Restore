@@ -2,59 +2,59 @@
 - (BOOL)_isReadyToRoute;
 - (BOOL)canDeleteCurrentFieldIndex;
 - (BOOL)hasInputsInSearchField;
-- (BOOL)routeSearchController:(id)a3 waypointsIncludeObject:(id)a4;
-- (BOOL)waypointsIncludeCurrentLocationForRouteSearchTableViewController:(id)a3;
+- (BOOL)routeSearchController:(id)controller waypointsIncludeObject:(id)object;
+- (BOOL)waypointsIncludeCurrentLocationForRouteSearchTableViewController:(id)controller;
 - (RoutePlanningDataCoordination)dataCoordinator;
-- (RouteSearchViewController)initWithDelegate:(id)a3 dataCoordinator:(id)a4;
-- (RouteSearchViewController)initWithDelegate:(id)a3 items:(id)a4 waypointIndex:(unint64_t)a5 selectionHandler:(id)a6;
-- (RouteSearchViewController)initWithWaypointEditor:(id)a3 suggestionsTableView:(id)a4 delegate:(id)a5 dataCoordinator:(id)a6;
+- (RouteSearchViewController)initWithDelegate:(id)delegate dataCoordinator:(id)coordinator;
+- (RouteSearchViewController)initWithDelegate:(id)delegate items:(id)items waypointIndex:(unint64_t)index selectionHandler:(id)handler;
+- (RouteSearchViewController)initWithWaypointEditor:(id)editor suggestionsTableView:(id)view delegate:(id)delegate dataCoordinator:(id)coordinator;
 - (RouteSearchViewControllerDelegate)delegate;
 - (RouteWaypointSearchFields)routeSearchFields;
 - (id)_itemsForRouteRequest;
-- (id)latLngForRouteSearchTableViewController:(id)a3;
-- (id)latLngFromSearchFieldItem:(id)a3;
-- (id)personalizedItemManagerForRouteSearchTableViewController:(id)a3;
+- (id)latLngForRouteSearchTableViewController:(id)controller;
+- (id)latLngFromSearchFieldItem:(id)item;
+- (id)personalizedItemManagerForRouteSearchTableViewController:(id)controller;
 - (id)selectedSearchFieldItem;
-- (id)traitsForRouteSearchTableViewController:(id)a3;
-- (id)userLocationSearchResultForRouteSearchTableViewController:(id)a3;
+- (id)traitsForRouteSearchTableViewController:(id)controller;
+- (id)userLocationSearchResultForRouteSearchTableViewController:(id)controller;
 - (int)searchFieldTypeForAnalytics;
 - (unint64_t)_currentlySelectedIndexForAddStop;
-- (void)_addSubViewsWithTextSearchSupport:(BOOL)a3;
-- (void)_cancelTapped:(id)a3;
-- (void)_cancelTapped:(id)a3 exitRoutePlanning:(BOOL)a4;
+- (void)_addSubViewsWithTextSearchSupport:(BOOL)support;
+- (void)_cancelTapped:(id)tapped;
+- (void)_cancelTapped:(id)tapped exitRoutePlanning:(BOOL)planning;
 - (void)_cleanUpOnDismiss;
 - (void)_initOfflinePlaceHolderWithTicket;
 - (void)_requestRoute;
-- (void)_requestRouteWithItems:(id)a3;
-- (void)_selectFieldAtIndex:(unint64_t)a3 beginEditing:(BOOL)a4;
-- (void)_setupConstraints:(BOOL)a3;
+- (void)_requestRouteWithItems:(id)items;
+- (void)_selectFieldAtIndex:(unint64_t)index beginEditing:(BOOL)editing;
+- (void)_setupConstraints:(BOOL)constraints;
 - (void)_setupHeaderContentViewConstraints;
 - (void)_updateTitle;
 - (void)deleteCurrentFieldIndex;
 - (void)didDismissByGesture;
 - (void)didResignCurrent;
-- (void)didTapOnQueryAcceleratorWithItem:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
+- (void)didTapOnQueryAcceleratorWithItem:(id)item;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
 - (void)makeAFieldFirstResponderIfNeeded;
-- (void)replaceSelectedFieldWithItem:(id)a3;
-- (void)routeSearch:(id)a3 didSearchForItem:(id)a4 previousSearchItem:(id)a5;
-- (void)routeSearch:(id)a3 didUpdateInputText:(id)a4 atIndex:(unint64_t)a5;
-- (void)routeSearchController:(id)a3 didSelectItem:(id)a4;
-- (void)routeSearchController:(id)a3 doSearchItem:(id)a4 userInfo:(id)a5;
-- (void)routeSearchFields:(id)a3 didClearInputTextForWaypointAtIndex:(unint64_t)waypointIndex;
-- (void)routeSearchFieldsDidBeginEditing:(id)a3;
-- (void)routeSearchFieldsDidUpdateItemsForRouteRequest:(id)a3;
-- (void)selectFieldIndex:(unint64_t)a3 beginEditing:(BOOL)a4;
-- (void)setDataCoordinator:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setPauseSelectionUpdates:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)replaceSelectedFieldWithItem:(id)item;
+- (void)routeSearch:(id)search didSearchForItem:(id)item previousSearchItem:(id)searchItem;
+- (void)routeSearch:(id)search didUpdateInputText:(id)text atIndex:(unint64_t)index;
+- (void)routeSearchController:(id)controller didSelectItem:(id)item;
+- (void)routeSearchController:(id)controller doSearchItem:(id)item userInfo:(id)info;
+- (void)routeSearchFields:(id)fields didClearInputTextForWaypointAtIndex:(unint64_t)waypointIndex;
+- (void)routeSearchFieldsDidBeginEditing:(id)editing;
+- (void)routeSearchFieldsDidUpdateItemsForRouteRequest:(id)request;
+- (void)selectFieldIndex:(unint64_t)index beginEditing:(BOOL)editing;
+- (void)setDataCoordinator:(id)coordinator;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderTitle:(id)title;
+- (void)setPauseSelectionUpdates:(BOOL)updates;
+- (void)setTitle:(id)title;
 - (void)updateFieldsWithCurrentDirectionItem;
-- (void)updateWithItems:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateWithItems:(id)items;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)willBecomeCurrent:(BOOL)current;
 @end
 
 @implementation RouteSearchViewController
@@ -99,36 +99,36 @@
 
 - (int)searchFieldTypeForAnalytics
 {
-  v3 = [(RouteSearchViewController *)self fieldsViewController];
-  v4 = [v3 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  v4 = [fieldsViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate];
 
   if (!v4)
   {
     return 2;
   }
 
-  v5 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 searchFieldTypeForAnalytics];
+    searchFieldTypeForAnalytics = [fieldsViewController2 searchFieldTypeForAnalytics];
   }
 
   else
   {
-    v6 = 2;
+    searchFieldTypeForAnalytics = 2;
   }
 
-  return v6;
+  return searchFieldTypeForAnalytics;
 }
 
-- (void)_cancelTapped:(id)a3 exitRoutePlanning:(BOOL)a4
+- (void)_cancelTapped:(id)tapped exitRoutePlanning:(BOOL)planning
 {
-  v4 = a4;
+  planningCopy = planning;
   v6 = +[MKMapService sharedService];
   [v6 captureUserAction:18 onTarget:-[RouteSearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v7 = [(RouteSearchViewController *)self routeSearchFields];
-  [v7 endEditingFields];
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  [routeSearchFields endEditingFields];
 
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
@@ -140,51 +140,51 @@
 
   else
   {
-    v10 = [(RouteSearchViewController *)self delegate];
-    [v10 routeSearchViewControllerDidDismiss:self shouldExitRoutePlanning:v4];
+    delegate = [(RouteSearchViewController *)self delegate];
+    [delegate routeSearchViewControllerDidDismiss:self shouldExitRoutePlanning:planningCopy];
   }
 }
 
-- (void)_cancelTapped:(id)a3
+- (void)_cancelTapped:(id)tapped
 {
-  v4 = a3;
-  [(RouteSearchViewController *)self _cancelTapped:v4 exitRoutePlanning:[(RouteSearchViewController *)self exitRoutePlanningOnCancel]];
+  tappedCopy = tapped;
+  [(RouteSearchViewController *)self _cancelTapped:tappedCopy exitRoutePlanning:[(RouteSearchViewController *)self exitRoutePlanningOnCancel]];
 }
 
-- (void)didTapOnQueryAcceleratorWithItem:(id)a3
+- (void)didTapOnQueryAcceleratorWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RouteSearchViewController *)self searchFieldView];
-  [v5 shouldReplaceTextWithCompletion:v4];
+  itemCopy = item;
+  searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+  [searchFieldView shouldReplaceTextWithCompletion:itemCopy];
 }
 
-- (void)routeSearchController:(id)a3 doSearchItem:(id)a4 userInfo:(id)a5
+- (void)routeSearchController:(id)controller doSearchItem:(id)item userInfo:(id)info
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v9 reset];
+  infoCopy = info;
+  itemCopy = item;
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController reset];
 
-  v12 = [(RouteSearchViewController *)self delegate];
-  v10 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v11 = [v10 recentAutocompleteSessionData];
-  [v12 routeSearchViewController:self wantsToPerformSearchWithItem:v8 userInfo:v7 autocompleteSessionData:v11];
+  delegate = [(RouteSearchViewController *)self delegate];
+  suggestionsTableViewController2 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  recentAutocompleteSessionData = [suggestionsTableViewController2 recentAutocompleteSessionData];
+  [delegate routeSearchViewController:self wantsToPerformSearchWithItem:itemCopy userInfo:infoCopy autocompleteSessionData:recentAutocompleteSessionData];
 }
 
-- (void)routeSearchController:(id)a3 didSelectItem:(id)a4
+- (void)routeSearchController:(id)controller didSelectItem:(id)item
 {
-  v5 = a4;
-  v6 = [SearchFieldItem searchFieldItemWithObject:v5 expandRecentsItem:1 preserveContact:1];
+  itemCopy = item;
+  v6 = [SearchFieldItem searchFieldItemWithObject:itemCopy expandRecentsItem:1 preserveContact:1];
   if (v6)
   {
-    v7 = [(RouteSearchViewController *)self routeSearchFields];
-    [v7 updateSearchFieldsFromIndex:0x7FFFFFFFFFFFFFFFLL withItem:v6];
+    routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+    [routeSearchFields updateSearchFieldsFromIndex:0x7FFFFFFFFFFFFFFFLL withItem:v6];
   }
 
   else
   {
     objc_opt_class();
-    v8 = v5;
+    v8 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -197,14 +197,14 @@
 
     v10 = v9;
 
-    v11 = [v10 historyEntry];
+    historyEntry = [v10 historyEntry];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_101013F60;
     v13[3] = &unk_101661B48;
     v13[4] = self;
-    [v11 ifSearch:0 ifRoute:v13 ifPlaceDisplay:0 ifTransitLineItem:0];
+    [historyEntry ifSearch:0 ifRoute:v13 ifPlaceDisplay:0 ifTransitLineItem:0];
   }
 
   objc_opt_class();
@@ -219,27 +219,27 @@
   }
 }
 
-- (BOOL)waypointsIncludeCurrentLocationForRouteSearchTableViewController:(id)a3
+- (BOOL)waypointsIncludeCurrentLocationForRouteSearchTableViewController:(id)controller
 {
-  v3 = [(RouteSearchViewController *)self routeSearchFields];
-  v4 = [v3 containsCurrentLocationItem];
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  containsCurrentLocationItem = [routeSearchFields containsCurrentLocationItem];
 
-  return v4;
+  return containsCurrentLocationItem;
 }
 
-- (BOOL)routeSearchController:(id)a3 waypointsIncludeObject:(id)a4
+- (BOOL)routeSearchController:(id)controller waypointsIncludeObject:(id)object
 {
-  v5 = a4;
-  v6 = [(RouteSearchViewController *)self routeSearchFields];
-  v7 = [v6 containsWaypointForItem:v5];
+  objectCopy = object;
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  v7 = [routeSearchFields containsWaypointForItem:objectCopy];
 
   return v7;
 }
 
-- (id)traitsForRouteSearchTableViewController:(id)a3
+- (id)traitsForRouteSearchTableViewController:(id)controller
 {
-  v4 = [(RouteSearchViewController *)self delegate];
-  v5 = [v4 traitsForRouteSearchViewController:self];
+  delegate = [(RouteSearchViewController *)self delegate];
+  v5 = [delegate traitsForRouteSearchViewController:self];
 
   if (MapsFeature_IsEnabled_VisitedPlaces())
   {
@@ -263,37 +263,37 @@
   return v5;
 }
 
-- (id)latLngForRouteSearchTableViewController:(id)a3
+- (id)latLngForRouteSearchTableViewController:(id)controller
 {
-  v4 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (!v4)
+  if (!fieldsViewController)
   {
-    v12 = [(RouteSearchViewController *)self searchFieldView];
-    v13 = [v12 previousSearchFieldItem];
-    v7 = [(RouteSearchViewController *)self latLngFromSearchFieldItem:v13];
+    searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+    previousSearchFieldItem = [searchFieldView previousSearchFieldItem];
+    latLng = [(RouteSearchViewController *)self latLngFromSearchFieldItem:previousSearchFieldItem];
 
 LABEL_9:
-    v7 = v7;
-    v11 = v7;
+    latLng = latLng;
+    v11 = latLng;
     goto LABEL_10;
   }
 
-  v5 = [(RouteSearchViewController *)self fieldsViewController];
-  v6 = [v5 _currentlySelectedIndexForAddStop];
+  fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+  _currentlySelectedIndexForAddStop = [fieldsViewController2 _currentlySelectedIndexForAddStop];
 
-  v7 = 0;
-  if (v6 && v6 != 0x7FFFFFFFFFFFFFFFLL)
+  latLng = 0;
+  if (_currentlySelectedIndexForAddStop && _currentlySelectedIndexForAddStop != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(RouteSearchViewController *)self fieldsViewController];
-    v9 = [v8 items];
+    fieldsViewController3 = [(RouteSearchViewController *)self fieldsViewController];
+    items = [fieldsViewController3 items];
 
-    v10 = [v9 objectAtIndexedSubscript:v6 - 1];
-    v7 = [v10 latLng];
+    v10 = [items objectAtIndexedSubscript:_currentlySelectedIndexForAddStop - 1];
+    latLng = [v10 latLng];
   }
 
   v11 = 0;
-  if (v6 && v6 != 0x7FFFFFFFFFFFFFFFLL)
+  if (_currentlySelectedIndexForAddStop && _currentlySelectedIndexForAddStop != 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_9;
   }
@@ -303,29 +303,29 @@ LABEL_10:
   return v11;
 }
 
-- (id)userLocationSearchResultForRouteSearchTableViewController:(id)a3
+- (id)userLocationSearchResultForRouteSearchTableViewController:(id)controller
 {
-  v4 = [(RouteSearchViewController *)self delegate];
-  v5 = [v4 userLocationSearchResultForRouteSearchViewController:self];
+  delegate = [(RouteSearchViewController *)self delegate];
+  v5 = [delegate userLocationSearchResultForRouteSearchViewController:self];
 
   return v5;
 }
 
-- (id)personalizedItemManagerForRouteSearchTableViewController:(id)a3
+- (id)personalizedItemManagerForRouteSearchTableViewController:(id)controller
 {
-  v4 = [(RouteSearchViewController *)self delegate];
-  v5 = [v4 personalizedItemManagerForRouteSearchViewController:self];
+  delegate = [(RouteSearchViewController *)self delegate];
+  v5 = [delegate personalizedItemManagerForRouteSearchViewController:self];
 
   return v5;
 }
 
-- (void)routeSearchFields:(id)a3 didClearInputTextForWaypointAtIndex:(unint64_t)waypointIndex
+- (void)routeSearchFields:(id)fields didClearInputTextForWaypointAtIndex:(unint64_t)waypointIndex
 {
-  v11 = a3;
+  fieldsCopy = fields;
   if (waypointIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(RouteSearchViewController *)self fieldsViewController];
-    if (v6)
+    fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+    if (fieldsViewController)
     {
 
       waypointIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -343,48 +343,48 @@ LABEL_10:
   }
 
   v7 = +[MKMapService sharedService];
-  v8 = [(RouteSearchViewController *)self currentUITargetForAnalytics];
+  currentUITargetForAnalytics = [(RouteSearchViewController *)self currentUITargetForAnalytics];
   if ((~waypointIndex & 0x7FFFFFFFFFFFFFFFLL) != 0)
   {
     v9 = [NSNumber numberWithUnsignedInteger:waypointIndex];
-    v10 = [v9 stringValue];
-    [v7 captureUserAction:278 onTarget:v8 eventValue:v10];
+    stringValue = [v9 stringValue];
+    [v7 captureUserAction:278 onTarget:currentUITargetForAnalytics eventValue:stringValue];
   }
 
   else
   {
-    [v7 captureUserAction:278 onTarget:v8 eventValue:0];
+    [v7 captureUserAction:278 onTarget:currentUITargetForAnalytics eventValue:0];
   }
 }
 
-- (void)routeSearch:(id)a3 didSearchForItem:(id)a4 previousSearchItem:(id)a5
+- (void)routeSearch:(id)search didSearchForItem:(id)item previousSearchItem:(id)searchItem
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(RouteSearchViewController *)self fieldsViewController];
-  if (v9)
+  itemCopy = item;
+  searchItemCopy = searchItem;
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  if (fieldsViewController)
   {
-    v10 = v7;
+    searchFieldItem = itemCopy;
   }
 
   else
   {
-    v11 = [(RouteSearchViewController *)self searchFieldView];
-    v10 = [v11 searchFieldItem];
+    searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+    searchFieldItem = [searchFieldView searchFieldItem];
   }
 
   v22[0] = @"SearchSessionAddStopFromWaypointEditor";
   v22[1] = @"SearchSessionAddStopReplacingServerProvidedWaypoint";
   v23[0] = &__kCFBooleanTrue;
-  v12 = [v10 composedWaypoint];
-  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v12 isServerProvidedWaypoint]);
+  composedWaypoint = [searchFieldItem composedWaypoint];
+  v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [composedWaypoint isServerProvidedWaypoint]);
   v23[1] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
   v15 = [NSMutableDictionary dictionaryWithDictionary:v14];
 
-  if (v8)
+  if (searchItemCopy)
   {
-    v16 = [(RouteSearchViewController *)self latLngFromSearchFieldItem:v8];
+    v16 = [(RouteSearchViewController *)self latLngFromSearchFieldItem:searchItemCopy];
     if (v16)
     {
       [v15 setObject:v16 forKeyedSubscript:@"SearchSessionAddStopPreviousLatLng"];
@@ -394,39 +394,39 @@ LABEL_10:
   v17 = +[MKMapService sharedService];
   [v17 captureUserAction:2014 onTarget:-[RouteSearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v18 = [(RouteSearchViewController *)self delegate];
+  delegate = [(RouteSearchViewController *)self delegate];
   v19 = [v15 copy];
-  v20 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v21 = [v20 recentAutocompleteSessionData];
-  [v18 routeSearchViewController:self wantsToPerformSearchWithItem:v7 userInfo:v19 autocompleteSessionData:v21];
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  recentAutocompleteSessionData = [suggestionsTableViewController recentAutocompleteSessionData];
+  [delegate routeSearchViewController:self wantsToPerformSearchWithItem:itemCopy userInfo:v19 autocompleteSessionData:recentAutocompleteSessionData];
 }
 
-- (void)routeSearch:(id)a3 didUpdateInputText:(id)a4 atIndex:(unint64_t)a5
+- (void)routeSearch:(id)search didUpdateInputText:(id)text atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v11 = [v8 length] != 0;
-  v12 = [v9 isEditingAnySearchField];
+  textCopy = text;
+  searchCopy = search;
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  v11 = [textCopy length] != 0;
+  isEditingAnySearchField = [searchCopy isEditingAnySearchField];
 
-  [v10 updateDataSourceHasInput:v11 isEditing:v12];
-  v13 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v14 = [(RouteSearchViewController *)self traitsForRouteSearchTableViewController:v13];
+  [suggestionsTableViewController updateDataSourceHasInput:v11 isEditing:isEditingAnySearchField];
+  suggestionsTableViewController2 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  v14 = [(RouteSearchViewController *)self traitsForRouteSearchTableViewController:suggestionsTableViewController2];
 
-  v15 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (v15)
+  if (fieldsViewController)
   {
-    v16 = [(RouteSearchViewController *)self _itemsForRouteRequest];
-    v17 = v16;
-    if (a5)
+    _itemsForRouteRequest = [(RouteSearchViewController *)self _itemsForRouteRequest];
+    searchFieldView2 = _itemsForRouteRequest;
+    if (index)
     {
-      if ([v16 count] > a5)
+      if ([_itemsForRouteRequest count] > index)
       {
-        v18 = [v17 objectAtIndex:a5 - 1];
-        v19 = [(RouteSearchViewController *)self fieldsViewController];
-        v20 = [v19 items];
-        v21 = [v20 objectAtIndex:a5];
+        previousSearchFieldItem = [searchFieldView2 objectAtIndex:index - 1];
+        fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+        items = [fieldsViewController2 items];
+        searchFieldItem = [items objectAtIndex:index];
 
         v22 = 14;
         goto LABEL_8;
@@ -440,17 +440,17 @@ LABEL_10:
       v22 = 13;
     }
 
-    v18 = 0;
-    v21 = 0;
+    previousSearchFieldItem = 0;
+    searchFieldItem = 0;
     goto LABEL_20;
   }
 
   waypointIndex = self->_waypointIndex;
-  v24 = [(RouteSearchViewController *)self searchFieldView];
-  v18 = [v24 previousSearchFieldItem];
+  searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+  previousSearchFieldItem = [searchFieldView previousSearchFieldItem];
 
-  v17 = [(RouteSearchViewController *)self searchFieldView];
-  v21 = [v17 searchFieldItem];
+  searchFieldView2 = [(RouteSearchViewController *)self searchFieldView];
+  searchFieldItem = [searchFieldView2 searchFieldItem];
   if (waypointIndex)
   {
     v22 = 14;
@@ -463,9 +463,9 @@ LABEL_10:
 
 LABEL_8:
 
-  if (v18)
+  if (previousSearchFieldItem)
   {
-    v25 = [(RouteSearchViewController *)self latLngFromSearchFieldItem:v18];
+    v25 = [(RouteSearchViewController *)self latLngFromSearchFieldItem:previousSearchFieldItem];
     [v25 lat];
     v27 = v26;
     [v25 lng];
@@ -475,7 +475,7 @@ LABEL_8:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v32 = 138412290;
-        v33 = v18;
+        v33 = previousSearchFieldItem;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Previous location in Route Planning has invalid coordinate. SearchFieldItem: %@", &v32, 0xCu);
       }
     }
@@ -487,24 +487,24 @@ LABEL_8:
   }
 
 LABEL_20:
-  v30 = [v21 composedWaypoint];
-  [v14 setAutocompleteOriginationEditingServerWaypoints:{objc_msgSend(v30, "isServerProvidedWaypoint")}];
+  composedWaypoint = [searchFieldItem composedWaypoint];
+  [v14 setAutocompleteOriginationEditingServerWaypoints:{objc_msgSend(composedWaypoint, "isServerProvidedWaypoint")}];
 
   [(RouteSearchViewController *)self setUsingExistingWaypointNameForAutocomplete:0];
-  v31 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v31 updateInputText:v8 traits:v14 source:v22];
+  suggestionsTableViewController3 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController3 updateInputText:textCopy traits:v14 source:v22];
 }
 
-- (void)routeSearchFieldsDidUpdateItemsForRouteRequest:(id)a3
+- (void)routeSearchFieldsDidUpdateItemsForRouteRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v5 reset];
+  requestCopy = request;
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController reset];
 
   if (self->_selectionHandler)
   {
-    v6 = [v4 itemsForRouteRequest];
-    v7 = [v6 firstObject];
+    itemsForRouteRequest = [requestCopy itemsForRouteRequest];
+    firstObject = [itemsForRouteRequest firstObject];
 
     (*(self->_selectionHandler + 2))();
     goto LABEL_3;
@@ -527,13 +527,13 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v8 = [(RouteSearchViewController *)self searchFieldView];
-  if (v8)
+  searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+  if (searchFieldView)
   {
-    v9 = v8;
-    v10 = [(RouteSearchViewController *)self _isReadyToRoute];
+    v9 = searchFieldView;
+    _isReadyToRoute = [(RouteSearchViewController *)self _isReadyToRoute];
 
-    if (v10)
+    if (_isReadyToRoute)
     {
       goto LABEL_9;
     }
@@ -542,56 +542,56 @@ LABEL_9:
 LABEL_3:
 }
 
-- (void)routeSearchFieldsDidBeginEditing:(id)a3
+- (void)routeSearchFieldsDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v7 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v5 = [v4 hasInput];
-  v6 = [v4 isEditingAnySearchField];
+  editingCopy = editing;
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  hasInput = [editingCopy hasInput];
+  isEditingAnySearchField = [editingCopy isEditingAnySearchField];
 
-  [v7 updateDataSourceHasInput:v5 isEditing:v6];
+  [suggestionsTableViewController updateDataSourceHasInput:hasInput isEditing:isEditingAnySearchField];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  if (a4 == 1)
+  if (type == 1)
   {
-    [(RouteSearchViewController *)self _cancelTapped:a3];
+    [(RouteSearchViewController *)self _cancelTapped:tapped];
   }
 }
 
-- (void)_requestRouteWithItems:(id)a3
+- (void)_requestRouteWithItems:(id)items
 {
-  v4 = a3;
-  v5 = [(RouteSearchViewController *)self routeSearchFields];
-  [v5 endEditingFields];
+  itemsCopy = items;
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  [routeSearchFields endEditingFields];
 
-  v6 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v7 = [(RouteSearchViewController *)self routeSearchFields];
-  [v6 updateDataSourceHasInput:0 isEditing:{objc_msgSend(v7, "isEditingAnySearchField")}];
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  routeSearchFields2 = [(RouteSearchViewController *)self routeSearchFields];
+  [suggestionsTableViewController updateDataSourceHasInput:0 isEditing:{objc_msgSend(routeSearchFields2, "isEditingAnySearchField")}];
 
-  v8 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v8 reloadData];
+  suggestionsTableViewController2 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController2 reloadData];
 
   v9 = +[MKMapService sharedService];
   [v9 captureUserAction:6003 onTarget:-[RouteSearchViewController currentUITargetForAnalytics](self eventValue:{"currentUITargetForAnalytics"), 0}];
 
-  v10 = [(RouteSearchViewController *)self dataCoordinator];
-  v11 = [v10 desiredTransportType];
+  dataCoordinator = [(RouteSearchViewController *)self dataCoordinator];
+  desiredTransportType = [dataCoordinator desiredTransportType];
 
-  v12 = [(RouteSearchViewController *)self delegate];
-  v13 = [v12 currentDirectionItemForRouteSearchViewController:self];
+  delegate = [(RouteSearchViewController *)self delegate];
+  v13 = [delegate currentDirectionItemForRouteSearchViewController:self];
 
-  if (!v11)
+  if (!desiredTransportType)
   {
     if ([v13 editRequired:0])
     {
-      v11 = [v13 transportType];
+      desiredTransportType = [v13 transportType];
     }
 
     else
     {
-      v11 = 0;
+      desiredTransportType = 0;
     }
   }
 
@@ -601,7 +601,7 @@ LABEL_3:
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v16 = v4;
+  v16 = itemsCopy;
   v17 = [v16 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v17)
   {
@@ -630,26 +630,26 @@ LABEL_3:
     while (v18);
   }
 
-  v22 = [[DirectionItem alloc] initWithItems:v15 ignoreMapType:v14 transportType:v11];
-  v23 = [(RouteSearchViewController *)self dataCoordinator];
+  v22 = [[DirectionItem alloc] initWithItems:v15 ignoreMapType:v14 transportType:desiredTransportType];
+  dataCoordinator2 = [(RouteSearchViewController *)self dataCoordinator];
 
-  if (v23)
+  if (dataCoordinator2)
   {
-    v24 = [(RouteSearchViewController *)self dataCoordinator];
-    v25 = [v24 drivePreferences];
-    [(DirectionItem *)v22 setDrivePreferences:v25];
+    dataCoordinator3 = [(RouteSearchViewController *)self dataCoordinator];
+    drivePreferences = [dataCoordinator3 drivePreferences];
+    [(DirectionItem *)v22 setDrivePreferences:drivePreferences];
 
-    v26 = [(RouteSearchViewController *)self dataCoordinator];
-    v27 = [v26 transitPreferences];
-    [(DirectionItem *)v22 setTransitPreferences:v27];
+    dataCoordinator4 = [(RouteSearchViewController *)self dataCoordinator];
+    transitPreferences = [dataCoordinator4 transitPreferences];
+    [(DirectionItem *)v22 setTransitPreferences:transitPreferences];
 
-    v28 = [(RouteSearchViewController *)self dataCoordinator];
-    v29 = [v28 cyclePreferences];
-    [(DirectionItem *)v22 setCyclePreferences:v29];
+    dataCoordinator5 = [(RouteSearchViewController *)self dataCoordinator];
+    cyclePreferences = [dataCoordinator5 cyclePreferences];
+    [(DirectionItem *)v22 setCyclePreferences:cyclePreferences];
 
-    v30 = [(RouteSearchViewController *)self dataCoordinator];
-    v31 = [v30 timing];
-    [(DirectionItem *)v22 setTiming:v31];
+    dataCoordinator6 = [(RouteSearchViewController *)self dataCoordinator];
+    timing = [dataCoordinator6 timing];
+    [(DirectionItem *)v22 setTiming:timing];
   }
 
   v32 = [NSMutableDictionary alloc];
@@ -658,18 +658,18 @@ LABEL_3:
   v33 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
   v34 = [v32 initWithDictionary:v33];
 
-  v35 = [(RouteSearchViewController *)self dataCoordinator];
-  v36 = [v35 originalHistoryEntryIdentifier];
-  [v34 setObject:v36 forKeyedSubscript:@"DirectionsRouteUUIDKey"];
+  dataCoordinator7 = [(RouteSearchViewController *)self dataCoordinator];
+  originalHistoryEntryIdentifier = [dataCoordinator7 originalHistoryEntryIdentifier];
+  [v34 setObject:originalHistoryEntryIdentifier forKeyedSubscript:@"DirectionsRouteUUIDKey"];
 
-  v37 = [(RouteSearchViewController *)self dataCoordinator];
-  v38 = [v37 automaticSharingContacts];
-  [v34 setObject:v38 forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
+  dataCoordinator8 = [(RouteSearchViewController *)self dataCoordinator];
+  automaticSharingContacts = [dataCoordinator8 automaticSharingContacts];
+  [v34 setObject:automaticSharingContacts forKeyedSubscript:@"DirectionsPreviousContactsForTripSharing"];
 
-  v39 = [(RouteSearchViewController *)self routeSearchFields];
-  LODWORD(v38) = [v39 hasInput];
+  routeSearchFields3 = [(RouteSearchViewController *)self routeSearchFields];
+  LODWORD(automaticSharingContacts) = [routeSearchFields3 hasInput];
 
-  if (v38)
+  if (automaticSharingContacts)
   {
     v40 = &off_1016EAEC8;
   }
@@ -680,15 +680,15 @@ LABEL_3:
   }
 
   [v34 setObject:v40 forKeyedSubscript:{@"SearchSessionTraitsSource", v43}];
-  v41 = [(RouteSearchViewController *)self delegate];
+  delegate2 = [(RouteSearchViewController *)self delegate];
   v42 = [v34 copy];
-  [v41 routeSearchViewController:self wantsToRequestRoutesWithItem:v22 allowToPromptEditing:1 userInfo:v42];
+  [delegate2 routeSearchViewController:self wantsToRequestRoutesWithItem:v22 allowToPromptEditing:1 userInfo:v42];
 }
 
 - (void)_requestRoute
 {
-  v3 = [(RouteSearchViewController *)self _itemsForRouteRequest];
-  [(RouteSearchViewController *)self _requestRouteWithItems:v3];
+  _itemsForRouteRequest = [(RouteSearchViewController *)self _itemsForRouteRequest];
+  [(RouteSearchViewController *)self _requestRouteWithItems:_itemsForRouteRequest];
 }
 
 - (BOOL)_isReadyToRoute
@@ -713,10 +713,10 @@ LABEL_3:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 waypoint];
-        v10 = [v9 isValid];
+        waypoint = [v8 waypoint];
+        isValid = [waypoint isValid];
 
-        if ((v10 & 1) == 0 && (sub_10000FA08(self) != 5 || !_UISolariumEnabled() || ![v8 isEmpty]))
+        if ((isValid & 1) == 0 && (sub_10000FA08(self) != 5 || !_UISolariumEnabled() || ![v8 isEmpty]))
         {
           v11 = 0;
           goto LABEL_14;
@@ -741,23 +741,23 @@ LABEL_14:
 
 - (id)_itemsForRouteRequest
 {
-  v3 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  v4 = [(RouteSearchViewController *)self routeSearchFields];
-  v5 = [v4 itemsForRouteRequest];
-  v6 = v5;
-  if (v3)
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  itemsForRouteRequest = [routeSearchFields itemsForRouteRequest];
+  v6 = itemsForRouteRequest;
+  if (fieldsViewController)
   {
   }
 
   else
   {
-    v7 = [v5 firstObject];
+    firstObject = [itemsForRouteRequest firstObject];
 
-    v8 = [(RouteSearchViewController *)self dataCoordinator];
-    v9 = [v8 directionItemForCurrentSession];
-    v10 = [v9 items];
-    v6 = [v10 mutableCopy];
+    dataCoordinator = [(RouteSearchViewController *)self dataCoordinator];
+    directionItemForCurrentSession = [dataCoordinator directionItemForCurrentSession];
+    items = [directionItemForCurrentSession items];
+    v6 = [items mutableCopy];
 
     if (sub_10000FA08(self) == 5 && _UISolariumEnabled() && !v6)
     {
@@ -772,12 +772,12 @@ LABEL_14:
     waypointIndex = self->_waypointIndex;
     if (waypointIndex >= [v6 count])
     {
-      [v6 addObject:v7];
+      [v6 addObject:firstObject];
     }
 
     else
     {
-      [v6 replaceObjectAtIndex:self->_waypointIndex withObject:v7];
+      [v6 replaceObjectAtIndex:self->_waypointIndex withObject:firstObject];
     }
   }
 
@@ -786,17 +786,17 @@ LABEL_14:
 
 - (void)_cleanUpOnDismiss
 {
-  v3 = [(RouteSearchViewController *)self routeSearchFields];
-  [v3 clear];
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  [routeSearchFields clear];
 
   [(RouteSearchViewController *)self setExitRoutePlanningOnCancel:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = RouteSearchViewController;
-  [(RouteSearchViewController *)&v4 viewDidAppear:a3];
+  [(RouteSearchViewController *)&v4 viewDidAppear:appear];
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"RouteSearchViewControllerDidAppear" object:0];
 }
@@ -809,20 +809,20 @@ LABEL_14:
   [(RouteSearchViewController *)self _cleanUpOnDismiss];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v12.receiver = self;
   v12.super_class = RouteSearchViewController;
-  [(ContaineeViewController *)&v12 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v12 willBecomeCurrent:current];
   [(RouteSearchViewController *)self loadViewIfNeeded];
-  v4 = [(RouteSearchViewController *)self dataCoordinator];
-  v5 = [v4 desiredTransportType];
+  dataCoordinator = [(RouteSearchViewController *)self dataCoordinator];
+  desiredTransportType = [dataCoordinator desiredTransportType];
   v6 = 0;
-  if (v5 > 1)
+  if (desiredTransportType > 1)
   {
-    if (v5 != 2)
+    if (desiredTransportType != 2)
     {
-      if (v5 != 5)
+      if (desiredTransportType != 5)
       {
         goto LABEL_13;
       }
@@ -834,9 +834,9 @@ LABEL_14:
 
   else
   {
-    if (v5)
+    if (desiredTransportType)
     {
-      if (v5 != 1)
+      if (desiredTransportType != 1)
       {
         goto LABEL_13;
       }
@@ -856,85 +856,85 @@ LABEL_14:
 LABEL_12:
   v6 = IsEnabled_Maps420;
 LABEL_13:
-  v8 = [(RouteSearchViewController *)self fieldsViewController];
-  [v8 setMprEnabled:v6];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  [fieldsViewController setMprEnabled:v6];
 
-  v9 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(RouteSearchViewController *)self fieldsViewController];
-    [v11 willBecomeCurrent];
+    fieldsViewController3 = [(RouteSearchViewController *)self fieldsViewController];
+    [fieldsViewController3 willBecomeCurrent];
   }
 }
 
-- (void)_setupConstraints:(BOOL)a3
+- (void)_setupConstraints:(BOOL)constraints
 {
-  v3 = a3;
-  v5 = [(RouteSearchViewController *)self fieldsViewController];
+  constraintsCopy = constraints;
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (!v5)
+  if (!fieldsViewController)
   {
     v46 = objc_alloc_init(NSMutableArray);
-    if (v3)
+    if (constraintsCopy)
     {
-      v42 = [(RouteWaypointSearchFieldView *)self->_searchFieldView leadingAnchor];
-      v44 = [(ContaineeViewController *)self contentView];
-      v40 = [v44 leadingAnchor];
-      v38 = [v42 constraintEqualToAnchor:v40];
+      leadingAnchor = [(RouteWaypointSearchFieldView *)self->_searchFieldView leadingAnchor];
+      contentView = [(ContaineeViewController *)self contentView];
+      leadingAnchor2 = [contentView leadingAnchor];
+      v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v48[0] = v38;
-      v36 = [(RouteWaypointSearchFieldView *)self->_searchFieldView trailingAnchor];
-      v6 = [(ContaineeViewController *)self contentView];
-      v7 = [v6 trailingAnchor];
-      v8 = [v36 constraintEqualToAnchor:v7];
+      trailingAnchor = [(RouteWaypointSearchFieldView *)self->_searchFieldView trailingAnchor];
+      contentView2 = [(ContaineeViewController *)self contentView];
+      trailingAnchor2 = [contentView2 trailingAnchor];
+      v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v48[1] = v8;
-      v9 = [(RouteWaypointSearchFieldView *)self->_searchFieldView topAnchor];
-      v10 = [(ContaineeViewController *)self contentView];
-      v11 = [v10 topAnchor];
-      v12 = [v9 constraintEqualToAnchor:v11];
+      topAnchor = [(RouteWaypointSearchFieldView *)self->_searchFieldView topAnchor];
+      contentView3 = [(ContaineeViewController *)self contentView];
+      topAnchor2 = [contentView3 topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v48[2] = v12;
       v13 = [NSArray arrayWithObjects:v48 count:3];
       [v46 addObjectsFromArray:v13];
 
       v14 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-      v15 = [(RouteWaypointSearchFieldView *)self->_searchFieldView bottomAnchor];
+      bottomAnchor = [(RouteWaypointSearchFieldView *)self->_searchFieldView bottomAnchor];
     }
 
     else
     {
-      v16 = [(RouteSearchViewController *)self containerHeaderView];
-      v15 = [v16 bottomAnchor];
+      containerHeaderView = [(RouteSearchViewController *)self containerHeaderView];
+      bottomAnchor = [containerHeaderView bottomAnchor];
 
       v14 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
     }
 
-    v32 = v15;
-    v45 = [(RouteSearchViewController *)self suggestionsTableViewController];
-    v43 = [v45 view];
-    v39 = [v43 leadingAnchor];
-    v41 = [(ContaineeViewController *)self contentView];
-    v37 = [v41 leadingAnchor];
-    v35 = [v39 constraintEqualToAnchor:v37];
+    v32 = bottomAnchor;
+    suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+    view = [suggestionsTableViewController view];
+    leadingAnchor3 = [view leadingAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    leadingAnchor4 = [contentView4 leadingAnchor];
+    v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v47[0] = v35;
-    v34 = [(RouteSearchViewController *)self suggestionsTableViewController];
-    v33 = [v34 view];
-    v30 = [v33 trailingAnchor];
-    v31 = [(ContaineeViewController *)self contentView];
-    v29 = [v31 trailingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29];
+    suggestionsTableViewController2 = [(RouteSearchViewController *)self suggestionsTableViewController];
+    view2 = [suggestionsTableViewController2 view];
+    trailingAnchor3 = [view2 trailingAnchor];
+    contentView5 = [(ContaineeViewController *)self contentView];
+    trailingAnchor4 = [contentView5 trailingAnchor];
+    v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v47[1] = v28;
-    v27 = [(RouteSearchViewController *)self suggestionsTableViewController];
-    v26 = [v27 view];
-    v17 = [v26 topAnchor];
-    v18 = [v17 constraintEqualToAnchor:v15 constant:16.0];
+    suggestionsTableViewController3 = [(RouteSearchViewController *)self suggestionsTableViewController];
+    view3 = [suggestionsTableViewController3 view];
+    topAnchor3 = [view3 topAnchor];
+    v18 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:16.0];
     v47[2] = v18;
-    v19 = [(RouteSearchViewController *)self suggestionsTableViewController];
-    v20 = [v19 view];
-    v21 = [v20 bottomAnchor];
-    v22 = [(ContaineeViewController *)self contentView];
-    v23 = [v22 bottomAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    suggestionsTableViewController4 = [(RouteSearchViewController *)self suggestionsTableViewController];
+    view4 = [suggestionsTableViewController4 view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    contentView6 = [(ContaineeViewController *)self contentView];
+    bottomAnchor3 = [contentView6 bottomAnchor];
+    v24 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v47[3] = v24;
     v25 = [v14[286] arrayWithObjects:v47 count:4];
     [v46 addObjectsFromArray:v25];
@@ -946,29 +946,29 @@ LABEL_13:
 - (void)_setupHeaderContentViewConstraints
 {
   v16 = [NSMutableArray alloc];
-  v25 = [(RouteSearchViewController *)self containerHeaderView];
-  v23 = [v25 topAnchor];
-  v24 = [(ContaineeViewController *)self headerView];
-  v22 = [v24 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  containerHeaderView = [(RouteSearchViewController *)self containerHeaderView];
+  topAnchor = [containerHeaderView topAnchor];
+  headerView = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[0] = v21;
-  v20 = [(RouteSearchViewController *)self containerHeaderView];
-  v18 = [v20 bottomAnchor];
-  v19 = [(ContaineeViewController *)self headerView];
-  v17 = [v19 bottomAnchor];
-  v15 = [v18 constraintEqualToAnchor:v17];
+  containerHeaderView2 = [(RouteSearchViewController *)self containerHeaderView];
+  bottomAnchor = [containerHeaderView2 bottomAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView2 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[1] = v15;
-  v14 = [(RouteSearchViewController *)self containerHeaderView];
-  v13 = [v14 leadingAnchor];
-  v3 = [(ContaineeViewController *)self headerView];
-  v4 = [v3 leadingAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4];
+  containerHeaderView3 = [(RouteSearchViewController *)self containerHeaderView];
+  leadingAnchor = [containerHeaderView3 leadingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView3 leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[2] = v5;
-  v6 = [(RouteSearchViewController *)self containerHeaderView];
-  v7 = [v6 trailingAnchor];
-  v8 = [(ContaineeViewController *)self headerView];
-  v9 = [v8 trailingAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  containerHeaderView4 = [(RouteSearchViewController *)self containerHeaderView];
+  trailingAnchor = [containerHeaderView4 trailingAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView4 trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[3] = v10;
   v11 = [NSArray arrayWithObjects:v26 count:4];
   v12 = [v16 initWithArray:v11];
@@ -983,7 +983,7 @@ LABEL_13:
   block[2] = sub_101015D48;
   block[3] = &unk_101661AE0;
   block[4] = self;
-  v5 = [(RouteSearchViewController *)self exitRoutePlanningOnCancel];
+  exitRoutePlanningOnCancel = [(RouteSearchViewController *)self exitRoutePlanningOnCancel];
   dispatch_async(&_dispatch_main_q, block);
   v3.receiver = self;
   v3.super_class = RouteSearchViewController;
@@ -992,14 +992,14 @@ LABEL_13:
 
 - (void)_updateTitle
 {
-  v3 = [(RouteSearchViewController *)self title];
-  v4 = [v3 length];
+  title = [(RouteSearchViewController *)self title];
+  v4 = [title length];
 
   if (v4)
   {
-    v12 = [(RouteSearchViewController *)self title];
-    v5 = [(RouteSearchViewController *)self containerHeaderView];
-    [v5 setTitle:v12];
+    title2 = [(RouteSearchViewController *)self title];
+    containerHeaderView = [(RouteSearchViewController *)self containerHeaderView];
+    [containerHeaderView setTitle:title2];
   }
 
   else
@@ -1008,7 +1008,7 @@ LABEL_13:
     {
       waypointIndex = self->_waypointIndex;
       v8 = +[NSBundle mainBundle];
-      v12 = v8;
+      title2 = v8;
       if (waypointIndex)
       {
         v9 = @"[Route Planning] To";
@@ -1035,64 +1035,64 @@ LABEL_13:
         v9 = @"Change Stop";
       }
 
-      v12 = v8;
+      title2 = v8;
     }
 
-    v5 = [v8 localizedStringForKey:v9 value:@"localized string not found" table:0];
-    v11 = [(RouteSearchViewController *)self containerHeaderView];
-    [v11 setTitle:v5];
+    containerHeaderView = [v8 localizedStringForKey:v9 value:@"localized string not found" table:0];
+    containerHeaderView2 = [(RouteSearchViewController *)self containerHeaderView];
+    [containerHeaderView2 setTitle:containerHeaderView];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v6.receiver = self;
   v6.super_class = RouteSearchViewController;
-  v4 = a3;
-  [(RouteSearchViewController *)&v6 setTitle:v4];
+  titleCopy = title;
+  [(RouteSearchViewController *)&v6 setTitle:titleCopy];
   v5 = [(RouteSearchViewController *)self containerHeaderView:v6.receiver];
-  [v5 setTitle:v4];
+  [v5 setTitle:titleCopy];
 }
 
-- (void)_addSubViewsWithTextSearchSupport:(BOOL)a3
+- (void)_addSubViewsWithTextSearchSupport:(BOOL)support
 {
-  v3 = a3;
-  if (a3)
+  supportCopy = support;
+  if (support)
   {
     v5 = [[RouteWaypointSearchFieldView alloc] initWithDelegate:self];
     searchFieldView = self->_searchFieldView;
     self->_searchFieldView = v5;
 
     [(RouteWaypointSearchFieldView *)self->_searchFieldView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(ContaineeViewController *)self contentView];
-    [v7 addSubview:self->_searchFieldView];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView addSubview:self->_searchFieldView];
   }
 
-  v8 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [(RouteSearchViewController *)self addChildViewController:v8];
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [(RouteSearchViewController *)self addChildViewController:suggestionsTableViewController];
 
-  v9 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v10 = [v9 view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  suggestionsTableViewController2 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  view = [suggestionsTableViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(ContaineeViewController *)self contentView];
-  v12 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v13 = [v12 view];
-  [v11 addSubview:v13];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  suggestionsTableViewController3 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  view2 = [suggestionsTableViewController3 view];
+  [contentView2 addSubview:view2];
 
-  v14 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v14 didMoveToParentViewController:self];
+  suggestionsTableViewController4 = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController4 didMoveToParentViewController:self];
 
   v15 = +[MapsOfflineUIHelper sharedHelper];
-  LODWORD(v12) = [v15 isUsingOfflineMaps];
+  LODWORD(suggestionsTableViewController3) = [v15 isUsingOfflineMaps];
 
-  if (v12 && !v3)
+  if (suggestionsTableViewController3 && !supportCopy)
   {
-    v16 = [(RouteSearchViewController *)self routeSearchFields];
-    [v16 endEditingFields];
+    routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+    [routeSearchFields endEditingFields];
   }
 
-  [(RouteSearchViewController *)self _setupConstraints:v3];
+  [(RouteSearchViewController *)self _setupConstraints:supportCopy];
 }
 
 - (void)viewDidLoad
@@ -1100,27 +1100,27 @@ LABEL_13:
   v14.receiver = self;
   v14.super_class = RouteSearchViewController;
   [(ContaineeViewController *)&v14 viewDidLoad];
-  v3 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (!v3)
+  if (!fieldsViewController)
   {
-    v4 = [(ContaineeViewController *)self headerView];
+    headerView = [(ContaineeViewController *)self headerView];
     LODWORD(v5) = 1148846080;
-    [v4 setContentHuggingPriority:1 forAxis:v5];
+    [headerView setContentHuggingPriority:1 forAxis:v5];
 
     v6 = [[ContainerHeaderView alloc] initWithCardButtonType:1];
     [(ContainerHeaderView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ContainerHeaderView *)v6 setDelegate:self];
-    v7 = [(ContaineeViewController *)self headerView];
-    [v7 addSubview:v6];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    [headerView2 addSubview:v6];
 
     [(RouteSearchViewController *)self setContainerHeaderView:v6];
     [(RouteSearchViewController *)self _setupHeaderContentViewConstraints];
     [(RouteSearchViewController *)self _updateTitle];
     v8 = +[MapsOfflineUIHelper sharedHelper];
-    v9 = [v8 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v8 isUsingOfflineMaps];
 
-    if (v9)
+    if (isUsingOfflineMaps)
     {
       [(RouteSearchViewController *)self _initOfflinePlaceHolderWithTicket];
     }
@@ -1130,11 +1130,11 @@ LABEL_13:
       [(RouteSearchViewController *)self _addSubViewsWithTextSearchSupport:1];
     }
 
-    v10 = [(RouteSearchViewController *)self view];
+    view = [(RouteSearchViewController *)self view];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = [v12 stringByReplacingOccurrencesOfString:@"Controller" withString:&stru_1016631F0];
-    [v10 setAccessibilityIdentifier:v13];
+    [view setAccessibilityIdentifier:v13];
 
     +[KeyboardAvoidingView startObservingKeyboard];
   }
@@ -1142,33 +1142,33 @@ LABEL_13:
 
 - (BOOL)hasInputsInSearchField
 {
-  v2 = [(RouteSearchViewController *)self routeSearchFields];
-  v3 = [v2 hasInput];
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  hasInput = [routeSearchFields hasInput];
 
-  return v3;
+  return hasInput;
 }
 
 - (id)selectedSearchFieldItem
 {
-  v2 = [(RouteSearchViewController *)self searchFieldView];
-  v3 = [v2 searchFieldItem];
+  searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+  searchFieldItem = [searchFieldView searchFieldItem];
 
-  return v3;
+  return searchFieldItem;
 }
 
-- (id)latLngFromSearchFieldItem:(id)a3
+- (id)latLngFromSearchFieldItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 latLng];
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  latLng = [itemCopy latLng];
+  v5 = latLng;
+  if (latLng)
   {
-    v6 = v4;
+    v6 = latLng;
   }
 
   else
   {
-    [v3 address];
+    [itemCopy address];
   }
 
   return v5;
@@ -1176,14 +1176,14 @@ LABEL_13:
 
 - (unint64_t)_currentlySelectedIndexForAddStop
 {
-  v3 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (v3)
+  if (fieldsViewController)
   {
-    v4 = [(RouteSearchViewController *)self fieldsViewController];
-    v5 = [v4 _currentlySelectedIndexForAddStop];
+    fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+    _currentlySelectedIndexForAddStop = [fieldsViewController2 _currentlySelectedIndexForAddStop];
 
-    return v5;
+    return _currentlySelectedIndexForAddStop;
   }
 
   else if (self->_waypointIndex == -1)
@@ -1197,34 +1197,34 @@ LABEL_13:
   }
 }
 
-- (void)setDataCoordinator:(id)a3
+- (void)setDataCoordinator:(id)coordinator
 {
-  objc_storeWeak(&self->_dataCoordinator, a3);
+  objc_storeWeak(&self->_dataCoordinator, coordinator);
 
   [(RouteSearchViewController *)self updateFieldsWithCurrentDirectionItem];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
-  v4 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  [v4 reconfigureDataSources];
+  objc_storeWeak(&self->_delegate, delegate);
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  [suggestionsTableViewController reconfigureDataSources];
 }
 
 - (void)makeAFieldFirstResponderIfNeeded
 {
-  v3 = [(RouteSearchViewController *)self fieldsViewController];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (v3)
+  if (fieldsViewController)
   {
-    v4 = [(RouteSearchViewController *)self fieldsViewController];
-    v5 = [v4 _currentlySelectedIndexForAddStop];
+    fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+    _currentlySelectedIndexForAddStop = [fieldsViewController2 _currentlySelectedIndexForAddStop];
 
-    v6 = [(RouteSearchViewController *)self fieldsViewController];
-    v9 = v6;
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    fieldsViewController3 = [(RouteSearchViewController *)self fieldsViewController];
+    suggestionsTableViewController = fieldsViewController3;
+    if (_currentlySelectedIndexForAddStop != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v6 selectFieldAtIndex:v5];
+      [fieldsViewController3 selectFieldAtIndex:_currentlySelectedIndexForAddStop];
       goto LABEL_9;
     }
   }
@@ -1234,94 +1234,94 @@ LABEL_13:
     if (!self->_supportsFullTextSearch)
     {
       v7 = +[MapsOfflineUIHelper sharedHelper];
-      v8 = [v7 isUsingOfflineMaps];
+      isUsingOfflineMaps = [v7 isUsingOfflineMaps];
 
-      if (v8)
+      if (isUsingOfflineMaps)
       {
-        v9 = [(RouteSearchViewController *)self suggestionsTableViewController];
-        [v9 updateCategoryDataSource:self->_supportsFullTextSearch];
+        suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+        [suggestionsTableViewController updateCategoryDataSource:self->_supportsFullTextSearch];
         goto LABEL_9;
       }
     }
 
-    v6 = [(RouteSearchViewController *)self routeSearchFields];
-    v9 = v6;
+    fieldsViewController3 = [(RouteSearchViewController *)self routeSearchFields];
+    suggestionsTableViewController = fieldsViewController3;
   }
 
-  [v6 beginEditingNextSearchField];
+  [fieldsViewController3 beginEditingNextSearchField];
 LABEL_9:
 }
 
-- (void)setPauseSelectionUpdates:(BOOL)a3
+- (void)setPauseSelectionUpdates:(BOOL)updates
 {
-  v3 = a3;
-  v4 = [(RouteSearchViewController *)self fieldsViewController];
-  [v4 setPauseSelectionUpdates:v3];
+  updatesCopy = updates;
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  [fieldsViewController setPauseSelectionUpdates:updatesCopy];
 }
 
-- (void)replaceSelectedFieldWithItem:(id)a3
+- (void)replaceSelectedFieldWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [(RouteSearchViewController *)self routeSearchFields];
-  [v5 updateSearchFieldsFromIndex:0x7FFFFFFFFFFFFFFFLL withItem:v4];
+  itemCopy = item;
+  routeSearchFields = [(RouteSearchViewController *)self routeSearchFields];
+  [routeSearchFields updateSearchFieldsFromIndex:0x7FFFFFFFFFFFFFFFLL withItem:itemCopy];
 }
 
 - (void)deleteCurrentFieldIndex
 {
-  v2 = [(RouteSearchViewController *)self fieldsViewController];
-  [v2 deleteCurrentFieldIndex];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  [fieldsViewController deleteCurrentFieldIndex];
 }
 
 - (BOOL)canDeleteCurrentFieldIndex
 {
-  v2 = [(RouteSearchViewController *)self fieldsViewController];
-  v3 = [v2 canDeleteCurrentFieldIndex];
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  canDeleteCurrentFieldIndex = [fieldsViewController canDeleteCurrentFieldIndex];
 
-  return v3;
+  return canDeleteCurrentFieldIndex;
 }
 
-- (void)_selectFieldAtIndex:(unint64_t)a3 beginEditing:(BOOL)a4
+- (void)_selectFieldAtIndex:(unint64_t)index beginEditing:(BOOL)editing
 {
-  v4 = a4;
+  editingCopy = editing;
   if (!self->_selectionHandler)
   {
-    v7 = [(RouteSearchViewController *)self dataCoordinator];
-    v8 = [v7 directionItemForCurrentSession];
-    v9 = [v8 items];
+    dataCoordinator = [(RouteSearchViewController *)self dataCoordinator];
+    directionItemForCurrentSession = [dataCoordinator directionItemForCurrentSession];
+    items = [directionItemForCurrentSession items];
     cachedItems = self->_cachedItems;
-    self->_cachedItems = v9;
+    self->_cachedItems = items;
 
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = 0;
+      indexCopy = 0;
     }
 
     else
     {
-      v11 = a3;
+      indexCopy = index;
     }
 
-    self->_waypointIndex = v11;
+    self->_waypointIndex = indexCopy;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a3 = 0;
+    index = 0;
     goto LABEL_10;
   }
 
-  if (a3 == -1)
+  if (index == -1)
   {
-    a3 = [(NSArray *)self->_cachedItems lastObject];
+    index = [(NSArray *)self->_cachedItems lastObject];
 LABEL_10:
     v12 = 0;
     goto LABEL_16;
   }
 
-  if ([(NSArray *)self->_cachedItems count]<= a3)
+  if ([(NSArray *)self->_cachedItems count]<= index)
   {
     v12 = 0;
-    if (!a3)
+    if (!index)
     {
       goto LABEL_16;
     }
@@ -1329,105 +1329,105 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  v12 = [(NSArray *)self->_cachedItems objectAtIndexedSubscript:a3];
-  if (a3)
+  v12 = [(NSArray *)self->_cachedItems objectAtIndexedSubscript:index];
+  if (index)
   {
 LABEL_15:
     v22 = v12;
-    a3 = [(NSArray *)self->_cachedItems objectAtIndexedSubscript:a3 - 1];
+    index = [(NSArray *)self->_cachedItems objectAtIndexedSubscript:index - 1];
     v12 = v22;
   }
 
 LABEL_16:
   v23 = v12;
-  v13 = [v12 waypointName];
-  -[RouteSearchViewController setUsingExistingWaypointNameForAutocomplete:](self, "setUsingExistingWaypointNameForAutocomplete:", [v13 length] != 0);
+  waypointName = [v12 waypointName];
+  -[RouteSearchViewController setUsingExistingWaypointNameForAutocomplete:](self, "setUsingExistingWaypointNameForAutocomplete:", [waypointName length] != 0);
 
-  v14 = [(RouteSearchViewController *)self searchFieldView];
-  [v14 setSearchFieldItem:v23];
+  searchFieldView = [(RouteSearchViewController *)self searchFieldView];
+  [searchFieldView setSearchFieldItem:v23];
 
-  v15 = [(RouteSearchViewController *)self searchFieldView];
-  [v15 setPreviousSearchFieldItem:a3];
+  searchFieldView2 = [(RouteSearchViewController *)self searchFieldView];
+  [searchFieldView2 setPreviousSearchFieldItem:index];
 
-  if (v4)
+  if (editingCopy)
   {
-    v16 = [(RouteSearchViewController *)self searchFieldView];
-    [v16 beginEditingNextSearchField];
+    searchFieldView3 = [(RouteSearchViewController *)self searchFieldView];
+    [searchFieldView3 beginEditingNextSearchField];
   }
 
   [(RouteSearchViewController *)self _updateTitle];
   waypointIndex = self->_waypointIndex;
   v18 = waypointIndex == 0x7FFFFFFFFFFFFFFFLL || waypointIndex >= [(NSArray *)self->_cachedItems count];
   v19 = +[MapsOfflineUIHelper sharedHelper];
-  v20 = [v19 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v19 isUsingOfflineMaps];
 
-  if (!v20 || self->_supportsFullTextSearch)
+  if (!isUsingOfflineMaps || self->_supportsFullTextSearch)
   {
-    v21 = [(RouteSearchViewController *)self suggestionsTableViewController];
-    [v21 updateTableViewHeader:v18];
+    suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+    [suggestionsTableViewController updateTableViewHeader:v18];
   }
 }
 
-- (void)selectFieldIndex:(unint64_t)a3 beginEditing:(BOOL)a4
+- (void)selectFieldIndex:(unint64_t)index beginEditing:(BOOL)editing
 {
-  v4 = a4;
-  v7 = [(RouteSearchViewController *)self fieldsViewController];
+  editingCopy = editing;
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
 
-  if (v7)
+  if (fieldsViewController)
   {
-    v10 = [(RouteSearchViewController *)self fieldsViewController];
-    [v10 selectFieldAtIndex:a3];
+    fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+    [fieldsViewController2 selectFieldAtIndex:index];
   }
 
   else
   {
     v8 = +[MapsOfflineUIHelper sharedHelper];
-    v9 = [v8 isUsingOfflineMaps];
+    isUsingOfflineMaps = [v8 isUsingOfflineMaps];
 
-    if (v9)
+    if (isUsingOfflineMaps)
     {
       self->_isWaitingForTextSearchSupport = 1;
-      self->_editIndex = a3;
-      self->_waypointIndex = a3;
+      self->_editIndex = index;
+      self->_waypointIndex = index;
     }
 
     else
     {
 
-      [(RouteSearchViewController *)self _selectFieldAtIndex:a3 beginEditing:v4];
+      [(RouteSearchViewController *)self _selectFieldAtIndex:index beginEditing:editingCopy];
     }
   }
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(RouteSearchViewController *)self loadViewIfNeeded];
-  v5 = [(RouteSearchViewController *)self containerHeaderView];
-  [v5 setTitle:v4];
+  containerHeaderView = [(RouteSearchViewController *)self containerHeaderView];
+  [containerHeaderView setTitle:titleCopy];
 }
 
-- (void)updateWithItems:(id)a3
+- (void)updateWithItems:(id)items
 {
-  v4 = a3;
-  v5 = [(RouteSearchViewController *)self fieldsViewController];
-  [v5 setItems:v4];
+  itemsCopy = items;
+  fieldsViewController = [(RouteSearchViewController *)self fieldsViewController];
+  [fieldsViewController setItems:itemsCopy];
 
-  v9 = [(RouteSearchViewController *)self suggestionsTableViewController];
-  v6 = [(RouteSearchViewController *)self fieldsViewController];
-  v7 = [v6 hasInput];
-  v8 = [(RouteSearchViewController *)self fieldsViewController];
-  [v9 updateDataSourceHasInput:v7 isEditing:{objc_msgSend(v8, "isEditingAnySearchField")}];
+  suggestionsTableViewController = [(RouteSearchViewController *)self suggestionsTableViewController];
+  fieldsViewController2 = [(RouteSearchViewController *)self fieldsViewController];
+  hasInput = [fieldsViewController2 hasInput];
+  fieldsViewController3 = [(RouteSearchViewController *)self fieldsViewController];
+  [suggestionsTableViewController updateDataSourceHasInput:hasInput isEditing:{objc_msgSend(fieldsViewController3, "isEditingAnySearchField")}];
 }
 
 - (void)updateFieldsWithCurrentDirectionItem
 {
   [(RouteSearchViewController *)self loadViewIfNeeded];
-  v3 = [(RouteSearchViewController *)self dataCoordinator];
-  v5 = [v3 directionItemForCurrentSession];
+  dataCoordinator = [(RouteSearchViewController *)self dataCoordinator];
+  directionItemForCurrentSession = [dataCoordinator directionItemForCurrentSession];
 
-  v4 = [v5 items];
-  [(RouteSearchViewController *)self updateWithItems:v4];
+  items = [directionItemForCurrentSession items];
+  [(RouteSearchViewController *)self updateWithItems:items];
 }
 
 - (RouteWaypointSearchFields)routeSearchFields
@@ -1441,12 +1441,12 @@ LABEL_16:
   return fieldsViewController;
 }
 
-- (RouteSearchViewController)initWithWaypointEditor:(id)a3 suggestionsTableView:(id)a4 delegate:(id)a5 dataCoordinator:(id)a6
+- (RouteSearchViewController)initWithWaypointEditor:(id)editor suggestionsTableView:(id)view delegate:(id)delegate dataCoordinator:(id)coordinator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  editorCopy = editor;
+  viewCopy = view;
+  delegateCopy = delegate;
+  coordinatorCopy = coordinator;
   v18.receiver = self;
   v18.super_class = RouteSearchViewController;
   v15 = [(RouteSearchViewController *)&v18 init];
@@ -1455,28 +1455,28 @@ LABEL_16:
     v16 = +[MKLocationManager sharedLocationManager];
     v15->_wasLocationServicesApproved = [v16 isLocationServicesApproved];
     v15->_wasAuthorizedForPreciseLocation = [v16 isAuthorizedForPreciseLocation];
-    objc_storeStrong(&v15->_fieldsViewController, a3);
+    objc_storeStrong(&v15->_fieldsViewController, editor);
     [(RoutePlanningWaypointEditorViewController *)v15->_fieldsViewController setDelegate:v15];
-    objc_storeStrong(&v15->_suggestionsTableViewController, a4);
-    [(RouteSearchViewController *)v15 setDelegate:v13];
-    [(RouteSearchViewController *)v15 setDataCoordinator:v14];
+    objc_storeStrong(&v15->_suggestionsTableViewController, view);
+    [(RouteSearchViewController *)v15 setDelegate:delegateCopy];
+    [(RouteSearchViewController *)v15 setDataCoordinator:coordinatorCopy];
     [(RouteWaypointSuggestionsTableViewController *)v15->_suggestionsTableViewController setDelegate:v15];
   }
 
   return v15;
 }
 
-- (RouteSearchViewController)initWithDelegate:(id)a3 items:(id)a4 waypointIndex:(unint64_t)a5 selectionHandler:(id)a6
+- (RouteSearchViewController)initWithDelegate:(id)delegate items:(id)items waypointIndex:(unint64_t)index selectionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = [(RouteSearchViewController *)self initWithDelegate:a3 dataCoordinator:0];
+  itemsCopy = items;
+  handlerCopy = handler;
+  v13 = [(RouteSearchViewController *)self initWithDelegate:delegate dataCoordinator:0];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_cachedItems, a4);
-    v14->_waypointIndex = a5;
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_cachedItems, items);
+    v14->_waypointIndex = index;
+    v15 = [handlerCopy copy];
     selectionHandler = v14->_selectionHandler;
     v14->_selectionHandler = v15;
   }
@@ -1484,10 +1484,10 @@ LABEL_16:
   return v14;
 }
 
-- (RouteSearchViewController)initWithDelegate:(id)a3 dataCoordinator:(id)a4
+- (RouteSearchViewController)initWithDelegate:(id)delegate dataCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = RouteSearchViewController;
   v8 = [(RouteSearchViewController *)&v14 initWithNibName:0 bundle:0];
@@ -1497,15 +1497,15 @@ LABEL_16:
     suggestionsTableViewController = v8->_suggestionsTableViewController;
     v8->_suggestionsTableViewController = v9;
 
-    v11 = [(ContaineeViewController *)v8 cardPresentationController];
-    [v11 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v8 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v12 = [(ContaineeViewController *)v8 cardPresentationController];
-    [v12 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v8 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     [(RouteSearchViewController *)v8 setExitRoutePlanningOnCancel:0];
-    [(RouteSearchViewController *)v8 setDelegate:v6];
-    [(RouteSearchViewController *)v8 setDataCoordinator:v7];
+    [(RouteSearchViewController *)v8 setDelegate:delegateCopy];
+    [(RouteSearchViewController *)v8 setDataCoordinator:coordinatorCopy];
     [(RouteWaypointSuggestionsTableViewController *)v8->_suggestionsTableViewController setDelegate:v8];
   }
 

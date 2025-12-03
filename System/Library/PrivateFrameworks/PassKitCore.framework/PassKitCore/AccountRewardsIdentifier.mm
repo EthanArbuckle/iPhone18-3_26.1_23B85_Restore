@@ -1,22 +1,22 @@
 @interface AccountRewardsIdentifier
-+ (id)_predicateForAccountRewardsPID:(int64_t)a3;
-+ (id)identifiersWithAccountRewardsPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteIdentifiersWithAccountRewardsPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertIdentifiers:(id)a3 forAccountRewardsPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)_predicateForAccountRewardsPID:(int64_t)d;
++ (id)identifiersWithAccountRewardsPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteIdentifiersWithAccountRewardsPID:(int64_t)d inDatabase:(id)database;
++ (void)insertIdentifiers:(id)identifiers forAccountRewardsPID:(int64_t)d inDatabase:(id)database;
 @end
 
 @implementation AccountRewardsIdentifier
 
-+ (void)insertIdentifiers:(id)a3 forAccountRewardsPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertIdentifiers:(id)identifiers forAccountRewardsPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
+  identifiersCopy = identifiers;
+  databaseCopy = database;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v8;
-  v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  obj = identifiersCopy;
+  v10 = [identifiersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -34,7 +34,7 @@
         v14 = *(*(&v18 + 1) + 8 * v13);
         v15 = +[NSMutableDictionary dictionary];
         [v15 setObjectOrNull:v14 forKey:@"b"];
-        v16 = [NSNumber numberWithLongLong:a4];
+        v16 = [NSNumber numberWithLongLong:d];
         [v15 setObject:v16 forKey:@"a"];
 
         v13 = v13 + 1;
@@ -48,11 +48,11 @@
   }
 }
 
-+ (id)identifiersWithAccountRewardsPID:(int64_t)a3 inDatabase:(id)a4
++ (id)identifiersWithAccountRewardsPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountRewardsPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountRewardsPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   v9 = +[NSMutableSet set];
   v19 = @"pid";
@@ -61,11 +61,11 @@
   v15[1] = 3221225472;
   v15[2] = sub_10007B3BC;
   v15[3] = &unk_10083C998;
-  v18 = a1;
-  v16 = v6;
+  selfCopy = self;
+  v16 = databaseCopy;
   v11 = v9;
   v17 = v11;
-  v12 = v6;
+  v12 = databaseCopy;
   [v8 enumeratePersistentIDsAndProperties:v10 usingBlock:v15];
 
   if ([v11 count])
@@ -81,18 +81,18 @@
   return v13;
 }
 
-+ (void)deleteIdentifiersWithAccountRewardsPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteIdentifiersWithAccountRewardsPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountRewardsPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountRewardsPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
 
-+ (id)_predicateForAccountRewardsPID:(int64_t)a3
++ (id)_predicateForAccountRewardsPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

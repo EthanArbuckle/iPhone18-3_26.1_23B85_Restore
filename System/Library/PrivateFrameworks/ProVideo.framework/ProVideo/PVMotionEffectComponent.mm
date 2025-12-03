@@ -1,37 +1,37 @@
 @interface PVMotionEffectComponent
 - (PVMotionEffect)motionEffect;
-- (PVMotionEffectComponent)initWithMotionEffect:(id)a3;
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5;
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5;
-- (void)motionEffect:(id)a3 didLoad:(const void *)a4;
-- (void)motionEffect:(id)a3 willOpenMedia:(const void *)a4 properties:(id)a5;
-- (void)motionEffect:(id)a3 willRender:(const void *)a4 properties:(id)a5 time:(id *)a6;
-- (void)motionEffectDidFailToLoad:(id)a3;
-- (void)motionEffectDidStartLoading:(id)a3;
+- (PVMotionEffectComponent)initWithMotionEffect:(id)effect;
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties;
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties;
+- (void)motionEffect:(id)effect didLoad:(const void *)load;
+- (void)motionEffect:(id)effect willOpenMedia:(const void *)media properties:(id)properties;
+- (void)motionEffect:(id)effect willRender:(const void *)render properties:(id)properties time:(id *)time;
+- (void)motionEffectDidFailToLoad:(id)load;
+- (void)motionEffectDidStartLoading:(id)loading;
 @end
 
 @implementation PVMotionEffectComponent
 
-- (PVMotionEffectComponent)initWithMotionEffect:(id)a3
+- (PVMotionEffectComponent)initWithMotionEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v8.receiver = self;
   v8.super_class = PVMotionEffectComponent;
-  v5 = [(PVEffectComponent *)&v8 initWithEffect:v4];
+  v5 = [(PVEffectComponent *)&v8 initWithEffect:effectCopy];
   v6 = v5;
   if (v5)
   {
-    [(PVMotionEffectComponent *)v5 setMotionEffect:v4];
+    [(PVMotionEffectComponent *)v5 setMotionEffect:effectCopy];
   }
 
   return v6;
 }
 
-- (void)effect:(id)a3 updateProperties:(id)a4 allProperties:(id)a5
+- (void)effect:(id)effect updateProperties:(id)properties allProperties:(id)allProperties
 {
   v9.receiver = self;
   v9.super_class = PVMotionEffectComponent;
-  [(PVEffectComponent *)&v9 effect:a3 updateProperties:a4 allProperties:a5];
+  [(PVEffectComponent *)&v9 effect:effect updateProperties:properties allProperties:allProperties];
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
 
@@ -42,7 +42,7 @@
   [v8 assertInspectablePropertiesAreLocked];
 }
 
-- (void)motionEffectDidStartLoading:(id)a3
+- (void)motionEffectDidStartLoading:(id)loading
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
@@ -51,7 +51,7 @@
   [v5 assertDocumentStatusIsInProgress];
 }
 
-- (void)motionEffect:(id)a3 didLoad:(const void *)a4
+- (void)motionEffect:(id)effect didLoad:(const void *)load
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
@@ -60,7 +60,7 @@
   [v6 assertDocumentStatusIsLoaded];
 }
 
-- (void)motionEffect:(id)a3 willOpenMedia:(const void *)a4 properties:(id)a5
+- (void)motionEffect:(id)effect willOpenMedia:(const void *)media properties:(id)properties
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
@@ -72,7 +72,7 @@
   [v8 assertInspectablePropertiesAreLocked];
 }
 
-- (void)motionEffect:(id)a3 didBecomeReady:(const void *)a4 properties:(id)a5
+- (void)motionEffect:(id)effect didBecomeReady:(const void *)ready properties:(id)properties
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
@@ -84,7 +84,7 @@
   [v8 assertInspectablePropertiesAreLocked];
 }
 
-- (void)motionEffect:(id)a3 willRender:(const void *)a4 properties:(id)a5 time:(id *)a6
+- (void)motionEffect:(id)effect willRender:(const void *)render properties:(id)properties time:(id *)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];
@@ -96,7 +96,7 @@
   [v9 assertInspectablePropertiesAreLocked];
 }
 
-- (void)motionEffectDidFailToLoad:(id)a3
+- (void)motionEffectDidFailToLoad:(id)load
 {
   WeakRetained = objc_loadWeakRetained(&self->_motionEffect);
   [WeakRetained assertDocumentIsLocked];

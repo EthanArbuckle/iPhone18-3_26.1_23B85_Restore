@@ -1,133 +1,133 @@
 @interface MPPlaybackArchiveDisplayProperties
-- (BOOL)isEqual:(id)a3;
-- (MPPlaybackArchiveDisplayProperties)initWithBlock:(id)a3;
-- (MPPlaybackArchiveDisplayProperties)initWithCoder:(id)a3;
-- (MPPlaybackArchiveDisplayProperties)initWithTitle:(id)a3 subtitle:(id)a4 artworkImageData:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (MPPlaybackArchiveDisplayProperties)initWithBlock:(id)block;
+- (MPPlaybackArchiveDisplayProperties)initWithCoder:(id)coder;
+- (MPPlaybackArchiveDisplayProperties)initWithTitle:(id)title subtitle:(id)subtitle artworkImageData:(id)data;
 - (NSString)description;
 - (NSURL)artworkImageURL;
-- (id)copyWithOptions:(unint64_t)a3;
+- (id)copyWithOptions:(unint64_t)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setArtworkImageData:(id)a3;
-- (void)setArtworkImageURL:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setArtworkImageData:(id)data;
+- (void)setArtworkImageURL:(id)l;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MPPlaybackArchiveDisplayProperties
 
-- (void)setArtworkImageURL:(id)a3
+- (void)setArtworkImageURL:(id)l
 {
-  v5 = a3;
-  v8 = v5;
+  lCopy = l;
+  v8 = lCopy;
   if (self->_final)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:155 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:155 description:@"Attempt to mutate after finalization."];
 
-    v5 = v8;
+    lCopy = v8;
   }
 
-  v6 = [v5 absoluteString];
-  [(NSMutableDictionary *)self->_storage setObject:v6 forKeyedSubscript:@"artworkImageURL"];
+  absoluteString = [lCopy absoluteString];
+  [(NSMutableDictionary *)self->_storage setObject:absoluteString forKeyedSubscript:@"artworkImageURL"];
 }
 
-- (void)setArtworkImageData:(id)a3
+- (void)setArtworkImageData:(id)data
 {
-  v5 = a3;
-  v9 = v5;
+  dataCopy = data;
+  v9 = dataCopy;
   if (self->_final)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:150 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:150 description:@"Attempt to mutate after finalization."];
 
-    v5 = v9;
+    dataCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dataCopy copy];
   artworkImageData = self->_artworkImageData;
   self->_artworkImageData = v6;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  v9 = v5;
+  subtitleCopy = subtitle;
+  v9 = subtitleCopy;
   if (self->_final)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:145 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:145 description:@"Attempt to mutate after finalization."];
 
-    v5 = v9;
+    subtitleCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [subtitleCopy copy];
   subtitle = self->_subtitle;
   self->_subtitle = v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  v9 = v5;
+  titleCopy = title;
+  v9 = titleCopy;
   if (self->_final)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:140 description:@"Attempt to mutate after finalization."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPPlaybackArchiveDisplayProperties.m" lineNumber:140 description:@"Attempt to mutate after finalization."];
 
-    v5 = v9;
+    titleCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [titleCopy copy];
   title = self->_title;
   self->_title = v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_artworkImageData forKey:@"artworkImageData"];
-  [v5 encodeObject:self->_storage forKey:@"storage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_artworkImageData forKey:@"artworkImageData"];
+  [coderCopy encodeObject:self->_storage forKey:@"storage"];
 }
 
-- (MPPlaybackArchiveDisplayProperties)initWithCoder:(id)a3
+- (MPPlaybackArchiveDisplayProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MPPlaybackArchiveDisplayProperties;
   v5 = [(MPPlaybackArchiveDisplayProperties *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkImageData"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkImageData"];
     artworkImageData = v5->_artworkImageData;
     v5->_artworkImageData = v10;
 
-    v12 = [v4 decodePropertyListForKey:@"storage"];
+    v12 = [coderCopy decodePropertyListForKey:@"storage"];
     v13 = [v12 mutableCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = v13;
+      dictionary = v13;
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     storage = v5->_storage;
-    v5->_storage = v15;
+    v5->_storage = dictionary;
 
     v5->_final = 1;
   }
@@ -148,14 +148,14 @@
   v185 = v5 ^ 0x7465646279746573;
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   v12 = [v10 length];
   if (v12 >= 8)
   {
     v13 = v12 & 0xFFFFFFFFFFFFFFF8;
     do
     {
-      v14 = *v11++;
+      v14 = *uTF8String++;
       v15 = (v4 + v6) ^ __ROR8__(v6, 51);
       v16 = v7 + (v8 ^ v14);
       v17 = __ROR8__(v8 ^ v14, 48);
@@ -194,8 +194,8 @@ LABEL_5:
   v21 = v12;
   do
   {
-    v22 = *v11;
-    v11 = (v11 + 1);
+    v22 = *uTF8String;
+    uTF8String = (uTF8String + 1);
     v20 |= v22 << v19;
     v19 += 8;
     --v21;
@@ -207,7 +207,7 @@ LABEL_10:
   v187 = v23;
 
   v24 = self->_title;
-  v25 = [(NSString *)v24 UTF8String];
+  uTF8String2 = [(NSString *)v24 UTF8String];
   v26 = [(NSString *)v24 length];
   v27 = HIBYTE(v23);
   v28 = HIBYTE(v23) & 7;
@@ -221,7 +221,7 @@ LABEL_10:
     }
 
     v31 = 8 * v28;
-    v32 = v25;
+    v32 = uTF8String2;
     v33 = v23 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -243,7 +243,7 @@ LABEL_10:
     v4 = v38 ^ v33;
     v179 = v38 ^ v33;
     v181 = v6;
-    v25 += v29;
+    uTF8String2 += v29;
     v187 = (v29 + v27) << 56;
     v26 = v30;
   }
@@ -252,8 +252,8 @@ LABEL_10:
   {
     do
     {
-      v39 = *v25;
-      v25 += 8;
+      v39 = *uTF8String2;
+      uTF8String2 += 8;
       v40 = (v4 + v6) ^ __ROR8__(v6, 51);
       v41 = v7 + (v8 ^ v39);
       v42 = __ROR8__(v8 ^ v39, 48);
@@ -282,7 +282,7 @@ LABEL_18:
     v46 = v26;
     do
     {
-      v47 = *v25++;
+      v47 = *uTF8String2++;
       v45 |= v47 << v44;
       v44 += 8;
       --v46;
@@ -307,7 +307,7 @@ LABEL_23:
   }
 
   v50 = self->_subtitle;
-  v51 = [(NSString *)v50 UTF8String];
+  uTF8String3 = [(NSString *)v50 UTF8String];
   v52 = [(NSString *)v50 length];
   v53 = v52;
   v54 = HIBYTE(v187);
@@ -323,7 +323,7 @@ LABEL_23:
     }
 
     v59 = 8 * v56;
-    v60 = v51;
+    v60 = uTF8String3;
     v61 = v187 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -343,7 +343,7 @@ LABEL_23:
     v185 = v67;
     v179 = v66 ^ v61;
     v181 = v68 ^ __ROR8__(v63, 47);
-    v51 += v57;
+    uTF8String3 += v57;
     v187 = (v57 + v54) << 56;
     v53 = v58;
   }
@@ -356,8 +356,8 @@ LABEL_23:
     v71 = v185;
     do
     {
-      v73 = *v51;
-      v51 += 8;
+      v73 = *uTF8String3;
+      uTF8String3 += 8;
       v74 = v71 ^ v73;
       v75 = v69 + v70;
       v76 = v75 ^ __ROR8__(v70, 51);
@@ -389,7 +389,7 @@ LABEL_34:
     v83 = v53;
     do
     {
-      v84 = *v51++;
+      v84 = *uTF8String3++;
       v82 |= v84 << v81;
       v81 += 8;
       --v83;
@@ -421,7 +421,7 @@ LABEL_34:
 LABEL_44:
 
   v86 = self->_artworkImageData;
-  v87 = [(NSData *)v86 bytes];
+  bytes = [(NSData *)v86 bytes];
   v88 = [(NSData *)v86 length];
   v89 = v88;
   v90 = HIBYTE(v187);
@@ -437,7 +437,7 @@ LABEL_44:
     }
 
     v95 = 8 * v92;
-    v96 = v87;
+    v96 = bytes;
     v97 = v187 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -457,7 +457,7 @@ LABEL_44:
     v185 = v103;
     v179 = v102 ^ v97;
     v181 = v104 ^ __ROR8__(v99, 47);
-    v87 = (v87 + v93);
+    bytes = (bytes + v93);
     v187 = (v93 + v90) << 56;
     v89 = v94;
   }
@@ -470,7 +470,7 @@ LABEL_44:
     v107 = v185;
     do
     {
-      v109 = *v87++;
+      v109 = *bytes++;
       v110 = v107 ^ v109;
       v111 = v105 + v106;
       v112 = v111 ^ __ROR8__(v106, 51);
@@ -502,8 +502,8 @@ LABEL_53:
     v119 = v89;
     do
     {
-      v120 = *v87;
-      v87 = (v87 + 1);
+      v120 = *bytes;
+      bytes = (bytes + 1);
       v118 |= v120 << v117;
       v117 += 8;
       --v119;
@@ -621,10 +621,10 @@ LABEL_62:
   return (v174 + v175) ^ __ROR8__(v174, 47) ^ v177 ^ __ROR8__(v174 + v175, 32) ^ v177 ^ __ROR8__(v175 ^ v176, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -634,29 +634,29 @@ LABEL_62:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       title = self->_title;
-      v7 = [(MPPlaybackArchiveDisplayProperties *)v5 title];
-      if (title == v7 || [(NSString *)title isEqual:v7])
+      title = [(MPPlaybackArchiveDisplayProperties *)v5 title];
+      if (title == title || [(NSString *)title isEqual:title])
       {
         subtitle = self->_subtitle;
-        v9 = [(MPPlaybackArchiveDisplayProperties *)v5 subtitle];
-        if (subtitle == v9 || [(NSString *)subtitle isEqual:v9])
+        subtitle = [(MPPlaybackArchiveDisplayProperties *)v5 subtitle];
+        if (subtitle == subtitle || [(NSString *)subtitle isEqual:subtitle])
         {
           artworkImageData = self->_artworkImageData;
-          v11 = [(MPPlaybackArchiveDisplayProperties *)v5 artworkImageData];
-          if (artworkImageData == v11 || [(NSData *)artworkImageData isEqual:v11])
+          artworkImageData = [(MPPlaybackArchiveDisplayProperties *)v5 artworkImageData];
+          if (artworkImageData == artworkImageData || [(NSData *)artworkImageData isEqual:artworkImageData])
           {
             storage = self->_storage;
-            v13 = [(MPPlaybackArchiveDisplayProperties *)v5 storage];
-            if (storage == v13)
+            storage = [(MPPlaybackArchiveDisplayProperties *)v5 storage];
+            if (storage == storage)
             {
               v14 = 1;
             }
 
             else
             {
-              v14 = [(NSMutableDictionary *)storage isEqual:v13];
+              v14 = [(NSMutableDictionary *)storage isEqual:storage];
             }
           }
 
@@ -691,17 +691,17 @@ LABEL_62:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPPlaybackArchiveDisplayProperties *)self title];
-  v6 = [(MPPlaybackArchiveDisplayProperties *)self subtitle];
-  v7 = [(MPPlaybackArchiveDisplayProperties *)self artworkImageData];
-  v8 = [(MPPlaybackArchiveDisplayProperties *)self artworkImageURL];
-  v9 = [(MPPlaybackArchiveDisplayProperties *)self storage];
-  v10 = [v3 stringWithFormat:@"<%@: %p title=%@ subtitle=%@ artworkImageData=%@ artworkImageURL=%@ storage=%@>", v4, self, v5, v6, v7, v8, v9];
+  title = [(MPPlaybackArchiveDisplayProperties *)self title];
+  subtitle = [(MPPlaybackArchiveDisplayProperties *)self subtitle];
+  artworkImageData = [(MPPlaybackArchiveDisplayProperties *)self artworkImageData];
+  artworkImageURL = [(MPPlaybackArchiveDisplayProperties *)self artworkImageURL];
+  storage = [(MPPlaybackArchiveDisplayProperties *)self storage];
+  v10 = [v3 stringWithFormat:@"<%@: %p title=%@ subtitle=%@ artworkImageData=%@ artworkImageURL=%@ storage=%@>", v4, self, title, subtitle, artworkImageData, artworkImageURL, storage];
 
   return v10;
 }
 
-- (id)copyWithOptions:(unint64_t)a3
+- (id)copyWithOptions:(unint64_t)options
 {
   v5 = [MPPlaybackArchiveDisplayProperties alloc];
   v11[0] = MEMORY[0x1E69E9820];
@@ -709,14 +709,14 @@ LABEL_62:
   v11[2] = __54__MPPlaybackArchiveDisplayProperties_copyWithOptions___block_invoke;
   v11[3] = &unk_1E767A550;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = options;
   v6 = [(MPPlaybackArchiveDisplayProperties *)v5 initWithBlock:v11];
-  v7 = [(MPPlaybackArchiveDisplayProperties *)self storage];
-  v8 = [v7 mutableCopy];
+  storage = [(MPPlaybackArchiveDisplayProperties *)self storage];
+  v8 = [storage mutableCopy];
   v9 = v6[5];
   v6[5] = v8;
 
-  if ((a3 & 0x10) != 0)
+  if ((options & 0x10) != 0)
   {
     [v6[5] removeObjectForKey:@"artworkImageURL"];
   }
@@ -746,21 +746,21 @@ void __54__MPPlaybackArchiveDisplayProperties_copyWithOptions___block_invoke(uin
   }
 }
 
-- (MPPlaybackArchiveDisplayProperties)initWithTitle:(id)a3 subtitle:(id)a4 artworkImageData:(id)a5
+- (MPPlaybackArchiveDisplayProperties)initWithTitle:(id)title subtitle:(id)subtitle artworkImageData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  dataCopy = data;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__MPPlaybackArchiveDisplayProperties_initWithTitle_subtitle_artworkImageData___block_invoke;
   v16[3] = &unk_1E767A528;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = titleCopy;
+  v18 = subtitleCopy;
+  v19 = dataCopy;
+  v11 = dataCopy;
+  v12 = subtitleCopy;
+  v13 = titleCopy;
   v14 = [(MPPlaybackArchiveDisplayProperties *)self initWithBlock:v16];
 
   return v14;
@@ -775,19 +775,19 @@ void __78__MPPlaybackArchiveDisplayProperties_initWithTitle_subtitle_artworkImag
   [v4 setArtworkImageData:a1[6]];
 }
 
-- (MPPlaybackArchiveDisplayProperties)initWithBlock:(id)a3
+- (MPPlaybackArchiveDisplayProperties)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = MPPlaybackArchiveDisplayProperties;
   v5 = [(MPPlaybackArchiveDisplayProperties *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     storage = v5->_storage;
-    v5->_storage = v6;
+    v5->_storage = dictionary;
 
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_final = 1;
   }
 

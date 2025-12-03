@@ -1,24 +1,24 @@
 @interface OFUIWindowDraggingSession
-- (BOOL)itemsContainObject:(id)a3;
+- (BOOL)itemsContainObject:(id)object;
 - (CGPoint)position;
 - (CGSize)presentationViewSize;
 - (OFUIWindowDraggingSession)init;
-- (OFUIWindowDraggingSession)initWithWindow:(id)a3 items:(id)a4 position:(CGPoint)a5 source:(id)a6;
-- (id)_hitDestinationInSuperview:(id)a3;
-- (id)_hitDestinationInView:(id)a3;
-- (id)objectsForPasteboardType:(id)a3 transcodeBlock:(id)a4 cache:(BOOL)a5;
-- (void)_finishPresentationViewWithCompletion:(id)a3;
+- (OFUIWindowDraggingSession)initWithWindow:(id)window items:(id)items position:(CGPoint)position source:(id)source;
+- (id)_hitDestinationInSuperview:(id)superview;
+- (id)_hitDestinationInView:(id)view;
+- (id)objectsForPasteboardType:(id)type transcodeBlock:(id)block cache:(BOOL)cache;
+- (void)_finishPresentationViewWithCompletion:(id)completion;
 - (void)_updateBadge;
 - (void)_updateDraggingInSameWindow;
-- (void)_updatePresentationViewWithCompletion:(id)a3;
-- (void)_updateView:(id)a3 orientation:(int64_t)a4 animated:(BOOL)a5;
-- (void)addItem:(id)a3;
+- (void)_updatePresentationViewWithCompletion:(id)completion;
+- (void)_updateView:(id)view orientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)addItem:(id)item;
 - (void)beginDragging;
 - (void)dealloc;
-- (void)endDragging:(BOOL)a3;
-- (void)moveToPosition:(CGPoint)a3;
+- (void)endDragging:(BOOL)dragging;
+- (void)moveToPosition:(CGPoint)position;
 - (void)updateDragging;
-- (void)updatePresentationViewOrientation:(id)a3;
+- (void)updatePresentationViewOrientation:(id)orientation;
 @end
 
 @implementation OFUIWindowDraggingSession
@@ -49,28 +49,28 @@
     -[OFUIWindowDraggingSession setPasteboard:](v3, "setPasteboard:", [MEMORY[0x277D75810] pasteboardWithUniqueName]);
     [(UIPasteboard *)v3->_pasteboard setPersistent:1];
     v3->_pasteboardCache = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_updatePresentationViewOrientation_ name:*MEMORY[0x277D76658] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_updatePresentationViewOrientation_ name:*MEMORY[0x277D76658] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
   }
 
   return v3;
 }
 
-- (OFUIWindowDraggingSession)initWithWindow:(id)a3 items:(id)a4 position:(CGPoint)a5 source:(id)a6
+- (OFUIWindowDraggingSession)initWithWindow:(id)window items:(id)items position:(CGPoint)position source:(id)source
 {
-  y = a5.y;
-  x = a5.x;
+  y = position.y;
+  x = position.x;
   v26 = *MEMORY[0x277D85DE8];
   v11 = [(OFUIWindowDraggingSession *)self init];
   v12 = v11;
   if (v11)
   {
-    v11->_window = a3;
+    v11->_window = window;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [a4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v13 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = *v22;
@@ -80,7 +80,7 @@
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(items);
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
@@ -96,7 +96,7 @@
           }
         }
 
-        v13 = [a4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v13);
@@ -104,7 +104,7 @@
 
     if ([(NSMutableArray *)v12->_items count])
     {
-      [(OFUIWindowDraggingSession *)v12 setSource:a6];
+      [(OFUIWindowDraggingSession *)v12 setSource:source];
       v12->_position.x = x;
       v12->_position.y = y;
     }
@@ -121,8 +121,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76658] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76658] object:{objc_msgSend(MEMORY[0x277D75128], "sharedApplication")}];
   if (self->_window)
   {
     self->_window = 0;
@@ -190,15 +190,15 @@
   [(OFUIWindowDraggingSession *)&v12 dealloc];
 }
 
-- (void)_updateView:(id)a3 orientation:(int64_t)a4 animated:(BOOL)a5
+- (void)_updateView:(id)view orientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v5 = a5;
-  if ((a4 - 3) > 1)
+  animatedCopy = animated;
+  if ((orientation - 3) > 1)
   {
     v8 = 0.0;
-    if ((a4 - 1) <= 1)
+    if ((orientation - 1) <= 1)
     {
-      if (a4 == 2)
+      if (orientation == 2)
       {
         v8 = 565.486678;
       }
@@ -213,12 +213,12 @@
   else
   {
     v7 = 282.743339;
-    if (a4 != 3)
+    if (orientation != 3)
     {
       v7 = 0.0;
     }
 
-    if (a4 == 4)
+    if (orientation == 4)
     {
       v8 = -282.743339;
     }
@@ -229,8 +229,8 @@
     }
   }
 
-  v9 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  if (v5)
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] beginAnimations:0 context:0];
   }
@@ -241,15 +241,15 @@
   }
 
   CGAffineTransformMakeRotation(&v10, v8 / 180.0);
-  [a3 setTransform:&v10];
-  if (v5)
+  [view setTransform:&v10];
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] commitAnimations];
   }
 
   else
   {
-    [MEMORY[0x277D75D18] setAnimationsEnabled:v9];
+    [MEMORY[0x277D75D18] setAnimationsEnabled:areAnimationsEnabled];
   }
 }
 
@@ -368,9 +368,9 @@ LABEL_25:
     v25 = @"badgeCopy";
 LABEL_30:
     v27 = [objc_msgSend(v23 imageWithContentsOfFile:{objc_msgSend(v24, "pathForResource:ofType:", v25, @"png", "CGImage"}];
-    v28 = [(UIView *)self->_badgeView layer];
+    layer = [(UIView *)self->_badgeView layer];
 
-    [(CALayer *)v28 setContents:v27];
+    [(CALayer *)layer setContents:v27];
     return;
   }
 
@@ -400,12 +400,12 @@ LABEL_21:
   [(UILabel *)v21 setText:v20];
 }
 
-- (void)_updatePresentationViewWithCompletion:(id)a3
+- (void)_updatePresentationViewWithCompletion:(id)completion
 {
   v65 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_items count])
   {
-    v49 = a3;
+    completionCopy = completion;
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
@@ -520,7 +520,7 @@ LABEL_21:
               v34 = v11;
               v36 = v35;
               v38 = v37;
-              v39 = [v13 imageView];
+              imageView = [v13 imageView];
               v40 = v30;
               v41 = v33;
               v10 = v31;
@@ -533,14 +533,14 @@ LABEL_21:
 
             else
             {
-              v39 = [v13 imageView];
+              imageView = [v13 imageView];
               v40 = 0.0;
               v41 = 0.0;
               v42 = v19;
               v43 = v21;
             }
 
-            [v39 setBounds:{v40, v41, v42, v43}];
+            [imageView setBounds:{v40, v41, v42, v43}];
             presentationView = self->_presentationView;
             v69.origin.x = v15;
             v69.origin.y = v17;
@@ -588,7 +588,7 @@ LABEL_21:
     v57[1] = 3221225472;
     v57[2] = __67__OFUIWindowDraggingSession__updatePresentationViewWithCompletion___block_invoke_2;
     v57[3] = &unk_279C8A1B8;
-    v57[4] = v49;
+    v57[4] = completionCopy;
     [MEMORY[0x277D75D18] animateWithDuration:2 delay:v58 options:v57 animations:0.200000003 completion:0.0];
   }
 }
@@ -723,9 +723,9 @@ LABEL_21:
   return result;
 }
 
-- (void)_finishPresentationViewWithCompletion:(id)a3
+- (void)_finishPresentationViewWithCompletion:(id)completion
 {
-  v4 = self;
+  selfCopy = self;
   v54 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_items count])
   {
@@ -733,13 +733,13 @@ LABEL_21:
     v46[1] = 3221225472;
     v47 = __67__OFUIWindowDraggingSession__finishPresentationViewWithCompletion___block_invoke;
     v48 = &unk_279C8A1E0;
-    v49 = v4;
-    v50 = a3;
+    v49 = selfCopy;
+    completionCopy = completion;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    obj = [(UIView *)v4->_presentationView subviews];
+    obj = [(UIView *)selfCopy->_presentationView subviews];
     v5 = [(NSArray *)obj countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v5)
     {
@@ -759,8 +759,8 @@ LABEL_21:
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v10 = v4;
-          items = v4->_items;
+          v10 = selfCopy;
+          items = selfCopy->_items;
           v12 = [(NSMutableArray *)items countByEnumeratingWithState:&v38 objects:v52 count:16];
           if (v12)
           {
@@ -793,7 +793,7 @@ LABEL_9:
             }
           }
 
-          v4 = v10;
+          selfCopy = v10;
         }
 
         v6 = [(NSArray *)obj countByEnumeratingWithState:&v42 objects:v53 count:16];
@@ -802,11 +802,11 @@ LABEL_9:
       while (v6);
     }
 
-    animation = v4->_animation;
+    animation = selfCopy->_animation;
     if (animation == 16)
     {
       v17 = objc_alloc(MEMORY[0x277D755E8]);
-      [(UIView *)v4->_presentationView bounds];
+      [(UIView *)selfCopy->_presentationView bounds];
       v18 = [v17 initWithFrame:?];
       obja = [MEMORY[0x277D755B8] imageWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"poof1", @"png"}];
       v19 = [MEMORY[0x277D755B8] imageWithContentsOfFile:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"poof2", @"png"}];
@@ -815,13 +815,13 @@ LABEL_9:
       [v18 setAnimationImages:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:", obja, v19, v20, v21, objc_msgSend(MEMORY[0x277D755B8], "imageWithContentsOfFile:", objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "pathForResource:ofType:", @"poof5", @"png", 0)}];
       [v18 setAnimationDuration:0.25];
       [v18 setAnimationRepeatCount:1];
-      [(UIView *)v4->_presentationView addSubview:v18];
+      [(UIView *)selfCopy->_presentationView addSubview:v18];
 
       v36 = 0u;
       v37 = 0u;
       v35 = 0u;
       v34 = 0u;
-      v22 = v4->_items;
+      v22 = selfCopy->_items;
       v23 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v34 objects:v51 count:16];
       if (v23)
       {
@@ -870,7 +870,7 @@ LABEL_9:
       v32[1] = 3221225472;
       v32[2] = __67__OFUIWindowDraggingSession__finishPresentationViewWithCompletion___block_invoke_3;
       v32[3] = &unk_279C89F90;
-      v32[4] = v4;
+      v32[4] = selfCopy;
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __67__OFUIWindowDraggingSession__finishPresentationViewWithCompletion___block_invoke_4;
@@ -1059,22 +1059,22 @@ LABEL_17:
   return result;
 }
 
-- (id)_hitDestinationInSuperview:(id)a3
+- (id)_hitDestinationInSuperview:(id)superview
 {
-  if (!a3 || ([a3 conformsToProtocol:&unk_287AE7C70] & 1) != 0)
+  if (!superview || ([superview conformsToProtocol:&unk_287AE7C70] & 1) != 0)
   {
-    return a3;
+    return superview;
   }
 
-  v6 = [a3 superview];
+  superview = [superview superview];
 
-  return [(OFUIWindowDraggingSession *)self _hitDestinationInSuperview:v6];
+  return [(OFUIWindowDraggingSession *)self _hitDestinationInSuperview:superview];
 }
 
-- (id)_hitDestinationInView:(id)a3
+- (id)_hitDestinationInView:(id)view
 {
   window = self->_window;
-  [a3 convertPoint:window fromView:{self->_position.x, self->_position.y}];
+  [view convertPoint:window fromView:{self->_position.x, self->_position.y}];
   v5 = [(OFUIWindow *)window hitTest:0 withEvent:?];
   v6 = v5;
   if (!v5 || ([v5 conformsToProtocol:&unk_287AE7C70] & 1) != 0)
@@ -1082,9 +1082,9 @@ LABEL_17:
     return v6;
   }
 
-  v8 = [v6 superview];
+  superview = [v6 superview];
 
-  return [(OFUIWindowDraggingSession *)self _hitDestinationInSuperview:v8];
+  return [(OFUIWindowDraggingSession *)self _hitDestinationInSuperview:superview];
 }
 
 - (void)beginDragging
@@ -1124,7 +1124,7 @@ uint64_t __42__OFUIWindowDraggingSession_beginDragging__block_invoke(uint64_t a1
   return [v5 updateDragging];
 }
 
-- (BOOL)itemsContainObject:(id)a3
+- (BOOL)itemsContainObject:(id)object
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -1171,15 +1171,15 @@ uint64_t __42__OFUIWindowDraggingSession_beginDragging__block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  if (-[OFUIWindowDraggingSession isDragging](self, "isDragging") && !-[OFUIWindowDraggingSession itemsContainObject:](self, "itemsContainObject:", [a3 object]) && (!self->_source || (objc_opt_respondsToSelector() & 1) == 0 || -[OFUIWindowDraggingSource draggingSource:willAddItem:](self->_source, "draggingSource:willAddItem:", self, a3)))
+  if (-[OFUIWindowDraggingSession isDragging](self, "isDragging") && !-[OFUIWindowDraggingSession itemsContainObject:](self, "itemsContainObject:", [item object]) && (!self->_source || (objc_opt_respondsToSelector() & 1) == 0 || -[OFUIWindowDraggingSource draggingSource:willAddItem:](self->_source, "draggingSource:willAddItem:", self, item)))
   {
-    v5 = [objc_msgSend(a3 "object")];
+    v5 = [objc_msgSend(item "object")];
     if (v5)
     {
       -[UIPasteboard addItems:](self->_pasteboard, "addItems:", [MEMORY[0x277CBEA60] arrayWithObject:v5]);
-      [(NSMutableArray *)self->_items addObject:a3];
+      [(NSMutableArray *)self->_items addObject:item];
       pasteboardCache = self->_pasteboardCache;
       objc_sync_enter(pasteboardCache);
       [(NSMutableDictionary *)self->_pasteboardCache removeAllObjects];
@@ -1189,7 +1189,7 @@ uint64_t __42__OFUIWindowDraggingSession_beginDragging__block_invoke(uint64_t a1
       v7[2] = __37__OFUIWindowDraggingSession_addItem___block_invoke;
       v7[3] = &unk_279C8A230;
       v7[4] = self;
-      v7[5] = a3;
+      v7[5] = item;
       [(OFUIWindowDraggingSession *)self _updatePresentationViewWithCompletion:v7];
     }
   }
@@ -1212,10 +1212,10 @@ uint64_t __37__OFUIWindowDraggingSession_addItem___block_invoke(uint64_t a1)
   return [v2 updateDragging];
 }
 
-- (void)moveToPosition:(CGPoint)a3
+- (void)moveToPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   if ([(OFUIWindowDraggingSession *)self isDragging])
   {
     self->_position.x = x;
@@ -1377,9 +1377,9 @@ LABEL_24:
   }
 }
 
-- (void)endDragging:(BOOL)a3
+- (void)endDragging:(BOOL)dragging
 {
-  v3 = a3;
+  draggingCopy = dragging;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateDraggingInSameWindow object:0];
   if (self->_state == 2)
   {
@@ -1405,7 +1405,7 @@ LABEL_24:
     }
   }
 
-  if (v3)
+  if (draggingCopy)
   {
     v7 = 8;
   }
@@ -1421,7 +1421,7 @@ LABEL_24:
   v14[2] = __41__OFUIWindowDraggingSession_endDragging___block_invoke;
   v14[3] = &unk_279C8A208;
   v14[4] = self;
-  if (v3 || !self->_destination || (destinationOperation = self->_destinationOperation, destinationOperation == 8) || destinationOperation == 1)
+  if (draggingCopy || !self->_destination || (destinationOperation = self->_destinationOperation, destinationOperation == 8) || destinationOperation == 1)
   {
     if (self->_destinationOperation == 8)
     {
@@ -1520,20 +1520,20 @@ uint64_t __41__OFUIWindowDraggingSession_endDragging___block_invoke_3(uint64_t a
   return v2();
 }
 
-- (void)updatePresentationViewOrientation:(id)a3
+- (void)updatePresentationViewOrientation:(id)orientation
 {
   presentationView = self->_presentationView;
-  v5 = [objc_msgSend(MEMORY[0x277D75128] sharedApplication];
+  sharedApplication = [objc_msgSend(MEMORY[0x277D75128] sharedApplication];
 
-  [(OFUIWindowDraggingSession *)self _updateView:presentationView orientation:v5 animated:1];
+  [(OFUIWindowDraggingSession *)self _updateView:presentationView orientation:sharedApplication animated:1];
 }
 
-- (id)objectsForPasteboardType:(id)a3 transcodeBlock:(id)a4 cache:(BOOL)a5
+- (id)objectsForPasteboardType:(id)type transcodeBlock:(id)block cache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   pasteboardCache = self->_pasteboardCache;
   objc_sync_enter(pasteboardCache);
-  v10 = [(NSMutableDictionary *)self->_pasteboardCache objectForKey:a3];
+  v10 = [(NSMutableDictionary *)self->_pasteboardCache objectForKey:type];
   objc_sync_exit(pasteboardCache);
   if (v10)
   {
@@ -1542,11 +1542,11 @@ uint64_t __41__OFUIWindowDraggingSession_endDragging___block_invoke_3(uint64_t a
 
   else
   {
-    v12 = (*(a4 + 2))(a4, -[UIPasteboard valuesForPasteboardType:inItemSet:](self->_pasteboard, "valuesForPasteboardType:inItemSet:", a3, -[UIPasteboard itemSetWithPasteboardTypes:](self->_pasteboard, "itemSetWithPasteboardTypes:", [MEMORY[0x277CBEA60] arrayWithObject:a3])));
+    v12 = (*(block + 2))(block, -[UIPasteboard valuesForPasteboardType:inItemSet:](self->_pasteboard, "valuesForPasteboardType:inItemSet:", type, -[UIPasteboard itemSetWithPasteboardTypes:](self->_pasteboard, "itemSetWithPasteboardTypes:", [MEMORY[0x277CBEA60] arrayWithObject:type])));
     v13 = v12;
-    if (v5 && v12)
+    if (cacheCopy && v12)
     {
-      [(NSMutableDictionary *)self->_pasteboardCache setObject:v12 forKey:a3];
+      [(NSMutableDictionary *)self->_pasteboardCache setObject:v12 forKey:type];
     }
 
     v11 = v13;

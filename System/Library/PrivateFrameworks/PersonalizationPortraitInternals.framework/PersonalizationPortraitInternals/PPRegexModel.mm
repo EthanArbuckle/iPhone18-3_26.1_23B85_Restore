@@ -1,15 +1,15 @@
 @interface PPRegexModel
-- (PPRegexModel)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (PPRegexModel)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation PPRegexModel
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  featuresCopy = features;
+  optionsCopy = options;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -18,21 +18,21 @@
   v32[1] = v32;
   v32[2] = 0x2020000000;
   v32[3] = mach_absolute_time();
-  v10 = [v8 featureValueForName:self->_inputName];
-  v11 = [v10 stringValue];
+  v10 = [featuresCopy featureValueForName:self->_inputName];
+  stringValue = [v10 stringValue];
 
-  if (v11)
+  if (stringValue)
   {
     regex = self->_regex;
-    v13 = [v11 length];
+    v13 = [stringValue length];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __53__PPRegexModel_predictionFromFeatures_options_error___block_invoke;
     v27[3] = &unk_278979378;
     v30 = &v33;
     v31 = v32;
-    v28 = v11;
-    v29 = self;
+    v28 = stringValue;
+    selfCopy = self;
     [(NSRegularExpression *)regex enumerateMatchesInString:v28 options:1 range:0 usingBlock:v13, v27];
     v14 = objc_alloc(MEMORY[0x277CBFED0]);
     outputName = self->_outputName;
@@ -42,7 +42,7 @@
     v17 = [PPCoreMLUtils _multiArrayForNumberArray:v16];
     v39 = v17;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&outputName count:1];
-    v19 = [v14 initWithDictionary:v18 error:a5];
+    v19 = [v14 initWithDictionary:v18 error:error];
 
     v20 = v28;
   }
@@ -58,7 +58,7 @@
     v23 = [PPCoreMLUtils _multiArrayForNumberArray:v22];
     v42[0] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    v19 = [v21 initWithDictionary:v24 error:a5];
+    v19 = [v21 initWithDictionary:v24 error:error];
   }
 
   _Block_object_dispose(v32, 8);
@@ -112,25 +112,25 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (PPRegexModel)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5
+- (PPRegexModel)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a4;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PPRegexModel;
   v8 = [(PPRegexModel *)&v18 init];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CCAC68]);
-    v10 = [v7 objectForKeyedSubscript:@"regex"];
-    v11 = [v9 initWithPattern:v10 options:1 error:a5];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"regex"];
+    v11 = [v9 initWithPattern:v10 options:1 error:error];
     regex = v8->_regex;
     v8->_regex = v11;
 
-    v13 = [v7 objectForKeyedSubscript:@"inputName"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"inputName"];
     inputName = v8->_inputName;
     v8->_inputName = v13;
 
-    v15 = [v7 objectForKeyedSubscript:@"outputName"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"outputName"];
     outputName = v8->_outputName;
     v8->_outputName = v15;
   }

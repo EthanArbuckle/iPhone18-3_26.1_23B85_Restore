@@ -1,19 +1,19 @@
 @interface CNAutocompleteQuery
-+ (BOOL)shouldSortResultsForPolicy:(id)a3;
-+ (BOOL)shouldSuppressAddressesAlreadyChosenForRequest:(id)a3;
-+ (id)observableForQuery:(id)a3 context:(id)a4;
-+ (id)observableWithSupplementalResultsForQuery:(id)a3;
-+ (id)queryWithRequest:(id)a3 searchProvider:(id)a4 delegate:(id)a5 probeProvider:(id)a6 scheduler:(id)a7 userSession:(id)a8 delegateToken:(id)a9;
-+ (void)configureNetworkActivityHandlersForBuilder:(id)a3 query:(id)a4;
-+ (void)configureNetworkForBuilder:(id)a3 query:(id)a4;
-+ (void)configureNetworkPolicyForBuilder:(id)a3 query:(id)a4;
-- (CNAutocompleteQuery)initWithRequest:(id)a3 searchProvider:(id)a4 delegate:(id)a5 probeProvider:(id)a6 scheduler:(id)a7 userSession:(id)a8 delegateToken:(id)a9;
++ (BOOL)shouldSortResultsForPolicy:(id)policy;
++ (BOOL)shouldSuppressAddressesAlreadyChosenForRequest:(id)request;
++ (id)observableForQuery:(id)query context:(id)context;
++ (id)observableWithSupplementalResultsForQuery:(id)query;
++ (id)queryWithRequest:(id)request searchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session delegateToken:(id)token;
++ (void)configureNetworkActivityHandlersForBuilder:(id)builder query:(id)query;
++ (void)configureNetworkForBuilder:(id)builder query:(id)query;
++ (void)configureNetworkPolicyForBuilder:(id)builder query:(id)query;
+- (CNAutocompleteQuery)initWithRequest:(id)request searchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session delegateToken:(id)token;
 - (CNCancelable)delegateToken;
-- (id)executeWithContext:(id)a3;
-- (id)makeDelegateWrapperWithDelegate:(id)a3 forRequest:(id)a4 sourceInclusionPolicy:(id)a5 userSession:(id)a6;
+- (id)executeWithContext:(id)context;
+- (id)makeDelegateWrapperWithDelegate:(id)delegate forRequest:(id)request sourceInclusionPolicy:(id)policy userSession:(id)session;
 - (void)cancel;
-- (void)searchOperationEncounteredError:(id)a3;
-- (void)searchOperationReportedResults:(id)a3;
+- (void)searchOperationEncounteredError:(id)error;
+- (void)searchOperationReportedResults:(id)results;
 - (void)searchOperationsHaveBegunNetworkActivity;
 - (void)searchOperationsHaveEndedNetworkActivity;
 - (void)searchOperationsHaveFinished;
@@ -34,10 +34,10 @@
   v3 = CNALoggingContextTriage();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CNAutocompleteQuery *)self request];
-    v5 = [v4 triageIdentifier];
+    request = [(CNAutocompleteQuery *)self request];
+    triageIdentifier = [request triageIdentifier];
     v9 = 138543362;
-    v10 = v5;
+    v10 = triageIdentifier;
     _os_log_impl(&dword_2155FE000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Search operation complete.", &v9, 0xCu);
   }
 
@@ -48,44 +48,44 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)queryWithRequest:(id)a3 searchProvider:(id)a4 delegate:(id)a5 probeProvider:(id)a6 scheduler:(id)a7 userSession:(id)a8 delegateToken:(id)a9
++ (id)queryWithRequest:(id)request searchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session delegateToken:(id)token
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[a1 alloc] initWithRequest:v22 searchProvider:v21 delegate:v20 probeProvider:v19 scheduler:v18 userSession:v17 delegateToken:v16];
+  tokenCopy = token;
+  sessionCopy = session;
+  schedulerCopy = scheduler;
+  probeProviderCopy = probeProvider;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  requestCopy = request;
+  v23 = [[self alloc] initWithRequest:requestCopy searchProvider:providerCopy delegate:delegateCopy probeProvider:probeProviderCopy scheduler:schedulerCopy userSession:sessionCopy delegateToken:tokenCopy];
 
   return v23;
 }
 
-- (CNAutocompleteQuery)initWithRequest:(id)a3 searchProvider:(id)a4 delegate:(id)a5 probeProvider:(id)a6 scheduler:(id)a7 userSession:(id)a8 delegateToken:(id)a9
+- (CNAutocompleteQuery)initWithRequest:(id)request searchProvider:(id)provider delegate:(id)delegate probeProvider:(id)probeProvider scheduler:(id)scheduler userSession:(id)session delegateToken:(id)token
 {
-  v15 = a3;
-  v34 = a4;
-  v16 = a5;
-  v33 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  requestCopy = request;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  probeProviderCopy = probeProvider;
+  schedulerCopy = scheduler;
+  sessionCopy = session;
+  tokenCopy = token;
   v37.receiver = self;
   v37.super_class = CNAutocompleteQuery;
   v20 = [(CNAutocompleteQuery *)&v37 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [requestCopy copy];
     request = v20->_request;
     v20->_request = v21;
 
-    objc_storeStrong(&v20->_searchProvider, a4);
-    objc_storeStrong(&v20->_probeProvider, a6);
-    objc_storeStrong(&v20->_userSession, a8);
-    if (v19)
+    objc_storeStrong(&v20->_searchProvider, provider);
+    objc_storeStrong(&v20->_probeProvider, probeProvider);
+    objc_storeStrong(&v20->_userSession, session);
+    if (tokenCopy)
     {
-      v23 = v19;
+      v23 = tokenCopy;
     }
 
     else
@@ -94,11 +94,11 @@
     }
 
     objc_storeWeak(&v20->_delegateToken, v23);
-    v24 = [CNAutocompleteSourceInclusionPolicy defaultPolicyWithFetchRequest:v15];
+    v24 = [CNAutocompleteSourceInclusionPolicy defaultPolicyWithFetchRequest:requestCopy];
     sourceInclusionPolicy = v20->_sourceInclusionPolicy;
     v20->_sourceInclusionPolicy = v24;
 
-    v26 = [(CNAutocompleteQuery *)v20 makeDelegateWrapperWithDelegate:v16 forRequest:v20->_request sourceInclusionPolicy:v20->_sourceInclusionPolicy userSession:v20->_userSession];
+    v26 = [(CNAutocompleteQuery *)v20 makeDelegateWrapperWithDelegate:delegateCopy forRequest:v20->_request sourceInclusionPolicy:v20->_sourceInclusionPolicy userSession:v20->_userSession];
     objc_storeStrong(&v20->_delegate, v26);
     v27 = MEMORY[0x277CFBDC8];
     v35[0] = MEMORY[0x277D85DD0];
@@ -111,73 +111,73 @@
     cancelationToken = v20->_cancelationToken;
     v20->_cancelationToken = v29;
 
-    objc_storeStrong(&v20->_scheduler, a7);
+    objc_storeStrong(&v20->_scheduler, scheduler);
     v31 = v20;
   }
 
   return v20;
 }
 
-- (id)makeDelegateWrapperWithDelegate:(id)a3 forRequest:(id)a4 sourceInclusionPolicy:(id)a5 userSession:(id)a6
+- (id)makeDelegateWrapperWithDelegate:(id)delegate forRequest:(id)request sourceInclusionPolicy:(id)policy userSession:(id)session
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[CNAutocompleteDelegateWrapper alloc] initWithDelegate:v12 userSession:v10 fetchRequest:v9];
+  requestCopy = request;
+  sessionCopy = session;
+  policyCopy = policy;
+  delegateCopy = delegate;
+  v13 = [[CNAutocompleteDelegateWrapper alloc] initWithDelegate:delegateCopy userSession:sessionCopy fetchRequest:requestCopy];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __100__CNAutocompleteQuery_makeDelegateWrapperWithDelegate_forRequest_sourceInclusionPolicy_userSession___block_invoke;
   v26[3] = &unk_2781C49A0;
-  v14 = v9;
+  v14 = requestCopy;
   v27 = v14;
   v15 = [(CNAutocompleteDelegateWrapper *)v13 addDiagnosticLog:v26];
 
-  LODWORD(v13) = [objc_opt_class() shouldSortResultsForPolicy:v11];
+  LODWORD(v13) = [objc_opt_class() shouldSortResultsForPolicy:policyCopy];
   if (v13)
   {
-    v16 = [v15 sortResults];
+    sortResults = [v15 sortResults];
 
-    v15 = v16;
+    v15 = sortResults;
   }
 
-  v17 = [v15 askDelegateToAdjustResults];
+  askDelegateToAdjustResults = [v15 askDelegateToAdjustResults];
 
   if ([objc_opt_class() shouldSuppressAddressesAlreadyChosenForRequest:v14])
   {
-    v18 = [v14 fetchContext];
-    v19 = [v18 otherAddressesAlreadyChosen];
-    v20 = [v17 suppressResultsWithAddresses:v19];
+    fetchContext = [v14 fetchContext];
+    otherAddressesAlreadyChosen = [fetchContext otherAddressesAlreadyChosen];
+    v20 = [askDelegateToAdjustResults suppressResultsWithAddresses:otherAddressesAlreadyChosen];
 
-    v17 = v20;
+    askDelegateToAdjustResults = v20;
   }
 
-  v21 = [MEMORY[0x277CFBE10] currentEnvironment];
-  v22 = [v21 featureFlags];
-  v23 = [v22 isFeatureEnabled:9];
+  currentEnvironment = [MEMORY[0x277CFBE10] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v23 = [featureFlags isFeatureEnabled:9];
 
   if (v23)
   {
-    v24 = [v17 removeResultsWithBlockedHandles];
+    removeResultsWithBlockedHandles = [askDelegateToAdjustResults removeResultsWithBlockedHandles];
 
-    v17 = v24;
+    askDelegateToAdjustResults = removeResultsWithBlockedHandles;
   }
 
-  return v17;
+  return askDelegateToAdjustResults;
 }
 
-+ (BOOL)shouldSuppressAddressesAlreadyChosenForRequest:(id)a3
++ (BOOL)shouldSuppressAddressesAlreadyChosenForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 fetchContext];
-  v6 = [v5 otherAddressesAlreadyChosen];
-  v7 = [v6 count];
+  requestCopy = request;
+  fetchContext = [requestCopy fetchContext];
+  otherAddressesAlreadyChosen = [fetchContext otherAddressesAlreadyChosen];
+  v7 = [otherAddressesAlreadyChosen count];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CFBEE8] standardPreferences];
-    v9 = [v8 userHasOptedInToPreference:@"CNSuppressAddressesAlreadyChosen"];
+    standardPreferences = [MEMORY[0x277CFBEE8] standardPreferences];
+    v9 = [standardPreferences userHasOptedInToPreference:@"CNSuppressAddressesAlreadyChosen"];
 
     if (v9)
     {
@@ -186,7 +186,7 @@
 
     else
     {
-      v10 = [a1 searchTypeSupportsSuppressionOfAlreadyChosenAddresses:{objc_msgSend(v4, "searchType")}];
+      v10 = [self searchTypeSupportsSuppressionOfAlreadyChosenAddresses:{objc_msgSend(requestCopy, "searchType")}];
     }
   }
 
@@ -198,25 +198,25 @@
   return v10;
 }
 
-+ (BOOL)shouldSortResultsForPolicy:(id)a3
++ (BOOL)shouldSortResultsForPolicy:(id)policy
 {
-  v3 = a3;
-  if ([v3 includeRecents] & 1) != 0 || (objc_msgSend(v3, "includeStewie") & 1) != 0 || (objc_msgSend(v3, "includeContacts") & 1) != 0 || (objc_msgSend(v3, "includeSuggestions") & 1) != 0 || (objc_msgSend(v3, "includeCalendarServers"))
+  policyCopy = policy;
+  if ([policyCopy includeRecents] & 1) != 0 || (objc_msgSend(policyCopy, "includeStewie") & 1) != 0 || (objc_msgSend(policyCopy, "includeContacts") & 1) != 0 || (objc_msgSend(policyCopy, "includeSuggestions") & 1) != 0 || (objc_msgSend(policyCopy, "includeCalendarServers"))
   {
-    v4 = 1;
+    includeDirectoryServers = 1;
   }
 
   else
   {
-    v4 = [v3 includeDirectoryServers];
+    includeDirectoryServers = [policyCopy includeDirectoryServers];
   }
 
-  return v4;
+  return includeDirectoryServers;
 }
 
-- (id)executeWithContext:(id)a3
+- (id)executeWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CFBE68];
   v23[0] = MEMORY[0x277D85DD0];
@@ -235,8 +235,8 @@
   v19[3] = &unk_2781C4A18;
   objc_copyWeak(&v20, &location);
   v6 = [v5 observerWithResultBlock:v23 completionBlock:v21 failureBlock:v19];
-  v7 = [objc_opt_class() observableForQuery:self context:v4];
-  v8 = [(CNAutocompleteQuery *)self scheduler];
+  v7 = [objc_opt_class() observableForQuery:self context:contextCopy];
+  scheduler = [(CNAutocompleteQuery *)self scheduler];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __42__CNAutocompleteQuery_executeWithContext___block_invoke_4;
@@ -245,7 +245,7 @@
   v17 = v9;
   v10 = v6;
   v18 = v10;
-  v11 = [v8 performCancelableBlock:&v13];
+  v11 = [scheduler performCancelableBlock:&v13];
 
   [(CNCancelationToken *)self->_cancelationToken addCancelable:v11, v13, v14, v15, v16];
   objc_destroyWeak(&v20);
@@ -285,59 +285,59 @@ void __42__CNAutocompleteQuery_executeWithContext___block_invoke_4(uint64_t a1, 
   [v4 addCancelable:v5];
 }
 
-+ (id)observableForQuery:(id)a3 context:(id)a4
++ (id)observableForQuery:(id)query context:(id)context
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 request];
-  v9 = [a1 shouldPerformQueryForRequest:v8];
+  queryCopy = query;
+  contextCopy = context;
+  request = [queryCopy request];
+  v9 = [self shouldPerformQueryForRequest:request];
 
   if (v9)
   {
-    v10 = [v6 request];
-    v11 = [v10 searchType];
-    v12 = [v6 scheduler];
-    v13 = [v6 probeProvider];
-    v14 = [CNAutocompleteObservableBuilder builderWithSearchType:v11 scheduler:v12 probeProvider:v13];
+    request2 = [queryCopy request];
+    searchType = [request2 searchType];
+    scheduler = [queryCopy scheduler];
+    probeProvider = [queryCopy probeProvider];
+    v14 = [CNAutocompleteObservableBuilder builderWithSearchType:searchType scheduler:scheduler probeProvider:probeProvider];
 
-    v15 = [v6 sourceInclusionPolicy];
-    v16 = [v6 searchProvider];
-    v17 = [v6 request];
-    v18 = [v6 scheduler];
-    v19 = [CNAutocompleteSearchObservableProvider providerWithSearchProvider:v16 fetchRequest:v17 scheduler:v18];
+    sourceInclusionPolicy = [queryCopy sourceInclusionPolicy];
+    searchProvider = [queryCopy searchProvider];
+    request3 = [queryCopy request];
+    scheduler2 = [queryCopy scheduler];
+    v19 = [CNAutocompleteSearchObservableProvider providerWithSearchProvider:searchProvider fetchRequest:request3 scheduler:scheduler2];
 
-    [a1 configureNetworkForBuilder:v14 query:v6];
-    if ([v15 includeContacts])
+    [self configureNetworkForBuilder:v14 query:queryCopy];
+    if ([sourceInclusionPolicy includeContacts])
     {
-      v20 = [v19 localSearchObservable];
-      [v14 addContactsObservable:v20];
+      localSearchObservable = [v19 localSearchObservable];
+      [v14 addContactsObservable:localSearchObservable];
       v21 = CNALoggingContextDebug();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v20;
+        v79 = localSearchObservable;
         _os_log_impl(&dword_2155FE000, v21, OS_LOG_TYPE_DEFAULT, "Adding local contacts observable %@", buf, 0xCu);
       }
     }
 
-    if ([v15 includeRecents])
+    if ([sourceInclusionPolicy includeRecents])
     {
-      v22 = [v19 recentsSearchObservable];
-      [v14 addCoreRecentsObservable:v22];
+      recentsSearchObservable = [v19 recentsSearchObservable];
+      [v14 addCoreRecentsObservable:recentsSearchObservable];
       v23 = CNALoggingContextDebug();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v22;
+        v79 = recentsSearchObservable;
         _os_log_impl(&dword_2155FE000, v23, OS_LOG_TYPE_DEFAULT, "Adding recent contacts observable %@", buf, 0xCu);
       }
     }
 
-    if ([v15 includeStewie])
+    if ([sourceInclusionPolicy includeStewie])
     {
-      v24 = [v19 stewieSearchObservable];
-      [v14 addStewieObservable:v24];
+      stewieSearchObservable = [v19 stewieSearchObservable];
+      [v14 addStewieObservable:stewieSearchObservable];
       v25 = CNALoggingContextDebug();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
@@ -347,38 +347,38 @@ void __42__CNAutocompleteQuery_executeWithContext___block_invoke_4(uint64_t a1, 
       }
     }
 
-    if ([v15 includeSuggestions])
+    if ([sourceInclusionPolicy includeSuggestions])
     {
-      v26 = [v19 suggestionsSearchObservable];
-      [v14 addSuggestionsObservable:v26];
+      suggestionsSearchObservable = [v19 suggestionsSearchObservable];
+      [v14 addSuggestionsObservable:suggestionsSearchObservable];
       v27 = CNALoggingContextDebug();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v26;
+        v79 = suggestionsSearchObservable;
         _os_log_impl(&dword_2155FE000, v27, OS_LOG_TYPE_DEFAULT, "Adding suggested contacts observable %@", buf, 0xCu);
       }
     }
 
-    v71 = a1;
-    if ([v15 includeLocalExtensions])
+    selfCopy = self;
+    if ([sourceInclusionPolicy includeLocalExtensions])
     {
-      v28 = [v19 localExtensionSearchObservables];
+      localExtensionSearchObservables = [v19 localExtensionSearchObservables];
       v76[0] = MEMORY[0x277D85DD0];
       v76[1] = 3221225472;
       v76[2] = __50__CNAutocompleteQuery_observableForQuery_context___block_invoke;
       v76[3] = &unk_2781C4A68;
       v77 = v14;
-      [v28 _cn_each:v76];
+      [localExtensionSearchObservables _cn_each:v76];
     }
 
-    if ([v15 includePredictions])
+    if ([sourceInclusionPolicy includePredictions])
     {
       v29 = objc_alloc_init(MEMORY[0x277CFBE90]);
       v30 = [v19 predictionsSearchObservableWithUnfilteredResultPromise:v29];
-      v31 = [v6 delegate];
-      v32 = [v29 future];
-      [v31 setPredictionResultsFuture:v32];
+      delegate = [queryCopy delegate];
+      future = [v29 future];
+      [delegate setPredictionResultsFuture:future];
 
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
@@ -396,92 +396,92 @@ void __42__CNAutocompleteQuery_executeWithContext___block_invoke_4(uint64_t a1, 
       }
     }
 
-    if ([v15 includeDirectoryServers])
+    if ([sourceInclusionPolicy includeDirectoryServers])
     {
       v69 = v19;
-      v35 = [v19 directoryServersSearchObservable];
-      v72 = v7;
-      v36 = [v7 directoryServerReuseCache];
-      v37 = [v6 request];
-      v38 = [v37 searchString];
+      directoryServersSearchObservable = [v19 directoryServersSearchObservable];
+      v72 = contextCopy;
+      directoryServerReuseCache = [contextCopy directoryServerReuseCache];
+      request4 = [queryCopy request];
+      searchString = [request4 searchString];
 
-      v39 = [[CNAutocompleteQueryCacheHelper alloc] initWithCache:v36 searchString:v38 serverSearchObservable:v35];
-      v40 = [(CNAutocompleteQueryCacheHelper *)v39 cachedResultsObservable];
-      [v14 addCachedDirectoryServerObservable:v40];
+      v39 = [[CNAutocompleteQueryCacheHelper alloc] initWithCache:directoryServerReuseCache searchString:searchString serverSearchObservable:directoryServersSearchObservable];
+      cachedResultsObservable = [(CNAutocompleteQueryCacheHelper *)v39 cachedResultsObservable];
+      [v14 addCachedDirectoryServerObservable:cachedResultsObservable];
       v41 = CNALoggingContextDebug();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v40;
+        v79 = cachedResultsObservable;
         _os_log_impl(&dword_2155FE000, v41, OS_LOG_TYPE_DEFAULT, "Adding cached directory servers observable %@", buf, 0xCu);
       }
 
-      v42 = [(CNAutocompleteQueryCacheHelper *)v39 uncachedResultsObservable];
-      [v14 addDirectoryServerObservable:v42];
+      uncachedResultsObservable = [(CNAutocompleteQueryCacheHelper *)v39 uncachedResultsObservable];
+      [v14 addDirectoryServerObservable:uncachedResultsObservable];
       v43 = CNALoggingContextDebug();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v79 = v42;
+        v79 = uncachedResultsObservable;
         _os_log_impl(&dword_2155FE000, v43, OS_LOG_TYPE_DEFAULT, "Adding directory servers observable %@", buf, 0xCu);
       }
 
-      v7 = v72;
+      contextCopy = v72;
       v19 = v69;
     }
 
-    if ([v15 includeCalendarServers] && +[CNAutocompleteCalendarServerSearch isSupported](CNAutocompleteCalendarServerSearch, "isSupported"))
+    if ([sourceInclusionPolicy includeCalendarServers] && +[CNAutocompleteCalendarServerSearch isSupported](CNAutocompleteCalendarServerSearch, "isSupported"))
     {
       v70 = v19;
-      v44 = [v19 calendarServersSearchObservable];
-      v73 = v7;
-      v45 = [v7 calendarServerReuseCache];
-      v46 = [v6 request];
-      v47 = [v46 searchString];
+      calendarServersSearchObservable = [v19 calendarServersSearchObservable];
+      v73 = contextCopy;
+      calendarServerReuseCache = [contextCopy calendarServerReuseCache];
+      request5 = [queryCopy request];
+      searchString2 = [request5 searchString];
 
       v48 = [CNAutocompleteQueryCacheHelper alloc];
-      v67 = v44;
-      v68 = v45;
-      v49 = v45;
-      v50 = v47;
-      v51 = [(CNAutocompleteQueryCacheHelper *)v48 initWithCache:v49 searchString:v47 serverSearchObservable:v44];
-      v52 = [(CNAutocompleteQueryCacheHelper *)v51 cachedResultsObservable];
-      v53 = [(CNAutocompleteQueryCacheHelper *)v51 uncachedResultsObservable];
-      v54 = [v53 publish];
+      v67 = calendarServersSearchObservable;
+      v68 = calendarServerReuseCache;
+      v49 = calendarServerReuseCache;
+      v50 = searchString2;
+      v51 = [(CNAutocompleteQueryCacheHelper *)v48 initWithCache:v49 searchString:searchString2 serverSearchObservable:calendarServersSearchObservable];
+      cachedResultsObservable2 = [(CNAutocompleteQueryCacheHelper *)v51 cachedResultsObservable];
+      uncachedResultsObservable2 = [(CNAutocompleteQueryCacheHelper *)v51 uncachedResultsObservable];
+      publish = [uncachedResultsObservable2 publish];
 
-      v55 = [[CNAutocompleteCalendarQueryAssembler alloc] initWithRawCachedObservable:v52 rawUncachedObservable:v54];
+      v55 = [[CNAutocompleteCalendarQueryAssembler alloc] initWithRawCachedObservable:cachedResultsObservable2 rawUncachedObservable:publish];
       [(CNAutocompleteCalendarQueryAssembler *)v55 assemble];
-      v56 = [(CNAutocompleteCalendarQueryAssembler *)v55 cachedObservable];
-      [v14 addCachedCalendarServerObservable:v56];
+      cachedObservable = [(CNAutocompleteCalendarQueryAssembler *)v55 cachedObservable];
+      [v14 addCachedCalendarServerObservable:cachedObservable];
 
-      v57 = [(CNAutocompleteCalendarQueryAssembler *)v55 uncachedObservable];
-      [v14 addCalendarServerObservable:v57];
+      uncachedObservable = [(CNAutocompleteCalendarQueryAssembler *)v55 uncachedObservable];
+      [v14 addCalendarServerObservable:uncachedObservable];
 
       v58 = CNALoggingContextDebug();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
-        v59 = [(CNAutocompleteCalendarQueryAssembler *)v55 cachedObservable];
+        cachedObservable2 = [(CNAutocompleteCalendarQueryAssembler *)v55 cachedObservable];
         *buf = 138412290;
-        v79 = v59;
+        v79 = cachedObservable2;
         _os_log_impl(&dword_2155FE000, v58, OS_LOG_TYPE_DEFAULT, "Adding cached calendar servers observable %@", buf, 0xCu);
       }
 
       v60 = CNALoggingContextDebug();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [(CNAutocompleteCalendarQueryAssembler *)v55 uncachedObservable];
+        uncachedObservable2 = [(CNAutocompleteCalendarQueryAssembler *)v55 uncachedObservable];
         *buf = 138412290;
-        v79 = v61;
+        v79 = uncachedObservable2;
         _os_log_impl(&dword_2155FE000, v60, OS_LOG_TYPE_DEFAULT, "Adding calendar servers observable %@", buf, 0xCu);
       }
 
-      v7 = v73;
+      contextCopy = v73;
       v19 = v70;
     }
 
-    if ([v15 includeSupplementalResults])
+    if ([sourceInclusionPolicy includeSupplementalResults])
     {
-      v62 = [v71 observableWithSupplementalResultsForQuery:v6];
+      v62 = [selfCopy observableWithSupplementalResultsForQuery:queryCopy];
       [v14 addSupplementalObservable:v62];
 
       v63 = CNALoggingContextDebug();
@@ -493,17 +493,17 @@ void __42__CNAutocompleteQuery_executeWithContext___block_invoke_4(uint64_t a1, 
       }
     }
 
-    v64 = [v14 makeObservable];
+    makeObservable = [v14 makeObservable];
   }
 
   else
   {
-    v64 = [MEMORY[0x277CFBE60] emptyObservable];
+    makeObservable = [MEMORY[0x277CFBE60] emptyObservable];
   }
 
   v65 = *MEMORY[0x277D85DE8];
 
-  return v64;
+  return makeObservable;
 }
 
 void __50__CNAutocompleteQuery_observableForQuery_context___block_invoke(uint64_t a1, void *a2)
@@ -536,42 +536,42 @@ void __50__CNAutocompleteQuery_observableForQuery_context___block_invoke_17(uint
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)configureNetworkForBuilder:(id)a3 query:(id)a4
++ (void)configureNetworkForBuilder:(id)builder query:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 configureNetworkPolicyForBuilder:v7 query:v6];
-  [a1 configureNetworkActivityHandlersForBuilder:v7 query:v6];
+  queryCopy = query;
+  builderCopy = builder;
+  [self configureNetworkPolicyForBuilder:builderCopy query:queryCopy];
+  [self configureNetworkActivityHandlersForBuilder:builderCopy query:queryCopy];
 }
 
-+ (void)configureNetworkPolicyForBuilder:(id)a3 query:(id)a4
++ (void)configureNetworkPolicyForBuilder:(id)builder query:(id)query
 {
-  v5 = a3;
-  v6 = [a4 request];
-  v7 = [v6 searchString];
-  v8 = [CNAutocompleteNetworkActivityPolicy policyWithThrottlingDelayForString:v7];
+  builderCopy = builder;
+  request = [query request];
+  searchString = [request searchString];
+  v8 = [CNAutocompleteNetworkActivityPolicy policyWithThrottlingDelayForString:searchString];
 
   [v8 delayBeforeBeginningNetworkActivity];
-  [v5 setNetworkActivityStartDelay:?];
+  [builderCopy setNetworkActivityStartDelay:?];
 }
 
-+ (void)configureNetworkActivityHandlersForBuilder:(id)a3 query:(id)a4
++ (void)configureNetworkActivityHandlersForBuilder:(id)builder query:(id)query
 {
-  v5 = a3;
-  v6 = a4;
-  objc_initWeak(&location, v6);
+  builderCopy = builder;
+  queryCopy = query;
+  objc_initWeak(&location, queryCopy);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__CNAutocompleteQuery_configureNetworkActivityHandlersForBuilder_query___block_invoke;
   v9[3] = &unk_2781C49F0;
   objc_copyWeak(&v10, &location);
-  [v5 setNetworkActivityDidStartHandler:v9];
+  [builderCopy setNetworkActivityDidStartHandler:v9];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CNAutocompleteQuery_configureNetworkActivityHandlersForBuilder_query___block_invoke_2;
   v7[3] = &unk_2781C49F0;
   objc_copyWeak(&v8, &location);
-  [v5 setNetworkActivityDidStopHandler:v7];
+  [builderCopy setNetworkActivityDidStopHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -589,11 +589,11 @@ void __72__CNAutocompleteQuery_configureNetworkActivityHandlersForBuilder_query_
   [WeakRetained searchOperationsHaveEndedNetworkActivity];
 }
 
-+ (id)observableWithSupplementalResultsForQuery:(id)a3
++ (id)observableWithSupplementalResultsForQuery:(id)query
 {
-  v3 = a3;
-  v4 = [v3 request];
-  v5 = [v4 triageIdentifier];
+  queryCopy = query;
+  request = [queryCopy request];
+  triageIdentifier = [request triageIdentifier];
 
   v6 = CNALoggingContextDebug();
   v7 = MEMORY[0x277CFBE60];
@@ -601,12 +601,12 @@ void __72__CNAutocompleteQuery_configureNetworkActivityHandlersForBuilder_query_
   v13[1] = 3221225472;
   v13[2] = __65__CNAutocompleteQuery_observableWithSupplementalResultsForQuery___block_invoke;
   v13[3] = &unk_2781C4B50;
-  v14 = v3;
-  v15 = v5;
+  v14 = queryCopy;
+  v15 = triageIdentifier;
   v16 = v6;
   v8 = v6;
-  v9 = v5;
-  v10 = v3;
+  v9 = triageIdentifier;
+  v10 = queryCopy;
   v11 = [v7 observableWithBlock:v13];
 
   return v11;
@@ -983,47 +983,47 @@ uint64_t __65__CNAutocompleteQuery_observableWithSupplementalResultsForQuery___b
   return v7;
 }
 
-- (void)searchOperationReportedResults:(id)a3
+- (void)searchOperationReportedResults:(id)results
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CNAutocompleteQuery *)self request];
-  v6 = [v5 maximumResultsCount];
-  v7 = [(CNAutocompleteQuery *)self completeResults];
-  v8 = [v4 _cn_take:{v6 - objc_msgSend(v7, "count")}];
+  resultsCopy = results;
+  request = [(CNAutocompleteQuery *)self request];
+  maximumResultsCount = [request maximumResultsCount];
+  completeResults = [(CNAutocompleteQuery *)self completeResults];
+  v8 = [resultsCopy _cn_take:{maximumResultsCount - objc_msgSend(completeResults, "count")}];
 
-  v9 = [(CNAutocompleteQuery *)self completeResults];
-  v10 = [v4 arrayByAddingObjectsFromArray:v9];
+  completeResults2 = [(CNAutocompleteQuery *)self completeResults];
+  v10 = [resultsCopy arrayByAddingObjectsFromArray:completeResults2];
 
   [(CNAutocompleteQuery *)self setCompleteResults:v10];
-  v11 = [(CNAutocompleteQuery *)self completeResults];
-  v12 = [v11 count];
-  v13 = [(CNAutocompleteQuery *)self request];
-  v14 = [v13 maximumResultsCount];
+  completeResults3 = [(CNAutocompleteQuery *)self completeResults];
+  v12 = [completeResults3 count];
+  request2 = [(CNAutocompleteQuery *)self request];
+  maximumResultsCount2 = [request2 maximumResultsCount];
 
-  if (v12 >= v14)
+  if (v12 >= maximumResultsCount2)
   {
     v17 = CNALoggingContextTriage();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CNAutocompleteQuery *)self request];
-      v19 = [v18 triageIdentifier];
-      v20 = [(CNAutocompleteQuery *)self request];
-      v21 = [v20 maximumResultsCount];
-      v22 = [(CNAutocompleteQuery *)self completeResults];
+      request3 = [(CNAutocompleteQuery *)self request];
+      triageIdentifier = [request3 triageIdentifier];
+      request4 = [(CNAutocompleteQuery *)self request];
+      maximumResultsCount3 = [request4 maximumResultsCount];
+      completeResults4 = [(CNAutocompleteQuery *)self completeResults];
       v26 = 138543874;
-      v27 = v19;
+      v27 = triageIdentifier;
       v28 = 2048;
-      v29 = v21;
+      v29 = maximumResultsCount3;
       v30 = 2048;
-      v31 = [v22 count];
+      v31 = [completeResults4 count];
       _os_log_impl(&dword_2155FE000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Reached maximumResultsCount (%lu) completeResults: (%lu), cancelling.", &v26, 0x20u);
     }
 
     [(CNAutocompleteQuery *)self cancel];
-    v23 = [(CNAutocompleteQuery *)self delegate];
+    delegate = [(CNAutocompleteQuery *)self delegate];
     WeakRetained = objc_loadWeakRetained(&self->_delegateToken);
-    [v23 autocompleteFetchHitMaximumResultsCount:WeakRetained results:v8];
+    [delegate autocompleteFetchHitMaximumResultsCount:WeakRetained results:v8];
   }
 
   else
@@ -1036,16 +1036,16 @@ uint64_t __65__CNAutocompleteQuery_observableWithSupplementalResultsForQuery___b
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)searchOperationEncounteredError:(id)a3
+- (void)searchOperationEncounteredError:(id)error
 {
   delegate = self->_delegate;
-  v5 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegateToken);
   [(CNAutocompleteDelegateWrapper *)delegate autocompleteFetchDidEndNetworkActivity:WeakRetained];
 
   v7 = self->_delegate;
   v8 = objc_loadWeakRetained(&self->_delegateToken);
-  [(CNAutocompleteDelegateWrapper *)v7 autocompleteFetch:v8 didFailWithError:v5];
+  [(CNAutocompleteDelegateWrapper *)v7 autocompleteFetch:v8 didFailWithError:errorCopy];
 }
 
 - (void)searchOperationsHaveBegunNetworkActivity
@@ -1084,7 +1084,7 @@ uint64_t __65__CNAutocompleteQuery_observableWithSupplementalResultsForQuery___b
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegateToken);
     v6 = 134218240;
-    v7 = self;
+    selfCopy = self;
     v8 = 2048;
     v9 = WeakRetained;
     _os_log_impl(&dword_2155FE000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling query %p, delegate token: %p", &v6, 0x16u);

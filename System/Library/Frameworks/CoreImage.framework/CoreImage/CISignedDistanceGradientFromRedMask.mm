@@ -29,7 +29,7 @@
       return 0;
     }
 
-    v10 = [CIVector vectorWithCGRect:x, y, width, height];
+    height = [CIVector vectorWithCGRect:x, y, width, height];
     [(NSNumber *)self->inputMaximumDistance floatValue];
     v12 = v11;
     if (v11 < 1.0 || v11 > 1000.0)
@@ -45,7 +45,7 @@
 
     v15 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_signedDistanceMaskPrep];
     v41[0] = self->inputImage;
-    v41[1] = v10;
+    v41[1] = height;
     v16 = -[CIImage imageBySamplingNearest](-[CIColorKernel applyWithExtent:arguments:](v15, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2], x, y, width, height), "imageBySamplingNearest");
     v17 = [CIKernel kernelWithInternalRepresentation:&CI::_signedDistanceMask];
     v18 = vcvtpd_s64_f64(log2(ceilf(v12) + 1.0));
@@ -67,7 +67,7 @@
         v37 = &__block_descriptor_36_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
         v38 = v19;
         v40[0] = v16;
-        v40[1] = v10;
+        v40[1] = height;
         v40[2] = [MEMORY[0x1E696AD98] numberWithInt:v19];
         v16 = -[CIImage imageBySamplingNearest](-[CIKernel applyWithExtent:roiCallback:arguments:](v17, "applyWithExtent:roiCallback:arguments:", &recta.origin.y, [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:3], v20, v21, v22, v23), "imageBySamplingNearest");
         v19 = (v19 / 2);
@@ -86,7 +86,7 @@
     inputImage = self->inputImage;
     v39[0] = v16;
     v39[1] = inputImage;
-    v39[2] = v10;
+    v39[2] = height;
     *&v25 = v35;
     v39[3] = [MEMORY[0x1E696AD98] numberWithFloat:v25];
     v34 = -[CIColorKernel applyWithExtent:arguments:](v24, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4], v26, v28, v30, v32);

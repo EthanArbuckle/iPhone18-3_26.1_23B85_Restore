@@ -2,22 +2,22 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)__sizeClassPair;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (id)_firstCurrentContextChildInWindow;
-- (void)transitionDidFinish:(BOOL)a3;
+- (void)transitionDidFinish:(BOOL)finish;
 @end
 
 @implementation _UICurrentContextPresentationController
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(UIPresentationController *)self presentingViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(UIPresentationController *)self presentingViewController];
-    v7 = [v6 view];
-    [v7 frame];
+    presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+    view2 = [presentingViewController2 view];
+    [view2 frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -48,12 +48,12 @@
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)__sizeClassPair
 {
-  v2 = [(UIPresentationController *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
-  v4 = [v2 verticalSizeClass];
+  traitCollection = [(UIPresentationController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  v5 = v3;
-  v6 = v4;
+  v5 = horizontalSizeClass;
+  v6 = verticalSizeClass;
   result.var1 = v6;
   result.var0 = v5;
   return result;
@@ -61,27 +61,27 @@
 
 - (id)_firstCurrentContextChildInWindow
 {
-  v3 = [(UIPresentationController *)self presentedViewController];
-  v4 = [v3 _existingView];
-  if (v4 && (v5 = v4, [v3 _existingView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "window"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v7))
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _existingView = [presentedViewController _existingView];
+  if (_existingView && (v5 = _existingView, [presentedViewController _existingView], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "window"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v7))
   {
-    v8 = v3;
+    _firstCurrentContextChildInWindow = presentedViewController;
   }
 
   else
   {
-    v9 = [(UIPresentationController *)self _childPresentationController];
-    v8 = [v9 _firstCurrentContextChildInWindow];
+    _childPresentationController = [(UIPresentationController *)self _childPresentationController];
+    _firstCurrentContextChildInWindow = [_childPresentationController _firstCurrentContextChildInWindow];
   }
 
-  return v8;
+  return _firstCurrentContextChildInWindow;
 }
 
-- (void)transitionDidFinish:(BOOL)a3
+- (void)transitionDidFinish:(BOOL)finish
 {
   v3.receiver = self;
   v3.super_class = _UICurrentContextPresentationController;
-  [(UIPresentationController *)&v3 transitionDidFinish:a3];
+  [(UIPresentationController *)&v3 transitionDidFinish:finish];
 }
 
 @end

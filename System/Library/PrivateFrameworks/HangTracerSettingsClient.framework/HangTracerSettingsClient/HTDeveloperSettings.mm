@@ -2,13 +2,13 @@
 - (BOOL)isEnabled;
 - (BOOL)isInternalBuild;
 - (HTDeveloperSettings)init;
-- (HTDeveloperSettings)initWithDefaults:(id)a3 savedSettingsDefaults:(id)a4;
+- (HTDeveloperSettings)initWithDefaults:(id)defaults savedSettingsDefaults:(id)settingsDefaults;
 - (NSArray)availableThresholdsLongNames;
 - (NSArray)availableThresholdsShortNames;
 - (NSArray)availableThresholdsValues;
 - (int64_t)hangTracerThreshold;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHangTracerThreshold:(int64_t)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHangTracerThreshold:(int64_t)threshold;
 @end
 
 @implementation HTDeveloperSettings
@@ -24,18 +24,18 @@
   return v7;
 }
 
-- (HTDeveloperSettings)initWithDefaults:(id)a3 savedSettingsDefaults:(id)a4
+- (HTDeveloperSettings)initWithDefaults:(id)defaults savedSettingsDefaults:(id)settingsDefaults
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  settingsDefaultsCopy = settingsDefaults;
   v20.receiver = self;
   v20.super_class = HTDeveloperSettings;
   v9 = [(HTDeveloperSettings *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_defaults, a3);
-    objc_storeStrong(&v10->_savedSettingsDefaults, a4);
+    objc_storeStrong(&v9->_defaults, defaults);
+    objc_storeStrong(&v10->_savedSettingsDefaults, settingsDefaults);
     v11 = objc_opt_new();
     shortDurationFormatter = v10->_shortDurationFormatter;
     v10->_shortDurationFormatter = v11;
@@ -45,11 +45,11 @@
     v13 = objc_opt_new();
     [(NSMeasurementFormatter *)v10->_shortDurationFormatter setNumberFormatter:v13];
 
-    v14 = [(NSMeasurementFormatter *)v10->_shortDurationFormatter numberFormatter];
-    [v14 setNumberStyle:0];
+    numberFormatter = [(NSMeasurementFormatter *)v10->_shortDurationFormatter numberFormatter];
+    [numberFormatter setNumberStyle:0];
 
-    v15 = [(NSMeasurementFormatter *)v10->_shortDurationFormatter numberFormatter];
-    [v15 setMaximumFractionDigits:0];
+    numberFormatter2 = [(NSMeasurementFormatter *)v10->_shortDurationFormatter numberFormatter];
+    [numberFormatter2 setMaximumFractionDigits:0];
 
     v16 = objc_opt_new();
     longDurationFormatter = v10->_longDurationFormatter;
@@ -74,17 +74,17 @@
 
 - (BOOL)isInternalBuild
 {
-  v2 = [MEMORY[0x277D0FA28] sharedPrefs];
-  v3 = [v2 isInternal];
+  mEMORY[0x277D0FA28] = [MEMORY[0x277D0FA28] sharedPrefs];
+  isInternal = [mEMORY[0x277D0FA28] isInternal];
 
-  return v3;
+  return isInternal;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v98[17] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (enabled)
   {
     defaults = self->_defaults;
     v6 = *MEMORY[0x277D0FAB0];
@@ -107,8 +107,8 @@
     v15 = keyWithPrefix(*MEMORY[0x277D0FAE0], v6);
     [(NSUserDefaults *)v14 setInteger:500 forKey:v15];
 
-    v16 = [MEMORY[0x277D0FA28] sharedPrefs];
-    LOBYTE(v15) = [v16 isInternal];
+    mEMORY[0x277D0FA28] = [MEMORY[0x277D0FA28] sharedPrefs];
+    LOBYTE(v15) = [mEMORY[0x277D0FA28] isInternal];
 
     if ((v15 & 1) == 0)
     {
@@ -304,7 +304,7 @@
   }
 
   notify_post(*MEMORY[0x277D0FA20]);
-  configureTailspinForThirdPartyDevelopment(v3);
+  configureTailspinForThirdPartyDevelopment(enabledCopy);
   v82 = *MEMORY[0x277D85DE8];
 }
 
@@ -317,16 +317,16 @@
   return v4;
 }
 
-- (void)setHangTracerThreshold:(int64_t)a3
+- (void)setHangTracerThreshold:(int64_t)threshold
 {
   defaults = self->_defaults;
   v6 = *MEMORY[0x277D0FAB0];
   v7 = keyWithPrefix(*MEMORY[0x277D0FAE0], *MEMORY[0x277D0FAB0]);
-  [(NSUserDefaults *)defaults setInteger:a3 forKey:v7];
+  [(NSUserDefaults *)defaults setInteger:threshold forKey:v7];
 
   v8 = self->_defaults;
   v9 = keyWithPrefix(*MEMORY[0x277D0FA88], v6);
-  [(NSUserDefaults *)v8 setInteger:a3 forKey:v9];
+  [(NSUserDefaults *)v8 setInteger:threshold forKey:v9];
 
   v10 = *MEMORY[0x277D0FA20];
 
@@ -350,16 +350,16 @@
 
 - (NSArray)availableThresholdsShortNames
 {
-  v3 = [(HTDeveloperSettings *)self availableThresholdsValues];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  availableThresholdsValues = [(HTDeveloperSettings *)self availableThresholdsValues];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(availableThresholdsValues, "count")}];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __52__HTDeveloperSettings_availableThresholdsShortNames__block_invoke;
   v11 = &unk_2796A9468;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  [availableThresholdsValues enumerateObjectsUsingBlock:&v8];
   v6 = [v5 copy];
 
   return v6;
@@ -382,16 +382,16 @@ void __52__HTDeveloperSettings_availableThresholdsShortNames__block_invoke(uint6
 
 - (NSArray)availableThresholdsLongNames
 {
-  v3 = [(HTDeveloperSettings *)self availableThresholdsValues];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  availableThresholdsValues = [(HTDeveloperSettings *)self availableThresholdsValues];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(availableThresholdsValues, "count")}];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __51__HTDeveloperSettings_availableThresholdsLongNames__block_invoke;
   v11 = &unk_2796A9468;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v5 = v4;
-  [v3 enumerateObjectsUsingBlock:&v8];
+  [availableThresholdsValues enumerateObjectsUsingBlock:&v8];
   v6 = [v5 copy];
 
   return v6;

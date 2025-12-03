@@ -1,5 +1,5 @@
 @interface PGCuratorInvestigationItem
-+ (id)itemWithUUID:(id)a3 itemInfo:(id)a4 curationModel:(id)a5;
++ (id)itemWithUUID:(id)d itemInfo:(id)info curationModel:(id)model;
 - (BOOL)clsHasCustomPlaybackVariation;
 - (BOOL)clsHasInterestingAudioClassification;
 - (BOOL)clsHasInterestingScenes;
@@ -24,7 +24,7 @@
 - (NSDateComponents)cls_localDateComponents;
 - (NSString)description;
 - (PGCuratorInvestigationItem)init;
-- (PGCuratorInvestigationItem)initWithUUID:(id)a3 itemInfo:(id)a4 curationModel:(id)a5;
+- (PGCuratorInvestigationItem)initWithUUID:(id)d itemInfo:(id)info curationModel:(id)model;
 - (double)clsAestheticScore;
 - (double)clsAutoplaySuggestionScore;
 - (double)clsContentScore;
@@ -49,9 +49,9 @@
 - (double)pl_gpsHorizontalAccuracy
 {
   clsGpsHorizontalAccuracy = self->_clsGpsHorizontalAccuracy;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsGpsHorizontalAccuracy == v4)
+  if (clsGpsHorizontalAccuracy == null)
   {
     return 0.0;
   }
@@ -64,12 +64,12 @@
 
 - (CLLocationCoordinate2D)pl_coordinate
 {
-  v3 = [(PGCuratorInvestigationItem *)self location];
+  location = [(PGCuratorInvestigationItem *)self location];
 
-  if (v3)
+  if (location)
   {
-    v4 = [(PGCuratorInvestigationItem *)self location];
-    [v4 coordinate];
+    location2 = [(PGCuratorInvestigationItem *)self location];
+    [location2 coordinate];
     v6 = v5;
     v8 = v7;
   }
@@ -89,18 +89,18 @@
 
 - (unint64_t)clsSimilarityModelVersion
 {
-  v2 = [(CLSCurationModel *)self->_curationModel sceneModel];
-  v3 = [v2 version];
+  sceneModel = [(CLSCurationModel *)self->_curationModel sceneModel];
+  version = [sceneModel version];
 
-  return v3;
+  return version;
 }
 
 - (double)clsIconicScore
 {
   clsIconicScore = self->_clsIconicScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIconicScore == v4)
+  if (clsIconicScore == null)
   {
     return 0.0;
   }
@@ -114,9 +114,9 @@
 - (BOOL)clsIsInSharedLibrary
 {
   clsIsInSharedLibrary = self->_clsIsInSharedLibrary;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInSharedLibrary == v4)
+  if (clsIsInSharedLibrary == null)
   {
     return 0;
   }
@@ -129,16 +129,16 @@
 - (double)clsSquareCropScore
 {
   clsSquareCropScore = self->_clsSquareCropScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsSquareCropScore == v4)
+  if (clsSquareCropScore == null)
   {
     return 0.0;
   }
 
   v5 = self->_clsSquareCropScore;
-  v6 = [MEMORY[0x277CBEB68] null];
-  if (v5 == v6)
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v5 == null2)
   {
     v8 = 0.5;
   }
@@ -155,9 +155,9 @@
 - (BOOL)clsIsLongExposure
 {
   clsIsLongExposure = self->_clsIsLongExposure;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsLongExposure == v4)
+  if (clsIsLongExposure == null)
   {
     return 0;
   }
@@ -170,9 +170,9 @@
 - (BOOL)clsIsLoopOrBounce
 {
   clsIsLoopOrBounce = self->_clsIsLoopOrBounce;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsLoopOrBounce == v4)
+  if (clsIsLoopOrBounce == null)
   {
     return 0;
   }
@@ -185,9 +185,9 @@
 - (BOOL)clsIsNonMemorable
 {
   clsIsNonMemorable = self->_clsIsNonMemorable;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsNonMemorable == v4)
+  if (clsIsNonMemorable == null)
   {
     return 0;
   }
@@ -200,9 +200,9 @@
 - (double)clsDuration
 {
   clsDuration = self->_clsDuration;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsDuration == v4)
+  if (clsDuration == null)
   {
     return 0.0;
   }
@@ -216,9 +216,9 @@
 - (double)clsAutoplaySuggestionScore
 {
   clsAutoplaySuggestionScore = self->_clsAutoplaySuggestionScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsAutoplaySuggestionScore == v4)
+  if (clsAutoplaySuggestionScore == null)
   {
     return 0.0;
   }
@@ -232,9 +232,9 @@
 - (double)clsHighlightVisibilityScore
 {
   clsHighlightVisibilityScore = self->_clsHighlightVisibilityScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsHighlightVisibilityScore == v4)
+  if (clsHighlightVisibilityScore == null)
   {
     return 0.0;
   }
@@ -248,9 +248,9 @@
 - (BOOL)clsHasInterestingScenes
 {
   clsHasInterestingScenes = self->_clsHasInterestingScenes;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsHasInterestingScenes == v4)
+  if (clsHasInterestingScenes == null)
   {
     return 0;
   }
@@ -263,9 +263,9 @@
 - (BOOL)clsHasPoorResolution
 {
   clsHasPoorResolution = self->_clsHasPoorResolution;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsHasPoorResolution == v4)
+  if (clsHasPoorResolution == null)
   {
     return 0;
   }
@@ -278,9 +278,9 @@
 - (BOOL)clsIsInhabited
 {
   clsIsInhabited = self->_clsIsInhabited;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInhabited == v4)
+  if (clsIsInhabited == null)
   {
     return 0;
   }
@@ -293,9 +293,9 @@
 - (double)clsFaceScore
 {
   clsFaceScore = self->_clsFaceScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsFaceScore == v4)
+  if (clsFaceScore == null)
   {
     return 0.0;
   }
@@ -309,9 +309,9 @@
 - (double)clsAestheticScore
 {
   clsAestheticScore = self->_clsAestheticScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsAestheticScore == v4)
+  if (clsAestheticScore == null)
   {
     return 0.0;
   }
@@ -325,9 +325,9 @@
 - (double)clsExposureScore
 {
   clsExposureScore = self->_clsExposureScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsExposureScore == v4)
+  if (clsExposureScore == null)
   {
     return 0.0;
   }
@@ -341,9 +341,9 @@
 - (double)clsSharpnessScore
 {
   clsSharpnessScore = self->_clsSharpnessScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsSharpnessScore == v4)
+  if (clsSharpnessScore == null)
   {
     return 0.0;
   }
@@ -357,9 +357,9 @@
 - (BOOL)clsHasCustomPlaybackVariation
 {
   clsHasCustomPlaybackVariation = self->_clsHasCustomPlaybackVariation;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsHasCustomPlaybackVariation == v4)
+  if (clsHasCustomPlaybackVariation == null)
   {
     return 0;
   }
@@ -372,9 +372,9 @@
 - (BOOL)clsHasInterestingAudioClassification
 {
   clsHasInterestingAudioClassification = self->_clsHasInterestingAudioClassification;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsHasInterestingAudioClassification == v4)
+  if (clsHasInterestingAudioClassification == null)
   {
     return 0;
   }
@@ -387,9 +387,9 @@
 - (BOOL)clsIsInterestingHDR
 {
   clsIsInterestingHDR = self->_clsIsInterestingHDR;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInterestingHDR == v4)
+  if (clsIsInterestingHDR == null)
   {
     return 0;
   }
@@ -402,9 +402,9 @@
 - (BOOL)clsIsInterestingSDOF
 {
   clsIsInterestingSDOF = self->_clsIsInterestingSDOF;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInterestingSDOF == v4)
+  if (clsIsInterestingSDOF == null)
   {
     return 0;
   }
@@ -417,9 +417,9 @@
 - (BOOL)clsIsInterestingPanorama
 {
   clsIsInterestingPanorama = self->_clsIsInterestingPanorama;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInterestingPanorama == v4)
+  if (clsIsInterestingPanorama == null)
   {
     return 0;
   }
@@ -432,9 +432,9 @@
 - (BOOL)clsIsInterestingLivePhoto
 {
   clsIsInterestingLivePhoto = self->_clsIsInterestingLivePhoto;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInterestingLivePhoto == v4)
+  if (clsIsInterestingLivePhoto == null)
   {
     return 0;
   }
@@ -447,9 +447,9 @@
 - (BOOL)clsIsInterestingVideo
 {
   clsIsInterestingVideo = self->_clsIsInterestingVideo;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsInterestingVideo == v4)
+  if (clsIsInterestingVideo == null)
   {
     return 0;
   }
@@ -462,9 +462,9 @@
 - (double)clsContentScore
 {
   clsContentScore = self->_clsContentScore;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsContentScore == v4)
+  if (clsContentScore == null)
   {
     return 0.0;
   }
@@ -478,9 +478,9 @@
 - (BOOL)isVideo
 {
   isVideo = self->_isVideo;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (isVideo == v4)
+  if (isVideo == null)
   {
     return 0;
   }
@@ -493,9 +493,9 @@
 - (BOOL)isFavorite
 {
   isFavorite = self->_isFavorite;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (isFavorite == v4)
+  if (isFavorite == null)
   {
     return 0;
   }
@@ -508,9 +508,9 @@
 - (BOOL)clsIsScreenshotOrScreenRecording
 {
   clsIsScreenshotOrScreenRecording = self->_clsIsScreenshotOrScreenRecording;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsScreenshotOrScreenRecording == v4)
+  if (clsIsScreenshotOrScreenRecording == null)
   {
     return 0;
   }
@@ -523,9 +523,9 @@
 - (BOOL)clsIsBlurry
 {
   clsIsBlurry = self->_clsIsBlurry;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsBlurry == v4)
+  if (clsIsBlurry == null)
   {
     return 0;
   }
@@ -538,9 +538,9 @@
 - (BOOL)clsIsUtility
 {
   clsIsUtility = self->_clsIsUtility;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsIsUtility == v4)
+  if (clsIsUtility == null)
   {
     return 0;
   }
@@ -553,9 +553,9 @@
 - (int64_t)clsShareCount
 {
   clsShareCount = self->_clsShareCount;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsShareCount == v4)
+  if (clsShareCount == null)
   {
     return 0;
   }
@@ -568,9 +568,9 @@
 - (int64_t)clsPlayCount
 {
   clsPlayCount = self->_clsPlayCount;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsPlayCount == v4)
+  if (clsPlayCount == null)
   {
     return 0;
   }
@@ -583,9 +583,9 @@
 - (int64_t)clsViewCount
 {
   clsViewCount = self->_clsViewCount;
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (clsViewCount == v4)
+  if (clsViewCount == null)
   {
     return 0;
   }
@@ -598,63 +598,63 @@
 - (NSDateComponents)cls_localDateComponents
 {
   v3 = MEMORY[0x277D27690];
-  v4 = [(PGCuratorInvestigationItem *)self cls_universalDate];
-  v5 = [(PGCuratorInvestigationItem *)self cls_localDate];
-  v6 = [v3 dateComponentsWithUTCDate:v4 localDate:v5];
+  cls_universalDate = [(PGCuratorInvestigationItem *)self cls_universalDate];
+  cls_localDate = [(PGCuratorInvestigationItem *)self cls_localDate];
+  v6 = [v3 dateComponentsWithUTCDate:cls_universalDate localDate:cls_localDate];
 
   return v6;
 }
 
 - (unint64_t)clsPeopleCount
 {
-  v3 = [(PGCuratorInvestigationItem *)self clsPersonLocalIdentifiers];
-  v4 = [MEMORY[0x277CBEB68] null];
+  clsPersonLocalIdentifiers = [(PGCuratorInvestigationItem *)self clsPersonLocalIdentifiers];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (clsPersonLocalIdentifiers == null)
   {
     return 0;
   }
 
-  v5 = [(PGCuratorInvestigationItem *)self clsPersonLocalIdentifiers];
-  v6 = [v5 count];
+  clsPersonLocalIdentifiers2 = [(PGCuratorInvestigationItem *)self clsPersonLocalIdentifiers];
+  v6 = [clsPersonLocalIdentifiers2 count];
 
   return v6;
 }
 
 - (CLLocation)location
 {
-  v3 = [(PGCuratorInvestigationItem *)self clsLocation];
-  v4 = [MEMORY[0x277CBEB68] null];
+  clsLocation = [(PGCuratorInvestigationItem *)self clsLocation];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (clsLocation == null)
   {
-    v5 = 0;
+    clsLocation2 = 0;
   }
 
   else
   {
-    v5 = [(PGCuratorInvestigationItem *)self clsLocation];
+    clsLocation2 = [(PGCuratorInvestigationItem *)self clsLocation];
   }
 
-  return v5;
+  return clsLocation2;
 }
 
 - (id)date
 {
-  v3 = [(PGCuratorInvestigationItem *)self cls_universalDate];
-  v4 = [MEMORY[0x277CBEB68] null];
+  cls_universalDate = [(PGCuratorInvestigationItem *)self cls_universalDate];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (cls_universalDate == null)
   {
-    v5 = 0;
+    cls_universalDate2 = 0;
   }
 
   else
   {
-    v5 = [(PGCuratorInvestigationItem *)self cls_universalDate];
+    cls_universalDate2 = [(PGCuratorInvestigationItem *)self cls_universalDate];
   }
 
-  return v5;
+  return cls_universalDate2;
 }
 
 - (NSString)description
@@ -663,215 +663,215 @@
   v8.receiver = self;
   v8.super_class = PGCuratorInvestigationItem;
   v4 = [(PGCuratorInvestigationItem *)&v8 description];
-  v5 = [(PGCuratorInvestigationItem *)self cls_universalDate];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  cls_universalDate = [(PGCuratorInvestigationItem *)self cls_universalDate];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, cls_universalDate];
 
   return v6;
 }
 
-- (PGCuratorInvestigationItem)initWithUUID:(id)a3 itemInfo:(id)a4 curationModel:(id)a5
+- (PGCuratorInvestigationItem)initWithUUID:(id)d itemInfo:(id)info curationModel:(id)model
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  infoCopy = info;
+  modelCopy = model;
   v222.receiver = self;
   v222.super_class = PGCuratorInvestigationItem;
   v12 = [(PGCuratorInvestigationItem *)&v222 init];
 
   if (v12)
   {
-    v217 = v11;
-    objc_storeStrong(&v12->_clsIdentifier, a3);
-    v13 = [MEMORY[0x277CBEB68] null];
+    v217 = modelCopy;
+    objc_storeStrong(&v12->_clsIdentifier, d);
+    null = [MEMORY[0x277CBEB68] null];
     cls_universalDate = v12->_cls_universalDate;
-    v12->_cls_universalDate = v13;
+    v12->_cls_universalDate = null;
 
-    v15 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
     clsLocation = v12->_clsLocation;
-    v12->_clsLocation = v15;
+    v12->_clsLocation = null2;
 
-    v17 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
     clsPersonLocalIdentifiers = v12->_clsPersonLocalIdentifiers;
-    v12->_clsPersonLocalIdentifiers = v17;
+    v12->_clsPersonLocalIdentifiers = null3;
 
-    v19 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
     clsSceneClassifications = v12->_clsSceneClassifications;
-    v12->_clsSceneClassifications = v19;
+    v12->_clsSceneClassifications = null4;
 
-    v21 = [MEMORY[0x277CBEB68] null];
+    null5 = [MEMORY[0x277CBEB68] null];
     clsSceneprint = v12->_clsSceneprint;
-    v12->_clsSceneprint = v21;
+    v12->_clsSceneprint = null5;
 
-    v23 = [MEMORY[0x277CBEB68] null];
+    null6 = [MEMORY[0x277CBEB68] null];
     clsUnprefetchedPersonLocalIdentifiers = v12->_clsUnprefetchedPersonLocalIdentifiers;
-    v12->_clsUnprefetchedPersonLocalIdentifiers = v23;
+    v12->_clsUnprefetchedPersonLocalIdentifiers = null6;
 
-    v25 = [MEMORY[0x277CBEB68] null];
+    null7 = [MEMORY[0x277CBEB68] null];
     clsPetLocalIdentifiers = v12->_clsPetLocalIdentifiers;
-    v12->_clsPetLocalIdentifiers = v25;
+    v12->_clsPetLocalIdentifiers = null7;
 
-    v27 = [MEMORY[0x277CBEB68] null];
+    null8 = [MEMORY[0x277CBEB68] null];
     clsPersonAndPetLocalIdentifiers = v12->_clsPersonAndPetLocalIdentifiers;
-    v12->_clsPersonAndPetLocalIdentifiers = v27;
+    v12->_clsPersonAndPetLocalIdentifiers = null8;
 
-    v29 = [MEMORY[0x277CBEB68] null];
+    null9 = [MEMORY[0x277CBEB68] null];
     clsViewCount = v12->_clsViewCount;
-    v12->_clsViewCount = v29;
+    v12->_clsViewCount = null9;
 
-    v31 = [MEMORY[0x277CBEB68] null];
+    null10 = [MEMORY[0x277CBEB68] null];
     clsPlayCount = v12->_clsPlayCount;
-    v12->_clsPlayCount = v31;
+    v12->_clsPlayCount = null10;
 
-    v33 = [MEMORY[0x277CBEB68] null];
+    null11 = [MEMORY[0x277CBEB68] null];
     clsShareCount = v12->_clsShareCount;
-    v12->_clsShareCount = v33;
+    v12->_clsShareCount = null11;
 
-    v35 = [MEMORY[0x277CBEB68] null];
+    null12 = [MEMORY[0x277CBEB68] null];
     clsIsUtility = v12->_clsIsUtility;
-    v12->_clsIsUtility = v35;
+    v12->_clsIsUtility = null12;
 
-    v37 = [MEMORY[0x277CBEB68] null];
+    null13 = [MEMORY[0x277CBEB68] null];
     clsIsBlurry = v12->_clsIsBlurry;
     p_clsIsBlurry = &v12->_clsIsBlurry;
-    v12->_clsIsBlurry = v37;
+    v12->_clsIsBlurry = null13;
 
-    v39 = [MEMORY[0x277CBEB68] null];
+    null14 = [MEMORY[0x277CBEB68] null];
     isVideo = v12->_isVideo;
-    v12->_isVideo = v39;
+    v12->_isVideo = null14;
 
-    v41 = [MEMORY[0x277CBEB68] null];
+    null15 = [MEMORY[0x277CBEB68] null];
     clsIsScreenshotOrScreenRecording = v12->_clsIsScreenshotOrScreenRecording;
-    v12->_clsIsScreenshotOrScreenRecording = v41;
+    v12->_clsIsScreenshotOrScreenRecording = null15;
 
-    v43 = [MEMORY[0x277CBEB68] null];
+    null16 = [MEMORY[0x277CBEB68] null];
     isFavorite = v12->_isFavorite;
-    v12->_isFavorite = v43;
+    v12->_isFavorite = null16;
 
-    v45 = [MEMORY[0x277CBEB68] null];
+    null17 = [MEMORY[0x277CBEB68] null];
     clsContentScore = v12->_clsContentScore;
-    v12->_clsContentScore = v45;
+    v12->_clsContentScore = null17;
 
-    v47 = [MEMORY[0x277CBEB68] null];
+    null18 = [MEMORY[0x277CBEB68] null];
     clsIsInterestingVideo = v12->_clsIsInterestingVideo;
     p_clsIsInterestingVideo = &v12->_clsIsInterestingVideo;
-    v12->_clsIsInterestingVideo = v47;
+    v12->_clsIsInterestingVideo = null18;
 
-    v49 = [MEMORY[0x277CBEB68] null];
+    null19 = [MEMORY[0x277CBEB68] null];
     clsIsInterestingLivePhoto = v12->_clsIsInterestingLivePhoto;
     p_clsIsInterestingLivePhoto = &v12->_clsIsInterestingLivePhoto;
-    v12->_clsIsInterestingLivePhoto = v49;
+    v12->_clsIsInterestingLivePhoto = null19;
 
-    v51 = [MEMORY[0x277CBEB68] null];
+    null20 = [MEMORY[0x277CBEB68] null];
     clsIsInterestingPanorama = v12->_clsIsInterestingPanorama;
     p_clsIsInterestingPanorama = &v12->_clsIsInterestingPanorama;
-    v12->_clsIsInterestingPanorama = v51;
+    v12->_clsIsInterestingPanorama = null20;
 
-    v53 = [MEMORY[0x277CBEB68] null];
+    null21 = [MEMORY[0x277CBEB68] null];
     clsIsInterestingSDOF = v12->_clsIsInterestingSDOF;
     p_clsIsInterestingSDOF = &v12->_clsIsInterestingSDOF;
-    v12->_clsIsInterestingSDOF = v53;
+    v12->_clsIsInterestingSDOF = null21;
 
-    v55 = [MEMORY[0x277CBEB68] null];
+    null22 = [MEMORY[0x277CBEB68] null];
     clsIsInterestingHDR = v12->_clsIsInterestingHDR;
     p_clsIsInterestingHDR = &v12->_clsIsInterestingHDR;
-    v12->_clsIsInterestingHDR = v55;
+    v12->_clsIsInterestingHDR = null22;
 
-    v57 = [MEMORY[0x277CBEB68] null];
+    null23 = [MEMORY[0x277CBEB68] null];
     clsHasInterestingAudioClassification = v12->_clsHasInterestingAudioClassification;
     p_clsHasInterestingAudioClassification = &v12->_clsHasInterestingAudioClassification;
-    v12->_clsHasInterestingAudioClassification = v57;
+    v12->_clsHasInterestingAudioClassification = null23;
 
-    v59 = [MEMORY[0x277CBEB68] null];
+    null24 = [MEMORY[0x277CBEB68] null];
     clsHasCustomPlaybackVariation = v12->_clsHasCustomPlaybackVariation;
     p_clsHasCustomPlaybackVariation = &v12->_clsHasCustomPlaybackVariation;
-    v12->_clsHasCustomPlaybackVariation = v59;
+    v12->_clsHasCustomPlaybackVariation = null24;
 
-    v61 = [MEMORY[0x277CBEB68] null];
+    null25 = [MEMORY[0x277CBEB68] null];
     clsSharpnessScore = v12->_clsSharpnessScore;
     p_clsSharpnessScore = &v12->_clsSharpnessScore;
-    v12->_clsSharpnessScore = v61;
+    v12->_clsSharpnessScore = null25;
 
-    v63 = [MEMORY[0x277CBEB68] null];
+    null26 = [MEMORY[0x277CBEB68] null];
     clsExposureScore = v12->_clsExposureScore;
     p_clsExposureScore = &v12->_clsExposureScore;
-    v12->_clsExposureScore = v63;
+    v12->_clsExposureScore = null26;
 
-    v65 = [MEMORY[0x277CBEB68] null];
+    null27 = [MEMORY[0x277CBEB68] null];
     clsAestheticScore = v12->_clsAestheticScore;
-    v12->_clsAestheticScore = v65;
+    v12->_clsAestheticScore = null27;
 
-    v67 = [MEMORY[0x277CBEB68] null];
+    null28 = [MEMORY[0x277CBEB68] null];
     clsIsAestheticallyPrettyGood = v12->_clsIsAestheticallyPrettyGood;
-    v12->_clsIsAestheticallyPrettyGood = v67;
+    v12->_clsIsAestheticallyPrettyGood = null28;
 
-    v69 = [MEMORY[0x277CBEB68] null];
+    null29 = [MEMORY[0x277CBEB68] null];
     clsFaceScore = v12->_clsFaceScore;
-    v12->_clsFaceScore = v69;
+    v12->_clsFaceScore = null29;
 
-    v71 = [MEMORY[0x277CBEB68] null];
+    null30 = [MEMORY[0x277CBEB68] null];
     clsIsInhabited = v12->_clsIsInhabited;
     p_clsIsInhabited = &v12->_clsIsInhabited;
-    v12->_clsIsInhabited = v71;
+    v12->_clsIsInhabited = null30;
 
-    v73 = [MEMORY[0x277CBEB68] null];
+    null31 = [MEMORY[0x277CBEB68] null];
     clsAvoidIfPossibleForKeyItem = v12->_clsAvoidIfPossibleForKeyItem;
-    v12->_clsAvoidIfPossibleForKeyItem = v73;
+    v12->_clsAvoidIfPossibleForKeyItem = null31;
 
-    v75 = [MEMORY[0x277CBEB68] null];
+    null32 = [MEMORY[0x277CBEB68] null];
     clsHasPoorResolution = v12->_clsHasPoorResolution;
-    v12->_clsHasPoorResolution = v75;
+    v12->_clsHasPoorResolution = null32;
 
-    v77 = [MEMORY[0x277CBEB68] null];
+    null33 = [MEMORY[0x277CBEB68] null];
     clsHasInterestingScenes = v12->_clsHasInterestingScenes;
     p_clsHasInterestingScenes = &v12->_clsHasInterestingScenes;
-    v12->_clsHasInterestingScenes = v77;
+    v12->_clsHasInterestingScenes = null33;
 
-    v79 = [MEMORY[0x277CBEB68] null];
+    null34 = [MEMORY[0x277CBEB68] null];
     clsHighlightVisibilityScore = v12->_clsHighlightVisibilityScore;
     p_clsHighlightVisibilityScore = &v12->_clsHighlightVisibilityScore;
-    v12->_clsHighlightVisibilityScore = v79;
+    v12->_clsHighlightVisibilityScore = null34;
 
-    v81 = [MEMORY[0x277CBEB68] null];
+    null35 = [MEMORY[0x277CBEB68] null];
     clsAutoplaySuggestionScore = v12->_clsAutoplaySuggestionScore;
     p_clsAutoplaySuggestionScore = &v12->_clsAutoplaySuggestionScore;
-    v12->_clsAutoplaySuggestionScore = v81;
+    v12->_clsAutoplaySuggestionScore = null35;
 
-    v83 = [MEMORY[0x277CBEB68] null];
+    null36 = [MEMORY[0x277CBEB68] null];
     clsDuration = v12->_clsDuration;
     p_clsDuration = &v12->_clsDuration;
-    v12->_clsDuration = v83;
+    v12->_clsDuration = null36;
 
-    v85 = [MEMORY[0x277CBEB68] null];
+    null37 = [MEMORY[0x277CBEB68] null];
     clsIsNonMemorable = v12->_clsIsNonMemorable;
     p_clsIsNonMemorable = &v12->_clsIsNonMemorable;
-    v12->_clsIsNonMemorable = v85;
+    v12->_clsIsNonMemorable = null37;
 
-    v87 = [MEMORY[0x277CBEB68] null];
+    null38 = [MEMORY[0x277CBEB68] null];
     clsIsLoopOrBounce = v12->_clsIsLoopOrBounce;
     p_clsIsLoopOrBounce = &v12->_clsIsLoopOrBounce;
-    v12->_clsIsLoopOrBounce = v87;
+    v12->_clsIsLoopOrBounce = null38;
 
-    v89 = [MEMORY[0x277CBEB68] null];
+    null39 = [MEMORY[0x277CBEB68] null];
     clsIsLongExposure = v12->_clsIsLongExposure;
-    v12->_clsIsLongExposure = v89;
+    v12->_clsIsLongExposure = null39;
 
-    v91 = [MEMORY[0x277CBEB68] null];
+    null40 = [MEMORY[0x277CBEB68] null];
     clsGpsHorizontalAccuracy = v12->_clsGpsHorizontalAccuracy;
-    v12->_clsGpsHorizontalAccuracy = v91;
+    v12->_clsGpsHorizontalAccuracy = null40;
 
-    v93 = [MEMORY[0x277CBEB68] null];
+    null41 = [MEMORY[0x277CBEB68] null];
     clsSquareCropScore = v12->_clsSquareCropScore;
-    v12->_clsSquareCropScore = v93;
+    v12->_clsSquareCropScore = null41;
 
-    v95 = [MEMORY[0x277CBEB68] null];
+    null42 = [MEMORY[0x277CBEB68] null];
     clsIsInSharedLibrary = v12->_clsIsInSharedLibrary;
-    v12->_clsIsInSharedLibrary = v95;
+    v12->_clsIsInSharedLibrary = null42;
 
-    v97 = [MEMORY[0x277CBEB68] null];
+    null43 = [MEMORY[0x277CBEB68] null];
     clsIconicScore = v12->_clsIconicScore;
-    v12->_clsIconicScore = v97;
+    v12->_clsIconicScore = null43;
 
-    v99 = [v10 objectForKeyedSubscript:@"creationDate"];
+    v99 = [infoCopy objectForKeyedSubscript:@"creationDate"];
     v100 = v99;
     if (!v99)
     {
@@ -880,7 +880,7 @@
 
     objc_storeStrong(&v12->_cls_universalDate, v100);
 
-    v101 = [v10 objectForKeyedSubscript:@"localCreationDate"];
+    v101 = [infoCopy objectForKeyedSubscript:@"localCreationDate"];
     cls_localDate = v101;
     if (!v101)
     {
@@ -889,7 +889,7 @@
 
     objc_storeStrong(&v12->_cls_localDate, cls_localDate);
 
-    v103 = [v10 objectForKeyedSubscript:@"location"];
+    v103 = [infoCopy objectForKeyedSubscript:@"location"];
     v218 = v103;
     if (v103)
     {
@@ -897,7 +897,7 @@
 
       if (v104)
       {
-        v105 = v9;
+        v105 = dCopy;
         v106 = objc_alloc(MEMORY[0x277CE41F8]);
         v107 = [v218 objectForKeyedSubscript:@"latitude"];
         [v107 doubleValue];
@@ -905,7 +905,7 @@
         v110 = [v218 objectForKeyedSubscript:@"longitude"];
         [v110 doubleValue];
         v111 = v106;
-        v9 = v105;
+        dCopy = v105;
         v113 = [v111 initWithLatitude:v109 longitude:v112];
         v114 = v12->_clsLocation;
         v12->_clsLocation = v113;
@@ -918,7 +918,7 @@
       }
     }
 
-    v115 = [v10 objectForKeyedSubscript:@"peopleNames"];
+    v115 = [infoCopy objectForKeyedSubscript:@"peopleNames"];
     v116 = v115;
     if (!v115)
     {
@@ -927,7 +927,7 @@
 
     objc_storeStrong(&v12->_clsPersonLocalIdentifiers, v116);
 
-    v117 = [v10 objectForKeyedSubscript:@"petNames"];
+    v117 = [infoCopy objectForKeyedSubscript:@"petNames"];
     v118 = v117;
     if (!v117)
     {
@@ -956,7 +956,7 @@
     v124 = v12->_clsPersonAndPetLocalIdentifiers;
     v12->_clsPersonAndPetLocalIdentifiers = v123;
 
-    v125 = [v10 objectForKeyedSubscript:@"isUtility"];
+    v125 = [infoCopy objectForKeyedSubscript:@"isUtility"];
     v126 = v125;
     v127 = MEMORY[0x277CBEC28];
     if (v125)
@@ -971,7 +971,7 @@
 
     objc_storeStrong(&v12->_clsIsUtility, v128);
 
-    v129 = [v10 objectForKeyedSubscript:@"isFavorite"];
+    v129 = [infoCopy objectForKeyedSubscript:@"isFavorite"];
     v130 = v129;
     if (v129)
     {
@@ -985,7 +985,7 @@
 
     objc_storeStrong(&v12->_isFavorite, v131);
 
-    v132 = [v10 objectForKeyedSubscript:@"isVideo"];
+    v132 = [infoCopy objectForKeyedSubscript:@"isVideo"];
     v133 = v132;
     if (v132)
     {
@@ -999,7 +999,7 @@
 
     objc_storeStrong(&v12->_isVideo, v134);
 
-    v135 = [v10 objectForKeyedSubscript:@"contentScore"];
+    v135 = [infoCopy objectForKeyedSubscript:@"contentScore"];
     v136 = v135;
     if (!v135)
     {
@@ -1008,7 +1008,7 @@
 
     objc_storeStrong(&v12->_clsContentScore, v136);
 
-    v137 = [v10 objectForKeyedSubscript:@"aestheticScore"];
+    v137 = [infoCopy objectForKeyedSubscript:@"aestheticScore"];
     v138 = v137;
     if (!v137)
     {
@@ -1017,7 +1017,7 @@
 
     objc_storeStrong(&v12->_clsAestheticScore, v138);
 
-    v139 = [v10 objectForKeyedSubscript:@"faceScore"];
+    v139 = [infoCopy objectForKeyedSubscript:@"faceScore"];
     v140 = v139;
     if (!v139)
     {
@@ -1026,12 +1026,12 @@
 
     objc_storeStrong(&v12->_clsFaceScore, v140);
 
-    v141 = [v10 objectForKeyedSubscript:@"sceneprint"];
+    v141 = [infoCopy objectForKeyedSubscript:@"sceneprint"];
     if (v141)
     {
       v142 = MEMORY[0x277CCAAC8];
       v143 = objc_opt_class();
-      v144 = [v10 objectForKeyedSubscript:@"sceneprint"];
+      v144 = [infoCopy objectForKeyedSubscript:@"sceneprint"];
       v221 = 0;
       v145 = [v142 unarchivedObjectOfClass:v143 fromData:v144 error:&v221];
       v146 = v221;
@@ -1045,7 +1045,7 @@
       v12->_clsSceneprint = 0;
     }
 
-    v147 = [v10 objectForKeyedSubscript:@"isInterestingVideo"];
+    v147 = [infoCopy objectForKeyedSubscript:@"isInterestingVideo"];
     v148 = v147;
     if (!v147)
     {
@@ -1054,7 +1054,7 @@
 
     objc_storeStrong(p_clsIsInterestingVideo, v148);
 
-    v149 = [v10 objectForKeyedSubscript:@"isInterestingLivePhoto"];
+    v149 = [infoCopy objectForKeyedSubscript:@"isInterestingLivePhoto"];
     v150 = v149;
     if (!v149)
     {
@@ -1063,7 +1063,7 @@
 
     objc_storeStrong(p_clsIsInterestingLivePhoto, v150);
 
-    v151 = [v10 objectForKeyedSubscript:@"isInterestingPanorama"];
+    v151 = [infoCopy objectForKeyedSubscript:@"isInterestingPanorama"];
     v152 = v151;
     if (!v151)
     {
@@ -1072,7 +1072,7 @@
 
     objc_storeStrong(p_clsIsInterestingPanorama, v152);
 
-    v153 = [v10 objectForKeyedSubscript:@"isInterestingSDOF"];
+    v153 = [infoCopy objectForKeyedSubscript:@"isInterestingSDOF"];
     v154 = v153;
     if (!v153)
     {
@@ -1081,7 +1081,7 @@
 
     objc_storeStrong(p_clsIsInterestingSDOF, v154);
 
-    v155 = [v10 objectForKeyedSubscript:@"isInterestingHDR"];
+    v155 = [infoCopy objectForKeyedSubscript:@"isInterestingHDR"];
     v156 = v155;
     if (!v155)
     {
@@ -1090,7 +1090,7 @@
 
     objc_storeStrong(p_clsIsInterestingHDR, v156);
 
-    v157 = [v10 objectForKeyedSubscript:@"hasInterestingAudioClassification"];
+    v157 = [infoCopy objectForKeyedSubscript:@"hasInterestingAudioClassification"];
     v158 = v157;
     if (!v157)
     {
@@ -1099,7 +1099,7 @@
 
     objc_storeStrong(p_clsHasInterestingAudioClassification, v158);
 
-    v159 = [v10 objectForKeyedSubscript:@"hasCustomPlaybackVariation"];
+    v159 = [infoCopy objectForKeyedSubscript:@"hasCustomPlaybackVariation"];
     v160 = v159;
     if (!v159)
     {
@@ -1108,7 +1108,7 @@
 
     objc_storeStrong(p_clsHasCustomPlaybackVariation, v160);
 
-    v161 = [v10 objectForKeyedSubscript:@"sharpnessScore"];
+    v161 = [infoCopy objectForKeyedSubscript:@"sharpnessScore"];
     v162 = v161;
     if (!v161)
     {
@@ -1117,7 +1117,7 @@
 
     objc_storeStrong(p_clsSharpnessScore, v162);
 
-    v163 = [v10 objectForKeyedSubscript:@"exposureScore"];
+    v163 = [infoCopy objectForKeyedSubscript:@"exposureScore"];
     v164 = v163;
     if (!v163)
     {
@@ -1126,7 +1126,7 @@
 
     objc_storeStrong(p_clsExposureScore, v164);
 
-    v165 = [v10 objectForKeyedSubscript:@"isBlurry"];
+    v165 = [infoCopy objectForKeyedSubscript:@"isBlurry"];
     v166 = v165;
     if (!v165)
     {
@@ -1135,7 +1135,7 @@
 
     objc_storeStrong(p_clsIsBlurry, v166);
 
-    v167 = [v10 objectForKeyedSubscript:@"isInhabited"];
+    v167 = [infoCopy objectForKeyedSubscript:@"isInhabited"];
     v168 = v167;
     if (!v167)
     {
@@ -1144,7 +1144,7 @@
 
     objc_storeStrong(p_clsIsInhabited, v168);
 
-    v169 = [v10 objectForKeyedSubscript:@"hasInterestingScenes"];
+    v169 = [infoCopy objectForKeyedSubscript:@"hasInterestingScenes"];
     v170 = v169;
     if (!v169)
     {
@@ -1153,7 +1153,7 @@
 
     objc_storeStrong(p_clsHasInterestingScenes, v170);
 
-    v171 = [v10 objectForKeyedSubscript:@"highlightVisibilityScore"];
+    v171 = [infoCopy objectForKeyedSubscript:@"highlightVisibilityScore"];
     v172 = v171;
     if (!v171)
     {
@@ -1162,7 +1162,7 @@
 
     objc_storeStrong(p_clsHighlightVisibilityScore, v172);
 
-    v173 = [v10 objectForKeyedSubscript:@"autoplaySuggestionScore"];
+    v173 = [infoCopy objectForKeyedSubscript:@"autoplaySuggestionScore"];
     v174 = v173;
     if (!v173)
     {
@@ -1171,7 +1171,7 @@
 
     objc_storeStrong(p_clsAutoplaySuggestionScore, v174);
 
-    v175 = [v10 objectForKeyedSubscript:@"faceInfos"];
+    v175 = [infoCopy objectForKeyedSubscript:@"faceInfos"];
     faceInfos = v175;
     if (!v175)
     {
@@ -1180,7 +1180,7 @@
 
     objc_storeStrong(&v12->_faceInfos, faceInfos);
 
-    v177 = [v10 objectForKeyedSubscript:@"duration"];
+    v177 = [infoCopy objectForKeyedSubscript:@"duration"];
     v178 = v177;
     if (!v177)
     {
@@ -1189,7 +1189,7 @@
 
     objc_storeStrong(p_clsDuration, v178);
 
-    v179 = [v10 objectForKeyedSubscript:@"isNonMemorable"];
+    v179 = [infoCopy objectForKeyedSubscript:@"isNonMemorable"];
     v180 = v179;
     if (!v179)
     {
@@ -1198,7 +1198,7 @@
 
     objc_storeStrong(p_clsIsNonMemorable, v180);
 
-    v181 = [v10 objectForKeyedSubscript:@"isLoopOrBounce"];
+    v181 = [infoCopy objectForKeyedSubscript:@"isLoopOrBounce"];
     v182 = v181;
     if (!v181)
     {
@@ -1207,7 +1207,7 @@
 
     objc_storeStrong(p_clsIsLoopOrBounce, v182);
 
-    v183 = [v10 objectForKeyedSubscript:@"isLongExposure"];
+    v183 = [infoCopy objectForKeyedSubscript:@"isLongExposure"];
     v184 = v183;
     if (!v183)
     {
@@ -1216,7 +1216,7 @@
 
     objc_storeStrong(&v12->_clsIsLongExposure, v184);
 
-    v185 = [v10 objectForKeyedSubscript:@"gpsHorizontalAccuracy"];
+    v185 = [infoCopy objectForKeyedSubscript:@"gpsHorizontalAccuracy"];
     v186 = v185;
     if (!v185)
     {
@@ -1225,7 +1225,7 @@
 
     objc_storeStrong(&v12->_clsGpsHorizontalAccuracy, v186);
 
-    v187 = [v10 objectForKeyedSubscript:@"squareCropScore"];
+    v187 = [infoCopy objectForKeyedSubscript:@"squareCropScore"];
     v188 = v187;
     if (!v187)
     {
@@ -1234,7 +1234,7 @@
 
     objc_storeStrong(&v12->_clsSquareCropScore, v188);
 
-    v189 = [v10 objectForKeyedSubscript:@"isInSharedLibrary"];
+    v189 = [infoCopy objectForKeyedSubscript:@"isInSharedLibrary"];
     v190 = v189;
     if (!v189)
     {
@@ -1243,7 +1243,7 @@
 
     objc_storeStrong(&v12->_clsIsInSharedLibrary, v190);
 
-    v191 = [v10 objectForKeyedSubscript:@"iconicScore"];
+    v191 = [infoCopy objectForKeyedSubscript:@"iconicScore"];
     v192 = v191;
     if (!v191)
     {
@@ -1252,7 +1252,7 @@
 
     objc_storeStrong(&v12->_clsIconicScore, v192);
 
-    v193 = [v10 objectForKeyedSubscript:@"scenes"];
+    v193 = [infoCopy objectForKeyedSubscript:@"scenes"];
     if (v193)
     {
       v194 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -1266,7 +1266,7 @@
       objc_storeStrong(&v12->_clsSceneClassifications, v194);
     }
 
-    v11 = v217;
+    modelCopy = v217;
   }
 
   v196 = v12;
@@ -1305,21 +1305,21 @@ void __66__PGCuratorInvestigationItem_initWithUUID_itemInfo_curationModel___bloc
   v2 = [(PGCuratorInvestigationItem *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     clsIdentifier = v2->_clsIdentifier;
-    v2->_clsIdentifier = v4;
+    v2->_clsIdentifier = uUIDString;
   }
 
   return v2;
 }
 
-+ (id)itemWithUUID:(id)a3 itemInfo:(id)a4 curationModel:(id)a5
++ (id)itemWithUUID:(id)d itemInfo:(id)info curationModel:(id)model
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithUUID:v10 itemInfo:v9 curationModel:v8];
+  modelCopy = model;
+  infoCopy = info;
+  dCopy = d;
+  v11 = [[self alloc] initWithUUID:dCopy itemInfo:infoCopy curationModel:modelCopy];
 
   return v11;
 }

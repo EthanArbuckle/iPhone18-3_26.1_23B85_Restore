@@ -1,48 +1,48 @@
 @interface _SFFormMetadataController
-- (BOOL)_formContainsAutoFilledElements:(id)a3;
+- (BOOL)_formContainsAutoFilledElements:(id)elements;
 - (WKWebProcessPlugInScriptWorld)scriptWorld;
-- (_SFFormMetadataController)initWithPageController:(id)a3;
+- (_SFFormMetadataController)initWithPageController:(id)controller;
 - (id)_observer;
-- (id)_webProcessPlugInBrowserContextController:(id)a3 willBeginInputSessionForElement:(id)a4 inFrame:(id)a5 userIsInteracting:(BOOL)a6;
-- (id)_webProcessPlugInBrowserContextController:(id)a3 willSubmitForm:(id)a4 toFrame:(id)a5 fromFrame:(id)a6 withValues:(id)a7;
-- (id)formAutoFillNodeForJSWrapper:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4;
-- (void)_checkSearchURLTemplateStringInFrame:(id)a3 autoFillFrame:(id)a4 autoFillNode:(id)a5 controller:(id)a6;
-- (void)_collectFormMetadataForPreFilling:(BOOL)a3;
-- (void)_webProcessPlugInBrowserContextController:(id)a3 textDidChangeInTextField:(id)a4 inFrame:(id)a5 initiatedByUserTyping:(BOOL)a6;
-- (void)_webProcessPlugInBrowserContextController:(id)a3 willSendSubmitEventToForm:(id)a4 inFrame:(id)a5 targetFrame:(id)a6 values:(id)a7;
-- (void)_willNavigateFrameWithUnsubmittedForm:(id)a3;
-- (void)autoFillFormInFrame:(id)a3 withValues:(id)a4 setAutoFilled:(BOOL)a5 focusFieldAfterFilling:(BOOL)a6 fieldToFocus:(id)a7 fieldsToObscure:(id)a8 submitForm:(BOOL)a9 completionHandler:(id)a10;
-- (void)autoFilledField:(id)a3 inForm:(id)a4 inFrame:(id)a5;
-- (void)clearField:(id)a3 inFrame:(id)a4;
+- (id)_webProcessPlugInBrowserContextController:(id)controller willBeginInputSessionForElement:(id)element inFrame:(id)frame userIsInteracting:(BOOL)interacting;
+- (id)_webProcessPlugInBrowserContextController:(id)controller willSubmitForm:(id)form toFrame:(id)frame fromFrame:(id)fromFrame withValues:(id)values;
+- (id)formAutoFillNodeForJSWrapper:(OpaqueJSValue *)wrapper inContext:(OpaqueJSContext *)context;
+- (void)_checkSearchURLTemplateStringInFrame:(id)frame autoFillFrame:(id)fillFrame autoFillNode:(id)node controller:(id)controller;
+- (void)_collectFormMetadataForPreFilling:(BOOL)filling;
+- (void)_webProcessPlugInBrowserContextController:(id)controller textDidChangeInTextField:(id)field inFrame:(id)frame initiatedByUserTyping:(BOOL)typing;
+- (void)_webProcessPlugInBrowserContextController:(id)controller willSendSubmitEventToForm:(id)form inFrame:(id)frame targetFrame:(id)targetFrame values:(id)values;
+- (void)_willNavigateFrameWithUnsubmittedForm:(id)form;
+- (void)autoFillFormInFrame:(id)frame withValues:(id)values setAutoFilled:(BOOL)filled focusFieldAfterFilling:(BOOL)filling fieldToFocus:(id)focus fieldsToObscure:(id)obscure submitForm:(BOOL)form completionHandler:(id)self0;
+- (void)autoFilledField:(id)field inForm:(id)form inFrame:(id)frame;
+- (void)clearField:(id)field inFrame:(id)frame;
 - (void)clearScriptWorld;
 - (void)collectFormMetadataForPageLevelAutoFill;
-- (void)collectFormMetadataWithRequestType:(unint64_t)a3 ignoreAutoFilledForms:(BOOL)a4 completionHandler:(id)a5;
+- (void)collectFormMetadataWithRequestType:(unint64_t)type ignoreAutoFilledForms:(BOOL)forms completionHandler:(id)handler;
 - (void)collectURLsForPreFilling;
 - (void)dealloc;
-- (void)didSameDocumentNavigation:(int64_t)a3 inFrame:(id)a4;
-- (void)didStartProvisionalLoadForFrame:(id)a3;
-- (void)fillForm:(double)a3 inFrame:(id)a4 withPassword:(id)a5 focusedFieldControlID:(id)a6 completionHandler:(id)a7;
-- (void)focusControlForStreamlinedLogin:(id)a3 inFrame:(id)a4;
+- (void)didSameDocumentNavigation:(int64_t)navigation inFrame:(id)frame;
+- (void)didStartProvisionalLoadForFrame:(id)frame;
+- (void)fillForm:(double)form inFrame:(id)frame withPassword:(id)password focusedFieldControlID:(id)d completionHandler:(id)handler;
+- (void)focusControlForStreamlinedLogin:(id)login inFrame:(id)frame;
 - (void)invalidate;
-- (void)removeAutomaticPasswordElementsInFrame:(id)a3 focusedPasswordControlUniqueID:(id)a4 passwordControlUniqueIDs:(id)a5 blurAfterRemoval:(BOOL)a6;
-- (void)removeAutomaticPasswordVisualTreatmentInFrame:(id)a3 passwordControlUniqueIDs:(id)a4;
-- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)a3 frame:(id)a4 passwordControlUniqueIDs:(id)a5;
+- (void)removeAutomaticPasswordElementsInFrame:(id)frame focusedPasswordControlUniqueID:(id)d passwordControlUniqueIDs:(id)ds blurAfterRemoval:(BOOL)removal;
+- (void)removeAutomaticPasswordVisualTreatmentInFrame:(id)frame passwordControlUniqueIDs:(id)ds;
+- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)appropriate frame:(id)frame passwordControlUniqueIDs:(id)ds;
 @end
 
 @implementation _SFFormMetadataController
 
-- (_SFFormMetadataController)initWithPageController:(id)a3
+- (_SFFormMetadataController)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = _SFFormMetadataController;
   v5 = [(WBSFormMetadataController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageController, v4);
-    v7 = [v4 browserContextController];
-    [v7 _setFormDelegate:v6];
+    objc_storeWeak(&v5->_pageController, controllerCopy);
+    browserContextController = [controllerCopy browserContextController];
+    [browserContextController _setFormDelegate:v6];
 
     v8 = v6;
   }
@@ -61,8 +61,8 @@
 - (void)invalidate
 {
   v3 = objc_storeWeak(&self->_pageController, 0);
-  v4 = [0 browserContextController];
-  [v4 _setFormDelegate:0];
+  browserContextController = [0 browserContextController];
+  [browserContextController _setFormDelegate:0];
 
   observer = self->_observer;
   self->_observer = 0;
@@ -73,9 +73,9 @@
   scriptWorld = self->_scriptWorld;
   if (!scriptWorld)
   {
-    v4 = [MEMORY[0x1E6985398] world];
+    world = [MEMORY[0x1E6985398] world];
     v5 = self->_scriptWorld;
-    self->_scriptWorld = v4;
+    self->_scriptWorld = world;
 
     [(WKWebProcessPlugInScriptWorld *)self->_scriptWorld makeAllShadowRootsOpen];
     [(WKWebProcessPlugInScriptWorld *)self->_scriptWorld disableOverrideBuiltinsBehavior];
@@ -89,24 +89,24 @@
 {
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v4 = [WeakRetained mainFrame];
+  mainFrame = [WeakRetained mainFrame];
 
-  addURLsInFrameTreeToArray(v4, v8);
-  v5 = [(_SFFormMetadataController *)self _observer];
-  v6 = [v4 URL];
-  v7 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:v4];
-  [v5 didCollectURLsForPreFilling:v8 atURL:v6 inFrame:v7];
+  addURLsInFrameTreeToArray(mainFrame, v8);
+  _observer = [(_SFFormMetadataController *)self _observer];
+  v6 = [mainFrame URL];
+  v7 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:mainFrame];
+  [_observer didCollectURLsForPreFilling:v8 atURL:v6 inFrame:v7];
 }
 
-- (BOOL)_formContainsAutoFilledElements:(id)a3
+- (BOOL)_formContainsAutoFilledElements:(id)elements
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 controls];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  controls = [elements controls];
+  v4 = [controls countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -116,7 +116,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(controls);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isAutoFilledTextField])
@@ -126,7 +126,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [controls countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -151,9 +151,9 @@ LABEL_11:
   [(_SFFormMetadataController *)self collectFormMetadataWithRequestType:0 ignoreAutoFilledForms:0 completionHandler:v2];
 }
 
-- (void)_collectFormMetadataForPreFilling:(BOOL)a3
+- (void)_collectFormMetadataForPreFilling:(BOOL)filling
 {
-  if (a3)
+  if (filling)
   {
     v3 = 1;
   }
@@ -172,32 +172,32 @@ LABEL_11:
   [(_SFFormMetadataController *)self collectFormMetadataWithRequestType:v3 ignoreAutoFilledForms:shouldListenForFormChanges completionHandler:v5];
 }
 
-- (void)collectFormMetadataWithRequestType:(unint64_t)a3 ignoreAutoFilledForms:(BOOL)a4 completionHandler:(id)a5
+- (void)collectFormMetadataWithRequestType:(unint64_t)type ignoreAutoFilledForms:(BOOL)forms completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v10 = [WeakRetained browserContextController];
-  v11 = [v10 mainFrame];
-  v12 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:v11];
+  browserContextController = [WeakRetained browserContextController];
+  mainFrame = [browserContextController mainFrame];
+  v12 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:mainFrame];
   v23 = 0;
   v24 = 0;
-  [(WBSFormMetadataController *)self getMetadataForAllFormsInPageWithMainFrame:v12 requestType:a3 frames:&v24 formMetadata:&v23];
+  [(WBSFormMetadataController *)self getMetadataForAllFormsInPageWithMainFrame:v12 requestType:type frames:&v24 formMetadata:&v23];
   v13 = v24;
   v14 = v23;
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __104___SFFormMetadataController_collectFormMetadataWithRequestType_ignoreAutoFilledForms_completionHandler___block_invoke;
   v18[3] = &unk_1E8490EC8;
-  v19 = v15;
+  v19 = dictionary;
   v20 = v14;
-  v22 = a4;
-  v21 = self;
+  formsCopy = forms;
+  selfCopy = self;
   v16 = v14;
-  v17 = v15;
+  v17 = dictionary;
   [v13 enumerateObjectsUsingBlock:v18];
-  v8[2](v8, v17);
+  handlerCopy[2](handlerCopy, v17);
 }
 
 - (void)clearScriptWorld
@@ -211,9 +211,9 @@ LABEL_11:
   }
 }
 
-- (id)formAutoFillNodeForJSWrapper:(OpaqueJSValue *)a3 inContext:(OpaqueJSContext *)a4
+- (id)formAutoFillNodeForJSWrapper:(OpaqueJSValue *)wrapper inContext:(OpaqueJSContext *)context
 {
-  v4 = [[SFFormAutoFillNode alloc] initWithJSWrapper:a3 inContext:a4];
+  v4 = [[SFFormAutoFillNode alloc] initWithJSWrapper:wrapper inContext:context];
 
   return v4;
 }
@@ -225,9 +225,9 @@ LABEL_11:
   {
     v4 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F5072D20];
     WeakRetained = objc_loadWeakRetained(&self->_pageController);
-    v6 = [WeakRetained browserContextController];
-    v7 = [v6 _remoteObjectRegistry];
-    v8 = [v7 remoteObjectProxyWithInterface:v4];
+    browserContextController = [WeakRetained browserContextController];
+    _remoteObjectRegistry = [browserContextController _remoteObjectRegistry];
+    v8 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v4];
     v9 = self->_observer;
     self->_observer = v8;
 
@@ -237,70 +237,70 @@ LABEL_11:
   return observer;
 }
 
-- (void)autoFillFormInFrame:(id)a3 withValues:(id)a4 setAutoFilled:(BOOL)a5 focusFieldAfterFilling:(BOOL)a6 fieldToFocus:(id)a7 fieldsToObscure:(id)a8 submitForm:(BOOL)a9 completionHandler:(id)a10
+- (void)autoFillFormInFrame:(id)frame withValues:(id)values setAutoFilled:(BOOL)filled focusFieldAfterFilling:(BOOL)filling fieldToFocus:(id)focus fieldsToObscure:(id)obscure submitForm:(BOOL)form completionHandler:(id)self0
 {
-  v12 = a6;
-  v13 = a5;
-  v16 = a3;
-  v17 = a10;
+  fillingCopy = filling;
+  filledCopy = filled;
+  frameCopy = frame;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __155___SFFormMetadataController_autoFillFormInFrame_withValues_setAutoFilled_focusFieldAfterFilling_fieldToFocus_fieldsToObscure_submitForm_completionHandler___block_invoke;
   v22[3] = &unk_1E8490EF0;
-  v23 = v16;
-  v24 = self;
-  v26 = v12;
-  v25 = v17;
+  v23 = frameCopy;
+  selfCopy = self;
+  v26 = fillingCopy;
+  v25 = handlerCopy;
   v21.receiver = self;
   v21.super_class = _SFFormMetadataController;
-  v18 = v17;
-  v19 = v16;
-  [(WBSFormMetadataController *)&v21 autoFillFormInFrame:v19 withValues:a4 setAutoFilled:v13 focusFieldAfterFilling:v12 fieldToFocus:a7 fieldsToObscure:a8 submitForm:a9 completionHandler:v22];
+  v18 = handlerCopy;
+  v19 = frameCopy;
+  [(WBSFormMetadataController *)&v21 autoFillFormInFrame:v19 withValues:values setAutoFilled:filledCopy focusFieldAfterFilling:fillingCopy fieldToFocus:focus fieldsToObscure:obscure submitForm:form completionHandler:v22];
 }
 
-- (void)fillForm:(double)a3 inFrame:(id)a4 withPassword:(id)a5 focusedFieldControlID:(id)a6 completionHandler:(id)a7
+- (void)fillForm:(double)form inFrame:(id)frame withPassword:(id)password focusedFieldControlID:(id)d completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a7;
+  frameCopy = frame;
+  handlerCopy = handler;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __99___SFFormMetadataController_fillForm_inFrame_withPassword_focusedFieldControlID_completionHandler___block_invoke;
   v17[3] = &unk_1E8490F18;
-  v20 = a3;
+  formCopy = form;
   v17[4] = self;
-  v18 = v12;
-  v19 = v13;
+  v18 = frameCopy;
+  v19 = handlerCopy;
   v16.receiver = self;
   v16.super_class = _SFFormMetadataController;
-  v14 = v13;
-  v15 = v12;
-  [(WBSFormMetadataController *)&v16 fillForm:v15 inFrame:a5 withPassword:a6 focusedFieldControlID:v17 completionHandler:a3];
+  v14 = handlerCopy;
+  v15 = frameCopy;
+  [(WBSFormMetadataController *)&v16 fillForm:v15 inFrame:password withPassword:d focusedFieldControlID:v17 completionHandler:form];
 }
 
-- (void)removeAutomaticPasswordElementsInFrame:(id)a3 focusedPasswordControlUniqueID:(id)a4 passwordControlUniqueIDs:(id)a5 blurAfterRemoval:(BOOL)a6
+- (void)removeAutomaticPasswordElementsInFrame:(id)frame focusedPasswordControlUniqueID:(id)d passwordControlUniqueIDs:(id)ds blurAfterRemoval:(BOOL)removal
 {
-  v6 = a6;
+  removalCopy = removal;
   v33[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:v10])
+  frameCopy = frame;
+  dCopy = d;
+  dsCopy = ds;
+  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:frameCopy])
   {
     v31.receiver = self;
     v31.super_class = _SFFormMetadataController;
-    [(WBSFormMetadataController *)&v31 removeAutomaticPasswordElementsInFrame:v10 focusedPasswordControlUniqueID:v11 passwordControlUniqueIDs:v12 blurAfterRemoval:v6];
-    v13 = [(WBSFormMetadataController *)self formAutoFillNodeForField:v11 inFrame:v10];
+    [(WBSFormMetadataController *)&v31 removeAutomaticPasswordElementsInFrame:frameCopy focusedPasswordControlUniqueID:dCopy passwordControlUniqueIDs:dsCopy blurAfterRemoval:removalCopy];
+    v13 = [(WBSFormMetadataController *)self formAutoFillNodeForField:dCopy inFrame:frameCopy];
     v29 = 0;
     v30 = 0;
-    [(WBSFormMetadataController *)self getMetadataForTextField:v13 inFrame:v10 textFieldMetadata:&v30 formMetadata:&v29 requestType:3];
+    [(WBSFormMetadataController *)self getMetadataForTextField:v13 inFrame:frameCopy textFieldMetadata:&v30 formMetadata:&v29 requestType:3];
     v14 = v30;
     v15 = v29;
     v16 = v29;
-    v17 = [v10 plugInFrame];
+    plugInFrame = [frameCopy plugInFrame];
     objc_storeStrong(&self->_unsubmittedForm, v15);
     if (v16)
     {
-      v18 = v17;
+      v18 = plugInFrame;
     }
 
     else
@@ -312,68 +312,68 @@ LABEL_11:
     v19 = 0;
     if (v13 && v14 && v16)
     {
-      v25 = [v10 plugInFrame];
+      plugInFrame2 = [frameCopy plugInFrame];
       v32[0] = @"textField";
-      v26 = [v14 serializedData];
-      v33[0] = v26;
+      serializedData = [v14 serializedData];
+      v33[0] = serializedData;
       v32[1] = @"form";
       [v16 serializedData];
       v20 = v28 = v13;
       v33[1] = v20;
       v32[2] = @"frame";
       v27 = v14;
-      v21 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:v25];
-      v22 = [(SFFormAutoFillFrameHandle *)v21 serializedData];
-      v33[2] = v22;
+      v21 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:plugInFrame2];
+      serializedData2 = [(SFFormAutoFillFrameHandle *)v21 serializedData];
+      v33[2] = serializedData2;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:3];
 
       v14 = v27;
       v13 = v28;
     }
 
-    v23 = [(_SFFormMetadataController *)self _observer];
-    v24 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:v17];
-    [v23 didRemoveAutomaticStrongPasswordInForm:v16 inputSessionUserObject:v19 inFrame:v24];
+    _observer = [(_SFFormMetadataController *)self _observer];
+    v24 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:plugInFrame];
+    [_observer didRemoveAutomaticStrongPasswordInForm:v16 inputSessionUserObject:v19 inFrame:v24];
   }
 }
 
-- (void)removeAutomaticPasswordVisualTreatmentInFrame:(id)a3 passwordControlUniqueIDs:(id)a4
+- (void)removeAutomaticPasswordVisualTreatmentInFrame:(id)frame passwordControlUniqueIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:v6])
+  frameCopy = frame;
+  dsCopy = ds;
+  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:frameCopy])
   {
     v8.receiver = self;
     v8.super_class = _SFFormMetadataController;
-    [(WBSFormMetadataController *)&v8 removeAutomaticPasswordVisualTreatmentInFrame:v6 passwordControlUniqueIDs:v7];
+    [(WBSFormMetadataController *)&v8 removeAutomaticPasswordVisualTreatmentInFrame:frameCopy passwordControlUniqueIDs:dsCopy];
   }
 }
 
-- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)a3 frame:(id)a4 passwordControlUniqueIDs:(id)a5
+- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)appropriate frame:(id)frame passwordControlUniqueIDs:(id)ds
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:v8])
+  appropriateCopy = appropriate;
+  frameCopy = frame;
+  dsCopy = ds;
+  if ([(WBSFormMetadataController *)self autoFillFrameIsValid:frameCopy])
   {
     v10.receiver = self;
     v10.super_class = _SFFormMetadataController;
-    [(WBSFormMetadataController *)&v10 setStrongPasswordElementViewableIfAppropriate:v6 frame:v8 passwordControlUniqueIDs:v9];
+    [(WBSFormMetadataController *)&v10 setStrongPasswordElementViewableIfAppropriate:appropriateCopy frame:frameCopy passwordControlUniqueIDs:dsCopy];
   }
 }
 
-- (void)clearField:(id)a3 inFrame:(id)a4
+- (void)clearField:(id)field inFrame:(id)frame
 {
-  v6 = a4;
+  frameCopy = frame;
   v18.receiver = self;
   v18.super_class = _SFFormMetadataController;
-  v7 = a3;
-  [(WBSFormMetadataController *)&v18 clearField:v7 inFrame:v6];
-  v8 = [(WBSFormMetadataController *)self formAutoFillNodeForField:v7 inFrame:v6];
+  fieldCopy = field;
+  [(WBSFormMetadataController *)&v18 clearField:fieldCopy inFrame:frameCopy];
+  v8 = [(WBSFormMetadataController *)self formAutoFillNodeForField:fieldCopy inFrame:frameCopy];
 
   v16 = 0;
   v17 = 0;
-  [(WBSFormMetadataController *)self getMetadataForTextField:v8 inFrame:v6 textFieldMetadata:&v17 formMetadata:&v16 requestType:3];
+  [(WBSFormMetadataController *)self getMetadataForTextField:v8 inFrame:frameCopy textFieldMetadata:&v17 formMetadata:&v16 requestType:3];
   v9 = v17;
   v10 = v16;
   v11 = v16;
@@ -381,59 +381,59 @@ LABEL_11:
   objc_storeStrong(&self->_unsubmittedForm, v10);
   if (v11)
   {
-    v12 = [v6 plugInFrame];
+    plugInFrame = [frameCopy plugInFrame];
   }
 
   else
   {
-    v12 = 0;
+    plugInFrame = 0;
   }
 
-  objc_storeStrong(&self->_unsubmittedFormFrame, v12);
+  objc_storeStrong(&self->_unsubmittedFormFrame, plugInFrame);
   if (v11)
   {
   }
 
-  v13 = [(_SFFormMetadataController *)self _observer];
+  _observer = [(_SFFormMetadataController *)self _observer];
   unsubmittedForm = self->_unsubmittedForm;
   v15 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:self->_unsubmittedFormFrame];
-  [v13 didUpdateUnsubmittedForm:unsubmittedForm inFrame:v15];
+  [_observer didUpdateUnsubmittedForm:unsubmittedForm inFrame:v15];
 }
 
-- (void)autoFilledField:(id)a3 inForm:(id)a4 inFrame:(id)a5
+- (void)autoFilledField:(id)field inForm:(id)form inFrame:(id)frame
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [v7 type];
-  if (v8 <= 5 && ((1 << v8) & 0x3A) != 0)
+  fieldCopy = field;
+  formCopy = form;
+  type = [formCopy type];
+  if (type <= 5 && ((1 << type) & 0x3A) != 0)
   {
-    v10 = [(_SFFormMetadataController *)self _observer];
-    [v10 autoFilledField:v11 inForm:v7];
+    _observer = [(_SFFormMetadataController *)self _observer];
+    [_observer autoFilledField:fieldCopy inForm:formCopy];
   }
 }
 
-- (void)focusControlForStreamlinedLogin:(id)a3 inFrame:(id)a4
+- (void)focusControlForStreamlinedLogin:(id)login inFrame:(id)frame
 {
   self->_focusingFormForStreamlinedLogin = 1;
   v5.receiver = self;
   v5.super_class = _SFFormMetadataController;
-  [(WBSFormMetadataController *)&v5 focusControlForStreamlinedLogin:a3 inFrame:a4];
+  [(WBSFormMetadataController *)&v5 focusControlForStreamlinedLogin:login inFrame:frame];
   self->_focusingFormForStreamlinedLogin = 0;
 }
 
-- (void)_willNavigateFrameWithUnsubmittedForm:(id)a3
+- (void)_willNavigateFrameWithUnsubmittedForm:(id)form
 {
-  v4 = a3;
+  formCopy = form;
   if (self->_unsubmittedForm)
   {
-    v10 = v4;
-    IsDescendantOfFrame = frameIsDescendantOfFrame(self->_unsubmittedFormFrame, v4);
-    v4 = v10;
+    v10 = formCopy;
+    IsDescendantOfFrame = frameIsDescendantOfFrame(self->_unsubmittedFormFrame, formCopy);
+    formCopy = v10;
     if (IsDescendantOfFrame)
     {
-      v6 = [(_SFFormMetadataController *)self _observer];
+      _observer = [(_SFFormMetadataController *)self _observer];
       v7 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:self->_unsubmittedFormFrame];
-      [v6 willNavigateFrame:v7 withUnsubmittedForm:self->_unsubmittedForm];
+      [_observer willNavigateFrame:v7 withUnsubmittedForm:self->_unsubmittedForm];
 
       unsubmittedForm = self->_unsubmittedForm;
       self->_unsubmittedForm = 0;
@@ -441,42 +441,42 @@ LABEL_11:
       unsubmittedFormFrame = self->_unsubmittedFormFrame;
       self->_unsubmittedFormFrame = 0;
 
-      v4 = v10;
+      formCopy = v10;
     }
   }
 }
 
-- (void)didStartProvisionalLoadForFrame:(id)a3
+- (void)didStartProvisionalLoadForFrame:(id)frame
 {
-  v6 = a3;
+  frameCopy = frame;
   WeakRetained = objc_loadWeakRetained(&self->_pageController);
-  v5 = [WeakRetained mainFrame];
+  mainFrame = [WeakRetained mainFrame];
 
-  if (v5 == v6)
+  if (mainFrame == frameCopy)
   {
     self->_shouldListenForFormChanges = 0;
   }
 
-  [(_SFFormMetadataController *)self _willNavigateFrameWithUnsubmittedForm:v6];
+  [(_SFFormMetadataController *)self _willNavigateFrameWithUnsubmittedForm:frameCopy];
 }
 
-- (void)didSameDocumentNavigation:(int64_t)a3 inFrame:(id)a4
+- (void)didSameDocumentNavigation:(int64_t)navigation inFrame:(id)frame
 {
-  if (a3)
+  if (navigation)
   {
-    [(_SFFormMetadataController *)self _willNavigateFrameWithUnsubmittedForm:a4];
+    [(_SFFormMetadataController *)self _willNavigateFrameWithUnsubmittedForm:frame];
   }
 }
 
-- (void)_checkSearchURLTemplateStringInFrame:(id)a3 autoFillFrame:(id)a4 autoFillNode:(id)a5 controller:(id)a6
+- (void)_checkSearchURLTemplateStringInFrame:(id)frame autoFillFrame:(id)fillFrame autoFillNode:(id)node controller:(id)controller
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  frameCopy = frame;
+  fillFrameCopy = fillFrame;
+  controllerCopy = controller;
+  if (node)
   {
-    [(WBSFormMetadataController *)self visibleNonEmptyTextFieldsInForm:a5 inFrame:v11];
+    [(WBSFormMetadataController *)self visibleNonEmptyTextFieldsInForm:node inFrame:fillFrameCopy];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -500,8 +500,8 @@ LABEL_11:
           }
 
           v20 = *(*(&v22 + 1) + 8 * v18);
-          v21 = [v20 isHTMLInputElementUserEdited];
-          if (v19 && (v21 & 1) != 0)
+          isHTMLInputElementUserEdited = [v20 isHTMLInputElementUserEdited];
+          if (v19 && (isHTMLInputElementUserEdited & 1) != 0)
           {
             v15 = v13;
 LABEL_15:
@@ -527,10 +527,10 @@ LABEL_15:
 
       if (v15)
       {
-        v19 = [(WBSFormMetadataController *)self formSubmissionURLStringForSearchTextField:v15 inFrame:v11 useStrictDetection:1];
+        v19 = [(WBSFormMetadataController *)self formSubmissionURLStringForSearchTextField:v15 inFrame:fillFrameCopy useStrictDetection:1];
         if (v19)
         {
-          [(_SFFormMetadataController *)self didFindSearchURLTemplateString:v19 inFrame:v10 pageController:v12];
+          [(_SFFormMetadataController *)self didFindSearchURLTemplateString:v19 inFrame:frameCopy pageController:controllerCopy];
         }
 
         goto LABEL_15;
@@ -544,11 +544,11 @@ LABEL_16:
   }
 }
 
-- (void)_webProcessPlugInBrowserContextController:(id)a3 textDidChangeInTextField:(id)a4 inFrame:(id)a5 initiatedByUserTyping:(BOOL)a6
+- (void)_webProcessPlugInBrowserContextController:(id)controller textDidChangeInTextField:(id)field inFrame:(id)frame initiatedByUserTyping:(BOOL)typing
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  fieldCopy = field;
+  frameCopy = frame;
   if ([(WBSFormMetadataController *)self isCurrentlyFilling])
   {
     v12 = WBS_LOG_CHANNEL_PREFIXAutoFill();
@@ -576,8 +576,8 @@ LABEL_16:
     v17[2] = __126___SFFormMetadataController__webProcessPlugInBrowserContextController_textDidChangeInTextField_inFrame_initiatedByUserTyping___block_invoke;
     v17[3] = &unk_1E848FB68;
     objc_copyWeak(&v20, buf);
-    v18 = v10;
-    v19 = v11;
+    v18 = fieldCopy;
+    v19 = frameCopy;
     [(WBSBlockCoalescer *)v16 scheduleBlock:v17];
 
     objc_destroyWeak(&v20);
@@ -585,18 +585,18 @@ LABEL_16:
   }
 }
 
-- (id)_webProcessPlugInBrowserContextController:(id)a3 willBeginInputSessionForElement:(id)a4 inFrame:(id)a5 userIsInteracting:(BOOL)a6
+- (id)_webProcessPlugInBrowserContextController:(id)controller willBeginInputSessionForElement:(id)element inFrame:(id)frame userIsInteracting:(BOOL)interacting
 {
-  v6 = a6;
+  interactingCopy = interacting;
   v34[3] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  frameCopy = frame;
   v11 = self->_focusingFormForStreamlinedLogin || self->_pendingBeginningInputSessionForControlAfterFilling;
   self->_pendingBeginningInputSessionForControlAfterFilling = 0;
-  if (!-[WBSFormMetadataController isCurrentlyFilling](self, "isCurrentlyFilling") && (([v9 isTextField] & 1) != 0 || objc_msgSend(v9, "isSelectElement")) && (v6 || v11 || GSEventIsHardwareKeyboardAttached() || (WeakRetained = objc_loadWeakRetained(&self->_pageController), objc_msgSend(WeakRetained, "webProcessPlugIn"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "plugInController"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "parameters"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "valueForKey:", @"launchedToTest"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v15, v14, WeakRetained, v18)))
+  if (!-[WBSFormMetadataController isCurrentlyFilling](self, "isCurrentlyFilling") && (([elementCopy isTextField] & 1) != 0 || objc_msgSend(elementCopy, "isSelectElement")) && (interactingCopy || v11 || GSEventIsHardwareKeyboardAttached() || (WeakRetained = objc_loadWeakRetained(&self->_pageController), objc_msgSend(WeakRetained, "webProcessPlugIn"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "plugInController"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "parameters"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "valueForKey:", @"launchedToTest"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "BOOLValue"), v17, v16, v15, v14, WeakRetained, v18)))
   {
-    v19 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:v10];
-    v20 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:v9];
+    v19 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:frameCopy];
+    v20 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:elementCopy];
     v31 = 0;
     v32 = 0;
     [(WBSFormMetadataController *)self getMetadataForTextField:v20 inFrame:v19 textFieldMetadata:&v32 formMetadata:&v31 requestType:0];
@@ -608,15 +608,15 @@ LABEL_16:
     if (v22)
     {
       v33[0] = @"textField";
-      v28 = [v21 serializedData];
-      v34[0] = v28;
+      serializedData = [v21 serializedData];
+      v34[0] = serializedData;
       v33[1] = @"form";
-      v23 = [v22 serializedData];
-      v34[1] = v23;
+      serializedData2 = [v22 serializedData];
+      v34[1] = serializedData2;
       v33[2] = @"frame";
-      v24 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:v10];
-      v25 = [(SFFormAutoFillFrameHandle *)v24 serializedData];
-      v34[2] = v25;
+      v24 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:frameCopy];
+      serializedData3 = [(SFFormAutoFillFrameHandle *)v24 serializedData];
+      v34[2] = serializedData3;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:3];
     }
 
@@ -642,12 +642,12 @@ LABEL_16:
   return v12;
 }
 
-- (void)_webProcessPlugInBrowserContextController:(id)a3 willSendSubmitEventToForm:(id)a4 inFrame:(id)a5 targetFrame:(id)a6 values:(id)a7
+- (void)_webProcessPlugInBrowserContextController:(id)controller willSendSubmitEventToForm:(id)form inFrame:(id)frame targetFrame:(id)targetFrame values:(id)values
 {
-  v9 = a5;
-  v10 = a4;
-  v19 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:v9];
-  v11 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:v10];
+  frameCopy = frame;
+  formCopy = form;
+  v19 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:frameCopy];
+  v11 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:formCopy];
 
   [(WBSFormMetadataController *)self willSendSubmitEventForForm:v11 inFrame:v19];
   v12 = [(WBSFormMetadataController *)self metadataForForm:v11 inFrame:v19 requestType:0];
@@ -655,31 +655,31 @@ LABEL_16:
   self->_unsubmittedForm = v12;
 
   unsubmittedFormFrame = self->_unsubmittedFormFrame;
-  self->_unsubmittedFormFrame = v9;
-  v15 = v9;
+  self->_unsubmittedFormFrame = frameCopy;
+  v15 = frameCopy;
 
-  v16 = [(_SFFormMetadataController *)self _observer];
+  _observer = [(_SFFormMetadataController *)self _observer];
   v17 = self->_unsubmittedForm;
   v18 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:self->_unsubmittedFormFrame];
-  [v16 didUpdateUnsubmittedForm:v17 inFrame:v18];
+  [_observer didUpdateUnsubmittedForm:v17 inFrame:v18];
 }
 
-- (id)_webProcessPlugInBrowserContextController:(id)a3 willSubmitForm:(id)a4 toFrame:(id)a5 fromFrame:(id)a6 withValues:(id)a7
+- (id)_webProcessPlugInBrowserContextController:(id)controller willSubmitForm:(id)form toFrame:(id)frame fromFrame:(id)fromFrame withValues:(id)values
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a4;
-  v15 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:v13];
-  v16 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:v14];
+  controllerCopy = controller;
+  frameCopy = frame;
+  fromFrameCopy = fromFrame;
+  formCopy = form;
+  v15 = [SFFormAutoFillFrame autoFillFrameWithWebProcessPlugInFrame:fromFrameCopy];
+  v16 = [SFFormAutoFillNode autoFillNodeWithNodeHandle:formCopy];
 
   v17 = [(WBSFormMetadataController *)self metadataForForm:v16 inFrame:v15 requestType:0 addUserEditedStateForUserNameAndPasswordFields:1];
   if (v17)
   {
-    v29 = v12;
-    v18 = [(WBSFormMetadata *)self->_unsubmittedForm uniqueID];
-    if (v18 == [v17 uniqueID])
+    v29 = frameCopy;
+    uniqueID = [(WBSFormMetadata *)self->_unsubmittedForm uniqueID];
+    if (uniqueID == [v17 uniqueID])
     {
       unsubmittedForm = self->_unsubmittedForm;
       self->_unsubmittedForm = 0;
@@ -687,21 +687,21 @@ LABEL_16:
       unsubmittedFormFrame = self->_unsubmittedFormFrame;
       self->_unsubmittedFormFrame = 0;
 
-      v21 = [(_SFFormMetadataController *)self _observer];
-      [v21 didUpdateUnsubmittedForm:0 inFrame:0];
+      _observer = [(_SFFormMetadataController *)self _observer];
+      [_observer didUpdateUnsubmittedForm:0 inFrame:0];
     }
 
     [(WBSFormMetadataController *)self willSubmitForm:v16 inFrame:v15];
     v30[0] = @"form";
-    v22 = [v17 serializedData];
+    serializedData = [v17 serializedData];
     v30[1] = @"frame";
-    v31[0] = v22;
-    v23 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:v13];
-    v24 = [(SFFormAutoFillFrameHandle *)v23 serializedData];
-    v31[1] = v24;
+    v31[0] = serializedData;
+    v23 = [[SFFormAutoFillFrameHandle alloc] initWithWebProcessPlugInFrame:fromFrameCopy];
+    serializedData2 = [(SFFormAutoFillFrameHandle *)v23 serializedData];
+    v31[1] = serializedData2;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
-    v12 = v29;
+    frameCopy = v29;
   }
 
   else
@@ -710,14 +710,14 @@ LABEL_16:
     v25 = 0;
   }
 
-  v26 = [v11 mainFrame];
+  mainFrame = [controllerCopy mainFrame];
 
-  if (v26 == v13)
+  if (mainFrame == fromFrameCopy)
   {
     v27 = [(WBSFormMetadataController *)self visibleNonEmptyTextFieldsInForm:v16 inFrame:v15];
     if ([v27 count])
     {
-      [(_SFFormMetadataController *)self _checkSearchURLTemplateStringInFrame:v12 autoFillFrame:v15 autoFillNode:v16 controller:v11];
+      [(_SFFormMetadataController *)self _checkSearchURLTemplateStringInFrame:frameCopy autoFillFrame:v15 autoFillNode:v16 controller:controllerCopy];
     }
   }
 

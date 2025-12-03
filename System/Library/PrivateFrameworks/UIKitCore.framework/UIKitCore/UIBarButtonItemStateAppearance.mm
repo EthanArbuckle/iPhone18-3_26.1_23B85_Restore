@@ -2,8 +2,8 @@
 - (UIBarButtonItemStateAppearance)init;
 - (UIOffset)backgroundImagePositionAdjustment;
 - (UIOffset)titlePositionAdjustment;
-- (id)_initWithOwner:(id)a3 data:(id)a4 state:(int64_t)a5;
-- (void)_writeToStorage:(id)a3;
+- (id)_initWithOwner:(id)owner data:(id)data state:(int64_t)state;
+- (void)_writeToStorage:(id)storage;
 - (void)setBackgroundImage:(UIImage *)backgroundImage;
 - (void)setBackgroundImagePositionAdjustment:(UIOffset)backgroundImagePositionAdjustment;
 - (void)setTitlePositionAdjustment:(UIOffset)titlePositionAdjustment;
@@ -19,41 +19,41 @@
   return 0;
 }
 
-- (id)_initWithOwner:(id)a3 data:(id)a4 state:(int64_t)a5
+- (id)_initWithOwner:(id)owner data:(id)data state:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  ownerCopy = owner;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = UIBarButtonItemStateAppearance;
   v10 = [(UIBarButtonItemStateAppearance *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_owner = v8;
-    objc_storeStrong(&v10->_data, a4);
-    v11->_state = a5;
+    v10->_owner = ownerCopy;
+    objc_storeStrong(&v10->_data, data);
+    v11->_state = state;
   }
 
   return v11;
 }
 
-- (void)_writeToStorage:(id)a3
+- (void)_writeToStorage:(id)storage
 {
   owner = self->_owner;
   if (owner)
   {
-    [(UIBarButtonItemAppearance *)owner _writeToStorage:a3];
+    [(UIBarButtonItemAppearance *)owner _writeToStorage:storage];
   }
 
   else
   {
     data = self->_data;
-    v6 = a3;
-    v7 = [(_UIBarAppearanceData *)data writableInstance];
+    storageCopy = storage;
+    writableInstance = [(_UIBarAppearanceData *)data writableInstance];
     v8 = self->_data;
-    self->_data = v7;
+    self->_data = writableInstance;
 
-    v6[2](v6);
+    storageCopy[2](storageCopy);
   }
 }
 

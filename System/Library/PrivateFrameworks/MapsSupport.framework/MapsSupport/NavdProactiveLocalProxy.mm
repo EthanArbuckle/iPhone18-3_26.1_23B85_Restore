@@ -1,24 +1,24 @@
 @interface NavdProactiveLocalProxy
 - (NavdProactiveLocalProxy)init;
 - (id)_getLastLocationSafely;
-- (id)_q_createLocationOperationWithLocationFuture:(id)a3;
-- (void)_createActivityForNextRefreshInTimeInterval:(double)a3;
-- (void)_processEntriesBeforeTimeStamp:(double)a3 withLocation:(id)a4 osTransaction:(id)a5;
-- (void)_q_ProcessEntriesBeforeTimeStamp:(double)a3 withLocation:(id)a4 osTransaction:(id)a5;
-- (void)_q_finishProcessingEntriesWithOsTransaction:(id)a3;
+- (id)_q_createLocationOperationWithLocationFuture:(id)future;
+- (void)_createActivityForNextRefreshInTimeInterval:(double)interval;
+- (void)_processEntriesBeforeTimeStamp:(double)stamp withLocation:(id)location osTransaction:(id)transaction;
+- (void)_q_ProcessEntriesBeforeTimeStamp:(double)stamp withLocation:(id)location osTransaction:(id)transaction;
+- (void)_q_finishProcessingEntriesWithOsTransaction:(id)transaction;
 - (void)_q_startProcessingEntries;
-- (void)_refreshCacheEntriesIfNeededOrForced:(BOOL)a3 osTransaction:(id)a4;
-- (void)_setLastLocationSafely:(id)a3;
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 fromClient:(id)a5;
+- (void)_refreshCacheEntriesIfNeededOrForced:(BOOL)forced osTransaction:(id)transaction;
+- (void)_setLastLocationSafely:(id)safely;
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination fromClient:(id)client;
 - (void)forceCacheRefresh;
-- (void)locationLeecher:(id)a3 errorLeechingLocation:(id)a4;
-- (void)locationLeecher:(id)a3 receivedLocation:(id)a4;
+- (void)locationLeecher:(id)leecher errorLeechingLocation:(id)location;
+- (void)locationLeecher:(id)leecher receivedLocation:(id)location;
 - (void)nextRefreshActivityFired;
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4;
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4;
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 handler:(id)a6;
-- (void)statusWithCallback:(id)a3;
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5;
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client;
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client;
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid handler:(id)handler;
+- (void)statusWithCallback:(id)callback;
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid;
 @end
 
 @implementation NavdProactiveLocalProxy
@@ -140,9 +140,9 @@
   return v2;
 }
 
-- (void)statusWithCallback:(id)a3
+- (void)statusWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (self->_valueRefreshTimeStamp == 0.0)
   {
     v6 = @"None";
@@ -159,87 +159,87 @@
   v10[2] = sub_10002661C;
   v10[3] = &unk_100066078;
   v11 = v6;
-  v12 = v4;
+  v12 = callbackCopy;
   v10[4] = self;
   v7 = v6;
-  v8 = v4;
+  v8 = callbackCopy;
   v9 = [NSBlockOperation blockOperationWithBlock:v10];
   [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v9];
 }
 
-- (void)_setLastLocationSafely:(id)a3
+- (void)_setLastLocationSafely:(id)safely
 {
-  v4 = a3;
+  safelyCopy = safely;
   lastLocationQueue = self->_lastLocationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000267BC;
   v7[3] = &unk_1000650C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = safelyCopy;
+  v6 = safelyCopy;
   dispatch_sync(lastLocationQueue, v7);
 }
 
-- (void)_refreshCacheEntriesIfNeededOrForced:(BOOL)a3 osTransaction:(id)a4
+- (void)_refreshCacheEntriesIfNeededOrForced:(BOOL)forced osTransaction:(id)transaction
 {
-  if (a3)
+  if (forced)
   {
-    v5 = a4;
+    transactionCopy = transaction;
     AbsoluteTime = CFDateGetAbsoluteTime(+[NSDate distantFuture]);
   }
 
   else
   {
-    v7 = a4;
+    transactionCopy2 = transaction;
     AbsoluteTime = CFAbsoluteTimeGetCurrent();
   }
 
-  [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:a4 osTransaction:AbsoluteTime];
+  [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:transaction osTransaction:AbsoluteTime];
 }
 
-- (id)_q_createLocationOperationWithLocationFuture:(id)a3
+- (id)_q_createLocationOperationWithLocationFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   v5 = objc_alloc_init(NSBlockOperation);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100026928;
   v8[3] = &unk_1000650C0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = futureCopy;
+  v6 = futureCopy;
   [v5 addExecutionBlock:v8];
 
   return v5;
 }
 
-- (void)_q_ProcessEntriesBeforeTimeStamp:(double)a3 withLocation:(id)a4 osTransaction:(id)a5
+- (void)_q_ProcessEntriesBeforeTimeStamp:(double)stamp withLocation:(id)location osTransaction:(id)transaction
 {
-  v8 = a4;
-  v9 = a5;
+  locationCopy = location;
+  transactionCopy = transaction;
   v38 = DefaultLoggingSubsystem;
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+    v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:stamp];
     v12 = [NSDateFormatter localizedStringFromDate:v11 dateStyle:1 timeStyle:3];
     *buf = 138478083;
     v63 = v12;
     v64 = 2113;
-    v65 = v8;
+    v65 = locationCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Processing all entries before %{private}@ (with location %{private}@)", buf, 0x16u);
   }
 
   [(NavdProactiveLocalProxy *)self _q_startProcessingEntries];
   v13 = objc_alloc_init(NavdLocationFuture);
   v14 = v13;
-  v40 = v9;
-  v41 = v8;
-  if (v8)
+  v40 = transactionCopy;
+  v41 = locationCopy;
+  if (locationCopy)
   {
-    [(NavdLocationFuture *)v13 fulfillWithLocation:v8];
-    [(NavdProactiveLocalProxy *)self _setLastLocationSafely:v8];
+    [(NavdLocationFuture *)v13 fulfillWithLocation:locationCopy];
+    [(NavdProactiveLocalProxy *)self _setLastLocationSafely:locationCopy];
     v39 = 0;
   }
 
@@ -270,7 +270,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v55 + 1) + 8 * i) blockIfShouldUpdateForTimestamp:v15 locationFuture:a3];
+        v22 = [*(*(&v55 + 1) + 8 * i) blockIfShouldUpdateForTimestamp:v15 locationFuture:stamp];
         v23 = v22;
         if (v22)
         {
@@ -397,9 +397,9 @@
   }
 }
 
-- (void)_q_finishProcessingEntriesWithOsTransaction:(id)a3
+- (void)_q_finishProcessingEntriesWithOsTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -428,9 +428,9 @@ LABEL_14:
   v9 = self->_numberOfTimesRepeatedProcessing + 1;
   self->_numberOfTimesRepeatedProcessing = v9;
   v10 = +[GEONavdDefaults sharedInstance];
-  v11 = [v10 maximumNumberOfProcessingLoopRepeats];
+  maximumNumberOfProcessingLoopRepeats = [v10 maximumNumberOfProcessingLoopRepeats];
 
-  if (v9 >= v11)
+  if (v9 >= maximumNumberOfProcessingLoopRepeats)
   {
     numberOfTimesRepeatedProcessing = self->_numberOfTimesRepeatedProcessing;
     v15 = +[GEONavdDefaults sharedInstance];
@@ -470,41 +470,41 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "refresh timestamp was in the past, so scheduling another update (%ld times in a row).", &v28, 0xCu);
   }
 
-  [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:v4 osTransaction:CFAbsoluteTimeGetCurrent()];
+  [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:transactionCopy osTransaction:CFAbsoluteTimeGetCurrent()];
 LABEL_15:
 }
 
-- (void)_processEntriesBeforeTimeStamp:(double)a3 withLocation:(id)a4 osTransaction:(id)a5
+- (void)_processEntriesBeforeTimeStamp:(double)stamp withLocation:(id)location osTransaction:(id)transaction
 {
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10002763C;
   v13 = &unk_1000660C8;
-  v17 = a3;
-  v14 = self;
-  v15 = a4;
-  v16 = a5;
-  v7 = v16;
-  v8 = v15;
+  stampCopy = stamp;
+  selfCopy = self;
+  locationCopy = location;
+  transactionCopy = transaction;
+  v7 = transactionCopy;
+  v8 = locationCopy;
   v9 = [NSBlockOperation blockOperationWithBlock:&v10];
-  [v9 setQueuePriority:{4, v10, v11, v12, v13, v14}];
+  [v9 setQueuePriority:{4, v10, v11, v12, v13, selfCopy}];
   [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v9];
 }
 
-- (void)startMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5 handler:(id)a6
+- (void)startMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationCopy = destination;
+  clientCopy = client;
+  uuidCopy = uuid;
+  handlerCopy = handler;
   v14 = [[NavdOsTransaction alloc] initWithTransactionName:"startMonitoringDestination"];
   v15 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v33 = v10;
+    v33 = destinationCopy;
     v34 = 2113;
-    v35 = v11;
+    v35 = clientCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Start monitoring destination: %{private}@, clientID: %{private}@", buf, 0x16u);
   }
 
@@ -512,33 +512,33 @@ LABEL_15:
   v23 = 3221225472;
   v24 = sub_10002785C;
   v25 = &unk_1000660F0;
-  v26 = self;
-  v27 = v10;
-  v28 = v11;
-  v29 = v12;
+  selfCopy = self;
+  v27 = destinationCopy;
+  v28 = clientCopy;
+  v29 = uuidCopy;
   v30 = v14;
-  v31 = v13;
-  v16 = v13;
+  v31 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v14;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v18 = uuidCopy;
+  v19 = clientCopy;
+  v20 = destinationCopy;
   v21 = [NSBlockOperation blockOperationWithBlock:&v22];
-  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v21, v22, v23, v24, v25, v26];
+  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v21, v22, v23, v24, v25, selfCopy];
 }
 
-- (void)requestRefreshForPlannedDestination:(id)a3 client:(id)a4
+- (void)requestRefreshForPlannedDestination:(id)destination client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  clientCopy = client;
   v8 = [[NavdOsTransaction alloc] initWithTransactionName:"requestRefreshForPlannedDestination"];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v23 = v6;
+    v23 = destinationCopy;
     v24 = 2113;
-    v25 = v7;
+    v25 = clientCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Request Refresh for destination: %{private}@, clientID: %{private}@", buf, 0x16u);
   }
 
@@ -546,29 +546,29 @@ LABEL_15:
   v15 = 3221225472;
   v16 = sub_100027A3C;
   v17 = &unk_100065C40;
-  v18 = self;
-  v19 = v6;
-  v20 = v7;
+  selfCopy = self;
+  v19 = destinationCopy;
+  v20 = clientCopy;
   v21 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = clientCopy;
+  v12 = destinationCopy;
   v13 = [NSBlockOperation blockOperationWithBlock:&v14];
-  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v13, v14, v15, v16, v17, v18];
+  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v13, v14, v15, v16, v17, selfCopy];
 }
 
-- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)a3 client:(id)a4
+- (void)onlyPerformLocalUpdatesForPlannedDestination:(id)destination client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  clientCopy = client;
   v8 = [[NavdOsTransaction alloc] initWithTransactionName:"onlyPerformLocalUpdatesForDestination"];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v23 = v6;
+    v23 = destinationCopy;
     v24 = 2113;
-    v25 = v7;
+    v25 = clientCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Only perform local updates for destination: %{private}@, clientID: %{private}@", buf, 0x16u);
   }
 
@@ -576,30 +576,30 @@ LABEL_15:
   v15 = 3221225472;
   v16 = sub_100027C18;
   v17 = &unk_100065C40;
-  v18 = self;
-  v19 = v6;
-  v20 = v7;
+  selfCopy = self;
+  v19 = destinationCopy;
+  v20 = clientCopy;
   v21 = v8;
   v10 = v8;
-  v11 = v7;
-  v12 = v6;
+  v11 = clientCopy;
+  v12 = destinationCopy;
   v13 = [NSBlockOperation blockOperationWithBlock:&v14];
-  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v13, v14, v15, v16, v17, v18];
+  [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v13, v14, v15, v16, v17, selfCopy];
 }
 
-- (void)stopMonitoringDestination:(id)a3 forClient:(id)a4 uuid:(id)a5
+- (void)stopMonitoringDestination:(id)destination forClient:(id)client uuid:(id)uuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
+  uuidCopy = uuid;
   v11 = [[NavdOsTransaction alloc] initWithTransactionName:"stopMonitoringDestination"];
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138478083;
-    v25 = v8;
+    v25 = destinationCopy;
     v26 = 2113;
-    v27 = v9;
+    v27 = clientCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Stop monitoring destination for destination:%{private}@, for client id: %{private}@", buf, 0x16u);
   }
 
@@ -611,14 +611,14 @@ LABEL_15:
   v19[2] = sub_100027E48;
   v19[3] = &unk_100064F08;
   v19[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
+  v20 = destinationCopy;
+  v21 = clientCopy;
+  v22 = uuidCopy;
   v23 = v11;
   v14 = v11;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v15 = uuidCopy;
+  v16 = clientCopy;
+  v17 = destinationCopy;
   v18 = [NSBlockOperation blockOperationWithBlock:v19];
   [(NSOperationQueue *)self->_cacheOperationQueue addOperation:v18];
 }
@@ -643,18 +643,18 @@ LABEL_15:
   [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:v3 osTransaction:v8 + Current];
 }
 
-- (void)_createActivityForNextRefreshInTimeInterval:(double)a3
+- (void)_createActivityForNextRefreshInTimeInterval:(double)interval
 {
   v5 = +[GEONavdDefaults sharedInstance];
   [v5 maximumRefreshIntervalLeeway];
   v7 = v6;
 
-  v8 = fmin(v7, a3);
+  v8 = fmin(v7, interval);
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v20 = a3;
+    intervalCopy2 = interval;
     v21 = 2048;
     v22 = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "creating next refresh activity with interval %f and leeway %f", buf, 0x16u);
@@ -663,17 +663,17 @@ LABEL_15:
   v10 = +[BGSystemTaskScheduler sharedScheduler];
   [v10 deregisterTaskWithIdentifier:@"com.apple.navd.nextValueRefreshActivity"];
 
-  self->_valueRefreshTimeStamp = CFAbsoluteTimeGetCurrent() + a3;
-  v11 = sub_1000326B4(@"com.apple.navd.nextValueRefreshActivity", 1, a3, v8);
+  self->_valueRefreshTimeStamp = CFAbsoluteTimeGetCurrent() + interval;
+  v11 = sub_1000326B4(@"com.apple.navd.nextValueRefreshActivity", 1, interval, v8);
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    v20 = a3;
+    intervalCopy2 = interval;
     v21 = 2048;
     v22 = v8;
     v23 = 2048;
-    v24 = a3;
+    intervalCopy3 = interval;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Registering next value refresh XPC activity triggered (timer: (%f), graceperiod: (%f), delay: (%f)", buf, 0x20u);
   }
 
@@ -694,26 +694,26 @@ LABEL_15:
       }
 
       *buf = 138412290;
-      v20 = *&v17;
+      intervalCopy2 = *&v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Failed to submit background system task with error: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)didPostUINotification:(unint64_t)a3 forDestination:(id)a4 fromClient:(id)a5
+- (void)didPostUINotification:(unint64_t)notification forDestination:(id)destination fromClient:(id)client
 {
-  v8 = a4;
-  v9 = a5;
+  destinationCopy = destination;
+  clientCopy = client;
   v10 = [[NavdOsTransaction alloc] initWithTransactionName:"postUiNotification"];
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134218499;
-    v22 = a3;
+    notificationCopy = notification;
     v23 = 2113;
-    v24 = v8;
+    v24 = destinationCopy;
     v25 = 2113;
-    v26 = v9;
+    v26 = clientCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Post UI Notification %lu for destination %{private}@ clientId %{private}@", buf, 0x20u);
   }
 
@@ -723,13 +723,13 @@ LABEL_15:
   v16[2] = sub_1000283AC;
   v16[3] = &unk_100066118;
   v19 = v10;
-  v20 = a3;
+  notificationCopy2 = notification;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
+  v17 = destinationCopy;
+  v18 = clientCopy;
   v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v14 = clientCopy;
+  v15 = destinationCopy;
   [(NSOperationQueue *)cacheOperationQueue addOperationWithBlock:v16];
 }
 
@@ -746,9 +746,9 @@ LABEL_15:
   [(NavdProactiveLocalProxy *)self _refreshCacheEntriesIfNeededOrForced:1 osTransaction:v3];
 }
 
-- (void)locationLeecher:(id)a3 receivedLocation:(id)a4
+- (void)locationLeecher:(id)leecher receivedLocation:(id)location
 {
-  v5 = a4;
+  locationCopy = location;
   v6 = +[GEONavdDefaults sharedInstance];
   [v6 minimumTimeIntervalToConsiderLeechedLocationInSeconds];
   v8 = v7;
@@ -759,10 +759,10 @@ LABEL_15:
 
   if (v8 >= 0.0 && v11 >= 0.0)
   {
-    v12 = [(NavdProactiveLocalProxy *)self _getLastLocationSafely];
-    if (v12)
+    _getLastLocationSafely = [(NavdProactiveLocalProxy *)self _getLastLocationSafely];
+    if (_getLastLocationSafely)
     {
-      [v5 distanceFromLocation:v12];
+      [locationCopy distanceFromLocation:_getLastLocationSafely];
       v14 = fabs(v13);
     }
 
@@ -777,7 +777,7 @@ LABEL_15:
       [v15 timeIntervalSinceDate:self->_lastLeechedLocationRefresh];
       v17 = v16;
 
-      if (!v12)
+      if (!_getLastLocationSafely)
       {
         goto LABEL_21;
       }
@@ -786,20 +786,20 @@ LABEL_15:
     else
     {
       v17 = 1.79769313e308;
-      if (!v12)
+      if (!_getLastLocationSafely)
       {
         goto LABEL_21;
       }
     }
 
     v18 = v17 <= v8 || v14 <= v11;
-    if (v18 || ([v5 horizontalAccuracy], v21 = v20, (-[NSObject horizontalAccuracy](v12, "horizontalAccuracy"), v21 >= v22) && (objc_msgSend(v5, "horizontalAccuracy"), v24 = v23, -[NSObject horizontalAccuracy](v12, "horizontalAccuracy"), v14 <= v25 + v24)))
+    if (v18 || ([locationCopy horizontalAccuracy], v21 = v20, (-[NSObject horizontalAccuracy](_getLastLocationSafely, "horizontalAccuracy"), v21 >= v22) && (objc_msgSend(locationCopy, "horizontalAccuracy"), v24 = v23, -[NSObject horizontalAccuracy](_getLastLocationSafely, "horizontalAccuracy"), v14 <= v25 + v24)))
     {
       v19 = GEOFindOrCreateLog();
       if (os_log_type_enabled(&v19->super, OS_LOG_TYPE_DEBUG))
       {
         v30 = 138478339;
-        v31 = *&v5;
+        v31 = *&locationCopy;
         v32 = 2048;
         v33 = v14;
         v34 = 2048;
@@ -816,7 +816,7 @@ LABEL_21:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       v30 = 138478339;
-      v31 = *&v5;
+      v31 = *&locationCopy;
       v32 = 2048;
       v33 = v14;
       v34 = 2048;
@@ -830,33 +830,33 @@ LABEL_21:
 
     v29 = +[NSDate distantPast];
     [v29 timeIntervalSinceReferenceDate];
-    [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:v5 withLocation:v19 osTransaction:?];
+    [(NavdProactiveLocalProxy *)self _processEntriesBeforeTimeStamp:locationCopy withLocation:v19 osTransaction:?];
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = GEOFindOrCreateLog();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  _getLastLocationSafely = GEOFindOrCreateLog();
+  if (os_log_type_enabled(_getLastLocationSafely, OS_LOG_TYPE_DEBUG))
   {
     v30 = 134218240;
     v31 = v8;
     v32 = 2048;
     v33 = v11;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Avoiding an unscheduled hypothesis update (leechedUpdateTimeThreshold = %f) (leechedUpdateDistanceThreshold = %f)", &v30, 0x16u);
+    _os_log_impl(&_mh_execute_header, _getLastLocationSafely, OS_LOG_TYPE_DEBUG, "Avoiding an unscheduled hypothesis update (leechedUpdateTimeThreshold = %f) (leechedUpdateDistanceThreshold = %f)", &v30, 0x16u);
   }
 
 LABEL_25:
 }
 
-- (void)locationLeecher:(id)a3 errorLeechingLocation:(id)a4
+- (void)locationLeecher:(id)leecher errorLeechingLocation:(id)location
 {
-  v4 = a4;
+  locationCopy = location;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = 138477827;
-    v7 = v4;
+    v7 = locationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Error leeching location: %{private}@", &v6, 0xCu);
   }
 }

@@ -1,18 +1,18 @@
 @interface GKTextStyle
-+ (double)scaledValueFromHISpecLeading:(double)a3 forFontTextStyle:(id)a4;
++ (double)scaledValueFromHISpecLeading:(double)leading forFontTextStyle:(id)style;
 + (double)standardFontSize;
-+ (double)standardLeadingForFontTextStyle:(id)a3;
-+ (id)attributedString:(id)a3 byReplayingFromBaseStyle:(id)a4 systemContentSizeDidChange:(BOOL)a5;
++ (double)standardLeadingForFontTextStyle:(id)style;
++ (id)attributedString:(id)string byReplayingFromBaseStyle:(id)style systemContentSizeDidChange:(BOOL)change;
 + (id)textStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GKTextStyle)init;
-- (GKTextStyle)styleWithName:(id)a3 fallback:(id)a4 layoutMode:(int)a5;
+- (GKTextStyle)styleWithName:(id)name fallback:(id)fallback layoutMode:(int)mode;
 - (SEL)fontNameRebaseSelector;
 - (SEL)fontSizeRebaseSelector;
 - (id)achievementLeaderboardPointsText;
 - (id)achievementLeaderboardRank;
 - (id)achievementValueText;
-- (id)alignment:(int64_t)a3 lineBreakMode:(int64_t)a4;
+- (id)alignment:(int64_t)alignment lineBreakMode:(int64_t)mode;
 - (id)attributes;
 - (id)bannerMessage;
 - (id)bannerShortTitle;
@@ -33,7 +33,7 @@
 - (id)composeFields;
 - (id)composeMessage;
 - (id)copy;
-- (id)copyWithBaseClass:(Class)a3;
+- (id)copyWithBaseClass:(Class)class;
 - (id)description;
 - (id)detailSecondaryHeaderText;
 - (id)emphasized;
@@ -55,8 +55,8 @@
 - (id)leaderboardRankMedium;
 - (id)leaderboardRankSmall;
 - (id)light;
-- (id)lineBreakMode:(int64_t)a3;
-- (id)lineHeight:(double)a3;
+- (id)lineBreakMode:(int64_t)mode;
+- (id)lineHeight:(double)height;
 - (id)localPlayerColor;
 - (id)medium;
 - (id)multiplayerAddText;
@@ -65,26 +65,26 @@
 - (id)multiplayerNameText;
 - (id)multiplayerStatusText;
 - (id)regular;
-- (id)remoteUIDetailLabel:(int)a3;
-- (id)remoteUIEditField:(int)a3;
-- (id)remoteUIEditLabel:(int)a3;
-- (id)remoteUILabel:(int)a3;
-- (id)remoteUINickNameField:(int)a3;
-- (id)remoteUINickNameLabel:(int)a3;
-- (id)remoteUISectionFooter:(int)a3;
-- (id)remoteUISectionHeader:(int)a3;
-- (id)remoteUISelectField:(int)a3;
-- (id)remoteUISelectLabel:(int)a3;
-- (id)remoteUITableFooterButton:(int)a3;
-- (id)remoteUITableHeaderButton:(int)a3;
-- (id)remoteUITableHeaderLabel:(int)a3;
-- (id)remoteUITableHeaderSubLabel:(int)a3;
+- (id)remoteUIDetailLabel:(int)label;
+- (id)remoteUIEditField:(int)field;
+- (id)remoteUIEditLabel:(int)label;
+- (id)remoteUILabel:(int)label;
+- (id)remoteUINickNameField:(int)field;
+- (id)remoteUINickNameLabel:(int)label;
+- (id)remoteUISectionFooter:(int)footer;
+- (id)remoteUISectionHeader:(int)header;
+- (id)remoteUISelectField:(int)field;
+- (id)remoteUISelectLabel:(int)label;
+- (id)remoteUITableFooterButton:(int)button;
+- (id)remoteUITableHeaderButton:(int)button;
+- (id)remoteUITableHeaderLabel:(int)label;
+- (id)remoteUITableHeaderSubLabel:(int)label;
 - (id)removeButtonTitle;
-- (id)replayOnBaseStyle:(id)a3 systemContentSizeDidChange:(BOOL)a4;
-- (id)resolveFontAndLineSpacing:(double *)a3;
+- (id)replayOnBaseStyle:(id)style systemContentSizeDidChange:(BOOL)change;
+- (id)resolveFontAndLineSpacing:(double *)spacing;
 - (id)roundButtonTitle;
-- (id)scaled:(double)a3;
-- (id)scaledForM34:(double)a3 zPosition:(double)a4;
+- (id)scaled:(double)scaled;
+- (id)scaledForM34:(double)m34 zPosition:(double)position;
 - (id)sectionCaption;
 - (id)sectionCaptionSmall;
 - (id)sectionHeader;
@@ -106,15 +106,15 @@
 - (id)thinNumberText;
 - (id)viewBackground;
 - (void)applyScaleForMesh;
-- (void)applyToEditField:(id)a3;
-- (void)applyToLabel:(id)a3;
-- (void)setFontName:(id)a3 kitTextStyleName:(id)a4 leadingOverrideFromHISpec:(double)a5 shouldOverrideSize:(BOOL)a6 rebaseSelector:(SEL)a7;
-- (void)setFontNameRebaseSelector:(SEL)a3;
-- (void)setFontSize:(double)a3 rebaseSelector:(SEL)a4;
-- (void)setFontSizeRebaseSelector:(SEL)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setMinimumLineHeight:(double)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)applyToEditField:(id)field;
+- (void)applyToLabel:(id)label;
+- (void)setFontName:(id)name kitTextStyleName:(id)styleName leadingOverrideFromHISpec:(double)spec shouldOverrideSize:(BOOL)size rebaseSelector:(SEL)selector;
+- (void)setFontNameRebaseSelector:(SEL)selector;
+- (void)setFontSize:(double)size rebaseSelector:(SEL)selector;
+- (void)setFontSizeRebaseSelector:(SEL)selector;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setMinimumLineHeight:(double)height;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation GKTextStyle
@@ -153,23 +153,23 @@ uint64_t __24__GKTextStyle_textStyle__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)attributedString:(id)a3 byReplayingFromBaseStyle:(id)a4 systemContentSizeDidChange:(BOOL)a5
++ (id)attributedString:(id)string byReplayingFromBaseStyle:(id)style systemContentSizeDidChange:(BOOL)change
 {
-  v7 = a4;
+  styleCopy = style;
   v8 = MEMORY[0x277CCAB48];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithAttributedString:v9];
-  v11 = [v9 length];
+  stringCopy = string;
+  v10 = [[v8 alloc] initWithAttributedString:stringCopy];
+  v11 = [stringCopy length];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSizeDidChange___block_invoke;
   v17[3] = &unk_27967F418;
-  v18 = v7;
-  v20 = a5;
+  v18 = styleCopy;
+  changeCopy = change;
   v12 = v10;
   v19 = v12;
-  v13 = v7;
-  [v9 enumerateAttributesInRange:0 options:v11 usingBlock:{0, v17}];
+  v13 = styleCopy;
+  [stringCopy enumerateAttributesInRange:0 options:v11 usingBlock:{0, v17}];
 
   v14 = v19;
   v15 = v12;
@@ -203,10 +203,10 @@ void __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSi
 + (double)standardFontSize
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", a1];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "+[GKTextStyle standardFontSize]", objc_msgSend(v5, "UTF8String"), 165];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "+[GKTextStyle standardFontSize]", objc_msgSend(lastPathComponent, "UTF8String"), 165];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return -1.0;
@@ -239,9 +239,9 @@ void __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSi
 
     v2->_fontSizeRebaseSelector = v6;
     v2->_fontNameRebaseSelector = v7;
-    v8 = [(GKColorPalette *)v3 standardTextColor];
+    standardTextColor = [(GKColorPalette *)v3 standardTextColor];
     color = v2->_color;
-    v2->_color = v8;
+    v2->_color = standardTextColor;
 
     palette = v2->_palette;
     v2->_palette = v3;
@@ -260,25 +260,25 @@ void __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSi
   return [(GKTextStyle *)&v3 init];
 }
 
-- (id)replayOnBaseStyle:(id)a3 systemContentSizeDidChange:(BOOL)a4
+- (id)replayOnBaseStyle:(id)style systemContentSizeDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  if ([v6 isMemberOfClass:objc_opt_class()] && !v4)
+  changeCopy = change;
+  styleCopy = style;
+  selfCopy = self;
+  if ([styleCopy isMemberOfClass:objc_opt_class()] && !changeCopy)
   {
     goto LABEL_12;
   }
 
-  v8 = [(GKTextStyle *)v7 fontSizeRebaseSelector];
-  v9 = [(GKTextStyle *)v7 fontNameRebaseSelector];
-  if (!(v8 | v9))
+  fontSizeRebaseSelector = [(GKTextStyle *)selfCopy fontSizeRebaseSelector];
+  fontNameRebaseSelector = [(GKTextStyle *)selfCopy fontNameRebaseSelector];
+  if (!(fontSizeRebaseSelector | fontNameRebaseSelector))
   {
     goto LABEL_12;
   }
 
-  v10 = v9;
-  v11 = [(GKTextStyle *)v7 copyWithBaseClass:objc_opt_class()];
+  v10 = fontNameRebaseSelector;
+  v11 = [(GKTextStyle *)selfCopy copyWithBaseClass:objc_opt_class()];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __60__GKTextStyle_replayOnBaseStyle_systemContentSizeDidChange___block_invoke;
@@ -293,9 +293,9 @@ void __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSi
   v14 = v12;
   v24 = v14;
   v15 = MEMORY[0x253041B30](&v20);
-  if (v8 == v10)
+  if (fontSizeRebaseSelector == v10)
   {
-    v17 = [v14 _gkInvokeSelector:{v8, v20, v21, v22, v23}];
+    v17 = [v14 _gkInvokeSelector:{fontSizeRebaseSelector, v20, v21, v22, v23}];
     (v15)[2](v15, v17);
   }
 
@@ -307,12 +307,12 @@ void __84__GKTextStyle_attributedString_byReplayingFromBaseStyle_systemContentSi
       (v15)[2](v15, v16);
     }
 
-    if (!v8)
+    if (!fontSizeRebaseSelector)
     {
       goto LABEL_11;
     }
 
-    v17 = [v14 _gkInvokeSelector:v8];
+    v17 = [v14 _gkInvokeSelector:fontSizeRebaseSelector];
   }
 
   (v13)[2](v13, v17);
@@ -321,10 +321,10 @@ LABEL_11:
   [v14 applyScaleForMesh];
   v18 = v14;
 
-  v7 = v18;
+  selfCopy = v18;
 LABEL_12:
 
-  return v7;
+  return selfCopy;
 }
 
 double __60__GKTextStyle_replayOnBaseStyle_systemContentSizeDidChange___block_invoke(uint64_t a1, uint64_t a2)
@@ -364,67 +364,67 @@ void __60__GKTextStyle_replayOnBaseStyle_systemContentSizeDidChange___block_invo
   return [(GKTextStyle *)self copyWithBaseClass:v3];
 }
 
-- (id)copyWithBaseClass:(Class)a3
+- (id)copyWithBaseClass:(Class)class
 {
-  v4 = [[a3 alloc] initEmpty];
-  if (v4)
+  initEmpty = [[class alloc] initEmpty];
+  if (initEmpty)
   {
     v5 = [(NSString *)self->_fontName copy];
-    v6 = *(v4 + 56);
-    *(v4 + 56) = v5;
+    v6 = *(initEmpty + 56);
+    *(initEmpty + 56) = v5;
 
     v7 = [(NSString *)self->_UIKitFontTextStyleName copy];
-    v8 = *(v4 + 64);
-    *(v4 + 64) = v7;
+    v8 = *(initEmpty + 64);
+    *(initEmpty + 64) = v7;
 
     fontSizeRebaseSelector = self->_fontSizeRebaseSelector;
-    *(v4 + 8) = self->_UIKitFontLeading;
-    *(v4 + 17) = self->_overrideUIKitFontSize;
-    *(v4 + 72) = self->_fontSize;
-    *(v4 + 104) = fontSizeRebaseSelector;
-    objc_storeStrong((v4 + 24), self->_color);
-    objc_storeStrong((v4 + 48), self->_palette);
-    *(v4 + 88) = self->_m34;
-    *(v4 + 96) = self->_zPosition;
-    *(v4 + 32) = self->_textAlignment;
-    *(v4 + 40) = self->_lineBreakMode;
-    *(v4 + 16) = self->_needsParagraphStyle;
-    *(v4 + 80) = self->_minimumLineHeight;
+    *(initEmpty + 8) = self->_UIKitFontLeading;
+    *(initEmpty + 17) = self->_overrideUIKitFontSize;
+    *(initEmpty + 72) = self->_fontSize;
+    *(initEmpty + 104) = fontSizeRebaseSelector;
+    objc_storeStrong((initEmpty + 24), self->_color);
+    objc_storeStrong((initEmpty + 48), self->_palette);
+    *(initEmpty + 88) = self->_m34;
+    *(initEmpty + 96) = self->_zPosition;
+    *(initEmpty + 32) = self->_textAlignment;
+    *(initEmpty + 40) = self->_lineBreakMode;
+    *(initEmpty + 16) = self->_needsParagraphStyle;
+    *(initEmpty + 80) = self->_minimumLineHeight;
   }
 
-  return v4;
+  return initEmpty;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"<%@ %p", objc_opt_class(), self];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"<%@ %p", objc_opt_class(), self];
   fontSizeRebaseSelector = self->_fontSizeRebaseSelector;
   fontSize = self->_fontSize;
   if (fontSizeRebaseSelector)
   {
     v6 = NSStringFromSelector(fontSizeRebaseSelector);
-    [v3 appendFormat:@"> %.1fpt sel:%@ font:%@", *&fontSize, v6, self->_fontName];
+    [string appendFormat:@"> %.1fpt sel:%@ font:%@", *&fontSize, v6, self->_fontName];
   }
 
   else
   {
-    [v3 appendFormat:@"> %.1fpt sel:%@ font:%@", *&fontSize, @"<n/a>", self->_fontName];
+    [string appendFormat:@"> %.1fpt sel:%@ font:%@", *&fontSize, @"<n/a>", self->_fontName];
   }
 
   zPosition = self->_zPosition;
   if (zPosition != 0.0)
   {
-    [v3 appendFormat:@" z:%.2f m34:%g 1/m34:%.0f", *&zPosition, *&self->_m34, 1.0 / self->_m34];
+    [string appendFormat:@" z:%.2f m34:%g 1/m34:%.0f", *&zPosition, *&self->_m34, 1.0 / self->_m34];
   }
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -434,9 +434,9 @@ void __60__GKTextStyle_replayOnBaseStyle_systemContentSizeDidChange___block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(GKTextStyle *)v6 fontName];
-      if (![v7 isEqual:self->_fontName])
+      v6 = equalCopy;
+      fontName = [(GKTextStyle *)v6 fontName];
+      if (![fontName isEqual:self->_fontName])
       {
         v11 = 0;
 LABEL_18:
@@ -444,9 +444,9 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v8 = [(GKTextStyle *)v6 color];
+      color = [(GKTextStyle *)v6 color];
       color = self->_color;
-      if (v8 == color || (-[GKTextStyle color](v6, "color"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:self->_color]))
+      if (color == color || (-[GKTextStyle color](v6, "color"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:self->_color]))
       {
         if ([(GKTextStyle *)v6 fontSizeRebaseSelector]== self->_fontSizeRebaseSelector && [(GKTextStyle *)v6 textAlignment]== self->_textAlignment && [(GKTextStyle *)v6 lineBreakMode]== self->_lineBreakMode)
         {
@@ -461,7 +461,7 @@ LABEL_18:
           v11 = 0;
         }
 
-        if (v8 == color)
+        if (color == color)
         {
           goto LABEL_17;
         }
@@ -486,7 +486,7 @@ LABEL_19:
   return v11;
 }
 
-+ (double)standardLeadingForFontTextStyle:(id)a3
++ (double)standardLeadingForFontTextStyle:(id)style
 {
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v3 leading];
@@ -495,21 +495,21 @@ LABEL_19:
   return v5;
 }
 
-+ (double)scaledValueFromHISpecLeading:(double)a3 forFontTextStyle:(id)a4
++ (double)scaledValueFromHISpecLeading:(double)leading forFontTextStyle:(id)style
 {
-  v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:a4];
-  [v5 _scaledValueForValue:a3];
+  v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:style];
+  [v5 _scaledValueForValue:leading];
   v7 = GKRoundToScreenScale(v6);
 
   return v7;
 }
 
-- (id)resolveFontAndLineSpacing:(double *)a3
+- (id)resolveFontAndLineSpacing:(double *)spacing
 {
   v5 = self->_fontName;
-  if (a3)
+  if (spacing)
   {
-    *a3 = 0.0;
+    *spacing = 0.0;
   }
 
   v6 = self->_UIKitFontTextStyleName;
@@ -524,10 +524,10 @@ LABEL_19:
       v8 = v9;
     }
 
-    if (a3 && self->_UIKitFontLeading != 0.0)
+    if (spacing && self->_UIKitFontLeading != 0.0)
     {
       [v8 _scaledValueForValue:?];
-      *a3 = GKRoundToScreenScale(v10);
+      *spacing = GKRoundToScreenScale(v10);
     }
   }
 
@@ -569,76 +569,76 @@ LABEL_19:
   return v8;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     self->_needsParagraphStyle = 1;
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  if (self->_lineBreakMode != a3)
+  if (self->_lineBreakMode != mode)
   {
-    self->_lineBreakMode = a3;
+    self->_lineBreakMode = mode;
     self->_needsParagraphStyle = 1;
   }
 }
 
-- (void)setMinimumLineHeight:(double)a3
+- (void)setMinimumLineHeight:(double)height
 {
-  if (self->_minimumLineHeight != a3)
+  if (self->_minimumLineHeight != height)
   {
-    self->_minimumLineHeight = a3;
+    self->_minimumLineHeight = height;
     self->_needsParagraphStyle = 1;
   }
 }
 
-- (void)setFontSize:(double)a3 rebaseSelector:(SEL)a4
+- (void)setFontSize:(double)size rebaseSelector:(SEL)selector
 {
-  self->_fontSize = a3;
-  if (a4)
+  self->_fontSize = size;
+  if (selector)
   {
-    v4 = a4;
+    selectorCopy = selector;
   }
 
   else
   {
-    v4 = 0;
+    selectorCopy = 0;
   }
 
-  self->_fontSizeRebaseSelector = v4;
+  self->_fontSizeRebaseSelector = selectorCopy;
 }
 
-- (void)setFontName:(id)a3 kitTextStyleName:(id)a4 leadingOverrideFromHISpec:(double)a5 shouldOverrideSize:(BOOL)a6 rebaseSelector:(SEL)a7
+- (void)setFontName:(id)name kitTextStyleName:(id)styleName leadingOverrideFromHISpec:(double)spec shouldOverrideSize:(BOOL)size rebaseSelector:(SEL)selector
 {
-  v15 = a3;
-  v13 = a4;
-  if (self->_fontName != v15)
+  nameCopy = name;
+  styleNameCopy = styleName;
+  if (self->_fontName != nameCopy)
   {
-    objc_storeStrong(&self->_fontName, a3);
+    objc_storeStrong(&self->_fontName, name);
   }
 
-  if (self->_UIKitFontTextStyleName != v13)
+  if (self->_UIKitFontTextStyleName != styleNameCopy)
   {
-    objc_storeStrong(&self->_UIKitFontTextStyleName, a4);
+    objc_storeStrong(&self->_UIKitFontTextStyleName, styleName);
   }
 
-  self->_UIKitFontLeading = a5;
-  self->_overrideUIKitFontSize = a6;
-  if (a7)
+  self->_UIKitFontLeading = spec;
+  self->_overrideUIKitFontSize = size;
+  if (selector)
   {
-    v14 = a7;
+    selectorCopy = selector;
   }
 
   else
   {
-    v14 = 0;
+    selectorCopy = 0;
   }
 
-  self->_fontNameRebaseSelector = v14;
+  self->_fontNameRebaseSelector = selectorCopy;
 }
 
 - (id)attributes
@@ -651,8 +651,8 @@ LABEL_19:
     v4 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"unknown font:%@", self->_fontName];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = [v4 stringWithFormat:@"%@ (font != nil)\n[%s (%s:%d)]", v5, "-[GKTextStyle attributes]", objc_msgSend(v7, "UTF8String"), 489];
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = [v4 stringWithFormat:@"%@ (font != nil)\n[%s (%s:%d)]", v5, "-[GKTextStyle attributes]", objc_msgSend(lastPathComponent, "UTF8String"), 489];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
   }
@@ -708,30 +708,30 @@ LABEL_19:
   return v11;
 }
 
-- (void)applyToLabel:(id)a3
+- (void)applyToLabel:(id)label
 {
   v7 = 0.0;
-  v4 = a3;
+  labelCopy = label;
   v5 = [(GKTextStyle *)self resolveFontAndLineSpacing:&v7];
-  [v4 setFont:v5];
-  v6 = [(GKTextStyle *)self color];
-  [v4 setTextColor:v6];
+  [labelCopy setFont:v5];
+  color = [(GKTextStyle *)self color];
+  [labelCopy setTextColor:color];
 
-  [v4 setLineBreakMode:{-[GKTextStyle lineBreakMode](self, "lineBreakMode")}];
-  [v4 setTextAlignment:{-[GKTextStyle textAlignment](self, "textAlignment")}];
-  [v4 setLineSpacing:v7];
+  [labelCopy setLineBreakMode:{-[GKTextStyle lineBreakMode](self, "lineBreakMode")}];
+  [labelCopy setTextAlignment:{-[GKTextStyle textAlignment](self, "textAlignment")}];
+  [labelCopy setLineSpacing:v7];
 }
 
-- (void)applyToEditField:(id)a3
+- (void)applyToEditField:(id)field
 {
-  v6 = a3;
+  fieldCopy = field;
   v4 = [(GKTextStyle *)self resolveFontAndLineSpacing:0];
-  [v6 setFont:v4];
+  [fieldCopy setFont:v4];
 
-  v5 = [(GKTextStyle *)self color];
-  [v6 setTextColor:v5];
+  color = [(GKTextStyle *)self color];
+  [fieldCopy setTextColor:color];
 
-  [v6 setTextAlignment:{-[GKTextStyle textAlignment](self, "textAlignment")}];
+  [fieldCopy setTextAlignment:{-[GKTextStyle textAlignment](self, "textAlignment")}];
 }
 
 - (id)baseFontRebaseSelector
@@ -747,9 +747,9 @@ LABEL_19:
 - (id)header0
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:32.0];
@@ -762,8 +762,8 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle header1]", objc_msgSend(v5, "UTF8String"), 572];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle header1]", objc_msgSend(lastPathComponent, "UTF8String"), 572];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return 0;
@@ -774,8 +774,8 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle header2]", objc_msgSend(v5, "UTF8String"), 578];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle header2]", objc_msgSend(lastPathComponent, "UTF8String"), 578];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return 0;
@@ -784,9 +784,9 @@ LABEL_19:
 - (id)header3
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:18.0];
@@ -797,9 +797,9 @@ LABEL_19:
 - (id)header4
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:14.0];
@@ -810,9 +810,9 @@ LABEL_19:
 - (id)headline
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setTextAlignment:4];
   [v4 setFontName:@"GKMagicBoldSystemFont" kitTextStyleName:*MEMORY[0x277D76988] shouldOverrideSize:0 rebaseSelector:a2];
@@ -824,9 +824,9 @@ LABEL_19:
 - (id)body
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setTextAlignment:4];
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76918] shouldOverrideSize:0 rebaseSelector:a2];
@@ -857,9 +857,9 @@ LABEL_19:
 - (id)caption1
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   [v4 setTextAlignment:4];
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76938] shouldOverrideSize:0 rebaseSelector:a2];
@@ -871,9 +871,9 @@ LABEL_19:
 - (id)caption2
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   [v4 setTextAlignment:4];
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76940] shouldOverrideSize:0 rebaseSelector:a2];
@@ -885,9 +885,9 @@ LABEL_19:
 - (id)bannerTitle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextOnDarkBackgroundColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextOnDarkBackgroundColor = [palette emphasizedTextOnDarkBackgroundColor];
+  [v4 setColor:emphasizedTextOnDarkBackgroundColor];
 
   [v4 setTextAlignment:4];
   [v4 setLineBreakMode:4];
@@ -900,9 +900,9 @@ LABEL_19:
 - (id)bannerShortTitle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextOnDarkBackgroundColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextOnDarkBackgroundColor = [palette emphasizedTextOnDarkBackgroundColor];
+  [v4 setColor:emphasizedTextOnDarkBackgroundColor];
 
   [v4 setTextAlignment:4];
   [v4 setLineBreakMode:4];
@@ -914,24 +914,24 @@ LABEL_19:
 
 - (id)bannerMessage
 {
-  v3 = [(GKTextStyle *)self header4];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 emphasizedTextOnDarkBackgroundColor];
-  [v3 setColor:v5];
+  header4 = [(GKTextStyle *)self header4];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextOnDarkBackgroundColor = [palette emphasizedTextOnDarkBackgroundColor];
+  [header4 setColor:emphasizedTextOnDarkBackgroundColor];
 
-  [v3 setTextAlignment:4];
-  [v3 setLineBreakMode:4];
+  [header4 setTextAlignment:4];
+  [header4 setLineBreakMode:4];
 
-  return v3;
+  return header4;
 }
 
 - (id)caption
 {
   v4 = [(GKTextStyle *)self copy];
   [v4 setTextAlignment:4];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 friendRequestCaptionTintColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  friendRequestCaptionTintColor = [palette friendRequestCaptionTintColor];
+  [v4 setColor:friendRequestCaptionTintColor];
 
   [v4 setFontSize:a2 rebaseSelector:12.0];
 
@@ -943,9 +943,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setTextAlignment:1];
   [v4 setLineBreakMode:0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 systemInteractionColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v4 setColor:systemInteractionColor];
 
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:11.0];
@@ -958,9 +958,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setTextAlignment:1];
   [v4 setLineBreakMode:0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 systemInteractionColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v4 setColor:systemInteractionColor];
 
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D769D0] leadingOverrideFromHISpec:0 shouldOverrideSize:a2 rebaseSelector:0.0];
   [v4 setFontSize:a2 rebaseSelector:14.0];
@@ -973,9 +973,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setTextAlignment:1];
   [v4 setLineBreakMode:0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 textOnDarkBackgroundColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  textOnDarkBackgroundColor = [palette textOnDarkBackgroundColor];
+  [v4 setColor:textOnDarkBackgroundColor];
 
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D769D0] leadingOverrideFromHISpec:0 shouldOverrideSize:a2 rebaseSelector:0.0];
   [v4 setFontSize:a2 rebaseSelector:14.0];
@@ -986,9 +986,9 @@ LABEL_19:
 - (id)small
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontSize:a2 rebaseSelector:9.0];
 
@@ -998,9 +998,9 @@ LABEL_19:
 - (id)info
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 standardTextColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v3 setColor:standardTextColor];
 
   return v3;
 }
@@ -1010,8 +1010,8 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle smallInfo]", objc_msgSend(v5, "UTF8String"), 807];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle smallInfo]", objc_msgSend(lastPathComponent, "UTF8String"), 807];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return 0;
@@ -1020,9 +1020,9 @@ LABEL_19:
 - (id)viewBackground
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 viewBackgroundColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  viewBackgroundColor = [palette viewBackgroundColor];
+  [v3 setColor:viewBackgroundColor];
 
   return v3;
 }
@@ -1030,9 +1030,9 @@ LABEL_19:
 - (id)emphasized
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 emphasizedTextColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v3 setColor:emphasizedTextColor];
 
   return v3;
 }
@@ -1040,9 +1040,9 @@ LABEL_19:
 - (id)emphasizedOnDarkBackground
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 emphasizedTextOnDarkBackgroundColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextOnDarkBackgroundColor = [palette emphasizedTextOnDarkBackgroundColor];
+  [v3 setColor:emphasizedTextOnDarkBackgroundColor];
 
   return v3;
 }
@@ -1076,17 +1076,17 @@ LABEL_19:
   }
 }
 
-- (id)scaledForM34:(double)a3 zPosition:(double)a4
+- (id)scaledForM34:(double)m34 zPosition:(double)position
 {
   v6 = [(GKTextStyle *)self copy];
-  [v6 setM34:a3];
-  [v6 setZPosition:a4];
+  [v6 setM34:m34];
+  [v6 setZPosition:position];
   [v6 applyScaleForMesh];
 
   return v6;
 }
 
-- (id)scaled:(double)a3
+- (id)scaled:(double)scaled
 {
   v5 = [(GKTextStyle *)self copy];
   v6 = v5;
@@ -1100,7 +1100,7 @@ LABEL_19:
     fontSizeRebaseSelector = 0;
   }
 
-  [v5 setFontSize:fontSizeRebaseSelector rebaseSelector:self->_fontSize * a3];
+  [v5 setFontSize:fontSizeRebaseSelector rebaseSelector:self->_fontSize * scaled];
 
   return v6;
 }
@@ -1108,9 +1108,9 @@ LABEL_19:
 - (id)localPlayerColor
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 localPlayerTintColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  localPlayerTintColor = [palette localPlayerTintColor];
+  [v3 setColor:localPlayerTintColor];
 
   return v3;
 }
@@ -1118,9 +1118,9 @@ LABEL_19:
 - (id)friendColor
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 friendTintColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  friendTintColor = [palette friendTintColor];
+  [v3 setColor:friendTintColor];
 
   return v3;
 }
@@ -1128,9 +1128,9 @@ LABEL_19:
 - (id)friendCaptionColor
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 friendRequestCaptionTintColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  friendRequestCaptionTintColor = [palette friendRequestCaptionTintColor];
+  [v3 setColor:friendRequestCaptionTintColor];
 
   return v3;
 }
@@ -1224,9 +1224,9 @@ LABEL_19:
   [v4 setFontName:@"GKMagicBoldSystemFont" kitTextStyleName:*MEMORY[0x277D769D0] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:15.0];
   [v4 setTextAlignment:1];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   return v4;
 }
@@ -1237,9 +1237,9 @@ LABEL_19:
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D769D0] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:15.0];
   [v4 setTextAlignment:1];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 systemInteractionColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v4 setColor:systemInteractionColor];
 
   return v4;
 }
@@ -1250,9 +1250,9 @@ LABEL_19:
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76968] shouldOverrideSize:1 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:11.0];
   [v4 setTextAlignment:1];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   return v4;
 }
@@ -1263,9 +1263,9 @@ LABEL_19:
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76968] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:17.0];
   [v4 setTextAlignment:1];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   return v4;
 }
@@ -1275,9 +1275,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76968] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:17.0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   return v4;
 }
@@ -1287,10 +1287,10 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle thinNumberText]", objc_msgSend(v5, "UTF8String"), 1058];
+  lastPathComponent = [v4 lastPathComponent];
+  1058 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle thinNumberText]", objc_msgSend(lastPathComponent, "UTF8String"), 1058];
 
-  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
+  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1058}];
   return 0;
 }
 
@@ -1299,10 +1299,10 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle gameDetailNameText]", objc_msgSend(v5, "UTF8String"), 1064];
+  lastPathComponent = [v4 lastPathComponent];
+  1064 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle gameDetailNameText]", objc_msgSend(lastPathComponent, "UTF8String"), 1064];
 
-  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
+  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1064}];
   return 0;
 }
 
@@ -1311,10 +1311,10 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle detailSecondaryHeaderText]", objc_msgSend(v5, "UTF8String"), 1070];
+  lastPathComponent = [v4 lastPathComponent];
+  1070 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle detailSecondaryHeaderText]", objc_msgSend(lastPathComponent, "UTF8String"), 1070];
 
-  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
+  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1070}];
   return 0;
 }
 
@@ -1350,9 +1350,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:18.0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   return v4;
 }
@@ -1371,9 +1371,9 @@ LABEL_19:
   v4 = [(GKTextStyle *)self copy];
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76918] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:19.0];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   return v4;
 }
@@ -1381,9 +1381,9 @@ LABEL_19:
 - (id)sectionHeader
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D769D0] shouldOverrideSize:0 rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:15.0];
@@ -1405,10 +1405,10 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle sectionCaptionSmall]", objc_msgSend(v5, "UTF8String"), 1163];
+  lastPathComponent = [v4 lastPathComponent];
+  1163 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle sectionCaptionSmall]", objc_msgSend(lastPathComponent, "UTF8String"), 1163];
 
-  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
+  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1163}];
   return 0;
 }
 
@@ -1417,10 +1417,10 @@ LABEL_19:
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", self];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKTextStyle.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle cellActionItem]", objc_msgSend(v5, "UTF8String"), 1169];
+  lastPathComponent = [v4 lastPathComponent];
+  1169 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKTextStyle cellActionItem]", objc_msgSend(lastPathComponent, "UTF8String"), 1169];
 
-  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
+  [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1169}];
   return 0;
 }
 
@@ -1428,19 +1428,19 @@ LABEL_19:
 {
   v3 = [(GKTextStyle *)self copy];
   [v3 setFontName:@"GKMagicSystemFont" kitTextStyleName:*MEMORY[0x277D76918] shouldOverrideSize:1 rebaseSelector:a2];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 != 1 || (v6 = 25.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
+  if (userInterfaceIdiom != 1 || (v6 = 25.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v6 = 16.2;
-    if (!v8)
+    if (!userInterfaceIdiom2)
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v11 = v10;
       v13 = v12;
 
@@ -1461,19 +1461,19 @@ LABEL_19:
 {
   v3 = [(GKTextStyle *)self copy];
   [v3 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5 != 1 || (v6 = 45.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
+  if (userInterfaceIdiom != 1 || (v6 = 45.0, *MEMORY[0x277D0C258] == 1) && (_GKIsRemoteUIUsingPadIdiom & 1) == 0)
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    v8 = [v7 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
     v6 = 30.0;
-    if (!v8)
+    if (!userInterfaceIdiom2)
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v11 = v10;
       v13 = v12;
 
@@ -1493,9 +1493,9 @@ LABEL_19:
 - (id)buttonTitle
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 systemInteractionColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v3 setColor:systemInteractionColor];
 
   return v3;
 }
@@ -1503,12 +1503,12 @@ LABEL_19:
 - (id)tableCellTitle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
-  v7 = [(GKTextStyle *)self fontName];
-  [v4 setFontName:v7 kitTextStyleName:*MEMORY[0x277D76918] shouldOverrideSize:0 rebaseSelector:a2];
+  fontName = [(GKTextStyle *)self fontName];
+  [v4 setFontName:fontName kitTextStyleName:*MEMORY[0x277D76918] shouldOverrideSize:0 rebaseSelector:a2];
 
   [v4 setFontSize:a2 rebaseSelector:18.0];
   [v4 setTextAlignment:4];
@@ -1519,12 +1519,12 @@ LABEL_19:
 - (id)tableCellSubtitle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
-  v7 = [(GKTextStyle *)self fontName];
-  [v4 setFontName:v7 kitTextStyleName:*MEMORY[0x277D76940] shouldOverrideSize:0 rebaseSelector:a2];
+  fontName = [(GKTextStyle *)self fontName];
+  [v4 setFontName:fontName kitTextStyleName:*MEMORY[0x277D76940] shouldOverrideSize:0 rebaseSelector:a2];
 
   [v4 setFontSize:a2 rebaseSelector:12.0];
   [v4 setTextAlignment:4];
@@ -1535,9 +1535,9 @@ LABEL_19:
 - (id)tableFooterStyle
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 standardTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v4 setColor:standardTextColor];
 
   [v4 setFontSize:a2 rebaseSelector:18.0];
   [v4 setTextAlignment:4];
@@ -1548,9 +1548,9 @@ LABEL_19:
 - (id)tabIconCaption
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:12.0];
@@ -1561,46 +1561,46 @@ LABEL_19:
 - (id)removeButtonTitle
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [(GKTextStyle *)self palette];
-  v5 = [v4 removeItemTextColor];
-  [v3 setColor:v5];
+  palette = [(GKTextStyle *)self palette];
+  removeItemTextColor = [palette removeItemTextColor];
+  [v3 setColor:removeItemTextColor];
 
   [v3 setTextAlignment:2];
 
   return v3;
 }
 
-- (id)alignment:(int64_t)a3 lineBreakMode:(int64_t)a4
+- (id)alignment:(int64_t)alignment lineBreakMode:(int64_t)mode
 {
   v6 = [(GKTextStyle *)self copy];
-  [v6 setTextAlignment:a3];
-  [v6 setLineBreakMode:a4];
+  [v6 setTextAlignment:alignment];
+  [v6 setLineBreakMode:mode];
 
   return v6;
 }
 
-- (id)lineBreakMode:(int64_t)a3
+- (id)lineBreakMode:(int64_t)mode
 {
   v4 = [(GKTextStyle *)self copy];
-  [v4 setLineBreakMode:a3];
+  [v4 setLineBreakMode:mode];
 
   return v4;
 }
 
-- (id)lineHeight:(double)a3
+- (id)lineHeight:(double)height
 {
   v4 = [(GKTextStyle *)self copy];
-  [v4 setMinimumLineHeight:a3];
+  [v4 setMinimumLineHeight:height];
 
   return v4;
 }
 
-- (id)remoteUISectionHeader:(int)a3
+- (id)remoteUISectionHeader:(int)header
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 emphasizedTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v5 setColor:emphasizedTextColor];
 
   [v5 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:14.0];
@@ -1608,25 +1608,25 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUISectionFooter:(int)a3
+- (id)remoteUISectionFooter:(int)footer
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setTextAlignment:4];
   v9 = 20.0;
   v10 = 17.0;
   v11 = @"GKMagicLightSystemFont";
-  if (a3 == 2)
+  if (footer == 2)
   {
     v11 = @"GKMagicSystemFont";
     v10 = 21.0;
     v9 = 30.0;
   }
 
-  if (a3)
+  if (footer)
   {
     v12 = v11;
   }
@@ -1636,7 +1636,7 @@ LABEL_19:
     v12 = @"GKMagicSystemFont";
   }
 
-  if (a3)
+  if (footer)
   {
     v13 = v10;
   }
@@ -1646,7 +1646,7 @@ LABEL_19:
     v13 = 14.0;
   }
 
-  if (a3)
+  if (footer)
   {
     v14 = v9;
   }
@@ -1663,16 +1663,16 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUILabel:(int)a3
+- (id)remoteUILabel:(int)label
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
   v9 = 18.0;
-  if (a3 == 2)
+  if (label == 2)
   {
     v9 = 23.0;
   }
@@ -1682,12 +1682,12 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUIDetailLabel:(int)a3
+- (id)remoteUIDetailLabel:(int)label
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 standardTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v5 setColor:standardTextColor];
 
   [v5 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:12.0];
@@ -1695,15 +1695,15 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUITableHeaderLabel:(int)a3
+- (id)remoteUITableHeaderLabel:(int)label
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setFontName:@"GKMagicLightSystemFont" rebaseSelector:a2];
-  if (a3 == 2)
+  if (label == 2)
   {
     [v6 setFontSize:a2 rebaseSelector:60.0];
     [v6 setMinimumLineHeight:71.0];
@@ -1711,7 +1711,7 @@ LABEL_19:
 
   else
   {
-    if (a3)
+    if (label)
     {
       v9 = 35.0;
     }
@@ -1730,19 +1730,19 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUITableHeaderSubLabel:(int)a3
+- (id)remoteUITableHeaderSubLabel:(int)label
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setTextAlignment:1];
   [v6 setLineBreakMode:0];
   v9 = @"GKMagicLightSystemFont";
   v10 = 17.0;
   v11 = 16.0;
-  if (a3 == 2)
+  if (label == 2)
   {
     v9 = @"GKMagicSystemFont";
     v10 = 21.0;
@@ -1753,7 +1753,7 @@ LABEL_19:
     v11 = 11.0;
   }
 
-  if (a3)
+  if (label)
   {
     v12 = v9;
   }
@@ -1763,7 +1763,7 @@ LABEL_19:
     v12 = @"GKMagicSystemFont";
   }
 
-  if (a3)
+  if (label)
   {
     v13 = v10;
   }
@@ -1773,7 +1773,7 @@ LABEL_19:
     v13 = 14.0;
   }
 
-  if (a3)
+  if (label)
   {
     v14 = v11;
   }
@@ -1790,17 +1790,17 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUITableFooterButton:(int)a3
+- (id)remoteUITableFooterButton:(int)button
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 systemInteractionColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v6 setColor:systemInteractionColor];
 
   [v6 setTextAlignment:1];
   [v6 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   v9 = 23.0;
-  if (a3 == 2)
+  if (button == 2)
   {
     v9 = 30.0;
   }
@@ -1810,12 +1810,12 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUITableHeaderButton:(int)a3
+- (id)remoteUITableHeaderButton:(int)button
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 systemInteractionColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  systemInteractionColor = [palette systemInteractionColor];
+  [v5 setColor:systemInteractionColor];
 
   [v5 setTextAlignment:1];
   [v5 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
@@ -1824,12 +1824,12 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUIEditField:(int)a3
+- (id)remoteUIEditField:(int)field
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 emphasizedTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v5 setColor:emphasizedTextColor];
 
   [v5 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:14.0];
@@ -1838,12 +1838,12 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUIEditLabel:(int)a3
+- (id)remoteUIEditLabel:(int)label
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 emphasizedTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v5 setColor:emphasizedTextColor];
 
   [v5 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:13.0];
@@ -1852,12 +1852,12 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUISelectLabel:(int)a3
+- (id)remoteUISelectLabel:(int)label
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 emphasizedTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v5 setColor:emphasizedTextColor];
 
   [v5 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:13.0];
@@ -1866,12 +1866,12 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUISelectField:(int)a3
+- (id)remoteUISelectField:(int)field
 {
   v5 = [(GKTextStyle *)self copy];
-  v6 = [(GKTextStyle *)self palette];
-  v7 = [v6 standardTextColor];
-  [v5 setColor:v7];
+  palette = [(GKTextStyle *)self palette];
+  standardTextColor = [palette standardTextColor];
+  [v5 setColor:standardTextColor];
 
   [v5 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v5 setFontSize:a2 rebaseSelector:14.0];
@@ -1880,16 +1880,16 @@ LABEL_19:
   return v5;
 }
 
-- (id)remoteUINickNameField:(int)a3
+- (id)remoteUINickNameField:(int)field
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   v9 = 14.0;
-  if (a3 == 2)
+  if (field == 2)
   {
     v9 = 22.0;
   }
@@ -1900,21 +1900,21 @@ LABEL_19:
   return v6;
 }
 
-- (id)remoteUINickNameLabel:(int)a3
+- (id)remoteUINickNameLabel:(int)label
 {
   v6 = [(GKTextStyle *)self copy];
-  v7 = [(GKTextStyle *)self palette];
-  v8 = [v7 emphasizedTextColor];
-  [v6 setColor:v8];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v6 setColor:emphasizedTextColor];
 
   [v6 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
   v9 = 14.0;
-  if (a3 == 2)
+  if (label == 2)
   {
     v9 = 18.0;
   }
 
-  if (!a3)
+  if (!label)
   {
     v9 = 13.0;
   }
@@ -1928,8 +1928,8 @@ LABEL_19:
 - (id)settingsLinkText
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [v3 setColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v3 setColor:systemBlueColor];
 
   [v3 setTextAlignment:4];
   [v3 setFontSize:a2 rebaseSelector:14.0];
@@ -1940,8 +1940,8 @@ LABEL_19:
 - (id)settingsButton
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [v3 setColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v3 setColor:systemBlueColor];
 
   [v3 setTextAlignment:4];
   [v3 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
@@ -1953,8 +1953,8 @@ LABEL_19:
 - (id)settingsBoldButton
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  [v3 setColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [v3 setColor:systemBlueColor];
 
   [v3 setTextAlignment:4];
   [v3 setFontName:@"GKMagicBoldSystemFont" rebaseSelector:a2];
@@ -1966,9 +1966,9 @@ LABEL_19:
 - (id)settingsLabel
 {
   v4 = [(GKTextStyle *)self copy];
-  v5 = [(GKTextStyle *)self palette];
-  v6 = [v5 emphasizedTextColor];
-  [v4 setColor:v6];
+  palette = [(GKTextStyle *)self palette];
+  emphasizedTextColor = [palette emphasizedTextColor];
+  [v4 setColor:emphasizedTextColor];
 
   [v4 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v4 setFontSize:a2 rebaseSelector:17.0];
@@ -1979,8 +1979,8 @@ LABEL_19:
 - (id)settingsHeader
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v3 setColor:v4];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v3 setColor:secondaryLabelColor];
 
   [v3 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v3 setFontSize:a2 rebaseSelector:14.0];
@@ -1991,8 +1991,8 @@ LABEL_19:
 - (id)settingsFooter
 {
   v3 = [(GKTextStyle *)self copy];
-  v4 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [v3 setColor:v4];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [v3 setColor:tertiaryLabelColor];
 
   [v3 setFontName:@"GKMagicSystemFont" rebaseSelector:a2];
   [v3 setFontSize:a2 rebaseSelector:14.0];
@@ -2000,12 +2000,12 @@ LABEL_19:
   return v3;
 }
 
-- (GKTextStyle)styleWithName:(id)a3 fallback:(id)a4 layoutMode:(int)a5
+- (GKTextStyle)styleWithName:(id)name fallback:(id)fallback layoutMode:(int)mode
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = NSSelectorFromString(v9);
-  v11 = [(NSString *)v9 stringByAppendingString:@":"];
+  fallbackCopy = fallback;
+  nameCopy = name;
+  v10 = NSSelectorFromString(nameCopy);
+  v11 = [(NSString *)nameCopy stringByAppendingString:@":"];
 
   v12 = NSSelectorFromString(v11);
   if (objc_opt_respondsToSelector())
@@ -2018,10 +2018,10 @@ LABEL_19:
     goto LABEL_4;
   }
 
-  if (v8)
+  if (fallbackCopy)
   {
-    v10 = NSSelectorFromString(v8);
-    v16 = [(NSString *)v8 stringByAppendingString:@":"];
+    v10 = NSSelectorFromString(fallbackCopy);
+    v16 = [(NSString *)fallbackCopy stringByAppendingString:@":"];
     v12 = NSSelectorFromString(v16);
 
     if (objc_opt_respondsToSelector())
@@ -2060,19 +2060,19 @@ LABEL_6:
   }
 }
 
-- (void)setFontSizeRebaseSelector:(SEL)a3
+- (void)setFontSizeRebaseSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_fontSizeRebaseSelector = v3;
+  self->_fontSizeRebaseSelector = selectorCopy;
 }
 
 - (SEL)fontNameRebaseSelector
@@ -2088,19 +2088,19 @@ LABEL_6:
   }
 }
 
-- (void)setFontNameRebaseSelector:(SEL)a3
+- (void)setFontNameRebaseSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_fontNameRebaseSelector = v3;
+  self->_fontNameRebaseSelector = selectorCopy;
 }
 
 @end

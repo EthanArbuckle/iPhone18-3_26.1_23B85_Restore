@@ -1,12 +1,12 @@
 @interface SSUSoundScapesPickerManager
-+ (BOOL)pickerSupportHome:(id)a3 targetMediaProfiles:(id)a4;
-+ (id)pickerForMediaProfiles:(id)a3 forDelegate:(id)a4;
++ (BOOL)pickerSupportHome:(id)home targetMediaProfiles:(id)profiles;
++ (id)pickerForMediaProfiles:(id)profiles forDelegate:(id)delegate;
 + (id)pickerIdentity;
 + (id)sharedManager;
 - (SSUSoundScapesPickerManager)init;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)registerViewController:(id)a3 forMediaProfiles:(id)a4 andDelegate:(id)a5;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)registerViewController:(id)controller forMediaProfiles:(id)profiles andDelegate:(id)delegate;
 @end
 
 @implementation SSUSoundScapesPickerManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __44__SSUSoundScapesPickerManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -55,22 +55,22 @@ uint64_t __44__SSUSoundScapesPickerManager_sharedManager__block_invoke(uint64_t 
   return v2;
 }
 
-- (void)registerViewController:(id)a3 forMediaProfiles:(id)a4 andDelegate:(id)a5
+- (void)registerViewController:(id)controller forMediaProfiles:(id)profiles andDelegate:(id)delegate
 {
   targetMediaProfile = self->_targetMediaProfile;
-  v9 = a5;
-  v10 = a3;
-  [(NSMapTable *)targetMediaProfile setObject:a4 forKey:v10];
-  v11 = [[_SSUSoundScapesDelegateForwarder alloc] initForViewController:v10];
-  [v11 setDelegate:v9];
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  [(NSMapTable *)targetMediaProfile setObject:profiles forKey:controllerCopy];
+  v11 = [[_SSUSoundScapesDelegateForwarder alloc] initForViewController:controllerCopy];
+  [v11 setDelegate:delegateCopy];
 
-  [(NSMapTable *)self->_delegates setObject:v11 forKey:v10];
+  [(NSMapTable *)self->_delegates setObject:v11 forKey:controllerCopy];
 }
 
-+ (BOOL)pickerSupportHome:(id)a3 targetMediaProfiles:(id)a4
++ (BOOL)pickerSupportHome:(id)home targetMediaProfiles:(id)profiles
 {
-  v4 = [a3 residentDevices];
-  v5 = [v4 na_firstObjectPassingTest:&__block_literal_global_0];
+  residentDevices = [home residentDevices];
+  v5 = [residentDevices na_firstObjectPassingTest:&__block_literal_global_0];
   v6 = v5 != 0;
 
   return v6;
@@ -104,32 +104,32 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
   pickerIdentity_identity = v3;
 }
 
-+ (id)pickerForMediaProfiles:(id)a3 forDelegate:(id)a4
++ (id)pickerForMediaProfiles:(id)profiles forDelegate:(id)delegate
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 pickerIdentity];
+  profilesCopy = profiles;
+  delegateCopy = delegate;
+  pickerIdentity = [self pickerIdentity];
   v9 = _SSULoggingFacility();
   v10 = v9;
-  if (v8)
+  if (pickerIdentity)
   {
-    v39 = v7;
-    v40 = v6;
+    v39 = delegateCopy;
+    v40 = profilesCopy;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       _os_log_impl(&dword_26B266000, v10, OS_LOG_TYPE_INFO, "Start loading picker", buf, 2u);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CC5E78]) initWithExtensionIdentity:v8];
+    v10 = [objc_alloc(MEMORY[0x277CC5E78]) initWithExtensionIdentity:pickerIdentity];
     v11 = [objc_alloc(MEMORY[0x277CC5E70]) initWithConfiguration:v10];
     v12 = objc_opt_new();
-    v13 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v12 setBackgroundColor:v13];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v12 setBackgroundColor:systemBackgroundColor];
 
     v14 = MEMORY[0x277CCA8D8];
-    v15 = [v8 url];
+    v15 = [pickerIdentity url];
     v16 = [v14 bundleWithURL:v15];
 
     v17 = objc_opt_new();
@@ -141,37 +141,37 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
     [v17 setTextAlignment:1];
     [v12 addSubview:v17];
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v19 = [v12 centerXAnchor];
-    v20 = [v17 centerXAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    centerXAnchor = [v12 centerXAnchor];
+    centerXAnchor2 = [v17 centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v21 setActive:1];
 
-    v22 = [v12 centerYAnchor];
-    v23 = [v17 centerYAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    centerYAnchor = [v12 centerYAnchor];
+    centerYAnchor2 = [v17 centerYAnchor];
+    v24 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v24 setActive:1];
 
-    v25 = [v17 leadingAnchor];
-    v26 = [v12 safeAreaLayoutGuide];
-    v27 = [v26 leadingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27 constant:20.0];
+    leadingAnchor = [v17 leadingAnchor];
+    safeAreaLayoutGuide = [v12 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
     [v28 setActive:1];
 
-    v29 = [v12 safeAreaLayoutGuide];
-    v30 = [v29 topAnchor];
-    v31 = [v17 topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    safeAreaLayoutGuide2 = [v12 safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide2 topAnchor];
+    topAnchor2 = [v17 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v32 setActive:1];
 
     [v11 setPlaceholderView:v12];
-    v33 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v34 = [v11 view];
-    [v34 setBackgroundColor:v33];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    view = [v11 view];
+    [view setBackgroundColor:systemBackgroundColor2];
 
     v35 = +[SSUSoundScapesPickerManager sharedManager];
     [v11 setDelegate:v35];
-    v7 = v39;
-    v6 = v40;
+    delegateCopy = v39;
+    profilesCopy = v40;
     [v35 registerViewController:v11 forMediaProfiles:v40 andDelegate:v39];
     v36 = _SSULoggingFacility();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
@@ -197,10 +197,10 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
   return v11;
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activateCopy = activate;
   v5 = _SSULoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -208,25 +208,25 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
     _os_log_impl(&dword_26B266000, v5, OS_LOG_TYPE_INFO, "Picker become active", buf, 2u);
   }
 
-  v6 = [(NSMapTable *)self->_targetMediaProfile objectForKey:v4];
-  v23 = [(NSMapTable *)self->_delegates objectForKey:v4];
-  v7 = [v6 anyObject];
-  v8 = [v7 home];
+  v6 = [(NSMapTable *)self->_targetMediaProfile objectForKey:activateCopy];
+  v23 = [(NSMapTable *)self->_delegates objectForKey:activateCopy];
+  anyObject = [v6 anyObject];
+  home = [anyObject home];
 
-  v9 = [v6 allObjects];
-  v24 = [v9 na_map:&__block_literal_global_134];
+  allObjects = [v6 allObjects];
+  v24 = [allObjects na_map:&__block_literal_global_134];
 
-  v10 = [v6 anyObject];
-  v11 = [v10 home];
-  v12 = [v11 residentDevices];
+  anyObject2 = [v6 anyObject];
+  home2 = [anyObject2 home];
+  residentDevices = [home2 residentDevices];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __61__SSUSoundScapesPickerManager_hostViewControllerDidActivate___block_invoke_2;
   v28[3] = &unk_279CD6678;
-  v13 = v8;
+  v13 = home;
   v29 = v13;
-  v14 = [v12 na_map:v28];
+  v14 = [residentDevices na_map:v28];
   v15 = _SSULoggingFacility();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -238,7 +238,7 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
   }
 
   v27 = 0;
-  v16 = [v4 makeXPCConnectionWithError:&v27];
+  v16 = [activateCopy makeXPCConnectionWithError:&v27];
   v17 = v27;
   if (v17)
   {
@@ -267,8 +267,8 @@ void __45__SSUSoundScapesPickerManager_pickerIdentity__block_invoke()
     [v16 setInvalidationHandler:v25];
     [v23 setConnection:v16];
     [v16 resume];
-    v21 = [v16 remoteObjectProxy];
-    [v21 setupDataSourceWithTargetDeviceVersions:v24 andFallbackResidentDeviceVersions:v14];
+    remoteObjectProxy = [v16 remoteObjectProxy];
+    [remoteObjectProxy setupDataSourceWithTargetDeviceVersions:v24 andFallbackResidentDeviceVersions:v14];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -323,14 +323,14 @@ void __61__SSUSoundScapesPickerManager_hostViewControllerDidActivate___block_inv
   }
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   delegates = self->_delegates;
-  v6 = a3;
-  v7 = [(NSMapTable *)delegates objectForKey:v6];
+  deactivateCopy = deactivate;
+  v7 = [(NSMapTable *)delegates objectForKey:deactivateCopy];
   [v7 pickerDismissed];
-  [(NSMapTable *)self->_targetMediaProfile removeObjectForKey:v6];
-  [(NSMapTable *)self->_delegates removeObjectForKey:v6];
+  [(NSMapTable *)self->_targetMediaProfile removeObjectForKey:deactivateCopy];
+  [(NSMapTable *)self->_delegates removeObjectForKey:deactivateCopy];
 }
 
 - (void)hostViewControllerDidActivate:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

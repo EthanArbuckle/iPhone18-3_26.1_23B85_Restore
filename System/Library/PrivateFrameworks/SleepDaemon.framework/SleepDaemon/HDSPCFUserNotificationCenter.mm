@@ -1,31 +1,31 @@
 @interface HDSPCFUserNotificationCenter
-- (HDSPCFUserNotificationCenter)initWithEnvironment:(id)a3;
+- (HDSPCFUserNotificationCenter)initWithEnvironment:(id)environment;
 - (HDSPEnvironment)environment;
 - (NSString)sourceIdentifier;
-- (id)_confirmTextForForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (id)_ignoreTextForForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4;
-- (void)_publishWakeDetectionNotificationForUserInfo:(id)a3;
-- (void)handleResponse:(unint64_t)a3 forUserNotification:(id)a4;
-- (void)publishNotificationForEvent:(id)a3;
-- (void)tearDownNotificationForEventIdentifier:(id)a3;
+- (id)_confirmTextForForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (id)_ignoreTextForForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on;
+- (void)_publishWakeDetectionNotificationForUserInfo:(id)info;
+- (void)handleResponse:(unint64_t)response forUserNotification:(id)notification;
+- (void)publishNotificationForEvent:(id)event;
+- (void)tearDownNotificationForEventIdentifier:(id)identifier;
 @end
 
 @implementation HDSPCFUserNotificationCenter
 
-- (HDSPCFUserNotificationCenter)initWithEnvironment:(id)a3
+- (HDSPCFUserNotificationCenter)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v14.receiver = self;
   v14.super_class = HDSPCFUserNotificationCenter;
   v5 = [(HDSPCFUserNotificationCenter *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
-    v7 = [v4 mutexGenerator];
-    v8 = v7[2]();
+    objc_storeWeak(&v5->_environment, environmentCopy);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v8 = mutexGenerator[2]();
     mutexProvider = v6->_mutexProvider;
     v6->_mutexProvider = v8;
 
@@ -39,32 +39,32 @@
   return v6;
 }
 
-- (void)publishNotificationForEvent:(id)a3
+- (void)publishNotificationForEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  if ([v4 isEqualToString:*MEMORY[0x277D621D8]])
+  eventCopy = event;
+  identifier = [eventCopy identifier];
+  if ([identifier isEqualToString:*MEMORY[0x277D621D8]])
   {
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v6 = [WeakRetained behavior];
-    v7 = [v6 isAppleWatch];
+    behavior = [WeakRetained behavior];
+    isAppleWatch = [behavior isAppleWatch];
 
-    if (v7)
+    if (isAppleWatch)
     {
       goto LABEL_5;
     }
 
-    v4 = [v8 context];
-    [(HDSPCFUserNotificationCenter *)self _publishWakeDetectionNotificationForUserInfo:v4];
+    identifier = [eventCopy context];
+    [(HDSPCFUserNotificationCenter *)self _publishWakeDetectionNotificationForUserInfo:identifier];
   }
 
 LABEL_5:
 }
 
-- (void)_publishWakeDetectionNotificationForUserInfo:(id)a3
+- (void)_publishWakeDetectionNotificationForUserInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -74,13 +74,13 @@ LABEL_5:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] publishWakeDetectionNotification", buf, 0xCu);
   }
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62338]];
-  v8 = [v7 BOOLValue];
+  v7 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62338]];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D62340]];
-  v10 = [v9 BOOLValue];
+  v9 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277D62340]];
+  bOOLValue2 = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue2)
   {
     v11 = HKSPLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -93,7 +93,7 @@ LABEL_5:
     }
   }
 
-  if (v8)
+  if (bOOLValue)
   {
     v14 = HKSPLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -106,20 +106,20 @@ LABEL_5:
     }
   }
 
-  v17 = [(HDSPCFUserNotificationCenter *)self _wakeDetectionAlertTitleForAlarmEnabled:v8 sleepModeOn:v10];
-  v18 = [(HDSPCFUserNotificationCenter *)self _wakeDetectionAlertBodyForAlarmEnabled:v8 sleepModeOn:v10];
-  v19 = [(HDSPCFUserNotificationCenter *)self _confirmTextForForAlarmEnabled:v8 sleepModeOn:v10];
-  v20 = [(HDSPCFUserNotificationCenter *)self _ignoreTextForForAlarmEnabled:v8 sleepModeOn:v10];
+  v17 = [(HDSPCFUserNotificationCenter *)self _wakeDetectionAlertTitleForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
+  v18 = [(HDSPCFUserNotificationCenter *)self _wakeDetectionAlertBodyForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
+  v19 = [(HDSPCFUserNotificationCenter *)self _confirmTextForForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
+  v20 = [(HDSPCFUserNotificationCenter *)self _ignoreTextForForAlarmEnabled:bOOLValue sleepModeOn:bOOLValue2];
   objc_initWeak(buf, self);
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v22 = [WeakRetained behavior];
-  v23 = [v22 isAppleWatch];
+  behavior = [WeakRetained behavior];
+  isAppleWatch = [behavior isAppleWatch];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUserInfo___block_invoke;
   v26[3] = &unk_279C7C028;
   objc_copyWeak(&v27, buf);
-  LOBYTE(v25) = v23 ^ 1;
+  LOBYTE(v25) = isAppleWatch ^ 1;
   [(HDSPCFUserNotificationCenter *)self _publishNotificationWithIdentifier:*MEMORY[0x277D621D8] title:v17 message:v18 defaultButtonTitle:v19 otherButtonTitle:v20 bypassDND:1 aboveLockScreen:v25 actionHandler:v26];
 
   objc_destroyWeak(&v27);
@@ -171,21 +171,21 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   [v1 confirmWakeUp:1];
 }
 
-- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_wakeDetectionAlertTitleForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
   v4 = @"EARLY_WAKEUP_TITLE_NONE";
-  if (a3)
+  if (enabled)
   {
     v4 = @"EARLY_WAKEUP_TITLE_ALARM";
   }
 
   v5 = @"EARLY_WAKEUP_TITLE_ALARM_AND_SLEEP_FOCUS";
-  if (!a3)
+  if (!enabled)
   {
     v5 = @"EARLY_WAKEUP_TITLE_SLEEP_FOCUS";
   }
 
-  if (a4)
+  if (on)
   {
     v6 = v5;
   }
@@ -200,21 +200,21 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   return v7;
 }
 
-- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_wakeDetectionAlertBodyForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
   v4 = @"EARLY_WAKEUP_BODY_NONE";
-  if (a3)
+  if (enabled)
   {
     v4 = @"EARLY_WAKEUP_BODY_ALARM";
   }
 
   v5 = @"EARLY_WAKEUP_BODY_ALARM_AND_SLEEP_FOCUS";
-  if (!a3)
+  if (!enabled)
   {
     v5 = @"EARLY_WAKEUP_BODY_SLEEP_FOCUS";
   }
 
-  if (a4)
+  if (on)
   {
     v6 = v5;
   }
@@ -229,9 +229,9 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   return v7;
 }
 
-- (id)_confirmTextForForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_confirmTextForForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
-  if (a3 || a4)
+  if (enabled || on)
   {
     v4 = @"EARLY_DISMISS_TURN_OFF";
   }
@@ -246,9 +246,9 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   return v5;
 }
 
-- (id)_ignoreTextForForAlarmEnabled:(BOOL)a3 sleepModeOn:(BOOL)a4
+- (id)_ignoreTextForForAlarmEnabled:(BOOL)enabled sleepModeOn:(BOOL)on
 {
-  if (a3 || a4)
+  if (enabled || on)
   {
     v4 = @"EARLY_DISMISS_LEAVE_ON";
   }
@@ -263,20 +263,20 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   return v5;
 }
 
-- (void)handleResponse:(unint64_t)a3 forUserNotification:(id)a4
+- (void)handleResponse:(unint64_t)response forUserNotification:(id)notification
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  notificationCopy = notification;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v6 identifier];
+    identifier = [notificationCopy identifier];
     *buf = 138543618;
     v21 = v8;
     v22 = 2114;
-    v23 = v10;
+    v23 = identifier;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] calling handler for %{public}@", buf, 0x16u);
   }
 
@@ -284,12 +284,12 @@ void __77__HDSPCFUserNotificationCenter__publishWakeDetectionNotificationForUser
   v15 = 3221225472;
   v16 = __67__HDSPCFUserNotificationCenter_handleResponse_forUserNotification___block_invoke;
   v17 = &unk_279C7B2D0;
-  v18 = self;
-  v19 = v6;
-  v11 = v6;
+  selfCopy = self;
+  v19 = notificationCopy;
+  v11 = notificationCopy;
   [(HDSPCFUserNotificationCenter *)self _withLock:&v14];
-  v12 = [v11 actionHandler];
-  (v12)[2](v12, a3 == 0);
+  actionHandler = [v11 actionHandler];
+  (actionHandler)[2](actionHandler, response == 0);
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -301,10 +301,10 @@ void __67__HDSPCFUserNotificationCenter_handleResponse_forUserNotification___blo
   [v1 removeObjectForKey:v2];
 }
 
-- (void)tearDownNotificationForEventIdentifier:(id)a3
+- (void)tearDownNotificationForEventIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -317,12 +317,12 @@ void __67__HDSPCFUserNotificationCenter_handleResponse_forUserNotification___blo
   v13[3] = &unk_279C7C078;
   v15 = &v16;
   v13[4] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v14 = v5;
   [(HDSPCFUserNotificationCenter *)self _withLock:v13];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v7 = [WeakRetained assertionManager];
-  [v7 releaseAssertionWithIdentifier:v5];
+  assertionManager = [WeakRetained assertionManager];
+  [assertionManager releaseAssertionWithIdentifier:v5];
 
   if (v17[5])
   {

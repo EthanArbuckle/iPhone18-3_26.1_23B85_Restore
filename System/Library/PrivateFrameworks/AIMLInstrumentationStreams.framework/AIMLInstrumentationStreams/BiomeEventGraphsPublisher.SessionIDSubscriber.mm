@@ -1,16 +1,16 @@
 @interface BiomeEventGraphsPublisher.SessionIDSubscriber
 - (_TtCC26AIMLInstrumentationStreams25BiomeEventGraphsPublisher19SessionIDSubscriber)init;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
+- (void)receiveCompletion:(id)completion;
 @end
 
 @implementation BiomeEventGraphsPublisher.SessionIDSubscriber
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23C871BA4();
   swift_unknownObjectRelease();
   sub_23C588DC0(v9, v8);
@@ -21,7 +21,7 @@
     sub_23C5A53C0();
     v5 = BPSDemandMax();
 
-    v4 = v7;
+    selfCopy = v7;
   }
 
   else
@@ -33,16 +33,16 @@
   return v5;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  sub_23C5A4EFC(v4);
+  completionCopy = completion;
+  selfCopy = self;
+  sub_23C5A4EFC(completionCopy);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_23C5A5174();
 }
 

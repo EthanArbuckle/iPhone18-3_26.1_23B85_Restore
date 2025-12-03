@@ -8,7 +8,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarLocationItemViewAccessibility;
@@ -18,16 +18,16 @@
 - (id)accessibilityLabel
 {
   v3 = [(UIStatusBarLocationItemViewAccessibility *)self safeValueForKey:@"_iconType"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
   MEMORY[0x29EDC9740](v3);
-  if (v4)
+  if (intValue)
   {
-    if (v4 == 1)
+    if (intValue == 1)
     {
       v5 = accessibilityLocalizedString(@"status.location.geofence");
     }
 
-    else if (v4 == 2)
+    else if (intValue == 2)
     {
       v5 = accessibilityLocalizedString(@"status.location.prominent");
     }
@@ -49,16 +49,16 @@
 - (id)accessibilityIdentifier
 {
   v3 = [(UIStatusBarLocationItemViewAccessibility *)self safeValueForKey:@"_iconType"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
   MEMORY[0x29EDC9740](v3);
-  if (v4)
+  if (intValue)
   {
-    if (v4 == 1)
+    if (intValue == 1)
     {
       v5 = MEMORY[0x29EDC9748](@"GeofenceLocationTrackingOn");
     }
 
-    else if (v4 == 2)
+    else if (intValue == 2)
     {
       v5 = MEMORY[0x29EDC9748](@"ProminentLocationTrackingOn");
     }

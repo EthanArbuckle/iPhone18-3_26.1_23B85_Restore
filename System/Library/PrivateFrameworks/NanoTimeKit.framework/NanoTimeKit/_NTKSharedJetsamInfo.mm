@@ -1,9 +1,9 @@
 @interface _NTKSharedJetsamInfo
 + (id)sharedJetsamInfo;
-- (BOOL)getInfoFor:(id)a3 into:(jetsam_info *)a4;
-- (BOOL)resetIntervalFor:(id)a3;
+- (BOOL)getInfoFor:(id)for into:(jetsam_info *)into;
+- (BOOL)resetIntervalFor:(id)for;
 - (_NTKSharedJetsamInfo)init;
-- (void)unregister:(id)a3;
+- (void)unregister:(id)unregister;
 @end
 
 @implementation _NTKSharedJetsamInfo
@@ -31,9 +31,9 @@
     fetchersLock = v2->_fetchersLock;
     v2->_fetchersLock = v3;
 
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     fetchers = v2->_fetchers;
-    v2->_fetchers = v5;
+    v2->_fetchers = weakToStrongObjectsMapTable;
 
     v2->_pid = getpid();
   }
@@ -41,10 +41,10 @@
   return v2;
 }
 
-- (BOOL)getInfoFor:(id)a3 into:(jetsam_info *)a4
+- (BOOL)getInfoFor:(id)for into:(jetsam_info *)into
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v29 = 0;
   v27 = 0u;
   v28 = 0u;
@@ -65,16 +65,16 @@
   if (!v7)
   {
     v8 = v26 >> 10;
-    a4->currentKB = *(&v15 + 1) >> 10;
-    a4->maxLifetimeKB = v8;
+    into->currentKB = *(&v15 + 1) >> 10;
+    into->maxLifetimeKB = v8;
     [(NSLock *)self->_fetchersLock lock];
-    v9 = [(NSMapTable *)self->_fetchers objectForKey:v6];
+    v9 = [(NSMapTable *)self->_fetchers objectForKey:forCopy];
     [(NSLock *)self->_fetchersLock unlock];
     if (v9)
     {
-      if (*(&v28 + 1) >> 10 <= a4->currentKB)
+      if (*(&v28 + 1) >> 10 <= into->currentKB)
       {
-        currentKB = a4->currentKB;
+        currentKB = into->currentKB;
       }
 
       else
@@ -82,10 +82,10 @@
         currentKB = *(&v28 + 1) >> 10;
       }
 
-      v11 = [v9 longLongValue];
-      if (currentKB <= v11)
+      longLongValue = [v9 longLongValue];
+      if (currentKB <= longLongValue)
       {
-        maxLifetimeKB = v11;
+        maxLifetimeKB = longLongValue;
       }
 
       else
@@ -96,19 +96,19 @@
 
     else
     {
-      maxLifetimeKB = a4->maxLifetimeKB;
+      maxLifetimeKB = into->maxLifetimeKB;
     }
 
-    a4->maxIntervalKB = maxLifetimeKB;
+    into->maxIntervalKB = maxLifetimeKB;
   }
 
   return v7 == 0;
 }
 
-- (BOOL)resetIntervalFor:(id)a3
+- (BOOL)resetIntervalFor:(id)for
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   v55 = 0;
   v53 = 0u;
   v54 = 0u;
@@ -135,12 +135,12 @@
 
   else
   {
-    v25 = v4;
+    v25 = forCopy;
     v6 = *(&v54 + 1);
     if (proc_reset_footprint_interval())
     {
       v5 = 0;
-      v4 = v25;
+      forCopy = v25;
     }
 
     else
@@ -152,8 +152,8 @@
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v8 = [(NSMapTable *)self->_fetchers keyEnumerator];
-      v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      keyEnumerator = [(NSMapTable *)self->_fetchers keyEnumerator];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v9)
       {
         v10 = v9;
@@ -164,23 +164,23 @@
           {
             if (*v32 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v13 = *(*(&v31 + 1) + 8 * i);
             if (v13 != v25)
             {
               v14 = [(NSMapTable *)self->_fetchers objectForKey:*(*(&v31 + 1) + 8 * i)];
-              v15 = [v14 longLongValue];
+              longLongValue = [v14 longLongValue];
 
-              if (v15 < v7)
+              if (longLongValue < v7)
               {
                 [v26 addObject:v13];
               }
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+          v10 = [keyEnumerator countByEnumeratingWithState:&v31 objects:v36 count:16];
         }
 
         while (v10);
@@ -217,7 +217,7 @@
         while (v18);
       }
 
-      v4 = v25;
+      forCopy = v25;
       [(NSMapTable *)self->_fetchers setObject:&unk_2841855F0 forKey:v25];
       [(NSLock *)self->_fetchersLock unlock];
 
@@ -228,12 +228,12 @@
   return v5;
 }
 
-- (void)unregister:(id)a3
+- (void)unregister:(id)unregister
 {
   fetchersLock = self->_fetchersLock;
-  v5 = a3;
+  unregisterCopy = unregister;
   [(NSLock *)fetchersLock lock];
-  [(NSMapTable *)self->_fetchers removeObjectForKey:v5];
+  [(NSMapTable *)self->_fetchers removeObjectForKey:unregisterCopy];
 
   v6 = self->_fetchersLock;
 

@@ -1,8 +1,8 @@
 @interface PLIndicatorFileCoordinator
 + (BOOL)systemLibraryAvailableIndicatorState;
-+ (void)setSystemLibraryAvailableIndicatorState:(BOOL)a3;
-- (BOOL)_canSetPauseMarkerWithUnpauseTime:(id)a3 onPauseData:(id)a4;
-- (BOOL)clearPauseMarkerForReason:(signed __int16)a3;
++ (void)setSystemLibraryAvailableIndicatorState:(BOOL)state;
+- (BOOL)_canSetPauseMarkerWithUnpauseTime:(id)time onPauseData:(id)data;
+- (BOOL)clearPauseMarkerForReason:(signed __int16)reason;
 - (BOOL)hasItemToDownload;
 - (BOOL)isDisableICloudPhotos;
 - (BOOL)isEnableICloudPhotos;
@@ -13,50 +13,50 @@
 - (BOOL)isRebuildingSocialGroups;
 - (BOOL)isStreamsLibraryUpdatingExpired;
 - (BOOL)isWipeCPLOnOpen;
-- (BOOL)needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:(BOOL)a3;
-- (PLIndicatorFileCoordinator)initWithPathManager:(id)a3;
-- (PLIndicatorFileCoordinator)initWithResourceHoldingDirectoryPath:(id)a3;
-- (id)_readPListWithFilename:(id)a3;
+- (BOOL)needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:(BOOL)files;
+- (PLIndicatorFileCoordinator)initWithPathManager:(id)manager;
+- (PLIndicatorFileCoordinator)initWithResourceHoldingDirectoryPath:(id)path;
+- (id)_readPListWithFilename:(id)filename;
 - (id)_rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath;
 - (id)_rebuildingPersonsIndicatorFilePath;
 - (id)_rebuildingSocialGroupsIndicatorFilePath;
 - (id)unpauseTime;
 - (signed)currentPauseReason;
-- (void)_createPauseMarkerForReason:(signed __int16)a3 withUnpauseTime:(id)a4 withPath:(id)a5;
-- (void)_setActivityIndicatorWithPath:(id)a3 flag:(BOOL)a4 uuid:(id)a5 crashRecovery:(id)a6;
-- (void)_writeDict:(id)a3 withFilename:(id)a4;
+- (void)_createPauseMarkerForReason:(signed __int16)reason withUnpauseTime:(id)time withPath:(id)path;
+- (void)_setActivityIndicatorWithPath:(id)path flag:(BOOL)flag uuid:(id)uuid crashRecovery:(id)recovery;
+- (void)_writeDict:(id)dict withFilename:(id)filename;
 - (void)clearWipeCPLOnOpen;
-- (void)createPauseMarkerWithUnpauseTime:(id)a3 reason:(signed __int16)a4;
+- (void)createPauseMarkerWithUnpauseTime:(id)time reason:(signed __int16)reason;
 - (void)dealloc;
 - (void)deleteCPLDownloadFinishedMarkerFilePath;
 - (void)forceSoftResetSync;
-- (void)getDownloadPhotoCount:(unint64_t *)a3 downloadVideoCount:(unint64_t *)a4;
-- (void)logCloudServiceEnableEvent:(BOOL)a3 serviceName:(id)a4 reason:(id)a5;
-- (void)setCreatingAssetIsBusy:(BOOL)a3 uuid:(id)a4;
-- (void)setDownloadCountsForImages:(unint64_t)a3 videos:(unint64_t)a4;
-- (void)setImageWriter:(id)a3 isBusy:(BOOL)a4 crashRecoverySupport:(id)a5;
-- (void)setIsRebuildingAssetResourceUploadJobConfiguration:(BOOL)a3;
-- (void)setIsRebuildingPersons:(BOOL)a3;
-- (void)setIsRebuildingSocialGroups:(BOOL)a3;
-- (void)setStreamsLibraryUpdatingExpired:(BOOL)a3;
-- (void)setTakingPhotoIsBusy:(BOOL)a3;
+- (void)getDownloadPhotoCount:(unint64_t *)count downloadVideoCount:(unint64_t *)videoCount;
+- (void)logCloudServiceEnableEvent:(BOOL)event serviceName:(id)name reason:(id)reason;
+- (void)setCreatingAssetIsBusy:(BOOL)busy uuid:(id)uuid;
+- (void)setDownloadCountsForImages:(unint64_t)images videos:(unint64_t)videos;
+- (void)setImageWriter:(id)writer isBusy:(BOOL)busy crashRecoverySupport:(id)support;
+- (void)setIsRebuildingAssetResourceUploadJobConfiguration:(BOOL)configuration;
+- (void)setIsRebuildingPersons:(BOOL)persons;
+- (void)setIsRebuildingSocialGroups:(BOOL)groups;
+- (void)setStreamsLibraryUpdatingExpired:(BOOL)expired;
+- (void)setTakingPhotoIsBusy:(BOOL)busy;
 - (void)setWipeCPLOnOpen;
-- (void)updateICloudPhotosMarkerForEnable:(BOOL)a3;
+- (void)updateICloudPhotosMarkerForEnable:(BOOL)enable;
 - (void)writeDisableICloudPhotosMarker;
 - (void)writeEnableICloudPhotosMarker;
 @end
 
 @implementation PLIndicatorFileCoordinator
 
-- (void)logCloudServiceEnableEvent:(BOOL)a3 serviceName:(id)a4 reason:(id)a5
+- (void)logCloudServiceEnableEvent:(BOOL)event serviceName:(id)name reason:(id)reason
 {
-  v6 = a3;
+  eventCopy = event;
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PLPhotoLibraryPathManager *)self->_pathManager cloudServiceEnableLogFileURL];
+  nameCopy = name;
+  reasonCopy = reason;
+  cloudServiceEnableLogFileURL = [(PLPhotoLibraryPathManager *)self->_pathManager cloudServiceEnableLogFileURL];
   v28 = 0;
-  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v10 options:0 error:&v28];
+  v11 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:cloudServiceEnableLogFileURL options:0 error:&v28];
   v12 = v28;
   if (!v11)
   {
@@ -66,11 +66,11 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109890;
-        v30 = v6;
+        v30 = eventCopy;
         v31 = 2114;
-        v32 = v8;
+        v32 = nameCopy;
         v33 = 2112;
-        v34 = v10;
+        v34 = cloudServiceEnableLogFileURL;
         v35 = 2112;
         v36 = v12;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Couldn't read enable event log, enabled: %d, type: %{public}@ path: %@, error: %@", buf, 0x26u);
@@ -89,13 +89,13 @@
 
 LABEL_17:
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v19 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v19 = [MEMORY[0x1E696AD98] numberWithBool:eventCopy];
     [v18 setObject:v19 forKeyedSubscript:@"enabled"];
 
-    [v18 setObject:v8 forKeyedSubscript:@"type"];
-    [v18 setObject:v9 forKeyedSubscript:@"reason"];
-    v20 = [MEMORY[0x1E695DF00] date];
-    [v18 setObject:v20 forKeyedSubscript:@"timestamp"];
+    [v18 setObject:nameCopy forKeyedSubscript:@"type"];
+    [v18 setObject:reasonCopy forKeyedSubscript:@"reason"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v18 setObject:date forKeyedSubscript:@"timestamp"];
 
     [v15 addObject:v18];
     v26 = 0;
@@ -105,7 +105,7 @@ LABEL_17:
     if (v21)
     {
       v25 = v22;
-      v23 = [v21 writeToURL:v10 options:0 error:&v25];
+      v23 = [v21 writeToURL:cloudServiceEnableLogFileURL options:0 error:&v25];
       v12 = v25;
 
       if (v23)
@@ -120,11 +120,11 @@ LABEL_28:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109890;
-        v30 = v6;
+        v30 = eventCopy;
         v31 = 2114;
-        v32 = v8;
+        v32 = nameCopy;
         v33 = 2112;
-        v34 = v10;
+        v34 = cloudServiceEnableLogFileURL;
         v35 = 2112;
         v36 = v12;
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Couldn't write enable event log, enabled: %d, type: %{public}@ path: %@, error: %@", buf, 0x26u);
@@ -139,11 +139,11 @@ LABEL_28:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109890;
-        v30 = v6;
+        v30 = eventCopy;
         v31 = 2114;
-        v32 = v8;
+        v32 = nameCopy;
         v33 = 2112;
-        v34 = v10;
+        v34 = cloudServiceEnableLogFileURL;
         v35 = 2112;
         v36 = v22;
         _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Couldn't encode enable event log, enabled: %d, type: %{public}@ path: %@, error: %@", buf, 0x26u);
@@ -173,11 +173,11 @@ LABEL_28:
     {
       v17 = objc_opt_class();
       *buf = 67109890;
-      v30 = v6;
+      v30 = eventCopy;
       v31 = 2114;
-      v32 = v8;
+      v32 = nameCopy;
       v33 = 2112;
-      v34 = v10;
+      v34 = cloudServiceEnableLogFileURL;
       v35 = 2114;
       v36 = v17;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "Couldn't decode enable event log, enabled: %d, type: %{public}@ path: %@, error: unexpected type: %{public}@", buf, 0x26u);
@@ -190,11 +190,11 @@ LABEL_28:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109890;
-      v30 = v6;
+      v30 = eventCopy;
       v31 = 2114;
-      v32 = v8;
+      v32 = nameCopy;
       v33 = 2112;
-      v34 = v10;
+      v34 = cloudServiceEnableLogFileURL;
       v35 = 2112;
       v36 = v14;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Couldn't decode enable event log, enabled: %d, type: %{public}@ path: %@, error: %@", buf, 0x26u);
@@ -219,15 +219,15 @@ LABEL_29:
 
 - (BOOL)isRebuildingAssetResourceUploadJobConfiguration
 {
-  v2 = [(PLIndicatorFileCoordinator *)self _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath];
+  _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
 }
 
-- (void)setIsRebuildingAssetResourceUploadJobConfiguration:(BOOL)a3
+- (void)setIsRebuildingAssetResourceUploadJobConfiguration:(BOOL)configuration
 {
-  v3 = [(PLIndicatorFileCoordinator *)self _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath];
+  _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingAssetResourceUploadJobConfigurationIndicatorFilePath];
   PLMakeIndicatorFileExistAtPath();
 }
 
@@ -241,15 +241,15 @@ LABEL_29:
 
 - (BOOL)isRebuildingSocialGroups
 {
-  v2 = [(PLIndicatorFileCoordinator *)self _rebuildingSocialGroupsIndicatorFilePath];
+  _rebuildingSocialGroupsIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingSocialGroupsIndicatorFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
 }
 
-- (void)setIsRebuildingSocialGroups:(BOOL)a3
+- (void)setIsRebuildingSocialGroups:(BOOL)groups
 {
-  v3 = [(PLIndicatorFileCoordinator *)self _rebuildingSocialGroupsIndicatorFilePath];
+  _rebuildingSocialGroupsIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingSocialGroupsIndicatorFilePath];
   PLMakeIndicatorFileExistAtPath();
 }
 
@@ -263,15 +263,15 @@ LABEL_29:
 
 - (BOOL)isRebuildingPersons
 {
-  v2 = [(PLIndicatorFileCoordinator *)self _rebuildingPersonsIndicatorFilePath];
+  _rebuildingPersonsIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingPersonsIndicatorFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
 }
 
-- (void)setIsRebuildingPersons:(BOOL)a3
+- (void)setIsRebuildingPersons:(BOOL)persons
 {
-  v3 = [(PLIndicatorFileCoordinator *)self _rebuildingPersonsIndicatorFilePath];
+  _rebuildingPersonsIndicatorFilePath = [(PLIndicatorFileCoordinator *)self _rebuildingPersonsIndicatorFilePath];
   PLMakeIndicatorFileExistAtPath();
 }
 
@@ -291,37 +291,37 @@ LABEL_29:
   return v3;
 }
 
-- (void)setStreamsLibraryUpdatingExpired:(BOOL)a3
+- (void)setStreamsLibraryUpdatingExpired:(BOOL)expired
 {
   v3 = [(PLPhotoLibraryPathManager *)self->_pathManager privateCacheDirectoryWithSubType:9];
   PLMakeIndicatorFileExistAtPath();
 }
 
-- (void)setDownloadCountsForImages:(unint64_t)a3 videos:(unint64_t)a4
+- (void)setDownloadCountsForImages:(unint64_t)images videos:(unint64_t)videos
 {
   v13[2] = *MEMORY[0x1E69E9840];
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:462 description:@"Must be run in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:462 description:@"Must be run in assetsd"];
   }
 
   v12[0] = @"CountKeyImages";
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:images];
   v12[1] = @"CountKeyVideos";
   v13[0] = v8;
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:videos];
   v13[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   [(PLIndicatorFileCoordinator *)self _writeDict:v10 withFilename:@"DownloadCounts.plist"];
 }
 
-- (void)getDownloadPhotoCount:(unint64_t *)a3 downloadVideoCount:(unint64_t *)a4
+- (void)getDownloadPhotoCount:(unint64_t *)count downloadVideoCount:(unint64_t *)videoCount
 {
-  if (a3)
+  if (count)
   {
-    if (a4)
+    if (videoCount)
     {
       goto LABEL_3;
     }
@@ -329,33 +329,33 @@ LABEL_29:
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"downloadPhotoCount"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:452 description:{@"Invalid parameter not satisfying: %@", @"downloadPhotoCount"}];
 
-    if (a4)
+    if (videoCount)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:453 description:{@"Invalid parameter not satisfying: %@", @"downloadVideoCount"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:453 description:{@"Invalid parameter not satisfying: %@", @"downloadVideoCount"}];
 
 LABEL_3:
   v12 = [(PLIndicatorFileCoordinator *)self _readPListWithFilename:@"DownloadCounts.plist"];
   v8 = [v12 objectForKeyedSubscript:@"CountKeyImages"];
-  *a3 = [v8 unsignedIntegerValue];
+  *count = [v8 unsignedIntegerValue];
 
   v9 = [v12 objectForKeyedSubscript:@"CountKeyVideos"];
-  *a4 = [v9 unsignedIntegerValue];
+  *videoCount = [v9 unsignedIntegerValue];
 }
 
 - (BOOL)hasItemToDownload
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:443 description:@"Must be run in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:443 description:@"Must be run in assetsd"];
   }
 
   v4 = [(PLIndicatorFileCoordinator *)self _readPListWithFilename:@"DownloadCounts.plist"];
@@ -374,56 +374,56 @@ LABEL_3:
   return v6;
 }
 
-- (void)_writeDict:(id)a3 withFilename:(id)a4
+- (void)_writeDict:(id)dict withFilename:(id)filename
 {
   pathManager = self->_pathManager;
-  v6 = a4;
-  v7 = a3;
+  filenameCopy = filename;
+  dictCopy = dict;
   v11 = [(PLPhotoLibraryPathManager *)pathManager cplDataDirectoryCreateIfNeeded:1];
   v8 = MEMORY[0x1E695DFF8];
-  v9 = [v11 stringByAppendingPathComponent:v6];
+  v9 = [v11 stringByAppendingPathComponent:filenameCopy];
 
   v10 = [v8 fileURLWithPath:v9 isDirectory:0];
 
-  [v7 writeToURL:v10 atomically:1];
+  [dictCopy writeToURL:v10 atomically:1];
 }
 
-- (id)_readPListWithFilename:(id)a3
+- (id)_readPListWithFilename:(id)filename
 {
   pathManager = self->_pathManager;
-  v4 = a3;
+  filenameCopy = filename;
   v5 = [(PLPhotoLibraryPathManager *)pathManager cplDataDirectoryCreateIfNeeded:0];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  v6 = [v5 stringByAppendingPathComponent:filenameCopy];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v6];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v6];
 
   if (v9)
   {
     v10 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v6];
 
-    v7 = v10;
+    dictionary = v10;
   }
 
-  return v7;
+  return dictionary;
 }
 
 - (void)clearWipeCPLOnOpen
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
+  wipeCPLOnOpenPath = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
   PLMakeIndicatorFileExistAtPath();
 }
 
 - (void)setWipeCPLOnOpen
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
+  wipeCPLOnOpenPath = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
   PLMakeIndicatorFileExistAtPath();
 }
 
 - (BOOL)isWipeCPLOnOpen
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
+  wipeCPLOnOpenPath = [(PLPhotoLibraryPathManager *)self->_pathManager wipeCPLOnOpenPath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
@@ -431,13 +431,13 @@ LABEL_3:
 
 - (void)forceSoftResetSync
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
+  forceSoftResetSyncPath = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
   PLMakeIndicatorFileExistAtPath();
 }
 
 - (BOOL)isForceSoftResetSync
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
+  forceSoftResetSyncPath = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
@@ -450,20 +450,20 @@ LABEL_3:
     return 0;
   }
 
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
-  v4 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:v3];
+  pauseICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
+  v4 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:pauseICloudPhotosFilePath];
   v5 = [v4 objectForKey:@"reason"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (id)unpauseTime
 {
   if ([(PLIndicatorFileCoordinator *)self isICloudPhotosPaused])
   {
-    v3 = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
-    v4 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:v3];
+    pauseICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
+    v4 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:pauseICloudPhotosFilePath];
     v5 = [v4 objectForKey:@"unpauseTime"];
   }
 
@@ -475,26 +475,26 @@ LABEL_3:
   return v5;
 }
 
-- (void)createPauseMarkerWithUnpauseTime:(id)a3 reason:(signed __int16)a4
+- (void)createPauseMarkerWithUnpauseTime:(id)time reason:(signed __int16)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   pathManager = self->_pathManager;
-  v7 = a3;
-  v8 = [(PLPhotoLibraryPathManager *)pathManager pauseICloudPhotosFilePath];
-  [(PLIndicatorFileCoordinator *)self _createPauseMarkerForReason:v4 withUnpauseTime:v7 withPath:v8];
+  timeCopy = time;
+  pauseICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)pathManager pauseICloudPhotosFilePath];
+  [(PLIndicatorFileCoordinator *)self _createPauseMarkerForReason:reasonCopy withUnpauseTime:timeCopy withPath:pauseICloudPhotosFilePath];
 }
 
-- (void)_createPauseMarkerForReason:(signed __int16)a3 withUnpauseTime:(id)a4 withPath:(id)a5
+- (void)_createPauseMarkerForReason:(signed __int16)reason withUnpauseTime:(id)time withPath:(id)path
 {
-  v6 = a3;
-  v15 = a4;
-  v8 = a5;
-  v9 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:v8];
+  reasonCopy = reason;
+  timeCopy = time;
+  pathCopy = path;
+  v9 = [(PLIndicatorFileCoordinator *)self _pauseDataOnPath:pathCopy];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    if (![(PLIndicatorFileCoordinator *)self _canSetPauseMarkerWithUnpauseTime:v15 onPauseData:v10])
+    if (![(PLIndicatorFileCoordinator *)self _canSetPauseMarkerWithUnpauseTime:timeCopy onPauseData:v10])
     {
       goto LABEL_8;
     }
@@ -505,15 +505,15 @@ LABEL_3:
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  [v10 setObject:v15 forKey:@"unpauseTime"];
-  v11 = [MEMORY[0x1E696AD98] numberWithShort:v6];
+  [v10 setObject:timeCopy forKey:@"unpauseTime"];
+  v11 = [MEMORY[0x1E696AD98] numberWithShort:reasonCopy];
   [v10 setObject:v11 forKey:@"reason"];
 
   v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v10 format:100 options:0 error:0];
-  [v12 writeToFile:v8 options:1073741825 error:0];
+  [v12 writeToFile:pathCopy options:1073741825 error:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   v14 = &PhotoLibraryUserPauseNotification;
-  if (v6 != 3)
+  if (reasonCopy != 3)
   {
     v14 = &PhotoLibraryPauseNotification;
   }
@@ -523,16 +523,16 @@ LABEL_3:
 LABEL_8:
 }
 
-- (BOOL)_canSetPauseMarkerWithUnpauseTime:(id)a3 onPauseData:(id)a4
+- (BOOL)_canSetPauseMarkerWithUnpauseTime:(id)time onPauseData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  timeCopy = time;
+  if (timeCopy)
   {
-    v6 = [a4 objectForKey:@"unpauseTime"];
+    v6 = [data objectForKey:@"unpauseTime"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 compare:v5] == -1;
+      v8 = [v6 compare:timeCopy] == -1;
     }
 
     else
@@ -549,18 +549,18 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)clearPauseMarkerForReason:(signed __int16)a3
+- (BOOL)clearPauseMarkerForReason:(signed __int16)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v14 = *MEMORY[0x1E69E9840];
-  v5 = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  pauseICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pauseICloudPhotosFilePath])
   {
-    if (v3 == 3 || ![(PLIndicatorFileCoordinator *)self isUserPause])
+    if (reasonCopy == 3 || ![(PLIndicatorFileCoordinator *)self isUserPause])
     {
       v11 = 0;
-      [v6 removeItemAtPath:v5 error:&v11];
+      [defaultManager removeItemAtPath:pauseICloudPhotosFilePath error:&v11];
       v8 = v11;
       v7 = v8 == 0;
       if (v8)
@@ -589,43 +589,43 @@ LABEL_8:
   return v7;
 }
 
-- (void)updateICloudPhotosMarkerForEnable:(BOOL)a3
+- (void)updateICloudPhotosMarkerForEnable:(BOOL)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   v28 = *MEMORY[0x1E69E9840];
   if ([(PLIndicatorFileCoordinator *)self isForceSoftResetSync])
   {
-    v5 = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
+    forceSoftResetSyncPath = [(PLPhotoLibraryPathManager *)self->_pathManager forceSoftResetSyncPath];
     PLMakeIndicatorFileExistAtPath();
   }
 
   if ([(PLIndicatorFileCoordinator *)self isEnableICloudPhotos])
   {
-    v6 = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
+    enableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
     PLMakeIndicatorFileExistAtPath();
   }
 
   if ([(PLIndicatorFileCoordinator *)self isDisableICloudPhotos])
   {
-    v7 = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
+    disableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
     PLMakeIndicatorFileExistAtPath();
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [(PLPhotoLibraryPathManager *)self->_pathManager cplEnableMarkerFilePath];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cplEnableMarkerFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager cplEnableMarkerFilePath];
+  v10 = [defaultManager fileExistsAtPath:cplEnableMarkerFilePath];
   v11 = v10;
-  if (v3)
+  if (enableCopy)
   {
-    v12 = PLBackendGetLog();
-    v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+    date = PLBackendGetLog();
+    v13 = os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT);
     if (v11)
     {
       if (v13)
       {
         *buf = 138412290;
-        v25 = v9;
-        _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "%@ already exist", buf, 0xCu);
+        v25 = cplEnableMarkerFilePath;
+        _os_log_impl(&dword_19BF1F000, date, OS_LOG_TYPE_DEFAULT, "%@ already exist", buf, 0xCu);
       }
 
       goto LABEL_25;
@@ -634,19 +634,19 @@ LABEL_8:
     if (v13)
     {
       *buf = 138412290;
-      v25 = v9;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "writing %@", buf, 0xCu);
+      v25 = cplEnableMarkerFilePath;
+      _os_log_impl(&dword_19BF1F000, date, OS_LOG_TYPE_DEFAULT, "writing %@", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v16 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v16 setDateFormat:@"yyyy-MM-dd HH.mm.ss.SSS"];
     v17 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
     [v16 setLocale:v17];
 
-    v18 = [v16 stringFromDate:v12];
+    v18 = [v16 stringFromDate:date];
     v23 = 0;
-    v19 = [v18 writeToFile:v9 atomically:1 encoding:4 error:&v23];
+    v19 = [v18 writeToFile:cplEnableMarkerFilePath atomically:1 encoding:4 error:&v23];
     v20 = v23;
 
     if ((v19 & 1) == 0)
@@ -655,7 +655,7 @@ LABEL_8:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v25 = v9;
+        v25 = cplEnableMarkerFilePath;
         v26 = 2112;
         v27 = v20;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "failed to write %@: %@", buf, 0x16u);
@@ -674,13 +674,13 @@ LABEL_25:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v9;
+      v25 = cplEnableMarkerFilePath;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "removing %@", buf, 0xCu);
     }
 
     v22 = 0;
-    v15 = [v8 removeItemAtPath:v9 error:&v22];
-    v12 = v22;
+    v15 = [defaultManager removeItemAtPath:cplEnableMarkerFilePath error:&v22];
+    date = v22;
     if (v15)
     {
       goto LABEL_25;
@@ -690,9 +690,9 @@ LABEL_25:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v25 = v9;
+      v25 = cplEnableMarkerFilePath;
       v26 = 2112;
-      v27 = v12;
+      v27 = date;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "failed to remove %@: %@", buf, 0x16u);
     }
 
@@ -704,7 +704,7 @@ LABEL_26:
 
 - (void)writeEnableICloudPhotosMarker
 {
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
+  enableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
   PLMakeIndicatorFileExistAtPath();
   if ([(PLIndicatorFileCoordinator *)self isDisableICloudPhotos])
   {
@@ -721,7 +721,7 @@ LABEL_26:
 
 - (void)writeDisableICloudPhotosMarker
 {
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
+  disableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
   PLMakeIndicatorFileExistAtPath();
   if ([(PLIndicatorFileCoordinator *)self isEnableICloudPhotos])
   {
@@ -732,16 +732,16 @@ LABEL_26:
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Removing stale enable marker as we are disabling iCPL", v6, 2u);
     }
 
-    v5 = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
+    enableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
     PLMakeIndicatorFileExistAtPath();
   }
 }
 
 - (void)deleteCPLDownloadFinishedMarkerFilePath
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [(PLPhotoLibraryPathManager *)self->_pathManager cplDownloadFinishedMarkerFilePath];
-  if ([v4 fileExistsAtPath:v3])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cplDownloadFinishedMarkerFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager cplDownloadFinishedMarkerFilePath];
+  if ([defaultManager fileExistsAtPath:cplDownloadFinishedMarkerFilePath])
   {
     PLMakeIndicatorFileExistAtPath();
   }
@@ -749,7 +749,7 @@ LABEL_26:
 
 - (BOOL)isICloudPhotosPaused
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
+  pauseICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager pauseICloudPhotosFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
@@ -757,7 +757,7 @@ LABEL_26:
 
 - (BOOL)isDisableICloudPhotos
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
+  disableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager disableICloudPhotosFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
@@ -765,20 +765,20 @@ LABEL_26:
 
 - (BOOL)isEnableICloudPhotos
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
+  enableICloudPhotosFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager enableICloudPhotosFilePath];
   v3 = PLDoesIndicatorFileExistAtPath();
 
   return v3;
 }
 
-- (BOOL)needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:(BOOL)a3
+- (BOOL)needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:(BOOL)files
 {
-  v3 = a3;
+  filesCopy = files;
   v27[3] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
-  v27[0] = v5;
-  v6 = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
-  v27[1] = v6;
+  takingVideoIndicatorFilePath = [MEMORY[0x1E69BF168] takingVideoIndicatorFilePath];
+  v27[0] = takingVideoIndicatorFilePath;
+  takingPhotoIndicatorFilePath = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
+  v27[1] = takingPhotoIndicatorFilePath;
   v7 = [(PLPhotoLibraryPathManager *)self->_pathManager privateDirectoryWithSubType:1];
   v27[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:3];
@@ -816,7 +816,7 @@ LABEL_26:
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Photo library needs recovery after crash because of indicator file %@", buf, 0xCu);
           }
 
-          if (!v3)
+          if (!filesCopy)
           {
             close(v17);
             v12 = 1;
@@ -849,29 +849,29 @@ LABEL_16:
   return v12 & 1;
 }
 
-- (void)setImageWriter:(id)a3 isBusy:(BOOL)a4 crashRecoverySupport:(id)a5
+- (void)setImageWriter:(id)writer isBusy:(BOOL)busy crashRecoverySupport:(id)support
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  busyCopy = busy;
+  writerCopy = writer;
+  supportCopy = support;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:150 description:@"only called by assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:150 description:@"only called by assetsd"];
 
-    if (v9)
+    if (writerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"imageWriter"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"imageWriter"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!writerCopy)
   {
     goto LABEL_5;
   }
@@ -882,11 +882,11 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = __73__PLIndicatorFileCoordinator_setImageWriter_isBusy_crashRecoverySupport___block_invoke;
   v16[3] = &unk_1E7578848;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:v11 flag:v6 uuid:0 crashRecovery:v16];
+  v17 = supportCopy;
+  v18 = writerCopy;
+  v12 = writerCopy;
+  v13 = supportCopy;
+  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:v11 flag:busyCopy uuid:0 crashRecovery:v16];
 }
 
 uint64_t __73__PLIndicatorFileCoordinator_setImageWriter_isBusy_crashRecoverySupport___block_invoke(uint64_t a1)
@@ -901,10 +901,10 @@ uint64_t __73__PLIndicatorFileCoordinator_setImageWriter_isBusy_crashRecoverySup
   return [*(a1 + 32) recoverFromCrashIfNeededWithImageWriter:*(a1 + 40)];
 }
 
-- (void)setCreatingAssetIsBusy:(BOOL)a3 uuid:(id)a4
+- (void)setCreatingAssetIsBusy:(BOOL)busy uuid:(id)uuid
 {
-  v4 = a3;
-  v8 = a4;
+  busyCopy = busy;
+  uuidCopy = uuid;
   resourceHoldingDirectoryPath = self->_resourceHoldingDirectoryPath;
   if (resourceHoldingDirectoryPath)
   {
@@ -916,27 +916,27 @@ uint64_t __73__PLIndicatorFileCoordinator_setImageWriter_isBusy_crashRecoverySup
     v7 = 0;
   }
 
-  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:v7 flag:v4 uuid:v8 crashRecovery:&__block_literal_global_41287];
+  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:v7 flag:busyCopy uuid:uuidCopy crashRecovery:&__block_literal_global_41287];
 }
 
-- (void)setTakingPhotoIsBusy:(BOOL)a3
+- (void)setTakingPhotoIsBusy:(BOOL)busy
 {
-  v3 = a3;
+  busyCopy = busy;
   if (PLIsAssetsd())
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:127 description:@"only called by processes that is not assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLIndicatorFileCoordinator.m" lineNumber:127 description:@"only called by processes that is not assetsd"];
   }
 
-  v6 = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
-  v7 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  takingPhotoIndicatorFilePath = [MEMORY[0x1E69BF168] takingPhotoIndicatorFilePath];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__PLIndicatorFileCoordinator_setTakingPhotoIsBusy___block_invoke;
   v10[3] = &unk_1E75781E8;
-  v11 = v7;
-  v8 = v7;
-  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:v6 flag:v3 uuid:0 crashRecovery:v10];
+  v11 = libraryURL;
+  v8 = libraryURL;
+  [(PLIndicatorFileCoordinator *)self _setActivityIndicatorWithPath:takingPhotoIndicatorFilePath flag:busyCopy uuid:0 crashRecovery:v10];
 }
 
 void __51__PLIndicatorFileCoordinator_setTakingPhotoIsBusy___block_invoke(uint64_t a1)
@@ -953,14 +953,14 @@ void __51__PLIndicatorFileCoordinator_setTakingPhotoIsBusy___block_invoke(uint64
   [v4 recoverFromCrashIfNeeded];
 }
 
-- (void)_setActivityIndicatorWithPath:(id)a3 flag:(BOOL)a4 uuid:(id)a5 crashRecovery:(id)a6
+- (void)_setActivityIndicatorWithPath:(id)path flag:(BOOL)flag uuid:(id)uuid crashRecovery:(id)recovery
 {
-  v8 = a3;
-  v12 = a5;
-  v13 = a6;
-  v9 = v13;
-  v10 = v12;
-  v11 = v8;
+  pathCopy = path;
+  uuidCopy = uuid;
+  recoveryCopy = recovery;
+  v9 = recoveryCopy;
+  v10 = uuidCopy;
+  v11 = pathCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -1154,9 +1154,9 @@ LABEL_13:
   [(PLIndicatorFileCoordinator *)&v4 dealloc];
 }
 
-- (PLIndicatorFileCoordinator)initWithResourceHoldingDirectoryPath:(id)a3
+- (PLIndicatorFileCoordinator)initWithResourceHoldingDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PLIndicatorFileCoordinator;
   v6 = [(PLIndicatorFileCoordinator *)&v9 init];
@@ -1164,22 +1164,22 @@ LABEL_13:
   if (v6)
   {
     *&v6->_activityIndicatorFid = 0xFFFFFFFFLL;
-    objc_storeStrong(&v6->_resourceHoldingDirectoryPath, a3);
+    objc_storeStrong(&v6->_resourceHoldingDirectoryPath, path);
   }
 
   return v7;
 }
 
-- (PLIndicatorFileCoordinator)initWithPathManager:(id)a3
+- (PLIndicatorFileCoordinator)initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PLIndicatorFileCoordinator;
   v6 = [(PLIndicatorFileCoordinator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pathManager, a3);
+    objc_storeStrong(&v6->_pathManager, manager);
     *&v7->_activityIndicatorFid = 0xFFFFFFFFLL;
   }
 
@@ -1188,17 +1188,17 @@ LABEL_13:
 
 + (BOOL)systemLibraryAvailableIndicatorState
 {
-  v2 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v3 = [v2 privateCacheDirectoryWithSubType:8];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v3 = [systemLibraryPathManager privateCacheDirectoryWithSubType:8];
 
-  LOBYTE(v2) = PLDoesIndicatorFileExistAtPath();
-  return v2;
+  LOBYTE(systemLibraryPathManager) = PLDoesIndicatorFileExistAtPath();
+  return systemLibraryPathManager;
 }
 
-+ (void)setSystemLibraryAvailableIndicatorState:(BOOL)a3
++ (void)setSystemLibraryAvailableIndicatorState:(BOOL)state
 {
-  v3 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v4 = [v3 privateCacheDirectoryWithSubType:8];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v4 = [systemLibraryPathManager privateCacheDirectoryWithSubType:8];
 
   PLMakeIndicatorFileExistAtPath();
 }

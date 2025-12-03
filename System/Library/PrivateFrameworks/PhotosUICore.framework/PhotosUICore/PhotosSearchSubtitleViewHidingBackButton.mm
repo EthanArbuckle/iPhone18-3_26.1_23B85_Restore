@@ -1,14 +1,14 @@
 @interface PhotosSearchSubtitleViewHidingBackButton
-- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)removeFromSuperview;
 @end
 
 @implementation PhotosSearchSubtitleViewHidingBackButton
 
-- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithCoder:(id)a3
+- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton_indexingStatusView);
@@ -24,7 +24,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A47F0A04();
 }
 
@@ -37,24 +37,24 @@
   *&v2[OBJC_IVAR____TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton_cachedTitleFrameMaxY] = 0;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v4 = *(self + OBJC_IVAR____TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton_subtitleView);
   if (v4)
   {
-    y = a3.y;
-    x = a3.x;
-    v8 = self;
+    y = test.y;
+    x = test.x;
+    selfCopy = self;
     v9 = v4;
-    v10 = a4;
-    [v9 convertPoint:v8 fromCoordinateSpace:{x, y}];
-    v11 = [v9 hitTest:v10 withEvent:?];
+    eventCopy = event;
+    [v9 convertPoint:selfCopy fromCoordinateSpace:{x, y}];
+    v11 = [v9 hitTest:eventCopy withEvent:?];
 
     if (!v11)
     {
-      v12.receiver = v8;
+      v12.receiver = selfCopy;
       v12.super_class = type metadata accessor for PhotosSearchSubtitleViewHidingBackButton();
-      v11 = [(_UINavigationBarTitleView *)&v12 hitTest:v10 withEvent:x, y];
+      v11 = [(_UINavigationBarTitleView *)&v12 hitTest:eventCopy withEvent:x, y];
     }
 
     return v11;
@@ -68,7 +68,7 @@
   return self;
 }
 
-- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICore40PhotosSearchSubtitleViewHidingBackButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

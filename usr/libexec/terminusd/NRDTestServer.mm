@@ -19,7 +19,7 @@
     }
 
     v9 = 237;
-    v10 = self;
+    selfCopy = self;
     v7 = "";
     v8 = "[NRDTestServer dealloc]";
     _NRLogWithArgs();

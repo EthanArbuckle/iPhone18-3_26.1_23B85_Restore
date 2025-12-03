@@ -1,18 +1,18 @@
 @interface NSMorphologyPronoun
-- (BOOL)isEqual:(id)a3;
-- (NSMorphologyPronoun)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSMorphologyPronoun)initWithCoder:(id)coder;
 - (NSMorphologyPronoun)initWithPronoun:(NSString *)pronoun morphology:(NSMorphology *)morphology dependentMorphology:(NSMorphology *)dependentMorphology;
 - (id)_morphunConstraints;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSMorphologyPronoun
 
 - (id)_morphunConstraints
 {
-  v2 = self;
+  selfCopy = self;
   NSMorphologyPronoun.morphunConstraints()();
 
   v3 = _NativeDictionary.bridged()();
@@ -52,29 +52,29 @@
   return v4 ^ [[(NSMorphologyPronoun *)self dependentMorphology] hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = -[NSString isEqualToString:](-[NSMorphologyPronoun pronoun](self, "pronoun"), "isEqualToString:", [a3 pronoun]);
+    v5 = -[NSString isEqualToString:](-[NSMorphologyPronoun pronoun](self, "pronoun"), "isEqualToString:", [equal pronoun]);
     if (v5)
     {
-      v5 = -[NSMorphology isEqual:](-[NSMorphologyPronoun morphology](self, "morphology"), "isEqual:", [a3 morphology]);
+      v5 = -[NSMorphology isEqual:](-[NSMorphologyPronoun morphology](self, "morphology"), "isEqual:", [equal morphology]);
       if (v5)
       {
-        v6 = [(NSMorphologyPronoun *)self dependentMorphology];
-        if (v6 == [a3 dependentMorphology])
+        dependentMorphology = [(NSMorphologyPronoun *)self dependentMorphology];
+        if (dependentMorphology == [equal dependentMorphology])
         {
           LOBYTE(v5) = 1;
         }
 
         else
         {
-          v7 = [(NSMorphologyPronoun *)self dependentMorphology];
-          v8 = [a3 dependentMorphology];
+          dependentMorphology2 = [(NSMorphologyPronoun *)self dependentMorphology];
+          dependentMorphology3 = [equal dependentMorphology];
 
-          LOBYTE(v5) = [(NSMorphology *)v7 isEqual:v8];
+          LOBYTE(v5) = [(NSMorphology *)dependentMorphology2 isEqual:dependentMorphology3];
         }
       }
     }
@@ -88,18 +88,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_pronoun forKey:@"pronoun"];
-  [a3 encodeObject:self->_morphology forKey:@"morphology"];
+  [coder encodeObject:self->_pronoun forKey:@"pronoun"];
+  [coder encodeObject:self->_morphology forKey:@"morphology"];
   if (self->_dependentMorphology)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (NSMorphologyPronoun)initWithCoder:(id)a3
+- (NSMorphologyPronoun)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -107,9 +107,9 @@
   v4 = [(NSMorphologyPronoun *)&v6 init];
   if (v4)
   {
-    v4->_pronoun = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"pronoun", "copy"}];
-    v4->_morphology = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"morphology", "copy"}];
-    v4->_dependentMorphology = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"dependentMorphology", "copy"}];
+    v4->_pronoun = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"pronoun", "copy"}];
+    v4->_morphology = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"morphology", "copy"}];
+    v4->_dependentMorphology = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"dependentMorphology", "copy"}];
   }
 
   return v4;

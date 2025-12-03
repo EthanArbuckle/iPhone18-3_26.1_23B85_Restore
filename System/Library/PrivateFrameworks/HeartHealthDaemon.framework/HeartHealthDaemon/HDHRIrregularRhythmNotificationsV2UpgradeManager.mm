@@ -1,15 +1,15 @@
 @interface HDHRIrregularRhythmNotificationsV2UpgradeManager
-- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 hypertensionNotificationsFeatureAvailabilityManager:(id)a6 analyticsSubmissionManager:(id)a7;
-- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 hypertensionNotificationsFeatureAvailabilityManager:(id)a6 analyticsSubmissionManager:(id)a7 protectedDataOperation:(id)a8;
-- (void)_reportAnalyticsEventForCountryCode:(id)a3 eventType:(id)a4 errorCategory:(id)a5 errorDetail:(id)a6;
+- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager hypertensionNotificationsFeatureAvailabilityManager:(id)featureAvailabilityManager analyticsSubmissionManager:(id)submissionManager;
+- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager hypertensionNotificationsFeatureAvailabilityManager:(id)featureAvailabilityManager analyticsSubmissionManager:(id)submissionManager protectedDataOperation:(id)operation;
+- (void)_reportAnalyticsEventForCountryCode:(id)code eventType:(id)type errorCategory:(id)category errorDetail:(id)detail;
 - (void)_startObservingOnboardingChanges;
 - (void)_stopObservingOnboardingChanges;
-- (void)doWorkWithCompletion:(id)a3;
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3;
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3;
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6;
+- (void)doWorkWithCompletion:(id)completion;
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability;
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update;
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion;
 @end
 
 @implementation HDHRIrregularRhythmNotificationsV2UpgradeManager
@@ -24,48 +24,48 @@
   [(HDFeatureAvailabilityExtension *)hypertensionNotificationsAvailabilityManager registerObserver:self queue:queue];
 }
 
-- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 hypertensionNotificationsFeatureAvailabilityManager:(id)a6 analyticsSubmissionManager:(id)a7
+- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager hypertensionNotificationsFeatureAvailabilityManager:(id)featureAvailabilityManager analyticsSubmissionManager:(id)submissionManager
 {
   v12 = MEMORY[0x277D10800];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  submissionManagerCopy = submissionManager;
+  featureAvailabilityManagerCopy = featureAvailabilityManager;
+  availabilityManagerCopy = availabilityManager;
+  managerCopy = manager;
+  profileCopy = profile;
   v18 = [v12 alloc];
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
-  v21 = [v18 initWithProfile:v17 debugIdentifier:v20 delegate:0];
+  v21 = [v18 initWithProfile:profileCopy debugIdentifier:v20 delegate:0];
 
-  v22 = [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self initWithProfile:v17 v1FeatureAvailabilityManager:v16 v2FeatureAvailabilityManager:v15 hypertensionNotificationsFeatureAvailabilityManager:v14 analyticsSubmissionManager:v13 protectedDataOperation:v21];
+  v22 = [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self initWithProfile:profileCopy v1FeatureAvailabilityManager:managerCopy v2FeatureAvailabilityManager:availabilityManagerCopy hypertensionNotificationsFeatureAvailabilityManager:featureAvailabilityManagerCopy analyticsSubmissionManager:submissionManagerCopy protectedDataOperation:v21];
   return v22;
 }
 
-- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)a3 v1FeatureAvailabilityManager:(id)a4 v2FeatureAvailabilityManager:(id)a5 hypertensionNotificationsFeatureAvailabilityManager:(id)a6 analyticsSubmissionManager:(id)a7 protectedDataOperation:(id)a8
+- (HDHRIrregularRhythmNotificationsV2UpgradeManager)initWithProfile:(id)profile v1FeatureAvailabilityManager:(id)manager v2FeatureAvailabilityManager:(id)availabilityManager hypertensionNotificationsFeatureAvailabilityManager:(id)featureAvailabilityManager analyticsSubmissionManager:(id)submissionManager protectedDataOperation:(id)operation
 {
-  v14 = a3;
-  v24 = a4;
-  v23 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  profileCopy = profile;
+  managerCopy = manager;
+  availabilityManagerCopy = availabilityManager;
+  featureAvailabilityManagerCopy = featureAvailabilityManager;
+  submissionManagerCopy = submissionManager;
+  operationCopy = operation;
   v25.receiver = self;
   v25.super_class = HDHRIrregularRhythmNotificationsV2UpgradeManager;
   v18 = [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_profile, v14);
-    objc_storeStrong(&v19->_v1FeatureAvailabilityManager, a4);
-    objc_storeStrong(&v19->_v2FeatureAvailabilityManager, a5);
-    objc_storeStrong(&v19->_hypertensionNotificationsAvailabilityManager, a6);
+    objc_storeWeak(&v18->_profile, profileCopy);
+    objc_storeStrong(&v19->_v1FeatureAvailabilityManager, manager);
+    objc_storeStrong(&v19->_v2FeatureAvailabilityManager, availabilityManager);
+    objc_storeStrong(&v19->_hypertensionNotificationsAvailabilityManager, featureAvailabilityManager);
     v20 = HKCreateSerialDispatchQueue();
     queue = v19->_queue;
     v19->_queue = v20;
 
-    objc_storeStrong(&v19->_analyticsSubmissionManager, a7);
-    objc_storeStrong(&v19->_protectedDataOperation, a8);
-    [(HDProtectedDataOperation *)v19->_protectedDataOperation setDelegate:v19, v23, v24];
+    objc_storeStrong(&v19->_analyticsSubmissionManager, submissionManager);
+    objc_storeStrong(&v19->_protectedDataOperation, operation);
+    [(HDProtectedDataOperation *)v19->_protectedDataOperation setDelegate:v19, availabilityManagerCopy, managerCopy];
     [(HDProtectedDataOperation *)v19->_protectedDataOperation requestWorkWithPriority:2 error:0];
   }
 
@@ -81,10 +81,10 @@
   [(HDFeatureAvailabilityExtension *)hypertensionNotificationsAvailabilityManager unregisterObserver:self];
 }
 
-- (void)doWorkWithCompletion:(id)a3
+- (void)doWorkWithCompletion:(id)completion
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v2FeatureAvailabilityManager = self->_v2FeatureAvailabilityManager;
   v73 = 0;
   v6 = [(HDFeatureAvailabilityExtension *)v2FeatureAvailabilityManager featureOnboardingRecordWithError:&v73];
@@ -107,7 +107,7 @@
       }
 
       [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"v2_eligibility" errorDetail:@"already_onboarded"];
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -121,15 +121,15 @@
       {
         if ([v18 isOnboardingPresent])
         {
-          v20 = [v18 onboardingCompletion];
-          v21 = [v20 countryCode];
+          onboardingCompletion = [v18 onboardingCompletion];
+          countryCode = [onboardingCompletion countryCode];
 
           v22 = self->_v2FeatureAvailabilityManager;
           v71 = v19;
-          v23 = [(HDFeatureAvailabilityExtension *)v22 onboardingEligibilityForCountryCode:v21 error:&v71];
+          v23 = [(HDFeatureAvailabilityExtension *)v22 onboardingEligibilityForCountryCode:countryCode error:&v71];
           v24 = v71;
 
-          v25 = [v18 featureSettings];
+          featureSettings = [v18 featureSettings];
           v63 = v23;
           if ([v23 isEligible])
           {
@@ -142,7 +142,7 @@
               *buf = 138543618;
               v75 = v28;
               v76 = 2114;
-              v77 = v21;
+              v77 = countryCode;
               v29 = v28;
               _os_log_impl(&dword_229486000, v27, OS_LOG_TYPE_DEFAULT, "[%{public}@] Beginning IRN2 upgrade using IRN1 country: %{public}@", buf, 0x16u);
             }
@@ -153,10 +153,10 @@
             v68[2] = __73__HDHRIrregularRhythmNotificationsV2UpgradeManager_doWorkWithCompletion___block_invoke;
             v68[3] = &unk_2786600F8;
             v68[4] = self;
-            v21 = v21;
-            v69 = v21;
-            v70 = v4;
-            [(HDFeatureAvailabilityExtension *)v30 setCurrentOnboardingVersionCompletedForCountryCode:v21 countryCodeProvenance:3 date:0 settings:v25 completion:v68];
+            countryCode = countryCode;
+            v69 = countryCode;
+            v70 = completionCopy;
+            [(HDFeatureAvailabilityExtension *)v30 setCurrentOnboardingVersionCompletedForCountryCode:countryCode countryCodeProvenance:3 date:0 settings:featureSettings completion:v68];
 
             v19 = v24;
           }
@@ -173,11 +173,11 @@
             {
               if ([v40 isOnboardingPresent])
               {
-                v61 = v25;
-                v41 = [v40 onboardingCompletion];
-                v42 = [v41 countryCode];
+                v61 = featureSettings;
+                onboardingCompletion2 = [v40 onboardingCompletion];
+                countryCode2 = [onboardingCompletion2 countryCode];
 
-                if (v42)
+                if (countryCode2)
                 {
                   _HKInitializeLogging();
                   v43 = *MEMORY[0x277CCC2D8];
@@ -188,7 +188,7 @@
                     *buf = 138543618;
                     v75 = v45;
                     v76 = 2114;
-                    v77 = v42;
+                    v77 = countryCode2;
                     v46 = v45;
                     _os_log_impl(&dword_229486000, v44, OS_LOG_TYPE_DEFAULT, "[%{public}@] Beginning IRN2 upgrade using Hypertension Notifications onboarding country: %{public}@", buf, 0x16u);
                   }
@@ -199,22 +199,22 @@
                   v64[2] = __73__HDHRIrregularRhythmNotificationsV2UpgradeManager_doWorkWithCompletion___block_invoke_327;
                   v64[3] = &unk_2786600F8;
                   v64[4] = self;
-                  v21 = v42;
-                  v65 = v21;
-                  v66 = v4;
+                  countryCode = countryCode2;
+                  v65 = countryCode;
+                  v66 = completionCopy;
                   v48 = v47;
-                  v25 = v61;
-                  [(HDFeatureAvailabilityExtension *)v48 setCurrentOnboardingVersionCompletedForCountryCode:v21 countryCodeProvenance:3 date:0 settings:v61 completion:v64];
+                  featureSettings = v61;
+                  [(HDFeatureAvailabilityExtension *)v48 setCurrentOnboardingVersionCompletedForCountryCode:countryCode countryCodeProvenance:3 date:0 settings:v61 completion:v64];
                 }
 
                 else
                 {
                   [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"hypertensionNotifications_eligibility" errorDetail:@"location_unavailable"];
                   v60 = [MEMORY[0x277CCA9B8] hk_error:109 description:@"Cannot upgrade V1 user to V2 as no associated feature country code exists"];
-                  (v4)[2](v4, 1, v60);
+                  (completionCopy)[2](completionCopy, 1, v60);
 
-                  v21 = 0;
-                  v25 = v61;
+                  countryCode = 0;
+                  featureSettings = v61;
                 }
               }
 
@@ -224,7 +224,7 @@
                 v54 = *MEMORY[0x277CCC2D8];
                 if (os_log_type_enabled(*MEMORY[0x277CCC2D8], OS_LOG_TYPE_DEFAULT))
                 {
-                  v55 = v25;
+                  v55 = featureSettings;
                   v56 = v54;
                   v57 = objc_opt_class();
                   *buf = 138543362;
@@ -232,11 +232,11 @@
                   v58 = v57;
                   _os_log_impl(&dword_229486000, v56, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cannot upgrade to IRN2 as not onboarded to Hypertension Notifications", buf, 0xCu);
 
-                  v25 = v55;
+                  featureSettings = v55;
                 }
 
                 [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"hypertensionNotifications_eligibility" errorDetail:@"not_onboarded"];
-                v4[2](v4, 0, 0);
+                completionCopy[2](completionCopy, 0, 0);
               }
             }
 
@@ -244,13 +244,13 @@
             {
               v49 = MEMORY[0x277CCACA8];
               [v19 domain];
-              v51 = v50 = v25;
+              v51 = v50 = featureSettings;
               v52 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "code")}];
               v53 = [v49 stringWithFormat:@"%@_%@", v51, v52];
               [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"hypertensionNotifications_eligibility" errorDetail:v53];
 
-              v25 = v50;
-              (v4)[2](v4, 0, v19);
+              featureSettings = v50;
+              (completionCopy)[2](completionCopy, 0, v19);
             }
           }
         }
@@ -270,19 +270,19 @@
           }
 
           [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"v1_eligibility" errorDetail:@"not_onboarded"];
-          v4[2](v4, 0, 0);
+          completionCopy[2](completionCopy, 0, 0);
         }
       }
 
       else
       {
         v31 = MEMORY[0x277CCACA8];
-        v32 = [v19 domain];
+        domain = [v19 domain];
         v33 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v19, "code")}];
-        v34 = [v31 stringWithFormat:@"%@_%@", v32, v33];
+        v34 = [v31 stringWithFormat:@"%@_%@", domain, v33];
         [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"v1_eligibility" errorDetail:v34];
 
-        (v4)[2](v4, 0, v19);
+        (completionCopy)[2](completionCopy, 0, v19);
       }
 
       v8 = v19;
@@ -292,12 +292,12 @@
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v7 domain];
+    domain2 = [v7 domain];
     v15 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v8, "code")}];
-    v16 = [v13 stringWithFormat:@"%@_%@", v14, v15];
+    v16 = [v13 stringWithFormat:@"%@_%@", domain2, v15];
     [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self _reportErrorAnalyticsEventForCountryCode:0 errorCategory:@"v2_eligibility" errorDetail:v16];
 
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 
   v59 = *MEMORY[0x277D85DE8];
@@ -361,16 +361,16 @@ void __73__HDHRIrregularRhythmNotificationsV2UpgradeManager_doWorkWithCompletion
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)performWorkForOperation:(id)a3 profile:(id)a4 databaseAccessibilityAssertion:(id)a5 completion:(id)a6
+- (void)performWorkForOperation:(id)operation profile:(id)profile databaseAccessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForOperation_profile_databaseAccessibilityAssertion_completion___block_invoke;
   v9[3] = &unk_27865FD68;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(HDHRIrregularRhythmNotificationsV2UpgradeManager *)self doWorkWithCompletion:v9];
 }
 
@@ -400,7 +400,7 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   return v9();
 }
 
-- (void)pairedDeviceCapabilitiesDidUpdate:(id)a3
+- (void)pairedDeviceCapabilitiesDidUpdate:(id)update
 {
   v16 = *MEMORY[0x277D85DE8];
   protectedDataOperation = self->_protectedDataOperation;
@@ -433,10 +433,10 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   protectedDataOperation = self->_protectedDataOperation;
   v16 = 0;
   v6 = [(HDProtectedDataOperation *)protectedDataOperation requestWorkWithPriority:2 error:&v16];
@@ -447,8 +447,8 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v4 featureIdentifier];
-    v12 = v11;
+    featureIdentifier = [completionCopy featureIdentifier];
+    v12 = featureIdentifier;
     *buf = 138543874;
     if (v6)
     {
@@ -462,7 +462,7 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
 
     v18 = v9;
     v19 = 2112;
-    v20 = v11;
+    v20 = featureIdentifier;
     v21 = 2114;
     v22 = v13;
     _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requested a chance to upgrade due to onboardingCompletion of Feature: %@ (error: %{public}@)", buf, 0x20u);
@@ -477,10 +477,10 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)a3
+- (void)featureAvailabilityExtensionDidUpdateRegionAvailability:(id)availability
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availabilityCopy = availability;
   protectedDataOperation = self->_protectedDataOperation;
   v15 = 0;
   v6 = [(HDProtectedDataOperation *)protectedDataOperation requestWorkWithPriority:2 error:&v15];
@@ -491,8 +491,8 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v4 featureIdentifier];
-    v12 = v11;
+    featureIdentifier = [availabilityCopy featureIdentifier];
+    v12 = featureIdentifier;
     *buf = 138543874;
     if (v6)
     {
@@ -506,7 +506,7 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
 
     v17 = v9;
     v18 = 2112;
-    v19 = v11;
+    v19 = featureIdentifier;
     v20 = 2114;
     v21 = v13;
     _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requested a chance to upgrade due to region availability changes of Feature: %@ (error: %{public}@)", buf, 0x20u);
@@ -515,7 +515,7 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)a3
+- (void)featureAvailabilityExtensionOnboardingCompletionDataDidBecomeAvailable:(id)available
 {
   v16 = *MEMORY[0x277D85DE8];
   protectedDataOperation = self->_protectedDataOperation;
@@ -548,15 +548,15 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportAnalyticsEventForCountryCode:(id)a3 eventType:(id)a4 errorCategory:(id)a5 errorDetail:(id)a6
+- (void)_reportAnalyticsEventForCountryCode:(id)code eventType:(id)type errorCategory:(id)category errorDetail:(id)detail
 {
   v10 = MEMORY[0x277D105D0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  detailCopy = detail;
+  categoryCopy = category;
+  typeCopy = type;
+  codeCopy = code;
   v15 = [v10 alloc];
-  if (v14)
+  if (codeCopy)
   {
     v16 = 3;
   }
@@ -566,7 +566,7 @@ uint64_t __126__HDHRIrregularRhythmNotificationsV2UpgradeManager_performWorkForO
     v16 = 0;
   }
 
-  v17 = [v15 initWithFeatureIdentifier:*MEMORY[0x277CCC080] eventType:v13 countryCode:v14 countryCodeProvenance:v16 errorCategory:v12 errorDetail:v11];
+  v17 = [v15 initWithFeatureIdentifier:*MEMORY[0x277CCC080] eventType:typeCopy countryCode:codeCopy countryCodeProvenance:v16 errorCategory:categoryCopy errorDetail:detailCopy];
 
   analyticsSubmissionManager = self->_analyticsSubmissionManager;
   v22 = 0;

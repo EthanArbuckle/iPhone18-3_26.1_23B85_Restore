@@ -1,33 +1,33 @@
 @interface TSCellularPlanIntroViewController
-+ (id)getDetailsWithTransferOption:(BOOL)a3 showQRCodeOption:(BOOL)a4 showCrossTransferOption:(BOOL)a5 transferIneligiblePlans:(id)a6;
++ (id)getDetailsWithTransferOption:(BOOL)option showQRCodeOption:(BOOL)codeOption showCrossTransferOption:(BOOL)transferOption transferIneligiblePlans:(id)plans;
 - (BOOL)_isStandaloneQRCodeView;
 - (BOOL)_shouldShowTravelEducation;
-- (TSCellularPlanIntroViewController)initWithTransferBackPlan:(id)a3;
+- (TSCellularPlanIntroViewController)initWithTransferBackPlan:(id)plan;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_laterButtonTapped;
 - (void)_loadIcons;
-- (void)_scanButtonTapped:(id)a3;
+- (void)_scanButtonTapped:(id)tapped;
 - (void)_shouldShowTravelEducation;
 - (void)_viewWillAppear;
-- (void)prepare:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)prepare:(id)prepare;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation TSCellularPlanIntroViewController
 
-+ (id)getDetailsWithTransferOption:(BOOL)a3 showQRCodeOption:(BOOL)a4 showCrossTransferOption:(BOOL)a5 transferIneligiblePlans:(id)a6
++ (id)getDetailsWithTransferOption:(BOOL)option showQRCodeOption:(BOOL)codeOption showCrossTransferOption:(BOOL)transferOption transferIneligiblePlans:(id)plans
 {
-  v6 = a5;
+  transferOptionCopy = transferOption;
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  if (!a4)
+  plansCopy = plans;
+  if (!codeOption)
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v6)
+    if (transferOptionCopy)
     {
       v11 = @"CELLULAR_PLAN_INTRO_DETAIL_CROSS_PLATFORM_NO_QR_CODE";
     }
@@ -40,10 +40,10 @@
     goto LABEL_11;
   }
 
-  if (a3)
+  if (option)
   {
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v6)
+    if (transferOptionCopy)
     {
       v11 = @"CELLULAR_PLAN_INTRO_DETAIL_CROSS_PLATFORM";
     }
@@ -59,7 +59,7 @@ LABEL_11:
     goto LABEL_29;
   }
 
-  if (v6)
+  if (transferOptionCopy)
   {
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"CELLULAR_PLAN_INTRO_DETAIL_CROSS_PLATFORM" value:&stru_28753DF48 table:@"Localizable"];
@@ -72,7 +72,7 @@ LABEL_11:
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = v9;
+    v14 = plansCopy;
     v15 = [v14 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v15)
     {
@@ -88,13 +88,13 @@ LABEL_11:
           }
 
           v19 = *(*(&v30 + 1) + 8 * i);
-          v20 = [v19 carrierName];
-          v21 = [v20 length];
+          carrierName = [v19 carrierName];
+          v21 = [carrierName length];
 
           if (v21)
           {
-            v22 = [v19 carrierName];
-            [v12 addObject:v22];
+            carrierName2 = [v19 carrierName];
+            [v12 addObject:carrierName2];
           }
         }
 
@@ -108,8 +108,8 @@ LABEL_11:
     {
       if ([v12 count] == 1)
       {
-        v23 = [v12 allObjects];
-        v24 = [v23 objectAtIndexedSubscript:0];
+        allObjects = [v12 allObjects];
+        v24 = [allObjects objectAtIndexedSubscript:0];
       }
 
       else
@@ -136,13 +136,13 @@ LABEL_29:
   return v13;
 }
 
-- (TSCellularPlanIntroViewController)initWithTransferBackPlan:(id)a3
+- (TSCellularPlanIntroViewController)initWithTransferBackPlan:(id)plan
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CF96D8] sharedManager];
-  v7 = [v6 getSupportedFlowTypes];
+  planCopy = plan;
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  getSupportedFlowTypes = [mEMORY[0x277CF96D8] getSupportedFlowTypes];
 
-  if (v7)
+  if (getSupportedFlowTypes)
   {
     v8 = objc_alloc(MEMORY[0x277CC37B0]);
     v9 = [v8 initWithQueue:MEMORY[0x277D85CD0]];
@@ -175,7 +175,7 @@ LABEL_29:
       v15->_showCrossTransferOption = v16;
       v15->_showTravelEduOption = 0;
       v15->_requireDelayBluetoothConnection = 0;
-      objc_storeStrong(&v15->_transferBackPlan, a3);
+      objc_storeStrong(&v15->_transferBackPlan, plan);
       transferIneligiblePlans = v15->_transferIneligiblePlans;
       v15->_transferIneligiblePlans = 0;
 
@@ -184,15 +184,15 @@ LABEL_29:
 
     self = v15;
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)viewDidLoad
@@ -212,15 +212,15 @@ LABEL_29:
     v7 = [v6 localizedStringForKey:@"SCAN_QR_CODE" value:&stru_28753DF48 table:@"Localizable"];
     [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
-    v8 = [(TSCellularPlanIntroViewController *)self buttonTray];
-    [v8 addButton:self->_scanButton];
+    buttonTray = [(TSCellularPlanIntroViewController *)self buttonTray];
+    [buttonTray addButton:self->_scanButton];
   }
 
   if (+[TSUtilities inBuddy])
   {
-    v9 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     laterButton = self->_laterButton;
-    self->_laterButton = v9;
+    self->_laterButton = linkButton;
 
     v11 = self->_laterButton;
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -228,8 +228,8 @@ LABEL_29:
     [(OBLinkTrayButton *)v11 setTitle:v13 forState:0];
 
     [(OBLinkTrayButton *)self->_laterButton addTarget:self action:sel__laterButtonTapped forControlEvents:64];
-    v14 = [(TSCellularPlanIntroViewController *)self buttonTray];
-    [v14 addButton:self->_laterButton];
+    buttonTray2 = [(TSCellularPlanIntroViewController *)self buttonTray];
+    [buttonTray2 addButton:self->_laterButton];
 
     [(OBLinkTrayButton *)self->_laterButton setEnabled:1];
     goto LABEL_16;
@@ -238,14 +238,14 @@ LABEL_29:
   v15 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__laterButtonTapped];
   if (+[TSUtilities isPad])
   {
-    v16 = [(OBBaseWelcomeController *)self navigationItem];
-    [v16 setRightBarButtonItem:v15];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v15];
     goto LABEL_12;
   }
 
-  v17 = [(TSCellularPlanIntroViewController *)self navigationController];
-  v18 = [v17 viewControllers];
-  if ([v18 count] < 2)
+  navigationController = [(TSCellularPlanIntroViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  if ([viewControllers count] < 2)
   {
   }
 
@@ -255,27 +255,27 @@ LABEL_29:
 
     if (v19)
     {
-      v16 = [(OBBaseWelcomeController *)self navigationItem];
-      [v16 setHidesBackButton:0 animated:0];
+      navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+      [navigationItem setHidesBackButton:0 animated:0];
       goto LABEL_12;
     }
   }
 
-  v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__laterButtonTapped];
-  v20 = [(OBBaseWelcomeController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v16];
+  navigationItem = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__laterButtonTapped];
+  navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:navigationItem];
 
 LABEL_12:
   if (_os_feature_enabled_impl() && !+[TSUtilities isPad])
   {
-    v21 = [MEMORY[0x277D37638] accessoryButton];
+    accessoryButton = [MEMORY[0x277D37638] accessoryButton];
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"LEARN_MORE_NO_ELLIPSIS" value:&stru_28753DF48 table:@"Localizable"];
-    [v21 setTitle:v23 forState:0];
+    [accessoryButton setTitle:v23 forState:0];
 
-    [v21 addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
-    v24 = [(TSCellularPlanIntroViewController *)self headerView];
-    [v24 addAccessoryButton:v21];
+    [accessoryButton addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
+    headerView = [(TSCellularPlanIntroViewController *)self headerView];
+    [headerView addAccessoryButton:accessoryButton];
   }
 
 LABEL_16:
@@ -285,40 +285,40 @@ LABEL_16:
     v26 = [v25 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(OBTableWelcomeController *)self setTableView:v26];
 
-    v27 = [(OBTableWelcomeController *)self tableView];
-    [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v28 = [(OBTableWelcomeController *)self tableView];
-    [v28 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-    v29 = [(OBTableWelcomeController *)self tableView];
-    v30 = [MEMORY[0x277D75348] clearColor];
-    [v29 setBackgroundColor:v30];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [tableView3 setBackgroundColor:clearColor];
 
-    v31 = [(OBTableWelcomeController *)self tableView];
-    [v31 setDataSource:self];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    [tableView4 setDataSource:self];
 
-    v32 = [(OBTableWelcomeController *)self tableView];
-    [v32 setDelegate:self];
+    tableView5 = [(OBTableWelcomeController *)self tableView];
+    [tableView5 setDelegate:self];
 
-    v33 = [(OBTableWelcomeController *)self tableView];
-    [v33 setScrollEnabled:1];
+    tableView6 = [(OBTableWelcomeController *)self tableView];
+    [tableView6 setScrollEnabled:1];
 
-    v34 = [(OBTableWelcomeController *)self tableView];
-    [v34 setAllowsMultipleSelection:0];
+    tableView7 = [(OBTableWelcomeController *)self tableView];
+    [tableView7 setAllowsMultipleSelection:0];
 
-    v35 = [(OBTableWelcomeController *)self tableView];
-    [v35 reloadData];
+    tableView8 = [(OBTableWelcomeController *)self tableView];
+    [tableView8 reloadData];
 
-    v36 = [(OBTableWelcomeController *)self tableView];
-    [v36 layoutIfNeeded];
+    tableView9 = [(OBTableWelcomeController *)self tableView];
+    [tableView9 layoutIfNeeded];
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(TSCellularPlanIntroViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(TSCellularPlanIntroViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = TSCellularPlanIntroViewController;
@@ -328,7 +328,7 @@ LABEL_16:
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v5 = objc_opt_new();
   showOptions = self->_showOptions;
@@ -359,99 +359,99 @@ LABEL_16:
   return [(NSMutableArray *)v7 count];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v7 = MEMORY[0x277CCACA8];
-  v8 = a3;
-  v9 = [v7 stringWithFormat:@"options%ld", objc_msgSend(v6, "section")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  viewCopy = view;
+  v9 = [v7 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:v9];
   }
 
-  v11 = [v10 contentView];
-  [v11 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v10 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v10 setAccessoryType:1];
-  v12 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v10 setBackgroundColor:v12];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v10 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v13 = [v10 textLabel];
-  [v13 setLineBreakMode:0];
+  textLabel = [v10 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v14 = [v10 textLabel];
-  [v14 setNumberOfLines:0];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v15 = [v10 textLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v17 = [v10 textLabel];
-  [v17 setFont:v16];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setFont:v16];
 
-  v18 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v6 row]);
-  LODWORD(v17) = [v18 isEqualToString:@"showTransferOption"];
+  v18 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
+  LODWORD(textLabel4) = [v18 isEqualToString:@"showTransferOption"];
 
   v19 = 0;
-  if (v17)
+  if (textLabel4)
   {
     v19 = self->_transferIcon;
-    v20 = [v10 textLabel];
+    textLabel5 = [v10 textLabel];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"TRANSFER_CATEGORY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-    [v20 setText:v22];
+    [textLabel5 setText:v22];
   }
 
-  v23 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v6 row]);
+  v23 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
   v24 = [v23 isEqualToString:@"showQRCodeOption"];
 
   if (v24)
   {
     v25 = self->_qrIcon;
 
-    v26 = [v10 textLabel];
+    textLabel6 = [v10 textLabel];
     v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v28 = [v27 localizedStringForKey:@"SCAN_CATEGORY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-    [v26 setText:v28];
+    [textLabel6 setText:v28];
 
     v19 = v25;
   }
 
-  v29 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v6 row]);
+  v29 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
   v30 = [v29 isEqualToString:@"showCrossTransferOption"];
 
   if (v30)
   {
     v31 = self->_crossTransferIcon;
 
-    v32 = [v10 textLabel];
+    textLabel7 = [v10 textLabel];
     v33 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v34 = [v33 localizedStringForKey:@"TARGET_TRANSFER_FROM_ANDROID_BUTTON" value:&stru_28753DF48 table:@"Localizable"];
-    [v32 setText:v34];
+    [textLabel7 setText:v34];
 
     v19 = v31;
   }
 
-  v35 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v6 row]);
+  v35 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
   v36 = [v35 isEqualToString:@"showTravelEducationOption"];
 
   if (v36)
   {
     v37 = self->_travelEduIcon;
 
-    v38 = [v10 textLabel];
+    textLabel8 = [v10 textLabel];
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v40 = [v39 localizedStringForKey:@"TRAVEL_EDUCATION_BUTTON" value:&stru_28753DF48 table:@"Localizable"];
-    [v38 setText:v40];
+    [textLabel8 setText:v40];
 
     v19 = v37;
   }
 
-  v41 = [MEMORY[0x277D75348] systemBlueColor];
-  v42 = [(UIImage *)v19 imageWithTintColor:v41];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v42 = [(UIImage *)v19 imageWithTintColor:systemBlueColor];
 
   UIGraphicsBeginImageContextWithOptions(*&self->_maxIconWidth, 0, 0.0);
   [v42 size];
@@ -461,16 +461,16 @@ LABEL_16:
   v46 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v47 = [v46 imageWithRenderingMode:1];
-  v48 = [v10 imageView];
-  [v48 setImage:v46];
+  imageView = [v10 imageView];
+  [imageView setImage:v46];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v5 row]);
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
   v7 = [v6 isEqualToString:@"showTransferOption"];
 
   if (v7)
@@ -480,7 +480,7 @@ LABEL_16:
 
   else
   {
-    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v5 row]);
+    v9 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
     v10 = [v9 isEqualToString:@"showQRCodeOption"];
 
     if (v10)
@@ -490,7 +490,7 @@ LABEL_16:
 
     else
     {
-      v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v5 row]);
+      v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
       v12 = [v11 isEqualToString:@"showCrossTransferOption"];
 
       if (v12)
@@ -500,7 +500,7 @@ LABEL_16:
 
       else
       {
-        v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [v5 row]);
+        v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_showOptions, "objectAtIndexedSubscript:", [pathCopy row]);
         v14 = [v13 isEqualToString:@"showTravelEducationOption"];
 
         if (!v14)
@@ -515,8 +515,8 @@ LABEL_16:
 
   *(&self->super.super.super.super.super.super.super.isa + *v8) = 1;
 LABEL_10:
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 deselectRowAtIndexPath:v5 animated:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
   if (self->_isCrossPlatformButtonTapped)
   {
@@ -540,8 +540,8 @@ LABEL_10:
 
   else
   {
-    v19 = [(TSCellularPlanIntroViewController *)self delegate];
-    [v19 viewControllerDidComplete:self];
+    delegate = [(TSCellularPlanIntroViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 }
 
@@ -566,11 +566,11 @@ void __71__TSCellularPlanIntroViewController_tableView_didSelectRowAtIndexPath__
   [v1 userDidTapCancel];
 }
 
-- (void)_scanButtonTapped:(id)a3
+- (void)_scanButtonTapped:(id)tapped
 {
   self->_isScanButtonTapped = 1;
-  v4 = [(TSCellularPlanIntroViewController *)self delegate];
-  [v4 viewControllerDidComplete:self];
+  delegate = [(TSCellularPlanIntroViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
 - (void)_laterButtonTapped
@@ -606,8 +606,8 @@ void __71__TSCellularPlanIntroViewController_tableView_didSelectRowAtIndexPath__
 
   else
   {
-    v19 = [(TSCellularPlanIntroViewController *)self delegate];
-    [v19 userDidTapCancel];
+    delegate = [(TSCellularPlanIntroViewController *)self delegate];
+    [delegate userDidTapCancel];
   }
 }
 
@@ -625,8 +625,8 @@ void __55__TSCellularPlanIntroViewController__laterButtonTapped__block_invoke(ui
   self->_isTravelEduButtonTapped = 0;
   if (+[TSUtilities inBuddy]&& ![TSUtilities isBackAllowed:self])
   {
-    v3 = [(OBBaseWelcomeController *)self navigationItem];
-    [v3 setHidesBackButton:1 animated:0];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
   }
 }
 
@@ -720,9 +720,9 @@ void __55__TSCellularPlanIntroViewController__laterButtonTapped__block_invoke(ui
         v6 = _TSLogDomain();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [v4 BOOLValue];
+          bOOLValue = [v4 BOOLValue];
           v8 = @"Not Show";
-          if (v7)
+          if (bOOLValue)
           {
             v8 = @"Show";
           }
@@ -734,7 +734,7 @@ void __55__TSCellularPlanIntroViewController__laterButtonTapped__block_invoke(ui
           _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "Show travel education result: %@ @%s", buf, 0x16u);
         }
 
-        v9 = [v4 BOOLValue];
+        bOOLValue2 = [v4 BOOLValue];
         goto LABEL_15;
       }
     }
@@ -748,21 +748,21 @@ void __55__TSCellularPlanIntroViewController__laterButtonTapped__block_invoke(ui
       }
     }
 
-    v9 = 0;
+    bOOLValue2 = 0;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v9 = 0;
+  bOOLValue2 = 0;
 LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue2;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v4 = a3;
+  prepareCopy = prepare;
   v5 = 1;
   if (((self->_showQRCodeOption + self->_showTransferOption + self->_showCrossTransferOption + self->_showTravelEduOption) & 0xFu) <= 1 && (self->_showTransferOption || self->_showQRCodeOption))
   {
@@ -780,8 +780,8 @@ LABEL_16:
     v5 = 0;
   }
 
-  v7 = v4;
-  (*(v4 + 2))(v4, v5);
+  v7 = prepareCopy;
+  (*(prepareCopy + 2))(prepareCopy, v5);
 }
 
 - (TSSIMSetupFlowDelegate)delegate
@@ -804,7 +804,7 @@ LABEL_16:
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2080;
   v6 = "[TSCellularPlanIntroViewController _shouldShowTravelEducation]";
   _os_log_error_impl(&dword_262AA8000, a2, OS_LOG_TYPE_ERROR, "[E]Error checking: %@ @%s", &v3, 0x16u);

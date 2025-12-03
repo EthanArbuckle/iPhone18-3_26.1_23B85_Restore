@@ -1,26 +1,26 @@
 @interface UIToolbarTextButton
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
-- (UIToolbarTextButton)initWithTitle:(id)a3 pressedTitle:(id)a4 withFont:(id)a5 withBarStyle:(int64_t)a6 withStyle:(int64_t)a7 withTitleWidth:(double)a8 possibleTitles:(id)a9 withToolbarTintColor:(id)a10;
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)_setPressed:(BOOL)a3;
+- (UIToolbarTextButton)initWithTitle:(id)title pressedTitle:(id)pressedTitle withFont:(id)font withBarStyle:(int64_t)style withStyle:(int64_t)withStyle withTitleWidth:(double)width possibleTitles:(id)titles withToolbarTintColor:(id)self0;
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)_setPressed:(BOOL)pressed;
 - (void)dealloc;
 - (void)layoutSubviews;
 @end
 
 @implementation UIToolbarTextButton
 
-- (UIToolbarTextButton)initWithTitle:(id)a3 pressedTitle:(id)a4 withFont:(id)a5 withBarStyle:(int64_t)a6 withStyle:(int64_t)a7 withTitleWidth:(double)a8 possibleTitles:(id)a9 withToolbarTintColor:(id)a10
+- (UIToolbarTextButton)initWithTitle:(id)title pressedTitle:(id)pressedTitle withFont:(id)font withBarStyle:(int64_t)style withStyle:(int64_t)withStyle withTitleWidth:(double)width possibleTitles:(id)titles withToolbarTintColor:(id)self0
 {
-  v18 = a7 == 2;
-  self->super._toolbarTintColor = a10;
-  self->super._barStyle = a6;
-  self->super._style = a7;
-  v19 = [(UINavigationButton *)[_UIToolbarNavigationButton alloc] initWithTitle:a3 possibleTitles:a9 style:(2 * v18)];
+  v18 = withStyle == 2;
+  self->super._toolbarTintColor = color;
+  self->super._barStyle = style;
+  self->super._style = withStyle;
+  v19 = [(UINavigationButton *)[_UIToolbarNavigationButton alloc] initWithTitle:title possibleTitles:titles style:(2 * v18)];
   v20 = v19;
-  if (a5)
+  if (font)
   {
-    [(UILabel *)[(UIButton *)v19 titleLabel] setFont:a5];
+    [(UILabel *)[(UIButton *)v19 titleLabel] setFont:font];
   }
 
   [(UIView *)self frame];
@@ -28,23 +28,23 @@
   v24 = v23;
   [(UINavigationButton *)v20 sizeThatFits:v25, v26];
   [(UINavigationButton *)v20 _setFrame:1 deferLayout:v22, v24, v27, v28];
-  if (a8 == 0.0)
+  if (width == 0.0)
   {
-    if (a9)
+    if (titles)
     {
-      v29 = [a9 count];
-      if (!a4 && !v29)
+      v29 = [titles count];
+      if (!pressedTitle && !v29)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!pressedTitle)
     {
       goto LABEL_10;
     }
 
-    [(UIToolbarButton *)self _sizeView:v20 toPossibleTitles:a9 pressedTitle:a4];
+    [(UIToolbarButton *)self _sizeView:v20 toPossibleTitles:titles pressedTitle:pressedTitle];
   }
 
 LABEL_10:
@@ -57,9 +57,9 @@ LABEL_10:
   {
     [(UIView *)v30 setOpaque:0];
     v31->super._info = v20;
-    v31->_title = [a3 copy];
-    v31->_pressedTitle = [a4 copy];
-    v31->_possibleTitles = [a9 copy];
+    v31->_title = [title copy];
+    v31->_pressedTitle = [pressedTitle copy];
+    v31->_possibleTitles = [titles copy];
     [(UIView *)v31 addSubview:v31->super._info];
     [(UIToolbarButton *)v31 _adjustPushButtonForMiniBar:0 isChangingBarHeight:0];
     [(UIView *)v31 setNeedsLayout];
@@ -72,10 +72,10 @@ LABEL_10:
   return v31;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v13[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -84,11 +84,11 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(UIButton *)info titleLabel];
-      v8 = [(UILabel *)v7 text];
+      titleLabel = [(UIButton *)info titleLabel];
+      text = [(UILabel *)titleLabel text];
       v12 = *off_1E70EC918;
-      v13[0] = [(UILabel *)v7 font];
-      -[NSString boundingRectWithSize:options:attributes:context:](v8, "boundingRectWithSize:options:attributes:context:", 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, width, height);
+      v13[0] = [(UILabel *)titleLabel font];
+      -[NSString boundingRectWithSize:options:attributes:context:](text, "boundingRectWithSize:options:attributes:context:", 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, width, height);
       width = v9;
     }
   }
@@ -107,14 +107,14 @@ LABEL_10:
   [(UIToolbarButton *)&v3 dealloc];
 }
 
-- (void)_setPressed:(BOOL)a3
+- (void)_setPressed:(BOOL)pressed
 {
-  v3 = a3;
+  pressedCopy = pressed;
   if ([(UIToolbarButton *)self _infoIsButton])
   {
     v6.receiver = self;
     v6.super_class = UIToolbarTextButton;
-    [(UIToolbarButton *)&v6 _setPressed:v3];
+    [(UIToolbarButton *)&v6 _setPressed:pressedCopy];
   }
 
   else
@@ -122,7 +122,7 @@ LABEL_10:
     pressedTitle = self->_pressedTitle;
     if (pressedTitle)
     {
-      if (!v3)
+      if (!pressedCopy)
       {
         pressedTitle = self->_title;
       }
@@ -148,20 +148,20 @@ LABEL_10:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [(UIView *)self superview];
-        if (v3)
+        superview = [(UIView *)self superview];
+        if (superview)
         {
-          v4 = v3;
-          if (([(UIView *)v3 centerTextButtons]& 1) == 0)
+          v4 = superview;
+          if (([(UIView *)superview centerTextButtons]& 1) == 0)
           {
             info = self->super._info;
             [(UIButton *)info setNeedsLayout];
             [(UIView *)info layoutIfNeeded];
-            v6 = [(UIButton *)info _titleView];
-            if (v6)
+            _titleView = [(UIButton *)info _titleView];
+            if (_titleView)
             {
-              v7 = v6;
-              [v6 _baselineOffsetFromBottom];
+              v7 = _titleView;
+              [_titleView _baselineOffsetFromBottom];
               v9 = v8;
               [v7 frame];
               [(UIView *)info convertRect:v4 toView:?];
@@ -213,10 +213,10 @@ LABEL_10:
   return result;
 }
 
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
   appearanceStorage = self->super._appearanceStorage;
-  if (a3)
+  if (attributes)
   {
     if (!appearanceStorage)
     {
@@ -229,17 +229,17 @@ LABEL_10:
     return;
   }
 
-  v8 = [a3 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
-  v9 = [self->super._appearanceStorage textAttributesForState:a4];
-  if (v8 | v9)
+  _ui_attributesForDictionaryContainingUIStringDrawingKeys = [attributes _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+  v9 = [self->super._appearanceStorage textAttributesForState:state];
+  if (_ui_attributesForDictionaryContainingUIStringDrawingKeys | v9)
   {
     v10 = v9;
-    if (([v8 isEqualToDictionary:v9] & 1) == 0)
+    if (([_ui_attributesForDictionaryContainingUIStringDrawingKeys isEqualToDictionary:v9] & 1) == 0)
     {
-      [self->super._appearanceStorage setTextAttributes:v8 forState:a4];
+      [self->super._appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:state];
       [(UIToolbarButton *)self _adjustToolbarButtonInfo];
       v11 = *off_1E70EC918;
-      v12 = [v8 objectForKey:*off_1E70EC918];
+      v12 = [_ui_attributesForDictionaryContainingUIStringDrawingKeys objectForKey:*off_1E70EC918];
       v13 = [v10 objectForKey:v11];
       if (v12 | v13)
       {
@@ -256,9 +256,9 @@ LABEL_10:
           v17 = v16;
           v19 = v18;
           v21 = v20;
-          v22 = [(UIToolbarButton *)self _isBordered];
+          _isBordered = [(UIToolbarButton *)self _isBordered];
           v23 = v19 + 20.0;
-          if (v22)
+          if (_isBordered)
           {
             v24 = 30.0;
           }
@@ -283,9 +283,9 @@ LABEL_10:
           }
 
           [(UIButton *)self->super._info setFrame:v15, v17, v28, v24];
-          v29 = [(UIView *)self superview];
+          superview = [(UIView *)self superview];
 
-          [(UIView *)v29 setNeedsLayout];
+          [(UIView *)superview setNeedsLayout];
         }
       }
     }

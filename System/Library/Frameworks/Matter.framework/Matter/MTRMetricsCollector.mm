@@ -1,9 +1,9 @@
 @interface MTRMetricsCollector
 + (id)sharedInstance;
 - (MTRMetricsCollector)init;
-- (id)metricSnapshotForCategory:(id)a3 removeMetrics:(BOOL)a4;
-- (id)metricSnapshotForCommissioning:(BOOL)a3;
-- (void)handleMetricEvent:(MetricEvent *)a3;
+- (id)metricSnapshotForCategory:(id)category removeMetrics:(BOOL)metrics;
+- (id)metricSnapshotForCommissioning:(BOOL)commissioning;
+- (void)handleMetricEvent:(MetricEvent *)event;
 - (void)registerTracingBackend;
 - (void)resetMetrics;
 - (void)unregisterTracingBackend;
@@ -32,9 +32,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metricsDataCollection = v3->_metricsDataCollection;
-    v3->_metricsDataCollection = v4;
+    v3->_metricsDataCollection = dictionary;
 
     v3->_tracingBackendRegistered = 0;
     v6 = v3;
@@ -91,20 +91,20 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)handleMetricEvent:(MetricEvent *)a3
+- (void)handleMetricEvent:(MetricEvent *)event
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  if (*(&a3->var2 + 4) <= 3u)
+  if (*(&event->var2 + 4) <= 3u)
   {
-    var1 = a3->var1;
+    var1 = event->var1;
     v6 = @"_end";
-    if (a3->var0 != 1)
+    if (event->var0 != 1)
     {
       v6 = @"_begin";
     }
 
-    if (a3->var0 == 2)
+    if (event->var0 == 2)
     {
       v7 = @"_event";
     }
@@ -114,11 +114,11 @@
       v7 = v6;
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%@", a3->var1, v7];
-    v9 = [[MTRMetricData alloc] initWithMetricEvent:a3];
-    if (a3->var0 == 1)
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%@", event->var1, v7];
+    v9 = [[MTRMetricData alloc] initWithMetricEvent:event];
+    if (event->var0 == 1)
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%@", a3->var1, @"_begin"];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s%@", event->var1, @"_begin"];
       v11 = [(NSMutableDictionary *)self->_metricsDataCollection objectForKeyedSubscript:v10];
       if (v11)
       {
@@ -130,7 +130,7 @@
         v12 = sub_2393D9044(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v13 = a3->var1;
+          v13 = event->var1;
           *buf = 136315138;
           v19 = v13;
           _os_log_impl(&dword_238DAE000, v12, OS_LOG_TYPE_ERROR, "Unable to find Begin event corresponding to Metric Event: %s", buf, 0xCu);
@@ -138,16 +138,16 @@
 
         if (sub_2393D5398(1u))
         {
-          v17 = a3->var1;
+          v17 = event->var1;
           sub_2393D5320(0, 1);
         }
       }
     }
 
     v14 = [(NSMutableDictionary *)self->_metricsDataCollection valueForKey:v8, v17];
-    if (!v14 || (v15 = a3->var0 == 2, v14, v15))
+    if (!v14 || (v15 = event->var0 == 2, v14, v15))
     {
-      if (strcmp(a3->var1, "core_dcm_commission_stage") || sub_2393ABB14(a3) != 40)
+      if (strcmp(event->var1, "core_dcm_commission_stage") || sub_2393ABB14(event) != 40)
       {
         [(NSMutableDictionary *)self->_metricsDataCollection setValue:v9 forKey:v8];
       }
@@ -158,23 +158,23 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)metricSnapshotForCommissioning:(BOOL)a3
+- (id)metricSnapshotForCommissioning:(BOOL)commissioning
 {
-  v3 = a3;
+  commissioningCopy = commissioning;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [[MTRMetrics alloc] initWithCapacity:[(NSMutableDictionary *)self->_metricsDataCollection count]];
   metricsDataCollection = self->_metricsDataCollection;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = sub_2393AC554;
   v16 = &unk_278A75BA8;
-  v8 = v5;
+  v8 = array;
   v17 = v8;
   v9 = v6;
   v18 = v9;
   [(NSMutableDictionary *)metricsDataCollection enumerateKeysAndObjectsUsingBlock:&v13];
-  if (v3)
+  if (commissioningCopy)
   {
     [(NSMutableDictionary *)self->_metricsDataCollection removeObjectsForKeys:v8, v13, v14, v15, v16, v17];
   }
@@ -187,27 +187,27 @@
   return v11;
 }
 
-- (id)metricSnapshotForCategory:(id)a3 removeMetrics:(BOOL)a4
+- (id)metricSnapshotForCategory:(id)category removeMetrics:(BOOL)metrics
 {
-  v4 = a4;
-  v6 = a3;
+  metricsCopy = metrics;
+  categoryCopy = category;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"dwnfw__%@__", v6];
-  v8 = [MEMORY[0x277CBEB18] array];
+  categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dwnfw__%@__", categoryCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = [[MTRMetrics alloc] initWithCapacity:[(NSMutableDictionary *)self->_metricsDataCollection count]];
   metricsDataCollection = self->_metricsDataCollection;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2393AC7D4;
   v17[3] = &unk_278A75BD0;
-  v11 = v7;
+  v11 = categoryCopy;
   v18 = v11;
-  v12 = v8;
+  v12 = array;
   v19 = v12;
   v13 = v9;
   v20 = v13;
   [(NSMutableDictionary *)metricsDataCollection enumerateKeysAndObjectsUsingBlock:v17];
-  if (v4)
+  if (metricsCopy)
   {
     [(NSMutableDictionary *)self->_metricsDataCollection removeObjectsForKeys:v12];
   }

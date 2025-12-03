@@ -1,23 +1,23 @@
 @interface ASCLockupFeatureSignpostTags
-- (ASCLockupFeatureSignpostTags)initWithCoder:(id)a3;
-- (ASCLockupFeatureSignpostTags)initWithSignpostTags:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCLockupFeatureSignpostTags)initWithCoder:(id)coder;
+- (ASCLockupFeatureSignpostTags)initWithSignpostTags:(id)tags;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockupFeatureSignpostTags
 
-- (ASCLockupFeatureSignpostTags)initWithSignpostTags:(id)a3
+- (ASCLockupFeatureSignpostTags)initWithSignpostTags:(id)tags
 {
-  v4 = a3;
+  tagsCopy = tags;
   v9.receiver = self;
   v9.super_class = ASCLockupFeatureSignpostTags;
   v5 = [(ASCLockupFeatureSignpostTags *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tagsCopy copy];
     signpostTags = v5->_signpostTags;
     v5->_signpostTags = v6;
   }
@@ -25,19 +25,19 @@
   return v5;
 }
 
-- (ASCLockupFeatureSignpostTags)initWithCoder:(id)a3
+- (ASCLockupFeatureSignpostTags)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"signpostTags"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"signpostTags"];
 
   if (v9)
   {
     self = [(ASCLockupFeatureSignpostTags *)self initWithSignpostTags:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,34 +47,34 @@
       [ASCLockupFeatureSignpostTags initWithCoder:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCLockupFeatureSignpostTags *)self signpostTags];
-  [v4 encodeObject:v5 forKey:@"signpostTags"];
+  coderCopy = coder;
+  signpostTags = [(ASCLockupFeatureSignpostTags *)self signpostTags];
+  [coderCopy encodeObject:signpostTags forKey:@"signpostTags"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCLockupFeatureSignpostTags *)self signpostTags];
-  [(ASCHasher *)v3 combineObject:v4];
+  signpostTags = [(ASCLockupFeatureSignpostTags *)self signpostTags];
+  [(ASCHasher *)v3 combineObject:signpostTags];
 
-  v5 = [(ASCHasher *)v3 finalizeHash];
-  return v5;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -97,17 +97,17 @@
 
   if (v7)
   {
-    v8 = [(ASCLockupFeatureSignpostTags *)self signpostTags];
-    v9 = [v7 signpostTags];
-    v10 = v9;
-    if (v8 && v9)
+    signpostTags = [(ASCLockupFeatureSignpostTags *)self signpostTags];
+    signpostTags2 = [v7 signpostTags];
+    v10 = signpostTags2;
+    if (signpostTags && signpostTags2)
     {
-      v11 = [v8 isEqual:v9];
+      v11 = [signpostTags isEqual:signpostTags2];
     }
 
     else
     {
-      v11 = v8 == v9;
+      v11 = signpostTags == signpostTags2;
     }
   }
 
@@ -122,12 +122,12 @@
 - (NSString)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLockupFeatureSignpostTags *)self signpostTags];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"signpostTags"];
+  signpostTags = [(ASCLockupFeatureSignpostTags *)self signpostTags];
+  [(ASCDescriber *)v3 addObject:signpostTags withName:@"signpostTags"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

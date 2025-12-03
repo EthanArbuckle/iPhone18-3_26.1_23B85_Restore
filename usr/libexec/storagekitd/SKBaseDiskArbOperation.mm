@@ -1,55 +1,55 @@
 @interface SKBaseDiskArbOperation
-+ (id)nilWithBlock:(id)a3 error:(id)a4;
-+ (void)storeMountState:(id)a3;
++ (id)nilWithBlock:(id)block error:(id)error;
++ (void)storeMountState:(id)state;
 - (BOOL)completeDiskArbOp;
 - (BOOL)raidTraverse;
 - (BOOL)recursive;
 - (BOOL)run;
-- (SKBaseDiskArbOperation)initWithTarget:(id)a3 options:(id)a4 callbackBlock:(id)a5;
-- (id)diskWithFSRefresh:(id)a3;
-- (id)disksForOperationWithTarget:(id)a3 ignoreGroup:(BOOL)a4;
+- (SKBaseDiskArbOperation)initWithTarget:(id)target options:(id)options callbackBlock:(id)block;
+- (id)diskWithFSRefresh:(id)refresh;
+- (id)disksForOperationWithTarget:(id)target ignoreGroup:(BOOL)group;
 - (id)newDAError;
 - (id)newPerformOperation;
-- (void)diskArbCallbackWithDissenter:(__DADissenter *)a3;
-- (void)removeWithMountPoint:(id)a3;
+- (void)diskArbCallbackWithDissenter:(__DADissenter *)dissenter;
+- (void)removeWithMountPoint:(id)point;
 @end
 
 @implementation SKBaseDiskArbOperation
 
-+ (id)nilWithBlock:(id)a3 error:(id)a4
++ (id)nilWithBlock:(id)block error:(id)error
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, a4);
+    (*(block + 2))(block, error);
   }
 
   return 0;
 }
 
-+ (void)storeMountState:(id)a3
++ (void)storeMountState:(id)state
 {
-  v7 = a3;
-  v3 = [v7 mountPoint];
+  stateCopy = state;
+  mountPoint = [stateCopy mountPoint];
 
-  if (v3)
+  if (mountPoint)
   {
     v4 = [SKMountState alloc];
-    v5 = [v7 mountPoint];
-    v6 = [(SKMountState *)v4 initWithMountPoint:v5];
+    mountPoint2 = [stateCopy mountPoint];
+    v6 = [(SKMountState *)v4 initWithMountPoint:mountPoint2];
 
-    [v7 setPreviousMount:v6];
+    [stateCopy setPreviousMount:v6];
   }
 }
 
-- (SKBaseDiskArbOperation)initWithTarget:(id)a3 options:(id)a4 callbackBlock:(id)a5
+- (SKBaseDiskArbOperation)initWithTarget:(id)target options:(id)options callbackBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  optionsCopy = options;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = SKBaseDiskArbOperation;
   v11 = [(SKManagerOperation *)&v25 init];
-  if (!v8 || ([v8 daDisk], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, v14 = objc_msgSend(v8, "isValid"), v13, !v14) || !v11)
+  if (!targetCopy || ([targetCopy daDisk], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, v14 = objc_msgSend(targetCopy, "isValid"), v13, !v14) || !v11)
   {
     v19 = +[SKBaseManager sharedManager];
     [v19 logEvent:@"com.apple.StorageKit.log.fault" eventPayloadBuilder:&stru_1000492C0];
@@ -60,7 +60,7 @@
       *buf = 136315650;
       v27 = "[SKBaseDiskArbOperation initWithTarget:options:callbackBlock:]";
       v28 = 2112;
-      v29 = v8;
+      v29 = targetCopy;
       v30 = 2112;
       v31 = v11;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_FAULT, "%s: Reached with invalid disk (%@) or init failed (%@)", buf, 0x20u);
@@ -71,9 +71,9 @@
     goto LABEL_13;
   }
 
-  if (v9)
+  if (optionsCopy)
   {
-    v15 = v9;
+    v15 = optionsCopy;
   }
 
   else
@@ -88,12 +88,12 @@
     v22 = [SKError nilWithPOSIXCode:22 debugDescription:@"Mount options must be a dictionary" error:0];
 LABEL_13:
     v23 = v22;
-    v18 = [v21 nilWithBlock:v10 error:v22];
+    v18 = [v21 nilWithBlock:blockCopy error:v22];
 
     goto LABEL_14;
   }
 
-  v16 = [v10 copy];
+  v16 = [blockCopy copy];
   callbackBlock = v11->_callbackBlock;
   v11->_callbackBlock = v16;
 
@@ -105,50 +105,50 @@ LABEL_14:
 
 - (BOOL)recursive
 {
-  v2 = [(SKBaseDiskArbOperation *)self options];
-  v3 = [v2 objectForKeyedSubscript:kSKDiskMountOptionRecursive];
+  options = [(SKBaseDiskArbOperation *)self options];
+  v3 = [options objectForKeyedSubscript:kSKDiskMountOptionRecursive];
 
   if (sub_100010164(v3))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)raidTraverse
 {
-  v2 = [(SKBaseDiskArbOperation *)self options];
-  v3 = [v2 objectForKeyedSubscript:kSKDiskMountOptionRecursiveRAID];
+  options = [(SKBaseDiskArbOperation *)self options];
+  v3 = [options objectForKeyedSubscript:kSKDiskMountOptionRecursiveRAID];
 
-  LOBYTE(v2) = sub_100010328(v3);
-  return v2;
+  LOBYTE(options) = sub_100010328(v3);
+  return options;
 }
 
-- (id)diskWithFSRefresh:(id)a3
+- (id)diskWithFSRefresh:(id)refresh
 {
-  v3 = a3;
-  v4 = [v3 filesystem];
-  if (v4)
+  refreshCopy = refresh;
+  filesystem = [refreshCopy filesystem];
+  if (filesystem)
   {
 
 LABEL_5:
-    v7 = v3;
+    v7 = refreshCopy;
     goto LABEL_6;
   }
 
-  if (([v3 isIOMediaDisk] & 1) == 0)
+  if (([refreshCopy isIOMediaDisk] & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 diskIdentifier];
-  v6 = [NSString stringWithFormat:@"/dev/%@", v5];
+  diskIdentifier = [refreshCopy diskIdentifier];
+  v6 = [NSString stringWithFormat:@"/dev/%@", diskIdentifier];
   v7 = [SKMediaKit getMediaKitFilesystemType:v6];
 
   if (v7)
@@ -161,23 +161,23 @@ LABEL_6:
   return v7;
 }
 
-- (id)disksForOperationWithTarget:(id)a3 ignoreGroup:(BOOL)a4
+- (id)disksForOperationWithTarget:(id)target ignoreGroup:(BOOL)group
 {
-  v5 = a3;
+  targetCopy = target;
   v65 = +[NSMutableSet set];
   if ([(SKBaseDiskArbOperation *)self recursive])
   {
-    v6 = [NSMutableArray arrayWithObject:v5];
-    if ([v5 isWholeDisk])
+    v6 = [NSMutableArray arrayWithObject:targetCopy];
+    if ([targetCopy isWholeDisk])
     {
-      v7 = [v5 children];
-      if (v7)
+      children = [targetCopy children];
+      if (children)
       {
-        [v6 addObjectsFromArray:v7];
+        [v6 addObjectsFromArray:children];
       }
     }
 
-    v59 = v5;
+    v59 = targetCopy;
     [(SKBaseDiskArbOperation *)self raidTraverse];
     v74 = 0u;
     v75 = 0u;
@@ -207,13 +207,13 @@ LABEL_6:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v13 container];
-            if (!v15)
+            container = [v13 container];
+            if (!container)
             {
               goto LABEL_58;
             }
 
-            v16 = v15;
+            v16 = container;
 
             v13 = v16;
           }
@@ -223,13 +223,13 @@ LABEL_6:
           {
             v17 = v12;
             v18 = v13;
-            v19 = v13;
-            v20 = [v19 volumes];
+            apfsVolumeGroupUUID = v13;
+            volumes = [apfsVolumeGroupUUID volumes];
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v21 = [v20 countByEnumeratingWithState:&v70 objects:v79 count:16];
+            v21 = [volumes countByEnumeratingWithState:&v70 objects:v79 count:16];
             if (v21)
             {
               v22 = v21;
@@ -240,7 +240,7 @@ LABEL_6:
                 {
                   if (*v71 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(volumes);
                   }
 
                   v25 = *(*(&v70 + 1) + 8 * i);
@@ -250,7 +250,7 @@ LABEL_6:
                   }
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v70 objects:v79 count:16];
+                v22 = [volumes countByEnumeratingWithState:&v70 objects:v79 count:16];
               }
 
               while (v22);
@@ -263,17 +263,17 @@ LABEL_6:
             goto LABEL_57;
           }
 
-          v26 = [v13 type];
-          if ([v26 isEqualToString:kSKDiskTypeEFI])
+          type = [v13 type];
+          if ([type isEqualToString:kSKDiskTypeEFI])
           {
             v27 = v12;
             v28 = v13;
-            v29 = [v13 diskIdentifier];
-            v30 = [v59 diskIdentifier];
-            if (![v29 isEqualToString:v30])
+            diskIdentifier = [v13 diskIdentifier];
+            diskIdentifier2 = [v59 diskIdentifier];
+            if (![diskIdentifier isEqualToString:diskIdentifier2])
             {
-              v50 = [(SKBaseDiskArbOperation *)self options];
-              v51 = [v50 objectForKeyedSubscript:kSKDiskMountOptionWithoutEFI];
+              options = [(SKBaseDiskArbOperation *)self options];
+              v51 = [options objectForKeyedSubscript:kSKDiskMountOptionWithoutEFI];
               v52 = sub_100010328(v51);
 
               v12 = v27;
@@ -297,12 +297,12 @@ LABEL_6:
 
 LABEL_29:
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) == 0 || ([v13 apfsVolumeGroupUUID], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31) || a4)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || ([v13 apfsVolumeGroupUUID], v31 = objc_claimAutoreleasedReturnValue(), v31, !v31) || group)
           {
-            v19 = [(SKBaseDiskArbOperation *)self diskWithFSRefresh:v13];
-            if (v19)
+            apfsVolumeGroupUUID = [(SKBaseDiskArbOperation *)self diskWithFSRefresh:v13];
+            if (apfsVolumeGroupUUID)
             {
-              [v65 addObject:v19];
+              [v65 addObject:apfsVolumeGroupUUID];
             }
 
             v10 = v60;
@@ -310,15 +310,15 @@ LABEL_29:
           }
 
           v58 = v12;
-          v19 = [v13 apfsVolumeGroupUUID];
+          apfsVolumeGroupUUID = [v13 apfsVolumeGroupUUID];
           v57 = v13;
-          v32 = [v13 container];
+          container2 = [v13 container];
           v66 = 0u;
           v67 = 0u;
           v68 = 0u;
           v69 = 0u;
-          v33 = [v32 volumes];
-          v34 = [v33 countByEnumeratingWithState:&v66 objects:v78 count:16];
+          volumes2 = [container2 volumes];
+          v34 = [volumes2 countByEnumeratingWithState:&v66 objects:v78 count:16];
           if (!v34)
           {
 
@@ -330,8 +330,8 @@ LABEL_29:
 
           v35 = v34;
           v63 = 0;
-          v64 = v33;
-          v55 = v32;
+          v64 = volumes2;
+          v55 = container2;
           v36 = 0;
           v37 = *v67;
           do
@@ -344,13 +344,13 @@ LABEL_29:
               }
 
               v39 = *(*(&v66 + 1) + 8 * j);
-              v40 = [v39 apfsVolumeGroupUUID];
-              v41 = [v40 isEqualToString:v19];
+              apfsVolumeGroupUUID2 = [v39 apfsVolumeGroupUUID];
+              v41 = [apfsVolumeGroupUUID2 isEqualToString:apfsVolumeGroupUUID];
 
               if (v41)
               {
-                v42 = [v39 getAPFSVolumeRole];
-                v43 = [v42 isEqualToString:SKAPFSVolumeRoleData];
+                getAPFSVolumeRole = [v39 getAPFSVolumeRole];
+                v43 = [getAPFSVolumeRole isEqualToString:SKAPFSVolumeRoleData];
 
                 if (v43)
                 {
@@ -361,8 +361,8 @@ LABEL_29:
 
                 else
                 {
-                  v46 = [v39 getAPFSVolumeRole];
-                  v47 = [v46 isEqualToString:SKAPFSVolumeRoleSystem];
+                  getAPFSVolumeRole2 = [v39 getAPFSVolumeRole];
+                  v47 = [getAPFSVolumeRole2 isEqualToString:SKAPFSVolumeRoleSystem];
 
                   v44 = v36;
                   v45 = v39;
@@ -395,7 +395,7 @@ LABEL_29:
             {
               [v65 addObject:v63];
               [v65 addObject:v36];
-              v32 = v55;
+              container2 = v55;
               goto LABEL_56;
             }
           }
@@ -409,7 +409,7 @@ LABEL_29:
             v12 = v58;
           }
 
-          v32 = v55;
+          container2 = v55;
 LABEL_55:
           [v65 addObject:v13];
 LABEL_56:
@@ -427,12 +427,12 @@ LABEL_58:
       while (v9);
     }
 
-    v5 = v59;
+    targetCopy = v59;
   }
 
   else
   {
-    v53 = [(SKBaseDiskArbOperation *)self diskWithFSRefresh:v5];
+    v53 = [(SKBaseDiskArbOperation *)self diskWithFSRefresh:targetCopy];
     if (v53)
     {
       [v65 addObject:v53];
@@ -442,42 +442,42 @@ LABEL_58:
   return v65;
 }
 
-- (void)diskArbCallbackWithDissenter:(__DADissenter *)a3
+- (void)diskArbCallbackWithDissenter:(__DADissenter *)dissenter
 {
-  if (a3)
+  if (dissenter)
   {
-    [(SKBaseDiskArbOperation *)self setDAstatus:DADissenterGetStatus(a3)];
+    [(SKBaseDiskArbOperation *)self setDAstatus:DADissenterGetStatus(dissenter)];
     [(SKBaseDiskArbOperation *)self setDissenterPID:DADissenterGetProcessID()];
-    [(SKBaseDiskArbOperation *)self setDAstatusString:DADissenterGetStatusString(a3)];
+    [(SKBaseDiskArbOperation *)self setDAstatusString:DADissenterGetStatusString(dissenter)];
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(SKBaseDiskArbOperation *)self currentOperationName];
-      v7 = [(SKBaseDiskArbOperation *)self DAstatus];
-      v8 = [(SKBaseDiskArbOperation *)self dissenterPID];
-      v9 = [(SKBaseDiskArbOperation *)self DAstatusString];
-      if (v9)
+      currentOperationName = [(SKBaseDiskArbOperation *)self currentOperationName];
+      dAstatus = [(SKBaseDiskArbOperation *)self DAstatus];
+      dissenterPID = [(SKBaseDiskArbOperation *)self dissenterPID];
+      dAstatusString = [(SKBaseDiskArbOperation *)self DAstatusString];
+      if (dAstatusString)
       {
-        v10 = [(SKBaseDiskArbOperation *)self DAstatusString];
+        dAstatusString2 = [(SKBaseDiskArbOperation *)self DAstatusString];
       }
 
       else
       {
-        v10 = @"(no status details)";
+        dAstatusString2 = @"(no status details)";
       }
 
       v12 = 136316162;
       v13 = "[SKBaseDiskArbOperation diskArbCallbackWithDissenter:]";
       v14 = 2112;
-      v15 = v6;
+      v15 = currentOperationName;
       v16 = 1024;
-      v17 = v7;
+      v17 = dAstatus;
       v18 = 1024;
-      v19 = v8;
+      v19 = dissenterPID;
       v20 = 2112;
-      v21 = v10;
+      v21 = dAstatusString2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s: %@: dissented with status 0x%x by pid %d: %@", &v12, 0x2Cu);
-      if (v9)
+      if (dAstatusString)
       {
       }
 
@@ -491,11 +491,11 @@ LABEL_58:
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SKBaseDiskArbOperation *)self currentOperationName];
+      currentOperationName = [(SKBaseDiskArbOperation *)self currentOperationName];
       v12 = 136315394;
       v13 = "[SKBaseDiskArbOperation diskArbCallbackWithDissenter:]";
       v14 = 2112;
-      v15 = v6;
+      v15 = currentOperationName;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@: success", &v12, 0x16u);
 LABEL_11:
     }
@@ -508,9 +508,9 @@ LABEL_11:
 
 - (BOOL)completeDiskArbOp
 {
-  v3 = [(SKBaseDiskArbOperation *)self currentOperationName];
+  currentOperationName = [(SKBaseDiskArbOperation *)self currentOperationName];
 
-  if (!v3)
+  if (!currentOperationName)
   {
     v4 = [(SKBaseDiskArbOperation *)self description];
     [(SKBaseDiskArbOperation *)self setCurrentOperationName:v4];
@@ -519,11 +519,11 @@ LABEL_11:
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SKBaseDiskArbOperation *)self currentOperationName];
+    currentOperationName2 = [(SKBaseDiskArbOperation *)self currentOperationName];
     v11 = 136315394;
     v12 = "[SKBaseDiskArbOperation completeDiskArbOp]";
     v13 = 2112;
-    v14 = v6;
+    v14 = currentOperationName2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@: running", &v11, 0x16u);
   }
 
@@ -548,16 +548,16 @@ LABEL_11:
 - (id)newDAError
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(SKBaseDiskArbOperation *)self DAstatusString];
+  dAstatusString = [(SKBaseDiskArbOperation *)self DAstatusString];
 
-  if (v4)
+  if (dAstatusString)
   {
-    v5 = [(SKBaseDiskArbOperation *)self DAstatusString];
-    [v3 setObject:v5 forKeyedSubscript:kSKErrorDiskArbErrorStringKey];
+    dAstatusString2 = [(SKBaseDiskArbOperation *)self DAstatusString];
+    [v3 setObject:dAstatusString2 forKeyedSubscript:kSKErrorDiskArbErrorStringKey];
 
-    v6 = [(SKBaseDiskArbOperation *)self DAstatus];
-    v7 = [(SKBaseDiskArbOperation *)self DAstatusString];
-    v8 = [NSString stringWithFormat:@"DA error code 0x%x: %@", v6, v7];
+    dAstatus = [(SKBaseDiskArbOperation *)self DAstatus];
+    dAstatusString3 = [(SKBaseDiskArbOperation *)self DAstatusString];
+    v8 = [NSString stringWithFormat:@"DA error code 0x%x: %@", dAstatus, dAstatusString3];
   }
 
   else
@@ -565,10 +565,10 @@ LABEL_11:
     v8 = [NSString stringWithFormat:@"DA error code 0x%x", [(SKBaseDiskArbOperation *)self DAstatus]];
   }
 
-  v9 = [(SKBaseDiskArbOperation *)self dissenterPID];
+  dissenterPID = [(SKBaseDiskArbOperation *)self dissenterPID];
   v10 = [(SKBaseDiskArbOperation *)self description];
   v11 = v10;
-  if (v9)
+  if (dissenterPID)
   {
     v12 = [NSString stringWithFormat:@"%@ dissented by process with PID %d, %@", v10, [(SKBaseDiskArbOperation *)self dissenterPID], v8];
     [v3 setObject:v12 forKeyedSubscript:NSDebugDescriptionErrorKey];
@@ -606,28 +606,28 @@ LABEL_11:
 
 - (BOOL)run
 {
-  v3 = [(SKBaseDiskArbOperation *)self newPerformOperation];
-  v4 = [(SKBaseDiskArbOperation *)self callbackBlock];
+  newPerformOperation = [(SKBaseDiskArbOperation *)self newPerformOperation];
+  callbackBlock = [(SKBaseDiskArbOperation *)self callbackBlock];
 
-  if (v4)
+  if (callbackBlock)
   {
-    v5 = [(SKBaseDiskArbOperation *)self callbackBlock];
-    (v5)[2](v5, v3);
+    callbackBlock2 = [(SKBaseDiskArbOperation *)self callbackBlock];
+    (callbackBlock2)[2](callbackBlock2, newPerformOperation);
   }
 
   [(SKManagerOperation *)self finished];
 
-  return v3 == 0;
+  return newPerformOperation == 0;
 }
 
-- (void)removeWithMountPoint:(id)a3
+- (void)removeWithMountPoint:(id)point
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"/private/var/mnt"])
+  pointCopy = point;
+  if ([pointCopy hasPrefix:@"/private/var/mnt"])
   {
     v4 = +[NSFileManager defaultManager];
     v13 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v13];
+    v5 = [v4 removeItemAtPath:pointCopy error:&v13];
     v6 = v13;
 
     v7 = sub_10000BFD0();
@@ -637,7 +637,7 @@ LABEL_11:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v15 = v3;
+        v15 = pointCopy;
         v9 = "Removed %@";
         v10 = v8;
         v11 = OS_LOG_TYPE_DEFAULT;
@@ -650,7 +650,7 @@ LABEL_7:
     else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v15 = v3;
+      v15 = pointCopy;
       v16 = 2112;
       v17 = v6;
       v9 = "Failed to remove %@: %@";

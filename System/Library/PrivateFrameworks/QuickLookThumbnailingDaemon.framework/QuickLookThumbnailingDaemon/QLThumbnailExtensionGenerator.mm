@@ -1,23 +1,23 @@
 @interface QLThumbnailExtensionGenerator
 - (QLThumbnailExtensionGenerator)init;
-- (void)generateThumbnailWithThumbnailRequest:(QLTGeneratorThumbnailRequest *)a3 item:(QLThumbnailItem *)a4 flavor:(int)a5 wantsLowQuality:(BOOL)a6 generationData:(NSDictionary *)a7 completionHandler:(id)a8;
+- (void)generateThumbnailWithThumbnailRequest:(QLTGeneratorThumbnailRequest *)request item:(QLThumbnailItem *)item flavor:(int)flavor wantsLowQuality:(BOOL)quality generationData:(NSDictionary *)data completionHandler:(id)handler;
 @end
 
 @implementation QLThumbnailExtensionGenerator
 
-- (void)generateThumbnailWithThumbnailRequest:(QLTGeneratorThumbnailRequest *)a3 item:(QLThumbnailItem *)a4 flavor:(int)a5 wantsLowQuality:(BOOL)a6 generationData:(NSDictionary *)a7 completionHandler:(id)a8
+- (void)generateThumbnailWithThumbnailRequest:(QLTGeneratorThumbnailRequest *)request item:(QLThumbnailItem *)item flavor:(int)flavor wantsLowQuality:(BOOL)quality generationData:(NSDictionary *)data completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FEB53B0, &qword_261630E00);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x28223BE20](v15 - 8);
   v18 = &v28 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 36) = a6;
-  *(v20 + 40) = a7;
+  *(v20 + 16) = request;
+  *(v20 + 24) = item;
+  *(v20 + 32) = flavor;
+  *(v20 + 36) = quality;
+  *(v20 + 40) = data;
   *(v20 + 48) = v19;
   *(v20 + 56) = self;
   v21 = sub_26162B9BC();
@@ -32,10 +32,10 @@
   v23[3] = 0;
   v23[4] = &unk_261630E20;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = a7;
-  v27 = self;
+  requestCopy = request;
+  itemCopy = item;
+  dataCopy = data;
+  selfCopy = self;
   sub_261614ED8(0, 0, v18, &unk_261630E30, v23);
 }
 

@@ -1,29 +1,29 @@
 @interface PUUserTransformView
-+ (double)doubleTapZoomScaleForContentSize:(CGSize)a3 inBoundsSize:(CGSize)a4 defaultScale:(double)a5 preferToFillOnDoubleTap:(BOOL)a6;
++ (double)doubleTapZoomScaleForContentSize:(CGSize)size inBoundsSize:(CGSize)boundsSize defaultScale:(double)scale preferToFillOnDoubleTap:(BOOL)tap;
 - (BOOL)_needsStateUpdate;
-- (BOOL)contentContainsLocationFromProvider:(id)a3;
+- (BOOL)contentContainsLocationFromProvider:(id)provider;
 - (BOOL)isTrackingZoomGesture;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGAffineTransform)userAffineTransform;
 - (CGPoint)_contentCenter;
-- (CGPoint)_contentOffsetAdjustmentForContentInsets:(UIEdgeInsets)a3;
+- (CGPoint)_contentOffsetAdjustmentForContentInsets:(UIEdgeInsets)insets;
 - (CGPoint)offset;
 - (CGRect)untransformedContentFrame;
 - (CGRect)visibleRect;
 - (CGSize)contentPixelSize;
 - (CGSize)scrollPadding;
-- (PUUserTransformView)initWithFrame:(CGRect)a3;
+- (PUUserTransformView)initWithFrame:(CGRect)frame;
 - (PUUserTransformViewDelegate)delegate;
-- (UIEdgeInsets)_contentInsetsForContentScale:(double)a3;
+- (UIEdgeInsets)_contentInsetsForContentScale:(double)scale;
 - (double)_currentPresentationZoomScale;
 - (double)doubleTapZoomScale;
 - (double)fillZoomScale;
-- (id)viewForZoomingInScrollView:(id)a3;
+- (id)viewForZoomingInScrollView:(id)view;
 - (void)_assertInsideStateChangeBlock;
 - (void)_assertInsideStateUpdate;
 - (void)_assertInsideZoomAndScrollChangeBlock;
 - (void)_didChangeState;
-- (void)_handleDisplayLink:(id)a3;
+- (void)_handleDisplayLink:(id)link;
 - (void)_invalidateAnimatingZoomEnd;
 - (void)_invalidateContentState;
 - (void)_invalidateScrollView;
@@ -32,33 +32,33 @@
 - (void)_invalidateUserInteracting;
 - (void)_invalidateUserPanningOrDecelerating;
 - (void)_invalidateUserZoomingOrBouncing;
-- (void)_performStateChanges:(id)a3;
-- (void)_performZoomAndScrollChanges:(id)a3;
-- (void)_setAnimatingZoomEnd:(BOOL)a3;
-- (void)_setContentAnimating:(BOOL)a3;
-- (void)_setContentCenter:(CGPoint)a3;
-- (void)_setContentZoomScale:(double)a3;
-- (void)_setEnabledInteractions:(unint64_t)a3;
+- (void)_performStateChanges:(id)changes;
+- (void)_performZoomAndScrollChanges:(id)changes;
+- (void)_setAnimatingZoomEnd:(BOOL)end;
+- (void)_setContentAnimating:(BOOL)animating;
+- (void)_setContentCenter:(CGPoint)center;
+- (void)_setContentZoomScale:(double)scale;
+- (void)_setEnabledInteractions:(unint64_t)interactions;
 - (void)_setNeedsStateUpdate;
-- (void)_setPreferredMaximumZoomScale:(double)a3;
-- (void)_setPreferredMinimumZoomScale:(double)a3;
-- (void)_setShouldTrackContentAnimation:(BOOL)a3;
-- (void)_setUpdatingScrollView:(BOOL)a3;
-- (void)_setUserAffineTransform:(CGAffineTransform *)a3;
-- (void)_setUserDeceleratingPan:(BOOL)a3;
-- (void)_setUserEndingZoom:(BOOL)a3;
-- (void)_setUserInteracting:(BOOL)a3;
-- (void)_setUserPanning:(BOOL)a3;
-- (void)_setUserPanningOrDecelerating:(BOOL)a3;
-- (void)_setUserZooming:(BOOL)a3;
-- (void)_setUserZoomingOrBouncing:(BOOL)a3;
+- (void)_setPreferredMaximumZoomScale:(double)scale;
+- (void)_setPreferredMinimumZoomScale:(double)scale;
+- (void)_setShouldTrackContentAnimation:(BOOL)animation;
+- (void)_setUpdatingScrollView:(BOOL)view;
+- (void)_setUserAffineTransform:(CGAffineTransform *)transform;
+- (void)_setUserDeceleratingPan:(BOOL)pan;
+- (void)_setUserEndingZoom:(BOOL)zoom;
+- (void)_setUserInteracting:(BOOL)interacting;
+- (void)_setUserPanning:(BOOL)panning;
+- (void)_setUserPanningOrDecelerating:(BOOL)decelerating;
+- (void)_setUserZooming:(BOOL)zooming;
+- (void)_setUserZoomingOrBouncing:(BOOL)bouncing;
 - (void)_updateAnimatingZoomEndIfNeeded;
 - (void)_updateContentStateIfNeeded;
 - (void)_updateDisplayLink;
 - (void)_updateEnabledInteractionsIfNeeded;
 - (void)_updateScrollViewFrame;
 - (void)_updateScrollViewIfNeeded;
-- (void)_updateScrollViewMinimumZoomScaleAndGoToMinimum:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateScrollViewMinimumZoomScaleAndGoToMinimum:(BOOL)minimum animated:(BOOL)animated;
 - (void)_updateShouldTrackContentAnimationIfNeeded;
 - (void)_updateStateIfNeeded;
 - (void)_updateUserAffineTransformIfNeeded;
@@ -68,29 +68,29 @@
 - (void)_updateZoomAndScrollIfNeeded;
 - (void)_willChangeState;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setContentPixelSize:(CGSize)a3;
-- (void)setDebugScrollViewContentImage:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDesiredZoomScale:(double)a3;
-- (void)setEnabledInteractions:(unint64_t)a3;
-- (void)setHasUserZoomedIn:(BOOL)a3;
-- (void)setHostedView:(id)a3;
-- (void)setMinimumZoomScale:(double)a3 animated:(BOOL)a4;
-- (void)setOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setRequireTwoTouchesForPan:(BOOL)a3;
-- (void)setScrollPadding:(CGSize)a3;
-- (void)setUntransformedContentFrame:(CGRect)a3;
-- (void)setUserAffineTransform:(CGAffineTransform *)a3;
-- (void)toggleZoomWithLocationProvider:(id)a3;
-- (void)zoomInOnLocationFromProvider:(id)a3 animated:(BOOL)a4;
-- (void)zoomOut:(BOOL)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setContentPixelSize:(CGSize)size;
+- (void)setDebugScrollViewContentImage:(id)image;
+- (void)setDelegate:(id)delegate;
+- (void)setDesiredZoomScale:(double)scale;
+- (void)setEnabledInteractions:(unint64_t)interactions;
+- (void)setHasUserZoomedIn:(BOOL)in;
+- (void)setHostedView:(id)view;
+- (void)setMinimumZoomScale:(double)scale animated:(BOOL)animated;
+- (void)setOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)setRequireTwoTouchesForPan:(BOOL)pan;
+- (void)setScrollPadding:(CGSize)padding;
+- (void)setUntransformedContentFrame:(CGRect)frame;
+- (void)setUserAffineTransform:(CGAffineTransform *)transform;
+- (void)toggleZoomWithLocationProvider:(id)provider;
+- (void)zoomInOnLocationFromProvider:(id)provider animated:(BOOL)animated;
+- (void)zoomOut:(BOOL)out;
 @end
 
 @implementation PUUserTransformView
@@ -160,40 +160,40 @@
   return result;
 }
 
-- (void)setHasUserZoomedIn:(BOOL)a3
+- (void)setHasUserZoomedIn:(BOOL)in
 {
-  if (self->_hasUserZoomedIn != a3)
+  if (self->_hasUserZoomedIn != in)
   {
-    self->_hasUserZoomedIn = a3;
+    self->_hasUserZoomedIn = in;
     if (self->_delegateFlags.respondsToDidChangeIsZoomedIn)
     {
-      v4 = [(PUUserTransformView *)self delegate];
-      [v4 userTransformViewDidChangeIsZoomedIn:self];
+      delegate = [(PUUserTransformView *)self delegate];
+      [delegate userTransformViewDidChangeIsZoomedIn:self];
     }
   }
 }
 
 - (CGRect)visibleRect
 {
-  v3 = [(PUUserTransformView *)self _scrollView];
-  v4 = [(PUUserTransformView *)self scrollContentView];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  scrollContentView = [(PUUserTransformView *)self scrollContentView];
   if (![(PUUserTransformView *)self _isContentAnimating])
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 layer];
-  v6 = [v5 presentationLayer];
+  layer = [_scrollView layer];
+  presentationLayer = [layer presentationLayer];
 
-  v7 = [v4 layer];
-  v8 = [v7 presentationLayer];
+  layer2 = [scrollContentView layer];
+  presentationLayer2 = [layer2 presentationLayer];
 
-  if (!v6 || !v8)
+  if (!presentationLayer || !presentationLayer2)
   {
 
 LABEL_6:
-    [v3 bounds];
-    [v3 convertRect:v4 toView:?];
+    [_scrollView bounds];
+    [_scrollView convertRect:scrollContentView toView:?];
     v10 = v17;
     v12 = v18;
     v14 = v19;
@@ -201,8 +201,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  [v6 bounds];
-  [v6 convertRect:v8 toLayer:?];
+  [presentationLayer bounds];
+  [presentationLayer convertRect:presentationLayer2 toLayer:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -220,15 +220,15 @@ LABEL_7:
   return result;
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v7 = a3;
-  v8 = [(PUUserTransformView *)self _scrollView];
+  zoomingCopy = zooming;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v8 != v7)
+  if (_scrollView != zoomingCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1195 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1195 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -266,19 +266,19 @@ uint64_t __64__PUUserTransformView_scrollViewDidEndZooming_withView_atScale___bl
   return [v1 _performStateChanges:v3];
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v6 = a3;
-  v7 = [(PUUserTransformView *)self _scrollView];
+  zoomingCopy = zooming;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v7 != v6)
+  if (_scrollView != zoomingCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1187 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1187 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
-  v8 = [MEMORY[0x1E695DF00] date];
-  [(PUUserTransformView *)self setZoomStartDate:v8];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PUUserTransformView *)self setZoomStartDate:date];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -288,15 +288,15 @@ uint64_t __64__PUUserTransformView_scrollViewDidEndZooming_withView_atScale___bl
   [(PUUserTransformView *)self _performStateChanges:v10];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v5 = a3;
-  v6 = [(PUUserTransformView *)self _scrollView];
+  deceleratingCopy = decelerating;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v6 != v5)
+  if (_scrollView != deceleratingCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1180 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1180 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -307,15 +307,15 @@ uint64_t __64__PUUserTransformView_scrollViewDidEndZooming_withView_atScale___bl
   [(PUUserTransformView *)self _performStateChanges:v8];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v7 = a3;
-  v8 = [(PUUserTransformView *)self _scrollView];
+  draggingCopy = dragging;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v8 != v7)
+  if (_scrollView != draggingCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1172 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1172 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -323,7 +323,7 @@ uint64_t __64__PUUserTransformView_scrollViewDidEndZooming_withView_atScale___bl
   v10[2] = __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___block_invoke;
   v10[3] = &unk_1E7B7FF98;
   v10[4] = self;
-  v11 = a4;
+  decelerateCopy = decelerate;
   [(PUUserTransformView *)self _performStateChanges:v10];
 }
 
@@ -336,15 +336,15 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
   return [v2 _setUserDeceleratingPan:v3];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = a3;
-  v6 = [(PUUserTransformView *)self _scrollView];
+  draggingCopy = dragging;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v6 != v5)
+  if (_scrollView != draggingCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1165 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1165 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -355,15 +355,15 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
   [(PUUserTransformView *)self _performStateChanges:v8];
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v5 = a3;
-  v6 = [(PUUserTransformView *)self _scrollView];
+  zoomCopy = zoom;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v6 != v5)
+  if (_scrollView != zoomCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1158 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -374,15 +374,15 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
   [(PUUserTransformView *)self _performStateChanges:v8];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
-  v6 = [(PUUserTransformView *)self _scrollView];
+  scrollCopy = scroll;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v6 != v5)
+  if (_scrollView != scrollCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1151 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1151 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -393,21 +393,21 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
   [(PUUserTransformView *)self _performStateChanges:v8];
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v5 = a3;
-  v6 = [(PUUserTransformView *)self _scrollView];
+  viewCopy = view;
+  _scrollView = [(PUUserTransformView *)self _scrollView];
 
-  if (v6 != v5)
+  if (_scrollView != viewCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1145 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:1145 description:{@"Invalid parameter not satisfying: %@", @"scrollView == [self _scrollView]"}];
   }
 
   return [(PUUserTransformView *)self scrollContentView];
 }
 
-- (void)_handleDisplayLink:(id)a3
+- (void)_handleDisplayLink:(id)link
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -420,12 +420,12 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
 - (void)_updateDisplayLink
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(PUUserTransformView *)self _shouldTrackContentAnimation];
-  v4 = [(PUUserTransformView *)self _displayLink];
-  v5 = v4;
-  if (v3)
+  _shouldTrackContentAnimation = [(PUUserTransformView *)self _shouldTrackContentAnimation];
+  _displayLink = [(PUUserTransformView *)self _displayLink];
+  v5 = _displayLink;
+  if (_shouldTrackContentAnimation)
   {
-    if (!v4)
+    if (!_displayLink)
     {
       v5 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__handleDisplayLink_];
       if ([MEMORY[0x1E69C44C8] highFramerateRequiresReasonAndRange])
@@ -435,8 +435,8 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
         [v5 setPreferredFrameRateRange:?];
       }
 
-      v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695D918]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [v5 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
 
       [(PUUserTransformView *)self _setDisplayLink:v5];
       v7 = PLOneUpGetLog();
@@ -446,15 +446,15 @@ uint64_t __63__PUUserTransformView_scrollViewDidEndDragging_willDecelerate___blo
       }
 
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       v8 = "%p starting display link";
       goto LABEL_10;
     }
   }
 
-  else if (v4)
+  else if (_displayLink)
   {
-    [v4 invalidate];
+    [_displayLink invalidate];
     [(PUUserTransformView *)self _setDisplayLink:0];
     v7 = PLOneUpGetLog();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -465,7 +465,7 @@ LABEL_11:
     }
 
     v9 = 134217984;
-    v10 = self;
+    selfCopy2 = self;
     v8 = "%p stopping display link";
 LABEL_10:
     _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, v8, &v9, 0xCu);
@@ -520,31 +520,31 @@ LABEL_12:
   return v15;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   hostedView = self->_hostedView;
-  v8 = v5;
-  if (hostedView != v5)
+  v8 = viewCopy;
+  if (hostedView != viewCopy)
   {
     [(UIView *)hostedView removeFromSuperview];
-    objc_storeStrong(&self->_hostedView, a3);
+    objc_storeStrong(&self->_hostedView, view);
     if (self->_hostedView)
     {
-      v7 = [(PUUserTransformView *)self scrollContentView];
-      [v7 bounds];
+      scrollContentView = [(PUUserTransformView *)self scrollContentView];
+      [scrollContentView bounds];
       [(UIView *)self->_hostedView setFrame:?];
-      [v7 addSubview:self->_hostedView];
+      [scrollContentView addSubview:self->_hostedView];
     }
   }
 }
 
-- (void)_setUpdatingScrollView:(BOOL)a3
+- (void)_setUpdatingScrollView:(BOOL)view
 {
-  if (self->__updatingScrollView != a3)
+  if (self->__updatingScrollView != view)
   {
-    self->__updatingScrollView = a3;
-    if (!a3)
+    self->__updatingScrollView = view;
+    if (!view)
     {
       [(PUUserTransformView *)self _invalidateContentState];
     }
@@ -559,7 +559,7 @@ LABEL_12:
     [(PUUserTransformView *)self contentPixelSize];
     if ((PXSizeIsEmpty() & 1) == 0)
     {
-      v3 = [(PUUserTransformView *)self _isUpdatingScrollView];
+      _isUpdatingScrollView = [(PUUserTransformView *)self _isUpdatingScrollView];
       [(PUUserTransformView *)self _setUpdatingScrollView:1];
       [(PUUserTransformView *)self bounds];
       v5 = v4;
@@ -574,11 +574,11 @@ LABEL_12:
       [(PUUserTransformView *)self contentPixelSize];
       v80 = v19;
       v20 = +[PUOneUpSettings sharedInstance];
-      v21 = [v20 useDebuggingColors];
+      useDebuggingColors = [v20 useDebuggingColors];
 
-      v22 = [(PUUserTransformView *)self _scrollView];
-      v23 = v22;
-      if (!v22)
+      _scrollView = [(PUUserTransformView *)self _scrollView];
+      v23 = _scrollView;
+      if (!_scrollView)
       {
         v23 = [[_PUUserTransformScrollView alloc] initWithFrame:v5, v7, v9, v11];
         [(_PUUserTransformScrollView *)v23 setScrollsToTop:0];
@@ -587,14 +587,14 @@ LABEL_12:
         [(_PUUserTransformScrollView *)v23 setShowsHorizontalScrollIndicator:0];
         [(_PUUserTransformScrollView *)v23 setShowsVerticalScrollIndicator:0];
         [(_PUUserTransformScrollView *)v23 setDelegate:self];
-        if (v21)
+        if (useDebuggingColors)
         {
-          v24 = [(_PUUserTransformScrollView *)v23 layer];
-          v25 = [MEMORY[0x1E69DC888] blueColor];
-          [v24 setBorderColor:{objc_msgSend(v25, "CGColor")}];
+          layer = [(_PUUserTransformScrollView *)v23 layer];
+          blueColor = [MEMORY[0x1E69DC888] blueColor];
+          [layer setBorderColor:{objc_msgSend(blueColor, "CGColor")}];
 
-          v26 = [(_PUUserTransformScrollView *)v23 layer];
-          [v26 setBorderWidth:2.0];
+          layer2 = [(_PUUserTransformScrollView *)v23 layer];
+          [layer2 setBorderWidth:2.0];
         }
 
         [(PUUserTransformView *)self addSubview:v23];
@@ -606,57 +606,57 @@ LABEL_12:
       v27 = v5;
       v78 = v7;
       [(PUUserTransformView *)self _updateScrollViewFrame];
-      v28 = [(PUUserTransformView *)self scrollContentView];
+      scrollContentView = [(PUUserTransformView *)self scrollContentView];
       v29 = MEMORY[0x1E695EFF8];
-      if (!v28)
+      if (!scrollContentView)
       {
         v30 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v16, v18}];
-        v28 = v30;
-        if (v21)
+        scrollContentView = v30;
+        if (useDebuggingColors)
         {
-          v31 = [v30 layer];
-          v32 = [MEMORY[0x1E69DC888] purpleColor];
-          [v31 setBorderColor:{objc_msgSend(v32, "CGColor")}];
+          layer3 = [v30 layer];
+          purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+          [layer3 setBorderColor:{objc_msgSend(purpleColor, "CGColor")}];
 
-          v33 = [v28 layer];
-          [v33 setBorderWidth:5.0];
+          layer4 = [scrollContentView layer];
+          [layer4 setBorderWidth:5.0];
         }
 
-        [(_PUUserTransformScrollView *)v23 addSubview:v28];
-        objc_storeStrong(&self->_scrollContentView, v28);
-        v34 = [(PUUserTransformView *)self debugScrollViewContentImage];
-        v35 = [v28 layer];
-        [v35 setContents:{objc_msgSend(v34, "CGImage")}];
+        [(_PUUserTransformScrollView *)v23 addSubview:scrollContentView];
+        objc_storeStrong(&self->_scrollContentView, scrollContentView);
+        debugScrollViewContentImage = [(PUUserTransformView *)self debugScrollViewContentImage];
+        layer5 = [scrollContentView layer];
+        [layer5 setContents:{objc_msgSend(debugScrollViewContentImage, "CGImage")}];
 
-        v36 = [(PUUserTransformView *)self hostedView];
-        if (v36)
+        hostedView = [(PUUserTransformView *)self hostedView];
+        if (hostedView)
         {
-          [v28 bounds];
+          [scrollContentView bounds];
           [(UIView *)self->_hostedView setFrame:?];
-          [v28 addSubview:self->_hostedView];
-          if (v21)
+          [scrollContentView addSubview:self->_hostedView];
+          if (useDebuggingColors)
           {
-            v37 = [MEMORY[0x1E69DC888] greenColor];
-            v38 = [v37 CGColor];
-            [v36 layer];
-            v76 = v22;
-            v40 = v39 = v3;
-            [v40 setBorderColor:v38];
+            greenColor = [MEMORY[0x1E69DC888] greenColor];
+            cGColor = [greenColor CGColor];
+            [hostedView layer];
+            v76 = _scrollView;
+            v40 = v39 = _isUpdatingScrollView;
+            [v40 setBorderColor:cGColor];
 
-            v3 = v39;
-            v22 = v76;
+            _isUpdatingScrollView = v39;
+            _scrollView = v76;
             v41 = 1.0;
           }
 
           else
           {
-            v37 = [v36 layer];
-            [v37 setBorderColor:0];
+            greenColor = [hostedView layer];
+            [greenColor setBorderColor:0];
             v41 = 0.0;
           }
 
-          v42 = [v36 layer];
-          [v42 setBorderWidth:v41];
+          layer6 = [hostedView layer];
+          [layer6 setBorderWidth:v41];
         }
 
         v29 = MEMORY[0x1E695EFF8];
@@ -771,7 +771,7 @@ LABEL_12:
       v87 = v77;
       v88 = v63;
       v89 = v91;
-      v65 = v22;
+      v65 = _scrollView;
       v86 = v65;
       [(PUUserTransformView *)self _performZoomAndScrollChanges:v85];
       [(_PUUserTransformScrollView *)v23 setContentInset:v75, v52, v73, v71];
@@ -791,12 +791,12 @@ LABEL_12:
       v83[2] = __48__PUUserTransformView__updateScrollViewIfNeeded__block_invoke_2;
       v83[3] = &unk_1E7B7FF98;
       v83[4] = self;
-      v84 = v3;
+      v84 = _isUpdatingScrollView;
       [(PUUserTransformView *)self _performStateChanges:v83];
       if ([(PUUserTransformView *)self requireTwoTouchesForPan])
       {
-        v69 = [(_PUUserTransformScrollView *)v23 panGestureRecognizer];
-        [v69 setMinimumNumberOfTouches:2];
+        panGestureRecognizer = [(_PUUserTransformScrollView *)v23 panGestureRecognizer];
+        [panGestureRecognizer setMinimumNumberOfTouches:2];
       }
 
       [(_PUUserTransformScrollView *)v23 px_setPocketsEnabled:[(PUUserTransformView *)self scrollPocketsEnabled]];
@@ -847,11 +847,11 @@ uint64_t __48__PUUserTransformView__updateScrollViewIfNeeded__block_invoke_2(uin
   }
 }
 
-- (CGPoint)_contentOffsetAdjustmentForContentInsets:(UIEdgeInsets)a3
+- (CGPoint)_contentOffsetAdjustmentForContentInsets:(UIEdgeInsets)insets
 {
-  left = a3.left;
-  top = a3.top;
-  [(PUUserTransformView *)self scrollPadding:a3.top];
+  left = insets.left;
+  top = insets.top;
+  [(PUUserTransformView *)self scrollPadding:insets.top];
   v7 = v5 * 0.5 - left;
   v8 = v6 * 0.5 - top;
   result.y = v8;
@@ -861,13 +861,13 @@ uint64_t __48__PUUserTransformView__updateScrollViewIfNeeded__block_invoke_2(uin
 
 - (BOOL)isTrackingZoomGesture
 {
-  v2 = [(PUUserTransformView *)self _scrollView];
-  v3 = [v2 isZooming];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  isZooming = [_scrollView isZooming];
 
-  return v3;
+  return isZooming;
 }
 
-- (UIEdgeInsets)_contentInsetsForContentScale:(double)a3
+- (UIEdgeInsets)_contentInsetsForContentScale:(double)scale
 {
   [(PUUserTransformView *)self scrollPadding];
   v7 = v6;
@@ -883,10 +883,10 @@ uint64_t __48__PUUserTransformView__updateScrollViewIfNeeded__block_invoke_2(uin
   else
   {
     [(PUUserTransformView *)self untransformedContentFrame];
-    v11 = v10 * a3;
-    v13 = v12 * a3;
-    v14 = [(PUUserTransformView *)self _scrollView];
-    [v14 bounds];
+    v11 = v10 * scale;
+    v13 = v12 * scale;
+    _scrollView = [(PUUserTransformView *)self _scrollView];
+    [_scrollView bounds];
     v16 = v15;
     v18 = v17;
 
@@ -910,15 +910,15 @@ uint64_t __48__PUUserTransformView__updateScrollViewIfNeeded__block_invoke_2(uin
     [(PUUserTransformView *)self _setNeedsUpdateZoomAndScroll:0];
     if (![(PUUserTransformView *)self isUserInteracting])
     {
-      v3 = [(PUUserTransformView *)self enabledInteractions];
+      enabledInteractions = [(PUUserTransformView *)self enabledInteractions];
       v4[0] = MEMORY[0x1E69E9820];
       v4[1] = 3221225472;
       v4[2] = __51__PUUserTransformView__updateZoomAndScrollIfNeeded__block_invoke;
       v4[3] = &unk_1E7B7FAF8;
       v4[4] = self;
-      v5 = v3 & 1;
-      v6 = (v3 & 4) != 0;
-      v7 = (v3 & 2) != 0;
+      v5 = enabledInteractions & 1;
+      v6 = (enabledInteractions & 4) != 0;
+      v7 = (enabledInteractions & 2) != 0;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v4];
     }
   }
@@ -954,69 +954,69 @@ void __51__PUUserTransformView__updateZoomAndScrollIfNeeded__block_invoke(uint64
 {
   if ([(PUUserTransformView *)self _numberOfNestedZoomAndScrollChanges]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:843 description:@"not within a zoom and scroll change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:843 description:@"not within a zoom and scroll change block"];
   }
 }
 
-- (void)_setPreferredMaximumZoomScale:(double)a3
+- (void)_setPreferredMaximumZoomScale:(double)scale
 {
   [(PUUserTransformView *)self _assertInsideZoomAndScrollChangeBlock];
-  if (self->__preferredMaximumZoomScale != a3)
+  if (self->__preferredMaximumZoomScale != scale)
   {
-    self->__preferredMaximumZoomScale = a3;
+    self->__preferredMaximumZoomScale = scale;
 
     [(PUUserTransformView *)self _invalidateZoomAndScroll];
   }
 }
 
-- (void)_setPreferredMinimumZoomScale:(double)a3
+- (void)_setPreferredMinimumZoomScale:(double)scale
 {
   [(PUUserTransformView *)self _assertInsideZoomAndScrollChangeBlock];
-  if (self->__preferredMinimumZoomScale != a3)
+  if (self->__preferredMinimumZoomScale != scale)
   {
-    self->__preferredMinimumZoomScale = a3;
+    self->__preferredMinimumZoomScale = scale;
 
     [(PUUserTransformView *)self _invalidateZoomAndScroll];
   }
 }
 
-- (void)setDesiredZoomScale:(double)a3
+- (void)setDesiredZoomScale:(double)scale
 {
   [(PUUserTransformView *)self _assertInsideZoomAndScrollChangeBlock];
-  if (self->_desiredZoomScale != a3)
+  if (self->_desiredZoomScale != scale)
   {
-    self->_desiredZoomScale = a3;
+    self->_desiredZoomScale = scale;
 
     [(PUUserTransformView *)self _invalidateZoomAndScroll];
   }
 }
 
-- (void)_setEnabledInteractions:(unint64_t)a3
+- (void)_setEnabledInteractions:(unint64_t)interactions
 {
   [(PUUserTransformView *)self _assertInsideZoomAndScrollChangeBlock];
-  if (self->_enabledInteractions != a3)
+  if (self->_enabledInteractions != interactions)
   {
-    self->_enabledInteractions = a3;
+    self->_enabledInteractions = interactions;
 
     [(PUUserTransformView *)self _invalidateZoomAndScroll];
   }
 }
 
-- (void)_performZoomAndScrollChanges:(id)a3
+- (void)_performZoomAndScrollChanges:(id)changes
 {
-  v7 = a3;
-  if (!v7)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:789 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:789 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
   }
 
-  v5 = [(PUUserTransformView *)self _numberOfNestedZoomAndScrollChanges];
-  [(PUUserTransformView *)self _setNumberOfNestedZoomAndScrollChanges:v5 + 1];
-  v7[2]();
-  [(PUUserTransformView *)self _setNumberOfNestedZoomAndScrollChanges:v5];
-  if (!v5)
+  _numberOfNestedZoomAndScrollChanges = [(PUUserTransformView *)self _numberOfNestedZoomAndScrollChanges];
+  [(PUUserTransformView *)self _setNumberOfNestedZoomAndScrollChanges:_numberOfNestedZoomAndScrollChanges + 1];
+  changesCopy[2]();
+  [(PUUserTransformView *)self _setNumberOfNestedZoomAndScrollChanges:_numberOfNestedZoomAndScrollChanges];
+  if (!_numberOfNestedZoomAndScrollChanges)
   {
     [(PUUserTransformView *)self _updateZoomAndScrollIfNeeded];
   }
@@ -1066,14 +1066,14 @@ void __51__PUUserTransformView__updateZoomAndScrollIfNeeded__block_invoke(uint64
   if ([(PUUserTransformView *)self _needsUpdateAnimatingZoomEnd])
   {
     [(PUUserTransformView *)self _setNeedsUpdateAnimatingZoomEnd:0];
-    v3 = [(PUUserTransformView *)self _isContentAnimating];
-    v4 = 0;
-    if (v3)
+    _isContentAnimating = [(PUUserTransformView *)self _isContentAnimating];
+    _isUserEndingZoom = 0;
+    if (_isContentAnimating)
     {
-      v4 = [(PUUserTransformView *)self _isUserEndingZoom];
+      _isUserEndingZoom = [(PUUserTransformView *)self _isUserEndingZoom];
     }
 
-    [(PUUserTransformView *)self _setAnimatingZoomEnd:v4];
+    [(PUUserTransformView *)self _setAnimatingZoomEnd:_isUserEndingZoom];
   }
 }
 
@@ -1086,21 +1086,21 @@ void __51__PUUserTransformView__updateZoomAndScrollIfNeeded__block_invoke(uint64
 
 - (double)_currentPresentationZoomScale
 {
-  v3 = [(PUUserTransformView *)self scrollContentView];
-  v4 = [v3 layer];
+  scrollContentView = [(PUUserTransformView *)self scrollContentView];
+  layer = [scrollContentView layer];
 
-  v5 = [v4 presentationLayer];
-  v6 = [(PUUserTransformView *)self _scrollView];
-  v7 = [v6 layer];
+  presentationLayer = [layer presentationLayer];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  layer2 = [_scrollView layer];
 
-  if (v4)
+  if (layer)
   {
-    [v4 transform];
+    [layer transform];
     v8 = *&v25;
-    if (v5)
+    if (presentationLayer)
     {
 LABEL_3:
-      [v5 transform];
+      [presentationLayer transform];
       v9 = *&v17;
       goto LABEL_6;
     }
@@ -1117,7 +1117,7 @@ LABEL_3:
     v8 = 0.0;
     v25 = 0u;
     v26 = 0u;
-    if (v5)
+    if (presentationLayer)
     {
       goto LABEL_3;
     }
@@ -1133,18 +1133,18 @@ LABEL_3:
   v17 = 0u;
   v18 = 0u;
 LABEL_6:
-  v10 = [v4 animationKeys];
-  if (![v10 count])
+  animationKeys = [layer animationKeys];
+  if (![animationKeys count])
   {
-    v11 = [v5 animationKeys];
-    if (![v11 count])
+    animationKeys2 = [presentationLayer animationKeys];
+    if (![animationKeys2 count])
     {
-      v12 = [v7 animationKeys];
-      if (![v12 count])
+      animationKeys3 = [layer2 animationKeys];
+      if (![animationKeys3 count])
       {
-        v14 = [v7 presentationLayer];
-        v15 = [v14 animationKeys];
-        v16 = [v15 count];
+        presentationLayer2 = [layer2 presentationLayer];
+        animationKeys4 = [presentationLayer2 animationKeys];
+        v16 = [animationKeys4 count];
 
         if (!v16)
         {
@@ -1171,45 +1171,45 @@ LABEL_13:
   }
 
   [(PUUserTransformView *)self _setNeedsUpdateContentState:0];
-  v3 = [(PUUserTransformView *)self scrollContentView];
+  scrollContentView = [(PUUserTransformView *)self scrollContentView];
 
-  if (!v3)
+  if (!scrollContentView)
   {
     return;
   }
 
-  v4 = [(PUUserTransformView *)self layer];
-  v5 = [(PUUserTransformView *)self scrollContentView];
-  v6 = [v5 layer];
+  layer = [(PUUserTransformView *)self layer];
+  scrollContentView2 = [(PUUserTransformView *)self scrollContentView];
+  layer2 = [scrollContentView2 layer];
 
-  v7 = [v6 presentationLayer];
-  v8 = v7;
-  if (v7)
+  presentationLayer = [layer2 presentationLayer];
+  v8 = presentationLayer;
+  if (presentationLayer)
   {
-    v9 = v7;
+    v9 = presentationLayer;
   }
 
   else
   {
-    v9 = v6;
+    v9 = layer2;
   }
 
   v10 = v9;
 
-  v11 = [(PUUserTransformView *)self _scrollView];
-  v12 = [v11 layer];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  layer3 = [_scrollView layer];
 
-  [v6 bounds];
+  [layer2 bounds];
   PXRectGetCenter();
-  [v4 convertPoint:v6 fromLayer:?];
+  [layer convertPoint:layer2 fromLayer:?];
   v14 = v13;
   v16 = v15;
   [v10 bounds];
   PXRectGetCenter();
-  [v4 convertPoint:v10 fromLayer:?];
+  [layer convertPoint:v10 fromLayer:?];
   v18 = v17;
   v20 = v19;
-  if (!v6)
+  if (!layer2)
   {
     v21 = 0.0;
     if (v10)
@@ -1222,7 +1222,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [v6 transform];
+  [layer2 transform];
   v21 = v39;
   if (!v10)
   {
@@ -1233,8 +1233,8 @@ LABEL_8:
   [v10 transform];
   v22 = v38;
 LABEL_11:
-  v23 = [v6 animationKeys];
-  if ([v23 count])
+  animationKeys = [layer2 animationKeys];
+  if ([animationKeys count])
   {
 
     [(PUUserTransformView *)self _setContentAnimating:1];
@@ -1242,25 +1242,25 @@ LABEL_11:
 
   else
   {
-    v24 = [v10 animationKeys];
-    if ([v24 count])
+    animationKeys2 = [v10 animationKeys];
+    if ([animationKeys2 count])
     {
       v25 = 1;
     }
 
     else
     {
-      v26 = [v12 animationKeys];
-      if ([v26 count])
+      animationKeys3 = [layer3 animationKeys];
+      if ([animationKeys3 count])
       {
         v25 = 1;
       }
 
       else
       {
-        v37 = [v12 presentationLayer];
-        v27 = [v37 animationKeys];
-        v25 = [v27 count] != 0;
+        presentationLayer2 = [layer3 presentationLayer];
+        animationKeys4 = [presentationLayer2 animationKeys];
+        v25 = [animationKeys4 count] != 0;
       }
     }
 
@@ -1281,8 +1281,8 @@ LABEL_11:
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(PUUserTransformView *)self _scrollView];
-  [v36 setContentInset:{v29, v31, v33, v35}];
+  _scrollView2 = [(PUUserTransformView *)self _scrollView];
+  [_scrollView2 setContentInset:{v29, v31, v33, v35}];
 }
 
 - (void)_invalidateContentState
@@ -1297,9 +1297,9 @@ LABEL_11:
   if ([(PUUserTransformView *)self _needsUpdateShouldTrackContentAnimation])
   {
     [(PUUserTransformView *)self _setNeedsUpdateShouldTrackContentAnimation:0];
-    v3 = [(PUUserTransformView *)self _isContentAnimating];
+    _isContentAnimating = [(PUUserTransformView *)self _isContentAnimating];
 
-    [(PUUserTransformView *)self _setShouldTrackContentAnimation:v3];
+    [(PUUserTransformView *)self _setShouldTrackContentAnimation:_isContentAnimating];
   }
 }
 
@@ -1315,9 +1315,9 @@ LABEL_11:
   if ([(PUUserTransformView *)self _needsUpdateUserInteracting])
   {
     [(PUUserTransformView *)self _setNeedsUpdateUserInteracting:0];
-    v3 = [(PUUserTransformView *)self _isUserPanningOrDecelerating]|| [(PUUserTransformView *)self _isUserZoomingOrBouncing];
+    _isUserZoomingOrBouncing = [(PUUserTransformView *)self _isUserPanningOrDecelerating]|| [(PUUserTransformView *)self _isUserZoomingOrBouncing];
 
-    [(PUUserTransformView *)self _setUserInteracting:v3];
+    [(PUUserTransformView *)self _setUserInteracting:_isUserZoomingOrBouncing];
   }
 }
 
@@ -1333,9 +1333,9 @@ LABEL_11:
   if ([(PUUserTransformView *)self _needsUpdateUserZoomingOrBouncing])
   {
     [(PUUserTransformView *)self _setNeedsUpdateUserZoomingOrBouncing:0];
-    v3 = [(PUUserTransformView *)self _isUserZooming]|| [(PUUserTransformView *)self _isUserEndingZoom]|| [(PUUserTransformView *)self _isAnimatingZoomEnd];
+    _isAnimatingZoomEnd = [(PUUserTransformView *)self _isUserZooming]|| [(PUUserTransformView *)self _isUserEndingZoom]|| [(PUUserTransformView *)self _isAnimatingZoomEnd];
 
-    [(PUUserTransformView *)self _setUserZoomingOrBouncing:v3];
+    [(PUUserTransformView *)self _setUserZoomingOrBouncing:_isAnimatingZoomEnd];
   }
 }
 
@@ -1351,9 +1351,9 @@ LABEL_11:
   if ([(PUUserTransformView *)self _needsUpdateUserPanningOrDecelerating])
   {
     [(PUUserTransformView *)self _setNeedsUpdateUserPanningOrDecelerating:0];
-    v3 = [(PUUserTransformView *)self _isUserPanning]|| [(PUUserTransformView *)self _isUserDeceleratingPan];
+    _isUserDeceleratingPan = [(PUUserTransformView *)self _isUserPanning]|| [(PUUserTransformView *)self _isUserDeceleratingPan];
 
-    [(PUUserTransformView *)self _setUserPanningOrDecelerating:v3];
+    [(PUUserTransformView *)self _setUserPanningOrDecelerating:_isUserDeceleratingPan];
   }
 }
 
@@ -1364,32 +1364,32 @@ LABEL_11:
   [(PUUserTransformView *)self _setNeedsStateUpdate];
 }
 
-- (void)_setUserAffineTransform:(CGAffineTransform *)a3
+- (void)_setUserAffineTransform:(CGAffineTransform *)transform
 {
   v18 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  v5 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v5 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v5;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v6 = *&self->_userAffineTransform.c;
   *&v16.a = *&self->_userAffineTransform.a;
   *&v16.c = v6;
   *&v16.tx = *&self->_userAffineTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v16))
   {
-    v7 = *&a3->a;
-    v8 = *&a3->tx;
-    *&self->_userAffineTransform.c = *&a3->c;
+    v7 = *&transform->a;
+    v8 = *&transform->tx;
+    *&self->_userAffineTransform.c = *&transform->c;
     *&self->_userAffineTransform.tx = v8;
     *&self->_userAffineTransform.a = v7;
     v9 = PLOneUpGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = *&a3->c;
-      *&t1.a = *&a3->a;
+      v10 = *&transform->c;
+      *&t1.a = *&transform->a;
       *&t1.c = v10;
-      *&t1.tx = *&a3->tx;
+      *&t1.tx = *&transform->tx;
       v11 = NSStringFromCGAffineTransform(&t1);
       LODWORD(t1.a) = 134218242;
       *(&t1.a + 4) = self;
@@ -1398,32 +1398,32 @@ LABEL_11:
       _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "%p userAffineTransform=%@", &t1, 0x16u);
     }
 
-    v12 = [(PUUserTransformView *)self isUserInteracting];
-    v13 = [(PUUserTransformView *)self _wasUserInteractingBeforeStateUpdate]|| v12;
-    v14 = [(PUUserTransformView *)self delegate];
-    v15 = *&a3->c;
-    *&t1.a = *&a3->a;
+    isUserInteracting = [(PUUserTransformView *)self isUserInteracting];
+    v13 = [(PUUserTransformView *)self _wasUserInteractingBeforeStateUpdate]|| isUserInteracting;
+    delegate = [(PUUserTransformView *)self delegate];
+    v15 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v15;
-    *&t1.tx = *&a3->tx;
-    [v14 userTransformView:self didChangeUserAffineTransform:&t1 isUserInteracting:v13 & 1];
+    *&t1.tx = *&transform->tx;
+    [delegate userTransformView:self didChangeUserAffineTransform:&t1 isUserInteracting:v13 & 1];
   }
 }
 
-- (void)_setAnimatingZoomEnd:(BOOL)a3
+- (void)_setAnimatingZoomEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__isAnimatingZoomEnd != v3)
+  if (self->__isAnimatingZoomEnd != endCopy)
   {
-    self->__isAnimatingZoomEnd = v3;
+    self->__isAnimatingZoomEnd = endCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = endCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isAnimatingZoomEnd=%i", &v6, 0x12u);
     }
 
@@ -1431,29 +1431,29 @@ LABEL_11:
   }
 }
 
-- (void)_setContentZoomScale:(double)a3
+- (void)_setContentZoomScale:(double)scale
 {
   v13 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__contentZoomScale != a3)
+  if (self->__contentZoomScale != scale)
   {
-    v5 = [(PUUserTransformView *)self _scrollView];
-    v6 = [v5 isZooming];
+    _scrollView = [(PUUserTransformView *)self _scrollView];
+    isZooming = [_scrollView isZooming];
 
-    if (v6)
+    if (isZooming)
     {
       [(PUUserTransformView *)self minimumZoomScale];
-      [(PUUserTransformView *)self setHasUserZoomedIn:v7 < a3];
+      [(PUUserTransformView *)self setHasUserZoomedIn:v7 < scale];
     }
 
-    self->__contentZoomScale = a3;
+    self->__contentZoomScale = scale;
     v8 = PLOneUpGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v9 = 134218240;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
-      v12 = a3;
+      scaleCopy = scale;
       _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEBUG, "%p contentZoomScale=%f", &v9, 0x16u);
     }
 
@@ -1461,10 +1461,10 @@ LABEL_11:
   }
 }
 
-- (void)_setContentCenter:(CGPoint)a3
+- (void)_setContentCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v13 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
   if (x != self->__contentCenter.x || y != self->__contentCenter.y)
@@ -1478,7 +1478,7 @@ LABEL_11:
       v14.y = y;
       v8 = NSStringFromCGPoint(v14);
       v9 = 134218242;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v8;
       _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEBUG, "%p contentCenter=%@", &v9, 0x16u);
@@ -1488,21 +1488,21 @@ LABEL_11:
   }
 }
 
-- (void)_setContentAnimating:(BOOL)a3
+- (void)_setContentAnimating:(BOOL)animating
 {
-  v3 = a3;
+  animatingCopy = animating;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__isContentAnimating != v3)
+  if (self->__isContentAnimating != animatingCopy)
   {
-    self->__isContentAnimating = v3;
+    self->__isContentAnimating = animatingCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = animatingCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isContentAnimating=%i", &v6, 0x12u);
     }
 
@@ -1511,21 +1511,21 @@ LABEL_11:
   }
 }
 
-- (void)_setShouldTrackContentAnimation:(BOOL)a3
+- (void)_setShouldTrackContentAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__shouldTrackContentAnimation != v3)
+  if (self->__shouldTrackContentAnimation != animationCopy)
   {
-    self->__shouldTrackContentAnimation = v3;
+    self->__shouldTrackContentAnimation = animationCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = animationCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p shouldTrackContentAnimation=%i", &v6, 0x12u);
     }
 
@@ -1533,48 +1533,48 @@ LABEL_11:
   }
 }
 
-- (void)_setUserInteracting:(BOOL)a3
+- (void)_setUserInteracting:(BOOL)interacting
 {
-  v3 = a3;
+  interactingCopy = interacting;
   v11 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->_isUserInteracting != v3)
+  if (self->_isUserInteracting != interactingCopy)
   {
-    self->_isUserInteracting = v3;
+    self->_isUserInteracting = interactingCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134218240;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
-      v10 = v3;
+      v10 = interactingCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserInteracting=%i", &v7, 0x12u);
     }
 
     [(PUUserTransformView *)self _invalidateUserAffineTransform];
     if (self->_delegateFlags.respondsToDidChangeIsUserInteracting)
     {
-      v6 = [(PUUserTransformView *)self delegate];
-      [v6 userTransformView:self didChangeIsUserInteracting:v3];
+      delegate = [(PUUserTransformView *)self delegate];
+      [delegate userTransformView:self didChangeIsUserInteracting:interactingCopy];
     }
   }
 }
 
-- (void)_setUserZoomingOrBouncing:(BOOL)a3
+- (void)_setUserZoomingOrBouncing:(BOOL)bouncing
 {
-  v3 = a3;
+  bouncingCopy = bouncing;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__isUserZoomingOrBouncing != v3)
+  if (self->__isUserZoomingOrBouncing != bouncingCopy)
   {
-    self->__isUserZoomingOrBouncing = v3;
+    self->__isUserZoomingOrBouncing = bouncingCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = bouncingCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserZoomingOrBouncing=%i", &v6, 0x12u);
     }
 
@@ -1582,21 +1582,21 @@ LABEL_11:
   }
 }
 
-- (void)_setUserPanningOrDecelerating:(BOOL)a3
+- (void)_setUserPanningOrDecelerating:(BOOL)decelerating
 {
-  v3 = a3;
+  deceleratingCopy = decelerating;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateUpdate];
-  if (self->__isUserPanningOrDecelerating != v3)
+  if (self->__isUserPanningOrDecelerating != deceleratingCopy)
   {
-    self->__isUserPanningOrDecelerating = v3;
+    self->__isUserPanningOrDecelerating = deceleratingCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = deceleratingCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserPanningOrDecelerating=%i", &v6, 0x12u);
     }
 
@@ -1604,26 +1604,26 @@ LABEL_11:
   }
 }
 
-- (void)_setUserEndingZoom:(BOOL)a3
+- (void)_setUserEndingZoom:(BOOL)zoom
 {
-  v3 = a3;
+  zoomCopy = zoom;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateChangeBlock];
-  if (self->__isUserEndingZoom != v3)
+  if (self->__isUserEndingZoom != zoomCopy)
   {
-    self->__isUserEndingZoom = v3;
+    self->__isUserEndingZoom = zoomCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = zoomCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserEndingZoom=%i", &v6, 0x12u);
     }
 
     [(PUUserTransformView *)self _invalidateUserZoomingOrBouncing];
-    if (v3)
+    if (zoomCopy)
     {
       [(PUUserTransformView *)self _invalidateAnimatingZoomEnd];
     }
@@ -1643,47 +1643,47 @@ LABEL_11:
   }
 }
 
-- (void)_setUserZooming:(BOOL)a3
+- (void)_setUserZooming:(BOOL)zooming
 {
-  v3 = a3;
+  zoomingCopy = zooming;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateChangeBlock];
-  if (self->__isUserZooming != v3)
+  if (self->__isUserZooming != zoomingCopy)
   {
-    self->__isUserZooming = v3;
+    self->__isUserZooming = zoomingCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = zoomingCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserZooming=%i", &v6, 0x12u);
     }
 
     [(PUUserTransformView *)self _invalidateUserZoomingOrBouncing];
-    if (v3)
+    if (zoomingCopy)
     {
       [(PUUserTransformView *)self _invalidateEnabledInteractions];
     }
   }
 }
 
-- (void)_setUserDeceleratingPan:(BOOL)a3
+- (void)_setUserDeceleratingPan:(BOOL)pan
 {
-  v3 = a3;
+  panCopy = pan;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateChangeBlock];
-  if (self->__isUserDeceleratingPan != v3)
+  if (self->__isUserDeceleratingPan != panCopy)
   {
-    self->__isUserDeceleratingPan = v3;
+    self->__isUserDeceleratingPan = panCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = panCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserDeceleratingPan=%i", &v6, 0x12u);
     }
 
@@ -1691,21 +1691,21 @@ LABEL_11:
   }
 }
 
-- (void)_setUserPanning:(BOOL)a3
+- (void)_setUserPanning:(BOOL)panning
 {
-  v3 = a3;
+  panningCopy = panning;
   v10 = *MEMORY[0x1E69E9840];
   [(PUUserTransformView *)self _assertInsideStateChangeBlock];
-  if (self->__isUserPanning != v3)
+  if (self->__isUserPanning != panningCopy)
   {
-    self->__isUserPanning = v3;
+    self->__isUserPanning = panningCopy;
     v5 = PLOneUpGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134218240;
-      v7 = self;
+      selfCopy = self;
       v8 = 1024;
-      v9 = v3;
+      v9 = panningCopy;
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%p isUserPanning=%i", &v6, 0x12u);
     }
 
@@ -1717,8 +1717,8 @@ LABEL_11:
 {
   if (![(PUUserTransformView *)self _isUpdatingState]&& [(PUUserTransformView *)self _numberOfNestedStateChanges]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:443 description:@"not within a state update or change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:443 description:@"not within a state update or change block"];
   }
 }
 
@@ -1738,7 +1738,7 @@ LABEL_11:
   {
     if ([(PUUserTransformView *)self _needsStateUpdate])
     {
-      v4 = [(PUUserTransformView *)self _isUpdatingState];
+      _isUpdatingState = [(PUUserTransformView *)self _isUpdatingState];
       [(PUUserTransformView *)self _setUpdatingState:1];
       [(PUUserTransformView *)self _setWasUserInteractingBeforeStateUpdate:[(PUUserTransformView *)self isUserInteracting]];
       [(PUUserTransformView *)self _updateUserPanningOrDeceleratingIfNeeded];
@@ -1749,11 +1749,11 @@ LABEL_11:
       [(PUUserTransformView *)self _updateShouldTrackContentAnimationIfNeeded];
       [(PUUserTransformView *)self _updateUserAffineTransformIfNeeded];
       [(PUUserTransformView *)self _updateEnabledInteractionsIfNeeded];
-      [(PUUserTransformView *)self _setUpdatingState:v4];
+      [(PUUserTransformView *)self _setUpdatingState:_isUpdatingState];
       if ([(PUUserTransformView *)self _needsStateUpdate])
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v5 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:425 description:@"state updates still needed after an update cycle"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:425 description:@"state updates still needed after an update cycle"];
       }
     }
   }
@@ -1777,17 +1777,17 @@ LABEL_11:
   [(PUUserTransformView *)self _setNumberOfNestedStateChanges:v3];
 }
 
-- (void)_performStateChanges:(id)a3
+- (void)_performStateChanges:(id)changes
 {
-  v6 = a3;
-  if (!v6)
+  changesCopy = changes;
+  if (!changesCopy)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
   }
 
   [(PUUserTransformView *)self _willChangeState];
-  v6[2]();
+  changesCopy[2]();
   [(PUUserTransformView *)self _didChangeState];
 }
 
@@ -1795,8 +1795,8 @@ LABEL_11:
 {
   if (![(PUUserTransformView *)self _isUpdatingState])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:375 description:@"not within a state update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:375 description:@"not within a state update"];
   }
 }
 
@@ -1804,18 +1804,18 @@ LABEL_11:
 {
   if ([(PUUserTransformView *)self _numberOfNestedStateChanges]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:370 description:@"not within a state change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:370 description:@"not within a state change block"];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v10.receiver = self;
   v10.super_class = PUUserTransformView;
-  if (![(PUUserTransformView *)&v10 pointInside:a4 withEvent:?])
+  if (![(PUUserTransformView *)&v10 pointInside:event withEvent:?])
   {
     return 0;
   }
@@ -1825,8 +1825,8 @@ LABEL_11:
     return 1;
   }
 
-  v7 = [(PUUserTransformView *)self delegate];
-  v8 = [v7 userTransformView:self shouldReceiveTouchAtPoint:{x, y}];
+  delegate = [(PUUserTransformView *)self delegate];
+  v8 = [delegate userTransformView:self shouldReceiveTouchAtPoint:{x, y}];
 
   return v8;
 }
@@ -1839,9 +1839,9 @@ LABEL_11:
   PXPointAdd();
   v4 = v3;
   v6 = v5;
-  v8 = [(PUUserTransformView *)self _scrollView];
-  v7 = [v8 layer];
-  [v7 setPosition:{v4, v6}];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  layer = [_scrollView layer];
+  [layer setPosition:{v4, v6}];
 }
 
 - (void)layoutSubviews
@@ -1850,8 +1850,8 @@ LABEL_11:
   v13.super_class = PUUserTransformView;
   [(PUUserTransformView *)&v13 layoutSubviews];
   [(PUUserTransformView *)self _updateScrollViewFrame];
-  v3 = [(PUUserTransformView *)self _scrollView];
-  [v3 bounds];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  [_scrollView bounds];
   v5 = v4;
   v7 = v6;
   [(PUUserTransformView *)self bounds];
@@ -1866,19 +1866,19 @@ LABEL_11:
   [(PUUserTransformView *)self _updateScrollViewIfNeeded];
 }
 
-- (void)setDebugScrollViewContentImage:(id)a3
+- (void)setDebugScrollViewContentImage:(id)image
 {
-  v5 = a3;
-  if (self->_debugScrollViewContentImage != v5)
+  imageCopy = image;
+  if (self->_debugScrollViewContentImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_debugScrollViewContentImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_debugScrollViewContentImage, image);
     [(PUUserTransformView *)self _invalidateScrollView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)zoomOut:(BOOL)a3
+- (void)zoomOut:(BOOL)out
 {
   if (([(PUUserTransformView *)self enabledInteractions]& 4) != 0)
   {
@@ -1887,7 +1887,7 @@ LABEL_11:
     v5[2] = __31__PUUserTransformView_zoomOut___block_invoke;
     v5[3] = &unk_1E7B7FF98;
     v5[4] = self;
-    v6 = a3;
+    outCopy = out;
     [(PUUserTransformView *)self _performZoomAndScrollChanges:v5];
   }
 }
@@ -1903,9 +1903,9 @@ void __31__PUUserTransformView_zoomOut___block_invoke(uint64_t a1)
   [*(a1 + 32) _setEnabledInteractions:7];
 }
 
-- (void)zoomInOnLocationFromProvider:(id)a3 animated:(BOOL)a4
+- (void)zoomInOnLocationFromProvider:(id)provider animated:(BOOL)animated
 {
-  v6 = a3;
+  providerCopy = provider;
   if (([(PUUserTransformView *)self enabledInteractions]& 2) != 0)
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -1913,8 +1913,8 @@ void __31__PUUserTransformView_zoomOut___block_invoke(uint64_t a1)
     v7[2] = __61__PUUserTransformView_zoomInOnLocationFromProvider_animated___block_invoke;
     v7[3] = &unk_1E7B805E8;
     v7[4] = self;
-    v8 = v6;
-    v9 = a4;
+    v8 = providerCopy;
+    animatedCopy = animated;
     [(PUUserTransformView *)self _performZoomAndScrollChanges:v7];
   }
 }
@@ -1952,12 +1952,12 @@ void __61__PUUserTransformView_zoomInOnLocationFromProvider_animated___block_inv
   [*(a1 + 32) _setEnabledInteractions:7];
 }
 
-- (void)toggleZoomWithLocationProvider:(id)a3
+- (void)toggleZoomWithLocationProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if ([(PUUserTransformView *)self hasUserZoomedIn])
   {
-    [(PUUserTransformView *)self zoomInOnLocationFromProvider:v4];
+    [(PUUserTransformView *)self zoomInOnLocationFromProvider:providerCopy];
   }
 
   else
@@ -1966,19 +1966,19 @@ void __61__PUUserTransformView_zoomInOnLocationFromProvider_animated___block_inv
   }
 }
 
-- (void)setOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  if (a3.x != self->_offset.x || a3.y != self->_offset.y)
+  if (offset.x != self->_offset.x || offset.y != self->_offset.y)
   {
     v9 = v4;
     v10 = v5;
-    self->_offset = a3;
+    self->_offset = offset;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__PUUserTransformView_setOffset_animated___block_invoke;
     v7[3] = &unk_1E7B7FF98;
     v7[4] = self;
-    v8 = a4;
+    animatedCopy = animated;
     [(PUUserTransformView *)self _performStateChanges:v7];
   }
 }
@@ -2004,14 +2004,14 @@ uint64_t __42__PUUserTransformView_setOffset_animated___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)contentContainsLocationFromProvider:(id)a3
+- (BOOL)contentContainsLocationFromProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(PUUserTransformView *)self scrollContentView];
-  if (v5)
+  providerCopy = provider;
+  scrollContentView = [(PUUserTransformView *)self scrollContentView];
+  if (scrollContentView)
   {
-    [v4 locationInView:v5];
-    v6 = [v5 pointInside:0 withEvent:?];
+    [providerCopy locationInView:scrollContentView];
+    v6 = [scrollContentView pointInside:0 withEvent:?];
   }
 
   else
@@ -2022,12 +2022,12 @@ uint64_t __42__PUUserTransformView_setOffset_animated___block_invoke(uint64_t a1
   return v6;
 }
 
-- (void)_updateScrollViewMinimumZoomScaleAndGoToMinimum:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateScrollViewMinimumZoomScaleAndGoToMinimum:(BOOL)minimum animated:(BOOL)animated
 {
   [(PUUserTransformView *)self minimumZoomScale];
   v8 = v7;
-  v9 = [(PUUserTransformView *)self _scrollView];
-  [v9 zoomScale];
+  _scrollView = [(PUUserTransformView *)self _scrollView];
+  [_scrollView zoomScale];
   v11 = v10;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2035,24 +2035,24 @@ uint64_t __42__PUUserTransformView_setOffset_animated___block_invoke(uint64_t a1
   aBlock[3] = &unk_1E7B7FA58;
   aBlock[4] = self;
   aBlock[5] = v8;
-  v28 = a4;
+  animatedCopy = animated;
   v12 = _Block_copy(aBlock);
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinimum_animated___block_invoke_2;
   v24[3] = &unk_1E7B7FF70;
-  v25 = v9;
+  v25 = _scrollView;
   v26 = v8;
-  v13 = v9;
+  v13 = _scrollView;
   v14 = _Block_copy(v24);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinimum_animated___block_invoke_3;
   v17[3] = &unk_1E7B7FAD0;
-  v22 = a3;
+  minimumCopy = minimum;
   v20 = v8;
   v21 = v11;
-  v23 = a4;
+  animatedCopy2 = animated;
   v17[4] = self;
   v18 = v12;
   v19 = v14;
@@ -2156,34 +2156,34 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   return v2();
 }
 
-- (void)setMinimumZoomScale:(double)a3 animated:(BOOL)a4
+- (void)setMinimumZoomScale:(double)scale animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 < 0.0)
+  animatedCopy = animated;
+  if (scale < 0.0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"minimumZoomScale >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUUserTransformView.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"minimumZoomScale >= 0"}];
   }
 
   minimumZoomScale = self->_minimumZoomScale;
-  if (minimumZoomScale != a3)
+  if (minimumZoomScale != scale)
   {
-    self->_minimumZoomScale = a3;
-    v8 = [(PUUserTransformView *)self _scrollView];
-    [v8 zoomScale];
+    self->_minimumZoomScale = scale;
+    _scrollView = [(PUUserTransformView *)self _scrollView];
+    [_scrollView zoomScale];
     v10 = v9;
 
-    [(PUUserTransformView *)self _updateScrollViewMinimumZoomScaleAndGoToMinimum:v10 == minimumZoomScale animated:v4];
+    [(PUUserTransformView *)self _updateScrollViewMinimumZoomScaleAndGoToMinimum:v10 == minimumZoomScale animated:animatedCopy];
   }
 }
 
-- (void)setScrollPadding:(CGSize)a3
+- (void)setScrollPadding:(CGSize)padding
 {
-  if (a3.width != self->_scrollPadding.width || a3.height != self->_scrollPadding.height)
+  if (padding.width != self->_scrollPadding.width || padding.height != self->_scrollPadding.height)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_scrollPadding = a3;
+    self->_scrollPadding = padding;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__PUUserTransformView_setScrollPadding___block_invoke;
@@ -2193,25 +2193,25 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   }
 }
 
-- (void)setEnabledInteractions:(unint64_t)a3
+- (void)setEnabledInteractions:(unint64_t)interactions
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __46__PUUserTransformView_setEnabledInteractions___block_invoke;
   v3[3] = &unk_1E7B7FF70;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = interactions;
   [(PUUserTransformView *)self _performZoomAndScrollChanges:v3];
 }
 
-- (void)setUserAffineTransform:(CGAffineTransform *)a3
+- (void)setUserAffineTransform:(CGAffineTransform *)transform
 {
   p_userAffineTransform = &self->_userAffineTransform;
   if ((PUAffineTransformIsApproximatelyEqualToTransform() & 1) == 0)
   {
-    v6 = *&a3->a;
-    v7 = *&a3->tx;
-    *&p_userAffineTransform->c = *&a3->c;
+    v6 = *&transform->a;
+    v7 = *&transform->tx;
+    *&p_userAffineTransform->c = *&transform->c;
     *&p_userAffineTransform->tx = v7;
     *&p_userAffineTransform->a = v6;
 
@@ -2219,14 +2219,14 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   }
 }
 
-- (void)setUntransformedContentFrame:(CGRect)a3
+- (void)setUntransformedContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_untransformedContentFrame = &self->_untransformedContentFrame;
-  if (!CGRectEqualToRect(a3, self->_untransformedContentFrame))
+  if (!CGRectEqualToRect(frame, self->_untransformedContentFrame))
   {
     p_untransformedContentFrame->origin.x = x;
     p_untransformedContentFrame->origin.y = y;
@@ -2237,27 +2237,27 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   }
 }
 
-- (void)setRequireTwoTouchesForPan:(BOOL)a3
+- (void)setRequireTwoTouchesForPan:(BOOL)pan
 {
-  if (self->_requireTwoTouchesForPan != a3)
+  if (self->_requireTwoTouchesForPan != pan)
   {
-    self->_requireTwoTouchesForPan = a3;
+    self->_requireTwoTouchesForPan = pan;
     [(PUUserTransformView *)self _invalidateScrollView];
   }
 }
 
-- (void)setContentPixelSize:(CGSize)a3
+- (void)setContentPixelSize:(CGSize)size
 {
-  if (a3.width != self->_contentPixelSize.width || a3.height != self->_contentPixelSize.height)
+  if (size.width != self->_contentPixelSize.width || size.height != self->_contentPixelSize.height)
   {
-    self->_contentPixelSize = a3;
+    self->_contentPixelSize = size;
     [(PUUserTransformView *)self _invalidateScrollView];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -2270,11 +2270,11 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   }
 }
 
-- (PUUserTransformView)initWithFrame:(CGRect)a3
+- (PUUserTransformView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUUserTransformView;
-  result = [(PUUserTransformView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PUUserTransformView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = MEMORY[0x1E695EFD0];
@@ -2295,19 +2295,19 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
   return result;
 }
 
-+ (double)doubleTapZoomScaleForContentSize:(CGSize)a3 inBoundsSize:(CGSize)a4 defaultScale:(double)a5 preferToFillOnDoubleTap:(BOOL)a6
++ (double)doubleTapZoomScaleForContentSize:(CGSize)size inBoundsSize:(CGSize)boundsSize defaultScale:(double)scale preferToFillOnDoubleTap:(BOOL)tap
 {
-  width = a3.width;
-  v7 = a4.width / a3.width;
-  v8 = a4.height / a3.height;
-  if (v7 >= a4.height / a3.height)
+  width = size.width;
+  v7 = boundsSize.width / size.width;
+  v8 = boundsSize.height / size.height;
+  if (v7 >= boundsSize.height / size.height)
   {
     v8 = v7;
   }
 
-  if (v8 <= a5)
+  if (v8 <= scale)
   {
-    result = a5;
+    result = scale;
   }
 
   else
@@ -2315,7 +2315,7 @@ uint64_t __80__PUUserTransformView__updateScrollViewMinimumZoomScaleAndGoToMinim
     result = v8;
   }
 
-  if (a3.height != 0.0 && ((v10 = width / a3.height, v10 > 2.0) || v10 < 0.5) || a6)
+  if (size.height != 0.0 && ((v10 = width / size.height, v10 > 2.0) || v10 < 0.5) || tap)
   {
     if (v8 > 1.01)
     {

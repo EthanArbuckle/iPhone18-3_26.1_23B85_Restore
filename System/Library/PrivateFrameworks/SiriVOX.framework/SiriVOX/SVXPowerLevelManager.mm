@@ -1,9 +1,9 @@
 @interface SVXPowerLevelManager
-- (SVXPowerLevelManager)initWithModule:(id)a3 audioPowerProvider:(id)a4;
-- (SVXPowerLevelManager)initWithModule:(id)a3 audioPowerProvider:(id)a4 powerLevelListener:(id)a5;
-- (void)_beginUpdateAudioPowerWithCompletion:(id)a3;
+- (SVXPowerLevelManager)initWithModule:(id)module audioPowerProvider:(id)provider;
+- (SVXPowerLevelManager)initWithModule:(id)module audioPowerProvider:(id)provider powerLevelListener:(id)listener;
+- (void)_beginUpdateAudioPowerWithCompletion:(id)completion;
 - (void)_endUpdateAudioPower;
-- (void)beginUpdateAudioPowerWithCompletion:(id)a3;
+- (void)beginUpdateAudioPowerWithCompletion:(id)completion;
 - (void)endUpdateAudioPower;
 @end
 
@@ -11,10 +11,10 @@
 
 - (void)_endUpdateAudioPower
 {
-  v3 = [(SVXModule *)self->_module instanceContext];
-  v4 = [v3 supportsAudioPowerUpdate];
+  instanceContext = [(SVXModule *)self->_module instanceContext];
+  supportsAudioPowerUpdate = [instanceContext supportsAudioPowerUpdate];
 
-  if (v4)
+  if (supportsAudioPowerUpdate)
   {
     powerLevelListener = self->_powerLevelListener;
 
@@ -22,17 +22,17 @@
   }
 }
 
-- (void)_beginUpdateAudioPowerWithCompletion:(id)a3
+- (void)_beginUpdateAudioPowerWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(SVXModule *)self->_module instanceContext];
-  if ([v4 supportsAudioPowerUpdate])
+  completionCopy = completion;
+  instanceContext = [(SVXModule *)self->_module instanceContext];
+  if ([instanceContext supportsAudioPowerUpdate])
   {
     audioPowerProvider = self->_audioPowerProvider;
 
     if (audioPowerProvider)
     {
-      [(SVXPowerLevelListener *)self->_powerLevelListener beginListeningToAudioPowerProvider:self->_audioPowerProvider completion:v7];
+      [(SVXPowerLevelListener *)self->_powerLevelListener beginListeningToAudioPowerProvider:self->_audioPowerProvider completion:completionCopy];
       goto LABEL_7;
     }
   }
@@ -41,15 +41,15 @@
   {
   }
 
-  v6 = v7;
-  if (!v7)
+  v6 = completionCopy;
+  if (!completionCopy)
   {
     goto LABEL_8;
   }
 
-  (*(v7 + 2))(v7, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_7:
-  v6 = v7;
+  v6 = completionCopy;
 LABEL_8:
 }
 
@@ -64,21 +64,21 @@ LABEL_8:
     _os_log_impl(&dword_2695B9000, v3, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v4 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__SVXPowerLevelManager_endUpdateAudioPower__block_invoke;
   v6[3] = &unk_279C68FC0;
   v6[4] = self;
-  [v4 performBlock:v6];
+  [performer performBlock:v6];
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginUpdateAudioPowerWithCompletion:(id)a3
+- (void)beginUpdateAudioPowerWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -87,44 +87,44 @@ LABEL_8:
     _os_log_impl(&dword_2695B9000, v5, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v6 = [(SVXModule *)self->_module performer];
+  performer = [(SVXModule *)self->_module performer];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SVXPowerLevelManager_beginUpdateAudioPowerWithCompletion___block_invoke;
   v9[3] = &unk_279C68EF8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  [v6 performBlock:v9];
+  v10 = completionCopy;
+  v7 = completionCopy;
+  [performer performBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (SVXPowerLevelManager)initWithModule:(id)a3 audioPowerProvider:(id)a4 powerLevelListener:(id)a5
+- (SVXPowerLevelManager)initWithModule:(id)module audioPowerProvider:(id)provider powerLevelListener:(id)listener
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  moduleCopy = module;
+  providerCopy = provider;
+  listenerCopy = listener;
   v15.receiver = self;
   v15.super_class = SVXPowerLevelManager;
   v12 = [(SVXPowerLevelManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_module, a3);
-    objc_storeStrong(&v13->_audioPowerProvider, a4);
-    objc_storeStrong(&v13->_powerLevelListener, a5);
+    objc_storeStrong(&v12->_module, module);
+    objc_storeStrong(&v13->_audioPowerProvider, provider);
+    objc_storeStrong(&v13->_powerLevelListener, listener);
   }
 
   return v13;
 }
 
-- (SVXPowerLevelManager)initWithModule:(id)a3 audioPowerProvider:(id)a4
+- (SVXPowerLevelManager)initWithModule:(id)module audioPowerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  moduleCopy = module;
   v8 = objc_alloc_init(SVXPowerLevelListener);
-  v9 = [(SVXPowerLevelManager *)self initWithModule:v7 audioPowerProvider:v6 powerLevelListener:v8];
+  v9 = [(SVXPowerLevelManager *)self initWithModule:moduleCopy audioPowerProvider:providerCopy powerLevelListener:v8];
 
   return v9;
 }

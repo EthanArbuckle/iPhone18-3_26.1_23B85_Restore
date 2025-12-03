@@ -1,9 +1,9 @@
 @interface HealthContentDaemonPluginObject
 - (NSString)pluginIdentifier;
 - (_TtC25HealthContentDaemonPlugin31HealthContentDaemonPluginObject)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
-- (id)newInternalContentDatabaseManagerForProfile:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
+- (id)newInternalContentDatabaseManagerForProfile:(id)profile;
 - (id)taskServerClasses;
 @end
 
@@ -19,26 +19,26 @@
   return v4;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_25154BBAC();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_25154BE28(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  v6 = sub_25154BE28(profileCopy);
 
   return v6;
 }
 
-- (id)newInternalContentDatabaseManagerForProfile:(id)a3
+- (id)newInternalContentDatabaseManagerForProfile:(id)profile
 {
   v4 = objc_allocWithZone(MEMORY[0x277D103A8]);
 

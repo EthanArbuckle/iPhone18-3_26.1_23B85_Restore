@@ -11,7 +11,7 @@
     dispatch_once(&currentContextInfo_onceToken, &__block_literal_global_830);
   }
 
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
   [v3 setVersion:65];
   [v3 setSystemName:currentContextInfo_systemName];
   [v3 setSystemVersion:currentContextInfo_systemVersion];
@@ -21,8 +21,8 @@
   v4 = +[PIGlobalSettings globalSettings];
   [v3 setInfillAlgorithm:{objc_msgSend(v4, "segmentationInfillAlgorithm")}];
 
-  v5 = [MEMORY[0x1E69C0938] deviceConfiguration];
-  [v3 setLayoutConfiguration:v5];
+  deviceConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
+  [v3 setLayoutConfiguration:deviceConfiguration];
 
   return v3;
 }

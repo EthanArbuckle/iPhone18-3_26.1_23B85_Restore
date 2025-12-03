@@ -1,10 +1,10 @@
 @interface AMSKeybag
 + (AMSKeybag)sharedInstance;
 - (AMSKeybag)init;
-- (BOOL)importDiversityBagWithData:(id)a3 error:(id *)a4;
-- (BOOL)importKeybagWithData:(id)a3 error:(id *)a4;
-- (id)keybagSyncDataWithAccountID:(id)a3 transactionType:(unsigned int)a4 error:(id *)a5;
-- (unsigned)fairplayContextWithError:(id *)a3;
+- (BOOL)importDiversityBagWithData:(id)data error:(id *)error;
+- (BOOL)importKeybagWithData:(id)data error:(id *)error;
+- (id)keybagSyncDataWithAccountID:(id)d transactionType:(unsigned int)type error:(id *)error;
+- (unsigned)fairplayContextWithError:(id *)error;
 - (void)resetContext;
 @end
 
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __27__AMSKeybag_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E2A98 != -1)
   {
     dispatch_once(&qword_1ED6E2A98, block);
@@ -54,17 +54,17 @@ uint64_t __27__AMSKeybag_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (unsigned)fairplayContextWithError:(id *)a3
+- (unsigned)fairplayContextWithError:(id *)error
 {
-  v4 = [(AMSKeybag *)self fairPlayContext];
-  LODWORD(a3) = [v4 fairplayContextIDWithError:a3];
+  fairPlayContext = [(AMSKeybag *)self fairPlayContext];
+  LODWORD(error) = [fairPlayContext fairplayContextIDWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)importKeybagWithData:(id)a3 error:(id *)a4
+- (BOOL)importKeybagWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -80,15 +80,15 @@ uint64_t __27__AMSKeybag_sharedInstance__block_invoke(uint64_t a1)
   v11[1] = 3221225472;
   v11[2] = __40__AMSKeybag_importKeybagWithData_error___block_invoke;
   v11[3] = &unk_1E73B86F8;
-  v8 = v6;
+  v8 = dataCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
   v15 = &v20;
   dispatch_sync(dispatchQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v9 = *(v17 + 24);
@@ -133,19 +133,19 @@ LABEL_6:
   }
 }
 
-- (BOOL)importDiversityBagWithData:(id)a3 error:(id *)a4
+- (BOOL)importDiversityBagWithData:(id)data error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 0;
 }
 
-- (id)keybagSyncDataWithAccountID:(id)a3 transactionType:(unsigned int)a4 error:(id *)a5
+- (id)keybagSyncDataWithAccountID:(id)d transactionType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -165,14 +165,14 @@ LABEL_6:
   block[3] = &unk_1E73B8720;
   block[4] = self;
   v15 = &v18;
-  v10 = v8;
-  v17 = a4;
+  v10 = dCopy;
+  typeCopy = type;
   v14 = v10;
   v16 = &v24;
   dispatch_sync(dispatchQueue, block);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
@@ -227,8 +227,8 @@ void __63__AMSKeybag_keybagSyncDataWithAccountID_transactionType_error___block_i
 
 - (void)resetContext
 {
-  v2 = [(AMSKeybag *)self fairPlayContext];
-  [v2 destroyContext];
+  fairPlayContext = [(AMSKeybag *)self fairPlayContext];
+  [fairPlayContext destroyContext];
 }
 
 @end

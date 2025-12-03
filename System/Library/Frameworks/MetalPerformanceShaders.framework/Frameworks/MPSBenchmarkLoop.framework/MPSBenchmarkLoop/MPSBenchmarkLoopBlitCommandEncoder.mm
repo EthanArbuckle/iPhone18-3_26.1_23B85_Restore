@@ -1,14 +1,14 @@
 @interface MPSBenchmarkLoopBlitCommandEncoder
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MPSBenchmarkLoopBlitCommandEncoder)initWithBlitEncoder:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MPSBenchmarkLoopBlitCommandEncoder)initWithBlitEncoder:(id)encoder;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)dealloc;
 - (void)endEncoding;
 @end
 
 @implementation MPSBenchmarkLoopBlitCommandEncoder
 
-- (MPSBenchmarkLoopBlitCommandEncoder)initWithBlitEncoder:(id)a3
+- (MPSBenchmarkLoopBlitCommandEncoder)initWithBlitEncoder:(id)encoder
 {
   v7.receiver = self;
   v7.super_class = MPSBenchmarkLoopBlitCommandEncoder;
@@ -16,9 +16,9 @@
   if (result)
   {
     v5 = result;
-    v6 = a3;
+    encoderCopy = encoder;
     result = v5;
-    v5->_originalCommandEncoder = v6;
+    v5->_originalCommandEncoder = encoderCopy;
   }
 
   return result;
@@ -34,7 +34,7 @@
   MEMORY[0x2821F9670](originalCommandEncoder, sel_endEncoding, v11, v12, v13);
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   originalCommandEncoder = self->_originalCommandEncoder;
   if (objc_opt_respondsToSelector())
@@ -48,7 +48,7 @@
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   originalCommandEncoder = self->_originalCommandEncoder;
   if (objc_opt_respondsToSelector())
@@ -58,7 +58,7 @@
 
   v7.receiver = self;
   v7.super_class = MPSBenchmarkLoopBlitCommandEncoder;
-  return [(MPSBenchmarkLoopBlitCommandEncoder *)&v7 respondsToSelector:a3];
+  return [(MPSBenchmarkLoopBlitCommandEncoder *)&v7 respondsToSelector:selector];
 }
 
 - (void)dealloc

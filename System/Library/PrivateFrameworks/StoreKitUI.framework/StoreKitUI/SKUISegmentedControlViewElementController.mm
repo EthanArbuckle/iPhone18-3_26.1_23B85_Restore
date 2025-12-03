@@ -1,31 +1,31 @@
 @interface SKUISegmentedControlViewElementController
-- (SKUISegmentedControlViewElementController)initWithViewElement:(id)a3 segmentedControl:(id)a4;
+- (SKUISegmentedControlViewElementController)initWithViewElement:(id)element segmentedControl:(id)control;
 - (UIViewController)parentViewController;
 - (id)_segmentedControl;
-- (void)_cancelMenuAction:(id)a3;
-- (void)_connectToSegmentedControl:(id)a3;
+- (void)_cancelMenuAction:(id)action;
+- (void)_connectToSegmentedControl:(id)control;
 - (void)_destroyMenuSheetViewController;
 - (void)_destroyPopoverController;
-- (void)_reloadPropertiesForSegmentedControl:(id)a3;
-- (void)_showMoreListSheetWithTitles:(id)a3 selectedIndex:(int64_t)a4;
-- (void)_showPopoverMoreListWithTitles:(id)a3;
+- (void)_reloadPropertiesForSegmentedControl:(id)control;
+- (void)_showMoreListSheetWithTitles:(id)titles selectedIndex:(int64_t)index;
+- (void)_showPopoverMoreListWithTitles:(id)titles;
 - (void)dealloc;
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4;
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)menuPopoverDidCancel:(id)a3;
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4;
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index;
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view;
+- (void)menuPopoverDidCancel:(id)cancel;
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index;
 - (void)reloadAfterDocumentUpdate;
-- (void)segmentedControl:(id)a3 showMoreListWithTitles:(id)a4;
-- (void)setDefaultMaximumNumberOfVisibleItems:(int64_t)a3;
-- (void)setDesiredSegmentWidth:(double)a3;
+- (void)segmentedControl:(id)control showMoreListWithTitles:(id)titles;
+- (void)setDefaultMaximumNumberOfVisibleItems:(int64_t)items;
+- (void)setDesiredSegmentWidth:(double)width;
 @end
 
 @implementation SKUISegmentedControlViewElementController
 
-- (SKUISegmentedControlViewElementController)initWithViewElement:(id)a3 segmentedControl:(id)a4
+- (SKUISegmentedControlViewElementController)initWithViewElement:(id)element segmentedControl:(id)control
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  controlCopy = control;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUISegmentedControlViewElementController initWithViewElement:segmentedControl:];
@@ -39,11 +39,11 @@
   {
     v9->_defaultMaximumNumberOfVisibleItems = -1;
     v9->_desiredSegmentWidth = 100.0;
-    objc_storeStrong(&v9->_viewElement, a3);
-    if (v8)
+    objc_storeStrong(&v9->_viewElement, element);
+    if (controlCopy)
     {
-      objc_storeStrong(&v10->_segmentedControl, a4);
-      [(SKUISegmentedControlViewElementController *)v10 _connectToSegmentedControl:v8];
+      objc_storeStrong(&v10->_segmentedControl, control);
+      [(SKUISegmentedControlViewElementController *)v10 _connectToSegmentedControl:controlCopy];
     }
   }
 
@@ -71,76 +71,76 @@
   }
 }
 
-- (void)setDefaultMaximumNumberOfVisibleItems:(int64_t)a3
+- (void)setDefaultMaximumNumberOfVisibleItems:(int64_t)items
 {
-  if (self->_defaultMaximumNumberOfVisibleItems != a3)
+  if (self->_defaultMaximumNumberOfVisibleItems != items)
   {
-    self->_defaultMaximumNumberOfVisibleItems = a3;
+    self->_defaultMaximumNumberOfVisibleItems = items;
     [(SKUISegmentedControlViewElementController *)self _reloadPropertiesForSegmentedControl:self->_segmentedControl];
   }
 }
 
-- (void)setDesiredSegmentWidth:(double)a3
+- (void)setDesiredSegmentWidth:(double)width
 {
-  if (self->_desiredSegmentWidth != a3)
+  if (self->_desiredSegmentWidth != width)
   {
-    self->_desiredSegmentWidth = a3;
+    self->_desiredSegmentWidth = width;
     [(SKUIFlexibleSegmentedControl *)self->_segmentedControl setDesiredSegmentWidth:?];
   }
 }
 
-- (void)segmentedControl:(id)a3 showMoreListWithTitles:(id)a4
+- (void)segmentedControl:(id)control showMoreListWithTitles:(id)titles
 {
-  v8 = a3;
-  v6 = a4;
+  controlCopy = control;
+  titlesCopy = titles;
   if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
   {
-    [(SKUISegmentedControlViewElementController *)self _showPopoverMoreListWithTitles:v6];
+    [(SKUISegmentedControlViewElementController *)self _showPopoverMoreListWithTitles:titlesCopy];
   }
 
   else
   {
-    v7 = [v8 itemTitles];
-    -[SKUISegmentedControlViewElementController _showMoreListSheetWithTitles:selectedIndex:](self, "_showMoreListSheetWithTitles:selectedIndex:", v7, [v8 selectedSegmentIndex]);
+    itemTitles = [controlCopy itemTitles];
+    -[SKUISegmentedControlViewElementController _showMoreListSheetWithTitles:selectedIndex:](self, "_showMoreListSheetWithTitles:selectedIndex:", itemTitles, [controlCopy selectedSegmentIndex]);
   }
 }
 
-- (void)menuPopoverDidCancel:(id)a3
+- (void)menuPopoverDidCancel:(id)cancel
 {
   [(SKUIFlexibleSegmentedControl *)self->_segmentedControl cancelMoreList];
 
   [(SKUISegmentedControlViewElementController *)self _destroyPopoverController];
 }
 
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index
 {
-  v6 = [(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListIndex];
-  [(SKUISegmentedControlViewElement *)self->_viewElement dispatchEventOfType:2 forItemAtIndex:v6 + a4];
-  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:v6 + a4];
+  moreListIndex = [(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListIndex];
+  [(SKUISegmentedControlViewElement *)self->_viewElement dispatchEventOfType:2 forItemAtIndex:moreListIndex + index];
+  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:moreListIndex + index];
 
   [(SKUISegmentedControlViewElementController *)self _destroyPopoverController];
 }
 
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view
 {
-  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl frameForSegmentWithIndex:[(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListIndex:a3]];
-  a4->origin.x = v6;
-  a4->origin.y = v7;
-  a4->size.width = v8;
-  a4->size.height = v9;
+  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl frameForSegmentWithIndex:[(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListIndex:popover]];
+  rect->origin.x = v6;
+  rect->origin.y = v7;
+  rect->size.width = v8;
+  rect->size.height = v9;
 }
 
-- (void)menuViewController:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)menuViewController:(id)controller didSelectItemAtIndex:(int64_t)index
 {
   [(SKUISegmentedControlViewElement *)self->_viewElement dispatchEventOfType:2 forItemAtIndex:?];
   [(SKUIFlexibleSegmentedControl *)self->_segmentedControl cancelMoreList];
-  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:a4];
+  [(SKUIFlexibleSegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:index];
   [(SKUIMenuViewController *)self->_menuSheetViewController dismissViewControllerAnimated:1 completion:0];
 
   [(SKUISegmentedControlViewElementController *)self _destroyMenuSheetViewController];
 }
 
-- (void)_cancelMenuAction:(id)a3
+- (void)_cancelMenuAction:(id)action
 {
   [(SKUIFlexibleSegmentedControl *)self->_segmentedControl cancelMoreList];
   [(SKUIMenuViewController *)self->_menuSheetViewController dismissViewControllerAnimated:1 completion:0];
@@ -148,23 +148,23 @@
   [(SKUISegmentedControlViewElementController *)self _destroyMenuSheetViewController];
 }
 
-- (void)_connectToSegmentedControl:(id)a3
+- (void)_connectToSegmentedControl:(id)control
 {
-  v8 = a3;
-  [v8 setDelegate:self];
-  [v8 setDesiredSegmentWidth:self->_desiredSegmentWidth];
-  v4 = [(SKUISegmentedControlViewElement *)self->_viewElement segmentItemTitles];
-  [v8 setItemTitles:v4];
+  controlCopy = control;
+  [controlCopy setDelegate:self];
+  [controlCopy setDesiredSegmentWidth:self->_desiredSegmentWidth];
+  segmentItemTitles = [(SKUISegmentedControlViewElement *)self->_viewElement segmentItemTitles];
+  [controlCopy setItemTitles:segmentItemTitles];
 
-  v5 = [(SKUISegmentedControlViewElement *)self->_viewElement moreListTitle];
-  [v8 setMoreListTitle:v5];
+  moreListTitle = [(SKUISegmentedControlViewElement *)self->_viewElement moreListTitle];
+  [controlCopy setMoreListTitle:moreListTitle];
 
-  [v8 setSelectedSegmentIndex:{-[SKUISegmentedControlViewElement initialSelectedItemIndex](self->_viewElement, "initialSelectedItemIndex")}];
-  v6 = [(SKUISegmentedControlViewElement *)self->_viewElement style];
-  v7 = SKUIViewElementPlainColorWithStyle(v6, 0);
-  [v8 setTintColor:v7];
+  [controlCopy setSelectedSegmentIndex:{-[SKUISegmentedControlViewElement initialSelectedItemIndex](self->_viewElement, "initialSelectedItemIndex")}];
+  style = [(SKUISegmentedControlViewElement *)self->_viewElement style];
+  v7 = SKUIViewElementPlainColorWithStyle(style, 0);
+  [controlCopy setTintColor:v7];
 
-  [(SKUISegmentedControlViewElementController *)self _reloadPropertiesForSegmentedControl:v8];
+  [(SKUISegmentedControlViewElementController *)self _reloadPropertiesForSegmentedControl:controlCopy];
 }
 
 - (void)_destroyMenuSheetViewController
@@ -186,20 +186,20 @@
   self->_popoverMenuViewController = 0;
 }
 
-- (void)_reloadPropertiesForSegmentedControl:(id)a3
+- (void)_reloadPropertiesForSegmentedControl:(id)control
 {
-  v8 = a3;
+  controlCopy = control;
   defaultMaximumNumberOfVisibleItems = [(SKUISegmentedControlViewElement *)self->_viewElement maximumNumberOfVisibleItems];
   if (defaultMaximumNumberOfVisibleItems > 0 || (defaultMaximumNumberOfVisibleItems = self->_defaultMaximumNumberOfVisibleItems, defaultMaximumNumberOfVisibleItems >= 1))
   {
-    [v8 setMaximumNumberOfVisibleItems:defaultMaximumNumberOfVisibleItems];
+    [controlCopy setMaximumNumberOfVisibleItems:defaultMaximumNumberOfVisibleItems];
   }
 
-  v5 = [(SKUISegmentedControlViewElement *)self->_viewElement style];
-  v6 = [v5 valueForStyle:@"itml-segmented-control-width"];
+  style = [(SKUISegmentedControlViewElement *)self->_viewElement style];
+  v6 = [style valueForStyle:@"itml-segmented-control-width"];
   v7 = [v6 isEqualToString:@"full"];
 
-  [v8 setSizesSegmentsToFitWidth:v7];
+  [controlCopy setSizesSegmentsToFitWidth:v7];
 }
 
 - (id)_segmentedControl
@@ -218,37 +218,37 @@
   return segmentedControl;
 }
 
-- (void)_showMoreListSheetWithTitles:(id)a3 selectedIndex:(int64_t)a4
+- (void)_showMoreListSheetWithTitles:(id)titles selectedIndex:(int64_t)index
 {
   if (!self->_menuSheetViewController)
   {
-    v7 = a3;
-    v27 = [(SKUISegmentedControlViewElementController *)self parentViewController];
-    v8 = [v27 navigationController];
-    v9 = v8;
-    if (v8)
+    titlesCopy = titles;
+    parentViewController = [(SKUISegmentedControlViewElementController *)self parentViewController];
+    navigationController = [parentViewController navigationController];
+    v9 = navigationController;
+    if (navigationController)
     {
-      v10 = [v8 navigationBar];
-      v11 = [v10 barStyle];
+      navigationBar = [navigationController navigationBar];
+      barStyle = [navigationBar barStyle];
     }
 
     else
     {
-      v11 = 0;
+      barStyle = 0;
     }
 
-    v12 = [[SKUIMenuViewController alloc] initWithMenuTitles:v7];
+    v12 = [[SKUIMenuViewController alloc] initWithMenuTitles:titlesCopy];
 
     menuSheetViewController = self->_menuSheetViewController;
     self->_menuSheetViewController = v12;
 
     [(SKUIMenuViewController *)self->_menuSheetViewController setDelegate:self];
-    [(SKUIMenuViewController *)self->_menuSheetViewController setIndexOfCheckedTitle:a4];
+    [(SKUIMenuViewController *)self->_menuSheetViewController setIndexOfCheckedTitle:index];
     v14 = self->_menuSheetViewController;
-    v15 = [(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListTitle];
-    [(SKUIMenuViewController *)v14 setTitle:v15];
+    moreListTitle = [(SKUIFlexibleSegmentedControl *)self->_segmentedControl moreListTitle];
+    [(SKUIMenuViewController *)v14 setTitle:moreListTitle];
 
-    if (v11 == 1)
+    if (barStyle == 1)
     {
       [(SKUIMenuViewController *)self->_menuSheetViewController setMenuStyle:1];
     }
@@ -261,11 +261,11 @@
     [(UIBarButtonItem *)self->_menuSheetCancelButtonItem setStyle:2];
     [(UIBarButtonItem *)self->_menuSheetCancelButtonItem setTarget:self];
     v18 = self->_menuSheetCancelButtonItem;
-    v19 = [(SKUISegmentedControlViewElementController *)self clientContext];
-    v20 = v19;
-    if (v19)
+    clientContext = [(SKUISegmentedControlViewElementController *)self clientContext];
+    v20 = clientContext;
+    if (clientContext)
     {
-      [v19 localizedStringForKey:@"CANCEL"];
+      [clientContext localizedStringForKey:@"CANCEL"];
     }
 
     else
@@ -275,29 +275,29 @@
     v21 = ;
     [(UIBarButtonItem *)v18 setTitle:v21];
 
-    v22 = [(SKUIMenuViewController *)self->_menuSheetViewController navigationItem];
-    [v22 setLeftBarButtonItem:self->_menuSheetCancelButtonItem];
+    navigationItem = [(SKUIMenuViewController *)self->_menuSheetViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:self->_menuSheetCancelButtonItem];
 
     v23 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:self->_menuSheetViewController];
-    v24 = [v23 navigationBar];
-    [v24 setBarStyle:v11];
+    navigationBar2 = [v23 navigationBar];
+    [navigationBar2 setBarStyle:barStyle];
 
-    v25 = [v23 view];
-    [v25 setSemanticContentAttribute:storeSemanticContentAttribute()];
+    view = [v23 view];
+    [view setSemanticContentAttribute:storeSemanticContentAttribute()];
 
-    v26 = [v23 navigationBar];
-    [v26 setSemanticContentAttribute:storeSemanticContentAttribute()];
+    navigationBar3 = [v23 navigationBar];
+    [navigationBar3 setSemanticContentAttribute:storeSemanticContentAttribute()];
 
-    [v27 presentViewController:v23 animated:1 completion:0];
+    [parentViewController presentViewController:v23 animated:1 completion:0];
   }
 }
 
-- (void)_showPopoverMoreListWithTitles:(id)a3
+- (void)_showPopoverMoreListWithTitles:(id)titles
 {
   if (!self->_popoverMenuViewController)
   {
-    v5 = a3;
-    v6 = [[SKUIMenuPopoverController alloc] initWithMenuTitles:v5];
+    titlesCopy = titles;
+    v6 = [[SKUIMenuPopoverController alloc] initWithMenuTitles:titlesCopy];
 
     popoverMenuViewController = self->_popoverMenuViewController;
     self->_popoverMenuViewController = v6;

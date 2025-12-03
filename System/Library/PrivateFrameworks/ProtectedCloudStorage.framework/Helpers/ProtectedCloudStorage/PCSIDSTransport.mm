@@ -1,24 +1,24 @@
 @interface PCSIDSTransport
-+ (id)transportWithIDSServiceName:(id)a3;
++ (id)transportWithIDSServiceName:(id)name;
 - (PCSIDSMessagingDelegate)delegate;
 - (PCSIDSMessagingDeviceManager)deviceManager;
-- (PCSIDSTransport)initWithServiceName:(id)a3;
+- (PCSIDSTransport)initWithServiceName:(id)name;
 - (id)copyLocalPairedDevices;
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7 handleReply:(id)a8;
-- (void)sendResponse:(id)a3 toMessage:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDeviceManager:(id)a3;
+- (void)sendMessage:(id)message toDevice:(id)device withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description handleReply:(id)reply;
+- (void)sendResponse:(id)response toMessage:(id)message withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)setDelegate:(id)delegate;
+- (void)setDeviceManager:(id)manager;
 @end
 
 @implementation PCSIDSTransport
 
-+ (id)transportWithIDSServiceName:(id)a3
++ (id)transportWithIDSServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -35,10 +35,10 @@
   block[1] = 3221225472;
   block[2] = sub_10000B23C;
   block[3] = &unk_100039010;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = nameCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -47,9 +47,9 @@
   return v7;
 }
 
-- (PCSIDSTransport)initWithServiceName:(id)a3
+- (PCSIDSTransport)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = PCSIDSTransport;
   v5 = [(PCSIDSTransport *)&v17 init];
@@ -66,15 +66,15 @@
   internalQueue = v5->_internalQueue;
   v5->_internalQueue = v8;
 
-  v10 = [[IDSService alloc] initWithService:v4];
+  v10 = [[IDSService alloc] initWithService:nameCopy];
   service = v5->_service;
   v5->_service = v10;
 
   if (v5->_service)
   {
-    v12 = [(PCSIDSTransport *)v5 service];
-    v13 = [(PCSIDSTransport *)v5 internalQueue];
-    [v12 addDelegate:v5 queue:v13];
+    service = [(PCSIDSTransport *)v5 service];
+    internalQueue = [(PCSIDSTransport *)v5 internalQueue];
+    [service addDelegate:v5 queue:internalQueue];
 
 LABEL_4:
     v14 = v5;
@@ -85,7 +85,7 @@ LABEL_4:
   if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = nameCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failed to create IDSService for %@", buf, 0xCu);
   }
 
@@ -95,81 +95,81 @@ LABEL_8:
   return v14;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PCSIDSTransport *)self internalQueue];
+  delegateCopy = delegate;
+  internalQueue = [(PCSIDSTransport *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B52C;
   v7[3] = &unk_100038CA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = delegateCopy;
+  v6 = delegateCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)setDeviceManager:(id)a3
+- (void)setDeviceManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PCSIDSTransport *)self internalQueue];
+  managerCopy = manager;
+  internalQueue = [(PCSIDSTransport *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B684;
   v7[3] = &unk_100038CA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)sendMessage:(id)a3 toDevice:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7 handleReply:(id)a8
+- (void)sendMessage:(id)message toDevice:(id)device withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description handleReply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(PCSIDSTransport *)self internalQueue];
+  messageCopy = message;
+  deviceCopy = device;
+  descriptionCopy = description;
+  replyCopy = reply;
+  internalQueue = [(PCSIDSTransport *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B9D0;
   block[3] = &unk_100039038;
-  v27 = v16;
-  v28 = v17;
-  v29 = a6;
-  v24 = v15;
-  v25 = self;
-  v30 = a5;
-  v26 = v14;
-  v19 = v16;
-  v20 = v14;
-  v21 = v15;
-  v22 = v17;
-  dispatch_async(v18, block);
+  v27 = descriptionCopy;
+  v28 = replyCopy;
+  timeoutCopy = timeout;
+  v24 = deviceCopy;
+  selfCopy = self;
+  priorityCopy = priority;
+  v26 = messageCopy;
+  v19 = descriptionCopy;
+  v20 = messageCopy;
+  v21 = deviceCopy;
+  v22 = replyCopy;
+  dispatch_async(internalQueue, block);
 }
 
-- (void)sendResponse:(id)a3 toMessage:(id)a4 withPriority:(int64_t)a5 timeout:(double)a6 logDescription:(id)a7
+- (void)sendResponse:(id)response toMessage:(id)message withPriority:(int64_t)priority timeout:(double)timeout logDescription:(id)description
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [v13 idsContext];
-  v16 = [v15 expectsPeerResponse];
+  responseCopy = response;
+  messageCopy = message;
+  descriptionCopy = description;
+  idsContext = [messageCopy idsContext];
+  expectsPeerResponse = [idsContext expectsPeerResponse];
 
-  if (v16)
+  if (expectsPeerResponse)
   {
-    v17 = [(PCSIDSTransport *)self internalQueue];
+    internalQueue = [(PCSIDSTransport *)self internalQueue];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10000C020;
     v21[3] = &unk_100039060;
-    v26 = a6;
-    v22 = v13;
-    v23 = self;
-    v24 = v12;
-    v27 = a5;
-    v25 = v14;
-    dispatch_async(v17, v21);
+    timeoutCopy = timeout;
+    v22 = messageCopy;
+    selfCopy = self;
+    v24 = responseCopy;
+    priorityCopy = priority;
+    v25 = descriptionCopy;
+    dispatch_async(internalQueue, v21);
   }
 
   else
@@ -178,44 +178,44 @@ LABEL_8:
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v13 message];
+      message = [messageCopy message];
       *buf = 138412546;
-      v29 = v20;
+      v29 = message;
       v30 = 2112;
-      v31 = v12;
+      v31 = responseCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Reply attempted to message that did not expect peer response: %@ -> %@", buf, 0x16u);
     }
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [v12 incomingResponseIdentifier];
-  if (v13)
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  if (incomingResponseIdentifier)
   {
-    v14 = [(PCSIDSTransport *)self pendingReplies];
-    v15 = [v14 objectForKeyedSubscript:v13];
+    pendingReplies = [(PCSIDSTransport *)self pendingReplies];
+    delegate2 = [pendingReplies objectForKeyedSubscript:incomingResponseIdentifier];
 
-    if (v15)
+    if (delegate2)
     {
-      v16 = [[PCSIDSMessage alloc] initWithMessage:v10 idsContext:v12 fromID:v11];
+      v16 = [[PCSIDSMessage alloc] initWithMessage:messageCopy idsContext:contextCopy fromID:dCopy];
       v17 = qword_1000407B8;
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [v12 incomingResponseIdentifier];
-        v20 = [v12 outgoingResponseIdentifier];
+        incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+        outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
         v30 = 138412546;
-        v31 = v19;
+        v31 = incomingResponseIdentifier2;
         v32 = 2112;
-        v33 = v20;
+        v33 = outgoingResponseIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Received reply for message ID %@ with ID %@", &v30, 0x16u);
       }
 
-      [(PCSIDSMessage *)v15 runReplyHandlerWithMessage:v16 error:0];
+      [(PCSIDSMessage *)delegate2 runReplyHandlerWithMessage:v16 error:0];
       goto LABEL_14;
     }
 
@@ -223,40 +223,40 @@ LABEL_8:
     if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
     {
       v28 = v27;
-      v29 = [v12 outgoingResponseIdentifier];
+      outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
       v30 = 138412546;
-      v31 = v29;
+      v31 = outgoingResponseIdentifier2;
       v32 = 2112;
-      v33 = v13;
+      v33 = incomingResponseIdentifier;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Got message with ID %@ with response ID %@, but no reply handler available", &v30, 0x16u);
     }
 
-    v25 = [(PCSIDSTransport *)self delegate];
-    v16 = v25;
+    delegate = [(PCSIDSTransport *)self delegate];
+    v16 = delegate;
     v26 = 0;
 LABEL_13:
-    [(PCSIDSMessage *)v25 incomingMessage:v26 fromDevice:v11];
+    [(PCSIDSMessage *)delegate incomingMessage:v26 fromDevice:dCopy];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v15 = [(PCSIDSTransport *)self delegate];
+  delegate2 = [(PCSIDSTransport *)self delegate];
   v21 = qword_1000407B8;
   v22 = os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT);
-  if (v15)
+  if (delegate2)
   {
     if (v22)
     {
       v23 = v21;
-      v24 = [v12 outgoingResponseIdentifier];
+      outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
       v30 = 138412290;
-      v31 = v24;
+      v31 = outgoingResponseIdentifier3;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Received message with ID %@", &v30, 0xCu);
     }
 
-    v16 = [[PCSIDSMessage alloc] initWithMessage:v10 idsContext:v12 fromID:v11];
-    v25 = v15;
+    v16 = [[PCSIDSMessage alloc] initWithMessage:messageCopy idsContext:contextCopy fromID:dCopy];
+    delegate = delegate2;
     v26 = v16;
     goto LABEL_13;
   }
@@ -264,7 +264,7 @@ LABEL_14:
   if (v22)
   {
     v30 = 138412546;
-    v31 = v11;
+    v31 = dCopy;
     v32 = 2112;
     v33 = 0;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Got message from %@ with id %@ with no delegate set", &v30, 0x16u);
@@ -273,18 +273,18 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
-  if (!a6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
-    v12 = [(PCSIDSTransport *)self pendingReplies];
-    v13 = [v12 objectForKeyedSubscript:v10];
+    pendingReplies = [(PCSIDSTransport *)self pendingReplies];
+    v13 = [pendingReplies objectForKeyedSubscript:identifierCopy];
 
     if (v13)
     {
-      [v13 runReplyHandlerWithMessage:0 error:v11];
+      [v13 runReplyHandlerWithMessage:0 error:errorCopy];
     }
 
     else
@@ -293,23 +293,23 @@ LABEL_15:
       if (os_log_type_enabled(qword_1000407B8, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412546;
-        v16 = v10;
+        v16 = identifierCopy;
         v17 = 2112;
-        v18 = v11;
+        v18 = errorCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Error occurred sending message %@: %@", &v15, 0x16u);
       }
     }
   }
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(PCSIDSTransport *)self deviceManager];
-  v7 = v6;
-  if (v6)
+  changedCopy = changed;
+  deviceManager = [(PCSIDSTransport *)self deviceManager];
+  v7 = deviceManager;
+  if (deviceManager)
   {
-    [v6 updatedIDSDevices:v5];
+    [deviceManager updatedIDSDevices:changedCopy];
   }
 
   else
@@ -323,14 +323,14 @@ LABEL_15:
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(PCSIDSTransport *)self deviceManager];
-  v7 = v6;
-  if (v6)
+  changedCopy = changed;
+  deviceManager = [(PCSIDSTransport *)self deviceManager];
+  v7 = deviceManager;
+  if (deviceManager)
   {
-    [v6 updatedIDSDevices:v5];
+    [deviceManager updatedIDSDevices:changedCopy];
   }
 
   else
@@ -346,17 +346,17 @@ LABEL_15:
 
 - (id)copyLocalPairedDevices
 {
-  v2 = [(PCSIDSTransport *)self service];
-  v3 = [v2 devices];
+  service = [(PCSIDSTransport *)self service];
+  devices = [service devices];
 
-  if (v3)
+  if (devices)
   {
     v4 = +[NSMutableArray array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = devices;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {

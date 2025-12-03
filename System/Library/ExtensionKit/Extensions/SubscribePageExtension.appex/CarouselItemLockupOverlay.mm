@@ -1,7 +1,7 @@
 @interface CarouselItemLockupOverlay
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)handleSelection:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)handleSelection:(id)selection;
 - (void)layoutSubviews;
 @end
 
@@ -9,15 +9,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100373CFC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_100373F78(width, height);
   v8 = v7;
 
@@ -28,22 +28,22 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100375220(v7);
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_100375220(eventCopy);
 
   return v9;
 }
 
-- (void)handleSelection:(id)a3
+- (void)handleSelection:(id)selection
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension25CarouselItemLockupOverlay_selectionHandler);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sub_10001B5AC(v3);
     v3(v5);
 

@@ -1,33 +1,33 @@
 @interface TUVouchingEnablementImpl
-- (BOOL)serverBagValueForKey:(id)a3 withDefault:(BOOL)a4;
+- (BOOL)serverBagValueForKey:(id)key withDefault:(BOOL)default;
 - (BOOL)shouldForceVerificationFailures;
 - (TUVouchingEnablementImpl)init;
-- (TUVouchingEnablementImpl)initWithUserDefaults:(id)a3 serverBag:(id)a4;
+- (TUVouchingEnablementImpl)initWithUserDefaults:(id)defaults serverBag:(id)bag;
 @end
 
 @implementation TUVouchingEnablementImpl
 
 - (TUVouchingEnablementImpl)init
 {
-  v3 = [CUTWeakLinkClass() sharedInstance];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [(TUVouchingEnablementImpl *)self initWithUserDefaults:v4 serverBag:v3];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [(TUVouchingEnablementImpl *)self initWithUserDefaults:standardUserDefaults serverBag:cUTWeakLinkClass()];
 
   return v5;
 }
 
-- (TUVouchingEnablementImpl)initWithUserDefaults:(id)a3 serverBag:(id)a4
+- (TUVouchingEnablementImpl)initWithUserDefaults:(id)defaults serverBag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = TUVouchingEnablementImpl;
   v9 = [(TUVouchingEnablementImpl *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_userDefaults, a3);
-    objc_storeStrong(&v10->_serverBag, a4);
+    objc_storeStrong(&v9->_userDefaults, defaults);
+    objc_storeStrong(&v10->_serverBag, bag);
   }
 
   return v10;
@@ -46,16 +46,16 @@
   return v3;
 }
 
-- (BOOL)serverBagValueForKey:(id)a3 withDefault:(BOOL)a4
+- (BOOL)serverBagValueForKey:(id)key withDefault:(BOOL)default
 {
-  v5 = [(FTServerBag *)self->_serverBag objectForKey:a3];
+  v5 = [(FTServerBag *)self->_serverBag objectForKey:key];
   v6 = v5;
   if (v5)
   {
-    a4 = [v5 BOOLValue];
+    default = [v5 BOOLValue];
   }
 
-  return a4;
+  return default;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface CKSettingsController
-- (BOOL)_isApplicationHiddenFromSettings:(id)a3;
-- (id)appPermissionEnabledForSpecifier:(id)a3;
+- (BOOL)_isApplicationHiddenFromSettings:(id)settings;
+- (id)appPermissionEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)fetchAppPermissionGroupsWithCompletionHandler:(id)a3;
-- (void)setAppPermissionEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)fetchAppPermissionGroupsWithCompletionHandler:(id)handler;
+- (void)setAppPermissionEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation CKSettingsController
 
-- (BOOL)_isApplicationHiddenFromSettings:(id)a3
+- (BOOL)_isApplicationHiddenFromSettings:(id)settings
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"com.apple.cloudkit"] & 1) == 0)
+  settingsCopy = settings;
+  if (([settingsCopy isEqualToString:@"com.apple.cloudkit"] & 1) == 0)
   {
     v13 = 0;
-    v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v13];
+    v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:settingsCopy allowPlaceholder:0 error:&v13];
     v6 = v13;
     if (v6)
     {
@@ -27,7 +27,7 @@
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v15 = v3;
+        v15 = settingsCopy;
         v16 = 2112;
         v17 = v6;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Bundle ID %@ doesn't belong to an application: %@", buf, 0x16u);
@@ -36,43 +36,43 @@
 
     else
     {
-      v8 = [v5 applicationState];
-      v9 = [v8 isInstalled];
+      applicationState = [v5 applicationState];
+      isInstalled = [applicationState isInstalled];
 
-      if (v9)
+      if (isInstalled)
       {
-        v10 = [v5 entitlements];
-        v11 = [v10 objectForKey:@"com.apple.private.appleaccount.app-hidden-from-icloud-settings" ofClass:objc_opt_class()];
+        entitlements = [v5 entitlements];
+        v11 = [entitlements objectForKey:@"com.apple.private.appleaccount.app-hidden-from-icloud-settings" ofClass:objc_opt_class()];
 
-        v4 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 LABEL_11:
 
         goto LABEL_12;
       }
     }
 
-    v4 = 0;
+    bOOLValue = 0;
     goto LABEL_11;
   }
 
-  v4 = 1;
+  bOOLValue = 1;
 LABEL_12:
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAppPermissionEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAppPermissionEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v36 = a3;
-  v35 = [a4 propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
-  v5 = [v35 applicationPermissionGroup];
+  enabledCopy = enabled;
+  v35 = [specifier propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
+  applicationPermissionGroup = [v35 applicationPermissionGroup];
   v6 = dispatch_group_create();
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v37 = v5;
-  obj = [v5 containerIDs];
+  v37 = applicationPermissionGroup;
+  obj = [applicationPermissionGroup containerIDs];
   v7 = [obj countByEnumeratingWithState:&v49 objects:v56 count:16];
   if (v7)
   {
@@ -96,18 +96,18 @@ LABEL_12:
         {
           dispatch_group_enter(v6);
           v14 = v13;
-          v15 = [v36 BOOLValue];
+          bOOLValue = [enabledCopy BOOLValue];
           v43[0] = _NSConcreteStackBlock;
           v43[1] = 3221225472;
           v43[2] = sub_6CC0;
           v43[3] = &unk_145D8;
           v44 = v35;
-          v45 = v36;
+          v45 = enabledCopy;
           v46 = v37;
           v47 = v6;
           v48 = v14;
           v16 = v14;
-          [v16 setApplicationPermission:1 enabled:v15 completionHandler:v43];
+          [v16 setApplicationPermission:1 enabled:bOOLValue completionHandler:v43];
         }
 
         else
@@ -158,8 +158,8 @@ LABEL_12:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v20 = [v37 applicationBundleIDs];
-    v21 = [v20 countByEnumeratingWithState:&v39 objects:v53 count:16];
+    applicationBundleIDs = [v37 applicationBundleIDs];
+    v21 = [applicationBundleIDs countByEnumeratingWithState:&v39 objects:v53 count:16];
     if (v21)
     {
       v23 = v21;
@@ -172,13 +172,13 @@ LABEL_12:
         {
           if (*v40 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(applicationBundleIDs);
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
           v27 = +[NSBundle mainBundle];
-          v28 = [v27 bundleIdentifier];
-          v29 = [v26 isEqual:v28];
+          bundleIdentifier = [v27 bundleIdentifier];
+          v29 = [v26 isEqual:bundleIdentifier];
 
           if (v29)
           {
@@ -221,7 +221,7 @@ LABEL_12:
           }
         }
 
-        v23 = [v20 countByEnumeratingWithState:&v39 objects:v53 count:16];
+        v23 = [applicationBundleIDs countByEnumeratingWithState:&v39 objects:v53 count:16];
       }
 
       while (v23);
@@ -229,11 +229,11 @@ LABEL_12:
   }
 }
 
-- (id)appPermissionEnabledForSpecifier:(id)a3
+- (id)appPermissionEnabledForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
-  v4 = [v3 applicationPermissionGroup];
-  if ([v4 enabledPermissions])
+  v3 = [specifier propertyForKey:@"CKSettingsDisplayableAppPermissionGroup"];
+  applicationPermissionGroup = [v3 applicationPermissionGroup];
+  if ([applicationPermissionGroup enabledPermissions])
   {
     v5 = &__kCFBooleanTrue;
   }
@@ -246,17 +246,17 @@ LABEL_12:
   return v5;
 }
 
-- (void)fetchAppPermissionGroupsWithCompletionHandler:(id)a3
+- (void)fetchAppPermissionGroupsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = [[CKContainerID alloc] initWithContainerIdentifier:@"com.apple.cloudkit.ckctl.container" environment:1];
   v5 = [[CKContainer alloc] initWithContainerID:v4];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_7094;
   v7[3] = &unk_14628;
-  v8 = v3;
-  v6 = v3;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 statusGroupsForApplicationPermission:1 completionHandler:v7];
 }
 
@@ -272,33 +272,33 @@ LABEL_12:
   {
     v41 = OBJC_IVAR___PSListController__specifiers;
     v4 = +[CPNetworkObserver sharedNetworkObserver];
-    v40 = [v4 isNetworkReachable];
+    isNetworkReachable = [v4 isNetworkReachable];
 
-    v5 = self;
-    objc_sync_enter(v5);
-    if (v5->_isLookingUpAppNames || v5->_displayableAppPermissionGroups)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_isLookingUpAppNames || selfCopy->_displayableAppPermissionGroups)
     {
-      objc_sync_exit(v5);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      v5->_isLookingUpAppNames = 1;
-      objc_sync_exit(v5);
+      selfCopy->_isLookingUpAppNames = 1;
+      objc_sync_exit(selfCopy);
 
       v48[0] = _NSConcreteStackBlock;
       v48[1] = 3221225472;
       v48[2] = sub_7698;
       v48[3] = &unk_14758;
-      v48[4] = v5;
+      v48[4] = selfCopy;
       v49 = dispatch_semaphore_create(0);
       v33 = v49;
-      [(CKSettingsController *)v5 fetchAppPermissionGroupsWithCompletionHandler:v48];
+      [(CKSettingsController *)selfCopy fetchAppPermissionGroupsWithCompletionHandler:v48];
       v34 = dispatch_time(0, 150000000);
       dispatch_semaphore_wait(v33, v34);
     }
 
-    v6 = v5;
+    v6 = selfCopy;
     objc_sync_enter(v6);
     v36 = [(NSMutableArray *)v6->_displayableAppPermissionGroups copy];
     v6->_needsToDisplayAppPermission = 0;
@@ -338,13 +338,13 @@ LABEL_12:
             }
 
             v14 = *(*(&v44 + 1) + 8 * v13);
-            v15 = [v14 primaryAppNameImage];
-            v16 = [v15 appDisplayName];
+            primaryAppNameImage = [v14 primaryAppNameImage];
+            appDisplayName = [primaryAppNameImage appDisplayName];
 
-            if (v16)
+            if (appDisplayName)
             {
-              v17 = [v14 appNameImages];
-              v18 = [v17 count];
+              appNameImages = [v14 appNameImages];
+              v18 = [appNameImages count];
 
               if (v18)
               {
@@ -377,19 +377,19 @@ LABEL_12:
 
                 v26 = [PSSpecifier preferenceSpecifierNamed:v20 target:v6 set:v22 get:"appPermissionEnabledForSpecifier:" detail:v24 cell:v25 edit:0, v35];
                 v27 = v26;
-                if ((v40 & 1) == 0)
+                if ((isNetworkReachable & 1) == 0)
                 {
                   [v26 setProperty:&__kCFBooleanFalse forKey:v38];
                 }
 
-                v28 = [v14 primaryAppNameImage];
-                v29 = [v28 appImage];
+                primaryAppNameImage2 = [v14 primaryAppNameImage];
+                appImage = [primaryAppNameImage2 appImage];
 
-                if (v29)
+                if (appImage)
                 {
-                  v30 = [v14 primaryAppNameImage];
-                  v31 = [v30 appImage];
-                  [v27 setProperty:v31 forKey:v39];
+                  primaryAppNameImage3 = [v14 primaryAppNameImage];
+                  appImage2 = [primaryAppNameImage3 appImage];
+                  [v27 setProperty:appImage2 forKey:v39];
                 }
 
                 [v27 setProperty:v14 forKey:@"CKSettingsDisplayableAppPermissionGroup"];

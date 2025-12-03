@@ -1,30 +1,30 @@
 @interface CDBAttachmentMigrator
-+ (BOOL)_createNewContainerIfNeeded:(id)a3 error:(id *)a4;
-+ (BOOL)_moveAttachmentWithInfo:(id)a3 error:(id *)a4;
-+ (BOOL)_moveAttachmentsWithInfo:(id)a3 error:(id *)a4;
-+ (id)_attachmentInfoForLegacyAttachmentURL:(id)a3 newAttachmentContainerForStore:(id)a4 newCalendarDataContainer:(id)a5 database:(CalDatabase *)a6 attachmentUUID:(id *)a7;
-+ (id)_infoForAttachmentsInLegacyAttachmentContainerForStore:(id)a3 newAttachmentContainerForStore:(id)a4 newCalendarDataContainer:(id)a5 database:(CalDatabase *)a6;
-+ (void)_moveAttachmentsForStore:(void *)a3 fromLegacyAttachmentContainer:(id)a4 calendarDataContainerProvider:(id)a5 database:(CalDatabase *)a6;
-+ (void)_moveAttachmentsFromLegacyAttachmentContainer:(id)a3 calendarDataContainerProvider:(id)a4 database:(CalDatabase *)a5;
-+ (void)_setFileSizeForAttachmentUUID:(id)a3 attachmentURL:(id)a4 database:(CalDatabase *)a5;
-+ (void)_setFileSizeForAttachmentsWithInfo:(id)a3 database:(CalDatabase *)a4;
-+ (void)_setLocalRelativePathForAttachmentUUID:(id)a3 localRelativePath:(id)a4 database:(CalDatabase *)a5;
-+ (void)_updateLocalRelativeURLForAttachmentsWithInfo:(id)a3 database:(CalDatabase *)a4;
-+ (void)migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:(id)a3;
-+ (void)migrateWithLegacyCalendarDataContainer:(id)a3 calendarDataContainerProvider:(id)a4 database:(CalDatabase *)a5;
++ (BOOL)_createNewContainerIfNeeded:(id)needed error:(id *)error;
++ (BOOL)_moveAttachmentWithInfo:(id)info error:(id *)error;
++ (BOOL)_moveAttachmentsWithInfo:(id)info error:(id *)error;
++ (id)_attachmentInfoForLegacyAttachmentURL:(id)l newAttachmentContainerForStore:(id)store newCalendarDataContainer:(id)container database:(CalDatabase *)database attachmentUUID:(id *)d;
++ (id)_infoForAttachmentsInLegacyAttachmentContainerForStore:(id)store newAttachmentContainerForStore:(id)forStore newCalendarDataContainer:(id)container database:(CalDatabase *)database;
++ (void)_moveAttachmentsForStore:(void *)store fromLegacyAttachmentContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database;
++ (void)_moveAttachmentsFromLegacyAttachmentContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database;
++ (void)_setFileSizeForAttachmentUUID:(id)d attachmentURL:(id)l database:(CalDatabase *)database;
++ (void)_setFileSizeForAttachmentsWithInfo:(id)info database:(CalDatabase *)database;
++ (void)_setLocalRelativePathForAttachmentUUID:(id)d localRelativePath:(id)path database:(CalDatabase *)database;
++ (void)_updateLocalRelativeURLForAttachmentsWithInfo:(id)info database:(CalDatabase *)database;
++ (void)migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:(id)container;
++ (void)migrateWithLegacyCalendarDataContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database;
 @end
 
 @implementation CDBAttachmentMigrator
 
-+ (void)migrateWithLegacyCalendarDataContainer:(id)a3 calendarDataContainerProvider:(id)a4 database:(CalDatabase *)a5
++ (void)migrateWithLegacyCalendarDataContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database
 {
-  v8 = a4;
-  v9 = a3;
-  [a1 migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:v9];
-  v10 = [MEMORY[0x1E6992F10] legacyAttachmentContainerWithBaseURL:v9];
+  providerCopy = provider;
+  containerCopy = container;
+  [self migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:containerCopy];
+  v10 = [MEMORY[0x1E6992F10] legacyAttachmentContainerWithBaseURL:containerCopy];
 
-  [a1 _moveAttachmentsFromLegacyAttachmentContainer:v10 calendarDataContainerProvider:v8 database:a5];
-  if ((CalDatabaseSave(a5) & 1) == 0)
+  [self _moveAttachmentsFromLegacyAttachmentContainer:v10 calendarDataContainerProvider:providerCopy database:database];
+  if ((CalDatabaseSave(database) & 1) == 0)
   {
     v11 = CDBLogHandle;
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_ERROR))
@@ -35,11 +35,11 @@
   }
 }
 
-+ (void)_moveAttachmentsFromLegacyAttachmentContainer:(id)a3 calendarDataContainerProvider:(id)a4 database:(CalDatabase *)a5
++ (void)_moveAttachmentsFromLegacyAttachmentContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = CalDatabaseCopyOfAllStores(a5);
+  containerCopy = container;
+  providerCopy = provider;
+  v9 = CalDatabaseCopyOfAllStores(database);
   if (v9)
   {
     v10 = v9;
@@ -49,7 +49,7 @@
       v12 = Count;
       for (i = 0; i != v12; ++i)
       {
-        [a1 _moveAttachmentsForStore:CFArrayGetValueAtIndex(v10 fromLegacyAttachmentContainer:i) calendarDataContainerProvider:v14 database:{v8, a5}];
+        [self _moveAttachmentsForStore:CFArrayGetValueAtIndex(v10 fromLegacyAttachmentContainer:i) calendarDataContainerProvider:containerCopy database:{providerCopy, database}];
       }
     }
 
@@ -57,15 +57,15 @@
   }
 }
 
-+ (void)_moveAttachmentsForStore:(void *)a3 fromLegacyAttachmentContainer:(id)a4 calendarDataContainerProvider:(id)a5 database:(CalDatabase *)a6
++ (void)_moveAttachmentsForStore:(void *)store fromLegacyAttachmentContainer:(id)container calendarDataContainerProvider:(id)provider database:(CalDatabase *)database
 {
   v57 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = CalStoreCopyUUID(a3);
+  containerCopy = container;
+  providerCopy = provider;
+  v12 = CalStoreCopyUUID(store);
   if (v12)
   {
-    v13 = [v10 URLByAppendingPathComponent:v12];
+    v13 = [containerCopy URLByAppendingPathComponent:v12];
     v14 = v13;
     if (!v13)
     {
@@ -75,15 +75,15 @@
         *buf = 138543618;
         v50 = v12;
         v51 = 2112;
-        v52 = v10;
+        v52 = containerCopy;
         _os_log_impl(&dword_1DEBB1000, v28, OS_LOG_TYPE_ERROR, "Could not get attachment container for store. store uuid = %{public}@, legacy attachment container = %@", buf, 0x16u);
       }
 
       goto LABEL_40;
     }
 
-    v15 = [v13 path];
-    if (!v15)
+    path = [v13 path];
+    if (!path)
     {
       v29 = CDBLogHandle;
       if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
@@ -91,20 +91,20 @@
         *buf = 138543618;
         v50 = v12;
         v51 = 2112;
-        v52 = v10;
+        v52 = containerCopy;
         _os_log_impl(&dword_1DEBB1000, v29, OS_LOG_TYPE_INFO, "Could not get attachment container path for store. store uuid = %{public}@, legacy attachment container = %@", buf, 0x16u);
       }
 
       goto LABEL_39;
     }
 
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v48 = 0;
-    if ([v16 fileExistsAtPath:v15 isDirectory:&v48])
+    if ([defaultManager fileExistsAtPath:path isDirectory:&v48])
     {
       if (v48)
       {
-        v17 = [v11 containerForAccountIdentifier:0];
+        v17 = [providerCopy containerForAccountIdentifier:0];
         if (v17)
         {
           v18 = [MEMORY[0x1E6992F10] attachmentContainerWithBaseURL:v17];
@@ -119,19 +119,19 @@
               v21 = v20;
               v44 = v19;
               v47 = 0;
-              v22 = [a1 _createNewContainerIfNeeded:v20 error:&v47];
+              v22 = [self _createNewContainerIfNeeded:v20 error:&v47];
               v43 = v47;
               if (v22)
               {
                 v23 = v21;
                 v17 = v45;
-                v42 = [a1 _infoForAttachmentsInLegacyAttachmentContainerForStore:v14 newAttachmentContainerForStore:v23 newCalendarDataContainer:v45 database:a6];
-                v24 = [a1 _moveAttachmentsWithInfo:? error:?];
+                v42 = [self _infoForAttachmentsInLegacyAttachmentContainerForStore:v14 newAttachmentContainerForStore:v23 newCalendarDataContainer:v45 database:database];
+                v24 = [self _moveAttachmentsWithInfo:? error:?];
                 v41 = 0;
                 if (v24)
                 {
-                  [a1 _updateLocalRelativeURLForAttachmentsWithInfo:v42 database:a6];
-                  [a1 _setFileSizeForAttachmentsWithInfo:v42 database:a6];
+                  [self _updateLocalRelativeURLForAttachmentsWithInfo:v42 database:database];
+                  [self _setFileSizeForAttachmentsWithInfo:v42 database:database];
                   v25 = v43;
                   v19 = v44;
                 }
@@ -221,7 +221,7 @@
         *buf = 138543618;
         v50 = v12;
         v51 = 2112;
-        v52 = v15;
+        v52 = path;
         v31 = "Legacy attachment container for store is not a directory. store uuid = %{public}@, legacy attachment container for store path = %@";
         v32 = v34;
         v33 = OS_LOG_TYPE_ERROR;
@@ -237,7 +237,7 @@
         *buf = 138543618;
         v50 = v12;
         v51 = 2112;
-        v52 = v15;
+        v52 = path;
         v31 = "Legacy attachment container for store does not exist. store uuid = %{public}@, legacy attachment container for store path = %@";
         v32 = v30;
         v33 = OS_LOG_TYPE_INFO;
@@ -268,15 +268,15 @@ LABEL_41:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_updateLocalRelativeURLForAttachmentsWithInfo:(id)a3 database:(CalDatabase *)a4
++ (void)_updateLocalRelativeURLForAttachmentsWithInfo:(id)info database:(CalDatabase *)database
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__CDBAttachmentMigrator__updateLocalRelativeURLForAttachmentsWithInfo_database___block_invoke;
   v4[3] = &__block_descriptor_48_e44_v32__0__NSString_8__CDBAttachmentInfo_16_B24l;
-  v4[4] = a1;
-  v4[5] = a4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v4];
+  v4[4] = self;
+  v4[5] = database;
+  [info enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __80__CDBAttachmentMigrator__updateLocalRelativeURLForAttachmentsWithInfo_database___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -286,12 +286,12 @@ void __80__CDBAttachmentMigrator__updateLocalRelativeURLForAttachmentsWithInfo_d
   [*(a1 + 32) _setLocalRelativePathForAttachmentUUID:v5 localRelativePath:v6 database:*(a1 + 40)];
 }
 
-+ (void)_setLocalRelativePathForAttachmentUUID:(id)a3 localRelativePath:(id)a4 database:(CalDatabase *)a5
++ (void)_setLocalRelativePathForAttachmentUUID:(id)d localRelativePath:(id)path database:(CalDatabase *)database
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = CalDatabaseCopyAttachmentFileWithUUID(a5, v7);
+  dCopy = d;
+  pathCopy = path;
+  v9 = CalDatabaseCopyAttachmentFileWithUUID(database, dCopy);
   if (v9)
   {
     v10 = v9;
@@ -305,11 +305,11 @@ void __80__CDBAttachmentMigrator__updateLocalRelativeURLForAttachmentsWithInfo_d
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [v8 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
       v15 = 138543618;
-      v16 = v7;
+      v16 = dCopy;
       v17 = 2114;
-      v18 = v13;
+      v18 = stringByDeletingPathExtension;
       _os_log_impl(&dword_1DEBB1000, v12, OS_LOG_TYPE_ERROR, "Could not get attachment. attachment uuid = %{public}@, local relative path = %{public}@", &v15, 0x16u);
     }
   }
@@ -317,15 +317,15 @@ void __80__CDBAttachmentMigrator__updateLocalRelativeURLForAttachmentsWithInfo_d
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_setFileSizeForAttachmentsWithInfo:(id)a3 database:(CalDatabase *)a4
++ (void)_setFileSizeForAttachmentsWithInfo:(id)info database:(CalDatabase *)database
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__CDBAttachmentMigrator__setFileSizeForAttachmentsWithInfo_database___block_invoke;
   v4[3] = &__block_descriptor_48_e44_v32__0__NSString_8__CDBAttachmentInfo_16_B24l;
-  v4[4] = a1;
-  v4[5] = a4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v4];
+  v4[4] = self;
+  v4[5] = database;
+  [info enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 void __69__CDBAttachmentMigrator__setFileSizeForAttachmentsWithInfo_database___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -335,31 +335,31 @@ void __69__CDBAttachmentMigrator__setFileSizeForAttachmentsWithInfo_database___b
   [*(a1 + 32) _setFileSizeForAttachmentUUID:v5 attachmentURL:v6 database:*(a1 + 40)];
 }
 
-+ (void)_setFileSizeForAttachmentUUID:(id)a3 attachmentURL:(id)a4 database:(CalDatabase *)a5
++ (void)_setFileSizeForAttachmentUUID:(id)d attachmentURL:(id)l database:(CalDatabase *)database
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 path];
-  if (v9)
+  dCopy = d;
+  lCopy = l;
+  path = [lCopy path];
+  if (path)
   {
     v10 = CDBLogHandle;
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v21 = v7;
+      v21 = dCopy;
       v22 = 2112;
-      v23 = v8;
+      v23 = lCopy;
       _os_log_impl(&dword_1DEBB1000, v10, OS_LOG_TYPE_INFO, "Setting file size for attachment uuid = %{public}@, attachment url = %@", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v19 = 0;
-    v12 = [MEMORY[0x1E6992F10] getFileSizeForPath:v9 fileManager:v11 error:&v19];
+    v12 = [MEMORY[0x1E6992F10] getFileSizeForPath:path fileManager:defaultManager error:&v19];
     v13 = v19;
     if (v12)
     {
-      v14 = CalDatabaseCopyAttachmentFileWithUUID(a5, v7);
+      v14 = CalDatabaseCopyAttachmentFileWithUUID(database, dCopy);
       if (v14)
       {
         v15 = v14;
@@ -377,9 +377,9 @@ LABEL_12:
       }
 
       *buf = 138543874;
-      v21 = v7;
+      v21 = dCopy;
       v22 = 2112;
-      v23 = v9;
+      v23 = path;
       v24 = 2112;
       v25 = v12;
       v17 = "Could not get attachment. attachment uuid = %{public}@, attachment path = %@, file size = %@";
@@ -396,9 +396,9 @@ LABEL_12:
       *buf = 138412802;
       v21 = v13;
       v22 = 2114;
-      v23 = v7;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v9;
+      v25 = path;
       v17 = "Could not get file size. error = %@, attachment uuid = %{public}@, attachment path = %@";
     }
 
@@ -411,9 +411,9 @@ LABEL_13:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_moveAttachmentsWithInfo:(id)a3 error:(id *)a4
++ (BOOL)_moveAttachmentsWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -429,12 +429,12 @@ LABEL_13:
   v9[2] = __56__CDBAttachmentMigrator__moveAttachmentsWithInfo_error___block_invoke;
   v9[3] = &unk_1E8689600;
   v9[5] = &v16;
-  v9[6] = a1;
+  v9[6] = self;
   v9[4] = &v10;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
-  if (a4)
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v9];
+  if (error)
   {
-    *a4 = v11[5];
+    *error = v11[5];
   }
 
   v7 = *(v17 + 24);
@@ -458,30 +458,30 @@ void __56__CDBAttachmentMigrator__moveAttachmentsWithInfo_error___block_invoke(v
   }
 }
 
-+ (BOOL)_moveAttachmentWithInfo:(id)a3 error:(id *)a4
++ (BOOL)_moveAttachmentWithInfo:(id)info error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 legacyURL];
-  v7 = [v5 url];
+  infoCopy = info;
+  legacyURL = [infoCopy legacyURL];
+  v7 = [infoCopy url];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  LOBYTE(a4) = [v8 moveItemAtURL:v6 toURL:v7 error:a4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LOBYTE(error) = [defaultManager moveItemAtURL:legacyURL toURL:v7 error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)_infoForAttachmentsInLegacyAttachmentContainerForStore:(id)a3 newAttachmentContainerForStore:(id)a4 newCalendarDataContainer:(id)a5 database:(CalDatabase *)a6
++ (id)_infoForAttachmentsInLegacyAttachmentContainerForStore:(id)store newAttachmentContainerForStore:(id)forStore newCalendarDataContainer:(id)container database:(CalDatabase *)database
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  v29 = v10;
+  storeCopy = store;
+  forStoreCopy = forStore;
+  containerCopy = container;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v29 = storeCopy;
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = 0;
-  v28 = v13;
-  v14 = [v13 contentsOfDirectoryAtURL:v10 includingPropertiesForKeys:0 options:4 error:&v36];
+  v28 = defaultManager;
+  v14 = [defaultManager contentsOfDirectoryAtURL:storeCopy includingPropertiesForKeys:0 options:4 error:&v36];
   v27 = v36;
   v32 = 0u;
   v33 = 0u;
@@ -504,7 +504,7 @@ void __56__CDBAttachmentMigrator__moveAttachmentsWithInfo_error___block_invoke(v
 
         v20 = *(*(&v32 + 1) + 8 * i);
         v31 = 0;
-        v21 = [a1 _attachmentInfoForLegacyAttachmentURL:v20 newAttachmentContainerForStore:v11 newCalendarDataContainer:v12 database:a6 attachmentUUID:&v31];
+        v21 = [self _attachmentInfoForLegacyAttachmentURL:v20 newAttachmentContainerForStore:forStoreCopy newCalendarDataContainer:containerCopy database:database attachmentUUID:&v31];
         v22 = v31;
         if (v22)
         {
@@ -534,41 +534,41 @@ void __56__CDBAttachmentMigrator__moveAttachmentsWithInfo_error___block_invoke(v
   return v24;
 }
 
-+ (id)_attachmentInfoForLegacyAttachmentURL:(id)a3 newAttachmentContainerForStore:(id)a4 newCalendarDataContainer:(id)a5 database:(CalDatabase *)a6 attachmentUUID:(id *)a7
++ (id)_attachmentInfoForLegacyAttachmentURL:(id)l newAttachmentContainerForStore:(id)store newCalendarDataContainer:(id)container database:(CalDatabase *)database attachmentUUID:(id *)d
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 path];
-  v15 = v14;
-  if (!v14)
+  lCopy = l;
+  storeCopy = store;
+  containerCopy = container;
+  path = [lCopy path];
+  v15 = path;
+  if (!path)
   {
     v24 = 0;
     goto LABEL_21;
   }
 
-  v16 = [v14 lastPathComponent];
-  v17 = v16;
-  if (v16)
+  lastPathComponent = [path lastPathComponent];
+  v17 = lastPathComponent;
+  if (lastPathComponent)
   {
-    v18 = [v16 stringByDeletingPathExtension];
-    v19 = v18;
-    if (v18)
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+    v19 = stringByDeletingPathExtension;
+    if (stringByDeletingPathExtension)
     {
-      v20 = v18;
-      *a7 = v19;
-      v21 = CalDatabaseCopyAttachmentFileWithUUID(a6, v19);
+      v20 = stringByDeletingPathExtension;
+      *d = v19;
+      v21 = CalDatabaseCopyAttachmentFileWithUUID(database, v19);
       if (v21)
       {
         CFRelease(v21);
-        v22 = [v12 URLByAppendingPathComponent:v17];
+        v22 = [storeCopy URLByAppendingPathComponent:v17];
         if (v22)
         {
-          v23 = [MEMORY[0x1E6992F10] localRelativePathForLocalAbsoluteURL:v22 localBaseURL:v13];
+          v23 = [MEMORY[0x1E6992F10] localRelativePathForLocalAbsoluteURL:v22 localBaseURL:containerCopy];
           if (v23)
           {
-            v24 = [[CDBAttachmentInfo alloc] initWithLegacyURL:v11 url:v22 localRelativePath:v23];
+            v24 = [[CDBAttachmentInfo alloc] initWithLegacyURL:lCopy url:v22 localRelativePath:v23];
           }
 
           else
@@ -581,7 +581,7 @@ void __56__CDBAttachmentMigrator__moveAttachmentsWithInfo_error___block_invoke(v
               v31 = 2112;
               v32 = v22;
               v33 = 2112;
-              v34 = v13;
+              v34 = containerCopy;
               _os_log_impl(&dword_1DEBB1000, v26, OS_LOG_TYPE_ERROR, "Could not get new attachment local relative path. attachment uuid = %@ new attachment url = %@, new calendar data container = %@", &v29, 0x20u);
             }
 
@@ -621,23 +621,23 @@ LABEL_21:
   return v24;
 }
 
-+ (BOOL)_createNewContainerIfNeeded:(id)a3 error:(id *)a4
++ (BOOL)_createNewContainerIfNeeded:(id)needed error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  if (v7)
+  neededCopy = needed;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [neededCopy path];
+  if (path)
   {
     LOBYTE(v12) = 0;
-    if ([v6 fileExistsAtPath:v7 isDirectory:&v12] && (v12 & 1) != 0)
+    if ([defaultManager fileExistsAtPath:path isDirectory:&v12] && (v12 & 1) != 0)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:a4];
+      v8 = [defaultManager createDirectoryAtURL:neededCopy withIntermediateDirectories:1 attributes:0 error:error];
     }
   }
 
@@ -647,7 +647,7 @@ LABEL_21:
     if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v5;
+      v13 = neededCopy;
       _os_log_impl(&dword_1DEBB1000, v9, OS_LOG_TYPE_ERROR, "New container path is nil. new attachment container = %@", &v12, 0xCu);
     }
 
@@ -658,10 +658,10 @@ LABEL_21:
   return v8;
 }
 
-+ (void)migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:(id)a3
++ (void)migrateDataClassProtectionForAttachmentsInLegacyCalendarDataContainer:(id)container
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  containerCopy = container;
   v4 = CDBLogHandle;
   if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
   {
@@ -669,15 +669,15 @@ LABEL_21:
     _os_log_impl(&dword_1DEBB1000, v4, OS_LOG_TYPE_INFO, "Fixing up dataclass protection for calendar attachments", buf, 2u);
   }
 
-  v5 = [MEMORY[0x1E6992F10] legacyAttachmentContainerWithBaseURL:v3];
+  v5 = [MEMORY[0x1E6992F10] legacyAttachmentContainerWithBaseURL:containerCopy];
   v6 = v5;
   if (v5)
   {
     v18 = v5;
-    v19 = v3;
-    v7 = [v5 path];
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 enumeratorAtPath:v7];
+    v19 = containerCopy;
+    path = [v5 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager enumeratorAtPath:path];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -696,9 +696,9 @@ LABEL_21:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [v7 stringByAppendingPathComponent:*(*(&v21 + 1) + 8 * i)];
+          v14 = [path stringByAppendingPathComponent:*(*(&v21 + 1) + 8 * i)];
           v20 = 0;
-          if ([v8 fileExistsAtPath:v14 isDirectory:&v20] && (v20 & 1) == 0)
+          if ([defaultManager fileExistsAtPath:v14 isDirectory:&v20] && (v20 & 1) == 0)
           {
             v15 = CDBLogHandle;
             if (os_log_type_enabled(CDBLogHandle, OS_LOG_TYPE_INFO))
@@ -719,7 +719,7 @@ LABEL_21:
     }
 
     v6 = v18;
-    v3 = v19;
+    containerCopy = v19;
   }
 
   else

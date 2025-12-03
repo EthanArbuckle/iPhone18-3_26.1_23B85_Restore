@@ -1,5 +1,5 @@
 @interface BSUIMappedImageCacheRegistry
-- (id)_initWithCachesPath:(id)a1;
+- (id)_initWithCachesPath:(id)path;
 - (id)tmpPath;
 @end
 
@@ -8,14 +8,14 @@
 - (id)tmpPath
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 16);
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 16);
     if (!v2)
     {
       v3 = objc_autoreleasePoolPush();
-      v4 = [*(a1 + 8) URLByAppendingPathComponent:@"MappedImageCache" isDirectory:1];
+      v4 = [*(self + 8) URLByAppendingPathComponent:@"MappedImageCache" isDirectory:1];
       v5 = objc_opt_new();
       v27 = 0;
       v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v27];
@@ -34,7 +34,7 @@
           v34 = 2114;
           v35 = v24;
           v36 = 2048;
-          v37 = a1;
+          selfCopy = self;
           v38 = 2114;
           v39 = @"BSUIMappedImageCache.m";
           v40 = 1024;
@@ -57,15 +57,15 @@
       if (v9)
       {
         v10 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v9 isDirectory:1 relativeToURL:0];
-        v11 = [v10 path];
-        v12 = [v11 copy];
-        v13 = *(a1 + 16);
-        *(a1 + 16) = v12;
+        path = [v10 path];
+        v12 = [path copy];
+        v13 = *(self + 16);
+        *(self + 16) = v12;
 
         v14 = BSLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = *(a1 + 8);
+          v15 = *(self + 8);
           *buf = 138412546;
           v29 = v4;
           v30 = 2112;
@@ -78,13 +78,13 @@
       {
         v16 = NSTemporaryDirectory();
         v17 = [v16 copy];
-        v18 = *(a1 + 16);
-        *(a1 + 16) = v17;
+        v18 = *(self + 16);
+        *(self + 16) = v17;
 
         v14 = BSLogCommon();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
         {
-          v26 = *(a1 + 16);
+          v26 = *(self + 16);
           *buf = 138412546;
           v29 = v4;
           v30 = 2112;
@@ -94,11 +94,11 @@
       }
 
       objc_autoreleasePoolPop(v3);
-      v2 = *(a1 + 16);
+      v2 = *(self + 16);
     }
 
     v19 = v2;
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 
   else
@@ -109,30 +109,30 @@
   return v19;
 }
 
-- (id)_initWithCachesPath:(id)a1
+- (id)_initWithCachesPath:(id)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
-    v9.receiver = a1;
+    v9.receiver = path;
     v9.super_class = BSUIMappedImageCacheRegistry;
-    a1 = objc_msgSendSuper2(&v9, sel_init);
-    if (a1)
+    path = objc_msgSendSuper2(&v9, sel_init);
+    if (path)
     {
       v4 = [v3 copy];
-      v5 = *(a1 + 1);
-      *(a1 + 1) = v4;
+      v5 = *(path + 1);
+      *(path + 1) = v4;
 
-      v6 = *(a1 + 2);
-      *(a1 + 2) = 0;
+      v6 = *(path + 2);
+      *(path + 2) = 0;
 
-      *(a1 + 8) = 0;
-      v7 = *(a1 + 3);
-      *(a1 + 3) = 0;
+      *(path + 8) = 0;
+      v7 = *(path + 3);
+      *(path + 3) = 0;
     }
   }
 
-  return a1;
+  return path;
 }
 
 @end

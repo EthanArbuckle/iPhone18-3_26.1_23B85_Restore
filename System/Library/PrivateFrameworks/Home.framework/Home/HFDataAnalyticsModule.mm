@@ -1,29 +1,29 @@
 @interface HFDataAnalyticsModule
-- (HFDataAnalyticsModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HFDataAnalyticsModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 @end
 
 @implementation HFDataAnalyticsModule
 
-- (HFDataAnalyticsModule)initWithItemUpdater:(id)a3 mediaProfileContainer:(id)a4
+- (HFDataAnalyticsModule)initWithItemUpdater:(id)updater mediaProfileContainer:(id)container
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  updaterCopy = updater;
+  containerCopy = container;
+  if (!containerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
   }
 
   v15.receiver = self;
   v15.super_class = HFDataAnalyticsModule;
-  v9 = [(HFItemModule *)&v15 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v15 initWithItemUpdater:updaterCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mediaProfileContainer, a4);
-    v11 = [[HFDataAnalyticsLogItemProvider alloc] initWithMediaProfileContainer:v8];
+    objc_storeStrong(&v9->_mediaProfileContainer, container);
+    v11 = [[HFDataAnalyticsLogItemProvider alloc] initWithMediaProfileContainer:containerCopy];
     logItemProvider = v10->_logItemProvider;
     v10->_logItemProvider = v11;
   }
@@ -34,20 +34,20 @@
 - (id)itemProviders
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HFDataAnalyticsModule *)self logItemProvider];
-  v4 = [v2 setWithObject:v3];
+  logItemProvider = [(HFDataAnalyticsModule *)self logItemProvider];
+  v4 = [v2 setWithObject:logItemProvider];
 
   return v4;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = [(HFItemSection *)[HFMutableItemSection alloc] initWithIdentifier:@"DataAnalyticsLogSection"];
-  v5 = [v3 allObjects];
+  allObjects = [itemsCopy allObjects];
 
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_5];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_5];
   [(HFItemSection *)v4 setItems:v6];
 
   v10[0] = v4;

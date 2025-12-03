@@ -1,40 +1,40 @@
 @interface SLDCollaborationAttributionViewRenderer
-+ (id)accessibilityLabelForTag:(id)a3;
-+ (id)collaboratorsStringForTag:(id)a3 prefixingWith:(BOOL)a4;
++ (id)accessibilityLabelForTag:(id)tag;
++ (id)collaboratorsStringForTag:(id)tag prefixingWith:(BOOL)with;
 - (BOOL)shouldShowLabels;
 - (BOOL)shouldShowSubtitle;
 - (CGImage)newAvatarImage;
-- (CGImage)newAvatarImageForRecipientDrawingMetadata:(id)a3 allowMonogram:(BOOL)a4;
-- (CGImage)newGroupPhotoImageFromFileURL:(id)a3;
-- (CGImage)newImageFromData:(id)a3;
-- (CGImage)newMonogramImageForContact:(id)a3;
-- (CGImage)newSnowglobeImageWithCGImages:(id)a3;
-- (CGRect)drawAvatarWithImageRef:(CGImage *)a3 inContext:(CGContext *)a4;
-- (CGRect)drawGenericGlyphInContext:(CGContext *)a3;
-- (SLDCollaborationAttributionViewRenderer)initWithStyle:(id)a3 tag:(id)a4;
-- (double)heightForLine:(__CTLine *)a3 withOptions:(unint64_t)a4;
+- (CGImage)newAvatarImageForRecipientDrawingMetadata:(id)metadata allowMonogram:(BOOL)monogram;
+- (CGImage)newGroupPhotoImageFromFileURL:(id)l;
+- (CGImage)newImageFromData:(id)data;
+- (CGImage)newMonogramImageForContact:(id)contact;
+- (CGImage)newSnowglobeImageWithCGImages:(id)images;
+- (CGRect)drawAvatarWithImageRef:(CGImage *)ref inContext:(CGContext *)context;
+- (CGRect)drawGenericGlyphInContext:(CGContext *)context;
+- (SLDCollaborationAttributionViewRenderer)initWithStyle:(id)style tag:(id)tag;
+- (double)heightForLine:(__CTLine *)line withOptions:(unint64_t)options;
 - (id)collaboratorsString;
 - (id)withCollaboratorsString;
-- (void)drawLine:(__CTLine *)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5;
-- (void)renderInContext:(CGContext *)a3;
+- (void)drawLine:(__CTLine *)line inRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)renderInContext:(CGContext *)context;
 @end
 
 @implementation SLDCollaborationAttributionViewRenderer
 
-- (SLDCollaborationAttributionViewRenderer)initWithStyle:(id)a3 tag:(id)a4
+- (SLDCollaborationAttributionViewRenderer)initWithStyle:(id)style tag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = SLDCollaborationAttributionViewRenderer;
   v9 = [(SLDCollaborationAttributionViewRenderer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_slotStyle, a3);
-    objc_storeStrong(&v10->_slotTag, a4);
-    v10->_RTL = [v7 layoutDirection] == 1;
-    v11 = [[SLCollaborationAttributionViewMetricsProvider alloc] initWithSlotStyle:v7 tag:v8];
+    objc_storeStrong(&v9->_slotStyle, style);
+    objc_storeStrong(&v10->_slotTag, tag);
+    v10->_RTL = [styleCopy layoutDirection] == 1;
+    v11 = [[SLCollaborationAttributionViewMetricsProvider alloc] initWithSlotStyle:styleCopy tag:tagCopy];
     metricsProvider = v10->_metricsProvider;
     v10->_metricsProvider = v11;
   }
@@ -42,14 +42,14 @@
   return v10;
 }
 
-- (void)renderInContext:(CGContext *)a3
+- (void)renderInContext:(CGContext *)context
 {
   v77 = *MEMORY[0x277D85DE8];
   v5 = SLDaemonLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v71 = 138412290;
-    v72 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_DEFAULT, "[%@] SLDCollaborationAttributionViewRenderer about to render.", &v71, 0xCu);
   }
 
@@ -57,11 +57,11 @@
   v7 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v9 = *(MEMORY[0x277CBF3A0] + 24);
-  v10 = [(SLDCollaborationAttributionViewRenderer *)self newAvatarImage];
-  if (v10)
+  newAvatarImage = [(SLDCollaborationAttributionViewRenderer *)self newAvatarImage];
+  if (newAvatarImage)
   {
-    v11 = v10;
-    [(SLDCollaborationAttributionViewRenderer *)self drawAvatarWithImageRef:v10 inContext:a3];
+    v11 = newAvatarImage;
+    [(SLDCollaborationAttributionViewRenderer *)self drawAvatarWithImageRef:newAvatarImage inContext:context];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -71,8 +71,8 @@
 
   else
   {
-    v20 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-    v21 = -[SLDCollaborationAttributionViewRenderer shouldShowGenericIconIfApplicableForVariant:](self, "shouldShowGenericIconIfApplicableForVariant:", [v20 variant]);
+    slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+    v21 = -[SLDCollaborationAttributionViewRenderer shouldShowGenericIconIfApplicableForVariant:](self, "shouldShowGenericIconIfApplicableForVariant:", [slotTag variant]);
 
     v22 = SLDaemonLogHandle();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
@@ -81,11 +81,11 @@
       if (v23)
       {
         v71 = 138412290;
-        v72 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_231772000, v22, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Showing generic glyph because avatar image was nil.", &v71, 0xCu);
       }
 
-      [(SLDCollaborationAttributionViewRenderer *)self drawGenericGlyphInContext:a3];
+      [(SLDCollaborationAttributionViewRenderer *)self drawGenericGlyphInContext:context];
       v13 = v24;
       v15 = v25;
       v17 = v26;
@@ -97,7 +97,7 @@
       if (v23)
       {
         v71 = 138412290;
-        v72 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_231772000, v22, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Not drawing an avatar because avatar image was nil and generic icon was not supported for the current variant.", &v71, 0xCu);
       }
 
@@ -110,22 +110,22 @@
 
   if ([(SLDCollaborationAttributionViewRenderer *)self shouldShowLabels])
   {
-    v28 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-    if ([v28 variant] == 2)
+    slotTag2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+    if ([slotTag2 variant] == 2)
     {
     }
 
     else
     {
-      v29 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-      v30 = [v29 variant];
+      slotTag3 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+      variant = [slotTag3 variant];
 
-      if (v30 != 5)
+      if (variant != 5)
       {
-        v34 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-        v31 = [v34 title];
+        slotTag4 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+        title = [slotTag4 title];
 
-        if (v31)
+        if (title)
         {
           goto LABEL_17;
         }
@@ -134,12 +134,12 @@
       }
     }
 
-    v31 = [(SLDCollaborationAttributionViewRenderer *)self collaboratorsString];
-    if (v31)
+    title = [(SLDCollaborationAttributionViewRenderer *)self collaboratorsString];
+    if (title)
     {
 LABEL_17:
-      v32 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-      v33 = [v32 singleLineTitleForString:v31];
+      metricsProvider = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+      v33 = [metricsProvider singleLineTitleForString:title];
 
       goto LABEL_20;
     }
@@ -149,11 +149,11 @@ LABEL_19:
 LABEL_20:
     if ([(SLDCollaborationAttributionViewRenderer *)self shouldShowSubtitle])
     {
-      v35 = [(SLDCollaborationAttributionViewRenderer *)self withCollaboratorsString];
-      if (v35)
+      withCollaboratorsString = [(SLDCollaborationAttributionViewRenderer *)self withCollaboratorsString];
+      if (withCollaboratorsString)
       {
-        v36 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-        v37 = [v36 singleLineSubtitleForString:v35];
+        metricsProvider2 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+        v37 = [metricsProvider2 singleLineSubtitleForString:withCollaboratorsString];
       }
 
       else
@@ -178,8 +178,8 @@ LABEL_20:
     v38 = 0.0;
     if (!CGRectEqualToRect(v78, v80))
     {
-      v39 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-      [v39 avatarLabelSpace];
+      metricsProvider3 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+      [metricsProvider3 avatarLabelSpace];
       v38 = v40;
     }
 
@@ -195,8 +195,8 @@ LABEL_20:
     v46 = v43 + v44;
     if (v44 > 0.0)
     {
-      v47 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-      [v47 titleSubtitleSpace];
+      metricsProvider4 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+      [metricsProvider4 titleSubtitleSpace];
       v46 = v46 + v48;
     }
 
@@ -213,22 +213,22 @@ LABEL_20:
 
     if (v33)
     {
-      v51 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-      [v51 drawingSize];
+      metricsProvider5 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+      [metricsProvider5 drawingSize];
       v53 = v52 - v49;
 
-      [(SLDCollaborationAttributionViewRenderer *)self drawLine:v33 inRect:a3 inContext:v49, v50, v53, v43];
+      [(SLDCollaborationAttributionViewRenderer *)self drawLine:v33 inRect:context inContext:v49, v50, v53, v43];
       if (v37)
       {
 LABEL_35:
-        v54 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-        [v54 titleSubtitleSpace];
+        metricsProvider6 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+        [metricsProvider6 titleSubtitleSpace];
         v56 = v43 + v50 + v55;
-        v57 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-        [v57 drawingSize];
+        metricsProvider7 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+        [metricsProvider7 drawingSize];
         v59 = v58 - v49;
 
-        [(SLDCollaborationAttributionViewRenderer *)self drawLine:v37 inRect:a3 inContext:v49, v56, v59, v45];
+        [(SLDCollaborationAttributionViewRenderer *)self drawLine:v37 inRect:context inContext:v49, v56, v59, v45];
 LABEL_42:
 
         goto LABEL_43;
@@ -240,16 +240,16 @@ LABEL_42:
       v60 = SLDaemonLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
       {
-        v61 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-        v62 = [v61 conversationDrawingMetadata];
-        v63 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-        v64 = [v63 collaboratorDisplayNames];
+        slotTag5 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+        conversationDrawingMetadata = [slotTag5 conversationDrawingMetadata];
+        slotTag6 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+        collaboratorDisplayNames = [slotTag6 collaboratorDisplayNames];
         v71 = 138412802;
-        v72 = self;
+        selfCopy5 = self;
         v73 = 2112;
-        v74 = v62;
+        v74 = conversationDrawingMetadata;
         v75 = 2112;
-        v76 = v64;
+        v76 = collaboratorDisplayNames;
         _os_log_impl(&dword_231772000, v60, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer failed to draw a title. conversationMetadata:%@ collaborationDisplayNames:%@.", &v71, 0x20u);
       }
 
@@ -262,16 +262,16 @@ LABEL_42:
     v65 = SLDaemonLogHandle();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
     {
-      v66 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-      v67 = [v66 conversationDrawingMetadata];
-      v68 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-      v69 = [v68 collaboratorDisplayNames];
+      slotTag7 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+      conversationDrawingMetadata2 = [slotTag7 conversationDrawingMetadata];
+      slotTag8 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+      collaboratorDisplayNames2 = [slotTag8 collaboratorDisplayNames];
       v71 = 138412802;
-      v72 = self;
+      selfCopy5 = self;
       v73 = 2112;
-      v74 = v67;
+      v74 = conversationDrawingMetadata2;
       v75 = 2112;
-      v76 = v69;
+      v76 = collaboratorDisplayNames2;
       _os_log_impl(&dword_231772000, v65, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer failed to draw a subtitle. conversationMetadata:%@ collaborationDisplayNames:%@.", &v71, 0x20u);
     }
 
@@ -282,14 +282,14 @@ LABEL_43:
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (CGImage)newGroupPhotoImageFromFileURL:(id)a3
+- (CGImage)newGroupPhotoImageFromFileURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v11 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:1 error:&v11];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:&v11];
     v6 = v11;
     if (v5)
     {
@@ -302,9 +302,9 @@ LABEL_43:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v13 = self;
+        selfCopy = self;
         v14 = 2112;
-        v15 = v4;
+        v15 = lCopy;
         v16 = 2112;
         v17 = v6;
         _os_log_error_impl(&dword_231772000, v8, OS_LOG_TYPE_ERROR, "[%@] SLDCollaborationAttributionViewRenderer failed to retrieve group photo data from file URL %@. error: %@", buf, 0x20u);
@@ -323,15 +323,15 @@ LABEL_43:
   return v7;
 }
 
-- (CGImage)newSnowglobeImageWithCGImages:(id)a3
+- (CGImage)newSnowglobeImageWithCGImages:(id)images
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CFBF18] maxContacts];
-  v6 = v4;
-  if ([v4 count] > v5)
+  imagesCopy = images;
+  maxContacts = [MEMORY[0x277CFBF18] maxContacts];
+  v6 = imagesCopy;
+  if ([imagesCopy count] > maxContacts)
   {
-    v6 = [v4 subarrayWithRange:{0, objc_msgSend(MEMORY[0x277CFBF18], "maxContacts")}];
+    v6 = [imagesCopy subarrayWithRange:{0, objc_msgSend(MEMORY[0x277CFBF18], "maxContacts")}];
   }
 
   v7 = [v6 count];
@@ -362,13 +362,13 @@ LABEL_43:
     while ([v6 count] > v12);
   }
 
-  v14 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v14 avatarDiameter];
+  metricsProvider = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider avatarDiameter];
   v16 = v15;
 
   v17 = MEMORY[0x277CFBF10];
-  v18 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  v19 = [v17 renderingScopeWithPointSize:-[SLDCollaborationAttributionViewRenderer isRTL](self scale:"isRTL") rightToLeft:0 style:0 color:{v16, v16, objc_msgSend(v18, "displayScale")}];
+  slotStyle = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  v19 = [v17 renderingScopeWithPointSize:-[SLDCollaborationAttributionViewRenderer isRTL](self scale:"isRTL") rightToLeft:0 style:0 color:{v16, v16, objc_msgSend(slotStyle, "displayScale")}];
 
   v20 = MEMORY[0x277CFBF20];
   v21 = [v6 count];
@@ -379,7 +379,7 @@ LABEL_43:
     v23 = SLDaemonLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [(SLDCollaborationAttributionViewRenderer *)self newSnowglobeImageWithCGImages:v4, v23];
+      [(SLDCollaborationAttributionViewRenderer *)self newSnowglobeImageWithCGImages:imagesCopy, v23];
     }
   }
 
@@ -387,18 +387,18 @@ LABEL_43:
   return v22;
 }
 
-- (CGImage)newImageFromData:(id)a3
+- (CGImage)newImageFromData:(id)data
 {
-  if (!a3)
+  if (!data)
   {
     return 0;
   }
 
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
 
-  v6 = CFDataCreate(0, v4, v5);
+  v6 = CFDataCreate(0, bytes, v5);
   v7 = CGDataProviderCreateWithCFData(v6);
   ImageAtIndex = v7;
   if (v7)
@@ -421,30 +421,30 @@ LABEL_43:
   return ImageAtIndex;
 }
 
-- (CGImage)newMonogramImageForContact:(id)a3
+- (CGImage)newMonogramImageForContact:(id)contact
 {
-  v4 = a3;
-  if (!v4)
+  contactCopy = contact;
+  if (!contactCopy)
   {
 LABEL_6:
     Image = 0;
     goto LABEL_7;
   }
 
-  v5 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  v6 = [v5 displayScale];
+  slotStyle = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  displayScale = [slotStyle displayScale];
 
-  v7 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v7 avatarDiameter];
+  metricsProvider = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider avatarDiameter];
   v9 = v8;
 
-  v10 = v9 * v6;
+  v10 = v9 * displayScale;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v12 = vcvtpd_s64_f64(v10);
   AlignedBytesPerRow = CGBitmapGetAlignedBytesPerRow();
   v14 = CGBitmapContextCreate(0, v12, v12, 8uLL, AlignedBytesPerRow, DeviceRGB, 1u);
-  v15 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  SLDRenderContactMonogramInContextAtRect(v15, v4, v14, 0, v10, 0.0, 0.0, v10, v10);
+  slotStyle2 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  SLDRenderContactMonogramInContextAtRect(slotStyle2, contactCopy, v14, 0, v10, 0.0, 0.0, v10, v10);
 
   Image = CGBitmapContextCreateImage(v14);
   CGContextRelease(v14);
@@ -465,34 +465,34 @@ LABEL_7:
   return Image;
 }
 
-- (CGImage)newAvatarImageForRecipientDrawingMetadata:(id)a3 allowMonogram:(BOOL)a4
+- (CGImage)newAvatarImageForRecipientDrawingMetadata:(id)metadata allowMonogram:(BOOL)monogram
 {
-  v4 = a4;
+  monogramCopy = monogram;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 contact];
-  if (!v7)
+  metadataCopy = metadata;
+  contact = [metadataCopy contact];
+  if (!contact)
   {
-    v8 = SLDaemonLogHandle();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    contactImageData = SLDaemonLogHandle();
+    if (os_log_type_enabled(contactImageData, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v6;
-      _os_log_impl(&dword_231772000, v8, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because recipient contact was nil. %@.", &v14, 0x16u);
+      v17 = metadataCopy;
+      _os_log_impl(&dword_231772000, contactImageData, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because recipient contact was nil. %@.", &v14, 0x16u);
     }
 
     goto LABEL_15;
   }
 
-  v8 = [v6 contactImageData];
-  if (!v8)
+  contactImageData = [metadataCopy contactImageData];
+  if (!contactImageData)
   {
-    if (v4)
+    if (monogramCopy)
     {
 LABEL_11:
-      v9 = [(SLDCollaborationAttributionViewRenderer *)self newMonogramImageForContact:v7];
+      v9 = [(SLDCollaborationAttributionViewRenderer *)self newMonogramImageForContact:contact];
       goto LABEL_16;
     }
 
@@ -500,9 +500,9 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
-      v17 = v6;
+      v17 = metadataCopy;
       _os_log_impl(&dword_231772000, v11, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because there was no contact photo and monograms aren't allowed. %@.", &v14, 0x16u);
     }
 
@@ -511,8 +511,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v9 = [(SLDCollaborationAttributionViewRenderer *)self newImageFromData:v8];
-  if (!v9 && v4)
+  v9 = [(SLDCollaborationAttributionViewRenderer *)self newImageFromData:contactImageData];
+  if (!v9 && monogramCopy)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -532,46 +532,46 @@ LABEL_16:
 - (CGImage)newAvatarImage
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v4 = [v3 isPlaceholder];
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  isPlaceholder = [slotTag isPlaceholder];
 
-  if (v4)
+  if (isPlaceholder)
   {
-    v5 = SLDaemonLogHandle();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    conversationDrawingMetadata = SLDaemonLogHandle();
+    if (os_log_type_enabled(conversationDrawingMetadata, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = self;
-      _os_log_impl(&dword_231772000, v5, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because slot tag isPlaceholder was YES.", buf, 0xCu);
+      selfCopy3 = self;
+      _os_log_impl(&dword_231772000, conversationDrawingMetadata, OS_LOG_TYPE_INFO, "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because slot tag isPlaceholder was YES.", buf, 0xCu);
     }
 
     goto LABEL_24;
   }
 
-  v6 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v5 = [v6 conversationDrawingMetadata];
+  slotTag2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  conversationDrawingMetadata = [slotTag2 conversationDrawingMetadata];
 
-  v7 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v8 = -[SLDCollaborationAttributionViewRenderer shouldShowSnowglobeIfApplicableForVariant:](self, "shouldShowSnowglobeIfApplicableForVariant:", [v7 variant]);
+  slotTag3 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  v8 = -[SLDCollaborationAttributionViewRenderer shouldShowSnowglobeIfApplicableForVariant:](self, "shouldShowSnowglobeIfApplicableForVariant:", [slotTag3 variant]);
 
-  v9 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v10 = -[SLDCollaborationAttributionViewRenderer shouldShowMonogramIfApplicableForVariant:](self, "shouldShowMonogramIfApplicableForVariant:", [v9 variant]);
+  slotTag4 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  v10 = -[SLDCollaborationAttributionViewRenderer shouldShowMonogramIfApplicableForVariant:](self, "shouldShowMonogramIfApplicableForVariant:", [slotTag4 variant]);
 
-  if ([v5 count]== 1)
+  if ([conversationDrawingMetadata count]== 1)
   {
-    v11 = [v5 firstObject];
-    v12 = [(SLDCollaborationAttributionViewRenderer *)self newAvatarImageForConversationDrawingMetadata:v11 allowSnowglobe:v8 allowMonogram:v10];
+    firstObject = [conversationDrawingMetadata firstObject];
+    v12 = [(SLDCollaborationAttributionViewRenderer *)self newAvatarImageForConversationDrawingMetadata:firstObject allowSnowglobe:v8 allowMonogram:v10];
 
     goto LABEL_25;
   }
 
-  if ([v5 count]< 2)
+  if ([conversationDrawingMetadata count]< 2)
   {
     v20 = SLDaemonLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = self;
+      selfCopy3 = self;
       v21 = "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because slot tag conversationDrawingMetadata was empty.";
 LABEL_22:
       _os_log_impl(&dword_231772000, v20, OS_LOG_TYPE_INFO, v21, buf, 0xCu);
@@ -590,7 +590,7 @@ LABEL_24:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = self;
+      selfCopy3 = self;
       v21 = "[%@] SLDCollaborationAttributionViewRenderer Returning nil for avatar image because snowglobes were not allowed for the current variant.";
       goto LABEL_22;
     }
@@ -603,8 +603,8 @@ LABEL_24:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v5;
-  v14 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  conversationDrawingMetadata = conversationDrawingMetadata;
+  v14 = [conversationDrawingMetadata countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -615,7 +615,7 @@ LABEL_24:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(conversationDrawingMetadata);
         }
 
         v18 = [(SLDCollaborationAttributionViewRenderer *)self newAvatarImageForConversationDrawingMetadata:*(*(&v24 + 1) + 8 * i) allowSnowglobe:0 allowMonogram:1, v24];
@@ -627,7 +627,7 @@ LABEL_24:
         }
       }
 
-      v15 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v15 = [conversationDrawingMetadata countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v15);
@@ -640,46 +640,46 @@ LABEL_25:
   return v12;
 }
 
-- (CGRect)drawGenericGlyphInContext:(CGContext *)a3
+- (CGRect)drawGenericGlyphInContext:(CGContext *)context
 {
-  v5 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v5 drawingSize];
+  metricsProvider = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider drawingSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  v11 = [v10 displayScale];
+  slotStyle = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  displayScale = [slotStyle displayScale];
 
-  v12 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v13 = [v12 placeholderGlyphConfiguration];
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  placeholderGlyphConfiguration = [slotTag placeholderGlyphConfiguration];
 
-  v14 = [v13 coreUISize];
-  v15 = [v13 weight];
-  [v13 pointSize];
+  coreUISize = [placeholderGlyphConfiguration coreUISize];
+  weight = [placeholderGlyphConfiguration weight];
+  [placeholderGlyphConfiguration pointSize];
   if (v16 > 0.0)
   {
-    [v13 pointSize];
+    [placeholderGlyphConfiguration pointSize];
     v19 = v20;
   }
 
   else
   {
-    v17 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-    [v17 avatarDiameter];
-    v19 = SLRoundToScale(v18, v11);
+    metricsProvider2 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+    [metricsProvider2 avatarDiameter];
+    v19 = SLRoundToScale(v18, displayScale);
   }
 
-  if (!v15)
+  if (!weight)
   {
-    v15 = 4;
+    weight = 4;
   }
 
-  v21 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  v22 = SLDSystemVectorGlyphWithSlotStyle(v21, @"person.crop.circle.badge.checkmark", v14, v15, v19);
+  slotStyle2 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  v22 = SLDSystemVectorGlyphWithSlotStyle(slotStyle2, @"person.crop.circle.badge.checkmark", coreUISize, weight, v19);
 
   v23 = objc_alloc(MEMORY[0x277D77800]);
-  v24 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
-  v25 = [v23 initWithVectorGlyph:v22 tintColor:{objc_msgSend(v24, "tintColor")}];
+  slotStyle3 = [(SLDCollaborationAttributionViewRenderer *)self slotStyle];
+  v25 = [v23 initWithVectorGlyph:v22 tintColor:{objc_msgSend(slotStyle3, "tintColor")}];
 
   [v22 contentBoundsUnrounded];
   v27 = v26;
@@ -703,13 +703,13 @@ LABEL_25:
   v45 = v35 + v44;
   [v22 alignmentRectUnrounded];
   v47 = v46 + v43;
-  v48 = SLRoundToScale(v45, v11);
-  v49 = SLRoundToScale(v47, v11);
+  v48 = SLRoundToScale(v45, displayScale);
+  v49 = SLRoundToScale(v47, displayScale);
   v50 = v35 + v48 - v45;
   v51 = v43 + v49 - v47;
-  CGContextSaveGState(a3);
-  [v25 drawInContext:a3 atPoint:{v50, v51}];
-  CGContextRestoreGState(a3);
+  CGContextSaveGState(context);
+  [v25 drawInContext:context atPoint:{v50, v51}];
+  CGContextRestoreGState(context);
 
   v52 = v50;
   v53 = v51;
@@ -722,38 +722,38 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)drawAvatarWithImageRef:(CGImage *)a3 inContext:(CGContext *)a4
+- (CGRect)drawAvatarWithImageRef:(CGImage *)ref inContext:(CGContext *)context
 {
-  v7 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v7 avatarDiameter];
+  metricsProvider = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider avatarDiameter];
   v9 = v8;
 
-  v10 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v10 drawingSize];
+  metricsProvider2 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider2 drawingSize];
   v12 = v11 - v9;
 
-  CGImageRetain(a3);
-  CGContextSaveGState(a4);
-  v13 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
-  [v13 drawingSize];
-  CGContextTranslateCTM(a4, 0.0, v14);
+  CGImageRetain(ref);
+  CGContextSaveGState(context);
+  metricsProvider3 = [(SLDCollaborationAttributionViewRenderer *)self metricsProvider];
+  [metricsProvider3 drawingSize];
+  CGContextTranslateCTM(context, 0.0, v14);
 
-  CGContextScaleCTM(a4, 1.0, -1.0);
-  CGContextBeginPath(a4);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextBeginPath(context);
   v19.origin.x = 0.0;
   v19.origin.y = v12;
   v19.size.width = v9;
   v19.size.height = v9;
-  CGContextAddEllipseInRect(a4, v19);
-  CGContextClip(a4);
-  CGContextClosePath(a4);
+  CGContextAddEllipseInRect(context, v19);
+  CGContextClip(context);
+  CGContextClosePath(context);
   v20.origin.x = 0.0;
   v20.origin.y = v12;
   v20.size.width = v9;
   v20.size.height = v9;
-  CGContextDrawImage(a4, v20, a3);
-  CGContextRestoreGState(a4);
-  CGImageRelease(a3);
+  CGContextDrawImage(context, v20, ref);
+  CGContextRestoreGState(context);
+  CGImageRelease(ref);
   v15 = 0.0;
   v16 = v12;
   v17 = v9;
@@ -765,12 +765,12 @@ LABEL_25:
   return result;
 }
 
-+ (id)accessibilityLabelForTag:(id)a3
++ (id)accessibilityLabelForTag:(id)tag
 {
-  v3 = a3;
-  if ((![v3 variant] || objc_msgSend(v3, "variant") == 3) && (objc_msgSend(v3, "collaboratorDisplayNames"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5))
+  tagCopy = tag;
+  if ((![tagCopy variant] || objc_msgSend(tagCopy, "variant") == 3) && (objc_msgSend(tagCopy, "collaboratorDisplayNames"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v5))
   {
-    v6 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:v3 prefixingWith:1];
+    v6 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:tagCopy prefixingWith:1];
   }
 
   else
@@ -783,12 +783,12 @@ LABEL_25:
 
 - (BOOL)shouldShowSubtitle
 {
-  v4 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v5 = [v4 variant];
-  if (v5)
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  variant = [slotTag variant];
+  if (variant)
   {
-    v2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-    if ([v2 variant] != 3)
+    slotTag2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+    if ([slotTag2 variant] != 3)
     {
       v6 = 0;
 LABEL_5:
@@ -797,11 +797,11 @@ LABEL_5:
     }
   }
 
-  v7 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v8 = [v7 collaboratorDisplayNames];
-  v6 = [v8 count] != 0;
+  slotTag3 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  collaboratorDisplayNames = [slotTag3 collaboratorDisplayNames];
+  v6 = [collaboratorDisplayNames count] != 0;
 
-  if (v5)
+  if (variant)
   {
     goto LABEL_5;
   }
@@ -813,61 +813,61 @@ LABEL_6:
 
 - (BOOL)shouldShowLabels
 {
-  v3 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  if ([v3 variant] == 1)
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  if ([slotTag variant] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-    v4 = [v5 variant] != 4;
+    slotTag2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+    v4 = [slotTag2 variant] != 4;
   }
 
   return v4;
 }
 
-- (double)heightForLine:(__CTLine *)a3 withOptions:(unint64_t)a4
+- (double)heightForLine:(__CTLine *)line withOptions:(unint64_t)options
 {
-  if (!a3)
+  if (!line)
   {
     return 0.0;
   }
 
   v5 = 0.0;
   ascent = 0.0;
-  CTLineGetTypographicBounds(a3, &ascent, &v5, 0);
+  CTLineGetTypographicBounds(line, &ascent, &v5, 0);
   return ascent + v5;
 }
 
 - (id)collaboratorsString
 {
-  v2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v3 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:v2 prefixingWith:0];
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  v3 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:slotTag prefixingWith:0];
 
   return v3;
 }
 
 - (id)withCollaboratorsString
 {
-  v2 = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
-  v3 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:v2 prefixingWith:1];
+  slotTag = [(SLDCollaborationAttributionViewRenderer *)self slotTag];
+  v3 = [SLDCollaborationAttributionViewRenderer collaboratorsStringForTag:slotTag prefixingWith:1];
 
   return v3;
 }
 
-+ (id)collaboratorsStringForTag:(id)a3 prefixingWith:(BOOL)a4
++ (id)collaboratorsStringForTag:(id)tag prefixingWith:(BOOL)with
 {
-  v5 = [a3 collaboratorDisplayNames];
-  v6 = [v5 mutableCopy];
+  collaboratorDisplayNames = [tag collaboratorDisplayNames];
+  v6 = [collaboratorDisplayNames mutableCopy];
 
   if (![v6 count])
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = SLFrameworkBundle();
     v14 = v13;
-    if (a4)
+    if (with)
     {
       v15 = @"With nobody";
     }
@@ -878,7 +878,7 @@ LABEL_6:
     }
 
     v19 = [v13 localizedStringForKey:v15 value:&stru_28468DAB8 table:@"SocialLayer"];
-    v11 = [v12 stringWithFormat:v19];
+    firstObject2 = [v12 stringWithFormat:v19];
     goto LABEL_26;
   }
 
@@ -889,7 +889,7 @@ LABEL_6:
       v16 = MEMORY[0x277CCACA8];
       v17 = SLFrameworkBundle();
       v14 = v17;
-      if (a4)
+      if (with)
       {
         v18 = @"With %@ and %@";
       }
@@ -913,7 +913,7 @@ LABEL_6:
       v14 = v22;
       if (v20 == 3)
       {
-        if (a4)
+        if (with)
         {
           v23 = @"With %@, %@ & %@";
         }
@@ -927,12 +927,12 @@ LABEL_6:
         v24 = [v6 objectAtIndexedSubscript:0];
         v25 = [v6 objectAtIndexedSubscript:1];
         v27 = [v6 objectAtIndexedSubscript:2];
-        v11 = [v21 stringWithFormat:v19, v24, v25, v27];
+        firstObject2 = [v21 stringWithFormat:v19, v24, v25, v27];
 
         goto LABEL_25;
       }
 
-      if (a4)
+      if (with)
       {
         v26 = @"WITH_@_@_AND_N_OTHERS_FORMAT";
       }
@@ -947,46 +947,46 @@ LABEL_6:
       v25 = [v6 objectAtIndexedSubscript:1];
       [v21 stringWithFormat:v19, v24, v25, objc_msgSend(v6, "count") - 2];
     }
-    v11 = ;
+    firstObject2 = ;
 LABEL_25:
 
 LABEL_26:
     goto LABEL_27;
   }
 
-  if (a4)
+  if (with)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = SLFrameworkBundle();
     v9 = [v8 localizedStringForKey:@"With %@" value:&stru_28468DAB8 table:@"SocialLayer"];
-    v10 = [v6 firstObject];
-    v11 = [v7 stringWithFormat:v9, v10];
+    firstObject = [v6 firstObject];
+    firstObject2 = [v7 stringWithFormat:v9, firstObject];
   }
 
   else
   {
-    v11 = [v6 firstObject];
+    firstObject2 = [v6 firstObject];
   }
 
 LABEL_27:
 
-  return v11;
+  return firstObject2;
 }
 
-- (void)drawLine:(__CTLine *)a3 inRect:(CGRect)a4 inContext:(CGContext *)a5
+- (void)drawLine:(__CTLine *)line inRect:(CGRect)rect inContext:(CGContext *)context
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a5);
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
   CGContextSetFontRenderingStyle();
   memset(&v10, 0, sizeof(v10));
   CGAffineTransformMakeScale(&v10, 1.0, -1.0);
   v9 = v10;
-  CGContextSetTextMatrix(a5, &v9);
-  BoundsWithOptions = CTLineGetBoundsWithOptions(a3, 8uLL);
-  CGContextTranslateCTM(a5, x, BoundsWithOptions.origin.y + y + BoundsWithOptions.size.height);
-  CTLineDraw(a3, a5);
-  CGContextRestoreGState(a5);
+  CGContextSetTextMatrix(context, &v9);
+  BoundsWithOptions = CTLineGetBoundsWithOptions(line, 8uLL);
+  CGContextTranslateCTM(context, x, BoundsWithOptions.origin.y + y + BoundsWithOptions.size.height);
+  CTLineDraw(line, context);
+  CGContextRestoreGState(context);
 }
 
 - (void)newSnowglobeImageWithCGImages:(NSObject *)a3 .cold.1(uint64_t a1, void *a2, NSObject *a3)

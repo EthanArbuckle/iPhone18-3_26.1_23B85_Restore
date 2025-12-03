@@ -1,33 +1,33 @@
 @interface HFCameraClipPlayerQueueUpdate
-- (HFCameraClipPlayerQueueUpdate)initWithClipManager:(id)a3 clips:(id)a4 targetPosition:(id)a5 queuedItems:(id)a6 queueLimit:(unint64_t)a7;
-- (id)_buildNewClipQueueForPosition:(id)a3;
+- (HFCameraClipPlayerQueueUpdate)initWithClipManager:(id)manager clips:(id)clips targetPosition:(id)position queuedItems:(id)items queueLimit:(unint64_t)limit;
+- (id)_buildNewClipQueueForPosition:(id)position;
 - (void)_computeQueueDiff;
-- (void)performUpdatesOnQueue:(id)a3;
+- (void)performUpdatesOnQueue:(id)queue;
 @end
 
 @implementation HFCameraClipPlayerQueueUpdate
 
-- (HFCameraClipPlayerQueueUpdate)initWithClipManager:(id)a3 clips:(id)a4 targetPosition:(id)a5 queuedItems:(id)a6 queueLimit:(unint64_t)a7
+- (HFCameraClipPlayerQueueUpdate)initWithClipManager:(id)manager clips:(id)clips targetPosition:(id)position queuedItems:(id)items queueLimit:(unint64_t)limit
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  managerCopy = manager;
+  clipsCopy = clips;
+  positionCopy = position;
+  itemsCopy = items;
   v24.receiver = self;
   v24.super_class = HFCameraClipPlayerQueueUpdate;
   v17 = [(HFCameraClipPlayerQueueUpdate *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clipManager, a3);
-    objc_storeStrong(&v18->_clips, a4);
-    objc_storeStrong(&v18->_targetPosition, a5);
-    v19 = [v16 copy];
+    objc_storeStrong(&v17->_clipManager, manager);
+    objc_storeStrong(&v18->_clips, clips);
+    objc_storeStrong(&v18->_targetPosition, position);
+    v19 = [itemsCopy copy];
     initialQueuedItems = v18->_initialQueuedItems;
     v18->_initialQueuedItems = v19;
 
-    v18->_queueLimit = a7;
-    v21 = [v16 na_dictionaryWithKeyGenerator:&__block_literal_global_1];
+    v18->_queueLimit = limit;
+    v21 = [itemsCopy na_dictionaryWithKeyGenerator:&__block_literal_global_1];
     initialQueuedItemsByClipID = v18->_initialQueuedItemsByClipID;
     v18->_initialQueuedItemsByClipID = v21;
 
@@ -45,65 +45,65 @@ id __97__HFCameraClipPlayerQueueUpdate_initWithClipManager_clips_targetPosition_
   return v3;
 }
 
-- (void)performUpdatesOnQueue:(id)a3
+- (void)performUpdatesOnQueue:(id)queue
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
-  v6 = [v4 queuableItems];
-  v7 = [v5 isEqualToArray:v6];
+  queueCopy = queue;
+  initialQueuedItems = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
+  queuableItems = [queueCopy queuableItems];
+  v7 = [initialQueuedItems isEqualToArray:queuableItems];
 
   if (v7)
   {
     if ([(HFCameraClipPlayerQueueUpdate *)self hasQueueChanges])
     {
-      v8 = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
+      queueDiff = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __55__HFCameraClipPlayerQueueUpdate_performUpdatesOnQueue___block_invoke;
       v23[3] = &unk_277DF2B48;
-      v9 = v4;
+      v9 = queueCopy;
       v24 = v9;
-      v25 = self;
-      [v8 enumerateDeletesUsingBlock:v23];
+      selfCopy = self;
+      [queueDiff enumerateDeletesUsingBlock:v23];
 
-      v10 = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
+      queueDiff2 = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
       v17 = MEMORY[0x277D85DD0];
       v18 = 3221225472;
       v19 = __55__HFCameraClipPlayerQueueUpdate_performUpdatesOnQueue___block_invoke_2;
       v20 = &unk_277DF2B48;
-      v21 = self;
+      selfCopy2 = self;
       v22 = v9;
-      [v10 enumerateInsertsUsingBlock:&v17];
+      [queueDiff2 enumerateInsertsUsingBlock:&v17];
     }
 
-    v11 = [v4 queuableItems];
-    v12 = [v11 firstObject];
+    queuableItems2 = [queueCopy queuableItems];
+    firstObject = [queuableItems2 firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      v13 = [(HFCameraClipPlayerQueueUpdate *)self targetPosition];
-      [v13 offset];
-      [v4 seekToOffset:v12 inItem:?];
+      targetPosition = [(HFCameraClipPlayerQueueUpdate *)self targetPosition];
+      [targetPosition offset];
+      [queueCopy seekToOffset:firstObject inItem:?];
     }
   }
 
   else
   {
-    v12 = HFLogForCategory(0x17uLL);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    firstObject = HFLogForCategory(0x17uLL);
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
-      v16 = [v4 queuableItems];
+      initialQueuedItems2 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
+      queuableItems3 = [queueCopy queuableItems];
       *buf = 138413058;
-      v27 = self;
+      selfCopy3 = self;
       v28 = 2112;
-      v29 = v4;
+      v29 = queueCopy;
       v30 = 2112;
-      v31 = v15;
+      v31 = initialQueuedItems2;
       v32 = 2112;
-      v33 = v16;
-      _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "Attempting to perform updates %@ on queue %@ when its items do not match our initial queued items! Expected; %@, actual: %@", buf, 0x2Au);
+      v33 = queuableItems3;
+      _os_log_error_impl(&dword_20D9BF000, firstObject, OS_LOG_TYPE_ERROR, "Attempting to perform updates %@ on queue %@ when its items do not match our initial queued items! Expected; %@, actual: %@", buf, 0x2Au);
     }
   }
 
@@ -239,21 +239,21 @@ id __55__HFCameraClipPlayerQueueUpdate_performUpdatesOnQueue___block_invoke_2(ui
 
 - (void)_computeQueueDiff
 {
-  v3 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
-  v4 = [v3 na_map:&__block_literal_global_6];
+  initialQueuedItems = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
+  v4 = [initialQueuedItems na_map:&__block_literal_global_6];
 
-  v5 = [(HFCameraClipPlayerQueueUpdate *)self targetPosition];
-  v6 = [(HFCameraClipPlayerQueueUpdate *)self _buildNewClipQueueForPosition:v5];
+  targetPosition = [(HFCameraClipPlayerQueueUpdate *)self targetPosition];
+  v6 = [(HFCameraClipPlayerQueueUpdate *)self _buildNewClipQueueForPosition:targetPosition];
   [(HFCameraClipPlayerQueueUpdate *)self setUpdatedClipQueue:v6];
 
-  v7 = [v4 firstObject];
-  v8 = [(HFCameraClipPlayerQueueUpdate *)self updatedClipQueue];
-  v9 = [v8 firstObject];
-  if (v7 == v9)
+  firstObject = [v4 firstObject];
+  updatedClipQueue = [(HFCameraClipPlayerQueueUpdate *)self updatedClipQueue];
+  firstObject2 = [updatedClipQueue firstObject];
+  if (firstObject == firstObject2)
   {
-    v10 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
-    v11 = [v10 firstObject];
-    -[HFCameraClipPlayerQueueUpdate setQueueChangesRequireRebuild:](self, "setQueueChangesRequireRebuild:", [v11 isPlayable] ^ 1);
+    initialQueuedItems2 = [(HFCameraClipPlayerQueueUpdate *)self initialQueuedItems];
+    firstObject3 = [initialQueuedItems2 firstObject];
+    -[HFCameraClipPlayerQueueUpdate setQueueChangesRequireRebuild:](self, "setQueueChangesRequireRebuild:", [firstObject3 isPlayable] ^ 1);
   }
 
   else
@@ -279,12 +279,12 @@ id __55__HFCameraClipPlayerQueueUpdate_performUpdatesOnQueue___block_invoke_2(ui
   }
 
   [v12 setEqualComparator:v13];
-  v14 = [(HFCameraClipPlayerQueueUpdate *)self updatedClipQueue];
-  v15 = [HFUniqueArrayDiff diffFromArray:v4 toArray:v14 options:v12];
+  updatedClipQueue2 = [(HFCameraClipPlayerQueueUpdate *)self updatedClipQueue];
+  v15 = [HFUniqueArrayDiff diffFromArray:v4 toArray:updatedClipQueue2 options:v12];
   [(HFCameraClipPlayerQueueUpdate *)self setQueueDiff:v15];
 
-  v16 = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
-  -[HFCameraClipPlayerQueueUpdate setHasQueueChanges:](self, "setHasQueueChanges:", [v16 numberOfOperations] != 0);
+  queueDiff = [(HFCameraClipPlayerQueueUpdate *)self queueDiff];
+  -[HFCameraClipPlayerQueueUpdate setHasQueueChanges:](self, "setHasQueueChanges:", [queueDiff numberOfOperations] != 0);
 }
 
 uint64_t __50__HFCameraClipPlayerQueueUpdate__computeQueueDiff__block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -320,35 +320,35 @@ LABEL_4:
   return v15;
 }
 
-- (id)_buildNewClipQueueForPosition:(id)a3
+- (id)_buildNewClipQueueForPosition:(id)position
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  positionCopy = position;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(HFCameraClipPlayerQueueUpdate *)self clips];
+  clips = [(HFCameraClipPlayerQueueUpdate *)self clips];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __63__HFCameraClipPlayerQueueUpdate__buildNewClipQueueForPosition___block_invoke;
   v24 = &unk_277DF2C00;
-  v6 = v4;
+  v6 = positionCopy;
   v25 = v6;
   v26 = &v27;
-  [v5 enumerateObjectsUsingBlock:&v21];
+  [clips enumerateObjectsUsingBlock:&v21];
 
   if (v28[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = HFLogForCategory(0x17uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v6 clip];
-      v18 = [v17 uniqueIdentifier];
-      v19 = [(HFCameraClipPlayerQueueUpdate *)self clips];
-      v20 = [v19 count];
+      clip = [v6 clip];
+      uniqueIdentifier = [clip uniqueIdentifier];
+      clips2 = [(HFCameraClipPlayerQueueUpdate *)self clips];
+      v20 = [clips2 count];
       *buf = 138412546;
-      v32 = v18;
+      v32 = uniqueIdentifier;
       v33 = 2048;
       v34 = v20;
       _os_log_error_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_ERROR, "Could not find matching playlist for clip %@ in clips %ld", buf, 0x16u);
@@ -361,31 +361,31 @@ LABEL_4:
   {
     if ([(HFCameraClipPlayerQueueUpdate *)self queueLimit:v21])
     {
-      v9 = [(HFCameraClipPlayerQueueUpdate *)self queueLimit];
+      queueLimit = [(HFCameraClipPlayerQueueUpdate *)self queueLimit];
     }
 
     else
     {
-      v9 = -1;
+      queueLimit = -1;
     }
 
-    v10 = [(HFCameraClipPlayerQueueUpdate *)self clips];
-    v11 = [v10 count];
+    clips3 = [(HFCameraClipPlayerQueueUpdate *)self clips];
+    v11 = [clips3 count];
     v12 = v28[3];
 
-    v13 = [(HFCameraClipPlayerQueueUpdate *)self clips];
-    v7 = v13;
-    if (v9 >= v11 - v12)
+    clips4 = [(HFCameraClipPlayerQueueUpdate *)self clips];
+    v7 = clips4;
+    if (queueLimit >= v11 - v12)
     {
       v14 = v11 - v12;
     }
 
     else
     {
-      v14 = v9;
+      v14 = queueLimit;
     }
 
-    v8 = [v13 subarrayWithRange:v28[3], v14];
+    v8 = [clips4 subarrayWithRange:v28[3], v14];
   }
 
   _Block_object_dispose(&v27, 8);

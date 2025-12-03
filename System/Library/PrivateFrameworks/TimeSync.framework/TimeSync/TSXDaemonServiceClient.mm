@@ -3,9 +3,9 @@
 - (BOOL)isMSGServiceAvailable;
 - (TSXDaemonServiceClient)init;
 - (id)exportedObject;
-- (id)propertiesForRegistryEntryID:(unint64_t)a3;
-- (id)propertyForRegistryEntryID:(unint64_t)a3 key:(id)a4;
-- (unsigned)startMSGExternalSync:(id *)a3;
+- (id)propertiesForRegistryEntryID:(unint64_t)d;
+- (id)propertyForRegistryEntryID:(unint64_t)d key:(id)key;
+- (unsigned)startMSGExternalSync:(id *)sync;
 - (void)dealloc;
 - (void)interruptedConnection;
 - (void)invalidatedConnection;
@@ -62,23 +62,23 @@ uint64_t __51__TSXDaemonServiceClient_sharedDaemonServiceClient__block_invoke()
     _dispatchQueue_0 = v7;
 
     v9 = objc_alloc(MEMORY[0x277CCAE80]);
-    v10 = [objc_opt_class() serviceName];
-    v11 = [v9 initWithMachServiceName:v10 options:4096];
+    serviceName = [objc_opt_class() serviceName];
+    v11 = [v9 initWithMachServiceName:serviceName options:4096];
     serverConnection = v2->_serverConnection;
     v2->_serverConnection = v11;
 
     v13 = MEMORY[0x277CCAE90];
-    v14 = [objc_opt_class() serverProtocol];
-    v15 = [v13 interfaceWithProtocol:v14];
+    serverProtocol = [objc_opt_class() serverProtocol];
+    v15 = [v13 interfaceWithProtocol:serverProtocol];
     [(NSXPCConnection *)v2->_serverConnection setRemoteObjectInterface:v15];
 
     v16 = MEMORY[0x277CCAE90];
-    v17 = [objc_opt_class() clientProtocol];
-    v18 = [v16 interfaceWithProtocol:v17];
+    clientProtocol = [objc_opt_class() clientProtocol];
+    v18 = [v16 interfaceWithProtocol:clientProtocol];
     [(NSXPCConnection *)v2->_serverConnection setExportedInterface:v18];
 
-    v19 = [(TSXDaemonServiceClient *)v2 exportedObject];
-    [(NSXPCConnection *)v2->_serverConnection setExportedObject:v19];
+    exportedObject = [(TSXDaemonServiceClient *)v2 exportedObject];
+    [(NSXPCConnection *)v2->_serverConnection setExportedObject:exportedObject];
 
     objc_initWeak(&location, v2);
     v24[0] = MEMORY[0x277D85DD0];
@@ -94,8 +94,8 @@ uint64_t __51__TSXDaemonServiceClient_sharedDaemonServiceClient__block_invoke()
     objc_copyWeak(&v23, &location);
     [(NSXPCConnection *)v2->_serverConnection setInvalidationHandler:v22];
     [(NSXPCConnection *)v2->_serverConnection resume];
-    v20 = [(NSXPCConnection *)v2->_serverConnection remoteObjectProxy];
-    [v20 openXPCConnection];
+    remoteObjectProxy = [(NSXPCConnection *)v2->_serverConnection remoteObjectProxy];
+    [remoteObjectProxy openXPCConnection];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&v25);
@@ -290,7 +290,7 @@ void __169__TSXDaemonServiceClient_callMethodForDaemonClient_clientMethodSelecto
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)propertiesForRegistryEntryID:(unint64_t)a3
+- (id)propertiesForRegistryEntryID:(unint64_t)d
 {
   v11 = 0;
   v12 = &v11;
@@ -298,16 +298,16 @@ void __169__TSXDaemonServiceClient_callMethodForDaemonClient_clientMethodSelecto
   v14 = __Block_byref_object_copy__2;
   v15 = __Block_byref_object_dispose__2;
   v16 = 0;
-  v5 = [(TSXDaemonServiceClient *)self serverConnection];
-  v6 = [v5 remoteObjectProxy];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_104];
+  serverConnection = [(TSXDaemonServiceClient *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  v7 = [remoteObjectProxy synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_104];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__TSXDaemonServiceClient_propertiesForRegistryEntryID___block_invoke_105;
   v10[3] = &unk_279DBE140;
   v10[4] = &v11;
-  [v7 propertiesForRegistryEntryID:a3 signpostID:self reply:v10];
+  [v7 propertiesForRegistryEntryID:d signpostID:self reply:v10];
   v8 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -335,25 +335,25 @@ void __55__TSXDaemonServiceClient_propertiesForRegistryEntryID___block_invoke_10
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)propertyForRegistryEntryID:(unint64_t)a3 key:(id)a4
+- (id)propertyForRegistryEntryID:(unint64_t)d key:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__2;
   v17 = __Block_byref_object_dispose__2;
   v18 = 0;
-  v7 = [(TSXDaemonServiceClient *)self serverConnection];
-  v8 = [v7 remoteObjectProxy];
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108];
+  serverConnection = [(TSXDaemonServiceClient *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  v9 = [remoteObjectProxy synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__TSXDaemonServiceClient_propertyForRegistryEntryID_key___block_invoke_109;
   v12[3] = &unk_279DBE140;
   v12[4] = &v13;
-  [v9 propertyForRegistryEntryID:a3 signpostID:self key:v6 reply:v12];
+  [v9 propertyForRegistryEntryID:d signpostID:self key:keyCopy reply:v12];
   v10 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -403,9 +403,9 @@ void __57__TSXDaemonServiceClient_propertyForRegistryEntryID_key___block_invoke_
 
 - (BOOL)isMSGServiceAvailable
 {
-  v2 = [(TSXDaemonServiceClient *)self serverConnection];
-  v3 = [v2 remoteObjectProxy];
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_113];
+  serverConnection = [(TSXDaemonServiceClient *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  v4 = [remoteObjectProxy synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_113];
 
   v7 = 0;
   v8 = &v7;
@@ -417,10 +417,10 @@ void __57__TSXDaemonServiceClient_propertyForRegistryEntryID_key___block_invoke_
   v6[3] = &unk_279DBE168;
   v6[4] = &v7;
   [v4 isMSGServiceAvailable:v6];
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(serverConnection) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
-  return v2;
+  return serverConnection;
 }
 
 void __47__TSXDaemonServiceClient_isMSGServiceAvailable__block_invoke(uint64_t a1, void *a2)
@@ -443,11 +443,11 @@ void __47__TSXDaemonServiceClient_isMSGServiceAvailable__block_invoke_114(uint64
   objc_autoreleasePoolPop(v4);
 }
 
-- (unsigned)startMSGExternalSync:(id *)a3
+- (unsigned)startMSGExternalSync:(id *)sync
 {
-  v4 = [(TSXDaemonServiceClient *)self serverConnection];
-  v5 = [v4 remoteObjectProxy];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_117];
+  serverConnection = [(TSXDaemonServiceClient *)self serverConnection];
+  remoteObjectProxy = [serverConnection remoteObjectProxy];
+  v6 = [remoteObjectProxy synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_117];
 
   v9 = 0;
   v10 = &v9;
@@ -458,11 +458,11 @@ void __47__TSXDaemonServiceClient_isMSGServiceAvailable__block_invoke_114(uint64
   v8[2] = __47__TSXDaemonServiceClient_startMSGExternalSync___block_invoke_118;
   v8[3] = &unk_279DBE190;
   v8[4] = &v9;
-  [v6 startMSGExternalSync:a3 reply:v8];
-  LODWORD(a3) = *(v10 + 6);
+  [v6 startMSGExternalSync:sync reply:v8];
+  LODWORD(sync) = *(v10 + 6);
   _Block_object_dispose(&v9, 8);
 
-  return a3;
+  return sync;
 }
 
 void __47__TSXDaemonServiceClient_startMSGExternalSync___block_invoke(uint64_t a1, void *a2)

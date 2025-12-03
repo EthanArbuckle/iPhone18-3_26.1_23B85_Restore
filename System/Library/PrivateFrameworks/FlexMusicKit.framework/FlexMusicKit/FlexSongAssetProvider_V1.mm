@@ -1,22 +1,22 @@
 @interface FlexSongAssetProvider_V1
-- (FlexSongAssetProvider_V1)initWithFolderPath:(id)a3;
-- (id)urlToAudioContainerForSegmentType:(unint64_t)a3;
-- (id)urlToAudioForSegment:(id)a3;
+- (FlexSongAssetProvider_V1)initWithFolderPath:(id)path;
+- (id)urlToAudioContainerForSegmentType:(unint64_t)type;
+- (id)urlToAudioForSegment:(id)segment;
 - (id)urlToRoot;
 @end
 
 @implementation FlexSongAssetProvider_V1
 
-- (FlexSongAssetProvider_V1)initWithFolderPath:(id)a3
+- (FlexSongAssetProvider_V1)initWithFolderPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = FlexSongAssetProvider_V1;
   v6 = [(FlexSongAssetProvider_V1 *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootFolderPath, a3);
+    objc_storeStrong(&v6->_rootFolderPath, path);
     audioFileExtension = v7->_audioFileExtension;
     v7->_audioFileExtension = @"m4a";
   }
@@ -33,22 +33,22 @@
   return v10;
 }
 
-- (id)urlToAudioContainerForSegmentType:(unint64_t)a3
+- (id)urlToAudioContainerForSegmentType:(unint64_t)type
 {
   v5 = MEMORY[0x277CBEBC0];
-  v6 = objc_msgSend_rootFolderPath(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_rootFolderPath(self, a2, type, v3, v4);
   v10 = objc_msgSend_fileURLWithPath_(v5, v7, v6, v8, v9);
 
   return v10;
 }
 
-- (id)urlToAudioForSegment:(id)a3
+- (id)urlToAudioForSegment:(id)segment
 {
-  if (a3)
+  if (segment)
   {
-    v4 = a3;
+    segmentCopy = segment;
     v9 = objc_msgSend_rootFolderPath(self, v5, v6, v7, v8);
-    v14 = objc_msgSend_name(v4, v10, v11, v12, v13);
+    v14 = objc_msgSend_name(segmentCopy, v10, v11, v12, v13);
 
     v18 = objc_msgSend_stringByAppendingPathComponent_(v9, v15, v14, v16, v17);
     v23 = objc_msgSend_audioFileExtension(self, v19, v20, v21, v22);

@@ -1,6 +1,6 @@
 @interface MonogramSimulationViewAccessibility
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation MonogramSimulationViewAccessibility
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   objc_opt_class();
   v7 = __UIAccessibilityCastAsClass();
   v8 = v7;

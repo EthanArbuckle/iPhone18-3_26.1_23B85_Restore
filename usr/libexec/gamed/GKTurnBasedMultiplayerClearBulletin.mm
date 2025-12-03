@@ -1,16 +1,16 @@
 @interface GKTurnBasedMultiplayerClearBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
-- (GKTurnBasedMultiplayerClearBulletin)initWithCoder:(id)a3;
-- (GKTurnBasedMultiplayerClearBulletin)initWithPushNotification:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
+- (GKTurnBasedMultiplayerClearBulletin)initWithCoder:(id)coder;
+- (GKTurnBasedMultiplayerClearBulletin)initWithPushNotification:(id)notification;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKTurnBasedMultiplayerClearBulletin
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -28,18 +28,18 @@
 
   v10 = objc_alloc_init(GKTurnBasedMultiplayerClearBulletin);
   v11 = +[GKBulletinController sharedController];
-  v12 = [(GKTurnBasedMultiplayerBulletin *)v10 matchID];
-  [v11 clearTurnBasedBulletinsForMatchID:v12];
+  matchID = [(GKTurnBasedMultiplayerBulletin *)v10 matchID];
+  [v11 clearTurnBasedBulletinsForMatchID:matchID];
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (GKTurnBasedMultiplayerClearBulletin)initWithPushNotification:(id)a3
+- (GKTurnBasedMultiplayerClearBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -54,19 +54,19 @@
 
   v13.receiver = self;
   v13.super_class = GKTurnBasedMultiplayerClearBulletin;
-  v7 = [(GKTurnBasedMultiplayerBulletin *)&v13 initWithPushNotification:v4];
+  v7 = [(GKTurnBasedMultiplayerBulletin *)&v13 initWithPushNotification:notificationCopy];
   if (v7)
   {
-    v8 = [v4 objectForKey:@"cc"];
-    v9 = [v8 integerValue];
+    v8 = [notificationCopy objectForKey:@"cc"];
+    integerValue = [v8 integerValue];
 
     v10 = 3;
-    if (v9 != 81)
+    if (integerValue != 81)
     {
       v10 = 0;
     }
 
-    if (v9 == 80)
+    if (integerValue == 80)
     {
       v11 = 2;
     }
@@ -82,9 +82,9 @@
   return v7;
 }
 
-- (GKTurnBasedMultiplayerClearBulletin)initWithCoder:(id)a3
+- (GKTurnBasedMultiplayerClearBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -99,19 +99,19 @@
 
   v10.receiver = self;
   v10.super_class = GKTurnBasedMultiplayerClearBulletin;
-  v7 = [(GKTurnBasedMultiplayerBulletin *)&v10 initWithCoder:v4];
+  v7 = [(GKTurnBasedMultiplayerBulletin *)&v10 initWithCoder:coderCopy];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clearType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clearType"];
     v7->_clearType = [v8 integerValue];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -126,9 +126,9 @@
 
   v8.receiver = self;
   v8.super_class = GKTurnBasedMultiplayerClearBulletin;
-  [(GKTurnBasedMultiplayerBulletin *)&v8 encodeWithCoder:v4];
+  [(GKTurnBasedMultiplayerBulletin *)&v8 encodeWithCoder:coderCopy];
   v7 = [NSNumber numberWithInteger:[(GKTurnBasedMultiplayerClearBulletin *)self clearType]];
-  [v4 encodeObject:v7 forKey:@"clearType"];
+  [coderCopy encodeObject:v7 forKey:@"clearType"];
 }
 
 @end

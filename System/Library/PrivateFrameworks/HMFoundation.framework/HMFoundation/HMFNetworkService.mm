@@ -1,40 +1,40 @@
 @interface HMFNetworkService
 + (id)logCategory;
-- (BOOL)_updateDeviceWithPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_updateDeviceWithPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)lowPowerMode;
-- (HMFNetworkService)initWithServiceInfo:(id)a3 port:(unsigned __int16)a4 queue:(id)a5;
-- (HMFNetworkService)initWithTXTRecords:(id)a3 browseResult:(id)a4 queue:(id)a5;
+- (HMFNetworkService)initWithServiceInfo:(id)info port:(unsigned __int16)port queue:(id)queue;
+- (HMFNetworkService)initWithTXTRecords:(id)records browseResult:(id)result queue:(id)queue;
 - (NSArray)addresses;
 - (NSString)host;
 - (NSString)hostName;
-- (id)_connectionWithPromise:(id)a3 parameters:(id)a4 receivedDataHandler:(id)a5;
+- (id)_connectionWithPromise:(id)promise parameters:(id)parameters receivedDataHandler:(id)handler;
 - (id)description;
-- (id)resolveAddressWithAddressType:(unint64_t)a3 timeout:(double)a4 receivedDataHandler:(id)a5;
+- (id)resolveAddressWithAddressType:(unint64_t)type timeout:(double)timeout receivedDataHandler:(id)handler;
 - (id)shortDescription;
 - (void)dealloc;
 - (void)invalidate;
-- (void)updateWithService:(id)a3;
+- (void)updateWithService:(id)service;
 @end
 
 @implementation HMFNetworkService
 
-- (HMFNetworkService)initWithTXTRecords:(id)a3 browseResult:(id)a4 queue:(id)a5
+- (HMFNetworkService)initWithTXTRecords:(id)records browseResult:(id)result queue:(id)queue
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = nw_browse_result_copy_endpoint(a4);
-  v11 = [[HMFNetworkServiceInfo alloc] initWithEndpoint:v10 txtRecord:v9];
+  queueCopy = queue;
+  recordsCopy = records;
+  v10 = nw_browse_result_copy_endpoint(result);
+  v11 = [[HMFNetworkServiceInfo alloc] initWithEndpoint:v10 txtRecord:recordsCopy];
 
-  v12 = [(HMFNetworkService *)self initWithServiceInfo:v11 port:nw_endpoint_get_port(v10) queue:v8];
+  v12 = [(HMFNetworkService *)self initWithServiceInfo:v11 port:nw_endpoint_get_port(v10) queue:queueCopy];
   return v12;
 }
 
-- (HMFNetworkService)initWithServiceInfo:(id)a3 port:(unsigned __int16)a4 queue:(id)a5
+- (HMFNetworkService)initWithServiceInfo:(id)info port:(unsigned __int16)port queue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  infoCopy = info;
+  queueCopy = queue;
+  if (infoCopy)
   {
     v17.receiver = self;
     v17.super_class = HMFNetworkService;
@@ -42,33 +42,33 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_workQueue, a5);
-      objc_storeStrong(&v12->_serviceInfo, a3);
-      v12->_port = a4;
+      objc_storeStrong(&v11->_workQueue, queue);
+      objc_storeStrong(&v12->_serviceInfo, info);
+      v12->_port = port;
       v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
       ipAddresses = v12->_ipAddresses;
       v12->_ipAddresses = v13;
     }
 
     self = v12;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -80,9 +80,9 @@
   v7 = v6;
   if (v6 && ([v6 host], v8 = objc_claimAutoreleasedReturnValue(), -[HMFNetworkService host](self, "host"), v9 = objc_claimAutoreleasedReturnValue(), v10 = HMFEqualObjects(v8, v9), v9, v8, v10))
   {
-    v11 = [v7 serviceInfo];
-    v12 = [(HMFNetworkService *)self serviceInfo];
-    v13 = HMFEqualObjects(v11, v12);
+    serviceInfo = [v7 serviceInfo];
+    serviceInfo2 = [(HMFNetworkService *)self serviceInfo];
+    v13 = HMFEqualObjects(serviceInfo, serviceInfo2);
   }
 
   else
@@ -95,12 +95,12 @@
 
 - (void)invalidate
 {
-  v3 = [(HMFNetworkService *)self nwConnection];
+  nwConnection = [(HMFNetworkService *)self nwConnection];
 
-  if (v3)
+  if (nwConnection)
   {
-    v4 = [(HMFNetworkService *)self nwConnection];
-    nw_connection_cancel(v4);
+    nwConnection2 = [(HMFNetworkService *)self nwConnection];
+    nw_connection_cancel(nwConnection2);
 
     [(HMFNetworkService *)self setNwConnection:0];
   }
@@ -114,12 +114,12 @@
   [(HMFNetworkService *)&v3 dealloc];
 }
 
-- (id)resolveAddressWithAddressType:(unint64_t)a3 timeout:(double)a4 receivedDataHandler:(id)a5
+- (id)resolveAddressWithAddressType:(unint64_t)type timeout:(double)timeout receivedDataHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if ([(HMFNetworkService *)self lowPowerMode])
   {
-    v9 = _Block_copy(v8);
+    v9 = _Block_copy(handlerCopy);
     if (v9)
     {
       v10 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
@@ -133,10 +133,10 @@
   {
     v27 = 0;
     v12 = [HMFFuture futureWithPromise:&v27];
-    v13 = [(HMFNetworkService *)self serviceInfo];
-    v14 = [v13 isUDP];
+    serviceInfo = [(HMFNetworkService *)self serviceInfo];
+    isUDP = [serviceInfo isUDP];
     v15 = *MEMORY[0x277CD9238];
-    if (v14)
+    if (isUDP)
     {
       secure_udp = nw_parameters_create_secure_udp(v15, &__block_literal_global_88);
     }
@@ -150,7 +150,7 @@
     v18 = nw_parameters_copy_default_protocol_stack(secure_udp);
     v19 = nw_protocol_stack_copy_internet_protocol(v18);
     v20 = v19;
-    if (a3 == 2)
+    if (type == 2)
     {
       v21 = 6;
     }
@@ -160,7 +160,7 @@
       v21 = 0;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v22 = 4;
     }
@@ -174,13 +174,13 @@
     v23 = nw_interface_create_with_name();
     nw_parameters_prohibit_interface(v17, v23);
 
-    v24 = [(HMFNetworkService *)self _connectionWithPromise:v27 parameters:v17 receivedDataHandler:v8];
+    v24 = [(HMFNetworkService *)self _connectionWithPromise:v27 parameters:v17 receivedDataHandler:handlerCopy];
     v25 = v24;
     if (v24)
     {
       nw_connection_start(v24);
       [(HMFNetworkService *)self setNwConnection:v25];
-      [v12 timeout:a4];
+      [v12 timeout:timeout];
     }
 
     else
@@ -193,18 +193,18 @@
   return v11;
 }
 
-- (void)updateWithService:(id)a3
+- (void)updateWithService:(id)service
 {
-  v4 = a3;
-  v5 = [(HMFNetworkService *)self workQueue];
+  serviceCopy = service;
+  workQueue = [(HMFNetworkService *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__HMFNetworkService_updateWithService___block_invoke;
   v7[3] = &unk_2786E6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = serviceCopy;
+  v6 = serviceCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __39__HMFNetworkService_updateWithService___block_invoke(uint64_t a1)
@@ -217,55 +217,55 @@ void __39__HMFNetworkService_updateWithService___block_invoke(uint64_t a1)
 - (NSString)host
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMFNetworkService *)self serviceInfo];
-  v5 = [v4 serviceName];
-  v6 = [(HMFNetworkService *)self serviceInfo];
-  v7 = [v6 serviceType];
-  v8 = [(HMFNetworkService *)self serviceInfo];
-  v9 = [v8 serviceDomain];
-  v10 = [v3 stringWithFormat:@"%@.%@.%@", v5, v7, v9];
+  serviceInfo = [(HMFNetworkService *)self serviceInfo];
+  serviceName = [serviceInfo serviceName];
+  serviceInfo2 = [(HMFNetworkService *)self serviceInfo];
+  serviceType = [serviceInfo2 serviceType];
+  serviceInfo3 = [(HMFNetworkService *)self serviceInfo];
+  serviceDomain = [serviceInfo3 serviceDomain];
+  v10 = [v3 stringWithFormat:@"%@.%@.%@", serviceName, serviceType, serviceDomain];
 
   return v10;
 }
 
 - (NSString)hostName
 {
-  v2 = [(HMFNetworkService *)self serviceInfo];
-  v3 = [v2 serviceName];
+  serviceInfo = [(HMFNetworkService *)self serviceInfo];
+  serviceName = [serviceInfo serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (NSArray)addresses
 {
-  v2 = [(HMFNetworkService *)self ipAddresses];
-  v3 = [v2 copy];
+  ipAddresses = [(HMFNetworkService *)self ipAddresses];
+  v3 = [ipAddresses copy];
 
   return v3;
 }
 
 - (BOOL)lowPowerMode
 {
-  v2 = [(HMFNetworkService *)self serviceInfo];
-  v3 = [v2 serviceName];
-  v4 = [v3 containsString:@"_lpm"];
+  serviceInfo = [(HMFNetworkService *)self serviceInfo];
+  serviceName = [serviceInfo serviceName];
+  v4 = [serviceName containsString:@"_lpm"];
 
   return v4;
 }
 
-- (id)_connectionWithPromise:(id)a3 parameters:(id)a4 receivedDataHandler:(id)a5
+- (id)_connectionWithPromise:(id)promise parameters:(id)parameters receivedDataHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  promiseCopy = promise;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   [(HMFNetworkService *)self invalidate];
-  v11 = [(HMFNetworkService *)self host];
-  [v11 UTF8String];
+  host = [(HMFNetworkService *)self host];
+  [host UTF8String];
   srv = nw_endpoint_create_srv();
-  v13 = nw_connection_create(srv, v9);
+  v13 = nw_connection_create(srv, parametersCopy);
 
-  v14 = [(HMFNetworkService *)self workQueue];
-  nw_connection_set_queue(v13, v14);
+  workQueue = [(HMFNetworkService *)self workQueue];
+  nw_connection_set_queue(v13, workQueue);
 
   objc_initWeak(&location, self);
   handler[0] = MEMORY[0x277D85DD0];
@@ -275,9 +275,9 @@ void __39__HMFNetworkService_updateWithService___block_invoke(uint64_t a1)
   objc_copyWeak(&v25, &location);
   v15 = v13;
   v22 = v15;
-  v16 = v10;
+  v16 = handlerCopy;
   v24 = v16;
-  v17 = v8;
+  v17 = promiseCopy;
   v23 = v17;
   nw_connection_set_state_changed_handler(v15, handler);
   v18 = v23;
@@ -375,14 +375,14 @@ void __75__HMFNetworkService__connectionWithPromise_parameters_receivedDataHandl
   }
 }
 
-- (BOOL)_updateDeviceWithPath:(id)a3
+- (BOOL)_updateDeviceWithPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMFNetworkService *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  pathCopy = path;
+  workQueue = [(HMFNetworkService *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v4)
+  if (pathCopy)
   {
     v6 = nw_path_copy_endpoint();
     v7 = v6;
@@ -392,17 +392,17 @@ void __75__HMFNetworkService__connectionWithPromise_parameters_receivedDataHandl
       [(NSMutableArray *)self->_ipAddresses addObject:v9];
       self->_port = nw_endpoint_get_port(v7);
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = HMFGetLogIdentifier(v11);
-        v14 = [(HMFNetAddress *)v9 addressString];
+        v13 = HMFGetLogIdentifier(selfCopy);
+        addressString = [(HMFNetAddress *)v9 addressString];
         port = self->_port;
         v19 = 138543874;
         v20 = v13;
         v21 = 2114;
-        v22 = v14;
+        v22 = addressString;
         v23 = 1024;
         v24 = port;
         _os_log_impl(&dword_22ADEC000, v12, OS_LOG_TYPE_INFO, "%{public}@Resolved: %{public}@ %hu", &v19, 0x1Cu);
@@ -432,10 +432,10 @@ void __75__HMFNetworkService__connectionWithPromise_parameters_receivedDataHandl
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMFNetworkService *)self host];
-  v6 = [(HMFNetworkService *)self addresses];
-  v7 = [v6 lastObject];
-  v8 = [v3 stringWithFormat:@"%@ %@ %@ (%hu)", v4, v5, v7, -[HMFNetworkService port](self, "port")];
+  host = [(HMFNetworkService *)self host];
+  addresses = [(HMFNetworkService *)self addresses];
+  lastObject = [addresses lastObject];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@ (%hu)", v4, host, lastObject, -[HMFNetworkService port](self, "port")];
 
   return v8;
 }
@@ -443,8 +443,8 @@ void __75__HMFNetworkService__connectionWithPromise_parameters_receivedDataHandl
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMFNetworkService *)self host];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  host = [(HMFNetworkService *)self host];
+  v4 = [v2 stringWithFormat:@"%@", host];
 
   return v4;
 }

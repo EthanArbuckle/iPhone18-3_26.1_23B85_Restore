@@ -1,7 +1,7 @@
 @interface CRKIdentifiedProviderRegistry
 + (id)sharedInstance;
 - (CRKIdentifiedProviderRegistry)init;
-- (void)registerIdentifiedProvider:(id)a3;
+- (void)registerIdentifiedProvider:(id)provider;
 @end
 
 @implementation CRKIdentifiedProviderRegistry
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __47__CRKIdentifiedProviderRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1, block);
@@ -47,18 +47,18 @@ uint64_t __47__CRKIdentifiedProviderRegistry_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerIdentifiedProvider:(id)a3
+- (void)registerIdentifiedProvider:(id)provider
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([(NSMutableOrderedSet *)self->_identifiedProviders containsObject:v4]& 1) == 0)
+  providerCopy = provider;
+  if (([(NSMutableOrderedSet *)self->_identifiedProviders containsObject:providerCopy]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_identifiedProviders addObject:v4];
+    [(NSMutableOrderedSet *)self->_identifiedProviders addObject:providerCopy];
     v5 = *MEMORY[0x277CF93F0];
     if (os_log_type_enabled(*MEMORY[0x277CF93F0], OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = providerCopy;
       _os_log_impl(&dword_243247000, v5, OS_LOG_TYPE_INFO, "Registered provider with CardKit: %@", &v6, 0xCu);
     }
   }

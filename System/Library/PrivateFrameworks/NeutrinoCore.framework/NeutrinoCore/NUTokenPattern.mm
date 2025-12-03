@@ -1,19 +1,19 @@
 @interface NUTokenPattern
-- (BOOL)isEqualToPattern:(id)a3;
-- (BOOL)isEqualToTokenPattern:(id)a3;
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5;
+- (BOOL)isEqualToPattern:(id)pattern;
+- (BOOL)isEqualToTokenPattern:(id)pattern;
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count;
 - (NUTokenPattern)init;
-- (NUTokenPattern)initWithToken:(id)a3;
+- (NUTokenPattern)initWithToken:(id)token;
 - (id)shortestMatch;
 @end
 
 @implementation NUTokenPattern
 
-- (BOOL)match:(id)a3 location:(unint64_t *)a4 count:(unint64_t *)a5
+- (BOOL)match:(id)match location:(unint64_t *)location count:(unint64_t *)count
 {
-  v8 = a3;
-  v9 = *a4;
-  if (v9 >= [v8 count])
+  matchCopy = match;
+  v9 = *location;
+  if (v9 >= [matchCopy count])
   {
     v13 = 0;
     v10 = 0;
@@ -21,15 +21,15 @@
 
   else
   {
-    v10 = [v8 objectAtIndex:*a4];
-    v11 = [(NUTokenPattern *)self token];
-    v12 = [v10 isEqualToString:v11];
+    v10 = [matchCopy objectAtIndex:*location];
+    token = [(NUTokenPattern *)self token];
+    v12 = [v10 isEqualToString:token];
 
     if (v12)
     {
-      ++*a4;
+      ++*location;
       v13 = 1;
-      *a5 = 1;
+      *count = 1;
     }
 
     else
@@ -41,21 +41,21 @@
   return v13;
 }
 
-- (BOOL)isEqualToTokenPattern:(id)a3
+- (BOOL)isEqualToTokenPattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(NUTokenPattern *)self token];
-  v6 = [v4 token];
+  patternCopy = pattern;
+  token = [(NUTokenPattern *)self token];
+  token2 = [patternCopy token];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(patternCopy) = [token isEqualToString:token2];
+  return patternCopy;
 }
 
-- (BOOL)isEqualToPattern:(id)a3
+- (BOOL)isEqualToPattern:(id)pattern
 {
-  v4 = a3;
+  patternCopy = pattern;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUTokenPattern *)self isEqualToTokenPattern:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUTokenPattern *)self isEqualToTokenPattern:patternCopy];
 
   return v5;
 }
@@ -69,11 +69,11 @@
   return v2;
 }
 
-- (NUTokenPattern)initWithToken:(id)a3
+- (NUTokenPattern)initWithToken:(id)token
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     v10 = NUAssertLogger_5128();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -94,8 +94,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v17;
         v29 = 2114;
@@ -106,8 +106,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -116,7 +116,7 @@
     _NUAssertFailHandler("[NUTokenPattern initWithToken:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUPattern.m", 217, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "token != nil");
   }
 
-  v5 = v4;
+  v5 = tokenCopy;
   v26.receiver = self;
   v26.super_class = NUTokenPattern;
   v6 = [(NUTokenPattern *)&v26 init];
@@ -176,8 +176,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -193,8 +193,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

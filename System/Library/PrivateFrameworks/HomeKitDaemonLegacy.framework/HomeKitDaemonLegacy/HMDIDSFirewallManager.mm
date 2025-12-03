@@ -1,14 +1,14 @@
 @interface HMDIDSFirewallManager
 + (id)logCategory;
-- (HMDIDSFirewallManager)initWithContext:(id)a3;
+- (HMDIDSFirewallManager)initWithContext:(id)context;
 - (NSArray)userIDs;
-- (void)addFireWallEntryForUserIDs:(id)a3;
+- (void)addFireWallEntryForUserIDs:(id)ds;
 - (void)handleDidAddHome;
-- (void)handleDidAddUserWithUserID:(id)a3;
-- (void)handleDidAddUserWithUserID:(id)a3 completion:(id)a4;
+- (void)handleDidAddUserWithUserID:(id)d;
+- (void)handleDidAddUserWithUserID:(id)d completion:(id)completion;
 - (void)handleDidRemoveHome;
 - (void)handleDidRemoveUser;
-- (void)replaceFireWallEntriesWithUserIDs:(id)a3;
+- (void)replaceFireWallEntriesWithUserIDs:(id)ds;
 - (void)start;
 @end
 
@@ -17,12 +17,12 @@
 - (void)handleDidRemoveUser
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManager *)self context];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -33,23 +33,23 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSFirewallManager *)v6 userIDs];
-  [(HMDIDSFirewallManager *)v6 replaceFireWallEntriesWithUserIDs:v9];
+  userIDs = [(HMDIDSFirewallManager *)selfCopy userIDs];
+  [(HMDIDSFirewallManager *)selfCopy replaceFireWallEntriesWithUserIDs:userIDs];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDidAddUserWithUserID:(id)a3 completion:(id)a4
+- (void)handleDidAddUserWithUserID:(id)d completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDIDSFirewallManager *)self context];
-  v9 = [v8 workQueue];
-  dispatch_assert_queue_V2(v9);
+  dCopy = d;
+  completionCopy = completion;
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -57,30 +57,30 @@
     *buf = 138543619;
     v20 = v13;
     v21 = 2117;
-    v22 = v6;
+    v22 = dCopy;
     _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Adding firewall entry for userID: %{sensitive}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(HMDIDSFirewallManager *)v11 context];
-  v18 = v6;
+  context2 = [(HMDIDSFirewallManager *)selfCopy context];
+  v18 = dCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
   v16 = [HMDIDSFirewallManager firewallEntriesForUserIDs:v15];
-  [v14 addFirewallEntries:v16 completion:v7];
+  [context2 addFirewallEntries:v16 completion:completionCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDidAddUserWithUserID:(id)a3
+- (void)handleDidAddUserWithUserID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -88,14 +88,14 @@
     *buf = 138543619;
     v15 = v10;
     v16 = 2117;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Handling did add user with userID: %{sensitive}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = v4;
+  v13 = dCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
-  [(HMDIDSFirewallManager *)v8 addFireWallEntryForUserIDs:v11];
+  [(HMDIDSFirewallManager *)selfCopy addFireWallEntryForUserIDs:v11];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -103,12 +103,12 @@
 - (void)handleDidRemoveHome
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManager *)self context];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -119,8 +119,8 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSFirewallManager *)v6 userIDs];
-  [(HMDIDSFirewallManager *)v6 replaceFireWallEntriesWithUserIDs:v9];
+  userIDs = [(HMDIDSFirewallManager *)selfCopy userIDs];
+  [(HMDIDSFirewallManager *)selfCopy replaceFireWallEntriesWithUserIDs:userIDs];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -128,12 +128,12 @@
 - (void)handleDidAddHome
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManager *)self context];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -144,25 +144,25 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSFirewallManager *)v6 context];
-  [v9 registerForHomeUserNotifications];
+  context2 = [(HMDIDSFirewallManager *)selfCopy context];
+  [context2 registerForHomeUserNotifications];
 
-  v10 = [(HMDIDSFirewallManager *)v6 userIDs];
-  [(HMDIDSFirewallManager *)v6 replaceFireWallEntriesWithUserIDs:v10];
+  userIDs = [(HMDIDSFirewallManager *)selfCopy userIDs];
+  [(HMDIDSFirewallManager *)selfCopy replaceFireWallEntriesWithUserIDs:userIDs];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addFireWallEntryForUserIDs:(id)a3
+- (void)addFireWallEntryForUserIDs:(id)ds
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  dsCopy = ds;
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -170,28 +170,28 @@
     v14 = 138543619;
     v15 = v10;
     v16 = 2117;
-    v17 = v4;
+    v17 = dsCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Adding firewall entries for userIDs: %{sensitive}@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDIDSFirewallManager *)v8 context];
-  v12 = [HMDIDSFirewallManager firewallEntriesForUserIDs:v4];
-  [v11 addFirewallEntries:v12];
+  context2 = [(HMDIDSFirewallManager *)selfCopy context];
+  v12 = [HMDIDSFirewallManager firewallEntriesForUserIDs:dsCopy];
+  [context2 addFirewallEntries:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceFireWallEntriesWithUserIDs:(id)a3
+- (void)replaceFireWallEntriesWithUserIDs:(id)ds
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSFirewallManager *)self context];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  dsCopy = ds;
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -199,14 +199,14 @@
     v14 = 138543619;
     v15 = v10;
     v16 = 2117;
-    v17 = v4;
+    v17 = dsCopy;
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Replacing firewall entries with userIDs: %{sensitive}@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDIDSFirewallManager *)v8 context];
-  v12 = [HMDIDSFirewallManager firewallEntriesForUserIDs:v4];
-  [v11 replaceFireWallEntries:v12];
+  context2 = [(HMDIDSFirewallManager *)selfCopy context];
+  v12 = [HMDIDSFirewallManager firewallEntriesForUserIDs:dsCopy];
+  [context2 replaceFireWallEntries:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -214,12 +214,12 @@
 - (void)start
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDIDSFirewallManager *)self context];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  context = [(HMDIDSFirewallManager *)self context];
+  workQueue = [context workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -230,25 +230,25 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSFirewallManager *)v6 context];
-  [v9 configure];
+  context2 = [(HMDIDSFirewallManager *)selfCopy context];
+  [context2 configure];
 
-  v10 = [(HMDIDSFirewallManager *)v6 userIDs];
-  [(HMDIDSFirewallManager *)v6 replaceFireWallEntriesWithUserIDs:v10];
+  userIDs = [(HMDIDSFirewallManager *)selfCopy userIDs];
+  [(HMDIDSFirewallManager *)selfCopy replaceFireWallEntriesWithUserIDs:userIDs];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (NSArray)userIDs
 {
-  v2 = [(HMDIDSFirewallManager *)self context];
-  v3 = [v2 homeManager];
-  v4 = [v3 homes];
-  v5 = v4;
+  context = [(HMDIDSFirewallManager *)self context];
+  homeManager = [context homeManager];
+  homes = [homeManager homes];
+  v5 = homes;
   v6 = MEMORY[0x277CBEBF8];
-  if (v4)
+  if (homes)
   {
-    v6 = v4;
+    v6 = homes;
   }
 
   v7 = v6;
@@ -257,9 +257,9 @@
   v9 = [v7 na_flatMap:&__block_literal_global_109_70861];
 
   v10 = [v8 setWithArray:v9];
-  v11 = [v10 allObjects];
+  allObjects = [v10 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 id __32__HMDIDSFirewallManager_userIDs__block_invoke(uint64_t a1, void *a2)
@@ -270,16 +270,16 @@ id __32__HMDIDSFirewallManager_userIDs__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (HMDIDSFirewallManager)initWithContext:(id)a3
+- (HMDIDSFirewallManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HMDIDSFirewallManager;
   v6 = [(HMDIDSFirewallManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     [(HMDIDSFirewallManagerContext *)v7->_context setFirewallManager:v7];
   }
 

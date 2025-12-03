@@ -1,26 +1,26 @@
 @interface SearchUIDescriptionCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)didPressMoreButton;
 @end
 
 @implementation SearchUIDescriptionCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIDescriptionCardSectionView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"SearchUIDescriptionCardSectionView" hasInstanceMethod:@"didPressMoreButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"TLKDescriptionView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIDescriptionCardSectionView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"SearchUIDescriptionCardSectionView" hasInstanceMethod:@"didPressMoreButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"TLKDescriptionView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(SearchUIDescriptionCardSectionViewAccessibility *)self safeValueForKey:@"contentView"];
   v3 = [v2 safeValueForKey:@"text"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (void)didPressMoreButton

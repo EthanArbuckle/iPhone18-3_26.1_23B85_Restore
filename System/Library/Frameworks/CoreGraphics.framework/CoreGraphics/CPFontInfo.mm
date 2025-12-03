@@ -1,7 +1,7 @@
 @interface CPFontInfo
-- (BOOL)getDescriptor:(id *)a3;
+- (BOOL)getDescriptor:(id *)descriptor;
 - (CGRect)readRect;
-- (CPFontInfo)initWithFontData:(__CFData *)a3;
+- (CPFontInfo)initWithFontData:(__CFData *)data;
 - (__CFData)newKernData;
 - (int)kernUnitsPerEm;
 - (unsigned)readByte;
@@ -40,52 +40,52 @@
   return result;
 }
 
-- (BOOL)getDescriptor:(id *)a3
+- (BOOL)getDescriptor:(id *)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     if (self->fontDataLength >= 0x54)
     {
       self->valid = 1;
       self->offset = 0;
       [(CPFontInfo *)self readFloat];
-      a3->var0 = v6;
+      descriptor->var0 = v6;
       [(CPFontInfo *)self readFloat];
-      a3->var1 = v7;
-      a3->var2 = [(CPFontInfo *)self readUnsignedLong];
+      descriptor->var1 = v7;
+      descriptor->var2 = [(CPFontInfo *)self readUnsignedLong];
       [(CPFontInfo *)self readRect];
-      a3->var3.origin.x = v8;
-      a3->var3.origin.y = v9;
-      a3->var3.size.width = v10;
-      a3->var3.size.height = v11;
+      descriptor->var3.origin.x = v8;
+      descriptor->var3.origin.y = v9;
+      descriptor->var3.size.width = v10;
+      descriptor->var3.size.height = v11;
       [(CPFontInfo *)self readFloat];
-      a3->var4 = v12;
+      descriptor->var4 = v12;
       [(CPFontInfo *)self readFloat];
-      a3->var5 = v13;
+      descriptor->var5 = v13;
       [(CPFontInfo *)self readFloat];
-      a3->var6 = v14;
+      descriptor->var6 = v14;
       [(CPFontInfo *)self readFloat];
-      a3->var7 = v15;
+      descriptor->var7 = v15;
       [(CPFontInfo *)self readFloat];
-      a3->var8 = v16;
+      descriptor->var8 = v16;
       [(CPFontInfo *)self readFloat];
-      a3->var9 = v17;
+      descriptor->var9 = v17;
       [(CPFontInfo *)self readFloat];
-      a3->var10 = v18;
+      descriptor->var10 = v18;
       [(CPFontInfo *)self readFloat];
-      a3->var11 = v19;
+      descriptor->var11 = v19;
       [(CPFontInfo *)self readFloat];
-      a3->var12 = v20;
+      descriptor->var12 = v20;
       [(CPFontInfo *)self readFloat];
-      a3->var13 = v21;
+      descriptor->var13 = v21;
       [(CPFontInfo *)self readFloat];
-      a3->var14 = v22;
+      descriptor->var14 = v22;
       [(CPFontInfo *)self readFloat];
-      a3->var15 = v23;
+      descriptor->var15 = v23;
       [(CPFontInfo *)self readFloat];
-      a3->var16 = v24;
+      descriptor->var16 = v24;
       [(CPFontInfo *)self readFloat];
-      a3->var17 = v25;
+      descriptor->var17 = v25;
       return self->valid;
     }
 
@@ -123,10 +123,10 @@
 
 - (unsigned)readUnsignedLong
 {
-  v3 = [(CPFontInfo *)self readByte];
-  v4 = [(CPFontInfo *)self readByte];
-  v5 = [(CPFontInfo *)self readByte];
-  return (v3 << 24) | (v4 << 16) | (v5 << 8) | [(CPFontInfo *)self readByte];
+  readByte = [(CPFontInfo *)self readByte];
+  readByte2 = [(CPFontInfo *)self readByte];
+  readByte3 = [(CPFontInfo *)self readByte];
+  return (readByte << 24) | (readByte2 << 16) | (readByte3 << 8) | [(CPFontInfo *)self readByte];
 }
 
 - (unsigned)readByte
@@ -174,19 +174,19 @@
   }
 }
 
-- (CPFontInfo)initWithFontData:(__CFData *)a3
+- (CPFontInfo)initWithFontData:(__CFData *)data
 {
   v4 = [(CPFontInfo *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (data)
     {
-      Length = CFDataGetLength(a3);
+      Length = CFDataGetLength(data);
       v5->fontDataLength = Length;
       if (Length)
       {
-        v7 = CFRetain(a3);
+        v7 = CFRetain(data);
         v5->fontData = v7;
         v5->dataPtr = CFDataGetBytePtr(v7);
       }

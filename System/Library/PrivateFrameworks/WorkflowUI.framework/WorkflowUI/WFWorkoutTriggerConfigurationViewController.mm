@@ -1,85 +1,85 @@
 @interface WFWorkoutTriggerConfigurationViewController
-- (WFWorkoutTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4;
+- (WFWorkoutTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode;
 - (id)customSections;
-- (id)infoForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)infoForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (id)tableViewCellClasses;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options;
 - (void)updateUI;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFWorkoutTriggerConfigurationViewController
 
-- (void)triggerTableViewController:(id)a3 didFinishWithAnySelected:(BOOL)a4 orSelectedOptions:(id)a5
+- (void)triggerTableViewController:(id)controller didFinishWithAnySelected:(BOOL)selected orSelectedOptions:(id)options
 {
-  v5 = a4;
-  v14 = a5;
-  v8 = a3;
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  v10 = v9;
-  if (v5)
+  selectedCopy = selected;
+  optionsCopy = options;
+  controllerCopy = controller;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  v10 = trigger;
+  if (selectedCopy)
   {
-    [v9 setSelection:0];
+    [trigger setSelection:0];
 
-    v11 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v11 setSelectedWorkoutTypes:MEMORY[0x277CBEBF8]];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger2 setSelectedWorkoutTypes:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
-    [v9 setSelection:1];
+    [trigger setSelection:1];
 
-    v11 = [v14 if_map:&__block_literal_global_52];
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v12 setSelectedWorkoutTypes:v11];
+    trigger2 = [optionsCopy if_map:&__block_literal_global_52];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    [trigger3 setSelectedWorkoutTypes:trigger2];
   }
 
-  [v8 dismissViewControllerAnimated:1 completion:0];
-  v13 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v13 reloadData];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)cell:(id)a3 didSelectOptionWithLeftViewSelected:(BOOL)a4 rightViewSelected:(BOOL)a5
+- (void)cell:(id)cell didSelectOptionWithLeftViewSelected:(BOOL)selected rightViewSelected:(BOOL)viewSelected
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v8 setOnStart:v6];
+  viewSelectedCopy = viewSelected;
+  selectedCopy = selected;
+  trigger = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger setOnStart:selectedCopy];
 
-  v9 = [(WFTriggerConfigurationViewController *)self trigger];
-  [v9 setOnEnd:v5];
+  trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+  [trigger2 setOnEnd:viewSelectedCopy];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = -[WFWorkoutTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v7 = -[WFWorkoutTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v8 = [v7 objectForKeyedSubscript:@"identifier"];
   v9 = [v8 isEqual:@"workoutType"];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277D7CAC8] allTypes];
+    allTypes = [MEMORY[0x277D7CAC8] allTypes];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __81__WFWorkoutTriggerConfigurationViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v20[3] = &unk_279EE75E0;
     v20[4] = self;
-    v11 = [v10 if_map:v20];
+    v11 = [allTypes if_map:v20];
 
-    v12 = [(WFTriggerConfigurationViewController *)self trigger];
-    v13 = [v12 selection] == 0;
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    v13 = [trigger selection] == 0;
 
     v14 = [WFTriggerTableViewController alloc];
     v15 = WFLocalizedString(@"Any Workout");
@@ -93,9 +93,9 @@
     [(WFWorkoutTriggerConfigurationViewController *)self presentViewController:v18 animated:1 completion:0];
   }
 
-  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:v6 withSectionInfo:v7];
-  v19 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v19 reloadData];
+  [(WFTriggerConfigurationViewController *)self didSelectRowAtIndexPath:pathCopy withSectionInfo:v7];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 
   [(WFTriggerConfigurationViewController *)self updateNextButtonEnabledState];
 }
@@ -119,21 +119,21 @@ WFSelectableListOption *__81__WFWorkoutTriggerConfigurationViewController_tableV
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(WFWorkoutTriggerConfigurationViewController *)self infoForSection:a4];
+  v4 = [(WFWorkoutTriggerConfigurationViewController *)self infoForSection:section];
   v5 = [v4 objectForKeyedSubscript:@"sectionTitle"];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[WFWorkoutTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [v6 section]);
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[WFWorkoutTriggerConfigurationViewController infoForSection:](self, "infoForSection:", [pathCopy section]);
   v9 = [v8 objectForKeyedSubscript:@"cellIdentifier"];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccessoryType:0];
   v11 = [v8 objectForKeyedSubscript:@"identifier"];
@@ -153,7 +153,7 @@ WFSelectableListOption *__81__WFWorkoutTriggerConfigurationViewController_tableV
   if (!v14)
   {
     v58 = v9;
-    v55 = v6;
+    v55 = pathCopy;
     v53 = v10;
     if (v15)
     {
@@ -176,61 +176,61 @@ WFSelectableListOption *__81__WFWorkoutTriggerConfigurationViewController_tableV
 
     v59 = v22;
 
-    v57 = [(WFTriggerConfigurationViewController *)self trigger];
-    v23 = [objc_opt_class() onIcon];
-    v56 = [(WFTriggerConfigurationViewController *)self trigger];
-    v24 = [objc_opt_class() onLabel];
-    v54 = [(WFTriggerConfigurationViewController *)self trigger];
-    v25 = [objc_opt_class() onIconTintColor];
-    v52 = [(WFTriggerConfigurationViewController *)self trigger];
-    v26 = [objc_opt_class() offIcon];
-    v27 = [(WFTriggerConfigurationViewController *)self trigger];
-    v28 = [objc_opt_class() offLabel];
-    v29 = [(WFTriggerConfigurationViewController *)self trigger];
-    v30 = [objc_opt_class() offIconTintColor];
-    [v59 configureWithLeftGlyph:v23 leftTitle:v24 leftTintColor:v25 rightGlyph:v26 rightTitle:v28 rightTintColor:v30];
+    trigger = [(WFTriggerConfigurationViewController *)self trigger];
+    onIcon = [objc_opt_class() onIcon];
+    trigger2 = [(WFTriggerConfigurationViewController *)self trigger];
+    onLabel = [objc_opt_class() onLabel];
+    trigger3 = [(WFTriggerConfigurationViewController *)self trigger];
+    onIconTintColor = [objc_opt_class() onIconTintColor];
+    trigger4 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIcon = [objc_opt_class() offIcon];
+    trigger5 = [(WFTriggerConfigurationViewController *)self trigger];
+    offLabel = [objc_opt_class() offLabel];
+    trigger6 = [(WFTriggerConfigurationViewController *)self trigger];
+    offIconTintColor = [objc_opt_class() offIconTintColor];
+    [v59 configureWithLeftGlyph:onIcon leftTitle:onLabel leftTintColor:onIconTintColor rightGlyph:offIcon rightTitle:offLabel rightTintColor:offIconTintColor];
 
-    v31 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v59 setLeftViewSelected:{objc_msgSend(v31, "onStart")}];
+    trigger7 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v59 setLeftViewSelected:{objc_msgSend(trigger7, "onStart")}];
 
-    v32 = [(WFTriggerConfigurationViewController *)self trigger];
-    [v59 setRightViewSelected:{objc_msgSend(v32, "onEnd")}];
+    trigger8 = [(WFTriggerConfigurationViewController *)self trigger];
+    [v59 setRightViewSelected:{objc_msgSend(trigger8, "onEnd")}];
 
     [v59 setDelegate:self];
     v9 = v58;
-    v6 = v55;
+    pathCopy = v55;
     v10 = v53;
     goto LABEL_20;
   }
 
   v17 = WFLocalizedString(@"Workout Type");
-  v18 = [v16 textLabel];
-  [v18 setText:v17];
+  textLabel = [v16 textLabel];
+  [textLabel setText:v17];
 
-  v19 = [(WFTriggerConfigurationViewController *)self trigger];
-  v20 = [v19 selection];
+  trigger9 = [(WFTriggerConfigurationViewController *)self trigger];
+  selection = [trigger9 selection];
 
-  if (v20 == 1)
+  if (selection == 1)
   {
-    v33 = [(WFTriggerConfigurationViewController *)self trigger];
-    v34 = [v33 selectedWorkoutTypes];
-    v35 = [v34 count];
+    trigger10 = [(WFTriggerConfigurationViewController *)self trigger];
+    selectedWorkoutTypes = [trigger10 selectedWorkoutTypes];
+    v35 = [selectedWorkoutTypes count];
 
     if (v35)
     {
-      v36 = [(WFTriggerConfigurationViewController *)self trigger];
-      v37 = [v36 selectedWorkoutTypes];
-      v38 = [v37 count];
+      trigger11 = [(WFTriggerConfigurationViewController *)self trigger];
+      selectedWorkoutTypes2 = [trigger11 selectedWorkoutTypes];
+      v38 = [selectedWorkoutTypes2 count];
 
       if (v38 == 1)
       {
         v39 = objc_alloc(MEMORY[0x277D7CAC8]);
-        v60 = [(WFTriggerConfigurationViewController *)self trigger];
-        v40 = [v60 selectedWorkoutTypes];
-        v41 = [v40 firstObject];
+        trigger12 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedWorkoutTypes3 = [trigger12 selectedWorkoutTypes];
+        firstObject = [selectedWorkoutTypes3 firstObject];
         v42 = v9;
-        v43 = [v39 initWithActivityType:{objc_msgSend(v41, "unsignedIntegerValue")}];
-        v44 = [v43 name];
+        v43 = [v39 initWithActivityType:{objc_msgSend(firstObject, "unsignedIntegerValue")}];
+        name = [v43 name];
 
         v9 = v42;
       }
@@ -239,9 +239,9 @@ WFSelectableListOption *__81__WFWorkoutTriggerConfigurationViewController_tableV
       {
         v48 = MEMORY[0x277CCACA8];
         v49 = WFLocalizedString(@"Any of %lu types");
-        v50 = [(WFTriggerConfigurationViewController *)self trigger];
-        v51 = [v50 selectedWorkoutTypes];
-        v44 = [v48 localizedStringWithFormat:v49, objc_msgSend(v51, "count")];
+        trigger13 = [(WFTriggerConfigurationViewController *)self trigger];
+        selectedWorkoutTypes4 = [trigger13 selectedWorkoutTypes];
+        name = [v48 localizedStringWithFormat:v49, objc_msgSend(selectedWorkoutTypes4, "count")];
       }
 
       goto LABEL_19;
@@ -251,62 +251,62 @@ WFSelectableListOption *__81__WFWorkoutTriggerConfigurationViewController_tableV
     goto LABEL_18;
   }
 
-  if (!v20)
+  if (!selection)
   {
     v21 = @"Any Workout";
 LABEL_18:
-    v44 = WFLocalizedString(v21);
+    name = WFLocalizedString(v21);
     goto LABEL_19;
   }
 
-  v44 = 0;
+  name = 0;
 LABEL_19:
-  v45 = [v16 detailTextLabel];
-  [v45 setText:v44];
+  detailTextLabel = [v16 detailTextLabel];
+  [detailTextLabel setText:name];
 
 LABEL_20:
-  v46 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:v6 sectionInfo:v8];
+  v46 = [(WFTriggerConfigurationViewController *)self configureAdditionalCellsIfNeeded:v10 indexPath:pathCopy sectionInfo:v8];
 
   return v46;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFWorkoutTriggerConfigurationViewController *)self infoForSection:a4];
+  v5 = [(WFWorkoutTriggerConfigurationViewController *)self infoForSection:section];
   v6 = [(WFTriggerConfigurationViewController *)self numberOfRowsInSectionWithInfo:v5];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFTriggerConfigurationViewController *)self sections];
-  v4 = [v3 count];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v4 = [sections count];
 
   return v4;
 }
 
-- (id)infoForSection:(int64_t)a3
+- (id)infoForSection:(int64_t)section
 {
-  v4 = [(WFTriggerConfigurationViewController *)self sections];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  sections = [(WFTriggerConfigurationViewController *)self sections];
+  v5 = [sections objectAtIndexedSubscript:section];
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = WFWorkoutTriggerConfigurationViewController;
-  [(WFWorkoutTriggerConfigurationViewController *)&v5 viewWillAppear:a3];
-  v4 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v4 reloadData];
+  [(WFWorkoutTriggerConfigurationViewController *)&v5 viewWillAppear:appear];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateUI
 {
-  v2 = [(WFTriggerConfigurationViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(WFTriggerConfigurationViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (id)customSections
@@ -346,19 +346,19 @@ LABEL_20:
   return v4;
 }
 
-- (WFWorkoutTriggerConfigurationViewController)initWithTrigger:(id)a3 mode:(unint64_t)a4
+- (WFWorkoutTriggerConfigurationViewController)initWithTrigger:(id)trigger mode:(unint64_t)mode
 {
-  v7 = a3;
+  triggerCopy = trigger;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFWorkoutTriggerConfigurationViewController.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWorkoutTrigger class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkoutTriggerConfigurationViewController.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"[trigger isKindOfClass:[WFWorkoutTrigger class]]"}];
   }
 
   v13.receiver = self;
   v13.super_class = WFWorkoutTriggerConfigurationViewController;
-  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:v7 mode:a4];
+  v8 = [(WFTriggerConfigurationViewController *)&v13 initWithTrigger:triggerCopy mode:mode];
   v9 = v8;
   if (v8)
   {

@@ -1,20 +1,20 @@
 @interface REMSnoozeTimeUtils
-+ (int64_t)nextThirdsHour:(int64_t)a3;
-+ (int64_t)nextThirdsHourFromHour:(int64_t)a3;
++ (int64_t)nextThirdsHour:(int64_t)hour;
++ (int64_t)nextThirdsHourFromHour:(int64_t)hour;
 @end
 
 @implementation REMSnoozeTimeUtils
 
-+ (int64_t)nextThirdsHourFromHour:(int64_t)a3
++ (int64_t)nextThirdsHourFromHour:(int64_t)hour
 {
-  if ((a3 % 24) <= 0xFFFFFFFFFFFFFFE7)
+  if ((hour % 24) <= 0xFFFFFFFFFFFFFFE7)
   {
-    v3 = a3 % 24;
+    v3 = hour % 24;
   }
 
   else
   {
-    v3 = a3 % 24 + 24;
+    v3 = hour % 24 + 24;
   }
 
   v4 = REMLocalizedTimeOfDayCreationHour(0);
@@ -45,18 +45,18 @@
   return result;
 }
 
-+ (int64_t)nextThirdsHour:(int64_t)a3
++ (int64_t)nextThirdsHour:(int64_t)hour
 {
-  if (a3 > 1)
+  if (hour > 1)
   {
-    if (a3 == 2)
+    if (hour == 2)
     {
       v4 = 5;
 
       return REMLocalizedTimeOfDayCreationHour(v4);
     }
 
-    if (a3 == 3)
+    if (hour == 3)
     {
       return REMLocalizedTimeOfDayCreationHour(0) + 24;
     }
@@ -64,14 +64,14 @@
 
   else
   {
-    if (!a3)
+    if (!hour)
     {
       v4 = 0;
 
       return REMLocalizedTimeOfDayCreationHour(v4);
     }
 
-    if (a3 == 1)
+    if (hour == 1)
     {
       v4 = 2;
 

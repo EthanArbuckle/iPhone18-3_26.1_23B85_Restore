@@ -1,12 +1,12 @@
 @interface NWListener
-- (NWListener)initWithLayer:(void *)a3;
-- (void)setListener:(id)a3;
+- (NWListener)initWithLayer:(void *)layer;
+- (void)setListener:(id)listener;
 - (void)stopListening;
 @end
 
 @implementation NWListener
 
-- (NWListener)initWithLayer:(void *)a3
+- (NWListener)initWithLayer:(void *)layer
 {
   v8.receiver = self;
   v8.super_class = NWListener;
@@ -18,7 +18,7 @@
     v4->readySemaphore = v5;
 
     v4->listenerState = 0;
-    v4->layer = a3;
+    v4->layer = layer;
   }
 
   return v4;
@@ -43,18 +43,18 @@
   }
 }
 
-- (void)setListener:(id)a3
+- (void)setListener:(id)listener
 {
-  objc_storeStrong(&self->listener, a3);
-  v5 = a3;
-  v6 = self;
-  nw_listener_set_queue(self->listener, v6->listenerQueue);
+  objc_storeStrong(&self->listener, listener);
+  listenerCopy = listener;
+  selfCopy = self;
+  nw_listener_set_queue(self->listener, selfCopy->listenerQueue);
   listener = self->listener;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __26__NWListener_setListener___block_invoke;
   handler[3] = &unk_279AE3C88;
-  v8 = v6;
+  v8 = selfCopy;
   v14 = v8;
   nw_listener_set_state_changed_handler(listener, handler);
   v9 = self->listener;

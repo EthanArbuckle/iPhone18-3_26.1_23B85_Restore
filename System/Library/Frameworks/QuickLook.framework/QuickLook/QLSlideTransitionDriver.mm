@@ -8,9 +8,9 @@
 
 - (void)animateTransition
 {
-  v3 = [(QLTransitionDriver *)self gestureTracker];
-  v4 = v3;
-  if (!v3 || ([v3 trackedTransform], CGAffineTransformIsIdentity(&v5)) || -[QLTransitionDriver presenting](self, "presenting"))
+  gestureTracker = [(QLTransitionDriver *)self gestureTracker];
+  v4 = gestureTracker;
+  if (!gestureTracker || ([gestureTracker trackedTransform], CGAffineTransformIsIdentity(&v5)) || -[QLTransitionDriver presenting](self, "presenting"))
   {
     [(QLSlideTransitionDriver *)self _animateTransition];
   }
@@ -34,11 +34,11 @@
 
   else
   {
-    v4 = [(QLTransitionDriver *)self destinationView];
-    v5 = v4;
-    if (v4)
+    destinationView = [(QLTransitionDriver *)self destinationView];
+    v5 = destinationView;
+    if (destinationView)
     {
-      [v4 transform];
+      [destinationView transform];
     }
 
     else
@@ -50,8 +50,8 @@
   v18 = v19;
   if ([(QLTransitionDriver *)self presenting])
   {
-    v6 = [(QLTransitionDriver *)self transitionContainer];
-    [v6 frame];
+    transitionContainer = [(QLTransitionDriver *)self transitionContainer];
+    [transitionContainer frame];
     Height = CGRectGetHeight(v20);
     v16 = v19;
     CGAffineTransformTranslate(&v17, &v16, 0.0, Height);
@@ -60,19 +60,19 @@
 
   else
   {
-    v6 = [(QLTransitionDriver *)self transitionContainer];
-    [v6 frame];
+    transitionContainer = [(QLTransitionDriver *)self transitionContainer];
+    [transitionContainer frame];
     v8 = CGRectGetHeight(v21);
-    v9 = [(QLTransitionDriver *)self destinationView];
-    [v9 frame];
+    destinationView2 = [(QLTransitionDriver *)self destinationView];
+    [destinationView2 frame];
     v17 = v18;
     CGAffineTransformTranslate(&v18, &v17, 0.0, v8 - v10);
   }
 
   v15 = v19;
-  v11 = [(QLTransitionDriver *)self destinationView];
+  destinationView3 = [(QLTransitionDriver *)self destinationView];
   v17 = v15;
-  [v11 setTransform:&v17];
+  [destinationView3 setTransform:&v17];
 
   [(QLTransitionDriver *)self presenting];
   v12 = MEMORY[0x277D75D18];
@@ -94,19 +94,19 @@ void __45__QLSlideTransitionDriver__animateTransition__block_invoke_2(uint64_t a
 
 - (void)_animateTransitionUserSlideDismissal
 {
-  v3 = [(QLTransitionDriver *)self gestureTracker];
-  [v3 trackedVelocity];
+  gestureTracker = [(QLTransitionDriver *)self gestureTracker];
+  [gestureTracker trackedVelocity];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
   v13 = v11 * 1.5;
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v16 = v15;
   v17 = v15 * 1.5;
 
@@ -152,11 +152,11 @@ void __45__QLSlideTransitionDriver__animateTransition__block_invoke_2(uint64_t a
   }
 
   *&v36.a = 0uLL;
-  v22 = [(QLTransitionDriver *)self destinationView];
-  v23 = v22;
-  if (v22)
+  destinationView = [(QLTransitionDriver *)self destinationView];
+  v23 = destinationView;
+  if (destinationView)
   {
-    [v22 transform];
+    [destinationView transform];
   }
 
   else
@@ -182,9 +182,9 @@ void __45__QLSlideTransitionDriver__animateTransition__block_invoke_2(uint64_t a
   }
 
   v32 = v36;
-  v28 = [(QLTransitionDriver *)self destinationView];
+  destinationView2 = [(QLTransitionDriver *)self destinationView];
   v34 = v32;
-  [v28 setTransform:&v34];
+  [destinationView2 setTransform:&v34];
 
   v29 = MEMORY[0x277D75D18];
   [(QLTransitionDriver *)self duration];

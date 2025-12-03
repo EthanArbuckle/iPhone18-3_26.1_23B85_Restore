@@ -1,27 +1,27 @@
 @interface POMMESSchemaPOMMESPegasusResponseServerDrivenContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addCatId:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCatId:(id)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusResponseServerDrivenContext
 
-- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = POMMESSchemaPOMMESPegasusResponseServerDrivenContext;
   v5 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"catId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"catId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusResponseServerDrivenContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,31 +106,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_catIds)
   {
-    v4 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"catId"];
+    catIds = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
+    v5 = [catIds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"catId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
-    v6 = [v4 catIds];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    catIds = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
+    catIds2 = [equalCopy catIds];
+    v7 = catIds2;
+    if ((catIds != 0) != (catIds2 == 0))
     {
-      v8 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
-      if (!v8)
+      catIds3 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
+      if (!catIds3)
       {
 
 LABEL_10:
@@ -138,10 +138,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
-      v11 = [v4 catIds];
-      v12 = [v10 isEqual:v11];
+      v9 = catIds3;
+      catIds4 = [(POMMESSchemaPOMMESPegasusResponseServerDrivenContext *)self catIds];
+      catIds5 = [equalCopy catIds];
+      v12 = [catIds4 isEqual:catIds5];
 
       if (v12)
       {
@@ -160,10 +160,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,31 +196,31 @@ LABEL_8:
   }
 }
 
-- (void)addCatId:(id)a3
+- (void)addCatId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   catIds = self->_catIds;
-  v8 = v4;
+  v8 = idCopy;
   if (!catIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_catIds;
-    self->_catIds = v6;
+    self->_catIds = array;
 
-    v4 = v8;
+    idCopy = v8;
     catIds = self->_catIds;
   }
 
-  [(NSArray *)catIds addObject:v4];
+  [(NSArray *)catIds addObject:idCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = POMMESSchemaPOMMESPegasusResponseServerDrivenContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

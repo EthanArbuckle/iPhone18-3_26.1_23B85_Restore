@@ -45,16 +45,16 @@ uint64_t __36__AXSBMenuBarManager_sharedInstance__block_invoke()
 
 - (void)toggleMenuBar
 {
-  v2 = [(AXSBMenuBarManager *)self menuBarSystemService];
-  [v2 toggleMenuBarVisibility];
+  menuBarSystemService = [(AXSBMenuBarManager *)self menuBarSystemService];
+  [menuBarSystemService toggleMenuBarVisibility];
 }
 
 - (BOOL)isMenuBarSupported
 {
-  v2 = [(AXSBMenuBarManager *)self menuBarSystemService];
-  v3 = [v2 isMenuBarSupported];
+  menuBarSystemService = [(AXSBMenuBarManager *)self menuBarSystemService];
+  isMenuBarSupported = [menuBarSystemService isMenuBarSupported];
 
-  return v3;
+  return isMenuBarSupported;
 }
 
 @end

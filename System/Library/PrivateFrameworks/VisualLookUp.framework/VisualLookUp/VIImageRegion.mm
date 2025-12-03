@@ -1,21 +1,21 @@
 @interface VIImageRegion
-+ (id)regionForEntireImageWithDomains:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)regionForEntireImageWithDomains:(id)domains;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)regionOfInterest;
-- (VIImageRegion)initWithRegionOfInterest:(CGRect)a3 domainInfo:(id)a4;
-- (VIImageRegion)initWithRegionOfInterest:(CGRect)a3 domains:(id)a4;
+- (VIImageRegion)initWithRegionOfInterest:(CGRect)interest domainInfo:(id)info;
+- (VIImageRegion)initWithRegionOfInterest:(CGRect)interest domains:(id)domains;
 - (unint64_t)hash;
 @end
 
 @implementation VIImageRegion
 
-- (VIImageRegion)initWithRegionOfInterest:(CGRect)a3 domainInfo:(id)a4
+- (VIImageRegion)initWithRegionOfInterest:(CGRect)interest domainInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = VIImageRegion;
   v10 = [(VIImageRegion *)&v23 init];
@@ -36,7 +36,7 @@
     regionID = v11->_regionID;
     v11->_regionID = v18;
 
-    v20 = [v9 copy];
+    v20 = [infoCopy copy];
     domainInfo = v11->_domainInfo;
     v11->_domainInfo = v20;
   }
@@ -44,31 +44,31 @@
   return v11;
 }
 
-- (VIImageRegion)initWithRegionOfInterest:(CGRect)a3 domains:(id)a4
+- (VIImageRegion)initWithRegionOfInterest:(CGRect)interest domains:(id)domains
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = VIImageDomainInfoFromKeys(a4);
-  v10 = [(VIImageRegion *)self initWithRegionOfInterest:v9 domainInfo:x, y, width, height];
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  v9 = VIImageDomainInfoFromKeys(domains);
+  height = [(VIImageRegion *)self initWithRegionOfInterest:v9 domainInfo:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-+ (id)regionForEntireImageWithDomains:(id)a3
++ (id)regionForEntireImageWithDomains:(id)domains
 {
-  v3 = VIImageDomainInfoFromKeys(a3);
+  v3 = VIImageDomainInfoFromKeys(domains);
   v4 = [VIImageRegion alloc];
-  v5 = [(VIImageRegion *)v4 initWithRegionOfInterest:v3 domainInfo:*&VIIdentityRect, unk_1ECB50860, *&qword_1ECB50868, unk_1ECB50870];
+  unk_1ECB50870 = [(VIImageRegion *)v4 initWithRegionOfInterest:v3 domainInfo:*&VIIdentityRect, unk_1ECB50860, *&qword_1ECB50868, unk_1ECB50870];
 
-  return v5;
+  return unk_1ECB50870;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -78,7 +78,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -88,8 +88,8 @@
 
     v6 = v5;
     domainInfo = self->_domainInfo;
-    v8 = [(VIImageRegion *)v6 domainInfo];
-    if (VIObjectIsEqual(domainInfo, v8))
+    domainInfo = [(VIImageRegion *)v6 domainInfo];
+    if (VIObjectIsEqual(domainInfo, domainInfo))
     {
       [(VIImageRegion *)v6 regionOfInterest];
       v15.origin.x = v9;

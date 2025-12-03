@@ -1,25 +1,25 @@
 @interface HCSettings
 + (id)additionalInfoForPrefenceUpdate;
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 withDefaultValue:(BOOL)a4;
-- (BOOL)_switchFromRootUserIfNecessary:(id)a3;
-- (BOOL)shouldSaveUpdateInfoForPreferenceKey:(id)a3;
+- (BOOL)BOOLValueForPreferenceKey:(id)key withDefaultValue:(BOOL)value;
+- (BOOL)_switchFromRootUserIfNecessary:(id)necessary;
+- (BOOL)shouldSaveUpdateInfoForPreferenceKey:(id)key;
 - (HCSettings)init;
-- (double)cgfloatValueForPreferenceKey:(id)a3 withDefaultValue:(double)a4;
-- (id)_valueForPreferenceKey:(id)a3;
+- (double)cgfloatValueForPreferenceKey:(id)key withDefaultValue:(double)value;
+- (id)_valueForPreferenceKey:(id)key;
 - (id)nanoDomainAccessor;
-- (id)objectValueForKey:(id)a3 withClass:(Class)a4 andDefaultValue:(id)a5;
-- (id)preferenceDomainForPreferenceKey:(id)a3;
-- (int64_t)integerValueForKey:(id)a3 withDefaultValue:(int64_t)a4;
-- (void)_handlePreferenceChanged:(id)a3;
-- (void)_registerForNotification:(id)a3;
-- (void)_synchronizeIfNecessary:(id)a3;
+- (id)objectValueForKey:(id)key withClass:(Class)class andDefaultValue:(id)value;
+- (id)preferenceDomainForPreferenceKey:(id)key;
+- (int64_t)integerValueForKey:(id)key withDefaultValue:(int64_t)value;
+- (void)_handlePreferenceChanged:(id)changed;
+- (void)_registerForNotification:(id)notification;
+- (void)_synchronizeIfNecessary:(id)necessary;
 - (void)dealloc;
-- (void)logMessage:(id)a3;
-- (void)pairedWatchDidChange:(id)a3;
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5;
-- (void)resetValueForSelector:(SEL)a3;
-- (void)saveUpdateInfoIfNeededForPreferenceKey:(id)a3 toDomain:(__CFString *)a4;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4;
+- (void)logMessage:(id)message;
+- (void)pairedWatchDidChange:(id)change;
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener;
+- (void)resetValueForSelector:(SEL)selector;
+- (void)saveUpdateInfoIfNeededForPreferenceKey:(id)key toDomain:(__CFString *)domain;
+- (void)setValue:(id)value forPreferenceKey:(id)key;
 @end
 
 @implementation HCSettings
@@ -77,28 +77,28 @@
     v2->_updateBlocks = v7;
 
     v2->_syncLock._os_unfair_lock_opaque = 0;
-    v9 = [(HCSettings *)v2 keysToSync];
-    v10 = [v9 count];
+    keysToSync = [(HCSettings *)v2 keysToSync];
+    v10 = [keysToSync count];
 
     if (v10)
     {
       v11 = dispatch_queue_create("accessibility.hearing.domain.accessor", 0);
       [(HCSettings *)v2 setNanoDomainAccessorQueue:v11];
 
-      v12 = [(HCSettings *)v2 nanoDomainAccessorQueue];
+      nanoDomainAccessorQueue = [(HCSettings *)v2 nanoDomainAccessorQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __18__HCSettings_init__block_invoke;
       block[3] = &unk_1E857EDF0;
       v13 = v2;
       v18 = v13;
-      dispatch_async(v12, block);
+      dispatch_async(nanoDomainAccessorQueue, block);
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 addObserver:v13 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v13 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3688] object:0];
 
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 addObserver:v13 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v13 selector:sel_pairedWatchDidChange_ name:*MEMORY[0x1E69B3660] object:0];
     }
   }
 
@@ -113,23 +113,23 @@ void __18__HCSettings_init__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HCSettings;
   [(HCSettings *)&v4 dealloc];
 }
 
-- (void)pairedWatchDidChange:(id)a3
+- (void)pairedWatchDidChange:(id)change
 {
-  v4 = [(HCSettings *)self nanoDomainAccessorQueue];
+  nanoDomainAccessorQueue = [(HCSettings *)self nanoDomainAccessorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__HCSettings_pairedWatchDidChange___block_invoke;
   block[3] = &unk_1E857EDF0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(nanoDomainAccessorQueue, block);
 }
 
 void __35__HCSettings_pairedWatchDidChange___block_invoke(uint64_t a1)
@@ -145,8 +145,8 @@ void __35__HCSettings_pairedWatchDidChange___block_invoke(uint64_t a1)
   if (!domainAccessor)
   {
     v4 = objc_alloc(MEMORY[0x1E69B3588]);
-    v5 = [(HCSettings *)self nanoPreferenceDomain];
-    v6 = [v4 initWithDomain:v5];
+    nanoPreferenceDomain = [(HCSettings *)self nanoPreferenceDomain];
+    v6 = [v4 initWithDomain:nanoPreferenceDomain];
     v7 = self->_domainAccessor;
     self->_domainAccessor = v6;
 
@@ -156,10 +156,10 @@ void __35__HCSettings_pairedWatchDidChange___block_invoke(uint64_t a1)
   return domainAccessor;
 }
 
-- (void)_handlePreferenceChanged:(id)a3
+- (void)_handlePreferenceChanged:(id)changed
 {
-  v3 = a3;
-  [v3 stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F54E6330];
+  changedCopy = changed;
+  [changedCopy stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F54E6330];
   v5 = 0;
   v6 = &v5;
   v7 = 0x3032000000;
@@ -196,15 +196,15 @@ void __39__HCSettings__handlePreferenceChanged___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)resetValueForSelector:(SEL)a3
+- (void)resetValueForSelector:(SEL)selector
 {
-  v4 = [(HCSettings *)self preferenceKeyForSelector:a3];
+  v4 = [(HCSettings *)self preferenceKeyForSelector:selector];
   [(HCSettings *)self setValue:0 forPreferenceKey:v4];
 }
 
-- (void)_registerForNotification:(id)a3
+- (void)_registerForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __39__HCSettings__registerForNotification___block_invoke;
@@ -221,8 +221,8 @@ void __39__HCSettings__handlePreferenceChanged___block_invoke_2(uint64_t a1, voi
   block[2] = __39__HCSettings__registerForNotification___block_invoke_2;
   block[3] = &unk_1E857ED78;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_sync(v5, block);
 }
 
@@ -253,16 +253,16 @@ void __39__HCSettings__registerForNotification___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v7];
-  v13 = v6;
-  v12 = v7;
-  v9 = v7;
+  blockCopy = block;
+  listenerCopy = listener;
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:listenerCopy];
+  v13 = blockCopy;
+  v12 = listenerCopy;
+  v9 = listenerCopy;
   v10 = v8;
-  v11 = v6;
+  v11 = blockCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
@@ -330,9 +330,9 @@ uint64_t __67__HCSettings_registerUpdateBlock_forRetrieveSelector_withListener__
   return v4;
 }
 
-- (BOOL)_switchFromRootUserIfNecessary:(id)a3
+- (BOOL)_switchFromRootUserIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (!geteuid())
   {
     v6 = getpwnam("mobile");
@@ -342,7 +342,7 @@ uint64_t __67__HCSettings_registerUpdateBlock_forRetrieveSelector_withListener__
       if (pw_uid)
       {
         seteuid(pw_uid);
-        v3[2](v3);
+        necessaryCopy[2](necessaryCopy);
         seteuid(0);
         v4 = 1;
         goto LABEL_3;
@@ -362,22 +362,22 @@ LABEL_3:
   return v4;
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)setValue:(id)value forPreferenceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __40__HCSettings_setValue_forPreferenceKey___block_invoke;
   v18[3] = &unk_1E857EE88;
   v18[4] = self;
-  v8 = v6;
+  v8 = valueCopy;
   v19 = v8;
-  v9 = v7;
+  v9 = keyCopy;
   v20 = v9;
-  LOBYTE(v7) = [(HCSettings *)self _switchFromRootUserIfNecessary:v18];
+  LOBYTE(keyCopy) = [(HCSettings *)self _switchFromRootUserIfNecessary:v18];
 
-  if ((v7 & 1) == 0)
+  if ((keyCopy & 1) == 0)
   {
     if ([(HCSettings *)self shouldStoreLocally])
     {
@@ -393,10 +393,10 @@ LABEL_3:
       }
     }
 
-    v13 = [(HCSettings *)self keysToSync];
-    if ([v13 count] && objc_msgSend(v13, "containsObject:", v9))
+    keysToSync = [(HCSettings *)self keysToSync];
+    if ([keysToSync count] && objc_msgSend(keysToSync, "containsObject:", v9))
     {
-      v14 = [(HCSettings *)self nanoDomainAccessorQueue];
+      nanoDomainAccessorQueue = [(HCSettings *)self nanoDomainAccessorQueue];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __40__HCSettings_setValue_forPreferenceKey___block_invoke_2;
@@ -404,7 +404,7 @@ LABEL_3:
       v15[4] = self;
       v16 = v8;
       v17 = v9;
-      dispatch_async(v14, v15);
+      dispatch_async(nanoDomainAccessorQueue, v15);
     }
   }
 }
@@ -433,10 +433,10 @@ void __40__HCSettings_setValue_forPreferenceKey___block_invoke_2(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_synchronizeIfNecessary:(id)a3
+- (void)_synchronizeIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v3 = v4;
+  necessaryCopy = necessary;
+  v3 = necessaryCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
@@ -450,13 +450,13 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
   }
 }
 
-- (id)objectValueForKey:(id)a3 withClass:(Class)a4 andDefaultValue:(id)a5
+- (id)objectValueForKey:(id)key withClass:(Class)class andDefaultValue:(id)value
 {
-  v7 = a5;
-  v8 = [(HCSettings *)self _valueForPreferenceKey:a3];
+  valueCopy = value;
+  v8 = [(HCSettings *)self _valueForPreferenceKey:key];
   if (!v8 || (objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = v7;
+    v9 = valueCopy;
 
     v8 = v9;
   }
@@ -464,36 +464,36 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (int64_t)integerValueForKey:(id)a3 withDefaultValue:(int64_t)a4
+- (int64_t)integerValueForKey:(id)key withDefaultValue:(int64_t)value
 {
-  v5 = [(HCSettings *)self _valueForPreferenceKey:a3];
+  v5 = [(HCSettings *)self _valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 withDefaultValue:(BOOL)a4
+- (BOOL)BOOLValueForPreferenceKey:(id)key withDefaultValue:(BOOL)value
 {
-  v5 = [(HCSettings *)self _valueForPreferenceKey:a3];
+  v5 = [(HCSettings *)self _valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (double)cgfloatValueForPreferenceKey:(id)a3 withDefaultValue:(double)a4
+- (double)cgfloatValueForPreferenceKey:(id)key withDefaultValue:(double)value
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  v9 = [(HCSettings *)self objectValueForKey:v6 withClass:v7 andDefaultValue:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  v9 = [(HCSettings *)self objectValueForKey:keyCopy withClass:v7 andDefaultValue:v8];
 
   [v9 doubleValue];
   v11 = v10;
@@ -501,9 +501,9 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
   return v11;
 }
 
-- (id)_valueForPreferenceKey:(id)a3
+- (id)_valueForPreferenceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -516,7 +516,7 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
   v21[3] = &unk_1E857EEB0;
   v23 = &v24;
   v21[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v22 = v5;
   if ([(HCSettings *)self _switchFromRootUserIfNecessary:v21])
   {
@@ -544,7 +544,7 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
 
     else
     {
-      v10 = [(HCSettings *)self nanoDomainAccessorQueue];
+      nanoDomainAccessorQueue = [(HCSettings *)self nanoDomainAccessorQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __37__HCSettings__valueForPreferenceKey___block_invoke_2;
@@ -552,7 +552,7 @@ void __38__HCSettings__synchronizeIfNecessary___block_invoke(uint64_t a1)
       v12[4] = self;
       v14 = &v15;
       v13 = v5;
-      dispatch_sync(v10, v12);
+      dispatch_sync(nanoDomainAccessorQueue, v12);
     }
 
     v6 = v16[5];
@@ -592,39 +592,39 @@ void __37__HCSettings__valueForPreferenceKey___block_invoke_2(uint64_t a1)
   *(v6 + 40) = v5;
 }
 
-- (BOOL)shouldSaveUpdateInfoForPreferenceKey:(id)a3
+- (BOOL)shouldSaveUpdateInfoForPreferenceKey:(id)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(HCSettings *)self keysMonitoredForUpdates];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  keysMonitoredForUpdates = [(HCSettings *)self keysMonitoredForUpdates];
+  v6 = [keysMonitoredForUpdates containsObject:keyCopy];
 
   return v6;
 }
 
-- (void)saveUpdateInfoIfNeededForPreferenceKey:(id)a3 toDomain:(__CFString *)a4
+- (void)saveUpdateInfoIfNeededForPreferenceKey:(id)key toDomain:(__CFString *)domain
 {
-  v8 = a3;
+  keyCopy = key;
   if ([(HCSettings *)self shouldSaveUpdateInfoForPreferenceKey:?])
   {
     v6 = +[HCSettings additionalInfoForPrefenceUpdate];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_UpdateInfo"];
-    CFPreferencesSetAppValue(v7, v6, a4);
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", keyCopy, @"_UpdateInfo"];
+    CFPreferencesSetAppValue(v7, v6, domain);
   }
 }
 
-- (id)preferenceDomainForPreferenceKey:(id)a3
+- (id)preferenceDomainForPreferenceKey:(id)key
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return &stru_1F54E6330;
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   objc_opt_class();
 

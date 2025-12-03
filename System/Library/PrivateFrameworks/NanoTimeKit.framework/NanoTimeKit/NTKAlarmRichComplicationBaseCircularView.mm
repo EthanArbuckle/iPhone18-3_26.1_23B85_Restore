@@ -1,15 +1,15 @@
 @interface NTKAlarmRichComplicationBaseCircularView
 - (BOOL)_pairedDeviceSupportsComplicationSymbols;
-- (NTKAlarmRichComplicationBaseCircularView)initWithFamily:(int64_t)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (NTKAlarmRichComplicationBaseCircularView)initWithFamily:(int64_t)family;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKAlarmRichComplicationBaseCircularView
 
-- (NTKAlarmRichComplicationBaseCircularView)initWithFamily:(int64_t)a3
+- (NTKAlarmRichComplicationBaseCircularView)initWithFamily:(int64_t)family
 {
   v77[2] = *MEMORY[0x277D85DE8];
   v66.receiver = self;
@@ -22,7 +22,7 @@
   }
 
   v3->_layout = 0;
-  v5 = [(CDRichComplicationView *)v3 device];
+  device = [(CDRichComplicationView *)v3 device];
   v75 = 0u;
   memset(v76, 0, sizeof(v76));
   v73 = 0u;
@@ -33,18 +33,18 @@
   v70 = 0u;
   *location = 0u;
   v68 = 0u;
-  ___LayoutConstants_block_invoke_38(v5, location);
-  if (a3 == 10)
+  ___LayoutConstants_block_invoke_38(device, location);
+  if (family == 10)
   {
     goto LABEL_8;
   }
 
-  if (a3 != 12)
+  if (family != 12)
   {
     v7 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      _LayoutConstants_cold_1(a3, v7);
+      _LayoutConstants_cold_1(family, v7);
     }
 
 LABEL_8:
@@ -99,11 +99,11 @@ LABEL_9:
   v53[3] = &unk_27877DC30;
   objc_copyWeak(&v54, from);
   [(CLKUIColoringLabel *)v14 setNowProvider:v53];
-  v15 = [MEMORY[0x277D75348] whiteColor];
-  [(CLKUIColoringLabel *)v4->_timeLabel setTextColor:v15];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CLKUIColoringLabel *)v4->_timeLabel setTextColor:whiteColor];
 
-  v16 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-  [v16 addSubview:v4->_timeLabel];
+  contentView = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+  [contentView addSubview:v4->_timeLabel];
 
   v17 = objc_alloc_init(off_27877BEF8);
   designatorLabel = v4->_designatorLabel;
@@ -113,19 +113,19 @@ LABEL_9:
   [(CLKUIColoringLabel *)v4->_designatorLabel setNeedsResizeHandler:v51];
   [(CLKUIColoringLabel *)v4->_designatorLabel setHidden:1];
   v19 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v4->_layoutConstants.designatorLabelFontSize design:*MEMORY[0x277D74420]];
-  v50 = [v19 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v19 CLKFontWithAlternativePunctuation];
 
-  [(CLKUIColoringLabel *)v4->_designatorLabel setFont:v50];
-  v20 = [MEMORY[0x277D75348] systemOrangeColor];
-  [(CLKUIColoringLabel *)v4->_designatorLabel setTextColor:v20];
+  [(CLKUIColoringLabel *)v4->_designatorLabel setFont:cLKFontWithAlternativePunctuation];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  [(CLKUIColoringLabel *)v4->_designatorLabel setTextColor:systemOrangeColor];
 
-  v21 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-  [v21 addSubview:v4->_designatorLabel];
+  contentView2 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+  [contentView2 addSubview:v4->_designatorLabel];
 
   if (![(NTKAlarmRichComplicationBaseCircularView *)v4 _pairedDeviceSupportsComplicationSymbols])
   {
     v38 = objc_alloc(MEMORY[0x277D755E8]);
-    if (a3 == 12)
+    if (family == 12)
     {
       v39 = @"graphicExtraLargeAlarm";
     }
@@ -140,10 +140,10 @@ LABEL_9:
 
   v22 = [MEMORY[0x277D755D0] configurationWithPointSize:v4->_layoutConstants.alarmSymbolPointSize];
   v23 = MEMORY[0x277D755D0];
-  v24 = [MEMORY[0x277D75348] whiteColor];
-  v77[0] = v24;
-  v25 = [MEMORY[0x277D75348] systemOrangeColor];
-  v77[1] = v25;
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  v77[0] = whiteColor2;
+  systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+  v77[1] = systemOrangeColor2;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v77 count:2];
   v27 = [v23 configurationWithPaletteColors:v26];
 
@@ -151,8 +151,8 @@ LABEL_9:
   v29 = [MEMORY[0x277D755B8] systemImageNamed:@"alarm" withConfiguration:v28];
   v30 = [MEMORY[0x277D755D0] configurationWithPointSize:v4->_layoutConstants.snoozeSymbolPointSize];
   v31 = [MEMORY[0x277D755B8] systemImageNamed:@"zzz" withConfiguration:v30];
-  v32 = [MEMORY[0x277D75348] systemOrangeColor];
-  v33 = [v31 imageWithTintColor:v32 renderingMode:1];
+  systemOrangeColor3 = [MEMORY[0x277D75348] systemOrangeColor];
+  v33 = [v31 imageWithTintColor:systemOrangeColor3 renderingMode:1];
 
   v34 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v29];
   idleImageView = v4->_idleImageView;
@@ -163,28 +163,28 @@ LABEL_9:
   v4->_snoozeImageView = v36;
 
   [(UIImageView *)v4->_idleImageView setHidden:0];
-  v40 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-  [v40 addSubview:v4->_idleImageView];
+  contentView3 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+  [contentView3 addSubview:v4->_idleImageView];
 
   [(UIImageView *)v4->_snoozeImageView setHidden:1];
-  v41 = [MEMORY[0x277D75348] systemOrangeColor];
-  [(UIImageView *)v4->_snoozeImageView setTintColor:v41];
+  systemOrangeColor4 = [MEMORY[0x277D75348] systemOrangeColor];
+  [(UIImageView *)v4->_snoozeImageView setTintColor:systemOrangeColor4];
 
-  v42 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-  [v42 addSubview:v4->_snoozeImageView];
+  contentView4 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+  [contentView4 addSubview:v4->_snoozeImageView];
 
   v43 = [NTKRichComplicationRingProgressView alloc];
   snoozeRingStrokeWidth = v4->_layoutConstants.snoozeRingStrokeWidth;
-  v45 = [(CDRichComplicationView *)v4 device];
-  v46 = [(NTKRichComplicationRingProgressView *)v43 initWithFamily:a3 curveWidth:v45 padding:snoozeRingStrokeWidth forDevice:0.0];
+  device2 = [(CDRichComplicationView *)v4 device];
+  v46 = [(NTKRichComplicationRingProgressView *)v43 initWithFamily:family curveWidth:device2 padding:snoozeRingStrokeWidth forDevice:0.0];
   snoozeProgressView = v4->_snoozeProgressView;
   v4->_snoozeProgressView = v46;
 
   [(CDRichComplicationProgressView *)v4->_snoozeProgressView setFilterProvider:v4];
   [(CDRichComplicationProgressView *)v4->_snoozeProgressView setStyle:1];
   [(NTKRichComplicationRingProgressView *)v4->_snoozeProgressView setHidden:1];
-  v48 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
-  [v48 addSubview:v4->_snoozeProgressView];
+  contentView5 = [(NTKRichComplicationCircularBaseView *)v4 contentView];
+  [contentView5 addSubview:v4->_snoozeProgressView];
 
   objc_destroyWeak(&v54);
   objc_destroyWeak(from);
@@ -216,10 +216,10 @@ id __59__NTKAlarmRichComplicationBaseCircularView_initWithFamily___block_invoke_
 
 - (BOOL)_pairedDeviceSupportsComplicationSymbols
 {
-  v2 = [(CDRichComplicationView *)self device];
-  v3 = [v2 isRunningGloryGMOrLater];
+  device = [(CDRichComplicationView *)self device];
+  isRunningGloryGMOrLater = [device isRunningGloryGMOrLater];
 
-  return v3;
+  return isRunningGloryGMOrLater;
 }
 
 - (void)layoutSubviews
@@ -227,8 +227,8 @@ id __59__NTKAlarmRichComplicationBaseCircularView_initWithFamily___block_invoke_
   v36.receiver = self;
   v36.super_class = NTKAlarmRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v36 layoutSubviews];
-  v3 = [(NTKRichComplicationCircularBaseView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKRichComplicationCircularBaseView *)self contentView];
+  [contentView bounds];
   v32 = v5;
   v34 = v4;
   v7 = v6;
@@ -270,8 +270,8 @@ LABEL_6:
     v14 = v16;
   }
 
-  v19 = [(CLKUIColoringLabel *)self->_timeLabel font];
-  [v19 ascender];
+  font = [(CLKUIColoringLabel *)self->_timeLabel font];
+  [font ascender];
   *&v20 = v15 - v20;
   v21 = ceilf(*&v20);
 
@@ -289,8 +289,8 @@ LABEL_6:
     designatorLabelMaxWidth = v22;
   }
 
-  v26 = [(CLKUIColoringLabel *)self->_designatorLabel font];
-  [v26 ascender];
+  font2 = [(CLKUIColoringLabel *)self->_designatorLabel font];
+  [font2 ascender];
   *&v27 = designatorLabel12HourDesignatorLeadingLayoutBottom - v27;
   v28 = ceilf(*&v27);
 
@@ -304,11 +304,11 @@ LABEL_6:
   [(NTKRichComplicationRingProgressView *)self->_snoozeProgressView setFrame:v35, v33, v7, v9];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v26 = a3;
-  v5 = [v26 metadata];
-  v6 = [v5 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
+  templateCopy = template;
+  metadata = [templateCopy metadata];
+  v6 = [metadata objectForKeyedSubscript:@"NTKAlarmComplicationMetadataStateKey"];
 
   if ([v6 isEqualToString:@"NTKAlarmComplicationMetadataStateValue_Idle"])
   {
@@ -321,26 +321,26 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v7 = [v26 metadata];
-  v8 = [v7 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
+  metadata2 = [templateCopy metadata];
+  v8 = [metadata2 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataTimeTextProviderKey"];
 
   if ([v6 isEqualToString:@"NTKAlarmComplicationMetadataStateValue_Set"])
   {
-    v9 = [v26 metadata];
-    v10 = [v9 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorTextProviderKey"];
+    metadata3 = [templateCopy metadata];
+    v10 = [metadata3 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorTextProviderKey"];
 
-    v11 = [v26 metadata];
-    v12 = [v11 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorExistsKey"];
-    v13 = [v12 BOOLValue];
+    metadata4 = [templateCopy metadata];
+    v12 = [metadata4 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorExistsKey"];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v8 && v10 && v13)
+    if (v8 && v10 && bOOLValue)
     {
       [(UIImageView *)self->_idleImageView setHidden:1];
-      v14 = [v26 metadata];
-      v15 = [v14 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorLeadsKey"];
-      v16 = [v15 BOOLValue];
+      metadata5 = [templateCopy metadata];
+      v15 = [metadata5 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataDesignatorLeadsKey"];
+      bOOLValue2 = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue2)
       {
         v17 = 2;
       }
@@ -354,8 +354,8 @@ LABEL_6:
       [(CLKUIColoringLabel *)self->_timeLabel setHidden:0];
       [(CLKUIColoringLabel *)self->_timeLabel setTextProvider:v8];
       v18 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:self->_layoutConstants.timeLabel12HourLayoutFontSize design:*MEMORY[0x277D74420]];
-      v19 = [v18 CLKFontWithAlternativePunctuation];
-      [(CLKUIColoringLabel *)self->_timeLabel setFont:v19];
+      cLKFontWithAlternativePunctuation = [v18 CLKFontWithAlternativePunctuation];
+      [(CLKUIColoringLabel *)self->_timeLabel setFont:cLKFontWithAlternativePunctuation];
 
       [(CLKUIColoringLabel *)self->_designatorLabel setHidden:0];
       [(CLKUIColoringLabel *)self->_designatorLabel setTextProvider:v10];
@@ -368,8 +368,8 @@ LABEL_6:
       [(CLKUIColoringLabel *)self->_timeLabel setHidden:0];
       [(CLKUIColoringLabel *)self->_timeLabel setTextProvider:v8];
       v24 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:self->_layoutConstants.timeLabel24HourLayoutFontSize design:*MEMORY[0x277D74420]];
-      v25 = [v24 CLKFontWithAlternativePunctuation];
-      [(CLKUIColoringLabel *)self->_timeLabel setFont:v25];
+      cLKFontWithAlternativePunctuation2 = [v24 CLKFontWithAlternativePunctuation];
+      [(CLKUIColoringLabel *)self->_timeLabel setFont:cLKFontWithAlternativePunctuation2];
 
       [(CLKUIColoringLabel *)self->_designatorLabel setHidden:1];
     }
@@ -385,18 +385,18 @@ LABEL_6:
     [(UIImageView *)self->_idleImageView setHidden:1];
     [(CLKUIColoringLabel *)self->_timeLabel setHidden:0];
     [(CLKUIColoringLabel *)self->_timeLabel setTextProvider:v8];
-    v20 = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
-    [v20 setPaused:0];
+    textProvider = [(CLKUIColoringLabel *)self->_timeLabel textProvider];
+    [textProvider setPaused:0];
 
     v21 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:self->_layoutConstants.timeLabelSnoozeLayoutFontSize design:*MEMORY[0x277D74420]];
-    v22 = [v21 CLKFontWithAlternativePunctuation];
-    [(CLKUIColoringLabel *)self->_timeLabel setFont:v22];
+    cLKFontWithAlternativePunctuation3 = [v21 CLKFontWithAlternativePunctuation];
+    [(CLKUIColoringLabel *)self->_timeLabel setFont:cLKFontWithAlternativePunctuation3];
 
     [(CLKUIColoringLabel *)self->_designatorLabel setHidden:1];
     [(UIImageView *)self->_snoozeImageView setHidden:0];
     [(NTKRichComplicationRingProgressView *)self->_snoozeProgressView setHidden:0];
-    v23 = [v26 metadata];
-    v10 = [v23 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataGaugeProviderKey"];
+    metadata6 = [templateCopy metadata];
+    v10 = [metadata6 objectForKeyedSubscript:@"NTKAlarmComplicationMetadataGaugeProviderKey"];
 
     [(CDRichComplicationProgressView *)self->_snoozeProgressView setGaugeProvider:v10];
 LABEL_15:
@@ -407,36 +407,36 @@ LABEL_17:
   [(NTKRichComplicationCircularBaseView *)self _updatePlatterColor];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v13.receiver = self;
   v13.super_class = NTKAlarmRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v13 transitionToMonochromeWithFraction:?];
-  v5 = [(CDRichComplicationView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:-[NTKAlarmRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), a3}];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v6 = [filterProvider filtersForView:self style:-[NTKAlarmRichComplicationBaseCircularView _backgroundFilterStyle](self fraction:{"_backgroundFilterStyle"), fraction}];
 
   if (v6)
   {
-    v7 = [(UIImageView *)self->_idleImageView layer];
-    [v7 setFilters:v6];
+    layer = [(UIImageView *)self->_idleImageView layer];
+    [layer setFilters:v6];
 
-    v8 = [(CLKUIColoringLabel *)self->_designatorLabel layer];
-    [v8 setFilters:v6];
+    layer2 = [(CLKUIColoringLabel *)self->_designatorLabel layer];
+    [layer2 setFilters:v6];
 
-    v9 = [(UIImageView *)self->_snoozeImageView layer];
-    [v9 setFilters:v6];
+    layer3 = [(UIImageView *)self->_snoozeImageView layer];
+    [layer3 setFilters:v6];
   }
 
-  v10 = [(CDRichComplicationView *)self filterProvider];
-  v11 = [v10 filtersForView:self style:-[NTKAlarmRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), a3}];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v11 = [filterProvider2 filtersForView:self style:-[NTKAlarmRichComplicationBaseCircularView _foregroundFilterStyle](self fraction:{"_foregroundFilterStyle"), fraction}];
 
   if (v11)
   {
-    v12 = [(CLKUIColoringLabel *)self->_timeLabel layer];
-    [v12 setFilters:v11];
+    layer4 = [(CLKUIColoringLabel *)self->_timeLabel layer];
+    [layer4 setFilters:v11];
   }
 
-  [(CDRichComplicationProgressView *)self->_snoozeProgressView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationProgressView *)self->_snoozeProgressView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor
@@ -444,28 +444,28 @@ LABEL_17:
   v11.receiver = self;
   v11.super_class = NTKAlarmRichComplicationBaseCircularView;
   [(NTKRichComplicationCircularBaseView *)&v11 updateMonochromeColor];
-  v3 = [(CDRichComplicationView *)self filterProvider];
-  v4 = [v3 filtersForView:self style:{-[NTKAlarmRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
+  filterProvider = [(CDRichComplicationView *)self filterProvider];
+  v4 = [filterProvider filtersForView:self style:{-[NTKAlarmRichComplicationBaseCircularView _backgroundFilterStyle](self, "_backgroundFilterStyle")}];
 
   if (v4)
   {
-    v5 = [(UIImageView *)self->_idleImageView layer];
-    [v5 setFilters:v4];
+    layer = [(UIImageView *)self->_idleImageView layer];
+    [layer setFilters:v4];
 
-    v6 = [(CLKUIColoringLabel *)self->_designatorLabel layer];
-    [v6 setFilters:v4];
+    layer2 = [(CLKUIColoringLabel *)self->_designatorLabel layer];
+    [layer2 setFilters:v4];
 
-    v7 = [(UIImageView *)self->_snoozeImageView layer];
-    [v7 setFilters:v4];
+    layer3 = [(UIImageView *)self->_snoozeImageView layer];
+    [layer3 setFilters:v4];
   }
 
-  v8 = [(CDRichComplicationView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:{-[NTKAlarmRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
+  filterProvider2 = [(CDRichComplicationView *)self filterProvider];
+  v9 = [filterProvider2 filtersForView:self style:{-[NTKAlarmRichComplicationBaseCircularView _foregroundFilterStyle](self, "_foregroundFilterStyle")}];
 
   if (v9)
   {
-    v10 = [(CLKUIColoringLabel *)self->_timeLabel layer];
-    [v10 setFilters:v9];
+    layer4 = [(CLKUIColoringLabel *)self->_timeLabel layer];
+    [layer4 setFilters:v9];
   }
 
   [(CDRichComplicationProgressView *)self->_snoozeProgressView updateMonochromeColor];

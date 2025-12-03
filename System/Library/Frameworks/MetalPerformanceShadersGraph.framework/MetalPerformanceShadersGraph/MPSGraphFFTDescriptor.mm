@@ -1,6 +1,6 @@
 @interface MPSGraphFFTDescriptor
 + (MPSGraphFFTDescriptor)descriptor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphFFTDescriptor
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [MPSGraphFFTDescriptor alloc];
   *(result + 8) = self->_inverse;

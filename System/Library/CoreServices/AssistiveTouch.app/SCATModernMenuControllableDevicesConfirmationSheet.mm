@@ -1,23 +1,23 @@
 @interface SCATModernMenuControllableDevicesConfirmationSheet
-- (SCATModernMenuControllableDevicesConfirmationSheet)initWithMenu:(id)a3 interDeviceSearchResult:(id)a4;
+- (SCATModernMenuControllableDevicesConfirmationSheet)initWithMenu:(id)menu interDeviceSearchResult:(id)result;
 - (SCATModernMenuControllableDevicesConfirmationSheetDelegate)delegate;
 - (id)makeMenuItemsIfNeeded;
-- (void)menuItemWasActivated:(id)a3;
-- (void)sheetWillDisappear:(BOOL)a3;
+- (void)menuItemWasActivated:(id)activated;
+- (void)sheetWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SCATModernMenuControllableDevicesConfirmationSheet
 
-- (SCATModernMenuControllableDevicesConfirmationSheet)initWithMenu:(id)a3 interDeviceSearchResult:(id)a4
+- (SCATModernMenuControllableDevicesConfirmationSheet)initWithMenu:(id)menu interDeviceSearchResult:(id)result
 {
-  v7 = a4;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = SCATModernMenuControllableDevicesConfirmationSheet;
-  v8 = [(SCATModernMenuSheet *)&v11 initWithMenu:a3];
+  v8 = [(SCATModernMenuSheet *)&v11 initWithMenu:menu];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_searchResult, a4);
+    objc_storeStrong(&v8->_searchResult, result);
   }
 
   return v9;
@@ -33,22 +33,22 @@
   return v5;
 }
 
-- (void)menuItemWasActivated:(id)a3
+- (void)menuItemWasActivated:(id)activated
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"controllableDevices_confirm"];
+  activatedCopy = activated;
+  identifier = [activatedCopy identifier];
+  v6 = [identifier isEqualToString:@"controllableDevices_confirm"];
 
   if (v6)
   {
-    v7 = [(SCATModernMenuControllableDevicesConfirmationSheet *)self delegate];
-    [v7 didConfirmForSheet:self];
+    delegate = [(SCATModernMenuControllableDevicesConfirmationSheet *)self delegate];
+    [delegate didConfirmForSheet:self];
   }
 
   else
   {
-    v8 = [v4 identifier];
-    v9 = [(SCATModernMenuSheet *)self isBackItemIdentifier:v8];
+    identifier2 = [activatedCopy identifier];
+    v9 = [(SCATModernMenuSheet *)self isBackItemIdentifier:identifier2];
 
     if (v9)
     {
@@ -57,19 +57,19 @@
 
     v10.receiver = self;
     v10.super_class = SCATModernMenuControllableDevicesConfirmationSheet;
-    [(SCATModernMenuSheet *)&v10 menuItemWasActivated:v4];
+    [(SCATModernMenuSheet *)&v10 menuItemWasActivated:activatedCopy];
   }
 }
 
-- (void)sheetWillDisappear:(BOOL)a3
+- (void)sheetWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SCATModernMenuControllableDevicesConfirmationSheet;
-  [(SCATModernMenuSheet *)&v5 sheetWillDisappear:a3];
+  [(SCATModernMenuSheet *)&v5 sheetWillDisappear:disappear];
   if (![(SCATModernMenuControllableDevicesConfirmationSheet *)self isPoppingToPreviousViewController])
   {
-    v4 = [(SCATModernMenuControllableDevicesConfirmationSheet *)self delegate];
-    [v4 didExitMenuFromSheet:self];
+    delegate = [(SCATModernMenuControllableDevicesConfirmationSheet *)self delegate];
+    [delegate didExitMenuFromSheet:self];
   }
 
   [(SCATModernMenuControllableDevicesConfirmationSheet *)self setIsPoppingToPreviousViewController:0];

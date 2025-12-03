@@ -1,23 +1,23 @@
 @interface EMCollectionItemIDStateCapturer
-- (EMCollectionItemIDStateCapturer)initWithTitle:(id)a3 delegate:(id)a4;
+- (EMCollectionItemIDStateCapturer)initWithTitle:(id)title delegate:(id)delegate;
 - (EMCollectionItemIDStateCapturerDelegate)delegate;
-- (id)descriptionForItem:(id)a3;
-- (id)itemsForStateCaptureWithErrorString:(id *)a3;
+- (id)descriptionForItem:(id)item;
+- (id)itemsForStateCaptureWithErrorString:(id *)string;
 - (id)labelForStateCapture;
 @end
 
 @implementation EMCollectionItemIDStateCapturer
 
-- (EMCollectionItemIDStateCapturer)initWithTitle:(id)a3 delegate:(id)a4
+- (EMCollectionItemIDStateCapturer)initWithTitle:(id)title delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = EMCollectionItemIDStateCapturer;
-  v7 = [(EFListStateCapturer *)&v10 initWithTitle:a3 itemName:@"Item IDs" headLimit:200 tailLimit:100 delegate:self];
+  v7 = [(EFListStateCapturer *)&v10 initWithTitle:title itemName:@"Item IDs" headLimit:200 tailLimit:100 delegate:self];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
@@ -25,26 +25,26 @@
 
 - (id)labelForStateCapture
 {
-  v2 = [(EMCollectionItemIDStateCapturer *)self delegate];
-  v3 = [v2 labelForStateCapture];
+  delegate = [(EMCollectionItemIDStateCapturer *)self delegate];
+  labelForStateCapture = [delegate labelForStateCapture];
 
-  return v3;
+  return labelForStateCapture;
 }
 
-- (id)itemsForStateCaptureWithErrorString:(id *)a3
+- (id)itemsForStateCaptureWithErrorString:(id *)string
 {
-  v4 = [(EMCollectionItemIDStateCapturer *)self delegate];
-  v5 = [v4 itemIDsForStateCaptureWithErrorString:a3];
+  delegate = [(EMCollectionItemIDStateCapturer *)self delegate];
+  v5 = [delegate itemIDsForStateCaptureWithErrorString:string];
 
   return v5;
 }
 
-- (id)descriptionForItem:(id)a3
+- (id)descriptionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 description];
+    v4 = [itemCopy description];
   }
 
   else

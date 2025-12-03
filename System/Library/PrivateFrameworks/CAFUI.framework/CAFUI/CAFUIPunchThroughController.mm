@@ -1,48 +1,48 @@
 @interface CAFUIPunchThroughController
-- (BOOL)displayIdentifier:(id)a3 hasPunchThroughWithIdentifier:(id)a4;
-- (BOOL)displayIdentifier:(id)a3 isDisplayingPunchThroughWithIdentifier:(id)a4;
-- (BOOL)hasPunchThroughWithIdentifier:(id)a3;
-- (CAFUIPunchThroughController)initWithSession:(id)a3;
-- (id)punchThroughIdentifierOnDisplay:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)punchThroughControllerDidDismiss:(id)a3;
-- (void)removeControllersWithIdentifier:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)requestActivationOfPunchThroughWithIdentifier:(id)a3 displayIdentifier:(id)a4 completion:(id)a5;
-- (void)requestDismissalOfPunchThroughWithIdentifier:(id)a3 displayIdentifier:(id)a4 completion:(id)a5;
+- (BOOL)displayIdentifier:(id)identifier hasPunchThroughWithIdentifier:(id)withIdentifier;
+- (BOOL)displayIdentifier:(id)identifier isDisplayingPunchThroughWithIdentifier:(id)withIdentifier;
+- (BOOL)hasPunchThroughWithIdentifier:(id)identifier;
+- (CAFUIPunchThroughController)initWithSession:(id)session;
+- (id)punchThroughIdentifierOnDisplay:(id)display;
+- (void)addObserver:(id)observer;
+- (void)punchThroughControllerDidDismiss:(id)dismiss;
+- (void)removeControllersWithIdentifier:(id)identifier;
+- (void)removeObserver:(id)observer;
+- (void)requestActivationOfPunchThroughWithIdentifier:(id)identifier displayIdentifier:(id)displayIdentifier completion:(id)completion;
+- (void)requestDismissalOfPunchThroughWithIdentifier:(id)identifier displayIdentifier:(id)displayIdentifier completion:(id)completion;
 @end
 
 @implementation CAFUIPunchThroughController
 
-- (CAFUIPunchThroughController)initWithSession:(id)a3
+- (CAFUIPunchThroughController)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = CAFUIPunchThroughController;
   v6 = [(CAFUIPunchThroughController *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_session, session);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     activePunchThroughs = v7->_activePunchThroughs;
-    v7->_activePunchThroughs = v8;
+    v7->_activePunchThroughs = dictionary;
 
     v10 = objc_alloc(MEMORY[0x277CF89C0]);
     v11 = [v10 initWithProtocol:&unk_2854E3270 callbackQueue:MEMORY[0x277D85CD0]];
     observers = v7->_observers;
     v7->_observers = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    v14 = [v5 configuration];
-    v15 = [v14 displays];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    configuration = [sessionCopy configuration];
+    displays = [configuration displays];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __47__CAFUIPunchThroughController_initWithSession___block_invoke;
     v20[3] = &unk_278D49628;
-    v21 = v13;
-    v16 = v13;
-    [v15 bs_each:v20];
+    v21 = dictionary2;
+    v16 = dictionary2;
+    [displays bs_each:v20];
 
     v17 = [v16 copy];
     availablePunchThroughIdentifiers = v7->_availablePunchThroughIdentifiers;
@@ -74,54 +74,54 @@ void __47__CAFUIPunchThroughController_initWithSession___block_invoke(uint64_t a
   [v6 setObject:v5 forKeyedSubscript:v7];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFUIPunchThroughController *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFUIPunchThroughController *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFUIPunchThroughController *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFUIPunchThroughController *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (void)requestActivationOfPunchThroughWithIdentifier:(id)a3 displayIdentifier:(id)a4 completion:(id)a5
+- (void)requestActivationOfPunchThroughWithIdentifier:(id)identifier displayIdentifier:(id)displayIdentifier completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  displayIdentifierCopy = displayIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ([(CAFUIPunchThroughController *)self displayIdentifier:v9 hasPunchThroughWithIdentifier:v8])
+  if ([(CAFUIPunchThroughController *)self displayIdentifier:displayIdentifierCopy hasPunchThroughWithIdentifier:identifierCopy])
   {
-    v11 = [objc_alloc(MEMORY[0x277CF9328]) initWithPunchThroughIdentifier:v8];
+    v11 = [objc_alloc(MEMORY[0x277CF9328]) initWithPunchThroughIdentifier:identifierCopy];
     [v11 setDelegate:self];
-    v12 = [(CAFUIPunchThroughController *)self activePunchThroughs];
-    [v12 setObject:v11 forKeyedSubscript:v9];
+    activePunchThroughs = [(CAFUIPunchThroughController *)self activePunchThroughs];
+    [activePunchThroughs setObject:v11 forKeyedSubscript:displayIdentifierCopy];
 
     v13 = CAFUIStatusLogForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = v8;
+      v25 = identifierCopy;
       v26 = 2114;
-      v27 = v9;
+      v27 = displayIdentifierCopy;
       _os_log_impl(&dword_24234D000, v13, OS_LOG_TYPE_DEFAULT, "Requesting presentation of punch-through %{public}@ on display %{public}@", buf, 0x16u);
     }
 
     v14 = +[CAFUIStatusViewController sharedInstance];
-    [v14 appendStringWithFormat:@"Requesting presentation of punch-through %{public}@ on display %{public}@", v8, v9];
+    [v14 appendStringWithFormat:@"Requesting presentation of punch-through %{public}@ on display %{public}@", identifierCopy, displayIdentifierCopy];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __106__CAFUIPunchThroughController_requestActivationOfPunchThroughWithIdentifier_displayIdentifier_completion___block_invoke_119;
     v19[3] = &unk_278D496A0;
-    v20 = v8;
-    v21 = v10;
-    v15 = v10;
+    v20 = identifierCopy;
+    v21 = completionCopy;
+    v15 = completionCopy;
     [v11 requestPresentationWithCompletion:v19];
   }
 
@@ -131,21 +131,21 @@ void __47__CAFUIPunchThroughController_initWithSession___block_invoke(uint64_t a
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = v8;
+      v25 = identifierCopy;
       v26 = 2114;
-      v27 = v9;
+      v27 = displayIdentifierCopy;
       _os_log_impl(&dword_24234D000, v16, OS_LOG_TYPE_DEFAULT, "Requested presentation of punch-through %{public}@, which does not exist on display %{public}@.", buf, 0x16u);
     }
 
     v17 = +[CAFUIStatusViewController sharedInstance];
-    [v17 appendStringWithFormat:@"Requested presentation of punch-through %{public}@, which does not exist on display %{public}@.", v8, v9];
+    [v17 appendStringWithFormat:@"Requested presentation of punch-through %{public}@, which does not exist on display %{public}@.", identifierCopy, displayIdentifierCopy];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __106__CAFUIPunchThroughController_requestActivationOfPunchThroughWithIdentifier_displayIdentifier_completion___block_invoke;
     block[3] = &unk_278D49650;
-    v23 = v10;
-    v11 = v10;
+    v23 = completionCopy;
+    v11 = completionCopy;
     v18 = MEMORY[0x277D85CD0];
     dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -196,15 +196,15 @@ void __106__CAFUIPunchThroughController_requestActivationOfPunchThroughWithIdent
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)requestDismissalOfPunchThroughWithIdentifier:(id)a3 displayIdentifier:(id)a4 completion:(id)a5
+- (void)requestDismissalOfPunchThroughWithIdentifier:(id)identifier displayIdentifier:(id)displayIdentifier completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  displayIdentifierCopy = displayIdentifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v11 = [(CAFUIPunchThroughController *)self activePunchThroughs];
-  v12 = [v11 objectForKeyedSubscript:v9];
+  activePunchThroughs = [(CAFUIPunchThroughController *)self activePunchThroughs];
+  v12 = [activePunchThroughs objectForKeyedSubscript:displayIdentifierCopy];
 
   if (!v12)
   {
@@ -212,26 +212,26 @@ void __106__CAFUIPunchThroughController_requestActivationOfPunchThroughWithIdent
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v38 = v8;
+      v38 = identifierCopy;
       _os_log_impl(&dword_24234D000, v21, OS_LOG_TYPE_DEFAULT, "Requested dismissal of punch-through %{public}@, but it isn't visible.", buf, 0xCu);
     }
 
     v22 = +[CAFUIStatusViewController sharedInstance];
-    [v22 appendStringWithFormat:@"Requested dismissal of punch-through %{public}@, but it isn't visible.", v8];
+    [v22 appendStringWithFormat:@"Requested dismissal of punch-through %{public}@, but it isn't visible.", identifierCopy];
 
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __105__CAFUIPunchThroughController_requestDismissalOfPunchThroughWithIdentifier_displayIdentifier_completion___block_invoke;
     v35[3] = &unk_278D49650;
     v18 = &v36;
-    v36 = v10;
+    v36 = completionCopy;
     v20 = MEMORY[0x277D85CD0];
     v23 = v35;
     goto LABEL_12;
   }
 
-  v13 = [v12 punchThroughIdentifier];
-  v14 = [v13 isEqualToString:v8];
+  punchThroughIdentifier = [v12 punchThroughIdentifier];
+  v14 = [punchThroughIdentifier isEqualToString:identifierCopy];
 
   v15 = CAFUIStatusLogForCategory(0);
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -239,26 +239,26 @@ void __106__CAFUIPunchThroughController_requestActivationOfPunchThroughWithIdent
   {
     if (v16)
     {
-      v24 = [v12 punchThroughIdentifier];
+      punchThroughIdentifier2 = [v12 punchThroughIdentifier];
       *buf = 138543874;
-      v38 = v8;
+      v38 = identifierCopy;
       v39 = 2114;
-      v40 = v9;
+      v40 = displayIdentifierCopy;
       v41 = 2114;
-      v42 = v24;
+      v42 = punchThroughIdentifier2;
       _os_log_impl(&dword_24234D000, v15, OS_LOG_TYPE_DEFAULT, "Requested dismissal of punch-through %{public}@ on display %{public}@, but that display is showing a different punch-through: %{public}@", buf, 0x20u);
     }
 
     v25 = +[CAFUIStatusViewController sharedInstance];
-    v26 = [v12 punchThroughIdentifier];
-    [v25 appendStringWithFormat:@"Requested dismissal of punch-through %{public}@ on display %{public}@, but that display is showing a different punch-through: %{public}@", v8, v9, v26];
+    punchThroughIdentifier3 = [v12 punchThroughIdentifier];
+    [v25 appendStringWithFormat:@"Requested dismissal of punch-through %{public}@ on display %{public}@, but that display is showing a different punch-through: %{public}@", identifierCopy, displayIdentifierCopy, punchThroughIdentifier3];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__CAFUIPunchThroughController_requestDismissalOfPunchThroughWithIdentifier_displayIdentifier_completion___block_invoke_134;
     block[3] = &unk_278D49650;
     v18 = &v34;
-    v34 = v10;
+    v34 = completionCopy;
     v20 = MEMORY[0x277D85CD0];
     v23 = block;
 LABEL_12:
@@ -269,26 +269,26 @@ LABEL_12:
   if (v16)
   {
     *buf = 138543618;
-    v38 = v8;
+    v38 = identifierCopy;
     v39 = 2114;
-    v40 = v9;
+    v40 = displayIdentifierCopy;
     _os_log_impl(&dword_24234D000, v15, OS_LOG_TYPE_DEFAULT, "Requesting dismissal of punch-through %{public}@ on display %{public}@", buf, 0x16u);
   }
 
   v17 = +[CAFUIStatusViewController sharedInstance];
-  [v17 appendStringWithFormat:@"Requesting dismissal of punch-through %{public}@ on display %{public}@", v8, v9];
+  [v17 appendStringWithFormat:@"Requesting dismissal of punch-through %{public}@ on display %{public}@", identifierCopy, displayIdentifierCopy];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __105__CAFUIPunchThroughController_requestDismissalOfPunchThroughWithIdentifier_displayIdentifier_completion___block_invoke_138;
   v27[3] = &unk_278D496F0;
   v18 = &v28;
-  v28 = v8;
+  v28 = identifierCopy;
   v19 = v12;
   v29 = v19;
-  v30 = self;
-  v31 = v9;
-  v32 = v10;
+  selfCopy = self;
+  v31 = displayIdentifierCopy;
+  v32 = completionCopy;
   [v19 requestDismissalWithCompletion:v27];
 
   v20 = v29;
@@ -359,41 +359,41 @@ uint64_t __105__CAFUIPunchThroughController_requestDismissalOfPunchThroughWithId
   return v4();
 }
 
-- (BOOL)hasPunchThroughWithIdentifier:(id)a3
+- (BOOL)hasPunchThroughWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAFUIPunchThroughController *)self session];
-  v6 = [v5 configuration];
-  v7 = [v6 displays];
+  identifierCopy = identifier;
+  session = [(CAFUIPunchThroughController *)self session];
+  configuration = [session configuration];
+  displays = [configuration displays];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__CAFUIPunchThroughController_hasPunchThroughWithIdentifier___block_invoke;
   v12[3] = &unk_278D49718;
-  v13 = v4;
-  v8 = v4;
-  v9 = [v7 bs_firstObjectPassingTest:v12];
+  v13 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = [displays bs_firstObjectPassingTest:v12];
   v10 = v9 != 0;
 
   return v10;
 }
 
-- (BOOL)displayIdentifier:(id)a3 hasPunchThroughWithIdentifier:(id)a4
+- (BOOL)displayIdentifier:(id)identifier hasPunchThroughWithIdentifier:(id)withIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFUIPunchThroughController *)self session];
-  v9 = [v8 configuration];
-  v10 = [v9 displays];
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
+  session = [(CAFUIPunchThroughController *)self session];
+  configuration = [session configuration];
+  displays = [configuration displays];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__CAFUIPunchThroughController_displayIdentifier_hasPunchThroughWithIdentifier___block_invoke;
   v14[3] = &unk_278D49718;
-  v15 = v6;
-  v11 = v6;
-  v12 = [v10 bs_firstObjectPassingTest:v14];
+  v15 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = [displays bs_firstObjectPassingTest:v14];
 
-  LOBYTE(v8) = [v12 hasPunchThroughWithIdentifier:v7];
-  return v8;
+  LOBYTE(session) = [v12 hasPunchThroughWithIdentifier:withIdentifierCopy];
+  return session;
 }
 
 uint64_t __79__CAFUIPunchThroughController_displayIdentifier_hasPunchThroughWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -404,44 +404,44 @@ uint64_t __79__CAFUIPunchThroughController_displayIdentifier_hasPunchThroughWith
   return v4;
 }
 
-- (BOOL)displayIdentifier:(id)a3 isDisplayingPunchThroughWithIdentifier:(id)a4
+- (BOOL)displayIdentifier:(id)identifier isDisplayingPunchThroughWithIdentifier:(id)withIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFUIPunchThroughController *)self activePunchThroughs];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  withIdentifierCopy = withIdentifier;
+  identifierCopy = identifier;
+  activePunchThroughs = [(CAFUIPunchThroughController *)self activePunchThroughs];
+  v9 = [activePunchThroughs objectForKeyedSubscript:identifierCopy];
 
-  v10 = [v9 punchThroughIdentifier];
-  LOBYTE(v8) = [v10 isEqualToString:v6];
+  punchThroughIdentifier = [v9 punchThroughIdentifier];
+  LOBYTE(activePunchThroughs) = [punchThroughIdentifier isEqualToString:withIdentifierCopy];
 
-  return v8;
+  return activePunchThroughs;
 }
 
-- (id)punchThroughIdentifierOnDisplay:(id)a3
+- (id)punchThroughIdentifierOnDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(CAFUIPunchThroughController *)self activePunchThroughs];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  displayCopy = display;
+  activePunchThroughs = [(CAFUIPunchThroughController *)self activePunchThroughs];
+  v6 = [activePunchThroughs objectForKeyedSubscript:displayCopy];
 
-  v7 = [v6 punchThroughIdentifier];
+  punchThroughIdentifier = [v6 punchThroughIdentifier];
 
-  return v7;
+  return punchThroughIdentifier;
 }
 
-- (void)removeControllersWithIdentifier:(id)a3
+- (void)removeControllersWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAFUIPunchThroughController *)self activePunchThroughs];
-  v6 = [v5 allKeys];
+  identifierCopy = identifier;
+  activePunchThroughs = [(CAFUIPunchThroughController *)self activePunchThroughs];
+  allKeys = [activePunchThroughs allKeys];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__CAFUIPunchThroughController_removeControllersWithIdentifier___block_invoke;
   v8[3] = &unk_278D49740;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 bs_each:v8];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [allKeys bs_each:v8];
 }
 
 void __63__CAFUIPunchThroughController_removeControllersWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -479,30 +479,30 @@ void __63__CAFUIPunchThroughController_removeControllersWithIdentifier___block_i
   }
 }
 
-- (void)punchThroughControllerDidDismiss:(id)a3
+- (void)punchThroughControllerDidDismiss:(id)dismiss
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dismissCopy = dismiss;
   v5 = CAFUIStatusLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 punchThroughIdentifier];
+    punchThroughIdentifier = [dismissCopy punchThroughIdentifier];
     *buf = 138543362;
-    v13 = v6;
+    v13 = punchThroughIdentifier;
     _os_log_impl(&dword_24234D000, v5, OS_LOG_TYPE_DEFAULT, "Punch-through with identifier %{public}@ did dismiss.", buf, 0xCu);
   }
 
   v7 = +[CAFUIStatusViewController sharedInstance];
-  v8 = [v4 punchThroughIdentifier];
-  [v7 appendStringWithFormat:@"Punch-through with identifier %{public}@ did dismiss.", v8];
+  punchThroughIdentifier2 = [dismissCopy punchThroughIdentifier];
+  [v7 appendStringWithFormat:@"Punch-through with identifier %{public}@ did dismiss.", punchThroughIdentifier2];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__CAFUIPunchThroughController_punchThroughControllerDidDismiss___block_invoke;
   block[3] = &unk_278D49768;
   block[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = dismissCopy;
+  v9 = dismissCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

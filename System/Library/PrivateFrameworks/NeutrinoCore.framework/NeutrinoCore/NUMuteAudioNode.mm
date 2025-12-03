@@ -1,24 +1,24 @@
 @interface NUMuteAudioNode
-- (NUMuteAudioNode)initWithInput:(id)a3;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateVideo:(id *)a3;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NUMuteAudioNode)initWithInput:(id)input;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateVideo:(id *)video;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUMuteAudioNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v4 = [(NURenderNode *)self inputForKey:*MEMORY[0x1E695FAB0]];
-  v5 = [v4 _evaluateImage:a3];
+  v5 = [v4 _evaluateImage:image];
 
   return v5;
 }
 
-- (id)_evaluateVideo:(id *)a3
+- (id)_evaluateVideo:(id *)video
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!video)
   {
     v15 = NUAssertLogger_31502();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v22;
         v39 = 2114;
@@ -51,8 +51,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v38 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -104,7 +104,7 @@
 
     else
     {
-      *a3 = [NUError errorWithCode:1 reason:@"[NUMuteAudioNode _evaluateVideo] failed to get mutableCopy" object:v5];
+      *video = [NUError errorWithCode:1 reason:@"[NUMuteAudioNode _evaluateVideo] failed to get mutableCopy" object:v5];
     }
   }
 
@@ -116,22 +116,22 @@
   return v7;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUMuteAudioNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (NUMuteAudioNode)initWithInput:(id)a3
+- (NUMuteAudioNode)initWithInput:(id)input
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E695FAB0];
-  v11[0] = a3;
+  v11[0] = input;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  inputCopy = input;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = NUMuteAudioNode;

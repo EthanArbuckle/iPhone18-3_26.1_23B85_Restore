@@ -1,17 +1,17 @@
 @interface ExternalLinkCell
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
 @implementation ExternalLinkCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(ExternalLinkCell *)&v6 traitCollectionDidChange:v4];
+  [(ExternalLinkCell *)&v6 traitCollectionDidChange:changeCopy];
   [v5 setNeedsUpdateConstraints];
 }
 
@@ -22,10 +22,10 @@
   v2 = v6.receiver;
   [(ExternalLinkCell *)&v6 updateConstraints];
   v3 = sub_1295B8();
-  v4 = [v2 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [v2 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  [v3 setActive:v5 == &dword_0 + 1];
+  [v3 setActive:horizontalSizeClass == &dword_0 + 1];
 }
 
 @end

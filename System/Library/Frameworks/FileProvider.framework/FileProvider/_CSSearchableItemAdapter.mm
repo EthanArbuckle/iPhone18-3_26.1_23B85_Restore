@@ -41,7 +41,7 @@
 - (NSString)providerIdentifier;
 - (NSString)typeIdentifier;
 - (UTType)contentType;
-- (_CSSearchableItemAdapter)initWithSearchableItem:(id)a3;
+- (_CSSearchableItemAdapter)initWithSearchableItem:(id)item;
 - (id)collaborationIdentifier;
 - (id)containerSubitemCount;
 - (id)formerIdentifier;
@@ -58,44 +58,44 @@
 
 - (NSString)typeIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 contentType];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  contentType = [attributeSet contentType];
 
-  return v3;
+  return contentType;
 }
 
 - (NSString)filename
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v4 = [v3 attributeForKey:@"FPFilename"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v4 = [attributeSet attributeForKey:@"FPFilename"];
 
   if (v4)
   {
-    v5 = v4;
+    filename = v4;
   }
 
   else
   {
-    v6 = [(_CSSearchableItemAdapter *)self item];
-    v7 = [v6 attributeSet];
-    v5 = [v7 filename];
+    item = [(_CSSearchableItemAdapter *)self item];
+    attributeSet2 = [item attributeSet];
+    filename = [attributeSet2 filename];
   }
 
-  return v5;
+  return filename;
 }
 
 - (NSString)parentItemIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPParentFileItemID"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPParentFileItemID"];
 
   return v3;
 }
 
 - (NSString)itemIdentifier
 {
-  v3 = [(CSSearchableItem *)self->_item attributeSet];
-  v4 = [v3 attributeForKey:@"FPOnDiskIdentifier"];
+  attributeSet = [(CSSearchableItem *)self->_item attributeSet];
+  v4 = [attributeSet attributeForKey:@"FPOnDiskIdentifier"];
 
   if (v4)
   {
@@ -104,10 +104,10 @@
 
   else
   {
-    v6 = [(CSSearchableItem *)self->_item uniqueIdentifier];
-    v7 = [(CSSearchableItem *)self->_item attributeSet];
-    v8 = [v7 fileProviderDomainIdentifier];
-    v5 = [FPItemID fpIdentifierFromCoreSpotlightIdentifier:v6 domainIdentifier:v8];
+    uniqueIdentifier = [(CSSearchableItem *)self->_item uniqueIdentifier];
+    attributeSet2 = [(CSSearchableItem *)self->_item attributeSet];
+    fileProviderDomainIdentifier = [attributeSet2 fileProviderDomainIdentifier];
+    v5 = [FPItemID fpIdentifierFromCoreSpotlightIdentifier:uniqueIdentifier domainIdentifier:fileProviderDomainIdentifier];
   }
 
   return v5;
@@ -115,20 +115,20 @@
 
 - (NSString)providerIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 fileProviderID];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  fileProviderID = [attributeSet fileProviderID];
 
-  return v3;
+  return fileProviderID;
 }
 
 - (NSString)fp_domainIdentifier
 {
-  v2 = [(CSSearchableItem *)self->_item attributeSet];
-  v3 = [v2 fileProviderDomainIdentifier];
-  v4 = v3;
-  if (v3)
+  attributeSet = [(CSSearchableItem *)self->_item attributeSet];
+  fileProviderDomainIdentifier = [attributeSet fileProviderDomainIdentifier];
+  v4 = fileProviderDomainIdentifier;
+  if (fileProviderDomainIdentifier)
   {
-    v5 = v3;
+    v5 = fileProviderDomainIdentifier;
   }
 
   else
@@ -143,8 +143,8 @@
 
 - (NSFileProviderItemVersion)itemVersion
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPItemVersion"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPItemVersion"];
 
   if (v3)
   {
@@ -164,44 +164,44 @@
 - (UTType)contentType
 {
   v2 = MEMORY[0x1E6982C40];
-  v3 = [(_CSSearchableItemAdapter *)self typeIdentifier];
-  v4 = [v2 fp_cachedTypeWithIdentifier:v3];
+  typeIdentifier = [(_CSSearchableItemAdapter *)self typeIdentifier];
+  v4 = [v2 fp_cachedTypeWithIdentifier:typeIdentifier];
 
   return v4;
 }
 
 - (unint64_t)capabilities
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v4 = [v3 attributeForKey:@"FPCapabilities"];
-  v5 = [v4 unsignedIntegerValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v4 = [attributeSet attributeForKey:@"FPCapabilities"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v7 = [v6 attributeForKey:@"FPEvictable"];
+  attributeSet2 = [(_CSSearchableItemAdapter *)self attributeSet];
+  v7 = [attributeSet2 attributeForKey:@"FPEvictable"];
   LODWORD(v4) = [v7 BOOLValue];
 
   if (v4)
   {
-    return v5 | 0x40;
+    return unsignedIntegerValue | 0x40;
   }
 
   else
   {
-    return v5;
+    return unsignedIntegerValue;
   }
 }
 
 - (NSNumber)documentSize
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v4 = [v3 fileSize];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  fileSize = [attributeSet fileSize];
 
-  if (v4)
+  if (fileSize)
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(_CSSearchableItemAdapter *)self attributeSet];
-    v7 = [v6 fileSize];
-    [v7 doubleValue];
+    attributeSet2 = [(_CSSearchableItemAdapter *)self attributeSet];
+    fileSize2 = [attributeSet2 fileSize];
+    [fileSize2 doubleValue];
     v9 = [v5 numberWithDouble:v8 * 1000000.0];
   }
 
@@ -215,39 +215,39 @@
 
 - (NSNumber)childItemCount
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 subItemCount];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  subItemCount = [attributeSet subItemCount];
 
-  return v3;
+  return subItemCount;
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 contentCreationDate];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  contentCreationDate = [attributeSet contentCreationDate];
 
-  return v3;
+  return contentCreationDate;
 }
 
 - (NSDate)contentModificationDate
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 contentModificationDate];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  contentModificationDate = [attributeSet contentModificationDate];
 
-  return v3;
+  return contentModificationDate;
 }
 
 - (id)formerIdentifier
 {
-  v3 = [(CSSearchableItem *)self->_item attributeSet];
-  v4 = [v3 attributeForKey:@"FPOnDiskIdentifier"];
+  attributeSet = [(CSSearchableItem *)self->_item attributeSet];
+  v4 = [attributeSet attributeForKey:@"FPOnDiskIdentifier"];
 
   if (v4)
   {
-    v5 = [(CSSearchableItem *)self->_item uniqueIdentifier];
-    v6 = [(CSSearchableItem *)self->_item attributeSet];
-    v7 = [v6 fileProviderDomainIdentifier];
-    v8 = [FPItemID fpIdentifierFromCoreSpotlightIdentifier:v5 domainIdentifier:v7];
+    uniqueIdentifier = [(CSSearchableItem *)self->_item uniqueIdentifier];
+    attributeSet2 = [(CSSearchableItem *)self->_item attributeSet];
+    fileProviderDomainIdentifier = [attributeSet2 fileProviderDomainIdentifier];
+    v8 = [FPItemID fpIdentifierFromCoreSpotlightIdentifier:uniqueIdentifier domainIdentifier:fileProviderDomainIdentifier];
   }
 
   else
@@ -260,16 +260,16 @@
 
 - (NSDate)lastUsedDate
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 lastUsedDate];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  lastUsedDate = [attributeSet lastUsedDate];
 
-  return v3;
+  return lastUsedDate;
 }
 
 - (id)tags
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v4 = [v3 attributeForKey:@"_kMDItemUserTags"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v4 = [attributeSet attributeForKey:@"_kMDItemUserTags"];
 
   if (v4)
   {
@@ -278,27 +278,27 @@
 
   else
   {
-    v6 = [(_CSSearchableItemAdapter *)self attributeSet];
-    v7 = [v6 userTags];
+    attributeSet2 = [(_CSSearchableItemAdapter *)self attributeSet];
+    userTags = [attributeSet2 userTags];
 
-    if (v7)
+    if (userTags)
     {
-      v8 = [(_CSSearchableItemAdapter *)self attributeSet];
-      v9 = [v8 attributeForKey:@"FPTagColors"];
+      attributeSet3 = [(_CSSearchableItemAdapter *)self attributeSet];
+      v9 = [attributeSet3 attributeForKey:@"FPTagColors"];
 
-      if (v9 && (v10 = [v7 count], v10 == objc_msgSend(v9, "count")))
+      if (v9 && (v10 = [userTags count], v10 == objc_msgSend(v9, "count")))
       {
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __32___CSSearchableItemAdapter_tags__block_invoke_2;
         v12[3] = &unk_1E793CFC0;
         v13 = v9;
-        v5 = [v7 fp_mapWithIndex:v12];
+        v5 = [userTags fp_mapWithIndex:v12];
       }
 
       else
       {
-        v5 = [v7 fp_mapWithIndex:&__block_literal_global_134_0];
+        v5 = [userTags fp_mapWithIndex:&__block_literal_global_134_0];
       }
     }
 
@@ -313,42 +313,42 @@
 
 - (NSNumber)favoriteRank
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 favoriteRank];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  favoriteRank = [attributeSet favoriteRank];
 
-  return v3;
+  return favoriteRank;
 }
 
 - (BOOL)isTrashed
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isTrashed];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isTrashed = [attributeSet isTrashed];
+  bOOLValue = [isTrashed BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isUploaded
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isUploaded];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isUploaded = [attributeSet isUploaded];
+  bOOLValue = [isUploaded BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isUploading
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isUploading];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isUploading = [attributeSet isUploading];
+  bOOLValue = [isUploading BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSError)uploadingError
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -368,13 +368,13 @@
     [_CSSearchableItemAdapter uploadingError];
   }
 
-  v6 = [v3 attributeForKey:*v4];
+  v6 = [attributeSet attributeForKey:*v4];
 
   if (v6)
   {
     v7 = [FPSearchableItemError errorFromString:v6];
-    v8 = [(_CSSearchableItemAdapter *)self fileURL];
-    v9 = [v7 fp_annotatedErrorWithURL:v8 variant:0];
+    fileURL = [(_CSSearchableItemAdapter *)self fileURL];
+    v9 = [v7 fp_annotatedErrorWithURL:fileURL variant:0];
   }
 
   else
@@ -387,34 +387,34 @@
 
 - (BOOL)isDownloading
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isDownloading];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isDownloading = [attributeSet isDownloading];
+  bOOLValue = [isDownloading BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isDownloaded
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPDownloaded"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPDownloaded"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isMostRecentVersionDownloaded
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPMostRecentVersionDownloaded"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPMostRecentVersionDownloaded"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSError)downloadingError
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -434,13 +434,13 @@
     [_CSSearchableItemAdapter downloadingError];
   }
 
-  v6 = [v3 attributeForKey:*v4];
+  v6 = [attributeSet attributeForKey:*v4];
 
   if (v6)
   {
     v7 = [FPSearchableItemError errorFromString:v6];
-    v8 = [(_CSSearchableItemAdapter *)self fileURL];
-    v9 = [v7 fp_annotatedErrorWithURL:v8 variant:0];
+    fileURL = [(_CSSearchableItemAdapter *)self fileURL];
+    v9 = [v7 fp_annotatedErrorWithURL:fileURL variant:0];
   }
 
   else
@@ -453,43 +453,43 @@
 
 - (BOOL)isShared
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isShared];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isShared = [attributeSet isShared];
+  bOOLValue = [isShared BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSharedByCurrentUser
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 isUserOwned];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  isUserOwned = [attributeSet isUserOwned];
+  bOOLValue = [isUserOwned BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)fp_isLastModifiedByCurrentUser
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPLastModifiedByCurrentUser"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPLastModifiedByCurrentUser"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)collaborationIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPCollaborationIdentifier"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPCollaborationIdentifier"];
 
   return v3;
 }
 
 - (BOOL)isCollaborationInvitation
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"com_apple_mobilesms_syndicationContentType"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"com_apple_mobilesms_syndicationContentType"];
   v4 = [v3 integerValue] > 0;
 
   return v4;
@@ -498,8 +498,8 @@
 - (NSData)originatorInfo
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"com.apple.synapse:DocumentAttributes"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"com.apple.synapse:DocumentAttributes"];
 
   if (v3)
   {
@@ -530,8 +530,8 @@ LABEL_8:
 
 - (NSDictionary)userInfo
 {
-  v3 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v4 = [v3 attributeForKey:@"FPUserInfoKeys"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v4 = [attributeSet attributeForKey:@"FPUserInfoKeys"];
 
   if (v4 && (-[_CSSearchableItemAdapter attributeSet](self, "attributeSet"), v5 = objc_claimAutoreleasedReturnValue(), [v5 attributeForKey:@"FPUserInfoValues"], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
@@ -548,135 +548,135 @@ LABEL_8:
 
 - (NSString)displayName
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 displayName];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  displayName = [attributeSet displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (BOOL)fp_isContainer
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPIsContainer"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPIsContainer"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)fp_parentDomainIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPParentDomainID"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPParentDomainID"];
 
   return v3;
 }
 
 - (NSString)fp_cloudContainerIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPCloudContainerID"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPCloudContainerID"];
 
   return v3;
 }
 
 - (BOOL)fp_isUbiquitous
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPIsUbiquitous"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPIsUbiquitous"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isTopLevelSharedItem
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPIsTopLevelSharedItem"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPIsTopLevelSharedItem"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isInPinnedFolder
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPItemIsInPinnedFolder"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPItemIsInPinnedFolder"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPinned
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPItemIsPinned"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPItemIsPinned"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isRecursivelyDownloaded
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPItemIsRecursivelyDownloaded"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPItemIsRecursivelyDownloaded"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)preformattedOwnerName
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 ownerName];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  ownerName = [attributeSet ownerName];
 
-  return v3;
+  return ownerName;
 }
 
 - (NSString)preformattedMostRecentEditorName
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 lastEditorName];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  lastEditorName = [attributeSet lastEditorName];
 
-  return v3;
+  return lastEditorName;
 }
 
 - (NSData)tagData
 {
-  v3 = [(_CSSearchableItemAdapter *)self tags];
-  v4 = v3;
-  if (v3)
+  tags = [(_CSSearchableItemAdapter *)self tags];
+  v4 = tags;
+  if (tags)
   {
-    v5 = FPGetTagsDataForTags(v3);
+    v5 = FPGetTagsDataForTags(tags);
   }
 
   else
   {
-    v6 = [(_CSSearchableItemAdapter *)self attributeSet];
-    v5 = [v6 attributeForKey:@"FPTagsData"];
+    attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+    v5 = [attributeSet attributeForKey:@"FPTagsData"];
   }
 
   return v5;
 }
 
-- (_CSSearchableItemAdapter)initWithSearchableItem:(id)a3
+- (_CSSearchableItemAdapter)initWithSearchableItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = _CSSearchableItemAdapter;
   v6 = [(_CSSearchableItemAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
@@ -684,89 +684,89 @@ LABEL_8:
 
 - (id)sharingCurrentUserRole
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 sharedItemCurrentUserRole];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  sharedItemCurrentUserRole = [attributeSet sharedItemCurrentUserRole];
 
-  return v3;
+  return sharedItemCurrentUserRole;
 }
 
 - (id)containerSubitemCount
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 subItemCount];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  subItemCount = [attributeSet subItemCount];
 
-  return v3;
+  return subItemCount;
 }
 
 - (NSData)versionIdentifier
 {
-  v3 = [(_CSSearchableItemAdapter *)self itemVersion];
-  v4 = [v3 contentVersion];
-  v5 = [v4 length];
+  itemVersion = [(_CSSearchableItemAdapter *)self itemVersion];
+  contentVersion = [itemVersion contentVersion];
+  v5 = [contentVersion length];
 
   if (v5)
   {
-    v6 = [v3 contentVersion];
+    contentVersion2 = [itemVersion contentVersion];
   }
 
   else
   {
-    v7 = [(_CSSearchableItemAdapter *)self attributeSet];
-    v8 = [v7 versionIdentifier];
+    attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+    versionIdentifier = [attributeSet versionIdentifier];
 
-    if (v8)
+    if (versionIdentifier)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v8 options:0];
+      contentVersion2 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:versionIdentifier options:0];
     }
 
     else
     {
-      v6 = 0;
+      contentVersion2 = 0;
     }
   }
 
-  return v6;
+  return contentVersion2;
 }
 
 - (id)sharingCurrentUserPermissions
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPSharingCurrentUserPermissions"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPSharingCurrentUserPermissions"];
 
   return v3;
 }
 
 - (id)fp_appContainerBundleIdentifier
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPAppContainerBundleID"];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPAppContainerBundleID"];
 
   return v3;
 }
 
 - (BOOL)fp_isContainerPristine
 {
-  v2 = [(_CSSearchableItemAdapter *)self attributeSet];
-  v3 = [v2 attributeForKey:@"FPIsContainerPristine"];
-  v4 = [v3 BOOLValue];
+  attributeSet = [(_CSSearchableItemAdapter *)self attributeSet];
+  v3 = [attributeSet attributeForKey:@"FPIsContainerPristine"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)uploadingError
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMDItemUploadError(void)"];
-  [v0 handleFailureInFunction:v1 file:@"FPItem+CSSearchableItem.m" lineNumber:59 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"FPItem+CSSearchableItem.m" lineNumber:59 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
 - (void)downloadingError
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMDItemDownloadError(void)"];
-  [v0 handleFailureInFunction:v1 file:@"FPItem+CSSearchableItem.m" lineNumber:60 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"FPItem+CSSearchableItem.m" lineNumber:60 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

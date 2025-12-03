@@ -1,8 +1,8 @@
 @interface PXApplicationSettings
 + (PXApplicationSettings)sharedInstance;
-+ (id)attributedStringTransformedForDisplay:(id)a3;
++ (id)attributedStringTransformedForDisplay:(id)display;
 + (id)settingsControllerModule;
-+ (id)stringTransformedForDisplay:(id)a3;
++ (id)stringTransformedForDisplay:(id)display;
 - (BOOL)_wantsPseudoStringsForDisplay;
 - (void)setDefaultValues;
 @end
@@ -55,31 +55,31 @@ void __39__PXApplicationSettings_sharedInstance__block_invoke()
   return [(PXApplicationSettings *)self wantsPseudostringsWithIncreasedLength];
 }
 
-+ (id)attributedStringTransformedForDisplay:(id)a3
++ (id)attributedStringTransformedForDisplay:(id)display
 {
-  v3 = a3;
+  displayCopy = display;
   v4 = +[PXApplicationSettings sharedInstance];
   if (![v4 _wantsPseudoStringsForDisplay])
   {
-    v5 = v3;
+    v5 = displayCopy;
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v7 = [v3 length];
+  v7 = [displayCopy length];
 
-  v5 = v3;
+  v5 = displayCopy;
   if (v7)
   {
     v4 = +[PXApplicationSettings sharedInstance];
-    v8 = [v3 mutableCopy];
+    v8 = [displayCopy mutableCopy];
     if ([v4 wantsPseudostringsWithIncreasedLength] && objc_msgSend(v4, "pseudoStringsLengthIncreaseFactor") >= 2)
     {
       v9 = 1;
       do
       {
-        [v8 appendAttributedString:v3];
+        [v8 appendAttributedString:displayCopy];
         ++v9;
       }
 
@@ -89,8 +89,8 @@ LABEL_3:
     if ([v4 wantsPseudostringsWithSpecialCharacters])
     {
       v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v11 = [v4 stringWithSpecialCharacters];
-      v12 = [v10 initWithString:v11];
+      stringWithSpecialCharacters = [v4 stringWithSpecialCharacters];
+      v12 = [v10 initWithString:stringWithSpecialCharacters];
       [v8 insertAttributedString:v12 atIndex:0];
     }
 
@@ -104,34 +104,34 @@ LABEL_4:
   return v5;
 }
 
-+ (id)stringTransformedForDisplay:(id)a3
++ (id)stringTransformedForDisplay:(id)display
 {
-  v3 = a3;
+  displayCopy = display;
   v4 = +[PXApplicationSettings sharedInstance];
   if (![v4 _wantsPseudoStringsForDisplay])
   {
-    v5 = v3;
+    v5 = displayCopy;
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v7 = [v3 length];
+  v7 = [displayCopy length];
 
-  v5 = v3;
+  v5 = displayCopy;
   if (v7)
   {
     v4 = +[PXApplicationSettings sharedInstance];
-    v5 = v3;
+    v5 = displayCopy;
     if ([v4 wantsPseudostringsWithIncreasedLength])
     {
-      v5 = [v3 stringByPaddingToLength:objc_msgSend(v3 withString:"length") * objc_msgSend(v4 startingAtIndex:{"pseudoStringsLengthIncreaseFactor"), v3, 0}];
+      v5 = [displayCopy stringByPaddingToLength:objc_msgSend(displayCopy withString:"length") * objc_msgSend(v4 startingAtIndex:{"pseudoStringsLengthIncreaseFactor"), displayCopy, 0}];
     }
 
     if ([v4 wantsPseudostringsWithSpecialCharacters])
     {
-      v8 = [v4 stringWithSpecialCharacters];
-      v9 = [v8 stringByAppendingString:v5];
+      stringWithSpecialCharacters = [v4 stringWithSpecialCharacters];
+      v9 = [stringWithSpecialCharacters stringByAppendingString:v5];
 
       v5 = v9;
     }
@@ -213,8 +213,8 @@ LABEL_4:
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v58 count:1];
   v24 = [v19 sectionWithRows:v23 title:@"GreenTea"];
   v63[4] = v24;
-  v25 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v63[5] = v25;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v63[5] = px_restoreDefaultsSection;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:6];
   v41 = [v40 moduleWithTitle:@"Application" contents:v26];
 

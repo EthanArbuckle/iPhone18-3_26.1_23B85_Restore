@@ -1,12 +1,12 @@
 @interface AVTEditingModelColors
 + (id)buildAllColors;
-+ (void)createColorsForPaletteCategory:(int64_t)a3 inCache:(id)a4 withDerivedPaletteCategories:(id)a5;
++ (void)createColorsForPaletteCategory:(int64_t)category inCache:(id)cache withDerivedPaletteCategories:(id)categories;
 - (AVTEditingModelColors)init;
-- (AVTEditingModelColors)initWithStorage:(id)a3 variationStore:(id)a4;
-- (BOOL)colorHasDerivedColorDependency:(id)a3;
-- (id)colorForSettingKind:(id)a3 identifier:(id)a4;
-- (id)colorsForSettingKind:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AVTEditingModelColors)initWithStorage:(id)storage variationStore:(id)store;
+- (BOOL)colorHasDerivedColorDependency:(id)dependency;
+- (id)colorForSettingKind:(id)kind identifier:(id)identifier;
+- (id)colorsForSettingKind:(id)kind;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AVTEditingModelColors
@@ -19,45 +19,45 @@
   return v4;
 }
 
-- (AVTEditingModelColors)initWithStorage:(id)a3 variationStore:(id)a4
+- (AVTEditingModelColors)initWithStorage:(id)storage variationStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = AVTEditingModelColors;
   v9 = [(AVTEditingModelColors *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storage, a3);
-    objc_storeStrong(&v10->_variationStore, a4);
+    objc_storeStrong(&v9->_storage, storage);
+    objc_storeStrong(&v10->_variationStore, store);
   }
 
   return v10;
 }
 
-- (id)colorForSettingKind:(id)a3 identifier:(id)a4
+- (id)colorForSettingKind:(id)kind identifier:(id)identifier
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = a4;
-  v8 = [(AVTEditingModelColors *)self storage];
+  var1 = kind.var1;
+  var0 = kind.var0;
+  identifierCopy = identifier;
+  storage = [(AVTEditingModelColors *)self storage];
   v9 = AVTAvatarSettingKindIdentifier(var0, var1);
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v10 = [storage objectForKeyedSubscript:v9];
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
 
   return v11;
 }
 
-- (id)colorsForSettingKind:(id)a3
+- (id)colorsForSettingKind:(id)kind
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(AVTEditingModelColors *)self storage];
+  var1 = kind.var1;
+  var0 = kind.var0;
+  storage = [(AVTEditingModelColors *)self storage];
   v6 = AVTAvatarSettingKindIdentifier(var0, var1);
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 allValues];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_32];
+  v7 = [storage objectForKeyedSubscript:v6];
+  allValues = [v7 allValues];
+  v9 = [allValues sortedArrayUsingComparator:&__block_literal_global_32];
   v10 = [v9 copy];
 
   return v10;
@@ -77,13 +77,13 @@ uint64_t __46__AVTEditingModelColors_colorsForSettingKind___block_invoke(uint64_
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTEditingModelColors alloc];
-  v5 = [(AVTEditingModelColors *)self storage];
-  v6 = [v5 _avtui_deepCopy];
-  v7 = [(AVTEditingModelColors *)self variationStore];
-  v8 = [(AVTEditingModelColors *)v4 initWithStorage:v6 variationStore:v7];
+  storage = [(AVTEditingModelColors *)self storage];
+  _avtui_deepCopy = [storage _avtui_deepCopy];
+  variationStore = [(AVTEditingModelColors *)self variationStore];
+  v8 = [(AVTEditingModelColors *)v4 initWithStorage:_avtui_deepCopy variationStore:variationStore];
 
   return v8;
 }
@@ -111,7 +111,7 @@ uint64_t __46__AVTEditingModelColors_colorsForSettingKind___block_invoke(uint64_
           objc_enumerationMutation(v4);
         }
 
-        [a1 createColorsForPaletteCategory:objc_msgSend(*(*(&v11 + 1) + 8 * i) inCache:"integerValue") withDerivedPaletteCategories:{v3, v4}];
+        [self createColorsForPaletteCategory:objc_msgSend(*(*(&v11 + 1) + 8 * i) inCache:"integerValue") withDerivedPaletteCategories:{v3, v4}];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -125,25 +125,25 @@ uint64_t __46__AVTEditingModelColors_colorsForSettingKind___block_invoke(uint64_
   return v9;
 }
 
-+ (void)createColorsForPaletteCategory:(int64_t)a3 inCache:(id)a4 withDerivedPaletteCategories:(id)a5
++ (void)createColorsForPaletteCategory:(int64_t)category inCache:(id)cache withDerivedPaletteCategories:(id)categories
 {
-  v8 = a4;
-  v9 = a5;
+  cacheCopy = cache;
+  categoriesCopy = categories;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDerivedPaletteCategories___block_invoke;
   v20 = &unk_1E7F3D568;
-  v10 = v8;
+  v10 = cacheCopy;
   v21 = v10;
-  v11 = v9;
+  v11 = categoriesCopy;
   v22 = v11;
-  v23 = a1;
-  v24 = a3;
+  selfCopy = self;
+  categoryCopy = category;
   v12 = MEMORY[0x1BFB0DE80](&v17);
   for (i = 0; i != 3; ++i)
   {
-    v14 = [MEMORY[0x1E698E2A8] colorPresetsForCategory:a3 colorIndex:{i, v17, v18, v19, v20}];
-    v15 = AVTColorSettingKind(a3, i);
+    v14 = [MEMORY[0x1E698E2A8] colorPresetsForCategory:category colorIndex:{i, v17, v18, v19, v20}];
+    v15 = AVTColorSettingKind(category, i);
     (v12)[2](v12, v14, v15, v16);
   }
 }
@@ -275,23 +275,23 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
   }
 }
 
-- (BOOL)colorHasDerivedColorDependency:(id)a3
+- (BOOL)colorHasDerivedColorDependency:(id)dependency
 {
   v58 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dependencyCopy = dependency;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v5 = [(AVTEditingModelColors *)self storage];
-  v6 = [v5 allKeys];
+  storage = [(AVTEditingModelColors *)self storage];
+  allKeys = [storage allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v51 objects:v57 count:16];
   if (v7)
   {
     v8 = *v52;
-    v39 = v6;
-    v36 = self;
+    v39 = allKeys;
+    selfCopy = self;
     v34 = *v52;
     do
     {
@@ -301,7 +301,7 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
       {
         if (*v52 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v40 = v9;
@@ -310,17 +310,17 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v11 = [(AVTEditingModelColors *)self storage];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 allKeys];
+        storage2 = [(AVTEditingModelColors *)self storage];
+        v12 = [storage2 objectForKeyedSubscript:v10];
+        allKeys2 = [v12 allKeys];
 
-        v41 = [v13 countByEnumeratingWithState:&v47 objects:v56 count:16];
+        v41 = [allKeys2 countByEnumeratingWithState:&v47 objects:v56 count:16];
         if (v41)
         {
           v14 = *v48;
           v37 = *v48;
           v38 = v10;
-          v42 = v13;
+          v42 = allKeys2;
           do
           {
             v15 = 0;
@@ -328,12 +328,12 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
             {
               if (*v48 != v14)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allKeys2);
               }
 
               v16 = *(*(&v47 + 1) + 8 * v15);
-              v17 = [(AVTEditingModelColors *)self storage];
-              v18 = [v17 objectForKeyedSubscript:v10];
+              storage3 = [(AVTEditingModelColors *)self storage];
+              v18 = [storage3 objectForKeyedSubscript:v10];
               v19 = [v18 objectForKeyedSubscript:v16];
 
               v20 = objc_autoreleasePoolPush();
@@ -341,10 +341,10 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
               v44 = 0u;
               v45 = 0u;
               v46 = 0u;
-              v21 = [v19 derivedColorsByCategories];
-              v22 = [v21 allValues];
+              derivedColorsByCategories = [v19 derivedColorsByCategories];
+              allValues = [derivedColorsByCategories allValues];
 
-              v23 = [v22 countByEnumeratingWithState:&v43 objects:v55 count:16];
+              v23 = [allValues countByEnumeratingWithState:&v43 objects:v55 count:16];
               if (v23)
               {
                 v24 = v23;
@@ -355,28 +355,28 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
                   {
                     if (*v44 != v25)
                     {
-                      objc_enumerationMutation(v22);
+                      objc_enumerationMutation(allValues);
                     }
 
                     v27 = *(*(&v43 + 1) + 8 * i);
                     [v27 settingKind];
                     v29 = v28;
-                    [v4 settingKind];
+                    [dependencyCopy settingKind];
                     if (v29 == v30)
                     {
-                      v31 = [v27 settingKind];
-                      if (v31 == [v4 settingKind])
+                      settingKind = [v27 settingKind];
+                      if (settingKind == [dependencyCopy settingKind])
                       {
 
                         objc_autoreleasePoolPop(v20);
                         v32 = 1;
-                        v6 = v39;
+                        allKeys = v39;
                         goto LABEL_27;
                       }
                     }
                   }
 
-                  v24 = [v22 countByEnumeratingWithState:&v43 objects:v55 count:16];
+                  v24 = [allValues countByEnumeratingWithState:&v43 objects:v55 count:16];
                   if (v24)
                   {
                     continue;
@@ -388,14 +388,14 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
 
               objc_autoreleasePoolPop(v20);
               ++v15;
-              v13 = v42;
-              self = v36;
+              allKeys2 = v42;
+              self = selfCopy;
               v14 = v37;
               v10 = v38;
             }
 
             while (v15 != v41);
-            v6 = v39;
+            allKeys = v39;
             v8 = v34;
             v41 = [v42 countByEnumeratingWithState:&v47 objects:v56 count:16];
           }
@@ -407,7 +407,7 @@ void __93__AVTEditingModelColors_createColorsForPaletteCategory_inCache_withDeri
       }
 
       while (v40 + 1 != v35);
-      v7 = [v6 countByEnumeratingWithState:&v51 objects:v57 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v51 objects:v57 count:16];
       v32 = 0;
     }
 

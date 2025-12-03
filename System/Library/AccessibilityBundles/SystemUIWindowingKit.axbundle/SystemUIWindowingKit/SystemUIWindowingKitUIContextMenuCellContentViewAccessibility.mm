@@ -1,29 +1,29 @@
 @interface SystemUIWindowingKitUIContextMenuCellContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SystemUIWindowingKitUIContextMenuCellContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UIContextMenuCellContentView" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UIContextMenuCellContentView" hasInstanceMethod:@"iconImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v13.receiver = self;
   v13.super_class = SystemUIWindowingKitUIContextMenuCellContentViewAccessibility;
-  v3 = [(SystemUIWindowingKitUIContextMenuCellContentViewAccessibility *)&v13 accessibilityLabel];
+  accessibilityLabel = [(SystemUIWindowingKitUIContextMenuCellContentViewAccessibility *)&v13 accessibilityLabel];
   objc_opt_class();
   v4 = [(SystemUIWindowingKitUIContextMenuCellContentViewAccessibility *)self safeValueForKey:@"iconImageView"];
   v5 = __UIAccessibilityCastAsClass();
 
-  v6 = [v5 image];
-  v7 = [v6 safeValueForKey:@"_imageAsset"];
+  image = [v5 image];
+  v7 = [image safeValueForKey:@"_imageAsset"];
   v8 = [v7 safeStringForKey:@"assetName"];
 
   if (([v8 isEqualToString:@"inset.filled.lefthalf.rectangle"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"rectangle.lefthalf.inset.fill"))
@@ -76,7 +76,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v10 = v3;
+  v10 = accessibilityLabel;
 LABEL_5:
   v11 = v10;
 

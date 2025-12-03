@@ -1,5 +1,5 @@
 @interface MTGenericSettingsFooterLabelView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
 - (MTGenericSettingsFooterLabelView)init;
 - (void)_setupLabel;
 - (void)_updateColors;
@@ -20,8 +20,8 @@
     v4 = +[UIColor clearColor];
     [(MTGenericSettingsFooterLabelView *)v3 setBackgroundColor:v4];
 
-    v5 = [(MTGenericSettingsFooterLabelView *)v3 textView];
-    [v5 setDelegate:v3];
+    textView = [(MTGenericSettingsFooterLabelView *)v3 textView];
+    [textView setDelegate:v3];
   }
 
   return v3;
@@ -48,19 +48,19 @@
   y = v34.origin.y;
   width = v34.size.width;
   height = v34.size.height;
-  v17 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v17 setFrame:{x, y, width, height}];
+  textView = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView setFrame:{x, y, width, height}];
 
   if ([(MTGenericSettingsFooterLabelView *)self topAlignLabel])
   {
-    v18 = [(MTGenericSettingsFooterLabelView *)self textView];
-    [v18 sizeToFit];
+    textView2 = [(MTGenericSettingsFooterLabelView *)self textView];
+    [textView2 sizeToFit];
   }
 
   if ([(MTGenericSettingsFooterLabelView *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v19 = [(MTGenericSettingsFooterLabelView *)self textView];
-    [v19 frame];
+    textView3 = [(MTGenericSettingsFooterLabelView *)self textView];
+    [textView3 frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -78,22 +78,22 @@
     v37.size.width = v25;
     v37.size.height = v27;
     v30 = v29 - CGRectGetMinX(v37);
-    v31 = [(MTGenericSettingsFooterLabelView *)self textView];
-    [v31 setFrame:{v30, v23, v25, v27}];
+    textView4 = [(MTGenericSettingsFooterLabelView *)self textView];
+    [textView4 setFrame:{v30, v23, v25, v27}];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  v6 = [a4 absoluteString];
+  absoluteString = [l absoluteString];
 
-  if (v6 == UIApplicationOpenSettingsURLString)
+  if (absoluteString == UIApplicationOpenSettingsURLString)
   {
     v7 = +[UIApplication sharedApplication];
     [v7 openGlobalSettings];
   }
 
-  return v6 != UIApplicationOpenSettingsURLString;
+  return absoluteString != UIApplicationOpenSettingsURLString;
 }
 
 - (void)_setupLabel
@@ -101,37 +101,37 @@
   v3 = objc_alloc_init(UITextView);
   [(MTGenericSettingsFooterLabelView *)self setTextView:v3];
 
-  v4 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [(MTGenericSettingsFooterLabelView *)self addSubview:v4];
+  textView = [(MTGenericSettingsFooterLabelView *)self textView];
+  [(MTGenericSettingsFooterLabelView *)self addSubview:textView];
 
-  v5 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v5 setTextAlignment:4];
+  textView2 = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView2 setTextAlignment:4];
 
-  v6 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v6 setEditable:0];
+  textView3 = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView3 setEditable:0];
 
-  v7 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v7 setScrollEnabled:0];
+  textView4 = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView4 setScrollEnabled:0];
 
   v9 = +[UIColor clearColor];
-  v8 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v8 setBackgroundColor:v9];
+  textView5 = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView5 setBackgroundColor:v9];
 }
 
 - (void)_updateColors
 {
   v3 = [NSMutableAttributedString alloc];
-  v4 = [(MTGenericSettingsFooterLabelView *)self textView];
-  v5 = [v4 attributedText];
-  v10 = [v3 initWithAttributedString:v5];
+  textView = [(MTGenericSettingsFooterLabelView *)self textView];
+  attributedText = [textView attributedText];
+  v10 = [v3 initWithAttributedString:attributedText];
 
   v6 = +[UIListContentConfiguration groupedFooterConfiguration];
-  v7 = [v6 textProperties];
-  v8 = [v7 resolvedColor];
-  [v10 addAttribute:NSForegroundColorAttributeName value:v8 range:{0, objc_msgSend(v10, "length")}];
+  textProperties = [v6 textProperties];
+  resolvedColor = [textProperties resolvedColor];
+  [v10 addAttribute:NSForegroundColorAttributeName value:resolvedColor range:{0, objc_msgSend(v10, "length")}];
 
-  v9 = [(MTGenericSettingsFooterLabelView *)self textView];
-  [v9 setAttributedText:v10];
+  textView2 = [(MTGenericSettingsFooterLabelView *)self textView];
+  [textView2 setAttributedText:v10];
 }
 
 @end

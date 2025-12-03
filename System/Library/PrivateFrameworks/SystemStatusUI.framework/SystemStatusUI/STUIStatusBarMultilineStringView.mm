@@ -1,18 +1,18 @@
 @interface STUIStatusBarMultilineStringView
-- (STUIStatusBarMultilineStringView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarMultilineStringView)initWithFrame:(CGRect)frame;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setNumberOfLines:(int64_t)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setNumberOfLines:(int64_t)lines;
 @end
 
 @implementation STUIStatusBarMultilineStringView
 
-- (STUIStatusBarMultilineStringView)initWithFrame:(CGRect)a3
+- (STUIStatusBarMultilineStringView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = STUIStatusBarMultilineStringView;
-  v3 = [(STUIStatusBarMultilineStringView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(STUIStatusBarMultilineStringView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc(MEMORY[0x277D75A68]);
   [(STUIStatusBarMultilineStringView *)v3 bounds];
   v5 = [v4 initWithFrame:?];
@@ -22,40 +22,40 @@
   [(UIStackView *)v3->_stackView setAxis:1];
   [(UIStackView *)v3->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(STUIStatusBarMultilineStringView *)v3 addSubview:v3->_stackView];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(STUIStatusBarMultilineStringView *)v3 leadingAnchor];
-  v9 = [(UIStackView *)v3->_stackView leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
-  [v7 addObject:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  leadingAnchor = [(STUIStatusBarMultilineStringView *)v3 leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)v3->_stackView leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v10];
 
-  v11 = [(STUIStatusBarMultilineStringView *)v3 trailingAnchor];
-  v12 = [(UIStackView *)v3->_stackView trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  [v7 addObject:v13];
+  trailingAnchor = [(STUIStatusBarMultilineStringView *)v3 trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)v3->_stackView trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v13];
 
-  v14 = [(STUIStatusBarMultilineStringView *)v3 topAnchor];
-  v15 = [(UIStackView *)v3->_stackView topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
-  [v7 addObject:v16];
+  topAnchor = [(STUIStatusBarMultilineStringView *)v3 topAnchor];
+  topAnchor2 = [(UIStackView *)v3->_stackView topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  [array addObject:v16];
 
-  v17 = [(STUIStatusBarMultilineStringView *)v3 bottomAnchor];
-  v18 = [(UIStackView *)v3->_stackView bottomAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
-  [v7 addObject:v19];
+  bottomAnchor = [(STUIStatusBarMultilineStringView *)v3 bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)v3->_stackView bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v19];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v7];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
   return v3;
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_numberOfLines != a3)
+  if (self->_numberOfLines != lines)
   {
-    v3 = a3;
-    self->_numberOfLines = a3;
-    v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-    v6 = [v5 copy];
+    linesCopy = lines;
+    self->_numberOfLines = lines;
+    arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+    v6 = [arrangedSubviews copy];
 
     v15 = 0u;
     v16 = 0u;
@@ -87,31 +87,31 @@
       while (v9);
     }
 
-    if (v3 >= 1)
+    if (linesCopy >= 1)
     {
       do
       {
         v12 = objc_alloc_init(STUIStatusBarStringView);
         [(UIStackView *)self->_stackView addArrangedSubview:v12];
 
-        --v3;
+        --linesCopy;
       }
 
-      while (v3);
+      while (linesCopy);
     }
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(STUIStatusBarMultilineStringView *)self stringViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  stringViews = [(STUIStatusBarMultilineStringView *)self stringViews];
+  v6 = [stringViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -123,14 +123,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stringViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) applyStyleAttributes:v4];
+        [*(*(&v10 + 1) + 8 * v9++) applyStyleAttributes:attributesCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [stringViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -139,18 +139,18 @@
 
 - (id)viewForFirstBaselineLayout
 {
-  v2 = [(STUIStatusBarMultilineStringView *)self stringViews];
-  v3 = [v2 firstObject];
+  stringViews = [(STUIStatusBarMultilineStringView *)self stringViews];
+  firstObject = [stringViews firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)viewForLastBaselineLayout
 {
-  v2 = [(STUIStatusBarMultilineStringView *)self stringViews];
-  v3 = [v2 lastObject];
+  stringViews = [(STUIStatusBarMultilineStringView *)self stringViews];
+  lastObject = [stringViews lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 @end

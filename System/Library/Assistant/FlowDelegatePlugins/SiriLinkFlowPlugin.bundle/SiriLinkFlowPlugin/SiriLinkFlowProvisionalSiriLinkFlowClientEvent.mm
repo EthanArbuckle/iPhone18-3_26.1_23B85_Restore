@@ -1,34 +1,34 @@
 @interface SiriLinkFlowProvisionalSiriLinkFlowClientEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SiriLinkFlowProvisionalLinkActionCompletion)linkActionCompletion;
 - (SiriLinkFlowProvisionalLinkActionConversion)linkActionConversion;
-- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithDictionary:(id)a3;
-- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithJSON:(id)a3;
+- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithDictionary:(id)dictionary;
+- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setLinkActionCompletion:(id)a3;
-- (void)setLinkActionConversion:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLinkActionCompletion:(id)completion;
+- (void)setLinkActionConversion:(id)conversion;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SiriLinkFlowProvisionalSiriLinkFlowClientEvent
 
-- (void)setLinkActionCompletion:(id)a3
+- (void)setLinkActionCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   linkActionConversion = self->_linkActionConversion;
   self->_linkActionConversion = 0;
 
   v6 = 101;
-  if (!v4)
+  if (!completionCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   linkActionCompletion = self->_linkActionCompletion;
-  self->_linkActionCompletion = v4;
+  self->_linkActionCompletion = completionCopy;
 }
 
 - (SiriLinkFlowProvisionalLinkActionCompletion)linkActionCompletion
@@ -46,21 +46,21 @@
   return v3;
 }
 
-- (void)setLinkActionConversion:(id)a3
+- (void)setLinkActionConversion:(id)conversion
 {
-  v4 = a3;
+  conversionCopy = conversion;
   linkActionCompletion = self->_linkActionCompletion;
   self->_linkActionCompletion = 0;
 
   v6 = 102;
-  if (!v4)
+  if (!conversionCopy)
   {
     v6 = 0;
   }
 
   self->_whichEvent_Type = v6;
   linkActionConversion = self->_linkActionConversion;
-  self->_linkActionConversion = v4;
+  self->_linkActionConversion = conversionCopy;
 }
 
 - (SiriLinkFlowProvisionalLinkActionConversion)linkActionConversion
@@ -78,65 +78,65 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+  linkActionCompletion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
 
-  if (v6)
+  if (linkActionCompletion)
   {
-    v7 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+    linkActionCompletion2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+  linkActionConversion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (linkActionConversion)
   {
-    v10 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+    linkActionConversion2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -148,20 +148,20 @@
   {
   }
 
-  v6 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
-  v7 = [v4 linkActionCompletion];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+  eventMetadata2 = [equalCopy linkActionCompletion];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
-  if (v13)
+  linkActionCompletion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+  if (linkActionCompletion)
   {
-    v14 = v13;
-    v15 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
-    v16 = [v4 linkActionCompletion];
-    v17 = [v15 isEqual:v16];
+    v14 = linkActionCompletion;
+    linkActionCompletion2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+    linkActionCompletion3 = [equalCopy linkActionCompletion];
+    v17 = [linkActionCompletion2 isEqual:linkActionCompletion3];
 
     if (!v17)
     {
@@ -173,12 +173,12 @@
   {
   }
 
-  v6 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
-  v7 = [v4 linkActionConversion];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+  eventMetadata2 = [equalCopy linkActionConversion];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v18 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
-    if (!v18)
+    linkActionConversion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+    if (!linkActionConversion)
     {
 
 LABEL_21:
@@ -186,10 +186,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
-    v21 = [v4 linkActionConversion];
-    v22 = [v20 isEqual:v21];
+    v19 = linkActionConversion;
+    linkActionConversion2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+    linkActionConversion3 = [equalCopy linkActionConversion];
+    v22 = [linkActionConversion2 isEqual:linkActionConversion3];
 
     if (v22)
     {
@@ -221,11 +221,11 @@ LABEL_19:
   v3 = +[NSMutableDictionary dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
@@ -237,11 +237,11 @@ LABEL_19:
 
   if (self->_linkActionCompletion)
   {
-    v7 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    linkActionCompletion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionCompletion];
+    dictionaryRepresentation2 = [linkActionCompletion dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"linkActionCompletion"];
+      [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"linkActionCompletion"];
     }
 
     else
@@ -253,11 +253,11 @@ LABEL_19:
 
   if (self->_linkActionConversion)
   {
-    v10 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    linkActionConversion = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self linkActionConversion];
+    dictionaryRepresentation3 = [linkActionConversion dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"linkActionConversion"];
+      [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"linkActionConversion"];
     }
 
     else
@@ -272,10 +272,10 @@ LABEL_19:
 
 - (NSData)jsonData
 {
-  v2 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self dictionaryRepresentation];
-  if ([NSJSONSerialization isValidJSONObject:v2])
+  dictionaryRepresentation = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self dictionaryRepresentation];
+  if ([NSJSONSerialization isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:0];
+    v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -286,33 +286,33 @@ LABEL_19:
   return v3;
 }
 
-- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithJSON:(id)a3
+- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [NSJSONSerialization JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithDictionary:(id)a3
+- (SiriLinkFlowProvisionalSiriLinkFlowClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = SiriLinkFlowProvisionalSiriLinkFlowClientEvent;
   v5 = [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -320,7 +320,7 @@ LABEL_19:
       [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"linkActionCompletion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkActionCompletion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -328,7 +328,7 @@ LABEL_19:
       [(SiriLinkFlowProvisionalSiriLinkFlowClientEvent *)v5 setLinkActionCompletion:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"linkActionConversion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"linkActionConversion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

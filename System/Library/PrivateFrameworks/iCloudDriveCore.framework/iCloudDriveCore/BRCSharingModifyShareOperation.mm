@@ -1,51 +1,51 @@
 @interface BRCSharingModifyShareOperation
-- (BOOL)_shouldFetchSharingIdentity:(BOOL)a3;
-- (BRCSharingModifyShareOperation)initWithName:(id)a3 zone:(id)a4 share:(id)a5 sessionContext:(id)a6;
+- (BOOL)_shouldFetchSharingIdentity:(BOOL)identity;
+- (BRCSharingModifyShareOperation)initWithName:(id)name zone:(id)zone share:(id)share sessionContext:(id)context;
 - (id)createActivity;
-- (void)_performAfterCopyingPublicSharingKeyWithRecordID:(id)a3 completion:(id)a4;
-- (void)_performAfterFetchingiWorkRoutingTokenIfNecessary:(id)a3 completion:(id)a4;
-- (void)_performAfterFetchingiWorkSharingIdentityOnItem:(id)a3 wantRoutingKey:(BOOL)a4 completion:(id)a5;
-- (void)_performAfterGettingPublicSharingKeyForRecord:(id)a3 completion:(id)a4;
-- (void)_performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey:(BOOL)a3 completion:(id)a4;
-- (void)_updateDBAndSyncDownIfNeededWithShare:(id)a3 recordsToLearnCKInfo:(id)a4;
+- (void)_performAfterCopyingPublicSharingKeyWithRecordID:(id)d completion:(id)completion;
+- (void)_performAfterFetchingiWorkRoutingTokenIfNecessary:(id)necessary completion:(id)completion;
+- (void)_performAfterFetchingiWorkSharingIdentityOnItem:(id)item wantRoutingKey:(BOOL)key completion:(id)completion;
+- (void)_performAfterGettingPublicSharingKeyForRecord:(id)record completion:(id)completion;
+- (void)_performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey:(BOOL)key completion:(id)completion;
+- (void)_updateDBAndSyncDownIfNeededWithShare:(id)share recordsToLearnCKInfo:(id)info;
 - (void)main;
 @end
 
 @implementation BRCSharingModifyShareOperation
 
-- (BRCSharingModifyShareOperation)initWithName:(id)a3 zone:(id)a4 share:(id)a5 sessionContext:(id)a6
+- (BRCSharingModifyShareOperation)initWithName:(id)name zone:(id)zone share:(id)share sessionContext:(id)context
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v11 metadataSyncContext];
+  zoneCopy = zone;
+  shareCopy = share;
+  contextCopy = context;
+  nameCopy = name;
+  metadataSyncContext = [zoneCopy metadataSyncContext];
   v25.receiver = self;
   v25.super_class = BRCSharingModifyShareOperation;
-  v16 = [(_BRCOperation *)&v25 initWithName:v14 syncContext:v15 sessionContext:v13];
+  v16 = [(_BRCOperation *)&v25 initWithName:nameCopy syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v16)
   {
-    v17 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v16 setGroup:v17];
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v16 setGroup:br_sharingMisc];
 
     [(_BRCOperation *)v16 setNonDiscretionary:1];
-    objc_storeStrong(&v16->_serverZone, a4);
-    objc_storeStrong(&v16->_share, a5);
-    v18 = [v12 recordID];
-    v19 = [v18 brc_shareItemID];
+    objc_storeStrong(&v16->_serverZone, zone);
+    objc_storeStrong(&v16->_share, share);
+    recordID = [shareCopy recordID];
+    brc_shareItemID = [recordID brc_shareItemID];
     itemID = v16->_itemID;
-    v16->_itemID = v19;
+    v16->_itemID = brc_shareItemID;
 
     if (!v16->_itemID)
     {
       [BRCSharingModifyShareOperation initWithName:zone:share:sessionContext:];
     }
 
-    v21 = [(_BRCOperation *)v16 callbackQueue];
-    v22 = [v11 session];
-    v23 = [v22 clientTruthWorkloop];
-    dispatch_set_target_queue(v21, v23);
+    callbackQueue = [(_BRCOperation *)v16 callbackQueue];
+    session = [zoneCopy session];
+    clientTruthWorkloop = [session clientTruthWorkloop];
+    dispatch_set_target_queue(callbackQueue, clientTruthWorkloop);
   }
 
   return v16;
@@ -58,23 +58,23 @@
   return v2;
 }
 
-- (void)_updateDBAndSyncDownIfNeededWithShare:(id)a3 recordsToLearnCKInfo:(id)a4
+- (void)_updateDBAndSyncDownIfNeededWithShare:(id)share recordsToLearnCKInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCServerZone *)self->_serverZone clientZone];
-  v9 = [v8 db];
+  shareCopy = share;
+  infoCopy = info;
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  v9 = [clientZone db];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __93__BRCSharingModifyShareOperation__updateDBAndSyncDownIfNeededWithShare_recordsToLearnCKInfo___block_invoke;
   v17 = &unk_278505640;
-  v18 = v8;
-  v19 = v7;
-  v20 = self;
-  v21 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = v8;
+  v18 = clientZone;
+  v19 = infoCopy;
+  selfCopy = self;
+  v21 = shareCopy;
+  v10 = shareCopy;
+  v11 = infoCopy;
+  v12 = clientZone;
   [v9 groupInBatch:&v14];
 
   v13 = [v12 db];
@@ -218,13 +218,13 @@ LABEL_27:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAfterCopyingPublicSharingKeyWithRecordID:(id)a3 completion:(id)a4
+- (void)_performAfterCopyingPublicSharingKeyWithRecordID:(id)d completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v19[0] = v6;
+  v19[0] = dCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v10 = [v8 initWithRecordIDs:v9];
 
@@ -233,14 +233,14 @@ LABEL_27:
   v15[1] = 3221225472;
   v15[2] = __94__BRCSharingModifyShareOperation__performAfterCopyingPublicSharingKeyWithRecordID_completion___block_invoke;
   v15[3] = &unk_278503E90;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
   [v10 setFetchRecordsCompletionBlock:v15];
-  v13 = [(_BRCOperation *)self callbackQueue];
-  [v10 setCallbackQueue:v13];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  [v10 setCallbackQueue:callbackQueue];
 
   [(_BRCOperation *)self addSubOperation:v10];
   v14 = *MEMORY[0x277D85DE8];
@@ -282,11 +282,11 @@ void __94__BRCSharingModifyShareOperation__performAfterCopyingPublicSharingKeyWi
   (*(a1[6] + 16))();
 }
 
-- (void)_performAfterGettingPublicSharingKeyForRecord:(id)a3 completion:(id)a4
+- (void)_performAfterGettingPublicSharingKeyForRecord:(id)record completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -294,15 +294,15 @@ void __94__BRCSharingModifyShareOperation__performAfterCopyingPublicSharingKeyWi
     [BRCSharingModifyShareOperation _performAfterGettingPublicSharingKeyForRecord:completion:];
   }
 
-  if (!v6)
+  if (!recordCopy)
   {
     [BRCSharingModifyShareOperation _performAfterGettingPublicSharingKeyForRecord:completion:];
   }
 
-  v10 = [v6 recordID];
-  [v6 setWantsPublicSharingKey:1];
+  recordID = [recordCopy recordID];
+  [recordCopy setWantsPublicSharingKey:1];
   v11 = objc_alloc(MEMORY[0x277CBC4A0]);
-  v21[0] = v6;
+  v21[0] = recordCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v13 = [v11 initWithRecordsToSave:v12 recordIDsToDelete:0];
 
@@ -312,14 +312,14 @@ void __94__BRCSharingModifyShareOperation__performAfterCopyingPublicSharingKeyWi
   v18[1] = 3221225472;
   v18[2] = __91__BRCSharingModifyShareOperation__performAfterGettingPublicSharingKeyForRecord_completion___block_invoke;
   v18[3] = &unk_2785067F8;
-  v19 = v10;
-  v20 = v7;
+  v19 = recordID;
+  v20 = completionCopy;
   v18[4] = self;
-  v14 = v10;
-  v15 = v7;
+  v14 = recordID;
+  v15 = completionCopy;
   [v13 setModifyRecordsCompletionBlock:v18];
-  v16 = [(_BRCOperation *)self callbackQueue];
-  [v13 setCallbackQueue:v16];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  [v13 setCallbackQueue:callbackQueue];
 
   [(_BRCOperation *)self addSubOperation:v13];
   v17 = *MEMORY[0x277D85DE8];
@@ -436,14 +436,14 @@ void __91__BRCSharingModifyShareOperation__performAfterGettingPublicSharingKeyFo
   [v2 learnCKInfosFromSavedRecords:*(a1 + 40) isOutOfBandModifyRecords:1];
 }
 
-- (BOOL)_shouldFetchSharingIdentity:(BOOL)a3
+- (BOOL)_shouldFetchSharingIdentity:(BOOL)identity
 {
-  v3 = a3;
-  v5 = [(CKShare *)self->_share publicSharingIdentity];
-  v6 = v5 != 0;
-  if (v5)
+  identityCopy = identity;
+  publicSharingIdentity = [(CKShare *)self->_share publicSharingIdentity];
+  v6 = publicSharingIdentity != 0;
+  if (publicSharingIdentity)
   {
-    v7 = !v3;
+    v7 = !identityCopy;
   }
 
   else
@@ -453,38 +453,38 @@ void __91__BRCSharingModifyShareOperation__performAfterGettingPublicSharingKeyFo
 
   if (!v7)
   {
-    v8 = [(CKShare *)self->_share routingKey];
-    v6 = v8 != 0;
+    routingKey = [(CKShare *)self->_share routingKey];
+    v6 = routingKey != 0;
   }
 
   return !v6;
 }
 
-- (void)_performAfterFetchingiWorkRoutingTokenIfNecessary:(id)a3 completion:(id)a4
+- (void)_performAfterFetchingiWorkRoutingTokenIfNecessary:(id)necessary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKShare *)self->_share routingKey];
+  necessaryCopy = necessary;
+  completionCopy = completion;
+  routingKey = [(CKShare *)self->_share routingKey];
 
-  if (v8)
+  if (routingKey)
   {
     goto LABEL_4;
   }
 
-  v9 = [v6 routingKey];
+  routingKey2 = [necessaryCopy routingKey];
 
-  if (v9)
+  if (routingKey2)
   {
-    v10 = [v6 routingKey];
-    [(CKShare *)self->_share setRoutingKey:v10];
+    routingKey3 = [necessaryCopy routingKey];
+    [(CKShare *)self->_share setRoutingKey:routingKey3];
 
 LABEL_4:
-    v7[2](v7, self, 0);
+    completionCopy[2](completionCopy, self, 0);
     goto LABEL_5;
   }
 
-  v11 = [(CKShare *)self->_share publicSharingIdentity];
-  if (v11 && (v12 = v11, [(CKShare *)self->_share baseToken], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+  publicSharingIdentity = [(CKShare *)self->_share publicSharingIdentity];
+  if (publicSharingIdentity && (v12 = publicSharingIdentity, [(CKShare *)self->_share baseToken], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -493,19 +493,19 @@ LABEL_4:
       [BRCSharingModifyShareOperation _performAfterFetchingiWorkRoutingTokenIfNecessary:completion:];
     }
 
-    v16 = [(CKShare *)self->_share publicSharingIdentity];
-    [v6 setMutableEncryptedPublicSharingKeyData:v16];
+    publicSharingIdentity2 = [(CKShare *)self->_share publicSharingIdentity];
+    [necessaryCopy setMutableEncryptedPublicSharingKeyData:publicSharingIdentity2];
 
-    v17 = [(CKShare *)self->_share baseToken];
-    [v6 setBaseToken:v17];
+    baseToken = [(CKShare *)self->_share baseToken];
+    [necessaryCopy setBaseToken:baseToken];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __95__BRCSharingModifyShareOperation__performAfterFetchingiWorkRoutingTokenIfNecessary_completion___block_invoke;
     v21[3] = &unk_278506820;
     v21[4] = self;
-    v22 = v7;
-    [(BRCSharingModifyShareOperation *)self _performAfterGettingPublicSharingKeyForRecord:v6 completion:v21];
+    v22 = completionCopy;
+    [(BRCSharingModifyShareOperation *)self _performAfterGettingPublicSharingKeyForRecord:necessaryCopy completion:v21];
   }
 
   else
@@ -518,7 +518,7 @@ LABEL_4:
     }
 
     v20 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:@"unreachable: no public sharing identity. avoiding breaking iwork shares"];
-    (v7)[2](v7, self, v20);
+    (completionCopy)[2](completionCopy, self, v20);
   }
 
 LABEL_5:
@@ -553,27 +553,27 @@ void __95__BRCSharingModifyShareOperation__performAfterFetchingiWorkRoutingToken
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_performAfterFetchingiWorkSharingIdentityOnItem:(id)a3 wantRoutingKey:(BOOL)a4 completion:(id)a5
+- (void)_performAfterFetchingiWorkSharingIdentityOnItem:(id)item wantRoutingKey:(BOOL)key completion:(id)completion
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CKShare *)self->_share baseToken];
-  if (!v10)
+  itemCopy = item;
+  completionCopy = completion;
+  baseToken = [(CKShare *)self->_share baseToken];
+  if (!baseToken)
   {
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(CKShare *)self->_share publicSharingIdentity];
-  if (v12)
+  v11 = baseToken;
+  publicSharingIdentity = [(CKShare *)self->_share publicSharingIdentity];
+  if (publicSharingIdentity)
   {
-    v13 = v12;
-    if (a4)
+    v13 = publicSharingIdentity;
+    if (key)
     {
-      v14 = [(CKShare *)self->_share routingKey];
+      routingKey = [(CKShare *)self->_share routingKey];
 
-      if (!v14)
+      if (!routingKey)
       {
         goto LABEL_7;
       }
@@ -583,7 +583,7 @@ void __95__BRCSharingModifyShareOperation__performAfterFetchingiWorkRoutingToken
     {
     }
 
-    v9[2](v9, self, 0);
+    completionCopy[2](completionCopy, self, 0);
     goto LABEL_12;
   }
 
@@ -595,9 +595,9 @@ LABEL_7:
     [BRCSharingModifyShareOperation _performAfterFetchingiWorkSharingIdentityOnItem:wantRoutingKey:completion:];
   }
 
-  v17 = [v8 documentRecordID];
+  documentRecordID = [itemCopy documentRecordID];
   v18 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v33[0] = v17;
+  v33[0] = documentRecordID;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
   v20 = [v18 initWithRecordIDs:v19];
 
@@ -611,15 +611,15 @@ LABEL_7:
   v26[1] = 3221225472;
   v26[2] = __108__BRCSharingModifyShareOperation__performAfterFetchingiWorkSharingIdentityOnItem_wantRoutingKey_completion___block_invoke;
   v26[3] = &unk_278506848;
-  v27 = v17;
-  v28 = v8;
-  v29 = self;
-  v31 = a4;
-  v30 = v9;
-  v23 = v17;
+  v27 = documentRecordID;
+  v28 = itemCopy;
+  selfCopy = self;
+  keyCopy = key;
+  v30 = completionCopy;
+  v23 = documentRecordID;
   [v20 setFetchRecordsCompletionBlock:v26];
-  v24 = [(_BRCOperation *)self callbackQueue];
-  [v20 setCallbackQueue:v24];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
+  [v20 setCallbackQueue:callbackQueue];
 
   [(_BRCOperation *)self addSubOperation:v20];
 LABEL_12:
@@ -807,19 +807,19 @@ LABEL_40:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey:(BOOL)a3 completion:(id)a4
+- (void)_performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey:(BOOL)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(_BRCOperation *)self callbackQueue];
+  completionCopy = completion;
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__BRCSharingModifyShareOperation__performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey_completion___block_invoke;
   block[3] = &unk_278506870;
-  v11 = a3;
+  keyCopy = key;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(callbackQueue, block);
 }
 
 void __112__BRCSharingModifyShareOperation__performAfterPreparingSharingIdentityIfNecessaryWhenWantRoutingKey_completion___block_invoke(uint64_t a1)

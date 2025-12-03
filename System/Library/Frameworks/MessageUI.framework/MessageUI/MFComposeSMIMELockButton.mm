@@ -1,23 +1,23 @@
 @interface MFComposeSMIMELockButton
-- (MFComposeSMIMELockButton)initWithFrame:(CGRect)a3;
+- (MFComposeSMIMELockButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)touchInsets;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_closeLock;
 - (void)_openLock;
-- (void)_updateButtonAppearanceAnimated:(BOOL)a3;
-- (void)setCanEncrypt:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setWantsEncryption:(BOOL)a3;
-- (void)setWantsEncryption:(BOOL)a3 canEncrypt:(BOOL)a4 animated:(BOOL)a5;
+- (void)_updateButtonAppearanceAnimated:(BOOL)animated;
+- (void)setCanEncrypt:(BOOL)encrypt;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setWantsEncryption:(BOOL)encryption;
+- (void)setWantsEncryption:(BOOL)encryption canEncrypt:(BOOL)encrypt animated:(BOOL)animated;
 @end
 
 @implementation MFComposeSMIMELockButton
 
-- (MFComposeSMIMELockButton)initWithFrame:(CGRect)a3
+- (MFComposeSMIMELockButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = MFComposeSMIMELockButton;
-  v3 = [(MFComposeSMIMELockButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, 21.0, 22.0];
+  v3 = [(MFComposeSMIMELockButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, 21.0, 22.0];
   v4 = v3;
   if (v3)
   {
@@ -49,17 +49,17 @@
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (enabled)
   {
-    v7 = 0;
+    lightGrayColor = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC888] lightGrayColor];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -67,17 +67,17 @@
   aBlock[2] = __48__MFComposeSMIMELockButton_setEnabled_animated___block_invoke;
   aBlock[3] = &unk_1E806C520;
   aBlock[4] = self;
-  v8 = v7;
+  v8 = lightGrayColor;
   v16 = v8;
   v9 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__MFComposeSMIMELockButton_setEnabled_animated___block_invoke_2;
   v13[3] = &unk_1E806CDD0;
-  v14 = a3;
+  enabledCopy = enabled;
   v13[4] = self;
   v10 = _Block_copy(v13);
-  if (v4)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x1E69DD250];
     UIAnimationDragCoefficient();
@@ -104,34 +104,34 @@ unsigned __int8 *__48__MFComposeSMIMELockButton_setEnabled_animated___block_invo
   return result;
 }
 
-- (void)setWantsEncryption:(BOOL)a3
+- (void)setWantsEncryption:(BOOL)encryption
 {
-  if (self->_wantsEncryption != a3)
+  if (self->_wantsEncryption != encryption)
   {
-    self->_wantsEncryption = a3;
+    self->_wantsEncryption = encryption;
     [(MFComposeSMIMELockButton *)self _updateButtonAppearance];
   }
 }
 
-- (void)setCanEncrypt:(BOOL)a3
+- (void)setCanEncrypt:(BOOL)encrypt
 {
-  if (self->_canEncrypt != a3)
+  if (self->_canEncrypt != encrypt)
   {
-    self->_canEncrypt = a3;
+    self->_canEncrypt = encrypt;
     [(MFComposeSMIMELockButton *)self _updateButtonAppearance];
   }
 }
 
-- (void)setWantsEncryption:(BOOL)a3 canEncrypt:(BOOL)a4 animated:(BOOL)a5
+- (void)setWantsEncryption:(BOOL)encryption canEncrypt:(BOOL)encrypt animated:(BOOL)animated
 {
-  self->_wantsEncryption = a3;
-  self->_canEncrypt = a4;
-  [(MFComposeSMIMELockButton *)self _updateButtonAppearanceAnimated:a5];
+  self->_wantsEncryption = encryption;
+  self->_canEncrypt = encrypt;
+  [(MFComposeSMIMELockButton *)self _updateButtonAppearanceAnimated:animated];
 }
 
-- (void)_updateButtonAppearanceAnimated:(BOOL)a3
+- (void)_updateButtonAppearanceAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__MFComposeSMIMELockButton__updateButtonAppearanceAnimated___block_invoke;
@@ -139,7 +139,7 @@ unsigned __int8 *__48__MFComposeSMIMELockButton_setEnabled_animated___block_invo
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     v6 = MEMORY[0x1E69DD250];
     UIAnimationDragCoefficient();
@@ -197,25 +197,25 @@ void __60__MFComposeSMIMELockButton__updateButtonAppearanceAnimated___block_invo
   [(UIImageView *)lockedImageView setAlpha:1.0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(MFComposeSMIMELockButton *)self alpha];
   if (v8 > 0.0 && ([(MFComposeSMIMELockButton *)self bounds], v28 = v9, v29 = v10, v30 = v11, v13 = v12, [(MFComposeSMIMELockButton *)self touchInsets], v15 = v14, [(MFComposeSMIMELockButton *)self touchInsets], v17 = v16, [(MFComposeSMIMELockButton *)self touchInsets], v19 = v18, [(MFComposeSMIMELockButton *)self touchInsets], v21 = v20, [(MFComposeSMIMELockButton *)self touchInsets], v23 = v22, [(MFComposeSMIMELockButton *)self touchInsets], v34.origin.x = v28 + v15, v34.origin.y = v13 + v17, v34.size.height = v30 + v24 - v23, v34.size.width = v29 + v21 - v19, v33.x = x, v33.y = y, CGRectContainsPoint(v34, v33)))
   {
-    v25 = self;
+    selfCopy = self;
   }
 
   else
   {
     v31.receiver = self;
     v31.super_class = MFComposeSMIMELockButton;
-    v25 = [(MFComposeSMIMELockButton *)&v31 hitTest:v7 withEvent:x, y];
+    selfCopy = [(MFComposeSMIMELockButton *)&v31 hitTest:eventCopy withEvent:x, y];
   }
 
-  v26 = v25;
+  v26 = selfCopy;
 
   return v26;
 }

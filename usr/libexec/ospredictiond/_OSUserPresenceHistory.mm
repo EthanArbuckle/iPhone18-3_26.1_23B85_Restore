@@ -1,12 +1,12 @@
 @interface _OSUserPresenceHistory
 + (id)sharedInstance;
-- (double)hoursUntilNextActivityAtDate:(id)a3;
-- (id)getHistoryStrata:(int64_t)a3 endsBefore:(id)a4;
-- (id)getPastSliceTimewiseNearDate:(id)a3 whichStrata:(int64_t)a4 earlyBoundaryInSeconds:(double)a5 laterBoundaryInSeconds:(double)a6 clipIntervals:(BOOL)a7;
-- (id)historicalSecondsSincePresentAtDate:(id)a3 whichStrata:(int64_t)a4;
+- (double)hoursUntilNextActivityAtDate:(id)date;
+- (id)getHistoryStrata:(int64_t)strata endsBefore:(id)before;
+- (id)getPastSliceTimewiseNearDate:(id)date whichStrata:(int64_t)strata earlyBoundaryInSeconds:(double)seconds laterBoundaryInSeconds:(double)inSeconds clipIntervals:(BOOL)intervals;
+- (id)historicalSecondsSincePresentAtDate:(id)date whichStrata:(int64_t)strata;
 - (void)clearUserPresenceHistory;
 - (void)loadHistoryFromUnderlyingDataSource;
-- (void)updateStratasWithQueryDate:(id)a3;
+- (void)updateStratasWithQueryDate:(id)date;
 @end
 
 @implementation _OSUserPresenceHistory
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10003E770;
   block[3] = &unk_100094818;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000B6AD8 != -1)
   {
     dispatch_once(&qword_1000B6AD8, block);
@@ -32,16 +32,16 @@
 {
   v3 = os_transaction_create();
   v4 = BiomeLibrary();
-  v5 = [v4 Activity];
-  v36 = [v5 Level];
+  activity = [v4 Activity];
+  level = [activity Level];
 
   v6 = [NSDate dateWithTimeIntervalSinceNow:-691200000.0];
-  v7 = [(_OSIntervalHistory *)self latestTimeZoneChange];
+  latestTimeZoneChange = [(_OSIntervalHistory *)self latestTimeZoneChange];
 
-  if (v7)
+  if (latestTimeZoneChange)
   {
-    v8 = [(_OSIntervalHistory *)self latestTimeZoneChange];
-    v9 = [v6 laterDate:v8];
+    latestTimeZoneChange2 = [(_OSIntervalHistory *)self latestTimeZoneChange];
+    v9 = [v6 laterDate:latestTimeZoneChange2];
 
     v6 = v9;
   }
@@ -51,13 +51,13 @@
   v12 = [v10 initWithStartDate:v6 endDate:v11 maxEvents:8000 lastN:0 reversed:0];
 
   v31 = v12;
-  v35 = [v36 publisherWithOptions:v12];
+  v35 = [level publisherWithOptions:v12];
   v13 = BiomeLibrary();
-  v14 = [v13 Device];
-  v15 = [v14 TimeZone];
-  v34 = [v15 publisher];
+  device = [v13 Device];
+  timeZone = [device TimeZone];
+  publisher = [timeZone publisher];
 
-  v33 = [v34 orderedMergeWithOther:v35 comparator:&stru_1000955C0];
+  v33 = [publisher orderedMergeWithOther:v35 comparator:&stru_1000955C0];
   v32 = [v33 filterWithIsIncluded:&stru_1000955E0];
   v16 = [[BPSTuple alloc] initWithFirst:0 second:0];
   v17 = [v32 scanWithInitial:v16 nextPartialResult:&stru_100095600];
@@ -99,8 +99,8 @@
   v21 = [(_OSIntervalHistory *)self log];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-    v23 = [v22 count];
+    allIntervalsSortByStartAsc = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+    v23 = [allIntervalsSortByStartAsc count];
     *buf = 134217984;
     v49 = v23;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Constructed %lu active interval(s) from Biome", buf, 0xCu);
@@ -112,17 +112,17 @@
   v25 = [(_OSIntervalHistory *)self log];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [(_OSIntervalHistory *)self lastRefreshDate];
-    v27 = [(_OSIntervalHistory *)self oldestIntervalInHistory];
-    v28 = [v27 startDate];
-    v29 = [(_OSIntervalHistory *)self newestIntervalInHistory];
-    v30 = [v29 endDate];
+    lastRefreshDate = [(_OSIntervalHistory *)self lastRefreshDate];
+    oldestIntervalInHistory = [(_OSIntervalHistory *)self oldestIntervalInHistory];
+    startDate = [oldestIntervalInHistory startDate];
+    newestIntervalInHistory = [(_OSIntervalHistory *)self newestIntervalInHistory];
+    endDate = [newestIntervalInHistory endDate];
     *buf = 138412802;
-    v49 = v26;
+    v49 = lastRefreshDate;
     v50 = 2112;
-    v51 = v28;
+    v51 = startDate;
     v52 = 2112;
-    v53 = v30;
+    v53 = endDate;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Reloaded from Biome at %@ with activities ranging from %@ to %@", buf, 0x20u);
   }
 
@@ -130,27 +130,27 @@
   _Block_object_dispose(&v41, 8);
 }
 
-- (void)updateStratasWithQueryDate:(id)a3
+- (void)updateStratasWithQueryDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_OSIntervalHistory *)self lastQueryDate];
-  if (v5)
+  dateCopy = date;
+  lastQueryDate = [(_OSIntervalHistory *)self lastQueryDate];
+  if (lastQueryDate)
   {
-    v6 = v5;
-    v7 = [(_OSIntervalHistory *)self lastQueryDate];
-    if (v7 == v4)
+    v6 = lastQueryDate;
+    lastQueryDate2 = [(_OSIntervalHistory *)self lastQueryDate];
+    if (lastQueryDate2 == dateCopy)
     {
-      v15 = [(_OSUserPresenceHistory *)self intervalsSameDayOfWeekAsQuery];
-      if (v15)
+      intervalsSameDayOfWeekAsQuery = [(_OSUserPresenceHistory *)self intervalsSameDayOfWeekAsQuery];
+      if (intervalsSameDayOfWeekAsQuery)
       {
-        v16 = v15;
-        v17 = [(_OSUserPresenceHistory *)self intervalsSameWorkOrOffAsQuery];
-        if (v17)
+        v16 = intervalsSameDayOfWeekAsQuery;
+        intervalsSameWorkOrOffAsQuery = [(_OSUserPresenceHistory *)self intervalsSameWorkOrOffAsQuery];
+        if (intervalsSameWorkOrOffAsQuery)
         {
-          v18 = v17;
-          v19 = [(_OSUserPresenceHistory *)self intervalsRecentFromQuery];
+          v18 = intervalsSameWorkOrOffAsQuery;
+          intervalsRecentFromQuery = [(_OSUserPresenceHistory *)self intervalsRecentFromQuery];
 
-          if (v19)
+          if (intervalsRecentFromQuery)
           {
             goto LABEL_7;
           }
@@ -162,43 +162,43 @@
   }
 
 LABEL_4:
-  v8 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-  v9 = [OSIntelligenceUtilities filterEvents:v8 startOnSameWeekdayAs:v4];
+  allIntervalsSortByStartAsc = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+  v9 = [OSIntelligenceUtilities filterEvents:allIntervalsSortByStartAsc startOnSameWeekdayAs:dateCopy];
   [(_OSUserPresenceHistory *)self setIntervalsSameDayOfWeekAsQuery:v9];
 
-  v10 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-  v11 = [OSIntelligenceUtilities filterEvents:v10 withSameWorkOrOffStatusAs:v4];
+  allIntervalsSortByStartAsc2 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+  v11 = [OSIntelligenceUtilities filterEvents:allIntervalsSortByStartAsc2 withSameWorkOrOffStatusAs:dateCopy];
   [(_OSUserPresenceHistory *)self setIntervalsSameWorkOrOffAsQuery:v11];
 
-  v12 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-  v13 = [OSIntelligenceUtilities filterEvents:v12 isRecentForDate:v4 goingDaysBack:3 useEndDate:1];
+  allIntervalsSortByStartAsc3 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+  v13 = [OSIntelligenceUtilities filterEvents:allIntervalsSortByStartAsc3 isRecentForDate:dateCopy goingDaysBack:3 useEndDate:1];
   [(_OSUserPresenceHistory *)self setIntervalsRecentFromQuery:v13];
 
   v14 = [(_OSIntervalHistory *)self log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    sub_10005AE28(v4, self, v14);
+    sub_10005AE28(dateCopy, self, v14);
   }
 
-  [(_OSIntervalHistory *)self setLastQueryDate:v4];
+  [(_OSIntervalHistory *)self setLastQueryDate:dateCopy];
 LABEL_7:
 }
 
-- (double)hoursUntilNextActivityAtDate:(id)a3
+- (double)hoursUntilNextActivityAtDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
-  v7 = v4;
+  allIntervalsSortByStartAsc = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+  v6 = [allIntervalsSortByStartAsc countByEnumeratingWithState:&v32 objects:v36 count:16];
+  v7 = dateCopy;
   if (v6)
   {
     v8 = v6;
     v9 = *v33;
-    v7 = v4;
+    v7 = dateCopy;
     while (2)
     {
       v10 = 0;
@@ -207,18 +207,18 @@ LABEL_7:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allIntervalsSortByStartAsc);
         }
 
         v12 = *(*(&v32 + 1) + 8 * v10);
-        v13 = [v12 startDate];
-        [v13 timeIntervalSinceDate:v4];
+        startDate = [v12 startDate];
+        [startDate timeIntervalSinceDate:dateCopy];
         v15 = v14;
 
         if (v15 > 0.0)
         {
-          v16 = [v12 startDate];
-          [v16 timeIntervalSinceDate:v11];
+          startDate2 = [v12 startDate];
+          [startDate2 timeIntervalSinceDate:v11];
           v18 = v17;
 
           if (v18 != 0.0)
@@ -228,15 +228,15 @@ LABEL_7:
           }
         }
 
-        v19 = [v12 endDate];
-        v7 = [v11 laterDate:v19];
+        endDate = [v12 endDate];
+        v7 = [v11 laterDate:endDate];
 
         v10 = v10 + 1;
         v11 = v7;
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v8 = [allIntervalsSortByStartAsc countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v8)
       {
         continue;
@@ -248,25 +248,25 @@ LABEL_7:
 
 LABEL_12:
 
-  [v7 timeIntervalSinceDate:v4];
+  [v7 timeIntervalSinceDate:dateCopy];
   v20 = 0.0;
   if (v21 <= 1800.0)
   {
-    v22 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+    allIntervalsSortByStartAsc2 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_10003FA44;
     v30[3] = &unk_100095648;
     v31 = v7;
-    v23 = [v22 indexOfObjectPassingTest:v30];
+    v23 = [allIntervalsSortByStartAsc2 indexOfObjectPassingTest:v30];
 
     v20 = 24.0;
     if (v23 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v24 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
-      v25 = [v24 objectAtIndexedSubscript:v23];
-      v26 = [v25 startDate];
-      [v26 timeIntervalSinceDate:v4];
+      allIntervalsSortByStartAsc3 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+      v25 = [allIntervalsSortByStartAsc3 objectAtIndexedSubscript:v23];
+      startDate3 = [v25 startDate];
+      [startDate3 timeIntervalSinceDate:dateCopy];
       v28 = v27 / 3600.0;
 
       v20 = fmin(v28, 24.0);
@@ -276,19 +276,19 @@ LABEL_12:
   return v20;
 }
 
-- (id)historicalSecondsSincePresentAtDate:(id)a3 whichStrata:(int64_t)a4
+- (id)historicalSecondsSincePresentAtDate:(id)date whichStrata:(int64_t)strata
 {
-  v6 = a3;
-  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:v6];
+  dateCopy = date;
+  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:dateCopy];
   v7 = objc_opt_new();
-  v8 = [(_OSIntervalHistory *)self oldestIntervalInHistory];
-  v9 = [v8 startDate];
-  v10 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:v6 andDate:v9];
+  oldestIntervalInHistory = [(_OSIntervalHistory *)self oldestIntervalInHistory];
+  startDate = [oldestIntervalInHistory startDate];
+  v10 = [OSIntelligenceUtilities datewiseDistanceBetweenDate:dateCopy andDate:startDate];
 
-  v23 = v6;
-  v11 = [OSIntelligenceUtilities getDailyAnchorsForDate:v6 whichStrata:a4 withNrDaysHistory:v10];
-  v12 = [(_OSIntervalHistory *)self newestIntervalInHistory];
-  v13 = [v12 endDate];
+  v23 = dateCopy;
+  v11 = [OSIntelligenceUtilities getDailyAnchorsForDate:dateCopy whichStrata:strata withNrDaysHistory:v10];
+  newestIntervalInHistory = [(_OSIntervalHistory *)self newestIntervalInHistory];
+  endDate = [newestIntervalInHistory endDate];
 
   v26 = 0u;
   v27 = 0u;
@@ -310,7 +310,7 @@ LABEL_12:
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [v19 laterDate:v13];
+        v20 = [v19 laterDate:endDate];
 
         if (v20 != v19)
         {
@@ -329,19 +329,19 @@ LABEL_12:
   return v7;
 }
 
-- (id)getHistoryStrata:(int64_t)a3 endsBefore:(id)a4
+- (id)getHistoryStrata:(int64_t)strata endsBefore:(id)before
 {
-  v6 = a4;
-  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:v6];
-  if (a3 > 1)
+  beforeCopy = before;
+  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:beforeCopy];
+  if (strata > 1)
   {
-    if (a3 == 2)
+    if (strata == 2)
     {
       v7 = 64;
       goto LABEL_13;
     }
 
-    if (a3 == 3)
+    if (strata == 3)
     {
       v7 = 72;
       goto LABEL_13;
@@ -350,20 +350,20 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!strata)
   {
 LABEL_11:
-    v9 = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
+    allIntervalsSortByStartAsc = [(_OSIntervalHistory *)self allIntervalsSortByStartAsc];
     goto LABEL_14;
   }
 
-  if (a3 != 1)
+  if (strata != 1)
   {
 LABEL_8:
     v8 = [(_OSIntervalHistory *)self log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10005AF68(a3, v8);
+      sub_10005AF68(strata, v8);
     }
 
     goto LABEL_11;
@@ -371,27 +371,27 @@ LABEL_8:
 
   v7 = 56;
 LABEL_13:
-  v9 = *(&self->super.super.isa + v7);
+  allIntervalsSortByStartAsc = *(&self->super.super.isa + v7);
 LABEL_14:
-  v10 = v9;
-  v11 = [NSPredicate predicateWithFormat:@"endDate <= %@", v6];
-  v12 = [v10 filteredArrayUsingPredicate:v11];
+  v10 = allIntervalsSortByStartAsc;
+  beforeCopy = [NSPredicate predicateWithFormat:@"endDate <= %@", beforeCopy];
+  v12 = [v10 filteredArrayUsingPredicate:beforeCopy];
 
   return v12;
 }
 
-- (id)getPastSliceTimewiseNearDate:(id)a3 whichStrata:(int64_t)a4 earlyBoundaryInSeconds:(double)a5 laterBoundaryInSeconds:(double)a6 clipIntervals:(BOOL)a7
+- (id)getPastSliceTimewiseNearDate:(id)date whichStrata:(int64_t)strata earlyBoundaryInSeconds:(double)seconds laterBoundaryInSeconds:(double)inSeconds clipIntervals:(BOOL)intervals
 {
-  v7 = a7;
-  v12 = a3;
-  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:v12];
+  intervalsCopy = intervals;
+  dateCopy = date;
+  [(_OSIntervalHistory *)self refreshCacheIfStaleWithQueryDate:dateCopy];
   v13 = objc_opt_new();
-  if (a5 >= a6)
+  if (seconds >= inSeconds)
   {
     v29 = [(_OSIntervalHistory *)self log];
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      sub_10005AFE0(v29, a5, a6);
+      sub_10005AFE0(v29, seconds, inSeconds);
     }
 
     v18 = v13;
@@ -400,28 +400,28 @@ LABEL_14:
 
   else
   {
-    v14 = [(_OSUserPresenceHistory *)self getHistoryStrata:a4 endsBefore:v12];
+    v14 = [(_OSUserPresenceHistory *)self getHistoryStrata:strata endsBefore:dateCopy];
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
     v46[2] = sub_10004022C;
     v46[3] = &unk_100095670;
-    v15 = v12;
+    v15 = dateCopy;
     v47 = v15;
-    v48 = a5;
-    v49 = a6;
+    secondsCopy = seconds;
+    inSecondsCopy = inSeconds;
     v16 = v14;
     v17 = [NSPredicate predicateWithBlock:v46];
     v18 = [v14 filteredArrayUsingPredicate:v17];
 
     if ([v18 count])
     {
-      v39 = self;
-      if (v7)
+      selfCopy = self;
+      if (intervalsCopy)
       {
-        v34 = a4;
+        strataCopy = strata;
         v35 = v17;
         v37 = v16;
-        v38 = v12;
+        v38 = dateCopy;
         v40 = objc_opt_new();
         v42 = 0u;
         v43 = 0u;
@@ -444,11 +444,11 @@ LABEL_14:
               }
 
               v23 = *(*(&v42 + 1) + 8 * i);
-              v24 = [OSIntelligenceUtilities clipInterval:v23 withTimewiseSliceDefineBy:v15 leftBoundary:a5 rightBoundary:a6, v34];
+              strataCopy = [OSIntelligenceUtilities clipInterval:v23 withTimewiseSliceDefineBy:v15 leftBoundary:seconds rightBoundary:inSeconds, strataCopy];
               v25 = [_OSUserPresenceInterval alloc];
-              v26 = [v24 startDate];
-              v27 = [v24 endDate];
-              v28 = -[_OSUserPresenceInterval initWithStartDate:andEndDate:andPresenceStatus:](v25, "initWithStartDate:andEndDate:andPresenceStatus:", v26, v27, [v23 isPresentWithDisplay]);
+              startDate = [strataCopy startDate];
+              endDate = [strataCopy endDate];
+              v28 = -[_OSUserPresenceInterval initWithStartDate:andEndDate:andPresenceStatus:](v25, "initWithStartDate:andEndDate:andPresenceStatus:", startDate, endDate, [v23 isPresentWithDisplay]);
 
               if ([(_OSIInterval *)v28 isValidInterval]&& [(_OSUserPresenceInterval *)v28 hasReasonableDuration])
               {
@@ -465,26 +465,26 @@ LABEL_14:
         if ([v40 count])
         {
           v16 = v37;
-          v12 = v38;
+          dateCopy = v38;
           v17 = v35;
           v18 = v36;
         }
 
         else
         {
-          v32 = [(_OSIntervalHistory *)v39 log];
-          v12 = v38;
+          v32 = [(_OSIntervalHistory *)selfCopy log];
+          dateCopy = v38;
           v17 = v35;
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
             *buf = 138413058;
             v52 = v15;
             v53 = 2048;
-            v54 = v34;
+            strataCopy2 = strataCopy;
             v55 = 2048;
-            v56 = a5;
+            secondsCopy3 = seconds;
             v57 = 2048;
-            v58 = a6;
+            inSecondsCopy3 = inSeconds;
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "WARNING: no interval left after clipping at %@ for strata=%lu and bounds=(%.2f, %.2f)", buf, 0x2Au);
           }
 
@@ -508,11 +508,11 @@ LABEL_14:
         *buf = 138413058;
         v52 = v15;
         v53 = 2048;
-        v54 = a4;
+        strataCopy2 = strata;
         v55 = 2048;
-        v56 = a5;
+        secondsCopy3 = seconds;
         v57 = 2048;
-        v58 = a6;
+        inSecondsCopy3 = inSeconds;
         _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "WARNING: vertical slice is empty for at %@ strata=%lu and bounds=(%.2f, %.2f)", buf, 0x2Au);
       }
 

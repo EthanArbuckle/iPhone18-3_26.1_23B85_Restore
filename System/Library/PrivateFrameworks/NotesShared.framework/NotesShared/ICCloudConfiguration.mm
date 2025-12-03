@@ -1,13 +1,13 @@
 @interface ICCloudConfiguration
-+ (BOOL)isConfigurationValid:(id)a3;
++ (BOOL)isConfigurationValid:(id)valid;
 + (ICCloudConfiguration)sharedConfiguration;
 + (NSArray)availableConfigurationURLs;
 + (NSURL)defaultConfigurationURL;
 + (id)cachedConfigurationURL;
 + (id)cloudConfigurationQueue;
-+ (id)overridableValueForKey:(id)a3 inConfigurationDictionary:(id)a4 userDefaults:(id)a5;
-+ (void)loadSharedConfigurationWithQoSClass:(unsigned int)a3 completionHandler:(id)a4;
-+ (void)setDefaultConfigurationURL:(id)a3;
++ (id)overridableValueForKey:(id)key inConfigurationDictionary:(id)dictionary userDefaults:(id)defaults;
++ (void)loadSharedConfigurationWithQoSClass:(unsigned int)class completionHandler:(id)handler;
++ (void)setDefaultConfigurationURL:(id)l;
 - (BOOL)audioTranscriptPostProcessingEnabled;
 - (BOOL)fastSyncEnabled;
 - (BOOL)fastSyncPaperKitEnableEphemeralRecords;
@@ -16,8 +16,8 @@
 - (BOOL)requestUserNotificationAuthorizationAtLaunch;
 - (BOOL)shouldPerformTopHitSearch;
 - (BOOL)shouldSyncWhenEnteringForeground;
-- (ICCloudConfiguration)initWithConfigurationDictionary:(id)a3 userDefaults:(id)a4 usesLocalConfigurationFile:(BOOL)a5;
-- (ICCloudConfiguration)initWithUserDefaults:(id)a3 usesLocalConfigurationFile:(BOOL)a4;
+- (ICCloudConfiguration)initWithConfigurationDictionary:(id)dictionary userDefaults:(id)defaults usesLocalConfigurationFile:(BOOL)file;
+- (ICCloudConfiguration)initWithUserDefaults:(id)defaults usesLocalConfigurationFile:(BOOL)file;
 - (ICCloudThrottlingPolicy)throttlingPolicy;
 - (NSDictionary)configurationDictionary;
 - (NSNumber)maximumAttachmentSizeMB;
@@ -27,7 +27,7 @@
 - (double)keychainFetchErrorTimeout;
 - (double)keychainMaximumSyncInterval;
 - (double)keychainMinimumSyncInterval;
-- (id)overridableValueForKey:(id)a3 inConfigurationDictionary:(id)a4;
+- (id)overridableValueForKey:(id)key inConfigurationDictionary:(id)dictionary;
 - (unint64_t)appStoreRatingCohortPercentage;
 - (unint64_t)appStoreRatingLaunchCount;
 - (unint64_t)appStoreRatingLaunchDayPeriod;
@@ -46,13 +46,13 @@
 - (unint64_t)serverSideUpdateTaskMaxFailureCount;
 - (unint64_t)unsupportedNoteDeviceCheckIntervalSeconds;
 - (void)dealloc;
-- (void)downloadConfigurationFromRemoteURL:(id)a3 completionHandler:(id)a4;
-- (void)downloadRemoteConfiguration:(id)a3;
-- (void)loadConfigurationFromURL:(id)a3;
-- (void)loadConfigurationFromURL:(id)a3 completionHandler:(id)a4;
+- (void)downloadConfigurationFromRemoteURL:(id)l completionHandler:(id)handler;
+- (void)downloadRemoteConfiguration:(id)configuration;
+- (void)loadConfigurationFromURL:(id)l;
+- (void)loadConfigurationFromURL:(id)l completionHandler:(id)handler;
 - (void)loadLocalConfigurationFile;
-- (void)setConfigurationFromDictionary:(id)a3;
-- (void)setDownloadTimer:(uint64_t)a1;
+- (void)setConfigurationFromDictionary:(id)dictionary;
+- (void)setDownloadTimer:(uint64_t)timer;
 @end
 
 @implementation ICCloudConfiguration
@@ -94,8 +94,8 @@ void __59__ICCloudConfiguration_SharedInstance__sharedConfiguration__block_invok
 
 - (void)loadLocalConfigurationFile
 {
-  v3 = [objc_opt_class() cachedConfigurationURL];
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v3];
+  cachedConfigurationURL = [objc_opt_class() cachedConfigurationURL];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:cachedConfigurationURL];
   if (!v4)
   {
     goto LABEL_8;
@@ -127,15 +127,15 @@ LABEL_8:
       [ICCloudConfiguration loadLocalConfigurationFile];
     }
 
-    v8 = [objc_opt_class() defaultConfigurationURL];
-    [(ICCloudConfiguration *)self loadConfigurationFromURL:v8];
+    defaultConfigurationURL = [objc_opt_class() defaultConfigurationURL];
+    [(ICCloudConfiguration *)self loadConfigurationFromURL:defaultConfigurationURL];
   }
 }
 
 + (id)cachedConfigurationURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
 
   v4 = [v3 URLByAppendingPathComponent:@"RemoteConfiguration" isDirectory:0];
   v5 = [v4 URLByAppendingPathExtension:@"plist"];
@@ -181,11 +181,11 @@ LABEL_8:
   return fastSyncEnabled;
 }
 
-+ (id)overridableValueForKey:(id)a3 inConfigurationDictionary:(id)a4 userDefaults:(id)a5
++ (id)overridableValueForKey:(id)key inConfigurationDictionary:(id)dictionary userDefaults:(id)defaults
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKey:v7];
+  keyCopy = key;
+  dictionaryCopy = dictionary;
+  v9 = [defaults objectForKey:keyCopy];
   v10 = v9;
   if (v9)
   {
@@ -194,7 +194,7 @@ LABEL_8:
 
   else
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   }
 
   v12 = v11;
@@ -452,16 +452,16 @@ LABEL_8:
   return audioTranscriptPostProcessingEnabled;
 }
 
-- (ICCloudConfiguration)initWithConfigurationDictionary:(id)a3 userDefaults:(id)a4 usesLocalConfigurationFile:(BOOL)a5
+- (ICCloudConfiguration)initWithConfigurationDictionary:(id)dictionary userDefaults:(id)defaults usesLocalConfigurationFile:(BOOL)file
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  defaultsCopy = defaults;
   v15.receiver = self;
   v15.super_class = ICCloudConfiguration;
   v10 = [(ICCloudConfiguration *)&v15 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dictionaryCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -476,21 +476,21 @@ LABEL_8:
     objc_storeStrong(&v10->_configurationDictionary, v13);
 
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_userDefaults, a4);
-    v10->_usesLocalConfigurationFile = a5;
+    objc_storeStrong(&v10->_userDefaults, defaults);
+    v10->_usesLocalConfigurationFile = file;
   }
 
   return v10;
 }
 
-- (ICCloudConfiguration)initWithUserDefaults:(id)a3 usesLocalConfigurationFile:(BOOL)a4
+- (ICCloudConfiguration)initWithUserDefaults:(id)defaults usesLocalConfigurationFile:(BOOL)file
 {
-  v4 = a4;
-  v5 = [(ICCloudConfiguration *)self initWithConfigurationDictionary:MEMORY[0x277CBEC10] userDefaults:a3 usesLocalConfigurationFile:a4];
+  fileCopy = file;
+  v5 = [(ICCloudConfiguration *)self initWithConfigurationDictionary:MEMORY[0x277CBEC10] userDefaults:defaults usesLocalConfigurationFile:file];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (fileCopy)
     {
       [(ICCloudConfiguration *)v5 loadLocalConfigurationFile];
     }
@@ -514,10 +514,10 @@ void __72__ICCloudConfiguration_initWithUserDefaults_usesLocalConfigurationFile_
   [(ICCloudConfiguration *)*(a1 + 32) setDownloadTimer:v2];
 }
 
-+ (BOOL)isConfigurationValid:(id)a3
++ (BOOL)isConfigurationValid:(id)valid
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"configurationVersion"];
+  v3 = [valid objectForKeyedSubscript:@"configurationVersion"];
   v4 = v3;
   if (!v3)
   {
@@ -537,7 +537,7 @@ void __72__ICCloudConfiguration_initWithUserDefaults_usesLocalConfigurationFile_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = [v4 unsignedIntegerValue];
+      unsignedIntegerValue = [v4 unsignedIntegerValue];
       v10 = 2048;
       v11 = 11;
       _os_log_impl(&dword_214D51000, v6, OS_LOG_TYPE_DEFAULT, "Configuration version (%ld) is not the expected version (%ld)", &v8, 0x16u);
@@ -557,38 +557,38 @@ LABEL_10:
 + (NSURL)defaultConfigurationURL
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  v4 = [v3 stringForKey:@"CloudConfigurationPath"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  v4 = [mEMORY[0x277D36180] stringForKey:@"CloudConfigurationPath"];
 
   if (!v4)
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
-  if (([v5 checkResourceIsReachableAndReturnError:0] & 1) == 0)
+  firstObject = [MEMORY[0x277CBEBC0] fileURLWithPath:v4];
+  if (([firstObject checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    v6 = [a1 availableConfigurationURLs];
+    availableConfigurationURLs = [self availableConfigurationURLs];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __47__ICCloudConfiguration_defaultConfigurationURL__block_invoke;
     v22[3] = &unk_278196620;
     v23 = v4;
-    v7 = [v6 ic_objectPassingTest:v22];
+    v7 = [availableConfigurationURLs ic_objectPassingTest:v22];
 
-    [a1 setDefaultConfigurationURL:v7];
-    v5 = v7;
+    [self setDefaultConfigurationURL:v7];
+    firstObject = v7;
   }
 
-  if (!v5)
+  if (!firstObject)
   {
 LABEL_5:
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [a1 availableConfigurationURLs];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    availableConfigurationURLs2 = [self availableConfigurationURLs];
+    v9 = [availableConfigurationURLs2 countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -599,12 +599,12 @@ LABEL_7:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(availableConfigurationURLs2);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
-        v14 = [v13 lastPathComponent];
-        v15 = [v14 containsString:@"Normal"];
+        lastPathComponent = [v13 lastPathComponent];
+        v15 = [lastPathComponent containsString:@"Normal"];
 
         if (v15)
         {
@@ -613,7 +613,7 @@ LABEL_7:
 
         if (v10 == ++v12)
         {
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+          v10 = [availableConfigurationURLs2 countByEnumeratingWithState:&v18 objects:v24 count:16];
           if (v10)
           {
             goto LABEL_7;
@@ -623,9 +623,9 @@ LABEL_7:
         }
       }
 
-      v5 = v13;
+      firstObject = v13;
 
-      if (v5)
+      if (firstObject)
       {
         goto LABEL_16;
       }
@@ -636,14 +636,14 @@ LABEL_7:
 LABEL_13:
     }
 
-    v16 = [a1 availableConfigurationURLs];
-    v5 = [v16 firstObject];
+    availableConfigurationURLs3 = [self availableConfigurationURLs];
+    firstObject = [availableConfigurationURLs3 firstObject];
 
 LABEL_16:
-    [a1 setDefaultConfigurationURL:v5];
+    [self setDefaultConfigurationURL:firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 uint64_t __47__ICCloudConfiguration_defaultConfigurationURL__block_invoke(uint64_t a1, void *a2)
@@ -655,16 +655,16 @@ uint64_t __47__ICCloudConfiguration_defaultConfigurationURL__block_invoke(uint64
   return v5;
 }
 
-+ (void)setDefaultConfigurationURL:(id)a3
++ (void)setDefaultConfigurationURL:(id)l
 {
   v3 = MEMORY[0x277D36180];
-  v4 = a3;
-  v5 = [v3 sharedAppGroupDefaults];
-  v6 = [v4 path];
+  lCopy = l;
+  sharedAppGroupDefaults = [v3 sharedAppGroupDefaults];
+  path = [lCopy path];
 
-  [v5 setObject:v6 forKey:@"CloudConfigurationPath"];
-  v7 = [MEMORY[0x277D36180] sharedAppGroupDefaults];
-  [v7 synchronize];
+  [sharedAppGroupDefaults setObject:path forKey:@"CloudConfigurationPath"];
+  mEMORY[0x277D36180] = [MEMORY[0x277D36180] sharedAppGroupDefaults];
+  [mEMORY[0x277D36180] synchronize];
 }
 
 + (NSArray)availableConfigurationURLs
@@ -678,17 +678,17 @@ uint64_t __47__ICCloudConfiguration_defaultConfigurationURL__block_invoke(uint64
   else
   {
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v4 = [v3 resourceURL];
-    v5 = [v4 URLByAppendingPathComponent:@"CloudConfigurations" isDirectory:1];
+    resourceURL = [v3 resourceURL];
+    v5 = [resourceURL URLByAppendingPathComponent:@"CloudConfigurations" isDirectory:1];
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
-    v7 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:5 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v7 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:0 options:5 errorHandler:0];
 
     if (v7)
     {
-      v8 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       v9 = availableConfigurationURLs_configurationURLs;
-      availableConfigurationURLs_configurationURLs = v8;
+      availableConfigurationURLs_configurationURLs = allObjects;
     }
 
     else
@@ -708,7 +708,7 @@ uint64_t __47__ICCloudConfiguration_defaultConfigurationURL__block_invoke(uint64
   return v2;
 }
 
-- (void)downloadRemoteConfiguration:(id)a3
+- (void)downloadRemoteConfiguration:(id)configuration
 {
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"https://configuration.apple.com/configurations/internetservices/cloudkit/notes-1.9.plist"];
   [(ICCloudConfiguration *)self downloadConfigurationFromRemoteURL:v4 completionHandler:&__block_literal_global_170];
@@ -726,22 +726,22 @@ void __52__ICCloudConfiguration_downloadRemoteConfiguration___block_invoke(uint6
   }
 }
 
-- (void)downloadConfigurationFromRemoteURL:(id)a3 completionHandler:(id)a4
+- (void)downloadConfigurationFromRemoteURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CCAD38];
-  v8 = a3;
-  v9 = [v7 defaultSessionConfiguration];
-  [v9 setRequestCachePolicy:1];
-  v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v9];
+  lCopy = l;
+  defaultSessionConfiguration = [v7 defaultSessionConfiguration];
+  [defaultSessionConfiguration setRequestCachePolicy:1];
+  v10 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __77__ICCloudConfiguration_downloadConfigurationFromRemoteURL_completionHandler___block_invoke;
   v16 = &unk_278196668;
-  v17 = self;
-  v18 = v6;
-  v11 = v6;
-  v12 = [v10 dataTaskWithURL:v8 completionHandler:&v13];
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = [v10 dataTaskWithURL:lCopy completionHandler:&v13];
 
   [v12 resume];
 }
@@ -841,16 +841,16 @@ void __77__ICCloudConfiguration_downloadConfigurationFromRemoteURL_completionHan
   }
 }
 
-- (void)loadConfigurationFromURL:(id)a3
+- (void)loadConfigurationFromURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICCloudConfiguration loadConfigurationFromURL:];
   }
 
-  v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v4];
+  v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:lCopy];
   if (v6)
   {
     [(ICCloudConfiguration *)self setConfigurationFromDictionary:v6];
@@ -866,20 +866,20 @@ void __77__ICCloudConfiguration_downloadConfigurationFromRemoteURL_completionHan
   }
 }
 
-- (void)loadConfigurationFromURL:(id)a3 completionHandler:(id)a4
+- (void)loadConfigurationFromURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = +[ICCloudConfiguration cloudConfigurationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__ICCloudConfiguration_loadConfigurationFromURL_completionHandler___block_invoke;
   block[3] = &unk_278196690;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = lCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(v8, block);
 }
 
@@ -912,11 +912,11 @@ LABEL_6:
   }
 }
 
-- (void)setConfigurationFromDictionary:(id)a3
+- (void)setConfigurationFromDictionary:(id)dictionary
 {
   v212 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy copy];
   v6 = v5;
   if (v5)
   {
@@ -965,13 +965,13 @@ LABEL_6:
 
   v18 = [v8 objectForKeyedSubscript:@"throttlingPolicy"];
   v196 = v10;
-  v197 = self;
+  selfCopy = self;
   v195 = v18;
   if (v18)
   {
     v19 = v18;
     v193 = v8;
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v202 = 0u;
     v203 = 0u;
     v204 = 0u;
@@ -993,7 +993,7 @@ LABEL_6:
 
           v25 = *(*(&v202 + 1) + 8 * i);
           v26 = [v25 objectForKeyedSubscript:@"count"];
-          v27 = [v26 unsignedIntegerValue];
+          unsignedIntegerValue = [v26 unsignedIntegerValue];
 
           v28 = [v25 objectForKeyedSubscript:@"intervalSeconds"];
           [v28 doubleValue];
@@ -1003,8 +1003,8 @@ LABEL_6:
           [v31 doubleValue];
           v33 = v32;
 
-          v34 = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:v27 maximumBatchIntervalFactor:v30 numberOfBatches:v33];
-          [(ICCloudThrottlingLevel *)v20 addObject:v34];
+          v34 = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:unsignedIntegerValue maximumBatchIntervalFactor:v30 numberOfBatches:v33];
+          [(ICCloudThrottlingLevel *)array addObject:v34];
         }
 
         v22 = [obj countByEnumeratingWithState:&v202 objects:v211 count:16];
@@ -1013,10 +1013,10 @@ LABEL_6:
       while (v22);
     }
 
-    v35 = [[ICCloudThrottlingPolicy alloc] initWithThrottlingLevels:v20 resetInterval:v17];
-    self = v197;
-    throttlingPolicy = v197->_throttlingPolicy;
-    v197->_throttlingPolicy = v35;
+    v35 = [[ICCloudThrottlingPolicy alloc] initWithThrottlingLevels:array resetInterval:v17];
+    self = selfCopy;
+    throttlingPolicy = selfCopy->_throttlingPolicy;
+    selfCopy->_throttlingPolicy = v35;
     v8 = v193;
   }
 
@@ -1029,9 +1029,9 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v37, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no throttling levels", buf, 2u);
     }
 
-    v20 = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:0 maximumBatchIntervalFactor:60.0 numberOfBatches:5.0];
+    array = [[ICCloudThrottlingLevel alloc] initWithBatchInterval:0 maximumBatchIntervalFactor:60.0 numberOfBatches:5.0];
     v38 = [ICCloudThrottlingPolicy alloc];
-    v210 = v20;
+    v210 = array;
     throttlingPolicy = [MEMORY[0x277CBEA60] arrayWithObjects:&v210 count:1];
     v39 = [(ICCloudThrottlingPolicy *)v38 initWithThrottlingLevels:throttlingPolicy resetInterval:v17];
     v40 = self->_throttlingPolicy;
@@ -1045,7 +1045,7 @@ LABEL_6:
   obja = v42;
   if (v42)
   {
-    v43 = [v42 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v42 unsignedIntegerValue];
   }
 
   else
@@ -1057,10 +1057,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v44, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating cohort percentage", buf, 2u);
     }
 
-    v43 = 0;
+    unsignedIntegerValue2 = 0;
   }
 
-  self->_appStoreRatingCohortPercentage = v43;
+  self->_appStoreRatingCohortPercentage = unsignedIntegerValue2;
   objc_opt_class();
   v45 = [(ICCloudConfiguration *)self overridableValueForKey:@"appStoreRatingIdleTimeInterval" inConfigurationDictionary:v8];
   v46 = ICDynamicCast();
@@ -1091,7 +1091,7 @@ LABEL_6:
   v192 = v50;
   if (v50)
   {
-    v51 = [v50 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v50 unsignedIntegerValue];
   }
 
   else
@@ -1103,10 +1103,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v52, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating launch count", buf, 2u);
     }
 
-    v51 = 3;
+    unsignedIntegerValue3 = 3;
   }
 
-  self->_appStoreRatingLaunchCount = v51;
+  self->_appStoreRatingLaunchCount = unsignedIntegerValue3;
   objc_opt_class();
   v53 = [(ICCloudConfiguration *)self overridableValueForKey:@"appStoreRatingLaunchDayPeriod" inConfigurationDictionary:v8];
   v54 = ICDynamicCast();
@@ -1114,7 +1114,7 @@ LABEL_6:
   v191 = v54;
   if (v54)
   {
-    v55 = [v54 unsignedIntegerValue];
+    unsignedIntegerValue4 = [v54 unsignedIntegerValue];
   }
 
   else
@@ -1126,10 +1126,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v56, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating launch day period", buf, 2u);
     }
 
-    v55 = 30;
+    unsignedIntegerValue4 = 30;
   }
 
-  self->_appStoreRatingLaunchDayPeriod = v55;
+  self->_appStoreRatingLaunchDayPeriod = unsignedIntegerValue4;
   objc_opt_class();
   v57 = [(ICCloudConfiguration *)self overridableValueForKey:@"appStoreRatingOldestLaunchDayPeriod" inConfigurationDictionary:v8];
   v58 = ICDynamicCast();
@@ -1137,7 +1137,7 @@ LABEL_6:
   v190 = v58;
   if (v58)
   {
-    v59 = [v58 unsignedIntegerValue];
+    unsignedIntegerValue5 = [v58 unsignedIntegerValue];
   }
 
   else
@@ -1149,10 +1149,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v60, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating oldest launch day period", buf, 2u);
     }
 
-    v59 = 7;
+    unsignedIntegerValue5 = 7;
   }
 
-  self->_appStoreRatingOldestLaunchDayPeriod = v59;
+  self->_appStoreRatingOldestLaunchDayPeriod = unsignedIntegerValue5;
   objc_opt_class();
   v61 = [(ICCloudConfiguration *)self overridableValueForKey:@"appStoreRatingNoteCount" inConfigurationDictionary:v8];
   v62 = ICDynamicCast();
@@ -1160,7 +1160,7 @@ LABEL_6:
   v189 = v62;
   if (v62)
   {
-    v63 = [v62 unsignedIntegerValue];
+    unsignedIntegerValue6 = [v62 unsignedIntegerValue];
   }
 
   else
@@ -1172,10 +1172,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v64, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating note count", buf, 2u);
     }
 
-    v63 = 100;
+    unsignedIntegerValue6 = 100;
   }
 
-  self->_appStoreRatingNoteCount = v63;
+  self->_appStoreRatingNoteCount = unsignedIntegerValue6;
   objc_opt_class();
   v65 = [(ICCloudConfiguration *)self overridableValueForKey:@"appStoreRatingRequestDayPeriod" inConfigurationDictionary:v8];
   v66 = ICDynamicCast();
@@ -1183,7 +1183,7 @@ LABEL_6:
   v188 = v66;
   if (v66)
   {
-    v67 = [v66 unsignedIntegerValue];
+    unsignedIntegerValue7 = [v66 unsignedIntegerValue];
   }
 
   else
@@ -1195,10 +1195,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v68, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no app store rating request day period", buf, 2u);
     }
 
-    v67 = 120;
+    unsignedIntegerValue7 = 120;
   }
 
-  self->_appStoreRatingRequestDayPeriod = v67;
+  self->_appStoreRatingRequestDayPeriod = unsignedIntegerValue7;
   objc_opt_class();
   v69 = [(ICCloudConfiguration *)self overridableValueForKey:@"maxInlineAssetSizeBytes" inConfigurationDictionary:v8];
   v70 = ICDynamicCast();
@@ -1206,7 +1206,7 @@ LABEL_6:
   v187 = v70;
   if (v70)
   {
-    v71 = [v70 unsignedIntegerValue];
+    unsignedIntegerValue8 = [v70 unsignedIntegerValue];
   }
 
   else
@@ -1218,10 +1218,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v72, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no max inline asset size", buf, 2u);
     }
 
-    v71 = 0x80000;
+    unsignedIntegerValue8 = 0x80000;
   }
 
-  self->_maxInlineAssetSizeBytes = v71;
+  self->_maxInlineAssetSizeBytes = unsignedIntegerValue8;
   objc_opt_class();
   v73 = [(ICCloudConfiguration *)self overridableValueForKey:@"maxAttachmentsPerNote" inConfigurationDictionary:v8];
   v74 = ICDynamicCast();
@@ -1233,13 +1233,13 @@ LABEL_6:
   {
     if (v76)
     {
-      v77 = [v74 unsignedIntegerValue];
+      unsignedIntegerValue9 = [v74 unsignedIntegerValue];
       *buf = 134217984;
-      v209 = v77;
+      v209 = unsignedIntegerValue9;
       _os_log_impl(&dword_214D51000, v75, OS_LOG_TYPE_DEFAULT, "Maximum attachments per note %lu", buf, 0xCu);
     }
 
-    v78 = [v74 unsignedIntegerValue];
+    unsignedIntegerValue10 = [v74 unsignedIntegerValue];
   }
 
   else
@@ -1250,10 +1250,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v75, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no max attachments per note", buf, 2u);
     }
 
-    v78 = 100;
+    unsignedIntegerValue10 = 100;
   }
 
-  self->_maxAttachmentsPerNote = v78;
+  self->_maxAttachmentsPerNote = unsignedIntegerValue10;
   objc_opt_class();
   v79 = [(ICCloudConfiguration *)self overridableValueForKey:@"maxSubAttachmentsPerAttachment" inConfigurationDictionary:v8];
   v80 = ICDynamicCast();
@@ -1261,7 +1261,7 @@ LABEL_6:
   v185 = v80;
   if (v80)
   {
-    v81 = [v80 unsignedIntegerValue];
+    unsignedIntegerValue11 = [v80 unsignedIntegerValue];
   }
 
   else
@@ -1273,10 +1273,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v82, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no max sub attachments per attachment", buf, 2u);
     }
 
-    v81 = 24;
+    unsignedIntegerValue11 = 24;
   }
 
-  self->_maxSubAttachmentsPerAttachment = v81;
+  self->_maxSubAttachmentsPerAttachment = unsignedIntegerValue11;
   v83 = [v8 objectForKeyedSubscript:@"shouldSyncWhenEnteringForeground"];
   v84 = v83;
   if (v83)
@@ -1318,15 +1318,15 @@ LABEL_6:
   v182 = v92;
   if (v92)
   {
-    v93 = [v92 unsignedIntegerValue];
+    unsignedIntegerValue12 = [v92 unsignedIntegerValue];
   }
 
   else
   {
-    v93 = 50;
+    unsignedIntegerValue12 = 50;
   }
 
-  self->_resultsLimitPerSyncOperation = v93;
+  self->_resultsLimitPerSyncOperation = unsignedIntegerValue12;
   objc_opt_class();
   v94 = [(ICCloudConfiguration *)self overridableValueForKey:@"shouldPerformTopHit" inConfigurationDictionary:v8];
   v95 = ICDynamicCast();
@@ -1356,7 +1356,7 @@ LABEL_6:
   v180 = v98;
   if (v98)
   {
-    v99 = [v98 unsignedIntegerValue];
+    unsignedIntegerValue13 = [v98 unsignedIntegerValue];
   }
 
   else
@@ -1368,17 +1368,17 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v100, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no mentionNotificationMaxRetries value", buf, 2u);
     }
 
-    v99 = 10;
+    unsignedIntegerValue13 = 10;
   }
 
-  self->_mentionNotificationMaxRetries = v99;
+  self->_mentionNotificationMaxRetries = unsignedIntegerValue13;
   objc_opt_class();
   v101 = [(ICCloudConfiguration *)self overridableValueForKey:@"launchTaskMaxRetries" inConfigurationDictionary:v8];
   v102 = ICDynamicCast();
 
   if (v102)
   {
-    v103 = [v102 unsignedIntegerValue];
+    unsignedIntegerValue14 = [v102 unsignedIntegerValue];
   }
 
   else
@@ -1390,10 +1390,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v104, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no launchTaskMaxRetryNumber value", buf, 2u);
     }
 
-    v103 = 10;
+    unsignedIntegerValue14 = 10;
   }
 
-  self->_launchTaskMaxRetries = v103;
+  self->_launchTaskMaxRetries = unsignedIntegerValue14;
   objc_opt_class();
   v105 = [(ICCloudConfiguration *)self overridableValueForKey:@"serverSideUpdateTaskMaxFailureCount" inConfigurationDictionary:v8];
   v106 = ICDynamicCast();
@@ -1401,7 +1401,7 @@ LABEL_6:
   v178 = v106;
   if (v106)
   {
-    v107 = [v102 unsignedIntegerValue];
+    unsignedIntegerValue15 = [v102 unsignedIntegerValue];
   }
 
   else
@@ -1413,15 +1413,15 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v108, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no serverSideUpdateTaskMaxFailureCount value", buf, 2u);
     }
 
-    v107 = 10;
+    unsignedIntegerValue15 = 10;
   }
 
-  self->_serverSideUpdateTaskMaxFailureCount = v107;
+  self->_serverSideUpdateTaskMaxFailureCount = unsignedIntegerValue15;
   v109 = [v8 objectForKeyedSubscript:@"durationInSecondsForNextPasswordReask"];
   v177 = v109;
   if (v109)
   {
-    v110 = [v109 unsignedIntegerValue];
+    unsignedIntegerValue16 = [v109 unsignedIntegerValue];
   }
 
   else
@@ -1433,10 +1433,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v111, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no durationForNextPasswordReask value", buf, 2u);
     }
 
-    v110 = 1209600;
+    unsignedIntegerValue16 = 1209600;
   }
 
-  self->_durationForNextPasswordReask = v110;
+  self->_durationForNextPasswordReask = unsignedIntegerValue16;
   objc_opt_class();
   v112 = [(ICCloudConfiguration *)self overridableValueForKey:@"unsupportedNoteDeviceCheckIntervalSeconds" inConfigurationDictionary:v8];
   v113 = ICDynamicCast();
@@ -1444,7 +1444,7 @@ LABEL_6:
   v176 = v113;
   if (v113)
   {
-    v114 = [v113 unsignedIntegerValue];
+    unsignedIntegerValue17 = [v113 unsignedIntegerValue];
   }
 
   else
@@ -1456,10 +1456,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v115, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no unsupportedNoteDeviceCheckIntervalSecondsNumber value", buf, 2u);
     }
 
-    v114 = 86400;
+    unsignedIntegerValue17 = 86400;
   }
 
-  self->_unsupportedNoteDeviceCheckIntervalSeconds = v114;
+  self->_unsupportedNoteDeviceCheckIntervalSeconds = unsignedIntegerValue17;
   objc_opt_class();
   v116 = [(ICCloudConfiguration *)self overridableValueForKey:@"requestUserNotificationAuthorizationAtLaunch" inConfigurationDictionary:v8];
   v117 = ICDynamicCast();
@@ -1511,7 +1511,7 @@ LABEL_6:
   v173 = v123;
   if (v123)
   {
-    v124 = [v123 unsignedIntegerValue];
+    unsignedIntegerValue18 = [v123 unsignedIntegerValue];
   }
 
   else
@@ -1523,10 +1523,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v125, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no fastSyncMaximumMessageSizeBytes value", buf, 2u);
     }
 
-    v124 = 64000;
+    unsignedIntegerValue18 = 64000;
   }
 
-  self->_fastSyncMaximumMessageSizeBytes = v124;
+  self->_fastSyncMaximumMessageSizeBytes = unsignedIntegerValue18;
   objc_opt_class();
   v126 = [(ICCloudConfiguration *)self overridableValueForKey:@"fastSyncPaperKitEnablePCSEncryption" inConfigurationDictionary:v8];
   v127 = ICDynamicCast();
@@ -1578,7 +1578,7 @@ LABEL_6:
   v179 = v102;
   if (v133)
   {
-    v134 = [v133 unsignedIntegerValue];
+    unsignedIntegerValue19 = [v133 unsignedIntegerValue];
   }
 
   else
@@ -1590,10 +1590,10 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v135, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no fastSyncMaximumThumbnailMessageSizeBytes value", buf, 2u);
     }
 
-    v134 = 102400;
+    unsignedIntegerValue19 = 102400;
   }
 
-  self->_fastSyncMaximumThumbnailMessageSizeBytes = v134;
+  self->_fastSyncMaximumThumbnailMessageSizeBytes = unsignedIntegerValue19;
   v136 = [(ICCloudConfiguration *)self overridableValueForKey:@"fastSyncPresenceDebounceDuration" inConfigurationDictionary:v8];
   v170 = v133;
   if (objc_opt_respondsToSelector())
@@ -1711,7 +1711,7 @@ LABEL_6:
     }
 
     v153 = 3600.0;
-    self = v197;
+    self = selfCopy;
   }
 
   self->_keychainMaximumSyncInterval = v153;
@@ -1733,8 +1733,8 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v157, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no audioTranscriptPostProcessingEnabled value", buf, 2u);
     }
 
-    self = v197;
-    v197->_audioTranscriptPostProcessingEnabled = 1;
+    self = selfCopy;
+    selfCopy->_audioTranscriptPostProcessingEnabled = 1;
   }
 
   objc_opt_class();
@@ -1755,8 +1755,8 @@ LABEL_6:
       _os_log_impl(&dword_214D51000, v160, OS_LOG_TYPE_DEFAULT, "Trying to create a cloud configuration with no searchSubstringMatchingEnabled value", buf, 2u);
     }
 
-    self = v197;
-    v197->_searchSubstringMatchingEnabled = 1;
+    self = selfCopy;
+    selfCopy->_searchSubstringMatchingEnabled = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1786,18 +1786,18 @@ void __55__ICCloudConfiguration_setConfigurationFromDictionary___block_invoke(ui
   [v2 postNotification:*(a1 + 32)];
 }
 
-+ (void)loadSharedConfigurationWithQoSClass:(unsigned int)a3 completionHandler:(id)a4
++ (void)loadSharedConfigurationWithQoSClass:(unsigned int)class completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ICCloudConfiguration cloudConfigurationQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__ICCloudConfiguration_SharedInstance__loadSharedConfigurationWithQoSClass_completionHandler___block_invoke;
   v10[3] = &unk_2781966B8;
-  v11 = v6;
-  v12 = a1;
-  v8 = v6;
-  v9 = dispatch_block_create_with_qos_class(0, a3, 0, v10);
+  v11 = handlerCopy;
+  selfCopy = self;
+  v8 = handlerCopy;
+  v9 = dispatch_block_create_with_qos_class(0, class, 0, v10);
   dispatch_async(v7, v9);
 }
 
@@ -1813,10 +1813,10 @@ void __94__ICCloudConfiguration_SharedInstance__loadSharedConfigurationWithQoSCl
   }
 }
 
-- (id)overridableValueForKey:(id)a3 inConfigurationDictionary:(id)a4
+- (id)overridableValueForKey:(id)key inConfigurationDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   v8 = objc_opt_class();
   if (self)
   {
@@ -1828,29 +1828,29 @@ void __94__ICCloudConfiguration_SharedInstance__loadSharedConfigurationWithQoSCl
     userDefaults = 0;
   }
 
-  v10 = [v8 overridableValueForKey:v7 inConfigurationDictionary:v6 userDefaults:userDefaults];
+  v10 = [v8 overridableValueForKey:keyCopy inConfigurationDictionary:dictionaryCopy userDefaults:userDefaults];
 
   return v10;
 }
 
-- (void)setDownloadTimer:(uint64_t)a1
+- (void)setDownloadTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 232), a2);
+    objc_storeStrong((timer + 232), a2);
   }
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_downloadTimer;
   }
 
   [(ICCloudConfiguration *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = ICCloudConfiguration;
   [(ICCloudConfiguration *)&v3 dealloc];
 }

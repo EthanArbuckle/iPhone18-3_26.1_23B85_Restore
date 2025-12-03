@@ -1,22 +1,22 @@
 @interface NSString
-- (id)_mb_openatWithMode:(unsigned __int16)a3 setupDir:(id)a4 itemAccessor:(id)a5;
-- (void)mb_splitIntoBase:(int *)a3 andRelativePath:(const char *)a4;
+- (id)_mb_openatWithMode:(unsigned __int16)mode setupDir:(id)dir itemAccessor:(id)accessor;
+- (void)mb_splitIntoBase:(int *)base andRelativePath:(const char *)path;
 @end
 
 @implementation NSString
 
-- (void)mb_splitIntoBase:(int *)a3 andRelativePath:(const char *)a4
+- (void)mb_splitIntoBase:(int *)base andRelativePath:(const char *)path
 {
-  v6 = [(NSString *)self fileSystemRepresentation];
-  if (strlen(v6) < 0x400)
+  fileSystemRepresentation = [(NSString *)self fileSystemRepresentation];
+  if (strlen(fileSystemRepresentation) < 0x400)
   {
     goto LABEL_8;
   }
 
-  v7 = v6 + 1023;
+  v7 = fileSystemRepresentation + 1023;
   while (*v7 != 47)
   {
-    if (--v7 <= v6)
+    if (--v7 <= fileSystemRepresentation)
     {
       if (*v7 != 47)
       {
@@ -27,41 +27,41 @@
     }
   }
 
-  v8 = malloc_type_malloc(v7 - v6 + 1, 0x2F21F65DuLL);
-  memcpy(v8, v6, v7 - v6);
-  *(v8 + v7 - v6) = 0;
-  *a3 = open(v8, 0);
+  v8 = malloc_type_malloc(v7 - fileSystemRepresentation + 1, 0x2F21F65DuLL);
+  memcpy(v8, fileSystemRepresentation, v7 - fileSystemRepresentation);
+  *(v8 + v7 - fileSystemRepresentation) = 0;
+  *base = open(v8, 0);
   free(v8);
-  if (*a3 == -1)
+  if (*base == -1)
   {
 LABEL_8:
-    *a3 = -2;
+    *base = -2;
   }
 
   else
   {
-    v6 = v7 + 1;
+    fileSystemRepresentation = v7 + 1;
   }
 
-  *a4 = v6;
+  *path = fileSystemRepresentation;
 }
 
-- (id)_mb_openatWithMode:(unsigned __int16)a3 setupDir:(id)a4 itemAccessor:(id)a5
+- (id)_mb_openatWithMode:(unsigned __int16)mode setupDir:(id)dir itemAccessor:(id)accessor
 {
-  v8 = a4;
-  v9 = a5;
+  dirCopy = dir;
+  accessorCopy = accessor;
   v16 = -1;
   v15 = 0;
   [(NSString *)self mb_splitIntoBase:&v16 andRelativePath:&v15];
-  if (!v8 || (v8[2](v8, v16, v15), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!dirCopy || (dirCopy[2](dirCopy, v16, v15), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (!v9)
+    if (!accessorCopy)
     {
       v10 = 0;
       goto LABEL_15;
     }
 
-    if ((a3 & 0xF000) == 0x8000)
+    if ((mode & 0xF000) == 0x8000)
     {
       v11 = openat_dprotected_np(v16, v15, 256, 0, 1, 0);
       if ((v11 & 0x80000000) != 0)
@@ -75,7 +75,7 @@ LABEL_14:
 
     else
     {
-      if ((a3 & 0xF000) == 0x4000)
+      if ((mode & 0xF000) == 0x4000)
       {
         v13 = openat(v16, v15, 0x100000);
       }
@@ -93,7 +93,7 @@ LABEL_14:
       }
     }
 
-    v10 = v9[2](v9, v11);
+    v10 = accessorCopy[2](accessorCopy, v11);
     close(v11);
   }
 

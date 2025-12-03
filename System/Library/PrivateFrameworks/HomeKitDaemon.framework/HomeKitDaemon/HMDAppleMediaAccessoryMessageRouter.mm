@@ -1,10 +1,10 @@
 @interface HMDAppleMediaAccessoryMessageRouter
 + (id)logCategory;
-- (HMDAppleMediaAccessoryMessageRouter)initWithIdentifier:(id)a3 messageDispatcher:(id)a4;
+- (HMDAppleMediaAccessoryMessageRouter)initWithIdentifier:(id)identifier messageDispatcher:(id)dispatcher;
 - (HMDAppleMediaAccessoryMessageRouterDataSource)dataSource;
-- (id)dataSourceDeviceForMessage:(id)a3;
+- (id)dataSourceDeviceForMessage:(id)message;
 - (id)logIdentifier;
-- (void)relayMessage:(id)a3 device:(id)a4 allowRemoteRelayFromPrimary:(BOOL)a5;
+- (void)relayMessage:(id)message device:(id)device allowRemoteRelayFromPrimary:(BOOL)primary;
 @end
 
 @implementation HMDAppleMediaAccessoryMessageRouter
@@ -18,27 +18,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAppleMediaAccessoryMessageRouter *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDAppleMediaAccessoryMessageRouter *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)dataSourceDeviceForMessage:(id)a3
+- (id)dataSourceDeviceForMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleMediaAccessoryMessageRouter *)self dataSource];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  dataSource = [(HMDAppleMediaAccessoryMessageRouter *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 deviceForAppleMediaAccessoryMessageRouter:self message:v4];
+    v7 = [dataSource deviceForAppleMediaAccessoryMessageRouter:self message:messageCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -57,30 +57,30 @@
   return v7;
 }
 
-- (void)relayMessage:(id)a3 device:(id)a4 allowRemoteRelayFromPrimary:(BOOL)a5
+- (void)relayMessage:(id)message device:(id)device allowRemoteRelayFromPrimary:(BOOL)primary
 {
-  v5 = a5;
+  primaryCopy = primary;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDAppleMediaAccessoryMessageRouter *)self dataSource];
-  if (![v8 isRemote])
+  messageCopy = message;
+  deviceCopy = device;
+  dataSource = [(HMDAppleMediaAccessoryMessageRouter *)self dataSource];
+  if (![messageCopy isRemote])
   {
 LABEL_7:
-    v16 = [v8 copy];
+    v16 = [messageCopy copy];
     v17 = [v16 mutableCopy];
 
     [v17 setRemote:1];
     [v17 setSecureRemote:1];
     [v17 setRemoteRestriction:-1];
     v18 = [HMDRemoteDeviceMessageDestination alloc];
-    v19 = [v8 destination];
-    v20 = [v19 target];
-    v21 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:v20 device:v9];
+    destination = [messageCopy destination];
+    target = [destination target];
+    v21 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:target device:deviceCopy];
     [v17 setDestination:v21];
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
@@ -93,25 +93,25 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v22);
-    v26 = [(HMDAppleMediaAccessoryMessageRouter *)v23 messageDispatcher];
-    [v26 sendMessage:v17];
+    messageDispatcher = [(HMDAppleMediaAccessoryMessageRouter *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v17];
 
     goto LABEL_13;
   }
 
-  if (v5 && [v10 isCurrentDevicePrimaryResident])
+  if (primaryCopy && [dataSource isCurrentDevicePrimaryResident])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v8 identifier];
+      identifier = [messageCopy identifier];
       v32 = 138543618;
       v33 = v14;
       v34 = 2112;
-      v35 = v15;
+      v35 = identifier;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Allowing relay for message: %@", &v32, 0x16u);
     }
 
@@ -120,7 +120,7 @@ LABEL_7:
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy3 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -128,30 +128,30 @@ LABEL_7:
     v32 = 138543618;
     v33 = v30;
     v34 = 2112;
-    v35 = v8;
+    v35 = messageCopy;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to relay message due to being a remote message: %@", &v32, 0x16u);
   }
 
   objc_autoreleasePoolPop(v27);
   v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:12];
-  [v8 respondWithError:v17];
+  [messageCopy respondWithError:v17];
 LABEL_13:
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAppleMediaAccessoryMessageRouter)initWithIdentifier:(id)a3 messageDispatcher:(id)a4
+- (HMDAppleMediaAccessoryMessageRouter)initWithIdentifier:(id)identifier messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  dispatcherCopy = dispatcher;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -164,8 +164,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    objc_storeStrong(&v11->_messageDispatcher, a4);
+    objc_storeStrong(&v10->_identifier, identifier);
+    objc_storeStrong(&v11->_messageDispatcher, dispatcher);
   }
 
   return v11;

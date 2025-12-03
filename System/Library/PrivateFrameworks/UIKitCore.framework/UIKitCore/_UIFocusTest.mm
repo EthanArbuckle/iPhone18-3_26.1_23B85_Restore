@@ -1,28 +1,28 @@
 @interface _UIFocusTest
-+ (void)_setCurrentTest:(id)a3;
-- (_UIFocusTest)initWithIdentifier:(id)a3;
++ (void)_setCurrentTest:(id)test;
+- (_UIFocusTest)initWithIdentifier:(id)identifier;
 - (_UIFocusTestDelegate)delegate;
-- (void)_finish:(BOOL)a3;
+- (void)_finish:(BOOL)_finish;
 - (void)_start;
 - (void)reset;
-- (void)runWithCompletionHandler:(id)a3;
+- (void)runWithCompletionHandler:(id)handler;
 @end
 
 @implementation _UIFocusTest
 
-- (_UIFocusTest)initWithIdentifier:(id)a3
+- (_UIFocusTest)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  if ([v5 isEqualToString:&stru_1EFB14550])
+  if ([identifierCopy isEqualToString:&stru_1EFB14550])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:27 description:@"Focus tests require a non-empty identifier."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:27 description:@"Focus tests require a non-empty identifier."];
   }
 
   v12.receiver = self;
@@ -30,7 +30,7 @@
   v6 = [(_UIFocusTest *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
@@ -41,21 +41,21 @@
   return v6;
 }
 
-+ (void)_setCurrentTest:(id)a3
++ (void)_setCurrentTest:(id)test
 {
-  v4 = a3;
-  if (__currentTest != v4)
+  testCopy = test;
+  if (__currentTest != testCopy)
   {
-    v5 = v4;
+    v5 = testCopy;
     [__currentTest cancel];
-    objc_storeStrong(&__currentTest, a3);
-    v4 = v5;
+    objc_storeStrong(&__currentTest, test);
+    testCopy = v5;
   }
 }
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(_UIFocusTest *)self state])
   {
     [(_UIFocusTest *)self reset];
@@ -63,7 +63,7 @@
 
   [_UIFocusTest _setCurrentTest:self];
   [(_UIFocusTest *)self setState:1];
-  [(_UIFocusTest *)self setRunCompletionHandler:v4];
+  [(_UIFocusTest *)self setRunCompletionHandler:handlerCopy];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -77,22 +77,22 @@
 {
   if ([(_UIFocusTest *)self state]!= 1)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:82 description:@"Cannot start a test that has already been started."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTest.m" lineNumber:82 description:@"Cannot start a test that has already been started."];
   }
 
-  v7 = [(_UIFocusTest *)self delegate];
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(_UIFocusTest *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v7 _focusTestWillStart:self];
+    [delegate _focusTestWillStart:self];
   }
 
   [(_UIFocusTest *)self setState:2];
   if ([(_UIFocusTest *)self _isApplicationTest])
   {
     v4 = UIApp;
-    v5 = [(_UIFocusTest *)self identifier];
-    [v4 startedTest:v5];
+    identifier = [(_UIFocusTest *)self identifier];
+    [v4 startedTest:identifier];
   }
 
   [(_UIFocusTest *)self main];
@@ -105,20 +105,20 @@
   [(_UIFocusTest *)self setState:0];
 }
 
-- (void)_finish:(BOOL)a3
+- (void)_finish:(BOOL)_finish
 {
-  v3 = a3;
-  v10 = self;
-  if ([(_UIFocusTest *)v10 state]== 1 || [(_UIFocusTest *)v10 state]== 2)
+  _finishCopy = _finish;
+  selfCopy = self;
+  if ([(_UIFocusTest *)selfCopy state]== 1 || [(_UIFocusTest *)selfCopy state]== 2)
   {
-    if ([(_UIFocusTest *)v10 _isApplicationTest])
+    if ([(_UIFocusTest *)selfCopy _isApplicationTest])
     {
       v4 = UIApp;
-      v5 = [(_UIFocusTest *)v10 identifier];
-      [v4 finishedTest:v5];
+      identifier = [(_UIFocusTest *)selfCopy identifier];
+      [v4 finishedTest:identifier];
     }
 
-    if (v3)
+    if (_finishCopy)
     {
       v6 = 4;
     }
@@ -128,22 +128,22 @@
       v6 = 3;
     }
 
-    [(_UIFocusTest *)v10 setState:v6];
+    [(_UIFocusTest *)selfCopy setState:v6];
     [_UIFocusTest _setCurrentTest:0];
-    v7 = [(_UIFocusTest *)v10 delegate];
-    if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(_UIFocusTest *)selfCopy delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v7 _focusTestDidFinish:v10];
+      [delegate _focusTestDidFinish:selfCopy];
     }
 
-    v8 = [(_UIFocusTest *)v10 runCompletionHandler];
+    runCompletionHandler = [(_UIFocusTest *)selfCopy runCompletionHandler];
 
-    if (v8)
+    if (runCompletionHandler)
     {
-      v9 = [(_UIFocusTest *)v10 runCompletionHandler];
-      v9[2]();
+      runCompletionHandler2 = [(_UIFocusTest *)selfCopy runCompletionHandler];
+      runCompletionHandler2[2]();
 
-      [(_UIFocusTest *)v10 setRunCompletionHandler:0];
+      [(_UIFocusTest *)selfCopy setRunCompletionHandler:0];
     }
   }
 }

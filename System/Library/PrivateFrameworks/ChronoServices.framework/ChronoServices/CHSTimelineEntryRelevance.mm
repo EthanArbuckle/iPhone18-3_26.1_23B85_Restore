@@ -1,26 +1,26 @@
 @interface CHSTimelineEntryRelevance
-- (BOOL)isEqual:(id)a3;
-- (CHSTimelineEntryRelevance)initWithCoder:(id)a3;
-- (CHSTimelineEntryRelevance)initWithDate:(id)a3;
-- (CHSTimelineEntryRelevance)initWithDate:(id)a3 score:(double)a4 duration:(double)a5;
-- (CHSTimelineEntryRelevance)initWithTimelineEntryRelevance:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSTimelineEntryRelevance)initWithCoder:(id)coder;
+- (CHSTimelineEntryRelevance)initWithDate:(id)date;
+- (CHSTimelineEntryRelevance)initWithDate:(id)date score:(double)score duration:(double)duration;
+- (CHSTimelineEntryRelevance)initWithTimelineEntryRelevance:(id)relevance;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSTimelineEntryRelevance
 
-- (CHSTimelineEntryRelevance)initWithDate:(id)a3
+- (CHSTimelineEntryRelevance)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = CHSTimelineEntryRelevance;
   v6 = [(CHSTimelineEntryRelevance *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     v7->_hasRelevance = 0;
     v7->_score = 0.0;
     v7->_duration = 0.0;
@@ -29,37 +29,37 @@
   return v7;
 }
 
-- (CHSTimelineEntryRelevance)initWithDate:(id)a3 score:(double)a4 duration:(double)a5
+- (CHSTimelineEntryRelevance)initWithDate:(id)date score:(double)score duration:(double)duration
 {
-  v9 = a3;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = CHSTimelineEntryRelevance;
   v10 = [(CHSTimelineEntryRelevance *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_date, a3);
+    objc_storeStrong(&v10->_date, date);
     v11->_hasRelevance = 1;
-    v11->_score = a4;
-    v11->_duration = a5;
+    v11->_score = score;
+    v11->_duration = duration;
   }
 
   return v11;
 }
 
-- (CHSTimelineEntryRelevance)initWithTimelineEntryRelevance:(id)a3
+- (CHSTimelineEntryRelevance)initWithTimelineEntryRelevance:(id)relevance
 {
-  v4 = a3;
+  relevanceCopy = relevance;
   v8.receiver = self;
   v8.super_class = CHSTimelineEntryRelevance;
   v5 = [(CHSTimelineEntryRelevance *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_date, v4[2]);
-    v6->_hasRelevance = *(v4 + 8);
-    *&v6->_score = v4[3];
-    *&v6->_duration = v4[4];
+    objc_storeStrong(&v5->_date, relevanceCopy[2]);
+    v6->_hasRelevance = *(relevanceCopy + 8);
+    *&v6->_score = relevanceCopy[3];
+    *&v6->_duration = relevanceCopy[4];
   }
 
   return v6;
@@ -67,26 +67,26 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendObject:self->_date];
-  v5 = [v3 appendBool:self->_hasRelevance];
-  v6 = [v3 appendDouble:self->_score];
-  v7 = [v3 appendDouble:self->_duration];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendObject:self->_date];
+  v5 = [builder appendBool:self->_hasRelevance];
+  v6 = [builder appendDouble:self->_score];
+  v7 = [builder appendDouble:self->_duration];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   date = self->_date;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __37__CHSTimelineEntryRelevance_isEqual___block_invoke;
   v28[3] = &unk_1E7453078;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendObject:date counterpart:v28];
   hasRelevance = self->_hasRelevance;
@@ -132,40 +132,40 @@
     v7 = [v3 appendTimeInterval:@"duration" withName:0 decomposeUnits:self->_duration];
   }
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (CHSTimelineEntryRelevance)initWithCoder:(id)a3
+- (CHSTimelineEntryRelevance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CHSTimelineEntryRelevance;
   v5 = [(CHSTimelineEntryRelevance *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    v5->_hasRelevance = [v4 decodeBoolForKey:@"hasRelevance"];
-    [v4 decodeDoubleForKey:@"score"];
+    v5->_hasRelevance = [coderCopy decodeBoolForKey:@"hasRelevance"];
+    [coderCopy decodeDoubleForKey:@"score"];
     v5->_score = v8;
-    [v4 decodeDoubleForKey:@"duration"];
+    [coderCopy decodeDoubleForKey:@"duration"];
     v5->_duration = v9;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_date forKey:@"date"];
-  [v4 encodeBool:self->_hasRelevance forKey:@"hasRelevance"];
-  [v4 encodeDouble:@"score" forKey:self->_score];
-  [v4 encodeDouble:@"duration" forKey:self->_duration];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeBool:self->_hasRelevance forKey:@"hasRelevance"];
+  [coderCopy encodeDouble:@"score" forKey:self->_score];
+  [coderCopy encodeDouble:@"duration" forKey:self->_duration];
 }
 
 @end

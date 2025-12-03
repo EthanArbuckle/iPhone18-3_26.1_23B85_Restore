@@ -1,16 +1,16 @@
 @interface VNFaceQualityGenerator
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (basic_string_view<char,)modelVersionIDForConfigurationOptions:(id)a3;
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (basic_string_view<char,)modelVersionIDForConfigurationOptions:(id)options;
++ (id)keyForDetectorWithConfigurationOptions:(id)options;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceQualityGenerator
 
-+ (basic_string_view<char,)modelVersionIDForConfigurationOptions:(id)a3
++ (basic_string_view<char,)modelVersionIDForConfigurationOptions:(id)options
 {
   [VNError VNAssertClass:objc_opt_class() needsToOverrideMethod:a2];
   v3 = "";
@@ -20,10 +20,10 @@
   return result;
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:v5 error:a4];
+  optionsCopy = options;
+  v6 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v6)
   {
     goto LABEL_7;
@@ -35,10 +35,10 @@
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v6];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -52,14 +52,14 @@ LABEL_8:
   return v7;
 }
 
-+ (id)keyForDetectorWithConfigurationOptions:(id)a3
++ (id)keyForDetectorWithConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v10.receiver = a1;
+  optionsCopy = options;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VNFaceQualityGenerator;
-  v5 = objc_msgSendSuper2(&v10, sel_keyForDetectorWithConfigurationOptions_, v4);
+  v5 = objc_msgSendSuper2(&v10, sel_keyForDetectorWithConfigurationOptions_, optionsCopy);
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [a1 espressoModelFileNameForConfigurationOptions:v4];
+  v7 = [self espressoModelFileNameForConfigurationOptions:optionsCopy];
   v8 = [v6 stringWithFormat:@"%@:%@", v5, v7];
 
   return v8;
@@ -72,18 +72,18 @@ LABEL_8:
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = VNCloneFaceObservationFromOptions(v12, a8);
+  optionsCopy = options;
+  v13 = VNCloneFaceObservationFromOptions(optionsCopy, error);
   if (!v13)
   {
-    a8 = 0;
+    error = 0;
     goto LABEL_15;
   }
 
-  v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 specifyingRequestClass:objc_opt_class() error:a8];
+  v14 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
   if (!v14)
   {
     goto LABEL_13;
@@ -92,9 +92,9 @@ LABEL_8:
   ptr = self->_mFaceQualityPredictor.__ptr_;
   v17 = *(ptr + 14);
   v16 = *(ptr + 15);
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  CVPixelBufferImageType = ImageProcessing_getCVPixelBufferImageType(a4);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  CVPixelBufferImageType = ImageProcessing_getCVPixelBufferImageType(buffer);
   if (Width == v17 && Height == v16)
   {
     if (CVPixelBufferImageType == 4)
@@ -130,11 +130,11 @@ LABEL_8:
           {
             [v13 setFaceCaptureQuality:v14 originatingRequestSpecifier:?];
             v29[0] = v13;
-            a8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
+            error = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
             goto LABEL_14;
           }
 
-          if (!a8)
+          if (!error)
           {
             goto LABEL_14;
           }
@@ -149,7 +149,7 @@ LABEL_8:
       }
 
       v21 = 9307;
-      if (!a8)
+      if (!error)
       {
         goto LABEL_14;
       }
@@ -158,10 +158,10 @@ LABEL_11:
       v22 = VNErrorForCVMLStatus(v21);
       v23 = [VNError errorForInternalErrorWithLocalizedDescription:@"Could not run network" underlyingError:v22];
 LABEL_12:
-      *a8 = v23;
+      *error = v23;
 
 LABEL_13:
-      a8 = 0;
+      error = 0;
       goto LABEL_14;
     }
 
@@ -174,7 +174,7 @@ LABEL_13:
   }
 
   v21 = 9331;
-  if (a8)
+  if (error)
   {
     goto LABEL_11;
   }
@@ -183,23 +183,23 @@ LABEL_14:
 
 LABEL_15:
 
-  return a8;
+  return error;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v13)
   {
-    v14 = [VNValidationUtilities requiredFaceObservationInOptions:v12 error:a8];
+    v14 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
     if (!v14)
     {
       goto LABEL_18;
     }
 
     [v13 orientation];
-    if ((VNSetFaceOrientationInOptionsDictionary(v14, v12, a8) & 1) == 0)
+    if ((VNSetFaceOrientationInOptionsDictionary(v14, optionsCopy, error) & 1) == 0)
     {
       goto LABEL_18;
     }
@@ -212,16 +212,16 @@ LABEL_15:
     ptr = self->_mFaceQualityPredictor.__ptr_;
     v20 = *(ptr + 14);
     v21 = *(ptr + 15);
-    v22 = [v14 requestRevision];
+    requestRevision = [v14 requestRevision];
     v42 = 0.3825;
-    if ((v22 - 3737841664) <= 6)
+    if ((requestRevision - 3737841664) <= 6)
     {
-      if (((1 << v22) & 0x75) != 0)
+      if (((1 << requestRevision) & 0x75) != 0)
       {
         goto LABEL_10;
       }
 
-      if (v22 == 3737841667)
+      if (requestRevision == 3737841667)
       {
 LABEL_9:
         v42 = 0.0;
@@ -229,17 +229,17 @@ LABEL_9:
       }
     }
 
-    if ((v22 - 1) >= 3)
+    if ((requestRevision - 1) >= 3)
     {
-      if (!v22)
+      if (!requestRevision)
       {
         goto LABEL_9;
       }
 
-      if (a8)
+      if (error)
       {
         +[VNError errorForUnsupportedRevision:ofRequestClass:](VNError, "errorForUnsupportedRevision:ofRequestClass:", [v14 requestRevision], objc_opt_class());
-        *a8 = v34 = 0;
+        *error = v34 = 0;
 LABEL_19:
 
         goto LABEL_20;
@@ -251,10 +251,10 @@ LABEL_18:
     }
 
 LABEL_10:
-    v23 = [v13 width];
-    v24 = [v13 height];
-    v25.i64[0] = v23;
-    v25.i64[1] = v24;
+    width = [v13 width];
+    height = [v13 height];
+    v25.i64[0] = width;
+    v25.i64[1] = height;
     v26.f64[0] = v38;
     v26.f64[1] = v37;
     v27 = vcvtq_f64_u64(v25);
@@ -286,9 +286,9 @@ LABEL_10:
       }
     }
 
-    [v12 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
-    v35 = [v13 croppedBufferWithWidth:v20 height:v21 format:1111970369 cropRect:v12 options:a8 error:{v41, v33, v43, v32}];
-    *a7 = v35;
+    [optionsCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
+    v35 = [v13 croppedBufferWithWidth:v20 height:v21 format:1111970369 cropRect:optionsCopy options:error error:{v41, v33, v43, v32}];
+    *buffer = v35;
     v34 = v35 != 0;
     goto LABEL_19;
   }
@@ -299,16 +299,16 @@ LABEL_20:
   return v34;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v21.receiver = self;
   v21.super_class = VNFaceQualityGenerator;
-  v18 = a3;
+  sessionCopy = session;
   if ([VNEspressoModelFileBasedDetector completeInitializationForSession:sel_completeInitializationForSession_error_ error:?])
   {
-    v16 = [(VNDetector *)self configurationOptions];
-    v17 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    v6 = [objc_opt_class() modelVersionIDForConfigurationOptions:v16];
+    configurationOptions = [(VNDetector *)self configurationOptions];
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    v6 = [objc_opt_class() modelVersionIDForConfigurationOptions:configurationOptions];
     v8 = v7;
     if (v7 >= 0x7FFFFFFFFFFFFFF8)
     {
@@ -327,8 +327,8 @@ LABEL_20:
     }
 
     *(__dst + v8) = 0;
-    [v17 network];
-    [v17 plan];
+    [espressoResources network];
+    [espressoResources plan];
     if ((v20 & 0x80u) == 0)
     {
       v10 = v20;
@@ -374,10 +374,10 @@ LABEL_24:
     }
 
     v9 = p_mFaceQualityPredictor->__ptr_ != 0;
-    if (a4 && !p_mFaceQualityPredictor->__ptr_)
+    if (error && !p_mFaceQualityPredictor->__ptr_)
     {
       v14 = VNErrorForCVMLStatus(0x247C);
-      *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"Failure to create face quality predictor" underlyingError:v14];
+      *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Failure to create face quality predictor" underlyingError:v14];
     }
   }
 

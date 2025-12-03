@@ -15,9 +15,9 @@
   v9[3] = &unk_1E7C43B40;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
-  v7 = [a1 objectsAtIndexes:v6];
-  [a1 removeObjectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v9];
+  v7 = [self objectsAtIndexes:v6];
+  [self removeObjectsAtIndexes:v6];
 
   return v7;
 }
@@ -27,25 +27,25 @@
   v6 = MEMORY[0x1E696AC90];
   v7 = a3;
   v8 = [v6 indexSetWithIndexesInRange:{a4, objc_msgSend(v7, "count")}];
-  [a1 insertObjects:v7 atIndexes:v8];
+  [self insertObjects:v7 atIndexes:v8];
 }
 
 - (void)fc_transformWithBlock:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5)
   {
     v6 = 0;
     v7 = v5 - 1;
     do
     {
-      v8 = [a1 objectAtIndex:v6];
+      v8 = [self objectAtIndex:v6];
       v12 = 0;
       v9 = v4[2](v4, v8, v6, &v12);
       if (v9 != v8)
       {
-        [a1 replaceObjectAtIndex:v6 withObject:v9];
+        [self replaceObjectAtIndex:v6 withObject:v9];
       }
 
       v10 = v12;

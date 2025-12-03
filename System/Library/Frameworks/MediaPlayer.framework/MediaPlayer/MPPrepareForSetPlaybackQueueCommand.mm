@@ -1,38 +1,38 @@
 @interface MPPrepareForSetPlaybackQueueCommand
-- (MPPrepareForSetPlaybackQueueCommand)initWithMediaRemoteCommandType:(unsigned int)a3;
+- (MPPrepareForSetPlaybackQueueCommand)initWithMediaRemoteCommandType:(unsigned int)type;
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setProactiveCommandOptions:(id)a3;
+- (void)setProactiveCommandOptions:(id)options;
 @end
 
 @implementation MPPrepareForSetPlaybackQueueCommand
 
 - (id)_mediaRemoteCommandInfoOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   os_unfair_lock_lock(&self->_lock);
   proactiveCommandOptions = self->_proactiveCommandOptions;
   if (proactiveCommandOptions)
   {
-    [v3 setObject:proactiveCommandOptions forKeyedSubscript:*MEMORY[0x1E69B0CF0]];
+    [dictionary setObject:proactiveCommandOptions forKeyedSubscript:*MEMORY[0x1E69B0CF0]];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setProactiveCommandOptions:(id)a3
+- (void)setProactiveCommandOptions:(id)options
 {
-  v6 = a3;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_lock);
-  if ([v6 isEqual:self->_proactiveCommandOptions])
+  if ([optionsCopy isEqual:self->_proactiveCommandOptions])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v4 = [v6 copy];
+    v4 = [optionsCopy copy];
     proactiveCommandOptions = self->_proactiveCommandOptions;
     self->_proactiveCommandOptions = v4;
 
@@ -41,11 +41,11 @@
   }
 }
 
-- (MPPrepareForSetPlaybackQueueCommand)initWithMediaRemoteCommandType:(unsigned int)a3
+- (MPPrepareForSetPlaybackQueueCommand)initWithMediaRemoteCommandType:(unsigned int)type
 {
   v4.receiver = self;
   v4.super_class = MPPrepareForSetPlaybackQueueCommand;
-  result = [(MPRemoteCommand *)&v4 initWithMediaRemoteCommandType:*&a3];
+  result = [(MPRemoteCommand *)&v4 initWithMediaRemoteCommandType:*&type];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;

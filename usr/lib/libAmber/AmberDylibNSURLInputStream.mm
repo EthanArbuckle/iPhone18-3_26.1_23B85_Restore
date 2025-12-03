@@ -1,11 +1,11 @@
 @interface AmberDylibNSURLInputStream
-- (AmberDylibNSURLInputStream)initWithAmberRequest:(void *)a3;
+- (AmberDylibNSURLInputStream)initWithAmberRequest:(void *)request;
 - (unint64_t)streamStatus;
 @end
 
 @implementation AmberDylibNSURLInputStream
 
-- (AmberDylibNSURLInputStream)initWithAmberRequest:(void *)a3
+- (AmberDylibNSURLInputStream)initWithAmberRequest:(void *)request
 {
   v8.receiver = self;
   v8.super_class = AmberDylibNSURLInputStream;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_amberRequest = a3;
+    v4->_amberRequest = request;
     v4->_status = 0;
     v6 = v4;
   }

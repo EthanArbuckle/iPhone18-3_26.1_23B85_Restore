@@ -1,21 +1,21 @@
 @interface ATXAssetsAggregateLogger
-+ (void)logKey:(id)a3 replaceScalarValueWith:(int64_t)a4;
++ (void)logKey:(id)key replaceScalarValueWith:(int64_t)with;
 @end
 
 @implementation ATXAssetsAggregateLogger
 
-+ (void)logKey:(id)a3 replaceScalarValueWith:(int64_t)a4
++ (void)logKey:(id)key replaceScalarValueWith:(int64_t)with
 {
-  v9 = a3;
-  if (!v9)
+  keyCopy = key;
+  if (!keyCopy)
   {
-    [ATXAssetsAggregateLogger logKey:a2 replaceScalarValueWith:a1];
+    [ATXAssetsAggregateLogger logKey:a2 replaceScalarValueWith:self];
   }
 
   v7 = objc_opt_new();
-  [v7 setKey:v9];
-  v8 = [MEMORY[0x1E69C5B48] sharedInstance];
-  [v8 trackScalarForMessage:v7 count:a4];
+  [v7 setKey:keyCopy];
+  mEMORY[0x1E69C5B48] = [MEMORY[0x1E69C5B48] sharedInstance];
+  [mEMORY[0x1E69C5B48] trackScalarForMessage:v7 count:with];
 }
 
 + (void)logKey:(uint64_t)a1 replaceScalarValueWith:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

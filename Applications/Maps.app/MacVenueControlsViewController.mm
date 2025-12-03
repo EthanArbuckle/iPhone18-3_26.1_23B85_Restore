@@ -1,34 +1,34 @@
 @interface MacVenueControlsViewController
 - (BOOL)isHidden;
-- (BOOL)lacksSearchResultsForFloorOrdinal:(id)a3;
+- (BOOL)lacksSearchResultsForFloorOrdinal:(id)ordinal;
 - (BOOL)shouldBeHidden;
 - (BrowseVenueViewControllerDelegate)browseViewControllerDelegate;
-- (MacVenueControlsViewController)initWithVenueFloorViewDelegate:(id)a3 venueBrowseDelegate:(id)a4 venuesManager:(id)a5;
+- (MacVenueControlsViewController)initWithVenueFloorViewDelegate:(id)delegate venueBrowseDelegate:(id)browseDelegate venuesManager:(id)manager;
 - (VenueFloorViewControllerDelegate)floorViewControllerDelegate;
 - (VenuesManager)venuesManager;
-- (void)browseVenue:(id)a3;
+- (void)browseVenue:(id)venue;
 - (void)didChangeConstraints;
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5;
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal;
 - (void)didClose;
 - (void)didFinishHiding;
 - (void)didFinishShowing;
 - (void)didOpen;
 - (void)didStartHiding;
 - (void)didStartShowing;
-- (void)selectedFloorOrdinal:(id)a3;
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3;
-- (void)setForceHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setHidden:(BOOL)a3;
-- (void)setOpen:(BOOL)a3 animated:(BOOL)a4;
-- (void)setVenue:(id)a3 focusedBuilding:(id)a4 animated:(BOOL)a5 forceUpdate:(BOOL)a6;
+- (void)selectedFloorOrdinal:(id)ordinal;
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal;
+- (void)setForceHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setHidden:(BOOL)hidden;
+- (void)setOpen:(BOOL)open animated:(BOOL)animated;
+- (void)setVenue:(id)venue focusedBuilding:(id)building animated:(BOOL)animated forceUpdate:(BOOL)update;
 - (void)toggleHidden;
 - (void)updateBrowseVenueText;
 - (void)updateDisplayedFloor;
-- (void)updateHiddenAnimated:(BOOL)a3 completion:(id)a4;
-- (void)updateVenueAndBuildingsAnimated:(BOOL)a3 forced:(BOOL)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateHiddenAnimated:(BOOL)animated completion:(id)completion;
+- (void)updateVenueAndBuildingsAnimated:(BOOL)animated forced:(BOOL)forced;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MacVenueControlsViewController
@@ -56,65 +56,65 @@
 
 - (void)didClose
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidClose:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidClose:self];
 }
 
 - (void)didOpen
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidOpen:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidOpen:self];
 }
 
 - (void)didFinishShowing
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidFinishShowing:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidFinishShowing:self];
 }
 
 - (void)didStartShowing
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidStartShowing:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidStartShowing:self];
 }
 
 - (void)didFinishHiding
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidFinishHiding:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidFinishHiding:self];
 }
 
 - (void)didStartHiding
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidStartHiding:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidStartHiding:self];
 }
 
 - (void)didChangeConstraints
 {
-  v3 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  [v3 venueFloorViewControllerDidChangeConstraints:self];
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  [floorViewControllerDelegate venueFloorViewControllerDidChangeConstraints:self];
 }
 
-- (void)browseVenue:(id)a3
+- (void)browseVenue:(id)venue
 {
-  v3 = [(MacVenueControlsViewController *)self browseViewControllerDelegate];
-  [v3 viewControllerDidSelectBrowseVenue:0];
+  browseViewControllerDelegate = [(MacVenueControlsViewController *)self browseViewControllerDelegate];
+  [browseViewControllerDelegate viewControllerDidSelectBrowseVenue:0];
 }
 
-- (void)selectedFloorOrdinal:(id)a3
+- (void)selectedFloorOrdinal:(id)ordinal
 {
-  v4 = a3;
-  v5 = [(MacVenueControlsViewController *)self shortFloorNames];
-  v7 = [v5 objectForKeyedSubscript:v4];
+  ordinalCopy = ordinal;
+  shortFloorNames = [(MacVenueControlsViewController *)self shortFloorNames];
+  v7 = [shortFloorNames objectForKeyedSubscript:ordinalCopy];
 
-  v6 = [(MacVenueControlsViewController *)self floorPicker];
-  [v6 setTitle:v7 forState:0];
+  floorPicker = [(MacVenueControlsViewController *)self floorPicker];
+  [floorPicker setTitle:v7 forState:0];
 }
 
-- (void)setDisplayedFloorOrdinal:(signed __int16)a3
+- (void)setDisplayedFloorOrdinal:(signed __int16)ordinal
 {
-  v3 = a3;
+  ordinalCopy = ordinal;
   v20 = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
@@ -137,8 +137,8 @@
         }
 
         v9 = *(*(&v23 + 1) + 8 * v8);
-        v10 = [(MacVenueControlsViewController *)self shortFloorNames];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        shortFloorNames = [(MacVenueControlsViewController *)self shortFloorNames];
+        v11 = [shortFloorNames objectForKeyedSubscript:v9];
 
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
@@ -149,7 +149,7 @@
         v12 = v11;
         v22 = v12;
         v13 = [UIAction actionWithTitle:v12 image:0 identifier:v12 handler:v21];
-        [v13 setState:{objc_msgSend(v9, "shortValue") == v3}];
+        [v13 setState:{objc_msgSend(v9, "shortValue") == ordinalCopy}];
         if ([(MacVenueControlsViewController *)self lacksSearchResultsForFloorOrdinal:v9])
         {
           [v13 setAttributes:1];
@@ -167,12 +167,12 @@
     while (v6);
   }
 
-  v14 = [(MacVenueControlsViewController *)self shortFloorNames];
-  v15 = [NSNumber numberWithShort:v3];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  shortFloorNames2 = [(MacVenueControlsViewController *)self shortFloorNames];
+  v15 = [NSNumber numberWithShort:ordinalCopy];
+  v16 = [shortFloorNames2 objectForKeyedSubscript:v15];
 
-  v17 = [(MacVenueControlsViewController *)self floorPicker];
-  [v17 setTitle:v16 forState:0];
+  floorPicker = [(MacVenueControlsViewController *)self floorPicker];
+  [floorPicker setTitle:v16 forState:0];
 
   v18 = [UIMenu menuWithTitle:&stru_1016631F0 children:v20];
   [(UIButton *)self->_floorPicker setMenu:v18];
@@ -180,17 +180,17 @@
 
 - (void)updateBrowseVenueText
 {
-  v3 = [(MacVenueControlsViewController *)self venue];
-  v9 = [v3 shortName];
+  venue = [(MacVenueControlsViewController *)self venue];
+  shortName = [venue shortName];
 
-  v4 = [v9 length];
+  v4 = [shortName length];
   v5 = +[NSBundle mainBundle];
   v6 = v5;
   if (v4)
   {
     v7 = [v5 localizedStringForKey:@"Browse [venue with name]" value:@"localized string not found" table:0];
 
-    v8 = [NSString stringWithFormat:v7, v9];
+    v8 = [NSString stringWithFormat:v7, shortName];
     v6 = v7;
   }
 
@@ -204,44 +204,44 @@
 
 - (void)updateDisplayedFloor
 {
-  v3 = [(MacVenueControlsViewController *)self venue];
+  venue = [(MacVenueControlsViewController *)self venue];
 
-  if (v3)
+  if (venue)
   {
-    v5 = [(MacVenueControlsViewController *)self venuesManager];
-    v4 = [(MacVenueControlsViewController *)self venue];
-    -[MacVenueControlsViewController setDisplayedFloorOrdinal:](self, "setDisplayedFloorOrdinal:", [v5 displayedFloorOrdinalForBuildingsInVenue:v4]);
+    venuesManager = [(MacVenueControlsViewController *)self venuesManager];
+    venue2 = [(MacVenueControlsViewController *)self venue];
+    -[MacVenueControlsViewController setDisplayedFloorOrdinal:](self, "setDisplayedFloorOrdinal:", [venuesManager displayedFloorOrdinalForBuildingsInVenue:venue2]);
   }
 }
 
-- (void)setVenue:(id)a3 focusedBuilding:(id)a4 animated:(BOOL)a5 forceUpdate:(BOOL)a6
+- (void)setVenue:(id)venue focusedBuilding:(id)building animated:(BOOL)animated forceUpdate:(BOOL)update
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(VKVenueFeatureMarker *)v10 buildings];
-  v12 = v11;
+  animatedCopy = animated;
+  venueCopy = venue;
+  buildings = [(VKVenueFeatureMarker *)venueCopy buildings];
+  v12 = buildings;
   v13 = &__NSArray0__struct;
-  if (v11)
+  if (buildings)
   {
-    v13 = v11;
+    v13 = buildings;
   }
 
   v14 = v13;
 
-  if (!a6 && self->_venue == v10)
+  if (!update && self->_venue == venueCopy)
   {
-    v33 = self;
-    v34 = v7;
+    selfCopy4 = self;
+    v34 = animatedCopy;
     v32 = 0;
     goto LABEL_21;
   }
 
-  objc_storeStrong(&self->_venue, a3);
+  objc_storeStrong(&self->_venue, venue);
   [(MacVenueControlsViewController *)self updateBrowseVenueText];
-  if ([(MacVenueControlsViewController *)self isHidden]|| ![(MacVenueControlsViewController *)self shouldBeHidden]|| !v7)
+  if ([(MacVenueControlsViewController *)self isHidden]|| ![(MacVenueControlsViewController *)self shouldBeHidden]|| !animatedCopy)
   {
-    v39 = v7;
-    v41 = v10;
+    v39 = animatedCopy;
+    v41 = venueCopy;
     v15 = objc_opt_new();
     v16 = objc_opt_new();
     v45 = 0u;
@@ -265,11 +265,11 @@
           }
 
           v22 = *(*(&v45 + 1) + 8 * i);
-          v23 = [v22 floorOrdinals];
-          [v16 addObjectsFromArray:v23];
+          floorOrdinals = [v22 floorOrdinals];
+          [v16 addObjectsFromArray:floorOrdinals];
 
-          v24 = [v22 floorNames];
-          [v15 addEntriesFromDictionary:v24];
+          floorNames = [v22 floorNames];
+          [v15 addEntriesFromDictionary:floorNames];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -278,24 +278,24 @@
       while (v19);
     }
 
-    v25 = [v16 allObjects];
-    v26 = [v25 sortedArrayUsingSelector:"compare:"];
-    v27 = [v26 reverseObjectEnumerator];
-    v28 = [v27 allObjects];
+    allObjects = [v16 allObjects];
+    v26 = [allObjects sortedArrayUsingSelector:"compare:"];
+    reverseObjectEnumerator = [v26 reverseObjectEnumerator];
+    allObjects2 = [reverseObjectEnumerator allObjects];
 
-    if (!a6)
+    if (!update)
     {
-      v29 = [(MacVenueControlsViewController *)self floorOrdinals];
-      if ([NSArray array:v28 isEqualToArray:v29])
+      floorOrdinals2 = [(MacVenueControlsViewController *)self floorOrdinals];
+      if ([NSArray array:allObjects2 isEqualToArray:floorOrdinals2])
       {
-        v30 = [(MacVenueControlsViewController *)self shortFloorNames];
-        v31 = [NSDictionary dictionary:v15 isEqualToDictionary:v30];
+        shortFloorNames = [(MacVenueControlsViewController *)self shortFloorNames];
+        v31 = [NSDictionary dictionary:v15 isEqualToDictionary:shortFloorNames];
 
         if (v31)
         {
           [(MacVenueControlsViewController *)self updateHiddenAnimated:v39 completion:0];
           v14 = v40;
-          v10 = v41;
+          venueCopy = v41;
 LABEL_30:
 
           goto LABEL_31;
@@ -307,7 +307,7 @@ LABEL_30:
       }
     }
 
-    objc_storeStrong(&self->_floorOrdinals, v28);
+    objc_storeStrong(&self->_floorOrdinals, allObjects2);
     objc_storeStrong(&self->_shortFloorNames, v15);
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
@@ -331,21 +331,21 @@ LABEL_30:
       }
 
       v36[2](v36);
-      v37 = self;
+      selfCopy3 = self;
       v38 = 1;
     }
 
     else
     {
       (v35[2])(v35);
-      v37 = self;
+      selfCopy3 = self;
       v38 = 0;
     }
 
-    [(MacVenueControlsViewController *)v37 updateHiddenAnimated:v38 completion:0];
+    [(MacVenueControlsViewController *)selfCopy3 updateHiddenAnimated:v38 completion:0];
 LABEL_29:
     v14 = v40;
-    v10 = v41;
+    venueCopy = v41;
 
     goto LABEL_30;
   }
@@ -355,24 +355,24 @@ LABEL_29:
   v49[2] = sub_100C948A8;
   v49[3] = &unk_101661AE0;
   v49[4] = self;
-  v50 = a6;
+  updateCopy = update;
   v32 = v49;
-  v33 = self;
+  selfCopy4 = self;
   v34 = 1;
 LABEL_21:
-  [(MacVenueControlsViewController *)v33 updateHiddenAnimated:v34 completion:v32];
+  [(MacVenueControlsViewController *)selfCopy4 updateHiddenAnimated:v34 completion:v32];
 LABEL_31:
 }
 
-- (void)updateVenueAndBuildingsAnimated:(BOOL)a3 forced:(BOOL)a4
+- (void)updateVenueAndBuildingsAnimated:(BOOL)animated forced:(BOOL)forced
 {
-  v4 = a4;
-  v5 = a3;
-  v10 = [(MacVenueControlsViewController *)self venuesManager];
-  v7 = [v10 venueWithFocus];
-  v8 = [(MacVenueControlsViewController *)self venuesManager];
-  v9 = [v8 venueBuildingWithFocus];
-  [(MacVenueControlsViewController *)self setVenue:v7 focusedBuilding:v9 animated:v5 forceUpdate:v4];
+  forcedCopy = forced;
+  animatedCopy = animated;
+  venuesManager = [(MacVenueControlsViewController *)self venuesManager];
+  venueWithFocus = [venuesManager venueWithFocus];
+  venuesManager2 = [(MacVenueControlsViewController *)self venuesManager];
+  venueBuildingWithFocus = [venuesManager2 venueBuildingWithFocus];
+  [(MacVenueControlsViewController *)self setVenue:venueWithFocus focusedBuilding:venueBuildingWithFocus animated:animatedCopy forceUpdate:forcedCopy];
 }
 
 - (void)toggleHidden
@@ -385,23 +385,23 @@ LABEL_31:
   }
 }
 
-- (void)updateHiddenAnimated:(BOOL)a3 completion:(id)a4
+- (void)updateHiddenAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(MacVenueControlsViewController *)self shouldBeHidden];
-  if (v7 == [(MacVenueControlsViewController *)self isHidden])
+  completionCopy = completion;
+  shouldBeHidden = [(MacVenueControlsViewController *)self shouldBeHidden];
+  if (shouldBeHidden == [(MacVenueControlsViewController *)self isHidden])
   {
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!animated)
   {
-    if (!v7)
+    if (!shouldBeHidden)
     {
       [(MacVenueControlsViewController *)self didStartShowing];
       [(MacVenueControlsViewController *)self setHidden:0];
       [(MacVenueControlsViewController *)self didFinishShowing];
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_10;
       }
@@ -414,39 +414,39 @@ LABEL_31:
     [(MacVenueControlsViewController *)self setOpen:0 animated:0];
     [(MacVenueControlsViewController *)self didFinishHiding];
 LABEL_8:
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_10;
   }
 
-  if ((v7 & 1) == 0)
+  if ((shouldBeHidden & 1) == 0)
   {
-    v8 = [(MacVenueControlsViewController *)self view];
-    [v8 setAlpha:0.0];
+    view = [(MacVenueControlsViewController *)self view];
+    [view setAlpha:0.0];
 
     [(MacVenueControlsViewController *)self setHidden:0];
-    v9 = [(MacVenueControlsViewController *)self view];
-    [v9 layoutIfNeeded];
+    view2 = [(MacVenueControlsViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100C94B9C;
   v13[3] = &unk_101661AE0;
-  v14 = v7;
+  v14 = shouldBeHidden;
   v13[4] = self;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100C94C60;
   v10[3] = &unk_10164FD60;
   v10[4] = self;
-  v12 = v7;
-  v11 = v6;
+  v12 = shouldBeHidden;
+  v11 = completionCopy;
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v13 completion:v10];
 
 LABEL_10:
@@ -459,11 +459,11 @@ LABEL_10:
     return 1;
   }
 
-  v4 = [(MacVenueControlsViewController *)self venue];
-  if (v4)
+  venue = [(MacVenueControlsViewController *)self venue];
+  if (venue)
   {
-    v5 = [(MacVenueControlsViewController *)self floorOrdinals];
-    v3 = [v5 count] < 2;
+    floorOrdinals = [(MacVenueControlsViewController *)self floorOrdinals];
+    v3 = [floorOrdinals count] < 2;
   }
 
   else
@@ -474,75 +474,75 @@ LABEL_10:
   return v3;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MacVenueControlsViewController *)self setVisible:0];
   v5.receiver = self;
   v5.super_class = MacVenueControlsViewController;
-  [(MacVenueControlsViewController *)&v5 viewDidDisappear:v3];
+  [(MacVenueControlsViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MacVenueControlsViewController;
-  [(MacVenueControlsViewController *)&v4 viewWillAppear:a3];
+  [(MacVenueControlsViewController *)&v4 viewWillAppear:appear];
   [(MacVenueControlsViewController *)self setVisible:1];
   [(MacVenueControlsViewController *)self toggleHidden];
   [(MacVenueControlsViewController *)self updateVenueAndBuildingsAnimated:0 forced:1];
 }
 
-- (void)didChangeFocusedVenue:(id)a3 focusedBuilding:(id)a4 displayedFloorOrdinal:(signed __int16)a5
+- (void)didChangeFocusedVenue:(id)venue focusedBuilding:(id)building displayedFloorOrdinal:(signed __int16)ordinal
 {
-  v5 = a5;
-  [(MacVenueControlsViewController *)self setVenue:a3 focusedBuilding:a4 animated:1 forceUpdate:0];
-  if (a3)
+  ordinalCopy = ordinal;
+  [(MacVenueControlsViewController *)self setVenue:venue focusedBuilding:building animated:1 forceUpdate:0];
+  if (venue)
   {
     [(MacVenueControlsViewController *)self updateBrowseVenueText];
 
-    [(MacVenueControlsViewController *)self setDisplayedFloorOrdinal:v5];
+    [(MacVenueControlsViewController *)self setDisplayedFloorOrdinal:ordinalCopy];
   }
 }
 
-- (BOOL)lacksSearchResultsForFloorOrdinal:(id)a3
+- (BOOL)lacksSearchResultsForFloorOrdinal:(id)ordinal
 {
-  if (!a3)
+  if (!ordinal)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
-  v6 = [(MacVenueControlsViewController *)self venue];
-  v7 = [v4 shortValue];
+  ordinalCopy = ordinal;
+  floorViewControllerDelegate = [(MacVenueControlsViewController *)self floorViewControllerDelegate];
+  venue = [(MacVenueControlsViewController *)self venue];
+  shortValue = [ordinalCopy shortValue];
 
-  LOBYTE(v4) = [v5 lacksSearchResultsInVenue:v6 forFloorOrdinal:v7];
-  return v4;
+  LOBYTE(ordinalCopy) = [floorViewControllerDelegate lacksSearchResultsInVenue:venue forFloorOrdinal:shortValue];
+  return ordinalCopy;
 }
 
-- (void)setForceHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setForceHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (self->_forceHidden == v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (self->_forceHidden == hiddenCopy)
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = v8;
-    (*(v8 + 2))(v8);
+    v10 = completionCopy;
+    (*(completionCopy + 2))(completionCopy);
   }
 
   else
   {
-    self->_forceHidden = v6;
-    v10 = v8;
-    [(MacVenueControlsViewController *)self updateHiddenAnimated:v5 completion:v8];
+    self->_forceHidden = hiddenCopy;
+    v10 = completionCopy;
+    [(MacVenueControlsViewController *)self updateHiddenAnimated:animatedCopy completion:completionCopy];
   }
 
   v9 = v10;
@@ -551,33 +551,33 @@ LABEL_6:
 
 - (BOOL)isHidden
 {
-  v2 = [(MacVenueControlsViewController *)self view];
-  v3 = [v2 isHidden];
+  view = [(MacVenueControlsViewController *)self view];
+  isHidden = [view isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(MacVenueControlsViewController *)self view];
-  v6 = [v5 isHidden];
+  hiddenCopy = hidden;
+  view = [(MacVenueControlsViewController *)self view];
+  isHidden = [view isHidden];
 
-  if (v6 != v3)
+  if (isHidden != hiddenCopy)
   {
-    v7 = [(MacVenueControlsViewController *)self view];
-    [v7 setHidden:v3];
+    view2 = [(MacVenueControlsViewController *)self view];
+    [view2 setHidden:hiddenCopy];
   }
 }
 
-- (void)setOpen:(BOOL)a3 animated:(BOOL)a4
+- (void)setOpen:(BOOL)open animated:(BOOL)animated
 {
-  if (self->_open != a3)
+  if (self->_open != open)
   {
-    v4 = a3;
-    self->_open = a3;
+    openCopy = open;
+    self->_open = open;
     [(MacVenueControlsViewController *)self toggleHidden];
-    if (v4)
+    if (openCopy)
     {
 
       [(MacVenueControlsViewController *)self didOpen];
@@ -596,8 +596,8 @@ LABEL_6:
   v67.receiver = self;
   v67.super_class = MacVenueControlsViewController;
   [(MacVenueControlsViewController *)&v67 viewDidLoad];
-  v3 = [(MacVenueControlsViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(MacVenueControlsViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v4 = [MapsTheme visualEffectViewAllowingBlur:1];
   effectView = self->_effectView;
@@ -605,10 +605,10 @@ LABEL_6:
 
   [(UIVisualEffectView *)self->_effectView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIVisualEffectView *)self->_effectView _setCornerRadius:1 continuous:15 maskedCorners:9.0];
-  v6 = [(MacVenueControlsViewController *)self view];
-  [v6 addSubview:self->_effectView];
+  view2 = [(MacVenueControlsViewController *)self view];
+  [view2 addSubview:self->_effectView];
 
-  v7 = [(UIVisualEffectView *)self->_effectView contentView];
+  contentView = [(UIVisualEffectView *)self->_effectView contentView];
   v8 = +[UIFont system16];
   v9 = [UIColor colorNamed:@"VenueBrowseFloorPickerTextColor"];
   v10 = [UIButton buttonWithType:0];
@@ -617,18 +617,18 @@ LABEL_6:
 
   [(UIButton *)self->_browseButton setAccessibilityIdentifier:@"VenueBrowseButton"];
   [(UIButton *)self->_browseButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(UIButton *)self->_browseButton titleLabel];
-  [v12 setFont:v8];
+  titleLabel = [(UIButton *)self->_browseButton titleLabel];
+  [titleLabel setFont:v8];
 
   [(UIButton *)self->_browseButton setContentEdgeInsets:5.0, 15.0, 5.0, 15.0];
   [(UIButton *)self->_browseButton setTitleColor:v9 forState:0];
   [(UIButton *)self->_browseButton addTarget:self action:"browseVenue:" forControlEvents:64];
-  [v7 addSubview:self->_browseButton];
+  [contentView addSubview:self->_browseButton];
   v13 = objc_alloc_init(HairlineView);
   [(HairlineView *)v13 setVertical:1];
   [(HairlineView *)v13 setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = v13;
-  [v7 addSubview:v13];
+  [contentView addSubview:v13];
   v15 = [MapsRightImageButton buttonWithType:0];
   floorPicker = self->_floorPicker;
   self->_floorPicker = v15;
@@ -638,9 +638,9 @@ LABEL_6:
   [(UIButton *)self->_floorPicker setContentEdgeInsets:5.0, 15.0, 5.0, 15.0];
   v65 = v9;
   [(UIButton *)self->_floorPicker setTitleColor:v9 forState:0];
-  v17 = [(UIButton *)self->_floorPicker titleLabel];
+  titleLabel2 = [(UIButton *)self->_floorPicker titleLabel];
   v66 = v8;
-  [v17 setFont:v8];
+  [titleLabel2 setFont:v8];
 
   v18 = self->_floorPicker;
   v19 = [UIImageSymbolConfiguration configurationWithFont:v8 scale:2];
@@ -649,62 +649,62 @@ LABEL_6:
 
   [(UIButton *)self->_floorPicker setTintColor:v9];
   [(UIButton *)self->_floorPicker setShowsMenuAsPrimaryAction:1];
-  [v7 addSubview:self->_floorPicker];
-  v64 = [(MacVenueControlsViewController *)self view];
-  v63 = [v64 heightAnchor];
-  v62 = [(UIVisualEffectView *)self->_effectView heightAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  [contentView addSubview:self->_floorPicker];
+  view3 = [(MacVenueControlsViewController *)self view];
+  heightAnchor = [view3 heightAnchor];
+  heightAnchor2 = [(UIVisualEffectView *)self->_effectView heightAnchor];
+  v61 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v68[0] = v61;
-  v60 = [(MacVenueControlsViewController *)self view];
-  v59 = [v60 widthAnchor];
-  v58 = [(UIVisualEffectView *)self->_effectView widthAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  view4 = [(MacVenueControlsViewController *)self view];
+  widthAnchor = [view4 widthAnchor];
+  widthAnchor2 = [(UIVisualEffectView *)self->_effectView widthAnchor];
+  v57 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v68[1] = v57;
-  v56 = [(UIButton *)self->_browseButton leadingAnchor];
-  v55 = [v7 leadingAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  leadingAnchor = [(UIButton *)self->_browseButton leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v54 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v68[2] = v54;
-  v53 = [(UIButton *)self->_browseButton topAnchor];
-  v52 = [v7 topAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  topAnchor = [(UIButton *)self->_browseButton topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v68[3] = v51;
-  v50 = [(UIButton *)self->_browseButton bottomAnchor];
-  v49 = [v7 bottomAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  bottomAnchor = [(UIButton *)self->_browseButton bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v48 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v68[4] = v48;
-  v46 = [(HairlineView *)v14 leadingAnchor];
-  v45 = [(UIButton *)self->_browseButton trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  leadingAnchor3 = [(HairlineView *)v14 leadingAnchor];
+  trailingAnchor = [(UIButton *)self->_browseButton trailingAnchor];
+  v44 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
   v68[5] = v44;
-  v43 = [(HairlineView *)v14 centerYAnchor];
-  v42 = [v7 centerYAnchor];
-  v40 = [v43 constraintEqualToAnchor:v42];
+  centerYAnchor = [(HairlineView *)v14 centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v40 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v68[6] = v40;
-  v39 = [(HairlineView *)v14 topAnchor];
-  v38 = [v7 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:8.0];
+  topAnchor3 = [(HairlineView *)v14 topAnchor];
+  topAnchor4 = [contentView topAnchor];
+  v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
   v68[7] = v37;
   v47 = v14;
-  v36 = [(HairlineView *)v14 bottomAnchor];
-  v35 = [v7 bottomAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:-8.0];
+  bottomAnchor3 = [(HairlineView *)v14 bottomAnchor];
+  bottomAnchor4 = [contentView bottomAnchor];
+  v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-8.0];
   v68[8] = v34;
-  v33 = [(UIButton *)self->_floorPicker leadingAnchor];
-  v32 = [(HairlineView *)v14 trailingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  leadingAnchor4 = [(UIButton *)self->_floorPicker leadingAnchor];
+  trailingAnchor2 = [(HairlineView *)v14 trailingAnchor];
+  v31 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2];
   v68[9] = v31;
-  v30 = [(UIButton *)self->_floorPicker trailingAnchor];
-  v21 = [v7 trailingAnchor];
-  v22 = [v30 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [(UIButton *)self->_floorPicker trailingAnchor];
+  trailingAnchor4 = [contentView trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v68[10] = v22;
-  v23 = [(UIButton *)self->_floorPicker topAnchor];
-  v41 = v7;
-  v24 = [v7 topAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  topAnchor5 = [(UIButton *)self->_floorPicker topAnchor];
+  v41 = contentView;
+  topAnchor6 = [contentView topAnchor];
+  v25 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v68[11] = v25;
-  v26 = [(UIButton *)self->_floorPicker bottomAnchor];
-  v27 = [v41 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  bottomAnchor5 = [(UIButton *)self->_floorPicker bottomAnchor];
+  bottomAnchor6 = [v41 bottomAnchor];
+  v28 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v68[12] = v28;
   v29 = [NSArray arrayWithObjects:v68 count:13];
   [NSLayoutConstraint activateConstraints:v29];
@@ -712,20 +712,20 @@ LABEL_6:
   [(MapsThemeViewController *)self updateTheme];
 }
 
-- (MacVenueControlsViewController)initWithVenueFloorViewDelegate:(id)a3 venueBrowseDelegate:(id)a4 venuesManager:(id)a5
+- (MacVenueControlsViewController)initWithVenueFloorViewDelegate:(id)delegate venueBrowseDelegate:(id)browseDelegate venuesManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  browseDelegateCopy = browseDelegate;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = MacVenueControlsViewController;
   v11 = [(MacVenueControlsViewController *)&v16 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_floorViewControllerDelegate, v8);
-    objc_storeWeak(&v12->_browseViewControllerDelegate, v9);
-    objc_storeWeak(&v12->_venuesManager, v10);
+    objc_storeWeak(&v11->_floorViewControllerDelegate, delegateCopy);
+    objc_storeWeak(&v12->_browseViewControllerDelegate, browseDelegateCopy);
+    objc_storeWeak(&v12->_venuesManager, managerCopy);
     floorOrdinals = v12->_floorOrdinals;
     v12->_floorOrdinals = &__NSArray0__struct;
 

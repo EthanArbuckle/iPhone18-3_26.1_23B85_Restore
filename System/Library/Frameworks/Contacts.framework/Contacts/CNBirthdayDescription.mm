@@ -1,25 +1,25 @@
 @interface CNBirthdayDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4;
-- (id)CNValueFromABBytes:(char *)a3 length:(unint64_t)a4;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)isValidValue:(id)value error:(id *)error;
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue;
+- (id)CNValueFromABBytes:(char *)bytes length:(unint64_t)length;
+- (void)ABValueFromCNValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNBirthdayDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 birthday];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  birthday = [contactCopy birthday];
+  if (!birthday)
   {
-    v4 = [v7 birthday];
-    if (!v4)
+    birthday2 = [otherCopy birthday];
+    if (!birthday2)
     {
       v11 = 1;
 LABEL_6:
@@ -28,11 +28,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 birthday];
-  v10 = [v7 birthday];
-  v11 = [v9 isEqual:v10];
+  birthday3 = [contactCopy birthday];
+  birthday4 = [otherCopy birthday];
+  v11 = [birthday3 isEqual:birthday4];
 
-  if (!v8)
+  if (!birthday)
   {
     goto LABEL_6;
   }
@@ -42,30 +42,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_birthday"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_birthday"];
 
   v7 = [v9 copy];
-  v8 = v5[27];
-  v5[27] = v7;
+  v8 = contactCopy[27];
+  contactCopy[27] = v7;
 }
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 day];
-  v9 = [v7 day];
-  v22 = [v6 month];
-  v10 = [v7 month];
-  v11 = [v6 calendar];
-  if (!v11)
+  valueCopy = value;
+  withValueCopy = withValue;
+  v8 = [valueCopy day];
+  v9 = [withValueCopy day];
+  month = [valueCopy month];
+  month2 = [withValueCopy month];
+  calendar = [valueCopy calendar];
+  if (!calendar)
   {
-    v4 = [v7 calendar];
-    if (!v4)
+    calendar2 = [withValueCopy calendar];
+    if (!calendar2)
     {
       v14 = 1;
 LABEL_6:
@@ -74,26 +74,26 @@ LABEL_6:
     }
   }
 
-  v12 = [v6 calendar];
-  v13 = [v7 calendar];
-  v14 = [v12 isEqual:v13];
+  calendar3 = [valueCopy calendar];
+  calendar4 = [withValueCopy calendar];
+  v14 = [calendar3 isEqual:calendar4];
 
-  if (!v11)
+  if (!calendar)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  v15 = [v6 year];
-  v16 = [v7 year];
-  v17 = [v6 year];
-  v18 = [v7 year];
+  year = [valueCopy year];
+  year2 = [withValueCopy year];
+  year3 = [valueCopy year];
+  year4 = [withValueCopy year];
   v19 = 0;
-  if (v8 == v9 && v22 == v10)
+  if (v8 == v9 && month == month2)
   {
-    v20 = (v15 == 0x7FFFFFFFFFFFFFFFLL) ^ (v16 == 0x7FFFFFFFFFFFFFFFLL);
-    if (v17 == v18)
+    v20 = (year == 0x7FFFFFFFFFFFFFFFLL) ^ (year2 == 0x7FFFFFFFFFFFFFFFLL);
+    if (year3 == year4)
     {
       v20 = 1;
     }
@@ -104,57 +104,57 @@ LABEL_7:
   return v19;
 }
 
-- (BOOL)isValue:(id)a3 preferredToUnifiedValue:(id)a4
+- (BOOL)isValue:(id)value preferredToUnifiedValue:(id)unifiedValue
 {
-  v5 = a4;
-  v6 = [a3 year];
-  v7 = [v5 year];
+  unifiedValueCopy = unifiedValue;
+  year = [value year];
+  year2 = [unifiedValueCopy year];
 
-  return v6 != 0x7FFFFFFFFFFFFFFFLL && v7 == 0x7FFFFFFFFFFFFFFFLL;
+  return year != 0x7FFFFFFFFFFFFFFFLL && year2 == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = CNBirthdayDescription;
-  v7 = [(CNPropertyDescription *)&v13 isValidValue:v6 error:a4];
+  v7 = [(CNPropertyDescription *)&v13 isValidValue:valueCopy error:error];
   v8 = v7;
-  if (v6 && v7)
+  if (valueCopy && v7)
   {
     v12 = 0;
-    v8 = [CN areValidGregorianDayComponents:v6 error:&v12];
+    v8 = [CN areValidGregorianDayComponents:valueCopy error:&v12];
     v9 = v12;
-    if (a4 && !v8)
+    if (error && !v8)
     {
       v10 = [(CNPropertyDescription *)self key];
-      *a4 = [CNErrorFactory errorByPrependingKeyPath:v10 toKeyPathsInError:v9];
+      *error = [CNErrorFactory errorByPrependingKeyPath:v10 toKeyPathsInError:v9];
     }
   }
 
   return v8;
 }
 
-- (id)CNValueFromABBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNValueFromABBytes:(char *)bytes length:(unint64_t)length
 {
-  v5 = [CNiOSABConversions dateFromABBytes:a3 length:a4];
+  v5 = [CNiOSABConversions dateFromABBytes:bytes length:length];
 
   return [(CNBirthdayDescription *)self CNValueFromABValue:v5];
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A2E0];
+    *d = *MEMORY[0x1E698A2E0];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = [MEMORY[0x1E6996698] dateFromDayComponents:a3];
+  v3 = [MEMORY[0x1E6996698] dateFromDayComponents:value];
   v4 = v3;
   if (v3 && (v5 = CFRetain(v3)) != 0)
   {

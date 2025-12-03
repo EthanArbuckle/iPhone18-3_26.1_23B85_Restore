@@ -1,32 +1,32 @@
 @interface ABSPBFavoritesSyncObject
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addEntry:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntry:(id)entry;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBFavoritesSyncObject
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   entrys = self->_entrys;
-  v8 = v4;
+  v8 = entryCopy;
   if (!entrys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_entrys;
     self->_entrys = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     entrys = self->_entrys;
   }
 
-  [(NSMutableArray *)entrys addObject:v4];
+  [(NSMutableArray *)entrys addObject:entryCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBFavoritesSyncObject;
   v3 = [(ABSPBFavoritesSyncObject *)&v7 description];
-  v4 = [(ABSPBFavoritesSyncObject *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBFavoritesSyncObject *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -65,8 +65,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -81,9 +81,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -117,28 +117,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(ABSPBFavoritesSyncObject *)self entrysCount])
   {
-    [v8 clearEntrys];
-    v4 = [(ABSPBFavoritesSyncObject *)self entrysCount];
-    if (v4)
+    [toCopy clearEntrys];
+    entrysCount = [(ABSPBFavoritesSyncObject *)self entrysCount];
+    if (entrysCount)
     {
-      v5 = v4;
+      v5 = entrysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ABSPBFavoritesSyncObject *)self entryAtIndex:i];
-        [v8 addEntry:v7];
+        [toCopy addEntry:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addEntry:v11];
 
         v10 = v10 + 1;
@@ -175,13 +175,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     entrys = self->_entrys;
-    if (entrys | v4[1])
+    if (entrys | equalCopy[1])
     {
       v6 = [(NSMutableArray *)entrys isEqual:?];
     }
@@ -200,13 +200,13 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

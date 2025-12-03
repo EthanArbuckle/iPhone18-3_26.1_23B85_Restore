@@ -1,14 +1,14 @@
 @interface HSPCSiriForEveryoneViewController
-- (HSPCSiriForEveryoneViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSiriForEveryoneViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_enableMultiUser;
 @end
 
 @implementation HSPCSiriForEveryoneViewController
 
-- (HSPCSiriForEveryoneViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSiriForEveryoneViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = [UIImageView alloc];
   v9 = HUImageNamed();
   v10 = [v8 initWithImage:v9];
@@ -20,12 +20,12 @@
   v12 = v11;
   if (v11)
   {
-    [(HSPCSiriForEveryoneViewController *)v11 setConfig:v7];
-    [(HSPCSiriForEveryoneViewController *)v12 setCoordinator:v6];
-    v13 = [(HSPCSiriForEveryoneViewController *)v12 config];
-    v14 = [v13 home];
-    v15 = [v14 users];
-    [v15 count];
+    [(HSPCSiriForEveryoneViewController *)v11 setConfig:configCopy];
+    [(HSPCSiriForEveryoneViewController *)v12 setCoordinator:coordinatorCopy];
+    config = [(HSPCSiriForEveryoneViewController *)v12 config];
+    home = [config home];
+    users = [home users];
+    [users count];
 
     v16 = HULocalizedString();
     [(HSPCSiriForEveryoneViewController *)v12 setTitle:v16];
@@ -42,15 +42,15 @@
 
 - (id)_enableMultiUser
 {
-  v3 = [(HSPCSiriForEveryoneViewController *)self config];
-  v4 = [v3 home];
+  config = [(HSPCSiriForEveryoneViewController *)self config];
+  home = [config home];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100026458;
   v14 = &unk_1000C6030;
-  v15 = v4;
-  v5 = v4;
+  v15 = home;
+  v5 = home;
   v6 = [NAFuture futureWithBlock:&v11];
   v16[0] = v6;
   v7 = [(HSPCSiriForEveryoneViewController *)self commitConfiguration:v11];

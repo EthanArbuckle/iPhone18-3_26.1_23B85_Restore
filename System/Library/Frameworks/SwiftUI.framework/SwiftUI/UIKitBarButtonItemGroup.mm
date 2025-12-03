@@ -1,10 +1,10 @@
 @interface UIKitBarButtonItemGroup
-- (_TtC7SwiftUI23UIKitBarButtonItemGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4;
+- (_TtC7SwiftUI23UIKitBarButtonItemGroup)initWithBarButtonItems:(id)items representativeItem:(id)item;
 @end
 
 @implementation UIKitBarButtonItemGroup
 
-- (_TtC7SwiftUI23UIKitBarButtonItemGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4
+- (_TtC7SwiftUI23UIKitBarButtonItemGroup)initWithBarButtonItems:(id)items representativeItem:(id)item
 {
   ObjectType = swift_getObjectType();
   v8 = OBJC_IVAR____TtC7SwiftUI23UIKitBarButtonItemGroup_groupItem;
@@ -14,7 +14,7 @@
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = ObjectType;
-  return [(UIBarButtonItemGroup *)&v11 initWithBarButtonItems:a3 representativeItem:a4];
+  return [(UIBarButtonItemGroup *)&v11 initWithBarButtonItems:items representativeItem:item];
 }
 
 @end

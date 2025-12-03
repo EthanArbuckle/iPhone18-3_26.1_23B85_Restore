@@ -10,18 +10,18 @@
 - (void)_dumpCaps;
 - (void)_receivedPendingACRequests;
 - (void)_receivedPendingVCRequests;
-- (void)_setServiceVCCaps:(unint64_t)a3 toCaps:(unint64_t)a4;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)blockOnPendingVCInvitationsWithCapabilities:(int64_t)a3;
-- (void)cancelVCRequestWithBuddy:(id)a3 vcProps:(id)a4 forAccount:(id)a5 conferenceID:(id)a6 reason:(id)a7;
+- (void)_setServiceVCCaps:(unint64_t)caps toCaps:(unint64_t)toCaps;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)blockOnPendingVCInvitationsWithCapabilities:(int64_t)capabilities;
+- (void)cancelVCRequestWithBuddy:(id)buddy vcProps:(id)props forAccount:(id)account conferenceID:(id)d reason:(id)reason;
 - (void)pushCachedVCCapsToDaemon;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)requestPendingACInvitations;
 - (void)requestPendingVCInvitations;
-- (void)setDelegate:(id)a3;
-- (void)setIMAVCapabilities:(int64_t)a3 toCaps:(int64_t)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setIMAVCapabilities:(int64_t)capabilities toCaps:(int64_t)caps;
 - (void)setupIMAVController;
-- (void)vcCapabilitiesChanged:(unint64_t)a3;
+- (void)vcCapabilitiesChanged:(unint64_t)changed;
 @end
 
 @implementation IMAVController
@@ -92,26 +92,26 @@
   return v6;
 }
 
-- (void)cancelVCRequestWithBuddy:(id)a3 vcProps:(id)a4 forAccount:(id)a5 conferenceID:(id)a6 reason:(id)a7
+- (void)cancelVCRequestWithBuddy:(id)buddy vcProps:(id)props forAccount:(id)account conferenceID:(id)d reason:(id)reason
 {
   v89 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v80 = a7;
-  if (!v13)
+  buddyCopy = buddy;
+  propsCopy = props;
+  accountCopy = account;
+  dCopy = d;
+  reasonCopy = reason;
+  if (!accountCopy)
   {
-    v13 = objc_msgSend_account(v11, v15, v16, v17, v18);
+    accountCopy = objc_msgSend_account(buddyCopy, v15, v16, v17, v18);
   }
 
-  v19 = objc_msgSend_objectForKey_(v12, v15, *MEMORY[0x277D19568], v17, v18);
+  v19 = objc_msgSend_objectForKey_(propsCopy, v15, *MEMORY[0x277D19568], v17, v18);
   v81 = objc_msgSend_unsignedIntValue(v19, v20, v21, v22, v23);
 
   v24 = sub_254761764();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = objc_msgSend_ID(v11, v25, v26, v27, v28);
+    v29 = objc_msgSend_ID(buddyCopy, v25, v26, v27, v28);
     *buf = 138412290;
     v84 = v29;
     _os_log_impl(&dword_254743000, v24, OS_LOG_TYPE_DEFAULT, "Sending cancel to service for: %@", buf, 0xCu);
@@ -121,18 +121,18 @@
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v84 = v14;
+    v84 = dCopy;
     v85 = 2112;
-    v86 = v13;
+    v86 = accountCopy;
     v87 = 2112;
-    v88 = v11;
+    v88 = buddyCopy;
     _os_log_impl(&dword_254743000, v30, OS_LOG_TYPE_DEFAULT, "Conference ID: %@     Account: %@    Handle: %@", buf, 0x20u);
   }
 
   v31 = sub_254761764();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = objc_msgSend_loginStatusMessage(v13, v32, v33, v34, v35);
+    v36 = objc_msgSend_loginStatusMessage(accountCopy, v32, v33, v34, v35);
     *buf = 138412290;
     v84 = v36;
     _os_log_impl(&dword_254743000, v31, OS_LOG_TYPE_DEFAULT, "        Account login status: %@", buf, 0xCu);
@@ -141,7 +141,7 @@
   v37 = sub_254761764();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    if (objc_msgSend_isActive(v13, v38, v39, v40, v41))
+    if (objc_msgSend_isActive(accountCopy, v38, v39, v40, v41))
     {
       v42 = @"YES";
     }
@@ -176,43 +176,43 @@
   }
 
   v58 = objc_msgSend_sharedInstance(MEMORY[0x277D18D68], v54, v55, v56, v57);
-  v63 = objc_msgSend_ID(v11, v59, v60, v61, v62);
+  v63 = objc_msgSend_ID(buddyCopy, v59, v60, v61, v62);
   v67 = objc_msgSend_vcResponseInfoWithSessionID_(self, v64, v81, v65, v66);
-  v72 = objc_msgSend_account(v11, v68, v69, v70, v71);
+  v72 = objc_msgSend_account(buddyCopy, v68, v69, v70, v71);
   v77 = objc_msgSend_uniqueID(v72, v73, v74, v75, v76);
-  objc_msgSend_cancelVCRequestWithPerson_properties_conference_reason_account_(v58, v78, v63, v67, v14, v80, v77);
+  objc_msgSend_cancelVCRequestWithPerson_properties_conference_reason_account_(v58, v78, v63, v67, dCopy, reasonCopy, v77);
 
   v79 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v13 = a3;
-  v9 = a4;
-  if (v13 && (objc_msgSend_containsObjectIdenticalTo_(self->_delegates, v6, v13, v7, v8) & 1) == 0)
+  delegateCopy = delegate;
+  queueCopy = queue;
+  if (delegateCopy && (objc_msgSend_containsObjectIdenticalTo_(self->_delegates, v6, delegateCopy, v7, v8) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_delegates, v10, v13, v11, v12);
+    objc_msgSend_addObject_(self->_delegates, v10, delegateCopy, v11, v12);
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    objc_msgSend_removeObjectIdenticalTo_(self->_delegates, a2, a3, v3, v4);
+    objc_msgSend_removeObjectIdenticalTo_(self->_delegates, a2, delegate, v3, v4);
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v12 = a3;
+  delegateCopy = delegate;
   v8 = objc_msgSend_delegate(self, v4, v5, v6, v7);
 
-  v11 = v12;
-  if (v8 != v12)
+  v11 = delegateCopy;
+  if (v8 != delegateCopy)
   {
-    objc_msgSend_addDelegate_queue_(self, v9, v12, MEMORY[0x277D85CD0], v10);
-    v11 = v12;
+    objc_msgSend_addDelegate_queue_(self, v9, delegateCopy, MEMORY[0x277D85CD0], v10);
+    v11 = delegateCopy;
   }
 }
 
@@ -330,16 +330,16 @@
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setServiceVCCaps:(unint64_t)a3 toCaps:(unint64_t)a4
+- (void)_setServiceVCCaps:(unint64_t)caps toCaps:(unint64_t)toCaps
 {
-  v5 = (qword_28134A440 & ~a3 | a4) & 0x1F0000 | 0x100000020000;
+  v5 = (qword_28134A440 & ~caps | toCaps) & 0x1F0000 | 0x100000020000;
   qword_28134A440 = v5;
   if (!qword_28134A438)
   {
     qword_28134A438 = v5;
   }
 
-  objc_msgSend__dumpCaps(self, a2, a3, a4, v4);
+  objc_msgSend__dumpCaps(self, a2, caps, toCaps, v4);
   v10 = objc_msgSend__nonFinalChat(IMAVChat, v6, v7, v8, v9);
 
   if (!v10)
@@ -351,19 +351,19 @@
   objc_msgSend_setVCCapabilities_(v18, v15, qword_28134A440, v16, v17);
 }
 
-- (void)setIMAVCapabilities:(int64_t)a3 toCaps:(int64_t)a4
+- (void)setIMAVCapabilities:(int64_t)capabilities toCaps:(int64_t)caps
 {
-  v5 = vdupq_n_s64(a3);
+  v5 = vdupq_n_s64(capabilities);
   v6 = vorrq_s8(vandq_s8(vshlq_u64(v5, xmmword_254783240), xmmword_254783270), vandq_s8(vshlq_u64(v5, xmmword_254783250), xmmword_254783260));
-  v7 = vdupq_n_s64(a4);
+  v7 = vdupq_n_s64(caps);
   v8 = vorr_s8(*v6.i8, *&vextq_s8(v6, v6, 8uLL));
   v9 = vorrq_s8(vandq_s8(vshlq_u64(v7, xmmword_254783240), xmmword_254783270), vandq_s8(vshlq_u64(v7, xmmword_254783250), xmmword_254783260));
   objc_msgSend__setServiceVCCaps_toCaps_(self, a2, v8, *&vorr_s8(*v9.i8, *&vextq_s8(v9, v9, 8uLL)), v4);
 }
 
-- (void)vcCapabilitiesChanged:(unint64_t)a3
+- (void)vcCapabilitiesChanged:(unint64_t)changed
 {
-  if (objc_msgSend__shouldRunConferences(self, a2, a3, v3, v4))
+  if (objc_msgSend__shouldRunConferences(self, a2, changed, v3, v4))
   {
     LOBYTE(v11) = 0;
   }
@@ -394,12 +394,12 @@
   else if (!qword_28134A440)
   {
 LABEL_9:
-    qword_28134A440 = a3;
+    qword_28134A440 = changed;
   }
 
-  if (qword_28134A438 != a3)
+  if (qword_28134A438 != changed)
   {
-    qword_28134A438 = a3;
+    qword_28134A438 = changed;
     if ((objc_msgSend__shouldRunConferences(self, v12, v13, v14, v15) & 1) != 0 || (objc_msgSend__shouldRunACConferences(self, v17, v18, v19, v20) & 1) != 0 || objc_msgSend__shouldObserveConferences(self, v17, v18, v19, v20))
     {
       v21 = objc_msgSend_standardUserDefaults(MEMORY[0x277CBEBD0], v17, v18, v19, v20);
@@ -525,9 +525,9 @@ LABEL_8:
   }
 }
 
-- (void)blockOnPendingVCInvitationsWithCapabilities:(int64_t)a3
+- (void)blockOnPendingVCInvitationsWithCapabilities:(int64_t)capabilities
 {
-  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D18D68], a2, a3, v3, v4);
+  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D18D68], a2, capabilities, v3, v4);
   isConnected = objc_msgSend_isConnected(v6, v7, v8, v9, v10);
 
   if ((isConnected & 1) == 0)

@@ -1,63 +1,63 @@
 @interface CPSHidingLabel
 - (CPSHidingLabelDelegate)hidingLabelDelegate;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation CPSHidingLabel
 
 - (void)layoutSubviews
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v15.receiver = self;
   v15.super_class = CPSHidingLabel;
   [(CPSHidingLabel *)&v15 layoutSubviews];
-  v10 = [(CPSHidingLabel *)v17 text];
-  v9 = [(CPSHidingLabel *)v17 font];
-  v8 = [(CPSHidingLabel *)v17 traitCollection];
-  [v8 displayScale];
-  CPSSizeForText(v10, v9, 0, 1.79769313e308, v2);
+  text = [(CPSHidingLabel *)selfCopy text];
+  font = [(CPSHidingLabel *)selfCopy font];
+  traitCollection = [(CPSHidingLabel *)selfCopy traitCollection];
+  [traitCollection displayScale];
+  CPSSizeForText(text, font, 0, 1.79769313e308, v2);
   v14 = v3;
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  [(CPSHidingLabel *)v17 frame];
+  MEMORY[0x277D82BD8](traitCollection);
+  MEMORY[0x277D82BD8](font);
+  *&v4 = MEMORY[0x277D82BD8](text).n128_u64[0];
+  [(CPSHidingLabel *)selfCopy frame];
   v13 = ceil(v5) < v14;
   if (!v13)
   {
-    v6 = [(CPSHidingLabel *)v17 text];
+    text2 = [(CPSHidingLabel *)selfCopy text];
     v11 = 0;
     v7 = 1;
-    if (v6)
+    if (text2)
     {
-      v12 = [(CPSHidingLabel *)v17 text];
+      text3 = [(CPSHidingLabel *)selfCopy text];
       v11 = 1;
-      v7 = [v12 length] == 0;
+      v7 = [text3 length] == 0;
     }
 
     v13 = v7;
     if (v11)
     {
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](text3);
     }
 
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](text2);
   }
 
-  [(CPSHidingLabel *)v17 setHidden:v13];
+  [(CPSHidingLabel *)selfCopy setHidden:v13];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  hiddenCopy = hidden;
   v4.receiver = self;
   v4.super_class = CPSHidingLabel;
-  [(CPSHidingLabel *)&v4 setHidden:a3];
-  WeakRetained = objc_loadWeakRetained(&v7->_hidingLabelDelegate);
-  [WeakRetained label:v7 hidden:v5];
+  [(CPSHidingLabel *)&v4 setHidden:hidden];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_hidingLabelDelegate);
+  [WeakRetained label:selfCopy hidden:hiddenCopy];
   MEMORY[0x277D82BD8](WeakRetained);
 }
 

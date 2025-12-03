@@ -1,8 +1,8 @@
 @interface FSFStreamRegistry
-+ (BOOL)writeDict:(id)a3;
++ (BOOL)writeDict:(id)dict;
 + (id)readFileInToDict;
 + (id)registryFilePath;
-- (BOOL)registerForStream:(id)a3 withSchema:(id)a4 error:(id *)a5;
+- (BOOL)registerForStream:(id)stream withSchema:(id)schema error:(id *)error;
 @end
 
 @implementation FSFStreamRegistry
@@ -15,10 +15,10 @@
   return v3;
 }
 
-- (BOOL)registerForStream:(id)a3 withSchema:(id)a4 error:(id *)a5
+- (BOOL)registerForStream:(id)stream withSchema:(id)schema error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  schemaCopy = schema;
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = +[FSFStreamRegistry readFileInToDict];
   if (v9)
@@ -27,21 +27,21 @@
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [v8 objectForKeyedSubscript:v6];
+  v11 = [v8 objectForKeyedSubscript:streamCopy];
 
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:v6];
+    v12 = [v8 objectForKeyedSubscript:streamCopy];
     [v10 addObjectsFromArray:v12];
   }
 
-  v13 = [v7 schemaData];
-  [v10 addObject:v13];
+  schemaData = [schemaCopy schemaData];
+  [v10 addObject:schemaData];
 
-  [v8 setObject:v10 forKey:v6];
-  LOBYTE(v13) = [FSFStreamRegistry writeDict:v8];
+  [v8 setObject:v10 forKey:streamCopy];
+  LOBYTE(schemaData) = [FSFStreamRegistry writeDict:v8];
 
-  return v13;
+  return schemaData;
 }
 
 + (id)readFileInToDict
@@ -61,10 +61,10 @@
   return v4;
 }
 
-+ (BOOL)writeDict:(id)a3
++ (BOOL)writeDict:(id)dict
 {
   v11 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:3 error:&v11];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dict options:3 error:&v11];
   v4 = v11;
   v5 = +[FSFStreamRegistry registryFilePath];
   v10 = v4;

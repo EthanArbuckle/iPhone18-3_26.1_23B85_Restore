@@ -1,30 +1,30 @@
 @interface UISplitKeyboardSupportAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axDescriptionForPoint:(double)a3 windowWidth:(double)a4 windowHeight:(double)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axDescriptionForPoint:(double)point windowWidth:(double)width windowHeight:(double)height;
 - (id)_axLastLocationDescription;
-- (void)_axSetLastLocationDescription:(uint64_t)a1;
-- (void)translateDetected:(id)a3;
+- (void)_axSetLastLocationDescription:(uint64_t)description;
+- (void)translateDetected:(id)detected;
 @end
 
 @implementation UISplitKeyboardSupportAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UISplitKeyboardSupport" hasInstanceMethod:@"translateDetected:" withFullSignature:{"v", "@", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (id)_axLastLocationDescription
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UISplitKeyboardSupportAccessibility___axLastLocationDescription);
+    v2 = objc_getAssociatedObject(self, &__UISplitKeyboardSupportAccessibility___axLastLocationDescription);
   }
 
   else
@@ -35,12 +35,12 @@
   return v2;
 }
 
-- (void)_axSetLastLocationDescription:(uint64_t)a1
+- (void)_axSetLastLocationDescription:(uint64_t)description
 {
-  v3 = a1;
+  descriptionCopy = description;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (descriptionCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -48,19 +48,19 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)translateDetected:(id)a3
+- (void)translateDetected:(id)detected
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, detected);
   v20 = 0;
   objc_opt_class();
   v19 = __UIAccessibilityCastAsClass();
   v18 = MEMORY[0x29EDC9748](v19);
   objc_storeStrong(&v19, 0);
   v21 = v18;
-  v17.receiver = v23;
+  v17.receiver = selfCopy;
   v17.super_class = UISplitKeyboardSupportAccessibility;
   [(UISplitKeyboardSupportAccessibility *)&v17 translateDetected:location[0]];
   if ([MEMORY[0x29EDC7B08] isFloating])
@@ -75,28 +75,28 @@
 
     else if ([v21 state] == 2)
     {
-      v16 = [(UISplitKeyboardSupportAccessibility *)v23 _axLastLocationDescription];
-      v15 = [MEMORY[0x29EDC7B08] sharedInstance];
-      v14 = [v15 window];
-      [v14 bounds];
+      _axLastLocationDescription = [(UISplitKeyboardSupportAccessibility *)selfCopy _axLastLocationDescription];
+      mEMORY[0x29EDC7B08] = [MEMORY[0x29EDC7B08] sharedInstance];
+      window = [mEMORY[0x29EDC7B08] window];
+      [window bounds];
       v13 = v24;
       Width = CGRectGetWidth(v24);
       Height = CGRectGetHeight(v13);
-      v7 = v23;
-      [v15 bounds];
+      v7 = selfCopy;
+      [mEMORY[0x29EDC7B08] bounds];
       AX_CGRectGetCenter();
-      [v15 convertPoint:0 toView:{v3, v4}];
+      [mEMORY[0x29EDC7B08] convertPoint:0 toView:{v3, v4}];
       argument = [(UISplitKeyboardSupportAccessibility *)v7 _axDescriptionForPoint:v5 windowWidth:v6 windowHeight:Width, Height];
-      if (([v16 isEqualToString:argument] & 1) == 0)
+      if (([_axLastLocationDescription isEqualToString:argument] & 1) == 0)
       {
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], argument);
-        [(UISplitKeyboardSupportAccessibility *)v23 _axSetLastLocationDescription:?];
+        [(UISplitKeyboardSupportAccessibility *)selfCopy _axSetLastLocationDescription:?];
       }
 
       objc_storeStrong(&argument, 0);
-      objc_storeStrong(&v14, 0);
-      objc_storeStrong(&v15, 0);
-      objc_storeStrong(&v16, 0);
+      objc_storeStrong(&window, 0);
+      objc_storeStrong(&mEMORY[0x29EDC7B08], 0);
+      objc_storeStrong(&_axLastLocationDescription, 0);
     }
   }
 
@@ -104,25 +104,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_axDescriptionForPoint:(double)a3 windowWidth:(double)a4 windowHeight:(double)a5
+- (id)_axDescriptionForPoint:(double)point windowWidth:(double)width windowHeight:(double)height
 {
   v19 = a2;
-  v20 = a3;
-  v18 = a1;
-  v17 = a4;
-  v16 = a5;
-  if (!a1)
+  pointCopy = point;
+  selfCopy = self;
+  widthCopy = width;
+  heightCopy = height;
+  if (!self)
   {
     v21 = 0;
     goto LABEL_22;
   }
 
   v15 = 0;
-  if (v19 >= v17 / 3.0)
+  if (v19 >= widthCopy / 3.0)
   {
-    if (v19 <= 2.0 * v17 / 3.0)
+    if (v19 <= 2.0 * widthCopy / 3.0)
     {
-      if (v20 < v16 / 3.0)
+      if (pointCopy < heightCopy / 3.0)
       {
         v10 = accessibilityLocalizedString(@"keyboard.floating.top");
         v11 = v15;
@@ -131,7 +131,7 @@
         goto LABEL_21;
       }
 
-      if (v20 <= 2.0 * v16 / 3.0)
+      if (pointCopy <= 2.0 * heightCopy / 3.0)
       {
         v7 = accessibilityLocalizedString(@"keyboard.floating.center");
       }
@@ -144,7 +144,7 @@
 
     else
     {
-      if (v20 < v16 / 3.0)
+      if (pointCopy < heightCopy / 3.0)
       {
         v8 = accessibilityLocalizedString(@"keyboard.floating.top.right");
         v9 = v15;
@@ -153,7 +153,7 @@
         goto LABEL_21;
       }
 
-      if (v20 <= 2.0 * v16 / 3.0)
+      if (pointCopy <= 2.0 * heightCopy / 3.0)
       {
         v7 = accessibilityLocalizedString(@"keyboard.floating.right");
       }
@@ -171,9 +171,9 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if (v20 >= v16 / 3.0)
+  if (pointCopy >= heightCopy / 3.0)
   {
-    if (v20 <= 2.0 * v16 / 3.0)
+    if (pointCopy <= 2.0 * heightCopy / 3.0)
     {
       v7 = accessibilityLocalizedString(@"keyboard.floating.left");
     }

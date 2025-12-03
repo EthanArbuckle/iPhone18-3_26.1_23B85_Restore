@@ -1,59 +1,59 @@
 @interface CDMonitorManager
-+ (id)monitorManagerForEventStreams:(id)a3 domain:(unint64_t)a4;
-- (BOOL)_hasMonitorForStreamName:(id)a3;
-- (BOOL)hasMonitor:(id)a3;
-- (CDMonitorManager)initWithEventStreams:(id)a3 domain:(unint64_t)a4;
++ (id)monitorManagerForEventStreams:(id)streams domain:(unint64_t)domain;
+- (BOOL)_hasMonitorForStreamName:(id)name;
+- (BOOL)hasMonitor:(id)monitor;
+- (CDMonitorManager)initWithEventStreams:(id)streams domain:(unint64_t)domain;
 - (id)_allMonitors;
 - (id)_allStreamNames;
-- (id)_currentEventForStreamName:(id)a3;
-- (id)_lastUpdateForStreamName:(id)a3;
-- (id)_monitorForStreamName:(id)a3;
+- (id)_currentEventForStreamName:(id)name;
+- (id)_lastUpdateForStreamName:(id)name;
+- (id)_monitorForStreamName:(id)name;
 - (id)currentEvent;
-- (id)currentEventForStream:(id)a3;
+- (id)currentEventForStream:(id)stream;
 - (id)lastUpdate;
-- (id)lastUpdateForStream:(id)a3;
-- (void)_addMonitor:(id)a3 forStreamName:(id)a4;
-- (void)_removeMonitorForStreamName:(id)a3;
-- (void)_setHistoricalHandler:(id)a3 forStreamName:(id)a4;
-- (void)_setInstantHandler:(id)a3 forStreamName:(id)a4;
-- (void)_startMonitorForStreamName:(id)a3;
-- (void)_stopMonitorForStreamName:(id)a3;
-- (void)_updateForStreamName:(id)a3;
-- (void)addMonitor:(id)a3;
-- (void)deliverNotificationEvent:(id)a3;
+- (id)lastUpdateForStream:(id)stream;
+- (void)_addMonitor:(id)monitor forStreamName:(id)name;
+- (void)_removeMonitorForStreamName:(id)name;
+- (void)_setHistoricalHandler:(id)handler forStreamName:(id)name;
+- (void)_setInstantHandler:(id)handler forStreamName:(id)name;
+- (void)_startMonitorForStreamName:(id)name;
+- (void)_stopMonitorForStreamName:(id)name;
+- (void)_updateForStreamName:(id)name;
+- (void)addMonitor:(id)monitor;
+- (void)deliverNotificationEvent:(id)event;
 - (void)handleShutdownNotification;
-- (void)populateCurrentValueForStreamName:(id)a3;
-- (void)removeMonitor:(id)a3;
-- (void)setHistoricalDeletingHandler:(id)a3;
-- (void)setHistoricalHandler:(id)a3;
-- (void)setHistoricalHandler:(id)a3 forStream:(id)a4;
-- (void)setInstantHandler:(id)a3;
-- (void)setInstantHandler:(id)a3 forStream:(id)a4;
-- (void)setShutdownHandler:(id)a3;
+- (void)populateCurrentValueForStreamName:(id)name;
+- (void)removeMonitor:(id)monitor;
+- (void)setHistoricalDeletingHandler:(id)handler;
+- (void)setHistoricalHandler:(id)handler;
+- (void)setHistoricalHandler:(id)handler forStream:(id)stream;
+- (void)setInstantHandler:(id)handler;
+- (void)setInstantHandler:(id)handler forStream:(id)stream;
+- (void)setShutdownHandler:(id)handler;
 - (void)start;
-- (void)startMonitorForStream:(id)a3;
+- (void)startMonitorForStream:(id)stream;
 - (void)stop;
-- (void)stopMonitorForStream:(id)a3;
+- (void)stopMonitorForStream:(id)stream;
 - (void)update;
-- (void)updateForStream:(id)a3;
+- (void)updateForStream:(id)stream;
 @end
 
 @implementation CDMonitorManager
 
 - (id)_allMonitors
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_monitors allValues];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allValues = [(NSMutableDictionary *)selfCopy->_monitors allValues];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allValues;
 }
 
-- (CDMonitorManager)initWithEventStreams:(id)a3 domain:(unint64_t)a4
+- (CDMonitorManager)initWithEventStreams:(id)streams domain:(unint64_t)domain
 {
   v110 = *MEMORY[0x1E69E9840];
-  v66 = a3;
+  streamsCopy = streams;
   v101.receiver = self;
   v101.super_class = CDMonitorManager;
   observer = [(CDMonitorManager *)&v101 init];
@@ -87,8 +87,8 @@
 
   if (!UsageTrackingLibraryCore())
   {
-    v7 = +[_CDLogging contextChannel];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    contextChannel = +[_CDLogging contextChannel];
+    if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
     {
       [CDMonitorManager initWithEventStreams:domain:];
     }
@@ -118,8 +118,8 @@ LABEL_72:
 
   free(v6);
 LABEL_9:
-  v7 = [(NSMutableSet *)self[6]._shutdownHandlingMonitors contextChannel];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  contextChannel = [(NSMutableSet *)self[6]._shutdownHandlingMonitors contextChannel];
+  if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEBUG))
   {
     [CDMonitorManager initWithEventStreams:domain:];
   }
@@ -134,7 +134,7 @@ LABEL_15:
 
 LABEL_17:
 
-  v70 = _CDDomainAvailabilityDescription(a4);
+  v70 = _CDDomainAvailabilityDescription(domain);
   v9 = +[_CDLogging contextChannel];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -145,14 +145,14 @@ LABEL_17:
   v11 = *(observer + 9);
   *(observer + 9) = v10;
 
-  v69 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v68 = [MEMORY[0x1E695DFA8] set];
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v12 = [v66 allEventStreams];
-  obj = [v12 allValues];
+  allEventStreams = [streamsCopy allEventStreams];
+  obj = [allEventStreams allValues];
 
   v13 = [obj countByEnumeratingWithState:&v97 objects:v109 count:16];
   if (v13)
@@ -168,86 +168,86 @@ LABEL_17:
         }
 
         v15 = *(*(&v97 + 1) + 8 * i);
-        v16 = [v15 eventStreamProperties];
-        v17 = [v16 name];
+        eventStreamProperties = [v15 eventStreamProperties];
+        name = [eventStreamProperties name];
 
-        if (!v17)
+        if (!name)
         {
-          v25 = +[_CDLogging contextChannel];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          monitorClass = +[_CDLogging contextChannel];
+          if (os_log_type_enabled(monitorClass, OS_LOG_TYPE_ERROR))
           {
-            [(CDMonitorManager *)v107 initWithEventStreams:v15 domain:&v108, v25];
+            [(CDMonitorManager *)v107 initWithEventStreams:v15 domain:&v108, monitorClass];
           }
 
           goto LABEL_63;
         }
 
-        v18 = [v17 lowercaseString];
-        v19 = [v18 containsString:@"(internal)"];
+        lowercaseString = [name lowercaseString];
+        v19 = [lowercaseString containsString:@"(internal)"];
 
         if (!v19 || +[_CDDeviceInfo isRunningOnInternalBuild])
         {
-          v20 = [v15 eventStreamProperties];
-          v21 = [v20 isAvailable];
+          eventStreamProperties2 = [v15 eventStreamProperties];
+          isAvailable = [eventStreamProperties2 isAvailable];
 
-          if (v21)
+          if (isAvailable)
           {
-            v22 = [v15 eventStreamProperties];
-            v23 = ([v22 domainAvailability] & a4) == 0;
+            eventStreamProperties3 = [v15 eventStreamProperties];
+            v23 = ([eventStreamProperties3 domainAvailability] & domain) == 0;
 
             if (!v23)
             {
-              v24 = [v15 eventStreamProperties];
-              v25 = [v24 monitorClass];
+              eventStreamProperties4 = [v15 eventStreamProperties];
+              monitorClass = [eventStreamProperties4 monitorClass];
 
-              if (v25)
+              if (monitorClass)
               {
-                v26 = NSClassFromString(&v25->isa);
+                v26 = NSClassFromString(&monitorClass->isa);
                 v27 = v26;
                 if (v26)
                 {
                   v28 = objc_alloc_init(v26);
                   if (v28)
                   {
-                    v29 = [v15 eventStreamProperties];
-                    v30 = [v29 isInstant];
+                    eventStreamProperties5 = [v15 eventStreamProperties];
+                    isInstant = [eventStreamProperties5 isInstant];
 
-                    v31 = [v15 eventStreamProperties];
-                    v32 = [v31 isHistorical];
+                    eventStreamProperties6 = [v15 eventStreamProperties];
+                    isHistorical = [eventStreamProperties6 isHistorical];
 
-                    v33 = [v15 eventStreamProperties];
-                    v72 = [v33 setupOnDemand];
+                    eventStreamProperties7 = [v15 eventStreamProperties];
+                    setupOnDemand = [eventStreamProperties7 setupOnDemand];
 
-                    v34 = [v15 eventStreamProperties];
-                    v35 = [v34 pollingPeriod];
+                    eventStreamProperties8 = [v15 eventStreamProperties];
+                    pollingPeriod = [eventStreamProperties8 pollingPeriod];
 
                     v36 = +[_CDLogging knowledgeChannel];
                     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
                     {
                       *location = 138544130;
-                      *&location[4] = v17;
+                      *&location[4] = name;
                       v103 = 1024;
-                      *v104 = v30;
+                      *v104 = isInstant;
                       *&v104[4] = 1024;
-                      *&v104[6] = v32;
+                      *&v104[6] = isHistorical;
                       v105 = 2048;
-                      v106 = v35;
+                      v106 = pollingPeriod;
                       _os_log_debug_impl(&dword_191750000, v36, OS_LOG_TYPE_DEBUG, "Monitor %{public}@ IsInstant=%d, IsHistorical=%d, PollingPeriod=%ld", location, 0x22u);
                     }
 
-                    if (v30 && [v28 conformsToProtocol:&unk_1F0624888])
+                    if (isInstant && [v28 conformsToProtocol:&unk_1F0624888])
                     {
                       v93[0] = MEMORY[0x1E69E9820];
                       v93[1] = 3221225472;
                       v93[2] = __48__CDMonitorManager_initWithEventStreams_domain___block_invoke;
                       v93[3] = &unk_1E7369FC8;
                       v94 = observer;
-                      v95 = v17;
+                      v95 = name;
                       v96 = v15;
                       [v28 setInstantHandler:v93];
                     }
 
-                    if (v32)
+                    if (isHistorical)
                     {
                       if ([v28 conformsToProtocol:&unk_1F06248E8])
                       {
@@ -257,11 +257,11 @@ LABEL_17:
                         v89[3] = &unk_1E7369FF0;
                         v67 = observer;
                         v90 = v67;
-                        v37 = v17;
+                        v37 = name;
                         v91 = v37;
                         v92 = v15;
                         [v28 setHistoricalHandler:v89];
-                        if ((v35 - 1) <= 6)
+                        if ((pollingPeriod - 1) <= 6)
                         {
                           v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.coreduetd.monitor.%@", v37];
                           objc_initWeak(location, v28);
@@ -270,7 +270,7 @@ LABEL_17:
                           v87[2] = __48__CDMonitorManager_initWithEventStreams_domain___block_invoke_92;
                           v87[3] = &unk_1E7367220;
                           objc_copyWeak(&v88, location);
-                          v39 = [_CDPeriodicSchedulerJob jobWithPeriod:v35 schedulerJobName:v38 handler:v87];
+                          v39 = [_CDPeriodicSchedulerJob jobWithPeriod:pollingPeriod schedulerJobName:v38 handler:v87];
                           v40 = +[_CDPeriodicScheduler sharedInstance];
                           [v40 registerJob:v39];
 
@@ -278,10 +278,10 @@ LABEL_17:
                           objc_destroyWeak(location);
                         }
 
-                        v41 = [v15 eventStreamProperties];
-                        v42 = [v41 shouldSaveCurrentEventOnShutdown];
+                        eventStreamProperties9 = [v15 eventStreamProperties];
+                        shouldSaveCurrentEventOnShutdown = [eventStreamProperties9 shouldSaveCurrentEventOnShutdown];
 
-                        if (v42)
+                        if (shouldSaveCurrentEventOnShutdown)
                         {
                           v43 = v28;
                           [*(observer + 9) addObject:v43];
@@ -305,16 +305,16 @@ LABEL_17:
                         v78[2] = __48__CDMonitorManager_initWithEventStreams_domain___block_invoke_101;
                         v78[3] = &unk_1E736A040;
                         v79 = observer;
-                        v80 = v17;
+                        v80 = name;
                         v81 = v15;
                         [v28 setHistoricalDeletingHandler:v78];
                       }
                     }
 
-                    [v69 setObject:v28 forKey:v17];
-                    if (v72)
+                    [dictionary setObject:v28 forKey:name];
+                    if (setupOnDemand)
                     {
-                      [v68 addObject:v17];
+                      [v68 addObject:name];
                     }
                   }
 
@@ -327,7 +327,7 @@ LABEL_17:
                       *location = 138543618;
                       *&location[4] = v49;
                       v103 = 2114;
-                      *v104 = v17;
+                      *v104 = name;
                       _os_log_error_impl(&dword_191750000, v48, OS_LOG_TYPE_ERROR, "Unable to initialize monitor %{public}@ for streamName %{public}@", location, 0x16u);
                     }
                   }
@@ -339,9 +339,9 @@ LABEL_17:
                   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                   {
                     *location = 138543618;
-                    *&location[4] = v25;
+                    *&location[4] = monitorClass;
                     v103 = 2114;
-                    *v104 = v17;
+                    *v104 = name;
                     _os_log_error_impl(&dword_191750000, v28, OS_LOG_TYPE_ERROR, "Unable to find monitor class %{public}@ for streamName %{public}@", location, 0x16u);
                   }
                 }
@@ -353,7 +353,7 @@ LABEL_17:
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
                 {
                   *location = 138543362;
-                  *&location[4] = v17;
+                  *&location[4] = name;
                   _os_log_impl(&dword_191750000, v28, OS_LOG_TYPE_INFO, "No monitor for %{public}@", location, 0xCu);
                 }
               }
@@ -361,14 +361,14 @@ LABEL_17:
               goto LABEL_63;
             }
 
-            v25 = +[_CDLogging contextChannel];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+            monitorClass = +[_CDLogging contextChannel];
+            if (os_log_type_enabled(monitorClass, OS_LOG_TYPE_INFO))
             {
               *location = 138412546;
               *&location[4] = v70;
               v103 = 2112;
-              *v104 = v17;
-              v45 = v25;
+              *v104 = name;
+              v45 = monitorClass;
               v46 = "Monitor is not supported in the %@ domain: %@ ";
               v47 = 22;
 LABEL_54:
@@ -378,12 +378,12 @@ LABEL_54:
 
           else
           {
-            v25 = +[_CDLogging contextChannel];
-            if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+            monitorClass = +[_CDLogging contextChannel];
+            if (os_log_type_enabled(monitorClass, OS_LOG_TYPE_INFO))
             {
               *location = 138412290;
-              *&location[4] = v17;
-              v45 = v25;
+              *&location[4] = name;
+              v45 = monitorClass;
               v46 = "Monitor is not supported on this platform: %@";
               v47 = 12;
               goto LABEL_54;
@@ -400,7 +400,7 @@ LABEL_63:
     while (v13);
   }
 
-  objc_storeStrong(observer + 1, v69);
+  objc_storeStrong(observer + 1, dictionary);
   objc_storeStrong(observer + 2, v68);
   v50 = +[_CDLogging knowledgeChannel];
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
@@ -408,13 +408,13 @@ LABEL_63:
     [CDMonitorManager initWithEventStreams:? domain:?];
   }
 
-  v51 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v52 = *(observer + 7);
-  *(observer + 7) = v51;
+  *(observer + 7) = dictionary2;
 
-  v53 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v54 = *(observer + 8);
-  *(observer + 8) = v53;
+  *(observer + 8) = dictionary3;
 
   v55 = dispatch_queue_create("com.apple.CDMonitorManager.workQueue", MEMORY[0x1E69E96A8]);
   v56 = *(observer + 10);
@@ -540,17 +540,17 @@ uint64_t __48__CDMonitorManager_initWithEventStreams_domain___block_invoke_107(u
   return [*(a1 + 32) handleShutdownNotification];
 }
 
-+ (id)monitorManagerForEventStreams:(id)a3 domain:(unint64_t)a4
++ (id)monitorManagerForEventStreams:(id)streams domain:(unint64_t)domain
 {
-  v5 = a3;
+  streamsCopy = streams;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_invoke;
   v11[3] = &unk_1E7368B18;
-  v12 = v5;
-  v13 = a4;
+  v12 = streamsCopy;
+  domainCopy = domain;
   v6 = monitorManagerForEventStreams_domain__onceToken;
-  v7 = v5;
+  v7 = streamsCopy;
   if (v6 != -1)
   {
     dispatch_once(&monitorManagerForEventStreams_domain__onceToken, v11);
@@ -571,15 +571,15 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-- (id)_monitorForStreamName:(id)a3
+- (id)_monitorForStreamName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_monitors objectForKeyedSubscript:v4];
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_monitors objectForKeyedSubscript:nameCopy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -592,107 +592,107 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
 
 - (id)_allStreamNames
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_monitors allKeys];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  allKeys = [(NSMutableDictionary *)selfCopy->_monitors allKeys];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)_setInstantHandler:(id)a3 forStreamName:(id)a4
+- (void)_setInstantHandler:(id)handler forStreamName:(id)name
 {
-  v6 = a4;
-  v7 = MEMORY[0x193B00C50](a3);
-  [(NSMutableDictionary *)self->_instantHandlerMap setObject:v7 forKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = MEMORY[0x193B00C50](handler);
+  [(NSMutableDictionary *)self->_instantHandlerMap setObject:v7 forKeyedSubscript:nameCopy];
 }
 
-- (void)setInstantHandler:(id)a3 forStream:(id)a4
+- (void)setInstantHandler:(id)handler forStream:(id)stream
 {
-  v10 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  streamCopy = stream;
   v7 = objc_autoreleasePoolPush();
-  v8 = [v6 eventStreamProperties];
-  v9 = [v8 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
-  if (v9)
+  if (name)
   {
-    [(CDMonitorManager *)self _setInstantHandler:v10 forStreamName:v9];
+    [(CDMonitorManager *)self _setInstantHandler:handlerCopy forStreamName:name];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setInstantHandler:(id)a3
+- (void)setInstantHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   v4 = objc_autoreleasePoolPush();
-  v5 = MEMORY[0x193B00C50](v7);
+  v5 = MEMORY[0x193B00C50](handlerCopy);
   generalInstantHandler = self->_generalInstantHandler;
   self->_generalInstantHandler = v5;
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_setHistoricalHandler:(id)a3 forStreamName:(id)a4
+- (void)_setHistoricalHandler:(id)handler forStreamName:(id)name
 {
-  v6 = a4;
-  v7 = MEMORY[0x193B00C50](a3);
-  [(NSMutableDictionary *)self->_historicalHandlerMap setObject:v7 forKeyedSubscript:v6];
+  nameCopy = name;
+  v7 = MEMORY[0x193B00C50](handler);
+  [(NSMutableDictionary *)self->_historicalHandlerMap setObject:v7 forKeyedSubscript:nameCopy];
 }
 
-- (void)setHistoricalHandler:(id)a3 forStream:(id)a4
+- (void)setHistoricalHandler:(id)handler forStream:(id)stream
 {
-  v10 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  streamCopy = stream;
   v7 = objc_autoreleasePoolPush();
-  v8 = [v6 eventStreamProperties];
-  v9 = [v8 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
-  if (v9)
+  if (name)
   {
-    [(CDMonitorManager *)self _setHistoricalHandler:v10 forStreamName:v9];
+    [(CDMonitorManager *)self _setHistoricalHandler:handlerCopy forStreamName:name];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setHistoricalHandler:(id)a3
+- (void)setHistoricalHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   v4 = objc_autoreleasePoolPush();
-  v5 = MEMORY[0x193B00C50](v7);
+  v5 = MEMORY[0x193B00C50](handlerCopy);
   generalHistoricalHandler = self->_generalHistoricalHandler;
   self->_generalHistoricalHandler = v5;
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)setHistoricalDeletingHandler:(id)a3
+- (void)setHistoricalDeletingHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   v4 = objc_autoreleasePoolPush();
-  v5 = MEMORY[0x193B00C50](v7);
+  v5 = MEMORY[0x193B00C50](handlerCopy);
   generalHistoricalDeletingHandler = self->_generalHistoricalDeletingHandler;
   self->_generalHistoricalDeletingHandler = v5;
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)setShutdownHandler:(id)a3
+- (void)setShutdownHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   v4 = objc_autoreleasePoolPush();
-  v5 = MEMORY[0x193B00C50](v7);
+  v5 = MEMORY[0x193B00C50](handlerCopy);
   generalShutdownHandler = self->_generalShutdownHandler;
   self->_generalShutdownHandler = v5;
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_startMonitorForStreamName:(id)a3
+- (void)_startMonitorForStreamName:(id)name
 {
-  v4 = [(CDMonitorManager *)self _monitorForStreamName:a3];
+  v4 = [(CDMonitorManager *)self _monitorForStreamName:name];
   v5 = os_transaction_create();
   if (v4 && [v4 conformsToProtocol:&unk_1F0624888])
   {
@@ -714,23 +714,23 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   }
 }
 
-- (void)startMonitorForStream:(id)a3
+- (void)startMonitorForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 eventStreamProperties];
-  v7 = [v6 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
   v8 = +[_CDLogging knowledgeChannel];
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (name)
   {
     if (v9)
     {
       [CDMonitorManager startMonitorForStream:];
     }
 
-    [(CDMonitorManager *)self _startMonitorForStreamName:v7];
+    [(CDMonitorManager *)self _startMonitorForStreamName:name];
   }
 
   else
@@ -752,8 +752,8 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CDMonitorManager *)self _allStreamNames];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  _allStreamNames = [(CDMonitorManager *)self _allStreamNames];
+  v4 = [_allStreamNames countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -764,7 +764,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allStreamNames);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -785,7 +785,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [_allStreamNames countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
@@ -795,9 +795,9 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_stopMonitorForStreamName:(id)a3
+- (void)_stopMonitorForStreamName:(id)name
 {
-  v4 = [(CDMonitorManager *)self _monitorForStreamName:a3];
+  v4 = [(CDMonitorManager *)self _monitorForStreamName:name];
   v5 = v4;
   if (v4 && [v4 conformsToProtocol:&unk_1F0624888])
   {
@@ -821,23 +821,23 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   }
 }
 
-- (void)stopMonitorForStream:(id)a3
+- (void)stopMonitorForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 eventStreamProperties];
-  v7 = [v6 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
   v8 = +[_CDLogging knowledgeChannel];
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  if (name)
   {
     if (v9)
     {
       [CDMonitorManager stopMonitorForStream:];
     }
 
-    [(CDMonitorManager *)self _stopMonitorForStreamName:v7];
+    [(CDMonitorManager *)self _stopMonitorForStreamName:name];
   }
 
   else
@@ -859,8 +859,8 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CDMonitorManager *)self _allStreamNames];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  _allStreamNames = [(CDMonitorManager *)self _allStreamNames];
+  v4 = [_allStreamNames countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -871,7 +871,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allStreamNames);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -892,7 +892,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [_allStreamNames countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
@@ -902,11 +902,11 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateCurrentValueForStreamName:(id)a3
+- (void)populateCurrentValueForStreamName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(CDMonitorManager *)self _monitorForStreamName:v7];
+  v5 = [(CDMonitorManager *)self _monitorForStreamName:nameCopy];
   v6 = v5;
   if (v5 && [v5 conformsToProtocol:&unk_1F0624888])
   {
@@ -916,33 +916,33 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_currentEventForStreamName:(id)a3
+- (id)_currentEventForStreamName:(id)name
 {
-  v3 = [(CDMonitorManager *)self _monitorForStreamName:a3];
+  v3 = [(CDMonitorManager *)self _monitorForStreamName:name];
   v4 = v3;
   if (v3 && [v3 conformsToProtocol:&unk_1F0624888])
   {
-    v5 = [v4 currentEvent];
+    currentEvent = [v4 currentEvent];
   }
 
   else
   {
-    v5 = 0;
+    currentEvent = 0;
   }
 
-  return v5;
+  return currentEvent;
 }
 
-- (id)currentEventForStream:(id)a3
+- (id)currentEventForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 eventStreamProperties];
-  v7 = [v6 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(CDMonitorManager *)self _currentEventForStreamName:v7];
+    v8 = [(CDMonitorManager *)self _currentEventForStreamName:name];
   }
 
   else
@@ -959,13 +959,13 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CDMonitorManager *)self _allStreamNames];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _allStreamNames = [(CDMonitorManager *)self _allStreamNames];
+  v6 = [_allStreamNames countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -976,24 +976,24 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allStreamNames);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(CDMonitorManager *)self _currentEventForStreamName:v10];
         if (v11)
         {
-          [v4 setObject:v11 forKey:v10];
+          [dictionary setObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [_allStreamNames countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v4];
+  v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   objc_autoreleasePoolPop(v3);
   v13 = *MEMORY[0x1E69E9840];
@@ -1001,10 +1001,10 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   return v12;
 }
 
-- (void)_updateForStreamName:(id)a3
+- (void)_updateForStreamName:(id)name
 {
-  v4 = a3;
-  v5 = [(CDMonitorManager *)self _monitorForStreamName:v4];
+  nameCopy = name;
+  v5 = [(CDMonitorManager *)self _monitorForStreamName:nameCopy];
   v6 = v5;
   if (v5 && [v5 conformsToProtocol:&unk_1F06248E8])
   {
@@ -1018,16 +1018,16 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   }
 }
 
-- (void)updateForStream:(id)a3
+- (void)updateForStream:(id)stream
 {
-  v7 = a3;
+  streamCopy = stream;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v7 eventStreamProperties];
-  v6 = [v5 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
-  if (v6)
+  if (name)
   {
-    [(CDMonitorManager *)self _updateForStreamName:v6];
+    [(CDMonitorManager *)self _updateForStreamName:name];
   }
 
   objc_autoreleasePoolPop(v4);
@@ -1041,8 +1041,8 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(CDMonitorManager *)self _allStreamNames];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _allStreamNames = [(CDMonitorManager *)self _allStreamNames];
+  v5 = [_allStreamNames countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1054,14 +1054,14 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allStreamNames);
         }
 
         [(CDMonitorManager *)self _updateForStreamName:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [_allStreamNames countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1071,33 +1071,33 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lastUpdateForStreamName:(id)a3
+- (id)_lastUpdateForStreamName:(id)name
 {
-  v3 = [(CDMonitorManager *)self _monitorForStreamName:a3];
+  v3 = [(CDMonitorManager *)self _monitorForStreamName:name];
   v4 = v3;
   if (v3 && [v3 conformsToProtocol:&unk_1F06248E8])
   {
-    v5 = [v4 lastUpdate];
+    lastUpdate = [v4 lastUpdate];
   }
 
   else
   {
-    v5 = 0;
+    lastUpdate = 0;
   }
 
-  return v5;
+  return lastUpdate;
 }
 
-- (id)lastUpdateForStream:(id)a3
+- (id)lastUpdateForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 eventStreamProperties];
-  v7 = [v6 name];
+  eventStreamProperties = [streamCopy eventStreamProperties];
+  name = [eventStreamProperties name];
 
-  if (v7)
+  if (name)
   {
-    v8 = [(CDMonitorManager *)self _lastUpdateForStreamName:v7];
+    v8 = [(CDMonitorManager *)self _lastUpdateForStreamName:name];
   }
 
   else
@@ -1114,13 +1114,13 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CDMonitorManager *)self _allStreamNames];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _allStreamNames = [(CDMonitorManager *)self _allStreamNames];
+  v6 = [_allStreamNames countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1131,24 +1131,24 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allStreamNames);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(CDMonitorManager *)self _lastUpdateForStreamName:v10];
         if (v11)
         {
-          [v4 setObject:v11 forKey:v10];
+          [dictionary setObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [_allStreamNames countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v4];
+  v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   objc_autoreleasePoolPop(v3);
   v13 = *MEMORY[0x1E69E9840];
@@ -1156,13 +1156,13 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   return v12;
 }
 
-- (void)deliverNotificationEvent:(id)a3
+- (void)deliverNotificationEvent:(id)event
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v17 = os_transaction_create();
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (eventCopy)
   {
     context = v5;
     v23 = 0u;
@@ -1193,7 +1193,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
             v19[2] = __45__CDMonitorManager_deliverNotificationEvent___block_invoke;
             v19[3] = &unk_1E7367710;
             v19[4] = v10;
-            v20 = v4;
+            v20 = eventCopy;
             v12 = v17;
             v13 = v19;
             block[0] = MEMORY[0x1E69E9820];
@@ -1247,8 +1247,8 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
           objc_enumerationMutation(v2);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) shutdownHandler];
-        if (v9)
+        shutdownHandler = [*(*(&v14 + 1) + 8 * v8) shutdownHandler];
+        if (shutdownHandler)
         {
           if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
           {
@@ -1259,7 +1259,7 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
             _os_log_impl(&dword_191750000, v7, OS_LOG_TYPE_DEFAULT, "Calling shutdown handler for monitor %@.", buf, 0xCu);
           }
 
-          v9[2](v9);
+          shutdownHandler[2](shutdownHandler);
         }
 
         ++v8;
@@ -1275,65 +1275,65 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addMonitor:(id)a3 forStreamName:(id)a4
+- (void)_addMonitor:(id)monitor forStreamName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8 && v6)
+  monitorCopy = monitor;
+  nameCopy = name;
+  if (monitorCopy && nameCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    [(NSMutableDictionary *)v7->_monitors setObject:v8 forKeyedSubscript:v6];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_monitors setObject:monitorCopy forKeyedSubscript:nameCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addMonitor:(id)a3
+- (void)addMonitor:(id)monitor
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() eventStream];
-  [(CDMonitorManager *)self _addMonitor:v6 forStreamName:v5];
+  eventStream = [objc_opt_class() eventStream];
+  [(CDMonitorManager *)self _addMonitor:monitorCopy forStreamName:eventStream];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_removeMonitorForStreamName:(id)a3
+- (void)_removeMonitorForStreamName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableDictionary *)v5->_monitors removeObjectForKey:v6];
-    objc_sync_exit(v5);
+    v6 = nameCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_monitors removeObjectForKey:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    nameCopy = v6;
   }
 }
 
-- (void)removeMonitor:(id)a3
+- (void)removeMonitor:(id)monitor
 {
-  v6 = a3;
+  monitorCopy = monitor;
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() eventStream];
-  [(CDMonitorManager *)self _removeMonitorForStreamName:v5];
+  eventStream = [objc_opt_class() eventStream];
+  [(CDMonitorManager *)self _removeMonitorForStreamName:eventStream];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)_hasMonitorForStreamName:(id)a3
+- (BOOL)_hasMonitorForStreamName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)v5->_monitors objectForKeyedSubscript:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(NSMutableDictionary *)selfCopy->_monitors objectForKeyedSubscript:nameCopy];
     v7 = v6 != 0;
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1344,12 +1344,12 @@ uint64_t __57__CDMonitorManager_monitorManagerForEventStreams_domain___block_inv
   return v7;
 }
 
-- (BOOL)hasMonitor:(id)a3
+- (BOOL)hasMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_opt_class() eventStream];
-  LOBYTE(self) = [(CDMonitorManager *)self _hasMonitorForStreamName:v6];
+  eventStream = [objc_opt_class() eventStream];
+  LOBYTE(self) = [(CDMonitorManager *)self _hasMonitorForStreamName:eventStream];
 
   objc_autoreleasePoolPop(v5);
   return self;

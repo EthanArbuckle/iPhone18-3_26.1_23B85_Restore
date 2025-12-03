@@ -1,11 +1,11 @@
 @interface APPCDenylistReasonCharacteristic
 - (APPCDenylistReasonCharacteristic)init;
-- (APPCDenylistReasonCharacteristic)initWithGlobalCategories:(id)a3 globalKeywords:(id)a4 campaignCategories:(id)a5 campaignKeywords:(id)a6;
+- (APPCDenylistReasonCharacteristic)initWithGlobalCategories:(id)categories globalKeywords:(id)keywords campaignCategories:(id)campaignCategories campaignKeywords:(id)campaignKeywords;
 @end
 
 @implementation APPCDenylistReasonCharacteristic
 
-- (APPCDenylistReasonCharacteristic)initWithGlobalCategories:(id)a3 globalKeywords:(id)a4 campaignCategories:(id)a5 campaignKeywords:(id)a6
+- (APPCDenylistReasonCharacteristic)initWithGlobalCategories:(id)categories globalKeywords:(id)keywords campaignCategories:(id)campaignCategories campaignKeywords:(id)campaignKeywords
 {
   v6 = sub_1C1B94EC8();
   v7 = sub_1C1B94EC8();

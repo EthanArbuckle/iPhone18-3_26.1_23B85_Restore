@@ -1,31 +1,31 @@
 @interface PREditingPosterContentStyleCoordinator
-+ (id)_legibleIconColorForLuminance:(double)a3;
-+ (id)coordinatorForColorWellView:(id)a3 vibrant:(BOOL)a4;
-+ (id)coordinatorImplForStyle:(id)a3;
-- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)a3 suggested:(BOOL)a4;
-- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)a3 suggested:(BOOL)a4 coordinator:(id)a5;
++ (id)_legibleIconColorForLuminance:(double)luminance;
++ (id)coordinatorForColorWellView:(id)view vibrant:(BOOL)vibrant;
++ (id)coordinatorImplForStyle:(id)style;
+- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)style suggested:(BOOL)suggested;
+- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)style suggested:(BOOL)suggested coordinator:(id)coordinator;
 - (PRPosterContentStyle)style;
 - (double)itemViewLuminance;
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3;
-- (void)setContentsLuminance:(double)a3;
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4;
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied;
+- (void)setContentsLuminance:(double)luminance;
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied;
 @end
 
 @implementation PREditingPosterContentStyleCoordinator
 
-+ (id)coordinatorForColorWellView:(id)a3 vibrant:(BOOL)a4
++ (id)coordinatorForColorWellView:(id)view vibrant:(BOOL)vibrant
 {
-  v4 = a4;
+  vibrantCopy = vibrant;
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 colorWell];
-  v8 = [v7 selectedColor];
+  viewCopy = view;
+  colorWell = [viewCopy colorWell];
+  selectedColor = [colorWell selectedColor];
 
   v9 = [PRPosterContentDiscreteColorsStyle alloc];
-  v17[0] = v8;
+  v17[0] = selectedColor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v11 = 0.0;
-  if (v4)
+  if (vibrantCopy)
   {
     v11 = 1.0;
     v12 = 2;
@@ -36,29 +36,29 @@
     v12 = 0;
   }
 
-  v13 = [(PRPosterContentDiscreteColorsStyle *)v9 initWithColors:v10 vibrant:v4 supportsVariation:1 variationValue:v12 preferredMaterialType:v11];
+  v13 = [(PRPosterContentDiscreteColorsStyle *)v9 initWithColors:v10 vibrant:vibrantCopy supportsVariation:1 variationValue:v12 preferredMaterialType:v11];
 
-  v14 = [[_PREditingPosterContentUIColorWellCoordinatorImpl alloc] initWithStyle:v13 colorWellView:v6];
-  v15 = [[a1 alloc] initWithInitialStyle:v13 suggested:0 coordinator:v14];
+  v14 = [[_PREditingPosterContentUIColorWellCoordinatorImpl alloc] initWithStyle:v13 colorWellView:viewCopy];
+  v15 = [[self alloc] initWithInitialStyle:v13 suggested:0 coordinator:v14];
 
   return v15;
 }
 
-+ (id)coordinatorImplForStyle:(id)a3
++ (id)coordinatorImplForStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 type];
+  styleCopy = style;
+  type = [styleCopy type];
   v5 = 0;
-  if (v4 > 1)
+  if (type > 1)
   {
-    if (v4 == 2)
+    if (type == 2)
     {
       v6 = _PREditingPosterContentVibrantMaterialStyleCoordinatorImpl;
     }
 
     else
     {
-      if (v4 != 3)
+      if (type != 3)
       {
         goto LABEL_15;
       }
@@ -69,28 +69,28 @@
     goto LABEL_11;
   }
 
-  if (v4)
+  if (type)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
       goto LABEL_15;
     }
 
     v6 = _PREditingPosterContentGradientStyleCoordinatorImpl;
 LABEL_11:
-    v5 = [[v6 alloc] initWithStyle:v3];
+    v5 = [[v6 alloc] initWithStyle:styleCopy];
     goto LABEL_15;
   }
 
-  v7 = v3;
-  v8 = [v7 colors];
-  v9 = [v8 count];
+  v7 = styleCopy;
+  colors = [v7 colors];
+  v9 = [colors count];
 
   if (v9 <= 1)
   {
-    v11 = [v7 isVibrant];
+    isVibrant = [v7 isVibrant];
     v10 = off_1E7842000;
-    if (v11)
+    if (isVibrant)
     {
       v10 = off_1E7842028;
     }
@@ -108,9 +108,9 @@ LABEL_15:
   return v5;
 }
 
-+ (id)_legibleIconColorForLuminance:(double)a3
++ (id)_legibleIconColorForLuminance:(double)luminance
 {
-  if (a3 >= 0.9)
+  if (luminance >= 0.9)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -124,29 +124,29 @@ LABEL_15:
   return v3;
 }
 
-- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)a3 suggested:(BOOL)a4
+- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)style suggested:(BOOL)suggested
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() coordinatorImplForStyle:v6];
-  v8 = [(PREditingPosterContentStyleCoordinator *)self initWithInitialStyle:v6 suggested:v4 coordinator:v7];
+  suggestedCopy = suggested;
+  styleCopy = style;
+  v7 = [objc_opt_class() coordinatorImplForStyle:styleCopy];
+  v8 = [(PREditingPosterContentStyleCoordinator *)self initWithInitialStyle:styleCopy suggested:suggestedCopy coordinator:v7];
 
   return v8;
 }
 
-- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)a3 suggested:(BOOL)a4 coordinator:(id)a5
+- (PREditingPosterContentStyleCoordinator)initWithInitialStyle:(id)style suggested:(BOOL)suggested coordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a5;
+  styleCopy = style;
+  coordinatorCopy = coordinator;
   v14.receiver = self;
   v14.super_class = PREditingPosterContentStyleCoordinator;
   v11 = [(PREditingPosterContentStyleCoordinator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_style, a3);
-    v12->_suggested = a4;
-    objc_storeStrong(&v12->_coordinatorImpl, a5);
+    objc_storeStrong(&v11->_style, style);
+    v12->_suggested = suggested;
+    objc_storeStrong(&v12->_coordinatorImpl, coordinator);
   }
 
   return v12;
@@ -154,9 +154,9 @@ LABEL_15:
 
 - (PRPosterContentStyle)style
 {
-  v3 = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl style];
-  style = v3;
-  if (!v3)
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl style];
+  style = style;
+  if (!style)
   {
     style = self->_style;
   }
@@ -166,21 +166,21 @@ LABEL_15:
   return style;
 }
 
-- (void)setVariation:(double)a3 glassStyleApplied:(BOOL)a4
+- (void)setVariation:(double)variation glassStyleApplied:(BOOL)applied
 {
-  [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl setVariation:a4 glassStyleApplied:a3];
-  v5 = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl style];
+  [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl setVariation:applied glassStyleApplied:variation];
+  style = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl style];
   style = self->_style;
-  self->_style = v5;
+  self->_style = style;
 
-  MEMORY[0x1EEE66BB8](v5, style);
+  MEMORY[0x1EEE66BB8](style, style);
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  if (self->_contentsLuminance != a3)
+  if (self->_contentsLuminance != luminance)
   {
-    self->_contentsLuminance = a3;
+    self->_contentsLuminance = luminance;
     [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl setContentsLuminance:?];
   }
 
@@ -189,8 +189,8 @@ LABEL_15:
     v4 = objc_opt_class();
     [(PREditingPosterContentStyleCoordinator *)self itemViewLuminance];
     v7 = [v4 _legibleIconColorForLuminance:?];
-    v5 = [(UIImageView *)self->_symbolImageView tintColor];
-    v6 = [v7 isEqual:v5];
+    tintColor = [(UIImageView *)self->_symbolImageView tintColor];
+    v6 = [v7 isEqual:tintColor];
 
     if ((v6 & 1) == 0)
     {
@@ -211,11 +211,11 @@ LABEL_15:
   return result;
 }
 
-- (id)itemViewWithGlassStyleApplied:(BOOL)a3
+- (id)itemViewWithGlassStyleApplied:(BOOL)applied
 {
-  v3 = a3;
+  appliedCopy = applied;
   v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 50.0, 50.0}];
-  v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl itemViewWithGlassStyleApplied:v3];
+  v6 = [(_PREditingPosterContentStyleCoordinatorImpl *)self->_coordinatorImpl itemViewWithGlassStyleApplied:appliedCopy];
   [v5 bounds];
   [v6 setFrame:?];
   if (!v6)
@@ -223,16 +223,16 @@ LABEL_15:
     v7 = objc_alloc(MEMORY[0x1E69DD250]);
     [v5 bounds];
     v6 = [v7 initWithFrame:?];
-    if ([(PRPosterContentStyle *)self->_style type]== 5 && v3)
+    if ([(PRPosterContentStyle *)self->_style type]== 5 && appliedCopy)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:1];
       [v6 _setBackground:v8];
       [v6 setClipsToBounds:1];
-      v9 = [v6 layer];
-      [v9 setCornerRadius:17.0];
+      layer = [v6 layer];
+      [layer setCornerRadius:17.0];
 
-      v10 = [v6 layer];
-      [v10 setCornerCurve:*MEMORY[0x1E69796E8]];
+      layer2 = [v6 layer];
+      [layer2 setCornerCurve:*MEMORY[0x1E69796E8]];
     }
   }
 

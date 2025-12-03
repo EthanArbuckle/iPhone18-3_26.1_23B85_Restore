@@ -7,10 +7,10 @@
 - (uint64_t)image
 {
   v2 = MEMORY[0x277D755B8];
-  v3 = [a1 CGImage];
-  [a1 scale];
+  cGImage = [self CGImage];
+  [self scale];
 
-  return [v2 imageWithCGImage:v3 scale:0 orientation:?];
+  return [v2 imageWithCGImage:cGImage scale:0 orientation:?];
 }
 
 @end

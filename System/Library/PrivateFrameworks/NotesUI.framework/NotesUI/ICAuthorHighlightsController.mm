@@ -1,38 +1,38 @@
 @interface ICAuthorHighlightsController
 - (BOOL)isAnimating;
-- (BOOL)isPerformingHighlightUpdatesForTextStorage:(id)a3;
-- (BOOL)rangeHasOrNeedsHighlights:(_NSRange)a3 inTextStorage:(id)a4;
-- (BOOL)shouldAnimateInTextStorage:(id)a3;
+- (BOOL)isPerformingHighlightUpdatesForTextStorage:(id)storage;
+- (BOOL)rangeHasOrNeedsHighlights:(_NSRange)highlights inTextStorage:(id)storage;
+- (BOOL)shouldAnimateInTextStorage:(id)storage;
 - (CADisplayLink)highlightAnimationsDisplayLink;
-- (ICAuthorHighlightsController)initWithNote:(id)a3 textLayoutManager:(id)a4;
+- (ICAuthorHighlightsController)initWithNote:(id)note textLayoutManager:(id)manager;
 - (ICTTTextEditGrouper)editGrouper;
 - (ICTTTextStorage)invalidHighlightsTextStorage;
 - (NSCache)editGroupsForTextStorageDocument;
 - (NSMutableSet)textStorageDocumentsBeingUpdated;
 - (NSMutableSet)textStorageDocumentsNeedingHighlightUpdates;
 - (_NSRange)invalidHighlightsRange;
-- (id)attributesForHighlightingTextLineFragment:(id)a3 characterRange:(_NSRange)a4 defaultRenderingAttributes:(id)a5 effectiveRange:(_NSRange *)a6 textView:(id)a7;
-- (id)editGroupsForTextStorage:(id)a3;
-- (id)highlightColorForUserID:(id)a3;
-- (id)highlightsAttributedStringForTextStorage:(id)a3;
+- (id)attributesForHighlightingTextLineFragment:(id)fragment characterRange:(_NSRange)range defaultRenderingAttributes:(id)attributes effectiveRange:(_NSRange *)effectiveRange textView:(id)view;
+- (id)editGroupsForTextStorage:(id)storage;
+- (id)highlightColorForUserID:(id)d;
+- (id)highlightsAttributedStringForTextStorage:(id)storage;
 - (void)dealloc;
-- (void)extendHighlightsForRange:(_NSRange)a3 inTextStorage:(id)a4;
-- (void)extendHighlightsForRange:(_NSRange)a3 inTextStorage:(id)a4 reverse:(BOOL)a5;
-- (void)flashHighlightsForRange:(_NSRange)a3 withDuration:(id)a4 inTextStorage:(id)a5;
-- (void)performHighlightUpdatesForRange:(_NSRange)a3 inTextStorage:(id)a4 updates:(id)a5;
-- (void)removeHighlightAnimationsForRange:(_NSRange)a3 inTextStorage:(id)a4;
-- (void)removeHighlightValuesForRange:(_NSRange)a3 inTextStorage:(id)a4;
-- (void)setAttachmentHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6;
-- (void)setCheckmarkHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6;
-- (void)setCoalesceAuthorHighlightUpdates:(BOOL)a3;
-- (void)setHighlightAnimation:(id)a3 forRange:(_NSRange)a4 inTextStorage:(id)a5;
-- (void)setHighlightAttributesForHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6 editGroups:(id)a7;
-- (void)setHighlightValue:(id)a3 forRange:(_NSRange)a4 inTextStorage:(id)a5;
-- (void)setTextHighlightValue:(double)a3 highlightColor:(id)a4 blendsTextColor:(BOOL)a5 forRange:(_NSRange)a6 inTextStorage:(id)a7;
-- (void)textStorageDidProcessEndEditing:(id)a3;
+- (void)extendHighlightsForRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)extendHighlightsForRange:(_NSRange)range inTextStorage:(id)storage reverse:(BOOL)reverse;
+- (void)flashHighlightsForRange:(_NSRange)range withDuration:(id)duration inTextStorage:(id)storage;
+- (void)performHighlightUpdatesForRange:(_NSRange)range inTextStorage:(id)storage updates:(id)updates;
+- (void)removeHighlightAnimationsForRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)removeHighlightValuesForRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)setAttachmentHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)setCheckmarkHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)setCoalesceAuthorHighlightUpdates:(BOOL)updates;
+- (void)setHighlightAnimation:(id)animation forRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)setHighlightAttributesForHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage editGroups:(id)groups;
+- (void)setHighlightValue:(id)value forRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)setTextHighlightValue:(double)value highlightColor:(id)color blendsTextColor:(BOOL)textColor forRange:(_NSRange)range inTextStorage:(id)storage;
+- (void)textStorageDidProcessEndEditing:(id)editing;
 - (void)updateDerivedConfiguration;
 - (void)updateHighlightAnimationsIfNeeded;
-- (void)updateHighlightAttributesForRange:(_NSRange)a3 inTextStorage:(id)a4;
+- (void)updateHighlightAttributesForRange:(_NSRange)range inTextStorage:(id)storage;
 @end
 
 @implementation ICAuthorHighlightsController
@@ -40,11 +40,11 @@
 - (void)updateDerivedConfiguration
 {
   [(ICAuthorHighlightsController *)self setFadedMultiplier:0.6];
-  v6 = [(ICAuthorHighlightsController *)self note];
-  v3 = [v6 textStorage];
-  v4 = [v3 hasAnyTextViewWithDarkAppearance];
+  note = [(ICAuthorHighlightsController *)self note];
+  textStorage = [note textStorage];
+  hasAnyTextViewWithDarkAppearance = [textStorage hasAnyTextViewWithDarkAppearance];
   v5 = 0.2;
-  if (v4)
+  if (hasAnyTextViewWithDarkAppearance)
   {
     v5 = 0.25;
   }
@@ -73,21 +73,21 @@
   return v6;
 }
 
-- (ICAuthorHighlightsController)initWithNote:(id)a3 textLayoutManager:(id)a4
+- (ICAuthorHighlightsController)initWithNote:(id)note textLayoutManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  noteCopy = note;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = ICAuthorHighlightsController;
   v9 = [(ICAuthorHighlightsController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_note, a3);
-    objc_storeStrong(&v10->_textLayoutManager, a4);
+    objc_storeStrong(&v9->_note, note);
+    objc_storeStrong(&v10->_textLayoutManager, manager);
     v10->_allowsAnimations = 1;
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v10 selector:sel_textStorageDidProcessEndEditing_ name:@"ICTTTextStorageDidProcessEndEditingNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_textStorageDidProcessEndEditing_ name:@"ICTTTextStorageDidProcessEndEditingNotification" object:0];
 
     [(ICAuthorHighlightsController *)v10 updateDerivedConfiguration];
   }
@@ -97,28 +97,28 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICAuthorHighlightsController;
   [(ICAuthorHighlightsController *)&v4 dealloc];
 }
 
-- (id)highlightColorForUserID:(id)a3
+- (id)highlightColorForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICAuthorHighlightsController *)self note];
-  v6 = [v5 collaborationColorManager];
-  v7 = [(ICAuthorHighlightsController *)self note];
-  v8 = [v6 highlightColorForUserID:v4 note:v7];
+  dCopy = d;
+  note = [(ICAuthorHighlightsController *)self note];
+  collaborationColorManager = [note collaborationColorManager];
+  note2 = [(ICAuthorHighlightsController *)self note];
+  v8 = [collaborationColorManager highlightColorForUserID:dCopy note:note2];
 
   return v8;
 }
 
-- (id)highlightsAttributedStringForTextStorage:(id)a3
+- (id)highlightsAttributedStringForTextStorage:(id)storage
 {
-  v3 = a3;
+  storageCopy = storage;
   objc_opt_class();
   v4 = ICDynamicCast();
   v5 = v4;
@@ -130,36 +130,36 @@
   else
   {
     objc_opt_class();
-    v7 = [v3 highlightsAttributedString];
+    highlightsAttributedString = [storageCopy highlightsAttributedString];
     v6 = ICCheckedDynamicCast();
   }
 
   return v6;
 }
 
-- (void)setHighlightValue:(id)a3 forRange:(_NSRange)a4 inTextStorage:(id)a5
+- (void)setHighlightValue:(id)value forRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  valueCopy = value;
+  storageCopy = storage;
   [(ICAuthorHighlightsController *)self updateDerivedConfiguration];
-  v20.location = [v10 ic_range];
+  v20.location = [storageCopy ic_range];
   v21.location = location;
   v21.length = length;
   v11 = NSIntersectionRange(v20, v21);
-  v12 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v10];
+  v12 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
 
   v13 = *MEMORY[0x1E69B7928];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__ICAuthorHighlightsController_setHighlightValue_forRange_inTextStorage___block_invoke;
   v16[3] = &unk_1E846ADA8;
-  v17 = v9;
+  v17 = valueCopy;
   v18 = v12;
   v19 = v11;
   v14 = v12;
-  v15 = v9;
+  v15 = valueCopy;
   [v14 enumerateAttribute:v13 inRange:v11.location options:v11.length usingBlock:{0x100000, v16}];
 }
 
@@ -187,25 +187,25 @@ void __73__ICAuthorHighlightsController_setHighlightValue_forRange_inTextStorage
   [*(a1 + 40) addAttribute:*MEMORY[0x1E69B7928] value:v3 range:{*(a1 + 48), *(a1 + 56)}];
 }
 
-- (void)removeHighlightValuesForRange:(_NSRange)a3 inTextStorage:(id)a4
+- (void)removeHighlightValuesForRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:a4];
+  length = range.length;
+  location = range.location;
+  v6 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storage];
   [v6 removeAttribute:*MEMORY[0x1E69B7928] range:{location, length}];
 }
 
 - (BOOL)isAnimating
 {
-  v2 = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
-  v3 = [v2 count] != 0;
+  textStorageDocumentsNeedingHighlightUpdates = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
+  v3 = [textStorageDocumentsNeedingHighlightUpdates count] != 0;
 
   return v3;
 }
 
-- (BOOL)shouldAnimateInTextStorage:(id)a3
+- (BOOL)shouldAnimateInTextStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   if ([(ICAuthorHighlightsController *)self allowsAnimations])
   {
     v5 = [(ICAuthorHighlightsController *)self now];
@@ -216,8 +216,8 @@ void __73__ICAuthorHighlightsController_setHighlightValue_forRange_inTextStorage
 
     else
     {
-      v7 = [v4 textViews];
-      v6 = [v7 count] != 0;
+      textViews = [storageCopy textViews];
+      v6 = [textViews count] != 0;
     }
   }
 
@@ -229,15 +229,15 @@ void __73__ICAuthorHighlightsController_setHighlightValue_forRange_inTextStorage
   return v6;
 }
 
-- (void)setHighlightAnimation:(id)a3 forRange:(_NSRange)a4 inTextStorage:(id)a5
+- (void)setHighlightAnimation:(id)animation forRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (-[ICAuthorHighlightsController shouldAnimateInTextStorage:](self, "shouldAnimateInTextStorage:", v10) || ([v9 isRemovedOnCompletion] & 1) == 0)
+  length = range.length;
+  location = range.location;
+  animationCopy = animation;
+  storageCopy = storage;
+  if (-[ICAuthorHighlightsController shouldAnimateInTextStorage:](self, "shouldAnimateInTextStorage:", storageCopy) || ([animationCopy isRemovedOnCompletion] & 1) == 0)
   {
-    [(ICAuthorHighlightsController *)self removeHighlightAnimationsForRange:location inTextStorage:length, v10];
+    [(ICAuthorHighlightsController *)self removeHighlightAnimationsForRange:location inTextStorage:length, storageCopy];
     [(ICAuthorHighlightsController *)self updateDerivedConfiguration];
     v11 = [(ICAuthorHighlightsController *)self now];
     v12 = v11;
@@ -253,21 +253,21 @@ void __73__ICAuthorHighlightsController_setHighlightValue_forRange_inTextStorage
 
     v14 = v13;
 
-    v27.location = [v10 ic_range];
+    v27.location = [storageCopy ic_range];
     v28.location = location;
     v28.length = length;
     v15 = NSIntersectionRange(v27, v28);
-    v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v10];
+    v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
     v17 = *MEMORY[0x1E69B7928];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __77__ICAuthorHighlightsController_setHighlightAnimation_forRange_inTextStorage___block_invoke;
     v21[3] = &unk_1E846ADD0;
     v22 = v14;
-    v23 = v9;
+    v23 = animationCopy;
     v24 = v16;
-    v25 = self;
-    v18 = v10;
+    selfCopy = self;
+    v18 = storageCopy;
     v26 = v18;
     v19 = v16;
     v20 = v14;
@@ -341,16 +341,16 @@ void __77__ICAuthorHighlightsController_setHighlightAnimation_forRange_inTextSto
   }
 }
 
-- (void)removeHighlightAnimationsForRange:(_NSRange)a3 inTextStorage:(id)a4
+- (void)removeHighlightAnimationsForRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v15.location = [v7 ic_range];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v15.location = [storageCopy ic_range];
   v16.location = location;
   v16.length = length;
   v8 = NSIntersectionRange(v15, v16);
-  v9 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v7];
+  v9 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
 
   v10 = MEMORY[0x1E69B7920];
   v11 = *MEMORY[0x1E69B7920];
@@ -406,28 +406,28 @@ void __80__ICAuthorHighlightsController_removeHighlightAnimationsForRange_inText
   [*(a1 + 40) addAttribute:*MEMORY[0x1E69B7928] value:v7 range:{a3, a4}];
 }
 
-- (void)flashHighlightsForRange:(_NSRange)a3 withDuration:(id)a4 inTextStorage:(id)a5
+- (void)flashHighlightsForRange:(_NSRange)range withDuration:(id)duration inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
-  if ([(ICAuthorHighlightsController *)self shouldAnimateInTextStorage:v10])
+  length = range.length;
+  location = range.location;
+  durationCopy = duration;
+  storageCopy = storage;
+  if ([(ICAuthorHighlightsController *)self shouldAnimateInTextStorage:storageCopy])
   {
     [(ICAuthorHighlightsController *)self updateDerivedConfiguration];
-    v18.location = [v10 ic_range];
+    v18.location = [storageCopy ic_range];
     v19.location = location;
     v19.length = length;
     v11 = NSIntersectionRange(v18, v19);
-    v12 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v10];
+    v12 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
     v13 = *MEMORY[0x1E69B7928];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__ICAuthorHighlightsController_flashHighlightsForRange_withDuration_inTextStorage___block_invoke;
     v14[3] = &unk_1E846AE48;
-    v15 = v9;
-    v16 = self;
-    v17 = v10;
+    v15 = durationCopy;
+    selfCopy = self;
+    v17 = storageCopy;
     [v12 enumerateAttribute:v13 inRange:v11.location options:v11.length usingBlock:{0, v14}];
   }
 }
@@ -473,30 +473,30 @@ void __83__ICAuthorHighlightsController_flashHighlightsForRange_withDuration_inT
   [*(a1 + 40) setHighlightAnimation:v8 forRange:a3 inTextStorage:{a4, *(a1 + 48)}];
 }
 
-- (void)setCoalesceAuthorHighlightUpdates:(BOOL)a3
+- (void)setCoalesceAuthorHighlightUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICAuthorHighlightsController setCoalesceAuthorHighlightUpdates:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  if (self->_coalesceAuthorHighlightUpdates != v3)
+  if (self->_coalesceAuthorHighlightUpdates != updatesCopy)
   {
-    self->_coalesceAuthorHighlightUpdates = v3;
-    if (!v3 && [(ICAuthorHighlightsController *)self invalidHighlightsRange]!= 0x7FFFFFFFFFFFFFFFLL)
+    self->_coalesceAuthorHighlightUpdates = updatesCopy;
+    if (!updatesCopy && [(ICAuthorHighlightsController *)self invalidHighlightsRange]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       [(ICAuthorHighlightsController *)self invalidHighlightsRange];
       if (v5)
       {
-        v6 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
+        invalidHighlightsTextStorage = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
 
-        if (v6)
+        if (invalidHighlightsTextStorage)
         {
-          v7 = [(ICAuthorHighlightsController *)self invalidHighlightsRange];
+          invalidHighlightsRange = [(ICAuthorHighlightsController *)self invalidHighlightsRange];
           v9 = v8;
-          v10 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
-          [(ICAuthorHighlightsController *)self performHighlightUpdatesForRange:v7 inTextStorage:v9 updates:v10, 0];
+          invalidHighlightsTextStorage2 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
+          [(ICAuthorHighlightsController *)self performHighlightUpdatesForRange:invalidHighlightsRange inTextStorage:v9 updates:invalidHighlightsTextStorage2, 0];
         }
       }
     }
@@ -507,80 +507,80 @@ void __83__ICAuthorHighlightsController_flashHighlightsForRange_withDuration_inT
   }
 }
 
-- (void)performHighlightUpdatesForRange:(_NSRange)a3 inTextStorage:(id)a4 updates:(id)a5
+- (void)performHighlightUpdatesForRange:(_NSRange)range inTextStorage:(id)storage updates:(id)updates
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  storageCopy = storage;
+  updatesCopy = updates;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICAuthorHighlightsController performHighlightUpdatesForRange:inTextStorage:updates:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  if (!v9)
+  if (!storageCopy)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((textStorage) != nil)" functionName:"-[ICAuthorHighlightsController performHighlightUpdatesForRange:inTextStorage:updates:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "textStorage"}];
   }
 
-  if ([v9 length] && length)
+  if ([storageCopy length] && length)
   {
-    if (v10)
+    if (updatesCopy)
     {
       [(ICAuthorHighlightsController *)self updateDerivedConfiguration];
 LABEL_9:
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v29 = @"ICAuthorHighlightsControllerTextStorageKey";
-      v30[0] = v9;
+      v30[0] = storageCopy;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-      [v11 postNotificationName:@"ICAuthorHighlightsControllerWillPerformHighlightUpdatesNotification" object:self userInfo:v12];
+      [defaultCenter postNotificationName:@"ICAuthorHighlightsControllerWillPerformHighlightUpdatesNotification" object:self userInfo:v12];
 
-      v13 = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
-      v14 = [v9 document];
-      [v13 addObject:v14];
+      textStorageDocumentsBeingUpdated = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
+      document = [storageCopy document];
+      [textStorageDocumentsBeingUpdated addObject:document];
 
       objc_opt_class();
       v15 = ICDynamicCast();
       [v15 beginPreventEditingUpdates];
 
-      [v9 beginTemporaryAttributeEditing];
-      if (v10)
+      [storageCopy beginTemporaryAttributeEditing];
+      if (updatesCopy)
       {
-        v10[2](v10, location, length);
+        updatesCopy[2](updatesCopy, location, length);
       }
 
-      v33.location = [v9 ic_range];
+      v33.location = [storageCopy ic_range];
       v33.length = v16;
       v31.location = location;
       v31.length = length;
       v17 = NSIntersectionRange(v31, v33);
-      [(ICAuthorHighlightsController *)self updateHighlightAttributesForRange:v17.location inTextStorage:v17.length, v9];
-      [v9 endTemporaryAttributeEditing];
+      [(ICAuthorHighlightsController *)self updateHighlightAttributesForRange:v17.location inTextStorage:v17.length, storageCopy];
+      [storageCopy endTemporaryAttributeEditing];
       objc_opt_class();
       v18 = ICDynamicCast();
       [v18 endPreventEditingUpdates];
 
-      v19 = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
-      v20 = [v9 document];
-      [v19 removeObject:v20];
+      textStorageDocumentsBeingUpdated2 = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
+      document2 = [storageCopy document];
+      [textStorageDocumentsBeingUpdated2 removeObject:document2];
 
-      v21 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v27 = @"ICAuthorHighlightsControllerTextStorageKey";
-      v28 = v9;
+      v28 = storageCopy;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-      [v21 postNotificationName:@"ICAuthorHighlightsControllerDidPerformHighlightUpdatesNotification" object:self userInfo:v22];
+      [defaultCenter2 postNotificationName:@"ICAuthorHighlightsControllerDidPerformHighlightUpdatesNotification" object:self userInfo:v22];
 
       goto LABEL_20;
     }
 
-    if ([(ICAuthorHighlightsController *)self isPerformingHighlightUpdatesForTextStorage:v9])
+    if ([(ICAuthorHighlightsController *)self isPerformingHighlightUpdatesForTextStorage:storageCopy])
     {
       goto LABEL_20;
     }
 
     [(ICAuthorHighlightsController *)self updateDerivedConfiguration];
-    if (![(ICAuthorHighlightsController *)self rangeHasOrNeedsHighlights:location inTextStorage:length, v9])
+    if (![(ICAuthorHighlightsController *)self rangeHasOrNeedsHighlights:location inTextStorage:length, storageCopy])
     {
       goto LABEL_20;
     }
@@ -590,19 +590,19 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v23 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
-    if (v23)
+    invalidHighlightsTextStorage = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
+    if (invalidHighlightsTextStorage)
     {
-      v24 = v23;
-      v25 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
+      v24 = invalidHighlightsTextStorage;
+      invalidHighlightsTextStorage2 = [(ICAuthorHighlightsController *)self invalidHighlightsTextStorage];
 
-      if (v25 != v9)
+      if (invalidHighlightsTextStorage2 != storageCopy)
       {
         goto LABEL_9;
       }
     }
 
-    [(ICAuthorHighlightsController *)self setInvalidHighlightsTextStorage:v9];
+    [(ICAuthorHighlightsController *)self setInvalidHighlightsTextStorage:storageCopy];
     if ([(ICAuthorHighlightsController *)self invalidHighlightsRange]!= 0x7FFFFFFFFFFFFFFFLL)
     {
       v32.location = [(ICAuthorHighlightsController *)self invalidHighlightsRange];
@@ -619,22 +619,22 @@ LABEL_9:
 LABEL_20:
 }
 
-- (BOOL)isPerformingHighlightUpdatesForTextStorage:(id)a3
+- (BOOL)isPerformingHighlightUpdatesForTextStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
-  v6 = [v4 document];
+  storageCopy = storage;
+  textStorageDocumentsBeingUpdated = [(ICAuthorHighlightsController *)self textStorageDocumentsBeingUpdated];
+  document = [storageCopy document];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(storageCopy) = [textStorageDocumentsBeingUpdated containsObject:document];
+  return storageCopy;
 }
 
-- (BOOL)rangeHasOrNeedsHighlights:(_NSRange)a3 inTextStorage:(id)a4
+- (BOOL)rangeHasOrNeedsHighlights:(_NSRange)highlights inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v19.location = [v7 ic_range];
+  length = highlights.length;
+  location = highlights.location;
+  storageCopy = storage;
+  v19.location = [storageCopy ic_range];
   v20.location = location;
   v20.length = length;
   v8 = NSIntersectionRange(v19, v20);
@@ -642,12 +642,12 @@ LABEL_20:
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v9 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v7];
+  v9 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__ICAuthorHighlightsController_rangeHasOrNeedsHighlights_inTextStorage___block_invoke;
   v12[3] = &unk_1E846AE70;
-  v10 = v7;
+  v10 = storageCopy;
   v13 = v10;
   v14 = &v15;
   [v9 enumerateAttributesInRange:v8.location options:v8.length usingBlock:{0, v12}];
@@ -684,31 +684,31 @@ void __72__ICAuthorHighlightsController_rangeHasOrNeedsHighlights_inTextStorage_
   *a5 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)extendHighlightsForRange:(_NSRange)a3 inTextStorage:(id)a4
+- (void)extendHighlightsForRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v10 = a4;
-  v12.location = [v10 ic_range];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v12.location = [storageCopy ic_range];
   v13.location = location;
   v13.length = length;
   v7 = NSIntersectionRange(v12, v13);
-  v8 = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
-  v9 = [v10 document];
-  [v8 removeObjectForKey:v9];
+  editGroupsForTextStorageDocument = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
+  document = [storageCopy document];
+  [editGroupsForTextStorageDocument removeObjectForKey:document];
 
-  [(ICAuthorHighlightsController *)self extendHighlightsForRange:v7.location inTextStorage:v7.length reverse:v10, 0];
-  [(ICAuthorHighlightsController *)self extendHighlightsForRange:v7.location inTextStorage:v7.length reverse:v10, 1];
+  [(ICAuthorHighlightsController *)self extendHighlightsForRange:v7.location inTextStorage:v7.length reverse:storageCopy, 0];
+  [(ICAuthorHighlightsController *)self extendHighlightsForRange:v7.location inTextStorage:v7.length reverse:storageCopy, 1];
 }
 
-- (void)extendHighlightsForRange:(_NSRange)a3 inTextStorage:(id)a4 reverse:(BOOL)a5
+- (void)extendHighlightsForRange:(_NSRange)range inTextStorage:(id)storage reverse:(BOOL)reverse
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  reverseCopy = reverse;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  v10 = storageCopy;
+  if (reverseCopy)
   {
     v11 = length;
   }
@@ -718,7 +718,7 @@ void __72__ICAuthorHighlightsController_rangeHasOrNeedsHighlights_inTextStorage_
     v11 = -1;
   }
 
-  v12 = [v9 attributesAtIndex:location + v11 effectiveRange:0];
+  v12 = [storageCopy attributesAtIndex:location + v11 effectiveRange:0];
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
@@ -732,7 +732,7 @@ void __72__ICAuthorHighlightsController_rangeHasOrNeedsHighlights_inTextStorage_
   v20[4] = __Block_byref_object_dispose__26;
   v21 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69B7920]];
   v13 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v10];
-  if (v5)
+  if (reverseCopy)
   {
     v14 = 2;
   }
@@ -829,14 +829,14 @@ void __79__ICAuthorHighlightsController_extendHighlightsForRange_inTextStorage_r
   highlightAnimationsDisplayLink = self->_highlightAnimationsDisplayLink;
   if (!highlightAnimationsDisplayLink)
   {
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v5 = [v4 displayLinkWithTarget:self selector:sel_updateHighlightAnimationsIfNeeded];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    v5 = [mainScreen displayLinkWithTarget:self selector:sel_updateHighlightAnimationsIfNeeded];
     v6 = self->_highlightAnimationsDisplayLink;
     self->_highlightAnimationsDisplayLink = v5;
 
     v7 = self->_highlightAnimationsDisplayLink;
-    v8 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v7 addToRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v7 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     highlightAnimationsDisplayLink = self->_highlightAnimationsDisplayLink;
   }
@@ -846,8 +846,8 @@ void __79__ICAuthorHighlightsController_extendHighlightsForRange_inTextStorage_r
 
 - (void)updateHighlightAnimationsIfNeeded
 {
-  v3 = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
-  v4 = [v3 count];
+  textStorageDocumentsNeedingHighlightUpdates = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
+  v4 = [textStorageDocumentsNeedingHighlightUpdates count];
 
   if (v4)
   {
@@ -856,8 +856,8 @@ void __79__ICAuthorHighlightsController_extendHighlightsForRange_inTextStorage_r
 
   else
   {
-    v5 = [(ICAuthorHighlightsController *)self highlightAnimationsDisplayLink];
-    [v5 setPaused:1];
+    highlightAnimationsDisplayLink = [(ICAuthorHighlightsController *)self highlightAnimationsDisplayLink];
+    [highlightAnimationsDisplayLink setPaused:1];
   }
 }
 
@@ -969,8 +969,8 @@ void __65__ICAuthorHighlightsController_updateHighlightAnimationsIfNeeded__block
   if (!editGrouper)
   {
     v4 = objc_alloc(MEMORY[0x1E69B78D8]);
-    v5 = [(ICAuthorHighlightsController *)self note];
-    v6 = [v4 initWithNote:v5];
+    note = [(ICAuthorHighlightsController *)self note];
+    v6 = [v4 initWithNote:note];
     v7 = self->_editGrouper;
     self->_editGrouper = v6;
 
@@ -978,8 +978,8 @@ void __65__ICAuthorHighlightsController_updateHighlightAnimationsIfNeeded__block
     v8 = objc_alloc_init(MEMORY[0x1E69B78D0]);
     [(ICTTTextEditGrouper *)self->_editGrouper setFilter:v8];
 
-    v9 = [(ICTTTextEditGrouper *)self->_editGrouper filter];
-    [v9 setAllowsMissingUsers:0];
+    filter = [(ICTTTextEditGrouper *)self->_editGrouper filter];
+    [filter setAllowsMissingUsers:0];
 
     editGrouper = self->_editGrouper;
   }
@@ -1008,33 +1008,33 @@ void __65__ICAuthorHighlightsController_updateHighlightAnimationsIfNeeded__block
   return v6;
 }
 
-- (id)editGroupsForTextStorage:(id)a3
+- (id)editGroupsForTextStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
-  v6 = [v4 document];
-  v7 = [v5 objectForKey:v6];
+  storageCopy = storage;
+  editGroupsForTextStorageDocument = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
+  document = [storageCopy document];
+  v7 = [editGroupsForTextStorageDocument objectForKey:document];
 
   if (!v7)
   {
-    v8 = [(ICAuthorHighlightsController *)self editGrouper];
-    v9 = [v4 ic_range];
-    v11 = [v4 editsInRange:{v9, v10}];
-    v7 = [v8 groupedEditsForEdits:v11 inAttributedString:v4];
+    editGrouper = [(ICAuthorHighlightsController *)self editGrouper];
+    ic_range = [storageCopy ic_range];
+    v11 = [storageCopy editsInRange:{ic_range, v10}];
+    v7 = [editGrouper groupedEditsForEdits:v11 inAttributedString:storageCopy];
 
-    v12 = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
-    v13 = [v4 document];
-    [v12 setObject:v7 forKey:v13];
+    editGroupsForTextStorageDocument2 = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
+    document2 = [storageCopy document];
+    [editGroupsForTextStorageDocument2 setObject:v7 forKey:document2];
   }
 
   return v7;
 }
 
-- (void)updateHighlightAttributesForRange:(_NSRange)a3 inTextStorage:(id)a4
+- (void)updateHighlightAttributesForRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
   v8 = [(ICAuthorHighlightsController *)self now];
   v9 = v8;
   if (v8)
@@ -1049,20 +1049,20 @@ void __65__ICAuthorHighlightsController_updateHighlightAnimationsIfNeeded__block
 
   v11 = v10;
 
-  v12 = [(ICAuthorHighlightsController *)self editGroupsForTextStorage:v7];
+  v12 = [(ICAuthorHighlightsController *)self editGroupsForTextStorage:storageCopy];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v13 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v7];
+  v13 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __80__ICAuthorHighlightsController_updateHighlightAttributesForRange_inTextStorage___block_invoke;
   v22[3] = &unk_1E846AF08;
   v14 = v11;
   v23 = v14;
-  v24 = self;
-  v15 = v7;
+  selfCopy = self;
+  v15 = storageCopy;
   v25 = v15;
   v27 = &v28;
   v16 = v12;
@@ -1070,12 +1070,12 @@ void __65__ICAuthorHighlightsController_updateHighlightAnimationsIfNeeded__block
   [v13 enumerateAttributesInRange:location options:length usingBlock:{0, v22}];
   if (*(v29 + 24) == 1)
   {
-    v17 = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
-    v18 = [v15 document];
-    [v17 addObject:v18];
+    textStorageDocumentsNeedingHighlightUpdates = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
+    document = [v15 document];
+    [textStorageDocumentsNeedingHighlightUpdates addObject:document];
 
-    v19 = [(ICAuthorHighlightsController *)self highlightAnimationsDisplayLink];
-    [v19 setPaused:0];
+    highlightAnimationsDisplayLink = [(ICAuthorHighlightsController *)self highlightAnimationsDisplayLink];
+    [highlightAnimationsDisplayLink setPaused:0];
 LABEL_9:
 
     goto LABEL_10;
@@ -1083,9 +1083,9 @@ LABEL_9:
 
   if (location == [v15 ic_range] && length == v20)
   {
-    v19 = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
-    v21 = [v15 document];
-    [v19 removeObject:v21];
+    highlightAnimationsDisplayLink = [(ICAuthorHighlightsController *)self textStorageDocumentsNeedingHighlightUpdates];
+    document2 = [v15 document];
+    [highlightAnimationsDisplayLink removeObject:document2];
 
     goto LABEL_9;
   }
@@ -1161,48 +1161,48 @@ void __80__ICAuthorHighlightsController_updateHighlightAttributesForRange_inText
   [*(a1 + 40) setHighlightAttributesForHighlightValue:v15 highlightColor:a3 forRange:a4 inTextStorage:*(a1 + 48) editGroups:{*(a1 + 56), v11}];
 }
 
-- (void)setHighlightAttributesForHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6 editGroups:(id)a7
+- (void)setHighlightAttributesForHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage editGroups:(id)groups
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v38 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v14];
+  colorCopy = color;
+  storageCopy = storage;
+  groupsCopy = groups;
+  v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
   v17 = *MEMORY[0x1E69B7940];
-  v18 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v18 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   [v16 addAttribute:v17 value:v18 range:{location, length}];
 
-  [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:0 highlightColor:location forRange:length inTextStorage:v14, a3];
-  v19 = 0.0;
-  if (!v13)
+  [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:0 highlightColor:location forRange:length inTextStorage:storageCopy, value];
+  valueCopy = 0.0;
+  if (!colorCopy)
   {
-    v19 = a3;
+    valueCopy = value;
   }
 
-  [(ICAuthorHighlightsController *)self setCheckmarkHighlightValue:0 highlightColor:location forRange:length inTextStorage:v14, v19];
+  [(ICAuthorHighlightsController *)self setCheckmarkHighlightValue:0 highlightColor:location forRange:length inTextStorage:storageCopy, valueCopy];
   range2[0] = location;
   v20 = location;
   v21 = length;
-  [(ICAuthorHighlightsController *)self setTextHighlightValue:0 highlightColor:0 blendsTextColor:v20 forRange:length inTextStorage:v14, a3];
-  if (a3 > 0.0)
+  [(ICAuthorHighlightsController *)self setTextHighlightValue:0 highlightColor:0 blendsTextColor:v20 forRange:length inTextStorage:storageCopy, value];
+  if (value > 0.0)
   {
-    if (v13)
+    if (colorCopy)
     {
-      [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:v13 highlightColor:range2[0] forRange:length inTextStorage:v14, a3];
-      [(ICAuthorHighlightsController *)self setTextHighlightValue:v13 highlightColor:0 blendsTextColor:range2[0] forRange:length inTextStorage:v14, a3];
+      [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:colorCopy highlightColor:range2[0] forRange:length inTextStorage:storageCopy, value];
+      [(ICAuthorHighlightsController *)self setTextHighlightValue:colorCopy highlightColor:0 blendsTextColor:range2[0] forRange:length inTextStorage:storageCopy, value];
     }
 
     else
     {
       v30 = v16;
-      v31 = v15;
+      v31 = groupsCopy;
       v35 = 0u;
       v36 = 0u;
       *&range2[1] = 0u;
       v34 = 0u;
-      obj = v15;
+      obj = groupsCopy;
       v22 = [obj countByEnumeratingWithState:&range2[1] objects:v37 count:16];
       if (v22)
       {
@@ -1224,12 +1224,12 @@ void __80__ICAuthorHighlightsController_updateHighlightAttributesForRange_inText
             v27 = NSIntersectionRange(v39, v40);
             if (v27.length)
             {
-              v28 = [v26 userID];
-              v29 = [(ICAuthorHighlightsController *)self highlightColorForUserID:v28];
+              userID = [v26 userID];
+              v29 = [(ICAuthorHighlightsController *)self highlightColorForUserID:userID];
 
-              [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:v29 highlightColor:v27.location forRange:v27.length inTextStorage:v14, a3];
-              [(ICAuthorHighlightsController *)self setCheckmarkHighlightValue:v29 highlightColor:v27.location forRange:v27.length inTextStorage:v14, a3];
-              [(ICAuthorHighlightsController *)self setTextHighlightValue:v29 highlightColor:1 blendsTextColor:v27.location forRange:v27.length inTextStorage:v14, a3];
+              [(ICAuthorHighlightsController *)self setAttachmentHighlightValue:v29 highlightColor:v27.location forRange:v27.length inTextStorage:storageCopy, value];
+              [(ICAuthorHighlightsController *)self setCheckmarkHighlightValue:v29 highlightColor:v27.location forRange:v27.length inTextStorage:storageCopy, value];
+              [(ICAuthorHighlightsController *)self setTextHighlightValue:v29 highlightColor:1 blendsTextColor:v27.location forRange:v27.length inTextStorage:storageCopy, value];
             }
           }
 
@@ -1239,38 +1239,38 @@ void __80__ICAuthorHighlightsController_updateHighlightAttributesForRange_inText
         while (v23);
       }
 
-      v15 = v31;
-      v13 = 0;
+      groupsCopy = v31;
+      colorCopy = 0;
       v16 = v30;
     }
   }
 }
 
-- (void)setAttachmentHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6
+- (void)setAttachmentHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a6;
-  v12 = a4;
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  colorCopy = color;
   [(ICAuthorHighlightsController *)self fadedMultiplier];
-  v14 = a3 * v13 + 1.0;
+  v14 = value * v13 + 1.0;
   if (v14 < 0.0)
   {
     v14 = 0.0;
   }
 
   v15 = fmin(v14, 1.0);
-  if (a3 >= 0.0)
+  if (value >= 0.0)
   {
-    v16 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v16 = 0.0;
+    valueCopy = 0.0;
   }
 
-  v17 = [v12 colorWithAlphaComponent:{fmin(v16, 1.0)}];
+  v17 = [colorCopy colorWithAlphaComponent:{fmin(valueCopy, 1.0)}];
 
   v18 = *MEMORY[0x1E69DB5F8];
   v21[0] = MEMORY[0x1E69E9820];
@@ -1278,10 +1278,10 @@ void __80__ICAuthorHighlightsController_updateHighlightAttributesForRange_inText
   v21[2] = __98__ICAuthorHighlightsController_setAttachmentHighlightValue_highlightColor_forRange_inTextStorage___block_invoke;
   v21[3] = &unk_1E846AF30;
   v22 = v17;
-  v23 = v11;
+  v23 = storageCopy;
   v24 = v15;
-  v25 = a3;
-  v19 = v11;
+  valueCopy2 = value;
+  v19 = storageCopy;
   v20 = v17;
   [v19 enumerateAttribute:v18 inRange:location options:length usingBlock:{0, v21}];
 }
@@ -1396,21 +1396,21 @@ void __98__ICAuthorHighlightsController_setAttachmentHighlightValue_highlightCol
   }
 }
 
-- (void)setCheckmarkHighlightValue:(double)a3 highlightColor:(id)a4 forRange:(_NSRange)a5 inTextStorage:(id)a6
+- (void)setCheckmarkHighlightValue:(double)value highlightColor:(id)color forRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a4;
-  v12 = a6;
+  length = range.length;
+  location = range.location;
+  colorCopy = color;
+  storageCopy = storage;
   [(ICAuthorHighlightsController *)self fadedMultiplier];
-  v14 = a3 * v13 + 1.0;
+  v14 = value * v13 + 1.0;
   if (v14 < 0.0)
   {
     v14 = 0.0;
   }
 
   v15 = fmin(v14, 1.0);
-  v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v12];
+  v16 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
   [v16 removeAttribute:*MEMORY[0x1E69B7938] range:{location, length}];
   v17 = *MEMORY[0x1E69B7600];
   v21[0] = MEMORY[0x1E69E9820];
@@ -1418,14 +1418,14 @@ void __98__ICAuthorHighlightsController_setAttachmentHighlightValue_highlightCol
   v21[2] = __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColor_forRange_inTextStorage___block_invoke;
   v21[3] = &unk_1E846AF58;
   v21[4] = self;
-  v22 = v11;
-  v25 = a3;
+  v22 = colorCopy;
+  valueCopy = value;
   v26 = v15;
-  v23 = v12;
+  v23 = storageCopy;
   v24 = v16;
   v18 = v16;
-  v19 = v12;
-  v20 = v11;
+  v19 = storageCopy;
+  v20 = colorCopy;
   [v19 enumerateAttribute:v17 inRange:location options:length usingBlock:{0, v21}];
 }
 
@@ -1485,16 +1485,16 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
   }
 }
 
-- (void)setTextHighlightValue:(double)a3 highlightColor:(id)a4 blendsTextColor:(BOOL)a5 forRange:(_NSRange)a6 inTextStorage:(id)a7
+- (void)setTextHighlightValue:(double)value highlightColor:(id)color blendsTextColor:(BOOL)textColor forRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  textColorCopy = textColor;
   v53 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a7;
+  colorCopy = color;
+  storageCopy = storage;
   [(ICAuthorHighlightsController *)self fadedMultiplier];
-  v16 = a3 * v15 + 1.0;
+  v16 = value * v15 + 1.0;
   if (v16 >= 0.0)
   {
     v17 = v16;
@@ -1506,26 +1506,26 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
   }
 
   [(ICAuthorHighlightsController *)self highlightedMultiplier];
-  v19 = v18 * a3;
+  v19 = v18 * value;
   if (v19 < 0.0)
   {
     v19 = 0.0;
   }
 
-  v20 = [v13 colorWithAlphaComponent:{fmin(v19, 1.0)}];
-  v21 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:v14];
+  v20 = [colorCopy colorWithAlphaComponent:{fmin(v19, 1.0)}];
+  v21 = [(ICAuthorHighlightsController *)self highlightsAttributedStringForTextStorage:storageCopy];
   v22 = v21;
   if (v17 >= 1.0)
   {
     if (v20)
     {
-      v33 = v13;
+      v33 = colorCopy;
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __108__ICAuthorHighlightsController_setTextHighlightValue_highlightColor_blendsTextColor_forRange_inTextStorage___block_invoke_2;
       v48[3] = &unk_1E846AF80;
-      v32 = v14;
-      v49 = v14;
+      v32 = storageCopy;
+      v49 = storageCopy;
       v34 = v49;
       [v49 ic_componentRangesSeparatedByPredicate:v48 inRange:{location, length}];
       v44 = 0u;
@@ -1547,9 +1547,9 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
               objc_enumerationMutation(obj);
             }
 
-            v30 = [*(*(&v44 + 1) + 8 * i) rangeValue];
+            rangeValue = [*(*(&v44 + 1) + 8 * i) rangeValue];
             v31 = v29;
-            if (v10)
+            if (textColorCopy)
             {
               v39[0] = MEMORY[0x1E69E9820];
               v39[1] = 3221225472;
@@ -1557,14 +1557,14 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
               v39[3] = &unk_1E846AFA8;
               v40 = v20;
               v41 = v34;
-              v43 = a3;
+              valueCopy = value;
               v42 = v22;
-              [v42 enumerateAttributesInRange:v30 options:v31 usingBlock:{0, v39}];
+              [v42 enumerateAttributesInRange:rangeValue options:v31 usingBlock:{0, v39}];
             }
 
             else
             {
-              [v22 addAttribute:v27 value:v20 range:{v30, v29}];
+              [v22 addAttribute:v27 value:v20 range:{rangeValue, v29}];
             }
           }
 
@@ -1574,8 +1574,8 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
         while (v25);
       }
 
-      v14 = v32;
-      v13 = v33;
+      storageCopy = v32;
+      colorCopy = v33;
       v23 = &v49;
     }
 
@@ -1587,7 +1587,7 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
       v36[2] = __108__ICAuthorHighlightsController_setTextHighlightValue_highlightColor_blendsTextColor_forRange_inTextStorage___block_invoke_4;
       v36[3] = &unk_1E8468DC0;
       v23 = &v37;
-      v37 = v14;
+      v37 = storageCopy;
       v38 = v22;
       [v38 enumerateAttributesInRange:location options:length usingBlock:{0, v36}];
     }
@@ -1600,7 +1600,7 @@ void __97__ICAuthorHighlightsController_setCheckmarkHighlightValue_highlightColo
     v50[1] = 3221225472;
     v50[2] = __108__ICAuthorHighlightsController_setTextHighlightValue_highlightColor_blendsTextColor_forRange_inTextStorage___block_invoke;
     v50[3] = &unk_1E8468E88;
-    v51[1] = *&a3;
+    v51[1] = *&value;
     v51[2] = *&v17;
     v23 = v51;
     v51[0] = v22;
@@ -1888,41 +1888,41 @@ void __108__ICAuthorHighlightsController_setTextHighlightValue_highlightColor_bl
   [*(a1 + 40) addAttribute:*MEMORY[0x1E69DB750] value:v27 range:{a3, a4}];
 }
 
-- (id)attributesForHighlightingTextLineFragment:(id)a3 characterRange:(_NSRange)a4 defaultRenderingAttributes:(id)a5 effectiveRange:(_NSRange *)a6 textView:(id)a7
+- (id)attributesForHighlightingTextLineFragment:(id)fragment characterRange:(_NSRange)range defaultRenderingAttributes:(id)attributes effectiveRange:(_NSRange *)effectiveRange textView:(id)view
 {
-  location = a4.location;
+  location = range.location;
   v73[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a7;
-  v14 = a3;
+  attributesCopy = attributes;
+  viewCopy = view;
+  fragmentCopy = fragment;
   objc_opt_class();
-  v15 = [v14 textLayoutFragment];
+  textLayoutFragment = [fragmentCopy textLayoutFragment];
 
-  v16 = [v15 textElement];
+  textElement = [textLayoutFragment textElement];
   v17 = ICDynamicCast();
 
-  v70 = v13;
+  v70 = viewCopy;
   if (!v17 || ([v17 locationForCharacterIndex:location dataSourceLocationsOnly:1 actualRange:0], v18 = objc_claimAutoreleasedReturnValue(), (v19 = v18) == 0) && (objc_msgSend(v17, "locationForCharacterIndex:dataSourceLocationsOnly:actualRange:", location, 0, 0), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v33 = v12;
+    v33 = attributesCopy;
     goto LABEL_29;
   }
 
   v71.location = 0;
   v71.length = 0;
-  v20 = [(ICAuthorHighlightsController *)self note];
-  v21 = [v20 textContentStorage];
+  note = [(ICAuthorHighlightsController *)self note];
+  textContentStorage = [note textContentStorage];
 
-  v22 = [v21 documentRange];
-  v23 = [v22 location];
+  documentRange = [textContentStorage documentRange];
+  location = [documentRange location];
   v69 = v19;
-  v24 = [v21 offsetFromLocation:v23 toLocation:v19];
+  v24 = [textContentStorage offsetFromLocation:location toLocation:v19];
 
-  v25 = [v21 textStorage];
-  v26 = [v25 highlightsAttributedString];
-  v27 = [v26 attributesAtIndex:v24 effectiveRange:&v71];
+  textStorage = [textContentStorage textStorage];
+  highlightsAttributedString = [textStorage highlightsAttributedString];
+  v27 = [highlightsAttributedString attributesAtIndex:v24 effectiveRange:&v71];
 
-  v28.location = [v13 ic_markedTextRange];
+  v28.location = [viewCopy ic_markedTextRange];
   if (v28.location == 0x7FFFFFFFFFFFFFFFLL || (v29 = v28.location, length = v28.length, !NSIntersectionRange(v28, v71).location))
   {
     v32 = 0;
@@ -1963,15 +1963,15 @@ void __108__ICAuthorHighlightsController_setTextHighlightValue_highlightColor_bl
     }
   }
 
-  v34 = [v21 documentRange];
-  v35 = [v34 location];
-  v36 = [v21 locationFromLocation:v35 withOffset:v71.location];
+  documentRange2 = [textContentStorage documentRange];
+  location2 = [documentRange2 location];
+  v36 = [textContentStorage locationFromLocation:location2 withOffset:v71.location];
 
   v37 = [v17 rangeForLocation:v36 allowsTrailingEdge:1];
   v38 = v71.length;
-  a6->location = v37;
-  a6->length = v38;
-  v39 = [v12 mutableCopy];
+  effectiveRange->location = v37;
+  effectiveRange->length = v38;
+  v39 = [attributesCopy mutableCopy];
   if (!v18)
   {
     objc_opt_class();
@@ -2069,19 +2069,19 @@ LABEL_29:
   return v33;
 }
 
-- (void)textStorageDidProcessEndEditing:(id)a3
+- (void)textStorageDidProcessEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [editingCopy object];
 
   v8 = ICDynamicCast();
 
   if (![(ICAuthorHighlightsController *)self isPerformingHighlightUpdatesForTextStorage:v8])
   {
-    v6 = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
-    v7 = [v8 document];
-    [v6 removeObjectForKey:v7];
+    editGroupsForTextStorageDocument = [(ICAuthorHighlightsController *)self editGroupsForTextStorageDocument];
+    document = [v8 document];
+    [editGroupsForTextStorageDocument removeObjectForKey:document];
   }
 }
 

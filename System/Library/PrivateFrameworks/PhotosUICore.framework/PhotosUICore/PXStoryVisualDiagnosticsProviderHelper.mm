@@ -1,33 +1,33 @@
 @interface PXStoryVisualDiagnosticsProviderHelper
 - (PXStoryVisualDiagnosticsProviderHelper)init;
-- (PXStoryVisualDiagnosticsProviderHelper)initWithConfiguration:(id)a3;
-- (void)drawAsset:(id)a3 contentsRect:(id *)a4 inRect:(CGRect)a5 context:(id)a6;
-- (void)drawAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5;
-- (void)drawCropRectsForAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5 configuration:(id)a6;
-- (void)drawSegmentOfTimeline:(id)a3 withIdentifier:(int64_t)a4 inRect:(CGRect)a5 context:(id)a6;
+- (PXStoryVisualDiagnosticsProviderHelper)initWithConfiguration:(id)configuration;
+- (void)drawAsset:(id)asset contentsRect:(id *)rect inRect:(CGRect)inRect context:(id)context;
+- (void)drawAsset:(id)asset inRect:(CGRect)rect context:(id)context;
+- (void)drawCropRectsForAsset:(id)asset inRect:(CGRect)rect context:(id)context configuration:(id)configuration;
+- (void)drawSegmentOfTimeline:(id)timeline withIdentifier:(int64_t)identifier inRect:(CGRect)rect context:(id)context;
 @end
 
 @implementation PXStoryVisualDiagnosticsProviderHelper
 
-- (void)drawCropRectsForAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5 configuration:(id)a6
+- (void)drawCropRectsForAsset:(id)asset inRect:(CGRect)rect context:(id)context configuration:(id)configuration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  assetCopy = asset;
+  contextCopy = context;
+  configurationCopy = configuration;
   v16 = objc_alloc_init(_PXStoryVisualDiagnosticsCropRectsConfiguration);
-  v15[2](v15, v16);
+  configurationCopy[2](configurationCopy, v16);
 
-  v17 = [v14 CGContext];
+  cGContext = [contextCopy CGContext];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_context_configuration___block_invoke_2;
   aBlock[3] = &unk_1E772CDF8;
-  aBlock[5] = v17;
-  v76 = v14;
+  aBlock[5] = cGContext;
+  v76 = contextCopy;
   aBlock[4] = v76;
   v18 = _Block_copy(aBlock);
   v104[0] = MEMORY[0x1E69E9820];
@@ -49,7 +49,7 @@
   *&v103[6] = y;
   *&v103[7] = width;
   *&v103[8] = height;
-  v103[9] = v17;
+  v103[9] = cGContext;
   v103[4] = v19;
   v21 = _Block_copy(v103);
   if (v16)
@@ -105,56 +105,56 @@
     v30 = *(MEMORY[0x1E695F050] + 24);
   }
 
-  [v13 preferredCropRect];
+  [assetCopy preferredCropRect];
   v35 = __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_context_configuration___block_invoke(v31, v32, v33, v34);
   v37 = v36;
   v39 = v38;
   v41 = v40;
-  v42 = [MEMORY[0x1E69DC888] redColor];
+  redColor = [MEMORY[0x1E69DC888] redColor];
   v43 = (v20 + 16);
-  (*(v20 + 2))(v20, v42, @"Preferred", v35, v37, v39, v41);
+  (*(v20 + 2))(v20, redColor, @"Preferred", v35, v37, v39, v41);
 
-  [v13 acceptableCropRect];
+  [assetCopy acceptableCropRect];
   v48 = __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_context_configuration___block_invoke(v44, v45, v46, v47);
   v50 = v49;
   v52 = v51;
   v54 = v53;
-  v55 = [MEMORY[0x1E69DC888] orangeColor];
-  (*(v20 + 2))(v20, v55, @"Acceptable", v48, v50, v52, v54);
+  orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+  (*(v20 + 2))(v20, orangeColor, @"Acceptable", v48, v50, v52, v54);
 
-  [v13 faceAreaRect];
+  [assetCopy faceAreaRect];
   v60 = __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_context_configuration___block_invoke(v56, v57, v58, v59);
   v62 = v61;
   v64 = v63;
   v66 = v65;
-  v67 = [MEMORY[0x1E69DC888] blueColor];
-  (*(v20 + 2))(v20, v67, @"Face Area", v60, v62, v64, v66);
+  blueColor = [MEMORY[0x1E69DC888] blueColor];
+  (*(v20 + 2))(v20, blueColor, @"Face Area", v60, v62, v64, v66);
 
-  v68 = [(PXStoryVisualDiagnosticsProviderHelper *)self croppingContext];
+  croppingContext = [(PXStoryVisualDiagnosticsProviderHelper *)self croppingContext];
   v80[0] = MEMORY[0x1E69E9820];
   v80[1] = v75;
   v80[2] = __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_context_configuration___block_invoke_6;
   v80[3] = &unk_1E772CE70;
   v69 = v20;
   v80[4] = v69;
-  [v68 requestIndividualFaceRectsInAsset:v13 options:1 resultHandler:v80];
+  [croppingContext requestIndividualFaceRectsInAsset:assetCopy options:1 resultHandler:v80];
 
-  v70 = [MEMORY[0x1E69DC888] greenColor];
-  (*v43)(v69, v70, @"Best Playback", v24, v26, v28, v30);
+  greenColor = [MEMORY[0x1E69DC888] greenColor];
+  (*v43)(v69, greenColor, @"Best Playback", v24, v26, v28, v30);
 
-  v71 = [MEMORY[0x1E69DC888] cyanColor];
+  cyanColor = [MEMORY[0x1E69DC888] cyanColor];
   v72 = v21[2];
   v77 = v100;
   v78 = v101;
   v79 = v102;
-  v72(v21, &v77, v71, @"Source", 0.4, 3.0);
+  v72(v21, &v77, cyanColor, @"Source", 0.4, 3.0);
 
-  v73 = [MEMORY[0x1E69DC888] magentaColor];
+  magentaColor = [MEMORY[0x1E69DC888] magentaColor];
   v74 = v21[2];
   v77 = v89;
   v78 = v90;
   v79 = v91;
-  v74(v21, &v77, v73, @"Target", 0.6, 3.0);
+  v74(v21, &v77, magentaColor, @"Target", 0.6, 3.0);
 
   [(_PXStoryVisualDiagnosticsCropRectsConfiguration *)v16 TVPreviewSize];
   PXSizeIsEmpty();
@@ -263,16 +263,16 @@ void __93__PXStoryVisualDiagnosticsProviderHelper_drawCropRectsForAsset_inRect_c
   [v4 setRelativePosition:{*(a1 + 48), 1.0}];
 }
 
-- (void)drawSegmentOfTimeline:(id)a3 withIdentifier:(int64_t)a4 inRect:(CGRect)a5 context:(id)a6
+- (void)drawSegmentOfTimeline:(id)timeline withIdentifier:(int64_t)identifier inRect:(CGRect)rect context:(id)context
 {
-  v8 = a3;
-  v9 = a6;
-  if (v8)
+  timelineCopy = timeline;
+  contextCopy = context;
+  if (timelineCopy)
   {
-    [v8 timeRangeForSegmentWithIdentifier:a4];
+    [timelineCopy timeRangeForSegmentWithIdentifier:identifier];
   }
 
-  [v8 size];
+  [timelineCopy size];
   PXRectWithOriginAndSize();
 }
 
@@ -284,35 +284,35 @@ void __94__PXStoryVisualDiagnosticsProviderHelper_drawSegmentOfTimeline_withIden
   }
 }
 
-- (void)drawAsset:(id)a3 contentsRect:(id *)a4 inRect:(CGRect)a5 context:(id)a6
+- (void)drawAsset:(id)asset contentsRect:(id *)rect inRect:(CGRect)inRect context:(id)context
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a6;
-  v13 = [v12 CGContext];
-  CGContextSaveGState(v13);
-  if ([v12 isPrivateDataAllowed])
+  height = inRect.size.height;
+  width = inRect.size.width;
+  y = inRect.origin.y;
+  x = inRect.origin.x;
+  assetCopy = asset;
+  contextCopy = context;
+  cGContext = [contextCopy CGContext];
+  CGContextSaveGState(cGContext);
+  if ([contextCopy isPrivateDataAllowed])
   {
     v23.origin.x = x;
     v23.origin.y = y;
     v23.size.width = width;
     v23.size.height = height;
-    CGContextClipToRect(v13, v23);
+    CGContextClipToRect(cGContext, v23);
     PXStoryRectDecompose();
   }
 
-  CGContextSetLineWidth(v13, 1.0);
-  v14 = [MEMORY[0x1E69DC888] blackColor];
-  CGContextSetStrokeColorWithColor(v13, [v14 CGColor]);
+  CGContextSetLineWidth(cGContext, 1.0);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  CGContextSetStrokeColorWithColor(cGContext, [blackColor CGColor]);
 
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
   v24.size.height = height;
-  CGContextStrokeRect(v13, v24);
+  CGContextStrokeRect(cGContext, v24);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -323,7 +323,7 @@ void __94__PXStoryVisualDiagnosticsProviderHelper_drawSegmentOfTimeline_withIden
   v26.size.width = width;
   v26.size.height = height;
   MinY = CGRectGetMinY(v26);
-  CGContextMoveToPoint(v13, MinX, MinY);
+  CGContextMoveToPoint(cGContext, MinX, MinY);
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.width = width;
@@ -334,7 +334,7 @@ void __94__PXStoryVisualDiagnosticsProviderHelper_drawSegmentOfTimeline_withIden
   v28.size.width = width;
   v28.size.height = height;
   MaxY = CGRectGetMaxY(v28);
-  CGContextAddLineToPoint(v13, MaxX, MaxY);
+  CGContextAddLineToPoint(cGContext, MaxX, MaxY);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
@@ -345,7 +345,7 @@ void __94__PXStoryVisualDiagnosticsProviderHelper_drawSegmentOfTimeline_withIden
   v30.size.width = width;
   v30.size.height = height;
   v20 = CGRectGetMinY(v30);
-  CGContextMoveToPoint(v13, v19, v20);
+  CGContextMoveToPoint(cGContext, v19, v20);
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
@@ -356,9 +356,9 @@ void __94__PXStoryVisualDiagnosticsProviderHelper_drawSegmentOfTimeline_withIden
   v32.size.width = width;
   v32.size.height = height;
   v22 = CGRectGetMaxY(v32);
-  CGContextAddLineToPoint(v13, v21, v22);
-  CGContextStrokePath(v13);
-  CGContextRestoreGState(v13);
+  CGContextAddLineToPoint(cGContext, v21, v22);
+  CGContextStrokePath(cGContext);
+  CGContextRestoreGState(cGContext);
 }
 
 uint64_t __80__PXStoryVisualDiagnosticsProviderHelper_drawAsset_contentsRect_inRect_context___block_invoke(uint64_t result)
@@ -383,35 +383,35 @@ double *__80__PXStoryVisualDiagnosticsProviderHelper_drawAsset_contentsRect_inRe
   return result;
 }
 
-- (void)drawAsset:(id)a3 inRect:(CGRect)a4 context:(id)a5
+- (void)drawAsset:(id)asset inRect:(CGRect)rect context:(id)context
 {
   v5 = *(off_1E7722240 + 1);
   v6[0] = *off_1E7722240;
   v6[1] = v5;
   v6[2] = *(off_1E7722240 + 2);
-  [(PXStoryVisualDiagnosticsProviderHelper *)self drawAsset:a3 contentsRect:v6 inRect:a5 context:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(PXStoryVisualDiagnosticsProviderHelper *)self drawAsset:asset contentsRect:v6 inRect:context context:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (PXStoryVisualDiagnosticsProviderHelper)initWithConfiguration:(id)a3
+- (PXStoryVisualDiagnosticsProviderHelper)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = PXStoryVisualDiagnosticsProviderHelper;
   v6 = [(PXStoryVisualDiagnosticsProviderHelper *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v7->_contentsScale = 2.0;
     v8 = [PXStoryDefaultDisplayAssetCroppingContext alloc];
-    v9 = [(PXStoryConfiguration *)v7->_configuration assetCollection];
-    v10 = [(PXStoryDefaultDisplayAssetCroppingContext *)v8 initWithAssetCollection:v9 detailedSaliency:0];
+    assetCollection = [(PXStoryConfiguration *)v7->_configuration assetCollection];
+    v10 = [(PXStoryDefaultDisplayAssetCroppingContext *)v8 initWithAssetCollection:assetCollection detailedSaliency:0];
     croppingContext = v7->_croppingContext;
     v7->_croppingContext = v10;
 
-    v12 = [(PXStoryConfiguration *)v7->_configuration mediaProvider];
+    mediaProvider = [(PXStoryConfiguration *)v7->_configuration mediaProvider];
     mediaProvider = v7->_mediaProvider;
-    v7->_mediaProvider = v12;
+    v7->_mediaProvider = mediaProvider;
   }
 
   return v7;
@@ -419,8 +419,8 @@ double *__80__PXStoryVisualDiagnosticsProviderHelper_drawAsset_contentsRect_inRe
 
 - (PXStoryVisualDiagnosticsProviderHelper)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryVisualDiagnosticsProviderHelper.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryVisualDiagnosticsProviderHelper init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryVisualDiagnosticsProviderHelper.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryVisualDiagnosticsProviderHelper init]"}];
 
   abort();
 }

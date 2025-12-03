@@ -1,36 +1,36 @@
 @interface SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)self setProtoEncoding:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)self setRuntimeEncoding:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)self setEventDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -41,13 +41,13 @@
   return v4 ^ [(NSString *)self->_eventDescription hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((protoEncoding = self->_protoEncoding, !(protoEncoding | v4[2])) || -[NSData isEqual:](protoEncoding, "isEqual:")) && ((runtimeEncoding = self->_runtimeEncoding, !(runtimeEncoding | v4[3])) || -[NSData isEqual:](runtimeEncoding, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((protoEncoding = self->_protoEncoding, !(protoEncoding | equalCopy[2])) || -[NSData isEqual:](protoEncoding, "isEqual:")) && ((runtimeEncoding = self->_runtimeEncoding, !(runtimeEncoding | equalCopy[3])) || -[NSData isEqual:](runtimeEncoding, "isEqual:")))
   {
     eventDescription = self->_eventDescription;
-    if (eventDescription | v4[1])
+    if (eventDescription | equalCopy[1])
     {
       v8 = [(NSString *)eventDescription isEqual:?];
     }
@@ -66,78 +66,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_protoEncoding copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_protoEncoding copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_runtimeEncoding copyWithZone:a3];
+  v8 = [(NSData *)self->_runtimeEncoding copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_eventDescription copyWithZone:a3];
+  v10 = [(NSString *)self->_eventDescription copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_protoEncoding)
   {
-    [v4 setProtoEncoding:?];
-    v4 = v5;
+    [toCopy setProtoEncoding:?];
+    toCopy = v5;
   }
 
   if (self->_runtimeEncoding)
   {
     [v5 setRuntimeEncoding:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_eventDescription)
   {
     [v5 setEventDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_protoEncoding)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_runtimeEncoding)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_eventDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   protoEncoding = self->_protoEncoding;
   if (protoEncoding)
   {
-    [v3 setObject:protoEncoding forKey:@"proto_encoding"];
+    [dictionary setObject:protoEncoding forKey:@"proto_encoding"];
   }
 
   runtimeEncoding = self->_runtimeEncoding;
@@ -161,8 +161,8 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent;
   v4 = [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)&v8 description];
-  v5 = [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALCDM_PLANNERCDMTranscriptEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

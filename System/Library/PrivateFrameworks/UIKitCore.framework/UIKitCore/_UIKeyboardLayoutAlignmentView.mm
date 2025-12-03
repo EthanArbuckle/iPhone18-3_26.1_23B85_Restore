@@ -1,59 +1,59 @@
 @interface _UIKeyboardLayoutAlignmentView
-+ (BOOL)_shouldIgnoreFrameChangeNotification:(id)a3 inView:(id)a4;
-+ (CGRect)_endFrameForNotification:(id)a3 inView:(id)a4;
-+ (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3 inView:(id)a4;
-- (BOOL)_shouldOverrideAnimationForFrameChangeNotification:(id)a3;
-- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3;
-- (_UIKeyboardLayoutAlignmentView)initWithFrame:(CGRect)a3;
++ (BOOL)_shouldIgnoreFrameChangeNotification:(id)notification inView:(id)view;
++ (CGRect)_endFrameForNotification:(id)notification inView:(id)view;
++ (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame inView:(id)view;
+- (BOOL)_shouldOverrideAnimationForFrameChangeNotification:(id)notification;
+- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame;
+- (_UIKeyboardLayoutAlignmentView)initWithFrame:(CGRect)frame;
 - (void)_createConstraints;
 - (void)_matchInitialKeyboardFrame;
 - (void)_removeConstraints;
-- (void)_startObservingKeyboardNotificationsForScreen:(id)a3;
+- (void)_startObservingKeyboardNotificationsForScreen:(id)screen;
 - (void)_stopObservingKeyboardNotifications;
-- (void)_updateConstraintsForKeyboardNotification:(id)a3;
-- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)a3;
+- (void)_updateConstraintsForKeyboardNotification:(id)notification;
+- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)disabled;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIKeyboardLayoutAlignmentView
 
-- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)a3
+- (void)setAutomaticKeyboardFrameTrackingDisabled:(BOOL)disabled
 {
-  if (self->_automaticKeyboardFrameTrackingDisabled != a3)
+  if (self->_automaticKeyboardFrameTrackingDisabled != disabled)
   {
     [(_UIKeyboardLayoutAlignmentView *)self _stopObservingKeyboardNotifications];
-    self->_automaticKeyboardFrameTrackingDisabled = a3;
-    if (!a3)
+    self->_automaticKeyboardFrameTrackingDisabled = disabled;
+    if (!disabled)
     {
-      v6 = [(UIView *)self window];
-      v5 = [v6 screen];
-      [(_UIKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:v5];
+      window = [(UIView *)self window];
+      screen = [window screen];
+      [(_UIKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:screen];
     }
   }
 }
 
-+ (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3 inView:(id)a4
++ (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [v8 superview];
-  v10 = [v8 _window];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  superview = [viewCopy superview];
+  _window = [viewCopy _window];
 
-  v11 = [v10 screen];
-  v12 = [v11 coordinateSpace];
-  [v9 convertRect:v12 fromCoordinateSpace:{x, y, width, height}];
+  screen = [_window screen];
+  coordinateSpace = [screen coordinateSpace];
+  [superview convertRect:coordinateSpace fromCoordinateSpace:{x, y, width, height}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  [v9 bounds];
+  [superview bounds];
   v36.origin.x = v21;
   v36.origin.y = v22;
   v36.size.width = v23;
@@ -86,12 +86,12 @@
   return result;
 }
 
-- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)a3
+- (CGRect)_frameInBoundsForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_opt_class();
 
   [v8 _frameInBoundsForKeyboardFrame:self inView:{x, y, width, height}];
@@ -102,15 +102,15 @@
   return result;
 }
 
-- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)a3
+- (void)_updateConstraintsToMatchKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
+  height = frame.size.height;
   v9[2] = *MEMORY[0x1E69E9840];
-  [(NSLayoutConstraint *)self->widthConstraint setConstant:a3.size.width, a3.origin.y];
+  [(NSLayoutConstraint *)self->widthConstraint setConstant:frame.size.width, frame.origin.y];
   [(NSLayoutConstraint *)self->heightConstraint setConstant:height];
-  v5 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v5)
+  if (superview)
   {
     v6 = MEMORY[0x1E69977A0];
     disambiguatingLeftConstraint = self->disambiguatingLeftConstraint;
@@ -121,17 +121,17 @@
   }
 }
 
-+ (BOOL)_shouldIgnoreFrameChangeNotification:(id)a3 inView:(id)a4
++ (BOOL)_shouldIgnoreFrameChangeNotification:(id)notification inView:(id)view
 {
-  v5 = a4;
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
-  v8 = [v7 BOOLValue];
+  viewCopy = view;
+  userInfo = [notification userInfo];
+  v7 = [userInfo objectForKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = [v5 keyboardSceneDelegate];
-    v10 = [v9 isOnScreen] ^ 1;
+    keyboardSceneDelegate = [viewCopy keyboardSceneDelegate];
+    v10 = [keyboardSceneDelegate isOnScreen] ^ 1;
   }
 
   else
@@ -142,42 +142,42 @@
   return v10;
 }
 
-- (BOOL)_shouldOverrideAnimationForFrameChangeNotification:(id)a3
+- (BOOL)_shouldOverrideAnimationForFrameChangeNotification:(id)notification
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
-  v5 = [v4 BOOLValue];
+  userInfo = [notification userInfo];
+  v4 = [userInfo objectForKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (CGRect)_endFrameForNotification:(id)a3 inView:(id)a4
++ (CGRect)_endFrameForNotification:(id)notification inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 userInfo];
-  v9 = [v8 valueForKey:@"UIKeyboardFrameEndUserInfoKey"];
+  viewCopy = view;
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo valueForKey:@"UIKeyboardFrameEndUserInfoKey"];
   [v9 CGRectValue];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  LODWORD(v8) = [a1 _shouldIgnoreFrameChangeNotification:v7 inView:v6];
-  if (v8)
+  LODWORD(userInfo) = [self _shouldIgnoreFrameChangeNotification:notificationCopy inView:viewCopy];
+  if (userInfo)
   {
-    v18 = [v6 window];
-    +[UIKeyboard sizeForInterfaceOrientation:](UIKeyboard, "sizeForInterfaceOrientation:", [v18 interfaceOrientation]);
+    window = [viewCopy window];
+    +[UIKeyboard sizeForInterfaceOrientation:](UIKeyboard, "sizeForInterfaceOrientation:", [window interfaceOrientation]);
     v15 = v19;
     v17 = v20;
 
-    v21 = [v6 _window];
-    v22 = [v21 screen];
-    [v22 bounds];
+    _window = [viewCopy _window];
+    screen = [_window screen];
+    [screen bounds];
     v13 = CGRectGetHeight(v35) - v17;
   }
 
-  [a1 _frameInBoundsForKeyboardFrame:v6 inView:{v11, v13, v15, v17}];
+  [self _frameInBoundsForKeyboardFrame:viewCopy inView:{v11, v13, v15, v17}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -194,14 +194,14 @@
   return result;
 }
 
-- (void)_updateConstraintsForKeyboardNotification:(id)a3
+- (void)_updateConstraintsForKeyboardNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 valueForKey:@"UIKeyboardFrameBeginUserInfoKey"];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo valueForKey:@"UIKeyboardFrameBeginUserInfoKey"];
     [v7 CGRectValue];
     rect2.origin.x = v8;
     v10 = v9;
@@ -213,8 +213,8 @@
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [v5 userInfo];
-    v24 = [v23 valueForKey:@"UIKeyboardAnimationDurationUserInfoKey"];
+    userInfo2 = [v5 userInfo];
+    v24 = [userInfo2 valueForKey:@"UIKeyboardAnimationDurationUserInfoKey"];
     [v24 floatValue];
     v26 = v25;
 
@@ -227,9 +227,9 @@
 
     v47 = v28;
     v29 = v16;
-    v30 = [v5 userInfo];
-    v31 = [v30 valueForKey:@"UIKeyboardAnimationCurveUserInfoKey"];
-    v32 = [v31 integerValue];
+    userInfo3 = [v5 userInfo];
+    v31 = [userInfo3 valueForKey:@"UIKeyboardAnimationCurveUserInfoKey"];
+    integerValue = [v31 integerValue];
 
     [(_UIKeyboardLayoutAlignmentView *)self _frameInBoundsForKeyboardFrame:rect2.origin.x, v10, v12, v14];
     v34 = v33;
@@ -265,14 +265,14 @@
         *&rect2.size.height = __76___UIKeyboardLayoutAlignmentView__updateConstraintsForKeyboardNotification___block_invoke_2;
         v49 = &unk_1E71060F8;
         v52 = v47;
-        v53 = v32;
-        v50 = self;
+        v53 = integerValue;
+        selfCopy = self;
         v51 = v42;
         v43 = _Block_copy(&rect2.origin.y);
         if ([(_UIKeyboardLayoutAlignmentView *)self _shouldOverrideAnimationForFrameChangeNotification:v5])
         {
-          v44 = [MEMORY[0x1E695DFD0] mainRunLoop];
-          [v44 performBlock:v43];
+          mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+          [mainRunLoop performBlock:v43];
         }
 
         else
@@ -289,13 +289,13 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   [(_UIKeyboardLayoutAlignmentView *)self _stopObservingKeyboardNotifications];
-  v5 = [v4 screen];
+  screen = [windowCopy screen];
 
-  [(_UIKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:v5];
+  [(_UIKeyboardLayoutAlignmentView *)self _startObservingKeyboardNotificationsForScreen:screen];
 }
 
 - (void)didMoveToWindow
@@ -308,10 +308,10 @@
 - (void)_createConstraints
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self superview];
-  if (v3)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v4 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:4 relatedBy:0 toItem:v3 attribute:4 multiplier:1.0 constant:0.0];
+    v4 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:4 relatedBy:0 toItem:superview attribute:4 multiplier:1.0 constant:0.0];
     bottomConstraint = self->bottomConstraint;
     self->bottomConstraint = v4;
 
@@ -323,7 +323,7 @@
     heightConstraint = self->heightConstraint;
     self->heightConstraint = v8;
 
-    v10 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
+    v10 = [MEMORY[0x1E69977A0] constraintWithItem:self attribute:1 relatedBy:0 toItem:superview attribute:1 multiplier:1.0 constant:0.0];
     disambiguatingLeftConstraint = self->disambiguatingLeftConstraint;
     self->disambiguatingLeftConstraint = v10;
 
@@ -334,8 +334,8 @@
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     [v12 activateConstraints:v14];
 
-    v15 = [(UIView *)self window];
-    if (v15)
+    window = [(UIView *)self window];
+    if (window)
     {
       [(_UIKeyboardLayoutAlignmentView *)self _matchInitialKeyboardFrame];
     }
@@ -344,13 +344,13 @@
 
 - (void)_matchInitialKeyboardFrame
 {
-  v3 = [(UIView *)self keyboardSceneDelegate];
-  v4 = [v3 isOnScreen];
+  keyboardSceneDelegate = [(UIView *)self keyboardSceneDelegate];
+  isOnScreen = [keyboardSceneDelegate isOnScreen];
 
-  if (v4)
+  if (isOnScreen)
   {
-    v5 = [(UIView *)self keyboardSceneDelegate];
-    [v5 visibleFrameInView:0];
+    keyboardSceneDelegate2 = [(UIView *)self keyboardSceneDelegate];
+    [keyboardSceneDelegate2 visibleFrameInView:0];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -381,11 +381,11 @@
   self->disambiguatingLeftConstraint = 0;
 }
 
-- (_UIKeyboardLayoutAlignmentView)initWithFrame:(CGRect)a3
+- (_UIKeyboardLayoutAlignmentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIKeyboardLayoutAlignmentView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -406,18 +406,18 @@
 
 - (void)_stopObservingKeyboardNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIKeyboardPrivateWillChangeFrameNotification" object:0];
 }
 
-- (void)_startObservingKeyboardNotificationsForScreen:(id)a3
+- (void)_startObservingKeyboardNotificationsForScreen:(id)screen
 {
-  if (a3)
+  if (screen)
   {
     v4 = MEMORY[0x1E696AD88];
-    v5 = a3;
-    v6 = [v4 defaultCenter];
-    [v6 addObserver:self selector:sel__keyboardChanged_ name:@"UIKeyboardPrivateWillChangeFrameNotification" object:v5];
+    screenCopy = screen;
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter addObserver:self selector:sel__keyboardChanged_ name:@"UIKeyboardPrivateWillChangeFrameNotification" object:screenCopy];
   }
 }
 

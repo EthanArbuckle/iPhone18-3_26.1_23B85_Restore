@@ -1,6 +1,6 @@
 @interface SBAppSwitcherSnapshotLockoutViewControllerProvider
 - (SBAppSwitcherSnapshotLockoutViewControllerProvider)init;
-- (id)blockingViewControllerForBundleIdentifier:(id)a3 screenTimePolicy:(int64_t)a4;
+- (id)blockingViewControllerForBundleIdentifier:(id)identifier screenTimePolicy:(int64_t)policy;
 - (void)dealloc;
 @end
 
@@ -17,8 +17,8 @@
     availableControllers = v2->_availableControllers;
     v2->_availableControllers = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__receivedMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__receivedMemoryWarning_ name:*MEMORY[0x277D76670] object:0];
   }
 
   return v2;
@@ -26,30 +26,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76670] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76670] object:0];
 
   v4.receiver = self;
   v4.super_class = SBAppSwitcherSnapshotLockoutViewControllerProvider;
   [(SBAppSwitcherSnapshotLockoutViewControllerProvider *)&v4 dealloc];
 }
 
-- (id)blockingViewControllerForBundleIdentifier:(id)a3 screenTimePolicy:(int64_t)a4
+- (id)blockingViewControllerForBundleIdentifier:(id)identifier screenTimePolicy:(int64_t)policy
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_availableControllers _sb_dequeue];
-  if (!v7)
+  identifierCopy = identifier;
+  _sb_dequeue = [(NSMutableArray *)self->_availableControllers _sb_dequeue];
+  if (!_sb_dequeue)
   {
-    v7 = [MEMORY[0x277D4BD90] newTranslucentBlockingViewController];
-    v8 = [MEMORY[0x277D4BD90] closeApplicationHandler];
-    [v7 setOkButtonHandler:v8];
+    _sb_dequeue = [MEMORY[0x277D4BD90] newTranslucentBlockingViewController];
+    closeApplicationHandler = [MEMORY[0x277D4BD90] closeApplicationHandler];
+    [_sb_dequeue setOkButtonHandler:closeApplicationHandler];
 
-    [v7 _setIgnoresWrapperViewForContentOverlayInsets:1];
+    [_sb_dequeue _setIgnoresWrapperViewForContentOverlayInsets:1];
   }
 
-  [v7 updateAppearanceUsingPolicy:a4 forBundleIdentifier:v6];
+  [_sb_dequeue updateAppearanceUsingPolicy:policy forBundleIdentifier:identifierCopy];
 
-  return v7;
+  return _sb_dequeue;
 }
 
 @end

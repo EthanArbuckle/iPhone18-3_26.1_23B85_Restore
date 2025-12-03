@@ -1,26 +1,26 @@
 @interface SKUIItemArtworkContext
-+ (id)lockupContextWithSize:(int64_t)a3;
++ (id)lockupContextWithSize:(int64_t)size;
 + (id)roomContext;
 + (id)wishlistContext;
-- (CGSize)imageSizeForItem:(id)a3;
-- (CGSize)largestImageSizeForItems:(id)a3;
-- (CGSize)largestImageSizeForLockups:(id)a3;
-- (id)URLForItem:(id)a3;
-- (id)artworkForItem:(id)a3;
-- (id)dataConsumerForItem:(id)a3;
-- (id)placeholderImageForItem:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setGeneralConsumer:(id)a3;
-- (void)setIconConsumer:(id)a3;
-- (void)setLetterboxConsumer:(id)a3;
-- (void)setNewsstandConsumer:(id)a3;
-- (void)setPosterConsumer:(id)a3;
+- (CGSize)imageSizeForItem:(id)item;
+- (CGSize)largestImageSizeForItems:(id)items;
+- (CGSize)largestImageSizeForLockups:(id)lockups;
+- (id)URLForItem:(id)item;
+- (id)artworkForItem:(id)item;
+- (id)dataConsumerForItem:(id)item;
+- (id)placeholderImageForItem:(id)item;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setGeneralConsumer:(id)consumer;
+- (void)setIconConsumer:(id)consumer;
+- (void)setLetterboxConsumer:(id)consumer;
+- (void)setNewsstandConsumer:(id)consumer;
+- (void)setPosterConsumer:(id)consumer;
 @end
 
 @implementation SKUIItemArtworkContext
 
-+ (id)lockupContextWithSize:(int64_t)a3
++ (id)lockupContextWithSize:(int64_t)size
 {
   if (os_variant_has_internal_content())
   {
@@ -35,13 +35,13 @@
   }
 
   v12 = objc_alloc_init(objc_opt_class());
-  v13 = [SKUIProductImageDataConsumer lockupConsumerWithSize:a3 itemKind:12];
+  v13 = [SKUIProductImageDataConsumer lockupConsumerWithSize:size itemKind:12];
   [v12 setGeneralConsumer:v13];
 
-  v14 = [SKUIStyledImageDataConsumer lockupIconConsumerWithSize:a3];
+  v14 = [SKUIStyledImageDataConsumer lockupIconConsumerWithSize:size];
   [v12 setIconConsumer:v14];
 
-  v15 = [SKUIStyledImageDataConsumer lockupProductImageConsumerWithSize:a3];
+  v15 = [SKUIStyledImageDataConsumer lockupProductImageConsumerWithSize:size];
   [v12 setNewsstandConsumer:v15];
 
   return v12;
@@ -101,9 +101,9 @@
   return v10;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -116,9 +116,9 @@
     }
   }
 
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    objc_storeStrong(&self->_colorScheme, a3);
+    objc_storeStrong(&self->_colorScheme, scheme);
     [(SKUIProductImageDataConsumer *)self->_generalImageConsumer setColorScheme:self->_colorScheme];
     [(SKUIProductImageDataConsumer *)self->_letterboxConsumer setColorScheme:self->_colorScheme];
     [(SKUIProductImageDataConsumer *)self->_posterConsumer setColorScheme:self->_colorScheme];
@@ -127,9 +127,9 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -142,9 +142,9 @@
     }
   }
 
-  if (self->_backgroundColor != v5)
+  if (self->_backgroundColor != colorCopy)
   {
-    objc_storeStrong(&self->_backgroundColor, a3);
+    objc_storeStrong(&self->_backgroundColor, color);
     [(SKUIProductImageDataConsumer *)self->_generalImageConsumer setBackgroundColor:self->_backgroundColor];
     [(SKUIStyledImageDataConsumer *)self->_iconConsumer setBackgroundColor:self->_backgroundColor];
     [(SKUIProductImageDataConsumer *)self->_letterboxConsumer setBackgroundColor:self->_backgroundColor];
@@ -155,9 +155,9 @@
   }
 }
 
-- (void)setGeneralConsumer:(id)a3
+- (void)setGeneralConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -170,9 +170,9 @@
     }
   }
 
-  if (self->_generalImageConsumer != v5)
+  if (self->_generalImageConsumer != consumerCopy)
   {
-    objc_storeStrong(&self->_generalImageConsumer, a3);
+    objc_storeStrong(&self->_generalImageConsumer, consumer);
     [(SKUIProductImageDataConsumer *)self->_generalImageConsumer setColorScheme:self->_colorScheme];
     [(SKUIProductImageDataConsumer *)self->_generalImageConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
@@ -180,9 +180,9 @@
   }
 }
 
-- (void)setIconConsumer:(id)a3
+- (void)setIconConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -195,18 +195,18 @@
     }
   }
 
-  if (self->_iconConsumer != v5)
+  if (self->_iconConsumer != consumerCopy)
   {
-    objc_storeStrong(&self->_iconConsumer, a3);
+    objc_storeStrong(&self->_iconConsumer, consumer);
     [(SKUIStyledImageDataConsumer *)self->_iconConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
   }
 }
 
-- (void)setLetterboxConsumer:(id)a3
+- (void)setLetterboxConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -219,9 +219,9 @@
     }
   }
 
-  if (self->_letterboxConsumer != v5)
+  if (self->_letterboxConsumer != consumerCopy)
   {
-    objc_storeStrong(&self->_letterboxConsumer, a3);
+    objc_storeStrong(&self->_letterboxConsumer, consumer);
     [(SKUIProductImageDataConsumer *)self->_letterboxConsumer setColorScheme:self->_colorScheme];
     [(SKUIProductImageDataConsumer *)self->_letterboxConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
@@ -229,9 +229,9 @@
   }
 }
 
-- (void)setNewsstandConsumer:(id)a3
+- (void)setNewsstandConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -244,18 +244,18 @@
     }
   }
 
-  if (self->_newsstandConsumer != v5)
+  if (self->_newsstandConsumer != consumerCopy)
   {
-    objc_storeStrong(&self->_newsstandConsumer, a3);
+    objc_storeStrong(&self->_newsstandConsumer, consumer);
     [(SKUIStyledImageDataConsumer *)self->_newsstandConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
     self->_placeholders = 0;
   }
 }
 
-- (void)setPosterConsumer:(id)a3
+- (void)setPosterConsumer:(id)consumer
 {
-  v5 = a3;
+  consumerCopy = consumer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -268,9 +268,9 @@
     }
   }
 
-  if (self->_posterConsumer != v5)
+  if (self->_posterConsumer != consumerCopy)
   {
-    objc_storeStrong(&self->_posterConsumer, a3);
+    objc_storeStrong(&self->_posterConsumer, consumer);
     [(SKUIProductImageDataConsumer *)self->_posterConsumer setColorScheme:self->_colorScheme];
     [(SKUIProductImageDataConsumer *)self->_posterConsumer setBackgroundColor:self->_backgroundColor];
     placeholders = self->_placeholders;
@@ -278,9 +278,9 @@
   }
 }
 
-- (id)dataConsumerForItem:(id)a3
+- (id)dataConsumerForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -293,23 +293,23 @@
     }
   }
 
-  v13 = [v4 itemKind];
-  if (v13 > 0x11)
+  itemKind = [itemCopy itemKind];
+  if (itemKind > 0x11)
   {
 LABEL_18:
     v14 = 24;
     goto LABEL_19;
   }
 
-  if (((1 << v13) & 0x21020) == 0)
+  if (((1 << itemKind) & 0x21020) == 0)
   {
-    if (((1 << v13) & 0x44) != 0)
+    if (((1 << itemKind) & 0x44) != 0)
     {
       v14 = 64;
       goto LABEL_19;
     }
 
-    if (v13 == 8)
+    if (itemKind == 8)
     {
       v14 = 40;
       goto LABEL_19;
@@ -318,12 +318,12 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v4 isNewsstandApp] && (objc_msgSend(v4, "newsstandArtworks"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
+  if ([itemCopy isNewsstandApp] && (objc_msgSend(itemCopy, "newsstandArtworks"), v15 = objc_claimAutoreleasedReturnValue(), v15, v15))
   {
     v14 = 48;
   }
 
-  else if ([v4 isHiddenFromSpringBoard] && (objc_msgSend(v4, "hasMessagesExtension") & 1) != 0)
+  else if ([itemCopy isHiddenFromSpringBoard] && (objc_msgSend(itemCopy, "hasMessagesExtension") & 1) != 0)
   {
     v14 = 72;
   }
@@ -349,35 +349,35 @@ LABEL_19:
   return v16;
 }
 
-- (CGSize)imageSizeForItem:(id)a3
+- (CGSize)imageSizeForItem:(id)item
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && (v5 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG)))
   {
     [(SKUIItemArtworkContext *)v5 imageSizeForItem:v6, v7, v8, v9, v10, v11, v12];
-    if (v4)
+    if (itemCopy)
     {
 LABEL_5:
-      v13 = [v4 itemKind];
+      itemKind = [itemCopy itemKind];
       v14 = 0;
-      if (v13 <= 0x11 && ((1 << v13) & 0x21020) != 0)
+      if (itemKind <= 0x11 && ((1 << itemKind) & 0x21020) != 0)
       {
-        v14 = [v4 isNewsstandApp] ^ 1;
+        v14 = [itemCopy isNewsstandApp] ^ 1;
       }
 
-      v15 = [(SKUIItemArtworkContext *)self dataConsumerForItem:v4];
+      v15 = [(SKUIItemArtworkContext *)self dataConsumerForItem:itemCopy];
       [v15 imageSize];
       v17 = v16;
       v19 = v18;
 
       if ((v14 & 1) == 0)
       {
-        v20 = [v4 artworksProvider];
-        v21 = v20;
-        if (v20)
+        artworksProvider = [itemCopy artworksProvider];
+        v21 = artworksProvider;
+        if (artworksProvider)
         {
-          v22 = [v20 bestArtworkForScaledSize:{v17, v19}];
+          v22 = [artworksProvider bestArtworkForScaledSize:{v17, v19}];
           [v22 size];
           v24 = v23;
           v26 = v25;
@@ -397,7 +397,7 @@ LABEL_5:
     }
   }
 
-  else if (v4)
+  else if (itemCopy)
   {
     goto LABEL_5;
   }
@@ -451,10 +451,10 @@ LABEL_24:
   return result;
 }
 
-- (CGSize)largestImageSizeForItems:(id)a3
+- (CGSize)largestImageSizeForItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -467,7 +467,7 @@ LABEL_24:
     }
   }
 
-  if ([v4 count])
+  if ([itemsCopy count])
   {
     v13 = *MEMORY[0x277CBF3A8];
     v14 = *(MEMORY[0x277CBF3A8] + 8);
@@ -475,7 +475,7 @@ LABEL_24:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = v4;
+    v15 = itemsCopy;
     v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v16)
     {
@@ -527,10 +527,10 @@ LABEL_24:
   return result;
 }
 
-- (CGSize)largestImageSizeForLockups:(id)a3
+- (CGSize)largestImageSizeForLockups:(id)lockups
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lockupsCopy = lockups;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -549,7 +549,7 @@ LABEL_24:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v4;
+  v15 = lockupsCopy;
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
   v17 = v14;
   v18 = v13;
@@ -569,10 +569,10 @@ LABEL_24:
           objc_enumerationMutation(v15);
         }
 
-        v22 = [*(*(&v30 + 1) + 8 * v21) item];
-        if (v22)
+        item = [*(*(&v30 + 1) + 8 * v21) item];
+        if (item)
         {
-          [(SKUIItemArtworkContext *)self imageSizeForItem:v22];
+          [(SKUIItemArtworkContext *)self imageSizeForItem:item];
           if (v17 < v24)
           {
             v17 = v24;
@@ -608,9 +608,9 @@ LABEL_24:
   return result;
 }
 
-- (id)placeholderImageForItem:(id)a3
+- (id)placeholderImageForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -623,10 +623,10 @@ LABEL_24:
     }
   }
 
-  [(SKUIItemArtworkContext *)self imageSizeForItem:v4];
+  [(SKUIItemArtworkContext *)self imageSizeForItem:itemCopy];
   v14 = v13;
   v16 = v15;
-  v17 = [(SKUIItemArtworkContext *)self dataConsumerForItem:v4];
+  v17 = [(SKUIItemArtworkContext *)self dataConsumerForItem:itemCopy];
 
   if (v17 == self->_iconConsumer)
   {
@@ -715,9 +715,9 @@ LABEL_24:
   return v29;
 }
 
-- (id)URLForItem:(id)a3
+- (id)URLForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -730,15 +730,15 @@ LABEL_24:
     }
   }
 
-  v13 = [(SKUIItemArtworkContext *)self artworkForItem:v4];
+  v13 = [(SKUIItemArtworkContext *)self artworkForItem:itemCopy];
   v14 = [v13 URL];
 
   return v14;
 }
 
-- (id)artworkForItem:(id)a3
+- (id)artworkForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -751,14 +751,14 @@ LABEL_24:
     }
   }
 
-  v13 = [(SKUIItemArtworkContext *)self dataConsumerForItem:v4];
+  v13 = [(SKUIItemArtworkContext *)self dataConsumerForItem:itemCopy];
   [v13 imageSize];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v4 artworksProvider];
+  artworksProvider = [itemCopy artworksProvider];
 
-  v19 = [v18 bestArtworkForScaledSize:{v15, v17}];
+  v19 = [artworksProvider bestArtworkForScaledSize:{v15, v17}];
 
   return v19;
 }

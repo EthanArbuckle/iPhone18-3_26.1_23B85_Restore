@@ -1,14 +1,14 @@
 @interface NFRemoteAdminConnectionHTTP
-- (NFRemoteAdminConnectionHTTP)initWithURL:(id)a3 SEID:(id)a4;
-- (NFRemoteAdminConnectionHTTP)initWithURL:(id)a3 SEID:(id)a4 showProprietaryHeaders:(BOOL)a5 disableEVTrustValidation:(BOOL)a6;
+- (NFRemoteAdminConnectionHTTP)initWithURL:(id)l SEID:(id)d;
+- (NFRemoteAdminConnectionHTTP)initWithURL:(id)l SEID:(id)d showProprietaryHeaders:(BOOL)headers disableEVTrustValidation:(BOOL)validation;
 - (unsigned)disconnect;
-- (unsigned)performRequest:(id)a3 body:(id)a4 header:(id)a5 response:(id)a6 responseHeader:(id)a7 httpStatus:(int64_t *)a8 duration:(double *)a9 sessionError:(id *)a10;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (unsigned)performRequest:(id)request body:(id)body header:(id)header response:(id)response responseHeader:(id)responseHeader httpStatus:(int64_t *)status duration:(double *)duration sessionError:(id *)self0;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation NFRemoteAdminConnectionHTTP
 
-- (NFRemoteAdminConnectionHTTP)initWithURL:(id)a3 SEID:(id)a4
+- (NFRemoteAdminConnectionHTTP)initWithURL:(id)l SEID:(id)d
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -57,10 +57,10 @@
   return 0;
 }
 
-- (NFRemoteAdminConnectionHTTP)initWithURL:(id)a3 SEID:(id)a4 showProprietaryHeaders:(BOOL)a5 disableEVTrustValidation:(BOOL)a6
+- (NFRemoteAdminConnectionHTTP)initWithURL:(id)l SEID:(id)d showProprietaryHeaders:(BOOL)headers disableEVTrustValidation:(BOOL)validation
 {
-  v10 = a3;
-  v11 = a4;
+  lCopy = l;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = NFRemoteAdminConnectionHTTP;
   v12 = [(NFRemoteAdminConnectionHTTP *)&v18 init];
@@ -70,14 +70,14 @@
     sem = v12->_sem;
     v12->_sem = v13;
 
-    if ([v11 length])
+    if ([dCopy length])
     {
-      v15 = [v10 URLByAppendingPathComponent:v11];
+      v15 = [lCopy URLByAppendingPathComponent:dCopy];
     }
 
     else
     {
-      v15 = v10;
+      v15 = lCopy;
     }
 
     baseURL = v12->_baseURL;
@@ -85,7 +85,7 @@
 
     if (os_variant_has_internal_content())
     {
-      v12->_disableEVTrustValidation = a6;
+      v12->_disableEVTrustValidation = validation;
     }
 
     block[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@
     }
 
     objc_storeStrong(&v12->_netSession, qword_10005BAA8);
-    v12->_proprietaryHeaders = a5;
+    v12->_proprietaryHeaders = headers;
   }
 
   return v12;
@@ -108,21 +108,21 @@
 
 - (unsigned)disconnect
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSURLSessionTask *)v2->_netSessionTask cancel];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSURLSessionTask *)selfCopy->_netSessionTask cancel];
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
 
-- (unsigned)performRequest:(id)a3 body:(id)a4 header:(id)a5 response:(id)a6 responseHeader:(id)a7 httpStatus:(int64_t *)a8 duration:(double *)a9 sessionError:(id *)a10
+- (unsigned)performRequest:(id)request body:(id)body header:(id)header response:(id)response responseHeader:(id)responseHeader httpStatus:(int64_t *)status duration:(double *)duration sessionError:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v117 = a7;
+  requestCopy = request;
+  bodyCopy = body;
+  headerCopy = header;
+  responseCopy = response;
+  responseHeaderCopy = responseHeader;
   v135 = 0;
   v136 = &v135;
   v137 = 0x2020000000;
@@ -140,11 +140,11 @@
   *&v144[16] = sub_100039F6C;
   *&v144[24] = sub_100039F7C;
   *&v144[32] = 0;
-  v19 = [v15 length];
+  v19 = [requestCopy length];
   baseURL = self->_baseURL;
   if (v19)
   {
-    v21 = [(NSURL *)baseURL URLByAppendingPathComponent:v15];
+    v21 = [(NSURL *)baseURL URLByAppendingPathComponent:requestCopy];
   }
 
   else
@@ -156,13 +156,13 @@
   self->_url = v21;
 
   objc_storeStrong((*v144 + 40), self->_url);
-  if (!v16)
+  if (!bodyCopy)
   {
     v115 = 0;
     goto LABEL_9;
   }
 
-  if (![NSJSONSerialization isValidJSONObject:v16])
+  if (![NSJSONSerialization isValidJSONObject:bodyCopy])
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -179,7 +179,7 @@
         v34 = 43;
       }
 
-      v31(3, "%c[%{public}s %{public}s]:%i JSON serialization failed, invalid body: %{public}@", v34, ClassName, Name, 277, v16);
+      v31(3, "%c[%{public}s %{public}s]:%i JSON serialization failed, invalid body: %{public}@", v34, ClassName, Name, 277, bodyCopy);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -208,7 +208,7 @@
       *&v140[20] = 1024;
       *&v140[22] = 277;
       v141 = 2114;
-      v142 = v16;
+      v142 = bodyCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i JSON serialization failed, invalid body: %{public}@", buf, 0x2Cu);
     }
 
@@ -216,7 +216,7 @@
   }
 
   v128 = 0;
-  v23 = [NSJSONSerialization dataWithJSONObject:v16 options:0 error:&v128];
+  v23 = [NSJSONSerialization dataWithJSONObject:bodyCopy options:0 error:&v128];
   v24 = v128;
   v25 = v24;
   v115 = v23;
@@ -283,18 +283,18 @@ LABEL_9:
   [v26 setHTTPMethod:@"POST"];
   v27 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{@"application/json", @"Content-Type", 0}];
   v28 = v27;
-  if (v17)
+  if (headerCopy)
   {
-    [v27 addEntriesFromDictionary:v17];
+    [v27 addEntriesFromDictionary:headerCopy];
   }
 
-  v112 = v17;
-  v113 = v18;
+  v112 = headerCopy;
+  v113 = responseCopy;
   if (self->_proprietaryHeaders)
   {
     context = objc_autoreleasePoolPush();
-    v110 = v16;
-    v111 = v15;
+    v110 = bodyCopy;
+    v111 = requestCopy;
     v109 = v28;
     if (NFIsSimulator())
     {
@@ -311,29 +311,29 @@ LABEL_9:
     v105 = MGCopyAnswer();
     v104 = NFBuildVersion();
     v103 = [[NSString alloc] initWithFormat:@"%@", v29];
-    v39 = [[NSString alloc] initWithFormat:@"%@;%@;%@", v107, v105, v104];
+    v104 = [[NSString alloc] initWithFormat:@"%@;%@;%@", v107, v105, v104];
     v40 = [NSBundle bundleForClass:objc_opt_class()];
-    v41 = [v40 infoDictionary];
-    v42 = [v41 objectForKey:kCFBundleVersionKey];
+    infoDictionary = [v40 infoDictionary];
+    v42 = [infoDictionary objectForKey:kCFBundleVersionKey];
 
     v43 = +[NSBundle mainBundle];
-    v44 = [v43 infoDictionary];
-    v45 = [v44 objectForKey:kCFBundleVersionKey];
+    infoDictionary2 = [v43 infoDictionary];
+    v45 = [infoDictionary2 objectForKey:kCFBundleVersionKey];
 
     v46 = [NSString alloc];
-    v47 = [v40 bundleIdentifier];
-    v48 = [v43 bundleIdentifier];
-    v49 = [v46 initWithFormat:@"%@/%@ (%@/%@)", v47, v42, v48, v45];
+    bundleIdentifier = [v40 bundleIdentifier];
+    bundleIdentifier2 = [v43 bundleIdentifier];
+    v49 = [v46 initWithFormat:@"%@/%@ (%@/%@)", bundleIdentifier, v42, bundleIdentifier2, v45];
 
-    v50 = [[NSString alloc] initWithFormat:@"<%@> <%@> <%@>", v103, v39, v49];
+    v50 = [[NSString alloc] initWithFormat:@"<%@> <%@> <%@>", v103, v104, v49];
     objc_autoreleasePoolPop(context);
     v28 = v109;
     [v109 setObject:v50 forKey:@"X-Apple-Client-Info"];
 
     objc_autoreleasePoolPop(objc_autoreleasePoolPush());
-    v16 = v110;
-    v15 = v111;
-    v18 = v113;
+    bodyCopy = v110;
+    requestCopy = v111;
+    responseCopy = v113;
   }
 
   [v26 setAllHTTPHeaderFields:v28];
@@ -389,9 +389,9 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i [TSM] Request Header: %@", buf, 0x2Cu);
     }
 
-    v18 = v113;
+    responseCopy = v113;
     v28 = v51;
-    sub_10002D188("[TSM] Request Body: ", v16);
+    sub_10002D188("[TSM] Request Body: ", bodyCopy);
   }
 
   v62 = v28;
@@ -399,48 +399,48 @@ LABEL_9:
   *v140 = buf;
   *&v140[8] = 0x2020000000;
   *&v140[16] = 0;
-  v63 = self;
-  objc_sync_enter(v63);
-  netSession = v63->_netSession;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  netSession = selfCopy->_netSession;
   v119[0] = _NSConcreteStackBlock;
   v119[1] = 3221225472;
   v119[2] = sub_100039F84;
   v119[3] = &unk_100055078;
-  v119[4] = v63;
+  v119[4] = selfCopy;
   v126 = a2;
-  v120 = v117;
+  v120 = responseHeaderCopy;
   v122 = buf;
   v123 = &v129;
   v124 = v143;
-  v127 = a8;
+  statusCopy = status;
   v125 = &v135;
-  v65 = v18;
+  v65 = responseCopy;
   v121 = v65;
   v66 = [(NSURLSession *)netSession dataTaskWithRequest:v26 completionHandler:v119];
-  netSessionTask = v63->_netSessionTask;
-  v63->_netSessionTask = v66;
+  netSessionTask = selfCopy->_netSessionTask;
+  selfCopy->_netSessionTask = v66;
 
   mach_continuous_time();
-  [(NSURLSessionTask *)v63->_netSessionTask resume];
+  [(NSURLSessionTask *)selfCopy->_netSessionTask resume];
 
-  objc_sync_exit(v63);
-  if (v63->_netSessionTask)
+  objc_sync_exit(selfCopy);
+  if (selfCopy->_netSessionTask)
   {
-    dispatch_semaphore_wait(v63->_sem, 0xFFFFFFFFFFFFFFFFLL);
+    dispatch_semaphore_wait(selfCopy->_sem, 0xFFFFFFFFFFFFFFFFLL);
   }
 
-  v68 = v63;
+  v68 = selfCopy;
   objc_sync_enter(v68);
-  v69 = v63->_netSessionTask;
-  v63->_netSessionTask = 0;
+  v69 = selfCopy->_netSessionTask;
+  selfCopy->_netSessionTask = 0;
 
-  [(NSURLSession *)v63->_netSession flushWithCompletionHandler:&stru_100055098];
+  [(NSURLSession *)selfCopy->_netSession flushWithCompletionHandler:&stru_100055098];
   objc_sync_exit(v68);
 
-  if (a9)
+  if (duration)
   {
     v70 = *(*v140 + 24);
-    *a9 = GetElapsedTimeInMillisecondsFromMachTime() / 1000.0;
+    *duration = GetElapsedTimeInMillisecondsFromMachTime() / 1000.0;
   }
 
   if (byte_10005BAB0 == 1 && [v65 count])
@@ -452,10 +452,10 @@ LABEL_9:
 
   _Block_object_dispose(v143, 8);
   objc_autoreleasePoolPop(v116);
-  v17 = v112;
-  if (a10)
+  headerCopy = v112;
+  if (error)
   {
-    *a10 = v130[5];
+    *error = v130[5];
   }
 
   if (v130[5])
@@ -478,7 +478,7 @@ LABEL_9:
 
       v72(3, "%c[%{public}s %{public}s]:%i NetSessionError=%{public}@", v78, v75, v76, 447, v77);
 
-      v17 = v112;
+      headerCopy = v112;
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -501,7 +501,7 @@ LABEL_9:
       v84 = [v130[5] description];
       *v143 = 67110146;
       *&v143[4] = v81;
-      v17 = v112;
+      headerCopy = v112;
       *v144 = 2082;
       *&v144[2] = v82;
       *&v144[10] = 2082;
@@ -515,7 +515,7 @@ LABEL_9:
   }
 
   v85 = *(v136 + 6);
-  v18 = v113;
+  responseCopy = v113;
 LABEL_68:
   _Block_object_dispose(&v129, 8);
 
@@ -523,19 +523,19 @@ LABEL_68:
   return v85;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 protectionSpace];
-  v13 = [v12 authenticationMethod];
-  if ([v13 isEqualToString:NSURLAuthenticationMethodServerTrust])
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
   {
-    v14 = [v9 delegateQueue];
-    v15 = [v14 underlyingQueue];
+    delegateQueue = [sessionCopy delegateQueue];
+    underlyingQueue = [delegateQueue underlyingQueue];
 
-    if (!v15)
+    if (!underlyingQueue)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       Logger = NFLogGetLogger();
@@ -585,21 +585,21 @@ LABEL_68:
       exit(-1);
     }
 
-    v16 = [v12 serverTrust];
-    v17 = [v9 delegateQueue];
-    v18 = [v17 underlyingQueue];
+    serverTrust = [protectionSpace serverTrust];
+    delegateQueue2 = [sessionCopy delegateQueue];
+    underlyingQueue2 = [delegateQueue2 underlyingQueue];
     v49[1] = 3221225472;
     v49[0] = _NSConcreteStackBlock;
     v50 = sub_10003BB64;
     v51 = &unk_1000550E8;
-    v53 = v11;
-    v52 = v12;
-    v19 = v18;
+    v53 = handlerCopy;
+    v52 = protectionSpace;
+    v19 = underlyingQueue2;
     v20 = v49;
     v21 = v20;
     if (self)
     {
-      if (v16)
+      if (serverTrust)
       {
         result = _NSConcreteStackBlock;
         *v65 = 3221225472;
@@ -609,11 +609,11 @@ LABEL_68:
         v67 = "_trustPassesExtendedValidation:queue:completionHandler:";
         v48 = v20;
         v66 = v48;
-        v22 = SecTrustEvaluateAsyncWithError(v16, v19, &result);
+        v22 = SecTrustEvaluateAsyncWithError(serverTrust, v19, &result);
         if (v22)
         {
           v23 = v22;
-          v47 = v17;
+          v47 = delegateQueue2;
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
           v24 = NFLogGetLogger();
           if (v24)
@@ -664,7 +664,7 @@ LABEL_68:
           }
 
           v50(v48, 0);
-          v17 = v47;
+          delegateQueue2 = v47;
         }
       }
 
@@ -677,7 +677,7 @@ LABEL_68:
 
   else
   {
-    (*(v11 + 2))(v11, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 

@@ -1,17 +1,17 @@
 @interface _INPBReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsReservationStatus:(id)a3;
+- (int)StringAsReservationStatus:(id)status;
 - (unint64_t)hash;
-- (void)addActions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActions:(id)a3;
-- (void)setReservationHolderName:(id)a3;
-- (void)setReservationNumber:(id)a3;
-- (void)setReservationStatus:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addActions:(id)actions;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActions:(id)actions;
+- (void)setReservationHolderName:(id)name;
+- (void)setReservationNumber:(id)number;
+- (void)setReservationStatus:(int)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBReservation
@@ -19,14 +19,14 @@
 - (id)dictionaryRepresentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(_INPBReservation *)self url];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"URL"];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"URL"];
 
   if ([(NSArray *)self->_actions count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -46,8 +46,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -56,50 +56,50 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"actions"];
+    [dictionary setObject:array forKeyedSubscript:@"actions"];
   }
 
-  v13 = [(_INPBReservation *)self bookingTime];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"bookingTime"];
+  bookingTime = [(_INPBReservation *)self bookingTime];
+  dictionaryRepresentation3 = [bookingTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"bookingTime"];
 
-  v15 = [(_INPBReservation *)self itemReference];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"itemReference"];
+  itemReference = [(_INPBReservation *)self itemReference];
+  dictionaryRepresentation4 = [itemReference dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"itemReference"];
 
   if (self->_reservationHolderName)
   {
-    v17 = [(_INPBReservation *)self reservationHolderName];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"reservationHolderName"];
+    reservationHolderName = [(_INPBReservation *)self reservationHolderName];
+    v18 = [reservationHolderName copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"reservationHolderName"];
   }
 
   if (self->_reservationNumber)
   {
-    v19 = [(_INPBReservation *)self reservationNumber];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"reservationNumber"];
+    reservationNumber = [(_INPBReservation *)self reservationNumber];
+    v20 = [reservationNumber copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"reservationNumber"];
   }
 
   if ([(_INPBReservation *)self hasReservationStatus])
   {
-    v21 = [(_INPBReservation *)self reservationStatus];
-    if ((v21 - 1) >= 5)
+    reservationStatus = [(_INPBReservation *)self reservationStatus];
+    if ((reservationStatus - 1) >= 5)
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v21];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", reservationStatus];
     }
 
     else
     {
-      v22 = *(&off_1E72870A0 + (v21 - 1));
+      v22 = *(&off_1E72870A0 + (reservationStatus - 1));
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"reservationStatus"];
+    [dictionary setObject:v22 forKeyedSubscript:@"reservationStatus"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -123,17 +123,17 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBReservation *)self url];
-  v6 = [v4 url];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self url];
+  actions2 = [equalCopy url];
+  if ((actions != 0) == (actions2 == 0))
   {
     goto LABEL_31;
   }
@@ -143,7 +143,7 @@
   {
     v8 = v7;
     v9 = [(_INPBReservation *)self url];
-    v10 = [v4 url];
+    v10 = [equalCopy url];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -156,20 +156,20 @@
   {
   }
 
-  v5 = [(_INPBReservation *)self actions];
-  v6 = [v4 actions];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self actions];
+  actions2 = [equalCopy actions];
+  if ((actions != 0) == (actions2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBReservation *)self actions];
-  if (v12)
+  actions3 = [(_INPBReservation *)self actions];
+  if (actions3)
   {
-    v13 = v12;
-    v14 = [(_INPBReservation *)self actions];
-    v15 = [v4 actions];
-    v16 = [v14 isEqual:v15];
+    v13 = actions3;
+    actions4 = [(_INPBReservation *)self actions];
+    actions5 = [equalCopy actions];
+    v16 = [actions4 isEqual:actions5];
 
     if (!v16)
     {
@@ -181,20 +181,20 @@
   {
   }
 
-  v5 = [(_INPBReservation *)self bookingTime];
-  v6 = [v4 bookingTime];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self bookingTime];
+  actions2 = [equalCopy bookingTime];
+  if ((actions != 0) == (actions2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBReservation *)self bookingTime];
-  if (v17)
+  bookingTime = [(_INPBReservation *)self bookingTime];
+  if (bookingTime)
   {
-    v18 = v17;
-    v19 = [(_INPBReservation *)self bookingTime];
-    v20 = [v4 bookingTime];
-    v21 = [v19 isEqual:v20];
+    v18 = bookingTime;
+    bookingTime2 = [(_INPBReservation *)self bookingTime];
+    bookingTime3 = [equalCopy bookingTime];
+    v21 = [bookingTime2 isEqual:bookingTime3];
 
     if (!v21)
     {
@@ -206,20 +206,20 @@
   {
   }
 
-  v5 = [(_INPBReservation *)self itemReference];
-  v6 = [v4 itemReference];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self itemReference];
+  actions2 = [equalCopy itemReference];
+  if ((actions != 0) == (actions2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBReservation *)self itemReference];
-  if (v22)
+  itemReference = [(_INPBReservation *)self itemReference];
+  if (itemReference)
   {
-    v23 = v22;
-    v24 = [(_INPBReservation *)self itemReference];
-    v25 = [v4 itemReference];
-    v26 = [v24 isEqual:v25];
+    v23 = itemReference;
+    itemReference2 = [(_INPBReservation *)self itemReference];
+    itemReference3 = [equalCopy itemReference];
+    v26 = [itemReference2 isEqual:itemReference3];
 
     if (!v26)
     {
@@ -231,20 +231,20 @@
   {
   }
 
-  v5 = [(_INPBReservation *)self reservationHolderName];
-  v6 = [v4 reservationHolderName];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self reservationHolderName];
+  actions2 = [equalCopy reservationHolderName];
+  if ((actions != 0) == (actions2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBReservation *)self reservationHolderName];
-  if (v27)
+  reservationHolderName = [(_INPBReservation *)self reservationHolderName];
+  if (reservationHolderName)
   {
-    v28 = v27;
-    v29 = [(_INPBReservation *)self reservationHolderName];
-    v30 = [v4 reservationHolderName];
-    v31 = [v29 isEqual:v30];
+    v28 = reservationHolderName;
+    reservationHolderName2 = [(_INPBReservation *)self reservationHolderName];
+    reservationHolderName3 = [equalCopy reservationHolderName];
+    v31 = [reservationHolderName2 isEqual:reservationHolderName3];
 
     if (!v31)
     {
@@ -256,22 +256,22 @@
   {
   }
 
-  v5 = [(_INPBReservation *)self reservationNumber];
-  v6 = [v4 reservationNumber];
-  if ((v5 != 0) == (v6 == 0))
+  actions = [(_INPBReservation *)self reservationNumber];
+  actions2 = [equalCopy reservationNumber];
+  if ((actions != 0) == (actions2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(_INPBReservation *)self reservationNumber];
-  if (v32)
+  reservationNumber = [(_INPBReservation *)self reservationNumber];
+  if (reservationNumber)
   {
-    v33 = v32;
-    v34 = [(_INPBReservation *)self reservationNumber];
-    v35 = [v4 reservationNumber];
-    v36 = [v34 isEqual:v35];
+    v33 = reservationNumber;
+    reservationNumber2 = [(_INPBReservation *)self reservationNumber];
+    reservationNumber3 = [equalCopy reservationNumber];
+    v36 = [reservationNumber2 isEqual:reservationNumber3];
 
     if (!v36)
     {
@@ -283,10 +283,10 @@ LABEL_31:
   {
   }
 
-  v39 = [(_INPBReservation *)self hasReservationStatus];
-  if (v39 == [v4 hasReservationStatus])
+  hasReservationStatus = [(_INPBReservation *)self hasReservationStatus];
+  if (hasReservationStatus == [equalCopy hasReservationStatus])
   {
-    if (!-[_INPBReservation hasReservationStatus](self, "hasReservationStatus") || ![v4 hasReservationStatus] || (reservationStatus = self->_reservationStatus, reservationStatus == objc_msgSend(v4, "reservationStatus")))
+    if (!-[_INPBReservation hasReservationStatus](self, "hasReservationStatus") || ![equalCopy hasReservationStatus] || (reservationStatus = self->_reservationStatus, reservationStatus == objc_msgSend(equalCopy, "reservationStatus")))
     {
       v37 = 1;
       goto LABEL_33;
@@ -300,25 +300,25 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBReservation allocWithZone:](_INPBReservation init];
-  v6 = [(_INPBURLValue *)self->_url copyWithZone:a3];
+  v6 = [(_INPBURLValue *)self->_url copyWithZone:zone];
   [(_INPBReservation *)v5 setUrl:v6];
 
-  v7 = [(NSArray *)self->_actions copyWithZone:a3];
+  v7 = [(NSArray *)self->_actions copyWithZone:zone];
   [(_INPBReservation *)v5 setActions:v7];
 
-  v8 = [(_INPBTimestamp *)self->_bookingTime copyWithZone:a3];
+  v8 = [(_INPBTimestamp *)self->_bookingTime copyWithZone:zone];
   [(_INPBReservation *)v5 setBookingTime:v8];
 
-  v9 = [(_INPBDataString *)self->_itemReference copyWithZone:a3];
+  v9 = [(_INPBDataString *)self->_itemReference copyWithZone:zone];
   [(_INPBReservation *)v5 setItemReference:v9];
 
-  v10 = [(NSString *)self->_reservationHolderName copyWithZone:a3];
+  v10 = [(NSString *)self->_reservationHolderName copyWithZone:zone];
   [(_INPBReservation *)v5 setReservationHolderName:v10];
 
-  v11 = [(NSString *)self->_reservationNumber copyWithZone:a3];
+  v11 = [(NSString *)self->_reservationNumber copyWithZone:zone];
   [(_INPBReservation *)v5 setReservationNumber:v11];
 
   if ([(_INPBReservation *)self hasReservationStatus])
@@ -329,34 +329,34 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBReservation)initWithCoder:(id)a3
+- (_INPBReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBReservation *)self initWithData:v6];
+    self = [(_INPBReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = [(_INPBReservation *)self url];
 
   if (v5)
@@ -397,33 +397,33 @@ LABEL_33:
     while (v9);
   }
 
-  v13 = [(_INPBReservation *)self bookingTime];
+  bookingTime = [(_INPBReservation *)self bookingTime];
 
-  if (v13)
+  if (bookingTime)
   {
-    v14 = [(_INPBReservation *)self bookingTime];
+    bookingTime2 = [(_INPBReservation *)self bookingTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_INPBReservation *)self itemReference];
+  itemReference = [(_INPBReservation *)self itemReference];
 
-  if (v15)
+  if (itemReference)
   {
-    v16 = [(_INPBReservation *)self itemReference];
+    itemReference2 = [(_INPBReservation *)self itemReference];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_INPBReservation *)self reservationHolderName];
+  reservationHolderName = [(_INPBReservation *)self reservationHolderName];
 
-  if (v17)
+  if (reservationHolderName)
   {
     reservationHolderName = self->_reservationHolderName;
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(_INPBReservation *)self reservationNumber];
+  reservationNumber = [(_INPBReservation *)self reservationNumber];
 
-  if (v19)
+  if (reservationNumber)
   {
     reservationNumber = self->_reservationNumber;
     PBDataWriterWriteStringField();
@@ -438,30 +438,30 @@ LABEL_33:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsReservationStatus:(id)a3
+- (int)StringAsReservationStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_RESERVATION_STATUS"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_RESERVATION_STATUS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CANCELED"])
+  else if ([statusCopy isEqualToString:@"CANCELED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PENDING"])
+  else if ([statusCopy isEqualToString:@"PENDING"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HOLD"])
+  else if ([statusCopy isEqualToString:@"HOLD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CONFIRMED"])
+  else if ([statusCopy isEqualToString:@"CONFIRMED"])
   {
     v4 = 5;
   }
@@ -474,10 +474,10 @@ LABEL_33:
   return v4;
 }
 
-- (void)setReservationStatus:(int)a3
+- (void)setReservationStatus:(int)status
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (status == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -485,49 +485,49 @@ LABEL_33:
   else
   {
     *&self->_has = has | 1;
-    self->_reservationStatus = a3;
+    self->_reservationStatus = status;
   }
 }
 
-- (void)setReservationNumber:(id)a3
+- (void)setReservationNumber:(id)number
 {
-  v4 = [a3 copy];
+  v4 = [number copy];
   reservationNumber = self->_reservationNumber;
   self->_reservationNumber = v4;
 
   MEMORY[0x1EEE66BB8](v4, reservationNumber);
 }
 
-- (void)setReservationHolderName:(id)a3
+- (void)setReservationHolderName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   reservationHolderName = self->_reservationHolderName;
   self->_reservationHolderName = v4;
 
   MEMORY[0x1EEE66BB8](v4, reservationHolderName);
 }
 
-- (void)addActions:(id)a3
+- (void)addActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionsCopy;
   if (!actions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actions;
-    self->_actions = v6;
+    self->_actions = array;
 
-    v4 = v8;
+    actionsCopy = v8;
     actions = self->_actions;
   }
 
-  [(NSArray *)actions addObject:v4];
+  [(NSArray *)actions addObject:actionsCopy];
 }
 
-- (void)setActions:(id)a3
+- (void)setActions:(id)actions
 {
-  v4 = [a3 mutableCopy];
+  v4 = [actions mutableCopy];
   actions = self->_actions;
   self->_actions = v4;
 

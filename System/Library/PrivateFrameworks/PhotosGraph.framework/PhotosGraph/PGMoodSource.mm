@@ -1,13 +1,13 @@
 @interface PGMoodSource
 - (NSDictionary)moodSourceDictionary;
-- (PGMoodSource)initWithAssetCollection:(id)a3 photoLibrary:(id)a4 options:(id)a5;
-- (PGMoodSource)initWithEnrichedMemory:(id)a3 photoLibrary:(id)a4 options:(id)a5;
-- (id)_moodVectorForMoodIdentifier:(id)a3;
-- (id)_moodVectorsWithGraph:(id)a3;
-- (id)negativeVectorWithGraph:(id)a3;
-- (id)positiveVectorWithGraph:(id)a3;
+- (PGMoodSource)initWithAssetCollection:(id)collection photoLibrary:(id)library options:(id)options;
+- (PGMoodSource)initWithEnrichedMemory:(id)memory photoLibrary:(id)library options:(id)options;
+- (id)_moodVectorForMoodIdentifier:(id)identifier;
+- (id)_moodVectorsWithGraph:(id)graph;
+- (id)negativeVectorWithGraph:(id)graph;
+- (id)positiveVectorWithGraph:(id)graph;
 - (unint64_t)_sourceInputCount;
-- (void)_combineMoodVectorsWithGraph:(id)a3;
+- (void)_combineMoodVectorsWithGraph:(id)graph;
 @end
 
 @implementation PGMoodSource
@@ -18,8 +18,8 @@
   if (!moodSourceDictionary)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [objc_opt_class() _plistName];
-    v6 = [v4 pathForResource:v5 ofType:@"plist"];
+    _plistName = [objc_opt_class() _plistName];
+    v6 = [v4 pathForResource:_plistName ofType:@"plist"];
 
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
     v8 = self->_moodSourceDictionary;
@@ -33,9 +33,9 @@
 
 - (unint64_t)_sourceInputCount
 {
-  v2 = [(PGMoodSource *)self enrichedMemory];
-  v3 = [v2 memoryMomentNodes];
-  v4 = [v3 count];
+  enrichedMemory = [(PGMoodSource *)self enrichedMemory];
+  memoryMomentNodes = [enrichedMemory memoryMomentNodes];
+  v4 = [memoryMomentNodes count];
 
   if (v4 <= 1)
   {
@@ -48,15 +48,15 @@
   }
 }
 
-- (void)_combineMoodVectorsWithGraph:(id)a3
+- (void)_combineMoodVectorsWithGraph:(id)graph
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v20 = self;
-  v21 = v4;
-  v7 = [(PGMoodSource *)self _moodVectorsWithGraph:v4];
+  selfCopy = self;
+  v21 = graphCopy;
+  v7 = [(PGMoodSource *)self _moodVectorsWithGraph:graphCopy];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -91,10 +91,10 @@
     while (v9);
   }
 
-  v13 = [(PGMoodSource *)v20 _sourceInputCount];
-  if (v13 > 1)
+  _sourceInputCount = [(PGMoodSource *)selfCopy _sourceInputCount];
+  if (_sourceInputCount > 1)
   {
-    [(PGMoodVector *)v5 multiplyByWeight:1.0 / v13];
+    [(PGMoodVector *)v5 multiplyByWeight:1.0 / _sourceInputCount];
   }
 
   else
@@ -109,12 +109,12 @@
   v14 = v6;
   v23 = v14;
   [(PGMoodVector *)v14 enumerateWithBlock:v22];
-  positiveVector = v20->_positiveVector;
-  v20->_positiveVector = v5;
+  positiveVector = selfCopy->_positiveVector;
+  selfCopy->_positiveVector = v5;
   v16 = v5;
 
-  negativeVector = v20->_negativeVector;
-  v20->_negativeVector = v14;
+  negativeVector = selfCopy->_negativeVector;
+  selfCopy->_negativeVector = v14;
   v18 = v14;
 
   v19 = *MEMORY[0x277D85DE8];
@@ -150,12 +150,12 @@ uint64_t __45__PGMoodSource__combineMoodVectorsWithGraph___block_invoke_2(uint64
   return result;
 }
 
-- (id)_moodVectorsWithGraph:(id)a3
+- (id)_moodVectorsWithGraph:(id)graph
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(PGMoodSource *)self _plistMoodIdentifiersWithGraph:v4];
+  graphCopy = graph;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [(PGMoodSource *)self _plistMoodIdentifiersWithGraph:graphCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -177,7 +177,7 @@ uint64_t __45__PGMoodSource__combineMoodVectorsWithGraph___block_invoke_2(uint64
         v11 = [(PGMoodSource *)self _moodVectorForMoodIdentifier:*(*(&v14 + 1) + 8 * i)];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -189,14 +189,14 @@ uint64_t __45__PGMoodSource__combineMoodVectorsWithGraph___block_invoke_2(uint64
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)_moodVectorForMoodIdentifier:(id)a3
+- (id)_moodVectorForMoodIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PGMoodSource *)self moodSourceDictionary];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  moodSourceDictionary = [(PGMoodSource *)self moodSourceDictionary];
+  v6 = [moodSourceDictionary objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -205,7 +205,7 @@ uint64_t __45__PGMoodSource__combineMoodVectorsWithGraph___block_invoke_2(uint64
 
   else
   {
-    v7 = [PGMoodHolidayResolver moodVectorForMoodIdentifier:v4];
+    v7 = [PGMoodHolidayResolver moodVectorForMoodIdentifier:identifierCopy];
   }
 
   v8 = v7;
@@ -213,63 +213,63 @@ uint64_t __45__PGMoodSource__combineMoodVectorsWithGraph___block_invoke_2(uint64
   return v8;
 }
 
-- (id)negativeVectorWithGraph:(id)a3
+- (id)negativeVectorWithGraph:(id)graph
 {
   negativeVector = self->_negativeVector;
   if (!negativeVector)
   {
-    [(PGMoodSource *)self _combineMoodVectorsWithGraph:a3];
+    [(PGMoodSource *)self _combineMoodVectorsWithGraph:graph];
     negativeVector = self->_negativeVector;
   }
 
   return negativeVector;
 }
 
-- (id)positiveVectorWithGraph:(id)a3
+- (id)positiveVectorWithGraph:(id)graph
 {
   positiveVector = self->_positiveVector;
   if (!positiveVector)
   {
-    [(PGMoodSource *)self _combineMoodVectorsWithGraph:a3];
+    [(PGMoodSource *)self _combineMoodVectorsWithGraph:graph];
     positiveVector = self->_positiveVector;
   }
 
   return positiveVector;
 }
 
-- (PGMoodSource)initWithEnrichedMemory:(id)a3 photoLibrary:(id)a4 options:(id)a5
+- (PGMoodSource)initWithEnrichedMemory:(id)memory photoLibrary:(id)library options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  memoryCopy = memory;
+  libraryCopy = library;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = PGMoodSource;
   v12 = [(PGMoodSource *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_enrichedMemory, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_enrichedMemory, memory);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_options, options);
   }
 
   return v13;
 }
 
-- (PGMoodSource)initWithAssetCollection:(id)a3 photoLibrary:(id)a4 options:(id)a5
+- (PGMoodSource)initWithAssetCollection:(id)collection photoLibrary:(id)library options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  libraryCopy = library;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = PGMoodSource;
   v12 = [(PGMoodSource *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetCollection, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_assetCollection, collection);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_options, options);
   }
 
   return v13;

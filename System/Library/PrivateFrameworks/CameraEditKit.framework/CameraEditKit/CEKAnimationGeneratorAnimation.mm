@@ -1,26 +1,26 @@
 @interface CEKAnimationGeneratorAnimation
-- (CEKAnimationGeneratorAnimation)initWithStartTime:(double)a3 duration:(double)a4 updateHandler:(id)a5 completionHandler:(id)a6;
+- (CEKAnimationGeneratorAnimation)initWithStartTime:(double)time duration:(double)duration updateHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CEKAnimationGeneratorAnimation
 
-- (CEKAnimationGeneratorAnimation)initWithStartTime:(double)a3 duration:(double)a4 updateHandler:(id)a5 completionHandler:(id)a6
+- (CEKAnimationGeneratorAnimation)initWithStartTime:(double)time duration:(double)duration updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v20.receiver = self;
   v20.super_class = CEKAnimationGeneratorAnimation;
   v12 = [(CEKAnimationGeneratorAnimation *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    v12->_startTime = a3;
-    v12->_duration = a4;
-    v14 = [v10 copy];
+    v12->_startTime = time;
+    v12->_duration = duration;
+    v14 = [handlerCopy copy];
     updateHandler = v13->_updateHandler;
     v13->_updateHandler = v14;
 
-    v16 = [v11 copy];
+    v16 = [completionHandlerCopy copy];
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v16;
 

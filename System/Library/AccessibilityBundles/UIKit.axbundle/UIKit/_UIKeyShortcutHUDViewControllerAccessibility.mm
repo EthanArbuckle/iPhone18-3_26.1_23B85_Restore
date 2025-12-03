@@ -1,19 +1,19 @@
 @interface _UIKeyShortcutHUDViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (void)setHidden:(BOOL)a3 completionHandler:(id)a4;
+- (void)setHidden:(BOOL)hidden completionHandler:(id)handler;
 @end
 
 @implementation _UIKeyShortcutHUDViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIKeyShortcutHUDViewController";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -43,22 +43,22 @@
   return 1;
 }
 
-- (void)setHidden:(BOOL)a3 completionHandler:(id)a4
+- (void)setHidden:(BOOL)hidden completionHandler:(id)handler
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  hiddenCopy = hidden;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v4 = v17;
-  v5 = v15;
+  objc_storeStrong(&location, handler);
+  v4 = selfCopy;
+  v5 = hiddenCopy;
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;
   v9 = 0;
   v10 = __76___UIKeyShortcutHUDViewControllerAccessibility_setHidden_completionHandler___block_invoke;
   v11 = &unk_29F30CB58;
   v12 = MEMORY[0x29EDC9748](location);
-  v13 = v15;
+  v13 = hiddenCopy;
   v6.receiver = v4;
   v6.super_class = _UIKeyShortcutHUDViewControllerAccessibility;
   [(_UIKeyShortcutHUDViewControllerAccessibility *)&v6 setHidden:v5 completionHandler:?];

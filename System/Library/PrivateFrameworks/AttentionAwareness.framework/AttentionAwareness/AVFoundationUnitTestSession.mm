@@ -1,15 +1,15 @@
 @interface AVFoundationUnitTestSession
 - (AVFoundationUnitTestSession)init;
 - (BOOL)cancelUnitTestStream;
-- (BOOL)startUnitTestStream:(id)a3 options:(id)a4;
+- (BOOL)startUnitTestStream:(id)stream options:(id)options;
 - (void)AVFoundationDeliverStreamingEvent;
 - (void)initializeStreamingTimer;
-- (void)setErrorState:(BOOL)a3;
+- (void)setErrorState:(BOOL)state;
 @end
 
 @implementation AVFoundationUnitTestSession
 
-- (void)setErrorState:(BOOL)a3
+- (void)setErrorState:(BOOL)state
 {
   v28 = *MEMORY[0x1E69E9840];
   queue = self->_queue;
@@ -18,7 +18,7 @@
   v20[2] = __45__AVFoundationUnitTestSession_setErrorState___block_invoke;
   v20[3] = &unk_1E7F37FC8;
   v20[4] = self;
-  v21 = a3;
+  stateCopy = state;
   dispatch_sync(queue, v20);
   if (currentLogLevel == 5)
   {
@@ -132,10 +132,10 @@ LABEL_25:
   return 1;
 }
 
-- (BOOL)startUnitTestStream:(id)a3 options:(id)a4
+- (BOOL)startUnitTestStream:(id)stream options:(id)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  streamCopy = stream;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;

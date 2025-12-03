@@ -1,43 +1,43 @@
 @interface FARegisterPushTokenRequest
-- (FARegisterPushTokenRequest)initWithPushToken:(id)a3;
-- (void)startRequestWithCompletionHandler:(id)a3;
+- (FARegisterPushTokenRequest)initWithPushToken:(id)token;
+- (void)startRequestWithCompletionHandler:(id)handler;
 @end
 
 @implementation FARegisterPushTokenRequest
 
-- (FARegisterPushTokenRequest)initWithPushToken:(id)a3
+- (FARegisterPushTokenRequest)initWithPushToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v6 = [(FAFamilyCircleRequest *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pushToken, a3);
+    objc_storeStrong(&v6->_pushToken, token);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)startRequestWithCompletionHandler:(id)a3
+- (void)startRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__FARegisterPushTokenRequest_startRequestWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CA46D8;
-  v5 = v4;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:v12];
   pushToken = self->_pushToken;
-  v8 = [(FAFamilyCircleRequest *)self requestOptions];
+  requestOptions = [(FAFamilyCircleRequest *)self requestOptions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__FARegisterPushTokenRequest_startRequestWithCompletionHandler___block_invoke_17;
   v10[3] = &unk_1E7CA46D8;
   v11 = v5;
   v9 = v5;
-  [v6 registerPushToken:pushToken options:v8 replyBlock:v10];
+  [v6 registerPushToken:pushToken options:requestOptions replyBlock:v10];
 }
 
 void __64__FARegisterPushTokenRequest_startRequestWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

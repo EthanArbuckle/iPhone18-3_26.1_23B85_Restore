@@ -1,10 +1,10 @@
 @interface CDMAutoBugCapture
-+ (void)reportUnsafeWithType:(id)a3 subType:(id)a4;
++ (void)reportUnsafeWithType:(id)type subType:(id)subType;
 @end
 
 @implementation CDMAutoBugCapture
 
-+ (void)reportUnsafeWithType:(id)a3 subType:(id)a4
++ (void)reportUnsafeWithType:(id)type subType:(id)subType
 {
   v4 = sub_1DC51772C();
   v6 = v5;

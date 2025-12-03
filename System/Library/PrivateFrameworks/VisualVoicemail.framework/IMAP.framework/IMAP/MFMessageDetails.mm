@@ -1,5 +1,5 @@
 @interface MFMessageDetails
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)copyMessageInfo;
 - (void)dealloc;
@@ -24,22 +24,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (objc_opt_respondsToSelector())
   {
     libraryID = self->libraryID;
-    v6 = [v4 libraryID];
+    libraryID = [equalCopy libraryID];
 
-    return libraryID == v6;
+    return libraryID == libraryID;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MFMessageDetails;
-    v7 = [(MFMessageDetails *)&v9 isEqual:v4];
+    v7 = [(MFMessageDetails *)&v9 isEqual:equalCopy];
   }
 
   return v7;
@@ -54,13 +54,13 @@
   dateSent = self->dateSent;
   conversationHash = self->conversationHash;
   messageIDHash = self->messageIDHash;
-  v9 = [(MFMessageDetails *)self read];
-  v10 = [(MFMessageDetails *)self isKnownToHaveAttachments];
-  v11 = [(MFMessageDetails *)self flagged];
+  read = [(MFMessageDetails *)self read];
+  isKnownToHaveAttachments = [(MFMessageDetails *)self isKnownToHaveAttachments];
+  flagged = [(MFMessageDetails *)self flagged];
   BYTE3(v14) = [(MFMessageDetails *)self senderVIP];
-  BYTE2(v14) = v11;
-  BYTE1(v14) = v10;
-  LOBYTE(v14) = v9;
+  BYTE2(v14) = flagged;
+  BYTE1(v14) = isKnownToHaveAttachments;
+  LOBYTE(v14) = read;
   v12 = [MFMessageInfo initWithUid:v15 mailboxID:"initWithUid:mailboxID:messageID:dateReceivedInterval:dateSentInterval:conversationHash:read:knownToHaveAttachments:flagged:isVIP:" messageID:libraryID dateReceivedInterval:mailboxID dateSentInterval:messageIDHash conversationHash:dateReceived read:dateSent knownToHaveAttachments:conversationHash flagged:v14 isVIP:?];
   [(MFMessageInfo *)v12 setUidIsLibraryID:1];
   return v12;

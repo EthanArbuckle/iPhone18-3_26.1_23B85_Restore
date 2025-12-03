@@ -1,18 +1,18 @@
 @interface SUICProgressDebugViewController
 - (NSProgress)progress;
-- (SUICProgressDebugViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_eventGeneratorButtonTouchedUpInside:(id)a3;
+- (SUICProgressDebugViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_eventGeneratorButtonTouchedUpInside:(id)inside;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation SUICProgressDebugViewController
 
-- (SUICProgressDebugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SUICProgressDebugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = SUICProgressDebugViewController;
-  v4 = [(SUICProgressDebugViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(SUICProgressDebugViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(SUICProgressIndicatorViewController);
@@ -40,18 +40,18 @@
   v8.receiver = self;
   v8.super_class = SUICProgressDebugViewController;
   [(SUICProgressDebugViewController *)&v8 viewDidLoad];
-  v3 = [(SUICProgressDebugViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SUICProgressDebugViewController *)self view];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
   [(SUICProgressDebugViewController *)self addChildViewController:self->_indicatorViewController];
-  v5 = [(SUICProgressDebugViewController *)self view];
-  v6 = [(SUICProgressIndicatorViewController *)self->_indicatorViewController view];
-  [v5 addSubview:v6];
+  view2 = [(SUICProgressDebugViewController *)self view];
+  view3 = [(SUICProgressIndicatorViewController *)self->_indicatorViewController view];
+  [view2 addSubview:view3];
 
   [(SUICProgressIndicatorViewController *)self->_indicatorViewController didMoveToParentViewController:self];
-  v7 = [(SUICProgressDebugViewController *)self view];
-  [v7 addSubview:self->_eventGeneratorButton];
+  view4 = [(SUICProgressDebugViewController *)self view];
+  [view4 addSubview:self->_eventGeneratorButton];
 }
 
 - (void)viewDidLayoutSubviews
@@ -59,17 +59,17 @@
   v13.receiver = self;
   v13.super_class = SUICProgressDebugViewController;
   [(SUICProgressDebugViewController *)&v13 viewDidLayoutSubviews];
-  v3 = [(SUICProgressDebugViewController *)self view];
-  [v3 bounds];
+  view = [(SUICProgressDebugViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   [(UIButton *)self->_eventGeneratorButton setFrame:v5, v7, v9, v11];
-  v12 = [(SUICProgressIndicatorViewController *)self->_indicatorViewController view];
+  view2 = [(SUICProgressIndicatorViewController *)self->_indicatorViewController view];
   UIRectCenteredIntegralRect();
-  [v12 setFrame:?];
+  [view2 setFrame:?];
 }
 
 - (NSProgress)progress
@@ -80,7 +80,7 @@
   return v2;
 }
 
-- (void)_eventGeneratorButtonTouchedUpInside:(id)a3
+- (void)_eventGeneratorButtonTouchedUpInside:(id)inside
 {
   testEventLoopCounter = self->_testEventLoopCounter;
   if (testEventLoopCounter >= 5)

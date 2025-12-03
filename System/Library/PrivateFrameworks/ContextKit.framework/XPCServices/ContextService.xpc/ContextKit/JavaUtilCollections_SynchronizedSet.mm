@@ -1,20 +1,20 @@
 @interface JavaUtilCollections_SynchronizedSet
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilCollections_SynchronizedSet)initWithJavaUtilSet:(id)a3 withId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilCollections_SynchronizedSet)initWithJavaUtilSet:(id)set withId:(id)id;
 - (unint64_t)hash;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedSet
 
-- (JavaUtilCollections_SynchronizedSet)initWithJavaUtilSet:(id)a3 withId:(id)a4
+- (JavaUtilCollections_SynchronizedSet)initWithJavaUtilSet:(id)set withId:(id)id
 {
-  JreStrongAssign(&self->super.c_, a3);
-  JreStrongAssign(&self->super.mutex_, a4);
+  JreStrongAssign(&self->super.c_, set);
+  JreStrongAssign(&self->super.mutex_, id);
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -24,7 +24,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilCollection *)c isEqual:a3];
+  v7 = [(JavaUtilCollection *)c isEqual:equal];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -44,16 +44,16 @@
   return v5;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

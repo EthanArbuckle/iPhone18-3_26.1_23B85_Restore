@@ -1,16 +1,16 @@
 @interface PopUpCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation PopUpCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFBrowsingAssistantPopUpCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"_SFBrowsingAssistantPopUpCell" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"_SFBrowsingAssistantPopUpCell" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFBrowsingAssistantPopUpCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"_SFBrowsingAssistantPopUpCell" hasSwiftField:@"title" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"_SFBrowsingAssistantPopUpCell" hasSwiftField:@"subtitle" withSwiftType:"Optional<String>"];
 }
 
 - (id)accessibilityValue
@@ -20,7 +20,7 @@
   v3 = v2;
   if (v2)
   {
-    v4 = v2;
+    text = v2;
   }
 
   else
@@ -35,18 +35,18 @@
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = [v5 accessories];
-      v4 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
-      if (v4)
+      accessories = [v5 accessories];
+      text = [accessories countByEnumeratingWithState:&v15 objects:v20 count:16];
+      if (text)
       {
         v8 = *v16;
         while (2)
         {
-          for (i = 0; i != v4; i = i + 1)
+          for (i = 0; i != text; i = i + 1)
           {
             if (*v16 != v8)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(accessories);
             }
 
             v10 = *(*(&v15 + 1) + 8 * i);
@@ -62,14 +62,14 @@
               }
 
               v12 = v11;
-              v4 = [v11 text];
+              text = [v11 text];
 
               goto LABEL_15;
             }
           }
 
-          v4 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
-          if (v4)
+          text = [accessories countByEnumeratingWithState:&v15 objects:v20 count:16];
+          if (text)
           {
             continue;
           }
@@ -83,13 +83,13 @@ LABEL_15:
 
     else
     {
-      v4 = 0;
+      text = 0;
     }
   }
 
   v13 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return text;
 }
 
 @end

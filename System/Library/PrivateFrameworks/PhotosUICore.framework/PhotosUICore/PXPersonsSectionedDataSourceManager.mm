@@ -1,8 +1,8 @@
 @interface PXPersonsSectionedDataSourceManager
-- (PXPersonsSectionedDataSourceManager)initWithPhotoLibrary:(id)a3;
+- (PXPersonsSectionedDataSourceManager)initWithPhotoLibrary:(id)library;
 - (id)createInitialDataSource;
-- (int64_t)_personTypeForSection:(int64_t)a3;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
+- (int64_t)_personTypeForSection:(int64_t)section;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
 - (void)reloadData;
 @end
 
@@ -14,28 +14,28 @@
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PXPersonsSectionedDataSourceManager peopleHomeSortingType](self, "peopleHomeSortingType")}];
   [(PXPhotoLibraryLocalDefaults *)localDefaults setNumber:v4 forKey:@"PXPeopleHomeSortingType"];
 
-  v10 = [(PXPersonsSectionedDataSourceManager *)self photoLibrary];
-  v5 = peopleHomeFetchResults(v10);
+  photoLibrary = [(PXPersonsSectionedDataSourceManager *)self photoLibrary];
+  v5 = peopleHomeFetchResults(photoLibrary);
   v6 = [PXPersonsSectionedDataSource alloc];
-  v7 = [(PXSectionedDataSourceManager *)self dataSource];
-  v8 = [v7 faceTiles];
-  v9 = [(PXPersonsSectionedDataSource *)v6 initWithPhotoLibrary:v10 personsSections:v5 faceTiles:v8 peopleHomeSortingType:[(PXPersonsSectionedDataSourceManager *)self peopleHomeSortingType]];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  faceTiles = [dataSource faceTiles];
+  v9 = [(PXPersonsSectionedDataSource *)v6 initWithPhotoLibrary:photoLibrary personsSections:v5 faceTiles:faceTiles peopleHomeSortingType:[(PXPersonsSectionedDataSourceManager *)self peopleHomeSortingType]];
 
   [(PXSectionedDataSourceManager *)self setDataSource:v9 changeDetails:0];
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v48 = self;
-  v50 = [(PXSectionedDataSourceManager *)self dataSource];
-  v5 = [v50 numberOfSections];
-  v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v5];
-  v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
+  queueCopy = queue;
+  selfCopy = self;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
+  v45 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:numberOfSections];
+  v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:numberOfSections];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v47 = v5;
-  if (v5 < 1)
+  v47 = numberOfSections;
+  if (numberOfSections < 1)
   {
     v7 = 0;
   }
@@ -52,28 +52,28 @@
     v44 = v10;
     do
     {
-      *buf = [v50 identifier];
+      *buf = [dataSource identifier];
       v62 = v8;
       v63 = v46;
-      v11 = [v50 objectsInIndexPath:buf];
-      v12 = [(PXPersonsSectionedDataSourceManager *)v48 _personTypeForSection:v8];
+      v11 = [dataSource objectsInIndexPath:buf];
+      v12 = [(PXPersonsSectionedDataSourceManager *)selfCopy _personTypeForSection:v8];
       if (v12 >= 2)
       {
         PXAssertGetLog();
       }
 
-      v13 = [v11 photoLibrary];
-      v14 = peopleHomeFetchResultForType(v12, v13);
+      photoLibrary = [v11 photoLibrary];
+      v14 = peopleHomeFetchResultForType(v12, photoLibrary);
 
-      v15 = [v4 changeDetailsForFetchResult:v11];
-      v16 = [v15 changedObjects];
+      v15 = [queueCopy changeDetailsForFetchResult:v11];
+      changedObjects = [v15 changedObjects];
 
-      v17 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:v11 toFetchResult:v14 changedObjects:v16];
+      v17 = [MEMORY[0x1E6978848] changeDetailsFromFetchResult:v11 toFetchResult:v14 changedObjects:changedObjects];
       v18 = v17;
       if (v17)
       {
         v51 = v17;
-        v52 = v16;
+        v52 = changedObjects;
         v53 = v14;
         v54 = v11;
         v55 = v8;
@@ -97,14 +97,14 @@
               }
 
               v24 = *(*(&v56 + 1) + 8 * i);
-              v25 = [v24 objectID];
-              if ([v4 keyFaceChangedForPersonOID:v25])
+              objectID = [v24 objectID];
+              if ([queueCopy keyFaceChangedForPersonOID:objectID])
               {
                 v26 = +[PXPeopleFaceCropManager sharedManager];
                 [v26 invalidateCacheForPerson:v24];
 
-                v27 = [v24 localIdentifier];
-                [v6 addObject:v27];
+                localIdentifier = [v24 localIdentifier];
+                [v6 addObject:localIdentifier];
               }
             }
 
@@ -120,13 +120,13 @@
         v29 = [MEMORY[0x1E696AD98] numberWithInteger:v55];
         [v45 setObject:v28 forKeyedSubscript:v29];
 
-        v30 = [v51 fetchResultAfterChanges];
-        [v49 addObject:v30];
+        fetchResultAfterChanges = [v51 fetchResultAfterChanges];
+        [v49 addObject:fetchResultAfterChanges];
 
         v7 = 1;
         v14 = v53;
         v11 = v54;
-        v16 = v52;
+        changedObjects = v52;
       }
 
       else
@@ -140,45 +140,45 @@
     while (v8 != v47);
   }
 
-  v31 = [v50 faceTiles];
+  faceTiles = [dataSource faceTiles];
   if ([v6 count])
   {
-    v32 = [v31 mutableCopy];
+    v32 = [faceTiles mutableCopy];
     [v32 removeObjectsForKeys:v6];
     v33 = [v32 copy];
 
-    v31 = v33;
+    faceTiles = v33;
   }
 
   if (v7)
   {
-    localDefaults = v48->_localDefaults;
-    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PXPersonsSectionedDataSourceManager peopleHomeSortingType](v48, "peopleHomeSortingType")}];
+    localDefaults = selfCopy->_localDefaults;
+    v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PXPersonsSectionedDataSourceManager peopleHomeSortingType](selfCopy, "peopleHomeSortingType")}];
     [(PXPhotoLibraryLocalDefaults *)localDefaults setNumber:v35 forKey:@"PXPeopleHomeSortingType"];
 
     v36 = [PXPersonsSectionedDataSource alloc];
-    v37 = [(PXPersonsSectionedDataSourceManager *)v48 photoLibrary];
-    v38 = [(PXPersonsSectionedDataSource *)v36 initWithPhotoLibrary:v37 personsSections:v49 faceTiles:v31 peopleHomeSortingType:[(PXPersonsSectionedDataSourceManager *)v48 peopleHomeSortingType]];
+    photoLibrary2 = [(PXPersonsSectionedDataSourceManager *)selfCopy photoLibrary];
+    v38 = [(PXPersonsSectionedDataSource *)v36 initWithPhotoLibrary:photoLibrary2 personsSections:v49 faceTiles:faceTiles peopleHomeSortingType:[(PXPersonsSectionedDataSourceManager *)selfCopy peopleHomeSortingType]];
 
     v39 = [off_1E77218B0 alloc];
-    v40 = [v50 identifier];
-    v41 = [(PXPersonsSectionedDataSource *)v38 identifier];
-    v42 = [off_1E7721450 changeDetailsWithNoChanges];
-    v43 = [v39 initWithFromDataSourceIdentifier:v40 toDataSourceIdentifier:v41 sectionChanges:v42 itemChangeDetailsBySection:v45 subitemChangeDetailsByItemBySection:0];
+    identifier = [dataSource identifier];
+    identifier2 = [(PXPersonsSectionedDataSource *)v38 identifier];
+    changeDetailsWithNoChanges = [off_1E7721450 changeDetailsWithNoChanges];
+    v43 = [v39 initWithFromDataSourceIdentifier:identifier toDataSourceIdentifier:identifier2 sectionChanges:changeDetailsWithNoChanges itemChangeDetailsBySection:v45 subitemChangeDetailsByItemBySection:0];
 
-    [(PXSectionedDataSourceManager *)v48 setDataSource:v38 changeDetails:v43];
+    [(PXSectionedDataSourceManager *)selfCopy setDataSource:v38 changeDetails:v43];
   }
 }
 
-- (int64_t)_personTypeForSection:(int64_t)a3
+- (int64_t)_personTypeForSection:(int64_t)section
 {
   v4 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!section)
   {
     return 1;
   }
 
-  if (a3 != 1)
+  if (section != 1)
   {
     PXAssertGetLog();
   }
@@ -188,27 +188,27 @@
 
 - (id)createInitialDataSource
 {
-  v3 = [(PXPersonsSectionedDataSourceManager *)self photoLibrary];
-  [v3 px_registerChangeObserver:self];
-  peopleHomeFetchResults(v3);
+  photoLibrary = [(PXPersonsSectionedDataSourceManager *)self photoLibrary];
+  [photoLibrary px_registerChangeObserver:self];
+  peopleHomeFetchResults(photoLibrary);
   objc_claimAutoreleasedReturnValue();
   PXFlatMap();
 }
 
-- (PXPersonsSectionedDataSourceManager)initWithPhotoLibrary:(id)a3
+- (PXPersonsSectionedDataSourceManager)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PXPersonsSectionedDataSourceManager;
   v6 = [(PXSectionedDataSourceManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
-    v8 = [(PXPersonsSectionedDataSourceManager *)v7 photoLibrary];
-    v9 = [v8 px_localDefaults];
+    objc_storeStrong(&v6->_photoLibrary, library);
+    photoLibrary = [(PXPersonsSectionedDataSourceManager *)v7 photoLibrary];
+    px_localDefaults = [photoLibrary px_localDefaults];
     localDefaults = v7->_localDefaults;
-    v7->_localDefaults = v9;
+    v7->_localDefaults = px_localDefaults;
   }
 
   return v7;

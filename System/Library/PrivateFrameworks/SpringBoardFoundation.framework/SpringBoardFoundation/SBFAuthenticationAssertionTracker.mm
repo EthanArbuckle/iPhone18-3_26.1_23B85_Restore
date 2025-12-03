@@ -1,12 +1,12 @@
 @interface SBFAuthenticationAssertionTracker
 - (SBFAuthenticationAssertionTracker)init;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)addAssertion:(id)a3;
+- (void)addAssertion:(id)assertion;
 - (void)dealloc;
-- (void)removeAssertion:(id)a3;
+- (void)removeAssertion:(id)assertion;
 @end
 
 @implementation SBFAuthenticationAssertionTracker
@@ -18,9 +18,9 @@
   v2 = [(SBFAuthenticationAssertionTracker *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     assertions = v2->_assertions;
-    v2->_assertions = v3;
+    v2->_assertions = weakObjectsHashTable;
 
     v2->_mkbAssertion = 0;
   }
@@ -42,28 +42,28 @@
   [(SBFAuthenticationAssertionTracker *)&v4 dealloc];
 }
 
-- (void)addAssertion:(id)a3
+- (void)addAssertion:(id)assertion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assertionCopy = assertion;
   if (!self->_mkbAssertion)
   {
-    v5 = [(SBFAuthenticationAssertionTracker *)self mkbAssertionOptions];
-    if (v5)
+    mkbAssertionOptions = [(SBFAuthenticationAssertionTracker *)self mkbAssertionOptions];
+    if (mkbAssertionOptions)
     {
       cf = 0;
       MKBDeviceLockAssertion = _get_MKBDeviceLockAssertion();
-      self->_mkbAssertion = MKBDeviceLockAssertion(v5, &cf);
+      self->_mkbAssertion = MKBDeviceLockAssertion(mkbAssertionOptions, &cf);
       if (cf)
       {
         v7 = SBLogAuthenticationAssertions();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [cf code];
+          code = [cf code];
           *buf = 138412802;
-          v12 = v4;
+          v12 = assertionCopy;
           v13 = 1024;
-          v14 = v8;
+          v14 = code;
           v15 = 2112;
           v16 = cf;
           _os_log_impl(&dword_1BEA11000, v7, OS_LOG_TYPE_DEFAULT, "Failed to take MKBDeviceLockAssertion (%@) due to error: %d - %@", buf, 0x1Cu);
@@ -80,12 +80,12 @@
     }
   }
 
-  [(NSHashTable *)self->_assertions addObject:v4];
+  [(NSHashTable *)self->_assertions addObject:assertionCopy];
 }
 
-- (void)removeAssertion:(id)a3
+- (void)removeAssertion:(id)assertion
 {
-  [(NSHashTable *)self->_assertions removeObject:a3];
+  [(NSHashTable *)self->_assertions removeObject:assertion];
   if (![(NSHashTable *)self->_assertions count])
   {
     mkbAssertion = self->_mkbAssertion;
@@ -99,10 +99,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFAuthenticationAssertionTracker *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFAuthenticationAssertionTracker *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -113,30 +113,30 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFAuthenticationAssertionTracker *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFAuthenticationAssertionTracker *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBFAuthenticationAssertionTracker *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBFAuthenticationAssertionTracker *)self succinctDescriptionBuilder];
   if (self->_mkbAssertion || [(NSHashTable *)self->_assertions count])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __75__SBFAuthenticationAssertionTracker_descriptionBuilderWithMultilinePrefix___block_invoke;
     v7[3] = &unk_1E807F290;
-    v8 = v5;
-    v9 = self;
-    [v8 appendBodySectionWithName:0 multilinePrefix:v4 block:v7];
+    v8 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v8 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v7];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __75__SBFAuthenticationAssertionTracker_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)

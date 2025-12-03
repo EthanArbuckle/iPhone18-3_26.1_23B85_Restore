@@ -1,18 +1,18 @@
 @interface ATXActionTimeEstimateAWDTracker
 - (ATXActionTimeEstimateAWDTracker)init;
-- (ATXActionTimeEstimateAWDTracker)initWithAppInFocusStream:(id)a3 intentStream:(id)a4 userActivityStream:(id)a5;
-- (id)_createTimeEstimateContainers:(id)a3 withSessionLengths:(id)a4 withSessionIndices:(id)a5 withParameterSet:(id)a6 withLaunchReasons:(id)a7 withNoMatchCount:(id)a8 forActionType:(unint64_t)a9;
-- (id)_effectiveEndDateFor:(id)a3;
-- (id)_effectiveStartDateFor:(id)a3;
-- (id)_getActionKeyFor:(id)a3;
+- (ATXActionTimeEstimateAWDTracker)initWithAppInFocusStream:(id)stream intentStream:(id)intentStream userActivityStream:(id)activityStream;
+- (id)_createTimeEstimateContainers:(id)containers withSessionLengths:(id)lengths withSessionIndices:(id)indices withParameterSet:(id)set withLaunchReasons:(id)reasons withNoMatchCount:(id)count forActionType:(unint64_t)type;
+- (id)_effectiveEndDateFor:(id)for;
+- (id)_effectiveStartDateFor:(id)for;
+- (id)_getActionKeyFor:(id)for;
 - (id)_queryStartTime;
 - (id)_readTimestamp;
-- (id)getTimeEstimatesFor:(id)a3 forAppLaunches:(id)a4 withActionType:(unint64_t)a5;
+- (id)getTimeEstimatesFor:(id)for forAppLaunches:(id)launches withActionType:(unint64_t)type;
 - (void)_readTimestamp;
-- (void)_writeTimestamp:(id)a3;
-- (void)logActionTimeEstimatesWithActivity:(id)a3;
-- (void)logActionTimeEstimatesWithStartDate:(id)a3 endDate:(id)a4 withActivity:(id)a5;
-- (void)postTimeEstimates:(id)a3;
+- (void)_writeTimestamp:(id)timestamp;
+- (void)logActionTimeEstimatesWithActivity:(id)activity;
+- (void)logActionTimeEstimatesWithStartDate:(id)date endDate:(id)endDate withActivity:(id)activity;
+- (void)postTimeEstimates:(id)estimates;
 @end
 
 @implementation ATXActionTimeEstimateAWDTracker
@@ -27,31 +27,31 @@
   return v6;
 }
 
-- (ATXActionTimeEstimateAWDTracker)initWithAppInFocusStream:(id)a3 intentStream:(id)a4 userActivityStream:(id)a5
+- (ATXActionTimeEstimateAWDTracker)initWithAppInFocusStream:(id)stream intentStream:(id)intentStream userActivityStream:(id)activityStream
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  streamCopy = stream;
+  intentStreamCopy = intentStream;
+  activityStreamCopy = activityStream;
   v15.receiver = self;
   v15.super_class = ATXActionTimeEstimateAWDTracker;
   v12 = [(ATXActionTimeEstimateAWDTracker *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_appInFocusStream, a3);
-    objc_storeStrong(&v13->_intentStream, a4);
-    objc_storeStrong(&v13->_activityStream, a5);
+    objc_storeStrong(&v12->_appInFocusStream, stream);
+    objc_storeStrong(&v13->_intentStream, intentStream);
+    objc_storeStrong(&v13->_activityStream, activityStream);
   }
 
   return v13;
 }
 
-- (void)logActionTimeEstimatesWithActivity:(id)a3
+- (void)logActionTimeEstimatesWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ATXActionTimeEstimateAWDTracker *)self _queryStartTime];
+  activityCopy = activity;
+  _queryStartTime = [(ATXActionTimeEstimateAWDTracker *)self _queryStartTime];
   v6 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-86400.0];
-  if ([v6 compare:v5] == -1)
+  if ([v6 compare:_queryStartTime] == -1)
   {
     v7 = __atxlog_handle_default();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -59,19 +59,19 @@
       [ATXActionTimeEstimateAWDTracker logActionTimeEstimatesWithActivity:];
     }
 
-    v8 = v5;
+    v8 = _queryStartTime;
     v6 = v8;
   }
 
   v9 = objc_opt_new();
-  [(ATXActionTimeEstimateAWDTracker *)self logActionTimeEstimatesWithStartDate:v6 endDate:v9 withActivity:v4];
+  [(ATXActionTimeEstimateAWDTracker *)self logActionTimeEstimatesWithStartDate:v6 endDate:v9 withActivity:activityCopy];
 }
 
-- (void)logActionTimeEstimatesWithStartDate:(id)a3 endDate:(id)a4 withActivity:(id)a5
+- (void)logActionTimeEstimatesWithStartDate:(id)date endDate:(id)endDate withActivity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  activityCopy = activity;
   v11 = objc_opt_new();
   appInFocusStream = self->_appInFocusStream;
   v19[0] = MEMORY[0x277D85DD0];
@@ -80,16 +80,16 @@
   v19[3] = &unk_278596DC8;
   v13 = v11;
   v20 = v13;
-  [(ATXAppInFocusStream *)appInFocusStream enumerateAppLaunchSessionsBetweenStartDate:v8 endDate:v9 shouldReverse:0 bundleIDFilter:0 block:v19];
-  if (!v10 || ([v10 didDefer] & 1) == 0)
+  [(ATXAppInFocusStream *)appInFocusStream enumerateAppLaunchSessionsBetweenStartDate:dateCopy endDate:endDateCopy shouldReverse:0 bundleIDFilter:0 block:v19];
+  if (!activityCopy || ([activityCopy didDefer] & 1) == 0)
   {
-    v14 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:v8 endDate:v9 forSource:4];
-    v15 = [(ATXUserActivityStream *)self->_activityStream getActivityIntentEventsBetweenStartDate:v8 endDate:v9];
+    v14 = [(ATXIntentStream *)self->_intentStream getIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy forSource:4];
+    v15 = [(ATXUserActivityStream *)self->_activityStream getActivityIntentEventsBetweenStartDate:dateCopy endDate:endDateCopy];
     if ([v13 count])
     {
       if ([v14 count] || objc_msgSend(v15, "count"))
       {
-        if (v10 && ([v10 didDefer] & 1) != 0)
+        if (activityCopy && ([activityCopy didDefer] & 1) != 0)
         {
           goto LABEL_12;
         }
@@ -100,7 +100,7 @@
         v18 = [(ATXActionTimeEstimateAWDTracker *)self getTimeEstimatesFor:v15 forAppLaunches:v13 withActionType:1];
         [v17 addObjectsFromArray:v18];
         [(ATXActionTimeEstimateAWDTracker *)self postTimeEstimates:v17];
-        [(ATXActionTimeEstimateAWDTracker *)self _writeTimestamp:v9];
+        [(ATXActionTimeEstimateAWDTracker *)self _writeTimestamp:endDateCopy];
       }
 
       else
@@ -126,54 +126,54 @@ LABEL_12:
   }
 }
 
-- (id)_getActionKeyFor:(id)a3
+- (id)_getActionKeyFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 action];
-  v5 = [v4 actionKey];
-  v6 = v5;
+  forCopy = for;
+  action = [forCopy action];
+  actionKey = [action actionKey];
+  v6 = actionKey;
   v7 = @"Unknown";
-  if (v5)
+  if (actionKey)
   {
-    v7 = v5;
+    v7 = actionKey;
   }
 
   v8 = v7;
 
-  v9 = [v3 intent];
+  intent = [forCopy intent];
 
-  v10 = [v9 parametersByName];
-  v11 = [v10 count];
+  parametersByName = [intent parametersByName];
+  v11 = [parametersByName count];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%lu", v8, v11];
 
   return v12;
 }
 
-- (id)_effectiveStartDateFor:(id)a3
+- (id)_effectiveStartDateFor:(id)for
 {
-  v3 = [a3 appSessionStartTime];
-  v4 = [v3 dateByAddingTimeInterval:-5.0];
+  appSessionStartTime = [for appSessionStartTime];
+  v4 = [appSessionStartTime dateByAddingTimeInterval:-5.0];
 
   return v4;
 }
 
-- (id)_effectiveEndDateFor:(id)a3
+- (id)_effectiveEndDateFor:(id)for
 {
-  v3 = [a3 appSessionEndTime];
-  v4 = [v3 dateByAddingTimeInterval:5.0];
+  appSessionEndTime = [for appSessionEndTime];
+  v4 = [appSessionEndTime dateByAddingTimeInterval:5.0];
 
   return v4;
 }
 
-- (id)getTimeEstimatesFor:(id)a3 forAppLaunches:(id)a4 withActionType:(unint64_t)a5
+- (id)getTimeEstimatesFor:(id)for forAppLaunches:(id)launches withActionType:(unint64_t)type
 {
   v95 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v47 = v6;
-  v57 = v7;
-  if ([v6 count])
+  forCopy = for;
+  launchesCopy = launches;
+  v47 = forCopy;
+  v57 = launchesCopy;
+  if ([forCopy count])
   {
     v55 = objc_opt_new();
     v51 = objc_opt_new();
@@ -186,14 +186,14 @@ LABEL_12:
     v92[2] = 0x3032000000;
     v92[3] = __Block_byref_object_copy__20;
     v92[4] = __Block_byref_object_dispose__20;
-    v8 = [v7 firstObject];
-    v93 = [v8 appSessionStartTime];
+    firstObject = [launchesCopy firstObject];
+    appSessionStartTime = [firstObject appSessionStartTime];
 
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    obj = v6;
+    obj = forCopy;
     v9 = [obj countByEnumeratingWithState:&v88 objects:v94 count:16];
     if (v9)
     {
@@ -273,10 +273,10 @@ LABEL_12:
             [v58 setObject:&unk_283A556E8 forKeyedSubscript:v13];
           }
 
-          v28 = [v12 intent];
-          v29 = [v28 parametersByName];
-          v30 = [v29 allKeys];
-          v31 = [v30 sortedArrayUsingSelector:sel_compare_];
+          intent = [v12 intent];
+          parametersByName = [intent parametersByName];
+          allKeys = [parametersByName allKeys];
+          v31 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
           if ([v31 count])
           {
@@ -388,7 +388,7 @@ LABEL_12:
       while (v9);
     }
 
-    v43 = [(ATXActionTimeEstimateAWDTracker *)self _createTimeEstimateContainers:v55 withSessionLengths:v53 withSessionIndices:v54 withParameterSet:v51 withLaunchReasons:v52 withNoMatchCount:v58 forActionType:a5];
+    v43 = [(ATXActionTimeEstimateAWDTracker *)self _createTimeEstimateContainers:v55 withSessionLengths:v53 withSessionIndices:v54 withParameterSet:v51 withLaunchReasons:v52 withNoMatchCount:v58 forActionType:type];
     _Block_object_dispose(v92, 8);
   }
 
@@ -500,41 +500,41 @@ void __85__ATXActionTimeEstimateAWDTracker_getTimeEstimatesFor_forAppLaunches_wi
   }
 }
 
-- (id)_createTimeEstimateContainers:(id)a3 withSessionLengths:(id)a4 withSessionIndices:(id)a5 withParameterSet:(id)a6 withLaunchReasons:(id)a7 withNoMatchCount:(id)a8 forActionType:(unint64_t)a9
+- (id)_createTimeEstimateContainers:(id)containers withSessionLengths:(id)lengths withSessionIndices:(id)indices withParameterSet:(id)set withLaunchReasons:(id)reasons withNoMatchCount:(id)count forActionType:(unint64_t)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  containersCopy = containers;
+  lengthsCopy = lengths;
+  indicesCopy = indices;
+  setCopy = set;
+  reasonsCopy = reasons;
+  countCopy = count;
   v20 = objc_opt_new();
   v21 = MEMORY[0x277CBEB58];
-  v22 = [v14 allKeys];
-  v23 = [v21 setWithArray:v22];
+  allKeys = [containersCopy allKeys];
+  v23 = [v21 setWithArray:allKeys];
 
-  v24 = [v19 allKeys];
-  [v23 addObjectsFromArray:v24];
+  allKeys2 = [countCopy allKeys];
+  [v23 addObjectsFromArray:allKeys2];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __169__ATXActionTimeEstimateAWDTracker__createTimeEstimateContainers_withSessionLengths_withSessionIndices_withParameterSet_withLaunchReasons_withNoMatchCount_forActionType___block_invoke;
   v35[3] = &unk_278598E98;
-  v43 = a9;
-  v36 = v14;
-  v37 = v15;
-  v38 = v16;
-  v39 = v18;
-  v40 = v19;
-  v41 = v17;
+  typeCopy = type;
+  v36 = containersCopy;
+  v37 = lengthsCopy;
+  v38 = indicesCopy;
+  v39 = reasonsCopy;
+  v40 = countCopy;
+  v41 = setCopy;
   v25 = v20;
   v42 = v25;
-  v26 = v17;
-  v27 = v19;
-  v28 = v18;
-  v29 = v16;
-  v30 = v15;
-  v31 = v14;
+  v26 = setCopy;
+  v27 = countCopy;
+  v28 = reasonsCopy;
+  v29 = indicesCopy;
+  v30 = lengthsCopy;
+  v31 = containersCopy;
   [v23 enumerateObjectsUsingBlock:v35];
   v32 = v42;
   v33 = v25;
@@ -707,11 +707,11 @@ void __169__ATXActionTimeEstimateAWDTracker__createTimeEstimateContainers_withSe
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postTimeEstimates:(id)a3
+- (void)postTimeEstimates:(id)estimates
 {
-  v3 = a3;
+  estimatesCopy = estimates;
   v5 = objc_opt_new();
-  v4 = [v3 mutableCopy];
+  v4 = [estimatesCopy mutableCopy];
 
   [v5 setActions:v4];
   AWDPostMetric();
@@ -719,10 +719,10 @@ void __169__ATXActionTimeEstimateAWDTracker__createTimeEstimateContainers_withSe
 
 - (id)_queryStartTime
 {
-  v2 = [(ATXActionTimeEstimateAWDTracker *)self _readTimestamp];
-  if (v2 && (v3 = objc_opt_new(), v4 = [v2 compare:v3], v3, v4 != 1))
+  _readTimestamp = [(ATXActionTimeEstimateAWDTracker *)self _readTimestamp];
+  if (_readTimestamp && (v3 = objc_opt_new(), v4 = [_readTimestamp compare:v3], v3, v4 != 1))
   {
-    v5 = v2;
+    v5 = _readTimestamp;
   }
 
   else
@@ -739,9 +739,9 @@ void __169__ATXActionTimeEstimateAWDTracker__createTimeEstimateContainers_withSe
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc(MEMORY[0x277CBEA90]);
-  v5 = [(ATXActionTimeEstimateAWDTracker *)self _defaultActionTimeEstimateTimestampPath];
+  _defaultActionTimeEstimateTimestampPath = [(ATXActionTimeEstimateAWDTracker *)self _defaultActionTimeEstimateTimestampPath];
   v19 = 0;
-  v6 = [v4 initWithContentsOfFile:v5 options:0 error:&v19];
+  v6 = [v4 initWithContentsOfFile:_defaultActionTimeEstimateTimestampPath options:0 error:&v19];
   v7 = v19;
 
   objc_autoreleasePoolPop(v3);
@@ -798,13 +798,13 @@ LABEL_14:
   return v15;
 }
 
-- (void)_writeTimestamp:(id)a3
+- (void)_writeTimestamp:(id)timestamp
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timestampCopy = timestamp;
   v6 = objc_autoreleasePoolPush();
   v19 = @"lastQueryEndTime";
-  v20[0] = v5;
+  v20[0] = timestampCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   v18 = 0;
   v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v18];
@@ -823,7 +823,7 @@ LABEL_14:
   v15[2] = __51__ATXActionTimeEstimateAWDTracker__writeTimestamp___block_invoke;
   v15[3] = &unk_278596C10;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v13 = v8;
   dispatch_async(v12, v15);
 

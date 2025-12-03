@@ -1,13 +1,13 @@
 @interface _NSTextLayoutFragmentStorage
-- (BOOL)revalidateLayoutFragmentRangeForLocation:(id)a3;
-- (id)adjustedTextRangeWithTextRange:(id)a3 adjustment:(unint64_t)a4;
-- (id)enumerateTextLayoutFragmentFromLocation:(id)a3 options:(int64_t)a4 usingBlock:(id)a5;
-- (id)enumerateTextLayoutFragmentInTextRange:(id)a3 options:(int64_t)a4 usingBlock:(id)a5;
-- (id)textLayoutFragmentForTextLocation:(id)a3 allowsTrailingEdge:(BOOL)a4;
+- (BOOL)revalidateLayoutFragmentRangeForLocation:(id)location;
+- (id)adjustedTextRangeWithTextRange:(id)range adjustment:(unint64_t)adjustment;
+- (id)enumerateTextLayoutFragmentFromLocation:(id)location options:(int64_t)options usingBlock:(id)block;
+- (id)enumerateTextLayoutFragmentInTextRange:(id)range options:(int64_t)options usingBlock:(id)block;
+- (id)textLayoutFragmentForTextLocation:(id)location allowsTrailingEdge:(BOOL)edge;
 - (int64_t)offsetDeltaForLastTextLayoutFragment;
-- (void)invalidateTextLayoutFragmentsInTextRange:(id)a3 adjustTextRange:(BOOL)a4;
-- (void)invalidateTextLayoutFragmentsInTextRange:(id)a3 delta:(int64_t)a4;
-- (void)setTextLayoutFragments:(id)a3;
+- (void)invalidateTextLayoutFragmentsInTextRange:(id)range adjustTextRange:(BOOL)textRange;
+- (void)invalidateTextLayoutFragmentsInTextRange:(id)range delta:(int64_t)delta;
+- (void)setTextLayoutFragments:(id)fragments;
 @end
 
 @implementation _NSTextLayoutFragmentStorage
@@ -34,37 +34,37 @@
   return v5;
 }
 
-- (id)adjustedTextRangeWithTextRange:(id)a3 adjustment:(unint64_t)a4
+- (id)adjustedTextRangeWithTextRange:(id)range adjustment:(unint64_t)adjustment
 {
-  v6 = a3;
+  rangeCopy = range;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74___NSTextLayoutFragmentStorage_adjustedTextRangeWithTextRange_adjustment___block_invoke;
   v9[3] = &unk_1E7266DE8;
   objc_copyWeak(&v10, &location);
-  v7 = [v6 textRangeWithAdjustment:a4 rangeProvider:v9];
+  v7 = [rangeCopy textRangeWithAdjustment:adjustment rangeProvider:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 
   return v7;
 }
 
-- (id)enumerateTextLayoutFragmentInTextRange:(id)a3 options:(int64_t)a4 usingBlock:(id)a5
+- (id)enumerateTextLayoutFragmentInTextRange:(id)range options:(int64_t)options usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
-  if (a4)
+  rangeCopy = range;
+  blockCopy = block;
+  offsetDeltaForLastTextLayoutFragment = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
+  if (options)
   {
-    v11 = [v8 endLocation];
-    [v8 location];
+    endLocation = [rangeCopy endLocation];
+    [rangeCopy location];
   }
 
   else
   {
-    v11 = [v8 location];
-    [v8 endLocation];
+    endLocation = [rangeCopy location];
+    [rangeCopy endLocation];
   }
   v12 = ;
   v24 = 0;
@@ -73,14 +73,14 @@
   v27 = __Block_byref_object_copy__5;
   v28 = __Block_byref_object_dispose__5;
   v29 = 0;
-  if (v10)
+  if (offsetDeltaForLastTextLayoutFragment)
   {
-    v13 = a4;
+    optionsCopy = options;
   }
 
   else
   {
-    v13 = a4 | 2;
+    optionsCopy = options | 2;
   }
 
   v19[0] = MEMORY[0x1E69E9820];
@@ -88,12 +88,12 @@
   v19[2] = __90___NSTextLayoutFragmentStorage_enumerateTextLayoutFragmentInTextRange_options_usingBlock___block_invoke;
   v19[3] = &unk_1E7266E10;
   v22 = &v24;
-  v23 = a4 & 1;
+  v23 = options & 1;
   v14 = v12;
   v20 = v14;
-  v15 = v9;
+  v15 = blockCopy;
   v21 = v15;
-  v16 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:v11 options:v13 usingBlock:v19];
+  v16 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:endLocation options:optionsCopy usingBlock:v19];
   v17 = v25[5];
 
   _Block_object_dispose(&v24, 8);
@@ -101,28 +101,28 @@
   return v17;
 }
 
-- (id)enumerateTextLayoutFragmentFromLocation:(id)a3 options:(int64_t)a4 usingBlock:(id)a5
+- (id)enumerateTextLayoutFragmentFromLocation:(id)location options:(int64_t)options usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if ((a4 & 2) != 0)
+  locationCopy = location;
+  blockCopy = block;
+  if ((options & 2) != 0)
   {
     v11 = 0;
-    v12 = a4;
+    optionsCopy2 = options;
   }
 
   else
   {
-    v10 = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
-    v11 = v10 != 0;
-    if (v10)
+    offsetDeltaForLastTextLayoutFragment = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
+    v11 = offsetDeltaForLastTextLayoutFragment != 0;
+    if (offsetDeltaForLastTextLayoutFragment)
     {
-      v12 = a4;
+      optionsCopy2 = options;
     }
 
     else
     {
-      v12 = a4 | 2;
+      optionsCopy2 = options | 2;
     }
   }
 
@@ -130,18 +130,18 @@
   v16[1] = 3221225472;
   v16[2] = __91___NSTextLayoutFragmentStorage_enumerateTextLayoutFragmentFromLocation_options_usingBlock___block_invoke;
   v16[3] = &unk_1E7266E38;
-  v17 = v9;
-  v18 = (a4 & 2) == 0;
+  v17 = blockCopy;
+  v18 = (options & 2) == 0;
   v19 = v11;
-  v13 = v9;
-  v14 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:v8 options:v12 usingBlock:v16];
+  v13 = blockCopy;
+  v14 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:locationCopy options:optionsCopy2 usingBlock:v16];
 
   return v14;
 }
 
-- (id)textLayoutFragmentForTextLocation:(id)a3 allowsTrailingEdge:(BOOL)a4
+- (id)textLayoutFragmentForTextLocation:(id)location allowsTrailingEdge:(BOOL)edge
 {
-  v6 = a3;
+  locationCopy = location;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -152,7 +152,7 @@
   v17[1] = 3221225472;
   v17[2] = __85___NSTextLayoutFragmentStorage_textLayoutFragmentForTextLocation_allowsTrailingEdge___block_invoke;
   v17[3] = &unk_1E7266E60;
-  v7 = v6;
+  v7 = locationCopy;
   v18 = v7;
   v19 = &v20;
   v8 = [(_NSTextLayoutFragmentStorage *)self enumerateTextLayoutFragmentFromLocation:v7 options:0 usingBlock:v17];
@@ -163,7 +163,7 @@
     v13[1] = 3221225472;
     v13[2] = __85___NSTextLayoutFragmentStorage_textLayoutFragmentForTextLocation_allowsTrailingEdge___block_invoke_2;
     v13[3] = &unk_1E7266E88;
-    v16 = a4;
+    edgeCopy = edge;
     v14 = v7;
     v15 = &v20;
     v10 = [(_NSTextLayoutFragmentStorage *)self enumerateTextLayoutFragmentFromLocation:v14 options:1 usingBlock:v13];
@@ -178,47 +178,47 @@
   return v11;
 }
 
-- (void)setTextLayoutFragments:(id)a3
+- (void)setTextLayoutFragments:(id)fragments
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55___NSTextLayoutFragmentStorage_setTextLayoutFragments___block_invoke;
   v3[3] = &unk_1E7266EB0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [fragments enumerateObjectsUsingBlock:v3];
 }
 
-- (void)invalidateTextLayoutFragmentsInTextRange:(id)a3 delta:(int64_t)a4
+- (void)invalidateTextLayoutFragmentsInTextRange:(id)range delta:(int64_t)delta
 {
-  v6 = [(_NSTextLayoutFragmentStorage *)self adjustedTextRangeWithTextRange:a3 adjustment:6];
+  v6 = [(_NSTextLayoutFragmentStorage *)self adjustedTextRangeWithTextRange:range adjustment:6];
   if (v6)
   {
-    [(_NSTextRunStorage *)self invalidateElementsInRange:v6 delta:a4];
+    [(_NSTextRunStorage *)self invalidateElementsInRange:v6 delta:delta];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)invalidateTextLayoutFragmentsInTextRange:(id)a3 adjustTextRange:(BOOL)a4
+- (void)invalidateTextLayoutFragmentsInTextRange:(id)range adjustTextRange:(BOOL)textRange
 {
-  v4 = a4;
-  v7 = a3;
-  if (v4)
+  textRangeCopy = textRange;
+  rangeCopy = range;
+  if (textRangeCopy)
   {
-    v6 = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
+    offsetDeltaForLastTextLayoutFragment = [(_NSTextLayoutFragmentStorage *)self offsetDeltaForLastTextLayoutFragment];
   }
 
   else
   {
-    v6 = 0;
+    offsetDeltaForLastTextLayoutFragment = 0;
   }
 
-  [(_NSTextLayoutFragmentStorage *)self invalidateTextLayoutFragmentsInTextRange:v7 delta:v6];
+  [(_NSTextLayoutFragmentStorage *)self invalidateTextLayoutFragmentsInTextRange:rangeCopy delta:offsetDeltaForLastTextLayoutFragment];
 }
 
-- (BOOL)revalidateLayoutFragmentRangeForLocation:(id)a3
+- (BOOL)revalidateLayoutFragmentRangeForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -244,7 +244,7 @@
   v8[4] = &v21;
   v8[5] = &v15;
   v8[6] = &v9;
-  v5 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:v4 options:0 usingBlock:v8];
+  v5 = [(_NSTextRunStorage *)self enumerateObjectsFromLocation:locationCopy options:0 usingBlock:v8];
   v6 = v22[5];
   if (v6)
   {

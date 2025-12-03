@@ -1,8 +1,8 @@
 @interface NTKCaliforniaFaceComplicationDescriptor
 - (id)complicationSlotDescriptors;
-- (id)localizedNameForComplicationSlot:(id)a3;
+- (id)localizedNameForComplicationSlot:(id)slot;
 - (id)orderedComplicationSlots;
-- (id)richComplicationSlotsForDevice:(id)a3;
+- (id)richComplicationSlotsForDevice:(id)device;
 @end
 
 @implementation NTKCaliforniaFaceComplicationDescriptor
@@ -11,8 +11,8 @@
 {
   v14.receiver = self;
   v14.super_class = NTKCaliforniaFaceComplicationDescriptor;
-  v2 = [(NTKCaliforniaFaceComplicationDescriptor *)&v14 complicationSlotDescriptors];
-  v3 = [v2 mutableCopy];
+  complicationSlotDescriptors = [(NTKCaliforniaFaceComplicationDescriptor *)&v14 complicationSlotDescriptors];
+  v3 = [complicationSlotDescriptors mutableCopy];
 
   v4 = NTKAllSignatureCircularTypes();
   v5 = NTKAllSimpleTextComplicationTypes();
@@ -39,20 +39,20 @@
 {
   v6.receiver = self;
   v6.super_class = NTKCaliforniaFaceComplicationDescriptor;
-  v2 = [(NTKCaliforniaFaceComplicationDescriptor *)&v6 orderedComplicationSlots];
+  orderedComplicationSlots = [(NTKCaliforniaFaceComplicationDescriptor *)&v6 orderedComplicationSlots];
   v7[0] = NTKComplicationSlotBezel;
   v7[1] = NTKComplicationSlotSubdialTop;
   v7[2] = NTKComplicationSlotSubdialBottom;
   v3 = [NSArray arrayWithObjects:v7 count:3];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  v4 = [orderedComplicationSlots arrayByAddingObjectsFromArray:v3];
 
   return v4;
 }
 
-- (id)localizedNameForComplicationSlot:(id)a3
+- (id)localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotBezel])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotBezel])
   {
     v5 = NTKClockFaceLocalizedString();
   }
@@ -61,7 +61,7 @@
   {
     v8.receiver = self;
     v8.super_class = NTKCaliforniaFaceComplicationDescriptor;
-    v5 = [(NTKCaliforniaFaceComplicationDescriptor *)&v8 localizedNameForComplicationSlot:v4];
+    v5 = [(NTKCaliforniaFaceComplicationDescriptor *)&v8 localizedNameForComplicationSlot:slotCopy];
   }
 
   v6 = v5;
@@ -69,11 +69,11 @@
   return v6;
 }
 
-- (id)richComplicationSlotsForDevice:(id)a3
+- (id)richComplicationSlotsForDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = NTKCaliforniaFaceComplicationDescriptor;
-  v3 = [(NTKCaliforniaFaceComplicationDescriptor *)&v6 richComplicationSlotsForDevice:a3];
+  v3 = [(NTKCaliforniaFaceComplicationDescriptor *)&v6 richComplicationSlotsForDevice:device];
   v4 = [v3 arrayByAddingObject:NTKComplicationSlotSubdialBottom];
 
   return v4;

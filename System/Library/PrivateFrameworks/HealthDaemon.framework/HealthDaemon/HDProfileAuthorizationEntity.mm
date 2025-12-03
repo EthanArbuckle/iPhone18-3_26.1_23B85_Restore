@@ -1,10 +1,10 @@
 @interface HDProfileAuthorizationEntity
-+ (BOOL)fetchStatus:(int64_t *)a3 profile:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
-+ (BOOL)setStatus:(int64_t)a3 profile:(id)a4 bundleIdentifier:(id)a5 dateModified:(id)a6 error:(id *)a7;
-+ (BOOL)setStatusIfNeeded:(int64_t)a3 profile:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6;
++ (BOOL)fetchStatus:(int64_t *)status profile:(id)profile bundleIdentifier:(id)identifier error:(id *)error;
++ (BOOL)setStatus:(int64_t)status profile:(id)profile bundleIdentifier:(id)identifier dateModified:(id)modified error:(id *)error;
++ (BOOL)setStatusIfNeeded:(int64_t)needed profile:(id)profile bundleIdentifier:(id)identifier error:(id *)error;
 + (id)_allProperties;
-+ (id)anyForBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)unitTest_getBundleIdentifier:(id *)a3 status:(int64_t *)a4 dateModified:(id *)a5 forProfile:(id)a6 error:(id *)a7;
++ (id)anyForBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
+- (BOOL)unitTest_getBundleIdentifier:(id *)identifier status:(int64_t *)status dateModified:(id *)modified forProfile:(id)profile error:(id *)error;
 @end
 
 @implementation HDProfileAuthorizationEntity
@@ -22,24 +22,24 @@
   return v0;
 }
 
-+ (BOOL)setStatusIfNeeded:(int64_t)a3 profile:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
++ (BOOL)setStatusIfNeeded:(int64_t)needed profile:(id)profile bundleIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 database];
+  profileCopy = profile;
+  identifierCopy = identifier;
+  database = [profileCopy database];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__HDProfileAuthorizationEntity_setStatusIfNeeded_profile_bundleIdentifier_error___block_invoke;
   v16[3] = &unk_2786154B8;
-  v17 = v10;
-  v18 = v11;
-  v19 = a1;
-  v20 = a3;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v16];
+  v17 = profileCopy;
+  v18 = identifierCopy;
+  selfCopy = self;
+  neededCopy = needed;
+  v13 = identifierCopy;
+  v14 = profileCopy;
+  LOBYTE(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v16];
 
-  return a6;
+  return error;
 }
 
 uint64_t __81__HDProfileAuthorizationEntity_setStatusIfNeeded_profile_bundleIdentifier_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -66,20 +66,20 @@ uint64_t __81__HDProfileAuthorizationEntity_setStatusIfNeeded_profile_bundleIden
   return v6;
 }
 
-+ (BOOL)setStatus:(int64_t)a3 profile:(id)a4 bundleIdentifier:(id)a5 dateModified:(id)a6 error:(id *)a7
++ (BOOL)setStatus:(int64_t)status profile:(id)profile bundleIdentifier:(id)identifier dateModified:(id)modified error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v12 profileType] == 1)
+  profileCopy = profile;
+  identifierCopy = identifier;
+  modifiedCopy = modified;
+  if ([profileCopy profileType] == 1)
   {
-    v15 = [MEMORY[0x277CCA9B8] hk_invalidProfileError];
-    if (v15)
+    hk_invalidProfileError = [MEMORY[0x277CCA9B8] hk_invalidProfileError];
+    if (hk_invalidProfileError)
     {
-      if (a7)
+      if (error)
       {
-        v16 = v15;
-        *a7 = v15;
+        v16 = hk_invalidProfileError;
+        *error = hk_invalidProfileError;
       }
 
       else
@@ -93,16 +93,16 @@ uint64_t __81__HDProfileAuthorizationEntity_setStatusIfNeeded_profile_bundleIden
 
   else
   {
-    v17 = [v12 database];
+    database = [profileCopy database];
     v18 = +[HDProfileAuthorizationEntity _allProperties];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __86__HDProfileAuthorizationEntity_setStatus_profile_bundleIdentifier_dateModified_error___block_invoke;
     v22[3] = &unk_278613AE8;
-    v23 = v13;
-    v25 = a3;
-    v24 = v14;
-    v19 = [a1 insertOrReplaceEntity:1 healthDatabase:v17 properties:v18 error:a7 bindingHandler:v22];
+    v23 = identifierCopy;
+    statusCopy = status;
+    v24 = modifiedCopy;
+    v19 = [self insertOrReplaceEntity:1 healthDatabase:database properties:v18 error:error bindingHandler:v22];
 
     v20 = v19 != 0;
   }
@@ -119,28 +119,28 @@ void __86__HDProfileAuthorizationEntity_setStatus_profile_bundleIdentifier_dateM
   JUMPOUT(0x22AAC6B50);
 }
 
-+ (BOOL)fetchStatus:(int64_t *)a3 profile:(id)a4 bundleIdentifier:(id)a5 error:(id *)a6
++ (BOOL)fetchStatus:(int64_t *)status profile:(id)profile bundleIdentifier:(id)identifier error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  if ([v10 profileType] != 1)
+  profileCopy = profile;
+  identifierCopy = identifier;
+  if ([profileCopy profileType] != 1)
   {
-    v13 = [MEMORY[0x277D10B18] predicateWithProperty:@"source_bundle_id" equalToValue:v11];
-    v14 = [v10 database];
+    v13 = [MEMORY[0x277D10B18] predicateWithProperty:@"source_bundle_id" equalToValue:identifierCopy];
+    database = [profileCopy database];
     v22 = 0;
-    v15 = [a1 propertyValueForAnyWithProperty:@"status" predicate:v13 healthDatabase:v14 error:&v22];
+    v15 = [self propertyValueForAnyWithProperty:@"status" predicate:v13 healthDatabase:database error:&v22];
     v16 = v22;
 
     if (!v15)
     {
       if (v16)
       {
-        if (a6)
+        if (error)
         {
           v18 = v16;
           v12 = 0;
-          *a6 = v16;
+          *error = v16;
         }
 
         else
@@ -152,7 +152,7 @@ void __86__HDProfileAuthorizationEntity_setStatus_profile_bundleIdentifier_dateM
         goto LABEL_16;
       }
 
-      *a3 = 0;
+      *status = 0;
 LABEL_15:
       v12 = 1;
 LABEL_16:
@@ -163,18 +163,18 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v15 integerValue];
-      if (v17 < 3)
+      integerValue = [v15 integerValue];
+      if (integerValue < 3)
       {
 LABEL_14:
-        *a3 = v17;
+        *status = integerValue;
         goto LABEL_15;
       }
     }
 
     else
     {
-      v17 = -1;
+      integerValue = -1;
     }
 
     _HKInitializeLogging();
@@ -182,39 +182,39 @@ LABEL_14:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2048;
-      v26 = v17;
+      v26 = integerValue;
       _os_log_error_impl(&dword_228986000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Encountered unexpected value %ld in table profile_authorization", buf, 0x16u);
     }
 
-    v17 = 0;
+    integerValue = 0;
     goto LABEL_14;
   }
 
   v12 = 1;
-  *a3 = 1;
+  *status = 1;
 LABEL_17:
 
   v20 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-+ (id)anyForBundleIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)anyForBundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"source_bundle_id" equalToValue:a3];
-  v11 = [v9 database];
+  profileCopy = profile;
+  v10 = [v8 predicateWithProperty:@"source_bundle_id" equalToValue:identifier];
+  database = [profileCopy database];
 
-  v12 = [a1 anyWithPredicate:v10 healthDatabase:v11 error:a5];
+  v12 = [self anyWithPredicate:v10 healthDatabase:database error:error];
 
   return v12;
 }
 
-- (BOOL)unitTest_getBundleIdentifier:(id *)a3 status:(int64_t *)a4 dateModified:(id *)a5 forProfile:(id)a6 error:(id *)a7
+- (BOOL)unitTest_getBundleIdentifier:(id *)identifier status:(int64_t *)status dateModified:(id *)modified forProfile:(id)profile error:(id *)error
 {
-  v12 = a6;
+  profileCopy = profile;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -228,26 +228,26 @@ LABEL_17:
   v22 = __Block_byref_object_dispose__14;
   v23 = 0;
   v13 = +[HDProfileAuthorizationEntity _allProperties];
-  v14 = [v12 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __98__HDProfileAuthorizationEntity_unitTest_getBundleIdentifier_status_dateModified_forProfile_error___block_invoke;
   v17[3] = &unk_2786154E0;
   v17[4] = &v24;
   v17[5] = &v18;
-  v17[6] = a4;
-  v15 = [(HDHealthEntity *)self getValuesForProperties:v13 healthDatabase:v14 error:a7 handler:v17];
+  v17[6] = status;
+  v15 = [(HDHealthEntity *)self getValuesForProperties:v13 healthDatabase:database error:error handler:v17];
 
   if (v15)
   {
-    if (a3)
+    if (identifier)
     {
-      *a3 = v25[5];
+      *identifier = v25[5];
     }
 
-    if (a5)
+    if (modified)
     {
-      *a5 = v19[5];
+      *modified = v19[5];
     }
   }
 

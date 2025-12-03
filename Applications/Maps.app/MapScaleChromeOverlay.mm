@@ -1,26 +1,26 @@
 @interface MapScaleChromeOverlay
 - (ChromeOverlayHosting)host;
 - (MapViewProviding)mapViewProvider;
-- (void)setHost:(id)a3;
-- (void)setMapViewProvider:(id)a3;
+- (void)setHost:(id)host;
+- (void)setMapViewProvider:(id)provider;
 @end
 
 @implementation MapScaleChromeOverlay
 
-- (void)setMapViewProvider:(id)a3
+- (void)setMapViewProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10002DE9C();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setHost:(id)a3
+- (void)setHost:(id)host
 {
-  *(self + OBJC_IVAR____TtC4Maps21MapScaleChromeOverlay_host) = a3;
+  *(self + OBJC_IVAR____TtC4Maps21MapScaleChromeOverlay_host) = host;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_10002DFCC();
   swift_unknownObjectRelease();

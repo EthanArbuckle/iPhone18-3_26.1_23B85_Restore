@@ -1,24 +1,24 @@
 @interface PXUIAssetBadgeView
-+ (CGSize)sizeForBadgeInfo:(PXAssetBadgeInfo *)a3 contentWidth:(double)a4;
-+ (double)preferredHeightForStyle:(int64_t)a3;
-+ (id)badgeSizeCacheKeyValueFromBadgeInfo:(PXAssetBadgeInfo *)a3 contentWidth:(double)a4;
++ (CGSize)sizeForBadgeInfo:(PXAssetBadgeInfo *)info contentWidth:(double)width;
++ (double)preferredHeightForStyle:(int64_t)style;
++ (id)badgeSizeCacheKeyValueFromBadgeInfo:(PXAssetBadgeInfo *)info contentWidth:(double)width;
 + (id)measuringLabel;
-+ (void)preloadResourcesForStyle:(int64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (void)preloadResourcesForStyle:(int64_t)style;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)bottomElementsPadding;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PXAssetBadgeInfo)badgeInfo;
-- (PXUIAssetBadgeView)initWithFrame:(CGRect)a3;
+- (PXUIAssetBadgeView)initWithFrame:(CGRect)frame;
 - (PXUIAssetBadgeViewDelegate)delegate;
-- (id)_updateTopGroup:(id)a3 withBadgeInfo:(PXAssetBadgeInfo *)a4;
-- (void)_handleButton:(id)a3;
+- (id)_updateTopGroup:(id)group withBadgeInfo:(PXAssetBadgeInfo *)info;
+- (void)_handleButton:(id)button;
 - (void)_invalidate;
 - (void)_layoutBottomCornersImages;
 - (void)_layoutBottomLabel;
-- (void)_layoutTopGroup:(id)a3;
-- (void)_removeViewsFromGroup:(id)a3;
-- (void)_setBackgroundImage:(id)a3;
+- (void)_layoutTopGroup:(id)group;
+- (void)_removeViewsFromGroup:(id)group;
+- (void)_setBackgroundImage:(id)image;
 - (void)_setNeedsUpdate;
 - (void)_updateBackgroundIfNeeded;
 - (void)_updateBottomLabelIfNeeded;
@@ -30,13 +30,13 @@
 - (void)_updateTopLeftElementsIfNeeded;
 - (void)_updateTopRightElementsIfNeeded;
 - (void)layoutSubviews;
-- (void)performChanges:(id)a3 animated:(BOOL)a4;
+- (void)performChanges:(id)changes animated:(BOOL)animated;
 - (void)prepareForReuse;
-- (void)setContentWidth:(double)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOverContent:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setContentWidth:(double)width;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setOverContent:(BOOL)content;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation PXUIAssetBadgeView
@@ -65,15 +65,15 @@
   return WeakRetained;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v20.receiver = self;
   v20.super_class = PXUIAssetBadgeView;
-  if ([(PXUIAssetBadgeView *)&v20 pointInside:v7 withEvent:x, y])
+  if ([(PXUIAssetBadgeView *)&v20 pointInside:eventCopy withEvent:x, y])
   {
     v8 = 1;
   }
@@ -84,8 +84,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [(PXUIAssetBadgeView *)self subviews];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    subviews = [(PXUIAssetBadgeView *)self subviews];
+    v10 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -96,19 +96,19 @@
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews);
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
           [(PXUIAssetBadgeView *)self convertPoint:v14 toView:x, y];
-          if ([v14 pointInside:v7 withEvent:?])
+          if ([v14 pointInside:eventCopy withEvent:?])
           {
             v8 = 1;
             goto LABEL_13;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v11)
         {
           continue;
@@ -163,8 +163,8 @@ LABEL_13:
   {
     self->_needsUpdateFlags.background = 0;
     [(PXUIAssetBadgeView *)self badgeInfo];
-    v3 = [(PXUIAssetBadgeView *)self style];
-    if (v3 == 7 || v3 == 1)
+    style = [(PXUIAssetBadgeView *)self style];
+    if (style == 7 || style == 1)
     {
       v4 = +[PXAssetVariationsSettings sharedInstance];
       [v4 showLoopBadges];
@@ -188,16 +188,16 @@ LABEL_13:
         self->_bottomLabel = v3;
 
         v5 = self->_bottomLabel;
-        v6 = [MEMORY[0x1E69DC888] clearColor];
-        [(UILabel *)v5 setBackgroundColor:v6];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        [(UILabel *)v5 setBackgroundColor:clearColor];
 
         v7 = self->_bottomLabel;
         v8 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:12.0];
         [(UILabel *)v7 setFont:v8];
 
         v9 = self->_bottomLabel;
-        v10 = [MEMORY[0x1E69DC888] whiteColor];
-        [(UILabel *)v9 setTextColor:v10];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [(UILabel *)v9 setTextColor:whiteColor];
 
         [(UILabel *)self->_bottomLabel setTextAlignment:4];
         [(PXUIAssetBadgeView *)self addSubview:self->_bottomLabel];
@@ -221,8 +221,8 @@ LABEL_13:
       goto LABEL_11;
     }
 
-    v3 = [(PXUIAssetBadgeView *)self style];
-    if (v3 != 7 && v3 != 1)
+    style = [(PXUIAssetBadgeView *)self style];
+    if (style != 7 && style != 1)
     {
       goto LABEL_11;
     }
@@ -231,23 +231,23 @@ LABEL_13:
     if ((v10 & 0x180) != 0)
     {
       v4 = +[PXAssetVariationsSettings sharedInstance];
-      v5 = [v4 showLoopBadges];
+      showLoopBadges = [v4 showLoopBadges];
 
-      if (v5)
+      if (showLoopBadges)
       {
-        v6 = [off_1E77214D8 loopingBadgeImage];
+        loopingBadgeImage = [off_1E77214D8 loopingBadgeImage];
         goto LABEL_17;
       }
     }
 
     if ((v10 & 2) != 0)
     {
-      v6 = [off_1E77214D8 panoramaBadgeImage];
+      loopingBadgeImage = [off_1E77214D8 panoramaBadgeImage];
     }
 
     else if ((v10 & 0x20) != 0)
     {
-      v6 = [off_1E77214D8 cloudBadgeImage];
+      loopingBadgeImage = [off_1E77214D8 cloudBadgeImage];
     }
 
     else
@@ -262,12 +262,12 @@ LABEL_12:
         return;
       }
 
-      v6 = [off_1E77214D8 contentSyndicationBadgeImage];
+      loopingBadgeImage = [off_1E77214D8 contentSyndicationBadgeImage];
     }
 
 LABEL_17:
-    v7 = v6;
-    if (v6)
+    v7 = loopingBadgeImage;
+    if (loopingBadgeImage)
     {
       if (!self->_bottomTrailingImageView)
       {
@@ -291,8 +291,8 @@ LABEL_17:
     [(PXUIAssetBadgeView *)self badgeInfo];
     if ((v6 & 2) != 0 && [(PXUIAssetBadgeView *)self style]== 1)
     {
-      v3 = [off_1E77214D8 spatialBadgeImage];
-      if (v3)
+      spatialBadgeImage = [off_1E77214D8 spatialBadgeImage];
+      if (spatialBadgeImage)
       {
         if (!self->_bottomSpatialBadgeImageView)
         {
@@ -307,10 +307,10 @@ LABEL_17:
 
     else
     {
-      v3 = 0;
+      spatialBadgeImage = 0;
     }
 
-    [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView setImage:v3];
+    [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView setImage:spatialBadgeImage];
     [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView sizeToFit];
   }
 }
@@ -323,13 +323,13 @@ LABEL_17:
     [(PXUIAssetBadgeView *)self badgeInfo];
     if (v8)
     {
-      v3 = [(PXUIAssetBadgeView *)self style];
-      if (v3 == 2)
+      style = [(PXUIAssetBadgeView *)self style];
+      if (style == 2)
       {
-        v4 = [off_1E77214D8 favoritesCollectionBadgeImage];
+        favoritesCollectionBadgeImage = [off_1E77214D8 favoritesCollectionBadgeImage];
 LABEL_10:
-        v5 = v4;
-        if (v4)
+        v5 = favoritesCollectionBadgeImage;
+        if (favoritesCollectionBadgeImage)
         {
           if (!self->_bottomLeadingImageView)
           {
@@ -344,9 +344,9 @@ LABEL_10:
         goto LABEL_7;
       }
 
-      if (v3 == 1)
+      if (style == 1)
       {
-        v4 = [off_1E77214D8 favoriteBadgeImage];
+        favoritesCollectionBadgeImage = [off_1E77214D8 favoriteBadgeImage];
         goto LABEL_10;
       }
     }
@@ -357,31 +357,31 @@ LABEL_7:
   }
 }
 
-- (id)_updateTopGroup:(id)a3 withBadgeInfo:(PXAssetBadgeInfo *)a4
+- (id)_updateTopGroup:(id)group withBadgeInfo:(PXAssetBadgeInfo *)info
 {
-  a3;
-  v6 = [(PXUIAssetBadgeView *)self style];
-  v7 = [(PXUIAssetBadgeView *)self isOverContent];
-  if ((v6 - 3) < 4)
+  group;
+  style = [(PXUIAssetBadgeView *)self style];
+  isOverContent = [(PXUIAssetBadgeView *)self isOverContent];
+  if ((style - 3) < 4)
   {
-    v8 = *&a4->count;
-    v13 = *&a4->badges;
+    v8 = *&info->count;
+    v13 = *&info->badges;
     v14 = v8;
-    [off_1E77214D8 imageForBadgeInfo:&v13 style:v6 isOverContent:v7];
+    [off_1E77214D8 imageForBadgeInfo:&v13 style:style isOverContent:isOverContent];
     objc_claimAutoreleasedReturnValue();
-    v9 = *&a4->count;
-    v13 = *&a4->badges;
+    v9 = *&info->count;
+    v13 = *&info->badges;
     v14 = v9;
-    [off_1E77214D8 textForBadgeInfo:&v13 style:v6];
+    [off_1E77214D8 textForBadgeInfo:&v13 style:style];
     objc_claimAutoreleasedReturnValue();
-    v10 = *&a4->count;
-    v13 = *&a4->badges;
+    v10 = *&info->count;
+    v13 = *&info->badges;
     v14 = v10;
     PXAssetBadgeInfoIsToggleable();
   }
 
-  v11 = *&a4->count;
-  v13 = *&a4->badges;
+  v11 = *&info->count;
+  v13 = *&info->badges;
   v14 = v11;
   PXAssetBadgeInfoIsToggleable();
 }
@@ -512,25 +512,25 @@ LABEL_7:
   }
 }
 
-- (void)_setBackgroundImage:(id)a3
+- (void)_setBackgroundImage:(id)image
 {
-  v6 = a3;
-  v4 = [(PXUIAssetBadgeView *)self layer];
-  if (v6)
+  imageCopy = image;
+  layer = [(PXUIAssetBadgeView *)self layer];
+  if (imageCopy)
   {
-    [v4 setContentsGravity:@"resize"];
+    [layer setContentsGravity:@"resize"];
   }
 
-  v5 = v6;
-  [v4 setContents:{objc_msgSend(v6, "CGImage")}];
+  v5 = imageCopy;
+  [layer setContents:{objc_msgSend(imageCopy, "CGImage")}];
 }
 
-- (void)_handleButton:(id)a3
+- (void)_handleButton:(id)button
 {
-  v4 = a3;
-  v5 = [(_PXUIAssetBadgeTopGroup *)self->_topLeftPrimaryGroup button];
+  buttonCopy = button;
+  button = [(_PXUIAssetBadgeTopGroup *)self->_topLeftPrimaryGroup button];
 
-  if (v5 == v4)
+  if (button == buttonCopy)
   {
     topLeftPrimaryGroup = self->_topLeftPrimaryGroup;
     if (topLeftPrimaryGroup)
@@ -549,9 +549,9 @@ LABEL_7:
 
   else
   {
-    v6 = [(_PXUIAssetBadgeTopGroup *)self->_topLeftSecondaryGroup button];
+    button2 = [(_PXUIAssetBadgeTopGroup *)self->_topLeftSecondaryGroup button];
 
-    if (v6 == v4)
+    if (button2 == buttonCopy)
     {
       topLeftSecondaryGroup = self->_topLeftSecondaryGroup;
       if (topLeftSecondaryGroup)
@@ -570,9 +570,9 @@ LABEL_7:
 
     else
     {
-      v7 = [(_PXUIAssetBadgeTopGroup *)self->_topRightGroup button];
+      button3 = [(_PXUIAssetBadgeTopGroup *)self->_topRightGroup button];
 
-      if (v7 == v4)
+      if (button3 == buttonCopy)
       {
         topRightGroup = self->_topRightGroup;
         if (topRightGroup)
@@ -598,19 +598,19 @@ LABEL_7:
 
   if (self->_delegateRespondsTo.userDidSelectBadges)
   {
-    v12 = [(PXUIAssetBadgeView *)self delegate];
-    [v12 assetBadgeView:self userDidSelectBadges:v8];
+    delegate = [(PXUIAssetBadgeView *)self delegate];
+    [delegate assetBadgeView:self userDidSelectBadges:v8];
   }
 
   if (self->_delegateRespondsTo.dismissPresentedViewController)
   {
-    v13 = [(PXUIAssetBadgeView *)self delegate];
+    delegate2 = [(PXUIAssetBadgeView *)self delegate];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __36__PXUIAssetBadgeView__handleButton___block_invoke;
     v14[3] = &unk_1E774C648;
-    v15 = v4;
-    [v13 assetBadgeView:self dismissAnyPresentedViewControllerWithCompletion:v14];
+    v15 = buttonCopy;
+    [delegate2 assetBadgeView:self dismissAnyPresentedViewControllerWithCompletion:v14];
   }
 }
 
@@ -628,9 +628,9 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXUIAssetBadgeView *)self _updateIfNeeded:a3.width];
+  [(PXUIAssetBadgeView *)self _updateIfNeeded:fits.width];
   width = self->_contentSize.width;
   height = self->_contentSize.height;
   result.height = height;
@@ -696,20 +696,20 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
 
 - (void)_layoutBottomCornersImages
 {
-  v54 = [(_PXUIAssetBadgeImageView *)self->_bottomLeadingImageView image];
-  v3 = [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView image];
-  v4 = [(_PXUIAssetBadgeImageView *)self->_bottomTrailingImageView image];
-  if (v54)
+  image = [(_PXUIAssetBadgeImageView *)self->_bottomLeadingImageView image];
+  image2 = [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView image];
+  image3 = [(_PXUIAssetBadgeImageView *)self->_bottomTrailingImageView image];
+  if (image)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4 == 0;
+    v5 = image3 == 0;
   }
 
-  if (!v5 || v3 != 0)
+  if (!v5 || image2 != 0)
   {
     width = self->_bottomElementsPadding.width;
     height = self->_bottomElementsPadding.height;
@@ -718,16 +718,16 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(PXUIAssetBadgeView *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PXUIAssetBadgeView *)self _shouldReverseLayoutDirection];
     v16 = MEMORY[0x1E695F058];
     v53 = v8;
-    if (v54)
+    if (image)
     {
       v17 = *(MEMORY[0x1E695F058] + 8);
-      [v54 size];
+      [image size];
       v19 = v18;
       v21 = v20;
-      if (v15)
+      if (_shouldReverseLayoutDirection)
       {
         v22 = *v16;
         v56.origin.x = v8;
@@ -766,13 +766,13 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
       [(_PXUIAssetBadgeImageView *)self->_bottomLeadingImageView setFrame:v24, v26, v19, v21];
     }
 
-    if (v3)
+    if (image2)
     {
       v27 = v16[1];
-      [v3 size];
+      [image2 size];
       v29 = v28;
       v31 = v30;
-      if (v15)
+      if (_shouldReverseLayoutDirection)
       {
         v32 = *v16;
         v61.origin.x = v8;
@@ -815,10 +815,10 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
       [(_PXUIAssetBadgeImageView *)self->_bottomSpatialBadgeImageView setFrame:v36, v40, v29, v31];
     }
 
-    if (v4)
+    if (image3)
     {
       v41 = v16[1];
-      [v4 size];
+      [image3 size];
       v43 = v42;
       v45 = v44;
       if ([(PXUIAssetBadgeView *)self style]== 7 || ([(PXUIAssetBadgeView *)self _shouldReverseLayoutDirection]& 1) != 0)
@@ -861,47 +861,47 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_removeViewsFromGroup:(id)a3
+- (void)_removeViewsFromGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v8 = a3;
-    v3 = [v8 backgroundView];
-    [v3 removeFromSuperview];
+    groupCopy = group;
+    backgroundView = [groupCopy backgroundView];
+    [backgroundView removeFromSuperview];
 
-    [v8 setBackgroundView:0];
-    v4 = [v8 button];
-    [v4 removeFromSuperview];
+    [groupCopy setBackgroundView:0];
+    button = [groupCopy button];
+    [button removeFromSuperview];
 
-    [v8 setButton:0];
-    v5 = [v8 imageView];
-    [v5 removeFromSuperview];
+    [groupCopy setButton:0];
+    imageView = [groupCopy imageView];
+    [imageView removeFromSuperview];
 
-    [v8 setImageView:0];
-    v6 = [v8 chevronImageView];
-    [v6 removeFromSuperview];
+    [groupCopy setImageView:0];
+    chevronImageView = [groupCopy chevronImageView];
+    [chevronImageView removeFromSuperview];
 
-    [v8 setChevronImageView:0];
-    v7 = [v8 label];
-    [v7 removeFromSuperview];
+    [groupCopy setChevronImageView:0];
+    label = [groupCopy label];
+    [label removeFromSuperview];
 
-    [v8 setLabel:0];
+    [groupCopy setLabel:0];
   }
 }
 
-- (void)_layoutTopGroup:(id)a3
+- (void)_layoutTopGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy)
   {
-    [v4 frame];
+    [groupCopy frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v5 backgroundView];
-    [v14 setFrame:{v7, v9, v11, v13}];
+    backgroundView = [v5 backgroundView];
+    [backgroundView setFrame:{v7, v9, v11, v13}];
 
     if ([(PXUIAssetBadgeView *)self style]== 4)
     {
@@ -909,20 +909,20 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
       PXAssetBadgeInfoIsLivePhotoToggleable();
     }
 
-    v15 = [v5 button];
-    [v15 setFrame:{v7, v9, v11, v13}];
+    button = [v5 button];
+    [button setFrame:{v7, v9, v11, v13}];
 
-    v16 = [v5 imageView];
+    imageView = [v5 imageView];
     [v5 imageFrame];
-    [v16 setFrame:?];
+    [imageView setFrame:?];
 
-    v17 = [v5 chevronImageView];
+    chevronImageView = [v5 chevronImageView];
     [v5 chevronImageFrame];
-    [v17 setFrame:?];
+    [chevronImageView setFrame:?];
 
-    v18 = [v5 label];
+    label = [v5 label];
     [v5 labelFrame];
-    [v18 setFrame:?];
+    [label setFrame:?];
   }
 }
 
@@ -939,12 +939,12 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
   [(PXUIAssetBadgeView *)self _layoutBottomLabel];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PXUIAssetBadgeView *)self frame];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -963,14 +963,14 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
   }
 }
 
-- (void)performChanges:(id)a3 animated:(BOOL)a4
+- (void)performChanges:(id)changes animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  changesCopy = changes;
+  v7 = changesCopy;
+  if (changesCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8 = MEMORY[0x1E69DD250];
       v9[0] = MEMORY[0x1E69E9820];
@@ -978,13 +978,13 @@ void __36__PXUIAssetBadgeView__handleButton___block_invoke(uint64_t a1)
       v9[2] = __46__PXUIAssetBadgeView_performChanges_animated___block_invoke;
       v9[3] = &unk_1E774C2F0;
       v9[4] = self;
-      v10 = v6;
+      v10 = changesCopy;
       [v8 transitionWithView:self duration:5242886 options:v9 animations:0 completion:0.3];
     }
 
     else
     {
-      v6[2](v6);
+      changesCopy[2](changesCopy);
     }
   }
 }
@@ -997,29 +997,29 @@ uint64_t __46__PXUIAssetBadgeView_performChanges_animated___block_invoke(uint64_
   return [v2 layoutIfNeeded];
 }
 
-- (void)setContentWidth:(double)a3
+- (void)setContentWidth:(double)width
 {
-  if (self->_contentWidth != a3)
+  if (self->_contentWidth != width)
   {
-    self->_contentWidth = a3;
+    self->_contentWidth = width;
     [(PXUIAssetBadgeView *)self _invalidate];
   }
 }
 
-- (void)setOverContent:(BOOL)a3
+- (void)setOverContent:(BOOL)content
 {
-  if (self->_overContent != a3)
+  if (self->_overContent != content)
   {
-    self->_overContent = a3;
+    self->_overContent = content;
     [(PXUIAssetBadgeView *)self _invalidate];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PXUIAssetBadgeView *)self _invalidate];
   }
 }
@@ -1033,9 +1033,9 @@ uint64_t __46__PXUIAssetBadgeView_performChanges_animated___block_invoke(uint64_
   [(PXUIAssetBadgeView *)self _invalidate];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1048,17 +1048,17 @@ uint64_t __46__PXUIAssetBadgeView_performChanges_animated___block_invoke(uint64_
   }
 }
 
-- (PXUIAssetBadgeView)initWithFrame:(CGRect)a3
+- (PXUIAssetBadgeView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PXUIAssetBadgeView;
-  v3 = [(PXUIAssetBadgeView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXUIAssetBadgeView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PXUIAssetBadgeView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
-    [v5 setAllowsGroupOpacity:0];
+    layer = [(PXUIAssetBadgeView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
+    [layer setAllowsGroupOpacity:0];
     __asm { FMOV            V0.2D, #5.0 }
 
     v4->_bottomElementsPadding = _Q0;
@@ -1067,10 +1067,10 @@ uint64_t __46__PXUIAssetBadgeView_performChanges_animated___block_invoke(uint64_
   return v4;
 }
 
-+ (CGSize)sizeForBadgeInfo:(PXAssetBadgeInfo *)a3 contentWidth:(double)a4
++ (CGSize)sizeForBadgeInfo:(PXAssetBadgeInfo *)info contentWidth:(double)width
 {
-  v4 = *&a3->count;
-  v5 = *&a3->badges;
+  v4 = *&info->count;
+  v5 = *&info->badges;
   v6 = v4;
   PXAssetBadgeInfoIsNull();
 }
@@ -1105,12 +1105,12 @@ uint64_t __52__PXUIAssetBadgeView_sizeForBadgeInfo_contentWidth___block_invoke()
   return [v2 setCountLimit:42];
 }
 
-+ (id)badgeSizeCacheKeyValueFromBadgeInfo:(PXAssetBadgeInfo *)a3 contentWidth:(double)a4
++ (id)badgeSizeCacheKeyValueFromBadgeInfo:(PXAssetBadgeInfo *)info contentWidth:(double)width
 {
-  v6[0] = a3->badges;
-  v6[1] = *&a3->duration;
-  v6[2] = a3->count;
-  *&v6[3] = a4;
+  v6[0] = info->badges;
+  v6[1] = *&info->duration;
+  v6[2] = info->count;
+  *&v6[3] = width;
   v4 = [objc_alloc(MEMORY[0x1E696B098]) initWithBytes:v6 objCType:"{_PXBadgeSizeCacheKey=Qdqd}"];
 
   return v4;
@@ -1137,25 +1137,25 @@ void __36__PXUIAssetBadgeView_measuringLabel__block_invoke()
   PXAssetBadgeInfoCreateWithBadges();
 }
 
-+ (double)preferredHeightForStyle:(int64_t)a3
++ (double)preferredHeightForStyle:(int64_t)style
 {
   result = 0.0;
-  if ((a3 - 1) <= 6)
+  if ((style - 1) <= 6)
   {
-    return dbl_1A5383B08[a3 - 1];
+    return dbl_1A5383B08[style - 1];
   }
 
   return result;
 }
 
-+ (void)preloadResourcesForStyle:(int64_t)a3
++ (void)preloadResourcesForStyle:(int64_t)style
 {
-  if ((a3 - 3) <= 2 && preloadResourcesForStyle__onceToken != -1)
+  if ((style - 3) <= 2 && preloadResourcesForStyle__onceToken != -1)
   {
     dispatch_once(&preloadResourcesForStyle__onceToken, &__block_literal_global_248142);
   }
 
-  if (a3 == 7)
+  if (style == 7)
   {
     if (preloadResourcesForStyle__onceToken_205 == -1)
     {
@@ -1166,7 +1166,7 @@ void __36__PXUIAssetBadgeView_measuringLabel__block_invoke()
     v5 = &__block_literal_global_207_248145;
   }
 
-  else if (a3 == 6)
+  else if (style == 6)
   {
     if (preloadResourcesForStyle__onceToken_200 == -1)
     {
@@ -1179,7 +1179,7 @@ void __36__PXUIAssetBadgeView_measuringLabel__block_invoke()
 
   else
   {
-    if (a3 != 1 || preloadResourcesForStyle__onceToken_191 == -1)
+    if (style != 1 || preloadResourcesForStyle__onceToken_191 == -1)
     {
       return;
     }

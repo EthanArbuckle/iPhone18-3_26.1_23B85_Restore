@@ -1,21 +1,21 @@
 @interface CNImageDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNImageDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 imageData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  imageData = [contactCopy imageData];
+  if (!imageData)
   {
-    v4 = [v7 imageData];
-    if (!v4)
+    imageData2 = [otherCopy imageData];
+    if (!imageData2)
     {
       v11 = 1;
 LABEL_6:
@@ -24,11 +24,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 imageData];
-  v10 = [v7 imageData];
-  v11 = [v9 isEqual:v10];
+  imageData3 = [contactCopy imageData];
+  imageData4 = [otherCopy imageData];
+  v11 = [imageData3 isEqual:imageData4];
 
-  if (!v8)
+  if (!imageData)
   {
     goto LABEL_6;
   }
@@ -38,30 +38,30 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageData"];
 
   v7 = [v9 copy];
-  v8 = v5[32];
-  v5[32] = v7;
+  v8 = contactCopy[32];
+  contactCopy[32] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A170];
+    *d = *MEMORY[0x1E698A170];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  result = ABPersonCopyImageDataWithFormat(a3, kABPersonImageFormatOriginalSize);
+  result = ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatOriginalSize);
   if (result)
   {
 

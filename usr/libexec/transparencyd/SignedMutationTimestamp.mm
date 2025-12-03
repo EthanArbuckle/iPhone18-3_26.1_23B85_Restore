@@ -1,41 +1,41 @@
 @interface SignedMutationTimestamp
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5;
-- (id)createManagedObject:(id)a3 uri:(id)a4 serverHint:(id)a5 error:(id *)a6;
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store;
+- (id)createManagedObject:(id)object uri:(id)uri serverHint:(id)hint error:(id *)error;
 - (id)diagnosticsJsonDictionary;
-- (id)parsedMutationWithError:(id *)a3;
-- (unint64_t)verifyWithError:(id *)a3;
+- (id)parsedMutationWithError:(id *)error;
+- (unint64_t)verifyWithError:(id *)error;
 @end
 
 @implementation SignedMutationTimestamp
 
-+ (id)signedTypeWithObject:(id)a3 verifier:(id)a4 dataStore:(id)a5
++ (id)signedTypeWithObject:(id)object verifier:(id)verifier dataStore:(id)store
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  storeCopy = store;
+  verifierCopy = verifier;
+  objectCopy = object;
   v10 = objc_alloc_init(SignedMutationTimestamp);
-  [(SignedObjectHolder *)v10 setSignedObject:v9];
+  [(SignedObjectHolder *)v10 setSignedObject:objectCopy];
 
-  [(SignedObjectHolder *)v10 setVerifier:v8];
-  [(SignedObjectHolder *)v10 setDataStore:v7];
+  [(SignedObjectHolder *)v10 setVerifier:verifierCopy];
+  [(SignedObjectHolder *)v10 setDataStore:storeCopy];
 
   return v10;
 }
 
-- (id)parsedMutationWithError:(id *)a3
+- (id)parsedMutationWithError:(id *)error
 {
-  v5 = [(SignedMutationTimestamp *)self mutation];
-  if (v5 && (v6 = v5, -[SignedMutationTimestamp mutation](self, "mutation"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
+  mutation = [(SignedMutationTimestamp *)self mutation];
+  if (mutation && (v6 = mutation, -[SignedMutationTimestamp mutation](self, "mutation"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
   {
-    v9 = [(SignedMutationTimestamp *)self mutation];
-    v10 = [IdsMutation parseFromData:v9 error:a3];
+    mutation2 = [(SignedMutationTimestamp *)self mutation];
+    v10 = [IdsMutation parseFromData:mutation2 error:error];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-4 description:@"SMT missing mutation"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-4 description:@"SMT missing mutation"];
     }
 
     if (qword_10039CAC8 != -1)
@@ -56,49 +56,49 @@
   return v10;
 }
 
-- (id)createManagedObject:(id)a3 uri:(id)a4 serverHint:(id)a5 error:(id *)a6
+- (id)createManagedObject:(id)object uri:(id)uri serverHint:(id)hint error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SignedMutationTimestamp *)self parsedMutationWithError:a6];
+  objectCopy = object;
+  uriCopy = uri;
+  hintCopy = hint;
+  v13 = [(SignedMutationTimestamp *)self parsedMutationWithError:error];
   if (v13)
   {
-    v14 = [(SignedObjectHolder *)self dataStore];
-    v15 = [(SignedObjectHolder *)self data];
+    dataStore = [(SignedObjectHolder *)self dataStore];
+    data = [(SignedObjectHolder *)self data];
     [v13 mutationMs];
-    v16 = [(SignedObjectHolder *)self signature];
-    v17 = [v16 signingKeySpkihash];
+    signature = [(SignedObjectHolder *)self signature];
+    signingKeySpkihash = [signature signingKeySpkihash];
     v18 = +[NSDate now];
-    v19 = v10;
+    v19 = objectCopy;
     v20 = v18;
-    v21 = v11;
+    v21 = uriCopy;
     v22 = v19;
     v29 = v21;
-    v23 = [v14 createMutation:v15 application:? uri:? mutationMs:? spkiHash:? receiptTime:?];
+    v23 = [dataStore createMutation:data application:? uri:? mutationMs:? spkiHash:? receiptTime:?];
 
     if (v23)
     {
-      [v23 setReceiptServerHint:v12];
+      [v23 setReceiptServerHint:hintCopy];
       v24 = v23;
-      v10 = v22;
-      v11 = v29;
+      objectCopy = v22;
+      uriCopy = v29;
     }
 
     else
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [TransparencyError errorWithDomain:kTransparencyErrorAlloc code:-60 description:@"failed to create KTMutation entity"];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorAlloc code:-60 description:@"failed to create KTMutation entity"];
       }
 
-      v10 = v22;
+      objectCopy = v22;
       if (qword_10039CAC8 != -1)
       {
         sub_10025D018();
       }
 
-      v11 = v29;
+      uriCopy = v29;
       v27 = qword_10039CAD0;
       if (os_log_type_enabled(qword_10039CAD0, OS_LOG_TYPE_ERROR))
       {
@@ -110,9 +110,9 @@
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-73 underlyingError:*a6 description:?];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-73 underlyingError:*error description:?];
     }
 
     if (qword_10039CAC8 != -1)
@@ -123,9 +123,9 @@
     v25 = qword_10039CAD0;
     if (os_log_type_enabled(qword_10039CAD0, OS_LOG_TYPE_ERROR))
     {
-      if (a6)
+      if (error)
       {
-        v26 = *a6;
+        v26 = *error;
       }
 
       else
@@ -148,21 +148,21 @@
 {
   v9.receiver = self;
   v9.super_class = SignedMutationTimestamp;
-  v3 = [(SignedObjectHolder *)&v9 diagnosticsJsonDictionary];
-  v4 = [v3 mutableCopy];
+  diagnosticsJsonDictionary = [(SignedObjectHolder *)&v9 diagnosticsJsonDictionary];
+  v4 = [diagnosticsJsonDictionary mutableCopy];
 
   v5 = [(SignedMutationTimestamp *)self parsedMutationWithError:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 diagnosticsJsonDictionary];
-    [v4 setObject:v7 forKeyedSubscript:@"mutation"];
+    diagnosticsJsonDictionary2 = [v5 diagnosticsJsonDictionary];
+    [v4 setObject:diagnosticsJsonDictionary2 forKeyedSubscript:@"mutation"];
   }
 
   return v4;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -170,9 +170,9 @@
   v10[3] = &unk_100328178;
   v10[4] = self;
   v5 = objc_retainBlock(v10);
-  v6 = [(SignedMutationTimestamp *)self application];
-  v7 = [TransparencyAnalytics formatEventName:@"VerifySmtEvent" application:v6];
-  v8 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v7 validateType:3 error:a3 block:v5];
+  application = [(SignedMutationTimestamp *)self application];
+  v7 = [TransparencyAnalytics formatEventName:@"VerifySmtEvent" application:application];
+  v8 = [TransparencyAnalytics doKTResultWithAnalyticsForEventName:v7 validateType:3 error:error block:v5];
 
   return v8;
 }

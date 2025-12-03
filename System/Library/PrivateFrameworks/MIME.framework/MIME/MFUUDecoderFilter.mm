@@ -1,26 +1,26 @@
 @interface MFUUDecoderFilter
-- (int64_t)appendData:(id)a3;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation MFUUDecoderFilter
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy)
   {
-    v6 = [v4 _createDispatchData];
+    _createDispatchData = [dataCopy _createDispatchData];
     data = self->_data;
     if (data)
     {
-      concat = dispatch_data_create_concat(data, v6);
+      concat = dispatch_data_create_concat(data, _createDispatchData);
     }
 
     else
     {
-      concat = v6;
+      concat = _createDispatchData;
     }
 
     v10 = self->_data;
@@ -40,10 +40,10 @@
 - (void)done
 {
   v3 = self->_data;
-  v4 = [(OS_dispatch_data *)v3 mf_decodeUuencoded];
+  mf_decodeUuencoded = [(OS_dispatch_data *)v3 mf_decodeUuencoded];
   v6.receiver = self;
   v6.super_class = MFUUDecoderFilter;
-  [(MFBaseFilterDataConsumer *)&v6 appendData:v4];
+  [(MFBaseFilterDataConsumer *)&v6 appendData:mf_decodeUuencoded];
   v5.receiver = self;
   v5.super_class = MFUUDecoderFilter;
   [(MFBaseFilterDataConsumer *)&v5 done];

@@ -1,20 +1,20 @@
 @interface TITypingSessionLogger
-- (BOOL)shouldPrintEvent:(id)a3;
+- (BOOL)shouldPrintEvent:(id)event;
 - (TITypingSessionLogger)init;
-- (TITypingSessionLogger)initWithCoder:(id)a3;
-- (id)logDetailsForKeyboardState:(id)a3;
+- (TITypingSessionLogger)initWithCoder:(id)coder;
+- (id)logDetailsForKeyboardState:(id)state;
 - (id)temporaryKeyboardsDirectory;
-- (void)acceptingCandidateWithTrigger:(id)a3;
-- (void)addDrawInputWithSyllableCount:(unint64_t)a3 keyboardState:(id)a4;
-- (void)addKeyInput:(id)a3 keyboardState:(id)a4;
-- (void)addTouchEvent:(id)a3;
-- (void)candidateAccepted:(id)a3 withInput:(id)a4 documentState:(id)a5 inputContext:(id)a6 inputStem:(id)a7 predictionBarHit:(BOOL)a8 useCandidateSelection:(BOOL)a9 candidateIndex:(int64_t)a10 keyboardState:(id)a11;
-- (void)candidatesOffered:(id)a3 keyboardState:(id)a4;
-- (void)changingContextWithTrigger:(id)a3;
-- (void)layoutDidChange:(id)a3 keyboardState:(id)a4;
+- (void)acceptingCandidateWithTrigger:(id)trigger;
+- (void)addDrawInputWithSyllableCount:(unint64_t)count keyboardState:(id)state;
+- (void)addKeyInput:(id)input keyboardState:(id)state;
+- (void)addTouchEvent:(id)event;
+- (void)candidateAccepted:(id)accepted withInput:(id)input documentState:(id)state inputContext:(id)context inputStem:(id)stem predictionBarHit:(BOOL)hit useCandidateSelection:(BOOL)selection candidateIndex:(int64_t)self0 keyboardState:(id)self1;
+- (void)candidatesOffered:(id)offered keyboardState:(id)state;
+- (void)changingContextWithTrigger:(id)trigger;
+- (void)layoutDidChange:(id)change keyboardState:(id)state;
 - (void)saveRecording;
-- (void)sendTo:(id)a3;
-- (void)setClientID:(id)a3 keyboardState:(id)a4;
+- (void)sendTo:(id)to;
+- (void)setClientID:(id)d keyboardState:(id)state;
 @end
 
 @implementation TITypingSessionLogger
@@ -24,9 +24,9 @@
   v2 = NSTemporaryDirectory();
   v3 = [v2 stringByAppendingPathComponent:@"/Keyboard"];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = 0;
-  [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v6];
+  [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v6];
 
   return v3;
 }
@@ -75,15 +75,15 @@
       {
         v13 = objc_alloc_init(MEMORY[0x277CCA968]);
         [v13 setDateFormat:@"MM-dd-HH-mm"];
-        v14 = [MEMORY[0x277CBEAA8] date];
-        v15 = [v13 stringFromDate:v14];
+        date = [MEMORY[0x277CBEAA8] date];
+        v15 = [v13 stringFromDate:date];
 
         v12 = v15;
       }
 
-      v16 = [(TITypingSessionLogger *)self temporaryKeyboardsDirectory];
+      temporaryKeyboardsDirectory = [(TITypingSessionLogger *)self temporaryKeyboardsDirectory];
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"typingSessionLog-%@.data", v12];
-      v18 = [v16 stringByAppendingPathComponent:v17];
+      v18 = [temporaryKeyboardsDirectory stringByAppendingPathComponent:v17];
 
       [v3 writeToFile:v18 atomically:1];
     }
@@ -91,40 +91,40 @@
     v19 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.keyboard"];
     if ([v19 BOOLForKey:@"typingSessionNotificationsEnabled"])
     {
-      v20 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v20 postNotificationName:@"com.apple.keyboard.inputAnalytics.sessionRecordingDidComplete" object:0 userInfo:0 deliverImmediately:1];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter postNotificationName:@"com.apple.keyboard.inputAnalytics.sessionRecordingDidComplete" object:0 userInfo:0 deliverImmediately:1];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)logDetailsForKeyboardState:(id)a3
+- (id)logDetailsForKeyboardState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 inputMode];
+  stateCopy = state;
+  inputMode = [stateCopy inputMode];
   v5 = TIInputModeGetLanguage();
 
-  v6 = [v3 inputMode];
+  inputMode2 = [stateCopy inputMode];
   v7 = TIInputModeGetRegion();
 
-  v8 = [v3 layoutState];
-  v9 = [v8 softwareLayout];
+  layoutState = [stateCopy layoutState];
+  softwareLayout = [layoutState softwareLayout];
 
-  v10 = [v3 hardwareKeyboardMode];
-  v11 = [v3 floatingKeyboardMode];
-  v12 = [v3 splitKeyboardMode];
-  v13 = [v3 landscapeOrientation];
+  hardwareKeyboardMode = [stateCopy hardwareKeyboardMode];
+  floatingKeyboardMode = [stateCopy floatingKeyboardMode];
+  splitKeyboardMode = [stateCopy splitKeyboardMode];
+  landscapeOrientation = [stateCopy landscapeOrientation];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@|%d|%d|%d|%d|%@", v5, v7, v10, v11, v12, v13, v9];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@|%d|%d|%d|%d|%@", v5, v7, hardwareKeyboardMode, floatingKeyboardMode, splitKeyboardMode, landscapeOrientation, softwareLayout];
 
   return v14;
 }
 
-- (void)sendTo:(id)a3
+- (void)sendTo:(id)to
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -145,7 +145,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) sendTo:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) sendTo:{toCopy, v11}];
       }
 
       while (v7 != v9);
@@ -158,9 +158,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldPrintEvent:(id)a3
+- (BOOL)shouldPrintEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -194,138 +194,138 @@
   return v4;
 }
 
-- (void)setClientID:(id)a3 keyboardState:(id)a4
+- (void)setClientID:(id)d keyboardState:(id)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  stateCopy = state;
   v8 = IXADefaultLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:v7];
-    v14 = [v12 stringWithFormat:@"%s Set Client ID: %@, KeyboardState=%@", "-[TITypingSessionLogger setClientID:keyboardState:]", v6, v13];
+    v13 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:stateCopy];
+    v14 = [v12 stringWithFormat:@"%s Set Client ID: %@, KeyboardState=%@", "-[TITypingSessionLogger setClientID:keyboardState:]", dCopy, v13];
     *buf = 138412290;
     v16 = v14;
     _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  v10 = [[TIKeyboardInteractionProtocolEventSetClientID alloc] initWithClientID:v6 keyboardState:v7];
+  v10 = [[TIKeyboardInteractionProtocolEventSetClientID alloc] initWithClientID:dCopy keyboardState:stateCopy];
   [(NSMutableArray *)typingEvents addObject:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)layoutDidChange:(id)a3 keyboardState:(id)a4
+- (void)layoutDidChange:(id)change keyboardState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  stateCopy = state;
   v8 = IXADefaultLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v6 firstKeyString];
-    v14 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:v7];
-    v15 = [v12 stringWithFormat:@"%s Layout Did Change: firstKeyString=%s, KeyboardState=%@", "-[TITypingSessionLogger layoutDidChange:keyboardState:]", v13, v14];
+    firstKeyString = [changeCopy firstKeyString];
+    v14 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:stateCopy];
+    v15 = [v12 stringWithFormat:@"%s Layout Did Change: firstKeyString=%s, KeyboardState=%@", "-[TITypingSessionLogger layoutDidChange:keyboardState:]", firstKeyString, v14];
     *buf = 138412290;
     v17 = v15;
     _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  v10 = [[TIKeyboardInteractionProtocolEventLayoutDidChange alloc] initWithLayout:v6 keyboardState:v7];
+  v10 = [[TIKeyboardInteractionProtocolEventLayoutDidChange alloc] initWithLayout:changeCopy keyboardState:stateCopy];
   [(NSMutableArray *)typingEvents addObject:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changingContextWithTrigger:(id)a3
+- (void)changingContextWithTrigger:(id)trigger
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = IXADefaultLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Changing context, trigger=%@", "-[TITypingSessionLogger changingContextWithTrigger:]", v4];
+    triggerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Changing context, trigger=%@", "-[TITypingSessionLogger changingContextWithTrigger:]", triggerCopy];
     *buf = 138412290;
-    v11 = v9;
+    v11 = triggerCopy;
     _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  v7 = [[TIKeyboardInteractionProtocolEventChangingContextWithTrigger alloc] initWithContextChangeTrigger:v4];
+  v7 = [[TIKeyboardInteractionProtocolEventChangingContextWithTrigger alloc] initWithContextChangeTrigger:triggerCopy];
   [(NSMutableArray *)typingEvents addObject:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)candidateAccepted:(id)a3 withInput:(id)a4 documentState:(id)a5 inputContext:(id)a6 inputStem:(id)a7 predictionBarHit:(BOOL)a8 useCandidateSelection:(BOOL)a9 candidateIndex:(int64_t)a10 keyboardState:(id)a11
+- (void)candidateAccepted:(id)accepted withInput:(id)input documentState:(id)state inputContext:(id)context inputStem:(id)stem predictionBarHit:(BOOL)hit useCandidateSelection:(BOOL)selection candidateIndex:(int64_t)self0 keyboardState:(id)self1
 {
-  v30 = a8;
+  hitCopy = hit;
   v33 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a11;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
+  acceptedCopy = accepted;
+  keyboardStateCopy = keyboardState;
+  stemCopy = stem;
+  contextCopy = context;
+  stateCopy = state;
+  inputCopy = input;
   v22 = IXADefaultLogFacility();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     v27 = MEMORY[0x277CCACA8];
-    v29 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:v17];
-    v28 = [v27 stringWithFormat:@"%s Candidate accepted, Cand=%@, KeyboardState=%@", "-[TITypingSessionLogger candidateAccepted:withInput:documentState:inputContext:inputStem:predictionBarHit:useCandidateSelection:candidateIndex:keyboardState:]", v16, v29];
+    v29 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:keyboardStateCopy];
+    v28 = [v27 stringWithFormat:@"%s Candidate accepted, Cand=%@, KeyboardState=%@", "-[TITypingSessionLogger candidateAccepted:withInput:documentState:inputContext:inputStem:predictionBarHit:useCandidateSelection:candidateIndex:keyboardState:]", acceptedCopy, v29];
     *buf = 138412290;
     v32 = v28;
     _os_log_debug_impl(&dword_22CA55000, v22, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  LOBYTE(v26) = a9;
-  v24 = [[TIKeyboardInteractionProtocolEventCandidateAccepted alloc] initWithCandidateAccepted:v16 withInput:v21 documentState:v20 inputContext:v19 inputStem:v18 predictionBarHit:v30 useCandidateSelection:v26 candidateIndex:a10 keyboardState:v17];
+  LOBYTE(v26) = selection;
+  v24 = [[TIKeyboardInteractionProtocolEventCandidateAccepted alloc] initWithCandidateAccepted:acceptedCopy withInput:inputCopy documentState:stateCopy inputContext:contextCopy inputStem:stemCopy predictionBarHit:hitCopy useCandidateSelection:v26 candidateIndex:index keyboardState:keyboardStateCopy];
 
   [(NSMutableArray *)typingEvents addObject:v24];
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptingCandidateWithTrigger:(id)a3
+- (void)acceptingCandidateWithTrigger:(id)trigger
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = IXADefaultLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Accepting candidate, trigger=%@", "-[TITypingSessionLogger acceptingCandidateWithTrigger:]", v4];
+    triggerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Accepting candidate, trigger=%@", "-[TITypingSessionLogger acceptingCandidateWithTrigger:]", triggerCopy];
     *buf = 138412290;
-    v11 = v9;
+    v11 = triggerCopy;
     _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  v7 = [[TIKeyboardInteractionProtocolEventAcceptingCandidateWithTrigger alloc] initWithCandidateAcceptedTrigger:v4];
+  v7 = [[TIKeyboardInteractionProtocolEventAcceptingCandidateWithTrigger alloc] initWithCandidateAcceptedTrigger:triggerCopy];
   [(NSMutableArray *)typingEvents addObject:v7];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)candidatesOffered:(id)a3 keyboardState:(id)a4
+- (void)candidatesOffered:(id)offered keyboardState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  offeredCopy = offered;
+  stateCopy = state;
+  if (offeredCopy)
   {
     v8 = IXADefaultLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v12 = MEMORY[0x277CCACA8];
-      v13 = [v6 corrections];
-      v14 = [v13 autocorrection];
-      v15 = [v6 predictions];
-      v16 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:v7];
-      v17 = [v12 stringWithFormat:@"%s Candidates offered, AC=%@, Predictions=%@, KeyboardState=%@", "-[TITypingSessionLogger candidatesOffered:keyboardState:]", v14, v15, v16];
+      corrections = [offeredCopy corrections];
+      autocorrection = [corrections autocorrection];
+      predictions = [offeredCopy predictions];
+      v16 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:stateCopy];
+      v17 = [v12 stringWithFormat:@"%s Candidates offered, AC=%@, Predictions=%@, KeyboardState=%@", "-[TITypingSessionLogger candidatesOffered:keyboardState:]", autocorrection, predictions, v16];
       *buf = 138412290;
       v19 = v17;
       _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -333,56 +333,56 @@
   }
 
   typingEvents = self->_typingEvents;
-  v10 = [[TIKeyboardInteractionProtocolEventCandidatesOffered alloc] initWithCandidatesOffered:v6 keyboardState:v7];
+  v10 = [[TIKeyboardInteractionProtocolEventCandidatesOffered alloc] initWithCandidatesOffered:offeredCopy keyboardState:stateCopy];
   [(NSMutableArray *)typingEvents addObject:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDrawInputWithSyllableCount:(unint64_t)a3 keyboardState:(id)a4
+- (void)addDrawInputWithSyllableCount:(unint64_t)count keyboardState:(id)state
 {
   typingEvents = self->_typingEvents;
-  v6 = a4;
-  v7 = [[TIKeyboardInteractionProtocolEventAddDrawInputWithSyllableCount alloc] initWithSyllableCount:a3 keyboardState:v6];
+  stateCopy = state;
+  v7 = [[TIKeyboardInteractionProtocolEventAddDrawInputWithSyllableCount alloc] initWithSyllableCount:count keyboardState:stateCopy];
 
   [(NSMutableArray *)typingEvents addObject:v7];
 }
 
-- (void)addTouchEvent:(id)a3
+- (void)addTouchEvent:(id)event
 {
   typingEvents = self->_typingEvents;
-  v4 = a3;
-  v5 = [[TIKeyboardInteractionProtocolEventAddTouchEvent alloc] initWithTouchEvent:v4];
+  eventCopy = event;
+  v5 = [[TIKeyboardInteractionProtocolEventAddTouchEvent alloc] initWithTouchEvent:eventCopy];
 
   [(NSMutableArray *)typingEvents addObject:v5];
 }
 
-- (void)addKeyInput:(id)a3 keyboardState:(id)a4
+- (void)addKeyInput:(id)input keyboardState:(id)state
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  stateCopy = state;
   v8 = IXADefaultLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:v7];
-    v14 = [v12 stringWithFormat:@"%s Add Key Input: %@, KeyboardState=%@", "-[TITypingSessionLogger addKeyInput:keyboardState:]", v6, v13];
+    v13 = [(TITypingSessionLogger *)self logDetailsForKeyboardState:stateCopy];
+    v14 = [v12 stringWithFormat:@"%s Add Key Input: %@, KeyboardState=%@", "-[TITypingSessionLogger addKeyInput:keyboardState:]", inputCopy, v13];
     *buf = 138412290;
     v16 = v14;
     _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 
   typingEvents = self->_typingEvents;
-  v10 = [[TIKeyboardInteractionProtocolEventAddKeyInput alloc] initWithKeyInput:v6 keyboardState:v7];
+  v10 = [[TIKeyboardInteractionProtocolEventAddKeyInput alloc] initWithKeyInput:inputCopy keyboardState:stateCopy];
   [(NSMutableArray *)typingEvents addObject:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (TITypingSessionLogger)initWithCoder:(id)a3
+- (TITypingSessionLogger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = TITypingSessionLogger;
   v5 = [(TITypingSessionLogger *)&v23 init];
@@ -400,11 +400,11 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v22 setWithObjects:{v21, v20, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"typingEvents"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"typingEvents"];
     typingEvents = v5->_typingEvents;
     v5->_typingEvents = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typingSession"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typingSession"];
     savedSession = v5->_savedSession;
     v5->_savedSession = v17;
   }
@@ -419,9 +419,9 @@
   v2 = [(TITypingSessionLogger *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     typingEvents = v2->_typingEvents;
-    v2->_typingEvents = v3;
+    v2->_typingEvents = array;
   }
 
   return v2;

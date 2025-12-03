@@ -1,23 +1,23 @@
 @interface MappedPropertyList
-+ (id)readKeyPath:(id)a3 fromURL:(id)a4 error:(id *)a5;
-+ (id)readKeyPaths:(id)a3 fromURL:(id)a4 error:(id *)a5;
-- (MappedPropertyList)initWithURL:(id)a3;
-- (id)readKeyPath:(id)a3 error:(id *)a4;
-- (id)readKeyPaths:(id)a3 error:(id *)a4;
++ (id)readKeyPath:(id)path fromURL:(id)l error:(id *)error;
++ (id)readKeyPaths:(id)paths fromURL:(id)l error:(id *)error;
+- (MappedPropertyList)initWithURL:(id)l;
+- (id)readKeyPath:(id)path error:(id *)error;
+- (id)readKeyPaths:(id)paths error:(id *)error;
 @end
 
 @implementation MappedPropertyList
 
-- (MappedPropertyList)initWithURL:(id)a3
+- (MappedPropertyList)initWithURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     v10 = [NSException exceptionWithName:NSInvalidArgumentException reason:@"[MappedPropertyList initWithURL:]: nil URL argument" userInfo:0];
     objc_exception_throw(v10);
   }
 
-  v5 = v4;
+  v5 = lCopy;
   v11.receiver = self;
   v11.super_class = MappedPropertyList;
   v6 = [(MappedPropertyList *)&v11 init];
@@ -31,39 +31,39 @@
   return v6;
 }
 
-+ (id)readKeyPath:(id)a3 fromURL:(id)a4 error:(id *)a5
++ (id)readKeyPath:(id)path fromURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MappedPropertyList alloc] initWithURL:v7];
+  lCopy = l;
+  pathCopy = path;
+  v9 = [[MappedPropertyList alloc] initWithURL:lCopy];
 
-  v10 = [(MappedPropertyList *)v9 readKeyPath:v8 error:a5];
+  v10 = [(MappedPropertyList *)v9 readKeyPath:pathCopy error:error];
 
   return v10;
 }
 
-+ (id)readKeyPaths:(id)a3 fromURL:(id)a4 error:(id *)a5
++ (id)readKeyPaths:(id)paths fromURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MappedPropertyList alloc] initWithURL:v7];
+  lCopy = l;
+  pathsCopy = paths;
+  v9 = [[MappedPropertyList alloc] initWithURL:lCopy];
 
-  v10 = [(MappedPropertyList *)v9 readKeyPaths:v8 error:a5];
+  v10 = [(MappedPropertyList *)v9 readKeyPaths:pathsCopy error:error];
 
   return v10;
 }
 
-- (id)readKeyPath:(id)a3 error:(id *)a4
+- (id)readKeyPath:(id)path error:(id *)error
 {
-  v6 = [NSSet setWithObject:a3];
-  v7 = [(MappedPropertyList *)self readKeyPaths:v6 error:a4];
+  v6 = [NSSet setWithObject:path];
+  v7 = [(MappedPropertyList *)self readKeyPaths:v6 error:error];
 
   return v7;
 }
 
-- (id)readKeyPaths:(id)a3 error:(id *)a4
+- (id)readKeyPaths:(id)paths error:(id *)error
 {
-  v6 = a3;
+  pathsCopy = paths;
   if (self->_data)
   {
     v7 = 0;
@@ -80,7 +80,7 @@
 
     if (!self->_data)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -91,7 +91,7 @@
 
   if (_CFPropertyListCreateFiltered())
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -101,7 +101,7 @@
   {
 
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -111,7 +111,7 @@ LABEL_10:
   if (v7)
   {
     v11 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_12:

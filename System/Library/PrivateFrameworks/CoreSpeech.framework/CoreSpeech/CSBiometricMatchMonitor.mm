@@ -1,10 +1,10 @@
 @interface CSBiometricMatchMonitor
 + (id)sharedInstance;
-- (BOOL)getLastBiometricMatchEvent:(BOOL *)a3 atTime:(unint64_t *)a4;
+- (BOOL)getLastBiometricMatchEvent:(BOOL *)event atTime:(unint64_t *)time;
 - (CSBiometricMatchMonitor)init;
 - (CSBiometricMatchMonitorDelegate)delegate;
-- (unint64_t)getBiometricMatchResultForTriggerTimeStamp:(unint64_t)a3;
-- (void)device:(id)a3 matchEventOccurred:(id)a4;
+- (unint64_t)getBiometricMatchResultForTriggerTimeStamp:(unint64_t)stamp;
+- (void)device:(id)device matchEventOccurred:(id)occurred;
 - (void)startObserving;
 @end
 
@@ -17,9 +17,9 @@
   return WeakRetained;
 }
 
-- (unint64_t)getBiometricMatchResultForTriggerTimeStamp:(unint64_t)a3
+- (unint64_t)getBiometricMatchResultForTriggerTimeStamp:(unint64_t)stamp
 {
-  if (!a3)
+  if (!stamp)
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -99,10 +99,10 @@
   }
 }
 
-- (void)device:(id)a3 matchEventOccurred:(id)a4
+- (void)device:(id)device matchEventOccurred:(id)occurred
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  occurredCopy = occurred;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -110,13 +110,13 @@
     v13 = 136315650;
     v14 = "[CSBiometricMatchMonitor device:matchEventOccurred:]";
     v15 = 1024;
-    v16 = [v7 result];
+    result = [occurredCopy result];
     v17 = 2048;
-    v18 = [v7 timeStamp];
+    timeStamp = [occurredCopy timeStamp];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s BiometricMatchEventOccurred: result = %u, timeStamp = %llu", &v13, 0x1Cu);
   }
 
-  if (v7)
+  if (occurredCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v11 = objc_opt_respondsToSelector();
@@ -124,12 +124,12 @@
     if (v11)
     {
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 biometricMatchMonitorDidReceiveMatchAttempt:objc_msgSend(v7 atTime:{"result"), objc_msgSend(v7, "timeStamp")}];
+      [v12 biometricMatchMonitorDidReceiveMatchAttempt:objc_msgSend(occurredCopy atTime:{"result"), objc_msgSend(occurredCopy, "timeStamp")}];
     }
   }
 }
 
-- (BOOL)getLastBiometricMatchEvent:(BOOL *)a3 atTime:(unint64_t *)a4
+- (BOOL)getLastBiometricMatchEvent:(BOOL *)event atTime:(unint64_t *)time
 {
   biometricDevice = self->_biometricDevice;
   if (!biometricDevice)
@@ -171,25 +171,25 @@ LABEL_15:
   if (v10)
   {
     v11 = v9;
-    v12 = [v7 result];
-    v13 = [v7 timeStamp];
+    result = [v7 result];
+    timeStamp = [v7 timeStamp];
     *buf = 136315650;
     v19 = "[CSBiometricMatchMonitor getLastBiometricMatchEvent:atTime:]";
     v20 = 1024;
-    LODWORD(v21[0]) = v12;
+    LODWORD(v21[0]) = result;
     WORD2(v21[0]) = 2048;
-    *(v21 + 6) = v13;
+    *(v21 + 6) = timeStamp;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s BiometricMatchEvent: result = %u, timeStamp = %llu", buf, 0x1Cu);
   }
 
-  if (a3)
+  if (event)
   {
-    *a3 = [v7 result];
+    *event = [v7 result];
   }
 
-  if (a4)
+  if (time)
   {
-    *a4 = [v7 timeStamp];
+    *time = [v7 timeStamp];
   }
 
   LOBYTE(v14) = 1;
@@ -248,10 +248,10 @@ LABEL_15:
 
     v6 = v5;
     _Block_object_dispose(&v16, 8);
-    v7 = [v5 availableDevices];
-    v8 = [v7 firstObject];
+    availableDevices = [v5 availableDevices];
+    firstObject = [availableDevices firstObject];
     v14 = 0;
-    v9 = [v3 deviceWithDescriptor:v8 error:&v14];
+    v9 = [v3 deviceWithDescriptor:firstObject error:&v14];
     v10 = v14;
     biometricDevice = v2->_biometricDevice;
     v2->_biometricDevice = v9;

@@ -1,21 +1,21 @@
 @interface HDMCPregnancyStateQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (Class)queryClass;
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 - (NSSet)objectTypes;
-- (_TtC27HealthMenstrualCyclesDaemon29HDMCPregnancyStateQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (_TtC27HealthMenstrualCyclesDaemon29HDMCPregnancyStateQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 - (void)_queue_stop;
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation HDMCPregnancyStateQueryServer
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  sub_2293D2E78(v7);
+  configurationCopy = configuration;
+  clientCopy = client;
+  sub_2293D2E78(clientCopy);
 
   return 1;
 }
@@ -27,7 +27,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
   v10 = sub_22944F0B4();
   v11 = *(v10 - 8);
@@ -36,10 +36,10 @@
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22944F094();
   swift_getObjCClassMetadata();
-  v15 = a4;
-  v16 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   swift_unknownObjectRetain();
-  v17 = static HDMCPregnancyStateQueryServer.createTaskServer(with:configuration:client:delegate:)(v14, a4, v16, a6);
+  v17 = static HDMCPregnancyStateQueryServer.createTaskServer(with:configuration:client:delegate:)(v14, configuration, clientCopy, delegate);
   (*(v11 + 8))(v14, v10);
   swift_unknownObjectRelease();
 
@@ -66,18 +66,18 @@
 
 - (void)_queue_start
 {
-  v2 = self;
+  selfCopy = self;
   HDMCPregnancyStateQueryServer._queue_start()();
 }
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  HDMCPregnancyStateQueryServer.pregnancyModelDidUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  HDMCPregnancyStateQueryServer.pregnancyModelDidUpdate(_:)(updateCopy);
 }
 
-- (_TtC27HealthMenstrualCyclesDaemon29HDMCPregnancyStateQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (_TtC27HealthMenstrualCyclesDaemon29HDMCPregnancyStateQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v6 = sub_22944F0B4();
   v7 = *(*(v6 - 8) + 64);
@@ -92,7 +92,7 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC27HealthMenstrualCyclesDaemon29HDMCPregnancyStateQueryServer_pregnancyManager);
   v3 = *(v2 + OBJC_IVAR____TtC27HealthMenstrualCyclesDaemon20HDMCPregnancyManager_observers);
-  v4 = self;
+  selfCopy = self;
   [v3 unregisterObserver_];
   [*(v2 + OBJC_IVAR____TtC27HealthMenstrualCyclesDaemon20HDMCPregnancyManager_userInitiatedObservers) unregisterObserver_];
 }

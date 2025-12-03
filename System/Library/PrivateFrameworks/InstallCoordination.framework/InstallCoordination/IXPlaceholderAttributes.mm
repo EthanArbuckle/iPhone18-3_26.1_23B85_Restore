@@ -1,16 +1,16 @@
 @interface IXPlaceholderAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IXPlaceholderAttributes)init;
-- (IXPlaceholderAttributes)initWithCoder:(id)a3;
-- (IXPlaceholderAttributes)initWithInfoPlistDictionary:(id)a3;
-- (IXPlaceholderAttributes)initWithInfoPlistFromBundle:(__CFBundle *)a3 error:(id *)a4;
-- (IXPlaceholderAttributes)initWithInfoPlistFromBundleURL:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IXPlaceholderAttributes)initWithCoder:(id)coder;
+- (IXPlaceholderAttributes)initWithInfoPlistDictionary:(id)dictionary;
+- (IXPlaceholderAttributes)initWithInfoPlistFromBundle:(__CFBundle *)bundle error:(id *)error;
+- (IXPlaceholderAttributes)initWithInfoPlistFromBundleURL:(id)l error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)infoPlistContent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRequiredDeviceCapabilitiesWithArray:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRequiredDeviceCapabilitiesWithArray:(id)array;
 @end
 
 @implementation IXPlaceholderAttributes
@@ -22,93 +22,93 @@
   return [(IXPlaceholderAttributes *)&v3 init];
 }
 
-- (IXPlaceholderAttributes)initWithCoder:(id)a3
+- (IXPlaceholderAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v51.receiver = self;
   v51.super_class = IXPlaceholderAttributes;
   v5 = [(IXPlaceholderAttributes *)&v51 init];
   if (v5)
   {
-    v5->_launchProhibited = [v4 decodeBoolForKey:@"launchProhibited"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+    v5->_launchProhibited = [coderCopy decodeBoolForKey:@"launchProhibited"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersionString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersionString"];
     bundleShortVersionString = v5->_bundleShortVersionString;
     v5->_bundleShortVersionString = v8;
 
-    v10 = [v4 decodePropertyListForKey:@"extensionDictionary"];
+    v10 = [coderCopy decodePropertyListForKey:@"extensionDictionary"];
     extensionDictionary = v5->_extensionDictionary;
     v5->_extensionDictionary = v10;
 
-    v12 = [v4 decodePropertyListForKey:@"exAppExtensionAttributes"];
+    v12 = [coderCopy decodePropertyListForKey:@"exAppExtensionAttributes"];
     exAppExtensionAttributes = v5->_exAppExtensionAttributes;
     v5->_exAppExtensionAttributes = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
     minimumOSVersion = v5->_minimumOSVersion;
     v5->_minimumOSVersion = v14;
 
-    v16 = [v4 decodePropertyListForKey:@"requiredDeviceCapabilities"];
+    v16 = [coderCopy decodePropertyListForKey:@"requiredDeviceCapabilities"];
     requiredDeviceCapabilities = v5->_requiredDeviceCapabilities;
     v5->_requiredDeviceCapabilities = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"sbAppTags"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"sbAppTags"];
     sbAppTags = v5->_sbAppTags;
     v5->_sbAppTags = v21;
 
     v23 = MEMORY[0x1E695DFD8];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"lsCounterpartIdentifiers"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"lsCounterpartIdentifiers"];
     lsCounterpartIdentifiers = v5->_lsCounterpartIdentifiers;
     v5->_lsCounterpartIdentifiers = v26;
 
-    v5->_lsRequiresPostProcessing = [v4 decodeBoolForKey:@"lsRequiresPostProcessing"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sbIconMasqueradeIdentifier"];
+    v5->_lsRequiresPostProcessing = [coderCopy decodeBoolForKey:@"lsRequiresPostProcessing"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sbIconMasqueradeIdentifier"];
     sbIconMasqueradeIdentifier = v5->_sbIconMasqueradeIdentifier;
     v5->_sbIconMasqueradeIdentifier = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionBundleIdentifierForWatchApp"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionBundleIdentifierForWatchApp"];
     companionBundleIdentifierForWatchApp = v5->_companionBundleIdentifierForWatchApp;
     v5->_companionBundleIdentifierForWatchApp = v30;
 
-    v5->_watchOnlyApp = [v4 decodeBoolForKey:@"watchOnlyApp"];
-    v5->_runsIndependentlyOfCompanionApp = [v4 decodeBoolForKey:@"runsIndependentlyOfCompanionApp"];
-    v5->_arcadeApp = [v4 decodeBoolForKey:@"arcadeApp"];
-    v32 = [v4 decodePropertyListForKey:@"webKitPushBundleMetadata"];
+    v5->_watchOnlyApp = [coderCopy decodeBoolForKey:@"watchOnlyApp"];
+    v5->_runsIndependentlyOfCompanionApp = [coderCopy decodeBoolForKey:@"runsIndependentlyOfCompanionApp"];
+    v5->_arcadeApp = [coderCopy decodeBoolForKey:@"arcadeApp"];
+    v32 = [coderCopy decodePropertyListForKey:@"webKitPushBundleMetadata"];
     webKitPushBundleMetadata = v5->_webKitPushBundleMetadata;
     v5->_webKitPushBundleMetadata = v32;
 
     v34 = MEMORY[0x1E695DFD8];
     v35 = objc_opt_class();
     v36 = [v34 setWithObjects:{v35, objc_opt_class(), 0}];
-    v37 = [v4 decodeObjectOfClasses:v36 forKey:@"uiDeviceFamily"];
+    v37 = [coderCopy decodeObjectOfClasses:v36 forKey:@"uiDeviceFamily"];
     uiDeviceFamily = v5->_uiDeviceFamily;
     v5->_uiDeviceFamily = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accentColorName"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accentColorName"];
     accentColorName = v5->_accentColorName;
     v5->_accentColorName = v39;
 
-    v41 = [v4 decodePropertyListForKey:@"uiLaunchScreen"];
+    v41 = [coderCopy decodePropertyListForKey:@"uiLaunchScreen"];
     uiLaunchScreen = v5->_uiLaunchScreen;
     v5->_uiLaunchScreen = v41;
 
-    v5->_lsRequiresIPhoneOS = [v4 decodeBoolForKey:@"lsRequiresIPhoneOS"];
+    v5->_lsRequiresIPhoneOS = [coderCopy decodeBoolForKey:@"lsRequiresIPhoneOS"];
     v43 = MEMORY[0x1E695DFD8];
     v44 = objc_opt_class();
     v45 = [v43 setWithObjects:{v44, objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"cfBundleSupportedPlatforms"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"cfBundleSupportedPlatforms"];
     cfBundleSupportedPlatforms = v5->_cfBundleSupportedPlatforms;
     v5->_cfBundleSupportedPlatforms = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dtPlatformName"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dtPlatformName"];
     dtPlatformName = v5->_dtPlatformName;
     v5->_dtPlatformName = v48;
   }
@@ -116,73 +116,73 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[IXPlaceholderAttributes launchProhibited](self forKey:{"launchProhibited"), @"launchProhibited"}];
-  v5 = [(IXPlaceholderAttributes *)self bundleVersion];
-  [v4 encodeObject:v5 forKey:@"bundleVersion"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[IXPlaceholderAttributes launchProhibited](self forKey:{"launchProhibited"), @"launchProhibited"}];
+  bundleVersion = [(IXPlaceholderAttributes *)self bundleVersion];
+  [coderCopy encodeObject:bundleVersion forKey:@"bundleVersion"];
 
-  v6 = [(IXPlaceholderAttributes *)self bundleShortVersionString];
-  [v4 encodeObject:v6 forKey:@"bundleShortVersionString"];
+  bundleShortVersionString = [(IXPlaceholderAttributes *)self bundleShortVersionString];
+  [coderCopy encodeObject:bundleShortVersionString forKey:@"bundleShortVersionString"];
 
-  v7 = [(IXPlaceholderAttributes *)self extensionDictionary];
-  [v4 encodeObject:v7 forKey:@"extensionDictionary"];
+  extensionDictionary = [(IXPlaceholderAttributes *)self extensionDictionary];
+  [coderCopy encodeObject:extensionDictionary forKey:@"extensionDictionary"];
 
-  v8 = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
-  [v4 encodeObject:v8 forKey:@"exAppExtensionAttributes"];
+  exAppExtensionAttributes = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
+  [coderCopy encodeObject:exAppExtensionAttributes forKey:@"exAppExtensionAttributes"];
 
-  v9 = [(IXPlaceholderAttributes *)self minimumOSVersion];
-  [v4 encodeObject:v9 forKey:@"minimumOSVersion"];
+  minimumOSVersion = [(IXPlaceholderAttributes *)self minimumOSVersion];
+  [coderCopy encodeObject:minimumOSVersion forKey:@"minimumOSVersion"];
 
-  v10 = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
-  [v4 encodeObject:v10 forKey:@"requiredDeviceCapabilities"];
+  requiredDeviceCapabilities = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
+  [coderCopy encodeObject:requiredDeviceCapabilities forKey:@"requiredDeviceCapabilities"];
 
-  v11 = [(IXPlaceholderAttributes *)self sbAppTags];
-  [v4 encodeObject:v11 forKey:@"sbAppTags"];
+  sbAppTags = [(IXPlaceholderAttributes *)self sbAppTags];
+  [coderCopy encodeObject:sbAppTags forKey:@"sbAppTags"];
 
-  v12 = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
-  [v4 encodeObject:v12 forKey:@"lsCounterpartIdentifiers"];
+  lsCounterpartIdentifiers = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
+  [coderCopy encodeObject:lsCounterpartIdentifiers forKey:@"lsCounterpartIdentifiers"];
 
-  [v4 encodeBool:-[IXPlaceholderAttributes lsRequiresPostProcessing](self forKey:{"lsRequiresPostProcessing"), @"lsRequiresPostProcessing"}];
-  v13 = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
-  [v4 encodeObject:v13 forKey:@"sbIconMasqueradeIdentifier"];
+  [coderCopy encodeBool:-[IXPlaceholderAttributes lsRequiresPostProcessing](self forKey:{"lsRequiresPostProcessing"), @"lsRequiresPostProcessing"}];
+  sbIconMasqueradeIdentifier = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
+  [coderCopy encodeObject:sbIconMasqueradeIdentifier forKey:@"sbIconMasqueradeIdentifier"];
 
-  v14 = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
-  [v4 encodeObject:v14 forKey:@"companionBundleIdentifierForWatchApp"];
+  companionBundleIdentifierForWatchApp = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
+  [coderCopy encodeObject:companionBundleIdentifierForWatchApp forKey:@"companionBundleIdentifierForWatchApp"];
 
-  [v4 encodeBool:-[IXPlaceholderAttributes watchOnlyApp](self forKey:{"watchOnlyApp"), @"watchOnlyApp"}];
-  [v4 encodeBool:-[IXPlaceholderAttributes runsIndependentlyOfCompanionApp](self forKey:{"runsIndependentlyOfCompanionApp"), @"runsIndependentlyOfCompanionApp"}];
-  [v4 encodeBool:-[IXPlaceholderAttributes arcadeApp](self forKey:{"arcadeApp"), @"arcadeApp"}];
-  v15 = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
-  [v4 encodeObject:v15 forKey:@"webKitPushBundleMetadata"];
+  [coderCopy encodeBool:-[IXPlaceholderAttributes watchOnlyApp](self forKey:{"watchOnlyApp"), @"watchOnlyApp"}];
+  [coderCopy encodeBool:-[IXPlaceholderAttributes runsIndependentlyOfCompanionApp](self forKey:{"runsIndependentlyOfCompanionApp"), @"runsIndependentlyOfCompanionApp"}];
+  [coderCopy encodeBool:-[IXPlaceholderAttributes arcadeApp](self forKey:{"arcadeApp"), @"arcadeApp"}];
+  webKitPushBundleMetadata = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
+  [coderCopy encodeObject:webKitPushBundleMetadata forKey:@"webKitPushBundleMetadata"];
 
-  v16 = [(IXPlaceholderAttributes *)self uiDeviceFamily];
-  [v4 encodeObject:v16 forKey:@"uiDeviceFamily"];
+  uiDeviceFamily = [(IXPlaceholderAttributes *)self uiDeviceFamily];
+  [coderCopy encodeObject:uiDeviceFamily forKey:@"uiDeviceFamily"];
 
-  v17 = [(IXPlaceholderAttributes *)self accentColorName];
-  [v4 encodeObject:v17 forKey:@"accentColorName"];
+  accentColorName = [(IXPlaceholderAttributes *)self accentColorName];
+  [coderCopy encodeObject:accentColorName forKey:@"accentColorName"];
 
-  v18 = [(IXPlaceholderAttributes *)self uiLaunchScreen];
-  [v4 encodeObject:v18 forKey:@"uiLaunchScreen"];
+  uiLaunchScreen = [(IXPlaceholderAttributes *)self uiLaunchScreen];
+  [coderCopy encodeObject:uiLaunchScreen forKey:@"uiLaunchScreen"];
 
-  [v4 encodeBool:-[IXPlaceholderAttributes lsRequiresIPhoneOS](self forKey:{"lsRequiresIPhoneOS"), @"lsRequiresIPhoneOS"}];
-  v19 = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
-  [v4 encodeObject:v19 forKey:@"cfBundleSupportedPlatforms"];
+  [coderCopy encodeBool:-[IXPlaceholderAttributes lsRequiresIPhoneOS](self forKey:{"lsRequiresIPhoneOS"), @"lsRequiresIPhoneOS"}];
+  cfBundleSupportedPlatforms = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
+  [coderCopy encodeObject:cfBundleSupportedPlatforms forKey:@"cfBundleSupportedPlatforms"];
 
-  v20 = [(IXPlaceholderAttributes *)self dtPlatformName];
-  [v4 encodeObject:v20 forKey:@"dtPlatformName"];
+  dtPlatformName = [(IXPlaceholderAttributes *)self dtPlatformName];
+  [coderCopy encodeObject:dtPlatformName forKey:@"dtPlatformName"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IXPlaceholderAttributes *)self launchProhibited];
-    if (v6 != [v5 launchProhibited])
+    v5 = equalCopy;
+    launchProhibited = [(IXPlaceholderAttributes *)self launchProhibited];
+    if (launchProhibited != [v5 launchProhibited])
     {
 LABEL_3:
       v7 = 0;
@@ -191,42 +191,42 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v8 = [(IXPlaceholderAttributes *)self bundleVersion];
-    v9 = [v5 bundleVersion];
-    v10 = v8;
-    v11 = v9;
-    v12 = v11;
-    if ((v10 != 0) != (v11 != 0) || v10 && v11 && ![v10 isEqual:v11])
+    bundleVersion = [(IXPlaceholderAttributes *)self bundleVersion];
+    bundleVersion2 = [v5 bundleVersion];
+    dtPlatformName = bundleVersion;
+    v11 = bundleVersion2;
+    dtPlatformName2 = v11;
+    if ((dtPlatformName != 0) != (v11 != 0) || dtPlatformName && v11 && ![dtPlatformName isEqual:v11])
     {
       goto LABEL_18;
     }
 
-    v13 = [(IXPlaceholderAttributes *)self bundleShortVersionString];
-    v14 = [v5 bundleShortVersionString];
-    v10 = v13;
-    v15 = v14;
-    v12 = v15;
-    if ((v10 != 0) != (v15 != 0) || v10 && v15 && ![v10 isEqual:v15])
+    bundleShortVersionString = [(IXPlaceholderAttributes *)self bundleShortVersionString];
+    bundleShortVersionString2 = [v5 bundleShortVersionString];
+    dtPlatformName = bundleShortVersionString;
+    v15 = bundleShortVersionString2;
+    dtPlatformName2 = v15;
+    if ((dtPlatformName != 0) != (v15 != 0) || dtPlatformName && v15 && ![dtPlatformName isEqual:v15])
     {
       goto LABEL_18;
     }
 
-    v16 = [(IXPlaceholderAttributes *)self extensionDictionary];
-    v17 = [v5 extensionDictionary];
-    v10 = v16;
-    v18 = v17;
-    v12 = v18;
-    if ((v10 != 0) != (v18 != 0) || v10 && v18 && ![v10 isEqual:v18])
+    extensionDictionary = [(IXPlaceholderAttributes *)self extensionDictionary];
+    extensionDictionary2 = [v5 extensionDictionary];
+    dtPlatformName = extensionDictionary;
+    v18 = extensionDictionary2;
+    dtPlatformName2 = v18;
+    if ((dtPlatformName != 0) != (v18 != 0) || dtPlatformName && v18 && ![dtPlatformName isEqual:v18])
     {
       goto LABEL_18;
     }
 
-    v19 = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
-    v20 = [v5 exAppExtensionAttributes];
-    v10 = v19;
-    v21 = v20;
-    v12 = v21;
-    if ((v10 != 0) != (v21 != 0) || v10 && v21 && ![v10 isEqual:v21])
+    exAppExtensionAttributes = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
+    exAppExtensionAttributes2 = [v5 exAppExtensionAttributes];
+    dtPlatformName = exAppExtensionAttributes;
+    v21 = exAppExtensionAttributes2;
+    dtPlatformName2 = v21;
+    if ((dtPlatformName != 0) != (v21 != 0) || dtPlatformName && v21 && ![dtPlatformName isEqual:v21])
     {
 LABEL_18:
 
@@ -236,138 +236,138 @@ LABEL_18:
     else
     {
 
-      v23 = [(IXPlaceholderAttributes *)self minimumOSVersion];
-      v24 = [v5 minimumOSVersion];
-      v25 = _CompareObjects(v23, v24);
+      minimumOSVersion = [(IXPlaceholderAttributes *)self minimumOSVersion];
+      minimumOSVersion2 = [v5 minimumOSVersion];
+      v25 = _CompareObjects(minimumOSVersion, minimumOSVersion2);
 
       if (!v25)
       {
         goto LABEL_3;
       }
 
-      v26 = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
-      v27 = [v5 requiredDeviceCapabilities];
-      v28 = _CompareObjects(v26, v27);
+      requiredDeviceCapabilities = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
+      requiredDeviceCapabilities2 = [v5 requiredDeviceCapabilities];
+      v28 = _CompareObjects(requiredDeviceCapabilities, requiredDeviceCapabilities2);
 
       if (!v28)
       {
         goto LABEL_3;
       }
 
-      v29 = [(IXPlaceholderAttributes *)self sbAppTags];
-      v30 = [v5 sbAppTags];
-      v31 = _CompareObjects(v29, v30);
+      sbAppTags = [(IXPlaceholderAttributes *)self sbAppTags];
+      sbAppTags2 = [v5 sbAppTags];
+      v31 = _CompareObjects(sbAppTags, sbAppTags2);
 
       if (!v31)
       {
         goto LABEL_3;
       }
 
-      v32 = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
-      v33 = [v5 lsCounterpartIdentifiers];
-      v34 = _CompareObjects(v32, v33);
+      lsCounterpartIdentifiers = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
+      lsCounterpartIdentifiers2 = [v5 lsCounterpartIdentifiers];
+      v34 = _CompareObjects(lsCounterpartIdentifiers, lsCounterpartIdentifiers2);
 
       if (!v34)
       {
         goto LABEL_3;
       }
 
-      v35 = [(IXPlaceholderAttributes *)self lsRequiresPostProcessing];
-      if (v35 != [v5 lsRequiresPostProcessing])
+      lsRequiresPostProcessing = [(IXPlaceholderAttributes *)self lsRequiresPostProcessing];
+      if (lsRequiresPostProcessing != [v5 lsRequiresPostProcessing])
       {
         goto LABEL_3;
       }
 
-      v36 = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
-      v37 = [v5 sbIconMasqueradeIdentifier];
-      v38 = _CompareObjects(v36, v37);
+      sbIconMasqueradeIdentifier = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
+      sbIconMasqueradeIdentifier2 = [v5 sbIconMasqueradeIdentifier];
+      v38 = _CompareObjects(sbIconMasqueradeIdentifier, sbIconMasqueradeIdentifier2);
 
       if (!v38)
       {
         goto LABEL_3;
       }
 
-      v39 = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
-      v40 = [v5 companionBundleIdentifierForWatchApp];
-      v41 = _CompareObjects(v39, v40);
+      companionBundleIdentifierForWatchApp = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
+      companionBundleIdentifierForWatchApp2 = [v5 companionBundleIdentifierForWatchApp];
+      v41 = _CompareObjects(companionBundleIdentifierForWatchApp, companionBundleIdentifierForWatchApp2);
 
       if (!v41)
       {
         goto LABEL_3;
       }
 
-      v42 = [(IXPlaceholderAttributes *)self watchOnlyApp];
-      if (v42 != [v5 watchOnlyApp])
+      watchOnlyApp = [(IXPlaceholderAttributes *)self watchOnlyApp];
+      if (watchOnlyApp != [v5 watchOnlyApp])
       {
         goto LABEL_3;
       }
 
-      v43 = [(IXPlaceholderAttributes *)self runsIndependentlyOfCompanionApp];
-      if (v43 != [v5 runsIndependentlyOfCompanionApp])
+      runsIndependentlyOfCompanionApp = [(IXPlaceholderAttributes *)self runsIndependentlyOfCompanionApp];
+      if (runsIndependentlyOfCompanionApp != [v5 runsIndependentlyOfCompanionApp])
       {
         goto LABEL_3;
       }
 
-      v44 = [(IXPlaceholderAttributes *)self arcadeApp];
-      if (v44 != [v5 arcadeApp])
+      arcadeApp = [(IXPlaceholderAttributes *)self arcadeApp];
+      if (arcadeApp != [v5 arcadeApp])
       {
         goto LABEL_3;
       }
 
-      v45 = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
-      v46 = [v5 webKitPushBundleMetadata];
-      v47 = _CompareObjects(v45, v46);
+      webKitPushBundleMetadata = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
+      webKitPushBundleMetadata2 = [v5 webKitPushBundleMetadata];
+      v47 = _CompareObjects(webKitPushBundleMetadata, webKitPushBundleMetadata2);
 
       if (!v47)
       {
         goto LABEL_3;
       }
 
-      v48 = [(IXPlaceholderAttributes *)self uiDeviceFamily];
-      v49 = [v5 uiDeviceFamily];
-      v50 = _CompareObjects(v48, v49);
+      uiDeviceFamily = [(IXPlaceholderAttributes *)self uiDeviceFamily];
+      uiDeviceFamily2 = [v5 uiDeviceFamily];
+      v50 = _CompareObjects(uiDeviceFamily, uiDeviceFamily2);
 
       if (!v50)
       {
         goto LABEL_3;
       }
 
-      v51 = [(IXPlaceholderAttributes *)self accentColorName];
-      v52 = [v5 accentColorName];
-      v53 = _CompareObjects(v51, v52);
+      accentColorName = [(IXPlaceholderAttributes *)self accentColorName];
+      accentColorName2 = [v5 accentColorName];
+      v53 = _CompareObjects(accentColorName, accentColorName2);
 
       if (!v53)
       {
         goto LABEL_3;
       }
 
-      v54 = [(IXPlaceholderAttributes *)self uiLaunchScreen];
-      v55 = [v5 uiLaunchScreen];
-      v56 = _CompareObjects(v54, v55);
+      uiLaunchScreen = [(IXPlaceholderAttributes *)self uiLaunchScreen];
+      uiLaunchScreen2 = [v5 uiLaunchScreen];
+      v56 = _CompareObjects(uiLaunchScreen, uiLaunchScreen2);
 
       if (!v56)
       {
         goto LABEL_3;
       }
 
-      v57 = [(IXPlaceholderAttributes *)self lsRequiresIPhoneOS];
-      if (v57 != [v5 lsRequiresIPhoneOS])
+      lsRequiresIPhoneOS = [(IXPlaceholderAttributes *)self lsRequiresIPhoneOS];
+      if (lsRequiresIPhoneOS != [v5 lsRequiresIPhoneOS])
       {
         goto LABEL_3;
       }
 
-      v58 = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
-      v59 = [v5 cfBundleSupportedPlatforms];
-      v60 = _CompareObjects(v58, v59);
+      cfBundleSupportedPlatforms = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
+      cfBundleSupportedPlatforms2 = [v5 cfBundleSupportedPlatforms];
+      v60 = _CompareObjects(cfBundleSupportedPlatforms, cfBundleSupportedPlatforms2);
 
       if (!v60)
       {
         goto LABEL_3;
       }
 
-      v10 = [(IXPlaceholderAttributes *)self dtPlatformName];
-      v12 = [v5 dtPlatformName];
-      v7 = _CompareObjects(v10, v12);
+      dtPlatformName = [(IXPlaceholderAttributes *)self dtPlatformName];
+      dtPlatformName2 = [v5 dtPlatformName];
+      v7 = _CompareObjects(dtPlatformName, dtPlatformName2);
     }
 
     goto LABEL_20;
@@ -381,153 +381,153 @@ LABEL_21:
 
 - (unint64_t)hash
 {
-  v3 = [(IXPlaceholderAttributes *)self launchProhibited];
-  v4 = [(IXPlaceholderAttributes *)self bundleVersion];
-  v5 = [v4 hash];
+  launchProhibited = [(IXPlaceholderAttributes *)self launchProhibited];
+  bundleVersion = [(IXPlaceholderAttributes *)self bundleVersion];
+  v5 = [bundleVersion hash];
 
-  v6 = [(IXPlaceholderAttributes *)self bundleShortVersionString];
-  v7 = v5 | [v6 hash] | v3;
+  bundleShortVersionString = [(IXPlaceholderAttributes *)self bundleShortVersionString];
+  v7 = v5 | [bundleShortVersionString hash] | launchProhibited;
 
-  v8 = [(IXPlaceholderAttributes *)self extensionDictionary];
-  v9 = [v8 hash];
+  extensionDictionary = [(IXPlaceholderAttributes *)self extensionDictionary];
+  v9 = [extensionDictionary hash];
 
-  v10 = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
-  v11 = v9 | [v10 hash];
+  exAppExtensionAttributes = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
+  v11 = v9 | [exAppExtensionAttributes hash];
 
-  v12 = [(IXPlaceholderAttributes *)self minimumOSVersion];
-  v13 = v7 | v11 | [v12 hash];
+  minimumOSVersion = [(IXPlaceholderAttributes *)self minimumOSVersion];
+  v13 = v7 | v11 | [minimumOSVersion hash];
 
-  v14 = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
-  v15 = [v14 hash];
+  requiredDeviceCapabilities = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
+  v15 = [requiredDeviceCapabilities hash];
 
-  v16 = [(IXPlaceholderAttributes *)self sbAppTags];
-  v17 = v15 | [v16 hash];
+  sbAppTags = [(IXPlaceholderAttributes *)self sbAppTags];
+  v17 = v15 | [sbAppTags hash];
 
-  v18 = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
-  v19 = v17 | [v18 hash];
+  lsCounterpartIdentifiers = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
+  v19 = v17 | [lsCounterpartIdentifiers hash];
 
   v20 = v13 | v19 | [(IXPlaceholderAttributes *)self lsRequiresPostProcessing];
-  v21 = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
-  v22 = [v21 hash];
+  sbIconMasqueradeIdentifier = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
+  v22 = [sbIconMasqueradeIdentifier hash];
 
-  v23 = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
-  v24 = v22 | [v23 hash];
+  companionBundleIdentifierForWatchApp = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
+  v24 = v22 | [companionBundleIdentifierForWatchApp hash];
 
   v25 = v24 | [(IXPlaceholderAttributes *)self watchOnlyApp];
   v26 = v25 | [(IXPlaceholderAttributes *)self runsIndependentlyOfCompanionApp];
   v27 = v20 | v26 | [(IXPlaceholderAttributes *)self arcadeApp];
-  v28 = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
-  v29 = [v28 hash];
+  webKitPushBundleMetadata = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
+  v29 = [webKitPushBundleMetadata hash];
 
-  v30 = [(IXPlaceholderAttributes *)self uiDeviceFamily];
-  v31 = v29 | [v30 hash];
+  uiDeviceFamily = [(IXPlaceholderAttributes *)self uiDeviceFamily];
+  v31 = v29 | [uiDeviceFamily hash];
 
-  v32 = [(IXPlaceholderAttributes *)self accentColorName];
-  v33 = v31 | [v32 hash];
+  accentColorName = [(IXPlaceholderAttributes *)self accentColorName];
+  v33 = v31 | [accentColorName hash];
 
-  v34 = [(IXPlaceholderAttributes *)self uiLaunchScreen];
-  v35 = v33 | [v34 hash];
+  uiLaunchScreen = [(IXPlaceholderAttributes *)self uiLaunchScreen];
+  v35 = v33 | [uiLaunchScreen hash];
 
   v36 = v35 | [(IXPlaceholderAttributes *)self lsRequiresIPhoneOS];
-  v37 = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
-  v38 = v27 | v36 | [v37 hash];
+  cfBundleSupportedPlatforms = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
+  v38 = v27 | v36 | [cfBundleSupportedPlatforms hash];
 
-  v39 = [(IXPlaceholderAttributes *)self dtPlatformName];
-  v40 = [v39 hash];
+  dtPlatformName = [(IXPlaceholderAttributes *)self dtPlatformName];
+  v40 = [dtPlatformName hash];
 
   return v38 | v40;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLaunchProhibited:{-[IXPlaceholderAttributes launchProhibited](self, "launchProhibited")}];
-  v5 = [(IXPlaceholderAttributes *)self bundleVersion];
-  [v4 setBundleVersion:v5];
+  bundleVersion = [(IXPlaceholderAttributes *)self bundleVersion];
+  [v4 setBundleVersion:bundleVersion];
 
-  v6 = [(IXPlaceholderAttributes *)self bundleShortVersionString];
-  [v4 setBundleShortVersionString:v6];
+  bundleShortVersionString = [(IXPlaceholderAttributes *)self bundleShortVersionString];
+  [v4 setBundleShortVersionString:bundleShortVersionString];
 
-  v7 = [(IXPlaceholderAttributes *)self extensionDictionary];
-  [v4 setExtensionDictionary:v7];
+  extensionDictionary = [(IXPlaceholderAttributes *)self extensionDictionary];
+  [v4 setExtensionDictionary:extensionDictionary];
 
-  v8 = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
-  [v4 setExAppExtensionAttributes:v8];
+  exAppExtensionAttributes = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
+  [v4 setExAppExtensionAttributes:exAppExtensionAttributes];
 
-  v9 = [(IXPlaceholderAttributes *)self minimumOSVersion];
-  [v4 setMinimumOSVersion:v9];
+  minimumOSVersion = [(IXPlaceholderAttributes *)self minimumOSVersion];
+  [v4 setMinimumOSVersion:minimumOSVersion];
 
-  v10 = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
-  [v4 setRequiredDeviceCapabilities:v10];
+  requiredDeviceCapabilities = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
+  [v4 setRequiredDeviceCapabilities:requiredDeviceCapabilities];
 
-  v11 = [(IXPlaceholderAttributes *)self sbAppTags];
-  [v4 setSbAppTags:v11];
+  sbAppTags = [(IXPlaceholderAttributes *)self sbAppTags];
+  [v4 setSbAppTags:sbAppTags];
 
-  v12 = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
-  [v4 setLsCounterpartIdentifiers:v12];
+  lsCounterpartIdentifiers = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
+  [v4 setLsCounterpartIdentifiers:lsCounterpartIdentifiers];
 
   [v4 setLsRequiresPostProcessing:{-[IXPlaceholderAttributes lsRequiresPostProcessing](self, "lsRequiresPostProcessing")}];
-  v13 = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
-  [v4 setSbIconMasqueradeIdentifier:v13];
+  sbIconMasqueradeIdentifier = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
+  [v4 setSbIconMasqueradeIdentifier:sbIconMasqueradeIdentifier];
 
-  v14 = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
-  [v4 setCompanionBundleIdentifierForWatchApp:v14];
+  companionBundleIdentifierForWatchApp = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
+  [v4 setCompanionBundleIdentifierForWatchApp:companionBundleIdentifierForWatchApp];
 
   [v4 setWatchOnlyApp:{-[IXPlaceholderAttributes watchOnlyApp](self, "watchOnlyApp")}];
   [v4 setRunsIndependentlyOfCompanionApp:{-[IXPlaceholderAttributes runsIndependentlyOfCompanionApp](self, "runsIndependentlyOfCompanionApp")}];
   [v4 setArcadeApp:{-[IXPlaceholderAttributes arcadeApp](self, "arcadeApp")}];
-  v15 = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
-  [v4 setWebKitPushBundleMetadata:v15];
+  webKitPushBundleMetadata = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
+  [v4 setWebKitPushBundleMetadata:webKitPushBundleMetadata];
 
-  v16 = [(IXPlaceholderAttributes *)self uiDeviceFamily];
-  [v4 setUiDeviceFamily:v16];
+  uiDeviceFamily = [(IXPlaceholderAttributes *)self uiDeviceFamily];
+  [v4 setUiDeviceFamily:uiDeviceFamily];
 
-  v17 = [(IXPlaceholderAttributes *)self accentColorName];
-  [v4 setAccentColorName:v17];
+  accentColorName = [(IXPlaceholderAttributes *)self accentColorName];
+  [v4 setAccentColorName:accentColorName];
 
-  v18 = [(IXPlaceholderAttributes *)self uiLaunchScreen];
-  [v4 setUiLaunchScreen:v18];
+  uiLaunchScreen = [(IXPlaceholderAttributes *)self uiLaunchScreen];
+  [v4 setUiLaunchScreen:uiLaunchScreen];
 
   [v4 setLsRequiresIPhoneOS:{-[IXPlaceholderAttributes lsRequiresIPhoneOS](self, "lsRequiresIPhoneOS")}];
-  v19 = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
-  [v4 setCfBundleSupportedPlatforms:v19];
+  cfBundleSupportedPlatforms = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
+  [v4 setCfBundleSupportedPlatforms:cfBundleSupportedPlatforms];
 
-  v20 = [(IXPlaceholderAttributes *)self dtPlatformName];
-  [v4 setDtPlatformName:v20];
+  dtPlatformName = [(IXPlaceholderAttributes *)self dtPlatformName];
+  [v4 setDtPlatformName:dtPlatformName];
 
   return v4;
 }
 
-- (IXPlaceholderAttributes)initWithInfoPlistFromBundleURL:(id)a3 error:(id *)a4
+- (IXPlaceholderAttributes)initWithInfoPlistFromBundleURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(IXPlaceholderAttributes *)self _plistKeys];
-  v8 = LoadInfoPlistFromBundleAtURL(v6, v7, a4);
+  lCopy = l;
+  _plistKeys = [(IXPlaceholderAttributes *)self _plistKeys];
+  v8 = LoadInfoPlistFromBundleAtURL(lCopy, _plistKeys, error);
 
   if (v8)
   {
     self = [(IXPlaceholderAttributes *)self initWithInfoPlistDictionary:v8];
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (IXPlaceholderAttributes)initWithInfoPlistFromBundle:(__CFBundle *)a3 error:(id *)a4
+- (IXPlaceholderAttributes)initWithInfoPlistFromBundle:(__CFBundle *)bundle error:(id *)error
 {
-  v6 = self;
-  v7 = [(IXPlaceholderAttributes *)self _plistKeys];
-  v8 = LoadInfoPlistFromBundle(a3, v7, a4);
+  selfCopy = self;
+  _plistKeys = [(IXPlaceholderAttributes *)self _plistKeys];
+  v8 = LoadInfoPlistFromBundle(bundle, _plistKeys, error);
 
   if (v8)
   {
-    v6 = [(IXPlaceholderAttributes *)v6 initWithInfoPlistDictionary:v8];
-    v9 = v6;
+    selfCopy = [(IXPlaceholderAttributes *)selfCopy initWithInfoPlistDictionary:v8];
+    v9 = selfCopy;
   }
 
   else
@@ -538,20 +538,20 @@ LABEL_21:
   return v9;
 }
 
-- (IXPlaceholderAttributes)initWithInfoPlistDictionary:(id)a3
+- (IXPlaceholderAttributes)initWithInfoPlistDictionary:(id)dictionary
 {
   v93 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(IXPlaceholderAttributes *)self init];
   if (!v5)
   {
     goto LABEL_77;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"LSApplicationLaunchProhibited"];
   [(IXPlaceholderAttributes *)v5 setLaunchProhibited:IXBooleanValue(v6, 0)];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+  v7 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E500]];
   objc_opt_class();
   v8 = v7;
   if (objc_opt_isKindOfClass())
@@ -565,7 +565,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setBundleVersion:v9];
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E148]];
+  v10 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E148]];
   objc_opt_class();
   v11 = v10;
   if (objc_opt_isKindOfClass())
@@ -579,7 +579,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setBundleShortVersionString:v12];
-  v13 = [v4 objectForKeyedSubscript:@"NSExtension"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"NSExtension"];
   objc_opt_class();
   v14 = v13;
   if (objc_opt_isKindOfClass())
@@ -593,7 +593,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setExtensionDictionary:v15];
-  v16 = [v4 objectForKeyedSubscript:@"EXAppExtensionAttributes"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"EXAppExtensionAttributes"];
   objc_opt_class();
   v17 = v16;
   if (objc_opt_isKindOfClass())
@@ -607,7 +607,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setExAppExtensionAttributes:v18];
-  v19 = [v4 objectForKeyedSubscript:@"MinimumOSVersion"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"MinimumOSVersion"];
   objc_opt_class();
   v20 = v19;
   if (objc_opt_isKindOfClass())
@@ -621,7 +621,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setMinimumOSVersion:v21];
-  v22 = [v4 objectForKeyedSubscript:@"SBAppTags"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"SBAppTags"];
   objc_opt_class();
   v23 = v22;
   if (objc_opt_isKindOfClass())
@@ -638,7 +638,7 @@ LABEL_21:
   v25 = IXFilterArrayForClass(v24);
   [(IXPlaceholderAttributes *)v5 setSbAppTags:v25];
 
-  v26 = [v4 objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
+  v26 = [dictionaryCopy objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
   objc_opt_class();
   v27 = v26;
   if (objc_opt_isKindOfClass())
@@ -655,10 +655,10 @@ LABEL_21:
   v29 = IXFilterArrayForClass(v28);
   [(IXPlaceholderAttributes *)v5 setLsCounterpartIdentifiers:v29];
 
-  v30 = [v4 objectForKeyedSubscript:@"LSRequiresPostProcessing"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"LSRequiresPostProcessing"];
   [(IXPlaceholderAttributes *)v5 setLsRequiresPostProcessing:IXBooleanValue(v30, 0)];
 
-  v31 = [v4 objectForKeyedSubscript:@"SBIconMasqueradeIdentifier"];
+  v31 = [dictionaryCopy objectForKeyedSubscript:@"SBIconMasqueradeIdentifier"];
   objc_opt_class();
   v32 = v31;
   if (objc_opt_isKindOfClass())
@@ -672,7 +672,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setSbIconMasqueradeIdentifier:v33];
-  v34 = [v4 objectForKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
   objc_opt_class();
   v35 = v34;
   if (objc_opt_isKindOfClass())
@@ -686,7 +686,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setCompanionBundleIdentifierForWatchApp:v36];
-  v37 = [v4 objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
   objc_opt_class();
   v38 = v37;
   if (objc_opt_isKindOfClass())
@@ -729,16 +729,16 @@ LABEL_21:
     }
   }
 
-  v46 = [v4 objectForKeyedSubscript:@"WKWatchOnly"];
+  v46 = [dictionaryCopy objectForKeyedSubscript:@"WKWatchOnly"];
   [(IXPlaceholderAttributes *)v5 setWatchOnlyApp:IXBooleanValue(v46, 0)];
 
-  v47 = [v4 objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
+  v47 = [dictionaryCopy objectForKeyedSubscript:@"WKRunsIndependentlyOfCompanionApp"];
   [(IXPlaceholderAttributes *)v5 setRunsIndependentlyOfCompanionApp:IXBooleanValue(v47, 0)];
 
-  v48 = [v4 objectForKeyedSubscript:@"NSApplicationRequiresArcade"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"NSApplicationRequiresArcade"];
   [(IXPlaceholderAttributes *)v5 setArcadeApp:IXBooleanValue(v48, 0)];
 
-  v49 = [v4 objectForKeyedSubscript:@"WKPushBundleMetadata"];
+  v49 = [dictionaryCopy objectForKeyedSubscript:@"WKPushBundleMetadata"];
   objc_opt_class();
   v50 = v49;
   if (objc_opt_isKindOfClass())
@@ -752,7 +752,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setWebKitPushBundleMetadata:v51];
-  v52 = [v4 objectForKeyedSubscript:@"NSAccentColorName"];
+  v52 = [dictionaryCopy objectForKeyedSubscript:@"NSAccentColorName"];
   objc_opt_class();
   v53 = v52;
   if (objc_opt_isKindOfClass())
@@ -766,7 +766,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setAccentColorName:v54];
-  v55 = [v4 objectForKeyedSubscript:@"UILaunchScreen"];
+  v55 = [dictionaryCopy objectForKeyedSubscript:@"UILaunchScreen"];
   objc_opt_class();
   v56 = v55;
   if (objc_opt_isKindOfClass())
@@ -780,7 +780,7 @@ LABEL_21:
   }
 
   [(IXPlaceholderAttributes *)v5 setUiLaunchScreen:v57];
-  v58 = [v4 objectForKeyedSubscript:@"UIDeviceFamily"];
+  v58 = [dictionaryCopy objectForKeyedSubscript:@"UIDeviceFamily"];
   objc_opt_class();
   v59 = v58;
   if (objc_opt_isKindOfClass())
@@ -796,7 +796,7 @@ LABEL_21:
   if (v60)
   {
     v85 = v38;
-    v86 = v4;
+    v86 = dictionaryCopy;
     v61 = objc_opt_new();
     v87 = 0u;
     v88 = 0u;
@@ -820,8 +820,8 @@ LABEL_21:
           v67 = *(*(&v87 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v68 = [v67 intValue];
-            v69 = [MEMORY[0x1E696AD98] numberWithInt:v68];
+            intValue = [v67 intValue];
+            v69 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
             [v61 addObject:v69];
           }
         }
@@ -836,13 +836,13 @@ LABEL_21:
     [(IXPlaceholderAttributes *)v5 setUiDeviceFamily:v70];
 
     v38 = v85;
-    v4 = v86;
+    dictionaryCopy = v86;
   }
 
-  v71 = [v4 objectForKeyedSubscript:@"LSRequiresIPhoneOS"];
+  v71 = [dictionaryCopy objectForKeyedSubscript:@"LSRequiresIPhoneOS"];
   [(IXPlaceholderAttributes *)v5 setLsRequiresIPhoneOS:IXBooleanValue(v71, 0)];
 
-  v72 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E158]];
+  v72 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E158]];
   objc_opt_class();
   v73 = v72;
   if (objc_opt_isKindOfClass())
@@ -888,7 +888,7 @@ LABEL_21:
   [(IXPlaceholderAttributes *)v5 setCfBundleSupportedPlatforms:v75];
 
 LABEL_73:
-  v80 = [v4 objectForKeyedSubscript:@"DTPlatformName"];
+  v80 = [dictionaryCopy objectForKeyedSubscript:@"DTPlatformName"];
   objc_opt_class();
   v81 = v80;
   if (objc_opt_isKindOfClass())
@@ -908,16 +908,16 @@ LABEL_77:
   return v5;
 }
 
-- (void)setRequiredDeviceCapabilitiesWithArray:(id)a3
+- (void)setRequiredDeviceCapabilitiesWithArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -979,47 +979,47 @@ LABEL_77:
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"LSApplicationLaunchProhibited"];
   }
 
-  v4 = [(IXPlaceholderAttributes *)self bundleVersion];
-  [v3 setObject:v4 forKeyedSubscript:*MEMORY[0x1E695E500]];
+  bundleVersion = [(IXPlaceholderAttributes *)self bundleVersion];
+  [v3 setObject:bundleVersion forKeyedSubscript:*MEMORY[0x1E695E500]];
 
-  v5 = [(IXPlaceholderAttributes *)self bundleShortVersionString];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695E148]];
+  bundleShortVersionString = [(IXPlaceholderAttributes *)self bundleShortVersionString];
+  [v3 setObject:bundleShortVersionString forKeyedSubscript:*MEMORY[0x1E695E148]];
 
-  v6 = [(IXPlaceholderAttributes *)self extensionDictionary];
-  [v3 setObject:v6 forKeyedSubscript:@"NSExtension"];
+  extensionDictionary = [(IXPlaceholderAttributes *)self extensionDictionary];
+  [v3 setObject:extensionDictionary forKeyedSubscript:@"NSExtension"];
 
-  v7 = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
-  [v3 setObject:v7 forKeyedSubscript:@"EXAppExtensionAttributes"];
+  exAppExtensionAttributes = [(IXPlaceholderAttributes *)self exAppExtensionAttributes];
+  [v3 setObject:exAppExtensionAttributes forKeyedSubscript:@"EXAppExtensionAttributes"];
 
-  v8 = [(IXPlaceholderAttributes *)self minimumOSVersion];
-  [v3 setObject:v8 forKeyedSubscript:@"MinimumOSVersion"];
+  minimumOSVersion = [(IXPlaceholderAttributes *)self minimumOSVersion];
+  [v3 setObject:minimumOSVersion forKeyedSubscript:@"MinimumOSVersion"];
 
-  v9 = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
-  [v3 setObject:v9 forKeyedSubscript:@"UIRequiredDeviceCapabilities"];
+  requiredDeviceCapabilities = [(IXPlaceholderAttributes *)self requiredDeviceCapabilities];
+  [v3 setObject:requiredDeviceCapabilities forKeyedSubscript:@"UIRequiredDeviceCapabilities"];
 
-  v10 = [(IXPlaceholderAttributes *)self sbAppTags];
-  [v3 setObject:v10 forKeyedSubscript:@"SBAppTags"];
+  sbAppTags = [(IXPlaceholderAttributes *)self sbAppTags];
+  [v3 setObject:sbAppTags forKeyedSubscript:@"SBAppTags"];
 
-  v11 = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
-  [v3 setObject:v11 forKeyedSubscript:@"LSCounterpartIdentifiers"];
+  lsCounterpartIdentifiers = [(IXPlaceholderAttributes *)self lsCounterpartIdentifiers];
+  [v3 setObject:lsCounterpartIdentifiers forKeyedSubscript:@"LSCounterpartIdentifiers"];
 
-  v12 = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
-  [v3 setObject:v12 forKeyedSubscript:@"SBIconMasqueradeIdentifier"];
+  sbIconMasqueradeIdentifier = [(IXPlaceholderAttributes *)self sbIconMasqueradeIdentifier];
+  [v3 setObject:sbIconMasqueradeIdentifier forKeyedSubscript:@"SBIconMasqueradeIdentifier"];
 
-  v13 = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
-  [v3 setObject:v13 forKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
+  companionBundleIdentifierForWatchApp = [(IXPlaceholderAttributes *)self companionBundleIdentifierForWatchApp];
+  [v3 setObject:companionBundleIdentifierForWatchApp forKeyedSubscript:@"WKCompanionAppBundleIdentifier"];
 
-  v14 = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
-  [v3 setObject:v14 forKeyedSubscript:@"WKPushBundleMetadata"];
+  webKitPushBundleMetadata = [(IXPlaceholderAttributes *)self webKitPushBundleMetadata];
+  [v3 setObject:webKitPushBundleMetadata forKeyedSubscript:@"WKPushBundleMetadata"];
 
-  v15 = [(IXPlaceholderAttributes *)self uiDeviceFamily];
-  [v3 setObject:v15 forKeyedSubscript:@"UIDeviceFamily"];
+  uiDeviceFamily = [(IXPlaceholderAttributes *)self uiDeviceFamily];
+  [v3 setObject:uiDeviceFamily forKeyedSubscript:@"UIDeviceFamily"];
 
-  v16 = [(IXPlaceholderAttributes *)self accentColorName];
-  [v3 setObject:v16 forKeyedSubscript:@"NSAccentColorName"];
+  accentColorName = [(IXPlaceholderAttributes *)self accentColorName];
+  [v3 setObject:accentColorName forKeyedSubscript:@"NSAccentColorName"];
 
-  v17 = [(IXPlaceholderAttributes *)self uiLaunchScreen];
-  [v3 setObject:v17 forKeyedSubscript:@"UILaunchScreen"];
+  uiLaunchScreen = [(IXPlaceholderAttributes *)self uiLaunchScreen];
+  [v3 setObject:uiLaunchScreen forKeyedSubscript:@"UILaunchScreen"];
 
   if ([(IXPlaceholderAttributes *)self watchOnlyApp])
   {
@@ -1046,11 +1046,11 @@ LABEL_77:
     [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"LSRequiresIPhoneOS"];
   }
 
-  v18 = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
-  [v3 setObject:v18 forKeyedSubscript:*MEMORY[0x1E695E158]];
+  cfBundleSupportedPlatforms = [(IXPlaceholderAttributes *)self cfBundleSupportedPlatforms];
+  [v3 setObject:cfBundleSupportedPlatforms forKeyedSubscript:*MEMORY[0x1E695E158]];
 
-  v19 = [(IXPlaceholderAttributes *)self dtPlatformName];
-  [v3 setObject:v19 forKeyedSubscript:@"DTPlatformName"];
+  dtPlatformName = [(IXPlaceholderAttributes *)self dtPlatformName];
+  [v3 setObject:dtPlatformName forKeyedSubscript:@"DTPlatformName"];
 
   v20 = [v3 copy];
 
@@ -1062,8 +1062,8 @@ LABEL_77:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IXPlaceholderAttributes *)self infoPlistContent];
-  v7 = [v3 stringWithFormat:@"<%@<%p> : %@>", v5, self, v6];
+  infoPlistContent = [(IXPlaceholderAttributes *)self infoPlistContent];
+  v7 = [v3 stringWithFormat:@"<%@<%p> : %@>", v5, self, infoPlistContent];
 
   return v7;
 }

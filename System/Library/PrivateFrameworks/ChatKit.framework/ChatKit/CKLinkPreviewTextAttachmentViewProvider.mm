@@ -1,16 +1,16 @@
 @interface CKLinkPreviewTextAttachmentViewProvider
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (_TtC7ChatKit39CKLinkPreviewTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (_TtC7ChatKit39CKLinkPreviewTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location;
 @end
 
 @implementation CKLinkPreviewTextAttachmentViewProvider
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_190BE5668(a5);
+  containerCopy = container;
+  selfCopy = self;
+  sub_190BE5668(container);
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC7ChatKit39CKLinkPreviewTextAttachmentViewProvider)initWithTextAttachment:(id)a3 parentView:(id)a4 textLayoutManager:(id)a5 location:(id)a6
+- (_TtC7ChatKit39CKLinkPreviewTextAttachmentViewProvider)initWithTextAttachment:(id)attachment parentView:(id)view textLayoutManager:(id)manager location:(id)location
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

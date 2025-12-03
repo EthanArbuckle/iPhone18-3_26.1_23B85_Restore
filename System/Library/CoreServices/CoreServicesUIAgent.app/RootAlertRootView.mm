@@ -1,5 +1,5 @@
 @interface RootAlertRootView
-- (_TtC19CoreServicesUIAgent17RootAlertRootView)initWithFrame:(CGRect)a3;
+- (_TtC19CoreServicesUIAgent17RootAlertRootView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -17,13 +17,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for RootAlertRootView();
-  v3 = self;
+  selfCopy = self;
   [(RootAlertRootView *)&v6 layoutSubviews];
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC19CoreServicesUIAgent17RootAlertRootView_child);
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC19CoreServicesUIAgent17RootAlertRootView_child);
   if (v4)
   {
     v5 = v4;
-    [(RootAlertRootView *)v3 bounds:v6.receiver];
+    [(RootAlertRootView *)selfCopy bounds:v6.receiver];
     [v5 setFrame:?];
   }
 
@@ -32,12 +32,12 @@
   }
 }
 
-- (_TtC19CoreServicesUIAgent17RootAlertRootView)initWithFrame:(CGRect)a3
+- (_TtC19CoreServicesUIAgent17RootAlertRootView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -49,9 +49,9 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19CoreServicesUIAgent17RootAlertRootView_child) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for RootAlertRootView();
-  v8 = [(RootAlertRootView *)&v10 initWithFrame:x, y, width, height];
+  height = [(RootAlertRootView *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
 @end

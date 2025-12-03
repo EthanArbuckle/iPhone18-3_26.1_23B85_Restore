@@ -1,10 +1,10 @@
 @interface _UIFloatingContentView
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4;
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect;
 - (BOOL)_effectiveUseShadowImage;
 - (BOOL)_hasPotentialSolariumImpactedContent;
 - (BOOL)clipsContentToBounds;
-- (BOOL)isBackgroundMaterialSetForState:(unint64_t)a3;
-- (CGPath)_shadowPathForSize:(CGSize)a3 radius:(double)a4;
+- (BOOL)isBackgroundMaterialSetForState:(unint64_t)state;
+- (CGPath)_shadowPathForSize:(CGSize)size radius:(double)radius;
 - (CGPoint)focusScaleAnchorPoint;
 - (CGPoint)highContrastFocusIndicatorOutset;
 - (CGRect)shadowContentsCenter;
@@ -18,96 +18,96 @@
 - (CGSize)unfocusedShadowExpansion;
 - (UIView)contentView;
 - (UIView)visualEffectContainerView;
-- (_UIFloatingContentView)initWithFrame:(CGRect)a3;
+- (_UIFloatingContentView)initWithFrame:(CGRect)frame;
 - (_UIFloatingContentViewDelegate)floatingContentDelegate;
 - (_UIFocusAnimationConfiguration)focusAnimationConfiguration;
 - (double)_legacy_effectiveShadowOpacity;
 - (double)_test_currentShadowOpacity;
-- (double)shadowOpacityForUserInterfaceStyle:(int64_t)a3;
-- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)a3;
-- (id)backgroundColorForState:(unint64_t)a3;
-- (id)backgroundMaterialForState:(unint64_t)a3;
-- (id)glassForState:(unint64_t)a3;
+- (double)shadowOpacityForUserInterfaceStyle:(int64_t)style;
+- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)necessary;
+- (id)backgroundColorForState:(unint64_t)state;
+- (id)backgroundMaterialForState:(unint64_t)state;
+- (id)glassForState:(unint64_t)state;
 - (void)_createPunchoutShadowView;
 - (void)_installContentMotionEffects;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_layoutContentView;
 - (void)_layoutHighContrastFocusIndicator;
 - (void)_layoutShadow;
 - (void)_legacy_layoutShadow;
-- (void)_legacy_updateShadowContentsScaleForPrimaryState:(unint64_t)a3;
+- (void)_legacy_updateShadowContentsScaleForPrimaryState:(unint64_t)state;
 - (void)_legacy_updateShadowLayer;
-- (void)_legacy_updateShadowOpacityForPrimaryState:(unint64_t)a3;
-- (void)_legacy_updateTransformForPrimaryState:(unint64_t)a3;
-- (void)_modern_updateTransformForPrimaryState:(unint64_t)a3;
-- (void)_setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4;
+- (void)_legacy_updateShadowOpacityForPrimaryState:(unint64_t)state;
+- (void)_legacy_updateTransformForPrimaryState:(unint64_t)state;
+- (void)_modern_updateTransformForPrimaryState:(unint64_t)state;
+- (void)_setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator;
 - (void)_setShadowImageIfNeeded;
 - (void)_uninstallContentMotionEffects;
-- (void)_updateContainerLayerQualityForPrimaryState:(unint64_t)a3;
-- (void)_updateCornerRadius:(double)a3;
+- (void)_updateContainerLayerQualityForPrimaryState:(unint64_t)state;
+- (void)_updateCornerRadius:(double)radius;
 - (void)_updateCornerRadiusLayers;
-- (void)_updateDefaultBackgroundFillsForHighlightStyle:(int64_t)a3;
+- (void)_updateDefaultBackgroundFillsForHighlightStyle:(int64_t)style;
 - (void)_updateFocusedFrameGuideConstraintsIfApplicable;
-- (void)_updateHighContrastFocusIndicatorForPrimaryState:(unint64_t)a3;
+- (void)_updateHighContrastFocusIndicatorForPrimaryState:(unint64_t)state;
 - (void)_updateHighContrastFocusIndicatorView;
-- (void)_updateHighlightViewForPrimaryState:(unint64_t)a3;
+- (void)_updateHighlightViewForPrimaryState:(unint64_t)state;
 - (void)_updateMarkerLayerIfPresent;
 - (void)_updatePunchoutShadowLayer;
 - (void)_updateScaleFactor;
 - (void)_updateShadowLayer;
-- (void)_updateTransformForPrimaryState:(unint64_t)a3;
+- (void)_updateTransformForPrimaryState:(unint64_t)state;
 - (void)_updateUnfocusedBorderView;
-- (void)_updateViewPropertiesForHighlightStyle:(int64_t)a3;
-- (void)addContentMotionEffect:(id)a3;
+- (void)_updateViewPropertiesForHighlightStyle:(int64_t)style;
+- (void)addContentMotionEffect:(id)effect;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)removeBackgroundMaterialForState:(unint64_t)a3;
-- (void)removeGlassForState:(unint64_t)a3;
+- (void)removeBackgroundMaterialForState:(unint64_t)state;
+- (void)removeGlassForState:(unint64_t)state;
 - (void)removeSecondaryBackdropView;
-- (void)setAsymmetricFocusedSizeIncrease:(CGSize)a3;
-- (void)setAsymmetricPressedScaleFactor:(CGSize)a3;
-- (void)setAsymmetricPressedSizeIncrease:(CGSize)a3;
-- (void)setAsymmetricScaleFactor:(CGSize)a3;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
-- (void)setBackgroundMaterial:(id)a3 forState:(unint64_t)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setClipsContentToBounds:(BOOL)a3;
-- (void)setContentMotion:(id)a3;
-- (void)setContentMotionRotation:(CGPoint)a3 translation:(CGPoint)a4;
-- (void)setContinuousCornerEnabled:(BOOL)a3;
-- (void)setControlState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setCornerCurve:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGlass:(id)a3 forState:(unint64_t)a4;
-- (void)setHighContrastFocusIndicatorCornerRadius:(double)a3;
-- (void)setHighlightStyle:(int64_t)a3;
-- (void)setPressedShadowExpansion:(CGSize)a3;
-- (void)setPressedShadowOpacity:(double)a3;
-- (void)setPressedShadowRadius:(double)a3;
-- (void)setPressedShadowVerticalOffset:(double)a3;
-- (void)setRoundContentWhenDeselected:(BOOL)a3;
-- (void)setScalesBackwards:(BOOL)a3;
-- (void)setSecondaryBackdropView:(id)a3;
-- (void)setShadowContentsCenter:(CGRect)a3;
-- (void)setShadowEnabled:(BOOL)a3;
-- (void)setShadowImage:(id)a3 stretchable:(BOOL)a4;
-- (void)setShadowOpacity:(double)a3 forUserInterfaceStyle:(int64_t)a4;
-- (void)setUnfocusedBorderOpacity:(double)a3;
-- (void)setUnfocusedShadowOpacity:(double)a3;
-- (void)setUnfocusedShadowRadius:(double)a3;
-- (void)setUnfocusedShadowVerticalOffset:(double)a3;
-- (void)setUseShadowImage:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAsymmetricFocusedSizeIncrease:(CGSize)increase;
+- (void)setAsymmetricPressedScaleFactor:(CGSize)factor;
+- (void)setAsymmetricPressedSizeIncrease:(CGSize)increase;
+- (void)setAsymmetricScaleFactor:(CGSize)factor;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
+- (void)setBackgroundMaterial:(id)material forState:(unint64_t)state;
+- (void)setBounds:(CGRect)bounds;
+- (void)setClipsContentToBounds:(BOOL)bounds;
+- (void)setContentMotion:(id)motion;
+- (void)setContentMotionRotation:(CGPoint)rotation translation:(CGPoint)translation;
+- (void)setContinuousCornerEnabled:(BOOL)enabled;
+- (void)setControlState:(unint64_t)state animated:(BOOL)animated;
+- (void)setCornerCurve:(id)curve;
+- (void)setCornerRadius:(double)radius;
+- (void)setFrame:(CGRect)frame;
+- (void)setGlass:(id)glass forState:(unint64_t)state;
+- (void)setHighContrastFocusIndicatorCornerRadius:(double)radius;
+- (void)setHighlightStyle:(int64_t)style;
+- (void)setPressedShadowExpansion:(CGSize)expansion;
+- (void)setPressedShadowOpacity:(double)opacity;
+- (void)setPressedShadowRadius:(double)radius;
+- (void)setPressedShadowVerticalOffset:(double)offset;
+- (void)setRoundContentWhenDeselected:(BOOL)deselected;
+- (void)setScalesBackwards:(BOOL)backwards;
+- (void)setSecondaryBackdropView:(id)view;
+- (void)setShadowContentsCenter:(CGRect)center;
+- (void)setShadowEnabled:(BOOL)enabled;
+- (void)setShadowImage:(id)image stretchable:(BOOL)stretchable;
+- (void)setShadowOpacity:(double)opacity forUserInterfaceStyle:(int64_t)style;
+- (void)setUnfocusedBorderOpacity:(double)opacity;
+- (void)setUnfocusedShadowOpacity:(double)opacity;
+- (void)setUnfocusedShadowRadius:(double)radius;
+- (void)setUnfocusedShadowVerticalOffset:(double)offset;
+- (void)setUseShadowImage:(BOOL)image;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIFloatingContentView
 
-- (_UIFloatingContentView)initWithFrame:(CGRect)a3
+- (_UIFloatingContentView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = _UIFloatingContentView;
-  v3 = [(UIView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -169,8 +169,8 @@
     }
 
     [(_UIFloatingContentView *)v23 _updateViewPropertiesForHighlightStyle:v23->_highlightStyle];
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v23 selector:sel__updateHighContrastFocusIndicatorView name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v23 selector:sel__updateHighContrastFocusIndicatorView name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
   }
 
   return v4;
@@ -196,8 +196,8 @@
     CFRelease(backgroundMaterialsByState);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityHighContrastFocusIndicatorChangedNotification" object:0];
 
   v7.receiver = self;
   v7.super_class = _UIFloatingContentView;
@@ -211,15 +211,15 @@
   return WeakRetained;
 }
 
-- (BOOL)_applyKeyPathsAndRelativeValues:(id)a3 forMotionEffect:(id)a4
+- (BOOL)_applyKeyPathsAndRelativeValues:(id)values forMotionEffect:(id)effect
 {
-  v5 = a3;
+  valuesCopy = values;
   if ([(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:[(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]]])
   {
-    v6 = [v5 objectForKey:@"focusDirectionX"];
+    v6 = [valuesCopy objectForKey:@"focusDirectionX"];
     [v6 doubleValue];
     v8 = v7;
-    v9 = [v5 objectForKey:@"focusDirectionY"];
+    v9 = [valuesCopy objectForKey:@"focusDirectionY"];
     [v9 doubleValue];
     self->_focusDirection.x = v8;
     self->_focusDirection.y = v10;
@@ -230,14 +230,14 @@
   return 1;
 }
 
-- (void)setContentMotion:(id)a3
+- (void)setContentMotion:(id)motion
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (self->_contentMotion != v5 && ![(_UIFloatingMotionConfiguration *)v5 isEqual:?])
+  motionCopy = motion;
+  v6 = motionCopy;
+  if (self->_contentMotion != motionCopy && ![(_UIFloatingMotionConfiguration *)motionCopy isEqual:?])
   {
-    objc_storeStrong(&self->_contentMotion, a3);
+    objc_storeStrong(&self->_contentMotion, motion);
     [(_UIFloatingMotionConfiguration *)v6 rotation];
     self->_contentRotation.x = v7;
     self->_contentRotation.y = v8;
@@ -261,28 +261,28 @@
   }
 }
 
-- (void)setContentMotionRotation:(CGPoint)a3 translation:(CGPoint)a4
+- (void)setContentMotionRotation:(CGPoint)rotation translation:(CGPoint)translation
 {
-  v5 = [[_UIFloatingMotionConfiguration alloc] _initWithTranslation:a4.x rotation:a4.y, a3.x, a3.y];
+  v5 = [[_UIFloatingMotionConfiguration alloc] _initWithTranslation:translation.x rotation:translation.y, rotation.x, rotation.y];
   [(_UIFloatingContentView *)self setContentMotion:v5];
 }
 
-- (void)addContentMotionEffect:(id)a3
+- (void)addContentMotionEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   contentMotionEffects = self->_contentMotionEffects;
-  v8 = v4;
+  v8 = effectCopy;
   if (!contentMotionEffects)
   {
     v6 = objc_opt_new();
     v7 = self->_contentMotionEffects;
     self->_contentMotionEffects = v6;
 
-    v4 = v8;
+    effectCopy = v8;
     contentMotionEffects = self->_contentMotionEffects;
   }
 
-  [(NSMutableArray *)contentMotionEffects addObject:v4];
+  [(NSMutableArray *)contentMotionEffects addObject:effectCopy];
 }
 
 - (void)_installContentMotionEffects
@@ -309,8 +309,8 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(UIView *)self motionEffects];
-        v10 = [v9 containsObject:v8];
+        motionEffects = [(UIView *)self motionEffects];
+        v10 = [motionEffects containsObject:v8];
 
         if ((v10 & 1) == 0)
         {
@@ -352,8 +352,8 @@
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
-        v9 = [(UIView *)self motionEffects];
-        v10 = [v9 containsObject:v8];
+        motionEffects = [(UIView *)self motionEffects];
+        v10 = [motionEffects containsObject:v8];
 
         if (v10)
         {
@@ -371,18 +371,18 @@
   }
 }
 
-- (void)setHighlightStyle:(int64_t)a3
+- (void)setHighlightStyle:(int64_t)style
 {
-  if (self->_highlightStyle != a3)
+  if (self->_highlightStyle != style)
   {
-    self->_highlightStyle = a3;
+    self->_highlightStyle = style;
     [(_UIFloatingContentView *)self _updateViewPropertiesForHighlightStyle:?];
 
     [(_UIFloatingContentView *)self _updateUnfocusedBorderView];
   }
 }
 
-- (void)_updateDefaultBackgroundFillsForHighlightStyle:(int64_t)a3
+- (void)_updateDefaultBackgroundFillsForHighlightStyle:(int64_t)style
 {
   if (self->_highlightStyle == 1 && _UISolariumEnabled() && ((_UIInternalPreferenceUsesDefault(&_MergedGlobals_924, @"UISolariumFloatingContentViewEnableBackgroundFills", _UIInternalPreferenceUpdateBool) & 1) != 0 || byte_1ED48A90C))
   {
@@ -478,10 +478,10 @@
   }
 }
 
-- (void)_updateViewPropertiesForHighlightStyle:(int64_t)a3
+- (void)_updateViewPropertiesForHighlightStyle:(int64_t)style
 {
   v5 = *MEMORY[0x1E69796E8];
-  if (a3)
+  if (style)
   {
     v6 = 0.18;
   }
@@ -492,13 +492,13 @@
   }
 
   v7 = 40.0;
-  if (!a3)
+  if (!style)
   {
     v7 = 20.0;
   }
 
   v30 = v7;
-  if (a3)
+  if (style)
   {
     v8 = 22.5;
   }
@@ -531,7 +531,7 @@
 
   else
   {
-    v11 = vdup_n_s32(a3 == 0);
+    v11 = vdup_n_s32(style == 0);
     v12.i64[0] = v11.u32[0];
     v12.i64[1] = v11.u32[1];
     v13 = vcltzq_s64(vshlq_n_s64(v12, 0x3FuLL));
@@ -542,17 +542,17 @@
     *v17.i64 = v30;
   }
 
-  v18 = vdup_n_s32(a3 == 0);
+  v18 = vdup_n_s32(style == 0);
   v19 = 40.0;
   v31[1] = 3221225472;
   v20 = 8.0;
-  if (!a3)
+  if (!style)
   {
     v19 = 8.0;
   }
 
   v21 = 20.0;
-  if (!a3)
+  if (!style)
   {
     v21 = 2.0;
   }
@@ -573,11 +573,11 @@
   v31[0] = MEMORY[0x1E69E9820];
   v31[2] = __65___UIFloatingContentView__updateViewPropertiesForHighlightStyle___block_invoke;
   v31[3] = &unk_1E70F6F88;
-  v33 = a3;
+  styleCopy = style;
   v34 = 0x4012000000000000;
   v31[4] = self;
   v32 = v5;
-  v46 = a3 == 0;
+  v46 = style == 0;
   v35 = v19;
   v36 = v20;
   __asm { FMOV            V6.2D, #0.5 }
@@ -640,17 +640,17 @@
     [(UIView *)self->_visualEffectContainerView setEdgesPreservingSuperviewLayoutMargins:15];
     [(UIView *)self->_visualEffectContainerView setOpaque:0];
     [(UIView *)self->_visualEffectContainerView setBackgroundColor:0];
-    v7 = [(UIView *)self->_visualEffectContainerView layer];
-    [v7 setCornerCurve:self->_cornerCurve];
+    layer = [(UIView *)self->_visualEffectContainerView layer];
+    [layer setCornerCurve:self->_cornerCurve];
 
-    v8 = [(UIView *)self->_visualEffectContainerView layer];
-    [v8 setCornerRadius:self->_cornerRadius];
+    layer2 = [(UIView *)self->_visualEffectContainerView layer];
+    [layer2 setCornerRadius:self->_cornerRadius];
 
-    v9 = [(UIView *)self->_visualEffectContainerView layer];
-    [v9 setAllowsGroupOpacity:0];
+    layer3 = [(UIView *)self->_visualEffectContainerView layer];
+    [layer3 setAllowsGroupOpacity:0];
 
-    v10 = [(UIView *)self->_visualEffectContainerView layer];
-    [v10 setAllowsGroupBlending:0];
+    layer4 = [(UIView *)self->_visualEffectContainerView layer];
+    [layer4 setAllowsGroupBlending:0];
 
     [(UIView *)self->_visualEffectContainerView setClipsToBounds:0];
     [(UIView *)self->_visualEffectContainerView setAlpha:1.0];
@@ -661,14 +661,14 @@
   return visualEffectContainerView;
 }
 
-- (void)setSecondaryBackdropView:(id)a3
+- (void)setSecondaryBackdropView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   secondaryBackdropView = self->_secondaryBackdropView;
-  v11 = v5;
+  v11 = viewCopy;
   if (secondaryBackdropView)
   {
-    if (secondaryBackdropView == v5)
+    if (secondaryBackdropView == viewCopy)
     {
       goto LABEL_7;
     }
@@ -678,9 +678,9 @@
     self->_secondaryBackdropView = 0;
   }
 
-  objc_storeStrong(&self->_secondaryBackdropView, a3);
-  v8 = [(_UIFloatingContentView *)self visualEffectContainerView];
-  [v8 addSubview:self->_secondaryBackdropView];
+  objc_storeStrong(&self->_secondaryBackdropView, view);
+  visualEffectContainerView = [(_UIFloatingContentView *)self visualEffectContainerView];
+  [visualEffectContainerView addSubview:self->_secondaryBackdropView];
 
   v9 = self->_secondaryBackdropView;
   [(UIView *)self->_visualEffectContainerView bounds];
@@ -690,10 +690,10 @@
     [(UIView *)self->_visualEffectContainerView setClipsToBounds:1];
   }
 
-  v10 = [(UIView *)self->_secondaryBackdropView layer];
-  [v10 setCornerRadius:0.0];
+  layer = [(UIView *)self->_secondaryBackdropView layer];
+  [layer setCornerRadius:0.0];
 
-  v5 = v11;
+  viewCopy = v11;
 LABEL_7:
 }
 
@@ -708,28 +708,28 @@ LABEL_7:
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_originalCornerRadius != a3)
+  if (self->_originalCornerRadius != radius)
   {
-    self->_originalCornerRadius = a3;
+    self->_originalCornerRadius = radius;
     [(_UIFloatingContentView *)self _updateCornerRadius:?];
   }
 }
 
-- (void)setCornerCurve:(id)a3
+- (void)setCornerCurve:(id)curve
 {
-  if (self->_cornerCurve != a3)
+  if (self->_cornerCurve != curve)
   {
-    self->_cornerCurve = a3;
+    self->_cornerCurve = curve;
     [(_UIFloatingContentView *)self _updateCornerRadiusLayers];
   }
 }
 
-- (void)setContinuousCornerEnabled:(BOOL)a3
+- (void)setContinuousCornerEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x1E69796E8];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x1E69796E0];
   }
@@ -737,11 +737,11 @@ LABEL_7:
   [(_UIFloatingContentView *)self setCornerCurve:*v3];
 }
 
-- (void)_updateCornerRadius:(double)a3
+- (void)_updateCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     v5 = [(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]];
 
     [(_UIFloatingContentView *)self _updateTransformForPrimaryState:v5];
@@ -751,72 +751,72 @@ LABEL_7:
 - (void)_updateCornerRadiusLayers
 {
   v3 = [(_UIFloatingContentView *)self _shouldApplyCornerRadiusForPrimaryState:[(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]];
-  v4 = [(UIView *)self->_containerView layer];
-  [v4 setCornerCurve:self->_cornerCurve];
+  layer = [(UIView *)self->_containerView layer];
+  [layer setCornerCurve:self->_cornerCurve];
 
-  v5 = [(UIView *)self->_containerView layer];
-  v6 = v5;
+  layer2 = [(UIView *)self->_containerView layer];
+  v6 = layer2;
   cornerRadius = 0.0;
   if (v3)
   {
     cornerRadius = self->_cornerRadius;
   }
 
-  [v5 setCornerRadius:cornerRadius];
+  [layer2 setCornerRadius:cornerRadius];
 
-  v8 = [(UIView *)self->_highlightView layer];
-  [v8 setCornerCurve:self->_cornerCurve];
+  layer3 = [(UIView *)self->_highlightView layer];
+  [layer3 setCornerCurve:self->_cornerCurve];
 
-  v9 = [(UIView *)self->_highlightView layer];
-  [v9 setCornerRadius:self->_cornerRadius];
+  layer4 = [(UIView *)self->_highlightView layer];
+  [layer4 setCornerRadius:self->_cornerRadius];
 
-  v10 = [(UIView *)self->_visualEffectContainerView layer];
-  [v10 setCornerCurve:self->_cornerCurve];
+  layer5 = [(UIView *)self->_visualEffectContainerView layer];
+  [layer5 setCornerCurve:self->_cornerCurve];
 
-  v11 = [(UIView *)self->_visualEffectContainerView layer];
-  [v11 setCornerRadius:self->_cornerRadius];
+  layer6 = [(UIView *)self->_visualEffectContainerView layer];
+  [layer6 setCornerRadius:self->_cornerRadius];
 
   unfocusedBorderView = self->_unfocusedBorderView;
   if (unfocusedBorderView)
   {
-    v13 = [(UIView *)unfocusedBorderView layer];
-    [v13 setCornerCurve:self->_cornerCurve];
+    layer7 = [(UIView *)unfocusedBorderView layer];
+    [layer7 setCornerCurve:self->_cornerCurve];
 
-    v14 = [(UIView *)self->_unfocusedBorderView layer];
-    [v14 setCornerRadius:self->_cornerRadius];
+    layer8 = [(UIView *)self->_unfocusedBorderView layer];
+    [layer8 setCornerRadius:self->_cornerRadius];
   }
 
   punchoutShadowView = self->_punchoutShadowView;
   if (punchoutShadowView)
   {
-    v16 = [(UIView *)punchoutShadowView layer];
-    [v16 setCornerCurve:self->_cornerCurve];
+    layer9 = [(UIView *)punchoutShadowView layer];
+    [layer9 setCornerCurve:self->_cornerCurve];
 
-    v17 = [(UIView *)self->_punchoutShadowView layer];
-    [v17 setCornerRadius:self->_cornerRadius];
+    layer10 = [(UIView *)self->_punchoutShadowView layer];
+    [layer10 setCornerRadius:self->_cornerRadius];
   }
 
   [(_UIFloatingContentView *)self _layoutHighContrastFocusIndicator];
 }
 
-- (void)setRoundContentWhenDeselected:(BOOL)a3
+- (void)setRoundContentWhenDeselected:(BOOL)deselected
 {
-  if (self->_roundContentWhenDeselected != a3)
+  if (self->_roundContentWhenDeselected != deselected)
   {
-    self->_roundContentWhenDeselected = a3;
+    self->_roundContentWhenDeselected = deselected;
     v5 = [(_UIFloatingContentView *)self _shouldApplyCornerRadiusForPrimaryState:[(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]];
-    v6 = [(UIView *)self->_containerView layer];
-    [v6 setCornerCurve:self->_cornerCurve];
+    layer = [(UIView *)self->_containerView layer];
+    [layer setCornerCurve:self->_cornerCurve];
 
-    v7 = [(UIView *)self->_containerView layer];
+    layer2 = [(UIView *)self->_containerView layer];
     cornerRadius = 0.0;
     if (v5)
     {
       cornerRadius = self->_cornerRadius;
     }
 
-    v9 = v7;
-    [v7 setCornerRadius:cornerRadius];
+    v9 = layer2;
+    [layer2 setCornerRadius:cornerRadius];
   }
 }
 
@@ -825,9 +825,9 @@ LABEL_7:
   focusAnimationConfiguration = self->_focusAnimationConfiguration;
   if (!focusAnimationConfiguration)
   {
-    v4 = [objc_opt_class() _defaultFocusAnimationConfiguration];
+    _defaultFocusAnimationConfiguration = [objc_opt_class() _defaultFocusAnimationConfiguration];
     v5 = self->_focusAnimationConfiguration;
-    self->_focusAnimationConfiguration = v4;
+    self->_focusAnimationConfiguration = _defaultFocusAnimationConfiguration;
 
     focusAnimationConfiguration = self->_focusAnimationConfiguration;
   }
@@ -835,56 +835,56 @@ LABEL_7:
   return focusAnimationConfiguration;
 }
 
-- (id)backgroundColorForState:(unint64_t)a3
+- (id)backgroundColorForState:(unint64_t)state
 {
-  if ([(_UIFloatingContentView *)self _primaryStateForState:?]!= a3)
+  if ([(_UIFloatingContentView *)self _primaryStateForState:?]!= state)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:866 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:866 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
   }
 
   backgroundColorsByState = self->_backgroundColorsByState;
 
-  return CFDictionaryGetValue(backgroundColorsByState, a3);
+  return CFDictionaryGetValue(backgroundColorsByState, state);
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
-  value = a3;
-  if ([(_UIFloatingContentView *)self _primaryStateForState:a4]!= a4)
+  value = color;
+  if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:873 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:873 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
   }
 
   backgroundColorsByState = self->_backgroundColorsByState;
   if (value)
   {
-    CFDictionarySetValue(backgroundColorsByState, a4, value);
+    CFDictionarySetValue(backgroundColorsByState, state, value);
   }
 
   else
   {
-    CFDictionaryRemoveValue(backgroundColorsByState, a4);
+    CFDictionaryRemoveValue(backgroundColorsByState, state);
   }
 
-  if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== a4)
+  if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== state)
   {
-    [(_UIFloatingContentView *)self _updateHighlightViewForPrimaryState:a4];
+    [(_UIFloatingContentView *)self _updateHighlightViewForPrimaryState:state];
   }
 }
 
-- (id)glassForState:(unint64_t)a3
+- (id)glassForState:(unint64_t)state
 {
   if (_UISolariumEnabled() && self->_glassesByState)
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a3]!= a3)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:889 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:889 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
     }
 
-    v6 = CFDictionaryGetValue(self->_glassesByState, a3);
+    v6 = CFDictionaryGetValue(self->_glassesByState, state);
   }
 
   else
@@ -895,15 +895,15 @@ LABEL_7:
   return v6;
 }
 
-- (void)setGlass:(id)a3 forState:(unint64_t)a4
+- (void)setGlass:(id)glass forState:(unint64_t)state
 {
-  value = a3;
+  value = glass;
   if (_UISolariumEnabled())
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a4]!= a4)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:900 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:900 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
     }
 
     glassesByState = self->_glassesByState;
@@ -913,53 +913,53 @@ LABEL_7:
       self->_glassesByState = glassesByState;
     }
 
-    CFDictionarySetValue(glassesByState, a4, value);
-    if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== a4)
+    CFDictionarySetValue(glassesByState, state, value);
+    if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== state)
     {
-      [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:a4 focusDirection:self->_highlightStyle forHighlightStyle:self->_focusDirection.x, self->_focusDirection.y];
+      [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:state focusDirection:self->_highlightStyle forHighlightStyle:self->_focusDirection.x, self->_focusDirection.y];
     }
   }
 }
 
-- (void)removeGlassForState:(unint64_t)a3
+- (void)removeGlassForState:(unint64_t)state
 {
   if (_UISolariumEnabled() && self->_glassesByState)
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a3]!= a3)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:917 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:917 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
     }
 
-    if (CFDictionaryContainsKey(self->_glassesByState, a3))
+    if (CFDictionaryContainsKey(self->_glassesByState, state))
     {
-      CFDictionaryRemoveValue(self->_glassesByState, a3);
-      if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== a3)
+      CFDictionaryRemoveValue(self->_glassesByState, state);
+      if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== state)
       {
         highlightStyle = self->_highlightStyle;
         x = self->_focusDirection.x;
         y = self->_focusDirection.y;
 
-        [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:a3 focusDirection:highlightStyle forHighlightStyle:x, y];
+        [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:state focusDirection:highlightStyle forHighlightStyle:x, y];
       }
     }
   }
 }
 
-- (id)backgroundMaterialForState:(unint64_t)a3
+- (id)backgroundMaterialForState:(unint64_t)state
 {
   if (_UISolariumEnabled() && self->_backgroundMaterialsByState)
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a3]!= a3)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:932 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:932 description:@"_UIFloatingContentView: getting properties for mixed states is unsupported"];
     }
 
-    v6 = CFDictionaryGetValue(self->_backgroundMaterialsByState, a3);
-    v7 = [MEMORY[0x1E695DFB0] null];
+    v6 = CFDictionaryGetValue(self->_backgroundMaterialsByState, state);
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 == v7)
+    if (v6 == null)
     {
       v8 = 0;
     }
@@ -978,15 +978,15 @@ LABEL_7:
   return v8;
 }
 
-- (void)setBackgroundMaterial:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundMaterial:(id)material forState:(unint64_t)state
 {
-  v10 = a3;
+  materialCopy = material;
   if (_UISolariumEnabled())
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a4]!= a4)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:945 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:945 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
     }
 
     backgroundMaterialsByState = self->_backgroundMaterialsByState;
@@ -996,59 +996,59 @@ LABEL_7:
       self->_backgroundMaterialsByState = backgroundMaterialsByState;
     }
 
-    v8 = v10;
-    if (!v10)
+    null = materialCopy;
+    if (!materialCopy)
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    CFDictionarySetValue(backgroundMaterialsByState, a4, v8);
-    if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== a4)
+    CFDictionarySetValue(backgroundMaterialsByState, state, null);
+    if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== state)
     {
-      [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:a4 focusDirection:self->_highlightStyle forHighlightStyle:self->_focusDirection.x, self->_focusDirection.y];
+      [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:state focusDirection:self->_highlightStyle forHighlightStyle:self->_focusDirection.x, self->_focusDirection.y];
     }
   }
 }
 
-- (void)removeBackgroundMaterialForState:(unint64_t)a3
+- (void)removeBackgroundMaterialForState:(unint64_t)state
 {
   if (_UISolariumEnabled() && self->_backgroundMaterialsByState)
   {
-    if ([(_UIFloatingContentView *)self _primaryStateForState:a3]!= a3)
+    if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:966 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:966 description:@"_UIFloatingContentView: setting properties for mixed states is unsupported"];
     }
 
-    if (CFDictionaryContainsKey(self->_backgroundMaterialsByState, a3))
+    if (CFDictionaryContainsKey(self->_backgroundMaterialsByState, state))
     {
-      CFDictionaryRemoveValue(self->_backgroundMaterialsByState, a3);
-      if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== a3)
+      CFDictionaryRemoveValue(self->_backgroundMaterialsByState, state);
+      if ([(_UIFloatingContentView *)self _primaryStateForState:self->_controlState]== state)
       {
         highlightStyle = self->_highlightStyle;
         x = self->_focusDirection.x;
         y = self->_focusDirection.y;
 
-        [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:a3 focusDirection:highlightStyle forHighlightStyle:x, y];
+        [(_UIFloatingContentView *)self _applyGlassMaterialsWithPrimaryState:state focusDirection:highlightStyle forHighlightStyle:x, y];
       }
     }
   }
 }
 
-- (BOOL)isBackgroundMaterialSetForState:(unint64_t)a3
+- (BOOL)isBackgroundMaterialSetForState:(unint64_t)state
 {
   v6 = _UISolariumEnabled();
   if (v6)
   {
     if (self->_backgroundMaterialsByState)
     {
-      if ([(_UIFloatingContentView *)self _primaryStateForState:a3]!= a3)
+      if ([(_UIFloatingContentView *)self _primaryStateForState:state]!= state)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:983 description:@"_UIFloatingContentView: checking properties for mixed states is unsupported"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingContentView.m" lineNumber:983 description:@"_UIFloatingContentView: checking properties for mixed states is unsupported"];
       }
 
-      LOBYTE(v6) = CFDictionaryContainsKey(self->_backgroundMaterialsByState, a3) != 0;
+      LOBYTE(v6) = CFDictionaryContainsKey(self->_backgroundMaterialsByState, state) != 0;
     }
 
     else
@@ -1060,30 +1060,30 @@ LABEL_7:
   return v6;
 }
 
-- (void)setShadowImage:(id)a3 stretchable:(BOOL)a4
+- (void)setShadowImage:(id)image stretchable:(BOOL)stretchable
 {
-  v7 = a3;
+  imageCopy = image;
   if ((_UIFloatingContentViewEnablePunchoutShadow() & 1) == 0)
   {
     self->_useShadowImage = 1;
-    self->_stretchableShadowImage = a4;
-    if (!a4)
+    self->_stretchableShadowImage = stretchable;
+    if (!stretchable)
     {
       self->_unfocusedShadowVerticalOffset = 0.0;
       self->_shadowVerticalOffset = 0.0;
     }
 
-    objc_storeStrong(&self->_shadowImage, a3);
+    objc_storeStrong(&self->_shadowImage, image);
     [(_UIFloatingContentView *)self _updateShadowLayer];
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseShadowImage:(BOOL)a3
+- (void)setUseShadowImage:(BOOL)image
 {
-  if (self->_useShadowImage != a3)
+  if (self->_useShadowImage != image)
   {
-    self->_useShadowImage = a3;
+    self->_useShadowImage = image;
     [(_UIFloatingContentView *)self _updateShadowLayer];
 
     [(UIView *)self setNeedsLayout];
@@ -1100,29 +1100,29 @@ LABEL_7:
   return [(_UIFloatingContentView *)self useShadowImage];
 }
 
-- (void)setShadowEnabled:(BOOL)a3
+- (void)setShadowEnabled:(BOOL)enabled
 {
-  if (self->_shadowEnabled != a3)
+  if (self->_shadowEnabled != enabled)
   {
-    self->_shadowEnabled = a3;
+    self->_shadowEnabled = enabled;
     [(_UIFloatingContentView *)self _updateShadowLayer];
 
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setScalesBackwards:(BOOL)a3
+- (void)setScalesBackwards:(BOOL)backwards
 {
-  if (self->_scalesBackwards != a3)
+  if (self->_scalesBackwards != backwards)
   {
-    self->_scalesBackwards = a3;
+    self->_scalesBackwards = backwards;
   }
 }
 
-- (CGPath)_shadowPathForSize:(CGSize)a3 radius:(double)a4
+- (CGPath)_shadowPathForSize:(CGSize)size radius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (qword_1EA990AC8 != -1)
   {
     dispatch_once(&qword_1EA990AC8, &__block_literal_global_48);
@@ -1137,11 +1137,11 @@ LABEL_7:
   *&v27[1] = height;
   [(_UIFloatingContentView *)self cornerRadius];
   v27[2] = v16;
-  *&v27[3] = a4;
+  *&v27[3] = radius;
   v28 = self->_cornerCurve;
   v17 = [MEMORY[0x1E696B098] valueWithBytes:v27 objCType:"{?={CGSize=dd}dd@}"];
-  v18 = [_MergedGlobals_24 objectForKey:v17];
-  if (!v18)
+  cGPath = [_MergedGlobals_24 objectForKey:v17];
+  if (!cGPath)
   {
     v19 = round(v9 + (v13 - width) * 0.5);
     v20 = round(v11 + (v15 - height) * 0.5);
@@ -1159,36 +1159,36 @@ LABEL_7:
       [UIBezierPath bezierPathWithRoundedRect:v19 cornerRadius:v20, width, height, v25];
     }
     v24 = ;
-    v18 = [v24 CGPath];
+    cGPath = [v24 CGPath];
 
-    if (v18)
+    if (cGPath)
     {
-      [_MergedGlobals_24 setObject:v18 forKey:v17];
+      [_MergedGlobals_24 setObject:cGPath forKey:v17];
     }
   }
 
-  return v18;
+  return cGPath;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = _UIFloatingContentView;
-  v4 = a3;
-  [(UIView *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UIView *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIView *)self traitCollection:v6.receiver];
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6.receiver = self;
   v6.super_class = _UIFloatingContentView;
-  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:v4];
+  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   if ([(_UIFloatingContentView *)self forwardsSubviewIntrinsicContentSizeInvalidationsToSuperview])
   {
-    v5 = [(UIView *)self superview];
-    [v5 _intrinsicContentSizeInvalidatedForChildView:v4];
+    superview = [(UIView *)self superview];
+    [superview _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   }
 }
 
@@ -1209,12 +1209,12 @@ LABEL_7:
 - (BOOL)_hasPotentialSolariumImpactedContent
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(__CFDictionary *)self->_backgroundColorsByState allValues];
+  allValues = [(__CFDictionary *)self->_backgroundColorsByState allValues];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1226,14 +1226,14 @@ LABEL_7:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * i) alphaComponent];
         v5 |= v8 > 0.999999881;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1353,12 +1353,12 @@ LABEL_7:
   self->_punchoutShadowView = v4;
 
   [(UIView *)self->_transformView insertSubview:self->_punchoutShadowView atIndex:0];
-  v7 = [(UIView *)self->_punchoutShadowView layer];
+  layer = [(UIView *)self->_punchoutShadowView layer];
   v6 = +[UIColor blackColor];
-  [v7 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v6, "CGColor")}];
 
-  [v7 setPunchoutShadow:1];
-  [v7 setShadowPathIsBounds:1];
+  [layer setPunchoutShadow:1];
+  [layer setShadowPathIsBounds:1];
 }
 
 - (void)_updatePunchoutShadowLayer
@@ -1368,7 +1368,7 @@ LABEL_7:
   if (shadowEnabled)
   {
     [(UIView *)punchoutShadowView setHidden:0];
-    v19 = [(UIView *)self->_punchoutShadowView layer];
+    layer = [(UIView *)self->_punchoutShadowView layer];
     v5 = [(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]];
     [(_UIFloatingContentView *)self unfocusedShadowRadius];
     v7 = v6;
@@ -1381,8 +1381,8 @@ LABEL_7:
       v7 = v14;
       [(_UIFloatingContentView *)self shadowVerticalOffset];
       v9 = v15;
-      v16 = [(UIView *)self traitCollection];
-      -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [v16 userInterfaceStyle]);
+      traitCollection = [(UIView *)self traitCollection];
+      -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
       v13 = v17;
     }
 
@@ -1400,10 +1400,10 @@ LABEL_7:
       v13 = v10;
     }
 
-    [v19 setShadowRadius:v7];
-    [v19 setShadowOffset:{0.0, v9}];
+    [layer setShadowRadius:v7];
+    [layer setShadowOffset:{0.0, v9}];
     *&v18 = v13;
-    [v19 setShadowOpacity:v18];
+    [layer setShadowOpacity:v18];
   }
 
   else
@@ -1419,11 +1419,11 @@ LABEL_7:
   {
     v3 = [(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]];
     v4 = [(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:v3];
-    v5 = [(_UIFloatingContentView *)self _effectiveUseShadowImage];
+    _effectiveUseShadowImage = [(_UIFloatingContentView *)self _effectiveUseShadowImage];
     [(UIView *)self bounds];
     v9 = v8;
     v11 = v10;
-    if (v5)
+    if (_effectiveUseShadowImage)
     {
       if (self->_stretchableShadowImage)
       {
@@ -1494,8 +1494,8 @@ LABEL_7:
           }
         }
 
-        v49 = [(_UIFloatingContentView *)self _disableOutsetShadowPath];
-        if (v49)
+        _disableOutsetShadowPath = [(_UIFloatingContentView *)self _disableOutsetShadowPath];
+        if (_disableOutsetShadowPath)
         {
           v50 = v21;
         }
@@ -1505,7 +1505,7 @@ LABEL_7:
           v50 = v37;
         }
 
-        if (v49)
+        if (_disableOutsetShadowPath)
         {
           v51 = v21;
         }
@@ -1589,15 +1589,15 @@ LABEL_7:
       v62.size.height = v11;
       [(UIView *)self->_legacyShadowView setCenter:MidX, CGRectGetMidY(v62)];
       v45 = [(_UIFloatingContentView *)self _shadowPathForSize:v9 radius:v11, v30];
-      v46 = [(UIView *)self->_legacyShadowView layer];
-      [v46 setShadowPath:v45];
+      layer = [(UIView *)self->_legacyShadowView layer];
+      [layer setShadowPath:v45];
 
       cornerCurve = self->_cornerCurve;
-      v48 = [(UIView *)self->_legacyShadowView layer];
-      [v48 setCornerCurve:cornerCurve];
+      layer2 = [(UIView *)self->_legacyShadowView layer];
+      [layer2 setCornerCurve:cornerCurve];
 
-      v59 = [(UIView *)self->_legacyShadowView layer];
-      [v59 setShadowRadius:v30];
+      layer3 = [(UIView *)self->_legacyShadowView layer];
+      [layer3 setShadowRadius:v30];
     }
   }
 }
@@ -1607,11 +1607,11 @@ LABEL_7:
   highContrastFocusIndicatorView = self->_highContrastFocusIndicatorView;
   if (highContrastFocusIndicatorView)
   {
-    v4 = [(UIView *)highContrastFocusIndicatorView layer];
-    [v4 borderWidth];
+    layer = [(UIView *)highContrastFocusIndicatorView layer];
+    [layer borderWidth];
     v6 = v5 + v5;
-    v7 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-    [v7 borderWidth];
+    layer2 = [(UIView *)self->_highContrastFocusIndicatorView layer];
+    [layer2 borderWidth];
     y = v8 + v8;
 
     if (self->_highContrastFocusIndicatorOutset.x == *MEMORY[0x1E695EFF8] && self->_highContrastFocusIndicatorOutset.y == *(MEMORY[0x1E695EFF8] + 8))
@@ -1630,8 +1630,8 @@ LABEL_7:
     [(UIView *)self->_highContrastFocusIndicatorView setFrame:v19.origin.x, v19.origin.y, v19.size.width, v19.size.height];
     v11 = _UISolariumMetricsEnabled();
     cornerCurve = self->_cornerCurve;
-    v13 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-    [v13 setCornerCurve:cornerCurve];
+    layer3 = [(UIView *)self->_highContrastFocusIndicatorView layer];
+    [layer3 setCornerCurve:cornerCurve];
 
     highContrastFocusIndicatorCornerRadius = self->_highContrastFocusIndicatorCornerRadius;
     if (highContrastFocusIndicatorCornerRadius <= 0.0)
@@ -1654,24 +1654,24 @@ LABEL_7:
       highContrastFocusIndicatorCornerRadius = v15 + self->_cornerRadius;
     }
 
-    v16 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-    [v16 setCornerRadius:highContrastFocusIndicatorCornerRadius];
+    layer4 = [(UIView *)self->_highContrastFocusIndicatorView layer];
+    [layer4 setCornerRadius:highContrastFocusIndicatorCornerRadius];
   }
 }
 
-- (void)setControlState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setControlState:(unint64_t)state animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
-    v6 = [(_UIFloatingContentView *)self focusAnimationConfiguration];
-    if ((a3 & 8) != 0)
+    focusAnimationConfiguration = [(_UIFloatingContentView *)self focusAnimationConfiguration];
+    if ((state & 8) != 0)
     {
-      [UIFocusAnimationCoordinator _focusingAnimationCoordinatorWithConfiguration:v6 inContext:0];
+      [UIFocusAnimationCoordinator _focusingAnimationCoordinatorWithConfiguration:focusAnimationConfiguration inContext:0];
     }
 
     else
     {
-      [UIFocusAnimationCoordinator _unfocusingAnimationCoordinatorWithConfiguration:v6 inContext:0];
+      [UIFocusAnimationCoordinator _unfocusingAnimationCoordinatorWithConfiguration:focusAnimationConfiguration inContext:0];
     }
     v8 = ;
 
@@ -1684,21 +1684,21 @@ LABEL_7:
   }
 
   v9 = v7;
-  [(_UIFloatingContentView *)self _setControlState:a3 withAnimationCoordinator:v7];
+  [(_UIFloatingContentView *)self _setControlState:state withAnimationCoordinator:v7];
   [v9 _animate];
 }
 
-- (void)_setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4
+- (void)_setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   controlState = self->_controlState;
-  if (controlState != a3)
+  if (controlState != state)
   {
-    self->_controlState = a3;
-    v8 = [(_UIFloatingContentView *)self _primaryStateForState:a3];
+    self->_controlState = state;
+    v8 = [(_UIFloatingContentView *)self _primaryStateForState:state];
     if (v8 == 1)
     {
-      if ((a3 & 8) != 0)
+      if ((state & 8) != 0)
       {
         v8 = 1;
       }
@@ -1727,9 +1727,9 @@ LABEL_7:
     aBlock[4] = self;
     v21 = v8 == 0;
     v10 = _Block_copy(aBlock);
-    v11 = [v6 activeFocusAnimation] == 1;
-    v12 = [v6 _activeConfiguration];
-    [v12 unfocusingBackgroundFadeDurationPercentage];
+    v11 = [coordinatorCopy activeFocusAnimation] == 1;
+    _activeConfiguration = [coordinatorCopy _activeConfiguration];
+    [_activeConfiguration unfocusingBackgroundFadeDurationPercentage];
     v14 = v13;
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -1744,9 +1744,9 @@ LABEL_7:
     v17[7] = controlState;
     v15 = _Block_copy(v17);
     v16 = v15;
-    if (v6)
+    if (coordinatorCopy)
     {
-      [v6 addCoordinatedAnimations:v15 completion:v10];
+      [coordinatorCopy addCoordinatedAnimations:v15 completion:v10];
     }
 
     else
@@ -1764,12 +1764,12 @@ LABEL_7:
   }
 }
 
-- (void)setClipsContentToBounds:(BOOL)a3
+- (void)setClipsContentToBounds:(BOOL)bounds
 {
   containerView = self->_containerView;
   if (containerView)
   {
-    [(UIView *)containerView setClipsToBounds:a3];
+    [(UIView *)containerView setClipsToBounds:bounds];
   }
 }
 
@@ -1784,11 +1784,11 @@ LABEL_7:
   return containerView;
 }
 
-- (void)setHighContrastFocusIndicatorCornerRadius:(double)a3
+- (void)setHighContrastFocusIndicatorCornerRadius:(double)radius
 {
-  self->_highContrastFocusIndicatorCornerRadius = a3;
-  v4 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-  [v4 setCornerRadius:a3];
+  self->_highContrastFocusIndicatorCornerRadius = radius;
+  layer = [(UIView *)self->_highContrastFocusIndicatorView layer];
+  [layer setCornerRadius:radius];
 }
 
 - (void)_updateHighContrastFocusIndicatorView
@@ -1804,12 +1804,12 @@ LABEL_7:
       self->_highContrastFocusIndicatorView = v4;
 
       v6 = +[UIColor whiteColor];
-      v7 = [v6 CGColor];
-      v8 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-      [v8 setBorderColor:v7];
+      cGColor = [v6 CGColor];
+      layer = [(UIView *)self->_highContrastFocusIndicatorView layer];
+      [layer setBorderColor:cGColor];
 
-      v9 = [(UIView *)self->_highContrastFocusIndicatorView layer];
-      [v9 setBorderWidth:8.0];
+      layer2 = [(UIView *)self->_highContrastFocusIndicatorView layer];
+      [layer2 setBorderWidth:8.0];
 
       [(UIView *)self->_transformView insertSubview:self->_highContrastFocusIndicatorView atIndex:0];
       [(_UIFloatingContentView *)self _layoutHighContrastFocusIndicator];
@@ -1847,8 +1847,8 @@ LABEL_7:
       v4 = *&qword_1EA95E138;
     }
 
-    v5 = [(UIView *)self->_unfocusedBorderView layer];
-    [v5 setBorderWidth:v4];
+    layer = [(UIView *)self->_unfocusedBorderView layer];
+    [layer setBorderWidth:v4];
 
     if ((self->_controlState & 8) != 0)
     {
@@ -1861,9 +1861,9 @@ LABEL_7:
     }
     v9 = ;
     v6 = v9;
-    v7 = [v9 CGColor];
-    v8 = [(UIView *)self->_unfocusedBorderView layer];
-    [v8 setBorderColor:v7];
+    cGColor = [v9 CGColor];
+    layer2 = [(UIView *)self->_unfocusedBorderView layer];
+    [layer2 setBorderColor:cGColor];
   }
 }
 
@@ -1884,26 +1884,26 @@ LABEL_7:
 
 - (double)_legacy_effectiveShadowOpacity
 {
-  v3 = [(UIView *)self traitCollection];
-  -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [v3 userInterfaceStyle]);
+  traitCollection = [(UIView *)self traitCollection];
+  -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
   v5 = v4;
 
   return v5;
 }
 
-- (void)_legacy_updateShadowOpacityForPrimaryState:(unint64_t)a3
+- (void)_legacy_updateShadowOpacityForPrimaryState:(unint64_t)state
 {
   [(_UIFloatingContentView *)self _legacy_effectiveShadowOpacity];
   v6 = v5;
   unfocusedShadowOpacity = v5;
-  if (![(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:a3])
+  if (![(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:state])
   {
     unfocusedShadowOpacity = self->_unfocusedShadowOpacity;
   }
 
   if ([(_UIFloatingContentView *)self _effectiveUseShadowImage])
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       highlightStyle = self->_highlightStyle;
       if (highlightStyle)
@@ -1920,30 +1920,30 @@ LABEL_7:
       }
     }
 
-    v13 = [(UIView *)self->_legacyShadowView layer];
+    layer = [(UIView *)self->_legacyShadowView layer];
     *&v14 = unfocusedShadowOpacity;
-    v15 = v13;
-    [v13 setOpacity:v14];
+    v15 = layer;
+    [layer setOpacity:v14];
   }
 
   else
   {
-    v9 = [(UIView *)self->_legacyShadowView layer];
+    layer2 = [(UIView *)self->_legacyShadowView layer];
     LODWORD(v10) = 1.0;
-    [v9 setOpacity:v10];
+    [layer2 setOpacity:v10];
 
-    v11 = [(UIView *)self->_legacyShadowView layer];
+    layer3 = [(UIView *)self->_legacyShadowView layer];
     *&v12 = unfocusedShadowOpacity;
-    v15 = v11;
-    [v11 setShadowOpacity:v12];
+    v15 = layer3;
+    [layer3 setShadowOpacity:v12];
   }
 }
 
 - (void)_legacy_updateShadowLayer
 {
-  v3 = [(_UIFloatingContentView *)self isShadowEnabled];
+  isShadowEnabled = [(_UIFloatingContentView *)self isShadowEnabled];
   legacyShadowView = self->_legacyShadowView;
-  if (v3)
+  if (isShadowEnabled)
   {
     if (!legacyShadowView)
     {
@@ -1957,14 +1957,14 @@ LABEL_7:
       legacyShadowView = self->_legacyShadowView;
     }
 
-    v18 = [(UIView *)legacyShadowView layer];
-    [(UIView *)v18 setZPosition:-1000.0];
+    layer = [(UIView *)legacyShadowView layer];
+    [(UIView *)layer setZPosition:-1000.0];
     if ([(_UIFloatingContentView *)self _effectiveUseShadowImage])
     {
-      v8 = [(_UIFloatingContentView *)self shadowImage];
+      shadowImage = [(_UIFloatingContentView *)self shadowImage];
       [(UIView *)self->_legacyShadowView setOpaque:0];
       [(UIView *)self->_legacyShadowView setBackgroundColor:0];
-      -[UIView setContents:](v18, "setContents:", [v8 CGImage]);
+      -[UIView setContents:](layer, "setContents:", [shadowImage CGImage]);
       if (self->_stretchableShadowImage)
       {
         [(_UIFloatingContentView *)self shadowContentsCenter];
@@ -1978,34 +1978,34 @@ LABEL_7:
         v12 = 1.0;
       }
 
-      [(UIView *)v18 setContentsCenter:v9, v10, v11, v12];
-      [(UIView *)v18 setShadowOpacity:0.0];
-      [(UIView *)v18 setOpacity:0.0];
-      [(UIView *)v18 setShadowRadius:0.0];
-      [(UIView *)v18 setZPosition:-1000.0];
+      [(UIView *)layer setContentsCenter:v9, v10, v11, v12];
+      [(UIView *)layer setShadowOpacity:0.0];
+      [(UIView *)layer setOpacity:0.0];
+      [(UIView *)layer setShadowRadius:0.0];
+      [(UIView *)layer setZPosition:-1000.0];
     }
 
     else
     {
-      [(UIView *)v18 setContents:0];
-      [(UIView *)v18 setContentsCenter:0.0, 0.0, 1.0, 1.0];
-      v14 = [(UIView *)self traitCollection];
-      -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [v14 userInterfaceStyle]);
+      [(UIView *)layer setContents:0];
+      [(UIView *)layer setContentsCenter:0.0, 0.0, 1.0, 1.0];
+      traitCollection = [(UIView *)self traitCollection];
+      -[_UIFloatingContentView shadowOpacityForUserInterfaceStyle:](self, "shadowOpacityForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
       *&v15 = v15;
-      [(UIView *)v18 setShadowOpacity:v15];
+      [(UIView *)layer setShadowOpacity:v15];
 
-      v16 = [(_UIFloatingContentView *)self cornerCurve];
-      [(UIView *)v18 setCornerCurve:v16];
+      cornerCurve = [(_UIFloatingContentView *)self cornerCurve];
+      [(UIView *)layer setCornerCurve:cornerCurve];
 
       [(_UIFloatingContentView *)self shadowRadius];
-      [(UIView *)v18 setShadowRadius:?];
+      [(UIView *)layer setShadowRadius:?];
     }
 
     [(_UIFloatingContentView *)self _layoutShadow];
     v17 = [(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]];
     [(_UIFloatingContentView *)self _legacy_updateShadowOpacityForPrimaryState:v17];
     [(_UIFloatingContentView *)self _updateTransformForPrimaryState:v17];
-    v13 = v18;
+    v13 = layer;
   }
 
   else
@@ -2016,14 +2016,14 @@ LABEL_7:
   }
 }
 
-- (void)setShadowContentsCenter:(CGRect)a3
+- (void)setShadowContentsCenter:(CGRect)center
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = center.size.height;
+  width = center.size.width;
+  y = center.origin.y;
+  x = center.origin.x;
   p_shadowContentsCenter = &self->_shadowContentsCenter;
-  if (!CGRectEqualToRect(self->_shadowContentsCenter, a3))
+  if (!CGRectEqualToRect(self->_shadowContentsCenter, center))
   {
     p_shadowContentsCenter->origin.x = x;
     p_shadowContentsCenter->origin.y = y;
@@ -2031,28 +2031,28 @@ LABEL_7:
     p_shadowContentsCenter->size.height = height;
     if (self->_stretchableShadowImage)
     {
-      v9 = [(UIView *)self->_legacyShadowView layer];
-      [v9 setContentsCenter:{x, y, width, height}];
+      layer = [(UIView *)self->_legacyShadowView layer];
+      [layer setContentsCenter:{x, y, width, height}];
     }
   }
 }
 
-- (void)setShadowOpacity:(double)a3 forUserInterfaceStyle:(int64_t)a4
+- (void)setShadowOpacity:(double)opacity forUserInterfaceStyle:(int64_t)style
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65___UIFloatingContentView_setShadowOpacity_forUserInterfaceStyle___block_invoke;
   v5[3] = &unk_1E70F6848;
   v5[4] = self;
-  v5[5] = a4;
-  *&v5[6] = a3;
+  v5[5] = style;
+  *&v5[6] = opacity;
   [UIView _performSystemAppearanceModifications:v5];
   [(_UIFloatingContentView *)self _updateShadowLayer];
 }
 
-- (double)shadowOpacityForUserInterfaceStyle:(int64_t)a3
+- (double)shadowOpacityForUserInterfaceStyle:(int64_t)style
 {
-  v3 = a3 == 2 || a3 == 1000;
+  v3 = style == 2 || style == 1000;
   v4 = 41;
   if (v3)
   {
@@ -2066,14 +2066,14 @@ LABEL_7:
 {
   if (_UIFloatingContentViewEnablePunchoutShadow())
   {
-    v3 = [(UIView *)self->_punchoutShadowView layer];
-    [v3 shadowOpacity];
+    layer = [(UIView *)self->_punchoutShadowView layer];
+    [layer shadowOpacity];
   }
 
   else
   {
-    v3 = [(UIView *)self->_legacyShadowView layer];
-    [v3 opacity];
+    layer = [(UIView *)self->_legacyShadowView layer];
+    [layer opacity];
   }
 
   v5 = v4;
@@ -2081,11 +2081,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)setUnfocusedShadowOpacity:(double)a3
+- (void)setUnfocusedShadowOpacity:(double)opacity
 {
-  if (self->_unfocusedShadowOpacity != a3)
+  if (self->_unfocusedShadowOpacity != opacity)
   {
-    self->_unfocusedShadowOpacity = a3;
+    self->_unfocusedShadowOpacity = opacity;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2101,11 +2101,11 @@ LABEL_7:
   }
 }
 
-- (void)setUnfocusedShadowVerticalOffset:(double)a3
+- (void)setUnfocusedShadowVerticalOffset:(double)offset
 {
-  if (self->_unfocusedShadowVerticalOffset != a3)
+  if (self->_unfocusedShadowVerticalOffset != offset)
   {
-    self->_unfocusedShadowVerticalOffset = a3;
+    self->_unfocusedShadowVerticalOffset = offset;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2121,11 +2121,11 @@ LABEL_7:
   }
 }
 
-- (void)setUnfocusedShadowRadius:(double)a3
+- (void)setUnfocusedShadowRadius:(double)radius
 {
-  if (self->_unfocusedShadowRadius != a3)
+  if (self->_unfocusedShadowRadius != radius)
   {
-    self->_unfocusedShadowRadius = a3;
+    self->_unfocusedShadowRadius = radius;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2140,11 +2140,11 @@ LABEL_7:
   }
 }
 
-- (void)setPressedShadowRadius:(double)a3
+- (void)setPressedShadowRadius:(double)radius
 {
-  if (self->_pressedShadowRadius != a3)
+  if (self->_pressedShadowRadius != radius)
   {
-    self->_pressedShadowRadius = a3;
+    self->_pressedShadowRadius = radius;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2159,11 +2159,11 @@ LABEL_7:
   }
 }
 
-- (void)setPressedShadowVerticalOffset:(double)a3
+- (void)setPressedShadowVerticalOffset:(double)offset
 {
-  if (self->_pressedShadowVerticalOffset != a3)
+  if (self->_pressedShadowVerticalOffset != offset)
   {
-    self->_pressedShadowVerticalOffset = a3;
+    self->_pressedShadowVerticalOffset = offset;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2179,22 +2179,22 @@ LABEL_7:
   }
 }
 
-- (void)setPressedShadowExpansion:(CGSize)a3
+- (void)setPressedShadowExpansion:(CGSize)expansion
 {
-  if (self->_pressedShadowExpansion.width == a3.width && self->_pressedShadowExpansion.height == a3.height)
+  if (self->_pressedShadowExpansion.width == expansion.width && self->_pressedShadowExpansion.height == expansion.height)
   {
-    self->_pressedShadowExpansion = a3;
+    self->_pressedShadowExpansion = expansion;
     v6 = [(_UIFloatingContentView *)self _primaryStateForState:[(_UIFloatingContentView *)self controlState]];
 
     [(_UIFloatingContentView *)self _updateTransformForPrimaryState:v6];
   }
 }
 
-- (void)setPressedShadowOpacity:(double)a3
+- (void)setPressedShadowOpacity:(double)opacity
 {
-  if (self->_pressedShadowOpacity != a3)
+  if (self->_pressedShadowOpacity != opacity)
   {
-    self->_pressedShadowOpacity = a3;
+    self->_pressedShadowOpacity = opacity;
     if (_UIFloatingContentViewEnablePunchoutShadow())
     {
 
@@ -2210,11 +2210,11 @@ LABEL_7:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UIFloatingContentView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UIFloatingContentView *)self _layoutContentView];
   [(_UIFloatingContentView *)self _updateScaleFactor];
   if (_UISolariumMetricsEnabled())
@@ -2225,11 +2225,11 @@ LABEL_7:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UIFloatingContentView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UIFloatingContentView *)self _layoutContentView];
   [(_UIFloatingContentView *)self _updateScaleFactor];
   if (_UISolariumMetricsEnabled())
@@ -2240,39 +2240,39 @@ LABEL_7:
   }
 }
 
-- (void)setUnfocusedBorderOpacity:(double)a3
+- (void)setUnfocusedBorderOpacity:(double)opacity
 {
-  if (self->_unfocusedBorderOpacity != a3)
+  if (self->_unfocusedBorderOpacity != opacity)
   {
-    self->_unfocusedBorderOpacity = a3;
+    self->_unfocusedBorderOpacity = opacity;
     [(_UIFloatingContentView *)self _updateUnfocusedBorderView];
   }
 }
 
-- (void)setAsymmetricScaleFactor:(CGSize)a3
+- (void)setAsymmetricScaleFactor:(CGSize)factor
 {
-  self->_asymmetricScaleFactor = a3;
+  self->_asymmetricScaleFactor = factor;
   self->_customScale = 1;
   self->_symmetricScale = 0;
 }
 
-- (void)setAsymmetricFocusedSizeIncrease:(CGSize)a3
+- (void)setAsymmetricFocusedSizeIncrease:(CGSize)increase
 {
-  self->_asymmetricFocusedSizeIncrease = a3;
+  self->_asymmetricFocusedSizeIncrease = increase;
   self->_customScale = 0;
   self->_symmetricScale = 0;
 }
 
-- (void)setAsymmetricPressedScaleFactor:(CGSize)a3
+- (void)setAsymmetricPressedScaleFactor:(CGSize)factor
 {
-  self->_asymmetricPressedScaleFactor = a3;
+  self->_asymmetricPressedScaleFactor = factor;
   self->_customScale = 1;
   self->_symmetricScale = 0;
 }
 
-- (void)setAsymmetricPressedSizeIncrease:(CGSize)a3
+- (void)setAsymmetricPressedSizeIncrease:(CGSize)increase
 {
-  self->_asymmetricPressedSizeIncrease = a3;
+  self->_asymmetricPressedSizeIncrease = increase;
   self->_customScale = 0;
   self->_symmetricScale = 0;
 }
@@ -2351,9 +2351,9 @@ LABEL_7:
   }
 }
 
-- (void)_updateContainerLayerQualityForPrimaryState:(unint64_t)a3
+- (void)_updateContainerLayerQualityForPrimaryState:(unint64_t)state
 {
-  if ([(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:a3])
+  if ([(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:state])
   {
     v4 = self->_contentRotation.y != *(MEMORY[0x1E695EFF8] + 8) || self->_contentRotation.x != *MEMORY[0x1E695EFF8];
   }
@@ -2363,35 +2363,35 @@ LABEL_7:
     v4 = 0;
   }
 
-  v5 = [(UIView *)self->_containerView layer];
-  [v5 setAllowsEdgeAntialiasing:v4];
+  layer = [(UIView *)self->_containerView layer];
+  [layer setAllowsEdgeAntialiasing:v4];
 
-  v6 = [(UIView *)self->_containerView layer];
-  [v6 setShouldRasterize:v4];
+  layer2 = [(UIView *)self->_containerView layer];
+  [layer2 setShouldRasterize:v4];
 }
 
-- (void)_updateHighlightViewForPrimaryState:(unint64_t)a3
+- (void)_updateHighlightViewForPrimaryState:(unint64_t)state
 {
-  v4 = [(_UIFloatingContentView *)self backgroundColorForState:a3];
+  v4 = [(_UIFloatingContentView *)self backgroundColorForState:state];
   [(UIView *)self->_highlightView setBackgroundColor:v4];
 }
 
-- (void)_updateTransformForPrimaryState:(unint64_t)a3
+- (void)_updateTransformForPrimaryState:(unint64_t)state
 {
   if (_UISolariumMetricsEnabled())
   {
 
-    [(_UIFloatingContentView *)self _modern_updateTransformForPrimaryState:a3];
+    [(_UIFloatingContentView *)self _modern_updateTransformForPrimaryState:state];
   }
 
   else
   {
 
-    [(_UIFloatingContentView *)self _legacy_updateTransformForPrimaryState:a3];
+    [(_UIFloatingContentView *)self _legacy_updateTransformForPrimaryState:state];
   }
 }
 
-- (void)_legacy_updateTransformForPrimaryState:(unint64_t)a3
+- (void)_legacy_updateTransformForPrimaryState:(unint64_t)state
 {
   v5 = *(MEMORY[0x1E69792E8] + 48);
   v76 = *(MEMORY[0x1E69792E8] + 32);
@@ -2454,7 +2454,7 @@ LABEL_7:
     v64 = *&v61.m43;
   }
 
-  if ([(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:a3])
+  if ([(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:state])
   {
     p_asymmetricScaleFactor = &self->_asymmetricScaleFactor;
     if (fabs(self->_asymmetricScaleFactor.width) < 2.22044605e-16 || fabs(self->_asymmetricScaleFactor.height) < 2.22044605e-16)
@@ -2463,7 +2463,7 @@ LABEL_7:
     }
 
     shadowVerticalOffset = self->_shadowVerticalOffset;
-    if (a3 == 1)
+    if (state == 1)
     {
       highlightStyle = self->_highlightStyle;
       if (highlightStyle)
@@ -2506,7 +2506,7 @@ LABEL_7:
       goto LABEL_31;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       v20 = self->_highlightStyle;
       if (!v20)
@@ -2697,7 +2697,7 @@ LABEL_31:
   v64 = *&v61.m43;
   v16 = -0.001;
 LABEL_32:
-  v46 = [(UIView *)self->_transformView layer];
+  layer = [(UIView *)self->_transformView layer];
   *&v61.m21 = v76;
   *&v61.m23 = v77;
   *&v61.m31 = v78;
@@ -2707,13 +2707,13 @@ LABEL_32:
   v61.m34 = v8;
   *&v61.m41 = v72;
   *&v61.m43 = v73;
-  [v46 setTransform:&v61];
+  [layer setTransform:&v61];
 
-  v47 = [(UIView *)self->_contentView layer];
+  layer2 = [(UIView *)self->_contentView layer];
   v61 = v71;
-  [v47 setTransform:&v61];
+  [layer2 setTransform:&v61];
 
-  v48 = [(UIView *)self->_legacyShadowView layer];
+  layer3 = [(UIView *)self->_legacyShadowView layer];
   *&v61.m21 = v67;
   *&v61.m23 = v68;
   *&v61.m31 = v69;
@@ -2723,14 +2723,14 @@ LABEL_32:
   v61.m34 = v16;
   *&v61.m41 = v63;
   *&v61.m43 = v64;
-  [v48 setTransform:&v61];
+  [layer3 setTransform:&v61];
 
-  v49 = [(UIView *)self->_visualEffectContainerView layer];
+  layer4 = [(UIView *)self->_visualEffectContainerView layer];
   v61 = v62;
-  [v49 setTransform:&v61];
+  [layer4 setTransform:&v61];
 }
 
-- (void)_modern_updateTransformForPrimaryState:(unint64_t)a3
+- (void)_modern_updateTransformForPrimaryState:(unint64_t)state
 {
   v5 = *(MEMORY[0x1E69792E8] + 48);
   v143 = *(MEMORY[0x1E69792E8] + 32);
@@ -2791,7 +2791,7 @@ LABEL_32:
     v131 = *&v129.m43;
   }
 
-  v21 = [(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:a3];
+  v21 = [(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:state];
   if (!v21)
   {
     unfocusedShadowVerticalOffset = self->_unfocusedShadowVerticalOffset;
@@ -2822,7 +2822,7 @@ LABEL_32:
   v104 = m34;
   v22 = originalCornerRadius;
   v23 = 43;
-  if (a3 == 1)
+  if (state == 1)
   {
     v23 = 48;
   }
@@ -3133,7 +3133,7 @@ LABEL_66:
   v142 = *&v129.m13;
   v8 = v129.m34;
   v83 = 30;
-  if (a3 == 1)
+  if (state == 1)
   {
     v83 = 42;
   }
@@ -3199,7 +3199,7 @@ LABEL_66:
   v33 = v119;
 LABEL_73:
   v126 = originalCornerRadius;
-  v85 = [(UIView *)self->_transformView layer];
+  layer = [(UIView *)self->_transformView layer];
   *&v129.m21 = v143;
   *&v129.m23 = v144;
   *&v129.m31 = v145;
@@ -3209,7 +3209,7 @@ LABEL_73:
   v129.m34 = v8;
   *&v129.m41 = v139;
   *&v129.m43 = v140;
-  [v85 setTransform:&v129];
+  [layer setTransform:&v129];
 
   [(UIView *)self->_containerView setFrame:v33, v32, width, height];
   [(UIView *)self->_highlightView setFrame:v11, v13, width, height];
@@ -3228,9 +3228,9 @@ LABEL_73:
     [(UIView *)self->_secondaryBackdropView layoutIfNeeded];
   }
 
-  v89 = [(UIView *)self->_contentView layer];
+  layer2 = [(UIView *)self->_contentView layer];
   v129 = v138;
-  [v89 setTransform:&v129];
+  [layer2 setTransform:&v129];
 
   [(UIView *)self->_containerView bounds];
   v90 = v149.origin.x;
@@ -3252,7 +3252,7 @@ LABEL_73:
   legacyShadowView = self->_legacyShadowView;
   if (legacyShadowView)
   {
-    v98 = [(UIView *)legacyShadowView layer];
+    layer3 = [(UIView *)legacyShadowView layer];
     *&v129.m21 = v134;
     *&v129.m23 = v135;
     *&v129.m31 = v136;
@@ -3262,7 +3262,7 @@ LABEL_73:
     v129.m34 = v116;
     *&v129.m41 = v130;
     *&v129.m43 = v131;
-    [v98 setTransform:&v129];
+    [layer3 setTransform:&v129];
   }
 
   specularView = self->_specularView;
@@ -3270,11 +3270,11 @@ LABEL_73:
   {
     [(UIView *)specularView setBounds:v90, v91, v92, v93];
     [(UIView *)self->_specularView setCenter:MidX, MidY];
-    v100 = [(_UIFocusSpecularHighlightView *)self->_specularView specularHighlightLayer];
-    [v100 updateTransformWithFocused:v21];
+    specularHighlightLayer = [(_UIFocusSpecularHighlightView *)self->_specularView specularHighlightLayer];
+    [specularHighlightLayer updateTransformWithFocused:v21];
 
-    v101 = [(_UIFocusSpecularHighlightView *)self->_specularView specularHighlightLayer];
-    [v101 updateForFocusDirection:v21 isFocused:{self->_focusDirection.x, self->_focusDirection.y}];
+    specularHighlightLayer2 = [(_UIFocusSpecularHighlightView *)self->_specularView specularHighlightLayer];
+    [specularHighlightLayer2 updateForFocusDirection:v21 isFocused:{self->_focusDirection.x, self->_focusDirection.y}];
   }
 
   unfocusedBorderView = self->_unfocusedBorderView;
@@ -3288,9 +3288,9 @@ LABEL_73:
   [(_UIFloatingContentView *)self _updateCornerRadiusLayers];
 }
 
-- (void)_updateHighContrastFocusIndicatorForPrimaryState:(unint64_t)a3
+- (void)_updateHighContrastFocusIndicatorForPrimaryState:(unint64_t)state
 {
-  v4 = [(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:a3];
+  v4 = [(_UIFloatingContentView *)self _shouldAppearToFloatForPrimaryState:state];
   v5 = 0.0;
   if (v4)
   {
@@ -3302,17 +3302,17 @@ LABEL_73:
   [(UIView *)highContrastFocusIndicatorView setAlpha:v5];
 }
 
-- (void)_legacy_updateShadowContentsScaleForPrimaryState:(unint64_t)a3
+- (void)_legacy_updateShadowContentsScaleForPrimaryState:(unint64_t)state
 {
   if (self->_legacyShadowView)
   {
     v4 = 1.0;
-    if (a3 == 1)
+    if (state == 1)
     {
       v4 = 2.0;
     }
 
-    if (a3 == 8)
+    if (state == 8)
     {
       v5 = 1.05;
     }
@@ -3324,7 +3324,7 @@ LABEL_73:
 
     [MEMORY[0x1E6979518] animationDuration];
     v7 = v6;
-    v17 = [MEMORY[0x1E6979518] animationTimingFunction];
+    animationTimingFunction = [MEMORY[0x1E6979518] animationTimingFunction];
     v8 = MEMORY[0x1E6979518];
     +[UIView inheritedAnimationDuration];
     [v8 setAnimationDuration:?];
@@ -3339,13 +3339,13 @@ LABEL_73:
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
     [v13 setToValue:v14];
 
-    v15 = [(UIView *)self->_legacyShadowView layer];
-    [v15 setContentsScale:v5];
+    layer = [(UIView *)self->_legacyShadowView layer];
+    [layer setContentsScale:v5];
 
-    v16 = [(UIView *)self->_legacyShadowView layer];
-    [v16 addAnimation:v13 forKey:@"ShadowViewContentsScaleAnimation"];
+    layer2 = [(UIView *)self->_legacyShadowView layer];
+    [layer2 addAnimation:v13 forKey:@"ShadowViewContentsScaleAnimation"];
 
-    [MEMORY[0x1E6979518] setAnimationTimingFunction:v17];
+    [MEMORY[0x1E6979518] setAnimationTimingFunction:animationTimingFunction];
     [MEMORY[0x1E6979518] setAnimationDuration:v7];
   }
 }
@@ -3368,9 +3368,9 @@ LABEL_73:
   }
 }
 
-- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)a3
+- (id)_focusedFrameGuideCreateIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v15[4] = *MEMORY[0x1E69E9840];
   v5 = objc_getAssociatedObject(self, &_focusedFrameGuideCreateIfNecessary__focusedFrameGuideKey);
   if (v5)
@@ -3380,7 +3380,7 @@ LABEL_73:
 
   else
   {
-    v6 = !v3;
+    v6 = !necessaryCopy;
   }
 
   if (!v6)
@@ -3407,8 +3407,8 @@ LABEL_73:
 
     [(_UIFloatingContentView *)self _updateFocusedFrameGuideConstraintsIfApplicable];
     v12 = MEMORY[0x1E69977A0];
-    v13 = [(UILayoutGuide *)v5 _systemConstraints];
-    [v12 activateConstraints:v13];
+    _systemConstraints = [(UILayoutGuide *)v5 _systemConstraints];
+    [v12 activateConstraints:_systemConstraints];
   }
 
   return v5;
@@ -3455,44 +3455,44 @@ LABEL_73:
       v13 = 0.0;
     }
 
-    v14 = [v31 _systemConstraints];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    _systemConstraints = [v31 _systemConstraints];
+    v15 = [_systemConstraints objectAtIndexedSubscript:0];
     [v15 constant];
     v17 = v16;
 
     if (v17 != v13)
     {
-      v18 = [v14 objectAtIndexedSubscript:0];
+      v18 = [_systemConstraints objectAtIndexedSubscript:0];
       [v18 setConstant:v13];
     }
 
-    v19 = [v14 objectAtIndexedSubscript:1];
+    v19 = [_systemConstraints objectAtIndexedSubscript:1];
     [v19 constant];
     v21 = v20;
 
     if (v21 != v12)
     {
-      v22 = [v14 objectAtIndexedSubscript:1];
+      v22 = [_systemConstraints objectAtIndexedSubscript:1];
       [v22 setConstant:v12];
     }
 
-    v23 = [v14 objectAtIndexedSubscript:2];
+    v23 = [_systemConstraints objectAtIndexedSubscript:2];
     [v23 constant];
     v25 = v24;
 
     if (v25 != v13)
     {
-      v26 = [v14 objectAtIndexedSubscript:2];
+      v26 = [_systemConstraints objectAtIndexedSubscript:2];
       [v26 setConstant:v13];
     }
 
-    v27 = [v14 objectAtIndexedSubscript:3];
+    v27 = [_systemConstraints objectAtIndexedSubscript:3];
     [v27 constant];
     v29 = v28;
 
     if (v29 != v12)
     {
-      v30 = [v14 objectAtIndexedSubscript:3];
+      v30 = [_systemConstraints objectAtIndexedSubscript:3];
       [v30 setConstant:v12];
     }
 

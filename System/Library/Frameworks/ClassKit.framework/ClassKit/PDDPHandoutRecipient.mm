@@ -1,12 +1,12 @@
 @interface PDDPHandoutRecipient
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPHandoutRecipient
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPHandoutRecipient;
   v3 = [(PDDPHandoutRecipient *)&v7 description];
-  v4 = [(PDDPHandoutRecipient *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPHandoutRecipient *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -59,109 +59,109 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_parentObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_classId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v5;
+    [toCopy setObjectId:?];
+    toCopy = v5;
   }
 
   if (self->_parentObjectId)
   {
     [v5 setParentObjectId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_classId)
   {
     [v5 setClassId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personId)
   {
     [v5 setPersonId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appIdentifier)
   {
     [v5 setAppIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v8 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_classId copyWithZone:a3];
+  v10 = [(NSString *)self->_classId copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_personId copyWithZone:a3];
+  v12 = [(NSString *)self->_personId copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_appIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_appIdentifier copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((objectId = self->_objectId, !(objectId | v4[3])) || -[NSString isEqual:](objectId, "isEqual:")) && ((parentObjectId = self->_parentObjectId, !(parentObjectId | v4[4])) || -[NSString isEqual:](parentObjectId, "isEqual:")) && ((classId = self->_classId, !(classId | v4[2])) || -[NSString isEqual:](classId, "isEqual:")) && ((personId = self->_personId, !(personId | v4[5])) || -[NSString isEqual:](personId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((objectId = self->_objectId, !(objectId | equalCopy[3])) || -[NSString isEqual:](objectId, "isEqual:")) && ((parentObjectId = self->_parentObjectId, !(parentObjectId | equalCopy[4])) || -[NSString isEqual:](parentObjectId, "isEqual:")) && ((classId = self->_classId, !(classId | equalCopy[2])) || -[NSString isEqual:](classId, "isEqual:")) && ((personId = self->_personId, !(personId | equalCopy[5])) || -[NSString isEqual:](personId, "isEqual:")))
   {
     appIdentifier = self->_appIdentifier;
-    if (appIdentifier | v4[1])
+    if (appIdentifier | equalCopy[1])
     {
       v10 = [(NSString *)appIdentifier isEqual:?];
     }
@@ -189,30 +189,30 @@
   return v6 ^ [(NSString *)self->_appIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[3])
+  fromCopy = from;
+  if (fromCopy[3])
   {
     [(PDDPHandoutRecipient *)self setObjectId:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(PDDPHandoutRecipient *)self setParentObjectId:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PDDPHandoutRecipient *)self setClassId:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(PDDPHandoutRecipient *)self setPersonId:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(PDDPHandoutRecipient *)self setAppIdentifier:?];
   }

@@ -1,20 +1,20 @@
 @interface FBSProcessResourceProvision
-+ (id)provisionWithAllowance:(id *)a3;
-+ (id)provisionWithResourceType:(int64_t)a3 timeInterval:(double)a4;
++ (id)provisionWithAllowance:(id *)allowance;
++ (id)provisionWithResourceType:(int64_t)type timeInterval:(double)interval;
 - (BOOL)_queue_updateConsumption;
-- (BOOL)allowanceRemaining:(id *)a3;
-- (FBSProcessResourceProvision)initWithAllowance:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)allowanceRemaining:(id *)remaining;
+- (FBSProcessResourceProvision)initWithAllowance:(id *)allowance;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)succinctDescriptionBuilder;
 - (void)_beginMonitoring;
 - (void)_prepareForReuse;
-- (void)_queue_evaluateConsumptionFromTimer:(BOOL)a3;
+- (void)_queue_evaluateConsumptionFromTimer:(BOOL)timer;
 - (void)_queue_noteAllowanceExhausted;
 - (void)_queue_stopMonitoring;
 - (void)_queue_updateConsumption;
 - (void)_updateProgress;
 - (void)dealloc;
-- (void)setAllowance:(id *)a3;
+- (void)setAllowance:(id *)allowance;
 @end
 
 @implementation FBSProcessResourceProvision
@@ -146,7 +146,7 @@ LABEL_21:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_queue == nil"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_8();
@@ -165,8 +165,8 @@ LABEL_21:
 - (void)_beginMonitoring
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FBSProcessExecutionProvision *)self process];
-  v5 = FBSProcessPrettyDescription(v4);
+  process = [(FBSProcessExecutionProvision *)self process];
+  v5 = FBSProcessPrettyDescription(process);
   v6 = NSStringFromProcessResourceType(self->_allowance.type);
   [v3 stringWithFormat:@"com.apple.frontboardservices.watchdog-%@-%@", v5, v6];
   objc_claimAutoreleasedReturnValue();
@@ -181,15 +181,15 @@ LABEL_21:
 {
   v8.receiver = self;
   v8.super_class = FBSProcessResourceProvision;
-  v3 = [(FBSProcessExecutionProvision *)&v8 succinctDescriptionBuilder];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = NSStringFromProcessResourceAllowance(&v4->_allowance.type);
-  v6 = [v3 appendObject:v5 withName:@"allowance"];
+  succinctDescriptionBuilder = [(FBSProcessExecutionProvision *)&v8 succinctDescriptionBuilder];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = NSStringFromProcessResourceAllowance(&selfCopy->_allowance.type);
+  v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"allowance"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 uint64_t __46__FBSProcessResourceProvision__stopMonitoring__block_invoke(uint64_t a1)
@@ -203,11 +203,11 @@ uint64_t __46__FBSProcessResourceProvision__stopMonitoring__block_invoke(uint64_
 - (void)_queue_stopMonitoring
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(FBSProcessExecutionProvision *)self process];
+  process = [(FBSProcessExecutionProvision *)self process];
   v4 = FBLogWatchdog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = FBSProcessPrettyDescription(v3);
+    v5 = FBSProcessPrettyDescription(process);
     v6 = NSStringFromProcessResourceType(self->_allowance.type);
     v8 = 138543618;
     v9 = v5;
@@ -226,7 +226,7 @@ uint64_t __46__FBSProcessResourceProvision__stopMonitoring__block_invoke(uint64_
   v21 = *MEMORY[0x1E69E9840];
   if ([(FBSProcessExecutionProvision *)self isMonitoring]&& ![(FBSProcessExecutionProvision *)self isViolated])
   {
-    v4 = [(FBSProcessExecutionProvision *)self process];
+    process = [(FBSProcessExecutionProvision *)self process];
     v12 = 0;
     v3 = [(FBSProcessResourceProvision *)self _queue_calculateValueConsumed:&v12];
     if (v3)
@@ -235,7 +235,7 @@ uint64_t __46__FBSProcessResourceProvision__stopMonitoring__block_invoke(uint64_
       v5 = FBLogWatchdog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        v6 = FBSProcessPrettyDescription(v4);
+        v6 = FBSProcessPrettyDescription(process);
         p_allowance = &self->_allowance;
         v8 = NSStringFromProcessResourceType(self->_allowance.type);
         v9 = NSStringFromProcessResourceValue(p_allowance->type, v12);
@@ -257,7 +257,7 @@ uint64_t __46__FBSProcessResourceProvision__stopMonitoring__block_invoke(uint64_
       v5 = FBLogWatchdog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
-        [(FBSProcessResourceProvision *)v4 _queue_updateConsumption];
+        [(FBSProcessResourceProvision *)process _queue_updateConsumption];
       }
     }
   }
@@ -284,13 +284,13 @@ void __47__FBSProcessResourceProvision__prepareForReuse__block_invoke(uint64_t a
   *(v4 + 96) = 0;
 }
 
-+ (id)provisionWithAllowance:(id *)a3
++ (id)provisionWithAllowance:(id *)allowance
 {
-  if (FBSProcessResourceAllowanceIsValid(a3))
+  if (FBSProcessResourceAllowanceIsValid(allowance))
   {
-    v5 = [a1 alloc];
-    v8 = *&a3->var0;
-    var2 = a3->var2;
+    v5 = [self alloc];
+    v8 = *&allowance->var0;
+    var2 = allowance->var2;
     v6 = [v5 initWithAllowance:&v8];
   }
 
@@ -302,23 +302,23 @@ void __47__FBSProcessResourceProvision__prepareForReuse__block_invoke(uint64_t a
   return v6;
 }
 
-+ (id)provisionWithResourceType:(int64_t)a3 timeInterval:(double)a4
++ (id)provisionWithResourceType:(int64_t)type timeInterval:(double)interval
 {
-  FBSProcessResourceAllowanceMakeWithTimeInterval(a3, v7, a4);
-  v5 = [a1 provisionWithAllowance:v7];
+  FBSProcessResourceAllowanceMakeWithTimeInterval(type, v7, interval);
+  v5 = [self provisionWithAllowance:v7];
 
   return v5;
 }
 
-- (FBSProcessResourceProvision)initWithAllowance:(id *)a3
+- (FBSProcessResourceProvision)initWithAllowance:(id *)allowance
 {
   v6.receiver = self;
   v6.super_class = FBSProcessResourceProvision;
   result = [(FBSProcessExecutionProvision *)&v6 init];
   if (result)
   {
-    var2 = a3->var2;
-    *&result->_allowance.type = *&a3->var0;
+    var2 = allowance->var2;
+    *&result->_allowance.type = *&allowance->var0;
     result->_allowance.reserved = var2;
     result->_consumedValue = 0;
   }
@@ -326,14 +326,14 @@ void __47__FBSProcessResourceProvision__prepareForReuse__block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)allowanceRemaining:(id *)a3
+- (BOOL)allowanceRemaining:(id *)remaining
 {
-  v3 = a3;
-  if (a3)
+  remainingCopy = remaining;
+  if (remaining)
   {
     if ([(FBSProcessExecutionProvision *)self isViolated])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(remainingCopy) = 0;
     }
 
     else
@@ -375,14 +375,14 @@ void __47__FBSProcessResourceProvision__prepareForReuse__block_invoke(uint64_t a
         }
 
         FBSProcessResourceAllowanceMake(v20[4], v10, v20[6], &v12);
-        *&v3->var0 = v12;
-        v3->var2 = v13;
-        LOBYTE(v3) = FBSProcessResourceAllowanceIsValid(v3);
+        *&remainingCopy->var0 = v12;
+        remainingCopy->var2 = v13;
+        LOBYTE(remainingCopy) = FBSProcessResourceAllowanceIsValid(remainingCopy);
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(remainingCopy) = 0;
       }
 
       _Block_object_dispose(&v15, 8);
@@ -390,7 +390,7 @@ void __47__FBSProcessResourceProvision__prepareForReuse__block_invoke(uint64_t a
     }
   }
 
-  return v3;
+  return remainingCopy;
 }
 
 __n128 __50__FBSProcessResourceProvision_allowanceRemaining___block_invoke(uint64_t a1)
@@ -445,18 +445,18 @@ uint64_t __47__FBSProcessResourceProvision__beginMonitoring__block_invoke_34(uin
 
 - (void)_queue_noteAllowanceExhausted
 {
-  v3 = FBSProcessPrettyDescription(a1);
+  v3 = FBSProcessPrettyDescription(self);
   v4 = NSStringFromProcessResourceType(*(a2 + 56));
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_1_1(&dword_1A2DBB000, v5, v6, "[%{public}@] [%{public}@] Allowance exhausted!", v7, v8, v9, v10, v11);
 }
 
-- (void)_queue_evaluateConsumptionFromTimer:(BOOL)a3
+- (void)_queue_evaluateConsumptionFromTimer:(BOOL)timer
 {
-  v3 = a3;
+  timerCopy = timer;
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [(FBSProcessExecutionProvision *)self process];
-  if (v3)
+  process = [(FBSProcessExecutionProvision *)self process];
+  if (timerCopy)
   {
     ++self->_timerFireCount;
   }
@@ -464,7 +464,7 @@ uint64_t __47__FBSProcessResourceProvision__beginMonitoring__block_invoke_34(uin
   v6 = FBLogWatchdog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = FBSProcessPrettyDescription(v5);
+    v7 = FBSProcessPrettyDescription(process);
     v8 = NSStringFromProcessResourceType(self->_allowance.type);
     timerFireCount = self->_timerFireCount;
     v10 = 138543874;
@@ -489,9 +489,9 @@ LABEL_8:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   allowance = self->_allowance;
   v5 = [v4 initWithAllowance:&allowance];
   v6 = [(NSError *)self->super._error copy];
@@ -505,16 +505,16 @@ LABEL_8:
   return v5;
 }
 
-- (void)setAllowance:(id *)a3
+- (void)setAllowance:(id *)allowance
 {
-  var2 = a3->var2;
-  *&self->_allowance.type = *&a3->var0;
+  var2 = allowance->var2;
+  *&self->_allowance.type = *&allowance->var0;
   self->_allowance.reserved = var2;
 }
 
 - (void)_prepareForReuse
 {
-  v3 = FBSProcessPrettyDescription(a1);
+  v3 = FBSProcessPrettyDescription(self);
   v4 = NSStringFromProcessResourceType(*(a2 + 56));
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_1_1(&dword_1A2DBB000, v5, v6, "[%{public}@] [%{public}@] Invalidated", v7, v8, v9, v10, v11);
@@ -522,7 +522,7 @@ LABEL_8:
 
 - (void)_queue_updateConsumption
 {
-  v3 = FBSProcessPrettyDescription(a1);
+  v3 = FBSProcessPrettyDescription(self);
   v4 = NSStringFromProcessResourceType(*(a2 + 56));
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_1_1(&dword_1A2DBB000, v5, v6, "[%{public}@] [%{public}@] Unable to calculate resource consumption :(", v7, v8, v9, v10, v11);

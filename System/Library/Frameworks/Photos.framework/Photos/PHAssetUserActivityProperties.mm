@@ -1,23 +1,23 @@
 @interface PHAssetUserActivityProperties
 + (id)propertiesToFetch;
-- (PHAssetUserActivityProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetUserActivityProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetUserActivityProperties
 
-- (PHAssetUserActivityProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetUserActivityProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v28.receiver = self;
   v28.super_class = PHAssetUserActivityProperties;
   v10 = [(PHAssetUserActivityProperties *)&v28 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
       v12 = @"additionalAttributes.playCount";
     }
@@ -27,7 +27,7 @@
       v12 = @"playCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.shareCount";
     }
@@ -37,7 +37,7 @@
       v13 = @"shareCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.viewCount";
     }
@@ -47,7 +47,7 @@
       v14 = @"viewCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v15 = @"additionalAttributes.pendingPlayCount";
     }
@@ -57,7 +57,7 @@
       v15 = @"pendingPlayCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v16 = @"additionalAttributes.pendingShareCount";
     }
@@ -67,7 +67,7 @@
       v16 = @"pendingShareCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v17 = @"additionalAttributes.pendingViewCount";
     }
@@ -77,7 +77,7 @@
       v17 = @"pendingViewCount";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v18 = @"additionalAttributes.lastViewedDate";
     }
@@ -87,25 +87,25 @@
       v18 = @"lastViewedDate";
     }
 
-    v19 = [v8 objectForKeyedSubscript:v12];
+    v19 = [dictionaryCopy objectForKeyedSubscript:v12];
     v11->_syncedPlayCount = [v19 longLongValue];
 
-    v20 = [v8 objectForKeyedSubscript:v13];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v13];
     v11->_syncedShareCount = [v20 longLongValue];
 
-    v21 = [v8 objectForKeyedSubscript:v14];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v14];
     v11->_syncedViewCount = [v21 longLongValue];
 
-    v22 = [v8 objectForKeyedSubscript:v15];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v15];
     v11->_pendingPlayCount = [v22 longLongValue];
 
-    v23 = [v8 objectForKeyedSubscript:v16];
+    v23 = [dictionaryCopy objectForKeyedSubscript:v16];
     v11->_pendingShareCount = [v23 longLongValue];
 
-    v24 = [v8 objectForKeyedSubscript:v17];
+    v24 = [dictionaryCopy objectForKeyedSubscript:v17];
     v11->_pendingViewCount = [v24 longLongValue];
 
-    v25 = [v8 objectForKeyedSubscript:v18];
+    v25 = [dictionaryCopy objectForKeyedSubscript:v18];
     lastViewedDate = v11->_lastViewedDate;
     v11->_lastViewedDate = v25;
   }

@@ -1,32 +1,32 @@
 @interface MODowntimeDetectionUtilities
-+ (double)calculateMeanWithIndices:(id)a3 forArray:(id)a4;
-+ (id)calculateStatsPerHour:(id)a3 withTrimFraction:(double)a4;
-+ (id)deriveCompositeScoreForDays:(id)a3 forScreentimeDurations:(id)a4 forMotionAndWorkoutBundles:(id)a5 forEngagement:(id)a6 withCalendar:(id)a7 withMaxScreentimeDuration:(double)a8 withMinNumDaysWithScreentimeThreshold:(double)a9 withOverallActivityThreshold:(double)a10 withMinNumObservationsThreshold:(double)a11 withMinActiveHoursThreshold:(double)a12 error:(id *)a13;
-+ (id)downtimeDetectionPipeline:(id)a3 withBundles:(id)a4 withEngagement:(id)a5 withDefaults:(id)a6 withAllowedScreentimeCategories:(id)a7 forRecentDays:(BOOL)a8 error:(id *)a9;
-+ (id)findDowntimeWindow:(id)a3 maxWindowLength:(double)a4 minWindowLength:(double)a5 withWindowActivityRatioMax:(double)a6 error:(id *)a7;
-+ (id)getTotalScreentimeDurations:(id)a3 withAllowedScreentimeCategories:(id)a4;
-+ (id)getUniqueDays:(id)a3 withCalendar:(id)a4;
-+ (id)preprocessEventsForDowntimeDetection:(id)a3 withBundles:(id)a4 withEngagement:(id)a5 withMinNumDaysWithScreentimeThreshold:(double)a6 withOverallActivityThreshold:(double)a7 withMinNumObservationsThreshold:(double)a8 withMinActiveHoursThreshold:(double)a9 withAllowedScreentimeCategories:(id)a10 error:(id *)a11;
++ (double)calculateMeanWithIndices:(id)indices forArray:(id)array;
++ (id)calculateStatsPerHour:(id)hour withTrimFraction:(double)fraction;
++ (id)deriveCompositeScoreForDays:(id)days forScreentimeDurations:(id)durations forMotionAndWorkoutBundles:(id)bundles forEngagement:(id)engagement withCalendar:(id)calendar withMaxScreentimeDuration:(double)duration withMinNumDaysWithScreentimeThreshold:(double)threshold withOverallActivityThreshold:(double)self0 withMinNumObservationsThreshold:(double)self1 withMinActiveHoursThreshold:(double)self2 error:(id *)self3;
++ (id)downtimeDetectionPipeline:(id)pipeline withBundles:(id)bundles withEngagement:(id)engagement withDefaults:(id)defaults withAllowedScreentimeCategories:(id)categories forRecentDays:(BOOL)days error:(id *)error;
++ (id)findDowntimeWindow:(id)window maxWindowLength:(double)length minWindowLength:(double)windowLength withWindowActivityRatioMax:(double)max error:(id *)error;
++ (id)getTotalScreentimeDurations:(id)durations withAllowedScreentimeCategories:(id)categories;
++ (id)getUniqueDays:(id)days withCalendar:(id)calendar;
++ (id)preprocessEventsForDowntimeDetection:(id)detection withBundles:(id)bundles withEngagement:(id)engagement withMinNumDaysWithScreentimeThreshold:(double)threshold withOverallActivityThreshold:(double)activityThreshold withMinNumObservationsThreshold:(double)observationsThreshold withMinActiveHoursThreshold:(double)hoursThreshold withAllowedScreentimeCategories:(id)self0 error:(id *)self1;
 @end
 
 @implementation MODowntimeDetectionUtilities
 
-+ (id)downtimeDetectionPipeline:(id)a3 withBundles:(id)a4 withEngagement:(id)a5 withDefaults:(id)a6 withAllowedScreentimeCategories:(id)a7 forRecentDays:(BOOL)a8 error:(id *)a9
++ (id)downtimeDetectionPipeline:(id)pipeline withBundles:(id)bundles withEngagement:(id)engagement withDefaults:(id)defaults withAllowedScreentimeCategories:(id)categories forRecentDays:(BOOL)days error:(id *)error
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (a9)
+  daysCopy = days;
+  pipelineCopy = pipeline;
+  bundlesCopy = bundles;
+  engagementCopy = engagement;
+  defaultsCopy = defaults;
+  categoriesCopy = categories;
+  if (error)
   {
-    *a9 = 0;
+    *error = 0;
   }
 
   v19 = objc_opt_new();
-  v79 = v16;
-  if (v9)
+  v79 = engagementCopy;
+  if (daysCopy)
   {
     +[NSDate date];
     v71 = v73 = v19;
@@ -36,67 +36,67 @@
     [v74 setDay:-2];
     v72 = [v76 dateByAddingComponents:v74 toDate:v75 options:0];
     [NSPredicate predicateWithFormat:@"%K >= %@", @"startDate", v72];
-    v20 = v80 = v18;
-    v21 = [v14 filteredArrayUsingPredicate:v20];
-    v22 = [v15 filteredArrayUsingPredicate:v20];
-    [v17 objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinNumDaysWithScreentimeThresholdKey"];
-    v23 = v77 = v15;
+    v20 = v80 = categoriesCopy;
+    v21 = [pipelineCopy filteredArrayUsingPredicate:v20];
+    v22 = [bundlesCopy filteredArrayUsingPredicate:v20];
+    [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinNumDaysWithScreentimeThresholdKey"];
+    v23 = v77 = bundlesCopy;
     [v23 doubleValue];
     v25 = v24;
-    v26 = [v17 objectForKeyedSubscript:@"DowntimeDetectionRecentDaysOverallActivityThresholdKey"];
+    v26 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionRecentDaysOverallActivityThresholdKey"];
     [v26 doubleValue];
     v28 = v27;
-    v29 = [v17 objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinNumObservationsThresholdKey"];
+    v29 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinNumObservationsThresholdKey"];
     [v29 doubleValue];
     v31 = v30;
-    [v17 objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinActiveHoursThresholdKey"];
-    v33 = v32 = v14;
+    [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionRecentDaysMinActiveHoursThresholdKey"];
+    v33 = v32 = pipelineCopy;
     [v33 doubleValue];
     v86 = 0;
-    v34 = v16;
+    v34 = engagementCopy;
     v35 = v22;
-    v82 = [a1 preprocessEventsForDowntimeDetection:v21 withBundles:v22 withEngagement:v34 withMinNumDaysWithScreentimeThreshold:v80 withOverallActivityThreshold:&v86 withMinNumObservationsThreshold:v25 withMinActiveHoursThreshold:v28 withAllowedScreentimeCategories:v31 error:v36];
-    v37 = v17;
+    v82 = [self preprocessEventsForDowntimeDetection:v21 withBundles:v22 withEngagement:v34 withMinNumDaysWithScreentimeThreshold:v80 withOverallActivityThreshold:&v86 withMinNumObservationsThreshold:v25 withMinActiveHoursThreshold:v28 withAllowedScreentimeCategories:v31 error:v36];
+    v37 = defaultsCopy;
     v38 = v86;
 
-    v14 = v32;
+    pipelineCopy = v32;
     v39 = v71;
 
-    v15 = v77;
+    bundlesCopy = v77;
     v40 = v38;
-    v17 = v37;
+    defaultsCopy = v37;
 
-    v18 = v80;
+    categoriesCopy = v80;
     v41 = 0.0;
   }
 
   else
   {
-    v42 = [v17 objectForKeyedSubscript:@"DowntimeDetectionMinNumDaysWithScreentimeThresholdKey"];
+    v42 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionMinNumDaysWithScreentimeThresholdKey"];
     [v42 doubleValue];
     v44 = v43;
-    v45 = [v17 objectForKeyedSubscript:@"DowntimeDetectionOverallActivityThresholdKey"];
+    v45 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionOverallActivityThresholdKey"];
     [v45 doubleValue];
     v47 = v46;
-    v48 = [v17 objectForKeyedSubscript:@"DowntimeDetectionMinNumObservationsThresholdKey"];
+    v48 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionMinNumObservationsThresholdKey"];
     [v48 doubleValue];
     v50 = v49;
-    v51 = [v17 objectForKeyedSubscript:@"DowntimeDetectionMinActiveHoursThresholdKey"];
+    v51 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionMinActiveHoursThresholdKey"];
     [v51 doubleValue];
     v85 = 0;
-    v82 = [a1 preprocessEventsForDowntimeDetection:v14 withBundles:v15 withEngagement:v16 withMinNumDaysWithScreentimeThreshold:v18 withOverallActivityThreshold:&v85 withMinNumObservationsThreshold:v44 withMinActiveHoursThreshold:v47 withAllowedScreentimeCategories:v50 error:v52];
+    v82 = [self preprocessEventsForDowntimeDetection:pipelineCopy withBundles:bundlesCopy withEngagement:engagementCopy withMinNumDaysWithScreentimeThreshold:categoriesCopy withOverallActivityThreshold:&v85 withMinNumObservationsThreshold:v44 withMinActiveHoursThreshold:v47 withAllowedScreentimeCategories:v50 error:v52];
     v40 = v85;
 
-    v39 = [v17 objectForKeyedSubscript:@"DowntimeDetectionTrimFractionKey"];
+    v39 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionTrimFractionKey"];
     [v39 doubleValue];
     v41 = v53;
   }
 
-  if (a9 && v40)
+  if (error && v40)
   {
     v54 = v40;
     v55 = 0;
-    *a9 = v40;
+    *error = v40;
 LABEL_18:
     v56 = v82;
     goto LABEL_19;
@@ -105,26 +105,26 @@ LABEL_18:
   v56 = v82;
   if (v82)
   {
-    v81 = v18;
-    v78 = v15;
-    v57 = [a1 calculateStatsPerHour:v82 withTrimFraction:v41];
-    v58 = [v17 objectForKeyedSubscript:@"DowntimeDetectionWinLengthMaxDefaultKey"];
+    v81 = categoriesCopy;
+    v78 = bundlesCopy;
+    v57 = [self calculateStatsPerHour:v82 withTrimFraction:v41];
+    v58 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionWinLengthMaxDefaultKey"];
     [v58 doubleValue];
     v60 = v59;
-    v61 = [v17 objectForKeyedSubscript:@"DowntimeDetectionWinLengthMinDefaultKey"];
+    v61 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionWinLengthMinDefaultKey"];
     [v61 doubleValue];
     v63 = v62;
-    v64 = [v17 objectForKeyedSubscript:@"DowntimeDetectionWinActivityRatioMaxDefaultKey"];
+    v64 = [defaultsCopy objectForKeyedSubscript:@"DowntimeDetectionWinActivityRatioMaxDefaultKey"];
     [v64 doubleValue];
     v84 = 0;
-    v66 = [a1 findDowntimeWindow:v57 maxWindowLength:&v84 minWindowLength:v60 withWindowActivityRatioMax:v63 error:v65];
+    v66 = [self findDowntimeWindow:v57 maxWindowLength:&v84 minWindowLength:v60 withWindowActivityRatioMax:v63 error:v65];
     v67 = v84;
 
-    if (a9 && v67)
+    if (error && v67)
     {
       v68 = v67;
       v55 = 0;
-      *a9 = v67;
+      *error = v67;
     }
 
     else
@@ -132,18 +132,18 @@ LABEL_18:
       v55 = v66;
     }
 
-    v15 = v78;
-    v18 = v81;
+    bundlesCopy = v78;
+    categoriesCopy = v81;
 
     goto LABEL_18;
   }
 
-  if (a9)
+  if (error)
   {
     v87 = NSLocalizedDescriptionKey;
     v88 = @"DT: Downtime detection pipeline generic error";
     v69 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-    *a9 = [NSError errorWithDomain:@"MOErrorDomain" code:29 userInfo:v69];
+    *error = [NSError errorWithDomain:@"MOErrorDomain" code:29 userInfo:v69];
   }
 
   v55 = 0;
@@ -152,25 +152,25 @@ LABEL_19:
   return v55;
 }
 
-+ (id)preprocessEventsForDowntimeDetection:(id)a3 withBundles:(id)a4 withEngagement:(id)a5 withMinNumDaysWithScreentimeThreshold:(double)a6 withOverallActivityThreshold:(double)a7 withMinNumObservationsThreshold:(double)a8 withMinActiveHoursThreshold:(double)a9 withAllowedScreentimeCategories:(id)a10 error:(id *)a11
++ (id)preprocessEventsForDowntimeDetection:(id)detection withBundles:(id)bundles withEngagement:(id)engagement withMinNumDaysWithScreentimeThreshold:(double)threshold withOverallActivityThreshold:(double)activityThreshold withMinNumObservationsThreshold:(double)observationsThreshold withMinActiveHoursThreshold:(double)hoursThreshold withAllowedScreentimeCategories:(id)self0 error:(id *)self1
 {
-  v46 = a5;
-  if (a11)
+  engagementCopy = engagement;
+  if (error)
   {
-    *a11 = 0;
+    *error = 0;
   }
 
-  v20 = a10;
-  v21 = a4;
-  v22 = a3;
+  categoriesCopy = categories;
+  bundlesCopy = bundles;
+  detectionCopy = detection;
   v45 = [NSPredicate predicateWithFormat:@"bundleSubType IN %@", &off_10036DFF8];
-  v23 = [v21 filteredArrayUsingPredicate:?];
+  v23 = [bundlesCopy filteredArrayUsingPredicate:?];
 
   v44 = [NSPredicate predicateWithFormat:@"category == %d", 20];
-  v24 = [v22 filteredArrayUsingPredicate:?];
+  v24 = [detectionCopy filteredArrayUsingPredicate:?];
 
   v43 = v24;
-  v25 = [MODowntimeDetectionUtilities getTotalScreentimeDurations:v24 withAllowedScreentimeCategories:v20];
+  v25 = [MODowntimeDetectionUtilities getTotalScreentimeDurations:v24 withAllowedScreentimeCategories:categoriesCopy];
 
   v26 = [v25 objectForKeyedSubscript:@"durationArray"];
   v27 = [v25 objectForKeyedSubscript:@"maxDuration"];
@@ -185,19 +185,19 @@ LABEL_19:
     [v30 addObjectsFromArray:v26];
   }
 
-  v32 = v46;
-  if (v46)
+  v32 = engagementCopy;
+  if (engagementCopy)
   {
-    [v31 addObjectsFromArray:v46];
+    [v31 addObjectsFromArray:engagementCopy];
   }
 
   v33 = +[NSCalendar currentCalendar];
-  v34 = [a1 getUniqueDays:v31 withCalendar:v33];
-  v35 = [a1 getUniqueDays:v26 withCalendar:v33];
-  if ([v35 count] >= a6)
+  v34 = [self getUniqueDays:v31 withCalendar:v33];
+  v35 = [self getUniqueDays:v26 withCalendar:v33];
+  if ([v35 count] >= threshold)
   {
     v48 = 0;
-    v38 = [a1 deriveCompositeScoreForDays:v34 forScreentimeDurations:v26 forMotionAndWorkoutBundles:v47 forEngagement:v46 withCalendar:v33 withMaxScreentimeDuration:&v48 withMinNumDaysWithScreentimeThreshold:v29 withOverallActivityThreshold:a6 withMinNumObservationsThreshold:a7 withMinActiveHoursThreshold:a8 error:a9];
+    v38 = [self deriveCompositeScoreForDays:v34 forScreentimeDurations:v26 forMotionAndWorkoutBundles:v47 forEngagement:engagementCopy withCalendar:v33 withMaxScreentimeDuration:&v48 withMinNumDaysWithScreentimeThreshold:v29 withOverallActivityThreshold:threshold withMinNumObservationsThreshold:activityThreshold withMinActiveHoursThreshold:observationsThreshold error:hoursThreshold];
     v39 = v48;
     v37 = v39;
     if (v38)
@@ -205,10 +205,10 @@ LABEL_19:
       v40 = v38;
     }
 
-    else if (a11)
+    else if (error)
     {
       v41 = v39;
-      *a11 = v37;
+      *error = v37;
     }
   }
 
@@ -220,7 +220,7 @@ LABEL_19:
       +[MODowntimeDetectionUtilities preprocessEventsForDowntimeDetection:withBundles:withEngagement:withMinNumDaysWithScreentimeThreshold:withOverallActivityThreshold:withMinNumObservationsThreshold:withMinActiveHoursThreshold:withAllowedScreentimeCategories:error:];
     }
 
-    if (!a11)
+    if (!error)
     {
       v38 = 0;
       goto LABEL_19;
@@ -229,9 +229,9 @@ LABEL_19:
     v49 = NSLocalizedDescriptionKey;
     v50 = @"DT: Not sufficient amount of days with screentime for downtime detection";
     v37 = [NSDictionary dictionaryWithObjects:&v50 forKeys:&v49 count:1];
-    v32 = v46;
+    v32 = engagementCopy;
     [NSError errorWithDomain:@"MOErrorDomain" code:24 userInfo:v37];
-    *a11 = v38 = 0;
+    *error = v38 = 0;
   }
 
 LABEL_19:
@@ -239,16 +239,16 @@ LABEL_19:
   return v38;
 }
 
-+ (id)getUniqueDays:(id)a3 withCalendar:(id)a4
++ (id)getUniqueDays:(id)days withCalendar:(id)calendar
 {
-  v5 = a3;
-  v6 = a4;
+  daysCopy = days;
+  calendarCopy = calendar;
   v7 = +[NSMutableSet set];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v5;
+  v8 = daysCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -267,16 +267,16 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v14 = [v13 startDate];
+          startDate = [v13 startDate];
         }
 
         else
         {
-          v14 = [v13 objectForKeyedSubscript:{@"startDate", v21}];
+          startDate = [v13 objectForKeyedSubscript:{@"startDate", v21}];
         }
 
-        v15 = v14;
-        v16 = [v6 startOfDayForDate:v14];
+        v15 = startDate;
+        v16 = [calendarCopy startOfDayForDate:startDate];
         [v7 addObject:v16];
       }
 
@@ -286,25 +286,25 @@ LABEL_19:
     while (v10);
   }
 
-  v17 = [v7 allObjects];
-  v18 = [v17 sortedArrayUsingComparator:&__block_literal_global_44];
+  allObjects = [v7 allObjects];
+  v18 = [allObjects sortedArrayUsingComparator:&__block_literal_global_44];
 
   v19 = [v18 copy];
 
   return v19;
 }
 
-+ (id)getTotalScreentimeDurations:(id)a3 withAllowedScreentimeCategories:(id)a4
++ (id)getTotalScreentimeDurations:(id)durations withAllowedScreentimeCategories:(id)categories
 {
-  v5 = a3;
-  v50 = a4;
+  durationsCopy = durations;
+  categoriesCopy = categories;
   v47 = +[NSMutableArray array];
   v49 = +[NSMutableArray array];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v5;
+  obj = durationsCopy;
   v6 = [obj countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v6)
   {
@@ -321,15 +321,15 @@ LABEL_19:
 
         v10 = *(*(&v51 + 1) + 8 * i);
         v11 = [v10 valueForKeyPath:@"screenTimeEvent.appCategoryUsages"];
-        v12 = [NSPredicate predicateWithFormat:@"%K IN %@", @"appCategory", v50];
-        v13 = [v11 filteredArrayUsingPredicate:v12];
+        categoriesCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"appCategory", categoriesCopy];
+        v13 = [v11 filteredArrayUsingPredicate:categoriesCopy];
         v14 = [v13 valueForKeyPath:@"duration"];
         v15 = [v14 valueForKeyPath:@"@sum.self"];
         [v15 doubleValue];
         if (v16 > 0.0)
         {
-          v17 = [v10 startDate];
-          [v47 addObject:v17];
+          startDate = [v10 startDate];
+          [v47 addObject:startDate];
 
           [v49 addObject:v15];
         }
@@ -413,26 +413,26 @@ LABEL_19:
   return v39;
 }
 
-+ (id)deriveCompositeScoreForDays:(id)a3 forScreentimeDurations:(id)a4 forMotionAndWorkoutBundles:(id)a5 forEngagement:(id)a6 withCalendar:(id)a7 withMaxScreentimeDuration:(double)a8 withMinNumDaysWithScreentimeThreshold:(double)a9 withOverallActivityThreshold:(double)a10 withMinNumObservationsThreshold:(double)a11 withMinActiveHoursThreshold:(double)a12 error:(id *)a13
++ (id)deriveCompositeScoreForDays:(id)days forScreentimeDurations:(id)durations forMotionAndWorkoutBundles:(id)bundles forEngagement:(id)engagement withCalendar:(id)calendar withMaxScreentimeDuration:(double)duration withMinNumDaysWithScreentimeThreshold:(double)threshold withOverallActivityThreshold:(double)self0 withMinNumObservationsThreshold:(double)self1 withMinActiveHoursThreshold:(double)self2 error:(id *)self3
 {
-  v21 = a3;
-  v70 = a4;
-  v69 = a5;
-  v68 = a6;
-  v74 = a7;
-  if (a13)
+  daysCopy = days;
+  durationsCopy = durations;
+  bundlesCopy = bundles;
+  engagementCopy = engagement;
+  calendarCopy = calendar;
+  if (error)
   {
-    *a13 = 0;
+    *error = 0;
   }
 
-  v62 = a13;
+  errorCopy = error;
   v71 = +[NSMutableArray array];
   v72 = +[NSMutableDictionary dictionary];
   v83 = 0u;
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  obj = v21;
+  obj = daysCopy;
   v65 = [obj countByEnumeratingWithState:&v81 objects:v93 count:16];
   if (v65)
   {
@@ -453,14 +453,14 @@ LABEL_19:
         {
           v75 = objc_alloc_init(NSDateComponents);
           [v75 setHour:v22];
-          v23 = [v74 dateByAddingUnit:32 value:v22 toDate:v73 options:0];
-          v24 = [v74 dateByAddingUnit:32 value:1 toDate:v23 options:0];
+          v23 = [calendarCopy dateByAddingUnit:32 value:v22 toDate:v73 options:0];
+          v24 = [calendarCopy dateByAddingUnit:32 value:1 toDate:v23 options:0];
           v25 = [NSPredicate predicateWithFormat:@"(%K < %@) AND (%K > %@)", @"startDate", v24, @"endDate", v23];
-          v26 = [v70 filteredArrayUsingPredicate:v25];
-          v27 = [v69 filteredArrayUsingPredicate:v25];
-          v28 = [v68 filteredArrayUsingPredicate:v25];
-          v29 = [v26 firstObject];
-          v30 = [v29 objectForKeyedSubscript:@"duration"];
+          v26 = [durationsCopy filteredArrayUsingPredicate:v25];
+          v27 = [bundlesCopy filteredArrayUsingPredicate:v25];
+          v28 = [engagementCopy filteredArrayUsingPredicate:v25];
+          firstObject = [v26 firstObject];
+          v30 = [firstObject objectForKeyedSubscript:@"duration"];
           [v30 doubleValue];
           v32 = v31;
           if ([v27 count])
@@ -483,7 +483,7 @@ LABEL_19:
             v34 = 0.0;
           }
 
-          v35 = v32 / a8 + v33 + v34;
+          v35 = v32 / duration + v33 + v34;
           if (v35 > 0.0)
           {
             v36 = [NSNumber numberWithInt:v22];
@@ -543,22 +543,22 @@ LABEL_19:
   v76[1] = 3221225472;
   v76[2] = __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentimeDurations_forMotionAndWorkoutBundles_forEngagement_withCalendar_withMaxScreentimeDuration_withMinNumDaysWithScreentimeThreshold_withOverallActivityThreshold_withMinNumObservationsThreshold_withMinActiveHoursThreshold_error___block_invoke;
   v76[3] = &unk_10033DD38;
-  *&v76[5] = a11;
+  *&v76[5] = observationsThreshold;
   v76[4] = &v77;
   [v72 enumerateKeysAndObjectsUsingBlock:v76];
   v45 = v78[3];
-  v46 = a10 * 24.0 * a9;
-  v47 = v46 >= v44 || v45 <= a12;
-  v48 = v62;
+  v46 = activityThreshold * 24.0 * threshold;
+  v47 = v46 >= v44 || v45 <= hoursThreshold;
+  v48 = errorCopy;
   if (v47)
   {
-    if (v46 < v44 && v45 <= a12)
+    if (v46 < v44 && v45 <= hoursThreshold)
     {
       v54 = _mo_log_facility_get_os_log(&MOLogFacilityAvailabilityPredictionManager);
       if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
       {
         +[MODowntimeDetectionUtilities deriveCompositeScoreForDays:forScreentimeDurations:forMotionAndWorkoutBundles:forEngagement:withCalendar:withMaxScreentimeDuration:withMinNumDaysWithScreentimeThreshold:withOverallActivityThreshold:withMinNumObservationsThreshold:withMinActiveHoursThreshold:error:];
-        v48 = v62;
+        v48 = errorCopy;
       }
 
       if (v48)
@@ -566,17 +566,17 @@ LABEL_19:
         v89 = NSLocalizedDescriptionKey;
         v90 = @"DT: Did not observe sufficent amount of active hours across days";
         v55 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-        *v62 = [NSError errorWithDomain:@"MOErrorDomain" code:25 userInfo:v55];
+        *errorCopy = [NSError errorWithDomain:@"MOErrorDomain" code:25 userInfo:v55];
       }
     }
 
-    else if (v46 < v44 || v45 <= a12)
+    else if (v46 < v44 || v45 <= hoursThreshold)
     {
       v51 = _mo_log_facility_get_os_log(&MOLogFacilityAvailabilityPredictionManager);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
         +[MODowntimeDetectionUtilities deriveCompositeScoreForDays:forScreentimeDurations:forMotionAndWorkoutBundles:forEngagement:withCalendar:withMaxScreentimeDuration:withMinNumDaysWithScreentimeThreshold:withOverallActivityThreshold:withMinNumObservationsThreshold:withMinActiveHoursThreshold:error:];
-        v48 = v62;
+        v48 = errorCopy;
       }
 
       if (v48)
@@ -584,7 +584,7 @@ LABEL_19:
         v85 = NSLocalizedDescriptionKey;
         v86 = @"DT: Both checks failed for deriving composite score";
         v52 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-        *v62 = [NSError errorWithDomain:@"MOErrorDomain" code:27 userInfo:v52];
+        *errorCopy = [NSError errorWithDomain:@"MOErrorDomain" code:27 userInfo:v52];
       }
     }
 
@@ -594,7 +594,7 @@ LABEL_19:
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
         +[MODowntimeDetectionUtilities deriveCompositeScoreForDays:forScreentimeDurations:forMotionAndWorkoutBundles:forEngagement:withCalendar:withMaxScreentimeDuration:withMinNumDaysWithScreentimeThreshold:withOverallActivityThreshold:withMinNumObservationsThreshold:withMinActiveHoursThreshold:error:];
-        v48 = v62;
+        v48 = errorCopy;
       }
 
       if (v48)
@@ -602,7 +602,7 @@ LABEL_19:
         v87 = NSLocalizedDescriptionKey;
         v88 = @"DT: Overall activity not sufficient for downtime detection";
         v58 = [NSDictionary dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-        *v62 = [NSError errorWithDomain:@"MOErrorDomain" code:26 userInfo:v58];
+        *errorCopy = [NSError errorWithDomain:@"MOErrorDomain" code:26 userInfo:v58];
       }
     }
 
@@ -630,15 +630,15 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
   return result;
 }
 
-+ (id)calculateStatsPerHour:(id)a3 withTrimFraction:(double)a4
++ (id)calculateStatsPerHour:(id)hour withTrimFraction:(double)fraction
 {
-  v5 = a3;
+  hourCopy = hour;
   v6 = +[NSMutableDictionary dictionary];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v5;
+  obj = hourCopy;
   v7 = [obj countByEnumeratingWithState:&v40 objects:v51 count:16];
   if (v7)
   {
@@ -677,8 +677,8 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v32 = [v6 allKeys];
-  v15 = [v32 countByEnumeratingWithState:&v36 objects:v50 count:16];
+  allKeys = [v6 allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v36 objects:v50 count:16];
   if (v15)
   {
     v17 = v15;
@@ -691,7 +691,7 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
       {
         if (*v37 != v34)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v36 + 1) + 8 * j);
@@ -700,7 +700,7 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
         v22 = [v21 count];
         if (v22)
         {
-          v23 = vcvtmd_u64_f64(v22 * a4);
+          v23 = vcvtmd_u64_f64(v22 * fraction);
           v24 = [v21 subarrayWithRange:{v23, &v22[-2 * v23]}];
           if (v24)
           {
@@ -742,7 +742,7 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
         }
       }
 
-      v17 = [v32 countByEnumeratingWithState:&v36 objects:v50 count:16];
+      v17 = [allKeys countByEnumeratingWithState:&v36 objects:v50 count:16];
     }
 
     while (v17);
@@ -753,12 +753,12 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
   return v29;
 }
 
-+ (id)findDowntimeWindow:(id)a3 maxWindowLength:(double)a4 minWindowLength:(double)a5 withWindowActivityRatioMax:(double)a6 error:(id *)a7
++ (id)findDowntimeWindow:(id)window maxWindowLength:(double)length minWindowLength:(double)windowLength withWindowActivityRatioMax:(double)max error:(id *)error
 {
-  v11 = a3;
-  if (a7)
+  windowCopy = window;
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v12 = +[NSMutableArray array];
@@ -766,7 +766,7 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
   do
   {
     v14 = [NSNumber numberWithInt:v13];
-    v15 = [v11 objectForKeyedSubscript:v14];
+    v15 = [windowCopy objectForKeyedSubscript:v14];
     v16 = [v15 objectForKeyedSubscript:@"trimmedMean"];
     [v12 addObject:v16];
 
@@ -774,11 +774,11 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
   }
 
   while (v13 != 24);
-  v43 = v11;
-  v17 = a5;
-  if (v17 <= a4)
+  v43 = windowCopy;
+  windowLengthCopy = windowLength;
+  if (windowLengthCopy <= length)
   {
-    v21 = a5;
+    windowLengthCopy2 = windowLength;
     v20 = -1;
     v19 = INFINITY;
     v18 = -1;
@@ -786,19 +786,19 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
     do
     {
       v22 = 0;
-      v44 = v21;
+      v44 = windowLengthCopy2;
       do
       {
         v45 = v18;
-        v23 = [NSMutableArray arrayWithCapacity:v21, v17];
+        windowLengthCopy = [NSMutableArray arrayWithCapacity:windowLengthCopy2, windowLengthCopy];
         v24 = v22;
-        v25 = v21;
-        if (v21 >= 1)
+        v25 = windowLengthCopy2;
+        if (windowLengthCopy2 >= 1)
         {
           do
           {
-            v26 = [NSNumber numberWithInt:v24 % 0x18];
-            [v23 addObject:v26];
+            0x18 = [NSNumber numberWithInt:v24 % 0x18];
+            [windowLengthCopy addObject:0x18];
 
             ++v24;
             --v25;
@@ -807,10 +807,10 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
           while (v25);
         }
 
-        [a1 calculateMeanWithIndices:v23 forArray:v12];
+        [self calculateMeanWithIndices:windowLengthCopy forArray:v12];
         v28 = v27;
         v29 = +[NSMutableArray array];
-        v30 = [NSSet setWithArray:v23];
+        v30 = [NSSet setWithArray:windowLengthCopy];
         v31 = 0;
         do
         {
@@ -824,9 +824,9 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
         }
 
         while (v31 != 24);
-        [a1 calculateMeanWithIndices:v29 forArray:v46];
+        [self calculateMeanWithIndices:v29 forArray:v46];
         v34 = 1.0;
-        v21 = v44;
+        windowLengthCopy2 = v44;
         if (v33 > 0.0)
         {
           v34 = round(v28 / v33 * 100000.0) / 100000.0;
@@ -850,11 +850,11 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
       }
 
       while (v22 != 24);
-      v21 = v44 + 1;
-      v17 = (v44 + 1);
+      windowLengthCopy2 = v44 + 1;
+      windowLengthCopy = (v44 + 1);
     }
 
-    while (v17 <= a4);
+    while (windowLengthCopy <= length);
   }
 
   else
@@ -864,11 +864,11 @@ id __296__MODowntimeDetectionUtilities_deriveCompositeScoreForDays_forScreentime
     v20 = -1;
   }
 
-  if (v19 < a6)
+  if (v19 < max)
   {
     v50[0] = @"downtimeWindowStartHour";
-    v36 = [NSNumber numberWithInteger:v20, v17];
-    v51[0] = v36;
+    windowLengthCopy2 = [NSNumber numberWithInteger:v20, windowLengthCopy];
+    v51[0] = windowLengthCopy2;
     v50[1] = @"downtimeWindowEndHour";
     v37 = [NSNumber numberWithDouble:((v20 + v18) % 24)];
     v51[1] = v37;
@@ -891,8 +891,8 @@ LABEL_29:
   {
     v48 = NSLocalizedDescriptionKey;
     v49 = @"DT: Ratio of activity in the window to outside is not sufficient";
-    v36 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-    [NSError errorWithDomain:@"MOErrorDomain" code:28 userInfo:v36];
+    windowLengthCopy2 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
+    [NSError errorWithDomain:@"MOErrorDomain" code:28 userInfo:windowLengthCopy2];
     *v42 = v39 = 0;
     goto LABEL_29;
   }
@@ -903,15 +903,15 @@ LABEL_30:
   return v39;
 }
 
-+ (double)calculateMeanWithIndices:(id)a3 forArray:(id)a4
++ (double)calculateMeanWithIndices:(id)indices forArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  indicesCopy = indices;
+  arrayCopy = array;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [indicesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -923,15 +923,15 @@ LABEL_30:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indicesCopy);
         }
 
-        v12 = [v6 objectAtIndexedSubscript:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "integerValue")}];
+        v12 = [arrayCopy objectAtIndexedSubscript:{objc_msgSend(*(*(&v16 + 1) + 8 * i), "integerValue")}];
         [v12 doubleValue];
         v10 = v10 + v13;
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [indicesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -942,7 +942,7 @@ LABEL_30:
     v10 = 0.0;
   }
 
-  v14 = [v5 count];
+  v14 = [indicesCopy count];
 
   return v10 / v14;
 }

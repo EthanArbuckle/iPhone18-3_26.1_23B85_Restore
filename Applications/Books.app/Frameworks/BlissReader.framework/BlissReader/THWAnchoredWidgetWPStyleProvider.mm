@@ -1,18 +1,18 @@
 @interface THWAnchoredWidgetWPStyleProvider
-- (THWAnchoredWidgetWPStyleProvider)initWithStorage:(id)a3;
+- (THWAnchoredWidgetWPStyleProvider)initWithStorage:(id)storage;
 - (void)dealloc;
 @end
 
 @implementation THWAnchoredWidgetWPStyleProvider
 
-- (THWAnchoredWidgetWPStyleProvider)initWithStorage:(id)a3
+- (THWAnchoredWidgetWPStyleProvider)initWithStorage:(id)storage
 {
   v6.receiver = self;
   v6.super_class = THWAnchoredWidgetWPStyleProvider;
   v4 = [(THWAnchoredWidgetWPStyleProvider *)&v6 init];
   if (v4)
   {
-    v4->_storage = a3;
+    v4->_storage = storage;
   }
 
   return v4;

@@ -1,32 +1,32 @@
 @interface ACSENetworkRequestController
-- (ACSENetworkRequestController)initWithSession:(id)a3 numberOfSecondsBetweenRetries:(id)a4;
-- (void)executeRequest:(id)a3 acceptedStatusCodes:(id)a4 completion:(id)a5;
+- (ACSENetworkRequestController)initWithSession:(id)session numberOfSecondsBetweenRetries:(id)retries;
+- (void)executeRequest:(id)request acceptedStatusCodes:(id)codes completion:(id)completion;
 @end
 
 @implementation ACSENetworkRequestController
 
-- (ACSENetworkRequestController)initWithSession:(id)a3 numberOfSecondsBetweenRetries:(id)a4
+- (ACSENetworkRequestController)initWithSession:(id)session numberOfSecondsBetweenRetries:(id)retries
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  retriesCopy = retries;
   v13.receiver = self;
   v13.super_class = ACSENetworkRequestController;
   v8 = [(ACSENetworkRequestController *)&v13 init];
   session = v8->_session;
-  v8->_session = v6;
-  v10 = v6;
+  v8->_session = sessionCopy;
+  v10 = sessionCopy;
 
   numberOfSecondsBetweenRetries = v8->_numberOfSecondsBetweenRetries;
-  v8->_numberOfSecondsBetweenRetries = v7;
+  v8->_numberOfSecondsBetweenRetries = retriesCopy;
 
   return v8;
 }
 
-- (void)executeRequest:(id)a3 acceptedStatusCodes:(id)a4 completion:(id)a5
+- (void)executeRequest:(id)request acceptedStatusCodes:(id)codes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  codesCopy = codes;
+  completionCopy = completion;
   v11 = [(NSArray *)self->_numberOfSecondsBetweenRetries copy];
   objc_initWeak(&location, self);
   v27 = 0;
@@ -42,12 +42,12 @@
   v20[2] = __78__ACSENetworkRequestController_executeRequest_acceptedStatusCodes_completion___block_invoke;
   v20[3] = &unk_278BBCEF8;
   objc_copyWeak(&v26, &location);
-  v14 = v10;
+  v14 = completionCopy;
   v24 = v14;
   v25 = &v27;
-  v15 = v8;
+  v15 = requestCopy;
   v21 = v15;
-  v16 = v9;
+  v16 = codesCopy;
   v22 = v16;
   v17 = v11;
   v23 = v17;

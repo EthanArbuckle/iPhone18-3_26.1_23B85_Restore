@@ -1,47 +1,47 @@
 @interface PXPhotosGridShareActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridShareActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  if ([v4 allowsShareAllAction])
+  modelCopy = model;
+  if ([modelCopy allowsShareAllAction])
   {
-    v5 = [v4 currentDataSource];
-    v6 = [v5 containsAnyItems];
+    currentDataSource = [modelCopy currentDataSource];
+    containsAnyItems = [currentDataSource containsAnyItems];
   }
 
   else
   {
-    v6 = 0;
+    containsAnyItems = 0;
   }
 
-  return v6;
+  return containsAnyItems;
 }
 
 - (void)performUserInteractionTask
 {
   v28[3] = *MEMORY[0x1E69E9840];
-  v4 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v4 currentDataSource];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
 
-  v6 = [v5 containerCollection];
-  v7 = [v6 canContainAssets];
+  containerCollection = [currentDataSource containerCollection];
+  canContainAssets = [containerCollection canContainAssets];
 
-  if ((v7 & 1) == 0)
+  if ((canContainAssets & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"dataSource.containerCollection.canContainAssets"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"dataSource.containerCollection.canContainAssets"}];
   }
 
-  v8 = [v5 containerCollection];
-  v9 = [(PXActionPerformer *)self hostViewController];
-  v10 = [[PXActivitySharingContext alloc] initWithAssetCollection:v8 assetsDataSource:v5];
-  v11 = [v5 keyAsset];
-  [(PXActivitySharingContext *)v10 setKeyAsset:v11];
+  containerCollection2 = [currentDataSource containerCollection];
+  hostViewController = [(PXActionPerformer *)self hostViewController];
+  v10 = [[PXActivitySharingContext alloc] initWithAssetCollection:containerCollection2 assetsDataSource:currentDataSource];
+  keyAsset = [currentDataSource keyAsset];
+  [(PXActivitySharingContext *)v10 setKeyAsset:keyAsset];
 
   [(PXActivitySharingContext *)v10 setSourceOrigin:3];
   v28[0] = @"com.apple.Photos.activity.SlideShow";
@@ -50,35 +50,35 @@
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   [(PXActivitySharingContext *)v10 setExcludedActivityTypes:v12];
 
-  v13 = [(PXActivitySharingContext *)v10 excludedActivityTypes];
+  excludedActivityTypes = [(PXActivitySharingContext *)v10 excludedActivityTypes];
   v27[0] = @"PUActivityTypeHide";
   v27[1] = @"PUActivityTypeDuplicate";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
-  v15 = [v13 arrayByAddingObjectsFromArray:v14];
+  v15 = [excludedActivityTypes arrayByAddingObjectsFromArray:v14];
   [(PXActivitySharingContext *)v10 setExcludedActivityTypes:v15];
 
-  v16 = [v9 px_sharePresentation];
-  if (!v16)
+  px_sharePresentation = [hostViewController px_sharePresentation];
+  if (!px_sharePresentation)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"sharePresentation"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"sharePresentation"}];
   }
 
-  v17 = [v16 createActivitySharingControllerWithContext:v10];
+  v17 = [px_sharePresentation createActivitySharingControllerWithContext:v10];
   [v17 selectInitialAssets];
   if (!v17)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"activitySharingController"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"activitySharingController"}];
   }
 
-  v18 = [v17 activityViewController];
-  if (!v18)
+  activityViewController = [v17 activityViewController];
+  if (!activityViewController)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v26 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:75 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController.activityViewController", v23}];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:75 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"activitySharingController.activityViewController", v23}];
 LABEL_12:
 
     goto LABEL_9;
@@ -87,17 +87,17 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v23 = NSStringFromClass(v24);
-    v25 = [v18 px_descriptionForAssertionMessage];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:75 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController.activityViewController", v23, v25}];
+    px_descriptionForAssertionMessage = [activityViewController px_descriptionForAssertionMessage];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXPhotosGridShareActionPerformer.m" lineNumber:75 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"activitySharingController.activityViewController", v23, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
 
 LABEL_9:
-  [v9 presentViewController:v18 animated:1 completion:0];
+  [hostViewController presentViewController:activityViewController animated:1 completion:0];
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
 }
 

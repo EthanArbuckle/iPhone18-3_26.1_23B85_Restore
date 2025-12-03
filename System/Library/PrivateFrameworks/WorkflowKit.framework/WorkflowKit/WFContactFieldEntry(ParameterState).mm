@@ -9,34 +9,34 @@
 - (void)processWithContext:()ParameterState userInputRequiredHandler:valueHandler:
 {
   v7 = a5;
-  v8 = [a1 underlyingObject];
-  (a5)[2](v7, v8, 0);
+  underlyingObject = [self underlyingObject];
+  (a5)[2](v7, underlyingObject, 0);
 }
 
 - (id)serializedRepresentation
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  if ([a1 type])
+  if ([self type])
   {
-    v2 = [a1 underlyingObject];
-    if ([v2 conformsToProtocol:&unk_1F4ABA0E0])
+    underlyingObject = [self underlyingObject];
+    if ([underlyingObject conformsToProtocol:&unk_1F4ABA0E0])
     {
-      v3 = [v2 wfSerializedRepresentation];
+      wfSerializedRepresentation = [underlyingObject wfSerializedRepresentation];
     }
 
     else
     {
-      v3 = v2;
+      wfSerializedRepresentation = underlyingObject;
     }
 
-    v4 = v3;
-    if (v3)
+    wfSerializedRepresentation2 = wfSerializedRepresentation;
+    if (wfSerializedRepresentation)
     {
       v9[0] = @"EntryType";
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "type")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "type")}];
       v9[1] = @"SerializedEntry";
       v10[0] = v6;
-      v10[1] = v4;
+      v10[1] = wfSerializedRepresentation2;
       v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
     }
 
@@ -48,9 +48,9 @@
 
   else
   {
-    v2 = [a1 contact];
-    v4 = [v2 wfSerializedRepresentation];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E6997140]];
+    underlyingObject = [self contact];
+    wfSerializedRepresentation2 = [underlyingObject wfSerializedRepresentation];
+    v5 = [wfSerializedRepresentation2 objectForKeyedSubscript:*MEMORY[0x1E6997140]];
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -70,7 +70,7 @@
     v8 = v7;
     if (!v7)
     {
-      v5 = 0;
+      selfCopy3 = 0;
 LABEL_25:
 
       goto LABEL_26;
@@ -90,19 +90,19 @@ LABEL_25:
 
       if (v17)
       {
-        a1 = [a1 initWithContact:v17];
-        v5 = a1;
+        self = [self initWithContact:v17];
+        selfCopy3 = self;
       }
 
       else
       {
-        v5 = 0;
+        selfCopy3 = 0;
       }
 
       goto LABEL_24;
     }
 
-    v12 = [v11 integerValue];
+    integerValue = [v11 integerValue];
     v13 = [v8 objectForKey:@"SerializedEntry"];
     if (v13)
     {
@@ -125,44 +125,44 @@ LABEL_25:
 
     v17 = v14;
 
-    v5 = 0;
-    if (v12 > 2)
+    selfCopy3 = 0;
+    if (integerValue > 2)
     {
-      if (v12 == 3)
+      if (integerValue == 3)
       {
         v20 = [v8 objectForKey:@"SerializedEntry"];
         v21 = objc_opt_class();
         v18 = WFEnforceClass_74974(v20, v21);
 
-        v19 = [a1 initWithCustomHandle:v18];
+        v19 = [self initWithCustomHandle:v18];
         goto LABEL_23;
       }
 
-      if (v12 == 4)
+      if (integerValue == 4)
       {
         v18 = [MEMORY[0x1E6996EB8] objectWithWFSerializedRepresentation:v17];
-        v19 = [a1 initWithMessageGroup:v18];
+        v19 = [self initWithMessageGroup:v18];
         goto LABEL_23;
       }
     }
 
     else
     {
-      if (v12 == 1)
+      if (integerValue == 1)
       {
         v18 = [MEMORY[0x1E6996F00] objectWithWFSerializedRepresentation:v17];
-        v19 = [a1 initWithPhoneNumber:v18];
+        v19 = [self initWithPhoneNumber:v18];
         goto LABEL_23;
       }
 
-      if (v12 == 2)
+      if (integerValue == 2)
       {
         v18 = [MEMORY[0x1E6996E00] objectWithWFSerializedRepresentation:v17];
-        v19 = [a1 initWithEmailAddress:v18];
+        v19 = [self initWithEmailAddress:v18];
 LABEL_23:
-        a1 = v19;
+        self = v19;
 
-        v5 = a1;
+        selfCopy3 = self;
       }
     }
 
@@ -171,12 +171,12 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  a1 = [a1 initWithHandleString:v4];
-  v5 = a1;
+  self = [self initWithHandleString:v4];
+  selfCopy3 = self;
 LABEL_26:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v5;
+  return selfCopy3;
 }
 
 @end

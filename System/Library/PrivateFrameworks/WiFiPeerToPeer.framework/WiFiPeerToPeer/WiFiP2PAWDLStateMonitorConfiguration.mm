@@ -1,9 +1,9 @@
 @interface WiFiP2PAWDLStateMonitorConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (WiFiP2PAWDLStateMonitorConfiguration)init;
-- (WiFiP2PAWDLStateMonitorConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WiFiP2PAWDLStateMonitorConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiP2PAWDLStateMonitorConfiguration
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (WiFiP2PAWDLStateMonitorConfiguration)initWithCoder:(id)a3
+- (WiFiP2PAWDLStateMonitorConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WiFiP2PAWDLStateMonitorConfiguration;
   v5 = [(WiFiP2PAWDLStateMonitorConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AWDLStateMonitor.optionsKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AWDLStateMonitor.optionsKey"];
     v5->_options = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AWDLStateMonitor.services"];
+    v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AWDLStateMonitor.services"];
     servicesRequiringAvailabilityNotification = v5->_servicesRequiringAvailabilityNotification;
     v5->_servicesRequiringAvailabilityNotification = v7;
   }
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
     goto LABEL_8;
@@ -60,25 +60,25 @@
     goto LABEL_10;
   }
 
-  v5 = v4;
-  v6 = [(WiFiP2PAWDLStateMonitorConfiguration *)self options];
-  if (v6 != [(WiFiP2PAWDLStateMonitorConfiguration *)v5 options])
+  v5 = equalCopy;
+  options = [(WiFiP2PAWDLStateMonitorConfiguration *)self options];
+  if (options != [(WiFiP2PAWDLStateMonitorConfiguration *)v5 options])
   {
     goto LABEL_6;
   }
 
-  v7 = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
-  v8 = [(WiFiP2PAWDLStateMonitorConfiguration *)v5 servicesRequiringAvailabilityNotification];
-  v9 = v8;
-  if (v7 == v8)
+  servicesRequiringAvailabilityNotification = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
+  servicesRequiringAvailabilityNotification2 = [(WiFiP2PAWDLStateMonitorConfiguration *)v5 servicesRequiringAvailabilityNotification];
+  v9 = servicesRequiringAvailabilityNotification2;
+  if (servicesRequiringAvailabilityNotification == servicesRequiringAvailabilityNotification2)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
-  v11 = [(WiFiP2PAWDLStateMonitorConfiguration *)v5 servicesRequiringAvailabilityNotification];
-  v12 = [v10 isEqual:v11];
+  servicesRequiringAvailabilityNotification3 = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
+  servicesRequiringAvailabilityNotification4 = [(WiFiP2PAWDLStateMonitorConfiguration *)v5 servicesRequiringAvailabilityNotification];
+  v12 = [servicesRequiringAvailabilityNotification3 isEqual:servicesRequiringAvailabilityNotification4];
 
   if (v12)
   {
@@ -94,23 +94,23 @@ LABEL_10:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[WiFiP2PAWDLStateMonitorConfiguration options](self, "options")}];
-  [v5 encodeObject:v6 forKey:@"AWDLStateMonitor.optionsKey"];
+  [coderCopy encodeObject:v6 forKey:@"AWDLStateMonitor.optionsKey"];
 
-  v7 = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
-  [v5 encodeObject:v7 forKey:@"AWDLStateMonitor.services"];
+  servicesRequiringAvailabilityNotification = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
+  [coderCopy encodeObject:servicesRequiringAvailabilityNotification forKey:@"AWDLStateMonitor.services"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WiFiP2PAWDLStateMonitorConfiguration);
   [(WiFiP2PAWDLStateMonitorConfiguration *)v4 setOptions:[(WiFiP2PAWDLStateMonitorConfiguration *)self options]];
-  v5 = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
-  v6 = [v5 copy];
+  servicesRequiringAvailabilityNotification = [(WiFiP2PAWDLStateMonitorConfiguration *)self servicesRequiringAvailabilityNotification];
+  v6 = [servicesRequiringAvailabilityNotification copy];
   [(WiFiP2PAWDLStateMonitorConfiguration *)v4 setServicesRequiringAvailabilityNotification:v6];
 
   return v4;

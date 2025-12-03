@@ -19,26 +19,26 @@
 
 - (double)effectiveBaselineOffsetFromBottom
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   baseLineFromBottom = IfNeeded->_baselines.baseLineFromBottom;
   if (!NUIContainerViewLengthIsDefault(baseLineFromBottom))
   {
     return baseLineFromBottom;
   }
 
-  v4 = [(objc_object *)a1 _nui_baselineViewType];
-  if (v4 != 1)
+  _nui_baselineViewType = [(objc_object *)self _nui_baselineViewType];
+  if (_nui_baselineViewType != 1)
   {
-    v7 = v4;
-    [(objc_object *)a1 _currentScreenScale];
+    v7 = _nui_baselineViewType;
+    [(objc_object *)self _currentScreenScale];
     v9 = v8;
     if (!v7)
     {
-      [(objc_object *)a1 effectiveLayoutSizeFittingSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
-      [(objc_object *)a1 _baselineOffsetsAtSize:?];
+      [(objc_object *)self effectiveLayoutSizeFittingSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+      [(objc_object *)self _baselineOffsetsAtSize:?];
       v11 = v10;
       v13 = v12;
-      [(objc_object *)a1 alignmentRectInsets];
+      [(objc_object *)self alignmentRectInsets];
       v15 = v11 + v14;
       v17 = v13 + v16;
 LABEL_15:
@@ -60,7 +60,7 @@ LABEL_15:
 
 LABEL_11:
     v15 = 0.0;
-    if ([(objc_object *)a1 _hasFontInfoForVerticalBaselineSpacing]&& (v19 = [(objc_object *)a1 _fontInfoForBaselineSpacing]) != 0)
+    if ([(objc_object *)self _hasFontInfoForVerticalBaselineSpacing]&& (v19 = [(objc_object *)self _fontInfoForBaselineSpacing]) != 0)
     {
       v20 = v19;
       [v19 ascender];
@@ -77,39 +77,39 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v5 = [(objc_object *)a1 viewForLastBaselineLayout];
-  if (!v5 || v5 == a1)
+  viewForLastBaselineLayout = [(objc_object *)self viewForLastBaselineLayout];
+  if (!viewForLastBaselineLayout || viewForLastBaselineLayout == self)
   {
-    [(objc_object *)a1 _currentScreenScale];
+    [(objc_object *)self _currentScreenScale];
     v9 = v18;
     goto LABEL_11;
   }
 
-  [(objc_object *)v5 effectiveBaselineOffsetFromBottom];
+  [(objc_object *)viewForLastBaselineLayout effectiveBaselineOffsetFromBottom];
   return result;
 }
 
 - (double)effectiveFirstBaselineOffsetFromTop
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   baseLineFromTop = IfNeeded->_baselines.baseLineFromTop;
   if (!NUIContainerViewLengthIsDefault(baseLineFromTop))
   {
     return baseLineFromTop;
   }
 
-  v4 = [(objc_object *)a1 _nui_baselineViewType];
-  if (v4 != 1)
+  _nui_baselineViewType = [(objc_object *)self _nui_baselineViewType];
+  if (_nui_baselineViewType != 1)
   {
-    v7 = v4;
-    [(objc_object *)a1 _currentScreenScale];
+    v7 = _nui_baselineViewType;
+    [(objc_object *)self _currentScreenScale];
     v9 = v8;
     if (!v7)
     {
-      [(objc_object *)a1 effectiveLayoutSizeFittingSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
-      [(objc_object *)a1 _baselineOffsetsAtSize:?];
+      [(objc_object *)self effectiveLayoutSizeFittingSize:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
+      [(objc_object *)self _baselineOffsetsAtSize:?];
       v11 = v10;
-      [(objc_object *)a1 alignmentRectInsets];
+      [(objc_object *)self alignmentRectInsets];
       v13 = v11 + v12;
 LABEL_14:
       v18 = round(v9 * v13) / v9;
@@ -130,13 +130,13 @@ LABEL_14:
 
 LABEL_11:
     v13 = 0.0;
-    if ([(objc_object *)a1 _hasFontInfoForVerticalBaselineSpacing])
+    if ([(objc_object *)self _hasFontInfoForVerticalBaselineSpacing])
     {
-      v15 = [(objc_object *)a1 _fontInfoForBaselineSpacing];
-      if (v15)
+      _fontInfoForBaselineSpacing = [(objc_object *)self _fontInfoForBaselineSpacing];
+      if (_fontInfoForBaselineSpacing)
       {
-        v16 = v15;
-        [v15 ascender];
+        v16 = _fontInfoForBaselineSpacing;
+        [_fontInfoForBaselineSpacing ascender];
         v13 = v17;
         [v16 descender];
       }
@@ -145,30 +145,30 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v5 = [(objc_object *)a1 viewForFirstBaselineLayout];
-  if (!v5 || v5 == a1)
+  viewForFirstBaselineLayout = [(objc_object *)self viewForFirstBaselineLayout];
+  if (!viewForFirstBaselineLayout || viewForFirstBaselineLayout == self)
   {
-    [(objc_object *)a1 _currentScreenScale];
+    [(objc_object *)self _currentScreenScale];
     v9 = v14;
     goto LABEL_11;
   }
 
-  [(objc_object *)v5 effectiveFirstBaselineOffsetFromTop];
+  [(objc_object *)viewForFirstBaselineLayout effectiveFirstBaselineOffsetFromTop];
   return result;
 }
 
 - (CGFloat)effectiveLayoutSizeFittingSize:()NUIContainerView
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   flags = IfNeeded->_flags;
   v25 = *MEMORY[0x277CBF3A8];
   v8 = flags;
   if ((flags & 1) == 0)
   {
-    v9 = [(objc_object *)a1 isLayoutSizeDependentOnPerpendicularAxis];
+    isLayoutSizeDependentOnPerpendicularAxis = [(objc_object *)self isLayoutSizeDependentOnPerpendicularAxis];
     v26.width = a2;
     v26.height = a3;
-    if (nui_size_cache::find_size(&IfNeeded->_sizeCache, v26, v9, &v25))
+    if (nui_size_cache::find_size(&IfNeeded->_sizeCache, v26, isLayoutSizeDependentOnPerpendicularAxis, &v25))
     {
       return v25.width;
     }
@@ -219,7 +219,7 @@ LABEL_11:
   *&IfNeeded->_flags = v8 | 2;
   if (v13 != width || v12 != height)
   {
-    [(objc_object *)a1 calculateLayoutSizeFittingSize:v16, v17];
+    [(objc_object *)self calculateLayoutSizeFittingSize:v16, v17];
     if (v19 > v13)
     {
       v13 = v19;
@@ -268,7 +268,7 @@ LABEL_11:
 
 - (_NUIViewContainerViewInfo)setNeverCacheEffectiveLayoutSize:()NUIContainerView
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   *&result->_flags = *&result->_flags & 0xFE | a3;
   return result;
 }
@@ -286,13 +286,13 @@ LABEL_11:
     a3 = 0.0;
   }
 
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   if (result->_minSize.width != v4 || result->_minSize.height != a3)
   {
     result->_minSize.width = v4;
     result->_minSize.height = a3;
 
-    return [(objc_object *)a1 invalidateIntrinsicContentSize];
+    return [(objc_object *)self invalidateIntrinsicContentSize];
   }
 
   return result;
@@ -311,13 +311,13 @@ LABEL_11:
     a3 = 10000.0;
   }
 
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   if (result->_maxSize.width != v4 || result->_maxSize.height != a3)
   {
     result->_maxSize.width = v4;
     result->_maxSize.height = a3;
 
-    return [(objc_object *)a1 invalidateIntrinsicContentSize];
+    return [(objc_object *)self invalidateIntrinsicContentSize];
   }
 
   return result;
@@ -325,8 +325,8 @@ LABEL_11:
 
 - (uint64_t)setLayoutSize:()NUIContainerView withHorizontalContentPriority:verticalContentPriority:
 {
-  [a1 setMinimumLayoutSize:?];
-  result = [a1 setMaximumLayoutSize:{a2, a3}];
+  [self setMinimumLayoutSize:?];
+  result = [self setMaximumLayoutSize:{a2, a3}];
   v12 = 0;
   v13 = 1;
   do
@@ -335,9 +335,9 @@ LABEL_11:
     if (a4 > -1.0)
     {
       *&v11 = a4;
-      [a1 setContentHuggingPriority:v12 forAxis:v11];
+      [self setContentHuggingPriority:v12 forAxis:v11];
       *&v15 = a4;
-      result = [a1 setContentCompressionResistancePriority:v12 forAxis:v15];
+      result = [self setContentCompressionResistancePriority:v12 forAxis:v15];
     }
 
     v13 = 0;
@@ -351,7 +351,7 @@ LABEL_11:
 
 - (_NUIViewContainerViewInfo)setCustomAlignmentRectInsets:()NUIContainerView
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   v7.f64[0] = a2;
   v7.f64[1] = a3;
   v8.f64[0] = a4;
@@ -364,7 +364,7 @@ LABEL_11:
     result->_alignmentInsets.right = a5;
     *&result->_flags &= ~8u;
 
-    return [(objc_object *)a1 invalidateIntrinsicContentSize];
+    return [(objc_object *)self invalidateIntrinsicContentSize];
   }
 
   return result;
@@ -372,14 +372,14 @@ LABEL_11:
 
 - (_NUIViewContainerViewInfo)setCustomBaselineOffsetFromBottom:()NUIContainerView
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   flags = result->_flags;
   if (result->_baselines.baseLineFromBottom != a2 || (flags & 0x10) == 0)
   {
     result->_baselines.baseLineFromBottom = a2;
     *&result->_flags = flags | 0x20;
 
-    return [(objc_object *)a1 invalidateIntrinsicContentSize];
+    return [(objc_object *)self invalidateIntrinsicContentSize];
   }
 
   return result;
@@ -387,7 +387,7 @@ LABEL_11:
 
 - (double)customBaselineOffsetFromBottom
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
   if ((*&IfNeeded->_flags & 0x20) != 0)
   {
     p_baseLineFromBottom = &IfNeeded->_baselines.baseLineFromBottom;
@@ -403,14 +403,14 @@ LABEL_11:
 
 - (_NUIViewContainerViewInfo)setCustomFirstBaselineOffsetFromTop:()NUIContainerView
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   flags = result->_flags;
   if (result->_baselines.baseLineFromTop != a2 || (flags & 0x10) == 0)
   {
     result->_baselines.baseLineFromTop = a2;
     *&result->_flags = flags | 0x10;
 
-    return [(objc_object *)a1 invalidateIntrinsicContentSize];
+    return [(objc_object *)self invalidateIntrinsicContentSize];
   }
 
   return result;
@@ -418,7 +418,7 @@ LABEL_11:
 
 - (double)customFirstBaselineOffsetFromTop
 {
-  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(a1, 0);
+  IfNeeded = _NUIContainerViewInfoCreateIfNeeded(self, 0);
   if ((*&IfNeeded->_flags & 0x10) != 0)
   {
     p_baselines = &IfNeeded->_baselines;
@@ -434,7 +434,7 @@ LABEL_11:
 
 - (_NUIViewContainerViewInfo)setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:()NUIContainerView
 {
-  result = _NUIContainerViewInfoCreateIfNeeded(a1, 1);
+  result = _NUIContainerViewInfoCreateIfNeeded(self, 1);
   if (a3)
   {
     v5 = 4;
@@ -451,18 +451,18 @@ LABEL_11:
 
 - (uint64_t)setUntransformedFrame:()NUIContainerView
 {
-  v10 = [a1 layer];
-  v11 = v10;
+  layer = [self layer];
+  v11 = layer;
   memset(&v20[1], 0, sizeof(CATransform3D));
-  if (v10)
+  if (layer)
   {
-    [v10 transform];
+    [layer transform];
   }
 
   v20[0] = v20[1];
   if (CATransform3DIsIdentity(v20))
   {
-    return [a1 setFrame:{a2, a3, a4, a5}];
+    return [self setFrame:{a2, a3, a4, a5}];
   }
 
   [v11 anchorPoint];
@@ -487,9 +487,9 @@ LABEL_11:
   v24.origin.y = a3;
   v24.size.width = a4;
   v24.size.height = a5;
-  [a1 setCenter:{v18, MinY + CGRectGetHeight(v24) * v16}];
-  [a1 bounds];
-  return [a1 setBounds:?];
+  [self setCenter:{v18, MinY + CGRectGetHeight(v24) * v16}];
+  [self bounds];
+  return [self setBounds:?];
 }
 
 @end

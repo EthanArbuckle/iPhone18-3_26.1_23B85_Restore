@@ -48,7 +48,7 @@ uint64_t __54__MTCompanionSyncStatusProvider_deviceSupportsSyncing__block_invoke
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       v7 = "%{public}@ this device doesn't support syncing.";
 LABEL_8:
       _os_log_impl(&dword_1B1F9F000, v6, OS_LOG_TYPE_DEFAULT, v7, &v9, 0xCu);
@@ -61,15 +61,15 @@ LABEL_9:
   }
 
   v3 = +[MTPairedDeviceListener sharedListener];
-  v4 = [v3 hasActivePairedDeviceSupportingSyncing];
+  hasActivePairedDeviceSupportingSyncing = [v3 hasActivePairedDeviceSupportingSyncing];
 
-  if ((v4 & 1) == 0)
+  if ((hasActivePairedDeviceSupportingSyncing & 1) == 0)
   {
     v6 = MTLogForCategory(6);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       v7 = "%{public}@ no active paired device supporting syncing.  Syncing is disabled";
       goto LABEL_8;
     }
@@ -90,7 +90,7 @@ LABEL_10:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B1F9F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ active paired device changed.", &v6, 0xCu);
   }
 

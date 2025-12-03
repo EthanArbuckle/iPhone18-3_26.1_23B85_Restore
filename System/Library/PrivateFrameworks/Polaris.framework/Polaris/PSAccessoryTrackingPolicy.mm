@@ -1,21 +1,21 @@
 @interface PSAccessoryTrackingPolicy
-- (PSAccessoryTrackingPolicy)initWithBuider:(id)a3;
-- (id)evaluatePolicy:(id)a3;
+- (PSAccessoryTrackingPolicy)initWithBuider:(id)buider;
+- (id)evaluatePolicy:(id)policy;
 - (void)updatePolicyState;
 @end
 
 @implementation PSAccessoryTrackingPolicy
 
-- (PSAccessoryTrackingPolicy)initWithBuider:(id)a3
+- (PSAccessoryTrackingPolicy)initWithBuider:(id)buider
 {
-  v4 = a3;
+  buiderCopy = buider;
   v9.receiver = self;
   v9.super_class = PSAccessoryTrackingPolicy;
   v5 = [(PSAccessoryTrackingPolicy *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(PSAccessoryTrackingPolicy *)v5 setBuilder:v4];
+    [(PSAccessoryTrackingPolicy *)v5 setBuilder:buiderCopy];
     v7 = objc_alloc_init(NSMutableDictionary);
     [(PSAccessoryTrackingPolicy *)v6 setGraphToDesiredLowerBoundStride:v7];
 
@@ -35,16 +35,16 @@
   v21 = v4;
   v22 = v3;
   v7 = [NSSet setWithObjects:v3, v4, v5, v6, 0];
-  v8 = [(PSAccessoryTrackingPolicy *)self builder];
-  v9 = [v8 allDependentGraphsForResourceSet:v7];
+  builder = [(PSAccessoryTrackingPolicy *)self builder];
+  v9 = [builder allDependentGraphsForResourceSet:v7];
 
-  v10 = [(PSAccessoryTrackingPolicy *)self graphToDesiredLowerBoundStride];
-  [v10 removeAllObjects];
+  graphToDesiredLowerBoundStride = [(PSAccessoryTrackingPolicy *)self graphToDesiredLowerBoundStride];
+  [graphToDesiredLowerBoundStride removeAllObjects];
 
-  v11 = [(PSAccessoryTrackingPolicy *)self graphToSessionName];
-  [v11 removeAllObjects];
+  graphToSessionName = [(PSAccessoryTrackingPolicy *)self graphToSessionName];
+  [graphToSessionName removeAllObjects];
 
-  v12 = [(PSAccessoryTrackingPolicy *)self policyTargetLowerBoundStride];
+  policyTargetLowerBoundStride = [(PSAccessoryTrackingPolicy *)self policyTargetLowerBoundStride];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -66,8 +66,8 @@
         }
 
         v18 = *(*(&v23 + 1) + 8 * v17);
-        v19 = [(PSAccessoryTrackingPolicy *)self graphToDesiredLowerBoundStride];
-        [v19 setObject:v12 forKey:v18];
+        graphToDesiredLowerBoundStride2 = [(PSAccessoryTrackingPolicy *)self graphToDesiredLowerBoundStride];
+        [graphToDesiredLowerBoundStride2 setObject:policyTargetLowerBoundStride forKey:v18];
 
         v17 = v17 + 1;
       }
@@ -80,7 +80,7 @@
   }
 }
 
-- (id)evaluatePolicy:(id)a3
+- (id)evaluatePolicy:(id)policy
 {
   [(PSAccessoryTrackingPolicy *)self updatePolicyState];
   v4 = objc_alloc_init(NSMutableDictionary);
@@ -106,11 +106,11 @@
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_graphToDesiredLowerBoundStride objectForKeyedSubscript:v9];
         v11 = objc_alloc_init(PSGraphState);
-        v12 = [v9 session];
-        [(PSGraphState *)v11 setSessionName:v12];
+        session = [v9 session];
+        [(PSGraphState *)v11 setSessionName:session];
 
-        v13 = [v9 name];
-        [(PSGraphState *)v11 setGraphName:v13];
+        name = [v9 name];
+        [(PSGraphState *)v11 setGraphName:name];
 
         [(PSGraphState *)v11 setLowerBoundStride:v10];
         [(PSGraphState *)v11 setTargetStride:0];

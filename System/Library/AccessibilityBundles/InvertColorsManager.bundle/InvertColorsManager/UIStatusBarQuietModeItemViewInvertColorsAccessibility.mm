@@ -1,22 +1,22 @@
 @interface UIStatusBarQuietModeItemViewInvertColorsAccessibility
-- (UIStatusBarQuietModeItemViewInvertColorsAccessibility)initWithFrame:(CGRect)a3;
+- (UIStatusBarQuietModeItemViewInvertColorsAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadInvertColors;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation UIStatusBarQuietModeItemViewInvertColorsAccessibility
 
-- (UIStatusBarQuietModeItemViewInvertColorsAccessibility)initWithFrame:(CGRect)a3
+- (UIStatusBarQuietModeItemViewInvertColorsAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = UIStatusBarQuietModeItemViewInvertColorsAccessibility;
-  v3 = [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)v3 _accessibilityLoadInvertColors];
 
   return v3;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if (UIAccessibilityIsInvertColorsEnabled())
   {
@@ -24,7 +24,7 @@
     {
       v7.receiver = self;
       v7.super_class = UIStatusBarQuietModeItemViewInvertColorsAccessibility;
-      [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v7 setAlpha:a3];
+      [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v7 setAlpha:alpha];
     }
 
     else
@@ -39,7 +39,7 @@
   {
     v6.receiver = self;
     v6.super_class = UIStatusBarQuietModeItemViewInvertColorsAccessibility;
-    [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v6 setAlpha:a3];
+    [(UIStatusBarQuietModeItemViewInvertColorsAccessibility *)&v6 setAlpha:alpha];
   }
 }
 

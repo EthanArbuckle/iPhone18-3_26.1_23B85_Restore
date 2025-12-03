@@ -1,14 +1,14 @@
 @interface HDCloudSyncRepository
 - (HDCloudSyncRepository)init;
-- (HDCloudSyncRepository)initWithProfile:(id)a3 syncCircleIdentifier:(id)a4 primaryCKContainer:(id)a5 secondaryCKContainers:(id)a6 userRecordName:(id)a7;
+- (HDCloudSyncRepository)initWithProfile:(id)profile syncCircleIdentifier:(id)identifier primaryCKContainer:(id)container secondaryCKContainers:(id)containers userRecordName:(id)name;
 - (HDCloudSyncRepositoryProfile)profile;
-- (id)cachedOwnerIdentifierForContainer:(id)a3;
-- (id)containerForContainerIdentifier:(id)a3;
+- (id)cachedOwnerIdentifierForContainer:(id)container;
+- (id)containerForContainerIdentifier:(id)identifier;
 - (id)description;
 - (int)deviceMode;
-- (void)cacheAllOwnerIdentifiersWithCompletion:(id)a3;
-- (void)enumerateAllContainersWithBlock:(id)a3;
-- (void)enumerateSecondaryContainersWithBlock:(id)a3;
+- (void)cacheAllOwnerIdentifiersWithCompletion:(id)completion;
+- (void)enumerateAllContainersWithBlock:(id)block;
+- (void)enumerateSecondaryContainersWithBlock:(id)block;
 @end
 
 @implementation HDCloudSyncRepository
@@ -23,17 +23,17 @@
   return 0;
 }
 
-- (HDCloudSyncRepository)initWithProfile:(id)a3 syncCircleIdentifier:(id)a4 primaryCKContainer:(id)a5 secondaryCKContainers:(id)a6 userRecordName:(id)a7
+- (HDCloudSyncRepository)initWithProfile:(id)profile syncCircleIdentifier:(id)identifier primaryCKContainer:(id)container secondaryCKContainers:(id)containers userRecordName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  profileCopy = profile;
+  identifierCopy = identifier;
+  containerCopy = container;
+  containersCopy = containers;
+  nameCopy = name;
+  if (!profileCopy)
   {
-    v75 = [MEMORY[0x277CCA890] currentHandler];
-    [v75 handleFailureInMethod:a2 object:self file:@"HDCloudSyncRepository.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncRepository.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
   }
 
   v77.receiver = self;
@@ -42,14 +42,14 @@
   v19 = v18;
   if (v18)
   {
-    v20 = objc_storeWeak(&v18->_profile, v13);
-    v21 = [v13 profileIdentifier];
+    v20 = objc_storeWeak(&v18->_profile, profileCopy);
+    profileIdentifier = [profileCopy profileIdentifier];
     profileIdentifier = v19->_profileIdentifier;
-    v19->_profileIdentifier = v21;
+    v19->_profileIdentifier = profileIdentifier;
 
     v19->_profileType = [(HKProfileIdentifier *)v19->_profileIdentifier type];
-    objc_storeStrong(&v19->_primaryCKContainer, a5);
-    v76 = v15;
+    objc_storeStrong(&v19->_primaryCKContainer, container);
+    v76 = containerCopy;
     if (v19->_primaryCKContainer)
     {
       [MEMORY[0x277CBEB98] setWithObject:?];
@@ -63,7 +63,7 @@
     allCKContainers = v19->_allCKContainers;
     v19->_allCKContainers = v23;
 
-    v25 = [v16 copy];
+    v25 = [containersCopy copy];
     secondaryCKContainers = v19->_secondaryCKContainers;
     v19->_secondaryCKContainers = v25;
 
@@ -71,65 +71,65 @@
     v28 = v19->_allCKContainers;
     v19->_allCKContainers = v27;
 
-    v29 = [v14 copy];
+    v29 = [identifierCopy copy];
     syncCircleIdentifier = v19->_syncCircleIdentifier;
     v19->_syncCircleIdentifier = v29;
 
-    v31 = [v17 copy];
+    v31 = [nameCopy copy];
     userRecordName = v19->_userRecordName;
     v19->_userRecordName = v31;
 
     WeakRetained = objc_loadWeakRetained(&v19->_profile);
-    v34 = [WeakRetained daemon];
-    v35 = [v34 behavior];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
     behavior = v19->_behavior;
-    v19->_behavior = v35;
+    v19->_behavior = behavior;
 
     v37 = [HDCloudSyncAvailability alloc];
     profileType = v19->_profileType;
     v39 = objc_loadWeakRetained(&v19->_profile);
-    v40 = [v39 daemon];
-    v41 = [v40 behavior];
-    v42 = [(HDCloudSyncAvailability *)v37 initWithProfileType:profileType behavior:v41];
+    daemon2 = [v39 daemon];
+    behavior2 = [daemon2 behavior];
+    v42 = [(HDCloudSyncAvailability *)v37 initWithProfileType:profileType behavior:behavior2];
     syncAvailability = v19->_syncAvailability;
     v19->_syncAvailability = v42;
 
-    v44 = [v13 medicalIDDataManager];
+    medicalIDDataManager = [profileCopy medicalIDDataManager];
     medicalIDDataManager = v19->_medicalIDDataManager;
-    v19->_medicalIDDataManager = v44;
+    v19->_medicalIDDataManager = medicalIDDataManager;
 
-    v46 = [v13 attachmentManager];
+    attachmentManager = [profileCopy attachmentManager];
     attachmentManager = v19->_attachmentManager;
-    v19->_attachmentManager = v46;
+    v19->_attachmentManager = attachmentManager;
 
-    v48 = [v13 daemon];
-    v49 = [v48 profileManager];
+    daemon3 = [profileCopy daemon];
+    profileManager = [daemon3 profileManager];
     profileManager = v19->_profileManager;
-    v19->_profileManager = v49;
+    v19->_profileManager = profileManager;
 
-    v51 = [v13 sharingEntryManager];
+    sharingEntryManager = [profileCopy sharingEntryManager];
     sharingEntryManager = v19->_sharingEntryManager;
-    v19->_sharingEntryManager = v51;
+    v19->_sharingEntryManager = sharingEntryManager;
 
-    v53 = [v13 sharingAuthorizationManager];
+    sharingAuthorizationManager = [profileCopy sharingAuthorizationManager];
     sharingAuthorizationManager = v19->_sharingAuthorizationManager;
-    v19->_sharingAuthorizationManager = v53;
+    v19->_sharingAuthorizationManager = sharingAuthorizationManager;
 
-    v55 = [v13 sharedSummaryManager];
+    sharedSummaryManager = [profileCopy sharedSummaryManager];
     sharedSummaryManager = v19->_sharedSummaryManager;
-    v19->_sharedSummaryManager = v55;
+    v19->_sharedSummaryManager = sharedSummaryManager;
 
-    v57 = [v13 syncIdentityManager];
+    syncIdentityManager = [profileCopy syncIdentityManager];
     syncIdentityManager = v19->_syncIdentityManager;
-    v19->_syncIdentityManager = v57;
+    v19->_syncIdentityManager = syncIdentityManager;
 
-    v59 = [v13 syncEngine];
+    syncEngine = [profileCopy syncEngine];
     syncEngine = v19->_syncEngine;
-    v19->_syncEngine = v59;
+    v19->_syncEngine = syncEngine;
 
     v61 = [HDCloudSyncShimProvider alloc];
-    v62 = [v13 legacyRepositoryProfile];
-    v63 = [(HDCloudSyncShimProvider *)v61 initWithProfile:v62];
+    legacyRepositoryProfile = [profileCopy legacyRepositoryProfile];
+    v63 = [(HDCloudSyncShimProvider *)v61 initWithProfile:legacyRepositoryProfile];
     cloudSyncShimProvider = v19->_cloudSyncShimProvider;
     v19->_cloudSyncShimProvider = v63;
 
@@ -141,20 +141,20 @@
 
     else if (v65 == 1)
     {
-      v66 = [(HDCloudSyncRepository *)v19 profile];
-      v67 = [v66 daemon];
-      v68 = [v67 behavior];
-      v69 = [v68 features];
-      v19->_shouldPushToUnifiedZone = [v69 unifiedCloudSync];
+      profile = [(HDCloudSyncRepository *)v19 profile];
+      daemon4 = [profile daemon];
+      behavior3 = [daemon4 behavior];
+      features = [behavior3 features];
+      v19->_shouldPushToUnifiedZone = [features unifiedCloudSync];
     }
 
     v70 = objc_loadWeakRetained(&v19->_profile);
-    v71 = [v70 daemon];
-    v72 = [v71 behavior];
-    v73 = [v72 isAppleWatch];
+    daemon5 = [v70 daemon];
+    behavior4 = [daemon5 behavior];
+    isAppleWatch = [behavior4 isAppleWatch];
 
-    v15 = v76;
-    if (v73)
+    containerCopy = v76;
+    if (isAppleWatch)
     {
       v19->_shouldPushToUnifiedZone = 1;
     }
@@ -169,9 +169,9 @@
   if (profileType == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v5 = [WeakRetained daemon];
-    v6 = [v5 behavior];
-    if ([v6 tinkerModeEnabled])
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    if ([behavior tinkerModeEnabled])
     {
       v3 = 2;
     }
@@ -195,10 +195,10 @@
   return v3;
 }
 
-- (id)containerForContainerIdentifier:(id)a3
+- (id)containerForContainerIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -218,8 +218,8 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 containerIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        containerIdentifier = [v9 containerIdentifier];
+        v11 = [containerIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -245,24 +245,24 @@ LABEL_11:
   return v6;
 }
 
-- (void)cacheAllOwnerIdentifiersWithCompletion:(id)a3
+- (void)cacheAllOwnerIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained cloudSyncManager];
-  v6 = [v5 ownerIdentifierManager];
-  v7 = [(HDCloudSyncRepository *)self allCKContainers];
-  v8 = [v7 allObjects];
-  [v6 cacheOwnerIdentifiersForContainers:v8 completion:v4];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
+  ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
+  allCKContainers = [(HDCloudSyncRepository *)self allCKContainers];
+  allObjects = [allCKContainers allObjects];
+  [ownerIdentifierManager cacheOwnerIdentifiersForContainers:allObjects completion:completionCopy];
 }
 
-- (id)cachedOwnerIdentifierForContainer:(id)a3
+- (id)cachedOwnerIdentifierForContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained cloudSyncManager];
-  v7 = [v6 ownerIdentifierManager];
-  v8 = [v7 cachedOwnerIdentifierForContainer:v4];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
+  ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
+  v8 = [ownerIdentifierManager cachedOwnerIdentifierForContainer:containerCopy];
 
   return v8;
 }
@@ -273,24 +273,24 @@ LABEL_11:
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   profileIdentifier = self->_profileIdentifier;
-  v7 = [self->_primaryCKContainer containerIdentifier];
-  v8 = [v3 allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
-  v10 = [v4 stringWithFormat:@"<%@:%p [%@] %@ (%@)>", v5, self, profileIdentifier, v7, v9];
+  containerIdentifier = [self->_primaryCKContainer containerIdentifier];
+  allObjects = [v3 allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
+  v10 = [v4 stringWithFormat:@"<%@:%p [%@] %@ (%@)>", v5, self, profileIdentifier, containerIdentifier, v9];
 
   return v10;
 }
 
-- (void)enumerateSecondaryContainersWithBlock:(id)a3
+- (void)enumerateSecondaryContainersWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HDCloudSyncRepository *)self secondaryCKContainers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  secondaryCKContainers = [(HDCloudSyncRepository *)self secondaryCKContainers];
+  v6 = [secondaryCKContainers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -302,14 +302,14 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(secondaryCKContainers);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [secondaryCKContainers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -318,16 +318,16 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateAllContainersWithBlock:(id)a3
+- (void)enumerateAllContainersWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(HDCloudSyncRepository *)self allCKContainers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allCKContainers = [(HDCloudSyncRepository *)self allCKContainers];
+  v6 = [allCKContainers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -339,14 +339,14 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allCKContainers);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allCKContainers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

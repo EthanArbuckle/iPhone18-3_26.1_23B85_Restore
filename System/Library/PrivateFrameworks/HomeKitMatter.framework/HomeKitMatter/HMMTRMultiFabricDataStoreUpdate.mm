@@ -1,11 +1,11 @@
 @interface HMMTRMultiFabricDataStoreUpdate
 + (id)logCategory;
 - (BOOL)commit;
-- (HMMTRMultiFabricDataStoreUpdate)initWithFabricData:(id)a3 chipStorageDelegate:(id)a4 keychainDelegate:(id)a5 v2FabricDataStoreDelegate:(id)a6;
+- (HMMTRMultiFabricDataStoreUpdate)initWithFabricData:(id)data chipStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate v2FabricDataStoreDelegate:(id)storeDelegate;
 - (HMMTRMultiFabricDataStoreUpdateCHIPStorageDelegate)chipStorageDelegate;
 - (HMMTRMultiFabricDataStoreUpdateKeychainDelegate)keychainDelegate;
 - (HMMTRMultiFabricDataStoreUpdateV2FabricDataStoreDelegate)v2FabricDataStoreDelegate;
-- (id)chipStorageContentFromFabricData:(id)a3;
+- (id)chipStorageContentFromFabricData:(id)data;
 - (id)logIdentifier;
 @end
 
@@ -34,60 +34,60 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageDelegate];
-  v3 = [v2 identifier];
+  chipStorageDelegate = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageDelegate];
+  identifier = [chipStorageDelegate identifier];
 
-  return v3;
+  return identifier;
 }
 
-- (id)chipStorageContentFromFabricData:(id)a3
+- (id)chipStorageContentFromFabricData:(id)data
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 ipk];
-  [v4 setObject:v5 forKeyedSubscript:@"IPK"];
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = [dataCopy ipk];
+  [dictionary setObject:v5 forKeyedSubscript:@"IPK"];
 
   v6 = MEMORY[0x277CD5230];
-  v7 = [v3 rootCert];
-  v8 = [v6 convertX509Certificate:v7];
-  [v4 setObject:v8 forKeyedSubscript:@"f/1/r"];
+  rootCert = [dataCopy rootCert];
+  v8 = [v6 convertX509Certificate:rootCert];
+  [dictionary setObject:v8 forKeyedSubscript:@"f/1/r"];
 
   v9 = MEMORY[0x277CD5230];
-  v10 = [v3 residentOperationalCert];
-  v11 = [v9 convertX509Certificate:v10];
-  [v4 setObject:v11 forKeyedSubscript:@"f/1/n"];
+  residentOperationalCert = [dataCopy residentOperationalCert];
+  v11 = [v9 convertX509Certificate:residentOperationalCert];
+  [dictionary setObject:v11 forKeyedSubscript:@"f/1/n"];
 
   v39 = 0x12C1349002515;
   v40 = 24;
   v12 = [MEMORY[0x277CBEA90] dataWithBytes:&v39 length:9];
-  [v4 setObject:v12 forKeyedSubscript:@"f/1/m"];
+  [dictionary setObject:v12 forKeyedSubscript:@"f/1/m"];
 
-  v13 = [v3 residentOperationalKeyPair];
-  v14 = [v13 serialize];
-  [v4 setObject:v14 forKeyedSubscript:@"f/1/o"];
+  residentOperationalKeyPair = [dataCopy residentOperationalKeyPair];
+  serialize = [residentOperationalKeyPair serialize];
+  [dictionary setObject:serialize forKeyedSubscript:@"f/1/o"];
 
   v37 = 0x104013602002415;
   v38 = 6168;
   v15 = [MEMORY[0x277CBEA90] dataWithBytes:&v37 length:10];
-  [v4 setObject:v15 forKeyedSubscript:@"g/fidx"];
+  [dictionary setObject:v15 forKeyedSubscript:@"g/fidx"];
 
   v36 = 0x1829625600002615;
   v16 = [MEMORY[0x277CBEA90] dataWithBytes:&v36 length:8];
-  [v4 setObject:v16 forKeyedSubscript:@"g/lkgt"];
+  [dictionary setObject:v16 forKeyedSubscript:@"g/lkgt"];
 
-  v17 = [v3 residentOperationalCert];
-  [v4 setObject:v17 forKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
+  residentOperationalCert2 = [dataCopy residentOperationalCert];
+  [dictionary setObject:residentOperationalCert2 forKeyedSubscript:@"HMD.MTRPlugin.OperationalCert"];
 
-  v18 = [v3 rootCert];
-  [v4 setObject:v18 forKeyedSubscript:@"HMD.MTRPlugin.RootCert"];
+  rootCert2 = [dataCopy rootCert];
+  [dictionary setObject:rootCert2 forKeyedSubscript:@"HMD.MTRPlugin.RootCert"];
 
-  v19 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v20 = v4;
+  v20 = dictionary;
   v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v21)
   {
@@ -105,7 +105,7 @@
         v25 = *(*(&v31 + 1) + 8 * i);
         v26 = [v20 objectForKeyedSubscript:{v25, v31}];
         v27 = [v26 base64EncodedStringWithOptions:0];
-        [v19 setObject:v27 forKeyedSubscript:v25];
+        [dictionary2 setObject:v27 forKeyedSubscript:v25];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -114,7 +114,7 @@
     while (v22);
   }
 
-  v28 = [v19 copy];
+  v28 = [dictionary2 copy];
   v29 = *MEMORY[0x277D85DE8];
 
   return v28;
@@ -123,14 +123,14 @@
 - (BOOL)commit
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTRMultiFabricDataStoreUpdate *)self v2FabricDataStoreDelegate];
-  v4 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
-  v5 = [v3 storeFabricData:v4];
+  v2FabricDataStoreDelegate = [(HMMTRMultiFabricDataStoreUpdate *)self v2FabricDataStoreDelegate];
+  fabricData = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
+  v5 = [v2FabricDataStoreDelegate storeFabricData:fabricData];
 
   if ((v5 & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -147,22 +147,22 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v6 = [(HMMTRMultiFabricDataStoreUpdate *)self keychainDelegate];
-  v7 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
-  v8 = [v7 rootKeyPair];
-  v9 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
-  v10 = [v9 residentOperationalKeyPair];
-  v11 = [v6 updateNocSigner:v8 ownerSharedOperationalKeyPair:v10];
+  keychainDelegate = [(HMMTRMultiFabricDataStoreUpdate *)self keychainDelegate];
+  fabricData2 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
+  rootKeyPair = [fabricData2 rootKeyPair];
+  fabricData3 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
+  residentOperationalKeyPair = [fabricData3 residentOperationalKeyPair];
+  v11 = [keychainDelegate updateNocSigner:rootKeyPair ownerSharedOperationalKeyPair:residentOperationalKeyPair];
 
   if (v11)
   {
-    v12 = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageDelegate];
-    v13 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
-    v14 = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageContentFromFabricData:v13];
-    v15 = [v12 updateKeyValueStoreWithEntries:v14];
+    chipStorageDelegate = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageDelegate];
+    fabricData4 = [(HMMTRMultiFabricDataStoreUpdate *)self fabricData];
+    v14 = [(HMMTRMultiFabricDataStoreUpdate *)self chipStorageContentFromFabricData:fabricData4];
+    v15 = [chipStorageDelegate updateKeyValueStoreWithEntries:v14];
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     v19 = v18;
     if (v15)
@@ -196,7 +196,7 @@ LABEL_12:
   }
 
   v16 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   v20 = 1;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -215,22 +215,22 @@ LABEL_13:
   return v20;
 }
 
-- (HMMTRMultiFabricDataStoreUpdate)initWithFabricData:(id)a3 chipStorageDelegate:(id)a4 keychainDelegate:(id)a5 v2FabricDataStoreDelegate:(id)a6
+- (HMMTRMultiFabricDataStoreUpdate)initWithFabricData:(id)data chipStorageDelegate:(id)delegate keychainDelegate:(id)keychainDelegate v2FabricDataStoreDelegate:(id)storeDelegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  delegateCopy = delegate;
+  keychainDelegateCopy = keychainDelegate;
+  storeDelegateCopy = storeDelegate;
   v18.receiver = self;
   v18.super_class = HMMTRMultiFabricDataStoreUpdate;
   v15 = [(HMMTRMultiFabricDataStoreUpdate *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fabricData, a3);
-    objc_storeWeak(&v16->_chipStorageDelegate, v12);
-    objc_storeWeak(&v16->_keychainDelegate, v13);
-    objc_storeWeak(&v16->_v2FabricDataStoreDelegate, v14);
+    objc_storeStrong(&v15->_fabricData, data);
+    objc_storeWeak(&v16->_chipStorageDelegate, delegateCopy);
+    objc_storeWeak(&v16->_keychainDelegate, keychainDelegateCopy);
+    objc_storeWeak(&v16->_v2FabricDataStoreDelegate, storeDelegateCopy);
   }
 
   return v16;

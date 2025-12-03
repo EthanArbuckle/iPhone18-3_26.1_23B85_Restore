@@ -1,43 +1,43 @@
 @interface ProvisioningCarInvitationActivationViewController
-- (_TtC9PassKitUI49ProvisioningCarInvitationActivationViewController)initWithContext:(int64_t)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (_TtC9PassKitUI49ProvisioningCarInvitationActivationViewController)initWithContext:(int64_t)context;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)loadView;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
 @end
 
 @implementation ProvisioningCarInvitationActivationViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD2FE310();
 }
 
-- (_TtC9PassKitUI49ProvisioningCarInvitationActivationViewController)initWithContext:(int64_t)a3
+- (_TtC9PassKitUI49ProvisioningCarInvitationActivationViewController)initWithContext:(int64_t)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = self;
+  continueCopy = continue;
+  selfCopy = self;
   sub_1BD2FEFBC();
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [(ProvisioningCarInvitationActivationViewController *)v7 view];
-  if (v5)
+  iCopy = i;
+  selfCopy = self;
+  view = [(ProvisioningCarInvitationActivationViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setUserInteractionEnabled_];
+    v6 = view;
+    [view setUserInteractionEnabled_];
 
-    [(PKExplanationViewController *)v7 showSpinner:v4];
+    [(PKExplanationViewController *)selfCopy showSpinner:iCopy];
   }
 
   else

@@ -1,23 +1,23 @@
 @interface AppCache
-+ (id)appCacheWithRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 cacheDeleteVolume:(id)a9 isDataseparated:(BOOL)a10 isPlaceholder:(BOOL)a11 isPlugin:(BOOL)a12 telemetry:(id)a13;
-+ (id)appCacheWithRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 isDataseparated:(BOOL)a9 isPlaceholder:(BOOL)a10 isPlugin:(BOOL)a11 telemetry:(id)a12;
-+ (void)enumerateGroupCachesOnVolume:(id)a3 block:(id)a4;
-+ (void)enumerateWithContainerQuery:(id)a3 container_class:(unint64_t)a4 options:(int)a5 telemetry:(id)a6 block:(id)a7;
-- (AppCache)initWithBundleRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 cacheDeleteVolume:(id)a9 isDataseparated:(BOOL)a10 isPlaceholder:(BOOL)a11 isPlugin:(BOOL)a12 telemetry:(id)a13;
-- (BOOL)moveCacheAside:(id)a3;
++ (id)appCacheWithRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string cacheDeleteVolume:(id)volume isDataseparated:(BOOL)self0 isPlaceholder:(BOOL)self1 isPlugin:(BOOL)self2 telemetry:(id)self3;
++ (id)appCacheWithRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string isDataseparated:(BOOL)dataseparated isPlaceholder:(BOOL)self0 isPlugin:(BOOL)self1 telemetry:(id)self2;
++ (void)enumerateGroupCachesOnVolume:(id)volume block:(id)block;
++ (void)enumerateWithContainerQuery:(id)query container_class:(unint64_t)container_class options:(int)options telemetry:(id)telemetry block:(id)block;
+- (AppCache)initWithBundleRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string cacheDeleteVolume:(id)volume isDataseparated:(BOOL)self0 isPlaceholder:(BOOL)self1 isPlugin:(BOOL)self2 telemetry:(id)self3;
+- (BOOL)moveCacheAside:(id)aside;
 - (BOOL)validate;
 - (id)cachePath;
 - (id)description;
 - (id)tmpPath;
 - (int)urgency;
 - (int64_t)three_days_ago;
-- (unint64_t)caches:(BOOL)a3 purge:(BOOL)a4;
-- (unint64_t)clearCaches:(BOOL)a3;
-- (unint64_t)tmp:(BOOL)a3 purge:(BOOL)a4 all:(BOOL)a5;
-- (void)addBundleRecord:(id)a3;
-- (void)addBundleRecords:(id)a3;
+- (unint64_t)caches:(BOOL)caches purge:(BOOL)purge;
+- (unint64_t)clearCaches:(BOOL)caches;
+- (unint64_t)tmp:(BOOL)tmp purge:(BOOL)purge all:(BOOL)all;
+- (void)addBundleRecord:(id)record;
+- (void)addBundleRecords:(id)records;
 - (void)invalidate;
-- (void)setLastUsedTime:(id)a3;
+- (void)setLastUsedTime:(id)time;
 @end
 
 @implementation AppCache
@@ -25,28 +25,28 @@
 - (id)description
 {
   v32 = MEMORY[0x1E696AEC0];
-  v3 = [(AppCache *)self identifier];
-  v29 = [(AppCache *)self urgency];
-  v4 = [(AppCache *)self lastUsed];
+  identifier = [(AppCache *)self identifier];
+  urgency = [(AppCache *)self urgency];
+  lastUsed = [(AppCache *)self lastUsed];
   v5 = humanReadableNumber([(AppCache *)self caches:0 purge:0]);
   v6 = humanReadableNumber([(AppCache *)self tmp:0 purge:0 all:0]);
-  v33 = [(AppCache *)self lastKnownFreespace];
-  v38 = humanReadableNumber([v33 unsignedLongLongValue]);
-  v31 = [(AppCache *)self bundleIdentifiers];
-  v30 = [v31 allObjects];
-  v37 = [v30 componentsJoinedByString:{@", "}];
-  v7 = [(AppCache *)self personaUniqueString];
-  v35 = v4;
-  v36 = v3;
+  lastKnownFreespace = [(AppCache *)self lastKnownFreespace];
+  v38 = humanReadableNumber([lastKnownFreespace unsignedLongLongValue]);
+  bundleIdentifiers = [(AppCache *)self bundleIdentifiers];
+  allObjects = [bundleIdentifiers allObjects];
+  v37 = [allObjects componentsJoinedByString:{@", "}];
+  personaUniqueString = [(AppCache *)self personaUniqueString];
+  v35 = lastUsed;
+  v36 = identifier;
   v34 = v5;
-  if (v7)
+  if (personaUniqueString)
   {
-    v8 = [(AppCache *)self personaUniqueString];
+    personaUniqueString2 = [(AppCache *)self personaUniqueString];
   }
 
   else
   {
-    v8 = @"none";
+    personaUniqueString2 = @"none";
   }
 
   if ([(AppCache *)self isDataseparated])
@@ -69,13 +69,13 @@
     v10 = "";
   }
 
-  v11 = [(AppCache *)self dataContainerURL];
-  v12 = [v11 fileSystemRepresentation];
-  v13 = [(AppCache *)self userManagedAssetsURL];
-  if (v13)
+  dataContainerURL = [(AppCache *)self dataContainerURL];
+  fileSystemRepresentation = [dataContainerURL fileSystemRepresentation];
+  userManagedAssetsURL = [(AppCache *)self userManagedAssetsURL];
+  if (userManagedAssetsURL)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@", user managed assets: %s", -[NSURL fileSystemRepresentation](self->_userManagedAssetsURL, "fileSystemRepresentation")];
-    v27 = v12;
+    v27 = fileSystemRepresentation;
     v23 = v9;
     v25 = v10;
     v21 = v6;
@@ -83,12 +83,12 @@
     v16 = v34;
     v17 = v35;
     v18 = v36;
-    v19 = [v32 stringWithFormat:@"identifier: %@, urgency: %d, lastUsed: %@, cacheSize: %@, tmpSize: %@, freespace: %@ bundleRecords: [ %@ ], persona: %@%s%s, data container: %s%@", v36, v29, v35, v34, v21, v38, v37, v8, v23, v25, v27, v14];
+    v19 = [v32 stringWithFormat:@"identifier: %@, urgency: %d, lastUsed: %@, cacheSize: %@, tmpSize: %@, freespace: %@ bundleRecords: [ %@ ], persona: %@%s%s, data container: %s%@", v36, urgency, v35, v34, v21, v38, v37, personaUniqueString2, v23, v25, v27, v14];
   }
 
   else
   {
-    v28 = v12;
+    v28 = fileSystemRepresentation;
     v24 = v9;
     v26 = v10;
     v22 = v6;
@@ -96,27 +96,27 @@
     v16 = v34;
     v17 = v35;
     v18 = v36;
-    v19 = [v32 stringWithFormat:@"identifier: %@, urgency: %d, lastUsed: %@, cacheSize: %@, tmpSize: %@, freespace: %@ bundleRecords: [ %@ ], persona: %@%s%s, data container: %s%@", v36, v29, v35, v34, v22, v38, v37, v8, v24, v26, v28, &stru_1F3876480];
+    v19 = [v32 stringWithFormat:@"identifier: %@, urgency: %d, lastUsed: %@, cacheSize: %@, tmpSize: %@, freespace: %@ bundleRecords: [ %@ ], persona: %@%s%s, data container: %s%@", v36, urgency, v35, v34, v22, v38, v37, personaUniqueString2, v24, v26, v28, &stru_1F3876480];
   }
 
-  if (v7)
+  if (personaUniqueString)
   {
   }
 
   return v19;
 }
 
-- (AppCache)initWithBundleRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 cacheDeleteVolume:(id)a9 isDataseparated:(BOOL)a10 isPlaceholder:(BOOL)a11 isPlugin:(BOOL)a12 telemetry:(id)a13
+- (AppCache)initWithBundleRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string cacheDeleteVolume:(id)volume isDataseparated:(BOOL)self0 isPlaceholder:(BOOL)self1 isPlugin:(BOOL)self2 telemetry:(id)self3
 {
   v58 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v52 = a5;
-  v21 = a6;
-  v51 = a7;
-  v50 = a8;
-  v22 = a9;
-  v49 = a13;
+  recordsCopy = records;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  stringCopy = string;
+  volumeCopy = volume;
+  telemetryCopy = telemetry;
   v53.receiver = self;
   v53.super_class = AppCache;
   v23 = [(AppCache *)&v53 init];
@@ -126,7 +126,7 @@
     goto LABEL_15;
   }
 
-  if (!v19 || !v20)
+  if (!recordsCopy || !identifierCopy)
   {
     v30 = CDGetLogHandle("client");
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -148,9 +148,9 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  if (v21)
+  if (lCopy)
   {
-    objc_storeStrong(&v23->_dataContainerURL, a6);
+    objc_storeStrong(&v23->_dataContainerURL, l);
   }
 
   dataContainerURL = v24->_dataContainerURL;
@@ -165,23 +165,23 @@ LABEL_28:
     *buf = 67109378;
     v55 = 94;
     v56 = 2112;
-    v57 = v20;
+    v57 = identifierCopy;
     v31 = "%d AppCache: cannot create an AppCache for %@ without dataContainerURL";
     v32 = v30;
     v33 = 18;
     goto LABEL_28;
   }
 
-  if (v22)
+  if (volumeCopy)
   {
     if (!initWithBundleRecords_identifier_groupIdentifiers_dataContainerURL_userManagedAssetsURL_personaUniqueString_cacheDeleteVolume_isDataseparated_isPlaceholder_isPlugin_telemetry__cdVolFreespace)
     {
-      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v22, "freespace")}];
+      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(volumeCopy, "freespace")}];
       v27 = initWithBundleRecords_identifier_groupIdentifiers_dataContainerURL_userManagedAssetsURL_personaUniqueString_cacheDeleteVolume_isDataseparated_isPlaceholder_isPlugin_telemetry__cdVolFreespace;
       initWithBundleRecords_identifier_groupIdentifiers_dataContainerURL_userManagedAssetsURL_personaUniqueString_cacheDeleteVolume_isDataseparated_isPlaceholder_isPlugin_telemetry__cdVolFreespace = v26;
     }
 
-    v28 = v22;
+    v28 = volumeCopy;
     cdVol = v24->_cdVol;
     v24->_cdVol = v28;
   }
@@ -199,28 +199,28 @@ LABEL_28:
     goto LABEL_15;
   }
 
-  if (!a12)
+  if (!plugin)
   {
-    objc_storeStrong(&v24->_userManagedAssetsURL, a7);
+    objc_storeStrong(&v24->_userManagedAssetsURL, rL);
   }
 
-  v39 = [v19 mutableCopy];
+  v39 = [recordsCopy mutableCopy];
   bundleIdentifiers = v24->_bundleIdentifiers;
   v24->_bundleIdentifiers = v39;
 
-  v41 = v52;
-  if (v52)
+  v41 = identifiersCopy;
+  if (identifiersCopy)
   {
-    v41 = [v52 mutableCopy];
+    v41 = [identifiersCopy mutableCopy];
   }
 
   groupContainerIdentifiers = v24->_groupContainerIdentifiers;
   v24->_groupContainerIdentifiers = v41;
 
-  objc_storeStrong(&v24->_identifier, a4);
-  objc_storeStrong(&v24->_personaUniqueString, a8);
-  v24->_isPlaceholder = a11;
-  v24->_isPlugin = a12;
+  objc_storeStrong(&v24->_identifier, identifier);
+  objc_storeStrong(&v24->_personaUniqueString, string);
+  v24->_isPlaceholder = placeholder;
+  v24->_isPlugin = plugin;
   v43 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AppCache tmp:purge:all:](v24, "tmp:purge:all:", 0, 0, 0)}];
   lastKnownTmpSize = v24->_lastKnownTmpSize;
   v24->_lastKnownTmpSize = v43;
@@ -242,7 +242,7 @@ LABEL_28:
   lastKnownFreespace = v24->_lastKnownFreespace;
   v24->_lastKnownFreespace = v47;
 
-  objc_storeStrong(&v24->_telemetry, a13);
+  objc_storeStrong(&v24->_telemetry, telemetry);
   v24->_timestamp = nan("");
   v34 = v24;
 LABEL_16:
@@ -251,17 +251,17 @@ LABEL_16:
   return v34;
 }
 
-+ (id)appCacheWithRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 isDataseparated:(BOOL)a9 isPlaceholder:(BOOL)a10 isPlugin:(BOOL)a11 telemetry:(id)a12
++ (id)appCacheWithRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string isDataseparated:(BOOL)dataseparated isPlaceholder:(BOOL)self0 isPlugin:(BOOL)self1 telemetry:(id)self2
 {
   v40 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a12;
-  if (!v18)
+  recordsCopy = records;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  stringCopy = string;
+  telemetryCopy = telemetry;
+  if (!identifierCopy)
   {
     v26 = CDGetLogHandle("client");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -280,7 +280,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v20)
+  if (!lCopy)
   {
     v26 = CDGetLogHandle("client");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -293,9 +293,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  BYTE2(v33) = a11;
-  LOWORD(v33) = __PAIR16__(a10, a9);
-  v24 = [AppCache initWithBundleRecords:"initWithBundleRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:cacheDeleteVolume:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:v17 groupIdentifiers:v18 dataContainerURL:v19 userManagedAssetsURL:v20 personaUniqueString:v21 cacheDeleteVolume:v22 isDataseparated:0 isPlaceholder:v33 isPlugin:v23 telemetry:?];
+  BYTE2(v33) = plugin;
+  LOWORD(v33) = __PAIR16__(placeholder, dataseparated);
+  v24 = [AppCache initWithBundleRecords:"initWithBundleRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:cacheDeleteVolume:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:recordsCopy groupIdentifiers:identifierCopy dataContainerURL:identifiersCopy userManagedAssetsURL:lCopy personaUniqueString:rLCopy cacheDeleteVolume:stringCopy isDataseparated:0 isPlaceholder:v33 isPlugin:telemetryCopy telemetry:?];
   v25 = CDGetLogHandle("client");
   v26 = v25;
   if (!v24)
@@ -306,7 +306,7 @@ LABEL_13:
     }
 
     *buf = 138412290;
-    v37 = v18;
+    v37 = identifierCopy;
     v28 = "AppCache: unable to create AppCache for %@";
     v29 = v26;
     v30 = 12;
@@ -315,11 +315,11 @@ LABEL_13:
 
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(AppCache *)v24 identifier];
-    v35 = [(AppCache *)v24 lastKnownCacheSize];
-    v34 = humanReadableNumber([v35 unsignedLongLongValue]);
+    identifier = [(AppCache *)v24 identifier];
+    lastKnownCacheSize = [(AppCache *)v24 lastKnownCacheSize];
+    v34 = humanReadableNumber([lastKnownCacheSize unsignedLongLongValue]);
     *buf = 138412546;
-    v37 = v27;
+    v37 = identifier;
     v38 = 2112;
     v39 = v34;
     _os_log_impl(&dword_1BA7F1000, v26, OS_LOG_TYPE_DEFAULT, "AppCache: created an app cache - identifier: %@, cacheSize: %@", buf, 0x16u);
@@ -332,25 +332,25 @@ LABEL_14:
   return v24;
 }
 
-+ (id)appCacheWithRecords:(id)a3 identifier:(id)a4 groupIdentifiers:(id)a5 dataContainerURL:(id)a6 userManagedAssetsURL:(id)a7 personaUniqueString:(id)a8 cacheDeleteVolume:(id)a9 isDataseparated:(BOOL)a10 isPlaceholder:(BOOL)a11 isPlugin:(BOOL)a12 telemetry:(id)a13
++ (id)appCacheWithRecords:(id)records identifier:(id)identifier groupIdentifiers:(id)identifiers dataContainerURL:(id)l userManagedAssetsURL:(id)rL personaUniqueString:(id)string cacheDeleteVolume:(id)volume isDataseparated:(BOOL)self0 isPlaceholder:(BOOL)self1 isPlugin:(BOOL)self2 telemetry:(id)self3
 {
   v42 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a13;
-  if (!v18)
+  recordsCopy = records;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  rLCopy = rL;
+  stringCopy = string;
+  volumeCopy = volume;
+  telemetryCopy = telemetry;
+  if (!identifierCopy)
   {
     v28 = CDGetLogHandle("client");
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
       v26 = 0;
-      v25 = v37;
+      v25 = recordsCopy;
       goto LABEL_10;
     }
 
@@ -361,7 +361,7 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!v20)
+  if (!lCopy)
   {
     v28 = CDGetLogHandle("client");
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -374,10 +374,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  BYTE2(v33) = a12;
-  LOWORD(v33) = __PAIR16__(a11, a10);
-  v25 = v37;
-  v26 = [AppCache initWithBundleRecords:"initWithBundleRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:cacheDeleteVolume:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:v37 groupIdentifiers:v18 dataContainerURL:v19 userManagedAssetsURL:v20 personaUniqueString:v21 cacheDeleteVolume:v22 isDataseparated:v23 isPlaceholder:v33 isPlugin:v24 telemetry:?];
+  BYTE2(v33) = plugin;
+  LOWORD(v33) = __PAIR16__(placeholder, dataseparated);
+  v25 = recordsCopy;
+  v26 = [AppCache initWithBundleRecords:"initWithBundleRecords:identifier:groupIdentifiers:dataContainerURL:userManagedAssetsURL:personaUniqueString:cacheDeleteVolume:isDataseparated:isPlaceholder:isPlugin:telemetry:" identifier:recordsCopy groupIdentifiers:identifierCopy dataContainerURL:identifiersCopy userManagedAssetsURL:lCopy personaUniqueString:rLCopy cacheDeleteVolume:stringCopy isDataseparated:volumeCopy isPlaceholder:v33 isPlugin:telemetryCopy telemetry:?];
   v27 = CDGetLogHandle("client");
   v28 = v27;
   if (v26)
@@ -385,16 +385,16 @@ LABEL_17:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       [(AppCache *)v26 identifier];
-      v29 = v36 = v19;
-      v35 = [(AppCache *)v26 lastKnownCacheSize];
-      v34 = humanReadableNumber([v35 unsignedLongLongValue]);
+      v29 = v36 = identifiersCopy;
+      lastKnownCacheSize = [(AppCache *)v26 lastKnownCacheSize];
+      v34 = humanReadableNumber([lastKnownCacheSize unsignedLongLongValue]);
       *buf = 138412546;
       v39 = v29;
       v40 = 2112;
       v41 = v34;
       _os_log_impl(&dword_1BA7F1000, v28, OS_LOG_TYPE_DEFAULT, "AppCache: created an app cache - identifier: %@, cacheSize: %@", buf, 0x16u);
 
-      v19 = v36;
+      identifiersCopy = v36;
     }
   }
 
@@ -403,7 +403,7 @@ LABEL_17:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v39 = v18;
+      v39 = identifierCopy;
       _os_log_error_impl(&dword_1BA7F1000, v28, OS_LOG_TYPE_ERROR, "AppCache: unable to create AppCache for %@", buf, 0xCu);
     }
 
@@ -417,37 +417,37 @@ LABEL_10:
   return v26;
 }
 
-- (void)addBundleRecord:(id)a3
+- (void)addBundleRecord:(id)record
 {
-  v12 = a3;
-  v4 = [(AppCache *)self bundleIdentifiers];
-  v5 = [v12 bundleIdentifier];
-  v6 = [v4 containsObject:v5];
+  recordCopy = record;
+  bundleIdentifiers = [(AppCache *)self bundleIdentifiers];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v6 = [bundleIdentifiers containsObject:bundleIdentifier];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(AppCache *)self dataContainerURL];
-    v8 = [v12 dataContainerURL];
-    v9 = [v7 isEqual:v8];
+    dataContainerURL = [(AppCache *)self dataContainerURL];
+    dataContainerURL2 = [recordCopy dataContainerURL];
+    v9 = [dataContainerURL isEqual:dataContainerURL2];
 
     if (v9)
     {
-      v10 = [(AppCache *)self bundleIdentifiers];
-      v11 = [v12 bundleIdentifier];
-      [v10 addObject:v11];
+      bundleIdentifiers2 = [(AppCache *)self bundleIdentifiers];
+      bundleIdentifier2 = [recordCopy bundleIdentifier];
+      [bundleIdentifiers2 addObject:bundleIdentifier2];
     }
   }
 }
 
-- (void)addBundleRecords:(id)a3
+- (void)addBundleRecords:(id)records
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [recordsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -459,14 +459,14 @@ LABEL_10:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordsCopy);
         }
 
         [(AppCache *)self addBundleRecord:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [recordsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -477,8 +477,8 @@ LABEL_10:
 
 - (int)urgency
 {
-  v2 = [(AppCache *)self lastUsed];
-  v3 = urgencyForDate(v2);
+  lastUsed = [(AppCache *)self lastUsed];
+  v3 = urgencyForDate(lastUsed);
 
   return v3;
 }
@@ -486,8 +486,8 @@ LABEL_10:
 - (id)cachePath
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(AppCache *)self dataContainerURL];
-  v4 = [v2 stringWithUTF8String:{objc_msgSend(v3, "fileSystemRepresentation")}];
+  dataContainerURL = [(AppCache *)self dataContainerURL];
+  v4 = [v2 stringWithUTF8String:{objc_msgSend(dataContainerURL, "fileSystemRepresentation")}];
   v5 = [v4 stringByAppendingPathComponent:@"Library/Caches"];
 
   return v5;
@@ -496,21 +496,21 @@ LABEL_10:
 - (id)tmpPath
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(AppCache *)self dataContainerURL];
-  v4 = [v2 stringWithUTF8String:{objc_msgSend(v3, "fileSystemRepresentation")}];
+  dataContainerURL = [(AppCache *)self dataContainerURL];
+  v4 = [v2 stringWithUTF8String:{objc_msgSend(dataContainerURL, "fileSystemRepresentation")}];
   v5 = [v4 stringByAppendingPathComponent:@"tmp"];
 
   return v5;
 }
 
-- (void)setLastUsedTime:(id)a3
+- (void)setLastUsedTime:(id)time
 {
-  v6 = a3;
-  v4 = [(AppCache *)self lastUsed];
-  v5 = v4;
-  if (!v4 || [v4 compare:v6] == -1)
+  timeCopy = time;
+  lastUsed = [(AppCache *)self lastUsed];
+  v5 = lastUsed;
+  if (!lastUsed || [lastUsed compare:timeCopy] == -1)
   {
-    [(AppCache *)self setLastUsed:v6];
+    [(AppCache *)self setLastUsed:timeCopy];
   }
 }
 
@@ -523,8 +523,8 @@ LABEL_10:
 
 - (BOOL)validate
 {
-  v3 = [(AppCache *)self cachePath];
-  v4 = access([v3 UTF8String], 0);
+  cachePath = [(AppCache *)self cachePath];
+  v4 = access([cachePath UTF8String], 0);
 
   if (v4)
   {
@@ -543,8 +543,8 @@ LABEL_10:
   }
 
   cdVol = self->_cdVol;
-  v9 = [(AppCache *)self lastKnownFreespace];
-  LOBYTE(cdVol) = -[CacheDeleteVolume freespaceIsStale:](cdVol, "freespaceIsStale:", [v9 unsignedLongLongValue]);
+  lastKnownFreespace = [(AppCache *)self lastKnownFreespace];
+  LOBYTE(cdVol) = -[CacheDeleteVolume freespaceIsStale:](cdVol, "freespaceIsStale:", [lastKnownFreespace unsignedLongLongValue]);
 
   return cdVol ^ 1;
 }
@@ -571,66 +571,66 @@ LABEL_10:
   return v7.tv_sec - 259200;
 }
 
-- (unint64_t)tmp:(BOOL)a3 purge:(BOOL)a4 all:(BOOL)a5
+- (unint64_t)tmp:(BOOL)tmp purge:(BOOL)purge all:(BOOL)all
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (all)
   {
-    v5 = a4;
-    if (!a3)
+    purgeCopy = purge;
+    if (!tmp)
     {
       [(AppCache *)self validate];
     }
 
     v7 = MEMORY[0x1E696AD98];
-    v8 = [(AppCache *)self tmpPath];
-    v9 = [v7 numberWithUnsignedLongLong:{size_dir(objc_msgSend(v8, "UTF8String"))}];
+    tmpPath = [(AppCache *)self tmpPath];
+    v9 = [v7 numberWithUnsignedLongLong:{size_dir(objc_msgSend(tmpPath, "UTF8String"))}];
     [(AppCache *)self setLastKnownTmpSize:v9];
 
-    if (!v5)
+    if (!purgeCopy)
     {
-      v21 = [(AppCache *)self lastKnownTmpSize];
-      v22 = [v21 unsignedLongLongValue];
+      lastKnownTmpSize = [(AppCache *)self lastKnownTmpSize];
+      unsignedLongLongValue = [lastKnownTmpSize unsignedLongLongValue];
 
       v23 = *MEMORY[0x1E69E9840];
-      return v22;
+      return unsignedLongLongValue;
     }
 
-    v10 = [(AppCache *)self tmpPath];
-    v11 = [(AppCache *)self moveCacheAside:v10];
+    tmpPath2 = [(AppCache *)self tmpPath];
+    v11 = [(AppCache *)self moveCacheAside:tmpPath2];
 
     if (!v11)
     {
       v12 = CDGetLogHandle("client");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(AppCache *)self identifier];
+        identifier = [(AppCache *)self identifier];
         v27[0] = 67109378;
         v27[1] = 291;
         v28 = 2112;
-        v29 = v13;
+        v29 = identifier;
         _os_log_impl(&dword_1BA7F1000, v12, OS_LOG_TYPE_DEFAULT, "%d %@ Unable to move aside tmp, clearing in place", v27, 0x12u);
       }
 
-      v14 = [(AppCache *)self tmpPath];
-      nuke_dir([v14 UTF8String], 1);
+      tmpPath3 = [(AppCache *)self tmpPath];
+      nuke_dir([tmpPath3 UTF8String], 1);
     }
 
-    v15 = [(AppCache *)self tmpPath];
-    v16 = size_dir([v15 UTF8String]);
+    tmpPath4 = [(AppCache *)self tmpPath];
+    v16 = size_dir([tmpPath4 UTF8String]);
 
-    v17 = [(AppCache *)self lastKnownTmpSize];
-    v18 = [v17 unsignedLongLongValue];
+    lastKnownTmpSize2 = [(AppCache *)self lastKnownTmpSize];
+    unsignedLongLongValue2 = [lastKnownTmpSize2 unsignedLongLongValue];
 
-    if (v18 <= v16)
+    if (unsignedLongLongValue2 <= v16)
     {
       v20 = 0;
     }
 
     else
     {
-      v19 = [(AppCache *)self lastKnownTmpSize];
-      v20 = [v19 unsignedLongLongValue] - v16;
+      lastKnownTmpSize3 = [(AppCache *)self lastKnownTmpSize];
+      v20 = [lastKnownTmpSize3 unsignedLongLongValue] - v16;
     }
 
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v16];
@@ -646,12 +646,12 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)moveCacheAside:(id)a3
+- (BOOL)moveCacheAside:(id)aside
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AppCache *)self cdVol];
-  v6 = discardedCachesPathForVolume(v5);
+  asideCopy = aside;
+  cdVol = [(AppCache *)self cdVol];
+  v6 = discardedCachesPathForVolume(cdVol);
 
   v7 = CDGetLogHandle("client");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -667,9 +667,9 @@ LABEL_10:
   {
     if (!mkdir([v6 UTF8String], 0x1C0u) || *__error() == 17)
     {
-      v8 = [MEMORY[0x1E696AFB0] UUID];
-      v9 = [v8 UUIDString];
-      v10 = [v6 stringByAppendingPathComponent:v9];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v10 = [v6 stringByAppendingPathComponent:uUIDString];
 
       v11 = CDGetLogHandle("client");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -686,11 +686,11 @@ LABEL_10:
         v16 = CDGetLogHandle("client");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v29 = [v10 UTF8String];
+          uTF8String = [v10 UTF8String];
           v30 = __error();
           v31 = strerror(*v30);
           v35 = 136315394;
-          *v36 = v29;
+          *v36 = uTF8String;
           *&v36[8] = 2080;
           *&v36[10] = v31;
           _os_log_error_impl(&dword_1BA7F1000, v16, OS_LOG_TYPE_ERROR, "mkdir failed for %s : %s", &v35, 0x16u);
@@ -699,12 +699,12 @@ LABEL_10:
 
       else
       {
-        v12 = [v4 UTF8String];
-        v13 = [v10 UTF8String];
-        rename(v12, v13, v14);
+        uTF8String2 = [asideCopy UTF8String];
+        uTF8String3 = [v10 UTF8String];
+        rename(uTF8String2, uTF8String3, v14);
         if (!v15)
         {
-          if (!mkdir([v4 UTF8String], 0x1C0u))
+          if (!mkdir([asideCopy UTF8String], 0x1C0u))
           {
             v22 = 1;
             goto LABEL_24;
@@ -713,11 +713,11 @@ LABEL_10:
           v16 = CDGetLogHandle("client");
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
-            v32 = [v4 UTF8String];
+            uTF8String4 = [asideCopy UTF8String];
             v33 = __error();
             v34 = strerror(*v33);
             v35 = 136315394;
-            *v36 = v32;
+            *v36 = uTF8String4;
             *&v36[8] = 2080;
             *&v36[10] = v34;
             _os_log_error_impl(&dword_1BA7F1000, v16, OS_LOG_TYPE_ERROR, "Unable to re-create Caches directory at: %s : %s", &v35, 0x16u);
@@ -730,15 +730,15 @@ LABEL_10:
         v16 = CDGetLogHandle("client");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v17 = [(AppCache *)self cachePath];
-          v18 = [v17 UTF8String];
-          v19 = [v10 UTF8String];
+          cachePath = [(AppCache *)self cachePath];
+          uTF8String5 = [cachePath UTF8String];
+          uTF8String6 = [v10 UTF8String];
           v20 = __error();
           v21 = strerror(*v20);
           v35 = 136315650;
-          *v36 = v18;
+          *v36 = uTF8String5;
           *&v36[8] = 2080;
-          *&v36[10] = v19;
+          *&v36[10] = uTF8String6;
           v37 = 2080;
           v38 = v21;
           _os_log_error_impl(&dword_1BA7F1000, v16, OS_LOG_TYPE_ERROR, "rename failed for %s -> %s : %s", &v35, 0x20u);
@@ -754,11 +754,11 @@ LABEL_22:
     v16 = CDGetLogHandle("client");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v6 UTF8String];
+      uTF8String7 = [v6 UTF8String];
       v27 = __error();
       v28 = strerror(*v27);
       v35 = 136315394;
-      *v36 = v26;
+      *v36 = uTF8String7;
       *&v36[8] = 2080;
       *&v36[10] = v28;
       _os_log_error_impl(&dword_1BA7F1000, v16, OS_LOG_TYPE_ERROR, "mkdir failed for %s : %s", &v35, 0x16u);
@@ -770,9 +770,9 @@ LABEL_22:
     v16 = CDGetLogHandle("client");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v25 = [(CacheDeleteVolume *)self->_cdVol mountPoint];
+      mountPoint = [(CacheDeleteVolume *)self->_cdVol mountPoint];
       v35 = 138412290;
-      *v36 = v25;
+      *v36 = mountPoint;
       _os_log_error_impl(&dword_1BA7F1000, v16, OS_LOG_TYPE_ERROR, "AppCache moveCacheAside: Unable to create destination path for mount point: %@", &v35, 0xCu);
     }
 
@@ -789,48 +789,48 @@ LABEL_24:
   return v22;
 }
 
-- (unint64_t)caches:(BOOL)a3 purge:(BOOL)a4
+- (unint64_t)caches:(BOOL)caches purge:(BOOL)purge
 {
-  v4 = a4;
+  purgeCopy = purge;
   v44 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (caches)
   {
 LABEL_16:
     v26 = MEMORY[0x1E696AD98];
-    v27 = [(AppCache *)self cachePath];
-    v28 = [v26 numberWithUnsignedLongLong:{size_dir(objc_msgSend(v27, "UTF8String"))}];
+    cachePath = [(AppCache *)self cachePath];
+    v28 = [v26 numberWithUnsignedLongLong:{size_dir(objc_msgSend(cachePath, "UTF8String"))}];
     [(AppCache *)self setLastKnownCacheSize:v28];
 
-    v29 = [MEMORY[0x1E695DF00] date];
-    [v29 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     [(AppCache *)self setTimestamp:?];
 
-    if (v4)
+    if (purgeCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_17:
-    v25 = [(AppCache *)self lastKnownCacheSize];
-    v23 = [v25 unsignedLongLongValue];
+    lastKnownCacheSize = [(AppCache *)self lastKnownCacheSize];
+    unsignedLongLongValue = [lastKnownCacheSize unsignedLongLongValue];
     goto LABEL_18;
   }
 
-  v6 = [(AppCache *)self lastKnownCacheSize];
-  if (![v6 unsignedLongLongValue])
+  lastKnownCacheSize2 = [(AppCache *)self lastKnownCacheSize];
+  if (![lastKnownCacheSize2 unsignedLongLongValue])
   {
 
     goto LABEL_16;
   }
 
-  v7 = [(AppCache *)self validate];
+  validate = [(AppCache *)self validate];
 
-  if (!v7)
+  if (!validate)
   {
     goto LABEL_16;
   }
 
-  if (!v4)
+  if (!purgeCopy)
   {
     goto LABEL_17;
   }
@@ -839,75 +839,75 @@ LABEL_5:
   v8 = CDGetLogHandle("client");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(AppCache *)self identifier];
-    v10 = [(AppCache *)self lastKnownCacheSize];
+    identifier = [(AppCache *)self identifier];
+    lastKnownCacheSize3 = [(AppCache *)self lastKnownCacheSize];
     v11 = MEMORY[0x1E695DF00];
     [(AppCache *)self timestamp];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
     v36 = 67109890;
     v37 = 365;
     v38 = 2112;
-    v39 = v9;
+    v39 = identifier;
     v40 = 2112;
-    v41 = v10;
+    v41 = lastKnownCacheSize3;
     v42 = 2112;
     v43 = v12;
     _os_log_impl(&dword_1BA7F1000, v8, OS_LOG_TYPE_DEFAULT, "%d %@ purging cache, self.lastKnownCacheSize: %@ at %@", &v36, 0x26u);
   }
 
-  v13 = [(AppCache *)self cachePath];
-  v14 = [(AppCache *)self moveCacheAside:v13];
+  cachePath2 = [(AppCache *)self cachePath];
+  v14 = [(AppCache *)self moveCacheAside:cachePath2];
 
   if (!v14)
   {
     v15 = CDGetLogHandle("client");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(AppCache *)self identifier];
+      identifier2 = [(AppCache *)self identifier];
       v36 = 67109378;
       v37 = 367;
       v38 = 2112;
-      v39 = v16;
+      v39 = identifier2;
       _os_log_impl(&dword_1BA7F1000, v15, OS_LOG_TYPE_DEFAULT, "%d %@ Unable to move aside cache, clearing in place", &v36, 0x12u);
     }
 
-    v17 = [(AppCache *)self cachePath];
-    nuke_dir([v17 UTF8String], 1);
+    cachePath3 = [(AppCache *)self cachePath];
+    nuke_dir([cachePath3 UTF8String], 1);
   }
 
-  v18 = [(AppCache *)self cachePath];
-  v19 = size_dir([v18 UTF8String]);
+  cachePath4 = [(AppCache *)self cachePath];
+  v19 = size_dir([cachePath4 UTF8String]);
 
-  v20 = [(AppCache *)self lastKnownCacheSize];
-  v21 = [v20 unsignedLongLongValue];
+  lastKnownCacheSize4 = [(AppCache *)self lastKnownCacheSize];
+  unsignedLongLongValue2 = [lastKnownCacheSize4 unsignedLongLongValue];
 
-  if (v21 <= v19)
+  if (unsignedLongLongValue2 <= v19)
   {
-    v23 = 0;
+    unsignedLongLongValue = 0;
   }
 
   else
   {
-    v22 = [(AppCache *)self lastKnownCacheSize];
-    v23 = [v22 unsignedLongLongValue] - v19;
+    lastKnownCacheSize5 = [(AppCache *)self lastKnownCacheSize];
+    unsignedLongLongValue = [lastKnownCacheSize5 unsignedLongLongValue] - v19;
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v19];
   [(AppCache *)self setLastKnownCacheSize:v24];
 
-  v25 = [MEMORY[0x1E695DF00] date];
-  [v25 timeIntervalSinceReferenceDate];
+  lastKnownCacheSize = [MEMORY[0x1E695DF00] date];
+  [lastKnownCacheSize timeIntervalSinceReferenceDate];
   [(AppCache *)self setTimestamp:?];
 LABEL_18:
 
-  v30 = [(AppCache *)self telemetry];
+  telemetry = [(AppCache *)self telemetry];
 
-  if (v30)
+  if (telemetry)
   {
     v31 = CDGetLogHandle("client");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      if (v4)
+      if (purgeCopy)
       {
         v32 = " purge";
       }
@@ -917,32 +917,32 @@ LABEL_18:
         v32 = "";
       }
 
-      v33 = [(AppCache *)self cachePath];
+      cachePath5 = [(AppCache *)self cachePath];
       v36 = 67109890;
       v37 = 382;
       v38 = 2080;
       v39 = v32;
       v40 = 2048;
-      v41 = v23;
+      v41 = unsignedLongLongValue;
       v42 = 2112;
-      v43 = v33;
+      v43 = cachePath5;
       _os_log_impl(&dword_1BA7F1000, v31, OS_LOG_TYPE_DEFAULT, "%d%s caches result: %llu on %@", &v36, 0x26u);
     }
   }
 
   v34 = *MEMORY[0x1E69E9840];
-  return v23;
+  return unsignedLongLongValue;
 }
 
-- (unint64_t)clearCaches:(BOOL)a3
+- (unint64_t)clearCaches:(BOOL)caches
 {
   v26 = *MEMORY[0x1E69E9840];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [(AppCache *)self bundleIdentifiers];
-  v6 = [v5 allObjects];
+  bundleIdentifiers = [(AppCache *)self bundleIdentifiers];
+  allObjects = [bundleIdentifiers allObjects];
 
   v7 = 0;
   v8 = -3;
@@ -950,15 +950,15 @@ LABEL_18:
   v17 = v9;
   do
   {
-    v10 = [(AppCache *)self telemetry];
+    telemetry = [(AppCache *)self telemetry];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __24__AppCache_clearCaches___block_invoke;
     v18[3] = &unk_1E7F02FC0;
     v18[4] = self;
     v18[5] = &v20;
-    v19 = a3;
-    v11 = assert_group_cache_deletion(v10, v6, v18, &__block_literal_global_9);
+    cachesCopy = caches;
+    v11 = assert_group_cache_deletion(telemetry, allObjects, v18, &__block_literal_global_9);
 
     v12 = CDGetLogHandle("client");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1027,25 +1027,25 @@ void __24__AppCache_clearCaches___block_invoke_30(uint64_t a1, void *a2, void *a
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)enumerateWithContainerQuery:(id)a3 container_class:(unint64_t)a4 options:(int)a5 telemetry:(id)a6 block:(id)a7
++ (void)enumerateWithContainerQuery:(id)query container_class:(unint64_t)container_class options:(int)options telemetry:(id)telemetry block:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v11 = a7;
+  queryCopy = query;
+  telemetryCopy = telemetry;
+  blockCopy = block;
   v12 = objc_autoreleasePoolPush();
   if (container_query_create())
   {
-    v13 = [MEMORY[0x1E69DF068] sharedManager];
-    v14 = [v13 listAllPersonaWithAttributes];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    listAllPersonaWithAttributes = [mEMORY[0x1E69DF068] listAllPersonaWithAttributes];
     container_query_set_class();
     container_query_operation_set_flags();
     container_query_set_include_other_owners();
-    v21 = v14;
-    v22 = v9;
-    v23 = v10;
-    v24 = v11;
-    v15 = v14;
+    v21 = listAllPersonaWithAttributes;
+    v22 = queryCopy;
+    v23 = telemetryCopy;
+    v24 = blockCopy;
+    v15 = listAllPersonaWithAttributes;
     iterate_results_sync = container_query_iterate_results_sync();
     container_query_get_last_error();
     v17 = container_error_copy_unlocalized_description();
@@ -1074,11 +1074,11 @@ void __24__AppCache_clearCaches___block_invoke_30(uint64_t a1, void *a2, void *a
 
   else
   {
-    v13 = CDGetLogHandle("client");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x1E69DF068] = CDGetLogHandle("client");
+    if (os_log_type_enabled(mEMORY[0x1E69DF068], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BA7F1000, v13, OS_LOG_TYPE_DEFAULT, "container_query_create failed", buf, 2u);
+      _os_log_impl(&dword_1BA7F1000, mEMORY[0x1E69DF068], OS_LOG_TYPE_DEFAULT, "container_query_create failed", buf, 2u);
     }
   }
 
@@ -1387,27 +1387,27 @@ LABEL_53:
   return 1;
 }
 
-+ (void)enumerateGroupCachesOnVolume:(id)a3 block:(id)a4
++ (void)enumerateGroupCachesOnVolume:(id)volume block:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
   v8 = getRootVolume();
   if (v8)
   {
     v9 = container_query_create();
     v10 = v9;
-    if (v5)
+    if (volumeCopy)
     {
-      v25 = v6;
+      v25 = blockCopy;
       v11 = v7;
       empty = xpc_array_create_empty();
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v13 = v5;
+      v13 = volumeCopy;
       v14 = [v13 countByEnumeratingWithState:&v27 objects:v33 count:16];
       if (v14)
       {
@@ -1433,7 +1433,7 @@ LABEL_53:
       }
 
       v7 = v11;
-      v6 = v25;
+      blockCopy = v25;
       if (v10)
       {
         goto LABEL_11;
@@ -1454,7 +1454,7 @@ LABEL_11:
         }
 
         container_query_set_include_other_owners();
-        v26 = v6;
+        v26 = blockCopy;
         iterate_results_sync = container_query_iterate_results_sync();
         container_query_get_last_error();
         v20 = container_error_copy_unlocalized_description();

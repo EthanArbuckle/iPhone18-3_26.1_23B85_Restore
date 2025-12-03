@@ -1,11 +1,11 @@
 @interface CSIndexEventListener
 - (id)description;
-- (id)findJournalBasePath:(id)a3;
+- (id)findJournalBasePath:(id)path;
 - (void)handleDeviceLocking;
 - (void)handleDeviceUnlocked;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 - (void)lostConnection;
-- (void)processJournalsOnStartupForJournalsPath:(id)a3;
+- (void)processJournalsOnStartupForJournalsPath:(id)path;
 @end
 
 @implementation CSIndexEventListener
@@ -19,24 +19,24 @@
   return v5;
 }
 
-- (void)processJournalsOnStartupForJournalsPath:(id)a3
+- (void)processJournalsOnStartupForJournalsPath:(id)path
 {
   v94 = *MEMORY[0x277D85DE8];
-  v67 = a3;
+  pathCopy = path;
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v4 = SKGLogInit();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v91 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_DEFAULT, "### CSIndexEventListener(%@) processJournalsOnStartupForJournalsPath", buf, 0xCu);
     }
   }
 
-  v5 = [v67 stringByAppendingFormat:@"/%s", getCSIndexTypeShortNameCString(self->_indexType)];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  v5 = [pathCopy stringByAppendingFormat:@"/%s", getCSIndexTypeShortNameCString(self->_indexType)];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if (v7)
   {
@@ -154,7 +154,7 @@
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v91 = v23;
+                selfCopy2 = v23;
                 _os_log_error_impl(&dword_231B25000, v26, OS_LOG_TYPE_ERROR, "CSXPCEventListener#processJournalsOnStartupForJournalsPath invalid journalName %@", buf, 0xCu);
               }
             }
@@ -165,7 +165,7 @@
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v91 = self;
+                selfCopy2 = self;
                 v92 = 2112;
                 v93 = v25;
                 _os_log_impl(&dword_231B25000, v27, OS_LOG_TYPE_DEFAULT, "### CSIndexEventListener(%@) processJournalsOnStartupForJournalsPath registering journal with managers: %@", buf, 0x16u);
@@ -181,35 +181,35 @@
             v32 = [v28 numberFromString:v31];
 
             v63 = v32;
-            v33 = [v32 unsignedLongLongValue];
+            unsignedLongLongValue = [v32 unsignedLongLongValue];
             v34 = [v24 objectAtIndexedSubscript:2];
             v35 = objc_alloc_init(MEMORY[0x277CCABB8]);
             v36 = [v24 objectAtIndexedSubscript:3];
             v37 = [v35 numberFromString:v36];
-            v38 = [v37 intValue];
+            intValue = [v37 intValue];
 
             v39 = objc_alloc_init(MEMORY[0x277CCABB8]);
             v40 = [v24 objectAtIndexedSubscript:4];
             v41 = [v39 numberFromString:v40];
-            v42 = [v41 unsignedLongLongValue];
+            unsignedLongLongValue2 = [v41 unsignedLongLongValue];
 
             v43 = [v24 objectAtIndexedSubscript:5];
             bzero(buf, 0x400uLL);
             v68 = v34;
-            journalTocPathWithProtectionClass([v67 UTF8String], self->_indexType, objc_msgSend(v34, "UTF8String"), objc_msgSend(v43, "UTF8String"), v33, v38, buf);
+            journalTocPathWithProtectionClass([pathCopy UTF8String], self->_indexType, objc_msgSend(v34, "UTF8String"), objc_msgSend(v43, "UTF8String"), unsignedLongLongValue, intValue, buf);
             if ([(NSArray *)self->_managers count])
             {
               for (j = 0; j < [(NSArray *)self->_managers count]; ++j)
               {
                 v45 = [(NSArray *)self->_managers objectAtIndexedSubscript:j];
-                v46 = [(CSEmbeddingsUpdater *)v45 activityJournal];
-                v47 = [(CSEmbeddingsUpdater *)v46 asyncIndexProcessors];
-                v48 = [v47 isAcceptingJournals];
+                activityJournal = [(CSEmbeddingsUpdater *)v45 activityJournal];
+                asyncIndexProcessors = [(CSEmbeddingsUpdater *)activityJournal asyncIndexProcessors];
+                isAcceptingJournals = [asyncIndexProcessors isAcceptingJournals];
 
-                if (v48)
+                if (isAcceptingJournals)
                 {
                   v49 = [(NSArray *)self->_managers objectAtIndexedSubscript:j];
-                  [v49 registerJournalWithIno:v43 journalBasePath:v67 journalIno:v42 dev:v38 journalNumber:v33 journalCookie:v68];
+                  [v49 registerJournalWithIno:v43 journalBasePath:pathCopy journalIno:unsignedLongLongValue2 dev:intValue journalNumber:unsignedLongLongValue journalCookie:v68];
                 }
 
                 else
@@ -245,13 +245,13 @@
                   v51 = *__error();
                 }
 
-                v53 = [v64 UTF8String];
+                uTF8String = [v64 UTF8String];
                 *v76 = 67109634;
                 *&v76[4] = v51;
                 *&v76[8] = 2112;
                 *&v76[10] = self;
                 *&v76[18] = 2080;
-                *&v76[20] = v53;
+                *&v76[20] = uTF8String;
                 _os_log_impl(&dword_231B25000, v52, OS_LOG_TYPE_DEFAULT, "### unlink journal (%d) %@ - %s ", v76, 0x1Cu);
               }
             }
@@ -319,10 +319,10 @@ LABEL_75:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findJournalBasePath:(id)a3
+- (id)findJournalBasePath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   getAllCSManagedIndexPath();
   v21 = 0u;
   v22 = 0u;
@@ -344,15 +344,15 @@ LABEL_3:
 
       v9 = getJournalPathForBasePath(*(*(&v21 + 1) + 8 * v8));
       bzero(__str, 0x400uLL);
-      v10 = [v9 UTF8String];
-      if (v3)
+      uTF8String = [v9 UTF8String];
+      if (pathCopy)
       {
-        v11 = *(v3 + 3);
-        v13 = *(v3 + 8);
-        v12 = *(v3 + 9);
-        v14 = *(v3 + 5);
-        v15 = *(v3 + 4);
-        v16 = *(v3 + 5);
+        v11 = *(pathCopy + 3);
+        v13 = *(pathCopy + 8);
+        v12 = *(pathCopy + 9);
+        v14 = *(pathCopy + 5);
+        v15 = *(pathCopy + 4);
+        v16 = *(pathCopy + 5);
       }
 
       else
@@ -365,7 +365,7 @@ LABEL_3:
         v16 = 0;
       }
 
-      journalPathWithProtectionClass(v10, v11, v12, v13, v15, v14, v16, __str);
+      journalPathWithProtectionClass(uTF8String, v11, v12, v13, v15, v14, v16, __str);
       memset(&v20, 0, sizeof(v20));
       if (!stat(__str, &v20))
       {
@@ -397,17 +397,17 @@ LABEL_13:
   return v9;
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (!messageCopy)
   {
     v12 = journalsPath();
     goto LABEL_22;
   }
 
-  v6 = v4[4] - 1;
+  v6 = messageCopy[4] - 1;
   if (v6 <= 2)
   {
     v7 = 0x242523u >> (8 * v6);
@@ -465,7 +465,7 @@ LABEL_16:
       v12 = v12;
       v26 = v12;
       v27 = v5;
-      v28 = self;
+      selfCopy = self;
       dispatch_group_notify(v14, queue, block);
 
       goto LABEL_23;

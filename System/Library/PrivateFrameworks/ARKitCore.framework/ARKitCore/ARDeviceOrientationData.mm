@@ -1,36 +1,36 @@
 @interface ARDeviceOrientationData
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4;
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp;
 - ($8452678F12DBC466148836A9D382CAFC)rotationMatrix;
 - (ARDeviceOrientationData)init;
-- (ARDeviceOrientationData)initWithCoder:(id)a3;
-- (ARDeviceOrientationData)initWithDictionary:(id)a3;
-- (ARDeviceOrientationData)initWithMetadataWrapper:(id)a3;
-- (ARDeviceOrientationData)initWithMotionData:(id)a3;
-- (ARDeviceOrientationData)initWithTimestamp:(double)a3 rotationMatrix:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (ARDeviceOrientationData)initWithCoder:(id)coder;
+- (ARDeviceOrientationData)initWithDictionary:(id)dictionary;
+- (ARDeviceOrientationData)initWithMetadataWrapper:(id)wrapper;
+- (ARDeviceOrientationData)initWithMotionData:(id)data;
+- (ARDeviceOrientationData)initWithTimestamp:(double)timestamp rotationMatrix:(id *)matrix;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (double)rotationMatrixENU;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeToDictionary;
-- (void)appendToWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeviceMotion:(id)a3;
-- (void)setRotationMatrix:(id *)a3;
+- (void)appendToWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeviceMotion:(id)motion;
+- (void)setRotationMatrix:(id *)matrix;
 @end
 
 @implementation ARDeviceOrientationData
 
-- (void)setDeviceMotion:(id)a3
+- (void)setDeviceMotion:(id)motion
 {
-  v5 = a3;
-  objc_storeStrong(&self->_deviceMotion, a3);
-  [v5 timestamp];
+  motionCopy = motion;
+  objc_storeStrong(&self->_deviceMotion, motion);
+  [motionCopy timestamp];
   self->_timestamp = v6;
-  v7 = [v5 attitude];
-  v8 = v7;
-  if (v7)
+  attitude = [motionCopy attitude];
+  v8 = attitude;
+  if (attitude)
   {
-    [v7 rotationMatrix];
+    [attitude rotationMatrix];
   }
 
   else
@@ -51,12 +51,12 @@
 
 - (double)rotationMatrixENU
 {
-  v1 = *(a1 + 40);
-  v2 = *(a1 + 72);
-  v24 = *(a1 + 56);
+  v1 = *(self + 40);
+  v2 = *(self + 72);
+  v24 = *(self + 56);
   v25 = v2;
-  v26 = *(a1 + 88);
-  v22 = *(a1 + 24);
+  v26 = *(self + 88);
+  v22 = *(self + 24);
   v23 = v1;
   *&v3 = ARMatrix4x4FromCMRotationMatrix(v22.i64);
   v20 = v4;
@@ -110,19 +110,19 @@
   return [(ARDeviceOrientationData *)self initWithTimestamp:v3 rotationMatrix:0.0];
 }
 
-- (ARDeviceOrientationData)initWithTimestamp:(double)a3 rotationMatrix:(id *)a4
+- (ARDeviceOrientationData)initWithTimestamp:(double)timestamp rotationMatrix:(id *)matrix
 {
   v10.receiver = self;
   v10.super_class = ARDeviceOrientationData;
   result = [(ARDeviceOrientationData *)&v10 init];
   if (result)
   {
-    result->_timestamp = a3;
-    *&result->_rotationMatrix.m11 = *&a4->var0;
-    v7 = *&a4->var2;
-    v8 = *&a4->var4;
-    v9 = *&a4->var6;
-    result->_rotationMatrix.m33 = a4->var8;
+    result->_timestamp = timestamp;
+    *&result->_rotationMatrix.m11 = *&matrix->var0;
+    v7 = *&matrix->var2;
+    v8 = *&matrix->var4;
+    v9 = *&matrix->var6;
+    result->_rotationMatrix.m33 = matrix->var8;
     *&result->_rotationMatrix.m31 = v9;
     *&result->_rotationMatrix.m22 = v8;
     *&result->_rotationMatrix.m13 = v7;
@@ -131,35 +131,35 @@
   return result;
 }
 
-- (ARDeviceOrientationData)initWithMotionData:(id)a3
+- (ARDeviceOrientationData)initWithMotionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = ARDeviceOrientationData;
   v5 = [(ARDeviceOrientationData *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ARDeviceOrientationData *)v5 setDeviceMotion:v4];
+    [(ARDeviceOrientationData *)v5 setDeviceMotion:dataCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceMotion = self->_deviceMotion;
   if (deviceMotion)
   {
-    v9 = a3;
-    [v9 encodeObject:deviceMotion forKey:@"deviceMotion"];
+    coderCopy = coder;
+    [coderCopy encodeObject:deviceMotion forKey:@"deviceMotion"];
   }
 
   else
   {
     timestamp = self->_timestamp;
-    v6 = a3;
-    [v6 encodeDouble:@"timestamp" forKey:timestamp];
+    coderCopy2 = coder;
+    [coderCopy2 encodeDouble:@"timestamp" forKey:timestamp];
     v7 = *&self->_rotationMatrix.m13;
     v8 = *&self->_rotationMatrix.m31;
     v10[2] = *&self->_rotationMatrix.m22;
@@ -167,14 +167,14 @@
     m33 = self->_rotationMatrix.m33;
     v10[0] = *&self->_rotationMatrix.m11;
     v10[1] = v7;
-    [v6 ar_encodeCMRotationMatrix:v10 forKey:@"rotationMatrix"];
+    [coderCopy2 ar_encodeCMRotationMatrix:v10 forKey:@"rotationMatrix"];
   }
 }
 
-- (ARDeviceOrientationData)initWithCoder:(id)a3
+- (ARDeviceOrientationData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceMotion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceMotion"];
   if (v5)
   {
     v6 = [(ARDeviceOrientationData *)self initWithMotionData:v5];
@@ -182,16 +182,16 @@
 
   else
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v8 = v7;
     v17 = 0;
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 ar_decodeCMRotationMatrixForKey:@"rotationMatrix"];
+      [coderCopy ar_decodeCMRotationMatrixForKey:@"rotationMatrix"];
     }
 
     v11[2] = v15;
@@ -228,9 +228,9 @@
   return v5;
 }
 
-- (ARDeviceOrientationData)initWithDictionary:(id)a3
+- (ARDeviceOrientationData)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"deviceMotion"];
+  v4 = [dictionary objectForKeyedSubscript:@"deviceMotion"];
   if (v4)
   {
     v5 = v4;
@@ -243,52 +243,52 @@
     if (v9)
     {
       self = [(ARDeviceOrientationData *)self initWithMotionData:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (ARDeviceOrientationData)initWithMetadataWrapper:(id)a3
+- (ARDeviceOrientationData)initWithMetadataWrapper:(id)wrapper
 {
-  v4 = [MEMORY[0x1E698BEB0] decodeCMDeviceMotion:a3];
+  v4 = [MEMORY[0x1E698BEB0] decodeCMDeviceMotion:wrapper];
   if (v4)
   {
     self = [(ARDeviceOrientationData *)self initWithMotionData:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)appendToWriter:(id)a3
+- (void)appendToWriter:(id)writer
 {
-  v4 = a3;
-  v5 = [(ARDeviceOrientationData *)self deviceMotion];
-  [v4 processDeviceMotionData:v5 andAdditionalData:0];
+  writerCopy = writer;
+  deviceMotion = [(ARDeviceOrientationData *)self deviceMotion];
+  [writerCopy processDeviceMotionData:deviceMotion andAdditionalData:0];
 }
 
-+ (id)grabNextFromReader:(id)a3 timestamp:(double *)a4
++ (id)grabNextFromReader:(id)reader timestamp:(double *)timestamp
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  readerCopy = reader;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_autoreleasePoolPush();
   v8 = *(MEMORY[0x1E6960CA8] + 16);
   v21 = *MEMORY[0x1E6960CA8];
@@ -298,7 +298,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [v5 grabNextCMDeviceMotion:&v21];
+  v9 = [readerCopy grabNextCMDeviceMotion:&v21];
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
   if (v10)
   {
@@ -314,7 +314,7 @@
         }
 
         v14 = [objc_alloc(objc_opt_class()) initWithMotionData:*(*(&v17 + 1) + 8 * i)];
-        [v6 addObject:v14];
+        [array addObject:v14];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v17 objects:v24 count:16];
@@ -325,16 +325,16 @@
 
   *&v16.value = v21;
   v16.epoch = v22;
-  *a4 = CMTimeGetSeconds(&v16);
+  *timestamp = CMTimeGetSeconds(&v16);
   objc_autoreleasePoolPop(v7);
 
-  return v6;
+  return array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   deviceMotion = self->_deviceMotion;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (deviceMotion)
   {
     v6 = self->_deviceMotion;
@@ -356,12 +356,12 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (vabdd_f64(self->_timestamp, *(v5 + 2)) >= 2.22044605e-16)
     {
       LOBYTE(v18) = 0;
@@ -410,17 +410,17 @@
 
   [(ARDeviceOrientationData *)self timestamp];
   [v6 appendFormat:@" timestamp=%f", v7];
-  v8 = [(ARDeviceOrientationData *)self deviceMotion];
-  v9 = [v8 attitude];
-  [v9 pitch];
+  deviceMotion = [(ARDeviceOrientationData *)self deviceMotion];
+  attitude = [deviceMotion attitude];
+  [attitude pitch];
   v11 = v10;
-  v12 = [(ARDeviceOrientationData *)self deviceMotion];
-  v13 = [v12 attitude];
-  [v13 roll];
+  deviceMotion2 = [(ARDeviceOrientationData *)self deviceMotion];
+  attitude2 = [deviceMotion2 attitude];
+  [attitude2 roll];
   v15 = v14;
-  v16 = [(ARDeviceOrientationData *)self deviceMotion];
-  v17 = [v16 attitude];
-  [v17 yaw];
+  deviceMotion3 = [(ARDeviceOrientationData *)self deviceMotion];
+  attitude3 = [deviceMotion3 attitude];
+  [attitude3 yaw];
   [v6 appendFormat:@" pitch=%f roll=%f yaw=%f", v11, v15, v18];
 
   [v6 appendString:@">"];
@@ -440,13 +440,13 @@
   return self;
 }
 
-- (void)setRotationMatrix:(id *)a3
+- (void)setRotationMatrix:(id *)matrix
 {
-  *&self->_rotationMatrix.m11 = *&a3->var0;
-  v3 = *&a3->var2;
-  v4 = *&a3->var4;
-  v5 = *&a3->var6;
-  self->_rotationMatrix.m33 = a3->var8;
+  *&self->_rotationMatrix.m11 = *&matrix->var0;
+  v3 = *&matrix->var2;
+  v4 = *&matrix->var4;
+  v5 = *&matrix->var6;
+  self->_rotationMatrix.m33 = matrix->var8;
   *&self->_rotationMatrix.m31 = v5;
   *&self->_rotationMatrix.m22 = v4;
   *&self->_rotationMatrix.m13 = v3;

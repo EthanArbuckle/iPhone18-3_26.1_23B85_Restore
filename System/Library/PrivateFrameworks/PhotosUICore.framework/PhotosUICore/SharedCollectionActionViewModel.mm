@@ -1,7 +1,7 @@
 @interface SharedCollectionActionViewModel
 - (NSArray)itemProvidersForActivityItemsConfiguration;
 - (_TtC12PhotosUICore31SharedCollectionActionViewModel)init;
-- (id)activityItemsConfigurationMetadataForKey:(id)a3;
+- (id)activityItemsConfigurationMetadataForKey:(id)key;
 @end
 
 @implementation SharedCollectionActionViewModel
@@ -15,7 +15,7 @@
 
 - (NSArray)itemProvidersForActivityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   SharedCollectionActionViewModel.itemProvidersForActivityItemsConfiguration.getter();
 
   sub_1A3C52C70(0, &qword_1EB120AD0);
@@ -24,21 +24,21 @@
   return v3;
 }
 
-- (id)activityItemsConfigurationMetadataForKey:(id)a3
+- (id)activityItemsConfigurationMetadataForKey:(id)key
 {
   v5 = sub_1A524C674();
   v7 = v6;
   if (v5 == sub_1A524C674() && v7 == v8)
   {
-    v14 = a3;
-    v15 = self;
+    keyCopy = key;
+    selfCopy = self;
   }
 
   else
   {
     v10 = sub_1A524EAB4();
-    v11 = a3;
-    v12 = self;
+    keyCopy2 = key;
+    selfCopy2 = self;
 
     if ((v10 & 1) == 0)
     {

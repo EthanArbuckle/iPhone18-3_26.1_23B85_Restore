@@ -1,6 +1,6 @@
 @interface FMItemSharingFeaturesListView
 - (_TtC6FindMy29FMItemSharingFeaturesListView)init;
-- (_TtC6FindMy29FMItemSharingFeaturesListView)initWithCoder:(id)a3;
+- (_TtC6FindMy29FMItemSharingFeaturesListView)initWithCoder:(id)coder;
 @end
 
 @implementation FMItemSharingFeaturesListView
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC6FindMy29FMItemSharingFeaturesListView)initWithCoder:(id)a3
+- (_TtC6FindMy29FMItemSharingFeaturesListView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

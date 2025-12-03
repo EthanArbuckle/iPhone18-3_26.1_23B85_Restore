@@ -1,14 +1,14 @@
 @interface VCMediaNegotiatorMediaEncryptionSettings
-- (BOOL)isEqualToEncryptionSettings:(id)a3;
-- (VCMediaNegotiatorMediaEncryptionSettings)initWithSendMediaKey:(id)a3;
-- (void)addMediaCipherSuite:(int64_t)a3;
-- (void)addSRTCPCipherSuite:(int64_t)a3;
+- (BOOL)isEqualToEncryptionSettings:(id)settings;
+- (VCMediaNegotiatorMediaEncryptionSettings)initWithSendMediaKey:(id)key;
+- (void)addMediaCipherSuite:(int64_t)suite;
+- (void)addSRTCPCipherSuite:(int64_t)suite;
 - (void)dealloc;
 @end
 
 @implementation VCMediaNegotiatorMediaEncryptionSettings
 
-- (VCMediaNegotiatorMediaEncryptionSettings)initWithSendMediaKey:(id)a3
+- (VCMediaNegotiatorMediaEncryptionSettings)initWithSendMediaKey:(id)key
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -23,7 +23,7 @@ LABEL_11:
     return 0;
   }
 
-  if (!a3)
+  if (!key)
   {
     [VCMediaNegotiatorMediaEncryptionSettings initWithSendMediaKey:v4];
     goto LABEL_11;
@@ -45,7 +45,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5->_sendMediaKey = a3;
+  v5->_sendMediaKey = key;
   return v5;
 }
 
@@ -58,41 +58,41 @@ LABEL_11:
   [(VCMediaNegotiatorMediaEncryptionSettings *)&v3 dealloc];
 }
 
-- (void)addMediaCipherSuite:(int64_t)a3
+- (void)addMediaCipherSuite:(int64_t)suite
 {
   mediaCipherSuites = self->_mediaCipherSuites;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:suite];
 
   [(NSMutableSet *)mediaCipherSuites addObject:v4];
 }
 
-- (void)addSRTCPCipherSuite:(int64_t)a3
+- (void)addSRTCPCipherSuite:(int64_t)suite
 {
   srtcpCipherSuites = self->_srtcpCipherSuites;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:suite];
 
   [(NSMutableSet *)srtcpCipherSuites addObject:v4];
 }
 
-- (BOOL)isEqualToEncryptionSettings:(id)a3
+- (BOOL)isEqualToEncryptionSettings:(id)settings
 {
-  if (a3 == self)
+  if (settings == self)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = -[NSData isEqualToData:](self->_sendMediaKey, "isEqualToData:", [a3 sendMediaKey]);
+    v5 = -[NSData isEqualToData:](self->_sendMediaKey, "isEqualToData:", [settings sendMediaKey]);
     if (v5)
     {
-      v5 = -[NSMutableSet isEqualToSet:](self->_mediaCipherSuites, "isEqualToSet:", [a3 mediaCipherSuites]);
+      v5 = -[NSMutableSet isEqualToSet:](self->_mediaCipherSuites, "isEqualToSet:", [settings mediaCipherSuites]);
       if (v5)
       {
         srtcpCipherSuites = self->_srtcpCipherSuites;
-        v7 = [a3 srtcpCipherSuites];
+        srtcpCipherSuites = [settings srtcpCipherSuites];
 
-        LOBYTE(v5) = [(NSMutableSet *)srtcpCipherSuites isEqualToSet:v7];
+        LOBYTE(v5) = [(NSMutableSet *)srtcpCipherSuites isEqualToSet:srtcpCipherSuites];
       }
     }
   }

@@ -1,18 +1,18 @@
 @interface WFWorkflowProgressView
-- (WFWorkflowProgressView)initWithFrame:(CGRect)a3;
+- (WFWorkflowProgressView)initWithFrame:(CGRect)frame;
 - (void)beginBreatheAnimation;
 - (void)endBreatheAnimation;
 - (void)layoutSubviews;
-- (void)setFractionCompleted:(double)a3;
-- (void)setProgressStrokeWidth:(double)a3;
-- (void)setResolvedTintColor:(id)a3;
-- (void)setStopSize:(double)a3;
+- (void)setFractionCompleted:(double)completed;
+- (void)setProgressStrokeWidth:(double)width;
+- (void)setResolvedTintColor:(id)color;
+- (void)setStopSize:(double)size;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)transitionCompletedLayerToVisible:(BOOL)a3 animated:(BOOL)a4 haptic:(BOOL)a5;
-- (void)transitionRunningLayerToVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)transitionToState:(int64_t)a3;
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)transitionCompletedLayerToVisible:(BOOL)visible animated:(BOOL)animated haptic:(BOOL)haptic;
+- (void)transitionRunningLayerToVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)transitionToState:(int64_t)state;
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated;
 - (void)updatePaths;
 @end
 
@@ -20,11 +20,11 @@
 
 - (void)endBreatheAnimation
 {
-  v3 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-  [v3 removeAnimationForKey:@"breathe.scale"];
+  stopGlyphLayer = [(WFWorkflowProgressView *)self stopGlyphLayer];
+  [stopGlyphLayer removeAnimationForKey:@"breathe.scale"];
 
-  v4 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-  [v4 removeAnimationForKey:@"breathe.opacity"];
+  stopGlyphLayer2 = [(WFWorkflowProgressView *)self stopGlyphLayer];
+  [stopGlyphLayer2 removeAnimationForKey:@"breathe.opacity"];
 }
 
 - (void)beginBreatheAnimation
@@ -40,8 +40,8 @@
   v5 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
   [v11 setTimingFunction:v5];
 
-  v6 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-  [v6 addAnimation:v11 forKey:@"breathe.scale"];
+  stopGlyphLayer = [(WFWorkflowProgressView *)self stopGlyphLayer];
+  [stopGlyphLayer addAnimation:v11 forKey:@"breathe.scale"];
 
   v7 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v7 setFromValue:&unk_1F4819A78];
@@ -53,17 +53,17 @@
   v9 = [MEMORY[0x1E69793D0] functionWithName:v4];
   [v7 setTimingFunction:v9];
 
-  v10 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-  [v10 addAnimation:v7 forKey:@"breathe.opacity"];
+  stopGlyphLayer2 = [(WFWorkflowProgressView *)self stopGlyphLayer];
+  [stopGlyphLayer2 addAnimation:v7 forKey:@"breathe.opacity"];
 }
 
-- (void)transitionCompletedLayerToVisible:(BOOL)a3 animated:(BOOL)a4 haptic:(BOOL)a5
+- (void)transitionCompletedLayerToVisible:(BOOL)visible animated:(BOOL)animated haptic:(BOOL)haptic
 {
-  if (a3)
+  if (visible)
   {
-    if (a4)
+    if (animated)
     {
-      v6 = a5;
+      hapticCopy = haptic;
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __76__WFWorkflowProgressView_transitionCompletedLayerToVisible_animated_haptic___block_invoke;
@@ -77,34 +77,34 @@
       block[3] = &unk_1E83086B0;
       block[4] = self;
       dispatch_after(v7, MEMORY[0x1E69E96A0], block);
-      if (v6)
+      if (hapticCopy)
       {
-        v8 = [(WFWorkflowProgressView *)self feedbackGenerator];
-        [v8 impactOccurred];
+        feedbackGenerator = [(WFWorkflowProgressView *)self feedbackGenerator];
+        [feedbackGenerator impactOccurred];
       }
 
       return;
     }
 
-    v9 = [(WFWorkflowProgressView *)self checkmarkImageView];
-    [v9 setAlpha:{1.0, v9}];
+    checkmarkImageView = [(WFWorkflowProgressView *)self checkmarkImageView];
+    [checkmarkImageView setAlpha:{1.0, checkmarkImageView}];
   }
 
   else
   {
-    if (a4)
+    if (animated)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __76__WFWorkflowProgressView_transitionCompletedLayerToVisible_animated_haptic___block_invoke_4;
       v12[3] = &unk_1E83086B0;
       v12[4] = self;
-      [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:{a4, a5, 0.200000003}];
+      [MEMORY[0x1E69DD250] animateWithDuration:v12 animations:{animated, haptic, 0.200000003}];
       return;
     }
 
-    v11 = [(WFWorkflowProgressView *)self checkmarkImageView];
-    [v11 setAlpha:{0.0, v11}];
+    checkmarkImageView2 = [(WFWorkflowProgressView *)self checkmarkImageView];
+    [checkmarkImageView2 setAlpha:{0.0, checkmarkImageView2}];
   }
 }
 
@@ -153,28 +153,28 @@ void __76__WFWorkflowProgressView_transitionCompletedLayerToVisible_animated_hap
   [v1 setTransform:v6];
 }
 
-- (void)transitionRunningLayerToVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)transitionRunningLayerToVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  if (!a3)
+  animatedCopy = animated;
+  if (!visible)
   {
-    v13 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-    [v13 setOpacity:0.0];
+    stopGlyphLayer = [(WFWorkflowProgressView *)self stopGlyphLayer];
+    [stopGlyphLayer setOpacity:0.0];
 
     v20 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v14 = [(WFWorkflowProgressView *)self runningContainerLayer];
-    v15 = [v14 presentationLayer];
-    v16 = [v15 valueForKeyPath:@"opacity"];
+    runningContainerLayer = [(WFWorkflowProgressView *)self runningContainerLayer];
+    presentationLayer = [runningContainerLayer presentationLayer];
+    v16 = [presentationLayer valueForKeyPath:@"opacity"];
     [v20 setFromValue:v16];
 
     v17 = [MEMORY[0x1E696AD98] numberWithFloat:0.0];
     [v20 setToValue:v17];
 
     [v20 setDuration:0.200000003];
-    v18 = [(WFWorkflowProgressView *)self runningContainerLayer];
-    [v18 setOpacity:0.0];
+    runningContainerLayer2 = [(WFWorkflowProgressView *)self runningContainerLayer];
+    [runningContainerLayer2 setOpacity:0.0];
 
-    if (!v4)
+    if (!animatedCopy)
     {
       goto LABEL_6;
     }
@@ -183,9 +183,9 @@ void __76__WFWorkflowProgressView_transitionCompletedLayerToVisible_animated_hap
   }
 
   v20 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-  v6 = [(WFWorkflowProgressView *)self runningContainerLayer];
-  v7 = [v6 presentationLayer];
-  v8 = [v7 valueForKeyPath:@"opacity"];
+  runningContainerLayer3 = [(WFWorkflowProgressView *)self runningContainerLayer];
+  presentationLayer2 = [runningContainerLayer3 presentationLayer];
+  v8 = [presentationLayer2 valueForKeyPath:@"opacity"];
   [v20 setFromValue:v8];
 
   LODWORD(v9) = 1.0;
@@ -193,35 +193,35 @@ void __76__WFWorkflowProgressView_transitionCompletedLayerToVisible_animated_hap
   [v20 setToValue:v10];
 
   [v20 setDuration:0.200000003];
-  v11 = [(WFWorkflowProgressView *)self runningContainerLayer];
+  runningContainerLayer4 = [(WFWorkflowProgressView *)self runningContainerLayer];
   LODWORD(v12) = 1.0;
-  [v11 setOpacity:v12];
+  [runningContainerLayer4 setOpacity:v12];
 
-  if (v4)
+  if (animatedCopy)
   {
 LABEL_5:
-    v19 = [(WFWorkflowProgressView *)self runningContainerLayer];
-    [v19 addAnimation:v20 forKey:0];
+    runningContainerLayer5 = [(WFWorkflowProgressView *)self runningContainerLayer];
+    [runningContainerLayer5 addAnimation:v20 forKey:0];
   }
 
 LABEL_6:
 }
 
-- (void)transitionToState:(int64_t)a3 animated:(BOOL)a4
+- (void)transitionToState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(WFWorkflowProgressView *)self currentState]!= a3)
+  animatedCopy = animated;
+  if ([(WFWorkflowProgressView *)self currentState]!= state)
   {
-    [(WFWorkflowProgressView *)self transitionRunningLayerToVisible:a3 == 0 animated:v4];
-    [(WFWorkflowProgressView *)self transitionCompletedLayerToVisible:a3 != 0 animated:v4 haptic:1];
-    self->_currentState = a3;
+    [(WFWorkflowProgressView *)self transitionRunningLayerToVisible:state == 0 animated:animatedCopy];
+    [(WFWorkflowProgressView *)self transitionCompletedLayerToVisible:state != 0 animated:animatedCopy haptic:1];
+    self->_currentState = state;
   }
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
-  [(WFWorkflowProgressView *)self transitionToState:a3 animated:1];
-  if (a3)
+  [(WFWorkflowProgressView *)self transitionToState:state animated:1];
+  if (state)
   {
 
     [(WFWorkflowProgressView *)self endBreatheAnimation];
@@ -229,9 +229,9 @@ LABEL_6:
 
   else
   {
-    v5 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-    v6 = [v5 animationKeys];
-    v7 = [v6 count];
+    stopGlyphLayer = [(WFWorkflowProgressView *)self stopGlyphLayer];
+    animationKeys = [stopGlyphLayer animationKeys];
+    v7 = [animationKeys count];
 
     if (!v7)
     {
@@ -245,34 +245,34 @@ LABEL_6:
 {
   [(WFWorkflowProgressView *)self fractionCompleted];
   v4 = v3;
-  v25 = [(WFWorkflowProgressView *)self stopGlyphLayer];
-  v5 = [(WFWorkflowProgressView *)self backgroundCircleLayer];
-  v6 = [(WFWorkflowProgressView *)self partialRingLayer];
+  stopGlyphLayer = [(WFWorkflowProgressView *)self stopGlyphLayer];
+  backgroundCircleLayer = [(WFWorkflowProgressView *)self backgroundCircleLayer];
+  partialRingLayer = [(WFWorkflowProgressView *)self partialRingLayer];
   [(WFWorkflowProgressView *)self stopSize];
   v8 = v7;
-  [v25 setBounds:{0.0, 0.0, v8, v8}];
-  [v25 setCornerRadius:v8 * *MEMORY[0x1E69E0FE0]];
-  [v25 setCornerCurve:*MEMORY[0x1E69796E8]];
+  [stopGlyphLayer setBounds:{0.0, 0.0, v8, v8}];
+  [stopGlyphLayer setCornerRadius:v8 * *MEMORY[0x1E69E0FE0]];
+  [stopGlyphLayer setCornerCurve:*MEMORY[0x1E69796E8]];
   [(WFWorkflowProgressView *)self bounds];
   MidX = CGRectGetMidX(v27);
   [(WFWorkflowProgressView *)self bounds];
-  [v25 setPosition:{MidX, CGRectGetMidY(v28)}];
-  v10 = [(WFWorkflowProgressView *)self resolvedTintColor];
-  [v25 setBackgroundColor:{objc_msgSend(v10, "CGColor")}];
+  [stopGlyphLayer setPosition:{MidX, CGRectGetMidY(v28)}];
+  resolvedTintColor = [(WFWorkflowProgressView *)self resolvedTintColor];
+  [stopGlyphLayer setBackgroundColor:{objc_msgSend(resolvedTintColor, "CGColor")}];
 
   [(WFWorkflowProgressView *)self bounds];
-  [v5 setFrame:?];
+  [backgroundCircleLayer setFrame:?];
   [(WFWorkflowProgressView *)self bounds];
-  [v5 setCornerRadius:v11 * 0.5];
-  v12 = [(WFWorkflowProgressView *)self resolvedTintColor];
-  v13 = [v12 colorWithAlphaComponent:0.100000001];
-  [v5 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+  [backgroundCircleLayer setCornerRadius:v11 * 0.5];
+  resolvedTintColor2 = [(WFWorkflowProgressView *)self resolvedTintColor];
+  v13 = [resolvedTintColor2 colorWithAlphaComponent:0.100000001];
+  [backgroundCircleLayer setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
 
   [(WFWorkflowProgressView *)self progressStrokeWidth];
   v15 = v14;
   [(WFWorkflowProgressView *)self bounds];
   v30 = CGRectInset(v29, v15 + v15, v15 + v15);
-  [v6 setFrame:{v30.origin.x, v30.origin.y, v30.size.width, v30.size.height}];
+  [partialRingLayer setFrame:{v30.origin.x, v30.origin.y, v30.size.width, v30.size.height}];
   [(WFWorkflowProgressView *)self bounds];
   v17 = v16;
   [(WFWorkflowProgressView *)self bounds];
@@ -287,47 +287,47 @@ LABEL_6:
   }
 
   v20 = (v19 - v15) * 0.5;
-  [v6 bounds];
+  [partialRingLayer bounds];
   v21 = CGRectGetMidX(v31);
-  [v6 bounds];
+  [partialRingLayer bounds];
   v22 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:v21 startAngle:CGRectGetMidY(v32) endAngle:v20 clockwise:{-1.57079633, 4.71238898}];
-  [v6 setPath:{objc_msgSend(v22, "CGPath")}];
+  [partialRingLayer setPath:{objc_msgSend(v22, "CGPath")}];
 
-  v23 = [(WFWorkflowProgressView *)self resolvedTintColor];
-  [v6 setStrokeColor:{objc_msgSend(v23, "CGColor")}];
+  resolvedTintColor3 = [(WFWorkflowProgressView *)self resolvedTintColor];
+  [partialRingLayer setStrokeColor:{objc_msgSend(resolvedTintColor3, "CGColor")}];
 
-  [v6 setLineWidth:v15];
-  v24 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setFillColor:{objc_msgSend(v24, "CGColor")}];
+  [partialRingLayer setLineWidth:v15];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [partialRingLayer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  [v6 setLineCap:*MEMORY[0x1E6979E78]];
-  [v6 setStrokeEnd:v4];
+  [partialRingLayer setLineCap:*MEMORY[0x1E6979E78]];
+  [partialRingLayer setStrokeEnd:v4];
 }
 
-- (void)setResolvedTintColor:(id)a3
+- (void)setResolvedTintColor:(id)color
 {
-  objc_storeStrong(&self->_resolvedTintColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_resolvedTintColor, color);
+  colorCopy = color;
   [(WFWorkflowProgressView *)self updatePaths];
-  v6 = [(WFWorkflowProgressView *)self checkmarkImageView];
-  [v6 setTintColor:v5];
+  checkmarkImageView = [(WFWorkflowProgressView *)self checkmarkImageView];
+  [checkmarkImageView setTintColor:colorCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = WFWorkflowProgressView;
-  v4 = a3;
-  [(WFWorkflowProgressView *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFWorkflowProgressView *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(WFWorkflowProgressView *)self traitCollection:v11.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(WFWorkflowProgressView *)self tintColor];
-    v9 = [(WFWorkflowProgressView *)self traitCollection];
-    v10 = [v8 resolvedColorWithTraitCollection:v9];
+    tintColor = [(WFWorkflowProgressView *)self tintColor];
+    traitCollection = [(WFWorkflowProgressView *)self traitCollection];
+    v10 = [tintColor resolvedColorWithTraitCollection:traitCollection];
     [(WFWorkflowProgressView *)self setResolvedTintColor:v10];
   }
 }
@@ -337,41 +337,41 @@ LABEL_6:
   v6.receiver = self;
   v6.super_class = WFWorkflowProgressView;
   [(WFWorkflowProgressView *)&v6 tintColorDidChange];
-  v3 = [(WFWorkflowProgressView *)self tintColor];
-  v4 = [(WFWorkflowProgressView *)self traitCollection];
-  v5 = [v3 resolvedColorWithTraitCollection:v4];
+  tintColor = [(WFWorkflowProgressView *)self tintColor];
+  traitCollection = [(WFWorkflowProgressView *)self traitCollection];
+  v5 = [tintColor resolvedColorWithTraitCollection:traitCollection];
   [(WFWorkflowProgressView *)self setResolvedTintColor:v5];
 }
 
-- (void)setProgressStrokeWidth:(double)a3
+- (void)setProgressStrokeWidth:(double)width
 {
-  if (self->_progressStrokeWidth != a3)
+  if (self->_progressStrokeWidth != width)
   {
-    self->_progressStrokeWidth = a3;
+    self->_progressStrokeWidth = width;
     [(WFWorkflowProgressView *)self updatePaths];
   }
 }
 
-- (void)setStopSize:(double)a3
+- (void)setStopSize:(double)size
 {
-  if (self->_stopSize != a3)
+  if (self->_stopSize != size)
   {
-    self->_stopSize = a3;
+    self->_stopSize = size;
     [(WFWorkflowProgressView *)self updatePaths];
   }
 }
 
-- (void)setFractionCompleted:(double)a3
+- (void)setFractionCompleted:(double)completed
 {
   fractionCompleted = self->_fractionCompleted;
-  if (fractionCompleted != a3)
+  if (fractionCompleted != completed)
   {
-    if (fractionCompleted > a3)
+    if (fractionCompleted > completed)
     {
-      a3 = self->_fractionCompleted;
+      completed = self->_fractionCompleted;
     }
 
-    self->_fractionCompleted = a3;
+    self->_fractionCompleted = completed;
     [(WFWorkflowProgressView *)self updatePaths];
   }
 }
@@ -386,12 +386,12 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WFWorkflowProgressView *)self runningContainerLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  runningContainerLayer = [(WFWorkflowProgressView *)self runningContainerLayer];
+  [runningContainerLayer setFrame:{v4, v6, v8, v10}];
 
   [(WFWorkflowProgressView *)self bounds];
-  v12 = [(WFWorkflowProgressView *)self traitCollection];
-  [v12 displayScale];
+  traitCollection = [(WFWorkflowProgressView *)self traitCollection];
+  [traitCollection displayScale];
   BSFloatRoundForScale();
   v14 = v13;
 
@@ -401,36 +401,36 @@ LABEL_6:
   v19 = v14 + v14;
   v21 = v20 - (v14 + v14);
   v23 = v22 - v19;
-  v24 = [(WFWorkflowProgressView *)self checkmarkImageView];
-  [v24 setFrame:{v16, v18, v21, v23}];
+  checkmarkImageView = [(WFWorkflowProgressView *)self checkmarkImageView];
+  [checkmarkImageView setFrame:{v16, v18, v21, v23}];
 
   [(WFWorkflowProgressView *)self updatePaths];
 }
 
-- (WFWorkflowProgressView)initWithFrame:(CGRect)a3
+- (WFWorkflowProgressView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = WFWorkflowProgressView;
-  v3 = [(WFWorkflowProgressView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFWorkflowProgressView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_stopSize = 8.0;
     v3->_progressStrokeWidth = 2.0;
-    v5 = [MEMORY[0x1E6979398] layer];
-    v6 = [(WFWorkflowProgressView *)v4 layer];
-    [v6 addSublayer:v5];
+    layer = [MEMORY[0x1E6979398] layer];
+    layer2 = [(WFWorkflowProgressView *)v4 layer];
+    [layer2 addSublayer:layer];
 
     runningContainerLayer = v4->_runningContainerLayer;
-    v4->_runningContainerLayer = v5;
-    v8 = v5;
+    v4->_runningContainerLayer = layer;
+    v8 = layer;
 
     v9 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [(CAShapeLayer *)v9 setAllowsGroupBlending:0];
     v10 = *MEMORY[0x1E6979CF8];
     [(CAShapeLayer *)v9 setCompositingFilter:*MEMORY[0x1E6979CF8]];
-    v11 = [(WFWorkflowProgressView *)v4 layer];
-    [v11 addSublayer:v9];
+    layer3 = [(WFWorkflowProgressView *)v4 layer];
+    [layer3 addSublayer:v9];
 
     backgroundCircleLayer = v4->_backgroundCircleLayer;
     v4->_backgroundCircleLayer = v9;

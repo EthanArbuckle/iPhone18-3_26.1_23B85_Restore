@@ -1,23 +1,23 @@
 @interface SiriGKSnippetControllerFactory
-- (id)viewControllerForAceObject:(id)a3;
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)viewControllerForAceObject:(id)object;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation SiriGKSnippetControllerFactory
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[SiriGKSnippetViewController alloc] initWithSnippet:v5];
+    v6 = [[SiriGKSnippetViewController alloc] initWithSnippet:snippetCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
-    *a4 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -28,13 +28,13 @@
   return v6;
 }
 
-- (id)viewControllerForAceObject:(id)a3
+- (id)viewControllerForAceObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SiriGKImageDetailViewController alloc] initWithImageViewSnippet:v3];
+    v4 = [[SiriGKImageDetailViewController alloc] initWithImageViewSnippet:objectCopy];
   }
 
   else

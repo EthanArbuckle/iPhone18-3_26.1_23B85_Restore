@@ -1,6 +1,6 @@
 @interface PUPhotoEditApertureToolbar
 - (BOOL)enabled;
-- (BOOL)setNextApertureValue:(BOOL)a3 coarse:(BOOL)a4;
+- (BOOL)setNextApertureValue:(BOOL)value coarse:(BOOL)coarse;
 - (PUPhotoEditApertureToolbar)init;
 - (PUPhotoEditApertureToolbarDelegate)delegate;
 - (UIEdgeInsets)preferredPreviewViewInsets;
@@ -8,22 +8,22 @@
 - (double)maximumApertureValue;
 - (double)minimumApertureValue;
 - (double)originalApertureValue;
-- (id)_nextApertureValueFromValue:(id)a3 reverse:(BOOL)a4;
-- (void)_handleApertureUpdateCoalescerWithContext:(id)a3;
-- (void)_updateBackgroundAnimated:(BOOL)a3;
+- (id)_nextApertureValueFromValue:(id)value reverse:(BOOL)reverse;
+- (void)_handleApertureUpdateCoalescerWithContext:(id)context;
+- (void)_updateBackgroundAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)setApertureValueClosestTo:(double)a3;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setDepthIsOn:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4;
-- (void)setMaximumApertureValue:(double)a3;
-- (void)setMinimumApertureValue:(double)a3;
-- (void)setOriginalApertureValueClosestTo:(double)a3;
-- (void)setSliderWidth:(double)a3;
-- (void)setUseTranslucentBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)sliderDidEndScrolling:(id)a3;
-- (void)sliderWillBeginScrolling:(id)a3;
+- (void)setApertureValueClosestTo:(double)to;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setDepthIsOn:(BOOL)on;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator;
+- (void)setMaximumApertureValue:(double)value;
+- (void)setMinimumApertureValue:(double)value;
+- (void)setOriginalApertureValueClosestTo:(double)to;
+- (void)setSliderWidth:(double)width;
+- (void)setUseTranslucentBackground:(BOOL)background animated:(BOOL)animated;
+- (void)sliderDidEndScrolling:(id)scrolling;
+- (void)sliderWillBeginScrolling:(id)scrolling;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 @end
@@ -37,43 +37,43 @@
   return WeakRetained;
 }
 
-- (void)sliderDidEndScrolling:(id)a3
+- (void)sliderDidEndScrolling:(id)scrolling
 {
-  v4 = [(PUPhotoEditApertureToolbar *)self delegate];
-  [v4 apertureToolbarDidStopSliding:self];
+  delegate = [(PUPhotoEditApertureToolbar *)self delegate];
+  [delegate apertureToolbarDidStopSliding:self];
 }
 
-- (void)sliderWillBeginScrolling:(id)a3
+- (void)sliderWillBeginScrolling:(id)scrolling
 {
-  v4 = [(PUPhotoEditApertureToolbar *)self delegate];
-  [v4 apertureToolbarDidStartSliding:self];
+  delegate = [(PUPhotoEditApertureToolbar *)self delegate];
+  [delegate apertureToolbarDidStartSliding:self];
 }
 
-- (void)setDepthIsOn:(BOOL)a3
+- (void)setDepthIsOn:(BOOL)on
 {
   if (self->_sliderImplementsOffState)
   {
-    v4 = a3;
-    v5 = [(PUPhotoEditApertureToolbar *)self slider];
-    [v5 setSliderOn:v4];
+    onCopy = on;
+    slider = [(PUPhotoEditApertureToolbar *)self slider];
+    [slider setSliderOn:onCopy];
   }
 }
 
-- (void)setApertureValueClosestTo:(double)a3
+- (void)setApertureValueClosestTo:(double)to
 {
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v4 setApertureValueClosestTo:a3];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider setApertureValueClosestTo:to];
 }
 
-- (BOOL)setNextApertureValue:(BOOL)a3 coarse:(BOOL)a4
+- (BOOL)setNextApertureValue:(BOOL)value coarse:(BOOL)coarse
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PUPhotoEditApertureToolbar *)self slider];
+  coarseCopy = coarse;
+  valueCopy = value;
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
   v8 = MEMORY[0x1E696AD98];
-  [v7 apertureValue];
+  [slider apertureValue];
   v9 = [v8 numberWithDouble:?];
-  if (![v7 includesOffState])
+  if (![slider includesOffState])
   {
     goto LABEL_11;
   }
@@ -83,36 +83,36 @@
   v11 = [v10 numberWithDouble:?];
   if (v11)
   {
-    if (([v7 isSliderOn] & 1) == 0)
+    if (([slider isSliderOn] & 1) == 0)
     {
-      if (!v5)
+      if (!valueCopy)
       {
         goto LABEL_9;
       }
 
-      v13 = [(PUPhotoEditApertureToolbar *)self delegate];
-      [v13 apertureToolbar:self didUpdateDepthActive:1];
+      delegate = [(PUPhotoEditApertureToolbar *)self delegate];
+      [delegate apertureToolbar:self didUpdateDepthActive:1];
 LABEL_18:
 
 LABEL_20:
       [v11 floatValue];
-      [v7 setApertureValueClosestTo:v20];
+      [slider setApertureValueClosestTo:v20];
       v14 = 1;
       goto LABEL_21;
     }
 
-    if ([v9 isEqualToNumber:v11] && !v5)
+    if ([v9 isEqualToNumber:v11] && !valueCopy)
     {
-      v12 = [(PUPhotoEditApertureToolbar *)self delegate];
-      [v12 apertureToolbar:self didUpdateDepthActive:0];
+      delegate2 = [(PUPhotoEditApertureToolbar *)self delegate];
+      [delegate2 apertureToolbar:self didUpdateDepthActive:0];
 
       goto LABEL_9;
     }
 
 LABEL_11:
-    v15 = [(PUPhotoEditApertureToolbar *)self _nextApertureValueFromValue:v9 reverse:v5];
+    v15 = [(PUPhotoEditApertureToolbar *)self _nextApertureValueFromValue:v9 reverse:valueCopy];
     v11 = v15;
-    if (v4)
+    if (coarseCopy)
     {
       v16 = v15;
     }
@@ -128,17 +128,17 @@ LABEL_11:
       while (1)
       {
         v18 = v17;
-        v19 = [(PUPhotoEditApertureToolbar *)self _nextApertureValueFromValue:v11 reverse:v5];
+        v19 = [(PUPhotoEditApertureToolbar *)self _nextApertureValueFromValue:v11 reverse:valueCopy];
 
         if (!v19)
         {
           break;
         }
 
-        v13 = v19;
+        delegate = v19;
 
         v17 = 0;
-        v11 = v13;
+        v11 = delegate;
         if ((v18 & 1) == 0)
         {
           goto LABEL_18;
@@ -163,17 +163,17 @@ LABEL_22:
   return v14;
 }
 
-- (id)_nextApertureValueFromValue:(id)a3 reverse:(BOOL)a4
+- (id)_nextApertureValueFromValue:(id)value reverse:(BOOL)reverse
 {
-  v4 = a4;
+  reverseCopy = reverse;
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  valueCopy = value;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [MEMORY[0x1E6993828] validApertureValues];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  validApertureValues = [MEMORY[0x1E6993828] validApertureValues];
+  v7 = [validApertureValues countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = 0;
@@ -185,7 +185,7 @@ LABEL_22:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(validApertureValues);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -195,7 +195,7 @@ LABEL_22:
           goto LABEL_14;
         }
 
-        v8 = [v5 isEqualToNumber:*(*(&v17 + 1) + 8 * i)];
+        v8 = [valueCopy isEqualToNumber:*(*(&v17 + 1) + 8 * i)];
         if ((v8 & 1) == 0)
         {
           v13 = v12;
@@ -204,7 +204,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [validApertureValues countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -221,7 +221,7 @@ LABEL_22:
 
 LABEL_14:
 
-  if (v4)
+  if (reverseCopy)
   {
     v14 = v9;
   }
@@ -238,48 +238,48 @@ LABEL_14:
 
 - (double)apertureValue
 {
-  v2 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v2 apertureValue];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider apertureValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOriginalApertureValueClosestTo:(double)a3
+- (void)setOriginalApertureValueClosestTo:(double)to
 {
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v4 setMarkedApertureValueClosestTo:a3];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider setMarkedApertureValueClosestTo:to];
 }
 
 - (double)originalApertureValue
 {
-  v2 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v2 markedApertureValue];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider markedApertureValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLayoutOrientation:(int64_t)a3 withTransitionCoordinator:(id)a4
+- (void)setLayoutOrientation:(int64_t)orientation withTransitionCoordinator:(id)coordinator
 {
-  if (self->_layoutOrientation != a3)
+  if (self->_layoutOrientation != orientation)
   {
     v11[9] = v4;
     v11[10] = v5;
-    self->_layoutOrientation = a3;
-    self->_isResizing = a4 != 0;
+    self->_layoutOrientation = orientation;
+    self->_isResizing = coordinator != 0;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77__PUPhotoEditApertureToolbar_setLayoutOrientation_withTransitionCoordinator___block_invoke;
     v11[3] = &unk_1E7B7DC38;
     v11[4] = self;
-    v7 = a4;
-    [v7 animateAlongsideTransition:0 completion:v11];
-    v8 = [(PUPhotoEditApertureToolbar *)self view];
-    [v8 setNeedsUpdateConstraints];
+    coordinatorCopy = coordinator;
+    [coordinatorCopy animateAlongsideTransition:0 completion:v11];
+    view = [(PUPhotoEditApertureToolbar *)self view];
+    [view setNeedsUpdateConstraints];
 
-    v9 = [(PUPhotoEditApertureToolbar *)self delegate];
-    if ([v9 apertureToolbarShouldRotateLabelsWithOrientation:self])
+    delegate = [(PUPhotoEditApertureToolbar *)self delegate];
+    if ([delegate apertureToolbarShouldRotateLabelsWithOrientation:self])
     {
       v10 = 2;
     }
@@ -293,66 +293,66 @@ LABEL_14:
   }
 }
 
-- (void)setMaximumApertureValue:(double)a3
+- (void)setMaximumApertureValue:(double)value
 {
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
   [(PUPhotoEditApertureToolbar *)self minimumApertureValue];
-  [v4 setMinimumApertureValueClosestTo:? maximumApertureValueClosestTo:?];
+  [slider setMinimumApertureValueClosestTo:? maximumApertureValueClosestTo:?];
 }
 
 - (double)maximumApertureValue
 {
-  v2 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v2 maximumApertureValue];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider maximumApertureValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setMinimumApertureValue:(double)a3
+- (void)setMinimumApertureValue:(double)value
 {
-  v6 = [(PUPhotoEditApertureToolbar *)self slider];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
   [(PUPhotoEditApertureToolbar *)self maximumApertureValue];
-  [v6 setMinimumApertureValueClosestTo:a3 maximumApertureValueClosestTo:v5];
+  [slider setMinimumApertureValueClosestTo:value maximumApertureValueClosestTo:v5];
 }
 
 - (double)minimumApertureValue
 {
-  v2 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v2 minimumApertureValue];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider minimumApertureValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSliderWidth:(double)a3
+- (void)setSliderWidth:(double)width
 {
-  if (self->_sliderWidth != a3)
+  if (self->_sliderWidth != width)
   {
-    self->_sliderWidth = a3;
-    v4 = [(PUPhotoEditApertureToolbar *)self view];
-    [v4 setNeedsUpdateConstraints];
+    self->_sliderWidth = width;
+    view = [(PUPhotoEditApertureToolbar *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider setEnabled:enabledCopy];
 }
 
 - (BOOL)enabled
 {
-  v2 = [(PUPhotoEditApertureToolbar *)self slider];
-  v3 = [v2 isEnabled];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  isEnabled = [slider isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)_updateBackgroundAnimated:(BOOL)a3
+- (void)_updateBackgroundAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   useTranslucentBackground = self->_useTranslucentBackground;
   if (useTranslucentBackground == [(_UIBackdropView *)self->_backdropBackgroundView isHidden])
   {
@@ -367,7 +367,7 @@ LABEL_14:
       v7 = 1.0;
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       if (!useTranslucentBackground)
       {
@@ -434,8 +434,8 @@ uint64_t __56__PUPhotoEditApertureToolbar__updateBackgroundAnimated___block_invo
   }
 
   v10 = (width + v9 * -1.33333333) * 0.5;
-  v11 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v11 intrinsicContentSize];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider intrinsicContentSize];
   v13 = v12;
   v15 = v14;
 
@@ -489,24 +489,24 @@ uint64_t __56__PUPhotoEditApertureToolbar__updateBackgroundAnimated___block_invo
   v32[4] = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_constraints];
   [(NSMutableArray *)self->_constraints removeAllObjects];
-  v3 = [(PUPhotoEditApertureToolbar *)self view];
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
+  view = [(PUPhotoEditApertureToolbar *)self view];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
   constraints = self->_constraints;
-  v28 = [v4 centerXAnchor];
-  v27 = [v3 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerXAnchor = [slider centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v32[0] = v26;
-  v25 = [v4 centerYAnchor];
-  v5 = [v3 centerYAnchor];
-  v6 = [v25 constraintEqualToAnchor:v5];
+  centerYAnchor = [slider centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v6 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[1] = v6;
-  v7 = [v4 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:110.0];
+  heightAnchor = [slider heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:110.0];
   v32[2] = v8;
-  v29 = v3;
-  v9 = [v3 heightAnchor];
-  v10 = [v4 heightAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  v29 = view;
+  heightAnchor2 = [view heightAnchor];
+  heightAnchor3 = [slider heightAnchor];
+  v11 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v32[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
   [(NSMutableArray *)constraints addObjectsFromArray:v12];
@@ -515,32 +515,32 @@ uint64_t __56__PUPhotoEditApertureToolbar__updateBackgroundAnimated___block_invo
   v31[0] = *MEMORY[0x1E695EFD0];
   v31[1] = v13;
   v31[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v4 setTransform:v31];
+  [slider setTransform:v31];
   [(PUPhotoEditApertureToolbar *)self sliderWidth];
   if (v14 <= 0.0)
   {
     v19 = v29;
     v23 = self->_constraints;
-    v16 = [v29 widthAnchor];
-    v20 = [v4 widthAnchor];
-    v21 = [v16 constraintEqualToAnchor:v20];
-    [(NSMutableArray *)v23 addObject:v21];
+    widthAnchor = [v29 widthAnchor];
+    widthAnchor2 = [slider widthAnchor];
+    widthAnchor4 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [(NSMutableArray *)v23 addObject:widthAnchor4];
   }
 
   else
   {
-    v15 = [v4 widthAnchor];
+    widthAnchor3 = [slider widthAnchor];
     [(PUPhotoEditApertureToolbar *)self sliderWidth];
-    v16 = [v15 constraintEqualToConstant:?];
+    widthAnchor = [widthAnchor3 constraintEqualToConstant:?];
 
     LODWORD(v17) = 1144750080;
-    [v16 setPriority:v17];
-    [(NSMutableArray *)self->_constraints addObject:v16];
+    [widthAnchor setPriority:v17];
+    [(NSMutableArray *)self->_constraints addObject:widthAnchor];
     v18 = self->_constraints;
     v19 = v29;
-    v20 = [v29 widthAnchor];
-    v21 = [v4 widthAnchor];
-    v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21];
+    widthAnchor2 = [v29 widthAnchor];
+    widthAnchor4 = [slider widthAnchor];
+    v22 = [widthAnchor2 constraintGreaterThanOrEqualToAnchor:widthAnchor4];
     [(NSMutableArray *)v18 addObject:v22];
   }
 
@@ -550,26 +550,26 @@ uint64_t __56__PUPhotoEditApertureToolbar__updateBackgroundAnimated___block_invo
   [(PUPhotoEditApertureToolbar *)&v30 updateViewConstraints];
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setBackdropViewGroupName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_backdropViewGroupName isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [nameCopy copy];
     backdropViewGroupName = self->_backdropViewGroupName;
     self->_backdropViewGroupName = v4;
 
-    v6 = [(PUPhotoEditApertureToolbar *)self backdropViewGroupName];
-    [(_UIBackdropView *)self->_backdropBackgroundView setGroupName:v6];
+    backdropViewGroupName = [(PUPhotoEditApertureToolbar *)self backdropViewGroupName];
+    [(_UIBackdropView *)self->_backdropBackgroundView setGroupName:backdropViewGroupName];
   }
 }
 
-- (void)setUseTranslucentBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setUseTranslucentBackground:(BOOL)background animated:(BOOL)animated
 {
-  if (self->_useTranslucentBackground != a3)
+  if (self->_useTranslucentBackground != background)
   {
-    self->_useTranslucentBackground = a3;
-    [(PUPhotoEditApertureToolbar *)self _updateBackgroundAnimated:a4];
+    self->_useTranslucentBackground = background;
+    [(PUPhotoEditApertureToolbar *)self _updateBackgroundAnimated:animated];
   }
 }
 
@@ -589,38 +589,38 @@ uint64_t __56__PUPhotoEditApertureToolbar__updateBackgroundAnimated___block_invo
   }
 }
 
-- (void)_handleApertureUpdateCoalescerWithContext:(id)a3
+- (void)_handleApertureUpdateCoalescerWithContext:(id)context
 {
-  [a3 delayNextInvocationByTimeInterval:0.05];
-  v9 = [(PUPhotoEditApertureToolbar *)self delegate];
-  v4 = [(PUPhotoEditApertureToolbar *)self slider];
-  [v4 apertureValue];
+  [context delayNextInvocationByTimeInterval:0.05];
+  delegate = [(PUPhotoEditApertureToolbar *)self delegate];
+  slider = [(PUPhotoEditApertureToolbar *)self slider];
+  [slider apertureValue];
   v6 = v5;
 
   if (!self->_sliderImplementsOffState)
   {
 LABEL_6:
-    [v9 apertureToolbar:self didChangeValue:v6];
+    [delegate apertureToolbar:self didChangeValue:v6];
     goto LABEL_8;
   }
 
   if (v6 != 0.0)
   {
-    v7 = [(PUPhotoEditApertureToolbar *)self slider];
-    v8 = [v7 isSliderOn];
+    slider2 = [(PUPhotoEditApertureToolbar *)self slider];
+    isSliderOn = [slider2 isSliderOn];
 
-    if (v8)
+    if (isSliderOn)
     {
-      if (([v9 apertureToolbarIsDepthActive] & 1) == 0)
+      if (([delegate apertureToolbarIsDepthActive] & 1) == 0)
       {
-        [v9 apertureToolbar:self didUpdateDepthActive:1];
+        [delegate apertureToolbar:self didUpdateDepthActive:1];
       }
 
       goto LABEL_6;
     }
   }
 
-  [v9 apertureToolbar:self didUpdateDepthActive:0];
+  [delegate apertureToolbar:self didUpdateDepthActive:0];
 LABEL_8:
 }
 
@@ -628,8 +628,8 @@ LABEL_8:
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [(PUPhotoEditApertureToolbar *)self setView:v3];
   [(CEKApertureSlider *)self->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -641,61 +641,61 @@ LABEL_8:
   self->_backdropBackgroundView = v6;
 
   [(_UIBackdropView *)self->_backdropBackgroundView setHidden:1];
-  v8 = [(_UIBackdropView *)self->_backdropBackgroundView layer];
-  [v8 setAllowsGroupOpacity:0];
+  layer = [(_UIBackdropView *)self->_backdropBackgroundView layer];
+  [layer setAllowsGroupOpacity:0];
 
   [(_UIBackdropView *)self->_backdropBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(_UIBackdropView *)self->_backdropBackgroundView groupName];
-  [(PUPhotoEditApertureToolbar *)self setBackdropViewGroupName:v9];
+  groupName = [(_UIBackdropView *)self->_backdropBackgroundView groupName];
+  [(PUPhotoEditApertureToolbar *)self setBackdropViewGroupName:groupName];
 
   v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
   solidBackgroundView = self->_solidBackgroundView;
   self->_solidBackgroundView = v10;
 
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)self->_solidBackgroundView setBackgroundColor:v12];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)self->_solidBackgroundView setBackgroundColor:clearColor2];
 
   [(UIView *)self->_solidBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addSubview:self->_backdropBackgroundView];
   [v3 addSubview:self->_solidBackgroundView];
-  v13 = [(_UIBackdropView *)self->_backdropBackgroundView leadingAnchor];
-  v14 = [v3 leadingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  leadingAnchor = [(_UIBackdropView *)self->_backdropBackgroundView leadingAnchor];
+  leadingAnchor2 = [v3 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v15 setActive:1];
 
-  v16 = [(_UIBackdropView *)self->_backdropBackgroundView trailingAnchor];
-  v17 = [v3 trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  trailingAnchor = [(_UIBackdropView *)self->_backdropBackgroundView trailingAnchor];
+  trailingAnchor2 = [v3 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v18 setActive:1];
 
-  v19 = [(_UIBackdropView *)self->_backdropBackgroundView topAnchor];
-  v20 = [v3 topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  topAnchor = [(_UIBackdropView *)self->_backdropBackgroundView topAnchor];
+  topAnchor2 = [v3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v21 setActive:1];
 
-  v22 = [(_UIBackdropView *)self->_backdropBackgroundView bottomAnchor];
-  v23 = [v3 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor = [(_UIBackdropView *)self->_backdropBackgroundView bottomAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v24 setActive:1];
 
-  v25 = [(UIView *)self->_solidBackgroundView leadingAnchor];
-  v26 = [v3 leadingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  leadingAnchor3 = [(UIView *)self->_solidBackgroundView leadingAnchor];
+  leadingAnchor4 = [v3 leadingAnchor];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v27 setActive:1];
 
-  v28 = [(UIView *)self->_solidBackgroundView trailingAnchor];
-  v29 = [v3 trailingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  trailingAnchor3 = [(UIView *)self->_solidBackgroundView trailingAnchor];
+  trailingAnchor4 = [v3 trailingAnchor];
+  v30 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v30 setActive:1];
 
-  v31 = [(UIView *)self->_solidBackgroundView topAnchor];
-  v32 = [v3 topAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  topAnchor3 = [(UIView *)self->_solidBackgroundView topAnchor];
+  topAnchor4 = [v3 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   [v33 setActive:1];
 
-  v34 = [(UIView *)self->_solidBackgroundView bottomAnchor];
-  v35 = [v3 bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  bottomAnchor3 = [(UIView *)self->_solidBackgroundView bottomAnchor];
+  bottomAnchor4 = [v3 bottomAnchor];
+  v36 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   [v36 setActive:1];
 
   [v3 addSubview:self->_slider];
@@ -742,25 +742,25 @@ void __38__PUPhotoEditApertureToolbar_loadView__block_invoke(uint64_t a1, uint64
       slider = v2->_slider;
       v2->_slider = v7;
 
-      v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v10 = [v9 colorWithAlphaComponent:0.3];
-      v11 = [(CEKApertureSlider *)v2->_slider tickMarksConfiguration];
-      [v11 setSecondaryTickMarkColor:v10];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      v10 = [secondaryLabelColor colorWithAlphaComponent:0.3];
+      tickMarksConfiguration = [(CEKApertureSlider *)v2->_slider tickMarksConfiguration];
+      [tickMarksConfiguration setSecondaryTickMarkColor:v10];
 
-      v12 = [(CEKApertureSlider *)v2->_slider subviews];
-      v13 = [v12 firstObject];
+      subviews = [(CEKApertureSlider *)v2->_slider subviews];
+      firstObject = [subviews firstObject];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 _setHiddenPocketEdges:15];
+        [firstObject _setHiddenPocketEdges:15];
       }
     }
 
     else
     {
       v14 = [v6 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v13 = v2->_slider;
+      firstObject = v2->_slider;
       v2->_slider = v14;
     }
 
@@ -772,9 +772,9 @@ void __38__PUPhotoEditApertureToolbar_loadView__block_invoke(uint64_t a1, uint64
     if (objc_opt_respondsToSelector())
     {
       v15 = +[PUPhotoEditProtoSettings sharedInstance];
-      v16 = [v15 apertureSliderHasOffPosition];
+      apertureSliderHasOffPosition = [v15 apertureSliderHasOffPosition];
 
-      if (v16)
+      if (apertureSliderHasOffPosition)
       {
         v2->_sliderImplementsOffState = 1;
         [(CEKApertureSlider *)v2->_slider setIncludesOffState:1];

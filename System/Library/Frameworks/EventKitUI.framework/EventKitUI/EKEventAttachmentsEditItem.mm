@@ -1,28 +1,28 @@
 @interface EKEventAttachmentsEditItem
 - (BOOL)_shouldCondenseIntoSingleItem;
 - (BOOL)_shouldShowAddAttachmentCell;
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4;
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session;
 - (id)_addAttachmentCell;
 - (id)attachmentEvent;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (id)footerTitle;
-- (id)parentViewControllerForAttachmentCellController:(id)a3;
-- (id)trailingSwipeActionsConfigurationForRowAtIndex:(int64_t)a3;
+- (id)parentViewControllerForAttachmentCellController:(id)controller;
+- (id)trailingSwipeActionsConfigurationForRowAtIndex:(int64_t)index;
 - (unint64_t)numberOfSubitems;
-- (void)_addAttachment:(id)a3;
+- (void)_addAttachment:(id)attachment;
 - (void)_cleanUpCellControllers;
-- (void)_loadAndAddDataAttachmentFromItem:(id)a3;
-- (void)_showAddAttachmentViewControllerAnimated:(BOOL)a3;
+- (void)_loadAndAddDataAttachmentFromItem:(id)item;
+- (void)_showAddAttachmentViewControllerAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter;
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
 - (void)refreshFromCalendarItemAndStore;
 @end
 
@@ -39,31 +39,31 @@
 {
   if (!self->_eventToModify)
   {
-    v3 = [(EKEventEditItem *)self event];
-    if ([v3 isNew])
+    event = [(EKEventEditItem *)self event];
+    if ([event isNew])
     {
     }
 
     else
     {
-      v4 = [(EKEventEditItem *)self event];
-      v5 = [v4 isOrWasPartOfRecurringSeries];
+      event2 = [(EKEventEditItem *)self event];
+      isOrWasPartOfRecurringSeries = [event2 isOrWasPartOfRecurringSeries];
 
-      if (v5)
+      if (isOrWasPartOfRecurringSeries)
       {
-        v6 = [(EKEventEditItem *)self event];
-        v7 = [v6 masterEvent];
+        event3 = [(EKEventEditItem *)self event];
+        masterEvent = [event3 masterEvent];
         eventToModify = self->_eventToModify;
-        self->_eventToModify = v7;
+        self->_eventToModify = masterEvent;
 
 LABEL_7:
         goto LABEL_8;
       }
     }
 
-    v9 = [(EKEventEditItem *)self event];
-    v6 = self->_eventToModify;
-    self->_eventToModify = v9;
+    event4 = [(EKEventEditItem *)self event];
+    event3 = self->_eventToModify;
+    self->_eventToModify = event4;
     goto LABEL_7;
   }
 
@@ -80,15 +80,15 @@ LABEL_8:
   [(EKCalendarItemEditItem *)&v12 refreshFromCalendarItemAndStore];
   if (![(EKEventAttachmentsEditItem *)self _shouldCondenseIntoSingleItem])
   {
-    v3 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-    v4 = [v3 calendar];
-    v5 = [v4 source];
+    attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+    calendar = [attachmentEvent calendar];
+    source = [calendar source];
 
-    v6 = [MEMORY[0x1E6993370] sharedInstance];
-    v7 = [v6 sourceIsManaged:v5];
+    mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+    v7 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
-    v8 = [v3 attachments];
-    v9 = [EKEventAttachmentCellController cellControllersForAttachments:v8 givenExistingControllers:self->_cellControllers sourceIsManaged:v7];
+    attachments = [attachmentEvent attachments];
+    v9 = [EKEventAttachmentCellController cellControllersForAttachments:attachments givenExistingControllers:self->_cellControllers sourceIsManaged:v7];
 
     [(NSArray *)self->_cellControllers makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
     cellControllers = self->_cellControllers;
@@ -109,9 +109,9 @@ LABEL_8:
 
 - (BOOL)_shouldCondenseIntoSingleItem
 {
-  v2 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-  v3 = [v2 attachments];
-  v4 = [v3 count] > 3;
+  attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+  attachments = [attachmentEvent attachments];
+  v4 = [attachments count] > 3;
 
   return v4;
 }
@@ -131,53 +131,53 @@ LABEL_8:
   return v3 + [(EKEventAttachmentsEditItem *)self _shouldShowAddAttachmentCell];
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if ([(EKEventAttachmentsEditItem *)self _shouldCondenseIntoSingleItem])
   {
-    if (!a3)
+    if (!index)
     {
-      v5 = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
-      [(EKUITableViewCell *)v5 setAccessoryType:1];
+      _addAttachmentCell = [[EKUITableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
+      [(EKUITableViewCell *)_addAttachmentCell setAccessoryType:1];
       v6 = EventKitUIBundle();
       v7 = [v6 localizedStringForKey:@"Attachments" value:&stru_1F4EF6790 table:0];
-      v8 = [(EKUITableViewCell *)v5 textLabel];
-      [v8 setText:v7];
+      textLabel = [(EKUITableViewCell *)_addAttachmentCell textLabel];
+      [textLabel setText:v7];
 
-      v9 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-      v10 = [v9 attachments];
-      [v10 count];
+      attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+      attachments = [attachmentEvent attachments];
+      [attachments count];
       v11 = CUIKLocalizedStringForInteger();
-      v12 = [(EKUITableViewCell *)v5 detailTextLabel];
-      [v12 setText:v11];
+      detailTextLabel = [(EKUITableViewCell *)_addAttachmentCell detailTextLabel];
+      [detailTextLabel setText:v11];
 
 LABEL_6:
       goto LABEL_10;
     }
 
 LABEL_8:
-    v5 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell];
+    _addAttachmentCell = [(EKEventAttachmentsEditItem *)self _addAttachmentCell];
     goto LABEL_10;
   }
 
   v13 = [(NSArray *)self->_cellControllers count];
   cellControllers = self->_cellControllers;
-  if (v13 > a3)
+  if (v13 > index)
   {
-    v9 = [(NSArray *)cellControllers objectAtIndex:a3];
-    v5 = [v9 cell];
+    attachmentEvent = [(NSArray *)cellControllers objectAtIndex:index];
+    _addAttachmentCell = [attachmentEvent cell];
     goto LABEL_6;
   }
 
-  if ([(NSArray *)cellControllers count]== a3)
+  if ([(NSArray *)cellControllers count]== index)
   {
     goto LABEL_8;
   }
 
-  v5 = 0;
+  _addAttachmentCell = 0;
 LABEL_10:
 
-  return v5;
+  return _addAttachmentCell;
 }
 
 - (id)_addAttachmentCell
@@ -191,8 +191,8 @@ LABEL_10:
 
     v6 = EventKitUIBundle();
     v7 = [v6 localizedStringForKey:@"Add attachment" value:@"Add attachment…" table:0];
-    v8 = [(EKUITableViewCell *)self->_addAttachmentCell textLabel];
-    [v8 setText:v7];
+    textLabel = [(EKUITableViewCell *)self->_addAttachmentCell textLabel];
+    [textLabel setText:v7];
 
     v9 = [objc_alloc(MEMORY[0x1E69DC9B8]) initWithDelegate:self];
     [(EKUITableViewCell *)self->_addAttachmentCell addInteraction:v9];
@@ -204,22 +204,22 @@ LABEL_10:
   return addAttachmentCell;
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v6 = a3;
+  editorCopy = editor;
   if (![(EKEventAttachmentsEditItem *)self _shouldCondenseIntoSingleItem])
   {
     v7 = [(NSArray *)self->_cellControllers count];
     cellControllers = self->_cellControllers;
-    if (v7 > a4)
+    if (v7 > subitem)
     {
-      v9 = [(NSArray *)cellControllers objectAtIndex:a4];
+      v9 = [(NSArray *)cellControllers objectAtIndex:subitem];
       [v9 cellSelected];
 
       goto LABEL_8;
     }
 
-    if ([(NSArray *)cellControllers count]!= a4)
+    if ([(NSArray *)cellControllers count]!= subitem)
     {
       goto LABEL_8;
     }
@@ -229,51 +229,51 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (subitem)
   {
     goto LABEL_7;
   }
 
   v10.receiver = self;
   v10.super_class = EKEventAttachmentsEditItem;
-  [(EKCalendarItemEditItem *)&v10 editor:v6 didSelectSubitem:0];
+  [(EKCalendarItemEditItem *)&v10 editor:editorCopy didSelectSubitem:0];
 LABEL_8:
 }
 
-- (id)detailViewControllerWithFrame:(CGRect)a3 forSubitemAtIndex:(unint64_t)a4
+- (id)detailViewControllerWithFrame:(CGRect)frame forSubitemAtIndex:(unint64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(EKCalendarItemEditItem *)self calendarItem];
-  v10 = [v9 calendar];
-  v11 = [v10 source];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem calendar];
+  source = [calendar source];
 
-  v12 = [MEMORY[0x1E6993370] sharedInstance];
-  v13 = [v12 sourceIsManaged:v11];
+  mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+  v13 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
   v14 = [EKEventAttachmentEditViewController alloc];
-  v15 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-  v16 = [v15 attachments];
-  v17 = [(EKEventAttachmentEditViewController *)v14 initWithFrame:v16 attachments:v13 sourceIsManaged:x, y, width, height];
+  attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+  attachments = [attachmentEvent attachments];
+  height = [(EKEventAttachmentEditViewController *)v14 initWithFrame:attachments attachments:v13 sourceIsManaged:x, y, width, height];
 
-  [(EKEventAttachmentEditViewController *)v17 setDelegate:self];
+  [(EKEventAttachmentEditViewController *)height setDelegate:self];
 
-  return v17;
+  return height;
 }
 
 - (BOOL)_shouldShowAddAttachmentCell
 {
-  v2 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-  v3 = [v2 supportsAddingAttachments];
+  attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+  supportsAddingAttachments = [attachmentEvent supportsAddingAttachments];
 
-  return v3;
+  return supportsAddingAttachments;
 }
 
-- (id)trailingSwipeActionsConfigurationForRowAtIndex:(int64_t)a3
+- (id)trailingSwipeActionsConfigurationForRowAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSArray *)self->_cellControllers count]<= a3)
+  if (index < 0 || [(NSArray *)self->_cellControllers count]<= index)
   {
     v11 = 0;
   }
@@ -289,8 +289,8 @@ LABEL_8:
     v15 = __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtIndex___block_invoke;
     v16 = &unk_1E84418B0;
     objc_copyWeak(v18, &location);
-    v18[1] = a3;
-    v17 = self;
+    v18[1] = index;
+    selfCopy = self;
     v8 = [v5 contextualActionWithStyle:1 title:v7 handler:&v13];
 
     v9 = MEMORY[0x1E69DCFC0];
@@ -395,15 +395,15 @@ void __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtI
   v11[2](v11, 1);
 }
 
-- (id)parentViewControllerForAttachmentCellController:(id)a3
+- (id)parentViewControllerForAttachmentCellController:(id)controller
 {
-  v4 = [(EKCalendarItemEditItem *)self delegate];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(EKCalendarItemEditItem *)self delegate];
-    v7 = [v6 viewControllerForEditItem:self];
+    delegate2 = [(EKCalendarItemEditItem *)self delegate];
+    v7 = [delegate2 viewControllerForEditItem:self];
   }
 
   else
@@ -414,23 +414,23 @@ void __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtI
   return v7;
 }
 
-- (void)_showAddAttachmentViewControllerAnimated:(BOOL)a3
+- (void)_showAddAttachmentViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = [(EKCalendarItemEditItem *)self delegate];
+  delegate = [(EKCalendarItemEditItem *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(EKCalendarItemEditItem *)self delegate];
-    v8 = [v7 viewControllerForEditItem:self];
+    delegate2 = [(EKCalendarItemEditItem *)self delegate];
+    v8 = [delegate2 viewControllerForEditItem:self];
 
     if (v8)
     {
-      v9 = [v8 presentedViewController];
+      presentedViewController = [v8 presentedViewController];
 
-      if (!v9)
+      if (!presentedViewController)
       {
         v10 = objc_alloc(MEMORY[0x1E69DC968]);
         v18[0] = *MEMORY[0x1E6982D50];
@@ -440,15 +440,15 @@ void __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtI
         self->_documentPickerPresented = 1;
         [v12 setDelegate:self];
         [v12 setAllowsMultipleSelection:0];
-        v13 = [(EKEventEditItem *)self event];
-        v14 = [v13 calendar];
-        v15 = [v14 source];
+        event = [(EKEventEditItem *)self event];
+        calendar = [event calendar];
+        source = [calendar source];
 
-        v16 = [MEMORY[0x1E6993370] sharedInstance];
-        v17 = [v16 sourceIsManaged:v15];
+        mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+        v17 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
         [v12 _setIsContentManaged:v17];
-        [v8 presentViewController:v12 animated:v3 completion:0];
+        [v8 presentViewController:v12 animated:animatedCopy completion:0];
       }
     }
   }
@@ -459,46 +459,46 @@ void __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtI
   }
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   self->_documentPickerPresented = 0;
-  v6 = a4;
-  v7 = [a3 presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  lsCopy = ls;
+  presentingViewController = [picker presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
-  v9 = [v6 firstObject];
+  firstObject = [lsCopy firstObject];
 
-  if (v9)
+  if (firstObject)
   {
-    v8 = [objc_alloc(MEMORY[0x1E6966960]) initWithFilepath:v9];
+    v8 = [objc_alloc(MEMORY[0x1E6966960]) initWithFilepath:firstObject];
     [(EKEventAttachmentsEditItem *)self _addAttachment:v8];
   }
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   self->_documentPickerPresented = 0;
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancelled presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_addAttachment:(id)a3
+- (void)_addAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(EKEventAttachmentsEditItem *)self attachmentEvent];
-  [v5 addAttachment:v4];
+  attachmentEvent = [(EKEventAttachmentsEditItem *)self attachmentEvent];
+  [attachmentEvent addAttachment:attachmentCopy];
 
   [(EKEventAttachmentsEditItem *)self setAttachmentsModified:1];
   [(EKEventAttachmentsEditItem *)self refreshFromCalendarItemAndStore];
   [(EKCalendarItemEditItem *)self notifySubitemDidSave:[(EKEventAttachmentsEditItem *)self numberOfSubitems]- 1];
-  v6 = [(EKCalendarItemEditItem *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(EKCalendarItemEditItem *)self delegate];
+  LOBYTE(attachmentEvent) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (attachmentEvent)
   {
-    v7 = [(EKCalendarItemEditItem *)self delegate];
-    [v7 editItem:self wantsDoneButtonDisabled:0];
+    delegate2 = [(EKCalendarItemEditItem *)self delegate];
+    [delegate2 editItem:self wantsDoneButtonDisabled:0];
   }
 }
 
@@ -511,9 +511,9 @@ void __77__EKEventAttachmentsEditItem_trailingSwipeActionsConfigurationForRowAtI
     goto LABEL_5;
   }
 
-  v4 = [(EKEventAttachmentsEditItem *)self _shouldShowAddAttachmentCell];
+  _shouldShowAddAttachmentCell = [(EKEventAttachmentsEditItem *)self _shouldShowAddAttachmentCell];
 
-  if (v4)
+  if (_shouldShowAddAttachmentCell)
   {
     WeakRetained = EventKitUIBundle();
     v5 = [WeakRetained localizedStringForKey:@"Attachments will be applied to all occurrences" value:&stru_1F4EF6790 table:0];
@@ -528,48 +528,48 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)dropInteraction:(id)a3 canHandleSession:(id)a4
+- (BOOL)dropInteraction:(id)interaction canHandleSession:(id)session
 {
   v10[2] = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E6982D60];
-  v5 = a4;
-  v6 = [v4 identifier];
-  v10[0] = v6;
-  v7 = [*MEMORY[0x1E6982F30] identifier];
-  v10[1] = v7;
+  sessionCopy = session;
+  identifier = [v4 identifier];
+  v10[0] = identifier;
+  identifier2 = [*MEMORY[0x1E6982F30] identifier];
+  v10[1] = identifier2;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
 
-  LOBYTE(v6) = [v5 hasItemsConformingToTypeIdentifiers:v8];
-  return v6;
+  LOBYTE(identifier) = [sessionCopy hasItemsConformingToTypeIdentifiers:v8];
+  return identifier;
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnter:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnter:(id)enter
 {
-  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:a3];
+  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:interaction];
   [v4 setHighlighted:1];
 }
 
-- (void)dropInteraction:(id)a3 sessionDidExit:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidExit:(id)exit
 {
-  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:a3];
+  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:interaction];
   [v4 setHighlighted:0];
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC9C0]) initWithDropOperation:2];
 
   return v4;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [a4 items];
+  obj = [drop items];
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -587,17 +587,17 @@ LABEL_7:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 itemProvider];
-        v11 = [v7 identifier];
-        if ([v10 hasItemConformingToTypeIdentifier:v11])
+        itemProvider = [v9 itemProvider];
+        identifier = [v7 identifier];
+        if ([itemProvider hasItemConformingToTypeIdentifier:identifier])
         {
         }
 
         else
         {
-          v12 = [v9 itemProvider];
-          v13 = [v15 identifier];
-          v14 = [v12 hasItemConformingToTypeIdentifier:v13];
+          itemProvider2 = [v9 itemProvider];
+          identifier2 = [v15 identifier];
+          v14 = [itemProvider2 hasItemConformingToTypeIdentifier:identifier2];
 
           if (!v14)
           {
@@ -615,22 +615,22 @@ LABEL_7:
   }
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
-  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:a3];
+  v4 = [(EKEventAttachmentsEditItem *)self _addAttachmentCell:interaction];
   [v4 setHighlighted:0];
 }
 
-- (void)_loadAndAddDataAttachmentFromItem:(id)a3
+- (void)_loadAndAddDataAttachmentFromItem:(id)item
 {
-  v4 = [a3 itemProvider];
-  v5 = [*MEMORY[0x1E6982D60] identifier];
+  itemProvider = [item itemProvider];
+  identifier = [*MEMORY[0x1E6982D60] identifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__EKEventAttachmentsEditItem__loadAndAddDataAttachmentFromItem___block_invoke;
   v7[3] = &unk_1E84418D8;
   v7[4] = self;
-  v6 = [v4 loadFileRepresentationForTypeIdentifier:v5 completionHandler:v7];
+  v6 = [itemProvider loadFileRepresentationForTypeIdentifier:identifier completionHandler:v7];
 }
 
 void __64__EKEventAttachmentsEditItem__loadAndAddDataAttachmentFromItem___block_invoke(uint64_t a1, void *a2)

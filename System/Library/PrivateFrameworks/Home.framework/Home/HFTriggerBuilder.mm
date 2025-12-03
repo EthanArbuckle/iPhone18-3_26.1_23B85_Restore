@@ -1,22 +1,22 @@
 @interface HFTriggerBuilder
-+ (id)triggerBuilderForTrigger:(id)a3 inHome:(id)a4 context:(id)a5 assertsFailure:(BOOL)a6;
++ (id)triggerBuilderForTrigger:(id)trigger inHome:(id)home context:(id)context assertsFailure:(BOOL)failure;
 - (BOOL)areActionsAffectedByEndEvents;
 - (BOOL)isShortcutOwned;
 - (BOOL)requiresHomeHub;
 - (BOOL)requiresUpdatedHomeHub;
 - (HFDurationEventBuilder)designatedDurationEventBuilder;
-- (HFTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
-- (HFTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5;
-- (HFTriggerBuilder)initWithHome:(id)a3;
-- (HFTriggerBuilder)initWithHome:(id)a3 context:(id)a4;
+- (HFTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home;
+- (HFTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context;
+- (HFTriggerBuilder)initWithHome:(id)home;
+- (HFTriggerBuilder)initWithHome:(id)home context:(id)context;
 - (NSArray)endEventBuilders;
 - (NSString)displayName;
-- (id)_commitAddTriggerToHome:(id)a3;
+- (id)_commitAddTriggerToHome:(id)home;
 - (id)_commitUsingBuilders;
-- (id)_deleteTrigger:(id)a3 fromHome:(id)a4;
+- (id)_deleteTrigger:(id)trigger fromHome:(id)home;
 - (id)_lazy_performValidation;
 - (id)_legacyCommitItem;
-- (id)_uniquelyRenameTrigger:(id)a3 pendingReplaceByNewTriggerWithName:(id)a4;
+- (id)_uniquelyRenameTrigger:(id)trigger pendingReplaceByNewTriggerWithName:(id)name;
 - (id)_updateActionSets;
 - (id)_updateAnonymousActionSet;
 - (id)_updateConditions;
@@ -27,43 +27,43 @@
 - (id)commitCreateTrigger;
 - (id)commitEditTrigger;
 - (id)commitItem;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)deleteTrigger;
 - (id)getOrCreateTriggerBuilder;
-- (id)naturalLanguageNameOfType:(unint64_t)a3;
-- (id)naturalLanguageNameWithOptions:(id)a3;
-- (id)replaceCurrentTriggerWithTrigger:(id)a3;
-- (id)updateTriggerBuilder:(id)a3;
+- (id)naturalLanguageNameOfType:(unint64_t)type;
+- (id)naturalLanguageNameWithOptions:(id)options;
+- (id)replaceCurrentTriggerWithTrigger:(id)trigger;
+- (id)updateTriggerBuilder:(id)builder;
 - (id)validationError;
 - (unint64_t)hash;
 - (void)_didReplaceBackingTrigger;
-- (void)_notifyObserversOfAddingTrigger:(id)a3;
-- (void)_notifyObserversOfChangingTrigger:(id)a3;
-- (void)addEndEventBuilder:(id)a3;
+- (void)_notifyObserversOfAddingTrigger:(id)trigger;
+- (void)_notifyObserversOfChangingTrigger:(id)trigger;
+- (void)addEndEventBuilder:(id)builder;
 - (void)removeAllEndEventBuilders;
-- (void)removeEndEventBuilder:(id)a3;
-- (void)removeServiceLikeItem:(id)a3;
-- (void)setEndEvent:(id)a3;
-- (void)updateEndEventBuilder:(id)a3;
+- (void)removeEndEventBuilder:(id)builder;
+- (void)removeServiceLikeItem:(id)item;
+- (void)setEndEvent:(id)event;
+- (void)updateEndEventBuilder:(id)builder;
 @end
 
 @implementation HFTriggerBuilder
 
 - (id)getOrCreateTriggerBuilder
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
-  v4 = v3;
-  if (!v3)
+  trigger = [(HFTriggerBuilder *)self trigger];
+  v4 = trigger;
+  if (!trigger)
   {
-    v5 = [(HFTriggerBuilder *)self createNewTriggerBuilder];
-    v6 = [HFTriggerBuilderPair creatingTriggerWithBuilder:v5];
+    createNewTriggerBuilder = [(HFTriggerBuilder *)self createNewTriggerBuilder];
+    v6 = [HFTriggerBuilderPair creatingTriggerWithBuilder:createNewTriggerBuilder];
     goto LABEL_5;
   }
 
-  v5 = [v3 hf_copyAsBuilder];
-  if (v5)
+  createNewTriggerBuilder = [trigger hf_copyAsBuilder];
+  if (createNewTriggerBuilder)
   {
-    v6 = [HFTriggerBuilderPair updatingTrigger:v4 withBuilder:v5];
+    v6 = [HFTriggerBuilderPair updatingTrigger:v4 withBuilder:createNewTriggerBuilder];
 LABEL_5:
     v7 = v6;
     goto LABEL_7;
@@ -75,51 +75,51 @@ LABEL_7:
   return v7;
 }
 
-- (id)updateTriggerBuilder:(id)a3
+- (id)updateTriggerBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self name];
-  [v4 setName:v5 isConfigured:{-[HFTriggerBuilder nameIsConfigured](self, "nameIsConfigured")}];
+  builderCopy = builder;
+  name = [(HFTriggerBuilder *)self name];
+  [builderCopy setName:name isConfigured:{-[HFTriggerBuilder nameIsConfigured](self, "nameIsConfigured")}];
 
-  [v4 setEnabled:{-[HFTriggerBuilder enabled](self, "enabled")}];
-  v6 = [(HFTriggerBuilder *)self triggerActionSets];
-  [v6 updateActionSetsInTriggerBuilder:v4];
+  [builderCopy setEnabled:{-[HFTriggerBuilder enabled](self, "enabled")}];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  [triggerActionSets updateActionSetsInTriggerBuilder:builderCopy];
 
   v7 = MEMORY[0x277D2C900];
 
   return [v7 futureWithNoResult];
 }
 
-+ (id)triggerBuilderForTrigger:(id)a3 inHome:(id)a4 context:(id)a5 assertsFailure:(BOOL)a6
++ (id)triggerBuilderForTrigger:(id)trigger inHome:(id)home context:(id)context assertsFailure:(BOOL)failure
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if ([v11 conformsToProtocol:&unk_28258B3D8])
+  failureCopy = failure;
+  triggerCopy = trigger;
+  homeCopy = home;
+  contextCopy = context;
+  if ([triggerCopy conformsToProtocol:&unk_28258B3D8])
   {
-    v14 = [v11 hf_triggerType];
+    hf_triggerType = [triggerCopy hf_triggerType];
   }
 
   else
   {
-    v14 = 0;
+    hf_triggerType = 0;
   }
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure___block_invoke;
   v22 = &unk_277E00DF0;
-  v24 = v14;
-  v15 = v11;
-  v27 = v6;
+  v24 = hf_triggerType;
+  v15 = triggerCopy;
+  v27 = failureCopy;
   v23 = v15;
   v25 = a2;
-  v26 = a1;
+  selfCopy = self;
   v16 = __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure___block_invoke(&v19);
-  if (v16 || v6)
+  if (v16 || failureCopy)
   {
-    v17 = [[v16 alloc] initWithExistingObject:v15 inHome:v12 context:v13];
+    v17 = [[v16 alloc] initWithExistingObject:v15 inHome:homeCopy context:contextCopy];
     if (!v17)
     {
       NSLog(&cfstr_CouldNotCreate_1.isa, v15, v19, v20, v21, v22);
@@ -156,59 +156,59 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
   return v4;
 }
 
-- (HFTriggerBuilder)initWithHome:(id)a3
+- (HFTriggerBuilder)initWithHome:(id)home
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_context_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:119 description:{@"%s is unavailable; use %@ instead", "-[HFTriggerBuilder initWithHome:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:119 description:{@"%s is unavailable; use %@ instead", "-[HFTriggerBuilder initWithHome:]", v6}];
 
   return 0;
 }
 
-- (HFTriggerBuilder)initWithHome:(id)a3 context:(id)a4
+- (HFTriggerBuilder)initWithHome:(id)home context:(id)context
 {
-  v6 = a4;
-  v7 = [(HFTriggerBuilder *)self initWithExistingObject:0 inHome:a3 context:v6];
+  contextCopy = context;
+  v7 = [(HFTriggerBuilder *)self initWithExistingObject:0 inHome:home context:contextCopy];
   v8 = v7;
   if (v7)
   {
-    [(HFTriggerBuilder *)v7 setContext:v6];
+    [(HFTriggerBuilder *)v7 setContext:contextCopy];
   }
 
   return v8;
 }
 
-- (HFTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithExistingObject_inHome_context_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:132 description:{@"%s is unavailable; use %@ instead", "-[HFTriggerBuilder initWithExistingObject:inHome:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:132 description:{@"%s is unavailable; use %@ instead", "-[HFTriggerBuilder initWithExistingObject:inHome:]", v7}];
 
   return 0;
 }
 
-- (HFTriggerBuilder)initWithExistingObject:(id)a3 inHome:(id)a4 context:(id)a5
+- (HFTriggerBuilder)initWithExistingObject:(id)object inHome:(id)home context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  homeCopy = home;
+  contextCopy = context;
   v39.receiver = self;
   v39.super_class = HFTriggerBuilder;
-  v10 = [(HFItemBuilder *)&v39 initWithExistingObject:a3 inHome:v8];
+  v10 = [(HFItemBuilder *)&v39 initWithExistingObject:object inHome:homeCopy];
   v11 = v10;
   if (v10)
   {
-    [(HFTriggerBuilder *)v10 setContext:v9];
+    [(HFTriggerBuilder *)v10 setContext:contextCopy];
     v12 = [HFTriggerActionSetsBuilder alloc];
-    v13 = [(HFTriggerBuilder *)v11 trigger];
-    v14 = [v13 actionSets];
-    v15 = -[HFTriggerActionSetsBuilder initWithActionSets:inHome:filterEmptyActionSets:](v12, "initWithActionSets:inHome:filterEmptyActionSets:", v14, v8, [v9 filtersEmptyActionSets]);
+    trigger = [(HFTriggerBuilder *)v11 trigger];
+    actionSets = [trigger actionSets];
+    v15 = -[HFTriggerActionSetsBuilder initWithActionSets:inHome:filterEmptyActionSets:](v12, "initWithActionSets:inHome:filterEmptyActionSets:", actionSets, homeCopy, [contextCopy filtersEmptyActionSets]);
     [(HFTriggerBuilder *)v11 setTriggerActionSets:v15];
 
     objc_opt_class();
-    v16 = [(HFTriggerBuilder *)v11 trigger];
+    trigger2 = [(HFTriggerBuilder *)v11 trigger];
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = trigger2;
     }
 
     else
@@ -218,64 +218,64 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
 
     v18 = v17;
 
-    v19 = [v18 predicate];
+    predicate = [v18 predicate];
 
-    if (v19)
+    if (predicate)
     {
-      v20 = [v18 predicate];
-      v21 = [HFConditionCollection conditionCollectionForPredicate:v20];
+      predicate2 = [v18 predicate];
+      v21 = [HFConditionCollection conditionCollectionForPredicate:predicate2];
     }
 
     else
     {
       v22 = [HFConditionCollection alloc];
-      v20 = [MEMORY[0x277CBEA60] array];
-      v21 = [(HFConditionCollection *)v22 initWithConditions:v20];
+      predicate2 = [MEMORY[0x277CBEA60] array];
+      v21 = [(HFConditionCollection *)v22 initWithConditions:predicate2];
     }
 
     v23 = v21;
     [(HFTriggerBuilder *)v11 setConditionCollection:v21];
 
-    v24 = [v18 endEvents];
-    if (v24)
+    endEvents = [v18 endEvents];
+    if (endEvents)
     {
-      v25 = [v18 endEvents];
-      v26 = [v25 na_map:&__block_literal_global_211];
+      endEvents2 = [v18 endEvents];
+      array = [endEvents2 na_map:&__block_literal_global_211];
     }
 
     else
     {
-      v26 = [MEMORY[0x277CBEA60] array];
+      array = [MEMORY[0x277CBEA60] array];
     }
 
     v27 = [HFMutableSetDiff alloc];
-    v28 = [MEMORY[0x277CBEB98] setWithArray:v26];
+    v28 = [MEMORY[0x277CBEB98] setWithArray:array];
     v29 = [(HFMutableSetDiff *)v27 initWithFromSet:v28];
     [(HFTriggerBuilder *)v11 setEndEventBuildersDiff:v29];
 
-    v30 = [(HFTriggerBuilder *)v11 trigger];
-    v31 = [v30 configuredName];
-    if (v31)
+    trigger3 = [(HFTriggerBuilder *)v11 trigger];
+    configuredName = [trigger3 configuredName];
+    if (configuredName)
     {
-      [(HFTriggerBuilder *)v11 setName:v31];
+      [(HFTriggerBuilder *)v11 setName:configuredName];
     }
 
     else
     {
-      v32 = [(HFTriggerBuilder *)v11 trigger];
-      v33 = [v32 name];
-      [(HFTriggerBuilder *)v11 setName:v33];
+      trigger4 = [(HFTriggerBuilder *)v11 trigger];
+      name = [trigger4 name];
+      [(HFTriggerBuilder *)v11 setName:name];
     }
 
-    v34 = [(HFTriggerBuilder *)v11 trigger];
-    v35 = [v34 configuredName];
-    [(HFTriggerBuilder *)v11 setNameIsConfigured:v35 != 0];
+    trigger5 = [(HFTriggerBuilder *)v11 trigger];
+    configuredName2 = [trigger5 configuredName];
+    [(HFTriggerBuilder *)v11 setNameIsConfigured:configuredName2 != 0];
 
-    v36 = [(HFTriggerBuilder *)v11 trigger];
-    if (v36)
+    trigger6 = [(HFTriggerBuilder *)v11 trigger];
+    if (trigger6)
     {
-      v37 = [(HFTriggerBuilder *)v11 trigger];
-      -[HFTriggerBuilder setEnabled:](v11, "setEnabled:", [v37 isEnabled]);
+      trigger7 = [(HFTriggerBuilder *)v11 trigger];
+      -[HFTriggerBuilder setEnabled:](v11, "setEnabled:", [trigger7 isEnabled]);
     }
 
     else
@@ -302,30 +302,30 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
   return displayName;
 }
 
-- (void)addEndEventBuilder:(id)a3
+- (void)addEndEventBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   if (![(HFTriggerBuilder *)self supportsEndEvents])
   {
-    NSLog(&cfstr_AttemptToAddAn.isa, v5, self);
+    NSLog(&cfstr_AttemptToAddAn.isa, builderCopy, self);
   }
 
-  v4 = [(HFTriggerBuilder *)self endEventBuildersDiff];
-  [v4 addObject:v5];
+  endEventBuildersDiff = [(HFTriggerBuilder *)self endEventBuildersDiff];
+  [endEventBuildersDiff addObject:builderCopy];
 }
 
-- (void)updateEndEventBuilder:(id)a3
+- (void)updateEndEventBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self endEventBuildersDiff];
-  [v5 updateObject:v4];
+  builderCopy = builder;
+  endEventBuildersDiff = [(HFTriggerBuilder *)self endEventBuildersDiff];
+  [endEventBuildersDiff updateObject:builderCopy];
 }
 
-- (void)removeEndEventBuilder:(id)a3
+- (void)removeEndEventBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self endEventBuildersDiff];
-  [v5 deleteObject:v4];
+  builderCopy = builder;
+  endEventBuildersDiff = [(HFTriggerBuilder *)self endEventBuildersDiff];
+  [endEventBuildersDiff deleteObject:builderCopy];
 }
 
 - (void)removeAllEndEventBuilders
@@ -335,8 +335,8 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HFTriggerBuilder *)self endEventBuilders];
-  v4 = [v3 copy];
+  endEventBuilders = [(HFTriggerBuilder *)self endEventBuilders];
+  v4 = [endEventBuilders copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -366,17 +366,17 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeServiceLikeItem:(id)a3
+- (void)removeServiceLikeItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 services];
-  v6 = [v5 na_flatMap:&__block_literal_global_80_0];
+  itemCopy = item;
+  services = [itemCopy services];
+  v6 = [services na_flatMap:&__block_literal_global_80_0];
 
   objc_opt_class();
-  v7 = [v4 homeKitObject];
+  homeKitObject = [itemCopy homeKitObject];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = homeKitObject;
   }
 
   else
@@ -388,15 +388,15 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
 
   if (v9)
   {
-    v10 = [v9 services];
-    v11 = [v10 na_flatMap:&__block_literal_global_84];
+    services2 = [v9 services];
+    v11 = [services2 na_flatMap:&__block_literal_global_84];
     v12 = [v6 setByAddingObjectsFromArray:v11];
 
     v6 = v12;
   }
 
   objc_opt_class();
-  v13 = v4;
+  v13 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -409,26 +409,26 @@ id __75__HFTriggerBuilder_triggerBuilderForTrigger_inHome_context_assertsFailure
 
   v15 = v14;
 
-  v16 = [v15 mediaProfileContainer];
+  mediaProfileContainer = [v15 mediaProfileContainer];
 
-  v17 = [(HFTriggerBuilder *)self triggerActionSets];
-  v18 = [v17 anonymousActionSetBuilder];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  anonymousActionSetBuilder = [triggerActionSets anonymousActionSetBuilder];
 
-  v19 = [v18 actionBuilders];
-  v20 = [v19 toSet];
+  actionBuilders = [anonymousActionSetBuilder actionBuilders];
+  toSet = [actionBuilders toSet];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_3;
   v29[3] = &unk_277E00E18;
   v30 = v6;
   v31 = v9;
-  v32 = v16;
-  v21 = v18;
+  v32 = mediaProfileContainer;
+  v21 = anonymousActionSetBuilder;
   v33 = v21;
   v22 = v6;
   v23 = v9;
-  v24 = v16;
-  v25 = [v20 na_map:v29];
+  v24 = mediaProfileContainer;
+  v25 = [toSet na_map:v29];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91;
@@ -560,29 +560,29 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
   [v4 deleteObject:v3];
 }
 
-- (void)setEndEvent:(id)a3
+- (void)setEndEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HFTriggerBuilder *)self removeAllEndEventBuilders];
-  [(HFTriggerBuilder *)self addEndEventBuilder:v4];
+  [(HFTriggerBuilder *)self addEndEventBuilder:eventCopy];
 }
 
 - (NSArray)endEventBuilders
 {
-  v2 = [(HFTriggerBuilder *)self endEventBuildersDiff];
-  v3 = [v2 toSet];
-  v4 = [v3 allObjects];
+  endEventBuildersDiff = [(HFTriggerBuilder *)self endEventBuildersDiff];
+  toSet = [endEventBuildersDiff toSet];
+  allObjects = [toSet allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (BOOL)requiresHomeHub
 {
   objc_opt_class();
-  v3 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = trigger;
   }
 
   else
@@ -592,17 +592,17 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
 
   v5 = v4;
 
-  v6 = [v5 triggerActivationState];
-  return v6 == 1;
+  triggerActivationState = [v5 triggerActivationState];
+  return triggerActivationState == 1;
 }
 
 - (BOOL)requiresUpdatedHomeHub
 {
   objc_opt_class();
-  v3 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = trigger;
   }
 
   else
@@ -612,16 +612,16 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
 
   v5 = v4;
 
-  v6 = [v5 triggerActivationState];
-  return v6 == 2;
+  triggerActivationState = [v5 triggerActivationState];
+  return triggerActivationState == 2;
 }
 
 - (BOOL)areActionsAffectedByEndEvents
 {
-  v2 = [(HFTriggerBuilder *)self triggerActionSets];
-  v3 = [v2 areActionsAffectedByEndEvents];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  areActionsAffectedByEndEvents = [triggerActionSets areActionsAffectedByEndEvents];
 
-  return v3;
+  return areActionsAffectedByEndEvents;
 }
 
 - (HFDurationEventBuilder)designatedDurationEventBuilder
@@ -631,8 +631,8 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [(HFTriggerBuilder *)self endEventBuilders];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  endEventBuilders = [(HFTriggerBuilder *)self endEventBuilders];
+  v3 = [endEventBuilders countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -644,7 +644,7 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(endEventBuilders);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -665,7 +665,7 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [endEventBuilders countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);
@@ -683,32 +683,32 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
 
 - (BOOL)isShortcutOwned
 {
-  v3 = [(HFTriggerBuilder *)self triggerActionSets];
-  v4 = [v3 isShortcutOwned];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  isShortcutOwned = [triggerActionSets isShortcutOwned];
 
-  if (v4)
+  if (isShortcutOwned)
   {
     return 1;
   }
 
-  v6 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
 
-  if (!v6)
+  if (!trigger)
   {
     return 0;
   }
 
-  v7 = [(HFTriggerBuilder *)self trigger];
-  v8 = [v7 hf_isShortcutOwned];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  hf_isShortcutOwned = [trigger2 hf_isShortcutOwned];
 
-  return v8;
+  return hf_isShortcutOwned;
 }
 
 - (id)deleteTrigger
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
-  v4 = [(HFItemBuilder *)self home];
-  v5 = [(HFTriggerBuilder *)self _deleteTrigger:v3 fromHome:v4];
+  trigger = [(HFTriggerBuilder *)self trigger];
+  home = [(HFItemBuilder *)self home];
+  v5 = [(HFTriggerBuilder *)self _deleteTrigger:trigger fromHome:home];
 
   return v5;
 }
@@ -719,37 +719,37 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
   v3 = [(HFItemBuilder *)self verifyPropertyIsSet:@"name"];
   if (v3)
   {
-    v4 = v3;
+    firstObject = v3;
   }
 
   else
   {
-    v5 = [(HFTriggerBuilder *)self name];
-    v4 = [(HFItemBuilder *)self verifyNameIsNotEmpty:v5];
+    name = [(HFTriggerBuilder *)self name];
+    firstObject = [(HFItemBuilder *)self verifyNameIsNotEmpty:name];
 
-    if (!v4)
+    if (!firstObject)
     {
-      v6 = [(HFTriggerBuilder *)self triggerActionSets];
-      v7 = [v6 anonymousActionSetBuilder];
-      v8 = [v7 actions];
-      v9 = [v8 count];
+      triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+      anonymousActionSetBuilder = [triggerActionSets anonymousActionSetBuilder];
+      actions = [anonymousActionSetBuilder actions];
+      v9 = [actions count];
 
-      v10 = [(HFTriggerBuilder *)self triggerActionSets];
-      v11 = [v10 namedActionSetsDiff];
-      v12 = [v11 toSet];
-      v13 = v9 | [v12 count];
+      triggerActionSets2 = [(HFTriggerBuilder *)self triggerActionSets];
+      namedActionSetsDiff = [triggerActionSets2 namedActionSetsDiff];
+      toSet = [namedActionSetsDiff toSet];
+      v13 = v9 | [toSet count];
 
       if (v13)
       {
-        v15 = [(HFTriggerBuilder *)self triggerActionSets];
-        v16 = [v15 anonymousActionSetBuilder];
-        v17 = [v16 actions];
-        v18 = [v17 na_map:&__block_literal_global_104_0];
-        v4 = [v18 firstObject];
+        triggerActionSets3 = [(HFTriggerBuilder *)self triggerActionSets];
+        anonymousActionSetBuilder2 = [triggerActionSets3 anonymousActionSetBuilder];
+        actions2 = [anonymousActionSetBuilder2 actions];
+        v18 = [actions2 na_map:&__block_literal_global_104_0];
+        firstObject = [v18 firstObject];
 
-        if (v4)
+        if (firstObject)
         {
-          v19 = v4;
+          v19 = firstObject;
         }
       }
 
@@ -758,23 +758,23 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
         v22 = @"HFItemBuilderFailureReason";
         v23[0] = @"Triggers must have at least one action or action set";
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-        v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D2C8B8] code:2 userInfo:v14];
+        firstObject = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D2C8B8] code:2 userInfo:v14];
       }
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)asEventTriggerBuilder
 {
   objc_opt_class();
-  v3 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = selfCopy;
   }
 
   else
@@ -793,8 +793,8 @@ void __42__HFTriggerBuilder_removeServiceLikeItem___block_invoke_91(uint64_t a1,
   v3 = [(HFItemBuilder *)self lazy_verifyPropertyIsSet:@"name"];
   v4 = MEMORY[0x277D2C900];
   v13[0] = v3;
-  v5 = [(HFTriggerBuilder *)self name];
-  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:v5];
+  name = [(HFTriggerBuilder *)self name];
+  v6 = [(HFItemBuilder *)self lazy_verifyNameIsNotEmpty:name];
   v13[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v8 = [v4 chainFutures:v7];
@@ -832,83 +832,83 @@ void __43__HFTriggerBuilder__lazy_performValidation__block_invoke(uint64_t a1, v
 - (id)_commitUsingBuilders
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HFTriggerBuilder *)self validationError];
-  if (v3)
+  validationError = [(HFTriggerBuilder *)self validationError];
+  if (validationError)
   {
-    v4 = [(HFTriggerBuilder *)self trigger];
+    trigger = [(HFTriggerBuilder *)self trigger];
     v5 = HFOperationEditTrigger;
-    if (!v4)
+    if (!trigger)
     {
       v5 = HFOperationAddTrigger;
     }
 
-    v6 = *v5;
+    home = *v5;
 
     v7 = HFLogForCategory(0x2BuLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v3;
+      v23 = validationError;
       _os_log_error_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_ERROR, "Error validating trigger builder: %@. Error: %@", buf, 0x16u);
     }
 
     v8 = MEMORY[0x277D2C900];
-    v9 = [(HFTriggerBuilder *)self displayName];
-    v10 = [v3 hf_errorWithOperationType:v6 failedItemName:v9];
-    v11 = [v8 futureWithError:v10];
+    displayName = [(HFTriggerBuilder *)self displayName];
+    v10 = [validationError hf_errorWithOperationType:home failedItemName:displayName];
+    _legacyCommitItem = [v8 futureWithError:v10];
     goto LABEL_9;
   }
 
-  v6 = [(HFItemBuilder *)self home];
-  v12 = [(HFTriggerBuilder *)self getOrCreateTriggerBuilder];
-  if (v12)
+  home = [(HFItemBuilder *)self home];
+  getOrCreateTriggerBuilder = [(HFTriggerBuilder *)self getOrCreateTriggerBuilder];
+  if (getOrCreateTriggerBuilder)
   {
-    v13 = v12;
-    v14 = [v12 builder];
-    v10 = [(HFTriggerBuilder *)self updateTriggerBuilder:v14];
+    v13 = getOrCreateTriggerBuilder;
+    builder = [getOrCreateTriggerBuilder builder];
+    v10 = [(HFTriggerBuilder *)self updateTriggerBuilder:builder];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __40__HFTriggerBuilder__commitUsingBuilders__block_invoke;
     v17[3] = &unk_277DFA5C0;
-    v9 = v13;
-    v18 = v9;
-    v6 = v6;
-    v19 = v6;
-    v11 = [v10 flatMap:v17];
+    displayName = v13;
+    v18 = displayName;
+    home = home;
+    v19 = home;
+    _legacyCommitItem = [v10 flatMap:v17];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [(HFTriggerBuilder *)self _legacyCommitItem];
-  v9 = 0;
+  _legacyCommitItem = [(HFTriggerBuilder *)self _legacyCommitItem];
+  displayName = 0;
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return _legacyCommitItem;
 }
 
 - (id)_legacyCommitItem
 {
   v37[7] = *MEMORY[0x277D85DE8];
-  v3 = [(HFTriggerBuilder *)self trigger];
+  trigger = [(HFTriggerBuilder *)self trigger];
   v4 = HFOperationEditTrigger;
-  if (!v3)
+  if (!trigger)
   {
     v4 = HFOperationAddTrigger;
   }
 
   v25 = *v4;
 
-  v5 = [(HFTriggerBuilder *)self trigger];
-  v6 = v5 == 0;
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  v6 = trigger2 == 0;
 
-  v7 = [(HFTriggerBuilder *)self _lazy_performValidation];
-  v8 = v7;
+  _lazy_performValidation = [(HFTriggerBuilder *)self _lazy_performValidation];
+  v8 = _lazy_performValidation;
   if (v6)
   {
     v36[0] = MEMORY[0x277D85DD0];
@@ -916,7 +916,7 @@ LABEL_10:
     v36[2] = __37__HFTriggerBuilder__legacyCommitItem__block_invoke;
     v36[3] = &unk_277DF2CE0;
     v36[4] = self;
-    v10 = [v7 flatMap:{v36, v25}];
+    v10 = [_lazy_performValidation flatMap:{v36, v25}];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __37__HFTriggerBuilder__legacyCommitItem__block_invoke_2;
@@ -932,23 +932,23 @@ LABEL_10:
     v34[2] = __37__HFTriggerBuilder__legacyCommitItem__block_invoke_3;
     v34[3] = &unk_277DF2CE0;
     v34[4] = self;
-    v9 = [v7 flatMap:{v34, v25}];
+    v9 = [_lazy_performValidation flatMap:{v34, v25}];
   }
 
   v11 = MEMORY[0x277D2C900];
   v37[0] = v9;
-  v12 = [(HFTriggerBuilder *)self _updateAnonymousActionSet];
-  v37[1] = v12;
-  v13 = [(HFTriggerBuilder *)self _updateActionSets];
-  v37[2] = v13;
-  v14 = [(HFTriggerBuilder *)self _updateConditions];
-  v37[3] = v14;
-  v15 = [(HFTriggerBuilder *)self _updateEndEvents];
-  v37[4] = v15;
-  v16 = [(HFTriggerBuilder *)self _updateEnabledState];
-  v37[5] = v16;
-  v17 = [(HFTriggerBuilder *)self lazilyFinishCommitingTrigger];
-  v37[6] = v17;
+  _updateAnonymousActionSet = [(HFTriggerBuilder *)self _updateAnonymousActionSet];
+  v37[1] = _updateAnonymousActionSet;
+  _updateActionSets = [(HFTriggerBuilder *)self _updateActionSets];
+  v37[2] = _updateActionSets;
+  _updateConditions = [(HFTriggerBuilder *)self _updateConditions];
+  v37[3] = _updateConditions;
+  _updateEndEvents = [(HFTriggerBuilder *)self _updateEndEvents];
+  v37[4] = _updateEndEvents;
+  _updateEnabledState = [(HFTriggerBuilder *)self _updateEnabledState];
+  v37[5] = _updateEnabledState;
+  lazilyFinishCommitingTrigger = [(HFTriggerBuilder *)self lazilyFinishCommitingTrigger];
+  v37[6] = lazilyFinishCommitingTrigger;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:7];
   v19 = [v11 chainFutures:v18];
 
@@ -965,7 +965,7 @@ LABEL_10:
   v27[3] = &unk_277E00E68;
   v21 = v26;
   v28 = v21;
-  v29 = self;
+  selfCopy = self;
   objc_copyWeak(&v30, &location);
   v22 = [v20 recover:v27];
   objc_destroyWeak(&v30);
@@ -1078,8 +1078,8 @@ void __37__HFTriggerBuilder__legacyCommitItem__block_invoke_6(uint64_t a1)
   v4 = os_signpost_id_make_with_pointer(v3, self);
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HFTriggerBuilder *)self trigger];
-  if (v6)
+  trigger = [(HFTriggerBuilder *)self trigger];
+  if (trigger)
   {
     v7 = @"Committing";
   }
@@ -1089,20 +1089,20 @@ void __37__HFTriggerBuilder__legacyCommitItem__block_invoke_6(uint64_t a1)
     v7 = @"Creating";
   }
 
-  v8 = [(HFTriggerBuilder *)self name];
-  v9 = [(HFTriggerBuilder *)self trigger];
-  if (v9)
+  name = [(HFTriggerBuilder *)self name];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  if (trigger2)
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(HFTriggerBuilder *)self trigger];
-    v12 = [v11 uniqueIdentifier];
-    v13 = [v10 stringWithFormat:@" (%@)", v12];
-    v14 = [v5 stringWithFormat:@"%@ trigger with name: %@%@", v7, v8, v13];
+    trigger3 = [(HFTriggerBuilder *)self trigger];
+    uniqueIdentifier = [trigger3 uniqueIdentifier];
+    v13 = [v10 stringWithFormat:@" (%@)", uniqueIdentifier];
+    v14 = [v5 stringWithFormat:@"%@ trigger with name: %@%@", v7, name, v13];
   }
 
   else
   {
-    v14 = [v5 stringWithFormat:@"%@ trigger with name: %@%@", v7, v8, &stru_2824B1A78];
+    v14 = [v5 stringWithFormat:@"%@ trigger with name: %@%@", v7, name, &stru_2824B1A78];
   }
 
   v15 = HFLogForCategory(0x35uLL);
@@ -1114,14 +1114,14 @@ void __37__HFTriggerBuilder__legacyCommitItem__block_invoke_6(uint64_t a1)
     _os_signpost_emit_with_name_impl(&dword_20D9BF000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v4, "HFTriggerBuilderCommit", "%@", buf, 0xCu);
   }
 
-  v17 = [(HFItemBuilder *)self home];
-  if ([v17 areAutomationBuildersSupported])
+  home = [(HFItemBuilder *)self home];
+  if ([home areAutomationBuildersSupported])
   {
-    v18 = [(HFTriggerBuilder(AutomationBuilders) *)self supportsHomeKitAutomationBuilders];
+    supportsHomeKitAutomationBuilders = [(HFTriggerBuilder(AutomationBuilders) *)self supportsHomeKitAutomationBuilders];
 
-    if (v18)
+    if (supportsHomeKitAutomationBuilders)
     {
-      v19 = [(HFTriggerBuilder *)self _commitUsingBuilders];
+      _commitUsingBuilders = [(HFTriggerBuilder *)self _commitUsingBuilders];
       goto LABEL_15;
     }
   }
@@ -1130,9 +1130,9 @@ void __37__HFTriggerBuilder__legacyCommitItem__block_invoke_6(uint64_t a1)
   {
   }
 
-  v19 = [(HFTriggerBuilder *)self _legacyCommitItem];
+  _commitUsingBuilders = [(HFTriggerBuilder *)self _legacyCommitItem];
 LABEL_15:
-  v20 = v19;
+  v20 = _commitUsingBuilders;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __30__HFTriggerBuilder_commitItem__block_invoke;
@@ -1953,72 +1953,72 @@ LABEL_6:
 
 - (id)commitCreateTrigger
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:690 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder commitCreateTrigger]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:690 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder commitCreateTrigger]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)commitEditTrigger
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:696 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder commitEditTrigger]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:696 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder commitEditTrigger]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)naturalLanguageNameOfType:(unint64_t)a3
+- (id)naturalLanguageNameOfType:(unint64_t)type
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:702 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder naturalLanguageNameOfType:]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFTriggerBuilder.m" lineNumber:702 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFTriggerBuilder naturalLanguageNameOfType:]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3
+- (id)naturalLanguageNameWithOptions:(id)options
 {
-  v4 = [a3 nameType];
+  nameType = [options nameType];
 
-  return [(HFTriggerBuilder *)self naturalLanguageNameOfType:v4];
+  return [(HFTriggerBuilder *)self naturalLanguageNameOfType:nameType];
 }
 
-- (id)replaceCurrentTriggerWithTrigger:(id)a3
+- (id)replaceCurrentTriggerWithTrigger:(id)trigger
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFTriggerBuilder *)self trigger];
+  triggerCopy = trigger;
+  trigger = [(HFTriggerBuilder *)self trigger];
   v6 = HFLogForCategory(0x2BuLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 hf_prettyDescription];
-    v8 = [v4 hf_prettyDescription];
-    v9 = [(HFItemBuilder *)self home];
+    hf_prettyDescription = [trigger hf_prettyDescription];
+    hf_prettyDescription2 = [triggerCopy hf_prettyDescription];
+    home = [(HFItemBuilder *)self home];
     *buf = 138412802;
-    v25 = v7;
+    v25 = hf_prettyDescription;
     v26 = 2112;
-    v27 = v8;
+    v27 = hf_prettyDescription2;
     v28 = 2112;
-    v29 = v9;
+    v29 = home;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Swapping current trigger:%@ for new trigger:%@ in home:%@", buf, 0x20u);
   }
 
-  v10 = [v4 name];
-  v11 = [(HFTriggerBuilder *)self _uniquelyRenameTrigger:v5 pendingReplaceByNewTriggerWithName:v10];
+  name = [triggerCopy name];
+  v11 = [(HFTriggerBuilder *)self _uniquelyRenameTrigger:trigger pendingReplaceByNewTriggerWithName:name];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__HFTriggerBuilder_replaceCurrentTriggerWithTrigger___block_invoke;
   v22[3] = &unk_277DFA5C0;
   v22[4] = self;
-  v23 = v4;
-  v12 = v4;
+  v23 = triggerCopy;
+  v12 = triggerCopy;
   v13 = [v11 flatMap:v22];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __53__HFTriggerBuilder_replaceCurrentTriggerWithTrigger___block_invoke_2;
   v20[3] = &unk_277DFA5C0;
   v20[4] = self;
-  v21 = v5;
-  v14 = v5;
+  v21 = trigger;
+  v14 = trigger;
   v15 = [v13 flatMap:v20];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -2042,17 +2042,17 @@ id __53__HFTriggerBuilder_replaceCurrentTriggerWithTrigger___block_invoke_2(uint
   return v4;
 }
 
-- (void)_notifyObserversOfAddingTrigger:(id)a3
+- (void)_notifyObserversOfAddingTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__HFTriggerBuilder__notifyObserversOfAddingTrigger___block_invoke;
   v7[3] = &unk_277DF3810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = triggerCopy;
+  v6 = triggerCopy;
   [v5 dispatchHomeObserverMessage:v7 sender:0];
 }
 
@@ -2066,17 +2066,17 @@ void __52__HFTriggerBuilder__notifyObserversOfAddingTrigger___block_invoke(uint6
   }
 }
 
-- (void)_notifyObserversOfChangingTrigger:(id)a3
+- (void)_notifyObserversOfChangingTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HFTriggerBuilder__notifyObserversOfChangingTrigger___block_invoke;
   v7[3] = &unk_277DF3810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = triggerCopy;
+  v6 = triggerCopy;
   [v5 dispatchHomeObserverMessage:v7 sender:0];
 }
 
@@ -2092,31 +2092,31 @@ void __54__HFTriggerBuilder__notifyObserversOfChangingTrigger___block_invoke(uin
 
 - (void)_didReplaceBackingTrigger
 {
-  v3 = [(HFTriggerBuilder *)self triggerActionSets];
-  [v3 resetAllActionSets];
+  triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+  [triggerActionSets resetAllActionSets];
 
   v8 = [MEMORY[0x277CBEB98] set];
-  v4 = [(HFTriggerBuilder *)self endEventBuildersDiff];
-  v5 = [v4 toSet];
-  v6 = [HFSetDiff diffFromSet:v8 toSet:v5];
+  endEventBuildersDiff = [(HFTriggerBuilder *)self endEventBuildersDiff];
+  toSet = [endEventBuildersDiff toSet];
+  v6 = [HFSetDiff diffFromSet:v8 toSet:toSet];
   v7 = [v6 mutableCopy];
   [(HFTriggerBuilder *)self setEndEventBuildersDiff:v7];
 }
 
-- (id)_uniquelyRenameTrigger:(id)a3 pendingReplaceByNewTriggerWithName:(id)a4
+- (id)_uniquelyRenameTrigger:(id)trigger pendingReplaceByNewTriggerWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  triggerCopy = trigger;
+  nameCopy = name;
   v8 = MEMORY[0x277D2C900];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__HFTriggerBuilder__uniquelyRenameTrigger_pendingReplaceByNewTriggerWithName___block_invoke;
   v13[3] = &unk_277DF6F70;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = triggerCopy;
+  v15 = nameCopy;
+  v9 = nameCopy;
+  v10 = triggerCopy;
   v11 = [v8 futureWithErrorOnlyHandlerAdapterBlock:v13];
 
   return v11;
@@ -2139,16 +2139,16 @@ void __78__HFTriggerBuilder__uniquelyRenameTrigger_pendingReplaceByNewTriggerWit
   [*(a1 + 40) updateName:v11 completionHandler:v5];
 }
 
-- (id)_commitAddTriggerToHome:(id)a3
+- (id)_commitAddTriggerToHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = MEMORY[0x277D2C900];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __44__HFTriggerBuilder__commitAddTriggerToHome___block_invoke;
   v18[3] = &unk_277DF4150;
   v18[4] = self;
-  v6 = v4;
+  v6 = homeCopy;
   v19 = v6;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -2164,7 +2164,7 @@ void __78__HFTriggerBuilder__uniquelyRenameTrigger_pendingReplaceByNewTriggerWit
   v13[2] = __44__HFTriggerBuilder__commitAddTriggerToHome___block_invoke_2_172;
   v13[3] = &unk_277DF2748;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v10 = v8;
   v11 = [v7 addFailureBlock:v13];
 
@@ -2239,25 +2239,25 @@ void __44__HFTriggerBuilder__commitAddTriggerToHome___block_invoke_2_172(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_deleteTrigger:(id)a3 fromHome:(id)a4
+- (id)_deleteTrigger:(id)trigger fromHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueIdentifier];
-  v9 = v8;
-  if (v7 && v8)
+  triggerCopy = trigger;
+  homeCopy = home;
+  uniqueIdentifier = [triggerCopy uniqueIdentifier];
+  v9 = uniqueIdentifier;
+  if (homeCopy && uniqueIdentifier)
   {
-    v10 = [v6 hf_isBuilder];
+    hf_isBuilder = [triggerCopy hf_isBuilder];
 
-    if ((v10 & 1) == 0)
+    if ((hf_isBuilder & 1) == 0)
     {
       v11 = MEMORY[0x277D2C900];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke;
       v24[3] = &unk_277DF4150;
-      v25 = v7;
-      v12 = v6;
+      v25 = homeCopy;
+      v12 = triggerCopy;
       v26 = v12;
       v13 = [v11 futureWithErrorOnlyHandlerAdapterBlock:v24];
       v21[0] = MEMORY[0x277D85DD0];
@@ -2266,15 +2266,15 @@ void __44__HFTriggerBuilder__commitAddTriggerToHome___block_invoke_2_172(uint64_
       v21[3] = &unk_277DF7060;
       v14 = v12;
       v22 = v14;
-      v23 = self;
+      selfCopy = self;
       v15 = [v13 addSuccessBlock:v21];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke_2_176;
       v18[3] = &unk_277DF2748;
       v19 = v14;
-      v20 = self;
-      v16 = [v15 addFailureBlock:v18];
+      selfCopy2 = self;
+      futureWithNoResult = [v15 addFailureBlock:v18];
 
       goto LABEL_7;
     }
@@ -2284,10 +2284,10 @@ void __44__HFTriggerBuilder__commitAddTriggerToHome___block_invoke_2_172(uint64_
   {
   }
 
-  v16 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_7:
 
-  return v16;
+  return futureWithNoResult;
 }
 
 void __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke_2(uint64_t a1)
@@ -2349,15 +2349,15 @@ void __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke_2_176(uint64_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
-  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:v4];
+  objectCopy = object;
+  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:objectCopy];
   if (![(HFComparisonResult *)v5 containsCriticalDifference])
   {
-    v6 = [(HFTriggerBuilder *)self triggerActionSets];
-    v7 = [v4 triggerActionSets];
-    v8 = [v6 compareToObject:v7];
+    triggerActionSets = [(HFTriggerBuilder *)self triggerActionSets];
+    triggerActionSets2 = [objectCopy triggerActionSets];
+    v8 = [triggerActionSets compareToObject:triggerActionSets2];
 
     v9 = [HFContainedObjectDifference containedObjectDifferenceWithKey:@"triggerActionSets" comparisonResult:v8];
     [(HFComparisonResult *)v5 add:v9];
@@ -2366,15 +2366,15 @@ void __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke_2_176(uint64_
     v17 = 3221225472;
     v18 = __48__HFTriggerBuilder_Comparison__compareToObject___block_invoke;
     v19 = &unk_277DF6EF8;
-    v20 = self;
-    v10 = v4;
+    selfCopy = self;
+    v10 = objectCopy;
     v21 = v10;
     v11 = [HFDifference difference:@"enabled" priority:1 withBlock:&v16];
-    [(HFComparisonResult *)v5 add:v11, v16, v17, v18, v19, v20];
+    [(HFComparisonResult *)v5 add:v11, v16, v17, v18, v19, selfCopy];
 
-    v12 = [(HFTriggerBuilder *)self endEventBuilders];
-    v13 = [v10 endEventBuilders];
-    v14 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"endEvents" objectsA:v12 objectsB:v13];
+    endEventBuilders = [(HFTriggerBuilder *)self endEventBuilders];
+    endEventBuilders2 = [v10 endEventBuilders];
+    v14 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"endEvents" objectsA:endEventBuilders objectsB:endEventBuilders2];
     [(HFComparisonResult *)v5 add:v14];
   }
 
@@ -2383,17 +2383,17 @@ void __44__HFTriggerBuilder__deleteTrigger_fromHome___block_invoke_2_176(uint64_
 
 - (unint64_t)hash
 {
-  v3 = [(HFTriggerBuilder *)self trigger];
-  v4 = [v3 uniqueIdentifier];
+  trigger = [(HFTriggerBuilder *)self trigger];
+  uniqueIdentifier = [trigger uniqueIdentifier];
 
-  if (!v4)
+  if (!uniqueIdentifier)
   {
     return 0;
   }
 
-  v5 = [(HFTriggerBuilder *)self trigger];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 hash];
+  trigger2 = [(HFTriggerBuilder *)self trigger];
+  uniqueIdentifier2 = [trigger2 uniqueIdentifier];
+  v7 = [uniqueIdentifier2 hash];
 
   return v7;
 }

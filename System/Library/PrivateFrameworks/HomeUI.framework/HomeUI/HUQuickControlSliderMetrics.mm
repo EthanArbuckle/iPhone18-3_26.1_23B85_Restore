@@ -1,21 +1,21 @@
 @interface HUQuickControlSliderMetrics
-- (HUQuickControlSliderMetrics)initWithSizeDescriptor:(id)a3 cornerRadius:(double)a4 widthToCornerRadiusRatio:(double)a5;
+- (HUQuickControlSliderMetrics)initWithSizeDescriptor:(id)descriptor cornerRadius:(double)radius widthToCornerRadiusRatio:(double)ratio;
 @end
 
 @implementation HUQuickControlSliderMetrics
 
-- (HUQuickControlSliderMetrics)initWithSizeDescriptor:(id)a3 cornerRadius:(double)a4 widthToCornerRadiusRatio:(double)a5
+- (HUQuickControlSliderMetrics)initWithSizeDescriptor:(id)descriptor cornerRadius:(double)radius widthToCornerRadiusRatio:(double)ratio
 {
-  v9 = a3;
+  descriptorCopy = descriptor;
   v13.receiver = self;
   v13.super_class = HUQuickControlSliderMetrics;
   v10 = [(HUQuickControlSliderMetrics *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_sizeDescriptor, a3);
-    v11->_cornerRadius = a4;
-    v11->_widthToCornerRadiusRatio = a5;
+    objc_storeStrong(&v10->_sizeDescriptor, descriptor);
+    v11->_cornerRadius = radius;
+    v11->_widthToCornerRadiusRatio = ratio;
   }
 
   return v11;

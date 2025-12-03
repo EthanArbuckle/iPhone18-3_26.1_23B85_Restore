@@ -1,22 +1,22 @@
 @interface EKUIFocusBannerCollectionViewCell
-- (EKUIFocusBannerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (EKUIFocusBannerCollectionViewCell)initWithFrame:(CGRect)frame;
 - (EKUIFocusBannerCollectionViewCellDelegate)delegate;
 - (id)_configuration;
 - (id)_createFocusFilterToggleButton;
 - (id)_focusFilterButtonConfiguration;
-- (void)_configureCellSwitchingLayout:(BOOL)a3;
+- (void)_configureCellSwitchingLayout:(BOOL)layout;
 - (void)_tapped;
-- (void)setOn:(BOOL)a3;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation EKUIFocusBannerCollectionViewCell
 
-- (EKUIFocusBannerCollectionViewCell)initWithFrame:(CGRect)a3
+- (EKUIFocusBannerCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = EKUIFocusBannerCollectionViewCell;
-  v3 = [(EKUIFocusBannerCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKUIFocusBannerCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -55,8 +55,8 @@ void __51__EKUIFocusBannerCollectionViewCell_initWithFrame___block_invoke(uint64
 - (id)_createFocusFilterToggleButton
 {
   v3 = [MEMORY[0x1E69DC738] buttonWithType:1];
-  v4 = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
-  [v3 setConfiguration:v4];
+  _focusFilterButtonConfiguration = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
+  [v3 setConfiguration:_focusFilterButtonConfiguration];
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
@@ -87,91 +87,91 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
 - (void)_tapped
 {
   [(EKUIFocusBannerCollectionViewCell *)self setOn:[(EKUIFocusBannerCollectionViewCell *)self on]^ 1];
-  v3 = [(EKUIFocusBannerCollectionViewCell *)self delegate];
+  delegate = [(EKUIFocusBannerCollectionViewCell *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(EKUIFocusBannerCollectionViewCell *)self delegate];
-    [v5 focusBannerCollectionViewCellToggled:self];
+    delegate2 = [(EKUIFocusBannerCollectionViewCell *)self delegate];
+    [delegate2 focusBannerCollectionViewCellToggled:self];
   }
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(EKUIFocusBannerCollectionViewCell *)self _configureCellSwitchingLayout:0];
   }
 }
 
-- (void)_configureCellSwitchingLayout:(BOOL)a3
+- (void)_configureCellSwitchingLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v53[6] = *MEMORY[0x1E69E9840];
-  v5 = [(EKUIFocusBannerCollectionViewCell *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  traitCollection = [(EKUIFocusBannerCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    if (v3)
+    if (layoutCopy)
     {
       [(EKUIFocusBannerCollectionViewCell *)self setContentConfiguration:0];
       [(EKUIFocusBannerCollectionViewCell *)self setAccessories:MEMORY[0x1E695E0F0]];
       v8 = objc_alloc(MEMORY[0x1E69DCC30]);
-      v9 = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
-      v10 = [v8 initWithConfiguration:v9];
+      _configuration = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
+      v10 = [v8 initWithConfiguration:_configuration];
       axListContentView = self->_axListContentView;
       self->_axListContentView = v10;
 
       [(UIListContentView *)self->_axListContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v12 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      [v12 addSubview:self->_axListContentView];
+      contentView = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      [contentView addSubview:self->_axListContentView];
 
-      v13 = [(EKUIFocusBannerCollectionViewCell *)self _createFocusFilterToggleButton];
+      _createFocusFilterToggleButton = [(EKUIFocusBannerCollectionViewCell *)self _createFocusFilterToggleButton];
       axFocusFilterToggleButton = self->_axFocusFilterToggleButton;
-      self->_axFocusFilterToggleButton = v13;
+      self->_axFocusFilterToggleButton = _createFocusFilterToggleButton;
 
       [(UIButton *)self->_axFocusFilterToggleButton setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v15) = 1148846080;
       [(UIButton *)self->_axFocusFilterToggleButton setContentCompressionResistancePriority:0 forAxis:v15];
       LODWORD(v16) = 1148846080;
       [(UIButton *)self->_axFocusFilterToggleButton setContentCompressionResistancePriority:1 forAxis:v16];
-      v17 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      [v17 addSubview:self->_axFocusFilterToggleButton];
+      contentView2 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      [contentView2 addSubview:self->_axFocusFilterToggleButton];
 
-      v50 = [(UIListContentView *)self->_axListContentView leadingAnchor];
-      v51 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      v49 = [v51 leadingAnchor];
-      v48 = [v50 constraintEqualToAnchor:v49];
+      leadingAnchor = [(UIListContentView *)self->_axListContentView leadingAnchor];
+      contentView3 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      leadingAnchor2 = [contentView3 leadingAnchor];
+      v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v53[0] = v48;
-      v46 = [(UIListContentView *)self->_axListContentView trailingAnchor];
-      v47 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      v45 = [v47 trailingAnchor];
-      v44 = [v46 constraintEqualToAnchor:v45];
+      trailingAnchor = [(UIListContentView *)self->_axListContentView trailingAnchor];
+      contentView4 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      trailingAnchor2 = [contentView4 trailingAnchor];
+      v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v53[1] = v44;
-      v42 = [(UIListContentView *)self->_axListContentView topAnchor];
-      v43 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      v41 = [v43 topAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      topAnchor = [(UIListContentView *)self->_axListContentView topAnchor];
+      contentView5 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      topAnchor2 = [contentView5 topAnchor];
+      v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v53[2] = v40;
-      v39 = [(UIButton *)self->_axFocusFilterToggleButton topAnchor];
-      v38 = [(UIListContentView *)self->_axListContentView bottomAnchor];
-      v37 = [v39 constraintEqualToAnchor:v38 constant:8.0];
+      topAnchor3 = [(UIButton *)self->_axFocusFilterToggleButton topAnchor];
+      bottomAnchor = [(UIListContentView *)self->_axListContentView bottomAnchor];
+      v37 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:8.0];
       v53[3] = v37;
-      v35 = [(UIButton *)self->_axFocusFilterToggleButton bottomAnchor];
-      v36 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      v18 = [v36 layoutMarginsGuide];
-      v19 = [v18 bottomAnchor];
-      v20 = [v35 constraintEqualToAnchor:v19];
+      bottomAnchor2 = [(UIButton *)self->_axFocusFilterToggleButton bottomAnchor];
+      contentView6 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      layoutMarginsGuide = [contentView6 layoutMarginsGuide];
+      bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+      v20 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v53[4] = v20;
-      v21 = [(UIButton *)self->_axFocusFilterToggleButton leadingAnchor];
-      v22 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
-      v23 = [v22 layoutMarginsGuide];
-      v24 = [v23 leadingAnchor];
-      v25 = [v21 constraintEqualToAnchor:v24];
+      leadingAnchor3 = [(UIButton *)self->_axFocusFilterToggleButton leadingAnchor];
+      contentView7 = [(EKUIFocusBannerCollectionViewCell *)self contentView];
+      layoutMarginsGuide2 = [contentView7 layoutMarginsGuide];
+      leadingAnchor4 = [layoutMarginsGuide2 leadingAnchor];
+      v25 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v53[5] = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:6];
       axConstraints = self->_axConstraints;
@@ -180,16 +180,16 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
       [MEMORY[0x1E696ACD8] activateConstraints:self->_axConstraints];
     }
 
-    v28 = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
-    [(UIListContentView *)self->_axListContentView setConfiguration:v28];
+    _configuration2 = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
+    [(UIListContentView *)self->_axListContentView setConfiguration:_configuration2];
 
-    v29 = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
-    [(UIButton *)self->_axFocusFilterToggleButton setConfiguration:v29];
+    _focusFilterButtonConfiguration = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
+    [(UIButton *)self->_axFocusFilterToggleButton setConfiguration:_focusFilterButtonConfiguration];
   }
 
   else
   {
-    if (v3)
+    if (layoutCopy)
     {
       if (self->_axConstraints)
       {
@@ -198,9 +198,9 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
 
       [(UIListContentView *)self->_axListContentView removeFromSuperview];
       [(UIButton *)self->_axFocusFilterToggleButton removeFromSuperview];
-      v30 = [(EKUIFocusBannerCollectionViewCell *)self _createFocusFilterToggleButton];
+      _createFocusFilterToggleButton2 = [(EKUIFocusBannerCollectionViewCell *)self _createFocusFilterToggleButton];
       focusFilterToggleButton = self->_focusFilterToggleButton;
-      self->_focusFilterToggleButton = v30;
+      self->_focusFilterToggleButton = _createFocusFilterToggleButton2;
 
       v32 = [objc_alloc(MEMORY[0x1E69DC790]) initWithCustomView:self->_focusFilterToggleButton placement:1];
       v52 = v32;
@@ -208,26 +208,26 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
       [(EKUIFocusBannerCollectionViewCell *)self setAccessories:v33];
     }
 
-    v34 = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
-    [(UIButton *)self->_focusFilterToggleButton setConfiguration:v34];
+    _focusFilterButtonConfiguration2 = [(EKUIFocusBannerCollectionViewCell *)self _focusFilterButtonConfiguration];
+    [(UIButton *)self->_focusFilterToggleButton setConfiguration:_focusFilterButtonConfiguration2];
 
-    v29 = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
-    [(EKUIFocusBannerCollectionViewCell *)self setContentConfiguration:v29];
+    _focusFilterButtonConfiguration = [(EKUIFocusBannerCollectionViewCell *)self _configuration];
+    [(EKUIFocusBannerCollectionViewCell *)self setContentConfiguration:_focusFilterButtonConfiguration];
   }
 }
 
 - (id)_configuration
 {
-  v2 = self;
-  v3 = [(EKUIFocusBannerCollectionViewCell *)self defaultContentConfiguration];
-  LODWORD(v2) = [(EKUIFocusBannerCollectionViewCell *)v2 on];
+  selfCopy = self;
+  defaultContentConfiguration = [(EKUIFocusBannerCollectionViewCell *)self defaultContentConfiguration];
+  LODWORD(selfCopy) = [(EKUIFocusBannerCollectionViewCell *)selfCopy on];
   v4 = EventKitUIBundle();
   v5 = v4;
-  if (v2)
+  if (selfCopy)
   {
     v6 = [v4 localizedStringForKey:@"Filtered by Focus" value:&stru_1F4EF6790 table:0];
 
-    v7 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     [MEMORY[0x1E69DC888] systemIndigoColor];
   }
 
@@ -235,24 +235,24 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
   {
     v6 = [v4 localizedStringForKey:@"Focus Filter Off" value:&stru_1F4EF6790 table:0];
 
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    labelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
   v8 = ;
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"moon.circle.fill"];
-  [v3 setImage:v9];
+  [defaultContentConfiguration setImage:v9];
 
-  v10 = [v3 imageProperties];
-  [v10 setTintColor:v8];
+  imageProperties = [defaultContentConfiguration imageProperties];
+  [imageProperties setTintColor:v8];
 
-  [v3 setText:v6];
-  v11 = [v3 textProperties];
-  [v11 setColor:v7];
+  [defaultContentConfiguration setText:v6];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:labelColor];
 
-  v12 = [v3 textProperties];
-  [v12 setNumberOfLines:0];
+  textProperties2 = [defaultContentConfiguration textProperties];
+  [textProperties2 setNumberOfLines:0];
 
-  return v3;
+  return defaultContentConfiguration;
 }
 
 - (id)_focusFilterButtonConfiguration
@@ -275,23 +275,23 @@ void __67__EKUIFocusBannerCollectionViewCell__createFocusFilterToggleButton__blo
 
   v8 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDD80] addingSymbolicTraits:32770 options:0];
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
-  v10 = [MEMORY[0x1E69DC888] systemIndigoColor];
+  systemIndigoColor = [MEMORY[0x1E69DC888] systemIndigoColor];
   v11 = *MEMORY[0x1E69DB650];
   v19[0] = *MEMORY[0x1E69DB648];
   v19[1] = v11;
   v20[0] = v9;
-  v20[1] = v10;
+  v20[1] = systemIndigoColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v12];
-  v14 = [(EKUIFocusBannerCollectionViewCell *)self traitCollection];
-  v15 = [v14 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v15))
+  traitCollection = [(EKUIFocusBannerCollectionViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
 
 LABEL_7:
-    v17 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
-    [v17 setCornerStyle:4];
-    [v17 setButtonSize:0];
+    grayButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    [grayButtonConfiguration setCornerStyle:4];
+    [grayButtonConfiguration setButtonSize:0];
     goto LABEL_9;
   }
 
@@ -302,13 +302,13 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v17 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v17 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  grayButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [grayButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
 LABEL_9:
-  [v17 setAttributedTitle:v13];
-  [v17 setTitleLineBreakMode:2];
+  [grayButtonConfiguration setAttributedTitle:v13];
+  [grayButtonConfiguration setTitleLineBreakMode:2];
 
-  return v17;
+  return grayButtonConfiguration;
 }
 
 - (EKUIFocusBannerCollectionViewCellDelegate)delegate

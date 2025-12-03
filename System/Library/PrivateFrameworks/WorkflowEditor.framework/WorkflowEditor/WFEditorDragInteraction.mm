@@ -1,6 +1,6 @@
 @interface WFEditorDragInteraction
 - (UIView)view;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation WFEditorDragInteraction
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_27459A9BC(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_27459A9BC(view);
 }
 
 @end

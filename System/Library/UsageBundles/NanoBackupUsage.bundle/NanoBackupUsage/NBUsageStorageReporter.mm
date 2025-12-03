@@ -1,7 +1,7 @@
 @interface NBUsageStorageReporter
-- (BOOL)deleteDataForCategory:(id)a3 withError:(id *)a4;
+- (BOOL)deleteDataForCategory:(id)category withError:(id *)error;
 - (NBUsageStorageReporter)init;
-- (float)sizeForCategory:(id)a3;
+- (float)sizeForCategory:(id)category;
 - (id)usageBundleApps;
 - (void)populateUsageBundleApps;
 @end
@@ -53,14 +53,14 @@
   v14 = 3221225472;
   v15 = sub_123C;
   v16 = &unk_82F8;
-  v17 = self;
+  selfCopy = self;
   v8 = v3;
   v18 = v8;
   v9 = v4;
   v19 = v9;
   v20 = &v21;
   dispatch_sync(backupQueue, &v13);
-  [v9 sortUsingComparator:{&stru_8338, v13, v14, v15, v16, v17}];
+  [v9 sortUsingComparator:{&stru_8338, v13, v14, v15, v16, selfCopy}];
   *&v10 = v22[3];
   [v8 setTotalSize:v10];
   [v8 setCategories:v9];
@@ -84,12 +84,12 @@
   return cachedBundleApps;
 }
 
-- (BOOL)deleteDataForCategory:(id)a3 withError:(id *)a4
+- (BOOL)deleteDataForCategory:(id)category withError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 identifier];
+  categoryCopy = category;
+  identifier = [categoryCopy identifier];
 
-  if (v7 && (v8 = [NSUUID alloc], [v6 identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "initWithUUIDString:", v9), v9, v10))
+  if (identifier && (v8 = [NSUUID alloc], [categoryCopy identifier], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "initWithUUIDString:", v9), v9, v10))
   {
     v20 = 0;
     v21 = &v20;
@@ -105,8 +105,8 @@
     v18 = &v20;
     block[4] = self;
     v16 = v10;
-    v17 = v6;
-    v19 = a4;
+    v17 = categoryCopy;
+    errorCopy = error;
     v12 = v10;
     dispatch_sync(backupQueue, block);
     v13 = v21[5] == 0;
@@ -122,10 +122,10 @@
   return v13;
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)self->_cachedCategorySizes objectForKeyedSubscript:v4];
+  identifier = [category identifier];
+  v5 = [(NSMutableDictionary *)self->_cachedCategorySizes objectForKeyedSubscript:identifier];
   [v5 floatValue];
   v7 = v6;
 

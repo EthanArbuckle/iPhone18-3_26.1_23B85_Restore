@@ -1,20 +1,20 @@
 @interface SUUIDocumentContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_rightBarButtonIsEnabled;
 - (id)_accessibilityRightBarButtonItem;
 - (id)_rightBarButtonAccessibilityLabel;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 @end
 
 @implementation SUUIDocumentContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"navigationController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UINavigationController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UINavigationBar" hasInstanceMethod:@"currentRightView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"navigationController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UINavigationController" hasInstanceMethod:@"navigationBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UINavigationBar" hasInstanceMethod:@"currentRightView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)_accessibilityRightBarButtonItem
@@ -38,40 +38,40 @@
 
 - (id)_rightBarButtonAccessibilityLabel
 {
-  v2 = [(SUUIDocumentContainerViewControllerAccessibility *)self _accessibilityRightBarButtonItem];
-  v3 = [v2 accessibilityLabel];
+  _accessibilityRightBarButtonItem = [(SUUIDocumentContainerViewControllerAccessibility *)self _accessibilityRightBarButtonItem];
+  accessibilityLabel = [_accessibilityRightBarButtonItem accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)_rightBarButtonIsEnabled
 {
-  v2 = [(SUUIDocumentContainerViewControllerAccessibility *)self _accessibilityRightBarButtonItem];
-  v3 = [v2 safeValueForKey:@"isEnabled"];
-  v4 = [v3 BOOLValue];
+  _accessibilityRightBarButtonItem = [(SUUIDocumentContainerViewControllerAccessibility *)self _accessibilityRightBarButtonItem];
+  v3 = [_accessibilityRightBarButtonItem safeValueForKey:@"isEnabled"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonAccessibilityLabel];
-  v6 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonIsEnabled];
+  updateCopy = update;
+  _rightBarButtonAccessibilityLabel = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonAccessibilityLabel];
+  _rightBarButtonIsEnabled = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonIsEnabled];
   v21.receiver = self;
   v21.super_class = SUUIDocumentContainerViewControllerAccessibility;
-  [(SUUIDocumentContainerViewControllerAccessibility *)&v21 documentDidUpdate:v4];
+  [(SUUIDocumentContainerViewControllerAccessibility *)&v21 documentDidUpdate:updateCopy];
 
-  v7 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonAccessibilityLabel];
-  v8 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonIsEnabled];
-  if ([v5 isEqualToString:v7] && v6 != v8)
+  _rightBarButtonAccessibilityLabel2 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonAccessibilityLabel];
+  _rightBarButtonIsEnabled2 = [(SUUIDocumentContainerViewControllerAccessibility *)self _rightBarButtonIsEnabled];
+  if ([_rightBarButtonAccessibilityLabel isEqualToString:_rightBarButtonAccessibilityLabel2] && _rightBarButtonIsEnabled != _rightBarButtonIsEnabled2)
   {
     v9 = MEMORY[0x29EDBD7E8];
     v10 = MEMORY[0x29EDBA0F8];
-    if (v8)
+    if (_rightBarButtonIsEnabled2)
     {
       v11 = accessibilityLocalizedString(@"button.enabled");
-      v12 = [v10 stringWithFormat:v11, v7];
+      v12 = [v10 stringWithFormat:v11, _rightBarButtonAccessibilityLabel2];
       v13 = [v9 axAttributedStringWithString:v12];
 
       [v13 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD978]];
@@ -84,7 +84,7 @@
     else
     {
       v16 = accessibilityLocalizedString(@"button.disabled");
-      v17 = [v10 stringWithFormat:v16, v7];
+      v17 = [v10 stringWithFormat:v16, _rightBarButtonAccessibilityLabel2];
       v13 = [v9 axAttributedStringWithString:v17];
 
       [v13 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD978]];

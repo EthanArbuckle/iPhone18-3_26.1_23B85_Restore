@@ -1,7 +1,7 @@
 @interface VFXREREnderer
 - (MTLDevice)device;
 - (VFXREREnderer)init;
-- (void)setDevice:(id)a3;
+- (void)setDevice:(id)device;
 @end
 
 @implementation VFXREREnderer
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  *(&self->super.isa + OBJC_IVAR___VFXREREnderer_device) = a3;
+  *(&self->super.isa + OBJC_IVAR___VFXREREnderer_device) = device;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

@@ -1,24 +1,24 @@
 @interface UARPUSBPDAccessory
-- (BOOL)isEqual:(id)a3;
-- (BOOL)vuarpAssetFullyStaged:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)vuarpAssetFullyStaged:(id)staged;
 - (BOOL)vuarpAssetOffered;
-- (BOOL)vuarpDynamicAssetSolicited:(id)a3;
-- (BOOL)vuarpFirmwarePayloadComplete:(id)a3;
-- (BOOL)vuarpFirmwarePayloadData:(id)a3 data:(id)a4 offset:(unint64_t)a5;
-- (BOOL)vuarpFirmwarePayloadReady:(id)a3;
+- (BOOL)vuarpDynamicAssetSolicited:(id)solicited;
+- (BOOL)vuarpFirmwarePayloadComplete:(id)complete;
+- (BOOL)vuarpFirmwarePayloadData:(id)data data:(id)a4 offset:(unint64_t)offset;
+- (BOOL)vuarpFirmwarePayloadReady:(id)ready;
 - (BOOL)vuarpHasStagedAssets;
-- (BOOL)vuarpLastError:(unsigned int *)a3 lastAction:(unsigned int *)a4;
+- (BOOL)vuarpLastError:(unsigned int *)error lastAction:(unsigned int *)action;
 - (BOOL)vuarpRescindStagedAssets;
-- (BOOL)vuarpSendMessage:(id)a3 error:(id *)a4;
+- (BOOL)vuarpSendMessage:(id)message error:(id *)error;
 - (NSString)description;
 - (UARPUSBPDAccessory)init;
-- (UARPUSBPDAccessory)initWithHardwareID:(id)a3 identifier:(id)a4 vuarpDelegate:(id)a5 hpmDelegate:(id)a6;
+- (UARPUSBPDAccessory)initWithHardwareID:(id)d identifier:(id)identifier vuarpDelegate:(id)delegate hpmDelegate:(id)hpmDelegate;
 - (id)vuarpAppleModelNumber;
 - (id)vuarpExpectedTag;
 - (id)vuarpHardwareVersion;
 - (id)vuarpModelName;
 - (unsigned)vuarpApplyStagedAssets;
-- (void)connectToVUARP:(unint64_t)a3 payloadWindowLength:(unint64_t)a4 delegate:(id)a5;
+- (void)connectToVUARP:(unint64_t)p payloadWindowLength:(unint64_t)length delegate:(id)delegate;
 - (void)disconnectFromVUARP;
 @end
 
@@ -31,12 +31,12 @@
   return 0;
 }
 
-- (UARPUSBPDAccessory)initWithHardwareID:(id)a3 identifier:(id)a4 vuarpDelegate:(id)a5 hpmDelegate:(id)a6
+- (UARPUSBPDAccessory)initWithHardwareID:(id)d identifier:(id)identifier vuarpDelegate:(id)delegate hpmDelegate:(id)hpmDelegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  hpmDelegateCopy = hpmDelegate;
   v18.receiver = self;
   v18.super_class = UARPUSBPDAccessory;
   v14 = [(UARPUSBPDAccessory *)&v18 init];
@@ -46,24 +46,24 @@
     log = v14->_log;
     v14->_log = v15;
 
-    v14->_vendorID = [v10 vendorID];
-    v14->_productID = [v10 productID];
-    objc_storeStrong(&v14->_appleModelNumber, a4);
-    objc_storeStrong(&v14->_vuarpDelegate, a5);
-    objc_storeStrong(&v14->_hpmDelegate, a6);
-    v14->_isMagSafeCable = [v10 isMagSafeCable];
-    v14->_isPowerAdapter = [v10 isPowerAdapter];
-    v14->_supportsAccMode7 = [v10 supportsAccMode7];
-    v14->_isUSBCLightning = [v10 isUSBCLightning];
+    v14->_vendorID = [dCopy vendorID];
+    v14->_productID = [dCopy productID];
+    objc_storeStrong(&v14->_appleModelNumber, identifier);
+    objc_storeStrong(&v14->_vuarpDelegate, delegate);
+    objc_storeStrong(&v14->_hpmDelegate, hpmDelegate);
+    v14->_isMagSafeCable = [dCopy isMagSafeCable];
+    v14->_isPowerAdapter = [dCopy isPowerAdapter];
+    v14->_supportsAccMode7 = [dCopy supportsAccMode7];
+    v14->_isUSBCLightning = [dCopy isUSBCLightning];
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -73,12 +73,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UARPUSBPDAccessory *)self vendorID];
-      if (v6 == [(UARPUSBPDAccessory *)v5 vendorID])
+      v5 = equalCopy;
+      vendorID = [(UARPUSBPDAccessory *)self vendorID];
+      if (vendorID == [(UARPUSBPDAccessory *)v5 vendorID])
       {
-        v7 = [(UARPUSBPDAccessory *)self productID];
-        v8 = v7 == [(UARPUSBPDAccessory *)v5 productID];
+        productID = [(UARPUSBPDAccessory *)self productID];
+        v8 = productID == [(UARPUSBPDAccessory *)v5 productID];
       }
 
       else
@@ -96,16 +96,16 @@
   return v8;
 }
 
-- (void)connectToVUARP:(unint64_t)a3 payloadWindowLength:(unint64_t)a4 delegate:(id)a5
+- (void)connectToVUARP:(unint64_t)p payloadWindowLength:(unint64_t)length delegate:(id)delegate
 {
   v9 = 0;
   v10 = 0;
   v12 = 0;
   v11 = 0;
-  v8[0] = a3;
-  v8[1] = a3;
-  v8[2] = a4;
-  objc_storeWeak(&self->_delegate, a5);
+  v8[0] = p;
+  v8[1] = p;
+  v8[2] = length;
+  objc_storeWeak(&self->_delegate, delegate);
   v6 = [[VUARPAccessory alloc] initWithDelegate:self options:v8];
   vuarpAccessory = self->_vuarpAccessory;
   self->_vuarpAccessory = v6;
@@ -171,13 +171,13 @@
   return [NSString stringWithFormat:@"AMN=<%@> needsFirmware=<%s>, needsLogs=<%s>, needsAnalytics=<%s>, autoAppliesStagedFirmware=<%s> supportsAccmode7=<%s>", self->_appleModelNumber, v3, v4, v5, v6, v2];
 }
 
-- (BOOL)vuarpSendMessage:(id)a3 error:(id *)a4
+- (BOOL)vuarpSendMessage:(id)message error:(id *)error
 {
-  v6 = a3;
+  messageCopy = message;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a4) = [WeakRetained recvUarpMsgFromAccessory:self uarpMsg:v6 error:a4];
+  LOBYTE(error) = [WeakRetained recvUarpMsgFromAccessory:self uarpMsg:messageCopy error:error];
 
-  return a4;
+  return error;
 }
 
 - (id)vuarpModelName
@@ -185,16 +185,16 @@
   if (self->_requiresAuthentication)
   {
     v3 = [UARPMagSafeCable authenticationStatusToString:self->_authStatus];
-    v4 = [(VUARPProtocol *)self->_vuarpDelegate modelName];
-    v5 = [NSString stringWithFormat:@"%@ <%s>", v4, v3];
+    modelName = [(VUARPProtocol *)self->_vuarpDelegate modelName];
+    modelName2 = [NSString stringWithFormat:@"%@ <%s>", modelName, v3];
   }
 
   else
   {
-    v5 = [(VUARPProtocol *)self->_vuarpDelegate modelName];
+    modelName2 = [(VUARPProtocol *)self->_vuarpDelegate modelName];
   }
 
-  return v5;
+  return modelName2;
 }
 
 - (id)vuarpHardwareVersion
@@ -202,16 +202,16 @@
   vuarpDelegate = self->_vuarpDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(VUARPProtocol *)self->_vuarpDelegate hardwareVersion];
-    v5 = [v4 stringValue];
+    hardwareVersion = [(VUARPProtocol *)self->_vuarpDelegate hardwareVersion];
+    stringValue = [hardwareVersion stringValue];
   }
 
   else
   {
-    v5 = @"unknown";
+    stringValue = @"unknown";
   }
 
-  return v5;
+  return stringValue;
 }
 
 - (id)vuarpExpectedTag
@@ -219,21 +219,21 @@
   vuarpDelegate = self->_vuarpDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(VUARPProtocol *)self->_vuarpDelegate expectedTag];
+    expectedTag = [(VUARPProtocol *)self->_vuarpDelegate expectedTag];
   }
 
   else
   {
-    v4 = 0;
+    expectedTag = 0;
   }
 
-  return v4;
+  return expectedTag;
 }
 
-- (BOOL)vuarpLastError:(unsigned int *)a3 lastAction:(unsigned int *)a4
+- (BOOL)vuarpLastError:(unsigned int *)error lastAction:(unsigned int *)action
 {
-  *a3 = 1;
-  *a4 = 140989193;
+  *error = 1;
+  *action = 140989193;
   return 1;
 }
 
@@ -255,9 +255,9 @@
   return v3;
 }
 
-- (BOOL)vuarpAssetFullyStaged:(id)a3
+- (BOOL)vuarpAssetFullyStaged:(id)staged
 {
-  v4 = a3;
+  stagedCopy = staged;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -266,7 +266,7 @@
   }
 
   stagedFwVersion = self->_stagedFwVersion;
-  self->_stagedFwVersion = v4;
+  self->_stagedFwVersion = stagedCopy;
 
   return 1;
 }
@@ -327,38 +327,38 @@
   return v4;
 }
 
-- (BOOL)vuarpFirmwarePayloadReady:(id)a3
+- (BOOL)vuarpFirmwarePayloadReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = readyCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Payload %@ Ready", &v7, 0xCu);
   }
 
   return 1;
 }
 
-- (BOOL)vuarpFirmwarePayloadData:(id)a3 data:(id)a4 offset:(unint64_t)a5
+- (BOOL)vuarpFirmwarePayloadData:(id)data data:(id)a4 offset:(unint64_t)offset
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = a4;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     v13 = log;
     v14 = 138412802;
-    v15 = v8;
+    v15 = dataCopy;
     v16 = 2048;
     v17 = [v9 length];
     v18 = 2048;
-    v19 = a5;
+    offsetCopy = offset;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Write Payload %@ data length %lu, offset %lu", &v14, 0x20u);
   }
 
-  v11 = [(VUARPProtocol *)self->_vuarpDelegate firmwareUpdateWriteData:v9 offset:a5 error:0];
+  v11 = [(VUARPProtocol *)self->_vuarpDelegate firmwareUpdateWriteData:v9 offset:offset error:0];
   if ((v11 & 1) == 0)
   {
     [(VUARPProtocol *)self->_vuarpDelegate firmwareUpdateCleanup:0];
@@ -367,14 +367,14 @@
   return v11;
 }
 
-- (BOOL)vuarpFirmwarePayloadComplete:(id)a3
+- (BOOL)vuarpFirmwarePayloadComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = completeCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Write Payload %@ Complete", &v8, 0xCu);
   }
 
@@ -384,30 +384,30 @@
   return v6;
 }
 
-- (BOOL)vuarpDynamicAssetSolicited:(id)a3
+- (BOOL)vuarpDynamicAssetSolicited:(id)solicited
 {
-  v4 = a3;
+  solicitedCopy = solicited;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = solicitedCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Dynamic Asset solicited %@", &v16, 0xCu);
   }
 
-  v6 = [v4 assetTag];
+  assetTag = [solicitedCopy assetTag];
   v7 = isDynamicAssetLogs();
 
   if (v7)
   {
     vuarpDelegate = self->_vuarpDelegate;
-    v9 = [v4 url];
+    v9 = [solicitedCopy url];
     v10 = [(VUARPProtocol *)vuarpDelegate solicitLogs:v9 error:0];
   }
 
   else
   {
-    v11 = [v4 assetTag];
+    assetTag2 = [solicitedCopy assetTag];
     v12 = isDynamicAssetAnalytics();
 
     if (!v12)
@@ -417,7 +417,7 @@
     }
 
     v13 = self->_vuarpDelegate;
-    v9 = [v4 url];
+    v9 = [solicitedCopy url];
     v10 = [(VUARPProtocol *)v13 solicitAnalytics:v9 error:0];
   }
 

@@ -1,40 +1,40 @@
 @interface PKPendingCarKeyProvisioning
-+ (id)uniqueIdentifierForBrandIdentifier:(id)a3 pairedReaderIdentifier:(id)a4;
-+ (id)uniqueIdentifierForCarKeyConfiguration:(id)a3;
-+ (id)uniqueIdentifierForSubcredential:(id)a3;
-- (BOOL)representsPass:(id)a3;
-- (PKPendingCarKeyProvisioning)initWithCarKeyConfiguration:(id)a3;
-- (PKPendingCarKeyProvisioning)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)uniqueIdentifierForBrandIdentifier:(id)identifier pairedReaderIdentifier:(id)readerIdentifier;
++ (id)uniqueIdentifierForCarKeyConfiguration:(id)configuration;
++ (id)uniqueIdentifierForSubcredential:(id)subcredential;
+- (BOOL)representsPass:(id)pass;
+- (PKPendingCarKeyProvisioning)initWithCarKeyConfiguration:(id)configuration;
+- (PKPendingCarKeyProvisioning)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPendingCarKeyProvisioning
 
-- (PKPendingCarKeyProvisioning)initWithCarKeyConfiguration:(id)a3
+- (PKPendingCarKeyProvisioning)initWithCarKeyConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [PKPendingCarKeyProvisioning uniqueIdentifierForCarKeyConfiguration:v5];
+  configurationCopy = configuration;
+  v6 = [PKPendingCarKeyProvisioning uniqueIdentifierForCarKeyConfiguration:configurationCopy];
   v10.receiver = self;
   v10.super_class = PKPendingCarKeyProvisioning;
   v7 = [(PKPendingProvisioning *)&v10 initWithUniqueIdentifier:v6 status:3];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_configuration, a3);
+    objc_storeStrong(&v7->_configuration, configuration);
   }
 
   return v8;
 }
 
-- (PKPendingCarKeyProvisioning)initWithCoder:(id)a3
+- (PKPendingCarKeyProvisioning)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPendingCarKeyProvisioning;
-  v5 = [(PKPendingProvisioning *)&v9 initWithCoder:v4];
+  v5 = [(PKPendingProvisioning *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v6;
   }
@@ -42,45 +42,45 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPendingCarKeyProvisioning;
-  v4 = a3;
-  [(PKPendingProvisioning *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPendingProvisioning *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_configuration forKey:{@"configuration", v5.receiver, v5.super_class}];
 }
 
-+ (id)uniqueIdentifierForBrandIdentifier:(id)a3 pairedReaderIdentifier:(id)a4
++ (id)uniqueIdentifierForBrandIdentifier:(id)identifier pairedReaderIdentifier:(id)readerIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  if ([readerIdentifierCopy length] && objc_msgSend(identifierCopy, "length"))
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@", @"CarKey", v5, v6];
+    readerIdentifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@.%@", @"CarKey", identifierCopy, readerIdentifierCopy];
   }
 
   else
   {
-    v7 = 0;
+    readerIdentifierCopy = 0;
   }
 
-  return v7;
+  return readerIdentifierCopy;
 }
 
-- (BOOL)representsPass:(id)a3
+- (BOOL)representsPass:(id)pass
 {
   v34 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [a3 devicePaymentApplications];
-  v22 = [v4 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  devicePaymentApplications = [pass devicePaymentApplications];
+  v22 = [devicePaymentApplications countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
   {
     v5 = *v29;
-    v23 = v4;
+    v23 = devicePaymentApplications;
     v21 = *v29;
     do
     {
@@ -88,7 +88,7 @@
       {
         if (*v29 != v5)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
@@ -96,8 +96,8 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v8 = [v7 subcredentials];
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        subcredentials = [v7 subcredentials];
+        v9 = [subcredentials countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v9)
         {
           v10 = v9;
@@ -108,25 +108,25 @@
             {
               if (*v25 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(subcredentials);
               }
 
               v13 = [PKPendingCarKeyProvisioning uniqueIdentifierForSubcredential:*(*(&v24 + 1) + 8 * j)];
-              v14 = [(PKPendingProvisioning *)self uniqueIdentifier];
+              uniqueIdentifier = [(PKPendingProvisioning *)self uniqueIdentifier];
               v15 = v13;
               v16 = v15;
-              if (v14 == v15)
+              if (uniqueIdentifier == v15)
               {
 
 LABEL_25:
                 v19 = 1;
-                v4 = v23;
+                devicePaymentApplications = v23;
                 goto LABEL_27;
               }
 
               if (v15)
               {
-                v17 = v14 == 0;
+                v17 = uniqueIdentifier == 0;
               }
 
               else
@@ -140,7 +140,7 @@ LABEL_25:
 
               else
               {
-                v18 = [v14 isEqualToString:v15];
+                v18 = [uniqueIdentifier isEqualToString:v15];
 
                 if (v18)
                 {
@@ -149,7 +149,7 @@ LABEL_25:
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v10 = [subcredentials countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v10)
             {
               continue;
@@ -159,7 +159,7 @@ LABEL_25:
           }
         }
 
-        v4 = v23;
+        devicePaymentApplications = v23;
         v5 = v21;
       }
 
@@ -180,24 +180,24 @@ LABEL_27:
   return v19;
 }
 
-+ (id)uniqueIdentifierForCarKeyConfiguration:(id)a3
++ (id)uniqueIdentifierForCarKeyConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 issuerIdentifier];
-  v6 = [v4 pairedReaderIdentifier];
+  configurationCopy = configuration;
+  issuerIdentifier = [configurationCopy issuerIdentifier];
+  pairedReaderIdentifier = [configurationCopy pairedReaderIdentifier];
 
-  v7 = [a1 uniqueIdentifierForBrandIdentifier:v5 pairedReaderIdentifier:v6];
+  v7 = [self uniqueIdentifierForBrandIdentifier:issuerIdentifier pairedReaderIdentifier:pairedReaderIdentifier];
 
   return v7;
 }
 
-+ (id)uniqueIdentifierForSubcredential:(id)a3
++ (id)uniqueIdentifierForSubcredential:(id)subcredential
 {
-  v4 = a3;
-  v5 = [v4 brandIdentifier];
-  v6 = [v4 pairedReaderIdentifier];
+  subcredentialCopy = subcredential;
+  brandIdentifier = [subcredentialCopy brandIdentifier];
+  pairedReaderIdentifier = [subcredentialCopy pairedReaderIdentifier];
 
-  v7 = [a1 uniqueIdentifierForBrandIdentifier:v5 pairedReaderIdentifier:v6];
+  v7 = [self uniqueIdentifierForBrandIdentifier:brandIdentifier pairedReaderIdentifier:pairedReaderIdentifier];
 
   return v7;
 }

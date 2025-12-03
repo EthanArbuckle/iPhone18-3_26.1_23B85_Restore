@@ -1,17 +1,17 @@
 @interface BMFindMyContactActivity
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFindMyContactActivity)initWithHandle:(id)a3 actionType:(int)a4 eventTimestampBegin:(id)a5 eventTimestampEnd:(id)a6 bundleID:(id)a7;
-- (BMFindMyContactActivity)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMFindMyContactActivity)initWithHandle:(id)handle actionType:(int)type eventTimestampBegin:(id)begin eventTimestampEnd:(id)end bundleID:(id)d;
+- (BMFindMyContactActivity)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)eventTimestampBegin;
 - (NSDate)eventTimestampEnd;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFindMyContactActivity
@@ -36,25 +36,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFindMyContactActivity *)self handle];
-    v7 = [v5 handle];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    handle = [(BMFindMyContactActivity *)self handle];
+    handle2 = [v5 handle];
+    v8 = handle2;
+    if (handle == handle2)
     {
     }
 
     else
     {
-      v9 = [(BMFindMyContactActivity *)self handle];
-      v10 = [v5 handle];
-      v11 = [v9 isEqual:v10];
+      handle3 = [(BMFindMyContactActivity *)self handle];
+      handle4 = [v5 handle];
+      v11 = [handle3 isEqual:handle4];
 
       if (!v11)
       {
@@ -62,21 +62,21 @@
       }
     }
 
-    v13 = [(BMFindMyContactActivity *)self actionType];
-    if (v13 == [v5 actionType])
+    actionType = [(BMFindMyContactActivity *)self actionType];
+    if (actionType == [v5 actionType])
     {
-      v14 = [(BMFindMyContactActivity *)self eventTimestampBegin];
-      v15 = [v5 eventTimestampBegin];
-      v16 = v15;
-      if (v14 == v15)
+      eventTimestampBegin = [(BMFindMyContactActivity *)self eventTimestampBegin];
+      eventTimestampBegin2 = [v5 eventTimestampBegin];
+      v16 = eventTimestampBegin2;
+      if (eventTimestampBegin == eventTimestampBegin2)
       {
       }
 
       else
       {
-        v17 = [(BMFindMyContactActivity *)self eventTimestampBegin];
-        v18 = [v5 eventTimestampBegin];
-        v19 = [v17 isEqual:v18];
+        eventTimestampBegin3 = [(BMFindMyContactActivity *)self eventTimestampBegin];
+        eventTimestampBegin4 = [v5 eventTimestampBegin];
+        v19 = [eventTimestampBegin3 isEqual:eventTimestampBegin4];
 
         if (!v19)
         {
@@ -84,18 +84,18 @@
         }
       }
 
-      v20 = [(BMFindMyContactActivity *)self eventTimestampEnd];
-      v21 = [v5 eventTimestampEnd];
-      v22 = v21;
-      if (v20 == v21)
+      eventTimestampEnd = [(BMFindMyContactActivity *)self eventTimestampEnd];
+      eventTimestampEnd2 = [v5 eventTimestampEnd];
+      v22 = eventTimestampEnd2;
+      if (eventTimestampEnd == eventTimestampEnd2)
       {
       }
 
       else
       {
-        v23 = [(BMFindMyContactActivity *)self eventTimestampEnd];
-        v24 = [v5 eventTimestampEnd];
-        v25 = [v23 isEqual:v24];
+        eventTimestampEnd3 = [(BMFindMyContactActivity *)self eventTimestampEnd];
+        eventTimestampEnd4 = [v5 eventTimestampEnd];
+        v25 = [eventTimestampEnd3 isEqual:eventTimestampEnd4];
 
         if (!v25)
         {
@@ -103,18 +103,18 @@
         }
       }
 
-      v27 = [(BMFindMyContactActivity *)self bundleID];
-      v28 = [v5 bundleID];
-      if (v27 == v28)
+      bundleID = [(BMFindMyContactActivity *)self bundleID];
+      bundleID2 = [v5 bundleID];
+      if (bundleID == bundleID2)
       {
         v12 = 1;
       }
 
       else
       {
-        v29 = [(BMFindMyContactActivity *)self bundleID];
-        v30 = [v5 bundleID];
-        v12 = [v29 isEqual:v30];
+        bundleID3 = [(BMFindMyContactActivity *)self bundleID];
+        bundleID4 = [v5 bundleID];
+        v12 = [bundleID3 isEqual:bundleID4];
       }
 
       goto LABEL_15;
@@ -170,14 +170,14 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v29[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFindMyContactActivity *)self handle];
+  handle = [(BMFindMyContactActivity *)self handle];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFindMyContactActivity actionType](self, "actionType")}];
-  v5 = [(BMFindMyContactActivity *)self eventTimestampBegin];
-  if (v5)
+  eventTimestampBegin = [(BMFindMyContactActivity *)self eventTimestampBegin];
+  if (eventTimestampBegin)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(BMFindMyContactActivity *)self eventTimestampBegin];
-    [v7 timeIntervalSince1970];
+    eventTimestampBegin2 = [(BMFindMyContactActivity *)self eventTimestampBegin];
+    [eventTimestampBegin2 timeIntervalSince1970];
     v8 = [v6 numberWithDouble:?];
   }
 
@@ -186,12 +186,12 @@ LABEL_16:
     v8 = 0;
   }
 
-  v9 = [(BMFindMyContactActivity *)self eventTimestampEnd];
-  if (v9)
+  eventTimestampEnd = [(BMFindMyContactActivity *)self eventTimestampEnd];
+  if (eventTimestampEnd)
   {
     v10 = MEMORY[0x1E696AD98];
-    v11 = [(BMFindMyContactActivity *)self eventTimestampEnd];
-    [v11 timeIntervalSince1970];
+    eventTimestampEnd2 = [(BMFindMyContactActivity *)self eventTimestampEnd];
+    [eventTimestampEnd2 timeIntervalSince1970];
     v12 = [v10 numberWithDouble:?];
   }
 
@@ -200,50 +200,50 @@ LABEL_16:
     v12 = 0;
   }
 
-  v13 = [(BMFindMyContactActivity *)self bundleID];
+  bundleID = [(BMFindMyContactActivity *)self bundleID];
   v24 = @"handle";
-  v14 = v3;
-  if (!v3)
+  null = handle;
+  if (!handle)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v14;
-  v29[0] = v14;
+  v22 = null;
+  v29[0] = null;
   v25 = @"actionType";
-  v15 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[1] = v15;
+  v29[1] = null2;
   v26 = @"eventTimestampBegin";
-  v16 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[2] = v16;
+  v29[2] = null3;
   v27 = @"eventTimestampEnd";
-  v17 = v12;
+  null4 = v12;
   if (!v12)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[3] = v17;
+  v29[3] = null4;
   v28 = @"bundleID";
-  v18 = v13;
-  if (!v13)
+  null5 = bundleID;
+  if (!bundleID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[4] = v18;
+  v29[4] = null5;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v24 count:{5, v22}];
-  if (v13)
+  if (bundleID)
   {
     if (v12)
     {
@@ -276,7 +276,7 @@ LABEL_20:
 
 LABEL_28:
 
-    if (v3)
+    if (handle)
     {
       goto LABEL_22;
     }
@@ -292,7 +292,7 @@ LABEL_27:
   }
 
 LABEL_21:
-  if (v3)
+  if (handle)
   {
     goto LABEL_22;
   }
@@ -305,16 +305,16 @@ LABEL_22:
   return v19;
 }
 
-- (BMFindMyContactActivity)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFindMyContactActivity)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"handle"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"handle"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v51 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"actionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"actionType"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -328,7 +328,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v50 = 0;
             v12 = 0;
@@ -338,13 +338,13 @@ LABEL_4:
           v36 = objc_alloc(MEMORY[0x1E696ABC0]);
           v37 = *MEMORY[0x1E698F240];
           v58 = *MEMORY[0x1E696A578];
-          v38 = a4;
-          a4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"actionType"];
-          v59 = a4;
-          v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
+          errorCopy = error;
+          error = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"actionType"];
+          errorCopy2 = error;
+          v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&errorCopy2 forKeys:&v58 count:1];
           v50 = 0;
           v12 = 0;
-          *v38 = [v36 initWithDomain:v37 code:2 userInfo:v13];
+          *errorCopy = [v36 initWithDomain:v37 code:2 userInfo:v13];
           goto LABEL_38;
         }
 
@@ -359,8 +359,8 @@ LABEL_4:
       v50 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"eventTimestampBegin"];
-    v48 = a4;
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampBegin"];
+    errorCopy3 = error;
     v49 = v7;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -382,7 +382,7 @@ LABEL_4:
         if (objc_opt_isKindOfClass())
         {
           v20 = objc_alloc_init(MEMORY[0x1E696AC80]);
-          a4 = [v20 dateFromString:v13];
+          error = [v20 dateFromString:v13];
 
           goto LABEL_24;
         }
@@ -390,7 +390,7 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v12 = 0;
             goto LABEL_38;
@@ -403,10 +403,10 @@ LABEL_4:
           v57 = v22;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
           v41 = [v39 initWithDomain:v40 code:2 userInfo:v21];
-          v42 = a4;
-          a4 = 0;
+          errorCopy4 = error;
+          error = 0;
           v12 = 0;
-          *v42 = v41;
+          *errorCopy4 = v41;
 LABEL_37:
 
           v7 = v49;
@@ -418,16 +418,16 @@ LABEL_38:
         v19 = v13;
       }
 
-      a4 = v19;
+      error = v19;
     }
 
     else
     {
-      a4 = 0;
+      error = 0;
     }
 
 LABEL_24:
-    v21 = [v6 objectForKeyedSubscript:@"eventTimestampEnd"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"eventTimestampEnd"];
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -456,7 +456,7 @@ LABEL_24:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!v48)
+          if (!errorCopy3)
           {
             v22 = 0;
             v12 = 0;
@@ -472,7 +472,7 @@ LABEL_24:
           v44 = [v47 initWithDomain:v43 code:2 userInfo:v30];
           v22 = 0;
           v12 = 0;
-          *v48 = v44;
+          *errorCopy3 = v44;
           goto LABEL_36;
         }
 
@@ -488,13 +488,13 @@ LABEL_24:
     }
 
 LABEL_32:
-    v30 = [v6 objectForKeyedSubscript:@"bundleID"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     if (v30 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v48)
+        if (errorCopy3)
         {
           v46 = objc_alloc(MEMORY[0x1E696ABC0]);
           v45 = *MEMORY[0x1E698F240];
@@ -502,7 +502,7 @@ LABEL_32:
           v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"bundleID"];
           v53 = v34;
           v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-          *v48 = [v46 initWithDomain:v45 code:2 userInfo:v35];
+          *errorCopy3 = [v46 initWithDomain:v45 code:2 userInfo:v35];
         }
 
         v31 = 0;
@@ -518,7 +518,7 @@ LABEL_32:
       v31 = 0;
     }
 
-    v12 = -[BMFindMyContactActivity initWithHandle:actionType:eventTimestampBegin:eventTimestampEnd:bundleID:](self, "initWithHandle:actionType:eventTimestampBegin:eventTimestampEnd:bundleID:", v51, [v50 intValue], a4, v22, v31);
+    v12 = -[BMFindMyContactActivity initWithHandle:actionType:eventTimestampBegin:eventTimestampEnd:bundleID:](self, "initWithHandle:actionType:eventTimestampBegin:eventTimestampEnd:bundleID:", v51, [v50 intValue], error, v22, v31);
     self = v12;
 LABEL_36:
 
@@ -532,7 +532,7 @@ LABEL_36:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v51 = 0;
     v12 = 0;
@@ -547,7 +547,7 @@ LABEL_36:
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:&v60 count:1];
   v51 = 0;
   v12 = 0;
-  *a4 = [v10 initWithDomain:v11 code:2 userInfo:v8];
+  *error = [v10 initWithDomain:v11 code:2 userInfo:v8];
 LABEL_39:
 
 LABEL_40:
@@ -559,14 +559,14 @@ LABEL_40:
 {
   v3 = objc_opt_new();
   [(BMFindMyContactActivity *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_handle)
   {
     PBDataWriterWriteStringField();
@@ -586,17 +586,17 @@ LABEL_40:
     PBDataWriterWriteDoubleField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v37.receiver = self;
   v37.super_class = BMFindMyContactActivity;
   v5 = [(BMEventBase *)&v37 init];
@@ -605,12 +605,12 @@ LABEL_40:
     goto LABEL_56;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_54;
       }
@@ -621,18 +621,18 @@ LABEL_40:
       while (1)
       {
         LOBYTE(v38) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v38 & 0x7F) << v7;
@@ -649,9 +649,9 @@ LABEL_40:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_54;
       }
@@ -690,18 +690,18 @@ LABEL_42:
       while (1)
       {
         LOBYTE(v38) = 0;
-        v21 = [v4 position] + 1;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 1;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v23 = [v4 data];
-          [v23 getBytes:&v38 range:{objc_msgSend(v4, "position"), 1}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v20 |= (v38 & 0x7F) << v18;
@@ -717,7 +717,7 @@ LABEL_42:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v20 > 3)
+      if (([fromCopy hasError] & 1) != 0 || v20 > 3)
       {
 LABEL_46:
         LODWORD(v20) = 0;
@@ -725,8 +725,8 @@ LABEL_46:
 
       v5->_actionType = v20;
 LABEL_53:
-      v34 = [v4 position];
-      if (v34 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_54;
       }
@@ -736,18 +736,18 @@ LABEL_53:
     {
       v5->_hasRaw_eventTimestampBegin = 1;
       v38 = 0;
-      v25 = [v4 position] + 8;
-      if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 8, v26 <= objc_msgSend(v4, "length")))
+      v25 = [fromCopy position] + 8;
+      if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 8, v26 <= objc_msgSend(fromCopy, "length")))
       {
-        v30 = [v4 data];
-        [v30 getBytes:&v38 range:{objc_msgSend(v4, "position"), 8}];
+        data3 = [fromCopy data];
+        [data3 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v31 = v38;
@@ -759,18 +759,18 @@ LABEL_53:
     {
       v5->_hasRaw_eventTimestampEnd = 1;
       v38 = 0;
-      v27 = [v4 position] + 8;
-      if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 8, v28 <= objc_msgSend(v4, "length")))
+      v27 = [fromCopy position] + 8;
+      if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 8, v28 <= objc_msgSend(fromCopy, "length")))
       {
-        v33 = [v4 data];
-        [v33 getBytes:&v38 range:{objc_msgSend(v4, "position"), 8}];
+        data4 = [fromCopy data];
+        [data4 getBytes:&v38 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v31 = v38;
@@ -791,7 +791,7 @@ LABEL_52:
   }
 
 LABEL_54:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_55:
     v35 = 0;
@@ -809,34 +809,34 @@ LABEL_56:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFindMyContactActivity *)self handle];
+  handle = [(BMFindMyContactActivity *)self handle];
   v5 = BMFindMyContactActivityEventTypeAsString([(BMFindMyContactActivity *)self actionType]);
-  v6 = [(BMFindMyContactActivity *)self eventTimestampBegin];
-  v7 = [(BMFindMyContactActivity *)self eventTimestampEnd];
-  v8 = [(BMFindMyContactActivity *)self bundleID];
-  v9 = [v3 initWithFormat:@"BMFindMyContactActivity with handle: %@, actionType: %@, eventTimestampBegin: %@, eventTimestampEnd: %@, bundleID: %@", v4, v5, v6, v7, v8];
+  eventTimestampBegin = [(BMFindMyContactActivity *)self eventTimestampBegin];
+  eventTimestampEnd = [(BMFindMyContactActivity *)self eventTimestampEnd];
+  bundleID = [(BMFindMyContactActivity *)self bundleID];
+  v9 = [v3 initWithFormat:@"BMFindMyContactActivity with handle: %@, actionType: %@, eventTimestampBegin: %@, eventTimestampEnd: %@, bundleID: %@", handle, v5, eventTimestampBegin, eventTimestampEnd, bundleID];
 
   return v9;
 }
 
-- (BMFindMyContactActivity)initWithHandle:(id)a3 actionType:(int)a4 eventTimestampBegin:(id)a5 eventTimestampEnd:(id)a6 bundleID:(id)a7
+- (BMFindMyContactActivity)initWithHandle:(id)handle actionType:(int)type eventTimestampBegin:(id)begin eventTimestampEnd:(id)end bundleID:(id)d
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handleCopy = handle;
+  beginCopy = begin;
+  endCopy = end;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = BMFindMyContactActivity;
   v17 = [(BMEventBase *)&v21 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_handle, a3);
-    v17->_actionType = a4;
-    if (v14)
+    objc_storeStrong(&v17->_handle, handle);
+    v17->_actionType = type;
+    if (beginCopy)
     {
       v17->_hasRaw_eventTimestampBegin = 1;
-      [v14 timeIntervalSince1970];
+      [beginCopy timeIntervalSince1970];
     }
 
     else
@@ -846,10 +846,10 @@ LABEL_56:
     }
 
     v17->_raw_eventTimestampBegin = v18;
-    if (v15)
+    if (endCopy)
     {
       v17->_hasRaw_eventTimestampEnd = 1;
-      [v15 timeIntervalSince1970];
+      [endCopy timeIntervalSince1970];
     }
 
     else
@@ -859,7 +859,7 @@ LABEL_56:
     }
 
     v17->_raw_eventTimestampEnd = v19;
-    objc_storeStrong(&v17->_bundleID, a7);
+    objc_storeStrong(&v17->_bundleID, d);
   }
 
   return v17;
@@ -884,9 +884,9 @@ LABEL_56:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -894,8 +894,8 @@ LABEL_56:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMFindMyContactActivity alloc] initByReadFrom:v7];
     v4 = v8;

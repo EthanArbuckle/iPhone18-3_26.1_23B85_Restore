@@ -1,69 +1,69 @@
 @interface UIPrintingProgress
 - (BOOL)progressVisible;
 - (NSString)title;
-- (UIPrintingProgress)initWithPrinterName:(id)a3 forceDisplayAsAlert:(BOOL)a4 hostingWindowScene:(id)a5 cancelHandler:(id)a6;
+- (UIPrintingProgress)initWithPrinterName:(id)name forceDisplayAsAlert:(BOOL)alert hostingWindowScene:(id)scene cancelHandler:(id)handler;
 - (UIWindowScene)hostingWindowScene;
 - (double)nextPrintDelay;
-- (id)initPDFCreationWithHostingWindowScene:(id)a3 cancelHandler:(id)a4;
+- (id)initPDFCreationWithHostingWindowScene:(id)scene cancelHandler:(id)handler;
 - (void)_mainQueue_endProgress;
-- (void)_mainQueue_hideProgressAnimated:(BOOL)a3;
+- (void)_mainQueue_hideProgressAnimated:(BOOL)animated;
 - (void)_mainQueue_presentProgressAlert;
-- (void)_mainQueue_showProgress:(id)a3 immediately:(BOOL)a4;
+- (void)_mainQueue_showProgress:(id)progress immediately:(BOOL)immediately;
 - (void)_presentProgressAlert;
 - (void)endProgress;
-- (void)hideProgressAnimated:(BOOL)a3;
+- (void)hideProgressAnimated:(BOOL)animated;
 - (void)progressCancel;
-- (void)setPage:(int64_t)a3 ofPage:(int64_t)a4;
-- (void)setPrinterInfoState:(int)a3;
-- (void)showProgress:(id)a3 immediately:(BOOL)a4;
+- (void)setPage:(int64_t)page ofPage:(int64_t)ofPage;
+- (void)setPrinterInfoState:(int)state;
+- (void)showProgress:(id)progress immediately:(BOOL)immediately;
 @end
 
 @implementation UIPrintingProgress
 
-- (UIPrintingProgress)initWithPrinterName:(id)a3 forceDisplayAsAlert:(BOOL)a4 hostingWindowScene:(id)a5 cancelHandler:(id)a6
+- (UIPrintingProgress)initWithPrinterName:(id)name forceDisplayAsAlert:(BOOL)alert hostingWindowScene:(id)scene cancelHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  sceneCopy = scene;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = UIPrintingProgress;
   v13 = [(UIPrintingProgress *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     printerName = v13->_printerName;
     v13->_printerName = v14;
 
-    v16 = [v12 copy];
+    v16 = [handlerCopy copy];
     cancelHandler = v13->_cancelHandler;
     v13->_cancelHandler = v16;
 
-    v13->_forceDisplayAsAlert = a4;
+    v13->_forceDisplayAsAlert = alert;
     *&v13->_presentingAlert = 0;
     [(UIPrintingProgress *)v13 setProgressAlertDelay:1.0];
-    [(UIPrintingProgress *)v13 setHostingWindowScene:v11];
+    [(UIPrintingProgress *)v13 setHostingWindowScene:sceneCopy];
   }
 
   return v13;
 }
 
-- (id)initPDFCreationWithHostingWindowScene:(id)a3 cancelHandler:(id)a4
+- (id)initPDFCreationWithHostingWindowScene:(id)scene cancelHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = UIPrintingProgress;
   v8 = [(UIPrintingProgress *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [handlerCopy copy];
     cancelHandler = v8->_cancelHandler;
     v8->_cancelHandler = v9;
 
     v8->_forceDisplayAsAlert = 1;
     v8->_creatingPDF = 1;
     [(UIPrintingProgress *)v8 setProgressAlertDelay:0.0];
-    [(UIPrintingProgress *)v8 setHostingWindowScene:v6];
+    [(UIPrintingProgress *)v8 setHostingWindowScene:sceneCopy];
   }
 
   return v8;
@@ -71,15 +71,15 @@
 
 - (BOOL)progressVisible
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_4:
-    v5 = [(UIPrintingProgress *)self progressAlertWindow];
-    v6 = [v5 _isVisible];
+    progressAlertWindow = [(UIPrintingProgress *)self progressAlertWindow];
+    _isVisible = [progressAlertWindow _isVisible];
 
-    return v6;
+    return _isVisible;
   }
 
   forceDisplayAsAlert = self->_forceDisplayAsAlert;
@@ -135,18 +135,18 @@ LABEL_4:
 
 - (void)_mainQueue_presentProgressAlert
 {
-  v7 = [(UIPrintingProgress *)self hostingWindowScene];
-  if (!v7)
+  hostingWindowScene = [(UIPrintingProgress *)self hostingWindowScene];
+  if (!hostingWindowScene)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v7 = [v3 _findUISceneForLegacyInterfaceOrientation];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    hostingWindowScene = [mEMORY[0x277D75128] _findUISceneForLegacyInterfaceOrientation];
   }
 
-  v4 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v7];
+  v4 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:hostingWindowScene];
   [(UIPrintingProgress *)self setProgressAlertWindow:v4];
   [v4 setOpaque:0];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   [v4 setWindowLevel:*MEMORY[0x277D772A8]];
   [v4 setHidden:1];
@@ -157,13 +157,13 @@ LABEL_4:
   [v6 presentViewController:self->_alertController animated:0 completion:0];
 }
 
-- (void)showProgress:(id)a3 immediately:(BOOL)a4
+- (void)showProgress:(id)progress immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
+  immediatelyCopy = immediately;
+  progressCopy = progress;
   if (pthread_main_np() == 1)
   {
-    [(UIPrintingProgress *)self _mainQueue_showProgress:v6 immediately:v4];
+    [(UIPrintingProgress *)self _mainQueue_showProgress:progressCopy immediately:immediatelyCopy];
   }
 
   else
@@ -175,38 +175,38 @@ LABEL_4:
     block[2] = __47__UIPrintingProgress_showProgress_immediately___block_invoke;
     block[3] = &unk_279A9BF50;
     block[4] = self;
-    v9 = v6;
-    v10 = v4;
+    v9 = progressCopy;
+    v10 = immediatelyCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)_mainQueue_showProgress:(id)a3 immediately:(BOOL)a4
+- (void)_mainQueue_showProgress:(id)progress immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(UIPrintingProgress *)self progressVisible]&& v4)
+  immediatelyCopy = immediately;
+  progressCopy = progress;
+  if ([(UIPrintingProgress *)self progressVisible]&& immediatelyCopy)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_displayTime = v7;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  if ([v8 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_7:
     alertController = self->_alertController;
     if (alertController)
     {
-      [(UIAlertController *)alertController setMessage:v6];
+      [(UIAlertController *)alertController setMessage:progressCopy];
     }
 
     else
     {
       v11 = MEMORY[0x277D75110];
-      v12 = [(UIPrintingProgress *)self title];
-      v13 = [v11 alertControllerWithTitle:v12 message:v6 preferredStyle:1];
+      title = [(UIPrintingProgress *)self title];
+      v13 = [v11 alertControllerWithTitle:title message:progressCopy preferredStyle:1];
       v14 = self->_alertController;
       self->_alertController = v13;
 
@@ -229,8 +229,8 @@ LABEL_7:
       objc_destroyWeak(&location);
     }
 
-    v20 = [(UIAlertController *)self->_alertController actions];
-    v21 = [v20 firstObject];
+    actions = [(UIAlertController *)self->_alertController actions];
+    firstObject = [actions firstObject];
     donePrinting = self->_donePrinting;
     v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v24 = v23;
@@ -247,9 +247,9 @@ LABEL_7:
     }
 
     v27 = [v23 localizedStringForKey:v25 value:v26 table:@"Localizable"];
-    [v21 setTitle:v27];
+    [firstObject setTitle:v27];
 
-    if (v4 && !self->_presentingAlert && ![*MEMORY[0x277D76620] applicationState])
+    if (immediatelyCopy && !self->_presentingAlert && ![*MEMORY[0x277D76620] applicationState])
     {
       [(UIPrintingProgress *)self _presentProgressAlert];
     }
@@ -267,14 +267,14 @@ LABEL_7:
   viewController = self->_viewController;
   if (viewController)
   {
-    [(UIPrintingProgressViewController *)viewController setMessage:v6];
+    [(UIPrintingProgressViewController *)viewController setMessage:progressCopy];
   }
 
   else
   {
     v29 = [UIPrintingProgressViewController alloc];
-    v30 = [(UIPrintingProgress *)self title];
-    v31 = [(UIPrintingProgressViewController *)v29 initWithTitle:v30 message:v6 printingProgress:self];
+    title2 = [(UIPrintingProgress *)self title];
+    v31 = [(UIPrintingProgressViewController *)v29 initWithTitle:title2 message:progressCopy printingProgress:self];
     v32 = self->_viewController;
     self->_viewController = v31;
 
@@ -309,13 +309,13 @@ void *__58__UIPrintingProgress__mainQueue_showProgress_immediately___block_invok
   return result;
 }
 
-- (void)hideProgressAnimated:(BOOL)a3
+- (void)hideProgressAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (pthread_main_np() == 1)
   {
 
-    [(UIPrintingProgress *)self _mainQueue_hideProgressAnimated:v3];
+    [(UIPrintingProgress *)self _mainQueue_hideProgressAnimated:animatedCopy];
   }
 
   else
@@ -325,16 +325,16 @@ void *__58__UIPrintingProgress__mainQueue_showProgress_immediately___block_invok
     v5[2] = __43__UIPrintingProgress_hideProgressAnimated___block_invoke;
     v5[3] = &unk_279A9C400;
     v5[4] = self;
-    v6 = v3;
+    v6 = animatedCopy;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
 
-- (void)_mainQueue_hideProgressAnimated:(BOOL)a3
+- (void)_mainQueue_hideProgressAnimated:(BOOL)animated
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_endProgress object:0];
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  if ([v4 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
 
 LABEL_4:
@@ -409,11 +409,11 @@ uint64_t __54__UIPrintingProgress__mainQueue_hideProgressAnimated___block_invoke
 
 - (void)_mainQueue_endProgress
 {
-  v3 = [*MEMORY[0x277D76620] applicationState];
+  applicationState = [*MEMORY[0x277D76620] applicationState];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v5 = v4;
   displayTime = self->_displayTime;
-  if ([(UIPrintingProgress *)self progressVisible]&& !v3 && ((v7 = v5 - displayTime, v5 - displayTime > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
+  if ([(UIPrintingProgress *)self progressVisible]&& !applicationState && ((v7 = v5 - displayTime, v5 - displayTime > 0.0) ? (v8 = v7 < 1.0) : (v8 = 0), v8))
   {
 
     [(UIPrintingProgress *)self performSelector:sel_endProgress withObject:0 afterDelay:v7];
@@ -421,24 +421,24 @@ uint64_t __54__UIPrintingProgress__mainQueue_hideProgressAnimated___block_invoke
 
   else
   {
-    v9 = [(UIPrintingProgress *)self progressVisible];
-    if (v3)
+    progressVisible = [(UIPrintingProgress *)self progressVisible];
+    if (applicationState)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v9;
+      v10 = progressVisible;
     }
 
     [(UIPrintingProgress *)self hideProgressAnimated:v10];
   }
 }
 
-- (void)setPrinterInfoState:(int)a3
+- (void)setPrinterInfoState:(int)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"Failed to Contact Printer" value:@"Failed to Contact Printer" table:@"Localizable"];
@@ -448,7 +448,7 @@ uint64_t __54__UIPrintingProgress__mainQueue_hideProgressAnimated___block_invoke
     self->_donePrinting = 1;
   }
 
-  else if (!a3)
+  else if (!state)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = [v7 localizedStringForKey:@"Contacting Printer…" value:@"Contacting Printer…" table:@"Localizable"];
@@ -456,9 +456,9 @@ uint64_t __54__UIPrintingProgress__mainQueue_hideProgressAnimated___block_invoke
   }
 }
 
-- (void)setPage:(int64_t)a3 ofPage:(int64_t)a4
+- (void)setPage:(int64_t)page ofPage:(int64_t)ofPage
 {
-  if (a3 == -2)
+  if (page == -2)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v5 localizedStringForKey:@"Preparing…" value:@"Preparing…" table:@"Localizable"];
@@ -467,24 +467,24 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 != -1)
+  if (page != -1)
   {
-    v7 = a4 - 1;
-    if (a4 - 1 >= a3)
+    pageCopy2 = ofPage - 1;
+    if (ofPage - 1 >= page)
     {
-      v7 = a3;
+      pageCopy2 = page;
     }
 
-    if (a4 <= 0)
+    if (ofPage <= 0)
     {
-      v7 = a3;
+      pageCopy2 = page;
     }
 
     v8 = MEMORY[0x277CCABB8];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:v7 + 1];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:pageCopy2 + 1];
     v5 = [v8 localizedStringFromNumber:v9 numberStyle:0];
 
-    if (a4 < 1)
+    if (ofPage < 1)
     {
       v17 = MEMORY[0x277CCACA8];
       v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -495,7 +495,7 @@ LABEL_16:
     else
     {
       v10 = MEMORY[0x277CCABB8];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:ofPage];
       v12 = [v10 localizedStringFromNumber:v11 numberStyle:0];
 
       v13 = MEMORY[0x277CCACA8];
@@ -540,8 +540,8 @@ LABEL_17:
 
 - (double)nextPrintDelay
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 

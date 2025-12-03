@@ -1,5 +1,5 @@
 @interface MPCSharedSessionParticipant
-+ (id)payloadValueFromJSONValue:(id)a3;
++ (id)payloadValueFromJSONValue:(id)value;
 - (id)humanDescription;
 - (id)mpc_jsonValue;
 @end
@@ -89,11 +89,11 @@
   return v3;
 }
 
-+ (id)payloadValueFromJSONValue:(id)a3
++ (id)payloadValueFromJSONValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"sessionType"];
-  v5 = [v4 integerValue];
+  valueCopy = value;
+  v4 = [valueCopy objectForKeyedSubscript:@"sessionType"];
+  integerValue = [v4 integerValue];
 
   v6 = [MPCSharedSessionParticipant alloc];
   if (v6)
@@ -104,7 +104,7 @@
     v8 = v7;
     if (v7)
     {
-      v7[2] = v5;
+      v7[2] = integerValue;
     }
   }
 
@@ -113,39 +113,39 @@
     v8 = 0;
   }
 
-  v9 = [v3 objectForKeyedSubscript:@"isLocal"];
-  v10 = [v9 BOOLValue];
+  v9 = [valueCopy objectForKeyedSubscript:@"isLocal"];
+  bOOLValue = [v9 BOOLValue];
   if (v8)
   {
-    *(v8 + 8) = v10;
+    *(v8 + 8) = bOOLValue;
   }
 
-  v12 = [v3 objectForKeyedSubscript:@"expanseID"];
+  v12 = [valueCopy objectForKeyedSubscript:@"expanseID"];
   if (v8)
   {
     objc_setProperty_nonatomic_copy(v8, v11, v12, 24);
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"liveLinkID"];
+  v14 = [valueCopy objectForKeyedSubscript:@"liveLinkID"];
   if (v8)
   {
     objc_setProperty_nonatomic_copy(v8, v13, v14, 32);
   }
 
-  v15 = [v3 objectForKeyedSubscript:@"liveLinkServerID"];
-  v16 = [v15 longLongValue];
+  v15 = [valueCopy objectForKeyedSubscript:@"liveLinkServerID"];
+  longLongValue = [v15 longLongValue];
   if (v8)
   {
-    v8[5] = v16;
+    v8[5] = longLongValue;
   }
 
-  v18 = [v3 objectForKeyedSubscript:@"mrGroupSessionID"];
+  v18 = [valueCopy objectForKeyedSubscript:@"mrGroupSessionID"];
   if (v8)
   {
     objc_setProperty_nonatomic_copy(v8, v17, v18, 48);
   }
 
-  v19 = [v3 objectForKeyedSubscript:@"mrUserIdentityID"];
+  v19 = [valueCopy objectForKeyedSubscript:@"mrUserIdentityID"];
 
   if (v8)
   {
@@ -157,49 +157,49 @@
 
 - (id)humanDescription
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
-    if ([*(v1 + 24) length])
+    array = [MEMORY[0x1E695DF70] array];
+    if ([*(selfCopy + 24) length])
     {
-      v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"expanseID=%@", *(v1 + 24)];
-      [v2 addObject:v3];
+      v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"expanseID=%@", *(selfCopy + 24)];
+      [array addObject:v3];
     }
 
-    if ([*(v1 + 32) length])
+    if ([*(selfCopy + 32) length])
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"liveLinkID=%@", *(v1 + 32)];
-      [v2 addObject:v4];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"liveLinkID=%@", *(selfCopy + 32)];
+      [array addObject:v4];
     }
 
-    if (*(v1 + 40))
+    if (*(selfCopy + 40))
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"liveLinkServerID=%ld", *(v1 + 40)];
-      [v2 addObject:v5];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"liveLinkServerID=%ld", *(selfCopy + 40)];
+      [array addObject:v5];
     }
 
-    if ([*(v1 + 48) length])
+    if ([*(selfCopy + 48) length])
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mrGroupSessionID=%@", *(v1 + 48)];
-      [v2 addObject:v6];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mrGroupSessionID=%@", *(selfCopy + 48)];
+      [array addObject:v6];
     }
 
-    if ([*(v1 + 56) length])
+    if ([*(selfCopy + 56) length])
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mrUserIdentityID=%@", *(v1 + 56)];
-      [v2 addObject:v7];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mrUserIdentityID=%@", *(selfCopy + 56)];
+      [array addObject:v7];
     }
 
-    if (*(v1 + 8) == 1)
+    if (*(selfCopy + 8) == 1)
     {
-      [v2 addObject:@"isLocal"];
+      [array addObject:@"isLocal"];
     }
 
-    v1 = [v2 msv_compactDescription];
+    selfCopy = [array msv_compactDescription];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

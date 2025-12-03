@@ -1,17 +1,17 @@
 @interface BKSMutableHIDEventDeferringModality
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation BKSMutableHIDEventDeferringModality
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  identifierCopy = identifier;
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  if (!v24)
+  if (!identifierCopy)
   {
     v10 = NSStringFromClass(v6);
     v11 = [v5 stringWithFormat:@"Value for '%@' was unexpectedly nil. Expected %@.", @"identifier", v10];
@@ -26,7 +26,7 @@
       v27 = 2114;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringModality.m";
       v33 = 1024;
@@ -45,13 +45,13 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = MEMORY[0x1E696AEC0];
-    v16 = [v24 classForCoder];
-    if (!v16)
+    classForCoder = [identifierCopy classForCoder];
+    if (!classForCoder)
     {
-      v16 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v17 = NSStringFromClass(v16);
+    v17 = NSStringFromClass(classForCoder);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     v20 = [v15 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"identifier", v17, v19];
@@ -66,7 +66,7 @@
       v27 = 2114;
       v28 = v23;
       v29 = 2048;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2114;
       v32 = @"BKSHIDEventDeferringModality.m";
       v33 = 1024;
@@ -82,14 +82,14 @@
     JUMPOUT(0x18635DF98);
   }
 
-  v7 = [v24 copy];
+  v7 = [identifierCopy copy];
   identifier = self->super._identifier;
   self->super._identifier = v7;
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSHIDEventDeferringModality alloc];
 

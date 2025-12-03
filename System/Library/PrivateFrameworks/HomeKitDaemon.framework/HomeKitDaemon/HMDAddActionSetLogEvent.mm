@@ -1,19 +1,19 @@
 @interface HMDAddActionSetLogEvent
-- (HMDAddActionSetLogEvent)initWithActionSetType:(id)a3 homeUUID:(id)a4;
+- (HMDAddActionSetLogEvent)initWithActionSetType:(id)type homeUUID:(id)d;
 @end
 
 @implementation HMDAddActionSetLogEvent
 
-- (HMDAddActionSetLogEvent)initWithActionSetType:(id)a3 homeUUID:(id)a4
+- (HMDAddActionSetLogEvent)initWithActionSetType:(id)type homeUUID:(id)d
 {
-  v7 = a3;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = HMDAddActionSetLogEvent;
-  v8 = [(HMMHomeLogEvent *)&v11 initWithHomeUUID:a4];
+  v8 = [(HMMHomeLogEvent *)&v11 initWithHomeUUID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_actionSetType, a3);
+    objc_storeStrong(&v8->_actionSetType, type);
   }
 
   return v9;

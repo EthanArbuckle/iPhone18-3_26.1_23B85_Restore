@@ -8,30 +8,30 @@
 {
   v14.receiver = self;
   v14.super_class = IMAccessibilityLabelAccessibility;
-  v3 = [(IMAccessibilityLabelAccessibility *)&v14 accessibilityLabel];
-  v4 = [(IMAccessibilityLabelAccessibility *)self imaxIdentification];
-  v5 = [v4 isEqualToString:@"LabelWithSeparatedChars"];
+  accessibilityLabel = [(IMAccessibilityLabelAccessibility *)&v14 accessibilityLabel];
+  imaxIdentification = [(IMAccessibilityLabelAccessibility *)self imaxIdentification];
+  v5 = [imaxIdentification isEqualToString:@"LabelWithSeparatedChars"];
 
   if (v5)
   {
     v6 = +[NSMutableString string];
-    v7 = [v3 length];
+    v7 = [accessibilityLabel length];
     if (v7 >= 1)
     {
       v8 = v7;
       for (i = 0; i != v8; ++i)
       {
-        v10 = [v3 characterAtIndex:i];
+        v10 = [accessibilityLabel characterAtIndex:i];
         if (i)
         {
           v11 = v10;
-          if ([v3 characterAtIndex:i - 1] != 32 && v11 == 32)
+          if ([accessibilityLabel characterAtIndex:i - 1] != 32 && v11 == 32)
           {
             continue;
           }
         }
 
-        v12 = [v3 substringWithRange:{i, 1}];
+        v12 = [accessibilityLabel substringWithRange:{i, 1}];
         [v6 appendString:v12];
       }
     }
@@ -39,7 +39,7 @@
 
   else
   {
-    v6 = v3;
+    v6 = accessibilityLabel;
   }
 
   return v6;

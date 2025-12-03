@@ -1,6 +1,6 @@
 @interface NFRoutingConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,7 +15,7 @@
   hostMode = self->_hostMode;
   embeddedMode = self->_embeddedMode;
   pollingDuration = self->_pollingDuration;
-  v10 = [(NFRoutingConfig *)self wantsIsoDepToHost];
+  wantsIsoDepToHost = [(NFRoutingConfig *)self wantsIsoDepToHost];
   lpcdEcpFrame = self->_lpcdEcpFrame;
   if (!lpcdEcpFrame)
   {
@@ -33,7 +33,7 @@
     v13 = "no";
   }
 
-  if (v10)
+  if (wantsIsoDepToHost)
   {
     v14 = "yes";
   }
@@ -61,18 +61,18 @@
   return [NSString stringWithFormat:@"fieldDetect=%lu cardType=%s express=%s lpcd=%s pollingType=%lu duration=%d host=%lu embedded=%lu isoDepToHostEnable=%s wantsESEReader=%s lpcdEcpFrame=%@", fieldDetectType, v4, v12, v15, pollingType, pollingDuration, hostMode, embeddedMode, v14, v13, lpcdEcpFrame];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4 || [(NFRoutingConfig *)v4 isMemberOfClass:objc_opt_class()]&& sub_10004B630(self, v4) && self->_fieldDetectType == v4->_fieldDetectType;
+  equalCopy = equal;
+  v5 = self == equalCopy || [(NFRoutingConfig *)equalCopy isMemberOfClass:objc_opt_class()]&& sub_10004B630(self, equalCopy) && self->_fieldDetectType == equalCopy->_fieldDetectType;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NFRoutingConfig allocWithZone:a3];
-  v5 = self;
+  v4 = [NFRoutingConfig allocWithZone:zone];
+  selfCopy = self;
   if (v4)
   {
     v8.receiver = v4;
@@ -81,19 +81,19 @@
     v4 = v6;
     if (v6)
     {
-      v6->_wantsSEReader = v5->_wantsSEReader;
-      v6->_wantsExpress = v5->_wantsExpress;
-      v6->_wantsDisableStandbyInExpress = v5->_wantsDisableStandbyInExpress;
-      v6->_pollingType = v5->_pollingType;
-      v6->_cardEmulationType = v5->_cardEmulationType;
-      v6->_hostMode = v5->_hostMode;
-      v6->_embeddedMode = v5->_embeddedMode;
-      v6->_fieldDetectType = v5->_fieldDetectType;
-      v6->_pollingDuration = v5->_pollingDuration;
-      v6->_polling = v5->_polling;
-      v6->_tagDiscoveryConfig = v5->_tagDiscoveryConfig;
-      v6->_fdOn = v5->_fdOn;
-      objc_storeStrong(&v6->_lpcdEcpFrame, v5->_lpcdEcpFrame);
+      v6->_wantsSEReader = selfCopy->_wantsSEReader;
+      v6->_wantsExpress = selfCopy->_wantsExpress;
+      v6->_wantsDisableStandbyInExpress = selfCopy->_wantsDisableStandbyInExpress;
+      v6->_pollingType = selfCopy->_pollingType;
+      v6->_cardEmulationType = selfCopy->_cardEmulationType;
+      v6->_hostMode = selfCopy->_hostMode;
+      v6->_embeddedMode = selfCopy->_embeddedMode;
+      v6->_fieldDetectType = selfCopy->_fieldDetectType;
+      v6->_pollingDuration = selfCopy->_pollingDuration;
+      v6->_polling = selfCopy->_polling;
+      v6->_tagDiscoveryConfig = selfCopy->_tagDiscoveryConfig;
+      v6->_fdOn = selfCopy->_fdOn;
+      objc_storeStrong(&v6->_lpcdEcpFrame, selfCopy->_lpcdEcpFrame);
     }
   }
 

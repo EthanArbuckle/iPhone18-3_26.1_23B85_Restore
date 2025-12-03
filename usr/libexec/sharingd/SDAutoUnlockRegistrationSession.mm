@@ -1,29 +1,29 @@
 @interface SDAutoUnlockRegistrationSession
 - (id)description;
 - (void)invalidate;
-- (void)notifyDelegateWithError:(id)a3;
+- (void)notifyDelegateWithError:(id)error;
 @end
 
 @implementation SDAutoUnlockRegistrationSession
 
-- (void)notifyDelegateWithError:(id)a3
+- (void)notifyDelegateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Registration session notifying delegate with error: %@", &v9, 0xCu);
   }
 
-  v6 = [(SDAutoUnlockPairingSession *)self delegate];
+  delegate = [(SDAutoUnlockPairingSession *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SDAutoUnlockPairingSession *)self delegate];
-    [v8 session:self didCompleteWithError:v4];
+    delegate2 = [(SDAutoUnlockPairingSession *)self delegate];
+    [delegate2 session:self didCompleteWithError:errorCopy];
   }
 }
 
@@ -31,9 +31,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(SDAutoUnlockPairingSession *)self deviceID];
-  v6 = [(SDAutoUnlockPairingSession *)self sessionID];
-  v7 = [NSString stringWithFormat:@"<%@: %p deviceID=%@ sessionID=%@>", v4, self, v5, v6];
+  deviceID = [(SDAutoUnlockPairingSession *)self deviceID];
+  sessionID = [(SDAutoUnlockPairingSession *)self sessionID];
+  v7 = [NSString stringWithFormat:@"<%@: %p deviceID=%@ sessionID=%@>", v4, self, deviceID, sessionID];
 
   return v7;
 }
@@ -43,14 +43,14 @@
   v7.receiver = self;
   v7.super_class = SDAutoUnlockRegistrationSession;
   [(SDAutoUnlockPairingSession *)&v7 invalidate];
-  v3 = [(SDAutoUnlockPairingSession *)self aksSession];
-  v4 = [v3 resetSession];
+  aksSession = [(SDAutoUnlockPairingSession *)self aksSession];
+  resetSession = [aksSession resetSession];
 
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (resetSession)
     {
       v6 = @"YES";
     }

@@ -1,9 +1,9 @@
 @interface OKTransitionFlip
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (OKTransitionFlip)init;
-- (OKTransitionFlip)initWithSettings:(id)a3;
-- (void)prepareInView:(id)a3;
+- (OKTransitionFlip)initWithSettings:(id)settings;
+- (void)prepareInView:(id)view;
 @end
 
 @implementation OKTransitionFlip
@@ -21,25 +21,25 @@
   return result;
 }
 
-- (OKTransitionFlip)initWithSettings:(id)a3
+- (OKTransitionFlip)initWithSettings:(id)settings
 {
   v8.receiver = self;
   v8.super_class = OKTransitionFlip;
   v4 = [(OKTransitionParallaxPush *)&v8 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"direction"];
+    v5 = [settings objectForKey:@"direction"];
     if (v5)
     {
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v6 = 1;
+      integerValue = 1;
     }
 
-    v4->_direction = v6;
+    v4->_direction = integerValue;
   }
 
   return v4;
@@ -48,7 +48,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKTransitionFlip;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"direction";
@@ -65,14 +65,14 @@
   return v2;
 }
 
-- (void)prepareInView:(id)a3
+- (void)prepareInView:(id)view
 {
   v8.receiver = self;
   v8.super_class = OKTransitionFlip;
-  [(OKTransitionCATransition *)&v8 prepareInView:a3];
+  [(OKTransitionCATransition *)&v8 prepareInView:view];
   [(CATransition *)self->super._transition setType:@"flip"];
-  v4 = [(OKTransition *)self reversed];
-  v5 = [(OKTransition *)self isForward];
+  reversed = [(OKTransition *)self reversed];
+  isForward = [(OKTransition *)self isForward];
   direction = self->_direction;
   v7 = 3 - direction;
   if (direction >= 3)
@@ -80,7 +80,7 @@
     v7 = 7 - direction;
   }
 
-  if (v4 == v5)
+  if (reversed == isForward)
   {
     direction = v7;
   }
@@ -88,12 +88,12 @@
   [(CATransition *)self->super._transition setSubtype:sDirectionStrings[direction]];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKTransitionFlip"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKTransitionFlip"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

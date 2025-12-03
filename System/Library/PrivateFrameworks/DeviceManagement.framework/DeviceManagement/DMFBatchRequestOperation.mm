@@ -1,17 +1,17 @@
 @interface DMFBatchRequestOperation
-- (DMFBatchRequestOperation)initWithActivityTransactionOperation:(id)a3 subOperations:(id)a4;
-- (void)activityTransactionOperationDidStart:(id)a3;
+- (DMFBatchRequestOperation)initWithActivityTransactionOperation:(id)operation subOperations:(id)operations;
+- (void)activityTransactionOperationDidStart:(id)start;
 - (void)main;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation DMFBatchRequestOperation
 
-- (DMFBatchRequestOperation)initWithActivityTransactionOperation:(id)a3 subOperations:(id)a4
+- (DMFBatchRequestOperation)initWithActivityTransactionOperation:(id)operation subOperations:(id)operations
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  operationCopy = operation;
+  operationsCopy = operations;
+  if (!operationCopy)
   {
     [DMFBatchRequestOperation initWithActivityTransactionOperation:a2 subOperations:self];
   }
@@ -22,8 +22,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_activityTransactionOperation, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_activityTransactionOperation, operation);
+    v12 = [operationsCopy copy];
     subOperations = v11->_subOperations;
     v11->_subOperations = v12;
   }
@@ -31,57 +31,57 @@
   return v11;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
-  v6 = [v5 request];
+  nameCopy = name;
+  activityTransactionOperation = [(DMFBatchRequestOperation *)self activityTransactionOperation];
+  request = [activityTransactionOperation request];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 setName:v4];
+    [request setName:nameCopy];
   }
 
   v7.receiver = self;
   v7.super_class = DMFBatchRequestOperation;
-  [(DMFBatchRequestOperation *)&v7 setName:v4];
+  [(DMFBatchRequestOperation *)&v7 setName:nameCopy];
 }
 
 - (void)main
 {
-  v3 = [(DMFBatchRequestOperation *)self subOperations];
-  v4 = [v3 count];
+  subOperations = [(DMFBatchRequestOperation *)self subOperations];
+  v4 = [subOperations count];
 
   if (v4)
   {
-    v5 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
-    v13 = [v5 request];
+    activityTransactionOperation = [(DMFBatchRequestOperation *)self activityTransactionOperation];
+    request = [activityTransactionOperation request];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v13 name];
+      name = [request name];
 
-      if (!v6)
+      if (!name)
       {
-        v7 = [(DMFBatchRequestOperation *)self name];
-        [v13 setName:v7];
+        name2 = [(DMFBatchRequestOperation *)self name];
+        [request setName:name2];
       }
     }
 
     v8 = objc_opt_new();
     [(DMFBatchRequestOperation *)self setQueue:v8];
 
-    v9 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
-    [v9 addTarget:self selector:sel_activityTransactionOperationDidStart_ forOperationEvents:1];
+    activityTransactionOperation2 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
+    [activityTransactionOperation2 addTarget:self selector:sel_activityTransactionOperationDidStart_ forOperationEvents:1];
 
-    v10 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
-    [v10 addTarget:self selector:sel_activityTransactionOperationDidFinish_ forOperationEvents:6];
+    activityTransactionOperation3 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
+    [activityTransactionOperation3 addTarget:self selector:sel_activityTransactionOperationDidFinish_ forOperationEvents:6];
 
-    v11 = [(DMFBatchRequestOperation *)self queue];
-    v12 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
-    [v11 addOperation:v12];
+    queue = [(DMFBatchRequestOperation *)self queue];
+    activityTransactionOperation4 = [(DMFBatchRequestOperation *)self activityTransactionOperation];
+    [queue addOperation:activityTransactionOperation4];
   }
 
   else
@@ -91,7 +91,7 @@
   }
 }
 
-- (void)activityTransactionOperationDidStart:(id)a3
+- (void)activityTransactionOperationDidStart:(id)start
 {
   v20 = *MEMORY[0x1E69E9840];
   v18[0] = MEMORY[0x1E69E9820];
@@ -104,8 +104,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(DMFBatchRequestOperation *)self subOperations];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  subOperations = [(DMFBatchRequestOperation *)self subOperations];
+  v6 = [subOperations countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -117,25 +117,25 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subOperations);
         }
 
         [v4 addDependency:*(*(&v14 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [subOperations countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(DMFBatchRequestOperation *)self queue];
-  [v10 addOperation:v4];
+  queue = [(DMFBatchRequestOperation *)self queue];
+  [queue addOperation:v4];
 
-  v11 = [(DMFBatchRequestOperation *)self queue];
-  v12 = [(DMFBatchRequestOperation *)self subOperations];
-  [v11 addOperations:v12 waitUntilFinished:0];
+  queue2 = [(DMFBatchRequestOperation *)self queue];
+  subOperations2 = [(DMFBatchRequestOperation *)self subOperations];
+  [queue2 addOperations:subOperations2 waitUntilFinished:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }

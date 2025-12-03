@@ -1,19 +1,19 @@
 @interface NUFillKernel
-+ (void)fillTexture:(id)a3 color:(id)a4 withCommandBuffer:(id)a5;
-+ (void)fillTexture:(id)a3 region:(id *)a4 color:(id)a5 withCommandBuffer:(id)a6;
++ (void)fillTexture:(id)texture color:(id)color withCommandBuffer:(id)buffer;
++ (void)fillTexture:(id)texture region:(id *)region color:(id)color withCommandBuffer:(id)buffer;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)color;
 - ($5EB37A2CB8D9A427EFBC3B5F5EFAD3F6)region;
-- (void)encodeToCommandBuffer:(id)a3 destinationTexture:(id)a4;
-- (void)setRegion:(id *)a3;
+- (void)encodeToCommandBuffer:(id)buffer destinationTexture:(id)texture;
+- (void)setRegion:(id *)region;
 @end
 
 @implementation NUFillKernel
 
-- (void)setRegion:(id *)a3
+- (void)setRegion:(id *)region
 {
-  v4 = *&a3->var0.var2;
-  v3 = *&a3->var1.var1;
-  *&self->_region.origin.x = *&a3->var0.var0;
+  v4 = *&region->var0.var2;
+  v3 = *&region->var1.var1;
+  *&self->_region.origin.x = *&region->var0.var0;
   *&self->_region.origin.z = v4;
   *&self->_region.size.height = v3;
 }
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 destinationTexture:(id)a4
+- (void)encodeToCommandBuffer:(id)buffer destinationTexture:(id)texture
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  bufferCopy = buffer;
+  textureCopy = texture;
+  if (bufferCopy)
   {
-    v8 = v7;
-    if (v7)
+    v8 = textureCopy;
+    if (textureCopy)
     {
       memset(v63, 0, 48);
       [(NUFillKernel *)self region];
@@ -77,8 +77,8 @@
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           buf = 138543618;
           buf_4 = v17;
           buf_12 = 2114;
@@ -89,8 +89,8 @@
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         buf = 138543362;
         buf_4 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -118,8 +118,8 @@
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v50 callStackSymbols];
+        v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v63 = 138543618;
         *&v63[4] = v49;
         *&v63[12] = 2114;
@@ -130,8 +130,8 @@
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v63 = 138543362;
       *&v63[4] = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v63, 0xCu);
@@ -159,8 +159,8 @@
       v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
       v41 = MEMORY[0x1E696AF00];
       v42 = v40;
-      v43 = [v41 callStackSymbols];
-      v44 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v41 callStackSymbols];
+      v44 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *v63 = 138543618;
       *&v63[4] = v40;
       *&v63[12] = 2114;
@@ -171,8 +171,8 @@
 
   else if (v30)
   {
-    v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v32 = [v31 componentsJoinedByString:@"\n"];
+    callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v32 = [callStackSymbols6 componentsJoinedByString:@"\n"];
     *v63 = 138543362;
     *&v63[4] = v32;
     _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v63, 0xCu);
@@ -181,40 +181,40 @@
   _NUAssertFailHandler("[NUFillKernel encodeToCommandBuffer:destinationTexture:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Metal/NUComputeKernel.m", 129, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "commandBuffer != nil");
 }
 
-+ (void)fillTexture:(id)a3 region:(id *)a4 color:(id)a5 withCommandBuffer:(id)a6
++ (void)fillTexture:(id)texture region:(id *)region color:(id)color withCommandBuffer:(id)buffer
 {
-  var3 = a5.var3;
-  var2 = a5.var2;
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v12 = a6;
-  v13 = a3;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  bufferCopy = buffer;
+  textureCopy = texture;
   v14 = [NUFillKernel alloc];
-  v15 = [v12 device];
-  v16 = [(NUComputeKernel *)v14 initWithDevice:v15];
+  device = [bufferCopy device];
+  v16 = [(NUComputeKernel *)v14 initWithDevice:device];
 
   [(NUFillKernel *)v16 setColor:var0, var1, var2, var3];
-  v17 = *&a4->var0.var2;
-  v18[0] = *&a4->var0.var0;
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a4->var1.var1;
+  v18[2] = *&region->var1.var1;
   [(NUFillKernel *)v16 setRegion:v18];
-  [(NUFillKernel *)v16 encodeToCommandBuffer:v12 destinationTexture:v13];
+  [(NUFillKernel *)v16 encodeToCommandBuffer:bufferCopy destinationTexture:textureCopy];
 }
 
-+ (void)fillTexture:(id)a3 color:(id)a4 withCommandBuffer:(id)a5
++ (void)fillTexture:(id)texture color:(id)color withCommandBuffer:(id)buffer
 {
-  var3 = a4.var3;
-  var2 = a4.var2;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v11 = a5;
-  v12 = a3;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  bufferCopy = buffer;
+  textureCopy = texture;
   memset(v13, 0, 24);
-  v13[3] = [v12 width];
-  v13[4] = [v12 height];
+  v13[3] = [textureCopy width];
+  v13[4] = [textureCopy height];
   v13[5] = 1;
-  [a1 fillTexture:v12 region:v13 color:v11 withCommandBuffer:{var0, var1, var2, var3}];
+  [self fillTexture:textureCopy region:v13 color:bufferCopy withCommandBuffer:{var0, var1, var2, var3}];
 }
 
 @end

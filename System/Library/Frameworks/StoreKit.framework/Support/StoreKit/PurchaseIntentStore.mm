@@ -1,5 +1,5 @@
 @interface PurchaseIntentStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (SQLiteDatabaseStoreDescriptor)storeDescriptor;
 @end
 
@@ -13,11 +13,11 @@
   return v2;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_100142AB8(v4);
+  schemaCopy = schema;
+  v5 = sub_100142AB8(schemaCopy);
 
   return v5;
 }

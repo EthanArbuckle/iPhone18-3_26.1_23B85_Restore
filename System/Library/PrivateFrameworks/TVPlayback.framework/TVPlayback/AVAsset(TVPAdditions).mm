@@ -14,8 +14,8 @@
   v9 = a5;
   if (([v7 isEqualToString:@"availableVideoDynamicRanges"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"maximumVideoResolution") & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"availableChapterLocales") & 1) == 0)
   {
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v14 = [v13 arrayForKey:@"AVAssetKeysForWhichToIgnoreFailures"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v14 = [standardUserDefaults arrayForKey:@"AVAssetKeysForWhichToIgnoreFailures"];
 
     if (v7 && v14)
     {
@@ -43,8 +43,8 @@ LABEL_23:
 
     if ([v7 isEqualToString:@"availableMediaCharacteristicsWithMediaSelectionOptions"])
     {
-      v15 = [v8 userInfo];
-      v16 = [v15 objectForKey:*MEMORY[0x277CE5D38]];
+      userInfo = [v8 userInfo];
+      v16 = [userInfo objectForKey:*MEMORY[0x277CE5D38]];
 
       if (![v16 count] || objc_msgSend(v16, "count") == 1 && (objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "isEqualToString:", *MEMORY[0x277CD6480]), v17, v18))
       {
@@ -75,11 +75,11 @@ LABEL_5:
 
 - (uint64_t)tvp_maximumVideoResolution
 {
-  v2 = [a1 statusOfValueForKey:@"maximumVideoResolution" error:0];
+  v2 = [self statusOfValueForKey:@"maximumVideoResolution" error:0];
   result = 0;
   if (v2 == 2)
   {
-    [a1 maximumVideoResolution];
+    [self maximumVideoResolution];
     v5 = 3;
     if (v4 < 3456.0)
     {
@@ -109,14 +109,14 @@ LABEL_5:
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = 0;
-  if ([a1 statusOfValueForKey:@"availableVideoDynamicRanges" error:0] == 2)
+  if ([self statusOfValueForKey:@"availableVideoDynamicRanges" error:0] == 2)
   {
-    v3 = [a1 availableVideoDynamicRanges];
+    availableVideoDynamicRanges = [self availableVideoDynamicRanges];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v4 = [availableVideoDynamicRanges countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -128,22 +128,22 @@ LABEL_5:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(availableVideoDynamicRanges);
           }
 
-          v9 = [*(*(&v12 + 1) + 8 * i) intValue];
-          if (v9 <= v6)
+          intValue = [*(*(&v12 + 1) + 8 * i) intValue];
+          if (intValue <= v6)
           {
             v6 = v6;
           }
 
           else
           {
-            v6 = v9;
+            v6 = intValue;
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [availableVideoDynamicRanges countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v5);

@@ -1,16 +1,16 @@
 @interface JFXExternalImageData
 - (CGRect)normalizedFaceRect;
-- (__n128)setCameraIntrinsics:(__n128)a3;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
 - (void)dealloc;
-- (void)setPixelBuffer:(__CVBuffer *)a3;
+- (void)setPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation JFXExternalImageData
 
-- (void)setPixelBuffer:(__CVBuffer *)a3
+- (void)setPixelBuffer:(__CVBuffer *)buffer
 {
   pixelBuffer = self->_pixelBuffer;
-  self->_pixelBuffer = CVPixelBufferRetain(a3);
+  self->_pixelBuffer = CVPixelBufferRetain(buffer);
 
   CVPixelBufferRelease(pixelBuffer);
 }
@@ -23,10 +23,10 @@
   [(JFXExternalImageData *)&v3 dealloc];
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[6] = a2;
-  result[7] = a3;
+  result[7] = intrinsics;
   result[8] = a4;
   return result;
 }

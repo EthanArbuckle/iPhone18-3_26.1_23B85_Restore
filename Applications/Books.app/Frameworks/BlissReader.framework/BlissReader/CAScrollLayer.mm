@@ -1,12 +1,12 @@
 @interface CAScrollLayer
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
 @end
 
 @implementation CAScrollLayer
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(CAScrollLayer *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -14,7 +14,7 @@
   v13 = v12;
   TSDRectWithOriginAndSize();
   [(CAScrollLayer *)self setBounds:?];
-  if (v4)
+  if (animatedCopy)
   {
     v14 = [CABasicAnimation animationWithKeyPath:@"bounds"];
     [(CABasicAnimation *)v14 setDuration:0.2];

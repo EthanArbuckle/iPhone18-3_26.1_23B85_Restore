@@ -1,7 +1,7 @@
 @interface CLBOpenApplicationVerifierResultError
 - (CLBOpenApplicationVerifierResultError)init;
 - (NSString)errorDescription;
-- (void)setErrorDescription:(id)a3;
+- (void)setErrorDescription:(id)description;
 @end
 
 @implementation CLBOpenApplicationVerifierResultError
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (void)setErrorDescription:(id)a3
+- (void)setErrorDescription:(id)description
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR___CLBOpenApplicationVerifierResultError_errorDescription);

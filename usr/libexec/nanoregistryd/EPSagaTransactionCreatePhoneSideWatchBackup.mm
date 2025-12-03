@@ -1,15 +1,15 @@
 @interface EPSagaTransactionCreatePhoneSideWatchBackup
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionCreatePhoneSideWatchBackup
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  entryCopy = entry;
+  v6 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
   if (!v6)
   {
     v13 = nr_daemon_log();
@@ -27,8 +27,8 @@
     }
 
 LABEL_11:
-    v7 = [(EPSagaTransactionCreatePhoneSideWatchBackup *)self delegate];
-    [v7 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionCreatePhoneSideWatchBackup *)self delegate];
+    [delegate transactionDidComplete:self];
     goto LABEL_12;
   }
 
@@ -53,9 +53,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
+  delegate = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = objc_alloc(sub_1000E5280());
-  v9 = dispatch_queue_create("com.apple.nanoregistry.recoverymanager.backup", v7);
+  v9 = dispatch_queue_create("com.apple.nanoregistry.recoverymanager.backup", delegate);
   v10 = [v8 initWithQueue:v9];
   backupManager = self->_backupManager;
   self->_backupManager = v10;
@@ -67,21 +67,21 @@ LABEL_10:
   v18[3] = &unk_1001799D0;
   v18[4] = self;
   v19 = v6;
-  v20 = v5;
+  v20 = entryCopy;
   [v12 createBackupForPairingID:v19 completionHandler:v18];
 
 LABEL_12:
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = [a3 queue];
+  queue = [entry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000E5710;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (EPTransactionDelegate)delegate

@@ -1,6 +1,6 @@
 @interface CLKTimeFormatter
 - (BOOL)isTopOfHour;
-- (CLKTimeFormatter)initWithForcedNumberSystem:(unint64_t)a3 clockTimer:(id)a4;
+- (CLKTimeFormatter)initWithForcedNumberSystem:(unint64_t)system clockTimer:(id)timer;
 - (CLKTimeFormatterDelegate)delegate;
 - (NSString)designatorText;
 - (NSString)timeAndDesignatorText;
@@ -16,14 +16,14 @@
 - (_NSRange)designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero;
 - (_NSRange)lastBlinkerRangeInTimeText;
 - (_NSRange)rangeInTimeSubstringFromSecondsSeparatorText;
-- (_NSRange)separatorNSRangeInTimeText:(id)a3;
+- (_NSRange)separatorNSRangeInTimeText:(id)text;
 - (_NSRange)separatorRangeInTimeAndDesignatorText;
 - (_NSRange)separatorRangeInTimeText;
 - (id)_blinkerRangeInTimeAndDesignatorText;
 - (id)_blinkerRangeInTimeSubstringFromSeparatorText;
 - (id)_blinkerRangeInTimeSubstringToSeparatorText;
 - (id)_blinkerRangeInTimeText;
-- (id)_designatorRangeInText:(id)a3;
+- (id)_designatorRangeInText:(id)text;
 - (id)_designatorRangeInTimeAndDesignatorText;
 - (id)_designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero;
 - (id)_lastBlinkerRangeInTimeText;
@@ -31,42 +31,42 @@
 - (id)_separatorRangeInTimeAndDesignatorText;
 - (id)_separatorRangeInTimeText;
 - (id)_timeAndDesignatorFormatter;
-- (id)timeSubstringToSeparatorTextWithZeroPadding:(BOOL)a3;
-- (id)timeTextForNumberSystem:(unint64_t)a3;
-- (id)trimLeadingLeftRightMarkerFrom:(id)a3;
+- (id)timeSubstringToSeparatorTextWithZeroPadding:(BOOL)padding;
+- (id)timeTextForNumberSystem:(unint64_t)system;
+- (id)trimLeadingLeftRightMarkerFrom:(id)from;
 - (void)_handleSignificantTimeChange;
-- (void)_invalidateDate:(id)a3;
+- (void)_invalidateDate:(id)date;
 - (void)_invalidateText;
 - (void)_notifyReportingLiveTimeDidChange;
 - (void)_notifyTextDidChange;
-- (void)_setUseNarrowDesignatorTextForGerman:(BOOL)a3;
+- (void)_setUseNarrowDesignatorTextForGerman:(BOOL)german;
 - (void)_startOrStopUpdatesIfNecessary;
-- (void)_stopMinuteUpdates:(BOOL)a3;
-- (void)_stopSecondsUpdates:(BOOL)a3;
+- (void)_stopMinuteUpdates:(BOOL)updates;
+- (void)_stopSecondsUpdates:(BOOL)updates;
 - (void)dealloc;
-- (void)setForcedNumberSystem:(unint64_t)a3;
-- (void)setIncludeSeparatorInTimeSubstringFromSeparatorText:(BOOL)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setPaused:(BOOL)a3 forReason:(id)a4;
-- (void)setShowSeconds:(BOOL)a3;
-- (void)setSuppressesDesignatorWhitespace:(BOOL)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setZeroPadTimeSubstringToSeparatorText:(BOOL)a3;
+- (void)setForcedNumberSystem:(unint64_t)system;
+- (void)setIncludeSeparatorInTimeSubstringFromSeparatorText:(BOOL)text;
+- (void)setOverrideDate:(id)date;
+- (void)setPaused:(BOOL)paused forReason:(id)reason;
+- (void)setShowSeconds:(BOOL)seconds;
+- (void)setSuppressesDesignatorWhitespace:(BOOL)whitespace;
+- (void)setTimeOffset:(double)offset;
+- (void)setTimeZone:(id)zone;
+- (void)setZeroPadTimeSubstringToSeparatorText:(BOOL)text;
 @end
 
 @implementation CLKTimeFormatter
 
-- (CLKTimeFormatter)initWithForcedNumberSystem:(unint64_t)a3 clockTimer:(id)a4
+- (CLKTimeFormatter)initWithForcedNumberSystem:(unint64_t)system clockTimer:(id)timer
 {
-  v6 = a4;
+  timerCopy = timer;
   v19.receiver = self;
   v19.super_class = CLKTimeFormatter;
   v7 = [(CLKTimeFormatter *)&v19 init];
   v8 = v7;
   if (v7)
   {
-    v7->_forcedNumberSystem = a3;
+    v7->_forcedNumberSystem = system;
     v9 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v8->_observers;
     v8->_observers = v9;
@@ -91,13 +91,13 @@
       [(CLKTimeFormatter *)v8 _startOrStopUpdatesIfNecessary];
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v8 selector:sel__invalidateText name:@"_FormatterCacheInvalidatedNotification" object:0];
-    [v13 addObserver:v8 selector:sel__handleSignificantTimeChange name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__invalidateText name:@"_FormatterCacheInvalidatedNotification" object:0];
+    [defaultCenter addObserver:v8 selector:sel__handleSignificantTimeChange name:*MEMORY[0x277D766F0] object:0];
     v8->_includeSeparatorInTimeSubstringFromSeparatorText = 1;
-    if (v6)
+    if (timerCopy)
     {
-      v14 = v6;
+      v14 = timerCopy;
     }
 
     else
@@ -114,8 +114,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self->_secondsUpdateToken)
   {
@@ -132,76 +132,76 @@
   [(CLKTimeFormatter *)&v4 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3 forReason:(id)a4
+- (void)setPaused:(BOOL)paused forReason:(id)reason
 {
   reasonsToPause = self->_reasonsToPause;
-  if (a3)
+  if (paused)
   {
-    [(NSMutableSet *)reasonsToPause addObject:a4];
+    [(NSMutableSet *)reasonsToPause addObject:reason];
   }
 
   else
   {
-    [(NSMutableSet *)reasonsToPause removeObject:a4];
+    [(NSMutableSet *)reasonsToPause removeObject:reason];
   }
 
   [(CLKTimeFormatter *)self _startOrStopUpdatesIfNecessary];
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v5 = a3;
-  if (([v5 isEqualToDate:self->_overrideDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqualToDate:self->_overrideDate] & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     [(CLKTimeFormatter *)self _startOrStopUpdatesIfNecessary];
     [(CLKTimeFormatter *)self _invalidateDate:0];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v5 = a3;
-  if (([v5 isEqualToTimeZone:self->_timeZone] & 1) == 0)
+  zoneCopy = zone;
+  if (([zoneCopy isEqualToTimeZone:self->_timeZone] & 1) == 0)
   {
-    objc_storeStrong(&self->_timeZone, a3);
+    objc_storeStrong(&self->_timeZone, zone);
     [(CLKTimeFormatter *)self _invalidateText];
   }
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  if (!CLKFloatEqualsFloat(a3, self->_timeOffset))
+  if (!CLKFloatEqualsFloat(offset, self->_timeOffset))
   {
-    self->_timeOffset = a3;
+    self->_timeOffset = offset;
 
     [(CLKTimeFormatter *)self _invalidateDate:0];
   }
 }
 
-- (void)setSuppressesDesignatorWhitespace:(BOOL)a3
+- (void)setSuppressesDesignatorWhitespace:(BOOL)whitespace
 {
-  if (self->_suppressesDesignatorWhitespace != a3)
+  if (self->_suppressesDesignatorWhitespace != whitespace)
   {
-    self->_suppressesDesignatorWhitespace = a3;
+    self->_suppressesDesignatorWhitespace = whitespace;
     [(CLKTimeFormatter *)self _invalidateText];
   }
 }
 
-- (void)_setUseNarrowDesignatorTextForGerman:(BOOL)a3
+- (void)_setUseNarrowDesignatorTextForGerman:(BOOL)german
 {
-  if (self->_useNarrowDesignatorTextForGerman != a3)
+  if (self->_useNarrowDesignatorTextForGerman != german)
   {
-    self->_useNarrowDesignatorTextForGerman = a3;
+    self->_useNarrowDesignatorTextForGerman = german;
     [(CLKTimeFormatter *)self _invalidateText];
   }
 }
 
-- (void)setForcedNumberSystem:(unint64_t)a3
+- (void)setForcedNumberSystem:(unint64_t)system
 {
-  if (self->_forcedNumberSystem != a3)
+  if (self->_forcedNumberSystem != system)
   {
-    self->_forcedNumberSystem = a3;
+    self->_forcedNumberSystem = system;
     [(CLKTimeFormatter *)self _invalidateText];
   }
 }
@@ -232,9 +232,9 @@
   designatorText = self->_designatorText;
   if (!designatorText)
   {
-    v4 = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorText];
-    v5 = [(CLKTimeFormatter *)self timeAndDesignatorText];
-    v6 = [v4 substringFromString:v5];
+    _designatorRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorText];
+    timeAndDesignatorText = [(CLKTimeFormatter *)self timeAndDesignatorText];
+    v6 = [_designatorRangeInTimeAndDesignatorText substringFromString:timeAndDesignatorText];
     v7 = self->_designatorText;
     self->_designatorText = v6;
 
@@ -249,12 +249,12 @@
   timeAndDesignatorText = self->_timeAndDesignatorText;
   if (!timeAndDesignatorText)
   {
-    v4 = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
-    v5 = [v4 stringFromDate:self->_date];
+    _timeAndDesignatorFormatter = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
+    v5 = [_timeAndDesignatorFormatter stringFromDate:self->_date];
 
-    v6 = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
-    v7 = [v6 locale];
-    v8 = [v7 objectForKey:*MEMORY[0x277CBE6C8]];
+    _timeAndDesignatorFormatter2 = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
+    locale = [_timeAndDesignatorFormatter2 locale];
+    v8 = [locale objectForKey:*MEMORY[0x277CBE6C8]];
 
     if ([v8 isEqualToString:@"th"])
     {
@@ -303,23 +303,23 @@ LABEL_10:
   timeAndDesignatorTextWithoutMinutesIfZero = self->_timeAndDesignatorTextWithoutMinutesIfZero;
   if (!timeAndDesignatorTextWithoutMinutesIfZero)
   {
-    v5 = [(CLKTimeFormatter *)self timeAndDesignatorText];
-    v6 = [(CLKTimeFormatter *)self separatorRangeInTimeAndDesignatorText];
+    timeAndDesignatorText = [(CLKTimeFormatter *)self timeAndDesignatorText];
+    separatorRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self separatorRangeInTimeAndDesignatorText];
     v8 = v7;
-    v9 = [(CLKTimeFormatter *)self designatorRangeInTimeAndDesignatorText];
+    designatorRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self designatorRangeInTimeAndDesignatorText];
     if (v10)
     {
-      if (v9 > v6)
+      if (designatorRangeInTimeAndDesignatorText > separatorRangeInTimeAndDesignatorText)
       {
-        v11 = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
-        v12 = [v11 length];
+        timeSubstringFromSeparatorText = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
+        v12 = [timeSubstringFromSeparatorText length];
 
-        v13 = [v5 substringWithRange:{v6 + v8, v12 - v8}];
-        LODWORD(v11) = [v13 isEqualToString:@"00"];
+        v13 = [timeAndDesignatorText substringWithRange:{separatorRangeInTimeAndDesignatorText + v8, v12 - v8}];
+        LODWORD(timeSubstringFromSeparatorText) = [v13 isEqualToString:@"00"];
 
-        if (v11)
+        if (timeSubstringFromSeparatorText)
         {
-          v14 = [v5 stringByReplacingCharactersInRange:v6 withString:{v12, &stru_284A20458}];
+          v14 = [timeAndDesignatorText stringByReplacingCharactersInRange:separatorRangeInTimeAndDesignatorText withString:{v12, &stru_284A20458}];
           v15 = *p_timeAndDesignatorTextWithoutMinutesIfZero;
           *p_timeAndDesignatorTextWithoutMinutesIfZero = v14;
         }
@@ -328,7 +328,7 @@ LABEL_10:
 
     if (!*p_timeAndDesignatorTextWithoutMinutesIfZero)
     {
-      objc_storeStrong(p_timeAndDesignatorTextWithoutMinutesIfZero, v5);
+      objc_storeStrong(p_timeAndDesignatorTextWithoutMinutesIfZero, timeAndDesignatorText);
     }
 
     timeAndDesignatorTextWithoutMinutesIfZero = *p_timeAndDesignatorTextWithoutMinutesIfZero;
@@ -352,17 +352,17 @@ LABEL_10:
   return timeSubstringToSeparatorText;
 }
 
-- (id)timeSubstringToSeparatorTextWithZeroPadding:(BOOL)a3
+- (id)timeSubstringToSeparatorTextWithZeroPadding:(BOOL)padding
 {
-  v3 = a3;
-  v5 = [(CLKTimeFormatter *)self separatorRangeInTimeText];
-  v6 = [(CLKTimeFormatter *)self timeText];
-  v7 = v6;
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  paddingCopy = padding;
+  separatorRangeInTimeText = [(CLKTimeFormatter *)self separatorRangeInTimeText];
+  timeText = [(CLKTimeFormatter *)self timeText];
+  v7 = timeText;
+  if (separatorRangeInTimeText != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v6 substringToIndex:v5];
+    v8 = [timeText substringToIndex:separatorRangeInTimeText];
 
-    if (v3)
+    if (paddingCopy)
     {
       v9 = CLKLocaleNumberSystemIdentifier(self->_forcedNumberSystem);
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"en_US@numbers=%@", v9];
@@ -379,11 +379,11 @@ LABEL_10:
   return v7;
 }
 
-- (void)setZeroPadTimeSubstringToSeparatorText:(BOOL)a3
+- (void)setZeroPadTimeSubstringToSeparatorText:(BOOL)text
 {
-  if (self->_zeroPadTimeSubstringToSeparatorText != a3)
+  if (self->_zeroPadTimeSubstringToSeparatorText != text)
   {
-    self->_zeroPadTimeSubstringToSeparatorText = a3;
+    self->_zeroPadTimeSubstringToSeparatorText = text;
     self->_timeSubstringToSeparatorText = 0;
     MEMORY[0x2821F96F8]();
   }
@@ -393,8 +393,8 @@ LABEL_10:
 {
   if (!self->_timeSubstringFromSeparatorText)
   {
-    v3 = [(CLKTimeFormatter *)self separatorRangeInTimeText];
-    if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+    separatorRangeInTimeText = [(CLKTimeFormatter *)self separatorRangeInTimeText];
+    if (separatorRangeInTimeText == 0x7FFFFFFFFFFFFFFFLL)
     {
       timeSubstringFromSeparatorText = self->_timeSubstringFromSeparatorText;
       self->_timeSubstringFromSeparatorText = &stru_284A20458;
@@ -402,11 +402,11 @@ LABEL_10:
 
     else
     {
-      v6 = v3;
+      v6 = separatorRangeInTimeText;
       v7 = v4;
       includeSeparatorInTimeSubstringFromSeparatorText = self->_includeSeparatorInTimeSubstringFromSeparatorText;
-      v9 = [(CLKTimeFormatter *)self timeText];
-      timeSubstringFromSeparatorText = v9;
+      timeText = [(CLKTimeFormatter *)self timeText];
+      timeSubstringFromSeparatorText = timeText;
       if (includeSeparatorInTimeSubstringFromSeparatorText)
       {
         v10 = v6;
@@ -417,7 +417,7 @@ LABEL_10:
         v10 = v6 + v7;
       }
 
-      v11 = [(NSString *)v9 substringFromIndex:v10];
+      v11 = [(NSString *)timeText substringFromIndex:v10];
       v12 = self->_timeSubstringFromSeparatorText;
       self->_timeSubstringFromSeparatorText = v11;
     }
@@ -428,11 +428,11 @@ LABEL_10:
   return v13;
 }
 
-- (void)setIncludeSeparatorInTimeSubstringFromSeparatorText:(BOOL)a3
+- (void)setIncludeSeparatorInTimeSubstringFromSeparatorText:(BOOL)text
 {
-  if (self->_includeSeparatorInTimeSubstringFromSeparatorText != a3)
+  if (self->_includeSeparatorInTimeSubstringFromSeparatorText != text)
   {
-    self->_includeSeparatorInTimeSubstringFromSeparatorText = a3;
+    self->_includeSeparatorInTimeSubstringFromSeparatorText = text;
     self->_timeSubstringFromSeparatorText = 0;
     MEMORY[0x2821F96F8]();
   }
@@ -440,11 +440,11 @@ LABEL_10:
 
 - (_NSRange)designatorRangeInTimeAndDesignatorText
 {
-  v2 = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorText];
-  v3 = [v2 range];
+  _designatorRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorText];
+  range = [_designatorRangeInTimeAndDesignatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -453,11 +453,11 @@ LABEL_10:
 
 - (_NSRange)designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero
 {
-  v2 = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
-  v3 = [v2 range];
+  _designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = [(CLKTimeFormatter *)self _designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero];
+  range = [_designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -466,19 +466,19 @@ LABEL_10:
 
 - (BOOL)isTopOfHour
 {
-  v2 = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
-  v3 = [v2 integerValue];
+  timeSubstringFromSeparatorText = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
+  integerValue = [timeSubstringFromSeparatorText integerValue];
 
-  return v3 == 0;
+  return integerValue == 0;
 }
 
 - (_NSRange)separatorRangeInTimeText
 {
-  v2 = [(CLKTimeFormatter *)self _separatorRangeInTimeText];
-  v3 = [v2 range];
+  _separatorRangeInTimeText = [(CLKTimeFormatter *)self _separatorRangeInTimeText];
+  range = [_separatorRangeInTimeText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -487,11 +487,11 @@ LABEL_10:
 
 - (_NSRange)separatorRangeInTimeAndDesignatorText
 {
-  v2 = [(CLKTimeFormatter *)self _separatorRangeInTimeAndDesignatorText];
-  v3 = [v2 range];
+  _separatorRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self _separatorRangeInTimeAndDesignatorText];
+  range = [_separatorRangeInTimeAndDesignatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -500,11 +500,11 @@ LABEL_10:
 
 - (_NSRange)blinkerRangeInTimeText
 {
-  v2 = [(CLKTimeFormatter *)self _blinkerRangeInTimeText];
-  v3 = [v2 range];
+  _blinkerRangeInTimeText = [(CLKTimeFormatter *)self _blinkerRangeInTimeText];
+  range = [_blinkerRangeInTimeText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -513,11 +513,11 @@ LABEL_10:
 
 - (_NSRange)lastBlinkerRangeInTimeText
 {
-  v2 = [(CLKTimeFormatter *)self _lastBlinkerRangeInTimeText];
-  v3 = [v2 range];
+  _lastBlinkerRangeInTimeText = [(CLKTimeFormatter *)self _lastBlinkerRangeInTimeText];
+  range = [_lastBlinkerRangeInTimeText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -526,11 +526,11 @@ LABEL_10:
 
 - (_NSRange)blinkerRangeInTimeAndDesignatorText
 {
-  v2 = [(CLKTimeFormatter *)self _blinkerRangeInTimeAndDesignatorText];
-  v3 = [v2 range];
+  _blinkerRangeInTimeAndDesignatorText = [(CLKTimeFormatter *)self _blinkerRangeInTimeAndDesignatorText];
+  range = [_blinkerRangeInTimeAndDesignatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -539,11 +539,11 @@ LABEL_10:
 
 - (_NSRange)blinkerRangeInTimeSubstringToSeparatorText
 {
-  v2 = [(CLKTimeFormatter *)self _blinkerRangeInTimeSubstringToSeparatorText];
-  v3 = [v2 range];
+  _blinkerRangeInTimeSubstringToSeparatorText = [(CLKTimeFormatter *)self _blinkerRangeInTimeSubstringToSeparatorText];
+  range = [_blinkerRangeInTimeSubstringToSeparatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -552,11 +552,11 @@ LABEL_10:
 
 - (_NSRange)blinkerRangeInTimeSubstringFromSeparatorText
 {
-  v2 = [(CLKTimeFormatter *)self _blinkerRangeInTimeSubstringFromSeparatorText];
-  v3 = [v2 range];
+  _blinkerRangeInTimeSubstringFromSeparatorText = [(CLKTimeFormatter *)self _blinkerRangeInTimeSubstringFromSeparatorText];
+  range = [_blinkerRangeInTimeSubstringFromSeparatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -565,59 +565,59 @@ LABEL_10:
 
 - (_NSRange)rangeInTimeSubstringFromSecondsSeparatorText
 {
-  v2 = [(CLKTimeFormatter *)self _rangeInTimeSubstringFromSecondsSeparatorText];
-  v3 = [v2 range];
+  _rangeInTimeSubstringFromSecondsSeparatorText = [(CLKTimeFormatter *)self _rangeInTimeSubstringFromSecondsSeparatorText];
+  range = [_rangeInTimeSubstringFromSecondsSeparatorText range];
   v5 = v4;
 
-  v6 = v3;
+  v6 = range;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (id)_designatorRangeInText:(id)a3
+- (id)_designatorRangeInText:(id)text
 {
-  v4 = a3;
-  v5 = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
-  v6 = [v5 AMSymbol];
-  v7 = [v5 PMSymbol];
-  v8 = [v5 locale];
-  v9 = [v8 objectForKey:*MEMORY[0x277CBE6C8]];
+  textCopy = text;
+  _timeAndDesignatorFormatter = [(CLKTimeFormatter *)self _timeAndDesignatorFormatter];
+  aMSymbol = [_timeAndDesignatorFormatter AMSymbol];
+  pMSymbol = [_timeAndDesignatorFormatter PMSymbol];
+  locale = [_timeAndDesignatorFormatter locale];
+  v9 = [locale objectForKey:*MEMORY[0x277CBE6C8]];
 
   if ([v9 isEqualToString:@"th"])
   {
-    v10 = [v6 stringByReplacingOccurrencesOfString:@"ก่อนเที่ยง" withString:@"AM"];
+    v10 = [aMSymbol stringByReplacingOccurrencesOfString:@"ก่อนเที่ยง" withString:@"AM"];
 
-    v11 = [v7 stringByReplacingOccurrencesOfString:@"หลังเที่ยง" withString:@"PM"];
-    v6 = v10;
+    v11 = [pMSymbol stringByReplacingOccurrencesOfString:@"หลังเที่ยง" withString:@"PM"];
+    aMSymbol = v10;
 LABEL_3:
 
-    v7 = v11;
+    pMSymbol = v11;
     goto LABEL_9;
   }
 
   if (self->_useNarrowDesignatorTextForGerman && [v9 isEqualToString:@"de"])
   {
-    if ([v6 rangeOfString:@"vorm."] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([aMSymbol rangeOfString:@"vorm."] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = [v6 stringByReplacingOccurrencesOfString:@"vorm." withString:@"v."];
+      v12 = [aMSymbol stringByReplacingOccurrencesOfString:@"vorm." withString:@"v."];
 
-      v6 = v12;
+      aMSymbol = v12;
     }
 
-    if ([v7 rangeOfString:@"nachm."] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([pMSymbol rangeOfString:@"nachm."] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [v7 stringByReplacingOccurrencesOfString:@"nachm." withString:@"n."];
+      v11 = [pMSymbol stringByReplacingOccurrencesOfString:@"nachm." withString:@"n."];
       goto LABEL_3;
     }
   }
 
 LABEL_9:
-  v13 = [v4 rangeOfString:v6];
+  v13 = [textCopy rangeOfString:aMSymbol];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v13 = [v4 rangeOfString:v7];
+    v13 = [textCopy rangeOfString:pMSymbol];
   }
 
   v15 = [_CLKTimeFormatterSubstringRange rangeWithRange:v13, v14];
@@ -630,8 +630,8 @@ LABEL_9:
   designatorRangeInTimeAndDesignatorText = self->_designatorRangeInTimeAndDesignatorText;
   if (!designatorRangeInTimeAndDesignatorText)
   {
-    v4 = [(CLKTimeFormatter *)self timeAndDesignatorText];
-    v5 = [(CLKTimeFormatter *)self _designatorRangeInText:v4];
+    timeAndDesignatorText = [(CLKTimeFormatter *)self timeAndDesignatorText];
+    v5 = [(CLKTimeFormatter *)self _designatorRangeInText:timeAndDesignatorText];
     v6 = self->_designatorRangeInTimeAndDesignatorText;
     self->_designatorRangeInTimeAndDesignatorText = v5;
 
@@ -646,8 +646,8 @@ LABEL_9:
   designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = self->_designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero;
   if (!designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero)
   {
-    v4 = [(CLKTimeFormatter *)self timeAndDesignatorTextWithoutMinutesIfZero];
-    v5 = [(CLKTimeFormatter *)self _designatorRangeInText:v4];
+    timeAndDesignatorTextWithoutMinutesIfZero = [(CLKTimeFormatter *)self timeAndDesignatorTextWithoutMinutesIfZero];
+    v5 = [(CLKTimeFormatter *)self _designatorRangeInText:timeAndDesignatorTextWithoutMinutesIfZero];
     v6 = self->_designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero;
     self->_designatorRangeInTimeAndDesignatorTextWithoutMinutesIfZero = v5;
 
@@ -662,8 +662,8 @@ LABEL_9:
   separatorRangeInTimeText = self->_separatorRangeInTimeText;
   if (!separatorRangeInTimeText)
   {
-    v4 = [(CLKTimeFormatter *)self timeText];
-    v5 = [(CLKTimeFormatter *)self separatorNSRangeInTimeText:v4];
+    timeText = [(CLKTimeFormatter *)self timeText];
+    v5 = [(CLKTimeFormatter *)self separatorNSRangeInTimeText:timeText];
     v7 = v6;
 
     v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
@@ -681,11 +681,11 @@ LABEL_9:
   separatorRangeInTimeAndDesignatorText = self->_separatorRangeInTimeAndDesignatorText;
   if (!separatorRangeInTimeAndDesignatorText)
   {
-    v4 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-    v5 = [v4 invertedSet];
+    decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+    invertedSet = [decimalDigitCharacterSet invertedSet];
 
-    v6 = [(CLKTimeFormatter *)self timeAndDesignatorText];
-    v7 = [v6 rangeOfCharacterFromSet:v5];
+    timeAndDesignatorText = [(CLKTimeFormatter *)self timeAndDesignatorText];
+    v7 = [timeAndDesignatorText rangeOfCharacterFromSet:invertedSet];
     v9 = v8;
 
     v10 = [_CLKTimeFormatterSubstringRange rangeWithRange:v7, v9];
@@ -703,11 +703,11 @@ LABEL_9:
   blinkerRangeInTimeText = self->_blinkerRangeInTimeText;
   if (!blinkerRangeInTimeText)
   {
-    v4 = [(CLKTimeFormatter *)self timeText];
-    v5 = [v4 _clkBlinkerRange];
+    timeText = [(CLKTimeFormatter *)self timeText];
+    _clkBlinkerRange = [timeText _clkBlinkerRange];
     v7 = v6;
 
-    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
+    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:_clkBlinkerRange, v7];
     v9 = self->_blinkerRangeInTimeText;
     self->_blinkerRangeInTimeText = v8;
 
@@ -722,11 +722,11 @@ LABEL_9:
   lastBlinkerRangeInTimeText = self->_lastBlinkerRangeInTimeText;
   if (!lastBlinkerRangeInTimeText)
   {
-    v4 = [(CLKTimeFormatter *)self timeText];
-    v5 = [v4 _clkBlinkerRangeByBackwardsSearch];
+    timeText = [(CLKTimeFormatter *)self timeText];
+    _clkBlinkerRangeByBackwardsSearch = [timeText _clkBlinkerRangeByBackwardsSearch];
     v7 = v6;
 
-    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
+    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:_clkBlinkerRangeByBackwardsSearch, v7];
     v9 = self->_lastBlinkerRangeInTimeText;
     self->_lastBlinkerRangeInTimeText = v8;
 
@@ -741,11 +741,11 @@ LABEL_9:
   blinkerRangeInTimeAndDesignatorText = self->_blinkerRangeInTimeAndDesignatorText;
   if (!blinkerRangeInTimeAndDesignatorText)
   {
-    v4 = [(CLKTimeFormatter *)self timeAndDesignatorText];
-    v5 = [v4 _clkBlinkerRange];
+    timeAndDesignatorText = [(CLKTimeFormatter *)self timeAndDesignatorText];
+    _clkBlinkerRange = [timeAndDesignatorText _clkBlinkerRange];
     v7 = v6;
 
-    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
+    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:_clkBlinkerRange, v7];
     v9 = self->_blinkerRangeInTimeAndDesignatorText;
     self->_blinkerRangeInTimeAndDesignatorText = v8;
 
@@ -760,11 +760,11 @@ LABEL_9:
   blinkerRangeInTimeSubstringToSeparatorText = self->_blinkerRangeInTimeSubstringToSeparatorText;
   if (!blinkerRangeInTimeSubstringToSeparatorText)
   {
-    v4 = [(CLKTimeFormatter *)self timeSubstringToSeparatorText];
-    v5 = [v4 _clkBlinkerRange];
+    timeSubstringToSeparatorText = [(CLKTimeFormatter *)self timeSubstringToSeparatorText];
+    _clkBlinkerRange = [timeSubstringToSeparatorText _clkBlinkerRange];
     v7 = v6;
 
-    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
+    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:_clkBlinkerRange, v7];
     v9 = self->_blinkerRangeInTimeSubstringToSeparatorText;
     self->_blinkerRangeInTimeSubstringToSeparatorText = v8;
 
@@ -779,11 +779,11 @@ LABEL_9:
   blinkerRangeInTimeSubstringFromSeparatorText = self->_blinkerRangeInTimeSubstringFromSeparatorText;
   if (!blinkerRangeInTimeSubstringFromSeparatorText)
   {
-    v4 = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
-    v5 = [v4 _clkBlinkerRange];
+    timeSubstringFromSeparatorText = [(CLKTimeFormatter *)self timeSubstringFromSeparatorText];
+    _clkBlinkerRange = [timeSubstringFromSeparatorText _clkBlinkerRange];
     v7 = v6;
 
-    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:v5, v7];
+    v8 = [_CLKTimeFormatterSubstringRange rangeWithRange:_clkBlinkerRange, v7];
     v9 = self->_blinkerRangeInTimeSubstringFromSeparatorText;
     self->_blinkerRangeInTimeSubstringFromSeparatorText = v8;
 
@@ -798,13 +798,13 @@ LABEL_9:
   rangeInTimeSubstringFromSecondsSeparatorText = self->_rangeInTimeSubstringFromSecondsSeparatorText;
   if (!rangeInTimeSubstringFromSecondsSeparatorText)
   {
-    v4 = [(CLKTimeFormatter *)self timeText];
-    v5 = [v4 _clkBlinkerRangeByBackwardsSearch];
+    timeText = [(CLKTimeFormatter *)self timeText];
+    _clkBlinkerRangeByBackwardsSearch = [timeText _clkBlinkerRangeByBackwardsSearch];
     v7 = v6;
 
-    v8 = v5 + v7;
-    v9 = [(CLKTimeFormatter *)self timeText];
-    v10 = [v9 length] - v8;
+    v8 = _clkBlinkerRangeByBackwardsSearch + v7;
+    timeText2 = [(CLKTimeFormatter *)self timeText];
+    v10 = [timeText2 length] - v8;
 
     v11 = [_CLKTimeFormatterSubstringRange rangeWithRange:v8, v10];
     v12 = self->_rangeInTimeSubstringFromSecondsSeparatorText;
@@ -824,17 +824,17 @@ LABEL_9:
   return v4;
 }
 
-- (id)trimLeadingLeftRightMarkerFrom:(id)a3
+- (id)trimLeadingLeftRightMarkerFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"\u200E"])
+  fromCopy = from;
+  if ([fromCopy hasPrefix:@"\u200E"])
   {
-    v4 = [v3 substringFromIndex:1];
+    v4 = [fromCopy substringFromIndex:1];
   }
 
   else
   {
-    v4 = v3;
+    v4 = fromCopy;
   }
 
   v5 = v4;
@@ -922,16 +922,16 @@ LABEL_9:
   }
 }
 
-- (void)_stopMinuteUpdates:(BOOL)a3
+- (void)_stopMinuteUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   if (self->_minutesUpdateToken)
   {
     [(CLKClockTimer *)self->_timer stopUpdatesForToken:?];
     minutesUpdateToken = self->_minutesUpdateToken;
     self->_minutesUpdateToken = 0;
 
-    if (v3)
+    if (updatesCopy)
     {
 
       [(CLKTimeFormatter *)self _notifyReportingLiveTimeDidChange];
@@ -939,16 +939,16 @@ LABEL_9:
   }
 }
 
-- (void)_stopSecondsUpdates:(BOOL)a3
+- (void)_stopSecondsUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   if (self->_secondsUpdateToken)
   {
     [(CLKClockTimer *)self->_timer stopUpdatesForToken:?];
     secondsUpdateToken = self->_secondsUpdateToken;
     self->_secondsUpdateToken = 0;
 
-    if (v3)
+    if (updatesCopy)
     {
 
       [(CLKTimeFormatter *)self _notifyReportingLiveTimeDidChange];
@@ -1037,11 +1037,11 @@ __CFString *__50__CLKTimeFormatter__startOrStopUpdatesIfNecessary__block_invoke_
   return v4;
 }
 
-- (void)_invalidateDate:(id)a3
+- (void)_invalidateDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
-  v8 = v4;
+  v8 = dateCopy;
   if (overrideDate)
   {
     v6 = overrideDate;
@@ -1049,8 +1049,8 @@ __CFString *__50__CLKTimeFormatter__startOrStopUpdatesIfNecessary__block_invoke_
 
   else
   {
-    v7 = v4;
-    if (!v4)
+    v7 = dateCopy;
+    if (!dateCopy)
     {
       v7 = +[CLKClockTimer now];
     }
@@ -1129,11 +1129,11 @@ __CFString *__50__CLKTimeFormatter__startOrStopUpdatesIfNecessary__block_invoke_
   }
 }
 
-- (void)setShowSeconds:(BOOL)a3
+- (void)setShowSeconds:(BOOL)seconds
 {
-  if (self->_showSeconds != a3)
+  if (self->_showSeconds != seconds)
   {
-    self->_showSeconds = a3;
+    self->_showSeconds = seconds;
     [(CLKTimeFormatter *)self _invalidateText];
   }
 }
@@ -1145,31 +1145,31 @@ __CFString *__50__CLKTimeFormatter__startOrStopUpdatesIfNecessary__block_invoke_
   return WeakRetained;
 }
 
-- (id)timeTextForNumberSystem:(unint64_t)a3
+- (id)timeTextForNumberSystem:(unint64_t)system
 {
-  if (self->_forcedNumberSystem == a3)
+  if (self->_forcedNumberSystem == system)
   {
-    v4 = [(CLKTimeFormatter *)self timeText];
+    timeText = [(CLKTimeFormatter *)self timeText];
   }
 
   else
   {
     v6 = +[_CLKTimeFormatterCache sharedInstance];
-    v7 = [v6 timeOnlyFormatterForTimeZone:self->_timeZone hasSeconds:self->_showSeconds forcedNumberSystem:a3];
+    v7 = [v6 timeOnlyFormatterForTimeZone:self->_timeZone hasSeconds:self->_showSeconds forcedNumberSystem:system];
     v8 = [v7 stringFromDate:self->_date];
 
-    v4 = [(CLKTimeFormatter *)self trimLeadingLeftRightMarkerFrom:v8];
+    timeText = [(CLKTimeFormatter *)self trimLeadingLeftRightMarkerFrom:v8];
   }
 
-  return v4;
+  return timeText;
 }
 
-- (_NSRange)separatorNSRangeInTimeText:(id)a3
+- (_NSRange)separatorNSRangeInTimeText:(id)text
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 punctuationCharacterSet];
-  v6 = [v4 rangeOfCharacterFromSet:v5];
+  textCopy = text;
+  punctuationCharacterSet = [v3 punctuationCharacterSet];
+  v6 = [textCopy rangeOfCharacterFromSet:punctuationCharacterSet];
   v8 = v7;
 
   v9 = v6;

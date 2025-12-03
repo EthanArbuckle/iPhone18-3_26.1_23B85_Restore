@@ -1,8 +1,8 @@
 @interface GKMultiplayerCustomInviteMessageViewController
 - (GKMultiplayerCustomInviteMessageViewControllerDelegate)delegate;
-- (void)donePressed:(id)a3;
+- (void)donePressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKMultiplayerCustomInviteMessageViewController
@@ -16,100 +16,100 @@
   v4 = GKGetLocalizedStringFromTableInBundle();
   [(GKMultiplayerCustomInviteMessageViewController *)self setTitle:v4];
 
-  v5 = [(GKMultiplayerCustomInviteMessageViewController *)self doneButton];
+  doneButton = [(GKMultiplayerCustomInviteMessageViewController *)self doneButton];
   v6 = GKGameCenterUIFrameworkBundle();
   v7 = GKGetLocalizedStringFromTableInBundle();
-  [v5 setTitle:v7 forState:0];
+  [doneButton setTitle:v7 forState:0];
 
-  v8 = [(GKMultiplayerCustomInviteMessageViewController *)self doneButton];
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setTitleColor:v9 forState:0];
+  doneButton2 = [(GKMultiplayerCustomInviteMessageViewController *)self doneButton];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [doneButton2 setTitleColor:whiteColor forState:0];
 
-  v10 = [(GKMultiplayerCustomInviteMessageViewController *)self delegate];
-  v11 = [v10 existingMessageForInviteViewController:self];
+  delegate = [(GKMultiplayerCustomInviteMessageViewController *)self delegate];
+  v11 = [delegate existingMessageForInviteViewController:self];
 
   if (v11)
   {
-    v12 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-    [v12 setText:v11];
+    messageTextField = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+    [messageTextField setText:v11];
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x277CCA898]);
-    v12 = GKGameCenterUIFrameworkBundle();
+    messageTextField = GKGameCenterUIFrameworkBundle();
     v14 = GKGetLocalizedStringFromTableInBundle();
     v15 = [v13 initWithString:v14];
-    v16 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-    [v16 setAttributedPlaceholder:v15];
+    messageTextField2 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+    [messageTextField2 setAttributedPlaceholder:v15];
   }
 
-  v17 = [(GKMultiplayerCustomInviteMessageViewController *)self navigationController];
-  [v17 setNavigationBarHidden:1];
+  navigationController = [(GKMultiplayerCustomInviteMessageViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
-  v18 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+  backgroundEffectView = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
 
-  if (!v18)
+  if (!backgroundEffectView)
   {
     v19 = objc_alloc(MEMORY[0x277D75D68]);
     v20 = [MEMORY[0x277D75210] effectWithStyle:2];
     v21 = [v19 initWithEffect:v20];
     [(GKMultiplayerCustomInviteMessageViewController *)self setBackgroundEffectView:v21];
 
-    v22 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-    v23 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
-    [v23 setBackgroundEffects:v22];
+    _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+    backgroundEffectView2 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+    [backgroundEffectView2 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
-    v24 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
-    [v24 _setGroupName:@"gameLayerGroup"];
+    backgroundEffectView3 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+    [backgroundEffectView3 _setGroupName:@"gameLayerGroup"];
 
-    v25 = [(GKMultiplayerCustomInviteMessageViewController *)self view];
-    [v25 bounds];
+    view = [(GKMultiplayerCustomInviteMessageViewController *)self view];
+    [view bounds];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
-    [v34 setFrame:{v27, v29, v31, v33}];
+    backgroundEffectView4 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+    [backgroundEffectView4 setFrame:{v27, v29, v31, v33}];
 
-    v35 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
-    [v35 setAutoresizingMask:18];
+    backgroundEffectView5 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+    [backgroundEffectView5 setAutoresizingMask:18];
   }
 
-  v36 = [(GKMultiplayerCustomInviteMessageViewController *)self view];
-  v37 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
-  [v36 insertSubview:v37 atIndex:0];
+  view2 = [(GKMultiplayerCustomInviteMessageViewController *)self view];
+  backgroundEffectView6 = [(GKMultiplayerCustomInviteMessageViewController *)self backgroundEffectView];
+  [view2 insertSubview:backgroundEffectView6 atIndex:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GKMultiplayerCustomInviteMessageViewController;
-  [(GKMultiplayerCustomInviteMessageViewController *)&v5 viewWillAppear:a3];
-  v4 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-  [v4 becomeFirstResponder];
+  [(GKMultiplayerCustomInviteMessageViewController *)&v5 viewWillAppear:appear];
+  messageTextField = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+  [messageTextField becomeFirstResponder];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
-  v4 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-  [v4 resignFirstResponder];
+  messageTextField = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+  [messageTextField resignFirstResponder];
 
-  v5 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-  v6 = [v5 text];
-  if ([v6 length])
+  messageTextField2 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+  text = [messageTextField2 text];
+  if ([text length])
   {
-    v7 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
-    v9 = [v7 text];
+    messageTextField3 = [(GKMultiplayerCustomInviteMessageViewController *)self messageTextField];
+    text2 = [messageTextField3 text];
   }
 
   else
   {
-    v9 = 0;
+    text2 = 0;
   }
 
-  v8 = [(GKMultiplayerCustomInviteMessageViewController *)self delegate];
-  [v8 customInviteViewController:self didFinishWithMessage:v9];
+  delegate = [(GKMultiplayerCustomInviteMessageViewController *)self delegate];
+  [delegate customInviteViewController:self didFinishWithMessage:text2];
 }
 
 - (GKMultiplayerCustomInviteMessageViewControllerDelegate)delegate

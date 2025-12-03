@@ -1,33 +1,33 @@
 @interface SDAirDropHandler
-+ (id)alertMessageLocalizedKeyForTypeDicts:(id)a3 senderIsMe:(BOOL)a4 isVerifiableIdentity:(BOOL)a5 isModernProgress:(BOOL)a6 transferState:(unint64_t)a7;
++ (id)alertMessageLocalizedKeyForTypeDicts:(id)dicts senderIsMe:(BOOL)me isVerifiableIdentity:(BOOL)identity isModernProgress:(BOOL)progress transferState:(unint64_t)state;
 + (id)persistedTransfersBaseURL;
-+ (id)transferURLForTransfer:(id)a3;
-+ (void)logReceiverBundleID:(id)a3 forURL:(id)a4;
-- (BOOL)openURLs:(id)a3 bundleIdentifier:(id)a4;
++ (id)transferURLForTransfer:(id)transfer;
++ (void)logReceiverBundleID:(id)d forURL:(id)l;
+- (BOOL)openURLs:(id)ls bundleIdentifier:(id)identifier;
 - (NSString)senderName;
 - (SDAirDropHandler)init;
-- (SDAirDropHandler)initWithTransfer:(id)a3 bundleIdentifier:(id)a4;
-- (id)alertMessageLocalizedKeyForTypeDicts:(id)a3;
-- (id)applicationProxyForBundleProxy:(id)a3;
-- (id)bundleProxyFromCandidateIdentifiers:(id)a3 handlesURL:(id)a4;
-- (id)cancelActionTitleToAccompanyActions:(id)a3;
-- (id)defaultActionForBundleProxy:(id)a3;
+- (SDAirDropHandler)initWithTransfer:(id)transfer bundleIdentifier:(id)identifier;
+- (id)alertMessageLocalizedKeyForTypeDicts:(id)dicts;
+- (id)applicationProxyForBundleProxy:(id)proxy;
+- (id)bundleProxyFromCandidateIdentifiers:(id)identifiers handlesURL:(id)l;
+- (id)cancelActionTitleToAccompanyActions:(id)actions;
+- (id)defaultActionForBundleProxy:(id)proxy;
 - (id)defaultFolder;
 - (id)description;
 - (int64_t)transferTypes;
 - (unint64_t)totalSharedItemsCount;
-- (void)actionSelected:(id)a3;
+- (void)actionSelected:(id)selected;
 - (void)activate;
 - (void)addStatusMonitorObservers;
 - (void)dealloc;
-- (void)launchMoveToAppShareSheetForFiles:(id)a3;
-- (void)logReceiverBundleID:(id)a3 forAppProxy:(id)a4 andURL:(id)a5;
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4;
-- (void)performOpenSharesheetActionWithImportedURLs:(id)a3 completion:(id)a4;
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4;
-- (void)performViewActionWithURLs:(id)a3;
+- (void)launchMoveToAppShareSheetForFiles:(id)files;
+- (void)logReceiverBundleID:(id)d forAppProxy:(id)proxy andURL:(id)l;
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion;
+- (void)performOpenSharesheetActionWithImportedURLs:(id)ls completion:(id)completion;
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion;
+- (void)performViewActionWithURLs:(id)ls;
 - (void)prepareOrPerformOpenAction;
-- (void)removeItemAtURLToFreeUpSpace:(id)a3;
+- (void)removeItemAtURLToFreeUpSpace:(id)space;
 - (void)removeNotificationObservers;
 - (void)transferUpdated;
 - (void)triggerSelectedActionIfAppropriate;
@@ -46,10 +46,10 @@
   return [(SDAirDropHandler *)self initWithTransfer:0];
 }
 
-- (SDAirDropHandler)initWithTransfer:(id)a3 bundleIdentifier:(id)a4
+- (SDAirDropHandler)initWithTransfer:(id)transfer bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  transferCopy = transfer;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = SDAirDropHandler;
   v8 = [(SDAirDropHandler *)&v24 init];
@@ -59,15 +59,15 @@
     goto LABEL_20;
   }
 
-  [(SDAirDropHandler *)v8 setTransfer:v6];
+  [(SDAirDropHandler *)v8 setTransfer:transferCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v6 metaData];
-  v11 = [v10 items];
+  metaData = [transferCopy metaData];
+  items = [metaData items];
 
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v12 = [items countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -78,7 +78,7 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(items);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
@@ -93,13 +93,13 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v13 = [items countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v13);
   }
 
-  if (v7 && (SFRemovableSystemAppAvailable() & 1) == 0)
+  if (identifierCopy && (SFRemovableSystemAppAvailable() & 1) == 0)
   {
     if (SFRemovableSystemAppAvailable())
     {
@@ -116,10 +116,10 @@
 
   v9->_handlingAppInstalled = v17;
 LABEL_17:
-  objc_storeStrong(&v9->_handlingAppBundleID, a4);
-  if (v7 && v9->_handlingAppInstalled)
+  objc_storeStrong(&v9->_handlingAppBundleID, identifier);
+  if (identifierCopy && v9->_handlingAppInstalled)
   {
-    v18 = [LSBundleProxy bundleProxyForIdentifier:v7];
+    v18 = [LSBundleProxy bundleProxyForIdentifier:identifierCopy];
     [(SDAirDropHandler *)v9 setBundleProxy:v18];
   }
 
@@ -142,10 +142,10 @@ LABEL_20:
 
 - (void)activate
 {
-  v3 = [(SDAirDropHandler *)self transferTypes];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 metaData];
-  [v5 setTransferTypes:v3];
+  transferTypes = [(SDAirDropHandler *)self transferTypes];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  [metaData setTransferTypes:transferTypes];
 
   [(SDAirDropHandler *)self addStatusMonitorObservers];
 
@@ -164,7 +164,7 @@ LABEL_20:
   bundleProxy = self->_bundleProxy;
   if (bundleProxy)
   {
-    v10 = [(LSBundleProxy *)bundleProxy bundleIdentifier];
+    bundleIdentifier = [(LSBundleProxy *)bundleProxy bundleIdentifier];
     NSAppendPrintF();
     v5 = v3;
 
@@ -179,78 +179,78 @@ LABEL_20:
 
 - (void)transferUpdated
 {
-  v15 = [(SDAirDropHandler *)self transfer];
-  v3 = [v15 selectedAction];
+  transfer = [(SDAirDropHandler *)self transfer];
+  selectedAction = [transfer selectedAction];
 
-  if (v3)
+  if (selectedAction)
   {
     [(SDAirDropHandler *)self triggerSelectedActionIfAppropriate];
 LABEL_8:
-    v5 = v15;
+    v5 = transfer;
     goto LABEL_9;
   }
 
-  v4 = [v15 selectedAction];
-  if (v4)
+  selectedAction2 = [transfer selectedAction];
+  if (selectedAction2)
   {
 
-    v5 = v15;
+    v5 = transfer;
   }
 
   else
   {
-    v13 = [v15 possibleActions];
-    v14 = [v13 count];
+    possibleActions = [transfer possibleActions];
+    v14 = [possibleActions count];
 
-    v5 = v15;
+    v5 = transfer;
     if (v14)
     {
       goto LABEL_9;
     }
   }
 
-  v6 = [v5 transferState];
-  v5 = v15;
-  if (v6 > 9)
+  transferState = [v5 transferState];
+  v5 = transfer;
+  if (transferState > 9)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v6) & 0x25E) != 0)
+  if (((1 << transferState) & 0x25E) != 0)
   {
     [(SDAirDropHandler *)self updatePossibleActions];
     goto LABEL_8;
   }
 
-  if (v6 == 7)
+  if (transferState == 7)
   {
     [(SDAirDropHandler *)self prepareOrPerformOpenAction];
     goto LABEL_8;
   }
 
 LABEL_9:
-  v7 = [v5 possibleActions];
-  v8 = [(SDAirDropHandler *)self cancelActionTitleToAccompanyActions:v7];
+  possibleActions2 = [v5 possibleActions];
+  v8 = [(SDAirDropHandler *)self cancelActionTitleToAccompanyActions:possibleActions2];
 
-  v9 = [v15 cancelAction];
-  [v9 setLocalizedTitle:v8];
+  cancelAction = [transfer cancelAction];
+  [cancelAction setLocalizedTitle:v8];
 
-  v10 = [v15 cancelAction];
-  [v10 setSingleItemLocalizedTitle:v8];
+  cancelAction2 = [transfer cancelAction];
+  [cancelAction2 setSingleItemLocalizedTitle:v8];
 
-  v11 = [(SDAirDropHandler *)self suitableContentsTitle];
-  [v15 setContentsTitle:v11];
+  suitableContentsTitle = [(SDAirDropHandler *)self suitableContentsTitle];
+  [transfer setContentsTitle:suitableContentsTitle];
 
-  v12 = [(SDAirDropHandler *)self suitableContentsDescription];
-  [v15 setContentsDescription:v12];
+  suitableContentsDescription = [(SDAirDropHandler *)self suitableContentsDescription];
+  [transfer setContentsDescription:suitableContentsDescription];
 }
 
-- (void)actionSelected:(id)a3
+- (void)actionSelected:(id)selected
 {
-  v5 = a3;
-  v6 = [(SDAirDropHandler *)self transfer];
-  v7 = [v6 cancelAction];
-  v8 = [v7 isEqual:v5];
+  selectedCopy = selected;
+  transfer = [(SDAirDropHandler *)self transfer];
+  cancelAction = [transfer cancelAction];
+  v8 = [cancelAction isEqual:selectedCopy];
 
   if (!v8)
   {
@@ -258,10 +258,10 @@ LABEL_9:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = [(SDAirDropHandler *)self transfer];
-    v14 = [v13 possibleActions];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    possibleActions = [transfer2 possibleActions];
 
-    v15 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    v15 = [possibleActions countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v15)
     {
       v16 = v15;
@@ -273,11 +273,11 @@ LABEL_9:
         {
           if (*v28 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(possibleActions);
           }
 
           v20 = *(*(&v27 + 1) + 8 * i);
-          if ([v20 isEqual:v5])
+          if ([v20 isEqual:selectedCopy])
           {
             v21 = v20;
 
@@ -285,25 +285,25 @@ LABEL_9:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v16 = [possibleActions countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v16);
 
       if (v17)
       {
-        v22 = [(SDAirDropHandler *)self transfer];
-        [v22 setSelectedAction:v17];
+        transfer3 = [(SDAirDropHandler *)self transfer];
+        [transfer3 setSelectedAction:v17];
 
-        v23 = [(SDAirDropHandler *)self transfer];
-        [v23 setPossibleActions:0];
+        transfer4 = [(SDAirDropHandler *)self transfer];
+        [transfer4 setPossibleActions:0];
 
         if ([v17 shouldUpdateUserResponse])
         {
-          v24 = [(SDAirDropHandler *)self transfer];
-          v25 = [v24 userResponse];
+          transfer5 = [(SDAirDropHandler *)self transfer];
+          userResponse = [transfer5 userResponse];
 
-          if (!v25)
+          if (!userResponse)
           {
             v26[0] = _NSConcreteStackBlock;
             v26[1] = 3221225472;
@@ -324,87 +324,87 @@ LABEL_9:
     }
 
     v17 = +[NSAssertionHandler currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SDAirDropHandler.m" lineNumber:221 description:{@"Failed to find localAction for %@", v5}];
+    [v17 handleFailureInMethod:a2 object:self file:@"SDAirDropHandler.m" lineNumber:221 description:{@"Failed to find localAction for %@", selectedCopy}];
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v9 = [(SDAirDropHandler *)self transfer];
-  v10 = [v9 cancelAction];
-  v11 = [(SDAirDropHandler *)self transfer];
-  [v11 setSelectedAction:v10];
+  transfer6 = [(SDAirDropHandler *)self transfer];
+  cancelAction2 = [transfer6 cancelAction];
+  transfer7 = [(SDAirDropHandler *)self transfer];
+  [transfer7 setSelectedAction:cancelAction2];
 
-  v12 = [(SDAirDropHandler *)self transfer];
-  [v12 setUserResponse:2];
+  transfer8 = [(SDAirDropHandler *)self transfer];
+  [transfer8 setUserResponse:2];
 
 LABEL_20:
 }
 
 - (void)triggerSelectedActionIfAppropriate
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 selectedAction];
+  transfer = [(SDAirDropHandler *)self transfer];
+  selectedAction = [transfer selectedAction];
 
-  if (v4)
+  if (selectedAction)
   {
-    v5 = [(SDAirDropHandler *)self transfer];
-    v6 = [v5 transferState];
-    v7 = [v4 minRequiredTransferState];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    transferState = [transfer2 transferState];
+    minRequiredTransferState = [selectedAction minRequiredTransferState];
 
-    if (v6 >= v7)
+    if (transferState >= minRequiredTransferState)
     {
-      v10 = [(SDAirDropHandler *)self transfer];
-      v11 = [v10 transferState];
-      v12 = [v4 maxTransferState];
+      transfer3 = [(SDAirDropHandler *)self transfer];
+      transferState2 = [transfer3 transferState];
+      maxTransferState = [selectedAction maxTransferState];
 
-      if (v11 > v12)
+      if (transferState2 > maxTransferState)
       {
         v13 = airdrop_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v21 = 138412290;
-          v22 = v4;
+          v22 = selectedAction;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Cannot trigger action %@ as it is past requirement", &v21, 0xCu);
         }
 
-        v8 = [(SDAirDropHandler *)self transfer];
-        [v8 setSelectedAction:0];
+        transfer4 = [(SDAirDropHandler *)self transfer];
+        [transfer4 setSelectedAction:0];
         goto LABEL_17;
       }
 
-      if (![v4 requiresUnlockedUI] || (+[SDStatusMonitor sharedMonitor](SDStatusMonitor, "sharedMonitor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "deviceUIUnlocked"), v14, (v15 & 1) != 0))
+      if (![selectedAction requiresUnlockedUI] || (+[SDStatusMonitor sharedMonitor](SDStatusMonitor, "sharedMonitor"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "deviceUIUnlocked"), v14, (v15 & 1) != 0))
       {
-        v16 = [(SDAirDropHandler *)self transfer];
-        v17 = [v16 transferState];
+        transfer5 = [(SDAirDropHandler *)self transfer];
+        transferState3 = [transfer5 transferState];
 
-        if (v17 == 4)
+        if (transferState3 == 4)
         {
-          v18 = [(SDAirDropHandler *)self transfer];
-          [v18 setTransferState:6];
+          transfer6 = [(SDAirDropHandler *)self transfer];
+          [transfer6 setTransferState:6];
         }
 
         v19 = airdrop_log();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v21 = 138412290;
-          v22 = v4;
+          v22 = selectedAction;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Triggering action %@", &v21, 0xCu);
         }
 
-        v20 = [(SDAirDropHandler *)self transfer];
-        [v20 setSelectedAction:0];
+        transfer7 = [(SDAirDropHandler *)self transfer];
+        [transfer7 setSelectedAction:0];
 
-        v8 = [v4 actionHandler];
-        (*(v8 + 16))(v8, v4);
+        transfer4 = [selectedAction actionHandler];
+        (*(transfer4 + 16))(transfer4, selectedAction);
         goto LABEL_17;
       }
 
-      v8 = airdrop_log();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      transfer4 = airdrop_log();
+      if (os_log_type_enabled(transfer4, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v4;
+        v22 = selectedAction;
         v9 = "Delaying trigger of action %@ till UI unlock";
         goto LABEL_5;
       }
@@ -412,14 +412,14 @@ LABEL_20:
 
     else
     {
-      v8 = airdrop_log();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      transfer4 = airdrop_log();
+      if (os_log_type_enabled(transfer4, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v4;
+        v22 = selectedAction;
         v9 = "Delaying trigger of action %@ till transferState reaches requirement";
 LABEL_5:
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v9, &v21, 0xCu);
+        _os_log_impl(&_mh_execute_header, transfer4, OS_LOG_TYPE_DEFAULT, v9, &v21, 0xCu);
       }
     }
 
@@ -458,14 +458,14 @@ LABEL_17:
   }
 }
 
-- (id)cancelActionTitleToAccompanyActions:(id)a3
+- (id)cancelActionTitleToAccompanyActions:(id)actions
 {
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 transferState];
+  transfer = [(SDAirDropHandler *)self transfer];
+  transferState = [transfer transferState];
 
-  if ((v4 - 1) <= 6)
+  if ((transferState - 1) <= 6)
   {
-    v5 = off_1008CDBF0[(v4 - 1)];
+    v5 = off_1008CDBF0[(transferState - 1)];
   }
 
   v6 = SFLocalizedStringForKey();
@@ -476,47 +476,47 @@ LABEL_17:
 - (void)updatePossibleActions
 {
   objc_initWeak(&location, self);
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 cancelAction];
-  v5 = v4 == 0;
+  transfer = [(SDAirDropHandler *)self transfer];
+  cancelAction = [transfer cancelAction];
+  v5 = cancelAction == 0;
 
   if (v5)
   {
     v6 = SFLocalizedStringForKey();
     v7 = [SFAirDropAction alloc];
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 identifier];
-    v10 = [v7 initWithTransferIdentifier:v9 actionIdentifier:@"SDCancelActionIdentifier" title:v6 singleItemTitle:v6 type:2];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    identifier = [transfer2 identifier];
+    v10 = [v7 initWithTransferIdentifier:identifier actionIdentifier:@"SDCancelActionIdentifier" title:v6 singleItemTitle:v6 type:2];
 
     [v10 setMinRequiredTransferState:1];
     [v10 setMaxTransferState:4];
     [v10 setActionHandler:&stru_1008CDAE8];
-    v11 = [(SDAirDropHandler *)self transfer];
-    [v11 setCancelAction:v10];
+    transfer3 = [(SDAirDropHandler *)self transfer];
+    [transfer3 setCancelAction:v10];
   }
 
-  v12 = [(SDAirDropHandler *)self transfer];
-  if ([v12 transferState] == 3)
+  transfer4 = [(SDAirDropHandler *)self transfer];
+  if ([transfer4 transferState] == 3)
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [(SDAirDropHandler *)self transfer];
-    v13 = [v14 transferState] == 9;
+    transfer5 = [(SDAirDropHandler *)self transfer];
+    v13 = [transfer5 transferState] == 9;
   }
 
   handlingAppBundleID = self->_handlingAppBundleID;
   if ((SFRemovableSystemAppAvailable() & 1) == 0 && self->_handlingAppBundleID != 0 && !v13)
   {
     v16 = [SFAirDropAction alloc];
-    v17 = [(SDAirDropHandler *)self transfer];
-    v18 = [v17 identifier];
+    transfer6 = [(SDAirDropHandler *)self transfer];
+    identifier2 = [transfer6 identifier];
     v19 = [LSApplicationProxy applicationProxyForSystemPlaceholder:self->_handlingAppBundleID];
-    v20 = [v19 localizedName];
-    v21 = [(SDAirDropHandler *)self singleItemActionTitle];
-    v22 = [v16 initWithTransferIdentifier:v18 actionIdentifier:@"SDUninstalledAppActionIdentifier" title:v20 singleItemTitle:v21 type:1];
+    localizedName = [v19 localizedName];
+    singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+    v22 = [v16 initWithTransferIdentifier:identifier2 actionIdentifier:@"SDUninstalledAppActionIdentifier" title:localizedName singleItemTitle:singleItemActionTitle type:1];
 
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
@@ -526,8 +526,8 @@ LABEL_17:
     [v22 setActionHandler:&v25];
     v31 = v22;
     v23 = [NSArray arrayWithObjects:&v31 count:1, v25, v26, v27, v28];
-    v24 = [(SDAirDropHandler *)self transfer];
-    [v24 setPossibleActions:v23];
+    transfer7 = [(SDAirDropHandler *)self transfer];
+    [transfer7 setPossibleActions:v23];
 
     objc_destroyWeak(&v29);
   }
@@ -542,18 +542,18 @@ LABEL_17:
 
   if (+[SFAirDropUserDefaults_objc moveToAppEnabled]&& ([(SDAirDropHandler *)self defaultOpenActionBundleID], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v13 = [(SDAirDropHandler *)self actionsForModernReadyForOpen];
-    v5 = [(SDAirDropHandler *)self transfer];
-    [v5 setPossibleActions:v13];
+    actionsForModernReadyForOpen = [(SDAirDropHandler *)self actionsForModernReadyForOpen];
+    transfer = [(SDAirDropHandler *)self transfer];
+    [transfer setPossibleActions:actionsForModernReadyForOpen];
   }
 
   else
   {
     v6 = SFLocalizedStringForKey();
     v7 = [SFAirDropAction alloc];
-    v8 = [(SDAirDropHandler *)self transfer];
-    v9 = [v8 identifier];
-    v10 = [v7 initWithTransferIdentifier:v9 actionIdentifier:@"SDOpenActionIdentifier" title:v6 singleItemTitle:v6 type:3];
+    transfer2 = [(SDAirDropHandler *)self transfer];
+    identifier = [transfer2 identifier];
+    v10 = [v7 initWithTransferIdentifier:identifier actionIdentifier:@"SDOpenActionIdentifier" title:v6 singleItemTitle:v6 type:3];
 
     [v10 setMinRequiredTransferState:7];
     [v10 setMaxTransferState:7];
@@ -566,8 +566,8 @@ LABEL_17:
     [v10 setActionHandler:v14];
     v17 = v10;
     v11 = [NSArray arrayWithObjects:&v17 count:1];
-    v12 = [(SDAirDropHandler *)self transfer];
-    [v12 setPossibleActions:v11];
+    transfer3 = [(SDAirDropHandler *)self transfer];
+    [transfer3 setPossibleActions:v11];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -577,9 +577,9 @@ LABEL_17:
 - (id)defaultFolder
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 temporaryDirectory];
+  temporaryDirectory = [v2 temporaryDirectory];
 
-  return v3;
+  return temporaryDirectory;
 }
 
 + (id)persistedTransfersBaseURL
@@ -590,79 +590,79 @@ LABEL_17:
   return v3;
 }
 
-+ (id)transferURLForTransfer:(id)a3
++ (id)transferURLForTransfer:(id)transfer
 {
-  v3 = a3;
-  v4 = [v3 customDestinationURL];
+  transferCopy = transfer;
+  customDestinationURL = [transferCopy customDestinationURL];
 
-  if (v4)
+  if (customDestinationURL)
   {
-    v5 = [v3 customDestinationURL];
+    customDestinationURL2 = [transferCopy customDestinationURL];
   }
 
   else
   {
     v6 = +[SDAirDropHandler persistedTransfersBaseURL];
-    v7 = [v3 identifier];
-    v5 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+    identifier = [transferCopy identifier];
+    customDestinationURL2 = [v6 URLByAppendingPathComponent:identifier isDirectory:1];
   }
 
-  return v5;
+  return customDestinationURL2;
 }
 
-- (void)performImportWithCompletedURLs:(id)a3 completion:(id)a4
+- (void)performImportWithCompletedURLs:(id)ls completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  lsCopy = ls;
   v7 = objc_alloc_init(SDAirDropHandlerImportResult);
-  [(SDAirDropHandlerImportResult *)v7 setImportedFiles:v6];
+  [(SDAirDropHandlerImportResult *)v7 setImportedFiles:lsCopy];
 
-  v5[2](v5, v7, 0);
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion
 {
-  v6 = a4;
-  v6[2](v6, [(SDAirDropHandler *)self openURLs:a3], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(SDAirDropHandler *)self openURLs:ls], 0);
 }
 
-- (void)performOpenSharesheetActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performOpenSharesheetActionWithImportedURLs:(id)ls completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000535D8;
   v8[3] = &unk_1008CDB38;
-  v9 = a4;
-  v6 = v9;
-  v7 = a3;
+  completionCopy = completion;
+  v6 = completionCopy;
+  lsCopy = ls;
   [(SDAirDropHandler *)self setMoveToShareSheetCompletion:v8];
-  [(SDAirDropHandler *)self launchMoveToAppShareSheetForFiles:v7];
+  [(SDAirDropHandler *)self launchMoveToAppShareSheetForFiles:lsCopy];
 }
 
-- (void)performViewActionWithURLs:(id)a3
+- (void)performViewActionWithURLs:(id)ls
 {
-  v6 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v6 count:1];
+  lsCopy = ls;
+  lsCopy2 = ls;
+  v5 = [NSArray arrayWithObjects:&lsCopy count:1];
 
-  [(SDAirDropHandler *)self openURLs:v5, v6];
+  [(SDAirDropHandler *)self openURLs:v5, lsCopy];
 }
 
-- (void)launchMoveToAppShareSheetForFiles:(id)a3
+- (void)launchMoveToAppShareSheetForFiles:(id)files
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 isFileURL];
+  filesCopy = files;
+  firstObject = [filesCopy firstObject];
+  isFileURL = [firstObject isFileURL];
 
-  if ((v6 & 1) == 0)
+  if ((isFileURL & 1) == 0)
   {
-    v7 = [(SDAirDropHandler *)self transfer];
-    v8 = [v7 completedURLs];
+    transfer = [(SDAirDropHandler *)self transfer];
+    completedURLs = [transfer completedURLs];
 
-    v4 = v8;
+    filesCopy = completedURLs;
   }
 
-  if ([v4 count])
+  if ([filesCopy count])
   {
     objc_initWeak(&location, self);
     v9 = objc_alloc_init(_TtC16DaemoniOSLibrary28SDAirDropMoveToAppShareSheet);
@@ -671,7 +671,7 @@ LABEL_17:
     v15[2] = sub_10005389C;
     v15[3] = &unk_1008CDB88;
     objc_copyWeak(&v16, &location);
-    [(SDAirDropMoveToAppShareSheet *)v9 showShareSheetWith:v4 completion:v15];
+    [(SDAirDropMoveToAppShareSheet *)v9 showShareSheetWith:filesCopy completion:v15];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&location);
@@ -685,49 +685,49 @@ LABEL_17:
       sub_100054DB8();
     }
 
-    v11 = [(SDAirDropHandler *)self moveToShareSheetCompletion];
+    moveToShareSheetCompletion = [(SDAirDropHandler *)self moveToShareSheetCompletion];
 
-    if (v11)
+    if (moveToShareSheetCompletion)
     {
-      v12 = [(SDAirDropHandler *)self moveToShareSheetCompletion];
-      v12[2](v12, 0);
+      moveToShareSheetCompletion2 = [(SDAirDropHandler *)self moveToShareSheetCompletion];
+      moveToShareSheetCompletion2[2](moveToShareSheetCompletion2, 0);
 
       [(SDAirDropHandler *)self setMoveToShareSheetCompletion:0];
     }
 
-    v13 = [(SDAirDropHandler *)self completionHandler];
+    completionHandler = [(SDAirDropHandler *)self completionHandler];
 
-    if (v13)
+    if (completionHandler)
     {
-      v14 = [(SDAirDropHandler *)self completionHandler];
-      v14[2](v14, 0, 0, 1);
+      completionHandler2 = [(SDAirDropHandler *)self completionHandler];
+      completionHandler2[2](completionHandler2, 0, 0, 1);
     }
   }
 }
 
-- (id)defaultActionForBundleProxy:(id)a3
+- (id)defaultActionForBundleProxy:(id)proxy
 {
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
     sub_100054E98(a2, self);
   }
 
   v6 = [SFAirDropAction alloc];
-  v7 = [(SDAirDropHandler *)self transfer];
-  v8 = [v7 identifier];
-  v9 = [v5 bundleIdentifier];
-  v10 = [v5 localizedName];
-  v11 = [(SDAirDropHandler *)self singleItemActionTitle];
-  v12 = [v6 initWithTransferIdentifier:v8 actionIdentifier:v9 title:v10 singleItemTitle:v11 type:1];
+  transfer = [(SDAirDropHandler *)self transfer];
+  identifier = [transfer identifier];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  localizedName = [proxyCopy localizedName];
+  singleItemActionTitle = [(SDAirDropHandler *)self singleItemActionTitle];
+  v12 = [v6 initWithTransferIdentifier:identifier actionIdentifier:bundleIdentifier title:localizedName singleItemTitle:singleItemActionTitle type:1];
 
   return v12;
 }
 
-- (id)applicationProxyForBundleProxy:(id)a3
+- (id)applicationProxyForBundleProxy:(id)proxy
 {
-  v3 = [a3 bundleIdentifier];
-  v4 = [LSApplicationProxy applicationProxyForIdentifier:v3];
+  bundleIdentifier = [proxy bundleIdentifier];
+  v4 = [LSApplicationProxy applicationProxyForIdentifier:bundleIdentifier];
 
   return v4;
 }
@@ -738,11 +738,11 @@ LABEL_17:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SDAirDropHandler *)self transfer];
-  v3 = [v2 metaData];
-  v4 = [v3 items];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  items = [metaData items];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -754,13 +754,13 @@ LABEL_17:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
         v7 += [*(*(&v11 + 1) + 8 * i) count];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [items countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -774,30 +774,30 @@ LABEL_17:
   return v7;
 }
 
-- (id)alertMessageLocalizedKeyForTypeDicts:(id)a3
+- (id)alertMessageLocalizedKeyForTypeDicts:(id)dicts
 {
-  v4 = a3;
+  dictsCopy = dicts;
   v5 = objc_opt_class();
-  v6 = [(SDAirDropHandler *)self transfer];
-  v7 = [v6 metaData];
-  v8 = [v7 senderIsMe];
-  v9 = [(SDAirDropHandler *)self transfer];
-  v10 = [v9 metaData];
-  v11 = [v10 isVerifiableIdentity];
-  v12 = [(SDAirDropHandler *)self isModernProgress];
-  v13 = [(SDAirDropHandler *)self transfer];
-  v14 = [v5 alertMessageLocalizedKeyForTypeDicts:v4 senderIsMe:v8 isVerifiableIdentity:v11 isModernProgress:v12 transferState:{objc_msgSend(v13, "transferState")}];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  senderIsMe = [metaData senderIsMe];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  metaData2 = [transfer2 metaData];
+  isVerifiableIdentity = [metaData2 isVerifiableIdentity];
+  isModernProgress = [(SDAirDropHandler *)self isModernProgress];
+  transfer3 = [(SDAirDropHandler *)self transfer];
+  v14 = [v5 alertMessageLocalizedKeyForTypeDicts:dictsCopy senderIsMe:senderIsMe isVerifiableIdentity:isVerifiableIdentity isModernProgress:isModernProgress transferState:{objc_msgSend(transfer3, "transferState")}];
 
   return v14;
 }
 
-+ (id)alertMessageLocalizedKeyForTypeDicts:(id)a3 senderIsMe:(BOOL)a4 isVerifiableIdentity:(BOOL)a5 isModernProgress:(BOOL)a6 transferState:(unint64_t)a7
++ (id)alertMessageLocalizedKeyForTypeDicts:(id)dicts senderIsMe:(BOOL)me isVerifiableIdentity:(BOOL)identity isModernProgress:(BOOL)progress transferState:(unint64_t)state
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  if (v7)
+  progressCopy = progress;
+  identityCopy = identity;
+  meCopy = me;
+  dictsCopy = dicts;
+  if (progressCopy)
   {
     v11 = @"MODERN_TRANSFER";
   }
@@ -812,7 +812,7 @@ LABEL_17:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = @"NO";
-    if (v7)
+    if (progressCopy)
     {
       v14 = @"YES";
     }
@@ -822,10 +822,10 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "isModernProgress: %@", buf, 0xCu);
   }
 
-  v30 = v7;
-  if (!v7)
+  v30 = progressCopy;
+  if (!progressCopy)
   {
-    if ((v8 & ~v9) != 0)
+    if ((identityCopy & ~meCopy) != 0)
     {
       v15 = @"_PERSON";
     }
@@ -842,7 +842,7 @@ LABEL_17:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v10;
+  obj = dictsCopy;
   v16 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v16)
   {
@@ -858,15 +858,15 @@ LABEL_17:
         }
 
         v20 = *(*(&v33 + 1) + 8 * i);
-        v21 = [v20 allKeys];
-        v22 = [v21 firstObject];
+        allKeys = [v20 allKeys];
+        firstObject = [allKeys firstObject];
 
-        [v12 appendFormat:@"_%@", v22];
-        v23 = [v20 allValues];
-        v24 = [v23 firstObject];
-        v25 = [v24 integerValue];
+        [v12 appendFormat:@"_%@", firstObject];
+        allValues = [v20 allValues];
+        firstObject2 = [allValues firstObject];
+        integerValue = [firstObject2 integerValue];
 
-        if (v25 <= 1)
+        if (integerValue <= 1)
         {
           v26 = &stru_1008EFBD0;
         }
@@ -887,7 +887,7 @@ LABEL_17:
 
   if (v30)
   {
-    if (a7 - 2 > 7)
+    if (state - 2 > 7)
     {
       goto LABEL_27;
     }
@@ -896,9 +896,9 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  if (a7 <= 3)
+  if (state <= 3)
   {
-    switch(a7)
+    switch(state)
     {
       case 1uLL:
         goto LABEL_38;
@@ -921,9 +921,9 @@ LABEL_26:
 
   else
   {
-    if (a7 <= 6)
+    if (state <= 6)
     {
-      if (a7 == 4 || a7 == 6)
+      if (state == 4 || state == 6)
       {
         goto LABEL_27;
       }
@@ -931,12 +931,12 @@ LABEL_26:
       goto LABEL_43;
     }
 
-    if (a7 == 8)
+    if (state == 8)
     {
       goto LABEL_27;
     }
 
-    if (a7 == 7)
+    if (state == 7)
     {
       v27 = @"_COMPLETED";
       goto LABEL_26;
@@ -957,35 +957,35 @@ LABEL_27:
   return v28;
 }
 
-- (id)bundleProxyFromCandidateIdentifiers:(id)a3 handlesURL:(id)a4
+- (id)bundleProxyFromCandidateIdentifiers:(id)identifiers handlesURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  lCopy = l;
   v8 = +[LSApplicationWorkspace defaultWorkspace];
-  v9 = [v8 URLOverrideForURL:v7];
+  v9 = [v8 URLOverrideForURL:lCopy];
 
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_100054348;
   v20 = &unk_1008CDBB0;
-  v21 = v6;
-  v22 = self;
-  v10 = v6;
+  v21 = identifiersCopy;
+  selfCopy = self;
+  v10 = identifiersCopy;
   v11 = objc_retainBlock(&v17);
   v12 = [LSApplicationWorkspace defaultWorkspace:v17];
   v13 = [v12 applicationsAvailableForOpeningURL:v9];
 
-  v14 = [v13 firstObject];
-  v15 = (v11[2])(v11, v14);
+  firstObject = [v13 firstObject];
+  v15 = (v11[2])(v11, firstObject);
 
   return v15;
 }
 
 - (NSString)senderName
 {
-  v2 = [(SDAirDropHandler *)self transfer];
-  v3 = [v2 metaData];
-  v4 = [v3 senderCompositeName];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  senderCompositeName = [metaData senderCompositeName];
 
   v5 = SFTruncateAirDropSenderNameForUI();
 
@@ -1000,61 +1000,61 @@ LABEL_27:
   return v9;
 }
 
-- (void)logReceiverBundleID:(id)a3 forAppProxy:(id)a4 andURL:(id)a5
+- (void)logReceiverBundleID:(id)d forAppProxy:(id)proxy andURL:(id)l
 {
-  v9 = a5;
-  if (a4)
+  lCopy = l;
+  if (proxy)
   {
-    v7 = [a4 bundleIdentifier];
-    [SDAirDropHandler logReceiverBundleID:v7 forURL:v9];
+    bundleIdentifier = [proxy bundleIdentifier];
+    [SDAirDropHandler logReceiverBundleID:bundleIdentifier forURL:lCopy];
 
-    v8 = v7;
+    v8 = bundleIdentifier;
   }
 
   else
   {
-    [SDAirDropHandler logReceiverBundleID:a3 forURL:v9];
-    v8 = v9;
+    [SDAirDropHandler logReceiverBundleID:d forURL:lCopy];
+    v8 = lCopy;
   }
 }
 
-+ (void)logReceiverBundleID:(id)a3 forURL:(id)a4
++ (void)logReceiverBundleID:(id)d forURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  lCopy = l;
+  v7 = lCopy;
+  if (dCopy)
   {
-    v8 = v5;
+    applicationIdentifier = dCopy;
 LABEL_3:
-    if (([v8 hasPrefix:@"com.apple."]& 1) == 0)
+    if (([applicationIdentifier hasPrefix:@"com.apple."]& 1) == 0)
     {
 
-      v8 = @"3rd-party";
+      applicationIdentifier = @"3rd-party";
     }
 
-    v9 = [NSString stringWithFormat:@"%@%@", @"com.apple.airdrop.transfer.receiver.id.", v8];
+    v9 = [NSString stringWithFormat:@"%@%@", @"com.apple.airdrop.transfer.receiver.id.", applicationIdentifier];
     off_10096F738(v9, 1);
 
     goto LABEL_10;
   }
 
-  if (v6)
+  if (lCopy)
   {
     v10 = +[LSApplicationWorkspace defaultWorkspace];
     v11 = [v10 applicationsAvailableForOpeningURL:v7];
 
-    v12 = [v11 firstObject];
-    v8 = [v12 applicationIdentifier];
+    firstObject = [v11 firstObject];
+    applicationIdentifier = [firstObject applicationIdentifier];
 
-    if (v8)
+    if (applicationIdentifier)
     {
       goto LABEL_3;
     }
   }
 
-  v8 = airdrop_log();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  applicationIdentifier = airdrop_log();
+  if (os_log_type_enabled(applicationIdentifier, OS_LOG_TYPE_ERROR))
   {
     sub_100054F0C();
   }
@@ -1062,12 +1062,12 @@ LABEL_3:
 LABEL_10:
 }
 
-- (void)removeItemAtURLToFreeUpSpace:(id)a3
+- (void)removeItemAtURLToFreeUpSpace:(id)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v4 = +[NSFileManager defaultManager];
   v8 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v8];
+  v5 = [v4 removeItemAtURL:spaceCopy error:&v8];
   v6 = v8;
 
   if ((v5 & 1) == 0)
@@ -1075,16 +1075,16 @@ LABEL_10:
     v7 = airdrop_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100054F40(v3, v7);
+      sub_100054F40(spaceCopy, v7);
     }
   }
 }
 
-- (BOOL)openURLs:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)openURLs:(id)ls bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  lsCopy = ls;
+  identifierCopy = identifier;
+  if (![lsCopy count])
   {
     v14 = airdrop_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1096,10 +1096,10 @@ LABEL_10:
     goto LABEL_38;
   }
 
-  v44 = self;
+  selfCopy = self;
   v8 = airdrop_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (identifierCopy)
   {
     if (v9)
     {
@@ -1107,7 +1107,7 @@ LABEL_10:
       *buf = 138412546;
       v53 = v10;
       v54 = 2112;
-      v55 = v7;
+      v55 = identifierCopy;
       v11 = "Opening URLs: %@ in %@";
       v12 = v8;
       v13 = 22;
@@ -1127,21 +1127,21 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v40 = v7;
+  v40 = identifierCopy;
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v14 = v6;
+  v14 = lsCopy;
   v16 = [v14 countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v16)
   {
     v17 = v16;
-    v39 = v6;
+    v39 = lsCopy;
     v45 = v14;
     v46 = *v48;
-    v18 = v44;
+    v18 = selfCopy;
     while (1)
     {
       v19 = 0;
@@ -1154,45 +1154,45 @@ LABEL_10:
         }
 
         v20 = *(*(&v47 + 1) + 8 * v19);
-        v21 = [v20 scheme];
-        v22 = [v21 lowercaseString];
-        if ([v22 isEqualToString:@"voicememos"])
+        scheme = [v20 scheme];
+        lowercaseString = [scheme lowercaseString];
+        if ([lowercaseString isEqualToString:@"voicememos"])
         {
           goto LABEL_25;
         }
 
-        v23 = [v20 scheme];
-        v24 = [v23 lowercaseString];
-        if ([v24 isEqualToString:@"photos"])
+        scheme2 = [v20 scheme];
+        lowercaseString2 = [scheme2 lowercaseString];
+        if ([lowercaseString2 isEqualToString:@"photos"])
         {
           goto LABEL_24;
         }
 
-        v25 = [v20 scheme];
-        v26 = [v25 lowercaseString];
-        if ([v26 isEqualToString:@"x-apple-calevent"])
+        scheme3 = [v20 scheme];
+        lowercaseString3 = [scheme3 lowercaseString];
+        if ([lowercaseString3 isEqualToString:@"x-apple-calevent"])
         {
           goto LABEL_23;
         }
 
-        v27 = [v20 scheme];
-        v28 = [v27 lowercaseString];
-        if ([v28 isEqualToString:@"shoebox"])
+        scheme4 = [v20 scheme];
+        lowercaseString4 = [scheme4 lowercaseString];
+        if ([lowercaseString4 isEqualToString:@"shoebox"])
         {
           goto LABEL_22;
         }
 
-        v42 = v27;
-        v41 = [v20 scheme];
-        v29 = [v41 lowercaseString];
-        if ([v29 isEqualToString:@"stocks"])
+        v42 = scheme4;
+        scheme5 = [v20 scheme];
+        lowercaseString5 = [scheme5 lowercaseString];
+        if ([lowercaseString5 isEqualToString:@"stocks"])
         {
 
-          v27 = v42;
+          scheme4 = v42;
 LABEL_22:
 
           v17 = v43;
-          v18 = v44;
+          v18 = selfCopy;
 LABEL_23:
 
           v14 = v45;
@@ -1211,11 +1211,11 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v37 = [v20 scheme];
-        v36 = [v37 lowercaseString];
-        v38 = [v36 isEqualToString:@"mobilephone"];
+        scheme6 = [v20 scheme];
+        lowercaseString6 = [scheme6 lowercaseString];
+        v38 = [lowercaseString6 isEqualToString:@"mobilephone"];
 
-        v18 = v44;
+        v18 = selfCopy;
         v14 = v45;
         v17 = v43;
         if (v38)
@@ -1245,7 +1245,7 @@ LABEL_27:
       if (!v34)
       {
 LABEL_35:
-        v6 = v39;
+        lsCopy = v39;
         goto LABEL_37;
       }
     }
@@ -1253,7 +1253,7 @@ LABEL_35:
 
   v15 = 0;
 LABEL_37:
-  v7 = v40;
+  identifierCopy = v40;
 LABEL_38:
 
   return v15;

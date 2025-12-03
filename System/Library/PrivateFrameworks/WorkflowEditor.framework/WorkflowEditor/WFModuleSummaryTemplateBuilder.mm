@@ -1,29 +1,29 @@
 @interface WFModuleSummaryTemplateBuilder
-+ (BOOL)formatString:(id)a3 containsParameterKey:(id)a4;
-+ (id)slotsForMultipleParameterState:(id)a3 inParameter:(id)a4;
++ (BOOL)formatString:(id)string containsParameterKey:(id)key;
++ (id)slotsForMultipleParameterState:(id)state inParameter:(id)parameter;
 - (NSArray)parameterKeys;
-- (WFModuleSummaryTemplateBuilder)initWithFormatString:(id)a3;
-- (id)buildContentWithParameters:(id)a3 editableParameters:(id)a4 parameterStates:(id)a5 variableBeingEdited:(id)a6;
-- (id)contentByEnumeratingSummaryWithParameterSlotBuilder:(id)a3;
+- (WFModuleSummaryTemplateBuilder)initWithFormatString:(id)string;
+- (id)buildContentWithParameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states variableBeingEdited:(id)edited;
+- (id)contentByEnumeratingSummaryWithParameterSlotBuilder:(id)builder;
 - (void)itemizeFormatStringIfNeeded;
 @end
 
 @implementation WFModuleSummaryTemplateBuilder
 
-- (id)buildContentWithParameters:(id)a3 editableParameters:(id)a4 parameterStates:(id)a5 variableBeingEdited:(id)a6
+- (id)buildContentWithParameters:(id)parameters editableParameters:(id)editableParameters parameterStates:(id)states variableBeingEdited:(id)edited
 {
-  v27 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parametersCopy = parameters;
+  editableParametersCopy = editableParameters;
+  statesCopy = states;
+  editedCopy = edited;
   v13 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v14 = v9;
+  v14 = parametersCopy;
   v15 = [v14 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v15)
   {
@@ -54,15 +54,15 @@
   v28[2] = __116__WFModuleSummaryTemplateBuilder_buildContentWithParameters_editableParameters_parameterStates_variableBeingEdited___block_invoke;
   v28[3] = &unk_279EDB9F0;
   v29 = v13;
-  v30 = v10;
-  v31 = v11;
-  v32 = v27;
-  v33 = v12;
-  v21 = v12;
-  v22 = v11;
-  v23 = v10;
+  v30 = editableParametersCopy;
+  v31 = statesCopy;
+  v32 = selfCopy;
+  v33 = editedCopy;
+  v21 = editedCopy;
+  v22 = statesCopy;
+  v23 = editableParametersCopy;
   v24 = v13;
-  v25 = [(WFModuleSummaryTemplateBuilder *)v27 contentByEnumeratingSummaryWithParameterSlotBuilder:v28];
+  v25 = [(WFModuleSummaryTemplateBuilder *)selfCopy contentByEnumeratingSummaryWithParameterSlotBuilder:v28];
 
   return v25;
 }
@@ -283,13 +283,13 @@ void __116__WFModuleSummaryTemplateBuilder_buildContentWithParameters_editablePa
   }
 }
 
-- (id)contentByEnumeratingSummaryWithParameterSlotBuilder:(id)a3
+- (id)contentByEnumeratingSummaryWithParameterSlotBuilder:(id)builder
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  builderCopy = builder;
   [(WFModuleSummaryTemplateBuilder *)self itemizeFormatStringIfNeeded];
-  v5 = [(WFModuleSummaryTemplateBuilder *)self formatItems];
-  v6 = [v5 count];
+  formatItems = [(WFModuleSummaryTemplateBuilder *)self formatItems];
+  v6 = [formatItems count];
 
   if (v6)
   {
@@ -319,7 +319,7 @@ void __116__WFModuleSummaryTemplateBuilder_buildContentWithParameters_editablePa
           if (objc_opt_isKindOfClass())
           {
             v14 = [(NSArray *)self->_parameterKeys objectAtIndex:v10];
-            v15 = v4[2](v4, v14);
+            v15 = builderCopy[2](builderCopy, v14);
             [v7 addObjectsFromArray:v15];
 
             ++v10;
@@ -348,36 +348,36 @@ void __116__WFModuleSummaryTemplateBuilder_buildContentWithParameters_editablePa
 
 - (void)itemizeFormatStringIfNeeded
 {
-  v3 = [(WFModuleSummaryTemplateBuilder *)self formatString];
-  if ([v3 length])
+  formatString = [(WFModuleSummaryTemplateBuilder *)self formatString];
+  if ([formatString length])
   {
-    v4 = [(WFModuleSummaryTemplateBuilder *)self formatItems];
-    v5 = [v4 count];
+    formatItems = [(WFModuleSummaryTemplateBuilder *)self formatItems];
+    v5 = [formatItems count];
 
     if (!v5)
     {
       v6 = objc_opt_new();
       v7 = objc_opt_new();
-      v8 = [MEMORY[0x277CCAC68] _intents_sharedFormatRegularExpression];
+      _intents_sharedFormatRegularExpression = [MEMORY[0x277CCAC68] _intents_sharedFormatRegularExpression];
       v22 = 0;
       v23 = &v22;
       v24 = 0x3010000000;
       v26 = 0;
       v27 = 0;
       v25 = "";
-      v9 = [v3 length];
+      v9 = [formatString length];
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __61__WFModuleSummaryTemplateBuilder_itemizeFormatStringIfNeeded__block_invoke;
       v17 = &unk_279EDB9A0;
       v21 = &v22;
-      v10 = v3;
+      v10 = formatString;
       v18 = v10;
       v11 = v6;
       v19 = v11;
       v12 = v7;
       v20 = v12;
-      [v8 enumerateMatchesInString:v10 options:0 range:0 usingBlock:{v9, &v14}];
+      [_intents_sharedFormatRegularExpression enumerateMatchesInString:v10 options:0 range:0 usingBlock:{v9, &v14}];
       v13 = [v10 substringFromIndex:{v23[5] + v23[4], v14, v15, v16, v17}];
       if ([v13 length])
       {
@@ -427,15 +427,15 @@ void __61__WFModuleSummaryTemplateBuilder_itemizeFormatStringIfNeeded__block_inv
   return parameterKeys;
 }
 
-- (WFModuleSummaryTemplateBuilder)initWithFormatString:(id)a3
+- (WFModuleSummaryTemplateBuilder)initWithFormatString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WFModuleSummaryTemplateBuilder;
   v5 = [(WFModuleSummaryTemplateBuilder *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     formatString = v5->_formatString;
     v5->_formatString = v6;
 
@@ -445,22 +445,22 @@ void __61__WFModuleSummaryTemplateBuilder_itemizeFormatStringIfNeeded__block_inv
   return v5;
 }
 
-+ (id)slotsForMultipleParameterState:(id)a3 inParameter:(id)a4
++ (id)slotsForMultipleParameterState:(id)state inParameter:(id)parameter
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v23 = a4;
-  v6 = [v5 variable];
+  stateCopy = state;
+  parameterCopy = parameter;
+  variable = [stateCopy variable];
 
-  if (v6)
+  if (variable)
   {
-    v7 = [v23 moduleSummarySlotForState:0];
-    v8 = [v5 variable];
-    [v7 populateWith:v8];
+    parameterStates = [parameterCopy moduleSummarySlotForState:0];
+    variable2 = [stateCopy variable];
+    [parameterStates populateWith:variable2];
 
-    if (v7)
+    if (parameterStates)
     {
-      v31[0] = v7;
+      v31[0] = parameterStates;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
       goto LABEL_16;
     }
@@ -468,8 +468,8 @@ void __61__WFModuleSummaryTemplateBuilder_itemizeFormatStringIfNeeded__block_inv
     goto LABEL_13;
   }
 
-  v7 = [v5 parameterStates];
-  if (![v7 count] && !objc_msgSend(v23, "isRangedSizeArray"))
+  parameterStates = [stateCopy parameterStates];
+  if (![parameterStates count] && !objc_msgSend(parameterCopy, "isRangedSizeArray"))
   {
 LABEL_13:
     v9 = 0;
@@ -484,10 +484,10 @@ LABEL_13:
   v24[1] = 3221225472;
   v24[2] = __77__WFModuleSummaryTemplateBuilder_slotsForMultipleParameterState_inParameter___block_invoke;
   v24[3] = &unk_279EDBA18;
-  v10 = v23;
+  v10 = parameterCopy;
   v25 = v10;
   v26 = &v27;
-  v11 = [v7 if_compactMap:v24];
+  v11 = [parameterStates if_compactMap:v24];
   if ([v10 isRangedSizeArray])
   {
     v12 = [v10 arraySizeRangeForCHSWidgetFamily:3];
@@ -501,8 +501,8 @@ LABEL_13:
         do
         {
           v16 = [v10 moduleSummarySlotForState:0];
-          v17 = [v16 identifier];
-          v18 = [v17 identifierBySettingArrayIndex:v15];
+          identifier = [v16 identifier];
+          v18 = [identifier identifierBySettingArrayIndex:v15];
           [v16 setIdentifier:v18];
 
           [v16 setEnabled:{v15 == objc_msgSend(v11, "count")}];
@@ -521,7 +521,7 @@ LABEL_13:
     }
   }
 
-  if (WFShouldShowAddButtonForParameter(v10, *(v28 + 24), v5, [v11 count]))
+  if (WFShouldShowAddButtonForParameter(v10, *(v28 + 24), stateCopy, [v11 count]))
   {
     v21 = [MEMORY[0x277D7D7B0] addingSlotWithKey:@"_array_add_"];
     v9 = [v11 arrayByAddingObject:v21];
@@ -554,12 +554,12 @@ id __77__WFModuleSummaryTemplateBuilder_slotsForMultipleParameterState_inParamet
   return v5;
 }
 
-+ (BOOL)formatString:(id)a3 containsParameterKey:(id)a4
++ (BOOL)formatString:(id)string containsParameterKey:(id)key
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [v5 stringWithFormat:@"${%@}", a4];
-  v8 = [v6 rangeOfString:v7 options:2];
+  stringCopy = string;
+  v7 = [v5 stringWithFormat:@"${%@}", key];
+  v8 = [stringCopy rangeOfString:v7 options:2];
 
   return v8 != 0x7FFFFFFFFFFFFFFFLL;
 }

@@ -1,16 +1,16 @@
 @interface IDSQRProtoAllocBindJoinInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)reasonAsString:(int)a3;
-- (int)StringAsReason:(id)a3;
+- (id)reasonAsString:(int)string;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoAllocBindJoinInfo
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -43,18 +43,18 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)reasonAsString:(int)a3
+- (id)reasonAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"NEWLY_JOINED";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -66,17 +66,17 @@
   return v4;
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"NEWLY_JOINED"];
+    v4 = [reasonCopy isEqualToString:@"NEWLY_JOINED"];
   }
 
   return v4;
@@ -88,26 +88,26 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoAllocBindJoinInfo;
   v4 = [(IDSQRProtoAllocBindJoinInfo *)&v8 description];
-  v5 = [(IDSQRProtoAllocBindJoinInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoAllocBindJoinInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_participantId];
-    [v3 setObject:v4 forKey:@"participant_id"];
+    [dictionary setObject:v4 forKey:@"participant_id"];
   }
 
   clientContextBlob = self->_clientContextBlob;
   if (clientContextBlob)
   {
-    v6 = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"client_context_blob"];
+    dictionaryRepresentation = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"client_context_blob"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -131,61 +131,61 @@
       v8 = @"NONE";
     }
 
-    [v3 setObject:v8 forKey:@"reason"];
+    [dictionary setObject:v8 forKey:@"reason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientContextBlob)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_participantId;
-    *(v4 + 28) |= 1u;
+    toCopy[1] = self->_participantId;
+    *(toCopy + 28) |= 1u;
   }
 
   if (self->_clientContextBlob)
   {
-    v5 = v4;
-    [v4 setClientContextBlob:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setClientContextBlob:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 6) = self->_reason;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 6) = self->_reason;
+    *(toCopy + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -193,7 +193,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  v7 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:a3];
+  v7 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -206,10 +206,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
@@ -217,19 +217,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_participantId != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_participantId != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_14;
   }
 
   clientContextBlob = self->_clientContextBlob;
-  if (clientContextBlob | *(v4 + 2))
+  if (clientContextBlob | *(equalCopy + 2))
   {
     if (![(IDSQRProtoMaterial *)clientContextBlob isEqual:?])
     {
@@ -241,10 +241,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 28) & 2) == 0;
+  v7 = (*(equalCopy + 28) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_reason != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_reason != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
@@ -283,13 +283,13 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 28))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 28))
   {
-    self->_participantId = v4[1];
+    self->_participantId = fromCopy[1];
     *&self->_has |= 1u;
   }
 

@@ -1,6 +1,6 @@
 @interface _UIScenePointerLockDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsPointerLockedDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UIScenePointerLockDiffAction
@@ -21,25 +21,25 @@
   return sceneSettingsPointerLockedDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v11 = a3;
-  v12 = a5;
+  sceneCopy = scene;
+  diffCopy = diff;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && ([v11 conformsToProtocol:&unk_1EFF0F0C0] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && ([sceneCopy conformsToProtocol:&unk_1EFF0F0C0] & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIScenePointerLockDiffAction.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]] || [uiScene conformsToProtocol:@protocol(_UISceneUIWindowHosting)]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIScenePointerLockDiffAction.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]] || [uiScene conformsToProtocol:@protocol(_UISceneUIWindowHosting)]"}];
   }
 
   v16 = 0;
-  v13 = [(_UIScenePointerLockDiffAction *)self sceneSettingsPointerLockedDiffInspector];
-  [v13 inspectDiff:v12 withContext:&v16];
+  sceneSettingsPointerLockedDiffInspector = [(_UIScenePointerLockDiffAction *)self sceneSettingsPointerLockedDiffInspector];
+  [sceneSettingsPointerLockedDiffInspector inspectDiff:diffCopy withContext:&v16];
 
   if (v16)
   {
-    v14 = [v11 pointerLockState];
-    [v14 _pointerLockStatusUpdated];
+    pointerLockState = [sceneCopy pointerLockState];
+    [pointerLockState _pointerLockStatusUpdated];
   }
 }
 

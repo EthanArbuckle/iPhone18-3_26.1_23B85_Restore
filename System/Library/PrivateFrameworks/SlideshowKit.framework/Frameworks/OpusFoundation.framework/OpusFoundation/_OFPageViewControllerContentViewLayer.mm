@@ -1,19 +1,19 @@
 @interface _OFPageViewControllerContentViewLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (_OFPageViewControllerContentViewLayer)initWithLayer:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (_OFPageViewControllerContentViewLayer)initWithLayer:(id)layer;
 - (void)dealloc;
 @end
 
 @implementation _OFPageViewControllerContentViewLayer
 
-- (_OFPageViewControllerContentViewLayer)initWithLayer:(id)a3
+- (_OFPageViewControllerContentViewLayer)initWithLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = _OFPageViewControllerContentViewLayer;
   v4 = [(_OFPageViewControllerContentViewLayer *)&v6 initWithLayer:?];
   if (v4)
   {
-    -[_OFPageViewControllerContentViewLayer setProgressReportDelegate:](v4, "setProgressReportDelegate:", [a3 progressReportDelegate]);
+    -[_OFPageViewControllerContentViewLayer setProgressReportDelegate:](v4, "setProgressReportDelegate:", [layer progressReportDelegate]);
   }
 
   return v4;
@@ -27,16 +27,16 @@
   [(_OFPageViewControllerContentViewLayer *)&v3 dealloc];
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
-  if ([a3 isEqualToString:@"progress"])
+  if ([key isEqualToString:@"progress"])
   {
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS____OFPageViewControllerContentViewLayer;
-  return objc_msgSendSuper2(&v6, sel_needsDisplayForKey_, a3);
+  return objc_msgSendSuper2(&v6, sel_needsDisplayForKey_, key);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface DBInstrumentClusterSceneViewController
-- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5;
-- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6;
+- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)scene application:(id)application environment:(id)environment;
+- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment;
 - (unint64_t)deactivationPolicy;
 - (void)_cancelFocusTimer;
-- (void)deactivatePresentationViewWithIdentifier:(id)a3;
+- (void)deactivatePresentationViewWithIdentifier:(id)identifier;
 @end
 
 @implementation DBInstrumentClusterSceneViewController
 
-- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)a3 application:(id)a4 environment:(id)a5
+- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)scene application:(id)application environment:(id)environment
 {
   v8 = self + OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController_frameOverride;
   *v8 = 0u;
@@ -21,10 +21,10 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController__focusTimer) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for DBInstrumentClusterSceneViewController();
-  return [(DBSceneHostViewController *)&v11 initWithScene:a3 application:a4 environment:a5];
+  return [(DBSceneHostViewController *)&v11 initWithScene:scene application:application environment:environment];
 }
 
-- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)a3 application:(id)a4 proxyApplication:(id)a5 environment:(id)a6
+- (_TtC9DashBoard38DBInstrumentClusterSceneViewController)initWithScene:(id)scene application:(id)application proxyApplication:(id)proxyApplication environment:(id)environment
 {
   v10 = self + OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController_frameOverride;
   *v10 = 0u;
@@ -37,20 +37,20 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController__focusTimer) = 0;
   v13.receiver = self;
   v13.super_class = type metadata accessor for DBInstrumentClusterSceneViewController();
-  return [(DBSceneHostViewController *)&v13 initWithScene:a3 application:a4 proxyApplication:a5 environment:a6];
+  return [(DBSceneHostViewController *)&v13 initWithScene:scene application:application proxyApplication:proxyApplication environment:environment];
 }
 
 - (unint64_t)deactivationPolicy
 {
-  v2 = self;
-  v3 = [(DBSceneHostViewController *)v2 application];
-  v4 = [(DBApplication *)v3 appPolicy];
+  selfCopy = self;
+  application = [(DBSceneHostViewController *)selfCopy application];
+  appPolicy = [(DBApplication *)application appPolicy];
 
-  if (v4)
+  if (appPolicy)
   {
-    v5 = [(CRCarPlayAppPolicy *)v4 launchUsingTemplateUI];
+    launchUsingTemplateUI = [(CRCarPlayAppPolicy *)appPolicy launchUsingTemplateUI];
 
-    if (v5)
+    if (launchUsingTemplateUI)
     {
       return 1;
     }
@@ -63,12 +63,12 @@
   return 2;
 }
 
-- (void)deactivatePresentationViewWithIdentifier:(id)a3
+- (void)deactivatePresentationViewWithIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for DBInstrumentClusterSceneViewController();
   v4 = v5.receiver;
-  [(DBSceneHostViewController *)&v5 deactivatePresentationViewWithIdentifier:a3];
+  [(DBSceneHostViewController *)&v5 deactivatePresentationViewWithIdentifier:identifier];
   [v4 _cancelFocusTimer];
 }
 
@@ -76,7 +76,7 @@
 {
   v3 = OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController__focusTimer;
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9DashBoard38DBInstrumentClusterSceneViewController__focusTimer);
-  v5 = self;
+  selfCopy = self;
   [v4 invalidate];
   v6 = *(&self->super.super.super.super.isa + v3);
   *(&self->super.super.super.super.isa + v3) = 0;

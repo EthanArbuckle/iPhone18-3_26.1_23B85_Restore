@@ -1,6 +1,6 @@
 @interface CoreImageLibrary
 - (CoreImageLibrary)init;
-- (id)kernelWithFunctionName:(id)a3 constants:(id)a4;
+- (id)kernelWithFunctionName:(id)name constants:(id)constants;
 - (id)url;
 @end
 
@@ -74,19 +74,19 @@
   return v19;
 }
 
-- (id)kernelWithFunctionName:(id)a3 constants:(id)a4
+- (id)kernelWithFunctionName:(id)name constants:(id)constants
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  constantsCopy = constants;
   v10 = objc_msgSend_availableNames(self, v8, v9);
-  v12 = objc_msgSend_containsObject_(v10, v11, v6);
+  v12 = objc_msgSend_containsObject_(v10, v11, nameCopy);
 
   if (v12)
   {
     v15 = MEMORY[0x29EDB9180];
     v16 = objc_msgSend_url(self, v13, v14);
     v23 = 0;
-    v18 = objc_msgSend_cachedKernelWithFunctionName_fromMetalLibrary_constants_error_(v15, v17, v6, v16, v7, &v23);
+    v18 = objc_msgSend_cachedKernelWithFunctionName_fromMetalLibrary_constants_error_(v15, v17, nameCopy, v16, constantsCopy, &v23);
     v19 = v23;
 
     if (!v18 || v19)
@@ -94,7 +94,7 @@
       v21 = uni_logger_compile();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        sub_2956CD75C(v6, v19, v21);
+        sub_2956CD75C(nameCopy, v19, v21);
       }
 
       v20 = 0;
@@ -111,7 +111,7 @@
     v19 = uni_logger_compile();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      sub_2956CD700(v6);
+      sub_2956CD700(nameCopy);
     }
 
     v20 = 0;

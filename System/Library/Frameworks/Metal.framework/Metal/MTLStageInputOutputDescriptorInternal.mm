@@ -1,10 +1,10 @@
 @interface MTLStageInputOutputDescriptorInternal
 + (id)vertexDescriptor;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithVertexFunction:(id)a3 error:(id *)a4 renderPipelineDescriptor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithVertexFunction:(id)function error:(id *)error renderPipelineDescriptor:(id)descriptor;
 - (MTLStageInputOutputDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 - (id)newSerializedDescriptor;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -34,13 +34,13 @@
   [(MTLStageInputOutputDescriptorInternal *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v5 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = MTLStageInputOutputDescriptorInternal;
   v6 = [(MTLStageInputOutputDescriptorInternal *)&v8 description];
-  return [v5 stringWithFormat:@"%@%@", v6, MTLStageInputOutputDescriptorDescription(self, a3)];
+  return [v5 stringWithFormat:@"%@%@", v6, MTLStageInputOutputDescriptorDescription(self, description)];
 }
 
 - (void)reset
@@ -88,9 +88,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     for (i = 0; i != 31; ++i)
@@ -98,7 +98,7 @@
       v7 = self->_vertexBufferArray->_descriptors[i];
       if (v7)
       {
-        *(v5[1] + 8 + i * 8) = [(MTLBufferLayoutDescriptorInternal *)v7 copyWithZone:a3];
+        *(v5[1] + 8 + i * 8) = [(MTLBufferLayoutDescriptorInternal *)v7 copyWithZone:zone];
       }
     }
 
@@ -107,7 +107,7 @@
       v9 = self->_attributeArray->_descriptors[j];
       if (v9)
       {
-        *(v5[2] + 8 + j * 8) = [(MTLAttributeDescriptorInternal *)v9 copyWithZone:a3];
+        *(v5[2] + 8 + j * 8) = [(MTLAttributeDescriptorInternal *)v9 copyWithZone:zone];
       }
     }
 
@@ -176,15 +176,15 @@
   return _MTLHashState(v14, 0x5E0uLL);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
@@ -192,7 +192,7 @@
   for (i = 0; i != 31; ++i)
   {
     v8 = self->_vertexBufferArray->_descriptors[i];
-    v9 = *(*(a3 + 1) + 8 + i * 8);
+    v9 = *(*(equal + 1) + 8 + i * 8);
     if (v8 != v9)
     {
       if (v8)
@@ -223,7 +223,7 @@
   for (j = 0; j != 31; ++j)
   {
     v12 = self->_attributeArray->_descriptors[j];
-    v13 = *(*(a3 + 2) + 8 + j * 8);
+    v13 = *(*(equal + 2) + 8 + j * 8);
     if (v12 != v13)
     {
       if (v12)
@@ -251,7 +251,7 @@
     }
   }
 
-  return self->_indexBufferIndex == *(a3 + 3) && self->_indexType == *(a3 + 4);
+  return self->_indexBufferIndex == *(equal + 3) && self->_indexType == *(equal + 4);
 }
 
 - (id)newSerializedDescriptor
@@ -393,49 +393,49 @@
   return result;
 }
 
-- (BOOL)validateWithVertexFunction:(id)a3 error:(id *)a4 renderPipelineDescriptor:(id)a5
+- (BOOL)validateWithVertexFunction:(id)function error:(id *)error renderPipelineDescriptor:(id)descriptor
 {
   v70 = *MEMORY[0x1E69E9840];
   v68 = 0;
   memset(v67, 0, sizeof(v67));
-  _MTLMessageContextBegin_(v67, "-[MTLStageInputOutputDescriptorInternal validateWithVertexFunction:error:renderPipelineDescriptor:]", 904, [a3 device], 4, "Vertex Descriptor Validation");
+  _MTLMessageContextBegin_(v67, "-[MTLStageInputOutputDescriptorInternal validateWithVertexFunction:error:renderPipelineDescriptor:]", 904, [function device], 4, "Vertex Descriptor Validation");
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v8 = [a3 vertexAttributes];
-  v9 = [v8 countByEnumeratingWithState:&v63 objects:v69 count:16];
+  vertexAttributes = [function vertexAttributes];
+  v9 = [vertexAttributes countByEnumeratingWithState:&v63 objects:v69 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v64;
-    v59 = a4;
+    errorCopy = error;
 LABEL_3:
     v12 = 0;
     while (1)
     {
       if (*v64 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(vertexAttributes);
       }
 
       v13 = *(*(&v63 + 1) + 8 * v12);
-      v14 = [v13 attributeIndex];
+      attributeIndex = [v13 attributeIndex];
       if (![v13 isActive])
       {
         goto LABEL_28;
       }
 
-      v19 = self->_attributeArray->_descriptors[v14];
+      v19 = self->_attributeArray->_descriptors[attributeIndex];
       if (!v19 || !v19->_vertexFormat)
       {
-        v36 = v59;
-        if (v59)
+        v36 = errorCopy;
+        if (errorCopy)
         {
-          v37 = [v13 name];
+          name = [v13 name];
           v38 = @"Vertex attribute %@(%d) is missing from the vertex descriptor";
-          _MTLMessageContextPush_(v67, 2, @"Vertex attribute %@(%d) is missing from the vertex descriptor", v39, v40, v41, v42, v43, v37);
-          v44 = [v13 name];
+          _MTLMessageContextPush_(v67, 2, @"Vertex attribute %@(%d) is missing from the vertex descriptor", v39, v40, v41, v42, v43, name);
+          name2 = [v13 name];
           goto LABEL_37;
         }
 
@@ -450,34 +450,34 @@ LABEL_38:
       v22 = descriptors[bufferIndex];
       if (!v22)
       {
-        v36 = v59;
-        if (v59)
+        v36 = errorCopy;
+        if (errorCopy)
         {
-          v45 = [v13 name];
+          name3 = [v13 name];
           v58 = v19->_bufferIndex;
           v38 = @"Vertex attribute %@(%d) references a vertex buffer at index %d, but there is no buffer layout set for that index";
-          _MTLMessageContextPush_(v67, 2, @"Vertex attribute %@(%d) references a vertex buffer at index %d, but there is no buffer layout set for that index", v46, v47, v48, v49, v50, v45);
-          v44 = [v13 name];
+          _MTLMessageContextPush_(v67, 2, @"Vertex attribute %@(%d) references a vertex buffer at index %d, but there is no buffer layout set for that index", v46, v47, v48, v49, v50, name3);
+          name2 = [v13 name];
           v57 = v19->_bufferIndex;
 LABEL_37:
-          *v36 = compilerErrorWithMessage(&v38->isa, v44, v14, v57);
+          *v36 = compilerErrorWithMessage(&v38->isa, name2, attributeIndex, v57);
         }
 
         goto LABEL_38;
       }
 
-      validateVertexAttribute(descriptors[bufferIndex], v14, v19, v67, v15, v16, v17, v18, v55);
+      validateVertexAttribute(descriptors[bufferIndex], attributeIndex, v19, v67, v15, v16, v17, v18, v55);
       validateFunctionStepRate(v22->_stepFunction, v22->_instanceStepRate, v67, v23, v24, v25, v26, v27, v56);
-      v28 = [v13 attributeType];
-      if (v28 >= gAttributeTypesCount)
+      attributeType = [v13 attributeType];
+      if (attributeType >= gAttributeTypesCount)
       {
         goto LABEL_28;
       }
 
-      v29 = v28;
-      v30 = &attributeTypes[3 * v28];
-      v31 = [a5 openGLModeEnabled];
-      if (!v29 && v31 && !*(v30 + 20))
+      v29 = attributeType;
+      v30 = &attributeTypes[3 * attributeType];
+      openGLModeEnabled = [descriptor openGLModeEnabled];
+      if (!v29 && openGLModeEnabled && !*(v30 + 20))
       {
         goto LABEL_28;
       }
@@ -496,12 +496,12 @@ LABEL_37:
         goto LABEL_24;
       }
 
-      [a5 openGLModeEnabled];
+      [descriptor openGLModeEnabled];
 LABEL_28:
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v63 objects:v69 count:16];
-        a4 = v59;
+        v10 = [vertexAttributes countByEnumeratingWithState:&v63 objects:v69 count:16];
+        error = errorCopy;
         if (v10)
         {
           goto LABEL_3;
@@ -522,15 +522,15 @@ LABEL_28:
     }
 
 LABEL_24:
-    v34 = [a5 openGLModeEnabled];
-    if ((v33 & 1) == 0 && (v34 & 1) == 0)
+    openGLModeEnabled2 = [descriptor openGLModeEnabled];
+    if ((v33 & 1) == 0 && (openGLModeEnabled2 & 1) == 0)
     {
-      if (v59)
+      if (errorCopy)
       {
-        v52 = [v13 name];
+        name4 = [v13 name];
         v53 = v30[1];
         v54 = MTLAttributeFormatString(v19->_vertexFormat);
-        *v59 = compilerErrorWithMessage(&cfstr_VertexAttribut_2.isa, v52, v14, v53, v54);
+        *errorCopy = compilerErrorWithMessage(&cfstr_VertexAttribut_2.isa, name4, attributeIndex, v53, v54);
       }
 
       goto LABEL_38;
@@ -540,9 +540,9 @@ LABEL_24:
   }
 
 LABEL_30:
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   _MTLMessageContextEnd(v67);

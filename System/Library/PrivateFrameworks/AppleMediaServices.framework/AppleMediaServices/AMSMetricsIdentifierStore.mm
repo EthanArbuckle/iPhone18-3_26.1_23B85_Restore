@@ -1,38 +1,38 @@
 @interface AMSMetricsIdentifierStore
-+ (AMSMetricsIdentifierStore)identifierStoreWithAccount:(id)a3 bagNamespace:(id)a4 bag:(id)a5;
-+ (id)_accountIdentifierForAccount:(id)a3;
-+ (id)_generateIdentifierKey:(id)a3 storeInfo:(id)a4 period:(int64_t)a5 resetInterval:(double)a6;
-+ (id)_generateStoreKeyForAccount:(id)a3 domain:(id)a4 clientInfo:(id)a5;
-+ (id)_identifierStoreInfoForKeys:(id)a3 inDatabase:(id)a4 date:(id)a5 needsToSync:(BOOL *)a6 account:(id)a7 clientInfo:(id)a8 domain:(id)a9 resetInterval:(double)a10 error:(id *)a11;
-+ (id)_identifierStoreWithAccount:(id)a3 parameters:(id)a4;
-+ (id)_parametersForBag:(id)a3 bagNamespace:(id)a4;
-+ (id)_promiseOfListOfNamespacesFromBag:(id)a3;
-+ (id)_promiseOfListOfStoresInNamespaceList:(id)a3 forAccount:(id)a4 bag:(id)a5;
-+ (id)_promiseToRotateIdentifiersForAccount:(id)a3 bag:(id)a4 namespaceList:(id)a5;
++ (AMSMetricsIdentifierStore)identifierStoreWithAccount:(id)account bagNamespace:(id)namespace bag:(id)bag;
++ (id)_accountIdentifierForAccount:(id)account;
++ (id)_generateIdentifierKey:(id)key storeInfo:(id)info period:(int64_t)period resetInterval:(double)interval;
++ (id)_generateStoreKeyForAccount:(id)account domain:(id)domain clientInfo:(id)info;
++ (id)_identifierStoreInfoForKeys:(id)keys inDatabase:(id)database date:(id)date needsToSync:(BOOL *)sync account:(id)account clientInfo:(id)info domain:(id)domain resetInterval:(double)self0 error:(id *)self1;
++ (id)_identifierStoreWithAccount:(id)account parameters:(id)parameters;
++ (id)_parametersForBag:(id)bag bagNamespace:(id)namespace;
++ (id)_promiseOfListOfNamespacesFromBag:(id)bag;
++ (id)_promiseOfListOfStoresInNamespaceList:(id)list forAccount:(id)account bag:(id)bag;
++ (id)_promiseToRotateIdentifiersForAccount:(id)account bag:(id)bag namespaceList:(id)list;
 + (id)_sharedQueue;
 + (id)_sync;
-+ (id)identifierForAccount:(id)a3 bag:(id)a4 bagNamespace:(id)a5 keyName:(id)a6;
-+ (id)performUserResetForStoresInBag:(id)a3 forAccount:(id)a4;
-+ (id)removeIdentifiersForStore:(id)a3;
-+ (id)shouldEnableResetUIFromBag:(id)a3;
-+ (int64_t)_periodFrom:(double)a3 storeInfoStarted:(id)a4 now:(id)a5;
++ (id)identifierForAccount:(id)account bag:(id)bag bagNamespace:(id)namespace keyName:(id)name;
++ (id)performUserResetForStoresInBag:(id)bag forAccount:(id)account;
++ (id)removeIdentifiersForStore:(id)store;
++ (id)shouldEnableResetUIFromBag:(id)bag;
++ (int64_t)_periodFrom:(double)from storeInfoStarted:(id)started now:(id)now;
 + (void)cleanupIdentifiers;
-+ (void)removeIdentifiersForAccount:(id)a3;
++ (void)removeIdentifiersForAccount:(id)account;
 - (AMSMetricsIdentifierStore)init;
-- (BOOL)isAccountValidForKey:(id)a3 activeItunesAccountDSID:(id *)a4;
-- (id)_generateEventFieldsForKeys:(id)a3 date:(id)a4;
-- (id)_identifierInfoForKey:(id)a3 storeInfo:(id)a4 period:(int64_t)a5 inDatabase:(id)a6 date:(id)a7 setValue:(id)a8 lastSyncDate:(id)a9 needsToSync:(BOOL *)a10 error:(id *)a11;
-- (id)_identifiersForKeys:(id)a3 currentDate:(id)a4;
-- (id)generateEventFieldsForKeys:(id)a3;
-- (id)generateEventFieldsForKeys:(id)a3 date:(id)a4;
-- (id)identifierForKey:(id)a3;
-- (id)identifierIfExistsForKey:(id)a3;
+- (BOOL)isAccountValidForKey:(id)key activeItunesAccountDSID:(id *)d;
+- (id)_generateEventFieldsForKeys:(id)keys date:(id)date;
+- (id)_identifierInfoForKey:(id)key storeInfo:(id)info period:(int64_t)period inDatabase:(id)database date:(id)date setValue:(id)value lastSyncDate:(id)syncDate needsToSync:(BOOL *)self0 error:(id *)self1;
+- (id)_identifiersForKeys:(id)keys currentDate:(id)date;
+- (id)generateEventFieldsForKeys:(id)keys;
+- (id)generateEventFieldsForKeys:(id)keys date:(id)date;
+- (id)identifierForKey:(id)key;
+- (id)identifierIfExistsForKey:(id)key;
 - (id)resetForcingStoreSync;
-- (void)_generateFutureIdentifiersIfNeededForKeys:(id)a3 storeInfo:(id)a4 afterPeriod:(int64_t)a5 inDatabase:(id)a6 date:(id)a7;
-- (void)_setIdentifier:(id)a3 withStartedDate:(id)a4 forKey:(id)a5;
-- (void)_setIdentifier:(id)a3 withStartedDate:(id)a4 lastSyncDate:(id)a5 forKey:(id)a6;
+- (void)_generateFutureIdentifiersIfNeededForKeys:(id)keys storeInfo:(id)info afterPeriod:(int64_t)period inDatabase:(id)database date:(id)date;
+- (void)_setIdentifier:(id)identifier withStartedDate:(id)date forKey:(id)key;
+- (void)_setIdentifier:(id)identifier withStartedDate:(id)date lastSyncDate:(id)syncDate forKey:(id)key;
 - (void)reset;
-- (void)setIdentifier:(id)a3 forKey:(id)a4;
+- (void)setIdentifier:(id)identifier forKey:(id)key;
 @end
 
 @implementation AMSMetricsIdentifierStore
@@ -66,13 +66,13 @@
 
 + (void)cleanupIdentifiers
 {
-  v3 = [a1 _sharedQueue];
+  _sharedQueue = [self _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_async(v3, block);
+  block[4] = self;
+  dispatch_async(_sharedQueue, block);
 }
 
 void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a1)
@@ -129,23 +129,23 @@ void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a
   }
 }
 
-- (id)generateEventFieldsForKeys:(id)a3
+- (id)generateEventFieldsForKeys:(id)keys
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
+  keysCopy = keys;
   v6 = [v4 now];
-  v7 = [(AMSMetricsIdentifierStore *)self _generateEventFieldsForKeys:v5 date:v6];
+  v7 = [(AMSMetricsIdentifierStore *)self _generateEventFieldsForKeys:keysCopy date:v6];
 
   return v7;
 }
 
-- (id)generateEventFieldsForKeys:(id)a3 date:(id)a4
+- (id)generateEventFieldsForKeys:(id)keys date:(id)date
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dateCopy = date;
   v8 = [MEMORY[0x1E695DF00] now];
-  [v7 timeIntervalSinceDate:v8];
+  [dateCopy timeIntervalSinceDate:v8];
   v10 = v9;
 
   [(AMSMetricsIdentifierStore *)self resetInterval];
@@ -157,8 +157,8 @@ void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -166,24 +166,24 @@ void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a
       v20 = v14;
       v21 = 2114;
       v22 = v15;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Date is out of bounds, using the current date.", &v19, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Date is out of bounds, using the current date.", &v19, 0x16u);
     }
 
     v16 = [MEMORY[0x1E695DF00] now];
 
-    v7 = v16;
+    dateCopy = v16;
   }
 
-  v17 = [(AMSMetricsIdentifierStore *)self _generateEventFieldsForKeys:v6 date:v7];
+  v17 = [(AMSMetricsIdentifierStore *)self _generateEventFieldsForKeys:keysCopy date:dateCopy];
 
   return v17;
 }
 
-- (id)_generateEventFieldsForKeys:(id)a3 date:(id)a4
+- (id)_generateEventFieldsForKeys:(id)keys date:(id)date
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(AMSMetricsIdentifierStore *)self _identifiersForKeys:a3 currentDate:a4];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [(AMSMetricsIdentifierStore *)self _identifiersForKeys:keys currentDate:date];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -203,7 +203,7 @@ void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * i) populateDictionary:v6 shouldEmitDiagnosticFields:-[AMSMetricsIdentifierStore shouldEmitDiagnosticFields](self shouldEmitPreviousUserId:{"shouldEmitDiagnosticFields", v13), -[AMSMetricsIdentifierStore shouldEmitPreviousUserId](self, "shouldEmitPreviousUserId")}];
+        [*(*(&v13 + 1) + 8 * i) populateDictionary:dictionary shouldEmitDiagnosticFields:-[AMSMetricsIdentifierStore shouldEmitDiagnosticFields](self shouldEmitPreviousUserId:{"shouldEmitDiagnosticFields", v13), -[AMSMetricsIdentifierStore shouldEmitPreviousUserId](self, "shouldEmitPreviousUserId")}];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -212,40 +212,40 @@ void __47__AMSMetricsIdentifierStore_cleanupIdentifiers__block_invoke(uint64_t a
     while (v9);
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (id)identifierForKey:(id)a3
+- (id)identifierForKey:(id)key
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  keyCopy = key;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v12 count:1];
+  keyCopy2 = key;
+  v6 = [v4 arrayWithObjects:&keyCopy count:1];
   v7 = [MEMORY[0x1E695DF00] now];
 
   v8 = [(AMSMetricsIdentifierStore *)self _identifiersForKeys:v6 currentDate:v7];
 
-  v9 = [v8 firstObject];
-  v10 = [v9 value];
+  firstObject = [v8 firstObject];
+  value = [firstObject value];
 
-  return v10;
+  return value;
 }
 
-+ (id)identifierForAccount:(id)a3 bag:(id)a4 bagNamespace:(id)a5 keyName:(id)a6
++ (id)identifierForAccount:(id)account bag:(id)bag bagNamespace:(id)namespace keyName:(id)name
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a1 _parametersForBag:a4 bagNamespace:a5];
+  accountCopy = account;
+  nameCopy = name;
+  v12 = [self _parametersForBag:bag bagNamespace:namespace];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__AMSMetricsIdentifierStore_identifierForAccount_bag_bagNamespace_keyName___block_invoke;
   v17[3] = &unk_1E73B9C78;
-  v19 = v11;
-  v20 = a1;
-  v18 = v10;
-  v13 = v11;
-  v14 = v10;
+  v19 = nameCopy;
+  selfCopy = self;
+  v18 = accountCopy;
+  v13 = nameCopy;
+  v14 = accountCopy;
   v15 = [v12 thenWithBlock:v17];
 
   return v15;
@@ -355,17 +355,17 @@ id __75__AMSMetricsIdentifierStore_identifierForAccount_bag_bagNamespace_keyName
   return v17;
 }
 
-+ (AMSMetricsIdentifierStore)identifierStoreWithAccount:(id)a3 bagNamespace:(id)a4 bag:(id)a5
++ (AMSMetricsIdentifierStore)identifierStoreWithAccount:(id)account bagNamespace:(id)namespace bag:(id)bag
 {
-  v8 = a3;
-  v9 = [a1 _parametersForBag:a5 bagNamespace:a4];
+  accountCopy = account;
+  v9 = [self _parametersForBag:bag bagNamespace:namespace];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__AMSMetricsIdentifierStore_identifierStoreWithAccount_bagNamespace_bag___block_invoke;
   v13[3] = &unk_1E73B9120;
-  v14 = v8;
-  v15 = a1;
-  v10 = v8;
+  v14 = accountCopy;
+  selfCopy = self;
+  v10 = accountCopy;
   v11 = [v9 thenWithBlock:v13];
 
   return v11;
@@ -379,18 +379,18 @@ id __73__AMSMetricsIdentifierStore_identifierStoreWithAccount_bagNamespace_bag__
   return v3;
 }
 
-+ (void)removeIdentifiersForAccount:(id)a3
++ (void)removeIdentifiersForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [a1 _sharedQueue];
+  accountCopy = account;
+  _sharedQueue = [self _sharedQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__AMSMetricsIdentifierStore_removeIdentifiersForAccount___block_invoke;
   v7[3] = &unk_1E73B40A8;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = accountCopy;
+  selfCopy = self;
+  v6 = accountCopy;
+  dispatch_async(_sharedQueue, v7);
 }
 
 void __57__AMSMetricsIdentifierStore_removeIdentifiersForAccount___block_invoke(uint64_t a1)
@@ -453,21 +453,21 @@ void __57__AMSMetricsIdentifierStore_removeIdentifiersForAccount___block_invoke(
   }
 }
 
-+ (id)removeIdentifiersForStore:(id)a3
++ (id)removeIdentifiersForStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [a1 _sharedQueue];
+  _sharedQueue = [self _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__AMSMetricsIdentifierStore_removeIdentifiersForStore___block_invoke;
   block[3] = &unk_1E73B9CA0;
-  v15 = a1;
-  v13 = v4;
+  selfCopy = self;
+  v13 = storeCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v8 = storeCopy;
+  dispatch_async(_sharedQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -805,11 +805,11 @@ BOOL __50__AMSMetricsIdentifierStore_resetForcingStoreSync__block_invoke_57(uint
   return v2 != 0;
 }
 
-- (void)setIdentifier:(id)a3 forKey:(id)a4
+- (void)setIdentifier:(id)identifier forKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   v8 = [MEMORY[0x1E695DF00] now];
   v9 = +[AMSLogConfig sharedMetricsConfig];
   if (!v9)
@@ -817,8 +817,8 @@ BOOL __50__AMSMetricsIdentifierStore_resetForcingStoreSync__block_invoke_57(uint
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
@@ -827,23 +827,23 @@ BOOL __50__AMSMetricsIdentifierStore_resetForcingStoreSync__block_invoke_57(uint
     v15 = 2114;
     v16 = v12;
     v17 = 2112;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v7;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting identifier: %@ (key: %{public}@)", &v13, 0x2Au);
+    v20 = keyCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting identifier: %@ (key: %{public}@)", &v13, 0x2Au);
   }
 
-  [(AMSMetricsIdentifierStore *)self _setIdentifier:v6 withStartedDate:v8 lastSyncDate:0 forKey:v7];
+  [(AMSMetricsIdentifierStore *)self _setIdentifier:identifierCopy withStartedDate:v8 lastSyncDate:0 forKey:keyCopy];
 }
 
-- (void)_setIdentifier:(id)a3 withStartedDate:(id)a4 forKey:(id)a5
+- (void)_setIdentifier:(id)identifier withStartedDate:(id)date forKey:(id)key
 {
-  v8 = a5;
-  v11 = a4;
-  v9 = a3;
-  if ([v8 crossDeviceSync])
+  keyCopy = key;
+  dateCopy = date;
+  identifierCopy = identifier;
+  if ([keyCopy crossDeviceSync])
   {
-    v10 = v11;
+    v10 = dateCopy;
   }
 
   else
@@ -851,15 +851,15 @@ BOOL __50__AMSMetricsIdentifierStore_resetForcingStoreSync__block_invoke_57(uint
     v10 = 0;
   }
 
-  [(AMSMetricsIdentifierStore *)self _setIdentifier:v9 withStartedDate:v11 lastSyncDate:v10 forKey:v8];
+  [(AMSMetricsIdentifierStore *)self _setIdentifier:identifierCopy withStartedDate:dateCopy lastSyncDate:v10 forKey:keyCopy];
 }
 
-- (void)_setIdentifier:(id)a3 withStartedDate:(id)a4 lastSyncDate:(id)a5 forKey:(id)a6
+- (void)_setIdentifier:(id)identifier withStartedDate:(id)date lastSyncDate:(id)syncDate forKey:(id)key
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dateCopy = date;
+  syncDateCopy = syncDate;
+  keyCopy = key;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -869,15 +869,15 @@ BOOL __50__AMSMetricsIdentifierStore_resetForcingStoreSync__block_invoke_57(uint
   v21 = 3221225472;
   v22 = __80__AMSMetricsIdentifierStore__setIdentifier_withStartedDate_lastSyncDate_forKey___block_invoke;
   v23 = &unk_1E73B9CF0;
-  v24 = self;
-  v15 = v13;
+  selfCopy = self;
+  v15 = keyCopy;
   v25 = v15;
-  v16 = v11;
+  v16 = dateCopy;
   v26 = v16;
   v29 = &v30;
-  v17 = v10;
+  v17 = identifierCopy;
   v27 = v17;
-  v18 = v12;
+  v18 = syncDateCopy;
   v28 = v18;
   dispatch_sync(v14, &v20);
 
@@ -1013,9 +1013,9 @@ LABEL_15:
 LABEL_17:
 }
 
-- (id)identifierIfExistsForKey:(id)a3
+- (id)identifierIfExistsForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x1E695DF00] now];
   v22[0] = 0;
   v22[1] = v22;
@@ -1035,7 +1035,7 @@ LABEL_17:
   v15[2] = __54__AMSMetricsIdentifierStore_identifierIfExistsForKey___block_invoke_2;
   v15[3] = &unk_1E73B9D60;
   v15[4] = self;
-  v9 = v4;
+  v9 = keyCopy;
   v16 = v9;
   v10 = v5;
   v17 = v10;
@@ -1256,30 +1256,30 @@ void __54__AMSMetricsIdentifierStore_identifierIfExistsForKey___block_invoke_3(u
   }
 }
 
-- (void)_generateFutureIdentifiersIfNeededForKeys:(id)a3 storeInfo:(id)a4 afterPeriod:(int64_t)a5 inDatabase:(id)a6 date:(id)a7
+- (void)_generateFutureIdentifiersIfNeededForKeys:(id)keys storeInfo:(id)info afterPeriod:(int64_t)period inDatabase:(id)database date:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  keysCopy = keys;
+  infoCopy = info;
+  databaseCopy = database;
+  dateCopy = date;
   [(AMSMetricsIdentifierStore *)self resetInterval];
   if (v16 != 0.0)
   {
-    v17 = [v13 started];
+    started = [infoCopy started];
 
-    if (v17)
+    if (started)
     {
       v18 = +[AMSMetricsIdentifierStore _sharedQueue];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __109__AMSMetricsIdentifierStore__generateFutureIdentifiersIfNeededForKeys_storeInfo_afterPeriod_inDatabase_date___block_invoke;
       v19[3] = &unk_1E73B9D88;
-      v20 = v15;
-      v21 = v13;
-      v22 = self;
-      v25 = a5;
-      v23 = v12;
-      v24 = v14;
+      v20 = dateCopy;
+      v21 = infoCopy;
+      selfCopy = self;
+      periodCopy = period;
+      v23 = keysCopy;
+      v24 = databaseCopy;
       dispatch_async(v18, v19);
     }
   }
@@ -1407,71 +1407,71 @@ void __109__AMSMetricsIdentifierStore__generateFutureIdentifiersIfNeededForKeys_
   qword_1ED6E2F50 = v0;
 }
 
-- (id)_identifierInfoForKey:(id)a3 storeInfo:(id)a4 period:(int64_t)a5 inDatabase:(id)a6 date:(id)a7 setValue:(id)a8 lastSyncDate:(id)a9 needsToSync:(BOOL *)a10 error:(id *)a11
+- (id)_identifierInfoForKey:(id)key storeInfo:(id)info period:(int64_t)period inDatabase:(id)database date:(id)date setValue:(id)value lastSyncDate:(id)syncDate needsToSync:(BOOL *)self0 error:(id *)self1
 {
-  v17 = a10;
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v43 = a8;
-  v21 = a9;
-  v22 = a6;
+  syncCopy2 = sync;
+  keyCopy = key;
+  infoCopy = info;
+  dateCopy = date;
+  valueCopy = value;
+  syncDateCopy = syncDate;
+  databaseCopy = database;
   [(AMSMetricsIdentifierStore *)self resetInterval];
   if (v23 == 0.0)
   {
-    v27 = a5;
+    periodCopy3 = period;
     v29 = 0;
   }
 
   else
   {
-    v24 = [v19 started];
-    if (v24)
+    started = [infoCopy started];
+    if (started)
     {
-      [v19 started];
-      v26 = v25 = v20;
+      [infoCopy started];
+      v26 = v25 = dateCopy;
       [(AMSMetricsIdentifierStore *)self resetInterval];
-      v27 = a5;
-      v29 = [v26 dateByAddingTimeInterval:v28 * (a5 + 1)];
+      periodCopy3 = period;
+      v29 = [v26 dateByAddingTimeInterval:v28 * (period + 1)];
 
-      v20 = v25;
-      v17 = a10;
+      dateCopy = v25;
+      syncCopy2 = sync;
     }
 
     else
     {
-      v27 = a5;
+      periodCopy3 = period;
       v29 = 0;
     }
   }
 
   v30 = objc_opt_class();
   [(AMSMetricsIdentifierStore *)self resetInterval];
-  v31 = [v30 _generateIdentifierKey:v18 storeInfo:v19 period:v27 resetInterval:?];
+  v31 = [v30 _generateIdentifierKey:keyCopy storeInfo:infoCopy period:periodCopy3 resetInterval:?];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __124__AMSMetricsIdentifierStore__identifierInfoForKey_storeInfo_period_inDatabase_date_setValue_lastSyncDate_needsToSync_error___block_invoke;
   v44[3] = &unk_1E73B9DB0;
   v44[4] = self;
-  v45 = v20;
-  v46 = v43;
-  v47 = v18;
+  v45 = dateCopy;
+  v46 = valueCopy;
+  v47 = keyCopy;
   v48 = v31;
   v49 = v29;
-  v50 = v19;
-  v51 = v21;
-  v52 = v17;
-  v42 = v21;
-  v32 = v19;
+  v50 = infoCopy;
+  v51 = syncDateCopy;
+  v52 = syncCopy2;
+  v42 = syncDateCopy;
+  v32 = infoCopy;
   v33 = v29;
   v34 = v31;
-  v35 = v18;
-  v36 = v43;
-  v37 = v20;
-  v38 = [v22 identifierForKey:v34 updateMaybe:v44 error:a11];
+  v35 = keyCopy;
+  v36 = valueCopy;
+  v37 = dateCopy;
+  v38 = [databaseCopy identifierForKey:v34 updateMaybe:v44 error:error];
 
-  v39 = [(AMSMetricsIdentifierStore *)self account];
-  v40 = [AMSMetricsIdentifierCore _removeU13Identifier:v38 account:v39];
+  account = [(AMSMetricsIdentifierStore *)self account];
+  v40 = [AMSMetricsIdentifierCore _removeU13Identifier:v38 account:account];
 
   return v40;
 }
@@ -1818,44 +1818,44 @@ LABEL_62:
   return v54;
 }
 
-- (BOOL)isAccountValidForKey:(id)a3 activeItunesAccountDSID:(id *)a4
+- (BOOL)isAccountValidForKey:(id)key activeItunesAccountDSID:(id *)d
 {
-  v6 = a3;
-  if (-[AMSMetricsIdentifierStore isActiveITunesAccountRequired](self, "isActiveITunesAccountRequired") || [v6 isActiveITunesAccountRequired])
+  keyCopy = key;
+  if (-[AMSMetricsIdentifierStore isActiveITunesAccountRequired](self, "isActiveITunesAccountRequired") || [keyCopy isActiveITunesAccountRequired])
   {
-    v7 = [(AMSMetricsIdentifierStore *)self account];
-    v8 = [v7 ams_DSID];
+    account = [(AMSMetricsIdentifierStore *)self account];
+    ams_DSID = [account ams_DSID];
 
-    v9 = v8 != 0;
-    if (v8)
+    v9 = ams_DSID != 0;
+    if (ams_DSID)
     {
-      v10 = [(AMSMetricsIdentifierStore *)self account];
-      if (([v10 ams_isiTunesAccount] & 1) == 0)
+      account2 = [(AMSMetricsIdentifierStore *)self account];
+      if (([account2 ams_isiTunesAccount] & 1) == 0)
       {
 
-        if (!a4)
+        if (!d)
         {
           goto LABEL_12;
         }
 
 LABEL_10:
-        if (*a4)
+        if (*d)
         {
-          v13 = *a4;
+          ams_DSID2 = *d;
           goto LABEL_13;
         }
 
 LABEL_12:
-        v14 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-        v15 = [v14 ams_activeiTunesAccount];
-        v13 = [v15 ams_DSID];
+        ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+        ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+        ams_DSID2 = [ams_activeiTunesAccount ams_DSID];
 
-        if (!a4)
+        if (!d)
         {
 LABEL_14:
-          if (v13)
+          if (ams_DSID2)
           {
-            v9 = [v8 isEqualToNumber:v13];
+            v9 = [ams_DSID isEqualToNumber:ams_DSID2];
           }
 
           else
@@ -1867,17 +1867,17 @@ LABEL_14:
         }
 
 LABEL_13:
-        v16 = v13;
-        *a4 = v13;
+        v16 = ams_DSID2;
+        *d = ams_DSID2;
         goto LABEL_14;
       }
 
-      v11 = [(AMSMetricsIdentifierStore *)self account];
-      v12 = [v11 isActive];
+      account3 = [(AMSMetricsIdentifierStore *)self account];
+      isActive = [account3 isActive];
 
-      if ((v12 & 1) == 0)
+      if ((isActive & 1) == 0)
       {
-        if (!a4)
+        if (!d)
         {
           goto LABEL_12;
         }
@@ -1897,11 +1897,11 @@ LABEL_19:
   return v9;
 }
 
-- (id)_identifiersForKeys:(id)a3 currentDate:(id)a4
+- (id)_identifiersForKeys:(id)keys currentDate:(id)date
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  dateCopy = date;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -1918,9 +1918,9 @@ LABEL_19:
   block[2] = __61__AMSMetricsIdentifierStore__identifiersForKeys_currentDate___block_invoke;
   block[3] = &unk_1E73B9DD8;
   block[4] = self;
-  v9 = v6;
+  v9 = keysCopy;
   v20 = v9;
-  v10 = v7;
+  v10 = dateCopy;
   v21 = v10;
   v22 = &v24;
   v23 = &v28;
@@ -1937,8 +1937,8 @@ LABEL_19:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v14 = objc_opt_class();
     v15 = AMSLogKey();
@@ -1951,7 +1951,7 @@ LABEL_19:
     v39 = v9;
     v40 = 2114;
     v41 = v16;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] -_identifiersForKeys:currentDate: Providing for keys %{public}@: %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: [%{public}@] -_identifiersForKeys:currentDate: Providing for keys %{public}@: %{public}@", buf, 0x2Au);
   }
 
   v17 = v29[5];
@@ -2163,18 +2163,18 @@ void __61__AMSMetricsIdentifierStore__identifiersForKeys_currentDate___block_inv
 LABEL_32:
 }
 
-+ (id)_identifierStoreInfoForKeys:(id)a3 inDatabase:(id)a4 date:(id)a5 needsToSync:(BOOL *)a6 account:(id)a7 clientInfo:(id)a8 domain:(id)a9 resetInterval:(double)a10 error:(id *)a11
++ (id)_identifierStoreInfoForKeys:(id)keys inDatabase:(id)database date:(id)date needsToSync:(BOOL *)sync account:(id)account clientInfo:(id)info domain:(id)domain resetInterval:(double)self0 error:(id *)self1
 {
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a7;
-  v21 = a4;
-  v22 = a3;
-  v23 = [AMSMetricsIdentifierStore _accountIdentifierForAccount:v20];
-  v24 = [a1 _generateStoreKeyForAccount:v20 domain:v19 clientInfo:v18];
+  dateCopy = date;
+  infoCopy = info;
+  domainCopy = domain;
+  accountCopy = account;
+  databaseCopy = database;
+  keysCopy = keys;
+  v23 = [AMSMetricsIdentifierStore _accountIdentifierForAccount:accountCopy];
+  v24 = [self _generateStoreKeyForAccount:accountCopy domain:domainCopy clientInfo:infoCopy];
 
-  v25 = [v22 ac_firstObjectPassingTest:&__block_literal_global_80_2];
+  v25 = [keysCopy ac_firstObjectPassingTest:&__block_literal_global_80_2];
 
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -2183,18 +2183,18 @@ LABEL_32:
   v35 = v23;
   v36 = v24;
   v43 = v25 != 0;
-  v37 = v17;
-  v38 = v18;
-  v39 = v19;
-  v40 = a1;
-  v41 = a10;
-  v42 = a6;
-  v26 = v19;
-  v27 = v18;
-  v28 = v17;
+  v37 = dateCopy;
+  v38 = infoCopy;
+  v39 = domainCopy;
+  selfCopy = self;
+  intervalCopy = interval;
+  syncCopy = sync;
+  v26 = domainCopy;
+  v27 = infoCopy;
+  v28 = dateCopy;
   v29 = v24;
   v30 = v23;
-  v31 = [v21 identifierStoreForKey:v29 updateMaybe:v34 error:a11];
+  v31 = [databaseCopy identifierStoreForKey:v29 updateMaybe:v34 error:error];
 
   return v31;
 }
@@ -2354,37 +2354,37 @@ LABEL_29:
   return v19;
 }
 
-+ (id)_accountIdentifierForAccount:(id)a3
++ (id)_accountIdentifierForAccount:(id)account
 {
-  v3 = [a3 ams_DSID];
-  v4 = [v3 stringValue];
+  ams_DSID = [account ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
-  if (!v4 || [(__CFString *)v4 integerValue]<= 0)
+  if (!stringValue || [(__CFString *)stringValue integerValue]<= 0)
   {
 
-    v4 = &stru_1F071BA78;
+    stringValue = &stru_1F071BA78;
   }
 
-  return v4;
+  return stringValue;
 }
 
-+ (id)_generateStoreKeyForAccount:(id)a3 domain:(id)a4 clientInfo:(id)a5
++ (id)_generateStoreKeyForAccount:(id)account domain:(id)domain clientInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  domainCopy = domain;
+  infoCopy = info;
   v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v11 = [v7 ams_DSID];
+  ams_DSID = [accountCopy ams_DSID];
 
-  if (v11)
+  if (ams_DSID)
   {
-    v12 = [v7 ams_DSID];
-    [v10 appendFormat:@"%@", v12];
+    ams_DSID2 = [accountCopy ams_DSID];
+    [v10 appendFormat:@"%@", ams_DSID2];
   }
 
-  if (v9)
+  if (infoCopy)
   {
-    v13 = v9;
+    v13 = infoCopy;
   }
 
   else
@@ -2393,45 +2393,45 @@ LABEL_29:
   }
 
   v14 = v13;
-  v15 = [v13 bundleIdentifier];
+  bundleIdentifier = [v13 bundleIdentifier];
 
-  if (v15)
+  if (bundleIdentifier)
   {
-    v16 = [v14 bundleIdentifier];
-    [v10 appendFormat:@"%@", v16];
+    bundleIdentifier2 = [v14 bundleIdentifier];
+    [v10 appendFormat:@"%@", bundleIdentifier2];
   }
 
-  if ([v8 length])
+  if ([domainCopy length])
   {
-    [v10 appendFormat:@".%@", v8];
+    [v10 appendFormat:@".%@", domainCopy];
   }
 
   if (![v10 length])
   {
-    v17 = [MEMORY[0x1E696AE30] processInfo];
-    v18 = [v17 processName];
-    [v10 appendFormat:@"%@", v18];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    [v10 appendFormat:@"%@", processName];
   }
 
   return v10;
 }
 
-+ (id)_generateIdentifierKey:(id)a3 storeInfo:(id)a4 period:(int64_t)a5 resetInterval:(double)a6
++ (id)_generateIdentifierKey:(id)key storeInfo:(id)info period:(int64_t)period resetInterval:(double)interval
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 storeKey];
-  v12 = [v10 storeUUID];
-  if ([v11 isEqual:v12])
+  keyCopy = key;
+  infoCopy = info;
+  storeKey = [infoCopy storeKey];
+  storeUUID = [infoCopy storeUUID];
+  if ([storeKey isEqual:storeUUID])
   {
-    v13 = [v9 crossDeviceSync];
+    crossDeviceSync = [keyCopy crossDeviceSync];
 
-    if ((v13 & 1) == 0)
+    if ((crossDeviceSync & 1) == 0)
     {
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v10 storeUUID];
-      v16 = [v9 name];
-      [v14 stringWithFormat:@"%@_%@", v15, v16, v20, v21];
+      storeUUID2 = [infoCopy storeUUID];
+      name = [keyCopy name];
+      [v14 stringWithFormat:@"%@_%@", storeUUID2, name, v20, v21];
       goto LABEL_6;
     }
   }
@@ -2441,19 +2441,19 @@ LABEL_29:
   }
 
   v17 = MEMORY[0x1E696AEC0];
-  v15 = [v10 storeUUID];
-  v16 = [v9 name];
-  [v17 stringWithFormat:@"%@_%@_%llx_%lx", v15, v16, a6, a5];
+  storeUUID2 = [infoCopy storeUUID];
+  name = [keyCopy name];
+  [v17 stringWithFormat:@"%@_%@_%llx_%lx", storeUUID2, name, interval, period];
   v18 = LABEL_6:;
 
   return v18;
 }
 
-+ (id)_identifierStoreWithAccount:(id)a3 parameters:(id)a4
++ (id)_identifierStoreWithAccount:(id)account parameters:(id)parameters
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKeyedSubscript:@"bundleIdentifier"];
+  parametersCopy = parameters;
+  accountCopy = account;
+  v7 = [parametersCopy objectForKeyedSubscript:@"bundleIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2465,7 +2465,7 @@ LABEL_29:
     v8 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"domain"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"domain"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2477,7 +2477,7 @@ LABEL_29:
     v10 = 0;
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"resetInterval"];
+  v11 = [parametersCopy objectForKeyedSubscript:@"resetInterval"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2489,7 +2489,7 @@ LABEL_29:
     v12 = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"shouldEmitDiagnosticFields"];
+  v13 = [parametersCopy objectForKeyedSubscript:@"shouldEmitDiagnosticFields"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2501,8 +2501,8 @@ LABEL_29:
     v14 = 0;
   }
 
-  v15 = [v14 BOOLValue];
-  v16 = [v5 objectForKeyedSubscript:@"shouldEmitPreviousUserId"];
+  bOOLValue = [v14 BOOLValue];
+  v16 = [parametersCopy objectForKeyedSubscript:@"shouldEmitPreviousUserId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2524,10 +2524,10 @@ LABEL_29:
     v18 = MEMORY[0x1E695E118];
   }
 
-  v19 = [v18 BOOLValue];
+  bOOLValue2 = [v18 BOOLValue];
 
   v20 = objc_alloc_init(AMSMetricsIdentifierStore);
-  [(AMSMetricsIdentifierStore *)v20 setAccount:v6];
+  [(AMSMetricsIdentifierStore *)v20 setAccount:accountCopy];
 
   if (v8)
   {
@@ -2537,24 +2537,24 @@ LABEL_29:
 
   [(AMSMetricsIdentifierStore *)v20 setDomain:v10];
   -[AMSMetricsIdentifierStore setResetInterval:](v20, "setResetInterval:", [v12 integerValue]);
-  [(AMSMetricsIdentifierStore *)v20 setShouldEmitDiagnosticFields:v15];
-  [(AMSMetricsIdentifierStore *)v20 setShouldEmitPreviousUserId:v19];
+  [(AMSMetricsIdentifierStore *)v20 setShouldEmitDiagnosticFields:bOOLValue];
+  [(AMSMetricsIdentifierStore *)v20 setShouldEmitPreviousUserId:bOOLValue2];
 
   return v20;
 }
 
-+ (id)_parametersForBag:(id)a3 bagNamespace:(id)a4
++ (id)_parametersForBag:(id)bag bagNamespace:(id)namespace
 {
-  v5 = a4;
-  v6 = [a3 dictionaryForKey:@"metrics-identifiers"];
-  v7 = [v6 valuePromise];
+  namespaceCopy = namespace;
+  v6 = [bag dictionaryForKey:@"metrics-identifiers"];
+  valuePromise = [v6 valuePromise];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__AMSMetricsIdentifierStore__parametersForBag_bagNamespace___block_invoke;
   v11[3] = &unk_1E73B5C28;
-  v12 = v5;
-  v8 = v5;
-  v9 = [v7 thenWithBlock:v11];
+  v12 = namespaceCopy;
+  v8 = namespaceCopy;
+  v9 = [valuePromise thenWithBlock:v11];
 
   return v9;
 }
@@ -2592,8 +2592,8 @@ uint64_t __41__AMSMetricsIdentifierStore__sharedQueue__block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -2601,7 +2601,7 @@ uint64_t __41__AMSMetricsIdentifierStore__sharedQueue__block_invoke()
     v18 = v5;
     v19 = 2114;
     v20 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] CloudKit Syncing", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] CloudKit Syncing", buf, 0x16u);
   }
 
   if (qword_1ED6E2F68 != -1)
@@ -2616,30 +2616,30 @@ uint64_t __41__AMSMetricsIdentifierStore__sharedQueue__block_invoke()
 
   else
   {
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = qword_1ED6E2F78;
     if (!qword_1ED6E2F78)
     {
       v10 = objc_alloc_init(AMSEngagement);
-      v11 = [(AMSEngagement *)v10 syncMetricsIdentifiers];
+      syncMetricsIdentifiers = [(AMSEngagement *)v10 syncMetricsIdentifiers];
       v12 = qword_1ED6E2F78;
-      qword_1ED6E2F78 = v11;
+      qword_1ED6E2F78 = syncMetricsIdentifiers;
 
       v13 = dispatch_time(0, 1000000000);
-      v14 = [v8 _sharedQueue];
+      _sharedQueue = [selfCopy _sharedQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __34__AMSMetricsIdentifierStore__sync__block_invoke_2;
       block[3] = &__block_descriptor_40_e5_v8__0l;
-      block[4] = v8;
-      dispatch_after(v13, v14, block);
+      block[4] = selfCopy;
+      dispatch_after(v13, _sharedQueue, block);
 
       v9 = qword_1ED6E2F78;
     }
 
     v7 = v9;
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   return v7;
@@ -2662,30 +2662,30 @@ void __34__AMSMetricsIdentifierStore__sync__block_invoke_2(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-+ (int64_t)_periodFrom:(double)a3 storeInfoStarted:(id)a4 now:(id)a5
++ (int64_t)_periodFrom:(double)from storeInfoStarted:(id)started now:(id)now
 {
-  if (a3 == 0.0 || a4 == 0)
+  if (from == 0.0 || started == 0)
   {
     v8 = 0;
   }
 
   else
   {
-    [a5 timeIntervalSinceDate:a4];
-    v8 = (v7 / a3);
+    [now timeIntervalSinceDate:started];
+    v8 = (v7 / from);
   }
 
   return v8 & ~(v8 >> 63);
 }
 
-+ (id)shouldEnableResetUIFromBag:(id)a3
++ (id)shouldEnableResetUIFromBag:(id)bag
 {
-  v4 = [a1 _promiseOfListOfNamespacesFromBag:a3];
+  v4 = [self _promiseOfListOfNamespacesFromBag:bag];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AMSMetricsIdentifierStore_shouldEnableResetUIFromBag___block_invoke;
   v7[3] = &__block_descriptor_40_e29___AMSPromise_16__0__NSArray_8l;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 thenWithBlock:v7];
 
   return v5;
@@ -2699,42 +2699,42 @@ id __56__AMSMetricsIdentifierStore_shouldEnableResetUIFromBag___block_invoke(uin
   return v3;
 }
 
-+ (id)performUserResetForStoresInBag:(id)a3 forAccount:(id)a4
++ (id)performUserResetForStoresInBag:(id)bag forAccount:(id)account
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  accountCopy = account;
   v8 = +[AMSLogConfig sharedMetricsConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
-    v12 = AMSHashIfNeeded(v7);
+    v12 = AMSHashIfNeeded(accountCopy);
     *buf = 138543874;
     v23 = v10;
     v24 = 2114;
     v25 = v11;
     v26 = 2114;
     v27 = v12;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing user reset for account %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing user reset for account %{public}@", buf, 0x20u);
   }
 
-  v13 = [a1 _promiseOfListOfNamespacesFromBag:v6];
+  v13 = [self _promiseOfListOfNamespacesFromBag:bagCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __71__AMSMetricsIdentifierStore_performUserResetForStoresInBag_forAccount___block_invoke;
   v18[3] = &unk_1E73B9E90;
-  v19 = v7;
-  v20 = v6;
-  v21 = a1;
-  v14 = v6;
-  v15 = v7;
+  v19 = accountCopy;
+  v20 = bagCopy;
+  selfCopy = self;
+  v14 = bagCopy;
+  v15 = accountCopy;
   v16 = [v13 thenWithBlock:v18];
 
   return v16;
@@ -2813,20 +2813,20 @@ void __71__AMSMetricsIdentifierStore_performUserResetForStoresInBag_forAccount__
   }
 }
 
-+ (id)_promiseToRotateIdentifiersForAccount:(id)a3 bag:(id)a4 namespaceList:(id)a5
++ (id)_promiseToRotateIdentifiersForAccount:(id)account bag:(id)bag namespaceList:(id)list
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  listCopy = list;
+  bagCopy = bag;
+  accountCopy = account;
   v11 = objc_opt_new();
-  v12 = [a1 _promiseOfListOfStoresInNamespaceList:v8 forAccount:v10 bag:v9];
+  v12 = [self _promiseOfListOfStoresInNamespaceList:listCopy forAccount:accountCopy bag:bagCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __85__AMSMetricsIdentifierStore__promiseToRotateIdentifiersForAccount_bag_namespaceList___block_invoke;
   v16[3] = &unk_1E73B9ED8;
   v17 = v11;
-  v18 = a1;
+  selfCopy = self;
   v13 = v11;
   v14 = [v12 thenWithBlock:v16];
 
@@ -2919,26 +2919,26 @@ id __85__AMSMetricsIdentifierStore__promiseToRotateIdentifiersForAccount_bag_nam
   return v22;
 }
 
-+ (id)_promiseOfListOfNamespacesFromBag:(id)a3
++ (id)_promiseOfListOfNamespacesFromBag:(id)bag
 {
-  v3 = [a3 arrayForKey:@"resetable-metrics-identifiers"];
-  v4 = [v3 valuePromise];
+  v3 = [bag arrayForKey:@"resetable-metrics-identifiers"];
+  valuePromise = [v3 valuePromise];
 
-  return v4;
+  return valuePromise;
 }
 
-+ (id)_promiseOfListOfStoresInNamespaceList:(id)a3 forAccount:(id)a4 bag:(id)a5
++ (id)_promiseOfListOfStoresInNamespaceList:(id)list forAccount:(id)account bag:(id)bag
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  listCopy = list;
+  accountCopy = account;
+  bagCopy = bag;
   v10 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v7;
+  v11 = listCopy;
   v31 = [v11 countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v31)
   {
@@ -2956,27 +2956,27 @@ id __85__AMSMetricsIdentifierStore__promiseToRotateIdentifiersForAccount_bag_nam
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        v17 = [*(v14 + 3552) sharedMetricsConfig];
-        if (!v17)
+        sharedMetricsConfig = [*(v14 + 3552) sharedMetricsConfig];
+        if (!sharedMetricsConfig)
         {
-          v17 = [*(v14 + 3552) sharedConfig];
+          sharedMetricsConfig = [*(v14 + 3552) sharedConfig];
         }
 
-        v18 = [v17 OSLogObject];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [sharedMetricsConfig OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           v19 = v13;
           v20 = v10;
           v21 = v11;
-          v22 = v9;
-          v23 = v8;
+          v22 = bagCopy;
+          v23 = accountCopy;
           v24 = objc_opt_class();
           AMSLogKey();
           v25 = v30 = v16;
           *buf = v29;
           v37 = v24;
-          v8 = v23;
-          v9 = v22;
+          accountCopy = v23;
+          bagCopy = v22;
           v11 = v21;
           v10 = v20;
           v13 = v19;
@@ -2985,12 +2985,12 @@ id __85__AMSMetricsIdentifierStore__promiseToRotateIdentifiersForAccount_bag_nam
           v39 = v25;
           v40 = 2114;
           v41 = v11;
-          _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing user reset for namespaces: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing user reset for namespaces: %{public}@", buf, 0x20u);
 
           v16 = v30;
         }
 
-        v26 = [AMSMetricsIdentifierStore identifierStoreWithAccount:v8 bagNamespace:v16 bag:v9];
+        v26 = [AMSMetricsIdentifierStore identifierStoreWithAccount:accountCopy bagNamespace:v16 bag:bagCopy];
         [v10 addObject:v26];
       }
 

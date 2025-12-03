@@ -1,6 +1,6 @@
 @interface VoIPCallObserverImpl
 - (VoIPCallObserverImpl)initWithCallback:(function<void)(BOOL queue:()BOOL;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 @end
 
 @implementation VoIPCallObserverImpl
@@ -192,11 +192,11 @@ LABEL_29:
   return v19;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
   v34 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  changedCopy = changed;
   if ((atomic_load_explicit(&qword_2A1399D38, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_2A1399D38))
   {
     qword_2A1399D40 = 0;
@@ -214,9 +214,9 @@ LABEL_29:
     }
 
 LABEL_28:
-    v18 = [v7 providerIdentifier];
+    providerIdentifier = [changedCopy providerIdentifier];
     *buf = 138412290;
-    *&buf[4] = v18;
+    *&buf[4] = providerIdentifier;
     _os_log_debug_impl(&dword_297288000, v8, OS_LOG_TYPE_DEBUG, "Provider ID: %@", buf, 0xCu);
 
     goto LABEL_4;
@@ -246,14 +246,14 @@ LABEL_4:
     }
 
 LABEL_30:
-    v19 = [v7 hasConnected];
-    v20 = [v7 hasEnded];
+    hasConnected = [changedCopy hasConnected];
+    hasEnded = [changedCopy hasEnded];
     fVoIPCallStarting = self->fVoIPCallStarting;
     fVoIPCallActive = self->fVoIPCallActive;
     *buf = 67109888;
-    *&buf[4] = v19;
+    *&buf[4] = hasConnected;
     *&buf[8] = 1024;
-    *&buf[10] = v20;
+    *&buf[10] = hasEnded;
     v30 = 1024;
     v31 = fVoIPCallStarting;
     v32 = 1024;
@@ -269,7 +269,7 @@ LABEL_30:
   }
 
 LABEL_7:
-  if (([v7 hasConnected] & 1) == 0 && (objc_msgSend(v7, "hasEnded") & 1) == 0)
+  if (([changedCopy hasConnected] & 1) == 0 && (objc_msgSend(changedCopy, "hasEnded") & 1) == 0)
   {
     if (!self->fVoIPCallStarting)
     {
@@ -291,7 +291,7 @@ LABEL_12:
   self->fVoIPCallStarting = 0;
   v10 = 1;
 LABEL_13:
-  if ([v7 hasConnected] && (objc_msgSend(v7, "hasEnded") & 1) == 0)
+  if ([changedCopy hasConnected] && (objc_msgSend(changedCopy, "hasEnded") & 1) == 0)
   {
     if (!self->fVoIPCallActive)
     {
@@ -338,14 +338,14 @@ LABEL_22:
     }
   }
 
-  v23 = [v7 hasConnected];
-  v24 = [v7 hasEnded];
+  hasConnected2 = [changedCopy hasConnected];
+  hasEnded2 = [changedCopy hasEnded];
   v25 = self->fVoIPCallStarting;
   v26 = self->fVoIPCallActive;
   *buf = 67109888;
-  *&buf[4] = v23;
+  *&buf[4] = hasConnected2;
   *&buf[8] = 1024;
-  *&buf[10] = v24;
+  *&buf[10] = hasEnded2;
   v30 = 1024;
   v31 = v25;
   v32 = 1024;
@@ -359,11 +359,11 @@ LABEL_22:
 LABEL_23:
   v12 = self->fVoIPCallStarting;
   v13 = self->fVoIPCallActive;
-  v14 = [v7 providerIdentifier];
-  v15 = v14;
+  providerIdentifier2 = [changedCopy providerIdentifier];
+  v15 = providerIdentifier2;
   v28 = v12;
   v27 = v13;
-  *buf = [v14 UTF8String];
+  *buf = [providerIdentifier2 UTF8String];
   f = self->fCallback.__f_.__f_;
   if (!f)
   {

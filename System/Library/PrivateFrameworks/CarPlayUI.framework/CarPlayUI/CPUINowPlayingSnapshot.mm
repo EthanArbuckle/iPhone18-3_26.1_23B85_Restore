@@ -4,11 +4,11 @@
 - (BOOL)shouldEnableBackButton;
 - (BOOL)shouldEnableNextButton;
 - (BOOL)showsStopButton;
-- (CPUINowPlayingSnapshot)initWithResponse:(id)a3;
+- (CPUINowPlayingSnapshot)initWithResponse:(id)response;
 - (NSNumber)jumpBackInterval;
 - (NSNumber)jumpForwardInterval;
-- (id)_getSongIsNext:(BOOL)a3;
-- (id)commandWithType:(unint64_t)a3;
+- (id)_getSongIsNext:(BOOL)next;
+- (id)commandWithType:(unint64_t)type;
 @end
 
 @implementation CPUINowPlayingSnapshot
@@ -25,104 +25,104 @@
 
 - (NSNumber)jumpForwardInterval
 {
-  v2 = [(CPUINowPlayingSnapshot *)self responseItem];
-  v3 = [v2 seekCommand];
-  v4 = [v3 preferredForwardJumpIntervals];
-  v5 = [v4 firstObject];
+  responseItem = [(CPUINowPlayingSnapshot *)self responseItem];
+  seekCommand = [responseItem seekCommand];
+  preferredForwardJumpIntervals = [seekCommand preferredForwardJumpIntervals];
+  firstObject = [preferredForwardJumpIntervals firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)shouldEnableNextButton
 {
-  v3 = [(CPUINowPlayingSnapshot *)self jumpForwardInterval];
+  jumpForwardInterval = [(CPUINowPlayingSnapshot *)self jumpForwardInterval];
 
-  if (v3)
+  if (jumpForwardInterval)
   {
     return 1;
   }
 
-  v5 = [(CPUINowPlayingSnapshot *)self tracklist];
-  v6 = [v5 changeItemCommand];
-  v7 = [v6 nextItem];
+  tracklist = [(CPUINowPlayingSnapshot *)self tracklist];
+  changeItemCommand = [tracklist changeItemCommand];
+  nextItem = [changeItemCommand nextItem];
 
-  if (!v7)
+  if (!nextItem)
   {
     return 0;
   }
 
-  v8 = [(CPUINowPlayingSnapshot *)self song];
-  v4 = v8 != 0;
+  song = [(CPUINowPlayingSnapshot *)self song];
+  v4 = song != 0;
 
   return v4;
 }
 
 - (NSNumber)jumpBackInterval
 {
-  v2 = [(CPUINowPlayingSnapshot *)self responseItem];
-  v3 = [v2 seekCommand];
-  v4 = [v3 preferredBackwardJumpIntervals];
-  v5 = [v4 firstObject];
+  responseItem = [(CPUINowPlayingSnapshot *)self responseItem];
+  seekCommand = [responseItem seekCommand];
+  preferredBackwardJumpIntervals = [seekCommand preferredBackwardJumpIntervals];
+  firstObject = [preferredBackwardJumpIntervals firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)shouldEnableBackButton
 {
-  v3 = [(CPUINowPlayingSnapshot *)self jumpBackInterval];
+  jumpBackInterval = [(CPUINowPlayingSnapshot *)self jumpBackInterval];
 
-  if (v3)
+  if (jumpBackInterval)
   {
     return 1;
   }
 
-  v5 = [(CPUINowPlayingSnapshot *)self tracklist];
-  v6 = [v5 changeItemCommand];
-  v7 = [v6 previousItem];
+  tracklist = [(CPUINowPlayingSnapshot *)self tracklist];
+  changeItemCommand = [tracklist changeItemCommand];
+  previousItem = [changeItemCommand previousItem];
 
-  if (!v7)
+  if (!previousItem)
   {
     return 0;
   }
 
-  v8 = [(CPUINowPlayingSnapshot *)self song];
-  v4 = v8 != 0;
+  song = [(CPUINowPlayingSnapshot *)self song];
+  v4 = song != 0;
 
   return v4;
 }
 
-- (id)_getSongIsNext:(BOOL)a3
+- (id)_getSongIsNext:(BOOL)next
 {
-  v3 = a3;
-  v5 = [(MPCPlayerResponseTracklist *)self->_tracklist items];
-  v6 = [v5 totalItemCount];
+  nextCopy = next;
+  items = [(MPCPlayerResponseTracklist *)self->_tracklist items];
+  totalItemCount = [items totalItemCount];
 
-  v7 = [(MPCPlayerResponseTracklist *)self->_tracklist playingItem];
-  v8 = [(MPCPlayerResponseTracklist *)self->_tracklist items];
-  v9 = [v8 firstItem];
-  v10 = [v7 isEqual:v9];
+  playingItem = [(MPCPlayerResponseTracklist *)self->_tracklist playingItem];
+  items2 = [(MPCPlayerResponseTracklist *)self->_tracklist items];
+  firstItem = [items2 firstItem];
+  v10 = [playingItem isEqual:firstItem];
 
-  if (v6 == 3 || v6 == 2 && v10 == v3)
+  if (totalItemCount == 3 || totalItemCount == 2 && v10 == nextCopy)
   {
-    v12 = [(MPCPlayerResponseTracklist *)self->_tracklist items];
-    v13 = v12;
-    if (v3)
+    items3 = [(MPCPlayerResponseTracklist *)self->_tracklist items];
+    v13 = items3;
+    if (nextCopy)
     {
-      [v12 lastItem];
+      [items3 lastItem];
     }
 
     else
     {
-      [v12 firstItem];
+      [items3 firstItem];
     }
     v14 = ;
 
     objc_opt_class();
-    v15 = [v14 metadataObject];
-    v16 = [v15 anyObject];
+    metadataObject = [v14 metadataObject];
+    anyObject = [metadataObject anyObject];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v16;
+      v11 = anyObject;
     }
 
     else
@@ -139,41 +139,41 @@
   return v11;
 }
 
-- (CPUINowPlayingSnapshot)initWithResponse:(id)a3
+- (CPUINowPlayingSnapshot)initWithResponse:(id)response
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  responseCopy = response;
   v54.receiver = self;
   v54.super_class = CPUINowPlayingSnapshot;
   v6 = [(CPUINowPlayingSnapshot *)&v54 init];
   if (v6)
   {
-    v7 = [v5 playerPath];
-    v8 = [v7 representedBundleID];
+    playerPath = [responseCopy playerPath];
+    representedBundleID = [playerPath representedBundleID];
     bundleIdentifier = v6->_bundleIdentifier;
-    v6->_bundleIdentifier = v8;
+    v6->_bundleIdentifier = representedBundleID;
 
-    objc_storeStrong(&v6->_response, a3);
-    v10 = [v5 tracklist];
-    v11 = [v10 playingItemIndexPath];
+    objc_storeStrong(&v6->_response, response);
+    tracklist = [responseCopy tracklist];
+    playingItemIndexPath = [tracklist playingItemIndexPath];
 
     v12 = CarPlayUIGeneralLogging();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (playingItemIndexPath)
     {
       if (v13)
       {
-        v14 = [(CPUINowPlayingSnapshot *)v6 bundleIdentifier];
+        bundleIdentifier = [(CPUINowPlayingSnapshot *)v6 bundleIdentifier];
         *buf = 138543618;
-        *&buf[4] = v14;
+        *&buf[4] = bundleIdentifier;
         *&buf[12] = 2114;
-        *&buf[14] = v11;
+        *&buf[14] = playingItemIndexPath;
         _os_log_impl(&dword_243134000, v12, OS_LOG_TYPE_DEFAULT, "Received MPRequestResponseController response for %{public}@ with playing index path %{public}@", buf, 0x16u);
       }
 
-      v15 = [v5 tracklist];
-      v16 = [v15 items];
-      v12 = [v16 itemAtIndexPath:v11];
+      tracklist2 = [responseCopy tracklist];
+      items = [tracklist2 items];
+      v12 = [items itemAtIndexPath:playingItemIndexPath];
 
       objc_storeStrong(&v6->_responseItem, v12);
       v57 = 0;
@@ -184,17 +184,17 @@
         [v12 duration];
       }
 
-      v17 = [v12 metadataObject];
-      v18 = [v17 anyObject];
+      metadataObject = [v12 metadataObject];
+      anyObject = [metadataObject anyObject];
 
-      v19 = [v5 tracklist];
-      v20 = [v19 items];
-      v21 = [v20 sectionAtIndex:{objc_msgSend(v11, "section")}];
+      tracklist3 = [responseCopy tracklist];
+      items2 = [tracklist3 items];
+      v21 = [items2 sectionAtIndex:{objc_msgSend(playingItemIndexPath, "section")}];
 
       if (v21)
       {
-        v22 = [v21 metadataObject];
-        v6->_isRadioPlayback = [v22 type] == 13;
+        metadataObject2 = [v21 metadataObject];
+        v6->_isRadioPlayback = [metadataObject2 type] == 13;
       }
 
       else
@@ -202,33 +202,33 @@
         v6->_isRadioPlayback = 0;
       }
 
-      v23 = [v18 title];
+      title = [anyObject title];
       title = v6->_title;
-      v6->_title = v23;
+      v6->_title = title;
 
-      if ([v18 shouldShowComposer])
+      if ([anyObject shouldShowComposer])
       {
-        [v18 composer];
+        [anyObject composer];
       }
 
       else
       {
-        [v18 artist];
+        [anyObject artist];
       }
       v25 = ;
-      v26 = [v25 name];
+      name = [v25 name];
       artist = v6->_artist;
-      v6->_artist = v26;
+      v6->_artist = name;
 
       if (v6->_isRadioPlayback)
       {
-        v28 = [v21 metadataObject];
-        v29 = [v28 radioStation];
-        v30 = [v29 attributionLabel];
+        metadataObject3 = [v21 metadataObject];
+        radioStation = [metadataObject3 radioStation];
+        attributionLabel = [radioStation attributionLabel];
 
-        if (v30)
+        if (attributionLabel)
         {
-          v31 = v30;
+          v31 = attributionLabel;
           v32 = v6->_artist;
           v6->_artist = v31;
         }
@@ -236,23 +236,23 @@
         else
         {
           v32 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v33 = [v18 artist];
-          v34 = [v33 name];
+          artist = [anyObject artist];
+          name2 = [artist name];
 
-          if ([v34 length])
+          if ([name2 length])
           {
-            [(NSString *)v32 addObject:v34];
+            [(NSString *)v32 addObject:name2];
           }
 
-          v53 = v34;
-          v35 = [v18 composer];
-          v36 = [v35 name];
+          v53 = name2;
+          composer = [anyObject composer];
+          name3 = [composer name];
 
-          if ([v18 shouldShowComposer] && objc_msgSend(v36, "length"))
+          if ([anyObject shouldShowComposer] && objc_msgSend(name3, "length"))
           {
             v37 = MEMORY[0x277CCACA8];
             v52 = CPUILocalizedStringForKey(@"COMPOSED_BY_TITLE_%@");
-            v38 = [v37 localizedStringWithFormat:v52, v36];
+            v38 = [v37 localizedStringWithFormat:v52, name3];
 
             [(NSString *)v32 addObject:v38];
           }
@@ -268,28 +268,28 @@
         }
       }
 
-      v41 = [v18 album];
-      v42 = [v41 title];
+      album = [anyObject album];
+      title2 = [album title];
       album = v6->_album;
-      v6->_album = v42;
+      v6->_album = title2;
 
-      v44 = [v18 artworkCatalog];
+      artworkCatalog = [anyObject artworkCatalog];
       artworkCatalog = v6->_artworkCatalog;
-      v6->_artworkCatalog = v44;
+      v6->_artworkCatalog = artworkCatalog;
 
       v46 = *&buf[16];
       *&v6->_durationSnapshot.snapshotTime = *buf;
       *&v6->_durationSnapshot.endTime = v46;
       *&v6->_durationSnapshot.elapsedDuration = v56;
       *&v6->_durationSnapshot.isLiveContent = v57;
-      v6->_state = [v5 state];
-      v47 = [v5 tracklist];
+      v6->_state = [responseCopy state];
+      tracklist4 = [responseCopy tracklist];
       tracklist = v6->_tracklist;
-      v6->_tracklist = v47;
+      v6->_tracklist = tracklist4;
 
       song = v6->_song;
-      v6->_song = v18;
-      v50 = v18;
+      v6->_song = anyObject;
+      v50 = anyObject;
     }
 
     else if (v13)
@@ -322,11 +322,11 @@ void __44__CPUINowPlayingSnapshot_knownJumpIntervals__block_invoke()
 
 - (BOOL)showsStopButton
 {
-  v3 = [(CPUINowPlayingSnapshot *)self response];
-  v4 = [v3 stop];
-  v5 = v4 != 0;
+  response = [(CPUINowPlayingSnapshot *)self response];
+  stop = [response stop];
+  v5 = stop != 0;
 
-  if (v4)
+  if (stop)
   {
     [(CPUINowPlayingSnapshot *)self durationSnapshot];
     if (v9 != 1)
@@ -358,112 +358,112 @@ LABEL_7:
   return v5;
 }
 
-- (id)commandWithType:(unint64_t)a3
+- (id)commandWithType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 6)
+    if (type > 6)
     {
-      switch(a3)
+      switch(type)
       {
         case 7uLL:
-          v4 = [(CPUINowPlayingSnapshot *)self responseItem];
-          v14 = [v4 seekCommand];
-          v5 = v14;
+          responseItem = [(CPUINowPlayingSnapshot *)self responseItem];
+          seekCommand = [responseItem seekCommand];
+          seekCommand2 = seekCommand;
           v15 = 1;
           break;
         case 8uLL:
-          v4 = [(CPUINowPlayingSnapshot *)self responseItem];
-          v14 = [v4 seekCommand];
-          v5 = v14;
+          responseItem = [(CPUINowPlayingSnapshot *)self responseItem];
+          seekCommand = [responseItem seekCommand];
+          seekCommand2 = seekCommand;
           v15 = -1;
           break;
         case 9uLL:
-          v4 = [(CPUINowPlayingSnapshot *)self responseItem];
-          v5 = [v4 seekCommand];
-          v6 = [v5 endSeek];
+          responseItem = [(CPUINowPlayingSnapshot *)self responseItem];
+          seekCommand2 = [responseItem seekCommand];
+          endSeek = [seekCommand2 endSeek];
           goto LABEL_26;
         default:
           goto LABEL_28;
       }
 
-      v6 = [v14 beginSeekWithDirection:v15];
+      endSeek = [seekCommand beginSeekWithDirection:v15];
 LABEL_26:
-      v3 = v6;
+      v3 = endSeek;
 
       goto LABEL_27;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
-      v9 = [(CPUINowPlayingSnapshot *)self responseItem];
-      v4 = [v9 seekCommand];
+      responseItem2 = [(CPUINowPlayingSnapshot *)self responseItem];
+      responseItem = [responseItem2 seekCommand];
 
-      [v4 preferredForwardJumpIntervals];
+      [responseItem preferredForwardJumpIntervals];
     }
 
     else
     {
-      v8 = [(CPUINowPlayingSnapshot *)self responseItem];
-      v4 = [v8 seekCommand];
+      responseItem3 = [(CPUINowPlayingSnapshot *)self responseItem];
+      responseItem = [responseItem3 seekCommand];
 
-      [v4 preferredBackwardJumpIntervals];
+      [responseItem preferredBackwardJumpIntervals];
     }
     v10 = ;
-    v11 = [v10 firstObject];
-    [v11 doubleValue];
+    firstObject = [v10 firstObject];
+    [firstObject doubleValue];
     v13 = v12;
 
-    v7 = [v4 jumpByInterval:v13];
+    play = [responseItem jumpByInterval:v13];
   }
 
-  else if (a3 <= 1)
+  else if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_28;
       }
 
-      v4 = [(CPUINowPlayingSnapshot *)self response];
-      v7 = [v4 play];
+      responseItem = [(CPUINowPlayingSnapshot *)self response];
+      play = [responseItem play];
     }
 
     else
     {
-      v4 = [(CPUINowPlayingSnapshot *)self response];
-      v7 = [v4 stop];
+      responseItem = [(CPUINowPlayingSnapshot *)self response];
+      play = [responseItem stop];
     }
   }
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
-        v4 = [(CPUINowPlayingSnapshot *)self tracklist];
-        v5 = [v4 changeItemCommand];
-        [v5 nextItem];
+        responseItem = [(CPUINowPlayingSnapshot *)self tracklist];
+        seekCommand2 = [responseItem changeItemCommand];
+        [seekCommand2 nextItem];
       }
 
       else
       {
-        v4 = [(CPUINowPlayingSnapshot *)self tracklist];
-        v5 = [v4 changeItemCommand];
-        [v5 previousItem];
+        responseItem = [(CPUINowPlayingSnapshot *)self tracklist];
+        seekCommand2 = [responseItem changeItemCommand];
+        [seekCommand2 previousItem];
       }
-      v6 = ;
+      endSeek = ;
       goto LABEL_26;
     }
 
-    v4 = [(CPUINowPlayingSnapshot *)self response];
-    v7 = [v4 pause];
+    responseItem = [(CPUINowPlayingSnapshot *)self response];
+    play = [responseItem pause];
   }
 
-  v3 = v7;
+  v3 = play;
 LABEL_27:
 
 LABEL_28:

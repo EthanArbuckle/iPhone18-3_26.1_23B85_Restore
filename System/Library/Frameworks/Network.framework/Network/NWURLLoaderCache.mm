@@ -1,17 +1,17 @@
 @interface NWURLLoaderCache
-- (void)copyVaryStateFromRequest:(void *)a1 varyValueToCopy:(void *)a2;
+- (void)copyVaryStateFromRequest:(void *)request varyValueToCopy:(void *)copy;
 @end
 
 @implementation NWURLLoaderCache
 
-- (void)copyVaryStateFromRequest:(void *)a1 varyValueToCopy:(void *)a2
+- (void)copyVaryStateFromRequest:(void *)request varyValueToCopy:(void *)copy
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = a2;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v16 = v4;
-  v6 = [v4 componentsSeparatedByString:{@", "}];
+  requestCopy = request;
+  copyCopy = copy;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v16 = copyCopy;
+  v6 = [copyCopy componentsSeparatedByString:{@", "}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -31,13 +31,13 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v13 = [v11 stringByTrimmingCharactersInSet:v12];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v13 = [v11 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-        v14 = [v3 valueForHTTPHeaderField:v13];
+        v14 = [requestCopy valueForHTTPHeaderField:v13];
         if (v14)
         {
-          [v5 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:v13];
         }
 
         else
@@ -52,7 +52,7 @@
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

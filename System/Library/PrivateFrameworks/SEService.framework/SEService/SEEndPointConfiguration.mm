@@ -1,16 +1,16 @@
 @interface SEEndPointConfiguration
-+ (id)configurationWithOpt1:(unsigned __int8)a3 opt2:(unsigned __int8)a4;
++ (id)configurationWithOpt1:(unsigned __int8)opt1 opt2:(unsigned __int8)opt2;
 + (id)homeDefaults;
 + (id)hydraDefaults;
 + (id)lyonHomeDefaults;
 + (id)lyonHydraDefaults;
 - (SEEndPointConfiguration)init;
-- (SEEndPointConfiguration)initWithCoder:(id)a3;
+- (SEEndPointConfiguration)initWithCoder:(id)coder;
 - (id)description;
 - (unsigned)opt1;
 - (unsigned)opt2;
 - (unsigned)optA;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEEndPointConfiguration
@@ -57,17 +57,17 @@
   return v2;
 }
 
-+ (id)configurationWithOpt1:(unsigned __int8)a3 opt2:(unsigned __int8)a4
++ (id)configurationWithOpt1:(unsigned __int8)opt1 opt2:(unsigned __int8)opt2
 {
-  v4 = a4;
+  opt2Copy = opt2;
   v17 = *MEMORY[0x1E69E9840];
-  if ((a4 & 0x30) != 0)
+  if ((opt2 & 0x30) != 0)
   {
     v5 = SESDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v13 = 67109120;
-      v14 = v4;
+      v14 = opt2Copy;
       _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_ERROR, "Option group 2 value has some RFU bits set 0x%02X", &v13, 8u);
     }
 
@@ -77,7 +77,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = a3;
+  opt1Copy = opt1;
   v6 = objc_opt_new();
   if (v6)
   {
@@ -85,35 +85,35 @@ LABEL_5:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v13 = 67109376;
-      v14 = v9;
+      v14 = opt1Copy;
       v15 = 1024;
-      v16 = v4;
+      v16 = opt2Copy;
       _os_log_impl(&dword_1C7B9A000, v10, OS_LOG_TYPE_DEBUG, "Creating SEEndPointConfiguration with Opt1 %02X and Opt2 %02X", &v13, 0xEu);
     }
 
-    [v6 setStandardFlowAllowedOnContactless:v9 & 1];
-    [v6 setFastFlowAllowedOnContactless:(v9 >> 1) & 1];
-    [v6 setStandardFlowAllowedOnWire:(v9 >> 2) & 1];
-    [v6 setFastFlowAllowedOnWire:(v9 >> 3) & 1];
-    [v6 setAuthorizeEndPointAllowed:(v9 >> 4) & 1];
-    [v6 setAuthorizeEndPointWithAuthorizeAllowed:(v9 >> 5) & 1];
-    [v6 setExchangeAllowedOnWire:(v9 >> 6) & 1];
-    [v6 setExchangeAllowedInFastFlow:v9 >> 7];
-    [v6 setSignAllowed:v4 & 1];
-    [v6 setExportEraseConfidentialMailBox:(v4 >> 1) & 1];
-    [v6 setServerIssuedKey:(v4 >> 2) & 1];
-    [v6 setFleetVehicle:(v4 >> 3) & 1];
-    [v6 setCompressedKeysAllowed:(v4 >> 6) & 1];
-    [v6 setConfidentialDataAllowed:v4 >> 7];
+    [v6 setStandardFlowAllowedOnContactless:opt1Copy & 1];
+    [v6 setFastFlowAllowedOnContactless:(opt1Copy >> 1) & 1];
+    [v6 setStandardFlowAllowedOnWire:(opt1Copy >> 2) & 1];
+    [v6 setFastFlowAllowedOnWire:(opt1Copy >> 3) & 1];
+    [v6 setAuthorizeEndPointAllowed:(opt1Copy >> 4) & 1];
+    [v6 setAuthorizeEndPointWithAuthorizeAllowed:(opt1Copy >> 5) & 1];
+    [v6 setExchangeAllowedOnWire:(opt1Copy >> 6) & 1];
+    [v6 setExchangeAllowedInFastFlow:opt1Copy >> 7];
+    [v6 setSignAllowed:opt2Copy & 1];
+    [v6 setExportEraseConfidentialMailBox:(opt2Copy >> 1) & 1];
+    [v6 setServerIssuedKey:(opt2Copy >> 2) & 1];
+    [v6 setFleetVehicle:(opt2Copy >> 3) & 1];
+    [v6 setCompressedKeysAllowed:(opt2Copy >> 6) & 1];
+    [v6 setConfidentialDataAllowed:opt2Copy >> 7];
     v5 = SESDefaultLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v11 = [v6 opt1];
-      v12 = [v6 opt2];
+      opt1 = [v6 opt1];
+      opt2 = [v6 opt2];
       v13 = 67109376;
-      v14 = v11;
+      v14 = opt1;
       v15 = 1024;
-      v16 = v12;
+      v16 = opt2;
       _os_log_impl(&dword_1C7B9A000, v5, OS_LOG_TYPE_INFO, "SEEndPointConfiguration created with Opt1 %02X and Opt2 %02X", &v13, 0xEu);
     }
 
@@ -261,172 +261,172 @@ LABEL_6:
   return v49;
 }
 
-- (SEEndPointConfiguration)initWithCoder:(id)a3
+- (SEEndPointConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SEEndPointConfiguration;
   v5 = [(SEEndPointConfiguration *)&v7 init];
   if (v5)
   {
-    v5->_enabledOnWire = [v4 decodeIntForKey:@"enabledOnWire"] != 0;
-    v5->_enabledOnContactless = [v4 decodeIntForKey:@"enabledOnContactless"] != 0;
-    v5->_standardFlowAllowedOnWire = [v4 decodeIntForKey:@"standardFlowAllowedOnWire"] != 0;
-    v5->_standardFlowAllowedOnContactless = [v4 decodeIntForKey:@"standardFlowAllowedOnContactless"] != 0;
-    v5->_fastFlowAllowedOnWire = [v4 decodeIntForKey:@"fastFlowAllowedOnWire"] != 0;
-    v5->_fastFlowAllowedOnContactless = [v4 decodeIntForKey:@"fastFlowAllowedOnContactless"] != 0;
-    v5->_exchangeAllowedOnWire = [v4 decodeIntForKey:@"exchangeAllowedOnWire"] != 0;
-    v5->_exchangeAllowedInFastFlow = [v4 decodeIntForKey:@"exchangeAllowedInFastFlow"] != 0;
-    v5->_authorizeEndPointAllowed = [v4 decodeIntForKey:@"authorizeEndPointAllowed"] != 0;
-    v5->_authorizeEndPointWithAuthorizeAllowed = [v4 decodeIntForKey:@"authorizeEndPointWithAuthorizeAllowed"] != 0;
-    v5->_signAllowed = [v4 decodeIntForKey:@"signAllowed"] != 0;
-    v5->_exportEraseConfidentialMailBox = [v4 decodeIntForKey:@"exportEraseConfidentialMailBox"] != 0;
-    v5->_compressedKeysAllowed = [v4 decodeIntForKey:@"compressedKeysAllowed"] != 0;
-    v5->_confidentialDataAllowed = [v4 decodeIntForKey:@"confidentialDataAllowed"] != 0;
-    v5->_serverIssuedKey = [v4 decodeIntForKey:@"serverIssuedKey"] != 0;
-    v5->_fleetVehicle = [v4 decodeIntForKey:@"fleetVehicle"] != 0;
-    v5->_nfcExpressOnlyInLPM = [v4 decodeIntForKey:@"nfcExpressOnlyInLPM"] != 0;
-    v5->_terminationNotPersisted = [v4 decodeIntForKey:@"terminationNotPersisted"] != 0;
-    v5->_lengthConfidentialMailBox = [v4 decodeIntForKey:@"lengthConfidentialMailBox"];
-    v5->_offsetConfidentialMailBox = [v4 decodeIntForKey:@"offsetConfidentialMailBox"];
-    v5->_lengthPrivateMailBox = [v4 decodeIntForKey:@"lengthPrivateMailBox"];
-    v5->_offsetPrivateMailBox = [v4 decodeIntForKey:@"offsetPrivateMailBox"];
+    v5->_enabledOnWire = [coderCopy decodeIntForKey:@"enabledOnWire"] != 0;
+    v5->_enabledOnContactless = [coderCopy decodeIntForKey:@"enabledOnContactless"] != 0;
+    v5->_standardFlowAllowedOnWire = [coderCopy decodeIntForKey:@"standardFlowAllowedOnWire"] != 0;
+    v5->_standardFlowAllowedOnContactless = [coderCopy decodeIntForKey:@"standardFlowAllowedOnContactless"] != 0;
+    v5->_fastFlowAllowedOnWire = [coderCopy decodeIntForKey:@"fastFlowAllowedOnWire"] != 0;
+    v5->_fastFlowAllowedOnContactless = [coderCopy decodeIntForKey:@"fastFlowAllowedOnContactless"] != 0;
+    v5->_exchangeAllowedOnWire = [coderCopy decodeIntForKey:@"exchangeAllowedOnWire"] != 0;
+    v5->_exchangeAllowedInFastFlow = [coderCopy decodeIntForKey:@"exchangeAllowedInFastFlow"] != 0;
+    v5->_authorizeEndPointAllowed = [coderCopy decodeIntForKey:@"authorizeEndPointAllowed"] != 0;
+    v5->_authorizeEndPointWithAuthorizeAllowed = [coderCopy decodeIntForKey:@"authorizeEndPointWithAuthorizeAllowed"] != 0;
+    v5->_signAllowed = [coderCopy decodeIntForKey:@"signAllowed"] != 0;
+    v5->_exportEraseConfidentialMailBox = [coderCopy decodeIntForKey:@"exportEraseConfidentialMailBox"] != 0;
+    v5->_compressedKeysAllowed = [coderCopy decodeIntForKey:@"compressedKeysAllowed"] != 0;
+    v5->_confidentialDataAllowed = [coderCopy decodeIntForKey:@"confidentialDataAllowed"] != 0;
+    v5->_serverIssuedKey = [coderCopy decodeIntForKey:@"serverIssuedKey"] != 0;
+    v5->_fleetVehicle = [coderCopy decodeIntForKey:@"fleetVehicle"] != 0;
+    v5->_nfcExpressOnlyInLPM = [coderCopy decodeIntForKey:@"nfcExpressOnlyInLPM"] != 0;
+    v5->_terminationNotPersisted = [coderCopy decodeIntForKey:@"terminationNotPersisted"] != 0;
+    v5->_lengthConfidentialMailBox = [coderCopy decodeIntForKey:@"lengthConfidentialMailBox"];
+    v5->_offsetConfidentialMailBox = [coderCopy decodeIntForKey:@"offsetConfidentialMailBox"];
+    v5->_lengthPrivateMailBox = [coderCopy decodeIntForKey:@"lengthPrivateMailBox"];
+    v5->_offsetPrivateMailBox = [coderCopy decodeIntForKey:@"offsetPrivateMailBox"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SEEndPointConfiguration enabledOnWire](self forKey:{"enabledOnWire"), @"enabledOnWire"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration enabledOnContactless](self forKey:{"enabledOnContactless"), @"enabledOnContactless"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration standardFlowAllowedOnWire](self forKey:{"standardFlowAllowedOnWire"), @"standardFlowAllowedOnWire"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration standardFlowAllowedOnContactless](self forKey:{"standardFlowAllowedOnContactless"), @"standardFlowAllowedOnContactless"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration fastFlowAllowedOnWire](self forKey:{"fastFlowAllowedOnWire"), @"fastFlowAllowedOnWire"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration fastFlowAllowedOnContactless](self forKey:{"fastFlowAllowedOnContactless"), @"fastFlowAllowedOnContactless"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration exchangeAllowedOnWire](self forKey:{"exchangeAllowedOnWire"), @"exchangeAllowedOnWire"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration exchangeAllowedInFastFlow](self forKey:{"exchangeAllowedInFastFlow"), @"exchangeAllowedInFastFlow"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration authorizeEndPointAllowed](self forKey:{"authorizeEndPointAllowed"), @"authorizeEndPointAllowed"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration authorizeEndPointWithAuthorizeAllowed](self forKey:{"authorizeEndPointWithAuthorizeAllowed"), @"authorizeEndPointWithAuthorizeAllowed"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration signAllowed](self forKey:{"signAllowed"), @"signAllowed"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration exportEraseConfidentialMailBox](self forKey:{"exportEraseConfidentialMailBox"), @"exportEraseConfidentialMailBox"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration compressedKeysAllowed](self forKey:{"compressedKeysAllowed"), @"compressedKeysAllowed"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration confidentialDataAllowed](self forKey:{"confidentialDataAllowed"), @"confidentialDataAllowed"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration serverIssuedKey](self forKey:{"serverIssuedKey"), @"serverIssuedKey"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration fleetVehicle](self forKey:{"fleetVehicle"), @"fleetVehicle"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration nfcExpressOnlyInLPM](self forKey:{"nfcExpressOnlyInLPM"), @"nfcExpressOnlyInLPM"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration terminationNotPersisted](self forKey:{"terminationNotPersisted"), @"terminationNotPersisted"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration lengthConfidentialMailBox](self forKey:{"lengthConfidentialMailBox"), @"lengthConfidentialMailBox"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration offsetConfidentialMailBox](self forKey:{"offsetConfidentialMailBox"), @"offsetConfidentialMailBox"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration lengthPrivateMailBox](self forKey:{"lengthPrivateMailBox"), @"lengthPrivateMailBox"}];
-  [v4 encodeInteger:-[SEEndPointConfiguration offsetPrivateMailBox](self forKey:{"offsetPrivateMailBox"), @"offsetPrivateMailBox"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SEEndPointConfiguration enabledOnWire](self forKey:{"enabledOnWire"), @"enabledOnWire"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration enabledOnContactless](self forKey:{"enabledOnContactless"), @"enabledOnContactless"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration standardFlowAllowedOnWire](self forKey:{"standardFlowAllowedOnWire"), @"standardFlowAllowedOnWire"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration standardFlowAllowedOnContactless](self forKey:{"standardFlowAllowedOnContactless"), @"standardFlowAllowedOnContactless"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration fastFlowAllowedOnWire](self forKey:{"fastFlowAllowedOnWire"), @"fastFlowAllowedOnWire"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration fastFlowAllowedOnContactless](self forKey:{"fastFlowAllowedOnContactless"), @"fastFlowAllowedOnContactless"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration exchangeAllowedOnWire](self forKey:{"exchangeAllowedOnWire"), @"exchangeAllowedOnWire"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration exchangeAllowedInFastFlow](self forKey:{"exchangeAllowedInFastFlow"), @"exchangeAllowedInFastFlow"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration authorizeEndPointAllowed](self forKey:{"authorizeEndPointAllowed"), @"authorizeEndPointAllowed"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration authorizeEndPointWithAuthorizeAllowed](self forKey:{"authorizeEndPointWithAuthorizeAllowed"), @"authorizeEndPointWithAuthorizeAllowed"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration signAllowed](self forKey:{"signAllowed"), @"signAllowed"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration exportEraseConfidentialMailBox](self forKey:{"exportEraseConfidentialMailBox"), @"exportEraseConfidentialMailBox"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration compressedKeysAllowed](self forKey:{"compressedKeysAllowed"), @"compressedKeysAllowed"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration confidentialDataAllowed](self forKey:{"confidentialDataAllowed"), @"confidentialDataAllowed"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration serverIssuedKey](self forKey:{"serverIssuedKey"), @"serverIssuedKey"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration fleetVehicle](self forKey:{"fleetVehicle"), @"fleetVehicle"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration nfcExpressOnlyInLPM](self forKey:{"nfcExpressOnlyInLPM"), @"nfcExpressOnlyInLPM"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration terminationNotPersisted](self forKey:{"terminationNotPersisted"), @"terminationNotPersisted"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration lengthConfidentialMailBox](self forKey:{"lengthConfidentialMailBox"), @"lengthConfidentialMailBox"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration offsetConfidentialMailBox](self forKey:{"offsetConfidentialMailBox"), @"offsetConfidentialMailBox"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration lengthPrivateMailBox](self forKey:{"lengthPrivateMailBox"), @"lengthPrivateMailBox"}];
+  [coderCopy encodeInteger:-[SEEndPointConfiguration offsetPrivateMailBox](self forKey:{"offsetPrivateMailBox"), @"offsetPrivateMailBox"}];
 }
 
 - (unsigned)opt1
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(SEEndPointConfiguration *)self standardFlowAllowedOnContactless];
+  standardFlowAllowedOnContactless = [(SEEndPointConfiguration *)self standardFlowAllowedOnContactless];
   if ([(SEEndPointConfiguration *)self fastFlowAllowedOnContactless])
   {
-    v3 |= 2u;
+    standardFlowAllowedOnContactless |= 2u;
   }
 
   if ([(SEEndPointConfiguration *)self standardFlowAllowedOnWire])
   {
-    v3 |= 4u;
+    standardFlowAllowedOnContactless |= 4u;
   }
 
   if ([(SEEndPointConfiguration *)self fastFlowAllowedOnWire])
   {
-    v3 |= 8u;
+    standardFlowAllowedOnContactless |= 8u;
   }
 
   if ([(SEEndPointConfiguration *)self authorizeEndPointAllowed])
   {
-    v3 |= 0x10u;
+    standardFlowAllowedOnContactless |= 0x10u;
   }
 
   if ([(SEEndPointConfiguration *)self authorizeEndPointWithAuthorizeAllowed])
   {
-    v3 |= 0x20u;
+    standardFlowAllowedOnContactless |= 0x20u;
   }
 
   if ([(SEEndPointConfiguration *)self exchangeAllowedOnWire])
   {
-    v3 |= 0x40u;
+    standardFlowAllowedOnContactless |= 0x40u;
   }
 
   if ([(SEEndPointConfiguration *)self exchangeAllowedInFastFlow])
   {
-    v3 |= 0x80u;
+    standardFlowAllowedOnContactless |= 0x80u;
   }
 
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = standardFlowAllowedOnContactless;
     _os_log_impl(&dword_1C7B9A000, v4, OS_LOG_TYPE_INFO, "Returning SEEndPointConfiguration Opt1 %02X", v7, 8u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return standardFlowAllowedOnContactless;
 }
 
 - (unsigned)opt2
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(SEEndPointConfiguration *)self signAllowed];
+  signAllowed = [(SEEndPointConfiguration *)self signAllowed];
   if ([(SEEndPointConfiguration *)self exportEraseConfidentialMailBox])
   {
-    v3 |= 2u;
+    signAllowed |= 2u;
   }
 
   if ([(SEEndPointConfiguration *)self serverIssuedKey])
   {
-    v3 |= 4u;
+    signAllowed |= 4u;
   }
 
   if ([(SEEndPointConfiguration *)self fleetVehicle])
   {
-    v3 |= 8u;
+    signAllowed |= 8u;
   }
 
   if ([(SEEndPointConfiguration *)self compressedKeysAllowed])
   {
-    v3 |= 0x40u;
+    signAllowed |= 0x40u;
   }
 
   if ([(SEEndPointConfiguration *)self confidentialDataAllowed])
   {
-    v3 |= 0x80u;
+    signAllowed |= 0x80u;
   }
 
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = signAllowed;
     _os_log_impl(&dword_1C7B9A000, v4, OS_LOG_TYPE_INFO, "Returning SEEndPointConfiguration Opt2 %02X", v7, 8u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return signAllowed;
 }
 
 - (unsigned)optA
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(SEEndPointConfiguration *)self nfcExpressOnlyInLPM];
+  nfcExpressOnlyInLPM = [(SEEndPointConfiguration *)self nfcExpressOnlyInLPM];
   if ([(SEEndPointConfiguration *)self terminationNotPersisted])
   {
-    v4 = v3 | 2;
+    v4 = nfcExpressOnlyInLPM | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = nfcExpressOnlyInLPM;
   }
 
   v5 = SESDefaultLogObject();

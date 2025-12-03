@@ -1,91 +1,91 @@
 @interface HUIEQChartSettingsCell
-- (CGPoint)convertToNormalizedPoint:(CGPoint)a3;
-- (HUIEQChartSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGPoint)convertToNormalizedPoint:(CGPoint)point;
+- (HUIEQChartSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUIEQChartSettingsDelegate)delegate;
 - (id)accessibilityCustomActions;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (void)performCustomAction:(unint64_t)a3;
+- (void)performCustomAction:(unint64_t)action;
 - (void)refreshChartFromSettings;
-- (void)updateChartModel:(id)a3 didUpdateValue:(CGPoint)a4;
+- (void)updateChartModel:(id)model didUpdateValue:(CGPoint)value;
 @end
 
 @implementation HUIEQChartSettingsCell
 
-- (HUIEQChartSettingsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUIEQChartSettingsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v49[4] = *MEMORY[0x277D85DE8];
   v48.receiver = self;
   v48.super_class = HUIEQChartSettingsCell;
-  v43 = a4;
-  v5 = [(PSTableCell *)&v48 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(PSTableCell *)&v48 initWithStyle:style reuseIdentifier:?];
   if (v5)
   {
     v6 = objc_alloc_init(_TtC9HearingUI15HUIEQChartModel);
     [(HUIEQChartSettingsCell *)v5 setModel:v6];
 
-    v7 = [(HUIEQChartSettingsCell *)v5 model];
-    [v7 setDelegate:v5];
+    model = [(HUIEQChartSettingsCell *)v5 model];
+    [model setDelegate:v5];
 
-    v8 = [MEMORY[0x277D12E18] sharedInstance];
-    v44 = [v8 tinnitusFilterPoint];
+    mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+    tinnitusFilterPoint = [mEMORY[0x277D12E18] tinnitusFilterPoint];
 
-    [v44 xValue];
+    [tinnitusFilterPoint xValue];
     v10 = v9;
-    [v44 yValue];
+    [tinnitusFilterPoint yValue];
     v12 = v11;
-    v13 = [(HUIEQChartSettingsCell *)v5 model];
-    [v13 setValue:{v10, v12}];
+    model2 = [(HUIEQChartSettingsCell *)v5 model];
+    [model2 setValue:{v10, v12}];
 
-    v14 = [(HUIEQChartSettingsCell *)v5 contentView];
-    [v14 frame];
+    contentView = [(HUIEQChartSettingsCell *)v5 contentView];
+    [contentView frame];
     v16 = v15;
 
-    v17 = [(HUIEQChartSettingsCell *)v5 model];
-    v42 = [_TtC9HearingUI31HUIEQChartHostingViewController createWith:v17 width:v16 height:v16];
+    model3 = [(HUIEQChartSettingsCell *)v5 model];
+    v42 = [_TtC9HearingUI31HUIEQChartHostingViewController createWith:model3 width:v16 height:v16];
 
-    v18 = [v42 view];
-    v19 = [(HUIEQChartSettingsCell *)v5 contentView];
-    v20 = [v19 backgroundColor];
-    [v18 setBackgroundColor:v20];
+    view = [v42 view];
+    contentView2 = [(HUIEQChartSettingsCell *)v5 contentView];
+    backgroundColor = [contentView2 backgroundColor];
+    [view setBackgroundColor:backgroundColor];
 
-    v21 = [(HUIEQChartSettingsCell *)v5 contentView];
-    [v21 addSubview:v18];
+    contentView3 = [(HUIEQChartSettingsCell *)v5 contentView];
+    [contentView3 addSubview:view];
 
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v32 = MEMORY[0x277CCAAD0];
-    v40 = [v18 topAnchor];
-    v41 = [(HUIEQChartSettingsCell *)v5 contentView];
-    v39 = [v41 topAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:0.0];
+    topAnchor = [view topAnchor];
+    contentView4 = [(HUIEQChartSettingsCell *)v5 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v49[0] = v38;
-    v36 = [v18 bottomAnchor];
-    v37 = [(HUIEQChartSettingsCell *)v5 contentView];
-    v35 = [v37 bottomAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35 constant:0.0];
+    bottomAnchor = [view bottomAnchor];
+    contentView5 = [(HUIEQChartSettingsCell *)v5 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v49[1] = v34;
-    v33 = [v18 leadingAnchor];
-    v22 = [(HUIEQChartSettingsCell *)v5 contentView];
-    v23 = [v22 leadingAnchor];
-    v24 = [v33 constraintEqualToAnchor:v23 constant:0.0];
+    leadingAnchor = [view leadingAnchor];
+    contentView6 = [(HUIEQChartSettingsCell *)v5 contentView];
+    leadingAnchor2 = [contentView6 leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v49[2] = v24;
-    v25 = [v18 trailingAnchor];
-    v26 = [(HUIEQChartSettingsCell *)v5 contentView];
-    v27 = [v26 trailingAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27 constant:0.0];
+    trailingAnchor = [view trailingAnchor];
+    contentView7 = [(HUIEQChartSettingsCell *)v5 contentView];
+    trailingAnchor2 = [contentView7 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v49[3] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
     [v32 activateConstraints:v29];
 
     objc_initWeak(&location, v5);
-    v30 = [MEMORY[0x277D12E18] sharedInstance];
+    mEMORY[0x277D12E18]2 = [MEMORY[0x277D12E18] sharedInstance];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke;
     v45[3] = &unk_2796F6D18;
     objc_copyWeak(&v46, &location);
-    [v30 registerUpdateBlock:v45 forRetrieveSelector:sel_tinnitusFilterMode withListener:v5];
+    [mEMORY[0x277D12E18]2 registerUpdateBlock:v45 forRetrieveSelector:sel_tinnitusFilterMode withListener:v5];
 
     objc_destroyWeak(&v46);
     objc_destroyWeak(&location);
@@ -111,41 +111,41 @@ void __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke_2
   [WeakRetained refreshChartFromSettings];
 }
 
-- (void)updateChartModel:(id)a3 didUpdateValue:(CGPoint)a4
+- (void)updateChartModel:(id)model didUpdateValue:(CGPoint)value
 {
-  v5 = a3;
-  v6 = [(HUIEQChartSettingsCell *)self delegate];
+  modelCopy = model;
+  delegate = [(HUIEQChartSettingsCell *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUIEQChartSettingsCell *)self delegate];
-    [v8 userUpdatedChartValue];
+    delegate2 = [(HUIEQChartSettingsCell *)self delegate];
+    [delegate2 userUpdatedChartValue];
   }
 
-  v15 = [MEMORY[0x277D12E18] sharedInstance];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
   v9 = objc_alloc(MEMORY[0x277D12E10]);
-  [v5 value];
+  [modelCopy value];
   v11 = v10;
   v13 = v12;
 
   v14 = [v9 initWithPoint:{v11, v13}];
-  [v15 setTinnitusFilterPoint:v14];
+  [mEMORY[0x277D12E18] setTinnitusFilterPoint:v14];
 }
 
 - (void)refreshChartFromSettings
 {
-  v3 = [MEMORY[0x277D12E18] sharedInstance];
-  v9 = [v3 tinnitusFilterPoint];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+  tinnitusFilterPoint = [mEMORY[0x277D12E18] tinnitusFilterPoint];
 
-  if (v9)
+  if (tinnitusFilterPoint)
   {
-    [v9 xValue];
+    [tinnitusFilterPoint xValue];
     v5 = v4;
-    [v9 yValue];
+    [tinnitusFilterPoint yValue];
     v7 = v6;
-    v8 = [(HUIEQChartSettingsCell *)self model];
-    [v8 setValue:{v5, v7}];
+    model = [(HUIEQChartSettingsCell *)self model];
+    [model setValue:{v5, v7}];
   }
 }
 
@@ -153,16 +153,16 @@ void __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke_2
 {
   v5.receiver = self;
   v5.super_class = HUIEQChartSettingsCell;
-  v2 = [(HUIEQChartSettingsCell *)&v5 accessibilityLabel];
+  accessibilityLabel = [(HUIEQChartSettingsCell *)&v5 accessibilityLabel];
   v3 = comfortSoundsLocString();
 
   return v3;
 }
 
-- (CGPoint)convertToNormalizedPoint:(CGPoint)a3
+- (CGPoint)convertToNormalizedPoint:(CGPoint)point
 {
-  v3 = round(a3.x * 100.0);
-  v4 = round(a3.y * 100.0);
+  v3 = round(point.x * 100.0);
+  v4 = round(point.y * 100.0);
   result.y = v4;
   result.x = v3;
   return result;
@@ -170,62 +170,62 @@ void __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke_2
 
 - (id)accessibilityValue
 {
-  v3 = [MEMORY[0x277D12E18] sharedInstance];
-  v4 = [v3 tinnitusFilterPoint];
+  mEMORY[0x277D12E18] = [MEMORY[0x277D12E18] sharedInstance];
+  tinnitusFilterPoint = [mEMORY[0x277D12E18] tinnitusFilterPoint];
 
-  if (v4)
+  if (tinnitusFilterPoint)
   {
-    [v4 xValue];
+    [tinnitusFilterPoint xValue];
     v6 = v5;
-    [v4 yValue];
+    [tinnitusFilterPoint yValue];
     [(HUIEQChartSettingsCell *)self convertToNormalizedPoint:v6, v7];
     v9 = v8;
     v11 = v10;
     v12 = MEMORY[0x277CCACA8];
     v13 = comfortSoundsLocString();
-    v14 = [v12 stringWithFormat:v13, v9, v11];
+    accessibilityValue = [v12 stringWithFormat:v13, v9, v11];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = HUIEQChartSettingsCell;
-    v14 = [(HUIEQChartSettingsCell *)&v16 accessibilityValue];
+    accessibilityValue = [(HUIEQChartSettingsCell *)&v16 accessibilityValue];
   }
 
-  return v14;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   v5.receiver = self;
   v5.super_class = HUIEQChartSettingsCell;
-  v2 = [(HUIEQChartSettingsCell *)&v5 accessibilityHint];
+  accessibilityHint = [(HUIEQChartSettingsCell *)&v5 accessibilityHint];
   v3 = comfortSoundsLocString();
 
   return v3;
 }
 
-- (void)performCustomAction:(unint64_t)a3
+- (void)performCustomAction:(unint64_t)action
 {
-  v5 = [(HUIEQChartSettingsCell *)self model];
-  [v5 value];
+  model = [(HUIEQChartSettingsCell *)self model];
+  [model value];
   v7 = v6;
 
-  v8 = [(HUIEQChartSettingsCell *)self model];
-  [v8 value];
+  model2 = [(HUIEQChartSettingsCell *)self model];
+  [model2 value];
   v10 = v9;
 
-  if (a3 > 1)
+  if (action > 1)
   {
-    if (a3 == 2)
+    if (action == 2)
     {
       v12 = 0.1;
     }
 
     else
     {
-      if (a3 != 3)
+      if (action != 3)
       {
         goto LABEL_12;
       }
@@ -238,9 +238,9 @@ void __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke_2
 
   else
   {
-    if (a3)
+    if (action)
     {
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_12;
       }
@@ -259,14 +259,14 @@ void __56__HUIEQChartSettingsCell_initWithStyle_reuseIdentifier___block_invoke_2
 LABEL_12:
   v13 = fmax(fmin(v7, 1.0), -1.0);
   v14 = fmax(fmin(v10, 1.0), -1.0);
-  v15 = [(HUIEQChartSettingsCell *)self model];
-  [v15 setValue:{v13, v14}];
+  model3 = [(HUIEQChartSettingsCell *)self model];
+  [model3 setValue:{v13, v14}];
 
-  v16 = [(HUIEQChartSettingsCell *)self model];
-  [(HUIEQChartSettingsCell *)self updateChartModel:v16 didUpdateValue:v13, v14];
+  model4 = [(HUIEQChartSettingsCell *)self model];
+  [(HUIEQChartSettingsCell *)self updateChartModel:model4 didUpdateValue:v13, v14];
 
-  v17 = [(HUIEQChartSettingsCell *)self model];
-  [v17 value];
+  model5 = [(HUIEQChartSettingsCell *)self model];
+  [model5 value];
   [(HUIEQChartSettingsCell *)self convertToNormalizedPoint:?];
   v19 = v18;
   v21 = v20;
@@ -283,8 +283,8 @@ LABEL_12:
   v3 = MEMORY[0x277CBEB18];
   v23.receiver = self;
   v23.super_class = HUIEQChartSettingsCell;
-  v4 = [(HUIEQChartSettingsCell *)&v23 accessibilityCustomActions];
-  v5 = [v3 arrayWithArray:v4];
+  accessibilityCustomActions = [(HUIEQChartSettingsCell *)&v23 accessibilityCustomActions];
+  v5 = [v3 arrayWithArray:accessibilityCustomActions];
 
   v6 = objc_alloc(MEMORY[0x277D75088]);
   v7 = comfortSoundsLocString();

@@ -1,7 +1,7 @@
 @interface TVRootShowcaseCarouselItemCell
 - (CGSize)intrinsicContentSize;
 - (void)didMoveToWindow;
-- (void)handleTappedButton:(id)a3;
+- (void)handleTappedButton:(id)button;
 - (void)prepareForReuse;
 - (void)restartVideo;
 @end
@@ -25,27 +25,27 @@
   v6 = type metadata accessor for TVRootShowcaseCarouselItemCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVFocusableCollectionViewCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI30TVRootShowcaseCarouselItemCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BBD3004();
 }
 
-- (void)handleTappedButton:(id)a3
+- (void)handleTappedButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BBD46AC(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_20BBD46AC(buttonCopy);
 }
 
 - (void)restartVideo
@@ -57,7 +57,7 @@
     v5 = MEMORY[0x277CC08F0];
     v6 = *MEMORY[0x277CC08F0];
     v7 = *(MEMORY[0x277CC08F0] + 16);
-    v8 = self;
+    selfCopy = self;
     v11[0] = v6;
     v11[1] = *(v5 + 8);
     v11[2] = v7;
@@ -67,7 +67,7 @@
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     v9 = 0;
   }
 

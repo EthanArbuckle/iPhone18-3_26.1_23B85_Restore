@@ -2,9 +2,9 @@
 - (AMSUICommonView)view;
 - (AMSUICommonViewController)init;
 - (void)loadView;
-- (void)setChildViewController:(id)a3;
-- (void)setView:(id)a3;
-- (void)unsetChildViewController:(id)a3;
+- (void)setChildViewController:(id)controller;
+- (void)setView:(id)view;
+- (void)unsetChildViewController:(id)controller;
 @end
 
 @implementation AMSUICommonViewController
@@ -20,46 +20,46 @@
 {
   v4.receiver = self;
   v4.super_class = AMSUICommonViewController;
-  v2 = [(AMSUICommonViewController *)&v4 view];
+  view = [(AMSUICommonViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v3.receiver = self;
   v3.super_class = AMSUICommonViewController;
-  [(AMSUICommonViewController *)&v3 setView:a3];
+  [(AMSUICommonViewController *)&v3 setView:view];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v16 = a3;
-  [(AMSUICommonViewController *)self addChildViewController:v16];
-  v4 = [(AMSUICommonViewController *)self view];
-  v5 = [v16 view];
-  [v4 addSubview:v5];
+  controllerCopy = controller;
+  [(AMSUICommonViewController *)self addChildViewController:controllerCopy];
+  view = [(AMSUICommonViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  v6 = [(AMSUICommonViewController *)self view];
-  [v6 bounds];
+  view3 = [(AMSUICommonViewController *)self view];
+  [view3 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v16 view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view4 = [controllerCopy view];
+  [view4 setFrame:{v8, v10, v12, v14}];
 
-  [v16 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)unsetChildViewController:(id)a3
+- (void)unsetChildViewController:(id)controller
 {
-  v4 = a3;
-  [v4 willMoveToParentViewController:0];
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:0];
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
 - (void)loadView

@@ -2,10 +2,10 @@
 + (id)compoundObjectMap;
 - (_UICompoundObjectMap)init;
 - (id)deepCopy;
-- (id)valueForObject:(id)a3 andProperty:(id)a4;
-- (void)addEntriesFromCompoundObjectMap:(id)a3 keepingCurrentValues:(BOOL)a4;
-- (void)performWithEach:(id)a3;
-- (void)setValue:(id)a3 forObject:(id)a4 andProperty:(id)a5;
+- (id)valueForObject:(id)object andProperty:(id)property;
+- (void)addEntriesFromCompoundObjectMap:(id)map keepingCurrentValues:(BOOL)values;
+- (void)performWithEach:(id)each;
+- (void)setValue:(id)value forObject:(id)object andProperty:(id)property;
 @end
 
 @implementation _UICompoundObjectMap
@@ -30,47 +30,47 @@
   return v2;
 }
 
-- (id)valueForObject:(id)a3 andProperty:(id)a4
+- (id)valueForObject:(id)object andProperty:(id)property
 {
   mapTable = self->_mapTable;
-  v5 = [_UICompoundObjectMapKey keyWithObject:a3 andProperty:a4];
+  v5 = [_UICompoundObjectMapKey keyWithObject:object andProperty:property];
   v6 = [(NSMutableDictionary *)mapTable objectForKey:v5];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forObject:(id)a4 andProperty:(id)a5
+- (void)setValue:(id)value forObject:(id)object andProperty:(id)property
 {
-  if (a3)
+  if (value)
   {
     mapTable = self->_mapTable;
-    v8 = a3;
-    v9 = [_UICompoundObjectMapKey keyWithObject:a4 andProperty:a5];
-    [(NSMutableDictionary *)mapTable setObject:v8 forKey:v9];
+    valueCopy = value;
+    v9 = [_UICompoundObjectMapKey keyWithObject:object andProperty:property];
+    [(NSMutableDictionary *)mapTable setObject:valueCopy forKey:v9];
   }
 }
 
-- (void)addEntriesFromCompoundObjectMap:(id)a3 keepingCurrentValues:(BOOL)a4
+- (void)addEntriesFromCompoundObjectMap:(id)map keepingCurrentValues:(BOOL)values
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __77___UICompoundObjectMap_addEntriesFromCompoundObjectMap_keepingCurrentValues___block_invoke;
   v4[3] = &unk_1E70F5E90;
-  v5 = a4;
+  valuesCopy = values;
   v4[4] = self;
-  [a3 performWithEach:v4];
+  [map performWithEach:v4];
 }
 
-- (void)performWithEach:(id)a3
+- (void)performWithEach:(id)each
 {
-  v4 = a3;
+  eachCopy = each;
   mapTable = self->_mapTable;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40___UICompoundObjectMap_performWithEach___block_invoke;
   v7[3] = &unk_1E70F5EB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = eachCopy;
+  v6 = eachCopy;
   [(NSMutableDictionary *)mapTable enumerateKeysAndObjectsUsingBlock:v7];
 }
 

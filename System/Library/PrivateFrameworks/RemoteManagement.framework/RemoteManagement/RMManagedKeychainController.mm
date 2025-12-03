@@ -1,26 +1,26 @@
 @interface RMManagedKeychainController
-+ (BOOL)removeAssetsNotMatchingStoreIdentifiers:(id)a3 scope:(int64_t)a4 personaID:(id)a5 error:(id *)a6;
++ (BOOL)removeAssetsNotMatchingStoreIdentifiers:(id)identifiers scope:(int64_t)scope personaID:(id)d error:(id *)error;
 + (RMSharedLock)lock;
 + (RMSharedLock)modifierLock;
-+ (id)newManagedKeychainControllerForScope:(int64_t)a3 personaID:(id)a4;
-- (BOOL)hasDataForAssetKey:(id)a3;
-- (BOOL)removedKeychainItemsForAssetKey:(id)a3 error:(id *)a4;
-- (BOOL)storeACMEDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(unint64_t)a5 keyType:(id)a6 hardwareBound:(BOOL)a7 subject:(id)a8 subjectAltName:(id)a9 usageFlags:(unint64_t)a10 extendedKeyUsage:(id)a11 attest:(BOOL)a12 isUserEnrollment:(BOOL)a13 assetKey:(id)a14 error:(id *)a15;
-- (BOOL)storePEMData:(id)a3 assetKey:(id)a4 error:(id *)a5;
-- (BOOL)storePKCS12Data:(id)a3 password:(id)a4 assetKey:(id)a5 error:(id *)a6;
-- (BOOL)storePKCS1Data:(id)a3 assetKey:(id)a4 error:(id *)a5;
-- (BOOL)storePassword:(id)a3 userName:(id)a4 assetKey:(id)a5 error:(id *)a6;
-- (BOOL)storeSCEPIdentityURL:(id)a3 caInstanceName:(id)a4 caFingerprint:(id)a5 caCapabilities:(id)a6 challenge:(id)a7 subject:(id)a8 keySize:(unint64_t)a9 usageFlags:(unint64_t)a10 subjectAltName:(id)a11 retries:(unint64_t)a12 retryDelay:(unsigned int)a13 assetKey:(id)a14 error:(id *)a15;
-- (BOOL)unassignAllAssetsFromConfigurationKey:(id)a3 error:(id *)a4;
-- (RMManagedKeychainController)initWithScope:(int64_t)a3 personaID:(id)a4;
-- (id)assetKeysForCertificatesAndReturnError:(id *)a3;
-- (id)assetKeysForIdentitiesAndReturnError:(id *)a3;
-- (id)assetKeysForPasswordsAndReturnError:(id *)a3;
-- (id)assignCertificateForAssetKey:(id)a3 toConfigurationKey:(id)a4 access:(void *)a5 group:(id)a6 error:(id *)a7;
-- (id)assignIdentityForAssetKey:(id)a3 configurationKey:(id)a4 access:(void *)a5 group:(id)a6 error:(id *)a7;
-- (id)assignPasswordForAssetKey:(id)a3 toConfigurationKey:(id)a4 access:(void *)a5 group:(id)a6 returnUserName:(id *)a7 error:(id *)a8;
-- (id)certificatePersistentRefForAssetKey:(id)a3 error:(id *)a4;
-- (id)certificatePersistentRefsForAssetKeys:(id)a3 error:(id *)a4;
++ (id)newManagedKeychainControllerForScope:(int64_t)scope personaID:(id)d;
+- (BOOL)hasDataForAssetKey:(id)key;
+- (BOOL)removedKeychainItemsForAssetKey:(id)key error:(id *)error;
+- (BOOL)storeACMEDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(unint64_t)size keyType:(id)type hardwareBound:(BOOL)bound subject:(id)subject subjectAltName:(id)name usageFlags:(unint64_t)self0 extendedKeyUsage:(id)self1 attest:(BOOL)self2 isUserEnrollment:(BOOL)self3 assetKey:(id)self4 error:(id *)self5;
+- (BOOL)storePEMData:(id)data assetKey:(id)key error:(id *)error;
+- (BOOL)storePKCS12Data:(id)data password:(id)password assetKey:(id)key error:(id *)error;
+- (BOOL)storePKCS1Data:(id)data assetKey:(id)key error:(id *)error;
+- (BOOL)storePassword:(id)password userName:(id)name assetKey:(id)key error:(id *)error;
+- (BOOL)storeSCEPIdentityURL:(id)l caInstanceName:(id)name caFingerprint:(id)fingerprint caCapabilities:(id)capabilities challenge:(id)challenge subject:(id)subject keySize:(unint64_t)size usageFlags:(unint64_t)self0 subjectAltName:(id)self1 retries:(unint64_t)self2 retryDelay:(unsigned int)self3 assetKey:(id)self4 error:(id *)self5;
+- (BOOL)unassignAllAssetsFromConfigurationKey:(id)key error:(id *)error;
+- (RMManagedKeychainController)initWithScope:(int64_t)scope personaID:(id)d;
+- (id)assetKeysForCertificatesAndReturnError:(id *)error;
+- (id)assetKeysForIdentitiesAndReturnError:(id *)error;
+- (id)assetKeysForPasswordsAndReturnError:(id *)error;
+- (id)assignCertificateForAssetKey:(id)key toConfigurationKey:(id)configurationKey access:(void *)access group:(id)group error:(id *)error;
+- (id)assignIdentityForAssetKey:(id)key configurationKey:(id)configurationKey access:(void *)access group:(id)group error:(id *)error;
+- (id)assignPasswordForAssetKey:(id)key toConfigurationKey:(id)configurationKey access:(void *)access group:(id)group returnUserName:(id *)name error:(id *)error;
+- (id)certificatePersistentRefForAssetKey:(id)key error:(id *)error;
+- (id)certificatePersistentRefsForAssetKeys:(id)keys error:(id *)error;
 - (id)debugState;
 - (void)_postNotification;
 - (void)debugState;
@@ -30,29 +30,29 @@
 
 @implementation RMManagedKeychainController
 
-+ (id)newManagedKeychainControllerForScope:(int64_t)a3 personaID:(id)a4
++ (id)newManagedKeychainControllerForScope:(int64_t)scope personaID:(id)d
 {
-  v5 = a4;
-  v6 = [[RMManagedKeychainController alloc] initWithScope:a3 personaID:v5];
+  dCopy = d;
+  v6 = [[RMManagedKeychainController alloc] initWithScope:scope personaID:dCopy];
 
   return v6;
 }
 
-- (RMManagedKeychainController)initWithScope:(int64_t)a3 personaID:(id)a4
+- (RMManagedKeychainController)initWithScope:(int64_t)scope personaID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = RMManagedKeychainController;
   v8 = [(RMManagedKeychainController *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_scope = a3 == 1;
-    objc_storeStrong(&v8->_personaID, a4);
+    v8->_scope = scope == 1;
+    objc_storeStrong(&v8->_personaID, d);
     v10 = +[RMLog managedKeychainController];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(RMManagedKeychainController *)v7 initWithScope:a3 personaID:v10];
+      [(RMManagedKeychainController *)dCopy initWithScope:scope personaID:v10];
     }
   }
 
@@ -111,9 +111,9 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (BOOL)hasDataForAssetKey:(id)a3
+- (BOOL)hasDataForAssetKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -124,21 +124,21 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v6 lock];
 
   v7 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v8 = [(RMManagedKeychainController *)self scope];
-  v9 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v8) = [v7 hasAssetForAssetKey:v4 scope:v8 persona:v9];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v7 hasAssetForAssetKey:keyCopy scope:scope persona:personaID];
 
   v10 = +[RMManagedKeychainController lock];
   [v10 unlock];
 
-  return v8;
+  return scope;
 }
 
-- (BOOL)storePassword:(id)a3 userName:(id)a4 assetKey:(id)a5 error:(id *)a6
+- (BOOL)storePassword:(id)password userName:(id)name assetKey:(id)key error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  nameCopy = name;
+  passwordCopy = password;
   v13 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -149,23 +149,23 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v14 lock];
 
   v15 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v16 = [(RMManagedKeychainController *)self scope];
-  v17 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v16) = [v15 storeWithPassword:v12 userName:v11 assetKey:v10 scope:v16 persona:v17 error:a6];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v15 storeWithPassword:passwordCopy userName:nameCopy assetKey:keyCopy scope:scope persona:personaID error:error];
 
   v18 = +[RMManagedKeychainController lock];
   [v18 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a6];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
-  return v16;
+  return scope;
 }
 
-- (BOOL)storePEMData:(id)a3 assetKey:(id)a4 error:(id *)a5
+- (BOOL)storePEMData:(id)data assetKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keyCopy = key;
+  dataCopy = data;
   v10 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -176,23 +176,23 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v11 lock];
 
   v12 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v13 = [(RMManagedKeychainController *)self scope];
-  v14 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v13) = [v12 storeWithPemData:v9 assetKey:v8 scope:v13 persona:v14 error:a5];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v12 storeWithPemData:dataCopy assetKey:keyCopy scope:scope persona:personaID error:error];
 
   v15 = +[RMManagedKeychainController lock];
   [v15 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a5];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
-  return v13;
+  return scope;
 }
 
-- (BOOL)storePKCS1Data:(id)a3 assetKey:(id)a4 error:(id *)a5
+- (BOOL)storePKCS1Data:(id)data assetKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  keyCopy = key;
+  dataCopy = data;
   v10 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -203,24 +203,24 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v11 lock];
 
   v12 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v13 = [(RMManagedKeychainController *)self scope];
-  v14 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v13) = [v12 storeWithDerData:v9 assetKey:v8 scope:v13 persona:v14 error:a5];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v12 storeWithDerData:dataCopy assetKey:keyCopy scope:scope persona:personaID error:error];
 
   v15 = +[RMManagedKeychainController lock];
   [v15 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a5];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
-  return v13;
+  return scope;
 }
 
-- (BOOL)storePKCS12Data:(id)a3 password:(id)a4 assetKey:(id)a5 error:(id *)a6
+- (BOOL)storePKCS12Data:(id)data password:(id)password assetKey:(id)key error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  keyCopy = key;
+  passwordCopy = password;
+  dataCopy = data;
   v13 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -231,29 +231,29 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v14 lock];
 
   v15 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v16 = [(RMManagedKeychainController *)self scope];
-  v17 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v16) = [v15 storeWithPkcs12Data:v12 password:v11 assetKey:v10 scope:v16 persona:v17 error:a6];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v15 storeWithPkcs12Data:dataCopy password:passwordCopy assetKey:keyCopy scope:scope persona:personaID error:error];
 
   v18 = +[RMManagedKeychainController lock];
   [v18 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a6];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
-  return v16;
+  return scope;
 }
 
-- (BOOL)storeSCEPIdentityURL:(id)a3 caInstanceName:(id)a4 caFingerprint:(id)a5 caCapabilities:(id)a6 challenge:(id)a7 subject:(id)a8 keySize:(unint64_t)a9 usageFlags:(unint64_t)a10 subjectAltName:(id)a11 retries:(unint64_t)a12 retryDelay:(unsigned int)a13 assetKey:(id)a14 error:(id *)a15
+- (BOOL)storeSCEPIdentityURL:(id)l caInstanceName:(id)name caFingerprint:(id)fingerprint caCapabilities:(id)capabilities challenge:(id)challenge subject:(id)subject keySize:(unint64_t)size usageFlags:(unint64_t)self0 subjectAltName:(id)self1 retries:(unint64_t)self2 retryDelay:(unsigned int)self3 assetKey:(id)self4 error:(id *)self5
 {
-  v21 = a14;
-  v36 = a11;
-  v35 = a8;
-  v34 = a7;
-  v33 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  keyCopy = key;
+  altNameCopy = altName;
+  subjectCopy = subject;
+  challengeCopy = challenge;
+  capabilitiesCopy = capabilities;
+  fingerprintCopy = fingerprint;
+  nameCopy = name;
+  lCopy = l;
   v25 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
@@ -264,30 +264,30 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v26 lock];
 
   v27 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v28 = [(RMManagedKeychainController *)self scope];
-  v29 = [(RMManagedKeychainController *)self personaID];
-  LODWORD(v32) = a13;
-  v37 = [v27 storeSCEPIdentityWithUrl:v24 caInstanceName:v23 caFingerprint:v22 caCapabilities:v33 challenge:v34 subject:v35 keySize:a9 usageFlags:a10 subjectAltName:v36 retries:a12 retryDelay:v32 assetKey:v21 scope:v28 persona:v29 error:a15];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LODWORD(v32) = delay;
+  v37 = [v27 storeSCEPIdentityWithUrl:lCopy caInstanceName:nameCopy caFingerprint:fingerprintCopy caCapabilities:capabilitiesCopy challenge:challengeCopy subject:subjectCopy keySize:size usageFlags:flags subjectAltName:altNameCopy retries:retries retryDelay:v32 assetKey:keyCopy scope:scope persona:personaID error:error];
 
   v30 = +[RMManagedKeychainController lock];
   [v30 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a15];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
   return v37;
 }
 
-- (BOOL)storeACMEDirectoryURL:(id)a3 clientIdentifier:(id)a4 keySize:(unint64_t)a5 keyType:(id)a6 hardwareBound:(BOOL)a7 subject:(id)a8 subjectAltName:(id)a9 usageFlags:(unint64_t)a10 extendedKeyUsage:(id)a11 attest:(BOOL)a12 isUserEnrollment:(BOOL)a13 assetKey:(id)a14 error:(id *)a15
+- (BOOL)storeACMEDirectoryURL:(id)l clientIdentifier:(id)identifier keySize:(unint64_t)size keyType:(id)type hardwareBound:(BOOL)bound subject:(id)subject subjectAltName:(id)name usageFlags:(unint64_t)self0 extendedKeyUsage:(id)self1 attest:(BOOL)self2 isUserEnrollment:(BOOL)self3 assetKey:(id)self4 error:(id *)self5
 {
-  v34 = a7;
-  v37 = a14;
-  v32 = a11;
-  v31 = a9;
-  v30 = a8;
-  v29 = a6;
-  v19 = a4;
-  v20 = a3;
+  boundCopy = bound;
+  keyCopy = key;
+  usageCopy = usage;
+  nameCopy = name;
+  subjectCopy = subject;
+  typeCopy = type;
+  identifierCopy = identifier;
+  lCopy = l;
   v21 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
@@ -298,25 +298,25 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v22 lock];
 
   v23 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v24 = [(RMManagedKeychainController *)self scope];
-  v25 = [(RMManagedKeychainController *)self personaID];
-  LOWORD(v28) = __PAIR16__(a13, a12);
-  v35 = [v23 storeACMEIdentityWithDirectoryURL:v20 clientIdentifier:v19 keySize:a5 keyType:v29 hardwareBound:v34 subject:v30 subjectAltName:v31 usageFlags:a10 extendedKeyUsage:v32 attest:v28 isUserEnrollment:v37 assetKey:v24 scope:v25 persona:a15 error:?];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOWORD(v28) = __PAIR16__(enrollment, attest);
+  v35 = [v23 storeACMEIdentityWithDirectoryURL:lCopy clientIdentifier:identifierCopy keySize:size keyType:typeCopy hardwareBound:boundCopy subject:subjectCopy subjectAltName:nameCopy usageFlags:flags extendedKeyUsage:usageCopy attest:v28 isUserEnrollment:keyCopy assetKey:scope scope:personaID persona:error error:?];
 
   v26 = +[RMManagedKeychainController lock];
   [v26 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a15];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
   return v35;
 }
 
-- (id)assignPasswordForAssetKey:(id)a3 toConfigurationKey:(id)a4 access:(void *)a5 group:(id)a6 returnUserName:(id *)a7 error:(id *)a8
+- (id)assignPasswordForAssetKey:(id)key toConfigurationKey:(id)configurationKey access:(void *)access group:(id)group returnUserName:(id *)name error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  keyCopy = key;
+  configurationKeyCopy = configurationKey;
+  groupCopy = group;
   v17 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
@@ -327,23 +327,23 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v18 lock];
 
   v19 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v20 = [(RMManagedKeychainController *)self scope];
-  v21 = [(RMManagedKeychainController *)self personaID];
-  v22 = [v19 assignPasswordWithAssetKey:v14 scope:v20 persona:v21 toConfigurationKey:v15 accessibility:a5 accessGroup:v16 returnUserName:a7 error:a8];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v22 = [v19 assignPasswordWithAssetKey:keyCopy scope:scope persona:personaID toConfigurationKey:configurationKeyCopy accessibility:access accessGroup:groupCopy returnUserName:name error:error];
 
   v23 = +[RMManagedKeychainController lock];
   [v23 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a8];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v22;
 }
 
-- (id)assignCertificateForAssetKey:(id)a3 toConfigurationKey:(id)a4 access:(void *)a5 group:(id)a6 error:(id *)a7
+- (id)assignCertificateForAssetKey:(id)key toConfigurationKey:(id)configurationKey access:(void *)access group:(id)group error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  keyCopy = key;
+  configurationKeyCopy = configurationKey;
+  groupCopy = group;
   v15 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -354,23 +354,23 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v16 lock];
 
   v17 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v18 = [(RMManagedKeychainController *)self scope];
-  v19 = [(RMManagedKeychainController *)self personaID];
-  v20 = [v17 assignCertWithAssetKey:v12 scope:v18 persona:v19 toConfigurationKey:v13 accessibility:a5 accessGroup:v14 error:a7];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v20 = [v17 assignCertWithAssetKey:keyCopy scope:scope persona:personaID toConfigurationKey:configurationKeyCopy accessibility:access accessGroup:groupCopy error:error];
 
   v21 = +[RMManagedKeychainController lock];
   [v21 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a7];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v20;
 }
 
-- (id)assignIdentityForAssetKey:(id)a3 configurationKey:(id)a4 access:(void *)a5 group:(id)a6 error:(id *)a7
+- (id)assignIdentityForAssetKey:(id)key configurationKey:(id)configurationKey access:(void *)access group:(id)group error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  keyCopy = key;
+  configurationKeyCopy = configurationKey;
+  groupCopy = group;
   v15 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -381,21 +381,21 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v16 lock];
 
   v17 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v18 = [(RMManagedKeychainController *)self scope];
-  v19 = [(RMManagedKeychainController *)self personaID];
-  v20 = [v17 assignIdentityWithAssetKey:v12 scope:v18 persona:v19 toConfigurationKey:v13 accessibility:a5 accessGroup:v14 error:a7];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v20 = [v17 assignIdentityWithAssetKey:keyCopy scope:scope persona:personaID toConfigurationKey:configurationKeyCopy accessibility:access accessGroup:groupCopy error:error];
 
   v21 = +[RMManagedKeychainController lock];
   [v21 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a7];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v20;
 }
 
-- (BOOL)unassignAllAssetsFromConfigurationKey:(id)a3 error:(id *)a4
+- (BOOL)unassignAllAssetsFromConfigurationKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -406,20 +406,20 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v8 lock];
 
   v9 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v10 = [(RMManagedKeychainController *)self scope];
-  v11 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v10) = [v9 unassignAllAssetsFromConfigurationKey:v6 scope:v10 persona:v11 error:a4];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v9 unassignAllAssetsFromConfigurationKey:keyCopy scope:scope persona:personaID error:error];
 
   v12 = +[RMManagedKeychainController lock];
   [v12 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a4];
-  return v10;
+  [RMErrorUtilities convertSwiftErrorReference:error];
+  return scope;
 }
 
-- (BOOL)removedKeychainItemsForAssetKey:(id)a3 error:(id *)a4
+- (BOOL)removedKeychainItemsForAssetKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -430,107 +430,107 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   [v8 lock];
 
   v9 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v10 = [(RMManagedKeychainController *)self scope];
-  v11 = [(RMManagedKeychainController *)self personaID];
-  LOBYTE(v10) = [v9 deleteWithAssetKey:v6 scope:v10 persona:v11 error:a4];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  LOBYTE(scope) = [v9 deleteWithAssetKey:keyCopy scope:scope persona:personaID error:error];
 
   v12 = +[RMManagedKeychainController lock];
   [v12 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a4];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   [(RMManagedKeychainController *)self _postNotification];
 
-  return v10;
+  return scope;
 }
 
-- (id)assetKeysForCertificatesAndReturnError:(id *)a3
+- (id)assetKeysForCertificatesAndReturnError:(id *)error
 {
   v5 = +[RMManagedKeychainController lock];
   [v5 lock];
 
   v6 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v7 = [(RMManagedKeychainController *)self scope];
-  v8 = [(RMManagedKeychainController *)self personaID];
-  v9 = [v6 assetKeysForCertificatesWithScope:v7 persona:v8 error:a3];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v9 = [v6 assetKeysForCertificatesWithScope:scope persona:personaID error:error];
 
   v10 = +[RMManagedKeychainController lock];
   [v10 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a3];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v9;
 }
 
-- (id)assetKeysForIdentitiesAndReturnError:(id *)a3
+- (id)assetKeysForIdentitiesAndReturnError:(id *)error
 {
   v5 = +[RMManagedKeychainController lock];
   [v5 lock];
 
   v6 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v7 = [(RMManagedKeychainController *)self scope];
-  v8 = [(RMManagedKeychainController *)self personaID];
-  v9 = [v6 assetKeysForIdentitiesWithScope:v7 persona:v8 error:a3];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v9 = [v6 assetKeysForIdentitiesWithScope:scope persona:personaID error:error];
 
   v10 = +[RMManagedKeychainController lock];
   [v10 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a3];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v9;
 }
 
-- (id)assetKeysForPasswordsAndReturnError:(id *)a3
+- (id)assetKeysForPasswordsAndReturnError:(id *)error
 {
   v5 = +[RMManagedKeychainController lock];
   [v5 lock];
 
   v6 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v7 = [(RMManagedKeychainController *)self scope];
-  v8 = [(RMManagedKeychainController *)self personaID];
-  v9 = [v6 assetKeysForPasswordsWithScope:v7 persona:v8 error:a3];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v9 = [v6 assetKeysForPasswordsWithScope:scope persona:personaID error:error];
 
   v10 = +[RMManagedKeychainController lock];
   [v10 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a3];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v9;
 }
 
-- (id)certificatePersistentRefForAssetKey:(id)a3 error:(id *)a4
+- (id)certificatePersistentRefForAssetKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = +[RMManagedKeychainController lock];
   [v7 lock];
 
   v8 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v9 = [(RMManagedKeychainController *)self scope];
-  v10 = [(RMManagedKeychainController *)self personaID];
-  v11 = [v8 certificatePersistentRefWithAssetKey:v6 scope:v9 persona:v10 error:a4];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v11 = [v8 certificatePersistentRefWithAssetKey:keyCopy scope:scope persona:personaID error:error];
 
   v12 = +[RMManagedKeychainController lock];
   [v12 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a4];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v11;
 }
 
-- (id)certificatePersistentRefsForAssetKeys:(id)a3 error:(id *)a4
+- (id)certificatePersistentRefsForAssetKeys:(id)keys error:(id *)error
 {
-  v6 = a3;
+  keysCopy = keys;
   v7 = +[RMManagedKeychainController lock];
   [v7 lock];
 
   v8 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v9 = [(RMManagedKeychainController *)self scope];
-  v10 = [(RMManagedKeychainController *)self personaID];
-  v11 = [v8 certificatePersistentRefsWithAssetKeys:v6 scope:v9 persona:v10 error:a4];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v11 = [v8 certificatePersistentRefsWithAssetKeys:keysCopy scope:scope persona:personaID error:error];
 
   v12 = +[RMManagedKeychainController lock];
   [v12 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a4];
+  [RMErrorUtilities convertSwiftErrorReference:error];
 
   return v11;
 }
@@ -551,34 +551,34 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   }
 
   v4 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v5 = [(RMManagedKeychainController *)self scope];
-  v6 = [(RMManagedKeychainController *)self personaID];
-  v7 = [v4 debugStateWithScope:v5 persona:v6];
+  scope = [(RMManagedKeychainController *)self scope];
+  personaID = [(RMManagedKeychainController *)self personaID];
+  v7 = [v4 debugStateWithScope:scope persona:personaID];
 
   return v7;
 }
 
-+ (BOOL)removeAssetsNotMatchingStoreIdentifiers:(id)a3 scope:(int64_t)a4 personaID:(id)a5 error:(id *)a6
++ (BOOL)removeAssetsNotMatchingStoreIdentifiers:(id)identifiers scope:(int64_t)scope personaID:(id)d error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v11 = +[RMLog managedKeychainController];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [RMManagedKeychainController removeAssetsNotMatchingStoreIdentifiers:v9 scope:v11 personaID:? error:?];
+    [RMManagedKeychainController removeAssetsNotMatchingStoreIdentifiers:identifiersCopy scope:v11 personaID:? error:?];
   }
 
   v12 = +[RMManagedKeychainController lock];
   [v12 lock];
 
   v13 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-  v14 = a4 == 1;
-  v15 = [v13 removeAssetsNotMatchingStoreIdentifiers:v9 scope:v14 persona:v10 error:a6];
+  v14 = scope == 1;
+  v15 = [v13 removeAssetsNotMatchingStoreIdentifiers:identifiersCopy scope:v14 persona:dCopy error:error];
 
   if (v15)
   {
     v16 = +[_TtC16RemoteManagement15ManagedKeychain sharedInstance];
-    v17 = [v16 unassignAssetsNotMatchingStoreIdentifiers:v9 scope:v14 persona:v10 error:a6];
+    v17 = [v16 unassignAssetsNotMatchingStoreIdentifiers:identifiersCopy scope:v14 persona:dCopy error:error];
   }
 
   else
@@ -589,7 +589,7 @@ uint64_t __43__RMManagedKeychainController_modifierLock__block_invoke()
   v18 = +[RMManagedKeychainController lock];
   [v18 unlock];
 
-  [RMErrorUtilities convertSwiftErrorReference:a6];
+  [RMErrorUtilities convertSwiftErrorReference:error];
   return v17;
 }
 

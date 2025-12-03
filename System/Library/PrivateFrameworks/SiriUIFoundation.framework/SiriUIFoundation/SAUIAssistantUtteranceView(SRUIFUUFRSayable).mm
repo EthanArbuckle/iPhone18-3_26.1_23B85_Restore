@@ -8,14 +8,14 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277D5AC48]);
-  v3 = [a1 dialogIdentifier];
-  [v2 setDialogIdentifier:v3];
+  dialogIdentifier = [self dialogIdentifier];
+  [v2 setDialogIdentifier:dialogIdentifier];
 
-  v4 = [a1 aceId];
-  [v2 setAceViewID:v4];
+  aceId = [self aceId];
+  [v2 setAceViewID:aceId];
 
-  v5 = [a1 encodedClassName];
-  [v2 setAceViewClass:v5];
+  encodedClassName = [self encodedClassName];
+  [v2 setAceViewClass:encodedClassName];
 
   v9[0] = v2;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];

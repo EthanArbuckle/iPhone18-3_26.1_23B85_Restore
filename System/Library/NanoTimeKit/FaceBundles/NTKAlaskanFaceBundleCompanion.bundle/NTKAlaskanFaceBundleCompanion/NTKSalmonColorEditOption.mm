@@ -1,5 +1,5 @@
 @interface NTKSalmonColorEditOption
-+ (id)_orderedValuesForDevice:(id)a3;
++ (id)_orderedValuesForDevice:(id)device;
 - (id)localizedName;
 - (id)pigmentEditOption;
 @end
@@ -8,20 +8,20 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKSalmonColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKSalmonColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_507C;
   v5[3] = &unk_38A28;
-  v5[4] = a1;
-  v3 = sub_507C(v5, a3);
+  v5[4] = self;
+  v3 = sub_507C(v5, device);
 
   return v3;
 }
@@ -44,7 +44,7 @@
     if (v7)
     {
       v8 = v7;
-      v9 = [[NTKPigmentEditOption alloc] initWithOptionName:v7 collectionName:@"gmt-evergreen"];
+      pigmentEditOption = [[NTKPigmentEditOption alloc] initWithOptionName:v7 collectionName:@"gmt-evergreen"];
 
       goto LABEL_6;
     }
@@ -52,10 +52,10 @@
 
   v11.receiver = self;
   v11.super_class = NTKSalmonColorEditOption;
-  v9 = [(NTKSalmonColorEditOption *)&v11 pigmentEditOption];
+  pigmentEditOption = [(NTKSalmonColorEditOption *)&v11 pigmentEditOption];
 LABEL_6:
 
-  return v9;
+  return pigmentEditOption;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface PXCreateSocialGroupAction
 - (NSString)localizedActionName;
-- (PXCreateSocialGroupAction)initWithPeople:(id)a3 customTitle:(id)a4 keyAssetUUID:(id)a5 creationCompletionBlock:(id)a6;
-- (PXCreateSocialGroupAction)initWithPhotoLibrary:(id)a3;
+- (PXCreateSocialGroupAction)initWithPeople:(id)people customTitle:(id)title keyAssetUUID:(id)d creationCompletionBlock:(id)block;
+- (PXCreateSocialGroupAction)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation PXCreateSocialGroupAction
@@ -14,14 +14,14 @@
   return v2;
 }
 
-- (PXCreateSocialGroupAction)initWithPeople:(id)a3 customTitle:(id)a4 keyAssetUUID:(id)a5 creationCompletionBlock:(id)a6
+- (PXCreateSocialGroupAction)initWithPeople:(id)people customTitle:(id)title keyAssetUUID:(id)d creationCompletionBlock:(id)block
 {
-  v9 = _Block_copy(a6);
-  if (a4)
+  v9 = _Block_copy(block);
+  if (title)
   {
-    a4 = sub_1A524C674();
+    title = sub_1A524C674();
     v11 = v10;
-    if (a5)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -35,17 +35,17 @@ LABEL_6:
 
 LABEL_7:
     v14 = 0;
-    return sub_1A42CCC90(a3, a4, v11, a5, v13, v9, v14);
+    return sub_1A42CCC90(people, title, v11, d, v13, v9, v14);
   }
 
   v11 = 0;
-  if (!a5)
+  if (!d)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  a5 = sub_1A524C674();
+  d = sub_1A524C674();
   v13 = v12;
   if (!v9)
   {
@@ -56,10 +56,10 @@ LABEL_4:
   v14 = swift_allocObject();
   *(v14 + 16) = v9;
   v9 = sub_1A3F3D4CC;
-  return sub_1A42CCC90(a3, a4, v11, a5, v13, v9, v14);
+  return sub_1A42CCC90(people, title, v11, d, v13, v9, v14);
 }
 
-- (PXCreateSocialGroupAction)initWithPhotoLibrary:(id)a3
+- (PXCreateSocialGroupAction)initWithPhotoLibrary:(id)library
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

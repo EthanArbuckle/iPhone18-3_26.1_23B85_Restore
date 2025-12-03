@@ -1,30 +1,30 @@
 @interface CNChangeHistoryLinkContactsEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryLinkContactsEvent)init;
-- (CNChangeHistoryLinkContactsEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryLinkContactsEvent)initWithFromContact:(id)a3 toContact:(id)a4 unifiedContact:(id)a5;
+- (CNChangeHistoryLinkContactsEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryLinkContactsEvent)initWithFromContact:(id)contact toContact:(id)toContact unifiedContact:(id)unifiedContact;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryLinkContactsEvent
 
 - (CNChangeHistoryLinkContactsEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryLinkContactsEvent)initWithFromContact:(id)a3 toContact:(id)a4 unifiedContact:(id)a5
+- (CNChangeHistoryLinkContactsEvent)initWithFromContact:(id)contact toContact:(id)toContact unifiedContact:(id)unifiedContact
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  contactCopy = contact;
+  toContactCopy = toContact;
+  unifiedContactCopy = unifiedContact;
+  if (contactCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -42,7 +42,7 @@
   if (!os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
 LABEL_6:
-    if (v10)
+    if (toContactCopy)
     {
       goto LABEL_7;
     }
@@ -51,7 +51,7 @@ LABEL_6:
   else
   {
     [CNChangeHistoryLinkContactsEvent initWithFromContact:v12 toContact:? unifiedContact:?];
-    if (v10)
+    if (toContactCopy)
     {
 LABEL_7:
       objc_opt_class();
@@ -71,7 +71,7 @@ LABEL_7:
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_3, OS_LOG_TYPE_FAULT))
   {
     [CNChangeHistoryLinkContactsEvent initWithFromContact:v13 toContact:? unifiedContact:?];
-    if (!v11)
+    if (!unifiedContactCopy)
     {
       goto LABEL_17;
     }
@@ -80,7 +80,7 @@ LABEL_7:
   }
 
 LABEL_11:
-  if (!v11)
+  if (!unifiedContactCopy)
   {
     goto LABEL_17;
   }
@@ -108,45 +108,45 @@ LABEL_17:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fromContact, a3);
-    objc_storeStrong(&v16->_toContact, a4);
-    objc_storeStrong(&v16->_unifiedContact, a5);
+    objc_storeStrong(&v15->_fromContact, contact);
+    objc_storeStrong(&v16->_toContact, toContact);
+    objc_storeStrong(&v16->_unifiedContact, unifiedContact);
     v17 = v16;
   }
 
   return v16;
 }
 
-- (CNChangeHistoryLinkContactsEvent)initWithCoder:(id)a3
+- (CNChangeHistoryLinkContactsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fromContact"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_toContact"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_unifiedContact"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fromContact"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_toContact"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_unifiedContact"];
 
   v8 = [(CNChangeHistoryLinkContactsEvent *)self initWithFromContact:v5 toContact:v6 unifiedContact:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fromContact = self->_fromContact;
-  v5 = a3;
-  [v5 encodeObject:fromContact forKey:@"_fromContact"];
-  [v5 encodeObject:self->_toContact forKey:@"_toContact"];
-  [v5 encodeObject:self->_unifiedContact forKey:@"_unifiedContact"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fromContact forKey:@"_fromContact"];
+  [coderCopy encodeObject:self->_toContact forKey:@"_toContact"];
+  [coderCopy encodeObject:self->_unifiedContact forKey:@"_unifiedContact"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__CNChangeHistoryLinkContactsEvent_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__CNChangeHistoryLinkContactsEvent_isEqual___block_invoke_2;
@@ -262,44 +262,44 @@ uint64_t __40__CNChangeHistoryLinkContactsEvent_hash__block_invoke_3(uint64_t a1
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNChangeHistoryLinkContactsEvent *)self fromContact];
-  v5 = [v3 appendName:@"fromContact" object:v4];
+  fromContact = [(CNChangeHistoryLinkContactsEvent *)self fromContact];
+  v5 = [v3 appendName:@"fromContact" object:fromContact];
 
-  v6 = [(CNChangeHistoryLinkContactsEvent *)self toContact];
-  v7 = [v3 appendName:@"toContact" object:v6];
+  toContact = [(CNChangeHistoryLinkContactsEvent *)self toContact];
+  v7 = [v3 appendName:@"toContact" object:toContact];
 
-  v8 = [(CNChangeHistoryLinkContactsEvent *)self unifiedContact];
-  v9 = [v3 appendName:@"unifiedContact" object:v8];
+  unifiedContact = [(CNChangeHistoryLinkContactsEvent *)self unifiedContact];
+  v9 = [v3 appendName:@"unifiedContact" object:unifiedContact];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitLinkContactsEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryLinkContactsEvent *)self fromContact];
-  v6 = [v5 identifier];
-  v7 = [v4 fromContact];
-  v8 = [v7 identifier];
-  v9 = [v6 compare:v8];
+  classCopy = class;
+  fromContact = [(CNChangeHistoryLinkContactsEvent *)self fromContact];
+  identifier = [fromContact identifier];
+  fromContact2 = [classCopy fromContact];
+  identifier2 = [fromContact2 identifier];
+  v9 = [identifier compare:identifier2];
 
   if (!v9)
   {
-    v10 = [(CNChangeHistoryLinkContactsEvent *)self toContact];
-    v11 = [v10 identifier];
-    v12 = [v4 toContact];
-    v13 = [v12 identifier];
-    v9 = [v11 compare:v13];
+    toContact = [(CNChangeHistoryLinkContactsEvent *)self toContact];
+    identifier3 = [toContact identifier];
+    toContact2 = [classCopy toContact];
+    identifier4 = [toContact2 identifier];
+    v9 = [identifier3 compare:identifier4];
   }
 
   return v9;

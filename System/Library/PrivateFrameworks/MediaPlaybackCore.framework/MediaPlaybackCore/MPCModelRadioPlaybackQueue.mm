@@ -1,49 +1,49 @@
 @interface MPCModelRadioPlaybackQueue
-- (BOOL)isExplicitItemAtIndex:(int64_t)a3;
-- (MPCModelRadioPlaybackQueue)initWithPlaybackContext:(id)a3;
-- (id)AVItemAtIndex:(int64_t)a3;
+- (BOOL)isExplicitItemAtIndex:(int64_t)index;
+- (MPCModelRadioPlaybackQueue)initWithPlaybackContext:(id)context;
+- (id)AVItemAtIndex:(int64_t)index;
 - (id)removeExplicitItems;
-- (id)trackForItemAtIndex:(int64_t)a3;
-- (id)tracksByApplyingTracksResponse:(id)a3 currentIndex:(int64_t)a4;
+- (id)trackForItemAtIndex:(int64_t)index;
+- (id)tracksByApplyingTracksResponse:(id)response currentIndex:(int64_t)index;
 - (void)removeAllItems;
-- (void)updateWithPersonalizedResponse:(id)a3;
+- (void)updateWithPersonalizedResponse:(id)response;
 @end
 
 @implementation MPCModelRadioPlaybackQueue
 
-- (void)updateWithPersonalizedResponse:(id)a3
+- (void)updateWithPersonalizedResponse:(id)response
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v30 = [v4 results];
-  v5 = [v30 firstSection];
-  [(MPCModelRadioPlaybackQueue *)self setRadioStation:v5];
+  responseCopy = response;
+  results = [responseCopy results];
+  firstSection = [results firstSection];
+  [(MPCModelRadioPlaybackQueue *)self setRadioStation:firstSection];
 
-  v6 = [v4 results];
-  v7 = [v4 radioStationTracks];
-  v31 = v4;
-  v8 = [v4 request];
-  v9 = [v8 itemProperties];
+  results2 = [responseCopy results];
+  radioStationTracks = [responseCopy radioStationTracks];
+  v31 = responseCopy;
+  request = [responseCopy request];
+  itemProperties = [request itemProperties];
   itemProperties = self->_itemProperties;
-  self->_itemProperties = v9;
+  self->_itemProperties = itemProperties;
 
-  v11 = [v6 copy];
+  v11 = [results2 copy];
   trackModels = self->_trackModels;
   self->_trackModels = v11;
 
-  v29 = v7;
-  v13 = [v7 copy];
+  v29 = radioStationTracks;
+  v13 = [radioStationTracks copy];
   tracks = self->_tracks;
   self->_tracks = v13;
 
   os_unfair_lock_lock(&self->_lock);
-  v35 = v6;
-  v15 = [v6 totalItemCount];
-  if (v15 >= 1)
+  v35 = results2;
+  totalItemCount = [results2 totalItemCount];
+  if (totalItemCount >= 1)
   {
-    v16 = v15;
+    v16 = totalItemCount;
     v17 = 0;
-    v32 = self;
+    selfCopy = self;
     do
     {
       if (v17 >= [(NSHashTable *)self->_activeModelGenericAVItems count])
@@ -75,9 +75,9 @@
             }
 
             v24 = *(*(&v37 + 1) + 8 * i);
-            v25 = [v24 genericObject];
-            v26 = [v25 identifiers];
-            v27 = [v26 intersectsSet:v18];
+            genericObject = [v24 genericObject];
+            identifiers = [genericObject identifiers];
+            v27 = [identifiers intersectsSet:v18];
 
             if (v27)
             {
@@ -95,7 +95,7 @@
       }
 
       v16 = v33;
-      self = v32;
+      self = selfCopy;
     }
 
     while (v34 > 1);
@@ -104,37 +104,37 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)tracksByApplyingTracksResponse:(id)a3 currentIndex:(int64_t)a4
+- (id)tracksByApplyingTracksResponse:(id)response currentIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(MPCModelRadioPlaybackQueue *)self tracks];
-  v8 = [v6 tracks];
-  if (![v7 totalItemCount])
+  responseCopy = response;
+  tracks = [(MPCModelRadioPlaybackQueue *)self tracks];
+  tracks2 = [responseCopy tracks];
+  if (![tracks totalItemCount])
   {
-    v9 = v8;
+    v9 = tracks2;
     goto LABEL_10;
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E6970818]);
-  v10 = [v8 firstSection];
-  [v9 appendSection:v10];
+  firstSection = [tracks2 firstSection];
+  [v9 appendSection:firstSection];
 
-  v11 = [v6 tracklistAction];
-  if (v11 == 1)
+  tracklistAction = [responseCopy tracklistAction];
+  if (tracklistAction == 1)
   {
-    if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13[5] = MEMORY[0x1E69E9820];
       v13[6] = 3221225472;
       v13[7] = __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentIndex___block_invoke_2;
       v13[8] = &unk_1E8235500;
       v13[9] = v9;
-      v13[10] = a4;
+      v13[10] = index;
       goto LABEL_8;
     }
   }
 
-  else if (!v11)
+  else if (!tracklistAction)
   {
     v13[11] = MEMORY[0x1E69E9820];
     v13[12] = 3221225472;
@@ -142,7 +142,7 @@
     v13[14] = &unk_1E82354D8;
     v13[15] = v9;
 LABEL_8:
-    [v7 enumerateItemsUsingBlock:?];
+    [tracks enumerateItemsUsingBlock:?];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
@@ -150,7 +150,7 @@ LABEL_8:
   v13[2] = __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentIndex___block_invoke_3;
   v13[3] = &unk_1E82354D8;
   v13[4] = v9;
-  [v8 enumerateItemsUsingBlock:v13];
+  [tracks2 enumerateItemsUsingBlock:v13];
 LABEL_10:
 
   return v9;
@@ -166,10 +166,10 @@ void __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentInde
   *a4 = v9 == *(a1 + 40);
 }
 
-- (id)trackForItemAtIndex:(int64_t)a3
+- (id)trackForItemAtIndex:(int64_t)index
 {
   tracks = self->_tracks;
-  v4 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
   v5 = [(MPSectionedCollection *)tracks itemAtIndexPath:v4];
 
   return v5;
@@ -178,14 +178,14 @@ void __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentInde
 - (id)removeExplicitItems
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69704C8]);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __49__MPCModelRadioPlaybackQueue_removeExplicitItems__block_invoke;
   v23[3] = &unk_1E82354B0;
   v23[4] = self;
-  v5 = v3;
+  v5 = array;
   v24 = v5;
   v6 = [v4 initWithBlock:v23];
   if ([v6 hasChanges])
@@ -196,8 +196,8 @@ void __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentInde
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [v5 reverseObjectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v10)
     {
       v11 = v10;
@@ -208,7 +208,7 @@ void __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentInde
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
@@ -216,7 +216,7 @@ void __74__MPCModelRadioPlaybackQueue_tracksByApplyingTracksResponse_currentInde
           [v8 removeItemAtIndexPath:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v11);
@@ -277,42 +277,42 @@ void __49__MPCModelRadioPlaybackQueue_removeExplicitItems__block_invoke_2(id *a1
   MEMORY[0x1EEE66BB8](v5, tracks);
 }
 
-- (BOOL)isExplicitItemAtIndex:(int64_t)a3
+- (BOOL)isExplicitItemAtIndex:(int64_t)index
 {
-  v4 = [(MPSectionedCollection *)self->_trackModels indexPathForGlobalIndex:a3];
+  v4 = [(MPSectionedCollection *)self->_trackModels indexPathForGlobalIndex:index];
   if (v4)
   {
     v5 = [(MPSectionedCollection *)self->_trackModels itemAtIndexPath:v4];
-    v6 = [v5 flattenedGenericObject];
-    v7 = [v6 type];
+    flattenedGenericObject = [v5 flattenedGenericObject];
+    type = [flattenedGenericObject type];
 
-    if (v7 == 1)
+    if (type == 1)
     {
-      v8 = [v5 song];
-      v9 = [v8 isExplicitSong];
+      song = [v5 song];
+      isExplicitSong = [song isExplicitSong];
     }
 
     else
     {
-      v9 = 0;
+      isExplicitSong = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    isExplicitSong = 0;
   }
 
-  return v9;
+  return isExplicitSong;
 }
 
-- (id)AVItemAtIndex:(int64_t)a3
+- (id)AVItemAtIndex:(int64_t)index
 {
-  v4 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
+  v4 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
   v5 = [(MPSectionedCollection *)self->_trackModels itemAtIndexPath:v4];
   v6 = [[MPCModelGenericAVItem alloc] initWithGenericObject:v5 itemProperties:self->_itemProperties playbackRequestEnvironment:self->_playbackRequestEnvironment identityPropertySet:self->_identityPropertySet];
-  v7 = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment userIdentity];
-  v8 = [MPCMediaLibraryPlaybackAssetCacheProvider deviceLibraryProviderWithUserIdentity:v7];
+  userIdentity = [(MPCPlaybackRequestEnvironment *)self->_playbackRequestEnvironment userIdentity];
+  v8 = [MPCMediaLibraryPlaybackAssetCacheProvider deviceLibraryProviderWithUserIdentity:userIdentity];
   [(MPCModelGenericAVItem *)v6 setAssetCacheProvider:v8];
 
   [(MPCModelGenericAVItem *)v6 setRadioPlayback:1];
@@ -322,22 +322,22 @@ void __49__MPCModelRadioPlaybackQueue_removeExplicitItems__block_invoke_2(id *a1
   [(MPCModelGenericAVItem *)v6 setPrioritizeStartupOverQuality:self->_prioritizeStartupOverQuality];
   v10 = [(MPSectionedCollection *)self->_tracks itemAtIndexPath:v4];
   v11 = -[MPSectionedCollection sectionAtIndex:](self->_tracks, "sectionAtIndex:", [v4 section]);
-  v12 = [v10 trackType];
-  [(MPCModelGenericAVItem *)v6 setRadioStreamPlayback:v12 == 4];
+  trackType = [v10 trackType];
+  [(MPCModelGenericAVItem *)v6 setRadioStreamPlayback:trackType == 4];
   -[MPCModelGenericAVItem setSubscriptionRequired:](v6, "setSubscriptionRequired:", [v11 isSubscriptionRequired]);
-  v13 = [v10 serverTrackInfo];
-  [(MPCModelGenericAVItem *)v6 setTrackInfo:v13];
+  serverTrackInfo = [v10 serverTrackInfo];
+  [(MPCModelGenericAVItem *)v6 setTrackInfo:serverTrackInfo];
 
-  if (v12 == 1)
+  if (trackType == 1)
   {
-    v14 = [v10 likeState];
+    likeState = [v10 likeState];
     v15 = 3;
-    if (v14 != -1)
+    if (likeState != -1)
     {
       v15 = 1;
     }
 
-    if (v14 == 1)
+    if (likeState == 1)
     {
       v16 = 2;
     }
@@ -357,9 +357,9 @@ void __49__MPCModelRadioPlaybackQueue_removeExplicitItems__block_invoke_2(id *a1
   return v6;
 }
 
-- (MPCModelRadioPlaybackQueue)initWithPlaybackContext:(id)a3
+- (MPCModelRadioPlaybackQueue)initWithPlaybackContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = MPCModelRadioPlaybackQueue;
   v5 = [(MPCModelRadioPlaybackQueue *)&v17 init];
@@ -367,27 +367,27 @@ void __49__MPCModelRadioPlaybackQueue_removeExplicitItems__block_invoke_2(id *a1
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     activeModelGenericAVItems = v6->_activeModelGenericAVItems;
-    v6->_activeModelGenericAVItems = v7;
+    v6->_activeModelGenericAVItems = weakObjectsHashTable;
 
-    v9 = [v4 siriReferenceIdentifier];
-    v6->_isSiriInitiated = v9 != 0;
+    siriReferenceIdentifier = [contextCopy siriReferenceIdentifier];
+    v6->_isSiriInitiated = siriReferenceIdentifier != 0;
 
-    v10 = [v4 playbackRequestEnvironment];
+    playbackRequestEnvironment = [contextCopy playbackRequestEnvironment];
     playbackRequestEnvironment = v6->_playbackRequestEnvironment;
-    v6->_playbackRequestEnvironment = v10;
+    v6->_playbackRequestEnvironment = playbackRequestEnvironment;
 
-    v12 = [v4 queueDescriptor];
-    v6->_prioritizeStartupOverQuality = [v12 prioritizeStartupOverQuality];
+    queueDescriptor = [contextCopy queueDescriptor];
+    v6->_prioritizeStartupOverQuality = [queueDescriptor prioritizeStartupOverQuality];
 
-    v13 = [v4 radioStation];
+    radioStation = [contextCopy radioStation];
 
-    if (v13)
+    if (radioStation)
     {
-      v14 = [v4 radioStation];
+      radioStation2 = [contextCopy radioStation];
       radioStation = v6->_radioStation;
-      v6->_radioStation = v14;
+      v6->_radioStation = radioStation2;
     }
   }
 

@@ -1,21 +1,21 @@
 @interface CKContextItem
-- (CKContextItem)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKContextItem)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContextItem
 
-- (CKContextItem)initWithCoder:(id)a3
+- (CKContextItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CKContextItem;
   v5 = [(CKContextItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     if (!v6)
     {
       v11 = 0;
@@ -26,7 +26,7 @@
     v5->_title = v6;
     v8 = v6;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topicId"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topicId"];
     topicId = v5->_topicId;
     v5->_topicId = v9;
   }
@@ -37,17 +37,17 @@ LABEL_6:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_topicId forKey:@"topicId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_topicId forKey:@"topicId"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [v4 setTitle:self->_title];
   [v4 setTopicId:self->_topicId];
   return v4;
@@ -55,8 +55,8 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v2 = [(CKContextItem *)self title];
-  v3 = 31 * [v2 hash];
+  title = [(CKContextItem *)self title];
+  v3 = 31 * [title hash];
 
   return v3;
 }

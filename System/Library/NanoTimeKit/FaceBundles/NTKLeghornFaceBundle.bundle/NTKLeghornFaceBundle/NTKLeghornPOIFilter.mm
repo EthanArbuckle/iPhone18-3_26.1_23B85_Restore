@@ -1,38 +1,38 @@
 @interface NTKLeghornPOIFilter
 + (NTKLeghornPOIFilter)all;
 + (NTKLeghornPOIFilter)none;
-+ (id)poiFilterFromDictionary:(id)a3;
-- (BOOL)includesCategory:(unint64_t)a3 named:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)poiFilterFromDictionary:(id)dictionary;
+- (BOOL)includesCategory:(unint64_t)category named:(id)named;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)dictionaryValue;
 - (NSString)shortStringValue;
 - (NSString)stringValue;
-- (NTKLeghornPOIFilter)initWithCoder:(id)a3;
-- (id)_objectForPropertyKey:(id)a3;
-- (id)copyIncludingCategories:(unint64_t)a3;
-- (id)copyWithExclusions:(id)a3 forCategory:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)excludedNamesForCategory:(unint64_t)a3;
-- (id)initIncludingCategories:(unint64_t)a3;
+- (NTKLeghornPOIFilter)initWithCoder:(id)coder;
+- (id)_objectForPropertyKey:(id)key;
+- (id)copyIncludingCategories:(unint64_t)categories;
+- (id)copyWithExclusions:(id)exclusions forCategory:(unint64_t)category;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)excludedNamesForCategory:(unint64_t)category;
+- (id)initIncludingCategories:(unint64_t)categories;
 - (unint64_t)hash;
-- (void)_updateWithPropertyKey:(id)a3 value:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)excludeCategory:(unint64_t)a3 named:(id)a4;
-- (void)includeCategory:(unint64_t)a3 named:(id)a4;
+- (void)_updateWithPropertyKey:(id)key value:(id)value;
+- (void)encodeWithCoder:(id)coder;
+- (void)excludeCategory:(unint64_t)category named:(id)named;
+- (void)includeCategory:(unint64_t)category named:(id)named;
 @end
 
 @implementation NTKLeghornPOIFilter
 
-- (id)initIncludingCategories:(unint64_t)a3
+- (id)initIncludingCategories:(unint64_t)categories
 {
-  v3 = a3;
+  categoriesCopy = categories;
   v9.receiver = self;
   v9.super_class = NTKLeghornPOIFilter;
   v4 = [(NTKLeghornPOIFilter *)&v9 init];
   v5 = v4;
   if (v4)
   {
-    v4->_includedCategories = v3 & 0x1FF;
+    v4->_includedCategories = categoriesCopy & 0x1FF;
     v6 = objc_opt_new();
     excludedMapsUserGuides = v5->_excludedMapsUserGuides;
     v5->_excludedMapsUserGuides = v6;
@@ -57,14 +57,14 @@
   return inited;
 }
 
-- (id)copyWithExclusions:(id)a3 forCategory:(unint64_t)a4
+- (id)copyWithExclusions:(id)exclusions forCategory:(unint64_t)category
 {
-  v4 = a4;
+  categoryCopy = category;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  exclusionsCopy = exclusions;
   v8 = objc_alloc_init(objc_opt_class());
   v8[1] = self->_includedCategories;
-  if ((v4 & 2) != 0)
+  if ((categoryCopy & 2) != 0)
   {
     v10 = objc_opt_new();
     v23 = 0u;
@@ -87,7 +87,7 @@
           }
 
           v20 = *(*(&v23 + 1) + 8 * i);
-          if (objc_msgSend_containsObject_(v6, v15, v16, v20, v23))
+          if (objc_msgSend_containsObject_(exclusionsCopy, v15, v16, v20, v23))
           {
             objc_msgSend_addObject_(v10, v15, v16, v20);
           }
@@ -111,12 +111,12 @@
   return v8;
 }
 
-- (id)copyIncludingCategories:(unint64_t)a3
+- (id)copyIncludingCategories:(unint64_t)categories
 {
-  v3 = a3;
+  categoriesCopy = categories;
   v6 = objc_alloc_init(objc_opt_class());
-  v6[1] = v3 & LODWORD(self->_includedCategories) & 0x1FF;
-  if ((v3 & 2) != 0)
+  v6[1] = categoriesCopy & LODWORD(self->_includedCategories) & 0x1FF;
+  if ((categoriesCopy & 2) != 0)
   {
     v8 = objc_msgSend_mutableCopy(self->_excludedMapsUserGuides, v5, v7);
   }
@@ -132,35 +132,35 @@
   return v6;
 }
 
-- (void)includeCategory:(unint64_t)a3 named:(id)a4
+- (void)includeCategory:(unint64_t)category named:(id)named
 {
-  v11 = a4;
-  objc_msgSend_includeCategories_(self, v6, v7, a3);
-  v10 = v11;
-  if ((a3 & 2) != 0 && v11)
+  namedCopy = named;
+  objc_msgSend_includeCategories_(self, v6, v7, category);
+  v10 = namedCopy;
+  if ((category & 2) != 0 && namedCopy)
   {
-    objc_msgSend_removeObject_(self->_excludedMapsUserGuides, v8, v9, v11);
-    v10 = v11;
+    objc_msgSend_removeObject_(self->_excludedMapsUserGuides, v8, v9, namedCopy);
+    v10 = namedCopy;
   }
 }
 
-- (void)excludeCategory:(unint64_t)a3 named:(id)a4
+- (void)excludeCategory:(unint64_t)category named:(id)named
 {
-  v5 = a3;
-  if ((a3 & 2) != 0 && a4)
+  categoryCopy = category;
+  if ((category & 2) != 0 && named)
   {
-    objc_msgSend_addObject_(self->_excludedMapsUserGuides, a2, v4, a4);
-    v5 &= ~2uLL;
+    objc_msgSend_addObject_(self->_excludedMapsUserGuides, a2, v4, named);
+    categoryCopy &= ~2uLL;
   }
 
-  objc_msgSend_excludeCategories_(self, a2, v4, v5, a4);
+  objc_msgSend_excludeCategories_(self, a2, v4, categoryCopy, named);
 }
 
-- (BOOL)includesCategory:(unint64_t)a3 named:(id)a4
+- (BOOL)includesCategory:(unint64_t)category named:(id)named
 {
-  v6 = a4;
-  v9 = v6;
-  if ((a3 & ~self->_includedCategories) != 0)
+  namedCopy = named;
+  v9 = namedCopy;
+  if ((category & ~self->_includedCategories) != 0)
   {
     LOBYTE(v10) = 0;
   }
@@ -168,18 +168,18 @@
   else
   {
     LOBYTE(v10) = 1;
-    if ((a3 & 2) != 0 && v6)
+    if ((category & 2) != 0 && namedCopy)
     {
-      v10 = objc_msgSend_containsObject_(self->_excludedMapsUserGuides, v7, v8, v6) ^ 1;
+      v10 = objc_msgSend_containsObject_(self->_excludedMapsUserGuides, v7, v8, namedCopy) ^ 1;
     }
   }
 
   return v10;
 }
 
-- (id)excludedNamesForCategory:(unint64_t)a3
+- (id)excludedNamesForCategory:(unint64_t)category
 {
-  if ((a3 & 2) != 0)
+  if ((category & 2) != 0)
   {
     v4 = objc_msgSend_copy(self->_excludedMapsUserGuides, a2, v3);
   }
@@ -192,10 +192,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqualToSet = 1;
   }
@@ -203,9 +203,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_includedCategories == v4->_includedCategories)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_includedCategories == equalCopy->_includedCategories)
     {
-      isEqualToSet = objc_msgSend_isEqualToSet_(self->_excludedMapsUserGuides, v5, v6, v4->_excludedMapsUserGuides);
+      isEqualToSet = objc_msgSend_isEqualToSet_(self->_excludedMapsUserGuides, v5, v6, equalCopy->_excludedMapsUserGuides);
     }
 
     else
@@ -225,7 +225,7 @@
   return self->_includedCategories | __ROR8__(objc_msgSend_hash(self->_excludedMapsUserGuides, v4, v5) | __ROR8__(v3, 56), 56);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[1] = self->_includedCategories;
@@ -302,16 +302,16 @@
   return v13;
 }
 
-- (id)_objectForPropertyKey:(id)a3
+- (id)_objectForPropertyKey:(id)key
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, v6, @"include"))
+  keyCopy = key;
+  if (objc_msgSend_isEqualToString_(keyCopy, v5, v6, @"include"))
   {
     v9 = NTKLeghornWaypointCategoryString(self->_includedCategories, v7, v8);
   }
 
-  else if (objc_msgSend_isEqualToString_(v4, v7, v8, @"exclude") && objc_msgSend_count(self->_excludedMapsUserGuides, v10, v11))
+  else if (objc_msgSend_isEqualToString_(keyCopy, v7, v8, @"exclude") && objc_msgSend_count(self->_excludedMapsUserGuides, v10, v11))
   {
     v14 = NTKLeghornWaypointCategoryString(2, v12, v13);
     v24 = v14;
@@ -329,26 +329,26 @@
   return v9;
 }
 
-- (void)_updateWithPropertyKey:(id)a3 value:(id)a4
+- (void)_updateWithPropertyKey:(id)key value:(id)value
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_isEqualToString_(v6, v8, v9, @"include"))
+  keyCopy = key;
+  valueCopy = value;
+  if (objc_msgSend_isEqualToString_(keyCopy, v8, v9, @"include"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_includedCategories = NTKLeghornWaypointCategoryFromString(v7, v12, v13);
+      self->_includedCategories = NTKLeghornWaypointCategoryFromString(valueCopy, v12, v13);
     }
   }
 
-  else if (objc_msgSend_isEqualToString_(v6, v10, v11, @"exclude"))
+  else if (objc_msgSend_isEqualToString_(keyCopy, v10, v11, @"exclude"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v7;
+      v14 = valueCopy;
       v17 = NTKLeghornWaypointCategoryString(2, v15, v16);
       v20 = objc_msgSend_objectForKeyedSubscript_(v14, v18, v19, v17);
       objc_opt_class();
@@ -436,10 +436,10 @@
   return v3;
 }
 
-+ (id)poiFilterFromDictionary:(id)a3
++ (id)poiFilterFromDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [NTKLeghornPOIFilter alloc];
   inited = objc_msgSend_initIncludingCategories_(v4, v5, v6, 0);
   v23 = 0u;
@@ -464,7 +464,7 @@
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = objc_msgSend_objectForKeyedSubscript_(v3, v13, v14, v18);
+        v19 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v13, v14, v18);
         objc_msgSend__updateWithPropertyKey_value_(inited, v20, v21, v18, v19);
       }
 
@@ -477,10 +477,10 @@
   return inited;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -506,7 +506,7 @@
         v17 = objc_msgSend__objectForPropertyKey_(self, v10, v11, v15);
         if (v17)
         {
-          objc_msgSend_encodeObject_forKey_(v4, v16, v18, v17, v15);
+          objc_msgSend_encodeObject_forKey_(coderCopy, v16, v18, v17, v15);
         }
       }
 
@@ -517,10 +517,10 @@
   }
 }
 
-- (NTKLeghornPOIFilter)initWithCoder:(id)a3
+- (NTKLeghornPOIFilter)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = NTKLeghornPOIFilter;
   v6 = [(NTKLeghornPOIFilter *)&v25 init];
@@ -548,7 +548,7 @@
           }
 
           v16 = *(*(&v21 + 1) + 8 * i);
-          v17 = objc_msgSend_decodeObjectForKey_(v4, v11, v12, v16);
+          v17 = objc_msgSend_decodeObjectForKey_(coderCopy, v11, v12, v16);
           objc_msgSend__updateWithPropertyKey_value_(v6, v18, v19, v16, v17);
         }
 

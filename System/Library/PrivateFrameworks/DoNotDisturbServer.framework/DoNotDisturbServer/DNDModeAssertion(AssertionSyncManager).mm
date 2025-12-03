@@ -8,38 +8,38 @@
 
 - (uint64_t)isInternalScheduled
 {
-  v1 = [a1 source];
-  v2 = [v1 clientIdentifier];
-  v3 = [v2 hasSuffix:@".private.schedule"];
+  source = [self source];
+  clientIdentifier = [source clientIdentifier];
+  v3 = [clientIdentifier hasSuffix:@".private.schedule"];
 
   return v3;
 }
 
 - (BOOL)isClientScheduled
 {
-  if ([a1 isInternalScheduled])
+  if ([self isInternalScheduled])
   {
     return 0;
   }
 
-  v3 = [a1 details];
-  v2 = [v3 reason] == 2;
+  details = [self details];
+  v2 = [details reason] == 2;
 
   return v2;
 }
 
 - (BOOL)isUserInitiated
 {
-  v2 = [a1 details];
-  if ([v2 reason] == 1)
+  details = [self details];
+  if ([details reason] == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 details];
-    v3 = [v4 reason] == 3;
+    details2 = [self details];
+    v3 = [details2 reason] == 3;
   }
 
   return v3;

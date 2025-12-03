@@ -1,8 +1,8 @@
 @interface BSServiceListenerConnection
-+ (id)_connectionFromIncomingConnection:(char)a3 requiresMessagingAfterHandshake:;
++ (id)_connectionFromIncomingConnection:(char)connection requiresMessagingAfterHandshake:;
 - (BOOL)isRevoked;
 - (BSXPCDecoding)initiatingContext;
-- (id)addEventObserver:(id)a3;
+- (id)addEventObserver:(id)observer;
 - (void)cancel;
 @end
 
@@ -11,9 +11,9 @@
 - (BSXPCDecoding)initiatingContext
 {
   v2 = MEMORY[0x1E698E7A8];
-  v3 = [(BSServiceConnection *)&self->super.super.isa _connection];
-  v4 = [(BSXPCServiceConnection *)v3 initiatingContext];
-  v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"clientContext"];
+  _connection = [(BSServiceConnection *)&self->super.super.isa _connection];
+  initiatingContext = [(BSXPCServiceConnection *)_connection initiatingContext];
+  v5 = [initiatingContext decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"clientContext"];
   v6 = [v2 coderWithMessage:v5];
 
   return v6;
@@ -21,27 +21,27 @@
 
 - (BOOL)isRevoked
 {
-  v2 = [(BSServiceConnection *)&self->super.super.isa _connection];
-  v3 = [(BSXPCServiceConnection *)v2 isRevokedPeer];
+  _connection = [(BSServiceConnection *)&self->super.super.isa _connection];
+  isRevokedPeer = [(BSXPCServiceConnection *)_connection isRevokedPeer];
 
-  return v3;
+  return isRevokedPeer;
 }
 
-+ (id)_connectionFromIncomingConnection:(char)a3 requiresMessagingAfterHandshake:
++ (id)_connectionFromIncomingConnection:(char)connection requiresMessagingAfterHandshake:
 {
   objc_opt_self();
-  v5 = [(BSXPCServiceConnection *)a2 initiatingContext];
-  v6 = [v5 decodeStringForKey:@"s"];
+  initiatingContext = [(BSXPCServiceConnection *)a2 initiatingContext];
+  v6 = [initiatingContext decodeStringForKey:@"s"];
   if (v6)
   {
     v7 = objc_opt_new();
     objc_storeStrong((v7 + 16), a2);
     objc_storeStrong((v7 + 24), v6);
-    v8 = [v5 decodeStringForKey:@"i"];
+    v8 = [initiatingContext decodeStringForKey:@"i"];
     v9 = *(v7 + 32);
     *(v7 + 32) = v8;
 
-    *(v7 + 169) = a3;
+    *(v7 + 169) = connection;
     v10 = [(BSServiceConnection *)[BSServiceListenerConnection alloc] _initWithConfiguration:v7];
   }
 
@@ -53,7 +53,7 @@
   return v10;
 }
 
-- (id)addEventObserver:(id)a3
+- (id)addEventObserver:(id)observer
 {
   if (self)
   {
@@ -71,8 +71,8 @@
   }
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, a3);
-  v6 = [(BSServiceConnection *)&self->super.super.isa _connection];
+  objc_initWeak(&from, observer);
+  _connection = [(BSServiceConnection *)&self->super.super.isa _connection];
   v7 = [@"observe-revoked:" stringByAppendingString:v5];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -80,7 +80,7 @@
   v12[3] = &unk_1E75207D0;
   objc_copyWeak(&v13, &location);
   objc_copyWeak(&v14, &from);
-  v8 = [(BSXPCServiceConnection *)v6 addObserverWithReason:v7 forRevocation:v12];
+  v8 = [(BSXPCServiceConnection *)_connection addObserverWithReason:v7 forRevocation:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v13);

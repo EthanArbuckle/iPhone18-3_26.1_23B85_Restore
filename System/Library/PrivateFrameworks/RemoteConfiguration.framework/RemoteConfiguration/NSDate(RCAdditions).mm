@@ -105,7 +105,7 @@ LABEL_14:
   v4 = MEMORY[0x277CBEA60];
   v5 = a3;
   v6 = [v4 arrayWithObjects:&v10 count:1];
-  v7 = [a1 rc_dateFromString:v5 possibleFormats:{v6, v10, v11}];
+  v7 = [self rc_dateFromString:v5 possibleFormats:{v6, v10, v11}];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -122,7 +122,7 @@ LABEL_14:
   v4 = MEMORY[0x277CBEA60];
   v5 = a3;
   v6 = [v4 arrayWithObjects:v10 count:4];
-  v7 = [a1 rc_dateFromString:v5 possibleFormats:v6];
+  v7 = [self rc_dateFromString:v5 possibleFormats:v6];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -132,7 +132,7 @@ LABEL_14:
 - (BOOL)rc_isEarlierThan:()RCAdditions withPrecision:
 {
   v6 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v8 = v7;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -159,7 +159,7 @@ LABEL_14:
 - (BOOL)rc_isLaterThan:()RCAdditions withPrecision:
 {
   v6 = a3;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v8 = v7;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -191,7 +191,7 @@ LABEL_14:
     [NSDate(RCAdditions) rc_millisecondTimeIntervalSinceDate:];
   }
 
-  [a1 timeIntervalSinceDate:v4];
+  [self timeIntervalSinceDate:v4];
   v6 = (fmax(v5, 0.0) * 1000.0);
 
   return v6;
@@ -205,7 +205,7 @@ LABEL_14:
   [v3 setTimeZone:v4];
 
   v8 = 0;
-  [v3 rangeOfUnit:16 startDate:&v8 interval:0 forDate:a1];
+  [v3 rangeOfUnit:16 startDate:&v8 interval:0 forDate:self];
   v5 = v8;
   v6 = v8;
 
@@ -225,9 +225,9 @@ LABEL_14:
   v7 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v6 setTimeZone:v7];
 
-  v8 = [v4 rc_dateOfEarliestGregorianCalendarDay];
-  v9 = [a1 rc_dateOfEarliestGregorianCalendarDay];
-  v10 = [v6 components:16 fromDate:v8 toDate:v9 options:0];
+  rc_dateOfEarliestGregorianCalendarDay = [v4 rc_dateOfEarliestGregorianCalendarDay];
+  rc_dateOfEarliestGregorianCalendarDay2 = [self rc_dateOfEarliestGregorianCalendarDay];
+  v10 = [v6 components:16 fromDate:rc_dateOfEarliestGregorianCalendarDay toDate:rc_dateOfEarliestGregorianCalendarDay2 options:0];
   v11 = [v10 day];
 
   return v11;
@@ -235,17 +235,17 @@ LABEL_14:
 
 - (uint64_t)isToday
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [v2 isDateInToday:a1];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v3 = [currentCalendar isDateInToday:self];
 
   return v3;
 }
 
 - (BOOL)rc_isWeekend
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE678]];
-  v4 = [v3 components:524 fromDate:a1];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE678]];
+  v4 = [v3 components:524 fromDate:self];
 
   v5 = [v4 weekday] == 1 || objc_msgSend(v4, "weekday") == 7;
   return v5;
@@ -255,11 +255,11 @@ LABEL_14:
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 components:28 fromDate:a1];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar components:28 fromDate:self];
 
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:28 fromDate:v5];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar2 components:28 fromDate:v5];
 
   v10 = [v7 isEqual:v9];
   return v10;
@@ -318,15 +318,15 @@ LABEL_7:
 - (id)rc_stringWithISO8601Format
 {
   v2 = [MEMORY[0x277CCA968] dateFormatterWithFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ" forReuse:0];
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }
 
 - (id)rc_stringWithYearAndMonthFormat
 {
-  v2 = [objc_opt_class() _fr_sharedYearAndMonthDateFormatter];
-  v3 = [v2 stringFromDate:a1];
+  _fr_sharedYearAndMonthDateFormatter = [objc_opt_class() _fr_sharedYearAndMonthDateFormatter];
+  v3 = [_fr_sharedYearAndMonthDateFormatter stringFromDate:self];
 
   return v3;
 }

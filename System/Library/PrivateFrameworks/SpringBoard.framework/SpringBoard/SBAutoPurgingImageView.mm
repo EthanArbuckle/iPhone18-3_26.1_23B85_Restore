@@ -1,19 +1,19 @@
 @interface SBAutoPurgingImageView
-- (SBAutoPurgingImageView)initWithImageGenerationBlock:(id)a3;
+- (SBAutoPurgingImageView)initWithImageGenerationBlock:(id)block;
 - (void)didMoveToWindow;
 @end
 
 @implementation SBAutoPurgingImageView
 
-- (SBAutoPurgingImageView)initWithImageGenerationBlock:(id)a3
+- (SBAutoPurgingImageView)initWithImageGenerationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = SBAutoPurgingImageView;
   v5 = [(SBAutoPurgingImageView *)&v9 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
   }
@@ -23,8 +23,8 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(SBAutoPurgingImageView *)self window];
-  if (v3)
+  window = [(SBAutoPurgingImageView *)self window];
+  if (window)
   {
     v4 = (*(self->_block + 2))();
   }

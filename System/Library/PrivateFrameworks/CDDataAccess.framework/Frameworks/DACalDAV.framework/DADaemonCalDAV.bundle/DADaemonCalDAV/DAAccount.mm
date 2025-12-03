@@ -10,10 +10,10 @@
 - (id)rem_store
 {
   v2 = +[DADAgentManager sharedManager];
-  v3 = [v2 rem_storeProvider];
-  v4 = [v3 rem_storeForDataAccess];
+  rem_storeProvider = [v2 rem_storeProvider];
+  rem_storeForDataAccess = [rem_storeProvider rem_storeForDataAccess];
 
-  if (!v4)
+  if (!rem_storeForDataAccess)
   {
     v5 = DALoggingwithCategory();
     v6 = _CPLog_to_os_log_type[3];
@@ -27,16 +27,16 @@
     }
   }
 
-  return v4;
+  return rem_storeForDataAccess;
 }
 
 - (id)rem_saveRequest
 {
   v2 = +[DADAgentManager sharedManager];
-  v3 = [v2 rem_storeProvider];
-  v4 = [v3 rem_saveRequestForDataAccess];
+  rem_storeProvider = [v2 rem_storeProvider];
+  rem_saveRequestForDataAccess = [rem_storeProvider rem_saveRequestForDataAccess];
 
-  if (!v4)
+  if (!rem_saveRequestForDataAccess)
   {
     v5 = DALoggingwithCategory();
     v6 = _CPLog_to_os_log_type[3];
@@ -50,15 +50,15 @@
     }
   }
 
-  return v4;
+  return rem_saveRequestForDataAccess;
 }
 
 - (id)rem_account
 {
-  v3 = [(DAAccount *)self rem_store];
-  v4 = [(DAAccount *)self accountID];
+  rem_store = [(DAAccount *)self rem_store];
+  accountID = [(DAAccount *)self accountID];
   v12 = 0;
-  v5 = [v3 fetchAccountWithExternalIdentifier:v4 error:&v12];
+  v5 = [rem_store fetchAccountWithExternalIdentifier:accountID error:&v12];
   v6 = v12;
 
   if (v6)
@@ -72,9 +72,9 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v9 = [(DAAccount *)self accountID];
+    accountID2 = [(DAAccount *)self accountID];
     *buf = 138543362;
-    v14 = v9;
+    v14 = accountID2;
     v10 = "Error when fetching account from ReminderKit %{public}@.";
 LABEL_4:
     _os_log_impl(&dword_0, v7, v8, v10, buf, 0xCu);
@@ -91,9 +91,9 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    v9 = [(DAAccount *)self accountID];
+    accountID2 = [(DAAccount *)self accountID];
     *buf = 138543362;
-    v14 = v9;
+    v14 = accountID2;
     v10 = "Could not find account from ReminderKit %{public}@.";
     goto LABEL_4;
   }
@@ -105,13 +105,13 @@ LABEL_7:
 
 - (id)rem_provideAccountInfo
 {
-  v3 = [(DAAccount *)self rem_account];
-  v4 = [v3 objectID];
+  rem_account = [(DAAccount *)self rem_account];
+  objectID = [rem_account objectID];
 
   v5 = [REMDAAccountInfo alloc];
-  v6 = [(DAAccount *)self accountID];
-  v7 = [(DAAccount *)self accountDescription];
-  v8 = [(REMDAAccountInfo *)v5 initWithAccountID:v6 remAccountObjectID:v4 accountDescription:v7];
+  accountID = [(DAAccount *)self accountID];
+  accountDescription = [(DAAccount *)self accountDescription];
+  v8 = [(REMDAAccountInfo *)v5 initWithAccountID:accountID remAccountObjectID:objectID accountDescription:accountDescription];
 
   return v8;
 }

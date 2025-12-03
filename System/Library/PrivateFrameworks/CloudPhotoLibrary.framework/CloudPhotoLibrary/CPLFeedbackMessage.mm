@@ -1,6 +1,6 @@
 @interface CPLFeedbackMessage
 + (id)feedbackType;
-- (CPLFeedbackMessage)initWithLibraryIdentifier:(id)a3;
+- (CPLFeedbackMessage)initWithLibraryIdentifier:(id)identifier;
 - (CPLServerFeedbackMessage)serverMessage;
 - (NSString)libraryIdentifierDescription;
 @end
@@ -29,8 +29,8 @@
   {
     v7 = objc_alloc_init(CPLServerFeedbackKeyAndValue);
     [(CPLServerFeedbackKeyAndValue *)v7 setKey:@"library"];
-    v8 = [(CPLFeedbackMessage *)self libraryIdentifierDescription];
-    [(CPLServerFeedbackKeyAndValue *)v7 setValue:v8];
+    libraryIdentifierDescription = [(CPLFeedbackMessage *)self libraryIdentifierDescription];
+    [(CPLServerFeedbackKeyAndValue *)v7 setValue:libraryIdentifierDescription];
 
     [(CPLServerFeedbackMessage *)v3 addKeysAndValues:v7];
   }
@@ -56,36 +56,36 @@ void __35__CPLFeedbackMessage_serverMessage__block_invoke()
   if (v3)
   {
     v5 = [(NSString *)libraryIdentifier substringToIndex:[(NSString *)libraryIdentifier length]- 7];
-    v6 = [v5 lowercaseString];
+    lowercaseString = [v5 lowercaseString];
   }
 
   else
   {
-    v6 = [(NSString *)libraryIdentifier lowercaseString];
+    lowercaseString = [(NSString *)libraryIdentifier lowercaseString];
   }
 
-  return v6;
+  return lowercaseString;
 }
 
-- (CPLFeedbackMessage)initWithLibraryIdentifier:(id)a3
+- (CPLFeedbackMessage)initWithLibraryIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CPLFeedbackMessage;
   v5 = [(CPLFeedbackMessage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     libraryIdentifier = v5->_libraryIdentifier;
     v5->_libraryIdentifier = v6;
 
-    v8 = [objc_opt_class() feedbackType];
+    feedbackType = [objc_opt_class() feedbackType];
     feedbackType = v5->_feedbackType;
-    v5->_feedbackType = v8;
+    v5->_feedbackType = feedbackType;
 
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v5->_creationDate;
-    v5->_creationDate = v10;
+    v5->_creationDate = date;
   }
 
   return v5;
@@ -93,10 +93,10 @@ void __35__CPLFeedbackMessage_serverMessage__block_invoke()
 
 + (id)feedbackType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Feedback/CPLFeedbackMessage.m"];
   v6 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:v5 lineNumber:67 description:{@"%@ should be overriden", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:67 description:{@"%@ should be overriden", v6}];
 
   abort();
 }

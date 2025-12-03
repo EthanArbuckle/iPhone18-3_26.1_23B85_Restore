@@ -1,35 +1,35 @@
 @interface SUUIShelfMenuBarViewElement
 + (id)supportedFeatures;
-- (SUUIShelfMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3;
+- (SUUIShelfMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload;
 - (void)_reloadMenuItems;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIShelfMenuBarViewElement
 
-- (SUUIShelfMenuBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIShelfMenuBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v16 = [v8 getAttribute:@"entityProviderID"];
+    v16 = [elementCopy getAttribute:@"entityProviderID"];
     v17 = [v16 length];
 
     if (v17)
     {
-      v13 = [(SUUIShelfMenuBarViewElement *)[SUUIDynamicShelfMenuBarViewElement alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v13 = [(SUUIShelfMenuBarViewElement *)[SUUIDynamicShelfMenuBarViewElement alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
       goto LABEL_6;
     }
   }
 
   v19.receiver = self;
   v19.super_class = SUUIShelfMenuBarViewElement;
-  v12 = [(SUUIShelfViewElement *)&v19 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v12 = [(SUUIShelfViewElement *)&v19 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v13 = v12;
   if (v12)
   {
@@ -50,7 +50,7 @@ LABEL_6:
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = *MEMORY[0x277D1AF10];
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SUUIShelfMenuBarViewElement;
   v4 = objc_msgSendSuper2(&v8, sel_supportedFeatures);
   if (v4)
@@ -67,14 +67,14 @@ LABEL_6:
   return v6;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
   v7.receiver = self;
   v7.super_class = SUUIShelfMenuBarViewElement;
-  v4 = a3;
-  v5 = [(SUUIShelfViewElement *)&v7 applyUpdatesWithElement:v4];
+  elementCopy = element;
+  v5 = [(SUUIShelfViewElement *)&v7 applyUpdatesWithElement:elementCopy];
 
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     [(SUUIMenuBarViewElementConfiguration *)self->_configuration _setNeedsReload:1, v7.receiver, v7.super_class];
   }
@@ -82,18 +82,18 @@ LABEL_6:
   return v5;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIShelfMenuBarViewElement *)self children];
+  blockCopy = block;
+  children = [(SUUIShelfMenuBarViewElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F87B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [children enumerateObjectsUsingBlock:v7];
 }
 
 void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -110,9 +110,9 @@ void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
   }
 }
 
-- (void)_menuBarViewElementConfigurationRequestsReload:(id)a3
+- (void)_menuBarViewElementConfigurationRequestsReload:(id)reload
 {
-  if (self->_configuration == a3)
+  if (self->_configuration == reload)
   {
     [(SUUIShelfMenuBarViewElement *)self _reloadMenuItems];
   }
@@ -120,17 +120,17 @@ void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
 
 - (void)_reloadMenuItems
 {
-  v2 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIShelfMenuBarViewElement *)self style];
-  v4 = [v3 valueForStyle:@"itml-shelf-layout"];
+  style = [(SUUIShelfMenuBarViewElement *)self style];
+  v4 = [style valueForStyle:@"itml-shelf-layout"];
   v5 = [v4 isEqualToString:@"zooming"];
 
   if (v5)
   {
     v28 = v5;
-    v29 = v2;
-    [(SUUIShelfMenuBarViewElement *)v2 children];
+    v29 = selfCopy;
+    [(SUUIShelfMenuBarViewElement *)selfCopy children];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -160,9 +160,9 @@ void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
           if (v31 == 1)
           {
             v14 = v13;
-            v15 = [v14 children];
-            v16 = [v15 objectAtIndex:v32];
-            v17 = [v15 objectAtIndex:v33];
+            children = [v14 children];
+            v16 = [children objectAtIndex:v32];
+            v17 = [children objectAtIndex:v33];
             if (!v10)
             {
               v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -198,7 +198,7 @@ void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
     }
 
     v18 = 2;
-    v2 = v29;
+    selfCopy = v29;
     v5 = v28;
   }
 
@@ -211,31 +211,31 @@ void __59__SUUIShelfMenuBarViewElement_enumerateChildrenUsingBlock___block_invok
   }
 
   v19 = [v9 copy];
-  focusedViewElements = v2->_focusedViewElements;
-  v2->_focusedViewElements = v19;
+  focusedViewElements = selfCopy->_focusedViewElements;
+  selfCopy->_focusedViewElements = v19;
 
   v21 = [v8 copy];
-  regularViewElements = v2->_regularViewElements;
-  v2->_regularViewElements = v21;
+  regularViewElements = selfCopy->_regularViewElements;
+  selfCopy->_regularViewElements = v21;
 
   if (v5)
   {
     v23 = &__block_literal_global_15;
-    v24 = v2;
+    v24 = selfCopy;
   }
 
   else
   {
-    v24 = v2;
+    v24 = selfCopy;
     v23 = 0;
   }
 
   [(SUUIShelfViewElement *)v24 setShelfItemViewElementValidator:v23];
-  v25 = [(SUUIShelfMenuBarViewElement *)v2 style];
-  v26 = [v25 valueForStyle:@"itml-scroll-enabled"];
-  v27 = [v26 BOOLValue];
+  style2 = [(SUUIShelfMenuBarViewElement *)selfCopy style];
+  v26 = [style2 valueForStyle:@"itml-scroll-enabled"];
+  bOOLValue = [v26 BOOLValue];
 
-  [(SUUIMenuBarViewElementConfiguration *)v2->_configuration _reloadWithMenuBarStyle:v18 menuItemViewElements:v10 scrollEnabled:v27];
+  [(SUUIMenuBarViewElementConfiguration *)selfCopy->_configuration _reloadWithMenuBarStyle:v18 menuItemViewElements:v10 scrollEnabled:bOOLValue];
 }
 
 uint64_t __47__SUUIShelfMenuBarViewElement__reloadMenuItems__block_invoke(uint64_t a1, void *a2)

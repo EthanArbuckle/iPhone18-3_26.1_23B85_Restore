@@ -12,7 +12,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLEduAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -46,9 +46,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"EduMode";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v11 = commonTypeDict_BoolFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -68,9 +68,9 @@
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"status";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_BoolFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v10 = commonTypeDict_BoolFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -84,7 +84,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -92,10 +92,10 @@
     v5.receiver = self;
     v5.super_class = PLEduAgent;
     self = [(PLAgent *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies

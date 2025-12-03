@@ -1,15 +1,15 @@
 @interface WFLocationAccuracyParameter
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStates;
 @end
 
 @implementation WFLocationAccuracyParameter
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 isEqualToString:@"Best"];
+  stateCopy = state;
+  value = [stateCopy value];
+  v5 = [value isEqualToString:@"Best"];
 
   if (v5)
   {
@@ -19,8 +19,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v3 value];
-  v8 = [v7 isEqualToString:@"NearestTenMeters"];
+  value2 = [stateCopy value];
+  v8 = [value2 isEqualToString:@"NearestTenMeters"];
 
   if (v8)
   {
@@ -28,8 +28,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v3 value];
-  v10 = [v9 isEqualToString:@"HundredMeters"];
+  value3 = [stateCopy value];
+  v10 = [value3 isEqualToString:@"HundredMeters"];
 
   if (v10)
   {
@@ -37,8 +37,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v3 value];
-  v12 = [v11 isEqualToString:@"Kilometer"];
+  value4 = [stateCopy value];
+  v12 = [value4 isEqualToString:@"Kilometer"];
 
   if (v12)
   {
@@ -46,8 +46,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v13 = [v3 value];
-  v14 = [v13 isEqualToString:@"ThreeKilometers"];
+  value5 = [stateCopy value];
+  v14 = [value5 isEqualToString:@"ThreeKilometers"];
 
   if (v14)
   {

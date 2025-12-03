@@ -1,35 +1,35 @@
 @interface DBSmartWidgetRangeBasedView
 - (BOOL)_wantsIconLayer;
 - (DBSmartWidgetRangeBasedPrediction)prediction;
-- (DBSmartWidgetRangeBasedView)initWithFrame:(CGRect)a3;
+- (DBSmartWidgetRangeBasedView)initWithFrame:(CGRect)frame;
 - (id)linearFocusItems;
 - (void)_runWidgetPrimaryButtonAction;
 - (void)_runWidgetSecondaryButtonAction;
-- (void)_setAlertType:(int64_t)a3;
-- (void)_traitEnvironmentDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_setAlertType:(int64_t)type;
+- (void)_traitEnvironmentDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateButtonViewConstraints;
 - (void)_updateImageBorder;
 - (void)_updateViews;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)predictionDidUpdate:(id)a3;
-- (void)setSpecial:(id)a3;
-- (void)widgetViewTapped:(id)a3;
+- (void)predictionDidUpdate:(id)update;
+- (void)setSpecial:(id)special;
+- (void)widgetViewTapped:(id)tapped;
 @end
 
 @implementation DBSmartWidgetRangeBasedView
 
-- (DBSmartWidgetRangeBasedView)initWithFrame:(CGRect)a3
+- (DBSmartWidgetRangeBasedView)initWithFrame:(CGRect)frame
 {
   v139[14] = *MEMORY[0x277D85DE8];
   v135.receiver = self;
   v135.super_class = DBSmartWidgetRangeBasedView;
-  v3 = [(DBSmartWidgetView *)&v135 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBSmartWidgetView *)&v135 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(DBSmartWidgetRangeBasedView *)v3 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(DBSmartWidgetRangeBasedView *)v3 layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = objc_alloc(MEMORY[0x277D75D18]);
     v7 = *MEMORY[0x277CBF3A0];
@@ -38,8 +38,8 @@
     v10 = *(MEMORY[0x277CBF3A0] + 24);
     v11 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], v8, v9, v10}];
     [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [v11 layer];
-    [v12 setAllowsGroupBlending:0];
+    layer2 = [v11 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(DBSmartWidgetRangeBasedView *)v4 addSubview:v11];
     v13 = objc_alloc_init(_TtC9DashBoard37DBSmartWidgetEffectCoordinatingButton);
@@ -47,11 +47,11 @@
     v4->_button = v13;
 
     [(DBSmartWidgetEffectCoordinatingButton *)v4->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button layer];
-    [v15 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer3 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button layer];
+    [layer3 setCornerCurve:*MEMORY[0x277CDA138]];
 
-    v16 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button layer];
-    [v16 setAllowsGroupBlending:0];
+    layer4 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button layer];
+    [layer4 setAllowsGroupBlending:0];
 
     [v11 addSubview:v4->_button];
     [(DBSmartWidgetEffectCoordinatingButton *)v4->_button addTarget:v4 action:sel__runWidgetPrimaryButtonAction forControlEvents:0x2000];
@@ -68,8 +68,8 @@
 
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v4->_imageView setContentMode:4];
-    v21 = [(UIImageView *)v4->_imageView layer];
-    [v21 setAllowsGroupBlending:0];
+    layer5 = [(UIImageView *)v4->_imageView layer];
+    [layer5 setAllowsGroupBlending:0];
 
     [v11 addSubview:v4->_imageView];
     v22 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918]];
@@ -86,65 +86,65 @@
     v25 = [MEMORY[0x277D755D0] configurationWithTextStyle:?];
     [(UIImageView *)v4->_alertView setSymbolConfiguration:v25];
 
-    v26 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button widthAnchor];
-    v27 = [v26 constraintEqualToConstant:40.0];
+    widthAnchor = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button widthAnchor];
+    v27 = [widthAnchor constraintEqualToConstant:40.0];
     buttonWidthAnchor = v4->_buttonWidthAnchor;
     v4->_buttonWidthAnchor = v27;
 
     v97 = MEMORY[0x277CCAAD0];
-    v129 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button centerYAnchor];
-    v126 = [v11 centerYAnchor];
-    v123 = [v129 constraintEqualToAnchor:v126];
+    centerYAnchor = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button centerYAnchor];
+    centerYAnchor2 = [v11 centerYAnchor];
+    v123 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v139[0] = v123;
-    v121 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button centerXAnchor];
+    centerXAnchor = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button centerXAnchor];
     v134 = v11;
-    v119 = [v11 centerXAnchor];
-    v117 = [v121 constraintEqualToAnchor:v119];
+    centerXAnchor2 = [v11 centerXAnchor];
+    v117 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v139[1] = v117;
     v139[2] = v4->_buttonWidthAnchor;
-    v115 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button heightAnchor];
-    v113 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button widthAnchor];
-    v111 = [v115 constraintEqualToAnchor:v113];
+    heightAnchor = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button heightAnchor];
+    widthAnchor2 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button widthAnchor];
+    v111 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v139[3] = v111;
-    v109 = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView leadingAnchor];
-    v107 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button leadingAnchor];
-    v105 = [v109 constraintEqualToAnchor:v107];
+    leadingAnchor = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView leadingAnchor];
+    leadingAnchor2 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button leadingAnchor];
+    v105 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v139[4] = v105;
-    v103 = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView topAnchor];
-    v101 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button topAnchor];
-    v99 = [v103 constraintEqualToAnchor:v101];
+    topAnchor = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView topAnchor];
+    topAnchor2 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button topAnchor];
+    v99 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v139[5] = v99;
-    v95 = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView trailingAnchor];
-    v93 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
-    v91 = [v95 constraintEqualToAnchor:v93];
+    trailingAnchor = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView trailingAnchor];
+    trailingAnchor2 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
+    v91 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v139[6] = v91;
-    v90 = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView bottomAnchor];
-    v89 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89];
+    bottomAnchor = [(DBIconLayerViewWithLegibility *)v4->_iconLayerView bottomAnchor];
+    bottomAnchor2 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
+    v88 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v139[7] = v88;
-    v87 = [(UIImageView *)v4->_imageView leadingAnchor];
-    v86 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button leadingAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    leadingAnchor3 = [(UIImageView *)v4->_imageView leadingAnchor];
+    leadingAnchor4 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button leadingAnchor];
+    v85 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v139[8] = v85;
-    v84 = [(UIImageView *)v4->_imageView topAnchor];
-    v83 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button topAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    topAnchor3 = [(UIImageView *)v4->_imageView topAnchor];
+    topAnchor4 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button topAnchor];
+    v82 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v139[9] = v82;
-    v81 = [(UIImageView *)v4->_imageView trailingAnchor];
-    v80 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    trailingAnchor3 = [(UIImageView *)v4->_imageView trailingAnchor];
+    trailingAnchor4 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
+    v79 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v139[10] = v79;
-    v78 = [(UIImageView *)v4->_imageView bottomAnchor];
-    v29 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
-    v30 = [v78 constraintEqualToAnchor:v29];
+    bottomAnchor3 = [(UIImageView *)v4->_imageView bottomAnchor];
+    bottomAnchor4 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
+    v30 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v139[11] = v30;
-    v31 = [(UIImageView *)v4->_alertView bottomAnchor];
-    v32 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:-5.0];
+    bottomAnchor5 = [(UIImageView *)v4->_alertView bottomAnchor];
+    bottomAnchor6 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button bottomAnchor];
+    v33 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-5.0];
     v139[12] = v33;
-    v34 = [(UIImageView *)v4->_alertView trailingAnchor];
-    v35 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    trailingAnchor5 = [(UIImageView *)v4->_alertView trailingAnchor];
+    trailingAnchor6 = [(DBSmartWidgetEffectCoordinatingButton *)v4->_button trailingAnchor];
+    v36 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v139[13] = v36;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v139 count:14];
     [v97 activateConstraints:v37];
@@ -154,8 +154,8 @@
     v4->_titleLabel = v38;
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [MEMORY[0x277D75348] _labelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v40];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:_labelColor];
 
     v41 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76920] variant:1280];
     [(UILabel *)v4->_titleLabel setFont:v41];
@@ -168,8 +168,8 @@
     v4->_subTitleLabel = v42;
 
     [(UILabel *)v4->_subTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v44 = [MEMORY[0x277D75348] _carSystemPrimaryColor];
-    [(UILabel *)v4->_subTitleLabel setTextColor:v44];
+    _carSystemPrimaryColor = [MEMORY[0x277D75348] _carSystemPrimaryColor];
+    [(UILabel *)v4->_subTitleLabel setTextColor:_carSystemPrimaryColor];
 
     v45 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v132 variant:256];
     [(UILabel *)v4->_subTitleLabel setFont:v45];
@@ -186,91 +186,91 @@
       v4->_actionButton = &v46->super.super.super;
 
       [(UIButton *)v4->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-      v48 = [(UIButton *)v4->_actionButton titleLabel];
+      titleLabel = [(UIButton *)v4->_actionButton titleLabel];
       v49 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v132 variant:1280];
-      [v48 setFont:v49];
+      [titleLabel setFont:v49];
 
-      v50 = [(UIButton *)v4->_actionButton titleLabel];
-      [v50 setAdjustsFontForContentSizeCategory:1];
+      titleLabel2 = [(UIButton *)v4->_actionButton titleLabel];
+      [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
       [(UIButton *)v4->_actionButton _setTouchInsets:-5.0, -5.0, -5.0, -5.0];
       [(DBSmartWidgetRangeBasedView *)v4 addSubview:v4->_actionButton];
       [(UIButton *)v4->_actionButton setHidden:1];
-      v51 = [(UILabel *)v4->_titleLabel trailingAnchor];
-      v52 = [(UIButton *)v4->_actionButton leadingAnchor];
+      trailingAnchor7 = [(UILabel *)v4->_titleLabel trailingAnchor];
+      leadingAnchor5 = [(UIButton *)v4->_actionButton leadingAnchor];
       v53 = -8.0;
     }
 
     else
     {
-      v51 = [(UILabel *)v4->_titleLabel trailingAnchor];
-      v52 = [(DBSmartWidgetRangeBasedView *)v4 trailingAnchor];
+      trailingAnchor7 = [(UILabel *)v4->_titleLabel trailingAnchor];
+      leadingAnchor5 = [(DBSmartWidgetRangeBasedView *)v4 trailingAnchor];
       v53 = -13.0;
     }
 
-    v54 = [v51 constraintEqualToAnchor:v52 constant:v53];
+    v54 = [trailingAnchor7 constraintEqualToAnchor:leadingAnchor5 constant:v53];
 
     v106 = MEMORY[0x277CCAAD0];
-    v130 = [v134 heightAnchor];
-    v127 = [v130 constraintEqualToConstant:40.0];
+    heightAnchor2 = [v134 heightAnchor];
+    v127 = [heightAnchor2 constraintEqualToConstant:40.0];
     v138[0] = v127;
-    v124 = [v134 centerYAnchor];
-    v122 = [(DBSmartWidgetRangeBasedView *)v4 centerYAnchor];
-    v120 = [v124 constraintEqualToAnchor:v122];
+    centerYAnchor3 = [v134 centerYAnchor];
+    centerYAnchor4 = [(DBSmartWidgetRangeBasedView *)v4 centerYAnchor];
+    v120 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v138[1] = v120;
-    v118 = [v134 leadingAnchor];
-    v116 = [(DBSmartWidgetRangeBasedView *)v4 leadingAnchor];
-    v114 = [v118 constraintEqualToAnchor:v116 constant:12.0];
+    leadingAnchor6 = [v134 leadingAnchor];
+    leadingAnchor7 = [(DBSmartWidgetRangeBasedView *)v4 leadingAnchor];
+    v114 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7 constant:12.0];
     v138[2] = v114;
-    v112 = [v134 widthAnchor];
-    v110 = [v134 heightAnchor];
-    v108 = [v112 constraintEqualToAnchor:v110];
+    widthAnchor3 = [v134 widthAnchor];
+    heightAnchor3 = [v134 heightAnchor];
+    v108 = [widthAnchor3 constraintEqualToAnchor:heightAnchor3];
     v138[3] = v108;
-    v104 = [(UILabel *)v4->_titleLabel firstBaselineAnchor];
-    v102 = [v134 topAnchor];
-    v100 = [v104 constraintEqualToAnchor:v102 constant:17.0];
+    firstBaselineAnchor = [(UILabel *)v4->_titleLabel firstBaselineAnchor];
+    topAnchor5 = [v134 topAnchor];
+    v100 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor5 constant:17.0];
     v138[4] = v100;
-    v98 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v96 = [v134 trailingAnchor];
-    v94 = [v98 constraintEqualToAnchor:v96 constant:8.0];
+    leadingAnchor8 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    trailingAnchor8 = [v134 trailingAnchor];
+    v94 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor8 constant:8.0];
     v138[5] = v94;
     v138[6] = v54;
     v133 = v54;
-    v92 = [(UILabel *)v4->_subTitleLabel firstBaselineAnchor];
-    v55 = [(UILabel *)v4->_titleLabel lastBaselineAnchor];
-    v56 = [v92 constraintEqualToAnchor:v55 constant:17.0];
+    firstBaselineAnchor2 = [(UILabel *)v4->_subTitleLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_titleLabel lastBaselineAnchor];
+    v56 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:17.0];
     v138[7] = v56;
-    v57 = [(UILabel *)v4->_subTitleLabel leadingAnchor];
-    v58 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58];
+    leadingAnchor9 = [(UILabel *)v4->_subTitleLabel leadingAnchor];
+    leadingAnchor10 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    v59 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
     v138[8] = v59;
-    v60 = [(UILabel *)v4->_subTitleLabel trailingAnchor];
-    v61 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v62 = [v60 constraintEqualToAnchor:v61];
+    trailingAnchor9 = [(UILabel *)v4->_subTitleLabel trailingAnchor];
+    trailingAnchor10 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    v62 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v138[9] = v62;
     v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v138 count:10];
     [v106 activateConstraints:v63];
 
     if (_os_feature_enabled_impl())
     {
-      v64 = [(UIButton *)v4->_actionButton widthAnchor];
-      v65 = [v64 constraintEqualToConstant:36.0];
+      widthAnchor4 = [(UIButton *)v4->_actionButton widthAnchor];
+      v65 = [widthAnchor4 constraintEqualToConstant:36.0];
       actionButtonWidthAnchor = v4->_actionButtonWidthAnchor;
       v4->_actionButtonWidthAnchor = v65;
 
       v125 = MEMORY[0x277CCAAD0];
       v137[0] = v4->_actionButtonWidthAnchor;
-      v131 = [(UIButton *)v4->_actionButton heightAnchor];
-      v128 = [(UIButton *)v4->_actionButton widthAnchor];
-      v67 = [v131 constraintEqualToAnchor:v128];
+      heightAnchor4 = [(UIButton *)v4->_actionButton heightAnchor];
+      widthAnchor5 = [(UIButton *)v4->_actionButton widthAnchor];
+      v67 = [heightAnchor4 constraintEqualToAnchor:widthAnchor5];
       v137[1] = v67;
-      v68 = [(UIButton *)v4->_actionButton trailingAnchor];
-      v69 = [(DBSmartWidgetRangeBasedView *)v4 trailingAnchor];
-      v70 = [v68 constraintEqualToAnchor:v69 constant:-13.0];
+      trailingAnchor11 = [(UIButton *)v4->_actionButton trailingAnchor];
+      trailingAnchor12 = [(DBSmartWidgetRangeBasedView *)v4 trailingAnchor];
+      v70 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:-13.0];
       v137[2] = v70;
-      v71 = [(UIButton *)v4->_actionButton centerYAnchor];
-      v72 = [(DBSmartWidgetRangeBasedView *)v4 centerYAnchor];
-      v73 = [v71 constraintEqualToAnchor:v72];
+      centerYAnchor5 = [(UIButton *)v4->_actionButton centerYAnchor];
+      centerYAnchor6 = [(DBSmartWidgetRangeBasedView *)v4 centerYAnchor];
+      v73 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
       v137[3] = v73;
       v74 = [MEMORY[0x277CBEA60] arrayWithObjects:v137 count:4];
       [v125 activateConstraints:v74];
@@ -286,16 +286,16 @@
   return v4;
 }
 
-- (void)_traitEnvironmentDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitEnvironmentDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(DBSmartWidgetRangeBasedView *)self _updateImageBorder:a3];
+  [(DBSmartWidgetRangeBasedView *)self _updateImageBorder:change];
   [(DBSmartWidgetRangeBasedView *)self _updateViews];
-  v9 = [(DBSmartWidgetRangeBasedView *)self prediction];
-  v5 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  v6 = [v9 buttonCompositingFilterWithTraitCollection:v5];
-  v7 = [(DBSmartWidgetRangeBasedView *)self button];
-  v8 = [v7 layer];
-  [v8 setCompositingFilter:v6];
+  prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+  traitCollection = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  v6 = [prediction buttonCompositingFilterWithTraitCollection:traitCollection];
+  button = [(DBSmartWidgetRangeBasedView *)self button];
+  layer = [button layer];
+  [layer setCompositingFilter:v6];
 }
 
 - (void)_updateViews
@@ -309,115 +309,115 @@
     [(DBSmartWidgetRangeBasedView *)v3 _updateViews];
   }
 
-  v4 = [(DBSmartWidgetRangeBasedView *)self prediction];
-  v5 = [(DBSmartWidgetRangeBasedView *)self _wantsIconLayer];
-  v6 = [(DBSmartWidgetRangeBasedView *)self iconLayerView];
-  v7 = v6;
-  if (v5)
+  prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+  _wantsIconLayer = [(DBSmartWidgetRangeBasedView *)self _wantsIconLayer];
+  iconLayerView = [(DBSmartWidgetRangeBasedView *)self iconLayerView];
+  v7 = iconLayerView;
+  if (_wantsIconLayer)
   {
-    [v6 setHidden:0];
+    [iconLayerView setHidden:0];
 
-    v8 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-    v9 = [v4 layerWithTraitCollection:v8];
+    traitCollection = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+    v9 = [prediction layerWithTraitCollection:traitCollection];
 
     [(DBSmartWidgetRangeBasedView *)self updateTraitsIfNeeded];
-    v10 = [(DBSmartWidgetRangeBasedView *)self iconLayerView];
-    [v10 setIconLayer:v9 animated:1];
+    iconLayerView2 = [(DBSmartWidgetRangeBasedView *)self iconLayerView];
+    [iconLayerView2 setIconLayer:v9 animated:1];
     goto LABEL_11;
   }
 
-  [v6 setHidden:1];
+  [iconLayerView setHidden:1];
 
-  v11 = [(DBSmartWidgetRangeBasedView *)self button];
-  v12 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  v13 = [v4 backgroundColorWithTraitCollection:v12];
-  [v11 configureWithBackgroundColor:v13];
+  button = [(DBSmartWidgetRangeBasedView *)self button];
+  traitCollection2 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  v13 = [prediction backgroundColorWithTraitCollection:traitCollection2];
+  [button configureWithBackgroundColor:v13];
 
   v14 = MEMORY[0x277D755B8];
-  v15 = [v4 symbol];
-  v16 = [v14 systemImageNamed:v15];
-  v17 = [(DBSmartWidgetRangeBasedView *)self imageView];
-  [v17 setImage:v16];
+  symbol = [prediction symbol];
+  v16 = [v14 systemImageNamed:symbol];
+  imageView = [(DBSmartWidgetRangeBasedView *)self imageView];
+  [imageView setImage:v16];
 
-  v18 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  v19 = [v4 tintColorWithTraitCollection:v18];
-  v20 = [(DBSmartWidgetRangeBasedView *)self imageView];
-  [v20 setTintColor:v19];
+  traitCollection3 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  v19 = [prediction tintColorWithTraitCollection:traitCollection3];
+  imageView2 = [(DBSmartWidgetRangeBasedView *)self imageView];
+  [imageView2 setTintColor:v19];
 
-  v21 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  v22 = [v4 buttonCompositingFilterWithTraitCollection:v21];
-  v23 = [(DBSmartWidgetRangeBasedView *)self button];
-  v24 = [v23 layer];
-  [v24 setCompositingFilter:v22];
+  traitCollection4 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  v22 = [prediction buttonCompositingFilterWithTraitCollection:traitCollection4];
+  button2 = [(DBSmartWidgetRangeBasedView *)self button];
+  layer = [button2 layer];
+  [layer setCompositingFilter:v22];
 
-  v25 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  v26 = [v4 imageCompositingFilterWithTraitCollection:v25];
-  v27 = [(DBSmartWidgetRangeBasedView *)self imageView];
-  v28 = [v27 layer];
-  [v28 setCompositingFilter:v26];
+  traitCollection5 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  v26 = [prediction imageCompositingFilterWithTraitCollection:traitCollection5];
+  imageView3 = [(DBSmartWidgetRangeBasedView *)self imageView];
+  layer2 = [imageView3 layer];
+  [layer2 setCompositingFilter:v26];
 
   v9 = objc_opt_new();
-  v29 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
-  v30 = [v29 text];
-  v31 = [v30 length];
+  titleLabel = [(DBSmartWidgetRangeBasedView *)self titleLabel];
+  text = [titleLabel text];
+  v31 = [text length];
 
   if (v31)
   {
-    v32 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
+    titleLabel2 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
 LABEL_9:
-    v36 = v32;
-    v37 = [v32 text];
-    [v9 addObject:v37];
+    v36 = titleLabel2;
+    text2 = [titleLabel2 text];
+    [v9 addObject:text2];
 
     goto LABEL_10;
   }
 
-  v33 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
-  v34 = [v33 text];
-  v35 = [v34 length];
+  subTitleLabel = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
+  text3 = [subTitleLabel text];
+  v35 = [text3 length];
 
   if (v35)
   {
-    v32 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
+    titleLabel2 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
     goto LABEL_9;
   }
 
 LABEL_10:
-  v10 = [v9 copy];
-  [(DBSmartWidgetEffectCoordinatingButton *)self->_button setAccessibilityUserInputLabels:v10];
+  iconLayerView2 = [v9 copy];
+  [(DBSmartWidgetEffectCoordinatingButton *)self->_button setAccessibilityUserInputLabels:iconLayerView2];
 LABEL_11:
 
-  [v4 width];
+  [prediction width];
   v39 = v38;
-  v40 = [(DBSmartWidgetRangeBasedView *)self buttonWidthAnchor];
-  [v40 setConstant:v39];
+  buttonWidthAnchor = [(DBSmartWidgetRangeBasedView *)self buttonWidthAnchor];
+  [buttonWidthAnchor setConstant:v39];
 
-  [v4 cornerRadius];
+  [prediction cornerRadius];
   v42 = v41;
-  v43 = [(DBSmartWidgetRangeBasedView *)self button];
-  [v43 setCornerRadius:v42];
+  button3 = [(DBSmartWidgetRangeBasedView *)self button];
+  [button3 setCornerRadius:v42];
 
-  -[DBSmartWidgetRangeBasedView _setAlertType:](self, "_setAlertType:", [v4 alert]);
-  v44 = [v4 title];
-  v45 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
-  [v45 setText:v44];
+  -[DBSmartWidgetRangeBasedView _setAlertType:](self, "_setAlertType:", [prediction alert]);
+  title = [prediction title];
+  titleLabel3 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
+  [titleLabel3 setText:title];
 
-  v46 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
-  [v46 setAccessibilityIdentifier:@"SmartWidgetTitle"];
+  titleLabel4 = [(DBSmartWidgetRangeBasedView *)self titleLabel];
+  [titleLabel4 setAccessibilityIdentifier:@"SmartWidgetTitle"];
 
-  v47 = [v4 subtitle];
-  v48 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
-  [v48 setText:v47];
+  subtitle = [prediction subtitle];
+  subTitleLabel2 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
+  [subTitleLabel2 setText:subtitle];
 
-  v49 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
-  [v49 setAccessibilityIdentifier:@"SmartWidgetSubtitle"];
+  subTitleLabel3 = [(DBSmartWidgetRangeBasedView *)self subTitleLabel];
+  [subTitleLabel3 setAccessibilityIdentifier:@"SmartWidgetSubtitle"];
 
-  v50 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+  actionButton = [(DBSmartWidgetRangeBasedView *)self actionButton];
 
-  if (v50)
+  if (actionButton)
   {
-    v51 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-    [v51 addTarget:self action:sel__runWidgetSecondaryButtonAction forControlEvents:0x2000];
+    actionButton2 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+    [actionButton2 addTarget:self action:sel__runWidgetSecondaryButtonAction forControlEvents:0x2000];
 
     if ([(DBSmartWidgetRangeBasedView *)self isFocused])
     {
@@ -431,55 +431,55 @@ LABEL_11:
     v52 = ;
     [(DBSmartWidgetRangeBasedView *)self setTintColor:v52];
 
-    v53 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-    [v53 setAccessibilityIdentifier:@"SmartWidgetButton"];
+    actionButton3 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+    [actionButton3 setAccessibilityIdentifier:@"SmartWidgetButton"];
   }
 
   [(DBSmartWidgetRangeBasedView *)self _updateButtonViewConstraints];
   [(DBSmartWidgetRangeBasedView *)self _updateImageBorder];
 }
 
-- (void)_setAlertType:(int64_t)a3
+- (void)_setAlertType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle.fill"];
-    v5 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    [v5 setImage:v4];
+    alertView = [(DBSmartWidgetRangeBasedView *)self alertView];
+    [alertView setImage:v4];
 
     v6 = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_31];
-    v7 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    [v7 setTintColor:v6];
+    alertView2 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    [alertView2 setTintColor:v6];
 
-    v8 = [MEMORY[0x277D75348] blackColor];
-    v9 = [v8 cgColor];
-    v10 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    v11 = [v10 layer];
-    [v11 setShadowColor:v9];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cgColor = [blackColor cgColor];
+    alertView3 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    layer = [alertView3 layer];
+    [layer setShadowColor:cgColor];
 
-    v12 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    v13 = [v12 layer];
+    alertView4 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    layer2 = [alertView4 layer];
     LODWORD(v14) = 1050253722;
-    [v13 setShadowOpacity:v14];
+    [layer2 setShadowOpacity:v14];
 
-    v15 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    v16 = [v15 layer];
-    [v16 setShadowOffset:{0.0, 2.0}];
+    alertView5 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    layer3 = [alertView5 layer];
+    [layer3 setShadowOffset:{0.0, 2.0}];
 
-    v18 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    v17 = [v18 layer];
-    [v17 setShadowRadius:10.0];
+    alertView6 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    layer4 = [alertView6 layer];
+    [layer4 setShadowRadius:10.0];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       return;
     }
 
-    v18 = [(DBSmartWidgetRangeBasedView *)self alertView];
-    [v18 setImage:0];
+    alertView6 = [(DBSmartWidgetRangeBasedView *)self alertView];
+    [alertView6 setImage:0];
   }
 }
 
@@ -494,18 +494,18 @@ id __45__DBSmartWidgetRangeBasedView__setAlertType___block_invoke()
 
 - (void)_updateButtonViewConstraints
 {
-  v3 = [(DBSmartWidgetRangeBasedView *)self prediction];
+  prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
 
-  if (v3)
+  if (prediction)
   {
-    v4 = [(DBSmartWidgetRangeBasedView *)self prediction];
-    v5 = [v4 hasSecondaryAction];
+    prediction2 = [(DBSmartWidgetRangeBasedView *)self prediction];
+    hasSecondaryAction = [prediction2 hasSecondaryAction];
 
-    if (v5)
+    if (hasSecondaryAction)
     {
-      v6 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+      actionButton = [(DBSmartWidgetRangeBasedView *)self actionButton];
 
-      if (!v6)
+      if (!actionButton)
       {
 LABEL_9:
         block[0] = MEMORY[0x277D85DD0];
@@ -517,12 +517,12 @@ LABEL_9:
         return;
       }
 
-      v7 = [(DBSmartWidgetRangeBasedView *)self superview];
-      [v7 bounds];
+      superview = [(DBSmartWidgetRangeBasedView *)self superview];
+      [superview bounds];
       v9 = v8;
 
-      v10 = [(DBSmartWidgetRangeBasedView *)self actionButtonWidthAnchor];
-      v11 = v10;
+      actionButtonWidthAnchor = [(DBSmartWidgetRangeBasedView *)self actionButtonWidthAnchor];
+      v11 = actionButtonWidthAnchor;
       if (v9 >= 200.0)
       {
         v12 = 36.0;
@@ -536,12 +536,12 @@ LABEL_9:
 
     else
     {
-      v10 = [(DBSmartWidgetRangeBasedView *)self actionButtonWidthAnchor];
-      v11 = v10;
+      actionButtonWidthAnchor = [(DBSmartWidgetRangeBasedView *)self actionButtonWidthAnchor];
+      v11 = actionButtonWidthAnchor;
       v12 = 0.0;
     }
 
-    [v10 setConstant:v12];
+    [actionButtonWidthAnchor setConstant:v12];
 
     goto LABEL_9;
   }
@@ -586,22 +586,22 @@ void __59__DBSmartWidgetRangeBasedView__updateButtonViewConstraints__block_invok
     [(DBSmartWidgetRangeBasedView *)self button];
   }
   v13 = ;
-  v3 = [(DBSmartWidgetRangeBasedView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 1)
+  traitCollection = [(DBSmartWidgetRangeBasedView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
-    v4 = [(DBSmartWidgetRangeBasedView *)self prediction];
-    v5 = [v4 showImageBorder];
+    prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+    showImageBorder = [prediction showImageBorder];
 
-    if (v5)
+    if (showImageBorder)
     {
-      v6 = [v13 layer];
-      [v6 setBorderWidth:0.5];
+      layer = [v13 layer];
+      [layer setBorderWidth:0.5];
 
-      v7 = [MEMORY[0x277D75348] blackColor];
-      v8 = [v7 colorWithAlphaComponent:0.0700000003];
-      v9 = [v8 CGColor];
-      v10 = [v13 layer];
-      [v10 setBorderColor:v9];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      layer4 = [blackColor colorWithAlphaComponent:0.0700000003];
+      cGColor = [layer4 CGColor];
+      layer2 = [v13 layer];
+      [layer2 setBorderColor:cGColor];
 
       goto LABEL_9;
     }
@@ -611,30 +611,30 @@ void __59__DBSmartWidgetRangeBasedView__updateButtonViewConstraints__block_invok
   {
   }
 
-  v11 = [v13 layer];
-  [v11 setBorderWidth:0.0];
+  layer3 = [v13 layer];
+  [layer3 setBorderWidth:0.0];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v12 = [v7 CGColor];
-  v8 = [v13 layer];
-  [v8 setBorderColor:v12];
+  blackColor = [MEMORY[0x277D75348] clearColor];
+  cGColor2 = [blackColor CGColor];
+  layer4 = [v13 layer];
+  [layer4 setBorderColor:cGColor2];
 LABEL_9:
 }
 
 - (void)_runWidgetPrimaryButtonAction
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 prediction];
+  prediction = [self prediction];
   v4 = 138543362;
-  v5 = v3;
+  v5 = prediction;
   _os_log_debug_impl(&dword_248146000, a2, OS_LOG_TYPE_DEBUG, "(RangeBasedView) Performing action: Primary %{public}@", &v4, 0xCu);
 }
 
 - (void)_runWidgetSecondaryButtonAction
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a1 prediction];
-  if ([v4 hasSecondaryAction])
+  prediction = [self prediction];
+  if ([prediction hasSecondaryAction])
   {
     v5 = @"YES";
   }
@@ -644,43 +644,43 @@ LABEL_9:
     v5 = @"NO";
   }
 
-  v6 = [a1 prediction];
+  prediction2 = [self prediction];
   v7 = 138543618;
   v8 = v5;
   v9 = 2114;
-  v10 = v6;
+  v10 = prediction2;
   _os_log_debug_impl(&dword_248146000, a2, OS_LOG_TYPE_DEBUG, "(RangeBasedView) Performing action: Secondary %{public}@ %{public}@", &v7, 0x16u);
 }
 
 - (BOOL)_wantsIconLayer
 {
-  v2 = [(DBSmartWidgetRangeBasedView *)self prediction];
-  v3 = [v2 wantsIconLayer];
+  prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+  wantsIconLayer = [prediction wantsIconLayer];
 
-  return v3;
+  return wantsIconLayer;
 }
 
 - (DBSmartWidgetRangeBasedPrediction)prediction
 {
   v4.receiver = self;
   v4.super_class = DBSmartWidgetRangeBasedView;
-  v2 = [(DBSmartWidgetView *)&v4 prediction];
+  prediction = [(DBSmartWidgetView *)&v4 prediction];
 
-  return v2;
+  return prediction;
 }
 
-- (void)setSpecial:(id)a3
+- (void)setSpecial:(id)special
 {
   v3.receiver = self;
   v3.super_class = DBSmartWidgetRangeBasedView;
-  [(DBSmartWidgetView *)&v3 setPrediction:a3];
+  [(DBSmartWidgetView *)&v3 setPrediction:special];
 }
 
-- (void)predictionDidUpdate:(id)a3
+- (void)predictionDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = DBSmartWidgetRangeBasedView;
-  [(DBSmartWidgetView *)&v4 predictionDidUpdate:a3];
+  [(DBSmartWidgetView *)&v4 predictionDidUpdate:update];
   [(DBSmartWidgetRangeBasedView *)self _updateViews];
 }
 
@@ -700,22 +700,22 @@ LABEL_9:
   if (v3 != *MEMORY[0x277CBF3A8] || v4 != *(MEMORY[0x277CBF3A8] + 8))
   {
     v6 = v3;
-    v7 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+    actionButton = [(DBSmartWidgetRangeBasedView *)self actionButton];
 
-    if (v7)
+    if (actionButton)
     {
-      v8 = [(DBSmartWidgetRangeBasedView *)self prediction];
-      v9 = [v8 hasSecondaryAction];
+      prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+      hasSecondaryAction = [prediction hasSecondaryAction];
 
-      if (v9)
+      if (hasSecondaryAction)
       {
-        v10 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-        v11 = v10;
+        actionButton2 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+        v11 = actionButton2;
         if (v6 >= 200.0)
         {
           v12 = 0;
 LABEL_11:
-          [v10 setHidden:v12];
+          [actionButton2 setHidden:v12];
 
           return;
         }
@@ -723,8 +723,8 @@ LABEL_11:
 
       else
       {
-        v10 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-        v11 = v10;
+        actionButton2 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+        v11 = actionButton2;
       }
 
       v12 = 1;
@@ -733,12 +733,12 @@ LABEL_11:
   }
 }
 
-- (void)widgetViewTapped:(id)a3
+- (void)widgetViewTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if ((!_os_feature_enabled_impl() || ([(UIButton *)self->_actionButton isFocused]& 1) == 0) && ([(DBSmartWidgetEffectCoordinatingButton *)self->_button isFocused]& 1) == 0)
   {
-    v4[2]();
+    tappedCopy[2]();
   }
 }
 
@@ -747,19 +747,19 @@ LABEL_11:
   v13[2] = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(DBSmartWidgetRangeBasedView *)self prediction];
-    if ([v3 hasSecondaryAction] && (-[DBSmartWidgetRangeBasedView actionButton](self, "actionButton"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    prediction = [(DBSmartWidgetRangeBasedView *)self prediction];
+    if ([prediction hasSecondaryAction] && (-[DBSmartWidgetRangeBasedView actionButton](self, "actionButton"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v5 = v4;
-      v6 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-      v7 = [v6 isHidden];
+      actionButton = [(DBSmartWidgetRangeBasedView *)self actionButton];
+      isHidden = [actionButton isHidden];
 
-      if ((v7 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
-        v8 = [(DBSmartWidgetRangeBasedView *)self button];
-        v13[0] = v8;
-        v9 = [(DBSmartWidgetRangeBasedView *)self actionButton];
-        v13[1] = v9;
+        button = [(DBSmartWidgetRangeBasedView *)self button];
+        v13[0] = button;
+        actionButton2 = [(DBSmartWidgetRangeBasedView *)self actionButton];
+        v13[1] = actionButton2;
         v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
         goto LABEL_8;
@@ -771,8 +771,8 @@ LABEL_11:
     }
   }
 
-  v8 = [(DBSmartWidgetRangeBasedView *)self button];
-  v12 = v8;
+  button = [(DBSmartWidgetRangeBasedView *)self button];
+  v12 = button;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
 LABEL_8:
 

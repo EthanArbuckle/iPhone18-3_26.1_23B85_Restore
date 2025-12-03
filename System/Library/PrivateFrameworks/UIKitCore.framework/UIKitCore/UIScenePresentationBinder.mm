@@ -1,52 +1,52 @@
 @interface UIScenePresentationBinder
 - (BOOL)_delegateShouldPresentSceneOnlyWhenLayersExist;
-- (UIScenePresentationBinder)initWithIdentifier:(id)a3 priority:(int64_t)a4 rootView:(id)a5 appearanceStyle:(unint64_t)a6;
+- (UIScenePresentationBinder)initWithIdentifier:(id)identifier priority:(int64_t)priority rootView:(id)view appearanceStyle:(unint64_t)style;
 - (UIScenePresentationBinderDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)_activatePresenter:(id)a3 scene:(id)a4 reason:(id)a5;
-- (void)_deactivatePresenter:(id)a3 scene:(id)a4 reason:(id)a5;
-- (void)_delegateDidStartPresentingScene:(id)a3;
-- (void)_delegateDidStopPresentingScene:(id)a3;
-- (void)_evaluateSceneForHosting:(id)a3 forReason:(id)a4;
-- (void)_noteSceneChangedLevel:(id)a3;
-- (void)_noteSceneMovedToBackground:(id)a3;
-- (void)_noteSceneMovedToForeground:(id)a3;
-- (void)_positionPresentationViewInRootViewOrderedCorrectly:(id)a3;
-- (void)_removeScene:(id)a3 forReason:(id)a4;
-- (void)addScene:(id)a3;
+- (void)_activatePresenter:(id)presenter scene:(id)scene reason:(id)reason;
+- (void)_deactivatePresenter:(id)presenter scene:(id)scene reason:(id)reason;
+- (void)_delegateDidStartPresentingScene:(id)scene;
+- (void)_delegateDidStopPresentingScene:(id)scene;
+- (void)_evaluateSceneForHosting:(id)hosting forReason:(id)reason;
+- (void)_noteSceneChangedLevel:(id)level;
+- (void)_noteSceneMovedToBackground:(id)background;
+- (void)_noteSceneMovedToForeground:(id)foreground;
+- (void)_positionPresentationViewInRootViewOrderedCorrectly:(id)correctly;
+- (void)_removeScene:(id)scene forReason:(id)reason;
+- (void)addScene:(id)scene;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeScene:(id)a3;
-- (void)scene:(id)a3 didApplyUpdateWithContext:(id)a4;
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3;
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTransform:(CGAffineTransform *)a3 forScene:(id)a4;
+- (void)removeScene:(id)scene;
+- (void)scene:(id)scene didApplyUpdateWithContext:(id)context;
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers;
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers;
+- (void)setDelegate:(id)delegate;
+- (void)setTransform:(CGAffineTransform *)transform forScene:(id)scene;
 @end
 
 @implementation UIScenePresentationBinder
 
-- (UIScenePresentationBinder)initWithIdentifier:(id)a3 priority:(int64_t)a4 rootView:(id)a5 appearanceStyle:(unint64_t)a6
+- (UIScenePresentationBinder)initWithIdentifier:(id)identifier priority:(int64_t)priority rootView:(id)view appearanceStyle:(unint64_t)style
 {
-  v11 = a3;
-  v12 = a5;
+  identifierCopy = identifier;
+  viewCopy = view;
   v20.receiver = self;
   v20.super_class = UIScenePresentationBinder;
   v13 = [(UIScenePresentationBinder *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    v14->_priority = a4;
-    objc_storeStrong(&v14->_rootView, a5);
+    objc_storeStrong(&v13->_identifier, identifier);
+    v14->_priority = priority;
+    objc_storeStrong(&v14->_rootView, view);
     v15 = [MEMORY[0x1E695DFA8] set];
     scenes = v14->_scenes;
     v14->_scenes = v15;
 
-    v14->_appearanceStyle = a6;
+    v14->_appearanceStyle = style;
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     mapSceneIDToPresenter = v14->_mapSceneIDToPresenter;
     v14->_mapSceneIDToPresenter = v17;
@@ -59,8 +59,8 @@
 {
   if (!self->_invalidated)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:62 description:@"UIAutomaticScenePresenter must be invalidated before it can be deallocated."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:62 description:@"UIAutomaticScenePresenter must be invalidated before it can be deallocated."];
   }
 
   v5.receiver = self;
@@ -68,9 +68,9 @@
   [(UIScenePresentationBinder *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -106,25 +106,25 @@
   }
 }
 
-- (void)addScene:(id)a3
+- (void)addScene:(id)scene
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
   }
 
-  if (!self->_invalidated && ([(NSMutableSet *)self->_scenes containsObject:v5]& 1) == 0)
+  if (!self->_invalidated && ([(NSMutableSet *)self->_scenes containsObject:sceneCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_scenes addObject:v5];
-    [v5 addObserver:self];
-    v6 = [v5 layerManager];
-    [v6 addObserver:self];
+    [(NSMutableSet *)self->_scenes addObject:sceneCopy];
+    [sceneCopy addObserver:self];
+    layerManager = [sceneCopy layerManager];
+    [layerManager addObserver:self];
 
-    v7 = [v5 uiPresentationManager];
-    v8 = [v7 createPresenterWithIdentifier:self->_identifier priority:self->_priority];
+    uiPresentationManager = [sceneCopy uiPresentationManager];
+    v8 = [uiPresentationManager createPresenterWithIdentifier:self->_identifier priority:self->_priority];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -132,19 +132,19 @@
     v12[3] = &unk_1E70FA288;
     v12[4] = self;
     [v8 modifyPresentationContext:v12];
-    v9 = [v5 identifier];
-    [(NSMutableDictionary *)self->_mapSceneIDToPresenter setObject:v8 forKey:v9];
+    identifier = [sceneCopy identifier];
+    [(NSMutableDictionary *)self->_mapSceneIDToPresenter setObject:v8 forKey:identifier];
     v10 = UIScenePresentationBinderLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v9;
+      v16 = identifier;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-added scene.", buf, 0x16u);
     }
 
-    [(UIScenePresentationBinder *)self _evaluateSceneForHosting:v5 forReason:@"client added scene"];
+    [(UIScenePresentationBinder *)self _evaluateSceneForHosting:sceneCopy forReason:@"client added scene"];
   }
 }
 
@@ -156,55 +156,55 @@ void __38__UIScenePresentationBinder_addScene___block_invoke(uint64_t a1, void *
   [v3 setPresentedLayerTypes:26];
 }
 
-- (void)removeScene:(id)a3
+- (void)removeScene:(id)scene
 {
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
-    v5 = 0;
+    sceneCopy = 0;
   }
 
   if (!self->_invalidated)
   {
-    v8 = v5;
-    v6 = [(NSMutableSet *)self->_scenes containsObject:v5];
-    v5 = v8;
+    v8 = sceneCopy;
+    v6 = [(NSMutableSet *)self->_scenes containsObject:sceneCopy];
+    sceneCopy = v8;
     if (v6)
     {
       [(UIScenePresentationBinder *)self _removeScene:v8 forReason:@"client requested"];
-      v5 = v8;
+      sceneCopy = v8;
     }
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3 forScene:(id)a4
+- (void)setTransform:(CGAffineTransform *)transform forScene:(id)scene
 {
-  v7 = a4;
-  if (!v7)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
   }
 
-  v8 = [v7 identifier];
-  v9 = [(NSMutableDictionary *)self->_mapSceneIDToPresenter objectForKey:v8];
+  identifier = [sceneCopy identifier];
+  v9 = [(NSMutableDictionary *)self->_mapSceneIDToPresenter objectForKey:identifier];
   if (!v9)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:112 description:{@"Not tracking scene: %@", v8}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:112 description:{@"Not tracking scene: %@", identifier}];
   }
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__UIScenePresentationBinder_setTransform_forScene___block_invoke;
   v13[3] = &__block_descriptor_80_e43_v16__0__UIMutableScenePresentationContext_8l;
-  v10 = *&a3->c;
-  v14 = *&a3->a;
+  v10 = *&transform->c;
+  v14 = *&transform->a;
   v15 = v10;
-  v16 = *&a3->tx;
+  v16 = *&transform->tx;
   [v9 modifyPresentationContext:v13];
 }
 
@@ -229,30 +229,30 @@ void __51__UIScenePresentationBinder_setTransform_forScene___block_invoke(_OWORD
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained scenePresentationBinderShouldPresentSceneOnlyWhenLayersExist:v3];
+  LOBYTE(selfCopy) = [WeakRetained scenePresentationBinderShouldPresentSceneOnlyWhenLayersExist:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_delegateDidStartPresentingScene:(id)a3
+- (void)_delegateDidStartPresentingScene:(id)scene
 {
   if ((*&self->_delegateFlags & 2) != 0)
   {
-    v5 = a3;
+    sceneCopy = scene;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained scenePresentationBinder:self didStartPresentingScene:v5];
+    [WeakRetained scenePresentationBinder:self didStartPresentingScene:sceneCopy];
   }
 }
 
-- (void)_delegateDidStopPresentingScene:(id)a3
+- (void)_delegateDidStopPresentingScene:(id)scene
 {
   if ((*&self->_delegateFlags & 4) != 0)
   {
-    v5 = a3;
+    sceneCopy = scene;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained scenePresentationBinder:self didStopPresentingScene:v5];
+    [WeakRetained scenePresentationBinder:self didStopPresentingScene:sceneCopy];
   }
 }
 
@@ -301,10 +301,10 @@ void __51__UIScenePresentationBinder_setTransform_forScene___block_invoke(_OWORD
 
 - (id)succinctDescription
 {
-  v2 = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -316,7 +316,7 @@ void __51__UIScenePresentationBinder_setTransform_forScene___block_invoke(_OWORD
   v8[3] = &unk_1E70F35B8;
   v4 = v3;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 modifyProem:v8];
   v6 = v4;
 
@@ -332,26 +332,26 @@ void __55__UIScenePresentationBinder_succinctDescriptionBuilder__block_invoke(ui
   [v3 appendString:v4 withName:@"style"];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIScenePresentationBinder *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIScenePresentationBinder *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__UIScenePresentationBinder_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -365,25 +365,25 @@ void __67__UIScenePresentationBinder_descriptionBuilderWithMultilinePrefix___blo
   [v2 appendArraySection:v3 withName:@"scenes" skipIfEmpty:0];
 }
 
-- (void)sceneLayerManagerDidStartTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStartTrackingLayers:(id)layers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layersCopy = layers;
   v5 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
-    v7 = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
+    identifier = [layersCopy identifier];
+    _delegateShouldPresentSceneOnlyWhenLayersExist = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
     v8 = @"NO";
     *buf = 134218498;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    if (v7)
+    if (_delegateShouldPresentSceneOnlyWhenLayersExist)
     {
       v8 = @"YES";
     }
 
-    v25 = v6;
+    v25 = identifier;
     v26 = 2114;
     v27 = v8;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-started tracking layers: shouldPresentOnlyWhenLayersExist: %{public}@", buf, 0x20u);
@@ -411,9 +411,9 @@ LABEL_8:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [v14 layerManager];
+        layerManager = [v14 layerManager];
 
-        if (v15 == v4)
+        if (layerManager == layersCopy)
         {
           break;
         }
@@ -447,25 +447,25 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)sceneLayerManagerDidStopTrackingLayers:(id)a3
+- (void)sceneLayerManagerDidStopTrackingLayers:(id)layers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layersCopy = layers;
   v5 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
-    v7 = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
+    identifier = [layersCopy identifier];
+    _delegateShouldPresentSceneOnlyWhenLayersExist = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
     v8 = @"NO";
     *buf = 134218498;
-    v23 = self;
+    selfCopy = self;
     v24 = 2114;
-    if (v7)
+    if (_delegateShouldPresentSceneOnlyWhenLayersExist)
     {
       v8 = @"YES";
     }
 
-    v25 = v6;
+    v25 = identifier;
     v26 = 2114;
     v27 = v8;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-stopped tracking layers: shouldPresentOnlyWhenLayersExist: %{public}@", buf, 0x20u);
@@ -493,9 +493,9 @@ LABEL_8:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [v14 layerManager];
+        layerManager = [v14 layerManager];
 
-        if (v15 == v4)
+        if (layerManager == layersCopy)
         {
           break;
         }
@@ -529,10 +529,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)scene:(id)a3 didApplyUpdateWithContext:(id)a4
+- (void)scene:(id)scene didApplyUpdateWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  contextCopy = context;
   if (!self->_settingsDiffInspector)
   {
     objc_initWeak(&location, self);
@@ -559,8 +559,8 @@ LABEL_18:
     objc_destroyWeak(&location);
   }
 
-  v12 = [v7 settingsDiff];
-  [v12 evaluateWithInspector:self->_settingsDiffInspector context:v6];
+  settingsDiff = [contextCopy settingsDiff];
+  [settingsDiff evaluateWithInspector:self->_settingsDiffInspector context:sceneCopy];
 }
 
 void __61__UIScenePresentationBinder_scene_didApplyUpdateWithContext___block_invoke(uint64_t a1, uint64_t a2)
@@ -587,15 +587,15 @@ void __61__UIScenePresentationBinder_scene_didApplyUpdateWithContext___block_inv
   }
 }
 
-- (void)_removeScene:(id)a3 forReason:(id)a4
+- (void)_removeScene:(id)scene forReason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  sceneCopy = scene;
+  reasonCopy = reason;
+  v9 = reasonCopy;
+  if (sceneCopy)
   {
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -603,8 +603,8 @@ void __61__UIScenePresentationBinder_scene_didApplyUpdateWithContext___block_inv
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:276 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
     if (v9)
     {
@@ -612,48 +612,48 @@ void __61__UIScenePresentationBinder_scene_didApplyUpdateWithContext___block_inv
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
 LABEL_3:
-  v10 = [v7 layerManager];
-  [v10 removeObserver:self];
+  layerManager = [sceneCopy layerManager];
+  [layerManager removeObserver:self];
 
-  [v7 removeObserver:self];
-  [(NSMutableSet *)self->_scenes removeObject:v7];
+  [sceneCopy removeObserver:self];
+  [(NSMutableSet *)self->_scenes removeObject:sceneCopy];
   v11 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 identifier];
+    identifier = [sceneCopy identifier];
     *buf = 134218498;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
-    v20 = v12;
+    v20 = identifier;
     v21 = 2114;
     v22 = v9;
     _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-removed scene for reason: %{public}@", buf, 0x20u);
   }
 
-  v13 = [v7 identifier];
-  v14 = [(NSMutableDictionary *)self->_mapSceneIDToPresenter objectForKey:v13];
+  identifier2 = [sceneCopy identifier];
+  v14 = [(NSMutableDictionary *)self->_mapSceneIDToPresenter objectForKey:identifier2];
   if ([v14 isActive])
   {
-    [(UIScenePresentationBinder *)self _deactivatePresenter:v14 scene:v7 reason:v9];
+    [(UIScenePresentationBinder *)self _deactivatePresenter:v14 scene:sceneCopy reason:v9];
   }
 
-  [(NSMutableDictionary *)self->_mapSceneIDToPresenter removeObjectForKey:v13];
+  [(NSMutableDictionary *)self->_mapSceneIDToPresenter removeObjectForKey:identifier2];
   [v14 invalidate];
 }
 
-- (void)_evaluateSceneForHosting:(id)a3 forReason:(id)a4
+- (void)_evaluateSceneForHosting:(id)hosting forReason:(id)reason
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  hostingCopy = hosting;
+  reasonCopy = reason;
+  v9 = reasonCopy;
+  if (hostingCopy)
   {
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -661,8 +661,8 @@ LABEL_3:
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:294 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
     if (v9)
     {
@@ -670,39 +670,39 @@ LABEL_3:
     }
   }
 
-  v28 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
 LABEL_3:
   v10 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 identifier];
+    identifier = [hostingCopy identifier];
     *buf = 134218498;
-    v30 = self;
+    selfCopy3 = self;
     v31 = 2114;
-    v32 = v11;
+    v32 = identifier;
     v33 = 2114;
     *v34 = v9;
     _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-evaluate scene for hosting for reason: %{public}@", buf, 0x20u);
   }
 
   mapSceneIDToPresenter = self->_mapSceneIDToPresenter;
-  v13 = [v7 identifier];
-  v14 = [(NSMutableDictionary *)mapSceneIDToPresenter objectForKey:v13];
+  identifier2 = [hostingCopy identifier];
+  v14 = [(NSMutableDictionary *)mapSceneIDToPresenter objectForKey:identifier2];
 
-  v15 = [v14 isActive];
-  v16 = [v7 layerManager];
-  v17 = [v16 layers];
-  v18 = [v17 count];
+  isActive = [v14 isActive];
+  layerManager = [hostingCopy layerManager];
+  layers = [layerManager layers];
+  v18 = [layers count];
 
-  v19 = [v7 settings];
-  v20 = [v19 isForeground];
+  settings = [hostingCopy settings];
+  isForeground = [settings isForeground];
 
-  v21 = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
+  _delegateShouldPresentSceneOnlyWhenLayersExist = [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist];
   if (v18)
   {
-    v22 = v21;
+    v22 = _delegateShouldPresentSceneOnlyWhenLayersExist;
   }
 
   else
@@ -710,41 +710,41 @@ LABEL_3:
     v22 = 0;
   }
 
-  v23 = !v21;
-  if (v20 && ((v23 | v22) & 1) != 0)
+  v23 = !_delegateShouldPresentSceneOnlyWhenLayersExist;
+  if (isForeground && ((v23 | v22) & 1) != 0)
   {
-    if ((v15 & 1) == 0)
+    if ((isActive & 1) == 0)
     {
-      [(UIScenePresentationBinder *)self _activatePresenter:v14 scene:v7 reason:v9];
+      [(UIScenePresentationBinder *)self _activatePresenter:v14 scene:hostingCopy reason:v9];
       goto LABEL_19;
     }
 
     v24 = UIScenePresentationBinderLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v7 identifier];
+      identifier3 = [hostingCopy identifier];
       *buf = 134218242;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2114;
-      v32 = v25;
+      v32 = identifier3;
       _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-not presenting scene is already being presented.", buf, 0x16u);
     }
 
     goto LABEL_17;
   }
 
-  if (!v15)
+  if (!isActive)
   {
     v24 = UIScenePresentationBinderLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v7 identifier];
+      identifier4 = [hostingCopy identifier];
       *buf = 134219010;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2114;
-      v32 = v26;
+      v32 = identifier4;
       v33 = 1024;
-      *v34 = v20;
+      *v34 = isForeground;
       *&v34[4] = 1024;
       *&v34[6] = v22;
       v35 = 1024;
@@ -757,28 +757,28 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  [(UIScenePresentationBinder *)self _deactivatePresenter:v14 scene:v7 reason:v9];
+  [(UIScenePresentationBinder *)self _deactivatePresenter:v14 scene:hostingCopy reason:v9];
 LABEL_19:
 }
 
-- (void)_activatePresenter:(id)a3 scene:(id)a4 reason:(id)a5
+- (void)_activatePresenter:(id)presenter scene:(id)scene reason:(id)reason
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  presenterCopy = presenter;
+  sceneCopy = scene;
+  reasonCopy = reason;
+  if (presenterCopy)
   {
-    if (v10)
+    if (sceneCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:329 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
-    if (v11)
+    if (reasonCopy)
     {
       goto LABEL_4;
     }
@@ -786,70 +786,70 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"presenter"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:328 description:{@"Invalid parameter not satisfying: %@", @"presenter"}];
 
-  if (!v10)
+  if (!sceneCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v11)
+  if (reasonCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_11:
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:330 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
 LABEL_4:
   v12 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 identifier];
+    identifier = [sceneCopy identifier];
     *buf = 134218498;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
-    v22 = v13;
+    v22 = identifier;
     v23 = 2114;
-    v24 = v11;
+    v24 = reasonCopy;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-started layer hosting for reason: %{public}@", buf, 0x20u);
   }
 
-  if (!v9)
+  if (!presenterCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:333 description:@"We expect a presenter."];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:333 description:@"We expect a presenter."];
   }
 
-  [v9 activate];
-  [(UIScenePresentationBinder *)self _noteWillStartPresentingScene:v10];
-  v14 = [v9 presentationView];
-  [(UIScenePresentationBinder *)self _positionPresentationViewInRootViewOrderedCorrectly:v14];
+  [presenterCopy activate];
+  [(UIScenePresentationBinder *)self _noteWillStartPresentingScene:sceneCopy];
+  presentationView = [presenterCopy presentationView];
+  [(UIScenePresentationBinder *)self _positionPresentationViewInRootViewOrderedCorrectly:presentationView];
 
-  [(UIScenePresentationBinder *)self _delegateDidStartPresentingScene:v10];
+  [(UIScenePresentationBinder *)self _delegateDidStartPresentingScene:sceneCopy];
 }
 
-- (void)_deactivatePresenter:(id)a3 scene:(id)a4 reason:(id)a5
+- (void)_deactivatePresenter:(id)presenter scene:(id)scene reason:(id)reason
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  presenterCopy = presenter;
+  sceneCopy = scene;
+  reasonCopy = reason;
+  if (presenterCopy)
   {
-    if (v10)
+    if (sceneCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:347 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:347 description:{@"Invalid parameter not satisfying: %@", @"scene"}];
 
-    if (v11)
+    if (reasonCopy)
     {
       goto LABEL_4;
     }
@@ -857,142 +857,142 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"presenter"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:346 description:{@"Invalid parameter not satisfying: %@", @"presenter"}];
 
-  if (!v10)
+  if (!sceneCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (reasonCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIScenePresentationBinder.m" lineNumber:348 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
 LABEL_4:
   v12 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 identifier];
+    identifier = [sceneCopy identifier];
     *buf = 134218498;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v13;
+    v21 = identifier;
     v22 = 2114;
-    v23 = v11;
+    v23 = reasonCopy;
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-stopped layer hosting for reason: %{public}@", buf, 0x20u);
   }
 
-  v14 = [v9 presentationView];
-  [v14 removeFromSuperview];
+  presentationView = [presenterCopy presentationView];
+  [presentationView removeFromSuperview];
 
-  [v9 deactivate];
-  [(UIScenePresentationBinder *)self _noteDidStopPresentingScene:v10];
-  [(UIScenePresentationBinder *)self _delegateDidStopPresentingScene:v10];
+  [presenterCopy deactivate];
+  [(UIScenePresentationBinder *)self _noteDidStopPresentingScene:sceneCopy];
+  [(UIScenePresentationBinder *)self _delegateDidStopPresentingScene:sceneCopy];
 }
 
-- (void)_noteSceneMovedToForeground:(id)a3
+- (void)_noteSceneMovedToForeground:(id)foreground
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [foregroundCopy identifier];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-scene moved to foreground", &v7, 0x16u);
   }
 
-  [(UIScenePresentationBinder *)self _evaluateSceneForHosting:v4 forReason:@"scene moved foreground"];
+  [(UIScenePresentationBinder *)self _evaluateSceneForHosting:foregroundCopy forReason:@"scene moved foreground"];
 }
 
-- (void)_noteSceneMovedToBackground:(id)a3
+- (void)_noteSceneMovedToBackground:(id)background
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgroundCopy = background;
   v5 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [backgroundCopy identifier];
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-scene moved to background", &v7, 0x16u);
   }
 
-  [(UIScenePresentationBinder *)self _evaluateSceneForHosting:v4 forReason:@"scene moved background"];
+  [(UIScenePresentationBinder *)self _evaluateSceneForHosting:backgroundCopy forReason:@"scene moved background"];
 }
 
-- (void)_noteSceneChangedLevel:(id)a3
+- (void)_noteSceneChangedLevel:(id)level
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  levelCopy = level;
   v5 = UIScenePresentationBinderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [levelCopy identifier];
     v11 = 134218242;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = identifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "%p-%{public}@-scene level changed", &v11, 0x16u);
   }
 
   mapSceneIDToPresenter = self->_mapSceneIDToPresenter;
-  v8 = [v4 identifier];
-  v9 = [(NSMutableDictionary *)mapSceneIDToPresenter objectForKey:v8];
+  identifier2 = [levelCopy identifier];
+  v9 = [(NSMutableDictionary *)mapSceneIDToPresenter objectForKey:identifier2];
 
   if ([v9 isActive])
   {
-    v10 = [v9 presentationView];
-    [(UIScenePresentationBinder *)self _positionPresentationViewInRootViewOrderedCorrectly:v10];
+    presentationView = [v9 presentationView];
+    [(UIScenePresentationBinder *)self _positionPresentationViewInRootViewOrderedCorrectly:presentationView];
   }
 }
 
-- (void)_positionPresentationViewInRootViewOrderedCorrectly:(id)a3
+- (void)_positionPresentationViewInRootViewOrderedCorrectly:(id)correctly
 {
-  v25 = a3;
-  [v25 removeFromSuperview];
-  v4 = [(UIScenePresentationBinder *)self _rootView];
-  v5 = [v4 subviews];
-  v6 = [v5 count];
+  correctlyCopy = correctly;
+  [correctlyCopy removeFromSuperview];
+  _rootView = [(UIScenePresentationBinder *)self _rootView];
+  subviews = [_rootView subviews];
+  v6 = [subviews count];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     v9 = 0;
     v22 = v6 - 1;
-    v24 = v4;
+    v24 = _rootView;
 LABEL_3:
     v23 = v8;
     do
     {
-      v10 = [v5 objectAtIndex:{v9, v22}];
-      v11 = [v25 presenter];
-      v12 = [v11 scene];
-      v13 = [v12 settings];
-      [v13 level];
+      v10 = [subviews objectAtIndex:{v9, v22}];
+      presenter = [correctlyCopy presenter];
+      scene = [presenter scene];
+      settings = [scene settings];
+      [settings level];
       v15 = v14;
-      v16 = [v10 presenter];
-      v17 = [v16 scene];
-      v18 = [v17 settings];
-      [v18 level];
+      presenter2 = [v10 presenter];
+      scene2 = [presenter2 scene];
+      settings2 = [scene2 settings];
+      [settings2 level];
       v20 = v19;
 
       if (v15 > v20)
       {
-        v4 = v24;
-        [v24 insertSubview:v25 aboveSubview:v10];
+        _rootView = v24;
+        [v24 insertSubview:correctlyCopy aboveSubview:v10];
 
         v8 = 1;
         if (v22 == v9++)
@@ -1007,17 +1007,17 @@ LABEL_3:
     }
 
     while (v7 != v9);
-    v4 = v24;
+    _rootView = v24;
     if ((v23 & 1) == 0)
     {
-      [v24 addSubview:v25];
-      [v24 sendSubviewToBack:v25];
+      [v24 addSubview:correctlyCopy];
+      [v24 sendSubviewToBack:correctlyCopy];
     }
   }
 
   else
   {
-    [v4 addSubview:v25];
+    [_rootView addSubview:correctlyCopy];
   }
 
 LABEL_13:

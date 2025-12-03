@@ -14,7 +14,7 @@
   v45 = v15;
   if (CKIsRunningUITests())
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
@@ -42,7 +42,7 @@
           }
 
           v23 = IMStripFormattingFromAddress();
-          [v16 addObject:v23];
+          [array addObject:v23];
         }
 
         v18 = [v17 countByEnumeratingWithState:&v57 objects:v67 count:16];
@@ -55,8 +55,8 @@
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v24 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    obj = [v24 simulatedChats];
+    mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    obj = [mEMORY[0x1E69A5AF8] simulatedChats];
 
     v48 = [obj countByEnumeratingWithState:&v53 objects:v66 count:16];
     if (v48)
@@ -77,8 +77,8 @@
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v28 = [v26 participants];
-          v29 = [v28 countByEnumeratingWithState:&v49 objects:v65 count:16];
+          participants = [v26 participants];
+          v29 = [participants countByEnumeratingWithState:&v49 objects:v65 count:16];
           if (v29)
           {
             v30 = *v50;
@@ -88,7 +88,7 @@
               {
                 if (*v50 != v30)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(participants);
                 }
 
                 v32 = [*(*(&v49 + 1) + 8 * k) ID];
@@ -96,13 +96,13 @@
                 [v27 addObject:v33];
               }
 
-              v29 = [v28 countByEnumeratingWithState:&v49 objects:v65 count:16];
+              v29 = [participants countByEnumeratingWithState:&v49 objects:v65 count:16];
             }
 
             while (v29);
           }
 
-          v34 = [MEMORY[0x1E695DFD8] setWithArray:v16];
+          v34 = [MEMORY[0x1E695DFD8] setWithArray:array];
           v35 = [v27 isEqualToSet:v34];
 
           if (v35)
@@ -132,7 +132,7 @@ LABEL_32:
     if ([v15 count] == 1)
     {
       v38 = [v15 objectAtIndex:0];
-      v36 = [a1 existingChatWithHandle:v38 allowAlternativeService:0];
+      v36 = [self existingChatWithHandle:v38 allowAlternativeService:0];
       if (!v36 && a9)
       {
         if (IMOSLoggingEnabled())
@@ -148,7 +148,7 @@ LABEL_32:
           }
         }
 
-        v36 = [a1 chatWithHandle:v38 lastAddressedHandle:v42 lastAddressedSIMID:v43];
+        v36 = [self chatWithHandle:v38 lastAddressedHandle:v42 lastAddressedSIMID:v43];
       }
     }
 
@@ -179,7 +179,7 @@ LABEL_32:
   {
     if (a8)
     {
-      v36 = [a1 existingChatWithHandles:v15 allowAlternativeService:0 groupID:0 displayName:v44 joinedChatsOnly:a7];
+      v36 = [self existingChatWithHandles:v15 allowAlternativeService:0 groupID:0 displayName:v44 joinedChatsOnly:a7];
       if (v36)
       {
         goto LABEL_33;
@@ -206,7 +206,7 @@ LABEL_32:
         }
       }
 
-      v36 = [a1 chatWithHandles:v45 displayName:v44 joinedChatsOnly:a7 findMatchingNamedGroups:a8 lastAddressedHandle:v42 lastAddressedSIMID:v43];
+      v36 = [self chatWithHandles:v45 displayName:v44 joinedChatsOnly:a7 findMatchingNamedGroups:a8 lastAddressedHandle:v42 lastAddressedSIMID:v43];
     }
   }
 

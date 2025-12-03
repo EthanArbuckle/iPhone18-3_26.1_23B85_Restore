@@ -1,26 +1,26 @@
 @interface CommonProduct
-- (BOOL)fourCharCodeMatchesDieTempType:(char)a3 fourCharCode:(__CFString *)a4;
-- (BOOL)fourCharCodeNeedsPMUtcal:(__CFString *)a3;
+- (BOOL)fourCharCodeMatchesDieTempType:(char)type fourCharCode:(__CFString *)code;
+- (BOOL)fourCharCodeNeedsPMUtcal:(__CFString *)utcal;
 - (BOOL)getPotentialForcedThermalPressureLevel;
 - (BOOL)isInternalInstall;
 - (BOOL)mitigationsFullyReleased;
-- (BOOL)shouldSuppressStandardBehaviors:(__CFDictionary *)a3;
-- (__CFArray)copyHotspotsArray:(id)a3;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (BOOL)shouldSuppressStandardBehaviors:(__CFDictionary *)behaviors;
+- (__CFArray)copyHotspotsArray:(id)array;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (id)getGridX;
 - (id)getGridY;
-- (id)initProduct:(id)a3;
-- (id)newBacklightComponentController:(__CFDictionary *)a3;
+- (id)initProduct:(id)product;
+- (id)newBacklightComponentController:(__CFDictionary *)controller;
 - (iir_filter_t)getFilterValues;
 - (int)compute2DGridTemps;
 - (int)computeMaxCGTemp;
 - (int)dieTempFilteredMaxAverage;
 - (int)getHighestSkinTemp;
 - (int)maxControlEffort;
-- (int)sensorIndexFromList:(__CFArray *)a3 fourCharCode:(__CFString *)a4;
+- (int)sensorIndexFromList:(__CFArray *)list fourCharCode:(__CFString *)code;
 - (unint64_t)getMaxSensorValue;
-- (unint64_t)getPotentialForcedThermalLevel:(unint64_t)a3;
+- (unint64_t)getPotentialForcedThermalLevel:(unint64_t)level;
 - (void)clearControlEffortOverrides;
 - (void)clearLoadingIndexOverrides;
 - (void)createConnectionToCT;
@@ -29,30 +29,30 @@
 - (void)emitThermalMitigationNotifications;
 - (void)emitThermalTrendNotifications;
 - (void)evaluteMitigationMaxLoadingIndex;
-- (void)getAllComponentID:(__SCPreferences *)a3;
+- (void)getAllComponentID:(__SCPreferences *)d;
 - (void)handleMCSThermalPressure;
-- (void)logTrapEntryForAC:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)logTrapEntryForAC:(id)c;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)probeAllSupervisorControlLoadingIndex;
-- (void)putDeviceInLowTempSimulationMode:(id)a3;
-- (void)putDeviceInThermalSimulationMode:(id)a3;
+- (void)putDeviceInLowTempSimulationMode:(id)mode;
+- (void)putDeviceInThermalSimulationMode:(id)mode;
 - (void)registerChargerNotification;
 - (void)registerDefaultsDomain;
 - (void)registerDisplayNotification;
 - (void)removeHotspotTargetOverrides;
-- (void)replaceOrAppendHotspotEntry:(__CFDictionary *)a3 existingHotspots:(__CFArray *)a4;
-- (void)send2DGridTempsToDisplayDriver:(int *)a3;
-- (void)sendMaxTempToDisplayDriver:(int)a3;
+- (void)replaceOrAppendHotspotEntry:(__CFDictionary *)entry existingHotspots:(__CFArray *)hotspots;
+- (void)send2DGridTempsToDisplayDriver:(int *)driver;
+- (void)sendMaxTempToDisplayDriver:(int)driver;
 - (void)setup2DGridDisplayDriver;
 - (void)simulateLightThermalPressure;
-- (void)thermalUpdatesToWatchdogEnabled:(id)a3;
+- (void)thermalUpdatesToWatchdogEnabled:(id)enabled;
 - (void)tryTakeAction;
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateContextualClamp;
-- (void)updateDisplayDriver:(BOOL)a3;
+- (void)updateDisplayDriver:(BOOL)driver;
 - (void)updateLifetimeServo;
 - (void)updatePowerzoneTelemetry;
-- (void)writeAllCornerTemperatures:(int)a3;
+- (void)writeAllCornerTemperatures:(int)temperatures;
 @end
 
 @implementation CommonProduct
@@ -71,10 +71,10 @@
   lifetimeServoController = self->lifetimeServoController;
   if (lifetimeServoController)
   {
-    v4 = [(CommonProduct *)self dieTempMaxMax];
-    v5 = [(CommonProduct *)self dieTempMaxAverage];
+    dieTempMaxMax = [(CommonProduct *)self dieTempMaxMax];
+    dieTempMaxAverage = [(CommonProduct *)self dieTempMaxAverage];
 
-    [(LifetimeServoController *)lifetimeServoController updateForTempMax:v4 tempAverage:v5];
+    [(LifetimeServoController *)lifetimeServoController updateForTempMax:dieTempMaxMax tempAverage:dieTempMaxAverage];
   }
 }
 
@@ -103,16 +103,16 @@
     return;
   }
 
-  v3 = [(CommonProduct *)self getHighestSkinTemp];
-  self->thermalState = v3;
-  if (v3 == 1)
+  getHighestSkinTemp = [(CommonProduct *)self getHighestSkinTemp];
+  self->thermalState = getHighestSkinTemp;
+  if (getHighestSkinTemp == 1)
   {
     self->thermalTrap = 1;
     v4 = 12;
     goto LABEL_9;
   }
 
-  if (v3 == 2)
+  if (getHighestSkinTemp == 2)
   {
     self->thermalTrap = 1;
     v4 = 16;
@@ -363,10 +363,10 @@ LABEL_9:
         objc_enumerationMutation(listOfSupervisorControl);
       }
 
-      v8 = [*(*(&v10 + 1) + 8 * i) controlEffort];
-      if (v6 <= v8)
+      controlEffort = [*(*(&v10 + 1) + 8 * i) controlEffort];
+      if (v6 <= controlEffort)
       {
-        v6 = v8;
+        v6 = controlEffort;
       }
     }
 
@@ -377,7 +377,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)initProduct:(id)a3
+- (id)initProduct:(id)product
 {
   v135.receiver = self;
   v135.super_class = CommonProduct;
@@ -401,10 +401,10 @@ LABEL_9:
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   *(v4 + 48) = dispatch_queue_create("com.apple.ThermalMonitor.mainQueue", v6);
   [+[TGraphSampler sharedInstance](TGraphSampler addtGraphDataSource:"addtGraphDataSource:", v4];
-  v7 = [qword_1000ABCB0 requestListID];
-  v8 = [a3 getConfigurationFor:@"generalProductConfig"];
+  requestListID = [qword_1000ABCB0 requestListID];
+  v8 = [product getConfigurationFor:@"generalProductConfig"];
   v9 = sub_100031D48(v8, @"noDisplay");
-  v10 = [a3 getConfigurationFor:@"powerZoneParams"];
+  v10 = [product getConfigurationFor:@"powerZoneParams"];
   v11 = sub_100031D48(v8, @"usesSMCSensorExchange");
   byte_1000ABC38 = v11;
   if (v11)
@@ -481,10 +481,10 @@ LABEL_9:
   if (!sub_100031D48(v8, @"skipMitigationController"))
   {
     v4[44] = sub_100031D48(v8, @"needsFastDieControl");
-    qword_1000ABCB0 = -[MitigationController initForFastLoop:noDisplay:powerSaveParams:powerZoneParams:]([MitigationController alloc], "initForFastLoop:noDisplay:powerSaveParams:powerZoneParams:", v4[44], v9, [a3 getConfigurationFor:@"powerSaveParams"], v10);
+    qword_1000ABCB0 = -[MitigationController initForFastLoop:noDisplay:powerSaveParams:powerZoneParams:]([MitigationController alloc], "initForFastLoop:noDisplay:powerSaveParams:powerZoneParams:", v4[44], v9, [product getConfigurationFor:@"powerSaveParams"], v10);
   }
 
-  v20 = [a3 getConfigurationFor:@"packageComponentControl"];
+  v20 = [product getConfigurationFor:@"packageComponentControl"];
   if (v20)
   {
     v21 = [[PackagePowerCC alloc] initWithParams:v20];
@@ -494,7 +494,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v22 = [a3 getConfigurationFor:@"cpuComponentControl"];
+  v22 = [product getConfigurationFor:@"cpuComponentControl"];
   if (v22)
   {
     v23 = v22;
@@ -502,13 +502,13 @@ LABEL_35:
     sub_100002A20(v22, @"controllerVersion", kCFNumberIntType, buf);
     if (*buf == 2)
     {
-      v24 = [[CpuPiecewiseCC alloc] initWithParams:v23 listID:v7 needspowerZones:v10 != 0];
+      v24 = [[CpuPiecewiseCC alloc] initWithParams:v23 listID:requestListID needspowerZones:v10 != 0];
     }
 
     else
     {
       valuePtr = 1065353216;
-      v25 = [a3 getConfigurationFor:@"Power_Scale"];
+      v25 = [product getConfigurationFor:@"Power_Scale"];
       if (v25)
       {
         CFNumberGetValue(v25, kCFNumberIntType, &valuePtr);
@@ -516,17 +516,17 @@ LABEL_35:
 
       v26 = [CpuCC alloc];
       LODWORD(v27) = valuePtr;
-      v24 = [(CpuCC *)v26 initWithParams:v23 powerScale:v7 listID:v10 != 0 needspowerZones:v27];
+      v24 = [(CpuCC *)v26 initWithParams:v23 powerScale:requestListID listID:v10 != 0 needspowerZones:v27];
     }
 
     v28 = v24;
     [*(v4 + 2) addObject:v24];
   }
 
-  v29 = [a3 getConfigurationFor:@"socComponentControl"];
+  v29 = [product getConfigurationFor:@"socComponentControl"];
   if (v29)
   {
-    v21 = [[SocCC alloc] initWithParams:v29 listID:v7];
+    v21 = [[SocCC alloc] initWithParams:v29 listID:requestListID];
     goto LABEL_35;
   }
 
@@ -576,10 +576,10 @@ LABEL_36:
       }
 
       v38 = *(&v126 + v35);
-      v39 = [a3 getConfigurationFor:{v38, v126, v127, v128, v129, v130}];
+      v39 = [product getConfigurationFor:{v38, v126, v127, v128, v129, v130}];
       if (v39)
       {
-        v40 = -[RadioPowerCC initWithRunLoopAndParams:withMitigationType:withParams:]([RadioPowerCC alloc], "initWithRunLoopAndParams:withMitigationType:withParams:", [a3 localMainRunloop], dword_100067A30[v35], v39);
+        v40 = -[RadioPowerCC initWithRunLoopAndParams:withMitigationType:withParams:]([RadioPowerCC alloc], "initWithRunLoopAndParams:withMitigationType:withParams:", [product localMainRunloop], dword_100067A30[v35], v39);
         if (v40)
         {
           v41 = v40;
@@ -627,7 +627,7 @@ LABEL_60:
     v31 = (v4 + 40);
     v32 = off_100084A08;
 LABEL_43:
-    v33 = [objc_alloc(*v32) initWithRunLoopAndParams:objc_msgSend(a3 withParams:{"localMainRunloop"), objc_msgSend(a3, "getConfigurationFor:", @"radioComponentControl"}];
+    v33 = [objc_alloc(*v32) initWithRunLoopAndParams:objc_msgSend(product withParams:{"localMainRunloop"), objc_msgSend(product, "getConfigurationFor:", @"radioComponentControl"}];
     v5 = v31;
     if (v33)
     {
@@ -648,14 +648,14 @@ LABEL_61:
   v46 = [[ThermalLevelCC alloc] initWithProduct:v4];
   [*(v4 + 2) addObject:v46];
 
-  v47 = [a3 getConfigurationFor:@"backlightComponentControl"];
+  v47 = [product getConfigurationFor:@"backlightComponentControl"];
   if (v47)
   {
     v48 = [v4 newBacklightComponentController:v47];
     [*(v4 + 2) addObject:v48];
   }
 
-  v49 = [a3 getConfigurationFor:@"refreshRateComponentControl"];
+  v49 = [product getConfigurationFor:@"refreshRateComponentControl"];
   if (v49)
   {
     v50 = v49;
@@ -669,28 +669,28 @@ LABEL_61:
     }
   }
 
-  v54 = [a3 getConfigurationFor:@"fanComponentControl"];
+  v54 = [product getConfigurationFor:@"fanComponentControl"];
   if (v54)
   {
     v55 = [[FanCC alloc] initWithParams:v54];
     [*(v4 + 2) addObject:v55];
   }
 
-  v56 = [a3 getConfigurationFor:@"wifiComponentControl"];
+  v56 = [product getConfigurationFor:@"wifiComponentControl"];
   if (v56)
   {
     v57 = [[WiFiCC alloc] initWithParams:v56];
     [*(v4 + 2) addObject:v57];
   }
 
-  v58 = [a3 getConfigurationFor:@"audioAmpComponentControl"];
+  v58 = [product getConfigurationFor:@"audioAmpComponentControl"];
   if (v58)
   {
     v59 = [[AudioAmpCC alloc] initWithParams:v58];
     [*(v4 + 2) addObject:v59];
   }
 
-  v60 = [a3 getConfigurationFor:@"arcComponentControl"];
+  v60 = [product getConfigurationFor:@"arcComponentControl"];
   if (v60)
   {
     v61 = v60;
@@ -705,7 +705,7 @@ LABEL_61:
     [*(v4 + 2) addObject:v64];
   }
 
-  v65 = [a3 getConfigurationFor:@"speakerComponentControl"];
+  v65 = [product getConfigurationFor:@"speakerComponentControl"];
   if (v65)
   {
     v66 = [[SpeakerCC alloc] initWithParams:v65];
@@ -718,7 +718,7 @@ LABEL_61:
   {
     if (sub_100031D48(v8, @"usesLinkCharger"))
     {
-      v67 = [a3 getConfigurationFor:@"linkChargerComponentControl"];
+      v67 = [product getConfigurationFor:@"linkChargerComponentControl"];
       v68 = LinkChargerCC;
 LABEL_83:
       v70 = [[v68 alloc] initWithParams:v67];
@@ -727,7 +727,7 @@ LABEL_83:
       goto LABEL_84;
     }
 
-    v69 = [a3 getConfigurationFor:@"powerSourceComponentControl"];
+    v69 = [product getConfigurationFor:@"powerSourceComponentControl"];
     if (v69)
     {
       v67 = v69;
@@ -737,10 +737,10 @@ LABEL_83:
   }
 
 LABEL_84:
-  v71 = [a3 getConfigurationFor:@"Sensors"];
+  v71 = [product getConfigurationFor:@"Sensors"];
   *(v4 + 74) = CFArrayGetCount(v71);
   [+[HidSensors sharedInstance](HidSensors loadProductTemperatureParameters:"loadProductTemperatureParameters:", v71];
-  v72 = [a3 getConfigurationFor:@"powerSensors"];
+  v72 = [product getConfigurationFor:@"powerSensors"];
   if (v72)
   {
     v73 = v72;
@@ -848,7 +848,7 @@ LABEL_84:
     while (CFArrayGetCount(v71) > v87);
   }
 
-  v90 = [v4 copyHotspotsArray:a3];
+  v90 = [v4 copyHotspotsArray:product];
   if (v90)
   {
     v91 = v90;
@@ -922,7 +922,7 @@ LABEL_129:
   }
 
   v4[104] = sub_100031D48(v8, @"canForceThermalLevels");
-  *(v4 + 6) = -[TableDrivenDecisionTree initWithComponentControllers:hotspotControllers:decisionTreeTable:]([TableDrivenDecisionTree alloc], "initWithComponentControllers:hotspotControllers:decisionTreeTable:", *(v4 + 2), *(v4 + 3), [a3 getConfigurationFor:@"DecisionTreeTable"]);
+  *(v4 + 6) = -[TableDrivenDecisionTree initWithComponentControllers:hotspotControllers:decisionTreeTable:]([TableDrivenDecisionTree alloc], "initWithComponentControllers:hotspotControllers:decisionTreeTable:", *(v4 + 2), *(v4 + 3), [product getConfigurationFor:@"DecisionTreeTable"]);
   if (sub_100031D48(v8, @"monitorsCameraSensors"))
   {
     v97 = [v4 sensorIndexFromList:v71 fourCharCode:@"SS0F"];
@@ -1038,7 +1038,7 @@ LABEL_169:
 LABEL_170:
   if (sub_100031D48(v8, @"needsLifetimeServo"))
   {
-    v110 = [a3 getConfigurationFor:@"lifetimeServoParams"];
+    v110 = [product getConfigurationFor:@"lifetimeServoParams"];
     if (v110 && (v111 = v110, v112 = CFGetTypeID(v110), v112 == CFDictionaryGetTypeID()))
     {
       *(v4 + 44) = [[LifetimeServoController alloc] initWithParams:v111 sensorList:v71];
@@ -1055,7 +1055,7 @@ LABEL_170:
     *(v4 + 44) = 0;
     if (sub_100031D48(v8, @"needsLTSStatePersistence"))
     {
-      v113 = [a3 getConfigurationFor:@"LTSStatePersistencePerIpRevision"];
+      v113 = [product getConfigurationFor:@"LTSStatePersistencePerIpRevision"];
       if (sub_100031D48(v8, @"LTSUsesACSK"))
       {
         v114 = LifetimeServoStatePersistenceACSK;
@@ -1119,7 +1119,7 @@ LABEL_170:
 
   if (sub_100031D48(v8, @"needsContextualClamp"))
   {
-    v117 = [a3 getConfigurationFor:@"contextualClampParams"];
+    v117 = [product getConfigurationFor:@"contextualClampParams"];
     if (v117 && (v118 = v117, v119 = CFGetTypeID(v117), v119 == CFDictionaryGetTypeID()))
     {
       *(v4 + 31) = -[ContextualClampController initWithParams:backlightController:product:]([ContextualClampController alloc], "initWithParams:backlightController:product:", v118, [v4 findComponent:0], v4);
@@ -1138,7 +1138,7 @@ LABEL_170:
 
   if (sub_100031D48(v8, @"needsArcControl"))
   {
-    v120 = [a3 getConfigurationFor:@"arcControlParams"];
+    v120 = [product getConfigurationFor:@"arcControlParams"];
     if (v120 && (v121 = v120, v122 = CFGetTypeID(v120), v122 == CFDictionaryGetTypeID()))
     {
       *(v4 + 32) = [[ArcController alloc] initWithParams:v121 product:v4];
@@ -1163,7 +1163,7 @@ LABEL_170:
     [v4 suppressStandardBehaviors];
   }
 
-  v123 = [a3 getConfigurationFor:@"lowTempMitigationLimits"];
+  v123 = [product getConfigurationFor:@"lowTempMitigationLimits"];
   *(v4 + 36) = v123;
   if (v123)
   {
@@ -1171,7 +1171,7 @@ LABEL_170:
     [*(v4 + 49) addObserver:v4 forKeyPath:@"ppmSimulationMode" options:1 context:v4];
   }
 
-  v124 = [a3 getConfigurationFor:@"thermalMitigationLimits"];
+  v124 = [product getConfigurationFor:@"thermalMitigationLimits"];
   *(v4 + 35) = v124;
   if (v124 || byte_1000AB2F9 == 1)
   {
@@ -1213,25 +1213,25 @@ LABEL_170:
   [v2 updateThermalPressureLevelNotification:0 shouldForceThermalPressure:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"thermalSimulationMode"])
+  if ([path isEqualToString:@"thermalSimulationMode"])
   {
-    v11 = [a5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v11 = [change objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
     [(CommonProduct *)self putDeviceInThermalSimulationMode:v11];
   }
 
-  else if ([a3 isEqualToString:@"ppmSimulationMode"])
+  else if ([path isEqualToString:@"ppmSimulationMode"])
   {
-    v12 = [a5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v12 = [change objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
     [(CommonProduct *)self putDeviceInLowTempSimulationMode:v12];
   }
 
-  else if ([a3 isEqualToString:@"watchdogUpdates"])
+  else if ([path isEqualToString:@"watchdogUpdates"])
   {
-    v13 = [a5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v13 = [change objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
     [(CommonProduct *)self thermalUpdatesToWatchdogEnabled:v13];
   }
@@ -1245,21 +1245,21 @@ LABEL_170:
 
     v14.receiver = self;
     v14.super_class = CommonProduct;
-    [(CommonProduct *)&v14 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(CommonProduct *)&v14 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
-- (void)thermalUpdatesToWatchdogEnabled:(id)a3
+- (void)thermalUpdatesToWatchdogEnabled:(id)enabled
 {
   v4 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = a3;
+    enabledCopy = enabled;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "<Notice> Asked to change watchdog updates mode to %@", &v9, 0xCu);
   }
 
-  v5 = [a3 isEqualToString:@"false"];
+  v5 = [enabled isEqualToString:@"false"];
   byte_1000A22A2 = v5 ^ 1;
   if (byte_1000AB2F8 == 1)
   {
@@ -1274,25 +1274,25 @@ LABEL_170:
       }
 
       v9 = 136315138;
-      v10 = v8;
+      enabledCopy = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> Watchdog Thermal Updates %sabled", &v9, 0xCu);
     }
   }
 }
 
-- (void)putDeviceInThermalSimulationMode:(id)a3
+- (void)putDeviceInThermalSimulationMode:(id)mode
 {
   v5 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Asked to change thermal mode to %@", &v13, 0xCu);
   }
 
-  if (a3)
+  if (mode)
   {
-    if ([a3 isEqualToString:@"off"])
+    if ([mode isEqualToString:@"off"])
     {
       [(CommonProduct *)self clearLoadingIndexOverrides];
       [(CommonProduct *)self removeLightPressureOverride];
@@ -1302,7 +1302,7 @@ LABEL_170:
       return;
     }
 
-    if ([a3 isEqualToString:@"nominal"])
+    if ([mode isEqualToString:@"nominal"])
     {
       memset(&qword_1000ABC90, 100, 17);
       [(CommonProduct *)self removeLightPressureOverride];
@@ -1317,7 +1317,7 @@ LABEL_15:
 
   [(CommonProduct *)self setHiPFeatureEnabled:0];
   byte_1000ABCA1 = 1;
-  v7 = [(NSDictionary *)self->simulatedThermalMitigationLimits valueForKeyPath:a3];
+  v7 = [(NSDictionary *)self->simulatedThermalMitigationLimits valueForKeyPath:mode];
   for (i = 0; i != 17; ++i)
   {
     v9 = [v7 valueForKey:*(&off_1000862F0 + i)];
@@ -1327,18 +1327,18 @@ LABEL_15:
     }
   }
 
-  if (a3)
+  if (mode)
   {
-    if ([a3 isEqualToString:@"light"])
+    if ([mode isEqualToString:@"light"])
     {
       [(CommonProduct *)self simulateLightThermalPressure];
       v6 = 0x40000000;
       goto LABEL_15;
     }
 
-    v11 = [a3 isEqualToString:@"moderate"];
+    v11 = [mode isEqualToString:@"moderate"];
     LODWORD(v10) = 3.0;
-    if ((v11 & 1) != 0 || (v12 = [a3 isEqualToString:{@"heavy", v10}], LODWORD(v10) = 4.0, v12))
+    if ((v11 & 1) != 0 || (v12 = [mode isEqualToString:{@"heavy", v10}], LODWORD(v10) = 4.0, v12))
     {
       dword_1000AB960 = LODWORD(v10);
     }
@@ -1347,17 +1347,17 @@ LABEL_15:
   [(CommonProduct *)self removeLightPressureOverride];
 }
 
-- (void)putDeviceInLowTempSimulationMode:(id)a3
+- (void)putDeviceInLowTempSimulationMode:(id)mode
 {
   v5 = qword_1000AB718;
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = a3;
+    modeCopy = mode;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Asked to change low temp mode to %@", &v13, 0xCu);
   }
 
-  if ([a3 isEqualToString:@"off"])
+  if ([mode isEqualToString:@"off"])
   {
     sub_100033898(0);
     sub_10003305C(0);
@@ -1373,7 +1373,7 @@ LABEL_15:
   {
     sub_100033898(1);
     sub_10003305C(1);
-    v6 = [(NSDictionary *)self->simulatedLowTempMitigationLimits valueForKeyPath:a3];
+    v6 = [(NSDictionary *)self->simulatedLowTempMitigationLimits valueForKeyPath:mode];
     if (v6)
     {
       v7 = v6;
@@ -1430,14 +1430,14 @@ LABEL_15:
   [(CommonProduct *)&v4 dealloc];
 }
 
-- (BOOL)fourCharCodeMatchesDieTempType:(char)a3 fourCharCode:(__CFString *)a4
+- (BOOL)fourCharCodeMatchesDieTempType:(char)type fourCharCode:(__CFString *)code
 {
-  if (!a4)
+  if (!code)
   {
     return 0;
   }
 
-  CString = CFStringGetCString(a4, buffer, 16, 0x8000100u);
+  CString = CFStringGetCString(code, buffer, 16, 0x8000100u);
   result = 0;
   if (CString && buffer[0] == 84)
   {
@@ -1450,20 +1450,20 @@ LABEL_15:
       return 0;
     }
 
-    return !v15 && v14 == a3;
+    return !v15 && v14 == type;
   }
 
   return result;
 }
 
-- (BOOL)fourCharCodeNeedsPMUtcal:(__CFString *)a3
+- (BOOL)fourCharCodeNeedsPMUtcal:(__CFString *)utcal
 {
-  if (!a3)
+  if (!utcal)
   {
     goto LABEL_7;
   }
 
-  CString = CFStringGetCString(a3, buffer, 16, 0x8000100u);
+  CString = CFStringGetCString(utcal, buffer, 16, 0x8000100u);
   if (CString)
   {
     LOBYTE(CString) = 0;
@@ -1668,14 +1668,14 @@ LABEL_7:
   }
 }
 
-- (void)logTrapEntryForAC:(id)a3
+- (void)logTrapEntryForAC:(id)c
 {
-  v3 = [[NSMutableArray alloc] initWithObjects:{a3, 0}];
+  v3 = [[NSMutableArray alloc] initWithObjects:{c, 0}];
   [v3 addObjectsFromArray:GetThermalState()];
   logEventForAppleCare();
 }
 
-- (void)getAllComponentID:(__SCPreferences *)a3
+- (void)getAllComponentID:(__SCPreferences *)d
 {
   Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
   v20 = 0u;
@@ -1734,16 +1734,16 @@ LABEL_7:
     while (v13);
   }
 
-  SCPreferencesSetValue(a3, @"listComponentID_CLTMV2", Mutable);
-  SCPreferencesCommitChanges(a3);
+  SCPreferencesSetValue(d, @"listComponentID_CLTMV2", Mutable);
+  SCPreferencesCommitChanges(d);
   CFRelease(Mutable);
 }
 
-- (id)newBacklightComponentController:(__CFDictionary *)a3
+- (id)newBacklightComponentController:(__CFDictionary *)controller
 {
   v4 = [BackLightCCSingle alloc];
 
-  return [(BackLightCCSingle *)v4 initWithParams:a3];
+  return [(BackLightCCSingle *)v4 initWithParams:controller];
 }
 
 - (iir_filter_t)getFilterValues
@@ -1778,10 +1778,10 @@ LABEL_7:
         objc_enumerationMutation(listOfSupervisorControl);
       }
 
-      v8 = [*(*(&v10 + 1) + 8 * i) getThermalStateofHotspot];
-      if (v8 > v5)
+      getThermalStateofHotspot = [*(*(&v10 + 1) + 8 * i) getThermalStateofHotspot];
+      if (getThermalStateofHotspot > v5)
       {
-        v5 = v8;
+        v5 = getThermalStateofHotspot;
       }
     }
 
@@ -1849,7 +1849,7 @@ LABEL_7:
   return byte_1000AB2B4;
 }
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
@@ -1877,9 +1877,9 @@ LABEL_7:
   return -1;
 }
 
-- (void)writeAllCornerTemperatures:(int)a3
+- (void)writeAllCornerTemperatures:(int)temperatures
 {
-  v3 = a3 / 100.0;
+  v3 = temperatures / 100.0;
   v4 = vcvtd_n_s64_f64(v3, 0x10uLL);
   v8 = v4;
   v9 = v4;
@@ -1905,7 +1905,7 @@ LABEL_7:
   }
 }
 
-- (void)updateDisplayDriver:(BOOL)a3
+- (void)updateDisplayDriver:(BOOL)driver
 {
   if (!qword_1000ABCA8)
   {
@@ -1913,7 +1913,7 @@ LABEL_7:
   }
 
   v4 = *(&qword_1000AB824 + self->tsfdIndex);
-  if (a3)
+  if (driver)
   {
     p_haveUsedDeferral = &self->_haveUsedDeferral;
     haveUsedDeferral = self->_haveUsedDeferral;
@@ -2031,11 +2031,11 @@ LABEL_23:
   [(CommonProduct *)self writeAllCornerTemperatures:v4];
 }
 
-- (void)sendMaxTempToDisplayDriver:(int)a3
+- (void)sendMaxTempToDisplayDriver:(int)driver
 {
   if (qword_1000ABCA8)
   {
-    v3 = a3 / 100.0;
+    v3 = driver / 100.0;
     v4 = *(&qword_1000AB824 + self->tsfdIndex) / 100.0;
     if (IOMobileFramebufferSetBlock())
     {
@@ -2060,7 +2060,7 @@ LABEL_23:
   }
 }
 
-- (void)send2DGridTempsToDisplayDriver:(int *)a3
+- (void)send2DGridTempsToDisplayDriver:(int *)driver
 {
   if (qword_1000ABCA8)
   {
@@ -2077,12 +2077,12 @@ LABEL_23:
       {
         v9 = v5 + 1;
         v10 = v8;
-        v11 = a3;
+        driverCopy = driver;
         if ((v5 & 0x80000000) == 0)
         {
           do
           {
-            v12 = *v11++;
+            v12 = *driverCopy++;
             *v10++ = (v12 << 16) / 100;
             --v9;
           }
@@ -2091,7 +2091,7 @@ LABEL_23:
         }
 
         ++v7;
-        a3 += v5 + 1;
+        driver += v5 + 1;
         v8 += 18;
       }
 
@@ -2122,10 +2122,10 @@ LABEL_23:
 {
   if (qword_1000ABCA8)
   {
-    v3 = [(CommonProduct *)self getGridX];
-    v4 = [(CommonProduct *)self getGridY];
-    v5 = [v3 count];
-    v6 = [v4 count];
+    getGridX = [(CommonProduct *)self getGridX];
+    getGridY = [(CommonProduct *)self getGridY];
+    v5 = [getGridX count];
+    v6 = [getGridY count];
     bzero(v14, 0x708uLL);
     v7 = 0;
     v13 = 1;
@@ -2139,7 +2139,7 @@ LABEL_23:
 
       else
       {
-        v8 = [objc_msgSend(v3 objectAtIndex:{v7), "intValue"}];
+        v8 = [objc_msgSend(getGridX objectAtIndex:{v7), "intValue"}];
       }
 
       *&v14[4 * v7++ + 1648] = v8;
@@ -2155,7 +2155,7 @@ LABEL_23:
 
       else
       {
-        v10 = [objc_msgSend(v4 objectAtIndex:{i), "intValue"}];
+        v10 = [objc_msgSend(getGridY objectAtIndex:{i), "intValue"}];
       }
 
       *&v14[4 * i + 1716] = v10;
@@ -2237,7 +2237,7 @@ LABEL_23:
   }
 }
 
-- (unint64_t)getPotentialForcedThermalLevel:(unint64_t)a3
+- (unint64_t)getPotentialForcedThermalLevel:(unint64_t)level
 {
   if (byte_1000A22A0 == 1 && self->canForceThermalLevels)
   {
@@ -2284,7 +2284,7 @@ LABEL_23:
     }
   }
 
-  return a3;
+  return level;
 }
 
 - (BOOL)getPotentialForcedThermalPressureLevel
@@ -2326,12 +2326,12 @@ LABEL_23:
   return v5 & 1;
 }
 
-- (int)sensorIndexFromList:(__CFArray *)a3 fourCharCode:(__CFString *)a4
+- (int)sensorIndexFromList:(__CFArray *)list fourCharCode:(__CFString *)code
 {
   LODWORD(v4) = -1;
-  if (a3 && a4)
+  if (list && code)
   {
-    if (CFArrayGetCount(a3) < 1)
+    if (CFArrayGetCount(list) < 1)
     {
 LABEL_9:
       LODWORD(v4) = -1;
@@ -2342,20 +2342,20 @@ LABEL_9:
       v4 = 0;
       while (1)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v4);
+        ValueAtIndex = CFArrayGetValueAtIndex(list, v4);
         if (ValueAtIndex)
         {
           Value = CFDictionaryGetValue(ValueAtIndex, @"4CharCode");
           if (Value)
           {
-            if (CFStringCompare(Value, a4, 0) == kCFCompareEqualTo)
+            if (CFStringCompare(Value, code, 0) == kCFCompareEqualTo)
             {
               break;
             }
           }
         }
 
-        if (CFArrayGetCount(a3) <= ++v4)
+        if (CFArrayGetCount(list) <= ++v4)
         {
           goto LABEL_9;
         }
@@ -2366,7 +2366,7 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)shouldSuppressStandardBehaviors:(__CFDictionary *)a3
+- (BOOL)shouldSuppressStandardBehaviors:(__CFDictionary *)behaviors
 {
   v4 = CFPreferencesCopyValue(@"FProgramNumber", @"com.apple.demo-settings", @"mobile", kCFPreferencesCurrentHost);
   if (byte_1000AB2F8 == 1)
@@ -2388,7 +2388,7 @@ LABEL_9:
     {
       if (CFNumberGetValue(v4, kCFNumberIntType, &valuePtr))
       {
-        Value = CFDictionaryGetValue(a3, @"suppressionFContexts");
+        Value = CFDictionaryGetValue(behaviors, @"suppressionFContexts");
         if (Value)
         {
           v8 = Value;
@@ -2485,30 +2485,30 @@ LABEL_28:
   return v18;
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 6)
+  if (index > 6)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_100086298 + a3);
+    return *(&off_100086298 + index);
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 > 2)
+  if (index > 2)
   {
-    if (a3 <= 4)
+    if (index <= 4)
     {
-      if (a3 != 3)
+      if (index != 3)
       {
         v3 = kCFAllocatorDefault;
-        v4 = [(CommonProduct *)self dieTempMaxAverage];
-        return CFStringCreateWithFormat(v3, 0, @"%d", v4);
+        dieTempMaxAverage = [(CommonProduct *)self dieTempMaxAverage];
+        return CFStringCreateWithFormat(v3, 0, @"%d", dieTempMaxAverage);
       }
 
       v5 = kCFAllocatorDefault;
@@ -2516,28 +2516,28 @@ LABEL_28:
       return CFStringCreateWithFormat(v5, 0, @"%d", chargerState);
     }
 
-    if (a3 == 5)
+    if (index == 5)
     {
       v3 = kCFAllocatorDefault;
-      v4 = [(CommonProduct *)self dieTempFilteredMaxAverage];
-      return CFStringCreateWithFormat(v3, 0, @"%d", v4);
+      dieTempMaxAverage = [(CommonProduct *)self dieTempFilteredMaxAverage];
+      return CFStringCreateWithFormat(v3, 0, @"%d", dieTempMaxAverage);
     }
 
-    if (a3 == 6)
+    if (index == 6)
     {
       v3 = kCFAllocatorDefault;
-      v4 = [(CommonProduct *)self dieTempMaxMax];
-      return CFStringCreateWithFormat(v3, 0, @"%d", v4);
+      dieTempMaxAverage = [(CommonProduct *)self dieTempMaxMax];
+      return CFStringCreateWithFormat(v3, 0, @"%d", dieTempMaxAverage);
     }
 
     return 0;
   }
 
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
-      if (a3 == 2)
+      if (index == 2)
       {
         v5 = kCFAllocatorDefault;
         chargerState = self->thermalPressureLevel;
@@ -2564,9 +2564,9 @@ LABEL_28:
   return CFStringCreateWithFormat(v7, 0, @"%d", v8);
 }
 
-- (__CFArray)copyHotspotsArray:(id)a3
+- (__CFArray)copyHotspotsArray:(id)array
 {
-  v3 = [a3 getConfigurationFor:@"hotspots"];
+  v3 = [array getConfigurationFor:@"hotspots"];
   v4 = v3;
   if (v3)
   {
@@ -2576,19 +2576,19 @@ LABEL_28:
   return v4;
 }
 
-- (void)replaceOrAppendHotspotEntry:(__CFDictionary *)a3 existingHotspots:(__CFArray *)a4
+- (void)replaceOrAppendHotspotEntry:(__CFDictionary *)entry existingHotspots:(__CFArray *)hotspots
 {
-  newValues = a3;
-  Value = CFDictionaryGetValue(a3, @"description");
+  newValues = entry;
+  Value = CFDictionaryGetValue(entry, @"description");
   if (Value)
   {
     v7 = Value;
-    Count = CFArrayGetCount(a4);
+    Count = CFArrayGetCount(hotspots);
     if (Count < 1)
     {
 LABEL_7:
 
-      CFArrayAppendValue(a4, a3);
+      CFArrayAppendValue(hotspots, entry);
     }
 
     else
@@ -2597,7 +2597,7 @@ LABEL_7:
       v10 = 0;
       while (1)
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a4, v10);
+        ValueAtIndex = CFArrayGetValueAtIndex(hotspots, v10);
         if (ValueAtIndex)
         {
           v12 = CFDictionaryGetValue(ValueAtIndex, @"description");
@@ -2615,7 +2615,7 @@ LABEL_7:
 
       v15.location = v10;
       v15.length = 1;
-      CFArrayReplaceValues(a4, v15, &newValues, 1);
+      CFArrayReplaceValues(hotspots, v15, &newValues, 1);
     }
   }
 }

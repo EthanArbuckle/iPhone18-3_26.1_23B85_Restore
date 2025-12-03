@@ -1,5 +1,5 @@
 @interface TextFieldDelegateForwarder
-- (BOOL)textFieldShouldClear:(id)a3;
+- (BOOL)textFieldShouldClear:(id)clear;
 - (TextFieldDelegateForwardingTarget)forwardingTarget;
 @end
 
@@ -12,11 +12,11 @@
   return WeakRetained;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
-  v5 = [(TextFieldDelegateForwarder *)self forwardingTarget];
-  v6 = [v5 textFieldShouldClear:v4];
+  clearCopy = clear;
+  forwardingTarget = [(TextFieldDelegateForwarder *)self forwardingTarget];
+  v6 = [forwardingTarget textFieldShouldClear:clearCopy];
 
   return v6;
 }

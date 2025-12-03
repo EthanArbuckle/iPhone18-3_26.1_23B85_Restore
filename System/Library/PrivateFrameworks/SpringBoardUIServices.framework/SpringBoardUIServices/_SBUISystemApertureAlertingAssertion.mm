@@ -1,26 +1,26 @@
 @interface _SBUISystemApertureAlertingAssertion
 - (SBUISystemApertureElementSource)elementSource;
-- (_SBUISystemApertureAlertingAssertion)initWithElementSource:(id)a3;
+- (_SBUISystemApertureAlertingAssertion)initWithElementSource:(id)source;
 - (id)_descriptionConstituents;
-- (void)addInvalidationBlock:(id)a3;
+- (void)addInvalidationBlock:(id)block;
 - (void)resetAutomaticInvalidationTimer;
-- (void)setAlertingAction:(id)a3;
-- (void)setAutomaticallyInvalidatable:(BOOL)a3;
+- (void)setAlertingAction:(id)action;
+- (void)setAutomaticallyInvalidatable:(BOOL)invalidatable;
 @end
 
 @implementation _SBUISystemApertureAlertingAssertion
 
-- (_SBUISystemApertureAlertingAssertion)initWithElementSource:(id)a3
+- (_SBUISystemApertureAlertingAssertion)initWithElementSource:(id)source
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = _SBUISystemApertureAlertingAssertion;
   v5 = [(SBUISystemApertureAssertion *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_elementSource, v4);
+    objc_storeWeak(&v5->_elementSource, sourceCopy);
     v6->_automaticallyInvalidatable = 1;
     objc_initWeak(&location, v6);
     v9[0] = MEMORY[0x1E69E9820];
@@ -44,9 +44,9 @@
   return v6;
 }
 
-- (void)setAlertingAction:(id)a3
+- (void)setAlertingAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   if (self->_alertingAction)
   {
     [_SBUISystemApertureAlertingAssertion setAlertingAction:];
@@ -54,7 +54,7 @@
 
   if ([(SBUISystemApertureAssertion *)self isValid])
   {
-    objc_storeStrong(&self->_alertingAction, a3);
+    objc_storeStrong(&self->_alertingAction, action);
     objc_initWeak(&location, self);
     alertingAction = self->_alertingAction;
     v9[0] = MEMORY[0x1E69E9820];
@@ -70,8 +70,8 @@
   else
   {
     v7 = self->_alertingAction;
-    v8 = [(SBUISystemApertureAssertion *)self _invalidationReason];
-    [(SBUISystemApertureAlertingAction *)v7 invalidateWithReason:v8];
+    _invalidationReason = [(SBUISystemApertureAssertion *)self _invalidationReason];
+    [(SBUISystemApertureAlertingAction *)v7 invalidateWithReason:_invalidationReason];
   }
 }
 
@@ -89,19 +89,19 @@
 
   v9.receiver = self;
   v9.super_class = _SBUISystemApertureAlertingAssertion;
-  v6 = [(SBUISystemApertureAssertion *)&v9 _descriptionConstituents];
-  v7 = [v6 arrayByAddingObject:v3];
+  _descriptionConstituents = [(SBUISystemApertureAssertion *)&v9 _descriptionConstituents];
+  v7 = [_descriptionConstituents arrayByAddingObject:v3];
 
   return v7;
 }
 
-- (void)setAutomaticallyInvalidatable:(BOOL)a3
+- (void)setAutomaticallyInvalidatable:(BOOL)invalidatable
 {
-  v3 = a3;
+  invalidatableCopy = invalidatable;
   v13 = *MEMORY[0x1E69E9840];
-  if ([(SBUISystemApertureAssertion *)self isValid]&& self->_automaticallyInvalidatable != v3)
+  if ([(SBUISystemApertureAssertion *)self isValid]&& self->_automaticallyInvalidatable != invalidatableCopy)
   {
-    self->_automaticallyInvalidatable = v3;
+    self->_automaticallyInvalidatable = invalidatableCopy;
     v5 = SBLogSystemApertureHosting();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -118,7 +118,7 @@
       v9 = 138412546;
       v10 = v6;
       v11 = 2114;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Automatic invalidation %@: %{public}@", &v9, 0x16u);
     }
 
@@ -137,17 +137,17 @@
   }
 }
 
-- (void)addInvalidationBlock:(id)a3
+- (void)addInvalidationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61___SBUISystemApertureAlertingAssertion_addInvalidationBlock___block_invoke;
   v7[3] = &unk_1E789FEC0;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = _SBUISystemApertureAlertingAssertion;
-  v5 = v4;
+  v5 = blockCopy;
   [(SBUISystemApertureAssertion *)&v6 addInvalidationBlock:v7];
 }
 
@@ -160,7 +160,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A9A79000, v3, OS_LOG_TYPE_DEFAULT, "Automatic invalidation timer reset: %{public}@", &v5, 0xCu);
     }
 

@@ -6,8 +6,8 @@
 
 - (void)launchDiagnosticsReporter
 {
-  v2 = [(OSAReport *)self logfile];
-  handleDiagnosticLog(3, v2);
+  logfile = [(OSAReport *)self logfile];
+  handleDiagnosticLog(3, logfile);
 }
 
 @end

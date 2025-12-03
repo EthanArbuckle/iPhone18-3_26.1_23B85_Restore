@@ -1,6 +1,6 @@
 @interface TISKEmojiSwitchEvent
 - (id)description;
-- (void)reportToSession:(id)a3;
+- (void)reportToSession:(id)session;
 @end
 
 @implementation TISKEmojiSwitchEvent
@@ -20,12 +20,12 @@
   return v2;
 }
 
-- (void)reportToSession:(id)a3
+- (void)reportToSession:(id)session
 {
   v3 = kTISKNumberOfTappedKeysCounter;
-  v4 = a3;
-  [v4 addSample:&unk_28400BF10 forKey:v3];
-  [v4 addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
+  sessionCopy = session;
+  [sessionCopy addSample:&unk_28400BF10 forKey:v3];
+  [sessionCopy addToCounterForRateMetric:1 forKey:kTISKTapTypingSpeed];
 }
 
 @end

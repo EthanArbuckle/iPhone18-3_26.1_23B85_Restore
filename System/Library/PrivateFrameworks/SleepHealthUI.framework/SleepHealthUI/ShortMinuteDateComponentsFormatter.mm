@@ -1,11 +1,11 @@
 @interface ShortMinuteDateComponentsFormatter
 - (_TtC13SleepHealthUI34ShortMinuteDateComponentsFormatter)init;
-- (_TtC13SleepHealthUI34ShortMinuteDateComponentsFormatter)initWithCoder:(id)a3;
+- (_TtC13SleepHealthUI34ShortMinuteDateComponentsFormatter)initWithCoder:(id)coder;
 @end
 
 @implementation ShortMinuteDateComponentsFormatter
 
-- (_TtC13SleepHealthUI34ShortMinuteDateComponentsFormatter)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI34ShortMinuteDateComponentsFormatter)initWithCoder:(id)coder
 {
   result = sub_269D9B100();
   __break(1u);

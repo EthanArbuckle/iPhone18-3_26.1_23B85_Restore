@@ -19,11 +19,11 @@
 
 - (void)clearUsageDefaults
 {
-  v3 = [(BSAbstractDefaultDomain *)self _store];
-  [v3 removeObjectForKey:@"SBStandByTime"];
-  [v3 removeObjectForKey:@"SBBatteryUsageTime"];
-  [v3 removeObjectForKey:@"SBWHaveChargedPartially"];
-  [v3 removeObjectForKey:@"SBInitialStandByTime"];
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store removeObjectForKey:@"SBStandByTime"];
+  [_store removeObjectForKey:@"SBBatteryUsageTime"];
+  [_store removeObjectForKey:@"SBWHaveChargedPartially"];
+  [_store removeObjectForKey:@"SBInitialStandByTime"];
   [(BSAbstractDefaultDomain *)self synchronizeDefaults];
 }
 

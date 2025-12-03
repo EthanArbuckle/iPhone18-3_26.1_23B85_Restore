@@ -1,54 +1,54 @@
 @interface VCTransportSessionIDS
-+ (int)transportTypeForConnectionType:(int)a3;
++ (int)transportTypeForConnectionType:(int)type;
 - (BOOL)isIPv6;
-- (VCTransportSessionIDS)initWithCallID:(unsigned int)a3 requireEncryptionInfo:(BOOL)a4 reportingAgent:(id)a5 notificationQueue:(id)a6 dataPath:(int)a7;
+- (VCTransportSessionIDS)initWithCallID:(unsigned int)d requireEncryptionInfo:(BOOL)info reportingAgent:(id)agent notificationQueue:(id)queue dataPath:(int)path;
 - (id)connectionSetupPiggybackBlob;
 - (id)datagramChannel;
-- (int)flushBasebandQueueForConnection:(id)a3 payloadInfoList:(id)a4;
-- (int)getSignalStrengthBars:(int *)a3 displayBars:(int *)a4 maxDisplayBars:(int *)a5;
+- (int)flushBasebandQueueForConnection:(id)connection payloadInfoList:(id)list;
+- (int)getSignalStrengthBars:(int *)bars displayBars:(int *)displayBars maxDisplayBars:(int *)maxDisplayBars;
 - (int)networkInterfaceType;
-- (int)registerBasebandNotificationsForConnection:(id)a3;
+- (int)registerBasebandNotificationsForConnection:(id)connection;
 - (unsigned)networkMTU;
 - (unsigned)remoteDeviceVersionIDS;
 - (void)cleanupDatagramChannel;
-- (void)datagramChannelEventLogForInfo:(id)a3 eventInfo:(id)a4;
+- (void)datagramChannelEventLogForInfo:(id)info eventInfo:(id)eventInfo;
 - (void)dealloc;
 - (void)deregisterBasebandNotifications;
-- (void)dispatchedProcessDatagramChannelEventInfo:(id)a3;
-- (void)handleCellularSoMaskChanged:(id)a3;
-- (void)handleChannelInfoReport:(id)a3;
-- (void)handleDefaultLinkUpdatedWithInfo:(id)a3;
-- (void)handleEncryptionConfig:(id)a3;
-- (void)handleIDSEncryptionInfoEvent:(id)a3;
-- (void)handleIDSMembershipChangeInfoEvent:(id)a3;
-- (void)handlePathMTUChange:(id)a3;
-- (void)handleRATChanged:(id)a3;
-- (void)handleReportingBlob:(id)a3;
-- (void)handleStatResponse:(id)a3;
-- (void)processDatagramChannelEventInfo:(id)a3;
-- (void)processSessionBasedServerExperiments:(id)a3;
-- (void)setConnectionSetupPiggybackBlob:(id)a3;
+- (void)dispatchedProcessDatagramChannelEventInfo:(id)info;
+- (void)handleCellularSoMaskChanged:(id)changed;
+- (void)handleChannelInfoReport:(id)report;
+- (void)handleDefaultLinkUpdatedWithInfo:(id)info;
+- (void)handleEncryptionConfig:(id)config;
+- (void)handleIDSEncryptionInfoEvent:(id)event;
+- (void)handleIDSMembershipChangeInfoEvent:(id)event;
+- (void)handlePathMTUChange:(id)change;
+- (void)handleRATChanged:(id)changed;
+- (void)handleReportingBlob:(id)blob;
+- (void)handleStatResponse:(id)response;
+- (void)processDatagramChannelEventInfo:(id)info;
+- (void)processSessionBasedServerExperiments:(id)experiments;
+- (void)setConnectionSetupPiggybackBlob:(id)blob;
 - (void)setConnectionSetupTime;
 - (void)setPiggybackBlobPreference;
 - (void)start;
-- (void)startMKMRecoveryForParticipantIDs:(id)a3;
+- (void)startMKMRecoveryForParticipantIDs:(id)ds;
 - (void)stop;
 @end
 
 @implementation VCTransportSessionIDS
 
-- (VCTransportSessionIDS)initWithCallID:(unsigned int)a3 requireEncryptionInfo:(BOOL)a4 reportingAgent:(id)a5 notificationQueue:(id)a6 dataPath:(int)a7
+- (VCTransportSessionIDS)initWithCallID:(unsigned int)d requireEncryptionInfo:(BOOL)info reportingAgent:(id)agent notificationQueue:(id)queue dataPath:(int)path
 {
   v24 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = VCTransportSessionIDS;
-  v9 = [(VCTransportSession *)&v15 initWithNotificationQueue:a6 reportingAgent:a5];
+  v9 = [(VCTransportSession *)&v15 initWithNotificationQueue:queue reportingAgent:agent];
   v10 = v9;
   if (v9)
   {
     v9->_socket = -1;
-    v9->_requireEncryptionInfo = a4;
-    v9->_dataPath = a7;
+    v9->_requireEncryptionInfo = info;
+    v9->_dataPath = path;
     v9->_useIDSLinkSuggestionFeatureFlag = [GKSConnectivitySettings isFeatureEnabledForStorebagKey:@"vc-ids-link-suggestion-enabled" userDefaultKey:@"idsLinkSuggestionEnabled" featureFlagDomain:"AVConference" featureFlagName:"UseIDSLinkSuggestion"];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -96,29 +96,29 @@
 
 - (BOOL)isIPv6
 {
-  v2 = [(VCTransportSessionIDS *)self copyActiveConnection];
-  v3 = VCConnection_ReportingIPVersion(v2) == 3;
+  copyActiveConnection = [(VCTransportSessionIDS *)self copyActiveConnection];
+  v3 = VCConnection_ReportingIPVersion(copyActiveConnection) == 3;
 
   return v3;
 }
 
 - (unsigned)networkMTU
 {
-  v2 = [(VCTransportSessionIDS *)self copyActiveConnection];
-  v3 = [v2 connectionMTU];
+  copyActiveConnection = [(VCTransportSessionIDS *)self copyActiveConnection];
+  connectionMTU = [copyActiveConnection connectionMTU];
 
-  return v3;
+  return connectionMTU;
 }
 
 - (int)networkInterfaceType
 {
-  v2 = [(VCTransportSessionIDS *)self copyActiveConnection];
-  v3 = +[VCTransportSessionIDS transportTypeForConnectionType:](VCTransportSessionIDS, "transportTypeForConnectionType:", [v2 localConnectionType]);
+  copyActiveConnection = [(VCTransportSessionIDS *)self copyActiveConnection];
+  v3 = +[VCTransportSessionIDS transportTypeForConnectionType:](VCTransportSessionIDS, "transportTypeForConnectionType:", [copyActiveConnection localConnectionType]);
 
   return v3;
 }
 
-- (void)processDatagramChannelEventInfo:(id)a3
+- (void)processDatagramChannelEventInfo:(id)info
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -127,16 +127,16 @@
   block[2] = __57__VCTransportSessionIDS_processDatagramChannelEventInfo___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = info;
   dispatch_async(stateQueue, block);
 }
 
-- (void)datagramChannelEventLogForInfo:(id)a3 eventInfo:(id)a4
+- (void)datagramChannelEventLogForInfo:(id)info eventInfo:(id)eventInfo
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = [a3 unsignedIntValue];
+  unsignedIntValue = [info unsignedIntValue];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (v6 == 10)
+  if (unsignedIntValue == 10)
   {
     if (ErrorLogLevelForModule >= 7)
     {
@@ -144,11 +144,11 @@
       v9 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [a3 intValue];
+        intValue = [info intValue];
         v11 = *MEMORY[0x1E69A5000];
-        if ([a4 objectForKeyedSubscript:*MEMORY[0x1E69A5000]])
+        if ([eventInfo objectForKeyedSubscript:*MEMORY[0x1E69A5000]])
         {
-          v12 = [objc_msgSend(objc_msgSend(a4 objectForKeyedSubscript:{v11), "description"), "UTF8String"}];
+          v12 = [objc_msgSend(objc_msgSend(eventInfo objectForKeyedSubscript:{v11), "description"), "UTF8String"}];
         }
 
         else
@@ -163,7 +163,7 @@
         v25 = 1024;
         v26 = 147;
         v27 = 1024;
-        *v28 = v10;
+        *v28 = intValue;
         *&v28[4] = 2080;
         *&v28[6] = v12;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received IDS data channel event=%d with keyIndex=%s", buf, 0x2Cu);
@@ -174,9 +174,9 @@
   else if (ErrorLogLevelForModule >= 7)
   {
     __str = 0;
-    v13 = [a3 intValue];
-    v14 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
-    asprintf(&__str, "Received IDS data channel event=%d with payload=%s", v13, v14);
+    intValue2 = [info intValue];
+    v14 = eventInfo ? [objc_msgSend(eventInfo "description")] : "<nil>";
+    asprintf(&__str, "Received IDS data channel event=%d with payload=%s", intValue2, v14);
     if (__str)
     {
       __lasts = 0;
@@ -213,16 +213,16 @@
   }
 }
 
-- (void)dispatchedProcessDatagramChannelEventInfo:(id)a3
+- (void)dispatchedProcessDatagramChannelEventInfo:(id)info
 {
   v44[3] = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4700]];
+  v5 = [info objectForKeyedSubscript:*MEMORY[0x1E69A4700]];
   if (v5)
   {
     v6 = v5;
-    [(VCTransportSessionIDS *)self datagramChannelEventLogForInfo:v5 eventInfo:a3];
-    v7 = [v6 unsignedIntValue];
-    switch(v7)
+    [(VCTransportSessionIDS *)self datagramChannelEventLogForInfo:v5 eventInfo:info];
+    unsignedIntValue = [v6 unsignedIntValue];
+    switch(unsignedIntValue)
     {
       case 1:
         v8 = [VCDefaults integerValueForKey:@"idsLinkSuggestionKey" defaultValue:0];
@@ -254,7 +254,7 @@
               v35 = 1024;
               v36 = 172;
               v37 = 1024;
-              v38 = linkPreferSuggestionFromDefaults;
+              unsignedIntValue2 = linkPreferSuggestionFromDefaults;
               v39 = 1024;
               v40 = 100;
               v41 = 1024;
@@ -266,10 +266,10 @@
           [(VCTransportSessionIDS *)self handleLinkPreferSuggestion:v13];
         }
 
-        [(VCTransportSessionIDS *)self handleLinkConnectedWithInfo:a3];
+        [(VCTransportSessionIDS *)self handleLinkConnectedWithInfo:info];
         if (!self->_sessionBasedServerExperimentsProcessed)
         {
-          [(VCTransportSessionIDS *)self processSessionBasedServerExperiments:a3];
+          [(VCTransportSessionIDS *)self processSessionBasedServerExperiments:info];
           self->_sessionBasedServerExperimentsProcessed = 1;
         }
 
@@ -277,20 +277,20 @@
         break;
       case 2:
 
-        [(VCTransportSessionIDS *)self handleLinkDisconnectedWithInfo:a3];
+        [(VCTransportSessionIDS *)self handleLinkDisconnectedWithInfo:info];
         break;
       case 3:
-        v24 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4768]];
+        v24 = [info objectForKeyedSubscript:*MEMORY[0x1E69A4768]];
         if (VCConnectionIDSIsCellularRATType([v24 intValue]))
         {
           -[VCConnectionManager setRealRATType:](self->super._connectionManager, "setRealRATType:", [v24 intValue]);
         }
 
-        v25 = [+[VCDefaults sharedInstance](VCDefaults localRATTypeOverride];
-        if (v25 != -1)
+        localRATTypeOverride = [+[VCDefaults sharedInstance](VCDefaults localRATTypeOverride];
+        if (localRATTypeOverride != -1)
         {
-          v26 = v25;
-          if (VCConnectionIDSIsCellularRATType(v25))
+          v26 = localRATTypeOverride;
+          if (VCConnectionIDSIsCellularRATType(localRATTypeOverride))
           {
             v24 = [MEMORY[0x1E696AD98] numberWithInt:v26];
           }
@@ -300,10 +300,10 @@
         break;
       case 4:
 
-        [(VCTransportSessionIDS *)self handleDefaultLinkUpdatedWithInfo:a3];
+        [(VCTransportSessionIDS *)self handleDefaultLinkUpdatedWithInfo:info];
         break;
       case 5:
-        v22 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4720]];
+        v22 = [info objectForKeyedSubscript:*MEMORY[0x1E69A4720]];
 
         [(VCTransportSessionIDS *)self handlePreConnectionDataReceived:v22];
         break;
@@ -312,72 +312,72 @@
       case 12:
         goto LABEL_19;
       case 7:
-        v21 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46A0]];
+        v21 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46A0]];
 
         [(VCTransportSessionIDS *)self handleCellularMTUChanged:v21];
         break;
       case 8:
-        v20 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A4710]];
+        v20 = [info objectForKeyedSubscript:*MEMORY[0x1E69A4710]];
 
         [(VCTransportSessionIDS *)self handleChannelInfoReport:v20];
         break;
       case 10:
 
-        [(VCTransportSessionIDS *)self handleIDSEncryptionInfoEvent:a3];
+        [(VCTransportSessionIDS *)self handleIDSEncryptionInfoEvent:info];
         break;
       case 11:
-        v27 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46D8]];
+        v27 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46D8]];
 
         [(VCTransportSessionIDS *)self handleIDSMembershipChangeInfoEvent:v27];
         break;
       case 13:
-        v29 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46F8]];
+        v29 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46F8]];
 
         [(VCTransportSessionIDS *)self handleStatResponse:v29];
         break;
       case 14:
 
-        [(VCTransportSessionIDS *)self handleSessionInfoResponse:a3];
+        [(VCTransportSessionIDS *)self handleSessionInfoResponse:info];
         break;
       case 15:
-        v23 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46E0]];
+        v23 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46E0]];
 
         [(VCTransportSessionIDS *)self handleProbingResponse:v23];
         break;
       case 16:
-        v28 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46A8]];
+        v28 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46A8]];
 
         [(VCTransportSessionIDS *)self handleCellularSoMaskChanged:v28];
         break;
       case 17:
 
-        [(VCTransportSessionIDS *)self handleLinkConstrainsChanged:a3];
+        [(VCTransportSessionIDS *)self handleLinkConstrainsChanged:info];
         break;
       case 18:
-        v30 = [a3 mutableCopy];
+        v30 = [info mutableCopy];
         [v30 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"transportSessionEventPayloadKey_IsCellular"];
         [(VCTransportSessionIDS *)self handleLinkConstrainsChanged:v30];
 
         break;
       case 19:
 
-        [(VCTransportSessionIDS *)self handleLinkPreferSuggestion:a3];
+        [(VCTransportSessionIDS *)self handleLinkPreferSuggestion:info];
         break;
       case 20:
-        v19 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46E8]];
+        v19 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46E8]];
 
         [(VCTransportSessionIDS *)self handleReportingBlob:v19];
         break;
       case 21:
 
-        [(VCTransportSessionIDS *)self handleEncryptionConfig:a3];
+        [(VCTransportSessionIDS *)self handleEncryptionConfig:info];
         break;
       case 22:
 
-        [(VCTransportSessionIDS *)self handlePathMTUChange:a3];
+        [(VCTransportSessionIDS *)self handlePathMTUChange:info];
         break;
       default:
-        if (v7 == 1001)
+        if (unsignedIntValue == 1001)
         {
           reportingSymptom();
           if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -406,7 +406,7 @@ LABEL_19:
               v35 = 1024;
               v36 = 255;
               v37 = 1024;
-              v38 = [v6 unsignedIntValue];
+              unsignedIntValue2 = [v6 unsignedIntValue];
               _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received unknown IDSDatagramChannelEvent %d", buf, 0x22u);
             }
           }
@@ -432,12 +432,12 @@ LABEL_19:
   remoteFrameworkVersion = self->super._remoteFrameworkVersion;
   if (remoteFrameworkVersion)
   {
-    v3 = [(NSString *)remoteFrameworkVersion intValue];
-    if (v3 >= 1700)
+    intValue = [(NSString *)remoteFrameworkVersion intValue];
+    if (intValue >= 1700)
     {
-      if (v3 >= 0x71D)
+      if (intValue >= 0x71D)
       {
-        if (v3 < 0x7AD)
+        if (intValue < 0x7AD)
         {
           v4 = 3;
         }
@@ -726,7 +726,7 @@ void __29__VCTransportSessionIDS_stop__block_invoke(uint64_t a1)
   self->_datagramChannel = 0;
 }
 
-- (void)startMKMRecoveryForParticipantIDs:(id)a3
+- (void)startMKMRecoveryForParticipantIDs:(id)ds
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -742,15 +742,15 @@ void __29__VCTransportSessionIDS_stop__block_invoke(uint64_t a1)
       v11 = 1024;
       v12 = 417;
       v13 = 2112;
-      v14 = a3;
+      dsCopy = ds;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Start MKM recovery for pariticipantIDs %@", &v7, 0x26u);
     }
   }
 
-  [(VCDatagramChannelIDS *)self->_datagramChannel startMKMRecoveryForParticipantIDs:a3];
+  [(VCDatagramChannelIDS *)self->_datagramChannel startMKMRecoveryForParticipantIDs:ds];
 }
 
-- (void)setConnectionSetupPiggybackBlob:(id)a3
+- (void)setConnectionSetupPiggybackBlob:(id)blob
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super._stateQueue;
@@ -759,7 +759,7 @@ void __29__VCTransportSessionIDS_stop__block_invoke(uint64_t a1)
   block[2] = __57__VCTransportSessionIDS_setConnectionSetupPiggybackBlob___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = blob;
   dispatch_async(stateQueue, block);
 }
 
@@ -871,10 +871,10 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
   return result;
 }
 
-- (void)handleDefaultLinkUpdatedWithInfo:(id)a3
+- (void)handleDefaultLinkUpdatedWithInfo:(id)info
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46B8]];
+  v3 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46B8]];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
@@ -888,17 +888,17 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
       v10 = 1024;
       v11 = 470;
       v12 = 1024;
-      v13 = [v3 linkID];
+      linkID = [v3 linkID];
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: default link updated to %d", &v6, 0x22u);
     }
   }
 }
 
-- (void)handleRATChanged:(id)a3
+- (void)handleRATChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v14 = *MEMORY[0x1E69E9840];
-  if ([a3 intValue] == 8)
+  if ([changed intValue] == 8)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -919,18 +919,18 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
 
   else
   {
-    if (-[VCTransportSessionIDS remoteDeviceVersionIDS](self, "remoteDeviceVersionIDS") == 1 && ([v3 intValue] == 1009 || objc_msgSend(v3, "intValue") == 1010))
+    if (-[VCTransportSessionIDS remoteDeviceVersionIDS](self, "remoteDeviceVersionIDS") == 1 && ([changedCopy intValue] == 1009 || objc_msgSend(changedCopy, "intValue") == 1010))
     {
-      v3 = &unk_1F5799C00;
+      changedCopy = &unk_1F5799C00;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{VCConnectionIDSCellTechForRATType(objc_msgSend(v3, "intValue"))}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{VCConnectionIDSCellTechForRATType(objc_msgSend(changedCopy, "intValue"))}];
 
     [(VCTransportSession *)self callEventHandlerWithEvent:8 info:v7];
   }
 }
 
-- (void)handleIDSEncryptionInfoEvent:(id)a3
+- (void)handleIDSEncryptionInfoEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -946,7 +946,7 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
       v11 = 1024;
       v12 = 500;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2080;
       v16 = "[VCTransportSessionIDS handleIDSEncryptionInfoEvent:]";
       v17 = 1024;
@@ -955,10 +955,10 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
     }
   }
 
-  [(VCTransportSession *)self callEventHandlerWithEvent:11 info:a3];
+  [(VCTransportSession *)self callEventHandlerWithEvent:11 info:event];
 }
 
-- (void)handleIDSMembershipChangeInfoEvent:(id)a3
+- (void)handleIDSMembershipChangeInfoEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -974,7 +974,7 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
       v11 = 1024;
       v12 = 506;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2080;
       v16 = "[VCTransportSessionIDS handleIDSMembershipChangeInfoEvent:]";
       v17 = 1024;
@@ -983,27 +983,27 @@ id __53__VCTransportSessionIDS_connectionSetupPiggybackBlob__block_invoke(uint64
     }
   }
 
-  [(VCTransportSession *)self callEventHandlerWithEvent:12 info:a3];
+  [(VCTransportSession *)self callEventHandlerWithEvent:12 info:event];
 }
 
-- (void)handleCellularSoMaskChanged:(id)a3
+- (void)handleCellularSoMaskChanged:(id)changed
 {
-  if (a3)
+  if (changed)
   {
-    v4 = [a3 unsignedIntValue];
-    if ((v4 & 4) != 0)
+    unsignedIntValue = [changed unsignedIntValue];
+    if ((unsignedIntValue & 4) != 0)
     {
       v5 = &unk_1F5799C18;
     }
 
-    else if ((v4 & 8) != 0)
+    else if ((unsignedIntValue & 8) != 0)
     {
       v5 = &unk_1F5799C30;
     }
 
     else
     {
-      if ((v4 & 1) == 0)
+      if ((unsignedIntValue & 1) == 0)
       {
         return;
       }
@@ -1045,12 +1045,12 @@ uint64_t __47__VCTransportSessionIDS_setConnectionSetupTime__block_invoke(uint64
   return result;
 }
 
-- (void)handleChannelInfoReport:(id)a3
+- (void)handleChannelInfoReport:(id)report
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ([a3 objectForKeyedSubscript:&unk_1F5799C48])
+  if ([report objectForKeyedSubscript:&unk_1F5799C48])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{&unk_1F5799C48), "integerValue"}];
+    v5 = [objc_msgSend(report objectForKeyedSubscript:{&unk_1F5799C48), "integerValue"}];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
@@ -1073,9 +1073,9 @@ uint64_t __47__VCTransportSessionIDS_setConnectionSetupTime__block_invoke(uint64
     [(VCTransportSessionIDS *)self setConnectionSetupTime];
   }
 
-  if ([a3 objectForKeyedSubscript:&unk_1F5799C60])
+  if ([report objectForKeyedSubscript:&unk_1F5799C60])
   {
-    -[VCTransportSessionIDS setQuickRelayServerProvider:](self, "setQuickRelayServerProvider:", [objc_msgSend(a3 objectForKeyedSubscript:{&unk_1F5799C60), "integerValue"}]);
+    -[VCTransportSessionIDS setQuickRelayServerProvider:](self, "setQuickRelayServerProvider:", [objc_msgSend(report objectForKeyedSubscript:{&unk_1F5799C60), "integerValue"}]);
   }
 }
 
@@ -1097,14 +1097,14 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   return result;
 }
 
-- (void)handleReportingBlob:(id)a3
+- (void)handleReportingBlob:(id)blob
 {
   v16[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v15 = @"IDSCB";
-    v16[0] = a3;
+    v16[0] = blob;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     reportingGenericEvent();
     if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -1123,7 +1123,7 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
           v11 = 1024;
           v12 = 607;
           v13 = 2112;
-          v14 = a3;
+          blobCopy = blob;
           _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Received IDS reportingBlob=%@", &v7, 0x26u);
         }
       }
@@ -1141,9 +1141,9 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   }
 }
 
-- (void)handleStatResponse:(id)a3
+- (void)handleStatResponse:(id)response
 {
-  if (a3)
+  if (response)
   {
     connectionManager = self->super._connectionManager;
 
@@ -1160,9 +1160,9 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   }
 }
 
-- (void)handleEncryptionConfig:(id)a3
+- (void)handleEncryptionConfig:(id)config
 {
-  if (a3)
+  if (config)
   {
     connectionManager = self->super._connectionManager;
 
@@ -1175,29 +1175,29 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   }
 }
 
-- (void)handlePathMTUChange:(id)a3
+- (void)handlePathMTUChange:(id)change
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4A40]), "unsignedCharValue"}];
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69A4718]), "unsignedIntValue"}];
+  v5 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E69A4A40]), "unsignedCharValue"}];
+  v6 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E69A4718]), "unsignedIntValue"}];
   connectionManager = self->super._connectionManager;
 
   [(VCConnectionManager *)connectionManager updatePathMTU:v6 linkID:v5];
 }
 
-+ (int)transportTypeForConnectionType:(int)a3
++ (int)transportTypeForConnectionType:(int)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return 0;
   }
 
   else
   {
-    return dword_1DBD491B0[a3];
+    return dword_1DBD491B0[type];
   }
 }
 
-- (int)getSignalStrengthBars:(int *)a3 displayBars:(int *)a4 maxDisplayBars:(int *)a5
+- (int)getSignalStrengthBars:(int *)bars displayBars:(int *)displayBars maxDisplayBars:(int *)maxDisplayBars
 {
   if (VCCTServiceMonitor_GetSignalStrength())
   {
@@ -1210,21 +1210,21 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   }
 }
 
-- (int)flushBasebandQueueForConnection:(id)a3 payloadInfoList:(id)a4
+- (int)flushBasebandQueueForConnection:(id)connection payloadInfoList:(id)list
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!VCConnection_IsLocalOnCellular(a3))
+  if (!VCConnection_IsLocalOnCellular(connection))
   {
     return -2144665542;
   }
 
-  v21 = self;
-  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a4, "count")}];
+  selfCopy = self;
+  v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(list, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v40 objects:v39 count:16];
+  v7 = [list countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1234,7 +1234,7 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
     v9 = *MEMORY[0x1E69A4AF8];
     v10 = *MEMORY[0x1E69A4AF0];
     v11 = *MEMORY[0x1E69A4AD8];
-    obj = a4;
+    obj = list;
     do
     {
       for (i = 0; i != v8; ++i)
@@ -1262,13 +1262,13 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
 
   v37 = *MEMORY[0x1E69A4728];
   v35[0] = *MEMORY[0x1E69A4A40];
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(a3)];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(connection)];
   v35[1] = *MEMORY[0x1E69A4730];
   v36[0] = v15;
   v36[1] = v26;
   v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:2];
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-  [(VCDatagramChannelIDS *)v21->_datagramChannel setChannelPreferences:v16];
+  [(VCDatagramChannelIDS *)selfCopy->_datagramChannel setChannelPreferences:v16];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v17 = VRTraceErrorLogLevelToCSTR();
@@ -1303,7 +1303,7 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   return 0;
 }
 
-- (int)registerBasebandNotificationsForConnection:(id)a3
+- (int)registerBasebandNotificationsForConnection:(id)connection
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E69A4738];
@@ -1314,7 +1314,7 @@ uint64_t __62__VCTransportSessionIDS_processSessionBasedServerExperiments___bloc
   v8[1] = v6;
   v9[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->super._basebandNotificationRegistrationToken];
   v8[2] = *MEMORY[0x1E69A4A40];
-  v9[2] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(a3)];
+  v9[2] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:VCConnectionIDS_LinkID(connection)];
   v11[0] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
   -[VCDatagramChannelIDS setChannelPreferences:](self->_datagramChannel, "setChannelPreferences:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1]);
   return 0;
@@ -1395,10 +1395,10 @@ void __30__VCTransportSessionIDS_start__block_invoke_2(uint64_t a1, uint64_t a2,
   }
 }
 
-- (void)processSessionBasedServerExperiments:(id)a3
+- (void)processSessionBasedServerExperiments:(id)experiments
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!experiments)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)
     {
@@ -1421,7 +1421,7 @@ LABEL_16:
     return;
   }
 
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
+  v4 = [experiments objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
   if (!v4)
   {
     if (VRTraceGetErrorLogLevelForModule() < 7)

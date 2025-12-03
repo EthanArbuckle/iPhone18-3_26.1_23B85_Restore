@@ -1,6 +1,6 @@
 @interface KeyTransparencyContactMapping
 + (id)countryCodeMap;
-+ (id)mapContactsToIDS:(id)a3;
++ (id)mapContactsToIDS:(id)s;
 @end
 
 @implementation KeyTransparencyContactMapping
@@ -17,12 +17,12 @@
   return v3;
 }
 
-+ (id)mapContactsToIDS:(id)a3
++ (id)mapContactsToIDS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   +[NSMutableSet set];
-  v47 = v46 = v3;
-  [v3 phoneNumbers];
+  v47 = v46 = sCopy;
+  [sCopy phoneNumbers];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -43,14 +43,14 @@
         }
 
         v8 = *(*(&v53 + 1) + 8 * v7);
-        v9 = [v8 value];
-        v10 = v9;
-        if (v9)
+        value = [v8 value];
+        v10 = value;
+        if (value)
         {
-          v11 = [v9 digits];
-          if (v11)
+          digits = [value digits];
+          if (digits)
           {
-            v12 = [v10 countryCode];
+            countryCode = [v10 countryCode];
             v13 = IDSCopyIDForPhoneNumberWithOptions();
 
             if (qword_10039CC68 != -1)
@@ -62,12 +62,12 @@
             if (os_log_type_enabled(qword_10039CC70, OS_LOG_TYPE_DEFAULT))
             {
               v15 = v14;
-              v16 = [v10 digits];
-              v17 = [v10 countryCode];
+              digits2 = [v10 digits];
+              countryCode2 = [v10 countryCode];
               *buf = 138413058;
-              v59 = v16;
+              v59 = digits2;
               v60 = 2112;
-              v61 = v17;
+              v61 = countryCode2;
               v62 = 2160;
               v63 = 1752392040;
               v64 = 2112;
@@ -75,10 +75,10 @@
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "mapContactsToIDS adding phonenumber %@[%@] as %{mask.hash}@", buf, 0x2Au);
             }
 
-            v18 = [v10 countryCode];
-            if (v18)
+            countryCode3 = [v10 countryCode];
+            if (countryCode3)
             {
-              v19 = v18;
+              v19 = countryCode3;
               goto LABEL_35;
             }
 
@@ -100,13 +100,13 @@
             }
 
             v19 = CPPhoneNumberCopyHomeCountryCode();
-            v23 = [a1 countryCodeMap];
+            countryCodeMap = [self countryCodeMap];
             v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d", [v19 intValue]);
-            v25 = [v23 objectForKey:v24];
+            v25 = [countryCodeMap objectForKey:v24];
 
             if (v25)
             {
-              v26 = [v10 digits];
+              digits3 = [v10 digits];
               v27 = IDSCopyIDForPhoneNumberWithOptions();
 
               if (qword_10039CC68 != -1)
@@ -118,9 +118,9 @@
               if (os_log_type_enabled(qword_10039CC70, OS_LOG_TYPE_DEFAULT))
               {
                 v29 = v28;
-                v30 = [v10 digits];
+                digits4 = [v10 digits];
                 *buf = 138413058;
-                v59 = v30;
+                v59 = digits4;
                 v60 = 2112;
                 v61 = v25;
                 v62 = 2160;
@@ -201,12 +201,12 @@ LABEL_40:
     while (v5);
   }
 
-  v31 = [v46 emailAddresses];
+  emailAddresses = [v46 emailAddresses];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v32 = [v31 countByEnumeratingWithState:&v49 objects:v57 count:16];
+  v32 = [emailAddresses countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v32)
   {
     v33 = v32;
@@ -218,15 +218,15 @@ LABEL_40:
       {
         if (*v50 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v36 = *(*(&v49 + 1) + 8 * v35);
-        v37 = [v36 value];
+        value2 = [v36 value];
 
-        if (v37)
+        if (value2)
         {
-          v38 = [v36 value];
+          value3 = [v36 value];
           v39 = IDSCopyIDForEmailAddress();
 
           if (qword_10039CC68 != -1)
@@ -238,11 +238,11 @@ LABEL_40:
           if (os_log_type_enabled(qword_10039CC70, OS_LOG_TYPE_DEFAULT))
           {
             v41 = v40;
-            v42 = [v36 value];
+            value4 = [v36 value];
             *buf = 141558786;
             v59 = 1752392040;
             v60 = 2112;
-            v61 = v42;
+            v61 = value4;
             v62 = 2160;
             v63 = 1752392040;
             v64 = 2112;
@@ -280,7 +280,7 @@ LABEL_40:
       }
 
       while (v33 != v35);
-      v33 = [v31 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      v33 = [emailAddresses countByEnumeratingWithState:&v49 objects:v57 count:16];
     }
 
     while (v33);

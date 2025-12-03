@@ -1,7 +1,7 @@
 @interface _UIWindowSceneDeviceOrientationSettingsDiffAction
 - (FBSSceneSettingsDiffInspector)sceneSettingsDeviceOrientationDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateDeviceOrientationWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateDeviceOrientationWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext;
 @end
 
 @implementation _UIWindowSceneDeviceOrientationSettingsDiffAction
@@ -22,45 +22,45 @@
   return sceneSettingsDeviceOrientationDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = a5;
+  sceneCopy = scene;
+  contextCopy = context;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneDeviceOrientationSettingsDiffAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneDeviceOrientationSettingsDiffAction.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
   v18 = 0;
-  v15 = v12;
-  v16 = [(_UIWindowSceneDeviceOrientationSettingsDiffAction *)self sceneSettingsDeviceOrientationDiffInspector];
-  [v16 inspectDiff:v14 withContext:&v18];
+  v15 = sceneCopy;
+  sceneSettingsDeviceOrientationDiffInspector = [(_UIWindowSceneDeviceOrientationSettingsDiffAction *)self sceneSettingsDeviceOrientationDiffInspector];
+  [sceneSettingsDeviceOrientationDiffInspector inspectDiff:diffCopy withContext:&v18];
 
-  [(_UIWindowSceneDeviceOrientationSettingsDiffAction *)self _updateDeviceOrientationWithSettingObserverContext:v18 windowScene:v15 transitionContext:v13];
+  [(_UIWindowSceneDeviceOrientationSettingsDiffAction *)self _updateDeviceOrientationWithSettingObserverContext:v18 windowScene:v15 transitionContext:contextCopy];
 }
 
-- (void)_updateDeviceOrientationWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5
+- (void)_updateDeviceOrientationWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  contextCopy = context;
+  sceneCopy = scene;
+  if (contextCopy)
   {
-    v8 = a5;
-    v9 = [v7 _settingsScene];
-    v10 = [v9 _FBSScene];
+    transitionContextCopy = transitionContext;
+    _settingsScene = [sceneCopy _settingsScene];
+    _FBSScene = [_settingsScene _FBSScene];
 
-    v11 = [v10 uiSettings];
-    v12 = [v11 deviceOrientation];
+    uiSettings = [_FBSScene uiSettings];
+    deviceOrientation = [uiSettings deviceOrientation];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __134___UIWindowSceneDeviceOrientationSettingsDiffAction__updateDeviceOrientationWithSettingObserverContext_windowScene_transitionContext___block_invoke;
     v13[3] = &unk_1E70F9B38;
-    v14 = v7;
-    v15 = v12;
-    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v8, v13, 0);
+    v14 = sceneCopy;
+    v15 = deviceOrientation;
+    _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(transitionContextCopy, v13, 0);
   }
 }
 

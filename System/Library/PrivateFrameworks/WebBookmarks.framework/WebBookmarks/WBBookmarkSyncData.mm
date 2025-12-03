@@ -1,24 +1,24 @@
 @interface WBBookmarkSyncData
-+ (id)positionFromContentsOfData:(id)a3;
-+ (id)syncDataWithContentsOfData:(id)a3;
-- (BOOL)hasGenerationForKey:(id)a3;
++ (id)positionFromContentsOfData:(id)data;
++ (id)syncDataWithContentsOfData:(id)data;
+- (BOOL)hasGenerationForKey:(id)key;
 - (CKRecord)record;
 - (CKShare)shareRecord;
 - (NSArray)auxiliaryRecordIDs;
 - (NSData)encodedBookmarkSyncData;
 - (NSDictionary)positionDictionaryRepresentation;
 - (WBBookmarkSyncData)init;
-- (WBBookmarkSyncData)initWithCoder:(id)a3;
-- (id)auxiliaryRecordForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)generationForKey:(id)a3;
+- (WBBookmarkSyncData)initWithCoder:(id)coder;
+- (id)auxiliaryRecordForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)generationForKey:(id)key;
 - (void)clearAllCKRecords;
 - (void)clearAllGenerationsExceptState;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementGenerationForKey:(id)a3 withDeviceIdentifier:(id)a4;
-- (void)setAuxiliaryRecord:(id)a3 forKey:(id)a4;
-- (void)setGeneration:(id)a3 forKey:(id)a4;
-- (void)setPositionDictionaryRepresentation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementGenerationForKey:(id)key withDeviceIdentifier:(id)identifier;
+- (void)setAuxiliaryRecord:(id)record forKey:(id)key;
+- (void)setGeneration:(id)generation forKey:(id)key;
+- (void)setPositionDictionaryRepresentation:(id)representation;
 @end
 
 @implementation WBBookmarkSyncData
@@ -30,44 +30,44 @@
   return v2;
 }
 
-+ (id)positionFromContentsOfData:(id)a3
++ (id)positionFromContentsOfData:(id)data
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:0];
+    v6 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
     v7 = objc_opt_class();
-    v8 = NSStringFromClass(a1);
+    v8 = NSStringFromClass(self);
     [v6 setClass:v7 forClassName:v8];
 
     [v6 setClass:objc_opt_class() forClassName:@"CloudBookmarkPosition"];
     [v6 setClass:objc_opt_class() forClassName:@"CloudBookmarkPositionSortValue"];
     v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
-    v10 = [v9 position];
+    position = [v9 position];
 
     objc_autoreleasePoolPop(v5);
   }
 
   else
   {
-    v10 = 0;
+    position = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return position;
 }
 
-+ (id)syncDataWithContentsOfData:(id)a3
++ (id)syncDataWithContentsOfData:(id)data
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:0];
+    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
     [v5 setClass:objc_opt_class() forClassName:@"CloudBookmarkSyncData"];
     [v5 setClass:objc_opt_class() forClassName:@"CloudBookmarkGeneration"];
     [v5 setClass:objc_opt_class() forClassName:@"CloudBookmarkPosition"];
@@ -92,9 +92,9 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x277CCA308]];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
 - (WBBookmarkSyncData)init
@@ -104,13 +104,13 @@
   v2 = [(WBBookmarkSyncData *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     generations = v2->_generations;
-    v2->_generations = v3;
+    v2->_generations = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     auxiliaryRecords = v2->_auxiliaryRecords;
-    v2->_auxiliaryRecords = v5;
+    v2->_auxiliaryRecords = dictionary2;
 
     extraPositionData = v2->_extraPositionData;
     v2->_extraPositionData = MEMORY[0x277CBEC10];
@@ -121,17 +121,17 @@
   return v2;
 }
 
-- (WBBookmarkSyncData)initWithCoder:(id)a3
+- (WBBookmarkSyncData)initWithCoder:(id)coder
 {
   v44[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = WBBookmarkSyncData;
   v5 = [(WBBookmarkSyncData *)&v42 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EncodedCKRecordSystemFields"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EncodedCKRecordSystemFields"];
     v8 = [v6 safari_initWithEncodedRecordData:v7];
     record = v5->_record;
     v5->_record = v8;
@@ -142,24 +142,24 @@
     v44[2] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:3];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Generations"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Generations"];
     v14 = [v13 mutableCopy];
     generations = v5->_generations;
     v5->_generations = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Position"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Position"];
     position = v5->_position;
     v5->_position = v16;
 
-    v5->_minimumAPIVersion = [v4 decodeIntegerForKey:@"MinimumAPIVersion"];
-    v5->_state = [v4 decodeIntegerForKey:@"Deleted"];
-    v5->_modifiedAttributeMask = [v4 decodeIntegerForKey:@"ModifiedAttributeMask"];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ParentRecordID"];
+    v5->_minimumAPIVersion = [coderCopy decodeIntegerForKey:@"MinimumAPIVersion"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"Deleted"];
+    v5->_modifiedAttributeMask = [coderCopy decodeIntegerForKey:@"ModifiedAttributeMask"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ParentRecordID"];
     parentRecordID = v5->_parentRecordID;
     v5->_parentRecordID = v18;
 
-    v5->_isDeletingRecordZone = [v4 decodeBoolForKey:@"IsDeletedRecordZone"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ShareRecord"];
+    v5->_isDeletingRecordZone = [coderCopy decodeBoolForKey:@"IsDeletedRecordZone"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ShareRecord"];
     shareRecord = v5->_shareRecord;
     v5->_shareRecord = v20;
 
@@ -168,21 +168,21 @@
     v24 = objc_opt_class();
     v25 = objc_opt_class();
     v26 = [v22 setWithObjects:{v23, v24, v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"AuxiliaryRecords"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"AuxiliaryRecords"];
     v28 = [v27 mutableCopy];
     v29 = v28;
     if (v28)
     {
-      v30 = v28;
+      dictionary = v28;
     }
 
     else
     {
-      v30 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     auxiliaryRecords = v5->_auxiliaryRecords;
-    v5->_auxiliaryRecords = v30;
+    v5->_auxiliaryRecords = dictionary;
 
     v32 = MEMORY[0x277CBEB98];
     v43[0] = objc_opt_class();
@@ -192,7 +192,7 @@
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:4];
     v34 = [v32 setWithArray:v33];
 
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"ExtraPositionData"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"ExtraPositionData"];
     extraPositionData = v5->_extraPositionData;
     v5->_extraPositionData = v35;
 
@@ -211,45 +211,45 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(CKRecord *)self->_record safari_encodedSystemFieldsData];
-  [v9 encodeObject:v4 forKey:@"EncodedCKRecordSystemFields"];
+  coderCopy = coder;
+  safari_encodedSystemFieldsData = [(CKRecord *)self->_record safari_encodedSystemFieldsData];
+  [coderCopy encodeObject:safari_encodedSystemFieldsData forKey:@"EncodedCKRecordSystemFields"];
 
-  [v9 encodeObject:self->_generations forKey:@"Generations"];
-  [v9 encodeObject:self->_position forKey:@"Position"];
-  [v9 encodeInteger:self->_minimumAPIVersion forKey:@"MinimumAPIVersion"];
-  [v9 encodeObject:self->_extraPositionData forKey:@"ExtraPositionData"];
-  [v9 encodeObject:self->_parentRecordID forKey:@"ParentRecordID"];
-  [v9 encodeObject:self->_shareRecord forKey:@"ShareRecord"];
-  [v9 encodeBool:self->_isDeletingRecordZone forKey:@"IsDeletedRecordZone"];
+  [coderCopy encodeObject:self->_generations forKey:@"Generations"];
+  [coderCopy encodeObject:self->_position forKey:@"Position"];
+  [coderCopy encodeInteger:self->_minimumAPIVersion forKey:@"MinimumAPIVersion"];
+  [coderCopy encodeObject:self->_extraPositionData forKey:@"ExtraPositionData"];
+  [coderCopy encodeObject:self->_parentRecordID forKey:@"ParentRecordID"];
+  [coderCopy encodeObject:self->_shareRecord forKey:@"ShareRecord"];
+  [coderCopy encodeBool:self->_isDeletingRecordZone forKey:@"IsDeletedRecordZone"];
   if ([(NSMutableDictionary *)self->_auxiliaryRecords count])
   {
     v5 = [(NSMutableDictionary *)self->_auxiliaryRecords safari_mapAndFilterKeysAndObjectsUsingBlock:&__block_literal_global_151];
-    [v9 encodeObject:v5 forKey:@"AuxiliaryRecords"];
+    [coderCopy encodeObject:v5 forKey:@"AuxiliaryRecords"];
   }
 
   state = self->_state;
   if (state)
   {
-    [v9 encodeInteger:state forKey:@"Deleted"];
+    [coderCopy encodeInteger:state forKey:@"Deleted"];
   }
 
   modifiedAttributeMask = self->_modifiedAttributeMask;
-  v8 = v9;
+  v8 = coderCopy;
   if (modifiedAttributeMask)
   {
-    [v9 encodeInteger:modifiedAttributeMask forKey:@"ModifiedAttributeMask"];
-    v8 = v9;
+    [coderCopy encodeInteger:modifiedAttributeMask forKey:@"ModifiedAttributeMask"];
+    v8 = coderCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(WBBookmarkSyncData *)self encodedBookmarkSyncData];
-  v6 = [v4 syncDataWithContentsOfData:v5];
+  encodedBookmarkSyncData = [(WBBookmarkSyncData *)self encodedBookmarkSyncData];
+  v6 = [v4 syncDataWithContentsOfData:encodedBookmarkSyncData];
 
   return v6;
 }
@@ -267,17 +267,17 @@
   position = self->_position;
   if (position)
   {
-    v5 = [(WBSCRDTPosition *)position dictionaryRepresentation];
-    [v3 setObject:v5 forKeyedSubscript:@"default"];
+    dictionaryRepresentation = [(WBSCRDTPosition *)position dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"default"];
   }
 
   return v3;
 }
 
-- (void)setPositionDictionaryRepresentation:(id)a3
+- (void)setPositionDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v11 = [v4 mutableCopy];
+  representationCopy = representation;
+  v11 = [representationCopy mutableCopy];
   [v11 removeObjectForKey:@"default"];
   v5 = [v11 copy];
   v6 = v5;
@@ -293,7 +293,7 @@
 
   objc_storeStrong(&self->_extraPositionData, v7);
 
-  v8 = [v4 safari_dictionaryForKey:@"default"];
+  v8 = [representationCopy safari_dictionaryForKey:@"default"];
 
   if (v8)
   {
@@ -317,47 +317,47 @@
   shareRecord = self->_shareRecord;
   self->_shareRecord = 0;
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   auxiliaryRecords = self->_auxiliaryRecords;
-  self->_auxiliaryRecords = v5;
+  self->_auxiliaryRecords = dictionary;
 
   MEMORY[0x2821F96F8]();
 }
 
 - (NSArray)auxiliaryRecordIDs
 {
-  v2 = [(NSMutableDictionary *)self->_auxiliaryRecords allValues];
-  v3 = [v2 safari_mapObjectsUsingBlock:&__block_literal_global_154];
+  allValues = [(NSMutableDictionary *)self->_auxiliaryRecords allValues];
+  v3 = [allValues safari_mapObjectsUsingBlock:&__block_literal_global_154];
 
   return v3;
 }
 
-- (id)auxiliaryRecordForKey:(id)a3
+- (id)auxiliaryRecordForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_auxiliaryRecords objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_auxiliaryRecords objectForKeyedSubscript:key];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)setAuxiliaryRecord:(id)a3 forKey:(id)a4
+- (void)setAuxiliaryRecord:(id)record forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)self->_auxiliaryRecords setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [record copy];
+  [(NSMutableDictionary *)self->_auxiliaryRecords setObject:v7 forKeyedSubscript:keyCopy];
 }
 
-- (BOOL)hasGenerationForKey:(id)a3
+- (BOOL)hasGenerationForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_generations objectForKeyedSubscript:a3];
-  v4 = [v3 isValid];
+  v3 = [(NSMutableDictionary *)self->_generations objectForKeyedSubscript:key];
+  isValid = [v3 isValid];
 
-  return v4;
+  return isValid;
 }
 
-- (id)generationForKey:(id)a3
+- (id)generationForKey:(id)key
 {
-  v3 = [(NSMutableDictionary *)self->_generations objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_generations objectForKeyedSubscript:key];
   v4 = v3;
   if (v3)
   {
@@ -374,31 +374,31 @@
   return v6;
 }
 
-- (void)setGeneration:(id)a3 forKey:(id)a4
+- (void)setGeneration:(id)generation forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 isValid];
+  generationCopy = generation;
+  keyCopy = key;
+  isValid = [generationCopy isValid];
   generations = self->_generations;
-  if (v7)
+  if (isValid)
   {
-    [(NSMutableDictionary *)generations setObject:v9 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)generations setObject:generationCopy forKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)generations removeObjectForKey:v6];
+    [(NSMutableDictionary *)generations removeObjectForKey:keyCopy];
   }
 }
 
-- (void)incrementGenerationForKey:(id)a3 withDeviceIdentifier:(id)a4
+- (void)incrementGenerationForKey:(id)key withDeviceIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(WBBookmarkSyncData *)self generationForKey:v7];
-  v8 = [v9 incrementedGenerationWithDeviceIdentifier:v6];
+  identifierCopy = identifier;
+  keyCopy = key;
+  v9 = [(WBBookmarkSyncData *)self generationForKey:keyCopy];
+  v8 = [v9 incrementedGenerationWithDeviceIdentifier:identifierCopy];
 
-  [(NSMutableDictionary *)self->_generations setObject:v8 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_generations setObject:v8 forKeyedSubscript:keyCopy];
 }
 
 - (void)clearAllGenerationsExceptState

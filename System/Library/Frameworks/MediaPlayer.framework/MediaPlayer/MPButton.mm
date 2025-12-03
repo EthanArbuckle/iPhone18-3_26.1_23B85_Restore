@@ -1,23 +1,23 @@
 @interface MPButton
 + (UIEdgeInsets)easyTouchDefaultHitRectInsets;
-+ (id)easyTouchButtonWithType:(int64_t)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (id)easyTouchButtonWithType:(int64_t)type;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (MPButton)initWithFrame:(CGRect)a3;
+- (MPButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)hitRectInsets;
 - (void)_delayedTriggerHold;
 - (void)_handleTouchCancel;
 - (void)_handleTouchDown;
 - (void)_handleTouchUp;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAlignmentRectInsets:(UIEdgeInsets)a3;
-- (void)setHitTestDebugEnabled:(BOOL)a3;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setAlignmentRectInsets:(UIEdgeInsets)insets;
+- (void)setHitTestDebugEnabled:(BOOL)enabled;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MPButton
@@ -111,29 +111,29 @@
   [(MPButton *)self sendActionsForControlEvents:0x1000000];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MPButton;
-  [(MPButton *)&v5 touchesEnded:a3 withEvent:a4];
+  [(MPButton *)&v5 touchesEnded:ended withEvent:event];
   *(self + 744) &= ~1u;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MPButton;
-  [(MPButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(MPButton *)&v5 touchesCancelled:cancelled withEvent:event];
   *(self + 744) &= ~1u;
 }
 
-- (void)setHitTestDebugEnabled:(BOOL)a3
+- (void)setHitTestDebugEnabled:(BOOL)enabled
 {
-  if (self->_hitTestDebugEnabled != a3)
+  if (self->_hitTestDebugEnabled != enabled)
   {
-    self->_hitTestDebugEnabled = a3;
+    self->_hitTestDebugEnabled = enabled;
     hitTestDebugView = self->_hitTestDebugView;
-    if (a3)
+    if (enabled)
     {
       if (!hitTestDebugView)
       {
@@ -142,16 +142,16 @@
         self->_hitTestDebugView = v5;
 
         [(UIView *)self->_hitTestDebugView setUserInteractionEnabled:0];
-        v7 = [MEMORY[0x1E69DC888] redColor];
-        v8 = [v7 CGColor];
-        v9 = [(UIView *)self->_hitTestDebugView layer];
-        [v9 setBorderColor:v8];
+        redColor = [MEMORY[0x1E69DC888] redColor];
+        cGColor = [redColor CGColor];
+        layer = [(UIView *)self->_hitTestDebugView layer];
+        [layer setBorderColor:cGColor];
 
-        v10 = [(UIView *)self->_hitTestDebugView layer];
-        [v10 setBorderWidth:1.0];
+        layer2 = [(UIView *)self->_hitTestDebugView layer];
+        [layer2 setBorderWidth:1.0];
 
-        v11 = [MEMORY[0x1E69DC888] redColor];
-        v12 = [v11 colorWithAlphaComponent:0.1];
+        redColor2 = [MEMORY[0x1E69DC888] redColor];
+        v12 = [redColor2 colorWithAlphaComponent:0.1];
         [(UIView *)self->_hitTestDebugView setBackgroundColor:v12];
 
         hitTestDebugView = self->_hitTestDebugView;
@@ -171,24 +171,24 @@
   }
 }
 
-- (void)setAlignmentRectInsets:(UIEdgeInsets)a3
+- (void)setAlignmentRectInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_alignmentRectInsets.top, v3), vceqq_f64(*&self->_alignmentRectInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_alignmentRectInsets = a3;
-    v5 = [(MPButton *)self superview];
-    [v5 setNeedsLayout];
+    self->_alignmentRectInsets = insets;
+    superview = [(MPButton *)self superview];
+    [superview setNeedsLayout];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(MPButton *)self hitRect];
   v10 = x;
   v11 = y;
@@ -196,39 +196,39 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = MPButton;
-  [(MPButton *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(MPButton *)&v5 endTrackingWithTouch:touch withEvent:event];
   [(MPButton *)self _handleTouchUp];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = MPButton;
-  [(MPButton *)&v4 cancelTrackingWithEvent:a3];
+  [(MPButton *)&v4 cancelTrackingWithEvent:event];
   [(MPButton *)self _handleTouchCancel];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  touchCopy = touch;
   [(MPButton *)self _handleTouchDown];
   v9.receiver = self;
   v9.super_class = MPButton;
-  LOBYTE(self) = [(MPButton *)&v9 beginTrackingWithTouch:v7 withEvent:v6];
+  LOBYTE(self) = [(MPButton *)&v9 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return self;
 }
 
-- (MPButton)initWithFrame:(CGRect)a3
+- (MPButton)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = MPButton;
-  result = [(MPButton *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(MPButton *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_holdDelayInterval = 0.75;
@@ -237,9 +237,9 @@
   return result;
 }
 
-+ (id)easyTouchButtonWithType:(int64_t)a3
++ (id)easyTouchButtonWithType:(int64_t)type
 {
-  v3 = [objc_opt_class() buttonWithType:a3];
+  v3 = [objc_opt_class() buttonWithType:type];
   [objc_opt_class() easyTouchDefaultHitRectInsets];
   [v3 setHitRectInsets:?];
 

@@ -2,9 +2,9 @@
 - (TSCH3DPieWedgeGeometry)init;
 - (id)selectionKnobPositions;
 - (void)generateArrays;
-- (void)generateRoundedTop:(void *)a3 radiusArray:(void *)a4;
-- (void)p_generateAngles:(void *)a3;
-- (void)p_generateBevelCoordinates:(void *)a3 andAngles:(void *)a4 radiusArray:(const void *)a5 topArray:(const void *)a6;
+- (void)generateRoundedTop:(void *)top radiusArray:(void *)array;
+- (void)p_generateAngles:(void *)angles;
+- (void)p_generateBevelCoordinates:(void *)coordinates andAngles:(void *)angles radiusArray:(const void *)array topArray:(const void *)topArray;
 @end
 
 @implementation TSCH3DPieWedgeGeometry
@@ -29,11 +29,11 @@
   return result;
 }
 
-- (void)generateRoundedTop:(void *)a3 radiusArray:(void *)a4
+- (void)generateRoundedTop:(void *)top radiusArray:(void *)array
 {
-  v10 = *a4;
-  v11 = *(a4 + 1) - *a4;
-  if (*(a3 + 1) - *a3 != v11)
+  v10 = *array;
+  v11 = *(array + 1) - *array;
+  if (*(top + 1) - *top != v11)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DPieWedgeGeometry generateRoundedTop:radiusArray:]");
@@ -41,15 +41,15 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 202, 0, "array size mismatch");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
-    v10 = *a4;
-    v11 = *(a4 + 1) - *a4;
+    v10 = *array;
+    v11 = *(array + 1) - *array;
   }
 
   v27 = v11 >> 2;
   if (v27 >= 1)
   {
     v28 = 0;
-    v29 = *a3;
+    v29 = *top;
     *&v4 = (v27 - 1);
     do
     {
@@ -64,13 +64,13 @@
   objc_msgSend_bevelHeight(self, a2, v4, v5, v6);
   v34 = *&v31;
   topZ = self->_topZ;
-  v36 = *(a4 + 1) - *a4;
-  if (v36 != *(a3 + 1) - *a3)
+  v36 = *(array + 1) - *array;
+  if (v36 != *(top + 1) - *top)
   {
     v37 = MEMORY[0x277D81150];
     v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v30, v31, v32, v33, "void (anonymous namespace)::round_top(vector<float> &, vector<float> &, float, float)");
     v43 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, v40, v41, v42, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DPieWedgeGeometry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v45, v46, v47, v38, v43, 136, 0, "size mismatch %zu and %zu", (*(a4 + 1) - *a4) >> 2, (*(a3 + 1) - *a3) >> 2);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v45, v46, v47, v38, v43, 136, 0, "size mismatch %zu and %zu", (*(array + 1) - *array) >> 2, (*(top + 1) - *top) >> 2);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v48, v49, v50, v51);
   }
@@ -84,8 +84,8 @@
     v56 = (v34 + (topZ - v34));
     v57 = (v52 - 1);
     v58 = -v34;
-    v59 = *a3 - 4;
-    v60 = *a4 - 4;
+    v59 = *top - 4;
+    v60 = *array - 4;
     do
     {
       v61 = 1.0;
@@ -107,10 +107,10 @@
   }
 }
 
-- (void)p_generateAngles:(void *)a3
+- (void)p_generateAngles:(void *)angles
 {
   angleSteps = self->_angleSteps;
-  if (angleSteps != (*(a3 + 1) - *a3) >> 2)
+  if (angleSteps != (*(angles + 1) - *angles) >> 2)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DPieWedgeGeometry p_generateAngles:]");
@@ -124,7 +124,7 @@
   {
     v24 = 0;
     v25 = self->_startAngle - *(&self->super._geometryBounds + 6);
-    v26 = *a3;
+    v26 = *angles;
     do
     {
       *(v26 + 4 * v24) = ((v25 * v24) / (angleSteps - 1)) + *(&self->super._geometryBounds + 6);
@@ -135,7 +135,7 @@
   }
 }
 
-- (void)p_generateBevelCoordinates:(void *)a3 andAngles:(void *)a4 radiusArray:(const void *)a5 topArray:(const void *)a6
+- (void)p_generateBevelCoordinates:(void *)coordinates andAngles:(void *)angles radiusArray:(const void *)array topArray:(const void *)topArray
 {
   radiusSteps = self->_radiusSteps;
   angleSteps = self->_angleSteps;
@@ -159,8 +159,8 @@
   v24 = v21;
   radius = self->_radius;
   v125 = angleSteps + 2 * bevelEdgeSteps;
-  v126 = a4;
-  if (v125 != (*(a4 + 1) - *a4) >> 2)
+  anglesCopy = angles;
+  if (v125 != (*(angles + 1) - *angles) >> 2)
   {
     v26 = MEMORY[0x277D81150];
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v20, v21, v22, v23, "[TSCH3DPieWedgeGeometry p_generateBevelCoordinates:andAngles:radiusArray:topArray:]");
@@ -175,8 +175,8 @@
   {
     v42 = 0;
     v43 = v41;
-    v44 = *v126;
-    v45 = *v126 + 4 * v41 + 4 * angleSteps;
+    v44 = *anglesCopy;
+    v45 = *anglesCopy + 4 * v41 + 4 * angleSteps;
     do
     {
       *(v44 + 4 * v42) = ((v19 * v42) / v43) + *(&self->super._geometryBounds + 6);
@@ -198,7 +198,7 @@
     v51 = xmmword_2764D6700;
     v52 = xmmword_2764D6710;
     v53 = vdupq_n_s64(4uLL);
-    v54 = (*v126 + 4 * v41 + 8);
+    v54 = (*anglesCopy + 4 * v41 + 8);
     do
     {
       v55 = vmovn_s64(vcgeq_u64(v50, v52));
@@ -228,7 +228,7 @@
   }
 
   sub_2761F27A8(__p, v41);
-  v56 = self;
+  selfCopy = self;
   v57 = self->_bevelEdgeSteps;
   sub_2761F64E8(v57 - 1);
   if (v57 >= 1)
@@ -242,7 +242,7 @@
     v68 = -1;
     do
     {
-      v69 = **a6;
+      v69 = **topArray;
       *&v69 = v69 + v66 * pow(((v57 + v68) / (v57 - 1)), 2.5);
       sub_2761F64E8(v63);
       v59 = (v70 + -1.0) * v67 / v65;
@@ -251,7 +251,7 @@
       *v71 = 0;
       v71[1] = LODWORD(v59);
       v71[2] = LODWORD(v69);
-      v57 = v56->_bevelEdgeSteps;
+      v57 = selfCopy->_bevelEdgeSteps;
       --v68;
       v62 += 12;
       ++v63;
@@ -261,7 +261,7 @@
   }
 
   v72 = angleSteps + 2 * bevelEdgeSteps;
-  if ((0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 2)) < v125 * radiusSteps)
+  if ((0xAAAAAAAAAAAAAAABLL * ((*(coordinates + 1) - *coordinates) >> 2)) < v125 * radiusSteps)
   {
     v73 = MEMORY[0x277D81150];
     v74 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v58, v59, v60, v61, "[TSCH3DPieWedgeGeometry p_generateBevelCoordinates:andAngles:radiusArray:topArray:]");
@@ -271,7 +271,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v84, v85, v86, v87);
   }
 
-  v129 = a6;
+  topArrayCopy = topArray;
   if (v125 >= 1)
   {
     v128 = 0;
@@ -279,7 +279,7 @@
     v89 = 12 * angleSteps + 24 * bevelEdgeSteps;
     do
     {
-      v90 = v56->_bevelEdgeSteps;
+      v90 = selfCopy->_bevelEdgeSteps;
       v91 = v90 + angleSteps;
       v92 = v90 - 1;
       if (v92 >= v88)
@@ -295,8 +295,8 @@
       v93 = (__p[0] + 12 * v92);
       v132 = *v93;
       v94 = v93[2];
-      v95 = v56->_radius;
-      v96 = __sincosf_stret(*(*v126 + 4 * v88));
+      v95 = selfCopy->_radius;
+      v96 = __sincosf_stret(*(*anglesCopy + 4 * v88));
       v137.f32[0] = v95 * v96.__sinval;
       v137.f32[1] = v95 * v96.__cosval;
       v97 = v132.f32[0] - (v95 * v96.__sinval);
@@ -320,11 +320,11 @@
             v136 = 0;
             v133 = 0;
             v134 = v94;
-            if (sub_276155088(&v137, &v133, &v135, 0, v56->_radius * *(*a5 + 4 * v100)))
+            if (sub_276155088(&v137, &v133, &v135, 0, selfCopy->_radius * *(*array + 4 * v100)))
             {
               v103 = v135;
-              v108 = pow(*(*a5 + 4 * v100), 10.0);
-              v102 = v94 + (v108 * (*(*v129 + 4 * v100) - v94));
+              v108 = pow(*(*array + 4 * v100), 10.0);
+              v102 = v94 + (v108 * (*(*topArrayCopy + 4 * v100) - v94));
             }
 
             else
@@ -340,7 +340,7 @@
             }
           }
 
-          v124 = (*a3 + v101);
+          v124 = (*coordinates + v101);
           *v124 = v103;
           v124[1].f32[0] = v102;
           ++v100;
@@ -455,7 +455,7 @@
   if (v289 < 1)
   {
     v33 = v20;
-    v32 = self;
+    selfCopy2 = self;
     v30 = v286;
   }
 
@@ -466,7 +466,7 @@
     do
     {
       v31 = __sincosf_stret(*(v304[0] + v29));
-      v32 = self;
+      selfCopy2 = self;
       *&v18 = radius * v31.__cosval;
       *&v19 = self->_bottomZ;
       v33 = v20 + 1;
@@ -483,7 +483,7 @@
   }
 
   v303 = v33;
-  *&v17 = v32->_bottomZ;
+  *&v17 = selfCopy2->_bottomZ;
   v35 = v33 + 1;
   v36 = v305[0] + 12 * v33;
   *v36 = 0;
@@ -501,7 +501,7 @@
 
   v52 = radiusSteps - 1;
   sub_2761F27A8(__p, v284 * (radiusSteps - 1));
-  v57 = self;
+  selfCopy4 = self;
   v283 = __p[0];
   if (radiusSteps >= 2)
   {
@@ -545,7 +545,7 @@
         }
 
         while (v65);
-        v57 = self;
+        selfCopy4 = self;
         v30 = v286;
       }
 
@@ -555,8 +555,8 @@
     while (v62 != v52);
   }
 
-  v67 = v57;
-  isFullCircle = objc_msgSend_isFullCircle(v57, v53, v54, v55, v56);
+  v67 = selfCopy4;
+  isFullCircle = objc_msgSend_isFullCircle(selfCopy4, v53, v54, v55, v56);
   v73 = 3 * radiusSteps;
   if (isFullCircle)
   {
@@ -921,7 +921,7 @@ LABEL_85:
   }
 
   capOffset = v303;
-  v211 = self;
+  selfCopy6 = self;
   self->_capOffset = v303;
   v212 = radiusSteps;
   if (radiusSteps < 1)
@@ -952,14 +952,14 @@ LABEL_85:
 
     while (v212);
     v216 = v303;
-    v211 = self;
+    selfCopy6 = self;
     capOffset = self->_capOffset;
   }
 
-  v211->_capCount = v216 - capOffset;
-  if ((objc_msgSend_isFullCircle(v211, v84, v86, v87, v88) & 1) == 0)
+  selfCopy6->_capCount = v216 - capOffset;
+  if ((objc_msgSend_isFullCircle(selfCopy6, v84, v86, v87, v88) & 1) == 0)
   {
-    v221 = self;
+    selfCopy8 = self;
     self->_capOffset = v216;
     v222 = v216;
     if (radiusSteps >= 1)
@@ -1048,11 +1048,11 @@ LABEL_85:
 
       while (radiusSteps != v228);
       v222 = v303;
-      v221 = self;
+      selfCopy8 = self;
       v216 = self->_capOffset;
     }
 
-    v221->_capCount = v222 - v216;
+    selfCopy8->_capCount = v222 - v216;
     v216 = v222;
   }
 

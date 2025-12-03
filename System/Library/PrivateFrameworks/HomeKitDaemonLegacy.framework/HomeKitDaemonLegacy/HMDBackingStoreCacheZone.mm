@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheZone
-- (HMDBackingStoreCacheZone)initWithZoneID:(int64_t)a3 name:(id)a4;
+- (HMDBackingStoreCacheZone)initWithZoneID:(int64_t)d name:(id)name;
 - (id)dumpDebug;
 @end
 
@@ -8,10 +8,10 @@
 - (id)dumpDebug
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"zone: %lu (%p)\n", -[HMDBackingStoreCacheZone zoneID](self, "zoneID"), self];
-  v4 = [(HMDBackingStoreCacheZone *)self zoneName];
-  [v3 appendFormat:@"  name: %@\n", v4];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"zone: %lu (%p)\n", -[HMDBackingStoreCacheZone zoneID](self, "zoneID"), self];
+  zoneName = [(HMDBackingStoreCacheZone *)self zoneName];
+  [string appendFormat:@"  name: %@\n", zoneName];
 
   v25 = 0u;
   v26 = 0u;
@@ -37,8 +37,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 dumpDebug];
-        v11 = [v10 componentsSeparatedByString:@"\n"];
+        dumpDebug = [v9 dumpDebug];
+        v11 = [dumpDebug componentsSeparatedByString:@"\n"];
 
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
@@ -54,7 +54,7 @@
                 objc_enumerationMutation(v11);
               }
 
-              [v3 appendFormat:@"    %@\n", *(*(&v19 + 1) + 8 * j)];
+              [string appendFormat:@"    %@\n", *(*(&v19 + 1) + 8 * j)];
             }
 
             v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -72,23 +72,23 @@
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return string;
 }
 
-- (HMDBackingStoreCacheZone)initWithZoneID:(int64_t)a3 name:(id)a4
+- (HMDBackingStoreCacheZone)initWithZoneID:(int64_t)d name:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = HMDBackingStoreCacheZone;
   v8 = [(HMDBackingStoreCacheZone *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_zoneID = a3;
-    objc_storeStrong(&v8->_zoneName, a4);
-    v10 = [MEMORY[0x277CBEB18] array];
+    v8->_zoneID = d;
+    objc_storeStrong(&v8->_zoneName, name);
+    array = [MEMORY[0x277CBEB18] array];
     actualGroups = v9->_actualGroups;
-    v9->_actualGroups = v10;
+    v9->_actualGroups = array;
 
     v12 = v9;
   }

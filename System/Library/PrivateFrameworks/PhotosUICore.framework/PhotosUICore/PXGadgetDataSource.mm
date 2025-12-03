@@ -1,38 +1,38 @@
 @interface PXGadgetDataSource
 - (BOOL)hasNoContentGadget;
 - (NSString)publiclySafeDescription;
-- (PXGadgetDataSource)initWithGadgetSections:(id)a3;
-- (PXSimpleIndexPath)indexPathForGadget:(SEL)a3;
-- (PXSimpleIndexPath)indexPathForGadgetSectionWithIdentifier:(SEL)a3;
-- (id)_gadgetsMatchingPredicate:(id)a3;
-- (id)gadgetAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)gadgetSectionAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)gadgetSectionWithIdentifier:(id)a3;
-- (id)gadgetWithId:(id)a3;
-- (id)gadgetsOfClass:(Class)a3;
-- (id)gadgetsOfType:(unint64_t)a3;
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
-- (void)_enumerateGadgetSectionsUsingBlock:(id)a3;
-- (void)_enumerateGadgetsInSection:(id)a3 atSectionIndex:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateGadgetSectionsUsingBlock:(id)a3;
-- (void)enumerateGadgetsUsingBlock:(id)a3;
+- (PXGadgetDataSource)initWithGadgetSections:(id)sections;
+- (PXSimpleIndexPath)indexPathForGadget:(SEL)gadget;
+- (PXSimpleIndexPath)indexPathForGadgetSectionWithIdentifier:(SEL)identifier;
+- (id)_gadgetsMatchingPredicate:(id)predicate;
+- (id)gadgetAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)gadgetSectionAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)gadgetSectionWithIdentifier:(id)identifier;
+- (id)gadgetWithId:(id)id;
+- (id)gadgetsOfClass:(Class)class;
+- (id)gadgetsOfType:(unint64_t)type;
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
+- (void)_enumerateGadgetSectionsUsingBlock:(id)block;
+- (void)_enumerateGadgetsInSection:(id)section atSectionIndex:(unint64_t)index usingBlock:(id)block;
+- (void)enumerateGadgetSectionsUsingBlock:(id)block;
+- (void)enumerateGadgetsUsingBlock:(id)block;
 @end
 
 @implementation PXGadgetDataSource
 
-- (void)_enumerateGadgetsInSection:(id)a3 atSectionIndex:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateGadgetsInSection:(id)section atSectionIndex:(unint64_t)index usingBlock:(id)block
 {
-  v7 = a5;
-  v8 = [a3 gadgets];
+  blockCopy = block;
+  gadgets = [section gadgets];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__PXGadgetDataSource__enumerateGadgetsInSection_atSectionIndex_usingBlock___block_invoke;
   v10[3] = &unk_1E773CBD8;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
-  [v8 enumerateObjectsUsingBlock:v10];
+  v11 = blockCopy;
+  indexCopy = index;
+  v9 = blockCopy;
+  [gadgets enumerateObjectsUsingBlock:v10];
 }
 
 uint64_t __75__PXGadgetDataSource__enumerateGadgetsInSection_atSectionIndex_usingBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -47,39 +47,39 @@ uint64_t __75__PXGadgetDataSource__enumerateGadgetsInSection_atSectionIndex_usin
   return result;
 }
 
-- (void)_enumerateGadgetSectionsUsingBlock:(id)a3
+- (void)_enumerateGadgetSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   gadgetSections = self->_gadgetSections;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PXGadgetDataSource__enumerateGadgetSectionsUsingBlock___block_invoke;
   v7[3] = &unk_1E773CB60;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSArray *)gadgetSections enumerateObjectsUsingBlock:v7];
 }
 
 - (NSString)publiclySafeDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXGadgetDataSource *)self identifier];
-  v5 = [(PXGadgetDataSource *)self numberOfSections];
-  v6 = [(PXGadgetDataSource *)self totalNumberOfItems];
-  v7 = [(PXGadgetDataSource *)self allSectionIndexPaths];
-  v8 = [(PXGadgetDataSource *)self allItemIndexPaths];
-  v9 = [v3 stringWithFormat:@"identifier: %ld, numberOfSections: %ld, totalNumberOfItems: %ld, allSectionIndexPaths: %@, allItemIndexPaths: %@", v4, v5, v6, v7, v8];
+  identifier = [(PXGadgetDataSource *)self identifier];
+  numberOfSections = [(PXGadgetDataSource *)self numberOfSections];
+  totalNumberOfItems = [(PXGadgetDataSource *)self totalNumberOfItems];
+  allSectionIndexPaths = [(PXGadgetDataSource *)self allSectionIndexPaths];
+  allItemIndexPaths = [(PXGadgetDataSource *)self allItemIndexPaths];
+  v9 = [v3 stringWithFormat:@"identifier: %ld, numberOfSections: %ld, totalNumberOfItems: %ld, allSectionIndexPaths: %@, allItemIndexPaths: %@", identifier, numberOfSections, totalNumberOfItems, allSectionIndexPaths, allItemIndexPaths];
 
   return v9;
 }
 
-- (void)enumerateGadgetsUsingBlock:(id)a3
+- (void)enumerateGadgetsUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
@@ -87,8 +87,8 @@ uint64_t __75__PXGadgetDataSource__enumerateGadgetsInSection_atSectionIndex_usin
   v8[2] = __49__PXGadgetDataSource_enumerateGadgetsUsingBlock___block_invoke;
   v8[3] = &unk_1E773CBB0;
   v8[4] = self;
-  v9 = v5;
-  v6 = v5;
+  v9 = blockCopy;
+  v6 = blockCopy;
   [(PXGadgetDataSource *)self _enumerateGadgetSectionsUsingBlock:v8];
 }
 
@@ -104,33 +104,33 @@ void __49__PXGadgetDataSource_enumerateGadgetsUsingBlock___block_invoke(uint64_t
   [v7 _enumerateGadgetsInSection:a2 atSectionIndex:a3 usingBlock:v8];
 }
 
-- (void)enumerateGadgetSectionsUsingBlock:(id)a3
+- (void)enumerateGadgetSectionsUsingBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__PXGadgetDataSource_enumerateGadgetSectionsUsingBlock___block_invoke;
   v8[3] = &unk_1E773CB60;
-  v9 = v5;
-  v6 = v5;
+  v9 = blockCopy;
+  v6 = blockCopy;
   [(PXGadgetDataSource *)self _enumerateGadgetSectionsUsingBlock:v8];
 }
 
 - (BOOL)hasNoContentGadget
 {
-  v2 = [(NSArray *)self->_gadgetSections firstObject];
-  v3 = [v2 gadgets];
-  v4 = [v3 firstObject];
+  firstObject = [(NSArray *)self->_gadgetSections firstObject];
+  gadgets = [firstObject gadgets];
+  firstObject2 = [gadgets firstObject];
 
-  if (v4)
+  if (firstObject2)
   {
-    v5 = [v4 gadgetType] == 0;
+    v5 = [firstObject2 gadgetType] == 0;
   }
 
   else
@@ -141,13 +141,13 @@ void __49__PXGadgetDataSource_enumerateGadgetsUsingBlock___block_invoke(uint64_t
   return v5;
 }
 
-- (id)gadgetWithId:(id)a3
+- (id)gadgetWithId:(id)id
 {
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"gadgetId"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"gadgetId"}];
   }
 
   v13 = 0;
@@ -160,7 +160,7 @@ void __49__PXGadgetDataSource_enumerateGadgetsUsingBlock___block_invoke(uint64_t
   v10[1] = 3221225472;
   v10[2] = __35__PXGadgetDataSource_gadgetWithId___block_invoke;
   v10[3] = &unk_1E773CB38;
-  v6 = v5;
+  v6 = idCopy;
   v11 = v6;
   v12 = &v13;
   [(PXGadgetDataSource *)self enumerateGadgetsUsingBlock:v10];
@@ -187,40 +187,40 @@ void __35__PXGadgetDataSource_gadgetWithId___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (id)gadgetsOfClass:(Class)a3
+- (id)gadgetsOfClass:(Class)class
 {
-  if (!a3)
+  if (!class)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"gadgetClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"gadgetClass"}];
   }
 
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", a3];
+  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self isKindOfClass: %@", class];
   v6 = [(PXGadgetDataSource *)self _gadgetsMatchingPredicate:v5];
 
   return v6;
 }
 
-- (id)gadgetsOfType:(unint64_t)a3
+- (id)gadgetsOfType:(unint64_t)type
 {
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"gadgetType == %d", a3];
-  v5 = [(PXGadgetDataSource *)self _gadgetsMatchingPredicate:v4];
+  type = [MEMORY[0x1E696AE18] predicateWithFormat:@"gadgetType == %d", type];
+  v5 = [(PXGadgetDataSource *)self _gadgetsMatchingPredicate:type];
 
   return v5;
 }
 
-- (id)_gadgetsMatchingPredicate:(id)a3
+- (id)_gadgetsMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__PXGadgetDataSource__gadgetsMatchingPredicate___block_invoke;
   v11[3] = &unk_1E773CB10;
-  v12 = v4;
+  v12 = predicateCopy;
   v6 = v5;
   v13 = v6;
-  v7 = v4;
+  v7 = predicateCopy;
   [(PXGadgetDataSource *)self enumerateGadgetSectionsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
@@ -236,13 +236,13 @@ void __48__PXGadgetDataSource__gadgetsMatchingPredicate___block_invoke(uint64_t 
   [*(a1 + 40) addObjectsFromArray:v4];
 }
 
-- (PXSimpleIndexPath)indexPathForGadget:(SEL)a3
+- (PXSimpleIndexPath)indexPathForGadget:(SEL)gadget
 {
   v7 = a4;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a3 object:self file:@"PXGadgetDataSource.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:gadget object:self file:@"PXGadgetDataSource.m" lineNumber:89 description:{@"Invalid parameter not satisfying: %@", @"gadget"}];
   }
 
   v16 = 0;
@@ -302,34 +302,34 @@ uint64_t __41__PXGadgetDataSource_indexPathForGadget___block_invoke_2(uint64_t r
   return result;
 }
 
-- (id)gadgetAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)gadgetAtIndexPath:(PXSimpleIndexPath *)path
 {
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->item == 0x7FFFFFFFFFFFFFFFLL || a3->subitem != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->item == 0x7FFFFFFFFFFFFFFFLL || path->subitem != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(indexPath)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsItem(indexPath)"}];
   }
 
-  if ([(PXGadgetDataSource *)self identifier]!= a3->dataSourceIdentifier)
+  if ([(PXGadgetDataSource *)self identifier]!= path->dataSourceIdentifier)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"self.identifier == indexPath.dataSourceIdentifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"self.identifier == indexPath.dataSourceIdentifier"}];
   }
 
-  v8 = [(NSArray *)self->_gadgetSections objectAtIndexedSubscript:a3->section];
-  v9 = [v8 gadgets];
-  v10 = [v9 objectAtIndexedSubscript:a3->item];
+  v8 = [(NSArray *)self->_gadgetSections objectAtIndexedSubscript:path->section];
+  gadgets = [v8 gadgets];
+  v10 = [gadgets objectAtIndexedSubscript:path->item];
 
   return v10;
 }
 
-- (PXSimpleIndexPath)indexPathForGadgetSectionWithIdentifier:(SEL)a3
+- (PXSimpleIndexPath)indexPathForGadgetSectionWithIdentifier:(SEL)identifier
 {
   v7 = a4;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a3 object:self file:@"PXGadgetDataSource.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:identifier object:self file:@"PXGadgetDataSource.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v18 = 0;
@@ -345,7 +345,7 @@ uint64_t __41__PXGadgetDataSource_indexPathForGadget___block_invoke_2(uint64_t r
   v14[2] = __62__PXGadgetDataSource_indexPathForGadgetSectionWithIdentifier___block_invoke;
   v14[3] = &unk_1E773CAE8;
   v10 = v7;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   v15 = v10;
   [(NSArray *)gadgetSections enumerateObjectsUsingBlock:v14];
@@ -378,18 +378,18 @@ float64x2_t __62__PXGadgetDataSource_indexPathForGadgetSectionWithIdentifier___b
   return result;
 }
 
-- (id)gadgetSectionWithIdentifier:(id)a3
+- (id)gadgetSectionWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v10 = 0u;
   v11 = 0u;
-  [(PXGadgetDataSource *)self indexPathForGadgetSectionWithIdentifier:v5];
+  [(PXGadgetDataSource *)self indexPathForGadgetSectionWithIdentifier:identifierCopy];
   if (*off_1E7721F68)
   {
     v9[0] = v10;
@@ -405,55 +405,55 @@ float64x2_t __62__PXGadgetDataSource_indexPathForGadgetSectionWithIdentifier___b
   return v6;
 }
 
-- (id)gadgetSectionAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)gadgetSectionAtIndexPath:(PXSimpleIndexPath *)path
 {
-  if (a3->dataSourceIdentifier == *off_1E7721F68 || a3->section == 0x7FFFFFFFFFFFFFFFLL || a3->item != 0x7FFFFFFFFFFFFFFFLL)
+  if (path->dataSourceIdentifier == *off_1E7721F68 || path->section == 0x7FFFFFFFFFFFFFFFLL || path->item != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"PXSimpleIndexPathIsSection(indexPath)"}];
   }
 
-  if ([(PXGadgetDataSource *)self identifier]!= a3->dataSourceIdentifier)
+  if ([(PXGadgetDataSource *)self identifier]!= path->dataSourceIdentifier)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"self.identifier == indexPath.dataSourceIdentifier"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGadgetDataSource.m" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"self.identifier == indexPath.dataSourceIdentifier"}];
   }
 
   gadgetSections = self->_gadgetSections;
-  section = a3->section;
+  section = path->section;
 
   return [(NSArray *)gadgetSections objectAtIndexedSubscript:section];
 }
 
-- (id)objectAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectAtIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v6[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v6[0] = *&path->dataSourceIdentifier;
   v6[1] = v3;
   v4 = [(PXGadgetDataSource *)self gadgetAtIndexPath:v6];
 
   return v4;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v3 = [(NSArray *)self->_gadgetSections objectAtIndexedSubscript:a3];
-  v4 = [v3 gadgets];
-  v5 = [v4 count];
+  v3 = [(NSArray *)self->_gadgetSections objectAtIndexedSubscript:section];
+  gadgets = [v3 gadgets];
+  v5 = [gadgets count];
 
   return v5;
 }
 
-- (PXGadgetDataSource)initWithGadgetSections:(id)a3
+- (PXGadgetDataSource)initWithGadgetSections:(id)sections
 {
-  v5 = a3;
+  sectionsCopy = sections;
   v9.receiver = self;
   v9.super_class = PXGadgetDataSource;
   v6 = [(PXGadgetDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gadgetSections, a3);
+    objc_storeStrong(&v6->_gadgetSections, sections);
   }
 
   return v7;

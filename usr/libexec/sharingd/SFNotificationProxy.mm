@@ -1,10 +1,10 @@
 @interface SFNotificationProxy
 - (SFNotificationProxy)init;
 - (id)externalID;
-- (void)_requestPostOrUpdate:(id)a3 info:(id)a4 mediumVariant:(BOOL)a5 canPost:(BOOL)a6;
-- (void)handleNotificationWasDismissed:(id)a3 reason:(int64_t)a4;
-- (void)handleNotificationWasTapped:(id)a3;
-- (void)requestRemove:(id)a3 withReason:(int64_t)a4;
+- (void)_requestPostOrUpdate:(id)update info:(id)info mediumVariant:(BOOL)variant canPost:(BOOL)post;
+- (void)handleNotificationWasDismissed:(id)dismissed reason:(int64_t)reason;
+- (void)handleNotificationWasTapped:(id)tapped;
+- (void)requestRemove:(id)remove withReason:(int64_t)reason;
 - (void)requestRemoveAll;
 - (void)reset;
 @end
@@ -58,17 +58,17 @@
   return v2;
 }
 
-- (void)_requestPostOrUpdate:(id)a3 info:(id)a4 mediumVariant:(BOOL)a5 canPost:(BOOL)a6
+- (void)_requestPostOrUpdate:(id)update info:(id)info mediumVariant:(BOOL)variant canPost:(BOOL)post
 {
-  v6 = a6;
-  v7 = a5;
-  v24 = a3;
-  v11 = a4;
+  postCopy = post;
+  variantCopy = variant;
+  updateCopy = update;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   externalID = self->_externalID;
   if (externalID)
   {
-    v13 = !v7;
+    v13 = !variantCopy;
   }
 
   else
@@ -98,30 +98,30 @@
       internalIDs = self->_internalIDs;
     }
 
-    if (([(NSMutableArray *)internalIDs containsObject:v24]& 1) == 0)
+    if (([(NSMutableArray *)internalIDs containsObject:updateCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_internalIDs addObject:v24];
+      [(NSMutableArray *)self->_internalIDs addObject:updateCopy];
     }
 
-    v17 = [(SFNotificationProxy *)self externalID];
-    if (v17)
+    externalID = [(SFNotificationProxy *)self externalID];
+    if (externalID)
     {
-      v18 = v17;
+      v18 = externalID;
       if (dword_1009708B0 <= 30 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
       {
         sub_1000F5EA0();
       }
 
       v19 = +[SDNotificationManager sharedManager];
-      [v19 homePodHandoffUpdateIfNeeded:v18 info:v11];
+      [v19 homePodHandoffUpdateIfNeeded:v18 info:infoCopy];
 LABEL_28:
 
-      self->_showingMedium = v7;
-      objc_storeStrong(&self->_triggeredID, a3);
+      self->_showingMedium = variantCopy;
+      objc_storeStrong(&self->_triggeredID, update);
     }
   }
 
-  else if (v6)
+  else if (postCopy)
   {
     v20 = self->_internalIDs;
     if (!v20)
@@ -133,18 +133,18 @@ LABEL_28:
       v20 = self->_internalIDs;
     }
 
-    [(NSMutableArray *)v20 addObject:v24];
-    v23 = [(SFNotificationProxy *)self externalID];
-    if (v23)
+    [(NSMutableArray *)v20 addObject:updateCopy];
+    externalID2 = [(SFNotificationProxy *)self externalID];
+    if (externalID2)
     {
-      v18 = v23;
+      v18 = externalID2;
       if (dword_1009708B0 <= 30 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
       {
         sub_1000F5E60();
       }
 
       v19 = +[SDNotificationManager sharedManager];
-      [v19 homePodHandoffPostIfNeeded:v18 info:v11];
+      [v19 homePodHandoffPostIfNeeded:v18 info:infoCopy];
       goto LABEL_28;
     }
   }
@@ -157,11 +157,11 @@ LABEL_28:
 LABEL_29:
 }
 
-- (void)requestRemove:(id)a3 withReason:(int64_t)a4
+- (void)requestRemove:(id)remove withReason:(int64_t)reason
 {
-  v24 = a3;
+  removeCopy = remove;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (([(NSMutableArray *)self->_internalIDs containsObject:v24]& 1) != 0)
+  if (([(NSMutableArray *)self->_internalIDs containsObject:removeCopy]& 1) != 0)
   {
     v6 = self->_externalID;
     if (!v6)
@@ -177,7 +177,7 @@ LABEL_29:
     if (!self->_showingMedium)
     {
       triggeredID = self->_triggeredID;
-      v8 = v24;
+      v8 = removeCopy;
       v9 = triggeredID;
       v10 = v9;
       if (v9 == v8)
@@ -207,7 +207,7 @@ LABEL_23:
           v18 = v17;
           if (v17)
           {
-            (*(v17 + 2))(v17, v8, a4);
+            (*(v17 + 2))(v17, v8, reason);
           }
 
           goto LABEL_45;
@@ -218,7 +218,7 @@ LABEL_23:
     if (!self->_showingMedium)
     {
       v12 = self->_triggeredID;
-      v13 = v24;
+      v13 = removeCopy;
       v14 = v12;
       v15 = v14;
       if (v14 == v13)
@@ -253,7 +253,7 @@ LABEL_34:
     }
 
     v19 = self->_triggeredID;
-    v20 = v24;
+    v20 = removeCopy;
     v21 = v19;
     v22 = v21;
     if (v21 == v20)
@@ -292,7 +292,7 @@ LABEL_32:
     sub_1000F5F7C();
 LABEL_44:
     v18 = +[SDNotificationManager sharedManager];
-    [v18 homePodHandoffRemove:v6 reason:a4];
+    [v18 homePodHandoffRemove:v6 reason:reason];
 LABEL_45:
 
     goto LABEL_46;
@@ -306,15 +306,15 @@ LABEL_45:
 LABEL_47:
 }
 
-- (void)handleNotificationWasTapped:(id)a3
+- (void)handleNotificationWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = v4;
+  tappedCopy = tapped;
+  v5 = tappedCopy;
   externalID = self->_externalID;
-  v14 = v4;
+  v14 = tappedCopy;
   if (externalID)
   {
-    v7 = v4;
+    v7 = tappedCopy;
     v8 = externalID;
     v9 = v8;
     if (v8 == v7)
@@ -365,12 +365,12 @@ LABEL_13:
   }
 }
 
-- (void)handleNotificationWasDismissed:(id)a3 reason:(int64_t)a4
+- (void)handleNotificationWasDismissed:(id)dismissed reason:(int64_t)reason
 {
-  v6 = a3;
+  dismissedCopy = dismissed;
   if (dword_1009708B0 <= 30 && (dword_1009708B0 != -1 || _LogCategory_Initialize()))
   {
-    sub_1000F6034(a4);
+    sub_1000F6034(reason);
   }
 
   v7 = objc_retainBlock(self->_dismissedHandler);
@@ -395,7 +395,7 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v7[2](v7, *(*(&v13 + 1) + 8 * i), a4);
+          v7[2](v7, *(*(&v13 + 1) + 8 * i), reason);
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -414,9 +414,9 @@ LABEL_13:
   if (!externalID)
   {
     v4 = +[NSUUID UUID];
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
     v6 = self->_externalID;
-    self->_externalID = v5;
+    self->_externalID = uUIDString;
 
     externalID = self->_externalID;
   }

@@ -1,10 +1,10 @@
 @interface SBFocusModeAlwaysOnPolicy
-- (BOOL)_shouldDisableAlwaysOnForDNDState:(id)a3;
+- (BOOL)_shouldDisableAlwaysOnForDNDState:(id)state;
 - (id)analyticsPolicyValue;
-- (void)_setDisableAlwaysOn:(BOOL)a3 dndState:(id)a4;
-- (void)_updateFromDNDState:(id)a3;
+- (void)_setDisableAlwaysOn:(BOOL)on dndState:(id)state;
+- (void)_updateFromDNDState:(id)state;
 - (void)activateAlwaysOnPolicy;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBFocusModeAlwaysOnPolicy
@@ -13,13 +13,13 @@
 {
   if ([(BLSAssertion *)self->_alwaysOnDisabledAssertion isAcquired])
   {
-    v3 = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
-    v4 = [v3 activeModeConfiguration];
-    v5 = [v4 mode];
+    state = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
+    activeModeConfiguration = [state activeModeConfiguration];
+    mode = [activeModeConfiguration mode];
 
-    if (v5)
+    if (mode)
     {
-      [v5 semanticType];
+      [mode semanticType];
       v6 = DNDModeSemanticTypeToString();
     }
 
@@ -44,17 +44,17 @@
   {
     self->_alwaysOnPolicyActive = 1;
     v3 = +[SBAlwaysOnDomain rootSettings];
-    v4 = [v3 policySettings];
+    policySettings = [v3 policySettings];
     policySettings = self->_policySettings;
-    self->_policySettings = v4;
+    self->_policySettings = policySettings;
 
     [(PTSettings *)self->_policySettings addKeyObserver:self];
     v6 = objc_alloc(MEMORY[0x277CF0868]);
-    v7 = [MEMORY[0x277CEA5C8] allowAmbientIdleTimerForSleepFocus];
-    v8 = [MEMORY[0x277CEA5E0] enableMotionDetectionWake];
-    v16[1] = v8;
-    v9 = [MEMORY[0x277CF08F8] disableAlwaysOn];
-    v16[2] = v9;
+    allowAmbientIdleTimerForSleepFocus = [MEMORY[0x277CEA5C8] allowAmbientIdleTimerForSleepFocus];
+    enableMotionDetectionWake = [MEMORY[0x277CEA5E0] enableMotionDetectionWake];
+    v16[1] = enableMotionDetectionWake;
+    disableAlwaysOn = [MEMORY[0x277CF08F8] disableAlwaysOn];
+    v16[2] = disableAlwaysOn;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
     v11 = [v6 initWithExplanation:@"Focus Mode" attributes:v10];
     alwaysOnDisabledAssertion = self->_alwaysOnDisabledAssertion;
@@ -66,50 +66,50 @@
     self->_dndStateMonitor = v13;
 
     [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor addObserver:self];
-    v15 = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
-    if (v15)
+    state = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
+    if (state)
     {
-      [(SBFocusModeAlwaysOnPolicy *)self _updateFromDNDState:v15];
+      [(SBFocusModeAlwaysOnPolicy *)self _updateFromDNDState:state];
     }
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_policySettings == a3)
+  if (self->_policySettings == settings)
   {
-    v6 = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
-    if (v6)
+    state = [(SBDoNotDisturbStateMonitor *)self->_dndStateMonitor state];
+    if (state)
     {
-      v7 = v6;
-      [(SBFocusModeAlwaysOnPolicy *)self _updateFromDNDState:v6];
-      v6 = v7;
+      v7 = state;
+      [(SBFocusModeAlwaysOnPolicy *)self _updateFromDNDState:state];
+      state = v7;
     }
   }
 }
 
-- (void)_updateFromDNDState:(id)a3
+- (void)_updateFromDNDState:(id)state
 {
-  v4 = a3;
-  [(SBFocusModeAlwaysOnPolicy *)self _setDisableAlwaysOn:[(SBFocusModeAlwaysOnPolicy *)self _shouldDisableAlwaysOnForDNDState:v4] dndState:v4];
+  stateCopy = state;
+  [(SBFocusModeAlwaysOnPolicy *)self _setDisableAlwaysOn:[(SBFocusModeAlwaysOnPolicy *)self _shouldDisableAlwaysOnForDNDState:stateCopy] dndState:stateCopy];
 }
 
-- (void)_setDisableAlwaysOn:(BOOL)a3 dndState:(id)a4
+- (void)_setDisableAlwaysOn:(BOOL)on dndState:(id)state
 {
-  v4 = a3;
+  onCopy = on;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (self->_disableAlwaysOn != v4)
+  stateCopy = state;
+  if (self->_disableAlwaysOn != onCopy)
   {
-    self->_disableAlwaysOn = v4;
+    self->_disableAlwaysOn = onCopy;
     v7 = SBLogBacklight();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (onCopy)
     {
       if (v8)
       {
         v9 = 138412290;
-        v10 = v6;
+        v10 = stateCopy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Acquiring focus-mode always-on-disable assertion for state %@", &v9, 0xCu);
       }
 
@@ -121,7 +121,7 @@
       if (v8)
       {
         v9 = 138412290;
-        v10 = v6;
+        v10 = stateCopy;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Releasing focus-mode always-on-disable assertion for state %@", &v9, 0xCu);
       }
 
@@ -130,32 +130,32 @@
   }
 }
 
-- (BOOL)_shouldDisableAlwaysOnForDNDState:(id)a3
+- (BOOL)_shouldDisableAlwaysOnForDNDState:(id)state
 {
-  v4 = a3;
-  v5 = [(SBAlwaysOnPolicySettings *)self->_policySettings focusStrategy];
-  if (v5 == 1)
+  stateCopy = state;
+  focusStrategy = [(SBAlwaysOnPolicySettings *)self->_policySettings focusStrategy];
+  if (focusStrategy == 1)
   {
-    v12 = [v4 activeModeConfiguration];
-    v13 = [v12 dimsLockScreen];
+    activeModeConfiguration = [stateCopy activeModeConfiguration];
+    dimsLockScreen = [activeModeConfiguration dimsLockScreen];
 
-    v11 = v13 != 0;
+    v11 = dimsLockScreen != 0;
   }
 
-  else if (v5)
+  else if (focusStrategy)
   {
     v11 = 0;
   }
 
   else
   {
-    v6 = [v4 activeModeConfiguration];
-    v7 = [v6 mode];
-    v8 = [v7 semanticType];
+    activeModeConfiguration2 = [stateCopy activeModeConfiguration];
+    mode = [activeModeConfiguration2 mode];
+    semanticType = [mode semanticType];
 
-    v9 = [(SBAlwaysOnPolicySettings *)self->_policySettings alwaysOnDisablingFocusSemanticTypes];
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
-    v11 = [v9 containsObject:v10];
+    alwaysOnDisablingFocusSemanticTypes = [(SBAlwaysOnPolicySettings *)self->_policySettings alwaysOnDisablingFocusSemanticTypes];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:semanticType];
+    v11 = [alwaysOnDisablingFocusSemanticTypes containsObject:v10];
   }
 
   return v11;

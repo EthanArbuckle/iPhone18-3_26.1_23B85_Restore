@@ -1,38 +1,38 @@
 @interface IndirectComputeCommandEncoderState
-+ (id)saveEncoder:(id)a3 withDescriptor:(id)a4 player:(id)a5;
-- (void)restoreEncoder:(id)a3 withDescriptor:(id)a4;
++ (id)saveEncoder:(id)encoder withDescriptor:(id)descriptor player:(id)player;
+- (void)restoreEncoder:(id)encoder withDescriptor:(id)descriptor;
 @end
 
 @implementation IndirectComputeCommandEncoderState
 
-+ (id)saveEncoder:(id)a3 withDescriptor:(id)a4 player:(id)a5
++ (id)saveEncoder:(id)encoder withDescriptor:(id)descriptor player:(id)player
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  encoderCopy = encoder;
+  descriptorCopy = descriptor;
+  playerCopy = player;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__0;
   v22 = __Block_byref_object_dispose__0;
   v23 = objc_alloc_init(IndirectComputeCommandEncoderState);
-  if (([v8 inheritPipelineState] & 1) == 0)
+  if (([descriptorCopy inheritPipelineState] & 1) == 0)
   {
-    v10 = [v7 computePipelineState];
+    computePipelineState = [encoderCopy computePipelineState];
     v11 = v19[5];
     v12 = *(v11 + 8);
-    *(v11 + 8) = v10;
+    *(v11 + 8) = computePipelineState;
   }
 
-  if (([v8 inheritBuffers] & 1) == 0)
+  if (([descriptorCopy inheritBuffers] & 1) == 0)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __72__IndirectComputeCommandEncoderState_saveEncoder_withDescriptor_player___block_invoke;
     v15[3] = &unk_27930F408;
-    v16 = v9;
+    v16 = playerCopy;
     v17 = &v18;
-    [v7 enumerateBuffersUsingBlock:v15];
+    [encoderCopy enumerateBuffersUsingBlock:v15];
   }
 
   v13 = v19[5];
@@ -89,21 +89,21 @@ LABEL_11:
   *(*(*(*v7 + 8) + 40) + v8 + 8 * a3) = v9;
 }
 
-- (void)restoreEncoder:(id)a3 withDescriptor:(id)a4
+- (void)restoreEncoder:(id)encoder withDescriptor:(id)descriptor
 {
-  v12 = a3;
-  v6 = a4;
-  if (([v6 inheritPipelineState] & 1) == 0 && self->_pipelineState)
+  encoderCopy = encoder;
+  descriptorCopy = descriptor;
+  if (([descriptorCopy inheritPipelineState] & 1) == 0 && self->_pipelineState)
   {
-    [v12 setComputePipelineState:?];
+    [encoderCopy setComputePipelineState:?];
   }
 
-  if (([v6 inheritBuffers] & 1) == 0)
+  if (([descriptorCopy inheritBuffers] & 1) == 0)
   {
-    v7 = [v6 maxKernelBufferBindCount];
-    if (v7)
+    maxKernelBufferBindCount = [descriptorCopy maxKernelBufferBindCount];
+    if (maxKernelBufferBindCount)
     {
-      v8 = -v7;
+      v8 = -maxKernelBufferBindCount;
       v9 = 64;
       do
       {
@@ -111,12 +111,12 @@ LABEL_11:
         v11 = self->_kernelBytes[0];
         if (v11)
         {
-          [v12 setBytes:v11 length:self->_kernelBytesLength[0] atIndex:v10];
+          [encoderCopy setBytes:v11 length:self->_kernelBytesLength[0] atIndex:v10];
         }
 
         else
         {
-          [v12 setBuffer:self->_kernelBuffers[0] offset:self->_kernelBufferOffsets[0] atIndex:v10];
+          [encoderCopy setBuffer:self->_kernelBuffers[0] offset:self->_kernelBufferOffsets[0] atIndex:v10];
         }
 
         ++v9;

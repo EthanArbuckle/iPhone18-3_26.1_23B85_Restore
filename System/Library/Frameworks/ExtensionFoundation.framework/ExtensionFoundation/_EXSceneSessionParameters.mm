@@ -1,40 +1,40 @@
 @interface _EXSceneSessionParameters
-- (_EXSceneSessionParameters)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_EXSceneSessionParameters)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXSceneSessionParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
   initializationParametersPromise = self->_initializationParametersPromise;
   if (initializationParametersPromise)
   {
-    [v5 encodeObject:initializationParametersPromise forKey:@"initializationPromise"];
+    [coderCopy encodeObject:initializationParametersPromise forKey:@"initializationPromise"];
   }
 
-  [v5 encodeInteger:self->_sizeBridgingOptions forKey:@"sizeBridgingOptions"];
+  [coderCopy encodeInteger:self->_sizeBridgingOptions forKey:@"sizeBridgingOptions"];
 }
 
-- (_EXSceneSessionParameters)initWithCoder:(id)a3
+- (_EXSceneSessionParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _EXSceneSessionParameters;
   v5 = [(_EXSceneSessionParameters *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
     sceneIdentifier = v5->_sceneIdentifier;
     v5->_sceneIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initializationPromise"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initializationPromise"];
     initializationParametersPromise = v5->_initializationParametersPromise;
     v5->_initializationParametersPromise = v8;
 
-    v5->_sizeBridgingOptions = [v4 decodeIntegerForKey:@"sizeBridgingOptions"];
+    v5->_sizeBridgingOptions = [coderCopy decodeIntegerForKey:@"sizeBridgingOptions"];
   }
 
   return v5;

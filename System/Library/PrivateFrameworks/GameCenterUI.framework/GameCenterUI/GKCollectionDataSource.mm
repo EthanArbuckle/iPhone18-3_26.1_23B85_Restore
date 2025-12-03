@@ -1,18 +1,18 @@
 @interface GKCollectionDataSource
 - (BOOL)isValidAnalytics;
-- (BOOL)searchMatchesItem:(id)a3 inSection:(int64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
+- (BOOL)searchMatchesItem:(id)item inSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
 - (GKCollectionDataSource)init;
 - (UIViewController)presentationViewController;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4;
-- (void)dismissViewController:(id)a3;
-- (void)loadDataWithCompletionHandler:(id)a3;
-- (void)setSearchText:(id)a3;
-- (void)setupCollectionView:(id)a3;
-- (void)showViewController:(id)a3 popoverSourceView:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path;
+- (void)dismissViewController:(id)controller;
+- (void)loadDataWithCompletionHandler:(id)handler;
+- (void)setSearchText:(id)text;
+- (void)setupCollectionView:(id)view;
+- (void)showViewController:(id)controller popoverSourceView:(id)view;
 @end
 
 @implementation GKCollectionDataSource
@@ -31,51 +31,51 @@
   return v3;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (self->_useStandardHeaders)
   {
     v4 = +[GKDashboardSectionHeaderView];
-    [v5 registerNib:v4 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"GKCollectionDataSourceHeader"];
+    [viewCopy registerNib:v4 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"GKCollectionDataSourceHeader"];
   }
 
-  [v5 setDataSource:self];
-  [v5 setDelegate:self];
+  [viewCopy setDataSource:self];
+  [viewCopy setDelegate:self];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 1, 0);
+    (*(handler + 2))(handler, 1, 0);
   }
 }
 
-- (void)showViewController:(id)a3 popoverSourceView:(id)a4
+- (void)showViewController:(id)controller popoverSourceView:(id)view
 {
-  v5 = a3;
-  v6 = [(GKCollectionDataSource *)self presentationViewController];
-  [v6 _gkShowViewController:v5];
+  controllerCopy = controller;
+  presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
+  [presentationViewController _gkShowViewController:controllerCopy];
 }
 
-- (void)dismissViewController:(id)a3
+- (void)dismissViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(GKCollectionDataSource *)self presentationViewController];
-  [v5 _gkDismissViewController:v4 animated:1];
+  controllerCopy = controller;
+  presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
+  [presentationViewController _gkDismissViewController:controllerCopy animated:1];
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
-  v4 = a3;
-  if (![(NSString *)self->_searchText isEqualToString:v4])
+  textCopy = text;
+  if (![(NSString *)self->_searchText isEqualToString:textCopy])
   {
-    v5 = [v4 copy];
+    v5 = [textCopy copy];
     searchText = self->_searchText;
     self->_searchText = v5;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if ([(GKCollectionDataSource *)self breakSearchInputTextIntoMultipleTerms])
     {
       v8 = self->_searchText;
@@ -84,34 +84,34 @@
       v10[1] = 3221225472;
       v10[2] = __40__GKCollectionDataSource_setSearchText___block_invoke;
       v10[3] = &unk_27966ABE8;
-      v11 = v7;
+      v11 = array;
       [(NSString *)v8 enumerateSubstringsInRange:0 options:v9 usingBlock:1027, v10];
     }
 
-    else if ([v4 length])
+    else if ([textCopy length])
     {
-      [v7 addObject:v4];
+      [array addObject:textCopy];
     }
 
-    [(GKCollectionDataSource *)self setSearchTerms:v7];
+    [(GKCollectionDataSource *)self setSearchTerms:array];
     [(GKCollectionDataSource *)self searchTextHasChanged];
   }
 }
 
-- (BOOL)searchMatchesItem:(id)a3 inSection:(int64_t)a4
+- (BOOL)searchMatchesItem:(id)item inSection:(int64_t)section
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   if ([(NSArray *)self->_searchTerms count])
   {
-    v7 = [(GKCollectionDataSource *)self searchKeyForSection:a4];
-    v8 = [(GKCollectionDataSource *)self alternateSearchKeyForSection:a4];
+    v7 = [(GKCollectionDataSource *)self searchKeyForSection:section];
+    v8 = [(GKCollectionDataSource *)self alternateSearchKeyForSection:section];
     if ([v7 length])
     {
-      v9 = [v6 valueForKeyPath:v7];
+      v9 = [itemCopy valueForKeyPath:v7];
       if (v8)
       {
-        v10 = [v6 valueForKeyPath:v8];
+        v10 = [itemCopy valueForKeyPath:v8];
       }
 
       else
@@ -182,27 +182,27 @@ LABEL_24:
   return v11;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"subclass needs to override collectionView:cellForItemAtIndexPath:", a4];
+  path = [MEMORY[0x277CCACA8] stringWithFormat:@"subclass needs to override collectionView:cellForItemAtIndexPath:", path];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionDataSource.m"];
-  v7 = [v6 lastPathComponent];
-  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v5, "-[GKCollectionDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(v7, "UTF8String"), 199];
+  lastPathComponent = [v6 lastPathComponent];
+  v8 = [v4 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", path, "-[GKCollectionDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 199];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v8}];
   return 0;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_useStandardHeaders && (v11 = *MEMORY[0x277D767D8], [v9 isEqualToString:*MEMORY[0x277D767D8]]))
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (self->_useStandardHeaders && (v11 = *MEMORY[0x277D767D8], [kindCopy isEqualToString:*MEMORY[0x277D767D8]]))
   {
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"GKCollectionDataSourceHeader" forIndexPath:v10];
-    v13 = -[GKCollectionDataSource headerTextForSection:](self, "headerTextForSection:", [v10 section]);
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:v11 withReuseIdentifier:@"GKCollectionDataSourceHeader" forIndexPath:pathCopy];
+    v13 = -[GKCollectionDataSource headerTextForSection:](self, "headerTextForSection:", [pathCopy section]);
     [v12 setTitle:v13];
 
     [v12 setOnDarkBackground:{-[GKCollectionDataSource onDarkBackground](self, "onDarkBackground")}];
@@ -213,8 +213,8 @@ LABEL_24:
     v14 = MEMORY[0x277CCACA8];
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"subclass needs to override collectionView:viewForSupplementaryElementOfKind:atIndexPath:"];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKCollectionDataSource.m"];
-    v17 = [v16 lastPathComponent];
-    v18 = [v14 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v15, "-[GKCollectionDataSource collectionView:viewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(v17, "UTF8String"), 218];
+    lastPathComponent = [v16 lastPathComponent];
+    v18 = [v14 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v15, "-[GKCollectionDataSource collectionView:viewForSupplementaryElementOfKind:atIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 218];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v18}];
     v12 = 0;
@@ -223,13 +223,13 @@ LABEL_24:
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   if (self->_useStandardHeaders && [(GKCollectionDataSource *)self itemCount])
   {
-    v10 = [(GKCollectionDataSource *)self headerTextForSection:a5];
+    v10 = [(GKCollectionDataSource *)self headerTextForSection:section];
     [GKDashboardSectionHeaderView platformSizeForTitle:v10 withFont:0];
     v12 = v11;
     v14 = v13;
@@ -248,15 +248,15 @@ LABEL_24:
   return result;
 }
 
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [a3 _gkFocusingLayout];
-  v6 = v5;
-  if (v5)
+  pathCopy = path;
+  _gkFocusingLayout = [view _gkFocusingLayout];
+  v6 = _gkFocusingLayout;
+  if (_gkFocusingLayout)
   {
-    v7 = [v5 focusedIndexPath];
-    v8 = [v7 isEqual:v9];
+    focusedIndexPath = [_gkFocusingLayout focusedIndexPath];
+    v8 = [focusedIndexPath isEqual:pathCopy];
 
     if (v8)
     {
@@ -265,36 +265,36 @@ LABEL_24:
   }
 }
 
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [a3 _gkFocusingLayout];
-  v6 = v5;
-  if (v5)
+  pathCopy = path;
+  _gkFocusingLayout = [view _gkFocusingLayout];
+  v6 = _gkFocusingLayout;
+  if (_gkFocusingLayout)
   {
-    v7 = [v5 focusedIndexPath];
-    v8 = [v7 isEqual:v9];
+    focusedIndexPath = [_gkFocusingLayout focusedIndexPath];
+    v8 = [focusedIndexPath isEqual:pathCopy];
 
     if ((v8 & 1) == 0)
     {
-      [v6 setFocusedIndexPath:v9];
+      [v6 setFocusedIndexPath:pathCopy];
     }
   }
 }
 
 - (BOOL)isValidAnalytics
 {
-  v3 = [(GKCollectionDataSource *)self analyticsEvent];
-  if (v3)
+  analyticsEvent = [(GKCollectionDataSource *)self analyticsEvent];
+  if (analyticsEvent)
   {
-    v4 = [(GKCollectionDataSource *)self analyticsEvent];
-    if ([v4 length])
+    analyticsEvent2 = [(GKCollectionDataSource *)self analyticsEvent];
+    if ([analyticsEvent2 length])
     {
-      v5 = [(GKCollectionDataSource *)self analyticsEventType];
-      if (v5)
+      analyticsEventType = [(GKCollectionDataSource *)self analyticsEventType];
+      if (analyticsEventType)
       {
-        v6 = [(GKCollectionDataSource *)self analyticsEventType];
-        v7 = [v6 length] != 0;
+        analyticsEventType2 = [(GKCollectionDataSource *)self analyticsEventType];
+        v7 = [analyticsEventType2 length] != 0;
       }
 
       else

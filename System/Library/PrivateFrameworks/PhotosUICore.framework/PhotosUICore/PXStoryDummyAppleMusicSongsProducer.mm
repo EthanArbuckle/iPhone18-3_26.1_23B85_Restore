@@ -1,14 +1,14 @@
 @interface PXStoryDummyAppleMusicSongsProducer
 - (PXStoryDummyAppleMusicSongsProducer)init;
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
-- (void)_queue_requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4;
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
+- (void)_queue_requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryDummyAppleMusicSongsProducer
 
-- (void)_queue_requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (void)_queue_requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v9 = a4;
+  handlerCopy = handler;
   queue_assets = self->_queue_assets;
   if (!queue_assets)
   {
@@ -18,7 +18,7 @@
   v6 = PXAudioAssetFetchResultWithArray(queue_assets);
   v7 = [[PXStorySongsConfiguration alloc] initWithCuratedAudioAssets:v6];
   v8 = [[PXStoryProducerResult alloc] initWithObject:v7];
-  v9[2](v9, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
 PXAppleMusicAsset *__84__PXStoryDummyAppleMusicSongsProducer__queue_requestSongsWithOptions_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -36,9 +36,9 @@ PXAppleMusicAsset *__84__PXStoryDummyAppleMusicSongsProducer__queue_requestSongs
   return v5;
 }
 
-- (id)requestSongsWithOptions:(unint64_t)a3 resultHandler:(id)a4
+- (id)requestSongsWithOptions:(unint64_t)options resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -46,9 +46,9 @@ PXAppleMusicAsset *__84__PXStoryDummyAppleMusicSongsProducer__queue_requestSongs
   v10[2] = __77__PXStoryDummyAppleMusicSongsProducer_requestSongsWithOptions_resultHandler___block_invoke;
   v10[3] = &unk_1E773C1F8;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v11 = v6;
-  v8 = v6;
+  v12[1] = options;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(queue, v10);
 
   objc_destroyWeak(v12);

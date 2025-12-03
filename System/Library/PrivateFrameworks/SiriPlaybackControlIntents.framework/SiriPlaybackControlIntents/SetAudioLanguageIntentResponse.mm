@@ -1,12 +1,12 @@
 @interface SetAudioLanguageIntentResponse
-- (SetAudioLanguageIntentResponse)initWithPropertiesByName:(id)a3;
+- (SetAudioLanguageIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation SetAudioLanguageIntentResponse
 
-- (SetAudioLanguageIntentResponse)initWithPropertiesByName:(id)a3
+- (SetAudioLanguageIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

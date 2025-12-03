@@ -1,12 +1,12 @@
 @interface IMDSyncChatSliceRecord
 - (IMDSyncChatSliceRecord)init;
-- (IMDSyncChatSliceRecord)initWithCoder:(id)a3;
-- (IMDSyncChatSliceRecord)initWithServiceName:(id)a3 ckRecordID:(id)a4;
+- (IMDSyncChatSliceRecord)initWithCoder:(id)coder;
+- (IMDSyncChatSliceRecord)initWithServiceName:(id)name ckRecordID:(id)d;
 - (NSString)ckRecordID;
 - (NSString)serviceName;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCkRecordID:(id)a3;
-- (void)setServiceName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCkRecordID:(id)d;
+- (void)setServiceName:(id)name;
 @end
 
 @implementation IMDSyncChatSliceRecord
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
   v4 = sub_1B7CFEA60();
   v5 = (self + OBJC_IVAR___IMDSyncChatSliceRecord_serviceName);
@@ -48,9 +48,9 @@
   return v4;
 }
 
-- (void)setCkRecordID:(id)a3
+- (void)setCkRecordID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1B7CFEA60();
   }
@@ -67,11 +67,11 @@
   v6[1] = v5;
 }
 
-- (IMDSyncChatSliceRecord)initWithServiceName:(id)a3 ckRecordID:(id)a4
+- (IMDSyncChatSliceRecord)initWithServiceName:(id)name ckRecordID:(id)d
 {
   v6 = sub_1B7CFEA60();
   v8 = v7;
-  if (a4)
+  if (d)
   {
     v9 = sub_1B7CFEA60();
   }
@@ -95,10 +95,10 @@
   return [(IMDSyncChatSliceRecord *)&v14 init];
 }
 
-- (IMDSyncChatSliceRecord)initWithCoder:(id)a3
+- (IMDSyncChatSliceRecord)initWithCoder:(id)coder
 {
   sub_1B7AEE088(0, &unk_1EDBE59A0, 0x1E696AEC0);
-  v5 = a3;
+  coderCopy = coder;
   v6 = sub_1B7CFEFB0();
   if (v6)
   {
@@ -118,11 +118,11 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B7C27D38(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B7C27D38(coderCopy);
 }
 
 - (IMDSyncChatSliceRecord)init

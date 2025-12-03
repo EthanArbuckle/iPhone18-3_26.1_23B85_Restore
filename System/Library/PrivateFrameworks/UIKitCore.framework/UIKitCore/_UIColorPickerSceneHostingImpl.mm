@@ -3,12 +3,12 @@
 - (void)_pickerDidDismissEyedropper;
 - (void)_pickerDidFinish;
 - (void)_pickerDidFloatEyedropper;
-- (void)_pickerDidSelectColor:(id)a3 colorSpace:(id)a4 isVolatile:(BOOL)a5;
+- (void)_pickerDidSelectColor:(id)color colorSpace:(id)space isVolatile:(BOOL)volatile;
 - (void)_pickerDidShowEyedropper;
 - (void)clientIsReady;
-- (void)dismissEyedropper:(BOOL)a3;
-- (void)setRemoteConfiguration:(id)a3;
-- (void)setRemoteSelectedColor:(id)a3;
+- (void)dismissEyedropper:(BOOL)eyedropper;
+- (void)setRemoteConfiguration:(id)configuration;
+- (void)setRemoteSelectedColor:(id)color;
 - (void)setupRemoteHosting;
 @end
 
@@ -18,8 +18,8 @@
 {
   if (!self->_hostingController)
   {
-    v4 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-    [v4 _beginDelayingPresentation:&__block_literal_global_465 cancellationHandler:3.0];
+    delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+    [delegateColorPickerViewController _beginDelayingPresentation:&__block_literal_global_465 cancellationHandler:3.0];
 
     v13 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:@"com.apple.UIKit.ColorPickerUIService"];
     v5 = [_UISceneHostingController alloc];
@@ -29,53 +29,53 @@
     self->_hostingController = v7;
 
     [(_UISceneHostingController *)self->_hostingController setDelegate:self];
-    v9 = [(_UISceneHostingController *)self->_hostingController sceneViewController];
-    v10 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-    [v10 _setChildViewController:v9];
+    sceneViewController = [(_UISceneHostingController *)self->_hostingController sceneViewController];
+    delegateColorPickerViewController2 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+    [delegateColorPickerViewController2 _setChildViewController:sceneViewController];
 
-    v11 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-    v12 = [v11 configuration];
-    [(_UIColorPickerSceneHostingImpl *)self setRemoteConfiguration:v12];
+    delegateColorPickerViewController3 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+    configuration = [delegateColorPickerViewController3 configuration];
+    [(_UIColorPickerSceneHostingImpl *)self setRemoteConfiguration:configuration];
   }
 }
 
-- (void)setRemoteSelectedColor:(id)a3
+- (void)setRemoteSelectedColor:(id)color
 {
-  v5 = a3;
-  v6 = a3;
-  ColorSpace = CGColorGetColorSpace([v6 CGColor]);
+  colorCopy = color;
+  colorCopy2 = color;
+  ColorSpace = CGColorGetColorSpace([colorCopy2 CGColor]);
   v9 = CGColorSpaceGetName(ColorSpace);
-  v8 = [_UIColorPickerActionHostToClient actionForSelectedColor:v6 withColorSpace:v9];
+  v8 = [_UIColorPickerActionHostToClient actionForSelectedColor:colorCopy2 withColorSpace:v9];
 
   [(_UISceneHostingController *)self->_hostingController sendAction:v8];
 }
 
-- (void)setRemoteConfiguration:(id)a3
+- (void)setRemoteConfiguration:(id)configuration
 {
-  v4 = [_UIColorPickerActionHostToClient actionForConfiguration:a3];
+  v4 = [_UIColorPickerActionHostToClient actionForConfiguration:configuration];
   [(_UISceneHostingController *)self->_hostingController sendAction:v4];
 }
 
-- (void)dismissEyedropper:(BOOL)a3
+- (void)dismissEyedropper:(BOOL)eyedropper
 {
-  v4 = [_UIColorPickerActionHostToClient actionForDismissEyeDropper:a3];
+  v4 = [_UIColorPickerActionHostToClient actionForDismissEyeDropper:eyedropper];
   [(_UISceneHostingController *)self->_hostingController sendAction:v4];
 }
 
 - (void)clientIsReady
 {
-  v3 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  v4 = [v3 _selectedColor];
-  [(_UIColorPickerSceneHostingImpl *)self setRemoteSelectedColor:v4];
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  _selectedColor = [delegateColorPickerViewController _selectedColor];
+  [(_UIColorPickerSceneHostingImpl *)self setRemoteSelectedColor:_selectedColor];
 
-  v5 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v5 _endDelayingPresentation];
+  delegateColorPickerViewController2 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController2 _endDelayingPresentation];
 }
 
 - (void)_pickerDidDismissEyedropper
 {
-  v3 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v3 _pickerDidDismissEyedropper];
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController _pickerDidDismissEyedropper];
 
   [(BSInvalidatable *)self->_foregroundAssertion invalidate];
   foregroundAssertion = self->_foregroundAssertion;
@@ -84,32 +84,32 @@
 
 - (void)_pickerDidFinish
 {
-  v2 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v2 _pickerDidFinish];
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController _pickerDidFinish];
 }
 
 - (void)_pickerDidFloatEyedropper
 {
-  v2 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v2 _pickerDidFloatEyedropper];
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController _pickerDidFloatEyedropper];
 }
 
-- (void)_pickerDidSelectColor:(id)a3 colorSpace:(id)a4 isVolatile:(BOOL)a5
+- (void)_pickerDidSelectColor:(id)color colorSpace:(id)space isVolatile:(BOOL)volatile
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v10 _pickerDidSelectColor:v9 colorSpace:v8 isVolatile:v5];
+  volatileCopy = volatile;
+  spaceCopy = space;
+  colorCopy = color;
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController _pickerDidSelectColor:colorCopy colorSpace:spaceCopy isVolatile:volatileCopy];
 }
 
 - (void)_pickerDidShowEyedropper
 {
-  v3 = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
-  [v3 _pickerDidShowEyedropper];
+  delegateColorPickerViewController = [(_UIColorPickerSceneHostingImpl *)self delegateColorPickerViewController];
+  [delegateColorPickerViewController _pickerDidShowEyedropper];
 
-  v6 = [(_UISceneHostingController *)self->_hostingController activationStateComponent];
-  v4 = [v6 foregroundAssertionForReason:@"eyedropper"];
+  activationStateComponent = [(_UISceneHostingController *)self->_hostingController activationStateComponent];
+  v4 = [activationStateComponent foregroundAssertionForReason:@"eyedropper"];
   foregroundAssertion = self->_foregroundAssertion;
   self->_foregroundAssertion = v4;
 }

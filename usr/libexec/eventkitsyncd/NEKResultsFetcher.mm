@@ -2,9 +2,9 @@
 - (NEKResultsFetcher)init;
 - (id)eventChangeObserver;
 - (id)reminderChangeObserver;
-- (void)fetchChangesIntoPipe:(id)a3 deferrable:(BOOL)a4;
-- (void)fetchEverythingIntoPipe:(id)a3;
-- (void)fetchNightlyIntoPipe:(id)a3;
+- (void)fetchChangesIntoPipe:(id)pipe deferrable:(BOOL)deferrable;
+- (void)fetchEverythingIntoPipe:(id)pipe;
+- (void)fetchNightlyIntoPipe:(id)pipe;
 - (void)join;
 @end
 
@@ -27,30 +27,30 @@
 
 - (id)eventChangeObserver
 {
-  v2 = [(NEKResultsFetcher *)self nekEventStore];
-  v3 = [v2 changeObserver];
+  nekEventStore = [(NEKResultsFetcher *)self nekEventStore];
+  changeObserver = [nekEventStore changeObserver];
 
-  return v3;
+  return changeObserver;
 }
 
 - (id)reminderChangeObserver
 {
-  v2 = [(NEKResultsFetcher *)self nekReminderStore];
-  v3 = [v2 changeObserver];
+  nekReminderStore = [(NEKResultsFetcher *)self nekReminderStore];
+  changeObserver = [nekReminderStore changeObserver];
 
-  return v3;
+  return changeObserver;
 }
 
-- (void)fetchEverythingIntoPipe:(id)a3
+- (void)fetchEverythingIntoPipe:(id)pipe
 {
-  v4 = a3;
+  pipeCopy = pipe;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_100073894();
   }
 
-  v5 = [(NEKResultsFetcher *)self nekEventStore];
-  v6 = [v5 environment];
+  nekEventStore = [(NEKResultsFetcher *)self nekEventStore];
+  environment = [nekEventStore environment];
 
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
@@ -65,38 +65,38 @@
   v39[4] = self;
   v8 = objc_retainBlock(v39);
   v9 = [NEKSyncWindow alloc];
-  v10 = [v6 tinyStore];
-  v11 = [(NEKSyncWindow *)v9 initForFullSync:1 tinyStore:v10];
+  tinyStore = [environment tinyStore];
+  v11 = [(NEKSyncWindow *)v9 initForFullSync:1 tinyStore:tinyStore];
 
-  v12 = [(NEKResultsFetcher *)self eventChangeObserver];
-  v13 = [v12 eventDatabaseController];
+  eventChangeObserver = [(NEKResultsFetcher *)self eventChangeObserver];
+  eventDatabaseController = [eventChangeObserver eventDatabaseController];
 
-  v14 = [(NEKResultsFetcher *)self eventChangeObserver];
-  [v14 restartTrackingChanges];
+  eventChangeObserver2 = [(NEKResultsFetcher *)self eventChangeObserver];
+  [eventChangeObserver2 restartTrackingChanges];
 
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_1000483B4;
   v37[3] = &unk_1000B4B90;
-  v15 = v13;
+  v15 = eventDatabaseController;
   v38 = v15;
-  [v4 addCompletion:v37];
-  v16 = [(NEKResultsFetcher *)self reminderChangeObserver];
-  v17 = [v16 changeStateMap];
+  [pipeCopy addCompletion:v37];
+  reminderChangeObserver = [(NEKResultsFetcher *)self reminderChangeObserver];
+  changeStateMap = [reminderChangeObserver changeStateMap];
 
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_1000483BC;
   v35[3] = &unk_1000B4BB8;
   v35[4] = self;
-  v18 = v17;
+  v18 = changeStateMap;
   v36 = v18;
-  [v4 addCompletion:v35];
+  [pipeCopy addCompletion:v35];
   v19 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v42 = v4;
+    v42 = pipeCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "fetchEverythingIntoPipe:PipeBefore: %{public}@", buf, 0xCu);
   }
 
@@ -106,33 +106,33 @@
   v28[2] = sub_100048410;
   v28[3] = &unk_1000B5B60;
   v29 = v15;
-  v30 = self;
-  v31 = v4;
+  selfCopy = self;
+  v31 = pipeCopy;
   v32 = v11;
   v33 = v7;
   v34 = v8;
   v21 = v8;
   v22 = v11;
   v23 = v7;
-  v24 = v4;
+  v24 = pipeCopy;
   v25 = v15;
   v26 = [v20 initWithBlock:v28];
   [(NEKResultsFetcher *)self setBackgroundThread:v26];
 
-  v27 = [(NEKResultsFetcher *)self backgroundThread];
-  [v27 start];
+  backgroundThread = [(NEKResultsFetcher *)self backgroundThread];
+  [backgroundThread start];
 }
 
-- (void)fetchNightlyIntoPipe:(id)a3
+- (void)fetchNightlyIntoPipe:(id)pipe
 {
-  v4 = a3;
+  pipeCopy = pipe;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_100073920();
   }
 
-  v5 = [(NEKResultsFetcher *)self nekEventStore];
-  v6 = [v5 environment];
+  nekEventStore = [(NEKResultsFetcher *)self nekEventStore];
+  environment = [nekEventStore environment];
 
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
@@ -147,25 +147,25 @@
   v34[4] = self;
   v8 = objc_retainBlock(v34);
   v9 = [NEKSyncWindow alloc];
-  v10 = [v6 tinyStore];
-  v11 = [(NEKSyncWindow *)v9 initForFullSync:0 tinyStore:v10];
+  tinyStore = [environment tinyStore];
+  v11 = [(NEKSyncWindow *)v9 initForFullSync:0 tinyStore:tinyStore];
 
-  v12 = [(NEKResultsFetcher *)self eventChangeObserver];
-  v13 = [v12 eventDatabaseController];
+  eventChangeObserver = [(NEKResultsFetcher *)self eventChangeObserver];
+  eventDatabaseController = [eventChangeObserver eventDatabaseController];
 
-  [v13 startMappingEntities];
+  [eventDatabaseController startMappingEntities];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100048B44;
   v32[3] = &unk_1000B4B90;
-  v14 = v13;
+  v14 = eventDatabaseController;
   v33 = v14;
-  [v4 addCompletion:v32];
+  [pipeCopy addCompletion:v32];
   v15 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v37 = v4;
+    v37 = pipeCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "fetchNightlyIntoPipe:PipeBefore: %{public}@", buf, 0xCu);
   }
 
@@ -174,90 +174,90 @@
   v24 = 3221225472;
   v25 = sub_100048B80;
   v26 = &unk_1000B5B88;
-  v27 = self;
-  v28 = v4;
+  selfCopy = self;
+  v28 = pipeCopy;
   v29 = v11;
   v30 = v7;
   v31 = v8;
   v17 = v8;
   v18 = v11;
   v19 = v7;
-  v20 = v4;
+  v20 = pipeCopy;
   v21 = [v16 initWithBlock:&v23];
-  [(NEKResultsFetcher *)self setBackgroundThread:v21, v23, v24, v25, v26, v27];
+  [(NEKResultsFetcher *)self setBackgroundThread:v21, v23, v24, v25, v26, selfCopy];
 
-  v22 = [(NEKResultsFetcher *)self backgroundThread];
-  [v22 start];
+  backgroundThread = [(NEKResultsFetcher *)self backgroundThread];
+  [backgroundThread start];
 }
 
-- (void)fetchChangesIntoPipe:(id)a3 deferrable:(BOOL)a4
+- (void)fetchChangesIntoPipe:(id)pipe deferrable:(BOOL)deferrable
 {
-  v4 = a4;
-  v6 = a3;
+  deferrableCopy = deferrable;
+  pipeCopy = pipe;
   if (os_log_type_enabled(*(qword_1000D18A8 + 8), OS_LOG_TYPE_DEBUG))
   {
     sub_1000739AC();
   }
 
-  v7 = [(NEKResultsFetcher *)self eventChangeObserver];
-  v8 = [v7 fetchEventChangeSet];
+  eventChangeObserver = [(NEKResultsFetcher *)self eventChangeObserver];
+  fetchEventChangeSet = [eventChangeObserver fetchEventChangeSet];
 
-  v9 = [(NEKResultsFetcher *)self reminderChangeObserver];
-  v10 = [v9 fetchReminderChangeSet];
+  reminderChangeObserver = [(NEKResultsFetcher *)self reminderChangeObserver];
+  fetchReminderChangeSet = [reminderChangeObserver fetchReminderChangeSet];
 
   v11 = [NEKSourceChangeAggregator alloc];
-  v12 = [(NEKResultsFetcher *)self nekEventStore];
-  v13 = [(NEKSourceChangeAggregator *)v11 initWithNEKEventStore:v12 eventChanges:v8 reminderChanges:v10];
+  nekEventStore = [(NEKResultsFetcher *)self nekEventStore];
+  v13 = [(NEKSourceChangeAggregator *)v11 initWithNEKEventStore:nekEventStore eventChanges:fetchEventChangeSet reminderChanges:fetchReminderChangeSet];
 
-  if ([v8 truncated])
+  if ([fetchEventChangeSet truncated])
   {
-    [v10 setTruncated:1];
+    [fetchReminderChangeSet setTruncated:1];
   }
 
-  if ([v10 truncated])
+  if ([fetchReminderChangeSet truncated])
   {
-    [v8 setTruncated:1];
+    [fetchEventChangeSet setTruncated:1];
   }
 
-  if ([v8 hasChangesInNext24hrs])
+  if ([fetchEventChangeSet hasChangesInNext24hrs])
   {
-    [v6 markAsAffectingNext24hrs];
+    [pipeCopy markAsAffectingNext24hrs];
   }
 
-  v14 = [v8 completion];
-  if (v14)
+  completion = [fetchEventChangeSet completion];
+  if (completion)
   {
-    [v6 addCompletion:v14];
+    [pipeCopy addCompletion:completion];
   }
 
-  v15 = [v10 completion];
-  if (v15)
+  completion2 = [fetchReminderChangeSet completion];
+  if (completion2)
   {
-    [v6 addCompletion:v15];
+    [pipeCopy addCompletion:completion2];
   }
 
-  if (![v8 isEmpty] || (objc_msgSend(v10, "isEmpty") & 1) == 0)
+  if (![fetchEventChangeSet isEmpty] || (objc_msgSend(fetchReminderChangeSet, "isEmpty") & 1) == 0)
   {
-    [v6 markAsNotEffectivelyEmpty];
+    [pipeCopy markAsNotEffectivelyEmpty];
   }
 
-  if ([v8 truncated])
+  if ([fetchEventChangeSet truncated])
   {
-    [v6 markAsTruncated];
+    [pipeCopy markAsTruncated];
   }
 
-  else if ([v10 isEmpty] && v4 && objc_msgSend(v8, "isDeferrable"))
+  else if ([fetchReminderChangeSet isEmpty] && deferrableCopy && objc_msgSend(fetchEventChangeSet, "isDeferrable"))
   {
-    [v6 markAsDeferrable];
+    [pipeCopy markAsDeferrable];
   }
 
-  if (([v8 truncated] & 1) != 0 || objc_msgSend(v8, "isEmpty") && objc_msgSend(v10, "isEmpty"))
+  if (([fetchEventChangeSet truncated] & 1) != 0 || objc_msgSend(fetchEventChangeSet, "isEmpty") && objc_msgSend(fetchReminderChangeSet, "isEmpty"))
   {
     v16 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v38 = v6;
+      v38 = pipeCopy;
       v17 = "Finishing pipe (empty changesets): %p";
       v18 = v16;
       v19 = 12;
@@ -266,11 +266,11 @@ LABEL_30:
     }
 
 LABEL_31:
-    [v6 finish];
+    [pipeCopy finish];
     goto LABEL_32;
   }
 
-  if ([v6 isDeferrable])
+  if ([pipeCopy isDeferrable])
   {
     v20 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -285,13 +285,13 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  v28 = [(NEKResultsFetcher *)self nekEventStore];
-  v21 = [(NEKResultsFetcher *)self nekReminderStore];
+  nekEventStore2 = [(NEKResultsFetcher *)self nekEventStore];
+  nekReminderStore = [(NEKResultsFetcher *)self nekReminderStore];
   v22 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v38 = v6;
+    v38 = pipeCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "fetchChangesIntoPipe:PipeBefore: %{public}@", buf, 0xCu);
   }
 
@@ -300,32 +300,32 @@ LABEL_31:
   v29[1] = 3221225472;
   v29[2] = sub_100049224;
   v29[3] = &unk_1000B5BB0;
-  v30 = v28;
-  v31 = v8;
+  v30 = nekEventStore2;
+  v31 = fetchEventChangeSet;
   v32 = v13;
-  v33 = v6;
-  v34 = v21;
-  v35 = v10;
-  v36 = self;
-  v27 = v21;
-  v24 = v28;
+  v33 = pipeCopy;
+  v34 = nekReminderStore;
+  v35 = fetchReminderChangeSet;
+  selfCopy = self;
+  v27 = nekReminderStore;
+  v24 = nekEventStore2;
   v25 = [v23 initWithBlock:v29];
   [(NEKResultsFetcher *)self setBackgroundThread:v25];
 
-  v26 = [(NEKResultsFetcher *)self backgroundThread];
-  [v26 start];
+  backgroundThread = [(NEKResultsFetcher *)self backgroundThread];
+  [backgroundThread start];
 
 LABEL_32:
 }
 
 - (void)join
 {
-  v3 = [(NEKResultsFetcher *)self backgroundThread];
+  backgroundThread = [(NEKResultsFetcher *)self backgroundThread];
 
-  if (v3)
+  if (backgroundThread)
   {
-    v4 = [(NEKResultsFetcher *)self terminateSemaphore];
-    dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
+    terminateSemaphore = [(NEKResultsFetcher *)self terminateSemaphore];
+    dispatch_semaphore_wait(terminateSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
     [(NEKResultsFetcher *)self setBackgroundThread:0];
   }

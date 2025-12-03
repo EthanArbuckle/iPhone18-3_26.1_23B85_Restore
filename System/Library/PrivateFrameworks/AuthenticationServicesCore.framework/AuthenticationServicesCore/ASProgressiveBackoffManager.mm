@@ -1,12 +1,12 @@
 @interface ASProgressiveBackoffManager
 - (_TtC26AuthenticationServicesCore27ASProgressiveBackoffManager)init;
-- (_TtC26AuthenticationServicesCore27ASProgressiveBackoffManager)initWithNumberOfOperationsBeforeTriggeringBackoff:(int64_t)a3 minimumCooldownDurationSeconds:(double)a4;
-- (void)performAfterBackoffForContext:(NSString *)a3 completionHandler:(id)a4;
+- (_TtC26AuthenticationServicesCore27ASProgressiveBackoffManager)initWithNumberOfOperationsBeforeTriggeringBackoff:(int64_t)backoff minimumCooldownDurationSeconds:(double)seconds;
+- (void)performAfterBackoffForContext:(NSString *)context completionHandler:(id)handler;
 @end
 
 @implementation ASProgressiveBackoffManager
 
-- (_TtC26AuthenticationServicesCore27ASProgressiveBackoffManager)initWithNumberOfOperationsBeforeTriggeringBackoff:(int64_t)a3 minimumCooldownDurationSeconds:(double)a4
+- (_TtC26AuthenticationServicesCore27ASProgressiveBackoffManager)initWithNumberOfOperationsBeforeTriggeringBackoff:(int64_t)backoff minimumCooldownDurationSeconds:(double)seconds
 {
   v5 = sub_1C21714B4();
   v7 = v6;
@@ -14,7 +14,7 @@
   v9 = swift_allocObject();
   swift_defaultActor_initialize();
   v10 = sub_1C2141EC0(MEMORY[0x1E69E7CC0]);
-  v9[14] = a3;
+  v9[14] = backoff;
   v9[15] = v5;
   v9[16] = v7;
   v9[17] = v10;
@@ -26,15 +26,15 @@
   return v11;
 }
 
-- (void)performAfterBackoffForContext:(NSString *)a3 completionHandler:(id)a4
+- (void)performAfterBackoffForContext:(NSString *)context completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = context;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1C2170BE4();
@@ -49,7 +49,7 @@
   v15[3] = 0;
   v15[4] = &unk_1C21799C0;
   v15[5] = v14;
-  v16 = a3;
+  contextCopy = context;
 
   sub_1C2166D88(0, 0, v10, &unk_1C21768B0, v15);
 }

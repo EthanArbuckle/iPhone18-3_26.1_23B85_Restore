@@ -1,15 +1,15 @@
 @interface SRGuideDetailSectionHeaderCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SRGuideDetailSectionHeaderCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SRGuideDetailSectionHeaderCollectionViewCell" hasInstanceVariable:@"_textContainerView" withType:"SiriUITextContainerView"];
-  [v3 validateClass:@"SiriUITextContainerView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SRGuideDetailSectionHeaderCollectionViewCell" hasInstanceVariable:@"_textContainerView" withType:"SiriUITextContainerView"];
+  [validationsCopy validateClass:@"SiriUITextContainerView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

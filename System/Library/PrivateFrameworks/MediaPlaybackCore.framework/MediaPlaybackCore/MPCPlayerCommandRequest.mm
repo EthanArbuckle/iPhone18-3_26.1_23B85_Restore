@@ -1,9 +1,9 @@
 @interface MPCPlayerCommandRequest
-- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)a3 options:(id)a4 controller:(id)a5 label:(id)a6;
-- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)a3 options:(id)a4 playerPath:(id)a5 label:(id)a6;
+- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)command options:(id)options controller:(id)controller label:(id)label;
+- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)command options:(id)options playerPath:(id)path label:(id)label;
 - (id)description;
-- (void)setCommandOptionValue:(id)a3 forKey:(id)a4;
-- (void)setLabel:(id)a3;
+- (void)setCommandOptionValue:(id)value forKey:(id)key;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MPCPlayerCommandRequest
@@ -18,16 +18,16 @@
   return v6;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  if (!v4)
+  labelCopy = label;
+  if (!labelCopy)
   {
-    v4 = self->_originalLabel;
+    labelCopy = self->_originalLabel;
   }
 
   label = self->_label;
-  v9 = v4;
+  v9 = labelCopy;
   if (v9 == label)
   {
 
@@ -45,11 +45,11 @@ LABEL_7:
   }
 }
 
-- (void)setCommandOptionValue:(id)a3 forKey:(id)a4
+- (void)setCommandOptionValue:(id)value forKey:(id)key
 {
   options = self->_options;
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = [(NSDictionary *)options mutableCopy];
   v10 = v9;
   if (v9)
@@ -64,33 +64,33 @@ LABEL_7:
 
   v14 = v11;
 
-  [v14 setObject:v8 forKeyedSubscript:v7];
+  [v14 setObject:valueCopy forKeyedSubscript:keyCopy];
   v12 = [v14 copy];
   v13 = self->_options;
   self->_options = v12;
 }
 
-- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)a3 options:(id)a4 playerPath:(id)a5 label:(id)a6
+- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)command options:(id)options playerPath:(id)path label:(id)label
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  optionsCopy = options;
+  pathCopy = path;
+  labelCopy = label;
   v22.receiver = self;
   v22.super_class = MPCPlayerCommandRequest;
   v13 = [(MPCPlayerCommandRequest *)&v22 init];
   v14 = v13;
   if (v13)
   {
-    v13->_command = a3;
-    v15 = [v10 copy];
+    v13->_command = command;
+    v15 = [optionsCopy copy];
     options = v14->_options;
     v14->_options = v15;
 
-    v17 = [v11 copy];
+    v17 = [pathCopy copy];
     playerPath = v14->_playerPath;
     v14->_playerPath = v17;
 
-    v19 = [v12 copy];
+    v19 = [labelCopy copy];
     label = v14->_label;
     v14->_label = v19;
 
@@ -100,18 +100,18 @@ LABEL_7:
   return v14;
 }
 
-- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)a3 options:(id)a4 controller:(id)a5 label:(id)a6
+- (MPCPlayerCommandRequest)initWithMediaRemoteCommand:(unsigned int)command options:(id)options controller:(id)controller label:(id)label
 {
-  v9 = *&a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  v14 = [v11 resolvedPlayerPath];
-  v15 = [(MPCPlayerCommandRequest *)self initWithMediaRemoteCommand:v9 options:v13 playerPath:v14 label:v12];
+  v9 = *&command;
+  controllerCopy = controller;
+  labelCopy = label;
+  optionsCopy = options;
+  resolvedPlayerPath = [controllerCopy resolvedPlayerPath];
+  v15 = [(MPCPlayerCommandRequest *)self initWithMediaRemoteCommand:v9 options:optionsCopy playerPath:resolvedPlayerPath label:labelCopy];
 
   if (v15)
   {
-    objc_storeStrong(&v15->_controller, a5);
+    objc_storeStrong(&v15->_controller, controller);
   }
 
   return v15;

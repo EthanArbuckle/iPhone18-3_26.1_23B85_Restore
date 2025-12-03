@@ -1,22 +1,22 @@
 @interface CLFenceManagerAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)syncgetFences:(void *)a3 forKey:(id)a4;
-- (BOOL)syncgetHasMonitoredFences:(id)a3;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)syncgetFences:(void *)fences forKey:(id)key;
+- (BOOL)syncgetHasMonitoredFences:(id)fences;
 - (CLFenceManagerAdapter)init;
 - (void)adaptee;
-- (void)addFence:(id)a3;
+- (void)addFence:(id)fence;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)getFencesForBundleID:(id)a3 withReply:(id)a4;
-- (void)removeFence:(id)a3;
-- (void)requestChangeFencesStateMatchingHandoffTags:(id)a3 forDeviceID:(id)a4;
-- (void)requestRegionState:(id)a3;
-- (void)setIsSimulatingLocation:(BOOL)a3;
-- (void)simulateFenceWithBundleID:(id)a3 andFenceID:(id)a4 eventType:(unsigned __int8)a5 atLocation:(id)a6;
+- (void)getFencesForBundleID:(id)d withReply:(id)reply;
+- (void)removeFence:(id)fence;
+- (void)requestChangeFencesStateMatchingHandoffTags:(id)tags forDeviceID:(id)d;
+- (void)requestRegionState:(id)state;
+- (void)setIsSimulatingLocation:(BOOL)location;
+- (void)simulateFenceWithBundleID:(id)d andFenceID:(id)iD eventType:(unsigned __int8)type atLocation:(id)location;
 @end
 
 @implementation CLFenceManagerAdapter
@@ -31,12 +31,12 @@
   return byte_10265B068;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -83,27 +83,27 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLFenceManagerAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLFenceManagerAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)addFence:(id)a3
+- (void)addFence:(id)fence
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1008BE4E8(v4, v5);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  (*(fence + 2))(v5, fence);
+  sub_1008BE4E8(adaptee, v5);
   if (__p)
   {
     v15 = __p;
@@ -131,11 +131,11 @@
   }
 }
 
-- (void)removeFence:(id)a3
+- (void)removeFence:(id)fence
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1008BFE6C(v4, v5);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  (*(fence + 2))(v5, fence);
+  sub_1008BFE6C(adaptee, v5);
   if (__p)
   {
     v15 = __p;
@@ -163,11 +163,11 @@
   }
 }
 
-- (void)requestRegionState:(id)a3
+- (void)requestRegionState:(id)state
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1008C0090(v4, v5);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  (*(state + 2))(v5, state);
+  sub_1008C0090(adaptee, v5);
   if (__p)
   {
     v15 = __p;
@@ -195,18 +195,18 @@
   }
 }
 
-- (void)requestChangeFencesStateMatchingHandoffTags:(id)a3 forDeviceID:(id)a4
+- (void)requestChangeFencesStateMatchingHandoffTags:(id)tags forDeviceID:(id)d
 {
   v6 = [(CLFenceManagerAdapter *)self adaptee]+ 112;
 
-  sub_100CAEC70(v6, a3, a4);
+  sub_100CAEC70(v6, tags, d);
 }
 
-- (BOOL)syncgetHasMonitoredFences:(id)a3
+- (BOOL)syncgetHasMonitoredFences:(id)fences
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  sub_10000EC00(&__p, [a3 UTF8String]);
-  v5 = sub_100CAF89C(v4 + 112);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  sub_10000EC00(&__p, [fences UTF8String]);
+  v5 = sub_100CAF89C(adaptee + 112);
   if (v8 < 0)
   {
     operator delete(__p);
@@ -215,11 +215,11 @@
   return v5;
 }
 
-- (BOOL)syncgetFences:(void *)a3 forKey:(id)a4
+- (BOOL)syncgetFences:(void *)fences forKey:(id)key
 {
-  v6 = [(CLFenceManagerAdapter *)self adaptee];
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_100CAE590(v6 + 112, __p, a3);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  sub_10000EC00(__p, [key UTF8String]);
+  sub_100CAE590(adaptee + 112, __p, fences);
   if (v9 < 0)
   {
     operator delete(__p[0]);
@@ -228,9 +228,9 @@
   return 1;
 }
 
-- (void)simulateFenceWithBundleID:(id)a3 andFenceID:(id)a4 eventType:(unsigned __int8)a5 atLocation:(id)a6
+- (void)simulateFenceWithBundleID:(id)d andFenceID:(id)iD eventType:(unsigned __int8)type atLocation:(id)location
 {
-  if (a5 == 1)
+  if (type == 1)
   {
     v9 = 1;
   }
@@ -240,7 +240,7 @@
     v9 = -1;
   }
 
-  if (a5)
+  if (type)
   {
     v10 = v9;
   }
@@ -250,12 +250,12 @@
     v10 = 0;
   }
 
-  v11 = [(CLFenceManagerAdapter *)self adaptee];
-  sub_10000EC00(v25, [a3 UTF8String]);
-  sub_10000EC00(v23, [a4 UTF8String]);
-  if (a6)
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  sub_10000EC00(v25, [d UTF8String]);
+  sub_10000EC00(v23, [iD UTF8String]);
+  if (location)
   {
-    [a6 clientLocation];
+    [location clientLocation];
   }
 
   else
@@ -281,7 +281,7 @@
   v21[5] = v17;
   v21[0] = v12;
   v21[1] = v13;
-  sub_1008C08F8(v11, v25, v23, v10, v21);
+  sub_1008C08F8(adaptee, v25, v23, v10, v21);
   if (v24 < 0)
   {
     operator delete(v23[0]);
@@ -293,20 +293,20 @@
   }
 }
 
-- (void)setIsSimulatingLocation:(BOOL)a3
+- (void)setIsSimulatingLocation:(BOOL)location
 {
-  v4 = [(CLFenceManagerAdapter *)self adaptee];
-  v4[3882] = a3;
-  v5 = (v4 + 344);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  adaptee[3882] = location;
+  v5 = (adaptee + 344);
 
-  sub_100C89364(v5, a3);
+  sub_100C89364(v5, location);
 }
 
-- (void)getFencesForBundleID:(id)a3 withReply:(id)a4
+- (void)getFencesForBundleID:(id)d withReply:(id)reply
 {
-  v6 = [(CLFenceManagerAdapter *)self adaptee];
-  sub_10000EC00(__p, [a3 UTF8String]);
-  sub_1008C0D98(v6, __p, a4);
+  adaptee = [(CLFenceManagerAdapter *)self adaptee];
+  sub_10000EC00(__p, [d UTF8String]);
+  sub_1008C0D98(adaptee, __p, reply);
   if (v8 < 0)
   {
     operator delete(__p[0]);

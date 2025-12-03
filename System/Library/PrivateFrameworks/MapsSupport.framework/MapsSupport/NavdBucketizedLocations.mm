@@ -3,7 +3,7 @@
 - (id).cxx_construct;
 - (id)locations;
 - (void)_pruneLeachedLocations;
-- (void)addLocation:(id)a3;
+- (void)addLocation:(id)location;
 @end
 
 @implementation NavdBucketizedLocations
@@ -34,12 +34,12 @@
   return v3;
 }
 
-- (void)addLocation:(id)a3
+- (void)addLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   v4 = self->_config.delegate;
   objc_sync_enter(v4);
-  [(MNRouteGeniusDelegateProxy *)self->_config.delegate insertObject:v5 atIndex:0];
+  [(MNRouteGeniusDelegateProxy *)self->_config.delegate insertObject:locationCopy atIndex:0];
   [(NavdBucketizedLocations *)self _pruneLeachedLocations];
   objc_sync_exit(v4);
 }
@@ -61,8 +61,8 @@
         while (1)
         {
           v8 = [(MNRouteGeniusDelegateProxy *)self->_config.delegate objectAtIndexedSubscript:v5];
-          v9 = [v8 timestamp];
-          v10 = MapsSuggestionsSecondsSince(v9);
+          timestamp = [v8 timestamp];
+          v10 = MapsSuggestionsSecondsSince(timestamp);
           v11 = qword_100049428[v4];
 
           if (v10 >= v11)

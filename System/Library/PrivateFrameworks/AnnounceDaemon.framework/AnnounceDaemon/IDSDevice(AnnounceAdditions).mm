@@ -6,8 +6,8 @@
 
 - (uint64_t)isHomePod
 {
-  v1 = [a1 modelIdentifier];
-  v2 = [v1 containsString:@"AudioAccessory"];
+  modelIdentifier = [self modelIdentifier];
+  v2 = [modelIdentifier containsString:@"AudioAccessory"];
 
   return v2;
 }

@@ -1,25 +1,25 @@
 @interface HUTitleButtonDescriptionCell
-- (HUTitleButtonDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUTitleButtonDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HUTitleButtonDescriptionCellDelegate)delegate;
 - (void)_updateButtonHidden;
-- (void)handleRemoveAction:(id)a3;
+- (void)handleRemoveAction:(id)action;
 - (void)prepareForReuse;
-- (void)setButtonColorFollowsTintColor:(BOOL)a3;
-- (void)setButtonFont:(id)a3;
-- (void)setButtonText:(id)a3;
-- (void)setHideButton:(BOOL)a3;
+- (void)setButtonColorFollowsTintColor:(BOOL)color;
+- (void)setButtonFont:(id)font;
+- (void)setButtonText:(id)text;
+- (void)setHideButton:(BOOL)button;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUTitleButtonDescriptionCell
 
-- (HUTitleButtonDescriptionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUTitleButtonDescriptionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = HUTitleButtonDescriptionCell;
-  v7 = [(HUTitleDescriptionCell *)&v21 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(HUTitleDescriptionCell *)&v21 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
@@ -29,8 +29,8 @@
     [(HUTitleDescriptionCell *)v7 setMaxNumberOfTitleLines:0];
     [(HUTitleDescriptionCell *)v7 setMaxNumberOfDescriptionLines:1];
     [(HUTitleButtonDescriptionCell *)v7 setButtonText:&stru_2823E0EE8];
-    v10 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:v10 primaryAction:0];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    v11 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     valueButton = v7->_valueButton;
     v7->_valueButton = v11;
 
@@ -41,11 +41,11 @@
     v18 = &unk_277DC0CF8;
     objc_copyWeak(&v19, &location);
     [(UIButton *)v7->_valueButton setConfigurationUpdateHandler:&v15];
-    [(UIButton *)v7->_valueButton setConfiguration:v10, v15, v16, v17, v18];
+    [(UIButton *)v7->_valueButton setConfiguration:plainButtonConfiguration, v15, v16, v17, v18];
     [(UIButton *)v7->_valueButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v7->_valueButton addTarget:v7 action:sel_handleRemoveAction_ forControlEvents:64];
-    v13 = [(HUTitleButtonDescriptionCell *)v7 contentView];
-    [v13 addSubview:v7->_valueButton];
+    contentView = [(HUTitleButtonDescriptionCell *)v7 contentView];
+    [contentView addSubview:v7->_valueButton];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -106,22 +106,22 @@ LABEL_6:
   [(HUTitleButtonDescriptionCell *)self setButtonColorFollowsTintColor:0];
 }
 
-- (void)setHideButton:(BOOL)a3
+- (void)setHideButton:(BOOL)button
 {
-  if (self->_hideButton != a3)
+  if (self->_hideButton != button)
   {
-    self->_hideButton = a3;
+    self->_hideButton = button;
     [(HUTitleButtonDescriptionCell *)self _updateButtonHidden];
   }
 }
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  v5 = a3;
-  v6 = [(HUTitleButtonDescriptionCell *)self buttonText];
-  v7 = v5;
+  textCopy = text;
+  buttonText = [(HUTitleButtonDescriptionCell *)self buttonText];
+  v7 = textCopy;
   v12 = v7;
-  if (v6 == v7)
+  if (buttonText == v7)
   {
 
 LABEL_8:
@@ -129,25 +129,25 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!buttonText)
   {
 
     goto LABEL_7;
   }
 
-  v8 = [v6 isEqual:v7];
+  v8 = [buttonText isEqual:v7];
 
   v9 = v12;
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_buttonText, a3);
-    v10 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v6 = [v10 configuration];
+    objc_storeStrong(&self->_buttonText, text);
+    valueButton = [(HUTitleButtonDescriptionCell *)self valueButton];
+    buttonText = [valueButton configuration];
 
-    [v6 setTitle:v12];
-    v11 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    [v11 setConfiguration:v6];
+    [buttonText setTitle:v12];
+    valueButton2 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    [valueButton2 setConfiguration:buttonText];
 
     [(HUTitleButtonDescriptionCell *)self _updateButtonHidden];
     goto LABEL_8;
@@ -156,109 +156,109 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)setButtonFont:(id)a3
+- (void)setButtonFont:(id)font
 {
-  v10 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_buttonFont isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_buttonFont, a3);
-    v5 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v6 = [v5 configuration];
+    objc_storeStrong(&self->_buttonFont, font);
+    valueButton = [(HUTitleButtonDescriptionCell *)self valueButton];
+    configuration = [valueButton configuration];
 
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v7 setObject:v10 forKey:*MEMORY[0x277D740A8]];
+    [v7 setObject:fontCopy forKey:*MEMORY[0x277D740A8]];
     v8 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:self->_buttonText attributes:v7];
-    [v6 setAttributedTitle:v8];
+    [configuration setAttributedTitle:v8];
 
-    v9 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    [v9 setConfiguration:v6];
+    valueButton2 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    [valueButton2 setConfiguration:configuration];
   }
 }
 
-- (void)setButtonColorFollowsTintColor:(BOOL)a3
+- (void)setButtonColorFollowsTintColor:(BOOL)color
 {
-  if ([(HUTitleButtonDescriptionCell *)self buttonColorFollowsTintColor]!= a3)
+  if ([(HUTitleButtonDescriptionCell *)self buttonColorFollowsTintColor]!= color)
   {
-    self->_buttonColorFollowsTintColor = a3;
+    self->_buttonColorFollowsTintColor = color;
   }
 }
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v41.receiver = self;
   v41.super_class = HUTitleButtonDescriptionCell;
   [(HUTitleDescriptionCell *)&v41 updateConstraints];
-  v4 = [(HUTitleButtonDescriptionCell *)self valueButton];
-  v5 = [v4 superview];
+  valueButton = [(HUTitleButtonDescriptionCell *)self valueButton];
+  superview = [valueButton superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v7 = [v6 centerYAnchor];
-    v8 = [(HUTitleButtonDescriptionCell *)self contentView];
-    v9 = [v8 centerYAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9];
-    [v3 addObject:v10];
+    valueButton2 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    centerYAnchor = [valueButton2 centerYAnchor];
+    contentView = [(HUTitleButtonDescriptionCell *)self contentView];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v10];
 
-    v11 = [(HUTitleButtonDescriptionCell *)self contentView];
-    v12 = [v11 layoutMarginsGuide];
-    v13 = [v12 trailingAnchor];
-    v14 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v15 = [v14 trailingAnchor];
-    v16 = [v13 constraintEqualToSystemSpacingAfterAnchor:v15 multiplier:1.0];
-    [v3 addObject:v16];
+    contentView2 = [(HUTitleButtonDescriptionCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide trailingAnchor];
+    valueButton3 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    trailingAnchor2 = [valueButton3 trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:1.0];
+    [array addObject:v16];
 
-    v17 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    valueButton4 = [(HUTitleButtonDescriptionCell *)self valueButton];
     LODWORD(v18) = 1144750080;
-    [v17 setContentCompressionResistancePriority:0 forAxis:v18];
+    [valueButton4 setContentCompressionResistancePriority:0 forAxis:v18];
 
-    v19 = [(HUTitleDescriptionCell *)self titleLabel];
-    v20 = [v19 trailingAnchor];
-    v21 = [v20 constraintsAffectingLayout];
+    titleLabel = [(HUTitleDescriptionCell *)self titleLabel];
+    trailingAnchor3 = [titleLabel trailingAnchor];
+    constraintsAffectingLayout = [trailingAnchor3 constraintsAffectingLayout];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __49__HUTitleButtonDescriptionCell_updateConstraints__block_invoke;
     v40[3] = &unk_277DBF850;
     v40[4] = self;
-    [v21 na_each:v40];
+    [constraintsAffectingLayout na_each:v40];
 
-    v22 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v23 = [v22 trailingAnchor];
-    v24 = [v23 constraintsAffectingLayout];
+    descriptionLabel = [(HUTitleDescriptionCell *)self descriptionLabel];
+    trailingAnchor4 = [descriptionLabel trailingAnchor];
+    constraintsAffectingLayout2 = [trailingAnchor4 constraintsAffectingLayout];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __49__HUTitleButtonDescriptionCell_updateConstraints__block_invoke_2;
     v39[3] = &unk_277DBF850;
     v39[4] = self;
-    [v24 na_each:v39];
+    [constraintsAffectingLayout2 na_each:v39];
 
-    v25 = [(HUTitleDescriptionCell *)self titleTrailingConstraint];
-    [v25 setActive:0];
+    titleTrailingConstraint = [(HUTitleDescriptionCell *)self titleTrailingConstraint];
+    [titleTrailingConstraint setActive:0];
 
-    v26 = [(HUTitleDescriptionCell *)self descriptionTrailingConstraint];
-    [v26 setActive:0];
+    descriptionTrailingConstraint = [(HUTitleDescriptionCell *)self descriptionTrailingConstraint];
+    [descriptionTrailingConstraint setActive:0];
 
-    v27 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    descriptionLabel2 = [(HUTitleDescriptionCell *)self descriptionLabel];
     LODWORD(v28) = 1132068864;
-    [v27 setContentCompressionResistancePriority:0 forAxis:v28];
+    [descriptionLabel2 setContentCompressionResistancePriority:0 forAxis:v28];
 
-    v29 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v30 = [v29 leadingAnchor];
-    v31 = [(HUTitleDescriptionCell *)self titleLabel];
-    v32 = [v31 trailingAnchor];
-    v33 = [v30 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v32 multiplier:1.0];
-    [v3 addObject:v33];
+    valueButton5 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    leadingAnchor = [valueButton5 leadingAnchor];
+    titleLabel2 = [(HUTitleDescriptionCell *)self titleLabel];
+    trailingAnchor5 = [titleLabel2 trailingAnchor];
+    v33 = [leadingAnchor constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor5 multiplier:1.0];
+    [array addObject:v33];
 
-    v34 = [(HUTitleButtonDescriptionCell *)self valueButton];
-    v35 = [v34 leadingAnchor];
-    v36 = [(HUTitleDescriptionCell *)self descriptionLabel];
-    v37 = [v36 trailingAnchor];
-    v38 = [v35 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v37 multiplier:1.0];
-    [v3 addObject:v38];
+    valueButton6 = [(HUTitleButtonDescriptionCell *)self valueButton];
+    leadingAnchor2 = [valueButton6 leadingAnchor];
+    descriptionLabel3 = [(HUTitleDescriptionCell *)self descriptionLabel];
+    trailingAnchor6 = [descriptionLabel3 trailingAnchor];
+    v38 = [leadingAnchor2 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor6 multiplier:1.0];
+    [array addObject:v38];
   }
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v3];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 void __49__HUTitleButtonDescriptionCell_updateConstraints__block_invoke(uint64_t a1, void *a2)
@@ -341,16 +341,16 @@ void __49__HUTitleButtonDescriptionCell_updateConstraints__block_invoke_2(uint64
 LABEL_8:
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v9.receiver = self;
   v9.super_class = HUTitleButtonDescriptionCell;
-  [(HUTitleDescriptionCell *)&v9 updateUIWithAnimation:a3];
+  [(HUTitleDescriptionCell *)&v9 updateUIWithAnimation:animation];
   [(HUTitleButtonDescriptionCell *)self setSelectionStyle:0];
   objc_opt_class();
-  v4 = [(HUIconCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13E30]];
+  item = [(HUIconCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13E30]];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -374,26 +374,26 @@ LABEL_8:
 
   else
   {
-    v4 = [(HUTitleButtonDescriptionCell *)self buttonText];
-    v3 = [v4 length] == 0;
+    buttonText = [(HUTitleButtonDescriptionCell *)self buttonText];
+    v3 = [buttonText length] == 0;
   }
 
-  v5 = [(HUTitleButtonDescriptionCell *)self valueButton];
-  v6 = [v5 superview];
+  valueButton = [(HUTitleButtonDescriptionCell *)self valueButton];
+  superview = [valueButton superview];
 
-  if (((v3 ^ (v6 != 0)) & 1) == 0)
+  if (((v3 ^ (superview != 0)) & 1) == 0)
   {
     if (v3)
     {
-      v7 = [(HUTitleButtonDescriptionCell *)self valueButton];
-      [v7 removeFromSuperview];
+      valueButton2 = [(HUTitleButtonDescriptionCell *)self valueButton];
+      [valueButton2 removeFromSuperview];
     }
 
     else
     {
-      v7 = [(HUTitleButtonDescriptionCell *)self contentView];
-      v8 = [(HUTitleButtonDescriptionCell *)self valueButton];
-      [v7 addSubview:v8];
+      valueButton2 = [(HUTitleButtonDescriptionCell *)self contentView];
+      valueButton3 = [(HUTitleButtonDescriptionCell *)self valueButton];
+      [valueButton2 addSubview:valueButton3];
     }
 
     [(HUTitleButtonDescriptionCell *)self setNeedsUpdateConstraints];
@@ -402,11 +402,11 @@ LABEL_8:
   }
 }
 
-- (void)handleRemoveAction:(id)a3
+- (void)handleRemoveAction:(id)action
 {
-  v5 = [(HUTitleButtonDescriptionCell *)self delegate];
-  v4 = [(HUIconCell *)self item];
-  [v5 buttonTappedForCell:self withItem:v4];
+  delegate = [(HUTitleButtonDescriptionCell *)self delegate];
+  item = [(HUIconCell *)self item];
+  [delegate buttonTappedForCell:self withItem:item];
 }
 
 - (HUTitleButtonDescriptionCellDelegate)delegate

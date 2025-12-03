@@ -9,18 +9,18 @@
 - (void)_invalidateLowDiskManager;
 - (void)_invalidateLowMemory;
 - (void)_invalidatePowerManager;
-- (void)_processLowDiskNotification:(BOOL)a3;
+- (void)_processLowDiskNotification:(BOOL)notification;
 - (void)_resetLowDiskManager;
 - (void)_resetPowerManager;
-- (void)_setPowerLevelWithCoalescing:(BOOL)a3;
-- (void)addLowDiskObserver:(id)a3 forDevice:(int)a4;
-- (void)addLowMemoryObserver:(id)a3;
-- (void)addPowerObserver:(id)a3;
+- (void)_setPowerLevelWithCoalescing:(BOOL)coalescing;
+- (void)addLowDiskObserver:(id)observer forDevice:(int)device;
+- (void)addLowMemoryObserver:(id)observer;
+- (void)addPowerObserver:(id)observer;
 - (void)close;
 - (void)dealloc;
-- (void)removeLowDiskObserver:(id)a3 forDevice:(int)a4;
-- (void)removeLowMemoryObserver:(id)a3;
-- (void)removePowerObserver:(id)a3;
+- (void)removeLowDiskObserver:(id)observer forDevice:(int)device;
+- (void)removeLowMemoryObserver:(id)observer;
+- (void)removePowerObserver:(id)observer;
 - (void)reset;
 @end
 
@@ -158,13 +158,13 @@
   return v3;
 }
 
-- (void)_setPowerLevelWithCoalescing:(BOOL)a3
+- (void)_setPowerLevelWithCoalescing:(BOOL)coalescing
 {
   v5 = +[GSUserDefaults defaults];
   [v5 doubleForKey:@"system.power" min:0.001 max:172800.0 byDefault:1.0];
   v7 = v6;
   dispatch_assert_queue_V2(self->_notificationQueue);
-  if (a3)
+  if (coalescing)
   {
     powerLevelOKTimer = self->_powerLevelOKTimer;
     if (self->_powerLevelOK)
@@ -214,31 +214,31 @@
   }
 }
 
-- (void)addPowerObserver:(id)a3
+- (void)addPowerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001BDC0;
   v7[3] = &unk_100041638;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
-- (void)removePowerObserver:(id)a3
+- (void)removePowerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001BF40;
   v7[3] = &unk_100041638;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -302,7 +302,7 @@
   dispatch_async(notificationQueue, block);
 }
 
-- (void)_processLowDiskNotification:(BOOL)a3
+- (void)_processLowDiskNotification:(BOOL)notification
 {
   dispatch_assert_queue_V2(self->_notificationQueue);
   lowDiskDict = self->_lowDiskDict;
@@ -311,37 +311,37 @@
   v6[2] = sub_10001C408;
   v6[3] = &unk_100041660;
   v6[4] = self;
-  v7 = a3;
+  notificationCopy = notification;
   [(NSMutableDictionary *)lowDiskDict enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)addLowDiskObserver:(id)a3 forDevice:(int)a4
+- (void)addLowDiskObserver:(id)observer forDevice:(int)device
 {
-  v6 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C7A4;
   block[3] = &unk_100041688;
-  v11 = a4;
+  deviceCopy = device;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(notificationQueue, block);
 }
 
-- (void)removeLowDiskObserver:(id)a3 forDevice:(int)a4
+- (void)removeLowDiskObserver:(id)observer forDevice:(int)device
 {
-  v6 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001C9FC;
   block[3] = &unk_100041688;
-  v11 = a4;
+  deviceCopy = device;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(notificationQueue, block);
 }
 
@@ -419,31 +419,31 @@
   }
 }
 
-- (void)addLowMemoryObserver:(id)a3
+- (void)addLowMemoryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CE68;
   v7[3] = &unk_100041638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
-- (void)removeLowMemoryObserver:(id)a3
+- (void)removeLowMemoryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CF0C;
   v7[3] = &unk_100041638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 

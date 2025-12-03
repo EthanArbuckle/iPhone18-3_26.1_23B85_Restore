@@ -1,9 +1,9 @@
 @interface ATXLockScreenNotificationRankerServer
 + (id)sharedInstance;
 - (ATXLockScreenNotificationRankerServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)rankNewNotificationIntoNotificationArrays:(id)a3 newNotification:(id)a4 notificationArrayIndex:(unint64_t)a5 reply:(id)a6;
-- (void)rankNotificationArrays:(id)a3 reply:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)rankNewNotificationIntoNotificationArrays:(id)arrays newNotification:(id)notification notificationArrayIndex:(unint64_t)index reply:(id)reply;
+- (void)rankNotificationArrays:(id)arrays reply:(id)reply;
 @end
 
 @implementation ATXLockScreenNotificationRankerServer
@@ -49,32 +49,32 @@ void __55__ATXLockScreenNotificationRankerServer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:*MEMORY[0x277CEBAF8]];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:*MEMORY[0x277CEBAF8]];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && ([v8 BOOLValue] & 1) != 0)
   {
     v9 = ATXLockScreenNotificationRankerXPCInterface();
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __76__ATXLockScreenNotificationRankerServer_listener_shouldAcceptNewConnection___block_invoke;
     v19[3] = &unk_2785977B0;
     objc_copyWeak(&v20, &location);
-    [v7 setInterruptionHandler:v19];
+    [connectionCopy setInterruptionHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __76__ATXLockScreenNotificationRankerServer_listener_shouldAcceptNewConnection___block_invoke_20;
     v17[3] = &unk_2785977B0;
     objc_copyWeak(&v18, &location);
-    [v7 setInvalidationHandler:v17];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v17];
+    [connectionCopy resume];
     v10 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -122,15 +122,15 @@ void __76__ATXLockScreenNotificationRankerServer_listener_shouldAcceptNewConnect
   }
 }
 
-- (void)rankNotificationArrays:(id)a3 reply:(id)a4
+- (void)rankNotificationArrays:(id)arrays reply:(id)reply
 {
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v14 = 0;
-    v8 = [ATXLockScreenNotificationRanker rankNotificationArrays:a3 error:&v14];
+    v8 = [ATXLockScreenNotificationRanker rankNotificationArrays:arrays error:&v14];
     v9 = v14;
-    v7[2](v7, v8, v9);
+    replyCopy[2](replyCopy, v8, v9);
   }
 
   else
@@ -149,21 +149,21 @@ void __76__ATXLockScreenNotificationRankerServer_listener_shouldAcceptNewConnect
   }
 }
 
-- (void)rankNewNotificationIntoNotificationArrays:(id)a3 newNotification:(id)a4 notificationArrayIndex:(unint64_t)a5 reply:(id)a6
+- (void)rankNewNotificationIntoNotificationArrays:(id)arrays newNotification:(id)notification notificationArrayIndex:(unint64_t)index reply:(id)reply
 {
-  v11 = a6;
-  if (v11)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v23 = 0;
-    v12 = [ATXLockScreenNotificationRanker rankNewNotificationIntoNotificationArrays:a3 newNotification:a4 notificationArrayIndex:a5 error:&v23];
+    v12 = [ATXLockScreenNotificationRanker rankNewNotificationIntoNotificationArrays:arrays newNotification:notification notificationArrayIndex:index error:&v23];
     v13 = v23;
     v14 = v13;
     if (v12)
     {
-      v15 = [v12 first];
-      v16 = [v15 unsignedIntegerValue];
-      v17 = [v12 second];
-      v11[2](v11, v16, [v17 unsignedIntegerValue], v14);
+      first = [v12 first];
+      unsignedIntegerValue = [first unsignedIntegerValue];
+      second = [v12 second];
+      replyCopy[2](replyCopy, unsignedIntegerValue, [second unsignedIntegerValue], v14);
     }
 
     else
@@ -177,7 +177,7 @@ void __76__ATXLockScreenNotificationRankerServer_listener_shouldAcceptNewConnect
         }
       }
 
-      v11[2](v11, 0, 0, v14);
+      replyCopy[2](replyCopy, 0, 0, v14);
     }
   }
 

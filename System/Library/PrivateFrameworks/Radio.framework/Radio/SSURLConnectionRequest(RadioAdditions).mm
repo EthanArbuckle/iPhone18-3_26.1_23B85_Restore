@@ -31,8 +31,8 @@
   }
 
   v14 = newRadioRequestWithRequestContext_requestProperties_storeBag__sDateFormatter;
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v14 stringFromDate:v15];
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = [v14 stringFromDate:date];
 
   if ([v16 length])
   {
@@ -40,8 +40,8 @@
   }
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  v19 = [v17 stringWithFormat:@"%li", objc_msgSend(v18, "secondsFromGMT")];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  v19 = [v17 stringWithFormat:@"%li", objc_msgSend(systemTimeZone, "secondsFromGMT")];
 
   if ([v19 length])
   {
@@ -50,8 +50,8 @@
 
   [v11 setShouldDecodeResponse:0];
   [v11 setMachineDataStyle:2];
-  v20 = [v11 HTTPBody];
-  if ([v20 length])
+  hTTPBody = [v11 HTTPBody];
+  if ([hTTPBody length])
   {
     v21 = MSVGzipCompressData();
     if ([v21 length])
@@ -62,15 +62,15 @@
   }
 
   v22 = [(SSURLConnectionRequest *)[RadioURLConnectionRequest alloc] initWithRequestProperties:v11];
-  v23 = [v9 URLBagDictionary];
+  uRLBagDictionary = [v9 URLBagDictionary];
 
-  [(SSURLConnectionRequest *)v22 configureWithURLBagDictionary:v23];
+  [(SSURLConnectionRequest *)v22 configureWithURLBagDictionary:uRLBagDictionary];
   [(SSURLConnectionRequest *)v22 setShouldMescalSign:1];
   if ([v7 usesLocalNetworking])
   {
     [(SSURLConnectionRequest *)v22 setRunsInProcess:1];
-    v24 = [v7 SAPSession];
-    [(SSURLConnectionRequest *)v22 setSAPSession:v24];
+    sAPSession = [v7 SAPSession];
+    [(SSURLConnectionRequest *)v22 setSAPSession:sAPSession];
 
     v25 = [objc_alloc(MEMORY[0x277D69D00]) initWithPolicyType:1];
     [(SSURLConnectionRequest *)v22 setSAPSignaturePolicy:v25];

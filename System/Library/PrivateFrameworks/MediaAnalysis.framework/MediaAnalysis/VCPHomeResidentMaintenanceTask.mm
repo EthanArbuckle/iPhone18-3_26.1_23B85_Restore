@@ -1,30 +1,30 @@
 @interface VCPHomeResidentMaintenanceTask
-+ (id)taskWithOptions:(id)a3 extendTimeoutBlock:(id)a4 completionHandler:(id)a5;
++ (id)taskWithOptions:(id)options extendTimeoutBlock:(id)block completionHandler:(id)handler;
 - (BOOL)isCanceled;
-- (VCPHomeResidentMaintenanceTask)initWithOptions:(id)a3 extendTimeoutBlock:(id)a4 completionHandler:(id)a5;
+- (VCPHomeResidentMaintenanceTask)initWithOptions:(id)options extendTimeoutBlock:(id)block completionHandler:(id)handler;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPHomeResidentMaintenanceTask
 
-- (VCPHomeResidentMaintenanceTask)initWithOptions:(id)a3 extendTimeoutBlock:(id)a4 completionHandler:(id)a5
+- (VCPHomeResidentMaintenanceTask)initWithOptions:(id)options extendTimeoutBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  blockCopy = block;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = VCPHomeResidentMaintenanceTask;
   v12 = [(VCPHomeResidentMaintenanceTask *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_options, a3);
-    v14 = _Block_copy(v10);
+    objc_storeStrong(&v12->_options, options);
+    v14 = _Block_copy(blockCopy);
     extendTimeoutBlock = v13->_extendTimeoutBlock;
     v13->_extendTimeoutBlock = v14;
 
-    v16 = _Block_copy(v11);
+    v16 = _Block_copy(handlerCopy);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v16;
 
@@ -34,12 +34,12 @@
   return v13;
 }
 
-+ (id)taskWithOptions:(id)a3 extendTimeoutBlock:(id)a4 completionHandler:(id)a5
++ (id)taskWithOptions:(id)options extendTimeoutBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithOptions:v7 extendTimeoutBlock:v8 completionHandler:v9];
+  optionsCopy = options;
+  blockCopy = block;
+  handlerCopy = handler;
+  v10 = [objc_alloc(objc_opt_class()) initWithOptions:optionsCopy extendTimeoutBlock:blockCopy completionHandler:handlerCopy];
 
   return v10;
 }
@@ -119,7 +119,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v35, 8);
-  v34 = [v4 taskService];
+  taskService = [v4 taskService];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -150,7 +150,7 @@
   v16 = &unk_1E834E418;
   v8 = v6;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v19 = &v35;
   v20 = &v22;
   v9 = _Block_copy(&v13);

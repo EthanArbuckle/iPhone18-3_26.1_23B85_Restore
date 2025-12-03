@@ -11,8 +11,8 @@
 + (void)__MPModelForYouRecommendationItemRelationshipPlaylist__MAPPING_MISSING__;
 + (void)__MPModelForYouRecommendationItemRelationshipRadioStation__MAPPING_MISSING__;
 - (MPModelForYouRecommendationGroup)subgroup;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 @end
 
@@ -76,76 +76,76 @@
 
 + (void)__MPModelForYouRecommendationItemPropertySubgroupIndex__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:34 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertySubgroupIndex"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:34 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertySubgroupIndex"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyParentGroup__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:33 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyParentGroup"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:33 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyParentGroup"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyBackedByStoreItemMetadata__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:32 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyBackedByStoreItemMetadata"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:32 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyBackedByStoreItemMetadata"];
 }
 
 + (void)__MPModelForYouRecommendationItemRelationshipRadioStation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:31 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipRadioStation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:31 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipRadioStation"];
 }
 
 + (void)__MPModelForYouRecommendationItemRelationshipPlaylist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:30 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipPlaylist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:30 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipPlaylist"];
 }
 
 + (void)__MPModelForYouRecommendationItemRelationshipAlbum__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:29 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipAlbum"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:29 description:@"Translator was missing mapping for MPModelForYouRecommendationItemRelationshipAlbum"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyUtterance__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:28 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyUtterance"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:28 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyUtterance"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:27 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:27 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyReason"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyURL__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:26 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyURL"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:26 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyURL"];
 }
 
 + (void)__MPModelForYouRecommendationItemPropertyItemType__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelForYouRecommendationItem.m" lineNumber:25 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyItemType"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelForYouRecommendationItem.m" lineNumber:25 description:@"Translator was missing mapping for MPModelForYouRecommendationItemPropertyItemType"];
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MPModelObject *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MPModelObject *)self identifiers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __92__MPModelForYouRecommendationItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_1E767CD40;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MPModelObject *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MPModelObject *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }
@@ -178,34 +178,34 @@ LABEL_8:
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v3 = [(MPModelForYouRecommendationItem *)self itemType];
-  switch(v3)
+  itemType = [(MPModelForYouRecommendationItem *)self itemType];
+  switch(itemType)
   {
     case 3:
-      v4 = [(MPModelForYouRecommendationItem *)self radioStation];
+      radioStation = [(MPModelForYouRecommendationItem *)self radioStation];
       goto LABEL_7;
     case 2:
-      v4 = [(MPModelForYouRecommendationItem *)self playlist];
+      radioStation = [(MPModelForYouRecommendationItem *)self playlist];
       goto LABEL_7;
     case 1:
-      v4 = [(MPModelForYouRecommendationItem *)self album];
+      radioStation = [(MPModelForYouRecommendationItem *)self album];
 LABEL_7:
-      v5 = v4;
+      v5 = radioStation;
       goto LABEL_9;
   }
 
   v5 = 0;
 LABEL_9:
-  v6 = [v5 relativeModelObjectForStoreLibraryPersonalization];
+  relativeModelObjectForStoreLibraryPersonalization = [v5 relativeModelObjectForStoreLibraryPersonalization];
 
-  return v6;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = [a3 relationships];
+  relationships = [properties relationships];
   v5 = [(MPModelForYouRecommendationItem *)self itemType]- 1;
-  if (v5 > 2 || ([v4 objectForKey:off_1E767CD60[v5]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v5 > 2 || ([relationships objectForKey:off_1E767CD60[v5]], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = +[MPPropertySet emptyPropertySet];
   }
@@ -215,9 +215,9 @@ LABEL_9:
 
 - (MPModelForYouRecommendationGroup)subgroup
 {
-  v3 = [(MPModelForYouRecommendationItem *)self parentGroup];
-  v4 = [v3 subgroups];
-  v5 = [v4 objectAtIndex:{-[MPModelForYouRecommendationItem subgroupIndex](self, "subgroupIndex")}];
+  parentGroup = [(MPModelForYouRecommendationItem *)self parentGroup];
+  subgroups = [parentGroup subgroups];
+  v5 = [subgroups objectAtIndex:{-[MPModelForYouRecommendationItem subgroupIndex](self, "subgroupIndex")}];
 
   return v5;
 }

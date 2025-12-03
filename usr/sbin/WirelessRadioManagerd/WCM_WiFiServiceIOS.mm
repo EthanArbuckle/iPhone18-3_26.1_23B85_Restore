@@ -2,78 +2,78 @@
 - (BOOL)isAssociated;
 - (BOOL)isWiFiNetworkCaptive;
 - (BOOL)isWiFiPrimaryInterface;
-- (BOOL)setWiFiBTCoexProfile:(id)a3 atIndex:(int64_t)a4;
-- (BOOL)setWiFiBTExtCoexProfile:(id)a3 atIndex:(int64_t)a4;
+- (BOOL)setWiFiBTCoexProfile:(id)profile atIndex:(int64_t)index;
+- (BOOL)setWiFiBTExtCoexProfile:(id)profile atIndex:(int64_t)index;
 - (WCM_WiFiServiceIOS)init;
 - (id)getLeastCongestedWifiParam;
 - (int)getPhyMode;
-- (int)sendMessage:(void *)a3 withValue:(void *)a4;
+- (int)sendMessage:(void *)message withValue:(void *)value;
 - (void)checkWiFiState;
 - (void)dealloc;
 - (void)disableLQMUpdate;
 - (void)disableWiFi;
 - (void)enableLQMUpdate;
-- (void)notifyWiFiStateChange:(BOOL)a3;
-- (void)performScan:(id)a3;
-- (void)processWifiDeviceExtendedLinkEvent:(__CFDictionary *)a3;
+- (void)notifyWiFiStateChange:(BOOL)change;
+- (void)performScan:(id)scan;
+- (void)processWifiDeviceExtendedLinkEvent:(__CFDictionary *)event;
 - (void)registerWiFiCallbacks;
-- (void)setAggregatedConditionIdConfig:(id)a3;
-- (void)setAntennaCellPolicy:(id)a3;
-- (void)setAntennaSelection:(id)a3;
-- (void)setAntennaSelectionV2:(id)a3;
-- (void)setAntennaSelectionWiFiEnh:(id)a3;
-- (void)setBTConnectionReport:(id)a3;
-- (void)setCellularFrequencyConfig:(id)a3;
-- (void)setChannelConfigurationForConditionId:(unsigned int)a3 enable2G:(BOOL)a4 enable5G:(BOOL)a5 enable6G:(BOOL)a6 wifi_channel_lower:(unsigned int)a7 wifi_channel_upper:(unsigned int)a8;
-- (void)setChannelsForCellularScanProtectionWiFiEnh:(id)a3 wiFiEnhChannels:(id)a4 indexArrayForScanThrottling:(id)a5;
-- (void)setChannelsForCellularScanProtectionWithMode:(id)a3 indexArrayForScanThrottling:(id)a4;
-- (void)setChannelsForTimeSharingMode:(id)a3;
-- (void)setChannelsToBlocklist:(id)a3;
-- (void)setChannelsToDisableOCL:(id)a3;
-- (void)setChannelsToDisableOCLWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
+- (void)setAggregatedConditionIdConfig:(id)config;
+- (void)setAntennaCellPolicy:(id)policy;
+- (void)setAntennaSelection:(id)selection;
+- (void)setAntennaSelectionV2:(id)v2;
+- (void)setAntennaSelectionWiFiEnh:(id)enh;
+- (void)setBTConnectionReport:(id)report;
+- (void)setCellularFrequencyConfig:(id)config;
+- (void)setChannelConfigurationForConditionId:(unsigned int)id enable2G:(BOOL)g enable5G:(BOOL)enable5G enable6G:(BOOL)enable6G wifi_channel_lower:(unsigned int)wifi_channel_lower wifi_channel_upper:(unsigned int)wifi_channel_upper;
+- (void)setChannelsForCellularScanProtectionWiFiEnh:(id)enh wiFiEnhChannels:(id)channels indexArrayForScanThrottling:(id)throttling;
+- (void)setChannelsForCellularScanProtectionWithMode:(id)mode indexArrayForScanThrottling:(id)throttling;
+- (void)setChannelsForTimeSharingMode:(id)mode;
+- (void)setChannelsToBlocklist:(id)blocklist;
+- (void)setChannelsToDisableOCL:(id)l;
+- (void)setChannelsToDisableOCLWiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
 - (void)setChannelsToEnableAssocProtectionModeWiFiEnh;
-- (void)setChannelsToEnableType7MSG2GWiFi:(id)a3;
-- (void)setChannelsToEnableType7MSG:(id)a3;
-- (void)setChannelsToEnableType7MSGWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
-- (void)setChannelsToEnableWCI2:(id)a3;
-- (void)setChannelsToEnableWCI2V2:(id)a3;
-- (void)setChannelsToEnableWCI2WiFiEnh:(id)a3 WiFiEnhChannels:(id)a4;
-- (void)setChannelsToEnablerFemModeWiFiEnh:(BOOL)a3 enable5G:(BOOL)a4 enable6G:(BOOL)a5;
-- (void)setCoexParams:(const char *)a3 withValue:(id)a4;
-- (void)setEnableAgcCoexMode:(id)a3;
-- (void)setEnableEnvelopeIndicationFor2G:(id)a3;
-- (void)setEnvelopeIndicationTimerFor2G:(id)a3;
+- (void)setChannelsToEnableType7MSG2GWiFi:(id)fi;
+- (void)setChannelsToEnableType7MSG:(id)g;
+- (void)setChannelsToEnableType7MSGWiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
+- (void)setChannelsToEnableWCI2:(id)i2;
+- (void)setChannelsToEnableWCI2V2:(id)v2;
+- (void)setChannelsToEnableWCI2WiFiEnh:(id)enh WiFiEnhChannels:(id)channels;
+- (void)setChannelsToEnablerFemModeWiFiEnh:(BOOL)enh enable5G:(BOOL)g enable6G:(BOOL)enable6G;
+- (void)setCoexParams:(const char *)params withValue:(id)value;
+- (void)setEnableAgcCoexMode:(id)mode;
+- (void)setEnableEnvelopeIndicationFor2G:(id)g;
+- (void)setEnvelopeIndicationTimerFor2G:(id)g;
 - (void)setLAACoexConfigEnableTxInd;
-- (void)setLAACoexConfigScanThrottleMask:(id)a3;
-- (void)setLAACoexConfigWci2TxDurationThreshold:(id)a3;
-- (void)setLAACoexConfigWifiDwellTime:(id)a3;
-- (void)setMWSChannelParameters:(id)a3;
-- (void)setMWSFrameConfig:(id)a3;
-- (void)setMWSSignalingConfig:(id)a3;
-- (void)setMaxDurationForCellularScanProtection:(id)a3;
-- (void)setMedtronicState:(int)a3;
-- (void)setRCU2CoexParams:(id)a3;
-- (void)setRxAntennaPreference:(id)a3;
-- (void)setRxPriorityThreshold:(id)a3;
-- (void)setRxProtectAutoModeParamWeight:(id)a3 andThresh:(id)a4;
-- (void)setRxProtectMode:(id)a3;
-- (void)setScanJoinRxProtectDuration:(id)a3;
-- (void)setTxAntennaPreference:(id)a3;
-- (void)setTxOnIndication:(id)a3;
-- (void)setWiFiBTCoexActiveProfileFor2G:(int64_t)a3 and5G:(int64_t)a4;
-- (void)setWiFiBTULOFDMAstate:(BOOL)a3;
-- (void)setWiFiCallingState:(BOOL)a3;
-- (void)setWiFiDevice:(__WiFiDeviceClient *)a3;
-- (void)setWiFiRCU1ModeChanged:(BOOL)a3 andChannelChanged:(BOOL)a4 andMode:(id)a5 andChannel:(id)a6;
-- (void)setWiFiRCU1ULOFDMAstate:(BOOL)a3;
-- (void)setWiFiRCU2CoexMode:(id)a3;
-- (void)setWiFiRCU2PMProtectionMode:(id)a3;
-- (void)setWiFiRCU2TimingArray:(id)a3;
-- (void)setWiFiRCU2ULOFDMAstate:(BOOL)a3;
-- (void)setWifiBTA2DPLLAStatus:(int)a3;
-- (void)setWifiBTA2DPStatus:(int)a3;
-- (void)setWifiBTeSCOHidStatus:(int)a3 andUseCase:(int)a4;
-- (void)setWifiBTeSCOStatus:(int)a3;
+- (void)setLAACoexConfigScanThrottleMask:(id)mask;
+- (void)setLAACoexConfigWci2TxDurationThreshold:(id)threshold;
+- (void)setLAACoexConfigWifiDwellTime:(id)time;
+- (void)setMWSChannelParameters:(id)parameters;
+- (void)setMWSFrameConfig:(id)config;
+- (void)setMWSSignalingConfig:(id)config;
+- (void)setMaxDurationForCellularScanProtection:(id)protection;
+- (void)setMedtronicState:(int)state;
+- (void)setRCU2CoexParams:(id)params;
+- (void)setRxAntennaPreference:(id)preference;
+- (void)setRxPriorityThreshold:(id)threshold;
+- (void)setRxProtectAutoModeParamWeight:(id)weight andThresh:(id)thresh;
+- (void)setRxProtectMode:(id)mode;
+- (void)setScanJoinRxProtectDuration:(id)duration;
+- (void)setTxAntennaPreference:(id)preference;
+- (void)setTxOnIndication:(id)indication;
+- (void)setWiFiBTCoexActiveProfileFor2G:(int64_t)g and5G:(int64_t)and5G;
+- (void)setWiFiBTULOFDMAstate:(BOOL)astate;
+- (void)setWiFiCallingState:(BOOL)state;
+- (void)setWiFiDevice:(__WiFiDeviceClient *)device;
+- (void)setWiFiRCU1ModeChanged:(BOOL)changed andChannelChanged:(BOOL)channelChanged andMode:(id)mode andChannel:(id)channel;
+- (void)setWiFiRCU1ULOFDMAstate:(BOOL)astate;
+- (void)setWiFiRCU2CoexMode:(id)mode;
+- (void)setWiFiRCU2PMProtectionMode:(id)mode;
+- (void)setWiFiRCU2TimingArray:(id)array;
+- (void)setWiFiRCU2ULOFDMAstate:(BOOL)astate;
+- (void)setWifiBTA2DPLLAStatus:(int)status;
+- (void)setWifiBTA2DPStatus:(int)status;
+- (void)setWifiBTeSCOHidStatus:(int)status andUseCase:(int)case;
+- (void)setWifiBTeSCOStatus:(int)status;
 - (void)unregisterWiFiCallbacks;
 @end
 
@@ -370,7 +370,7 @@ LABEL_21:
   return 0;
 }
 
-- (int)sendMessage:(void *)a3 withValue:(void *)a4
+- (int)sendMessage:(void *)message withValue:(void *)value
 {
   mWifiDevice = self->mWifiDevice;
   if (mWifiDevice)
@@ -384,7 +384,7 @@ LABEL_21:
     {
       if (self->mWifiDevicePowerState)
       {
-        [WCM_Logging logLevel:2 message:@"WiFiS: send WiFi message (%@)", a3];
+        [WCM_Logging logLevel:2 message:@"WiFiS: send WiFi message (%@)", message];
         v7 = self->mWifiDevice;
         v8 = WiFiDeviceClientSetCoexParameters();
         goto LABEL_12;
@@ -419,307 +419,307 @@ LABEL_12:
   return v8;
 }
 
-- (void)setChannelsToBlocklist:(id)a3
+- (void)setChannelsToBlocklist:(id)blocklist
 {
-  v5 = a3;
+  blocklistCopy = blocklist;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F299C;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = blocklist;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnableWCI2:(id)a3
+- (void)setChannelsToEnableWCI2:(id)i2
 {
-  v5 = a3;
+  i2Copy = i2;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F2B94;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = i2;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnableWCI2V2:(id)a3
+- (void)setChannelsToEnableWCI2V2:(id)v2
 {
-  v5 = a3;
+  v2Copy = v2;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F2D8C;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = v2;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnableWCI2WiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)setChannelsToEnableWCI2WiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  v7 = a3;
-  v8 = a4;
+  enhCopy = enh;
+  channelsCopy = channels;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F3288;
   block[3] = &unk_10023E058;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = enh;
+  block[5] = channels;
   block[6] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setChannelsToEnableType7MSG:(id)a3
+- (void)setChannelsToEnableType7MSG:(id)g
 {
-  v5 = a3;
+  gCopy = g;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F3C1C;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = g;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnableType7MSG2GWiFi:(id)a3
+- (void)setChannelsToEnableType7MSG2GWiFi:(id)fi
 {
-  v5 = a3;
+  fiCopy = fi;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F405C;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = fi;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnableType7MSGWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)setChannelsToEnableType7MSGWiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  v7 = a3;
-  v8 = a4;
+  enhCopy = enh;
+  channelsCopy = channels;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F4294;
   block[3] = &unk_10023E058;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = enh;
+  block[5] = channels;
   block[6] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setChannelsToDisableOCL:(id)a3
+- (void)setChannelsToDisableOCL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F4C28;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = l;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToDisableOCLWiFiEnh:(id)a3 WiFiEnhChannels:(id)a4
+- (void)setChannelsToDisableOCLWiFiEnh:(id)enh WiFiEnhChannels:(id)channels
 {
-  v7 = a3;
-  v8 = a4;
+  enhCopy = enh;
+  channelsCopy = channels;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F4E54;
   block[3] = &unk_10023E058;
-  block[4] = a3;
-  block[5] = a4;
+  block[4] = enh;
+  block[5] = channels;
   block[6] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setRxPriorityThreshold:(id)a3
+- (void)setRxPriorityThreshold:(id)threshold
 {
-  v5 = a3;
+  thresholdCopy = threshold;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F57E8;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = threshold;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setMWSChannelParameters:(id)a3
+- (void)setMWSChannelParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F58DC;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = parameters;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setMWSFrameConfig:(id)a3
+- (void)setMWSFrameConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F59D0;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = config;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setMWSSignalingConfig:(id)a3
+- (void)setMWSSignalingConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5ADC;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = config;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setRxAntennaPreference:(id)a3
+- (void)setRxAntennaPreference:(id)preference
 {
-  v5 = a3;
+  preferenceCopy = preference;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5BE8;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = preference;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setTxAntennaPreference:(id)a3
+- (void)setTxAntennaPreference:(id)preference
 {
-  v5 = a3;
+  preferenceCopy = preference;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5CE4;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = preference;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setAntennaCellPolicy:(id)a3
+- (void)setAntennaCellPolicy:(id)policy
 {
-  v5 = a3;
+  policyCopy = policy;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5DE0;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = policy;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setAntennaSelection:(id)a3
+- (void)setAntennaSelection:(id)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5EDC;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = selection;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setAntennaSelectionV2:(id)a3
+- (void)setAntennaSelectionV2:(id)v2
 {
-  v5 = a3;
+  v2Copy = v2;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F5FD0;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = v2;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setAntennaSelectionWiFiEnh:(id)a3
+- (void)setAntennaSelectionWiFiEnh:(id)enh
 {
-  v5 = a3;
+  enhCopy = enh;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F60C4;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = enh;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsForCellularScanProtectionWithMode:(id)a3 indexArrayForScanThrottling:(id)a4
+- (void)setChannelsForCellularScanProtectionWithMode:(id)mode indexArrayForScanThrottling:(id)throttling
 {
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  throttlingCopy = throttling;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F61EC;
   block[3] = &unk_10023E058;
-  block[4] = a3;
+  block[4] = mode;
   block[5] = self;
-  block[6] = a4;
+  block[6] = throttling;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setChannelsForCellularScanProtectionWiFiEnh:(id)a3 wiFiEnhChannels:(id)a4 indexArrayForScanThrottling:(id)a5
+- (void)setChannelsForCellularScanProtectionWiFiEnh:(id)enh wiFiEnhChannels:(id)channels indexArrayForScanThrottling:(id)throttling
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  enhCopy = enh;
+  channelsCopy = channels;
+  throttlingCopy = throttling;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000F6C0C;
   v12[3] = &unk_1002421B0;
-  v12[4] = a3;
-  v12[5] = a4;
-  v12[6] = a5;
+  v12[4] = enh;
+  v12[5] = channels;
+  v12[6] = throttling;
   v12[7] = self;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
-- (void)setChannelConfigurationForConditionId:(unsigned int)a3 enable2G:(BOOL)a4 enable5G:(BOOL)a5 enable6G:(BOOL)a6 wifi_channel_lower:(unsigned int)a7 wifi_channel_upper:(unsigned int)a8
+- (void)setChannelConfigurationForConditionId:(unsigned int)id enable2G:(BOOL)g enable5G:(BOOL)enable5G enable6G:(BOOL)enable6G wifi_channel_lower:(unsigned int)wifi_channel_lower wifi_channel_upper:(unsigned int)wifi_channel_upper
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000F8EAC;
   block[3] = &unk_1002421D8;
   block[4] = self;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v9 = a3;
-  v10 = a7;
-  v11 = a8;
+  gCopy = g;
+  enable5GCopy = enable5G;
+  enable6GCopy = enable6G;
+  idCopy = id;
+  wifi_channel_lowerCopy = wifi_channel_lower;
+  wifi_channel_upperCopy = wifi_channel_upper;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setAggregatedConditionIdConfig:(id)a3
+- (void)setAggregatedConditionIdConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F8FB8;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = config;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsToEnablerFemModeWiFiEnh:(BOOL)a3 enable5G:(BOOL)a4 enable6G:(BOOL)a5
+- (void)setChannelsToEnablerFemModeWiFiEnh:(BOOL)enh enable5G:(BOOL)g enable6G:(BOOL)enable6G
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000F92F8;
   v5[3] = &unk_100242200;
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
+  enhCopy = enh;
+  gCopy = g;
+  enable6GCopy = enable6G;
   v5[4] = self;
   dispatch_async(&_dispatch_main_q, v5);
 }
@@ -734,145 +734,145 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setMaxDurationForCellularScanProtection:(id)a3
+- (void)setMaxDurationForCellularScanProtection:(id)protection
 {
-  v5 = a3;
+  protectionCopy = protection;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F9DDC;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = protection;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setChannelsForTimeSharingMode:(id)a3
+- (void)setChannelsForTimeSharingMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F9ED0;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = mode;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setRxProtectMode:(id)a3
+- (void)setRxProtectMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    v5 = a3;
+    modeCopy = mode;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA02C;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = mode;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setRxProtectAutoModeParamWeight:(id)a3 andThresh:(id)a4
+- (void)setRxProtectAutoModeParamWeight:(id)weight andThresh:(id)thresh
 {
-  if (a3)
+  if (weight)
   {
-    if (a4)
+    if (thresh)
     {
-      v7 = a3;
-      v8 = a4;
+      weightCopy = weight;
+      threshCopy = thresh;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000FA140;
       block[3] = &unk_10023E058;
-      block[4] = a3;
-      block[5] = a4;
+      block[4] = weight;
+      block[5] = thresh;
       block[6] = self;
       dispatch_async(&_dispatch_main_q, block);
     }
   }
 }
 
-- (void)setTxOnIndication:(id)a3
+- (void)setTxOnIndication:(id)indication
 {
-  if (a3)
+  if (indication)
   {
-    v5 = a3;
+    indicationCopy = indication;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA29C;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = indication;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setScanJoinRxProtectDuration:(id)a3
+- (void)setScanJoinRxProtectDuration:(id)duration
 {
-  v5 = a3;
+  durationCopy = duration;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000FA390;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = duration;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)setCellularFrequencyConfig:(id)a3
+- (void)setCellularFrequencyConfig:(id)config
 {
-  if (a3)
+  if (config)
   {
-    v5 = a3;
+    configCopy = config;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA4A4;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = config;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setEnableEnvelopeIndicationFor2G:(id)a3
+- (void)setEnableEnvelopeIndicationFor2G:(id)g
 {
-  if (a3)
+  if (g)
   {
-    v5 = a3;
+    gCopy = g;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA5A0;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = g;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setEnvelopeIndicationTimerFor2G:(id)a3
+- (void)setEnvelopeIndicationTimerFor2G:(id)g
 {
-  if (a3)
+  if (g)
   {
-    v5 = a3;
+    gCopy = g;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA69C;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = g;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setEnableAgcCoexMode:(id)a3
+- (void)setEnableAgcCoexMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000FA790;
   v6[3] = &unk_10023DC80;
-  v6[4] = a3;
+  v6[4] = mode;
   v6[5] = self;
   dispatch_async(&_dispatch_main_q, v6);
 }
@@ -887,223 +887,223 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setLAACoexConfigWci2TxDurationThreshold:(id)a3
+- (void)setLAACoexConfigWci2TxDurationThreshold:(id)threshold
 {
-  if (a3)
+  if (threshold)
   {
-    v5 = a3;
+    thresholdCopy = threshold;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FA98C;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = threshold;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setLAACoexConfigScanThrottleMask:(id)a3
+- (void)setLAACoexConfigScanThrottleMask:(id)mask
 {
-  if (a3)
+  if (mask)
   {
-    v5 = a3;
+    maskCopy = mask;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FAA88;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = mask;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setLAACoexConfigWifiDwellTime:(id)a3
+- (void)setLAACoexConfigWifiDwellTime:(id)time
 {
-  if (a3)
+  if (time)
   {
-    v5 = a3;
+    timeCopy = time;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FAB84;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = time;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setWiFiBTULOFDMAstate:(BOOL)a3
+- (void)setWiFiBTULOFDMAstate:(BOOL)astate
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FAF64;
   v3[3] = &unk_10023E008;
-  v4 = a3;
+  astateCopy = astate;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setWiFiRCU1ULOFDMAstate:(BOOL)a3
+- (void)setWiFiRCU1ULOFDMAstate:(BOOL)astate
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FB05C;
   v3[3] = &unk_10023E008;
-  v4 = a3;
+  astateCopy = astate;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setWiFiRCU2ULOFDMAstate:(BOOL)a3
+- (void)setWiFiRCU2ULOFDMAstate:(BOOL)astate
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FB154;
   v3[3] = &unk_10023E008;
-  v4 = a3;
+  astateCopy = astate;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setWiFiRCU1ModeChanged:(BOOL)a3 andChannelChanged:(BOOL)a4 andMode:(id)a5 andChannel:(id)a6
+- (void)setWiFiRCU1ModeChanged:(BOOL)changed andChannelChanged:(BOOL)channelChanged andMode:(id)mode andChannel:(id)channel
 {
-  if (a5)
+  if (mode)
   {
-    if (a6)
+    if (channel)
     {
-      v11 = a5;
-      v12 = a6;
+      modeCopy = mode;
+      channelCopy = channel;
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1000FB294;
       v13[3] = &unk_100242228;
-      v14 = a3;
-      v15 = a4;
-      v13[4] = a5;
-      v13[5] = a6;
+      changedCopy = changed;
+      channelChangedCopy = channelChanged;
+      v13[4] = mode;
+      v13[5] = channel;
       v13[6] = self;
       dispatch_async(&_dispatch_main_q, v13);
     }
   }
 }
 
-- (void)setWiFiRCU2CoexMode:(id)a3
+- (void)setWiFiRCU2CoexMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    v5 = a3;
+    modeCopy = mode;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FB578;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = mode;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setWiFiRCU2PMProtectionMode:(id)a3
+- (void)setWiFiRCU2PMProtectionMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    v5 = a3;
+    modeCopy = mode;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FB674;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = mode;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setWiFiRCU2TimingArray:(id)a3
+- (void)setWiFiRCU2TimingArray:(id)array
 {
-  if (a3)
+  if (array)
   {
-    v5 = a3;
+    arrayCopy = array;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FB770;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = array;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setWifiBTeSCOStatus:(int)a3
+- (void)setWifiBTeSCOStatus:(int)status
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FB898;
   v3[3] = &unk_10023DBA0;
-  v4 = a3;
+  statusCopy = status;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setWifiBTeSCOHidStatus:(int)a3 andUseCase:(int)a4
+- (void)setWifiBTeSCOHidStatus:(int)status andUseCase:(int)case
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000FB98C;
   v4[3] = &unk_10023DD88;
-  v5 = a3;
-  v6 = a4;
+  statusCopy = status;
+  caseCopy = case;
   v4[4] = self;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)setWifiBTA2DPStatus:(int)a3
+- (void)setWifiBTA2DPStatus:(int)status
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FBADC;
   v3[3] = &unk_10023DBA0;
-  v4 = a3;
+  statusCopy = status;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setWifiBTA2DPLLAStatus:(int)a3
+- (void)setWifiBTA2DPLLAStatus:(int)status
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FBBD0;
   v3[3] = &unk_10023DBA0;
-  v4 = a3;
+  statusCopy = status;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)setBTConnectionReport:(id)a3
+- (void)setBTConnectionReport:(id)report
 {
-  if (a3)
+  if (report)
   {
-    v5 = a3;
+    reportCopy = report;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000FBCDC;
     v6[3] = &unk_10023DC80;
-    v6[4] = a3;
+    v6[4] = report;
     v6[5] = self;
     dispatch_async(&_dispatch_main_q, v6);
   }
 }
 
-- (void)setRCU2CoexParams:(id)a3
+- (void)setRCU2CoexParams:(id)params
 {
-  if (a3)
+  if (params)
   {
-    v5 = a3;
+    paramsCopy = params;
     if ([objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager "singleton")])
     {
       v6[0] = _NSConcreteStackBlock;
       v6[1] = 3221225472;
       v6[2] = sub_1000FBF0C;
       v6[3] = &unk_10023DC80;
-      v6[4] = a3;
+      v6[4] = params;
       v6[5] = self;
       dispatch_async(&_dispatch_main_q, v6);
     }
@@ -1185,9 +1185,9 @@ LABEL_12:
   }
 }
 
-- (void)setWiFiDevice:(__WiFiDeviceClient *)a3
+- (void)setWiFiDevice:(__WiFiDeviceClient *)device
 {
-  if (a3)
+  if (device)
   {
     if (self->mWifiDevice)
     {
@@ -1220,7 +1220,7 @@ LABEL_12:
       self->mWifiDevice = 0;
     }
 
-    self->mWifiDevice = CFRetain(a3);
+    self->mWifiDevice = CFRetain(device);
     Power = WiFiDeviceClientGetPower();
     self->mWifiDevicePowerState = Power != 0;
     v19 = "off";
@@ -1304,23 +1304,23 @@ LABEL_12:
   }
 }
 
-- (void)processWifiDeviceExtendedLinkEvent:(__CFDictionary *)a3
+- (void)processWifiDeviceExtendedLinkEvent:(__CFDictionary *)event
 {
   value_7 = 0;
-  if (a3)
+  if (event)
   {
-    v5 = CFDictionaryGetValue(a3, @"LINK_CHANGED_IS_LINKDOWN");
+    v5 = CFDictionaryGetValue(event, @"LINK_CHANGED_IS_LINKDOWN");
     CFNumberGetValue(v5, kCFNumberCharType, &value_7);
     if (value_7)
     {
       LOBYTE(value) = 0;
       LODWORD(keys[0]) = 0;
       LODWORD(values) = 0;
-      v6 = CFDictionaryGetValue(a3, @"LINKDOWN_IS_INVOL");
+      v6 = CFDictionaryGetValue(event, @"LINKDOWN_IS_INVOL");
       CFNumberGetValue(v6, kCFNumberCharType, &value);
-      v7 = CFDictionaryGetValue(a3, @"LINKDOWN_REASON_CODE");
+      v7 = CFDictionaryGetValue(event, @"LINKDOWN_REASON_CODE");
       CFNumberGetValue(v7, kCFNumberSInt32Type, keys);
-      v8 = CFDictionaryGetValue(a3, @"LINKDOWN_SUBREASON_CODE");
+      v8 = CFDictionaryGetValue(event, @"LINKDOWN_SUBREASON_CODE");
       CFNumberGetValue(v8, kCFNumberSInt32Type, &values);
       [WCM_Logging logLevel:5 message:@"WiFiS: WiFi linkdown: Invol=%d, Reason=%d, Subreason=%d", value, LODWORD(keys[0]), values];
       mDelegate = self->super.mDelegate;
@@ -1460,10 +1460,10 @@ LABEL_25:
   }
 }
 
-- (void)notifyWiFiStateChange:(BOOL)a3
+- (void)notifyWiFiStateChange:(BOOL)change
 {
   v4 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_BOOL(v4, "kWRM_is5G", a3);
+  xpc_dictionary_set_BOOL(v4, "kWRM_is5G", change);
   *keys = *off_100242280;
   object[0] = xpc_uint64_create(0x6DuLL);
   object[1] = v4;
@@ -1550,7 +1550,7 @@ LABEL_25:
   }
 }
 
-- (void)performScan:(id)a3
+- (void)performScan:(id)scan
 {
   if (self->mWifiDevice)
   {
@@ -1585,14 +1585,14 @@ LABEL_25:
   return v3;
 }
 
-- (void)setWiFiCallingState:(BOOL)a3
+- (void)setWiFiCallingState:(BOOL)state
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FDF14;
   block[3] = &unk_10023E008;
   block[4] = self;
-  v5 = a3;
+  stateCopy = state;
   dispatch_async(&_dispatch_main_q, block);
   [WCM_Logging logLevel:19 message:@"setWiFiCallingState called, mWifiManager: %x", self->mWifiManager];
 }
@@ -1634,68 +1634,68 @@ LABEL_25:
   [WCM_Logging logLevel:19 message:v9];
 }
 
-- (void)setMedtronicState:(int)a3
+- (void)setMedtronicState:(int)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000FE0D0;
   v3[3] = &unk_10023DBA0;
-  v4 = a3;
+  stateCopy = state;
   v3[4] = self;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (BOOL)setWiFiBTCoexProfile:(id)a3 atIndex:(int64_t)a4
+- (BOOL)setWiFiBTCoexProfile:(id)profile atIndex:(int64_t)index
 {
   v7 = [NSMutableDictionary dictionaryWithDictionary:?];
-  [(NSMutableDictionary *)v7 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:a4], @"UCM_PROFILE_INDEX"];
+  [(NSMutableDictionary *)v7 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:index], @"UCM_PROFILE_INDEX"];
   v8 = [(WCM_WiFiServiceIOS *)self sendMessage:&off_100272258 withValue:v7];
   if (v8)
   {
-    [WCM_Logging logLevel:0 message:@"WiFiS: failed to download profile to index %d with error(%s)\n%@", a4, Apple80211ErrToStr(), a3];
+    [WCM_Logging logLevel:0 message:@"WiFiS: failed to download profile to index %d with error(%s)\n%@", index, Apple80211ErrToStr(), profile];
   }
 
   else
   {
-    [WCM_Logging logLevel:2 message:@"WiFiS: succeed to download profile to index %d\n%@", a4, v7, v10];
+    [WCM_Logging logLevel:2 message:@"WiFiS: succeed to download profile to index %d\n%@", index, v7, v10];
   }
 
   return v8 == 0;
 }
 
-- (void)setWiFiBTCoexActiveProfileFor2G:(int64_t)a3 and5G:(int64_t)a4
+- (void)setWiFiBTCoexActiveProfileFor2G:(int64_t)g and5G:(int64_t)and5G
 {
-  v5 = a3 | (a4 << 16);
-  [WCM_Logging logLevel:2 message:@"WiFiS: Set Active Profile index2G(%ld) and index5G(%ld)", a3, a4];
+  v5 = g | (and5G << 16);
+  [WCM_Logging logLevel:2 message:@"WiFiS: Set Active Profile index2G(%ld) and index5G(%ld)", g, and5G];
   v6 = [NSNumber numberWithUnsignedInt:v5];
 
   [(WCM_WiFiServiceIOS *)self sendMessage:&off_100272270 withValue:v6];
 }
 
-- (BOOL)setWiFiBTExtCoexProfile:(id)a3 atIndex:(int64_t)a4
+- (BOOL)setWiFiBTExtCoexProfile:(id)profile atIndex:(int64_t)index
 {
   v7 = [NSMutableDictionary dictionaryWithDictionary:?];
-  [(NSMutableDictionary *)v7 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:a4], @"UCM_EXT_PROFILE_INDEX"];
+  [(NSMutableDictionary *)v7 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:index], @"UCM_EXT_PROFILE_INDEX"];
   v8 = [(WCM_WiFiServiceIOS *)self sendMessage:&off_100272288 withValue:v7];
   if (v8)
   {
-    [WCM_Logging logLevel:0 message:@"WiFiS: failed to download extended profile to index %ld with error(%s)\n%@", a4, Apple80211ErrToStr(), a3];
+    [WCM_Logging logLevel:0 message:@"WiFiS: failed to download extended profile to index %ld with error(%s)\n%@", index, Apple80211ErrToStr(), profile];
   }
 
   else
   {
-    [WCM_Logging logLevel:2 message:@"WiFiS: succeed to download extended profile to index %ld\n%@", a4, v7, v10];
+    [WCM_Logging logLevel:2 message:@"WiFiS: succeed to download extended profile to index %ld\n%@", index, v7, v10];
   }
 
   return v8 == 0;
 }
 
-- (void)setCoexParams:(const char *)a3 withValue:(id)a4
+- (void)setCoexParams:(const char *)params withValue:(id)value
 {
-  [WCM_Logging logLevel:2 message:@"%s: %s", "[WCM_WiFiServiceIOS setCoexParams:withValue:]", a3];
-  v7 = CFStringCreateWithCString(0, a3, 0x8000100u);
+  [WCM_Logging logLevel:2 message:@"%s: %s", "[WCM_WiFiServiceIOS setCoexParams:withValue:]", params];
+  v7 = CFStringCreateWithCString(0, params, 0x8000100u);
 
-  [(WCM_WiFiServiceIOS *)self sendMessage:v7 withValue:a4];
+  [(WCM_WiFiServiceIOS *)self sendMessage:v7 withValue:value];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MUImpressionElement
 - (CGRect)frame;
-- (MUImpressionElement)initWithElementIdentifier:(id)a3 visibilityThreshold:(double)a4;
+- (MUImpressionElement)initWithElementIdentifier:(id)identifier visibilityThreshold:(double)threshold;
 @end
 
 @implementation MUImpressionElement
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (MUImpressionElement)initWithElementIdentifier:(id)a3 visibilityThreshold:(double)a4
+- (MUImpressionElement)initWithElementIdentifier:(id)identifier visibilityThreshold:(double)threshold
 {
-  v7 = a3;
-  if (v7 && (a4 > 0.0 ? (v8 = a4 <= 1.0) : (v8 = 0), v8))
+  identifierCopy = identifier;
+  if (identifierCopy && (threshold > 0.0 ? (v8 = threshold <= 1.0) : (v8 = 0), v8))
   {
     v13.receiver = self;
     v13.super_class = MUImpressionElement;
@@ -29,20 +29,20 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_elementIdentifier, a3);
-      v11[3] = a4;
+      objc_storeStrong(&v10->_elementIdentifier, identifier);
+      v11[3] = threshold;
     }
 
     self = v11;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

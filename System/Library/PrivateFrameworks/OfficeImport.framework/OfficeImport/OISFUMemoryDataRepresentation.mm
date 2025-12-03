@@ -1,42 +1,42 @@
 @interface OISFUMemoryDataRepresentation
-- (BOOL)hasSameLocationAs:(id)a3;
-- (OISFUMemoryDataRepresentation)initWithData:(id)a3;
-- (OISFUMemoryDataRepresentation)initWithDataNoCopy:(id)a3;
-- (OISFUMemoryDataRepresentation)initWithDataRepresentation:(id)a3;
+- (BOOL)hasSameLocationAs:(id)as;
+- (OISFUMemoryDataRepresentation)initWithData:(id)data;
+- (OISFUMemoryDataRepresentation)initWithDataNoCopy:(id)copy;
+- (OISFUMemoryDataRepresentation)initWithDataRepresentation:(id)representation;
 - (id)bufferedInputStream;
-- (unint64_t)readIntoData:(id)a3;
+- (unint64_t)readIntoData:(id)data;
 - (void)dealloc;
 @end
 
 @implementation OISFUMemoryDataRepresentation
 
-- (OISFUMemoryDataRepresentation)initWithData:(id)a3
+- (OISFUMemoryDataRepresentation)initWithData:(id)data
 {
   v6.receiver = self;
   v6.super_class = OISFUMemoryDataRepresentation;
   v4 = [(OISFUMemoryDataRepresentation *)&v6 init];
   if (v4)
   {
-    v4->mData = [a3 copy];
+    v4->mData = [data copy];
   }
 
   return v4;
 }
 
-- (OISFUMemoryDataRepresentation)initWithDataNoCopy:(id)a3
+- (OISFUMemoryDataRepresentation)initWithDataNoCopy:(id)copy
 {
   v6.receiver = self;
   v6.super_class = OISFUMemoryDataRepresentation;
   v4 = [(OISFUMemoryDataRepresentation *)&v6 init];
   if (v4)
   {
-    v4->mData = a3;
+    v4->mData = copy;
   }
 
   return v4;
 }
 
-- (OISFUMemoryDataRepresentation)initWithDataRepresentation:(id)a3
+- (OISFUMemoryDataRepresentation)initWithDataRepresentation:(id)representation
 {
   v14.receiver = self;
   v14.super_class = OISFUMemoryDataRepresentation;
@@ -44,24 +44,24 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (representation)
     {
       v6 = objc_autoreleasePoolPush();
-      v7 = [a3 dataLength];
-      v8 = malloc_type_malloc(v7, 0x100004077774924uLL);
+      dataLength = [representation dataLength];
+      v8 = malloc_type_malloc(dataLength, 0x100004077774924uLL);
       if (!v8)
       {
         [MEMORY[0x277CBEAD8] raise:@"SFUMemoryDataRepresentationError" format:@"Could not allocate data"];
       }
 
-      v9 = [a3 inputStream];
-      if (v7 >= 1)
+      inputStream = [representation inputStream];
+      if (dataLength >= 1)
       {
-        v10 = &v8[v7];
+        v10 = &v8[dataLength];
         v11 = v8;
         do
         {
-          v12 = [v9 readToBuffer:v11 size:v10 - v11];
+          v12 = [inputStream readToBuffer:v11 size:v10 - v11];
           if (!v12)
           {
             [MEMORY[0x277CBEAD8] raise:@"SFUMemoryDataRepresentationError" format:@"Couldn't read enough data"];
@@ -73,8 +73,8 @@
         while (v11 < v10);
       }
 
-      [v9 close];
-      v5->mData = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v8 length:v7];
+      [inputStream close];
+      v5->mData = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v8 length:dataLength];
       objc_autoreleasePoolPop(v6);
     }
 
@@ -102,7 +102,7 @@
   return v2;
 }
 
-- (BOOL)hasSameLocationAs:(id)a3
+- (BOOL)hasSameLocationAs:(id)as
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -110,15 +110,15 @@
     return 0;
   }
 
-  v5 = [(OISFUMemoryDataRepresentation *)self data];
-  return v5 == [a3 data];
+  data = [(OISFUMemoryDataRepresentation *)self data];
+  return data == [as data];
 }
 
-- (unint64_t)readIntoData:(id)a3
+- (unint64_t)readIntoData:(id)data
 {
-  v5 = [a3 length];
-  [a3 appendData:{-[OISFUMemoryDataRepresentation data](self, "data")}];
-  return [a3 length] - v5;
+  v5 = [data length];
+  [data appendData:{-[OISFUMemoryDataRepresentation data](self, "data")}];
+  return [data length] - v5;
 }
 
 @end

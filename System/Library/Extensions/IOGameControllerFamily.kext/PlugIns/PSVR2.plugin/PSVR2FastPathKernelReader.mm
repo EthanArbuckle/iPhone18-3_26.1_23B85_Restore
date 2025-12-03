@@ -1,25 +1,25 @@
 @interface PSVR2FastPathKernelReader
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7;
-- (PSVR2FastPathKernelReader)initWithQueue:(id)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)readCurrentSample:(__IOGCFastPathSample *)a3;
-- (int)readNextSample:(__IOGCFastPathSample *)a3;
-- (int)readPreviousSample:(__IOGCFastPathSample *)a3;
-- (int)sample:(const __IOGCFastPathSample *)a3 getSubsample:(unsigned int)a4 field:(unsigned int)a5 domain:(unsigned int)a6 options:(unsigned int)a7 timestamp:(unint64_t *)a8 uncertainty:(unint64_t *)a9 flags:(unsigned int *)a10;
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3;
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position;
+- (PSVR2FastPathKernelReader)initWithQueue:(id)queue;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)readCurrentSample:(__IOGCFastPathSample *)sample;
+- (int)readNextSample:(__IOGCFastPathSample *)sample;
+- (int)readPreviousSample:(__IOGCFastPathSample *)sample;
+- (int)sample:(const __IOGCFastPathSample *)sample getSubsample:(unsigned int)subsample field:(unsigned int)field domain:(unsigned int)domain options:(unsigned int)options timestamp:(unint64_t *)timestamp uncertainty:(unint64_t *)uncertainty flags:(unsigned int *)self0;
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy;
 - (void)dealloc;
 @end
 
 @implementation PSVR2FastPathKernelReader
 
-- (PSVR2FastPathKernelReader)initWithQueue:(id)a3
+- (PSVR2FastPathKernelReader)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = PSVR2FastPathKernelReader;
   v4 = [(PSVR2FastPathKernelReader *)&v6 init];
   v4->_IOGCFastPathReaderVTBL = IOGCFastPathReaderInterfacePrepareObjCVtbl();
   v4->_IOGCFastPathSampleContainerVTBL = IOGCFastPathSampleContainerInterfacePrepareObjCVtbl();
-  v4->_queue = a3;
+  v4->_queue = queue;
   return v4;
 }
 
@@ -30,9 +30,9 @@
   [(PSVR2FastPathKernelReader *)&v3 dealloc];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0x6Bu, 0x29u, 0x76u, 0xBCu, 0xFu, 0xD5u, 0x4Bu, 0x35u, 0xAAu, 0x8Cu, 7u, 0x9Du, 0x84u, 0xBEu, 0xAu, 0x4Bu), CFEqual(v6, v8)))
   {
@@ -51,7 +51,7 @@
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -59,43 +59,43 @@ LABEL_5:
   return v10;
 }
 
-- (int)readCurrentSample:(__IOGCFastPathSample *)a3
+- (int)readCurrentSample:(__IOGCFastPathSample *)sample
 {
-  a3->var0 = &self->_IOGCFastPathSampleContainerVTBL;
-  a3->var1[0] = self->_queue;
-  *&a3->var1[1] = self->_cursor;
+  sample->var0 = &self->_IOGCFastPathSampleContainerVTBL;
+  sample->var1[0] = self->_queue;
+  *&sample->var1[1] = self->_cursor;
   return 0;
 }
 
-- (int)sample:(const __IOGCFastPathSample *)a3 getSubsample:(unsigned int)a4 field:(unsigned int)a5 domain:(unsigned int)a6 options:(unsigned int)a7 timestamp:(unint64_t *)a8 uncertainty:(unint64_t *)a9 flags:(unsigned int *)a10
+- (int)sample:(const __IOGCFastPathSample *)sample getSubsample:(unsigned int)subsample field:(unsigned int)field domain:(unsigned int)domain options:(unsigned int)options timestamp:(unint64_t *)timestamp uncertainty:(unint64_t *)uncertainty flags:(unsigned int *)self0
 {
   if (!dword_165E4)
   {
     mach_timebase_info(&dword_165E0);
   }
 
-  return sub_5098(self, a3);
+  return sub_5098(self, sample);
 }
 
-- (int)sampleDestroy:(__IOGCFastPathSample *)a3
+- (int)sampleDestroy:(__IOGCFastPathSample *)destroy
 {
-  a3->var0 = 0;
-  a3->var1[0] = 0;
-  a3->var1[1] = 0;
-  a3->var1[2] = -1;
+  destroy->var0 = 0;
+  destroy->var1[0] = 0;
+  destroy->var1[1] = 0;
+  destroy->var1[2] = -1;
   return 0;
 }
 
-- (BOOL)sample:(const __IOGCFastPathSample *)a3 getTraceProviderID:(unint64_t *)a4 queueID:(unint64_t *)a5 channel:(unsigned int *)a6 position:(unint64_t *)a7
+- (BOOL)sample:(const __IOGCFastPathSample *)sample getTraceProviderID:(unint64_t *)d queueID:(unint64_t *)iD channel:(unsigned int *)channel position:(unint64_t *)position
 {
-  *a4 = self->_queue->_client->_serviceID;
-  *a5 = self->_queue->_queueID;
-  *a6 = 0;
-  *a7 = a3->var1[2];
+  *d = self->_queue->_client->_serviceID;
+  *iD = self->_queue->_queueID;
+  *channel = 0;
+  *position = sample->var1[2];
   return 1;
 }
 
-- (int)readNextSample:(__IOGCFastPathSample *)a3
+- (int)readNextSample:(__IOGCFastPathSample *)sample
 {
   sub_6310(self);
   IOCircularDataQueueCursorMoveNext();
@@ -114,7 +114,7 @@ LABEL_5:
   return result;
 }
 
-- (int)readPreviousSample:(__IOGCFastPathSample *)a3
+- (int)readPreviousSample:(__IOGCFastPathSample *)sample
 {
   sub_6310(self);
   IOCircularDataQueueCursorMovePrevious();

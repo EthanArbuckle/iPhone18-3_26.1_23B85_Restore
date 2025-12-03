@@ -1,5 +1,5 @@
 @interface PXGTungstenEngineRecordingSession
-- (PXGTungstenEngineRecordingSession)initWithEngine:(id)a3 directoryURL:(id)a4;
+- (PXGTungstenEngineRecordingSession)initWithEngine:(id)engine directoryURL:(id)l;
 - (void)stop;
 @end
 
@@ -15,8 +15,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(PXGEngine *)self->_engine renderers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  renderers = [(PXGEngine *)self->_engine renderers];
+  v4 = [renderers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -28,14 +28,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(renderers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setRecordingSession:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [renderers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -44,24 +44,24 @@
   [(PXGEngine *)self->_engine setRecordingSession:0];
 }
 
-- (PXGTungstenEngineRecordingSession)initWithEngine:(id)a3 directoryURL:(id)a4
+- (PXGTungstenEngineRecordingSession)initWithEngine:(id)engine directoryURL:(id)l
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  engineCopy = engine;
+  lCopy = l;
   v9 = objc_alloc_init(PXGTungstenRecordingJSONSerializer);
   [(PXGTungstenRecordingJSONSerializer *)v9 setPrettyPrint:1];
   v21.receiver = self;
   v21.super_class = PXGTungstenEngineRecordingSession;
-  v10 = [(PXGTungstenRecordingSession *)&v21 initWithSerializer:v9 directoryURL:v8];
+  v10 = [(PXGTungstenRecordingSession *)&v21 initWithSerializer:v9 directoryURL:lCopy];
   if (v10)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [v7 renderers];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    renderers = [engineCopy renderers];
+    v12 = [renderers countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -73,20 +73,20 @@
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(renderers);
           }
 
           [*(*(&v17 + 1) + 8 * v15++) setRecordingSession:v10];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v13 = [renderers countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v13);
     }
 
-    objc_storeStrong(&v10->_engine, a3);
+    objc_storeStrong(&v10->_engine, engine);
   }
 
   return v10;

@@ -1,10 +1,10 @@
 @interface DBHomeKitCharacteristic
-+ (id)chacteristicWithService:(id)a3 characteristic:(id)a4;
++ (id)chacteristicWithService:(id)service characteristic:(id)characteristic;
 + (id)characteristicFormats;
 + (id)registeredCharacteristicClasses;
 + (void)load;
-+ (void)registerCharacteristicClass:(Class)a3;
-- (BOOL)_lock_setError:(id)a3;
++ (void)registerCharacteristicClass:(Class)class;
+- (BOOL)_lock_setError:(id)error;
 - (BOOL)hasError;
 - (BOOL)hidden;
 - (BOOL)notifies;
@@ -12,7 +12,7 @@
 - (BOOL)usable;
 - (BOOL)writable;
 - (DBHome)home;
-- (DBHomeKitCharacteristic)initWithService:(id)a3 characteristic:(id)a4;
+- (DBHomeKitCharacteristic)initWithService:(id)service characteristic:(id)characteristic;
 - (DBHomeKitService)service;
 - (NSError)error;
 - (NSString)description;
@@ -24,10 +24,10 @@
 - (id)value;
 - (unint64_t)_locked_State;
 - (void)_didUpdate;
-- (void)_readValueCompletionTransactionID:(unint64_t)a3 error:(id)a4;
-- (void)setError:(id)a3;
-- (void)setValue:(id)a3;
-- (void)updateValueRequiringRead:(BOOL)a3;
+- (void)_readValueCompletionTransactionID:(unint64_t)d error:(id)error;
+- (void)setError:(id)error;
+- (void)setValue:(id)value;
+- (void)updateValueRequiringRead:(BOOL)read;
 @end
 
 @implementation DBHomeKitCharacteristic
@@ -43,7 +43,7 @@
   }
 }
 
-+ (void)registerCharacteristicClass:(Class)a3
++ (void)registerCharacteristicClass:(Class)class
 {
   v14 = *MEMORY[0x277D85DE8];
   if (registerCharacteristicClass__onceToken != -1)
@@ -57,8 +57,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(objc_class *)a3 characteristicFormats];
-  v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  characteristicFormats = [(objc_class *)class characteristicFormats];
+  v6 = [characteristicFormats countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -68,13 +68,13 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(characteristicFormats);
         }
 
-        [_registeredCharacteristicClasses setObject:a3 forKeyedSubscript:*(*(&v9 + 1) + 8 * i)];
+        [_registeredCharacteristicClasses setObject:class forKeyedSubscript:*(*(&v9 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [characteristicFormats countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -102,28 +102,28 @@ uint64_t __55__DBHomeKitCharacteristic_registerCharacteristicClass___block_invok
   return v3;
 }
 
-+ (id)chacteristicWithService:(id)a3 characteristic:(id)a4
++ (id)chacteristicWithService:(id)service characteristic:(id)characteristic
 {
-  v5 = a4;
-  v6 = a3;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
   v7 = +[DBHomeKitCharacteristicTypes characteristicNameByType];
-  v8 = [v5 characteristicType];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  characteristicType = [characteristicCopy characteristicType];
+  characteristicType2 = [v7 objectForKeyedSubscript:characteristicType];
 
-  if (!v9)
+  if (!characteristicType2)
   {
-    v9 = [v5 characteristicType];
+    characteristicType2 = [characteristicCopy characteristicType];
   }
 
   v10 = +[DBHomeKitCharacteristic registeredCharacteristicClasses];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  v11 = [v10 objectForKeyedSubscript:characteristicType2];
 
   if (!v11)
   {
     v12 = +[DBHomeKitCharacteristic registeredCharacteristicClasses];
-    v13 = [v5 metadata];
-    v14 = [v13 format];
-    v11 = [v12 objectForKeyedSubscript:v14];
+    metadata = [characteristicCopy metadata];
+    format = [metadata format];
+    v11 = [v12 objectForKeyedSubscript:format];
 
     if (!v11)
     {
@@ -131,23 +131,23 @@ uint64_t __55__DBHomeKitCharacteristic_registerCharacteristicClass___block_invok
     }
   }
 
-  v15 = [[v11 alloc] initWithService:v6 characteristic:v5];
+  v15 = [[v11 alloc] initWithService:serviceCopy characteristic:characteristicCopy];
 
   return v15;
 }
 
-- (DBHomeKitCharacteristic)initWithService:(id)a3 characteristic:(id)a4
+- (DBHomeKitCharacteristic)initWithService:(id)service characteristic:(id)characteristic
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
   v11.receiver = self;
   v11.super_class = DBHomeKitCharacteristic;
   v8 = [(DBHomeKitCharacteristic *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_service, v6);
-    objc_storeStrong(&v9->_characteristic, a4);
+    objc_storeWeak(&v8->_service, serviceCopy);
+    objc_storeStrong(&v9->_characteristic, characteristic);
     v9->_state = 5;
     [(DBHomeKitCharacteristic *)v9 updateValueRequiringRead:1];
   }
@@ -173,9 +173,9 @@ uint64_t __55__DBHomeKitCharacteristic_registerCharacteristicClass___block_invok
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([(DBHomeKitCharacteristic *)self writable])
   {
     v5 = DBLogForCategory(9uLL);
@@ -186,20 +186,20 @@ uint64_t __55__DBHomeKitCharacteristic_registerCharacteristicClass___block_invok
 
     os_unfair_lock_lock(&self->_valueLock);
     [(DBHomeKitCharacteristic *)self setState:4];
-    [(DBHomeKitCharacteristic *)self setPendingValue:v4];
+    [(DBHomeKitCharacteristic *)self setPendingValue:valueCopy];
     [(DBHomeKitCharacteristic *)self setTransactionId:[(DBHomeKitCharacteristic *)self transactionId]+ 1];
     os_unfair_lock_unlock(&self->_valueLock);
     [(DBHomeKitCharacteristic *)self _didUpdate];
     objc_initWeak(&location, self);
-    v6 = [(DBHomeKitCharacteristic *)self home];
-    v7 = [(DBHomeKitCharacteristic *)self characteristic];
+    home = [(DBHomeKitCharacteristic *)self home];
+    characteristic = [(DBHomeKitCharacteristic *)self characteristic];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __36__DBHomeKitCharacteristic_setValue___block_invoke;
     v8[3] = &unk_278F02E90;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    [v6 _setValue:v9 forCharacteristic:v7 completion:v8];
+    v9 = valueCopy;
+    [home _setValue:v9 forCharacteristic:characteristic completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -247,24 +247,24 @@ void __37__DBHomeKitCharacteristic__didUpdate__block_invoke(uint64_t a1)
 
 - (DBHome)home
 {
-  v2 = [(DBHomeKitCharacteristic *)self service];
-  v3 = [v2 home];
+  service = [(DBHomeKitCharacteristic *)self service];
+  home = [service home];
 
-  return v3;
+  return home;
 }
 
 - (unint64_t)_locked_State
 {
   os_unfair_lock_lock(&self->_valueLock);
-  v3 = [(DBHomeKitCharacteristic *)self state];
+  state = [(DBHomeKitCharacteristic *)self state];
   os_unfair_lock_unlock(&self->_valueLock);
-  return v3;
+  return state;
 }
 
 - (BOOL)hasError
 {
-  v2 = [(DBHomeKitCharacteristic *)self error];
-  v3 = v2 != 0;
+  error = [(DBHomeKitCharacteristic *)self error];
+  v3 = error != 0;
 
   return v3;
 }
@@ -278,41 +278,41 @@ void __37__DBHomeKitCharacteristic__didUpdate__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_valueLock);
-  [(DBHomeKitCharacteristic *)self _lock_setError:v4];
+  [(DBHomeKitCharacteristic *)self _lock_setError:errorCopy];
 
   os_unfair_lock_unlock(&self->_valueLock);
 }
 
-- (BOOL)_lock_setError:(id)a3
+- (BOOL)_lock_setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   p_error = &self->_error;
   v7 = BSEqualObjects();
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(p_error, a3);
+    objc_storeStrong(p_error, error);
   }
 
   return v7 ^ 1;
 }
 
-- (void)updateValueRequiringRead:(BOOL)a3
+- (void)updateValueRequiringRead:(BOOL)read
 {
   os_unfair_lock_lock(&self->_valueLock);
-  if (!a3 && !self->_error)
+  if (!read && !self->_error)
   {
-    v11 = [(DBHomeKitCharacteristic *)self characteristic];
-    v12 = [v11 value];
+    characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+    value = [characteristic value];
 
-    if (v12)
+    if (value)
     {
-      v13 = [(DBHomeKitCharacteristic *)self characteristic];
-      v14 = [v13 value];
-      [(DBHomeKitCharacteristic *)self setCachedValue:v14];
+      characteristic2 = [(DBHomeKitCharacteristic *)self characteristic];
+      value2 = [characteristic2 value];
+      [(DBHomeKitCharacteristic *)self setCachedValue:value2];
 
       [(DBHomeKitCharacteristic *)self setPendingValue:0];
       [(DBHomeKitCharacteristic *)self setState:2];
@@ -335,12 +335,12 @@ LABEL_14:
     return;
   }
 
-  v5 = [(DBHomeKitCharacteristic *)self state];
-  if (v5 <= 2)
+  state = [(DBHomeKitCharacteristic *)self state];
+  if (state <= 2)
   {
-    v6 = [(DBHomeKitCharacteristic *)self characteristic];
-    v7 = [v6 value];
-    [(DBHomeKitCharacteristic *)self setPendingValue:v7];
+    characteristic3 = [(DBHomeKitCharacteristic *)self characteristic];
+    value3 = [characteristic3 value];
+    [(DBHomeKitCharacteristic *)self setPendingValue:value3];
 
     [(DBHomeKitCharacteristic *)self setState:3];
   }
@@ -348,7 +348,7 @@ LABEL_14:
   v8 = ([(DBHomeKitCharacteristic *)self transactionId]+ 1);
   [(DBHomeKitCharacteristic *)self setTransactionId:v8];
   os_unfair_lock_unlock(&self->_valueLock);
-  if (v5 < 3)
+  if (state < 3)
   {
     [(DBHomeKitCharacteristic *)self _didUpdate];
   }
@@ -360,14 +360,14 @@ LABEL_14:
   }
 
   objc_initWeak(&location, self);
-  v10 = [(DBHomeKitCharacteristic *)self characteristic];
+  characteristic4 = [(DBHomeKitCharacteristic *)self characteristic];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke;
   v16[3] = &unk_278F02EB8;
   objc_copyWeak(v17, &location);
   v17[1] = v8;
-  [v10 readValueWithCompletionHandler:v16];
+  [characteristic4 readValueWithCompletionHandler:v16];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -380,17 +380,17 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
   [WeakRetained _readValueCompletionTransactionID:*(a1 + 40) error:v3];
 }
 
-- (void)_readValueCompletionTransactionID:(unint64_t)a3 error:(id)a4
+- (void)_readValueCompletionTransactionID:(unint64_t)d error:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_valueLock);
-  v7 = [(DBHomeKitCharacteristic *)self transactionId];
-  if (v7 == a3)
+  transactionId = [(DBHomeKitCharacteristic *)self transactionId];
+  if (transactionId == d)
   {
-    v8 = [(DBHomeKitCharacteristic *)self characteristic];
-    v9 = [v8 value];
-    [(DBHomeKitCharacteristic *)self setCachedValue:v9];
+    characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+    value = [characteristic value];
+    [(DBHomeKitCharacteristic *)self setCachedValue:value];
 
     [(DBHomeKitCharacteristic *)self setPendingValue:0];
     [(DBHomeKitCharacteristic *)self setState:2];
@@ -406,15 +406,15 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 
   else
   {
-    v11 = v7;
+    v11 = transactionId;
     os_unfair_lock_unlock(&self->_valueLock);
     v12 = DBLogForCategory(9uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       v13 = 138543874;
-      v14 = self;
+      selfCopy = self;
       v15 = 2048;
-      v16 = a3;
+      dCopy = d;
       v17 = 2048;
       v18 = v11;
       _os_log_debug_impl(&dword_248146000, v12, OS_LOG_TYPE_DEBUG, "%{public}@ readValue completion: transactionID %lu != %lu", &v13, 0x20u);
@@ -425,47 +425,47 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 - (NSString)format
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() characteristicFormat];
-  v5 = [(DBHomeKitCharacteristic *)self characteristic];
-  v6 = [v5 metadata];
-  v7 = [v6 format];
-  v8 = [v3 stringWithFormat:@"%@-%@", v4, v7];
+  characteristicFormat = [objc_opt_class() characteristicFormat];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  metadata = [characteristic metadata];
+  format = [metadata format];
+  v8 = [v3 stringWithFormat:@"%@-%@", characteristicFormat, format];
 
   return v8;
 }
 
 - (BOOL)notifies
 {
-  v2 = [(DBHomeKitCharacteristic *)self characteristic];
-  v3 = [v2 properties];
-  v4 = [v3 containsObject:*MEMORY[0x277CCF738]];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  properties = [characteristic properties];
+  v4 = [properties containsObject:*MEMORY[0x277CCF738]];
 
   return v4;
 }
 
 - (BOOL)readable
 {
-  v2 = [(DBHomeKitCharacteristic *)self characteristic];
-  v3 = [v2 properties];
-  v4 = [v3 containsObject:*MEMORY[0x277CCF728]];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  properties = [characteristic properties];
+  v4 = [properties containsObject:*MEMORY[0x277CCF728]];
 
   return v4;
 }
 
 - (BOOL)writable
 {
-  v2 = [(DBHomeKitCharacteristic *)self characteristic];
-  v3 = [v2 properties];
-  v4 = [v3 containsObject:*MEMORY[0x277CCF740]];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  properties = [characteristic properties];
+  v4 = [properties containsObject:*MEMORY[0x277CCF740]];
 
   return v4;
 }
 
 - (BOOL)hidden
 {
-  v2 = [(DBHomeKitCharacteristic *)self characteristic];
-  v3 = [v2 properties];
-  v4 = [v3 containsObject:*MEMORY[0x277CCF720]];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  properties = [characteristic properties];
+  v4 = [properties containsObject:*MEMORY[0x277CCF720]];
 
   return v4;
 }
@@ -475,20 +475,20 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
   v66[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   os_unfair_lock_lock(&self->_valueLock);
-  v50 = [(DBHomeKitCharacteristic *)self state];
-  v48 = [(DBHomeKitCharacteristic *)self transactionId];
+  state = [(DBHomeKitCharacteristic *)self state];
+  transactionId = [(DBHomeKitCharacteristic *)self transactionId];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(DBHomeKitCharacteristic *)self characteristic];
-  v6 = [v5 value];
-  v7 = [v4 stringWithFormat:@"V:%@", v6];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  value = [characteristic value];
+  v7 = [v4 stringWithFormat:@"V:%@", value];
   v66[0] = v7;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(DBHomeKitCharacteristic *)self cachedValue];
-  v10 = [v8 stringWithFormat:@"C:%@", v9];
+  cachedValue = [(DBHomeKitCharacteristic *)self cachedValue];
+  v10 = [v8 stringWithFormat:@"C:%@", cachedValue];
   v66[1] = v10;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(DBHomeKitCharacteristic *)self pendingValue];
-  v13 = [v11 stringWithFormat:@"P:%@", v12];
+  pendingValue = [(DBHomeKitCharacteristic *)self pendingValue];
+  v13 = [v11 stringWithFormat:@"P:%@", pendingValue];
   v66[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:3];
   v57 = v3;
@@ -496,39 +496,39 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 
   v64 = [(NSError *)self->_error copy];
   os_unfair_lock_unlock(&self->_valueLock);
-  v63 = [(DBHomeKitCharacteristic *)self name];
-  v65[0] = v63;
+  name = [(DBHomeKitCharacteristic *)self name];
+  v65[0] = name;
   v15 = MEMORY[0x277CCACA8];
-  v62 = [(DBHomeKitCharacteristic *)self uniqueIdentifier];
-  v61 = [v15 stringWithFormat:@"uniqueIdentifier=%@", v62];
+  uniqueIdentifier = [(DBHomeKitCharacteristic *)self uniqueIdentifier];
+  v61 = [v15 stringWithFormat:@"uniqueIdentifier=%@", uniqueIdentifier];
   v65[1] = v61;
   v16 = MEMORY[0x277CCACA8];
-  v59 = [(DBHomeKitCharacteristic *)self service];
-  v60 = [(DBHomeKitCharacteristic *)self service];
-  v58 = [v60 uniqueIdentifier];
-  v56 = [v16 stringWithFormat:@"service=(%p)%@", v59, v58];
+  service = [(DBHomeKitCharacteristic *)self service];
+  service2 = [(DBHomeKitCharacteristic *)self service];
+  uniqueIdentifier2 = [service2 uniqueIdentifier];
+  v56 = [v16 stringWithFormat:@"service=(%p)%@", service, uniqueIdentifier2];
   v65[2] = v56;
   v17 = MEMORY[0x277CCACA8];
-  v54 = [(DBHomeKitCharacteristic *)self home];
-  v55 = [(DBHomeKitCharacteristic *)self home];
-  v53 = [v55 uniqueIdentifier];
-  v52 = [v17 stringWithFormat:@"home=(%p)%@", v54, v53];
+  home = [(DBHomeKitCharacteristic *)self home];
+  home2 = [(DBHomeKitCharacteristic *)self home];
+  uniqueIdentifier3 = [home2 uniqueIdentifier];
+  v52 = [v17 stringWithFormat:@"home=(%p)%@", home, uniqueIdentifier3];
   v65[3] = v52;
   v18 = MEMORY[0x277CCACA8];
-  v51 = NSStringFromCharacteristicState(v50);
-  v49 = [v18 stringWithFormat:@"state=%@(%lu)", v51, v48];
+  v51 = NSStringFromCharacteristicState(state);
+  v49 = [v18 stringWithFormat:@"state=%@(%lu)", v51, transactionId];
   v65[4] = v49;
   v19 = MEMORY[0x277CCACA8];
-  v47 = [(DBHomeKitCharacteristic *)self formatedValue];
-  v46 = [v19 stringWithFormat:@"formatedValue=%@", v47];
+  formatedValue = [(DBHomeKitCharacteristic *)self formatedValue];
+  v46 = [v19 stringWithFormat:@"formatedValue=%@", formatedValue];
   v65[5] = v46;
   v20 = MEMORY[0x277CCACA8];
   v45 = [v3 componentsJoinedByString:@" "];
   v44 = [v20 stringWithFormat:@"value=[%@]", v45];
   v65[6] = v44;
   v21 = MEMORY[0x277CCACA8];
-  v22 = [(DBHomeKitCharacteristic *)self format];
-  v23 = [v21 stringWithFormat:@"format=%@", v22];
+  format = [(DBHomeKitCharacteristic *)self format];
+  v23 = [v21 stringWithFormat:@"format=%@", format];
   v65[7] = v23;
   v24 = MEMORY[0x277CCACA8];
   if ([(DBHomeKitCharacteristic *)self notifies])
@@ -588,9 +588,9 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 
   v38 = MEMORY[0x277CCACA8];
   v39 = objc_opt_class();
-  v40 = [(DBHomeKitCharacteristic *)self characteristic];
+  characteristic2 = [(DBHomeKitCharacteristic *)self characteristic];
   v41 = [v37 componentsJoinedByString:@" "];
-  v42 = [v38 stringWithFormat:@"<%@: %p(%p) %@>", v39, self, v40, v41];
+  v42 = [v38 stringWithFormat:@"<%@: %p(%p) %@>", v39, self, characteristic2, v41];
 
   return v42;
 }
@@ -598,8 +598,8 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 + (id)characteristicFormats
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 characteristicFormat];
-  v5[0] = v2;
+  characteristicFormat = [self characteristicFormat];
+  v5[0] = characteristicFormat;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
@@ -607,31 +607,31 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(DBHomeKitCharacteristic *)self characteristic];
-  v3 = [v2 uniqueIdentifier];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  uniqueIdentifier = [characteristic uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (NSString)name
 {
   v3 = +[DBHomeKitCharacteristicTypes characteristicNameByType];
-  v4 = [(DBHomeKitCharacteristic *)self characteristic];
-  v5 = [v4 characteristicType];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  characteristicType = [characteristic characteristicType];
+  v6 = [v3 objectForKeyedSubscript:characteristicType];
 
   if (v6)
   {
-    v7 = v6;
+    characteristicType2 = v6;
   }
 
   else
   {
-    v8 = [(DBHomeKitCharacteristic *)self characteristic];
-    v7 = [v8 characteristicType];
+    characteristic2 = [(DBHomeKitCharacteristic *)self characteristic];
+    characteristicType2 = [characteristic2 characteristicType];
   }
 
-  return v7;
+  return characteristicType2;
 }
 
 - (BOOL)usable
@@ -642,9 +642,9 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
   }
 
   v4 = +[DBHomeKitCharacteristicTypes characteristicNameByType];
-  v5 = [(DBHomeKitCharacteristic *)self characteristic];
-  v6 = [v5 characteristicType];
-  v7 = [v4 objectForKeyedSubscript:v6];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  characteristicType = [characteristic characteristicType];
+  v7 = [v4 objectForKeyedSubscript:characteristicType];
   v3 = v7 != 0;
 
   return v3;
@@ -655,20 +655,20 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
   v25[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   os_unfair_lock_lock(&self->_valueLock);
-  v23 = [(DBHomeKitCharacteristic *)self state];
-  v24 = [(DBHomeKitCharacteristic *)self transactionId];
+  state = [(DBHomeKitCharacteristic *)self state];
+  transactionId = [(DBHomeKitCharacteristic *)self transactionId];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(DBHomeKitCharacteristic *)self characteristic];
-  v6 = [v5 value];
-  v7 = [v4 stringWithFormat:@"V:%@", v6];
+  characteristic = [(DBHomeKitCharacteristic *)self characteristic];
+  value = [characteristic value];
+  v7 = [v4 stringWithFormat:@"V:%@", value];
   v25[0] = v7;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(DBHomeKitCharacteristic *)self cachedValue];
-  v10 = [v8 stringWithFormat:@"C:%@", v9];
+  cachedValue = [(DBHomeKitCharacteristic *)self cachedValue];
+  v10 = [v8 stringWithFormat:@"C:%@", cachedValue];
   v25[1] = v10;
   v11 = MEMORY[0x277CCACA8];
-  v12 = [(DBHomeKitCharacteristic *)self pendingValue];
-  v13 = [v11 stringWithFormat:@"P:%@", v12];
+  pendingValue = [(DBHomeKitCharacteristic *)self pendingValue];
+  v13 = [v11 stringWithFormat:@"P:%@", pendingValue];
   v25[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
   [v3 addObjectsFromArray:v14];
@@ -676,19 +676,19 @@ void __52__DBHomeKitCharacteristic_updateValueRequiringRead___block_invoke(uint6
   v15 = [(NSError *)self->_error copy];
   os_unfair_lock_unlock(&self->_valueLock);
   v16 = MEMORY[0x277CCACA8];
-  v17 = [(DBHomeKitCharacteristic *)self name];
-  v18 = [(DBHomeKitCharacteristic *)self formatedValue];
-  v19 = NSStringFromCharacteristicState(v23);
+  name = [(DBHomeKitCharacteristic *)self name];
+  formatedValue = [(DBHomeKitCharacteristic *)self formatedValue];
+  v19 = NSStringFromCharacteristicState(state);
   v20 = [v3 componentsJoinedByString:@" "];
-  v21 = [v16 stringWithFormat:@"%@=%@ (%@ transactionID=%lu error=%@ values=[%@])", v17, v18, v19, v24, v15, v20];
+  v21 = [v16 stringWithFormat:@"%@=%@ (%@ transactionID=%lu error=%@ values=[%@])", name, formatedValue, v19, transactionId, v15, v20];
 
   return v21;
 }
 
 - (double)distance
 {
-  v2 = [(DBHomeKitCharacteristic *)self home];
-  [v2 distance];
+  home = [(DBHomeKitCharacteristic *)self home];
+  [home distance];
   v4 = v3;
 
   return v4;

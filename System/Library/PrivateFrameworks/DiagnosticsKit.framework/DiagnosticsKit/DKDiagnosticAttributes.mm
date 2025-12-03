@@ -1,15 +1,15 @@
 @interface DKDiagnosticAttributes
-- (BOOL)isEqualTo:(id)a3;
-- (BOOL)isEqualToAttributes:(id)a3;
-- (DKDiagnosticAttributes)initWithExtension:(id)a3;
-- (DKDiagnosticAttributes)initWithIdentifier:(id)a3 version:(id)a4 freeSpaceRequired:(id)a5 name:(id)a6 serviceName:(id)a7 headless:(BOOL)a8;
+- (BOOL)isEqualTo:(id)to;
+- (BOOL)isEqualToAttributes:(id)attributes;
+- (DKDiagnosticAttributes)initWithExtension:(id)extension;
+- (DKDiagnosticAttributes)initWithIdentifier:(id)identifier version:(id)version freeSpaceRequired:(id)required name:(id)name serviceName:(id)serviceName headless:(BOOL)headless;
 @end
 
 @implementation DKDiagnosticAttributes
 
-- (DKDiagnosticAttributes)initWithExtension:(id)a3
+- (DKDiagnosticAttributes)initWithExtension:(id)extension
 {
-  v5 = a3;
+  extensionCopy = extension;
   v41.receiver = self;
   v41.super_class = DKDiagnosticAttributes;
   v6 = [(DKDiagnosticAttributes *)&v41 init];
@@ -19,9 +19,9 @@
     goto LABEL_36;
   }
 
-  objc_storeStrong(&v6->_extension, a3);
-  v8 = [v5 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"DKBundleIdentifier"];
+  objc_storeStrong(&v6->_extension, extension);
+  attributes = [extensionCopy attributes];
+  v9 = [attributes objectForKeyedSubscript:@"DKBundleIdentifier"];
   bundleIdentifier = v7->_bundleIdentifier;
   v7->_bundleIdentifier = v9;
 
@@ -30,8 +30,8 @@
     objc_storeStrong(&v7->_bundleIdentifier, @"Default");
   }
 
-  v11 = [v5 attributes];
-  v12 = [v11 objectForKeyedSubscript:@"DKDiagnosticIdentifier"];
+  attributes2 = [extensionCopy attributes];
+  v12 = [attributes2 objectForKeyedSubscript:@"DKDiagnosticIdentifier"];
 
   if (v12)
   {
@@ -42,8 +42,8 @@
       identifier = v7->_identifier;
       v7->_identifier = v13;
 
-      v15 = [v5 infoDictionary];
-      v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277CBEC50]];
+      infoDictionary = [extensionCopy infoDictionary];
+      v16 = [infoDictionary objectForKeyedSubscript:*MEMORY[0x277CBEC50]];
 
       if (v16)
       {
@@ -51,8 +51,8 @@
         if (objc_opt_isKindOfClass())
         {
           objc_storeStrong(&v7->_version, v16);
-          v17 = [v5 attributes];
-          v18 = [v17 objectForKeyedSubscript:@"DKDiagnosticName"];
+          attributes3 = [extensionCopy attributes];
+          v18 = [attributes3 objectForKeyedSubscript:@"DKDiagnosticName"];
 
           if (v18)
           {
@@ -60,8 +60,8 @@
             if (objc_opt_isKindOfClass())
             {
               objc_storeStrong(&v7->_name, v18);
-              v19 = [v5 attributes];
-              v20 = [v19 objectForKeyedSubscript:@"DKDiagnosticFreeSpaceRequired"];
+              attributes4 = [extensionCopy attributes];
+              v20 = [attributes4 objectForKeyedSubscript:@"DKDiagnosticFreeSpaceRequired"];
 
               if (!v20)
               {
@@ -95,8 +95,8 @@ LABEL_20:
               }
 
               v7->_requiresUnlock = 0;
-              v24 = [v5 attributes];
-              v25 = [v24 objectForKeyedSubscript:@"DKDiagnosticRequiresUnlock"];
+              attributes5 = [extensionCopy attributes];
+              v25 = [attributes5 objectForKeyedSubscript:@"DKDiagnosticRequiresUnlock"];
 
               if (v25)
               {
@@ -107,8 +107,8 @@ LABEL_20:
                 }
               }
 
-              v26 = [v5 attributes];
-              v27 = [v26 objectForKeyedSubscript:@"DKDiagnosticSupportedDevices"];
+              attributes6 = [extensionCopy attributes];
+              v27 = [attributes6 objectForKeyedSubscript:@"DKDiagnosticSupportedDevices"];
 
               if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
@@ -123,8 +123,8 @@ LABEL_20:
                 v7->_supportedDevices = MEMORY[0x277CBEBF8];
               }
 
-              v30 = [v5 extensionPointIdentifier];
-              v31 = [v30 isEqualToString:@"com.apple.diagnostics-service"];
+              extensionPointIdentifier = [extensionCopy extensionPointIdentifier];
+              v31 = [extensionPointIdentifier isEqualToString:@"com.apple.diagnostics-service"];
 
               if (v31)
               {
@@ -133,8 +133,8 @@ LABEL_20:
 
               else
               {
-                v33 = [v5 extensionPointIdentifier];
-                v34 = [v33 isEqualToString:@"com.apple.diagnostics-ui-service"];
+                extensionPointIdentifier2 = [extensionCopy extensionPointIdentifier];
+                v34 = [extensionPointIdentifier2 isEqualToString:@"com.apple.diagnostics-ui-service"];
 
                 if (v34)
                 {
@@ -142,8 +142,8 @@ LABEL_20:
                   goto LABEL_35;
                 }
 
-                v36 = [v5 extensionPointIdentifier];
-                v37 = [v36 isEqualToString:@"com.apple.diagnostics-restricted-service"];
+                extensionPointIdentifier3 = [extensionCopy extensionPointIdentifier];
+                v37 = [extensionPointIdentifier3 isEqualToString:@"com.apple.diagnostics-restricted-service"];
 
                 if (v37)
                 {
@@ -152,15 +152,15 @@ LABEL_20:
 
                 else
                 {
-                  v38 = [v5 extensionPointIdentifier];
-                  v39 = [v38 isEqualToString:@"com.apple.diagnostics-restricted-ui-service"];
+                  extensionPointIdentifier4 = [extensionCopy extensionPointIdentifier];
+                  v39 = [extensionPointIdentifier4 isEqualToString:@"com.apple.diagnostics-restricted-ui-service"];
 
                   if (!v39)
                   {
                     v40 = DiagnosticsKitLogHandleForCategory(1);
                     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
                     {
-                      [(DKDiagnosticAttributes *)v5 initWithExtension:v40];
+                      [(DKDiagnosticAttributes *)extensionCopy initWithExtension:v40];
                     }
 
                     v7 = 0;
@@ -191,13 +191,13 @@ LABEL_37:
   return v22;
 }
 
-- (DKDiagnosticAttributes)initWithIdentifier:(id)a3 version:(id)a4 freeSpaceRequired:(id)a5 name:(id)a6 serviceName:(id)a7 headless:(BOOL)a8
+- (DKDiagnosticAttributes)initWithIdentifier:(id)identifier version:(id)version freeSpaceRequired:(id)required name:(id)name serviceName:(id)serviceName headless:(BOOL)headless
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  versionCopy = version;
+  requiredCopy = required;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
   v24.receiver = self;
   v24.super_class = DKDiagnosticAttributes;
   v18 = [(DKDiagnosticAttributes *)&v24 init];
@@ -207,12 +207,12 @@ LABEL_37:
     extension = v18->_extension;
     v18->_extension = 0;
 
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v19->_version, a4);
-    objc_storeStrong(&v19->_name, a6);
-    objc_storeStrong(&v19->_serviceName, a7);
-    v19->_headless = a8;
-    objc_storeStrong(&v19->_freeSpaceRequired, a5);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v19->_version, version);
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_serviceName, serviceName);
+    v19->_headless = headless;
+    objc_storeStrong(&v19->_freeSpaceRequired, required);
     if (!v19->_freeSpaceRequired)
     {
       v19->_freeSpaceRequired = &unk_285B92930;
@@ -224,10 +224,10 @@ LABEL_37:
   return v19;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  if (self == v4)
+  toCopy = to;
+  if (self == toCopy)
   {
     v5 = 1;
   }
@@ -235,37 +235,37 @@ LABEL_37:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DKDiagnosticAttributes *)self isEqualToAttributes:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DKDiagnosticAttributes *)self isEqualToAttributes:toCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAttributes:(id)a3
+- (BOOL)isEqualToAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticAttributes *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToNumber:v6])
+  attributesCopy = attributes;
+  identifier = [(DKDiagnosticAttributes *)self identifier];
+  identifier2 = [attributesCopy identifier];
+  if ([identifier isEqualToNumber:identifier2])
   {
-    v7 = [(DKDiagnosticAttributes *)self name];
-    v8 = [v4 name];
-    if ([v7 isEqualToString:v8])
+    name = [(DKDiagnosticAttributes *)self name];
+    name2 = [attributesCopy name];
+    if ([name isEqualToString:name2])
     {
-      v9 = [(DKDiagnosticAttributes *)self version];
-      v10 = [v4 version];
-      if ([v9 isEqualToString:v10])
+      version = [(DKDiagnosticAttributes *)self version];
+      version2 = [attributesCopy version];
+      if ([version isEqualToString:version2])
       {
-        v11 = [(DKDiagnosticAttributes *)self freeSpaceRequired];
-        v12 = [v4 freeSpaceRequired];
-        if ([v11 isEqualToNumber:v12])
+        freeSpaceRequired = [(DKDiagnosticAttributes *)self freeSpaceRequired];
+        freeSpaceRequired2 = [attributesCopy freeSpaceRequired];
+        if ([freeSpaceRequired isEqualToNumber:freeSpaceRequired2])
         {
-          v18 = v11;
-          v13 = [(DKDiagnosticAttributes *)self isHeadless];
-          if (v13 == [v4 isHeadless] && (v14 = -[DKDiagnosticAttributes isRestricted](self, "isRestricted"), v14 == objc_msgSend(v4, "isRestricted")))
+          v18 = freeSpaceRequired;
+          isHeadless = [(DKDiagnosticAttributes *)self isHeadless];
+          if (isHeadless == [attributesCopy isHeadless] && (v14 = -[DKDiagnosticAttributes isRestricted](self, "isRestricted"), v14 == objc_msgSend(attributesCopy, "isRestricted")))
           {
-            v16 = [(DKDiagnosticAttributes *)self requiresUnlock];
-            v15 = v16 ^ [v4 requiresUnlock] ^ 1;
+            requiresUnlock = [(DKDiagnosticAttributes *)self requiresUnlock];
+            v15 = requiresUnlock ^ [attributesCopy requiresUnlock] ^ 1;
           }
 
           else
@@ -273,7 +273,7 @@ LABEL_37:
             LOBYTE(v15) = 0;
           }
 
-          v11 = v18;
+          freeSpaceRequired = v18;
         }
 
         else

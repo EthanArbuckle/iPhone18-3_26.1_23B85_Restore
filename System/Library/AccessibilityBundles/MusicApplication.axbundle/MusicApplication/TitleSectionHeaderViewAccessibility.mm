@@ -1,5 +1,5 @@
 @interface TitleSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
@@ -8,19 +8,19 @@
 
 @implementation TitleSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"accessibilitySystemStyleButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"accessibilityAdditionalContentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"accessibilitySystemStyleButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.TitleSectionHeaderView" hasInstanceMethod:@"accessibilityAdditionalContentView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TitleSectionHeaderViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(TitleSectionHeaderViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }
@@ -43,20 +43,20 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(TitleSectionHeaderViewAccessibility *)self safeValueForKey:@"accessibilitySystemStyleButton"];
   if (v4)
   {
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   v5 = [(TitleSectionHeaderViewAccessibility *)self safeValueForKey:@"accessibilityAdditionalContentView"];
   if (v5)
   {
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
 @end

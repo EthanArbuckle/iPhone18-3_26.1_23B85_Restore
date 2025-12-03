@@ -1,15 +1,15 @@
 @interface OKError
-+ (id)errorForCode:(int64_t)a3;
++ (id)errorForCode:(int64_t)code;
 @end
 
 @implementation OKError
 
-+ (id)errorForCode:(int64_t)a3
++ (id)errorForCode:(int64_t)code
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  if (a3 <= -5)
+  if (code <= -5)
   {
-    switch(a3)
+    switch(code)
     {
       case -7:
         v5 = @"Already in use";
@@ -27,15 +27,15 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  if (a3 > -3)
+  if (code > -3)
   {
-    if (a3 == -2)
+    if (code == -2)
     {
       v5 = @"Not implemented";
       goto LABEL_17;
     }
 
-    if (a3 == -1)
+    if (code == -1)
     {
       v5 = @"Internal error";
       goto LABEL_17;
@@ -44,7 +44,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a3 == -4)
+  if (code == -4)
   {
     v5 = @"Cancelled";
   }
@@ -58,7 +58,7 @@ LABEL_17:
   v6 = [v4 localizedStringForKey:v5 value:v5 table:@"Localizable"];
   v7 = MEMORY[0x277CCA9B8];
 
-  return [v7 errorWithDomain:@"OKErrorDomain" code:a3 localizedDescription:v6];
+  return [v7 errorWithDomain:@"OKErrorDomain" code:code localizedDescription:v6];
 }
 
 @end

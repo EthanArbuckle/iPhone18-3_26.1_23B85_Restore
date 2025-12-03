@@ -1,5 +1,5 @@
 @interface HeadphoneReplayDevice
-- (BOOL)isServiceSupported:(unsigned int)a3;
+- (BOOL)isServiceSupported:(unsigned int)supported;
 - (CBProductInfo)productInfo;
 - (NSString)name;
 - (float)batteryLevelCase;
@@ -8,14 +8,14 @@
 - (float)batteryLevelRight;
 - (unsigned)accessorySettingFeatureBitMask;
 - (unsigned)deviceColor;
-- (void)setAccessorySettingFeatureBitMask:(unsigned int)a3;
-- (void)setBatteryLevelCase:(float)a3;
-- (void)setBatteryLevelLeft:(float)a3;
-- (void)setBatteryLevelMain:(float)a3;
-- (void)setBatteryLevelRight:(float)a3;
-- (void)setDeviceColor:(unsigned int)a3;
-- (void)setName:(id)a3;
-- (void)setProductInfo:(id)a3;
+- (void)setAccessorySettingFeatureBitMask:(unsigned int)mask;
+- (void)setBatteryLevelCase:(float)case;
+- (void)setBatteryLevelLeft:(float)left;
+- (void)setBatteryLevelMain:(float)main;
+- (void)setBatteryLevelRight:(float)right;
+- (void)setDeviceColor:(unsigned int)color;
+- (void)setName:(id)name;
+- (void)setProductInfo:(id)info;
 @end
 
 @implementation HeadphoneReplayDevice
@@ -31,13 +31,13 @@
   return v7;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](name);
   MEMORY[0x1E69E5928](self);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   HeadphoneReplayDevice.name.setter();
-  MEMORY[0x1E69E5920](a3);
+  MEMORY[0x1E69E5920](name);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -49,10 +49,10 @@
   return v4;
 }
 
-- (void)setAccessorySettingFeatureBitMask:(unsigned int)a3
+- (void)setAccessorySettingFeatureBitMask:(unsigned int)mask
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneReplayDevice.accessorySettingFeatureBitMask.setter(a3);
+  HeadphoneReplayDevice.accessorySettingFeatureBitMask.setter(mask);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -64,10 +64,10 @@
   return v4;
 }
 
-- (void)setDeviceColor:(unsigned int)a3
+- (void)setDeviceColor:(unsigned int)color
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneReplayDevice.deviceColor.setter(a3);
+  HeadphoneReplayDevice.deviceColor.setter(color);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -80,11 +80,11 @@
   return v4;
 }
 
-- (void)setProductInfo:(id)a3
+- (void)setProductInfo:(id)info
 {
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](info);
   MEMORY[0x1E69E5928](self);
-  HeadphoneReplayDevice.productInfo.setter(a3);
+  HeadphoneReplayDevice.productInfo.setter(info);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -96,7 +96,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelMain:(float)a3
+- (void)setBatteryLevelMain:(float)main
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneReplayDevice.batteryLevelMain.setter();
@@ -111,7 +111,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelCase:(float)a3
+- (void)setBatteryLevelCase:(float)case
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneReplayDevice.batteryLevelCase.setter();
@@ -126,7 +126,7 @@
   return v4;
 }
 
-- (void)setBatteryLevelLeft:(float)a3
+- (void)setBatteryLevelLeft:(float)left
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneReplayDevice.batteryLevelLeft.setter();
@@ -141,17 +141,17 @@
   return v4;
 }
 
-- (void)setBatteryLevelRight:(float)a3
+- (void)setBatteryLevelRight:(float)right
 {
   MEMORY[0x1E69E5928](self);
   HeadphoneReplayDevice.batteryLevelRight.setter();
   MEMORY[0x1E69E5920](self);
 }
 
-- (BOOL)isServiceSupported:(unsigned int)a3
+- (BOOL)isServiceSupported:(unsigned int)supported
 {
   MEMORY[0x1E69E5928](self);
-  HeadphoneReplayDevice.isServiceSupported(_:)(a3);
+  HeadphoneReplayDevice.isServiceSupported(_:)(supported);
   MEMORY[0x1E69E5920](self);
   return _convertBoolToObjCBool(_:)() & 1;
 }

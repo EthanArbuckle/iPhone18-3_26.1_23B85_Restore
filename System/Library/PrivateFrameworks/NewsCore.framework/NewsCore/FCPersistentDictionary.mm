@@ -1,7 +1,7 @@
 @interface FCPersistentDictionary
-- (BOOL)writeWithAccessor:(id)a3;
+- (BOOL)writeWithAccessor:(id)accessor;
 - (FCPersistentDictionary)init;
-- (FCPersistentDictionary)initWithFileURL:(id)a3 allowedClasses:(id)a4;
+- (FCPersistentDictionary)initWithFileURL:(id)l allowedClasses:(id)classes;
 - (id)read;
 @end
 
@@ -9,9 +9,9 @@
 
 - (id)read
 {
-  v3 = [(FCPersistentDictionary *)self fileURL];
-  v4 = [(FCPersistentDictionary *)self allowedClasses];
-  v5 = FCReadDictionary(v3, v4);
+  fileURL = [(FCPersistentDictionary *)self fileURL];
+  allowedClasses = [(FCPersistentDictionary *)self allowedClasses];
+  v5 = FCReadDictionary(fileURL, allowedClasses);
 
   return v5;
 }
@@ -42,12 +42,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersistentDictionary)initWithFileURL:(id)a3 allowedClasses:(id)a4
+- (FCPersistentDictionary)initWithFileURL:(id)l allowedClasses:(id)classes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  classesCopy = classes;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "fileURL"];
     *buf = 136315906;
@@ -60,13 +60,13 @@
     v27 = v16;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (classesCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (classesCopy)
   {
     goto LABEL_6;
   }
@@ -91,14 +91,14 @@ LABEL_6:
   v8 = [(FCPersistentDictionary *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     fileURL = v8->_fileURL;
     v8->_fileURL = v9;
 
     v19[0] = objc_opt_class();
     v19[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-    v12 = [v7 setByAddingObjectsFromArray:v11];
+    v12 = [classesCopy setByAddingObjectsFromArray:v11];
     allowedClasses = v8->_allowedClasses;
     v8->_allowedClasses = v12;
   }
@@ -107,13 +107,13 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)writeWithAccessor:(id)a3
+- (BOOL)writeWithAccessor:(id)accessor
 {
-  v4 = a3;
-  v5 = [(FCPersistentDictionary *)self fileURL];
-  v6 = [(FCPersistentDictionary *)self allowedClasses];
-  v7 = [(FCPersistentDictionary *)self fileURL];
-  v8 = FCReadWriteDictionaryWithAccessor(v5, v6, v7, 0, v4);
+  accessorCopy = accessor;
+  fileURL = [(FCPersistentDictionary *)self fileURL];
+  allowedClasses = [(FCPersistentDictionary *)self allowedClasses];
+  fileURL2 = [(FCPersistentDictionary *)self fileURL];
+  v8 = FCReadWriteDictionaryWithAccessor(fileURL, allowedClasses, fileURL2, 0, accessorCopy);
 
   return v8;
 }

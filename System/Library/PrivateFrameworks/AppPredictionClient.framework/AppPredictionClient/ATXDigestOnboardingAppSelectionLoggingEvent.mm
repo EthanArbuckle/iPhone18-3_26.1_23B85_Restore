@@ -1,49 +1,49 @@
 @interface ATXDigestOnboardingAppSelectionLoggingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProto:(id)a3;
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProtoData:(id)a3;
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithSessionUUID:(id)a3 bundleId:(id)a4 avgNumBasicNotifications:(unint64_t)a5 avgNumMessageNotifications:(unint64_t)a6 avgNumTimeSensitiveNonMessageNotifications:(unint64_t)a7 rank:(unint64_t)a8 addedToDigest:(BOOL)a9 wasShownInDigestOnboarding:(BOOL)a10;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProto:(id)proto;
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProtoData:(id)data;
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithSessionUUID:(id)d bundleId:(id)id avgNumBasicNotifications:(unint64_t)notifications avgNumMessageNotifications:(unint64_t)messageNotifications avgNumTimeSensitiveNonMessageNotifications:(unint64_t)nonMessageNotifications rank:(unint64_t)rank addedToDigest:(BOOL)digest wasShownInDigestOnboarding:(BOOL)self0;
 - (id)encodeAsProto;
 - (id)proto;
 @end
 
 @implementation ATXDigestOnboardingAppSelectionLoggingEvent
 
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithSessionUUID:(id)a3 bundleId:(id)a4 avgNumBasicNotifications:(unint64_t)a5 avgNumMessageNotifications:(unint64_t)a6 avgNumTimeSensitiveNonMessageNotifications:(unint64_t)a7 rank:(unint64_t)a8 addedToDigest:(BOOL)a9 wasShownInDigestOnboarding:(BOOL)a10
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithSessionUUID:(id)d bundleId:(id)id avgNumBasicNotifications:(unint64_t)notifications avgNumMessageNotifications:(unint64_t)messageNotifications avgNumTimeSensitiveNonMessageNotifications:(unint64_t)nonMessageNotifications rank:(unint64_t)rank addedToDigest:(BOOL)digest wasShownInDigestOnboarding:(BOOL)self0
 {
-  v17 = a3;
-  v18 = a4;
+  dCopy = d;
+  idCopy = id;
   v22.receiver = self;
   v22.super_class = ATXDigestOnboardingAppSelectionLoggingEvent;
   v19 = [(ATXDigestOnboardingAppSelectionLoggingEvent *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_sessionUUID, a3);
-    objc_storeStrong(&v20->_bundleId, a4);
-    v20->_avgNumBasicNotifications = a5;
-    v20->_avgNumMessageNotfications = a6;
-    v20->_avgNumTimeSensitiveNonMessageNotifications = a7;
-    v20->_rank = a8;
-    v20->_addedToDigest = a9;
-    v20->_wasShownInDigestOnboarding = a10;
+    objc_storeStrong(&v19->_sessionUUID, d);
+    objc_storeStrong(&v20->_bundleId, id);
+    v20->_avgNumBasicNotifications = notifications;
+    v20->_avgNumMessageNotfications = messageNotifications;
+    v20->_avgNumTimeSensitiveNonMessageNotifications = nonMessageNotifications;
+    v20->_rank = rank;
+    v20->_addedToDigest = digest;
+    v20->_wasShownInDigestOnboarding = onboarding;
   }
 
   return v20;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProtoData:(id)a3
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[ATXPBDigestOnboardingAppSelectionLoggingEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[ATXPBDigestOnboardingAppSelectionLoggingEvent alloc] initWithData:dataCopy];
 
   v6 = [(ATXDigestOnboardingAppSelectionLoggingEvent *)self initWithProto:v5];
   return v6;
@@ -51,19 +51,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXDigestOnboardingAppSelectionLoggingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXDigestOnboardingAppSelectionLoggingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProto:(id)a3
+- (ATXDigestOnboardingAppSelectionLoggingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -80,34 +80,34 @@ LABEL_7:
   }
 
   v5 = MEMORY[0x1E696AFB0];
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [v5 alloc];
-  v8 = [v6 sessionUUID];
-  v19 = [v7 initWithUUIDString:v8];
+  sessionUUID = [v6 sessionUUID];
+  v19 = [v7 initWithUUIDString:sessionUUID];
 
-  v9 = [v6 bundleId];
-  v10 = [v6 avgNumBasicNotifications];
-  v11 = [v6 avgNumMessageNotifications];
-  v12 = [v6 avgNumTimeSensitiveNonMessageNotifications];
-  v13 = [v6 rank];
-  v14 = [v6 addedToDigest];
+  bundleId = [v6 bundleId];
+  avgNumBasicNotifications = [v6 avgNumBasicNotifications];
+  avgNumMessageNotifications = [v6 avgNumMessageNotifications];
+  avgNumTimeSensitiveNonMessageNotifications = [v6 avgNumTimeSensitiveNonMessageNotifications];
+  rank = [v6 rank];
+  addedToDigest = [v6 addedToDigest];
   LOBYTE(v7) = [v6 wasShownInDigestOnboarding];
 
   BYTE1(v18) = v7;
-  LOBYTE(v18) = v14;
-  self = [(ATXDigestOnboardingAppSelectionLoggingEvent *)self initWithSessionUUID:v19 bundleId:v9 avgNumBasicNotifications:v10 avgNumMessageNotifications:v11 avgNumTimeSensitiveNonMessageNotifications:v12 rank:v13 addedToDigest:v18 wasShownInDigestOnboarding:?];
+  LOBYTE(v18) = addedToDigest;
+  self = [(ATXDigestOnboardingAppSelectionLoggingEvent *)self initWithSessionUUID:v19 bundleId:bundleId avgNumBasicNotifications:avgNumBasicNotifications avgNumMessageNotifications:avgNumMessageNotifications avgNumTimeSensitiveNonMessageNotifications:avgNumTimeSensitiveNonMessageNotifications rank:rank addedToDigest:v18 wasShownInDigestOnboarding:?];
 
-  v15 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_sessionUUID UUIDString];
-  [v3 setSessionUUID:v4];
+  uUIDString = [(NSUUID *)self->_sessionUUID UUIDString];
+  [v3 setSessionUUID:uUIDString];
 
   [v3 setBundleId:self->_bundleId];
   [v3 setAvgNumBasicNotifications:LODWORD(self->_avgNumBasicNotifications)];

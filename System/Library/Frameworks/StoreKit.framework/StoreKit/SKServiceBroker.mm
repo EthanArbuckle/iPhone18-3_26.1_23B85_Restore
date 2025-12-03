@@ -1,19 +1,19 @@
 @interface SKServiceBroker
-+ (id)_serviceConnectionWithName:(id)a3;
++ (id)_serviceConnectionWithName:(id)name;
 + (id)defaultBroker;
 - (SKServiceBroker)init;
 - (id)_serviceConnection;
-- (id)externalGatewayServiceWithErrorHandler:(id)a3;
-- (id)inAppBindingServiceWithErrorHandler:(id)a3;
-- (id)inAppEngagementServiceWithErrorHandler:(id)a3;
-- (id)messageServiceWithErrorHandler:(id)a3;
-- (id)offerEligibilityServiceWithErrorHandler:(id)a3;
-- (id)policyServiceWithErrorHandler:(id)a3;
-- (id)productLookupServiceWithErrorHandler:(id)a3;
-- (id)productServiceWithErrorHandler:(id)a3;
-- (id)purchaseIntentServiceWithErrorHandler:(id)a3;
-- (id)storeKitServiceWithErrorHandler:(id)a3;
-- (id)storeKitSynchronousServiceWithErrorHandler:(id)a3;
+- (id)externalGatewayServiceWithErrorHandler:(id)handler;
+- (id)inAppBindingServiceWithErrorHandler:(id)handler;
+- (id)inAppEngagementServiceWithErrorHandler:(id)handler;
+- (id)messageServiceWithErrorHandler:(id)handler;
+- (id)offerEligibilityServiceWithErrorHandler:(id)handler;
+- (id)policyServiceWithErrorHandler:(id)handler;
+- (id)productLookupServiceWithErrorHandler:(id)handler;
+- (id)productServiceWithErrorHandler:(id)handler;
+- (id)purchaseIntentServiceWithErrorHandler:(id)handler;
+- (id)storeKitServiceWithErrorHandler:(id)handler;
+- (id)storeKitSynchronousServiceWithErrorHandler:(id)handler;
 - (void)_serviceConnectionInvalidated;
 @end
 
@@ -55,17 +55,17 @@ uint64_t __32__SKServiceBroker_defaultBroker__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)externalGatewayServiceWithErrorHandler:(id)a3
+- (id)externalGatewayServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SKServiceBroker_externalGatewayServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -81,17 +81,17 @@ uint64_t __58__SKServiceBroker_externalGatewayServiceWithErrorHandler___block_in
   return result;
 }
 
-- (id)inAppBindingServiceWithErrorHandler:(id)a3
+- (id)inAppBindingServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__SKServiceBroker_inAppBindingServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -107,17 +107,17 @@ uint64_t __55__SKServiceBroker_inAppBindingServiceWithErrorHandler___block_invok
   return result;
 }
 
-- (id)inAppEngagementServiceWithErrorHandler:(id)a3
+- (id)inAppEngagementServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__SKServiceBroker_inAppEngagementServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -133,17 +133,17 @@ uint64_t __58__SKServiceBroker_inAppEngagementServiceWithErrorHandler___block_in
   return result;
 }
 
-- (id)messageServiceWithErrorHandler:(id)a3
+- (id)messageServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__SKServiceBroker_messageServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -159,17 +159,17 @@ uint64_t __50__SKServiceBroker_messageServiceWithErrorHandler___block_invoke(uin
   return result;
 }
 
-- (id)policyServiceWithErrorHandler:(id)a3
+- (id)policyServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__SKServiceBroker_policyServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -185,17 +185,17 @@ uint64_t __49__SKServiceBroker_policyServiceWithErrorHandler___block_invoke(uint
   return result;
 }
 
-- (id)productLookupServiceWithErrorHandler:(id)a3
+- (id)productLookupServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__SKServiceBroker_productLookupServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -211,17 +211,17 @@ uint64_t __56__SKServiceBroker_productLookupServiceWithErrorHandler___block_invo
   return result;
 }
 
-- (id)productServiceWithErrorHandler:(id)a3
+- (id)productServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__SKServiceBroker_productServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -237,17 +237,17 @@ uint64_t __50__SKServiceBroker_productServiceWithErrorHandler___block_invoke(uin
   return result;
 }
 
-- (id)purchaseIntentServiceWithErrorHandler:(id)a3
+- (id)purchaseIntentServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__SKServiceBroker_purchaseIntentServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -263,17 +263,17 @@ uint64_t __57__SKServiceBroker_purchaseIntentServiceWithErrorHandler___block_inv
   return result;
 }
 
-- (id)offerEligibilityServiceWithErrorHandler:(id)a3
+- (id)offerEligibilityServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__SKServiceBroker_offerEligibilityServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -289,17 +289,17 @@ uint64_t __59__SKServiceBroker_offerEligibilityServiceWithErrorHandler___block_i
   return result;
 }
 
-- (id)storeKitServiceWithErrorHandler:(id)a3
+- (id)storeKitServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__SKServiceBroker_storeKitServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -315,17 +315,17 @@ uint64_t __51__SKServiceBroker_storeKitServiceWithErrorHandler___block_invoke(ui
   return result;
 }
 
-- (id)storeKitSynchronousServiceWithErrorHandler:(id)a3
+- (id)storeKitSynchronousServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SKServiceBroker *)self _serviceConnection];
+  handlerCopy = handler;
+  _serviceConnection = [(SKServiceBroker *)self _serviceConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__SKServiceBroker_storeKitSynchronousServiceWithErrorHandler___block_invoke;
   v9[3] = &unk_1E7B27DA8;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -393,11 +393,11 @@ void __37__SKServiceBroker__serviceConnection__block_invoke_2(uint64_t a1)
   [WeakRetained _serviceConnectionInvalidated];
 }
 
-+ (id)_serviceConnectionWithName:(id)a3
++ (id)_serviceConnectionWithName:(id)name
 {
   v3 = MEMORY[0x1E696B0B8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithMachServiceName:v4 options:0];
+  nameCopy = name;
+  v5 = [[v3 alloc] initWithMachServiceName:nameCopy options:0];
 
   v6 = +[XPCInterface service];
   [v5 setRemoteObjectInterface:v6];

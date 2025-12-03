@@ -1,68 +1,68 @@
 @interface _SearchResultTwoLinesContentViewModel
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setObservedSearchResult:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setObservedSearchResult:(id)result;
 @end
 
 @implementation _SearchResultTwoLinesContentViewModel
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = [(_SearchResultTwoLinesContentViewModel *)self observedSearchResult];
+  pathCopy = path;
+  objectCopy = object;
+  observedSearchResult = [(_SearchResultTwoLinesContentViewModel *)self observedSearchResult];
 
-  if (v9 != v8)
+  if (observedSearchResult != objectCopy)
   {
     goto LABEL_10;
   }
 
-  v10 = [v14 isEqualToString:@"reverseGeocoded"];
+  v10 = [pathCopy isEqualToString:@"reverseGeocoded"];
 
   if (!v10)
   {
     goto LABEL_11;
   }
 
-  v11 = [(_SearchResultTwoLinesContentViewModel *)self preferredAddressFormat];
-  if (v11 == 1)
+  preferredAddressFormat = [(_SearchResultTwoLinesContentViewModel *)self preferredAddressFormat];
+  if (preferredAddressFormat == 1)
   {
-    v12 = [self->_observedSearchResult mapItem];
-    v9 = [v12 _addressFormattedAsCity];
+    mapItem = [self->_observedSearchResult mapItem];
+    observedSearchResult = [mapItem _addressFormattedAsCity];
   }
 
   else
   {
-    if (v11)
+    if (preferredAddressFormat)
     {
-      v9 = 0;
+      observedSearchResult = 0;
       goto LABEL_9;
     }
 
-    v12 = [self->_observedSearchResult mapItem];
-    v13 = [v12 _addressFormattedAsShortenedAddress];
-    v9 = sub_100C47980(v13);
+    mapItem = [self->_observedSearchResult mapItem];
+    _addressFormattedAsShortenedAddress = [mapItem _addressFormattedAsShortenedAddress];
+    observedSearchResult = sub_100C47980(_addressFormattedAsShortenedAddress);
   }
 
 LABEL_9:
-  [(_BasicTwoLinesContentViewModel *)self setSubtitleText:v9];
+  [(_BasicTwoLinesContentViewModel *)self setSubtitleText:observedSearchResult];
   [(_BasicTwoLinesContentViewModel *)self updateObservers];
 LABEL_10:
 
 LABEL_11:
 }
 
-- (void)setObservedSearchResult:(id)a3
+- (void)setObservedSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   observedSearchResult = self->_observedSearchResult;
-  if (observedSearchResult != v5)
+  if (observedSearchResult != resultCopy)
   {
-    v7 = v5;
+    v7 = resultCopy;
     [observedSearchResult removeObserver:self forKeyPath:@"reverseGeocoded"];
-    objc_storeStrong(&self->_observedSearchResult, a3);
+    objc_storeStrong(&self->_observedSearchResult, result);
     [(SearchResult *)v7 addObserver:self forKeyPath:@"reverseGeocoded" options:0 context:0];
-    v5 = v7;
+    resultCopy = v7;
   }
 }
 

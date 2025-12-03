@@ -1,36 +1,36 @@
 @interface PKAccountBillPaymentPayInterestDescriptionView
 - (BOOL)_showInterest;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountBillPaymentPayInterestDescriptionView)initWithAccount:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountBillPaymentPayInterestDescriptionView)initWithAccount:(id)account;
 - (PKAccountBillPaymentPayInterestDescriptionViewDelegate)delegate;
-- (id)_learnMoreAttributedStringWithText:(id)a3;
+- (id)_learnMoreAttributedStringWithText:(id)text;
 - (void)_updateLabels;
 - (void)layoutSubviews;
-- (void)setInterest:(id)a3;
-- (void)setInterestChargeDate:(id)a3;
-- (void)setSelectedPaymentDate:(id)a3;
+- (void)setInterest:(id)interest;
+- (void)setInterestChargeDate:(id)date;
+- (void)setSelectedPaymentDate:(id)date;
 @end
 
 @implementation PKAccountBillPaymentPayInterestDescriptionView
 
-- (PKAccountBillPaymentPayInterestDescriptionView)initWithAccount:(id)a3
+- (PKAccountBillPaymentPayInterestDescriptionView)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v45.receiver = self;
   v45.super_class = PKAccountBillPaymentPayInterestDescriptionView;
   v6 = [(PKAccountBillPaymentPayInterestDescriptionView *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
-    v8 = [v5 creditDetails];
-    v9 = [v8 currencyCode];
+    objc_storeStrong(&v6->_account, account);
+    creditDetails = [accountCopy creditDetails];
+    currencyCode = [creditDetails currencyCode];
     v10 = PKMutableNumberFormatterForCurrencyCode();
     amountFormatter = v7->_amountFormatter;
     v7->_amountFormatter = v10;
 
-    [v5 feature];
+    [accountCopy feature];
     v12 = PKLocalizedFeatureString();
     learnMoreString = v7->_learnMoreString;
     v7->_learnMoreString = v12;
@@ -58,8 +58,8 @@
     [(UILabel *)v19 setFont:v21];
 
     v22 = v7->_estimatedChargeLabel;
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v22 setTextColor:v23];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v22 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v7->_estimatedChargeLabel setNumberOfLines:0];
     [(UILabel *)v7->_estimatedChargeLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9780]];
@@ -82,13 +82,13 @@
     v7->_productDateFormatter = v28;
 
     v30 = v7->_productDateFormatter;
-    v31 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v30 setLocale:v31];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v30 setLocale:autoupdatingCurrentLocale];
 
     v32 = v7->_productDateFormatter;
-    v33 = [(PKAccount *)v7->_account creditDetails];
-    v34 = [v33 productTimeZone];
-    [(NSDateFormatter *)v32 setTimeZone:v34];
+    creditDetails2 = [(PKAccount *)v7->_account creditDetails];
+    productTimeZone = [creditDetails2 productTimeZone];
+    [(NSDateFormatter *)v32 setTimeZone:productTimeZone];
 
     [(NSDateFormatter *)v7->_productDateFormatter setLocalizedDateFormatFromTemplate:@"MMM d"];
     v35 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -96,8 +96,8 @@
     v7->_localDateFormatter = v35;
 
     v37 = v7->_localDateFormatter;
-    v38 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v37 setLocale:v38];
+    autoupdatingCurrentLocale2 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v37 setLocale:autoupdatingCurrentLocale2];
 
     [(NSDateFormatter *)v7->_localDateFormatter setLocalizedDateFormatFromTemplate:@"MMM d"];
     v39 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -105,8 +105,8 @@
     v7->_localTimeFormatter = v39;
 
     v41 = v7->_localTimeFormatter;
-    v42 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v41 setLocale:v42];
+    autoupdatingCurrentLocale3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v41 setLocale:autoupdatingCurrentLocale3];
 
     [(NSDateFormatter *)v7->_localTimeFormatter setLocalizedDateFormatFromTemplate:@"j:mm a z"];
     [(PKAccountBillPaymentPayInterestDescriptionView *)v7 addSubview:v7->_cancellationView];
@@ -118,15 +118,15 @@
   return v7;
 }
 
-- (void)setInterest:(id)a3
+- (void)setInterest:(id)interest
 {
-  v9 = a3;
+  interestCopy = interest;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_interest, a3);
+    objc_storeStrong(&self->_interest, interest);
     interest = self->_interest;
-    v6 = [MEMORY[0x1E69B86D0] roundingHandler];
-    v7 = [(NSDecimalNumber *)interest decimalNumberByRoundingAccordingToBehavior:v6];
+    roundingHandler = [MEMORY[0x1E69B86D0] roundingHandler];
+    v7 = [(NSDecimalNumber *)interest decimalNumberByRoundingAccordingToBehavior:roundingHandler];
     v8 = self->_interest;
     self->_interest = v7;
 
@@ -134,19 +134,19 @@
   }
 }
 
-- (void)setSelectedPaymentDate:(id)a3
+- (void)setSelectedPaymentDate:(id)date
 {
-  objc_storeStrong(&self->_selectedPaymentDate, a3);
+  objc_storeStrong(&self->_selectedPaymentDate, date);
 
   [(PKAccountBillPaymentPayInterestDescriptionView *)self setNeedsLayout];
 }
 
-- (void)setInterestChargeDate:(id)a3
+- (void)setInterestChargeDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_interestChargeDate, a3);
+    objc_storeStrong(&self->_interestChargeDate, date);
     [(PKAccountBillPaymentPayInterestDescriptionView *)self setNeedsLayout];
   }
 }
@@ -157,7 +157,7 @@
   v18.super_class = PKAccountBillPaymentPayInterestDescriptionView;
   [(PKAccountBillPaymentPayInterestDescriptionView *)&v18 layoutSubviews];
   [(PKAccountBillPaymentPayInterestDescriptionView *)self _updateLabels];
-  v3 = [(PKAccountBillPaymentPayInterestDescriptionView *)self _showInterest];
+  _showInterest = [(PKAccountBillPaymentPayInterestDescriptionView *)self _showInterest];
   [(PKAccountBillPaymentPayInterestDescriptionView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -179,7 +179,7 @@
   v19.size.width = v9;
   v19.size.height = v11;
   CGRectDivide(v19, &v16, &remainder, v13, CGRectMaxYEdge);
-  if (v3)
+  if (_showInterest)
   {
     CGRectDivide(remainder, &v16, &remainder, 20.0, CGRectMaxYEdge);
     [(UILabel *)self->_estimatedChargeLabel sizeThatFits:v9, 3.40282347e38];
@@ -194,10 +194,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 0.0;
   if ([(PKAccountBillPaymentPayInterestDescriptionView *)self _showInterest])
   {
@@ -215,7 +215,7 @@
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained billPaymentPayInterestDescriptionViewHasTappedLearnMore:self];
@@ -228,8 +228,8 @@
   interest = self->_interest;
   if (interest)
   {
-    v3 = [MEMORY[0x1E696AB90] zero];
-    LOBYTE(interest) = [(NSDecimalNumber *)interest compare:v3]== NSOrderedDescending;
+    zero = [MEMORY[0x1E696AB90] zero];
+    LOBYTE(interest) = [(NSDecimalNumber *)interest compare:zero]== NSOrderedDescending;
   }
 
   return interest;
@@ -244,14 +244,14 @@
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x1E696AB90] zero];
-  v5 = [interest compare:v4];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v5 = [interest compare:zero];
 
   if (v5 != 1)
   {
     interest = 0;
 LABEL_6:
-    v26 = 0;
+    pk_uppercaseStringForPreferredLocale = 0;
     goto LABEL_9;
   }
 
@@ -267,17 +267,17 @@ LABEL_6:
     PKLocalizedFeatureString();
   }
   v7 = ;
-  v26 = [v7 pk_uppercaseStringForPreferredLocale];
+  pk_uppercaseStringForPreferredLocale = [v7 pk_uppercaseStringForPreferredLocale];
 
   interest = [(NSNumberFormatter *)self->_amountFormatter stringFromNumber:self->_interest];
 
 LABEL_9:
-  v8 = [(PKAccount *)self->_account creditDetails];
-  v9 = [v8 productTimeZone];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  productTimeZone = [creditDetails productTimeZone];
 
   if (self->_selectedPaymentDate)
   {
-    v10 = v9 == 0;
+    v10 = productTimeZone == 0;
   }
 
   else
@@ -289,7 +289,7 @@ LABEL_9:
   {
     v11 = objc_alloc(MEMORY[0x1E695DEE8]);
     v12 = [v11 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-    [v12 setTimeZone:v9];
+    [v12 setTimeZone:productTimeZone];
     v13 = [v12 components:28 fromDate:self->_selectedPaymentDate];
     v14 = [v12 dateFromComponents:v13];
     cancellationDate = self->_cancellationDate;
@@ -312,23 +312,23 @@ LABEL_9:
     [(UITextView *)cancellationView setAttributedText:v23];
   }
 
-  [(UILabel *)self->_estimatedChargeLabel setText:v26];
+  [(UILabel *)self->_estimatedChargeLabel setText:pk_uppercaseStringForPreferredLocale];
   [(UILabel *)self->_estimatedChargeLabel sizeToFit];
   [(UILabel *)self->_interestLabel setText:interest];
   [(UILabel *)self->_interestLabel sizeToFit];
-  v24 = [(PKAccountBillPaymentPayInterestDescriptionView *)self _showInterest];
-  [(UILabel *)self->_interestLabel setHidden:!v24];
-  [(UILabel *)self->_estimatedChargeLabel setHidden:!v24];
+  _showInterest = [(PKAccountBillPaymentPayInterestDescriptionView *)self _showInterest];
+  [(UILabel *)self->_interestLabel setHidden:!_showInterest];
+  [(UILabel *)self->_estimatedChargeLabel setHidden:!_showInterest];
 }
 
-- (id)_learnMoreAttributedStringWithText:(id)a3
+- (id)_learnMoreAttributedStringWithText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = [v4 length];
+    v5 = [textCopy length];
     v6 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1F3BD7330];
-    v7 = [v4 rangeOfString:self->_learnMoreString];
+    v7 = [textCopy rangeOfString:self->_learnMoreString];
     v9 = v8;
     v10 = _UISolariumFeatureFlagEnabled();
     v11 = *MEMORY[0x1E69DDC38];
@@ -342,14 +342,14 @@ LABEL_9:
       PKFontForDefaultDesign(*MEMORY[0x1E69DDD78], v11, 0x8000, 0);
     }
     v13 = ;
-    v14 = [v13 pk_fixedWidthFont];
+    pk_fixedWidthFont = [v13 pk_fixedWidthFont];
 
-    v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
-    v15 = [MEMORY[0x1E69DC888] linkColor];
-    [v12 pk_addLinkURL:v6 toRange:v7 withColor:v9 isUnderlined:{v15, 0}];
+    v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    [v12 pk_addLinkURL:v6 toRange:v7 withColor:v9 isUnderlined:{linkColor, 0}];
 
-    v16 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v17 = [v16 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v17 = [defaultParagraphStyle mutableCopy];
 
     [v17 setLineBreakMode:0];
     [v17 setAlignment:PKOBKTextAlignment()];
@@ -358,7 +358,7 @@ LABEL_9:
     v19 = PKOBKFooterCaptionTextColor();
     [v12 addAttribute:v18 value:v19 range:{0, v5}];
 
-    [v12 addAttribute:*MEMORY[0x1E69DB648] value:v14 range:{0, v5}];
+    [v12 addAttribute:*MEMORY[0x1E69DB648] value:pk_fixedWidthFont range:{0, v5}];
   }
 
   else

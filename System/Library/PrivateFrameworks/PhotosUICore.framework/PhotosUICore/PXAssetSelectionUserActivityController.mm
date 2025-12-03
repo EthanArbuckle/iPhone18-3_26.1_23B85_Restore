@@ -1,15 +1,15 @@
 @interface PXAssetSelectionUserActivityController
 - (PXAssetSelectionUserActivityController)init;
-- (PXAssetSelectionUserActivityController)initWithSelectionManager:(id)a3;
+- (PXAssetSelectionUserActivityController)initWithSelectionManager:(id)manager;
 - (PXSelectionSnapshot)selectionSnapshot;
 - (void)_updateActivity;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setActive:(BOOL)a3;
-- (void)setHasSelection:(BOOL)a3;
-- (void)setSelectionManager:(id)a3;
-- (void)setSelectionSnapshot:(id)a3;
-- (void)userActivityWillSave:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setActive:(BOOL)active;
+- (void)setHasSelection:(BOOL)selection;
+- (void)setSelectionManager:(id)manager;
+- (void)setSelectionSnapshot:(id)snapshot;
+- (void)userActivityWillSave:(id)save;
 @end
 
 @implementation PXAssetSelectionUserActivityController
@@ -18,9 +18,9 @@
 {
   if ([(PXAssetSelectionUserActivityController *)self isActive]&& [(PXAssetSelectionUserActivityController *)self hasSelection])
   {
-    v3 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
+    currentUserActivity = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
 
-    if (!v3)
+    if (!currentUserActivity)
     {
       v6 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:@"com.apple.mobileslideshow.assetselection"];
       [v6 setEligibleForHandoff:0];
@@ -32,25 +32,25 @@
 
   else
   {
-    v4 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
+    currentUserActivity2 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
 
-    if (v4)
+    if (currentUserActivity2)
     {
-      v5 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
-      [v5 resignCurrent];
+      currentUserActivity3 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
+      [currentUserActivity3 resignCurrent];
 
       [(PXAssetSelectionUserActivityController *)self setCurrentUserActivity:0];
     }
   }
 }
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PXAssetSelectionUserActivityController *)self selectionSnapshot];
-  v7 = [v6 dataSource];
-  if (v7)
+  saveCopy = save;
+  selectionSnapshot = [(PXAssetSelectionUserActivityController *)self selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -58,60 +58,60 @@
       goto LABEL_3;
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v21 = NSStringFromClass(v22);
-    v23 = [v7 px_descriptionForAssertionMessage];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"currentSelection.dataSource", v21, v23}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"currentSelection.dataSource", v21, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    [v19 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"currentSelection.dataSource", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:132 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"currentSelection.dataSource", v21}];
   }
 
 LABEL_3:
-  v8 = [v6 selectedIndexPaths];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
   v9 = PLUIGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v28 = [v8 itemCount];
+    itemCount = [selectedIndexPaths itemCount];
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "Selection user activity has been requested with %lu assets selected", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "itemCount")}];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(selectedIndexPaths, "itemCount")}];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_invoke;
   v24[3] = &unk_1E7744508;
-  v11 = v7;
+  v11 = dataSource;
   v25 = v11;
   v12 = v10;
   v26 = v12;
-  [v8 enumerateItemIndexPathsUsingBlock:v24];
-  v13 = [v5 userInfo];
-  v14 = [v13 mutableCopy];
+  [selectedIndexPaths enumerateItemIndexPathsUsingBlock:v24];
+  userInfo = [saveCopy userInfo];
+  v14 = [userInfo mutableCopy];
   v15 = v14;
   if (v14)
   {
-    v16 = v14;
+    dictionary = v14;
   }
 
   else
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v17 = v16;
+  v17 = dictionary;
 
   v18 = [v12 copy];
   [v17 setObject:v18 forKeyedSubscript:@"selectedUUIDs"];
 
-  [v5 setUserInfo:v17];
+  [saveCopy setUserInfo:v17];
 }
 
 void __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_invoke(uint64_t a1, _OWORD *a2)
@@ -126,34 +126,34 @@ void __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_i
   [v6 addObject:v7];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (SelectionManagerObservationContext_116557 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (SelectionManagerObservationContext_116557 != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:123 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:123 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v13 = v9;
-    v10 = [(PXAssetSelectionUserActivityController *)self selectionManager];
-    v11 = [v10 selectionSnapshot];
-    [(PXAssetSelectionUserActivityController *)self setSelectionSnapshot:v11];
+    v13 = observableCopy;
+    selectionManager = [(PXAssetSelectionUserActivityController *)self selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
+    [(PXAssetSelectionUserActivityController *)self setSelectionSnapshot:selectionSnapshot];
 
-    v9 = v13;
+    observableCopy = v13;
   }
 }
 
-- (void)setHasSelection:(BOOL)a3
+- (void)setHasSelection:(BOOL)selection
 {
-  if (self->_hasSelection != a3)
+  if (self->_hasSelection != selection)
   {
-    self->_hasSelection = a3;
+    self->_hasSelection = selection;
     [(PXAssetSelectionUserActivityController *)self _updateActivity];
   }
 }
@@ -167,58 +167,58 @@ void __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_i
   return v3;
 }
 
-- (void)setSelectionSnapshot:(id)a3
+- (void)setSelectionSnapshot:(id)snapshot
 {
-  v9 = a3;
+  snapshotCopy = snapshot;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:72 description:{@"%s must be called on the main thread", "-[PXAssetSelectionUserActivityController setSelectionSnapshot:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:72 description:{@"%s must be called on the main thread", "-[PXAssetSelectionUserActivityController setSelectionSnapshot:]"}];
   }
 
-  v6 = [(PXAssetSelectionUserActivityController *)self hasSelection];
+  hasSelection = [(PXAssetSelectionUserActivityController *)self hasSelection];
   os_unfair_lock_lock(&self->_snapshotLock);
-  if (self->_selectionSnapshot != v9)
+  if (self->_selectionSnapshot != snapshotCopy)
   {
-    objc_storeStrong(&self->_selectionSnapshot, a3);
-    v7 = [(PXSelectionSnapshot *)v9 selectedIndexPaths];
-    v6 = [v7 itemCount] > 0;
+    objc_storeStrong(&self->_selectionSnapshot, snapshot);
+    selectedIndexPaths = [(PXSelectionSnapshot *)snapshotCopy selectedIndexPaths];
+    hasSelection = [selectedIndexPaths itemCount] > 0;
   }
 
   os_unfair_lock_unlock(&self->_snapshotLock);
-  [(PXAssetSelectionUserActivityController *)self setHasSelection:v6];
+  [(PXAssetSelectionUserActivityController *)self setHasSelection:hasSelection];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(PXAssetSelectionUserActivityController *)self _updateActivity];
   }
 }
 
-- (void)setSelectionManager:(id)a3
+- (void)setSelectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   selectionManager = self->_selectionManager;
-  if (selectionManager != v5)
+  if (selectionManager != managerCopy)
   {
-    v8 = v5;
+    v8 = managerCopy;
     [(PXSectionedSelectionManager *)selectionManager unregisterChangeObserver:self context:SelectionManagerObservationContext_116557];
-    objc_storeStrong(&self->_selectionManager, a3);
+    objc_storeStrong(&self->_selectionManager, manager);
     [(PXSectionedSelectionManager *)self->_selectionManager registerChangeObserver:self context:SelectionManagerObservationContext_116557];
-    v7 = [(PXSectionedSelectionManager *)self->_selectionManager selectionSnapshot];
-    [(PXAssetSelectionUserActivityController *)self setSelectionSnapshot:v7];
+    selectionSnapshot = [(PXSectionedSelectionManager *)self->_selectionManager selectionSnapshot];
+    [(PXAssetSelectionUserActivityController *)self setSelectionSnapshot:selectionSnapshot];
 
-    v5 = v8;
+    managerCopy = v8;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
-  [v3 resignCurrent];
+  currentUserActivity = [(PXAssetSelectionUserActivityController *)self currentUserActivity];
+  [currentUserActivity resignCurrent];
 
   [(PXAssetSelectionUserActivityController *)self setCurrentUserActivity:0];
   v4.receiver = self;
@@ -228,15 +228,15 @@ void __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_i
 
 - (PXAssetSelectionUserActivityController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXAssetSelectionUserActivityController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetSelectionUserActivityController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXAssetSelectionUserActivityController init]"}];
 
   abort();
 }
 
-- (PXAssetSelectionUserActivityController)initWithSelectionManager:(id)a3
+- (PXAssetSelectionUserActivityController)initWithSelectionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v8.receiver = self;
   v8.super_class = PXAssetSelectionUserActivityController;
   v5 = [(PXAssetSelectionUserActivityController *)&v8 init];
@@ -244,7 +244,7 @@ void __63__PXAssetSelectionUserActivityController_userActivityWillSave___block_i
   if (v5)
   {
     v5->_snapshotLock._os_unfair_lock_opaque = 0;
-    [(PXAssetSelectionUserActivityController *)v5 setSelectionManager:v4];
+    [(PXAssetSelectionUserActivityController *)v5 setSelectionManager:managerCopy];
   }
 
   return v6;

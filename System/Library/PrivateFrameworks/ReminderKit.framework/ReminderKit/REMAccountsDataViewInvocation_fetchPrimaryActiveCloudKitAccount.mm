@@ -1,47 +1,47 @@
 @interface REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount
-- (BOOL)isEqual:(id)a3;
-- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithCoder:(id)a3;
-- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithFetchREMObjectIDOnly:(BOOL)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithCoder:(id)coder;
+- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithFetchREMObjectIDOnly:(BOOL)only;
 - (id)name;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount
 
-- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithFetchREMObjectIDOnly:(BOOL)a3
+- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithFetchREMObjectIDOnly:(BOOL)only
 {
   v5.receiver = self;
   v5.super_class = REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount;
   result = [(REMStoreInvocationValueStorage *)&v5 init];
   if (result)
   {
-    result->_fetchREMObjectIDOnly = a3;
+    result->_fetchREMObjectIDOnly = only;
   }
 
   return result;
 }
 
-- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithCoder:(id)a3
+- (REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"fetchREMObjectIDOnly"];
+  v4 = [coder decodeBoolForKey:@"fetchREMObjectIDOnly"];
 
   return [(REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount *)self initWithFetchREMObjectIDOnly:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount fetchREMObjectIDOnly](self forKey:{"fetchREMObjectIDOnly"), @"fetchREMObjectIDOnly"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount fetchREMObjectIDOnly](self forKey:{"fetchREMObjectIDOnly"), @"fetchREMObjectIDOnly"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount *)self fetchREMObjectIDOnly];
-    v6 = v5 ^ [v4 fetchREMObjectIDOnly] ^ 1;
+    fetchREMObjectIDOnly = [(REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount *)self fetchREMObjectIDOnly];
+    v6 = fetchREMObjectIDOnly ^ [equalCopy fetchREMObjectIDOnly] ^ 1;
   }
 
   else
@@ -57,15 +57,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount;
-  v4 = [(REMStoreInvocation *)&v9 name];
-  v5 = [(REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount *)self fetchREMObjectIDOnly];
+  name = [(REMStoreInvocation *)&v9 name];
+  fetchREMObjectIDOnly = [(REMAccountsDataViewInvocation_fetchPrimaryActiveCloudKitAccount *)self fetchREMObjectIDOnly];
   v6 = &stru_1F0D67F00;
-  if (v5)
+  if (fetchREMObjectIDOnly)
   {
     v6 = @"(fetchREMObjectIDOnly)";
   }
 
-  v7 = [v3 stringWithFormat:@"%@%@", v4, v6];
+  v7 = [v3 stringWithFormat:@"%@%@", name, v6];
 
   return v7;
 }

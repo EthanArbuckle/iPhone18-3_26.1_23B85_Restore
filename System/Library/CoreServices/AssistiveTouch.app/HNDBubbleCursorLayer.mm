@@ -1,13 +1,13 @@
 @interface HNDBubbleCursorLayer
 - (HNDBubbleCursorLayer)init;
-- (double)_opacityForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5;
-- (double)valueForPointerSizeMultipler:(double)a3 withBaseValue:(double)a4;
+- (double)_opacityForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier;
+- (double)valueForPointerSizeMultipler:(double)multipler withBaseValue:(double)value;
 - (id)description;
 - (void)_updatePresentationProperties;
-- (void)ensureHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateLevel:(int)a3 animated:(BOOL)a4;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6;
-- (void)updateTheme:(int)a3 animated:(BOOL)a4;
+- (void)ensureHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)updateLevel:(int)level animated:(BOOL)animated;
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated;
+- (void)updateTheme:(int)theme animated:(BOOL)animated;
 @end
 
 @implementation HNDBubbleCursorLayer
@@ -46,12 +46,12 @@
   return v11;
 }
 
-- (void)ensureHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)ensureHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (self->_ensureHidden != a3)
+  if (self->_ensureHidden != hidden)
   {
-    self->_ensureHidden = a3;
-    if (a4)
+    self->_ensureHidden = hidden;
+    if (animated)
     {
 
       [(HNDBubbleCursorLayer *)self _updatePresentationProperties];
@@ -68,12 +68,12 @@
   }
 }
 
-- (void)updateTheme:(int)a3 animated:(BOOL)a4
+- (void)updateTheme:(int)theme animated:(BOOL)animated
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
-    if (a4)
+    self->_theme = theme;
+    if (animated)
     {
 
       [(HNDBubbleCursorLayer *)self _updatePresentationProperties];
@@ -90,12 +90,12 @@
   }
 }
 
-- (void)updateLevel:(int)a3 animated:(BOOL)a4
+- (void)updateLevel:(int)level animated:(BOOL)animated
 {
-  if (self->_level != a3)
+  if (self->_level != level)
   {
-    self->_level = a3;
-    if (a4)
+    self->_level = level;
+    if (animated)
     {
 
       [(HNDBubbleCursorLayer *)self _updatePresentationProperties];
@@ -112,28 +112,28 @@
   }
 }
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 isSimpleRect:(BOOL)a5 animated:(BOOL)a6
+- (void)updatePath:(id)path frame:(CGRect)frame isSimpleRect:(BOOL)rect animated:(BOOL)animated
 {
-  v7 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  [(HNDBubbleCursorLayer *)self setSimpleRect:v7];
-  if (!a6)
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
+  [(HNDBubbleCursorLayer *)self setSimpleRect:rectCopy];
+  if (!animated)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
   }
 
-  if (v14)
+  if (pathCopy)
   {
     [(HNDBubbleCursorLayer *)self setFrame:x, y, width, height];
     [(HNDBubbleCursorLayer *)self _updatePresentationProperties];
-    v13 = v14;
-    -[HNDBubbleCursorLayer setPath:](self, "setPath:", [v14 CGPath]);
-    if (a6)
+    v13 = pathCopy;
+    -[HNDBubbleCursorLayer setPath:](self, "setPath:", [pathCopy CGPath]);
+    if (animated)
     {
       goto LABEL_6;
     }
@@ -142,7 +142,7 @@
   }
 
   [(HNDBubbleCursorLayer *)self _updatePresentationProperties];
-  if (!a6)
+  if (!animated)
   {
 LABEL_5:
     +[CATransaction commit];
@@ -153,10 +153,10 @@ LABEL_6:
 
 - (void)_updatePresentationProperties
 {
-  v3 = [(HNDBubbleCursorLayer *)self theme];
-  v4 = [(HNDBubbleCursorLayer *)self level];
+  theme = [(HNDBubbleCursorLayer *)self theme];
+  level = [(HNDBubbleCursorLayer *)self level];
   v5 = sub_100042DE0();
-  if (v4)
+  if (level)
   {
     ensureHidden = self->_ensureHidden;
   }
@@ -167,45 +167,45 @@ LABEL_6:
   }
 
   [(HNDBubbleCursorLayer *)self setHidden:ensureHidden];
-  v7 = [(HNDBubbleCursorLayer *)self _strokeColorForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  v7 = [(HNDBubbleCursorLayer *)self _strokeColorForTheme:theme level:level pointerSizeMultiplier:v5];
   [(HNDBubbleCursorLayer *)self setRestingStrokeColor:v7];
 
-  v8 = [(HNDBubbleCursorLayer *)self restingStrokeColor];
-  -[HNDBubbleCursorLayer setStrokeColor:](self, "setStrokeColor:", [v8 CGColor]);
+  restingStrokeColor = [(HNDBubbleCursorLayer *)self restingStrokeColor];
+  -[HNDBubbleCursorLayer setStrokeColor:](self, "setStrokeColor:", [restingStrokeColor CGColor]);
 
-  v9 = [(HNDBubbleCursorLayer *)self _fillColorForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  v9 = [(HNDBubbleCursorLayer *)self _fillColorForTheme:theme level:level pointerSizeMultiplier:v5];
   [(HNDBubbleCursorLayer *)self setRestingFillColor:v9];
 
-  v10 = [(HNDBubbleCursorLayer *)self restingFillColor];
-  -[HNDBubbleCursorLayer setFillColor:](self, "setFillColor:", [v10 CGColor]);
+  restingFillColor = [(HNDBubbleCursorLayer *)self restingFillColor];
+  -[HNDBubbleCursorLayer setFillColor:](self, "setFillColor:", [restingFillColor CGColor]);
 
-  [(HNDBubbleCursorLayer *)self _boundsInsetForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  [(HNDBubbleCursorLayer *)self _boundsInsetForTheme:theme level:level pointerSizeMultiplier:v5];
   [(HNDBubbleCursorLayer *)self setBoundsInset:?];
-  [(HNDBubbleCursorLayer *)self _borderWidthForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  [(HNDBubbleCursorLayer *)self _borderWidthForTheme:theme level:level pointerSizeMultiplier:v5];
   [(HNDBubbleCursorLayer *)self setLineWidth:?];
-  v11 = [(HNDBubbleCursorLayer *)self _borderPatternForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  v11 = [(HNDBubbleCursorLayer *)self _borderPatternForTheme:theme level:level pointerSizeMultiplier:v5];
   [(HNDBubbleCursorLayer *)self setLineDashPattern:v11];
 
-  [(HNDBubbleCursorLayer *)self _opacityForTheme:v3 level:v4 pointerSizeMultiplier:v5];
+  [(HNDBubbleCursorLayer *)self _opacityForTheme:theme level:level pointerSizeMultiplier:v5];
   *&v12 = v12;
 
   [(HNDBubbleCursorLayer *)self setOpacity:v12];
 }
 
-- (double)valueForPointerSizeMultipler:(double)a3 withBaseValue:(double)a4
+- (double)valueForPointerSizeMultipler:(double)multipler withBaseValue:(double)value
 {
   if (sub_100042DE0() > 0.0)
   {
-    return (sub_100042DE0() * (a3 + -1.0) + 1.0) * a4;
+    return (sub_100042DE0() * (multipler + -1.0) + 1.0) * value;
   }
 
-  return a4;
+  return value;
 }
 
-- (double)_opacityForTheme:(int)a3 level:(int)a4 pointerSizeMultiplier:(double)a5
+- (double)_opacityForTheme:(int)theme level:(int)level pointerSizeMultiplier:(double)multiplier
 {
   result = 0.6;
-  if (a4 != 2)
+  if (level != 2)
   {
     return 1.0;
   }

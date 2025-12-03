@@ -1,61 +1,61 @@
 @interface _GCNintendoFusedJoyConDevice
-+ (id)identifierForFusedJoyConDeviceWithLeftDevice:(id)a3 rightDevice:(id)a4;
++ (id)identifierForFusedJoyConDeviceWithLeftDevice:(id)device rightDevice:(id)rightDevice;
 - (GCDeviceBattery)battery;
 - (NSSet)underlyingDevices;
 - (_GCDeviceManager)manager;
 - (_GCGamepadEventSourceDescription)gamepadEventSource;
 - (_GCNintendoFusedJoyConDevice)init;
-- (_GCNintendoFusedJoyConDevice)initWithLeft:(id)a3 right:(id)a4 manager:(id)a5;
-- (id)makeControllerForClient:(id)a3;
+- (_GCNintendoFusedJoyConDevice)initWithLeft:(id)left right:(id)right manager:(id)manager;
+- (id)makeControllerForClient:(id)client;
 - (id)persistentIdentifierForSettings;
-- (void)_addClient:(id)a3;
+- (void)_addClient:(id)client;
 - (void)_propagateBattery;
 - (void)_refreshBattery;
-- (void)_removeClient:(id)a3;
+- (void)_removeClient:(id)client;
 - (void)activateLogical;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4;
-- (void)setIndicatedPlayerIndex:(int64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change;
+- (void)setIndicatedPlayerIndex:(int64_t)index;
 - (void)settingsDidChange;
 @end
 
 @implementation _GCNintendoFusedJoyConDevice
 
-- (_GCNintendoFusedJoyConDevice)initWithLeft:(id)a3 right:(id)a4 manager:(id)a5
+- (_GCNintendoFusedJoyConDevice)initWithLeft:(id)left right:(id)right manager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  leftCopy = left;
+  rightCopy = right;
+  managerCopy = manager;
   v42.receiver = self;
   v42.super_class = _GCNintendoFusedJoyConDevice;
   v12 = [(_GCNintendoFusedJoyConDevice *)&v42 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_manager, v11);
-    v14 = [objc_opt_class() identifierForFusedJoyConDeviceWithLeftDevice:v9 rightDevice:v10];
+    objc_storeWeak(&v12->_manager, managerCopy);
+    v14 = [objc_opt_class() identifierForFusedJoyConDeviceWithLeftDevice:leftCopy rightDevice:rightCopy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    objc_storeStrong(&v13->_leftDevice, a3);
-    objc_storeStrong(&v13->_rightDevice, a4);
-    v16 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v13->_leftDevice, left);
+    objc_storeStrong(&v13->_rightDevice, right);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clients = v13->_clients;
-    v13->_clients = v16;
+    v13->_clients = strongToStrongObjectsMapTable;
 
     v13->_indicatedPlayerIndex = -1;
-    v18 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientPlayerIndicatorEndpoints = v13->_clientPlayerIndicatorEndpoints;
-    v13->_clientPlayerIndicatorEndpoints = v18;
+    v13->_clientPlayerIndicatorEndpoints = strongToStrongObjectsMapTable2;
 
     v20 = [[GCDeviceBattery alloc] initWithLevel:-1 batteryState:0.0];
     battery = v13->_battery;
     v13->_battery = v20;
 
-    v22 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientBatteryEndpoints = v13->_clientBatteryEndpoints;
-    v13->_clientBatteryEndpoints = v22;
+    v13->_clientBatteryEndpoints = strongToStrongObjectsMapTable3;
 
     objc_initWeak(&location, v13);
     v39[0] = MEMORY[0x1E69E9820];
@@ -80,19 +80,19 @@
     hapticDriver = v13->_hapticDriver;
     v13->_hapticDriver = v28;
 
-    v30 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable4 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientSettingsEndpoints = v13->_clientSettingsEndpoints;
-    v13->_clientSettingsEndpoints = v30;
+    v13->_clientSettingsEndpoints = strongToStrongObjectsMapTable4;
 
     v32 = GCLookupService();
     settingsStore = v13->_settingsStore;
     v13->_settingsStore = v32;
 
-    v34 = [(GCSSettingsStoreService *)v13->_settingsStore profiles];
-    [v34 addObserver:v13 forKeyPath:@"values" options:5 context:0];
+    profiles = [(GCSSettingsStoreService *)v13->_settingsStore profiles];
+    [profiles addObserver:v13 forKeyPath:@"values" options:5 context:0];
 
-    v35 = [(GCSSettingsStoreService *)v13->_settingsStore games];
-    [v35 addObserver:v13 forKeyPath:@"values" options:5 context:0];
+    games = [(GCSSettingsStoreService *)v13->_settingsStore games];
+    [games addObserver:v13 forKeyPath:@"values" options:5 context:0];
 
     if (([(GCSSettingsStoreService *)v13->_settingsStore showGCPreferencesPane]& 1) == 0)
     {
@@ -119,11 +119,11 @@
   settingsStore = self->_settingsStore;
   if (settingsStore)
   {
-    v4 = [(GCSSettingsStoreService *)settingsStore profiles];
-    [v4 removeObserver:self forKeyPath:@"values" context:0];
+    profiles = [(GCSSettingsStoreService *)settingsStore profiles];
+    [profiles removeObserver:self forKeyPath:@"values" context:0];
 
-    v5 = [(GCSSettingsStoreService *)self->_settingsStore games];
-    [v5 removeObserver:self forKeyPath:@"values" context:0];
+    games = [(GCSSettingsStoreService *)self->_settingsStore games];
+    [games removeObserver:self forKeyPath:@"values" context:0];
   }
 
   v6.receiver = self;
@@ -131,12 +131,12 @@
   [(_GCNintendoFusedJoyConDevice *)&v6 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"values"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"values"])
   {
     [(_GCNintendoFusedJoyConDevice *)self settingsDidChange];
   }
@@ -145,20 +145,20 @@
   {
     v13.receiver = self;
     v13.super_class = _GCNintendoFusedJoyConDevice;
-    [(_GCNintendoFusedJoyConDevice *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(_GCNintendoFusedJoyConDevice *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  [(_GCNintendoFusedJoyConDevice *)self setIndicatedPlayerIndex:a4];
+  [(_GCNintendoFusedJoyConDevice *)self setIndicatedPlayerIndex:change];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -170,14 +170,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:a4];
+        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:change];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -209,17 +209,17 @@
   [(_GCNintendoJoyConDevice *)rightDevice setInputMode:48];
 }
 
-+ (id)identifierForFusedJoyConDeviceWithLeftDevice:(id)a3 rightDevice:(id)a4
++ (id)identifierForFusedJoyConDeviceWithLeftDevice:(id)device rightDevice:(id)rightDevice
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
+  rightDeviceCopy = rightDevice;
+  deviceCopy = device;
   v8 = [v5 alloc];
-  v9 = [v7 identifier];
+  identifier = [deviceCopy identifier];
 
-  v10 = [v6 identifier];
+  identifier2 = [rightDeviceCopy identifier];
 
-  v11 = [v8 initWithFormat:@"FUSED_JOYCONS(L: %@, R: %@)", v9, v10];
+  v11 = [v8 initWithFormat:@"FUSED_JOYCONS(L: %@, R: %@)", identifier, identifier2];
 
   return v11;
 }
@@ -231,27 +231,27 @@
   return WeakRetained;
 }
 
-- (void)_addClient:(id)a3
+- (void)_addClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clientCopy)
   {
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (!v6)
     {
-      objc_initWeak(&location, v5);
-      objc_initWeak(&from, v4);
+      objc_initWeak(&location, selfCopy);
+      objc_initWeak(&from, clientCopy);
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __51___GCNintendoFusedJoyConDevice_Client___addClient___block_invoke;
       v12 = &unk_1E8419D00;
       objc_copyWeak(&v13, &location);
       objc_copyWeak(&v14, &from);
-      v7 = [v4 addInvalidationHandler:&v9];
-      [(NSMapTable *)v5->_clients setObject:v7 forKey:v4, v9, v10, v11, v12];
+      v7 = [clientCopy addInvalidationHandler:&v9];
+      [(NSMapTable *)selfCopy->_clients setObject:v7 forKey:clientCopy, v9, v10, v11, v12];
       if (gc_isInternalBuild())
       {
         v8 = getGCLogger();
@@ -265,24 +265,24 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_removeClient:(id)a3
+- (void)_removeClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clientCopy)
   {
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (v6)
     {
-      [(NSMapTable *)v5->_clientPlayerIndicatorEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientBatteryEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientSettingsEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clients removeObjectForKey:v4];
+      [(NSMapTable *)selfCopy->_clientPlayerIndicatorEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientBatteryEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientSettingsEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clients removeObjectForKey:clientCopy];
       if (gc_isInternalBuild())
       {
         v7 = getGCLogger();
@@ -291,21 +291,21 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)makeControllerForClient:(id)a3
+- (id)makeControllerForClient:(id)client
 {
   v208[1] = *MEMORY[0x1E69E9840];
-  v180 = a3;
-  v181 = [MEMORY[0x1E695DF70] array];
+  clientCopy = client;
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [[GCProductInformation alloc] initWithIdentifier:@"ProductInfo"];
   [(GCProductInformation *)v3 setProductCategory:@"Nintendo Switch Joy-Con (L/R)"];
   [(GCProductInformation *)v3 setVendorName:@"Joy-Con (L/R)"];
   v4 = [[_GCControllerComponentDescription alloc] initWithComponent:v3 bindings:0];
-  [v181 addObject:v4];
+  [array addObject:v4];
 
-  v5 = [(_GCNintendoFusedJoyConDevice *)self gamepadEventSource];
+  gamepadEventSource = [(_GCNintendoFusedJoyConDevice *)self gamepadEventSource];
   v190 = 0u;
   v191 = 0u;
   v188 = 0u;
@@ -326,17 +326,17 @@
   BYTE9(v187) = 0;
   v7 = [(GCExtendedGamepad *)[_GCNintendoSwitchGamepad alloc] initWithIdentifier:@"PhysicalInput" info:v182];
   v8 = [_GCControllerComponentDescription alloc];
-  v208[0] = v5;
+  v208[0] = gamepadEventSource;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v208 count:1];
   v10 = [(_GCControllerComponentDescription *)v8 initWithComponent:v7 bindings:v9];
 
-  [v181 addObject:v10];
+  [array addObject:v10];
   for (j = 0; j != 1584; j += 72)
   {
     __destructor_8_s0_s48_s56_s64(v182 + j);
   }
 
-  v166 = [(_GCNintendoFusedJoyConDevice *)self gamepadEventSource];
+  gamepadEventSource2 = [(_GCNintendoFusedJoyConDevice *)self gamepadEventSource];
   v179 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.home"];
   v12 = [MEMORY[0x1E695DFD8] setWithObject:@"Button Home"];
   [v179 setAliases:v12];
@@ -474,54 +474,54 @@
   [v39 setEventPressedValueField:20];
   v42 = MEMORY[0x1E69A06B8];
   v43 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v44 = [v39 localizedName];
-  v45 = [v39 symbol];
-  v46 = [v42 sourceWithElementAliases:v43 localizedName:v44 symbol:v45 direction:10];
+  localizedName = [v39 localizedName];
+  symbol = [v39 symbol];
+  v46 = [v42 sourceWithElementAliases:v43 localizedName:localizedName symbol:symbol direction:10];
   v207 = v46;
   v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v207 count:1];
   [v39 setXSources:v47];
 
   v48 = MEMORY[0x1E69A06B8];
   v49 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v50 = [v39 localizedName];
-  v51 = [v39 symbol];
-  v52 = [v48 sourceWithElementAliases:v49 localizedName:v50 symbol:v51 direction:5];
+  localizedName2 = [v39 localizedName];
+  symbol2 = [v39 symbol];
+  v52 = [v48 sourceWithElementAliases:v49 localizedName:localizedName2 symbol:symbol2 direction:5];
   v206 = v52;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v206 count:1];
   [v39 setYSources:v53];
 
   v54 = MEMORY[0x1E69A06B8];
   v55 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v56 = [v39 localizedName];
-  v57 = [v39 symbol];
-  v58 = [v54 sourceWithElementAliases:v55 localizedName:v56 symbol:v57 direction:1];
+  localizedName3 = [v39 localizedName];
+  symbol3 = [v39 symbol];
+  v58 = [v54 sourceWithElementAliases:v55 localizedName:localizedName3 symbol:symbol3 direction:1];
   v205 = v58;
   v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v205 count:1];
   [v39 setUpSources:v59];
 
   v60 = MEMORY[0x1E69A06B8];
   v61 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v62 = [v39 localizedName];
-  v63 = [v39 symbol];
-  v64 = [v60 sourceWithElementAliases:v61 localizedName:v62 symbol:v63 direction:2];
+  localizedName4 = [v39 localizedName];
+  symbol4 = [v39 symbol];
+  v64 = [v60 sourceWithElementAliases:v61 localizedName:localizedName4 symbol:symbol4 direction:2];
   v204 = v64;
   v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v204 count:1];
   [v39 setRightSources:v65];
 
   v66 = MEMORY[0x1E69A06B8];
   v67 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v68 = [v39 localizedName];
-  v69 = [v39 symbol];
-  v70 = [v66 sourceWithElementAliases:v67 localizedName:v68 symbol:v69 direction:4];
+  localizedName5 = [v39 localizedName];
+  symbol5 = [v39 symbol];
+  v70 = [v66 sourceWithElementAliases:v67 localizedName:localizedName5 symbol:symbol5 direction:4];
   v203 = v70;
   v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v203 count:1];
   [v39 setDownSources:v71];
 
   v72 = MEMORY[0x1E69A06B8];
   v73 = [MEMORY[0x1E695DFD8] setWithObject:@"Left Thumbstick"];
-  v74 = [v39 localizedName];
-  v75 = [v39 symbol];
-  v76 = [v72 sourceWithElementAliases:v73 localizedName:v74 symbol:v75 direction:8];
+  localizedName6 = [v39 localizedName];
+  symbol6 = [v39 symbol];
+  v76 = [v72 sourceWithElementAliases:v73 localizedName:localizedName6 symbol:symbol6 direction:8];
   v202 = v76;
   v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v202 count:1];
   [v39 setLeftSources:v77];
@@ -550,54 +550,54 @@
   [v83 setEventPressedValueField:21];
   v86 = MEMORY[0x1E69A06B8];
   v87 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v88 = [v83 localizedName];
-  v89 = [v83 symbol];
-  v90 = [v86 sourceWithElementAliases:v87 localizedName:v88 symbol:v89 direction:10];
+  localizedName7 = [v83 localizedName];
+  symbol7 = [v83 symbol];
+  v90 = [v86 sourceWithElementAliases:v87 localizedName:localizedName7 symbol:symbol7 direction:10];
   v200 = v90;
   v91 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v200 count:1];
   [v83 setXSources:v91];
 
   v92 = MEMORY[0x1E69A06B8];
   v93 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v94 = [v83 localizedName];
-  v95 = [v83 symbol];
-  v96 = [v92 sourceWithElementAliases:v93 localizedName:v94 symbol:v95 direction:5];
+  localizedName8 = [v83 localizedName];
+  symbol8 = [v83 symbol];
+  v96 = [v92 sourceWithElementAliases:v93 localizedName:localizedName8 symbol:symbol8 direction:5];
   v199 = v96;
   v97 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v199 count:1];
   [v83 setYSources:v97];
 
   v98 = MEMORY[0x1E69A06B8];
   v99 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v100 = [v83 localizedName];
-  v101 = [v83 symbol];
-  v102 = [v98 sourceWithElementAliases:v99 localizedName:v100 symbol:v101 direction:1];
+  localizedName9 = [v83 localizedName];
+  symbol9 = [v83 symbol];
+  v102 = [v98 sourceWithElementAliases:v99 localizedName:localizedName9 symbol:symbol9 direction:1];
   v198 = v102;
   v103 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v198 count:1];
   [v83 setUpSources:v103];
 
   v104 = MEMORY[0x1E69A06B8];
   v105 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v106 = [v83 localizedName];
-  v107 = [v83 symbol];
-  v108 = [v104 sourceWithElementAliases:v105 localizedName:v106 symbol:v107 direction:2];
+  localizedName10 = [v83 localizedName];
+  symbol10 = [v83 symbol];
+  v108 = [v104 sourceWithElementAliases:v105 localizedName:localizedName10 symbol:symbol10 direction:2];
   v197 = v108;
   v109 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v197 count:1];
   [v83 setRightSources:v109];
 
   v110 = MEMORY[0x1E69A06B8];
   v111 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v112 = [v83 localizedName];
-  v113 = [v83 symbol];
-  v114 = [v110 sourceWithElementAliases:v111 localizedName:v112 symbol:v113 direction:4];
+  localizedName11 = [v83 localizedName];
+  symbol11 = [v83 symbol];
+  v114 = [v110 sourceWithElementAliases:v111 localizedName:localizedName11 symbol:symbol11 direction:4];
   v196 = v114;
   v115 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v196 count:1];
   [v83 setDownSources:v115];
 
   v116 = MEMORY[0x1E69A06B8];
   v117 = [MEMORY[0x1E695DFD8] setWithObject:@"Right Thumbstick"];
-  v118 = [v83 localizedName];
-  v119 = [v83 symbol];
-  v120 = [v116 sourceWithElementAliases:v117 localizedName:v118 symbol:v119 direction:8];
+  localizedName12 = [v83 localizedName];
+  symbol12 = [v83 symbol];
+  v120 = [v116 sourceWithElementAliases:v117 localizedName:localizedName12 symbol:symbol12 direction:8];
   v195 = v120;
   v121 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v195 count:1];
   [v83 setLeftSources:v121];
@@ -630,86 +630,86 @@
   [v127 setElements:v128];
 
   v129 = [_GCControllerInputComponentDescription alloc];
-  v192 = v166;
+  v192 = gamepadEventSource2;
   v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v192 count:1];
   v131 = [(_GCControllerInputComponentDescription *)v129 initWithIdentifier:@"Input" controllerInputs:v127 bindings:v130];
 
-  [v181 addObject:v131];
-  v132 = self;
-  objc_sync_enter(v132);
-  v133 = [(NSMapTable *)v132->_clientPlayerIndicatorEndpoints objectForKey:v180];
+  [array addObject:v131];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v133 = [(NSMapTable *)selfCopy->_clientPlayerIndicatorEndpoints objectForKey:clientCopy];
   if (!v133)
   {
     v134 = [GCPlayerIndicatorXPCProxyServerEndpoint alloc];
-    v135 = [MEMORY[0x1E696AFB0] UUID];
-    v133 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v134 initWithIdentifier:v135 initialValue:v132->_indicatedPlayerIndex];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v133 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v134 initWithIdentifier:uUID initialValue:selfCopy->_indicatedPlayerIndex];
 
-    [(GCPlayerIndicatorXPCProxyServerEndpoint *)v133 setDelegate:v132];
-    [(NSMapTable *)v132->_clientPlayerIndicatorEndpoints setObject:v133 forKey:v180];
-    v136 = [v180 IPCObjectRegistry];
-    [v136 registerIPCObject:v133];
+    [(GCPlayerIndicatorXPCProxyServerEndpoint *)v133 setDelegate:selfCopy];
+    [(NSMapTable *)selfCopy->_clientPlayerIndicatorEndpoints setObject:v133 forKey:clientCopy];
+    iPCObjectRegistry = [clientCopy IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v133];
   }
 
-  v137 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v133 receiverDescription];
-  [v181 addObject:v137];
+  receiverDescription = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v133 receiverDescription];
+  [array addObject:receiverDescription];
 
-  objc_sync_exit(v132);
-  v138 = v132;
+  objc_sync_exit(selfCopy);
+  v138 = selfCopy;
   objc_sync_enter(v138);
-  v139 = [(NSMapTable *)v138->_clientBatteryEndpoints objectForKey:v180];
+  v139 = [(NSMapTable *)v138->_clientBatteryEndpoints objectForKey:clientCopy];
   if (!v139)
   {
     v140 = [GCBatteryXPCProxyServerEndpoint alloc];
-    v141 = [MEMORY[0x1E696AFB0] UUID];
-    v139 = [(GCBatteryXPCProxyServerEndpoint *)v140 initWithIdentifier:v141 initialValue:v138->_battery];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    v139 = [(GCBatteryXPCProxyServerEndpoint *)v140 initWithIdentifier:uUID2 initialValue:v138->_battery];
 
     [(GCBatteryXPCProxyServerEndpoint *)v139 setDelegate:v138];
-    [(NSMapTable *)v138->_clientBatteryEndpoints setObject:v139 forKey:v180];
-    v142 = [v180 IPCObjectRegistry];
-    [v142 registerIPCObject:v139];
+    [(NSMapTable *)v138->_clientBatteryEndpoints setObject:v139 forKey:clientCopy];
+    iPCObjectRegistry2 = [clientCopy IPCObjectRegistry];
+    [iPCObjectRegistry2 registerIPCObject:v139];
   }
 
-  v143 = [(GCBatteryXPCProxyServerEndpoint *)v139 receiverDescription];
-  [v181 addObject:v143];
+  receiverDescription2 = [(GCBatteryXPCProxyServerEndpoint *)v139 receiverDescription];
+  [array addObject:receiverDescription2];
 
   objc_sync_exit(v138);
   v144 = [GCHapticCapabilities alloc];
-  v145 = [(_GCNintendoJoyConDevice *)v138->_leftDevice hapticEngines];
-  v146 = [(_GCNintendoJoyConDevice *)v138->_rightDevice hapticEngines];
-  v147 = [v145 arrayByAddingObjectsFromArray:v146];
+  hapticEngines = [(_GCNintendoJoyConDevice *)v138->_leftDevice hapticEngines];
+  hapticEngines2 = [(_GCNintendoJoyConDevice *)v138->_rightDevice hapticEngines];
+  v147 = [hapticEngines arrayByAddingObjectsFromArray:hapticEngines2];
   v148 = [(GCHapticCapabilities *)v144 initWithIdentifier:@"HapticCapabilities" hapticEnginesInfo:v147 hapticCapabilityGraph:v138->_hapticCapabilityGraph];
 
   v149 = [[_GCControllerComponentDescription alloc] initWithComponent:v148 bindings:0];
-  [v181 addObject:v149];
+  [array addObject:v149];
 
   v150 = v138;
   objc_sync_enter(v150);
-  v151 = [v150[7] objectForKey:v180];
+  v151 = [v150[7] objectForKey:clientCopy];
   if (!v151)
   {
     v152 = v150[6];
-    v153 = [v150 persistentIdentifierForSettings];
-    v154 = [v180 bundleIdentifier];
-    v155 = [v152 profileForPersistentControllerIdentifier:v153 appBundleIdentifier:v154];
-    v156 = [v155 anonymizedCopy];
+    persistentIdentifierForSettings = [v150 persistentIdentifierForSettings];
+    bundleIdentifier = [clientCopy bundleIdentifier];
+    v155 = [v152 profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:bundleIdentifier];
+    anonymizedCopy = [v155 anonymizedCopy];
 
     v157 = [GCSettingsXPCProxyServerEndpoint alloc];
-    v158 = [MEMORY[0x1E696AFB0] UUID];
-    v151 = [(GCSettingsXPCProxyServerEndpoint *)v157 initWithIdentifier:v158 initialValueForProfile:v156];
+    uUID3 = [MEMORY[0x1E696AFB0] UUID];
+    v151 = [(GCSettingsXPCProxyServerEndpoint *)v157 initWithIdentifier:uUID3 initialValueForProfile:anonymizedCopy];
 
     [(GCSettingsXPCProxyServerEndpoint *)v151 setDelegate:v150];
-    [v150[7] setObject:v151 forKey:v180];
-    v159 = [v180 IPCObjectRegistry];
-    [v159 registerIPCObject:v151];
+    [v150[7] setObject:v151 forKey:clientCopy];
+    iPCObjectRegistry3 = [clientCopy IPCObjectRegistry];
+    [iPCObjectRegistry3 registerIPCObject:v151];
   }
 
-  v160 = [(GCSettingsXPCProxyServerEndpoint *)v151 receiverDescription];
-  [v181 addObject:v160];
+  receiverDescription3 = [(GCSettingsXPCProxyServerEndpoint *)v151 receiverDescription];
+  [array addObject:receiverDescription3];
 
   objc_sync_exit(v150);
   v161 = [_GCControllerDescription alloc];
-  v162 = [v150 identifier];
-  v163 = [(_GCControllerDescription *)v161 initWithIdentifier:v162 components:v181];
+  identifier = [v150 identifier];
+  v163 = [(_GCControllerDescription *)v161 initWithIdentifier:identifier components:array];
 
   v164 = *MEMORY[0x1E69E9840];
 
@@ -719,8 +719,8 @@
 - (_GCGamepadEventSourceDescription)gamepadEventSource
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_GCNintendoJoyConDevice *)self->_leftDevice gamepadEventSource];
-  v4 = [(_GCNintendoJoyConDevice *)self->_rightDevice gamepadEventSource];
+  gamepadEventSource = [(_GCNintendoJoyConDevice *)self->_leftDevice gamepadEventSource];
+  gamepadEventSource2 = [(_GCNintendoJoyConDevice *)self->_rightDevice gamepadEventSource];
   v5 = [[_GCGamepadEventFusionConfig alloc] initWithSourceCount:2];
   [(_GCGamepadEventFusionConfig *)v5 setPassRule:1 forElement:0 forSourceAtIndex:0];
   [(_GCGamepadEventFusionConfig *)v5 setPassRule:1 forElement:1 forSourceAtIndex:0];
@@ -748,8 +748,8 @@
   [(_GCGamepadEventFusionConfig *)v5 setPassRule:1 forElement:22 forSourceAtIndex:1];
   [(_GCGamepadEventFusionConfig *)v5 setPassRule:1 forElement:23 forSourceAtIndex:1];
   v6 = [_GCGamepadEventFusionDescription alloc];
-  v11[0] = v3;
-  v11[1] = v4;
+  v11[0] = gamepadEventSource;
+  v11[1] = gamepadEventSource2;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [(_GCGamepadEventFusionDescription *)v6 initWithConfiguration:v5 sources:v7];
 
@@ -758,40 +758,40 @@
   return v8;
 }
 
-- (void)setIndicatedPlayerIndex:(int64_t)a3
+- (void)setIndicatedPlayerIndex:(int64_t)index
 {
   [(_GCNintendoJoyConDevice *)self->_leftDevice setIndicatedPlayerIndex:?];
   rightDevice = self->_rightDevice;
 
-  [(_GCNintendoJoyConDevice *)rightDevice setIndicatedPlayerIndex:a3];
+  [(_GCNintendoJoyConDevice *)rightDevice setIndicatedPlayerIndex:index];
 }
 
 - (void)_refreshBattery
 {
-  v10 = [(_GCNintendoJoyConDevice *)self->_leftDevice battery];
-  v3 = [(_GCNintendoJoyConDevice *)self->_rightDevice battery];
+  battery = [(_GCNintendoJoyConDevice *)self->_leftDevice battery];
+  battery2 = [(_GCNintendoJoyConDevice *)self->_rightDevice battery];
   battery = self->_battery;
-  [v10 batteryLevel];
+  [battery batteryLevel];
   v6 = v5;
-  [v3 batteryLevel];
+  [battery2 batteryLevel];
   if (v6 < *&v7)
   {
     *&v7 = v6;
   }
 
   [(GCDeviceBattery *)battery _setBatteryLevel:v7];
-  v8 = [v10 batteryState];
-  if (v8 == [v3 batteryState])
+  batteryState = [battery batteryState];
+  if (batteryState == [battery2 batteryState])
   {
-    v9 = [v10 batteryState];
+    batteryState2 = [battery batteryState];
   }
 
   else
   {
-    v9 = -1;
+    batteryState2 = -1;
   }
 
-  [(GCDeviceBattery *)self->_battery _setBatteryState:v9];
+  [(GCDeviceBattery *)self->_battery _setBatteryState:batteryState2];
 }
 
 - (void)_propagateBattery
@@ -801,8 +801,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMapTable *)self->_clientBatteryEndpoints objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clientBatteryEndpoints objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -814,14 +814,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) setBattery:self->_battery];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -848,14 +848,14 @@
     _os_log_impl(&dword_1D2CD5000, v3, OS_LOG_TYPE_INFO, "settingsDidChange", buf, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(NSMapTable *)v4->_clientSettingsEndpoints keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  keyEnumerator = [(NSMapTable *)selfCopy->_clientSettingsEndpoints keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {
     v7 = *v18;
@@ -865,47 +865,47 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [(NSMapTable *)v4->_clientSettingsEndpoints objectForKey:v9];
-        settingsStore = v4->_settingsStore;
-        v12 = [(_GCNintendoFusedJoyConDevice *)v4 persistentIdentifierForSettings];
-        v13 = [v9 bundleIdentifier];
-        v14 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:v12 appBundleIdentifier:v13];
-        v15 = [v14 anonymizedCopy];
+        v10 = [(NSMapTable *)selfCopy->_clientSettingsEndpoints objectForKey:v9];
+        settingsStore = selfCopy->_settingsStore;
+        persistentIdentifierForSettings = [(_GCNintendoFusedJoyConDevice *)selfCopy persistentIdentifierForSettings];
+        bundleIdentifier = [v9 bundleIdentifier];
+        v14 = [(GCSSettingsStoreService *)settingsStore profileForPersistentControllerIdentifier:persistentIdentifierForSettings appBundleIdentifier:bundleIdentifier];
+        anonymizedCopy = [v14 anonymizedCopy];
 
-        [v10 setSettingsProfile:v15];
+        [v10 setSettingsProfile:anonymizedCopy];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v6 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (id)persistentIdentifierForSettings
 {
-  v3 = [(_GCNintendoFusedJoyConDevice *)self identifier];
+  identifier = [(_GCNintendoFusedJoyConDevice *)self identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(_GCNintendoFusedJoyConDevice *)self identifier];
+    identifier2 = [(_GCNintendoFusedJoyConDevice *)self identifier];
   }
 
   else
   {
-    v5 = &stru_1F4E3B4E0;
+    identifier2 = &stru_1F4E3B4E0;
   }
 
-  return v5;
+  return identifier2;
 }
 
 @end

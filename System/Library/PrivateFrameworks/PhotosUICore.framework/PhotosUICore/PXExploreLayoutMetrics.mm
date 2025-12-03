@@ -1,11 +1,11 @@
 @interface PXExploreLayoutMetrics
 - (NSString)diagnosticDescription;
-- (PXExploreLayoutMetrics)initWithExtendedTraitCollection:(id)a3;
-- (PXExploreLayoutMetrics)initWithSpec:(id)a3;
-- (PXExploreLayoutMetrics)initWithUserInterfaceIdiom:(int64_t)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 referenceSize:(CGSize)a6 safeAreaInsets:(UIEdgeInsets)a7;
+- (PXExploreLayoutMetrics)initWithExtendedTraitCollection:(id)collection;
+- (PXExploreLayoutMetrics)initWithSpec:(id)spec;
+- (PXExploreLayoutMetrics)initWithUserInterfaceIdiom:(int64_t)idiom sizeClass:(int64_t)class orientation:(int64_t)orientation referenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)padding;
 - (UIEdgeInsets)safeAreaInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXExploreLayoutMetrics
@@ -41,23 +41,23 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v12.receiver = self;
   v12.super_class = PXExploreLayoutMetrics;
-  v4 = [(PXLayoutMetrics *)&v12 diagnosticDescription];
-  v5 = [(PXExploreLayoutMetrics *)self layoutType];
-  v6 = [(PXExploreLayoutMetrics *)self layoutSubtype];
-  v7 = [(PXExploreLayoutMetrics *)self reorderingTolerance];
+  diagnosticDescription = [(PXLayoutMetrics *)&v12 diagnosticDescription];
+  layoutType = [(PXExploreLayoutMetrics *)self layoutType];
+  layoutSubtype = [(PXExploreLayoutMetrics *)self layoutSubtype];
+  reorderingTolerance = [(PXExploreLayoutMetrics *)self reorderingTolerance];
   [(PXExploreLayoutMetrics *)self safeAreaInsets];
   v8 = NSStringFromUIEdgeInsets(v14);
   [(PXExploreLayoutMetrics *)self interitemSpacing];
-  v10 = [v3 initWithFormat:@"%@ type=%li subtype=%li reorderTol=%li safeAreaInsets=%@ interitemSpacing=%f largeHeroDensity=%li allowHeaders=%i allowSpecialPanoHeaders=%i", v4, v5, v6, v7, v8, v9, -[PXExploreLayoutMetrics largeHeroDensity](self, "largeHeroDensity"), -[PXExploreLayoutMetrics allowHeaders](self, "allowHeaders"), -[PXExploreLayoutMetrics allowSpecialPanoHeaders](self, "allowSpecialPanoHeaders")];
+  v10 = [v3 initWithFormat:@"%@ type=%li subtype=%li reorderTol=%li safeAreaInsets=%@ interitemSpacing=%f largeHeroDensity=%li allowHeaders=%i allowSpecialPanoHeaders=%i", diagnosticDescription, layoutType, layoutSubtype, reorderingTolerance, v8, v9, -[PXExploreLayoutMetrics largeHeroDensity](self, "largeHeroDensity"), -[PXExploreLayoutMetrics allowHeaders](self, "allowHeaders"), -[PXExploreLayoutMetrics allowSpecialPanoHeaders](self, "allowSpecialPanoHeaders")];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = PXExploreLayoutMetrics;
-  v4 = [(PXLayoutMetrics *)&v11 copyWithZone:a3];
+  v4 = [(PXLayoutMetrics *)&v11 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -85,89 +85,89 @@
   return v5;
 }
 
-- (PXExploreLayoutMetrics)initWithSpec:(id)a3
+- (PXExploreLayoutMetrics)initWithSpec:(id)spec
 {
-  v4 = a3;
-  if ([v4 userInterfaceIdiom] == 2)
+  specCopy = spec;
+  if ([specCopy userInterfaceIdiom] == 2)
   {
-    v5 = [v4 windowOrientation];
+    windowOrientation = [specCopy windowOrientation];
   }
 
   else
   {
-    v5 = [v4 layoutOrientation];
+    windowOrientation = [specCopy layoutOrientation];
   }
 
-  v6 = v5;
-  v7 = [v4 userInterfaceIdiom];
-  v8 = [v4 sizeClass];
-  [v4 layoutReferenceSize];
+  v6 = windowOrientation;
+  userInterfaceIdiom = [specCopy userInterfaceIdiom];
+  sizeClass = [specCopy sizeClass];
+  [specCopy layoutReferenceSize];
   v10 = v9;
   v12 = v11;
-  [v4 safeAreaInsets];
-  v17 = [(PXExploreLayoutMetrics *)self initWithUserInterfaceIdiom:v7 sizeClass:v8 orientation:v6 referenceSize:v10 safeAreaInsets:v12, v13, v14, v15, v16];
+  [specCopy safeAreaInsets];
+  v17 = [(PXExploreLayoutMetrics *)self initWithUserInterfaceIdiom:userInterfaceIdiom sizeClass:sizeClass orientation:v6 referenceSize:v10 safeAreaInsets:v12, v13, v14, v15, v16];
 
   return v17;
 }
 
-- (PXExploreLayoutMetrics)initWithExtendedTraitCollection:(id)a3
+- (PXExploreLayoutMetrics)initWithExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 userInterfaceIdiom] == 2)
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceIdiom] == 2)
   {
-    v5 = [v4 windowOrientation];
+    windowOrientation = [collectionCopy windowOrientation];
   }
 
   else
   {
-    v5 = [v4 layoutOrientation];
+    windowOrientation = [collectionCopy layoutOrientation];
   }
 
-  v6 = v5;
-  v7 = [v4 userInterfaceIdiom];
-  v8 = [v4 layoutSizeClass];
-  [v4 layoutReferenceSize];
+  v6 = windowOrientation;
+  userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+  layoutSizeClass = [collectionCopy layoutSizeClass];
+  [collectionCopy layoutReferenceSize];
   v10 = v9;
   v12 = v11;
-  [v4 safeAreaInsets];
-  v17 = [(PXExploreLayoutMetrics *)self initWithUserInterfaceIdiom:v7 sizeClass:v8 orientation:v6 referenceSize:v10 safeAreaInsets:v12, v13, v14, v15, v16];
+  [collectionCopy safeAreaInsets];
+  v17 = [(PXExploreLayoutMetrics *)self initWithUserInterfaceIdiom:userInterfaceIdiom sizeClass:layoutSizeClass orientation:v6 referenceSize:v10 safeAreaInsets:v12, v13, v14, v15, v16];
 
   return v17;
 }
 
-- (PXExploreLayoutMetrics)initWithUserInterfaceIdiom:(int64_t)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 referenceSize:(CGSize)a6 safeAreaInsets:(UIEdgeInsets)a7
+- (PXExploreLayoutMetrics)initWithUserInterfaceIdiom:(int64_t)idiom sizeClass:(int64_t)class orientation:(int64_t)orientation referenceSize:(CGSize)size safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v24.receiver = self;
   v24.super_class = PXExploreLayoutMetrics;
-  v14 = [(PXExploreLayoutMetrics *)&v24 init:a6.width];
+  v14 = [(PXExploreLayoutMetrics *)&v24 init:size.width];
   v15 = v14;
   if (v14)
   {
-    if (a3 == 4)
+    if (idiom == 4)
     {
       v16 = 5;
     }
 
-    else if (a3 == 5)
+    else if (idiom == 5)
     {
       v16 = 6;
     }
 
-    else if (a4)
+    else if (class)
     {
-      if (a4 == 2)
+      if (class == 2)
       {
-        v17 = a5 >= 2;
+        v17 = orientation >= 2;
         v16 = 3;
       }
 
       else
       {
-        if (a4 != 1)
+        if (class != 1)
         {
 LABEL_16:
           v14->_layoutSubtype = 0;
@@ -180,9 +180,9 @@ LABEL_16:
           [v18 interitemSpacingForDays];
           v15->_interitemSpacing = v19;
           v15->_largeHeroDensity = [v18 largeHeroDensity];
-          v20 = [v18 acceptableLargeHeroPredicate];
+          acceptableLargeHeroPredicate = [v18 acceptableLargeHeroPredicate];
           acceptableLargeHeroPredicate = v15->_acceptableLargeHeroPredicate;
-          v15->_acceptableLargeHeroPredicate = v20;
+          v15->_acceptableLargeHeroPredicate = acceptableLargeHeroPredicate;
 
           [v18 allowSpecialPanoHeaders];
           v15->_allowSpecialPanoHeaders = v22 != 0.0;
@@ -193,7 +193,7 @@ LABEL_16:
           return v15;
         }
 
-        v17 = a5 >= 2;
+        v17 = orientation >= 2;
         v16 = 1;
       }
 

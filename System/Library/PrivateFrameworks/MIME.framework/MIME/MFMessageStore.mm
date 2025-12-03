@@ -1,21 +1,21 @@
 @interface MFMessageStore
 + (Class)headersClass;
 + (id)log;
-- (BOOL)hasCompleteDataForMimePart:(id)a3;
+- (BOOL)hasCompleteDataForMimePart:(id)part;
 - (MFMessageStore)init;
-- (id)_cachedBodyDataContainerForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedBodyDataForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedBodyForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedHeaderDataForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_cachedHeadersForMessage:(id)a3 valueIfNotPresent:(id)a4;
-- (id)_downloadHeadersForMessages:(id)a3;
-- (id)_fetchBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 partial:(BOOL *)a6;
-- (id)bestAlternativeForPart:(id)a3;
-- (id)decryptedTopLevelPartForPart:(id)a3;
-- (id)defaultAlternativeForPart:(id)a3;
-- (id)fullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6 didDownload:(BOOL *)a7;
+- (id)_cachedBodyDataContainerForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedBodyDataForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedBodyForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedHeaderDataForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_cachedHeadersForMessage:(id)message valueIfNotPresent:(id)present;
+- (id)_downloadHeadersForMessages:(id)messages;
+- (id)_fetchBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary partial:(BOOL *)partial;
+- (id)bestAlternativeForPart:(id)part;
+- (id)decryptedTopLevelPartForPart:(id)part;
+- (id)defaultAlternativeForPart:(id)part;
+- (id)fullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download;
 - (id)newObjectCache;
-- (id)uniquedString:(id)a3;
+- (id)uniquedString:(id)string;
 @end
 
 @implementation MFMessageStore
@@ -28,9 +28,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MFMessageStore *)v2 newObjectCache];
+    newObjectCache = [(MFMessageStore *)v2 newObjectCache];
     objectCache = v3->_objectCache;
-    v3->_objectCache = v4;
+    v3->_objectCache = newObjectCache;
   }
 
   return v3;
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __21__MFMessageStore_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken != -1)
   {
     dispatch_once(&log_onceToken, block);
@@ -76,16 +76,16 @@ void __21__MFMessageStore_log__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)_downloadHeadersForMessages:(id)a3
+- (id)_downloadHeadersForMessages:(id)messages
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  messagesCopy = messages;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = messagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -103,7 +103,7 @@ void __21__MFMessageStore_log__block_invoke(uint64_t a1)
         v11 = [(MFMessageStore *)self headersForMessage:v10 fetchIfNotAvailable:1, v14];
         if (v11)
         {
-          [v5 setObject:v11 forKeyedSubscript:v10];
+          [dictionary setObject:v11 forKeyedSubscript:v10];
         }
       }
 
@@ -115,25 +115,25 @@ void __21__MFMessageStore_log__block_invoke(uint64_t a1)
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)fullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6 didDownload:(BOOL *)a7
+- (id)fullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download
 {
-  v8 = a6;
-  v9 = [(MFMessageStore *)self bodyDataForMessage:a3 isComplete:a5 isPartial:0 downloadIfNecessary:?];
+  necessaryCopy = necessary;
+  v9 = [(MFMessageStore *)self bodyDataForMessage:message isComplete:complete isPartial:0 downloadIfNecessary:?];
   v10 = v9;
-  if (a7 && v8 && [v9 length])
+  if (download && necessaryCopy && [v9 length])
   {
-    *a7 = 1;
+    *download = 1;
   }
 
   return v10;
 }
 
-- (id)uniquedString:(id)a3
+- (id)uniquedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   _MFLockGlobalLock();
   uniqueStrings = self->_uniqueStrings;
   if (uniqueStrings)
@@ -151,51 +151,51 @@ void __21__MFMessageStore_log__block_invoke(uint64_t a1)
     self->_uniqueStrings = v6;
   }
 
-  v8 = [(NSMutableSet *)self->_uniqueStrings ef_uniquedObject:v4];
+  v8 = [(NSMutableSet *)self->_uniqueStrings ef_uniquedObject:stringCopy];
   _MFUnlockGlobalLock();
 
   return v8;
 }
 
-- (id)decryptedTopLevelPartForPart:(id)a3
+- (id)decryptedTopLevelPartForPart:(id)part
 {
-  v3 = a3;
-  v4 = [v3 decryptedMessageBodyIsEncrypted:0 isSigned:0];
+  partCopy = part;
+  v4 = [partCopy decryptedMessageBodyIsEncrypted:0 isSigned:0];
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 topLevelPart];
+      topLevelPart = [v4 topLevelPart];
 
-      v3 = v5;
+      partCopy = topLevelPart;
     }
   }
 
+  return partCopy;
+}
+
+- (id)defaultAlternativeForPart:(id)part
+{
+  v3 = [(MFMessageStore *)self bestAlternativeForPart:part];
+
   return v3;
 }
 
-- (id)defaultAlternativeForPart:(id)a3
+- (id)bestAlternativeForPart:(id)part
 {
-  v3 = [(MFMessageStore *)self bestAlternativeForPart:a3];
+  partCopy = part;
+  v5 = [(MFMessageStore *)self decryptedTopLevelPartForPart:partCopy];
 
-  return v3;
-}
-
-- (id)bestAlternativeForPart:(id)a3
-{
-  v4 = a3;
-  v5 = [(MFMessageStore *)self decryptedTopLevelPartForPart:v4];
-
-  v6 = [v5 type];
-  if ([v6 isEqualToString:@"multipart"])
+  type = [v5 type];
+  if ([type isEqualToString:@"multipart"])
   {
-    v7 = [v5 subtype];
-    v8 = [v7 isEqualToString:@"alternative"];
+    subtype = [v5 subtype];
+    v8 = [subtype isEqualToString:@"alternative"];
 
     if (v8)
     {
-      v9 = [v5 chosenAlternativePart];
+      chosenAlternativePart = [v5 chosenAlternativePart];
       goto LABEL_6;
     }
   }
@@ -204,11 +204,11 @@ void __21__MFMessageStore_log__block_invoke(uint64_t a1)
   {
   }
 
-  v9 = 0;
+  chosenAlternativePart = 0;
 LABEL_6:
-  if (v9)
+  if (chosenAlternativePart)
   {
-    v10 = v9;
+    v10 = chosenAlternativePart;
   }
 
   else
@@ -228,20 +228,20 @@ LABEL_6:
   return v2;
 }
 
-- (id)_cachedHeaderDataForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedHeaderDataForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:a4 forMessage:a3 kind:2];
+  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:present forMessage:message kind:2];
 
   return v4;
 }
 
-- (id)_cachedBodyDataForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedBodyDataForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  messageCopy = message;
+  presentCopy = present;
+  if (presentCopy)
   {
-    v8 = [[MFMessageDataContainer alloc] initWithData:v7];
+    v8 = [[MFMessageDataContainer alloc] initWithData:presentCopy];
   }
 
   else
@@ -249,7 +249,7 @@ LABEL_6:
     v8 = 0;
   }
 
-  v9 = [(MFMessageStore *)self _cachedBodyDataContainerForMessage:v6 valueIfNotPresent:v8];
+  v9 = [(MFMessageStore *)self _cachedBodyDataContainerForMessage:messageCopy valueIfNotPresent:v8];
   v10 = v9;
   if (v9)
   {
@@ -266,46 +266,46 @@ LABEL_6:
   return v11;
 }
 
-- (id)_cachedBodyForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedBodyForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v6 = a3;
-  v7 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:a4 forMessage:v6 kind:1];
-  [v7 setMessage:v6];
+  messageCopy = message;
+  v7 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:present forMessage:messageCopy kind:1];
+  [v7 setMessage:messageCopy];
 
   return v7;
 }
 
-- (id)_cachedHeadersForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedHeadersForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:a4 forMessage:a3 kind:0];
+  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:present forMessage:message kind:0];
 
   return v4;
 }
 
-- (id)_cachedBodyDataContainerForMessage:(id)a3 valueIfNotPresent:(id)a4
+- (id)_cachedBodyDataContainerForMessage:(id)message valueIfNotPresent:(id)present
 {
-  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:a4 forMessage:a3 kind:3];
+  v4 = [(MFMessageStoreObjectCache *)self->_objectCache addObject:present forMessage:message kind:3];
 
   return v4;
 }
 
-- (id)_fetchBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 partial:(BOOL *)a6
+- (id)_fetchBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary partial:(BOOL *)partial
 {
-  v8 = a3;
+  messageCopy = message;
   [(MFMessageStore *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFMessageStore _fetchBodyDataForMessage:andHeaderDataIfReadilyAvailable:downloadIfNecessary:partial:]", "MessageStore.m", 284, "0");
 }
 
-- (BOOL)hasCompleteDataForMimePart:(id)a3
+- (BOOL)hasCompleteDataForMimePart:(id)part
 {
-  v4 = a3;
-  v5 = [v4 mimeBody];
-  v6 = [v5 message];
+  partCopy = part;
+  mimeBody = [partCopy mimeBody];
+  message = [mimeBody message];
 
-  v7 = [(MFMessageStore *)self _cachedBodyDataForMessage:v6 valueIfNotPresent:0];
+  v7 = [(MFMessageStore *)self _cachedBodyDataForMessage:message valueIfNotPresent:0];
   v8 = [v7 length];
-  v9 = [v4 range];
-  LOBYTE(v8) = v8 >= v9 + v10;
+  range = [partCopy range];
+  LOBYTE(v8) = v8 >= range + v10;
 
   return v8;
 }

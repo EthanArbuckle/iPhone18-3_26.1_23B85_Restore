@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheGroup
-- (HMDBackingStoreCacheGroup)initWithGroupID:(int64_t)a3 zone:(id)a4 rootRecord:(id)a5 serverChangeToken:(id)a6 subscriptionName:(id)a7 owner:(id)a8 subscription:(id)a9;
+- (HMDBackingStoreCacheGroup)initWithGroupID:(int64_t)d zone:(id)zone rootRecord:(id)record serverChangeToken:(id)token subscriptionName:(id)name owner:(id)owner subscription:(id)subscription;
 - (HMDBackingStoreCacheZone)zone;
 - (id)dumpDebug;
 @end
@@ -15,50 +15,50 @@
 
 - (id)dumpDebug
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"zone_group: %lu (%p)\n", -[HMDBackingStoreCacheGroup groupID](self, "groupID"), self];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"zone_group: %lu (%p)\n", -[HMDBackingStoreCacheGroup groupID](self, "groupID"), self];
   v4 = [(HMDBackingStoreCacheGroup *)self zone];
-  [v3 appendFormat:@"  zone: %p\n", v4];
+  [string appendFormat:@"  zone: %p\n", v4];
 
-  v5 = [(HMDBackingStoreCacheGroup *)self rootRecordName];
-  [v3 appendFormat:@"  root: %@\n", v5];
+  rootRecordName = [(HMDBackingStoreCacheGroup *)self rootRecordName];
+  [string appendFormat:@"  root: %@\n", rootRecordName];
 
-  v6 = [(HMDBackingStoreCacheGroup *)self owner];
-  [v3 appendFormat:@"  owner: %@\n", v6];
+  owner = [(HMDBackingStoreCacheGroup *)self owner];
+  [string appendFormat:@"  owner: %@\n", owner];
 
-  v7 = [(HMDBackingStoreCacheGroup *)self subscriptionName];
-  [v3 appendFormat:@"  subs: %@\n", v7];
+  subscriptionName = [(HMDBackingStoreCacheGroup *)self subscriptionName];
+  [string appendFormat:@"  subs: %@\n", subscriptionName];
 
-  v8 = [(HMDBackingStoreCacheGroup *)self serverChangeToken];
-  [v3 appendFormat:@"  token: %@\n", v8];
+  serverChangeToken = [(HMDBackingStoreCacheGroup *)self serverChangeToken];
+  [string appendFormat:@"  token: %@\n", serverChangeToken];
 
-  v9 = [(HMDBackingStoreCacheGroup *)self subscription];
-  [v3 appendFormat:@"  subscription: %@\n", v9];
+  subscription = [(HMDBackingStoreCacheGroup *)self subscription];
+  [string appendFormat:@"  subscription: %@\n", subscription];
 
-  return v3;
+  return string;
 }
 
-- (HMDBackingStoreCacheGroup)initWithGroupID:(int64_t)a3 zone:(id)a4 rootRecord:(id)a5 serverChangeToken:(id)a6 subscriptionName:(id)a7 owner:(id)a8 subscription:(id)a9
+- (HMDBackingStoreCacheGroup)initWithGroupID:(int64_t)d zone:(id)zone rootRecord:(id)record serverChangeToken:(id)token subscriptionName:(id)name owner:(id)owner subscription:(id)subscription
 {
-  v15 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v16 = a8;
-  v17 = a9;
+  zoneCopy = zone;
+  recordCopy = record;
+  tokenCopy = token;
+  nameCopy = name;
+  ownerCopy = owner;
+  subscriptionCopy = subscription;
   v25.receiver = self;
   v25.super_class = HMDBackingStoreCacheGroup;
   v18 = [(HMDBackingStoreCacheGroup *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_groupID = a3;
-    objc_storeWeak(&v18->_zone, v15);
-    objc_storeStrong(&v19->_rootRecordName, a5);
-    objc_storeStrong(&v19->_serverChangeToken, a6);
-    objc_storeStrong(&v19->_subscriptionName, a7);
-    objc_storeStrong(&v19->_owner, a8);
-    objc_storeStrong(&v19->_subscription, a9);
+    v18->_groupID = d;
+    objc_storeWeak(&v18->_zone, zoneCopy);
+    objc_storeStrong(&v19->_rootRecordName, record);
+    objc_storeStrong(&v19->_serverChangeToken, token);
+    objc_storeStrong(&v19->_subscriptionName, name);
+    objc_storeStrong(&v19->_owner, owner);
+    objc_storeStrong(&v19->_subscription, subscription);
     v20 = v19;
   }
 

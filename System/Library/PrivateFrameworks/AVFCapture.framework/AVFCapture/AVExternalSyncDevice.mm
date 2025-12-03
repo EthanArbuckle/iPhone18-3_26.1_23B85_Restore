@@ -1,41 +1,41 @@
 @interface AVExternalSyncDevice
 + (void)initialize;
-- (id)_initWithIdentifier:(id)a3 pid:(unsigned int)a4 vid:(unsigned int)a5;
+- (id)_initWithIdentifier:(id)identifier pid:(unsigned int)pid vid:(unsigned int)vid;
 - (int64_t)status;
 - (void)_handleSourceDiedEvent;
-- (void)_handleUSBConnectionStateChange:(BOOL)a3;
+- (void)_handleUSBConnectionStateChange:(BOOL)change;
 - (void)_handleUnfollow;
-- (void)_notifyDelegateOfError:(int)a3;
-- (void)_setClock:(OpaqueCMClock *)a3;
-- (void)_setDelegate:(id)a3;
+- (void)_notifyDelegateOfError:(int)error;
+- (void)_setClock:(OpaqueCMClock *)clock;
+- (void)_setDelegate:(id)delegate;
 - (void)_setupStateMachine;
 - (void)applyActiveExternalSyncVideoFrameDuration;
 - (void)dealloc;
-- (void)handleClockReceived:(OpaqueCMClock *)a3;
-- (void)handleClockSetupFailedWithError:(int)a3;
-- (void)handleFollowForDevice:(id)a3 withSessionRunning:(BOOL)a4;
+- (void)handleClockReceived:(OpaqueCMClock *)received;
+- (void)handleClockSetupFailedWithError:(int)error;
+- (void)handleFollowForDevice:(id)device withSessionRunning:(BOOL)running;
 - (void)handleFollowTimeout;
-- (void)handleLockStateUpdateTriggerID:(unsigned int)a3 lockState:(BOOL)a4;
-- (void)handleSessionStateChange:(BOOL)a3;
-- (void)handleTSMSGOutOfBoundsTriggerID:(unsigned int)a3 error:(unsigned int)a4;
-- (void)handleTSMSGSessionStoppedTriggerID:(unsigned int)a3 status:(unsigned int)a4;
+- (void)handleLockStateUpdateTriggerID:(unsigned int)d lockState:(BOOL)state;
+- (void)handleSessionStateChange:(BOOL)change;
+- (void)handleTSMSGOutOfBoundsTriggerID:(unsigned int)d error:(unsigned int)error;
+- (void)handleTSMSGSessionStoppedTriggerID:(unsigned int)d status:(unsigned int)status;
 - (void)handleTransitionToActiveSync;
 - (void)handleTransitionToActiveSyncFromConfiguring;
 - (void)handleTransitionToConfiguring;
 - (void)handleTransitionToIdle;
 - (void)handleTransitionToJamSync;
 - (void)handleTransitionToUnavailable;
-- (void)handleTriggerPresentTriggerID:(unsigned int)a3 isPresentState:(BOOL)a4;
+- (void)handleTriggerPresentTriggerID:(unsigned int)d isPresentState:(BOOL)state;
 - (void)handleUnfollow;
 - (void)notifyDelegateStatusChange;
-- (void)setSignalCompensationDelay:(id *)a3;
+- (void)setSignalCompensationDelay:(id *)delay;
 @end
 
 @implementation AVExternalSyncDevice
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -44,20 +44,20 @@
   }
 }
 
-- (id)_initWithIdentifier:(id)a3 pid:(unsigned int)a4 vid:(unsigned int)a5
+- (id)_initWithIdentifier:(id)identifier pid:(unsigned int)pid vid:(unsigned int)vid
 {
   v11.receiver = self;
   v11.super_class = AVExternalSyncDevice;
   v8 = [(AVExternalSyncDevice *)&v11 init];
   if (v8)
   {
-    v8->_uniqueIdentifier = [a3 copy];
+    v8->_uniqueIdentifier = [identifier copy];
     v8->_usbConnected = 1;
     v8->_queue = dispatch_queue_create("com.apple.avcaptureexternalsyncdevice", 0);
     v8->_deviceWeakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v8];
     v8->_uuid = objc_opt_new();
-    v8->_vendorID = a5;
-    v8->_productID = a4;
+    v8->_vendorID = vid;
+    v8->_productID = pid;
     v9 = MEMORY[0x1E6960CC0];
     *&v8->_signalCompensationDelay.value = *MEMORY[0x1E6960CC0];
     v8->_signalCompensationDelay.epoch = *(v9 + 16);
@@ -69,15 +69,15 @@
 
 - (int64_t)status
 {
-  v3 = [(FigStateMachine *)self->_stateMachine currentState];
-  if (v3 <= 3)
+  currentState = [(FigStateMachine *)self->_stateMachine currentState];
+  if (currentState <= 3)
   {
-    if (v3 == 1)
+    if (currentState == 1)
     {
       return 0;
     }
 
-    if (v3 == 2)
+    if (currentState == 2)
     {
       return 1;
     }
@@ -85,7 +85,7 @@
 
   else
   {
-    switch(v3)
+    switch(currentState)
     {
       case 4:
         return 2;
@@ -155,7 +155,7 @@ uint64_t __42__AVExternalSyncDevice__setupStateMachine__block_invoke_4(uint64_t 
   [(AVExternalSyncDevice *)&v5 dealloc];
 }
 
-- (void)handleFollowForDevice:(id)a3 withSessionRunning:(BOOL)a4
+- (void)handleFollowForDevice:(id)device withSessionRunning:(BOOL)running
 {
   if (dword_1EB385A38)
   {
@@ -173,8 +173,8 @@ uint64_t __42__AVExternalSyncDevice__setupStateMachine__block_invoke_4(uint64_t 
   block[2] = __65__AVExternalSyncDevice_handleFollowForDevice_withSessionRunning___block_invoke;
   block[3] = &unk_1E7875C20;
   block[4] = deviceWeakReference;
-  block[5] = a3;
-  v11 = a4;
+  block[5] = device;
+  runningCopy = running;
   dispatch_async(queue, block);
 }
 
@@ -202,7 +202,7 @@ void *__65__AVExternalSyncDevice_handleFollowForDevice_withSessionRunning___bloc
   return result;
 }
 
-- (void)handleSessionStateChange:(BOOL)a3
+- (void)handleSessionStateChange:(BOOL)change
 {
   if (dword_1EB385A38)
   {
@@ -220,7 +220,7 @@ void *__65__AVExternalSyncDevice_handleFollowForDevice_withSessionRunning___bloc
   block[2] = __49__AVExternalSyncDevice_handleSessionStateChange___block_invoke;
   block[3] = &unk_1E786EE40;
   block[4] = deviceWeakReference;
-  v9 = a3;
+  changeCopy = change;
   dispatch_async(queue, block);
 }
 
@@ -255,7 +255,7 @@ void *__49__AVExternalSyncDevice_handleSessionStateChange___block_invoke(uint64_
   return result;
 }
 
-- (void)handleClockReceived:(OpaqueCMClock *)a3
+- (void)handleClockReceived:(OpaqueCMClock *)received
 {
   if (dword_1EB385A38)
   {
@@ -273,7 +273,7 @@ void *__49__AVExternalSyncDevice_handleSessionStateChange___block_invoke(uint64_
   block[2] = __44__AVExternalSyncDevice_handleClockReceived___block_invoke;
   block[3] = &unk_1E786ECD0;
   block[4] = deviceWeakReference;
-  block[5] = a3;
+  block[5] = received;
   dispatch_async(queue, block);
 }
 
@@ -303,7 +303,7 @@ uint64_t __44__AVExternalSyncDevice_handleClockReceived___block_invoke(uint64_t 
   return result;
 }
 
-- (void)handleClockSetupFailedWithError:(int)a3
+- (void)handleClockSetupFailedWithError:(int)error
 {
   if (dword_1EB385A38)
   {
@@ -321,7 +321,7 @@ uint64_t __44__AVExternalSyncDevice_handleClockReceived___block_invoke(uint64_t 
   block[2] = __56__AVExternalSyncDevice_handleClockSetupFailedWithError___block_invoke;
   block[3] = &unk_1E78704A0;
   block[4] = deviceWeakReference;
-  v9 = a3;
+  errorCopy = error;
   dispatch_async(queue, block);
 }
 
@@ -389,7 +389,7 @@ uint64_t __43__AVExternalSyncDevice_handleFollowTimeout__block_invoke(uint64_t a
   return result;
 }
 
-- (void)handleLockStateUpdateTriggerID:(unsigned int)a3 lockState:(BOOL)a4
+- (void)handleLockStateUpdateTriggerID:(unsigned int)d lockState:(BOOL)state
 {
   if (dword_1EB385A38)
   {
@@ -407,7 +407,7 @@ uint64_t __43__AVExternalSyncDevice_handleFollowTimeout__block_invoke(uint64_t a
   block[2] = __65__AVExternalSyncDevice_handleLockStateUpdateTriggerID_lockState___block_invoke;
   block[3] = &unk_1E786EE40;
   block[4] = deviceWeakReference;
-  v10 = a4;
+  stateCopy = state;
   dispatch_async(queue, block);
 }
 
@@ -438,7 +438,7 @@ uint64_t __65__AVExternalSyncDevice_handleLockStateUpdateTriggerID_lockState___b
   return result;
 }
 
-- (void)handleTSMSGOutOfBoundsTriggerID:(unsigned int)a3 error:(unsigned int)a4
+- (void)handleTSMSGOutOfBoundsTriggerID:(unsigned int)d error:(unsigned int)error
 {
   deviceWeakReference = self->_deviceWeakReference;
   queue = self->_queue;
@@ -468,7 +468,7 @@ id *__62__AVExternalSyncDevice_handleTSMSGOutOfBoundsTriggerID_error___block_inv
   return result;
 }
 
-- (void)handleTriggerPresentTriggerID:(unsigned int)a3 isPresentState:(BOOL)a4
+- (void)handleTriggerPresentTriggerID:(unsigned int)d isPresentState:(BOOL)state
 {
   if (dword_1EB385A38)
   {
@@ -486,7 +486,7 @@ id *__62__AVExternalSyncDevice_handleTSMSGOutOfBoundsTriggerID_error___block_inv
   block[2] = __69__AVExternalSyncDevice_handleTriggerPresentTriggerID_isPresentState___block_invoke;
   block[3] = &unk_1E786EE40;
   block[4] = deviceWeakReference;
-  v10 = a4;
+  stateCopy = state;
   dispatch_async(queue, block);
 }
 
@@ -533,7 +533,7 @@ LABEL_8:
   return [v4 transitionToState:v5 fromState:v6];
 }
 
-- (void)handleTSMSGSessionStoppedTriggerID:(unsigned int)a3 status:(unsigned int)a4
+- (void)handleTSMSGSessionStoppedTriggerID:(unsigned int)d status:(unsigned int)status
 {
   if (dword_1EB385A38)
   {
@@ -604,7 +604,7 @@ void *__38__AVExternalSyncDevice_handleUnfollow__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_handleUSBConnectionStateChange:(BOOL)a3
+- (void)_handleUSBConnectionStateChange:(BOOL)change
 {
   deviceWeakReference = self->_deviceWeakReference;
   if (dword_1EB385A38)
@@ -622,7 +622,7 @@ void *__38__AVExternalSyncDevice_handleUnfollow__block_invoke(uint64_t a1)
   block[2] = __56__AVExternalSyncDevice__handleUSBConnectionStateChange___block_invoke;
   block[3] = &unk_1E786EE40;
   block[4] = deviceWeakReference;
-  v9 = a3;
+  changeCopy = change;
   dispatch_async(queue, block);
 }
 
@@ -697,20 +697,20 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
   return result;
 }
 
-- (void)setSignalCompensationDelay:(id *)a3
+- (void)setSignalCompensationDelay:(id *)delay
 {
   v5 = [(FigStateMachine *)self->_stateMachine currentState]!= 1 && [(FigStateMachine *)self->_stateMachine currentState]!= 3 && [(FigStateMachine *)self->_stateMachine currentState]!= 4;
   time1 = self->_signalCompensationDelay;
   time2 = **&MEMORY[0x1E6960C70];
   v6 = CMTimeCompare(&time1, &time2);
-  v7 = MEMORY[0x1E6960CC0];
+  delayCopy = MEMORY[0x1E6960CC0];
   if (v6)
   {
-    v7 = a3;
+    delayCopy = delay;
   }
 
-  time1 = *v7;
-  time2 = *a3;
+  time1 = *delayCopy;
+  time2 = *delay;
   v12 = time1;
   v8 = CMTimeCompare(&time2, &v12);
   if (!v5 && v8)
@@ -729,7 +729,7 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
   }
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
   delegate = self->_delegate;
   if (delegate)
@@ -738,13 +738,13 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
     self->_delegate = 0;
   }
 
-  if (a3)
+  if (delegate)
   {
-    self->_delegate = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+    self->_delegate = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:delegate];
   }
 }
 
-- (void)_setClock:(OpaqueCMClock *)a3
+- (void)_setClock:(OpaqueCMClock *)clock
 {
   clock = self->_clock;
   if (clock)
@@ -752,11 +752,11 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
     CFRelease(clock);
   }
 
-  self->_clock = a3;
-  if (a3)
+  self->_clock = clock;
+  if (clock)
   {
 
-    CFRetain(a3);
+    CFRetain(clock);
   }
 }
 
@@ -782,7 +782,7 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
 - (void)applyActiveExternalSyncVideoFrameDuration
 {
   [[(AVCaptureDeviceInput *)self->_captureDeviceInput device] lockForConfiguration:0];
-  v3 = [(AVCaptureDeviceInput *)self->_captureDeviceInput device];
+  device = [(AVCaptureDeviceInput *)self->_captureDeviceInput device];
   captureDeviceInput = self->_captureDeviceInput;
   if (captureDeviceInput)
   {
@@ -796,7 +796,7 @@ uint64_t __46__AVExternalSyncDevice__handleSourceDiedEvent__block_invoke(uint64_
     memset(v6, 0, sizeof(v6));
   }
 
-  [(AVCaptureDevice *)v3 setActiveExternalSyncVideoFrameDuration:v6 withExternalSyncDevice:self forOwner:v5];
+  [(AVCaptureDevice *)device setActiveExternalSyncVideoFrameDuration:v6 withExternalSyncDevice:self forOwner:v5];
   [[(AVCaptureDeviceInput *)self->_captureDeviceInput device] unlockForConfiguration];
 }
 
@@ -911,11 +911,11 @@ void *__53__AVExternalSyncDevice_handleTransitionToConfiguring__block_invoke(uin
   delegate = self->_delegate;
   if (delegate)
   {
-    v4 = [(AVWeakReference *)delegate referencedObject];
-    if (v4)
+    referencedObject = [(AVWeakReference *)delegate referencedObject];
+    if (referencedObject)
     {
 
-      [v4 externalSyncDeviceStatusDidChange:self];
+      [referencedObject externalSyncDeviceStatusDidChange:self];
     }
 
     else if (dword_1EB385A38)
@@ -927,28 +927,28 @@ void *__53__AVExternalSyncDevice_handleTransitionToConfiguring__block_invoke(uin
   }
 }
 
-- (void)_notifyDelegateOfError:(int)a3
+- (void)_notifyDelegateOfError:(int)error
 {
   if (self->_delegate)
   {
-    if ((a3 + 73196) > 2)
+    if ((error + 73196) > 2)
     {
       v6 = 0;
     }
 
     else
     {
-      v5 = off_1E7875C68[a3 + 73196];
+      v5 = off_1E7875C68[error + 73196];
       v9 = *MEMORY[0x1E696A578];
       v10 = v5;
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     }
 
-    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:a3 userInfo:v6];
-    v8 = [(AVWeakReference *)self->_delegate referencedObject];
-    if (v8)
+    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:error userInfo:v6];
+    referencedObject = [(AVWeakReference *)self->_delegate referencedObject];
+    if (referencedObject)
     {
-      [v8 externalSyncDevice:self failedWithError:v7];
+      [referencedObject externalSyncDevice:self failedWithError:v7];
     }
   }
 }

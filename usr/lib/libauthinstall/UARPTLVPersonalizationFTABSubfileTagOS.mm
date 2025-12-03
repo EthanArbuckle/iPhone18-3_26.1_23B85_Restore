@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationFTABSubfileTagOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationFTABSubfileTagOS)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setTag:(id)a3;
+- (void)setTag:(id)tag;
 @end
 
 @implementation UARPTLVPersonalizationFTABSubfileTagOS
@@ -18,16 +18,16 @@
   return [(UARPMetaDataTLVOS *)&v3 init];
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 copy];
-  tag = v5->_tag;
-  v5->_tag = v6;
+  tagCopy = tag;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [tagCopy copy];
+  tag = selfCopy->_tag;
+  selfCopy->_tag = v6;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -47,8 +47,8 @@
   [v3 appendBytes:&v8 length:4];
   v7 = uarpHtonl(4u);
   [v3 appendBytes:&v7 length:4];
-  v4 = [(UARPTLVPersonalizationFTABSubfileTagOS *)self tlvValue];
-  [v3 appendData:v4];
+  tlvValue = [(UARPTLVPersonalizationFTABSubfileTagOS *)self tlvValue];
+  [v3 appendData:tlvValue];
 
   v5 = [MEMORY[0x29EDB8DA0] dataWithData:v3];
 
@@ -78,18 +78,18 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     if ([v4 length] == 4)
     {
-      v5 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       v6 = objc_opt_new();
-      v7 = [[UARPAssetTagOS alloc] initWithChar1:*v5 char2:v5[1] char3:v5[2] char4:v5[3]];
+      v7 = [[UARPAssetTagOS alloc] initWithChar1:*uTF8String char2:uTF8String[1] char3:uTF8String[2] char4:uTF8String[3]];
       [v6 setTag:v7];
     }
 
@@ -107,12 +107,12 @@
   return v6;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 4)
+  if (length == 4)
   {
     v5 = objc_opt_new();
-    v6 = [[UARPAssetTagOS alloc] initWithChar1:*a4 char2:*(a4 + 1) char3:*(a4 + 2) char4:*(a4 + 3)];
+    v6 = [[UARPAssetTagOS alloc] initWithChar1:*value char2:*(value + 1) char3:*(value + 2) char4:*(value + 3)];
     [v5 setTag:v6];
   }
 

@@ -1,24 +1,24 @@
 @interface BMParsecSearchTopic
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMParsecSearchTopic)initWithCoder:(id)a3;
-- (BMParsecSearchTopic)initWithIdentifier:(id)a3 score:(float)a4;
-- (BMParsecSearchTopic)initWithProto:(id)a3;
-- (BMParsecSearchTopic)initWithProtoData:(id)a3;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMParsecSearchTopic)initWithCoder:(id)coder;
+- (BMParsecSearchTopic)initWithIdentifier:(id)identifier score:(float)score;
+- (BMParsecSearchTopic)initWithProto:(id)proto;
+- (BMParsecSearchTopic)initWithProtoData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMParsecSearchTopic
 
-- (BMParsecSearchTopic)initWithIdentifier:(id)a3 score:(float)a4
+- (BMParsecSearchTopic)initWithIdentifier:(id)identifier score:(float)score
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [BMParsecSearchTopic initWithIdentifier:score:];
   }
@@ -29,19 +29,19 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_score = score;
   }
 
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -78,9 +78,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMParsecSearchTopic *)self jsonDict];
+  jsonDict = [(BMParsecSearchTopic *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -95,57 +95,57 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMParsecSearchTopic *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMParsecSearchTopic *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMParsecSearchTopic)initWithCoder:(id)a3
+- (BMParsecSearchTopic)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMParsecSearchTopic *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMParsecSearchTopic *)self proto];
-  v3 = [v2 data];
+  proto = [(BMParsecSearchTopic *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMParsecSearchTopic)initWithProto:(id)a3
+- (BMParsecSearchTopic)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasIdentifier]&& ([v5 hasScore]& 1) != 0)
       {
-        v6 = [v5 identifier];
+        identifier = [v5 identifier];
         [v5 score];
-        self = [(BMParsecSearchTopic *)self initWithIdentifier:v6 score:?];
+        self = [(BMParsecSearchTopic *)self initWithIdentifier:identifier score:?];
 
-        v7 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -167,40 +167,40 @@ LABEL_13:
       }
     }
 
-    v7 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v7;
+  return selfCopy;
 }
 
-- (BMParsecSearchTopic)initWithProtoData:(id)a3
+- (BMParsecSearchTopic)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBParsecSearchTopic alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBParsecSearchTopic alloc] initWithData:dataCopy];
 
     self = [(BMParsecSearchTopic *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMParsecSearchTopic *)self identifier];
-  [v3 setIdentifier:v4];
+  identifier = [(BMParsecSearchTopic *)self identifier];
+  [v3 setIdentifier:identifier];
 
   [(BMParsecSearchTopic *)self score];
   [v3 setScore:?];
@@ -208,16 +208,16 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     identifier = self->_identifier;
-    v7 = [v5 identifier];
-    if ([(NSString *)identifier isEqualToString:v7])
+    identifier = [v5 identifier];
+    if ([(NSString *)identifier isEqualToString:identifier])
     {
       score = self->_score;
       [v5 score];
@@ -238,12 +238,12 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   identifier = self->_identifier;
-  if (a4 && !identifier)
+  if (error && !identifier)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
   }
 
   return identifier != 0;

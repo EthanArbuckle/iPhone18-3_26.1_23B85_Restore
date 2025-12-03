@@ -1,8 +1,8 @@
 @interface SubscriberTransactionElement
 - (BOOL)expired;
-- (BOOL)matchContent:(id)a3;
-- (SubscriberTransactionElement)initWithAction:(id)a3 andAnnotation:(id)a4;
-- (SubscriberTransactionElement)initWithInfo:(id)a3;
+- (BOOL)matchContent:(id)content;
+- (SubscriberTransactionElement)initWithAction:(id)action andAnnotation:(id)annotation;
+- (SubscriberTransactionElement)initWithInfo:(id)info;
 - (id).cxx_construct;
 - (id)action;
 - (id)description;
@@ -11,14 +11,14 @@
 - (void)dealloc;
 - (void)decreaseAttempts;
 - (void)disarmCancelation;
-- (void)setAction:(id)a3;
-- (void)setCancelationTimestampInSecond:(unsigned int)a3;
-- (void)setIdentifier:(int)a3;
+- (void)setAction:(id)action;
+- (void)setCancelationTimestampInSecond:(unsigned int)second;
+- (void)setIdentifier:(int)identifier;
 @end
 
 @implementation SubscriberTransactionElement
 
-- (SubscriberTransactionElement)initWithAction:(id)a3 andAnnotation:(id)a4
+- (SubscriberTransactionElement)initWithAction:(id)action andAnnotation:(id)annotation
 {
   v8.receiver = self;
   v8.super_class = SubscriberTransactionElement;
@@ -26,8 +26,8 @@
   if (v6)
   {
     *(v6 + 6) = [[NSMutableDictionary alloc] initWithCapacity:3];
-    *(v6 + 7) = a4;
-    [v6 setAction:a3];
+    *(v6 + 7) = annotation;
+    [v6 setAction:action];
     [v6 setIdentifier:0xFFFFFFFFLL];
     v6[8] = 0;
     v6[40] = 0;
@@ -38,14 +38,14 @@
   return v6;
 }
 
-- (SubscriberTransactionElement)initWithInfo:(id)a3
+- (SubscriberTransactionElement)initWithInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = SubscriberTransactionElement;
   v4 = [(SubscriberTransactionElement *)&v6 init];
   if (v4)
   {
-    *(v4 + 6) = [[NSMutableDictionary alloc] initWithDictionary:a3];
+    *(v4 + 6) = [[NSMutableDictionary alloc] initWithDictionary:info];
     *(v4 + 7) = 0;
     v4[8] = 0;
     v4[40] = 0;
@@ -75,7 +75,7 @@
 
 - (id)identifier
 {
-  v3 = [(SubscriberTransactionElement *)self info];
+  info = [(SubscriberTransactionElement *)self info];
   if ([(SubscriberTransactionElement *)self type])
   {
     v4 = @"response-id";
@@ -86,13 +86,13 @@
     v4 = @"request-id";
   }
 
-  return [(NSMutableDictionary *)v3 objectForKey:v4];
+  return [(NSMutableDictionary *)info objectForKey:v4];
 }
 
-- (void)setIdentifier:(int)a3
+- (void)setIdentifier:(int)identifier
 {
-  v3 = *&a3;
-  v5 = [(SubscriberTransactionElement *)self info];
+  v3 = *&identifier;
+  info = [(SubscriberTransactionElement *)self info];
   v6 = [NSNumber numberWithInt:v3];
   if ([(SubscriberTransactionElement *)self type])
   {
@@ -104,21 +104,21 @@
     v7 = @"request-id";
   }
 
-  [(NSMutableDictionary *)v5 setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)info setObject:v6 forKey:v7];
 }
 
 - (id)action
 {
-  v2 = [(SubscriberTransactionElement *)self info];
+  info = [(SubscriberTransactionElement *)self info];
 
-  return [(NSMutableDictionary *)v2 objectForKey:@"action-name"];
+  return [(NSMutableDictionary *)info objectForKey:@"action-name"];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v4 = [(SubscriberTransactionElement *)self info];
+  info = [(SubscriberTransactionElement *)self info];
 
-  [(NSMutableDictionary *)v4 setObject:a3 forKey:@"action-name"];
+  [(NSMutableDictionary *)info setObject:action forKey:@"action-name"];
 }
 
 - (void)decreaseAttempts
@@ -133,7 +133,7 @@
   }
 }
 
-- (void)setCancelationTimestampInSecond:(unsigned int)a3
+- (void)setCancelationTimestampInSecond:(unsigned int)second
 {
   v5.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
   if (!self->cancelationTS.__engaged_)
@@ -141,7 +141,7 @@
     self->cancelationTS.__engaged_ = 1;
   }
 
-  self->cancelationTS.var0.__val_.__d_.__rep_ = v5.__d_.__rep_ + 1000000000 * a3;
+  self->cancelationTS.var0.__val_.__d_.__rep_ = v5.__d_.__rep_ + 1000000000 * second;
 }
 
 - (void)disarmCancelation
@@ -214,7 +214,7 @@
   }
 
   leftAttempts = self->leftAttempts;
-  v6 = [(SubscriberTransactionElement *)self secondsTillCancelation];
+  secondsTillCancelation = [(SubscriberTransactionElement *)self secondsTillCancelation];
   if (self->needSecureIntent)
   {
     v7 = "true";
@@ -245,19 +245,19 @@
     v9 = "false";
   }
 
-  return [NSString stringWithFormat:@"Type: %@, attempts:%slimited (%u), expire:%us secure-intent:%s, full-auth:%s, user-initiated:%s, Info: %@", v3, v4, leftAttempts, v6, v7, v8, v9, [(NSMutableDictionary *)[(SubscriberTransactionElement *)self info] description]];
+  return [NSString stringWithFormat:@"Type: %@, attempts:%slimited (%u), expire:%us secure-intent:%s, full-auth:%s, user-initiated:%s, Info: %@", v3, v4, leftAttempts, secondsTillCancelation, v7, v8, v9, [(NSMutableDictionary *)[(SubscriberTransactionElement *)self info] description]];
 }
 
-- (BOOL)matchContent:(id)a3
+- (BOOL)matchContent:(id)content
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [(NSMutableDictionary *)[(SubscriberTransactionElement *)self info] mutableCopy];
   [v6 removeObjectForKey:@"action-name"];
   [v6 removeObjectForKey:@"request-id"];
   [v6 removeObjectForKey:@"response-id"];
-  LOBYTE(a3) = [v6 isEqualToDictionary:a3];
+  LOBYTE(content) = [v6 isEqualToDictionary:content];
   objc_autoreleasePoolPop(v5);
-  return a3;
+  return content;
 }
 
 - (id).cxx_construct

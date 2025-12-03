@@ -1,21 +1,21 @@
 @interface NCDigestOnboardingIntroductionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation NCDigestOnboardingIntroductionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Container" withType:"UIView"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Title" withType:"UILabel"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Label" withType:"UILabel"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Container" withType:"UIView"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Title" withType:"UILabel"];
-  [v3 validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Label" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Container" withType:"UIView"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Title" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer1Label" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Container" withType:"UIView"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Title" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCDigestOnboardingIntroductionViewController" hasInstanceVariable:@"_explainer2Label" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

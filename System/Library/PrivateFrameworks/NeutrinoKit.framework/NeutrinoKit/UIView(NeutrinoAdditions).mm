@@ -33,7 +33,7 @@ LABEL_3:
         break;
       }
 
-      [a1 _recurseView:v12 filter:{v6, v13}];
+      [self _recurseView:v12 filter:{v6, v13}];
       if (v9 == ++v11)
       {
         v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];

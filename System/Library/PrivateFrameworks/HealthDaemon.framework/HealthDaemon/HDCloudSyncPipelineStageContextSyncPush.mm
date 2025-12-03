@@ -7,36 +7,36 @@
 - (void)main
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 profileType];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  profileType = [repository profileType];
 
-  if (v5 == 1)
+  if (profileType == 1)
   {
     v6 = [HDCloudSyncCompoundOperation alloc];
-    v7 = [(HDCloudSyncOperation *)self configuration];
-    v8 = [(HDCloudSyncCompoundOperation *)v6 initWithConfiguration:v7 cloudState:0 name:@"Push Context Sync" continueOnSubOperationError:0];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    v8 = [(HDCloudSyncCompoundOperation *)v6 initWithConfiguration:configuration2 cloudState:0 name:@"Push Context Sync" continueOnSubOperationError:0];
 
     v9 = objc_alloc(MEMORY[0x277CBC5E8]);
     v10 = MEMORY[0x277CBC5F8];
-    v11 = [(HDCloudSyncOperation *)self configuration];
-    v12 = [v11 syncContainerPrefix];
-    v13 = [v10 hd_contextSyncZoneIDForSyncCircleIdentifier:v12];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    syncContainerPrefix = [configuration3 syncContainerPrefix];
+    v13 = [v10 hd_contextSyncZoneIDForSyncCircleIdentifier:syncContainerPrefix];
     v14 = [v9 initWithZoneID:v13];
 
     v15 = [HDCloudSyncCreateZonesOperation alloc];
-    v16 = [(HDCloudSyncOperation *)self configuration];
+    configuration4 = [(HDCloudSyncOperation *)self configuration];
     v37 = v14;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-    v18 = [(HDCloudSyncOperation *)self configuration];
-    v19 = [v18 repository];
-    v20 = [v19 primaryCKContainer];
-    v21 = [(HDCloudSyncCreateZonesOperation *)v15 initWithConfiguration:v16 cloudState:0 zones:v17 container:v20];
+    configuration5 = [(HDCloudSyncOperation *)self configuration];
+    repository2 = [configuration5 repository];
+    primaryCKContainer = [repository2 primaryCKContainer];
+    v21 = [(HDCloudSyncCreateZonesOperation *)v15 initWithConfiguration:configuration4 cloudState:0 zones:v17 container:primaryCKContainer];
 
     [(HDCloudSyncCompoundOperation *)v8 addOperation:v21 transitionHandler:0];
     [(HDCloudSyncCompoundOperation *)v8 addOperationOfClass:objc_opt_class() transitionHandler:0];
     [(HDCloudSyncCompoundOperation *)v8 addOperationOfClass:objc_opt_class() transitionHandler:0];
-    v22 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __47__HDCloudSyncPipelineStageContextSyncPush_main__block_invoke;
@@ -47,9 +47,9 @@
     v31 = 3221225472;
     v32 = __47__HDCloudSyncPipelineStageContextSyncPush_main__block_invoke_303;
     v33 = &unk_278614BA8;
-    v34 = self;
-    v35 = v22;
-    v23 = v22;
+    selfCopy = self;
+    v35 = date;
+    v23 = date;
     [(HDCloudSyncOperation *)v8 setOnSuccess:&v30];
     [(HDCloudSyncCompoundOperation *)v8 start:v30];
   }
@@ -61,13 +61,13 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [(HDCloudSyncOperation *)self configuration];
-      v27 = [v26 repository];
-      v28 = [v27 profile];
+      configuration6 = [(HDCloudSyncOperation *)self configuration];
+      repository3 = [configuration6 repository];
+      profile = [repository3 profile];
       *buf = 138543618;
-      v39 = self;
+      selfCopy2 = self;
       v40 = 2114;
-      v41 = v28;
+      v41 = profile;
       _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Skipping context sync push stage for non-primary profile %{public}@", buf, 0x16u);
     }
 

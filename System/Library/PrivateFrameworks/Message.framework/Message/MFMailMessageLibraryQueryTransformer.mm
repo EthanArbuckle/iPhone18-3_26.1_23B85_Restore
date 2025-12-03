@@ -1,12 +1,12 @@
 @interface MFMailMessageLibraryQueryTransformer
 + (OS_os_log)log;
 - (EDMessagePersistence)messagePersistence;
-- (MFMailMessageLibraryQueryTransformer)initWithMessagePersistence:(id)a3;
-- (id)criterionForQuery:(id)a3;
-- (id)mailAccountForIdentifier:(id)a3;
-- (id)messageCriterionConverter:(id)a3 expressionForConstantValue:(id)a4 withCriterionType:(int64_t)a5;
-- (int64_t)messageCriterionConverter:(id)a3 criterionTypeForKey:(id)a4;
-- (unsigned)optionsForQuery:(id)a3;
+- (MFMailMessageLibraryQueryTransformer)initWithMessagePersistence:(id)persistence;
+- (id)criterionForQuery:(id)query;
+- (id)mailAccountForIdentifier:(id)identifier;
+- (id)messageCriterionConverter:(id)converter expressionForConstantValue:(id)value withCriterionType:(int64_t)type;
+- (int64_t)messageCriterionConverter:(id)converter criterionTypeForKey:(id)key;
+- (unsigned)optionsForQuery:(id)query;
 @end
 
 @implementation MFMailMessageLibraryQueryTransformer
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__MFMailMessageLibraryQueryTransformer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_18 != -1)
   {
     dispatch_once(&log_onceToken_18, block);
@@ -36,9 +36,9 @@ void __43__MFMailMessageLibraryQueryTransformer_log__block_invoke(uint64_t a1)
   log_log_18 = v1;
 }
 
-- (MFMailMessageLibraryQueryTransformer)initWithMessagePersistence:(id)a3
+- (MFMailMessageLibraryQueryTransformer)initWithMessagePersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   v9.receiver = self;
   v9.super_class = MFMailMessageLibraryQueryTransformer;
   v5 = [(MFMailMessageLibraryQueryTransformer *)&v9 init];
@@ -49,25 +49,25 @@ void __43__MFMailMessageLibraryQueryTransformer_log__block_invoke(uint64_t a1)
     v5->_criterionConverter = v6;
 
     [(MFMessageCriterionConverter *)v5->_criterionConverter setDelegate:v5];
-    objc_storeWeak(&v5->_messagePersistence, v4);
+    objc_storeWeak(&v5->_messagePersistence, persistenceCopy);
   }
 
   return v5;
 }
 
-- (int64_t)messageCriterionConverter:(id)a3 criterionTypeForKey:(id)a4
+- (int64_t)messageCriterionConverter:(id)converter criterionTypeForKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  converterCopy = converter;
+  keyCopy = key;
   if (messageCriterionConverter_criterionTypeForKey__onceToken != -1)
   {
     [MFMailMessageLibraryQueryTransformer messageCriterionConverter:criterionTypeForKey:];
   }
 
-  v7 = [messageCriterionConverter_criterionTypeForKey__mapping objectForKeyedSubscript:v6];
-  v8 = [v7 integerValue];
+  v7 = [messageCriterionConverter_criterionTypeForKey__mapping objectForKeyedSubscript:keyCopy];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criterionTypeForKey___block_invoke()
@@ -140,13 +140,13 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageCriterionConverter:(id)a3 expressionForConstantValue:(id)a4 withCriterionType:(int64_t)a5
+- (id)messageCriterionConverter:(id)converter expressionForConstantValue:(id)value withCriterionType:(int64_t)type
 {
-  v7 = a4;
-  if (a5 == 23)
+  valueCopy = value;
+  if (type == 23)
   {
-    v8 = [(MFMailMessageLibraryQueryTransformer *)self messagePersistence];
-    v9 = [v8 messageObjectIDCriterionExpressionForPredicateValue:v7];
+    messagePersistence = [(MFMailMessageLibraryQueryTransformer *)self messagePersistence];
+    v9 = [messagePersistence messageObjectIDCriterionExpressionForPredicateValue:valueCopy];
   }
 
   else
@@ -157,27 +157,27 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
   return v9;
 }
 
-- (id)mailAccountForIdentifier:(id)a3
+- (id)mailAccountForIdentifier:(id)identifier
 {
-  v3 = [MailAccount accountWithUniqueId:a3];
+  v3 = [MailAccount accountWithUniqueId:identifier];
 
   return v3;
 }
 
-- (id)criterionForQuery:(id)a3
+- (id)criterionForQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(MFMailMessageLibraryQueryTransformer *)self criterionConverter];
-  v6 = [v4 predicate];
-  v7 = [v5 messageCriterionFromPredicate:v6];
+  queryCopy = query;
+  criterionConverter = [(MFMailMessageLibraryQueryTransformer *)self criterionConverter];
+  predicate = [queryCopy predicate];
+  v7 = [criterionConverter messageCriterionFromPredicate:predicate];
 
   return v7;
 }
 
-- (unsigned)optionsForQuery:(id)a3
+- (unsigned)optionsForQuery:(id)query
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = a3;
+  queryCopy = query;
   if (optionsForQuery__onceToken != -1)
   {
     [MFMailMessageLibraryQueryTransformer optionsForQuery:];
@@ -187,9 +187,9 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [v16 sortDescriptors];
+  sortDescriptors = [queryCopy sortDescriptors];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v5 = [sortDescriptors countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = *v18;
@@ -199,7 +199,7 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sortDescriptors);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -209,7 +209,7 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
 
         if (v11)
         {
-          v12 = [v11 unsignedIntegerValue];
+          unsignedIntegerValue = [v11 unsignedIntegerValue];
           if ([v8 ascending])
           {
             v13 = 1024;
@@ -220,11 +220,11 @@ void __86__MFMailMessageLibraryQueryTransformer_messageCriterionConverter_criter
             v13 = 0;
           }
 
-          v4 |= v13 | v12;
+          v4 |= v13 | unsignedIntegerValue;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [sortDescriptors countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);

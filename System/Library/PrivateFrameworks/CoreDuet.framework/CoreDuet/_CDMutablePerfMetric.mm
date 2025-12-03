@@ -1,32 +1,32 @@
 @interface _CDMutablePerfMetric
-+ (id)perfMetricForFetchRequest:(void *)a3 type:;
-- (_CDMutablePerfMetric)initWithName:(id)a3 string:(id)a4 family:(id)a5;
++ (id)perfMetricForFetchRequest:(void *)request type:;
+- (_CDMutablePerfMetric)initWithName:(id)name string:(id)string family:(id)family;
 - (id)description;
-- (void)endTimingWithEvent:(_CDPerfEvent *)a3 resultCount:(unint64_t)a4 incrementErrorCount:(BOOL)a5;
+- (void)endTimingWithEvent:(_CDPerfEvent *)event resultCount:(unint64_t)count incrementErrorCount:(BOOL)errorCount;
 @end
 
 @implementation _CDMutablePerfMetric
 
-+ (id)perfMetricForFetchRequest:(void *)a3 type:
++ (id)perfMetricForFetchRequest:(void *)request type:
 {
   v4 = a2;
-  v5 = a3;
+  requestCopy = request;
   objc_opt_self();
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v6 BOOLForKey:@"CoreDuetQueryPerfMetricsEnabled"])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:@"CoreDuetQueryPerfMetricsEnabled"])
   {
-    v7 = [v4 predicate];
-    v8 = [v7 description];
+    predicate = [v4 predicate];
+    v8 = [predicate description];
     v9 = _CDNormalizedStringFromQueryString(v8);
     v10 = [v9 mutableCopy];
 
-    v11 = [v4 sortDescriptors];
-    v12 = [v11 count];
+    sortDescriptors = [v4 sortDescriptors];
+    v12 = [sortDescriptors count];
 
     if (v12)
     {
-      v13 = [v4 sortDescriptors];
-      v14 = [v13 valueForKey:@"key"];
+      sortDescriptors2 = [v4 sortDescriptors];
+      v14 = [sortDescriptors2 valueForKey:@"key"];
       v15 = [v14 componentsJoinedByString:{@", "}];
 
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@" ORDER BY %@", v15];
@@ -41,10 +41,10 @@
 
     if ([v4 fetchLimit])
     {
-      v18 = [v4 fetchLimit];
-      if (v18 < 2 || v18 == 0xFFFFFFFF)
+      fetchLimit = [v4 fetchLimit];
+      if (fetchLimit < 2 || fetchLimit == 0xFFFFFFFF)
       {
-        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18];
+        v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:fetchLimit];
       }
 
       else
@@ -53,7 +53,7 @@
         v22 = @"NN";
         v23 = @"NNN";
         v24 = @"NNNN";
-        if (v18 >> 5 >= 0xC35)
+        if (fetchLimit >> 5 >= 0xC35)
         {
           v25 = @"NNNNNN+";
         }
@@ -63,22 +63,22 @@
           v25 = @"NNNNN";
         }
 
-        if (v18 >> 4 >= 0x271)
+        if (fetchLimit >> 4 >= 0x271)
         {
           v24 = v25;
         }
 
-        if (v18 >= 0x3E8)
+        if (fetchLimit >= 0x3E8)
         {
           v23 = v24;
         }
 
-        if (v18 >= 0x64)
+        if (fetchLimit >= 0x64)
         {
           v22 = v23;
         }
 
-        if (v18 >= 0xA)
+        if (fetchLimit >= 0xA)
         {
           v21 = v22;
         }
@@ -95,7 +95,7 @@
 
     v29 = [_CDHashUtilities sha1ForString:v10];
     v30 = [v29 substringToIndex:{objc_msgSend(v29, "length") >> 1}];
-    v31 = [_CDPerfMetricFamily perfMetricFamilyWithName:v5];
+    v31 = [_CDPerfMetricFamily perfMetricFamilyWithName:requestCopy];
     v20 = [v31 perfMetricWithName:v30 string:v10];
   }
 
@@ -107,24 +107,24 @@
   return v20;
 }
 
-- (_CDMutablePerfMetric)initWithName:(id)a3 string:(id)a4 family:(id)a5
+- (_CDMutablePerfMetric)initWithName:(id)name string:(id)string family:(id)family
 {
   v6.receiver = self;
   v6.super_class = _CDMutablePerfMetric;
-  return [(_CDPerfMetric *)&v6 initWithName:a3 string:a4 family:a5];
+  return [(_CDPerfMetric *)&v6 initWithName:name string:string family:family];
 }
 
-- (void)endTimingWithEvent:(_CDPerfEvent *)a3 resultCount:(unint64_t)a4 incrementErrorCount:(BOOL)a5
+- (void)endTimingWithEvent:(_CDPerfEvent *)event resultCount:(unint64_t)count incrementErrorCount:(BOOL)errorCount
 {
-  if (!a3)
+  if (!event)
   {
     return;
   }
 
-  v5 = a5;
+  errorCountCopy = errorCount;
   os_unfair_lock_lock(&self->super._lock);
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = event->var0;
+  var1 = event->var1;
   if (self->_os_activity)
   {
     os_activity_scope_leave(&self->_os_activity_scope_state);
@@ -141,9 +141,9 @@
 
   count = self->super._count;
   self->super._count = count + 1;
-  v15 = a3->var1;
+  v15 = event->var1;
   self->super._lastElapsedTime = v12;
-  self->super._lastResultCount = a4;
+  self->super._lastResultCount = count;
   self->super._totalElapsedTime = v12 + self->super._totalElapsedTime;
   self->super._lastUpdateTime = v15;
   if (!count)
@@ -158,7 +158,7 @@
   {
 LABEL_16:
     *p_maximumElapsedTime = v12;
-    if (!v5)
+    if (!errorCountCopy)
     {
       goto LABEL_11;
     }
@@ -166,7 +166,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  if (v5)
+  if (errorCountCopy)
   {
 LABEL_10:
     ++self->super._errorCount;
@@ -182,11 +182,11 @@ LABEL_11:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_CDPerfMetric *)self name];
-  v7 = [(_CDPerfMetric *)self string];
+  name = [(_CDPerfMetric *)self name];
+  string = [(_CDPerfMetric *)self string];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_CDPerfMetric count](self, "count")}];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_CDPerfMetric errorCount](self, "errorCount")}];
-  v10 = [v3 stringWithFormat:@"%@: { name=%@, text='%@', count=%@, errorCount=%@ }", v5, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"%@: { name=%@, text='%@', count=%@, errorCount=%@ }", v5, name, string, v8, v9];
 
   return v10;
 }

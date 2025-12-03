@@ -1,16 +1,16 @@
 @interface WakingTimerScheduler
 + (id)sharedInstance;
-+ (void)cancelScheduledWake:(id)a3;
++ (void)cancelScheduledWake:(id)wake;
 - (WakingTimerScheduler)init;
 - (void)cancelScheduledWake;
-- (void)cancelTimer:(id)a3;
+- (void)cancelTimer:(id)timer;
 - (void)clearDispatchTimer;
 - (void)evaluateTimers;
-- (void)evaluateTimers:(unint64_t)a3;
-- (void)scheduleTimer:(id)a3;
-- (void)scheduleTimerWithEarliestDeadline:(id)a3 now:(unint64_t)a4;
-- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)a3 gracePeriod:(double)a4;
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4;
+- (void)evaluateTimers:(unint64_t)timers;
+- (void)scheduleTimer:(id)timer;
+- (void)scheduleTimerWithEarliestDeadline:(id)deadline now:(unint64_t)now;
+- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)time gracePeriod:(double)period;
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d;
 @end
 
 @implementation WakingTimerScheduler
@@ -27,8 +27,8 @@
     *(v2 + 3) = v3;
 
     v5 = +[MagicSwitchEnabler sharedInstance];
-    v6 = [v5 workQueue];
-    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+    workQueue = [v5 workQueue];
+    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, workQueue);
     v8 = *(v2 + 5);
     *(v2 + 5) = v7;
 
@@ -44,14 +44,14 @@
     dispatch_activate(*(v2 + 5));
     out_token = 0;
     v11 = +[MagicSwitchEnabler sharedInstance];
-    v12 = [v11 workQueue];
+    workQueue2 = [v11 workQueue];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_100006864;
     v32[3] = &unk_100018650;
     v13 = v10;
     v33 = v13;
-    v14 = notify_register_dispatch("com.apple.system.timezone", &out_token, v12, v32);
+    v14 = notify_register_dispatch("com.apple.system.timezone", &out_token, workQueue2, v32);
 
     if (v14)
     {
@@ -65,14 +65,14 @@
     }
 
     v16 = +[MagicSwitchEnabler sharedInstance];
-    v17 = [v16 workQueue];
+    workQueue3 = [v16 workQueue];
     v27 = _NSConcreteStackBlock;
     v28 = 3221225472;
     v29 = sub_1000068D8;
     v30 = &unk_100018650;
     v18 = v13;
     v31 = v18;
-    v19 = notify_register_dispatch("com.apple.system.clock_set", &out_token, v17, &v27);
+    v19 = notify_register_dispatch("com.apple.system.clock_set", &out_token, workQueue3, &v27);
 
     if (v19)
     {
@@ -91,8 +91,8 @@
     {
       v22 = *(v18 + 7);
       v23 = [MagicSwitchEnabler sharedInstance:v27];
-      v24 = [v23 workQueue];
-      IONotificationPortSetDispatchQueue(v22, v24);
+      workQueue4 = [v23 workQueue];
+      IONotificationPortSetDispatchQueue(v22, workQueue4);
     }
 
     else
@@ -115,7 +115,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000069F0;
   block[3] = &unk_100018670;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100021408 != -1)
   {
     dispatch_once(&qword_100021408, block);
@@ -126,10 +126,10 @@
   return v2;
 }
 
-- (void)scheduleTimer:(id)a3
+- (void)scheduleTimer:(id)timer
 {
-  v4 = a3;
-  if ([(NSHashTable *)self->_timers containsObject:v4])
+  timerCopy = timer;
+  if ([(NSHashTable *)self->_timers containsObject:timerCopy])
   {
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -143,39 +143,39 @@
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [timerCopy identifier];
     v14 = 134218242;
-    v15 = v4;
+    v15 = timerCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "WakingTimerScheduler --- Scheduling timer (%p) with identifier: (%@)", &v14, 0x16u);
   }
 
-  [(NSHashTable *)self->_timers addObject:v4];
+  [(NSHashTable *)self->_timers addObject:timerCopy];
   v9 = [objc_opt_class() now];
-  [v4 setStartTime:v9];
-  v10 = [v4 startTime];
-  [v4 delay];
-  [v4 setEarliestFireTime:(v10 + v11 * 1000000000.0)];
-  v12 = [v4 earliestFireTime];
-  [v4 gracePeriod];
-  [v4 setDeadline:(v12 + v13 * 1000000000.0)];
+  [timerCopy setStartTime:v9];
+  startTime = [timerCopy startTime];
+  [timerCopy delay];
+  [timerCopy setEarliestFireTime:(startTime + v11 * 1000000000.0)];
+  earliestFireTime = [timerCopy earliestFireTime];
+  [timerCopy gracePeriod];
+  [timerCopy setDeadline:(earliestFireTime + v13 * 1000000000.0)];
   [(WakingTimerScheduler *)self evaluateTimers:v9];
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v4;
+    v7 = timerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "WakingTimerScheduler --- Cancelling timer (%p)", &v6, 0xCu);
   }
 
-  [(NSHashTable *)self->_timers removeObject:v4];
-  if (self->_timerWithEarliestDeadline == v4)
+  [(NSHashTable *)self->_timers removeObject:timerCopy];
+  if (self->_timerWithEarliestDeadline == timerCopy)
   {
     self->_timerWithEarliestDeadline = 0;
   }
@@ -198,14 +198,14 @@
   [(WakingTimerScheduler *)self evaluateTimers:v3];
 }
 
-- (void)evaluateTimers:(unint64_t)a3
+- (void)evaluateTimers:(unint64_t)timers
 {
-  v5 = [(NSHashTable *)self->_timers allObjects];
+  allObjects = [(NSHashTable *)self->_timers allObjects];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -217,11 +217,11 @@
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v35 + 1) + 8 * i);
-        if ([v11 earliestFireTime] < a3)
+        if ([v11 earliestFireTime] < timers)
         {
           if (!v8)
           {
@@ -233,7 +233,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v7);
@@ -248,14 +248,14 @@
   {
     v12 = sub_100008D28("com.apple.MagicSwitch.WakingTimerScheduler.Fire");
     v13 = +[MagicSwitchEnabler sharedInstance];
-    v14 = [v13 workQueue];
+    workQueue = [v13 workQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000070D4;
     block[3] = &unk_100018698;
     v33 = v8;
     v34 = v12;
-    dispatch_async(v14, block);
+    dispatch_async(workQueue, block);
   }
 
   v30 = 0u;
@@ -275,7 +275,7 @@ LABEL_31:
   }
 
   v17 = v16;
-  v26 = v5;
+  v26 = allObjects;
   v18 = 0;
   v19 = *v29;
   do
@@ -290,8 +290,8 @@ LABEL_31:
       v21 = *(*(&v28 + 1) + 8 * j);
       if (v18)
       {
-        v22 = [*(*(&v28 + 1) + 8 * j) deadline];
-        if (v22 < [(WakingTimer *)v18 deadline])
+        deadline = [*(*(&v28 + 1) + 8 * j) deadline];
+        if (deadline < [(WakingTimer *)v18 deadline])
         {
           v23 = v21;
 
@@ -310,7 +310,7 @@ LABEL_31:
 
   while (v17);
 
-  v5 = v26;
+  allObjects = v26;
   if (!v18)
   {
     goto LABEL_31;
@@ -318,7 +318,7 @@ LABEL_31:
 
   if (v18 != self->_timerWithEarliestDeadline)
   {
-    [(WakingTimerScheduler *)self scheduleTimerWithEarliestDeadline:v18 now:a3];
+    [(WakingTimerScheduler *)self scheduleTimerWithEarliestDeadline:v18 now:timers];
   }
 
 LABEL_32:
@@ -346,17 +346,17 @@ LABEL_32:
   }
 }
 
-- (void)scheduleTimerWithEarliestDeadline:(id)a3 now:(unint64_t)a4
+- (void)scheduleTimerWithEarliestDeadline:(id)deadline now:(unint64_t)now
 {
-  v6 = a3;
-  v7 = [(WakingTimer *)v6 earliestFireTime]- a4;
-  [(WakingTimer *)v6 gracePeriod];
+  deadlineCopy = deadline;
+  v7 = [(WakingTimer *)deadlineCopy earliestFireTime]- now;
+  [(WakingTimer *)deadlineCopy gracePeriod];
   v9 = (v8 * 1000000000.0);
   v10 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218496;
-    v13 = v6;
+    v13 = deadlineCopy;
     v14 = 2048;
     v15 = v7 / 1000000000.0;
     v16 = 2048;
@@ -367,9 +367,9 @@ LABEL_32:
   v11 = dispatch_walltime(0, v7);
   dispatch_source_set_timer(self->_dispatchTimer, v11, 0xFFFFFFFFFFFFFFFFLL, v9);
   self->_dispatchTimerScheduled = 1;
-  [(WakingTimer *)v6 gracePeriod];
+  [(WakingTimer *)deadlineCopy gracePeriod];
   [(WakingTimerScheduler *)self scheduleWakeWithDelayBeforeFireTime:v7 gracePeriod:?];
-  self->_timerWithEarliestDeadline = v6;
+  self->_timerWithEarliestDeadline = deadlineCopy;
 }
 
 - (void)clearDispatchTimer
@@ -381,7 +381,7 @@ LABEL_32:
   }
 }
 
-- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)a3 gracePeriod:(double)a4
+- (void)scheduleWakeWithDelayBeforeFireTime:(unint64_t)time gracePeriod:(double)period
 {
   p_requestedWakeDate = &self->_requestedWakeDate;
   if (self->_requestedWakeDate)
@@ -389,7 +389,7 @@ LABEL_32:
     [(WakingTimerScheduler *)self cancelScheduledWake];
   }
 
-  v7 = [NSDate dateWithTimeIntervalSinceNow:(a3 / 0x3B9ACA00)];
+  v7 = [NSDate dateWithTimeIntervalSinceNow:(time / 0x3B9ACA00)];
   v8 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEBUG))
   {
@@ -398,14 +398,14 @@ LABEL_32:
     v16 = 134218240;
     v17 = v7;
     v18 = 2048;
-    v19 = v10;
+    periodCopy = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "WakingTimerScheduler --- Scheduling wake for date (%p) in (%.3f) seconds", &v16, 0x16u);
   }
 
   v23[0] = v7;
   v22[0] = @"time";
   v22[1] = @"leeway";
-  v11 = [NSNumber numberWithDouble:a4];
+  v11 = [NSNumber numberWithDouble:period];
   v22[2] = @"scheduledby";
   v23[1] = v11;
   v23[2] = @"com.apple.MagicSwitch.WakingTimerScheduler.IOPM";
@@ -421,7 +421,7 @@ LABEL_32:
       v16 = 138412802;
       v17 = v7;
       v18 = 2048;
-      v19 = a4;
+      periodCopy = period;
       v20 = 1024;
       v21 = v14;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "WakingTimerScheduler --- Failed to schedule wake at date (%@) with grace period (%f) with error: (%d)", &v16, 0x1Cu);
@@ -434,18 +434,18 @@ LABEL_32:
   }
 }
 
-+ (void)cancelScheduledWake:(id)a3
++ (void)cancelScheduledWake:(id)wake
 {
-  v3 = a3;
+  wakeCopy = wake;
   v4 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEBUG))
   {
     v12 = 134217984;
-    v13 = v3;
+    v13 = wakeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "WakingTimerScheduler --- Cancelling wake for date: (%p)", &v12, 0xCu);
   }
 
-  v5 = IOPMCancelScheduledPowerEvent(v3, @"com.apple.MagicSwitch.WakingTimerScheduler.IOPM", @"wake");
+  v5 = IOPMCancelScheduledPowerEvent(wakeCopy, @"com.apple.MagicSwitch.WakingTimerScheduler.IOPM", @"wake");
   if (v5)
   {
     v6 = v5;
@@ -455,7 +455,7 @@ LABEL_32:
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v3;
+        v13 = wakeCopy;
         v8 = "WakingTimerScheduler --- Failed to cancel wake for date (%@) with error: kIOReturnNotFound";
         v9 = v7;
         v10 = 12;
@@ -470,7 +470,7 @@ LABEL_9:
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412546;
-        v13 = v3;
+        v13 = wakeCopy;
         v14 = 1024;
         v15 = v6;
         v8 = "WakingTimerScheduler --- Failed to cancel wake for date (%@) with error: (%d)";
@@ -492,11 +492,11 @@ LABEL_9:
   }
 }
 
-- (void)systemPowerChanged:(unsigned int)a3 notificationID:(void *)a4
+- (void)systemPowerChanged:(unsigned int)changed notificationID:(void *)d
 {
-  if (a3 == -536870288 || (a3 == -536870144 || a3 == -536870272) && ([(WakingTimerScheduler *)self evaluateTimers], a3 == -536870272))
+  if (changed == -536870288 || (changed == -536870144 || changed == -536870272) && ([(WakingTimerScheduler *)self evaluateTimers], changed == -536870272))
   {
-    v7 = IOAllowPowerChange(self->_systemPowerConnection, a4);
+    v7 = IOAllowPowerChange(self->_systemPowerConnection, d);
     if (v7)
     {
       v8 = v7;
@@ -504,7 +504,7 @@ LABEL_9:
       if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
       {
         v10[0] = 67109376;
-        v10[1] = a3;
+        v10[1] = changed;
         v11 = 1024;
         v12 = v8;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WakingTimerScheduler --- Failed allow Power change (%u) with error: (%d)", v10, 0xEu);

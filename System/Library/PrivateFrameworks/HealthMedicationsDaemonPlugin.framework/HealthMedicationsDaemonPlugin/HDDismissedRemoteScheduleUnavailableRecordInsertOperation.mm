@@ -1,20 +1,20 @@
 @interface HDDismissedRemoteScheduleUnavailableRecordInsertOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithCoder:(id)a3;
-- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithRemoteScheduleUnavailableRecords:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithCoder:(id)coder;
+- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithRemoteScheduleUnavailableRecords:(id)records;
 @end
 
 @implementation HDDismissedRemoteScheduleUnavailableRecordInsertOperation
 
-- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithRemoteScheduleUnavailableRecords:(id)a3
+- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithRemoteScheduleUnavailableRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v9.receiver = self;
   v9.super_class = HDDismissedRemoteScheduleUnavailableRecordInsertOperation;
   v5 = [(HDDismissedRemoteScheduleUnavailableRecordInsertOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [recordsCopy copy];
     dismissedRecords = v5->_dismissedRecords;
     v5->_dismissedRecords = v6;
   }
@@ -22,10 +22,10 @@
   return v5;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  transactionCopy = transaction;
   if ([(NSArray *)self->_dismissedRecords count])
   {
     v18 = 0u;
@@ -47,7 +47,7 @@
             objc_enumerationMutation(v8);
           }
 
-          if (![HDDismissedRemoteScheduleUnavailableRecordEntity _insertRemoteScheduleUnavailableRecord:v7 transaction:a5 error:?])
+          if (![HDDismissedRemoteScheduleUnavailableRecordEntity _insertRemoteScheduleUnavailableRecord:transactionCopy transaction:error error:?])
           {
             v13 = 0;
             goto LABEL_12;
@@ -77,16 +77,16 @@ LABEL_12:
   return v13;
 }
 
-- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithCoder:(id)a3
+- (HDDismissedRemoteScheduleUnavailableRecordInsertOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = HDDismissedRemoteScheduleUnavailableRecordInsertOperation;
   v5 = [(HDDismissedRemoteScheduleUnavailableRecordInsertOperation *)&v10 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"dismissed_remote_schedule_unavailable_records"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"dismissed_remote_schedule_unavailable_records"];
     dismissedRecords = v5->_dismissedRecords;
     v5->_dismissedRecords = v7;
   }

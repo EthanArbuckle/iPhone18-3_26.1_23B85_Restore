@@ -1,37 +1,37 @@
 @interface HKGraphViewRendererSeriesRow
 - (CGRect)yAxisRect;
-- (HKGraphViewRendererSeriesRow)initWithRowSeries:(id)a3 mainSeriesForRow:(id)a4 selectedSeriesForRow:(id)a5 selectedRangeBoundariesXValue:(id)a6 selectedTouchPointCount:(int64_t)a7 yAxisRect:(CGRect)a8 axisAnnotationHandler:(id)a9;
+- (HKGraphViewRendererSeriesRow)initWithRowSeries:(id)series mainSeriesForRow:(id)row selectedSeriesForRow:(id)forRow selectedRangeBoundariesXValue:(id)value selectedTouchPointCount:(int64_t)count yAxisRect:(CGRect)rect axisAnnotationHandler:(id)handler;
 @end
 
 @implementation HKGraphViewRendererSeriesRow
 
-- (HKGraphViewRendererSeriesRow)initWithRowSeries:(id)a3 mainSeriesForRow:(id)a4 selectedSeriesForRow:(id)a5 selectedRangeBoundariesXValue:(id)a6 selectedTouchPointCount:(int64_t)a7 yAxisRect:(CGRect)a8 axisAnnotationHandler:(id)a9
+- (HKGraphViewRendererSeriesRow)initWithRowSeries:(id)series mainSeriesForRow:(id)row selectedSeriesForRow:(id)forRow selectedRangeBoundariesXValue:(id)value selectedTouchPointCount:(int64_t)count yAxisRect:(CGRect)rect axisAnnotationHandler:(id)handler
 {
-  height = a8.size.height;
-  width = a8.size.width;
-  y = a8.origin.y;
-  x = a8.origin.x;
-  v27 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  seriesCopy = series;
+  rowCopy = row;
+  forRowCopy = forRow;
+  valueCopy = value;
+  handlerCopy = handler;
   v28.receiver = self;
   v28.super_class = HKGraphViewRendererSeriesRow;
   v23 = [(HKGraphViewRendererSeriesRow *)&v28 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_overlaidSeries, a3);
-    objc_storeStrong(&v24->_mainSeriesForRow, a4);
-    objc_storeStrong(&v24->_selectedSeriesForRow, a5);
-    objc_storeStrong(&v24->_selectedRangeBoundariesXValue, a6);
-    v24->_selectedTouchPointCount = a7;
+    objc_storeStrong(&v23->_overlaidSeries, series);
+    objc_storeStrong(&v24->_mainSeriesForRow, row);
+    objc_storeStrong(&v24->_selectedSeriesForRow, forRow);
+    objc_storeStrong(&v24->_selectedRangeBoundariesXValue, value);
+    v24->_selectedTouchPointCount = count;
     v24->_yAxisRect.origin.x = x;
     v24->_yAxisRect.origin.y = y;
     v24->_yAxisRect.size.width = width;
     v24->_yAxisRect.size.height = height;
-    objc_storeStrong(&v24->_axisAnnotationHandler, a9);
+    objc_storeStrong(&v24->_axisAnnotationHandler, handler);
   }
 
   return v24;

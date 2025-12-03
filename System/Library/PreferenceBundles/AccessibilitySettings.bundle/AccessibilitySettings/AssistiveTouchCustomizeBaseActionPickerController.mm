@@ -1,15 +1,15 @@
 @interface AssistiveTouchCustomizeBaseActionPickerController
-- (id)_formattedTextForLocalizedIconString:(id)a3;
-- (id)astTitleForSection:(int64_t)a3;
-- (id)createASTIconSpecifier:(id)a3;
-- (id)formattedTextForIconAtIndexPath:(id)a3;
-- (id)iconForIndexPath:(id)a3;
+- (id)_formattedTextForLocalizedIconString:(id)string;
+- (id)astTitleForSection:(int64_t)section;
+- (id)createASTIconSpecifier:(id)specifier;
+- (id)formattedTextForIconAtIndexPath:(id)path;
+- (id)iconForIndexPath:(id)path;
 - (id)iconSpecifiers;
-- (id)localizedIconForIndexPath:(id)a3;
-- (id)localizedSortedIcons:(id)a3;
-- (int64_t)astNumberOfRowsInSection:(int64_t)a3;
-- (void)astTableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)astTableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)localizedIconForIndexPath:(id)path;
+- (id)localizedSortedIcons:(id)icons;
+- (int64_t)astNumberOfRowsInSection:(int64_t)section;
+- (void)astTableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)astTableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)loadView;
 - (void)reloadASTDataSource;
 - (void)reloadSpecifiers;
@@ -88,17 +88,17 @@
   v4.receiver = self;
   v4.super_class = AssistiveTouchCustomizeBaseActionPickerController;
   [(AssistiveTouchCustomizeBaseActionPickerController *)&v4 loadView];
-  v3 = [(AssistiveTouchCustomizeBaseActionPickerController *)self table];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
+  table = [(AssistiveTouchCustomizeBaseActionPickerController *)self table];
+  [table setRowHeight:UITableViewAutomaticDimension];
 
   [(AssistiveTouchCustomizeBaseActionPickerController *)self reloadASTDataSource];
 }
 
-- (id)createASTIconSpecifier:(id)a3
+- (id)createASTIconSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = AXUIAssistiveTouchStringForName();
-  if ([v4 isEqualToString:@"__NONE__"])
+  if ([specifierCopy isEqualToString:@"__NONE__"])
   {
     v6 = settingsLocString(@"NONE", @"HandSettings");
 
@@ -108,28 +108,28 @@
   v7 = [(AssistiveTouchCustomizeBaseActionPickerController *)self _formattedTextForLocalizedIconString:v5];
 
   v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:0 set:0 get:0 detail:0 cell:3 edit:0];
-  [v8 setProperty:v4 forKey:PSIDKey];
+  [v8 setProperty:specifierCopy forKey:PSIDKey];
 
   return v8;
 }
 
-- (id)localizedSortedIcons:(id)a3
+- (id)localizedSortedIcons:(id)icons
 {
-  v3 = a3;
+  iconsCopy = icons;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __74__AssistiveTouchCustomizeBaseActionPickerController_localizedSortedIcons___block_invoke;
   v10[3] = &unk_258738;
   v4 = objc_alloc_init(NSMutableDictionary);
   v11 = v4;
-  [v3 enumerateObjectsUsingBlock:v10];
+  [iconsCopy enumerateObjectsUsingBlock:v10];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __74__AssistiveTouchCustomizeBaseActionPickerController_localizedSortedIcons___block_invoke_2;
   v8[3] = &unk_256AC8;
   v9 = v4;
   v5 = v4;
-  v6 = [v3 sortedArrayUsingComparator:v8];
+  v6 = [iconsCopy sortedArrayUsingComparator:v8];
 
   return v6;
 }
@@ -152,26 +152,26 @@ id __74__AssistiveTouchCustomizeBaseActionPickerController_localizedSortedIcons_
   return v9;
 }
 
-- (id)formattedTextForIconAtIndexPath:(id)a3
+- (id)formattedTextForIconAtIndexPath:(id)path
 {
-  v4 = [(AssistiveTouchCustomizeBaseActionPickerController *)self localizedIconForIndexPath:a3];
+  v4 = [(AssistiveTouchCustomizeBaseActionPickerController *)self localizedIconForIndexPath:path];
   v5 = [(AssistiveTouchCustomizeBaseActionPickerController *)self _formattedTextForLocalizedIconString:v4];
 
   return v5;
 }
 
-- (id)_formattedTextForLocalizedIconString:(id)a3
+- (id)_formattedTextForLocalizedIconString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"-\n"];
+  stringCopy = string;
+  v4 = [stringCopy rangeOfString:@"-\n"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v3 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+    [stringCopy stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
   }
 
   else
   {
-    [v3 stringByReplacingCharactersInRange:v4 withString:{v5, &stru_25D420}];
+    [stringCopy stringByReplacingCharactersInRange:v4 withString:{v5, &stru_25D420}];
   }
   v6 = ;
 
@@ -401,58 +401,58 @@ LABEL_12:
   [(AssistiveTouchCustomizeBaseActionPickerController *)&v3 reloadSpecifiers];
 }
 
-- (id)astTitleForSection:(int64_t)a3
+- (id)astTitleForSection:(int64_t)section
 {
-  v3 = [(NSMutableArray *)self->_shownIconSections objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_shownIconSections objectAtIndexedSubscript:section];
   v4 = [v3 objectForKeyedSubscript:@"title"];
 
   return v4;
 }
 
-- (int64_t)astNumberOfRowsInSection:(int64_t)a3
+- (int64_t)astNumberOfRowsInSection:(int64_t)section
 {
-  v3 = [(NSMutableArray *)self->_shownIconSections objectAtIndexedSubscript:a3];
+  v3 = [(NSMutableArray *)self->_shownIconSections objectAtIndexedSubscript:section];
   v4 = [v3 objectForKeyedSubscript:@"icons"];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)iconForIndexPath:(id)a3
+- (id)iconForIndexPath:(id)path
 {
   shownIconSections = self->_shownIconSections;
-  v4 = a3;
-  v5 = -[NSMutableArray objectAtIndexedSubscript:](shownIconSections, "objectAtIndexedSubscript:", [v4 section]);
+  pathCopy = path;
+  v5 = -[NSMutableArray objectAtIndexedSubscript:](shownIconSections, "objectAtIndexedSubscript:", [pathCopy section]);
   v6 = [v5 objectForKeyedSubscript:@"icons"];
-  v7 = [v4 row];
+  v7 = [pathCopy row];
 
   v8 = [v6 objectAtIndexedSubscript:v7];
 
   return v8;
 }
 
-- (id)localizedIconForIndexPath:(id)a3
+- (id)localizedIconForIndexPath:(id)path
 {
-  v3 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:a3];
+  v3 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:path];
   v4 = AXUIAssistiveTouchStringForName();
 
   return v4;
 }
 
-- (void)astTableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)astTableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:pathCopy];
   v8 = [(AssistiveTouchCustomizeBaseActionPickerController *)self _isIconTypeEnabled:v7];
 
   if (v8)
   {
-    v9 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:v6];
+    v9 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:pathCopy];
     [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:v9];
 
-    v10 = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
-    v11 = [v10 isEqualToString:AXAssistiveTouchIconTypeMagnifier];
+    selectedPopoverIcon = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
+    v11 = [selectedPopoverIcon isEqualToString:AXAssistiveTouchIconTypeMagnifier];
 
     if (v11)
     {
@@ -460,25 +460,25 @@ LABEL_12:
       [v12 setMagnifierEnabled:1];
     }
 
-    [v13 deselectRowAtIndexPath:v6 animated:1];
-    if (*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] == v13)
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    if (*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] == viewCopy)
     {
       [(AssistiveTouchCustomizeBaseActionPickerController *)self reloadSpecifiers];
     }
 
     else
     {
-      [v13 reloadData];
+      [viewCopy reloadData];
     }
   }
 }
 
-- (void)astTableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)astTableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v7 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:a5];
-  v8 = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
-  v9 = [v7 isEqualToString:v8];
+  cellCopy = cell;
+  v7 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconForIndexPath:path];
+  selectedPopoverIcon = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
+  v9 = [v7 isEqualToString:selectedPopoverIcon];
 
   v10 = 3;
   if (v9)
@@ -491,17 +491,17 @@ LABEL_12:
     v11 = 0;
   }
 
-  [v14 setAccessoryType:v11];
+  [cellCopy setAccessoryType:v11];
   v12 = [(AssistiveTouchCustomizeBaseActionPickerController *)self _isIconTypeEnabled:v7];
   if (!v12)
   {
     v10 = 0;
   }
 
-  v13 = [v14 textLabel];
-  [v13 setEnabled:v12];
+  textLabel = [cellCopy textLabel];
+  [textLabel setEnabled:v12];
 
-  [v14 setSelectionStyle:v10];
+  [cellCopy setSelectionStyle:v10];
 }
 
 @end

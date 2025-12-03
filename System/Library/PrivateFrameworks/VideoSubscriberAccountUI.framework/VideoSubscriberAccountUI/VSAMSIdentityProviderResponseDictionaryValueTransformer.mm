@@ -1,23 +1,23 @@
 @interface VSAMSIdentityProviderResponseDictionaryValueTransformer
-- (id)createProviderAppArtworkFromAttributes:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)createProviderAppArtworkFromAttributes:(id)attributes;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSAMSIdentityProviderResponseDictionaryValueTransformer
 
-- (id)createProviderAppArtworkFromAttributes:(id)a3
+- (id)createProviderAppArtworkFromAttributes:(id)attributes
 {
-  v3 = [a3 vs_dictionaryForKey:*MEMORY[0x277CE23D0]];
-  v4 = [MEMORY[0x277CE2238] currentDevice];
-  v5 = [v4 stringForAMSPlatformAttributes];
-  v6 = [v3 vs_dictionaryForKey:v5];
+  v3 = [attributes vs_dictionaryForKey:*MEMORY[0x277CE23D0]];
+  currentDevice = [MEMORY[0x277CE2238] currentDevice];
+  stringForAMSPlatformAttributes = [currentDevice stringForAMSPlatformAttributes];
+  v6 = [v3 vs_dictionaryForKey:stringForAMSPlatformAttributes];
 
   if (!v6)
   {
-    v7 = [v4 bincompatOS];
-    if (v7)
+    bincompatOS = [currentDevice bincompatOS];
+    if (bincompatOS)
     {
-      v6 = [v3 vs_dictionaryForKey:v7];
+      v6 = [v3 vs_dictionaryForKey:bincompatOS];
     }
 
     else
@@ -29,15 +29,15 @@
   return v6;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v179 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v173 = v3;
+    v173 = valueCopy;
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Handling response %@", buf, 0xCu);
   }
 
@@ -48,7 +48,7 @@
   {
     v112 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v102 = *MEMORY[0x277CE23F8];
-    v7 = [v3 vs_arrayForKey:?];
+    v7 = [valueCopy vs_arrayForKey:?];
     v101 = v7;
     if (v7)
     {
@@ -91,7 +91,7 @@
         v130 = *MEMORY[0x277CE2350];
         v131 = *MEMORY[0x277CE2358];
         v119 = v5;
-        v120 = v3;
+        v120 = valueCopy;
         v118 = v8;
         v135 = *v168;
         while (1)
@@ -170,7 +170,7 @@
                 [v27 enumerateKeysAndObjectsUsingBlock:v165];
                 v148 = [v22 vs_stringForKey:v124];
                 v138 = [v22 vs_numberForKey:v123];
-                v29 = [v138 BOOLValue];
+                bOOLValue = [v138 BOOLValue];
                 v145 = v24;
                 v30 = v24 == 0;
                 v142 = [v22 vs_arrayOfStringsForKey:v122];
@@ -178,7 +178,7 @@
                 v150 = [v22 vs_stringForKey:@"minimumOSVersion"];
                 if (v20)
                 {
-                  v155 = v29;
+                  v155 = bOOLValue;
                   v31 = v20;
                   v32 = -[NSObject length](v31, "length") && -[NSObject length](v148, "length") && (-[NSObject containsObject:](v112, "containsObject:", v31) & 1) == 0 && [v140 count] != 0;
                   v129 = v23;
@@ -193,12 +193,12 @@
                     goto LABEL_54;
                   }
 
-                  v33 = [MEMORY[0x277CE2238] currentDevice];
-                  v34 = [v33 productVersion];
+                  currentDevice = [MEMORY[0x277CE2238] currentDevice];
+                  productVersion = [currentDevice productVersion];
 
-                  if (v34)
+                  if (productVersion)
                   {
-                    v35 = [v150 compare:v34 options:64] != 1 && v32;
+                    v35 = [v150 compare:productVersion options:64] != 1 && v32;
 
                     if (v35)
                     {
@@ -305,7 +305,7 @@ LABEL_39:
 
                     v5 = v119;
                     v154 = v36;
-                    v3 = v120;
+                    valueCopy = v120;
                     v8 = v118;
                   }
 
@@ -407,7 +407,7 @@ LABEL_39:
                 }
 
                 v5 = v119;
-                v3 = v120;
+                valueCopy = v120;
                 v8 = v118;
                 v6 = 0x277CBE000;
                 v12 = v153;
@@ -471,7 +471,7 @@ LABEL_92:
     v112 = VSErrorLogObject();
     if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
     {
-      [(VSAMSIdentityProviderResponseDictionaryValueTransformer *)v3 transformedValue:v112];
+      [(VSAMSIdentityProviderResponseDictionaryValueTransformer *)valueCopy transformedValue:v112];
     }
   }
 

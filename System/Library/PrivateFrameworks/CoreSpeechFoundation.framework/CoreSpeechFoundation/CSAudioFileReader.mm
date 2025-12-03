@@ -1,7 +1,7 @@
 @interface CSAudioFileReader
-- (BOOL)prepareRecording:(id)a3;
+- (BOOL)prepareRecording:(id)recording;
 - (BOOL)startRecording;
-- (CSAudioFileReader)initWithURL:(id)a3;
+- (CSAudioFileReader)initWithURL:(id)l;
 - (CSAudioFileReaderDelegate)delegate;
 - (void)_readAudioBufferAndFeed;
 - (void)close;
@@ -199,12 +199,12 @@ void __35__CSAudioFileReader_startRecording__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)prepareRecording:(id)a3
+- (BOOL)prepareRecording:(id)recording
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordingCopy = recording;
+  v5 = recordingCopy;
+  if (!recordingCopy)
   {
     v19 = CSLogCategoryAudio;
     if (!os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -219,14 +219,14 @@ void __35__CSAudioFileReader_startRecording__block_invoke_2(uint64_t a1)
   }
 
   v6 = *MEMORY[0x1E69582B8];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69582B8]];
+  v7 = [recordingCopy objectForKeyedSubscript:*MEMORY[0x1E69582B8]];
   if (v7)
   {
     v8 = v7;
     v9 = [v5 objectForKeyedSubscript:v6];
-    v10 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-    if (v10 != 1819304813)
+    if (unsignedIntegerValue != 1819304813)
     {
       v19 = CSLogCategoryAudio;
       if (!os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_ERROR))
@@ -325,14 +325,14 @@ LABEL_23:
   return v38;
 }
 
-- (CSAudioFileReader)initWithURL:(id)a3
+- (CSAudioFileReader)initWithURL:(id)l
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = CSAudioFileReader;
   v5 = [(CSAudioFileReader *)&v14 init];
-  if (v5 && (v6 = dispatch_queue_create("CSAudioFileReader Queue", 0), queue = v5->_queue, v5->_queue = v6, queue, (v8 = ExtAudioFileOpenURL(v4, &v5->_fFile)) != 0))
+  if (v5 && (v6 = dispatch_queue_create("CSAudioFileReader Queue", 0), queue = v5->_queue, v5->_queue = v6, queue, (v8 = ExtAudioFileOpenURL(lCopy, &v5->_fFile)) != 0))
   {
     v9 = v8;
     v10 = CSLogCategoryAudio;
@@ -341,7 +341,7 @@ LABEL_23:
       *buf = 136315650;
       v16 = "[CSAudioFileReader initWithURL:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = lCopy;
       v19 = 1024;
       v20 = v9;
       _os_log_error_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_ERROR, "%s ::: Error reading file %@, err: %d", buf, 0x1Cu);

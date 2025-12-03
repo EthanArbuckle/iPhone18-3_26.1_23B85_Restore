@@ -1,20 +1,20 @@
 @interface CPLCloudKitOperationContext
 - (CKOperation)operation;
 - (double)approximativeBlockedInterval;
-- (id)startDateDescriptionWithNow:(id)a3;
-- (void)setProgress:(double)a3;
+- (id)startDateDescriptionWithNow:(id)now;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation CPLCloudKitOperationContext
 
-- (id)startDateDescriptionWithNow:(id)a3
+- (id)startDateDescriptionWithNow:(id)now
 {
-  v4 = a3;
-  v5 = v4;
+  nowCopy = now;
+  v5 = nowCopy;
   startDate = self->_startDate;
   if (startDate)
   {
-    if (!v4)
+    if (!nowCopy)
     {
       v5 = +[NSDate date];
       startDate = self->_startDate;
@@ -65,7 +65,7 @@
   return v9;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   v5 = +[NSDate date];
   lastProgressDate = self->_lastProgressDate;
@@ -76,13 +76,13 @@
     objc_storeStrong(&self->_firstProgressDate, self->_lastProgressDate);
   }
 
-  v7 = 2.22507386e-308;
-  if (a3 != 0.0)
+  progressCopy = 2.22507386e-308;
+  if (progress != 0.0)
   {
-    v7 = a3;
+    progressCopy = progress;
   }
 
-  self->_progress = v7;
+  self->_progress = progressCopy;
 }
 
 - (double)approximativeBlockedInterval

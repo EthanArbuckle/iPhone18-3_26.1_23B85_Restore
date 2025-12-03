@@ -1,11 +1,11 @@
 @interface RBSDurationAttribute
-+ (id)attributeWithDuration:(double)a3 warningDuration:(double)a4 startPolicy:(unint64_t)a5 endPolicy:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (RBSDurationAttribute)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithInvalidationDuration:(unint64_t)a3 warningDuration:(double)a4 startPolicy:(double)a5 endPolicy:;
++ (id)attributeWithDuration:(double)duration warningDuration:(double)warningDuration startPolicy:(unint64_t)policy endPolicy:(unint64_t)endPolicy;
+- (BOOL)isEqual:(id)equal;
+- (RBSDurationAttribute)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithInvalidationDuration:(unint64_t)duration warningDuration:(double)warningDuration startPolicy:(double)policy endPolicy:;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSDurationAttribute
@@ -34,85 +34,85 @@
   return v9;
 }
 
-+ (id)attributeWithDuration:(double)a3 warningDuration:(double)a4 startPolicy:(unint64_t)a5 endPolicy:(unint64_t)a6
++ (id)attributeWithDuration:(double)duration warningDuration:(double)warningDuration startPolicy:(unint64_t)policy endPolicy:(unint64_t)endPolicy
 {
-  v6 = [[RBSDurationAttribute alloc] _initWithInvalidationDuration:a5 warningDuration:a6 startPolicy:a3 endPolicy:a4];
+  v6 = [[RBSDurationAttribute alloc] _initWithInvalidationDuration:policy warningDuration:endPolicy startPolicy:duration endPolicy:warningDuration];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSDurationAttribute;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_startPolicy == *(v4 + 3) && self->_endPolicy == *(v4 + 4) && vabdd_f64(self->_invalidationDuration, *(v4 + 1)) < 0.00000011920929 && vabdd_f64(self->_warningDuration, *(v4 + 2)) < 0.00000011920929;
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_startPolicy == *(equalCopy + 3) && self->_endPolicy == *(equalCopy + 4) && vabdd_f64(self->_invalidationDuration, *(equalCopy + 1)) < 0.00000011920929 && vabdd_f64(self->_warningDuration, *(equalCopy + 2)) < 0.00000011920929;
 
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSDurationAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
   [(RBSDurationAttribute *)self invalidationDuration:v5.receiver];
-  [v4 encodeDouble:@"invalidationDuration" forKey:?];
+  [coderCopy encodeDouble:@"invalidationDuration" forKey:?];
   [(RBSDurationAttribute *)self warningDuration];
-  [v4 encodeDouble:@"warningDuration" forKey:?];
-  [v4 encodeInt64:-[RBSDurationAttribute startPolicy](self forKey:{"startPolicy"), @"startPolicy"}];
-  [v4 encodeInt64:-[RBSDurationAttribute endPolicy](self forKey:{"endPolicy"), @"endPolicy"}];
+  [coderCopy encodeDouble:@"warningDuration" forKey:?];
+  [coderCopy encodeInt64:-[RBSDurationAttribute startPolicy](self forKey:{"startPolicy"), @"startPolicy"}];
+  [coderCopy encodeInt64:-[RBSDurationAttribute endPolicy](self forKey:{"endPolicy"), @"endPolicy"}];
 }
 
-- (RBSDurationAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSDurationAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSDurationAttribute;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"invalidationDuration"];
+    [coderCopy decodeDoubleForKey:@"invalidationDuration"];
     [(RBSDurationAttribute *)v5 setInvalidationDuration:?];
-    [v4 decodeDoubleForKey:@"warningDuration"];
+    [coderCopy decodeDoubleForKey:@"warningDuration"];
     [(RBSDurationAttribute *)v5 setWarningDuration:?];
-    -[RBSDurationAttribute setStartPolicy:](v5, "setStartPolicy:", [v4 decodeInt64ForKey:@"startPolicy"]);
-    -[RBSDurationAttribute setEndPolicy:](v5, "setEndPolicy:", [v4 decodeInt64ForKey:@"endPolicy"]);
+    -[RBSDurationAttribute setStartPolicy:](v5, "setStartPolicy:", [coderCopy decodeInt64ForKey:@"startPolicy"]);
+    -[RBSDurationAttribute setEndPolicy:](v5, "setEndPolicy:", [coderCopy decodeInt64ForKey:@"endPolicy"]);
   }
 
   return v5;
 }
 
-- (id)_initWithInvalidationDuration:(unint64_t)a3 warningDuration:(double)a4 startPolicy:(double)a5 endPolicy:
+- (id)_initWithInvalidationDuration:(unint64_t)duration warningDuration:(double)warningDuration startPolicy:(double)policy endPolicy:
 {
   if (result)
   {
     v9 = result;
-    if (a4 < 0.0)
+    if (warningDuration < 0.0)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_2();
       [v12 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
-    if (a5 < 0.0 || a5 >= a4)
+    if (policy < 0.0 || policy >= warningDuration)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_2();
       [v18 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
     if ((a2 - 104) <= 0xFFFFFFFFFFFFFF98)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_2();
       [v14 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
 
-    if (a3 >= 3)
+    if (duration >= 3)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       OUTLINED_FUNCTION_0_2();
       [v16 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
     }
@@ -122,10 +122,10 @@
     result = objc_msgSendSuper2(&v19, sel__init);
     if (result)
     {
-      *(result + 1) = a4;
-      *(result + 2) = a5;
+      *(result + 1) = warningDuration;
+      *(result + 2) = policy;
       *(result + 3) = a2;
-      *(result + 4) = a3;
+      *(result + 4) = duration;
     }
   }
 

@@ -1,44 +1,44 @@
 @interface AMDDODMLTrainer
-- (id)runTask:(id)a3 error:(id *)a4 errorDomain:(id)a5 dataProvider:(id)a6 attachmentProcessor:(id)a7;
-- (id)taskResultFromDict:(id)a3;
+- (id)runTask:(id)task error:(id *)error errorDomain:(id)domain dataProvider:(id)provider attachmentProcessor:(id)processor;
+- (id)taskResultFromDict:(id)dict;
 @end
 
 @implementation AMDDODMLTrainer
 
-- (id)runTask:(id)a3 error:(id *)a4 errorDomain:(id)a5 dataProvider:(id)a6 attachmentProcessor:(id)a7
+- (id)runTask:(id)task error:(id *)error errorDomain:(id)domain dataProvider:(id)provider attachmentProcessor:(id)processor
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
+  objc_storeStrong(location, task);
+  errorCopy = error;
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, domain);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
+  objc_storeStrong(&v25, provider);
   v24 = 0;
-  objc_storeStrong(&v24, a7);
+  objc_storeStrong(&v24, processor);
   v7 = [AMDDODMLModelMetadata alloc];
-  v23 = [(AMDDODMLModelMetadata *)v7 initModelMetadata:location[0] error:v27 errorDomain:v26];
+  v23 = [(AMDDODMLModelMetadata *)v7 initModelMetadata:location[0] error:errorCopy errorDomain:v26];
   if (v23)
   {
     v8 = [AMDDODMLEspressoModel alloc];
-    v21 = [(AMDDODMLEspressoModel *)v8 initWithModelMetadata:v23 withAttachmentProcessor:v24 error:v27 errorDomain:v26];
+    v21 = [(AMDDODMLEspressoModel *)v8 initWithModelMetadata:v23 withAttachmentProcessor:v24 error:errorCopy errorDomain:v26];
     if (v21)
     {
       v20 = [v25 numberOfIterationsPerEpoch:{objc_msgSend(v23, "batchSize")}];
       if (v20)
       {
-        v19 = [v23 numLocalIterations];
+        numLocalIterations = [v23 numLocalIterations];
         if ([v23 numEpochs] > 0)
         {
-          v19 = ([v23 numEpochs] * v20);
+          numLocalIterations = ([v23 numEpochs] * v20);
         }
 
-        v18 = [v21 trainOnData:v25 numLocalIterations:v19 error:v27 errorDomain:v26];
+        v18 = [v21 trainOnData:v25 numLocalIterations:numLocalIterations error:errorCopy errorDomain:v26];
         if (v18)
         {
-          v30 = [(AMDDODMLTrainer *)v29 taskResultFromDict:v18];
+          v30 = [(AMDDODMLTrainer *)selfCopy taskResultFromDict:v18];
         }
 
         else
@@ -55,7 +55,7 @@
         v9 = [NSError alloc];
         v13 = [v9 initWithDomain:v26 code:127 userInfo:0];
         v10 = v13;
-        *v27 = v13;
+        *errorCopy = v13;
         v30 = 0;
         v22 = 1;
       }
@@ -86,12 +86,12 @@
   return v11;
 }
 
-- (id)taskResultFromDict:(id)a3
+- (id)taskResultFromDict:(id)dict
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v7 = [location[0] mutableCopy];
   v6 = [v7 objectForKeyedSubscript:ModelDeltas];
   [v7 removeObjectForKey:ModelDeltas];

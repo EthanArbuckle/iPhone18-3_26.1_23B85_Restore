@@ -1,6 +1,6 @@
 @interface FigCaptureSourceConfiguration
-+ (id)stringForSourcePosition:(int)a3;
-+ (int)sourceTypeForString:(id)a3;
++ (id)stringForSourcePosition:(int)position;
++ (int)sourceTypeForString:(id)string;
 - ($273FE01EDA4852E8FFB0AF95686D18CC)externalSyncFrameRate;
 - ($273FE01EDA4852E8FFB0AF95686D18CC)lockedFrameRate;
 - ($273FE01EDA4852E8FFB0AF95686D18CC)pulseGeneratorFrameRate;
@@ -8,14 +8,14 @@
 - ($273FE01EDA4852E8FFB0AF95686D18CC)requiredMinFrameRate;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)lensSmudgeDetectionInterval;
 - (BOOL)bravoShiftMitigationEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)proResRawCaptureEnabled;
 - (CGSize)normalizedNonDestructiveCropSize;
-- (FigCaptureSourceConfiguration)initWithSource:(OpaqueFigCaptureSource *)a3;
-- (FigCaptureSourceConfiguration)initWithSourceType:(int)a3;
-- (FigCaptureSourceConfiguration)initWithXPCEncoding:(id)a3;
+- (FigCaptureSourceConfiguration)initWithSource:(OpaqueFigCaptureSource *)source;
+- (FigCaptureSourceConfiguration)initWithSourceType:(int)type;
+- (FigCaptureSourceConfiguration)initWithXPCEncoding:(id)encoding;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (int)sourceDeviceType;
 - (int)sourcePosition;
@@ -24,8 +24,8 @@
 - (uint64_t)_sourceToken;
 - (uint64_t)description;
 - (void)dealloc;
-- (void)setLensSmudgeDetectionInterval:(id *)a3;
-- (void)setMaxExposureDurationClientOverride:(id *)a3;
+- (void)setLensSmudgeDetectionInterval:(id *)interval;
+- (void)setMaxExposureDurationClientOverride:(id *)override;
 @end
 
 @implementation FigCaptureSourceConfiguration
@@ -34,10 +34,10 @@
 {
   IntAttribute = FigCaptureSourceGetIntAttribute([(FigCaptureSourceConfiguration *)self source], @"DeviceType", 0);
   v4 = (IntAttribute > 9) | (0xEFu >> IntAttribute);
-  v5 = [(FigCaptureSourceConfiguration *)self spatialOverCaptureEnabled];
+  spatialOverCaptureEnabled = [(FigCaptureSourceConfiguration *)self spatialOverCaptureEnabled];
   [(FigCaptureSourceVideoFormat *)[(FigCaptureSourceConfiguration *)self requiredFormat] maxContinuousZoomFactorForDepthDataDelivery];
   LOBYTE(v7) = v4 ^ 1;
-  if ((v4 & 1) == 0 && !v5)
+  if ((v4 & 1) == 0 && !spatialOverCaptureEnabled)
   {
     v8 = v6;
     v7 = ![(FigCaptureSourceConfiguration *)self depthDataDeliveryEnabled];
@@ -174,15 +174,15 @@
 
 - (uint64_t)description
 {
-  v4 = [a1 requiredFormat];
+  requiredFormat = [self requiredFormat];
   v5 = MEMORY[0x1E696AD60];
-  v6 = +[FigCaptureSourceConfiguration stringForSourceDeviceType:](FigCaptureSourceConfiguration, "stringForSourceDeviceType:", [a1 sourceDeviceType]);
-  v7 = +[FigCaptureSourceConfiguration stringForSourcePosition:](FigCaptureSourceConfiguration, "stringForSourcePosition:", [a1 sourcePosition]);
-  [v4 format];
-  v8 = [v5 stringWithFormat:@"SRC:%@ %@ %@/%dx%d", v6, v7, BWStringForOSType(), objc_msgSend(v4, "dimensions"), objc_msgSend(v4, "dimensions") >> 32];
-  if (FigCaptureFrameRateIsValidRational(*(a1 + 176), *(a1 + 184)))
+  v6 = +[FigCaptureSourceConfiguration stringForSourceDeviceType:](FigCaptureSourceConfiguration, "stringForSourceDeviceType:", [self sourceDeviceType]);
+  v7 = +[FigCaptureSourceConfiguration stringForSourcePosition:](FigCaptureSourceConfiguration, "stringForSourcePosition:", [self sourcePosition]);
+  [requiredFormat format];
+  v8 = [v5 stringWithFormat:@"SRC:%@ %@ %@/%dx%d", v6, v7, BWStringForOSType(), objc_msgSend(requiredFormat, "dimensions"), objc_msgSend(requiredFormat, "dimensions") >> 32];
+  if (FigCaptureFrameRateIsValidRational(*(self + 176), *(self + 184)))
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(locked:%@)", FigCaptureFrameRateAsString(*(a1 + 176), *(a1 + 184))];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(locked:%@)", FigCaptureFrameRateAsString(*(self + 176), *(self + 184))];
   }
 
   else
@@ -190,9 +190,9 @@
     v9 = &stru_1F216A3D0;
   }
 
-  if (FigCaptureFrameRateIsValidRational(*(a1 + 188), *(a1 + 196)))
+  if (FigCaptureFrameRateIsValidRational(*(self + 188), *(self + 196)))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(externalSync:%@)", FigCaptureFrameRateAsString(*(a1 + 188), *(a1 + 196))];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(externalSync:%@)", FigCaptureFrameRateAsString(*(self + 188), *(self + 196))];
   }
 
   else
@@ -200,18 +200,18 @@
     v10 = &stru_1F216A3D0;
   }
 
-  v11 = [a1 requiredMinFrameRate];
-  v13 = FigCaptureFrameRateAsString(v11, v12);
-  v14 = [a1 requiredMaxFrameRate];
-  v16 = FigCaptureFrameRateAsString(v14, v15);
-  [a1 maxFrameRateClientOverride];
+  requiredMinFrameRate = [self requiredMinFrameRate];
+  v13 = FigCaptureFrameRateAsString(requiredMinFrameRate, v12);
+  requiredMaxFrameRate = [self requiredMaxFrameRate];
+  v16 = FigCaptureFrameRateAsString(requiredMaxFrameRate, v15);
+  [self maxFrameRateClientOverride];
   v18 = v17;
-  [a1 videoZoomFactor];
-  [v8 appendFormat:@", %@-%@(max:%.0f)%@%@, Z:%.2f, ICM:%d", v13, v16, *&v18, v9, v10, v19, objc_msgSend(a1, "imageControlMode")];
-  if ([objc_msgSend(a1 "fallbackPrimaryConstituentDeviceTypes")])
+  [self videoZoomFactor];
+  [v8 appendFormat:@", %@-%@(max:%.0f)%@%@, Z:%.2f, ICM:%d", v13, v16, *&v18, v9, v10, v19, objc_msgSend(self, "imageControlMode")];
+  if ([objc_msgSend(self "fallbackPrimaryConstituentDeviceTypes")])
   {
     [v8 appendFormat:@", FallbackDeviceTypes:"];
-    if ([objc_msgSend(a1 "fallbackPrimaryConstituentDeviceTypes")])
+    if ([objc_msgSend(self "fallbackPrimaryConstituentDeviceTypes")])
     {
       v20 = 0;
       do
@@ -226,147 +226,147 @@
           v21 = " ";
         }
 
-        [v8 appendFormat:@"%s%d", v21, objc_msgSend(objc_msgSend(objc_msgSend(a1, "fallbackPrimaryConstituentDeviceTypes"), "objectAtIndexedSubscript:", v20++), "intValue")];
+        [v8 appendFormat:@"%s%d", v21, objc_msgSend(objc_msgSend(objc_msgSend(self, "fallbackPrimaryConstituentDeviceTypes"), "objectAtIndexedSubscript:", v20++), "intValue")];
       }
 
-      while ([objc_msgSend(a1 "fallbackPrimaryConstituentDeviceTypes")] > v20);
+      while ([objc_msgSend(self "fallbackPrimaryConstituentDeviceTypes")] > v20);
     }
   }
 
-  [a1 maxGainClientOverride];
+  [self maxGainClientOverride];
   if (v22 > 0.0)
   {
-    [a1 maxGainClientOverride];
+    [self maxGainClientOverride];
     [v8 appendFormat:@", MaxGain: %.0f", v23];
   }
 
-  if (*(a1 + 136))
+  if (*(self + 136))
   {
-    [v8 appendFormat:@", (FD E:%d B:%d S:%d)", objc_msgSend(objc_msgSend(objc_msgSend(a1, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"EyeDetectionEnabled", "BOOLValue"), objc_msgSend(objc_msgSend(objc_msgSend(a1, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"BlinkDetectionEnabled", "BOOLValue"), objc_msgSend(objc_msgSend(objc_msgSend(a1, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"SmileDetectionEnabled", "BOOLValue")];
+    [v8 appendFormat:@", (FD E:%d B:%d S:%d)", objc_msgSend(objc_msgSend(objc_msgSend(self, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"EyeDetectionEnabled", "BOOLValue"), objc_msgSend(objc_msgSend(objc_msgSend(self, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"BlinkDetectionEnabled", "BOOLValue"), objc_msgSend(objc_msgSend(objc_msgSend(self, "faceDetectionConfiguration"), "objectForKeyedSubscript:", @"SmileDetectionEnabled", "BOOLValue")];
   }
 
-  if (*(a1 + 144) == 1)
+  if (*(self + 144) == 1)
   {
     [v8 appendString:{@", QHDR/SHDR:1"}];
   }
 
-  if (*(a1 + 145) == 1)
+  if (*(self + 145) == 1)
   {
     [v8 appendString:{@", HR:1"}];
   }
 
-  if (*(a1 + 148))
+  if (*(self + 148))
   {
-    [v8 appendFormat:@", ColorSpace:%d", *(a1 + 148)];
+    [v8 appendFormat:@", ColorSpace:%d", *(self + 148)];
   }
 
-  if (*(a1 + 152) == 1)
+  if (*(self + 152) == 1)
   {
-    [*(a1 + 160) format];
-    [v8 appendFormat:@", Depth:1 %@/%dx%d", BWStringForOSType(), objc_msgSend(*(a1 + 160), "dimensions"), objc_msgSend(*(a1 + 160), "dimensions") >> 32];
+    [*(self + 160) format];
+    [v8 appendFormat:@", Depth:1 %@/%dx%d", BWStringForOSType(), objc_msgSend(*(self + 160), "dimensions"), objc_msgSend(*(self + 160), "dimensions") >> 32];
   }
 
-  if (*(a1 + 172) == 1)
+  if (*(self + 172) == 1)
   {
     [v8 appendString:{@", LowLight:1"}];
   }
 
-  v24 = *(a1 + 201);
-  if (*(a1 + 200) == 1 || (v24 & 1) != 0)
+  v24 = *(self + 201);
+  if (*(self + 200) == 1 || (v24 & 1) != 0)
   {
-    [v8 appendFormat:@", SpatialOverCapture:%d, NonDestructiveCropEnabled:%d", *(a1 + 200), v24];
+    [v8 appendFormat:@", SpatialOverCapture:%d, NonDestructiveCropEnabled:%d", *(self + 200), v24];
   }
 
-  v25 = *(a1 + 216);
-  if (*(a1 + 208) > 0.0 || v25 > 0.0)
+  v25 = *(self + 216);
+  if (*(self + 208) > 0.0 || v25 > 0.0)
   {
-    [v8 appendFormat:@", NormalizedNonDestructiveCropSize:%fx%f", *(a1 + 208), *&v25];
+    [v8 appendFormat:@", NormalizedNonDestructiveCropSize:%fx%f", *(self + 208), *&v25];
   }
 
-  if (*(a1 + 224) == 1)
+  if (*(self + 224) == 1)
   {
     [v8 appendString:{@", GDC:1"}];
   }
 
-  if (*(a1 + 225) == 1)
+  if (*(self + 225) == 1)
   {
     [v8 appendString:{@", VFR:1"}];
   }
 
-  v26 = *(a1 + 228);
+  v26 = *(self + 228);
   if (v26 >= 2)
   {
     [v8 appendFormat:@", StabilizationStrength:%@", FigCaptureVideoStabilizationStrengthToString(v26)];
   }
 
-  if (*(a1 + 232) == 1)
+  if (*(self + 232) == 1)
   {
-    [v8 appendFormat:@", CinematicFraming:1(CtrlMode:%d)", *(a1 + 236)];
+    [v8 appendFormat:@", CinematicFraming:1(CtrlMode:%d)", *(self + 236)];
   }
 
-  if (*(a1 + 242) == 1)
+  if (*(self + 242) == 1)
   {
     [v8 appendString:{@", BackgroundBlur:1"}];
   }
 
-  if (*(a1 + 257) == 1)
+  if (*(self + 257) == 1)
   {
     [v8 appendString:{@", DeskCam:1"}];
   }
 
-  if (*(a1 + 244) == 1)
+  if (*(self + 244) == 1)
   {
     [v8 appendString:{@", studioLighting:1"}];
   }
 
-  if (*(a1 + 246) == 1)
+  if (*(self + 246) == 1)
   {
     [v8 appendString:{@", reactionEffects:1"}];
   }
 
-  if (*(a1 + 248) == 1)
+  if (*(self + 248) == 1)
   {
     [v8 appendString:{@", backgroundReplacement:1"}];
   }
 
-  if (*(a1 + 268) == 1)
+  if (*(self + 268) == 1)
   {
     [v8 appendString:{@", MF:1"}];
-    [v8 appendFormat:@", PAngles x:%f, y:%f, DZF:%.3f", *(a1 + 272), *(a1 + 276), *(a1 + 280)];
+    [v8 appendFormat:@", PAngles x:%f, y:%f, DZF:%.3f", *(self + 272), *(self + 276), *(self + 280)];
   }
 
-  if (*(a1 + 289) == 1)
+  if (*(self + 289) == 1)
   {
     [v8 appendString:{@", DTE:1"}];
   }
 
-  if (*(a1 + 288) == 1)
+  if (*(self + 288) == 1)
   {
     [v8 appendFormat:@", GS:%d", 1];
   }
 
-  [v8 appendFormat:@", FaceDrivenAEAFMode:%d", *(a1 + 252)];
-  [v8 appendFormat:@", FaceDrivenAEAFEnabledByDefault:%d", *(a1 + 256)];
-  if (*(a1 + 290) == 1)
+  [v8 appendFormat:@", FaceDrivenAEAFMode:%d", *(self + 252)];
+  [v8 appendFormat:@", FaceDrivenAEAFEnabledByDefault:%d", *(self + 256)];
+  if (*(self + 290) == 1)
   {
     [v8 appendFormat:@", cameraMountedInLandscape: YES"];
   }
 
-  if (*(a1 + 291) == 1)
+  if (*(self + 291) == 1)
   {
-    [v8 appendFormat:@", CV:1(SA:%.2f)", *(a1 + 292)];
+    [v8 appendFormat:@", CV:1(SA:%.2f)", *(self + 292)];
   }
 
-  [v8 appendFormat:@", Output Aspect Ratio: %d", *(a1 + 300)];
-  result = [v8 appendFormat:@", Output Aspect Ratio RequestID: %lld", *(a1 + 304)];
-  if (*(a1 + 312) == 1)
+  [v8 appendFormat:@", Output Aspect Ratio: %d", *(self + 300)];
+  result = [v8 appendFormat:@", Output Aspect Ratio RequestID: %lld", *(self + 304)];
+  if (*(self + 312) == 1)
   {
     result = [v8 appendFormat:@", LensSmudgeDetection:1"];
   }
 
-  if (*(a1 + 344))
+  if (*(self + 344))
   {
-    result = [v8 appendFormat:@", SCA:%d", *(a1 + 360)];
+    result = [v8 appendFormat:@", SCA:%d", *(self + 360)];
   }
 
   *a2 = v8;
@@ -375,13 +375,13 @@
 
 - (uint64_t)_sourceToken
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v6 = 0;
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (v1 && (v2 = *(*(CMBaseObjectGetVTable() + 8) + 48)) != 0)
   {
     v2(v1, @"SourceToken", *MEMORY[0x1E695E480], &v6);
@@ -393,9 +393,9 @@
     v3 = 0;
   }
 
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 - (id)copyXPCEncoding
@@ -403,8 +403,8 @@
   v3 = xpc_dictionary_create(0, 0, 0);
   [(FigCaptureSourceConfiguration *)self sourceID];
   FigXPCMessageSetCFString();
-  v4 = [(FigCaptureSourceConfiguration *)self _sourceToken];
-  xpc_dictionary_set_int64(v3, "sourceToken", v4);
+  _sourceToken = [(FigCaptureSourceConfiguration *)self _sourceToken];
+  xpc_dictionary_set_int64(v3, "sourceToken", _sourceToken);
   xpc_dictionary_set_int64(v3, "sourceType", [(FigCaptureSourceConfiguration *)self sourceType]);
   if (self)
   {
@@ -430,8 +430,8 @@
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v15 = [(FigCaptureSourceConfiguration *)self fallbackPrimaryConstituentDeviceTypes];
-      v16 = [(NSArray *)v15 countByEnumeratingWithState:&v44 objects:v43 count:16];
+      fallbackPrimaryConstituentDeviceTypes = [(FigCaptureSourceConfiguration *)self fallbackPrimaryConstituentDeviceTypes];
+      v16 = [(NSArray *)fallbackPrimaryConstituentDeviceTypes countByEnumeratingWithState:&v44 objects:v43 count:16];
       if (v16)
       {
         v17 = v16;
@@ -442,7 +442,7 @@
           {
             if (*v45 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(fallbackPrimaryConstituentDeviceTypes);
             }
 
             v20 = xpc_int64_create([*(*(&v44 + 1) + 8 * i) intValue]);
@@ -450,7 +450,7 @@
             xpc_release(v20);
           }
 
-          v17 = [(NSArray *)v15 countByEnumeratingWithState:&v44 objects:v43 count:16];
+          v17 = [(NSArray *)fallbackPrimaryConstituentDeviceTypes countByEnumeratingWithState:&v44 objects:v43 count:16];
         }
 
         while (v17);
@@ -475,10 +475,10 @@
       xpc_dictionary_set_int64(v3, "colorSpace", [(FigCaptureSourceConfiguration *)self colorSpace]);
       xpc_dictionary_set_BOOL(v3, "depthDataDeliveryEnabled", [(FigCaptureSourceConfiguration *)self depthDataDeliveryEnabled]);
       FigXPCMessageSetCFDictionary();
-      v22 = [(FigCaptureSourceConfiguration *)self depthDataFormat];
-      if (v22)
+      depthDataFormat = [(FigCaptureSourceConfiguration *)self depthDataFormat];
+      if (depthDataFormat)
       {
-        xpc_dictionary_set_string(v3, "depthDataFormatUniqueID", [(NSString *)[(FigCaptureSourceFormat *)v22 uniqueID] UTF8String]);
+        xpc_dictionary_set_string(v3, "depthDataFormatUniqueID", [(NSString *)[(FigCaptureSourceFormat *)depthDataFormat uniqueID] UTF8String]);
       }
 
       [(FigCaptureSourceConfiguration *)self depthDataMaxFrameRate];
@@ -517,8 +517,8 @@
         xpc_dictionary_set_BOOL(v3, "variableFrameRateVideoCaptureEnabled", [(FigCaptureSourceConfiguration *)self variableFrameRateVideoCaptureEnabled]);
       }
 
-      v28 = [(FigCaptureSourceConfiguration *)self lockedFrameRate];
-      if (FigCaptureFrameRateIsInvalid(v28, v29))
+      lockedFrameRate = [(FigCaptureSourceConfiguration *)self lockedFrameRate];
+      if (FigCaptureFrameRateIsInvalid(lockedFrameRate, v29))
       {
         v30 = &FigCaptureFrameRateInvalid;
       }
@@ -531,8 +531,8 @@
       }
 
       xpc_dictionary_set_data(v3, "lockedFrameRate", v30, 0xCuLL);
-      v33 = [(FigCaptureSourceConfiguration *)self externalSyncFrameRate];
-      if (FigCaptureFrameRateIsInvalid(v33, v34))
+      externalSyncFrameRate = [(FigCaptureSourceConfiguration *)self externalSyncFrameRate];
+      if (FigCaptureFrameRateIsInvalid(externalSyncFrameRate, v34))
       {
         v35 = &FigCaptureFrameRateInvalid;
       }
@@ -652,21 +652,21 @@
 
 - (BOOL)proResRawCaptureEnabled
 {
-  v2 = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)self requiredFormat] format];
+  format = [(FigCaptureSourceFormat *)[(FigCaptureSourceConfiguration *)self requiredFormat] format];
 
-  return FigCapturePixelFormatIsPackedBayerRaw(v2);
+  return FigCapturePixelFormatIsPackedBayerRaw(format);
 }
 
-- (FigCaptureSourceConfiguration)initWithSource:(OpaqueFigCaptureSource *)a3
+- (FigCaptureSourceConfiguration)initWithSource:(OpaqueFigCaptureSource *)source
 {
   v7.receiver = self;
   v7.super_class = FigCaptureSourceConfiguration;
   v4 = [(FigCaptureSourceConfiguration *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (source)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(source);
     }
 
     else
@@ -680,22 +680,22 @@
   return v4;
 }
 
-- (FigCaptureSourceConfiguration)initWithSourceType:(int)a3
+- (FigCaptureSourceConfiguration)initWithSourceType:(int)type
 {
   v5.receiver = self;
   v5.super_class = FigCaptureSourceConfiguration;
   result = [(FigCaptureSourceConfiguration *)&v5 init];
   if (result)
   {
-    result->_sourceType = a3;
+    result->_sourceType = type;
   }
 
   return result;
 }
 
-- (FigCaptureSourceConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureSourceConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (!a3)
+  if (!encoding)
   {
 
     return 0;
@@ -707,8 +707,8 @@
   if (v4)
   {
     FigXPCMessageCopyCFString();
-    *(v4 + 6) = xpc_dictionary_get_int64(a3, "sourceType");
-    int64 = xpc_dictionary_get_int64(a3, "sourceToken");
+    *(v4 + 6) = xpc_dictionary_get_int64(encoding, "sourceType");
+    int64 = xpc_dictionary_get_int64(encoding, "sourceToken");
     if (int64)
     {
       v6 = FigCaptureSourceServerCopySourceForToken(int64);
@@ -728,7 +728,7 @@ LABEL_8:
 
     if ([v4 sourceType] == 1)
     {
-      string = xpc_dictionary_get_string(a3, "requiredFormatUniqueID");
+      string = xpc_dictionary_get_string(encoding, "requiredFormatUniqueID");
       if (string)
       {
         v8 = string;
@@ -763,7 +763,7 @@ LABEL_8:
           if (FormatByUniqueID)
           {
             length = 0;
-            data = xpc_dictionary_get_data(a3, "requiredMaxFrameRate", &length);
+            data = xpc_dictionary_get_data(encoding, "requiredMaxFrameRate", &length);
             if (length == 12)
             {
               v22 = *data;
@@ -778,7 +778,7 @@ LABEL_8:
             }
 
             length = 0;
-            v23 = xpc_dictionary_get_data(a3, "requiredMinFrameRate", &length);
+            v23 = xpc_dictionary_get_data(encoding, "requiredMinFrameRate", &length);
             if (length == 12)
             {
               v24 = *v23;
@@ -792,37 +792,37 @@ LABEL_8:
               *(v4 + 17) = 2;
             }
 
-            v25 = xpc_dictionary_get_double(a3, "maxFrameRateClientOverrideKey");
+            v25 = xpc_dictionary_get_double(encoding, "maxFrameRateClientOverrideKey");
             *(v4 + 18) = v25;
-            v26 = xpc_dictionary_get_double(a3, "maxGainClientOverride");
+            v26 = xpc_dictionary_get_double(encoding, "maxGainClientOverride");
             *(v4 + 19) = v26;
-            v27 = xpc_dictionary_get_double(a3, "videoZoomFactor");
+            v27 = xpc_dictionary_get_double(encoding, "videoZoomFactor");
             *(v4 + 21) = v27;
-            v28 = [MEMORY[0x1E695DF70] array];
-            value = xpc_dictionary_get_value(a3, "fallbackPrimaryConstituentDeviceTypes");
+            array = [MEMORY[0x1E695DF70] array];
+            value = xpc_dictionary_get_value(encoding, "fallbackPrimaryConstituentDeviceTypes");
             if (xpc_array_get_count(value))
             {
               v30 = 0;
               do
               {
-                [v28 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", xpc_array_get_int64(value, v30++))}];
+                [array addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", xpc_array_get_int64(value, v30++))}];
               }
 
               while (xpc_array_get_count(value) > v30);
             }
 
-            *(v4 + 12) = [v28 copy];
-            v31 = xpc_dictionary_get_double(a3, "videoZoomRampAcceleration");
+            *(v4 + 12) = [array copy];
+            v31 = xpc_dictionary_get_double(encoding, "videoZoomRampAcceleration");
             *(v4 + 22) = v31;
-            *(v4 + 26) = xpc_dictionary_get_int64(a3, "imageControlMode");
-            v4[108] = xpc_dictionary_get_BOOL(a3, "applyMaxExposureDurationFrameworkOverrideWhenAvailable");
+            *(v4 + 26) = xpc_dictionary_get_int64(encoding, "imageControlMode");
+            v4[108] = xpc_dictionary_get_BOOL(encoding, "applyMaxExposureDurationFrameworkOverrideWhenAvailable");
             FigXPCMessageGetCMTime();
-            v4[144] = xpc_dictionary_get_BOOL(a3, "sensorHDREnabled");
-            v4[145] = xpc_dictionary_get_BOOL(a3, "highlightRecoveryEnabled");
-            *(v4 + 37) = xpc_dictionary_get_int64(a3, "colorSpace");
-            v4[152] = xpc_dictionary_get_BOOL(a3, "depthDataDeliveryEnabled");
+            v4[144] = xpc_dictionary_get_BOOL(encoding, "sensorHDREnabled");
+            v4[145] = xpc_dictionary_get_BOOL(encoding, "highlightRecoveryEnabled");
+            *(v4 + 37) = xpc_dictionary_get_int64(encoding, "colorSpace");
+            v4[152] = xpc_dictionary_get_BOOL(encoding, "depthDataDeliveryEnabled");
             FigXPCMessageCopyCFDictionary();
-            v32 = xpc_dictionary_get_string(a3, "depthDataFormatUniqueID");
+            v32 = xpc_dictionary_get_string(encoding, "depthDataFormatUniqueID");
             if (v32 && (v33 = fcsc_findFormatByUniqueID(v32, [*(v4 + 5) supportedDepthDataFormats]), *(v4 + 20) = v33, !v33))
             {
               [FigCaptureSourceConfiguration initWithXPCEncoding:];
@@ -830,26 +830,26 @@ LABEL_8:
 
             else
             {
-              v34 = xpc_dictionary_get_double(a3, "depthDataMaxFrameRate");
+              v34 = xpc_dictionary_get_double(encoding, "depthDataMaxFrameRate");
               *(v4 + 42) = v34;
-              v4[172] = xpc_dictionary_get_BOOL(a3, "lowLightVideoCaptureEnabled");
-              v4[200] = xpc_dictionary_get_BOOL(a3, "spatialOverCaptureEnabled");
-              v4[201] = xpc_dictionary_get_BOOL(a3, "nonDestructiveCropEnabled");
-              v35 = xpc_dictionary_get_double(a3, "normalizedNonDestructiveCropSizeWidth");
-              v36 = xpc_dictionary_get_double(a3, "normalizedNonDestructiveCropSizeHeight");
+              v4[172] = xpc_dictionary_get_BOOL(encoding, "lowLightVideoCaptureEnabled");
+              v4[200] = xpc_dictionary_get_BOOL(encoding, "spatialOverCaptureEnabled");
+              v4[201] = xpc_dictionary_get_BOOL(encoding, "nonDestructiveCropEnabled");
+              v35 = xpc_dictionary_get_double(encoding, "normalizedNonDestructiveCropSizeWidth");
+              v36 = xpc_dictionary_get_double(encoding, "normalizedNonDestructiveCropSizeHeight");
               if (v35 > 0.0 && v36 > 0.0)
               {
                 *(v4 + 26) = v35;
                 *(v4 + 27) = v36;
               }
 
-              v4[224] = xpc_dictionary_get_BOOL(a3, "geometricDistortionCorrectionEnabled");
-              v37 = xpc_dictionary_get_BOOL(a3, "variableFrameRateVideoCaptureEnabled");
+              v4[224] = xpc_dictionary_get_BOOL(encoding, "geometricDistortionCorrectionEnabled");
+              v37 = xpc_dictionary_get_BOOL(encoding, "variableFrameRateVideoCaptureEnabled");
               *(v4 + 22) = 0;
               v4[225] = v37;
               *(v4 + 46) = 0;
               length = 0;
-              v38 = xpc_dictionary_get_data(a3, "lockedFrameRate", &length);
+              v38 = xpc_dictionary_get_data(encoding, "lockedFrameRate", &length);
               if (length == 12)
               {
                 v39 = *v38;
@@ -860,7 +860,7 @@ LABEL_8:
               *(v4 + 188) = 0;
               *(v4 + 49) = 0;
               v48 = 0;
-              v40 = xpc_dictionary_get_data(a3, "externalSyncFrameRate", &v48);
+              v40 = xpc_dictionary_get_data(encoding, "externalSyncFrameRate", &v48);
               if (v48 == 12)
               {
                 v41 = *v40;
@@ -868,43 +868,43 @@ LABEL_8:
                 *(v4 + 188) = v41;
               }
 
-              *(v4 + 57) = xpc_dictionary_get_int64(a3, "videoStabilizationStrength");
-              v4[232] = xpc_dictionary_get_BOOL(a3, "cinematicFramingEnabled");
-              v4[233] = xpc_dictionary_get_BOOL(a3, "cinematicFramingSupported");
-              *(v4 + 59) = xpc_dictionary_get_int64(a3, "cinematicFramingControlMode");
-              v4[240] = xpc_dictionary_get_BOOL(a3, "smartFramingEnabled");
-              v4[241] = xpc_dictionary_get_BOOL(a3, "backgroundBlurSupported");
-              v4[242] = xpc_dictionary_get_BOOL(a3, "backgroundBlurEnabled");
-              v4[243] = xpc_dictionary_get_BOOL(a3, "studioLightingSupported");
-              v4[244] = xpc_dictionary_get_BOOL(a3, "studioLightingEnabled");
-              v4[245] = xpc_dictionary_get_BOOL(a3, "reactionEffectsSupported");
-              v4[246] = xpc_dictionary_get_BOOL(a3, "reactionEffectsEnabled");
-              v4[247] = xpc_dictionary_get_BOOL(a3, "backgroundReplacementSupported");
-              v4[248] = xpc_dictionary_get_BOOL(a3, "backgroundReplacementEnabled");
-              *(v4 + 63) = xpc_dictionary_get_int64(a3, "faceDrivenAEAFMode");
-              v4[256] = xpc_dictionary_get_BOOL(a3, "faceDrivenAEAFEnabledByDefault");
-              v4[257] = xpc_dictionary_get_BOOL(a3, "deskCamEnabled");
-              v4[268] = xpc_dictionary_get_BOOL(a3, "manualFramingEnabled");
-              v42 = xpc_dictionary_get_double(a3, "manualFramingPanningAngleX");
+              *(v4 + 57) = xpc_dictionary_get_int64(encoding, "videoStabilizationStrength");
+              v4[232] = xpc_dictionary_get_BOOL(encoding, "cinematicFramingEnabled");
+              v4[233] = xpc_dictionary_get_BOOL(encoding, "cinematicFramingSupported");
+              *(v4 + 59) = xpc_dictionary_get_int64(encoding, "cinematicFramingControlMode");
+              v4[240] = xpc_dictionary_get_BOOL(encoding, "smartFramingEnabled");
+              v4[241] = xpc_dictionary_get_BOOL(encoding, "backgroundBlurSupported");
+              v4[242] = xpc_dictionary_get_BOOL(encoding, "backgroundBlurEnabled");
+              v4[243] = xpc_dictionary_get_BOOL(encoding, "studioLightingSupported");
+              v4[244] = xpc_dictionary_get_BOOL(encoding, "studioLightingEnabled");
+              v4[245] = xpc_dictionary_get_BOOL(encoding, "reactionEffectsSupported");
+              v4[246] = xpc_dictionary_get_BOOL(encoding, "reactionEffectsEnabled");
+              v4[247] = xpc_dictionary_get_BOOL(encoding, "backgroundReplacementSupported");
+              v4[248] = xpc_dictionary_get_BOOL(encoding, "backgroundReplacementEnabled");
+              *(v4 + 63) = xpc_dictionary_get_int64(encoding, "faceDrivenAEAFMode");
+              v4[256] = xpc_dictionary_get_BOOL(encoding, "faceDrivenAEAFEnabledByDefault");
+              v4[257] = xpc_dictionary_get_BOOL(encoding, "deskCamEnabled");
+              v4[268] = xpc_dictionary_get_BOOL(encoding, "manualFramingEnabled");
+              v42 = xpc_dictionary_get_double(encoding, "manualFramingPanningAngleX");
               *(v4 + 68) = v42;
-              v43 = xpc_dictionary_get_double(a3, "manualFramingPanningAngleY");
+              v43 = xpc_dictionary_get_double(encoding, "manualFramingPanningAngleY");
               *(v4 + 69) = v43;
-              *(v4 + 35) = xpc_dictionary_get_double(a3, "manualFramingDefaultZoomFactor");
-              v4[288] = xpc_dictionary_get_BOOL(a3, "gazeSelectionEnabled");
-              v4[289] = xpc_dictionary_get_BOOL(a3, "dockedTrackingEnabled");
-              v4[290] = xpc_dictionary_get_BOOL(a3, "clientExpectsCameraMountedInLandscapeOrientation");
-              v4[291] = xpc_dictionary_get_BOOL(a3, "cinematicVideoCaptureEnabled");
-              v44 = xpc_dictionary_get_double(a3, "simulatedAperture");
+              *(v4 + 35) = xpc_dictionary_get_double(encoding, "manualFramingDefaultZoomFactor");
+              v4[288] = xpc_dictionary_get_BOOL(encoding, "gazeSelectionEnabled");
+              v4[289] = xpc_dictionary_get_BOOL(encoding, "dockedTrackingEnabled");
+              v4[290] = xpc_dictionary_get_BOOL(encoding, "clientExpectsCameraMountedInLandscapeOrientation");
+              v4[291] = xpc_dictionary_get_BOOL(encoding, "cinematicVideoCaptureEnabled");
+              v44 = xpc_dictionary_get_double(encoding, "simulatedAperture");
               *(v4 + 73) = v44;
-              *(v4 + 75) = xpc_dictionary_get_int64(a3, "outputAspectRatio");
-              *(v4 + 38) = xpc_dictionary_get_int64(a3, "outputAspectRatioRequestID");
-              v4[312] = xpc_dictionary_get_BOOL(a3, "lensSmudgeDetectionEnabled");
+              *(v4 + 75) = xpc_dictionary_get_int64(encoding, "outputAspectRatio");
+              *(v4 + 38) = xpc_dictionary_get_int64(encoding, "outputAspectRatioRequestID");
+              v4[312] = xpc_dictionary_get_BOOL(encoding, "lensSmudgeDetectionEnabled");
               FigXPCMessageGetCMTime();
-              v45 = xpc_dictionary_get_value(a3, "sensitiveContentAnalyzerXPCObject");
+              v45 = xpc_dictionary_get_value(encoding, "sensitiveContentAnalyzerXPCObject");
               *(v4 + 43) = v45;
               if (!v45 || (v47 = 0, *(v4 + 44) = [objc_alloc(getSCVideoStreamAnalyzerClass()) initWithXPCObject:*(v4 + 43) error:&v47], objc_msgSend(objc_msgSend(v47, "domain"), "isEqualToString:", getSCAErrorDomain())) && objc_msgSend(v47, "code") == 20 || *(v4 + 44))
               {
-                v4[360] = xpc_dictionary_get_BOOL(a3, "sensitiveContentAnalyzerEnabled");
+                v4[360] = xpc_dictionary_get_BOOL(encoding, "sensitiveContentAnalyzerEnabled");
                 return v4;
               }
             }
@@ -927,16 +927,16 @@ LABEL_8:
 
     if ([v4 sourceType] == 2)
     {
-      v4[361] = xpc_dictionary_get_BOOL(a3, "clientOSVersionSupportsDecoupledIO");
-      v15 = xpc_dictionary_get_string(a3, "clientAudioClockDeviceUID");
+      v4[361] = xpc_dictionary_get_BOOL(encoding, "clientOSVersionSupportsDecoupledIO");
+      v15 = xpc_dictionary_get_string(encoding, "clientAudioClockDeviceUID");
       if (v15)
       {
         *(v4 + 46) = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v15];
       }
 
-      *(v4 + 47) = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:{xpc_dictionary_get_double(a3, "preferredIOBufferDuration")}];
+      *(v4 + 47) = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:{xpc_dictionary_get_double(encoding, "preferredIOBufferDuration")}];
       length = 0;
-      v16 = xpc_dictionary_get_data(a3, "remoteIOOutputFormat", &length);
+      v16 = xpc_dictionary_get_data(encoding, "remoteIOOutputFormat", &length);
       if (v16)
       {
         v17 = v16;
@@ -951,9 +951,9 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -970,16 +970,16 @@ LABEL_8:
       goto LABEL_76;
     }
 
-    v9 = [(FigCaptureSourceConfiguration *)self sourceID];
-    if (v9 == [a3 sourceID] || (v10 = -[NSString isEqual:](-[FigCaptureSourceConfiguration sourceID](self, "sourceID"), "isEqual:", objc_msgSend(a3, "sourceID"))) != 0)
+    sourceID = [(FigCaptureSourceConfiguration *)self sourceID];
+    if (sourceID == [equal sourceID] || (v10 = -[NSString isEqual:](-[FigCaptureSourceConfiguration sourceID](self, "sourceID"), "isEqual:", objc_msgSend(equal, "sourceID"))) != 0)
     {
-      if (self->_source && ([(FigCaptureSourceConfiguration *)self isEqual:a3]& 1) == 0)
+      if (self->_source && ([(FigCaptureSourceConfiguration *)self isEqual:equal]& 1) == 0)
       {
         goto LABEL_76;
       }
 
-      v11 = [(FigCaptureSourceConfiguration *)self _sourceToken];
-      if (v11 != [(FigCaptureSourceConfiguration *)a3 _sourceToken])
+      _sourceToken = [(FigCaptureSourceConfiguration *)self _sourceToken];
+      if (_sourceToken != [(FigCaptureSourceConfiguration *)equal _sourceToken])
       {
         goto LABEL_76;
       }
@@ -989,7 +989,7 @@ LABEL_8:
         goto LABEL_78;
       }
 
-      if (!a3)
+      if (!equal)
       {
         [(FigCaptureSourceConfiguration *)self sourceType];
 LABEL_87:
@@ -997,30 +997,30 @@ LABEL_87:
         return v10;
       }
 
-      if ([a3 sourceType] == 1)
+      if ([equal sourceType] == 1)
       {
-        v12 = [(FigCaptureSourceConfiguration *)self requiredFormat];
-        if (v12 == [a3 requiredFormat] || (v10 = -[FigCaptureSourceFormat isEqual:](-[FigCaptureSourceConfiguration requiredFormat](self, "requiredFormat"), "isEqual:", objc_msgSend(a3, "requiredFormat"))) != 0)
+        requiredFormat = [(FigCaptureSourceConfiguration *)self requiredFormat];
+        if (requiredFormat == [equal requiredFormat] || (v10 = -[FigCaptureSourceFormat isEqual:](-[FigCaptureSourceConfiguration requiredFormat](self, "requiredFormat"), "isEqual:", objc_msgSend(equal, "requiredFormat"))) != 0)
         {
-          v13 = [(FigCaptureSourceConfiguration *)self requiredMaxFrameRate];
+          requiredMaxFrameRate = [(FigCaptureSourceConfiguration *)self requiredMaxFrameRate];
           v15 = v14;
-          v16 = [a3 requiredMaxFrameRate];
-          if (FigCaptureFrameRateNotEqual(v13, v15, v16, v17))
+          requiredMaxFrameRate2 = [equal requiredMaxFrameRate];
+          if (FigCaptureFrameRateNotEqual(requiredMaxFrameRate, v15, requiredMaxFrameRate2, v17))
           {
             goto LABEL_76;
           }
 
-          v18 = [(FigCaptureSourceConfiguration *)self requiredMinFrameRate];
+          requiredMinFrameRate = [(FigCaptureSourceConfiguration *)self requiredMinFrameRate];
           v20 = v19;
-          v21 = [a3 requiredMinFrameRate];
-          if (FigCaptureFrameRateNotEqual(v18, v20, v21, v22))
+          requiredMinFrameRate2 = [equal requiredMinFrameRate];
+          if (FigCaptureFrameRateNotEqual(requiredMinFrameRate, v20, requiredMinFrameRate2, v22))
           {
             goto LABEL_76;
           }
 
           [(FigCaptureSourceConfiguration *)self maxFrameRateClientOverride];
           v24 = v23;
-          [a3 maxFrameRateClientOverride];
+          [equal maxFrameRateClientOverride];
           if (v24 != v25)
           {
             goto LABEL_76;
@@ -1028,7 +1028,7 @@ LABEL_87:
 
           [(FigCaptureSourceConfiguration *)self maxGainClientOverride];
           v27 = v26;
-          [a3 maxGainClientOverride];
+          [equal maxGainClientOverride];
           if (v27 != v28)
           {
             goto LABEL_76;
@@ -1036,237 +1036,237 @@ LABEL_87:
 
           [(FigCaptureSourceConfiguration *)self videoZoomFactor];
           v30 = v29;
-          [a3 videoZoomFactor];
+          [equal videoZoomFactor];
           if (v30 != v31)
           {
             goto LABEL_76;
           }
 
-          if (!-[FigCaptureSourceConfiguration fallbackPrimaryConstituentDeviceTypes](self, "fallbackPrimaryConstituentDeviceTypes") && ![a3 fallbackPrimaryConstituentDeviceTypes] || (v10 = -[NSArray isEqualToArray:](-[FigCaptureSourceConfiguration fallbackPrimaryConstituentDeviceTypes](self, "fallbackPrimaryConstituentDeviceTypes"), "isEqualToArray:", objc_msgSend(a3, "fallbackPrimaryConstituentDeviceTypes"))) != 0)
+          if (!-[FigCaptureSourceConfiguration fallbackPrimaryConstituentDeviceTypes](self, "fallbackPrimaryConstituentDeviceTypes") && ![equal fallbackPrimaryConstituentDeviceTypes] || (v10 = -[NSArray isEqualToArray:](-[FigCaptureSourceConfiguration fallbackPrimaryConstituentDeviceTypes](self, "fallbackPrimaryConstituentDeviceTypes"), "isEqualToArray:", objc_msgSend(equal, "fallbackPrimaryConstituentDeviceTypes"))) != 0)
           {
             [(FigCaptureSourceConfiguration *)self videoZoomRampAcceleration];
             v33 = v32;
-            [a3 videoZoomRampAcceleration];
+            [equal videoZoomRampAcceleration];
             if (v33 != v34)
             {
               goto LABEL_76;
             }
 
-            v35 = [(FigCaptureSourceConfiguration *)self imageControlMode];
-            if (v35 != [a3 imageControlMode])
+            imageControlMode = [(FigCaptureSourceConfiguration *)self imageControlMode];
+            if (imageControlMode != [equal imageControlMode])
             {
               goto LABEL_76;
             }
 
-            v36 = [(FigCaptureSourceConfiguration *)self applyMaxExposureDurationFrameworkOverrideWhenAvailable];
-            if (v36 != [a3 applyMaxExposureDurationFrameworkOverrideWhenAvailable])
+            applyMaxExposureDurationFrameworkOverrideWhenAvailable = [(FigCaptureSourceConfiguration *)self applyMaxExposureDurationFrameworkOverrideWhenAvailable];
+            if (applyMaxExposureDurationFrameworkOverrideWhenAvailable != [equal applyMaxExposureDurationFrameworkOverrideWhenAvailable])
             {
               goto LABEL_76;
             }
 
             [(FigCaptureSourceConfiguration *)self maxExposureDurationClientOverride];
-            [a3 maxExposureDurationClientOverride];
+            [equal maxExposureDurationClientOverride];
             if (CMTimeCompare(&time1, &v117))
             {
               goto LABEL_76;
             }
 
-            v37 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
-            if (v37 != [a3 faceDetectionConfiguration] && (-[NSDictionary isEqual:](-[FigCaptureSourceConfiguration faceDetectionConfiguration](self, "faceDetectionConfiguration"), "isEqual:", objc_msgSend(a3, "faceDetectionConfiguration")) & 1) == 0)
+            faceDetectionConfiguration = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
+            if (faceDetectionConfiguration != [equal faceDetectionConfiguration] && (-[NSDictionary isEqual:](-[FigCaptureSourceConfiguration faceDetectionConfiguration](self, "faceDetectionConfiguration"), "isEqual:", objc_msgSend(equal, "faceDetectionConfiguration")) & 1) == 0)
             {
-              v107 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
+              faceDetectionConfiguration2 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
               v108 = *off_1E798AD38;
-              v109 = [-[NSDictionary objectForKeyedSubscript:](v107 objectForKeyedSubscript:{*off_1E798AD38), "BOOLValue"}];
-              if (v109 != [objc_msgSend(objc_msgSend(a3 "faceDetectionConfiguration")])
+              v109 = [-[NSDictionary objectForKeyedSubscript:](faceDetectionConfiguration2 objectForKeyedSubscript:{*off_1E798AD38), "BOOLValue"}];
+              if (v109 != [objc_msgSend(objc_msgSend(equal "faceDetectionConfiguration")])
               {
                 goto LABEL_76;
               }
 
-              v110 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
+              faceDetectionConfiguration3 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
               v111 = *off_1E798AD30;
-              v112 = [-[NSDictionary objectForKeyedSubscript:](v110 objectForKeyedSubscript:{*off_1E798AD30), "BOOLValue"}];
-              if (v112 != [objc_msgSend(objc_msgSend(a3 "faceDetectionConfiguration")])
+              v112 = [-[NSDictionary objectForKeyedSubscript:](faceDetectionConfiguration3 objectForKeyedSubscript:{*off_1E798AD30), "BOOLValue"}];
+              if (v112 != [objc_msgSend(objc_msgSend(equal "faceDetectionConfiguration")])
               {
                 goto LABEL_76;
               }
 
-              v113 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
+              faceDetectionConfiguration4 = [(FigCaptureSourceConfiguration *)self faceDetectionConfiguration];
               v114 = *off_1E798AD48;
-              v115 = [-[NSDictionary objectForKeyedSubscript:](v113 objectForKeyedSubscript:{*off_1E798AD48), "BOOLValue"}];
-              if (v115 != [objc_msgSend(objc_msgSend(a3 "faceDetectionConfiguration")])
+              v115 = [-[NSDictionary objectForKeyedSubscript:](faceDetectionConfiguration4 objectForKeyedSubscript:{*off_1E798AD48), "BOOLValue"}];
+              if (v115 != [objc_msgSend(objc_msgSend(equal "faceDetectionConfiguration")])
               {
                 goto LABEL_76;
               }
             }
 
-            v38 = [(FigCaptureSourceConfiguration *)self sensorHDREnabled];
-            if (v38 != [a3 sensorHDREnabled])
+            sensorHDREnabled = [(FigCaptureSourceConfiguration *)self sensorHDREnabled];
+            if (sensorHDREnabled != [equal sensorHDREnabled])
             {
               goto LABEL_76;
             }
 
-            v39 = [(FigCaptureSourceConfiguration *)self highlightRecoveryEnabled];
-            if (v39 != [a3 highlightRecoveryEnabled])
+            highlightRecoveryEnabled = [(FigCaptureSourceConfiguration *)self highlightRecoveryEnabled];
+            if (highlightRecoveryEnabled != [equal highlightRecoveryEnabled])
             {
               goto LABEL_76;
             }
 
-            v40 = [(FigCaptureSourceConfiguration *)self colorSpace];
-            if (v40 != [a3 colorSpace])
+            colorSpace = [(FigCaptureSourceConfiguration *)self colorSpace];
+            if (colorSpace != [equal colorSpace])
             {
               goto LABEL_76;
             }
 
-            v41 = [(FigCaptureSourceConfiguration *)self depthDataDeliveryEnabled];
-            if (v41 != [a3 depthDataDeliveryEnabled])
+            depthDataDeliveryEnabled = [(FigCaptureSourceConfiguration *)self depthDataDeliveryEnabled];
+            if (depthDataDeliveryEnabled != [equal depthDataDeliveryEnabled])
             {
               goto LABEL_76;
             }
 
-            v42 = [(FigCaptureSourceConfiguration *)self depthDataFormat];
-            if (v42 == [a3 depthDataFormat] || (v10 = -[FigCaptureSourceFormat isEqual:](-[FigCaptureSourceConfiguration depthDataFormat](self, "depthDataFormat"), "isEqual:", objc_msgSend(a3, "depthDataFormat"))) != 0)
+            depthDataFormat = [(FigCaptureSourceConfiguration *)self depthDataFormat];
+            if (depthDataFormat == [equal depthDataFormat] || (v10 = -[FigCaptureSourceFormat isEqual:](-[FigCaptureSourceConfiguration depthDataFormat](self, "depthDataFormat"), "isEqual:", objc_msgSend(equal, "depthDataFormat"))) != 0)
             {
               [(FigCaptureSourceConfiguration *)self depthDataMaxFrameRate];
               v44 = v43;
-              [a3 depthDataMaxFrameRate];
+              [equal depthDataMaxFrameRate];
               if (v44 == v45)
               {
-                v46 = [(FigCaptureSourceConfiguration *)self lowLightVideoCaptureEnabled];
-                if (v46 == [a3 lowLightVideoCaptureEnabled])
+                lowLightVideoCaptureEnabled = [(FigCaptureSourceConfiguration *)self lowLightVideoCaptureEnabled];
+                if (lowLightVideoCaptureEnabled == [equal lowLightVideoCaptureEnabled])
                 {
-                  v47 = [(FigCaptureSourceConfiguration *)self spatialOverCaptureEnabled];
-                  if (v47 == [a3 spatialOverCaptureEnabled])
+                  spatialOverCaptureEnabled = [(FigCaptureSourceConfiguration *)self spatialOverCaptureEnabled];
+                  if (spatialOverCaptureEnabled == [equal spatialOverCaptureEnabled])
                   {
-                    v48 = [(FigCaptureSourceConfiguration *)self nonDestructiveCropEnabled];
-                    if (v48 == [a3 nonDestructiveCropEnabled])
+                    nonDestructiveCropEnabled = [(FigCaptureSourceConfiguration *)self nonDestructiveCropEnabled];
+                    if (nonDestructiveCropEnabled == [equal nonDestructiveCropEnabled])
                     {
                       [(FigCaptureSourceConfiguration *)self normalizedNonDestructiveCropSize];
                       v50 = v49;
-                      [a3 normalizedNonDestructiveCropSize];
+                      [equal normalizedNonDestructiveCropSize];
                       if (v50 == v51)
                       {
                         [(FigCaptureSourceConfiguration *)self normalizedNonDestructiveCropSize];
                         v53 = v52;
-                        [a3 normalizedNonDestructiveCropSize];
+                        [equal normalizedNonDestructiveCropSize];
                         if (v53 == v54)
                         {
-                          v55 = [(FigCaptureSourceConfiguration *)self geometricDistortionCorrectionEnabled];
-                          if (v55 == [a3 geometricDistortionCorrectionEnabled])
+                          geometricDistortionCorrectionEnabled = [(FigCaptureSourceConfiguration *)self geometricDistortionCorrectionEnabled];
+                          if (geometricDistortionCorrectionEnabled == [equal geometricDistortionCorrectionEnabled])
                           {
-                            v56 = [(FigCaptureSourceConfiguration *)self variableFrameRateVideoCaptureEnabled];
-                            if (v56 == [a3 variableFrameRateVideoCaptureEnabled])
+                            variableFrameRateVideoCaptureEnabled = [(FigCaptureSourceConfiguration *)self variableFrameRateVideoCaptureEnabled];
+                            if (variableFrameRateVideoCaptureEnabled == [equal variableFrameRateVideoCaptureEnabled])
                             {
-                              v57 = [(FigCaptureSourceConfiguration *)self lockedFrameRate];
+                              lockedFrameRate = [(FigCaptureSourceConfiguration *)self lockedFrameRate];
                               v59 = v58;
-                              v60 = [a3 lockedFrameRate];
-                              if (!FigCaptureFrameRateNotEqual(v57, v59, v60, v61))
+                              lockedFrameRate2 = [equal lockedFrameRate];
+                              if (!FigCaptureFrameRateNotEqual(lockedFrameRate, v59, lockedFrameRate2, v61))
                               {
-                                v62 = [(FigCaptureSourceConfiguration *)self externalSyncFrameRate];
+                                externalSyncFrameRate = [(FigCaptureSourceConfiguration *)self externalSyncFrameRate];
                                 v64 = v63;
-                                v65 = [a3 externalSyncFrameRate];
-                                if (!FigCaptureFrameRateNotEqual(v62, v64, v65, v66))
+                                externalSyncFrameRate2 = [equal externalSyncFrameRate];
+                                if (!FigCaptureFrameRateNotEqual(externalSyncFrameRate, v64, externalSyncFrameRate2, v66))
                                 {
-                                  v67 = [(FigCaptureSourceConfiguration *)self videoStabilizationStrength];
-                                  if (v67 == [a3 videoStabilizationStrength])
+                                  videoStabilizationStrength = [(FigCaptureSourceConfiguration *)self videoStabilizationStrength];
+                                  if (videoStabilizationStrength == [equal videoStabilizationStrength])
                                   {
-                                    v68 = [(FigCaptureSourceConfiguration *)self cinematicFramingEnabled];
-                                    if (v68 == [a3 cinematicFramingEnabled])
+                                    cinematicFramingEnabled = [(FigCaptureSourceConfiguration *)self cinematicFramingEnabled];
+                                    if (cinematicFramingEnabled == [equal cinematicFramingEnabled])
                                     {
-                                      v69 = [(FigCaptureSourceConfiguration *)self isCinematicFramingSupported];
-                                      if (v69 == [a3 isCinematicFramingSupported])
+                                      isCinematicFramingSupported = [(FigCaptureSourceConfiguration *)self isCinematicFramingSupported];
+                                      if (isCinematicFramingSupported == [equal isCinematicFramingSupported])
                                       {
-                                        v70 = [(FigCaptureSourceConfiguration *)self cinematicFramingControlMode];
-                                        if (v70 == [a3 cinematicFramingControlMode])
+                                        cinematicFramingControlMode = [(FigCaptureSourceConfiguration *)self cinematicFramingControlMode];
+                                        if (cinematicFramingControlMode == [equal cinematicFramingControlMode])
                                         {
-                                          v71 = [(FigCaptureSourceConfiguration *)self isSmartFramingEnabled];
-                                          if (v71 == [a3 isSmartFramingEnabled])
+                                          isSmartFramingEnabled = [(FigCaptureSourceConfiguration *)self isSmartFramingEnabled];
+                                          if (isSmartFramingEnabled == [equal isSmartFramingEnabled])
                                           {
-                                            v72 = [(FigCaptureSourceConfiguration *)self isBackgroundBlurSupported];
-                                            if (v72 == [a3 isBackgroundBlurSupported])
+                                            isBackgroundBlurSupported = [(FigCaptureSourceConfiguration *)self isBackgroundBlurSupported];
+                                            if (isBackgroundBlurSupported == [equal isBackgroundBlurSupported])
                                             {
-                                              v73 = [(FigCaptureSourceConfiguration *)self backgroundBlurEnabled];
-                                              if (v73 == [a3 backgroundBlurEnabled])
+                                              backgroundBlurEnabled = [(FigCaptureSourceConfiguration *)self backgroundBlurEnabled];
+                                              if (backgroundBlurEnabled == [equal backgroundBlurEnabled])
                                               {
-                                                v74 = [(FigCaptureSourceConfiguration *)self isStudioLightingSupported];
-                                                if (v74 == [a3 isStudioLightingSupported])
+                                                isStudioLightingSupported = [(FigCaptureSourceConfiguration *)self isStudioLightingSupported];
+                                                if (isStudioLightingSupported == [equal isStudioLightingSupported])
                                                 {
-                                                  v75 = [(FigCaptureSourceConfiguration *)self studioLightingEnabled];
-                                                  if (v75 == [a3 studioLightingEnabled])
+                                                  studioLightingEnabled = [(FigCaptureSourceConfiguration *)self studioLightingEnabled];
+                                                  if (studioLightingEnabled == [equal studioLightingEnabled])
                                                   {
-                                                    v76 = [(FigCaptureSourceConfiguration *)self reactionEffectsSupported];
-                                                    if (v76 == [a3 reactionEffectsSupported])
+                                                    reactionEffectsSupported = [(FigCaptureSourceConfiguration *)self reactionEffectsSupported];
+                                                    if (reactionEffectsSupported == [equal reactionEffectsSupported])
                                                     {
-                                                      v77 = [(FigCaptureSourceConfiguration *)self reactionEffectsEnabled];
-                                                      if (v77 == [a3 reactionEffectsEnabled])
+                                                      reactionEffectsEnabled = [(FigCaptureSourceConfiguration *)self reactionEffectsEnabled];
+                                                      if (reactionEffectsEnabled == [equal reactionEffectsEnabled])
                                                       {
-                                                        v78 = [(FigCaptureSourceConfiguration *)self isBackgroundReplacementSupported];
-                                                        if (v78 == [a3 isBackgroundReplacementSupported])
+                                                        isBackgroundReplacementSupported = [(FigCaptureSourceConfiguration *)self isBackgroundReplacementSupported];
+                                                        if (isBackgroundReplacementSupported == [equal isBackgroundReplacementSupported])
                                                         {
-                                                          v79 = [(FigCaptureSourceConfiguration *)self backgroundReplacementEnabled];
-                                                          if (v79 == [a3 backgroundReplacementEnabled])
+                                                          backgroundReplacementEnabled = [(FigCaptureSourceConfiguration *)self backgroundReplacementEnabled];
+                                                          if (backgroundReplacementEnabled == [equal backgroundReplacementEnabled])
                                                           {
-                                                            v80 = [(FigCaptureSourceConfiguration *)self faceDrivenAEAFMode];
-                                                            if (v80 == [a3 faceDrivenAEAFMode])
+                                                            faceDrivenAEAFMode = [(FigCaptureSourceConfiguration *)self faceDrivenAEAFMode];
+                                                            if (faceDrivenAEAFMode == [equal faceDrivenAEAFMode])
                                                             {
-                                                              v81 = [(FigCaptureSourceConfiguration *)self faceDrivenAEAFEnabledByDefault];
-                                                              if (v81 == [a3 faceDrivenAEAFEnabledByDefault])
+                                                              faceDrivenAEAFEnabledByDefault = [(FigCaptureSourceConfiguration *)self faceDrivenAEAFEnabledByDefault];
+                                                              if (faceDrivenAEAFEnabledByDefault == [equal faceDrivenAEAFEnabledByDefault])
                                                               {
-                                                                v82 = [(FigCaptureSourceConfiguration *)self deskCamEnabled];
-                                                                if (v82 == [a3 deskCamEnabled])
+                                                                deskCamEnabled = [(FigCaptureSourceConfiguration *)self deskCamEnabled];
+                                                                if (deskCamEnabled == [equal deskCamEnabled])
                                                                 {
-                                                                  v83 = [(FigCaptureSourceConfiguration *)self manualCinematicFramingEnabled];
-                                                                  if (v83 == [a3 manualCinematicFramingEnabled])
+                                                                  manualCinematicFramingEnabled = [(FigCaptureSourceConfiguration *)self manualCinematicFramingEnabled];
+                                                                  if (manualCinematicFramingEnabled == [equal manualCinematicFramingEnabled])
                                                                   {
                                                                     [(FigCaptureSourceConfiguration *)self manualFramingPanningAngleX];
                                                                     v85 = v84;
-                                                                    [a3 manualFramingPanningAngleX];
+                                                                    [equal manualFramingPanningAngleX];
                                                                     if (v85 == v86)
                                                                     {
                                                                       [(FigCaptureSourceConfiguration *)self manualFramingPanningAngleY];
                                                                       v88 = v87;
-                                                                      [a3 manualFramingPanningAngleY];
+                                                                      [equal manualFramingPanningAngleY];
                                                                       if (v88 == v89)
                                                                       {
-                                                                        v90 = [(FigCaptureSourceConfiguration *)self gazeSelectionEnabled];
-                                                                        if (v90 == [a3 gazeSelectionEnabled])
+                                                                        gazeSelectionEnabled = [(FigCaptureSourceConfiguration *)self gazeSelectionEnabled];
+                                                                        if (gazeSelectionEnabled == [equal gazeSelectionEnabled])
                                                                         {
-                                                                          v91 = [(FigCaptureSourceConfiguration *)self isDockedTrackingEnabled];
-                                                                          if (v91 == [a3 isDockedTrackingEnabled])
+                                                                          isDockedTrackingEnabled = [(FigCaptureSourceConfiguration *)self isDockedTrackingEnabled];
+                                                                          if (isDockedTrackingEnabled == [equal isDockedTrackingEnabled])
                                                                           {
-                                                                            v92 = [(FigCaptureSourceConfiguration *)self clientExpectsCameraMountedInLandscapeOrientation];
-                                                                            if (v92 == [a3 clientExpectsCameraMountedInLandscapeOrientation])
+                                                                            clientExpectsCameraMountedInLandscapeOrientation = [(FigCaptureSourceConfiguration *)self clientExpectsCameraMountedInLandscapeOrientation];
+                                                                            if (clientExpectsCameraMountedInLandscapeOrientation == [equal clientExpectsCameraMountedInLandscapeOrientation])
                                                                             {
-                                                                              v93 = [(FigCaptureSourceConfiguration *)self isCinematicVideoCaptureEnabled];
-                                                                              if (v93 == [a3 isCinematicVideoCaptureEnabled])
+                                                                              isCinematicVideoCaptureEnabled = [(FigCaptureSourceConfiguration *)self isCinematicVideoCaptureEnabled];
+                                                                              if (isCinematicVideoCaptureEnabled == [equal isCinematicVideoCaptureEnabled])
                                                                               {
                                                                                 [(FigCaptureSourceConfiguration *)self simulatedAperture];
                                                                                 v95 = v94;
-                                                                                [a3 simulatedAperture];
+                                                                                [equal simulatedAperture];
                                                                                 if (v95 == v96)
                                                                                 {
-                                                                                  v97 = [(FigCaptureSourceConfiguration *)self outputAspectRatio];
-                                                                                  if (v97 == [a3 outputAspectRatio])
+                                                                                  outputAspectRatio = [(FigCaptureSourceConfiguration *)self outputAspectRatio];
+                                                                                  if (outputAspectRatio == [equal outputAspectRatio])
                                                                                   {
-                                                                                    v98 = [(FigCaptureSourceConfiguration *)self outputAspectRatioRequestID];
-                                                                                    if (v98 == [a3 outputAspectRatioRequestID])
+                                                                                    outputAspectRatioRequestID = [(FigCaptureSourceConfiguration *)self outputAspectRatioRequestID];
+                                                                                    if (outputAspectRatioRequestID == [equal outputAspectRatioRequestID])
                                                                                     {
-                                                                                      v99 = [(FigCaptureSourceConfiguration *)self lensSmudgeDetectionEnabled];
-                                                                                      if (v99 == [a3 lensSmudgeDetectionEnabled])
+                                                                                      lensSmudgeDetectionEnabled = [(FigCaptureSourceConfiguration *)self lensSmudgeDetectionEnabled];
+                                                                                      if (lensSmudgeDetectionEnabled == [equal lensSmudgeDetectionEnabled])
                                                                                       {
                                                                                         [(FigCaptureSourceConfiguration *)self lensSmudgeDetectionInterval];
-                                                                                        [a3 lensSmudgeDetectionInterval];
+                                                                                        [equal lensSmudgeDetectionInterval];
                                                                                         if (!CMTimeCompare(&time1, &v117))
                                                                                         {
                                                                                           v100 = [(FigCaptureSourceConfiguration *)self sensitiveContentAnalyzerXPCObject]!= 0;
-                                                                                          if (v100 != ([a3 sensitiveContentAnalyzerXPCObject] == 0))
+                                                                                          if (v100 != ([equal sensitiveContentAnalyzerXPCObject] == 0))
                                                                                           {
                                                                                             if (![(FigCaptureSourceConfiguration *)self sensitiveContentAnalyzerXPCObject])
                                                                                             {
                                                                                               goto LABEL_87;
                                                                                             }
 
-                                                                                            v101 = [(FigCaptureSourceConfiguration *)self sensitiveContentAnalyzerEnabled];
-                                                                                            if (v101 == [a3 sensitiveContentAnalyzerEnabled])
+                                                                                            sensitiveContentAnalyzerEnabled = [(FigCaptureSourceConfiguration *)self sensitiveContentAnalyzerEnabled];
+                                                                                            if (sensitiveContentAnalyzerEnabled == [equal sensitiveContentAnalyzerEnabled])
                                                                                             {
                                                                                               goto LABEL_87;
                                                                                             }
@@ -1320,34 +1320,34 @@ LABEL_76:
       else
       {
 LABEL_78:
-        v102 = [(FigCaptureSourceConfiguration *)self sourceType];
-        if (!a3 || v102 != 2 || [a3 sourceType] != 2)
+        sourceType = [(FigCaptureSourceConfiguration *)self sourceType];
+        if (!equal || sourceType != 2 || [equal sourceType] != 2)
         {
           goto LABEL_87;
         }
 
-        v103 = [(FigCaptureSourceConfiguration *)self clientOSVersionSupportsDecoupledIO];
-        if (v103 != [a3 clientOSVersionSupportsDecoupledIO])
+        clientOSVersionSupportsDecoupledIO = [(FigCaptureSourceConfiguration *)self clientOSVersionSupportsDecoupledIO];
+        if (clientOSVersionSupportsDecoupledIO != [equal clientOSVersionSupportsDecoupledIO])
         {
           goto LABEL_76;
         }
 
-        v104 = [(FigCaptureSourceConfiguration *)self clientAudioClockDeviceUID];
-        if (v104 != [a3 clientAudioClockDeviceUID])
+        clientAudioClockDeviceUID = [(FigCaptureSourceConfiguration *)self clientAudioClockDeviceUID];
+        if (clientAudioClockDeviceUID != [equal clientAudioClockDeviceUID])
         {
           goto LABEL_76;
         }
 
-        v105 = [(FigCaptureSourceConfiguration *)self preferredIOBufferDuration];
-        if (v105 == [a3 preferredIOBufferDuration] || (v10 = -[NSNumber isEqual:](-[FigCaptureSourceConfiguration preferredIOBufferDuration](self, "preferredIOBufferDuration"), "isEqual:", objc_msgSend(a3, "preferredIOBufferDuration"))) != 0)
+        preferredIOBufferDuration = [(FigCaptureSourceConfiguration *)self preferredIOBufferDuration];
+        if (preferredIOBufferDuration == [equal preferredIOBufferDuration] || (v10 = -[NSNumber isEqual:](-[FigCaptureSourceConfiguration preferredIOBufferDuration](self, "preferredIOBufferDuration"), "isEqual:", objc_msgSend(equal, "preferredIOBufferDuration"))) != 0)
         {
-          v106 = [(FigCaptureSourceConfiguration *)self remoteIOOutputFormat];
-          if (v106 == [a3 remoteIOOutputFormat])
+          remoteIOOutputFormat = [(FigCaptureSourceConfiguration *)self remoteIOOutputFormat];
+          if (remoteIOOutputFormat == [equal remoteIOOutputFormat])
           {
             goto LABEL_87;
           }
 
-          v10 = -[AVAudioFormat isEqual:](-[FigCaptureSourceConfiguration remoteIOOutputFormat](self, "remoteIOOutputFormat"), "isEqual:", [a3 remoteIOOutputFormat]);
+          v10 = -[AVAudioFormat isEqual:](-[FigCaptureSourceConfiguration remoteIOOutputFormat](self, "remoteIOOutputFormat"), "isEqual:", [equal remoteIOOutputFormat]);
           if (v10)
           {
             goto LABEL_87;
@@ -1360,10 +1360,10 @@ LABEL_78:
   return v10;
 }
 
-+ (int)sourceTypeForString:(id)a3
++ (int)sourceTypeForString:(id)string
 {
   v4 = 1;
-  while ([a3 caseInsensitiveCompare:FigCaptureSourceTypeNameMap[v4]])
+  while ([string caseInsensitiveCompare:FigCaptureSourceTypeNameMap[v4]])
   {
     if (++v4 == 7)
     {
@@ -1375,16 +1375,16 @@ LABEL_78:
   return v4;
 }
 
-+ (id)stringForSourcePosition:(int)a3
++ (id)stringForSourcePosition:(int)position
 {
-  if (a3 > 2)
+  if (position > 2)
   {
     return &stru_1F216A3D0;
   }
 
   else
   {
-    return *(&off_1E7999AA8 + a3);
+    return *(&off_1E7999AA8 + position);
   }
 }
 
@@ -1416,32 +1416,32 @@ LABEL_6:
   return result;
 }
 
-- (void)setMaxExposureDurationClientOverride:(id *)a3
+- (void)setMaxExposureDurationClientOverride:(id *)override
 {
-  v3 = *&a3->var0;
-  self->_maxExposureDurationClientOverride.epoch = a3->var3;
+  v3 = *&override->var0;
+  self->_maxExposureDurationClientOverride.epoch = override->var3;
   *&self->_maxExposureDurationClientOverride.value = v3;
 }
 
-- (void)setLensSmudgeDetectionInterval:(id *)a3
+- (void)setLensSmudgeDetectionInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  *&self->_lensSmudgeDetectionInterval.flags = a3->var3;
+  v3 = *&interval->var0;
+  *&self->_lensSmudgeDetectionInterval.flags = interval->var3;
   *(&self->_lensSmudgeDetectionEnabled + 4) = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(FigCaptureSourceConfiguration *)self sourceID];
   [OUTLINED_FUNCTION_17() setSourceID:?];
-  v5 = [(FigCaptureSourceConfiguration *)self source];
-  if (v5)
+  source = [(FigCaptureSourceConfiguration *)self source];
+  if (source)
   {
-    v5 = CFRetain(v5);
+    source = CFRetain(source);
   }
 
-  *(v4 + 16) = v5;
+  *(v4 + 16) = source;
   *(v4 + 24) = [(FigCaptureSourceConfiguration *)self sourceType];
   if (self)
   {

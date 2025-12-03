@@ -1,14 +1,14 @@
 @interface VFXSliderConstraint
 + (id)sliderConstraint;
 - (VFXSliderConstraint)init;
-- (VFXSliderConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCollisionCategoryBitMask:(unint64_t)a3;
+- (VFXSliderConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCollisionCategoryBitMask:(unint64_t)mask;
 - (void)setOffset:(VFXSliderConstraint *)self;
-- (void)setRadius:(float)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setRadius:(float)radius;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation VFXSliderConstraint
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v8 = objc_msgSend_collisionCategoryBitMask(self, v5, v6, v7);
@@ -50,27 +50,27 @@
   return v4;
 }
 
-- (void)setCollisionCategoryBitMask:(unint64_t)a3
+- (void)setCollisionCategoryBitMask:(unint64_t)mask
 {
-  self->_categoryBitMask = a3;
+  self->_categoryBitMask = mask;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BBBC8;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = mask;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setRadius:(float)a3
+- (void)setRadius:(float)radius
 {
-  self->_radius = a3;
+  self->_radius = radius;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BBC74;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  radiusCopy = radius;
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"radius", v3);
 }
 
@@ -85,9 +85,9 @@
   objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, a2, self, @"offset", v3);
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, @"offset", v3))
+  if (objc_msgSend_isEqualToString_(key, a2, @"offset", v3))
   {
     v9 = MEMORY[0x1E696B098];
     objc_msgSend_offset(self, v6, v7, v8);
@@ -99,15 +99,15 @@
   {
     v14.receiver = self;
     v14.super_class = VFXSliderConstraint;
-    return [(VFXSliderConstraint *)&v14 valueForKey:a3];
+    return [(VFXSliderConstraint *)&v14 valueForKey:key];
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (objc_msgSend_isEqualToString_(a4, a2, @"offset", a4))
+  if (objc_msgSend_isEqualToString_(key, a2, @"offset", key))
   {
-    objc_msgSend_VFXFloat3Value(a3, v7, v8, v9);
+    objc_msgSend_VFXFloat3Value(value, v7, v8, v9);
 
     objc_msgSend_setOffset_(self, v10, v11, v12);
   }
@@ -116,22 +116,22 @@
   {
     v13.receiver = self;
     v13.super_class = VFXSliderConstraint;
-    [(VFXSliderConstraint *)&v13 setValue:a3 forKey:a4];
+    [(VFXSliderConstraint *)&v13 setValue:value forKey:key];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = VFXSliderConstraint;
   [(VFXConstraint *)&v9 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_categoryBitMask, @"collisionCategoryBitMask");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_categoryBitMask, @"collisionCategoryBitMask");
   *&v6 = self->_radius;
-  objc_msgSend_encodeFloat_forKey_(a3, v7, @"radius", v8, v6);
-  sub_1AF371A8C(a3, @"offset", *self->_offset);
+  objc_msgSend_encodeFloat_forKey_(coder, v7, @"radius", v8, v6);
+  sub_1AF371A8C(coder, @"offset", *self->_offset);
 }
 
-- (VFXSliderConstraint)initWithCoder:(id)a3
+- (VFXSliderConstraint)initWithCoder:(id)coder
 {
   v30.receiver = self;
   v30.super_class = VFXSliderConstraint;
@@ -141,12 +141,12 @@
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     v7->super._constraintRef = sub_1AF157008();
-    objc_msgSend_finalizeDecodeConstraint_(v7, v11, a3, v12);
-    v15 = objc_msgSend_decodeIntegerForKey_(a3, v13, @"collisionCategoryBitMask", v14);
+    objc_msgSend_finalizeDecodeConstraint_(v7, v11, coder, v12);
+    v15 = objc_msgSend_decodeIntegerForKey_(coder, v13, @"collisionCategoryBitMask", v14);
     objc_msgSend_setCollisionCategoryBitMask_(v7, v16, v15, v17);
-    objc_msgSend_decodeFloatForKey_(a3, v18, @"radius", v19);
+    objc_msgSend_decodeFloatForKey_(coder, v18, @"radius", v19);
     objc_msgSend_setRadius_(v7, v20, v21, v22);
-    v23 = sub_1AF371BC4(a3, @"offset");
+    v23 = sub_1AF371BC4(coder, @"offset");
     objc_msgSend_setOffset_(v7, v24, v25, v26, v23);
     objc_msgSend_setImmediateMode_(VFXTransaction, v27, v8, v28);
   }

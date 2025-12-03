@@ -1,6 +1,6 @@
 @interface ODDStyleDefinition
 - (ODDStyleDefinition)init;
-- (id)labelForName:(id)a3;
+- (id)labelForName:(id)name;
 @end
 
 @implementation ODDStyleDefinition
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (id)labelForName:(id)a3
+- (id)labelForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->mStyleLabels objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mStyleLabels objectForKey:name];
 
   return v3;
 }

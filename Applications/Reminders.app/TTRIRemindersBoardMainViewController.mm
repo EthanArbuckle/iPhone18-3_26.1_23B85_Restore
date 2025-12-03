@@ -1,30 +1,30 @@
 @interface TTRIRemindersBoardMainViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9Reminders36TTRIRemindersBoardMainViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (_TtC9Reminders36TTRIRemindersBoardMainViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)loadView;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TTRIRemindersBoardMainViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100474A88();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100474BBC();
 }
 
@@ -46,30 +46,30 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_100476C28(a4, width, height);
+  selfCopy = self;
+  sub_100476C28(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_100476EF8(a3, a4);
+  selfCopy = self;
+  sub_100476EF8(editing, animated);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(TTRIRemindersBoardMainViewController *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(TTRIRemindersBoardMainViewController *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   if (![v8 isViewLoaded])
   {
     goto LABEL_4;
@@ -78,7 +78,7 @@
   if (*&v8[OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_focusController])
   {
 
-    sub_10045C7B8(v6);
+    sub_10045C7B8(contextCopy);
 
 LABEL_4:
 
@@ -90,11 +90,11 @@ LABEL_4:
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
-  result = [(TTRIRemindersBoardMainViewController *)v2 isViewLoaded];
+  selfCopy = self;
+  result = [(TTRIRemindersBoardMainViewController *)selfCopy isViewLoaded];
   if (result)
   {
-    if (!*(&v2->super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_focusController))
+    if (!*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_focusController))
     {
       __break(1u);
       return result;
@@ -118,44 +118,44 @@ LABEL_4:
   sub_100476A68();
 }
 
-- (_TtC9Reminders36TTRIRemindersBoardMainViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders36TTRIRemindersBoardMainViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
 
   PassthroughSubject.send(_:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
 
   PassthroughSubject.send(_:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v26 = self;
+  selfCopy = self;
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
@@ -169,8 +169,8 @@ LABEL_4:
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v20 = a3;
-  v21 = v26;
+  viewCopy = view;
+  v21 = selfCopy;
   sub_10047D828(v16, v13, v10, v19);
 
   v22 = *(v8 + 8);
@@ -183,14 +183,14 @@ LABEL_4:
   return v23.super.isa;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   v6 = sub_100058000(&qword_100772140);
   __chkstk_darwin(v6 - 8);
   v8 = &v17 - v7;
   type metadata accessor for IndexPath();
   v9 = *(static Array._unconditionallyBridgeFromObjectiveC(_:)() + 16);
-  v10 = self;
+  selfCopy = self;
 
   if (v9)
   {
@@ -200,9 +200,9 @@ LABEL_4:
 
   else
   {
-    v12 = *&v10->initialFrameForLoadingView[OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter + 16];
-    v13 = *&v10->initialFrameForLoadingView[OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter + 24];
-    sub_10000C36C((&v10->super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter), v12);
+    v12 = *&selfCopy->initialFrameForLoadingView[OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter + 16];
+    v13 = *&selfCopy->initialFrameForLoadingView[OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter + 24];
+    sub_10000C36C((&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9Reminders36TTRIRemindersBoardMainViewController_presenter), v12);
     v14 = type metadata accessor for TTRRemindersListViewModel.Item();
     (*(*(v14 - 8) + 56))(v8, 1, 1, v14);
     v15 = (*(*(v13 + 8) + 856))(v8, v12);

@@ -1,28 +1,28 @@
 @interface AXSSMotionTrackingExpressionConfiguration
-+ ($569BC8A4F588CCDEF576D5B50041512B)convertIncomingExpressionsToExclaveBlendshapesOutput:(SEL)a3;
-+ (BOOL)_expressionIsActive:(unint64_t)a3 usingExclaveOutput:(id *)a4 expressionConfiguration:(id)a5;
-+ (BOOL)_jawOpenStartingWithValue:(float)a3 mouthClose:(float)a4 expressionConfiguration:(id)a5;
-+ (float)_minConfidenceExpressionStarted:(unint64_t)a3 usingExpressionConfiguration:(id)a4;
++ ($569BC8A4F588CCDEF576D5B50041512B)convertIncomingExpressionsToExclaveBlendshapesOutput:(SEL)output;
++ (BOOL)_expressionIsActive:(unint64_t)active usingExclaveOutput:(id *)output expressionConfiguration:(id)configuration;
++ (BOOL)_jawOpenStartingWithValue:(float)value mouthClose:(float)close expressionConfiguration:(id)configuration;
++ (float)_minConfidenceExpressionStarted:(unint64_t)started usingExpressionConfiguration:(id)configuration;
 + (id)_defaultSensitivitiesForAllFacialExpressions;
 + (id)_facialExpressionToSensitivityToValueMapping;
-+ (id)_populateExpressionArraysForProcessedExpressions:(id)a3 previousExpressions:(id)a4 startExpressionsOutSet:(id *)a5 endExpressionsOutSet:(id *)a6;
++ (id)_populateExpressionArraysForProcessedExpressions:(id)expressions previousExpressions:(id)previousExpressions startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet;
 + (id)defaultExpressionConfiguration;
-+ (id)processExclaveDetectedExpressions:(id *)a3 previousExpressions:(id)a4 expressionConfiguration:(id)a5 startExpressionsOutSet:(id *)a6 endExpressionsOutSet:(id *)a7;
-+ (id)processIncomingExpressions:(id)a3 previousExpressions:(id)a4 expressionConfiguration:(id)a5 startExpressionsOutSet:(id *)a6 endExpressionsOutSet:(id *)a7;
-+ (unint64_t)_activationForFacialExpression:(unint64_t)a3 usingExclaveExpressions:(id *)a4;
++ (id)processExclaveDetectedExpressions:(id *)expressions previousExpressions:(id)previousExpressions expressionConfiguration:(id)configuration startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet;
++ (id)processIncomingExpressions:(id)expressions previousExpressions:(id)previousExpressions expressionConfiguration:(id)configuration startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet;
++ (unint64_t)_activationForFacialExpression:(unint64_t)expression usingExclaveExpressions:(id *)expressions;
 - (AXSSMotionTrackingExpressionConfiguration)init;
-- (AXSSMotionTrackingExpressionConfiguration)initWithCoder:(id)a3;
-- (AXSSMotionTrackingExpressionConfiguration)initWithPlistDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMotionTrackingExpressionConfiguration:(id)a3;
+- (AXSSMotionTrackingExpressionConfiguration)initWithCoder:(id)coder;
+- (AXSSMotionTrackingExpressionConfiguration)initWithPlistDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMotionTrackingExpressionConfiguration:(id)configuration;
 - (NSDictionary)plistDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (unint64_t)sensitivityForFacialExpression:(unint64_t)a3;
-- (void)_safelySetSensitivity:(unint64_t)a3 forFacialExpression:(unint64_t)a4 inDictionary:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)sensitivityForFacialExpression:(unint64_t)expression;
+- (void)_safelySetSensitivity:(unint64_t)sensitivity forFacialExpression:(unint64_t)expression inDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 - (void)plistDictionary;
-- (void)setSensitivity:(unint64_t)a3 forFacialExpression:(unint64_t)a4;
+- (void)setSensitivity:(unint64_t)sensitivity forFacialExpression:(unint64_t)expression;
 @end
 
 @implementation AXSSMotionTrackingExpressionConfiguration
@@ -34,8 +34,8 @@
   v2 = [(AXSSMotionTrackingExpressionConfiguration *)&v7 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
-    v4 = [v3 mutableCopy];
+    _defaultSensitivitiesForAllFacialExpressions = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
+    v4 = [_defaultSensitivitiesForAllFacialExpressions mutableCopy];
     facialExpressionToSensitivity = v2->__facialExpressionToSensitivity;
     v2->__facialExpressionToSensitivity = v4;
   }
@@ -45,28 +45,28 @@
 
 + (id)defaultExpressionConfiguration
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (AXSSMotionTrackingExpressionConfiguration)initWithPlistDictionary:(id)a3
+- (AXSSMotionTrackingExpressionConfiguration)initWithPlistDictionary:(id)dictionary
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__1;
   v27 = __Block_byref_object_dispose__1;
-  v5 = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
-  v28 = [v5 mutableCopy];
+  _defaultSensitivitiesForAllFacialExpressions = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
+  v28 = [_defaultSensitivitiesForAllFacialExpressions mutableCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = NSStringFromSelector(sel__facialExpressionToSensitivity);
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [dictionaryCopy objectForKeyedSubscript:v6];
 
     v8 = MEMORY[0x1E696ACD0];
     v9 = MEMORY[0x1E695DFD8];
@@ -88,7 +88,7 @@
         v19[2] = __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___block_invoke;
         v19[3] = &unk_1E8134E48;
         v21 = &v23;
-        v20 = self;
+        selfCopy = self;
         [v12 enumerateKeysAndObjectsUsingBlock:v19];
       }
     }
@@ -135,13 +135,13 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
 - (NSDictionary)plistDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+  _facialExpressionToSensitivity = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
 
-  if (v4)
+  if (_facialExpressionToSensitivity)
   {
     v5 = MEMORY[0x1E696ACC8];
-    v6 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
-    v7 = [v6 copy];
+    _facialExpressionToSensitivity2 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+    v7 = [_facialExpressionToSensitivity2 copy];
     v14 = 0;
     v8 = [v5 archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v14];
     v9 = v14;
@@ -163,112 +163,112 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
   return v12;
 }
 
-- (unint64_t)sensitivityForFacialExpression:(unint64_t)a3
+- (unint64_t)sensitivityForFacialExpression:(unint64_t)expression
 {
-  v5 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  _facialExpressionToSensitivity = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:expression];
+  v7 = [_facialExpressionToSensitivity objectForKeyedSubscript:v6];
 
   if (!v7)
   {
     return 0;
   }
 
-  v8 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 unsignedIntegerValue];
+  _facialExpressionToSensitivity2 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:expression];
+  v10 = [_facialExpressionToSensitivity2 objectForKeyedSubscript:v9];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (void)setSensitivity:(unint64_t)a3 forFacialExpression:(unint64_t)a4
+- (void)setSensitivity:(unint64_t)sensitivity forFacialExpression:(unint64_t)expression
 {
-  v7 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
-  [(AXSSMotionTrackingExpressionConfiguration *)self _safelySetSensitivity:a3 forFacialExpression:a4 inDictionary:v7];
+  _facialExpressionToSensitivity = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+  [(AXSSMotionTrackingExpressionConfiguration *)self _safelySetSensitivity:sensitivity forFacialExpression:expression inDictionary:_facialExpressionToSensitivity];
 }
 
-+ (id)processIncomingExpressions:(id)a3 previousExpressions:(id)a4 expressionConfiguration:(id)a5 startExpressionsOutSet:(id *)a6 endExpressionsOutSet:(id *)a7
++ (id)processIncomingExpressions:(id)expressions previousExpressions:(id)previousExpressions expressionConfiguration:(id)configuration startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 objectForKeyedSubscript:@"TongueOut"];
+  configurationCopy = configuration;
+  previousExpressionsCopy = previousExpressions;
+  expressionsCopy = expressions;
+  v12 = [expressionsCopy objectForKeyedSubscript:@"TongueOut"];
   [v12 floatValue];
   v122 = v13;
 
-  v14 = [v11 objectForKeyedSubscript:@"MouthSmileLeft"];
+  v14 = [expressionsCopy objectForKeyedSubscript:@"MouthSmileLeft"];
   [v14 floatValue];
   v125 = v15;
 
-  v16 = [v11 objectForKeyedSubscript:@"MouthSmileRight"];
+  v16 = [expressionsCopy objectForKeyedSubscript:@"MouthSmileRight"];
   [v16 floatValue];
   v124 = v17;
 
-  v18 = [v11 objectForKeyedSubscript:@"JawOpen"];
+  v18 = [expressionsCopy objectForKeyedSubscript:@"JawOpen"];
   [v18 floatValue];
   v20 = v19;
 
-  v21 = [v11 objectForKeyedSubscript:@"MouthClose"];
+  v21 = [expressionsCopy objectForKeyedSubscript:@"MouthClose"];
   [v21 floatValue];
   v106 = v22;
 
-  v23 = [v11 objectForKeyedSubscript:@"BrowOuterUpLeft"];
+  v23 = [expressionsCopy objectForKeyedSubscript:@"BrowOuterUpLeft"];
   [v23 floatValue];
   v119 = v24;
 
-  v25 = [v11 objectForKeyedSubscript:@"BrowOuterUpRight"];
+  v25 = [expressionsCopy objectForKeyedSubscript:@"BrowOuterUpRight"];
   [v25 floatValue];
   v111 = v26;
 
-  v27 = [v11 objectForKeyedSubscript:@"EyeBlinkRight"];
+  v27 = [expressionsCopy objectForKeyedSubscript:@"EyeBlinkRight"];
   [v27 floatValue];
   v117 = v28;
 
-  v29 = [v11 objectForKeyedSubscript:@"EyeBlinkLeft"];
+  v29 = [expressionsCopy objectForKeyedSubscript:@"EyeBlinkLeft"];
   [v29 floatValue];
   v116 = v30;
 
-  v31 = [v11 objectForKeyedSubscript:@"NoseSneerRight"];
+  v31 = [expressionsCopy objectForKeyedSubscript:@"NoseSneerRight"];
   [v31 floatValue];
   v114 = v32;
 
-  v33 = [v11 objectForKeyedSubscript:@"NoseSneerLeft"];
+  v33 = [expressionsCopy objectForKeyedSubscript:@"NoseSneerLeft"];
   [v33 floatValue];
   v112 = v34;
 
-  v35 = [v11 objectForKeyedSubscript:@"MouthRight"];
+  v35 = [expressionsCopy objectForKeyedSubscript:@"MouthRight"];
   [v35 floatValue];
   v120 = v36;
 
-  v37 = [v11 objectForKeyedSubscript:@"MouthLeft"];
+  v37 = [expressionsCopy objectForKeyedSubscript:@"MouthLeft"];
   [v37 floatValue];
   v121 = v38;
 
-  v39 = [v11 objectForKeyedSubscript:@"MouthPucker"];
+  v39 = [expressionsCopy objectForKeyedSubscript:@"MouthPucker"];
 
   [v39 floatValue];
   v118 = v40;
 
-  [objc_opt_class() _minConfidenceExpressionStarted:4 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:4 usingExpressionConfiguration:configurationCopy];
   v42 = v41;
-  [objc_opt_class() _minConfidenceExpressionStarted:3 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:3 usingExpressionConfiguration:configurationCopy];
   v109 = v43;
-  [objc_opt_class() _minConfidenceExpressionStarted:2 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:2 usingExpressionConfiguration:configurationCopy];
   v45 = v44;
-  [objc_opt_class() _minConfidenceExpressionStarted:1 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:1 usingExpressionConfiguration:configurationCopy];
   v47 = v46;
-  [objc_opt_class() _minConfidenceExpressionStarted:5 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:5 usingExpressionConfiguration:configurationCopy];
   v49 = v48;
-  [objc_opt_class() _minConfidenceExpressionStarted:6 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:6 usingExpressionConfiguration:configurationCopy];
   v51 = v50;
-  [objc_opt_class() _minConfidenceExpressionStarted:7 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:7 usingExpressionConfiguration:configurationCopy];
   v110 = v52;
-  [objc_opt_class() _minConfidenceExpressionStarted:8 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:8 usingExpressionConfiguration:configurationCopy];
   v54 = v53;
-  [objc_opt_class() _minConfidenceExpressionStarted:9 usingExpressionConfiguration:v9];
+  [objc_opt_class() _minConfidenceExpressionStarted:9 usingExpressionConfiguration:configurationCopy];
   v56 = v55;
-  v113 = v9;
+  v113 = configurationCopy;
   *(&v102 + 1) = v20;
   if (v20 <= v45)
   {
@@ -280,18 +280,18 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
     v57 = objc_opt_class();
     *&v58 = v20;
     LODWORD(v59) = v106;
-    v107 = [v57 _jawOpenStartingWithValue:v9 mouthClose:v58 expressionConfiguration:v59];
+    v107 = [v57 _jawOpenStartingWithValue:configurationCopy mouthClose:v58 expressionConfiguration:v59];
   }
 
-  v60 = [v10 containsObject:&unk_1F4066708];
-  v61 = [v10 containsObject:&unk_1F4066720];
-  v62 = [v10 containsObject:&unk_1F4066738];
-  v63 = [v10 containsObject:&unk_1F4066750];
-  v64 = [v10 containsObject:&unk_1F4066768];
-  v65 = [v10 containsObject:&unk_1F4066780];
-  v66 = [v10 containsObject:&unk_1F4066798];
-  v67 = [v10 containsObject:&unk_1F40667B0];
-  v68 = [v10 containsObject:&unk_1F40667C8];
+  v60 = [previousExpressionsCopy containsObject:&unk_1F4066708];
+  v61 = [previousExpressionsCopy containsObject:&unk_1F4066720];
+  v62 = [previousExpressionsCopy containsObject:&unk_1F4066738];
+  v63 = [previousExpressionsCopy containsObject:&unk_1F4066750];
+  v64 = [previousExpressionsCopy containsObject:&unk_1F4066768];
+  v65 = [previousExpressionsCopy containsObject:&unk_1F4066780];
+  v66 = [previousExpressionsCopy containsObject:&unk_1F4066798];
+  v67 = [previousExpressionsCopy containsObject:&unk_1F40667B0];
+  v68 = [previousExpressionsCopy containsObject:&unk_1F40667C8];
   v69 = v47 * 0.375;
   v70 = v49 * 0.95;
   v71 = v51 * 0.65;
@@ -345,24 +345,24 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
   v82 = v116 > v49 && v117 > v49;
   v84 = v111 > v47 && v119 > v47;
   v86 = v124 > v109 && v125 > v109;
-  v87 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v88 = [MEMORY[0x1E696AD98] numberWithInt:v76];
-  [v87 setObject:v88 forKey:&unk_1F4066738];
+  [dictionary setObject:v88 forKey:&unk_1F4066738];
 
   v89 = [MEMORY[0x1E696AD98] numberWithInt:v86 | v72];
-  [v87 setObject:v89 forKey:&unk_1F4066708];
+  [dictionary setObject:v89 forKey:&unk_1F4066708];
 
   v90 = [MEMORY[0x1E696AD98] numberWithInt:v77 | v78];
-  [v87 setObject:v90 forKey:&unk_1F4066720];
+  [dictionary setObject:v90 forKey:&unk_1F4066720];
 
-  v91 = [MEMORY[0x1E696AD98] numberWithInt:v84 | v103];
-  [v87 setObject:v91 forKey:&unk_1F4066750];
+  v103 = [MEMORY[0x1E696AD98] numberWithInt:v84 | v103];
+  [dictionary setObject:v103 forKey:&unk_1F4066750];
 
-  v92 = [MEMORY[0x1E696AD98] numberWithInt:v82 | v104];
-  [v87 setObject:v92 forKey:&unk_1F4066768];
+  v104 = [MEMORY[0x1E696AD98] numberWithInt:v82 | v104];
+  [dictionary setObject:v104 forKey:&unk_1F4066768];
 
-  v93 = [MEMORY[0x1E696AD98] numberWithInt:v115 | v105];
-  [v87 setObject:v93 forKey:&unk_1F4066780];
+  v105 = [MEMORY[0x1E696AD98] numberWithInt:v115 | v105];
+  [dictionary setObject:v105 forKey:&unk_1F4066780];
 
   if (v118 > v110)
   {
@@ -375,7 +375,7 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
   }
 
   v95 = [MEMORY[0x1E696AD98] numberWithInt:v94];
-  [v87 setObject:v95 forKey:&unk_1F4066798];
+  [dictionary setObject:v95 forKey:&unk_1F4066798];
 
   if (v120 > v54)
   {
@@ -388,7 +388,7 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
   }
 
   v97 = [MEMORY[0x1E696AD98] numberWithInt:v96];
-  [v87 setObject:v97 forKey:&unk_1F40667B0];
+  [dictionary setObject:v97 forKey:&unk_1F40667B0];
 
   if (v121 > v56)
   {
@@ -401,18 +401,18 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
   }
 
   v99 = [MEMORY[0x1E696AD98] numberWithInt:v98];
-  [v87 setObject:v99 forKey:&unk_1F40667C8];
+  [dictionary setObject:v99 forKey:&unk_1F40667C8];
 
-  v100 = [objc_opt_class() _populateExpressionArraysForProcessedExpressions:v87 previousExpressions:v10 startExpressionsOutSet:a6 endExpressionsOutSet:a7];
+  v100 = [objc_opt_class() _populateExpressionArraysForProcessedExpressions:dictionary previousExpressions:previousExpressionsCopy startExpressionsOutSet:set endExpressionsOutSet:outSet];
 
   return v100;
 }
 
-+ (id)_populateExpressionArraysForProcessedExpressions:(id)a3 previousExpressions:(id)a4 startExpressionsOutSet:(id *)a5 endExpressionsOutSet:(id *)a6
++ (id)_populateExpressionArraysForProcessedExpressions:(id)expressions previousExpressions:(id)previousExpressions startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet
 {
   v7 = MEMORY[0x1E695DFA8];
-  v8 = a4;
-  v9 = a3;
+  previousExpressionsCopy = previousExpressions;
+  expressionsCopy = expressions;
   v10 = [v7 set];
   v11 = [MEMORY[0x1E695DFA8] set];
   v67 = [MEMORY[0x1E695DFA8] set];
@@ -422,44 +422,44 @@ void __69__AXSSMotionTrackingExpressionConfiguration_initWithPlistDictionary___b
     +[AXSSMotionTrackingExpressionConfiguration _populateExpressionArraysForProcessedExpressions:previousExpressions:startExpressionsOutSet:endExpressionsOutSet:];
   }
 
-  v12 = [v9 objectForKey:&unk_1F4066738];
-  v62 = [v12 BOOLValue];
+  v12 = [expressionsCopy objectForKey:&unk_1F4066738];
+  bOOLValue = [v12 BOOLValue];
 
-  v13 = [v9 objectForKey:&unk_1F4066708];
-  v57 = [v13 BOOLValue];
+  v13 = [expressionsCopy objectForKey:&unk_1F4066708];
+  bOOLValue2 = [v13 BOOLValue];
 
-  v14 = [v9 objectForKey:&unk_1F4066720];
-  v58 = [v14 BOOLValue];
+  v14 = [expressionsCopy objectForKey:&unk_1F4066720];
+  bOOLValue3 = [v14 BOOLValue];
 
-  v15 = [v9 objectForKey:&unk_1F4066750];
-  v59 = [v15 BOOLValue];
+  v15 = [expressionsCopy objectForKey:&unk_1F4066750];
+  bOOLValue4 = [v15 BOOLValue];
 
-  v16 = [v9 objectForKey:&unk_1F4066768];
-  v60 = [v16 BOOLValue];
+  v16 = [expressionsCopy objectForKey:&unk_1F4066768];
+  bOOLValue5 = [v16 BOOLValue];
 
-  v17 = [v9 objectForKey:&unk_1F4066780];
-  v65 = [v17 BOOLValue];
+  v17 = [expressionsCopy objectForKey:&unk_1F4066780];
+  bOOLValue6 = [v17 BOOLValue];
 
-  v18 = [v9 objectForKey:&unk_1F4066798];
+  v18 = [expressionsCopy objectForKey:&unk_1F4066798];
   LODWORD(v55) = [v18 BOOLValue];
 
-  v19 = [v9 objectForKey:&unk_1F40667B0];
-  v66 = [v19 BOOLValue];
+  v19 = [expressionsCopy objectForKey:&unk_1F40667B0];
+  bOOLValue7 = [v19 BOOLValue];
 
-  v20 = [v9 objectForKey:&unk_1F40667C8];
+  v20 = [expressionsCopy objectForKey:&unk_1F40667C8];
 
-  v64 = [v20 BOOLValue];
-  v21 = [v8 containsObject:&unk_1F4066708];
-  v22 = [v8 containsObject:&unk_1F4066720];
-  v23 = [v8 containsObject:&unk_1F4066738];
-  v24 = [v8 containsObject:&unk_1F4066750];
-  HIDWORD(v55) = [v8 containsObject:&unk_1F4066768];
-  v25 = [v8 containsObject:&unk_1F4066780];
-  v26 = [v8 containsObject:&unk_1F4066798];
-  v63 = [v8 containsObject:&unk_1F40667B0];
-  v61 = [v8 containsObject:&unk_1F40667C8];
+  bOOLValue8 = [v20 BOOLValue];
+  v21 = [previousExpressionsCopy containsObject:&unk_1F4066708];
+  v22 = [previousExpressionsCopy containsObject:&unk_1F4066720];
+  v23 = [previousExpressionsCopy containsObject:&unk_1F4066738];
+  v24 = [previousExpressionsCopy containsObject:&unk_1F4066750];
+  HIDWORD(v55) = [previousExpressionsCopy containsObject:&unk_1F4066768];
+  v25 = [previousExpressionsCopy containsObject:&unk_1F4066780];
+  v26 = [previousExpressionsCopy containsObject:&unk_1F4066798];
+  v63 = [previousExpressionsCopy containsObject:&unk_1F40667B0];
+  v61 = [previousExpressionsCopy containsObject:&unk_1F40667C8];
 
-  if (!v57)
+  if (!bOOLValue2)
   {
     v28 = v67;
     v27 = v68;
@@ -483,7 +483,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (!v58)
+  if (!bOOLValue3)
   {
     v30 = v28;
     if (!v22)
@@ -503,7 +503,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (!v62)
+  if (!bOOLValue)
   {
     v31 = v28;
     if (!v23)
@@ -523,7 +523,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  if (!v59)
+  if (!bOOLValue4)
   {
     v32 = v28;
     if (!v24)
@@ -543,14 +543,14 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (v60)
+  if (bOOLValue5)
   {
     [v10 addObject:&unk_1F4066768];
     if ((v55 & 0x100000000) == 0)
     {
-      v33 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v34 = _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate;
-      _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate = v33;
+      _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate = date;
     }
   }
 
@@ -561,8 +561,8 @@ LABEL_23:
     [v36 timeIntervalSinceDate:_populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate];
     v38 = v37;
 
-    v39 = [MEMORY[0x1E695DF00] date];
-    [v39 timeIntervalSinceDate:_populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:_populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_blinkEyesStartDate];
     v41 = v40;
 
     v26 = v35;
@@ -574,7 +574,7 @@ LABEL_23:
     }
   }
 
-  if (!v65)
+  if (!bOOLValue6)
   {
     v42 = v28;
     if (!v25)
@@ -594,11 +594,11 @@ LABEL_34:
   }
 
 LABEL_35:
-  if (!v64)
+  if (!bOOLValue8)
   {
     v43 = v28;
-    v45 = a5;
-    v44 = a6;
+    setCopy2 = set;
+    outSetCopy2 = outSet;
     if (!v61)
     {
       goto LABEL_40;
@@ -609,8 +609,8 @@ LABEL_35:
 
   [v10 addObject:&unk_1F40667C8];
   v43 = v27;
-  v45 = a5;
-  v44 = a6;
+  setCopy2 = set;
+  outSetCopy2 = outSet;
   if ((v61 & 1) == 0)
   {
 LABEL_39:
@@ -618,7 +618,7 @@ LABEL_39:
   }
 
 LABEL_40:
-  if (v66)
+  if (bOOLValue7)
   {
     [v10 addObject:&unk_1F40667B0];
     v46 = v27;
@@ -650,13 +650,13 @@ LABEL_45:
   }
 
   [v10 addObject:&unk_1F4066798];
-  v48 = [MEMORY[0x1E695DF00] date];
+  date3 = [MEMORY[0x1E695DF00] date];
   v49 = v26;
-  v50 = v48;
+  v50 = date3;
   v51 = _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_puckerCenterStartDate;
   if (v49)
   {
-    [v48 timeIntervalSinceDate:_populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_puckerCenterStartDate];
+    [date3 timeIntervalSinceDate:_populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_puckerCenterStartDate];
     v53 = v52;
 
     if (v53 > 0.15)
@@ -669,18 +669,18 @@ LABEL_48:
 
   else
   {
-    _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_puckerCenterStartDate = v48;
+    _populateExpressionArraysForProcessedExpressions_previousExpressions_startExpressionsOutSet_endExpressionsOutSet__s_puckerCenterStartDate = date3;
   }
 
 LABEL_55:
-  if (v45)
+  if (setCopy2)
   {
-    *v45 = [v27 copy];
+    *setCopy2 = [v27 copy];
   }
 
-  if (v44)
+  if (outSetCopy2)
   {
-    *v44 = [v28 copy];
+    *outSetCopy2 = [v28 copy];
   }
 
   return v10;
@@ -697,7 +697,7 @@ uint64_t __158__AXSSMotionTrackingExpressionConfiguration__populateExpressionArr
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ ($569BC8A4F588CCDEF576D5B50041512B)convertIncomingExpressionsToExclaveBlendshapesOutput:(SEL)a3
++ ($569BC8A4F588CCDEF576D5B50041512B)convertIncomingExpressionsToExclaveBlendshapesOutput:(SEL)output
 {
   v5 = a4;
   v6 = [v5 objectForKeyedSubscript:@"TongueOut"];
@@ -774,138 +774,138 @@ uint64_t __158__AXSSMotionTrackingExpressionConfiguration__populateExpressionArr
   return result;
 }
 
-+ (id)processExclaveDetectedExpressions:(id *)a3 previousExpressions:(id)a4 expressionConfiguration:(id)a5 startExpressionsOutSet:(id *)a6 endExpressionsOutSet:(id *)a7
++ (id)processExclaveDetectedExpressions:(id *)expressions previousExpressions:(id)previousExpressions expressionConfiguration:(id)configuration startExpressionsOutSet:(id *)set endExpressionsOutSet:(id *)outSet
 {
   v11 = MEMORY[0x1E695DF90];
-  v12 = a5;
-  v13 = a4;
-  v14 = [v11 dictionary];
+  configurationCopy = configuration;
+  previousExpressionsCopy = previousExpressions;
+  dictionary = [v11 dictionary];
   v15 = objc_opt_class();
-  v16 = *&a3->var6;
-  v64 = *&a3->var4;
+  v16 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v16;
-  var8 = a3->var8;
-  v17 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v17 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v17;
-  v18 = [v15 _expressionIsActive:4 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v18 = [v15 _expressionIsActive:4 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v19 = [MEMORY[0x1E696AD98] numberWithBool:v18];
-  [v14 setObject:v19 forKey:&unk_1F4066738];
+  [dictionary setObject:v19 forKey:&unk_1F4066738];
 
   v20 = objc_opt_class();
-  v21 = *&a3->var6;
-  v64 = *&a3->var4;
+  v21 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v21;
-  var8 = a3->var8;
-  v22 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v22 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v22;
-  v23 = [v20 _expressionIsActive:3 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v23 = [v20 _expressionIsActive:3 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v24 = [MEMORY[0x1E696AD98] numberWithBool:v23];
-  [v14 setObject:v24 forKey:&unk_1F4066708];
+  [dictionary setObject:v24 forKey:&unk_1F4066708];
 
   v25 = objc_opt_class();
-  v26 = *&a3->var6;
-  v64 = *&a3->var4;
+  v26 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v26;
-  var8 = a3->var8;
-  v27 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v27 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v27;
-  v28 = [v25 _expressionIsActive:2 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v28 = [v25 _expressionIsActive:2 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v29 = [MEMORY[0x1E696AD98] numberWithBool:v28];
-  [v14 setObject:v29 forKey:&unk_1F4066720];
+  [dictionary setObject:v29 forKey:&unk_1F4066720];
 
   v30 = objc_opt_class();
-  v31 = *&a3->var6;
-  v64 = *&a3->var4;
+  v31 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v31;
-  var8 = a3->var8;
-  v32 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v32 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v32;
-  v33 = [v30 _expressionIsActive:1 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v33 = [v30 _expressionIsActive:1 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v34 = [MEMORY[0x1E696AD98] numberWithBool:v33];
-  [v14 setObject:v34 forKey:&unk_1F4066750];
+  [dictionary setObject:v34 forKey:&unk_1F4066750];
 
   v35 = objc_opt_class();
-  v36 = *&a3->var6;
-  v64 = *&a3->var4;
+  v36 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v36;
-  var8 = a3->var8;
-  v37 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v37 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v37;
-  v38 = [v35 _expressionIsActive:5 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v38 = [v35 _expressionIsActive:5 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v39 = [MEMORY[0x1E696AD98] numberWithBool:v38];
-  [v14 setObject:v39 forKey:&unk_1F4066768];
+  [dictionary setObject:v39 forKey:&unk_1F4066768];
 
   v40 = objc_opt_class();
-  v41 = *&a3->var6;
-  v64 = *&a3->var4;
+  v41 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v41;
-  var8 = a3->var8;
-  v42 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v42 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v42;
-  v43 = [v40 _expressionIsActive:6 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v43 = [v40 _expressionIsActive:6 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v44 = [MEMORY[0x1E696AD98] numberWithBool:v43];
-  [v14 setObject:v44 forKey:&unk_1F4066780];
+  [dictionary setObject:v44 forKey:&unk_1F4066780];
 
   v45 = objc_opt_class();
-  v46 = *&a3->var6;
-  v64 = *&a3->var4;
+  v46 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v46;
-  var8 = a3->var8;
-  v47 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v47 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v47;
-  v48 = [v45 _expressionIsActive:7 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v48 = [v45 _expressionIsActive:7 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v49 = [MEMORY[0x1E696AD98] numberWithBool:v48];
-  [v14 setObject:v49 forKey:&unk_1F4066798];
+  [dictionary setObject:v49 forKey:&unk_1F4066798];
 
   v50 = objc_opt_class();
-  v51 = *&a3->var6;
-  v64 = *&a3->var4;
+  v51 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v51;
-  var8 = a3->var8;
-  v52 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v52 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v52;
-  v53 = [v50 _expressionIsActive:8 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v53 = [v50 _expressionIsActive:8 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
   v54 = [MEMORY[0x1E696AD98] numberWithBool:v53];
-  [v14 setObject:v54 forKey:&unk_1F40667B0];
+  [dictionary setObject:v54 forKey:&unk_1F40667B0];
 
   v55 = objc_opt_class();
-  v56 = *&a3->var6;
-  v64 = *&a3->var4;
+  v56 = *&expressions->var6;
+  v64 = *&expressions->var4;
   v65 = v56;
-  var8 = a3->var8;
-  v57 = *&a3->var2;
-  v62 = *&a3->var0;
+  var8 = expressions->var8;
+  v57 = *&expressions->var2;
+  v62 = *&expressions->var0;
   v63 = v57;
-  v58 = [v55 _expressionIsActive:9 usingExclaveOutput:&v62 expressionConfiguration:v12];
+  v58 = [v55 _expressionIsActive:9 usingExclaveOutput:&v62 expressionConfiguration:configurationCopy];
 
   v59 = [MEMORY[0x1E696AD98] numberWithBool:v58];
-  [v14 setObject:v59 forKey:&unk_1F40667C8];
+  [dictionary setObject:v59 forKey:&unk_1F40667C8];
 
-  v60 = [objc_opt_class() _populateExpressionArraysForProcessedExpressions:v14 previousExpressions:v13 startExpressionsOutSet:a6 endExpressionsOutSet:a7];
+  v60 = [objc_opt_class() _populateExpressionArraysForProcessedExpressions:dictionary previousExpressions:previousExpressionsCopy startExpressionsOutSet:set endExpressionsOutSet:outSet];
 
   return v60;
 }
 
-+ (BOOL)_expressionIsActive:(unint64_t)a3 usingExclaveOutput:(id *)a4 expressionConfiguration:(id)a5
++ (BOOL)_expressionIsActive:(unint64_t)active usingExclaveOutput:(id *)output expressionConfiguration:(id)configuration
 {
-  v7 = [a5 sensitivityForFacialExpression:?];
+  v7 = [configuration sensitivityForFacialExpression:?];
   v8 = objc_opt_class();
-  v9 = *&a4->var6;
-  v15[2] = *&a4->var4;
+  v9 = *&output->var6;
+  v15[2] = *&output->var4;
   v15[3] = v9;
-  var8 = a4->var8;
-  v10 = *&a4->var2;
-  v15[0] = *&a4->var0;
+  var8 = output->var8;
+  v10 = *&output->var2;
+  v15[0] = *&output->var0;
   v15[1] = v10;
-  v11 = [v8 _activationForFacialExpression:a3 usingExclaveExpressions:v15];
+  v11 = [v8 _activationForFacialExpression:active usingExclaveExpressions:v15];
   v12 = v11 > 1;
   v13 = v11 != 0;
   if (v7 != 1)
@@ -929,96 +929,96 @@ uint64_t __158__AXSSMotionTrackingExpressionConfiguration__populateExpressionArr
   }
 }
 
-+ (unint64_t)_activationForFacialExpression:(unint64_t)a3 usingExclaveExpressions:(id *)a4
++ (unint64_t)_activationForFacialExpression:(unint64_t)expression usingExclaveExpressions:(id *)expressions
 {
   result = 0;
-  if (a3 <= 4)
+  if (expression <= 4)
   {
-    if (a3 > 2)
+    if (expression > 2)
     {
-      if (a3 == 3)
+      if (expression == 3)
       {
-        a4 = (a4 + 16);
+        expressions = (expressions + 16);
       }
 
       else
       {
-        a4 = (a4 + 24);
+        expressions = (expressions + 24);
       }
     }
 
-    else if (a3 != 1)
+    else if (expression != 1)
     {
-      if (a3 != 2)
+      if (expression != 2)
       {
         return result;
       }
 
-      a4 = (a4 + 8);
+      expressions = (expressions + 8);
     }
   }
 
-  else if (a3 <= 6)
+  else if (expression <= 6)
   {
-    if (a3 == 5)
+    if (expression == 5)
     {
-      a4 = (a4 + 32);
+      expressions = (expressions + 32);
     }
 
     else
     {
-      a4 = (a4 + 40);
+      expressions = (expressions + 40);
     }
   }
 
   else
   {
-    switch(a3)
+    switch(expression)
     {
       case 7uLL:
-        a4 = (a4 + 48);
+        expressions = (expressions + 48);
         break;
       case 8uLL:
-        a4 = (a4 + 64);
+        expressions = (expressions + 64);
         break;
       case 9uLL:
-        a4 = (a4 + 56);
+        expressions = (expressions + 56);
         break;
       default:
         return result;
     }
   }
 
-  return a4->var0;
+  return expressions->var0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+  coderCopy = coder;
+  _facialExpressionToSensitivity = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
 
-  if (v4)
+  if (_facialExpressionToSensitivity)
   {
-    v5 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
+    _facialExpressionToSensitivity2 = [(AXSSMotionTrackingExpressionConfiguration *)self _facialExpressionToSensitivity];
     v6 = NSStringFromSelector(sel__facialExpressionToSensitivity);
-    [v7 encodeObject:v5 forKey:v6];
+    [coderCopy encodeObject:_facialExpressionToSensitivity2 forKey:v6];
   }
 }
 
-- (AXSSMotionTrackingExpressionConfiguration)initWithCoder:(id)a3
+- (AXSSMotionTrackingExpressionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AXSSMotionTrackingExpressionConfiguration *)self init];
   if (v5)
   {
-    v6 = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
-    v7 = [v6 mutableCopy];
+    _defaultSensitivitiesForAllFacialExpressions = [objc_opt_class() _defaultSensitivitiesForAllFacialExpressions];
+    v7 = [_defaultSensitivitiesForAllFacialExpressions mutableCopy];
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
     v11 = NSStringFromSelector(sel__facialExpressionToSensitivity);
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
 
     if (v12)
     {
@@ -1035,37 +1035,37 @@ uint64_t __158__AXSSMotionTrackingExpressionConfiguration__populateExpressionArr
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
-  v4 = [[AXSSMotionTrackingExpressionConfiguration alloc] initWithPlistDictionary:v3];
+  plistDictionary = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
+  v4 = [[AXSSMotionTrackingExpressionConfiguration alloc] initWithPlistDictionary:plistDictionary];
 
   return v4;
 }
 
-- (BOOL)isEqualToMotionTrackingExpressionConfiguration:(id)a3
+- (BOOL)isEqualToMotionTrackingExpressionConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
-  v6 = [v4 plistDictionary];
+  configurationCopy = configuration;
+  plistDictionary = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
+  plistDictionary2 = [configurationCopy plistDictionary];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(configurationCopy) = [plistDictionary isEqual:plistDictionary2];
+  return configurationCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
-  v3 = [v2 hash];
+  plistDictionary = [(AXSSMotionTrackingExpressionConfiguration *)self plistDictionary];
+  v3 = [plistDictionary hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingExpressionConfiguration *)self isEqualToMotionTrackingExpressionConfiguration:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSMotionTrackingExpressionConfiguration *)self isEqualToMotionTrackingExpressionConfiguration:equalCopy];
 
   return v5;
 }
@@ -1124,26 +1124,26 @@ void __89__AXSSMotionTrackingExpressionConfiguration__defaultSensitivitiesForAll
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_safelySetSensitivity:(unint64_t)a3 forFacialExpression:(unint64_t)a4 inDictionary:(id)a5
+- (void)_safelySetSensitivity:(unint64_t)sensitivity forFacialExpression:(unint64_t)expression inDictionary:(id)dictionary
 {
-  if (a3 - 1 <= 2 && a4 - 1 <= 8)
+  if (sensitivity - 1 <= 2 && expression - 1 <= 8)
   {
     v9 = MEMORY[0x1E696AD98];
-    v10 = a5;
-    v12 = [v9 numberWithUnsignedInteger:a3];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v10 setObject:v12 forKeyedSubscript:v11];
+    dictionaryCopy = dictionary;
+    v12 = [v9 numberWithUnsignedInteger:sensitivity];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:expression];
+    [dictionaryCopy setObject:v12 forKeyedSubscript:v11];
   }
 }
 
-+ (float)_minConfidenceExpressionStarted:(unint64_t)a3 usingExpressionConfiguration:(id)a4
++ (float)_minConfidenceExpressionStarted:(unint64_t)started usingExpressionConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [objc_opt_class() _facialExpressionToSensitivityToValueMapping];
-  v7 = [v5 sensitivityForFacialExpression:a3];
+  configurationCopy = configuration;
+  _facialExpressionToSensitivityToValueMapping = [objc_opt_class() _facialExpressionToSensitivityToValueMapping];
+  v7 = [configurationCopy sensitivityForFacialExpression:started];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:started];
+  v9 = [_facialExpressionToSensitivityToValueMapping objectForKeyedSubscript:v8];
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
   v11 = [v9 objectForKeyedSubscript:v10];
   [v11 floatValue];
@@ -1255,10 +1255,10 @@ void __89__AXSSMotionTrackingExpressionConfiguration__facialExpressionToSensitiv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_jawOpenStartingWithValue:(float)a3 mouthClose:(float)a4 expressionConfiguration:(id)a5
++ (BOOL)_jawOpenStartingWithValue:(float)value mouthClose:(float)close expressionConfiguration:(id)configuration
 {
-  v7 = [a5 sensitivityForFacialExpression:2];
-  v8 = a3 - a4;
+  v7 = [configuration sensitivityForFacialExpression:2];
+  v8 = value - close;
   if ((v7 - 1) <= 1)
   {
     return v8 >= 0.05;
@@ -1361,9 +1361,9 @@ void __96__AXSSMotionTrackingExpressionConfiguration_Exclave__facialExpressionTo
 - (void)plistDictionary
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = [a1 _facialExpressionToSensitivity];
+  _facialExpressionToSensitivity = [self _facialExpressionToSensitivity];
   v7 = 138412546;
-  v8 = v5;
+  v8 = _facialExpressionToSensitivity;
   v9 = 2112;
   v10 = a2;
   _os_log_error_impl(&dword_1C0E8A000, a3, OS_LOG_TYPE_ERROR, "ERROR: Couldn't encode object %@, encountered error: %@", &v7, 0x16u);

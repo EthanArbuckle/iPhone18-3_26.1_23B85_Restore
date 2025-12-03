@@ -1,27 +1,27 @@
 @interface CCUISatelliteModuleViewController
 - (BOOL)_hasContextMenuItems;
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3;
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view;
 - (CCUISatelliteModuleViewController)init;
 - (id)_connectedMenuItems;
-- (id)_debugDescriptionForState:(BOOL)a3;
-- (id)_glyphImageForState:(unint64_t)a3;
-- (id)_glyphStateForState:(unint64_t)a3;
+- (id)_debugDescriptionForState:(BOOL)state;
+- (id)_glyphImageForState:(unint64_t)state;
+- (id)_glyphStateForState:(unint64_t)state;
 - (id)_menuItemsForCurrentState;
 - (id)_notConnectedMenuItems;
 - (id)_offMenuItems;
-- (id)_subtitleTextForState:(unint64_t)a3;
+- (id)_subtitleTextForState:(unint64_t)state;
 - (void)_buttonTapped;
 - (void)_openSOSBuddyApp;
-- (void)_updateGlyphImageWithState:(unint64_t)a3;
+- (void)_updateGlyphImageWithState:(unint64_t)state;
 - (void)_updateSatelliteMenuItems;
-- (void)_updateState:(unint64_t)a3;
-- (void)buttonTapped:(id)a3;
+- (void)_updateState:(unint64_t)state;
+- (void)buttonTapped:(id)tapped;
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)updateState;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CCUISatelliteModuleViewController
@@ -44,8 +44,8 @@
     v2->_satelliteMonitor = v7;
 
     [(CCUISatelliteMonitor *)v2->_satelliteMonitor start];
-    v9 = [MEMORY[0x277CF0C18] serial];
-    v10 = [v9 autoreleaseFrequency:1];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v10 = [serial autoreleaseFrequency:1];
     v11 = [v10 serviceClass:25];
     v12 = BSDispatchQueueCreate();
     queue = v2->_queue;
@@ -63,8 +63,8 @@
   v19.super_class = CCUISatelliteModuleViewController;
   [(CCUIButtonModuleViewController *)&v19 viewDidLoad];
   v3 = [(CCUISatelliteModuleViewController *)self _glyphImageForState:1];
-  v4 = [MEMORY[0x277D75348] systemGreenColor];
-  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:systemGreenColor useLightStyle:1];
   [v5 setUseAutomaticSymbolColors:1];
   v6 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__glyphViewForExpandedConnectivityModuleTapped];
   [v5 addGestureRecognizer:v6];
@@ -85,7 +85,7 @@
 
   [(CCUIButtonModuleViewController *)self setTitle:v13];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:v13];
-  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:systemGreenColor useLightStyle:1];
   [v14 setUseIndependentAlpha:1];
   [v14 setDynamicLayoutEnabled:1];
   [v14 setUseAutomaticSymbolColors:1];
@@ -94,29 +94,29 @@
   self->_buttonViewForCollapsedConnectivityModule = v14;
   v16 = v14;
 
-  v17 = [MEMORY[0x277D75348] systemGreenColor];
+  systemGreenColor2 = [MEMORY[0x277D75348] systemGreenColor];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v17];
-  v18 = [(CCUIButtonModuleViewController *)self _templateView];
-  [v18 setContextMenuDelegate:self];
-  [v18 setShowsMenuAsPrimaryAction:1];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemGreenColor2];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
+  [_templateView setContextMenuDelegate:self];
+  [_templateView setShowsMenuAsPrimaryAction:1];
   [(CCUISatelliteModuleViewController *)self _updateSatelliteMenuItems];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUISatelliteModuleViewController;
-  [(CCUISatelliteModuleViewController *)&v4 viewWillAppear:a3];
+  [(CCUISatelliteModuleViewController *)&v4 viewWillAppear:appear];
   [(CCUISatelliteModuleViewController *)self startObservingStateChangesIfNecessary];
   [(CCUISatelliteModuleViewController *)self _updateState:[(CCUISatelliteMonitor *)self->_satelliteMonitor state]];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUISatelliteModuleViewController;
-  [(CCUISatelliteModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUISatelliteModuleViewController *)&v4 viewWillDisappear:disappear];
   [(CCUISatelliteModuleViewController *)self stopObservingStateChangesIfNecessary];
 }
 
@@ -136,31 +136,31 @@
   }
 }
 
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view
 {
-  v4 = [(CCUISatelliteModuleViewController *)self _hasContextMenuItems];
-  if (!v4)
+  _hasContextMenuItems = [(CCUISatelliteModuleViewController *)self _hasContextMenuItems];
+  if (!_hasContextMenuItems)
   {
     [(CCUISatelliteModuleViewController *)self _openSOSBuddyApp];
   }
 
-  return v4;
+  return _hasContextMenuItems;
 }
 
 - (void)updateState
 {
-  v3 = [(CCUISatelliteMonitor *)self->_satelliteMonitor state];
+  state = [(CCUISatelliteMonitor *)self->_satelliteMonitor state];
 
-  [(CCUISatelliteModuleViewController *)self _updateState:v3];
+  [(CCUISatelliteModuleViewController *)self _updateState:state];
 }
 
 - (BOOL)_hasContextMenuItems
 {
-  v2 = [(CCUISatelliteModuleViewController *)self contextMenuItems];
-  v3 = v2;
-  if (v2)
+  contextMenuItems = [(CCUISatelliteModuleViewController *)self contextMenuItems];
+  v3 = contextMenuItems;
+  if (contextMenuItems)
   {
-    v4 = [v2 count] != 0;
+    v4 = [contextMenuItems count] != 0;
   }
 
   else
@@ -208,8 +208,8 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
 
 - (void)_updateSatelliteMenuItems
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CCUISatelliteModuleViewController.m" lineNumber:231 description:@"This must be called on the main thread"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CCUISatelliteModuleViewController.m" lineNumber:231 description:@"This must be called on the main thread"];
 }
 
 - (id)_offMenuItems
@@ -331,38 +331,38 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
 
 - (id)_menuItemsForCurrentState
 {
-  v3 = [(CCUISatelliteMonitor *)self->_satelliteMonitor state];
-  switch(v3)
+  state = [(CCUISatelliteMonitor *)self->_satelliteMonitor state];
+  switch(state)
   {
     case 5uLL:
-      v4 = [(CCUISatelliteModuleViewController *)self _connectedMenuItems];
+      _connectedMenuItems = [(CCUISatelliteModuleViewController *)self _connectedMenuItems];
       break;
     case 3uLL:
-      v4 = [(CCUISatelliteModuleViewController *)self _notConnectedMenuItems];
+      _connectedMenuItems = [(CCUISatelliteModuleViewController *)self _notConnectedMenuItems];
       break;
     case 2uLL:
-      v4 = [(CCUISatelliteModuleViewController *)self _offMenuItems];
+      _connectedMenuItems = [(CCUISatelliteModuleViewController *)self _offMenuItems];
       break;
     default:
-      v4 = MEMORY[0x277CBEBF8];
+      _connectedMenuItems = MEMORY[0x277CBEBF8];
       break;
   }
 
-  return v4;
+  return _connectedMenuItems;
 }
 
-- (void)_updateState:(unint64_t)a3
+- (void)_updateState:(unint64_t)state
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (state)
   {
     [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setHidden:0];
-    v5 = [(CCUISatelliteModuleViewController *)self _inoperativeForState:a3];
-    v6 = [(CCUISatelliteModuleViewController *)self _enabledForState:a3];
-    v19 = [(CCUISatelliteModuleViewController *)self _userInteractionEnabledForState:a3];
-    v7 = [(CCUISatelliteModuleViewController *)self _glyphStateForState:a3];
-    v8 = [(CCUISatelliteModuleViewController *)self _subtitleTextForState:a3];
-    v9 = [(CCUISatelliteModuleViewController *)self _useAlternateBackgroundForState:a3];
+    v5 = [(CCUISatelliteModuleViewController *)self _inoperativeForState:state];
+    v6 = [(CCUISatelliteModuleViewController *)self _enabledForState:state];
+    v19 = [(CCUISatelliteModuleViewController *)self _userInteractionEnabledForState:state];
+    v7 = [(CCUISatelliteModuleViewController *)self _glyphStateForState:state];
+    v8 = [(CCUISatelliteModuleViewController *)self _subtitleTextForState:state];
+    v9 = [(CCUISatelliteModuleViewController *)self _useAlternateBackgroundForState:state];
     [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setHighlighted:0];
     [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setEnabled:1];
     [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setEnabled:v6];
@@ -374,20 +374,20 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
     [(CCUIButtonModuleViewController *)self setValueText:v8];
     [(CCUIButtonModuleViewController *)self setSelectedValueText:v8];
     [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setSubtitle:v8];
-    v10 = [(CCUISatelliteModuleViewController *)self _glyphImageForState:a3];
+    v10 = [(CCUISatelliteModuleViewController *)self _glyphImageForState:state];
     [(CCUIButtonModuleViewController *)self setGlyphImage:v10];
-    [(CCUISatelliteModuleViewController *)self _updateGlyphImageWithState:a3];
+    [(CCUISatelliteModuleViewController *)self _updateGlyphImageWithState:state];
     [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setUseAlternateBackground:v9];
     [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setUseAlternateBackground:v9];
     [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setUserInteractionEnabled:v19];
     [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setUserInteractionEnabled:v19];
-    v11 = [(CCUISatelliteModuleViewController *)self _hasContextMenuItems];
-    v12 = a3 != 1 && v11;
+    _hasContextMenuItems = [(CCUISatelliteModuleViewController *)self _hasContextMenuItems];
+    v12 = state != 1 && _hasContextMenuItems;
     [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAsPrimaryAction:v12];
     [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setShowsMenuAffordance:v12];
     [(CCUISatelliteModuleViewController *)self _updateSatelliteMenuItems];
-    v13 = [(CCUISatelliteModuleViewController *)self view];
-    [v13 setNeedsLayout];
+    view = [(CCUISatelliteModuleViewController *)self view];
+    [view setNeedsLayout];
 
     v14 = *MEMORY[0x277CFC8F8];
     if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -421,26 +421,26 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
   }
 }
 
-- (void)_updateGlyphImageWithState:(unint64_t)a3
+- (void)_updateGlyphImageWithState:(unint64_t)state
 {
-  v6 = [(CCUISatelliteModuleViewController *)self _glyphImageForState:a3];
+  v6 = [(CCUISatelliteModuleViewController *)self _glyphImageForState:state];
   [(CCUIButtonModuleViewController *)self setGlyphImage:v6];
-  v4 = [(CCUISatelliteModuleViewController *)self buttonViewForCollapsedConnectivityModule];
-  [v4 setGlyphImage:v6];
-  v5 = [(CCUISatelliteModuleViewController *)self glyphViewForExpandedConnectivityModule];
-  [v5 setGlyphImage:v6];
+  buttonViewForCollapsedConnectivityModule = [(CCUISatelliteModuleViewController *)self buttonViewForCollapsedConnectivityModule];
+  [buttonViewForCollapsedConnectivityModule setGlyphImage:v6];
+  glyphViewForExpandedConnectivityModule = [(CCUISatelliteModuleViewController *)self glyphViewForExpandedConnectivityModule];
+  [glyphViewForExpandedConnectivityModule setGlyphImage:v6];
 }
 
-- (id)_subtitleTextForState:(unint64_t)a3
+- (id)_subtitleTextForState:(unint64_t)state
 {
-  if (a3 - 1 > 5)
+  if (state - 1 > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_2783823A0[a3 - 1];
+    v3 = off_2783823A0[state - 1];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
   }
@@ -448,37 +448,37 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
   return v5;
 }
 
-- (id)_glyphStateForState:(unint64_t)a3
+- (id)_glyphStateForState:(unint64_t)state
 {
-  if (a3 - 1 > 5)
+  if (state - 1 > 5)
   {
     return @"hidden";
   }
 
   else
   {
-    return off_2783823D0[a3 - 1];
+    return off_2783823D0[state - 1];
   }
 }
 
-- (id)_glyphImageForState:(unint64_t)a3
+- (id)_glyphImageForState:(unint64_t)state
 {
-  if (a3 > 6)
+  if (state > 6)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_278382400[a3];
+    v3 = off_278382400[state];
   }
 
-  v4 = [(CCUIButtonModuleViewController *)self contentMetrics];
-  v5 = [v4 symbolConfiguration];
-  v6 = [MEMORY[0x277D755B8] _systemImageNamed:v3 withConfiguration:v5];
-  v7 = [v6 imageFlippedForRightToLeftLayoutDirection];
+  contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+  symbolConfiguration = [contentMetrics symbolConfiguration];
+  v6 = [MEMORY[0x277D755B8] _systemImageNamed:v3 withConfiguration:symbolConfiguration];
+  imageFlippedForRightToLeftLayoutDirection = [v6 imageFlippedForRightToLeftLayoutDirection];
 
-  return v7;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)_buttonTapped
@@ -490,7 +490,7 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
   }
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
   v4 = *MEMORY[0x277CFC8F8];
   if (os_log_type_enabled(*MEMORY[0x277CFC8F8], OS_LOG_TYPE_DEFAULT))
@@ -502,9 +502,9 @@ void __53__CCUISatelliteModuleViewController__openSOSBuddyApp__block_invoke()
   [(CCUISatelliteModuleViewController *)self _buttonTapped];
 }
 
-- (id)_debugDescriptionForState:(BOOL)a3
+- (id)_debugDescriptionForState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     return @"on";
   }

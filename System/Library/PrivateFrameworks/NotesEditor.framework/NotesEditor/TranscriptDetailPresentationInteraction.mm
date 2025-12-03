@@ -1,14 +1,14 @@
 @interface TranscriptDetailPresentationInteraction
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
 - (_TtC11NotesEditor39TranscriptDetailPresentationInteraction)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (void)didMoveToView:(id)a3;
-- (void)pan:(id)a3;
-- (void)setView:(id)a3;
-- (void)tap:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (void)didMoveToView:(id)view;
+- (void)pan:(id)pan;
+- (void)setView:(id)view;
+- (void)tap:(id)tap;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation TranscriptDetailPresentationInteraction
@@ -20,64 +20,64 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v5 = OBJC_IVAR____TtC11NotesEditor39TranscriptDetailPresentationInteraction_view;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = view;
+  viewCopy = view;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_2153CB8F4();
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_2153BFBDC(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_2153BFBDC(view);
 }
 
-- (void)tap:(id)a3
+- (void)tap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  selfCopy = self;
+  if ([tapCopy state] == 3)
   {
     sub_2153BFE7C();
   }
 }
 
-- (void)pan:(id)a3
+- (void)pan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 1)
+  panCopy = pan;
+  selfCopy = self;
+  if ([panCopy state] == 1)
   {
     sub_2153BFE7C();
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
   v12 = sub_2153CB994();
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v6 = sub_2153CBA90();
 
   return v6;
@@ -90,11 +90,11 @@
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  ShouldBeginySbSo09UIGestureH0CF_0 = _s11NotesEditor39TranscriptDetailPresentationInteractionC28gestureRecognizerShouldBeginySbSo09UIGestureH0CF_0(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  ShouldBeginySbSo09UIGestureH0CF_0 = _s11NotesEditor39TranscriptDetailPresentationInteractionC28gestureRecognizerShouldBeginySbSo09UIGestureH0CF_0(beginCopy);
 
   return ShouldBeginySbSo09UIGestureH0CF_0;
 }

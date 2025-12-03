@@ -1,14 +1,14 @@
 @interface PPTemporalClusterServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPTemporalClusterServerDelegate)init;
 @end
 
 @implementation PPTemporalClusterServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v23 = a3;
-  v22 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847A0638];
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -48,7 +48,7 @@
   v24[3] = &unk_2789790A8;
   v25 = v27;
   v20 = v27;
-  LOBYTE(v14) = [PPXPCServerHelper shouldAcceptConnection:v22 serviceName:@"com.apple.proactive.PersonalizationPortrait.TemporalCluster" allowedServerInterface:v5 allowedClientInterface:v16 requestHandler:v20 validateConnection:v19 setupClientProxy:v28 interruptionHandler:v26 invalidationHandler:v24];
+  LOBYTE(v14) = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.TemporalCluster" allowedServerInterface:v5 allowedClientInterface:v16 requestHandler:v20 validateConnection:v19 setupClientProxy:v28 interruptionHandler:v26 invalidationHandler:v24];
 
   return v14;
 }

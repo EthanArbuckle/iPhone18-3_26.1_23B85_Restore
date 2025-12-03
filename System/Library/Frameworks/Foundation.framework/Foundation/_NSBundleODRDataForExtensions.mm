@@ -1,15 +1,15 @@
 @interface _NSBundleODRDataForExtensions
-+ (_NSBundleODRDataForExtensions)dataForBundle:(int)a3 createIfRequired:;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)accessSandboxExtension:(id)a3;
++ (_NSBundleODRDataForExtensions)dataForBundle:(int)bundle createIfRequired:;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)accessSandboxExtension:(id)extension;
 - (void)dealloc;
-- (void)hostApplicationAssetPacksBecameAvailable:(id)a3;
-- (void)hostApplicationAssetPacksBecameUnavailable:(id)a3;
+- (void)hostApplicationAssetPacksBecameAvailable:(id)available;
+- (void)hostApplicationAssetPacksBecameUnavailable:(id)unavailable;
 @end
 
 @implementation _NSBundleODRDataForExtensions
 
-+ (_NSBundleODRDataForExtensions)dataForBundle:(int)a3 createIfRequired:
++ (_NSBundleODRDataForExtensions)dataForBundle:(int)bundle createIfRequired:
 {
   objc_opt_self();
   if (qword_1ED439AC0 != -1)
@@ -21,7 +21,7 @@
   v5 = qword_1ED439AB0;
   if (!qword_1ED439AB0)
   {
-    if (!a3)
+    if (!bundle)
     {
       v7 = 0;
       goto LABEL_10;
@@ -33,7 +33,7 @@
 
   v6 = [(NSMapTable *)v5 objectForKey:a2];
   v7 = v6;
-  if (a3 && !v6)
+  if (bundle && !v6)
   {
     v7 = [(_NSBundleODRDataCommon *)[_NSBundleODRDataForExtensions alloc] initWithBundle:a2];
     [qword_1ED439AB0 setObject:v7 forKey:a2];
@@ -55,10 +55,10 @@ LABEL_10:
   [(_NSBundleODRDataCommon *)&v3 dealloc];
 }
 
-- (void)accessSandboxExtension:(id)a3
+- (void)accessSandboxExtension:(id)extension
 {
   v8 = *MEMORY[0x1E69E9840];
-  [a3 UTF8String];
+  [extension UTF8String];
   v4 = sandbox_extension_consume();
   self->super._sandboxToken = v4;
   if (v4 < 0)
@@ -79,20 +79,20 @@ LABEL_10:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  [a4 setExportedObject:self];
-  [a4 setExportedInterface:_appExtensionInterface()];
-  [a4 resume];
-  self->_connection = a4;
+  [connection setExportedObject:self];
+  [connection setExportedInterface:_appExtensionInterface()];
+  [connection resume];
+  self->_connection = connection;
   return 1;
 }
 
-- (void)hostApplicationAssetPacksBecameAvailable:(id)a3
+- (void)hostApplicationAssetPacksBecameAvailable:(id)available
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = 0;
-  if (![(_NSBundleODRDataCommon *)self assetPacksBecameAvailable:a3 error:&v4])
+  if (![(_NSBundleODRDataCommon *)self assetPacksBecameAvailable:available error:&v4])
   {
     if (qword_1ED439B00 != -1)
     {
@@ -109,10 +109,10 @@ LABEL_10:
   }
 }
 
-- (void)hostApplicationAssetPacksBecameUnavailable:(id)a3
+- (void)hostApplicationAssetPacksBecameUnavailable:(id)unavailable
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (![(_NSBundleODRDataCommon *)self assetPacksBecameUnavailable:a3 error:0])
+  if (![(_NSBundleODRDataCommon *)self assetPacksBecameUnavailable:unavailable error:0])
   {
     if (qword_1ED439B00 != -1)
     {

@@ -1,28 +1,28 @@
 @interface CVNLPCaptionPostProcessingHandler
-- (BOOL)_checkAboveThreshold:(id)a3 observationConfidence:(double)a4 difference:(id *)a5;
-- (CVNLPCaptionPostProcessingHandler)initWithOptions:(id)a3 runtimeParameters:(id)a4;
+- (BOOL)_checkAboveThreshold:(id)threshold observationConfidence:(double)confidence difference:(id *)difference;
+- (CVNLPCaptionPostProcessingHandler)initWithOptions:(id)options runtimeParameters:(id)parameters;
 - (CVNLPCaptionRuntimeParameters)runtimeParameters;
-- (id)_checkForBlockingTokens:(id)a3 blockingTokens:(id)a4;
-- (id)_checkForBlockingTokens:(id)a3 visionObservations:(id)a4;
-- (id)_excludeGenderReplacements:(id)a3 genderOption:(int)a4 error:(id *)a5;
-- (id)_excludeGenderTriggers:(id)a3 genderOption:(int)a4 error:(id *)a5;
-- (id)_filterVisionObservations:(id)a3;
-- (id)_replacements:(id)a3 genderOption:(int)a4;
-- (id)postProcessCaptions:(id)a3 visionObservations:(id)a4;
+- (id)_checkForBlockingTokens:(id)tokens blockingTokens:(id)blockingTokens;
+- (id)_checkForBlockingTokens:(id)tokens visionObservations:(id)observations;
+- (id)_excludeGenderReplacements:(id)replacements genderOption:(int)option error:(id *)error;
+- (id)_excludeGenderTriggers:(id)triggers genderOption:(int)option error:(id *)error;
+- (id)_filterVisionObservations:(id)observations;
+- (id)_replacements:(id)_replacements genderOption:(int)option;
+- (id)postProcessCaptions:(id)captions visionObservations:(id)observations;
 @end
 
 @implementation CVNLPCaptionPostProcessingHandler
 
-- (CVNLPCaptionPostProcessingHandler)initWithOptions:(id)a3 runtimeParameters:(id)a4
+- (CVNLPCaptionPostProcessingHandler)initWithOptions:(id)options runtimeParameters:(id)parameters
 {
-  v5 = a4;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = CVNLPCaptionPostProcessingHandler;
   v6 = [(CVNLPCaptionPostProcessingHandler *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_runtimeParameters, v5);
+    objc_storeWeak(&v6->_runtimeParameters, parametersCopy);
     v10 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x1E696AB08], v8, @" ", v9);
     trimSet = v7->_trimSet;
     v7->_trimSet = v10;
@@ -31,13 +31,13 @@
   return v7;
 }
 
-- (id)postProcessCaptions:(id)a3 visionObservations:(id)a4
+- (id)postProcessCaptions:(id)captions visionObservations:(id)observations
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend__checkForBlockingTokens_visionObservations_(self, v8, v6, v7);
-  v12 = objc_msgSend__filterVisionObservations_(self, v10, v7, v11);
+  captionsCopy = captions;
+  observationsCopy = observations;
+  v9 = objc_msgSend__checkForBlockingTokens_visionObservations_(self, v8, captionsCopy, observationsCopy);
+  v12 = objc_msgSend__filterVisionObservations_(self, v10, observationsCopy, v11);
   v17[0] = CVNLPCaptions;
   v17[1] = CVNLPImageClassificationIdentifiers;
   v18[0] = v9;
@@ -49,18 +49,18 @@
   return v14;
 }
 
-- (id)_excludeGenderReplacements:(id)a3 genderOption:(int)a4 error:(id *)a5
+- (id)_excludeGenderReplacements:(id)replacements genderOption:(int)option error:(id *)error
 {
   v150 = *MEMORY[0x1E69E9840];
-  v121 = a3;
-  v129 = self;
+  replacementsCopy = replacements;
+  selfCopy = self;
   v10 = objc_msgSend_runtimeParameters(self, v7, v8, v9);
   v14 = objc_msgSend_genderOption(v10, v11, v12, v13);
 
-  if (a4 != 1 || v14)
+  if (option != 1 || v14)
   {
-    v116 = v121;
-    v115 = v121;
+    v116 = replacementsCopy;
+    v115 = replacementsCopy;
   }
 
   else
@@ -70,7 +70,7 @@
     v145 = 0u;
     v142 = 0u;
     v143 = 0u;
-    obj = v121;
+    obj = replacementsCopy;
     v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v18, &v142, v149, 16);
     if (v19)
     {
@@ -93,7 +93,7 @@
           v141 = 0u;
           v138 = 0u;
           v139 = 0u;
-          v32 = objc_msgSend_runtimeParameters(v129, v29, v30, v31);
+          v32 = objc_msgSend_runtimeParameters(selfCopy, v29, v30, v31);
           v36 = objc_msgSend_excludeGenderReplacements(v32, v33, v34, v35);
 
           v41 = objc_msgSend_countByEnumeratingWithState_objects_count_(v36, v37, &v138, v148, 16);
@@ -131,7 +131,7 @@
           }
 
           v66 = objc_msgSend_mutableCopy(v23, v63, v64, v65);
-          v70 = objc_msgSend_trimSet(v129, v67, v68, v69);
+          v70 = objc_msgSend_trimSet(selfCopy, v67, v68, v69);
           v73 = objc_msgSend_stringByTrimmingCharactersInSet_(v28, v71, v70, v72);
           objc_msgSend_setObject_forKeyedSubscript_(v66, v74, v73, CVNLPGeneratedCaption);
 
@@ -175,7 +175,7 @@
           v133 = 0u;
           v130 = 0u;
           v131 = 0u;
-          v102 = objc_msgSend_runtimeParameters(v129, v99, v100, v101);
+          v102 = objc_msgSend_runtimeParameters(selfCopy, v99, v100, v101);
           v106 = objc_msgSend_genderedTokens(v102, v103, v104, v105);
 
           v107 = v86;
@@ -195,7 +195,7 @@
                 if (objc_msgSend_indexOfObject_(v98, v109, *(*(&v130 + 1) + 8 * k), v110) != 0x7FFFFFFFFFFFFFFFLL)
                 {
 
-                  *a5 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v117, CVNLPCationErrorDomain, 1001, 0);
+                  *error = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v117, CVNLPCationErrorDomain, 1001, 0);
 
                   v115 = 0;
                   v114 = obja;
@@ -226,7 +226,7 @@
     v115 = obja;
 LABEL_35:
 
-    v116 = v121;
+    v116 = replacementsCopy;
   }
 
   v118 = *MEMORY[0x1E69E9840];
@@ -234,29 +234,29 @@ LABEL_35:
   return v115;
 }
 
-- (id)_excludeGenderTriggers:(id)a3 genderOption:(int)a4 error:(id *)a5
+- (id)_excludeGenderTriggers:(id)triggers genderOption:(int)option error:(id *)error
 {
   v89 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v72 = self;
+  triggersCopy = triggers;
+  selfCopy = self;
   v12 = objc_msgSend_runtimeParameters(self, v9, v10, v11);
   v16 = objc_msgSend_genderOption(v12, v13, v14, v15);
 
-  if (a4 == 1 && v16 == 1)
+  if (option == 1 && v16 == 1)
   {
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v17 = v8;
+    v17 = triggersCopy;
     v71 = v17;
     v68 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v82, v88, 16);
     if (v68)
     {
       v21 = *v83;
-      v70 = v8;
+      v70 = triggersCopy;
       v66 = *v83;
-      v67 = a5;
+      errorCopy = error;
       do
       {
         v22 = 0;
@@ -278,7 +278,7 @@ LABEL_35:
           v81 = 0u;
           v78 = 0u;
           v79 = 0u;
-          v37 = objc_msgSend_runtimeParameters(v72, v34, v35, v36);
+          v37 = objc_msgSend_runtimeParameters(selfCopy, v34, v35, v36);
           v41 = objc_msgSend_excludeGenderTriggers(v37, v38, v39, v40);
 
           v46 = objc_msgSend_countByEnumeratingWithState_objects_count_(v41, v42, &v78, v87, 16);
@@ -331,10 +331,10 @@ LABEL_35:
                     while (v59);
                   }
 
-                  *v67 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v63, CVNLPCationErrorDomain, 1002, 0);
+                  *errorCopy = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v63, CVNLPCationErrorDomain, 1002, 0);
 
                   v62 = 0;
-                  v8 = v70;
+                  triggersCopy = v70;
                   goto LABEL_31;
                 }
 
@@ -353,7 +353,7 @@ LABEL_12:
           }
 
           v22 = v69 + 1;
-          v8 = v70;
+          triggersCopy = v70;
           v17 = v71;
           v21 = v66;
         }
@@ -366,7 +366,7 @@ LABEL_12:
     }
   }
 
-  v62 = v8;
+  v62 = triggersCopy;
 LABEL_31:
 
   v64 = *MEMORY[0x1E69E9840];
@@ -374,22 +374,22 @@ LABEL_31:
   return v62;
 }
 
-- (id)_replacements:(id)a3 genderOption:(int)a4
+- (id)_replacements:(id)_replacements genderOption:(int)option
 {
   v122 = *MEMORY[0x1E69E9840];
-  v103 = a3;
+  _replacementsCopy = _replacements;
   v106 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7);
   v111 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x1E696AD18], v8, v9, v10);
   v118 = 0u;
   v119 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v103;
+  obj = _replacementsCopy;
   v107 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v116, v121, 16);
   if (v107)
   {
     v105 = *v117;
-    v14 = a4;
+    optionCopy = option;
     do
     {
       for (i = 0; i != v107; ++i)
@@ -430,7 +430,7 @@ LABEL_8:
             if (!v37)
             {
               v41 = objc_msgSend_genderOption(v35, v38, v39, v40);
-              v45 = objc_msgSend_unsignedIntegerValue(v41, v42, v43, v44) == v14;
+              v45 = objc_msgSend_unsignedIntegerValue(v41, v42, v43, v44) == optionCopy;
 
               if (!v45)
               {
@@ -506,20 +506,20 @@ LABEL_8:
   return v106;
 }
 
-- (BOOL)_checkAboveThreshold:(id)a3 observationConfidence:(double)a4 difference:(id *)a5
+- (BOOL)_checkAboveThreshold:(id)threshold observationConfidence:(double)confidence difference:(id *)difference
 {
-  v8 = a3;
+  thresholdCopy = threshold;
   v12 = objc_msgSend_runtimeParameters(self, v9, v10, v11);
   v16 = objc_msgSend_sensitiveImageParameters(v12, v13, v14, v15);
-  v19 = objc_msgSend_objectForKeyedSubscript_(v16, v17, v8, v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(v16, v17, thresholdCopy, v18);
 
-  if (v19 && (objc_msgSend_minConfidence(v19, v20, v21, v22), v26 < a4))
+  if (v19 && (objc_msgSend_minConfidence(v19, v20, v21, v22), v26 < confidence))
   {
-    if (a5)
+    if (difference)
     {
       v27 = MEMORY[0x1E696AD98];
       objc_msgSend_minConfidence(v19, v23, v24, v25);
-      *a5 = objc_msgSend_numberWithDouble_(v27, v29, v30, v31, a4 - v28);
+      *difference = objc_msgSend_numberWithDouble_(v27, v29, v30, v31, confidence - v28);
     }
 
     v32 = 1;
@@ -533,19 +533,19 @@ LABEL_8:
   return v32;
 }
 
-- (id)_checkForBlockingTokens:(id)a3 blockingTokens:(id)a4
+- (id)_checkForBlockingTokens:(id)tokens blockingTokens:(id)blockingTokens
 {
   v64 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v44 = a4;
-  if (objc_msgSend_count(v44, v5, v6, v7))
+  tokensCopy = tokens;
+  blockingTokensCopy = blockingTokens;
+  if (objc_msgSend_count(blockingTokensCopy, v5, v6, v7))
   {
     v41 = objc_msgSend_array(MEMORY[0x1E695DF70], v8, v9, v10);
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v40;
+    obj = tokensCopy;
     v45 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v57, v63, 16);
     if (v45)
     {
@@ -565,7 +565,7 @@ LABEL_8:
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v48 = v44;
+          v48 = blockingTokensCopy;
           v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v15, &v53, v62, 16);
           if (v16)
           {
@@ -679,7 +679,7 @@ LABEL_38:
 
   else
   {
-    v37 = v40;
+    v37 = tokensCopy;
   }
 
   v38 = *MEMORY[0x1E69E9840];
@@ -687,16 +687,16 @@ LABEL_38:
   return v37;
 }
 
-- (id)_checkForBlockingTokens:(id)a3 visionObservations:(id)a4
+- (id)_checkForBlockingTokens:(id)tokens visionObservations:(id)observations
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  tokensCopy = tokens;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v7 = a4;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v43, v47, 16);
+  observationsCopy = observations;
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(observationsCopy, v8, &v43, v47, 16);
   if (v12)
   {
     v13 = *v44;
@@ -706,7 +706,7 @@ LABEL_38:
       {
         if (*v44 != v13)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observationsCopy);
         }
 
         v15 = *(*(&v43 + 1) + 8 * i);
@@ -722,13 +722,13 @@ LABEL_38:
           v34 = objc_msgSend_objectForKeyedSubscript_(v27, v32, v31, v33);
 
           v38 = objc_msgSend_blockingTokens(v34, v35, v36, v37);
-          v40 = objc_msgSend__checkForBlockingTokens_blockingTokens_(self, v39, v6, v38);
+          v40 = objc_msgSend__checkForBlockingTokens_blockingTokens_(self, v39, tokensCopy, v38);
 
-          v6 = v40;
+          tokensCopy = v40;
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v9, &v43, v47, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(observationsCopy, v9, &v43, v47, 16);
     }
 
     while (v12);
@@ -736,10 +736,10 @@ LABEL_38:
 
   v41 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return tokensCopy;
 }
 
-- (id)_filterVisionObservations:(id)a3
+- (id)_filterVisionObservations:(id)observations
 {
   v77 = *MEMORY[0x1E69E9840];
   v73 = 0;
@@ -749,7 +749,7 @@ LABEL_38:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = a3;
+  obj = observations;
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v3, &v69, v76, 16);
   if (v7)
   {

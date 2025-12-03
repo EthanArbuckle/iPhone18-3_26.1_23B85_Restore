@@ -1,12 +1,12 @@
 @interface PersonalAudioVisualizerView
 - (CGSize)intrinsicContentSize;
-- (PersonalAudioVisualizerView)initWithTuningIndex:(unint64_t)a3;
-- (void)updateWithMagnitudes:(id)a3;
+- (PersonalAudioVisualizerView)initWithTuningIndex:(unint64_t)index;
+- (void)updateWithMagnitudes:(id)magnitudes;
 @end
 
 @implementation PersonalAudioVisualizerView
 
-- (PersonalAudioVisualizerView)initWithTuningIndex:(unint64_t)a3
+- (PersonalAudioVisualizerView)initWithTuningIndex:(unint64_t)index
 {
   v18.receiver = self;
   v18.super_class = PersonalAudioVisualizerView;
@@ -14,20 +14,20 @@
   v5 = v4;
   if (v4)
   {
-    [(PersonalAudioVisualizerView *)v4 setTuningIndex:a3];
+    [(PersonalAudioVisualizerView *)v4 setTuningIndex:index];
     v6 = +[NSMutableArray array];
-    v7 = [(PersonalAudioVisualizerView *)v5 numberOfPips];
-    if (v7)
+    numberOfPips = [(PersonalAudioVisualizerView *)v5 numberOfPips];
+    if (numberOfPips)
     {
-      v8 = v7;
+      v8 = numberOfPips;
       do
       {
         v9 = objc_alloc_init(CAShapeLayer);
         v10 = +[UIColor systemGrayColor];
         [v9 setFillColor:{objc_msgSend(v10, "CGColor")}];
 
-        v11 = [(PersonalAudioVisualizerView *)v5 layer];
-        [v11 addSublayer:v9];
+        layer = [(PersonalAudioVisualizerView *)v5 layer];
+        [layer addSublayer:v9];
 
         [v6 addObject:v9];
         --v8;
@@ -45,17 +45,17 @@
     v15 = +[UIColor systemLightGrayColor];
     -[CAShapeLayer setFillColor:](v14, "setFillColor:", [v15 CGColor]);
 
-    v16 = [(PersonalAudioVisualizerView *)v5 layer];
-    [v16 addSublayer:v5->_baseLine];
+    layer2 = [(PersonalAudioVisualizerView *)v5 layer];
+    [layer2 addSublayer:v5->_baseLine];
   }
 
   return v5;
 }
 
-- (void)updateWithMagnitudes:(id)a3
+- (void)updateWithMagnitudes:(id)magnitudes
 {
-  v4 = a3;
-  v3 = v4;
+  magnitudesCopy = magnitudes;
+  v3 = magnitudesCopy;
   AXPerformBlockOnMainThread();
 }
 

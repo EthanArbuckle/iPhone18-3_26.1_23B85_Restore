@@ -1,34 +1,34 @@
 @interface VGEarFrameDumpOutput
-- (VGEarFrameDumpOutput)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VGEarFrameDumpOutput)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGEarFrameDumpOutput
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   leftEarEnrolledPoses = self->_leftEarEnrolledPoses;
   v5 = NSStringFromSelector(sel_leftEarEnrolledPoses);
-  [v12 encodeObject:leftEarEnrolledPoses forKey:v5];
+  [coderCopy encodeObject:leftEarEnrolledPoses forKey:v5];
 
   rightEarEnrolledPoses = self->_rightEarEnrolledPoses;
   v7 = NSStringFromSelector(sel_rightEarEnrolledPoses);
-  [v12 encodeObject:rightEarEnrolledPoses forKey:v7];
+  [coderCopy encodeObject:rightEarEnrolledPoses forKey:v7];
 
   leftEarEnrolledYawToBoundingBox = self->_leftEarEnrolledYawToBoundingBox;
   v9 = NSStringFromSelector(sel_leftEarEnrolledYawToBoundingBox);
-  [v12 encodeObject:leftEarEnrolledYawToBoundingBox forKey:v9];
+  [coderCopy encodeObject:leftEarEnrolledYawToBoundingBox forKey:v9];
 
   rightEarEnrolledYawToBoundingBox = self->_rightEarEnrolledYawToBoundingBox;
   v11 = NSStringFromSelector(sel_rightEarEnrolledYawToBoundingBox);
-  [v12 encodeObject:rightEarEnrolledYawToBoundingBox forKey:v11];
+  [coderCopy encodeObject:rightEarEnrolledYawToBoundingBox forKey:v11];
 }
 
-- (VGEarFrameDumpOutput)initWithCoder:(id)a3
+- (VGEarFrameDumpOutput)initWithCoder:(id)coder
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = VGEarFrameDumpOutput;
   v5 = [(VGEarFrameDumpOutput *)&v33 init];
@@ -40,7 +40,7 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
     v8 = [v6 setWithArray:v7];
     v9 = NSStringFromSelector(sel_leftEarEnrolledPoses);
-    v10 = [v4 decodeObjectOfClasses:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClasses:v8 forKey:v9];
     leftEarEnrolledPoses = v5->_leftEarEnrolledPoses;
     v5->_leftEarEnrolledPoses = v10;
 
@@ -50,7 +50,7 @@
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
     v14 = [v12 setWithArray:v13];
     v15 = NSStringFromSelector(sel_rightEarEnrolledPoses);
-    v16 = [v4 decodeObjectOfClasses:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClasses:v14 forKey:v15];
     rightEarEnrolledPoses = v5->_rightEarEnrolledPoses;
     v5->_rightEarEnrolledPoses = v16;
 
@@ -64,7 +64,7 @@
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:6];
     v20 = [v18 setWithArray:v19];
     v21 = NSStringFromSelector(sel_leftEarEnrolledYawToBoundingBox);
-    v22 = [v4 decodeObjectOfClasses:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClasses:v20 forKey:v21];
     leftEarEnrolledYawToBoundingBox = v5->_leftEarEnrolledYawToBoundingBox;
     v5->_leftEarEnrolledYawToBoundingBox = v22;
 
@@ -78,7 +78,7 @@
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:6];
     v26 = [v24 setWithArray:v25];
     v27 = NSStringFromSelector(sel_rightEarEnrolledYawToBoundingBox);
-    v28 = [v4 decodeObjectOfClasses:v26 forKey:v27];
+    v28 = [coderCopy decodeObjectOfClasses:v26 forKey:v27];
     rightEarEnrolledYawToBoundingBox = v5->_rightEarEnrolledYawToBoundingBox;
     v5->_rightEarEnrolledYawToBoundingBox = v28;
 

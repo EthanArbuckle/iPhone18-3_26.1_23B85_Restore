@@ -1,13 +1,13 @@
 @interface BKProtectionInfo
-+ (id)newEmptyProtectionInfo:(id)a3;
++ (id)newEmptyProtectionInfo:(id)info;
 @end
 
 @implementation BKProtectionInfo
 
-+ (id)newEmptyProtectionInfo:(id)a3
++ (id)newEmptyProtectionInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 newByClass:objc_opt_class()];
+  infoCopy = info;
+  v4 = [infoCopy newByClass:objc_opt_class()];
 
   return v4;
 }

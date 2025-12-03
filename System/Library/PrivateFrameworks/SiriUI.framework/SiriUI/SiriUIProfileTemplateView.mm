@@ -1,5 +1,5 @@
 @interface SiriUIProfileTemplateView
-- (SiriUIProfileTemplateView)initWithDataSource:(id)a3;
+- (SiriUIProfileTemplateView)initWithDataSource:(id)source;
 - (int64_t)layoutStyle;
 - (void)layoutImage;
 - (void)reloadData;
@@ -7,26 +7,26 @@
 
 @implementation SiriUIProfileTemplateView
 
-- (SiriUIProfileTemplateView)initWithDataSource:(id)a3
+- (SiriUIProfileTemplateView)initWithDataSource:(id)source
 {
   v4.receiver = self;
   v4.super_class = SiriUIProfileTemplateView;
-  return [(SiriUILabelStackTemplateView *)&v4 initWithDataSource:a3];
+  return [(SiriUILabelStackTemplateView *)&v4 initWithDataSource:source];
 }
 
 - (void)layoutImage
 {
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
-  v4 = [v3 imageURI];
-  if (v4)
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  imageURI = [dataSource imageURI];
+  if (imageURI)
   {
-    v5 = v4;
-    v6 = [v3 imageURI];
-    v7 = [v6 length];
+    v5 = imageURI;
+    imageURI2 = [dataSource imageURI];
+    v7 = [imageURI2 length];
 
     if (v7)
     {
-      if ([v3 imageStyleValue])
+      if ([dataSource imageStyleValue])
       {
         v8 = 60.0;
       }
@@ -45,18 +45,18 @@
       v13 = [(UIImageView *)self->_imageView siriui_addWidthConstraint:v8];
       [(UIImageView *)self->_imageView setContentMode:2];
       [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-      v14 = [(UIImageView *)self->_imageView layer];
-      [v14 setCornerRadius:v8 * 0.5];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer setCornerRadius:v8 * 0.5];
 
       [(UIImageView *)self->_imageView setClipsToBounds:1];
       v15 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:0 diameter:v8];
       v16 = self->_imageView;
-      v17 = [v15 silhouetteMonogram];
-      [(UIImageView *)v16 setImage:v17];
+      silhouetteMonogram = [v15 silhouetteMonogram];
+      [(UIImageView *)v16 setImage:silhouetteMonogram];
 
-      v18 = [v3 alignmentValue];
+      alignmentValue = [dataSource alignmentValue];
       v19 = self->_imageView;
-      if (v18 == 1)
+      if (alignmentValue == 1)
       {
         [(SiriUILabelStackTemplateView *)self insertTopView:self->_imageView];
         v20 = [(UIImageView *)self->_imageView siriui_centerHorizontallyWithItem:self withMargin:0.0];
@@ -64,20 +64,20 @@
 
       else
       {
-        v21 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-        [v21 templatedContentMargins];
+        templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+        [templatedSuperview templatedContentMargins];
         [(SiriUILabelStackTemplateView *)self insertLeadingView:v19 withMargins:?];
       }
 
       [(SiriUIProfileTemplateView *)self setNeedsUpdateConstraints];
       objc_initWeak(&location, self);
-      v22 = [(SiriUIProfileTemplateView *)self traitCollection];
+      traitCollection = [(SiriUIProfileTemplateView *)self traitCollection];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __40__SiriUIProfileTemplateView_layoutImage__block_invoke;
       v23[3] = &unk_279C5A188;
       objc_copyWeak(&v24, &location);
-      [v3 fetchUIImageForTraitCollection:v22 completion:v23];
+      [dataSource fetchUIImageForTraitCollection:traitCollection completion:v23];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -106,10 +106,10 @@ void __40__SiriUIProfileTemplateView_layoutImage__block_invoke(uint64_t a1, void
 
 - (int64_t)layoutStyle
 {
-  v2 = [(SiriUIBaseTemplateView *)self dataSource];
-  v3 = [v2 alignmentValue];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  alignmentValue = [dataSource alignmentValue];
 
-  if (v3 == 1)
+  if (alignmentValue == 1)
   {
     return 2;
   }

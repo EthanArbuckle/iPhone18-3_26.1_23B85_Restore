@@ -1,21 +1,21 @@
 @interface SUUIPredicateListViewElement
 - (NSArray)predicateViewElements;
 - (NSPredicate)compoundEntityValuePredicate;
-- (id)applyUpdatesWithElement:(id)a3;
-- (void)_enumeratePredicateViewElementsUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (void)_enumeratePredicateViewElementsUsingBlock:(id)block;
 @end
 
 @implementation SUUIPredicateListViewElement
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIPredicateListViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
-  if (v5 == self && v4 != self && v4 != 0)
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
+  if (v5 == self && elementCopy != self && elementCopy != 0)
   {
-    objc_storeStrong(&self->_compoundEntityValuePredicate, v4->_compoundEntityValuePredicate);
+    objc_storeStrong(&self->_compoundEntityValuePredicate, elementCopy->_compoundEntityValuePredicate);
   }
 
   return v5;
@@ -66,13 +66,13 @@ void __53__SUUIPredicateListViewElement_predicateViewElements__block_invoke(uint
   compoundEntityValuePredicate = self->_compoundEntityValuePredicate;
   if (!compoundEntityValuePredicate)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __60__SUUIPredicateListViewElement_compoundEntityValuePredicate__block_invoke;
     v9[3] = &unk_2798F5FE0;
-    v10 = v4;
-    v5 = v4;
+    v10 = array;
+    v5 = array;
     [(SUUIPredicateListViewElement *)self _enumeratePredicateViewElementsUsingBlock:v9];
     v6 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v5];
     v7 = self->_compoundEntityValuePredicate;
@@ -91,17 +91,17 @@ void __60__SUUIPredicateListViewElement_compoundEntityValuePredicate__block_invo
   [v2 addObject:v3];
 }
 
-- (void)_enumeratePredicateViewElementsUsingBlock:(id)a3
+- (void)_enumeratePredicateViewElementsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __74__SUUIPredicateListViewElement__enumeratePredicateViewElementsUsingBlock___block_invoke;
     v6[3] = &unk_2798F6008;
-    v7 = v4;
+    v7 = blockCopy;
     [(SUUIViewElement *)self enumerateChildrenUsingBlock:v6];
   }
 }

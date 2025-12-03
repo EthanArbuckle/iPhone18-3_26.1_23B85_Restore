@@ -1,16 +1,16 @@
 @interface SESExpressConfiguration
-+ (id)withState:(int64_t)a3 passConfigs:(id)a4;
++ (id)withState:(int64_t)state passConfigs:(id)configs;
 @end
 
 @implementation SESExpressConfiguration
 
-+ (id)withState:(int64_t)a3 passConfigs:(id)a4
++ (id)withState:(int64_t)state passConfigs:(id)configs
 {
-  v5 = a4;
+  configsCopy = configs;
   v6 = objc_opt_new();
   v7 = v6[2];
-  v6[1] = a3;
-  v6[2] = v5;
+  v6[1] = state;
+  v6[2] = configsCopy;
 
   return v6;
 }

@@ -1,21 +1,21 @@
 @interface RBSProcessExtensionPointPredicate
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessExtensionPointPredicate
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [v5 isExtension];
+  processCopy = process;
+  identity = [processCopy identity];
+  isExtension = [identity isExtension];
 
-  if (v6)
+  if (isExtension)
   {
-    v7 = [(RBSProcessStringPredicate *)self identifier];
-    v8 = [v4 bundle];
-    v9 = [v8 extensionPointIdentifier];
-    v10 = [v7 isEqualToString:v9];
+    identifier = [(RBSProcessStringPredicate *)self identifier];
+    bundle = [processCopy bundle];
+    extensionPointIdentifier = [bundle extensionPointIdentifier];
+    v10 = [identifier isEqualToString:extensionPointIdentifier];
   }
 
   else

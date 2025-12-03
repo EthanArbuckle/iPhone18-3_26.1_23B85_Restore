@@ -1,40 +1,40 @@
 @interface INRideVehicle
-- (BOOL)isEqual:(id)a3;
-- (INRideVehicle)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRideVehicle)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
 - (id)_intents_cacheableObjects;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4;
-- (void)_intents_updateContainerWithCache:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_injectProxiesForImages:(id)images completion:(id)completion;
+- (void)_intents_updateContainerWithCache:(id)cache;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRideVehicle
 
-- (void)_injectProxiesForImages:(id)a3 completion:(id)a4
+- (void)_injectProxiesForImages:(id)images completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imagesCopy = images;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = [(INRideVehicle *)self copy];
-    v9 = [(INRideVehicle *)self mapAnnotationImage];
-    if (v9)
+    mapAnnotationImage = [(INRideVehicle *)self mapAnnotationImage];
+    if (mapAnnotationImage)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __75__INRideVehicle_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;
       v10[3] = &unk_1E7285CD0;
       v10[4] = v8;
-      v11 = v7;
-      v6[2](v6, v9, v10);
+      v11 = completionCopy;
+      imagesCopy[2](imagesCopy, mapAnnotationImage, v10);
     }
 
     else
     {
-      (*(v7 + 2))(v7, v8);
+      (*(completionCopy + 2))(completionCopy, v8);
     }
   }
 }
@@ -53,50 +53,50 @@ uint64_t __75__INRideVehicle_INImageProxyInjecting___injectProxiesForImages_comp
   v23[5] = *MEMORY[0x1E69E9840];
   v18 = @"location";
   location = self->_location;
-  v4 = location;
+  null = location;
   if (!location)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v4;
-  v23[0] = v4;
+  v16 = null;
+  v23[0] = null;
   v19 = @"registrationPlate";
   registrationPlate = self->_registrationPlate;
-  v6 = registrationPlate;
+  null2 = registrationPlate;
   if (!registrationPlate)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v6;
+  v23[1] = null2;
   v20 = @"manufacturer";
   manufacturer = self->_manufacturer;
-  v8 = manufacturer;
+  null3 = manufacturer;
   if (!manufacturer)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v8;
+  v23[2] = null3;
   v21 = @"model";
   model = self->_model;
-  v10 = model;
+  null4 = model;
   if (!model)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v10;
+  v23[3] = null4;
   v22 = @"mapAnnotationImage";
   mapAnnotationImage = self->_mapAnnotationImage;
-  v12 = mapAnnotationImage;
+  null5 = mapAnnotationImage;
   if (!mapAnnotationImage)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (mapAnnotationImage)
   {
@@ -160,55 +160,55 @@ LABEL_16:
   return v13;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRideVehicle;
   v6 = [(INRideVehicle *)&v11 description];
-  v7 = [(INRideVehicle *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRideVehicle *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   location = self->_location;
-  v5 = a3;
-  [v5 encodeObject:location forKey:@"location"];
-  [v5 encodeObject:self->_registrationPlate forKey:@"registrationPlate"];
-  [v5 encodeObject:self->_manufacturer forKey:@"manufacturer"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_mapAnnotationImage forKey:@"mapAnnotationImage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:location forKey:@"location"];
+  [coderCopy encodeObject:self->_registrationPlate forKey:@"registrationPlate"];
+  [coderCopy encodeObject:self->_manufacturer forKey:@"manufacturer"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_mapAnnotationImage forKey:@"mapAnnotationImage"];
 }
 
-- (INRideVehicle)initWithCoder:(id)a3
+- (INRideVehicle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = INRideVehicle;
   v5 = [(INRideVehicle *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registrationPlate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registrationPlate"];
     registrationPlate = v5->_registrationPlate;
     v5->_registrationPlate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturer"];
     manufacturer = v5->_manufacturer;
     v5->_manufacturer = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapAnnotationImage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapAnnotationImage"];
     mapAnnotationImage = v5->_mapAnnotationImage;
     v5->_mapAnnotationImage = v14;
   }
@@ -216,9 +216,9 @@ LABEL_16:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLocation:self->_location];
   [v4 setRegistrationPlate:self->_registrationPlate];
   [v4 setManufacturer:self->_manufacturer];
@@ -227,13 +227,13 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     location = self->_location;
     v11 = 0;
     if (location == v5[1] || [(CLLocation *)location isEqual:?])
@@ -275,29 +275,29 @@ LABEL_16:
   return v6 ^ [(INImage *)self->_mapAnnotationImage hash];
 }
 
-- (void)_intents_updateContainerWithCache:(id)a3
+- (void)_intents_updateContainerWithCache:(id)cache
 {
-  v13 = a3;
-  v4 = [(INRideVehicle *)self mapAnnotationImage];
-  if (v4)
+  cacheCopy = cache;
+  mapAnnotationImage = [(INRideVehicle *)self mapAnnotationImage];
+  if (mapAnnotationImage)
   {
-    v5 = v4;
-    v6 = [(INRideVehicle *)self mapAnnotationImage];
-    v7 = [v6 _identifier];
-    v8 = [v13 cacheableObjectForIdentifier:v7];
+    v5 = mapAnnotationImage;
+    mapAnnotationImage2 = [(INRideVehicle *)self mapAnnotationImage];
+    _identifier = [mapAnnotationImage2 _identifier];
+    v8 = [cacheCopy cacheableObjectForIdentifier:_identifier];
 
     if (v8)
     {
-      v9 = [(INRideVehicle *)self mapAnnotationImage];
-      v10 = [v9 _identifier];
-      v11 = [v13 cacheableObjectForIdentifier:v10];
+      mapAnnotationImage3 = [(INRideVehicle *)self mapAnnotationImage];
+      _identifier2 = [mapAnnotationImage3 _identifier];
+      v11 = [cacheCopy cacheableObjectForIdentifier:_identifier2];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [(INRideVehicle *)self mapAnnotationImage];
+        mapAnnotationImage4 = [(INRideVehicle *)self mapAnnotationImage];
         [v11 _imageSize];
-        [v12 _setImageSize:?];
+        [mapAnnotationImage4 _setImageSize:?];
       }
     }
   }
@@ -306,12 +306,12 @@ LABEL_16:
 - (id)_intents_cacheableObjects
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(INRideVehicle *)self mapAnnotationImage];
+  mapAnnotationImage = [(INRideVehicle *)self mapAnnotationImage];
 
-  if (v4)
+  if (mapAnnotationImage)
   {
-    v5 = [(INRideVehicle *)self mapAnnotationImage];
-    [v3 addObject:v5];
+    mapAnnotationImage2 = [(INRideVehicle *)self mapAnnotationImage];
+    [v3 addObject:mapAnnotationImage2];
   }
 
   if ([v3 count])

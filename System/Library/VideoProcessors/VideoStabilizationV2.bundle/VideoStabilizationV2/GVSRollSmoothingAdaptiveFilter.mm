@@ -1,15 +1,15 @@
 @interface GVSRollSmoothingAdaptiveFilter
 - (BOOL)shouldRampUp;
-- (GVSRollSmoothingAdaptiveFilter)initWithMaxTimescale:(float)a3 minTimescale:(float)a4 transitionTime:(float)a5 analyzer:(id)a6 rampingSettings:(GVSRollSmoothingAdaptiveFilterRampingSettings *)a7;
+- (GVSRollSmoothingAdaptiveFilter)initWithMaxTimescale:(float)timescale minTimescale:(float)minTimescale transitionTime:(float)time analyzer:(id)analyzer rampingSettings:(GVSRollSmoothingAdaptiveFilterRampingSettings *)settings;
 - (void)reset;
-- (void)updateRoll:(float)prevRoll pitch:(float)a4 atTime:(double)a5;
+- (void)updateRoll:(float)prevRoll pitch:(float)pitch atTime:(double)time;
 @end
 
 @implementation GVSRollSmoothingAdaptiveFilter
 
-- (GVSRollSmoothingAdaptiveFilter)initWithMaxTimescale:(float)a3 minTimescale:(float)a4 transitionTime:(float)a5 analyzer:(id)a6 rampingSettings:(GVSRollSmoothingAdaptiveFilterRampingSettings *)a7
+- (GVSRollSmoothingAdaptiveFilter)initWithMaxTimescale:(float)timescale minTimescale:(float)minTimescale transitionTime:(float)time analyzer:(id)analyzer rampingSettings:(GVSRollSmoothingAdaptiveFilterRampingSettings *)settings
 {
-  v13 = a6;
+  analyzerCopy = analyzer;
   v19.receiver = self;
   v19.super_class = GVSRollSmoothingAdaptiveFilter;
   v14 = [(GVSRollSmoothingAdaptiveFilter *)&v19 init];
@@ -24,7 +24,7 @@ LABEL_8:
   filter = v14->_filter;
   v14->_filter = v15;
 
-  objc_storeStrong(&v14->_analyzer, a6);
+  objc_storeStrong(&v14->_analyzer, analyzer);
   if (!v14->_filter)
   {
     v17 = 0;
@@ -32,22 +32,22 @@ LABEL_8:
   }
 
   v17 = 0;
-  if (a4 > 0.0 && v14->_analyzer)
+  if (minTimescale > 0.0 && v14->_analyzer)
   {
-    v14->_maxTimescale = a3;
-    v14->_minTimescale = a4;
-    if (a3 < a4)
+    v14->_maxTimescale = timescale;
+    v14->_minTimescale = minTimescale;
+    if (timescale < minTimescale)
     {
-      v14->_maxTimescale = a4;
-      a3 = a4;
+      v14->_maxTimescale = minTimescale;
+      timescale = minTimescale;
     }
 
-    v14->_rampFactorPerSecond = powf(a3 / a4, 1.0 / a5);
-    v14->_diffSqThreshHigh = a7->var0 * a7->var0;
-    v14->_diffSqThreshLow = a7->var1 * a7->var1;
-    v14->_slopeSqThreshHigh = a7->var2 * a7->var2;
-    v14->_slopeSqThreshLow = a7->var3 * a7->var3;
-    v14->_baselineVariance = a7->var4 * a7->var4;
+    v14->_rampFactorPerSecond = powf(timescale / minTimescale, 1.0 / time);
+    v14->_diffSqThreshHigh = settings->var0 * settings->var0;
+    v14->_diffSqThreshLow = settings->var1 * settings->var1;
+    v14->_slopeSqThreshHigh = settings->var2 * settings->var2;
+    v14->_slopeSqThreshLow = settings->var3 * settings->var3;
+    v14->_baselineVariance = settings->var4 * settings->var4;
     [(GVSRollSmoothingAdaptiveFilter *)v14 reset];
     goto LABEL_8;
   }
@@ -69,10 +69,10 @@ LABEL_10:
   self->_isRampingUp = 1;
 }
 
-- (void)updateRoll:(float)prevRoll pitch:(float)a4 atTime:(double)a5
+- (void)updateRoll:(float)prevRoll pitch:(float)pitch atTime:(double)time
 {
   v6 = prevRoll;
-  if (a4 < 1.0472 && (prevTime = self->_prevTime, prevTime <= a5))
+  if (pitch < 1.0472 && (prevTime = self->_prevTime, prevTime <= time))
   {
     prevRoll = self->_prevRoll;
     if (vabds_f32(v6, prevRoll) > 3.14159265)
@@ -100,7 +100,7 @@ LABEL_10:
       prevTime = self->_prevTime;
     }
 
-    v15 = a5 - prevTime;
+    v15 = time - prevTime;
     v16 = -v15;
     if (self->_isRampingUp)
     {
@@ -114,18 +114,18 @@ LABEL_10:
     [(GVSIIR2FilterFloat *)self->_filter updateValue:v19 withPole:v18];
     self->_filteredRoll = v20;
     *&v21 = v6;
-    [(GVSRollAnalyzer *)self->_analyzer updateWithRoll:v21 atTime:a5];
-    if (self->_forcedRampDownTime >= a5)
+    [(GVSRollAnalyzer *)self->_analyzer updateWithRoll:v21 atTime:time];
+    if (self->_forcedRampDownTime >= time)
     {
-      v22 = 0;
+      shouldRampUp = 0;
     }
 
     else
     {
-      v22 = [(GVSRollSmoothingAdaptiveFilter *)self shouldRampUp];
+      shouldRampUp = [(GVSRollSmoothingAdaptiveFilter *)self shouldRampUp];
     }
 
-    self->_isRampingUp = v22;
+    self->_isRampingUp = shouldRampUp;
   }
 
   else
@@ -133,13 +133,13 @@ LABEL_10:
     [(GVSIIR2FilterFloat *)self->_filter reset];
     [(GVSRollAnalyzer *)self->_analyzer reset];
     [(GVSRollAnalyzer *)self->_analyzer timeConstant];
-    self->_forcedRampDownTime = v9 + a5;
+    self->_forcedRampDownTime = v9 + time;
     self->_isRampingUp = 0;
     self->_currentTimescale = self->_minTimescale;
   }
 
   self->_prevRoll = v6;
-  self->_prevTime = a5;
+  self->_prevTime = time;
 }
 
 - (BOOL)shouldRampUp

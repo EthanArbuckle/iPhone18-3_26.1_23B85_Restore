@@ -1,6 +1,6 @@
 @interface FCNewsAppConfig
-+ (id)configurationWithData:(void *)a3 storefrontID:(void *)a4 preferredLanguageTags:;
-+ (id)defaultConfigurationForStoreFrontID:(uint64_t)a1;
++ (id)configurationWithData:(void *)data storefrontID:(void *)d preferredLanguageTags:;
++ (id)defaultConfigurationForStoreFrontID:(uint64_t)d;
 - (BOOL)adInstrumentationEnabled;
 - (BOOL)adSponsorshipsEnabled;
 - (BOOL)aggregatesInAppXavierEnabled;
@@ -335,18 +335,18 @@
 - (double)ttlForRecentRecipes;
 - (double)ttlForTrendingRecipes;
 - (double)widgetTelemetrySamplingRate;
-- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)a3;
-- (id)appAnalyticsAppHealthEndpointUrlForEnvironment:(unint64_t)a3;
-- (id)appAnalyticsAppHeartbeatEndpointUrlForEnvironment:(unint64_t)a3;
-- (id)appAnalyticsEndpointUrlForEnvironment:(unint64_t)a3;
-- (id)appAnalyticsNotificationReceiptEndpointUrlForEnvironment:(unint64_t)a3;
-- (id)expFieldForKey:(void *)a1;
+- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)environment;
+- (id)appAnalyticsAppHealthEndpointUrlForEnvironment:(unint64_t)environment;
+- (id)appAnalyticsAppHeartbeatEndpointUrlForEnvironment:(unint64_t)environment;
+- (id)appAnalyticsEndpointUrlForEnvironment:(unint64_t)environment;
+- (id)appAnalyticsNotificationReceiptEndpointUrlForEnvironment:(unint64_t)environment;
+- (id)expFieldForKey:(void *)key;
 - (id)jsonEncodableObject;
 - (id)localizedStorefrontID;
-- (id)paidALaCartePaywallConfigForChannelID:(id)a3;
+- (id)paidALaCartePaywallConfigForChannelID:(id)d;
 - (id)personalizationTreatment;
 - (id)recipeTagRecipeListIDPrefix;
-- (id)todayConfigWithIdentifier:(id)a3 queueConfigs:(id)a4 backgroundColorLight:(id)a5 backgroundColorDark:(id)a6 audioIndicatorColor:(id)a7 widgetBannerConfig:(id)a8;
+- (id)todayConfigWithIdentifier:(id)identifier queueConfigs:(id)configs backgroundColorLight:(id)light backgroundColorDark:(id)dark audioIndicatorColor:(id)color widgetBannerConfig:(id)config;
 - (int64_t)alternateUniversalLinksResourceRefreshRate;
 - (int64_t)analyticsEndpointMaxPayloadSize;
 - (int64_t)appConfigRefreshRate;
@@ -443,39 +443,39 @@
 - (unint64_t)bestOfBundleFeedGroupKind;
 - (unint64_t)likeDislikeBehavior;
 - (unint64_t)trendingStyle;
-- (void)initWithConfigDictionary:(void *)a3 storefrontID:(void *)a4 languageConfigDictionary:;
+- (void)initWithConfigDictionary:(void *)dictionary storefrontID:(void *)d languageConfigDictionary:;
 @end
 
 @implementation FCNewsAppConfig
 
 - (id)localizedStorefrontID
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 languageConfigDictionary];
-    if (v2)
+    languageConfigDictionary = [self languageConfigDictionary];
+    if (languageConfigDictionary)
     {
-      v1 = [v1 storefrontID];
-      v3 = FCAppConfigurationStringValue(v2, @"languageTag", &stru_1F2DC7DC0);
-      v4 = [v3 lowercaseString];
+      selfCopy = [selfCopy storefrontID];
+      v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"languageTag", &stru_1F2DC7DC0);
+      lowercaseString = [v3 lowercaseString];
 
-      if ([v1 isEqualToString:@"143455"] && objc_msgSend(v4, "isEqualToString:", @"fr-ca"))
+      if ([selfCopy isEqualToString:@"143455"] && objc_msgSend(lowercaseString, "isEqualToString:", @"fr-ca"))
       {
         v5 = @"143455-fr-ca";
 
-        v1 = v5;
+        selfCopy = v5;
       }
     }
 
     else
     {
-      v4 = +[FCAppleAccount sharedAccount];
-      v1 = [v4 supportedLocalizedContentStoreFrontID];
+      lowercaseString = +[FCAppleAccount sharedAccount];
+      selfCopy = [lowercaseString supportedLocalizedContentStoreFrontID];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __48__FCNewsAppConfig__loadSuperfeedConfigOverrides__block_invoke(uint64_t a1, void *a2)
@@ -493,16 +493,16 @@ void __48__FCNewsAppConfig__loadSuperfeedConfigOverrides__block_invoke(uint64_t 
 
 - (double)offlineModeMinimumSecondsSinceSuccessToOffline
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"offlineModeMinimumSecondsSinceSuccessToOffline2", 10.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"offlineModeMinimumSecondsSinceSuccessToOffline2", 10.0);
 
   return v3;
 }
 
 - (BOOL)useSecureConnectionForAssets
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"useSecureConnectionForAssets", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"useSecureConnectionForAssets", 1);
 
   return v3;
 }
@@ -524,48 +524,48 @@ void __63__FCNewsAppConfig__loadRecipeAutoFavoritesServiceConfiguration__block_i
 
 - (double)offlineModeMaximumDurationToCountAsSuccess
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"offlineModeMaximumDurationToCountAsSuccess", 3.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"offlineModeMaximumDurationToCountAsSuccess", 3.0);
 
   return v3;
 }
 
 - (NSArray)offlineModeDetectionIgnoredHosts
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"offlineModeDetectionIgnoredHosts", &unk_1F2E6F8E8);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"offlineModeDetectionIgnoredHosts", &unk_1F2E6F8E8);
 
   return v3;
 }
 
 - (int64_t)maximumRetryAfterForCK
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maximumRetryAfterForCK", 3600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maximumRetryAfterForCK", 3600);
 
   return v3;
 }
 
 - (NSString)experimentalizableFieldPostfix
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"experimentalizableFieldPostfix", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"experimentalizableFieldPostfix", 0);
 
   return v3;
 }
 
 - (BOOL)shouldShowAlternateHeadlines
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"shouldShowAlternateHeadlines", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"shouldShowAlternateHeadlines", 1);
 
   return v3;
 }
 
 - (BOOL)articleEmbeddingsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleEmbeddingsEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"articleEmbeddingsEnabled", 0);
 
   if (NFInternalBuild())
   {
@@ -588,8 +588,8 @@ void __63__FCNewsAppConfig__loadRecipeAutoFavoritesServiceConfiguration__block_i
 
 - (BOOL)isOrderFeedEndpointEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"orderFeedEnabledLevel", 7);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"orderFeedEnabledLevel", 7);
 
   if (!NFInternalBuild())
   {
@@ -609,16 +609,16 @@ void __63__FCNewsAppConfig__loadRecipeAutoFavoritesServiceConfiguration__block_i
 
 - (BOOL)checkForPaywallConfigChangesEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"checkForPaywallConfigChangesEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"checkForPaywallConfigChangesEnabled", 0);
 
   return v3;
 }
 
 - (double)newsletterSubscriptionStatusCacheTimeout
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"newsletterConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"newsletterConfig", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"newsletterSubscriptionStatusCacheTimeout", 86400);
   return v4;
@@ -626,8 +626,8 @@ void __63__FCNewsAppConfig__loadRecipeAutoFavoritesServiceConfiguration__block_i
 
 - (BOOL)isDefaultConfiguration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = v2 == 0;
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = configDictionary == 0;
 
   return v3;
 }
@@ -644,8 +644,8 @@ void __63__FCNewsAppConfig__loadRecipeAutoFavoritesServiceConfiguration__block_i
   {
 
 LABEL_11:
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v8 = FCAppConfigurationIntegerValue(v7, @"todayFeedLoadToCacheTimeWindow", 7200);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    integerValue = FCAppConfigurationIntegerValue(configDictionary, @"todayFeedLoadToCacheTimeWindow", 7200);
     goto LABEL_12;
   }
 
@@ -670,80 +670,80 @@ LABEL_11:
     v6 = 0;
   }
 
-  v7 = v6;
+  configDictionary = v6;
 
-  if (!v7)
+  if (!configDictionary)
   {
     goto LABEL_11;
   }
 
-  v8 = [v7 integerValue];
+  integerValue = [configDictionary integerValue];
 LABEL_12:
-  v9 = v8;
+  v9 = integerValue;
 
   return v9;
 }
 
 - (int64_t)entitlementsRequestTimeoutDurationInSeconds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"entitlementsRequestTimeoutDurationInSeconds", 5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"entitlementsRequestTimeoutDurationInSeconds", 5);
 
   return v3;
 }
 
 - (int64_t)appConfigRefreshRate
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appConfigRefreshRate", 3600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"appConfigRefreshRate", 3600);
 
   return v3;
 }
 
 - (BOOL)offlineModeEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"offlineModeEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"offlineModeEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)foodEnabled
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"foodEnabledLevel", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"foodEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)isAnalyticsJitterEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"analyticsJitterEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"analyticsJitterEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (double)analyticsJitterLowerBound
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"analyticsJitterLowerBound", -600.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"analyticsJitterLowerBound", -600.0);
 
   return v3;
 }
 
 - (double)analyticsJitterUpperBound
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"analyticsJitterUpperBound", 600.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"analyticsJitterUpperBound", 600.0);
 
   return v3;
 }
 
 - (NSArray)analyticsDenylistDescriptorsInternal
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsDenylistDescriptorsInternal", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsDenylistDescriptorsInternal", 0);
   v4 = v3;
   if (v3)
   {
@@ -778,8 +778,8 @@ LABEL_12:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"articleEmbeddingsScoringEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"articleEmbeddingsScoringEnabled", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
@@ -802,8 +802,8 @@ LABEL_12:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"clientSideEngagementBoostEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"clientSideEngagementBoostEnabled", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
@@ -826,8 +826,8 @@ LABEL_12:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"fallbackToReverseChronSorting", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"fallbackToReverseChronSorting", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
@@ -860,24 +860,24 @@ LABEL_12:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"statelessPersonalizationEnabled2", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"statelessPersonalizationEnabled2", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
 
 - (BOOL)statelessPersonalizationAllowedForExtensions
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"statelessPersonalizationAllowedForExtensions", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"statelessPersonalizationAllowedForExtensions", 1);
 
   return v3;
 }
 
 - (FCPersonalizationPublisherDampeningConfig)publisherDampeningConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"publisherDampeningConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"publisherDampeningConfig", 0);
 
   v4 = [[FCPersonalizationPublisherDampeningConfig alloc] initWithConfig:v3];
 
@@ -886,20 +886,20 @@ LABEL_12:
 
 - (FCPersonalizationPublisherDampeningConfig)shadowPublisherDampeningConfig
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"shadowPublisherDampeningConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"shadowPublisherDampeningConfig", 0);
 
   if (v4)
   {
-    v5 = [[FCPersonalizationPublisherDampeningConfig alloc] initWithConfig:v4];
+    publisherDampeningConfig = [[FCPersonalizationPublisherDampeningConfig alloc] initWithConfig:v4];
   }
 
   else
   {
-    v5 = [(FCNewsAppConfig *)self publisherDampeningConfig];
+    publisherDampeningConfig = [(FCNewsAppConfig *)self publisherDampeningConfig];
   }
 
-  v6 = v5;
+  v6 = publisherDampeningConfig;
 
   return v6;
 }
@@ -907,8 +907,8 @@ LABEL_12:
 - (FCStatelessPersonalizationPublisherFavorability)statelessPersonalizationPublisherFavorability
 {
   v3 = [FCStatelessPersonalizationPublisherFavorability alloc];
-  v4 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v5 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"statelessPersonalizationPublisherFavorability", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v5 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"statelessPersonalizationPublisherFavorability", 0);
   v6 = v5;
   if (v5)
   {
@@ -927,8 +927,8 @@ LABEL_12:
 
 - (BOOL)personalizationAnalyticsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"personalizationAnalytics", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"personalizationAnalytics", 0);
 
   if (NFInternalBuild())
   {
@@ -951,8 +951,8 @@ LABEL_12:
 
 - (BOOL)enableTabiTagScoring
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableTabiTagScoring", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableTabiTagScoring", 0);
 
   if (NFInternalBuild())
   {
@@ -975,32 +975,32 @@ LABEL_12:
 
 - (BOOL)enableTabiCohortMemberships
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableTabiCohortMemberships", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableTabiCohortMemberships", 0);
 
   return v3;
 }
 
 - (BOOL)aggregatesInAppXavierEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"aggregatesInXavierEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"aggregatesInXavierEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)liveActivitiesEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"liveActivitiesEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"liveActivitiesEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)useSearchInArticle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"useSearchInArticleEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"useSearchInArticleEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
@@ -1017,8 +1017,8 @@ LABEL_12:
 
   if (!v4 || (NewsCoreUserDefaults(), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 BOOLForKey:@"news.news_personalization.collect_internal_personalization_requests"], v5, v6))
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v8 = FCAppConfigurationArrayValueWithDefaultValue(v7, @"internalPersonalizationRequestsToCollect", &unk_1F2E6F8D0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v8 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"internalPersonalizationRequestsToCollect", &unk_1F2E6F8D0);
   }
 
   else
@@ -1032,16 +1032,16 @@ LABEL_5:
 
 - (NSDictionary)financeURLAnalyticsAllowLists
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"financeURLAnalyticsAllowLists", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"financeURLAnalyticsAllowLists", 0);
 
   return v3;
 }
 
 - (BOOL)enableNewsPersonalizationAutoFavorites
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableNewsPersonalizationAutoFavorites", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableNewsPersonalizationAutoFavorites", 0);
 
   if (NFInternalBuild())
   {
@@ -1064,16 +1064,16 @@ LABEL_5:
 
 - (int64_t)subscriptionsGlobalMeteredCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"subscriptionsGlobalMeteredCount", 30);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"subscriptionsGlobalMeteredCount", 30);
 
   return v3;
 }
 
 - (BOOL)smarterMessagingEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"smarterMessagingEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"smarterMessagingEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
@@ -1096,16 +1096,16 @@ LABEL_5:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"useNotificationsV2EnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"useNotificationsV2EnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
 
 - (FCSmarterMessagingConfig)smarterMessagingConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"smarterMessagingConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"smarterMessagingConfig", 0);
 
   v4 = [[FCSmarterMessagingConfig alloc] initWithDictionary:v3];
 
@@ -1114,24 +1114,24 @@ LABEL_5:
 
 - (int64_t)stateRestorationAllowedTimeWindow
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"news.demo.allow_long_state_restoration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"news.demo.allow_long_state_restoration"];
 
   if (v4)
   {
     return 86400;
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"stateRestorationAllowedTimeWindow", 7200);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"stateRestorationAllowedTimeWindow", 7200);
 
   return v7;
 }
 
 - (NSString)todayFeedEditionConfigJSON
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"todayFeedEditionConfigJson", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"todayFeedEditionConfigJson", 0);
 
   return v3;
 }
@@ -1154,8 +1154,8 @@ LABEL_5:
     }
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"foregroundHeartbeatEventEnabled2", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"foregroundHeartbeatEventEnabled2", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
 }
@@ -1164,14 +1164,14 @@ LABEL_5:
 {
   if (NFInternalBuild() && (NewsCoreUserDefaults(), v3 = objc_claimAutoreleasedReturnValue(), [v3 objectForKey:@"news.features.foregroundHeartbeatEventShouldUseQueue"], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
-    v5 = NewsCoreUserDefaults();
-    v6 = [v5 BOOLForKey:@"news.features.foregroundHeartbeatEventShouldUseQueue"];
+    configDictionary = NewsCoreUserDefaults();
+    v6 = [configDictionary BOOLForKey:@"news.features.foregroundHeartbeatEventShouldUseQueue"];
   }
 
   else
   {
-    v5 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationBoolValue(v5, @"foregroundHeartbeatEventShouldUseQueue", 1);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationBoolValue(configDictionary, @"foregroundHeartbeatEventShouldUseQueue", 1);
   }
 
   v7 = v6;
@@ -1181,56 +1181,56 @@ LABEL_5:
 
 - (int64_t)feedAdScreenfulsToPrefetch
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"feedAdScreenfulsToPrefetch", 3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"feedAdScreenfulsToPrefetch", 3);
 
   return v3;
 }
 
 - (BOOL)useWelcomeSeries
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"useWelcomeSeriesEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"useWelcomeSeriesEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)feedDifferentiationModeEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"feedDifferentiationModeEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"feedDifferentiationModeEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)isTodaySponsorshipEligible
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isTodaySponsorshipEligible", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isTodaySponsorshipEligible", 1);
 
   return v3;
 }
 
 - (BOOL)adSponsorshipsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"adSponsorshipsEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"adSponsorshipsEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)appReviewRequestEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"appReviewRequestEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"appReviewRequestEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (int64_t)newsletterSubscriptionType
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"newsletterConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"newsletterConfig", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"newsletterSubscriptionType", 2);
   return v4;
@@ -1238,8 +1238,8 @@ LABEL_5:
 
 - (NSString)personalizationBundleIdMappingResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"personalizationBundleIdMappingResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"personalizationBundleIdMappingResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -1248,8 +1248,8 @@ LABEL_5:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"personalizationBundleIdMappingResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"personalizationBundleIdMappingResourceId", 0);
   }
 
   return v6;
@@ -1257,8 +1257,8 @@ LABEL_5:
 
 - (NSString)personalizationUrlMappingResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"personalizationUrlMappingResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"personalizationUrlMappingResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -1267,8 +1267,8 @@ LABEL_5:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"personalizationUrlMappingResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"personalizationUrlMappingResourceId", 0);
   }
 
   return v6;
@@ -1276,8 +1276,8 @@ LABEL_5:
 
 - (NSString)personalizationWhitelistResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"personalizationWhitelistResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"personalizationWhitelistResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -1286,8 +1286,8 @@ LABEL_5:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"personalizationWhitelistResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"personalizationWhitelistResourceId", 0);
   }
 
   return v6;
@@ -1295,8 +1295,8 @@ LABEL_5:
 
 - (NSString)personalizationFavorabilityResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"personalizationPublisherFavorabilityScoresResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"personalizationPublisherFavorabilityScoresResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -1305,8 +1305,8 @@ LABEL_5:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"personalizationPublisherFavorabilityScoresResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"personalizationPublisherFavorabilityScoresResourceId", 0);
   }
 
   return v6;
@@ -1314,8 +1314,8 @@ LABEL_5:
 
 - (NSArray)topStoriesPublishDates
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"topStoriesPublishTimeIntervals", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"topStoriesPublishTimeIntervals", 0);
 
   v4 = [v3 fc_arrayByTransformingWithBlock:&__block_literal_global_2301];
 
@@ -1324,24 +1324,24 @@ LABEL_5:
 
 - (BOOL)configurableOffersEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"configurableOffersEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"configurableOffersEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (NSString)configurableOffersMappingResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"configurableOffersMappingResourceId", @"configuration-configurable-offers-mapping-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"configurableOffersMappingResourceId", @"configuration-configurable-offers-mapping-143441-en");
 
   return v3;
 }
 
 - (NSArray)deprecatedSportsTopicTagIds
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationArrayValueWithDefaultValue(v3, @"deprecatedSportsTopicTagIds", 0);
   v5 = v4;
@@ -1362,32 +1362,32 @@ LABEL_5:
 
 - (NSString)foodHubTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"foodHubTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"foodHubTagId", 0);
 
   return v3;
 }
 
 - (NSString)recipeCatalogTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipeCatalogTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeCatalogTagId", 0);
 
   return v3;
 }
 
 - (int64_t)articleRapidUpdatesTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleRapidUpdatesTimeout", 21600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"articleRapidUpdatesTimeout", 21600);
 
   return v3;
 }
 
 - (BOOL)adInstrumentationEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"adInstrumentationEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"adInstrumentationEnabled", 0);
 
   return v3;
 }
@@ -1411,8 +1411,8 @@ LABEL_5:
 
 - (int64_t)bestOfferRequestTimeoutDurationInSeconds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"bestOfferRequestTimeoutDurationInSeconds", 5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"bestOfferRequestTimeoutDurationInSeconds", 5);
 
   return v3;
 }
@@ -1443,7 +1443,7 @@ LABEL_5:
   objc_exception_throw(v6);
 }
 
-+ (id)defaultConfigurationForStoreFrontID:(uint64_t)a1
++ (id)defaultConfigurationForStoreFrontID:(uint64_t)d
 {
   v2 = a2;
   objc_opt_self();
@@ -1452,13 +1452,13 @@ LABEL_5:
   return v3;
 }
 
-- (void)initWithConfigDictionary:(void *)a3 storefrontID:(void *)a4 languageConfigDictionary:
+- (void)initWithConfigDictionary:(void *)dictionary storefrontID:(void *)d languageConfigDictionary:
 {
   v339 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1 || (v328.receiver = a1, v328.super_class = FCNewsAppConfig, (v10 = objc_msgSendSuper2(&v328, sel_init)) == 0))
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  if (!self || (v328.receiver = self, v328.super_class = FCNewsAppConfig, (v10 = objc_msgSendSuper2(&v328, sel_init)) == 0))
   {
     v50 = 0;
     goto LABEL_115;
@@ -1469,12 +1469,12 @@ LABEL_5:
   v13 = v11[2];
   v11[2] = v12;
 
-  v14 = [v8 copy];
+  v14 = [dictionaryCopy copy];
   v15 = v11[6];
   v11[6] = v14;
 
-  v297 = v9;
-  v16 = [v9 copy];
+  v297 = dCopy;
+  v16 = [dCopy copy];
   v17 = v11[7];
   v11[7] = v16;
 
@@ -1488,49 +1488,49 @@ LABEL_5:
   v20 = v11[52];
   v11[52] = v19;
 
-  v21 = [v11 languageConfigDictionary];
-  v22 = FCAppConfigurationDictionaryValueWithOverride(v21, @"peopleAlsoReadConfiguration", @"news.news_personalization.people_also_read_config_overrides.enabled", @"news.news_personalization.people_also_read_config_overrides.json");
+  languageConfigDictionary = [v11 languageConfigDictionary];
+  v22 = FCAppConfigurationDictionaryValueWithOverride(languageConfigDictionary, @"peopleAlsoReadConfiguration", @"news.news_personalization.people_also_read_config_overrides.enabled", @"news.news_personalization.people_also_read_config_overrides.json");
 
   v23 = [[FCPeopleAlsoReadConfiguration alloc] initWithDictionary:v22];
   v24 = v11[3];
   v11[3] = v23;
 
   v298 = v7;
-  v25 = v8;
+  v25 = dictionaryCopy;
   v26 = [FCOfflineDownloadsConfiguration alloc];
-  v27 = [v11 configDictionary];
-  v28 = FCAppConfigurationDictionaryValueWithDefaultValue(v27, @"offlineDownloadsConfig", 0);
+  configDictionary = [v11 configDictionary];
+  v28 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"offlineDownloadsConfig", 0);
   v29 = [(FCOfflineDownloadsConfiguration *)v26 initWithDictionary:v28 optimized:0];
   v30 = v11[4];
   v11[4] = v29;
 
   v31 = [FCOfflineDownloadsConfiguration alloc];
-  v32 = [v11 configDictionary];
-  v33 = FCAppConfigurationDictionaryValueWithDefaultValue(v32, @"offlineDownloadsConfigOptimized", 0);
+  configDictionary2 = [v11 configDictionary];
+  v33 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary2, @"offlineDownloadsConfigOptimized", 0);
   v34 = [(FCOfflineDownloadsConfiguration *)v31 initWithDictionary:v33 optimized:1];
   v35 = v11[5];
   v11[5] = v34;
 
-  v36 = [v11 configDictionary];
-  v37 = FCAppConfigurationIntegerValue(v36, @"enabledPrivateDataEncryptionLevel", 896);
+  configDictionary3 = [v11 configDictionary];
+  v37 = FCAppConfigurationIntegerValue(configDictionary3, @"enabledPrivateDataEncryptionLevel", 896);
 
-  v38 = [v11 configDictionary];
-  v39 = FCAppConfigurationIntegerValue(v38, @"privateDataMigrationCleanupLevel", 7);
+  configDictionary4 = [v11 configDictionary];
+  v39 = FCAppConfigurationIntegerValue(configDictionary4, @"privateDataMigrationCleanupLevel", 7);
 
-  v40 = [v11 configDictionary];
-  v41 = FCAppConfigurationIntegerValue(v40, @"privateDataSecureSubscriptionsLevel", 7);
+  configDictionary5 = [v11 configDictionary];
+  v41 = FCAppConfigurationIntegerValue(configDictionary5, @"privateDataSecureSubscriptionsLevel", 7);
 
-  v42 = [v11 configDictionary];
-  v43 = FCAppConfigurationIntegerValue(v42, @"privateDataSecureSubscriptionsCleanupLevel", 0xFFFFFFFFLL);
+  configDictionary6 = [v11 configDictionary];
+  v43 = FCAppConfigurationIntegerValue(configDictionary6, @"privateDataSecureSubscriptionsCleanupLevel", 0xFFFFFFFFLL);
 
-  v44 = [v11 configDictionary];
-  v45 = FCAppConfigurationIntegerValue(v44, @"privateDataEncryptionRequiredLevel", 7);
+  configDictionary7 = [v11 configDictionary];
+  v45 = FCAppConfigurationIntegerValue(configDictionary7, @"privateDataEncryptionRequiredLevel", 7);
 
-  v46 = [v11 configDictionary];
-  v47 = FCAppConfigurationIntegerValue(v46, @"privateDataMigrateToV4Level3", 0);
+  configDictionary8 = [v11 configDictionary];
+  v47 = FCAppConfigurationIntegerValue(configDictionary8, @"privateDataMigrateToV4Level3", 0);
 
-  v48 = [v11 configDictionary];
-  v49 = FCAppConfigurationIntegerValue(v48, @"privateDataCleanupToV4Level3", 0);
+  configDictionary9 = [v11 configDictionary];
+  v49 = FCAppConfigurationIntegerValue(configDictionary9, @"privateDataCleanupToV4Level3", 0);
 
   v299 = v25;
   v300 = v11;
@@ -1564,10 +1564,10 @@ LABEL_5:
   *(v11 + 12) = [FCFeatureEnablementChecker enabledForCurrentLevel:v43];
   *(v11 + 14) = [FCFeatureEnablementChecker enabledForCurrentLevel:v47];
   *(v11 + 15) = [FCFeatureEnablementChecker enabledForCurrentLevel:v49];
-  v303 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v304 = objc_opt_new();
-  v51 = [v11 configDictionary];
-  v52 = FCAppConfigurationArrayValueWithDefaultValue(v51, @"endpointConfigs", 0);
+  configDictionary10 = [v11 configDictionary];
+  v52 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary10, @"endpointConfigs", 0);
 
   v331 = 0u;
   v332 = 0u;
@@ -1619,30 +1619,30 @@ LABEL_5:
         v62 = FCEndpointEnvironmentForEnvironment(v61);
 
         v63 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v62];
-        [v303 setObject:v60 forKey:v63];
+        [dictionary setObject:v60 forKey:v63];
         v64 = FCAppConfigurationLog;
         if (os_log_type_enabled(FCAppConfigurationLog, OS_LOG_TYPE_INFO))
         {
           loga = v64;
-          v65 = [(FCEndpointConfiguration *)v60 clientAPIBaseURLString];
-          v66 = [(FCEndpointConfiguration *)v60 notificationsBaseURLString];
-          v67 = [(FCEndpointConfiguration *)v60 staticAssetBaseURLString];
-          v68 = [(FCEndpointConfiguration *)v60 remoteDataSourceBaseURLString];
-          v69 = [(FCEndpointConfiguration *)v60 newsletterAPIBaseURLString];
+          clientAPIBaseURLString = [(FCEndpointConfiguration *)v60 clientAPIBaseURLString];
+          notificationsBaseURLString = [(FCEndpointConfiguration *)v60 notificationsBaseURLString];
+          staticAssetBaseURLString = [(FCEndpointConfiguration *)v60 staticAssetBaseURLString];
+          remoteDataSourceBaseURLString = [(FCEndpointConfiguration *)v60 remoteDataSourceBaseURLString];
+          newsletterAPIBaseURLString = [(FCEndpointConfiguration *)v60 newsletterAPIBaseURLString];
           [(FCEndpointConfiguration *)v60 appAnalyticsAppHeartbeatBaseURLString];
           v71 = v70 = v60;
           *buf = 134219522;
           *&buf[4] = v62;
           *&buf[12] = 2112;
-          *&buf[14] = v65;
+          *&buf[14] = clientAPIBaseURLString;
           *&buf[22] = 2112;
-          *&buf[24] = v66;
+          *&buf[24] = notificationsBaseURLString;
           LOWORD(v334[0]) = 2112;
-          *(v334 + 2) = v67;
+          *(v334 + 2) = staticAssetBaseURLString;
           HIWORD(v334[2]) = 2112;
-          *&v334[3] = v68;
+          *&v334[3] = remoteDataSourceBaseURLString;
           LOWORD(v334[5]) = 2112;
-          *(&v334[5] + 2) = v69;
+          *(&v334[5] + 2) = newsletterAPIBaseURLString;
           HIWORD(v334[7]) = 2112;
           v335 = v71;
           _os_log_impl(&dword_1B63EF000, loga, OS_LOG_TYPE_INFO, "endpointConfig - environment: %ld, clientAPIURL: %@, notificationsURL: %@, staticAssetURL: %@, remoteDataSourcesURL: %@, newsletterURL: %@, appHeartbeatUrl: %@", buf, 0x48u);
@@ -1666,40 +1666,40 @@ LABEL_5:
   }
 
   v75 = *(v300 + 9);
-  *(v300 + 9) = v303;
-  v76 = v303;
+  *(v300 + 9) = dictionary;
+  v76 = dictionary;
 
   v77 = *(v300 + 53);
   *(v300 + 53) = v304;
 
-  v78 = [v300 languageConfigDictionary];
-  v79 = FCAppConfigurationArrayValueWithDefaultValue(v78, @"preSubscribedNotificationsChannelIds", 0);
+  languageConfigDictionary2 = [v300 languageConfigDictionary];
+  v79 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary2, @"preSubscribedNotificationsChannelIds", 0);
 
-  v80 = [v300 languageConfigDictionary];
-  v81 = FCAppConfigurationArrayValueWithDefaultValue(v80, @"recommendedNotificationChannels", 0);
+  languageConfigDictionary3 = [v300 languageConfigDictionary];
+  v81 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary3, @"recommendedNotificationChannels", 0);
 
   v82 = [v81 fc_arrayByTransformingWithBlock:&__block_literal_global_172];
   v83 = [[FCNotificationsConfiguration alloc] initWithPresubscribedChannelIDs:v79 recommendedNotificationChannelIDs:v82];
   v84 = *(v300 + 10);
   *(v300 + 10) = v83;
 
-  v85 = [v300 languageConfigDictionary];
-  v86 = FCAppConfigurationDictionaryValueWithDefaultValue(v85, @"topStoriesConfig", 0);
+  languageConfigDictionary4 = [v300 languageConfigDictionary];
+  v86 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary4, @"topStoriesConfig", 0);
 
   v87 = [[FCTopStoriesConfiguration alloc] initWithConfigDictionary:v86];
   v88 = *(v300 + 11);
   *(v300 + 11) = v87;
 
-  v89 = [v300 configDictionary];
-  v90 = FCAppConfigurationStringValue(v89, @"forYouNonPersonalizedGroupsOrder", 0);
+  configDictionary11 = [v300 configDictionary];
+  v90 = FCAppConfigurationStringValue(configDictionary11, @"forYouNonPersonalizedGroupsOrder", 0);
 
   v91 = [[FCForYouGroupsConfiguration alloc] initWithJSONConfiguration:v90];
   v92 = *(v300 + 12);
   *(v300 + 12) = v91;
 
   v93 = v299;
-  v94 = [v300 languageConfigDictionary];
-  v95 = FCAppConfigurationDictionaryValueWithDefaultValue(v94, @"puzzlesConfig", 0);
+  languageConfigDictionary5 = [v300 languageConfigDictionary];
+  v95 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary5, @"puzzlesConfig", 0);
 
   *v336 = @"143441";
   *&v336[8] = @"143455";
@@ -1709,22 +1709,22 @@ LABEL_5:
   v98 = *(v300 + 13);
   *(v300 + 13) = v97;
 
-  v99 = [v300 configDictionary];
-  v100 = FCAppConfigurationDictionaryValueWithDefaultValue(v99, @"iadConfig", 0);
+  configDictionary12 = [v300 configDictionary];
+  v100 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary12, @"iadConfig", 0);
 
   v101 = [[FCIAdConfiguration alloc] initWithConfigDictionary:v100];
   v102 = *(v300 + 14);
   *(v300 + 14) = v101;
 
-  v103 = [v300 configDictionary];
-  v104 = FCAppConfigurationDictionaryValueWithDefaultValue(v103, @"prefetchConfig", 0);
+  configDictionary13 = [v300 configDictionary];
+  v104 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary13, @"prefetchConfig", 0);
 
   v105 = [[FCPrefetchConfiguration alloc] initWithConfigDictionary:v104];
   v106 = *(v300 + 15);
   *(v300 + 15) = v105;
 
-  v107 = [v300 languageConfigDictionary];
-  v108 = FCAppConfigurationDictionaryValueWithDefaultValue(v107, @"shareVideoPlayerConfig", 0);
+  languageConfigDictionary6 = [v300 languageConfigDictionary];
+  v108 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary6, @"shareVideoPlayerConfig", 0);
 
   v109 = objc_opt_new();
   v110 = FCAppConfigurationStringValue(v108, @"discoverMoreVideosTitle", 0);
@@ -1739,15 +1739,15 @@ LABEL_5:
   v113 = *(v300 + 17);
   *(v300 + 17) = v109;
 
-  v114 = [v300 configDictionary];
-  v115 = FCAppConfigurationDictionaryValueWithDefaultValue(v114, @"widgetConfig2", 0);
+  configDictionary14 = [v300 configDictionary];
+  v115 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary14, @"widgetConfig2", 0);
 
   v116 = [[FCWidgetConfig alloc] initWithConfigDictionary:v115];
   v117 = *(v300 + 54);
   *(v300 + 54) = v116;
 
-  v118 = [v300 languageConfigDictionary];
-  v119 = FCAppConfigurationDictionaryValueWithDefaultValue(v118, @"channelPaywallConfigurations", 0);
+  languageConfigDictionary7 = [v300 languageConfigDictionary];
+  v119 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary7, @"channelPaywallConfigurations", 0);
 
   v120 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v119, "count")}];
   memset(buf, 0, sizeof(buf));
@@ -1785,8 +1785,8 @@ LABEL_5:
   v131 = *(v300 + 19);
   *(v300 + 19) = v130;
 
-  v132 = [v300 languageConfigDictionary];
-  v133 = FCAppConfigurationDictionaryValueWithDefaultValue(v132, @"channelUpsellConfigurations2", 0);
+  languageConfigDictionary8 = [v300 languageConfigDictionary];
+  v133 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary8, @"channelUpsellConfigurations2", 0);
 
   v134 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v133, "count")}];
   memset(buf, 0, sizeof(buf));
@@ -1824,39 +1824,39 @@ LABEL_5:
   v145 = *(v300 + 18);
   *(v300 + 18) = v144;
 
-  v146 = [v300 languageConfigDictionary];
-  v147 = FCAppConfigurationDictionaryValueWithDefaultValue(v146, @"sportsUpsellConfiguration", 0);
+  languageConfigDictionary9 = [v300 languageConfigDictionary];
+  v147 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary9, @"sportsUpsellConfiguration", 0);
 
   v148 = [[FCSportsUpsellConfig alloc] initWithConfigDictionary:v147];
   v149 = *(v300 + 20);
   *(v300 + 20) = v148;
 
-  v150 = [v300 languageConfigDictionary];
-  v151 = FCAppConfigurationDictionaryValueWithDefaultValue(v150, @"locationSharingUpsellConfiguration", 0);
+  languageConfigDictionary10 = [v300 languageConfigDictionary];
+  v151 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary10, @"locationSharingUpsellConfiguration", 0);
 
   v152 = [[FCLocationSharingUpsellConfig alloc] initWithConfigDictionary:v151];
   v153 = *(v300 + 21);
   *(v300 + 21) = v152;
 
-  v154 = [v300 languageConfigDictionary];
-  v155 = FCAppConfigurationDictionaryValueWithDefaultValue(v154, @"paidBundleViaOfferConfiguration", 0);
+  languageConfigDictionary11 = [v300 languageConfigDictionary];
+  v155 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary11, @"paidBundleViaOfferConfiguration", 0);
 
   v156 = [[FCPaidBundleViaOfferConfig alloc] initWithConfigDictionary:v155];
   v157 = *(v300 + 22);
   *(v300 + 22) = v156;
 
   v158 = v93;
-  v159 = [v300 languageConfigDictionary];
-  v160 = FCAppConfigurationDictionaryValueWithDefaultValue(v159, @"paidBundleConfig", 0);
+  languageConfigDictionary12 = [v300 languageConfigDictionary];
+  v160 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary12, @"paidBundleConfig", 0);
 
   v161 = [FCPaidBundleConfiguration alloc];
-  v162 = [(FCNewsAppConfig *)v300 localizedStorefrontID];
+  localizedStorefrontID = [(FCNewsAppConfig *)v300 localizedStorefrontID];
   *v336 = @"143441";
   *&v336[8] = @"143455";
   *&v336[16] = @"143444";
   v337 = @"143460";
   v163 = [MEMORY[0x1E695DEC8] arrayWithObjects:v336 count:4];
-  v164 = [(FCPaidBundleConfiguration *)v161 initWithConfigDictionary:v160 storefrontID:v158 localizedStorefrontID:v162 defaultSupportedStoreFronts:v163];
+  v164 = [(FCPaidBundleConfiguration *)v161 initWithConfigDictionary:v160 storefrontID:v158 localizedStorefrontID:localizedStorefrontID defaultSupportedStoreFronts:v163];
 
   v165 = *(v300 + 23);
   *(v300 + 23) = v164;
@@ -1866,8 +1866,8 @@ LABEL_5:
     v166 = NewsCoreUserDefaults();
     if ([v166 integerForKey:@"news.features.statelessPersonalization"] == 1)
     {
-      v167 = [v300 configDictionary];
-      v168 = FCAppConfigurationDictionaryValueWithDefaultValue(v167, @"newsPersonalizationConfiguration", 0);
+      configDictionary15 = [v300 configDictionary];
+      v168 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary15, @"newsPersonalizationConfiguration", 0);
 
       if (!v168)
       {
@@ -1880,7 +1880,7 @@ LABEL_5:
 
         v170 = +[FCNewsPersonalizationConfiguration defaultConfiguration];
         v171 = v300;
-        v172 = *(v300 + 42);
+        configDictionary16 = *(v300 + 42);
         *(v300 + 42) = v170;
         goto LABEL_42;
       }
@@ -1900,8 +1900,8 @@ LABEL_5:
 
   v174 = [FCNewsPersonalizationConfiguration alloc];
   v171 = v300;
-  v172 = [v300 configDictionary];
-  v175 = FCAppConfigurationDictionaryValueWithDefaultValue(v172, @"newsPersonalizationConfiguration", 0);
+  configDictionary16 = [v300 configDictionary];
+  v175 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary16, @"newsPersonalizationConfiguration", 0);
   v176 = [(FCNewsPersonalizationConfiguration *)v174 initWithDictionary:v175];
   v177 = *(v300 + 42);
   *(v300 + 42) = v176;
@@ -1946,9 +1946,9 @@ LABEL_42:
       if (os_log_type_enabled(FCTabiConfigurationLog, OS_LOG_TYPE_ERROR))
       {
         v295 = v187;
-        v296 = [v186 localizedDescription];
+        localizedDescription = [v186 localizedDescription];
         *v336 = 138543362;
-        *&v336[4] = v296;
+        *&v336[4] = localizedDescription;
         _os_log_error_impl(&dword_1B63EF000, v295, OS_LOG_TYPE_ERROR, "Failed to decode tabi config into Dictionary, proceeding as if no override is in place %{public}@", v336, 0xCu);
       }
     }
@@ -1956,8 +1956,8 @@ LABEL_42:
     else
     {
       v191 = [[FCNewsTabiConfiguration alloc] initWithDictionary:v185];
-      v284 = [(FCNewsTabiConfiguration *)v191 packageAssetIDs];
-      v285 = [v284 count];
+      packageAssetIDs = [(FCNewsTabiConfiguration *)v191 packageAssetIDs];
+      v285 = [packageAssetIDs count];
 
       if (v285)
       {
@@ -1967,9 +1967,9 @@ LABEL_42:
         if (os_log_type_enabled(FCTabiConfigurationLog, OS_LOG_TYPE_DEFAULT))
         {
           v287 = v286;
-          v288 = [(FCNewsTabiConfiguration *)v191 version];
+          version = [(FCNewsTabiConfiguration *)v191 version];
           *v336 = 138543362;
-          *&v336[4] = v288;
+          *&v336[4] = version;
           _os_log_impl(&dword_1B63EF000, v287, OS_LOG_TYPE_DEFAULT, "Loaded user defaults tabi configuration version %{public}@", v336, 0xCu);
 
           v286 = FCTabiConfigurationLog;
@@ -1998,14 +1998,14 @@ LABEL_42:
   }
 
 LABEL_52:
-  v188 = [v171 languageConfigDictionary];
-  v178 = FCAppConfigurationDictionaryValueWithDefaultValue(v188, @"newsTabiConfigurationV2", 0);
+  languageConfigDictionary13 = [v171 languageConfigDictionary];
+  v178 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary13, @"newsTabiConfigurationV2", 0);
 
-  v189 = [v171 languageConfigDictionary];
-  v185 = FCAppConfigurationDictionaryValueWithDefaultValue(v189, @"newsTabiConfigurationDawnburstD", 0);
+  languageConfigDictionary14 = [v171 languageConfigDictionary];
+  v185 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary14, @"newsTabiConfigurationDawnburstD", 0);
 
-  v190 = [v171 languageConfigDictionary];
-  v191 = FCAppConfigurationDictionaryValueWithDefaultValue(v190, @"newsTabiConfigurationDawnburstB", 0);
+  languageConfigDictionary15 = [v171 languageConfigDictionary];
+  v191 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary15, @"newsTabiConfigurationDawnburstB", 0);
 
   if (v178)
   {
@@ -2046,8 +2046,8 @@ LABEL_52:
       }
 
       v290 = [FCNewsTabiConfiguration alloc];
-      v199 = [v171 languageConfigDictionary];
-      v291 = FCAppConfigurationDictionaryValueWithDefaultValue(v199, @"newsTabiConfiguration", MEMORY[0x1E695E0F8]);
+      languageConfigDictionary16 = [v171 languageConfigDictionary];
+      v291 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary16, @"newsTabiConfiguration", MEMORY[0x1E695E0F8]);
       v292 = [(FCNewsTabiConfiguration *)v290 initWithDictionary:v291];
       v293 = *(v300 + 43);
       *(v300 + 43) = v292;
@@ -2067,7 +2067,7 @@ LABEL_52:
   }
 
   v198 = [(FCNewsTabiConfiguration *)v193 initWithDictionary:v194];
-  v199 = v171[43];
+  languageConfigDictionary16 = v171[43];
   v171[43] = v198;
 LABEL_65:
 
@@ -2076,16 +2076,16 @@ LABEL_65:
   {
     v201 = v171[43];
     v202 = v200;
-    v203 = [v201 version];
+    version2 = [v201 version];
     *v336 = 138543362;
-    *&v336[4] = v203;
+    *&v336[4] = version2;
     _os_log_impl(&dword_1B63EF000, v202, OS_LOG_TYPE_DEFAULT, "Loaded tabi configuration version %{public}@", v336, 0xCu);
   }
 
 LABEL_67:
 
-  v204 = [v171 languageConfigDictionary];
-  v205 = FCAppConfigurationDictionaryValueWithDefaultValue(v204, @"channelPickerConfigurations", 0);
+  languageConfigDictionary17 = [v171 languageConfigDictionary];
+  v205 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary17, @"channelPickerConfigurations", 0);
 
   v206 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v205, "count")}];
   memset(buf, 0, sizeof(buf));
@@ -2123,15 +2123,15 @@ LABEL_67:
   v217 = *(v300 + 48);
   *(v300 + 48) = v216;
 
-  v218 = [v300 configDictionary];
-  v219 = FCAppConfigurationDictionaryValueWithDefaultValue(v218, @"launchPresentationConfigV2", 0);
+  configDictionary17 = [v300 configDictionary];
+  v219 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary17, @"launchPresentationConfigV2", 0);
 
   v220 = [[FCLaunchPresentationConfig alloc] initWithConfigDictionary:v219];
   v221 = *(v300 + 49);
   *(v300 + 49) = v220;
 
-  v222 = [v300 languageConfigDictionary];
-  v223 = FCAppConfigurationDictionaryValueWithDefaultValue(v222, @"campaignReferralConfigurations", 0);
+  languageConfigDictionary18 = [v300 languageConfigDictionary];
+  v223 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary18, @"campaignReferralConfigurations", 0);
 
   v224 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v223, "count")}];
   memset(buf, 0, sizeof(buf));
@@ -2174,8 +2174,8 @@ LABEL_67:
   {
     v282 = FCStatelessPersonalizationLog;
     v7 = v298;
-    v8 = v299;
-    v9 = v297;
+    dictionaryCopy = v299;
+    dCopy = v297;
     if (os_log_type_enabled(FCStatelessPersonalizationLog, OS_LOG_TYPE_DEFAULT))
     {
       *v336 = 0;
@@ -2183,26 +2183,26 @@ LABEL_67:
     }
 
     v283 = +[FCTimesOfDayConfiguration defaultConfiguration];
-    v239 = *(v300 + 47);
+    configDictionary18 = *(v300 + 47);
     *(v300 + 47) = v283;
   }
 
   else
   {
     v238 = [FCTimesOfDayConfiguration alloc];
-    v239 = [v300 configDictionary];
-    v240 = FCAppConfigurationDictionaryValueWithDefaultValue(v239, @"timesOfDayConfiguration", 0);
+    configDictionary18 = [v300 configDictionary];
+    v240 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary18, @"timesOfDayConfiguration", 0);
     v241 = [(FCTimesOfDayConfiguration *)v238 initWithDictionary:v240];
     v242 = *(v300 + 47);
     *(v300 + 47) = v241;
 
     v7 = v298;
-    v8 = v299;
-    v9 = v297;
+    dictionaryCopy = v299;
+    dCopy = v297;
   }
 
-  v243 = [v300 languageConfigDictionary];
-  v244 = FCAppConfigurationDictionaryValueWithDefaultValue(v243, @"superfeedConfigOverrides", 0);
+  languageConfigDictionary19 = [v300 languageConfigDictionary];
+  v244 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary19, @"superfeedConfigOverrides", 0);
 
   v245 = MEMORY[0x1E695DF20];
   *v336 = MEMORY[0x1E69E9820];
@@ -2215,8 +2215,8 @@ LABEL_67:
   v248 = *(v300 + 51);
   *(v300 + 51) = v247;
 
-  v249 = [v300 languageConfigDictionary];
-  v250 = FCAppConfigurationDictionaryValueWithDefaultValue(v249, @"autoFavoritesServiceConfiguration", 0);
+  languageConfigDictionary20 = [v300 languageConfigDictionary];
+  v250 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary20, @"autoFavoritesServiceConfiguration", 0);
 
   if (v250)
   {
@@ -2269,8 +2269,8 @@ LABEL_67:
     __57__FCNewsAppConfig__loadAutoFavoritesServiceConfiguration__block_invoke(v336);
   }
 
-  v259 = [v50 languageConfigDictionary];
-  v260 = FCAppConfigurationDictionaryValueWithDefaultValue(v259, @"notificationScoringServiceConfiguration", 0);
+  languageConfigDictionary21 = [v50 languageConfigDictionary];
+  v260 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary21, @"notificationScoringServiceConfiguration", 0);
 
   if (v260)
   {
@@ -2323,8 +2323,8 @@ LABEL_67:
     __63__FCNewsAppConfig__loadNotificationScoringServiceConfiguration__block_invoke(v336);
   }
 
-  v269 = [v50 languageConfigDictionary];
-  v270 = FCAppConfigurationDictionaryValueWithDefaultValue(v269, @"recipeAutoFavoritesServiceConfiguration", 0);
+  languageConfigDictionary22 = [v50 languageConfigDictionary];
+  v270 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary22, @"recipeAutoFavoritesServiceConfiguration", 0);
 
   if (v270)
   {
@@ -2383,12 +2383,12 @@ LABEL_115:
   return v50;
 }
 
-+ (id)configurationWithData:(void *)a3 storefrontID:(void *)a4 preferredLanguageTags:
++ (id)configurationWithData:(void *)data storefrontID:(void *)d preferredLanguageTags:
 {
   v69 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  dCopy = d;
   objc_opt_self();
   if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -2403,13 +2403,13 @@ LABEL_115:
     v68 = v41;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -2431,21 +2431,21 @@ LABEL_115:
 LABEL_6:
   if (v6 && ([MEMORY[0x1E696ACB0] JSONObjectWithData:v6 options:0 error:0], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v47 = v7;
+    v47 = dataCopy;
     v48 = v6;
     v10 = v9;
-    v46 = v8;
-    v11 = v8;
+    v46 = dCopy;
+    v11 = dCopy;
     objc_opt_self();
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v13 = FCAppConfigurationArrayValueWithDefaultValue(v10, @"languageConfigs", 0);
     v45 = v10;
     v14 = FCAppConfigurationStringValue(v10, @"fallbackLanguageTag", 0);
-    v51 = [v14 lowercaseString];
+    lowercaseString = [v14 lowercaseString];
 
     v44 = v11;
     v43 = [v11 fc_arrayByTransformingWithBlock:&__block_literal_global_27];
-    v50 = [v13 firstObject];
+    firstObject = [v13 firstObject];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
@@ -2467,22 +2467,22 @@ LABEL_6:
 
           v19 = *(*(&v56 + 1) + 8 * i);
           v20 = FCAppConfigurationStringValue(v19, @"languageTag", &stru_1F2DC7DC0);
-          v21 = [v20 lowercaseString];
+          lowercaseString2 = [v20 lowercaseString];
 
-          [v12 setObject:v19 forKeyedSubscript:v21];
-          v22 = __75__FCNewsAppConfig_languageConfigDictionaryForConfig_preferredLanguageTags___block_invoke_2(v21);
-          v23 = [v12 objectForKeyedSubscript:v22];
+          [dictionary setObject:v19 forKeyedSubscript:lowercaseString2];
+          v22 = __75__FCNewsAppConfig_languageConfigDictionaryForConfig_preferredLanguageTags___block_invoke_2(lowercaseString2);
+          v23 = [dictionary objectForKeyedSubscript:v22];
 
           if (!v23)
           {
-            [v12 setObject:v19 forKeyedSubscript:v22];
+            [dictionary setObject:v19 forKeyedSubscript:v22];
           }
 
-          if ([v21 isEqualToString:v51])
+          if ([lowercaseString2 isEqualToString:lowercaseString])
           {
             v24 = v19;
 
-            v50 = v24;
+            firstObject = v24;
           }
         }
 
@@ -2492,7 +2492,7 @@ LABEL_6:
       while (v16);
     }
 
-    if ([v12 count])
+    if ([dictionary count])
     {
       v54 = 0u;
       v55 = 0u;
@@ -2516,8 +2516,8 @@ LABEL_6:
 
             v31 = *(*(&v52 + 1) + 8 * j);
             v32 = __75__FCNewsAppConfig_languageConfigDictionaryForConfig_preferredLanguageTags___block_invoke_2(v31);
-            v33 = [v12 objectForKeyedSubscript:v31];
-            if (v33 || ([v12 objectForKeyedSubscript:v32], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+            v33 = [dictionary objectForKeyedSubscript:v31];
+            if (v33 || ([dictionary objectForKeyedSubscript:v32], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
             {
               v34 = v33;
 
@@ -2557,24 +2557,24 @@ LABEL_34:
 
     else
     {
-      v37 = v50;
+      v37 = firstObject;
     }
 
     v38 = v37;
 
     v35 = v45;
     v6 = v48;
-    v8 = v46;
+    dCopy = v46;
     if (v38)
     {
-      v7 = v47;
+      dataCopy = v47;
       v36 = [[FCNewsAppConfig alloc] initWithConfigDictionary:v45 storefrontID:v47 languageConfigDictionary:v38];
     }
 
     else
     {
       v36 = 0;
-      v7 = v47;
+      dataCopy = v47;
     }
   }
 
@@ -2619,8 +2619,8 @@ id __75__FCNewsAppConfig_languageConfigDictionaryForConfig_preferredLanguageTags
 
 - (int64_t)optimizedStorageAutoEnablementThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"optimizedStorageAutoEnablementThreshold", 3000000000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"optimizedStorageAutoEnablementThreshold", 3000000000);
 
   return v3;
 }
@@ -2668,8 +2668,8 @@ void __63__FCNewsAppConfig__loadNotificationScoringServiceConfiguration__block_i
 - (NSData)delayedNotificationSchedulerConfigurationData
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"delayedNotificationSchedulerConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"delayedNotificationSchedulerConfiguration", 0);
 
   if (v3)
   {
@@ -2729,8 +2729,8 @@ void __63__FCNewsAppConfig__loadNotificationScoringServiceConfiguration__block_i
 - (NSData)delayedNotificationVendorConfigurationData
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"delayedNotificationVendorConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"delayedNotificationVendorConfiguration", 0);
 
   if (v3)
   {
@@ -2789,8 +2789,8 @@ void __63__FCNewsAppConfig__loadNotificationScoringServiceConfiguration__block_i
 
 - (NSDictionary)localInForYouTopicTagAllowList
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"localInForYouTopicTagAllowList", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localInForYouTopicTagAllowList", 0);
 
   if (v4)
   {
@@ -2836,368 +2836,368 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (int64_t)trendingTopicsRefreshRate
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"trendingTopicsRefreshRate", 3600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"trendingTopicsRefreshRate", 3600);
 
   return v3;
 }
 
 - (int64_t)dailyChannelUpsellsCountLimit
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"dailyChannelUpsellsCountLimit", 3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"dailyChannelUpsellsCountLimit", 3);
 
   return v3;
 }
 
 - (int64_t)shortcutsMaxCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"shortcutsMaxCount", 8);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"shortcutsMaxCount", 8);
 
   return v3;
 }
 
 - (BOOL)autoOnboardShortcuts
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"autoOnboardShortcuts", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"autoOnboardShortcuts", 0);
 
   return v3;
 }
 
 - (int64_t)minShortcutsOnboardCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minShortcutsOnboardCount", 4);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minShortcutsOnboardCount", 4);
 
   return v3;
 }
 
 - (int64_t)shortcutsOnboardCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"shortcutsOnboardCount", 6);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"shortcutsOnboardCount", 6);
 
   return v3;
 }
 
 - (int64_t)maxCuratedShortcutsCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxCuratedShortcutsCount", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxCuratedShortcutsCount", 1);
 
   return v3;
 }
 
 - (int64_t)maxSuggestedShortcutsCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxSuggestedShortcutsCount", 5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxSuggestedShortcutsCount", 5);
 
   return v3;
 }
 
 - (int64_t)shortcutsCustomizeAffordanceDisplayMinLaunchCount
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"shortcutsCustomizeAffordanceDisplayMinLaunchCount", 2);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"shortcutsCustomizeAffordanceDisplayMinLaunchCount", 2);
 
   return v3;
 }
 
 - (int64_t)shortcutsCustomizeAffordanceSendToBackPositionMinLaunchCount
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"shortcutsCustomizeAffordanceSendToBackPositionMinLaunchCount", 15);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"shortcutsCustomizeAffordanceSendToBackPositionMinLaunchCount", 15);
 
   return v3;
 }
 
 - (int64_t)notificationEnabledChannelsRefreshFrequency
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"notificationEnabledChannelsRefreshFrequency", 604800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"notificationEnabledChannelsRefreshFrequency", 604800);
 
   return v3;
 }
 
 - (int64_t)savedArticlesCutoffTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"savedArticlesCutoffTime", 15552000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"savedArticlesCutoffTime", 15552000);
 
   return v3;
 }
 
 - (int64_t)savedArticlesOpenedCutoffTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"savedArticlesOpenedCutoffTime", 21600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"savedArticlesOpenedCutoffTime", 21600);
 
   return v3;
 }
 
 - (int64_t)savedArticlesMaximumCountWiFi
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"savedArticlesMaximumCountWifi", 100);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"savedArticlesMaximumCountWifi", 100);
 
   return v3;
 }
 
 - (int64_t)savedArticlesMaximumCountCellular
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"savedArticlesMaximumCountCellular", 10);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"savedArticlesMaximumCountCellular", 10);
 
   return v3;
 }
 
 - (int64_t)maximumBundleSessionValue
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxBundleSessionValue", 10);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxBundleSessionValue", 10);
 
   return v3;
 }
 
 - (int64_t)maximumBundleSessionTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxBundleSessionTime", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxBundleSessionTime", 86400);
 
   return v3;
 }
 
 - (int64_t)maximumMastheadWelcomeMessageTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxMastheadWelcomeMessageTime", 604800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxMastheadWelcomeMessageTime", 604800);
 
   return v3;
 }
 
 - (int64_t)maximumPremiumHeadlinesGroupSlottingTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxPremiumHeadlinesGroupSlottingTime", 604800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxPremiumHeadlinesGroupSlottingTime", 604800);
 
   return v3;
 }
 
 - (int64_t)maximumPremiumStoriesUnlockedTipTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxPremiumStoriesUnlockedTipTime", 604800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxPremiumStoriesUnlockedTipTime", 604800);
 
   return v3;
 }
 
 - (NSString)blockedArticleLearnMoreURL
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"blockedArticleLearnMoreURL", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"blockedArticleLearnMoreURL", 0);
 
   return v3;
 }
 
 - (NSArray)presubscribedFeedIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"preSubscribedFeedIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"preSubscribedFeedIds", 0);
 
   return v3;
 }
 
 - (NSArray)permanentChannelIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"permanentChannelIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"permanentChannelIds", 0);
 
   return v3;
 }
 
 - (NSArray)appleNewsNotificationChannelIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"appleNewsNotificationChannelIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"appleNewsNotificationChannelIds", 0);
 
   return v3;
 }
 
 - (NSString)breakingNewsChannelID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"breakingNewsChannelId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"breakingNewsChannelId", 0);
 
   return v3;
 }
 
 - (NSString)briefingsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"briefingsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"briefingsTagId", 0);
 
   return v3;
 }
 
 - (NSString)trendingTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"trendingTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"trendingTagId", 0);
 
   return v3;
 }
 
 - (NSString)featuredStoriesTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"featuredStoriesTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"featuredStoriesTagId", 0);
 
   return v3;
 }
 
 - (NSString)savedStoriesTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"savedStoriesTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"savedStoriesTagId", 0);
 
   return v3;
 }
 
 - (NSString)myMagazinesTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"myMagazinesTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"myMagazinesTagId", 0);
 
   return v3;
 }
 
 - (NSString)sharedWithYouTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sharedWithYouTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sharedWithYouTagId", 0);
 
   return v3;
 }
 
 - (NSString)shortcutsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"shortcutsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"shortcutsTagId", 0);
 
   return v3;
 }
 
 - (NSString)mySportsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"mySportsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"mySportsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportsTopStoriesTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportsTopStoriesTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportsTopStoriesTagId", 0);
 
   return v3;
 }
 
 - (NSString)mySportsScoresTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"mySportsScoresTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"mySportsScoresTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportScoresTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportScoresTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportScoresTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportTeamScoresTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportTeamScoresTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportTeamScoresTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportLeagueScoresTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportLeagueScoresTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportLeagueScoresTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportsStandingsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportLeagueStandingsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportLeagueStandingsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportsBracketTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportBracketTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportBracketTagId", 0);
 
   return v3;
 }
 
 - (NSString)mySportsHighlightsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"mySportsHighlightsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"mySportsHighlightsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportHighlightsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportHighlightsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportHighlightsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportTeamHighlightsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportTeamHighlightsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportTeamHighlightsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportLeagueHighlightsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportLeagueHighlightsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportLeagueHighlightsTagId", 0);
 
   return v3;
 }
 
 - (NSString)sportEventHighlightsTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sportEventHighlightsTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sportEventHighlightsTagId", 0);
 
   return v3;
 }
 
 - (FCSportsPrivacyConfiguration)sportsPrivacyConfiguration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"sportsPrivacyConfiguration", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"sportsPrivacyConfiguration", 0);
 
   v4 = [[FCSportsPrivacyConfiguration alloc] initWithConfigDictionary:v3];
 
@@ -3206,40 +3206,40 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (NSString)editorialChannelID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"appleEditorialChannelId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"appleEditorialChannelId", 0);
 
   return v3;
 }
 
 - (NSString)spotlightChannelID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"spotlightChannelId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"spotlightChannelId", 0);
 
   return v3;
 }
 
 - (NSString)editorialGemsSectionID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"editorialGemsSectionId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"editorialGemsSectionId", 0);
 
   return v3;
 }
 
 - (double)feedLineHeightMultiplier
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"feedLineHeightMultiplier", 1.0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDoubleValue(languageConfigDictionary, @"feedLineHeightMultiplier", 1.0);
 
   return v3;
 }
 
 - (NSArray)aLaCartePaidSubscriptionGroupWhitelistedChannelIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"paidALaCarteSubscriptionGroupWhitelistedChannelIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"paidALaCarteSubscriptionGroupWhitelistedChannelIds", 0);
   v4 = v3;
   if (v3)
   {
@@ -3256,17 +3256,17 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
   return v5;
 }
 
-- (id)paidALaCartePaywallConfigForChannelID:(id)a3
+- (id)paidALaCartePaywallConfigForChannelID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (!self->_cachedPaidALaCartePaywallConfigs)
   {
-    v25 = v4;
+    v25 = dCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(v7, @"paidALaCartePaywallConfigs2", 0);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"paidALaCartePaywallConfigs2", 0);
 
     v28 = 0u;
     v29 = 0u;
@@ -3292,13 +3292,13 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
           v16 = [v9 objectForKeyedSubscript:v14];
           v17 = [(FCPaidALaCartePaywallConfig *)v15 initWithChannelID:v14 configDictionary:v16];
 
-          v18 = [(FCPaidALaCartePaywallConfig *)v17 channelID];
-          v19 = [v18 length];
+          channelID = [(FCPaidALaCartePaywallConfig *)v17 channelID];
+          v19 = [channelID length];
 
           if (v19)
           {
-            v20 = [(FCPaidALaCartePaywallConfig *)v17 channelID];
-            [(NSDictionary *)v6 setObject:v17 forKeyedSubscript:v20];
+            channelID2 = [(FCPaidALaCartePaywallConfig *)v17 channelID];
+            [(NSDictionary *)v6 setObject:v17 forKeyedSubscript:channelID2];
           }
         }
 
@@ -3331,8 +3331,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (NSString)todayFeedKnobs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"todayFeedKnobs", @"{}");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"todayFeedKnobs", @"{}");
 
   return v3;
 }
@@ -3340,8 +3340,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 - (NSArray)hiddenFeedIDs
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"hiddenFeedId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"hiddenFeedId", 0);
 
   if (v3)
   {
@@ -3361,96 +3361,96 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (int64_t)minimumDurationBetweenForYouGroupsWeekday
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumDurationBetweenForYouGroupsWeekday", 28800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumDurationBetweenForYouGroupsWeekday", 28800);
 
   return v3;
 }
 
 - (int64_t)minimumDurationBetweenForYouGroupsWeekend
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumDurationBetweenForYouGroupsWeekend", 14400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumDurationBetweenForYouGroupsWeekend", 14400);
 
   return v3;
 }
 
 - (int64_t)minimumDurationBetweenTrendingGroupsWeekday
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumDurationBetweenTrendingGroupsWeekday", 28800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumDurationBetweenTrendingGroupsWeekday", 28800);
 
   return v3;
 }
 
 - (int64_t)minimumDurationBetweenTrendingGroupsWeekend
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumDurationBetweenTrendingGroupsWeekend", 14400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumDurationBetweenTrendingGroupsWeekend", 14400);
 
   return v3;
 }
 
 - (int64_t)expiredPaidSubscriptionGroupCutoffTime
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"expiredPaidSubscriptionGroupCutoffTime", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"expiredPaidSubscriptionGroupCutoffTime", 0);
 
   return v3;
 }
 
 - (int64_t)maximumNumberOfExpiredPaidSubscriptionGroups
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxExpiredPaidSubscriptionGroupCount", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxExpiredPaidSubscriptionGroupCount", 0);
 
   return v3;
 }
 
 - (int64_t)maximumTimesHeadlineInPaidSubscriptionGroup
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxTimesHeadlineInPaidSubscriptionGroup", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxTimesHeadlineInPaidSubscriptionGroup", 0);
 
   return v3;
 }
 
 - (int64_t)maximumPaidSubscriptionGroupSizeiPad
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxPaidSubscriptionGroupSizeIPad", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxPaidSubscriptionGroupSizeIPad", 0);
 
   return v3;
 }
 
 - (int64_t)maximumPaidSubscriptionGroupSizeiPhone
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxPaidSubscriptionGroupSizeIPhone", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxPaidSubscriptionGroupSizeIPhone", 0);
 
   return v3;
 }
 
 - (BOOL)diversifyOptionalTopStories
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"diversifyOptionalTopStories", 1) != 0;
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"diversifyOptionalTopStories", 1) != 0;
 
   return v3;
 }
 
 - (int64_t)optionalTopStoriesRefreshRate
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"optionalTopStoriesRefreshRate", 14400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"optionalTopStoriesRefreshRate", 14400);
 
   return v3;
 }
 
 - (double)minimumTrendingUnseenRatio
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"minimumTrendingUnseenRatio", 0.5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"minimumTrendingUnseenRatio", 0.5);
 
   return v3;
 }
@@ -3460,8 +3460,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
   forYouVideoGroupsConfig = self->_forYouVideoGroupsConfig;
   if (!forYouVideoGroupsConfig)
   {
-    v4 = [(FCNewsAppConfig *)self configDictionary];
-    v5 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"forYouVideoGroupsConfig", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v5 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"forYouVideoGroupsConfig", 0);
 
     if (v5)
     {
@@ -3478,56 +3478,56 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (double)endOfArticleMinPaidHeadlineRatio
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"endOfArticleMinPaidHeadlineRatio", 0.25);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"endOfArticleMinPaidHeadlineRatio", 0.25);
 
   return v3;
 }
 
 - (int64_t)endOfArticleMaxInaccessiblePaidArticleCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"endOfArticleMaxInaccessiblePaidArticles", 2);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"endOfArticleMaxInaccessiblePaidArticles", 2);
 
   return v3;
 }
 
 - (int64_t)endOfArticleExpireArticlesAfter
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"endOfArticleExpireArticlesAfter", 7776000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"endOfArticleExpireArticlesAfter", 7776000);
 
   return v3;
 }
 
 - (NSString)endOfArticleFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"endOfArticleFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"endOfArticleFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (int64_t)minimumDistanceBetweenImageOnTopTiles
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumDistanceBetweenImageOnTopTiles", 4);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumDistanceBetweenImageOnTopTiles", 4);
 
   return v3;
 }
 
 - (NSString)nonBundleChannelPickerSuggestionsTabiPackageResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"nonBundleChannelPickerSuggestionsTabiPackageResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"nonBundleChannelPickerSuggestionsTabiPackageResourceId", 0);
 
   return v3;
 }
 
 - (NSString)bundleChannelPickerSuggestionsTabiPackageResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"bundleChannelPickerSuggestionsTabiPackageResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"bundleChannelPickerSuggestionsTabiPackageResourceId", 0);
 
   return v3;
 }
@@ -3548,7 +3548,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   else
   {
-    v5 = [(FCNewsAppConfig *)self localizedStorefrontID];
+    localizedStorefrontID = [(FCNewsAppConfig *)self localizedStorefrontID];
     objc_opt_self();
     if (qword_1EDB26FC0 != -1)
     {
@@ -3556,7 +3556,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
     }
 
     v6 = qword_1EDB26FB8;
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v7 = [v6 objectForKeyedSubscript:localizedStorefrontID];
     v8 = v7;
     if (v7)
     {
@@ -3570,8 +3570,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
     v10 = v9;
 
-    v11 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v4 = FCAppConfigurationStringValue(v11, @"forYouConfigId", v10);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"forYouConfigId", v10);
   }
 
   return v4;
@@ -3593,7 +3593,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   else
   {
-    v5 = [(FCNewsAppConfig *)self localizedStorefrontID];
+    localizedStorefrontID = [(FCNewsAppConfig *)self localizedStorefrontID];
     objc_opt_self();
     if (qword_1EDB26FD0 != -1)
     {
@@ -3601,7 +3601,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
     }
 
     v6 = qword_1EDB26FC8;
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v7 = [v6 objectForKeyedSubscript:localizedStorefrontID];
     v8 = v7;
     if (v7)
     {
@@ -3615,8 +3615,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
     v10 = v9;
 
-    v11 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v4 = FCAppConfigurationStringValue(v11, @"forYouPremiumConfigId", v10);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"forYouPremiumConfigId", v10);
   }
 
   return v4;
@@ -3624,7 +3624,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (NSString)audioConfigRecordID
 {
-  v3 = [(FCNewsAppConfig *)self localizedStorefrontID];
+  localizedStorefrontID = [(FCNewsAppConfig *)self localizedStorefrontID];
   objc_opt_self();
   if (qword_1EDB27000 != -1)
   {
@@ -3632,7 +3632,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
   }
 
   v4 = qword_1EDB26FF8;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:localizedStorefrontID];
   v6 = v5;
   if (v5)
   {
@@ -3646,8 +3646,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   v8 = v7;
 
-  v9 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v10 = FCAppConfigurationStringValue(v9, @"audioConfigId", v8);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v10 = FCAppConfigurationStringValue(languageConfigDictionary, @"audioConfigId", v8);
 
   return v10;
 }
@@ -3655,14 +3655,14 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 - (NSArray)freeGlobalESLArticleListIDs
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"freeEvergreenArticleListId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"freeEvergreenArticleListId", 0);
 
-  v5 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v6 = FCAppConfigurationStringValue(v5, @"freeEvergreenArticleListId2", v4);
+  languageConfigDictionary2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v6 = FCAppConfigurationStringValue(languageConfigDictionary2, @"freeEvergreenArticleListId2", v4);
 
-  v7 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v8 = v7;
+  languageConfigDictionary3 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v8 = languageConfigDictionary3;
   if (v6)
   {
     v13[0] = v6;
@@ -3672,7 +3672,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   else
   {
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v7, @"freeEvergreenArticleListIds", MEMORY[0x1E695E0F0]);
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary3, @"freeEvergreenArticleListIds", MEMORY[0x1E695E0F0]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -3683,14 +3683,14 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 - (NSArray)paidGlobalESLArticleListIDs
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"paidEvergreenArticleListId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"paidEvergreenArticleListId", 0);
 
-  v5 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v6 = FCAppConfigurationStringValue(v5, @"paidEvergreenArticleListId2", v4);
+  languageConfigDictionary2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v6 = FCAppConfigurationStringValue(languageConfigDictionary2, @"paidEvergreenArticleListId2", v4);
 
-  v7 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v8 = v7;
+  languageConfigDictionary3 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v8 = languageConfigDictionary3;
   if (v6)
   {
     v13[0] = v6;
@@ -3700,7 +3700,7 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   else
   {
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v7, @"paidEvergreenArticleListIds", MEMORY[0x1E695E0F0]);
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary3, @"paidEvergreenArticleListIds", MEMORY[0x1E695E0F0]);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -3710,32 +3710,32 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (NSString)freeTagESLArticleListIDPrefix
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"freeTagEvergreenArticleListIdPrefix", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"freeTagEvergreenArticleListIdPrefix", 0);
 
   return v3;
 }
 
 - (NSString)paidTagESLArticleListIDPrefix
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"paidTagEvergreenArticleListIdPrefix", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"paidTagEvergreenArticleListIdPrefix", 0);
 
   return v3;
 }
 
 - (int64_t)maxTagESLArticleListsToQuery
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxTagEvergreenArticleListsToQuery", 30);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"maxTagEvergreenArticleListsToQuery", 30);
 
   return v3;
 }
 
 - (BOOL)shouldManuallySupplementEvergreenWithIssueArticles
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v3, @"freeEvergreenArticleListIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"freeEvergreenArticleListIds", 0);
   if (v4)
   {
     v5 = 0;
@@ -3743,8 +3743,8 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   else
   {
-    v6 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v7 = FCAppConfigurationArrayValueWithDefaultValue(v6, @"paidEvergreenArticleListIds", 0);
+    languageConfigDictionary2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v7 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary2, @"paidEvergreenArticleListIds", 0);
     v5 = v7 == 0;
   }
 
@@ -3753,46 +3753,46 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
 - (int64_t)forYouMaxDailyEvergreenArticlesForFreeUsers
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationIntegerValue(v3, @"forYouMaxDailyEvergreenArticlesForFreeUsers", 30);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"forYouMaxDailyEvergreenArticlesForFreeUsers", 30);
 
-  v5 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v6 = FCAppConfigurationIntegerValue(v5, @"forYouMaxDailyEvergreenArticlesForFreeUsers2", v4);
+  languageConfigDictionary2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v6 = FCAppConfigurationIntegerValue(languageConfigDictionary2, @"forYouMaxDailyEvergreenArticlesForFreeUsers2", v4);
 
   return v6;
 }
 
 - (int64_t)forYouMaxDailyEvergreenArticlesForPaidUsers
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationIntegerValue(v3, @"forYouMaxDailyEvergreenArticlesForPaidUsers", 30);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"forYouMaxDailyEvergreenArticlesForPaidUsers", 30);
 
-  v5 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v6 = FCAppConfigurationIntegerValue(v5, @"forYouMaxDailyEvergreenArticlesForPaidUsers2", v4);
+  languageConfigDictionary2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v6 = FCAppConfigurationIntegerValue(languageConfigDictionary2, @"forYouMaxDailyEvergreenArticlesForPaidUsers2", v4);
 
   return v6;
 }
 
 - (int64_t)maxIssuesPerESLInventoryRequest
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxIssuesPerESLInventoryRequest", 100);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"maxIssuesPerESLInventoryRequest", 100);
 
   return v3;
 }
 
 - (NSArray)freeNotificationItemListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"freeNotificationItemListIds", &unk_1F2E6F8A0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"freeNotificationItemListIds", &unk_1F2E6F8A0);
 
   return v3;
 }
 
 - (NSArray)paidNotificationItemListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"paidNotificationItemListIds", &unk_1F2E6F8B8);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"paidNotificationItemListIds", &unk_1F2E6F8B8);
 
   return v3;
 }
@@ -3832,30 +3832,30 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
   if ([v6 longLongValue])
   {
-    v7 = [v6 longLongValue];
+    longLongValue = [v6 longLongValue];
   }
 
   else
   {
-    v8 = [(FCNewsAppConfig *)self configDictionary];
-    v7 = FCAppConfigurationIntegerValue(v8, @"notificationPoolAutoRefreshInterval", 14400);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    longLongValue = FCAppConfigurationIntegerValue(configDictionary, @"notificationPoolAutoRefreshInterval", 14400);
   }
 
-  return v7;
+  return longLongValue;
 }
 
 - (int64_t)notificationPoolMaxAge
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"notificationPoolMaxAge", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"notificationPoolMaxAge", 86400);
 
   return v3;
 }
 
-- (id)expFieldForKey:(void *)a1
+- (id)expFieldForKey:(void *)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     if (NFInternalBuild())
     {
@@ -3864,11 +3864,11 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
 
       if (!v5)
       {
-        v10 = [a1 languageConfigDictionary];
-        v8 = FCAppConfigurationStringValue(v10, v3, 0);
+        languageConfigDictionary = [key languageConfigDictionary];
+        v8 = FCAppConfigurationStringValue(languageConfigDictionary, v3, 0);
 
         v11 = NewsCoreUserDefaults();
-        v6 = v11;
+        languageConfigDictionary2 = v11;
         if (v8)
         {
           [v11 setObject:v8 forKey:v3];
@@ -3882,14 +3882,14 @@ id __49__FCNewsAppConfig_localInForYouTopicTagAllowList__block_invoke(uint64_t a
         goto LABEL_7;
       }
 
-      v6 = NewsCoreUserDefaults();
-      v7 = [v6 stringForKey:v3];
+      languageConfigDictionary2 = NewsCoreUserDefaults();
+      v7 = [languageConfigDictionary2 stringForKey:v3];
     }
 
     else
     {
-      v6 = [a1 languageConfigDictionary];
-      v7 = FCAppConfigurationStringValue(v6, v3, 0);
+      languageConfigDictionary2 = [key languageConfigDictionary];
+      v7 = FCAppConfigurationStringValue(languageConfigDictionary2, v3, 0);
     }
 
     v8 = v7;
@@ -3906,38 +3906,38 @@ LABEL_8:
 
 - (int64_t)expirePinnedArticlesAfter
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"expirePinnedArticlesAfter", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"expirePinnedArticlesAfter", 0);
 
   return v3;
 }
 
 - (int64_t)singleTopicFeedMinFeedItemsPerRequest
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"singleTopicFeedMinFeedItemsPerRequest", 20);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"singleTopicFeedMinFeedItemsPerRequest", 20);
 
   return v3;
 }
 
 - (int64_t)singleChannelFeedMinFeedItemsPerRequest
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"singleChannelFeedMinFeedItemsPerRequest", 20);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"singleChannelFeedMinFeedItemsPerRequest", 20);
 
   return v3;
 }
 
-- (id)todayConfigWithIdentifier:(id)a3 queueConfigs:(id)a4 backgroundColorLight:(id)a5 backgroundColorDark:(id)a6 audioIndicatorColor:(id)a7 widgetBannerConfig:(id)a8
+- (id)todayConfigWithIdentifier:(id)identifier queueConfigs:(id)configs backgroundColorLight:(id)light backgroundColorDark:(id)dark audioIndicatorColor:(id)color widgetBannerConfig:(id)config
 {
   v45 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v15 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  configsCopy = configs;
+  lightCopy = light;
+  darkCopy = dark;
+  colorCopy = color;
+  configCopy = config;
+  if (configsCopy || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     if (self)
     {
@@ -3970,19 +3970,19 @@ LABEL_4:
   if (v20)
   {
     self = objc_opt_new();
-    v31 = v16;
-    [(FCNewsAppConfig *)self setBackgroundColorLight:v16];
-    v30 = v17;
-    [(FCNewsAppConfig *)self setBackgroundColorDark:v17];
-    [(FCNewsAppConfig *)self setAudioIndicatorColor:v18];
-    v21 = v14;
-    [(FCNewsAppConfig *)self setWidgetIdentifier:v14];
-    [(FCNewsAppConfig *)self setWidgetBannerConfig:v19];
+    v31 = lightCopy;
+    [(FCNewsAppConfig *)self setBackgroundColorLight:lightCopy];
+    v30 = darkCopy;
+    [(FCNewsAppConfig *)self setBackgroundColorDark:darkCopy];
+    [(FCNewsAppConfig *)self setAudioIndicatorColor:colorCopy];
+    v21 = identifierCopy;
+    [(FCNewsAppConfig *)self setWidgetIdentifier:identifierCopy];
+    [(FCNewsAppConfig *)self setWidgetBannerConfig:configCopy];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v22 = v15;
+    v22 = configsCopy;
     v23 = [v22 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v23)
     {
@@ -4006,9 +4006,9 @@ LABEL_4:
       while (v24);
     }
 
-    v14 = v21;
-    v17 = v30;
-    v16 = v31;
+    identifierCopy = v21;
+    darkCopy = v30;
+    lightCopy = v31;
   }
 
   else
@@ -4033,7 +4033,7 @@ LABEL_14:
   return [(FCNewsAppConfig *)self forYouBackgroundMinimumUpdateInterval];
 }
 
-- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)a3
+- (id)analyticsEnvelopeContentTypeConfigsForEnvironment:(unint64_t)environment
 {
   if (self)
   {
@@ -4047,24 +4047,24 @@ LABEL_14:
 
   v5 = MEMORY[0x1E696AD98];
   v6 = analyticsContentTypeConfigsByContentTypeByEnvironment;
-  v7 = [v5 numberWithUnsignedInteger:a3];
+  v7 = [v5 numberWithUnsignedInteger:environment];
   v8 = [(NSDictionary *)v6 objectForKeyedSubscript:v7];
 
   return v8;
 }
 
-- (id)appAnalyticsEndpointUrlForEnvironment:(unint64_t)a3
+- (id)appAnalyticsEndpointUrlForEnvironment:(unint64_t)environment
 {
-  v4 = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  endpointConfigsByEnvironment = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:environment];
+  v6 = [endpointConfigsByEnvironment objectForKeyedSubscript:v5];
 
-  v7 = [v6 appAnalyticsBaseURLString];
-  v8 = v7;
+  appAnalyticsBaseURLString = [v6 appAnalyticsBaseURLString];
+  v8 = appAnalyticsBaseURLString;
   v9 = @"https://news-events.apple.com/analyticseventsv2/async";
-  if (v7)
+  if (appAnalyticsBaseURLString)
   {
-    v9 = v7;
+    v9 = appAnalyticsBaseURLString;
   }
 
   v10 = v9;
@@ -4074,65 +4074,65 @@ LABEL_14:
   return v11;
 }
 
-- (id)appAnalyticsNotificationReceiptEndpointUrlForEnvironment:(unint64_t)a3
+- (id)appAnalyticsNotificationReceiptEndpointUrlForEnvironment:(unint64_t)environment
 {
-  v4 = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  endpointConfigsByEnvironment = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:environment];
+  v6 = [endpointConfigsByEnvironment objectForKeyedSubscript:v5];
 
-  v7 = [v6 appAnalyticsNotificationReceiptBaseURLString];
+  appAnalyticsNotificationReceiptBaseURLString = [v6 appAnalyticsNotificationReceiptBaseURLString];
 
-  if (v7)
+  if (appAnalyticsNotificationReceiptBaseURLString)
   {
     v8 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v9 = [v6 appAnalyticsNotificationReceiptBaseURLString];
-    v7 = [v8 initWithString:v9];
+    appAnalyticsNotificationReceiptBaseURLString2 = [v6 appAnalyticsNotificationReceiptBaseURLString];
+    appAnalyticsNotificationReceiptBaseURLString = [v8 initWithString:appAnalyticsNotificationReceiptBaseURLString2];
   }
 
-  return v7;
+  return appAnalyticsNotificationReceiptBaseURLString;
 }
 
-- (id)appAnalyticsAppHealthEndpointUrlForEnvironment:(unint64_t)a3
+- (id)appAnalyticsAppHealthEndpointUrlForEnvironment:(unint64_t)environment
 {
-  v5 = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  endpointConfigsByEnvironment = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:environment];
+  v7 = [endpointConfigsByEnvironment objectForKeyedSubscript:v6];
 
-  v8 = [v7 appAnalyticsAppHealthBaseURLString];
+  appAnalyticsAppHealthBaseURLString = [v7 appAnalyticsAppHealthBaseURLString];
 
-  if (v8)
+  if (appAnalyticsAppHealthBaseURLString)
   {
     v9 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v10 = [v7 appAnalyticsAppHealthBaseURLString];
-    v11 = [v9 initWithString:v10];
+    appAnalyticsAppHealthBaseURLString2 = [v7 appAnalyticsAppHealthBaseURLString];
+    v11 = [v9 initWithString:appAnalyticsAppHealthBaseURLString2];
   }
 
   else
   {
-    v11 = [(FCNewsAppConfig *)self appAnalyticsEndpointUrlForEnvironment:a3];
+    v11 = [(FCNewsAppConfig *)self appAnalyticsEndpointUrlForEnvironment:environment];
   }
 
   return v11;
 }
 
-- (id)appAnalyticsAppHeartbeatEndpointUrlForEnvironment:(unint64_t)a3
+- (id)appAnalyticsAppHeartbeatEndpointUrlForEnvironment:(unint64_t)environment
 {
-  v5 = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  endpointConfigsByEnvironment = [(FCNewsAppConfig *)self endpointConfigsByEnvironment];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:environment];
+  v7 = [endpointConfigsByEnvironment objectForKeyedSubscript:v6];
 
-  v8 = [v7 appAnalyticsAppHeartbeatBaseURLString];
+  appAnalyticsAppHeartbeatBaseURLString = [v7 appAnalyticsAppHeartbeatBaseURLString];
 
-  if (v8)
+  if (appAnalyticsAppHeartbeatBaseURLString)
   {
     v9 = objc_alloc(MEMORY[0x1E695DFF8]);
-    v10 = [v7 appAnalyticsAppHeartbeatBaseURLString];
-    v11 = [v9 initWithString:v10];
+    appAnalyticsAppHeartbeatBaseURLString2 = [v7 appAnalyticsAppHeartbeatBaseURLString];
+    v11 = [v9 initWithString:appAnalyticsAppHeartbeatBaseURLString2];
   }
 
   else
   {
-    v11 = [(FCNewsAppConfig *)self appAnalyticsEndpointUrlForEnvironment:a3];
+    v11 = [(FCNewsAppConfig *)self appAnalyticsEndpointUrlForEnvironment:environment];
   }
 
   return v11;
@@ -4140,66 +4140,66 @@ LABEL_14:
 
 - (int64_t)maxRetriesForDroppedFeeds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxRetriesForDroppedFeeds", 2);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxRetriesForDroppedFeeds", 2);
 
   return v3;
 }
 
 - (double)delayBeforeRetryingDroppedFeeds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"delayBeforeRetryingDroppedFeeds", 1.5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"delayBeforeRetryingDroppedFeeds", 1.5);
 
   return v3;
 }
 
 - (int64_t)subscriptionsPlacardPublisherFrequencyInSeconds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"subscriptionsPlacardPublisherFrequencySeconds", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"subscriptionsPlacardPublisherFrequencySeconds", 86400);
 
   return v3;
 }
 
 - (int64_t)subscriptionsPlacardGlobalMaximumPerDay
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"subscriptionsPlacardGlobalMaxPerDay", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"subscriptionsPlacardGlobalMaxPerDay", 1);
 
   return v3;
 }
 
 - (int64_t)subscriptionsGracePeriodForTokenVerificationSeconds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"subscriptionsGracePeriodForTokenVerificationSeconds", 1296000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"subscriptionsGracePeriodForTokenVerificationSeconds", 1296000);
 
   return v3;
 }
 
 - (int64_t)entitlementsCacheRecoveryAttemptDurationInSeconds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"entitlementsCacheRecoveryAttemptDurationSeconds", 2592000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"entitlementsCacheRecoveryAttemptDurationSeconds", 2592000);
 
   return v3;
 }
 
 - (BOOL)enableCacheFallbackForArticleRecirculation
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableCacheFallbackForArticleRecirculation", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableCacheFallbackForArticleRecirculation", 1);
 
   return v3;
 }
 
 - (id)recipeTagRecipeListIDPrefix
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 languageConfigDictionary];
-    v2 = FCAppConfigurationStringValue(v1, @"recipeTagRecipeListIDPrefix", 0);
+    languageConfigDictionary = [self languageConfigDictionary];
+    v2 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeTagRecipeListIDPrefix", 0);
   }
 
   else
@@ -4212,35 +4212,35 @@ LABEL_14:
 
 - (NSString)freeTagRecipeListIDPrefix
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = [(FCNewsAppConfig *)self recipeTagRecipeListIDPrefix];
-  v5 = FCAppConfigurationStringValue(v3, @"freeTagRecipeListIdPrefix", v4);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  recipeTagRecipeListIDPrefix = [(FCNewsAppConfig *)self recipeTagRecipeListIDPrefix];
+  v5 = FCAppConfigurationStringValue(languageConfigDictionary, @"freeTagRecipeListIdPrefix", recipeTagRecipeListIDPrefix);
 
   return v5;
 }
 
 - (NSString)paidTagRecipeListIDPrefix
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = [(FCNewsAppConfig *)self recipeTagRecipeListIDPrefix];
-  v5 = FCAppConfigurationStringValue(v3, @"paidTagRecipeListIdPrefix", v4);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  recipeTagRecipeListIDPrefix = [(FCNewsAppConfig *)self recipeTagRecipeListIDPrefix];
+  v5 = FCAppConfigurationStringValue(languageConfigDictionary, @"paidTagRecipeListIdPrefix", recipeTagRecipeListIDPrefix);
 
   return v5;
 }
 
 - (NSString)trendingRecipesListID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"trendingRecipesListID", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"trendingRecipesListID", 0);
 
   return v3;
 }
 
 - (NSArray)freeGlobalRecipeListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"freeGlobalRecipeListIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"freeGlobalRecipeListIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4259,9 +4259,9 @@ LABEL_14:
 
 - (NSArray)paidGlobalRecipeListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"paidGlobalRecipeListIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"paidGlobalRecipeListIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4280,9 +4280,9 @@ LABEL_14:
 
 - (NSArray)freeRecentRecipeListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"freeRecentRecipeListIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"freeRecentRecipeListIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4301,9 +4301,9 @@ LABEL_14:
 
 - (NSArray)paidRecentRecipeListIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"paidRecentRecipeListIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"paidRecentRecipeListIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4322,9 +4322,9 @@ LABEL_14:
 
 - (NSArray)allowedRecipeRelatedTopicIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"allowedRecipeRelatedTopicIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"allowedRecipeRelatedTopicIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4343,9 +4343,9 @@ LABEL_14:
 
 - (NSArray)allowedRecipeSuitableForDietTagIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
   v3 = MEMORY[0x1E695E0F0];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"allowedRecipeSuitableForDietTagIDs", MEMORY[0x1E695E0F0]);
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"allowedRecipeSuitableForDietTagIDs", MEMORY[0x1E695E0F0]);
 
   if (v4)
   {
@@ -4364,124 +4364,124 @@ LABEL_14:
 
 - (double)ttlForTrendingRecipes
 {
-  v3 = [(FCNewsAppConfig *)self configDictionary];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
   [(FCNewsAppConfig *)self defaultTTLForRecipeListRecords];
-  v5 = FCAppConfigurationIntegerValue(v3, @"ttlForTrendingRecipes", v4);
+  v5 = FCAppConfigurationIntegerValue(configDictionary, @"ttlForTrendingRecipes", v4);
 
   return v5;
 }
 
 - (double)ttlForGlobalRecipes
 {
-  v3 = [(FCNewsAppConfig *)self configDictionary];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
   [(FCNewsAppConfig *)self defaultTTLForRecipeListRecords];
-  v5 = FCAppConfigurationIntegerValue(v3, @"ttlForGlobalRecipes", v4);
+  v5 = FCAppConfigurationIntegerValue(configDictionary, @"ttlForGlobalRecipes", v4);
 
   return v5;
 }
 
 - (double)ttlForRecentRecipes
 {
-  v3 = [(FCNewsAppConfig *)self configDictionary];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
   [(FCNewsAppConfig *)self defaultTTLForRecipeListRecords];
-  v5 = FCAppConfigurationIntegerValue(v3, @"ttlForRecentRecipes", v4);
+  v5 = FCAppConfigurationIntegerValue(configDictionary, @"ttlForRecentRecipes", v4);
 
   return v5;
 }
 
 - (double)ttlForPersonalizedRecipes
 {
-  v3 = [(FCNewsAppConfig *)self configDictionary];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
   [(FCNewsAppConfig *)self defaultTTLForRecipeListRecords];
-  v5 = FCAppConfigurationIntegerValue(v3, @"ttlForPersonalizedRecipes", v4);
+  v5 = FCAppConfigurationIntegerValue(configDictionary, @"ttlForPersonalizedRecipes", v4);
 
   return v5;
 }
 
 - (int64_t)endOfArticleOnscreenPercentageRequirement
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"endOfArticleOnscreenPercentageRequirement", 100);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"endOfArticleOnscreenPercentageRequirement", 100);
 
   return v3;
 }
 
 - (double)defaultTTLForArticleRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForArticleRecords", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForArticleRecords", 86400);
 
   return v3;
 }
 
 - (double)defaultTTLForArticleListRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForArticleListRecords", 7200);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForArticleListRecords", 7200);
 
   return v3;
 }
 
 - (double)defaultTTLForIssueRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForIssueRecords", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForIssueRecords", 86400);
 
   return v3;
 }
 
 - (double)defaultTTLForIssueListRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForIssueListRecords", 7200);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForIssueListRecords", 7200);
 
   return v3;
 }
 
 - (double)defaultTTLForPurchaseLookupRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForPurchaseLookupRecords", 900);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForPurchaseLookupRecords", 900);
 
   return v3;
 }
 
 - (double)defaultTTLForPuzzleRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForPuzzleRecords", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForPuzzleRecords", 86400);
 
   return v3;
 }
 
 - (double)defaultTTLForPuzzleTypeRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForPuzzleTypeRecords", 28800);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForPuzzleTypeRecords", 28800);
 
   return v3;
 }
 
 - (double)defaultTTLForRecipeRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForRecipeRecords", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForRecipeRecords", 86400);
 
   return v3;
 }
 
 - (double)defaultTTLForRecipeListRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForRecipeListRecords", 7200);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForRecipeListRecords", 7200);
 
   return v3;
 }
 
 - (double)defaultTTLForSportsEventRecords
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"defaultTTLForSportsEventRecords", 1500);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForSportsEventRecords", 1500);
 
   return v3;
 }
@@ -4496,296 +4496,296 @@ LABEL_14:
     return 180.0;
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v5 = FCAppConfigurationIntegerValue(v6, @"defaultTTLForTagRecords", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v5 = FCAppConfigurationIntegerValue(configDictionary, @"defaultTTLForTagRecords", 86400);
 
   return v5;
 }
 
 - (NSArray)onboardingFeedIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"onboardingTagIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"onboardingTagIds", 0);
 
   return v3;
 }
 
 - (NSArray)discoverNewsPlusChannelIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"discoverNewsPlusChannelIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"discoverNewsPlusChannelIds", 0);
 
   return v3;
 }
 
 - (NSArray)recommendedIssueAllowList
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"recommendedIssueAllowList", MEMORY[0x1E695E0F0]);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"recommendedIssueAllowList", MEMORY[0x1E695E0F0]);
 
   return v3;
 }
 
 - (NSArray)recommendedIssueDenyList
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"recommendedIssueDenyList", MEMORY[0x1E695E0F0]);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"recommendedIssueDenyList", MEMORY[0x1E695E0F0]);
 
   return v3;
 }
 
 - (BOOL)todayPerformanceAlertsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"todayPerformanceAlertsEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"todayPerformanceAlertsEnabled", 1);
 
   return v3;
 }
 
 - (int64_t)todayPerformanceAlertsMinNewsVersion
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayPerformanceAlertsMinNewsVersion", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayPerformanceAlertsMinNewsVersion", 0);
 
   return v3;
 }
 
 - (double)todayPerformanceAlertPrewarmThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayPerformanceAlertPrewarmThreshold", 10.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayPerformanceAlertPrewarmThreshold", 10.0);
 
   return v3;
 }
 
 - (double)todayPerformanceAlertGapExpansionThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayPerformanceAlertGapExpansionThreshold", 10.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayPerformanceAlertGapExpansionThreshold", 10.0);
 
   return v3;
 }
 
 - (double)todayPerformanceAlertSpinnerThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayPerformanceAlertSpinnerThreshold", 5.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayPerformanceAlertSpinnerThreshold", 5.0);
 
   return v3;
 }
 
 - (double)todayFeedConfigEndpointTimeoutAfterCK
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayFeedConfigEndpointTimeoutAfterCK", 2.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayFeedConfigEndpointTimeoutAfterCK", 2.0);
 
   return v3;
 }
 
 - (int64_t)autoScrollToTopFeedTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"autoScrollToTopFeedTimeout", 14400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"autoScrollToTopFeedTimeout", 14400);
 
   return v3;
 }
 
 - (NSString)webEmbedContentBlockers
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"webEmbedContentBlockers", @"[{trigger: {url-filter: .*,unless-domain: [*apple.com]},action: {type: block}}]");
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"webEmbedContentBlockers", @"[{trigger: {url-filter: .*,unless-domain: [*apple.com]},action: {type: block}}]");
 
   return v3;
 }
 
 - (NSString)webEmbedContentBlockerOverrides
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"webEmbedContentBlockerOverrides", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"webEmbedContentBlockerOverrides", 0);
 
   return v3;
 }
 
 - (NSString)anfRenderingConfiguration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"anfRenderingConfiguration", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"anfRenderingConfiguration", 0);
 
   return v3;
 }
 
 - (double)interstitialAdLoadDelay
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"interstitialAdLoadDelay", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"interstitialAdLoadDelay", 1.0);
 
   return v3;
 }
 
 - (double)prerollLoadingTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"prerollLoadingTimeout", 0.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"prerollLoadingTimeout", 0.0);
 
   return v3;
 }
 
 - (double)prerollReadyToPlayTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"prerollReadyToPlayTimeout", 2.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"prerollReadyToPlayTimeout", 2.0);
 
   return v3;
 }
 
 - (double)feedBannerAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"feedBannerAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"feedBannerAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (double)articleBannerAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"articleBannerAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"articleBannerAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (double)interstitialAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"interstitialAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"interstitialAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (double)prerollAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"prerollAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"prerollAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (double)nativeInFeedAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"nativeInFeedAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"nativeInFeedAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (double)nativeInArticleAdRequestThrottle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"nativeInArticleAdRequestThrottle", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"nativeInArticleAdRequestThrottle", 1.0);
 
   return v3;
 }
 
 - (int64_t)articleAdPrefetchLimit
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleAdPrefetchLimit", 3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"articleAdPrefetchLimit", 3);
 
   return v3;
 }
 
 - (BOOL)widgetContentPrefetchEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"widgetContentPrefetchEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"widgetContentPrefetchEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)widgetBackgroundInteractionEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"widgetBackgroundInteractionEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"widgetBackgroundInteractionEnabled", 0);
 
   return v3;
 }
 
 - (BOOL)widgetFetchOfTodayFeedLiteConfigEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"widgetFetchOfTodayFeedLiteConfigEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"widgetFetchOfTodayFeedLiteConfigEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)widgetAnalyticsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"widgetAnalyticsEnabled2", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"widgetAnalyticsEnabled2", 1);
 
   return v3;
 }
 
 - (BOOL)userSegmentationInWidgetAllowed
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"userSegmentationInWidgetAllowed", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"userSegmentationInWidgetAllowed", 1);
 
   return v3;
 }
 
 - (int64_t)newFavoriteNotificationAlertsFrequency
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"newFavoriteNotificationAlertsFrequency", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"newFavoriteNotificationAlertsFrequency", 0);
 
   return v3;
 }
 
 - (int64_t)notificationArticleCacheTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"notificationArticleCacheTimeout", 300);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"notificationArticleCacheTimeout", 300);
 
   return v3;
 }
 
 - (int64_t)notificationArticleWithRapidUpdatesCacheTimeout
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"notificationArticleWithRapidUpdatesCacheTimeout", 120);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"notificationArticleWithRapidUpdatesCacheTimeout", 120);
 
   return v3;
 }
 
 - (BOOL)notificationEnableAssetPrefetching
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"notificationEnableAssetPrefetching", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"notificationEnableAssetPrefetching", 1);
 
   return v3;
 }
 
 - (BOOL)notificationAssetPrefetchingRequiresWatch
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"notificationAssetPrefetchingRequiresWatch", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"notificationAssetPrefetchingRequiresWatch", 1);
 
   return v3;
 }
 
 - (NSString)embedConfigurationAssetID
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"anfEmbedConfigurationAsset", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"anfEmbedConfigurationAsset", 0);
 
   return v3;
 }
 
 - (BOOL)universalLinksEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"universalLinksEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"universalLinksEnabled", 0);
 
   return v3;
 }
@@ -4806,7 +4806,7 @@ LABEL_14:
 
   else
   {
-    v5 = [(FCNewsAppConfig *)self localizedStorefrontID];
+    localizedStorefrontID = [(FCNewsAppConfig *)self localizedStorefrontID];
     objc_opt_self();
     if (qword_1EDB26FE0 != -1)
     {
@@ -4814,7 +4814,7 @@ LABEL_14:
     }
 
     v6 = qword_1EDB26FD8;
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v7 = [v6 objectForKeyedSubscript:localizedStorefrontID];
     v8 = v7;
     if (v7)
     {
@@ -4828,8 +4828,8 @@ LABEL_14:
 
     v10 = v9;
 
-    v11 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v4 = FCAppConfigurationStringValue(v11, @"widgetSectionConfigId", v10);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"widgetSectionConfigId", v10);
   }
 
   return v4;
@@ -4837,256 +4837,256 @@ LABEL_14:
 
 - (double)widgetTelemetrySamplingRate
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"widgetTelemetrySamplingRate2", 0.01);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"widgetTelemetrySamplingRate2", 0.01);
 
   return v3;
 }
 
 - (double)articleDiversificationSimilarityExpectationStart
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"articleDiversitySimilarityExpectationStart", 0.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"articleDiversitySimilarityExpectationStart", 0.0);
 
   return v3;
 }
 
 - (double)articleDiversificationSimilarityExpectationEnd
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"articleDiversitySimilarityExpectationEnd", 0.1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"articleDiversitySimilarityExpectationEnd", 0.1);
 
   return v3;
 }
 
 - (double)articleDiversificationUniquePublisherExpectationSlope
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"publisherDiversitySlope", 0.75);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"publisherDiversitySlope", 0.75);
 
   return v3;
 }
 
 - (double)articleDiversificationUniquePublisherExpectationYIntercept
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"publisherDiversityYIntercept", 0.25);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"publisherDiversityYIntercept", 0.25);
 
   return v3;
 }
 
 - (int64_t)analyticsEndpointMaxPayloadSize
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"analyticsEndpointMaxPayloadSize", 500000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"analyticsEndpointMaxPayloadSize", 500000);
 
   return v3;
 }
 
 - (NSString)recipePersonalizationBundleIdMappingResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipePersonalizationBundleIdMappingResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipePersonalizationBundleIdMappingResourceId", 0);
 
   return v3;
 }
 
 - (NSString)recipePersonalizationUrlMappingResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipePersonalizationUrlMappingResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipePersonalizationUrlMappingResourceId", 0);
 
   return v3;
 }
 
 - (NSString)recipePersonalizationAllowlistResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipePersonalizationAllowlistResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipePersonalizationAllowlistResourceId", 0);
 
   return v3;
 }
 
 - (NSString)locationRecommendationMappingsResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"locationRecommendationMappingsResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"locationRecommendationMappingsResourceId", 0);
 
   return v3;
 }
 
 - (NSString)localAreasMappingResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"localAreasMappingResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"localAreasMappingResourceId", 0);
 
   return v3;
 }
 
 - (NSString)tagFeedLayoutConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"tagFeedLayoutConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"tagFeedLayoutConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)topicFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"topicFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"topicFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)channelFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"channelFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"channelFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)sectionFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sectionFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sectionFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)sharedWithYouFeedLayoutConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"sharedFeedConfigurationResourceId", @"shared-feed-config-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"sharedFeedConfigurationResourceId", @"shared-feed-config-143441-en");
 
   return v3;
 }
 
 - (NSString)savedFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"savedFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"savedFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)historyFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"historyFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"historyFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)searchFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"searchFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"searchFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)recipeSearchFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipeSearchFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeSearchFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)searchMoreFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"searchMoreFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"searchMoreFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)audioHistoryFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"audioHistoryFeedConfigurationResourceId", @"audio-history-feed-config-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"audioHistoryFeedConfigurationResourceId", @"audio-history-feed-config-143441-en");
 
   return v3;
 }
 
 - (NSString)audioPlaylistFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"audioPlaylistFeedConfigurationResourceId", @"audio-playlist-feed-config-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"audioPlaylistFeedConfigurationResourceId", @"audio-playlist-feed-config-143441-en");
 
   return v3;
 }
 
 - (NSString)endOfRecipeFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"endOfRecipeFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"endOfRecipeFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)recipeBoxFeedConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipeBoxFeedConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeBoxFeedConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)userConcernConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"userConcernConfigurationResourceId", @"user-concern-config-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"userConcernConfigurationResourceId", @"user-concern-config-143441-en");
 
   return v3;
 }
 
 - (NSString)channelPickerConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"channelPickerConfigurationResourceId", @"configuration-channel-picker-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"channelPickerConfigurationResourceId", @"configuration-channel-picker-143441-en");
 
   return v3;
 }
 
 - (NSString)searchEndpointConfigurationResourceID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"searchEndpointConfigurationResourceId", @"configuration-search-endpoint-143441-en");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"searchEndpointConfigurationResourceId", @"configuration-search-endpoint-143441-en");
 
   return v3;
 }
 
 - (NSString)inConversationsAudioTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"inConversationsAudioTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"inConversationsAudioTagId", 0);
 
   return v3;
 }
 
 - (NSString)businessAudioTagID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"businessAudioTagId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"businessAudioTagId", 0);
 
   return v3;
 }
 
 - (NSString)translationMapResourceID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"languageMapResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"languageMapResourceId", 0);
 
   return v3;
 }
 
 - (NSString)userVectorWhitelistResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"userVectorWhitelistResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"userVectorWhitelistResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -5095,8 +5095,8 @@ LABEL_14:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"userVectorWhitelistResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"userVectorWhitelistResourceId", 0);
   }
 
   return v6;
@@ -5104,8 +5104,8 @@ LABEL_14:
 
 - (NSString)userVectorModelResourceId
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"userVectorModelResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"userVectorModelResourceId", 0);
   v5 = v4;
   if (v4)
   {
@@ -5114,8 +5114,8 @@ LABEL_14:
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"userVectorModelResourceId", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"userVectorModelResourceId", 0);
   }
 
   return v6;
@@ -5123,40 +5123,40 @@ LABEL_14:
 
 - (int64_t)articleReadCountThreshold
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleReadCountThreshold", 1);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationIntegerValue(languageConfigDictionary, @"articleReadCountThreshold", 1);
 
   return v3;
 }
 
 - (int64_t)corryBarMaxArticleCountForArticleList
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"corryBarMaxArticleCountForArticleList", 10);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"corryBarMaxArticleCountForArticleList", 10);
 
   return v3;
 }
 
 - (int64_t)corryBarMaxArticleCountForSingleArticle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"corryBarMaxArticleCountForSingleArticle", 5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"corryBarMaxArticleCountForSingleArticle", 5);
 
   return v3;
 }
 
 - (BOOL)corryBarHideDiscoverMoreInterstitialForNonOnboardedUsers
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"corryBarHideDiscoverMoreInterstitialForNonOnboardedUsers", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"corryBarHideDiscoverMoreInterstitialForNonOnboardedUsers", 0);
 
   return v3;
 }
 
 - (NSString)exploreArticleID
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"exploreArticleId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"exploreArticleId", 0);
 
   return v3;
 }
@@ -5166,8 +5166,8 @@ LABEL_14:
   externalAnalyticsConfigurations = self->_externalAnalyticsConfigurations;
   if (!externalAnalyticsConfigurations)
   {
-    v4 = [(FCNewsAppConfig *)self configDictionary];
-    v5 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"externalAnalyticsConfig", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v5 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"externalAnalyticsConfig", 0);
 
     v6 = [v5 fc_arrayByTransformingWithBlock:&__block_literal_global_2272];
     v7 = self->_externalAnalyticsConfigurations;
@@ -5181,32 +5181,32 @@ LABEL_14:
 
 - (NSArray)mediaSharingBlacklistedChannelIDs
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"mediaSharingBlacklistedChannelIds", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(languageConfigDictionary, @"mediaSharingBlacklistedChannelIds", 0);
 
   return v3;
 }
 
 - (int64_t)topStoriesLocalNewsExpiration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"topStoriesLocalNewsExpiration", 21600);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"topStoriesLocalNewsExpiration", 21600);
 
   return v3;
 }
 
 - (int64_t)autoRefreshMinimumInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"autoRefreshMinimumInterval", 120);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"autoRefreshMinimumInterval", 120);
 
   return v3;
 }
 
 - (BOOL)terminateAppOnBackgroundAfterJoiningOrLeavingExperiment
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"terminateAppOnBackgroundAfterJoiningOrLeavingExperiment", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"terminateAppOnBackgroundAfterJoiningOrLeavingExperiment", 0);
 
   return v3;
 }
@@ -5221,8 +5221,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (unint64_t)trendingStyle
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"trendingStyle", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"trendingStyle", 0);
 
   v4 = 0;
   if (([v3 isEqualToString:@"TrendingCellStyleNumberedCircle"] & 1) == 0)
@@ -5235,8 +5235,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSString)articleRecirculationConfigJSON
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"articleRecirculationConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"articleRecirculationConfig", 0);
   v5 = v4;
   if (v4)
   {
@@ -5245,8 +5245,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"articleRecirculationConfig", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"articleRecirculationConfig", 0);
   }
 
   return v6;
@@ -5254,8 +5254,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSString)recipeRecirculationConfigJSON
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"recipeRecirculationConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeRecirculationConfig", 0);
   v5 = v4;
   if (v4)
   {
@@ -5264,8 +5264,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"recipeRecirculationConfig", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"recipeRecirculationConfig", 0);
   }
 
   return v6;
@@ -5273,8 +5273,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSString)issueArticleRecirculationConfig
 {
-  v3 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v4 = FCAppConfigurationStringValue(v3, @"issueArticleRecirculationConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v4 = FCAppConfigurationStringValue(languageConfigDictionary, @"issueArticleRecirculationConfig", 0);
   v5 = v4;
   if (v4)
   {
@@ -5283,8 +5283,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
   else
   {
-    v7 = [(FCNewsAppConfig *)self configDictionary];
-    v6 = FCAppConfigurationStringValue(v7, @"issueArticleRecirculationConfig", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v6 = FCAppConfigurationStringValue(configDictionary, @"issueArticleRecirculationConfig", 0);
   }
 
   return v6;
@@ -5292,71 +5292,71 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSString)articleRecirculationComponentPlacementConfigJSON
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"articleRecirculationComponentPlacementConfig", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"articleRecirculationComponentPlacementConfig", 0);
 
   return v3;
 }
 
 - (int64_t)articleRecirculationPopularFeedQueryTimeRange
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleRecirculationPopularFeedQueryTimeRange", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"articleRecirculationPopularFeedQueryTimeRange", 86400);
 
   return v3;
 }
 
 - (BOOL)disableThumbnailsForArticleRecirculation
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"disableThumbnailsForArticleRecirculation", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"disableThumbnailsForArticleRecirculation", 0);
 
   return v3;
 }
 
 - (NSString)feedNavigationConfigJSON
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"feedNavConfig", @"{items:[]}");
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"feedNavConfig", @"{items:[]}");
 
   return v3;
 }
 
 - (NSString)shortcutsCurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"shortcutsCurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"shortcutsCurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)shortcutsConfigResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"shortcutsConfigResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"shortcutsConfigResourceId", 0);
 
   return v3;
 }
 
 - (NSString)description
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = [v2 description];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = [configDictionary description];
 
   return v3;
 }
 
 - (BOOL)enableBadgeInSpotlightTabBar
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableBadgeInSpotlightTabBar", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableBadgeInSpotlightTabBar", 0);
 
   return v3;
 }
 
 - (NSString)magazinesConfigRecordID
 {
-  v3 = [(FCNewsAppConfig *)self localizedStorefrontID];
+  localizedStorefrontID = [(FCNewsAppConfig *)self localizedStorefrontID];
   objc_opt_self();
   if (qword_1EDB26FF0 != -1)
   {
@@ -5364,156 +5364,156 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
   }
 
   v4 = qword_1EDB26FE8;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:localizedStorefrontID];
 
-  v6 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v7 = FCAppConfigurationStringValue(v6, @"maConfigId", v5);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v7 = FCAppConfigurationStringValue(languageConfigDictionary, @"maConfigId", v5);
 
   return v7;
 }
 
 - (BOOL)isArticleToolbarCompressionEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"articleToolbarCompressionEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"articleToolbarCompressionEnabled", 1);
 
   return v3;
 }
 
 - (int64_t)lowStorageThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"lowStorageThreshold", 1000000000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"lowStorageThreshold", 1000000000);
 
   return v3;
 }
 
 - (int64_t)criticalStorageThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"criticalStorageThreshold", 200000000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"criticalStorageThreshold", 200000000);
 
   return v3;
 }
 
 - (int64_t)maximumTrendingGroupSizeiPad
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxTrendingGroupSizeIpad", 6);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxTrendingGroupSizeIpad", 6);
 
   return v3;
 }
 
 - (int64_t)maximumTrendingGroupSizeiPhone
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"maxTrendingGroupSizeIphone", 4);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"maxTrendingGroupSizeIphone", 4);
 
   return v3;
 }
 
 - (unint64_t)likeDislikeBehavior
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"likeDislikeBehavior", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"likeDislikeBehavior", 1);
 
   return v3;
 }
 
 - (unint64_t)bestOfBundleFeedGroupKind
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"bestOfBundleFeedGroupKind", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"bestOfBundleFeedGroupKind", 1);
 
   return v3;
 }
 
 - (int64_t)emailSignupRequiredAppLaunchCount
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"emailSignupRequiredAppLaunchCount", 4);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"emailSignupRequiredAppLaunchCount", 4);
 
   return v3;
 }
 
 - (BOOL)issuesNewsletterOptinEnabled
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"newsletterConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"newsletterConfig", 0);
 
-  LOBYTE(v2) = FCAppConfigurationBoolValue(v3, @"issuesNewsletterOptinEnabled", 0);
-  return v2;
+  LOBYTE(languageConfigDictionary) = FCAppConfigurationBoolValue(v3, @"issuesNewsletterOptinEnabled", 0);
+  return languageConfigDictionary;
 }
 
 - (BOOL)enableLocationBasedAutofavorites
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableLocationBasedAutofavorites", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableLocationBasedAutofavorites", 1);
 
   return v3;
 }
 
 - (BOOL)forYouGroupShouldPromoteAccessibleHeadline
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"forYouGroupShouldPromoteAccessibleHeadline", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"forYouGroupShouldPromoteAccessibleHeadline", 0);
 
   return v3;
 }
 
 - (BOOL)todayFeedEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"feed3EnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"feed3EnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)useNewsArticleSearch
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"searchConfigurationProfiles", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"searchConfigurationProfiles", 0);
 
-  LOBYTE(v2) = [v3 containsObject:@"newsArticleSearch"];
-  return v2;
+  LOBYTE(configDictionary) = [v3 containsObject:@"newsArticleSearch"];
+  return configDictionary;
 }
 
 - (BOOL)useMultipleNativeAds
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"useMultipleNativeAdsEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"useMultipleNativeAdsEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)isSportsSyncingSupported
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isSportsSyncingSupported", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isSportsSyncingSupported", 1);
 
   return v3;
 }
 
 - (BOOL)servicesBundleCIPActivationEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"servicesBundleCIPActivationEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"servicesBundleCIPActivationEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)paidBundleViaOfferEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"paidBundleViaOfferEnabledLevel", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"paidBundleViaOfferEnabledLevel", 0xFFFFFFFFLL);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)isSIWAOnMacEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"signInWithAppleOnMacEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"signInWithAppleOnMacEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
@@ -5523,8 +5523,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
   v10[1] = *MEMORY[0x1E69E9840];
   v10[0] = @"143441";
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v4 = [(FCNewsAppConfig *)self storefrontID];
-  if ([v3 containsObject:v4])
+  storefrontID = [(FCNewsAppConfig *)self storefrontID];
+  if ([v3 containsObject:storefrontID])
   {
     v5 = 0xFFFFFFFFLL;
   }
@@ -5534,8 +5534,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
     v5 = 0;
   }
 
-  v6 = [(FCNewsAppConfig *)self configDictionary];
-  v7 = FCAppConfigurationIntegerValue(v6, @"fineGrainedNewsletterManagementEnabledLevel", v5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v7 = FCAppConfigurationIntegerValue(configDictionary, @"fineGrainedNewsletterManagementEnabledLevel", v5);
 
   result = [FCFeatureEnablementChecker enabledForCurrentLevel:v7];
   v9 = *MEMORY[0x1E69E9840];
@@ -5544,168 +5544,168 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)dimNonSubscriberContentOffline
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"dimNonSubscriberContentOffline", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationBoolValue(languageConfigDictionary, @"dimNonSubscriberContentOffline", 0);
 
   return v3;
 }
 
 - (NSString)recipeCatalogFilterConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"recipeCatalogFilterConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"recipeCatalogFilterConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (NSString)offlineModeUnavailableMessage
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineModeUnavailableMessage", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineModeUnavailableMessage", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerUpsellMessage
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerUpsellMessage", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerUpsellMessage", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerDeviceOfflineTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerDeviceOfflineTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerDeviceOfflineTitle", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerPoorConnectionTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerPoorConnectionTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerPoorConnectionTitle", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerServerProblemTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerServerProblemTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerServerProblemTitle", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerUpdateRequiredTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerUpdateRequiredTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerUpdateRequiredTitle", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerDeviceObsoletionTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerDeviceObsoletionTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerDeviceObsoletionTitle", 0);
 
   return v3;
 }
 
 - (NSString)offlineStatusBannerDeviceOnlineTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"offlineStatusBannerDeviceOnlineTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"offlineStatusBannerDeviceOnlineTitle", 0);
 
   return v3;
 }
 
 - (NSString)enterOfflineModeButtonTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"enterOfflineModeButtonTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"enterOfflineModeButtonTitle", 0);
 
   return v3;
 }
 
 - (NSString)exitOfflineModeButtonTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"exitOfflineModeButtonTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"exitOfflineModeButtonTitle", 0);
 
   return v3;
 }
 
 - (BOOL)newSearchEndpointConfigEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"newSearchEndpointConfigEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"newSearchEndpointConfigEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)moreToReadEOAEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"moreToReadEOAEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"moreToReadEOAEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)moreFromIssueEOAEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"moreFromIssueEOAEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"moreFromIssueEOAEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)splitTopicGroups
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"splitTopicGroups", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"splitTopicGroups", 0);
 
   return v3;
 }
 
 - (BOOL)inAppMessagesEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"inAppMessagesEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"inAppMessagesEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (double)continueReadingDismissalInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"continueReadingDismissalIntervalSeconds", 6.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"continueReadingDismissalIntervalSeconds", 6.0);
 
   return v3;
 }
 
 - (BOOL)isCardFeedRedesignEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"feedRedesignEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"feedRedesignEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (int64_t)alternateUniversalLinksResourceRefreshRate
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"alternateUniversalLinksResourceRefreshRate", 86400);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"alternateUniversalLinksResourceRefreshRate", 86400);
 
   return v3;
 }
 
 - (BOOL)todayFeedConfigRequestsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayFeedConfigRequestsEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayFeedConfigRequestsEnabledLevel", 0);
 
   if (NFInternalBuild())
   {
@@ -5728,8 +5728,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)audioFeedConfigRequestsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioFeedConfigRequestsEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"audioFeedConfigRequestsEnabledLevel", 0);
 
   if (NFInternalBuild())
   {
@@ -5752,8 +5752,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)personalizationEventTrackingEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"personalizationEventTrackingEnabled2", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"personalizationEventTrackingEnabled2", 0xFFFFFFFFLL);
 
   if (NFInternalBuild())
   {
@@ -5776,8 +5776,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)sportsRecordEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"sportsRecordEnabled", 0xFFFFFFFFLL);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"sportsRecordEnabled", 0xFFFFFFFFLL);
 
   if (NFInternalBuild())
   {
@@ -5800,8 +5800,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)sportsRecommendationHidesIgnoredTags
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"sportsRecommendationHidesIgnoredTags", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"sportsRecommendationHidesIgnoredTags", 1);
 
   if (NFInternalBuild())
   {
@@ -5824,8 +5824,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)sportsNativeAdsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"sportsNativeAdsEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"sportsNativeAdsEnabled", 1);
 
   if (NFInternalBuild())
   {
@@ -5848,24 +5848,24 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)inFeedDebugging
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"inFeedDebuggingLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"inFeedDebuggingLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)isImprovedManagedTopicGroupingEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"improvedManagedTopicGroupingEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"improvedManagedTopicGroupingEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (NSArray)analyticsEventNamesPublicAllowlist
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsEventNamesPublicAllowlist", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsEventNamesPublicAllowlist", 0);
   v4 = v3;
   if (v3)
   {
@@ -5884,8 +5884,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSArray)analyticsEventNamesSeedAllowlist
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsEventNamesSeedAllowlist", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsEventNamesSeedAllowlist", 0);
   v4 = v3;
   if (v3)
   {
@@ -5904,8 +5904,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSArray)analyticsEventNamesInternalAllowlist
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsEventNamesInternalAllowlist", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsEventNamesInternalAllowlist", 0);
   v4 = v3;
   if (v3)
   {
@@ -5924,24 +5924,24 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (BOOL)shouldProxyURLBucketFetch
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"shouldProxyURLBucketFetch", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"shouldProxyURLBucketFetch", 1);
 
   return v3;
 }
 
 - (int64_t)minimumBucketGroupConfigVersion
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"minimumBucketGroupConfigVersion", 2);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"minimumBucketGroupConfigVersion", 2);
 
   return v3;
 }
 
 - (FCEmbedProxyConfiguration)embedProxyConfiguration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"embedProxyConfiguration", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"embedProxyConfiguration", 0);
 
   v4 = [[FCEmbedProxyConfiguration alloc] initWithDictionary:v3];
 
@@ -5950,16 +5950,16 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (double)derivedPersonalizationDataBalanceValue
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"derivedPersonalizationDataBalanceValue", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"derivedPersonalizationDataBalanceValue", 1.0);
 
   return v3;
 }
 
 - (FCNewsPlusLabelConfigGroup)newsPlusLabelConfigGroup
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"newsPlusLabelConfigGroup", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"newsPlusLabelConfigGroup", 0);
 
   v4 = [[FCNewsPlusLabelConfigGroup alloc] initWithConfigDictionary:v3];
 
@@ -5968,8 +5968,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (FCAppReviewRequestConfig)appReviewRequestConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"appReviewRequestConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"appReviewRequestConfig", 0);
 
   v4 = [[FCAppReviewRequestConfig alloc] initWithDictionary:v3];
 
@@ -5978,8 +5978,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSArray)analyticsDenylistDescriptorsPublic
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsDenylistDescriptorsPublic", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsDenylistDescriptorsPublic", 0);
   v4 = v3;
   if (v3)
   {
@@ -5998,8 +5998,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSArray)analyticsDenylistDescriptorsSeed
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"analyticsDenylistDescriptorsSeed", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"analyticsDenylistDescriptorsSeed", 0);
   v4 = v3;
   if (v3)
   {
@@ -6018,8 +6018,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSDictionary)editorialTopicEventMapping
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"editorialTopicEventMapping", 0);
   v5 = v4;
@@ -6040,8 +6040,8 @@ uint64_t __41__FCNewsAppConfig_topStoriesPublishDates__block_invoke(uint64_t a1,
 
 - (NSDictionary)editorialTopicEventMappingProperties
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDictionaryValueWithDefaultValue(v3, @"editorialTopicEventMappingProperties", 0);
   v5 = v4;
@@ -6068,8 +6068,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSArray)editoralRecommendedSportsTopicTagIds
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationArrayValueWithDefaultValue(v3, @"editoralRecommendedSportsTopicTagIds", 0);
   v5 = v4;
@@ -6090,8 +6090,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSArray)editorialFallbackSportsTopicTagIds
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationArrayValueWithDefaultValue(v3, @"editorialFallbackSportsTopicTagIds", 0);
   v5 = v4;
@@ -6112,8 +6112,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (int64_t)sportsManagementRecommendedItemsCount
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"sportsManagementRecommendedItemsCount", 5);
   return v4;
@@ -6121,8 +6121,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (int64_t)sportsManagementMinChildItemsCount
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"sportsManagementMinChildItemsCount", 15);
   return v4;
@@ -6130,8 +6130,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsTaxonomyResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"taxonomyResourceId", &stru_1F2DC7DC0);
 
@@ -6140,8 +6140,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsStandingConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"standingConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6150,8 +6150,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsBoxScoreConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"boxScoreConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6160,8 +6160,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsKeyPlayerConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"keyPlayerConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6170,8 +6170,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsLineScoreConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"lineScoreConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6180,8 +6180,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsInjuryReportConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"injuryReportConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6190,8 +6190,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsBracketConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"bracketConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6200,8 +6200,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsScoreConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"scoreConfigurationResourceId", &stru_1F2DC7DC0);
 
@@ -6210,8 +6210,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsSyncingConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"sportsSyncingConfigurationV2ResourceId", &stru_1F2DC7DC0);
 
@@ -6220,8 +6220,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsFeaturedEventsResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"featuredEventsResourceId", &stru_1F2DC7DC0);
 
@@ -6230,8 +6230,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)sportsConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"sportsDataConfiguration", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"sportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationStringValue(v3, @"configurationResourceId", &stru_1F2DC7DC0);
 
@@ -6240,81 +6240,81 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (NSString)webEmbedDataSourcesConfigurationResourceId
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"webEmbedDataSourcesConfigurationResourceId", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"webEmbedDataSourcesConfigurationResourceId", 0);
 
   return v3;
 }
 
 - (int64_t)liveActivityFollowedAlertsThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"liveActivityFollowedAlertsThreshold", 3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"liveActivityFollowedAlertsThreshold", 3);
 
   return v3;
 }
 
 - (int64_t)liveActivityScheduledAlertsThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"liveActivityScheduledAlertsThreshold", 3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"liveActivityScheduledAlertsThreshold", 3);
 
   return v3;
 }
 
 - (double)liveActivityScheduleDelay
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"liveActivityScheduleDelay", 10.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"liveActivityScheduleDelay", 10.0);
 
   return v3;
 }
 
 - (double)liveActivityScheduleRandomInitialDelay
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"liveActivityScheduleRandomInitialDelay", 30.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"liveActivityScheduleRandomInitialDelay", 30.0);
 
   return v3;
 }
 
 - (double)liveActivityScheduleTimeWindow
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"liveActivityScheduleTimeWindow", 300.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"liveActivityScheduleTimeWindow", 300.0);
 
   return v3;
 }
 
 - (double)liveActivityScheduleRetryInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"liveActivityScheduleRetryInterval", 300.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"liveActivityScheduleRetryInterval", 300.0);
 
   return v3;
 }
 
 - (double)liveActivityScheduleRetryTimeWindow
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"liveActivityScheduleRetryTimeWindow", 3600.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"liveActivityScheduleRetryTimeWindow", 3600.0);
 
   return v3;
 }
 
 - (int64_t)liveActivityScheduleRetryCountMax
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"liveActivityScheduleRetryCountMax", 5);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"liveActivityScheduleRetryCountMax", 5);
 
   return v3;
 }
 
 - (NSArray)liveActivityAssetServerURLs
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = [MEMORY[0x1E695DEC8] array];
-  v4 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"liveActivityAssetServerURLs", v3);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  array = [MEMORY[0x1E695DEC8] array];
+  v4 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"liveActivityAssetServerURLs", array);
 
   v5 = [v4 fc_arrayByTransformingWithBlock:&__block_literal_global_2781];
 
@@ -6323,49 +6323,49 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (BOOL)sportsSyncingV2Enabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"sportsSyncingV2EnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"sportsSyncingV2EnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (BOOL)exportToGroceryListEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"exportToGroceryListEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"exportToGroceryListEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (NSString)exportToGroceryListTipTitle
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"exportToGroceryListTipTitle", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"exportToGroceryListTipTitle", 0);
 
   return v3;
 }
 
 - (NSString)exportToGroceryListTipMessage
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"exportToGroceryListTipMessage", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"exportToGroceryListTipMessage", 0);
 
   return v3;
 }
 
 - (BOOL)useAltSportsRecommendationMapping
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
-  LOBYTE(v2) = FCAppConfigurationBoolValue(v3, @"useAltSportsRecommendationMapping", 0);
-  return v2;
+  LOBYTE(languageConfigDictionary) = FCAppConfigurationBoolValue(v3, @"useAltSportsRecommendationMapping", 0);
+  return languageConfigDictionary;
 }
 
 - (double)minMembershipForTaxonomyCandidates
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDoubleValue(v3, @"minMembershipForTaxonomyCandidates", 0.0);
   return v4;
@@ -6373,17 +6373,17 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (BOOL)considerAutofavoritesInMappingCandidates
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
-  LOBYTE(v2) = FCAppConfigurationBoolValue(v3, @"considerAutofavoritesInMappingCandidates", 1);
-  return v2;
+  LOBYTE(languageConfigDictionary) = FCAppConfigurationBoolValue(v3, @"considerAutofavoritesInMappingCandidates", 1);
+  return languageConfigDictionary;
 }
 
 - (double)minScoreThresholdForSportsRecommendations
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDoubleValue(v3, @"minScoreThresholdForSportsRecommendations", 0.0);
   return v4;
@@ -6391,8 +6391,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (double)minMembershipThreshold
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDoubleValue(v3, @"minMembershipThreshold", 0.051);
   return v4;
@@ -6400,8 +6400,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (double)minMembershipThresholdForLocalRecommendation
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationDoubleValue(v3, @"minMembershipThresholdForLocalRecommendation", 0.0);
   return v4;
@@ -6409,8 +6409,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (int64_t)maxSportRecommendationsWithLeagueTypeCollege
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"maxSportRecommendationsWithLeagueTypeCollege", 2);
   return v4;
@@ -6418,8 +6418,8 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
 
 - (int64_t)maxSportRecommendationsPerSport
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"localizedSportsDataConfiguration", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"localizedSportsDataConfiguration", 0);
 
   v4 = FCAppConfigurationIntegerValue(v3, @"maxSportRecommendationsPerSport", 3);
   return v4;
@@ -6437,19 +6437,19 @@ FCEditorialTopicEventMappingProperty *__55__FCNewsAppConfig_editorialTopicEventM
   }
 
   v5 = NewsCoreUserDefaults();
-  v6 = [v5 stringForKey:@"news.news_personalization.cluster_config_overrides.json"];
+  languageConfigDictionary = [v5 stringForKey:@"news.news_personalization.cluster_config_overrides.json"];
 
-  if (![v6 length])
+  if (![languageConfigDictionary length])
   {
 LABEL_8:
 
 LABEL_9:
-    v6 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(v6, @"todayFeedGroupClusteringKnobOverrides", 0);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"todayFeedGroupClusteringKnobOverrides", 0);
     goto LABEL_10;
   }
 
-  v7 = [v6 dataUsingEncoding:4];
+  v7 = [languageConfigDictionary dataUsingEncoding:4];
   v14 = 0;
   v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:&v14];
   v9 = v14;
@@ -6485,19 +6485,19 @@ LABEL_10:
   }
 
   v5 = NewsCoreUserDefaults();
-  v6 = [v5 stringForKey:@"news.news_personalization.cluster_config_overrides.json"];
+  languageConfigDictionary = [v5 stringForKey:@"news.news_personalization.cluster_config_overrides.json"];
 
-  if (![v6 length])
+  if (![languageConfigDictionary length])
   {
 LABEL_8:
 
 LABEL_9:
-    v6 = [(FCNewsAppConfig *)self languageConfigDictionary];
-    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(v6, @"tagFeedGroupClusteringKnobOverrides", 0);
+    languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+    v8 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"tagFeedGroupClusteringKnobOverrides", 0);
     goto LABEL_10;
   }
 
-  v7 = [v6 dataUsingEncoding:4];
+  v7 = [languageConfigDictionary dataUsingEncoding:4];
   v14 = 0;
   v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:&v14];
   v9 = v14;
@@ -6523,8 +6523,8 @@ LABEL_10:
 
 - (FCArticleLinkBehaviorConfig)articleLinkBehaviorConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"articleLinkBehaviorConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"articleLinkBehaviorConfig", 0);
 
   v4 = [[FCArticleLinkBehaviorConfig alloc] initWithConfigDictionary:v3];
 
@@ -6533,8 +6533,8 @@ LABEL_10:
 
 - (FCArticleModalBrandBarConfig)articleModalBrandBarConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"articleModalBrandBarConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"articleModalBrandBarConfig", 0);
 
   v4 = [[FCArticleModalBrandBarConfig alloc] initWithConfigDictionary:v3];
 
@@ -6543,8 +6543,8 @@ LABEL_10:
 
 - (FCSportsFavoritesSyncModalConfig)sportsFavoritesSyncModalConfig
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"sportsFavoritesSyncModalConfig", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"sportsFavoritesSyncModalConfig", 0);
 
   v4 = [[FCSportsFavoritesSyncModalConfig alloc] initWithConfigDictionary:v3];
 
@@ -6553,16 +6553,16 @@ LABEL_10:
 
 - (NSString)newsFeedFormatConfiguration
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"newsFeedFormatConfiguration", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"newsFeedFormatConfiguration", 0);
 
   return v3;
 }
 
 - (BOOL)articleLinkBehaviorImprovementsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"articleLinkBehaviorImprovementsEnabledLevel", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"articleLinkBehaviorImprovementsEnabledLevel", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
@@ -6570,8 +6570,8 @@ LABEL_10:
 - (BOOL)allowAnyChannelForTodayChannelGroups
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"allowAnyChannelForTodayChannelGroups", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"allowAnyChannelForTodayChannelGroups", 0);
 
   if (NFInternalBuild() && (NewsCoreUserDefaults(), v4 = objc_claimAutoreleasedReturnValue(), [v4 objectForKey:@"news.personalization.allow_any_channel_for_today_channel_groups"], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
@@ -6605,16 +6605,16 @@ LABEL_10:
 
 - (double)tagSubscriptionRepromptDelay
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"tagSubscriptionRepromptDelay", 0.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"tagSubscriptionRepromptDelay", 0.0);
 
   return v3;
 }
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = [v2 copy];
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = [configDictionary copy];
 
   return v3;
 }
@@ -6833,8 +6833,8 @@ void __68__FCNewsAppConfig_defaultAudioConfigRecordIDByLocalizedStorefrontID__bl
 
 - (int64_t)numberOfFetchedHeadlinesToReport
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"headlinePersonalizationInstrumentationConfig", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"headlinePersonalizationInstrumentationConfig", 0);
 
   if (FCAppConfigurationBoolValue(v3, @"sendsAllFetchedHeadlines", 0))
   {
@@ -6856,81 +6856,81 @@ void __68__FCNewsAppConfig_defaultAudioConfigRecordIDByLocalizedStorefrontID__bl
 
 - (BOOL)shouldShuffleReportedHeadlines
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"headlinePersonalizationInstrumentationConfig", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"headlinePersonalizationInstrumentationConfig", 0);
 
-  LOBYTE(v2) = FCAppConfigurationBoolValue(v3, @"sendsAllFetchedHeadlines", 0);
-  return v2 ^ 1;
+  LOBYTE(configDictionary) = FCAppConfigurationBoolValue(v3, @"sendsAllFetchedHeadlines", 0);
+  return configDictionary ^ 1;
 }
 
 - (BOOL)enableAIAttribution
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"enableAIAttributionEnabledLevelV2", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"enableAIAttributionEnabledLevelV2", 0);
 
   return [FCFeatureEnablementChecker enabledForCurrentLevel:v3];
 }
 
 - (NSString)aiAttributionArticleString
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"aiAttributionArticleString", 0);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationStringValue(languageConfigDictionary, @"aiAttributionArticleString", 0);
 
   return v3;
 }
 
 - (BOOL)enableTabiAdSegments
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableTabiAdSegments", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableTabiAdSegments", 0);
 
   return v3;
 }
 
 - (BOOL)enableTabiMyMagazinesPersonalization
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"enableTabiMyMagazinesPersonalization", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"enableTabiMyMagazinesPersonalization", 0);
 
   return v3;
 }
 
 - (BOOL)aggregatesInNotificationExtensionXavierEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"aggregatesInNotificationExtensionXavierEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"aggregatesInNotificationExtensionXavierEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)tabiScoringInNotificationExtensionEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"tabiScoringInNotificationExtensionEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"tabiScoringInNotificationExtensionEnabled", 0);
 
   return v3;
 }
 
 - (BOOL)aggregatesInWidgetsXavierEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"aggregatesInWidgetsXavierEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"aggregatesInWidgetsXavierEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)tabiScoringInWidgetsEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"tabiScoringInWidgetsEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"tabiScoringInWidgetsEnabled", 0);
 
   return v3;
 }
 
 - (BOOL)widgetForYouFromDaemonEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"widgetForYouFromDaemonEnabled", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"widgetForYouFromDaemonEnabled", 0);
 
   return v3;
 }
@@ -6940,8 +6940,8 @@ void __68__FCNewsAppConfig_defaultAudioConfigRecordIDByLocalizedStorefrontID__bl
   if (!NFInternalBuild())
   {
 LABEL_5:
-    v6 = [(FCNewsAppConfig *)self configDictionary];
-    v7 = FCAppConfigurationBoolValue(v6, @"todayWidgetForYouBestOfEnabled", 0);
+    configDictionary = [(FCNewsAppConfig *)self configDictionary];
+    v7 = FCAppConfigurationBoolValue(configDictionary, @"todayWidgetForYouBestOfEnabled", 0);
 
     return v7;
   }
@@ -6964,56 +6964,56 @@ LABEL_5:
 
 - (int64_t)todayWidgetForYouMaxInaccessible
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayWidgetForYouMaxInaccessible", 1000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayWidgetForYouMaxInaccessible", 1000);
 
   return v3;
 }
 
 - (int64_t)todayWidgetForYouMaxEvergreen
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayWidgetForYouMaxEvergreen", 1000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayWidgetForYouMaxEvergreen", 1000);
 
   return v3;
 }
 
 - (int64_t)todayWidgetForYouMaxPublisherOccurrences
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayWidgetForYouMaxPublisherOccurrences", 1000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayWidgetForYouMaxPublisherOccurrences", 1000);
 
   return v3;
 }
 
 - (double)todayWidgetForYouBundleArticleQuota
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayWidgetForYouBundleArticleQuota", 0.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayWidgetForYouBundleArticleQuota", 0.0);
 
   return v3;
 }
 
 - (double)todayWidgetForYouTopicDiversityThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"todayWidgetForYouTopicDiversityThreshold", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"todayWidgetForYouTopicDiversityThreshold", 1.0);
 
   return v3;
 }
 
 - (int64_t)todayWidgetForYouTopicDiversityWindowSize
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayWidgetForYouTopicDiversityWindowSize", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayWidgetForYouTopicDiversityWindowSize", 1);
 
   return v3;
 }
 
 - (NSArray)todayWidgetForYouTopicDiversityAllowedTopicIDs
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationArrayValueWithDefaultValue(v2, @"todayWidgetForYouTopicDiversityAllowedTopicIDs", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationArrayValueWithDefaultValue(configDictionary, @"todayWidgetForYouTopicDiversityAllowedTopicIDs", 0);
   v4 = v3;
   if (v3)
   {
@@ -7032,120 +7032,120 @@ LABEL_5:
 
 - (int64_t)todayWidgetForYouMaxAIGArticles
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"todayWidgetForYouMaxAIGArticles", 1000);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"todayWidgetForYouMaxAIGArticles", 1000);
 
   return v3;
 }
 
 - (NSDictionary)articleConfig
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"articleConfig", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(configDictionary, @"articleConfig", 0);
 
   return v3;
 }
 
 - (int64_t)audioPlaylistSweepRecencyThresholdInDays
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationIntegerValue(v2, @"audioPlaylistSweepRecencyThresholdInDays", 7);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationIntegerValue(configDictionary, @"audioPlaylistSweepRecencyThresholdInDays", 7);
 
   return v3;
 }
 
 - (double)audioPlaylistSweepListeningPercentageThreshold
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"audioPlaylistSweepListeningPercentageThreshold", 0.4);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"audioPlaylistSweepListeningPercentageThreshold", 0.4);
 
   return v3;
 }
 
 - (double)offlineModeDetectionPingInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"offlineModeDetectionPingInterval", 1.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"offlineModeDetectionPingInterval", 1.0);
 
   return v3;
 }
 
 - (double)offlineModeDetectionPingTimeoutInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"offlineModeDetectionPingTimeoutInterval", 5.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"offlineModeDetectionPingTimeoutInterval", 5.0);
 
   return v3;
 }
 
 - (double)offlineModeThrottleUnreliableDetectionTimeoutInterval
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationDoubleValue(v2, @"offlineModeThrottleUnreliableDetectionTimeoutInterval", 10.0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationDoubleValue(configDictionary, @"offlineModeThrottleUnreliableDetectionTimeoutInterval", 10.0);
 
   return v3;
 }
 
 - (NSDictionary)channelGroupBaselineMultipliers
 {
-  v2 = [(FCNewsAppConfig *)self languageConfigDictionary];
-  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(v2, @"channelGroupBaselineMultipliers", MEMORY[0x1E695E0F8]);
+  languageConfigDictionary = [(FCNewsAppConfig *)self languageConfigDictionary];
+  v3 = FCAppConfigurationDictionaryValueWithDefaultValue(languageConfigDictionary, @"channelGroupBaselineMultipliers", MEMORY[0x1E695E0F8]);
 
   return v3;
 }
 
 - (BOOL)tabiBackgroundRefreshEnabled
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"tabiBackgroundRefreshEnabled", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"tabiBackgroundRefreshEnabled", 1);
 
   return v3;
 }
 
 - (BOOL)shouldIncludeRecipePersonalizationScienceData
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"shouldIncludeRecipePersonalizationScienceData", 1);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"shouldIncludeRecipePersonalizationScienceData", 1);
 
   return v3;
 }
 
 - (NSString)smarterFetchStrategy
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationStringValue(v2, @"smarterFetchStrategy", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationStringValue(configDictionary, @"smarterFetchStrategy", 0);
 
   return v3;
 }
 
 - (BOOL)isSmarterFetchEnabledForESL
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isSmarterFetchEnabledForESL", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isSmarterFetchEnabledForESL", 0);
 
   return v3;
 }
 
 - (BOOL)isSmarterFetchEnabledForLatest
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isSmarterFetchEnabledForLatest", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isSmarterFetchEnabledForLatest", 0);
 
   return v3;
 }
 
 - (BOOL)isSmarterFetchEnabledForSupplementalESL
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isSmarterFetchEnabledForSupplementalESL", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isSmarterFetchEnabledForSupplementalESL", 0);
 
   return v3;
 }
 
 - (BOOL)isSmarterFetchEnabledForSupplementalLatest
 {
-  v2 = [(FCNewsAppConfig *)self configDictionary];
-  v3 = FCAppConfigurationBoolValue(v2, @"isSmarterFetchEnabledForSupplementalLatest", 0);
+  configDictionary = [(FCNewsAppConfig *)self configDictionary];
+  v3 = FCAppConfigurationBoolValue(configDictionary, @"isSmarterFetchEnabledForSupplementalLatest", 0);
 
   return v3;
 }

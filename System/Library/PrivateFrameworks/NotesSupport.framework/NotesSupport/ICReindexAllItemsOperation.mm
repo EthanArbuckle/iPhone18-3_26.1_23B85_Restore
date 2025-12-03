@@ -27,8 +27,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(ICIndexItemsOperation *)self dataSources];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  dataSources = [(ICIndexItemsOperation *)self dataSources];
+  v5 = [dataSources countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,7 +40,7 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataSources);
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
@@ -52,7 +52,7 @@
             *buf = 138412546;
             v25 = v9;
             v26 = 2112;
-            v27 = self;
+            selfCopy = self;
             _os_log_debug_impl(&dword_1D4576000, v10, OS_LOG_TYPE_DEBUG, "Staging data source %@ for reindexing in operation %@", buf, 0x16u);
           }
         }
@@ -64,7 +64,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [dataSources countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v6);
@@ -80,8 +80,8 @@
     }
   }
 
-  v13 = [(ICIndexItemsOperation *)self searchableIndex];
-  [v13 beginIndexBatch];
+  searchableIndex = [(ICIndexItemsOperation *)self searchableIndex];
+  [searchableIndex beginIndexBatch];
 
   if (ICVerboseSearchLogging())
   {
@@ -92,14 +92,14 @@
     }
   }
 
-  v15 = [(ICIndexItemsOperation *)self searchableIndex];
-  v16 = [(ICReindexAllItemsOperation *)self clientStateData];
+  searchableIndex2 = [(ICIndexItemsOperation *)self searchableIndex];
+  clientStateData = [(ICReindexAllItemsOperation *)self clientStateData];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __34__ICReindexAllItemsOperation_main__block_invoke;
   v19[3] = &unk_1E84850C8;
   v19[4] = self;
-  [v15 endIndexBatchWithClientState:v16 completionHandler:v19];
+  [searchableIndex2 endIndexBatchWithClientState:clientStateData completionHandler:v19];
 
   v18.receiver = self;
   v18.super_class = ICReindexAllItemsOperation;

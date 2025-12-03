@@ -1,13 +1,13 @@
 @interface RollingClockView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC11ClockPoster16RollingClockView)initWithCoder:(id)a3;
-- (_TtC11ClockPoster16RollingClockView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC11ClockPoster16RollingClockView)initWithCoder:(id)coder;
+- (_TtC11ClockPoster16RollingClockView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation RollingClockView
 
-- (_TtC11ClockPoster16RollingClockView)initWithCoder:(id)a3
+- (_TtC11ClockPoster16RollingClockView)initWithCoder:(id)coder
 {
   sub_1E4996F3C();
   v4 = OBJC_IVAR____TtC11ClockPoster16RollingClockView_model;
@@ -28,17 +28,17 @@
   [(RollingClockView *)&v2 layoutSubviews];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11ClockPoster16RollingClockView_viewController);
-  v6 = self;
-  v7 = [v5 view];
-  if (v7)
+  selfCopy = self;
+  view = [v5 view];
+  if (view)
   {
-    v10 = v7;
-    [v7 sizeThatFits_];
+    v10 = view;
+    [view sizeThatFits_];
     v12 = v11;
     v14 = v13;
 
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (_TtC11ClockPoster16RollingClockView)initWithFrame:(CGRect)a3
+- (_TtC11ClockPoster16RollingClockView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

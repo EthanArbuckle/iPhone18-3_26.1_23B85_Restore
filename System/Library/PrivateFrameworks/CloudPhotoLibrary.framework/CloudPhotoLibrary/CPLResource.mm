@@ -1,58 +1,58 @@
 @interface CPLResource
 + (BOOL)cplShouldGenerateDerivatives;
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3;
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3;
-+ (BOOL)isDynamicFingerprint:(id)a3;
-+ (BOOL)isNonDerivativeResourceType:(unint64_t)a3;
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding;
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality;
++ (BOOL)isDynamicFingerprint:(id)fingerprint;
++ (BOOL)isNonDerivativeResourceType:(unint64_t)type;
 + (BOOL)usesFakeDerivatives;
-+ (id)descriptionForResourceType:(unint64_t)a3;
-+ (id)normalizedResourcesFromResources:(id)a3 resourcePerResourceType:(id *)a4;
-+ (id)predicateMatchingDynamicFingerprintForKey:(id)a3;
-+ (id)shortDescriptionForResourceType:(unint64_t)a3;
-+ (unint64_t)maxPixelSizeForResourceType:(unint64_t)a3;
-+ (unint64_t)resourceTypeFromShortDescription:(id)a3;
-+ (void)enumerateResourceTypesWithBlock:(id)a3;
-+ (void)getAllResourceTypesToDownloadPrioritizeNonDerivatives:(const unint64_t *)a3;
-- (CPLResource)initWithCPLArchiver:(id)a3;
-- (CPLResource)initWithCoder:(id)a3;
-- (CPLResource)initWithResourceIdentity:(id)a3 itemScopedIdentifier:(id)a4 resourceType:(unint64_t)a5;
++ (id)descriptionForResourceType:(unint64_t)type;
++ (id)normalizedResourcesFromResources:(id)resources resourcePerResourceType:(id *)type;
++ (id)predicateMatchingDynamicFingerprintForKey:(id)key;
++ (id)shortDescriptionForResourceType:(unint64_t)type;
++ (unint64_t)maxPixelSizeForResourceType:(unint64_t)type;
++ (unint64_t)resourceTypeFromShortDescription:(id)description;
++ (void)enumerateResourceTypesWithBlock:(id)block;
++ (void)getAllResourceTypesToDownloadPrioritizeNonDerivatives:(const unint64_t *)derivatives;
+- (CPLResource)initWithCPLArchiver:(id)archiver;
+- (CPLResource)initWithCoder:(id)coder;
+- (CPLResource)initWithResourceIdentity:(id)identity itemScopedIdentifier:(id)identifier resourceType:(unint64_t)type;
 - (id)bestFileNameForResource;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)estimatedResourceSize;
-- (void)setItemIdentifier:(id)a3;
+- (void)setItemIdentifier:(id)identifier;
 @end
 
 @implementation CPLResource
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLResource)initWithCoder:(id)a3
+- (CPLResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPLResource;
   v5 = [(CPLResource *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
-    v7 = [(CPLResource *)v6 itemScopedIdentifier];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
+    itemScopedIdentifier = [(CPLResource *)v6 itemScopedIdentifier];
 
-    if (!v7)
+    if (!itemScopedIdentifier)
     {
       if (initWithCoder__onceToken_103 != -1)
       {
         dispatch_once(&initWithCoder__onceToken_103, &__block_literal_global_106);
       }
 
-      v8 = [v4 decodeObjectOfClass:initWithCoder__stringClass_104 forKey:@"itemIdentifier"];
+      v8 = [coderCopy decodeObjectOfClass:initWithCoder__stringClass_104 forKey:@"itemIdentifier"];
       if (v8)
       {
         v9 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:v8];
@@ -71,43 +71,43 @@ uint64_t __42__CPLResource_CPLNSCoding__initWithCoder___block_invoke()
   return result;
 }
 
-+ (BOOL)cplShouldIgnorePropertyForCoding:(id)a3
++ (BOOL)cplShouldIgnorePropertyForCoding:(id)coding
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"itemIdentifier"])
+  codingCopy = coding;
+  if ([codingCopy isEqualToString:@"itemIdentifier"])
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLResource;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForCoding_, codingCopy);
   }
 
   return v5;
 }
 
-- (CPLResource)initWithCPLArchiver:(id)a3
+- (CPLResource)initWithCPLArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v11.receiver = self;
   v11.super_class = CPLResource;
-  v5 = [&v11 initWithCPLArchiver:v4];
+  v5 = [&v11 initWithCPLArchiver:archiverCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CPLResource *)v5 itemScopedIdentifier];
+    itemScopedIdentifier = [(CPLResource *)v5 itemScopedIdentifier];
 
-    if (!v7)
+    if (!itemScopedIdentifier)
     {
       if (initWithCPLArchiver__onceToken_1958 != -1)
       {
         dispatch_once(&initWithCPLArchiver__onceToken_1958, &__block_literal_global_1961);
       }
 
-      v8 = [v4 decodeObjectOfClass:initWithCPLArchiver__stringClass_1959 forKey:@"itemIdentifier"];
+      v8 = [archiverCopy decodeObjectOfClass:initWithCPLArchiver__stringClass_1959 forKey:@"itemIdentifier"];
       if (v8)
       {
         v9 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:v8];
@@ -146,14 +146,14 @@ void __34__CPLResource_usesFakeDerivatives__block_invoke()
   }
 }
 
-+ (id)predicateMatchingDynamicFingerprintForKey:(id)a3
++ (id)predicateMatchingDynamicFingerprintForKey:(id)key
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K BEGINSWITH %@", v4, @"#"];
-  if ([a1 usesFakeDerivatives])
+  keyCopy = key;
+  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K BEGINSWITH %@", keyCopy, @"#"];
+  if ([self usesFakeDerivatives])
   {
-    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K BEGINSWITH %@", v4, @"^"];
+    v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K BEGINSWITH %@", keyCopy, @"^"];
     v7 = MEMORY[0x1E696AB28];
     v12[0] = v5;
     v12[1] = v6;
@@ -168,22 +168,22 @@ void __34__CPLResource_usesFakeDerivatives__block_invoke()
   return v5;
 }
 
-+ (BOOL)isDynamicFingerprint:(id)a3
++ (BOOL)isDynamicFingerprint:(id)fingerprint
 {
-  v4 = a3;
-  v5 = ([v4 hasPrefix:@"#"] & 1) != 0 || objc_msgSend(a1, "usesFakeDerivatives") && (objc_msgSend(v4, "hasPrefix:", @"^") & 1) != 0;
+  fingerprintCopy = fingerprint;
+  v5 = ([fingerprintCopy hasPrefix:@"#"] & 1) != 0 || objc_msgSend(self, "usesFakeDerivatives") && (objc_msgSend(fingerprintCopy, "hasPrefix:", @"^") & 1) != 0;
 
   return v5;
 }
 
-+ (void)getAllResourceTypesToDownloadPrioritizeNonDerivatives:(const unint64_t *)a3
++ (void)getAllResourceTypesToDownloadPrioritizeNonDerivatives:(const unint64_t *)derivatives
 {
   if (getAllResourceTypesToDownloadPrioritizeNonDerivatives__onceToken != -1)
   {
     dispatch_once(&getAllResourceTypesToDownloadPrioritizeNonDerivatives__onceToken, &__block_literal_global_322);
   }
 
-  *a3 = &getAllResourceTypesToDownloadPrioritizeNonDerivatives__allResourceTypes;
+  *derivatives = &getAllResourceTypesToDownloadPrioritizeNonDerivatives__allResourceTypes;
 }
 
 double __69__CPLResource_getAllResourceTypesToDownloadPrioritizeNonDerivatives___block_invoke()
@@ -276,16 +276,16 @@ LABEL_9:
 
 - (id)bestFileNameForResource
 {
-  v3 = [(CPLResource *)self identity];
-  v4 = [v3 fingerPrint];
-  v5 = [v3 fileUTI];
-  v6 = [CPLResourceIdentity storageNameForFingerPrint:v4 fileUTI:v5 bucket:0];
+  identity = [(CPLResource *)self identity];
+  fingerPrint = [identity fingerPrint];
+  fileUTI = [identity fileUTI];
+  v6 = [CPLResourceIdentity storageNameForFingerPrint:fingerPrint fileUTI:fileUTI bucket:0];
 
   if (v6)
   {
-    v7 = [(CPLResource *)self resourceType];
+    resourceType = [(CPLResource *)self resourceType];
     v8 = @"Unknown_";
-    switch(v7)
+    switch(resourceType)
     {
       case 0uLL:
         break;
@@ -371,7 +371,7 @@ LABEL_9:
         v8 = @"VideoHDRMedium_";
         break;
       default:
-        if (v7 == 1000)
+        if (resourceType == 1000)
         {
           v8 = @"AdjustmentOriginalResource_";
         }
@@ -398,21 +398,21 @@ LABEL_7:
 
 - (id)redactedDescription
 {
-  v3 = [(CPLResource *)self identity];
-  v4 = [v3 fileURL];
+  identity = [(CPLResource *)self identity];
+  fileURL = [identity fileURL];
   v5 = MEMORY[0x1E696AEC0];
   v6 = [CPLResource shortDescriptionForResourceType:[(CPLResource *)self resourceType]];
-  v7 = [(CPLResource *)self itemScopedIdentifier];
-  v8 = [v3 fingerPrint];
-  v9 = [v3 fileUTI];
-  v10 = [v3 isAvailable];
+  itemScopedIdentifier = [(CPLResource *)self itemScopedIdentifier];
+  fingerPrint = [identity fingerPrint];
+  fileUTI = [identity fileUTI];
+  isAvailable = [identity isAvailable];
   v11 = " unavailable";
-  if (v10)
+  if (isAvailable)
   {
     v11 = "";
   }
 
-  if (v4)
+  if (fileURL)
   {
     v12 = @"[%@ for %@ (%@ - %@) file: <redacted>%s]";
   }
@@ -422,100 +422,100 @@ LABEL_7:
     v12 = @"[%@ for %@ (%@ - %@) no file%s]";
   }
 
-  v13 = [v5 stringWithFormat:v12, v6, v7, v8, v9, v11];
+  v13 = [v5 stringWithFormat:v12, v6, itemScopedIdentifier, fingerPrint, fileUTI, v11];
 
   return v13;
 }
 
 - (id)description
 {
-  v3 = [(CPLResource *)self identity];
-  v4 = [v3 fileURL];
+  identity = [(CPLResource *)self identity];
+  fileURL = [identity fileURL];
   v5 = MEMORY[0x1E696AEC0];
   v6 = [CPLResource shortDescriptionForResourceType:[(CPLResource *)self resourceType]];
-  v7 = [(CPLResource *)self itemScopedIdentifier];
-  v8 = [v3 fingerPrint];
-  v9 = [v3 fileUTI];
-  if (v4)
+  itemScopedIdentifier = [(CPLResource *)self itemScopedIdentifier];
+  fingerPrint = [identity fingerPrint];
+  fileUTI = [identity fileUTI];
+  if (fileURL)
   {
-    v10 = [v4 path];
-    v11 = [v3 isAvailable];
+    path = [fileURL path];
+    isAvailable = [identity isAvailable];
     v12 = " unavailable";
-    if (v11)
+    if (isAvailable)
     {
       v12 = "";
     }
 
-    v13 = [v5 stringWithFormat:@"[%@ for %@ (%@ - %@) file: %@%s]", v6, v7, v8, v9, v10, v12];
+    v13 = [v5 stringWithFormat:@"[%@ for %@ (%@ - %@) file: %@%s]", v6, itemScopedIdentifier, fingerPrint, fileUTI, path, v12];
   }
 
   else
   {
-    v14 = [v3 isAvailable];
+    isAvailable2 = [identity isAvailable];
     v15 = " unavailable";
-    if (v14)
+    if (isAvailable2)
     {
       v15 = "";
     }
 
-    v13 = [v5 stringWithFormat:@"[%@ for %@ (%@ - %@) no file%s]", v6, v7, v8, v9, v15];
+    v13 = [v5 stringWithFormat:@"[%@ for %@ (%@ - %@) no file%s]", v6, itemScopedIdentifier, fingerPrint, fileUTI, v15];
   }
 
   return v13;
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy)
   {
-    v4 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:v4];
+    identifierCopy = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:@"PrimarySync" identifier:identifierCopy];
   }
 
   itemScopedIdentifier = self->_itemScopedIdentifier;
-  self->_itemScopedIdentifier = v4;
+  self->_itemScopedIdentifier = identifierCopy;
 }
 
-- (CPLResource)initWithResourceIdentity:(id)a3 itemScopedIdentifier:(id)a4 resourceType:(unint64_t)a5
+- (CPLResource)initWithResourceIdentity:(id)identity itemScopedIdentifier:(id)identifier resourceType:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  identityCopy = identity;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CPLResource;
   v11 = [(CPLResource *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identity, a3);
-    objc_storeStrong(&v12->_itemScopedIdentifier, a4);
-    v12->_resourceType = a5;
+    objc_storeStrong(&v11->_identity, identity);
+    objc_storeStrong(&v12->_itemScopedIdentifier, identifier);
+    v12->_resourceType = type;
   }
 
   return v12;
 }
 
-+ (BOOL)isNonDerivativeResourceType:(unint64_t)a3
++ (BOOL)isNonDerivativeResourceType:(unint64_t)type
 {
-  if (a3 > 0x1C || a3 <= 0xC && ((1 << a3) & 0x1801) != 0)
+  if (type > 0x1C || type <= 0xC && ((1 << type) & 0x1801) != 0)
   {
     return 0;
   }
 
   else
   {
-    return [a1 isDerivativeResourceType:{v3, v4}] ^ 1;
+    return [self isDerivativeResourceType:{v3, v4}] ^ 1;
   }
 }
 
-+ (void)enumerateResourceTypesWithBlock:(id)a3
++ (void)enumerateResourceTypesWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
   v5 = 0;
   while (1)
   {
-    v3[2](v3, v4, &v5);
+    blockCopy[2](blockCopy, v4, &v5);
     if (v5)
     {
       break;
@@ -523,7 +523,7 @@ LABEL_7:
 
     if (++v4 == 29)
     {
-      v3[2](v3, 1000, &v5);
+      blockCopy[2](blockCopy, 1000, &v5);
       break;
     }
   }
@@ -561,18 +561,18 @@ uint64_t __43__CPLResource_cplShouldGenerateDerivatives__block_invoke()
   return MEMORY[0x1EEE66BB8](v2, v1);
 }
 
-+ (unint64_t)maxPixelSizeForResourceType:(unint64_t)a3
++ (unint64_t)maxPixelSizeForResourceType:(unint64_t)type
 {
   v11 = *MEMORY[0x1E69E9840];
   result = 104857600;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       goto LABEL_16;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       result = 25165824;
       goto LABEL_16;
@@ -581,19 +581,19 @@ uint64_t __43__CPLResource_cplShouldGenerateDerivatives__block_invoke()
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     result = 3145728;
     goto LABEL_16;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     result = 172800;
     goto LABEL_16;
   }
 
-  if (a3 != 15)
+  if (type != 15)
   {
 LABEL_11:
     if ((_CPLSilentLogging & 1) == 0)
@@ -601,7 +601,7 @@ LABEL_11:
       v6 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [a1 descriptionForResourceType:a3];
+        v7 = [self descriptionForResourceType:type];
         v9 = 138412290;
         v10 = v7;
         _os_log_impl(&dword_1DC05A000, v6, OS_LOG_TYPE_ERROR, "Unsupported resource type %@ for maxPixels", &v9, 0xCu);
@@ -616,332 +616,332 @@ LABEL_16:
   return result;
 }
 
-+ (id)shortDescriptionForResourceType:(unint64_t)a3
++ (id)shortDescriptionForResourceType:(unint64_t)type
 {
-  v4 = @"Unknown";
-  switch(a3)
+  type = @"Unknown";
+  switch(type)
   {
     case 0xFFFFFFFFFFFFFFFFLL:
-      v4 = @"Any";
+      type = @"Any";
 
       break;
     case 0uLL:
       goto LABEL_101;
     case 1uLL:
-      v4 = @"Original";
+      type = @"Original";
 
       break;
     case 2uLL:
-      v4 = @"JPEGFull";
+      type = @"JPEGFull";
 
       break;
     case 3uLL:
-      v4 = @"JPEGLarge";
+      type = @"JPEGLarge";
 
       break;
     case 4uLL:
-      v4 = @"JPEGMedium";
+      type = @"JPEGMedium";
 
       break;
     case 5uLL:
-      v4 = @"JPEGThumbnail";
+      type = @"JPEGThumbnail";
 
       break;
     case 6uLL:
-      v4 = @"VideoMedium";
+      type = @"VideoMedium";
 
       break;
     case 7uLL:
-      v4 = @"VideoSmall";
+      type = @"VideoSmall";
 
       break;
     case 8uLL:
-      v4 = @"Audio";
+      type = @"Audio";
 
       break;
     case 9uLL:
-      v4 = @"SidecarXMP";
+      type = @"SidecarXMP";
 
       break;
     case 0xAuLL:
-      v4 = @"MediaMetaData";
+      type = @"MediaMetaData";
 
       break;
     case 0xBuLL:
-      v4 = @"Unused1";
+      type = @"Unused1";
 
       break;
     case 0xCuLL:
-      v4 = @"Unused2";
+      type = @"Unused2";
 
       break;
     case 0xDuLL:
-      v4 = @"AdjustmentData";
+      type = @"AdjustmentData";
 
       break;
     case 0xEuLL:
-      v4 = @"AdjustmentSecondaryData";
+      type = @"AdjustmentSecondaryData";
 
       break;
     case 0xFuLL:
-      v4 = @"AdjustmentBaseFullSize";
+      type = @"AdjustmentBaseFullSize";
 
       break;
     case 0x10uLL:
-      v4 = @"VideoFull";
+      type = @"VideoFull";
 
       break;
     case 0x11uLL:
-      v4 = @"OriginalAlt";
+      type = @"OriginalAlt";
 
       break;
     case 0x12uLL:
-      v4 = @"OriginalVidCompl";
+      type = @"OriginalVidCompl";
 
       break;
     case 0x13uLL:
-      v4 = @"VideoCompl";
+      type = @"VideoCompl";
 
       break;
     case 0x14uLL:
-      v4 = @"AdjustmentBaseVideoCompl";
+      type = @"AdjustmentBaseVideoCompl";
 
       break;
     case 0x15uLL:
-      v4 = @"VideoLarge";
+      type = @"VideoLarge";
 
       break;
     case 0x16uLL:
-      v4 = @"SidecarOther";
+      type = @"SidecarOther";
 
       break;
     case 0x17uLL:
-      v4 = @"OriginalSpatialOverCapture";
+      type = @"OriginalSpatialOverCapture";
 
       break;
     case 0x18uLL:
-      v4 = @"OriginalSpatialOverCaptureVideoComplement";
+      type = @"OriginalSpatialOverCaptureVideoComplement";
 
       break;
     case 0x19uLL:
-      v4 = @"AdjustmentBaseVideo";
+      type = @"AdjustmentBaseVideo";
 
       break;
     case 0x1AuLL:
-      v4 = @"VideoMetaData";
+      type = @"VideoMetaData";
 
       break;
     case 0x1BuLL:
-      v4 = @"AdjustedMediaMetaData";
+      type = @"AdjustedMediaMetaData";
 
       break;
     case 0x1CuLL:
-      v4 = @"VideoHDRMedium";
+      type = @"VideoHDRMedium";
 
       break;
     case 0x1DuLL:
-      v4 = @"MaxNormal";
+      type = @"MaxNormal";
 
       break;
     default:
-      if (a3 == 1000)
+      if (type == 1000)
       {
-        v4 = @"AdjustmentOriginalResource";
+        type = @"AdjustmentOriginalResource";
       }
 
-      else if (a3 == 1001)
+      else if (type == 1001)
       {
-        v4 = @"Max";
+        type = @"Max";
       }
 
       else
       {
-        v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ResourceType-%i", a3];
+        type = [MEMORY[0x1E696AEC0] stringWithFormat:@"ResourceType-%i", type];
 LABEL_101:
       }
 
       break;
   }
 
-  return v4;
+  return type;
 }
 
-+ (id)descriptionForResourceType:(unint64_t)a3
++ (id)descriptionForResourceType:(unint64_t)type
 {
-  v4 = @"CPLResourceTypeUnknown";
-  switch(a3)
+  type = @"CPLResourceTypeUnknown";
+  switch(type)
   {
     case 0xFFFFFFFFFFFFFFFFLL:
-      v4 = @"CPLResourceTypeAny";
+      type = @"CPLResourceTypeAny";
 
       break;
     case 0uLL:
       goto LABEL_101;
     case 1uLL:
-      v4 = @"CPLResourceTypeOriginal";
+      type = @"CPLResourceTypeOriginal";
 
       break;
     case 2uLL:
-      v4 = @"CPLResourceTypeJPEGFullSize";
+      type = @"CPLResourceTypeJPEGFullSize";
 
       break;
     case 3uLL:
-      v4 = @"CPLResourceTypeJPEGLargeSize";
+      type = @"CPLResourceTypeJPEGLargeSize";
 
       break;
     case 4uLL:
-      v4 = @"CPLResourceTypeJPEGMediumSize";
+      type = @"CPLResourceTypeJPEGMediumSize";
 
       break;
     case 5uLL:
-      v4 = @"CPLResourceTypeJPEGThumbnail";
+      type = @"CPLResourceTypeJPEGThumbnail";
 
       break;
     case 6uLL:
-      v4 = @"CPLResourceTypeVideoMediumSize";
+      type = @"CPLResourceTypeVideoMediumSize";
 
       break;
     case 7uLL:
-      v4 = @"CPLResourceTypeVideoSmallSize";
+      type = @"CPLResourceTypeVideoSmallSize";
 
       break;
     case 8uLL:
-      v4 = @"CPLResourceTypeSidecarAudio";
+      type = @"CPLResourceTypeSidecarAudio";
 
       break;
     case 9uLL:
-      v4 = @"CPLResourceTypeSidecarXMP";
+      type = @"CPLResourceTypeSidecarXMP";
 
       break;
     case 0xAuLL:
-      v4 = @"CPLResourceTypeMediaMetaData";
+      type = @"CPLResourceTypeMediaMetaData";
 
       break;
     case 0xBuLL:
-      v4 = @"CPLResourceTypeUnused1";
+      type = @"CPLResourceTypeUnused1";
 
       break;
     case 0xCuLL:
-      v4 = @"CPLResourceTypeUnused2";
+      type = @"CPLResourceTypeUnused2";
 
       break;
     case 0xDuLL:
-      v4 = @"CPLResourceTypeAdjustmentData";
+      type = @"CPLResourceTypeAdjustmentData";
 
       break;
     case 0xEuLL:
-      v4 = @"CPLResourceTypeAdjustmentSecondaryData";
+      type = @"CPLResourceTypeAdjustmentSecondaryData";
 
       break;
     case 0xFuLL:
-      v4 = @"CPLResourceTypeAdjustmentBaseJPEGFullSize";
+      type = @"CPLResourceTypeAdjustmentBaseJPEGFullSize";
 
       break;
     case 0x10uLL:
-      v4 = @"CPLResourceTypeVideoFullSize";
+      type = @"CPLResourceTypeVideoFullSize";
 
       break;
     case 0x11uLL:
-      v4 = @"CPLResourceTypeOriginalAlternate";
+      type = @"CPLResourceTypeOriginalAlternate";
 
       break;
     case 0x12uLL:
-      v4 = @"CPLResourceTypeOriginalVideoComplement";
+      type = @"CPLResourceTypeOriginalVideoComplement";
 
       break;
     case 0x13uLL:
-      v4 = @"CPLResourceTypeVideoComplement";
+      type = @"CPLResourceTypeVideoComplement";
 
       break;
     case 0x14uLL:
-      v4 = @"CPLResourceTypeAdjustmentBaseVideoComplement";
+      type = @"CPLResourceTypeAdjustmentBaseVideoComplement";
 
       break;
     case 0x15uLL:
-      v4 = @"CPLResourceTypeVideoLargeSize";
+      type = @"CPLResourceTypeVideoLargeSize";
 
       break;
     case 0x16uLL:
-      v4 = @"CPLResourceTypeSidecarOther";
+      type = @"CPLResourceTypeSidecarOther";
 
       break;
     case 0x17uLL:
-      v4 = @"CPLResourceTypeOriginalSpatialOverCapture";
+      type = @"CPLResourceTypeOriginalSpatialOverCapture";
 
       break;
     case 0x18uLL:
-      v4 = @"CPLResourceTypeOriginalSpatialOverCaptureVideoComplement";
+      type = @"CPLResourceTypeOriginalSpatialOverCaptureVideoComplement";
 
       break;
     case 0x19uLL:
-      v4 = @"CPLResourceTypeAdjustmentBaseVideo";
+      type = @"CPLResourceTypeAdjustmentBaseVideo";
 
       break;
     case 0x1AuLL:
-      v4 = @"CPLResourceTypeVideoMetaData";
+      type = @"CPLResourceTypeVideoMetaData";
 
       break;
     case 0x1BuLL:
-      v4 = @"CPLResourceTypeAdjustedMediaMetaData";
+      type = @"CPLResourceTypeAdjustedMediaMetaData";
 
       break;
     case 0x1CuLL:
-      v4 = @"CPLResourceTypeVideoHDRMediumSize";
+      type = @"CPLResourceTypeVideoHDRMediumSize";
 
       break;
     case 0x1DuLL:
-      v4 = @"_CPLResourceTypeMaxNormal";
+      type = @"_CPLResourceTypeMaxNormal";
 
       break;
     default:
-      if (a3 == 1000)
+      if (type == 1000)
       {
-        v4 = @"CPLResourceTypeAdjustmentOriginalResource";
+        type = @"CPLResourceTypeAdjustmentOriginalResource";
       }
 
-      else if (a3 == 1001)
+      else if (type == 1001)
       {
-        v4 = @"CPLResourceTypeMax";
+        type = @"CPLResourceTypeMax";
       }
 
       else
       {
-        v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown resource type %i", a3];
+        type = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown resource type %i", type];
 LABEL_101:
       }
 
       break;
   }
 
-  return v4;
+  return type;
 }
 
-+ (unint64_t)resourceTypeFromShortDescription:(id)a3
++ (unint64_t)resourceTypeFromShortDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__CPLResource_resourceTypeFromShortDescription___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (resourceTypeFromShortDescription__onceToken != -1)
   {
     dispatch_once(&resourceTypeFromShortDescription__onceToken, block);
   }
 
-  v5 = [resourceTypeFromShortDescription__mapping objectForKeyedSubscript:v4];
+  v5 = [resourceTypeFromShortDescription__mapping objectForKeyedSubscript:descriptionCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 void __48__CPLResource_resourceTypeFromShortDescription___block_invoke(uint64_t a1)
@@ -973,19 +973,19 @@ void __48__CPLResource_resourceTypeFromShortDescription___block_invoke_2(uint64_
   }
 }
 
-+ (id)normalizedResourcesFromResources:(id)a3 resourcePerResourceType:(id *)a4
++ (id)normalizedResourcesFromResources:(id)resources resourcePerResourceType:(id *)type
 {
   v34[16] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  resourcesCopy = resources;
+  if ([resourcesCopy count])
   {
-    v21 = a4;
+    typeCopy = type;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v7 = v5;
+    v7 = resourcesCopy;
     v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v8)
     {
@@ -1000,7 +1000,7 @@ void __48__CPLResource_resourceTypeFromShortDescription___block_invoke_2(uint64_
           }
 
           v11 = *(*(&v30 + 1) + 8 * i);
-          v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "resourceType", v21)}];
+          v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v11, "resourceType", typeCopy)}];
           [v6 setObject:v11 forKey:v12];
         }
 
@@ -1029,14 +1029,14 @@ void __48__CPLResource_resourceTypeFromShortDescription___block_invoke_2(uint64_
     if (v27[3])
     {
       v16 = v15;
-      *v21 = v15;
+      *typeCopy = v15;
       v17 = objc_alloc(MEMORY[0x1E695DEC8]);
       v18 = [v17 initWithObjects:v14 count:v27[3]];
     }
 
     else
     {
-      *v21 = MEMORY[0x1E695E0F8];
+      *typeCopy = MEMORY[0x1E695E0F8];
       v18 = MEMORY[0x1E695E0F0];
     }
 
@@ -1045,7 +1045,7 @@ void __48__CPLResource_resourceTypeFromShortDescription___block_invoke_2(uint64_
 
   else
   {
-    *a4 = MEMORY[0x1E695E0F8];
+    *type = MEMORY[0x1E695E0F8];
     v18 = MEMORY[0x1E695E0F0];
   }
 
@@ -1066,19 +1066,19 @@ void __72__CPLResource_normalizedResourcesFromResources_resourcePerResourceType_
   }
 }
 
-+ (BOOL)cplShouldIgnorePropertyForEquality:(id)a3
++ (BOOL)cplShouldIgnorePropertyForEquality:(id)equality
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"itemIdentifier"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"canGenerateDerivative"))
+  equalityCopy = equality;
+  if ([equalityCopy isEqualToString:@"itemIdentifier"] & 1) != 0 || (objc_msgSend(equalityCopy, "isEqualToString:", @"canGenerateDerivative"))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CPLResource;
-    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_cplShouldIgnorePropertyForEquality_, equalityCopy);
   }
 
   return v5;

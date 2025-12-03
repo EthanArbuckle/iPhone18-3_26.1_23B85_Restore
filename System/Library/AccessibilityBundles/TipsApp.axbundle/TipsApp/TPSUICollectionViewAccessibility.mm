@@ -1,5 +1,5 @@
 @interface TPSUICollectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsTipsCollectionView;
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility;
 - (id)_accessibilityFirstVisibleItem;
@@ -8,16 +8,16 @@
 
 @implementation TPSUICollectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionView" hasInstanceMethod:@"visibleCells" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_accessibilityScrollStatus" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityFirstVisibleItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSPageControl" isKindOfClass:@"UIPageControl"];
-  [v3 validateClass:@"TPSTipsViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TPSTipsViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceMethod:@"visibleCells" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_accessibilityScrollStatus" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSBaseTipCollectionViewCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NSObject" hasInstanceMethod:@"_accessibilityFirstVisibleItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSPageControl" isKindOfClass:@"UIPageControl"];
+  [validationsCopy validateClass:@"TPSTipsViewController" hasInstanceMethod:@"pageControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TPSTipsViewController"];
 }
 
 - (BOOL)_axIsTipsCollectionView
@@ -34,18 +34,18 @@
   if ([(TPSUICollectionViewAccessibility *)self _axIsTipsCollectionView])
   {
     v3 = [(TPSUICollectionViewAccessibility *)self safeArrayForKey:@"visibleCells"];
-    v4 = [v3 firstObject];
-    v5 = [v4 safeValueForKey:@"titleLabel"];
+    firstObject = [v3 firstObject];
+    _accessibilityFirstVisibleItem = [firstObject safeValueForKey:@"titleLabel"];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = TPSUICollectionViewAccessibility;
-    v5 = [(TPSUICollectionViewAccessibility *)&v7 _accessibilityFirstVisibleItem];
+    _accessibilityFirstVisibleItem = [(TPSUICollectionViewAccessibility *)&v7 _accessibilityFirstVisibleItem];
   }
 
-  return v5;
+  return _accessibilityFirstVisibleItem;
 }
 
 - (id)_accessibilityScrollStatus
@@ -60,15 +60,15 @@
     {
       v12 = 0;
       objc_opt_class();
-      v5 = [(TPSUICollectionViewAccessibility *)self delegate];
-      v6 = [v5 safeValueForKey:@"pageControl"];
+      delegate = [(TPSUICollectionViewAccessibility *)self delegate];
+      v6 = [delegate safeValueForKey:@"pageControl"];
       v7 = __UIAccessibilityCastAsClass();
 
       if (v7)
       {
-        v8 = [v7 accessibilityValue];
-        v9 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v8];
-        [v9 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBDB20]];
+        accessibilityValue = [v7 accessibilityValue];
+        _accessibilityScrollStatus = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:accessibilityValue];
+        [_accessibilityScrollStatus setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBDB20]];
 
         goto LABEL_7;
       }
@@ -77,10 +77,10 @@
 
   v11.receiver = self;
   v11.super_class = TPSUICollectionViewAccessibility;
-  v9 = [(TPSUICollectionViewAccessibility *)&v11 _accessibilityScrollStatus];
+  _accessibilityScrollStatus = [(TPSUICollectionViewAccessibility *)&v11 _accessibilityScrollStatus];
 LABEL_7:
 
-  return v9;
+  return _accessibilityScrollStatus;
 }
 
 - (BOOL)accessibilityCollectionViewBehavesLikeUIViewAccessibility

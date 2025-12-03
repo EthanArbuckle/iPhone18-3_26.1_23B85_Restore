@@ -1,27 +1,27 @@
 @interface SFSpeechRecognitionResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)rawTranscriptions;
 - (NSArray)transcriptions;
 - (NSString)description;
-- (SFSpeechRecognitionResult)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SFSpeechRecognitionResult)initWithCoder:(id)a3;
-- (id)_initWithBestTranscription:(id)a3 rawTranscription:(id)a4 final:(BOOL)a5 speechRecognitionMetadata:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SFSpeechRecognitionResult)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SFSpeechRecognitionResult)initWithCoder:(id)coder;
+- (id)_initWithBestTranscription:(id)transcription rawTranscription:(id)rawTranscription final:(BOOL)final speechRecognitionMetadata:(id)metadata;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSpeechRecognitionResult
 
-- (SFSpeechRecognitionResult)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SFSpeechRecognitionResult)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  v6 = a3;
-  if ([v6 length])
+  representationCopy = representation;
+  if ([representationCopy length])
   {
     v13.receiver = self;
     v13.super_class = SFSpeechRecognitionResult;
     v7 = [(SFSpeechRecognitionResult *)&v13 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:0];
       v9 = v8;
       if (v8)
       {
@@ -32,79 +32,79 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (NSArray)rawTranscriptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  rawTranscriptions = v2->_rawTranscriptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rawTranscriptions = selfCopy->_rawTranscriptions;
   if (!rawTranscriptions)
   {
-    v4 = ExpandTranscription(v2->_rawTranscription);
+    v4 = ExpandTranscription(selfCopy->_rawTranscription);
     v5 = [v4 copy];
-    v6 = v2->_rawTranscriptions;
-    v2->_rawTranscriptions = v5;
+    v6 = selfCopy->_rawTranscriptions;
+    selfCopy->_rawTranscriptions = v5;
 
-    rawTranscriptions = v2->_rawTranscriptions;
+    rawTranscriptions = selfCopy->_rawTranscriptions;
   }
 
   v7 = rawTranscriptions;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (NSArray)transcriptions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  transcriptions = v2->_transcriptions;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transcriptions = selfCopy->_transcriptions;
   if (!transcriptions)
   {
-    v4 = ExpandTranscription(v2->_bestTranscription);
+    v4 = ExpandTranscription(selfCopy->_bestTranscription);
     v5 = [v4 copy];
-    v6 = v2->_transcriptions;
-    v2->_transcriptions = v5;
+    v6 = selfCopy->_transcriptions;
+    selfCopy->_transcriptions = v5;
 
-    transcriptions = v2->_transcriptions;
+    transcriptions = selfCopy->_transcriptions;
   }
 
   v7 = transcriptions;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)_initWithBestTranscription:(id)a3 rawTranscription:(id)a4 final:(BOOL)a5 speechRecognitionMetadata:(id)a6
+- (id)_initWithBestTranscription:(id)transcription rawTranscription:(id)rawTranscription final:(BOOL)final speechRecognitionMetadata:(id)metadata
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  transcriptionCopy = transcription;
+  rawTranscriptionCopy = rawTranscription;
+  metadataCopy = metadata;
   v21.receiver = self;
   v21.super_class = SFSpeechRecognitionResult;
   v13 = [(SFSpeechRecognitionResult *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [transcriptionCopy copy];
     bestTranscription = v13->_bestTranscription;
     v13->_bestTranscription = v14;
 
-    v16 = [v11 copy];
+    v16 = [rawTranscriptionCopy copy];
     rawTranscription = v13->_rawTranscription;
     v13->_rawTranscription = v16;
 
-    v13->_final = a5;
-    v18 = [v12 copy];
+    v13->_final = final;
+    v18 = [metadataCopy copy];
     speechRecognitionMetadata = v13->_speechRecognitionMetadata;
     v13->_speechRecognitionMetadata = v18;
   }
@@ -112,20 +112,20 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bestTranscription = self->_bestTranscription;
-  v5 = a3;
-  [v5 encodeObject:bestTranscription forKey:@"_bestTranscription"];
-  [v5 encodeObject:self->_rawTranscription forKey:@"_rawTranscription"];
-  [v5 encodeBool:self->_final forKey:@"_final"];
-  [v5 encodeObject:self->_speechRecognitionMetadata forKey:@"_speechRecognitionMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bestTranscription forKey:@"_bestTranscription"];
+  [coderCopy encodeObject:self->_rawTranscription forKey:@"_rawTranscription"];
+  [coderCopy encodeBool:self->_final forKey:@"_final"];
+  [coderCopy encodeObject:self->_speechRecognitionMetadata forKey:@"_speechRecognitionMetadata"];
 }
 
-- (SFSpeechRecognitionResult)initWithCoder:(id)a3
+- (SFSpeechRecognitionResult)initWithCoder:(id)coder
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SFSpeechRecognitionResult;
   v5 = [(SFSpeechRecognitionResult *)&v20 init];
@@ -136,7 +136,7 @@
     v22[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_bestTranscription"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_bestTranscription"];
     bestTranscription = v5->_bestTranscription;
     v5->_bestTranscription = v9;
 
@@ -145,12 +145,12 @@
     v21[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_rawTranscription"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_rawTranscription"];
     rawTranscription = v5->_rawTranscription;
     v5->_rawTranscription = v14;
 
-    v5->_final = [v4 decodeBoolForKey:@"_final"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_speechRecognitionMetadata"];
+    v5->_final = [coderCopy decodeBoolForKey:@"_final"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_speechRecognitionMetadata"];
     speechRecognitionMetadata = v5->_speechRecognitionMetadata;
     v5->_speechRecognitionMetadata = v16;
   }
@@ -169,18 +169,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = 0;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_final == *(v4 + 24))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_final == *(equalCopy + 24))
   {
     bestTranscription = self->_bestTranscription;
-    if (bestTranscription == v4[4] || [(SFTranscription *)bestTranscription isEqual:?])
+    if (bestTranscription == equalCopy[4] || [(SFTranscription *)bestTranscription isEqual:?])
     {
       speechRecognitionMetadata = self->_speechRecognitionMetadata;
-      if (speechRecognitionMetadata == v4[5] || [(SFSpeechRecognitionMetadata *)speechRecognitionMetadata isEqual:?])
+      if (speechRecognitionMetadata == equalCopy[5] || [(SFSpeechRecognitionMetadata *)speechRecognitionMetadata isEqual:?])
       {
         v7 = 1;
       }

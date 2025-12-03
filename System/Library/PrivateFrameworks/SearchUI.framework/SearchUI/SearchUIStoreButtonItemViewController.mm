@@ -4,15 +4,15 @@
 - (SearchUIStoreButtonItemViewController)init;
 - (id)currentStoreButtonIdentifier;
 - (id)environment;
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4;
-- (id)presentingViewControllerForLockupView:(id)a3;
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer;
+- (id)presentingViewControllerForLockupView:(id)view;
 - (id)storeButtonItem;
 - (int)currentStoreButtonIdentifierType;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidFinishRequest:(id)a3;
-- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)updateWithButtonItem:(id)a3 buttonItemViewType:(unint64_t)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidFinishRequest:(id)request;
+- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)size;
+- (void)updateWithButtonItem:(id)item buttonItemViewType:(unint64_t)type;
 @end
 
 @implementation SearchUIStoreButtonItemViewController
@@ -25,8 +25,8 @@
   if (v2)
   {
     v3 = objc_opt_new();
-    v4 = [objc_opt_class() lockupViewGroup];
-    [v3 setGroup:v4];
+    lockupViewGroup = [objc_opt_class() lockupViewGroup];
+    [v3 setGroup:lockupViewGroup];
 
     [v3 setSize:*MEMORY[0x1E698B380]];
     [v3 setDelegate:v2];
@@ -38,30 +38,30 @@
   return v2;
 }
 
-- (void)updateWithButtonItem:(id)a3 buttonItemViewType:(unint64_t)a4
+- (void)updateWithButtonItem:(id)item buttonItemViewType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v7 = [v5 isEqual:v6];
+  itemCopy = item;
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  v7 = [itemCopy isEqual:buttonItem];
 
   if ((v7 & 1) == 0)
   {
-    [(SearchUIButtonItemViewController *)self setButtonItem:v5];
-    v8 = [(SearchUIStoreButtonItemViewController *)self currentStoreButtonIdentifier];
-    v9 = [(SearchUIStoreButtonItemViewController *)self currentStoreButtonIdentifierType];
-    if (!v8)
+    [(SearchUIButtonItemViewController *)self setButtonItem:itemCopy];
+    currentStoreButtonIdentifier = [(SearchUIStoreButtonItemViewController *)self currentStoreButtonIdentifier];
+    currentStoreButtonIdentifierType = [(SearchUIStoreButtonItemViewController *)self currentStoreButtonIdentifierType];
+    if (!currentStoreButtonIdentifier)
     {
-      v16 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-      [v16 setAlpha:0.0];
+      lockupView = [(SearchUIStoreButtonItemViewController *)self lockupView];
+      [lockupView setAlpha:0.0];
 
 LABEL_12:
       goto LABEL_13;
     }
 
-    v10 = v9;
-    v11 = [objc_opt_class() lockupCache];
-    v12 = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
-    v13 = [v11 objectForKey:v12];
+    v10 = currentStoreButtonIdentifierType;
+    lockupCache = [objc_opt_class() lockupCache];
+    storeButtonItem = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
+    v13 = [lockupCache objectForKey:storeButtonItem];
 
     if (v13)
     {
@@ -78,17 +78,17 @@ LABEL_12:
 
     else
     {
-      v17 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-      [v17 setAlpha:0.0];
+      lockupView2 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+      [lockupView2 setAlpha:0.0];
 
-      v18 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-      [v18 setLockup:0];
+      lockupView3 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+      [lockupView3 setLockup:0];
 
-      v19 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-      v20 = [v19 request];
-      v21 = [v20 id];
-      v22 = [v21 stringValue];
-      v23 = [v8 isEqualToString:v22];
+      lockupView4 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+      request = [lockupView4 request];
+      v21 = [request id];
+      stringValue = [v21 stringValue];
+      v23 = [currentStoreButtonIdentifier isEqualToString:stringValue];
 
       if (v23)
       {
@@ -99,27 +99,27 @@ LABEL_12:
       {
         if (!v10)
         {
-          v24 = [objc_alloc(MEMORY[0x1E698B398]) initWithStringValue:v8];
-          [(SearchUIStoreButtonItemViewController *)self setAdamID:v8];
+          v24 = [objc_alloc(MEMORY[0x1E698B398]) initWithStringValue:currentStoreButtonIdentifier];
+          [(SearchUIStoreButtonItemViewController *)self setAdamID:currentStoreButtonIdentifier];
           v25 = objc_alloc(MEMORY[0x1E698B3C0]);
           v26 = [v25 initWithID:v24 kind:*MEMORY[0x1E698B360] context:*MEMORY[0x1E698B330]];
-          v27 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-          [v27 setRequest:v26];
+          lockupView5 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+          [lockupView5 setRequest:v26];
         }
 
         goto LABEL_11;
       }
 
       [(SearchUIStoreButtonItemViewController *)self setAdamID:0];
-      v28 = [objc_opt_class() lockupViewGroup];
+      lockupViewGroup = [objc_opt_class() lockupViewGroup];
       v29 = *MEMORY[0x1E698B330];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __81__SearchUIStoreButtonItemViewController_updateWithButtonItem_buttonItemViewType___block_invoke_2;
       v30[3] = &unk_1E85B3230;
-      v31 = v5;
-      v32 = self;
-      [v28 _lockupRequestForBundleID:v8 withContext:v29 completionBlock:v30];
+      v31 = itemCopy;
+      selfCopy = self;
+      [lockupViewGroup _lockupRequestForBundleID:currentStoreButtonIdentifier withContext:v29 completionBlock:v30];
 
       v15 = v31;
     }
@@ -181,26 +181,26 @@ void __81__SearchUIStoreButtonItemViewController_updateWithButtonItem_buttonItem
 
 - (id)storeButtonItem
 {
-  v2 = [(SearchUIButtonItemViewController *)self buttonItem];
-  v3 = [v2 sfButtonItem];
+  buttonItem = [(SearchUIButtonItemViewController *)self buttonItem];
+  sfButtonItem = [buttonItem sfButtonItem];
 
-  return v3;
+  return sfButtonItem;
 }
 
 - (id)currentStoreButtonIdentifier
 {
-  v2 = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
-  v3 = [v2 identifier];
+  storeButtonItem = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
+  identifier = [storeButtonItem identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (int)currentStoreButtonIdentifierType
 {
-  v2 = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
-  v3 = [v2 identifierType];
+  storeButtonItem = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
+  identifierType = [storeButtonItem identifierType];
 
-  return v3;
+  return identifierType;
 }
 
 + (id)lockupCache
@@ -241,33 +241,33 @@ uint64_t __56__SearchUIStoreButtonItemViewController_lockupViewGroup__block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)presentingViewControllerForLockupView:(id)a3
+- (id)presentingViewControllerForLockupView:(id)view
 {
-  v3 = [(SearchUIStoreButtonItemViewController *)self environment];
-  v4 = [v3 presentingViewController];
+  environment = [(SearchUIStoreButtonItemViewController *)self environment];
+  presentingViewController = [environment presentingViewController];
 
-  return v4;
+  return presentingViewController;
 }
 
 - (id)environment
 {
-  v2 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-  v3 = [SearchUIUtilities environmentForDelegate:v2];
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  v3 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
   return v3;
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69D9240];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__SearchUIStoreButtonItemViewController_lockupViewDidFinishRequest___block_invoke;
   v7[3] = &unk_1E85B2540;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   [v5 dispatchMainIfNecessary:v7];
 }
 
@@ -295,110 +295,110 @@ void __68__SearchUIStoreButtonItemViewController_lockupViewDidFinishRequest___bl
   }
 }
 
-- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)a3
+- (void)lockupViewDidInvalidateIntrinsicContentSize:(id)size
 {
-  [a3 intrinsicContentSize];
+  [size intrinsicContentSize];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
   v9 = 74.0;
   if (v5 >= 74.0)
   {
     v9 = v5;
   }
 
-  if (!v8)
+  if (!isMacOS)
   {
     v5 = v9;
   }
 
-  v10 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+  lockupView = [(SearchUIStoreButtonItemViewController *)self lockupView];
   LODWORD(v11) = 1148846080;
-  [v10 setLayoutSize:v5 withContentPriority:{v7, v11}];
+  [lockupView setLayoutSize:v5 withContentPriority:{v7, v11}];
 
-  v12 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-  [v12 setCustomAlignmentRectInsets:{10.0, 0.0, 10.0, 0.0}];
+  lockupView2 = [(SearchUIStoreButtonItemViewController *)self lockupView];
+  [lockupView2 setCustomAlignmentRectInsets:{10.0, 0.0, 10.0, 0.0}];
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  viewCopy = view;
+  errorCopy = error;
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-    v10 = [v13 lockup];
-    v11 = [v10 id];
-    v12 = [v11 stringValue];
-    [v9 lockupViewForAppIdentifier:v12 didFailRequestWithError:v6];
+    feedbackDelegate2 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+    lockup = [viewCopy lockup];
+    v11 = [lockup id];
+    stringValue = [v11 stringValue];
+    [feedbackDelegate2 lockupViewForAppIdentifier:stringValue didFailRequestWithError:errorCopy];
   }
 }
 
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer
 {
-  v5 = a3;
+  viewCopy = view;
   [(SearchUIButtonItemViewController *)self buttonPressed];
-  v6 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-    v9 = [v5 lockup];
-    v10 = [v9 id];
-    v11 = [v10 stringValue];
-    [v8 lockupViewEngagedForAppIdentifier:v11];
+    feedbackDelegate2 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+    lockup = [viewCopy lockup];
+    v10 = [lockup id];
+    stringValue = [v10 stringValue];
+    [feedbackDelegate2 lockupViewEngagedForAppIdentifier:stringValue];
   }
 
-  v12 = [(SearchUIStoreButtonItemViewController *)self lockupView];
-  v13 = [v12 appearMetricsActivity];
+  lockupView = [(SearchUIStoreButtonItemViewController *)self lockupView];
+  appearMetricsActivity = [lockupView appearMetricsActivity];
 
-  return v13;
+  return appearMetricsActivity;
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v21 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x1E698B2B0]])
+  viewCopy = view;
+  changeCopy = change;
+  if ([changeCopy isEqualToString:*MEMORY[0x1E698B2B0]])
   {
     [(SearchUIStoreButtonItemViewController *)self setStartedInstalling:1];
   }
 
   else if ([(SearchUIStoreButtonItemViewController *)self startedInstalling])
   {
-    if ([v6 isEqualToString:*MEMORY[0x1E698B2B8]])
+    if ([changeCopy isEqualToString:*MEMORY[0x1E698B2B8]])
     {
-      v7 = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
-      v8 = [v7 shouldOpenAppAfterInstallCompletes];
+      storeButtonItem = [(SearchUIStoreButtonItemViewController *)self storeButtonItem];
+      shouldOpenAppAfterInstallCompletes = [storeButtonItem shouldOpenAppAfterInstallCompletes];
 
-      if (v8)
+      if (shouldOpenAppAfterInstallCompletes)
       {
         v9 = objc_alloc(MEMORY[0x1E69635F8]);
-        v10 = [v21 lockup];
-        v11 = [v10 id];
+        lockup = [viewCopy lockup];
+        v11 = [lockup id];
         v12 = [v9 initWithStoreItemIdentifier:objc_msgSend(v11 error:{"int64value"), 0}];
 
-        v13 = [v12 bundleIdentifier];
-        v14 = [(SearchUIStoreButtonItemViewController *)self environment];
-        [SearchUILaunchAppHandler openApplicationWithBundleIdentifier:v13 environment:v14];
+        bundleIdentifier = [v12 bundleIdentifier];
+        environment = [(SearchUIStoreButtonItemViewController *)self environment];
+        [SearchUILaunchAppHandler openApplicationWithBundleIdentifier:bundleIdentifier environment:environment];
       }
     }
   }
 
-  v15 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+  feedbackDelegate = [(SearchUIButtonItemViewController *)self feedbackDelegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
-    v18 = [v21 lockup];
-    v19 = [v18 id];
-    v20 = [v19 stringValue];
-    [v17 lockupViewForAppIdentifier:v20 didChangeState:v6];
+    feedbackDelegate2 = [(SearchUIButtonItemViewController *)self feedbackDelegate];
+    lockup2 = [viewCopy lockup];
+    v19 = [lockup2 id];
+    stringValue = [v19 stringValue];
+    [feedbackDelegate2 lockupViewForAppIdentifier:stringValue didChangeState:changeCopy];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface OZTemplateFlagXMLParser
-- (OZTemplateFlagXMLParser)initWithContentsOfURL:(id)a3;
+- (OZTemplateFlagXMLParser)initWithContentsOfURL:(id)l;
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
 @end
 
 @implementation OZTemplateFlagXMLParser
 
-- (OZTemplateFlagXMLParser)initWithContentsOfURL:(id)a3
+- (OZTemplateFlagXMLParser)initWithContentsOfURL:(id)l
 {
-  v4 = [objc_alloc(MEMORY[0x277CCAE70]) initWithContentsOfURL:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCAE70]) initWithContentsOfURL:l];
   if (!v4)
   {
     return 0;
@@ -43,49 +43,49 @@
   [(OZTemplateFlagXMLParser *)&v3 dealloc];
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  if ([a4 isEqualToString:@"template"])
+  if ([element isEqualToString:@"template"])
   {
     self->_foundTemplate = 1;
   }
 
-  if ([a4 isEqualToString:@"flags"] && self->_foundTemplate)
+  if ([element isEqualToString:@"flags"] && self->_foundTemplate)
   {
     self->_foundTemplateFlag = 1;
   }
 
-  if ([a4 isEqualToString:@"scene"])
+  if ([element isEqualToString:@"scene"])
   {
     self->_success = 1;
 
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([a4 isEqualToString:@"flags"] && self->_foundTemplateFlag)
+  if ([element isEqualToString:@"flags"] && self->_foundTemplateFlag)
   {
     self->_success = 1;
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 
-  if ([a4 isEqualToString:@"template"])
+  if ([element isEqualToString:@"template"])
   {
     self->_success = 1;
 
-    [a3 abortParsing];
+    [parser abortParsing];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   if (self->_foundTemplateFlag)
   {
     v7 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v7 setNumberStyle:1];
-    self->_templeFlags = [objc_msgSend(v7 numberFromString:{a4), "unsignedIntValue"}];
+    self->_templeFlags = [objc_msgSend(v7 numberFromString:{characters), "unsignedIntValue"}];
   }
 }
 

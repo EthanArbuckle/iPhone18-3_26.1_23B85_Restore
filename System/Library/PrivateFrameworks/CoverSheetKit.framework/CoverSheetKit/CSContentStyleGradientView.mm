@@ -1,33 +1,33 @@
 @interface CSContentStyleGradientView
-- (CSContentStyleGradientView)initWithFrame:(CGRect)a3;
+- (CSContentStyleGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setColors:(id)a3 locations:(id)a4 type:(id)a5;
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4;
+- (void)setColors:(id)colors locations:(id)locations type:(id)type;
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint;
 @end
 
 @implementation CSContentStyleGradientView
 
-- (CSContentStyleGradientView)initWithFrame:(CGRect)a3
+- (CSContentStyleGradientView)initWithFrame:(CGRect)frame
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CSContentStyleGradientView;
-  v3 = [(CSContentStyleGradientView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSContentStyleGradientView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CSContentStyleGradientView *)v3 setClipsToBounds:1];
-    v5 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     gradientLayer = v4->_gradientLayer;
-    v4->_gradientLayer = v5;
+    v4->_gradientLayer = layer;
 
     [(CAGradientLayer *)v4->_gradientLayer setStartPoint:0.5, 0.0];
     [(CAGradientLayer *)v4->_gradientLayer setEndPoint:0.5, 1.0];
     v7 = v4->_gradientLayer;
     [(CSContentStyleGradientView *)v4 bounds];
     [(CAGradientLayer *)v7 setFrame:?];
-    v8 = [(CSContentStyleGradientView *)v4 layer];
-    [v8 addSublayer:v4->_gradientLayer];
+    layer2 = [(CSContentStyleGradientView *)v4 layer];
+    [layer2 addSublayer:v4->_gradientLayer];
 
     v9 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     [v9 setValue:&unk_1F15930E0 forKey:@"inputRadius"];
@@ -54,24 +54,24 @@
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)setColors:(id)a3 locations:(id)a4 type:(id)a5
+- (void)setColors:(id)colors locations:(id)locations type:(id)type
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v16)
+  colorsCopy = colors;
+  locationsCopy = locations;
+  typeCopy = type;
+  if (colorsCopy)
   {
-    v10 = [(CAGradientLayer *)self->_gradientLayer colors];
-    v11 = [v16 isEqualToArray:v10] ^ 1;
+    colors = [(CAGradientLayer *)self->_gradientLayer colors];
+    v11 = [colorsCopy isEqualToArray:colors] ^ 1;
 
-    if (v8)
+    if (locationsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v13 = 0;
-    if (v9)
+    if (typeCopy)
     {
       goto LABEL_4;
     }
@@ -80,20 +80,20 @@ LABEL_6:
   }
 
   v11 = 0;
-  if (!v8)
+  if (!locationsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v12 = [(CAGradientLayer *)self->_gradientLayer locations];
-  v13 = [v8 isEqualToArray:v12] ^ 1;
+  locations = [(CAGradientLayer *)self->_gradientLayer locations];
+  v13 = [locationsCopy isEqualToArray:locations] ^ 1;
 
-  if (v9)
+  if (typeCopy)
   {
 LABEL_4:
-    v14 = [(CAGradientLayer *)self->_gradientLayer type];
-    v15 = v14 != v9;
+    type = [(CAGradientLayer *)self->_gradientLayer type];
+    v15 = type != typeCopy;
 
     goto LABEL_8;
   }
@@ -105,11 +105,11 @@ LABEL_8:
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [(CAGradientLayer *)self->_gradientLayer setColors:v16];
+    [(CAGradientLayer *)self->_gradientLayer setColors:colorsCopy];
     if (v13)
     {
 LABEL_10:
-      [(CAGradientLayer *)self->_gradientLayer setLocations:v8];
+      [(CAGradientLayer *)self->_gradientLayer setLocations:locationsCopy];
     }
   }
 
@@ -130,19 +130,19 @@ LABEL_10:
 
   if (v15)
   {
-    [(CAGradientLayer *)self->_gradientLayer setType:v9];
+    [(CAGradientLayer *)self->_gradientLayer setType:typeCopy];
   }
 
   [MEMORY[0x1E6979518] commit];
 LABEL_17:
 }
 
-- (void)setStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4
+- (void)setStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   [(CAGradientLayer *)self->_gradientLayer startPoint];
   v11 = v6 == v10 && v7 == v9;
   [(CAGradientLayer *)self->_gradientLayer endPoint];

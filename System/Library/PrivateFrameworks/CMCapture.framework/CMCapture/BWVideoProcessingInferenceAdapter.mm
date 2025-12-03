@@ -1,6 +1,6 @@
 @interface BWVideoProcessingInferenceAdapter
-- (BWVideoProcessingInferenceProvider)_newInferenceProviderWithType:(uint64_t)a3 analysisType:(uint64_t)a4 executionTarget:(void *)a5 configuration:(uint64_t)a6 preventionReasons:(uint64_t)a7 resourceProvider:(uint64_t)a8 additionalCacheAttributes:;
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7;
+- (BWVideoProcessingInferenceProvider)_newInferenceProviderWithType:(uint64_t)type analysisType:(uint64_t)analysisType executionTarget:(void *)target configuration:(uint64_t)configuration preventionReasons:(uint64_t)reasons resourceProvider:(uint64_t)provider additionalCacheAttributes:;
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status;
 - (uint64_t)_executionTargetForAnalysisType:(uint64_t)result;
 @end
 
@@ -79,14 +79,14 @@ id __108__BWVideoProcessingInferenceAdapter_inferenceProviderForType_version_con
   return +[BWInferenceVideoFormat formatByResolvingRequirements:](BWInferenceVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]);
 }
 
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status
 {
   v12 = [MEMORY[0x1E695DFD8] set];
-  if (a3 == 2001)
+  if (type == 2001)
   {
     v13 = v12;
     v14 = [(BWVideoProcessingInferenceAdapter *)self _executionTargetForAnalysisType:?];
-    v15 = [(BWVideoProcessingInferenceAdapter *)self _newInferenceProviderWithType:4 analysisType:v14 executionTarget:a5 configuration:v13 preventionReasons:a6 resourceProvider:0 additionalCacheAttributes:?];
+    v15 = [(BWVideoProcessingInferenceAdapter *)self _newInferenceProviderWithType:4 analysisType:v14 executionTarget:configuration configuration:v13 preventionReasons:provider resourceProvider:0 additionalCacheAttributes:?];
     v16 = v15;
     if (v15)
     {
@@ -110,17 +110,17 @@ id __108__BWVideoProcessingInferenceAdapter_inferenceProviderForType_version_con
     v18 = -31710;
   }
 
-  if (a7)
+  if (status)
   {
-    *a7 = v18;
+    *status = v18;
   }
 
   return v16;
 }
 
-- (BWVideoProcessingInferenceProvider)_newInferenceProviderWithType:(uint64_t)a3 analysisType:(uint64_t)a4 executionTarget:(void *)a5 configuration:(uint64_t)a6 preventionReasons:(uint64_t)a7 resourceProvider:(uint64_t)a8 additionalCacheAttributes:
+- (BWVideoProcessingInferenceProvider)_newInferenceProviderWithType:(uint64_t)type analysisType:(uint64_t)analysisType executionTarget:(void *)target configuration:(uint64_t)configuration preventionReasons:(uint64_t)reasons resourceProvider:(uint64_t)provider additionalCacheAttributes:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -129,24 +129,24 @@ id __108__BWVideoProcessingInferenceAdapter_inferenceProviderForType_version_con
   v28 = [MEMORY[0x1E696AD98] numberWithInt:{a2, @"InferenceType"}];
   v17 = [v16 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v28, &v27, 1)}];
   v18 = v17;
-  if (a8)
+  if (provider)
   {
-    [v17 addEntriesFromDictionary:a8];
+    [v17 addEntriesFromDictionary:provider];
   }
 
-  v19 = [(BWVisionInferenceAdapter *)a1 _generateInferenceProviderCacheKeyWithAttributes:v18];
+  v19 = [(BWVisionInferenceAdapter *)self _generateInferenceProviderCacheKeyWithAttributes:v18];
   if (!v19)
   {
     return 0;
   }
 
   v20 = v19;
-  v21 = [a1 shouldCacheInferenceProvider];
+  shouldCacheInferenceProvider = [self shouldCacheInferenceProvider];
   if (a2 == 2001)
   {
-    if (v21)
+    if (shouldCacheInferenceProvider)
     {
-      v22 = [objc_msgSend(a1 "cachedInferenceProviderByCacheKey")];
+      v22 = [objc_msgSend(self "cachedInferenceProviderByCacheKey")];
       if (v22)
       {
         return v22;
@@ -154,17 +154,17 @@ id __108__BWVideoProcessingInferenceAdapter_inferenceProviderForType_version_con
     }
   }
 
-  v24 = -[BWVideoProcessingInferenceProvider initWithType:analysisType:executionTarget:schedulerPriority:preventionReasons:resourceProvider:]([BWVideoProcessingInferenceProvider alloc], "initWithType:analysisType:executionTarget:schedulerPriority:preventionReasons:resourceProvider:", a2, a3, a4, [a5 priority], a6, a7);
+  v24 = -[BWVideoProcessingInferenceProvider initWithType:analysisType:executionTarget:schedulerPriority:preventionReasons:resourceProvider:]([BWVideoProcessingInferenceProvider alloc], "initWithType:analysisType:executionTarget:schedulerPriority:preventionReasons:resourceProvider:", a2, type, analysisType, [target priority], configuration, reasons);
   v23 = v24;
   if (v24)
   {
     [(BWVideoProcessingInferenceProvider *)v24 setCustomInferenceIdentifier:v20];
-    v25 = [a1 shouldCacheInferenceProvider];
+    shouldCacheInferenceProvider2 = [self shouldCacheInferenceProvider];
     if (a2 == 2001)
     {
-      if (v25)
+      if (shouldCacheInferenceProvider2)
       {
-        [objc_msgSend(a1 "cachedInferenceProviderByCacheKey")];
+        [objc_msgSend(self "cachedInferenceProviderByCacheKey")];
       }
     }
   }

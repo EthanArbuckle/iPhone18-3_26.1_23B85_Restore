@@ -1,6 +1,6 @@
 @interface WKFindConfiguration
 - (WKFindConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WKFindConfiguration
@@ -19,9 +19,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBackwards:self->_backwards];
   [v4 setCaseSensitive:self->_caseSensitive];
   [v4 setWraps:self->_wraps];

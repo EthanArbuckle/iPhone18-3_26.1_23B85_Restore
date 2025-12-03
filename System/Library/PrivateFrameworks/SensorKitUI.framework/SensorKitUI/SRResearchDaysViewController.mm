@@ -1,8 +1,8 @@
 @interface SRResearchDaysViewController
 - (SRResearchDaysViewController)init;
-- (id)dateForRow:(int64_t)a3;
-- (id)datesFrom:(double)a3 to:(double)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)dateForRow:(int64_t)row;
+- (id)datesFrom:(double)from to:(double)to;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -27,8 +27,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(SRResearchDaysViewController *)self tombstones];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  tombstones = [(SRResearchDaysViewController *)self tombstones];
+  v4 = [(NSArray *)tombstones countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -39,21 +39,21 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(tombstones);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
         if (![v8 reason])
         {
-          v9 = [(SRResearchDaysViewController *)self deletedDays];
+          deletedDays = [(SRResearchDaysViewController *)self deletedDays];
           [v8 startTime];
           v11 = v10;
           [v8 endTime];
-          [(NSMutableSet *)v9 addObjectsFromArray:[(SRResearchDaysViewController *)self datesFrom:v11 to:v12]];
+          [(NSMutableSet *)deletedDays addObjectsFromArray:[(SRResearchDaysViewController *)self datesFrom:v11 to:v12]];
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v5 = [(NSArray *)tombstones countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v5);
@@ -71,17 +71,17 @@
   [(SRResearchDaysViewController *)&v3 dealloc];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = [-[SRResearchDaysViewController tableView](self tableView];
-  if (!v6)
+  tableView = [-[SRResearchDaysViewController tableView](self tableView];
+  if (!tableView)
   {
-    v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"SRDataDayRowReuseIdentifier"];
-    [v6 setSelectionStyle:0];
+    tableView = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"SRDataDayRowReuseIdentifier"];
+    [tableView setSelectionStyle:0];
   }
 
-  v7 = -[SRResearchDaysViewController dateForRow:](self, "dateForRow:", [a4 row]);
-  [objc_msgSend(v6 "textLabel")];
+  v7 = -[SRResearchDaysViewController dateForRow:](self, "dateForRow:", [path row]);
+  [objc_msgSend(tableView "textLabel")];
   if ([(NSMutableSet *)[(SRResearchDaysViewController *)self deletedDays] containsObject:v7])
   {
     v8 = 3;
@@ -92,40 +92,40 @@
     v8 = 4;
   }
 
-  [objc_msgSend(v6 "detailTextLabel")];
-  return v6;
+  [objc_msgSend(tableView "detailTextLabel")];
+  return tableView;
 }
 
-- (id)dateForRow:(int64_t)a3
+- (id)dateForRow:(int64_t)row
 {
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = MEMORY[0x277CBEAA8];
   [(SRResearchDaysViewController *)self end];
-  v7 = [v5 startOfDayForDate:{objc_msgSend(v6, "dateWithSRAbsoluteTime:")}];
+  v7 = [currentCalendar startOfDayForDate:{objc_msgSend(v6, "dateWithSRAbsoluteTime:")}];
   v8 = objc_opt_new();
-  [v8 setDay:-a3];
+  [v8 setDay:-row];
 
-  return [v5 dateByAddingComponents:v8 toDate:v7 options:0];
+  return [currentCalendar dateByAddingComponents:v8 toDate:v7 options:0];
 }
 
-- (id)datesFrom:(double)a3 to:(double)a4
+- (id)datesFrom:(double)from to:(double)to
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a3 <= a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (from <= to)
   {
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [v8 startOfDayForDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithSRAbsoluteTime:", a3)}];
-    v10 = [v8 startOfDayForDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithSRAbsoluteTime:", a4)}];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v9 = [currentCalendar startOfDayForDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithSRAbsoluteTime:", from)}];
+    v10 = [currentCalendar startOfDayForDate:{objc_msgSend(MEMORY[0x277CBEAA8], "dateWithSRAbsoluteTime:", to)}];
     v11 = objc_opt_new();
     [v11 setDay:-1];
     for (i = v10; [i compare:v9] != -1; v10 = i)
     {
-      [v6 addObject:v10];
-      i = [v8 dateByAddingComponents:v11 toDate:v10 options:0];
+      [array addObject:v10];
+      i = [currentCalendar dateByAddingComponents:v11 toDate:v10 options:0];
     }
   }
 
-  return v6;
+  return array;
 }
 
 @end

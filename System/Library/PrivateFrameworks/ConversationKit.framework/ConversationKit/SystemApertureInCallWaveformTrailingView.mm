@@ -1,16 +1,16 @@
 @interface SystemApertureInCallWaveformTrailingView
 - (CGRect)frame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SystemApertureInCallWaveformTrailingView
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureInCallWaveformTrailingView.frame.getter();
   v4 = v3;
   v6 = v5;
@@ -28,21 +28,21 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   SystemApertureInCallWaveformTrailingView.frame.setter();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureInCallWaveformTrailingView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   SystemApertureInCallWaveformTrailingView.sizeThatFits(_:)(__PAIR128__(v5, v4));
 
   v6 = 43.0;
@@ -52,9 +52,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   SystemApertureInCallWaveformTrailingView.sizeThatFits(_:for:)();
   v6 = v5;
   v8 = v7;

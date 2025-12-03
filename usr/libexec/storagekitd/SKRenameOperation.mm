@@ -1,50 +1,50 @@
 @interface SKRenameOperation
-- (SKRenameOperation)initWithDisk:(id)a3 name:(id)a4 withCompletionBlock:(id)a5;
+- (SKRenameOperation)initWithDisk:(id)disk name:(id)name withCompletionBlock:(id)block;
 - (id)newPerformOperation;
 @end
 
 @implementation SKRenameOperation
 
-- (SKRenameOperation)initWithDisk:(id)a3 name:(id)a4 withCompletionBlock:(id)a5
+- (SKRenameOperation)initWithDisk:(id)disk name:(id)name withCompletionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  diskCopy = disk;
+  nameCopy = name;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = SKRenameOperation;
-  v12 = [(SKBaseDiskArbOperation *)&v24 initWithTarget:v9 options:&__NSDictionary0__struct callbackBlock:v11];
+  v12 = [(SKBaseDiskArbOperation *)&v24 initWithTarget:diskCopy options:&__NSDictionary0__struct callbackBlock:blockCopy];
   if (v12)
   {
-    v13 = [v9 filesystemType];
-    if (v13)
+    filesystemType = [diskCopy filesystemType];
+    if (filesystemType)
     {
-      v14 = v13;
-      v15 = [v9 filesystemType];
-      v16 = [v15 isEqualToString:kSKDiskFileSystemFAT];
+      v14 = filesystemType;
+      filesystemType2 = [diskCopy filesystemType];
+      v16 = [filesystemType2 isEqualToString:kSKDiskFileSystemFAT];
 
       if (v16)
       {
-        v17 = [v10 uppercaseString];
+        uppercaseString = [nameCopy uppercaseString];
 
-        v10 = v17;
+        nameCopy = uppercaseString;
       }
     }
 
-    v18 = [v9 filesystem];
+    filesystem = [diskCopy filesystem];
     v23 = 0;
-    v19 = [v18 isValidName:v10 error:&v23];
+    v19 = [filesystem isValidName:nameCopy error:&v23];
     v20 = v23;
 
     if (v19)
     {
-      objc_storeStrong(&v12->_diskToRename, a3);
-      objc_storeStrong(&v12->_name, v10);
+      objc_storeStrong(&v12->_diskToRename, disk);
+      objc_storeStrong(&v12->_name, nameCopy);
       v21 = v12;
     }
 
     else
     {
-      v11[2](v11, v20);
+      blockCopy[2](blockCopy, v20);
       v21 = 0;
     }
   }
@@ -59,8 +59,8 @@
 
 - (id)newPerformOperation
 {
-  v3 = [(SKDisk *)self->_diskToRename daDisk];
-  DADiskRename(v3, self->_name, 0, sub_100017B5C, self);
+  daDisk = [(SKDisk *)self->_diskToRename daDisk];
+  DADiskRename(daDisk, self->_name, 0, sub_100017B5C, self);
 
   if ([(SKBaseDiskArbOperation *)self completeDiskArbOp])
   {

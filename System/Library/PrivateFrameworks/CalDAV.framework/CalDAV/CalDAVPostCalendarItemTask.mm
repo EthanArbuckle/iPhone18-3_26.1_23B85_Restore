@@ -1,7 +1,7 @@
 @interface CalDAVPostCalendarItemTask
 - (id)additionalHeaderValues;
 - (id)description;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CalDAVPostCalendarItemTask
@@ -12,8 +12,8 @@
   v8.receiver = self;
   v8.super_class = CalDAVPostCalendarItemTask;
   v4 = [(CoreDAVPostOrPutTask *)&v8 description];
-  v5 = [(CalDAVPostCalendarItemTask *)self previousScheduleTag];
-  v6 = [v3 stringWithFormat:@"[%@], previousScheduleTag: [%@]", v4, v5];
+  previousScheduleTag = [(CalDAVPostCalendarItemTask *)self previousScheduleTag];
+  v6 = [v3 stringWithFormat:@"[%@], previousScheduleTag: [%@]", v4, previousScheduleTag];
 
   return v6;
 }
@@ -22,34 +22,34 @@
 {
   v7.receiver = self;
   v7.super_class = CalDAVPostCalendarItemTask;
-  v3 = [(CoreDAVPostOrPutTask *)&v7 additionalHeaderValues];
+  additionalHeaderValues = [(CoreDAVPostOrPutTask *)&v7 additionalHeaderValues];
   if (![(CoreDAVPostOrPutTask *)self forceToServer])
   {
-    v4 = [(CalDAVPostCalendarItemTask *)self previousScheduleTag];
-    v5 = [CalDAVUtils headersFromHeaders:v3 replacingPreconditionsWithScheduleTag:v4];
+    previousScheduleTag = [(CalDAVPostCalendarItemTask *)self previousScheduleTag];
+    v5 = [CalDAVUtils headersFromHeaders:additionalHeaderValues replacingPreconditionsWithScheduleTag:previousScheduleTag];
 
-    v3 = v5;
+    additionalHeaderValues = v5;
   }
 
-  return v3;
+  return additionalHeaderValues;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(CalDAVPostCalendarItemTask *)self delegate];
+  errorCopy = error;
+  delegate = [(CalDAVPostCalendarItemTask *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CalDAVPostCalendarItemTask *)self delegate];
-    [v7 postCalendarItemTask:self completedWithError:v4];
+    delegate2 = [(CalDAVPostCalendarItemTask *)self delegate];
+    [delegate2 postCalendarItemTask:self completedWithError:errorCopy];
   }
 
   [(CalDAVPostCalendarItemTask *)self setDelegate:0];
   v8.receiver = self;
   v8.super_class = CalDAVPostCalendarItemTask;
-  [(CoreDAVPostTask *)&v8 finishCoreDAVTaskWithError:v4];
+  [(CoreDAVPostTask *)&v8 finishCoreDAVTaskWithError:errorCopy];
 }
 
 @end

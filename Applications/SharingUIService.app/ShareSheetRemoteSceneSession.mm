@@ -1,10 +1,10 @@
 @interface ShareSheetRemoteSceneSession
 - (_TtC16SharingUIService28ShareSheetRemoteSceneSession)init;
 - (_UIHostedWindowScene)hostedWindowScene;
-- (void)activityContentViewControllerDidUpdateDataSource:(id)a3;
-- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)a3;
-- (void)addParticipantsViewController:(id)a3 completedSharingWithShareURL:(id)a4 ckShare:(id)a5;
-- (void)addParticipantsViewController:(id)a3 failedToSaveShareWithError:(id)a4;
+- (void)activityContentViewControllerDidUpdateDataSource:(id)source;
+- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)metadata;
+- (void)addParticipantsViewController:(id)controller completedSharingWithShareURL:(id)l ckShare:(id)share;
+- (void)addParticipantsViewController:(id)controller failedToSaveShareWithError:(id)error;
 @end
 
 @implementation ShareSheetRemoteSceneSession
@@ -31,12 +31,12 @@
   return result;
 }
 
-- (void)activityContentViewControllerDidUpdateDataSource:(id)a3
+- (void)activityContentViewControllerDidUpdateDataSource:(id)source
 {
   v4 = objc_allocWithZone(SHSheetAction);
-  v10 = self;
+  selfCopy = self;
   v5 = [v4 initWithType:10];
-  v6 = *(&v10->super.isa + OBJC_IVAR____TtC16SharingUIService28ShareSheetRemoteSceneSession_windowScene);
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16SharingUIService28ShareSheetRemoteSceneSession_windowScene);
   objc_opt_self();
   v7 = swift_dynamicCastObjCClass();
   if (v7)
@@ -47,22 +47,22 @@
   }
 }
 
-- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)a3
+- (void)activityContentViewControllerDidUpdateHeaderMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000080A8(v4);
+  metadataCopy = metadata;
+  selfCopy = self;
+  sub_1000080A8(metadataCopy);
 }
 
-- (void)addParticipantsViewController:(id)a3 failedToSaveShareWithError:(id)a4
+- (void)addParticipantsViewController:(id)controller failedToSaveShareWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_100009EBC(v8);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_100009EBC(errorCopy);
 }
 
-- (void)addParticipantsViewController:(id)a3 completedSharingWithShareURL:(id)a4 ckShare:(id)a5
+- (void)addParticipantsViewController:(id)controller completedSharingWithShareURL:(id)l ckShare:(id)share
 {
   v8 = type metadata accessor for URL();
   v9 = *(v8 - 8);
@@ -70,10 +70,10 @@
   __chkstk_darwin(v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v13 = a3;
-  v14 = a5;
-  v15 = self;
-  sub_10000A220(v12, v14);
+  controllerCopy = controller;
+  shareCopy = share;
+  selfCopy = self;
+  sub_10000A220(v12, shareCopy);
 
   (*(v9 + 8))(v12, v8);
 }

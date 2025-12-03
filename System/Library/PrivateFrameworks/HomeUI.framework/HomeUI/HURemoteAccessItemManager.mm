@@ -1,62 +1,62 @@
 @interface HURemoteAccessItemManager
 - (BOOL)_hasResidentDevice;
 - (BOOL)_isAllowedToEditTargetUser;
-- (BOOL)_isEditingAllowedForUser:(id)a3;
-- (BOOL)_isRemoteAccessAllowedForUser:(id)a3;
+- (BOOL)_isEditingAllowedForUser:(id)user;
+- (BOOL)_isRemoteAccessAllowedForUser:(id)user;
 - (BOOL)_isUserBeingEditedTheDeviceUser;
-- (BOOL)_isUserOwner:(id)a3;
+- (BOOL)_isUserOwner:(id)owner;
 - (HMUser)user;
-- (HURemoteAccessItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HURemoteAccessItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HURemoteAccessItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HURemoteAccessItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)_homeFuture;
 @end
 
 @implementation HURemoteAccessItemManager
 
-- (HURemoteAccessItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5
+- (HURemoteAccessItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate
 {
-  v8 = a3;
+  homeCopy = home;
   v12.receiver = self;
   v12.super_class = HURemoteAccessItemManager;
-  v9 = [(HFItemManager *)&v12 initWithDelegate:a5 sourceItem:a4];
+  v9 = [(HFItemManager *)&v12 initWithDelegate:delegate sourceItem:item];
   v10 = v9;
   if (v9)
   {
-    [(HURemoteAccessItemManager *)v9 setHomeForUser:v8];
+    [(HURemoteAccessItemManager *)v9 setHomeForUser:homeCopy];
   }
 
   return v10;
 }
 
-- (HURemoteAccessItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HURemoteAccessItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_userItem_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HURemoteAccessItemManager.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HURemoteAccessItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HURemoteAccessItemManager.m" lineNumber:38 description:{@"%s is unavailable; use %@ instead", "-[HURemoteAccessItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
 - (HMUser)user
 {
-  v2 = [(HFItemManager *)self sourceItem];
-  v3 = [v2 user];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  user = [sourceItem user];
 
-  return v3;
+  return user;
 }
 
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HURemoteAccessItemManager *)self homeForUser];
-  v4 = [v2 futureWithResult:v3];
+  homeForUser = [(HURemoteAccessItemManager *)self homeForUser];
+  v4 = [v2 futureWithResult:homeForUser];
 
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v4 = objc_alloc(MEMORY[0x277D14B38]);
   v15[0] = MEMORY[0x277D85DD0];
@@ -70,14 +70,14 @@
   v6 = MEMORY[0x277CBEB58];
   v7 = objc_alloc(MEMORY[0x277D14B40]);
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
-  v10 = [v8 setWithObject:v9];
+  allowRemoteAccessItem = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
+  v10 = [v8 setWithObject:allowRemoteAccessItem];
   v11 = [v7 initWithItems:v10];
   v12 = [v6 setWithObject:v11];
 
-  v13 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
 id __56__HURemoteAccessItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -124,24 +124,24 @@ id __56__HURemoteAccessItemManager__buildItemProvidersForHome___block_invoke(uin
   return v17;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
-  v7 = [v4 containsObject:v6];
+  allowRemoteAccessItem = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
+  v7 = [itemsCopy containsObject:allowRemoteAccessItem];
 
   if (v7)
   {
-    v8 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
-    v9 = [v4 containsObject:v8];
+    allowRemoteAccessItem2 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
+    v9 = [itemsCopy containsObject:allowRemoteAccessItem2];
 
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUControlAccessoriesRemotelySectionIdentifier"];
       v11 = MEMORY[0x277CBEA60];
-      v12 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
-      v13 = [v11 arrayWithObject:v12];
+      allowRemoteAccessItem3 = [(HURemoteAccessItemManager *)self allowRemoteAccessItem];
+      v13 = [v11 arrayWithObject:allowRemoteAccessItem3];
       [v10 setItems:v13];
 
       v14 = _HULocalizedStringWithDefaultValue(@"HUUsersCellControlAccessRemotelyFooter", @"HUUsersCellControlAccessRemotelyFooter", 1);
@@ -154,72 +154,72 @@ id __56__HURemoteAccessItemManager__buildItemProvidersForHome___block_invoke(uin
   return v5;
 }
 
-- (BOOL)_isRemoteAccessAllowedForUser:(id)a3
+- (BOOL)_isRemoteAccessAllowedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  LOBYTE(v4) = [v6 isRemoteAccessAllowed];
-  return v4;
+  LOBYTE(userCopy) = [v6 isRemoteAccessAllowed];
+  return userCopy;
 }
 
-- (BOOL)_isEditingAllowedForUser:(id)a3
+- (BOOL)_isEditingAllowedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  LOBYTE(v4) = [v6 isAdministrator];
-  return v4;
+  LOBYTE(userCopy) = [v6 isAdministrator];
+  return userCopy;
 }
 
-- (BOOL)_isUserOwner:(id)a3
+- (BOOL)_isUserOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  ownerCopy = owner;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:ownerCopy];
 
-  LOBYTE(v4) = [v6 isOwner];
-  return v4;
+  LOBYTE(ownerCopy) = [v6 isOwner];
+  return ownerCopy;
 }
 
 - (BOOL)_isUserBeingEditedTheDeviceUser
 {
-  v3 = [(HURemoteAccessItemManager *)self user];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 isEqual:v5];
+  user = [(HURemoteAccessItemManager *)self user];
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  v6 = [user isEqual:currentUser];
 
   return v6;
 }
 
 - (BOOL)_hasResidentDevice
 {
-  v3 = [(HFItemManager *)self home];
-  if ([v3 hf_supportsRemoteAccessRestrictions])
+  home = [(HFItemManager *)self home];
+  if ([home hf_supportsRemoteAccessRestrictions])
   {
-    v4 = 1;
+    hf_supportsPerUserRemoteAccess = 1;
   }
 
   else
   {
-    v5 = [(HFItemManager *)self home];
-    v4 = [v5 hf_supportsPerUserRemoteAccess];
+    home2 = [(HFItemManager *)self home];
+    hf_supportsPerUserRemoteAccess = [home2 hf_supportsPerUserRemoteAccess];
   }
 
-  return v4;
+  return hf_supportsPerUserRemoteAccess;
 }
 
 - (BOOL)_isAllowedToEditTargetUser
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [v3 currentUser];
-  if ([(HURemoteAccessItemManager *)self _isUserOwner:v4])
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  if ([(HURemoteAccessItemManager *)self _isUserOwner:currentUser])
   {
-    v5 = [(HURemoteAccessItemManager *)self _isUserBeingEditedTheDeviceUser];
+    _isUserBeingEditedTheDeviceUser = [(HURemoteAccessItemManager *)self _isUserBeingEditedTheDeviceUser];
 
-    if (!v5)
+    if (!_isUserBeingEditedTheDeviceUser)
     {
       LOBYTE(v6) = 1;
       return v6;
@@ -230,12 +230,12 @@ id __56__HURemoteAccessItemManager__buildItemProvidersForHome___block_invoke(uin
   {
   }
 
-  v7 = [(HFItemManager *)self home];
-  v8 = [v7 currentUser];
-  if ([(HURemoteAccessItemManager *)self _isEditingAllowedForUser:v8])
+  home2 = [(HFItemManager *)self home];
+  currentUser2 = [home2 currentUser];
+  if ([(HURemoteAccessItemManager *)self _isEditingAllowedForUser:currentUser2])
   {
-    v9 = [(HURemoteAccessItemManager *)self user];
-    v6 = ![(HURemoteAccessItemManager *)self _isEditingAllowedForUser:v9];
+    user = [(HURemoteAccessItemManager *)self user];
+    v6 = ![(HURemoteAccessItemManager *)self _isEditingAllowedForUser:user];
   }
 
   else

@@ -1,26 +1,26 @@
 @interface CPMLModel
-+ (id)initCPModelPath:(id)a3 withConfiguration:(id)a4;
++ (id)initCPModelPath:(id)path withConfiguration:(id)configuration;
 - (BOOL)reset;
-- (BOOL)updateModelWithCPDB:(id)a3;
-- (BOOL)updateModelWithDB:(id)a3;
-- (CPMLModel)initWithModelPath:(id)a3 withConfiguration:(id)a4;
-- (CPMLModel)initWithModelPath:(id)a3 withPropertyListPath:(id)a4;
-- (id)evalArray:(id)a3;
-- (id)evalDict:(id)a3;
-- (id)evalNSObjectV:(id)a3;
-- (id)evalString:(id)a3;
+- (BOOL)updateModelWithCPDB:(id)b;
+- (BOOL)updateModelWithDB:(id)b;
+- (CPMLModel)initWithModelPath:(id)path withConfiguration:(id)configuration;
+- (CPMLModel)initWithModelPath:(id)path withPropertyListPath:(id)listPath;
+- (id)evalArray:(id)array;
+- (id)evalDict:(id)dict;
+- (id)evalNSObjectV:(id)v;
+- (id)evalString:(id)string;
 - (id)getPropertyList;
-- (void)boundResult:(id)a3;
-- (void)initializeModel:(id)a3 withConfiguration:(id)a4;
+- (void)boundResult:(id)result;
+- (void)initializeModel:(id)model withConfiguration:(id)configuration;
 @end
 
 @implementation CPMLModel
 
-+ (id)initCPModelPath:(id)a3 withConfiguration:(id)a4
++ (id)initCPModelPath:(id)path withConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:@"machineLearningAlgorithm"];
+  pathCopy = path;
+  configurationCopy = configuration;
+  v7 = [configurationCopy objectForKey:@"machineLearningAlgorithm"];
   if ([v7 isEqualToString:@"KMEANS"])
   {
     v8 = objc_opt_new();
@@ -32,60 +32,60 @@
   }
 
   v9 = v8;
-  [(CPMLModel *)v8 initializeModel:v5 withConfiguration:v6];
+  [(CPMLModel *)v8 initializeModel:pathCopy withConfiguration:configurationCopy];
 
   return v9;
 }
 
-- (CPMLModel)initWithModelPath:(id)a3 withPropertyListPath:(id)a4
+- (CPMLModel)initWithModelPath:(id)path withPropertyListPath:(id)listPath
 {
-  v6 = a3;
-  objc_storeStrong(&self->_savedPlistPath, a4);
-  v7 = [(CPMLModel *)self getPropertyList];
-  if (v7)
+  pathCopy = path;
+  objc_storeStrong(&self->_savedPlistPath, listPath);
+  getPropertyList = [(CPMLModel *)self getPropertyList];
+  if (getPropertyList)
   {
-    self = [(CPMLModel *)self initWithModelPath:v6 withConfiguration:v7];
+    self = [(CPMLModel *)self initWithModelPath:pathCopy withConfiguration:getPropertyList];
   }
 
   return self;
 }
 
-- (CPMLModel)initWithModelPath:(id)a3 withConfiguration:(id)a4
+- (CPMLModel)initWithModelPath:(id)path withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CPMLModel;
   v8 = [(CPMLModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CPMLModel *)v8 initializeModel:v6 withConfiguration:v7];
+    [(CPMLModel *)v8 initializeModel:pathCopy withConfiguration:configurationCopy];
   }
 
   return v9;
 }
 
-- (void)initializeModel:(id)a3 withConfiguration:(id)a4
+- (void)initializeModel:(id)model withConfiguration:(id)configuration
 {
-  v15 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_modelPath, a3);
+  modelCopy = model;
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_modelPath, model);
   v8 = dispatch_queue_create("com.apple.coreprediction.mdb", 0);
   dispatch_queue = self->_dispatch_queue;
   self->_dispatch_queue = v8;
 
-  v10 = [[CPMLModelEvaluate alloc] initWithModel:v15 withPropertyList:v7];
+  v10 = [[CPMLModelEvaluate alloc] initWithModel:modelCopy withPropertyList:configurationCopy];
   cpModelEvaluate = self->cpModelEvaluate;
   self->cpModelEvaluate = v10;
 
-  v12 = [(CPMLModelEvaluate *)self->cpModelEvaluate getModelData];
-  self->_mData = v12;
-  if (v12)
+  getModelData = [(CPMLModelEvaluate *)self->cpModelEvaluate getModelData];
+  self->_mData = getModelData;
+  if (getModelData)
   {
-    v13 = *v12;
-    self->_realBase = &v12[*v12];
-    v14 = *&v12[v13];
+    v13 = *getModelData;
+    self->_realBase = &getModelData[*getModelData];
+    v14 = *&getModelData[v13];
     self->_totalBytesIntSection = v13;
     self->_totalBytesRealSection = v14;
   }
@@ -121,9 +121,9 @@
   return v5;
 }
 
-- (id)evalString:(id)a3
+- (id)evalString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -135,10 +135,10 @@
   block[1] = 3221225472;
   block[2] = __24__CPMLModel_evalString___block_invoke;
   block[3] = &unk_278E9EE38;
-  v10 = v4;
+  v10 = stringCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(dispatch_queue, block);
   v7 = v13[5];
 
@@ -157,9 +157,9 @@ uint64_t __24__CPMLModel_evalString___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)evalNSObjectV:(id)a3
+- (id)evalNSObjectV:(id)v
 {
-  v4 = a3;
+  vCopy = v;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -171,10 +171,10 @@ uint64_t __24__CPMLModel_evalString___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __27__CPMLModel_evalNSObjectV___block_invoke;
   block[3] = &unk_278E9EE38;
-  v10 = v4;
+  v10 = vCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = vCopy;
   dispatch_sync(dispatch_queue, block);
   v7 = v13[5];
 
@@ -193,9 +193,9 @@ uint64_t __27__CPMLModel_evalNSObjectV___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)evalArray:(id)a3
+- (id)evalArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -207,10 +207,10 @@ uint64_t __27__CPMLModel_evalNSObjectV___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __23__CPMLModel_evalArray___block_invoke;
   block[3] = &unk_278E9EE38;
-  v10 = v4;
+  v10 = arrayCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = arrayCopy;
   dispatch_sync(dispatch_queue, block);
   v7 = v13[5];
 
@@ -229,9 +229,9 @@ uint64_t __23__CPMLModel_evalArray___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)evalDict:(id)a3
+- (id)evalDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -243,10 +243,10 @@ uint64_t __23__CPMLModel_evalArray___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __22__CPMLModel_evalDict___block_invoke;
   block[3] = &unk_278E9EE38;
-  v10 = v4;
+  v10 = dictCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dictCopy;
   dispatch_sync(dispatch_queue, block);
   v7 = v13[5];
 
@@ -265,23 +265,23 @@ uint64_t __22__CPMLModel_evalDict___block_invoke(void *a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)boundResult:(id)a3
+- (void)boundResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   dispatch_queue = self->_dispatch_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __25__CPMLModel_boundResult___block_invoke;
   v7[3] = &unk_278E9EE60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resultCopy;
+  v6 = resultCopy;
   dispatch_async(dispatch_queue, v7);
 }
 
-- (BOOL)updateModelWithDB:(id)a3
+- (BOOL)updateModelWithDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -291,10 +291,10 @@ uint64_t __22__CPMLModel_evalDict___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __31__CPMLModel_updateModelWithDB___block_invoke;
   block[3] = &unk_278E9EE88;
-  v9 = v4;
-  v10 = self;
+  v9 = bCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = bCopy;
   dispatch_sync(dispatch_queue, block);
   LOBYTE(dispatch_queue) = *(v13 + 24);
 
@@ -308,9 +308,9 @@ void __31__CPMLModel_updateModelWithDB___block_invoke(void *a1)
   *(*(a1[6] + 8) + 24) = [*(a1[5] + 64) updateModel:?];
 }
 
-- (BOOL)updateModelWithCPDB:(id)a3
+- (BOOL)updateModelWithCPDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -320,10 +320,10 @@ void __31__CPMLModel_updateModelWithDB___block_invoke(void *a1)
   block[1] = 3221225472;
   block[2] = __33__CPMLModel_updateModelWithCPDB___block_invoke;
   block[3] = &unk_278E9EE38;
-  v9 = v4;
+  v9 = bCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = bCopy;
   dispatch_sync(dispatch_queue, block);
   LOBYTE(dispatch_queue) = *(v12 + 24);
 

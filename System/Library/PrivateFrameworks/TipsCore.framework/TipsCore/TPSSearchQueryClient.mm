@@ -1,12 +1,12 @@
 @interface TPSSearchQueryClient
 - (TPSSearchQueryClient)init;
-- (id)_objectCompletionOnClientQueue:(id)a3;
-- (void)_performWithProxyHandler:(id)a3 errorHandler:(id)a4;
-- (void)cancelQueryWithIdentifier:(id)a3;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)performQuery:(id)a3 completion:(id)a4;
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4;
+- (id)_objectCompletionOnClientQueue:(id)queue;
+- (void)_performWithProxyHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)cancelQueryWithIdentifier:(id)identifier;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)performQuery:(id)query completion:(id)completion;
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation TPSSearchQueryClient
@@ -34,15 +34,15 @@
   return v2;
 }
 
-- (void)performQuery:(id)a3 completion:(id)a4
+- (void)performQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(TPSSearchQueryClient *)self _objectCompletionOnClientQueue:a4];
+  queryCopy = query;
+  v7 = [(TPSSearchQueryClient *)self _objectCompletionOnClientQueue:completion];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __48__TPSSearchQueryClient_performQuery_completion___block_invoke;
   v12[3] = &unk_1E8101CF0;
-  v13 = v6;
+  v13 = queryCopy;
   v14 = v7;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -50,18 +50,18 @@
   v10[3] = &unk_1E8101CC8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = queryCopy;
   [(TPSSearchQueryClient *)self _performWithProxyHandler:v12 errorHandler:v10];
 }
 
-- (void)cancelQueryWithIdentifier:(id)a3
+- (void)cancelQueryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__TPSSearchQueryClient_cancelQueryWithIdentifier___block_invoke;
   v8[3] = &unk_1E8101D18;
-  v9 = v4;
+  v9 = identifierCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__TPSSearchQueryClient_cancelQueryWithIdentifier___block_invoke_2;
@@ -89,14 +89,14 @@ void __50__TPSSearchQueryClient_cancelQueryWithIdentifier___block_invoke_2(uint6
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__TPSSearchQueryClient_reindexAllSearchableItemsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8101CA0;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__TPSSearchQueryClient_reindexAllSearchableItemsWithCompletionHandler___block_invoke_2;
@@ -106,34 +106,34 @@ void __50__TPSSearchQueryClient_cancelQueryWithIdentifier___block_invoke_2(uint6
   [(TPSSearchQueryClient *)self _performWithProxyHandler:v8 errorHandler:v6];
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__TPSSearchQueryClient_reindexSearchableItemsWithIdentifiers_completionHandler___block_invoke;
   v12[3] = &unk_1E8101CF0;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifiersCopy;
+  v14 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__TPSSearchQueryClient_reindexSearchableItemsWithIdentifiers_completionHandler___block_invoke_2;
   v10[3] = &unk_1E8101CC8;
   v11 = v14;
   v8 = v14;
-  v9 = v6;
+  v9 = identifiersCopy;
   [(TPSSearchQueryClient *)self _performWithProxyHandler:v12 errorHandler:v10];
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__TPSSearchQueryClient_deleteAllSearchableItemsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8101CA0;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__TPSSearchQueryClient_deleteAllSearchableItemsWithCompletionHandler___block_invoke_2;
@@ -143,30 +143,30 @@ void __50__TPSSearchQueryClient_cancelQueryWithIdentifier___block_invoke_2(uint6
   [(TPSSearchQueryClient *)self _performWithProxyHandler:v8 errorHandler:v6];
 }
 
-- (void)_performWithProxyHandler:(id)a3 errorHandler:(id)a4
+- (void)_performWithProxyHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v10 = a3;
+  handlerCopy = handler;
   serviceProxy = self->_serviceProxy;
-  v7 = a4;
-  v8 = [(TPSServiceConnection *)serviceProxy connection];
-  v9 = [v8 remoteObjectProxyWithErrorHandler:v7];
+  errorHandlerCopy = errorHandler;
+  connection = [(TPSServiceConnection *)serviceProxy connection];
+  v9 = [connection remoteObjectProxyWithErrorHandler:errorHandlerCopy];
 
   if (v9)
   {
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (id)_objectCompletionOnClientQueue:(id)a3
+- (id)_objectCompletionOnClientQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__TPSSearchQueryClient__objectCompletionOnClientQueue___block_invoke;
   v8[3] = &unk_1E8101D80;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = queueCopy;
+  v5 = queueCopy;
   v6 = [v8 copy];
 
   return v6;

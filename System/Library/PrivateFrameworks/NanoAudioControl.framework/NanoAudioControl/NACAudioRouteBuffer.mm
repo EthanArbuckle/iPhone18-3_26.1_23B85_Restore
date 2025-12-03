@@ -1,23 +1,23 @@
 @interface NACAudioRouteBuffer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRouteType:(id)a3;
+- (int)StringAsRouteType:(id)type;
 - (int)routeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPicked:(BOOL)a3;
-- (void)setHasSupportsVolumeControl:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPicked:(BOOL)picked;
+- (void)setHasSupportsVolumeControl:(BOOL)control;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NACAudioRouteBuffer
 
-- (void)setHasSupportsVolumeControl:(BOOL)a3
+- (void)setHasSupportsVolumeControl:(BOOL)control
 {
-  if (a3)
+  if (control)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPicked:(BOOL)a3
+- (void)setHasPicked:(BOOL)picked
 {
-  if (a3)
+  if (picked)
   {
     v3 = 2;
   }
@@ -58,130 +58,130 @@
   }
 }
 
-- (int)StringAsRouteType:(id)a3
+- (int)StringAsRouteType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Speaker"])
+  else if ([typeCopy isEqualToString:@"Speaker"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Headphones"])
+  else if ([typeCopy isEqualToString:@"Headphones"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AirPods"])
+  else if ([typeCopy isEqualToString:@"AirPods"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Powerbeats"])
+  else if ([typeCopy isEqualToString:@"Powerbeats"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"BeatsSolo"])
+  else if ([typeCopy isEqualToString:@"BeatsSolo"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"BeatsStudio"])
+  else if ([typeCopy isEqualToString:@"BeatsStudio"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"BeatsX"])
+  else if ([typeCopy isEqualToString:@"BeatsX"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CarPlay"])
+  else if ([typeCopy isEqualToString:@"CarPlay"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AppleTV"])
+  else if ([typeCopy isEqualToString:@"AppleTV"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"HomePod"])
+  else if ([typeCopy isEqualToString:@"HomePod"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"AirTunes"])
+  else if ([typeCopy isEqualToString:@"AirTunes"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"HomePodPair"])
+  else if ([typeCopy isEqualToString:@"HomePodPair"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"TV"])
+  else if ([typeCopy isEqualToString:@"TV"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"PowerbeatsPro"])
+  else if ([typeCopy isEqualToString:@"PowerbeatsPro"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Beats419"])
+  else if ([typeCopy isEqualToString:@"Beats419"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"Beats364"])
+  else if ([typeCopy isEqualToString:@"Beats364"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"B298"])
+  else if ([typeCopy isEqualToString:@"B298"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"B515"])
+  else if ([typeCopy isEqualToString:@"B515"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"B372"])
+  else if ([typeCopy isEqualToString:@"B372"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"B520"])
+  else if ([typeCopy isEqualToString:@"B520"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"B520Pair"])
+  else if ([typeCopy isEqualToString:@"B520Pair"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"B507"])
+  else if ([typeCopy isEqualToString:@"B507"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"B688"])
+  else if ([typeCopy isEqualToString:@"B688"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"B494"])
+  else if ([typeCopy isEqualToString:@"B494"])
   {
     v4 = 24;
   }
@@ -200,20 +200,20 @@
   v8.receiver = self;
   v8.super_class = NACAudioRouteBuffer;
   v4 = [(NACAudioRouteBuffer *)&v8 description];
-  v5 = [(NACAudioRouteBuffer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NACAudioRouteBuffer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uniqueIdentifier = self->_uniqueIdentifier;
   if (uniqueIdentifier)
   {
-    [v3 setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+    [dictionary setObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   }
 
   routeName = self->_routeName;
@@ -276,20 +276,20 @@ LABEL_15:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_routeName)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -297,7 +297,7 @@ LABEL_15:
   {
     supportsVolumeControl = self->_supportsVolumeControl;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -318,39 +318,39 @@ LABEL_7:
 
   picked = self->_picked;
   PBDataWriterWriteBOOLField();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_8:
     routeType = self->_routeType;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueIdentifier)
   {
-    [v4 setUniqueIdentifier:?];
-    v4 = v6;
+    [toCopy setUniqueIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_routeName)
   {
     [v6 setRouteName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 33) = self->_supportsVolumeControl;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 33) = self->_supportsVolumeControl;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -369,26 +369,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 32) = self->_picked;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 32) = self->_picked;
+  *(toCopy + 36) |= 2u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v4 + 4) = self->_routeType;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 4) = self->_routeType;
+    *(toCopy + 36) |= 1u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_routeName copyWithZone:a3];
+  v8 = [(NSString *)self->_routeName copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
@@ -430,16 +430,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 3))
+  if (uniqueIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -448,7 +448,7 @@ LABEL_4:
   }
 
   routeName = self->_routeName;
-  if (routeName | *(v4 + 1))
+  if (routeName | *(equalCopy + 1))
   {
     if (![(NSString *)routeName isEqual:?])
     {
@@ -458,62 +458,62 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_25;
     }
 
-    v8 = *(v4 + 33);
+    v8 = *(equalCopy + 33);
     if (self->_supportsVolumeControl)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0)
+    if ((*(equalCopy + 36) & 2) == 0)
     {
       goto LABEL_25;
     }
 
-    v9 = *(v4 + 32);
+    v9 = *(equalCopy + 32);
     if (self->_picked)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_25;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_routeType == *(v4 + 4))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_routeType == *(equalCopy + 4))
     {
       v7 = 1;
       goto LABEL_26;
@@ -570,28 +570,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NACAudioRouteBuffer *)self setUniqueIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NACAudioRouteBuffer *)self setRouteName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) != 0)
   {
-    self->_supportsVolumeControl = *(v4 + 33);
+    self->_supportsVolumeControl = *(fromCopy + 33);
     *&self->_has |= 4u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -604,17 +604,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 36) & 2) == 0)
+  else if ((*(fromCopy + 36) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_picked = *(v4 + 32);
+  self->_picked = *(fromCopy + 32);
   *&self->_has |= 2u;
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
 LABEL_8:
-    self->_routeType = *(v4 + 4);
+    self->_routeType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

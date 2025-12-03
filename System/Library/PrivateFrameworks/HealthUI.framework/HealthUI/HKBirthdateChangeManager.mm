@@ -1,46 +1,46 @@
 @interface HKBirthdateChangeManager
 + (id)_birthdayCalendar;
-+ (void)showDisabledWarningWithAge:(int64_t)a3 isHealthChecklistAvailable:(BOOL)a4 presentingViewController:(id)a5 withAlertActions:(id)a6;
-+ (void)showDisabledWarningWithAge:(int64_t)a3 presentingViewController:(id)a4;
-+ (void)showDisabledWarningWithHealthChecklistWithAge:(int64_t)a3 presentingViewController:(id)a4 openHealthChecklistInContext:(BOOL)a5;
-- (HKBirthdateChangeManager)initWithHealthStore:(id)a3;
-- (id)setBirthdate:(id)a3 withError:(id *)a4;
-- (int64_t)_ageFromBirthDate:(id)a3;
-- (int64_t)_ageFromBirthDateComponents:(id)a3;
++ (void)showDisabledWarningWithAge:(int64_t)age isHealthChecklistAvailable:(BOOL)available presentingViewController:(id)controller withAlertActions:(id)actions;
++ (void)showDisabledWarningWithAge:(int64_t)age presentingViewController:(id)controller;
++ (void)showDisabledWarningWithHealthChecklistWithAge:(int64_t)age presentingViewController:(id)controller openHealthChecklistInContext:(BOOL)context;
+- (HKBirthdateChangeManager)initWithHealthStore:(id)store;
+- (id)setBirthdate:(id)birthdate withError:(id *)error;
+- (int64_t)_ageFromBirthDate:(id)date;
+- (int64_t)_ageFromBirthDateComponents:(id)components;
 @end
 
 @implementation HKBirthdateChangeManager
 
-- (HKBirthdateChangeManager)initWithHealthStore:(id)a3
+- (HKBirthdateChangeManager)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v8.receiver = self;
   v8.super_class = HKBirthdateChangeManager;
   v5 = [(HKBirthdateChangeManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(HKBirthdateChangeManager *)v5 setHealthStore:v4];
+    [(HKBirthdateChangeManager *)v5 setHealthStore:storeCopy];
   }
 
   return v6;
 }
 
-- (id)setBirthdate:(id)a3 withError:(id *)a4
+- (id)setBirthdate:(id)birthdate withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(HKBirthdateChangeManager *)self healthStore];
+  birthdateCopy = birthdate;
+  healthStore = [(HKBirthdateChangeManager *)self healthStore];
   v24 = 0;
-  v8 = [v7 dateOfBirthComponentsWithError:&v24];
+  v8 = [healthStore dateOfBirthComponentsWithError:&v24];
   v9 = v24;
 
-  v10 = [(HKBirthdateChangeManager *)self healthStore];
+  healthStore2 = [(HKBirthdateChangeManager *)self healthStore];
   v23 = v9;
-  v11 = [v10 _setDateOfBirthComponents:v6 error:&v23];
+  v11 = [healthStore2 _setDateOfBirthComponents:birthdateCopy error:&v23];
   v12 = v23;
 
   v13 = [(HKBirthdateChangeManager *)self _ageFromBirthDateComponents:v8];
-  v14 = [(HKBirthdateChangeManager *)self _ageFromBirthDateComponents:v6];
+  v14 = [(HKBirthdateChangeManager *)self _ageFromBirthDateComponents:birthdateCopy];
 
   v15 = objc_alloc_init(HKBirthdateChangeStatus);
   v16 = v15;
@@ -70,10 +70,10 @@
   v20 = v12;
   if (v12)
   {
-    if (a4)
+    if (error)
     {
       v21 = v20;
-      *a4 = v20;
+      *error = v20;
     }
 
     else
@@ -85,31 +85,31 @@
   return v16;
 }
 
-+ (void)showDisabledWarningWithAge:(int64_t)a3 presentingViewController:(id)a4
++ (void)showDisabledWarningWithAge:(int64_t)age presentingViewController:(id)controller
 {
-  v5 = a4;
-  [objc_opt_class() showDisabledWarningWithAge:a3 isHealthChecklistAvailable:0 presentingViewController:v5 withAlertActions:MEMORY[0x1E695E0F0]];
+  controllerCopy = controller;
+  [objc_opt_class() showDisabledWarningWithAge:age isHealthChecklistAvailable:0 presentingViewController:controllerCopy withAlertActions:MEMORY[0x1E695E0F0]];
 }
 
-+ (void)showDisabledWarningWithHealthChecklistWithAge:(int64_t)a3 presentingViewController:(id)a4 openHealthChecklistInContext:(BOOL)a5
++ (void)showDisabledWarningWithHealthChecklistWithAge:(int64_t)age presentingViewController:(id)controller openHealthChecklistInContext:(BOOL)context
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69DC648];
   v8 = MEMORY[0x1E696AAE8];
-  v9 = a4;
+  controllerCopy = controller;
   v10 = [v8 bundleWithIdentifier:@"com.apple.HealthUI"];
   v11 = [v10 localizedStringForKey:@"EDIT_DETAILS_ACTION_CHECKLIST" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __128__HKBirthdateChangeManager_showDisabledWarningWithHealthChecklistWithAge_presentingViewController_openHealthChecklistInContext___block_invoke;
   v15[3] = &__block_descriptor_33_e23_v16__0__UIAlertAction_8l;
-  v16 = a5;
+  contextCopy = context;
   v12 = [v7 actionWithTitle:v11 style:0 handler:v15];
 
   v13 = objc_opt_class();
   v17[0] = v12;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-  [v13 showDisabledWarningWithAge:a3 isHealthChecklistAvailable:1 presentingViewController:v9 withAlertActions:v14];
+  [v13 showDisabledWarningWithAge:age isHealthChecklistAvailable:1 presentingViewController:controllerCopy withAlertActions:v14];
 }
 
 void __128__HKBirthdateChangeManager_showDisabledWarningWithHealthChecklistWithAge_presentingViewController_openHealthChecklistInContext___block_invoke(uint64_t a1)
@@ -132,16 +132,16 @@ void __128__HKBirthdateChangeManager_showDisabledWarningWithHealthChecklistWithA
   [v5 openSensitiveURL:v4 withOptions:MEMORY[0x1E695E0F8]];
 }
 
-+ (void)showDisabledWarningWithAge:(int64_t)a3 isHealthChecklistAvailable:(BOOL)a4 presentingViewController:(id)a5 withAlertActions:(id)a6
++ (void)showDisabledWarningWithAge:(int64_t)age isHealthChecklistAvailable:(BOOL)available presentingViewController:(id)controller withAlertActions:(id)actions
 {
-  v7 = a4;
+  availableCopy = available;
   v36 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a6;
+  controllerCopy = controller;
+  actionsCopy = actions;
   v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = [v11 localizedStringForKey:@"EDIT_DETAILS_AGE_UNDER_13_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  if (a3 < 0 && v7)
+  if (age < 0 && availableCopy)
   {
     v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v14 = v13;
@@ -151,7 +151,7 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (v7)
+  if (availableCopy)
   {
     v17 = MEMORY[0x1E696AEC0];
     v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -161,7 +161,7 @@ LABEL_4:
 
   else
   {
-    if (a3 < 0)
+    if (age < 0)
     {
       v13 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v14 = v13;
@@ -176,7 +176,7 @@ LABEL_4:
   }
 
   v20 = [v18 localizedStringForKey:v19 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v16 = [v17 localizedStringWithFormat:v20, a3];
+  v16 = [v17 localizedStringWithFormat:v20, age];
 
 LABEL_10:
   v21 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v12 message:v16 preferredStyle:1];
@@ -184,7 +184,7 @@ LABEL_10:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = v10;
+  v22 = actionsCopy;
   v23 = [v22 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v23)
   {
@@ -217,33 +217,33 @@ LABEL_10:
 
   [v21 addAction:v30];
   [v21 setPreferredAction:v30];
-  [v9 presentViewController:v21 animated:1 completion:0];
+  [controllerCopy presentViewController:v21 animated:1 completion:0];
 }
 
-- (int64_t)_ageFromBirthDateComponents:(id)a3
+- (int64_t)_ageFromBirthDateComponents:(id)components
 {
-  if (!a3)
+  if (!components)
   {
     return -1;
   }
 
-  v4 = a3;
+  componentsCopy = components;
   v5 = +[HKBirthdateChangeManager _birthdayCalendar];
-  v6 = [v5 dateFromComponents:v4];
+  v6 = [v5 dateFromComponents:componentsCopy];
 
   v7 = [(HKBirthdateChangeManager *)self _ageFromBirthDate:v6];
   return v7;
 }
 
-- (int64_t)_ageFromBirthDate:(id)a3
+- (int64_t)_ageFromBirthDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[HKBirthdateChangeManager _birthdayCalendar];
-  v6 = [(HKBirthdateChangeManager *)self _nowDate];
-  v7 = [v5 components:4 fromDate:v4 toDate:v6 options:0];
+  _nowDate = [(HKBirthdateChangeManager *)self _nowDate];
+  v7 = [v5 components:4 fromDate:dateCopy toDate:_nowDate options:0];
 
-  v8 = [v7 year];
-  return v8;
+  year = [v7 year];
+  return year;
 }
 
 + (id)_birthdayCalendar

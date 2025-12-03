@@ -5,12 +5,12 @@
 - (void)dealloc;
 - (void)invalidateAggregateStatsTimerSource;
 - (void)invalidateWiFiAdviceMonitorTimerSource;
-- (void)reportEvent:(unsigned int)a3 details:(id)a4;
+- (void)reportEvent:(unsigned int)event details:(id)details;
 @end
 
 @implementation NRAutoLinkUpgradeMonitor
 
-- (void)reportEvent:(unsigned int)a3 details:(id)a4
+- (void)reportEvent:(unsigned int)event details:(id)details
 {
   if (self)
   {
@@ -23,9 +23,9 @@
   }
 
   v8 = nrUUID;
-  v9 = a4;
+  detailsCopy = details;
   v10 = [(NRAutoLinkUpgradeMonitor *)self description];
-  sub_1000059A8(v8, a3, v10, v9);
+  sub_1000059A8(v8, event, v10, detailsCopy);
 }
 
 - (void)invalidateAggregateStatsTimerSource
@@ -45,8 +45,8 @@
   {
     v13[5] = v2;
     v13[6] = v3;
-    v5 = [(NRAutoLinkUpgradeMonitor *)self queue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    queue = [(NRAutoLinkUpgradeMonitor *)self queue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
     dispatch_source_set_timer(v6, 0x8000000000000000, 0x13A52453C000uLL, 0x12A05F200uLL);
     objc_initWeak(v13, self);
@@ -85,8 +85,8 @@
   {
     v14[5] = v2;
     v14[6] = v3;
-    v5 = [(NRAutoLinkUpgradeMonitor *)self queue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    queue = [(NRAutoLinkUpgradeMonitor *)self queue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
 
     v7 = dispatch_time(0, 1800000000000);
     dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x12A05F200uLL);
@@ -134,7 +134,7 @@
     v7 = v6;
     v8 = _NRCopyLogObjectForNRUUID();
     v11 = 397;
-    v12 = self;
+    selfCopy = self;
     v9 = "";
     v10 = "[NRAutoLinkUpgradeMonitor dealloc]";
     _NRLogWithArgs();
@@ -157,18 +157,18 @@
 {
   v3 = [NSString alloc];
   identifier = self->_identifier;
-  v5 = [(NRAutoLinkUpgradeMonitor *)self started];
+  started = [(NRAutoLinkUpgradeMonitor *)self started];
   totalReceivedUpdates = self->_totalReceivedUpdates;
-  v7 = [(NRAutoLinkUpgradeMonitor *)self lastReceivedAdvice];
-  if (v7 <= 1)
+  lastReceivedAdvice = [(NRAutoLinkUpgradeMonitor *)self lastReceivedAdvice];
+  if (lastReceivedAdvice <= 1)
   {
-    if (!v7)
+    if (!lastReceivedAdvice)
     {
       v8 = @"None";
       goto LABEL_13;
     }
 
-    if (v7 == 1)
+    if (lastReceivedAdvice == 1)
     {
       v8 = @"BluetoothDefault";
       goto LABEL_13;
@@ -177,7 +177,7 @@
 
   else
   {
-    switch(v7)
+    switch(lastReceivedAdvice)
     {
       case 2:
         v8 = @"BluetoothClassic";
@@ -191,10 +191,10 @@
     }
   }
 
-  v8 = [[NSString alloc] initWithFormat:@"Unknown(%llu)", v7];
+  v8 = [[NSString alloc] initWithFormat:@"Unknown(%llu)", lastReceivedAdvice];
 LABEL_13:
   v9 = "Not-";
-  if (v5)
+  if (started)
   {
     v9 = "";
   }

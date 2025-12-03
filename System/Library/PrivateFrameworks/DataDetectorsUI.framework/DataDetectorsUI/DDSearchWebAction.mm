@@ -1,13 +1,13 @@
 @interface DDSearchWebAction
-- (DDSearchWebAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5;
-- (void)performFromView:(id)a3;
+- (DDSearchWebAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context;
+- (void)performFromView:(id)view;
 @end
 
 @implementation DDSearchWebAction
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  a3;
+  view;
   if (self->super.super._result)
   {
     v4 = DDResultGetMatchedString();
@@ -32,16 +32,16 @@ LABEL_6:
   MEMORY[0x2821F96F8]();
 }
 
-- (DDSearchWebAction)initWithQueryString:(id)a3 range:(_NSRange)a4 context:(id)a5
+- (DDSearchWebAction)initWithQueryString:(id)string range:(_NSRange)range context:(id)context
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 substringWithRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
+  v10 = [string substringWithRange:{location, length}];
   query = self->_query;
   self->_query = v10;
 
-  v12 = [(DDAction *)self initWithURL:0 result:0 context:v9];
+  v12 = [(DDAction *)self initWithURL:0 result:0 context:contextCopy];
   return v12;
 }
 

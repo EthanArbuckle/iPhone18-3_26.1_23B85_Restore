@@ -8,25 +8,25 @@
 
 - (id)_musicKit_self_reorderItemsCommand
 {
-  if ([a1 conformsToProtocol:&unk_1F50DD928])
+  if ([self conformsToProtocol:&unk_1F50DD928])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)musicKit_reorderItemsCommand_moveItem:()MusicKit_SoftLinking_MPCPlayerReorderItemsCommand afterItem:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _musicKit_self_reorderItemsCommand];
-  v9 = [v8 moveItem:v7 afterItem:v6];
+  _musicKit_self_reorderItemsCommand = [self _musicKit_self_reorderItemsCommand];
+  v9 = [_musicKit_self_reorderItemsCommand moveItem:v7 afterItem:v6];
 
   return v9;
 }
@@ -35,8 +35,8 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _musicKit_self_reorderItemsCommand];
-  v9 = [v8 moveItem:v7 beforeItem:v6];
+  _musicKit_self_reorderItemsCommand = [self _musicKit_self_reorderItemsCommand];
+  v9 = [_musicKit_self_reorderItemsCommand moveItem:v7 beforeItem:v6];
 
   return v9;
 }

@@ -1,48 +1,48 @@
 @interface MRAnimatedArtwork
-- (MRAnimatedArtwork)initWithAssetFileURL:(id)a3;
-- (MRAnimatedArtwork)initWithProtobuf:(id)a3;
-- (id)protobufWithFormat:(id)a3;
+- (MRAnimatedArtwork)initWithAssetFileURL:(id)l;
+- (MRAnimatedArtwork)initWithProtobuf:(id)protobuf;
+- (id)protobufWithFormat:(id)format;
 @end
 
 @implementation MRAnimatedArtwork
 
-- (MRAnimatedArtwork)initWithAssetFileURL:(id)a3
+- (MRAnimatedArtwork)initWithAssetFileURL:(id)l
 {
-  v4 = a3;
-  if ([v4 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
     v10.receiver = self;
     v10.super_class = MRAnimatedArtwork;
     v5 = [(MRAnimatedArtwork *)&v10 init];
     if (v5)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:v4 readonly:1];
+      v6 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:lCopy readonly:1];
       assetFileURLWrapper = v5->_assetFileURLWrapper;
       v5->_assetFileURLWrapper = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (MRAnimatedArtwork)initWithProtobuf:(id)a3
+- (MRAnimatedArtwork)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if ([v4 hasAssetFileURLData])
+  protobufCopy = protobuf;
+  if ([protobufCopy hasAssetFileURLData])
   {
     v5 = MEMORY[0x1E696ACD0];
     v6 = objc_opt_class();
-    v7 = [v4 assetFileURLData];
+    assetFileURLData = [protobufCopy assetFileURLData];
     v16 = 0;
-    v8 = [v5 unarchivedObjectOfClass:v6 fromData:v7 error:&v16];
+    v8 = [v5 unarchivedObjectOfClass:v6 fromData:assetFileURLData error:&v16];
     v9 = v16;
 
     if (v8)
@@ -57,7 +57,7 @@
       }
 
       self = v11;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -68,21 +68,21 @@
         [(MRAnimatedArtwork *)v9 initWithProtobuf:v13];
       }
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)protobufWithFormat:(id)a3
+- (id)protobufWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   assetFileURLWrapper = self->_assetFileURLWrapper;
   v11 = 0;
   v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:assetFileURLWrapper requiringSecureCoding:1 error:&v11];
@@ -90,7 +90,7 @@
   if (v6)
   {
     v8 = objc_alloc_init(_MRAnimatedArtworkProtobuf);
-    [(_MRAnimatedArtworkProtobuf *)v8 setType:v4];
+    [(_MRAnimatedArtworkProtobuf *)v8 setType:formatCopy];
     [(_MRAnimatedArtworkProtobuf *)v8 setAssetFileURLData:v6];
   }
 

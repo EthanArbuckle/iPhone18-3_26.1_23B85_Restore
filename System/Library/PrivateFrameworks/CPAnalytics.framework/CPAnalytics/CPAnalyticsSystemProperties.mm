@@ -2,9 +2,9 @@
 + (NSArray)dynamicPhotoLibraryProperties;
 + (NSArray)staticPhotoLibraryProperties;
 - (CPAnalyticsSystemProperties)init;
-- (id)propertyForKey:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5;
-- (void)addDynamicProperty:(id)a3 withProvider:(id)a4;
-- (void)addProperty:(id)a3 withValue:(id)a4;
+- (id)propertyForKey:(id)key forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction;
+- (void)addDynamicProperty:(id)property withProvider:(id)provider;
+- (void)addProperty:(id)property withValue:(id)value;
 - (void)removePhotoLibraryProperties;
 @end
 
@@ -29,22 +29,22 @@
 
 - (void)removePhotoLibraryProperties
 {
-  v3 = [(CPAnalyticsSystemProperties *)self systemProperties];
-  v4 = [objc_opt_class() staticPhotoLibraryProperties];
-  [v3 removeObjectsForKeys:v4];
+  systemProperties = [(CPAnalyticsSystemProperties *)self systemProperties];
+  staticPhotoLibraryProperties = [objc_opt_class() staticPhotoLibraryProperties];
+  [systemProperties removeObjectsForKeys:staticPhotoLibraryProperties];
 
-  v6 = [(CPAnalyticsSystemProperties *)self dynamicProperties];
-  v5 = [objc_opt_class() dynamicPhotoLibraryProperties];
-  [v6 removeObjectsForKeys:v5];
+  dynamicProperties = [(CPAnalyticsSystemProperties *)self dynamicProperties];
+  dynamicPhotoLibraryProperties = [objc_opt_class() dynamicPhotoLibraryProperties];
+  [dynamicProperties removeObjectsForKeys:dynamicPhotoLibraryProperties];
 }
 
-- (id)propertyForKey:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5
+- (id)propertyForKey:(id)key forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CPAnalyticsSystemProperties *)self systemProperties];
-  v12 = [v11 objectForKey:v8];
+  keyCopy = key;
+  nameCopy = name;
+  extractionCopy = extraction;
+  systemProperties = [(CPAnalyticsSystemProperties *)self systemProperties];
+  v12 = [systemProperties objectForKey:keyCopy];
 
   if (v12)
   {
@@ -53,31 +53,31 @@
 
   else
   {
-    v14 = [(CPAnalyticsSystemProperties *)self dynamicProperties];
-    v15 = [v14 objectForKey:v8];
+    dynamicProperties = [(CPAnalyticsSystemProperties *)self dynamicProperties];
+    v15 = [dynamicProperties objectForKey:keyCopy];
 
-    v13 = [v15 getDynamicProperty:v8 forEventName:v9 payloadForSystemPropertyExtraction:v10];
+    v13 = [v15 getDynamicProperty:keyCopy forEventName:nameCopy payloadForSystemPropertyExtraction:extractionCopy];
   }
 
   return v13;
 }
 
-- (void)addDynamicProperty:(id)a3 withProvider:(id)a4
+- (void)addDynamicProperty:(id)property withProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPAnalyticsSystemProperties *)self dynamicProperties];
-  [v8 setObject:v6 forKey:v7];
+  providerCopy = provider;
+  propertyCopy = property;
+  dynamicProperties = [(CPAnalyticsSystemProperties *)self dynamicProperties];
+  [dynamicProperties setObject:providerCopy forKey:propertyCopy];
 }
 
-- (void)addProperty:(id)a3 withValue:(id)a4
+- (void)addProperty:(id)property withValue:(id)value
 {
-  if (a4)
+  if (value)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(CPAnalyticsSystemProperties *)self systemProperties];
-    [v8 setValue:v6 forKey:v7];
+    valueCopy = value;
+    propertyCopy = property;
+    systemProperties = [(CPAnalyticsSystemProperties *)self systemProperties];
+    [systemProperties setValue:valueCopy forKey:propertyCopy];
   }
 }
 

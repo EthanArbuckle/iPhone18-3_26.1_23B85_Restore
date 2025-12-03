@@ -11,11 +11,11 @@
 - (void)_af_validateAndFinalize
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 applicationIdentifier];
+  applicationIdentifier = [self applicationIdentifier];
 
-  if (!v2)
+  if (!applicationIdentifier)
   {
-    if ([a1 state] == 1)
+    if ([self state] == 1)
     {
       v3 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -26,28 +26,28 @@
       }
     }
 
-    v4 = [a1 listeningToItem];
+    listeningToItem = [self listeningToItem];
 
-    if (v4)
+    if (listeningToItem)
     {
       v5 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
       {
         v6 = v5;
-        v7 = [a1 listeningToItem];
+        listeningToItem2 = [self listeningToItem];
         v9 = 136315394;
         v10 = "[SAMPQueueState(SiriMediaRemoteHelpers) _af_validateAndFinalize]";
         v11 = 2112;
-        v12 = v7;
+        v12 = listeningToItem2;
         _os_log_impl(&dword_1912FE000, v6, OS_LOG_TYPE_INFO, "%s We have a NowPlaying listeningToItem but no ApplicationDisplayID for it %@", &v9, 0x16u);
       }
     }
 
-    [a1 setState:3];
-    [a1 setListeningToItem:0];
-    [a1 setPlaybackQueuePosition:0];
-    [a1 setSource:0];
-    [a1 setPlaybackRate:0];
+    [self setState:3];
+    [self setListeningToItem:0];
+    [self setPlaybackQueuePosition:0];
+    [self setSource:0];
+    [self setPlaybackRate:0];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -58,10 +58,10 @@
   v64 = *MEMORY[0x1E69E9840];
   v6 = AFValidatedNowPlayingInfo(a3);
   v7 = [v6 objectForKey:*MEMORY[0x1E69B0F20]];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = 0x1E69C78D0;
-  if (!v8)
+  if (!bOOLValue)
   {
     v9 = 0x1E69C78D8;
   }
@@ -83,13 +83,13 @@
   [v10 setExternalIdentifier:v15];
 
   v16 = AFGetCurrentItemAdamIDFromNowPlayingInfo(v6);
-  v17 = [v16 stringValue];
-  [v10 setAdamIdentifier:v17];
+  stringValue = [v16 stringValue];
+  [v10 setAdamIdentifier:stringValue];
 
   switch(a4)
   {
     case 0:
-      v19 = [a1 _mediaTypeFromNowPlayingInfo:v6];
+      v19 = [self _mediaTypeFromNowPlayingInfo:v6];
 LABEL_12:
       [v10 setMediaType:v19];
       goto LABEL_14;
@@ -110,11 +110,11 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v20 = [a1 _mediaTypeFromNowPlayingInfo:v6];
+  v20 = [self _mediaTypeFromNowPlayingInfo:v6];
   [v10 setMediaType:v20];
 
 LABEL_14:
-  v21 = [a1 _mediaItemIdURLFromNowPlayingInfo:v6];
+  v21 = [self _mediaItemIdURLFromNowPlayingInfo:v6];
   [v10 setIdentifier:v21];
 
   v22 = objc_alloc_init(MEMORY[0x1E69C78F0]);
@@ -139,8 +139,8 @@ LABEL_14:
     v29 = [v6 objectForKey:*MEMORY[0x1E69B1028]];
     if (v29)
     {
-      v30 = [MEMORY[0x1E695DF00] date];
-      [v30 timeIntervalSinceDate:v29];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:v29];
       v32 = v31;
 
       v33 = AFSiriLogContextDaemon;
@@ -224,7 +224,7 @@ LABEL_14:
 
   else if (!v24)
   {
-    if (v8)
+    if (bOOLValue)
     {
       goto LABEL_44;
     }
@@ -233,31 +233,31 @@ LABEL_14:
   }
 
   [v10 setPlaybackInfo:v22];
-  if (v8)
+  if (bOOLValue)
   {
     goto LABEL_44;
   }
 
 LABEL_40:
-  v43 = [v10 title];
-  if (v43 || ([v10 album], (v43 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v10, "artist"), (v43 = objc_claimAutoreleasedReturnValue()) != 0))
+  title = [v10 title];
+  if (title || ([v10 album], (title = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v10, "artist"), (title = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v60 = [v10 identifier];
+    identifier = [v10 identifier];
 
-    if (!v60)
+    if (!identifier)
     {
 
-      [a1 setListeningToItem:0];
+      [self setListeningToItem:0];
       goto LABEL_48;
     }
   }
 
 LABEL_44:
-  [a1 setListeningToItem:v10];
+  [self setListeningToItem:v10];
   if (v10)
   {
     v44 = [v6 objectForKey:*MEMORY[0x1E69B0FA8]];
@@ -268,9 +268,9 @@ LABEL_44:
       v45 = MEMORY[0x1E69C8028];
     }
 
-    [a1 setSource:*v45];
+    [self setSource:*v45];
     v46 = [v6 objectForKey:*MEMORY[0x1E69B0F60]];
-    [a1 setCurrentItemSteerable:{objc_msgSend(v46, "BOOLValue")}];
+    [self setCurrentItemSteerable:{objc_msgSend(v46, "BOOLValue")}];
   }
 
 LABEL_48:
@@ -279,13 +279,13 @@ LABEL_48:
   [v47 setIndex:{objc_msgSend(v48, "unsignedIntegerValue")}];
   v49 = [v6 objectForKey:*MEMORY[0x1E69B1048]];
   [v47 setQueueSize:{objc_msgSend(v49, "unsignedIntegerValue")}];
-  [a1 setPlaybackQueuePosition:v47];
+  [self setPlaybackQueuePosition:v47];
   v50 = [v6 objectForKey:*v28];
   [v50 doubleValue];
   v52 = v51;
 
   v53 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:v52];
-  [a1 setPlaybackRate:v53];
+  [self setPlaybackRate:v53];
 
   v54 = [v6 objectForKey:*MEMORY[0x1E69B0EB8]];
   if ([v54 count])
@@ -313,10 +313,10 @@ LABEL_48:
     v56 = 0;
   }
 
-  [a1 setCurrentListeningToContainer:v56];
-  [a1 _af_setShuffleModeFromNowPlayingInfo:v6];
+  [self setCurrentListeningToContainer:v56];
+  [self _af_setShuffleModeFromNowPlayingInfo:v6];
   v58 = AFLanguageOptionsForNowPlayingInfo(v6);
-  [a1 setAudioAndSubtitleLanguageOptions:v58];
+  [self setAudioAndSubtitleLanguageOptions:v58];
 
   v59 = *MEMORY[0x1E69E9840];
 }
@@ -335,7 +335,7 @@ LABEL_48:
     v6 = 0;
   }
 
-  [a1 setShuffleEnabled:v6];
+  [self setShuffleEnabled:v6];
 }
 
 - (id)_mediaTypeFromNowPlayingInfo:()SiriMediaRemoteHelpers
@@ -366,11 +366,11 @@ LABEL_7:
   v25 = *MEMORY[0x1E69E9840];
   v3 = a3;
   v4 = AFGetCurrentItemAdamIDFromNowPlayingInfo(v3);
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
 
-  if (v5)
+  if (stringValue)
   {
-    v6 = v5;
+    stringValue2 = stringValue;
     v7 = @"store";
     goto LABEL_3;
   }
@@ -379,10 +379,10 @@ LABEL_7:
   if (v11)
   {
     v12 = v11;
-    v13 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v6 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:v13];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    stringValue2 = [v12 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-    if (v6)
+    if (stringValue2)
     {
       v7 = @"external";
       goto LABEL_3;
@@ -398,8 +398,8 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v6 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+    uRLPathAllowedCharacterSet2 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    stringValue2 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
 
     goto LABEL_14;
   }
@@ -423,15 +423,15 @@ LABEL_7:
 
 LABEL_19:
 
-    v6 = 0;
+    stringValue2 = 0;
     v7 = 0;
     goto LABEL_3;
   }
 
-  v6 = [v14 stringValue];
+  stringValue2 = [v14 stringValue];
 LABEL_14:
 
-  if (v6)
+  if (stringValue2)
   {
     v7 = @"device";
   }
@@ -442,7 +442,7 @@ LABEL_14:
   }
 
 LABEL_3:
-  v8 = _AFMediaIdURLFromHostAndIdentifier(v7, v6);
+  v8 = _AFMediaIdURLFromHostAndIdentifier(v7, stringValue2);
 
   v9 = *MEMORY[0x1E69E9840];
 

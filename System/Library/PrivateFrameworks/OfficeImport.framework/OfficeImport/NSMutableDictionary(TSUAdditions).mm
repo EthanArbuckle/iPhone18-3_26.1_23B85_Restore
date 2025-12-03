@@ -9,11 +9,11 @@
 
 - (uint64_t)tsu_objectForKey:()TSUAdditions withDefaultUsingBlock:
 {
-  v7 = [a1 objectForKey:?];
+  v7 = [self objectForKey:?];
   if (!v7)
   {
     v7 = (*(a4 + 16))(a4);
-    [a1 setObject:v7 forKey:a3];
+    [self setObject:v7 forKey:a3];
   }
 
   return v7;
@@ -26,7 +26,7 @@
   v5[2] = __73__NSMutableDictionary_TSUAdditions__tsu_objectForKey_withDefaultOfClass___block_invoke;
   v5[3] = &unk_2799C63C0;
   v5[4] = a4;
-  return [a1 tsu_objectForKey:a3 withDefaultUsingBlock:v5];
+  return [self tsu_objectForKey:a3 withDefaultUsingBlock:v5];
 }
 
 + (id)tsu_dictionaryByInvertingDictionaryIfPossible:()TSUAdditions
@@ -59,7 +59,7 @@
 
 + (uint64_t)tsu_dictionaryByInvertingDictionary:()TSUAdditions
 {
-  v1 = [a1 tsu_dictionaryByInvertingDictionaryIfPossible:?];
+  v1 = [self tsu_dictionaryByInvertingDictionaryIfPossible:?];
   if (!v1)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[NSMutableDictionary(TSUAdditions) tsu_dictionaryByInvertingDictionary:]"];

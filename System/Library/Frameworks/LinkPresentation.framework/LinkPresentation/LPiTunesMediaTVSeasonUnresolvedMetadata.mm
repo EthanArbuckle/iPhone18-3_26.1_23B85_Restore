@@ -12,8 +12,8 @@
   [(LPiTunesMediaTVSeasonMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPiTunesMediaTVSeasonMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaTVSeasonMetadata *)v3 setGenre:self->_genre];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaTVSeasonMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaTVSeasonMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }

@@ -1,9 +1,9 @@
 @interface RMSFairPlaySession
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3;
-- (id)_hexStringForData:(id)a3;
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info;
+- (id)_hexStringForData:(id)data;
 - (id)handshakeData;
-- (id)handshakeIterationWithData:(id)a3;
-- (id)headerForURL:(id)a3;
+- (id)handshakeIterationWithData:(id)data;
+- (id)headerForURL:(id)l;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -42,15 +42,15 @@
   return v12;
 }
 
-- (id)handshakeIterationWithData:(id)a3
+- (id)handshakeIterationWithData:(id)data
 {
   v20 = 0;
   v19 = 0;
   v18 = -1;
-  v4 = a3;
-  v5 = a3;
-  [v5 bytes];
-  [v5 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  [dataCopy2 bytes];
+  [dataCopy2 length];
 
   Mib5yocT();
   if (v6)
@@ -79,13 +79,13 @@
   return v16;
 }
 
-- (id)headerForURL:(id)a3
+- (id)headerForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v4 path];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  path = [lCopy path];
 
-  v7 = [v5 substringFromIndex:{objc_msgSend(v5, "rangeOfString:", v6)}];
+  v7 = [absoluteString substringFromIndex:{objc_msgSend(absoluteString, "rangeOfString:", path)}];
 
   v8 = [v7 dataUsingEncoding:4];
   v9 = malloc_type_malloc(0x10uLL, 0xF399E873uLL);
@@ -123,10 +123,10 @@
   }
 }
 
-- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)a3
+- (BOOL)_getHardwareInfo:(FairPlayHWInfo_ *)info
 {
-  v3 = a3;
-  if (a3)
+  infoCopy = info;
+  if (info)
   {
     v4 = MGCopyAnswer();
     if (v4)
@@ -135,14 +135,14 @@
       v6 = CFGetTypeID(v4);
       if (v6 == CFDataGetTypeID() && (Length = CFDataGetLength(v5), Length <= 20))
       {
-        v3->IDLength = Length;
-        [v5 getBytes:v3->ID length:?];
-        LOBYTE(v3) = 1;
+        infoCopy->IDLength = Length;
+        [v5 getBytes:infoCopy->ID length:?];
+        LOBYTE(infoCopy) = 1;
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(infoCopy) = 0;
       }
 
       CFRelease(v5);
@@ -150,22 +150,22 @@
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(infoCopy) = 0;
     }
   }
 
-  return v3;
+  return infoCopy;
 }
 
-- (id)_hexStringForData:(id)a3
+- (id)_hexStringForData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{2 * objc_msgSend(v3, "length")}];
-  v5 = [v3 length];
-  v6 = [v3 bytes];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{2 * objc_msgSend(dataCopy, "length")}];
+  v5 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v5)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;

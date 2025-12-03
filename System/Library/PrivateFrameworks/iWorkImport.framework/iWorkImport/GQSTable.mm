@@ -1,24 +1,24 @@
 @interface GQSTable
-- (GQSTable)initWithStreaming:(BOOL)a3 table:(id)a4;
+- (GQSTable)initWithStreaming:(BOOL)streaming table:(id)table;
 - (int64_t)column;
 - (void)dealloc;
-- (void)setCurrentOverlapCell:(id)a3;
-- (void)setLastCellRead:(id)a3;
-- (void)skipCells:(int64_t)a3;
+- (void)setCurrentOverlapCell:(id)cell;
+- (void)setLastCellRead:(id)read;
+- (void)skipCells:(int64_t)cells;
 @end
 
 @implementation GQSTable
 
-- (GQSTable)initWithStreaming:(BOOL)a3 table:(id)a4
+- (GQSTable)initWithStreaming:(BOOL)streaming table:(id)table
 {
   v7.receiver = self;
   v7.super_class = GQSTable;
   result = [(GQSTable *)&v7 init];
   if (result)
   {
-    result->mIsStreaming = a3;
-    result->mTable = a4;
-    result->mAlwaysPutReadCellsInArray = !a3;
+    result->mIsStreaming = streaming;
+    result->mTable = table;
+    result->mAlwaysPutReadCellsInArray = !streaming;
     result->mCellCount = 1;
     result->mIsCounting = 1;
   }
@@ -33,20 +33,20 @@
   [(GQSTable *)&v3 dealloc];
 }
 
-- (void)setCurrentOverlapCell:(id)a3
+- (void)setCurrentOverlapCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
 
-  self->mCurrentOverlapCell = a3;
+  self->mCurrentOverlapCell = cell;
 }
 
-- (void)setLastCellRead:(id)a3
+- (void)setLastCellRead:(id)read
 {
   mLastCellRead = self->mLastCellRead;
-  if (mLastCellRead != a3)
+  if (mLastCellRead != read)
   {
 
-    self->mLastCellRead = a3;
+    self->mLastCellRead = read;
   }
 }
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)skipCells:(int64_t)a3
+- (void)skipCells:(int64_t)cells
 {
   if (self->mIsCounting)
   {
-    self->mCellCount += a3;
+    self->mCellCount += cells;
   }
 }
 

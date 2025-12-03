@@ -1,42 +1,42 @@
 @interface PKFDICTableViewFooterView
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKFDICTableViewFooterView)initWithReuseIdentifier:(id)a3 feature:(unint64_t)a4 displayingBankName:(BOOL)a5 footerText:(id)a6;
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKFDICTableViewFooterView)initWithReuseIdentifier:(id)identifier feature:(unint64_t)feature displayingBankName:(BOOL)name footerText:(id)text;
 - (void)layoutSubviews;
 @end
 
 @implementation PKFDICTableViewFooterView
 
-- (PKFDICTableViewFooterView)initWithReuseIdentifier:(id)a3 feature:(unint64_t)a4 displayingBankName:(BOOL)a5 footerText:(id)a6
+- (PKFDICTableViewFooterView)initWithReuseIdentifier:(id)identifier feature:(unint64_t)feature displayingBankName:(BOOL)name footerText:(id)text
 {
-  v6 = a5;
-  v10 = a6;
+  nameCopy = name;
+  textCopy = text;
   v21.receiver = self;
   v21.super_class = PKFDICTableViewFooterView;
-  v11 = [(PKFDICTableViewFooterView *)&v21 initWithReuseIdentifier:a3];
+  v11 = [(PKFDICTableViewFooterView *)&v21 initWithReuseIdentifier:identifier];
   if (v11)
   {
-    v12 = [[PKFDICSignageView alloc] initWithFeature:a4 displayingBankName:v6];
+    v12 = [[PKFDICSignageView alloc] initWithFeature:feature displayingBankName:nameCopy];
     fdicView = v11->_fdicView;
     v11->_fdicView = v12;
 
-    v14 = [(PKFDICTableViewFooterView *)v11 contentView];
-    [v14 addSubview:v11->_fdicView];
+    contentView = [(PKFDICTableViewFooterView *)v11 contentView];
+    [contentView addSubview:v11->_fdicView];
 
-    if ([v10 length])
+    if ([textCopy length])
     {
       v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
       footerLabel = v11->_footerLabel;
       v11->_footerLabel = v15;
 
-      [(UILabel *)v11->_footerLabel setText:v10];
+      [(UILabel *)v11->_footerLabel setText:textCopy];
       [(UILabel *)v11->_footerLabel setNumberOfLines:0];
       v17 = [objc_opt_class() _defaultFontForTableViewStyle:1 isSectionHeader:0];
       [(UILabel *)v11->_footerLabel setFont:v17];
       v18 = [objc_opt_class() _defaultTextColorForTableViewStyle:1 isSectionHeader:0];
       [(UILabel *)v11->_footerLabel setTextColor:v18];
-      v19 = [(PKFDICTableViewFooterView *)v11 contentView];
-      [v19 addSubview:v11->_footerLabel];
+      contentView2 = [(PKFDICTableViewFooterView *)v11 contentView];
+      [contentView2 addSubview:v11->_footerLabel];
     }
   }
 
@@ -48,14 +48,14 @@
   v4.receiver = self;
   v4.super_class = PKFDICTableViewFooterView;
   [(PKFDICTableViewFooterView *)&v4 layoutSubviews];
-  v3 = [(PKFDICTableViewFooterView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKFDICTableViewFooterView *)self contentView];
+  [contentView bounds];
   [(PKFDICTableViewFooterView *)self _layoutSubviewsInBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(PKFDICTableViewFooterView *)self contentView:a3.width];
+  v4 = [(PKFDICTableViewFooterView *)self contentView:fits.width];
   [v4 bounds];
   [(PKFDICTableViewFooterView *)self _layoutSubviewsInBounds:1 isTemplateLayout:?];
   v6 = v5;
@@ -68,14 +68,14 @@
   return result;
 }
 
-- (CGSize)_layoutSubviewsInBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutSubviewsInBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(PKFDICTableViewFooterView *)self contentView];
-  [v10 layoutMargins];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  contentView = [(PKFDICTableViewFooterView *)self contentView];
+  [contentView layoutMargins];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -93,8 +93,8 @@
   remainder.size.width = v21 - v20;
   remainder.size.height = v25;
   memset(&v36, 0, sizeof(v36));
-  v26 = [(PKFDICTableViewFooterView *)self contentView];
-  [v26 _shouldReverseLayoutDirection];
+  contentView2 = [(PKFDICTableViewFooterView *)self contentView];
+  [contentView2 _shouldReverseLayoutDirection];
 
   footerLabel = self->_footerLabel;
   if (footerLabel)
@@ -107,7 +107,7 @@
     v39.size.height = v25;
     CGRectDivide(v39, &v36, &remainder, v29, CGRectMinYEdge);
     v30 = v12 + v29;
-    if (!a4)
+    if (!layout)
     {
       [(UILabel *)self->_footerLabel setFrame:*&v36.origin, *&v36.size];
     }
@@ -120,7 +120,7 @@
   [(PKFDICSignageView *)self->_fdicView sizeThatFits:v24, 1.79769313e308];
   v32 = v31;
   CGRectDivide(remainder, &v36, &remainder, v31, CGRectMinYEdge);
-  if (!a4)
+  if (!layout)
   {
     fdicView = self->_fdicView;
     PKContentAlignmentMake();

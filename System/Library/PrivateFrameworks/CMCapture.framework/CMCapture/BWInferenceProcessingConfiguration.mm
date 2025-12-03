@@ -47,11 +47,11 @@
     return result;
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (a2)
   {
-    [v3 addObject:@"MemoryOptimized"];
+    [array addObject:@"MemoryOptimized"];
     if ((a2 & 2) == 0)
     {
 LABEL_4:

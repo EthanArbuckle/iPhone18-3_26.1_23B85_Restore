@@ -3,8 +3,8 @@
 - (NSIndexSet)indices;
 - (NSString)actionString;
 - (_TtC8Freeform34CRLCommandReorderContainerChildren)init;
-- (_TtC8Freeform34CRLCommandReorderContainerChildren)initWithParentContainer:(id)a3 childrenToMove:(id)a4 targetIndices:(id)a5;
-- (void)setActionString:(id)a3;
+- (_TtC8Freeform34CRLCommandReorderContainerChildren)initWithParentContainer:(id)container childrenToMove:(id)move targetIndices:(id)indices;
+- (void)setActionString:(id)string;
 @end
 
 @implementation CRLCommandReorderContainerChildren
@@ -32,7 +32,7 @@
   return v10;
 }
 
-- (_TtC8Freeform34CRLCommandReorderContainerChildren)initWithParentContainer:(id)a3 childrenToMove:(id)a4 targetIndices:(id)a5
+- (_TtC8Freeform34CRLCommandReorderContainerChildren)initWithParentContainer:(id)container childrenToMove:(id)move targetIndices:(id)indices
 {
   v6 = type metadata accessor for IndexSet();
   __chkstk_darwin(v6 - 8);
@@ -40,7 +40,7 @@
   type metadata accessor for CRLBoardItem(0);
   v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static IndexSet._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_10078A058(a3, v9, v8);
+  return sub_10078A058(container, v9, v8);
 }
 
 - (NSString)actionString
@@ -51,7 +51,7 @@
   return v2;
 }
 
-- (void)setActionString:(id)a3
+- (void)setActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC8Freeform34CRLCommandReorderContainerChildren_actionString);

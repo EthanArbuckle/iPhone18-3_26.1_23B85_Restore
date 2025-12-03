@@ -1,21 +1,21 @@
 @interface SCROBrailleUIAction
-- (SCROBrailleUIAction)initWithType:(unint64_t)a3 originator:(id)a4;
+- (SCROBrailleUIAction)initWithType:(unint64_t)type originator:(id)originator;
 - (SCROBrailleUIView)originator;
 @end
 
 @implementation SCROBrailleUIAction
 
-- (SCROBrailleUIAction)initWithType:(unint64_t)a3 originator:(id)a4
+- (SCROBrailleUIAction)initWithType:(unint64_t)type originator:(id)originator
 {
-  v6 = a4;
+  originatorCopy = originator;
   v10.receiver = self;
   v10.super_class = SCROBrailleUIAction;
   v7 = [(SCROBrailleUIAction *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    objc_storeWeak(&v7->_originator, v6);
+    v7->_type = type;
+    objc_storeWeak(&v7->_originator, originatorCopy);
   }
 
   return v8;

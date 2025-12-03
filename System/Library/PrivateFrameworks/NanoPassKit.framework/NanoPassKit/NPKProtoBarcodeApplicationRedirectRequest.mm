@@ -1,12 +1,12 @@
 @interface NPKProtoBarcodeApplicationRedirectRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoBarcodeApplicationRedirectRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoBarcodeApplicationRedirectRequest;
   v4 = [(NPKProtoBarcodeApplicationRedirectRequest *)&v8 description];
-  v5 = [(NPKProtoBarcodeApplicationRedirectRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoBarcodeApplicationRedirectRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   passData = self->_passData;
   if (passData)
   {
-    [v3 setObject:passData forKey:@"passData"];
+    [dictionary setObject:passData forKey:@"passData"];
   }
 
   transactionData = self->_transactionData;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_passData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transactionData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appLaunchToken)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_passData)
   {
-    [v4 setPassData:?];
-    v4 = v5;
+    [toCopy setPassData:?];
+    toCopy = v5;
   }
 
   if (self->_transactionData)
   {
     [v5 setTransactionData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appLaunchToken)
   {
     [v5 setAppLaunchToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_passData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_passData copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_transactionData copyWithZone:a3];
+  v8 = [(NSData *)self->_transactionData copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_appLaunchToken copyWithZone:a3];
+  v10 = [(NSString *)self->_appLaunchToken copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((passData = self->_passData, !(passData | v4[2])) || -[NSData isEqual:](passData, "isEqual:")) && ((transactionData = self->_transactionData, !(transactionData | v4[3])) || -[NSData isEqual:](transactionData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((passData = self->_passData, !(passData | equalCopy[2])) || -[NSData isEqual:](passData, "isEqual:")) && ((transactionData = self->_transactionData, !(transactionData | equalCopy[3])) || -[NSData isEqual:](transactionData, "isEqual:")))
   {
     appLaunchToken = self->_appLaunchToken;
-    if (appLaunchToken | v4[1])
+    if (appLaunchToken | equalCopy[1])
     {
       v8 = [(NSString *)appLaunchToken isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_appLaunchToken hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(NPKProtoBarcodeApplicationRedirectRequest *)self setPassData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoBarcodeApplicationRedirectRequest *)self setTransactionData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoBarcodeApplicationRedirectRequest *)self setAppLaunchToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

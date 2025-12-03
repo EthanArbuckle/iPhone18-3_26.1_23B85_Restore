@@ -1,41 +1,41 @@
 @interface REMICloudIsOffDataView
-- (REMICloudIsOffDataView)initWithStore:(id)a3;
-- (id)fetchHasAnyDirtyCloudObjectInAccount:(id)a3 error:(id *)a4;
-- (id)fetchICloudIsOffCloudConfigurationPropertiesWithError:(id *)a3;
+- (REMICloudIsOffDataView)initWithStore:(id)store;
+- (id)fetchHasAnyDirtyCloudObjectInAccount:(id)account error:(id *)error;
+- (id)fetchICloudIsOffCloudConfigurationPropertiesWithError:(id *)error;
 @end
 
 @implementation REMICloudIsOffDataView
 
-- (REMICloudIsOffDataView)initWithStore:(id)a3
+- (REMICloudIsOffDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMICloudIsOffDataView;
   v6 = [(REMICloudIsOffDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchICloudIsOffCloudConfigurationPropertiesWithError:(id *)a3
+- (id)fetchICloudIsOffCloudConfigurationPropertiesWithError:(id *)error
 {
   v5 = objc_alloc_init(REMICloudIsOffDataViewInvocation_fetchICCloudConfigurationProperties);
-  v6 = [(REMICloudIsOffDataView *)self store];
-  v7 = [v6 resultFromPerformingInvocation:v5 error:a3];
+  store = [(REMICloudIsOffDataView *)self store];
+  v7 = [store resultFromPerformingInvocation:v5 error:error];
 
   v8 = objc_opt_class();
   v9 = REMDynamicCast(v8, v7);
   [v9 timeIntervalSinceLastPrompt];
   if (v10 == 0.0)
   {
-    if (a3 && !*a3)
+    if (error && !*error)
     {
       [REMError internalErrorWithDebugDescription:@"REMICloudIsOff: The ICCloudConfigurationProperty timeIntervalSinceLastPrompt is 0 and has not been set"];
-      *a3 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -54,27 +54,27 @@
   return v12;
 }
 
-- (id)fetchHasAnyDirtyCloudObjectInAccount:(id)a3 error:(id *)a4
+- (id)fetchHasAnyDirtyCloudObjectInAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMICloudIsOffDataViewInvocation_fetchHasAnyDirtyCloudObjectInAccount alloc] initWithAccountObjectID:v6];
+  accountCopy = account;
+  v7 = [[REMICloudIsOffDataViewInvocation_fetchHasAnyDirtyCloudObjectInAccount alloc] initWithAccountObjectID:accountCopy];
 
-  v8 = [(REMICloudIsOffDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  store = [(REMICloudIsOffDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v10 = 0;
+    hasAnyDirtyCloudObject = 0;
   }
 
   else
   {
     v11 = objc_opt_class();
     v12 = REMDynamicCast(v11, v9);
-    v10 = [v12 hasAnyDirtyCloudObject];
+    hasAnyDirtyCloudObject = [v12 hasAnyDirtyCloudObject];
   }
 
-  return v10;
+  return hasAnyDirtyCloudObject;
 }
 
 @end

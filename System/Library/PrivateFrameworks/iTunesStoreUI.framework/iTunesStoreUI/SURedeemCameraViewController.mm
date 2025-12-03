@@ -1,17 +1,17 @@
 @interface SURedeemCameraViewController
-- (BOOL)textFieldShouldEndEditing:(id)a3;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
 - (void)_cancelButtonAction;
-- (void)_detectedCode:(id)a3;
+- (void)_detectedCode:(id)code;
 - (void)_dismissKeyboard;
 - (void)_hideOverlay;
 - (void)_layoutCodeTextField;
-- (void)_layoutCodeTextFieldWithNotification:(id)a3;
+- (void)_layoutCodeTextFieldWithNotification:(id)notification;
 - (void)_overlayTapAction;
 - (void)_presentCameraErrorAlert;
 - (void)_recognitionError;
 - (void)_recognitionSuccess;
 - (void)_redeemButtonAction;
-- (void)_setBackButtonTitle:(id)a3;
+- (void)_setBackButtonTitle:(id)title;
 - (void)_setup;
 - (void)_setupActivityIndicator;
 - (void)_setupCameraController;
@@ -27,30 +27,30 @@
 - (void)_toggleCameraButtonAction;
 - (void)_updateNavigationItemAnimated;
 - (void)_updateState;
-- (void)codeRedeemerControllerDidEndWithCode:(id)a3 error:(id)a4;
+- (void)codeRedeemerControllerDidEndWithCode:(id)code error:(id)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)performAction:(int64_t)a3 withObject:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)performAction:(int64_t)action withObject:(id)object;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SURedeemCameraViewController
 
-- (void)performAction:(int64_t)a3 withObject:(id)a4
+- (void)performAction:(int64_t)action withObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SURedeemCameraViewController_performAction_withObject___block_invoke;
   block[3] = &unk_1E8164B40;
-  v9 = v6;
-  v10 = a3;
+  v9 = objectCopy;
+  actionCopy = action;
   block[4] = self;
-  v7 = v6;
+  v7 = objectCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -100,19 +100,19 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
   [(SURedeemCameraViewController *)self setState:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SURedeemCameraViewController;
-  [(SURedeemCameraViewController *)&v4 viewDidAppear:a3];
+  [(SURedeemCameraViewController *)&v4 viewDidAppear:appear];
   [(SURedeemCameraViewController *)self _startCameraController];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SURedeemCameraViewController;
-  [(SURedeemCameraViewController *)&v4 viewDidDisappear:a3];
+  [(SURedeemCameraViewController *)&v4 viewDidDisappear:disappear];
   [(SURedeemCameraViewController *)self _stopCameraController];
 }
 
@@ -121,31 +121,31 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
   v15.receiver = self;
   v15.super_class = SURedeemCameraViewController;
   [(SURedeemCameraViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(SURedeemCameraViewController *)self cameraController];
-  v4 = [v3 view];
-  v5 = [(SURedeemCameraViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  cameraController = [(SURedeemCameraViewController *)self cameraController];
+  view = [cameraController view];
+  view2 = [(SURedeemCameraViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v6 = [(SURedeemCameraViewController *)self activityIndicator];
-  v7 = [(SURedeemCameraViewController *)self view];
-  [v7 center];
+  activityIndicator = [(SURedeemCameraViewController *)self activityIndicator];
+  view3 = [(SURedeemCameraViewController *)self view];
+  [view3 center];
   v9 = v8;
-  v10 = [(SURedeemCameraViewController *)self view];
-  [v10 bounds];
+  view4 = [(SURedeemCameraViewController *)self view];
+  [view4 bounds];
   v12 = v11;
-  v13 = [(SURedeemCameraViewController *)self view];
-  [v13 safeAreaInsets];
-  [v6 setCenter:{v9, v12 - v14 + -44.0 + -64.0}];
+  view5 = [(SURedeemCameraViewController *)self view];
+  [view5 safeAreaInsets];
+  [activityIndicator setCenter:{v9, v12 - v14 + -44.0 + -64.0}];
 
   [(SURedeemCameraViewController *)self _layoutCodeTextField];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = SURedeemCameraViewController;
-  [(SURedeemCameraViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(SURedeemCameraViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(SURedeemCameraViewController *)self setKeyboardHeight:0.0];
   [(SURedeemCameraViewController *)self _dismissKeyboard];
 }
@@ -153,8 +153,8 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
 - (void)loadView
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v4 setBackgroundColor:systemBackgroundColor];
 
   [(SURedeemCameraViewController *)self setView:v4];
 }
@@ -175,8 +175,8 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
   v3 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:0];
   [(UIActivityIndicatorView *)v3 setAlpha:0.0];
   [(UIActivityIndicatorView *)v3 setHidden:1];
-  v4 = [(SURedeemCameraViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(SURedeemCameraViewController *)self view];
+  [view addSubview:v3];
 
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = v3;
@@ -189,19 +189,19 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
     v3 = objc_alloc_init(SUCodeRedeemerController);
     [(SURedeemCameraViewController *)self setCameraController:v3];
 
-    v4 = [(SURedeemCameraViewController *)self cameraController];
-    [v4 willMoveToParentViewController:self];
+    cameraController = [(SURedeemCameraViewController *)self cameraController];
+    [cameraController willMoveToParentViewController:self];
 
-    v5 = [(SURedeemCameraViewController *)self cameraController];
-    [(SURedeemCameraViewController *)self addChildViewController:v5];
+    cameraController2 = [(SURedeemCameraViewController *)self cameraController];
+    [(SURedeemCameraViewController *)self addChildViewController:cameraController2];
 
-    v6 = [(SURedeemCameraViewController *)self view];
-    v7 = [(SURedeemCameraViewController *)self cameraController];
-    v8 = [v7 view];
-    [v6 addSubview:v8];
+    view = [(SURedeemCameraViewController *)self view];
+    cameraController3 = [(SURedeemCameraViewController *)self cameraController];
+    view2 = [cameraController3 view];
+    [view addSubview:view2];
 
-    v9 = [(SURedeemCameraViewController *)self cameraController];
-    [v9 didMoveToParentViewController:self];
+    cameraController4 = [(SURedeemCameraViewController *)self cameraController];
+    [cameraController4 didMoveToParentViewController:self];
   }
 }
 
@@ -213,8 +213,8 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
   v5 = [v4 localizedStringForKey:@"ENTER_CODE_MANUALLY" value:&stru_1F41B3660 table:0];
   [(SURedeemCodeTextField *)v3 setPlaceholder:v5];
 
-  v6 = [(SURedeemCameraViewController *)self view];
-  [v6 addSubview:v3];
+  view = [(SURedeemCameraViewController *)self view];
+  [view addSubview:v3];
 
   codeTextField = self->_codeTextField;
   self->_codeTextField = v3;
@@ -222,14 +222,14 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
 
 - (void)_setupNavigationItem
 {
-  v3 = [(SURedeemCameraViewController *)self navigationItem];
+  navigationItem = [(SURedeemCameraViewController *)self navigationItem];
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SCAN_CARD" value:&stru_1F41B3660 table:0];
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
-  v6 = [(SURedeemCameraViewController *)self navigationItem];
+  navigationItem2 = [(SURedeemCameraViewController *)self navigationItem];
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonAction];
-  [v6 setLeftBarButtonItem:v7];
+  [navigationItem2 setLeftBarButtonItem:v7];
 
   v8 = objc_alloc(MEMORY[0x1E69DC708]);
   v9 = MEMORY[0x1E69DCAB8];
@@ -247,38 +247,38 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
 
 - (void)_setupNotifications
 {
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self];
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 1 && [(SURedeemCameraViewController *)self ignoreDefaultKeyboardNotifications])
+  if (userInterfaceIdiom == 1 && [(SURedeemCameraViewController *)self ignoreDefaultKeyboardNotifications])
   {
-    [v7 addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:@"SUKeyboardDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:@"SUKeyboardDidChangeNotification" object:0];
     v5 = SUKeyboardWillChangeNotification;
   }
 
   else
   {
     v6 = MEMORY[0x1E69DE080];
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v6 = MEMORY[0x1E69DDF78];
     }
 
-    [v7 addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:*v6 object:0];
+    [defaultCenter addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:*v6 object:0];
     v5 = MEMORY[0x1E69DE078];
   }
 
-  [v7 addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:*v5 object:0];
+  [defaultCenter addObserver:self selector:sel__layoutCodeTextFieldWithNotification_ name:*v5 object:0];
 }
 
 - (void)_setupOverlayView
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(UIView *)v3 setAlpha:0.0];
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)v3 setBackgroundColor:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)v3 setBackgroundColor:blackColor];
 
   [(UIView *)v3 setHidden:1];
   v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__overlayTapAction];
@@ -286,9 +286,9 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
   overlayView = self->_overlayView;
   self->_overlayView = v3;
 
-  v6 = [(SURedeemCameraViewController *)self view];
-  v7 = [(SURedeemCameraViewController *)self overlayView];
-  [v6 addSubview:v7];
+  view = [(SURedeemCameraViewController *)self view];
+  overlayView = [(SURedeemCameraViewController *)self overlayView];
+  [view addSubview:overlayView];
 }
 
 - (void)_cancelButtonAction
@@ -302,35 +302,35 @@ uint64_t __57__SURedeemCameraViewController_performAction_withObject___block_inv
 - (void)_redeemButtonAction
 {
   [(SURedeemCameraViewController *)self _dismissKeyboard];
-  v3 = [(SURedeemCameraViewController *)self codeTextField];
-  v4 = [v3 text];
+  codeTextField = [(SURedeemCameraViewController *)self codeTextField];
+  text = [codeTextField text];
 
-  [(SURedeemCameraViewController *)self _detectedCode:v4];
+  [(SURedeemCameraViewController *)self _detectedCode:text];
 }
 
-- (void)_setBackButtonTitle:(id)a3
+- (void)_setBackButtonTitle:(id)title
 {
   v4 = MEMORY[0x1E69DC708];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithTitle:v5 style:0 target:self action:sel__cancelButtonAction];
+  titleCopy = title;
+  v7 = [[v4 alloc] initWithTitle:titleCopy style:0 target:self action:sel__cancelButtonAction];
 
-  v6 = [(SURedeemCameraViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v7];
+  navigationItem = [(SURedeemCameraViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 }
 
 - (void)_toggleCameraButtonAction
 {
-  v3 = [(SURedeemCameraViewController *)self toggleCameraBarButton];
-  [v3 setEnabled:0];
+  toggleCameraBarButton = [(SURedeemCameraViewController *)self toggleCameraBarButton];
+  [toggleCameraBarButton setEnabled:0];
 
   objc_initWeak(&location, self);
-  v4 = [(SURedeemCameraViewController *)self cameraController];
+  cameraController = [(SURedeemCameraViewController *)self cameraController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__SURedeemCameraViewController__toggleCameraButtonAction__block_invoke;
   v5[3] = &unk_1E8164920;
   objc_copyWeak(&v6, &location);
-  [v4 toggleCameraWithCompletion:v5];
+  [cameraController toggleCameraWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -347,8 +347,8 @@ void __57__SURedeemCameraViewController__toggleCameraButtonAction__block_invoke(
 {
   if ([(SURedeemCameraViewController *)self state]!= 2)
   {
-    v3 = [(SURedeemCameraViewController *)self codeTextField];
-    [v3 setText:0];
+    codeTextField = [(SURedeemCameraViewController *)self codeTextField];
+    [codeTextField setText:0];
 
     [(SURedeemCameraViewController *)self _dismissKeyboard];
   }
@@ -356,23 +356,23 @@ void __57__SURedeemCameraViewController__toggleCameraButtonAction__block_invoke(
 
 - (void)_recognitionError
 {
-  v2 = [(SURedeemCameraViewController *)self cameraController];
-  [v2 recognitionError];
+  cameraController = [(SURedeemCameraViewController *)self cameraController];
+  [cameraController recognitionError];
 }
 
 - (void)_recognitionSuccess
 {
-  v2 = [(SURedeemCameraViewController *)self cameraController];
-  [v2 recognitionSuccess];
+  cameraController = [(SURedeemCameraViewController *)self cameraController];
+  [cameraController recognitionSuccess];
 }
 
 - (void)_startActivityIndicator
 {
-  v3 = [(SURedeemCameraViewController *)self activityIndicator];
-  [v3 startAnimating];
+  activityIndicator = [(SURedeemCameraViewController *)self activityIndicator];
+  [activityIndicator startAnimating];
 
-  v4 = [(SURedeemCameraViewController *)self activityIndicator];
-  [v4 setHidden:0];
+  activityIndicator2 = [(SURedeemCameraViewController *)self activityIndicator];
+  [activityIndicator2 setHidden:0];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -422,36 +422,36 @@ void __55__SURedeemCameraViewController__stopAcitivityIndicator__block_invoke_2(
 {
   if (![(SURedeemCameraViewController *)self state])
   {
-    v3 = [(SURedeemCameraViewController *)self cameraController];
-    v4 = [v3 delegate];
+    cameraController = [(SURedeemCameraViewController *)self cameraController];
+    delegate = [cameraController delegate];
 
-    if (!v4)
+    if (!delegate)
     {
-      v5 = [(SURedeemCameraViewController *)self cameraController];
-      [v5 setDelegate:self];
+      cameraController2 = [(SURedeemCameraViewController *)self cameraController];
+      [cameraController2 setDelegate:self];
 
-      v6 = [(SURedeemCameraViewController *)self cameraController];
-      [v6 startSession];
+      cameraController3 = [(SURedeemCameraViewController *)self cameraController];
+      [cameraController3 startSession];
     }
   }
 }
 
 - (void)_stopCameraController
 {
-  v3 = [(SURedeemCameraViewController *)self cameraController];
-  if (v3)
+  cameraController = [(SURedeemCameraViewController *)self cameraController];
+  if (cameraController)
   {
-    v4 = v3;
-    v5 = [(SURedeemCameraViewController *)self cameraController];
-    v6 = [v5 delegate];
+    v4 = cameraController;
+    cameraController2 = [(SURedeemCameraViewController *)self cameraController];
+    delegate = [cameraController2 delegate];
 
-    if (v6)
+    if (delegate)
     {
-      v7 = [(SURedeemCameraViewController *)self cameraController];
-      [v7 setDelegate:0];
+      cameraController3 = [(SURedeemCameraViewController *)self cameraController];
+      [cameraController3 setDelegate:0];
 
-      v8 = [(SURedeemCameraViewController *)self cameraController];
-      [v8 cancel];
+      cameraController4 = [(SURedeemCameraViewController *)self cameraController];
+      [cameraController4 cancel];
     }
   }
 }
@@ -485,8 +485,8 @@ void __44__SURedeemCameraViewController__hideOverlay__block_invoke_2(uint64_t a1
 
 - (void)_showOverlay
 {
-  v3 = [(SURedeemCameraViewController *)self overlayView];
-  [v3 setHidden:0];
+  overlayView = [(SURedeemCameraViewController *)self overlayView];
+  [overlayView setHidden:0];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -502,7 +502,7 @@ void __44__SURedeemCameraViewController__showOverlay__block_invoke(uint64_t a1)
   [v1 setAlpha:0.4];
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
   if ([(SURedeemCameraViewController *)self state]== 1)
   {
@@ -512,19 +512,19 @@ void __44__SURedeemCameraViewController__showOverlay__block_invoke(uint64_t a1)
   return 1;
 }
 
-- (void)codeRedeemerControllerDidEndWithCode:(id)a3 error:(id)a4
+- (void)codeRedeemerControllerDidEndWithCode:(id)code error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__SURedeemCameraViewController_codeRedeemerControllerDidEndWithCode_error___block_invoke;
   block[3] = &unk_1E81644D0;
-  v11 = v7;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = v7;
+  v11 = errorCopy;
+  v12 = codeCopy;
+  selfCopy = self;
+  v8 = codeCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -552,36 +552,36 @@ uint64_t __75__SURedeemCameraViewController_codeRedeemerControllerDidEndWithCode
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SURedeemCameraViewController;
   [(SURedeemCameraViewController *)&v4 dealloc];
 }
 
-- (void)_detectedCode:(id)a3
+- (void)_detectedCode:(id)code
 {
-  v6 = a3;
-  v4 = [(SURedeemCameraViewController *)self codeHandler];
+  codeCopy = code;
+  codeHandler = [(SURedeemCameraViewController *)self codeHandler];
 
-  if (v4)
+  if (codeHandler)
   {
-    v5 = [(SURedeemCameraViewController *)self codeHandler];
-    (v5)[2](v5, v6);
+    codeHandler2 = [(SURedeemCameraViewController *)self codeHandler];
+    (codeHandler2)[2](codeHandler2, codeCopy);
   }
 }
 
 - (void)_dismissKeyboard
 {
-  v2 = [(SURedeemCameraViewController *)self view];
-  [v2 endEditing:1];
+  view = [(SURedeemCameraViewController *)self view];
+  [view endEditing:1];
 }
 
 - (void)_layoutCodeTextField
 {
-  v3 = [(SURedeemCameraViewController *)self view];
-  [v3 bounds];
+  view = [(SURedeemCameraViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -592,28 +592,28 @@ uint64_t __75__SURedeemCameraViewController_codeRedeemerControllerDidEndWithCode
 
   else
   {
-    v9 = [(SURedeemCameraViewController *)self view];
-    [v9 safeAreaInsets];
+    view2 = [(SURedeemCameraViewController *)self view];
+    [view2 safeAreaInsets];
     v8 = v10 + 44.0;
   }
 
-  v11 = [(SURedeemCameraViewController *)self codeTextField];
+  codeTextField = [(SURedeemCameraViewController *)self codeTextField];
   [(SURedeemCameraViewController *)self keyboardHeight];
-  [v11 setFrame:{0.0, v7 - v12 - v8, v5, v8}];
+  [codeTextField setFrame:{0.0, v7 - v12 - v8, v5, v8}];
 
-  v14 = [(SURedeemCameraViewController *)self overlayView];
+  overlayView = [(SURedeemCameraViewController *)self overlayView];
   [(SURedeemCameraViewController *)self keyboardHeight];
-  [v14 setFrame:{0.0, 0.0, v5, v7 - v13 - v8}];
+  [overlayView setFrame:{0.0, 0.0, v5, v7 - v13 - v8}];
 }
 
-- (void)_layoutCodeTextFieldWithNotification:(id)a3
+- (void)_layoutCodeTextFieldWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = 0.0;
   if ([(SURedeemCameraViewController *)self state]== 1)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
+    userInfo = [notificationCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DDFA0]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
@@ -622,32 +622,32 @@ uint64_t __75__SURedeemCameraViewController_codeRedeemerControllerDidEndWithCode
 
     if (![(SURedeemCameraViewController *)self ignoreDefaultKeyboardNotifications])
     {
-      v15 = [(SURedeemCameraViewController *)self view];
-      v16 = [(SURedeemCameraViewController *)self view];
-      v17 = [v16 window];
-      [v15 convertRect:v17 fromView:{v9, v11, v13, v5}];
+      view = [(SURedeemCameraViewController *)self view];
+      view2 = [(SURedeemCameraViewController *)self view];
+      window = [view2 window];
+      [view convertRect:window fromView:{v9, v11, v13, v5}];
       v11 = v18;
       v5 = v19;
     }
 
-    v20 = [MEMORY[0x1E69DC938] currentDevice];
-    v21 = [v20 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v21 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v22 = [(SURedeemCameraViewController *)self view];
-      [v22 bounds];
+      view3 = [(SURedeemCameraViewController *)self view];
+      [view3 bounds];
       v5 = v23 - v11;
     }
   }
 
   [(SURedeemCameraViewController *)self setKeyboardHeight:fmax(v5, 0.0)];
-  v24 = [v4 userInfo];
-  v25 = [v24 valueForKey:*MEMORY[0x1E69DDF38]];
-  v26 = [v25 intValue];
+  userInfo2 = [notificationCopy userInfo];
+  v25 = [userInfo2 valueForKey:*MEMORY[0x1E69DDF38]];
+  intValue = [v25 intValue];
 
-  v27 = [v4 userInfo];
-  v28 = [v27 valueForKey:*MEMORY[0x1E69DDF40]];
+  userInfo3 = [notificationCopy userInfo];
+  v28 = [userInfo3 valueForKey:*MEMORY[0x1E69DDF40]];
   [v28 floatValue];
   v30 = v29;
 
@@ -656,7 +656,7 @@ uint64_t __75__SURedeemCameraViewController_codeRedeemerControllerDidEndWithCode
   v31[2] = __69__SURedeemCameraViewController__layoutCodeTextFieldWithNotification___block_invoke;
   v31[3] = &unk_1E81645E8;
   v31[4] = self;
-  [MEMORY[0x1E69DD250] animateWithDuration:v26 delay:v31 options:0 animations:v30 completion:0.0];
+  [MEMORY[0x1E69DD250] animateWithDuration:intValue delay:v31 options:0 animations:v30 completion:0.0];
 }
 
 - (void)_presentCameraErrorAlert
@@ -701,9 +701,9 @@ void __56__SURedeemCameraViewController__presentCameraErrorAlert__block_invoke(u
     [(SURedeemCameraViewController *)self _dismissKeyboard];
     [(SURedeemCameraViewController *)self _startCameraController];
     [(SURedeemCameraViewController *)self _hideOverlay];
-    v4 = [(SURedeemCameraViewController *)self codeTextField];
+    codeTextField = [(SURedeemCameraViewController *)self codeTextField];
 LABEL_7:
-    v5 = v4;
+    v5 = codeTextField;
     v6 = 1;
     goto LABEL_8;
   }
@@ -718,7 +718,7 @@ LABEL_7:
     [(SURedeemCameraViewController *)self _stopAcitivityIndicator];
     [(SURedeemCameraViewController *)self _stopCameraController];
     [(SURedeemCameraViewController *)self _showOverlay];
-    v4 = [(SURedeemCameraViewController *)self overlayView];
+    codeTextField = [(SURedeemCameraViewController *)self overlayView];
     goto LABEL_7;
   }
 
@@ -726,14 +726,14 @@ LABEL_7:
   [(SURedeemCameraViewController *)self _stopCameraController];
   [(SURedeemCameraViewController *)self _showOverlay];
   [(SURedeemCameraViewController *)self _dismissKeyboard];
-  v3 = [(SURedeemCameraViewController *)self overlayView];
-  [v3 setUserInteractionEnabled:0];
+  overlayView = [(SURedeemCameraViewController *)self overlayView];
+  [overlayView setUserInteractionEnabled:0];
 
-  v4 = [(SURedeemCameraViewController *)self codeTextField];
-  v5 = v4;
+  codeTextField = [(SURedeemCameraViewController *)self codeTextField];
+  v5 = codeTextField;
   v6 = 0;
 LABEL_8:
-  [v4 setUserInteractionEnabled:v6];
+  [codeTextField setUserInteractionEnabled:v6];
 
 LABEL_9:
 
@@ -744,11 +744,11 @@ LABEL_9:
 {
   if (![(SURedeemCameraViewController *)self state])
   {
-    v5 = [(SURedeemCameraViewController *)self navigationItem];
-    v3 = [(SURedeemCameraViewController *)self toggleCameraBarButton];
+    navigationItem = [(SURedeemCameraViewController *)self navigationItem];
+    toggleCameraBarButton = [(SURedeemCameraViewController *)self toggleCameraBarButton];
 LABEL_7:
-    v4 = v3;
-    [v5 setRightBarButtonItem:v3];
+    v4 = toggleCameraBarButton;
+    [navigationItem setRightBarButtonItem:toggleCameraBarButton];
 
     goto LABEL_8;
   }
@@ -760,13 +760,13 @@ LABEL_7:
       return;
     }
 
-    v5 = [(SURedeemCameraViewController *)self navigationItem];
-    v3 = [(SURedeemCameraViewController *)self redeemBarButton];
+    navigationItem = [(SURedeemCameraViewController *)self navigationItem];
+    toggleCameraBarButton = [(SURedeemCameraViewController *)self redeemBarButton];
     goto LABEL_7;
   }
 
-  v5 = [(SURedeemCameraViewController *)self navigationItem];
-  [v5 setRightBarButtonItem:0];
+  navigationItem = [(SURedeemCameraViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 LABEL_8:
 }
 

@@ -1,18 +1,18 @@
 @interface TVRUIImageFetcher
-+ (TVRUIImageFetcher)imageFetcherWithOptions:(unint64_t)a3;
-- (BOOL)hasPendingCompletionHandlersForIdentifier:(id)a3;
-- (TVRUIImageFetcher)initWithOptions:(unint64_t)a3;
-- (id)cachedImageForIdentifier:(id)a3;
-- (void)addPendingCompletionHandler:(id)a3 identifier:(id)a4;
-- (void)fetchImageWithTemplateString:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6;
-- (void)fetchImageWithURL:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)invokeCompletionHandlersForIdentifier:(id)a3 image:(id)a4;
-- (void)removePendingCompletionHandlersForIdentifier:(id)a3;
++ (TVRUIImageFetcher)imageFetcherWithOptions:(unint64_t)options;
+- (BOOL)hasPendingCompletionHandlersForIdentifier:(id)identifier;
+- (TVRUIImageFetcher)initWithOptions:(unint64_t)options;
+- (id)cachedImageForIdentifier:(id)identifier;
+- (void)addPendingCompletionHandler:(id)handler identifier:(id)identifier;
+- (void)fetchImageWithTemplateString:(id)string size:(CGSize)size identifier:(id)identifier completion:(id)completion;
+- (void)fetchImageWithURL:(id)l identifier:(id)identifier completion:(id)completion;
+- (void)invokeCompletionHandlersForIdentifier:(id)identifier image:(id)image;
+- (void)removePendingCompletionHandlersForIdentifier:(id)identifier;
 @end
 
 @implementation TVRUIImageFetcher
 
-- (TVRUIImageFetcher)initWithOptions:(unint64_t)a3
+- (TVRUIImageFetcher)initWithOptions:(unint64_t)options
 {
   v14.receiver = self;
   v14.super_class = TVRUIImageFetcher;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     cachedImages = v5->_cachedImages;
     v5->_cachedImages = v6;
@@ -29,9 +29,9 @@
     pendingImageRequestCompletionHandlers = v5->_pendingImageRequestCompletionHandlers;
     v5->_pendingImageRequestCompletionHandlers = v8;
 
-    v10 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-    [v10 setHTTPMaximumConnectionsPerHost:30];
-    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v10];
+    defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+    [defaultSessionConfiguration setHTTPMaximumConnectionsPerHost:30];
+    v11 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
     urlSession = v5->_urlSession;
     v5->_urlSession = v11;
   }
@@ -39,56 +39,56 @@
   return v5;
 }
 
-+ (TVRUIImageFetcher)imageFetcherWithOptions:(unint64_t)a3
++ (TVRUIImageFetcher)imageFetcherWithOptions:(unint64_t)options
 {
-  v3 = [[a1 alloc] initWithOptions:a3];
+  v3 = [[self alloc] initWithOptions:options];
 
   return v3;
 }
 
-- (void)fetchImageWithTemplateString:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6
+- (void)fetchImageWithTemplateString:(id)string size:(CGSize)size identifier:(id)identifier completion:(id)completion
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v11 = MEMORY[0x277D6C500];
-  v12 = a6;
-  v13 = a5;
-  v15 = [v11 imageTemplateWithString:a3];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  v15 = [v11 imageTemplateWithString:string];
   v14 = [v15 urlForSize:{width, height}];
-  [(TVRUIImageFetcher *)self fetchImageWithURL:v14 identifier:v13 completion:v12];
+  [(TVRUIImageFetcher *)self fetchImageWithURL:v14 identifier:identifierCopy completion:completionCopy];
 }
 
-- (void)fetchImageWithURL:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)fetchImageWithURL:(id)l identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (lCopy)
   {
-    v12 = [(TVRUIImageFetcher *)self cachedImages];
-    v13 = [v12 objectForKeyedSubscript:v9];
+    cachedImages = [(TVRUIImageFetcher *)self cachedImages];
+    v13 = [cachedImages objectForKeyedSubscript:identifierCopy];
 
     if (v13)
     {
-      (v11)[2](v11, v9, v13);
+      (v11)[2](v11, identifierCopy, v13);
     }
 
     else
     {
-      v14 = [(TVRUIImageFetcher *)self hasPendingCompletionHandlersForIdentifier:v9];
-      [(TVRUIImageFetcher *)self addPendingCompletionHandler:v11 identifier:v9];
+      v14 = [(TVRUIImageFetcher *)self hasPendingCompletionHandlersForIdentifier:identifierCopy];
+      [(TVRUIImageFetcher *)self addPendingCompletionHandler:v11 identifier:identifierCopy];
       if (!v14)
       {
         objc_initWeak(&location, self);
-        v15 = [(TVRUIImageFetcher *)self urlSession];
+        urlSession = [(TVRUIImageFetcher *)self urlSession];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __61__TVRUIImageFetcher_fetchImageWithURL_identifier_completion___block_invoke;
         v17[3] = &unk_279D87D00;
         objc_copyWeak(&v19, &location);
-        v18 = v9;
-        v16 = [v15 dataTaskWithURL:v8 completionHandler:v17];
+        v18 = identifierCopy;
+        v16 = [urlSession dataTaskWithURL:lCopy completionHandler:v17];
 
         [v16 resume];
         objc_destroyWeak(&v19);
@@ -99,7 +99,7 @@
 
   else
   {
-    (*(v10 + 2))(v10, v9, 0);
+    (*(completionCopy + 2))(completionCopy, identifierCopy, 0);
   }
 }
 
@@ -135,34 +135,34 @@ void __61__TVRUIImageFetcher_fetchImageWithURL_identifier_completion___block_inv
   [WeakRetained invokeCompletionHandlersForIdentifier:*(a1 + 40) image:v3];
 }
 
-- (id)cachedImageForIdentifier:(id)a3
+- (id)cachedImageForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUIImageFetcher *)self cachedImages];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  cachedImages = [(TVRUIImageFetcher *)self cachedImages];
+  v6 = [cachedImages objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasPendingCompletionHandlersForIdentifier:(id)a3
+- (BOOL)hasPendingCompletionHandlersForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  pendingImageRequestCompletionHandlers = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
+  v6 = [pendingImageRequestCompletionHandlers objectForKeyedSubscript:identifierCopy];
 
-  LOBYTE(v5) = [v6 count] != 0;
-  return v5;
+  LOBYTE(pendingImageRequestCompletionHandlers) = [v6 count] != 0;
+  return pendingImageRequestCompletionHandlers;
 }
 
-- (void)addPendingCompletionHandler:(id)a3 identifier:(id)a4
+- (void)addPendingCompletionHandler:(id)handler identifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  pendingImageRequestCompletionHandlers = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
+  v9 = [pendingImageRequestCompletionHandlers objectForKeyedSubscript:identifierCopy];
 
-  v10 = _Block_copy(v7);
+  v10 = _Block_copy(handlerCopy);
   if (v9)
   {
     v11 = [v9 arrayByAddingObject:v10];
@@ -174,32 +174,32 @@ void __61__TVRUIImageFetcher_fetchImageWithURL_identifier_completion___block_inv
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   }
 
-  v12 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
-  [v12 setObject:v11 forKeyedSubscript:v6];
+  pendingImageRequestCompletionHandlers2 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
+  [pendingImageRequestCompletionHandlers2 setObject:v11 forKeyedSubscript:identifierCopy];
 }
 
-- (void)removePendingCompletionHandlersForIdentifier:(id)a3
+- (void)removePendingCompletionHandlersForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
-  [v5 removeObjectForKey:v4];
+  identifierCopy = identifier;
+  pendingImageRequestCompletionHandlers = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
+  [pendingImageRequestCompletionHandlers removeObjectForKey:identifierCopy];
 }
 
-- (void)invokeCompletionHandlersForIdentifier:(id)a3 image:(id)a4
+- (void)invokeCompletionHandlersForIdentifier:(id)identifier image:(id)image
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  imageCopy = image;
+  if ([identifierCopy length])
   {
-    if (v7)
+    if (imageCopy)
     {
-      v8 = [(TVRUIImageFetcher *)self cachedImages];
-      [v8 setObject:v7 forKeyedSubscript:v6];
+      cachedImages = [(TVRUIImageFetcher *)self cachedImages];
+      [cachedImages setObject:imageCopy forKeyedSubscript:identifierCopy];
     }
 
-    v9 = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    pendingImageRequestCompletionHandlers = [(TVRUIImageFetcher *)self pendingImageRequestCompletionHandlers];
+    v10 = [pendingImageRequestCompletionHandlers objectForKeyedSubscript:identifierCopy];
 
     if ([v10 count])
     {
@@ -235,7 +235,7 @@ void __61__TVRUIImageFetcher_fetchImageWithURL_identifier_completion___block_inv
       }
     }
 
-    [(TVRUIImageFetcher *)self removePendingCompletionHandlersForIdentifier:v6, v16];
+    [(TVRUIImageFetcher *)self removePendingCompletionHandlersForIdentifier:identifierCopy, v16];
   }
 }
 

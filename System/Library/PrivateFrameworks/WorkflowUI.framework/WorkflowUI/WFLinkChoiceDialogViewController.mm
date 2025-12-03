@@ -1,50 +1,50 @@
 @interface WFLinkChoiceDialogViewController
-- (void)getCATResultWithCompletionHandler:(id)a3;
+- (void)getCATResultWithCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation WFLinkChoiceDialogViewController
 
-- (void)getCATResultWithCompletionHandler:(id)a3
+- (void)getCATResultWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFLinkChoiceDialogViewController.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLinkChoiceDialogViewController.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v6 = [(WFLinkChoiceDialogViewController *)self catResult];
+  catResult = [(WFLinkChoiceDialogViewController *)self catResult];
 
-  if (v6)
+  if (catResult)
   {
-    v7 = [(WFLinkChoiceDialogViewController *)self catResult];
-    v5[2](v5, v7);
+    catResult2 = [(WFLinkChoiceDialogViewController *)self catResult];
+    handlerCopy[2](handlerCopy, catResult2);
   }
 
   else
   {
-    v8 = [(WFCompactDialogViewController *)self request];
-    v9 = [v8 request];
-    v10 = [v9 dialog];
+    request = [(WFCompactDialogViewController *)self request];
+    v8Request = [request request];
+    dialog = [v8Request dialog];
 
-    if (v10)
+    if (dialog)
     {
-      v11 = [(WFCompactDialogViewController *)self request];
-      v12 = [v11 request];
-      v13 = [v12 dialog];
+      request2 = [(WFCompactDialogViewController *)self request];
+      v11Request = [request2 request];
+      dialog2 = [v11Request dialog];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __70__WFLinkChoiceDialogViewController_getCATResultWithCompletionHandler___block_invoke;
       v15[3] = &unk_279EE7940;
       v15[4] = self;
-      v16 = v5;
-      [v13 getResultWithCompletionHandler:v15];
+      v16 = handlerCopy;
+      [dialog2 getResultWithCompletionHandler:v15];
     }
 
     else
     {
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }
@@ -83,13 +83,13 @@ void __70__WFLinkChoiceDialogViewController_getCATResultWithCompletionHandler___
   v13.receiver = self;
   v13.super_class = WFLinkChoiceDialogViewController;
   [(WFLinkDialogViewController *)&v13 viewDidLoad];
-  v3 = [(WFCompactPlatterViewController *)self platterView];
-  [v3 setAccessibilityIdentifier:@"junior_link_result_platter_view"];
+  platterView = [(WFCompactPlatterViewController *)self platterView];
+  [platterView setAccessibilityIdentifier:@"junior_link_result_platter_view"];
 
   v4 = objc_opt_new();
   objc_initWeak(&location, self);
-  v5 = [(WFCompactDialogViewController *)self request];
-  v6 = [v5 buttons];
+  request = [(WFCompactDialogViewController *)self request];
+  buttons = [request buttons];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__WFLinkChoiceDialogViewController_viewDidLoad__block_invoke;
@@ -97,7 +97,7 @@ void __70__WFLinkChoiceDialogViewController_getCATResultWithCompletionHandler___
   v7 = v4;
   v10 = v7;
   objc_copyWeak(&v11, &location);
-  [v6 enumerateObjectsUsingBlock:v9];
+  [buttons enumerateObjectsUsingBlock:v9];
 
   [(WFCompactDialogViewController *)self configureActionGroupWithActions:v7];
   v8[0] = MEMORY[0x277D85DD0];

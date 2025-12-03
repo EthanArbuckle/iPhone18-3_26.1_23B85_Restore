@@ -1,18 +1,18 @@
 @interface MedicationInfoItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation MedicationInfoItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"nameLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"strengthLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"ingredientsLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"medmojiView" withSwiftType:"MedicationView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"nameLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"strengthLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"ingredientsLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"HealthMedicationsUI.MedicationInfoItemCell" hasSwiftField:@"medmojiView" withSwiftType:"MedicationView"];
 }
 
 - (id)accessibilityLabel
@@ -28,9 +28,9 @@
 - (id)accessibilityValue
 {
   v2 = [(MedicationInfoItemCellAccessibility *)self safeSwiftValueForKey:@"medmojiView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

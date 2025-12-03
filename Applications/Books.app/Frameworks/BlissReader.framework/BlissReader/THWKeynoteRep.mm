@@ -1,64 +1,64 @@
 @interface THWKeynoteRep
 - (BOOL)autoplayAllowed;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4;
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4;
-- (BOOL)expandedHasContentForPanel:(int)a3;
-- (BOOL)expandedHasRoomForPanelsWithHeight:(double)a3 inFrame:(CGRect)a4;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep;
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep;
+- (BOOL)expandedHasContentForPanel:(int)panel;
+- (BOOL)expandedHasRoomForPanelsWithHeight:(double)height inFrame:(CGRect)frame;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
-- (BOOL)keynoteShowRep:(id)a3 handleURL:(id)a4;
+- (BOOL)keynoteShowRep:(id)rep handleURL:(id)l;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
 - (CGAffineTransform)freeTransform;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)ftcTargetFrame;
 - (CGRect)pressableNaturalBounds;
 - (CGRect)rectForCompletion;
 - (THAnimationController)animationController;
 - (THWAutoplayConfig)autoplayConfig;
-- (THWKeynoteRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWKeynoteRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (THWKeynoteShowRep)showRep;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
 - (THWTransportControlRep)transportControlRep;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (id)animationLayer;
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5;
-- (id)cloneForTransportControl:(id)a3;
-- (id)expandedChildInfosForPanel:(int)a3;
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4;
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted;
+- (id)cloneForTransportControl:(id)control;
+- (id)expandedChildInfosForPanel:(int)panel;
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture;
 - (id)expandedSupportedGestureKinds;
 - (id)shadowAnimationLayer;
 - (id)targetLayer;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer;
 - (void)dealloc;
 - (void)didPresentExpandedPostCommit;
 - (void)expandableExpandedPresentationDidEnd;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
 - (void)freeTransformDidEnd;
 - (void)freeTransformWillBegin;
 - (void)handleNavigateNextCommand;
 - (void)handleNavigatePreviousCommand;
-- (void)p_keynoteShowDidUpdate:(id)a3;
+- (void)p_keynoteShowDidUpdate:(id)update;
 - (void)p_play;
 - (void)p_stop;
 - (void)p_togglePanelDescriptionExpanded;
 - (void)viewScaleDidChange;
 - (void)wasAddedToParent;
 - (void)willBeRemovedFromParent;
-- (void)willBeginHandlingGesture:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
 @end
 
 @implementation THWKeynoteRep
 
-- (THWKeynoteRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWKeynoteRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v6.receiver = self;
   v6.super_class = THWKeynoteRep;
-  v4 = [(THWKeynoteRep *)&v6 initWithLayout:a3 canvas:a4];
+  v4 = [(THWKeynoteRep *)&v6 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     v4->_freeTransformableHandler = -[THWFreeTransformableRepGestureTargetHandler initWithFreeTransformableRep:handler:]([THWFreeTransformableRepGestureTargetHandler alloc], "initWithFreeTransformableRep:handler:", v4, [objc_msgSend(-[THWKeynoteRep hostICC](v4 "hostICC")]);
@@ -80,10 +80,10 @@
   {
     objc_opt_class();
     [(THWKeynoteRep *)self interactiveCanvasController];
-    v3 = [TSUDynamicCast() pressHandlerForPressableReps];
-    if (v3)
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:v3];
+      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:pressHandlerForPressableReps];
       self->_pressableHandler = v4;
       [(THWPressableRepGestureTargetHandler *)v4 setEnabledOnlyIfWidgetInteractionDisabledOnPage:1];
     }
@@ -116,16 +116,16 @@
   }
 
   [-[THWKeynoteRep layout](self "layout")];
-  v3 = [(THWKeynoteRep *)self layout];
+  layout = [(THWKeynoteRep *)self layout];
 
-  [v3 invalidateChildren];
+  [layout invalidateChildren];
 }
 
-- (id)cloneForTransportControl:(id)a3
+- (id)cloneForTransportControl:(id)control
 {
-  v3 = [(THWKeynoteRep *)self showRep];
+  showRep = [(THWKeynoteRep *)self showRep];
 
-  return [(THWKeynoteShowRep *)v3 transportControlClone];
+  return [(THWKeynoteShowRep *)showRep transportControlClone];
 }
 
 - (void)p_play
@@ -148,11 +148,11 @@
   _os_activity_initiate(&dword_0, "Keynote Stop", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (id)buttonControl:(id)a3 imageForState:(int)a4 highlighted:(BOOL)a5
+- (id)buttonControl:(id)control imageForState:(int)state highlighted:(BOOL)highlighted
 {
-  v5 = a5;
+  highlightedCopy = highlighted;
   v6 = THBundle();
-  if (v5)
+  if (highlightedCopy)
   {
     v7 = @"play-keynote-64-P";
   }
@@ -165,32 +165,32 @@
   return [TSUImage imageNamed:v7 inBundle:v6];
 }
 
-- (void)buttonControl:(id)a3 didUpdateLayer:(id)a4
+- (void)buttonControl:(id)control didUpdateLayer:(id)layer
 {
-  [a4 setContentsGravity:kCAGravityResizeAspectFill];
-  [objc_msgSend(a3 "canvas")];
+  [layer setContentsGravity:kCAGravityResizeAspectFill];
+  [objc_msgSend(control "canvas")];
   TSDMultiplySizeScalar();
-  [a4 bounds];
+  [layer bounds];
   TSDShrinkSizeToFitInSize();
   v7 = v6;
   v9 = v8;
-  [a4 bounds];
+  [layer bounds];
   v12 = THScaleNeededToFitSizeInSize(v10, v11, v7, v9);
   CATransform3DMakeScale(&v14, v12, v12, 1.0);
   v13 = v14;
-  [a4 setTransform:&v13];
+  [layer setTransform:&v13];
 }
 
-- (BOOL)control:(id)a3 isInteractionEnabledForRep:(id)a4
+- (BOOL)control:(id)control isInteractionEnabledForRep:(id)rep
 {
-  if (![(THWKeynoteRep *)self pressableHandler:a3])
+  if (![(THWKeynoteRep *)self pressableHandler:control])
   {
     return 1;
   }
 
-  v5 = [(THWKeynoteRep *)self pressableHandler];
+  pressableHandler = [(THWKeynoteRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v5 widgetInteractionEnabled];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionEnabled];
 }
 
 - (THAnimationController)animationController
@@ -217,42 +217,42 @@
   }
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWKeynoteRep info](self "info")];
 
   return [v4 panelContentProviderHasContentForPanel:v3];
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THWKeynoteRep info](self "info")];
 
   return [v4 panelContentProviderChildInfosForPanel:v3];
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  v4 = [(THWKeynoteRep *)self layout:a3.origin.x];
+  v4 = [(THWKeynoteRep *)self layout:frame.origin.x];
 
   [v4 invalidateFrame];
 }
 
 - (id)expandedSupportedGestureKinds
 {
-  v2 = [(THWKeynoteRep *)self showRep];
+  showRep = [(THWKeynoteRep *)self showRep];
 
-  return [(THWKeynoteShowRep *)v2 supportedGestureKinds];
+  return [(THWKeynoteShowRep *)showRep supportedGestureKinds];
 }
 
-- (BOOL)expandedHasRoomForPanelsWithHeight:(double)a3 inFrame:(CGRect)a4
+- (BOOL)expandedHasRoomForPanelsWithHeight:(double)height inFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [-[THWKeynoteShowRep layout](-[THWKeynoteRep showRep](self "showRep")];
   TSDScaleSizeWithinSize();
   v10 = v9;
@@ -260,15 +260,15 @@
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  return CGRectGetHeight(v12) - v10 >= a3;
+  return CGRectGetHeight(v12) - v10 >= height;
 }
 
 - (void)didPresentExpandedPostCommit
 {
   +[CATransaction flush];
-  v3 = [(THWKeynoteRep *)self showRep];
+  showRep = [(THWKeynoteRep *)self showRep];
 
-  [(THWKeynoteShowRep *)v3 playPreparedShow];
+  [(THWKeynoteShowRep *)showRep playPreparedShow];
 }
 
 - (void)p_togglePanelDescriptionExpanded
@@ -280,9 +280,9 @@
   [(THWExpandedRepController *)expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
 }
 
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture
 {
-  if (a3 != 1)
+  if (panel != 1)
   {
     return 0;
   }
@@ -297,46 +297,46 @@
   return [[THWTapGestureAction alloc] initWithAction:v7];
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  if (a4 == 1 && !self->_panelDescriptionExpanded)
+  if (panel == 1 && !self->_panelDescriptionExpanded)
   {
-    v6 = [-[THWKeynoteRep layout](self layout];
-    if ([v6 isCompactHeight])
+    layout = [-[THWKeynoteRep layout](self layout];
+    if ([layout isCompactHeight])
     {
       return 2;
     }
 
-    else if ([v6 isCompactWidth])
+    else if ([layout isCompactWidth])
     {
       return 5;
     }
   }
 
-  return a5;
+  return default;
 }
 
 - (void)handleNavigateNextCommand
 {
-  v2 = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone];
-  if ([(TSWTransportControlClone *)v2 transportControlCloneCanGotoNext])
+  transportControlClone = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone];
+  if ([(TSWTransportControlClone *)transportControlClone transportControlCloneCanGotoNext])
   {
 
-    [(TSWTransportControlClone *)v2 transportControlCloneGotoNext];
+    [(TSWTransportControlClone *)transportControlClone transportControlCloneGotoNext];
   }
 }
 
 - (void)handleNavigatePreviousCommand
 {
-  v2 = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone];
-  if ([(TSWTransportControlClone *)v2 transportControlCloneCanGotoPrev])
+  transportControlClone = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone];
+  if ([(TSWTransportControlClone *)transportControlClone transportControlCloneCanGotoPrev])
   {
 
-    [(TSWTransportControlClone *)v2 transportControlCloneGotoPrev];
+    [(TSWTransportControlClone *)transportControlClone transportControlCloneGotoPrev];
   }
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   [-[THWKeynoteShowRep layout](-[THWKeynoteRep showRep](self "showRep")];
   TSDScaleSizeWithinSize();
@@ -349,7 +349,7 @@
   return fminf(*&v9, *&v10);
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -358,9 +358,9 @@
   return result;
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  v3 = [(THWKeynoteRep *)self layout:a3.width];
+  v3 = [(THWKeynoteRep *)self layout:size.width];
 
   [v3 invalidateFrame];
 }
@@ -369,10 +369,10 @@
 {
   if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWKeynoteRep *)self freeTransformableHandler] ftc] isFreeTransformInProgress]|| (result = [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWKeynoteRep *)self freeTransformableHandler] ftc] freeTransformLayer]) == 0)
   {
-    v4 = [(THWKeynoteRep *)self interactiveCanvasController];
-    v5 = [(THWKeynoteRep *)self showRep];
+    interactiveCanvasController = [(THWKeynoteRep *)self interactiveCanvasController];
+    showRep = [(THWKeynoteRep *)self showRep];
 
-    return [v4 layerForRep:v5];
+    return [interactiveCanvasController layerForRep:showRep];
   }
 
   return result;
@@ -469,33 +469,33 @@
   return TSUDynamicCast();
 }
 
-- (void)p_keynoteShowDidUpdate:(id)a3
+- (void)p_keynoteShowDidUpdate:(id)update
 {
-  v4 = [a3 object];
-  if (v4 == [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone])
+  object = [update object];
+  if (object == [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] transportControlClone])
   {
-    v5 = [(THWKeynoteRep *)self layout];
+    layout = [(THWKeynoteRep *)self layout];
 
-    [v5 hidePlayButton];
+    [layout hidePlayButton];
   }
 }
 
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] canHandleGesture:a3 forChildRep:a4])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] canHandleGesture:gesture forChildRep:rep])
   {
     return 1;
   }
 
-  v6 = [a3 gestureKind];
-  return v6 == TSDFreeTransform;
+  gestureKind = [gesture gestureKind];
+  return gestureKind == TSDFreeTransform;
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWKeynoteRep *)self layout];
+  layout = [(THWKeynoteRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (BOOL)isFreeTransformInProgress
@@ -508,24 +508,24 @@
 - (void)freeTransformWillBegin
 {
   [-[THWKeynoteRep layout](self "layout")];
-  v3 = [(THWKeynoteRep *)self showRep];
+  showRep = [(THWKeynoteRep *)self showRep];
 
-  [(THWKeynoteShowRep *)v3 pauseLayerUpdates];
+  [(THWKeynoteShowRep *)showRep pauseLayerUpdates];
 }
 
 - (void)freeTransformDidEnd
 {
   [-[THWKeynoteRep layout](self "layout")];
-  v3 = [(THWKeynoteRep *)self showRep];
+  showRep = [(THWKeynoteRep *)self showRep];
 
-  [(THWKeynoteShowRep *)v3 resumeLayerUpdatesAndLayoutImmediately];
+  [(THWKeynoteShowRep *)showRep resumeLayerUpdatesAndLayoutImmediately];
 }
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] layout];
+  layout = [(THWKeynoteShowRep *)[(THWKeynoteRep *)self showRep] layout];
 
-  [v2 frameInParent];
+  [layout frameInParent];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -533,46 +533,46 @@
   return result;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] canHandleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWKeynoteRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWKeynoteRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v6 canHandleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] handleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWKeynoteRep *)self pressableHandler] handleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWKeynoteRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWKeynoteRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v6 handleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler handleGesture:gesture];
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWKeynoteRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWKeynoteRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
 - (BOOL)wantsPressAnimation
 {
-  v2 = [(THWKeynoteRep *)self pressableHandler];
+  pressableHandler = [(THWKeynoteRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v2 widgetInteractionDisabledOnPage];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionDisabledOnPage];
 }
 
 - (BOOL)wantsPressAction
@@ -599,22 +599,22 @@
 
 - (THWAutoplayConfig)autoplayConfig
 {
-  v2 = [(THWKeynoteRep *)self info];
+  info = [(THWKeynoteRep *)self info];
 
-  return [v2 autoplayConfig];
+  return [info autoplayConfig];
 }
 
 - (BOOL)autoplayAllowed
 {
-  v2 = [(THWKeynoteRep *)self pressableHandler];
+  pressableHandler = [(THWKeynoteRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v2 widgetInteractionAllowAutoplay];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionAllowAutoplay];
 }
 
-- (BOOL)keynoteShowRep:(id)a3 handleURL:(id)a4
+- (BOOL)keynoteShowRep:(id)rep handleURL:(id)l
 {
-  v7 = [objc_msgSend(a4 "scheme")];
-  if ([(THWKeynoteRep *)self showRep]!= a3)
+  v7 = [objc_msgSend(l "scheme")];
+  if ([(THWKeynoteRep *)self showRep]!= rep)
   {
     goto LABEL_2;
   }
@@ -625,7 +625,7 @@
     return v8;
   }
 
-  if (![v7 isEqualToString:@"ibooks"] || objc_msgSend(a4, "host"))
+  if (![v7 isEqualToString:@"ibooks"] || objc_msgSend(l, "host"))
   {
     [+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")];
 LABEL_2:
@@ -642,14 +642,14 @@ LABEL_2:
       return v8;
     }
 
-    [v8 handleHyperlinkWithURL:a4];
+    [v8 handleHyperlinkWithURL:l];
   }
 
   else
   {
     objc_opt_class();
     [(THWKeynoteRep *)self interactiveCanvasController];
-    [TSUDynamicCast() performSelectorOnMainThread:"handleHyperlinkWithURL:" withObject:a4 waitUntilDone:0];
+    [TSUDynamicCast() performSelectorOnMainThread:"handleHyperlinkWithURL:" withObject:l waitUntilDone:0];
   }
 
   LOBYTE(v8) = 1;

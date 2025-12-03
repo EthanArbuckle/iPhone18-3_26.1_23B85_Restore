@@ -1,7 +1,7 @@
 @interface PLAnalysisCoordinatorStepSearchSuggestions
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
 - (void)cancel;
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5;
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler;
 @end
 
 @implementation PLAnalysisCoordinatorStepSearchSuggestions
@@ -12,37 +12,37 @@
   v3 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     v5 = 138543362;
-    v6 = v4;
+    v6 = parentTaskID;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Search Suggestions Step request to be cancelled, cannot actively stop but step will end soon", &v5, 0xCu);
   }
 }
 
-- (void)_performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)_performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepSearchSuggestions _performStepForAssets:withProgress:withCompletionHandler:]"];
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
+  libraryServicesManager = [(PLAnalysisCoordinatorStep *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAnalysisCoordinatorStepSearchSuggestions _performStepForAssets:withProgress:withCompletionHandler:]"];
 
   if (v13)
   {
-    v14 = [v13 libraryServicesManager];
-    v15 = [v14 wellKnownPhotoLibraryIdentifier];
+    libraryServicesManager2 = [v13 libraryServicesManager];
+    wellKnownPhotoLibraryIdentifier = [libraryServicesManager2 wellKnownPhotoLibraryIdentifier];
 
-    if (v15 == 1)
+    if (wellKnownPhotoLibraryIdentifier == 1)
     {
       [PLInitialSuggestionsManager generateInitialSuggestionsForPhotoLibrary:v13];
-      [v9 setCompletedUnitCount:{objc_msgSend(v9, "completedUnitCount") + objc_msgSend(v8, "count")}];
+      [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount") + objc_msgSend(assetsCopy, "count")}];
       v16 = MEMORY[0x1E69BF2D0];
-      v17 = [MEMORY[0x1E695DFB0] null];
-      v18 = [v16 successWithResult:v17];
+      null = [MEMORY[0x1E695DFB0] null];
+      v18 = [v16 successWithResult:null];
 
-      v10[2](v10, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
 
     else
@@ -51,7 +51,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 134217984;
-        v23 = v15;
+        v23 = wellKnownPhotoLibraryIdentifier;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Initial suggestion generation requested for unsupported library with identifier: %tu. No initial suggestions will be generated.", &v22, 0xCu);
       }
     }
@@ -62,22 +62,22 @@
     v19 = MEMORY[0x1E69BF2D0];
     v20 = PLErrorCreate();
     v21 = [v19 failureWithError:v20];
-    v10[2](v10, v21);
+    handlerCopy[2](handlerCopy, v21);
   }
 }
 
-- (void)performStepForAssets:(id)a3 withProgress:(id)a4 withCompletionHandler:(id)a5
+- (void)performStepForAssets:(id)assets withProgress:(id)progress withCompletionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetsCopy = assets;
+  progressCopy = progress;
+  handlerCopy = handler;
   v11 = PLAnalysisCoordinatorGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    parentTaskID = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     *buf = 138543362;
-    v26 = v12;
+    v26 = parentTaskID;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting Search Suggestions Step", buf, 0xCu);
   }
 
@@ -88,12 +88,12 @@
   v16 = v15;
   if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v17 = [v8 count];
-    v18 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
+    v17 = [assetsCopy count];
+    parentTaskID2 = [(PLAnalysisCoordinatorStep *)self parentTaskID];
     *buf = 134349314;
     v26 = v17;
     v27 = 2114;
-    v28 = v18;
+    v28 = parentTaskID2;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "AnalysisCoordinatorStepSearchSuggestions", "asset count: %{public}lu, parent task: %{public}@", buf, 0x16u);
   }
 
@@ -104,10 +104,10 @@
   v21[4] = self;
   v23 = v16;
   v24 = v14;
-  v19 = v10;
+  v19 = handlerCopy;
   v22 = v19;
   v20 = v16;
-  [(PLAnalysisCoordinatorStepSearchSuggestions *)self _performStepForAssets:v8 withProgress:v9 withCompletionHandler:v21];
+  [(PLAnalysisCoordinatorStepSearchSuggestions *)self _performStepForAssets:assetsCopy withProgress:progressCopy withCompletionHandler:v21];
 }
 
 void __102__PLAnalysisCoordinatorStepSearchSuggestions_performStepForAssets_withProgress_withCompletionHandler___block_invoke(uint64_t a1, void *a2)

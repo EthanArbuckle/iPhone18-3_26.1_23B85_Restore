@@ -1,12 +1,12 @@
 @interface BRLRhineBrailleTranslator
 - (BOOL)activeTableSupportsContractedBraille;
 - (BRLRhineBrailleTranslator)init;
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7;
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5;
-- (int)sendCommand:(id)a3;
-- (void)extractLocations:(int *)a3 locations_output:(id *)a4 output_size:(int64_t)a5;
-- (void)setActiveTable:(id)a3;
-- (void)setTranslationMode:(unint64_t)a3;
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges;
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations;
+- (int)sendCommand:(id)command;
+- (void)extractLocations:(int *)locations locations_output:(id *)locations_output output_size:(int64_t)output_size;
+- (void)setActiveTable:(id)table;
+- (void)setTranslationMode:(unint64_t)mode;
 @end
 
 @implementation BRLRhineBrailleTranslator
@@ -43,12 +43,12 @@
   return useContraction & 1;
 }
 
-- (void)setActiveTable:(id)a3
+- (void)setActiveTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v6 = [NSCharacterSet characterSetWithCharactersInString:@"_-"];
-  v7 = [v5 rangeOfCharacterFromSet:v6 options:4];
-  v8 = v5;
+  v7 = [tableCopy rangeOfCharacterFromSet:v6 options:4];
+  v8 = tableCopy;
   v9 = v8;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -79,7 +79,7 @@
 
     else
     {
-      objc_storeStrong(&self->_activeTable, a3);
+      objc_storeStrong(&self->_activeTable, table);
     }
   }
 
@@ -93,11 +93,11 @@
   }
 }
 
-- (int)sendCommand:(id)a3
+- (int)sendCommand:(id)command
 {
-  v3 = a3;
-  v4 = [v3 UTF8String];
-  v5 = 6 * strlen(v4);
+  commandCopy = command;
+  uTF8String = [commandCopy UTF8String];
+  v5 = 6 * strlen(uTF8String);
   if (v5 >= 0x1FFFFFFF)
   {
     v6 = 0x1FFFFFFFLL;
@@ -112,7 +112,7 @@
   if (v7)
   {
     v8 = v7;
-    v9 = wh_forward_translate(v4, v7, v6, 0);
+    v9 = wh_forward_translate(uTF8String, v7, v6, 0);
     if (v9)
     {
       v10 = sub_1B834();
@@ -139,34 +139,34 @@
   return v9;
 }
 
-- (void)extractLocations:(int *)a3 locations_output:(id *)a4 output_size:(int64_t)a5
+- (void)extractLocations:(int *)locations locations_output:(id *)locations_output output_size:(int64_t)output_size
 {
-  if (a4)
+  if (locations_output)
   {
-    v5 = a5;
-    v8 = 8 * a5;
-    v9 = malloc_type_malloc(8 * a5, 0x92B35D10uLL);
+    output_sizeCopy = output_size;
+    v8 = 8 * output_size;
+    v9 = malloc_type_malloc(8 * output_size, 0x92B35D10uLL);
     v10 = v9;
-    if (v5 >= 1)
+    if (output_sizeCopy >= 1)
     {
       v11 = v9;
       do
       {
-        v12 = *a3++;
+        v12 = *locations++;
         *v11++ = v12;
-        --v5;
+        --output_sizeCopy;
       }
 
-      while (v5);
+      while (output_sizeCopy);
     }
 
-    *a4 = [NSData dataWithBytes:v9 length:v8];
+    *locations_output = [NSData dataWithBytes:v9 length:v8];
 
     free(v10);
   }
 }
 
-- (void)setTranslationMode:(unint64_t)a3
+- (void)setTranslationMode:(unint64_t)mode
 {
   if (_os_feature_enabled_impl())
   {
@@ -178,9 +178,9 @@ LABEL_7:
     }
   }
 
-  else if (a3 != 3)
+  else if (mode != 3)
   {
-    if (a3 - 1 > 1)
+    if (mode - 1 > 1)
     {
       return;
     }
@@ -194,13 +194,13 @@ LABEL_8:
   [(BRLRhineBrailleTranslator *)self sendCommand:v5];
 }
 
-- (id)printBrailleForText:(id)a3 mode:(unint64_t)a4 locations:(id *)a5 textPositionsRange:(_NSRange)a6 textFormattingRanges:(id)a7
+- (id)printBrailleForText:(id)text mode:(unint64_t)mode locations:(id *)locations textPositionsRange:(_NSRange)range textFormattingRanges:(id)ranges
 {
-  v39 = a5;
-  v10 = a3;
-  v42 = a7;
-  [(BRLRhineBrailleTranslator *)self setTranslationMode:a4];
-  v11 = v10;
+  locationsCopy = locations;
+  textCopy = text;
+  rangesCopy = ranges;
+  [(BRLRhineBrailleTranslator *)self setTranslationMode:mode];
+  v11 = textCopy;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -227,7 +227,7 @@ LABEL_8:
 
         v20 = *(*(&v44 + 1) + 8 * v17);
         v43 = 0;
-        v11 = [v20 preprocessPrintString:v18 withLocationMap:&v43 isEightDot:1 textFormattingRanges:{v42, v39, v41}];
+        v11 = [v20 preprocessPrintString:v18 withLocationMap:&v43 isEightDot:1 textFormattingRanges:{rangesCopy, locationsCopy, v41}];
         v21 = v43;
 
         v15 = [BRLTPreprocessorHelper mergeLocationMap:v19 withLocationMap:v21];
@@ -346,11 +346,11 @@ LABEL_40:
   return v34;
 }
 
-- (id)textForPrintBraille:(id)a3 mode:(unint64_t)a4 locations:(id *)a5
+- (id)textForPrintBraille:(id)braille mode:(unint64_t)mode locations:(id *)locations
 {
-  v8 = a3;
-  [(BRLRhineBrailleTranslator *)self setTranslationMode:a4];
-  v9 = [v8 cStringUsingEncoding:4];
+  brailleCopy = braille;
+  [(BRLRhineBrailleTranslator *)self setTranslationMode:mode];
+  v9 = [brailleCopy cStringUsingEncoding:4];
   v10 = 6 * strlen(v9);
   if (v10 >= 0x1FFFFFFF)
   {
@@ -421,7 +421,7 @@ LABEL_40:
     }
 
     v19 = [NSString stringWithCString:v13 encoding:12];
-    -[BRLRhineBrailleTranslator extractLocations:locations_output:output_size:](self, "extractLocations:locations_output:output_size:", v15, a5, [v19 length]);
+    -[BRLRhineBrailleTranslator extractLocations:locations_output:output_size:](self, "extractLocations:locations_output:output_size:", v15, locations, [v19 length]);
     free(v13);
     free(v12);
     free(v15);

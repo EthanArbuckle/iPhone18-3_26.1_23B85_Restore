@@ -1,28 +1,28 @@
 @interface AEBookInfoAssetPlugin
-- (BOOL)_shouldShowAlertForError:(id)a3;
-- (BOOL)helper:(id)a3 validateBookAuthorizationWithError:(id *)a4 needsCoordination:(BOOL)a5;
-- (BOOL)isEpubURL:(id)a3;
-- (id)_bookInfoForAssetAtURL:(id)a3 withMoc:(id)a4 error:(id *)a5 needsCoordination:(BOOL)a6 updateDate:(id)a7;
-- (id)helper:(id)a3 annotationProviderForURL:(id)a4 needsCoordination:(BOOL)a5 forAssetID:(id)a6;
-- (id)helper:(id)a3 coverImageForURL:(id)a4;
-- (id)helper:(id)a3 coverImageForURL:(id)a4 size:(CGSize)a5;
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6;
-- (id)helperForURL:(id)a3 withOptions:(id)a4;
-- (void)_showAlertForError:(id)a3 forAssetAtURL:(id)a4 transaction:(id)a5;
-- (void)helper:(id)a3 canRefetch:(BOOL)a4 viewControllerWithOptions:(id)a5 completion:(id)a6;
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4;
-- (void)helper:(id)a3 updateCachedURLFrom:(id)a4 to:(id)a5;
+- (BOOL)_shouldShowAlertForError:(id)error;
+- (BOOL)helper:(id)helper validateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination;
+- (BOOL)isEpubURL:(id)l;
+- (id)_bookInfoForAssetAtURL:(id)l withMoc:(id)moc error:(id *)error needsCoordination:(BOOL)coordination updateDate:(id)date;
+- (id)helper:(id)helper annotationProviderForURL:(id)l needsCoordination:(BOOL)coordination forAssetID:(id)d;
+- (id)helper:(id)helper coverImageForURL:(id)l;
+- (id)helper:(id)helper coverImageForURL:(id)l size:(CGSize)size;
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination;
+- (id)helperForURL:(id)l withOptions:(id)options;
+- (void)_showAlertForError:(id)error forAssetAtURL:(id)l transaction:(id)transaction;
+- (void)helper:(id)helper canRefetch:(BOOL)refetch viewControllerWithOptions:(id)options completion:(id)completion;
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l;
+- (void)helper:(id)helper updateCachedURLFrom:(id)from to:(id)to;
 @end
 
 @implementation AEBookInfoAssetPlugin
 
-- (BOOL)isEpubURL:(id)a3
+- (BOOL)isEpubURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 pathExtension];
-    v5 = [v4 caseInsensitiveCompare:@"epub"] == 0;
+    pathExtension = [lCopy pathExtension];
+    v5 = [pathExtension caseInsensitiveCompare:@"epub"] == 0;
   }
 
   else
@@ -33,27 +33,27 @@
   return v5;
 }
 
-- (id)_bookInfoForAssetAtURL:(id)a3 withMoc:(id)a4 error:(id *)a5 needsCoordination:(BOOL)a6 updateDate:(id)a7
+- (id)_bookInfoForAssetAtURL:(id)l withMoc:(id)moc error:(id *)error needsCoordination:(BOOL)coordination updateDate:(id)date
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  coordinationCopy = coordination;
+  lCopy = l;
+  mocCopy = moc;
+  dateCopy = date;
   v14 = +[AEEpubInfoSource sharedInstance];
-  v15 = [v14 bookInfoForURL:v11 fromManagedObjectContext:v12 error:a5 needsCoordination:v8 updateDate:v13];
+  v15 = [v14 bookInfoForURL:lCopy fromManagedObjectContext:mocCopy error:error needsCoordination:coordinationCopy updateDate:dateCopy];
 
   return v15;
 }
 
-- (id)helper:(id)a3 metadataForKey:(id)a4 forURL:(id)a5 needsCoordination:(BOOL)a6
+- (id)helper:(id)helper metadataForKey:(id)key forURL:(id)l needsCoordination:(BOOL)coordination
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  if ([(AEBookInfoAssetPlugin *)self isEpubURL:v10])
+  coordinationCopy = coordination;
+  keyCopy = key;
+  lCopy = l;
+  if ([(AEBookInfoAssetPlugin *)self isEpubURL:lCopy])
   {
     v11 = +[AEEpubInfoSource sharedInstance];
-    v12 = [v11 metadataForKey:v9 forURL:v10 needsCoordination:v6];
+    v12 = [v11 metadataForKey:keyCopy forURL:lCopy needsCoordination:coordinationCopy];
   }
 
   else
@@ -64,36 +64,36 @@
   return v12;
 }
 
-- (void)helper:(id)a3 deletePersistentCacheForURL:(id)a4
+- (void)helper:(id)helper deletePersistentCacheForURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v4 = +[AEEpubInfoSource sharedInstance];
-  [v4 resetBookForURL:v5];
+  [v4 resetBookForURL:lCopy];
 }
 
-- (void)helper:(id)a3 updateCachedURLFrom:(id)a4 to:(id)a5
+- (void)helper:(id)helper updateCachedURLFrom:(id)from to:(id)to
 {
-  v8 = a4;
-  v6 = a5;
+  fromCopy = from;
+  toCopy = to;
   v7 = +[AEEpubInfoSource sharedInstance];
-  [v7 updateCachedURLFrom:v8 to:v6];
+  [v7 updateCachedURLFrom:fromCopy to:toCopy];
 }
 
-- (void)helper:(id)a3 canRefetch:(BOOL)a4 viewControllerWithOptions:(id)a5 completion:(id)a6
+- (void)helper:(id)helper canRefetch:(BOOL)refetch viewControllerWithOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v29 = v10;
+  helperCopy = helper;
+  optionsCopy = options;
+  completionCopy = completion;
+  v29 = helperCopy;
   v28 = [v29 url];
-  v13 = [v11 objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
+  v13 = [optionsCopy objectForKeyedSubscript:BCTransactionOptionsTransactionKey];
   v45[0] = 0;
   v45[1] = v45;
   v45[2] = 0x3032000000;
   v45[3] = sub_3CD04;
   v45[4] = sub_3CD14;
-  v14 = self;
-  v46 = v14;
+  selfCopy = self;
+  v46 = selfCopy;
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_3CD1C;
@@ -101,13 +101,13 @@
   v44 = v45;
   v27 = v13;
   v42 = v27;
-  v15 = v12;
+  v15 = completionCopy;
   v43 = v15;
   v16 = objc_retainBlock(v41);
-  v17 = [v11 objectForKey:AEHelperNumberIsApplePubKey];
-  v18 = [v17 BOOLValue];
+  v17 = [optionsCopy objectForKey:AEHelperNumberIsApplePubKey];
+  bOOLValue = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue)
   {
     v19 = [NSError errorWithDomain:AssetEngineErrorDomain code:1004 userInfo:0];
     if (v19)
@@ -118,7 +118,7 @@
 
   else
   {
-    v26 = [v11 valueForKey:@"assetID"];
+    v26 = [optionsCopy valueForKey:@"assetID"];
     v20 = [NSFileAccessIntent readingIntentWithURL:v28 options:1];
     v21 = objc_opt_new();
     v47 = v20;
@@ -129,14 +129,14 @@
     v30[2] = sub_3CF7C;
     v30[3] = &unk_1E3A90;
     v31 = v28;
-    v32 = v11;
+    v32 = optionsCopy;
     v38 = v16;
     v24 = v20;
     v33 = v24;
-    v34 = v14;
+    v34 = selfCopy;
     v25 = v26;
     v35 = v25;
-    v40 = a4;
+    refetchCopy = refetch;
     v36 = v27;
     v37 = v29;
     v39 = v15;
@@ -148,14 +148,14 @@
   _Block_object_dispose(v45, 8);
 }
 
-- (BOOL)helper:(id)a3 validateBookAuthorizationWithError:(id *)a4 needsCoordination:(BOOL)a5
+- (BOOL)helper:(id)helper validateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v8 = a3;
-  v9 = [v8 url];
+  helperCopy = helper;
+  v9 = [helperCopy url];
   v10 = +[AEEpubInfoSource sharedInstance];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -163,10 +163,10 @@
   v13[3] = &unk_1E3AB8;
   v13[4] = self;
   v11 = v9;
-  v17 = a5;
+  coordinationCopy = coordination;
   v14 = v11;
   v15 = &v18;
-  v16 = a4;
+  errorCopy = error;
   [v10 performBackgroundTaskAndWait:v13];
 
   LOBYTE(v9) = *(v19 + 24);
@@ -175,31 +175,31 @@
   return v9;
 }
 
-- (id)helper:(id)a3 coverImageForURL:(id)a4 size:(CGSize)a5
+- (id)helper:(id)helper coverImageForURL:(id)l size:(CGSize)size
 {
-  v5 = [(AEBookInfoAssetPlugin *)self helper:a3 coverImageForURL:a4, a5.width, a5.height];
+  v5 = [(AEBookInfoAssetPlugin *)self helper:helper coverImageForURL:l, size.width, size.height];
 
   return v5;
 }
 
-- (id)helper:(id)a3 coverImageForURL:(id)a4
+- (id)helper:(id)helper coverImageForURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_3CD04;
   v18 = sub_3CD14;
   v19 = 0;
-  if ([(AEBookInfoAssetPlugin *)self isEpubURL:v5])
+  if ([(AEBookInfoAssetPlugin *)self isEpubURL:lCopy])
   {
     +[AEEpubInfoSource sharedInstance];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_3ED9C;
     v10 = v9[3] = &unk_1E3AE0;
-    v11 = v5;
-    v12 = self;
+    v11 = lCopy;
+    selfCopy = self;
     v13 = &v14;
     v6 = v10;
     [v6 performBackgroundTaskAndWait:v9];
@@ -211,67 +211,67 @@
   return v7;
 }
 
-- (id)helper:(id)a3 annotationProviderForURL:(id)a4 needsCoordination:(BOOL)a5 forAssetID:(id)a6
+- (id)helper:(id)helper annotationProviderForURL:(id)l needsCoordination:(BOOL)coordination forAssetID:(id)d
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(AEBookInfoAssetPlugin *)self sharedAnnotationProvider];
-  if (v12)
+  coordinationCopy = coordination;
+  helperCopy = helper;
+  lCopy = l;
+  dCopy = d;
+  sharedAnnotationProvider = [(AEBookInfoAssetPlugin *)self sharedAnnotationProvider];
+  if (dCopy)
   {
-    v14 = v12;
+    v14 = dCopy;
   }
 
   else
   {
-    v14 = [v10 helperMetadataForKey:AEHelperStringMetadataAssetIDKey needsCoordination:v7];
+    v14 = [helperCopy helperMetadataForKey:AEHelperStringMetadataAssetIDKey needsCoordination:coordinationCopy];
   }
 
   v15 = v14;
   v16 = [UIApplication contextDirectoryForAssetWithID:v14];
-  v17 = [IMLibraryPlist isManagedBookFromURL:v11];
-  v18 = [v17 BOOLValue];
+  v17 = [IMLibraryPlist isManagedBookFromURL:lCopy];
+  bOOLValue = [v17 BOOLValue];
 
-  v19 = [AEAnnotationSerializationManager annotationSerializationManagerWithAssetID:v15 assetURL:v11 bookVersionString:0 pathToAssetContextDirectory:v16 isManagedBook:v18];
-  if (([v19 isAssetOfflineWithAssetID:v15] & 1) != 0 || objc_msgSend(v19, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", v13, v15))
+  v19 = [AEAnnotationSerializationManager annotationSerializationManagerWithAssetID:v15 assetURL:lCopy bookVersionString:0 pathToAssetContextDirectory:v16 isManagedBook:bOOLValue];
+  if (([v19 isAssetOfflineWithAssetID:v15] & 1) != 0 || objc_msgSend(v19, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", sharedAnnotationProvider, v15))
   {
     v20 = [v19 annotationProviderForOfflineDBWithAssetID:v15];
 
-    v13 = v20;
+    sharedAnnotationProvider = v20;
   }
 
-  return v13;
+  return sharedAnnotationProvider;
 }
 
-- (id)helperForURL:(id)a3 withOptions:(id)a4
+- (id)helperForURL:(id)l withOptions:(id)options
 {
-  v5 = a3;
-  v6 = [[AEPluginDelegateInstance alloc] initWithDelegate:self forURL:v5];
+  lCopy = l;
+  v6 = [[AEPluginDelegateInstance alloc] initWithDelegate:self forURL:lCopy];
 
   return v6;
 }
 
-- (BOOL)_shouldShowAlertForError:(id)a3
+- (BOOL)_shouldShowAlertForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
-  v6 = v5;
-  if (v4 == -996)
+  errorCopy = error;
+  code = [errorCopy code];
+  domain = [errorCopy domain];
+  v6 = domain;
+  if (code == -996)
   {
-    v7 = [v5 isEqualToString:fd45c988dd8cc08fce2e58d17f4ed2];
+    v7 = [domain isEqualToString:fd45c988dd8cc08fce2e58d17f4ed2];
   }
 
   else
   {
-    if (v4 != &stru_3D8.segname[4])
+    if (code != &stru_3D8.segname[4])
     {
       v8 = 1;
       goto LABEL_7;
     }
 
-    v7 = [v5 isEqualToString:AssetEngineErrorDomain];
+    v7 = [domain isEqualToString:AssetEngineErrorDomain];
   }
 
   v8 = v7 ^ 1;
@@ -280,19 +280,19 @@ LABEL_7:
   return v8;
 }
 
-- (void)_showAlertForError:(id)a3 forAssetAtURL:(id)a4 transaction:(id)a5
+- (void)_showAlertForError:(id)error forAssetAtURL:(id)l transaction:(id)transaction
 {
-  v32 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (!v8)
+  errorCopy = error;
+  lCopy = l;
+  transactionCopy = transaction;
+  if (!transactionCopy)
   {
     BCReportAssertionFailureWithMessage();
   }
 
   v9 = &_s13BookAnalytics13SkipDirectionO7forwardyA2CmFWC_ptr;
   v10 = +[AEAssetEngine libraryMgr];
-  v11 = [v10 metadataForAssetAtURL:v7 needsCoordination:1];
+  v11 = [v10 metadataForAssetAtURL:lCopy needsCoordination:1];
 
   v12 = [IMLibraryPlist titleFromPlistEntry:v11];
   v13 = AEBundle();
@@ -311,17 +311,17 @@ LABEL_7:
     v17 = [v15 localizedStringForKey:@"Cannot Open Book" value:&stru_1E7188 table:0];
   }
 
-  v18 = [v32 code];
-  if (v18 > 1999)
+  code = [errorCopy code];
+  if (code > 1999)
   {
-    if (v18 == &stru_798.reloff)
+    if (code == &stru_798.reloff)
     {
       v19 = AEBundle();
       v20 = [v19 localizedStringForKey:@"This book is protected by an incompatible technology." value:&stru_1E7188 table:0];
       goto LABEL_26;
     }
 
-    if (v18 == (&stru_798.reloff + 2))
+    if (code == (&stru_798.reloff + 2))
     {
 LABEL_22:
       v19 = AEBundle();
@@ -329,17 +329,17 @@ LABEL_22:
       goto LABEL_26;
     }
 
-    if (v18 == &stru_798.nreloc)
+    if (code == &stru_798.nreloc)
     {
       objc_opt_class();
-      v21 = [v32 userInfo];
-      v22 = [v21 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo = [errorCopy userInfo];
+      v22 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
       v19 = BUDynamicCast();
 
-      v23 = [v19 localizedDescription];
-      if ([v23 length])
+      localizedDescription = [v19 localizedDescription];
+      if ([localizedDescription length])
       {
-        v24 = v23;
+        v24 = localizedDescription;
       }
 
       else
@@ -355,23 +355,23 @@ LABEL_22:
     goto LABEL_18;
   }
 
-  if ((v18 - 250) < 2)
+  if ((code - 250) < 2)
   {
     goto LABEL_25;
   }
 
-  if (v18 != &stru_20.flags && v18 != (&stru_108.size + 1))
+  if (code != &stru_20.flags && code != (&stru_108.size + 1))
   {
 LABEL_18:
-    v25 = [v32 domain];
-    if ([v25 isEqualToString:AMSErrorDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:AMSErrorDomain])
     {
 
       goto LABEL_22;
     }
 
-    v26 = [v32 domain];
-    v27 = [v26 isEqualToString:AKAppleIDAuthenticationErrorDomain];
+    domain2 = [errorCopy domain];
+    v27 = [domain2 isEqualToString:AKAppleIDAuthenticationErrorDomain];
 
     if (v27)
     {
@@ -394,8 +394,8 @@ LABEL_27:
   v30 = [UIAlertAction actionWithTitle:v14 style:1 handler:0];
   [v29 addAction:v30];
 
-  v31 = [v9[137] appInfoMgr];
-  [v31 presentViewController:v29 transaction:v8 animated:1 completion:0];
+  appInfoMgr = [v9[137] appInfoMgr];
+  [appInfoMgr presentViewController:v29 transaction:transactionCopy animated:1 completion:0];
 }
 
 @end

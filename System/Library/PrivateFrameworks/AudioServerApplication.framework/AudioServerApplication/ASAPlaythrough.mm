@@ -1,33 +1,33 @@
 @interface ASAPlaythrough
-- (ASAPlaythrough)initWithDevice:(id)a3 usingChannelMapping:(id)a4;
-- (ASAPlaythrough)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDevice:(id)a5 withName:(id)a6 isPrivate:(BOOL)a7 usingChannelMapping:(id)a8;
-- (ASAPlaythrough)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDeviceUID:(id)a5 withName:(id)a6 isPrivate:(BOOL)a7 usingChannelMapping:(id)a8;
+- (ASAPlaythrough)initWithDevice:(id)device usingChannelMapping:(id)mapping;
+- (ASAPlaythrough)initWithDevices:(id)devices usingMainDevice:(id)device andClockDevice:(id)clockDevice withName:(id)name isPrivate:(BOOL)private usingChannelMapping:(id)mapping;
+- (ASAPlaythrough)initWithDevices:(id)devices usingMainDevice:(id)device andClockDeviceUID:(id)d withName:(id)name isPrivate:(BOOL)private usingChannelMapping:(id)mapping;
 - (BOOL)start;
 - (BOOL)stop;
 - (void)_createIOContext;
-- (void)_freeIOContext:(id *)a3;
+- (void)_freeIOContext:(id *)context;
 - (void)dealloc;
 @end
 
 @implementation ASAPlaythrough
 
-- (ASAPlaythrough)initWithDevice:(id)a3 usingChannelMapping:(id)a4
+- (ASAPlaythrough)initWithDevice:(id)device usingChannelMapping:(id)mapping
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  mappingCopy = mapping;
   v13.receiver = self;
   v13.super_class = ASAPlaythrough;
   v8 = [(ASAPlaythrough *)&v13 init];
   if (v8)
   {
     v9 = +[ASACoreAudio sharedCoreAudioObject];
-    v10 = [v9 audioDeviceWithUID:v6];
+    v10 = [v9 audioDeviceWithUID:deviceCopy];
     audioDevice = v8->_audioDevice;
     v8->_audioDevice = v10;
 
     if (v8->_audioDevice)
     {
-      objc_storeStrong(&v8->_channelMapping, a4);
+      objc_storeStrong(&v8->_channelMapping, mapping);
       v8->_aggregateID = 0;
     }
 
@@ -41,25 +41,25 @@
   return v8;
 }
 
-- (ASAPlaythrough)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDevice:(id)a5 withName:(id)a6 isPrivate:(BOOL)a7 usingChannelMapping:(id)a8
+- (ASAPlaythrough)initWithDevices:(id)devices usingMainDevice:(id)device andClockDevice:(id)clockDevice withName:(id)name isPrivate:(BOOL)private usingChannelMapping:(id)mapping
 {
-  v59 = a7;
+  privateCopy = private;
   v83 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v64 = a5;
-  v63 = a6;
-  v62 = a8;
-  v66 = [MEMORY[0x277CBEB18] array];
-  v14 = [MEMORY[0x277CCAB68] string];
-  v15 = [v12 firstObject];
+  devicesCopy = devices;
+  deviceCopy = device;
+  clockDeviceCopy = clockDevice;
+  nameCopy = name;
+  mappingCopy = mapping;
+  array = [MEMORY[0x277CBEB18] array];
+  string = [MEMORY[0x277CCAB68] string];
+  firstObject = [devicesCopy firstObject];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
-  v16 = v12;
+  v16 = devicesCopy;
   v17 = [v16 countByEnumeratingWithState:&v71 objects:v82 count:16];
-  v61 = v13;
+  v61 = deviceCopy;
   if (v17)
   {
     v18 = v17;
@@ -74,8 +74,8 @@
         }
 
         v21 = *(*(&v71 + 1) + 8 * i);
-        v22 = [v15 clockDomain];
-        if (v22 != [v21 clockDomain])
+        clockDomain = [firstObject clockDomain];
+        if (clockDomain != [v21 clockDomain])
         {
           v23 = 0;
           goto LABEL_11;
@@ -104,7 +104,7 @@ LABEL_11:
   if (v24)
   {
     v25 = v24;
-    v26 = v14;
+    v26 = string;
     v27 = *v68;
 
     do
@@ -123,7 +123,7 @@ LABEL_11:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v80 = v63;
+            v80 = nameCopy;
             _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "All devices in aggregate %@ share a clock domain, disabling drift compensation", buf, 0xCu);
             v30 = 0;
           }
@@ -131,16 +131,16 @@ LABEL_11:
 
         else
         {
-          v31 = [v64 deviceUID];
-          v32 = [v29 deviceUID];
-          v33 = [v31 isEqualToString:v32];
+          deviceUID = [clockDeviceCopy deviceUID];
+          deviceUID2 = [v29 deviceUID];
+          v33 = [deviceUID isEqualToString:deviceUID2];
 
           v30 = v33 ^ 1u;
         }
 
         v77[0] = @"uid";
-        v34 = [v29 deviceUID];
-        v78[0] = v34;
+        deviceUID3 = [v29 deviceUID];
+        v78[0] = deviceUID3;
         v77[1] = @"drift";
         v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v30];
         v78[1] = v35;
@@ -149,25 +149,25 @@ LABEL_11:
         v78[2] = v36;
         v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:3];
 
-        [v66 addObject:v37];
-        v38 = [v29 deviceUID];
-        [v26 appendFormat:@"%@%@", &stru_285341100, v38];
+        [array addObject:v37];
+        deviceUID4 = [v29 deviceUID];
+        [v26 appendFormat:@"%@%@", &stru_285341100, deviceUID4];
       }
 
       v25 = [obj countByEnumeratingWithState:&v67 objects:v81 count:16];
     }
 
     while (v25);
-    v15 = 0;
-    v14 = v26;
+    firstObject = 0;
+    string = v26;
   }
 
   v39 = MEMORY[0x277CCACA8];
-  v40 = [v64 deviceUID];
-  if (v40)
+  deviceUID5 = [clockDeviceCopy deviceUID];
+  if (deviceUID5)
   {
-    v41 = [v64 deviceUID];
-    v42 = [v39 stringWithFormat:@"%@", v41];
+    deviceUID6 = [clockDeviceCopy deviceUID];
+    v42 = [v39 stringWithFormat:@"%@", deviceUID6];
   }
 
   else
@@ -176,11 +176,11 @@ LABEL_11:
   }
 
   v43 = MEMORY[0x277CCACA8];
-  v44 = [v61 deviceUID];
-  if (v44)
+  deviceUID7 = [v61 deviceUID];
+  if (deviceUID7)
   {
-    v45 = [v61 deviceUID];
-    v46 = [v43 stringWithFormat:@"%@", v45];
+    deviceUID8 = [v61 deviceUID];
+    v46 = [v43 stringWithFormat:@"%@", deviceUID8];
   }
 
   else
@@ -190,16 +190,16 @@ LABEL_11:
 
   v75[0] = @"name";
   v75[1] = @"uid";
-  v76[0] = v63;
-  v76[1] = v14;
+  v76[0] = nameCopy;
+  v76[1] = string;
   v75[2] = @"clock";
   v75[3] = @"master";
   v76[2] = v42;
   v76[3] = v46;
-  v76[4] = v66;
+  v76[4] = array;
   v75[4] = @"subdevices";
   v75[5] = @"private";
-  v47 = [MEMORY[0x277CCABB0] numberWithBool:v59];
+  v47 = [MEMORY[0x277CCABB0] numberWithBool:privateCopy];
   v76[5] = v47;
   v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:6];
 
@@ -212,13 +212,13 @@ LABEL_11:
 
   v49 = +[ASACoreAudio sharedCoreAudioObject];
   v50 = [v49 pluginWithBundleID:@"com.apple.audio.V5"];
-  v51 = [v50 audioDeviceObjectIDWithUID:v14];
+  v51 = [v50 audioDeviceObjectIDWithUID:string];
   *buf = v51;
   if (v51 && !AudioHardwareDestroyAggregateDevice(v51))
   {
     while (1)
     {
-      *buf = [v50 audioDeviceObjectIDWithUID:v14];
+      *buf = [v50 audioDeviceObjectIDWithUID:string];
       if (!*buf)
       {
         break;
@@ -243,7 +243,7 @@ LABEL_11:
   while (1)
   {
     v54 = *buf;
-    if (v54 == [v50 audioDeviceObjectIDWithUID:v14])
+    if (v54 == [v50 audioDeviceObjectIDWithUID:string])
     {
       break;
     }
@@ -251,12 +251,12 @@ LABEL_11:
     usleep(0x2710u);
   }
 
-  v55 = [(ASAPlaythrough *)self initWithDevice:v14 usingChannelMapping:v62];
+  v55 = [(ASAPlaythrough *)self initWithDevice:string usingChannelMapping:mappingCopy];
   v52 = v55;
   if (v55)
   {
     v55->_aggregateID = *buf;
-    v56 = v14;
+    v56 = string;
     aggregateUID = v52->_aggregateUID;
     v52->_aggregateUID = v56;
 LABEL_44:
@@ -266,22 +266,22 @@ LABEL_44:
   return v52;
 }
 
-- (ASAPlaythrough)initWithDevices:(id)a3 usingMainDevice:(id)a4 andClockDeviceUID:(id)a5 withName:(id)a6 isPrivate:(BOOL)a7 usingChannelMapping:(id)a8
+- (ASAPlaythrough)initWithDevices:(id)devices usingMainDevice:(id)device andClockDeviceUID:(id)d withName:(id)name isPrivate:(BOOL)private usingChannelMapping:(id)mapping
 {
-  v30 = a7;
+  privateCopy = private;
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v31 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
+  devicesCopy = devices;
+  deviceCopy = device;
+  dCopy = d;
+  nameCopy = name;
+  mappingCopy = mapping;
   v16 = objc_opt_new();
   v17 = +[ASACoreAudio sharedCoreAudioObject];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v18 = v12;
+  v18 = devicesCopy;
   v19 = [v18 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v19)
   {
@@ -313,9 +313,9 @@ LABEL_44:
     while (v20);
   }
 
-  v24 = [v17 audioDeviceWithUID:v31];
-  v25 = [v17 clockDeviceWithUID:v13];
-  v26 = [(ASAPlaythrough *)self initWithDevices:v16 usingMainDevice:v24 andClockDevice:v25 withName:v14 isPrivate:v30 usingChannelMapping:v15];
+  v24 = [v17 audioDeviceWithUID:deviceCopy];
+  v25 = [v17 clockDeviceWithUID:dCopy];
+  v26 = [(ASAPlaythrough *)self initWithDevices:v16 usingMainDevice:v24 andClockDevice:v25 withName:nameCopy isPrivate:privateCopy usingChannelMapping:mappingCopy];
 
   v27 = *MEMORY[0x277D85DE8];
   return v26;
@@ -334,8 +334,8 @@ LABEL_44:
     return 0;
   }
 
-  v3 = [(ASAPlaythrough *)self audioDevice];
-  v4 = [v3 createAudioProcID:&self->_procID forIOProc:InputOutputProc withClientData:self->_ioContext error:0];
+  audioDevice = [(ASAPlaythrough *)self audioDevice];
+  v4 = [audioDevice createAudioProcID:&self->_procID forIOProc:InputOutputProc withClientData:self->_ioContext error:0];
 
   if (!v4)
   {
@@ -362,8 +362,8 @@ LABEL_44:
       while (v10 < ioContext->var2);
     }
 
-    v11 = [(ASAPlaythrough *)self audioDevice];
-    [v11 setMainOutputProperty:1937077093 withData:v7 ofSize:v5 withQualifier:0 ofSize:0];
+    audioDevice2 = [(ASAPlaythrough *)self audioDevice];
+    [audioDevice2 setMainOutputProperty:1937077093 withData:v7 ofSize:v5 withQualifier:0 ofSize:0];
   }
 
   free(v7);
@@ -387,18 +387,18 @@ LABEL_44:
       while (v17 < v15->var1);
     }
 
-    v18 = [(ASAPlaythrough *)self audioDevice];
-    [v18 setMainInputProperty:1937077093 withData:v14 ofSize:v12 withQualifier:0 ofSize:0];
+    audioDevice3 = [(ASAPlaythrough *)self audioDevice];
+    [audioDevice3 setMainInputProperty:1937077093 withData:v14 ofSize:v12 withQualifier:0 ofSize:0];
   }
 
   free(v14);
-  v19 = [(ASAPlaythrough *)self audioDevice];
-  v20 = [v19 startAudioProc:self->_procID error:0];
+  audioDevice4 = [(ASAPlaythrough *)self audioDevice];
+  v20 = [audioDevice4 startAudioProc:self->_procID error:0];
 
   if (!v20)
   {
-    v22 = [(ASAPlaythrough *)self audioDevice];
-    [v22 destroyAudioProcID:self->_procID error:0];
+    audioDevice5 = [(ASAPlaythrough *)self audioDevice];
+    [audioDevice5 destroyAudioProcID:self->_procID error:0];
 
     self->_procID = 0;
     [(ASAPlaythrough *)self _destroyIOContext];
@@ -418,11 +418,11 @@ LABEL_44:
 
 - (BOOL)stop
 {
-  v3 = [(ASAPlaythrough *)self playing];
-  if (v3)
+  playing = [(ASAPlaythrough *)self playing];
+  if (playing)
   {
-    v4 = [(ASAPlaythrough *)self audioDevice];
-    [v4 stopAudioProc:self->_procID error:0];
+    audioDevice = [(ASAPlaythrough *)self audioDevice];
+    [audioDevice stopAudioProc:self->_procID error:0];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -430,15 +430,15 @@ LABEL_44:
       _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Audio Proc Stoped\n", v7, 2u);
     }
 
-    v5 = [(ASAPlaythrough *)self audioDevice];
-    [v5 destroyAudioProcID:self->_procID error:0];
+    audioDevice2 = [(ASAPlaythrough *)self audioDevice];
+    [audioDevice2 destroyAudioProcID:self->_procID error:0];
 
     self->_procID = 0;
     [(ASAPlaythrough *)self _destroyIOContext];
     [(ASAPlaythrough *)self setPlaying:0];
   }
 
-  return v3;
+  return playing;
 }
 
 - (void)_createIOContext
@@ -448,15 +448,15 @@ LABEL_44:
   if (v3)
   {
     v4 = v3;
-    v5 = [(ASAPlaythrough *)self audioDevice];
-    v6 = [v5 inputStreamObjectIDs];
+    audioDevice = [(ASAPlaythrough *)self audioDevice];
+    inputStreamObjectIDs = [audioDevice inputStreamObjectIDs];
 
-    v93 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v108 = 0u;
     v109 = 0u;
     v110 = 0u;
     v111 = 0u;
-    obj = v6;
+    obj = inputStreamObjectIDs;
     v7 = [obj countByEnumeratingWithState:&v108 objects:v116 count:16];
     if (v7)
     {
@@ -473,9 +473,9 @@ LABEL_44:
           }
 
           v12 = -[ASAObject initWithAudioObjectID:]([ASAStream alloc], "initWithAudioObjectID:", [*(*(&v108 + 1) + 8 * i) unsignedIntValue]);
-          [v93 addObject:v12];
-          v13 = [(ASAStream *)v12 virtualFormat];
-          v9 += [v13 channelsPerFrame];
+          [array addObject:v12];
+          virtualFormat = [(ASAStream *)v12 virtualFormat];
+          v9 += [virtualFormat channelsPerFrame];
         }
 
         v8 = [obj countByEnumeratingWithState:&v108 objects:v116 count:16];
@@ -489,15 +489,15 @@ LABEL_44:
       v9 = 0;
     }
 
-    v14 = [(ASAPlaythrough *)self audioDevice];
-    v15 = [v14 outputStreamObjectIDs];
+    audioDevice2 = [(ASAPlaythrough *)self audioDevice];
+    outputStreamObjectIDs = [audioDevice2 outputStreamObjectIDs];
 
-    v92 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v104 = 0u;
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v89 = v15;
+    v89 = outputStreamObjectIDs;
     v16 = [v89 countByEnumeratingWithState:&v104 objects:v115 count:16];
     if (v16)
     {
@@ -514,9 +514,9 @@ LABEL_44:
           }
 
           v21 = -[ASAObject initWithAudioObjectID:]([ASAStream alloc], "initWithAudioObjectID:", [*(*(&v104 + 1) + 8 * j) unsignedIntValue]);
-          [v92 addObject:v21];
-          v22 = [(ASAStream *)v21 virtualFormat];
-          v18 += [v22 channelsPerFrame];
+          [array2 addObject:v21];
+          virtualFormat2 = [(ASAStream *)v21 virtualFormat];
+          v18 += [virtualFormat2 channelsPerFrame];
         }
 
         v17 = [v89 countByEnumeratingWithState:&v104 objects:v115 count:16];
@@ -531,12 +531,12 @@ LABEL_44:
     }
 
     memset(&v103, 0, sizeof(v103));
-    v23 = [v93 firstObject];
-    v24 = [v23 virtualFormat];
-    v25 = v24;
-    if (v24)
+    firstObject = [array firstObject];
+    virtualFormat3 = [firstObject virtualFormat];
+    v25 = virtualFormat3;
+    if (virtualFormat3)
     {
-      [v24 audioStreamBasicDescription];
+      [virtualFormat3 audioStreamBasicDescription];
     }
 
     else
@@ -548,8 +548,8 @@ LABEL_44:
     v103.mBytesPerPacket = 4;
     v103.mChannelsPerFrame = v18;
     v103.mBytesPerFrame = 4;
-    v26 = [(ASAPlaythrough *)self audioDevice];
-    v4->var0 = [v26 ioBufferFrameSize];
+    audioDevice3 = [(ASAPlaythrough *)self audioDevice];
+    v4->var0 = [audioDevice3 ioBufferFrameSize];
 
     if (v9 <= v18)
     {
@@ -585,7 +585,7 @@ LABEL_44:
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v82 = v93;
+        v82 = array;
         v91 = [v82 countByEnumeratingWithState:&v99 objects:v114 count:16];
         if (v91)
         {
@@ -593,7 +593,7 @@ LABEL_44:
           v33 = 0;
           v88 = 0;
           v84 = *v100;
-          v86 = self;
+          selfCopy = self;
           do
           {
             v34 = 0;
@@ -610,11 +610,11 @@ LABEL_44:
               *&inSourceFormat.mBitsPerChannel = 0;
               *&inSourceFormat.mSampleRate = v35;
               *&inSourceFormat.mBytesPerPacket = v35;
-              v37 = [v36 virtualFormat];
-              v38 = v37;
-              if (v37)
+              virtualFormat4 = [v36 virtualFormat];
+              v38 = virtualFormat4;
+              if (virtualFormat4)
               {
-                [v37 audioStreamBasicDescription];
+                [virtualFormat4 audioStreamBasicDescription];
               }
 
               else
@@ -635,7 +635,7 @@ LABEL_44:
               if (v4->var5[v33])
               {
                 v42 = v4->var7[v33];
-                self = v86;
+                self = selfCopy;
                 v35 = 0uLL;
                 if (v42 && (var9 = v4->var9, var9[v33]))
                 {
@@ -680,7 +680,7 @@ LABEL_44:
               else
               {
                 v88 = 1;
-                self = v86;
+                self = selfCopy;
                 v35 = 0uLL;
               }
 
@@ -746,7 +746,7 @@ LABEL_44:
       v97 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v83 = v92;
+      v83 = array2;
       v87 = [v83 countByEnumeratingWithState:&v94 objects:v112 count:16];
       if (v87)
       {
@@ -771,11 +771,11 @@ LABEL_44:
             *&inSourceFormat.mBitsPerChannel = 0;
             *&inSourceFormat.mSampleRate = v66;
             *&inSourceFormat.mBytesPerPacket = v66;
-            v68 = [v67 virtualFormat];
-            v69 = v68;
-            if (v68)
+            virtualFormat5 = [v67 virtualFormat];
+            v69 = virtualFormat5;
+            if (virtualFormat5)
             {
-              [v68 audioStreamBasicDescription];
+              [virtualFormat5 audioStreamBasicDescription];
             }
 
             else
@@ -795,10 +795,10 @@ LABEL_44:
                 v73 = v72;
                 if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                 {
-                  v74 = [v67 startingChannel];
+                  startingChannel = [v67 startingChannel];
                   *&inDestinationFormat.mSampleRate = __PAIR64__(v63, v81);
                   LOWORD(inDestinationFormat.mFormatID) = 1024;
-                  *(&inDestinationFormat.mFormatID + 2) = v74;
+                  *(&inDestinationFormat.mFormatID + 2) = startingChannel;
                   HIWORD(inDestinationFormat.mFormatFlags) = 1024;
                   inDestinationFormat.mBytesPerPacket = inSourceFormat.mChannelsPerFrame;
                   _os_log_impl(&dword_2415BC000, v64, OS_LOG_TYPE_DEFAULT, "Output Audio Map for %u starting at %u with %u channels\n", &inDestinationFormat, 0x14u);
@@ -881,119 +881,119 @@ LABEL_95:
   v80 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_freeIOContext:(id *)a3
+- (void)_freeIOContext:(id *)context
 {
-  if (a3)
+  if (context)
   {
-    var6 = a3->var6;
+    var6 = context->var6;
     if (var6)
     {
-      var2 = a3->var2;
+      var2 = context->var2;
       if (var2)
       {
         for (i = 0; i < var2; ++i)
         {
-          v7 = a3->var6[i];
+          v7 = context->var6[i];
           if (v7)
           {
             AudioConverterDispose(v7);
-            var2 = a3->var2;
+            var2 = context->var2;
           }
         }
 
-        var6 = a3->var6;
+        var6 = context->var6;
       }
 
       free(var6);
     }
 
-    var5 = a3->var5;
+    var5 = context->var5;
     if (var5)
     {
-      var1 = a3->var1;
+      var1 = context->var1;
       if (var1)
       {
         for (j = 0; j < var1; ++j)
         {
-          v11 = a3->var5[j];
+          v11 = context->var5[j];
           if (v11)
           {
             AudioConverterDispose(v11);
-            var1 = a3->var1;
+            var1 = context->var1;
           }
         }
 
-        var5 = a3->var5;
+        var5 = context->var5;
       }
 
       free(var5);
     }
 
-    var7 = a3->var7;
+    var7 = context->var7;
     if (var7)
     {
-      if (a3->var1)
+      if (context->var1)
       {
         v13 = 0;
         do
         {
-          free(a3->var7[v13++]);
+          free(context->var7[v13++]);
         }
 
-        while (v13 < a3->var1);
-        var7 = a3->var7;
+        while (v13 < context->var1);
+        var7 = context->var7;
       }
 
       free(var7);
     }
 
-    var9 = a3->var9;
+    var9 = context->var9;
     if (var9)
     {
-      if (a3->var1)
+      if (context->var1)
       {
         v15 = 0;
         do
         {
-          free(a3->var9[v15++]);
+          free(context->var9[v15++]);
         }
 
-        while (v15 < a3->var1);
-        var9 = a3->var9;
+        while (v15 < context->var1);
+        var9 = context->var9;
       }
 
       free(var9);
     }
 
-    var8 = a3->var8;
+    var8 = context->var8;
     if (var8)
     {
-      if (a3->var2)
+      if (context->var2)
       {
         v17 = 0;
         do
         {
-          free(a3->var8[v17++]);
+          free(context->var8[v17++]);
         }
 
-        while (v17 < a3->var2);
-        var8 = a3->var8;
+        while (v17 < context->var2);
+        var8 = context->var8;
       }
 
       free(var8);
     }
 
-    free(a3->var10);
-    free(a3->var4);
+    free(context->var10);
+    free(context->var4);
 
-    free(a3);
+    free(context);
   }
 }
 
 - (void)dealloc
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xEu);
   v6 = *MEMORY[0x277D85DE8];

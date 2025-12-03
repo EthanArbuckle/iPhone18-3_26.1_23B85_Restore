@@ -1,30 +1,30 @@
 @interface BWStillImageCoordinatorNode
-+ ($07919FF52A1CF34B835B8E07CC3CE49A)worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:(SEL)a3 stillImageCaptureSettings:(id)a4 captureDevice:(id)a5;
++ ($07919FF52A1CF34B835B8E07CC3CE49A)worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:(SEL)settings stillImageCaptureSettings:(id)captureSettings captureDevice:(id)device;
 + (void)initialize;
 - (BOOL)_speedOverQualityCaptureEnabled;
-- (BOOL)_waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:(float)a3 freeBufferCountOut:;
+- (BOOL)_waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:(float)timeout freeBufferCountOut:;
 - (BOOL)shouldGraphLiveReconfigurationWait;
 - (BWStillImageSettings)_currentStillImageSettings;
 - (BWStillImageSettings)_resolvePhotoManifest;
-- (id)_initWithNodeConfiguration:(id)a3 captureDevice:(id)a4 inputPortTypes:(id)a5 sensorRawInputPortTypes:(id)a6 highResStillImageDimensions:(id)a7 allStateTransitionsHandler:(id)a8;
-- (int)_enqueueRequestWithSettings:(id)a3 serviceRequestsIfNecessary:(BOOL)a4;
-- (int)beginStillImageMomentCaptureWithSettings:(id)a3;
-- (int)cancelStillImageMomentCaptureWithSettingsID:(int64_t)a3;
-- (int)captureStillImageNowWithSettings:(id)a3;
-- (int)commitStillImageMomentCaptureWithSettings:(id)a3;
-- (int)initiateStillImageCaptureNowWithSettings:(id)a3;
-- (int)prepareStillImageCaptureNowWithSettings:(id)a3;
+- (id)_initWithNodeConfiguration:(id)configuration captureDevice:(id)device inputPortTypes:(id)types sensorRawInputPortTypes:(id)portTypes highResStillImageDimensions:(id)dimensions allStateTransitionsHandler:(id)handler;
+- (int)_enqueueRequestWithSettings:(id)settings serviceRequestsIfNecessary:(BOOL)necessary;
+- (int)beginStillImageMomentCaptureWithSettings:(id)settings;
+- (int)cancelStillImageMomentCaptureWithSettingsID:(int64_t)d;
+- (int)captureStillImageNowWithSettings:(id)settings;
+- (int)commitStillImageMomentCaptureWithSettings:(id)settings;
+- (int)initiateStillImageCaptureNowWithSettings:(id)settings;
+- (int)prepareStillImageCaptureNowWithSettings:(id)settings;
 - (uint64_t)_beginInitiatingCapture;
 - (uint64_t)_beginResolvingCapture;
 - (uint64_t)_cancelMomentCaptureIfNeeded;
 - (uint64_t)_capturedAllFrames;
 - (uint64_t)_configureCurrentCaptureRequestStateForFigCaptureStillImageSettings;
 - (uint64_t)_didResolveReferenceFrameBracketedCaptureSequenceNumber:(uint64_t)result;
-- (uint64_t)_didSelectNewReferenceFrameWithPTS:(uint64_t)a3 transform:(uint64_t)a4 forSettings:;
+- (uint64_t)_didSelectNewReferenceFrameWithPTS:(uint64_t)s transform:(uint64_t)transform forSettings:;
 - (uint64_t)_ensureDeviceOrientationMonitor;
 - (uint64_t)_expectedFrameCountForNextRequest;
 - (uint64_t)_fireDelegateCallbackWithInfo:(uint64_t)result;
-- (uint64_t)_maxShotBufferCapacityForCurrentRequestWithBufferCount:(int)a3 ultraHighResBufferCount:;
+- (uint64_t)_maxShotBufferCapacityForCurrentRequestWithBufferCount:(int)count ultraHighResBufferCount:;
 - (uint64_t)_receivedFrameOrErrorCountForCurrentRequest;
 - (uint64_t)_setupProcessing;
 - (uint64_t)_setupStateMachineWithAllStateTransitionsHandler:(uint64_t)result;
@@ -37,54 +37,54 @@
 - (void)_beginUncommittedMomentCapture;
 - (void)_cancelMomentCapture;
 - (void)_commitMomentCapture;
-- (void)_completeRequestWithStatus:(uint64_t)a1;
+- (void)_completeRequestWithStatus:(uint64_t)status;
 - (void)_configureCurrentCaptureRequestStateForFigCaptureStillImageSettings;
 - (void)_didCaptureStillImage;
-- (void)_didResolveStillImagePTS:(void *)a3 isPreBracketedEV0:;
-- (void)_fireDelegateCallbackWithFlag:(uint64_t)a1;
-- (void)_flushStillImageRequestWithError:(uint64_t)a1;
+- (void)_didResolveStillImagePTS:(void *)s isPreBracketedEV0:;
+- (void)_fireDelegateCallbackWithFlag:(uint64_t)flag;
+- (void)_flushStillImageRequestWithError:(uint64_t)error;
 - (void)_readyToRespondToRequest;
 - (void)_serviceNextRequest;
-- (void)_stoppedUsingBufferWithSensorRawHighResolutionFlavor:(int)a3;
+- (void)_stoppedUsingBufferWithSensorRawHighResolutionFlavor:(int)flavor;
 - (void)_unpackNextRequest;
 - (void)_updateResponsiveShutterEnabled;
-- (void)_waitToMakePaceWithReferenceTime:(uint64_t)a1;
-- (void)captureStream:(id)a3 didCapturePreBracketedEV0ImageWithPTS:(id *)a4;
-- (void)captureStream:(id)a3 didCaptureReferenceFrameWithPTS:(id *)a4 referenceFrameBracketedCaptureSequenceNumber:(id)a5;
-- (void)captureStream:(id)a3 stillImageCaptureError:(int)a4;
-- (void)captureStreamDidCompleteStillImageCapture:(id)a3;
-- (void)captureStreamWillBeginStillImageCapture:(id)a3;
-- (void)captureStreamWillWaitForTimeMachineToFill:(id)a3;
-- (void)clientReceivedPayloadForSettings:(id)a3 status:(int)a4 clientIsMidStillImageGraph:(BOOL)a5;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_waitToMakePaceWithReferenceTime:(uint64_t)time;
+- (void)captureStream:(id)stream didCapturePreBracketedEV0ImageWithPTS:(id *)s;
+- (void)captureStream:(id)stream didCaptureReferenceFrameWithPTS:(id *)s referenceFrameBracketedCaptureSequenceNumber:(id)number;
+- (void)captureStream:(id)stream stillImageCaptureError:(int)error;
+- (void)captureStreamDidCompleteStillImageCapture:(id)capture;
+- (void)captureStreamWillBeginStillImageCapture:(id)capture;
+- (void)captureStreamWillWaitForTimeMachineToFill:(id)fill;
+- (void)clientReceivedPayloadForSettings:(id)settings status:(int)status clientIsMidStillImageGraph:(BOOL)graph;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)node:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 forSettings:(id)a6;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)node:(id)node didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform forSettings:(id)settings;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setCompressedShotBuffer:(id)a3;
-- (void)willStopGraph:(BOOL)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setCompressedShotBuffer:(id)buffer;
+- (void)willStopGraph:(BOOL)graph;
 @end
 
 @implementation BWStillImageCoordinatorNode
 
 - (void)_updateResponsiveShutterEnabled
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_88_2();
-    if (!v2 || *(a1 + 208) != 2)
+    if (!v2 || *(self + 208) != 2)
     {
-      *(a1 + 476) = 0;
-      *(a1 + 508) = 0;
+      *(self + 476) = 0;
+      *(self + 508) = 0;
       [objc_opt_class() setMaxShotBufferCapacity:0];
-      *(a1 + 536) = 0;
+      *(self + 536) = 0;
       v5 = 448;
       v6 = 1;
 LABEL_15:
-      *(a1 + v5) = v6;
+      *(self + v5) = v6;
       return;
     }
 
@@ -98,11 +98,11 @@ LABEL_15:
       v3 = 18;
     }
 
-    if ([*(a1 + 144) softISPEnabled])
+    if ([*(self + 144) softISPEnabled])
     {
-      if ([*(a1 + 144) sensorRawStillImageOutputsEnabled])
+      if ([*(self + 144) sensorRawStillImageOutputsEnabled])
       {
-        if ([*(a1 + 144) depthDataDeliveryEnabled])
+        if ([*(self + 144) depthDataDeliveryEnabled])
         {
           v3 = 27;
         }
@@ -121,23 +121,23 @@ LABEL_15:
         v4 = 1;
       }
 
-      *(a1 + 448) = v4;
+      *(self + 448) = v4;
     }
 
-    *(a1 + 476) = 1;
+    *(self + 476) = 1;
     OUTLINED_FUNCTION_33();
     if (v2)
     {
-      *(a1 + 480) = 0;
-      *(a1 + 488) = 0;
-      *(a1 + 492) = 0;
-      v7 = *(a1 + 448);
+      *(self + 480) = 0;
+      *(self + 488) = 0;
+      *(self + 492) = 0;
+      v7 = *(self + 448);
       objc_opt_class();
       objc_opt_self();
       sUltraHighResFrameCountExpansionFactor = v7;
       [objc_opt_class() setCurrentAllocatedShotBufferCapacity:0];
       [objc_opt_class() setMaxShotBufferCapacity:v3];
-      *(a1 + 484) = v3;
+      *(self + 484) = v3;
       [objc_opt_class() setNumberOfZoomBasedBufferIncludedInShotBuffer:0];
       [objc_opt_class() setNumberOfUltraHighResBufferIncludedInShotBuffer:0];
     }
@@ -145,27 +145,27 @@ LABEL_15:
     else
     {
       [objc_opt_class() setMaxShotBufferCapacity:0];
-      *(a1 + 448) = 1;
-      v8 = *(a1 + 448);
+      *(self + 448) = 1;
+      v8 = *(self + 448);
       objc_opt_class();
       objc_opt_self();
       sUltraHighResFrameCountExpansionFactor = v8;
     }
 
-    *(a1 + 508) = 1;
+    *(self + 508) = 1;
     OUTLINED_FUNCTION_33();
     if (v2)
     {
-      *(a1 + 512) = 1082130432;
+      *(self + 512) = 1082130432;
     }
 
-    *(a1 + 536) = *(a1 + 454);
-    if (*(a1 + 536) == 1)
+    *(self + 536) = *(self + 454);
+    if (*(self + 536) == 1)
     {
-      *(a1 + 540) = 2;
-      if (*(a1 + 536))
+      *(self + 540) = 2;
+      if (*(self + 536))
       {
-        *(a1 + 544) = 1040187392;
+        *(self + 544) = 1040187392;
         v5 = 548;
         v6 = 1051931443;
         goto LABEL_15;
@@ -176,7 +176,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -185,28 +185,28 @@ LABEL_15:
   }
 }
 
-+ ($07919FF52A1CF34B835B8E07CC3CE49A)worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:(SEL)a3 stillImageCaptureSettings:(id)a4 captureDevice:(id)a5
++ ($07919FF52A1CF34B835B8E07CC3CE49A)worstCaseMaxBracketedCaptureBufferCountForPreparedSettings:(SEL)settings stillImageCaptureSettings:(id)captureSettings captureDevice:(id)device
 {
-  if (a4)
+  if (captureSettings)
   {
-    v10 = [a4 HDRMode] != 0;
-    v11 = [a4 digitalFlashMode] != 0;
-    v12 = [a4 qualityPrioritization];
+    v10 = [captureSettings HDRMode] != 0;
+    v11 = [captureSettings digitalFlashMode] != 0;
+    qualityPrioritization = [captureSettings qualityPrioritization];
   }
 
   else
   {
-    v12 = 2;
+    qualityPrioritization = 2;
     v11 = 1;
     v10 = 1;
   }
 
-  v13 = [a6 maxStillImageCaptureBufferCountForHDRMode:v10 digitalFlashMode:v11 qualityPrioritization:v12 clientBracketCount:objc_msgSend(a4 bravoConstituentImageDeliveryDeviceTypes:{"bracketedImageCount"), objc_msgSend(a4, "bravoConstituentImageDeliveryDeviceTypes")}];
+  v13 = [a6 maxStillImageCaptureBufferCountForHDRMode:v10 digitalFlashMode:v11 qualityPrioritization:qualityPrioritization clientBracketCount:objc_msgSend(captureSettings bravoConstituentImageDeliveryDeviceTypes:{"bracketedImageCount"), objc_msgSend(captureSettings, "bravoConstituentImageDeliveryDeviceTypes")}];
   *&retstr->var0 = 0;
   *&retstr->var2 = 0;
   retstr->var4 = 0;
-  v42 = a5;
-  if (!a5)
+  deviceCopy = device;
+  if (!device)
   {
     if ([a6 softISPEnabled])
     {
@@ -232,7 +232,7 @@ LABEL_29:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = [a5 captureStreamSettings];
+  obj = [device captureStreamSettings];
   v14 = [obj countByEnumeratingWithState:&v47 objects:v46 count:16];
   if (!v14)
   {
@@ -268,10 +268,10 @@ LABEL_29:
       }
 
       v22 = *(*(&v47 + 1) + 8 * i);
-      v23 = [v22 expectedFrameCaptureCounts];
+      expectedFrameCaptureCounts = [v22 expectedFrameCaptureCounts];
       v25 = v24;
-      v26 = HIDWORD(v23);
-      v19 += v23;
+      v26 = HIDWORD(expectedFrameCaptureCounts);
+      v19 += expectedFrameCaptureCounts;
       v27 = [v45 isPortTypeUsingZoomBasedSourceSensorRaws:{objc_msgSend(v22, "portType")}];
       if (v27)
       {
@@ -340,35 +340,35 @@ LABEL_31:
 LABEL_34:
   if ([v30 maxShotBufferCapacity] >= 1)
   {
-    v31 = [v30 currentAllocatedShotBufferCapacity];
+    currentAllocatedShotBufferCapacity = [v30 currentAllocatedShotBufferCapacity];
     v32 = a6;
-    if (v31 >= [v30 maxShotBufferCapacity])
+    if (currentAllocatedShotBufferCapacity >= [v30 maxShotBufferCapacity])
     {
-      v33 = [v30 maxShotBufferCapacity];
+      maxShotBufferCapacity = [v30 maxShotBufferCapacity];
     }
 
     else
     {
-      v33 = [v30 currentAllocatedShotBufferCapacity];
+      maxShotBufferCapacity = [v30 currentAllocatedShotBufferCapacity];
     }
 
-    v34 = v33;
-    v35 = [v30 numberOfZoomBasedBufferIncludedInShotBuffer];
-    v36 = [v30 numberOfUltraHighResBufferIncludedInShotBuffer];
+    v34 = maxShotBufferCapacity;
+    numberOfZoomBasedBufferIncludedInShotBuffer = [v30 numberOfZoomBasedBufferIncludedInShotBuffer];
+    numberOfUltraHighResBufferIncludedInShotBuffer = [v30 numberOfUltraHighResBufferIncludedInShotBuffer];
     objc_opt_self();
-    v37 = sUltraHighResFrameCountExpansionFactor * v36;
+    v37 = sUltraHighResFrameCountExpansionFactor * numberOfUltraHighResBufferIncludedInShotBuffer;
     if ([v32 softISPEnabled])
     {
-      if (v42)
+      if (deviceCopy)
       {
         if ([v32 sensorRawStillImageOutputsEnabled])
         {
           if (v18 > 0 || v17 > 0 || v16 >= 1)
           {
-            v18 = v34 - v35 - v37;
+            v18 = v34 - numberOfZoomBasedBufferIncludedInShotBuffer - v37;
             retstr->var1 = v18;
-            retstr->var2 = v35;
-            retstr->var3 = v36;
+            retstr->var2 = numberOfZoomBasedBufferIncludedInShotBuffer;
+            retstr->var3 = numberOfUltraHighResBufferIncludedInShotBuffer;
           }
 
           if (v19 >= 1)
@@ -438,7 +438,7 @@ LABEL_34:
   return result;
 }
 
-- (id)_initWithNodeConfiguration:(id)a3 captureDevice:(id)a4 inputPortTypes:(id)a5 sensorRawInputPortTypes:(id)a6 highResStillImageDimensions:(id)a7 allStateTransitionsHandler:(id)a8
+- (id)_initWithNodeConfiguration:(id)configuration captureDevice:(id)device inputPortTypes:(id)types sensorRawInputPortTypes:(id)portTypes highResStillImageDimensions:(id)dimensions allStateTransitionsHandler:(id)handler
 {
   v66.receiver = self;
   v66.super_class = BWStillImageCoordinatorNode;
@@ -446,18 +446,18 @@ LABEL_34:
   v15 = v14;
   if (v14)
   {
-    v43 = a8;
-    obj = a6;
+    handlerCopy = handler;
+    obj = portTypes;
     [(BWNode *)v14 setSupportsLiveReconfiguration:1];
-    *(v15 + 136) = a3;
-    v17 = a4;
-    *(v15 + 144) = v17;
+    *(v15 + 136) = configuration;
+    deviceCopy = device;
+    *(v15 + 144) = deviceCopy;
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v18 = [v17 captureStreams];
-    v19 = [v18 countByEnumeratingWithState:&v62 objects:v61 count:16];
+    captureStreams = [deviceCopy captureStreams];
+    v19 = [captureStreams countByEnumeratingWithState:&v62 objects:v61 count:16];
     if (v19)
     {
       v20 = v19;
@@ -469,28 +469,28 @@ LABEL_34:
         {
           if (*v63 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(captureStreams);
           }
 
           [*(*(&v62 + 1) + 8 * v22++) setStillImageCaptureDelegate:v15];
         }
 
         while (v20 != v22);
-        v20 = [v18 countByEnumeratingWithState:&v62 objects:v61 count:16];
+        v20 = [captureStreams countByEnumeratingWithState:&v62 objects:v61 count:16];
       }
 
       while (v20);
     }
 
     [v15 setSupportsConcurrentLiveInputCallbacks:0];
-    *(v15 + 184) = a7;
-    v48 = [MEMORY[0x1E695DF90] dictionary];
-    v49 = [MEMORY[0x1E695DF90] dictionary];
+    *(v15 + 184) = dimensions;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v23 = [a5 countByEnumeratingWithState:&v57 objects:v56 count:16];
+    v23 = [types countByEnumeratingWithState:&v57 objects:v56 count:16];
     if (v23)
     {
       v25 = v23;
@@ -504,7 +504,7 @@ LABEL_34:
         {
           if (*v58 != v26)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(types);
           }
 
           v28 = *(*(&v57 + 1) + 8 * v27);
@@ -515,7 +515,7 @@ LABEL_34:
           [(BWNodeInput *)v29 setPassthroughMode:1];
           [(BWNodeInput *)v29 setRetainedBufferCount:0];
           [v15 addInput:v29];
-          [v48 setObject:v29 forKeyedSubscript:v28];
+          [dictionary setObject:v29 forKeyedSubscript:v28];
           [(BWNodeInput *)v29 setName:BWPortTypeToDisplayString(v28, v31)];
           ++v24;
           v32 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v15];
@@ -524,7 +524,7 @@ LABEL_34:
 
           [(BWNodeOutput *)v32 setPassthroughMode:1];
           [(BWNodeOutput *)v32 setIndexOfInputWhichDrivesThisOutput:[(BWNodeInput *)v29 index]];
-          [v49 setObject:v32 forKeyedSubscript:v28];
+          [dictionary2 setObject:v32 forKeyedSubscript:v28];
           [(BWNodeOutput *)v32 setName:BWPortTypeToDisplayString(v28, v34)];
           [v15 addOutput:v32];
 
@@ -532,7 +532,7 @@ LABEL_34:
         }
 
         while (v25 != v27);
-        v25 = [a5 countByEnumeratingWithState:&v57 objects:v56 count:16];
+        v25 = [types countByEnumeratingWithState:&v57 objects:v56 count:16];
       }
 
       while (v25);
@@ -543,8 +543,8 @@ LABEL_34:
       LODWORD(v24) = 0;
     }
 
-    v46 = [MEMORY[0x1E695DF90] dictionary];
-    v47 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
@@ -572,7 +572,7 @@ LABEL_34:
           [(BWNodeInput *)v37 setPassthroughMode:1];
           [(BWNodeInput *)v37 setRetainedBufferCount:0];
           [v15 addInput:v37];
-          [v46 setObject:v37 forKeyedSubscript:v36];
+          [dictionary3 setObject:v37 forKeyedSubscript:v36];
           -[BWNodeInput setName:](v37, "setName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", BWPortTypeToDisplayString(v36, v39), @"SensorRaw"]);
           ++v24;
           v40 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v15];
@@ -581,7 +581,7 @@ LABEL_34:
 
           [(BWNodeOutput *)v40 setPassthroughMode:1];
           [(BWNodeOutput *)v40 setIndexOfInputWhichDrivesThisOutput:[(BWNodeInput *)v37 index]];
-          [v47 setObject:v40 forKeyedSubscript:v36];
+          [dictionary4 setObject:v40 forKeyedSubscript:v36];
           -[BWNodeInput setName:](v37, "setName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", BWPortTypeToDisplayString(v36, v42), @"SensorRaw"]);
           [v15 addOutput:v40];
 
@@ -597,16 +597,16 @@ LABEL_34:
 
     *(v15 + 224) = objc_alloc_init(MEMORY[0x1E695DF70]);
     *(v15 + 232) = 0;
-    *(v15 + 152) = [v48 copy];
-    *(v15 + 160) = [v49 copy];
-    *(v15 + 168) = [v46 copy];
-    *(v15 + 176) = [v47 copy];
+    *(v15 + 152) = [dictionary copy];
+    *(v15 + 160) = [dictionary2 copy];
+    *(v15 + 168) = [dictionary3 copy];
+    *(v15 + 176) = [dictionary4 copy];
     *(v15 + 248) = FigDispatchQueueCreateWithPriority();
     *(v15 + 256) = dispatch_group_create();
     *(v15 + 272) = dispatch_group_create();
     *(v15 + 288) = objc_alloc_init(MEMORY[0x1E695DF90]);
     *(v15 + 296) = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(BWStillImageCoordinatorNode *)v15 _setupStateMachineWithAllStateTransitionsHandler:v43];
+    [(BWStillImageCoordinatorNode *)v15 _setupStateMachineWithAllStateTransitionsHandler:handlerCopy];
     *(v15 + 216) = 2;
     *(v15 + 432) = 0;
   }
@@ -646,12 +646,12 @@ LABEL_34:
   [(BWNode *)&v9 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", a3), "objectAtIndexedSubscript:", [a4 index]);
-  v6 = [a4 format];
+  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs", format), "objectAtIndexedSubscript:", [input index]);
+  format = [input format];
 
-  [v5 setFormat:v6];
+  [v5 setFormat:format];
 }
 
 - (void)prepareForCurrentConfigurationToBecomeLive
@@ -671,8 +671,8 @@ LABEL_34:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(BWNode *)self inputs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+    inputs = [(BWNode *)self inputs];
+    v5 = [(NSArray *)inputs countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -683,7 +683,7 @@ LABEL_34:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(inputs);
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
@@ -694,7 +694,7 @@ LABEL_34:
           }
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v6 = [(NSArray *)inputs countByEnumeratingWithState:&v15 objects:v14 count:16];
       }
 
       while (v6);
@@ -706,7 +706,7 @@ LABEL_34:
   [(BWNode *)&v13 prepareForCurrentConfigurationToBecomeLive:v11];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (dword_1ED844530)
   {
@@ -717,7 +717,7 @@ LABEL_34:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5, v10, v11])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input, v10, v11])
   {
     stillImageDispatchGroup = self->_stillImageDispatchGroup;
     stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -726,7 +726,7 @@ LABEL_34:
     block[2] = __87__BWStillImageCoordinatorNode_configurationWithID_updatedFormat_didBecomeLiveForInput___block_invoke;
     block[3] = &unk_1E7990178;
     block[4] = self;
-    block[5] = a3;
+    block[5] = d;
     dispatch_group_notify(stillImageDispatchGroup, stillImageDispatchQueue, block);
   }
 }
@@ -852,7 +852,7 @@ uint64_t __87__BWStillImageCoordinatorNode_configurationWithID_updatedFormat_did
   return [v3 transitionToState:v4];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (dword_1ED844530)
   {
@@ -863,15 +863,15 @@ uint64_t __87__BWStillImageCoordinatorNode_configurationWithID_updatedFormat_did
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([(BWNode *)self allInputsHaveReachedState:0, a4, v13, v14])
+  if ([(BWNode *)self allInputsHaveReachedState:0, input, v13, v14])
   {
     stillImageDispatchQueue = self->_stillImageDispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __73__BWStillImageCoordinatorNode_didReachEndOfDataForConfigurationID_input___block_invoke;
     block[3] = &unk_1E79973A0;
-    v18 = a3 != 0;
-    block[4] = a3;
+    v18 = d != 0;
+    block[4] = d;
     block[5] = self;
     dispatch_async(stillImageDispatchQueue, block);
     if (dword_1ED844530)
@@ -906,8 +906,8 @@ uint64_t __87__BWStillImageCoordinatorNode_configurationWithID_updatedFormat_did
     v15[1] = 3221225472;
     v15[2] = __73__BWStillImageCoordinatorNode_didReachEndOfDataForConfigurationID_input___block_invoke_64;
     v15[3] = &unk_1E79973A0;
-    v16 = a3 != 0;
-    v15[4] = a3;
+    v16 = d != 0;
+    v15[4] = d;
     v15[5] = self;
     dispatch_group_notify(stillImageDispatchGroup, v12, v15);
   }
@@ -1047,13 +1047,13 @@ LABEL_14:
   return result;
 }
 
-- (int)initiateStillImageCaptureNowWithSettings:(id)a3
+- (int)initiateStillImageCaptureNowWithSettings:(id)settings
 {
-  if (a3 && ([a3 stillImageUserInitiatedRequestPTS], (v6 & 1) != 0))
+  if (settings && ([settings stillImageUserInitiatedRequestPTS], (v6 & 1) != 0))
   {
-    if ([a3 stillImageUserInitiatedRequestTime])
+    if ([settings stillImageUserInitiatedRequestTime])
     {
-      return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:a3 serviceRequestsIfNecessary:1];
+      return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:settings serviceRequestsIfNecessary:1];
     }
 
     [BWStillImageCoordinatorNode initiateStillImageCaptureNowWithSettings:];
@@ -1067,7 +1067,7 @@ LABEL_14:
   return -12780;
 }
 
-- (int)captureStillImageNowWithSettings:(id)a3
+- (int)captureStillImageNowWithSettings:(id)settings
 {
   if (dword_1ED844530)
   {
@@ -1078,10 +1078,10 @@ LABEL_14:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:a3 serviceRequestsIfNecessary:1, v7, v8];
+  return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:settings serviceRequestsIfNecessary:1, v7, v8];
 }
 
-- (int)prepareStillImageCaptureNowWithSettings:(id)a3
+- (int)prepareStillImageCaptureNowWithSettings:(id)settings
 {
   if (dword_1ED844530)
   {
@@ -1092,10 +1092,10 @@ LABEL_14:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:a3 serviceRequestsIfNecessary:1, v7, v8];
+  return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:settings serviceRequestsIfNecessary:1, v7, v8];
 }
 
-- (int)beginStillImageMomentCaptureWithSettings:(id)a3
+- (int)beginStillImageMomentCaptureWithSettings:(id)settings
 {
   if (dword_1ED844530)
   {
@@ -1106,16 +1106,16 @@ LABEL_14:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([a3 isBeginMomentCaptureSettings])
+  if ([settings isBeginMomentCaptureSettings])
   {
-    return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:a3 serviceRequestsIfNecessary:1];
+    return [(BWStillImageCoordinatorNode *)self _enqueueRequestWithSettings:settings serviceRequestsIfNecessary:1];
   }
 
   [BWStillImageCoordinatorNode beginStillImageMomentCaptureWithSettings:];
   return -12780;
 }
 
-- (int)cancelStillImageMomentCaptureWithSettingsID:(int64_t)a3
+- (int)cancelStillImageMomentCaptureWithSettingsID:(int64_t)d
 {
   v14 = 0;
   v15 = &v14;
@@ -1130,11 +1130,11 @@ LABEL_14:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [(BWFigVideoCaptureDevice *)self->_captureDevice zeroShutterLagCancelWaitingForTimeMachinesForSettingsID:a3, v9, v10];
+  [(BWFigVideoCaptureDevice *)self->_captureDevice zeroShutterLagCancelWaitingForTimeMachinesForSettingsID:d, v9, v10];
   os_unfair_lock_lock(&self->_requestQueueLock);
-  self->_momentCaptureLastCancelledSettingsID = a3;
+  self->_momentCaptureLastCancelledSettingsID = d;
   os_unfair_lock_unlock(&self->_requestQueueLock);
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"canceling moment capture for captureID:%lld", a3];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"canceling moment capture for captureID:%lld", d];
   dispatch_group_enter(self->_stillImageDispatchGroup);
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1143,7 +1143,7 @@ LABEL_14:
   block[3] = &unk_1E79973C8;
   block[4] = self;
   block[5] = &v14;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(stillImageDispatchQueue, block);
   v7 = *(v15 + 6);
   _Block_object_dispose(&v14, 8);
@@ -1167,7 +1167,7 @@ uint64_t __75__BWStillImageCoordinatorNode_cancelStillImageMomentCaptureWithSett
   return [v3 transitionToState:v2];
 }
 
-- (int)commitStillImageMomentCaptureWithSettings:(id)a3
+- (int)commitStillImageMomentCaptureWithSettings:(id)settings
 {
   v15 = 0;
   v16 = &v15;
@@ -1183,15 +1183,15 @@ uint64_t __75__BWStillImageCoordinatorNode_cancelStillImageMomentCaptureWithSett
   }
 
   os_unfair_lock_lock(&self->_requestQueueLock);
-  v6 = [a3 settingsID];
-  self->_momentCaptureLastComittedSettingsID = v6;
-  if (self->_momentCaptureUnfiredWillBeginCaptureBeforeResolvingSettingsCallbackSettingsID == v6)
+  settingsID = [settings settingsID];
+  self->_momentCaptureLastComittedSettingsID = settingsID;
+  if (self->_momentCaptureUnfiredWillBeginCaptureBeforeResolvingSettingsCallbackSettingsID == settingsID)
   {
     self->_momentCaptureUnfiredWillBeginCaptureBeforeResolvingSettingsCallbackSettingsID = 0;
     os_unfair_lock_unlock(&self->_requestQueueLock);
-    if (v6 >= 1)
+    if (settingsID >= 1)
     {
-      [objc_loadWeak(&self->_stillImageCaptureStatusDelegate) stillImageCoordinator:self willBeginCaptureBeforeResolvingSettingsForID:v6];
+      [objc_loadWeak(&self->_stillImageCaptureStatusDelegate) stillImageCoordinator:self willBeginCaptureBeforeResolvingSettingsForID:settingsID];
     }
   }
 
@@ -1200,7 +1200,7 @@ uint64_t __75__BWStillImageCoordinatorNode_cancelStillImageMomentCaptureWithSett
     os_unfair_lock_unlock(&self->_requestQueueLock);
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"commit moment capture for captureID:%lld", objc_msgSend(a3, "settingsID", v10, v11)];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"commit moment capture for captureID:%lld", objc_msgSend(settings, "settingsID", v10, v11)];
   dispatch_group_enter(self->_stillImageDispatchGroup);
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1208,7 +1208,7 @@ uint64_t __75__BWStillImageCoordinatorNode_cancelStillImageMomentCaptureWithSett
   block[2] = __73__BWStillImageCoordinatorNode_commitStillImageMomentCaptureWithSettings___block_invoke;
   block[3] = &unk_1E79906C0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = settings;
   block[6] = &v15;
   dispatch_sync(stillImageDispatchQueue, block);
   v8 = *(v16 + 6);
@@ -1260,9 +1260,9 @@ void __73__BWStillImageCoordinatorNode_commitStillImageMomentCaptureWithSettings
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v7 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+  v7 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
   if (!v7)
   {
     LODWORD(v28) = 0;
@@ -1277,7 +1277,7 @@ void __73__BWStillImageCoordinatorNode_commitStillImageMomentCaptureWithSettings
     free(v9);
   }
 
-  v10 = [(BWFigVideoCaptureDevice *)self->_captureDevice sensorRawHighResolutionFlavorForDimensions:BWPixelBufferDimensionsFromSampleBuffer(a3)];
+  v10 = [(BWFigVideoCaptureDevice *)self->_captureDevice sensorRawHighResolutionFlavorForDimensions:BWPixelBufferDimensionsFromSampleBuffer(buffer)];
   if (dword_1ED844530)
   {
     LODWORD(v28) = 0;
@@ -1289,7 +1289,7 @@ void __73__BWStillImageCoordinatorNode_commitStillImageMomentCaptureWithSettings
 
   if (self->_stillImageCapturePipeliningMode == 2)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
       v13 = ImageBuffer;
@@ -1351,8 +1351,8 @@ LABEL_15:
   block[4] = self;
   block[5] = v7;
   block[8] = &v34;
-  block[9] = a3;
-  block[6] = a4;
+  block[9] = buffer;
+  block[6] = input;
   block[7] = &v28;
   dispatch_sync(stillImageDispatchQueue, block);
   if (*(v35 + 24) == 1)
@@ -1392,7 +1392,7 @@ void __59__BWStillImageCoordinatorNode_renderSampleBuffer_forInput___block_invok
   [(BWStillImageCoordinatorNode *)v56 _stoppedUsingBufferWithSensorRawHighResolutionFlavor:v63, v57, v58, v59, v60, v61, v62, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, a48, a49, a50, a51, a52, a53, a54, a55];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   v22[0] = 0;
   v22[1] = v22;
@@ -1411,11 +1411,11 @@ void __59__BWStillImageCoordinatorNode_renderSampleBuffer_forInput___block_invok
     v15[1] = 3221225472;
     v15[2] = __56__BWStillImageCoordinatorNode_handleNodeError_forInput___block_invoke;
     v15[3] = &unk_1E7997440;
-    v15[4] = a4;
+    v15[4] = input;
     v15[5] = &v16;
     [(NSDictionary *)portTypeToInput enumerateKeysAndObjectsUsingBlock:v15];
     v8 = [(BWStillImageCaptureSettings *)self->_currentResolvedStillImageCaptureSettings captureStreamSettingsForPortType:v17[5]];
-    v9 = [v8 expectedFrameCaptureCount];
+    expectedFrameCaptureCount = [v8 expectedFrameCaptureCount];
     stillImageDispatchQueue = self->_stillImageDispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1423,14 +1423,14 @@ void __59__BWStillImageCoordinatorNode_renderSampleBuffer_forInput___block_invok
     block[3] = &unk_1E7997468;
     block[6] = &v16;
     block[7] = v22;
-    v14 = v9;
+    v14 = expectedFrameCaptureCount;
     block[4] = self;
     block[5] = v8;
     dispatch_sync(stillImageDispatchQueue, block);
     if ([v17[5] isEqualToString:*off_1E798A0E8])
     {
-      v11 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [a4 index]);
-      v12 = +[BWNodeError newError:sourceNode:stillImageSettings:metadata:](BWNodeError, "newError:sourceNode:stillImageSettings:metadata:", [a3 errorCode], self, -[BWStillImageCoordinatorNode _currentStillImageSettings](self), objc_msgSend(a3, "metadata"));
+      v11 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [input index]);
+      v12 = +[BWNodeError newError:sourceNode:stillImageSettings:metadata:](BWNodeError, "newError:sourceNode:stillImageSettings:metadata:", [error errorCode], self, -[BWStillImageCoordinatorNode _currentStillImageSettings](self), objc_msgSend(error, "metadata"));
       [v11 emitNodeError:v12];
     }
   }
@@ -1473,21 +1473,21 @@ uint64_t __56__BWStillImageCoordinatorNode_handleNodeError_forInput___block_invo
   return result;
 }
 
-- (void)clientReceivedPayloadForSettings:(id)a3 status:(int)a4 clientIsMidStillImageGraph:(BOOL)a5
+- (void)clientReceivedPayloadForSettings:(id)settings status:(int)status clientIsMidStillImageGraph:(BOOL)graph
 {
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__BWStillImageCoordinatorNode_clientReceivedPayloadForSettings_status_clientIsMidStillImageGraph___block_invoke;
   block[3] = &unk_1E7991B48;
-  v8 = a5;
+  graphCopy = graph;
   block[4] = self;
-  block[5] = a3;
-  v7 = a4;
+  block[5] = settings;
+  statusCopy = status;
   dispatch_async(stillImageDispatchQueue, block);
 }
 
-- (void)willStopGraph:(BOOL)a3
+- (void)willStopGraph:(BOOL)graph
 {
   v17 = 0;
   v18 = &v17;
@@ -1508,7 +1508,7 @@ uint64_t __56__BWStillImageCoordinatorNode_handleNodeError_forInput___block_invo
   block[3] = &unk_1E7997490;
   block[4] = self;
   block[5] = &v13;
-  v11 = a3;
+  graphCopy = graph;
   block[6] = v12;
   block[7] = &v17;
   dispatch_sync(stillImageDispatchQueue, block);
@@ -1833,14 +1833,14 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   }
 }
 
-- (void)setCompressedShotBuffer:(id)a3
+- (void)setCompressedShotBuffer:(id)buffer
 {
   compressedShotBuffer = self->_compressedShotBuffer;
-  if (compressedShotBuffer != a3)
+  if (compressedShotBuffer != buffer)
   {
 
-    self->_compressedShotBuffer = a3;
-    if (a3)
+    self->_compressedShotBuffer = buffer;
+    if (buffer)
     {
       self->_extraUncompressedShotBufferCapacityForThermalSystemPressureLevelSerious = 1;
       self->_extraUncompressedShotBufferCapacityForThermalSystemPressureLevelCritical = 4;
@@ -1848,7 +1848,7 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   }
 }
 
-- (void)captureStreamWillBeginStillImageCapture:(id)a3
+- (void)captureStreamWillBeginStillImageCapture:(id)capture
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1860,7 +1860,7 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, block);
 }
 
-- (void)captureStream:(id)a3 didCaptureReferenceFrameWithPTS:(id *)a4 referenceFrameBracketedCaptureSequenceNumber:(id)a5
+- (void)captureStream:(id)stream didCaptureReferenceFrameWithPTS:(id *)s referenceFrameBracketedCaptureSequenceNumber:(id)number
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1868,9 +1868,9 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   block[1] = 3221225472;
   block[2] = __122__BWStillImageCoordinatorNode_captureStream_didCaptureReferenceFrameWithPTS_referenceFrameBracketedCaptureSequenceNumber___block_invoke;
   block[3] = &unk_1E7997200;
-  v8 = *a4;
+  v8 = *s;
   block[4] = self;
-  block[5] = a5;
+  block[5] = number;
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, block);
 }
 
@@ -1888,8 +1888,8 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
         v12 = 0u;
         v9 = 0u;
         v10 = 0u;
-        v4 = [v3 outputs];
-        result = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+        outputs = [v3 outputs];
+        result = [outputs countByEnumeratingWithState:&v9 objects:v8 count:16];
         if (result)
         {
           v5 = result;
@@ -1901,14 +1901,14 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
             {
               if (*v10 != v6)
               {
-                objc_enumerationMutation(v4);
+                objc_enumerationMutation(outputs);
               }
 
               [*(*(&v9 + 1) + 8 * v7++) emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:{objc_msgSend(a2, "intValue")}];
             }
 
             while (v5 != v7);
-            result = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+            result = [outputs countByEnumeratingWithState:&v9 objects:v8 count:16];
             v5 = result;
           }
 
@@ -1921,7 +1921,7 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   return result;
 }
 
-- (void)captureStream:(id)a3 didCapturePreBracketedEV0ImageWithPTS:(id *)a4
+- (void)captureStream:(id)stream didCapturePreBracketedEV0ImageWithPTS:(id *)s
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1930,11 +1930,11 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   v6[2] = __83__BWStillImageCoordinatorNode_captureStream_didCapturePreBracketedEV0ImageWithPTS___block_invoke;
   v6[3] = &unk_1E7990150;
   v6[4] = self;
-  v7 = *a4;
+  v7 = *s;
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, v6);
 }
 
-- (void)captureStreamDidCompleteStillImageCapture:(id)a3
+- (void)captureStreamDidCompleteStillImageCapture:(id)capture
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1943,11 +1943,11 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   v5[2] = __73__BWStillImageCoordinatorNode_captureStreamDidCompleteStillImageCapture___block_invoke;
   v5[3] = &unk_1E798F898;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = capture;
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, v5);
 }
 
-- (void)captureStream:(id)a3 stillImageCaptureError:(int)a4
+- (void)captureStream:(id)stream stillImageCaptureError:(int)error
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1956,11 +1956,11 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   v6[2] = __68__BWStillImageCoordinatorNode_captureStream_stillImageCaptureError___block_invoke;
   v6[3] = &unk_1E7991CF0;
   v6[4] = self;
-  v7 = a4;
+  errorCopy = error;
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, v6);
 }
 
-- (void)node:(id)a3 didSelectNewReferenceFrameWithPTS:(id *)a4 transform:(id)a5 forSettings:(id)a6
+- (void)node:(id)node didSelectNewReferenceFrameWithPTS:(id *)s transform:(id)transform forSettings:(id)settings
 {
   stillImageDispatchGroup = self->_stillImageDispatchGroup;
   stillImageDispatchQueue = self->_stillImageDispatchQueue;
@@ -1968,10 +1968,10 @@ void __65__BWStillImageCoordinatorNode_shouldGraphLiveReconfigurationWait__block
   v8[1] = 3221225472;
   v8[2] = __92__BWStillImageCoordinatorNode_node_didSelectNewReferenceFrameWithPTS_transform_forSettings___block_invoke;
   v8[3] = &unk_1E79974B8;
-  v9 = *a4;
+  v9 = *s;
   v8[4] = self;
-  v8[5] = a5;
-  v8[6] = a6;
+  v8[5] = transform;
+  v8[6] = settings;
   dispatch_group_async(stillImageDispatchGroup, stillImageDispatchQueue, v8);
 }
 
@@ -1985,29 +1985,29 @@ uint64_t __92__BWStillImageCoordinatorNode_node_didSelectNewReferenceFrameWithPT
   return [(BWStillImageCoordinatorNode *)v2 _didSelectNewReferenceFrameWithPTS:v1 transform:v3 forSettings:?];
 }
 
-- (int)_enqueueRequestWithSettings:(id)a3 serviceRequestsIfNecessary:(BOOL)a4
+- (int)_enqueueRequestWithSettings:(id)settings serviceRequestsIfNecessary:(BOOL)necessary
 {
-  if (!a3)
+  if (!settings)
   {
     [BWStillImageCoordinatorNode _enqueueRequestWithSettings:serviceRequestsIfNecessary:];
     return -12780;
   }
 
-  v7 = [a3 isUserInitiatedRequestSettings];
-  v8 = [a3 isClientInitiatedPrepareSettings];
+  isUserInitiatedRequestSettings = [settings isUserInitiatedRequestSettings];
+  isClientInitiatedPrepareSettings = [settings isClientInitiatedPrepareSettings];
   os_unfair_lock_lock(&self->_requestQueueLock);
-  if (!v8)
+  if (!isClientInitiatedPrepareSettings)
   {
-    if (v7)
+    if (isUserInitiatedRequestSettings)
     {
 LABEL_9:
-      [(NSMutableArray *)self->_requestQueue addObject:a3];
+      [(NSMutableArray *)self->_requestQueue addObject:settings];
       goto LABEL_10;
     }
 
     if (self->_captureRequestCount <= 9)
     {
-      [(NSMutableArray *)self->_requestQueue addObject:a3];
+      [(NSMutableArray *)self->_requestQueue addObject:settings];
       ++self->_captureRequestCount;
       goto LABEL_10;
     }
@@ -2019,7 +2019,7 @@ LABEL_12:
 
   if (self->_prepareRequestCount > 9)
   {
-    if (v7)
+    if (isUserInitiatedRequestSettings)
     {
       goto LABEL_9;
     }
@@ -2027,7 +2027,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [(NSMutableArray *)self->_requestQueue addObject:a3];
+  [(NSMutableArray *)self->_requestQueue addObject:settings];
   ++self->_prepareRequestCount;
 LABEL_10:
   os_unfair_lock_unlock(&self->_requestQueueLock);
@@ -2037,8 +2037,8 @@ LABEL_10:
   block[2] = __86__BWStillImageCoordinatorNode__enqueueRequestWithSettings_serviceRequestsIfNecessary___block_invoke;
   block[3] = &unk_1E79973A0;
   block[4] = self;
-  block[5] = a3;
-  v12 = a4;
+  block[5] = settings;
+  necessaryCopy = necessary;
   dispatch_async(stillImageDispatchQueue, block);
   return 0;
 }
@@ -2246,9 +2246,9 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     ++self->_numberOfBurstCapturesInFlight;
   }
 
-  v11 = [(BWStillImageCaptureSettings *)self->_currentResolvedStillImageCaptureSettings deliverDeferredPhotoProxyImage];
-  v116 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings aspectRatio];
-  if ([(BWFigVideoCaptureDevice *)self->_captureDevice aspectRatio]!= v116)
+  deliverDeferredPhotoProxyImage = [(BWStillImageCaptureSettings *)self->_currentResolvedStillImageCaptureSettings deliverDeferredPhotoProxyImage];
+  aspectRatio = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings aspectRatio];
+  if ([(BWFigVideoCaptureDevice *)self->_captureDevice aspectRatio]!= aspectRatio)
   {
     if (dword_1ED844530)
     {
@@ -2270,7 +2270,7 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
       {
         v15 = BWAspectRatioToShortString([(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings aspectRatio]);
         v16 = BWAspectRatioToShortString([(BWFigVideoCaptureDevice *)self->_captureDevice aspectRatio]);
-        v17 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
+        settingsID = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
         v128 = 136315906;
         v129 = "[BWStillImageCoordinatorNode _configureCurrentCaptureRequestStateForFigCaptureStillImageSettings]";
         v130 = 2114;
@@ -2278,7 +2278,7 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
         v132 = 2114;
         *v133 = v16;
         *&v133[8] = 2050;
-        v134 = v17;
+        v134 = settingsID;
         LODWORD(v96) = 42;
         v94 = &v128;
         _os_log_send_and_compose_impl();
@@ -2292,15 +2292,15 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     [objc_loadWeak(&self->_stillImageCaptureStatusDelegate) stillImageCoordinator:self updateSettingsAfterLiveReconfiguration:self->_currentRequestedStillImageCaptureSettings];
   }
 
-  v18 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputDimensions];
-  v19 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings thumbnailDimensions];
-  v20 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings rawThumbnailDimensions];
-  v21 = v11;
-  v97 = HIDWORD(*&v18);
-  v98 = v18;
-  if (v11)
+  outputDimensions = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputDimensions];
+  thumbnailDimensions = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings thumbnailDimensions];
+  rawThumbnailDimensions = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings rawThumbnailDimensions];
+  v21 = deliverDeferredPhotoProxyImage;
+  v97 = HIDWORD(*&outputDimensions);
+  v98 = outputDimensions;
+  if (deliverDeferredPhotoProxyImage)
   {
-    var1 = v18.var1;
+    var1 = outputDimensions.var1;
   }
 
   else
@@ -2308,9 +2308,9 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     var1 = 0;
   }
 
-  if (v11)
+  if (deliverDeferredPhotoProxyImage)
   {
-    var0 = v18.var0;
+    var0 = outputDimensions.var0;
   }
 
   else
@@ -2318,9 +2318,9 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     var0 = 0;
   }
 
-  if (v11)
+  if (deliverDeferredPhotoProxyImage)
   {
-    v24 = v19.var1;
+    v24 = thumbnailDimensions.var1;
   }
 
   else
@@ -2328,13 +2328,13 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     v24 = 0;
   }
 
-  v104 = HIDWORD(*&v19);
+  v104 = HIDWORD(*&thumbnailDimensions);
   v105 = v24;
-  v101 = v19;
-  v102 = HIDWORD(*&v20);
-  if (v11)
+  v101 = thumbnailDimensions;
+  v102 = HIDWORD(*&rawThumbnailDimensions);
+  if (deliverDeferredPhotoProxyImage)
   {
-    v25 = v19.var0;
+    v25 = thumbnailDimensions.var0;
   }
 
   else
@@ -2343,9 +2343,9 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
   }
 
   v107 = v25;
-  if (v11)
+  if (deliverDeferredPhotoProxyImage)
   {
-    v26 = v20.var1;
+    v26 = rawThumbnailDimensions.var1;
   }
 
   else
@@ -2354,10 +2354,10 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
   }
 
   v109 = v26;
-  v27 = v20;
-  if (v11)
+  v27 = rawThumbnailDimensions;
+  if (deliverDeferredPhotoProxyImage)
   {
-    v28 = v20.var0;
+    v28 = rawThumbnailDimensions.var0;
   }
 
   else
@@ -2366,24 +2366,24 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
   }
 
   v111 = v28;
-  v118 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings resolutionFlavor];
-  if (!v118)
+  resolutionFlavor = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings resolutionFlavor];
+  if (!resolutionFlavor)
   {
-    v118 = 0;
+    resolutionFlavor = 0;
     v100 = 0;
     goto LABEL_151;
   }
 
-  if (![(NSArray *)self->_highResStillImageDimensions count]|| (v29 = [FigCaptureSourceFormatDimensions identifyDimensionsFromFlavor:v118 availableHighResStillImageDimensions:self->_highResStillImageDimensions]) == 0)
+  if (![(NSArray *)self->_highResStillImageDimensions count]|| (v29 = [FigCaptureSourceFormatDimensions identifyDimensionsFromFlavor:resolutionFlavor availableHighResStillImageDimensions:self->_highResStillImageDimensions]) == 0)
   {
     v100 = 0;
     goto LABEL_151;
   }
 
   v30 = v29;
-  v31 = [(BWStillImageCaptureSettings *)self->_currentResolvedStillImageCaptureSettings captureFlags];
-  v33 = (v31 & 0x100000000) == 0 && v118 == 2;
-  v35 = (v31 & 0x100600000000) == 0 && v118 == 1;
+  captureFlags = [(BWStillImageCaptureSettings *)self->_currentResolvedStillImageCaptureSettings captureFlags];
+  v33 = (captureFlags & 0x100000000) == 0 && resolutionFlavor == 2;
+  v35 = (captureFlags & 0x100600000000) == 0 && resolutionFlavor == 1;
   v100 = __PAIR64__(v33, v35);
   if (v33 || v35)
   {
@@ -2391,70 +2391,70 @@ uint64_t __53__BWStillImageCoordinatorNode__beginResolvingCapture__block_invoke_
     if (v41)
     {
       v30 = v41;
-      v39 = [v41 dimensions];
-      v40 = v116;
-      if (v116)
+      dimensions = [v41 dimensions];
+      v40 = aspectRatio;
+      if (aspectRatio)
       {
-        v42 = BWAspectRatioValueFromAspectRatio(v116);
-        v39 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v39, v42);
+        v42 = BWAspectRatioValueFromAspectRatio(aspectRatio);
+        dimensions = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(dimensions, v42);
       }
 
       v37 = v27;
-      v118 = 0;
-      v38 = HIDWORD(v39);
-      var1 = HIDWORD(v39);
-      v36 = v39;
+      resolutionFlavor = 0;
+      v38 = HIDWORD(dimensions);
+      var1 = HIDWORD(dimensions);
+      v36 = dimensions;
       goto LABEL_68;
     }
 
-    v118 = 0;
+    resolutionFlavor = 0;
 LABEL_151:
     v117 = var1;
     v36 = var0;
     v115 = var0;
     v43 = v27;
     v38 = v97;
-    v39 = v98;
+    dimensions = v98;
     goto LABEL_76;
   }
 
   v36 = var0;
   v37 = v27;
   v38 = v97;
-  v39 = v98;
-  v40 = v116;
+  dimensions = v98;
+  v40 = aspectRatio;
 LABEL_68:
   if (v21)
   {
     v43 = v37;
-    v44 = [v30 deferredPhotoProxyDimensions];
-    if (v44 < 1 || SHIDWORD(v44) < 1)
+    deferredPhotoProxyDimensions = [v30 deferredPhotoProxyDimensions];
+    if (deferredPhotoProxyDimensions < 1 || SHIDWORD(deferredPhotoProxyDimensions) < 1)
     {
       v117 = var1;
       v115 = v36;
       v38 = var1;
-      v39 = v36;
+      dimensions = v36;
     }
 
     else
     {
-      v45 = [v30 deferredPhotoProxyDimensions];
-      v39 = v45;
+      deferredPhotoProxyDimensions2 = [v30 deferredPhotoProxyDimensions];
+      dimensions = deferredPhotoProxyDimensions2;
       if (v40)
       {
         v46 = BWAspectRatioValueFromAspectRatio(v40);
-        v47 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v39, v46);
+        v47 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(dimensions, v46);
         v38 = HIDWORD(v47);
-        v39 = v47;
+        dimensions = v47;
         v115 = v47;
         v117 = HIDWORD(v47);
       }
 
       else
       {
-        v38 = HIDWORD(v45);
-        v117 = HIDWORD(v45);
-        v115 = v45;
+        v38 = HIDWORD(deferredPhotoProxyDimensions2);
+        v117 = HIDWORD(deferredPhotoProxyDimensions2);
+        v115 = deferredPhotoProxyDimensions2;
       }
     }
   }
@@ -2470,7 +2470,7 @@ LABEL_76:
   if ([(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings deviceOrientationCorrectionEnabled]&& !self->_cinematicFramingWarpingRequired && ([(BWStillImageCoordinatorNode *)self _ensureDeviceOrientationMonitor], v76 = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor mostRecentPortraitLandscapeOrientation], v76))
   {
     v77 = v76;
-    v99 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputMirroring];
+    outputMirroring = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputMirroring];
     v78 = [-[NSArray firstObject](-[BWStillImageCaptureSettings captureStreamSettings](self->_currentResolvedStillImageCaptureSettings "captureStreamSettings")];
     if ([v78 isEqual:*off_1E798A0E0])
     {
@@ -2482,7 +2482,7 @@ LABEL_76:
       v120 = [v78 isEqual:*off_1E798A0F8];
     }
 
-    v79 = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor rotationDegreesFromOrientation:v77 isFrontCamera:v120 isExternalCamera:[(BWFigVideoCaptureDevice *)self->_captureDevice isExternalVariant] isMirrored:v99 clientExpectsCameraMountedInLandscapeOrientation:[(BWGraph *)[(BWNode *)self graph] clientExpectsCameraMountedInLandscapeOrientation]];
+    v79 = [(BWDeviceOrientationMonitor *)self->_deviceOrientationMonitor rotationDegreesFromOrientation:v77 isFrontCamera:v120 isExternalCamera:[(BWFigVideoCaptureDevice *)self->_captureDevice isExternalVariant] isMirrored:outputMirroring clientExpectsCameraMountedInLandscapeOrientation:[(BWGraph *)[(BWNode *)self graph] clientExpectsCameraMountedInLandscapeOrientation]];
     v80 = v79;
     LODWORD(v48) = v101.var0;
     if (dword_1ED844530)
@@ -2501,14 +2501,14 @@ LABEL_76:
 
       if (v84)
       {
-        v85 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
-        v86 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputRotationDegrees];
+        settingsID2 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
+        outputRotationDegrees = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings outputRotationDegrees];
         v128 = 136315906;
         v129 = "[BWStillImageCoordinatorNode _configureCurrentCaptureRequestStateForFigCaptureStillImageSettings]";
         v130 = 2048;
-        v131 = v85;
+        v131 = settingsID2;
         v132 = 1024;
-        *v133 = v86;
+        *v133 = outputRotationDegrees;
         *&v133[4] = 1024;
         *&v133[6] = v121;
         LODWORD(v96) = 34;
@@ -2523,8 +2523,8 @@ LABEL_76:
     [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setOutputRotationDegrees:v80, v94, v96];
     if (v80 == 270 || v80 == 90)
     {
-      v39 = __ROR8__(v39 | (v38 << 32), 32);
-      v38 = HIDWORD(v39);
+      dimensions = __ROR8__(dimensions | (v38 << 32), 32);
+      v38 = HIDWORD(dimensions);
       v48 = __ROR8__(v101, 32);
       v53 = HIDWORD(v48);
       v55 = __ROR8__(v43, 32);
@@ -2559,15 +2559,15 @@ LABEL_76:
 
         if (v91)
         {
-          v92 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
+          settingsID3 = [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings settingsID];
           v128 = 136316930;
           v129 = "[BWStillImageCoordinatorNode _configureCurrentCaptureRequestStateForFigCaptureStillImageSettings]";
           v130 = 2048;
-          v131 = v92;
+          v131 = settingsID3;
           v132 = 1024;
-          *v133 = v39;
+          *v133 = dimensions;
           *&v133[4] = 1024;
-          *&v133[6] = HIDWORD(v39);
+          *&v133[6] = HIDWORD(dimensions);
           LOWORD(v134) = 1024;
           *(&v134 + 2) = v115;
           HIWORD(v134) = 1024;
@@ -2608,7 +2608,7 @@ LABEL_76:
   LODWORD(v53) = v104;
   LODWORD(v55) = v43.var0;
 LABEL_80:
-  v57 = v48 > v39 || v53 > v38;
+  v57 = v48 > dimensions || v53 > v38;
   if (v57)
   {
     v58 = v38;
@@ -2621,7 +2621,7 @@ LABEL_80:
 
   if (v57)
   {
-    v59 = v39;
+    v59 = dimensions;
   }
 
   else
@@ -2629,7 +2629,7 @@ LABEL_80:
     v59 = v48;
   }
 
-  v61 = v55 > v39 || v54 > v38;
+  v61 = v55 > dimensions || v54 > v38;
   v62 = v38;
   if (v61)
   {
@@ -2643,7 +2643,7 @@ LABEL_80:
 
   if (v61)
   {
-    v64 = v39;
+    v64 = dimensions;
   }
 
   else
@@ -2664,7 +2664,7 @@ LABEL_80:
   }
 
   v112 = v68;
-  v69 = v39;
+  v69 = dimensions;
   if (v67)
   {
     v70 = v51;
@@ -2705,7 +2705,7 @@ LABEL_80:
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setThumbnailHeight:v58];
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setRawThumbnailWidth:v64];
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setRawThumbnailHeight:v63];
-  [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setResolutionFlavor:v118];
+  [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setResolutionFlavor:resolutionFlavor];
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setDeferredPhotoProxyWidth:v115];
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setDeferredPhotoProxyHeight:v117];
   [(FigCaptureStillImageSettings *)self->_currentRequestedStillImageCaptureSettings setDeferredPhotoFinalWidth:v36];
@@ -3144,7 +3144,7 @@ LABEL_45:
 
 - (void)_attemptToCompleteRequest
 {
-  if (!a1)
+  if (!self)
   {
     goto LABEL_12;
   }
@@ -3156,24 +3156,24 @@ LABEL_45:
     FigDebugAssert3();
   }
 
-  if (!*(a1 + 320) || ([OUTLINED_FUNCTION_76_2() isBeginMomentCaptureSettings] & 1) != 0 || (*(a1 + 352) & 1) != 0)
+  if (!*(self + 320) || ([OUTLINED_FUNCTION_76_2() isBeginMomentCaptureSettings] & 1) != 0 || (*(self + 352) & 1) != 0)
   {
     goto LABEL_12;
   }
 
-  v2 = *(a1 + 320);
-  v3 = [OUTLINED_FUNCTION_76_2() isOutputFormatCompressed];
-  v4 = [v2 captureType];
-  v5 = !v3 || v4 == 11;
+  v2 = *(self + 320);
+  isOutputFormatCompressed = [OUTLINED_FUNCTION_76_2() isOutputFormatCompressed];
+  captureType = [v2 captureType];
+  v5 = !isOutputFormatCompressed || captureType == 11;
   if (v5)
   {
     goto LABEL_12;
   }
 
-  [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForCurrentRequest];
+  [(BWStillImageCoordinatorNode *)self _expectedFrameCountForCurrentRequest];
   v6 = OUTLINED_FUNCTION_27_0();
-  v7 = [(BWStillImageCoordinatorNode *)v6 _receivedFrameOrErrorCountForCurrentRequest];
-  if (v2 > v7)
+  _receivedFrameOrErrorCountForCurrentRequest = [(BWStillImageCoordinatorNode *)v6 _receivedFrameOrErrorCountForCurrentRequest];
+  if (v2 > _receivedFrameOrErrorCountForCurrentRequest)
   {
     goto LABEL_12;
   }
@@ -3181,31 +3181,31 @@ LABEL_45:
   OUTLINED_FUNCTION_33();
   if (v5)
   {
-    v11 = [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForNextRequest];
-    v12 = v11;
-    if (v11 >= [objc_opt_class() maxShotBufferCapacity])
+    _expectedFrameCountForNextRequest = [(BWStillImageCoordinatorNode *)self _expectedFrameCountForNextRequest];
+    maxShotBufferCapacity = _expectedFrameCountForNextRequest;
+    if (_expectedFrameCountForNextRequest >= [objc_opt_class() maxShotBufferCapacity])
     {
-      v12 = [objc_opt_class() maxShotBufferCapacity];
+      maxShotBufferCapacity = [objc_opt_class() maxShotBufferCapacity];
     }
 
-    os_unfair_lock_lock((a1 + 432));
-    v13 = [objc_opt_class() maxShotBufferCapacity];
-    v14 = *(a1 + 436);
-    if (v13 <= v14)
+    os_unfair_lock_lock((self + 432));
+    maxShotBufferCapacity2 = [objc_opt_class() maxShotBufferCapacity];
+    v14 = *(self + 436);
+    if (maxShotBufferCapacity2 <= v14)
     {
       v16 = 0;
     }
 
     else
     {
-      v15 = [objc_opt_class() maxShotBufferCapacity];
-      v14 = *(a1 + 436);
-      v16 = v15 - v14;
+      maxShotBufferCapacity3 = [objc_opt_class() maxShotBufferCapacity];
+      v14 = *(self + 436);
+      v16 = maxShotBufferCapacity3 - v14;
     }
 
-    v20 = *(a1 + 480);
-    os_unfair_lock_unlock((a1 + 432));
-    if (v16 >= v12)
+    v20 = *(self + 480);
+    os_unfair_lock_unlock((self + 432));
+    if (v16 >= maxShotBufferCapacity)
     {
       v23 = MEMORY[0x1E695FF58];
       if (*MEMORY[0x1E695FF58] == 1)
@@ -3215,13 +3215,13 @@ LABEL_45:
         kdebug_trace();
       }
 
-      if (*(a1 + 456))
+      if (*(self + 456))
       {
         v24 = (v20 - v14) & ~((v20 - v14) >> 31);
         v25 = ([OUTLINED_FUNCTION_64_6() captureFlags] & 2) == 0;
         if (([OUTLINED_FUNCTION_34_11() passthroughEnabled] & v25) != 0)
         {
-          v26 = (v11 - v24) & ~((v11 - v24) >> 31);
+          v26 = (_expectedFrameCountForNextRequest - v24) & ~((_expectedFrameCountForNextRequest - v24) >> 31);
         }
 
         else
@@ -3230,15 +3230,15 @@ LABEL_45:
         }
 
         v27 = [OUTLINED_FUNCTION_34_11() hasUncompressedEquivalentFreeBufferCount:v26];
-        v28 = [OUTLINED_FUNCTION_34_11() freeBufferCountIncreasedHandler];
+        freeBufferCountIncreasedHandler = [OUTLINED_FUNCTION_34_11() freeBufferCountIncreasedHandler];
         if (!v27)
         {
-          if (!v28)
+          if (!freeBufferCountIncreasedHandler)
           {
             v64 = 0;
             v62 = 0;
             v63 = 0;
-            OUTLINED_FUNCTION_95_4(*(a1 + 456), v29);
+            OUTLINED_FUNCTION_95_4(*(self + 456), v29);
             if (dword_1ED844530)
             {
               OUTLINED_FUNCTION_58_3();
@@ -3286,14 +3286,14 @@ LABEL_45:
             OUTLINED_FUNCTION_80_2();
             v49 = __56__BWStillImageCoordinatorNode__attemptToCompleteRequest__block_invoke;
             v50 = &unk_1E798F870;
-            v51 = a1;
-            [*(a1 + 456) setFreeBufferCountIncreasedHandler:v48];
+            selfCopy = self;
+            [*(self + 456) setFreeBufferCountIncreasedHandler:v48];
           }
 
           goto LABEL_12;
         }
 
-        if (v28)
+        if (freeBufferCountIncreasedHandler)
         {
           [OUTLINED_FUNCTION_34_11() setFreeBufferCountIncreasedHandler:0];
           v64 = 0;
@@ -3347,7 +3347,7 @@ LABEL_45:
         }
       }
 
-      [BWStillImageCoordinatorNode _waitToMakePaceWithReferenceTime:a1];
+      [BWStillImageCoordinatorNode _waitToMakePaceWithReferenceTime:self];
       v46 = OUTLINED_FUNCTION_75_3();
       [(BWStillImageCoordinatorNode *)v46 _completeRequestWithStatus:v47];
     }
@@ -3365,7 +3365,7 @@ LABEL_45:
           v54 = 1024;
           v55 = v16;
           v56 = 1024;
-          v57 = v12;
+          v57 = maxShotBufferCapacity;
           OUTLINED_FUNCTION_77_0();
           OUTLINED_FUNCTION_7_4();
           _os_log_send_and_compose_impl();
@@ -3386,9 +3386,9 @@ LABEL_12:
     return;
   }
 
-  os_unfair_lock_lock((a1 + 432));
-  v8 = *(a1 + 436);
-  os_unfair_lock_unlock((a1 + 432));
+  os_unfair_lock_lock((self + 432));
+  v8 = *(self + 436);
+  os_unfair_lock_unlock((self + 432));
   if (v8 > 0)
   {
     if (dword_1ED844530)
@@ -3422,16 +3422,16 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [BWStillImageCoordinatorNode _waitToMakePaceWithReferenceTime:a1];
+  [BWStillImageCoordinatorNode _waitToMakePaceWithReferenceTime:self];
   OUTLINED_FUNCTION_75_3();
   OUTLINED_FUNCTION_89_3();
 
   [(BWStillImageCoordinatorNode *)v17 _completeRequestWithStatus:v18];
 }
 
-- (void)_stoppedUsingBufferWithSensorRawHighResolutionFlavor:(int)a3
+- (void)_stoppedUsingBufferWithSensorRawHighResolutionFlavor:(int)flavor
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_91();
     a54 = v55;
@@ -3727,19 +3727,19 @@ LABEL_34:
 
 - (uint64_t)_capturedAllFrames
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForCurrentRequest];
+  [(BWStillImageCoordinatorNode *)self _expectedFrameCountForCurrentRequest];
   v3 = OUTLINED_FUNCTION_27_0();
   if (v1 <= [(BWStillImageCoordinatorNode *)v3 _receivedFrameOrErrorCountForCurrentRequest])
   {
     return 1;
   }
 
-  v4 = [*(a1 + 320) captureStreamSettings];
+  captureStreamSettings = [*(self + 320) captureStreamSettings];
   OUTLINED_FUNCTION_74_3();
   v6 = [v5 countByEnumeratingWithState:? objects:? count:?];
   if (!v6)
@@ -3756,7 +3756,7 @@ LABEL_34:
     {
       if (MEMORY[0] != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(captureStreamSettings);
       }
 
       if (v9)
@@ -3771,7 +3771,7 @@ LABEL_34:
     }
 
     OUTLINED_FUNCTION_74_3();
-    v7 = [v4 countByEnumeratingWithState:? objects:? count:?];
+    v7 = [captureStreamSettings countByEnumeratingWithState:? objects:? count:?];
   }
 
   while (v7);
@@ -3953,9 +3953,9 @@ void __59__BWStillImageCoordinatorNode_renderSampleBuffer_forInput___block_invok
   return result;
 }
 
-- (void)_completeRequestWithStatus:(uint64_t)a1
+- (void)_completeRequestWithStatus:(uint64_t)status
 {
-  if (!a1)
+  if (!status)
   {
     return;
   }
@@ -3967,23 +3967,23 @@ void __59__BWStillImageCoordinatorNode_renderSampleBuffer_forInput___block_invok
     FigDebugAssert3();
   }
 
-  v4 = *(a1 + 312);
+  v4 = *(status + 312);
   if (v4)
   {
-    if ([*(a1 + 312) isUserInitiatedRequestSettings])
+    if ([*(status + 312) isUserInitiatedRequestSettings])
     {
       v13 = a2 == 0;
     }
 
     else
     {
-      if (![*(a1 + 312) isClientInitiatedPrepareSettings])
+      if (![*(status + 312) isClientInitiatedPrepareSettings])
       {
         v5 = 0;
 LABEL_23:
-        if (!a2 && [*(a1 + 320) captureType] && *(a1 + 304) >= 1)
+        if (!a2 && [*(status + 320) captureType] && *(status + 304) >= 1)
         {
-          *(a1 + 528) = mach_absolute_time();
+          *(status + 528) = mach_absolute_time();
           v14 = FigHostTimeToNanoseconds();
           if (dword_1ED844530)
           {
@@ -4002,7 +4002,7 @@ LABEL_23:
 
             if (v15)
             {
-              if (*(a1 + 476))
+              if (*(status + 476))
               {
                 v16 = @"[Shot Buffer] ";
               }
@@ -4028,7 +4028,7 @@ LABEL_23:
             fig_log_call_emit_and_clean_up_after_send_and_compose();
           }
 
-          *(a1 + 520) = 0;
+          *(status + 520) = 0;
         }
 
         if (dword_1ED844530)
@@ -4060,11 +4060,11 @@ LABEL_23:
           OUTLINED_FUNCTION_39_0();
         }
 
-        [(BWStillImageCoordinatorNode *)a1 _readyToRespondToRequest];
+        [(BWStillImageCoordinatorNode *)status _readyToRespondToRequest];
         goto LABEL_6;
       }
 
-      v13 = [*(a1 + 280) currentState] == 32;
+      v13 = [*(status + 280) currentState] == 32;
     }
 
     v5 = v13;
@@ -4087,56 +4087,56 @@ LABEL_6:
     v8 = fig_log_handle();
     if (os_signpost_enabled(v8))
     {
-      v9 = [*(a1 + 312) settingsID];
+      settingsID = [*(status + 312) settingsID];
       *buf = 67240192;
-      v34 = v9;
+      v34 = settingsID;
       _os_signpost_emit_with_name_impl(&dword_1AC90E000, v8, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "StillCaptureRequest", " enableTelemetry=YES N1=%{public,signpost.telemetry:number1}d", buf, 8u);
     }
   }
 
-  v10 = [*(a1 + 312) settingsID];
+  settingsID2 = [*(status + 312) settingsID];
 
-  *(a1 + 312) = 0;
-  *(a1 + 320) = 0;
+  *(status + 312) = 0;
+  *(status + 320) = 0;
 
-  *(a1 + 328) = 0;
-  *(a1 + 344) = 0;
-  [*(a1 + 288) removeAllObjects];
-  [*(a1 + 296) removeAllObjects];
-  *(a1 + 308) = 0;
-  *(a1 + 304) = 0;
-  *(a1 + 336) = 0;
-  *(a1 + 352) = 0;
-  *(a1 + 353) = 0;
+  *(status + 328) = 0;
+  *(status + 344) = 0;
+  [*(status + 288) removeAllObjects];
+  [*(status + 296) removeAllObjects];
+  *(status + 308) = 0;
+  *(status + 304) = 0;
+  *(status + 336) = 0;
+  *(status + 352) = 0;
+  *(status + 353) = 0;
 
-  *(a1 + 360) = 0;
-  *(a1 + 368) = 0;
-  *(a1 + 376) = 0;
-  os_unfair_lock_lock((a1 + 232));
-  *(a1 + 384) = 0;
-  os_unfair_lock_unlock((a1 + 232));
+  *(status + 360) = 0;
+  *(status + 368) = 0;
+  *(status + 376) = 0;
+  os_unfair_lock_lock((status + 232));
+  *(status + 384) = 0;
+  os_unfair_lock_unlock((status + 232));
   v11 = MEMORY[0x1E6960C70];
-  *(a1 + 408) = *MEMORY[0x1E6960C70];
-  *(a1 + 424) = *(v11 + 16);
+  *(status + 408) = *MEMORY[0x1E6960C70];
+  *(status + 424) = *(v11 + 16);
   if (v4)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"complete request for captureID:%lld", v10];
-    dispatch_group_leave(*(a1 + 256));
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"complete request for captureID:%lld", settingsID2];
+    dispatch_group_leave(*(status + 256));
   }
 
-  v12 = *(a1 + 248);
+  v12 = *(status + 248);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__BWStillImageCoordinatorNode__completeRequestWithStatus___block_invoke;
   block[3] = &unk_1E7997500;
-  block[4] = a1;
-  block[5] = v10;
+  block[4] = status;
+  block[5] = settingsID2;
   v25 = a2;
   v26 = v5;
   dispatch_async(v12, block);
 }
 
-- (void)captureStreamWillWaitForTimeMachineToFill:(id)a3
+- (void)captureStreamWillWaitForTimeMachineToFill:(id)fill
 {
   if (!_FigIsCurrentDispatchQueue())
   {
@@ -4187,9 +4187,9 @@ void __71__BWStillImageCoordinatorNode_captureStreamWillBeginStillImageCapture__
   }
 }
 
-- (void)_fireDelegateCallbackWithFlag:(uint64_t)a1
+- (void)_fireDelegateCallbackWithFlag:(uint64_t)flag
 {
-  if (a1)
+  if (flag)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4199,7 +4199,7 @@ void __71__BWStillImageCoordinatorNode_captureStreamWillBeginStillImageCapture__
     }
 
     v4 = [[BWStillImageCaptureDelegateCallbackInfo alloc] initWithFlag:a2];
-    [(BWStillImageCoordinatorNode *)a1 _fireDelegateCallbackWithInfo:v4];
+    [(BWStillImageCoordinatorNode *)flag _fireDelegateCallbackWithInfo:v4];
   }
 }
 
@@ -4232,9 +4232,9 @@ uint64_t __122__BWStillImageCoordinatorNode_captureStream_didCaptureReferenceFra
   return result;
 }
 
-- (void)_didResolveStillImagePTS:(void *)a3 isPreBracketedEV0:
+- (void)_didResolveStillImagePTS:(void *)s isPreBracketedEV0:
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4243,7 +4243,7 @@ uint64_t __122__BWStillImageCoordinatorNode_captureStream_didCaptureReferenceFra
       FigDebugAssert3();
     }
 
-    if (a3)
+    if (s)
     {
       v5 = 8;
     }
@@ -4256,9 +4256,9 @@ uint64_t __122__BWStillImageCoordinatorNode_captureStream_didCaptureReferenceFra
     v6 = [BWStillImageCaptureDelegateCallbackInfo alloc];
     v8 = *a2;
     v9 = *(a2 + 2);
-    [(BWStillImageCaptureDelegateCallbackInfo *)v6 initWithFlag:v5 pts:&v8 isPreBracketFrame:a3];
+    [(BWStillImageCaptureDelegateCallbackInfo *)v6 initWithFlag:v5 pts:&v8 isPreBracketFrame:s];
     v7 = OUTLINED_FUNCTION_27_0();
-    [(BWStillImageCoordinatorNode *)v7 _fireDelegateCallbackWithInfo:a3];
+    [(BWStillImageCoordinatorNode *)v7 _fireDelegateCallbackWithInfo:s];
   }
 }
 
@@ -4303,7 +4303,7 @@ void __73__BWStillImageCoordinatorNode_captureStreamDidCompleteStillImageCapture
 
 - (void)_didCaptureStillImage
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4312,7 +4312,7 @@ void __73__BWStillImageCoordinatorNode_captureStreamDidCompleteStillImageCapture
       FigDebugAssert3();
     }
 
-    [(BWStillImageCoordinatorNode *)a1 _fireDelegateCallbackWithFlag:?];
+    [(BWStillImageCoordinatorNode *)self _fireDelegateCallbackWithFlag:?];
   }
 }
 
@@ -4338,9 +4338,9 @@ void __68__BWStillImageCoordinatorNode_captureStream_stillImageCaptureError___bl
   }
 }
 
-- (void)_flushStillImageRequestWithError:(uint64_t)a1
+- (void)_flushStillImageRequestWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     if (dword_1ED844530)
     {
@@ -4358,11 +4358,11 @@ void __68__BWStillImageCoordinatorNode_captureStream_stillImageCaptureError___bl
 
       if (v4)
       {
-        v5 = [OUTLINED_FUNCTION_66_3() settingsID];
+        settingsID = [OUTLINED_FUNCTION_66_3() settingsID];
         [OUTLINED_FUNCTION_66_3() captureRequestIdentifier];
         OUTLINED_FUNCTION_79_2();
         *(v6 + 4) = "[BWStillImageCoordinatorNode _flushStillImageRequestWithError:]";
-        *(v6 + 14) = v5;
+        *(v6 + 14) = settingsID;
         *(v6 + 30) = v7;
         OUTLINED_FUNCTION_76();
         OUTLINED_FUNCTION_13();
@@ -4380,7 +4380,7 @@ void __68__BWStillImageCoordinatorNode_captureStream_stillImageCaptureError___bl
       FigDebugAssert3();
     }
 
-    [*(a1 + 320) captureStreamSettings];
+    [*(error + 320) captureStreamSettings];
     OUTLINED_FUNCTION_47_0();
     obj = v8;
     v9 = [v8 countByEnumeratingWithState:? objects:? count:?];
@@ -4399,44 +4399,44 @@ void __68__BWStillImageCoordinatorNode_captureStream_stillImageCaptureError___bl
           }
 
           v13 = *(8 * v12);
-          v14 = [v13 portType];
-          v15 = [objc_msgSend(*(a1 + 288) objectForKeyedSubscript:{v14), "intValue"}];
-          v16 = [v13 expectedFrameCaptureCount];
+          portType = [v13 portType];
+          v15 = [objc_msgSend(*(error + 288) objectForKeyedSubscript:{portType), "intValue"}];
+          expectedFrameCaptureCount = [v13 expectedFrameCaptureCount];
           if ([v13 adaptiveBracketingParameters])
           {
-            v16 = [v13 currentExpectedAdaptiveBracketedFrameCaptureCount];
+            expectedFrameCaptureCount = [v13 currentExpectedAdaptiveBracketedFrameCaptureCount];
           }
 
-          v17 = v16 - v15;
-          if (!v17)
+          expectedFrameCaptureCount2 = expectedFrameCaptureCount - v15;
+          if (!expectedFrameCaptureCount2)
           {
-            if (*(a1 + 308) == *(a1 + 304))
+            if (*(error + 308) == *(error + 304))
             {
               goto LABEL_22;
             }
 
-            v17 = [v13 expectedFrameCaptureCount];
+            expectedFrameCaptureCount2 = [v13 expectedFrameCaptureCount];
           }
 
-          if (v17 >= 1)
+          if (expectedFrameCaptureCount2 >= 1)
           {
-            v18 = [BWNodeError newError:a2 sourceNode:a1 stillImageSettings:[(BWStillImageCoordinatorNode *)a1 _currentStillImageSettings] metadata:0];
+            v18 = [BWNodeError newError:a2 sourceNode:error stillImageSettings:[(BWStillImageCoordinatorNode *)error _currentStillImageSettings] metadata:0];
             do
             {
               if ([v13 isYUVCapture])
               {
-                [objc_msgSend(objc_msgSend(a1 "outputs")];
+                [objc_msgSend(objc_msgSend(error "outputs")];
               }
 
               if ([v13 isSensorRawCapture])
               {
-                [objc_msgSend(objc_msgSend(a1 "outputs")];
+                [objc_msgSend(objc_msgSend(error "outputs")];
               }
 
-              --v17;
+              --expectedFrameCaptureCount2;
             }
 
-            while (v17);
+            while (expectedFrameCaptureCount2);
           }
 
 LABEL_22:
@@ -4452,12 +4452,12 @@ LABEL_22:
       while (v19);
     }
 
-    [(BWStillImageCoordinatorNode *)a1 _didCaptureStillImage];
-    [(BWStillImageCoordinatorNode *)a1 _readyToRespondToRequest];
-    if (*(a1 + 320))
+    [(BWStillImageCoordinatorNode *)error _didCaptureStillImage];
+    [(BWStillImageCoordinatorNode *)error _readyToRespondToRequest];
+    if (*(error + 320))
     {
 
-      *(a1 + 344) = [objc_msgSend(*(a1 + 312) "captureRequestIdentifier")];
+      *(error + 344) = [objc_msgSend(*(error + 312) "captureRequestIdentifier")];
       if (dword_1ED844530)
       {
         OUTLINED_FUNCTION_81_2();
@@ -4476,11 +4476,11 @@ LABEL_22:
 
         if (v23)
         {
-          v24 = [*(a1 + 312) settingsID];
-          [*(a1 + 312) captureRequestIdentifier];
+          settingsID2 = [*(error + 312) settingsID];
+          [*(error + 312) captureRequestIdentifier];
           OUTLINED_FUNCTION_79_2();
           *(v25 + 4) = "[BWStillImageCoordinatorNode _flushStillImageRequestWithError:]";
-          *(v25 + 14) = v24;
+          *(v25 + 14) = settingsID2;
           OUTLINED_FUNCTION_76();
           OUTLINED_FUNCTION_8_0();
           _os_log_send_and_compose_impl();
@@ -4493,12 +4493,12 @@ LABEL_22:
 
     else
     {
-      [(BWStillImageCoordinatorNode *)a1 _completeRequestWithStatus:a2];
+      [(BWStillImageCoordinatorNode *)error _completeRequestWithStatus:a2];
     }
   }
 }
 
-- (uint64_t)_didSelectNewReferenceFrameWithPTS:(uint64_t)a3 transform:(uint64_t)a4 forSettings:
+- (uint64_t)_didSelectNewReferenceFrameWithPTS:(uint64_t)s transform:(uint64_t)transform forSettings:
 {
   if (result)
   {
@@ -4513,7 +4513,7 @@ LABEL_22:
     Weak = objc_loadWeak((v7 + 192));
     v9 = *a2;
     v10 = *(a2 + 2);
-    return [Weak stillImageCoordinator:v7 didSelectNewReferenceFrameWithPTS:&v9 transform:a3 forSettings:a4];
+    return [Weak stillImageCoordinator:v7 didSelectNewReferenceFrameWithPTS:&v9 transform:s forSettings:transform];
   }
 
   return result;
@@ -4521,7 +4521,7 @@ LABEL_22:
 
 - (void)_serviceNextRequest
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -4533,7 +4533,7 @@ LABEL_22:
     FigDebugAssert3();
   }
 
-  [*(a1 + 280) currentState];
+  [*(self + 280) currentState];
   [OUTLINED_FUNCTION_27_0() _unpackNextRequest];
   v3 = OUTLINED_FUNCTION_21_16();
   if (!v3)
@@ -4552,11 +4552,11 @@ LABEL_22:
     goto LABEL_7;
   }
 
-  v8 = *(a1 + 128);
-  v9 = [OUTLINED_FUNCTION_21_16() isUserInitiatedRequestSettings];
+  v8 = *(self + 128);
+  isUserInitiatedRequestSettings = [OUTLINED_FUNCTION_21_16() isUserInitiatedRequestSettings];
   if (v8 == 1)
   {
-    if (v9)
+    if (isUserInitiatedRequestSettings)
     {
       if (v1 == 8)
       {
@@ -4573,8 +4573,8 @@ LABEL_22:
         OUTLINED_FUNCTION_10();
         FigCapturePleaseFileRadar(v14, v15, v16, v17, v18, 2036, v19, v20, &v21);
         free(v13);
-        [*(a1 + 144) cancelPrepareToCaptureStillImageNow];
-        [(BWStillImageCoordinatorNode *)a1 _completeRequestWithStatus:?];
+        [*(self + 144) cancelPrepareToCaptureStillImageNow];
+        [(BWStillImageCoordinatorNode *)self _completeRequestWithStatus:?];
       }
 
       else
@@ -4593,7 +4593,7 @@ LABEL_16:
         v10 = 2;
       }
 
-      if (*(a1 + 312))
+      if (*(self + 312))
       {
         v11 = v7;
       }
@@ -4603,7 +4603,7 @@ LABEL_16:
         v11 = v10;
       }
 
-      [*(a1 + 280) transitionToState:v11];
+      [*(self + 280) transitionToState:v11];
       return;
     }
 
@@ -4624,19 +4624,19 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  if (!v9)
+  if (!isUserInitiatedRequestSettings)
   {
-    [a1 _configureCurrentCaptureRequestStateForFigCaptureStillImageSettings];
+    [self _configureCurrentCaptureRequestStateForFigCaptureStillImageSettings];
     v7 = 1024;
     goto LABEL_16;
   }
 
-  [(BWStillImageCoordinatorNode *)a1 _completeRequestWithStatus:?];
+  [(BWStillImageCoordinatorNode *)self _completeRequestWithStatus:?];
 }
 
 - (void)_beginPreparingCapture
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4645,10 +4645,10 @@ LABEL_7:
       FigDebugAssert3();
     }
 
-    objc_loadWeak((a1 + 192));
+    objc_loadWeak((self + 192));
     v2 = OUTLINED_FUNCTION_27_0();
     [(BWStillImageCoordinatorNode *)v2 _currentStillImageSettings];
-    [OUTLINED_FUNCTION_40_9() stillImageCoordinator:a1 willPrepareStillImageCaptureWithSettings:? clientInitiated:?];
+    [OUTLINED_FUNCTION_40_9() stillImageCoordinator:self willPrepareStillImageCaptureWithSettings:? clientInitiated:?];
     v3 = OUTLINED_FUNCTION_75_3();
 
     [(BWStillImageCoordinatorNode *)v3 _completeRequestWithStatus:v4];
@@ -4745,7 +4745,7 @@ LABEL_7:
 
 - (void)_beginCapture
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4754,18 +4754,18 @@ LABEL_7:
       FigDebugAssert3();
     }
 
-    [(BWStillImageCoordinatorNode *)a1 _fireDelegateCallbackWithFlag:?];
-    if (*(a1 + 476) == 1)
+    [(BWStillImageCoordinatorNode *)self _fireDelegateCallbackWithFlag:?];
+    if (*(self + 476) == 1)
     {
       v13 = 0;
-      if ([(BWStillImageCoordinatorNode *)a1 _waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:3.0 freeBufferCountOut:?])
+      if ([(BWStillImageCoordinatorNode *)self _waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:3.0 freeBufferCountOut:?])
       {
-        if (*(a1 + 456))
+        if (*(self + 456))
         {
           v7 = v13;
-          v8 = [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForCurrentRequest]- v7;
+          v8 = [(BWStillImageCoordinatorNode *)self _expectedFrameCountForCurrentRequest]- v7;
           v9 = ([OUTLINED_FUNCTION_64_6() captureFlags] & 2) == 0;
-          if (([*(a1 + 456) passthroughEnabled] & v9) != 0)
+          if (([*(self + 456) passthroughEnabled] & v9) != 0)
           {
             v10 = 0;
           }
@@ -4775,16 +4775,16 @@ LABEL_7:
             v10 = v8;
           }
 
-          [*(a1 + 456) flushAndWaitForUncompressedEquivalentFreeBufferCount:v10];
+          [*(self + 456) flushAndWaitForUncompressedEquivalentFreeBufferCount:v10];
         }
       }
     }
 
-    if ((*(a1 + 336) & 0x40) == 0)
+    if ((*(self + 336) & 0x40) == 0)
     {
-      Weak = objc_loadWeak((a1 + 192));
-      [Weak stillImageCoordinator:a1 willPrepareStillImageCaptureWithSettings:-[BWStillImageCoordinatorNode _currentStillImageSettings](a1) clientInitiated:0];
-      *(a1 + 336) |= 0x40u;
+      Weak = objc_loadWeak((self + 192));
+      [Weak stillImageCoordinator:self willPrepareStillImageCaptureWithSettings:-[BWStillImageCoordinatorNode _currentStillImageSettings](self) clientInitiated:0];
+      *(self + 336) |= 0x40u;
     }
 
     v2 = [objc_msgSend(OUTLINED_FUNCTION_64_6() "portTypes")];
@@ -4794,14 +4794,14 @@ LABEL_7:
       v4 = v2;
       do
       {
-        dispatch_group_enter(*(a1 + 272));
+        dispatch_group_enter(*(self + 272));
         --v4;
       }
 
       while (v4);
     }
 
-    v5 = [*(a1 + 144) captureStillImageNowWithSettings:*(a1 + 312) captureSettings:*(a1 + 320)];
+    v5 = [*(self + 144) captureStillImageNowWithSettings:*(self + 312) captureSettings:*(self + 320)];
     if (v5)
     {
       v12 = v5;
@@ -4810,26 +4810,26 @@ LABEL_7:
       {
         do
         {
-          dispatch_group_leave(*(a1 + 272));
+          dispatch_group_leave(*(self + 272));
           --v3;
         }
 
         while (v3);
       }
 
-      [(BWStillImageCoordinatorNode *)a1 _flushStillImageRequestWithError:v12];
+      [(BWStillImageCoordinatorNode *)self _flushStillImageRequestWithError:v12];
     }
 
     else if ([OUTLINED_FUNCTION_84_3() currentState] == 512 || objc_msgSend(OUTLINED_FUNCTION_84_3(), "currentState") == 0x2000 && (OUTLINED_FUNCTION_33(), v6))
     {
-      [(BWStillImageCoordinatorNode *)a1 _setupProcessing];
+      [(BWStillImageCoordinatorNode *)self _setupProcessing];
     }
   }
 }
 
 - (void)_beginMomentCapture
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_58_2();
     v35 = v34;
@@ -4852,10 +4852,10 @@ LABEL_7:
     }
 
     os_unfair_lock_lock((v35 + 232));
-    v37 = [*(v35 + 312) settingsID];
+    settingsID = [*(v35 + 312) settingsID];
     v38 = *(v35 + 392);
     os_unfair_lock_unlock((v35 + 232));
-    v39 = v37 != v38 || dword_1ED844530 == 0;
+    v39 = settingsID != v38 || dword_1ED844530 == 0;
     if (!v39)
     {
       OUTLINED_FUNCTION_62();
@@ -4879,7 +4879,7 @@ LABEL_7:
       OUTLINED_FUNCTION_13_0();
     }
 
-    if (v37 == v38 || v36)
+    if (settingsID == v38 || v36)
     {
       v44 = 4096;
     }
@@ -4896,7 +4896,7 @@ LABEL_7:
 
 - (void)_beginUncommittedMomentCapture
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -4905,29 +4905,29 @@ LABEL_7:
       FigDebugAssert3();
     }
 
-    *(a1 + 352) = 1;
-    *(a1 + 353) = [objc_loadWeak((a1 + 200)) processingOnBeginMomentSupportedForCaptureSettings:*(a1 + 320)];
+    *(self + 352) = 1;
+    *(self + 353) = [objc_loadWeak((self + 200)) processingOnBeginMomentSupportedForCaptureSettings:*(self + 320)];
 
-    *(a1 + 360) = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(a1 + 368) = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([objc_msgSend(a1 "inputs")])
+    *(self + 360) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    *(self + 368) = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if ([objc_msgSend(self "inputs")])
     {
       v2 = 0;
       do
       {
-        [*(a1 + 368) setObject:objc_msgSend(MEMORY[0x1E695DF70] atIndexedSubscript:{"array"), v2++}];
+        [*(self + 368) setObject:objc_msgSend(MEMORY[0x1E695DF70] atIndexedSubscript:{"array"), v2++}];
       }
 
-      while ([objc_msgSend(a1 "inputs")] > v2);
+      while ([objc_msgSend(self "inputs")] > v2);
     }
 
-    [(BWStillImageCoordinatorNode *)a1 _beginCapture];
+    [(BWStillImageCoordinatorNode *)self _beginCapture];
   }
 }
 
 - (void)_commitMomentCapture
 {
-  if (a1)
+  if (self)
   {
     IsCurrentDispatchQueue = _FigIsCurrentDispatchQueue();
     if (!IsCurrentDispatchQueue)
@@ -4937,8 +4937,8 @@ LABEL_7:
       IsCurrentDispatchQueue = FigDebugAssert3();
     }
 
-    v5 = *(a1 + 360);
-    *(a1 + 360) = 0;
+    v5 = *(self + 360);
+    *(self + 360) = 0;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -4957,7 +4957,7 @@ LABEL_7:
             objc_enumerationMutation(v5);
           }
 
-          v9 = [(BWStillImageCoordinatorNode *)a1 _fireDelegateCallbackWithInfo:?];
+          v9 = [(BWStillImageCoordinatorNode *)self _fireDelegateCallbackWithInfo:?];
         }
 
         v7 = OUTLINED_FUNCTION_37(v9, v10, &v22, v21);
@@ -4966,20 +4966,20 @@ LABEL_7:
       while (v7);
     }
 
-    v11 = *(a1 + 376);
+    v11 = *(self + 376);
     if (v11)
     {
-      [(BWStillImageCoordinatorNode *)a1 _flushStillImageRequestWithError:v11];
+      [(BWStillImageCoordinatorNode *)self _flushStillImageRequestWithError:v11];
     }
 
     else
     {
-      [(BWStillImageCoordinatorNode *)a1 _setupProcessing];
-      v12 = *(a1 + 368);
-      *(a1 + 368) = 0;
-      if ((*(a1 + 353) & 1) == 0)
+      [(BWStillImageCoordinatorNode *)self _setupProcessing];
+      v12 = *(self + 368);
+      *(self + 368) = 0;
+      if ((*(self + 353) & 1) == 0)
       {
-        v20 = [(BWStillImageCoordinatorNode *)a1 _currentStillImageSettings];
+        _currentStillImageSettings = [(BWStillImageCoordinatorNode *)self _currentStillImageSettings];
         if ([v12 count])
         {
           v14 = 0;
@@ -5002,7 +5002,7 @@ LABEL_7:
                   if (i)
                   {
                     BWStillImageSampleBufferToDisplayString(v17);
-                    [(BWStillImageSettings *)v20 settingsID];
+                    [(BWStillImageSettings *)_currentStillImageSettings settingsID];
                     OUTLINED_FUNCTION_77_0();
                     OUTLINED_FUNCTION_13();
                     _os_log_send_and_compose_impl();
@@ -5012,8 +5012,8 @@ LABEL_7:
                   OUTLINED_FUNCTION_39_0();
                 }
 
-                BWStillImageCoordinatorAddAttachmentsToSampleBuffer(v17, v20);
-                [objc_msgSend(a1 "inputs")];
+                BWStillImageCoordinatorAddAttachmentsToSampleBuffer(v17, _currentStillImageSettings);
+                [objc_msgSend(self "inputs")];
                 i = [OUTLINED_FUNCTION_27_0() outputs];
                 [objc_msgSend(i objectAtIndexedSubscript:{objc_msgSend(v12, "index")), "emitSampleBuffer:", v17}];
                 ++v16;
@@ -5033,10 +5033,10 @@ LABEL_7:
       OUTLINED_FUNCTION_33();
       if (v13)
       {
-        if ([(BWStillImageCoordinatorNode *)a1 _capturedAllFrames])
+        if ([(BWStillImageCoordinatorNode *)self _capturedAllFrames])
         {
-          *(a1 + 352) = 0;
-          [(BWStillImageCoordinatorNode *)a1 _attemptToCompleteRequest];
+          *(self + 352) = 0;
+          [(BWStillImageCoordinatorNode *)self _attemptToCompleteRequest];
         }
       }
     }
@@ -5045,7 +5045,7 @@ LABEL_7:
 
 - (void)_cancelMomentCapture
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -5057,16 +5057,16 @@ LABEL_7:
     OUTLINED_FUNCTION_33();
     if (v2)
     {
-      [(BWStillImageCoordinatorNode *)a1 _flushStillImageRequestWithError:?];
-      *(a1 + 353) = 0;
+      [(BWStillImageCoordinatorNode *)self _flushStillImageRequestWithError:?];
+      *(self + 353) = 0;
     }
 
-    [*(a1 + 144) cancelPrepareToCaptureStillImageNow];
-    Weak = objc_loadWeak((a1 + 192));
-    v4 = [*(a1 + 312) settingsID];
-    v7 = *(a1 + 408);
-    v8 = *(a1 + 424);
-    [Weak stillImageCoordinator:a1 didCancelMomentCaptureForSettingsID:v4 streamingDisruptionEndPTS:&v7];
+    [*(self + 144) cancelPrepareToCaptureStillImageNow];
+    Weak = objc_loadWeak((self + 192));
+    settingsID = [*(self + 312) settingsID];
+    v7 = *(self + 408);
+    v8 = *(self + 424);
+    [Weak stillImageCoordinator:self didCancelMomentCaptureForSettingsID:settingsID streamingDisruptionEndPTS:&v7];
     v5 = OUTLINED_FUNCTION_75_3();
     [(BWStillImageCoordinatorNode *)v5 _completeRequestWithStatus:v6];
   }
@@ -5092,7 +5092,7 @@ void __54__BWStillImageCoordinatorNode__beginInitiatingCapture__block_invoke_3(u
 
 - (BOOL)_speedOverQualityCaptureEnabled
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -5104,9 +5104,9 @@ void __54__BWStillImageCoordinatorNode__beginInitiatingCapture__block_invoke_3(u
     FigDebugAssert3();
   }
 
-  if ([*(a1 + 144) unifiedBracketingMode] == 2)
+  if ([*(self + 144) unifiedBracketingMode] == 2)
   {
-    return [*(a1 + 312) qualityPrioritization] == 2;
+    return [*(self + 312) qualityPrioritization] == 2;
   }
 
   OUTLINED_FUNCTION_33();
@@ -5117,18 +5117,18 @@ void __54__BWStillImageCoordinatorNode__beginInitiatingCapture__block_invoke_3(u
 
   mach_absolute_time();
   v4 = (FigHostTimeToNanoseconds() / 1000) / 1000000.0;
-  v5 = *(a1 + 544);
-  if (v5 <= *(a1 + 548))
+  v5 = *(self + 544);
+  if (v5 <= *(self + 548))
   {
-    v6 = *(a1 + 548);
+    v6 = *(self + 548);
   }
 
   else
   {
-    v6 = *(a1 + 544);
+    v6 = *(self + 544);
   }
 
-  v7 = *(a1 + 552);
+  v7 = *(self + 552);
   if (v7 || v4 > v5)
   {
     if (v7 < 1 || v4 > v6)
@@ -5151,13 +5151,13 @@ void __54__BWStillImageCoordinatorNode__beginInitiatingCapture__block_invoke_3(u
           OUTLINED_FUNCTION_17_8();
         }
 
-        *(a1 + 552) = 0;
+        *(self + 552) = 0;
       }
 
       goto LABEL_32;
     }
 
-    *(a1 + 552) = v7 + 1;
+    *(self + 552) = v7 + 1;
     if (dword_1ED844530)
     {
       v13 = OUTLINED_FUNCTION_13_24();
@@ -5179,7 +5179,7 @@ LABEL_29:
 
   else
   {
-    *(a1 + 552) = 2;
+    *(self + 552) = 2;
     if (dword_1ED844530)
     {
       v8 = OUTLINED_FUNCTION_13_24();
@@ -5194,11 +5194,11 @@ LABEL_29:
   }
 
 LABEL_32:
-  v15 = *(a1 + 312);
-  v16 = [v15 burstQualityCaptureEnabled];
+  v15 = *(self + 312);
+  burstQualityCaptureEnabled = [v15 burstQualityCaptureEnabled];
   v17 = BWCIFilterArrayContainsPortraitFilters([v15 processedImageFilters]);
   v2 = 0;
-  if (*(a1 + 552) > *(a1 + 540) && (v16 & 1) == 0 && (v17 & 1) == 0)
+  if (*(self + 552) > *(self + 540) && (burstQualityCaptureEnabled & 1) == 0 && (v17 & 1) == 0)
   {
     if (dword_1ED844530)
     {
@@ -5312,12 +5312,12 @@ LABEL_32:
             [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_97_3() "photoDescriptors")];
             v13 = v3;
             v14 = v2;
-            v15 = [(BWStillImageProcessingSettings *)v1[9]._processingSettings captureRequestIdentifier];
+            captureRequestIdentifier = [(BWStillImageProcessingSettings *)v1[9]._processingSettings captureRequestIdentifier];
             [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_97_3() "photoDescriptors")];
             OUTLINED_FUNCTION_79_2();
             *(v16 + 4) = "[BWStillImageCoordinatorNode _setupProcessing]";
             *(v16 + 14) = v10 + 1;
-            *(v16 + 26) = v15;
+            *(v16 + 26) = captureRequestIdentifier;
             v2 = v14;
             v3 = v13;
             *(v16 + 36) = v17;
@@ -5336,8 +5336,8 @@ LABEL_32:
       while ([objc_msgSend(OUTLINED_FUNCTION_97_3() "photoDescriptors")] > v10);
     }
 
-    v18 = [(BWStillImageCoordinatorNode *)v1 _currentStillImageSettings];
-    v19 = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)v18 captureSettings] captureStreamSettings];
+    _currentStillImageSettings = [(BWStillImageCoordinatorNode *)v1 _currentStillImageSettings];
+    captureStreamSettings = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)_currentStillImageSettings captureSettings] captureStreamSettings];
     OUTLINED_FUNCTION_47_0();
     result = [v20 countByEnumeratingWithState:? objects:? count:?];
     if (result)
@@ -5347,7 +5347,7 @@ LABEL_32:
       {
         if (MEMORY[0] != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(captureStreamSettings);
         }
 
         v22 = MEMORY[0];
@@ -5363,14 +5363,14 @@ LABEL_32:
           v23 = [OUTLINED_FUNCTION_37_0() objectForKeyedSubscript:?];
           [(BWStillImageSettings *)v1 outputs];
           [v23 index];
-          [objc_msgSend(OUTLINED_FUNCTION_37_0() "objectAtIndexedSubscript:{"emitStillImagePrewarmMessageWithSettings:resourceConfig:", v18, 0}")];
+          [objc_msgSend(OUTLINED_FUNCTION_37_0() "objectAtIndexedSubscript:{"emitStillImagePrewarmMessageWithSettings:resourceConfig:", _currentStillImageSettings, 0}")];
         }
 
         OUTLINED_FUNCTION_78_0();
         if (v6)
         {
           OUTLINED_FUNCTION_47_0();
-          result = [NSArray countByEnumeratingWithState:v19 objects:"countByEnumeratingWithState:objects:count:" count:?];
+          result = [NSArray countByEnumeratingWithState:captureStreamSettings objects:"countByEnumeratingWithState:objects:count:" count:?];
           if (!result)
           {
             break;
@@ -5399,14 +5399,14 @@ LABEL_32:
   }
 
   v2 = 0x1E695D000uLL;
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [OUTLINED_FUNCTION_26_11() captureType];
-  v5 = [OUTLINED_FUNCTION_26_11() captureFlags];
+  array = [MEMORY[0x1E695DF70] array];
+  captureType = [OUTLINED_FUNCTION_26_11() captureType];
+  captureFlags = [OUTLINED_FUNCTION_26_11() captureFlags];
   v6 = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
   if ([OUTLINED_FUNCTION_21_16() outputFormat])
   {
-    v7 = 1;
-    if ((v5 & 0x800) == 0)
+    isBeginMomentCaptureSettings = 1;
+    if ((captureFlags & 0x800) == 0)
     {
       goto LABEL_12;
     }
@@ -5414,8 +5414,8 @@ LABEL_32:
 
   else
   {
-    v7 = [OUTLINED_FUNCTION_21_16() isBeginMomentCaptureSettings];
-    if ((v5 & 0x800) == 0)
+    isBeginMomentCaptureSettings = [OUTLINED_FUNCTION_21_16() isBeginMomentCaptureSettings];
+    if ((captureFlags & 0x800) == 0)
     {
 LABEL_12:
       v8 = 0;
@@ -5439,14 +5439,14 @@ LABEL_12:
   }
 
 LABEL_13:
-  v9 = 0;
-  v10 = v4 - 1;
+  bracketImageCount = 0;
+  v10 = captureType - 1;
   v62 = v1;
-  v11 = v8 | (v5 >> 5) & 0x200;
+  v11 = v8 | (captureFlags >> 5) & 0x200;
   switch(v10)
   {
     case 0:
-      if ((v5 & 0x60000000000) != 0)
+      if ((captureFlags & 0x60000000000) != 0)
       {
         v11 |= 2u;
       }
@@ -5462,56 +5462,56 @@ LABEL_51:
       v18 = [objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")];
       if (v18 <= 1)
       {
-        v9 = 1;
+        bracketImageCount = 1;
       }
 
       else
       {
-        v9 = v18;
+        bracketImageCount = v18;
       }
 
       if ([OUTLINED_FUNCTION_21_16() constantColorEnabled] && (objc_msgSend(OUTLINED_FUNCTION_21_16(), "constantColorFallbackPhotoDeliveryEnabled") & 1) != 0)
       {
-        v9 = 2;
+        bracketImageCount = 2;
       }
 
-      else if (v9 < 1)
+      else if (bracketImageCount < 1)
       {
         goto LABEL_81;
       }
 
-      v19 = v9;
+      v19 = bracketImageCount;
       do
       {
-        if ((v5 & 0x100) != 0)
+        if ((captureFlags & 0x100) != 0)
         {
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 0x10000];
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        v20 = [OUTLINED_FUNCTION_21_16() rawOutputFormat];
-        if (FigCapturePixelFormatIsBayerRaw(v20))
+        rawOutputFormat = [OUTLINED_FUNCTION_21_16() rawOutputFormat];
+        if (FigCapturePixelFormatIsBayerRaw(rawOutputFormat))
         {
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 0x80];
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        if (v7)
+        if (isBeginMomentCaptureSettings)
         {
           OUTLINED_FUNCTION_99_2();
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        --v9;
+        --bracketImageCount;
       }
 
-      while (v9);
+      while (bracketImageCount);
 LABEL_80:
-      v9 = v19;
+      bracketImageCount = v19;
 LABEL_81:
       if ([objc_msgSend(OUTLINED_FUNCTION_21_16() "originalImageFilters")])
       {
-        v22 = v9 < 1;
+        v22 = bracketImageCount < 1;
       }
 
       else
@@ -5524,20 +5524,20 @@ LABEL_81:
         v23 = 0;
         do
         {
-          v24 = [objc_msgSend(v3 objectAtIndexedSubscript:{v23), "unsignedIntValue"}];
+          v24 = [objc_msgSend(array objectAtIndexedSubscript:{v23), "unsignedIntValue"}];
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v24 | 4u];
           [OUTLINED_FUNCTION_40_9() replaceObjectAtIndex:v23++ withObject:?];
         }
 
-        while (v9 != v23);
+        while (bracketImageCount != v23);
       }
 
-      if ([v3 count])
+      if ([array count])
       {
         v25 = 0;
         do
         {
-          v26 = [objc_msgSend(v3 objectAtIndexedSubscript:{v25), "unsignedIntValue"}];
+          v26 = [objc_msgSend(array objectAtIndexedSubscript:{v25), "unsignedIntValue"}];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -5549,8 +5549,8 @@ LABEL_81:
             v27 = 0;
           }
 
-          v28 = [(BWStillImageCoordinatorNode *)v62 _currentStillImageSettings];
-          if (BWIsSmartStyleCapture(v28))
+          _currentStillImageSettings = [(BWStillImageCoordinatorNode *)v62 _currentStillImageSettings];
+          if (BWIsSmartStyleCapture(_currentStillImageSettings))
           {
             v29 = ([v27 smartStyle] != 0) << 21;
           }
@@ -5564,19 +5564,19 @@ LABEL_81:
           [OUTLINED_FUNCTION_40_9() replaceObjectAtIndex:v25++ withObject:?];
         }
 
-        while ([v3 count] > v25);
+        while ([array count] > v25);
       }
 
       if ([objc_msgSend(OUTLINED_FUNCTION_21_16() "processedImageFilters")])
       {
         v49 = BWCIFilterArrayContainsPortraitFilters([*(&v62->super.isa + v6[921]) processedImageFilters]);
         v50 = BWCIFilterArrayOnlyContainsPortraitFilters([*(&v62->super.isa + v6[921]) processedImageFilters]);
-        v51 = v49 & (v5 >> 11);
-        v52 = [(BWStillImageCoordinatorNode *)v62 _currentStillImageSettings];
-        v53 = BWIsSmartStyleAllowedForAdjustedImage(v52);
+        v51 = v49 & (captureFlags >> 11);
+        _currentStillImageSettings2 = [(BWStillImageCoordinatorNode *)v62 _currentStillImageSettings];
+        v53 = BWIsSmartStyleAllowedForAdjustedImage(_currentStillImageSettings2);
         if ((v51 & 1) != 0 || !v50)
         {
-          if ([v3 count])
+          if ([array count])
           {
             v56 = 0;
             if (v53)
@@ -5602,43 +5602,43 @@ LABEL_81:
             v59 = v58 | v57;
             do
             {
-              v60 = [objc_msgSend(v3 objectAtIndexedSubscript:{v56), "unsignedIntValue"}];
-              [v3 insertObject:objc_msgSend(MEMORY[0x1E696AD98] atIndex:{"numberWithUnsignedInt:", v59 | v60), v56 + 1}];
+              v60 = [objc_msgSend(array objectAtIndexedSubscript:{v56), "unsignedIntValue"}];
+              [array insertObject:objc_msgSend(MEMORY[0x1E696AD98] atIndex:{"numberWithUnsignedInt:", v59 | v60), v56 + 1}];
               v56 += 2;
             }
 
-            while ([v3 count] > v56);
+            while ([array count] > v56);
           }
         }
 
-        else if ((v5 & 0x800) != 0 && [v3 count])
+        else if ((captureFlags & 0x800) != 0 && [array count])
         {
           v54 = 0;
           do
           {
-            v55 = [objc_msgSend(v3 objectAtIndexedSubscript:{v54), "unsignedIntValue"}];
+            v55 = [objc_msgSend(array objectAtIndexedSubscript:{v54), "unsignedIntValue"}];
             [MEMORY[0x1E696AD98] numberWithUnsignedInt:v55 | 0x1000000u];
             [OUTLINED_FUNCTION_40_9() replaceObjectAtIndex:v54++ withObject:?];
           }
 
-          while ([v3 count] > v54);
+          while ([array count] > v54);
         }
       }
 
-      if (-[objc_class deliverDeferredPhotoProxyImage](v62[10].super.isa, "deliverDeferredPhotoProxyImage") && [v3 count])
+      if (-[objc_class deliverDeferredPhotoProxyImage](v62[10].super.isa, "deliverDeferredPhotoProxyImage") && [array count])
       {
         v30 = 0;
         do
         {
-          v31 = [objc_msgSend(v3 objectAtIndexedSubscript:{v30), "unsignedIntValue"}];
+          v31 = [objc_msgSend(array objectAtIndexedSubscript:{v30), "unsignedIntValue"}];
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v31 | 0x1000u];
           [OUTLINED_FUNCTION_40_9() replaceObjectAtIndex:v30++ withObject:?];
         }
 
-        while ([v3 count] > v30);
+        while ([array count] > v30);
       }
 
-      v32 = [*(v2 + 3952) arrayWithCapacity:{objc_msgSend(v3, "count")}];
+      v32 = [*(v2 + 3952) arrayWithCapacity:{objc_msgSend(array, "count")}];
       OUTLINED_FUNCTION_47_0();
       v37 = OUTLINED_FUNCTION_37(v33, v34, v35, v36);
       if (v37)
@@ -5651,7 +5651,7 @@ LABEL_81:
           {
             if (MEMORY[0] != v39)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(array);
             }
 
             v41 = *(8 * i);
@@ -5674,12 +5674,12 @@ LABEL_81:
     case 2:
       if ([OUTLINED_FUNCTION_26_11() deliverOriginalImage])
       {
-        v9 = 2;
+        bracketImageCount = 2;
       }
 
       else
       {
-        v9 = 1;
+        bracketImageCount = 1;
       }
 
       if ([OUTLINED_FUNCTION_26_11() deliverOriginalImage])
@@ -5694,17 +5694,17 @@ LABEL_81:
       v16 = [objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")];
       if (v16 <= 1)
       {
-        v9 = 1;
+        bracketImageCount = 1;
       }
 
       else
       {
-        v9 = v16;
+        bracketImageCount = v16;
       }
 
-      if (v9 >= 1)
+      if (bracketImageCount >= 1)
       {
-        v17 = v9;
+        v17 = bracketImageCount;
         do
         {
           OUTLINED_FUNCTION_99_2();
@@ -5718,14 +5718,14 @@ LABEL_81:
       goto LABEL_81;
     case 5:
     case 10:
-      if ((v5 & 0x100) != 0)
+      if ((captureFlags & 0x100) != 0)
       {
         [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 0x10000];
         [OUTLINED_FUNCTION_4() addObject:?];
       }
 
-      v9 = 1;
-      if ((v7 & 1) == 0)
+      bracketImageCount = 1;
+      if ((isBeginMomentCaptureSettings & 1) == 0)
       {
         goto LABEL_81;
       }
@@ -5735,43 +5735,43 @@ LABEL_48:
       [OUTLINED_FUNCTION_4() addObject:?];
       goto LABEL_81;
     case 6:
-      v9 = [OUTLINED_FUNCTION_21_16() bracketImageCount];
+      bracketImageCount = [OUTLINED_FUNCTION_21_16() bracketImageCount];
       if ([objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")])
       {
-        v9 *= [objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")];
+        bracketImageCount *= [objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")];
       }
 
-      if (v9 < 1)
+      if (bracketImageCount < 1)
       {
         goto LABEL_81;
       }
 
-      v19 = v9;
+      v19 = bracketImageCount;
       do
       {
-        if ((v5 & 0x100) != 0)
+        if ((captureFlags & 0x100) != 0)
         {
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 0x10000];
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        v21 = [OUTLINED_FUNCTION_21_16() rawOutputFormat];
-        if (FigCapturePixelFormatIsBayerRaw(v21))
+        rawOutputFormat2 = [OUTLINED_FUNCTION_21_16() rawOutputFormat];
+        if (FigCapturePixelFormatIsBayerRaw(rawOutputFormat2))
         {
           [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 0x80];
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        if (v7)
+        if (isBeginMomentCaptureSettings)
         {
           OUTLINED_FUNCTION_99_2();
           [OUTLINED_FUNCTION_4() addObject:?];
         }
 
-        --v9;
+        --bracketImageCount;
       }
 
-      while (v9);
+      while (bracketImageCount);
       goto LABEL_80;
     case 9:
     case 11:
@@ -5779,20 +5779,20 @@ LABEL_48:
       v12 = [objc_msgSend(OUTLINED_FUNCTION_21_16() "bravoConstituentImageDeliveryDeviceTypes")];
       if (v12 <= 1)
       {
-        v9 = 1;
+        bracketImageCount = 1;
       }
 
       else
       {
-        v9 = v12;
+        bracketImageCount = v12;
       }
 
-      if (v9 >= 1)
+      if (bracketImageCount >= 1)
       {
-        v61 = v9;
+        v61 = bracketImageCount;
         do
         {
-          if ((v5 & 0x100) != 0)
+          if ((captureFlags & 0x100) != 0)
           {
             if (([OUTLINED_FUNCTION_26_11() captureFlags] & 0x100000) != 0)
             {
@@ -5808,7 +5808,7 @@ LABEL_48:
             [OUTLINED_FUNCTION_4() addObject:?];
           }
 
-          if (v7)
+          if (isBeginMomentCaptureSettings)
           {
             [MEMORY[0x1E696AD98] numberWithUnsignedInt:{(objc_msgSend(OUTLINED_FUNCTION_26_11(), "captureFlags") >> 19) & 2 | v11}];
             [OUTLINED_FUNCTION_4() addObject:?];
@@ -5816,10 +5816,10 @@ LABEL_48:
 
           if ([OUTLINED_FUNCTION_26_11() deliverOriginalImage])
           {
-            v14 = [OUTLINED_FUNCTION_26_11() captureFlags];
+            captureFlags2 = [OUTLINED_FUNCTION_26_11() captureFlags];
             [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11 | 1];
             v15 = OUTLINED_FUNCTION_4();
-            if ((v14 & 0x2000) != 0)
+            if ((captureFlags2 & 0x2000) != 0)
             {
               [v15 addObject:?];
             }
@@ -5830,13 +5830,13 @@ LABEL_48:
             }
           }
 
-          --v9;
+          --bracketImageCount;
         }
 
-        while (v9);
+        while (bracketImageCount);
         v6 = &OBJC_IVAR___BWBravoPortraitSceneMonitorV2__stageMostRecentFaces;
         v2 = 0x1E695D000;
-        v9 = v61;
+        bracketImageCount = v61;
       }
 
       goto LABEL_81;
@@ -5885,8 +5885,8 @@ LABEL_48:
 
       else
       {
-        v6 = [a2 flag];
-        switch(v6)
+        flag = [a2 flag];
+        switch(flag)
         {
           case 1:
             [objc_loadWeak((v3 + 192)) stillImageCoordinator:v3 willBeginCaptureBeforeResolvingSettingsForID:{objc_msgSend(*(v3 + 312), "settingsID")}];
@@ -5911,14 +5911,14 @@ LABEL_48:
           case 8:
             goto LABEL_18;
           default:
-            switch(v6)
+            switch(flag)
             {
               case 16:
 LABEL_18:
-                v7 = [(BWStillImageCoordinatorNode *)v3 _currentStillImageSettings];
+                _currentStillImageSettings = [(BWStillImageCoordinatorNode *)v3 _currentStillImageSettings];
                 Weak = objc_loadWeak((v3 + 192));
                 [a2 pts];
-                [Weak stillImageCoordinator:v3 didResolveStillImagePTS:v14 forSettings:v7 isPreBracketedEV0:{objc_msgSend(a2, "isPreBracketFrame")}];
+                [Weak stillImageCoordinator:v3 didResolveStillImagePTS:v14 forSettings:_currentStillImageSettings isPreBracketedEV0:{objc_msgSend(a2, "isPreBracketFrame")}];
                 break;
               case 32:
                 [(BWStillImageCoordinatorNode *)v3 _currentStillImageSettings];
@@ -5952,9 +5952,9 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)_waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:(float)a3 freeBufferCountOut:
+- (BOOL)_waitUntilShotBufferHasEnoughFreeBuffersWithTimeout:(float)timeout freeBufferCountOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -5966,18 +5966,18 @@ LABEL_18:
     FigDebugAssert3();
   }
 
-  if (*(a1 + 476) != 1)
+  if (*(self + 476) != 1)
   {
     return 0;
   }
 
   v49 = a2;
-  v7 = [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForCurrentRequest];
-  v48 = [(BWStillImageCoordinatorNode *)a1 _zoomBasedBufferCountForCurrentSettings];
-  v47 = [(BWStillImageCoordinatorNode *)a1 _ultraHighResBufferCountForCurrentSettings];
-  v8 = [(BWStillImageCoordinatorNode *)a1 _maxShotBufferCapacityForCurrentRequestWithBufferCount:v7 ultraHighResBufferCount:v47];
-  os_unfair_lock_lock((a1 + 432));
-  if (*(a1 + 456) && v8 != [objc_opt_class() maxShotBufferCapacity])
+  _expectedFrameCountForCurrentRequest = [(BWStillImageCoordinatorNode *)self _expectedFrameCountForCurrentRequest];
+  _zoomBasedBufferCountForCurrentSettings = [(BWStillImageCoordinatorNode *)self _zoomBasedBufferCountForCurrentSettings];
+  _ultraHighResBufferCountForCurrentSettings = [(BWStillImageCoordinatorNode *)self _ultraHighResBufferCountForCurrentSettings];
+  v8 = [(BWStillImageCoordinatorNode *)self _maxShotBufferCapacityForCurrentRequestWithBufferCount:_expectedFrameCountForCurrentRequest ultraHighResBufferCount:_ultraHighResBufferCountForCurrentSettings];
+  os_unfair_lock_lock((self + 432));
+  if (*(self + 456) && v8 != [objc_opt_class() maxShotBufferCapacity])
   {
     if (dword_1ED844530)
     {
@@ -6016,21 +6016,21 @@ LABEL_18:
     v46 = 0;
   }
 
-  v11 = *(a1 + 436);
+  v11 = *(self + 436);
   v12 = (v8 - v11) & ~((v8 - v11) >> 31);
-  if (v11 + v7 >= [objc_opt_class() maxShotBufferCapacity])
+  if (v11 + _expectedFrameCountForCurrentRequest >= [objc_opt_class() maxShotBufferCapacity])
   {
-    v13 = [objc_opt_class() maxShotBufferCapacity];
+    maxShotBufferCapacity = [objc_opt_class() maxShotBufferCapacity];
   }
 
   else
   {
-    v13 = *(a1 + 436) + v7;
+    maxShotBufferCapacity = *(self + 436) + _expectedFrameCountForCurrentRequest;
   }
 
-  if (v12 < v7)
+  if (v12 < _expectedFrameCountForCurrentRequest)
   {
-    if (!*(a1 + 496))
+    if (!*(self + 496))
     {
       if (dword_1ED844530)
       {
@@ -6050,10 +6050,10 @@ LABEL_18:
         OUTLINED_FUNCTION_56_0();
       }
 
-      *(a1 + 496) = dispatch_group_create();
-      *(a1 + 504) = v7;
-      dispatch_group_enter(*(a1 + 496));
-      v20 = *(a1 + 496);
+      *(self + 496) = dispatch_group_create();
+      *(self + 504) = _expectedFrameCountForCurrentRequest;
+      dispatch_group_enter(*(self + 496));
+      v20 = *(self + 496);
       goto LABEL_31;
     }
 
@@ -6094,15 +6094,15 @@ LABEL_29:
 LABEL_31:
   v21 = OUTLINED_FUNCTION_63_6();
   os_unfair_lock_unlock(v21);
-  if (*(a1 + 456))
+  if (*(self + 456))
   {
-    v22 = [*(a1 + 320) captureFlags];
-    if (![*(a1 + 456) passthroughEnabled] || (v23 = v13, (v22 & 2) != 0))
+    captureFlags = [*(self + 320) captureFlags];
+    if (![*(self + 456) passthroughEnabled] || (maxShotBufferCapacity2 = maxShotBufferCapacity, (captureFlags & 2) != 0))
     {
-      v23 = [objc_opt_class() maxShotBufferCapacity];
+      maxShotBufferCapacity2 = [objc_opt_class() maxShotBufferCapacity];
     }
 
-    v24 = *(a1 + 484) - v23;
+    v24 = *(self + 484) - maxShotBufferCapacity2;
     if (v24 <= 1)
     {
       v25 = 1;
@@ -6113,7 +6113,7 @@ LABEL_31:
       v25 = v24;
     }
 
-    if ([*(a1 + 456) uncompressedEquivalentCapacity] != v25)
+    if ([*(self + 456) uncompressedEquivalentCapacity] != v25)
     {
       if (dword_1ED844530)
       {
@@ -6131,7 +6131,7 @@ LABEL_31:
 
         if (v27)
         {
-          [*(a1 + 456) uncompressedEquivalentCapacity];
+          [*(self + 456) uncompressedEquivalentCapacity];
           [objc_opt_class() maxShotBufferCapacity];
           OUTLINED_FUNCTION_29_8();
           OUTLINED_FUNCTION_9_3();
@@ -6143,7 +6143,7 @@ LABEL_31:
         OUTLINED_FUNCTION_17_8();
       }
 
-      [*(a1 + 456) setUncompressedEquivalentCapacity:v25];
+      [*(self + 456) setUncompressedEquivalentCapacity:v25];
     }
   }
 
@@ -6155,7 +6155,7 @@ LABEL_31:
       kdebug_trace();
     }
 
-    v29 = dispatch_time(0, (a3 * 1000000000.0));
+    v29 = dispatch_time(0, (timeout * 1000000000.0));
     v30 = dispatch_group_wait(v20, v29);
     v31 = v30 == 0;
     if (*v28 == 1)
@@ -6182,12 +6182,12 @@ LABEL_31:
       OUTLINED_FUNCTION_56_0();
       v34 = OUTLINED_FUNCTION_63_6();
       os_unfair_lock_lock(v34);
-      v35 = *(a1 + 496);
+      v35 = *(self + 496);
       if (v35 == v20)
       {
         dispatch_group_leave(v35);
 
-        *(a1 + 496) = 0;
+        *(self + 496) = 0;
       }
 
       v36 = OUTLINED_FUNCTION_63_6();
@@ -6197,33 +6197,33 @@ LABEL_31:
 
   else
   {
-    v31 = v12 >= v7;
+    v31 = v12 >= _expectedFrameCountForCurrentRequest;
   }
 
   v37 = OUTLINED_FUNCTION_63_6();
   os_unfair_lock_lock(v37);
-  v38 = *(a1 + 436) + v7;
+  v38 = *(self + 436) + _expectedFrameCountForCurrentRequest;
   if (v38 >= [objc_opt_class() maxShotBufferCapacity])
   {
-    v39 = [objc_opt_class() maxShotBufferCapacity];
+    maxShotBufferCapacity3 = [objc_opt_class() maxShotBufferCapacity];
   }
 
   else
   {
-    v39 = (*(a1 + 436) + v7);
+    maxShotBufferCapacity3 = (*(self + 436) + _expectedFrameCountForCurrentRequest);
   }
 
-  v40 = (*(a1 + 440) + v48);
-  v41 = (*(a1 + 444) + v47);
+  v40 = (*(self + 440) + _zoomBasedBufferCountForCurrentSettings);
+  v41 = (*(self + 444) + _ultraHighResBufferCountForCurrentSettings);
   mach_absolute_time();
   v42 = FigHostTimeToNanoseconds();
-  v43 = [*(a1 + 320) captureFlags];
-  if (([*(a1 + 456) passthroughEnabled] && (v43 & 2) == 0 || !*(a1 + 552) && !*(a1 + 436) && ((v42 / 1000) / 1000000.0) > 2.0) && v39 != *(a1 + 480) || v39 > *(a1 + 480) || v40 != *(a1 + 488) || v41 != *(a1 + 492) || v46)
+  captureFlags2 = [*(self + 320) captureFlags];
+  if (([*(self + 456) passthroughEnabled] && (captureFlags2 & 2) == 0 || !*(self + 552) && !*(self + 436) && ((v42 / 1000) / 1000000.0) > 2.0) && maxShotBufferCapacity3 != *(self + 480) || maxShotBufferCapacity3 > *(self + 480) || v40 != *(self + 488) || v41 != *(self + 492) || v46)
   {
-    *(a1 + 480) = v39;
-    *(a1 + 488) = v40;
-    *(a1 + 492) = v41;
-    [objc_opt_class() setCurrentAllocatedShotBufferCapacity:v39];
+    *(self + 480) = maxShotBufferCapacity3;
+    *(self + 488) = v40;
+    *(self + 492) = v41;
+    [objc_opt_class() setCurrentAllocatedShotBufferCapacity:maxShotBufferCapacity3];
     [objc_opt_class() setNumberOfZoomBasedBufferIncludedInShotBuffer:v40];
     [objc_opt_class() setNumberOfUltraHighResBufferIncludedInShotBuffer:v41];
   }
@@ -6240,7 +6240,7 @@ LABEL_31:
 
 - (void)_readyToRespondToRequest
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -6249,7 +6249,7 @@ LABEL_31:
       FigDebugAssert3();
     }
 
-    [(BWStillImageCoordinatorNode *)a1 _fireDelegateCallbackWithFlag:?];
+    [(BWStillImageCoordinatorNode *)self _fireDelegateCallbackWithFlag:?];
   }
 }
 
@@ -6262,8 +6262,8 @@ LABEL_31:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v2 = [*(result + 320) captureStreamSettings];
-    v3 = [v2 countByEnumeratingWithState:&v45 objects:v44 count:16];
+    captureStreamSettings = [*(result + 320) captureStreamSettings];
+    v3 = [captureStreamSettings countByEnumeratingWithState:&v45 objects:v44 count:16];
     if (v3)
     {
       v4 = v3;
@@ -6275,7 +6275,7 @@ LABEL_31:
         {
           if (*v46 != v6)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(captureStreamSettings);
           }
 
           v8 = [objc_msgSend(*(v1 + 288) objectForKeyedSubscript:{objc_msgSend(*(*(&v45 + 1) + 8 * i), "portType")), "intValue"}];
@@ -6293,8 +6293,8 @@ LABEL_31:
       v5 = 0;
     }
 
-    v10 = [*(v1 + 320) captureStreamSettings];
-    v12 = OUTLINED_FUNCTION_44_0(v10, v11);
+    captureStreamSettings2 = [*(v1 + 320) captureStreamSettings];
+    v12 = OUTLINED_FUNCTION_44_0(captureStreamSettings2, v11);
     if (v12)
     {
       v13 = v12;
@@ -6306,7 +6306,7 @@ LABEL_31:
         {
           if (*v43 != v15)
           {
-            objc_enumerationMutation(v2);
+            objc_enumerationMutation(captureStreamSettings);
           }
 
           v17 = [objc_msgSend(*(v1 + 296) objectForKeyedSubscript:{objc_msgSend(*(v42 + 8 * j), "portType")), "intValue"}];
@@ -6332,7 +6332,7 @@ LABEL_31:
 
 - (uint64_t)_expectedFrameCountForNextRequest
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -6344,14 +6344,14 @@ LABEL_31:
     FigDebugAssert3();
   }
 
-  v2 = [(BWStillImageCoordinatorNode *)a1 _expectedFrameCountForCurrentRequest];
-  os_unfair_lock_lock((a1 + 232));
+  _expectedFrameCountForCurrentRequest = [(BWStillImageCoordinatorNode *)self _expectedFrameCountForCurrentRequest];
+  os_unfair_lock_lock((self + 232));
   OUTLINED_FUNCTION_33();
   if (v11)
   {
-    if (*(a1 + 552) == *(a1 + 540) && *(a1 + 236) >= 1)
+    if (*(self + 552) == *(self + 540) && *(self + 236) >= 1)
     {
-      v12 = *(a1 + 224);
+      v12 = *(self + 224);
       if (OUTLINED_FUNCTION_17_0(v3, v4, v5, v6, v7, v8, v9, v10, v28, v30, v32, v34, v36, v38, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, 0))
       {
         v13 = MEMORY[0];
@@ -6363,9 +6363,9 @@ LABEL_31:
           }
 
           v14 = MEMORY[0];
-          v15 = [MEMORY[0] isUserInitiatedRequestSettings];
-          v16 = [v14 isClientInitiatedPrepareSettings];
-          if ((v15 & 1) == 0 && (v16 & 1) == 0)
+          isUserInitiatedRequestSettings = [MEMORY[0] isUserInitiatedRequestSettings];
+          isClientInitiatedPrepareSettings = [v14 isClientInitiatedPrepareSettings];
+          if ((isUserInitiatedRequestSettings & 1) == 0 && (isClientInitiatedPrepareSettings & 1) == 0)
           {
             break;
           }
@@ -6377,18 +6377,18 @@ LABEL_31:
           }
         }
 
-        v25 = [v14 burstQualityCaptureEnabled];
+        burstQualityCaptureEnabled = [v14 burstQualityCaptureEnabled];
         v26 = BWCIFilterArrayContainsPortraitFilters([v14 processedImageFilters]);
-        if ((v25 & 1) == 0 && (v26 & 1) == 0)
+        if ((burstQualityCaptureEnabled & 1) == 0 && (v26 & 1) == 0)
         {
           if ([v14 depthDataDeliveryEnabled])
           {
-            v2 = 6;
+            _expectedFrameCountForCurrentRequest = 6;
           }
 
           else
           {
-            v2 = 3;
+            _expectedFrameCountForCurrentRequest = 3;
           }
         }
       }
@@ -6396,19 +6396,19 @@ LABEL_31:
   }
 
 LABEL_23:
-  os_unfair_lock_unlock((a1 + 232));
-  return v2;
+  os_unfair_lock_unlock((self + 232));
+  return _expectedFrameCountForCurrentRequest;
 }
 
-- (void)_waitToMakePaceWithReferenceTime:(uint64_t)a1
+- (void)_waitToMakePaceWithReferenceTime:(uint64_t)time
 {
-  if (a1)
+  if (time)
   {
     OUTLINED_FUNCTION_88_2();
     if (v3)
     {
-      v2 = [OUTLINED_FUNCTION_64_6() captureFlags];
-      v3 = [OUTLINED_FUNCTION_64_6() captureType] == 1 && (v2 & 0x80) == 0;
+      captureFlags = [OUTLINED_FUNCTION_64_6() captureFlags];
+      v3 = [OUTLINED_FUNCTION_64_6() captureType] == 1 && (captureFlags & 0x80) == 0;
       if (!v3)
       {
         v4 = MEMORY[0x1E695FF58];
@@ -6420,7 +6420,7 @@ LABEL_23:
 
         mach_absolute_time();
         v5 = (FigHostTimeToNanoseconds() / 1000) / 1000000.0;
-        v6 = 1.0 / *(a1 + 512);
+        v6 = 1.0 / *(time + 512);
         if (v5 < v6)
         {
           v7 = v6 - v5;
@@ -6443,12 +6443,12 @@ LABEL_23:
 
 - (uint64_t)_ultraHighResBufferCountForCurrentSettings
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [*(a1 + 320) captureStreamSettings];
+  captureStreamSettings = [*(self + 320) captureStreamSettings];
   OUTLINED_FUNCTION_74_3();
   v3 = [v2 countByEnumeratingWithState:? objects:? count:?];
   if (!v3)
@@ -6465,42 +6465,42 @@ LABEL_23:
     {
       if (MEMORY[0] != v6)
       {
-        objc_enumerationMutation(v1);
+        objc_enumerationMutation(captureStreamSettings);
       }
 
       v5 = [*(8 * i) expectedUltraHighResFrameCaptureCount] + v5;
     }
 
     OUTLINED_FUNCTION_74_3();
-    v4 = [v1 countByEnumeratingWithState:? objects:? count:?];
+    v4 = [captureStreamSettings countByEnumeratingWithState:? objects:? count:?];
   }
 
   while (v4);
   return v5;
 }
 
-- (uint64_t)_maxShotBufferCapacityForCurrentRequestWithBufferCount:(int)a3 ultraHighResBufferCount:
+- (uint64_t)_maxShotBufferCapacityForCurrentRequestWithBufferCount:(int)count ultraHighResBufferCount:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = [objc_opt_class() maxShotBufferCapacity];
-  if (!*(a1 + 456))
+  maxShotBufferCapacity = [objc_opt_class() maxShotBufferCapacity];
+  if (!*(self + 456))
   {
-    return v6;
+    return maxShotBufferCapacity;
   }
 
-  v7 = [OUTLINED_FUNCTION_26_11() captureFlags];
-  v8 = [OUTLINED_FUNCTION_26_11() captureType];
-  v9 = [OUTLINED_FUNCTION_34_11() minimumUncompressedEquivalentCapacity];
+  captureFlags = [OUTLINED_FUNCTION_26_11() captureFlags];
+  captureType = [OUTLINED_FUNCTION_26_11() captureType];
+  minimumUncompressedEquivalentCapacity = [OUTLINED_FUNCTION_34_11() minimumUncompressedEquivalentCapacity];
   if ([OUTLINED_FUNCTION_34_11() passthroughEnabled])
   {
-    if ((v7 & 2) != 0)
+    if ((captureFlags & 2) != 0)
     {
-      v10 = *(a1 + 444);
-      v11 = *(a1 + 448) * v10;
+      v10 = *(self + 444);
+      v11 = *(self + 448) * v10;
       if (v10 >= 1)
       {
         v12 = v11 + 1;
@@ -6511,12 +6511,12 @@ LABEL_23:
         v12 = 1;
       }
 
-      v13 = (*(a1 + 436) - v11) & ~((*(a1 + 436) - v11) >> 31);
-      v14 = *(a1 + 472);
+      v13 = (*(self + 436) - v11) & ~((*(self + 436) - v11) >> 31);
+      v14 = *(self + 472);
       if (v14 == -1)
       {
-        *(a1 + 472) = v13;
-        v14 = *(a1 + 472);
+        *(self + 472) = v13;
+        v14 = *(self + 472);
       }
 
       v15 = v13 < v14;
@@ -6528,7 +6528,7 @@ LABEL_23:
       v16 = v14 + v12;
       if (v15)
       {
-        *(a1 + 472) = v13;
+        *(self + 472) = v13;
       }
     }
 
@@ -6536,10 +6536,10 @@ LABEL_23:
     {
       if (![OUTLINED_FUNCTION_34_11() compressionResourcesAllocated])
       {
-        v9 = 0;
+        minimumUncompressedEquivalentCapacity = 0;
       }
 
-      if (v8 == 11)
+      if (captureType == 11)
       {
         v17 = 0;
       }
@@ -6549,10 +6549,10 @@ LABEL_23:
         v17 = a2;
       }
 
-      v16 = *(a1 + 436) + v17;
-      if ((*(a1 + 472) & 0x80000000) == 0)
+      v16 = *(self + 436) + v17;
+      if ((*(self + 472) & 0x80000000) == 0)
       {
-        *(a1 + 472) = -1;
+        *(self + 472) = -1;
       }
     }
   }
@@ -6560,34 +6560,34 @@ LABEL_23:
   else
   {
     v16 = 0;
-    if ((v7 & 2) == 0 && v8 != 11)
+    if ((captureFlags & 2) == 0 && captureType != 11)
     {
-      if (a3 < 1)
+      if (count < 1)
       {
         v16 = 1;
       }
 
       else
       {
-        v16 = *(a1 + 448) * a3;
+        v16 = *(self + 448) * count;
       }
     }
 
-    v18 = *(a1 + 444);
+    v18 = *(self + 444);
     if (v18 >= 1)
     {
-      v16 += *(a1 + 448) * v18;
+      v16 += *(self + 448) * v18;
     }
   }
 
-  if (*(a1 + 484) - v9 <= 1)
+  if (*(self + 484) - minimumUncompressedEquivalentCapacity <= 1)
   {
     v19 = 1;
   }
 
   else
   {
-    v19 = *(a1 + 484) - v9;
+    v19 = *(self + 484) - minimumUncompressedEquivalentCapacity;
   }
 
   v20 = v16 + a2;
@@ -6608,15 +6608,15 @@ LABEL_23:
 
   if (([OUTLINED_FUNCTION_34_11() passthroughEnabled] & 1) == 0 && objc_msgSend(OUTLINED_FUNCTION_26_11(), "captureType") != 11)
   {
-    v22 = [*(a1 + 144) thermalSystemPressureLevel];
-    if (v22 == 2)
+    thermalSystemPressureLevel = [*(self + 144) thermalSystemPressureLevel];
+    if (thermalSystemPressureLevel == 2)
     {
       v23 = &OBJC_IVAR___BWStillImageCoordinatorNode__extraUncompressedShotBufferCapacityForThermalSystemPressureLevelSerious;
     }
 
     else
     {
-      if (v22 < 3)
+      if (thermalSystemPressureLevel < 3)
       {
         return v21;
       }
@@ -6624,7 +6624,7 @@ LABEL_23:
       v23 = &OBJC_IVAR___BWStillImageCoordinatorNode__extraUncompressedShotBufferCapacityForThermalSystemPressureLevelCritical;
     }
 
-    v24 = *(a1 + *v23);
+    v24 = *(self + *v23);
     v25 = v24 + v21;
     if (v24 + v21 >= v19)
     {

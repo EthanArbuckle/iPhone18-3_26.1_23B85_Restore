@@ -1,26 +1,26 @@
 @interface SearchUIShortcutsImage
-+ (id)imageFromContexualActionIcon:(id)a3;
-- (SearchUIShortcutsImage)initWithSFImage:(id)a3;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
++ (id)imageFromContexualActionIcon:(id)icon;
+- (SearchUIShortcutsImage)initWithSFImage:(id)image;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIShortcutsImage
 
-- (SearchUIShortcutsImage)initWithSFImage:(id)a3
+- (SearchUIShortcutsImage)initWithSFImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = SearchUIShortcutsImage;
-  v5 = [(SearchUIImage *)&v11 initWithSFImage:v4];
+  v5 = [(SearchUIImage *)&v11 initWithSFImage:imageCopy];
   if (v5)
   {
-    v6 = [v4 lnPropertyIdentifier];
+    lnPropertyIdentifier = [imageCopy lnPropertyIdentifier];
 
-    if (v6)
+    if (lnPropertyIdentifier)
     {
       v7 = objc_alloc(MEMORY[0x1E69E0A40]);
-      v8 = [v4 lnPropertyIdentifier];
-      v9 = [v7 initWithLNPropertyIdentifier:v8 displayStyle:0];
+      lnPropertyIdentifier2 = [imageCopy lnPropertyIdentifier];
+      v9 = [v7 initWithLNPropertyIdentifier:lnPropertyIdentifier2 displayStyle:0];
       [(SearchUIShortcutsImage *)v5 setIcon:v9];
     }
   }
@@ -28,12 +28,12 @@
   return v5;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [(SearchUIShortcutsImage *)self icon];
+  handlerCopy = handler;
+  icon = [(SearchUIShortcutsImage *)self icon];
 
-  if (v7)
+  if (icon)
   {
     objc_initWeak(&location, self);
     v19[0] = MEMORY[0x1E69E9820];
@@ -41,7 +41,7 @@
     v19[2] = __75__SearchUIShortcutsImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
     v19[3] = &unk_1E85B3FF8;
     objc_copyWeak(&v21, &location);
-    v20 = v6;
+    v20 = handlerCopy;
     [SearchUIUtilities dispatchAsyncIfNecessary:v19];
 
     objc_destroyWeak(&v21);
@@ -50,9 +50,9 @@
 
   else
   {
-    v8 = [(SearchUIImage *)self imageData];
+    imageData = [(SearchUIImage *)self imageData];
 
-    if (v8)
+    if (imageData)
     {
       [(SearchUIImage *)self size];
       v11 = v10;
@@ -64,18 +64,18 @@
         v12 = v15;
       }
 
-      v16 = [(SearchUIImage *)self imageData];
+      imageData2 = [(SearchUIImage *)self imageData];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __75__SearchUIShortcutsImage_loadImageWithScale_isDarkStyle_completionHandler___block_invoke_61;
       v17[3] = &unk_1E85B3CC8;
-      v18 = v6;
-      [SearchUIToolKitUtilities loadIconFromData:v16 size:v17 completionHandler:v11, v12];
+      v18 = handlerCopy;
+      [SearchUIToolKitUtilities loadIconFromData:imageData2 size:v17 completionHandler:v11, v12];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0, 1);
+      (*(handlerCopy + 2))(handlerCopy, 0, 1);
     }
   }
 }
@@ -150,57 +150,57 @@ uint64_t __75__SearchUIShortcutsImage_loadImageWithScale_isDarkStyle_completionH
   }
 }
 
-+ (id)imageFromContexualActionIcon:(id)a3
++ (id)imageFromContexualActionIcon:(id)icon
 {
-  v3 = a3;
-  v4 = [v3 imageData];
+  iconCopy = icon;
+  imageData = [iconCopy imageData];
 
-  if (v4)
+  if (imageData)
   {
-    v5 = objc_opt_new();
-    v6 = [v3 imageData];
-    [v5 setImageData:v6];
+    applicationBundleIdentifier = objc_opt_new();
+    imageData2 = [iconCopy imageData];
+    [applicationBundleIdentifier setImageData:imageData2];
 
-    [v3 imageScale];
-    [v5 setScale:?];
+    [iconCopy imageScale];
+    [applicationBundleIdentifier setScale:?];
     goto LABEL_8;
   }
 
-  v7 = [v3 systemName];
+  systemName = [iconCopy systemName];
 
-  if (v7)
+  if (systemName)
   {
-    v5 = objc_opt_new();
-    v8 = [v3 wfIcon];
-    v9 = [v8 symbolName];
-    [v5 setSymbolName:v9];
+    applicationBundleIdentifier = objc_opt_new();
+    wfIcon = [iconCopy wfIcon];
+    symbolName = [wfIcon symbolName];
+    [applicationBundleIdentifier setSymbolName:symbolName];
 
-    [v5 setIsTemplate:1];
-    [v5 setPunchThroughBackground:1];
-    [v5 setCornerRoundingStyle:4];
+    [applicationBundleIdentifier setIsTemplate:1];
+    [applicationBundleIdentifier setPunchThroughBackground:1];
+    [applicationBundleIdentifier setCornerRoundingStyle:4];
   }
 
   else
   {
-    v5 = [v3 applicationBundleIdentifier];
+    applicationBundleIdentifier = [iconCopy applicationBundleIdentifier];
 
-    if (!v5)
+    if (!applicationBundleIdentifier)
     {
       goto LABEL_8;
     }
 
-    v5 = objc_opt_new();
-    v8 = [v3 applicationBundleIdentifier];
-    [v5 setBundleIdentifier:v8];
+    applicationBundleIdentifier = objc_opt_new();
+    wfIcon = [iconCopy applicationBundleIdentifier];
+    [applicationBundleIdentifier setBundleIdentifier:wfIcon];
   }
 
 LABEL_8:
-  if (![v5 cornerRoundingStyle])
+  if (![applicationBundleIdentifier cornerRoundingStyle])
   {
-    [v5 setCornerRoundingStyle:{4 * (objc_msgSend(v3, "displayStyle") == 1)}];
+    [applicationBundleIdentifier setCornerRoundingStyle:{4 * (objc_msgSend(iconCopy, "displayStyle") == 1)}];
   }
 
-  return v5;
+  return applicationBundleIdentifier;
 }
 
 @end

@@ -2,13 +2,13 @@
 + (BKHIDSystemInterface)sharedInstance;
 - (BKHIDSystemInterface)init;
 - (BOOL)_routeSqueezeEventToSystem;
-- (id)destinationsForEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 overrideSenderDescriptor:(id)a5;
-- (id)dispatcherForEvent:(__IOHIDEvent *)a3;
-- (unint64_t)permittedRuleChangeMaskForAuditToken:(id)a3;
-- (void)handleIncomingDeliveryManagerConnection:(id)a3;
-- (void)handleIncomingDeliveryObserverConnection:(id)a3;
-- (void)hidSystem:(id)a3 receivedUpdatedDeviceOrientation:(int64_t)a4;
-- (void)postEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
+- (id)destinationsForEvent:(__IOHIDEvent *)event fromSender:(id)sender overrideSenderDescriptor:(id)descriptor;
+- (id)dispatcherForEvent:(__IOHIDEvent *)event;
+- (unint64_t)permittedRuleChangeMaskForAuditToken:(id)token;
+- (void)handleIncomingDeliveryManagerConnection:(id)connection;
+- (void)handleIncomingDeliveryObserverConnection:(id)connection;
+- (void)hidSystem:(id)system receivedUpdatedDeviceOrientation:(int64_t)orientation;
+- (void)postEvent:(__IOHIDEvent *)event fromSender:(id)sender;
 - (void)startEventProcessing;
 - (void)startServer;
 @end
@@ -27,13 +27,13 @@
   return v3;
 }
 
-- (void)hidSystem:(id)a3 receivedUpdatedDeviceOrientation:(int64_t)a4
+- (void)hidSystem:(id)system receivedUpdatedDeviceOrientation:(int64_t)orientation
 {
   v5 = sub_100005110();
-  sub_100092450(v5, a4);
+  sub_100092450(v5, orientation);
 }
 
-- (void)postEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)postEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
   v4 = [BKHIDSystemInterface destinationsForEvent:"destinationsForEvent:fromSender:" fromSender:?];
   v10 = 0u;
@@ -68,44 +68,44 @@
   }
 }
 
-- (id)destinationsForEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 overrideSenderDescriptor:(id)a5
+- (id)destinationsForEvent:(__IOHIDEvent *)event fromSender:(id)sender overrideSenderDescriptor:(id)descriptor
 {
-  v8 = a5;
-  if (!v8)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v9 = a4;
-    v8 = [v9 senderDescriptorForEventType:IOHIDEventGetType()];
+    senderCopy = sender;
+    descriptorCopy = [senderCopy senderDescriptorForEventType:IOHIDEventGetType()];
   }
 
-  v10 = [(BKHIDSystem *)self->_system deliveryManager];
-  v11 = [v10 destinationsForEvent:a3 sender:v8];
+  deliveryManager = [(BKHIDSystem *)self->_system deliveryManager];
+  v11 = [deliveryManager destinationsForEvent:event sender:descriptorCopy];
 
   return v11;
 }
 
-- (id)dispatcherForEvent:(__IOHIDEvent *)a3
+- (id)dispatcherForEvent:(__IOHIDEvent *)event
 {
   Type = IOHIDEventGetType();
-  v5 = self;
+  selfCopy = self;
   if (Type == 39)
   {
     IntegerValue = IOHIDEventGetIntegerValue();
-    if (IntegerValue < 2 || IntegerValue == 5 && ![(BKHIDSystemInterface *)v5 _routeSqueezeEventToSystem])
+    if (IntegerValue < 2 || IntegerValue == 5 && ![(BKHIDSystemInterface *)selfCopy _routeSqueezeEventToSystem])
     {
       v7 = +[BKTouchDeliveryGenericGestureFocusObserver sharedInstance];
 
-      v5 = v7;
+      selfCopy = v7;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)_routeSqueezeEventToSystem
 {
   v2 = +[BKIOHIDServicePersistentPropertyController digitizerServicePersistentPropertyController];
   v11 = @"SqueezeIsSystemShortcut";
-  v3 = 1;
+  isSqueezeForSystemShortcutEnabled = 1;
   v4 = [NSArray arrayWithObjects:&v11 count:1];
   v5 = [NSSet setWithArray:v4];
   v6 = +[BKSHIDEventSenderDescriptor stylusOpaqueTouchDigitizer];
@@ -115,21 +115,21 @@
   if (([v8 BOOLValue] & 1) == 0)
   {
     v9 = +[BKSDefaults localDefaults];
-    v3 = [v9 isSqueezeForSystemShortcutEnabled];
+    isSqueezeForSystemShortcutEnabled = [v9 isSqueezeForSystemShortcutEnabled];
   }
 
-  return v3;
+  return isSqueezeForSystemShortcutEnabled;
 }
 
-- (unint64_t)permittedRuleChangeMaskForAuditToken:(id)a3
+- (unint64_t)permittedRuleChangeMaskForAuditToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = +[BKSystemShellSentinel sharedInstance];
   v7 = 0u;
   v8 = 0u;
-  if (v3)
+  if (tokenCopy)
   {
-    [v3 realToken];
+    [tokenCopy realToken];
   }
 
   if ([v4 auditTokenRepresentsSystemApp:&v7])
@@ -145,21 +145,21 @@
   return v5;
 }
 
-- (void)handleIncomingDeliveryObserverConnection:(id)a3
+- (void)handleIncomingDeliveryObserverConnection:(id)connection
 {
   system = self->_system;
-  v4 = a3;
-  v6 = [(BKHIDSystem *)system deliveryManager];
-  v5 = [v6 observerService];
-  [v4 acceptConnectionWithMappedObject:v5];
+  connectionCopy = connection;
+  deliveryManager = [(BKHIDSystem *)system deliveryManager];
+  observerService = [deliveryManager observerService];
+  [connectionCopy acceptConnectionWithMappedObject:observerService];
 }
 
-- (void)handleIncomingDeliveryManagerConnection:(id)a3
+- (void)handleIncomingDeliveryManagerConnection:(id)connection
 {
   system = self->_system;
-  v4 = a3;
-  v5 = [(BKHIDSystem *)system deliveryManager];
-  [v4 acceptConnectionWithMappedObject:v5];
+  connectionCopy = connection;
+  deliveryManager = [(BKHIDSystem *)system deliveryManager];
+  [connectionCopy acceptConnectionWithMappedObject:deliveryManager];
 }
 
 - (void)startServer

@@ -25,8 +25,8 @@
     [(HAENGeoLocation *)v2 fetchGeoLocation];
     v7 = MEMORY[0x277CCACA8];
     v8 = v2->countryCode;
-    v9 = [(HAENGeoLocation *)v2 describeSource];
-    v10 = [v7 stringWithFormat:@"HAENGeoLocation: [%@, %@, %@]", v8, v9, v2->timestamp];
+    describeSource = [(HAENGeoLocation *)v2 describeSource];
+    v10 = [v7 stringWithFormat:@"HAENGeoLocation: [%@, %@, %@]", v8, describeSource, v2->timestamp];
     immutableDescription = v2->immutableDescription;
     v2->immutableDescription = v10;
   }
@@ -70,9 +70,9 @@
   else
   {
     *buf = 1;
-    v5 = [MEMORY[0x277D0EB00] sharedConfiguration];
+    mEMORY[0x277D0EB00] = [MEMORY[0x277D0EB00] sharedConfiguration];
     v14 = 0;
-    v6 = [v5 countryCodeWithSource:buf updatedAtTime:&v14];
+    v6 = [mEMORY[0x277D0EB00] countryCodeWithSource:buf updatedAtTime:&v14];
     v7 = v14;
 
     countryCode = self->countryCode;

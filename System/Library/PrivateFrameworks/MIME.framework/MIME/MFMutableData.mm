@@ -1,28 +1,28 @@
 @interface MFMutableData
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error;
 - (MFMutableData)init;
-- (MFMutableData)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (MFMutableData)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 freeWhenDone:(BOOL)a5;
-- (MFMutableData)initWithCapacity:(unint64_t)a3;
-- (MFMutableData)initWithContentsOfFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (MFMutableData)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (MFMutableData)initWithData:(id)a3;
-- (MFMutableData)initWithLength:(unint64_t)a3;
+- (MFMutableData)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (MFMutableData)initWithBytesNoCopy:(void *)copy length:(unint64_t)length freeWhenDone:(BOOL)done;
+- (MFMutableData)initWithCapacity:(unint64_t)capacity;
+- (MFMutableData)initWithContentsOfFile:(id)file options:(unint64_t)options error:(id *)error;
+- (MFMutableData)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
+- (MFMutableData)initWithData:(id)data;
+- (MFMutableData)initWithLength:(unint64_t)length;
 - (const)bytes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)subdataWithRange:(_NSRange)range;
 - (uint64_t)mutableBytes;
-- (void)_flushToDisk:(unint64_t)a3 capacity:(unint64_t)a4;
-- (void)_mapMutableData:(BOOL)a3;
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4;
-- (void)appendData:(id)a3;
+- (void)_flushToDisk:(unint64_t)disk capacity:(unint64_t)capacity;
+- (void)_mapMutableData:(BOOL)data;
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length;
+- (void)appendData:(id)data;
 - (void)dealloc;
 - (void)mf_makeImmutable;
 - (void)mutableBytes;
-- (void)setLength:(unint64_t)a3;
-- (void)setMappingThreshold:(unsigned int)a3;
+- (void)setLength:(unint64_t)length;
+- (void)setMappingThreshold:(unsigned int)threshold;
 @end
 
 @implementation MFMutableData
@@ -47,7 +47,7 @@
   return v3;
 }
 
-- (MFMutableData)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (MFMutableData)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v23.receiver = self;
   v23.super_class = MFMutableData;
@@ -57,19 +57,19 @@
     return v6;
   }
 
-  if ((a4 & 0x8000000000000000) != 0)
+  if ((length & 0x8000000000000000) != 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", a4, 0x7FFFFFFFFFFFFFFFLL}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", length, 0x7FFFFFFFFFFFFFFFLL}];
   }
 
   v7 = sDefaultThreshold;
   v6->_threshold = sDefaultThreshold;
   v6->_fd = -1;
-  if (v7 <= a4)
+  if (v7 <= length)
   {
     pthread_once(&sMFDataOnce, _MFDataInit);
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [objc_msgSend(v10 mf_makeUniqueFileInDirectory:{sMFDataPath), "fileSystemRepresentation"}];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [objc_msgSend(defaultManager mf_makeUniqueFileInDirectory:{sMFDataPath), "fileSystemRepresentation"}];
     if (v11)
     {
       v12 = strdup(v11);
@@ -81,9 +81,9 @@
         if (v13 != -1)
         {
           MFProtectFileDescriptor(v13, 3);
-          v6->_capacity = a4;
-          v6->_length = a4;
-          if (write(v6->_fd, a3, a4) == -1)
+          v6->_capacity = length;
+          v6->_length = length;
+          if (write(v6->_fd, bytes, length) == -1)
           {
             [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Error occured in write: (%d)", *__error()}];
           }
@@ -121,22 +121,22 @@
     goto LABEL_23;
   }
 
-  if (a4 <= 8)
+  if (length <= 8)
   {
-    v8 = 8;
+    lengthCopy = 8;
   }
 
   else
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
-  v6->_capacity = v8;
-  v9 = malloc_type_malloc(v8, 0x1F73EB5AuLL);
+  v6->_capacity = lengthCopy;
+  v9 = malloc_type_malloc(lengthCopy, 0x1F73EB5AuLL);
   v6->_bytes = v9;
-  if (a4)
+  if (length)
   {
-    memmove(v9, a3, a4);
+    memmove(v9, bytes, length);
   }
 
   else
@@ -146,7 +146,7 @@
 
   v14 = 16;
 LABEL_18:
-  *(&v6->super.super.super.isa + v14) = a4;
+  *(&v6->super.super.super.isa + v14) = length;
 LABEL_23:
   if (!v6->_bytes && !v6->_path)
   {
@@ -157,25 +157,25 @@ LABEL_23:
   return v6;
 }
 
-- (MFMutableData)initWithBytesNoCopy:(void *)a3 length:(unint64_t)a4 freeWhenDone:(BOOL)a5
+- (MFMutableData)initWithBytesNoCopy:(void *)copy length:(unint64_t)length freeWhenDone:(BOOL)done
 {
-  v5 = a5;
-  v7 = [(MFMutableData *)self initWithBytes:a3 length:a4];
-  if (v5)
+  doneCopy = done;
+  v7 = [(MFMutableData *)self initWithBytes:copy length:length];
+  if (doneCopy)
   {
-    free(a3);
+    free(copy);
   }
 
   return v7;
 }
 
-- (MFMutableData)initWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (MFMutableData)initWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v9 = [a3 path];
+    path = [l path];
 
-    return [(MFMutableData *)self initWithContentsOfFile:v9 options:a4 error:a5];
+    return [(MFMutableData *)self initWithContentsOfFile:path options:options error:error];
   }
 
   else
@@ -185,7 +185,7 @@ LABEL_23:
   }
 }
 
-- (MFMutableData)initWithContentsOfFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (MFMutableData)initWithContentsOfFile:(id)file options:(unint64_t)options error:(id *)error
 {
   pthread_once(&sMFDataOnce, _MFDataInit);
   v10.receiver = self;
@@ -196,7 +196,7 @@ LABEL_23:
   {
     v7->_threshold = sDefaultThreshold;
     v7->_fd = -1;
-    v7->_path = [a3 fileSystemRepresentation];
+    v7->_path = [file fileSystemRepresentation];
     [(MFMutableData *)v8 _mapMutableData:1];
     v8->_path = 0;
   }
@@ -204,49 +204,49 @@ LABEL_23:
   return v8;
 }
 
-- (MFMutableData)initWithData:(id)a3
+- (MFMutableData)initWithData:(id)data
 {
-  v5 = [a3 bytes];
-  v6 = [a3 length];
+  bytes = [data bytes];
+  v6 = [data length];
 
-  return [(MFMutableData *)self initWithBytes:v5 length:v6];
+  return [(MFMutableData *)self initWithBytes:bytes length:v6];
 }
 
-- (MFMutableData)initWithCapacity:(unint64_t)a3
+- (MFMutableData)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MFMutableData;
   v4 = [(MFMutableData *)&v7 init];
   if (v4)
   {
-    if ((a3 & 0x8000000000000000) != 0)
+    if ((capacity & 0x8000000000000000) != 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "capacity", a3, 0x7FFFFFFFFFFFFFFFLL}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "capacity", capacity, 0x7FFFFFFFFFFFFFFFLL}];
     }
 
     v4->_threshold = sDefaultThreshold;
     v4->_fd = -1;
-    if (a3 >> 30)
+    if (capacity >> 30)
     {
-      v5 = a3;
+      capacityCopy = capacity;
     }
 
     else
     {
-      v5 = (a3 + (a3 >> 2) + 3) & 0xFFFFFFFC;
+      capacityCopy = (capacity + (capacity >> 2) + 3) & 0xFFFFFFFC;
     }
 
-    v4->_capacity = v5;
-    if (v5 >= 0x80000)
+    v4->_capacity = capacityCopy;
+    if (capacityCopy >= 0x80000)
     {
-      v4->_capacity = NSRoundUpToMultipleOfPageSize(v5);
+      v4->_capacity = NSRoundUpToMultipleOfPageSize(capacityCopy);
     }
   }
 
   return v4;
 }
 
-- (MFMutableData)initWithLength:(unint64_t)a3
+- (MFMutableData)initWithLength:(unint64_t)length
 {
   v7.receiver = self;
   v7.super_class = MFMutableData;
@@ -256,22 +256,22 @@ LABEL_23:
   {
     v4->_threshold = sDefaultThreshold;
     v4->_fd = -1;
-    [(MFMutableData *)v4 setLength:a3];
+    [(MFMutableData *)v4 setLength:length];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [MFData allocWithZone:a3];
+  v4 = [MFData allocWithZone:zone];
 
   return [(MFData *)v4 initWithData:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithData:self];
 }
@@ -339,25 +339,25 @@ LABEL_23:
   return self->_bytes;
 }
 
-- (void)appendBytes:(const void *)a3 length:(unint64_t)a4
+- (void)appendBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
     v8 = [(MFMutableData *)self length];
-    if (__CFADD__(a4, v8))
+    if (__CFADD__(length, v8))
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695DA20];
       v11 = _NSMethodExceptionProem();
       v19.location = v8;
-      v19.length = a4;
+      v19.length = length;
       [v9 raise:v10 format:{@"%@: range %@ causes integer overflow", v11, NSStringFromRange(v19)}];
     }
 
     bytes = self->_bytes;
     if (bytes)
     {
-      v13 = bytes > a3;
+      v13 = bytes > bytes;
     }
 
     else
@@ -365,7 +365,7 @@ LABEL_23:
       v13 = 1;
     }
 
-    if (v13 || &bytes[v8] <= a3)
+    if (v13 || &bytes[v8] <= bytes)
     {
       v15 = 0;
       v14 = 0;
@@ -373,26 +373,26 @@ LABEL_23:
 
     else
     {
-      if (a3 + a4 > &bytes[v8])
+      if (bytes + length > &bytes[v8])
       {
         [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
         bytes = self->_bytes;
       }
 
-      v14 = (a3 - bytes);
+      v14 = (bytes - bytes);
       v15 = 1;
     }
 
-    [(MFMutableData *)self setLength:v8 + a4];
+    [(MFMutableData *)self setLength:v8 + length];
     if (!self->_flush)
     {
       self->_flush = 1;
       self->_flushFrom = v8;
     }
 
-    if (v8 + a4 > self->_capacity)
+    if (v8 + length > self->_capacity)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Not enough capacity to append bytes. Capacity: (%lu). New length: (%lu):", self->_capacity, v8 + a4}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Not enough capacity to append bytes. Capacity: (%lu). New length: (%lu):", self->_capacity, v8 + length}];
     }
 
     v16 = self->_bytes;
@@ -408,36 +408,36 @@ LABEL_23:
 
     if (v15)
     {
-      v17 = &v14[v16];
+      bytesCopy = &v14[v16];
     }
 
     else
     {
-      v17 = a3;
+      bytesCopy = bytes;
     }
 
-    memmove(v16 + v8, v17, a4);
+    memmove(v16 + v8, bytesCopy, length);
   }
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
-  v5 = [a3 bytes];
-  v6 = [a3 length];
+  bytes = [data bytes];
+  v6 = [data length];
 
-  [(MFMutableData *)self appendBytes:v5 length:v6];
+  [(MFMutableData *)self appendBytes:bytes length:v6];
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (sDefaultThreshold <= a3.length && self->_immutable)
+  length = range.length;
+  location = range.location;
+  if (sDefaultThreshold <= range.length && self->_immutable)
   {
     v6 = [MFData alloc];
     v7 = location;
     v8 = length;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1;
   }
 
@@ -446,45 +446,45 @@ LABEL_23:
     v6 = [MFData alloc];
     v7 = location;
     v8 = length;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
   }
 
-  v11 = [(MFData *)v6 _initWithRange:v7 from:v8 retainingParent:v9, v10];
+  v11 = [(MFData *)v6 _initWithRange:v7 from:v8 retainingParent:selfCopy2, v10];
 
   return v11;
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   if (self->_immutable)
   {
     [(MFMutableData *)a2 setLength:?];
   }
 
-  if ((a3 & 0x8000000000000000) != 0)
+  if ((length & 0x8000000000000000) != 0)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", a3, 0x7FFFFFFFFFFFFFFFLL}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(), "length", length, 0x7FFFFFFFFFFFFFFFLL}];
   }
 
-  else if (!a3)
+  else if (!length)
   {
     goto LABEL_46;
   }
 
   capacity = self->_capacity;
-  if (capacity < a3 || !self->_bytes)
+  if (capacity < length || !self->_bytes)
   {
     threshold = self->_threshold;
-    if (threshold <= a3)
+    if (threshold <= length)
     {
-      v13 = a3 + 0x100000;
-      if (a3 >> 21 > 4)
+      v13 = length + 0x100000;
+      if (length >> 21 > 4)
       {
-        v13 = a3 + 0x200000;
+        v13 = length + 0x200000;
       }
 
-      if (a3 >> 19)
+      if (length >> 19)
       {
         v14 = 2;
       }
@@ -494,8 +494,8 @@ LABEL_23:
         v14 = 1;
       }
 
-      v15 = (a3 >> v14) + a3;
-      if (a3 >> 20 <= 4)
+      v15 = (length >> v14) + length;
+      if (length >> 20 <= 4)
       {
         v16 = v15;
       }
@@ -515,12 +515,12 @@ LABEL_23:
     else
     {
       v7 = 1;
-      if (a3 >> 19)
+      if (length >> 19)
       {
         v7 = 2;
       }
 
-      v8 = (a3 >> v7) + a3;
+      v8 = (length >> v7) + length;
       if (capacity > v8)
       {
         v8 = self->_capacity;
@@ -546,13 +546,13 @@ LABEL_23:
       {
         if (self->_vm)
         {
-          v10 = [(MFMutableData *)self mutableBytes];
-          if (!v10)
+          mutableBytes = [(MFMutableData *)self mutableBytes];
+          if (!mutableBytes)
           {
             [MFMutableData setLength:];
           }
 
-          v11 = v10;
+          v11 = mutableBytes;
           bytes = 0;
           self->_bytes = 0;
           v9 = self->_capacity;
@@ -581,7 +581,7 @@ LABEL_23:
         else
         {
           length = self->_length;
-          if (length < a3)
+          if (length < length)
           {
             bzero(&v17[length], self->_capacity - length);
           }
@@ -609,13 +609,13 @@ LABEL_23:
   }
 
 LABEL_46:
-  self->_length = a3;
+  self->_length = length;
 }
 
-- (void)setMappingThreshold:(unsigned int)a3
+- (void)setMappingThreshold:(unsigned int)threshold
 {
-  self->_threshold = a3;
-  if ([(MFMutableData *)self length]> a3)
+  self->_threshold = threshold;
+  if ([(MFMutableData *)self length]> threshold)
   {
     v4 = [(MFMutableData *)self length];
     v5 = [(MFMutableData *)self length];
@@ -640,15 +640,15 @@ LABEL_46:
   }
 }
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
   if (!self->_immutable || !self->_path)
   {
     goto LABEL_15;
   }
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  MFRemoveItemAtPath(a3);
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  MFRemoveItemAtPath(file);
   if (!self->_bytes)
   {
     [(MFMutableData *)self _mapMutableData:1];
@@ -679,12 +679,12 @@ LABEL_46:
     self->_fd = -1;
   }
 
-  if ([v9 moveItemAtPath:objc_msgSend(MEMORY[0x1E696AEC0] toPath:"stringWithUTF8String:" error:{self->_path), a3, 0}])
+  if ([defaultManager moveItemAtPath:objc_msgSend(MEMORY[0x1E696AEC0] toPath:"stringWithUTF8String:" error:{self->_path), file, 0}])
   {
-    v14 = (a4 & 0xF0000000) - 0x10000000;
+    v14 = (options & 0xF0000000) - 0x10000000;
     if (!(v14 >> 30))
     {
-      [v9 mf_protectFileAtPath:a3 withClass:*(&unk_1D36EFE18 + (v14 >> 25)) error:0];
+      [defaultManager mf_protectFileAtPath:file withClass:*(&unk_1D36EFE18 + (v14 >> 25)) error:0];
     }
 
     free(self->_path);
@@ -697,28 +697,28 @@ LABEL_46:
 LABEL_15:
     v16.receiver = self;
     v16.super_class = MFMutableData;
-    return [(MFMutableData *)&v16 writeToFile:a3 options:a4 error:a5];
+    return [(MFMutableData *)&v16 writeToFile:file options:options error:error];
   }
 }
 
-- (BOOL)writeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
-    v9 = [a3 path];
+    path = [l path];
 
-    return [(MFMutableData *)self writeToFile:v9 options:a4 error:a5];
+    return [(MFMutableData *)self writeToFile:path options:options error:error];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = MFMutableData;
-    return [(MFMutableData *)&v11 writeToURL:a3 options:a4 error:a5];
+    return [(MFMutableData *)&v11 writeToURL:l options:options error:error];
   }
 }
 
-- (void)_flushToDisk:(unint64_t)a3 capacity:(unint64_t)a4
+- (void)_flushToDisk:(unint64_t)disk capacity:(unint64_t)capacity
 {
   path = self->_path;
   if (!path)
@@ -726,8 +726,8 @@ LABEL_15:
     pthread_once(&sMFDataOnce, _MFDataInit);
     self->_flush = 1;
     self->_flushFrom = 0;
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [objc_msgSend(v8 mf_makeUniqueFileInDirectory:{sMFDataPath), "fileSystemRepresentation"}];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [objc_msgSend(defaultManager mf_makeUniqueFileInDirectory:{sMFDataPath), "fileSystemRepresentation"}];
     if (v9)
     {
       v10 = strdup(v9);
@@ -771,8 +771,8 @@ LABEL_5:
         }
 
         flushFrom = self->_flushFrom;
-        v13 = a3 >= flushFrom;
-        v14 = a3 - flushFrom;
+        v13 = disk >= flushFrom;
+        v14 = disk - flushFrom;
         if (v13)
         {
           v15 = v14;
@@ -789,7 +789,7 @@ LABEL_5:
         }
       }
 
-      if (a3 != a4 && self->_capacity != a4 && ftruncate(self->_fd, a4) == -1)
+      if (disk != capacity && self->_capacity != capacity && ftruncate(self->_fd, capacity) == -1)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Error occured in truncate while flushing to disk: (%d)", *__error()}];
       }
@@ -811,15 +811,15 @@ LABEL_5:
         self->_vm = 0;
       }
 
-      self->_capacity = a4;
+      self->_capacity = capacity;
       self->_flush = 0;
     }
   }
 }
 
-- (void)_mapMutableData:(BOOL)a3
+- (void)_mapMutableData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   fd = self->_fd;
   if (fd != -1 || (fd = open(self->_path, 0, 438), fd != -1))
   {
@@ -856,7 +856,7 @@ LABEL_22:
     }
 
     self->_vm = 1;
-    if (v3)
+    if (dataCopy)
     {
       self->_length = st_size;
     }
@@ -913,9 +913,9 @@ LABEL_17:
 
 - (uint64_t)mutableBytes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
 
-  return [v4 handleFailureInMethod:a1 object:a2 file:@"MFData.m" lineNumber:676 description:@"Attempting to get mutableBytes on an immutable MFMutableData."];
+  return [currentHandler handleFailureInMethod:self object:a2 file:@"MFData.m" lineNumber:676 description:@"Attempting to get mutableBytes on an immutable MFMutableData."];
 }
 
 - (uint64_t)setLength:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

@@ -2,23 +2,23 @@
 - (CGSize)desiredAlternateSizeIfConvertedToPNG;
 - (CGSize)desiredSize;
 - (TSDImageResamplingOperation)init;
-- (TSDImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4;
-- (id)p_destinationTypeForOriginalFileType:(id)a3 sourceHasAlpha:(BOOL)a4 prioritizeHighEfficiencyFormat:(BOOL)a5;
-- (id)p_flexRangeImageWithSDRImage:(id)a3 hdrImage:(id)a4 resampledDisplayName:(id)a5;
-- (id)p_performHDRGainmapResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4;
-- (id)p_performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4 prioritizeHighEfficiencyFormat:(BOOL)a5;
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4;
-- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)a3;
+- (TSDImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size;
+- (id)p_destinationTypeForOriginalFileType:(id)type sourceHasAlpha:(BOOL)alpha prioritizeHighEfficiencyFormat:(BOOL)format;
+- (id)p_flexRangeImageWithSDRImage:(id)image hdrImage:(id)hdrImage resampledDisplayName:(id)name;
+- (id)p_performHDRGainmapResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions;
+- (id)p_performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions prioritizeHighEfficiencyFormat:(BOOL)format;
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions;
+- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)g;
 @end
 
 @implementation TSDImageResamplingOperation
 
-- (TSDImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4
+- (TSDImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  if (!v9)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  if (!providerCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSDImageResamplingOperation initWithImageProvider:desiredSize:]");
@@ -34,7 +34,7 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->mImageProvider, a3);
+    objc_storeStrong(&v17->mImageProvider, provider);
     v18->mDesiredSize.width = width;
     v18->mDesiredSize.height = height;
     if (TSDPlatformRisksMemoryCrashFromLargeImages())
@@ -74,10 +74,10 @@
   objc_exception_throw(v14);
 }
 
-- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)a3
+- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)g
 {
-  height = a3.height;
-  width = a3.width;
+  height = g.height;
+  width = g.width;
   objc_msgSend_desiredSize(self, a2, v3);
   if (width <= v9 && (objc_msgSend_desiredSize(self, v7, v8), height <= v10))
   {
@@ -98,7 +98,7 @@
   }
 }
 
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions
 {
   objc_opt_class();
   v9 = objc_msgSend_imageProvider(self, v7, v8);
@@ -115,39 +115,39 @@
 
       if (!isHDRCapable)
       {
-        a4 &= ~0x40uLL;
-        v24 = a3 & 0xFFFFFFFFFFFFFF5FLL | 0x20;
+        contextOptions &= ~0x40uLL;
+        optionsCopy = options & 0xFFFFFFFFFFFFFF5FLL | 0x20;
         goto LABEL_8;
       }
     }
 
-    if ((((a3 & 0x80) != 0) & hasHDRGainMap) == 1)
+    if ((((options & 0x80) != 0) & hasHDRGainMap) == 1)
     {
-      v23 = objc_msgSend_p_performHDRGainmapResampleOperationWithResampleOptions_bitmapContextOptions_(self, v11, a3, a4);
+      v23 = objc_msgSend_p_performHDRGainmapResampleOperationWithResampleOptions_bitmapContextOptions_(self, v11, options, contextOptions);
       goto LABEL_9;
     }
   }
 
-  v24 = a3;
+  optionsCopy = options;
 LABEL_8:
-  v23 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, v11, v24, a4, (a3 & 0x40) == 0);
+  v23 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, v11, optionsCopy, contextOptions, (options & 0x40) == 0);
 LABEL_9:
   v25 = v23;
 
   return v25;
 }
 
-- (id)p_performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4 prioritizeHighEfficiencyFormat:(BOOL)a5
+- (id)p_performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions prioritizeHighEfficiencyFormat:(BOOL)format
 {
-  v5 = a5;
-  v7 = a3;
+  formatCopy = format;
+  optionsCopy = options;
   v282[1] = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_imageProvider(self, a2, a3);
+  v9 = objc_msgSend_imageProvider(self, a2, options);
   objc_msgSend_naturalSize(v9, v10, v11);
   v13 = v12;
   v15 = v14;
 
-  if ((v7 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
     objc_msgSend_desiredAlternateSizeIfConvertedToPNG(self, v16, v17);
     if (v19 != *MEMORY[0x277CBF3A8] || v18 != *(MEMORY[0x277CBF3A8] + 8))
@@ -165,14 +165,14 @@ LABEL_9:
   TSUSizeMax();
   v29 = v28;
   v31 = v30;
-  if ((v7 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     TSUFitOrFillSizeInSize();
     v29 = v32;
     v31 = v33;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v34 = 0.5;
   }
@@ -186,7 +186,7 @@ LABEL_9:
   v37 = objc_msgSend_imageProvider(self, v35, v36);
   v38 = TSUDynamicCast();
 
-  if ((v7 & 2) == 0 && !v38)
+  if ((optionsCopy & 2) == 0 && !v38)
   {
     v41 = objc_msgSend_imageProvider(self, v39, v40);
     v44 = objc_msgSend_imageData(v41, v42, v43);
@@ -194,7 +194,7 @@ LABEL_9:
     goto LABEL_113;
   }
 
-  v268 = a4;
+  contextOptionsCopy = contextOptions;
   v45 = objc_msgSend_CGImageSource(v38, v39, v40);
   isrc = v45;
   if (v45 && (v48 = v45, CGImageSourceGetStatus(v45) == kCGImageStatusComplete))
@@ -260,7 +260,7 @@ LABEL_19:
 
   v276 = v38;
   v88 = objc_msgSend_tsu_preferredIdentifierForTagClass_conformingToUTI_(v73, v74, *MEMORY[0x277CE1CC0], 0);
-  v90 = objc_msgSend_p_destinationTypeForOriginalFileType_sourceHasAlpha_prioritizeHighEfficiencyFormat_(self, v89, v88, v278, v5);
+  v90 = objc_msgSend_p_destinationTypeForOriginalFileType_sourceHasAlpha_prioritizeHighEfficiencyFormat_(self, v89, v88, v278, formatCopy);
   v93 = objc_msgSend_identifier(*MEMORY[0x277CE1E10], v91, v92);
   v271 = v73;
   if (objc_msgSend_isEqualToString_(v90, v94, v93))
@@ -294,7 +294,7 @@ LABEL_19:
   v115 = objc_msgSend_currentCapabilities(TSDCapabilities, v113, v114);
   v118 = objc_msgSend_isHDRCapable(v115, v116, v117) & v112;
 
-  if ((v7 & 0x18) == 0 && v277 == 1 && !v118 && v29 < v13 && v31 < v15)
+  if ((optionsCopy & 0x18) == 0 && v277 == 1 && !v118 && v29 < v13 && v31 < v15)
   {
     v121 = v90;
     v122 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -314,7 +314,7 @@ LABEL_19:
     objc_msgSend_setObject_forKeyedSubscript_(v122, v129, v128, *MEMORY[0x277CD3660]);
 
     v131 = MEMORY[0x277CD3598];
-    if ((v7 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       v131 = MEMORY[0x277CD3590];
     }
@@ -329,17 +329,17 @@ LABEL_19:
     }
   }
 
-  v133 = v268 | 2;
+  v133 = contextOptionsCopy | 2;
   if (!v278)
   {
-    v133 = v268;
+    v133 = contextOptionsCopy;
   }
 
-  v134 = v133 | (4 * (v7 & 1));
+  v134 = v133 | (4 * (optionsCopy & 1));
   v135 = objc_msgSend_imageProvider(self, v119, v120);
   v138 = objc_msgSend_prefersHDRRendering(v135, v136, v137);
 
-  if ((((v7 & 0x30) == 16) & v138) != 0)
+  if ((((optionsCopy & 0x30) == 16) & v138) != 0)
   {
     v139 = v134 | 0x40;
   }
@@ -377,7 +377,7 @@ LABEL_19:
       }
     }
 
-    else if ((v7 & 0x20) == 0 || (objc_msgSend_prefersHDRRendering(v276, v140, v141) & 1) == 0)
+    else if ((optionsCopy & 0x20) == 0 || (objc_msgSend_prefersHDRRendering(v276, v140, v141) & 1) == 0)
     {
       v154 = [TSDImageRenderingConfiguration alloc];
       v157 = objc_msgSend_imageProvider(self, v155, v156);
@@ -414,7 +414,7 @@ LABEL_19:
   }
 
 LABEL_65:
-  if (v7)
+  if (optionsCopy)
   {
     v171 = kCGInterpolationNone;
   }
@@ -534,7 +534,7 @@ LABEL_65:
     }
   }
 
-  v184 = (v7 & 0x20) == 0 && (objc_msgSend_prefersHDRRendering(self->mImageProvider, v172, v173) & 1) != 0;
+  v184 = (optionsCopy & 0x20) == 0 && (objc_msgSend_prefersHDRRendering(self->mImageProvider, v172, v173) & 1) != 0;
   TSDCGContextSetShouldRenderHDRContent(v152, v184);
   v185 = CGBitmapContextGetColorSpace(v152);
   if (CGColorSpaceIsPQBased(v185))
@@ -677,13 +677,13 @@ LABEL_113:
   return v44;
 }
 
-- (id)p_destinationTypeForOriginalFileType:(id)a3 sourceHasAlpha:(BOOL)a4 prioritizeHighEfficiencyFormat:(BOOL)a5
+- (id)p_destinationTypeForOriginalFileType:(id)type sourceHasAlpha:(BOOL)alpha prioritizeHighEfficiencyFormat:(BOOL)format
 {
-  v5 = a5;
-  v8 = a3;
+  formatCopy = format;
+  typeCopy = type;
   v9 = *MEMORY[0x277CE1DC0];
   v12 = objc_msgSend_identifier(*MEMORY[0x277CE1DC0], v10, v11);
-  if (objc_msgSend_tsu_conformsToUTI_(v8, v13, v12))
+  if (objc_msgSend_tsu_conformsToUTI_(typeCopy, v13, v12))
   {
     v16 = 0;
   }
@@ -691,23 +691,23 @@ LABEL_113:
   else
   {
     v17 = objc_msgSend_highEfficiencyImageTypes(MEMORY[0x277D81200], v14, v15);
-    if (objc_msgSend_tsu_conformsToAnyUTI_(v8, v18, v17))
+    if (objc_msgSend_tsu_conformsToAnyUTI_(typeCopy, v18, v17))
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = objc_msgSend_tsu_conformsToUTI_(v8, v19, *MEMORY[0x277D81488]) ^ 1;
+      v16 = objc_msgSend_tsu_conformsToUTI_(typeCopy, v19, *MEMORY[0x277D81488]) ^ 1;
     }
   }
 
-  if (a4 || v16)
+  if (alpha || v16)
   {
     v9 = *MEMORY[0x277CE1E10];
   }
 
-  else if (v5 && objc_msgSend_prefersHDRRendering(self->mImageProvider, v20, v21))
+  else if (formatCopy && objc_msgSend_prefersHDRRendering(self->mImageProvider, v20, v21))
   {
     objc_msgSend_identifier(*MEMORY[0x277CE1D90], v20, v21);
     goto LABEL_15;
@@ -719,30 +719,30 @@ LABEL_113:
   return v22;
 }
 
-- (id)p_performHDRGainmapResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4
+- (id)p_performHDRGainmapResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions
 {
-  v7 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, a2, a3 | 0x20, a4, 1);
-  v9 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, v8, a3 | 0x10, a4, 1);
+  v7 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, a2, options | 0x20, contextOptions, 1);
+  v9 = objc_msgSend_p_performResampleOperationWithResampleOptions_bitmapContextOptions_prioritizeHighEfficiencyFormat_(self, v8, options | 0x10, contextOptions, 1);
   v12 = objc_msgSend_filename(v9, v10, v11);
   v14 = objc_msgSend_p_flexRangeImageWithSDRImage_hdrImage_resampledDisplayName_(self, v13, v7, v9, v12);
 
   return v14;
 }
 
-- (id)p_flexRangeImageWithSDRImage:(id)a3 hdrImage:(id)a4 resampledDisplayName:(id)a5
+- (id)p_flexRangeImageWithSDRImage:(id)image hdrImage:(id)hdrImage resampledDisplayName:(id)name
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  nameCopy = name;
   v9 = MEMORY[0x277CBF758];
-  v10 = a4;
-  v13 = objc_msgSend_NSData(a3, v11, v12);
+  hdrImageCopy = hdrImage;
+  v13 = objc_msgSend_NSData(image, v11, v12);
   v15 = objc_msgSend_imageWithData_(v9, v14, v13);
 
   v44 = *MEMORY[0x277CBFA50];
   v45[0] = MEMORY[0x277CBEC38];
   v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v16, v45, &v44, 1);
   v18 = MEMORY[0x277CBF758];
-  v21 = objc_msgSend_NSData(v10, v19, v20);
+  v21 = objc_msgSend_NSData(hdrImageCopy, v19, v20);
 
   v23 = objc_msgSend_imageWithData_options_(v18, v22, v21, v17);
 
@@ -763,12 +763,12 @@ LABEL_113:
   if (v36)
   {
     v40 = objc_msgSend_objectContext(self, v37, v38);
-    v42 = objc_msgSend_dataFromNSData_filename_context_(v39, v41, v33, v8, v40);
+    v42 = objc_msgSend_dataFromNSData_filename_context_(v39, v41, v33, nameCopy, v40);
   }
 
   else
   {
-    v42 = objc_msgSend_readOnlyDataFromNSData_filename_(MEMORY[0x277D80828], v37, v33, v8);
+    v42 = objc_msgSend_readOnlyDataFromNSData_filename_(MEMORY[0x277D80828], v37, v33, nameCopy);
   }
 
   return v42;

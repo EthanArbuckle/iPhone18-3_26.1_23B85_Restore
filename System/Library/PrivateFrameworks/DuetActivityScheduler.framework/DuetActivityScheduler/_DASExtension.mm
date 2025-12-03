@@ -1,7 +1,7 @@
 @interface _DASExtension
 - (_DASExtension)init;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)runner:(id)a3 performActivity:(id)a4;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)runner:(id)runner performActivity:(id)activity;
 - (void)suspend;
 @end
 
@@ -22,84 +22,84 @@
   return v2;
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = [(_DASExtension *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = contextCopy;
     _os_log_impl(&dword_1B6E2F000, v5, OS_LOG_TYPE_DEFAULT, "Beginning request with extension context %@", &v7, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_DASExtension *)self setContext:v4];
+    [(_DASExtension *)self setContext:contextCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)runner:(id)a3 performActivity:(id)a4
+- (void)runner:(id)runner performActivity:(id)activity
 {
   *&v22[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  runnerCopy = runner;
+  activityCopy = activity;
   v8 = [(_DASExtension *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412290;
-    *v22 = v7;
+    *v22 = activityCopy;
     _os_log_impl(&dword_1B6E2F000, v8, OS_LOG_TYPE_DEFAULT, "Extension performing activity: %@", &v21, 0xCu);
   }
 
   v9 = os_transaction_create();
   [(_DASExtension *)self setTransaction:v9];
 
-  v10 = [MEMORY[0x1E695DF00] date];
-  [(_DASExtension *)self setStartTime:v10];
+  date = [MEMORY[0x1E695DF00] date];
+  [(_DASExtension *)self setStartTime:date];
 
-  [(_DASExtension *)self setRunner:v6];
-  v11 = [v7 copy];
+  [(_DASExtension *)self setRunner:runnerCopy];
+  v11 = [activityCopy copy];
   [(_DASExtension *)self setActivity:v11];
 
-  v12 = [(_DASExtension *)self runner];
-  v13 = [v12 prepareForActivity:v7];
+  runner = [(_DASExtension *)self runner];
+  v13 = [runner prepareForActivity:activityCopy];
 
   if (v13)
   {
-    v14 = [(_DASExtension *)self runner];
-    v15 = [v14 start];
+    runner2 = [(_DASExtension *)self runner];
+    start = [runner2 start];
   }
 
   else
   {
-    v14 = [(_DASExtension *)self log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    runner2 = [(_DASExtension *)self log];
+    if (os_log_type_enabled(runner2, OS_LOG_TYPE_ERROR))
     {
-      [(_DASExtension *)v6 runner:v7 performActivity:v14];
+      [(_DASExtension *)runnerCopy runner:activityCopy performActivity:runner2];
     }
 
-    v15 = 3;
+    start = 3;
   }
 
-  v16 = [MEMORY[0x1E695DF00] date];
-  [v16 timeIntervalSinceDate:self->_startTime];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSinceDate:self->_startTime];
   v18 = v17;
   v19 = [(_DASExtension *)self log];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 67109376;
-    v22[0] = v15;
+    v22[0] = start;
     LOWORD(v22[1]) = 2048;
     *(&v22[1] + 2) = v18;
     _os_log_impl(&dword_1B6E2F000, v19, OS_LOG_TYPE_DEFAULT, "Extension complete (%hhu), time elapsed: %f s", &v21, 0x12u);
   }
 
-  [(_DASExtension *)self _activityCompletedWithStatus:v15];
+  [(_DASExtension *)self _activityCompletedWithStatus:start];
   v20 = *MEMORY[0x1E69E9840];
 }
 
@@ -112,8 +112,8 @@
     _os_log_impl(&dword_1B6E2F000, v3, OS_LOG_TYPE_DEFAULT, "Request for extension to finish early.", v5, 2u);
   }
 
-  v4 = [(_DASExtension *)self runner];
-  [v4 stop];
+  runner = [(_DASExtension *)self runner];
+  [runner stop];
 
   [(_DASExtension *)self _activityCompletedWithStatus:2];
 }

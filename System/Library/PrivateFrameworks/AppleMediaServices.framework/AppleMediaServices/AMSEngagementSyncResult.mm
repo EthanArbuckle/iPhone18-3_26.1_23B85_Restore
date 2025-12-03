@@ -1,7 +1,7 @@
 @interface AMSEngagementSyncResult
 + (id)archiveClasses;
-- (AMSEngagementSyncResult)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSEngagementSyncResult)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSEngagementSyncResult
@@ -19,23 +19,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSEngagementSyncResult *)self actions];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyActions"];
+  coderCopy = coder;
+  actions = [(AMSEngagementSyncResult *)self actions];
+  [coderCopy encodeObject:actions forKey:@"kCodingKeyActions"];
 }
 
-- (AMSEngagementSyncResult)initWithCoder:(id)a3
+- (AMSEngagementSyncResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = AMSEngagementSyncResult;
   v5 = [(AMSEngagementSyncResult *)&v10 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kCodingKeyActions"];
+    ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"kCodingKeyActions"];
     actions = v5->_actions;
     v5->_actions = v7;
   }

@@ -1,12 +1,12 @@
 @interface CLPCReportingInterface
-+ (id)createClient:(id *)a3;
++ (id)createClient:(id *)client;
 @end
 
 @implementation CLPCReportingInterface
 
-+ (id)createClient:(id *)a3
++ (id)createClient:(id *)client
 {
-  v3 = [[CLPCReportingClient alloc] init:a3];
+  v3 = [[CLPCReportingClient alloc] init:client];
 
   return v3;
 }

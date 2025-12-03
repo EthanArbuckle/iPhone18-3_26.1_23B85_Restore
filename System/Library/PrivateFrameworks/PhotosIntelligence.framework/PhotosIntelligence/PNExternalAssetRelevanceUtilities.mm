@@ -1,52 +1,52 @@
 @interface PNExternalAssetRelevanceUtilities
-+ (BOOL)importedAssetInferredRelevant:(id)a3;
++ (BOOL)importedAssetInferredRelevant:(id)relevant;
 + (id)internalPredicateToIncludeExternalAssetsNeedingProcessing;
 + (id)internalPredicateToIncludeProcessedExternalAssets;
-+ (int64_t)externalAssetEligibilityForAsset:(id)a3;
++ (int64_t)externalAssetEligibilityForAsset:(id)asset;
 @end
 
 @implementation PNExternalAssetRelevanceUtilities
 
-+ (BOOL)importedAssetInferredRelevant:(id)a3
++ (BOOL)importedAssetInferredRelevant:(id)relevant
 {
-  v3 = a3;
-  v4 = [v3 curationProperties];
-  v5 = [v4 importedByBundleIdentifier];
+  relevantCopy = relevant;
+  curationProperties = [relevantCopy curationProperties];
+  importedByBundleIdentifier = [curationProperties importedByBundleIdentifier];
 
-  if (!v5)
+  if (!importedByBundleIdentifier)
   {
     goto LABEL_6;
   }
 
-  v6 = [MEMORY[0x1E69BE5C8] importedByBundleIdentifiersAllowListForMomentGeneration];
-  v7 = [v6 containsObject:v5];
+  importedByBundleIdentifiersAllowListForMomentGeneration = [MEMORY[0x1E69BE5C8] importedByBundleIdentifiersAllowListForMomentGeneration];
+  v7 = [importedByBundleIdentifiersAllowListForMomentGeneration containsObject:importedByBundleIdentifier];
 
   if (v7)
   {
     goto LABEL_6;
   }
 
-  if ([CLSCurationUtilities isBlocklistedImportedByBundleIdentifier:v5 withExternalAppBlocklistType:1])
+  if ([CLSCurationUtilities isBlocklistedImportedByBundleIdentifier:importedByBundleIdentifier withExternalAppBlocklistType:1])
   {
     v8 = 0;
     goto LABEL_7;
   }
 
-  v9 = [v3 mediaAnalysisProperties];
-  v10 = [v9 syndicationProcessingValue];
+  mediaAnalysisProperties = [relevantCopy mediaAnalysisProperties];
+  syndicationProcessingValue = [mediaAnalysisProperties syndicationProcessingValue];
 
-  if ((v10 & 0x3CF1) != 0)
+  if ((syndicationProcessingValue & 0x3CF1) != 0)
   {
 LABEL_6:
     v8 = 1;
     goto LABEL_7;
   }
 
-  v12 = [MEMORY[0x1E69BE5C8] importedByBundleIdentifiersToIncludeIfNotProcessed];
-  if ([v12 containsObject:v5])
+  importedByBundleIdentifiersToIncludeIfNotProcessed = [MEMORY[0x1E69BE5C8] importedByBundleIdentifiersToIncludeIfNotProcessed];
+  if ([importedByBundleIdentifiersToIncludeIfNotProcessed containsObject:importedByBundleIdentifier])
   {
-    v13 = [v3 mediaAnalysisProperties];
-    v8 = [v13 syndicationProcessingVersion] == 0;
+    mediaAnalysisProperties2 = [relevantCopy mediaAnalysisProperties];
+    v8 = [mediaAnalysisProperties2 syndicationProcessingVersion] == 0;
   }
 
   else
@@ -63,8 +63,8 @@ LABEL_7:
   v9[2] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %llu", @"mediaAnalysisAttributes.syndicationProcessingVersion", 8];
   v4 = MEMORY[0x1E696AB28];
-  v5 = [a1 internalPredicateToIncludeExternalAssetsEligibleForProcessing];
-  v9[0] = v5;
+  internalPredicateToIncludeExternalAssetsEligibleForProcessing = [self internalPredicateToIncludeExternalAssetsEligibleForProcessing];
+  v9[0] = internalPredicateToIncludeExternalAssetsEligibleForProcessing;
   v9[1] = v3;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v7 = [v4 andPredicateWithSubpredicates:v6];
@@ -76,37 +76,37 @@ LABEL_7:
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %llu", @"mediaAnalysisAttributes.syndicationProcessingVersion", 8];
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %f", @"curationScore", 0x3FE0000000000000];
-  v5 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestSceneVersion];
-  v6 = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestFaceVersion];
+  0x3FE0000000000000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %f", @"curationScore", 0x3FE0000000000000];
+  predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestSceneVersion = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestSceneVersion];
+  predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestFaceVersion = [MEMORY[0x1E69BE540] predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestFaceVersion];
   v7 = MEMORY[0x1E696AB28];
-  v8 = [a1 internalPredicateToIncludeExternalAssetsEligibleForProcessing];
-  v12[0] = v8;
+  internalPredicateToIncludeExternalAssetsEligibleForProcessing = [self internalPredicateToIncludeExternalAssetsEligibleForProcessing];
+  v12[0] = internalPredicateToIncludeExternalAssetsEligibleForProcessing;
   v12[1] = v3;
-  v12[2] = v4;
-  v12[3] = v5;
-  v12[4] = v6;
+  v12[2] = 0x3FE0000000000000;
+  v12[3] = predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestSceneVersion;
+  v12[4] = predicateToIncludeOnlyAllowedForAnalysisAndProcessedAssetsToLatestFaceVersion;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:5];
   v10 = [v7 andPredicateWithSubpredicates:v9];
 
   return v10;
 }
 
-+ (int64_t)externalAssetEligibilityForAsset:(id)a3
++ (int64_t)externalAssetEligibilityForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 sceneAnalysisProperties];
-  v5 = [v4 sceneAnalysisVersion];
-  v6 = [MEMORY[0x1E69BE5A0] currentSceneVersion];
-  v7 = [v6 intValue];
+  assetCopy = asset;
+  sceneAnalysisProperties = [assetCopy sceneAnalysisProperties];
+  sceneAnalysisVersion = [sceneAnalysisProperties sceneAnalysisVersion];
+  currentSceneVersion = [MEMORY[0x1E69BE5A0] currentSceneVersion];
+  intValue = [currentSceneVersion intValue];
 
-  if (v7 <= v5)
+  if (intValue <= sceneAnalysisVersion)
   {
-    v9 = [v3 faceAdjustmentVersion];
+    faceAdjustmentVersion = [assetCopy faceAdjustmentVersion];
 
-    if (v9)
+    if (faceAdjustmentVersion)
     {
-      [v3 curationScore];
+      [assetCopy curationScore];
       if (v10 == 0.0)
       {
         v8 = -2;
@@ -114,18 +114,18 @@ LABEL_7:
 
       else
       {
-        [v3 curationScore];
+        [assetCopy curationScore];
         if (v11 >= *MEMORY[0x1E69BE8F8])
         {
-          v12 = [v3 mediaAnalysisProperties];
-          v13 = [v12 syndicationProcessingVersion];
+          mediaAnalysisProperties = [assetCopy mediaAnalysisProperties];
+          syndicationProcessingVersion = [mediaAnalysisProperties syndicationProcessingVersion];
 
-          if (v13 == 8)
+          if (syndicationProcessingVersion == 8)
           {
-            v14 = [v3 mediaAnalysisProperties];
-            v15 = [v14 syndicationProcessingValue];
+            mediaAnalysisProperties2 = [assetCopy mediaAnalysisProperties];
+            syndicationProcessingValue = [mediaAnalysisProperties2 syndicationProcessingValue];
 
-            if ((v15 & 0x3CF1) != 0)
+            if ((syndicationProcessingValue & 0x3CF1) != 0)
             {
               v8 = 2;
             }

@@ -8,40 +8,40 @@
 - (FKPaymentPass)fkPaymentPass
 {
   v3 = objc_alloc_init(MEMORY[0x1E6967E28]);
-  v4 = [(PKObject *)self uniqueID];
-  [v3 setUniqueID:v4];
+  uniqueID = [(PKObject *)self uniqueID];
+  [v3 setUniqueID:uniqueID];
 
-  v5 = [(PKPass *)self serialNumber];
-  [v3 setSerialNumber:v5];
+  serialNumber = [(PKPass *)self serialNumber];
+  [v3 setSerialNumber:serialNumber];
 
-  v6 = [(PKPass *)self passTypeIdentifier];
-  [v3 setPassTypeIdentifier:v6];
+  passTypeIdentifier = [(PKPass *)self passTypeIdentifier];
+  [v3 setPassTypeIdentifier:passTypeIdentifier];
 
-  v7 = [(PKSecureElementPass *)self associatedApplicationIdentifiers];
-  [v3 setAssociatedApplicationIdentifiers:v7];
+  associatedApplicationIdentifiers = [(PKSecureElementPass *)self associatedApplicationIdentifiers];
+  [v3 setAssociatedApplicationIdentifiers:associatedApplicationIdentifiers];
 
-  v8 = [(PKPass *)self storeIdentifiers];
-  [v3 setAssociatedStoreIdentifiers:v8];
+  storeIdentifiers = [(PKPass *)self storeIdentifiers];
+  [v3 setAssociatedStoreIdentifiers:storeIdentifiers];
 
-  v9 = [(PKSecureElementPass *)self issuerCountryCode];
-  [v3 setIssuerCountryCode:v9];
+  issuerCountryCode = [(PKSecureElementPass *)self issuerCountryCode];
+  [v3 setIssuerCountryCode:issuerCountryCode];
 
-  v10 = [(PKSecureElementPass *)self primaryAccountIdentifier];
-  [v3 setPrimaryAccountIdentifier:v10];
+  primaryAccountIdentifier = [(PKSecureElementPass *)self primaryAccountIdentifier];
+  [v3 setPrimaryAccountIdentifier:primaryAccountIdentifier];
 
-  v11 = [(PKPass *)self organizationName];
-  [v3 setOrganizationName:v11];
+  organizationName = [(PKPass *)self organizationName];
+  [v3 setOrganizationName:organizationName];
 
-  v12 = [(PKPass *)self localizedDescription];
-  [v3 setLocalizedDescription:v12];
+  localizedDescription = [(PKPass *)self localizedDescription];
+  [v3 setLocalizedDescription:localizedDescription];
 
-  v13 = [(PKSecureElementPass *)self devicePrimaryPaymentApplication];
-  v14 = PKPaymentMethodTypeToString([v13 paymentType]);
+  devicePrimaryPaymentApplication = [(PKSecureElementPass *)self devicePrimaryPaymentApplication];
+  v14 = PKPaymentMethodTypeToString([devicePrimaryPaymentApplication paymentType]);
   [v3 setPrimaryPaymentApplicationPaymentType:v14];
 
-  v15 = [(PKSecureElementPass *)self devicePrimaryPaymentApplication];
-  v16 = [v15 displayName];
-  [v3 setPrimaryPaymentApplicationDisplayName:v16];
+  devicePrimaryPaymentApplication2 = [(PKSecureElementPass *)self devicePrimaryPaymentApplication];
+  displayName = [devicePrimaryPaymentApplication2 displayName];
+  [v3 setPrimaryPaymentApplicationDisplayName:displayName];
 
   return v3;
 }

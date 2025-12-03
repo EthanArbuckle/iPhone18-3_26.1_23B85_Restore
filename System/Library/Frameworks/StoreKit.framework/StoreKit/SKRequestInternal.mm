@@ -23,8 +23,8 @@
   v3 = *MEMORY[0x1E69DDBE8];
   if (self->_backgroundTaskIdentifier != *MEMORY[0x1E69DDBE8])
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v4 endBackgroundTask:self->_backgroundTaskIdentifier];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:self->_backgroundTaskIdentifier];
 
     self->_backgroundTaskIdentifier = v3;
   }

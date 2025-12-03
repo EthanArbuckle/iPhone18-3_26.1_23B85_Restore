@@ -1,37 +1,37 @@
 @interface MockAKSOptionalParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MockAKSOptionalParameters
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(MockAKSOptionalParameters *)self setAccessGroups:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(MockAKSOptionalParameters *)self setExternalData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(MockAKSOptionalParameters *)self setAcmHandle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -42,13 +42,13 @@
   return v4 ^ [(NSData *)self->_acmHandle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((accessGroups = self->_accessGroups, !(accessGroups | v4[1])) || -[NSData isEqual:](accessGroups, "isEqual:")) && ((externalData = self->_externalData, !(externalData | v4[3])) || -[NSData isEqual:](externalData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((accessGroups = self->_accessGroups, !(accessGroups | equalCopy[1])) || -[NSData isEqual:](accessGroups, "isEqual:")) && ((externalData = self->_externalData, !(externalData | equalCopy[3])) || -[NSData isEqual:](externalData, "isEqual:")))
   {
     acmHandle = self->_acmHandle;
-    if (acmHandle | v4[2])
+    if (acmHandle | equalCopy[2])
     {
       v8 = [(NSData *)acmHandle isEqual:?];
     }
@@ -67,78 +67,78 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_accessGroups copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_accessGroups copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_externalData copyWithZone:a3];
+  v8 = [(NSData *)self->_externalData copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_acmHandle copyWithZone:a3];
+  v10 = [(NSData *)self->_acmHandle copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_accessGroups)
   {
-    [v4 setAccessGroups:?];
-    v4 = v5;
+    [toCopy setAccessGroups:?];
+    toCopy = v5;
   }
 
   if (self->_externalData)
   {
     [v5 setExternalData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_acmHandle)
   {
     [v5 setAcmHandle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_accessGroups)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_externalData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_acmHandle)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -149,18 +149,18 @@
       while (1)
       {
         v21 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -177,9 +177,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -202,13 +202,13 @@ LABEL_15:
         *&self->PBCodable_opaque[v17] = v16;
       }
 
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -241,8 +241,8 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = MockAKSOptionalParameters;
   v3 = [(MockAKSOptionalParameters *)&v7 description];
-  v4 = [(MockAKSOptionalParameters *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(MockAKSOptionalParameters *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }

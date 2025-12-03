@@ -1,33 +1,33 @@
 @interface ASCDescriber
-- (ASCDescriber)initWithObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCDescriber)initWithObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (id)describeObject;
 - (id)describeProperties;
 - (id)description;
 - (id)finalizeDescription;
 - (unint64_t)hash;
-- (void)addBool:(BOOL)a3 withName:(id)a4;
-- (void)addDouble:(double)a3 withName:(id)a4;
-- (void)addInt64:(int64_t)a3 withName:(id)a4;
-- (void)addInteger:(int64_t)a3 withName:(id)a4;
-- (void)addObject:(id)a3 withName:(id)a4;
-- (void)addSensitiveObject:(id)a3 withName:(id)a4;
-- (void)addUInt64:(unint64_t)a3 withName:(id)a4;
-- (void)addUnsignedInteger:(unint64_t)a3 withName:(id)a4;
+- (void)addBool:(BOOL)bool withName:(id)name;
+- (void)addDouble:(double)double withName:(id)name;
+- (void)addInt64:(int64_t)int64 withName:(id)name;
+- (void)addInteger:(int64_t)integer withName:(id)name;
+- (void)addObject:(id)object withName:(id)name;
+- (void)addSensitiveObject:(id)object withName:(id)name;
+- (void)addUInt64:(unint64_t)int64 withName:(id)name;
+- (void)addUnsignedInteger:(unint64_t)integer withName:(id)name;
 @end
 
 @implementation ASCDescriber
 
-- (ASCDescriber)initWithObject:(id)a3
+- (ASCDescriber)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = ASCDescriber;
   v6 = [(ASCDescriber *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     properties = v7->_properties;
     v7->_properties = v8;
@@ -36,76 +36,76 @@
   return v7;
 }
 
-- (void)addBool:(BOOL)a3 withName:(id)a4
+- (void)addBool:(BOOL)bool withName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = NSStringFromBOOL();
-  [(ASCDescriber *)self addObject:v6 withName:v5];
+  [(ASCDescriber *)self addObject:v6 withName:nameCopy];
 }
 
-- (void)addInteger:(int64_t)a3 withName:(id)a4
+- (void)addInteger:(int64_t)integer withName:(id)name
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(ASCDescriber *)self addObject:v8 withName:v7];
+  nameCopy = name;
+  v8 = [v6 numberWithInteger:integer];
+  [(ASCDescriber *)self addObject:v8 withName:nameCopy];
 }
 
-- (void)addUnsignedInteger:(unint64_t)a3 withName:(id)a4
+- (void)addUnsignedInteger:(unint64_t)integer withName:(id)name
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:a3];
-  [(ASCDescriber *)self addObject:v8 withName:v7];
+  nameCopy = name;
+  v8 = [v6 numberWithUnsignedInteger:integer];
+  [(ASCDescriber *)self addObject:v8 withName:nameCopy];
 }
 
-- (void)addInt64:(int64_t)a3 withName:(id)a4
+- (void)addInt64:(int64_t)int64 withName:(id)name
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithLongLong:a3];
-  [(ASCDescriber *)self addObject:v8 withName:v7];
+  nameCopy = name;
+  v8 = [v6 numberWithLongLong:int64];
+  [(ASCDescriber *)self addObject:v8 withName:nameCopy];
 }
 
-- (void)addUInt64:(unint64_t)a3 withName:(id)a4
+- (void)addUInt64:(unint64_t)int64 withName:(id)name
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedLongLong:a3];
-  [(ASCDescriber *)self addObject:v8 withName:v7];
+  nameCopy = name;
+  v8 = [v6 numberWithUnsignedLongLong:int64];
+  [(ASCDescriber *)self addObject:v8 withName:nameCopy];
 }
 
-- (void)addDouble:(double)a3 withName:(id)a4
+- (void)addDouble:(double)double withName:(id)name
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithDouble:a3];
-  [(ASCDescriber *)self addObject:v8 withName:v7];
+  nameCopy = name;
+  v8 = [v6 numberWithDouble:double];
+  [(ASCDescriber *)self addObject:v8 withName:nameCopy];
 }
 
-- (void)addSensitiveObject:(id)a3 withName:(id)a4
+- (void)addSensitiveObject:(id)object withName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = AMSHashIfNeeded();
-  [(ASCDescriber *)self addObject:v6 withName:v5];
+  [(ASCDescriber *)self addObject:v6 withName:nameCopy];
 }
 
-- (void)addObject:(id)a3 withName:(id)a4
+- (void)addObject:(id)object withName:(id)name
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(ASCDescriber *)self properties];
+  objectCopy = object;
+  nameCopy = name;
+  properties = [(ASCDescriber *)self properties];
   v8 = [ASCPair alloc];
-  v9 = v11;
-  if (!v11)
+  v9 = objectCopy;
+  if (!objectCopy)
   {
     v9 = +[ASCDescriber nilObject];
   }
 
-  v10 = [(ASCPair *)v8 initWithFirst:v6 second:v9];
-  [v7 addObject:v10];
+  v10 = [(ASCPair *)v8 initWithFirst:nameCopy second:v9];
+  [properties addObject:v10];
 
-  if (!v11)
+  if (!objectCopy)
   {
   }
 }
@@ -113,11 +113,11 @@
 - (id)describeObject
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(ASCDescriber *)self object];
+  object = [(ASCDescriber *)self object];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(ASCDescriber *)self object];
-  v8 = [v3 initWithFormat:@"%@:%p", v6, v7];
+  object2 = [(ASCDescriber *)self object];
+  v8 = [v3 initWithFormat:@"%@:%p", v6, object2];
 
   return v8;
 }
@@ -125,8 +125,8 @@
 - (id)describeProperties
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(ASCDescriber *)self properties];
-  v4 = [v3 count];
+  properties = [(ASCDescriber *)self properties];
+  v4 = [properties count];
 
   if (v4)
   {
@@ -135,8 +135,8 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(ASCDescriber *)self properties];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    properties2 = [(ASCDescriber *)self properties];
+    v7 = [properties2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -147,7 +147,7 @@
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(properties2);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
@@ -156,12 +156,12 @@
             [v5 appendString:@"; "];
           }
 
-          v12 = [v11 first];
-          v13 = [v11 second];
-          [v5 appendFormat:@"%@ = %@", v12, v13];
+          first = [v11 first];
+          second = [v11 second];
+          [v5 appendFormat:@"%@ = %@", first, second];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [properties2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -182,18 +182,18 @@
 
 - (id)finalizeDescription
 {
-  v3 = [(ASCDescriber *)self describeObject];
-  v4 = [(ASCDescriber *)self describeProperties];
-  v5 = [v4 length];
+  describeObject = [(ASCDescriber *)self describeObject];
+  describeProperties = [(ASCDescriber *)self describeProperties];
+  v5 = [describeProperties length];
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
   if (v5)
   {
-    v7 = [v6 initWithFormat:@"<%@ %@>", v3, v4];
+    v7 = [v6 initWithFormat:@"<%@ %@>", describeObject, describeProperties];
   }
 
   else
   {
-    v7 = [v6 initWithFormat:@"<%@>", v3, v10];
+    v7 = [v6 initWithFormat:@"<%@>", describeObject, v10];
   }
 
   v8 = v7;
@@ -204,21 +204,21 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCDescriber *)self object];
-  [(ASCHasher *)v3 combineObject:v4];
+  object = [(ASCDescriber *)self object];
+  [(ASCHasher *)v3 combineObject:object];
 
-  v5 = [(ASCDescriber *)self properties];
-  [(ASCHasher *)v3 combineObject:v5];
+  properties = [(ASCDescriber *)self properties];
+  [(ASCHasher *)v3 combineObject:properties];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -241,31 +241,31 @@
 
   if (v7)
   {
-    v8 = [(ASCDescriber *)self object];
-    v9 = [v7 object];
-    v10 = v9;
-    if (v8 && v9)
+    object = [(ASCDescriber *)self object];
+    object2 = [v7 object];
+    v10 = object2;
+    if (object && object2)
     {
-      if ([v8 isEqual:v9])
+      if ([object isEqual:object2])
       {
         goto LABEL_10;
       }
     }
 
-    else if (v8 == v9)
+    else if (object == object2)
     {
 LABEL_10:
-      v11 = [(ASCDescriber *)self properties];
-      v12 = [v7 properties];
-      v13 = v12;
-      if (v11 && v12)
+      properties = [(ASCDescriber *)self properties];
+      properties2 = [v7 properties];
+      v13 = properties2;
+      if (properties && properties2)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [properties isEqual:properties2];
       }
 
       else
       {
-        v14 = v11 == v12;
+        v14 = properties == properties2;
       }
 
       goto LABEL_18;
@@ -288,12 +288,12 @@ LABEL_19:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASCDescriber *)self object];
+  object = [(ASCDescriber *)self object];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [(ASCDescriber *)self object];
-  v10 = [(ASCDescriber *)self properties];
-  v11 = [v3 stringWithFormat:@"<%@:%p object = <%@:%p> properties = %@>", v5, self, v8, v9, v10];;
+  object2 = [(ASCDescriber *)self object];
+  properties = [(ASCDescriber *)self properties];
+  v11 = [v3 stringWithFormat:@"<%@:%p object = <%@:%p> properties = %@>", v5, self, v8, object2, properties];;
 
   return v11;
 }

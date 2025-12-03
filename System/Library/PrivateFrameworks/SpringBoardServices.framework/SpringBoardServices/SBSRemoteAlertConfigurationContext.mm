@@ -1,23 +1,23 @@
 @interface SBSRemoteAlertConfigurationContext
-+ (id)configurationContextWithLegacyAlertOptions:(id)a3;
-- (SBSRemoteAlertConfigurationContext)initWithCoder:(id)a3;
-- (SBSRemoteAlertConfigurationContext)initWithXPCDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
++ (id)configurationContextWithLegacyAlertOptions:(id)options;
+- (SBSRemoteAlertConfigurationContext)initWithCoder:(id)coder;
+- (SBSRemoteAlertConfigurationContext)initWithXPCDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation SBSRemoteAlertConfigurationContext
 
-+ (id)configurationContextWithLegacyAlertOptions:(id)a3
++ (id)configurationContextWithLegacyAlertOptions:(id)options
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 bs_safeDictionaryForKey:@"UserInfo"];
+  optionsCopy = options;
+  v5 = objc_alloc_init(self);
+  v6 = [optionsCopy bs_safeDictionaryForKey:@"UserInfo"];
   [v5 setUserInfo:v6];
 
   if (v5)
   {
-    v7 = [v4 copy];
+    v7 = [optionsCopy copy];
     v8 = v5[4];
     v5[4] = v7;
   }
@@ -25,9 +25,9 @@
   return v5;
 }
 
-- (SBSRemoteAlertConfigurationContext)initWithXPCDictionary:(id)a3
+- (SBSRemoteAlertConfigurationContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SBSRemoteAlertConfigurationContext;
   v5 = [(SBSRemoteAlertConfigurationContext *)&v15 init];
@@ -37,7 +37,7 @@
     userInfo = v5->_userInfo;
     v5->_userInfo = v6;
 
-    v8 = xpc_dictionary_get_value(v4, "c__endpoint");
+    v8 = xpc_dictionary_get_value(dictionaryCopy, "c__endpoint");
     xpcEndpoint = v5->_xpcEndpoint;
     v5->_xpcEndpoint = v8;
 
@@ -53,13 +53,13 @@
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   xpcEndpoint = self->_xpcEndpoint;
   if (xpcEndpoint)
   {
-    xpc_dictionary_set_value(v4, "c__endpoint", xpcEndpoint);
+    xpc_dictionary_set_value(dictionaryCopy, "c__endpoint", xpcEndpoint);
   }
 
   if (self->_userInfo)
@@ -87,41 +87,41 @@ id __62__SBSRemoteAlertConfigurationContext_encodeWithXPCDictionary___block_invo
   return v0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"SBSRemoteAlertConfigurationContext.m" lineNumber:87 description:@"This class may only be encoded by an NSXPCCoder."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSRemoteAlertConfigurationContext.m" lineNumber:87 description:@"This class may only be encoded by an NSXPCCoder."];
   }
 
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    [v11 encodeObject:userInfo forKey:@"__userInfo"];
+    [coderCopy encodeObject:userInfo forKey:@"__userInfo"];
   }
 
   xpcEndpoint = self->_xpcEndpoint;
   if (xpcEndpoint)
   {
-    [v11 encodeXPCObject:xpcEndpoint forKey:@"__endpoint"];
+    [coderCopy encodeXPCObject:xpcEndpoint forKey:@"__endpoint"];
   }
 
   if ([(NSSet *)self->_actions count])
   {
     v8 = xpc_dictionary_create(0, 0, 0);
     BSSerializeSetToXPCDictionaryWithKey();
-    [v11 encodeXPCObject:v8 forKey:@"__actions"];
+    [coderCopy encodeXPCObject:v8 forKey:@"__actions"];
   }
 
   legacyAlertOptions = self->_legacyAlertOptions;
-  v10 = v11;
+  v10 = coderCopy;
   if (legacyAlertOptions)
   {
-    [v11 encodeObject:legacyAlertOptions forKey:@"__legacyAlertOptions"];
-    v10 = v11;
+    [coderCopy encodeObject:legacyAlertOptions forKey:@"__legacyAlertOptions"];
+    v10 = coderCopy;
   }
 }
 
@@ -132,9 +132,9 @@ id __54__SBSRemoteAlertConfigurationContext_encodeWithCoder___block_invoke()
   return v0;
 }
 
-- (SBSRemoteAlertConfigurationContext)initWithCoder:(id)a3
+- (SBSRemoteAlertConfigurationContext)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -150,7 +150,7 @@ id __54__SBSRemoteAlertConfigurationContext_encodeWithCoder___block_invoke()
       v11 = objc_opt_class();
       v12 = objc_opt_class();
       v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-      v14 = [v5 decodeObjectOfClasses:v13 forKey:@"__userInfo"];
+      v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"__userInfo"];
       userInfo = v6->_userInfo;
       v6->_userInfo = v14;
 
@@ -163,16 +163,16 @@ id __54__SBSRemoteAlertConfigurationContext_encodeWithCoder___block_invoke()
         }
       }
 
-      v16 = [v5 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"__endpoint"];
+      v16 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"__endpoint"];
       xpcEndpoint = v6->_xpcEndpoint;
       v6->_xpcEndpoint = v16;
 
-      v18 = [v5 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"__actions"];
+      v18 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"__actions"];
       v19 = BSDeserializeSetOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();
       actions = v6->_actions;
       v6->_actions = v19;
 
-      v21 = [v5 decodePropertyListForKey:@"__legacyAlertOptions"];
+      v21 = [coderCopy decodePropertyListForKey:@"__legacyAlertOptions"];
       if ([v21 isNSDictionary])
       {
         objc_storeStrong(&v6->_legacyAlertOptions, v21);
@@ -180,18 +180,18 @@ id __54__SBSRemoteAlertConfigurationContext_encodeWithCoder___block_invoke()
     }
 
     self = v6;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SBSRemoteAlertConfigurationContext.m" lineNumber:114 description:@"This class may only be decoded by an NSXPCCoder."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBSRemoteAlertConfigurationContext.m" lineNumber:114 description:@"This class may only be decoded by an NSXPCCoder."];
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

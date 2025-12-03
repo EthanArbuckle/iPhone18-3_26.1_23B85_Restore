@@ -1,8 +1,8 @@
 @interface CRLiOSInsertPageViewControllerSearchBar
 - (BOOL)resignFirstResponder;
-- (void)p_recursivelyEnableButtonsInView:(id)a3;
-- (void)scribbleInteractionDidFinishWriting:(id)a3;
-- (void)scribbleInteractionWillBeginWriting:(id)a3;
+- (void)p_recursivelyEnableButtonsInView:(id)view;
+- (void)scribbleInteractionDidFinishWriting:(id)writing;
+- (void)scribbleInteractionWillBeginWriting:(id)writing;
 @end
 
 @implementation CRLiOSInsertPageViewControllerSearchBar
@@ -11,16 +11,16 @@
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInsertPageViewControllerSearchBar;
-  v3 = [(CRLiOSInsertPageViewControllerSearchBar *)&v5 resignFirstResponder];
+  resignFirstResponder = [(CRLiOSInsertPageViewControllerSearchBar *)&v5 resignFirstResponder];
   [(CRLiOSInsertPageViewControllerSearchBar *)self p_recursivelyEnableButtonsInView:self];
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)p_recursivelyEnableButtonsInView:(id)a3
+- (void)p_recursivelyEnableButtonsInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, viewCopy);
   v7 = v6;
   if (v6)
   {
@@ -33,8 +33,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [v4 subviews];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [viewCopy subviews];
+    v9 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -45,13 +45,13 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
           [(CRLiOSInsertPageViewControllerSearchBar *)self p_recursivelyEnableButtonsInView:*(*(&v13 + 1) + 8 * i)];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -59,41 +59,41 @@
   }
 }
 
-- (void)scribbleInteractionWillBeginWriting:(id)a3
+- (void)scribbleInteractionWillBeginWriting:(id)writing
 {
-  v5 = a3;
+  writingCopy = writing;
   if ([-[CRLiOSInsertPageViewControllerSearchBar superclass](self "superclass")])
   {
     v9.super_class = [(CRLiOSInsertPageViewControllerSearchBar *)self superclass];
-    objc_msgSendSuper(&v9, a2, v5);
+    objc_msgSendSuper(&v9, a2, writingCopy);
   }
 
-  v6 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
+  delegate = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
-    [v8 performSelector:"scribbleInteractionWillBeginWriting:" withObject:v5];
+    delegate2 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
+    [delegate2 performSelector:"scribbleInteractionWillBeginWriting:" withObject:writingCopy];
   }
 }
 
-- (void)scribbleInteractionDidFinishWriting:(id)a3
+- (void)scribbleInteractionDidFinishWriting:(id)writing
 {
-  v5 = a3;
+  writingCopy = writing;
   if ([-[CRLiOSInsertPageViewControllerSearchBar superclass](self "superclass")])
   {
     v9.super_class = [(CRLiOSInsertPageViewControllerSearchBar *)self superclass];
-    objc_msgSendSuper(&v9, a2, v5);
+    objc_msgSendSuper(&v9, a2, writingCopy);
   }
 
-  v6 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
+  delegate = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
-    [v8 performSelector:"scribbleInteractionDidFinishWriting:" withObject:v5];
+    delegate2 = [(CRLiOSInsertPageViewControllerSearchBar *)self delegate];
+    [delegate2 performSelector:"scribbleInteractionDidFinishWriting:" withObject:writingCopy];
   }
 }
 

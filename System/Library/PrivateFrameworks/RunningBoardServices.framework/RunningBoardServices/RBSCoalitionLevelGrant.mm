@@ -1,17 +1,17 @@
 @interface RBSCoalitionLevelGrant
-+ (id)grantWithCoalitionLevel:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (RBSCoalitionLevelGrant)initWithRBSXPCCoder:(id)a3;
++ (id)grantWithCoalitionLevel:(unint64_t)level;
+- (BOOL)isEqual:(id)equal;
+- (RBSCoalitionLevelGrant)initWithRBSXPCCoder:(id)coder;
 - (id)_initWithCoalitionLevel:(id)result;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSCoalitionLevelGrant
 
-+ (id)grantWithCoalitionLevel:(unint64_t)a3
++ (id)grantWithCoalitionLevel:(unint64_t)level
 {
-  v3 = [[RBSCoalitionLevelGrant alloc] _initWithCoalitionLevel:a3];
+  v3 = [[RBSCoalitionLevelGrant alloc] _initWithCoalitionLevel:level];
 
   return v3;
 }
@@ -25,41 +25,41 @@
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSCoalitionLevelGrant;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeUInt64:self->_coalitionLevel forKey:{@"level", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeUInt64:self->_coalitionLevel forKey:{@"level", v5.receiver, v5.super_class}];
 }
 
-- (RBSCoalitionLevelGrant)initWithRBSXPCCoder:(id)a3
+- (RBSCoalitionLevelGrant)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSCoalitionLevelGrant;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_coalitionLevel = [v4 decodeUInt64ForKey:@"level"];
+    v5->_coalitionLevel = [coderCopy decodeUInt64ForKey:@"level"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4 && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(RBSCoalitionLevelGrant *)v5 coalitionLevel]== self->_coalitionLevel;
+    v7 = equalCopy && (v6 = objc_opt_class(), v6 == objc_opt_class()) && [(RBSCoalitionLevelGrant *)v5 coalitionLevel]== self->_coalitionLevel;
   }
 
   return v7;
@@ -77,8 +77,8 @@
         goto LABEL_4;
       }
 
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = @"initialized with invalid level";
       v7 = v3;
       v8 = 74;
@@ -86,14 +86,14 @@
 
     else
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      v5 = v4;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v5 = currentHandler;
       v6 = @"initialized with unknown level";
       v7 = v3;
       v8 = 73;
     }
 
-    [v4 handleFailureInMethod:sel__initWithCoalitionLevel_ object:v7 file:@"RBSCoalitionLevelGrant.m" lineNumber:v8 description:v6];
+    [currentHandler handleFailureInMethod:sel__initWithCoalitionLevel_ object:v7 file:@"RBSCoalitionLevelGrant.m" lineNumber:v8 description:v6];
 
 LABEL_4:
     v9.receiver = v3;

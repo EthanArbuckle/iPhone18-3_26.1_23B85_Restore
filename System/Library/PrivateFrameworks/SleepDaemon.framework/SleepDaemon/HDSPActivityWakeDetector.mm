@@ -1,25 +1,25 @@
 @interface HDSPActivityWakeDetector
-- (HDSPActivityWakeDetector)initWithEnvironment:(id)a3;
+- (HDSPActivityWakeDetector)initWithEnvironment:(id)environment;
 - (HDSPEnvironment)environment;
 - (HDSPWakeDetectorDelegate)wakeDetectorDelegate;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)notifyForActivityDetectedOnDate:(id)a3;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)notifyForActivityDetectedOnDate:(id)date;
 - (void)startDetecting;
 - (void)stopDetecting;
 @end
 
 @implementation HDSPActivityWakeDetector
 
-- (HDSPActivityWakeDetector)initWithEnvironment:(id)a3
+- (HDSPActivityWakeDetector)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPActivityWakeDetector;
   v5 = [(HDSPActivityWakeDetector *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
@@ -42,8 +42,8 @@
 
     self->_isDetecting = 1;
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v6 = [WeakRetained notificationListener];
-    [v6 addObserver:self];
+    notificationListener = [WeakRetained notificationListener];
+    [notificationListener addObserver:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -63,38 +63,38 @@
 
   self->_isDetecting = 0;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained notificationListener];
-  [v6 removeObserver:self];
+  notificationListener = [WeakRetained notificationListener];
+  [notificationListener removeObserver:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyForActivityDetectedOnDate:(id)a3
+- (void)notifyForActivityDetectedOnDate:(id)date
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
     v10 = objc_opt_class();
     v11 = 2114;
-    v12 = v4;
+    v12 = dateCopy;
     v6 = v10;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] notifying for activity detected on date %{public}@", &v9, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_wakeDetectorDelegate);
-  [WeakRetained wakeDetector:self didDetectWakeUpEventOnDate:v4];
+  [WeakRetained wakeDetector:self didDetectWakeUpEventOnDate:dateCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.healthlite.SleepDetectedActivity"] && self->_isDetecting)
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.healthlite.SleepDetectedActivity"] && self->_isDetecting)
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -102,22 +102,22 @@
       *v17 = 138543618;
       *&v17[4] = objc_opt_class();
       *&v17[12] = 2114;
-      *&v17[14] = v5;
+      *&v17[14] = nameCopy;
       v7 = *&v17[4];
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", v17, 0x16u);
     }
 
-    v8 = [(HDSPActivityWakeDetector *)self environment];
-    v9 = [v8 currentDateProvider];
-    v13 = v9[2](v9, v10, v11, v12);
+    environment = [(HDSPActivityWakeDetector *)self environment];
+    currentDateProvider = [environment currentDateProvider];
+    v13 = currentDateProvider[2](currentDateProvider, v10, v11, v12);
     [(HDSPActivityWakeDetector *)self notifyForActivityDetectedOnDate:v13];
   }
 
-  v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 - (HDSPWakeDetectorDelegate)wakeDetectorDelegate

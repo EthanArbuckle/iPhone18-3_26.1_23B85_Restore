@@ -1,23 +1,23 @@
 @interface TILanguageModelOfflineLearningTask
-- (BOOL)incrementUsageCountsForMessages:(id)a3 forLanguage:(id)a4 adaptationContext:(id)a5;
-- (BOOL)incrementUsageCountsForMessages:(id)a3 withHandle:(id)a4;
+- (BOOL)incrementUsageCountsForMessages:(id)messages forLanguage:(id)language adaptationContext:(id)context;
+- (BOOL)incrementUsageCountsForMessages:(id)messages withHandle:(id)handle;
 - (TILanguageModelOfflineLearningHandle)handleForLanguageLikelihood;
-- (TILanguageModelOfflineLearningTask)initWithClientIdentifier:(id)a3 oneTimeTask:(BOOL)a4;
-- (id)handleForLanguage:(id)a3;
+- (TILanguageModelOfflineLearningTask)initWithClientIdentifier:(id)identifier oneTimeTask:(BOOL)task;
+- (id)handleForLanguage:(id)language;
 - (void)didFinishLearning;
-- (void)enumerateHandlesForLanguage:(id)a3 withBlock:(id)a4;
-- (void)setAdaptationContext:(id)a3 onHandle:(id)a4;
+- (void)enumerateHandlesForLanguage:(id)language withBlock:(id)block;
+- (void)setAdaptationContext:(id)context onHandle:(id)handle;
 @end
 
 @implementation TILanguageModelOfflineLearningTask
 
 - (void)didFinishLearning
 {
-  v3 = [(TILanguageModelOfflineLearningTask *)self handles];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_126];
+  handles = [(TILanguageModelOfflineLearningTask *)self handles];
+  [handles enumerateKeysAndObjectsUsingBlock:&__block_literal_global_126];
 
-  v4 = [(TILanguageModelOfflineLearningTask *)self handleForLanguageLikelihood];
-  [v4 didFinishLearning];
+  handleForLanguageLikelihood = [(TILanguageModelOfflineLearningTask *)self handleForLanguageLikelihood];
+  [handleForLanguageLikelihood didFinishLearning];
 }
 
 void __55__TILanguageModelOfflineLearningTask_didFinishLearning__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -29,10 +29,10 @@ void __55__TILanguageModelOfflineLearningTask_didFinishLearning__block_invoke(ui
   }
 }
 
-- (BOOL)incrementUsageCountsForMessages:(id)a3 forLanguage:(id)a4 adaptationContext:(id)a5
+- (BOOL)incrementUsageCountsForMessages:(id)messages forLanguage:(id)language adaptationContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  messagesCopy = messages;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -42,16 +42,16 @@ void __55__TILanguageModelOfflineLearningTask_didFinishLearning__block_invoke(ui
   v13[2] = __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_forLanguage_adaptationContext___block_invoke;
   v13[3] = &unk_2787329E0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
+  v14 = contextCopy;
+  v15 = messagesCopy;
   v16 = &v17;
-  v10 = v8;
-  v11 = v9;
-  [(TILanguageModelOfflineLearningTask *)self enumerateHandlesForLanguage:a4 withBlock:v13];
-  LOBYTE(a4) = *(v18 + 24);
+  v10 = messagesCopy;
+  v11 = contextCopy;
+  [(TILanguageModelOfflineLearningTask *)self enumerateHandlesForLanguage:language withBlock:v13];
+  LOBYTE(language) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return a4;
+  return language;
 }
 
 void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_forLanguage_adaptationContext___block_invoke(uint64_t a1, void *a2)
@@ -79,25 +79,25 @@ void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_f
   }
 }
 
-- (void)enumerateHandlesForLanguage:(id)a3 withBlock:(id)a4
+- (void)enumerateHandlesForLanguage:(id)language withBlock:(id)block
 {
-  v6 = a4;
-  v8 = [(TILanguageModelOfflineLearningTask *)self handleForLanguage:a3];
-  v6[2](v6, v8);
-  v7 = [(TILanguageModelOfflineLearningTask *)self handleForLanguageLikelihood];
-  v6[2](v6, v7);
+  blockCopy = block;
+  v8 = [(TILanguageModelOfflineLearningTask *)self handleForLanguage:language];
+  blockCopy[2](blockCopy, v8);
+  handleForLanguageLikelihood = [(TILanguageModelOfflineLearningTask *)self handleForLanguageLikelihood];
+  blockCopy[2](blockCopy, handleForLanguageLikelihood);
 }
 
-- (BOOL)incrementUsageCountsForMessages:(id)a3 withHandle:(id)a4
+- (BOOL)incrementUsageCountsForMessages:(id)messages withHandle:(id)handle
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  handleCopy = handle;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = v6;
+  v8 = messagesCopy;
   v33 = [v8 countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v33)
   {
@@ -113,16 +113,16 @@ void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_f
         }
 
         v10 = *(*(&v41 + 1) + 8 * v9);
-        v11 = [v10 dateSent];
-        v12 = [v7 lastAdaptationDate];
-        v13 = [v11 earlierDate:v12];
+        dateSent = [v10 dateSent];
+        lastAdaptationDate = [handleCopy lastAdaptationDate];
+        v13 = [dateSent earlierDate:lastAdaptationDate];
 
-        if (v13 != v11)
+        if (v13 != dateSent)
         {
-          [v11 timeIntervalSinceReferenceDate];
+          [dateSent timeIntervalSinceReferenceDate];
           v15 = v14;
           v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v17 = [v10 body];
+          body = [v10 body];
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __81__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_withHandle___block_invoke;
@@ -130,7 +130,7 @@ void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_f
           v39[4] = self;
           v18 = v16;
           v40 = v18;
-          [v17 enumerateLinesUsingBlock:v39];
+          [body enumerateLinesUsingBlock:v39];
 
           if (TICanLogMessageAtLevel_onceToken != -1)
           {
@@ -143,9 +143,9 @@ void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_f
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
               v26 = MEMORY[0x277CCACA8];
-              v27 = [v7 inputMode];
-              v28 = [v7 currentAdaptationContext];
-              v29 = [v26 stringWithFormat:@"%s Adapting to message (language=%@, adaptationContext=%@): %@", "-[TILanguageModelOfflineLearningTask incrementUsageCountsForMessages:withHandle:]", v27, v28, v18];
+              inputMode = [handleCopy inputMode];
+              currentAdaptationContext = [handleCopy currentAdaptationContext];
+              v29 = [v26 stringWithFormat:@"%s Adapting to message (language=%@, adaptationContext=%@): %@", "-[TILanguageModelOfflineLearningTask incrementUsageCountsForMessages:withHandle:]", inputMode, currentAdaptationContext, v18];
               *buf = 138412290;
               v47 = v29;
               _os_log_debug_impl(&dword_22CA55000, v19, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -179,7 +179,7 @@ void __100__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_f
                   goto LABEL_27;
                 }
 
-                [v7 adaptToParagraph:v25 timeStamp:1 adaptationType:v15];
+                [handleCopy adaptToParagraph:v25 timeStamp:1 adaptationType:v15];
               }
 
               v22 = [v20 countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -242,42 +242,42 @@ void __81__TILanguageModelOfflineLearningTask_incrementUsageCountsForMessages_wi
   }
 }
 
-- (void)setAdaptationContext:(id)a3 onHandle:(id)a4
+- (void)setAdaptationContext:(id)context onHandle:(id)handle
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v5 currentAdaptationContext];
-  if (v6 == v9)
+  contextCopy = context;
+  handleCopy = handle;
+  currentAdaptationContext = [handleCopy currentAdaptationContext];
+  if (currentAdaptationContext == contextCopy)
   {
   }
 
   else
   {
-    v7 = [v5 currentAdaptationContext];
-    v8 = [v9 isEqual:v7];
+    currentAdaptationContext2 = [handleCopy currentAdaptationContext];
+    v8 = [contextCopy isEqual:currentAdaptationContext2];
 
     if ((v8 & 1) == 0)
     {
-      [v5 updateAdaptationContext:v9];
+      [handleCopy updateAdaptationContext:contextCopy];
     }
   }
 }
 
-- (id)handleForLanguage:(id)a3
+- (id)handleForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__116;
   v14 = __Block_byref_object_dispose__117;
-  v5 = [(TILanguageModelOfflineLearningTask *)self handles];
-  v15 = [v5 objectForKey:v4];
+  handles = [(TILanguageModelOfflineLearningTask *)self handles];
+  v15 = [handles objectForKey:languageCopy];
 
   v6 = v11[5];
   if (!v6)
   {
-    v9 = v4;
+    v9 = languageCopy;
     TIDispatchSync();
 
     v6 = v11[5];
@@ -334,15 +334,15 @@ uint64_t __65__TILanguageModelOfflineLearningTask_handleForLanguageLikelihood__b
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (TILanguageModelOfflineLearningTask)initWithClientIdentifier:(id)a3 oneTimeTask:(BOOL)a4
+- (TILanguageModelOfflineLearningTask)initWithClientIdentifier:(id)identifier oneTimeTask:(BOOL)task
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = TILanguageModelOfflineLearningTask;
   v7 = [(TILanguageModelOfflineLearningTask *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     clientIdentifier = v7->_clientIdentifier;
     v7->_clientIdentifier = v8;
 
@@ -350,7 +350,7 @@ uint64_t __65__TILanguageModelOfflineLearningTask_handleForLanguageLikelihood__b
     handles = v7->_handles;
     v7->_handles = v10;
 
-    v7->_oneTimeTask = a4;
+    v7->_oneTimeTask = task;
   }
 
   return v7;

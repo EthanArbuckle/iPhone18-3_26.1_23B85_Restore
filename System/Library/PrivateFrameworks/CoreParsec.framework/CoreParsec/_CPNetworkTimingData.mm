@@ -1,9 +1,9 @@
 @interface _CPNetworkTimingData
 + (id)startMetricsForNormalization;
-- (BOOL)isEqual:(id)a3;
-- (_CPNetworkTimingData)initWithTelemetryDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPNetworkTimingData)initWithTelemetryDictionary:(id)dictionary;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPNetworkTimingData
@@ -30,28 +30,28 @@
   return v6 ^ v8 ^ v9 ^ (2654435761 * self->_QUICWhitelistedDomain) ^ (2654435761 * self->_redirectCount) ^ (2654435761 * self->_redirectCountW3C) ^ (2654435761 * self->_requestHeaderSize) ^ (2654435761 * self->_responseBodyBytesDecoded) ^ (2654435761 * self->_responseBodyBytesReceived) ^ (2654435761 * self->_responseHeaderSize) ^ (2654435761 * self->_TFOSuccess) ^ (2654435761 * self->_connectStart) ^ (2654435761 * self->_connectEnd) ^ (2654435761 * self->_domainLookupStart) ^ (2654435761 * self->_domainLookupEnd) ^ (2654435761 * self->_fetchStart) ^ (2654435761 * self->_redirectStart) ^ (2654435761 * self->_redirectEnd) ^ (2654435761 * self->_requestStart) ^ (2654435761 * self->_requestEnd) ^ (2654435761 * self->_responseStart) ^ (2654435761 * self->_responseEnd) ^ (2654435761 * self->_secureConnectStart) ^ ((*vbslq_s8(vnegq_f64(v13), v11, v10).i64 * 2654435760.0) + vcvtd_n_u64_f64(timingDataInit - *v10.i64, 0x40uLL));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(_CPNetworkTimingData *)self interfaceIdentifier];
-  v6 = [v4 interfaceIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self interfaceIdentifier];
+  interfaceIdentifier2 = [equalCopy interfaceIdentifier];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(_CPNetworkTimingData *)self interfaceIdentifier];
-  if (v7)
+  interfaceIdentifier3 = [(_CPNetworkTimingData *)self interfaceIdentifier];
+  if (interfaceIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_CPNetworkTimingData *)self interfaceIdentifier];
-    v10 = [v4 interfaceIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = interfaceIdentifier3;
+    interfaceIdentifier4 = [(_CPNetworkTimingData *)self interfaceIdentifier];
+    interfaceIdentifier5 = [equalCopy interfaceIdentifier];
+    v11 = [interfaceIdentifier4 isEqual:interfaceIdentifier5];
 
     if (!v11)
     {
@@ -63,20 +63,20 @@
   {
   }
 
-  v5 = [(_CPNetworkTimingData *)self peerAddress];
-  v6 = [v4 peerAddress];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self peerAddress];
+  interfaceIdentifier2 = [equalCopy peerAddress];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(_CPNetworkTimingData *)self peerAddress];
-  if (v12)
+  peerAddress = [(_CPNetworkTimingData *)self peerAddress];
+  if (peerAddress)
   {
-    v13 = v12;
-    v14 = [(_CPNetworkTimingData *)self peerAddress];
-    v15 = [v4 peerAddress];
-    v16 = [v14 isEqual:v15];
+    v13 = peerAddress;
+    peerAddress2 = [(_CPNetworkTimingData *)self peerAddress];
+    peerAddress3 = [equalCopy peerAddress];
+    v16 = [peerAddress2 isEqual:peerAddress3];
 
     if (!v16)
     {
@@ -89,31 +89,31 @@
   }
 
   connectionRace = self->_connectionRace;
-  if (connectionRace != [v4 connectionRace])
+  if (connectionRace != [equalCopy connectionRace])
   {
     goto LABEL_34;
   }
 
   connectionReused = self->_connectionReused;
-  if (connectionReused != [v4 connectionReused])
+  if (connectionReused != [equalCopy connectionReused])
   {
     goto LABEL_34;
   }
 
-  v5 = [(_CPNetworkTimingData *)self startTimeCounts];
-  v6 = [v4 startTimeCounts];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self startTimeCounts];
+  interfaceIdentifier2 = [equalCopy startTimeCounts];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v19 = [(_CPNetworkTimingData *)self startTimeCounts];
-  if (v19)
+  startTimeCounts = [(_CPNetworkTimingData *)self startTimeCounts];
+  if (startTimeCounts)
   {
-    v20 = v19;
-    v21 = [(_CPNetworkTimingData *)self startTimeCounts];
-    v22 = [v4 startTimeCounts];
-    v23 = [v21 isEqual:v22];
+    v20 = startTimeCounts;
+    startTimeCounts2 = [(_CPNetworkTimingData *)self startTimeCounts];
+    startTimeCounts3 = [equalCopy startTimeCounts];
+    v23 = [startTimeCounts2 isEqual:startTimeCounts3];
 
     if (!v23)
     {
@@ -125,20 +125,20 @@
   {
   }
 
-  v5 = [(_CPNetworkTimingData *)self stopTimeCounts];
-  v6 = [v4 stopTimeCounts];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self stopTimeCounts];
+  interfaceIdentifier2 = [equalCopy stopTimeCounts];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v24 = [(_CPNetworkTimingData *)self stopTimeCounts];
-  if (v24)
+  stopTimeCounts = [(_CPNetworkTimingData *)self stopTimeCounts];
+  if (stopTimeCounts)
   {
-    v25 = v24;
-    v26 = [(_CPNetworkTimingData *)self stopTimeCounts];
-    v27 = [v4 stopTimeCounts];
-    v28 = [v26 isEqual:v27];
+    v25 = stopTimeCounts;
+    stopTimeCounts2 = [(_CPNetworkTimingData *)self stopTimeCounts];
+    stopTimeCounts3 = [equalCopy stopTimeCounts];
+    v28 = [stopTimeCounts2 isEqual:stopTimeCounts3];
 
     if (!v28)
     {
@@ -150,20 +150,20 @@
   {
   }
 
-  v5 = [(_CPNetworkTimingData *)self connectionUUID];
-  v6 = [v4 connectionUUID];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self connectionUUID];
+  interfaceIdentifier2 = [equalCopy connectionUUID];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
     goto LABEL_33;
   }
 
-  v29 = [(_CPNetworkTimingData *)self connectionUUID];
-  if (v29)
+  connectionUUID = [(_CPNetworkTimingData *)self connectionUUID];
+  if (connectionUUID)
   {
-    v30 = v29;
-    v31 = [(_CPNetworkTimingData *)self connectionUUID];
-    v32 = [v4 connectionUUID];
-    v33 = [v31 isEqual:v32];
+    v30 = connectionUUID;
+    connectionUUID2 = [(_CPNetworkTimingData *)self connectionUUID];
+    connectionUUID3 = [equalCopy connectionUUID];
+    v33 = [connectionUUID2 isEqual:connectionUUID3];
 
     if (!v33)
     {
@@ -175,22 +175,22 @@
   {
   }
 
-  v5 = [(_CPNetworkTimingData *)self networkProtocolName];
-  v6 = [v4 networkProtocolName];
-  if ((v5 != 0) == (v6 == 0))
+  interfaceIdentifier = [(_CPNetworkTimingData *)self networkProtocolName];
+  interfaceIdentifier2 = [equalCopy networkProtocolName];
+  if ((interfaceIdentifier != 0) == (interfaceIdentifier2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v34 = [(_CPNetworkTimingData *)self networkProtocolName];
-  if (v34)
+  networkProtocolName = [(_CPNetworkTimingData *)self networkProtocolName];
+  if (networkProtocolName)
   {
-    v35 = v34;
-    v36 = [(_CPNetworkTimingData *)self networkProtocolName];
-    v37 = [v4 networkProtocolName];
-    v38 = [v36 isEqual:v37];
+    v35 = networkProtocolName;
+    networkProtocolName2 = [(_CPNetworkTimingData *)self networkProtocolName];
+    networkProtocolName3 = [equalCopy networkProtocolName];
+    v38 = [networkProtocolName2 isEqual:networkProtocolName3];
 
     if (!v38)
     {
@@ -203,68 +203,68 @@ LABEL_33:
   }
 
   QUICWhitelistedDomain = self->_QUICWhitelistedDomain;
-  if (QUICWhitelistedDomain == [v4 QUICWhitelistedDomain])
+  if (QUICWhitelistedDomain == [equalCopy QUICWhitelistedDomain])
   {
     redirectCount = self->_redirectCount;
-    if (redirectCount == [v4 redirectCount])
+    if (redirectCount == [equalCopy redirectCount])
     {
       redirectCountW3C = self->_redirectCountW3C;
-      if (redirectCountW3C == [v4 redirectCountW3C])
+      if (redirectCountW3C == [equalCopy redirectCountW3C])
       {
         requestHeaderSize = self->_requestHeaderSize;
-        if (requestHeaderSize == [v4 requestHeaderSize])
+        if (requestHeaderSize == [equalCopy requestHeaderSize])
         {
           responseBodyBytesDecoded = self->_responseBodyBytesDecoded;
-          if (responseBodyBytesDecoded == [v4 responseBodyBytesDecoded])
+          if (responseBodyBytesDecoded == [equalCopy responseBodyBytesDecoded])
           {
             responseBodyBytesReceived = self->_responseBodyBytesReceived;
-            if (responseBodyBytesReceived == [v4 responseBodyBytesReceived])
+            if (responseBodyBytesReceived == [equalCopy responseBodyBytesReceived])
             {
               responseHeaderSize = self->_responseHeaderSize;
-              if (responseHeaderSize == [v4 responseHeaderSize])
+              if (responseHeaderSize == [equalCopy responseHeaderSize])
               {
                 TFOSuccess = self->_TFOSuccess;
-                if (TFOSuccess == [v4 TFOSuccess])
+                if (TFOSuccess == [equalCopy TFOSuccess])
                 {
                   timingDataInit = self->_timingDataInit;
-                  [v4 timingDataInit];
+                  [equalCopy timingDataInit];
                   if (timingDataInit == v50)
                   {
                     connectStart = self->_connectStart;
-                    if (connectStart == [v4 connectStart])
+                    if (connectStart == [equalCopy connectStart])
                     {
                       connectEnd = self->_connectEnd;
-                      if (connectEnd == [v4 connectEnd])
+                      if (connectEnd == [equalCopy connectEnd])
                       {
                         domainLookupStart = self->_domainLookupStart;
-                        if (domainLookupStart == [v4 domainLookupStart])
+                        if (domainLookupStart == [equalCopy domainLookupStart])
                         {
                           domainLookupEnd = self->_domainLookupEnd;
-                          if (domainLookupEnd == [v4 domainLookupEnd])
+                          if (domainLookupEnd == [equalCopy domainLookupEnd])
                           {
                             fetchStart = self->_fetchStart;
-                            if (fetchStart == [v4 fetchStart])
+                            if (fetchStart == [equalCopy fetchStart])
                             {
                               redirectStart = self->_redirectStart;
-                              if (redirectStart == [v4 redirectStart])
+                              if (redirectStart == [equalCopy redirectStart])
                               {
                                 redirectEnd = self->_redirectEnd;
-                                if (redirectEnd == [v4 redirectEnd])
+                                if (redirectEnd == [equalCopy redirectEnd])
                                 {
                                   requestStart = self->_requestStart;
-                                  if (requestStart == [v4 requestStart])
+                                  if (requestStart == [equalCopy requestStart])
                                   {
                                     requestEnd = self->_requestEnd;
-                                    if (requestEnd == [v4 requestEnd])
+                                    if (requestEnd == [equalCopy requestEnd])
                                     {
                                       responseStart = self->_responseStart;
-                                      if (responseStart == [v4 responseStart])
+                                      if (responseStart == [equalCopy responseStart])
                                       {
                                         responseEnd = self->_responseEnd;
-                                        if (responseEnd == [v4 responseEnd])
+                                        if (responseEnd == [equalCopy responseEnd])
                                         {
                                           secureConnectStart = self->_secureConnectStart;
-                                          v39 = secureConnectStart == [v4 secureConnectStart];
+                                          v39 = secureConnectStart == [equalCopy secureConnectStart];
                                           goto LABEL_35;
                                         }
                                       }
@@ -294,20 +294,20 @@ LABEL_35:
   return v39;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
-  v4 = [(_CPNetworkTimingData *)self interfaceIdentifier];
+  to;
+  interfaceIdentifier = [(_CPNetworkTimingData *)self interfaceIdentifier];
 
-  if (v4)
+  if (interfaceIdentifier)
   {
     interfaceIdentifier = self->_interfaceIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_CPNetworkTimingData *)self peerAddress];
+  peerAddress = [(_CPNetworkTimingData *)self peerAddress];
 
-  if (v6)
+  if (peerAddress)
   {
     peerAddress = self->_peerAddress;
     PBDataWriterWriteDataField();
@@ -325,33 +325,33 @@ LABEL_35:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(_CPNetworkTimingData *)self startTimeCounts];
+  startTimeCounts = [(_CPNetworkTimingData *)self startTimeCounts];
 
-  if (v10)
+  if (startTimeCounts)
   {
-    v11 = [(_CPNetworkTimingData *)self startTimeCounts];
+    startTimeCounts2 = [(_CPNetworkTimingData *)self startTimeCounts];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_CPNetworkTimingData *)self stopTimeCounts];
+  stopTimeCounts = [(_CPNetworkTimingData *)self stopTimeCounts];
 
-  if (v12)
+  if (stopTimeCounts)
   {
-    v13 = [(_CPNetworkTimingData *)self stopTimeCounts];
+    stopTimeCounts2 = [(_CPNetworkTimingData *)self stopTimeCounts];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_CPNetworkTimingData *)self connectionUUID];
+  connectionUUID = [(_CPNetworkTimingData *)self connectionUUID];
 
-  if (v14)
+  if (connectionUUID)
   {
     connectionUUID = self->_connectionUUID;
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_CPNetworkTimingData *)self networkProtocolName];
+  networkProtocolName = [(_CPNetworkTimingData *)self networkProtocolName];
 
-  if (v16)
+  if (networkProtocolName)
   {
     networkProtocolName = self->_networkProtocolName;
     PBDataWriterWriteStringField();
@@ -487,21 +487,21 @@ LABEL_35:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPNetworkTimingData)initWithTelemetryDictionary:(id)a3
+- (_CPNetworkTimingData)initWithTelemetryDictionary:(id)dictionary
 {
   v94 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_CPNetworkTimingData *)self init];
   v6 = v5;
   if (v5)
   {
     v80 = v5;
-    v7 = [objc_opt_class() startMetricsForNormalization];
+    startMetricsForNormalization = [objc_opt_class() startMetricsForNormalization];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v86 objects:v93 count:16];
+    v8 = [startMetricsForNormalization countByEnumeratingWithState:&v86 objects:v93 count:16];
     if (v8)
     {
       v9 = v8;
@@ -513,10 +513,10 @@ LABEL_35:
         {
           if (*v87 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(startMetricsForNormalization);
           }
 
-          v13 = [v4 parsec_numberForKey:*(*(&v86 + 1) + 8 * i)];
+          v13 = [dictionaryCopy parsec_numberForKey:*(*(&v86 + 1) + 8 * i)];
           [v13 doubleValue];
           v15 = v14;
 
@@ -526,7 +526,7 @@ LABEL_35:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v86 objects:v93 count:16];
+        v9 = [startMetricsForNormalization countByEnumeratingWithState:&v86 objects:v93 count:16];
       }
 
       while (v9);
@@ -537,13 +537,13 @@ LABEL_35:
       v11 = 1.79769313e308;
     }
 
-    v78 = v4;
-    v79 = v7;
+    v78 = dictionaryCopy;
+    v79 = startMetricsForNormalization;
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v17 = v4;
+    v17 = dictionaryCopy;
     v18 = [v17 countByEnumeratingWithState:&v82 objects:v92 count:16];
     if (v18)
     {
@@ -1086,7 +1086,7 @@ LABEL_154:
     v6 = v80;
     v75 = v80;
 
-    v4 = v78;
+    dictionaryCopy = v78;
   }
 
   v76 = *MEMORY[0x1E69E9840];

@@ -1,22 +1,22 @@
 @interface ICLegacyTombstone
-+ (BOOL)hasTombstonePrefix:(id)a3;
-+ (id)addLegacyTombstoneWithObjectIdentifier:(id)a3 type:(signed __int16)a4 account:(id)a5;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)legacyTombstoneWithIdentifier:(id)a3 context:(id)a4;
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newLegacyTombstoneWithIdentifier:(id)a3 type:(signed __int16)a4 account:(id)a5;
-+ (id)tombstoneIdentifierForObjectIdentifier:(id)a3 type:(signed __int16)a4;
-+ (signed)tombstoneTypeFromRecordName:(id)a3;
-+ (void)addLegacyTombstoneForFolder:(id)a3;
-+ (void)addLegacyTombstoneForNote:(id)a3;
-+ (void)removeLegacyTombstoneForFolder:(id)a3;
-+ (void)removeLegacyTombstoneForNote:(id)a3;
-+ (void)removeLegacyTombstoneWithObjectIdentifier:(id)a3 type:(signed __int16)a4 context:(id)a5;
++ (BOOL)hasTombstonePrefix:(id)prefix;
++ (id)addLegacyTombstoneWithObjectIdentifier:(id)identifier type:(signed __int16)type account:(id)account;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)legacyTombstoneWithIdentifier:(id)identifier context:(id)context;
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
++ (id)newLegacyTombstoneWithIdentifier:(id)identifier type:(signed __int16)type account:(id)account;
++ (id)tombstoneIdentifierForObjectIdentifier:(id)identifier type:(signed __int16)type;
++ (signed)tombstoneTypeFromRecordName:(id)name;
++ (void)addLegacyTombstoneForFolder:(id)folder;
++ (void)addLegacyTombstoneForNote:(id)note;
++ (void)removeLegacyTombstoneForFolder:(id)folder;
++ (void)removeLegacyTombstoneForNote:(id)note;
++ (void)removeLegacyTombstoneWithObjectIdentifier:(id)identifier type:(signed __int16)type context:(id)context;
 - (BOOL)hasAllMandatoryFields;
-- (BOOL)isEquivalentTo:(id)a3;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6;
+- (BOOL)isEquivalentTo:(id)to;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state;
 - (id)ic_loggingValues;
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4;
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state;
 - (void)deleteFromLocalDatabase;
 - (void)objectWasDeletedFromCloud;
 - (void)objectWasDeletedFromCloudByAnotherDevice;
@@ -24,28 +24,28 @@
 
 @implementation ICLegacyTombstone
 
-+ (id)legacyTombstoneWithIdentifier:(id)a3 context:(id)a4
++ (id)legacyTombstoneWithIdentifier:(id)identifier context:(id)context
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"identifier == %@", a3];
-  v9 = [a1 legacyTombstonesMatchingPredicate:v8 context:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"identifier == %@", identifier];
+  v9 = [self legacyTombstonesMatchingPredicate:identifier context:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)newLegacyTombstoneWithIdentifier:(id)a3 type:(signed __int16)a4 account:(id)a5
++ (id)newLegacyTombstoneWithIdentifier:(id)identifier type:(signed __int16)type account:(id)account
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  typeCopy = type;
+  identifierCopy = identifier;
+  accountCopy = account;
+  v10 = accountCopy;
+  if (!identifierCopy)
   {
     v15 = MEMORY[0x277D36198];
-    v16 = NSStringFromClass(a1);
+    v16 = NSStringFromClass(self);
     [v15 handleFailedAssertWithCondition:"identifier" functionName:"+[ICLegacyTombstone newLegacyTombstoneWithIdentifier:type:account:]" simulateCrash:1 showAlert:0 format:{@"Trying to create a %@ with no identifier", v16}];
 
     if (v10)
@@ -55,39 +55,39 @@
 
 LABEL_5:
     v17 = MEMORY[0x277D36198];
-    v18 = NSStringFromClass(a1);
+    v18 = NSStringFromClass(self);
     [v17 handleFailedAssertWithCondition:"account" functionName:"+[ICLegacyTombstone newLegacyTombstoneWithIdentifier:type:account:]" simulateCrash:1 showAlert:0 format:{@"Trying to create a %@ with no account", v18}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!accountCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v11 = [v10 managedObjectContext];
-  v12 = [a1 newObjectWithIdentifier:v8 context:v11];
+  managedObjectContext = [v10 managedObjectContext];
+  v12 = [self newObjectWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v13 = [v10 persistentStore];
-  [v12 assignToPersistentStore:v13];
+  persistentStore = [v10 persistentStore];
+  [v12 assignToPersistentStore:persistentStore];
 
-  [v12 setType:v6];
+  [v12 setType:typeCopy];
   [v12 setAccount:v10];
 
   return v12;
 }
 
-+ (id)addLegacyTombstoneWithObjectIdentifier:(id)a3 type:(signed __int16)a4 account:(id)a5
++ (id)addLegacyTombstoneWithObjectIdentifier:(id)identifier type:(signed __int16)type account:(id)account
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 managedObjectContext];
-  v11 = [a1 tombstoneIdentifierForObjectIdentifier:v9 type:v5];
+  typeCopy = type;
+  accountCopy = account;
+  identifierCopy = identifier;
+  managedObjectContext = [accountCopy managedObjectContext];
+  v11 = [self tombstoneIdentifierForObjectIdentifier:identifierCopy type:typeCopy];
 
-  v12 = [a1 legacyTombstoneWithIdentifier:v11 context:v10];
+  v12 = [self legacyTombstoneWithIdentifier:v11 context:managedObjectContext];
   if (v12)
   {
     v13 = v12;
@@ -99,19 +99,19 @@ LABEL_3:
 
   else
   {
-    v13 = [ICLegacyTombstone newLegacyTombstoneWithIdentifier:v11 type:v5 account:v8];
+    v13 = [ICLegacyTombstone newLegacyTombstoneWithIdentifier:v11 type:typeCopy account:accountCopy];
     [v13 updateChangeCountWithReason:@"Created tombstone"];
   }
 
   return v13;
 }
 
-+ (void)removeLegacyTombstoneWithObjectIdentifier:(id)a3 type:(signed __int16)a4 context:(id)a5
++ (void)removeLegacyTombstoneWithObjectIdentifier:(id)identifier type:(signed __int16)type context:(id)context
 {
-  v5 = a4;
-  v8 = a5;
-  v10 = [a1 tombstoneIdentifierForObjectIdentifier:a3 type:v5];
-  v9 = [a1 legacyTombstoneWithIdentifier:? context:?];
+  typeCopy = type;
+  contextCopy = context;
+  v10 = [self tombstoneIdentifierForObjectIdentifier:identifier type:typeCopy];
+  v9 = [self legacyTombstoneWithIdentifier:? context:?];
 
   if (v9)
   {
@@ -119,130 +119,130 @@ LABEL_3:
   }
 }
 
-+ (void)addLegacyTombstoneForNote:(id)a3
++ (void)addLegacyTombstoneForNote:(id)note
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 folder];
-  v7 = [v6 account];
-  v10 = [a1 addLegacyTombstoneWithObjectIdentifier:v5 type:1 account:v7];
+  noteCopy = note;
+  identifier = [noteCopy identifier];
+  folder = [noteCopy folder];
+  account = [folder account];
+  v10 = [self addLegacyTombstoneWithObjectIdentifier:identifier type:1 account:account];
 
-  v8 = [v4 legacyContentHashAtImport];
-  [v10 setContentHashAtImport:v8];
+  legacyContentHashAtImport = [noteCopy legacyContentHashAtImport];
+  [v10 setContentHashAtImport:legacyContentHashAtImport];
 
-  v9 = [v4 legacyModificationDateAtImport];
+  legacyModificationDateAtImport = [noteCopy legacyModificationDateAtImport];
 
-  [v10 setModificationDateAtImport:v9];
+  [v10 setModificationDateAtImport:legacyModificationDateAtImport];
   [v10 updateChangeCountWithReason:@"Created tombstone"];
 }
 
-+ (void)removeLegacyTombstoneForNote:(id)a3
++ (void)removeLegacyTombstoneForNote:(id)note
 {
-  v4 = a3;
-  v6 = [v4 identifier];
-  v5 = [v4 managedObjectContext];
+  noteCopy = note;
+  identifier = [noteCopy identifier];
+  managedObjectContext = [noteCopy managedObjectContext];
 
-  [a1 removeLegacyTombstoneWithObjectIdentifier:v6 type:1 context:v5];
+  [self removeLegacyTombstoneWithObjectIdentifier:identifier type:1 context:managedObjectContext];
 }
 
-+ (void)addLegacyTombstoneForFolder:(id)a3
++ (void)addLegacyTombstoneForFolder:(id)folder
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 importedFromLegacy] & 1) == 0)
+  folderCopy = folder;
+  if (([folderCopy importedFromLegacy] & 1) == 0)
   {
     v5 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 identifier];
+      identifier = [folderCopy identifier];
       v10 = 138412290;
-      v11 = v6;
+      v11 = identifier;
       _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Trying to add a tombstone for a folder that wasn't from the legacy database: %@", &v10, 0xCu);
     }
   }
 
-  v7 = [v4 identifier];
-  v8 = [v4 account];
-  v9 = [a1 addLegacyTombstoneWithObjectIdentifier:v7 type:2 account:v8];
+  identifier2 = [folderCopy identifier];
+  account = [folderCopy account];
+  v9 = [self addLegacyTombstoneWithObjectIdentifier:identifier2 type:2 account:account];
 }
 
-+ (void)removeLegacyTombstoneForFolder:(id)a3
++ (void)removeLegacyTombstoneForFolder:(id)folder
 {
-  v4 = a3;
-  v6 = [v4 identifier];
-  v5 = [v4 managedObjectContext];
+  folderCopy = folder;
+  identifier = [folderCopy identifier];
+  managedObjectContext = [folderCopy managedObjectContext];
 
-  [a1 removeLegacyTombstoneWithObjectIdentifier:v6 type:2 context:v5];
+  [self removeLegacyTombstoneWithObjectIdentifier:identifier type:2 context:managedObjectContext];
 }
 
-- (BOOL)isEquivalentTo:(id)a3
+- (BOOL)isEquivalentTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  LODWORD(v4) = [(ICLegacyTombstone *)self type];
-  if (v4 == [v5 type])
+  LODWORD(toCopy) = [(ICLegacyTombstone *)self type];
+  if (toCopy == [v5 type])
   {
-    v6 = [(ICLegacyTombstone *)self contentHashAtImport];
-    v7 = [v5 contentHashAtImport];
-    v8 = [v6 isEqual:v7];
+    contentHashAtImport = [(ICLegacyTombstone *)self contentHashAtImport];
+    contentHashAtImport2 = [v5 contentHashAtImport];
+    v8 = [contentHashAtImport isEqual:contentHashAtImport2];
     if ((v8 & 1) == 0)
     {
-      v9 = [(ICLegacyTombstone *)self contentHashAtImport];
-      v10 = [v5 contentHashAtImport];
-      if (v9 != v10)
+      contentHashAtImport3 = [(ICLegacyTombstone *)self contentHashAtImport];
+      contentHashAtImport4 = [v5 contentHashAtImport];
+      if (contentHashAtImport3 != contentHashAtImport4)
       {
         v11 = 0;
         goto LABEL_16;
       }
 
-      v26 = v10;
-      v27 = v9;
+      v26 = contentHashAtImport4;
+      v27 = contentHashAtImport3;
     }
 
-    v12 = [(ICLegacyTombstone *)self modificationDateAtImport];
-    v13 = [v5 modificationDateAtImport];
-    v14 = [v12 isEqual:v13];
+    modificationDateAtImport = [(ICLegacyTombstone *)self modificationDateAtImport];
+    modificationDateAtImport2 = [v5 modificationDateAtImport];
+    v14 = [modificationDateAtImport isEqual:modificationDateAtImport2];
     if ((v14 & 1) == 0)
     {
-      v15 = [(ICLegacyTombstone *)self modificationDateAtImport];
-      v16 = [v5 modificationDateAtImport];
-      if (v15 != v16)
+      modificationDateAtImport3 = [(ICLegacyTombstone *)self modificationDateAtImport];
+      modificationDateAtImport4 = [v5 modificationDateAtImport];
+      if (modificationDateAtImport3 != modificationDateAtImport4)
       {
         v11 = 0;
         goto LABEL_14;
       }
 
-      v22 = v16;
-      v24 = v15;
+      v22 = modificationDateAtImport4;
+      v24 = modificationDateAtImport3;
     }
 
-    v28 = v7;
-    v29 = v6;
+    v28 = contentHashAtImport2;
+    v29 = contentHashAtImport;
     v17 = [(ICLegacyTombstone *)self account:v22];
-    v18 = [v17 objectID];
-    v19 = [v5 account];
-    v20 = [v19 objectID];
-    v11 = [v18 isEqual:v20];
+    objectID = [v17 objectID];
+    account = [v5 account];
+    objectID2 = [account objectID];
+    v11 = [objectID isEqual:objectID2];
 
     if (v14)
     {
 
-      v7 = v28;
-      v6 = v29;
+      contentHashAtImport2 = v28;
+      contentHashAtImport = v29;
       goto LABEL_15;
     }
 
-    v7 = v28;
-    v6 = v29;
-    v16 = v23;
-    v15 = v25;
+    contentHashAtImport2 = v28;
+    contentHashAtImport = v29;
+    modificationDateAtImport4 = v23;
+    modificationDateAtImport3 = v25;
 LABEL_14:
 
 LABEL_15:
-    v10 = v26;
-    v9 = v27;
+    contentHashAtImport4 = v26;
+    contentHashAtImport3 = v27;
     if (v8)
     {
 LABEL_17:
@@ -265,18 +265,18 @@ LABEL_18:
 {
   v12.receiver = self;
   v12.super_class = ICLegacyTombstone;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICLegacyTombstone *)self managedObjectContext];
+  managedObjectContext = [(ICLegacyTombstone *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __37__ICLegacyTombstone_ic_loggingValues__block_invoke;
   v9[3] = &unk_278194AD8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v6;
   return v6;
@@ -304,44 +304,44 @@ void __37__ICLegacyTombstone_ic_loggingValues__block_invoke(uint64_t a1)
   }
 }
 
-+ (id)tombstoneIdentifierForObjectIdentifier:(id)a3 type:(signed __int16)a4
++ (id)tombstoneIdentifierForObjectIdentifier:(id)identifier type:(signed __int16)type
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4 == 2)
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (typeCopy == 2)
   {
     v6 = @"LegacyFolderTombstone_";
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (typeCopy == 1)
   {
     v6 = @"LegacyNoteTombstone_";
 LABEL_5:
-    v7 = [(__CFString *)v6 stringByAppendingString:v5];
+    identifierCopy = [(__CFString *)v6 stringByAppendingString:identifierCopy];
     goto LABEL_9;
   }
 
   v8 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ICLegacyTombstone *)v5 tombstoneIdentifierForObjectIdentifier:v4 type:v8];
+    [(ICLegacyTombstone *)identifierCopy tombstoneIdentifierForObjectIdentifier:typeCopy type:v8];
   }
 
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"LegacyTombstone_%@", v5];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"LegacyTombstone_%@", identifierCopy];
 LABEL_9:
-  v9 = v7;
+  v9 = identifierCopy;
 
   return v9;
 }
 
-+ (signed)tombstoneTypeFromRecordName:(id)a3
++ (signed)tombstoneTypeFromRecordName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = 1;
-  if (([v3 hasPrefix:@"LegacyNoteTombstone_"] & 1) == 0)
+  if (([nameCopy hasPrefix:@"LegacyNoteTombstone_"] & 1) == 0)
   {
-    if ([v3 hasPrefix:@"LegacyFolderTombstone_"])
+    if ([nameCopy hasPrefix:@"LegacyFolderTombstone_"])
     {
       v4 = 2;
     }
@@ -355,17 +355,17 @@ LABEL_9:
   return v4;
 }
 
-+ (BOOL)hasTombstonePrefix:(id)a3
++ (BOOL)hasTombstonePrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"LegacyNoteTombstone_"])
+  prefixCopy = prefix;
+  if ([prefixCopy hasPrefix:@"LegacyNoteTombstone_"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"LegacyFolderTombstone_"];
+    v4 = [prefixCopy hasPrefix:@"LegacyFolderTombstone_"];
   }
 
   return v4;
@@ -379,8 +379,8 @@ LABEL_9:
     v7.super_class = ICLegacyTombstone;
     if ([(ICCloudSyncingObject *)&v7 hasAllMandatoryFields])
     {
-      v3 = [(ICLegacyTombstone *)self contentHashAtImport];
-      v4 = [v3 length] != 0;
+      contentHashAtImport = [(ICLegacyTombstone *)self contentHashAtImport];
+      v4 = [contentHashAtImport length] != 0;
     }
 
     else
@@ -399,17 +399,17 @@ LABEL_9:
   return v4;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 recordName];
-  LODWORD(a1) = [a1 hasTombstonePrefix:v9];
+  dCopy = d;
+  contextCopy = context;
+  recordName = [dCopy recordName];
+  LODWORD(self) = [self hasTombstonePrefix:recordName];
 
-  if (a1)
+  if (self)
   {
-    v10 = [v7 recordName];
-    v11 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v10 context:v8];
+    recordName2 = [dCopy recordName];
+    v11 = [ICLegacyTombstone legacyTombstoneWithIdentifier:recordName2 context:contextCopy];
   }
 
   else
@@ -420,37 +420,37 @@ LABEL_9:
   return v11;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 recordID];
-  v12 = [v11 recordName];
+  contextCopy = context;
+  dCopy = d;
+  recordCopy = record;
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
-  v13 = [v10 recordID];
-  v14 = [v13 recordName];
-  v15 = [a1 tombstoneTypeFromRecordName:v14];
+  recordID2 = [recordCopy recordID];
+  recordName2 = [recordID2 recordName];
+  v15 = [self tombstoneTypeFromRecordName:recordName2];
 
-  v16 = [ICAccount cloudKitAccountWithIdentifier:v9 context:v8];
+  v16 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:contextCopy];
 
-  v17 = [a1 newLegacyTombstoneWithIdentifier:v12 type:v15 account:v16];
-  [v17 mergeCloudKitRecord:v10 accountID:v9 approach:0];
+  v17 = [self newLegacyTombstoneWithIdentifier:recordName type:v15 account:v16];
+  [v17 mergeCloudKitRecord:recordCopy accountID:dCopy approach:0];
 
-  [v17 setServerRecord:v10];
+  [v17 setServerRecord:recordCopy];
   [v17 setInCloud:1];
   [v17 clearChangeCountWithReason:@"Created tombstone"];
 
   return v17;
 }
 
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state
 {
-  if (a3)
+  if (approach)
   {
     v6 = MEMORY[0x277D36198];
-    v7 = [(ICLegacyTombstone *)self className:a3];
-    v8 = ICStringFromSyncingApproach(a3);
+    v7 = [(ICLegacyTombstone *)self className:approach];
+    v8 = ICStringFromSyncingApproach(approach);
     [v6 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICLegacyTombstone(CloudKit) makeCloudKitRecordForApproach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v7, v8}];
 
     v9 = 0;
@@ -460,36 +460,36 @@ LABEL_9:
   {
     v15.receiver = self;
     v15.super_class = ICLegacyTombstone;
-    v9 = [(ICCloudSyncingObject *)&v15 makeCloudKitRecordForApproach:0 mergeableFieldState:a4];
-    v10 = [(ICLegacyTombstone *)self contentHashAtImport];
+    v9 = [(ICCloudSyncingObject *)&v15 makeCloudKitRecordForApproach:0 mergeableFieldState:state];
+    contentHashAtImport = [(ICLegacyTombstone *)self contentHashAtImport];
 
-    if (v10)
+    if (contentHashAtImport)
     {
-      v11 = [(ICLegacyTombstone *)self contentHashAtImport];
-      [v9 setObject:v11 forKeyedSubscript:@"ContentHashAtImport"];
+      contentHashAtImport2 = [(ICLegacyTombstone *)self contentHashAtImport];
+      [v9 setObject:contentHashAtImport2 forKeyedSubscript:@"ContentHashAtImport"];
     }
 
-    v12 = [(ICLegacyTombstone *)self modificationDateAtImport];
+    modificationDateAtImport = [(ICLegacyTombstone *)self modificationDateAtImport];
 
-    if (v12)
+    if (modificationDateAtImport)
     {
-      v13 = [(ICLegacyTombstone *)self modificationDateAtImport];
-      [v9 setObject:v13 forKeyedSubscript:@"ModificationDateAtImport"];
+      modificationDateAtImport2 = [(ICLegacyTombstone *)self modificationDateAtImport];
+      [v9 setObject:modificationDateAtImport2 forKeyedSubscript:@"ModificationDateAtImport"];
     }
   }
 
   return v9;
 }
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  v10 = a3;
-  if (a5)
+  recordCopy = record;
+  if (approach)
   {
     v11 = MEMORY[0x277D36198];
-    v12 = [(ICLegacyTombstone *)self className];
-    v13 = ICStringFromSyncingApproach(a5);
-    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICLegacyTombstone(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v12, v13}];
+    className = [(ICLegacyTombstone *)self className];
+    v13 = ICStringFromSyncingApproach(approach);
+    [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICLegacyTombstone(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", className, v13}];
 
 LABEL_9:
     v20 = 0;
@@ -498,28 +498,28 @@ LABEL_9:
 
   v22.receiver = self;
   v22.super_class = ICLegacyTombstone;
-  if (![(ICCloudSyncingObject *)&v22 mergeCloudKitRecord:v10 accountID:a4 approach:0 mergeableFieldState:a6])
+  if (![(ICCloudSyncingObject *)&v22 mergeCloudKitRecord:recordCopy accountID:d approach:0 mergeableFieldState:state])
   {
     goto LABEL_9;
   }
 
-  v14 = [v10 recordID];
-  v15 = [v14 recordName];
-  [(ICLegacyTombstone *)self setIdentifier:v15];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  [(ICLegacyTombstone *)self setIdentifier:recordName];
 
-  v16 = [v10 objectForKeyedSubscript:@"ContentHashAtImport"];
+  v16 = [recordCopy objectForKeyedSubscript:@"ContentHashAtImport"];
 
   if (v16)
   {
-    v17 = [v10 objectForKeyedSubscript:@"ContentHashAtImport"];
+    v17 = [recordCopy objectForKeyedSubscript:@"ContentHashAtImport"];
     [(ICLegacyTombstone *)self setContentHashAtImport:v17];
   }
 
-  v18 = [v10 objectForKeyedSubscript:@"ModificationDateAtImport"];
+  v18 = [recordCopy objectForKeyedSubscript:@"ModificationDateAtImport"];
 
   if (v18)
   {
-    v19 = [v10 objectForKeyedSubscript:@"ModificationDateAtImport"];
+    v19 = [recordCopy objectForKeyedSubscript:@"ModificationDateAtImport"];
     [(ICLegacyTombstone *)self setModificationDateAtImport:v19];
   }
 
@@ -536,8 +536,8 @@ LABEL_10:
   [(ICCloudSyncingObject *)&v4 objectWasDeletedFromCloud];
   if ([(ICCloudSyncingObject *)self hasSuccessfullyPushedLatestVersionToCloud])
   {
-    v3 = [(ICLegacyTombstone *)self managedObjectContext];
-    [v3 deleteObject:self];
+    managedObjectContext = [(ICLegacyTombstone *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 }
 
@@ -548,15 +548,15 @@ LABEL_10:
   [(ICCloudSyncingObject *)&v4 objectWasDeletedFromCloudByAnotherDevice];
   if ([(ICCloudSyncingObject *)self hasSuccessfullyPushedLatestVersionToCloud])
   {
-    v3 = [(ICLegacyTombstone *)self managedObjectContext];
-    [v3 deleteObject:self];
+    managedObjectContext = [(ICLegacyTombstone *)self managedObjectContext];
+    [managedObjectContext deleteObject:self];
   }
 }
 
 - (void)deleteFromLocalDatabase
 {
-  v3 = [(ICLegacyTombstone *)self managedObjectContext];
-  [v3 deleteObject:self];
+  managedObjectContext = [(ICLegacyTombstone *)self managedObjectContext];
+  [managedObjectContext deleteObject:self];
 }
 
 + (void)tombstoneIdentifierForObjectIdentifier:(os_log_t)log type:.cold.1(uint64_t a1, int a2, os_log_t log)

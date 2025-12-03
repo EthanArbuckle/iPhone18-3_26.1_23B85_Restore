@@ -1,17 +1,17 @@
 @interface NTKColtanDisplayQuad
-- (NTKColtanDisplayQuad)initWithRole:(unint64_t)a3 screenScale:(double)a4;
+- (NTKColtanDisplayQuad)initWithRole:(unint64_t)role screenScale:(double)scale;
 - (void)_significantTimeChanged;
 - (void)_updateRendererHandAngles;
 - (void)dealloc;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6;
-- (void)setPalette:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians;
+- (void)setPalette:(id)palette;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKColtanDisplayQuad
 
-- (NTKColtanDisplayQuad)initWithRole:(unint64_t)a3 screenScale:(double)a4
+- (NTKColtanDisplayQuad)initWithRole:(unint64_t)role screenScale:(double)scale
 {
   v16.receiver = self;
   v16.super_class = NTKColtanDisplayQuad;
@@ -19,7 +19,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_screenScale = a4;
+    v6->_screenScale = scale;
     v8 = +[CLKUIMetalResourceManager sharedDevice];
     device = v7->_device;
     v7->_device = v8;
@@ -28,7 +28,7 @@
     calendar = v7->_calendar;
     v7->_calendar = v10;
 
-    v7->_role = a3;
+    v7->_role = role;
     v7->_opacity = 1.0;
     v7->_quality = 0;
     v12 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -60,43 +60,43 @@
   [(NTKColtanDisplayQuad *)&v6 dealloc];
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 hourHandInnerColor];
+  paletteCopy = palette;
+  hourHandInnerColor = [paletteCopy hourHandInnerColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_hourHandInnerColor = v6;
 
-  v7 = [v4 hourHandOuterColor];
+  hourHandOuterColor = [paletteCopy hourHandOuterColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_hourHandOuterColor = v8;
 
-  v9 = [v4 minuteHandInnerColor];
+  minuteHandInnerColor = [paletteCopy minuteHandInnerColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_minuteHandInnerColor = v10;
 
-  v11 = [v4 minuteHandOuterColor];
+  minuteHandOuterColor = [paletteCopy minuteHandOuterColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_minuteHandOuterColor = v12;
 
-  v13 = [v4 centerGlowColor];
+  centerGlowColor = [paletteCopy centerGlowColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_centerGlowColor = v14;
 
-  v15 = [v4 secondHandColor];
+  secondHandColor = [paletteCopy secondHandColor];
   CLKUIConvertToRGBfFromUIColor();
   *self->_secondHandColor = v16;
 
-  v18 = [v4 tickColoration];
+  tickColoration = [paletteCopy tickColoration];
 
-  [v18 floatValue];
+  [tickColoration floatValue];
   self->_tickColoration = v17;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v15 = a3;
-  [v15 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v5 = v4;
   v7 = v6;
   screenScale = self->_screenScale;
@@ -108,17 +108,17 @@
     self->_resourceManager = 0;
   }
 
-  v11 = +[NTKColtanResourceManager sharedInstanceWithPixelFormat:](NTKColtanResourceManager, "sharedInstanceWithPixelFormat:", [v15 colorPixelFormat]);
+  v11 = +[NTKColtanResourceManager sharedInstanceWithPixelFormat:](NTKColtanResourceManager, "sharedInstanceWithPixelFormat:", [viewCopy colorPixelFormat]);
   v12 = self->_resourceManager;
   self->_resourceManager = v11;
 
   [(NTKColtanResourceManager *)self->_resourceManager addClient];
-  v13 = [[NTKColtanRenderer alloc] initWithSize:v5 * screenScale, v7 * screenScale];
+  screenScale = [[NTKColtanRenderer alloc] initWithSize:v5 * screenScale, v7 * screenScale];
   renderer = self->_renderer;
-  self->_renderer = v13;
+  self->_renderer = screenScale;
 
   [(NTKColtanRenderer *)self->_renderer setResourceManager:self->_resourceManager];
-  [v15 setPreferredFramesPerSecond:30];
+  [viewCopy setPreferredFramesPerSecond:30];
 }
 
 - (void)_updateRendererHandAngles
@@ -170,24 +170,24 @@ LABEL_9:
   [(NTKColtanRenderer *)self->_renderer setSecondAngle:v11];
 }
 
-- (void)setOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6
+- (void)setOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians
 {
-  v12 = a3;
-  if (v12)
+  dateCopy = date;
+  if (dateCopy)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     v11 = CACurrentMediaTime();
     self->_startOverrideTime = v11;
     self->_endOverrideTime = v11;
-    *&v11 = a6;
+    *&v11 = secondRadians;
     *&v11 = (*&v11 / 6.2832) - floor((*&v11 / 6.2832));
     self->_startSecondAngle = *&v11;
     self->_endSecondAngle = *&v11;
-    *&v11 = a5;
+    *&v11 = minuteRadians;
     *&v11 = (*&v11 / 6.2832) - floor((*&v11 / 6.2832));
     self->_startMinuteAngle = *&v11;
     self->_endMinuteAngle = *&v11;
-    *&v11 = a4;
+    *&v11 = radians;
     *&v11 = (*&v11 / 6.2832) - floor((*&v11 / 6.2832));
     self->_startHourAngle = *&v11;
     self->_endHourAngle = *&v11;
@@ -199,9 +199,9 @@ LABEL_9:
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
   if ((NTKEqualObjects() & 1) == 0)
   {
@@ -214,21 +214,21 @@ LABEL_9:
     }
 
     v12 = v11;
-    if (v7)
+    if (dateCopy)
     {
-      v13 = v7;
+      v13 = dateCopy;
     }
 
     else
     {
-      v13 = [v10 dateByAddingTimeInterval:a4];
+      v13 = [v10 dateByAddingTimeInterval:duration];
     }
 
     v14 = v13;
     v15 = CACurrentMediaTime();
     self->_startOverrideTime = v15;
-    self->_endOverrideTime = v15 + a4;
-    objc_storeStrong(&self->_overrideDate, a3);
+    self->_endOverrideTime = v15 + duration;
+    objc_storeStrong(&self->_overrideDate, date);
     calendar = self->_calendar;
     NTKHourMinuteSecondAnglesForTime();
     v17 = (0.0 / 6.2832) - floor((0.0 / 6.2832));
@@ -292,12 +292,12 @@ LABEL_9:
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [(NSCalendar *)self->_calendar timeZone];
-    v8 = [v7 name];
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    name = [timeZone name];
     v14 = 138412546;
     v15 = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%@ received significant time change with current timezone: %@", &v14, 0x16u);
   }
 
@@ -307,12 +307,12 @@ LABEL_9:
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [(NSCalendar *)self->_calendar timeZone];
-    v13 = [v12 name];
+    timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+    name2 = [timeZone2 name];
     v14 = 138412546;
     v15 = v11;
     v16 = 2112;
-    v17 = v13;
+    v17 = name2;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%@ did set new timezone after significant time change to: %@", &v14, 0x16u);
   }
 }

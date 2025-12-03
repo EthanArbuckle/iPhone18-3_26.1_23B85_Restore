@@ -1,24 +1,24 @@
 @interface SUWebView
-- (BOOL)getStatusBarStyle:(int64_t *)a3;
+- (BOOL)getStatusBarStyle:(int64_t *)style;
 - (NSString)title;
-- (SUWebView)initWithFrame:(CGRect)a3;
+- (SUWebView)initWithFrame:(CGRect)frame;
 - (id)windowScriptObject;
-- (void)_setPinnedHeaderView:(id)a3 withTopInsetAdjustment:(double)a4;
+- (void)_setPinnedHeaderView:(id)view withTopInsetAdjustment:(double)adjustment;
 - (void)beginSynchronousLayout;
 - (void)endSynchronousLayout;
-- (void)loadArchive:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setScrollingEnabled:(BOOL)a3;
-- (void)view:(id)a3 didSetFrame:(CGRect)a4 oldFrame:(CGRect)a5;
+- (void)loadArchive:(id)archive;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setScrollingEnabled:(BOOL)enabled;
+- (void)view:(id)view didSetFrame:(CGRect)frame oldFrame:(CGRect)oldFrame;
 @end
 
 @implementation SUWebView
 
-- (SUWebView)initWithFrame:(CGRect)a3
+- (SUWebView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SUWebView;
-  result = [(SUWebView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SUWebView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_originalShowsBackgroundShadow = -1;
@@ -33,8 +33,8 @@
   if (!synchronousLayoutCount)
   {
     [(SUWebView *)self _setDrawInWebThread:0];
-    v4 = [(SUWebView *)self _browserView];
-    [v4 setPaused:1];
+    _browserView = [(SUWebView *)self _browserView];
+    [_browserView setPaused:1];
 
     synchronousLayoutCount = self->_synchronousLayoutCount;
   }
@@ -53,11 +53,11 @@
     self->_synchronousLayoutCount = v5;
     if (v3)
     {
-      v7 = [(SUWebView *)self _browserView];
-      [v7 setPaused:0];
+      _browserView = [(SUWebView *)self _browserView];
+      [_browserView setPaused:0];
 
-      v8 = [(SUWebView *)self _browserView];
-      [v8 forceLayout];
+      _browserView2 = [(SUWebView *)self _browserView];
+      [_browserView2 forceLayout];
 
       [(SUWebView *)self forceDisplayIfNeeded];
 
@@ -66,20 +66,20 @@
   }
 }
 
-- (BOOL)getStatusBarStyle:(int64_t *)a3
+- (BOOL)getStatusBarStyle:(int64_t *)style
 {
   WebThreadLock();
-  v5 = [(SUWebView *)self _browserView];
-  v6 = [v5 webView];
-  v7 = [v6 mainFrame];
-  v8 = [v7 DOMDocument];
+  _browserView = [(SUWebView *)self _browserView];
+  webView = [_browserView webView];
+  mainFrame = [webView mainFrame];
+  dOMDocument = [mainFrame DOMDocument];
 
-  if (!v8)
+  if (!dOMDocument)
   {
     goto LABEL_7;
   }
 
-  v9 = [v8 getElementsByTagName:@"meta"];
+  v9 = [dOMDocument getElementsByTagName:@"meta"];
   if (![v9 length])
   {
 LABEL_6:
@@ -108,11 +108,11 @@ LABEL_7:
     }
   }
 
-  v16 = [MEMORY[0x1E69DD2B8] webClipStatusBarStyleForWebDocumentView:v5];
+  v16 = [MEMORY[0x1E69DD2B8] webClipStatusBarStyleForWebDocumentView:_browserView];
 
-  if (a3)
+  if (style)
   {
-    *a3 = v16;
+    *style = v16;
   }
 
   v14 = 1;
@@ -121,10 +121,10 @@ LABEL_8:
   return v14;
 }
 
-- (void)loadArchive:(id)a3
+- (void)loadArchive:(id)archive
 {
-  v4 = a3;
-  v3 = v4;
+  archiveCopy = archive;
+  v3 = archiveCopy;
   WebThreadRun();
 }
 
@@ -136,49 +136,49 @@ void __25__SUWebView_loadArchive___block_invoke(uint64_t a1)
   [v3 loadArchive:*(a1 + 40)];
 }
 
-- (void)setScrollingEnabled:(BOOL)a3
+- (void)setScrollingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SUWebView *)self _scrollView];
-  *(self + 456) = *(self + 456) & 0xFE | !v3;
-  [v5 setScrollsToTop:v3];
-  [v5 setScrollEnabled:v3];
+  enabledCopy = enabled;
+  _scrollView = [(SUWebView *)self _scrollView];
+  *(self + 456) = *(self + 456) & 0xFE | !enabledCopy;
+  [_scrollView setScrollsToTop:enabledCopy];
+  [_scrollView setScrollEnabled:enabledCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(SUWebView *)self _browserView];
-  v3 = [v2 webView];
-  v4 = [v3 mainFrameTitle];
+  _browserView = [(SUWebView *)self _browserView];
+  webView = [_browserView webView];
+  mainFrameTitle = [webView mainFrameTitle];
 
-  return v4;
+  return mainFrameTitle;
 }
 
 - (id)windowScriptObject
 {
-  v3 = [(SUWebView *)self _browserView];
-  v4 = [v3 webView];
-  v5 = [v4 windowScriptObject];
+  _browserView = [(SUWebView *)self _browserView];
+  webView = [_browserView webView];
+  windowScriptObject = [webView windowScriptObject];
 
   if (([(SUWebView *)self isLoading]& 1) != 0)
   {
-    v6 = [v5 valueForKey:@"document"];
+    v6 = [windowScriptObject valueForKey:@"document"];
     v7 = [v6 valueForKey:@"body"];
 
     if (!v7)
     {
-      v8 = [(SUWebView *)self _browserView];
-      v9 = [v8 loadsSynchronously];
-      [v8 setLoadsSynchronously:1];
+      _browserView2 = [(SUWebView *)self _browserView];
+      loadsSynchronously = [_browserView2 loadsSynchronously];
+      [_browserView2 setLoadsSynchronously:1];
       [(SUWebView *)self loadHTMLString:@"<html><head></head><body></body></html>" baseURL:0];
-      [v8 setLoadsSynchronously:v9];
+      [_browserView2 setLoadsSynchronously:loadsSynchronously];
     }
 
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [v5 valueForKey:@"document"];
+    v11 = [windowScriptObject valueForKey:@"document"];
     [v10 setObject:v11 forKey:@"document"];
 
-    v12 = [v5 valueForKey:@"iTunes"];
+    v12 = [windowScriptObject valueForKey:@"iTunes"];
     [v10 setObject:v12 forKey:@"iTunes"];
 
     v13 = [[SUScriptDictionary alloc] initWithDictionary:v10];
@@ -186,44 +186,44 @@ void __25__SUWebView_loadArchive___block_invoke(uint64_t a1)
 
   else
   {
-    v13 = v5;
+    v13 = windowScriptObject;
   }
 
   return v13;
 }
 
-- (void)_setPinnedHeaderView:(id)a3 withTopInsetAdjustment:(double)a4
+- (void)_setPinnedHeaderView:(id)view withTopInsetAdjustment:(double)adjustment
 {
-  v7 = a3;
-  if (self->_pinnedHeaderView != v7)
+  viewCopy = view;
+  if (self->_pinnedHeaderView != viewCopy)
   {
-    v13 = v7;
-    v8 = [(SUWebView *)self _scrollView];
+    v13 = viewCopy;
+    _scrollView = [(SUWebView *)self _scrollView];
     [(UIView *)self->_pinnedHeaderView removeFromSuperview];
-    objc_storeStrong(&self->_pinnedHeaderView, a3);
+    objc_storeStrong(&self->_pinnedHeaderView, view);
     if (self->_pinnedHeaderView)
     {
-      [v8 bounds];
+      [_scrollView bounds];
       v10 = v9;
       [(UIView *)v13 frame];
       v12 = v11;
       [(UIView *)self->_pinnedHeaderView setAutoresizingMask:2];
-      [(UIView *)self->_pinnedHeaderView setFrame:0.0, a4, v10, v12];
-      [v8 _addContentSubview:self->_pinnedHeaderView atBack:0];
+      [(UIView *)self->_pinnedHeaderView setFrame:0.0, adjustment, v10, v12];
+      [_scrollView _addContentSubview:self->_pinnedHeaderView atBack:0];
     }
 
-    self->_pinnedHeaderInsetAdjustment = a4;
+    self->_pinnedHeaderInsetAdjustment = adjustment;
 
-    v7 = v13;
+    viewCopy = v13;
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
-  [v5 contentInset];
+  scrollCopy = scroll;
+  [scrollCopy contentInset];
   v7 = v6;
-  [v5 contentOffset];
+  [scrollCopy contentOffset];
   v10 = v9;
   originalBackgroundColor = self->_originalBackgroundColor;
   if (v8 >= -v7)
@@ -238,7 +238,7 @@ void __25__SUWebView_loadArchive___block_invoke(uint64_t a1)
     originalShowsBackgroundShadow = self->_originalShowsBackgroundShadow;
     if (originalShowsBackgroundShadow != 255)
     {
-      [v5 _setShowsBackgroundShadow:originalShowsBackgroundShadow != 0];
+      [scrollCopy _setShowsBackgroundShadow:originalShowsBackgroundShadow != 0];
       self->_originalShowsBackgroundShadow = -1;
     }
 
@@ -255,17 +255,17 @@ void __25__SUWebView_loadArchive___block_invoke(uint64_t a1)
     v12 = v8;
     if (!originalBackgroundColor && self->_topBackgroundColor)
     {
-      v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
       v14 = self->_originalBackgroundColor;
-      self->_originalBackgroundColor = v13;
+      self->_originalBackgroundColor = systemBackgroundColor;
 
       [(SUWebView *)self setBackgroundColor:self->_topBackgroundColor];
     }
 
     if (self->_showsTopBackgroundShadow && self->_originalShowsBackgroundShadow == 255)
     {
-      self->_originalShowsBackgroundShadow = [v5 _showsBackgroundShadow];
-      [v5 _setShowsBackgroundShadow:self->_showsTopBackgroundShadow];
+      self->_originalShowsBackgroundShadow = [scrollCopy _showsBackgroundShadow];
+      [scrollCopy _setShowsBackgroundShadow:self->_showsTopBackgroundShadow];
     }
 
     pinnedHeaderView = self->_pinnedHeaderView;
@@ -281,30 +281,30 @@ void __25__SUWebView_loadArchive___block_invoke(uint64_t a1)
   {
     v18.receiver = self;
     v18.super_class = SUWebView;
-    [(SUWebView *)&v18 scrollViewDidScroll:v5];
+    [(SUWebView *)&v18 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)view:(id)a3 didSetFrame:(CGRect)a4 oldFrame:(CGRect)a5
+- (void)view:(id)view didSetFrame:(CGRect)frame oldFrame:(CGRect)oldFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
-  v15 = [(SUWebView *)self delegate];
+  height = oldFrame.size.height;
+  width = oldFrame.size.width;
+  y = oldFrame.origin.y;
+  x = oldFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  viewCopy = view;
+  delegate = [(SUWebView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v15 webView:self documentViewDidSetFrame:{v12, v11, v10, v9}];
+    [delegate webView:self documentViewDidSetFrame:{v12, v11, v10, v9}];
   }
 
   v16.receiver = self;
   v16.super_class = SUWebView;
-  [(SUWebView *)&v16 view:v14 didSetFrame:v12 oldFrame:v11, v10, v9, x, y, width, height];
+  [(SUWebView *)&v16 view:viewCopy didSetFrame:v12 oldFrame:v11, v10, v9, x, y, width, height];
 }
 
 @end

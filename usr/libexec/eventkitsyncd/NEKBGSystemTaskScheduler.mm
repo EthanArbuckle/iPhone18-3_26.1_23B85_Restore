@@ -1,6 +1,6 @@
 @interface NEKBGSystemTaskScheduler
 - (NEKBGSystemTaskScheduler)init;
-- (void)_handleResetSyncTask:(id)a3;
+- (void)_handleResetSyncTask:(id)task;
 - (void)requestResetSync;
 @end
 
@@ -49,7 +49,7 @@
     v7 = +[BGSystemTaskScheduler sharedScheduler];
     v14 = 0;
     v8 = [v7 submitTaskRequest:v5 error:&v14];
-    v6 = v14;
+    identifier2 = v14;
 
     v9 = *(qword_1000D18A8 + 8);
     if (v8)
@@ -57,21 +57,21 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = v9;
-        v11 = [v5 identifier];
+        identifier = [v5 identifier];
         *buf = 138412290;
-        v16 = v11;
+        v16 = identifier;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Task submitted with identifier: %@", buf, 0xCu);
       }
 
       v12 = +[NEKEnvironment instance];
-      v13 = [v12 tinyStore];
+      tinyStore = [v12 tinyStore];
       +[NSDate timeIntervalSinceReferenceDate];
-      [v13 setDoubleValue:@"resetSyncRequested" forKey:?];
+      [tinyStore setDoubleValue:@"resetSyncRequested" forKey:?];
     }
 
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_10006F2F0(v9, v5, v6);
+      sub_10006F2F0(v9, v5, identifier2);
     }
 
     goto LABEL_10;
@@ -81,32 +81,32 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [v3 identifier];
+    identifier2 = [v3 identifier];
     *buf = 138412290;
-    v16 = v6;
+    v16 = identifier2;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Task already exists, bail out for identifier: %@", buf, 0xCu);
 LABEL_10:
   }
 }
 
-- (void)_handleResetSyncTask:(id)a3
+- (void)_handleResetSyncTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v4 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [v3 identifier];
+    identifier = [taskCopy identifier];
     v9 = 138412290;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Handling task with identifier: %@", &v9, 0xCu);
   }
 
   v7 = +[NEKEnvironment instance];
-  v8 = [v7 syncController];
-  [v8 setNeedsFullSync];
+  syncController = [v7 syncController];
+  [syncController setNeedsFullSync];
 
-  [v3 setTaskCompleted];
+  [taskCopy setTaskCompleted];
 }
 
 @end

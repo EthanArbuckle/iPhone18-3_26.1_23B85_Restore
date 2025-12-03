@@ -1,17 +1,17 @@
 @interface HDSPSleepWidgetNotOnboardedState
-- (void)sleepScheduleModelDidChange:(id)a3;
+- (void)sleepScheduleModelDidChange:(id)change;
 @end
 
 @implementation HDSPSleepWidgetNotOnboardedState
 
-- (void)sleepScheduleModelDidChange:(id)a3
+- (void)sleepScheduleModelDidChange:(id)change
 {
-  v6 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v6 infoProvider];
-  if ([v4 isOnboarded])
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
+  if ([infoProvider isOnboarded])
   {
-    v5 = [(HKSPStateMachineState *)self stateMachine];
-    [v5 updateState];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 updateState];
   }
 }
 

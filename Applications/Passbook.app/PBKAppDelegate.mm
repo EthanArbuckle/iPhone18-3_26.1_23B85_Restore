@@ -1,43 +1,43 @@
 @interface PBKAppDelegate
-- (BOOL)_handleWalletUniversalLinkableURLWithHost:(id)a3 pathComponents:(id)a4 urlComponents:(id)a5;
-- (BOOL)_isValidRelayServerURL:(id)a3 outPathComponents:(id *)a4;
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 shouldRestoreSecureApplicationState:(id)a4;
-- (BOOL)application:(id)a3 shouldSaveSecureApplicationState:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)_handleWalletUniversalLinkableURLWithHost:(id)host pathComponents:(id)components urlComponents:(id)urlComponents;
+- (BOOL)_isValidRelayServerURL:(id)l outPathComponents:(id *)components;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application shouldRestoreSecureApplicationState:(id)state;
+- (BOOL)application:(id)application shouldSaveSecureApplicationState:(id)state;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 - (BOOL)canPresentLaunchPrompts;
 - (PBKAppDelegate)init;
-- (id)_bankConnectAuthorizationRedirectURLFromPathComponents:(id)a3 queryItems:(id)a4;
-- (id)_parseCampaignAttributionReferrerIdentifier:(id)a3;
-- (id)_parseReferrerIdentifier:(id)a3;
+- (id)_bankConnectAuthorizationRedirectURLFromPathComponents:(id)components queryItems:(id)items;
+- (id)_parseCampaignAttributionReferrerIdentifier:(id)identifier;
+- (id)_parseReferrerIdentifier:(id)identifier;
 - (id)applicationDocumentsDirectory;
 - (void)_createForegroundActiveResources;
 - (void)_destroyForegroundActiveResources;
 - (void)_executeForegroundActiveBlocksIfPossible;
-- (void)_executeWhenApplicationForegroundActive:(id)a3;
-- (void)_handlePassSharingActionForUniqueID:(id)a3 presentationBlock:(id)a4 completion:(id)a5;
-- (void)_handleSpotlightWithUserActivity:(id)a3;
-- (void)_handleUniversalLinkWithUserActivity:(id)a3;
-- (void)_presentBankConnectAuthorizationViewControllerWithRedirectURL:(id)a3;
+- (void)_executeWhenApplicationForegroundActive:(id)active;
+- (void)_handlePassSharingActionForUniqueID:(id)d presentationBlock:(id)block completion:(id)completion;
+- (void)_handleSpotlightWithUserActivity:(id)activity;
+- (void)_handleUniversalLinkWithUserActivity:(id)activity;
+- (void)_presentBankConnectAuthorizationViewControllerWithRedirectURL:(id)l;
 - (void)_presentLaunchPromptsIfNeeded;
-- (void)_setForegroundActive:(BOOL)a3;
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)consumeDoublePressUpForButtonKind:(int64_t)a3;
+- (void)_setForegroundActive:(BOOL)active;
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler;
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)applicationWillResignActive:(id)active;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)consumeDoublePressUpForButtonKind:(int64_t)kind;
 - (void)dealloc;
-- (void)handleDeletePassRequestWithPass:(id)a3;
-- (void)openSettingsForNotification:(id)a3;
-- (void)presentAccountServiceSchedulePaymentWithUniqueID:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6;
-- (void)presentAddMoneyForPassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)presentDeletePassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)presentSearchForPassWithUniqueID:(id)a3 withQuery:(id)a4 completion:(id)a5;
-- (void)willPresentNotification:(id)a3 withCompletionHandler:(id)a4;
+- (void)handleDeletePassRequestWithPass:(id)pass;
+- (void)openSettingsForNotification:(id)notification;
+- (void)presentAccountServiceSchedulePaymentWithUniqueID:(id)d billPayAmountType:(int64_t)type billPayAmount:(id)amount completion:(id)completion;
+- (void)presentAddMoneyForPassWithUniqueID:(id)d completion:(id)completion;
+- (void)presentDeletePassWithUniqueID:(id)d completion:(id)completion;
+- (void)presentSearchForPassWithUniqueID:(id)d withQuery:(id)query completion:(id)completion;
+- (void)willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation PBKAppDelegate
@@ -134,8 +134,8 @@
       lockButtonObserver = self->_lockButtonObserver;
       self->_lockButtonObserver = v8;
 
-      v10 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-      v11 = [v10 queueAssertion:5 completion:0];
+      pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+      v11 = [pKGetClassNFHardwareManager() queueAssertion:5 completion:0];
 
       v12 = PKLogFacilityTypeGetObject();
       informativeForegroundAssertion = v12;
@@ -190,8 +190,8 @@
 
 - (BOOL)canPresentLaunchPrompts
 {
-  v3 = [(PKPassGroupsViewController *)self->_cardsViewController pkui_frontMostViewController];
-  v4 = v3 == self->_cardsViewController && self->_foregroundActive;
+  pkui_frontMostViewController = [(PKPassGroupsViewController *)self->_cardsViewController pkui_frontMostViewController];
+  v4 = pkui_frontMostViewController == self->_cardsViewController && self->_foregroundActive;
 
   return v4;
 }
@@ -199,9 +199,9 @@
 - (void)_presentLaunchPromptsIfNeeded
 {
   launchAuthorizationPromptController = self->_launchAuthorizationPromptController;
-  v4 = [(PKPassGroupsViewController *)self->_cardsViewController groupsController];
-  v3 = [v4 passes];
-  [(PKLaunchAuthorizationPromptController *)launchAuthorizationPromptController presentLaunchPromptsForPassesIfNeeded:v3];
+  groupsController = [(PKPassGroupsViewController *)self->_cardsViewController groupsController];
+  passes = [groupsController passes];
+  [(PKLaunchAuthorizationPromptController *)launchAuthorizationPromptController presentLaunchPromptsForPassesIfNeeded:passes];
 }
 
 - (void)dealloc
@@ -217,18 +217,18 @@
   [(PBKAppDelegate *)&v5 dealloc];
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  applicationCopy = application;
   v8 = +[PSListController appearance];
   v9 = +[UIColor labelColor];
   [v8 setTextColor:v9];
 
   v10 = +[PKUIForegroundActiveArbiter sharedInstance];
-  v11 = [v7 applicationState];
+  applicationState = [applicationCopy applicationState];
 
-  if (v11 != 2)
+  if (applicationState != 2)
   {
     [v10 willEnterForegroundPrelude];
   }
@@ -240,23 +240,23 @@
   window = self->_window;
   self->_window = v14;
 
-  v16 = [[PKPassGroupsViewController alloc] _init_application];
+  _init_application = [[PKPassGroupsViewController alloc] _init_application];
   cardsViewController = self->_cardsViewController;
-  self->_cardsViewController = v16;
+  self->_cardsViewController = _init_application;
 
   v18 = [[PKPassGroupsViewNavigationController alloc] initWithPassGroupsViewController:self->_cardsViewController];
   navigationController = self->_navigationController;
   self->_navigationController = v18;
 
   [(UIWindow *)self->_window setRootViewController:self->_navigationController];
-  v20 = [(UIWindow *)self->_window windowScene];
+  windowScene = [(UIWindow *)self->_window windowScene];
   if (_os_feature_enabled_impl() && (AXAssistiveAccessEnabled() & 1) == 0)
   {
     v23 = self->_window;
     v24 = +[UIColor clearColor];
     [(UIWindow *)v23 setBackgroundColor:v24];
 
-    [v20 _setBackgroundStyle:1];
+    [windowScene _setBackgroundStyle:1];
     v25 = self->_navigationController;
     v26 = PKPGVNCBackgroundVisualEffect();
     [(PKPassGroupsViewNavigationController *)v25 setupBackgroundViewWithVisualEffect:v26];
@@ -268,7 +268,7 @@
     v22 = +[PKPassGroupStackView backgroundColor];
     [(UIWindow *)v21 setBackgroundColor:v22];
 
-    [v20 _setBackgroundStyle:0];
+    [windowScene _setBackgroundStyle:0];
   }
 
   [(PKPassGroupsViewController *)self->_cardsViewController presentOffscreenAnimated:0 withCompletionHandler:0];
@@ -283,24 +283,24 @@
   [v29 setCoordinator:self];
 
   [PKWalletAppShortcutProviderWrapper updateAppShortcutParametersWithCompletion:0];
-  if (v11 != 2)
+  if (applicationState != 2)
   {
     [v10 willEnterForegroundPostlude];
   }
 
-  v30 = [v6 objectForKey:UIApplicationLaunchOptionsURLKey];
+  v30 = [optionsCopy objectForKey:UIApplicationLaunchOptionsURLKey];
 
   if (!v30)
   {
-    v31 = [(PKPassGroupsViewController *)self->_cardsViewController itemIdentifierForFrontmostDiscoveryCard];
-    if (v31)
+    itemIdentifierForFrontmostDiscoveryCard = [(PKPassGroupsViewController *)self->_cardsViewController itemIdentifierForFrontmostDiscoveryCard];
+    if (itemIdentifierForFrontmostDiscoveryCard)
     {
       v32 = +[UIApplication sharedApplication];
-      v33 = [v32 applicationIconBadgeNumber];
+      applicationIconBadgeNumber = [v32 applicationIconBadgeNumber];
 
       v34 = +[PKDiscoveryService sharedInstance];
       v35 = v34;
-      if (v33 > 0)
+      if (applicationIconBadgeNumber > 0)
       {
         v36 = 2;
       }
@@ -310,20 +310,20 @@
         v36 = 3;
       }
 
-      [v34 discoveryItemWithIdentifier:v31 launchedWithReferralSource:v36];
+      [v34 discoveryItemWithIdentifier:itemIdentifierForFrontmostDiscoveryCard launchedWithReferralSource:v36];
     }
   }
 
   return 1;
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v3 = +[PKUIForegroundActiveArbiter sharedInstance];
   [v3 willResignActive];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   if ([(PBKAppDelegate *)self _shouldBeginSubjectReportingWallet])
   {
@@ -347,9 +347,9 @@
   [v5 willEnterForegroundPostlude];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
+  backgroundCopy = background;
   if ([(PBKAppDelegate *)self _shouldEndSubjectReportingWallet])
   {
     [PKAnalyticsReporter endSubjectReporting:PKAnalyticsSubjectWallet];
@@ -384,9 +384,9 @@
   v12 = +[PKUIForegroundActiveArbiter sharedInstance];
   [v12 didEnterBackground];
 
-  [v4 pkui_resetSharedRootAuthenticationContext];
+  [backgroundCopy pkui_resetSharedRootAuthenticationContext];
   v13 = objc_autoreleasePoolPush();
-  v14 = [(PKPassGroupsViewController *)self->_cardsViewController presentedViewController];
+  presentedViewController = [(PKPassGroupsViewController *)self->_cardsViewController presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -394,24 +394,24 @@
     goto LABEL_36;
   }
 
-  v16 = [v14 pkui_frontMostViewController];
+  pkui_frontMostViewController = [presentedViewController pkui_frontMostViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v16 presentingViewController];
+    presentingViewController = [pkui_frontMostViewController presentingViewController];
 
-    v16 = v17;
+    pkui_frontMostViewController = presentingViewController;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v16 viewControllers];
-    v19 = [v16 pkui_disablesAutomaticDismissalUponEnteringBackground];
-    if ((v19 & 1) == 0 && v18)
+    viewControllers = [pkui_frontMostViewController viewControllers];
+    pkui_disablesAutomaticDismissalUponEnteringBackground = [pkui_frontMostViewController pkui_disablesAutomaticDismissalUponEnteringBackground];
+    if ((pkui_disablesAutomaticDismissalUponEnteringBackground & 1) == 0 && viewControllers)
     {
-      v20 = [v18 firstObject];
-      if ([v20 pkui_disablesAutomaticDismissalUponEnteringBackground])
+      firstObject = [viewControllers firstObject];
+      if ([firstObject pkui_disablesAutomaticDismissalUponEnteringBackground])
       {
         v15 = 0;
 LABEL_34:
@@ -419,10 +419,10 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v21 = [v18 lastObject];
-      v32 = [v21 pkui_disablesAutomaticDismissalUponEnteringBackground];
+      lastObject = [viewControllers lastObject];
+      pkui_disablesAutomaticDismissalUponEnteringBackground2 = [lastObject pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-      if (v32)
+      if (pkui_disablesAutomaticDismissalUponEnteringBackground2)
       {
 LABEL_29:
         v15 = 0;
@@ -430,19 +430,19 @@ LABEL_29:
       }
 
 LABEL_22:
-      v22 = v18;
-      v23 = [v16 childViewControllers];
-      v20 = [v23 lastObject];
+      v22 = viewControllers;
+      childViewControllers = [pkui_frontMostViewController childViewControllers];
+      firstObject = [childViewControllers lastObject];
 
-      if (v20)
+      if (firstObject)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [v20 viewControllers];
+          viewControllers = [firstObject viewControllers];
 
-          v24 = [v18 firstObject];
-          if ([v24 pkui_disablesAutomaticDismissalUponEnteringBackground])
+          firstObject2 = [viewControllers firstObject];
+          if ([firstObject2 pkui_disablesAutomaticDismissalUponEnteringBackground])
           {
 
             v15 = 0;
@@ -451,25 +451,25 @@ LABEL_33:
             goto LABEL_34;
           }
 
-          v26 = [v18 lastObject];
-          v33 = [v26 pkui_disablesAutomaticDismissalUponEnteringBackground];
+          lastObject2 = [viewControllers lastObject];
+          pkui_disablesAutomaticDismissalUponEnteringBackground3 = [lastObject2 pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-          if (v33)
+          if (pkui_disablesAutomaticDismissalUponEnteringBackground3)
           {
             goto LABEL_29;
           }
 
-          v22 = v18;
+          v22 = viewControllers;
         }
 
         else
         {
-          v25 = [v20 pkui_disablesAutomaticDismissalUponEnteringBackground];
+          pkui_disablesAutomaticDismissalUponEnteringBackground4 = [firstObject pkui_disablesAutomaticDismissalUponEnteringBackground];
 
-          if (v25)
+          if (pkui_disablesAutomaticDismissalUponEnteringBackground4)
           {
             v15 = 0;
-            v18 = v22;
+            viewControllers = v22;
 LABEL_30:
             v7 = &selRef_presentShareActivationWithShareIdentifier_;
             goto LABEL_35;
@@ -477,20 +477,20 @@ LABEL_30:
         }
       }
 
-      v20 = +[PKDismissalPreventionAssertionManager sharedInstance];
-      v15 = [v20 shouldPreventAutomaticDismissal] ^ 1;
-      v18 = v22;
+      firstObject = +[PKDismissalPreventionAssertionManager sharedInstance];
+      v15 = [firstObject shouldPreventAutomaticDismissal] ^ 1;
+      viewControllers = v22;
       goto LABEL_33;
     }
   }
 
   else
   {
-    v19 = [v16 pkui_disablesAutomaticDismissalUponEnteringBackground];
-    v18 = 0;
+    pkui_disablesAutomaticDismissalUponEnteringBackground = [pkui_frontMostViewController pkui_disablesAutomaticDismissalUponEnteringBackground];
+    viewControllers = 0;
   }
 
-  if ((v19 & 1) == 0)
+  if ((pkui_disablesAutomaticDismissalUponEnteringBackground & 1) == 0)
   {
     goto LABEL_22;
   }
@@ -531,7 +531,7 @@ LABEL_36:
   self->_needsRegionSupportUpdate = 1;
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   [(PKLaunchAuthorizationPromptController *)self->_launchAuthorizationPromptController enableLaunchPromptsForSession];
   if ([(PKPassGroupsViewController *)self->_cardsViewController passesAreOutdated])
@@ -575,7 +575,7 @@ LABEL_36:
   }
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
   v4 = +[PKUIForegroundActiveArbiter sharedInstance];
   [v4 willTerminate];
@@ -583,53 +583,53 @@ LABEL_36:
   [(PBKAppDelegate *)self _destroyForegroundActiveResources];
 }
 
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_cardsViewController && [v6 applicationState] == 2)
+  applicationCopy = application;
+  handlerCopy = handler;
+  if (self->_cardsViewController && [applicationCopy applicationState] == 2)
   {
     cardsViewController = self->_cardsViewController;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100002A98;
     v9[3] = &unk_10001CC88;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = applicationCopy;
+    selfCopy = self;
+    v12 = handlerCopy;
     [(PKPassGroupsViewController *)cardsViewController reloadPassesWithCompletion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)application:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   [(PKLaunchAuthorizationPromptController *)self->_launchAuthorizationPromptController disableLaunchPromptsForSession];
-  v9 = [v7 type];
-  v10 = [v9 isEqualToString:PKQuickActionAddCardAction];
+  type = [itemCopy type];
+  v10 = [type isEqualToString:PKQuickActionAddCardAction];
 
   if (!v10)
   {
-    v12 = [v7 type];
-    if ([v12 isEqualToString:PKQuickActionOpenPassAction])
+    type2 = [itemCopy type];
+    if ([type2 isEqualToString:PKQuickActionOpenPassAction])
     {
     }
 
     else
     {
-      v13 = [v7 type];
-      v14 = [v13 isEqualToString:PKQuickActionLastTransactionAction];
+      type3 = [itemCopy type];
+      v14 = [type3 isEqualToString:PKQuickActionLastTransactionAction];
 
       if (!v14)
       {
-        v17 = [v7 type];
-        v18 = [v17 isEqualToString:PKQuickActionNearbyPeerPayment];
+        type4 = [itemCopy type];
+        v18 = [type4 isEqualToString:PKQuickActionNearbyPeerPayment];
 
         if (!v18)
         {
@@ -657,8 +657,8 @@ LABEL_8:
       }
     }
 
-    v15 = [v7 userInfo];
-    v16 = [v15 objectForKey:PKQuickActionPassUniqueIDKKey];
+    userInfo = [itemCopy userInfo];
+    v16 = [userInfo objectForKey:PKQuickActionPassUniqueIDKKey];
 
     [(PKPassGroupsViewController *)self->_cardsViewController presentPassWithUniqueID:v16 animated:1 completionHandler:0];
     goto LABEL_8;
@@ -671,21 +671,21 @@ LABEL_8:
   }
 
 LABEL_9:
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  lCopy = l;
+  optionsCopy = options;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = lCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Processing URL %{public}@", buf, 0xCu);
   }
 
@@ -695,20 +695,20 @@ LABEL_9:
   v13[2] = sub_100002F34;
   v13[3] = &unk_10001CE90;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = lCopy;
+  v15 = optionsCopy;
+  v10 = optionsCopy;
+  v11 = lCopy;
   [(PBKAppDelegate *)self _executeWhenApplicationForegroundActive:v13];
 
   return 1;
 }
 
-- (id)_bankConnectAuthorizationRedirectURLFromPathComponents:(id)a3 queryItems:(id)a4
+- (id)_bankConnectAuthorizationRedirectURLFromPathComponents:(id)components queryItems:(id)items
 {
-  v5 = a4;
-  v6 = [a3 lastObject];
-  v7 = [v6 isEqualToString:PKURLSubactionRouteAuthorization];
+  itemsCopy = items;
+  lastObject = [components lastObject];
+  v7 = [lastObject isEqualToString:PKURLSubactionRouteAuthorization];
 
   if (v7)
   {
@@ -716,7 +716,7 @@ LABEL_9:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v5;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -733,17 +733,17 @@ LABEL_9:
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [v14 value];
-          if ([v16 length])
+          name = [v14 name];
+          value = [v14 value];
+          if ([value length])
           {
-            v17 = v15;
+            v17 = name;
             v18 = v17;
             if (v17 == v12)
             {
 
 LABEL_21:
-              v21 = [NSURL URLWithString:v16];
+              v21 = [NSURL URLWithString:value];
 
               goto LABEL_22;
             }
@@ -796,27 +796,27 @@ LABEL_22:
   return v21;
 }
 
-- (void)_presentBankConnectAuthorizationViewControllerWithRedirectURL:(id)a3
+- (void)_presentBankConnectAuthorizationViewControllerWithRedirectURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   cardsViewController = self->_cardsViewController;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006D64;
   v7[3] = &unk_10001CEB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   [(PKPassGroupsViewController *)cardsViewController presentAuthorizationFlowAnimated:1 completion:v7];
 }
 
-- (id)_parseReferrerIdentifier:(id)a3
+- (id)_parseReferrerIdentifier:(id)identifier
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  identifierCopy = identifier;
+  v4 = [identifierCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -828,15 +828,15 @@ LABEL_22:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifierCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v9 value];
-        if ([v11 length])
+        name = [v9 name];
+        value = [v9 value];
+        if ([value length])
         {
-          v12 = v10;
+          v12 = name;
           v13 = v12;
           if (v12 == v7)
           {
@@ -871,7 +871,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [identifierCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -881,20 +881,20 @@ LABEL_19:
     }
   }
 
-  v11 = 0;
+  value = 0;
 LABEL_20:
 
-  return v11;
+  return value;
 }
 
-- (id)_parseCampaignAttributionReferrerIdentifier:(id)a3
+- (id)_parseCampaignAttributionReferrerIdentifier:(id)identifier
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  identifierCopy = identifier;
+  v4 = [identifierCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -906,15 +906,15 @@ LABEL_20:
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(identifierCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v9 value];
-        if ([v11 length])
+        name = [v9 name];
+        value = [v9 value];
+        if ([value length])
         {
-          v12 = v10;
+          v12 = name;
           v13 = v12;
           if (v12 == v7)
           {
@@ -949,7 +949,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [identifierCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v5)
       {
         continue;
@@ -959,23 +959,23 @@ LABEL_19:
     }
   }
 
-  v11 = 0;
+  value = 0;
 LABEL_20:
 
-  return v11;
+  return value;
 }
 
-- (BOOL)_handleWalletUniversalLinkableURLWithHost:(id)a3 pathComponents:(id)a4 urlComponents:(id)a5
+- (BOOL)_handleWalletUniversalLinkableURLWithHost:(id)host pathComponents:(id)components urlComponents:(id)urlComponents
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v522 = self;
+  hostCopy = host;
+  componentsCopy = components;
+  urlComponentsCopy = urlComponents;
+  selfCopy = self;
   [(PKLaunchAuthorizationPromptController *)self->_launchAuthorizationPromptController disableLaunchPromptsForSession];
-  v11 = [v10 queryItems];
-  v12 = [v9 count];
+  queryItems = [urlComponentsCopy queryItems];
+  v12 = [componentsCopy count];
   v13 = PKURLActionSetup;
-  v14 = v8;
+  v14 = hostCopy;
   v521 = v14;
   if (v13 == v14)
   {
@@ -996,8 +996,8 @@ LABEL_20:
   if (v16)
   {
 LABEL_7:
-    v17 = [(PBKAppDelegate *)v522 _parseReferrerIdentifier:v11];
-    v18 = [(PBKAppDelegate *)v522 _parseCampaignAttributionReferrerIdentifier:v11];
+    v17 = [(PBKAppDelegate *)selfCopy _parseReferrerIdentifier:queryItems];
+    v18 = [(PBKAppDelegate *)selfCopy _parseCampaignAttributionReferrerIdentifier:queryItems];
     if (v18)
     {
       +[PKCampaignAttributionSessionManager restartSession];
@@ -1011,7 +1011,7 @@ LABEL_7:
       goto LABEL_78;
     }
 
-    v19 = [v9 objectAtIndex:1];
+    v19 = [componentsCopy objectAtIndex:1];
     v20 = PKURLActionFeature;
     v21 = v19;
     v22 = v21;
@@ -1040,21 +1040,21 @@ LABEL_7:
 LABEL_78:
         if (PKEqualObjects())
         {
-          [(PKPassGroupsViewController *)v522->_cardsViewController presentPaymentSetupInMode:5 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+          [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPaymentSetupInMode:5 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
 LABEL_184:
-          LOBYTE(v33) = 1;
+          LOBYTE(fragment2) = 1;
           goto LABEL_185;
         }
 
         if (PKEqualObjects())
         {
-          [(PKPassGroupsViewController *)v522->_cardsViewController presentPaymentSetupInMode:6 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+          [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPaymentSetupInMode:6 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
           goto LABEL_184;
         }
 
         if (!PKEqualObjects())
         {
-          [(PKPassGroupsViewController *)v522->_cardsViewController presentPaymentSetupInMode:v23 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
+          [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPaymentSetupInMode:v23 referrerIdentifier:v17 referralSource:0 campaignIdentifier:v18 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:0 productIdentifiers:0 sectionIdentifier:0];
           goto LABEL_184;
         }
 
@@ -1062,7 +1062,7 @@ LABEL_184:
         if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v582 = v10;
+          v582 = urlComponentsCopy;
           _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "Received subcredential pairing url: %@", buf, 0xCu);
         }
 
@@ -1070,15 +1070,15 @@ LABEL_184:
         v575 = 0u;
         v574 = 0u;
         v573 = 0u;
-        v71 = v11;
+        v71 = queryItems;
         v537 = [v71 countByEnumeratingWithState:&v573 objects:v580 count:16];
         v504 = v26;
-        v505 = v9;
-        v508 = v10;
+        v505 = componentsCopy;
+        v508 = urlComponentsCopy;
         if (!v537)
         {
 
-          v74 = 0;
+          manufacturerIdentifier = 0;
           v126 = 0;
           v125 = 0;
           goto LABEL_241;
@@ -1091,7 +1091,7 @@ LABEL_184:
         v524 = 0;
         v72 = 0;
         v73 = 0;
-        v74 = 0;
+        manufacturerIdentifier = 0;
         v75 = 0;
         v535 = *v574;
         v76 = PKURLParamAppletSubcredentialPartnerAppIdentifier;
@@ -1103,7 +1103,7 @@ LABEL_184:
         v507 = 4;
         v516 = PKURLParamAppletSubcredentialReferralSource;
         v511 = PKURLParamAnalyticsArchivedParentToken;
-        v512 = v11;
+        v512 = queryItems;
         v533 = PKURLParamAppletSubcredentialPartnerAppIdentifier;
 LABEL_87:
         v77 = 0;
@@ -1115,14 +1115,14 @@ LABEL_87:
           }
 
           v78 = *(*(&v573 + 1) + 8 * v77);
-          v79 = [v78 name];
-          v80 = [v78 value];
-          if (![v80 length])
+          name = [v78 name];
+          value = [v78 value];
+          if (![value length])
           {
             goto LABEL_124;
           }
 
-          v81 = v79;
+          v81 = name;
           v82 = v81;
           if (v81 == v76)
           {
@@ -1160,7 +1160,7 @@ LABEL_87:
           {
 
 LABEL_107:
-            v89 = v80;
+            v89 = value;
 
             v75 = v89;
             goto LABEL_122;
@@ -1207,7 +1207,7 @@ LABEL_107:
 LABEL_120:
 
 LABEL_121:
-            v96 = [v80 componentsSeparatedByString:{@", "}];
+            v96 = [value componentsSeparatedByString:{@", "}];
             v524 = PKRadioTechnologyFromStrings();
 
             goto LABEL_122;
@@ -1234,7 +1234,7 @@ LABEL_121:
           {
 
 LABEL_133:
-            v100 = v80;
+            v100 = value;
 
             v73 = v100;
             goto LABEL_123;
@@ -1260,32 +1260,32 @@ LABEL_133:
           {
 
 LABEL_141:
-            v518 = v74;
-            v104 = v11;
-            v526 = v80;
+            v518 = manufacturerIdentifier;
+            v104 = queryItems;
+            v526 = value;
 
             v105 = +[PKPaymentService paymentService];
-            v106 = [v105 sharedPaymentWebServiceContext];
-            v107 = [v106 configuration];
+            sharedPaymentWebServiceContext = [v105 sharedPaymentWebServiceContext];
+            configuration = [sharedPaymentWebServiceContext configuration];
             v108 = PKCurrentRegion();
-            v109 = [v107 featureWithType:2 inRegion:v108];
+            v109 = [configuration featureWithType:2 inRegion:v108];
 
             v572 = 0u;
             v571 = 0u;
             v570 = 0u;
             v569 = 0u;
             v517 = v109;
-            v523 = [v109 supportedTerminals];
-            v110 = [v523 countByEnumeratingWithState:&v569 objects:v579 count:16];
+            supportedTerminals = [v109 supportedTerminals];
+            v110 = [supportedTerminals countByEnumeratingWithState:&v569 objects:v579 count:16];
             if (!v110)
             {
-              v11 = v104;
-              v74 = v518;
+              queryItems = v104;
+              manufacturerIdentifier = v518;
               goto LABEL_159;
             }
 
             v111 = v110;
-            v514 = v106;
+            v514 = sharedPaymentWebServiceContext;
             v515 = v105;
             v112 = *v570;
 LABEL_143:
@@ -1294,12 +1294,12 @@ LABEL_143:
             {
               if (*v570 != v112)
               {
-                objc_enumerationMutation(v523);
+                objc_enumerationMutation(supportedTerminals);
               }
 
               v114 = *(*(&v569 + 1) + 8 * v113);
-              v115 = [v114 partnerIdentifier];
-              v116 = [v115 isEqualToString:v526];
+              partnerIdentifier = [v114 partnerIdentifier];
+              v116 = [partnerIdentifier isEqualToString:v526];
 
               if (v116)
               {
@@ -1308,11 +1308,11 @@ LABEL_143:
 
               if (v111 == ++v113)
               {
-                v111 = [v523 countByEnumeratingWithState:&v569 objects:v579 count:16];
+                v111 = [supportedTerminals countByEnumeratingWithState:&v569 objects:v579 count:16];
                 if (!v111)
                 {
-                  v11 = v512;
-                  v74 = v518;
+                  queryItems = v512;
+                  manufacturerIdentifier = v518;
                   goto LABEL_151;
                 }
 
@@ -1320,11 +1320,11 @@ LABEL_143:
               }
             }
 
-            v74 = [v114 manufacturerIdentifier];
+            manufacturerIdentifier = [v114 manufacturerIdentifier];
 
-            v11 = v512;
+            queryItems = v512;
 LABEL_151:
-            v106 = v514;
+            sharedPaymentWebServiceContext = v514;
             v105 = v515;
 LABEL_159:
 
@@ -1379,7 +1379,7 @@ LABEL_122:
 
             v73 = v531;
 LABEL_169:
-            v123 = [[NSData alloc] initWithBase64EncodedString:v80 options:0];
+            v123 = [[NSData alloc] initWithBase64EncodedString:value options:0];
 
             v72 = v123;
             goto LABEL_123;
@@ -1414,7 +1414,7 @@ LABEL_124:
               v126 = v73;
               if (v75)
               {
-                v127 = v74;
+                v127 = manufacturerIdentifier;
                 v18 = v502;
                 v17 = v503;
                 if (!v524)
@@ -1437,8 +1437,8 @@ LABEL_124:
 
                 v70 = objc_alloc_init(PKAddCarKeyPassConfiguration);
                 [v70 setIssuerIdentifier:v75];
-                v129 = [v508 fragment];
-                [v70 setPassword:v129];
+                fragment = [v508 fragment];
+                [v70 setPassword:fragment];
 
                 [v70 setSupportedRadioTechnologies:v128];
                 [v70 setProvisioningTemplateIdentifier:v126];
@@ -1455,7 +1455,7 @@ LABEL_124:
                 [v70 setManufacturerIdentifier:v130];
                 [v70 setReferralSource:v507];
                 [v70 setAnalyticsArchivedParentToken:v125];
-                LOBYTE(v33) = [(PKPassGroupsViewController *)v522->_cardsViewController presentSubcredentialPairingFlowIfPossibleWithConfig:v70 animated:1];
+                LOBYTE(fragment2) = [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentSubcredentialPairingFlowIfPossibleWithConfig:v70 animated:1];
                 v131 = 0;
                 goto LABEL_244;
               }
@@ -1464,7 +1464,7 @@ LABEL_124:
               v17 = v503;
               v70 = oslog;
 LABEL_241:
-              v127 = v74;
+              v127 = manufacturerIdentifier;
               if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
@@ -1473,7 +1473,7 @@ LABEL_241:
               }
 
               v75 = 0;
-              LOBYTE(v33) = 0;
+              LOBYTE(fragment2) = 0;
               v131 = 1;
 LABEL_244:
 
@@ -1481,14 +1481,14 @@ LABEL_244:
               {
                 v132 = 0;
                 v26 = v504;
-                v9 = v505;
-                v10 = v508;
+                componentsCopy = v505;
+                urlComponentsCopy = v508;
                 goto LABEL_186;
               }
 
               v26 = v504;
-              v9 = v505;
-              v10 = v508;
+              componentsCopy = v505;
+              urlComponentsCopy = v508;
 LABEL_185:
               v132 = 1;
 LABEL_186:
@@ -1499,7 +1499,7 @@ LABEL_186:
               }
 
 LABEL_187:
-              LOBYTE(v33) = 0;
+              LOBYTE(fragment2) = 0;
               goto LABEL_188;
             }
 
@@ -1508,7 +1508,7 @@ LABEL_187:
         }
 
 LABEL_100:
-        v85 = v80;
+        v85 = value;
 
         v75 = v85;
         goto LABEL_123;
@@ -1522,18 +1522,18 @@ LABEL_100:
     }
 
     v24 = v26;
-    v22 = [v9 objectAtIndex:2];
+    v22 = [componentsCopy objectAtIndex:2];
     v45 = PKFeatureIdentifierFromString();
     if (v45)
     {
       v46 = v45;
       v47 = [[NSSet alloc] initWithObjects:{v22, 0}];
 
-      v33 = objc_alloc_init(PKPassPresentationContext);
-      [v33 setPresentationSource:5];
-      [(PKPassGroupsViewController *)v522->_cardsViewController presentFeatureSetupOrFeaturePass:v46 referrerIdentifier:v17 presentationContext:v33 completion:0];
+      fragment2 = objc_alloc_init(PKPassPresentationContext);
+      [fragment2 setPresentationSource:5];
+      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentFeatureSetupOrFeaturePass:v46 referrerIdentifier:v17 presentationContext:fragment2 completion:0];
 
-      LOBYTE(v33) = 1;
+      LOBYTE(fragment2) = 1;
       v26 = v24;
       goto LABEL_185;
     }
@@ -1571,60 +1571,60 @@ LABEL_23:
       goto LABEL_187;
     }
 
-    v32 = [v9 objectAtIndex:1];
-    v33 = PKURLRouteDiscoveryCard;
+    v32 = [componentsCopy objectAtIndex:1];
+    fragment2 = PKURLRouteDiscoveryCard;
     v34 = v32;
     v35 = v34;
-    if (v34 == v33)
+    if (v34 == fragment2)
     {
     }
 
     else
     {
-      if (!v34 || !v33)
+      if (!v34 || !fragment2)
       {
 
 LABEL_61:
         goto LABEL_187;
       }
 
-      LODWORD(v33) = [v34 isEqualToString:v33];
+      LODWORD(fragment2) = [v34 isEqualToString:fragment2];
 
-      if (!v33)
+      if (!fragment2)
       {
         goto LABEL_188;
       }
     }
 
-    v52 = [v9 objectAtIndex:2];
+    v52 = [componentsCopy objectAtIndex:2];
     if (v52)
     {
-      v33 = [[NSUUID alloc] initWithUUIDString:v52];
+      fragment2 = [[NSUUID alloc] initWithUUIDString:v52];
 
-      if (v33)
+      if (fragment2)
       {
         v53 = +[PKDiscoveryService sharedInstance];
         [v53 discoveryItemWithIdentifier:v52 launchedWithReferralSource:1];
 
-        v54 = [(PBKAppDelegate *)v522 _parseReferrerIdentifier:v11];
-        v55 = v11;
-        v56 = [(PBKAppDelegate *)v522 _parseCampaignAttributionReferrerIdentifier:v11];
+        v54 = [(PBKAppDelegate *)selfCopy _parseReferrerIdentifier:queryItems];
+        v55 = queryItems;
+        v56 = [(PBKAppDelegate *)selfCopy _parseCampaignAttributionReferrerIdentifier:queryItems];
         if (v56)
         {
           +[PKCampaignAttributionSessionManager restartSession];
           [PKAnalyticsReporter reportCampaignIdentifier:v56 eventType:0 referralSource:1 deepLinkType:3 productType:0];
         }
 
-        LOBYTE(v33) = 1;
-        [(PKPassGroupsViewController *)v522->_cardsViewController presentDiscoveryArticleForItemWithIdentifier:v52 referrerIdentifier:v54 animated:1 completion:0];
+        LOBYTE(fragment2) = 1;
+        [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentDiscoveryArticleForItemWithIdentifier:v52 referrerIdentifier:v54 animated:1 completion:0];
 
-        v11 = v55;
+        queryItems = v55;
       }
     }
 
     else
     {
-      LOBYTE(v33) = 0;
+      LOBYTE(fragment2) = 0;
     }
 
     goto LABEL_626;
@@ -1651,9 +1651,9 @@ LABEL_30:
   if (v39)
   {
 LABEL_39:
-    v40 = [v9 lastObject];
-    v41 = [(PBKAppDelegate *)v522 _parseCampaignAttributionReferrerIdentifier:v11];
-    if (!v40 || (v42 = v40, v42 == @"/") || (v43 = v42, v44 = [(__CFString *)v42 isEqualToString:@"/"], v43, v44))
+    lastObject = [componentsCopy lastObject];
+    v41 = [(PBKAppDelegate *)selfCopy _parseCampaignAttributionReferrerIdentifier:queryItems];
+    if (!lastObject || (v42 = lastObject, v42 == @"/") || (v43 = v42, v44 = [(__CFString *)v42 isEqualToString:@"/"], v43, v44))
     {
       if (v41)
       {
@@ -1661,8 +1661,8 @@ LABEL_39:
         [PKAnalyticsReporter reportCampaignIdentifier:v41 eventType:0 referralSource:2 deepLinkType:2 productType:1];
       }
 
-      LOBYTE(v33) = 1;
-      [(PKPassGroupsViewController *)v522->_cardsViewController presentPeerPaymentPassAnimated:1 campaignAttributionReferrerIdentifier:v41 completion:0];
+      LOBYTE(fragment2) = 1;
+      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPeerPaymentPassAnimated:1 campaignAttributionReferrerIdentifier:v41 completion:0];
       goto LABEL_45;
     }
 
@@ -1734,7 +1734,7 @@ LABEL_343:
                   goto LABEL_401;
                 }
 
-                v236 = [v9 objectAtIndex:1];
+                v236 = [componentsCopy objectAtIndex:1];
                 v237 = PKURLActionRouteRecurringPayment;
                 v238 = v236;
                 v239 = v238;
@@ -1813,26 +1813,26 @@ LABEL_480:
 LABEL_524:
                                 if (v12 < 2)
                                 {
-                                  LOBYTE(v33) = 0;
+                                  LOBYTE(fragment2) = 0;
                                 }
 
                                 else
                                 {
-                                  v351 = [v9 objectAtIndex:1];
-                                  v33 = PKURLActionRouteDeviceTap;
+                                  v351 = [componentsCopy objectAtIndex:1];
+                                  fragment2 = PKURLActionRouteDeviceTap;
                                   v352 = v351;
                                   v353 = v352;
-                                  if (v352 == v33)
+                                  if (v352 == fragment2)
                                   {
 
                                     goto LABEL_595;
                                   }
 
-                                  if (v352 && v33)
+                                  if (v352 && fragment2)
                                   {
-                                    LODWORD(v33) = [v352 isEqualToString:v33];
+                                    LODWORD(fragment2) = [v352 isEqualToString:fragment2];
 
-                                    if (!v33)
+                                    if (!fragment2)
                                     {
                                       goto LABEL_45;
                                     }
@@ -1845,25 +1845,25 @@ LABEL_595:
 
                                     else
                                     {
-                                      v408 = [v9 objectAtIndex:2];
+                                      v408 = [componentsCopy objectAtIndex:2];
                                       v393 = [NSDecimalNumber decimalNumberWithString:v408];
 
                                       if (v12 >= 4)
                                       {
-                                        v33 = [v9 objectAtIndex:3];
+                                        fragment2 = [componentsCopy objectAtIndex:3];
 LABEL_630:
-                                        [(PKPassGroupsViewController *)v522->_cardsViewController presentPeerPaymentDeviceTapWithInitialAmount:v393 initialMemo:v33];
+                                        [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPeerPaymentDeviceTapWithInitialAmount:v393 initialMemo:fragment2];
 
-                                        LOBYTE(v33) = 1;
+                                        LOBYTE(fragment2) = 1;
                                         goto LABEL_45;
                                       }
                                     }
 
-                                    v33 = 0;
+                                    fragment2 = 0;
                                     goto LABEL_630;
                                   }
 
-                                  LOBYTE(v33) = 0;
+                                  LOBYTE(fragment2) = 0;
                                 }
 
 LABEL_45:
@@ -1872,13 +1872,13 @@ LABEL_45:
                               }
                             }
 
-                            cardsViewController = v522->_cardsViewController;
+                            cardsViewController = selfCopy->_cardsViewController;
                             v563[0] = _NSConcreteStackBlock;
                             v563[1] = 3221225472;
                             v563[2] = sub_10000AD90;
                             v563[3] = &unk_10001CEE0;
-                            v563[4] = v522;
-                            LOBYTE(v33) = 1;
+                            v563[4] = selfCopy;
+                            LOBYTE(fragment2) = 1;
                             v174 = v563;
 LABEL_501:
                             [(PKPassGroupsViewController *)cardsViewController presentPeerPaymentPassAnimated:1 completion:v174];
@@ -1893,25 +1893,25 @@ LABEL_501:
                           }
                         }
 
-                        cardsViewController = v522->_cardsViewController;
+                        cardsViewController = selfCopy->_cardsViewController;
                         v564[0] = _NSConcreteStackBlock;
                         v564[1] = 3221225472;
                         v564[2] = sub_10000AD70;
                         v564[3] = &unk_10001CEE0;
-                        v564[4] = v522;
-                        LOBYTE(v33) = 1;
+                        v564[4] = selfCopy;
+                        LOBYTE(fragment2) = 1;
                         v174 = v564;
                         goto LABEL_501;
                       }
                     }
 
-                    cardsViewController = v522->_cardsViewController;
+                    cardsViewController = selfCopy->_cardsViewController;
                     v565[0] = _NSConcreteStackBlock;
                     v565[1] = 3221225472;
                     v565[2] = sub_10000AD10;
                     v565[3] = &unk_10001CEE0;
-                    v565[4] = v522;
-                    LOBYTE(v33) = 1;
+                    v565[4] = selfCopy;
+                    LOBYTE(fragment2) = 1;
                     v174 = v565;
                     goto LABEL_501;
                   }
@@ -1924,47 +1924,47 @@ LABEL_501:
 
                 else
                 {
-                  v266 = [v9 objectAtIndex:2];
+                  v266 = [componentsCopy objectAtIndex:2];
                 }
 
-                [(PKPassGroupsViewController *)v522->_cardsViewController presentPeerPaymentRecurringPaymentWithIdentifier:v266];
+                [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPeerPaymentRecurringPaymentWithIdentifier:v266];
 
-                LOBYTE(v33) = 1;
+                LOBYTE(fragment2) = 1;
                 goto LABEL_45;
               }
             }
 
-            cardsViewController = v522->_cardsViewController;
+            cardsViewController = selfCopy->_cardsViewController;
             v566[0] = _NSConcreteStackBlock;
             v566[1] = 3221225472;
             v566[2] = sub_10000ACE4;
             v566[3] = &unk_10001CEE0;
-            v566[4] = v522;
-            LOBYTE(v33) = 1;
+            v566[4] = selfCopy;
+            LOBYTE(fragment2) = 1;
             v174 = v566;
             goto LABEL_501;
           }
         }
 
-        cardsViewController = v522->_cardsViewController;
+        cardsViewController = selfCopy->_cardsViewController;
         v567[0] = _NSConcreteStackBlock;
         v567[1] = 3221225472;
         v567[2] = sub_10000ACC0;
         v567[3] = &unk_10001CEE0;
-        v567[4] = v522;
-        LOBYTE(v33) = 1;
+        v567[4] = selfCopy;
+        LOBYTE(fragment2) = 1;
         v174 = v567;
         goto LABEL_501;
       }
     }
 
-    cardsViewController = v522->_cardsViewController;
+    cardsViewController = selfCopy->_cardsViewController;
     v568[0] = _NSConcreteStackBlock;
     v568[1] = 3221225472;
     v568[2] = sub_10000AC98;
     v568[3] = &unk_10001CEE0;
-    v568[4] = v522;
-    LOBYTE(v33) = 1;
+    v568[4] = selfCopy;
+    LOBYTE(fragment2) = 1;
     v174 = v568;
     goto LABEL_501;
   }
@@ -1989,11 +1989,11 @@ LABEL_49:
     }
 
 LABEL_63:
-    v57 = [v9 indexOfObjectPassingTest:&stru_10001CF20];
-    if (v57 == 0x7FFFFFFFFFFFFFFFLL || (v58 = v57, [v9 objectAtIndexedSubscript:v57], (v59 = objc_claimAutoreleasedReturnValue()) == 0))
+    v57 = [componentsCopy indexOfObjectPassingTest:&stru_10001CF20];
+    if (v57 == 0x7FFFFFFFFFFFFFFFLL || (v58 = v57, [componentsCopy objectAtIndexedSubscript:v57], (v59 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      LOBYTE(v33) = 1;
-      [(PKPassGroupsViewController *)v522->_cardsViewController presentCreditPassAnimated:1 completion:0];
+      LOBYTE(fragment2) = 1;
+      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentCreditPassAnimated:1 completion:0];
       goto LABEL_188;
     }
 
@@ -2002,7 +2002,7 @@ LABEL_63:
     v52 = v59;
     v62 = v61;
     v63 = v62;
-    v64 = v11;
+    v64 = queryItems;
     if (v52 == v62)
     {
     }
@@ -2067,7 +2067,7 @@ LABEL_355:
                   goto LABEL_444;
                 }
 
-                v242 = [v9 objectAtIndex:1];
+                v242 = [componentsCopy objectAtIndex:1];
                 v243 = PKURLActionRouteCreditPaymentPassStatement;
                 v244 = v242;
                 v245 = v244;
@@ -2127,7 +2127,7 @@ LABEL_495:
                             v338 = v202;
                             v339 = v337;
                             v340 = v339;
-                            v341 = v10;
+                            v341 = urlComponentsCopy;
                             if (v338 == v339)
                             {
                             }
@@ -2230,18 +2230,18 @@ LABEL_818:
 
                                                   else
                                                   {
-                                                    v494 = [v9 objectAtIndex:v60];
+                                                    v494 = [componentsCopy objectAtIndex:v60];
                                                   }
 
-                                                  v496 = v522->_cardsViewController;
+                                                  v496 = selfCopy->_cardsViewController;
                                                   v549[0] = _NSConcreteStackBlock;
                                                   v549[1] = 3221225472;
                                                   v549[2] = sub_10000B0DC;
                                                   v549[3] = &unk_10001CF70;
-                                                  v549[4] = v522;
+                                                  v549[4] = selfCopy;
                                                   v550 = v494;
                                                   v497 = v494;
-                                                  LOBYTE(v33) = 1;
+                                                  LOBYTE(fragment2) = 1;
                                                   [(PKPassGroupsViewController *)v496 presentCreditPassAnimated:1 completion:v549];
 
                                                   goto LABEL_761;
@@ -2266,24 +2266,24 @@ LABEL_818:
                                             if (v12 <= v60)
                                             {
 LABEL_812:
-                                              v409 = v522->_cardsViewController;
-                                              LOBYTE(v33) = 1;
+                                              v409 = selfCopy->_cardsViewController;
+                                              LOBYTE(fragment2) = 1;
                                               v410 = 0;
                                               goto LABEL_710;
                                             }
 
-                                            v479 = [v9 objectAtIndex:v60];
+                                            v479 = [componentsCopy objectAtIndex:v60];
                                             if ([v479 length])
                                             {
-                                              v480 = v522->_cardsViewController;
+                                              v480 = selfCopy->_cardsViewController;
                                               v551[0] = _NSConcreteStackBlock;
                                               v551[1] = 3221225472;
                                               v551[2] = sub_10000B0B4;
                                               v551[3] = &unk_10001CF70;
-                                              v551[4] = v522;
+                                              v551[4] = selfCopy;
                                               v552 = v479;
                                               v481 = v479;
-                                              LOBYTE(v33) = 1;
+                                              LOBYTE(fragment2) = 1;
                                               [(PKPassGroupsViewController *)v480 presentCreditPassAnimated:1 completion:v551];
 
                                               goto LABEL_711;
@@ -2295,20 +2295,20 @@ LABEL_811:
                                           }
                                         }
 
-                                        v409 = v522->_cardsViewController;
+                                        v409 = selfCopy->_cardsViewController;
                                         v553[0] = _NSConcreteStackBlock;
                                         v553[1] = 3221225472;
                                         v553[2] = sub_10000B08C;
                                         v553[3] = &unk_10001CEE0;
-                                        v553[4] = v522;
-                                        LOBYTE(v33) = 1;
+                                        v553[4] = selfCopy;
+                                        LOBYTE(fragment2) = 1;
                                         v410 = v553;
 LABEL_710:
                                         [(PKPassGroupsViewController *)v409 presentCreditPassAnimated:1 completion:v410];
 LABEL_711:
 
 LABEL_761:
-                                        v10 = v341;
+                                        urlComponentsCopy = v341;
                                         goto LABEL_466;
                                       }
 
@@ -2320,22 +2320,22 @@ LABEL_761:
                                       }
                                     }
 
-                                    v409 = v522->_cardsViewController;
+                                    v409 = selfCopy->_cardsViewController;
                                     v554[0] = _NSConcreteStackBlock;
                                     v554[1] = 3221225472;
                                     v554[2] = sub_10000B038;
                                     v554[3] = &unk_10001CEE0;
-                                    v554[4] = v522;
-                                    LOBYTE(v33) = 1;
+                                    v554[4] = selfCopy;
+                                    LOBYTE(fragment2) = 1;
                                     v410 = v554;
                                     goto LABEL_710;
                                   }
                                 }
 
-                                [(PKPassGroupsViewController *)v522->_cardsViewController presentCreateAccountUserInvitationWithCompletion:0];
+                                [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentCreateAccountUserInvitationWithCompletion:0];
 LABEL_760:
 
-                                LOBYTE(v33) = 1;
+                                LOBYTE(fragment2) = 1;
                                 goto LABEL_761;
                               }
 
@@ -2353,7 +2353,7 @@ LABEL_760:
                               goto LABEL_664;
                             }
 
-                            v346 = [v9 objectAtIndex:v58 + 1];
+                            v346 = [componentsCopy objectAtIndex:v58 + 1];
                             v347 = PKRouteSummaryCategoryCategories;
                             v348 = v346;
                             v349 = v348;
@@ -2403,13 +2403,13 @@ LABEL_664:
 LABEL_756:
                                   if (v12 <= v60)
                                   {
-                                    v471 = 0x7FFFFFFFFFFFFFFFLL;
+                                    integerValue = 0x7FFFFFFFFFFFFFFFLL;
                                   }
 
                                   else
                                   {
-                                    v470 = [v9 objectAtIndex:v60];
-                                    v471 = [v470 integerValue];
+                                    v470 = [componentsCopy objectAtIndex:v60];
+                                    integerValue = [v470 integerValue];
                                   }
 
                                   v472 = +[PKAccountService sharedInstance];
@@ -2417,16 +2417,16 @@ LABEL_756:
                                   v555[1] = 3221225472;
                                   v555[2] = sub_10000AF10;
                                   v555[3] = &unk_10001CFC0;
-                                  v555[4] = v522;
+                                  v555[4] = selfCopy;
                                   v555[5] = v434;
                                   v555[6] = v358;
-                                  v555[7] = v471;
+                                  v555[7] = integerValue;
                                   [v472 defaultAccountForFeature:2 completion:v555];
 
                                   goto LABEL_760;
                                 }
 
-                                v429 = [v9 objectAtIndex:v60];
+                                v429 = [componentsCopy objectAtIndex:v60];
                                 v430 = PKTimePeriodMonth;
                                 v431 = v429;
                                 v432 = v431;
@@ -2525,19 +2525,19 @@ LABEL_755:
                           }
                         }
 
-                        v213 = v522->_cardsViewController;
+                        v213 = selfCopy->_cardsViewController;
                         v556[0] = _NSConcreteStackBlock;
                         v556[1] = 3221225472;
                         v556[2] = sub_10000AEEC;
                         v556[3] = &unk_10001CEE0;
-                        v556[4] = v522;
-                        LOBYTE(v33) = 1;
+                        v556[4] = selfCopy;
+                        LOBYTE(fragment2) = 1;
                         v214 = v556;
 LABEL_465:
                         [(PKPassGroupsViewController *)v213 presentCreditPassAnimated:1 completion:v214];
 
 LABEL_466:
-                        v11 = v64;
+                        queryItems = v64;
                         goto LABEL_188;
                       }
 
@@ -2549,61 +2549,61 @@ LABEL_466:
                       }
                     }
 
-                    v213 = v522->_cardsViewController;
+                    v213 = selfCopy->_cardsViewController;
                     v557[0] = _NSConcreteStackBlock;
                     v557[1] = 3221225472;
                     v557[2] = sub_10000AEC4;
                     v557[3] = &unk_10001CEE0;
-                    v557[4] = v522;
-                    LOBYTE(v33) = 1;
+                    v557[4] = selfCopy;
+                    LOBYTE(fragment2) = 1;
                     v214 = v557;
                     goto LABEL_465;
                   }
                 }
 
-                v33 = [v9 objectAtIndex:2];
-                v11 = v64;
-                if (v33)
+                fragment2 = [componentsCopy objectAtIndex:2];
+                queryItems = v64;
+                if (fragment2)
                 {
-                  v295 = [[NSUUID alloc] initWithUUIDString:v33];
+                  v295 = [[NSUUID alloc] initWithUUIDString:fragment2];
 
                   if (v295)
                   {
-                    v296 = v522->_cardsViewController;
+                    v296 = selfCopy->_cardsViewController;
                     v558[0] = _NSConcreteStackBlock;
                     v558[1] = 3221225472;
                     v558[2] = sub_10000AE98;
                     v558[3] = &unk_10001CF70;
-                    v558[4] = v522;
-                    v559 = v33;
+                    v558[4] = selfCopy;
+                    v559 = fragment2;
                     [(PKPassGroupsViewController *)v296 presentCreditPassAnimated:1 completion:v558];
                   }
                 }
 
-                LOBYTE(v33) = 1;
+                LOBYTE(fragment2) = 1;
                 goto LABEL_188;
               }
             }
 
-            v213 = v522->_cardsViewController;
+            v213 = selfCopy->_cardsViewController;
             v560[0] = _NSConcreteStackBlock;
             v560[1] = 3221225472;
             v560[2] = sub_10000AE70;
             v560[3] = &unk_10001CEE0;
-            v560[4] = v522;
-            LOBYTE(v33) = 1;
+            v560[4] = selfCopy;
+            LOBYTE(fragment2) = 1;
             v214 = v560;
             goto LABEL_465;
           }
         }
 
-        v213 = v522->_cardsViewController;
+        v213 = selfCopy->_cardsViewController;
         v561[0] = _NSConcreteStackBlock;
         v561[1] = 3221225472;
         v561[2] = sub_10000AE44;
         v561[3] = &unk_10001CEE0;
-        v561[4] = v522;
-        LOBYTE(v33) = 1;
+        v561[4] = selfCopy;
+        LOBYTE(fragment2) = 1;
         v214 = v561;
         goto LABEL_465;
       }
@@ -2613,16 +2613,16 @@ LABEL_466:
     {
       v198 = 0;
       v199 = 0;
-      v11 = v64;
+      queryItems = v64;
     }
 
     else
     {
-      v188 = [v9 objectAtIndexedSubscript:v58 + 1];
+      v188 = [componentsCopy objectAtIndexedSubscript:v58 + 1];
       v189 = PKURLSubactionRouteCreditPaymentPassShare;
       v190 = v188;
       v191 = v190;
-      v11 = v64;
+      queryItems = v64;
       if (v190 == v189)
       {
       }
@@ -2760,7 +2760,7 @@ LABEL_622:
 
                               v198 = 8;
 LABEL_623:
-                              v11 = v64;
+                              queryItems = v64;
                               goto LABEL_624;
                             }
 
@@ -2802,14 +2802,14 @@ LABEL_623:
     }
 
 LABEL_624:
-    v407 = v522->_cardsViewController;
+    v407 = selfCopy->_cardsViewController;
     v562[0] = _NSConcreteStackBlock;
     v562[1] = 3221225472;
     v562[2] = sub_10000AE1C;
     v562[3] = &unk_10001CF48;
-    v562[4] = v522;
+    v562[4] = selfCopy;
     v562[5] = v198;
-    LOBYTE(v33) = 1;
+    LOBYTE(fragment2) = 1;
     [(PKPassGroupsViewController *)v407 presentCreditPassAnimated:1 completion:v562];
 LABEL_625:
 
@@ -2967,15 +2967,15 @@ LABEL_468:
 
                             else
                             {
-                              v35 = [v9 objectAtIndex:1];
-                              [(PKPassGroupsViewController *)v522->_cardsViewController presentApplicationWithIdentifier:v35];
+                              v35 = [componentsCopy objectAtIndex:1];
+                              [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentApplicationWithIdentifier:v35];
                             }
 
                             goto LABEL_61;
                           }
 
-                          v513 = v11;
-                          v332 = v10;
+                          v513 = queryItems;
+                          v332 = urlComponentsCopy;
                           v333 = PKURLActionRouteAppleBalancePass;
                           v334 = v264;
                           v335 = v334;
@@ -3082,10 +3082,10 @@ LABEL_793:
                                                 {
 
 LABEL_823:
-                                                  v33 = PKURLActionPaymentSetupSelectSection;
+                                                  fragment2 = PKURLActionPaymentSetupSelectSection;
                                                   v495 = v484;
                                                   v392 = v495;
-                                                  if (v33 == v495)
+                                                  if (fragment2 == v495)
                                                   {
 
 LABEL_833:
@@ -3096,10 +3096,10 @@ LABEL_833:
 
                                                     else
                                                     {
-                                                      v418 = [v9 objectAtIndex:1];
+                                                      v418 = [componentsCopy objectAtIndex:1];
                                                     }
 
-                                                    v498 = v522->_cardsViewController;
+                                                    v498 = selfCopy->_cardsViewController;
                                                     v499 = +[NSSet set];
                                                     [(PKPassGroupsViewController *)v498 presentPaymentSetupInMode:7 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:v499 productIdentifiers:0 sectionIdentifier:v418];
 LABEL_840:
@@ -3107,11 +3107,11 @@ LABEL_840:
                                                     goto LABEL_706;
                                                   }
 
-                                                  if (v521 && v33)
+                                                  if (v521 && fragment2)
                                                   {
-                                                    LODWORD(v33) = [v495 isEqualToString:v33];
+                                                    LODWORD(fragment2) = [v495 isEqualToString:fragment2];
 
-                                                    if (!v33)
+                                                    if (!fragment2)
                                                     {
                                                       goto LABEL_790;
                                                     }
@@ -3137,7 +3137,7 @@ LABEL_840:
 
                                               else
                                               {
-                                                v493 = [v9 objectAtIndex:1];
+                                                v493 = [componentsCopy objectAtIndex:1];
                                                 if (v493)
                                                 {
                                                   v418 = [[NSSet alloc] initWithObjects:{v493, 0}];
@@ -3149,7 +3149,7 @@ LABEL_840:
                                                 }
                                               }
 
-                                              v500 = v522->_cardsViewController;
+                                              v500 = selfCopy->_cardsViewController;
                                               v499 = +[NSSet set];
                                               [(PKPassGroupsViewController *)v500 presentPaymentSetupInMode:3 referrerIdentifier:0 referralSource:0 campaignIdentifier:0 paymentNetwork:0 transitNetworkIdentifier:0 allowedFeatureIdentifiers:v499 productIdentifiers:v418 sectionIdentifier:0];
                                               goto LABEL_840;
@@ -3163,10 +3163,10 @@ LABEL_840:
 
                                           else
                                           {
-                                            v418 = [v9 objectAtIndex:1];
+                                            v418 = [componentsCopy objectAtIndex:1];
                                           }
 
-                                          [(PKPassGroupsViewController *)v522->_cardsViewController presentHowToUseWalletWithCardLotIdentifier:v418];
+                                          [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentHowToUseWalletWithCardLotIdentifier:v418];
                                           goto LABEL_706;
                                         }
                                       }
@@ -3175,8 +3175,8 @@ LABEL_840:
                                       v542 = 0u;
                                       v539 = 0u;
                                       v540 = 0u;
-                                      v451 = [v10 queryItems];
-                                      v452 = [v451 countByEnumeratingWithState:&v539 objects:v577 count:16];
+                                      queryItems2 = [urlComponentsCopy queryItems];
+                                      v452 = [queryItems2 countByEnumeratingWithState:&v539 objects:v577 count:16];
                                       if (v452)
                                       {
                                         v453 = v452;
@@ -3188,23 +3188,23 @@ LABEL_840:
                                           {
                                             if (*v540 != v454)
                                             {
-                                              objc_enumerationMutation(v451);
+                                              objc_enumerationMutation(queryItems2);
                                             }
 
                                             v457 = *(*(&v539 + 1) + 8 * i);
-                                            v458 = [v457 name];
-                                            v459 = v458;
-                                            if (v458 == v455)
+                                            name2 = [v457 name];
+                                            v459 = name2;
+                                            if (name2 == v455)
                                             {
 
 LABEL_774:
-                                              v478 = [v457 value];
+                                              value2 = [v457 value];
                                               v462 = PKApplePayUserEducationDemoSourceFromString();
 
                                               goto LABEL_775;
                                             }
 
-                                            if (v458)
+                                            if (name2)
                                             {
                                               v460 = v455 == 0;
                                             }
@@ -3220,7 +3220,7 @@ LABEL_774:
 
                                             else
                                             {
-                                              v461 = [v458 isEqualToString:v455];
+                                              v461 = [name2 isEqualToString:v455];
 
                                               if (v461)
                                               {
@@ -3229,7 +3229,7 @@ LABEL_774:
                                             }
                                           }
 
-                                          v453 = [v451 countByEnumeratingWithState:&v539 objects:v577 count:16];
+                                          v453 = [queryItems2 countByEnumeratingWithState:&v539 objects:v577 count:16];
                                           if (v453)
                                           {
                                             continue;
@@ -3242,23 +3242,23 @@ LABEL_774:
                                       v462 = 0;
 LABEL_775:
 
-                                      [(PKPassGroupsViewController *)v522->_cardsViewController presentApplePayUserEducationDemoFromSource:v462];
+                                      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentApplePayUserEducationDemoFromSource:v462];
                                       goto LABEL_707;
                                     }
                                   }
 
                                   v418 = objc_alloc_init(PKStoreKitReviewPromptHelper);
-                                  v419 = [(PBKAppDelegate *)v522 window];
-                                  v420 = [v419 windowScene];
-                                  [v418 requestReviewInScene:v420 trigger:0];
+                                  window = [(PBKAppDelegate *)selfCopy window];
+                                  windowScene = [window windowScene];
+                                  [v418 requestReviewInScene:windowScene trigger:0];
 
 LABEL_705:
 LABEL_706:
 
 LABEL_707:
-                                  LOBYTE(v33) = 1;
+                                  LOBYTE(fragment2) = 1;
 LABEL_790:
-                                  v10 = v332;
+                                  urlComponentsCopy = v332;
                                   goto LABEL_253;
                                 }
 
@@ -3273,47 +3273,47 @@ LABEL_790:
                               if (v12 != 4)
                               {
 LABEL_720:
-                                LOBYTE(v33) = 0;
+                                LOBYTE(fragment2) = 0;
                                 goto LABEL_790;
                               }
 
-                              v390 = [v9 objectAtIndexedSubscript:1];
-                              v33 = PKURLActionPendingProvisioning;
+                              v390 = [componentsCopy objectAtIndexedSubscript:1];
+                              fragment2 = PKURLActionPendingProvisioning;
                               v391 = v390;
                               v392 = v391;
-                              if (v391 == v33)
+                              if (v391 == fragment2)
                               {
                               }
 
                               else
                               {
-                                if (!v391 || !v33)
+                                if (!v391 || !fragment2)
                                 {
 
 LABEL_719:
                                   goto LABEL_720;
                                 }
 
-                                LODWORD(v33) = [v391 isEqualToString:v33];
+                                LODWORD(fragment2) = [v391 isEqualToString:fragment2];
 
-                                if (!v33)
+                                if (!fragment2)
                                 {
                                   goto LABEL_790;
                                 }
                               }
 
-                              v418 = [v9 objectAtIndexedSubscript:2];
-                              v419 = [v9 objectAtIndexedSubscript:3];
-                              [(PKPassGroupsViewController *)v522->_cardsViewController presentProvisioningForPendingProvisioningOfType:v418 identifier:v419];
+                              v418 = [componentsCopy objectAtIndexedSubscript:2];
+                              window = [componentsCopy objectAtIndexedSubscript:3];
+                              [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentProvisioningForPendingProvisioningOfType:v418 identifier:window];
                               goto LABEL_705;
                             }
                           }
 
-                          v362 = [v9 indexOfObjectPassingTest:&stru_10001D080];
-                          if (v362 == 0x7FFFFFFFFFFFFFFFLL || (v363 = v362, [v9 objectAtIndexedSubscript:v362], (v364 = objc_claimAutoreleasedReturnValue()) == 0))
+                          v362 = [componentsCopy indexOfObjectPassingTest:&stru_10001D080];
+                          if (v362 == 0x7FFFFFFFFFFFFFFFLL || (v363 = v362, [componentsCopy objectAtIndexedSubscript:v362], (v364 = objc_claimAutoreleasedReturnValue()) == 0))
                           {
-                            LOBYTE(v33) = 1;
-                            [(PKPassGroupsViewController *)v522->_cardsViewController presentPassForFeatureIdentifier:4 animated:1 completion:0];
+                            LOBYTE(fragment2) = 1;
+                            [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentPassForFeatureIdentifier:4 animated:1 completion:0];
                             v366 = 0;
 LABEL_789:
 
@@ -3334,7 +3334,7 @@ LABEL_789:
                             {
 
 LABEL_722:
-                              LOBYTE(v33) = 0;
+                              LOBYTE(fragment2) = 0;
                               goto LABEL_789;
                             }
 
@@ -3352,10 +3352,10 @@ LABEL_722:
                             goto LABEL_701;
                           }
 
-                          v443 = [v9 objectAtIndexedSubscript:?];
+                          v443 = [componentsCopy objectAtIndexedSubscript:?];
                           v444 = PKURLActionRouteAppleBalanceAddMoneyDirectTopUp;
                           v445 = v443;
-                          v33 = v445;
+                          fragment2 = v445;
                           if (v445 == v444)
                           {
                           }
@@ -3367,17 +3367,17 @@ LABEL_722:
 
 LABEL_799:
                               v486 = PKURLActionRouteAppleBalanceAddMoneyInStoreTopUp;
-                              v487 = v33;
+                              v487 = fragment2;
                               v447 = v487;
                               if (v487 == v486)
                               {
 
 LABEL_821:
-                                [(PKPassGroupsViewController *)v522->_cardsViewController presentAppleBalanceAddMoneyInStoreTopUpAnimated:1 completion:0];
+                                [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAppleBalanceAddMoneyInStoreTopUpAnimated:1 completion:0];
                                 goto LABEL_702;
                               }
 
-                              if (v33 && v486)
+                              if (fragment2 && v486)
                               {
                                 v488 = [v487 isEqualToString:v486];
 
@@ -3392,12 +3392,12 @@ LABEL_821:
                               }
 
 LABEL_701:
-                              [(PKPassGroupsViewController *)v522->_cardsViewController presentAppleBalanceAddMoneyAnimated:1 completion:0];
+                              [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAppleBalanceAddMoneyAnimated:1 completion:0];
 LABEL_702:
-                              v33 = v447;
+                              fragment2 = v447;
 LABEL_788:
 
-                              LOBYTE(v33) = 1;
+                              LOBYTE(fragment2) = 1;
                               goto LABEL_789;
                             }
 
@@ -3409,32 +3409,32 @@ LABEL_788:
                             }
                           }
 
-                          [(PKPassGroupsViewController *)v522->_cardsViewController presentAppleBalanceAddMoneyDirectTopUpAnimated:1 completion:0];
+                          [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAppleBalanceAddMoneyDirectTopUpAnimated:1 completion:0];
                           goto LABEL_788;
                         }
                       }
 
-                      v33 = [v10 fragment];
-                      v52 = [v33 componentsSeparatedByString:@"&"];
+                      fragment2 = [urlComponentsCopy fragment];
+                      v52 = [fragment2 componentsSeparatedByString:@"&"];
 
                       v310 = [v52 count];
-                      LOBYTE(v33) = v310 == 2;
+                      LOBYTE(fragment2) = v310 == 2;
                       if (v310 == 2)
                       {
-                        v311 = v10;
+                        v311 = urlComponentsCopy;
                         v312 = [NSData alloc];
                         [v52 objectAtIndexedSubscript:0];
-                        v314 = v313 = v11;
+                        v314 = v313 = queryItems;
                         v199 = [v312 initWithBase64EncodedString:v314 options:0];
 
                         v315 = [NSData alloc];
                         v316 = [v52 objectAtIndexedSubscript:1];
                         v317 = [v315 initWithBase64EncodedString:v316 options:0];
 
-                        v10 = v311;
-                        [(PKPassGroupsViewController *)v522->_cardsViewController presentSecurePassSessionWithIssuerData:v199 withSignature:v317 animated:1];
+                        urlComponentsCopy = v311;
+                        [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentSecurePassSessionWithIssuerData:v199 withSignature:v317 animated:1];
 
-                        v11 = v313;
+                        queryItems = v313;
                       }
 
                       else
@@ -3452,11 +3452,11 @@ LABEL_788:
                   }
 
 LABEL_368:
-                  v251 = [v9 indexOfObjectPassingTest:&stru_10001D060];
-                  if (v251 == 0x7FFFFFFFFFFFFFFFLL || (v252 = v251, [v9 objectAtIndexedSubscript:v251], (v253 = objc_claimAutoreleasedReturnValue()) == 0))
+                  v251 = [componentsCopy indexOfObjectPassingTest:&stru_10001D060];
+                  if (v251 == 0x7FFFFFFFFFFFFFFFLL || (v252 = v251, [componentsCopy objectAtIndexedSubscript:v251], (v253 = objc_claimAutoreleasedReturnValue()) == 0))
                   {
-                    LOBYTE(v33) = 1;
-                    [(PKPassGroupsViewController *)v522->_cardsViewController presentAccountFeature:5 animated:1 destination:0 fundingSourceIdentifier:0 completion:0];
+                    LOBYTE(fragment2) = 1;
+                    [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAccountFeature:5 animated:1 destination:0 fundingSourceIdentifier:0 completion:0];
                     v52 = 0;
                     goto LABEL_626;
                   }
@@ -3465,7 +3465,7 @@ LABEL_368:
                   v52 = v253;
                   v255 = v254;
                   v256 = v255;
-                  v257 = v11;
+                  v257 = queryItems;
                   if (v52 == v255)
                   {
                   }
@@ -3483,7 +3483,7 @@ LABEL_485:
                       if (v52 == v329)
                       {
 
-                        v11 = v257;
+                        queryItems = v257;
                       }
 
                       else
@@ -3494,7 +3494,7 @@ LABEL_485:
                           goto LABEL_531;
                         }
 
-                        v11 = v257;
+                        queryItems = v257;
                         v331 = [v52 isEqualToString:v329];
 
                         if (!v331)
@@ -3559,7 +3559,7 @@ LABEL_741:
                                       v463 = PKURLActionRouteSavingsBankVerification;
                                       v52 = v52;
                                       v464 = v463;
-                                      v33 = v464;
+                                      fragment2 = v464;
                                       if (v52 == v464)
                                       {
                                       }
@@ -3576,7 +3576,7 @@ LABEL_741:
 
                                         if (!v465)
                                         {
-                                          LOBYTE(v33) = 0;
+                                          LOBYTE(fragment2) = 0;
                                           goto LABEL_697;
                                         }
                                       }
@@ -3588,23 +3588,23 @@ LABEL_741:
 
                                       else
                                       {
-                                        v477 = [v9 objectAtIndex:2];
+                                        v477 = [componentsCopy objectAtIndex:2];
                                       }
 
-                                      LOBYTE(v33) = 1;
-                                      [(PKPassGroupsViewController *)v522->_cardsViewController presentAccountFeature:5 animated:1 destination:12 fundingSourceIdentifier:v477 completion:0];
+                                      LOBYTE(fragment2) = 1;
+                                      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAccountFeature:5 animated:1 destination:12 fundingSourceIdentifier:v477 completion:0];
 
                                       goto LABEL_697;
                                     }
                                   }
 
-                                  v374 = v522->_cardsViewController;
-                                  LOBYTE(v33) = 1;
+                                  v374 = selfCopy->_cardsViewController;
+                                  LOBYTE(fragment2) = 1;
                                   v375 = 11;
 LABEL_696:
                                   [(PKPassGroupsViewController *)v374 presentAccountFeature:5 animated:1 destination:v375 fundingSourceIdentifier:0 completion:0];
 LABEL_697:
-                                  v11 = v257;
+                                  queryItems = v257;
                                   goto LABEL_626;
                                 }
 
@@ -3616,22 +3616,22 @@ LABEL_697:
                                 }
                               }
 
-                              v374 = v522->_cardsViewController;
-                              LOBYTE(v33) = 1;
+                              v374 = selfCopy->_cardsViewController;
+                              LOBYTE(fragment2) = 1;
                               v375 = 3;
                               goto LABEL_696;
                             }
                           }
 
-                          v374 = v522->_cardsViewController;
-                          LOBYTE(v33) = 1;
+                          v374 = selfCopy->_cardsViewController;
+                          LOBYTE(fragment2) = 1;
                           v375 = 2;
                           goto LABEL_696;
                         }
                       }
 
-                      LOBYTE(v33) = 1;
-                      [(PKPassGroupsViewController *)v522->_cardsViewController presentAccountFeature:5 animated:1 destination:6 fundingSourceIdentifier:0 completion:0];
+                      LOBYTE(fragment2) = 1;
+                      [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAccountFeature:5 animated:1 destination:6 fundingSourceIdentifier:0 completion:0];
 LABEL_626:
 
                       goto LABEL_188;
@@ -3651,13 +3651,13 @@ LABEL_626:
 LABEL_462:
                     v318 = 1;
 LABEL_772:
-                    v11 = v257;
-                    LOBYTE(v33) = 1;
-                    [(PKPassGroupsViewController *)v522->_cardsViewController presentAccountFeature:5 animated:1 destination:v318 fundingSourceIdentifier:0 completion:0];
+                    queryItems = v257;
+                    LOBYTE(fragment2) = 1;
+                    [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentAccountFeature:5 animated:1 destination:v318 fundingSourceIdentifier:0 completion:0];
                     goto LABEL_625;
                   }
 
-                  v297 = [v9 objectAtIndexedSubscript:?];
+                  v297 = [componentsCopy objectAtIndexedSubscript:?];
                   v298 = PKURLActionRouteSavingsAddBankAccount;
                   v299 = v297;
                   v300 = v299;
@@ -3797,21 +3797,21 @@ LABEL_771:
 
               if (v12 == 2)
               {
-                v513 = v11;
-                v241 = [v9 objectAtIndexedSubscript:1];
+                v513 = queryItems;
+                v241 = [componentsCopy objectAtIndexedSubscript:1];
 LABEL_421:
                 if (v241)
                 {
-                  v288 = [v10 queryItems];
-                  v289 = [v288 pk_firstObjectPassingTest:&stru_10001D040];
+                  queryItems3 = [urlComponentsCopy queryItems];
+                  v289 = [queryItems3 pk_firstObjectPassingTest:&stru_10001D040];
 
-                  v290 = v522->_cardsViewController;
-                  v291 = [v289 value];
-                  v292 = v10;
-                  v293 = v291;
-                  if (v291)
+                  v290 = selfCopy->_cardsViewController;
+                  value3 = [v289 value];
+                  v292 = urlComponentsCopy;
+                  v293 = value3;
+                  if (value3)
                   {
-                    v294 = v291;
+                    v294 = value3;
                   }
 
                   else
@@ -3819,15 +3819,15 @@ LABEL_421:
                     v294 = PKAnalyticsReportShareReferralSourceUniversalLinkKey;
                   }
 
-                  LOBYTE(v33) = 1;
+                  LOBYTE(fragment2) = 1;
                   [(PKPassGroupsViewController *)v290 presentShareInvitationWithMailboxAddress:v241 referralSource:v294 animated:1];
 
-                  v10 = v292;
+                  urlComponentsCopy = v292;
                 }
 
                 else
                 {
-                  LOBYTE(v33) = 0;
+                  LOBYTE(fragment2) = 0;
                 }
 
                 goto LABEL_253;
@@ -3843,7 +3843,7 @@ LABEL_421:
                 goto LABEL_413;
               }
 
-              v220 = [v9 objectAtIndexedSubscript:2];
+              v220 = [componentsCopy objectAtIndexedSubscript:2];
               v221 = PKURLActionShareActivateShare;
               v222 = v220;
               v223 = v222;
@@ -3864,12 +3864,12 @@ LABEL_421:
                 if (!v224)
                 {
 LABEL_413:
-                  v513 = v11;
-                  v510 = v10;
+                  v513 = queryItems;
+                  v510 = urlComponentsCopy;
                   v280 = objc_alloc_init(NSMutableString);
                   for (j = 1; j != v12; ++j)
                   {
-                    v282 = [v9 objectAtIndexedSubscript:j];
+                    v282 = [componentsCopy objectAtIndexedSubscript:j];
                     v283 = v282;
                     if (v282 == @"https:" || v282 && (v284 = [(__CFString *)v282 isEqualToString:@"https:"], v283, (v284 & 1) != 0))
                     {
@@ -3881,22 +3881,22 @@ LABEL_413:
                       v285 = @"%@/";
                     }
 
-                    v286 = [v9 objectAtIndexedSubscript:j];
+                    v286 = [componentsCopy objectAtIndexedSubscript:j];
                     [v280 appendFormat:v285, v286];
                   }
 
-                  v10 = v510;
-                  v287 = [v510 fragment];
-                  [v280 appendFormat:@"#%@", v287];
+                  urlComponentsCopy = v510;
+                  fragment3 = [v510 fragment];
+                  [v280 appendFormat:@"#%@", fragment3];
 
                   v241 = [v280 copy];
                   goto LABEL_421;
                 }
               }
 
-              LOBYTE(v33) = 1;
-              v52 = [v9 objectAtIndexedSubscript:1];
-              [(PKPassGroupsViewController *)v522->_cardsViewController presentShareActivationWithShareIdentifier:v52];
+              LOBYTE(fragment2) = 1;
+              v52 = [componentsCopy objectAtIndexedSubscript:1];
+              [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentShareActivationWithShareIdentifier:v52];
               goto LABEL_626;
             }
           }
@@ -3908,34 +3908,34 @@ LABEL_413:
 
           else
           {
-            v206 = [v9 objectAtIndexedSubscript:1];
+            v206 = [componentsCopy objectAtIndexedSubscript:1];
           }
 
-          v211 = v522->_cardsViewController;
+          v211 = selfCopy->_cardsViewController;
           v543[0] = _NSConcreteStackBlock;
           v543[1] = 3221225472;
           v543[2] = sub_10000B214;
           v543[3] = &unk_10001CD38;
           v544 = v206;
           v212 = v206;
-          LOBYTE(v33) = 1;
+          LOBYTE(fragment2) = 1;
           [(PKPassGroupsViewController *)v211 presentInvitationsInboxAnimated:1 completion:v543];
 
           goto LABEL_188;
         }
       }
 
-      v175 = v11;
-      v176 = [v10 queryItems];
-      v177 = [v176 pk_firstObjectPassingTest:&stru_10001D000];
+      v175 = queryItems;
+      queryItems4 = [urlComponentsCopy queryItems];
+      v177 = [queryItems4 pk_firstObjectPassingTest:&stru_10001D000];
 
-      v178 = [v10 queryItems];
-      v33 = [v178 pk_firstObjectPassingTest:&stru_10001D020];
+      queryItems5 = [urlComponentsCopy queryItems];
+      fragment2 = [queryItems5 pk_firstObjectPassingTest:&stru_10001D020];
 
-      v179 = [v33 value];
+      value4 = [fragment2 value];
       v180 = PKVerificationSuccessValue;
-      v181 = v179;
-      v182 = v181;
+      v181 = value4;
+      value5 = v181;
       if (v181 == v180)
       {
       }
@@ -3956,36 +3956,36 @@ LABEL_413:
         }
       }
 
-      v200 = v522->_cardsViewController;
-      v182 = [v177 value];
-      [(PKPassGroupsViewController *)v200 dismissVerificationPageForPassWithDeviceAccountID:v182];
+      v200 = selfCopy->_cardsViewController;
+      value5 = [v177 value];
+      [(PKPassGroupsViewController *)v200 dismissVerificationPageForPassWithDeviceAccountID:value5];
 LABEL_292:
 
 LABEL_293:
-      LOBYTE(v33) = 1;
-      v11 = v175;
+      LOBYTE(fragment2) = 1;
+      queryItems = v175;
       goto LABEL_188;
     }
   }
 
-  v509 = v10;
+  v509 = urlComponentsCopy;
   v547 = 0u;
   v548 = 0u;
   v545 = 0u;
   v546 = 0u;
-  v513 = v11;
-  v139 = v11;
+  v513 = queryItems;
+  v139 = queryItems;
   v140 = [v139 countByEnumeratingWithState:&v545 objects:v578 count:16];
   if (!v140)
   {
 
     v164 = 0;
-    v163 = 0;
+    associatedPassUniqueID = 0;
     goto LABEL_248;
   }
 
   v141 = v140;
-  v506 = v9;
+  v506 = componentsCopy;
   v536 = 0;
   v142 = 0;
   obja = 0;
@@ -4004,11 +4004,11 @@ LABEL_293:
       }
 
       v146 = *(*(&v545 + 1) + 8 * k);
-      v147 = [v146 name];
-      v148 = [v146 value];
-      if ([v148 length])
+      name3 = [v146 name];
+      value6 = [v146 value];
+      if ([value6 length])
       {
-        v149 = v147;
+        v149 = name3;
         v150 = v149;
         if (v149 == v144)
         {
@@ -4025,10 +4025,10 @@ LABEL_211:
           v157 = objc_alloc_init(NSISO8601DateFormatter);
           [v157 setFormatOptions:275];
           v158 = +[NSCalendar currentCalendar];
-          v159 = [v158 timeZone];
-          [v157 setTimeZone:v159];
+          timeZone = [v158 timeZone];
+          [v157 setTimeZone:timeZone];
 
-          v142 = [v157 dateFromString:v148];
+          v142 = [v157 dateFromString:value6];
 LABEL_219:
 
           goto LABEL_230;
@@ -4064,7 +4064,7 @@ LABEL_219:
         {
 
 LABEL_221:
-          v160 = v148;
+          v160 = value6;
 
           v536 = v160;
           v139 = v534;
@@ -4092,7 +4092,7 @@ LABEL_221:
 
           v139 = v534;
 LABEL_229:
-          obja = [v148 integerValue];
+          obja = [value6 integerValue];
           goto LABEL_230;
         }
 
@@ -4118,8 +4118,8 @@ LABEL_230:
 
   while (v141);
 
-  v9 = v506;
-  v163 = v536;
+  componentsCopy = v506;
+  associatedPassUniqueID = v536;
   v164 = obja;
   if (!v142)
   {
@@ -4130,40 +4130,40 @@ LABEL_248:
   v169 = +[NSCalendar currentCalendar];
   v170 = [v169 components:30 fromDate:v142];
 
-  v10 = v509;
-  if (!v163 && v164 == 1)
+  urlComponentsCopy = v509;
+  if (!associatedPassUniqueID && v164 == 1)
   {
     v171 = +[PKPeerPaymentService sharedInstance];
-    v172 = [v171 account];
-    v163 = [v172 associatedPassUniqueID];
+    account = [v171 account];
+    associatedPassUniqueID = [account associatedPassUniqueID];
   }
 
-  LOBYTE(v33) = 1;
-  [(PKPassGroupsViewController *)v522->_cardsViewController presentDailyCashForPassUniqueIdentifier:v163 dateComponents:v170 redemptionType:v164 animated:1 completion:0];
+  LOBYTE(fragment2) = 1;
+  [(PKPassGroupsViewController *)selfCopy->_cardsViewController presentDailyCashForPassUniqueIdentifier:associatedPassUniqueID dateComponents:v170 redemptionType:v164 animated:1 completion:0];
 
 LABEL_253:
-  v11 = v513;
+  queryItems = v513;
 LABEL_188:
 
-  return v33;
+  return fragment2;
 }
 
-- (void)willPresentNotification:(id)a3 withCompletionHandler:(id)a4
+- (void)willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, 27);
+    (*(handler + 2))(handler, 27);
   }
 }
 
-- (void)openSettingsForNotification:(id)a3
+- (void)openSettingsForNotification:(id)notification
 {
-  v4 = [a3 request];
-  v5 = [v4 content];
-  v6 = [v5 userInfo];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v7 = [v6 PKStringForKey:PKPassbookBulletinPassUniqueIdentifierKey];
-  if (v7 || ([v6 PKStringForKey:PKUserNotificationPassUniqueIdentifierContextKey], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  v7 = [userInfo PKStringForKey:PKPassbookBulletinPassUniqueIdentifierKey];
+  if (v7 || ([userInfo PKStringForKey:PKUserNotificationPassUniqueIdentifierContextKey], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -4186,34 +4186,34 @@ LABEL_188:
   }
 }
 
-- (void)_handleUniversalLinkWithUserActivity:(id)a3
+- (void)_handleUniversalLinkWithUserActivity:(id)activity
 {
-  v4 = [a3 webpageURL];
-  if (!v4)
+  webpageURL = [activity webpageURL];
+  if (!webpageURL)
   {
     goto LABEL_16;
   }
 
-  v5 = [[NSURLComponents alloc] initWithURL:v4 resolvingAgainstBaseURL:1];
+  v5 = [[NSURLComponents alloc] initWithURL:webpageURL resolvingAgainstBaseURL:1];
   v6 = v5;
   if (!v5)
   {
     goto LABEL_15;
   }
 
-  v7 = [v5 host];
+  host = [v5 host];
   v8 = [v6 URL];
-  v9 = [v8 pathComponents];
+  pathComponents = [v8 pathComponents];
 
   if ((PKIsURLHttpScheme() & 1) == 0)
   {
-    [v9 count];
-    v11 = v9;
+    [pathComponents count];
+    v11 = pathComponents;
     goto LABEL_11;
   }
 
-  v33 = v9;
-  v10 = [(PBKAppDelegate *)self _isValidRelayServerURL:v4 outPathComponents:&v33];
+  v33 = pathComponents;
+  v10 = [(PBKAppDelegate *)self _isValidRelayServerURL:webpageURL outPathComponents:&v33];
   v11 = v33;
 
   if (v10)
@@ -4224,7 +4224,7 @@ LABEL_188:
   }
 
   v21 = PKWalletUniversalLinkHostName;
-  v22 = v7;
+  v22 = host;
   v23 = v21;
   v24 = v23;
   if (v22 == v23)
@@ -4253,7 +4253,7 @@ LABEL_188:
     goto LABEL_11;
   }
 
-  v30 = v7;
+  v30 = host;
   v13 = 0;
   v27 = PKURLActionRouteAppleCardPaymentPass;
   while (1)
@@ -4267,7 +4267,7 @@ LABEL_188:
 LABEL_28:
     if (v12 == ++v13)
     {
-      v7 = v30;
+      host = v30;
       goto LABEL_11;
     }
   }
@@ -4279,7 +4279,7 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v7 = v30;
+  host = v30;
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_11;
@@ -4312,7 +4312,7 @@ LABEL_11:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v4;
+      v35 = webpageURL;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Cannot handle universal link to URL: %@", buf, 0xCu);
     }
 
@@ -4321,7 +4321,7 @@ LABEL_11:
     v31[1] = 3221225472;
     v31[2] = sub_10000B948;
     v31[3] = &unk_10001D0A8;
-    v32 = v4;
+    v32 = webpageURL;
     [v20 openURL:v32 configuration:0 completionHandler:v31];
   }
 
@@ -4329,10 +4329,10 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_handleSpotlightWithUserActivity:(id)a3
+- (void)_handleSpotlightWithUserActivity:(id)activity
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
+  userInfo = [activity userInfo];
+  v5 = [userInfo objectForKeyedSubscript:CSSearchableItemActivityIdentifier];
   v6 = [NSURL URLWithString:v5];
   v7 = v6;
   if (!v6 || ([v6 scheme], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"x-coredata"), v8, !v9))
@@ -4410,7 +4410,7 @@ LABEL_10:
     v26[2] = sub_10000BE14;
     v26[3] = &unk_10001D0D0;
     v27 = v7;
-    v28 = self;
+    selfCopy = self;
     [v10 transactionWithURL:v27 completion:v26];
   }
 
@@ -4438,52 +4438,52 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v6 = a4;
+  activityCopy = activity;
   [(PKLaunchAuthorizationPromptController *)self->_launchAuthorizationPromptController disableLaunchPromptsForSession];
-  [v6 userInfo];
+  [activityCopy userInfo];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000C2BC;
   v10[3] = &unk_10001CE90;
   v10[4] = self;
-  v12 = v11 = v6;
+  v12 = v11 = activityCopy;
   v7 = v12;
-  v8 = v6;
+  v8 = activityCopy;
   [(PBKAppDelegate *)self _executeWhenApplicationForegroundActive:v10];
 
   return 1;
 }
 
-- (BOOL)application:(id)a3 shouldRestoreSecureApplicationState:(id)a4
+- (BOOL)application:(id)application shouldRestoreSecureApplicationState:(id)state
 {
-  v4 = a4;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"archiveVersion"];
+  stateCopy = state;
+  v5 = [stateCopy decodeObjectOfClass:objc_opt_class() forKey:@"archiveVersion"];
 
-  v6 = [v5 unsignedIntegerValue];
-  return v6 == 2;
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  return unsignedIntegerValue == 2;
 }
 
-- (BOOL)application:(id)a3 shouldSaveSecureApplicationState:(id)a4
+- (BOOL)application:(id)application shouldSaveSecureApplicationState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = [NSNumber numberWithUnsignedInteger:2];
-  [v5 encodeObject:v6 forKey:@"archiveVersion"];
+  [stateCopy encodeObject:v6 forKey:@"archiveVersion"];
 
-  v7 = [(PKPassGroupsViewController *)self->_cardsViewController groupStackView];
-  LOBYTE(v6) = [v7 isPresentingPassViewFront];
+  groupStackView = [(PKPassGroupsViewController *)self->_cardsViewController groupStackView];
+  LOBYTE(v6) = [groupStackView isPresentingPassViewFront];
 
   return v6;
 }
 
-- (void)_setForegroundActive:(BOOL)a3
+- (void)_setForegroundActive:(BOOL)active
 {
-  v3 = a3;
-  self->_foregroundActive = a3;
-  if (self->_foregroundActiveResourcesCreated != a3)
+  activeCopy = active;
+  self->_foregroundActive = active;
+  if (self->_foregroundActiveResourcesCreated != active)
   {
-    if (a3)
+    if (active)
     {
       [(PBKAppDelegate *)self _createForegroundActiveResources];
     }
@@ -4495,11 +4495,11 @@ LABEL_11:
   }
 
   [(PBKAppDelegate *)self _executeForegroundActiveBlocksIfPossible];
-  if (self->_brightnessRampingAllowed != v3)
+  if (self->_brightnessRampingAllowed != activeCopy)
   {
     v5 = +[PKBacklightController sharedInstance];
     v6 = v5;
-    if (v3)
+    if (activeCopy)
     {
       [v5 beginAllowingBacklightRamping:self];
     }
@@ -4509,7 +4509,7 @@ LABEL_11:
       [v5 endAllowingBacklightRamping:self];
     }
 
-    self->_brightnessRampingAllowed = v3;
+    self->_brightnessRampingAllowed = activeCopy;
   }
 }
 
@@ -4561,12 +4561,12 @@ LABEL_11:
     self->_informativeForegroundAssertion = 0;
     v15 = informativeForegroundAssertion;
 
-    v16 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
-    [v16 releaseAssertion:v15 completion:0];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    [pKGetClassNFHardwareManager() releaseAssertion:v15 completion:0];
   }
 }
 
-- (void)consumeDoublePressUpForButtonKind:(int64_t)a3
+- (void)consumeDoublePressUpForButtonKind:(int64_t)kind
 {
   v8 = PKAnalyticsSubjectWallet;
   v4 = [NSArray arrayWithObjects:&v8 count:1];
@@ -4584,49 +4584,49 @@ LABEL_11:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 URLsForDirectory:9 inDomains:1];
-  v4 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (void)_executeWhenApplicationForegroundActive:(id)a3
+- (void)_executeWhenApplicationForegroundActive:(id)active
 {
-  v4 = a3;
-  if (v4)
+  activeCopy = active;
+  if (activeCopy)
   {
-    v7 = v4;
+    v7 = activeCopy;
     if (self->_foregroundActive && self->_didBecomeActiveOnce)
     {
-      v4[2](v4);
+      activeCopy[2](activeCopy);
     }
 
     else
     {
       blocksQueuedForForegroundExecution = self->_blocksQueuedForForegroundExecution;
-      v6 = [v4 copy];
+      v6 = [activeCopy copy];
       [(NSMutableArray *)blocksQueuedForForegroundExecution addObject:v6];
     }
 
-    v4 = v7;
+    activeCopy = v7;
   }
 }
 
-- (BOOL)_isValidRelayServerURL:(id)a3 outPathComponents:(id *)a4
+- (BOOL)_isValidRelayServerURL:(id)l outPathComponents:(id *)components
 {
-  v5 = a3;
+  lCopy = l;
   v6 = +[PKPaymentService paymentService];
-  v7 = [v6 sharedPaymentWebServiceContext];
-  v8 = [v7 configuration];
+  sharedPaymentWebServiceContext = [v6 sharedPaymentWebServiceContext];
+  configuration = [sharedPaymentWebServiceContext configuration];
   v9 = PKCurrentRegion();
-  v10 = [v8 allowedRelayServerHostsForRegion:v9];
+  v10 = [configuration allowedRelayServerHostsForRegion:v9];
 
-  v11 = [v5 host];
-  if ([v10 containsObject:v11])
+  host = [lCopy host];
+  if ([v10 containsObject:host])
   {
     v12 = [NSString alloc];
-    v13 = [v12 initWithFormat:@"/v%@/%@/", PKSharingRelayServerRequestVersion, PKSharingRelayServerMailboxURI];
+    pKSharingRelayServerMailboxURI = [v12 initWithFormat:@"/v%@/%@/", PKSharingRelayServerRequestVersion, PKSharingRelayServerMailboxURI];
     v14 = PKWalletUniversalLinkHostName;
-    v15 = v11;
+    v15 = host;
     v16 = v15;
     if (v15 == v14)
     {
@@ -4648,8 +4648,8 @@ LABEL_11:
       }
     }
 
-    v19 = [v5 path];
-    v20 = [v19 hasPrefix:v13];
+    path = [lCopy path];
+    v20 = [path hasPrefix:pKSharingRelayServerMailboxURI];
 
     if (!v20)
     {
@@ -4661,9 +4661,9 @@ LABEL_13:
 
 LABEL_12:
     v23[0] = PKURLActionShare;
-    v21 = [v5 absoluteString];
-    v23[1] = v21;
-    *a4 = [NSArray arrayWithObjects:v23 count:2];
+    absoluteString = [lCopy absoluteString];
+    v23[1] = absoluteString;
+    *components = [NSArray arrayWithObjects:v23 count:2];
 
     v18 = 1;
     goto LABEL_13;
@@ -4675,96 +4675,96 @@ LABEL_14:
   return v18;
 }
 
-- (void)presentDeletePassWithUniqueID:(id)a3 completion:(id)a4
+- (void)presentDeletePassWithUniqueID:(id)d completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000D194;
   v7[3] = &unk_10001CC88;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(PBKAppDelegate *)v8 _executeWhenApplicationForegroundActive:v7];
+  selfCopy = self;
+  dCopy = d;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = dCopy;
+  [(PBKAppDelegate *)selfCopy _executeWhenApplicationForegroundActive:v7];
 }
 
-- (void)handleDeletePassRequestWithPass:(id)a3
+- (void)handleDeletePassRequestWithPass:(id)pass
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000D390;
   v4[3] = &unk_10001CE18;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(PBKAppDelegate *)v5 _executeWhenApplicationForegroundActive:v4];
+  selfCopy = self;
+  passCopy = pass;
+  v3 = passCopy;
+  [(PBKAppDelegate *)selfCopy _executeWhenApplicationForegroundActive:v4];
 }
 
-- (void)_handlePassSharingActionForUniqueID:(id)a3 presentationBlock:(id)a4 completion:(id)a5
+- (void)_handlePassSharingActionForUniqueID:(id)d presentationBlock:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  blockCopy = block;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000D57C;
   v13[3] = &unk_10001D250;
   v13[4] = self;
-  v14 = v8;
-  v15 = a5;
-  v16 = v9;
-  v10 = v9;
-  v11 = v15;
-  v12 = v8;
+  v14 = dCopy;
+  completionCopy = completion;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = completionCopy;
+  v12 = dCopy;
   [(PBKAppDelegate *)self _executeWhenApplicationForegroundActive:v13];
 }
 
-- (void)presentAddMoneyForPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)presentAddMoneyForPassWithUniqueID:(id)d completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000D8FC;
   v7[3] = &unk_10001CC88;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(PBKAppDelegate *)v8 _executeWhenApplicationForegroundActive:v7];
+  selfCopy = self;
+  dCopy = d;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = dCopy;
+  [(PBKAppDelegate *)selfCopy _executeWhenApplicationForegroundActive:v7];
 }
 
-- (void)presentSearchForPassWithUniqueID:(id)a3 withQuery:(id)a4 completion:(id)a5
+- (void)presentSearchForPassWithUniqueID:(id)d withQuery:(id)query completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000DB68;
   v10[3] = &unk_10001D328;
-  v11 = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v7 = v13;
-  v8 = v14;
-  v9 = v12;
-  [(PBKAppDelegate *)v11 _executeWhenApplicationForegroundActive:v10];
+  selfCopy = self;
+  dCopy = d;
+  queryCopy = query;
+  completionCopy = completion;
+  v7 = queryCopy;
+  v8 = completionCopy;
+  v9 = dCopy;
+  [(PBKAppDelegate *)selfCopy _executeWhenApplicationForegroundActive:v10];
 }
 
-- (void)presentAccountServiceSchedulePaymentWithUniqueID:(id)a3 billPayAmountType:(int64_t)a4 billPayAmount:(id)a5 completion:(id)a6
+- (void)presentAccountServiceSchedulePaymentWithUniqueID:(id)d billPayAmountType:(int64_t)type billPayAmount:(id)amount completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
+  dCopy = d;
+  amountCopy = amount;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10000DD54;
   v15[3] = &unk_10001D350;
   v15[4] = self;
-  v16 = v10;
-  v18 = a6;
-  v19 = a4;
-  v17 = v11;
-  v12 = v18;
-  v13 = v11;
-  v14 = v10;
+  v16 = dCopy;
+  completionCopy = completion;
+  typeCopy = type;
+  v17 = amountCopy;
+  v12 = completionCopy;
+  v13 = amountCopy;
+  v14 = dCopy;
   [(PBKAppDelegate *)self _executeWhenApplicationForegroundActive:v15];
 }
 

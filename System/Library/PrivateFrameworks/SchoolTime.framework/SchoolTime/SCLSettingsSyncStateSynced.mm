@@ -1,34 +1,34 @@
 @interface SCLSettingsSyncStateSynced
-- (void)didEnterWithPreviousState:(id)a3;
+- (void)didEnterWithPreviousState:(id)state;
 - (void)settingsDidChange;
 @end
 
 @implementation SCLSettingsSyncStateSynced
 
-- (void)didEnterWithPreviousState:(id)a3
+- (void)didEnterWithPreviousState:(id)state
 {
-  v4 = [(SCLSettingsSyncState *)self stateMachine];
-  v5 = [v4 context];
-  [v5 setError:0];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  context = [stateMachine context];
+  [context setError:0];
 
-  v6 = [(SCLSettingsSyncState *)self stateMachine];
-  v7 = [v6 context];
-  [v7 setMessageIdentifier:0];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  context2 = [stateMachine2 context];
+  [context2 setMessageIdentifier:0];
 
-  v8 = [(SCLSettingsSyncState *)self stateMachine];
-  v9 = [v8 context];
-  [v9 clearRecoveryHistory];
+  stateMachine3 = [(SCLSettingsSyncState *)self stateMachine];
+  context3 = [stateMachine3 context];
+  [context3 clearRecoveryHistory];
 
-  v10 = [(SCLSettingsSyncState *)self stateMachine];
-  [v10 cancelRetryActivity];
+  stateMachine4 = [(SCLSettingsSyncState *)self stateMachine];
+  [stateMachine4 cancelRetryActivity];
 }
 
 - (void)settingsDidChange
 {
-  v5 = [(SCLSettingsSyncState *)self stateMachine];
-  v3 = [(SCLSettingsSyncState *)self stateMachine];
-  v4 = [v3 pendingSendState];
-  [v5 transitionToState:v4];
+  stateMachine = [(SCLSettingsSyncState *)self stateMachine];
+  stateMachine2 = [(SCLSettingsSyncState *)self stateMachine];
+  pendingSendState = [stateMachine2 pendingSendState];
+  [stateMachine transitionToState:pendingSendState];
 }
 
 @end

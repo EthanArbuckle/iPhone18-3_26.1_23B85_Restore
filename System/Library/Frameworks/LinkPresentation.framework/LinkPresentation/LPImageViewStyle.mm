@@ -1,6 +1,6 @@
 @interface LPImageViewStyle
 - (LPImageViewStyle)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation LPImageViewStyle
@@ -49,9 +49,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   if (v4)
   {
     v5 = [(LPSize *)self->_fixedSize copy];

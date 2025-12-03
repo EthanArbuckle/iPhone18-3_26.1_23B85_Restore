@@ -1,16 +1,16 @@
 @interface FigCaptureClientApplicationStateMonitor
-+ (uint64_t)_applicationStateForBKSApplicationState:(int)a3 clientType:(int)a4 backgroundCameraAccess:;
-+ (uint64_t)_applicationStateForClientLayoutState:(unsigned int)a3 clientType:(int)a4 backgroundCameraAccess:;
++ (uint64_t)_applicationStateForBKSApplicationState:(int)state clientType:(int)type backgroundCameraAccess:;
++ (uint64_t)_applicationStateForClientLayoutState:(unsigned int)state clientType:(int)type backgroundCameraAccess:;
 + (void)initialize;
-+ (void)startContinuityCaptureTerminationMonitorWithHandler:(id)a3;
-+ (void)startPrewarmingMonitorWithHandler:(id)a3;
++ (void)startContinuityCaptureTerminationMonitorWithHandler:(id)handler;
++ (void)startPrewarmingMonitorWithHandler:(id)handler;
 + (void)stopPrewarmingMonitor;
-- (FigCaptureClientApplicationStateMonitor)initWithClientAuditToken:(id *)a3 mediaEnvironment:(id)a4 forThirdPartyTorch:(BOOL)a5 applicationAndLayoutStateHandler:(id)a6;
+- (FigCaptureClientApplicationStateMonitor)initWithClientAuditToken:(id *)token mediaEnvironment:(id)environment forThirdPartyTorch:(BOOL)torch applicationAndLayoutStateHandler:(id)handler;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)mediaEnvironment;
 - (OS_tcc_identity)mediaEnvironmentTCCIdentity;
-- (char)_initWithClient:(void *)a1;
+- (char)_initWithClient:(void *)client;
 - (uint64_t)_createAndObserveAVAudioSessionForBKSApplicationStateMonitoring;
 - (uint64_t)_createAndObserveCMSessionForBKSApplicationStateMonitoring;
 - (uint64_t)_resolveAggregateLayoutState;
@@ -21,69 +21,69 @@
 - (uint64_t)loggingPrefix;
 - (void)_deregisterAndReleaseAVAudioSession;
 - (void)_deregisterAndReleaseCMSession;
-- (void)_handleAVAudioSessionApplicationStateDidChangeNotification:(uint64_t)a1;
-- (void)_handleAVAudioSessionMediaServicesWereResetNotification:(uint64_t)a1;
+- (void)_handleAVAudioSessionApplicationStateDidChangeNotification:(uint64_t)notification;
+- (void)_handleAVAudioSessionMediaServicesWereResetNotification:(uint64_t)notification;
 - (void)_handleBKSApplicationStateChange:;
-- (void)_handleCMSessionApplicationStateDidChangeNotification:(uint64_t)a1;
-- (void)_handleLayout:(uint64_t)a1;
-- (void)_handleMediaEndowmentUpdate:(uint64_t)a1;
-- (void)_handleVisibilityEndowmentUpdate:(uint64_t)a1;
-- (void)_updateClientStateCondition:(void *)a3 newValue:;
-- (void)_updateMediaEnvironmentWithEndowmentInfos:(uint64_t)a3 evaluateLayout:(uint64_t)a4;
+- (void)_handleCMSessionApplicationStateDidChangeNotification:(uint64_t)notification;
+- (void)_handleLayout:(uint64_t)layout;
+- (void)_handleMediaEndowmentUpdate:(uint64_t)update;
+- (void)_handleVisibilityEndowmentUpdate:(uint64_t)update;
+- (void)_updateClientStateCondition:(void *)condition newValue:;
+- (void)_updateMediaEnvironmentWithEndowmentInfos:(uint64_t)infos evaluateLayout:(uint64_t)layout;
 - (void)dealloc;
-- (void)deviceLockStateMonitor:(id)a3 didUpdateDeviceLockState:(BOOL)a4;
+- (void)deviceLockStateMonitor:(id)monitor didUpdateDeviceLockState:(BOOL)state;
 - (void)invalidate;
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4;
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout;
 @end
 
 @implementation FigCaptureClientApplicationStateMonitor
 
 - (uint64_t)_resolveApplicationIDForLayoutMonitoring
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   FigSimpleMutexCheckIsLockedOnThisThread();
-  if ([*(a1 + 8) isSwiftPlaygroundsDevelopmentApp])
+  if ([*(self + 8) isSwiftPlaygroundsDevelopmentApp])
   {
     return 0x1F21854D0;
   }
 
-  if (![*(a1 + 8) mediaEnvironment])
+  if (![*(self + 8) mediaEnvironment])
   {
-    v7 = *(a1 + 8);
-    if (*(a1 + 64) == 1)
+    v7 = *(self + 8);
+    if (*(self + 64) == 1)
     {
-      v8 = [objc_msgSend(objc_msgSend(v7 "processHandle")];
+      xpcServiceRootHostApplicationID = [objc_msgSend(objc_msgSend(v7 "processHandle")];
     }
 
     else
     {
-      v9 = [v7 clientType];
-      v10 = *(a1 + 8);
-      if (v9 == 3 && (v11 = [v10 isSecureCaptureExtension], v10 = *(a1 + 8), (v11 & 1) == 0))
+      clientType = [v7 clientType];
+      v10 = *(self + 8);
+      if (clientType == 3 && (v11 = [v10 isSecureCaptureExtension], v10 = *(self + 8), (v11 & 1) == 0))
       {
-        v8 = [v10 xpcServiceRootHostApplicationID];
+        xpcServiceRootHostApplicationID = [v10 xpcServiceRootHostApplicationID];
       }
 
       else
       {
-        v8 = [v10 applicationID];
+        xpcServiceRootHostApplicationID = [v10 applicationID];
       }
     }
 
-    v4 = v8;
+    v4 = xpcServiceRootHostApplicationID;
     v32 = 0;
     if (FigCaptureAudiomxdSupportEnabled())
     {
-      if ((*(a1 + 80) & 1) == 0)
+      if ((*(self + 80) & 1) == 0)
       {
         goto LABEL_30;
       }
 
-      v12 = [*(a1 + 24) getMXSessionProperty:*MEMORY[0x1E69B0190] error:&v32];
+      v12 = [*(self + 24) getMXSessionProperty:*MEMORY[0x1E69B0190] error:&v32];
       if (v32)
       {
         OUTLINED_FUNCTION_24_10();
@@ -92,7 +92,7 @@
         OUTLINED_FUNCTION_4_0();
         if (v1)
         {
-          [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+          [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
           OUTLINED_FUNCTION_9_3();
           OUTLINED_FUNCTION_5_1();
         }
@@ -100,11 +100,11 @@
         goto LABEL_55;
       }
 
-      v13 = [v12 intValue];
-      if (!v13)
+      intValue = [v12 intValue];
+      if (!intValue)
       {
 LABEL_30:
-        if ([*(a1 + 8) applicationIDToInheritAppStateFrom])
+        if ([*(self + 8) applicationIDToInheritAppStateFrom])
         {
           if (dword_1ED844110)
           {
@@ -124,7 +124,7 @@ LABEL_30:
 
             if (v21)
             {
-              [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+              [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
               OUTLINED_FUNCTION_9_3();
               OUTLINED_FUNCTION_4_4();
               _os_log_send_and_compose_impl();
@@ -134,8 +134,8 @@ LABEL_30:
             OUTLINED_FUNCTION_13_0();
           }
 
-          [*(a1 + 8) setApplicationIDToInheritAppStateFrom:0];
-          [*(a1 + 8) setPidToInheritAppStateFrom:0];
+          [*(self + 8) setApplicationIDToInheritAppStateFrom:0];
+          [*(self + 8) setPidToInheritAppStateFrom:0];
         }
 
         return v4;
@@ -144,7 +144,7 @@ LABEL_30:
 
     else
     {
-      if ((*(a1 + 80) & 1) == 0)
+      if ((*(self + 80) & 1) == 0)
       {
         goto LABEL_30;
       }
@@ -158,7 +158,7 @@ LABEL_30:
         if (v2)
         {
           v15 = MEMORY[0x1E696AEC0];
-          [*(a1 + 8) pid];
+          [*(self + 8) pid];
           OUTLINED_FUNCTION_67_2();
           OUTLINED_FUNCTION_55_5();
           [v15 stringWithFormat:@"<%p[%d][%@]>"];
@@ -171,15 +171,15 @@ LABEL_30:
         goto LABEL_55;
       }
 
-      v13 = [0 intValue];
+      intValue = [0 intValue];
 
-      if (!v13)
+      if (!intValue)
       {
         goto LABEL_30;
       }
     }
 
-    if (v13 == [*(a1 + 8) pidToInheritAppStateFrom])
+    if (intValue == [*(self + 8) pidToInheritAppStateFrom])
     {
 LABEL_40:
       if (dword_1ED844110)
@@ -200,9 +200,9 @@ LABEL_40:
 
         if (v24)
         {
-          [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
-          [*(a1 + 8) applicationIDToInheritAppStateFrom];
-          [*(a1 + 8) pidToInheritAppStateFrom];
+          [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
+          [*(self + 8) applicationIDToInheritAppStateFrom];
+          [*(self + 8) pidToInheritAppStateFrom];
           OUTLINED_FUNCTION_9_3();
           OUTLINED_FUNCTION_18_13();
         }
@@ -211,8 +211,8 @@ LABEL_40:
         OUTLINED_FUNCTION_13_0();
       }
 
-      v25 = [objc_msgSend(*(a1 + 8) "applicationIDToInheritAppStateFrom")];
-      v26 = *(a1 + 8);
+      v25 = [objc_msgSend(*(self + 8) "applicationIDToInheritAppStateFrom")];
+      v26 = *(self + 8);
       if (v25)
       {
         return [v26 applicationID];
@@ -224,18 +224,18 @@ LABEL_40:
       }
     }
 
-    v16 = [MEMORY[0x1E69C75D0] handleForIdentifier:objc_msgSend(MEMORY[0x1E696AD98] error:{"numberWithInt:", v13), &v32}];
+    hostProcess = [MEMORY[0x1E69C75D0] handleForIdentifier:objc_msgSend(MEMORY[0x1E696AD98] error:{"numberWithInt:", intValue), &v32}];
     if (!v32)
     {
-      v17 = v16;
-      while ([v16 hostProcess])
+      v17 = hostProcess;
+      while ([hostProcess hostProcess])
       {
-        v16 = [v17 hostProcess];
-        v17 = v16;
+        hostProcess = [v17 hostProcess];
+        v17 = hostProcess;
       }
 
-      [*(a1 + 8) setPidToInheritAppStateFrom:{objc_msgSend(v17, "pid")}];
-      [*(a1 + 8) setApplicationIDToInheritAppStateFrom:{objc_msgSend(objc_msgSend(v17, "bundle"), "identifier")}];
+      [*(self + 8) setPidToInheritAppStateFrom:{objc_msgSend(v17, "pid")}];
+      [*(self + 8) setApplicationIDToInheritAppStateFrom:{objc_msgSend(objc_msgSend(v17, "bundle"), "identifier")}];
       goto LABEL_40;
     }
 
@@ -244,7 +244,7 @@ LABEL_40:
     OUTLINED_FUNCTION_30();
     if (v2)
     {
-      [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+      [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
       OUTLINED_FUNCTION_53_6();
       OUTLINED_FUNCTION_9_3();
       OUTLINED_FUNCTION_11_0();
@@ -257,7 +257,7 @@ LABEL_55:
     return v4;
   }
 
-  v6 = *(a1 + 8);
+  v6 = *(self + 8);
 
   return [v6 mediaEnvironmentBundleID];
 }
@@ -345,15 +345,15 @@ LABEL_55:
 
 - (uint64_t)_resolveApplicationState
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   FigSimpleMutexCheckIsLockedOnThisThread();
-  if (*(a1 + 80) == 1)
+  if (*(self + 80) == 1)
   {
-    v2 = +[FigCaptureClientApplicationStateMonitor _applicationStateForBKSApplicationState:clientType:backgroundCameraAccess:](FigCaptureClientApplicationStateMonitor, *(a1 + 84), [*(a1 + 8) clientType], objc_msgSend(*(a1 + 8), "hasBackgroundCameraAccess"));
+    v2 = +[FigCaptureClientApplicationStateMonitor _applicationStateForBKSApplicationState:clientType:backgroundCameraAccess:](FigCaptureClientApplicationStateMonitor, *(self + 84), [*(self + 8) clientType], objc_msgSend(*(self + 8), "hasBackgroundCameraAccess"));
   }
 
   else
@@ -361,16 +361,16 @@ LABEL_55:
     v2 = 2;
   }
 
-  if ((*(a1 + 96) & 1) == 0 && (*(a1 + 105) & 1) == 0)
+  if ((*(self + 96) & 1) == 0 && (*(self + 105) & 1) == 0)
   {
     OUTLINED_FUNCTION_56_6();
     v7 = v7 && v2 == 2;
     if (!v7)
     {
 LABEL_22:
-      if (*(a1 + 152) == 1 && v2 == 2)
+      if (*(self + 152) == 1 && v2 == 2)
       {
-        if (*(a1 + 153))
+        if (*(self + 153))
         {
           v2 = 1;
         }
@@ -385,8 +385,8 @@ LABEL_22:
     }
 
 LABEL_39:
-    v12 = [(FigCaptureClientApplicationStateMonitor *)a1 _resolveAggregateLayoutState];
-    v2 = +[FigCaptureClientApplicationStateMonitor _applicationStateForClientLayoutState:clientType:backgroundCameraAccess:](FigCaptureClientApplicationStateMonitor, v12, [*(a1 + 8) clientType], objc_msgSend(*(a1 + 8), "hasBackgroundCameraAccess"));
+    _resolveAggregateLayoutState = [(FigCaptureClientApplicationStateMonitor *)self _resolveAggregateLayoutState];
+    v2 = +[FigCaptureClientApplicationStateMonitor _applicationStateForClientLayoutState:clientType:backgroundCameraAccess:](FigCaptureClientApplicationStateMonitor, _resolveAggregateLayoutState, [*(self + 8) clientType], objc_msgSend(*(self + 8), "hasBackgroundCameraAccess"));
     goto LABEL_22;
   }
 
@@ -397,19 +397,19 @@ LABEL_39:
 
   v2 = 1;
 LABEL_9:
-  if ([*(a1 + 8) clientType] == 3)
+  if ([*(self + 8) clientType] == 3)
   {
     FigSimpleMutexLock();
-    v3 = [objc_msgSend(qword_1ED844F40 objectForKeyedSubscript:{objc_msgSend(*(a1 + 8), "xpcServiceRootHostApplicationID")), "referencedObject"}];
+    v3 = [objc_msgSend(qword_1ED844F40 objectForKeyedSubscript:{objc_msgSend(*(self + 8), "xpcServiceRootHostApplicationID")), "referencedObject"}];
     v4 = v3;
     if (v2 == 2)
     {
-      if (!v3 || (v5 = [*(v3 + 8) pid], v5 == objc_msgSend(*(a1 + 8), "pid")) || (objc_msgSend(objc_msgSend(*(v4 + 8), "applicationID"), "isEqualToString:", 0x1F21852F0) & 1) != 0 || (objc_msgSend(objc_msgSend(*(a1 + 8), "applicationID"), "isEqualToString:", 0x1F21852F0) & 1) != 0 || (objc_msgSend(objc_msgSend(*(a1 + 8), "applicationID"), "isEqualToString:", 0x1F21855B0) & 1) != 0)
+      if (!v3 || (v5 = [*(v3 + 8) pid], v5 == objc_msgSend(*(self + 8), "pid")) || (objc_msgSend(objc_msgSend(*(v4 + 8), "applicationID"), "isEqualToString:", 0x1F21852F0) & 1) != 0 || (objc_msgSend(objc_msgSend(*(self + 8), "applicationID"), "isEqualToString:", 0x1F21852F0) & 1) != 0 || (objc_msgSend(objc_msgSend(*(self + 8), "applicationID"), "isEqualToString:", 0x1F21855B0) & 1) != 0)
       {
-        if ([*(a1 + 8) xpcServiceRootHostApplicationID])
+        if ([*(self + 8) xpcServiceRootHostApplicationID])
         {
-          v6 = [[FigWeakReference alloc] initWithReferencedObject:a1];
-          [qword_1ED844F40 setObject:v6 forKeyedSubscript:{objc_msgSend(*(a1 + 8), "xpcServiceRootHostApplicationID")}];
+          v6 = [[FigWeakReference alloc] initWithReferencedObject:self];
+          [qword_1ED844F40 setObject:v6 forKeyedSubscript:{objc_msgSend(*(self + 8), "xpcServiceRootHostApplicationID")}];
         }
 
         else if (dword_1ED844110)
@@ -429,9 +429,9 @@ LABEL_9:
 
           if (v11)
           {
-            [MEMORY[0x1E696AEC0] stringWithFormat:@"<%p[%d][%@]>", a1, objc_msgSend(*(a1 + 8), "pid"), objc_msgSend(*(a1 + 8), "applicationID")];
-            [*(a1 + 8) applicationID];
-            [*(a1 + 8) pid];
+            [MEMORY[0x1E696AEC0] stringWithFormat:@"<%p[%d][%@]>", self, objc_msgSend(*(self + 8), "pid"), objc_msgSend(*(self + 8), "applicationID")];
+            [*(self + 8) applicationID];
+            [*(self + 8) pid];
             OUTLINED_FUNCTION_27_7();
             OUTLINED_FUNCTION_2_1();
             OUTLINED_FUNCTION_18_13();
@@ -446,9 +446,9 @@ LABEL_9:
 
       else
       {
-        [*(a1 + 8) xpcServiceRootHostApplicationID];
-        [*(a1 + 8) applicationID];
-        [*(a1 + 8) pid];
+        [*(self + 8) xpcServiceRootHostApplicationID];
+        [*(self + 8) applicationID];
+        [*(self + 8) pid];
         [*(v4 + 8) applicationID];
         [*(v4 + 8) pid];
         v14 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -460,9 +460,9 @@ LABEL_9:
 
     else
     {
-      if (v3 == a1)
+      if (v3 == self)
       {
-        [qword_1ED844F40 setObject:0 forKeyedSubscript:{objc_msgSend(*(a1 + 8), "xpcServiceRootHostApplicationID")}];
+        [qword_1ED844F40 setObject:0 forKeyedSubscript:{objc_msgSend(*(self + 8), "xpcServiceRootHostApplicationID")}];
       }
 
       v2 = 1;
@@ -654,7 +654,7 @@ void __106__FigCaptureClientApplicationStateMonitor__createAndObserveAVAudioSess
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -741,16 +741,16 @@ uint64_t __53__FigCaptureClientApplicationStateMonitor_initialize__block_invoke(
 
 - (NSString)mediaEnvironment
 {
-  v2 = [(FigCaptureClientApplicationStateMonitorClient *)self->_client mediaEnvironment];
+  mediaEnvironment = [(FigCaptureClientApplicationStateMonitorClient *)self->_client mediaEnvironment];
 
-  return v2;
+  return mediaEnvironment;
 }
 
 - (OS_tcc_identity)mediaEnvironmentTCCIdentity
 {
-  v2 = [(FigCaptureClientApplicationStateMonitorClient *)self->_client mediaEnvironmentTCCIdentity];
+  mediaEnvironmentTCCIdentity = [(FigCaptureClientApplicationStateMonitorClient *)self->_client mediaEnvironmentTCCIdentity];
 
-  return v2;
+  return mediaEnvironmentTCCIdentity;
 }
 
 - (NSString)debugDescription
@@ -775,23 +775,23 @@ uint64_t __53__FigCaptureClientApplicationStateMonitor_initialize__block_invoke(
   }
 
   v8 = [v3 stringWithFormat:@"%@, state: %@", v4, v7];
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_isBKSApplicationStateMonitoringRequiredForClient)
   {
-    [v9 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"bksAppState: %@", FigCaptureBKSApplicationStateToString(self->_bksApplicationState))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"bksAppState: %@", FigCaptureBKSApplicationStateToString(self->_bksApplicationState))}];
   }
 
   if (self->_isLayoutMonitoringRequiredForClient || self->_isExternalDisplayLayoutMonitoringRequiredForClient)
   {
-    [v9 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"layout: %@", FigCaptureClientLayoutStateToString(self->_aggregateLayoutState))}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"layout: %@", FigCaptureClientLayoutStateToString(self->_aggregateLayoutState))}];
   }
 
   if (self->_isDeviceLockStateMonitoringRequiredForClient)
   {
-    [v9 addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"device locked: %d", self->_deviceIsLocked)}];
+    [array addObject:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"device locked: %d", self->_deviceIsLocked)}];
   }
 
-  [v8 appendFormat:@" (%@)", objc_msgSend(v9, "componentsJoinedByString:", @", ")];
+  [v8 appendFormat:@" (%@)", objc_msgSend(array, "componentsJoinedByString:", @", ")];
   v10 = MEMORY[0x1E696AEC0];
 
   return [v10 stringWithString:v8];
@@ -822,7 +822,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   objc_autoreleasePoolPop(v2);
 }
 
-+ (uint64_t)_applicationStateForBKSApplicationState:(int)a3 clientType:(int)a4 backgroundCameraAccess:
++ (uint64_t)_applicationStateForBKSApplicationState:(int)state clientType:(int)type backgroundCameraAccess:
 {
   objc_opt_self();
   result = 1;
@@ -830,7 +830,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   {
     if (a2 == 4)
     {
-      if (a4)
+      if (type)
       {
         return 2;
       }
@@ -843,19 +843,19 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
 
     else if (a2 == 8)
     {
-      if ((a3 - 3) >= 5)
+      if ((state - 3) >= 5)
       {
         return 2;
       }
 
       else
       {
-        return dword_1AD055358[a3 - 3];
+        return dword_1AD055358[state - 3];
       }
     }
   }
 
-  else if (((a3 - 6) & 0xFFFFFFFD) != 0)
+  else if (((state - 6) & 0xFFFFFFFD) != 0)
   {
     return 1;
   }
@@ -868,13 +868,13 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   return result;
 }
 
-+ (uint64_t)_applicationStateForClientLayoutState:(unsigned int)a3 clientType:(int)a4 backgroundCameraAccess:
++ (uint64_t)_applicationStateForClientLayoutState:(unsigned int)state clientType:(int)type backgroundCameraAccess:
 {
   objc_opt_self();
   result = 1;
-  if (a3 <= 8)
+  if (state <= 8)
   {
-    if (((1 << a3) & 0x2E) != 0)
+    if (((1 << state) & 0x2E) != 0)
     {
       v8 = a2 - 2;
       if (a2 - 2) < 5 && ((0x17u >> v8))
@@ -882,7 +882,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
         return dword_1AD05536C[v8];
       }
 
-      else if (a4)
+      else if (type)
       {
         return 2;
       }
@@ -905,7 +905,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
         v9 = 2;
       }
 
-      if (((1 << a3) & 0x140) != 0)
+      if (((1 << state) & 0x140) != 0)
       {
         return v9;
       }
@@ -920,7 +920,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   return result;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateLayout:(id)a4
+- (void)layoutMonitor:(id)monitor didUpdateLayout:(id)layout
 {
   if (!self->_invalid)
   {
@@ -928,7 +928,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   }
 }
 
-+ (void)startPrewarmingMonitorWithHandler:(id)a3
++ (void)startPrewarmingMonitorWithHandler:(id)handler
 {
   v4 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{0x1F216ED50, 0x1F2185310, 0}];
   v5[0] = MEMORY[0x1E69E9820];
@@ -936,7 +936,7 @@ void __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionFo
   v5[2] = __77__FigCaptureClientApplicationStateMonitor_startPrewarmingMonitorWithHandler___block_invoke;
   v5[3] = &unk_1E79970C0;
   v5[4] = v4;
-  v5[5] = a3;
+  v5[5] = handler;
   v6 = 1;
   sPrewarmingProcessMonitor = [MEMORY[0x1E69C75F8] monitorWithConfiguration:v5];
 }
@@ -985,7 +985,7 @@ void __77__FigCaptureClientApplicationStateMonitor_startPrewarmingMonitorWithHan
   sPrewarmingProcessMonitor = 0;
 }
 
-+ (void)startContinuityCaptureTerminationMonitorWithHandler:(id)a3
++ (void)startContinuityCaptureTerminationMonitorWithHandler:(id)handler
 {
   if (!sContinuityCaptureProcessTerminationMonitor)
   {
@@ -993,7 +993,7 @@ void __77__FigCaptureClientApplicationStateMonitor_startPrewarmingMonitorWithHan
     v3[1] = 3221225472;
     v3[2] = __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTerminationMonitorWithHandler___block_invoke;
     v3[3] = &unk_1E7997110;
-    v3[4] = a3;
+    v3[4] = handler;
     sContinuityCaptureProcessTerminationMonitor = [MEMORY[0x1E69C75F8] monitorWithConfiguration:v3];
   }
 }
@@ -1031,14 +1031,14 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
   }
 }
 
-- (char)_initWithClient:(void *)a1
+- (char)_initWithClient:(void *)client
 {
-  if (!a1)
+  if (!client)
   {
     return 0;
   }
 
-  v37.receiver = a1;
+  v37.receiver = client;
   v37.super_class = FigCaptureClientApplicationStateMonitor;
   v4 = objc_msgSendSuper2(&v37, sel_init);
   if (v4)
@@ -1202,9 +1202,9 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
   return v4;
 }
 
-- (void)_handleMediaEndowmentUpdate:(uint64_t)a1
+- (void)_handleMediaEndowmentUpdate:(uint64_t)update
 {
-  if (a1)
+  if (update)
   {
     OUTLINED_FUNCTION_59_0();
     v3 = v2;
@@ -1239,21 +1239,21 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
   }
 }
 
-- (void)_updateMediaEnvironmentWithEndowmentInfos:(uint64_t)a3 evaluateLayout:(uint64_t)a4
+- (void)_updateMediaEnvironmentWithEndowmentInfos:(uint64_t)infos evaluateLayout:(uint64_t)layout
 {
-  if (a1)
+  if (self)
   {
-    v9 = a3;
-    v11 = a1;
+    infosCopy = infos;
+    selfCopy = self;
     if (dword_1ED844110)
     {
       v12 = OUTLINED_FUNCTION_46_6();
       OUTLINED_FUNCTION_58_8(v12);
       OUTLINED_FUNCTION_30();
-      if (v8)
+      if (endowment)
       {
         v13 = MEMORY[0x1E696AEC0];
-        [*(v11 + 8) pid];
+        [*(selfCopy + 8) pid];
         OUTLINED_FUNCTION_67_2();
         OUTLINED_FUNCTION_55_5();
         [v13 stringWithFormat:@"<%p[%d][%@]>"];
@@ -1264,21 +1264,21 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
         *&v41[22] = 2112;
         v45 = a2;
         LOWORD(v47) = 1024;
-        *(&v47 + 2) = v9;
+        *(&v47 + 2) = infosCopy;
         OUTLINED_FUNCTION_2_1();
         OUTLINED_FUNCTION_11_0();
         OUTLINED_FUNCTION_141();
       }
 
       OUTLINED_FUNCTION_2_4();
-      a1 = OUTLINED_FUNCTION_56_0();
+      self = OUTLINED_FUNCTION_56_0();
     }
 
-    v15 = OUTLINED_FUNCTION_60_1(a1, a2, a3, a4, a5, a6, a7, a8, v33, v35, v37, v39, *v41, *&v41[8], *&v41[16], v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, 0);
+    v15 = OUTLINED_FUNCTION_60_1(self, a2, infos, layout, a5, a6, a7, a8, v33, v35, v37, v39, *v41, *&v41[8], *&v41[16], v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, 0);
     if (v15)
     {
       v16 = v15;
-      v17 = v9;
+      v17 = infosCopy;
       v18 = MEMORY[0];
       while (2)
       {
@@ -1289,19 +1289,19 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
             objc_enumerationMutation(a2);
           }
 
-          v8 = *(8 * i);
-          isKindOfClass = [objc_msgSend(v8 "endowmentNamespace")];
+          endowment = *(8 * i);
+          isKindOfClass = [objc_msgSend(endowment "endowmentNamespace")];
           if (isKindOfClass)
           {
-            isKindOfClass = [objc_msgSend(v8 "environment")];
+            isKindOfClass = [objc_msgSend(endowment "environment")];
             if (isKindOfClass)
             {
-              v8 = [v8 endowment];
+              endowment = [endowment endowment];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
               if (isKindOfClass)
               {
-                v28 = [v8 objectForKeyedSubscript:*MEMORY[0x1E69B06F0]];
+                v28 = [endowment objectForKeyedSubscript:*MEMORY[0x1E69B06F0]];
                 goto LABEL_18;
               }
             }
@@ -1319,7 +1319,7 @@ void __95__FigCaptureClientApplicationStateMonitor_startContinuityCaptureTermina
 
       v28 = 0;
 LABEL_18:
-      v9 = v17;
+      infosCopy = v17;
     }
 
     else
@@ -1328,7 +1328,7 @@ LABEL_18:
     }
 
     FigSimpleMutexLock();
-    if ([*(v11 + 8) mediaEnvironmentBundleID] == v28 || (objc_msgSend(objc_msgSend(*(v11 + 8), "mediaEnvironmentBundleID"), "isEqualToString:", v28) & 1) != 0)
+    if ([*(selfCopy + 8) mediaEnvironmentBundleID] == v28 || (objc_msgSend(objc_msgSend(*(selfCopy + 8), "mediaEnvironmentBundleID"), "isEqualToString:", v28) & 1) != 0)
     {
       FigSimpleMutexUnlock();
     }
@@ -1340,14 +1340,14 @@ LABEL_18:
         v29 = OUTLINED_FUNCTION_46_6();
         OUTLINED_FUNCTION_58_8(v29);
         OUTLINED_FUNCTION_30();
-        if (v8)
+        if (endowment)
         {
           v30 = MEMORY[0x1E696AEC0];
-          [*(v11 + 8) pid];
+          [*(selfCopy + 8) pid];
           OUTLINED_FUNCTION_67_2();
           OUTLINED_FUNCTION_55_5();
           [v30 stringWithFormat:@"<%p[%d][%@]>"];
-          [*(v11 + 8) mediaEnvironmentBundleID];
+          [*(selfCopy + 8) mediaEnvironmentBundleID];
           OUTLINED_FUNCTION_27_7();
           OUTLINED_FUNCTION_2_1();
           OUTLINED_FUNCTION_11_0();
@@ -1358,23 +1358,23 @@ LABEL_18:
         OUTLINED_FUNCTION_56_0();
       }
 
-      [*(v11 + 8) setMediaEnvironmentBundleID:v28];
+      [*(selfCopy + 8) setMediaEnvironmentBundleID:v28];
       if (v28)
       {
         [v28 UTF8String];
         v31 = tcc_identity_create();
-        [*(v11 + 8) setMediaEnvironmentTCCIdentity:v31];
+        [*(selfCopy + 8) setMediaEnvironmentTCCIdentity:v31];
       }
 
       else
       {
-        [*(v11 + 8) setMediaEnvironmentTCCIdentity:0];
+        [*(selfCopy + 8) setMediaEnvironmentTCCIdentity:0];
       }
 
       FigSimpleMutexUnlock();
-      if (v9)
+      if (infosCopy)
       {
-        [*(v11 + 128) currentLayout];
+        [*(selfCopy + 128) currentLayout];
         v32 = OUTLINED_FUNCTION_3_30();
         [FigCaptureClientApplicationStateMonitor _handleLayout:v32];
       }
@@ -1384,7 +1384,7 @@ LABEL_18:
 
 - (uint64_t)_createAndObserveCMSessionForBKSApplicationStateMonitoring
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1406,7 +1406,7 @@ LABEL_18:
 
     if (v18)
     {
-      [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+      [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
       v29 = 136315394;
       OUTLINED_FUNCTION_5_43();
       OUTLINED_FUNCTION_9_14();
@@ -1435,7 +1435,7 @@ LABEL_18:
       v29 = 136315650;
       v30 = "[FigCaptureClientApplicationStateMonitor _createAndObserveCMSessionForBKSApplicationStateMonitoring]";
       v31 = 2114;
-      v32 = [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+      loggingPrefix = [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
       v33 = 1024;
       v34 = v13;
       OUTLINED_FUNCTION_5_1();
@@ -1445,7 +1445,7 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@"FigCaptureClient-%d", objc_msgSend(*(a1 + 8), "pid")];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@"FigCaptureClient-%d", objc_msgSend(*(self + 8), "pid")];
   v5 = CMSessionSetProperty();
   if (v5)
   {
@@ -1461,12 +1461,12 @@ LABEL_18:
 
   else
   {
-    [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(*(a1 + 8), "pid")}];
+    [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(*(self + 8), "pid")}];
     v6 = CMSessionSetProperty();
     if (!v6)
     {
       memset(v28, 0, sizeof(v28));
-      v7 = *(a1 + 8);
+      v7 = *(self + 8);
       if (v7)
       {
         [v7 auditToken];
@@ -1476,17 +1476,17 @@ LABEL_18:
       v8 = CMSessionSetProperty();
       if (!v8)
       {
-        v9 = [FigWeakReference weakReferenceToObject:a1];
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
+        v9 = [FigWeakReference weakReferenceToObject:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v11 = *MEMORY[0x1E69AFB00];
-        v12 = *(a1 + 32);
+        v12 = *(self + 32);
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __101__FigCaptureClientApplicationStateMonitor__createAndObserveCMSessionForBKSApplicationStateMonitoring__block_invoke;
         v27[3] = &unk_1E798FC90;
         v27[4] = v9;
-        *(a1 + 40) = [v10 addObserverForName:v11 object:v12 queue:0 usingBlock:v27];
-        [(FigCaptureClientApplicationStateMonitor *)a1 _updateBKSApplicationStateFromCMSession];
+        *(self + 40) = [defaultCenter addObserverForName:v11 object:v12 queue:0 usingBlock:v27];
+        [(FigCaptureClientApplicationStateMonitor *)self _updateBKSApplicationStateFromCMSession];
         return 0;
       }
 
@@ -1525,19 +1525,19 @@ LABEL_26:
 LABEL_27:
   fig_log_call_emit_and_clean_up_after_send_and_compose();
 LABEL_28:
-  v26 = *(a1 + 32);
+  v26 = *(self + 32);
   if (v26)
   {
     CFRelease(v26);
-    *(a1 + 32) = 0;
+    *(self + 32) = 0;
   }
 
   return v13;
 }
 
-- (void)_handleVisibilityEndowmentUpdate:(uint64_t)a1
+- (void)_handleVisibilityEndowmentUpdate:(uint64_t)update
 {
-  if (a1)
+  if (update)
   {
     OUTLINED_FUNCTION_59_0();
     v3 = v2;
@@ -1590,14 +1590,14 @@ LABEL_28:
   }
 }
 
-- (FigCaptureClientApplicationStateMonitor)initWithClientAuditToken:(id *)a3 mediaEnvironment:(id)a4 forThirdPartyTorch:(BOOL)a5 applicationAndLayoutStateHandler:(id)a6
+- (FigCaptureClientApplicationStateMonitor)initWithClientAuditToken:(id *)token mediaEnvironment:(id)environment forThirdPartyTorch:(BOOL)torch applicationAndLayoutStateHandler:(id)handler
 {
-  v7 = a5;
+  torchCopy = torch;
   v11 = [FigCaptureClientApplicationStateMonitorClient alloc];
-  v12 = *&a3->var0[4];
-  v16[0] = *a3->var0;
+  v12 = *&token->var0[4];
+  v16[0] = *token->var0;
   v16[1] = v12;
-  v13 = [(FigCaptureClientApplicationStateMonitorClient *)v11 initWithAuditToken:v16 mediaEnvironment:a4 forThirdPartyTorch:v7 applicationAndLayoutStateHandler:a6];
+  v13 = [(FigCaptureClientApplicationStateMonitorClient *)v11 initWithAuditToken:v16 mediaEnvironment:environment forThirdPartyTorch:torchCopy applicationAndLayoutStateHandler:handler];
   v14 = [(FigCaptureClientApplicationStateMonitor *)self _initWithClient:v13];
 
   return v14;
@@ -1605,25 +1605,25 @@ LABEL_28:
 
 - (void)_deregisterAndReleaseAVAudioSession
 {
-  if (a1)
+  if (self)
   {
     if (FigCaptureAudiomxdSupportEnabled())
     {
-      if (a1[3])
+      if (self[3])
       {
         OUTLINED_FUNCTION_57_5();
         if (v3)
         {
-          [v2 removeObserverForType:2 observer:a1[5] name:*MEMORY[0x1E69AFB00]];
+          [v2 removeObserverForType:2 observer:self[5] name:*MEMORY[0x1E69AFB00]];
 
-          a1[5] = 0;
-          [a1[3] removeObserverForType:1 observer:a1[6] name:*MEMORY[0x1E698D5C0]];
+          self[5] = 0;
+          [self[3] removeObserverForType:1 observer:self[6] name:*MEMORY[0x1E698D5C0]];
 
-          a1[6] = 0;
-          v2 = a1[3];
+          self[6] = 0;
+          v2 = self[3];
         }
 
-        a1[3] = 0;
+        self[3] = 0;
       }
     }
 
@@ -1648,7 +1648,7 @@ LABEL_28:
 
 - (void)_deregisterAndReleaseCMSession
 {
-  if (a1)
+  if (self)
   {
     if (FigCaptureAudiomxdSupportEnabled())
     {
@@ -1667,27 +1667,27 @@ LABEL_28:
       OUTLINED_FUNCTION_17_8();
     }
 
-    else if (*(a1 + 32))
+    else if (*(self + 32))
     {
       OUTLINED_FUNCTION_57_5();
-      if (!v3 || ([objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")], *(a1 + 40), *(a1 + 40) = 0, (v2 = *(a1 + 32)) != 0))
+      if (!v3 || ([objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")], *(self + 40), *(self + 40) = 0, (v2 = *(self + 32)) != 0))
       {
         CFRelease(v2);
-        *(a1 + 32) = 0;
+        *(self + 32) = 0;
       }
     }
   }
 }
 
-- (void)_handleAVAudioSessionApplicationStateDidChangeNotification:(uint64_t)a1
+- (void)_handleAVAudioSessionApplicationStateDidChangeNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_59_0();
     v3 = v2;
     v5 = v4;
-    v6 = [v2 name];
-    if ([v6 isEqualToString:*MEMORY[0x1E69AFB00]])
+    name = [v2 name];
+    if ([name isEqualToString:*MEMORY[0x1E69AFB00]])
     {
       if (dword_1ED844110)
       {
@@ -1711,8 +1711,8 @@ LABEL_28:
         OUTLINED_FUNCTION_39_0();
       }
 
-      v9 = [v3 userInfo];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
+      userInfo = [v3 userInfo];
+      v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
       if (v10)
       {
         v11 = v10;
@@ -1763,14 +1763,14 @@ LABEL_11:
   }
 }
 
-- (void)_handleAVAudioSessionMediaServicesWereResetNotification:(uint64_t)a1
+- (void)_handleAVAudioSessionMediaServicesWereResetNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_59_0();
     v3 = v2;
-    v5 = [v4 name];
-    if ([v5 isEqualToString:*MEMORY[0x1E698D5C0]])
+    name = [v4 name];
+    if ([name isEqualToString:*MEMORY[0x1E698D5C0]])
     {
       if (dword_1ED844110)
       {
@@ -1821,15 +1821,15 @@ LABEL_11:
   }
 }
 
-- (void)_handleCMSessionApplicationStateDidChangeNotification:(uint64_t)a1
+- (void)_handleCMSessionApplicationStateDidChangeNotification:(uint64_t)notification
 {
-  if (a1)
+  if (notification)
   {
     OUTLINED_FUNCTION_59_0();
     v3 = v2;
     v5 = v4;
-    v6 = [v2 name];
-    if ([v6 isEqualToString:*MEMORY[0x1E69AFB00]])
+    name = [v2 name];
+    if ([name isEqualToString:*MEMORY[0x1E69AFB00]])
     {
       if (dword_1ED844110)
       {
@@ -1854,8 +1854,8 @@ LABEL_11:
         OUTLINED_FUNCTION_39_0();
       }
 
-      v9 = [v3 userInfo];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
+      userInfo = [v3 userInfo];
+      v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AFA50]];
       if (v10)
       {
         v11 = v10;
@@ -2017,26 +2017,26 @@ LABEL_6:
   [(FigCaptureClientApplicationStateMonitor *)v7 _updateClientStateCondition:v8 newValue:v9];
 }
 
-- (void)_updateClientStateCondition:(void *)a3 newValue:
+- (void)_updateClientStateCondition:(void *)condition newValue:
 {
-  if (!a1 || (*(a1 + 168) & 1) != 0)
+  if (!self || (*(self + 168) & 1) != 0)
   {
     return;
   }
 
   FigSimpleMutexCheckIsLockedOnThisThread();
-  if (a1 + 84 == a2)
+  if (self + 84 == a2)
   {
-    [a3 unsignedIntValue];
+    [condition unsignedIntValue];
     OUTLINED_FUNCTION_38_8();
-    if ((!v10 || (*(a1 + 88) & 1) == 0) && dword_1ED844110)
+    if ((!v10 || (*(self + 88) & 1) == 0) && dword_1ED844110)
     {
       v11 = OUTLINED_FUNCTION_13_19();
       OUTLINED_FUNCTION_19_3(v11);
       OUTLINED_FUNCTION_4_0();
       if (v3)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         v26 = OUTLINED_FUNCTION_106_0();
         FigCaptureBKSApplicationStateToString(v26);
         OUTLINED_FUNCTION_8_27();
@@ -2048,22 +2048,22 @@ LABEL_6:
       OUTLINED_FUNCTION_39_0();
     }
 
-    *(a1 + 84) = a3;
+    *(self + 84) = condition;
     v12 = 88;
   }
 
-  else if (a1 + 100 == a2)
+  else if (self + 100 == a2)
   {
-    [a3 intValue];
+    [condition intValue];
     OUTLINED_FUNCTION_38_8();
-    if ((!v10 || (*(a1 + 104) & 1) == 0) && dword_1ED844110)
+    if ((!v10 || (*(self + 104) & 1) == 0) && dword_1ED844110)
     {
       v13 = OUTLINED_FUNCTION_13_19();
       OUTLINED_FUNCTION_19_3(v13);
       OUTLINED_FUNCTION_4_0();
       if (v3)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         v27 = OUTLINED_FUNCTION_106_0();
         FigCaptureClientLayoutStateToString(v27);
         OUTLINED_FUNCTION_8_27();
@@ -2075,22 +2075,22 @@ LABEL_6:
       OUTLINED_FUNCTION_39_0();
     }
 
-    *(a1 + 100) = a3;
+    *(self + 100) = condition;
     v12 = 104;
   }
 
-  else if (a1 + 108 == a2)
+  else if (self + 108 == a2)
   {
-    [a3 intValue];
+    [condition intValue];
     OUTLINED_FUNCTION_38_8();
-    if ((!v10 || (*(a1 + 112) & 1) == 0) && dword_1ED844110)
+    if ((!v10 || (*(self + 112) & 1) == 0) && dword_1ED844110)
     {
       v14 = OUTLINED_FUNCTION_13_19();
       OUTLINED_FUNCTION_19_3(v14);
       OUTLINED_FUNCTION_4_0();
       if (v3)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         v28 = OUTLINED_FUNCTION_106_0();
         FigCaptureClientLayoutStateToString(v28);
         OUTLINED_FUNCTION_8_27();
@@ -2102,22 +2102,22 @@ LABEL_6:
       OUTLINED_FUNCTION_39_0();
     }
 
-    *(a1 + 108) = a3;
+    *(self + 108) = condition;
     v12 = 112;
   }
 
-  else if (a1 + 116 == a2)
+  else if (self + 116 == a2)
   {
-    [a3 intValue];
+    [condition intValue];
     OUTLINED_FUNCTION_38_8();
-    if ((!v10 || (*(a1 + 120) & 1) == 0) && dword_1ED844110)
+    if ((!v10 || (*(self + 120) & 1) == 0) && dword_1ED844110)
     {
       v15 = OUTLINED_FUNCTION_13_19();
       OUTLINED_FUNCTION_19_3(v15);
       OUTLINED_FUNCTION_4_0();
       if (v3)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         v29 = OUTLINED_FUNCTION_106_0();
         FigCaptureClientLayoutStateToString(v29);
         OUTLINED_FUNCTION_8_27();
@@ -2129,14 +2129,14 @@ LABEL_6:
       OUTLINED_FUNCTION_39_0();
     }
 
-    *(a1 + 116) = a3;
+    *(self + 116) = condition;
     v12 = 120;
   }
 
   else
   {
-    v8 = (a1 + 153);
-    if (a1 + 153 != a2)
+    v8 = (self + 153);
+    if (self + 153 != a2)
     {
       OUTLINED_FUNCTION_3_45();
       os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -2144,7 +2144,7 @@ LABEL_6:
       OUTLINED_FUNCTION_30();
       if (v4)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         OUTLINED_FUNCTION_23_8();
         OUTLINED_FUNCTION_5();
         OUTLINED_FUNCTION_11_0();
@@ -2156,15 +2156,15 @@ LABEL_6:
       return;
     }
 
-    v16 = [a3 BOOLValue];
-    if ((*v8 != v16 || (*(a1 + 154) & 1) == 0) && dword_1ED844110)
+    bOOLValue = [condition BOOLValue];
+    if ((*v8 != bOOLValue || (*(self + 154) & 1) == 0) && dword_1ED844110)
     {
       v17 = OUTLINED_FUNCTION_13_19();
       OUTLINED_FUNCTION_19_3(v17);
       OUTLINED_FUNCTION_4_0();
       if (v3)
       {
-        [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
+        [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
         OUTLINED_FUNCTION_5();
         OUTLINED_FUNCTION_5_1();
         OUTLINED_FUNCTION_34_8();
@@ -2174,25 +2174,25 @@ LABEL_6:
       OUTLINED_FUNCTION_39_0();
     }
 
-    *v8 = v16;
+    *v8 = bOOLValue;
     v12 = 154;
   }
 
-  *(a1 + v12) = 1;
+  *(self + v12) = 1;
   OUTLINED_FUNCTION_57_5();
-  if ((!v10 || *(a1 + 88) == 1) && (*(a1 + 96) != 1 || *(a1 + 104) == 1) && (*(a1 + 105) != 1 || *(a1 + 112) == 1))
+  if ((!v10 || *(self + 88) == 1) && (*(self + 96) != 1 || *(self + 104) == 1) && (*(self + 105) != 1 || *(self + 112) == 1))
   {
     OUTLINED_FUNCTION_56_6();
-    if ((!v10 || *(a1 + 120) == 1) && (*(a1 + 152) != 1 || *(a1 + 154) == 1))
+    if ((!v10 || *(self + 120) == 1) && (*(self + 152) != 1 || *(self + 154) == 1))
     {
-      v18 = [(FigCaptureClientApplicationStateMonitor *)a1 _resolveApplicationState];
-      v19 = [(FigCaptureClientApplicationStateMonitor *)a1 _resolveAggregateLayoutState];
-      v20 = *(a1 + 92);
-      v21 = v20 == 2 && *(a1 + 124) != v19;
-      if (v20 != v18 || v21)
+      _resolveApplicationState = [(FigCaptureClientApplicationStateMonitor *)self _resolveApplicationState];
+      _resolveAggregateLayoutState = [(FigCaptureClientApplicationStateMonitor *)self _resolveAggregateLayoutState];
+      v20 = *(self + 92);
+      v21 = v20 == 2 && *(self + 124) != _resolveAggregateLayoutState;
+      if (v20 != _resolveApplicationState || v21)
       {
-        *(a1 + 92) = v18;
-        *(a1 + 124) = v19;
+        *(self + 92) = _resolveApplicationState;
+        *(self + 124) = _resolveAggregateLayoutState;
         if (dword_1ED844110)
         {
           OUTLINED_FUNCTION_6_37();
@@ -2211,8 +2211,8 @@ LABEL_6:
 
           if (v24)
           {
-            [(FigCaptureClientApplicationStateMonitor *)a1 loggingPrefix];
-            FigCaptureClientLayoutStateToString(*(a1 + 124));
+            [(FigCaptureClientApplicationStateMonitor *)self loggingPrefix];
+            FigCaptureClientLayoutStateToString(*(self + 124));
             OUTLINED_FUNCTION_23_8();
             OUTLINED_FUNCTION_5();
             OUTLINED_FUNCTION_18_13();
@@ -2223,16 +2223,16 @@ LABEL_6:
           OUTLINED_FUNCTION_13_0();
         }
 
-        v25 = [*(a1 + 8) applicationAndLayoutStateHandler];
-        (*(v25 + 16))(v25, [*(a1 + 8) pid], *(a1 + 92), *(a1 + 124));
+        applicationAndLayoutStateHandler = [*(self + 8) applicationAndLayoutStateHandler];
+        (*(applicationAndLayoutStateHandler + 16))(applicationAndLayoutStateHandler, [*(self + 8) pid], *(self + 92), *(self + 124));
       }
     }
   }
 }
 
-- (void)_handleLayout:(uint64_t)a1
+- (void)_handleLayout:(uint64_t)layout
 {
-  if (a1)
+  if (layout)
   {
     OUTLINED_FUNCTION_59_0();
     v4 = v3;
@@ -2245,7 +2245,7 @@ LABEL_3:
 
     v5 = v2;
     FigSimpleMutexLock();
-    v6 = [(FigCaptureClientApplicationStateMonitor *)v4 _resolveApplicationIDForLayoutMonitoring];
+    _resolveApplicationIDForLayoutMonitoring = [(FigCaptureClientApplicationStateMonitor *)v4 _resolveApplicationIDForLayoutMonitoring];
     if (dword_1ED844110)
     {
       v7 = OUTLINED_FUNCTION_13_19();
@@ -2273,8 +2273,8 @@ LABEL_3:
       v9 = 6;
 LABEL_29:
       v14 = [objc_msgSend(*(v4 + 8) "applicationID")];
-      v15 = [v5 displayType];
-      if (v15 <= 2)
+      displayType = [v5 displayType];
+      if (displayType <= 2)
       {
         if (((v9 == 3) & v14) != 0)
         {
@@ -2286,7 +2286,7 @@ LABEL_29:
           v16 = v9;
         }
 
-        -[FigCaptureClientApplicationStateMonitor _updateClientStateCondition:newValue:](v4, v4 + 8 * v15 + 100, [MEMORY[0x1E696AD98] numberWithInt:v16]);
+        -[FigCaptureClientApplicationStateMonitor _updateClientStateCondition:newValue:](v4, v4 + 8 * displayType + 100, [MEMORY[0x1E696AD98] numberWithInt:v16]);
       }
 
       FigSimpleMutexUnlock();
@@ -2334,7 +2334,7 @@ LABEL_29:
 
     if ([objc_msgSend(*(v4 + 8) "applicationID")])
     {
-      v12 = [v5 isSiriVisible];
+      isSiriVisible = [v5 isSiriVisible];
     }
 
     else
@@ -2381,10 +2381,10 @@ LABEL_19:
         goto LABEL_29;
       }
 
-      v12 = [v5 isPaymentServiceIDVerifierVisible];
+      isSiriVisible = [v5 isPaymentServiceIDVerifierVisible];
     }
 
-    if (v12)
+    if (isSiriVisible)
     {
       v9 = 2;
     }
@@ -2398,11 +2398,11 @@ LABEL_19:
   }
 }
 
-- (void)deviceLockStateMonitor:(id)a3 didUpdateDeviceLockState:(BOOL)a4
+- (void)deviceLockStateMonitor:(id)monitor didUpdateDeviceLockState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   FigSimpleMutexLock();
-  -[FigCaptureClientApplicationStateMonitor _updateClientStateCondition:newValue:](self, &self->_deviceIsLocked, [MEMORY[0x1E696AD98] numberWithBool:v4]);
+  -[FigCaptureClientApplicationStateMonitor _updateClientStateCondition:newValue:](self, &self->_deviceIsLocked, [MEMORY[0x1E696AD98] numberWithBool:stateCopy]);
 
   FigSimpleMutexUnlock();
 }

@@ -1,17 +1,17 @@
 @interface REWorkoutRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REWorkoutRelevanceProvider)initWithDictionary:(id)a3;
-- (REWorkoutRelevanceProvider)initWithState:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REWorkoutRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REWorkoutRelevanceProvider)initWithState:(unint64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 @end
 
 @implementation REWorkoutRelevanceProvider
 
-- (REWorkoutRelevanceProvider)initWithDictionary:(id)a3
+- (REWorkoutRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"state"];
+  v4 = [dictionary objectForKeyedSubscript:@"state"];
   v5 = -[REWorkoutRelevanceProvider initWithState:](self, "initWithState:", [v4 unsignedIntegerValue]);
 
   return v5;
@@ -30,31 +30,31 @@
   return v3;
 }
 
-- (REWorkoutRelevanceProvider)initWithState:(unint64_t)a3
+- (REWorkoutRelevanceProvider)initWithState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = REWorkoutRelevanceProvider;
   result = [(RERelevanceProvider *)&v5 init];
   if (result)
   {
-    result->_state = a3;
+    result->_state = state;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   state = self->_state;
 
   return [v4 initWithState:state];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -63,7 +63,7 @@
   {
     v7.receiver = self;
     v7.super_class = REWorkoutRelevanceProvider;
-    v5 = [(RERelevanceProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_state == v4->_state;
+    v5 = [(RERelevanceProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_state == equalCopy->_state;
   }
 
   return v5;

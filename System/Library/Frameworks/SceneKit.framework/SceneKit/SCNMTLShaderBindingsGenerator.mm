@@ -1,19 +1,19 @@
 @interface SCNMTLShaderBindingsGenerator
 + (void)allocateRegistry;
 + (void)deallocateRegistry;
-+ (void)registerArgument:(id)a3 frequency:(int)a4 block:(id)a5;
-+ (void)registerArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6;
-+ (void)registerSemantic:(id)a3 withBlock:(id)a4;
-+ (void)registerShadableArgumentBindingBlockForBuffers:(id)a3 textures:(id)a4 samplers:(id)a5;
-- (BOOL)addPassResourceBindingsForArgument:(id)a3;
++ (void)registerArgument:(id)argument frequency:(int)frequency block:(id)block;
++ (void)registerArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block;
++ (void)registerSemantic:(id)semantic withBlock:(id)block;
++ (void)registerShadableArgumentBindingBlockForBuffers:(id)buffers textures:(id)textures samplers:(id)samplers;
+- (BOOL)addPassResourceBindingsForArgument:(id)argument;
 - (SCNMTLShaderBindingsGenerator)init;
-- (id)_dictionaryForFrequency:(int)a3;
-- (int64_t)_searchArguments:(id)a3 forArgumentNamed:(id)a4 type:(unint64_t)a5;
-- (void)_checkForAssociatedSamplerOnBinding:(id)a3 argument:(id)a4;
-- (void)_parseArguments:(id)a3 function:(id)a4 renderPipeline:(id)a5;
-- (void)addResourceBindingsForArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6;
+- (id)_dictionaryForFrequency:(int)frequency;
+- (int64_t)_searchArguments:(id)arguments forArgumentNamed:(id)named type:(unint64_t)type;
+- (void)_checkForAssociatedSamplerOnBinding:(id)binding argument:(id)argument;
+- (void)_parseArguments:(id)arguments function:(id)function renderPipeline:(id)pipeline;
+- (void)addResourceBindingsForArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block;
 - (void)dealloc;
-- (void)generateBindingsForPipeline:(id)a3 withReflection:(id)a4 program:(__C3DFXMetalProgram *)a5 material:(__C3DMaterial *)a6 geometry:(__C3DGeometry *)a7 pass:(__C3DFXPass *)a8;
+- (void)generateBindingsForPipeline:(id)pipeline withReflection:(id)reflection program:(__C3DFXMetalProgram *)program material:(__C3DMaterial *)material geometry:(__C3DGeometry *)geometry pass:(__C3DFXPass *)pass;
 @end
 
 @implementation SCNMTLShaderBindingsGenerator
@@ -67,7 +67,7 @@
   __argumentRegistry = 0;
 }
 
-+ (void)registerSemantic:(id)a3 withBlock:(id)a4
++ (void)registerSemantic:(id)semantic withBlock:(id)block
 {
   if ([__semanticRegistry objectForKey:?])
   {
@@ -78,12 +78,12 @@
     }
   }
 
-  [__semanticRegistry setObject:_Block_copy(a4) forKey:a3];
+  [__semanticRegistry setObject:_Block_copy(block) forKey:semantic];
 }
 
-+ (void)registerArgument:(id)a3 frequency:(int)a4 block:(id)a5
++ (void)registerArgument:(id)argument frequency:(int)frequency block:(id)block
 {
-  v6 = *&a4;
+  v6 = *&frequency;
   if ([__argumentRegistry objectForKey:?])
   {
     v8 = scn_default_log();
@@ -93,14 +93,14 @@
     }
   }
 
-  v16 = [[SCNMTLArgumentBinder alloc] initWithBlock:a5 frequency:v6 needsRenderResource:0];
-  [__argumentRegistry setObject:v16 forKey:a3];
+  v16 = [[SCNMTLArgumentBinder alloc] initWithBlock:block frequency:v6 needsRenderResource:0];
+  [__argumentRegistry setObject:v16 forKey:argument];
 }
 
-+ (void)registerArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6
++ (void)registerArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block
 {
-  v7 = a5;
-  v8 = *&a4;
+  resourceCopy = resource;
+  v8 = *&frequency;
   if ([__argumentRegistry objectForKey:?])
   {
     v10 = scn_default_log();
@@ -110,15 +110,15 @@
     }
   }
 
-  v18 = [[SCNMTLArgumentBinder alloc] initWithBlock:a6 frequency:v8 needsRenderResource:v7];
-  [__argumentRegistry setObject:v18 forKey:a3];
+  v18 = [[SCNMTLArgumentBinder alloc] initWithBlock:block frequency:v8 needsRenderResource:resourceCopy];
+  [__argumentRegistry setObject:v18 forKey:argument];
 }
 
-+ (void)registerShadableArgumentBindingBlockForBuffers:(id)a3 textures:(id)a4 samplers:(id)a5
++ (void)registerShadableArgumentBindingBlockForBuffers:(id)buffers textures:(id)textures samplers:(id)samplers
 {
-  __shadableArgumentBindingBlocks = _Block_copy(a3);
-  qword_27CDD9340 = _Block_copy(a4);
-  qword_27CDD9348 = _Block_copy(a5);
+  __shadableArgumentBindingBlocks = _Block_copy(buffers);
+  qword_27CDD9340 = _Block_copy(textures);
+  qword_27CDD9348 = _Block_copy(samplers);
 }
 
 - (void)dealloc
@@ -128,14 +128,14 @@
   [(SCNMTLShaderBindingsGenerator *)&v3 dealloc];
 }
 
-- (int64_t)_searchArguments:(id)a3 forArgumentNamed:(id)a4 type:(unint64_t)a5
+- (int64_t)_searchArguments:(id)arguments forArgumentNamed:(id)named type:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  v8 = [arguments countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -146,7 +146,7 @@ LABEL_3:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(arguments);
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
@@ -157,7 +157,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [a3 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v9 = [arguments countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -167,7 +167,7 @@ LABEL_3:
       }
     }
 
-    if ([v12 type] == a5)
+    if ([v12 type] == type)
     {
       return [v12 index];
     }
@@ -176,9 +176,9 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = a4;
+      namedCopy = named;
       v21 = 1024;
-      v22 = a5;
+      typeCopy = type;
       _os_log_impl(&dword_21BEF7000, v14, OS_LOG_TYPE_DEFAULT, "Warning: arguments named %@ is reserved for type %d", buf, 0x12u);
     }
   }
@@ -186,10 +186,10 @@ LABEL_3:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_parseArguments:(id)a3 function:(id)a4 renderPipeline:(id)a5
+- (void)_parseArguments:(id)arguments function:(id)function renderPipeline:(id)pipeline
 {
   v52 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!function)
   {
     v7 = scn_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -198,14 +198,14 @@ LABEL_3:
     }
   }
 
-  v37 = SCNMTLFunctionTypeToProgramStage([a4 functionType]);
+  v37 = SCNMTLFunctionTypeToProgramStage([function functionType]);
   self->_current.stage = v37;
-  self->_current.arguments = a3;
+  self->_current.arguments = arguments;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v15 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  v15 = [arguments countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v15)
   {
     v16 = *v46;
@@ -216,7 +216,7 @@ LABEL_3:
       {
         if (*v46 != v16)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(arguments);
         }
 
         v18 = *(*(&v45 + 1) + 8 * v17);
@@ -302,9 +302,9 @@ LABEL_35:
                         log = scn_default_log();
                         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
                         {
-                          v23 = [(MTLStructMember *)v33 name];
+                          name = [(MTLStructMember *)v33 name];
                           LODWORD(buf) = 138412290;
-                          *(&buf + 4) = v23;
+                          *(&buf + 4) = name;
                           _os_log_impl(&dword_21BEF7000, log, OS_LOG_TYPE_DEFAULT, "Warning: unknown member in scn automated buffer : %@", &buf, 0xCu);
                         }
                       }
@@ -339,15 +339,15 @@ LABEL_35:
 
           else if ([v18 bufferDataType] == 1 && ((objc_msgSend(objc_msgSend(v18, "name"), "isEqualToString:", @"scn_frame") & 1) != 0 || objc_msgSend(objc_msgSend(v18, "name"), "isEqualToString:", @"scn_frame_multi")))
           {
-            v24 = [v18 index];
+            index = [v18 index];
             if (v37)
             {
-              self->_sceneBuffer.fragmentIndex = v24;
+              self->_sceneBuffer.fragmentIndex = index;
             }
 
             else
             {
-              self->_sceneBuffer.vertexIndex = v24;
+              self->_sceneBuffer.vertexIndex = index;
             }
           }
 
@@ -373,7 +373,7 @@ LABEL_60:
       }
 
       while (v17 != v15);
-      v26 = [a3 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v26 = [arguments countByEnumeratingWithState:&v45 objects:v51 count:16];
       v15 = v26;
     }
 
@@ -381,87 +381,87 @@ LABEL_60:
   }
 }
 
-- (void)generateBindingsForPipeline:(id)a3 withReflection:(id)a4 program:(__C3DFXMetalProgram *)a5 material:(__C3DMaterial *)a6 geometry:(__C3DGeometry *)a7 pass:(__C3DFXPass *)a8
+- (void)generateBindingsForPipeline:(id)pipeline withReflection:(id)reflection program:(__C3DFXMetalProgram *)program material:(__C3DMaterial *)material geometry:(__C3DGeometry *)geometry pass:(__C3DFXPass *)pass
 {
   os_unfair_lock_lock(&self->_generateLock);
-  self->_current.customBlocks = C3DFXMetalProgramGetBufferBindings(a5);
-  self->_current.pass = a8;
-  if (a6)
+  self->_current.customBlocks = C3DFXMetalProgramGetBufferBindings(program);
+  self->_current.pass = pass;
+  if (material)
   {
-    C3DMaterialGetCommonProfileIfNoTechnique(a6);
+    C3DMaterialGetCommonProfileIfNoTechnique(material);
   }
 
   self->_sceneBuffer = -1;
-  if ([a3 vertexFunction])
+  if ([pipeline vertexFunction])
   {
-    -[SCNMTLShaderBindingsGenerator _parseArguments:function:renderPipeline:](self, "_parseArguments:function:renderPipeline:", [a4 vertexArguments], objc_msgSend(a3, "vertexFunction"), a3);
+    -[SCNMTLShaderBindingsGenerator _parseArguments:function:renderPipeline:](self, "_parseArguments:function:renderPipeline:", [reflection vertexArguments], objc_msgSend(pipeline, "vertexFunction"), pipeline);
   }
 
-  if ([a3 fragmentFunction])
+  if ([pipeline fragmentFunction])
   {
-    -[SCNMTLShaderBindingsGenerator _parseArguments:function:renderPipeline:](self, "_parseArguments:function:renderPipeline:", [a4 fragmentArguments], objc_msgSend(a3, "fragmentFunction"), a3);
+    -[SCNMTLShaderBindingsGenerator _parseArguments:function:renderPipeline:](self, "_parseArguments:function:renderPipeline:", [reflection fragmentArguments], objc_msgSend(pipeline, "fragmentFunction"), pipeline);
   }
 
   if (self->_sceneBuffer.vertexIndex != 255 || self->_sceneBuffer.fragmentIndex != 255)
   {
-    *(a3 + 4) = self->_sceneBuffer;
+    *(pipeline + 4) = self->_sceneBuffer;
   }
 
   if ([(NSMutableDictionary *)self->_frameBindings count])
   {
-    [a3 setFrameBufferBindings:{-[NSMutableDictionary allValues](self->_frameBindings, "allValues")}];
+    [pipeline setFrameBufferBindings:{-[NSMutableDictionary allValues](self->_frameBindings, "allValues")}];
     [(NSMutableDictionary *)self->_frameBindings removeAllObjects];
   }
 
   if ([(NSMutableDictionary *)self->_nodeBindings count])
   {
-    [a3 setNodeBufferBindings:{-[NSMutableDictionary allValues](self->_nodeBindings, "allValues")}];
+    [pipeline setNodeBufferBindings:{-[NSMutableDictionary allValues](self->_nodeBindings, "allValues")}];
     [(NSMutableDictionary *)self->_nodeBindings removeAllObjects];
   }
 
   if ([(NSMutableDictionary *)self->_passBindings count])
   {
-    [a3 setPassBufferBindings:{-[NSMutableDictionary allValues](self->_passBindings, "allValues")}];
+    [pipeline setPassBufferBindings:{-[NSMutableDictionary allValues](self->_passBindings, "allValues")}];
     [(NSMutableDictionary *)self->_passBindings removeAllObjects];
   }
 
   if ([(NSMutableDictionary *)self->_shadableBindings count])
   {
-    [a3 setShadableBufferBindings:{-[NSMutableDictionary allValues](self->_shadableBindings, "allValues")}];
+    [pipeline setShadableBufferBindings:{-[NSMutableDictionary allValues](self->_shadableBindings, "allValues")}];
     [(NSMutableDictionary *)self->_shadableBindings removeAllObjects];
   }
 
   if ([(NSMutableDictionary *)self->_lightBindings count])
   {
-    [a3 setLightBufferBindings:{-[NSMutableDictionary allValues](self->_lightBindings, "allValues")}];
+    [pipeline setLightBufferBindings:{-[NSMutableDictionary allValues](self->_lightBindings, "allValues")}];
     [(NSMutableDictionary *)self->_lightBindings removeAllObjects];
   }
 
-  [a3 _computeUsageForArguments:objc_msgSend(a4 function:{"vertexArguments"), objc_msgSend(a3, "vertexFunction")}];
-  [a3 _computeUsageForArguments:objc_msgSend(a4 function:{"fragmentArguments"), objc_msgSend(a3, "fragmentFunction")}];
+  [pipeline _computeUsageForArguments:objc_msgSend(reflection function:{"vertexArguments"), objc_msgSend(pipeline, "vertexFunction")}];
+  [pipeline _computeUsageForArguments:objc_msgSend(reflection function:{"fragmentArguments"), objc_msgSend(pipeline, "fragmentFunction")}];
 
   os_unfair_lock_unlock(&self->_generateLock);
 }
 
-- (id)_dictionaryForFrequency:(int)a3
+- (id)_dictionaryForFrequency:(int)frequency
 {
-  if (a3 <= 3)
+  if (frequency <= 3)
   {
-    return *(&self->super.isa + qword_21C2A28E0[a3]);
+    return *(&self->super.isa + qword_21C2A28E0[frequency]);
   }
 
   return v3;
 }
 
-- (void)_checkForAssociatedSamplerOnBinding:(id)a3 argument:(id)a4
+- (void)_checkForAssociatedSamplerOnBinding:(id)binding argument:(id)argument
 {
-  v6 = -[SCNMTLShaderBindingsGenerator _searchArguments:forArgumentNamed:type:](self, "_searchArguments:forArgumentNamed:type:", self->_current.arguments, [objc_msgSend(a4 "name")], 3);
+  v6 = -[SCNMTLShaderBindingsGenerator _searchArguments:forArgumentNamed:type:](self, "_searchArguments:forArgumentNamed:type:", self->_current.arguments, [objc_msgSend(argument "name")], 3);
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     stage = self->_current.stage;
     if (stage == 1)
     {
-      *(a3 + 12) = v6;
+      *(binding + 12) = v6;
     }
 
     else if (stage)
@@ -475,30 +475,30 @@ LABEL_60:
 
     else
     {
-      *(a3 + 11) = v6;
+      *(binding + 11) = v6;
     }
   }
 }
 
-- (void)addResourceBindingsForArgument:(id)a3 frequency:(int)a4 needsRenderResource:(BOOL)a5 block:(id)a6
+- (void)addResourceBindingsForArgument:(id)argument frequency:(int)frequency needsRenderResource:(BOOL)resource block:(id)block
 {
-  v7 = a5;
-  v10 = [(SCNMTLShaderBindingsGenerator *)self _dictionaryForFrequency:*&a4];
-  v11 = [v10 objectForKeyedSubscript:{objc_msgSend(a3, "name")}];
+  resourceCopy = resource;
+  v10 = [(SCNMTLShaderBindingsGenerator *)self _dictionaryForFrequency:*&frequency];
+  v11 = [v10 objectForKeyedSubscript:{objc_msgSend(argument, "name")}];
   if (v11)
   {
     v12 = v11;
-    v13 = [(SCNMTLResourceBinding *)v11 type];
-    if (v13 != [a3 type])
+    type = [(SCNMTLResourceBinding *)v11 type];
+    if (type != [argument type])
     {
       v14 = scn_default_log();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        [SCNMTLShaderBindingsGenerator addResourceBindingsForArgument:a3 frequency:v12 needsRenderResource:? block:?];
+        [SCNMTLShaderBindingsGenerator addResourceBindingsForArgument:argument frequency:v12 needsRenderResource:? block:?];
       }
     }
 
-    if ([(SCNMTLResourceBinding *)v12 bindBlock]!= a6)
+    if ([(SCNMTLResourceBinding *)v12 bindBlock]!= block)
     {
       v15 = scn_default_log();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -511,16 +511,16 @@ LABEL_60:
   else
   {
     v12 = objc_alloc_init(SCNMTLResourceBinding);
-    [(SCNMTLResourceBinding *)v12 setBindBlock:a6];
-    [(SCNMTLResourceBinding *)v12 setNeedsRenderResource:v7];
-    [(SCNMTLResourceBinding *)v12 setArgument:a3];
-    [v10 setObject:v12 forKeyedSubscript:{objc_msgSend(a3, "name")}];
+    [(SCNMTLResourceBinding *)v12 setBindBlock:block];
+    [(SCNMTLResourceBinding *)v12 setNeedsRenderResource:resourceCopy];
+    [(SCNMTLResourceBinding *)v12 setArgument:argument];
+    [v10 setObject:v12 forKeyedSubscript:{objc_msgSend(argument, "name")}];
   }
 
   stage = self->_current.stage;
   if (stage == 1)
   {
-    v12->_indices.fragmentIndex = [a3 index];
+    v12->_indices.fragmentIndex = [argument index];
   }
 
   else if (stage)
@@ -534,20 +534,20 @@ LABEL_60:
 
   else
   {
-    v12->_indices.vertexIndex = [a3 index];
+    v12->_indices.vertexIndex = [argument index];
   }
 
-  if ([a3 type] == 2)
+  if ([argument type] == 2)
   {
-    [(SCNMTLShaderBindingsGenerator *)self _checkForAssociatedSamplerOnBinding:v12 argument:a3];
+    [(SCNMTLShaderBindingsGenerator *)self _checkForAssociatedSamplerOnBinding:v12 argument:argument];
   }
 }
 
-- (BOOL)addPassResourceBindingsForArgument:(id)a3
+- (BOOL)addPassResourceBindingsForArgument:(id)argument
 {
   v92 = *MEMORY[0x277D85DE8];
   v5 = [(SCNMTLShaderBindingsGenerator *)self _dictionaryForFrequency:3];
-  v6 = [v5 objectForKeyedSubscript:{objc_msgSend(a3, "name")}];
+  v6 = [v5 objectForKeyedSubscript:{objc_msgSend(argument, "name")}];
   if (v6)
   {
     objc_opt_class();
@@ -560,13 +560,13 @@ LABEL_60:
       }
     }
 
-    v15 = [(SCNMTLResourceBinding *)v6 type];
-    if (v15 != [a3 type])
+    type = [(SCNMTLResourceBinding *)v6 type];
+    if (type != [argument type])
     {
       v16 = scn_default_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
       {
-        [(SCNMTLShaderBindingsGenerator *)a3 addPassResourceBindingsForArgument:v6];
+        [(SCNMTLShaderBindingsGenerator *)argument addPassResourceBindingsForArgument:v6];
       }
     }
 
@@ -588,13 +588,13 @@ LABEL_60:
     v17 = objc_alloc_init(SCNMTLPassResourceBinding);
     [(SCNMTLResourceBinding *)v17 setBindBlock:0];
     [(SCNMTLResourceBinding *)v17 setNeedsRenderResource:0];
-    [(SCNMTLResourceBinding *)v17 setArgument:a3];
+    [(SCNMTLResourceBinding *)v17 setArgument:argument];
   }
 
   stage = self->_current.stage;
   if (stage == 1)
   {
-    v17->super._indices.fragmentIndex = [a3 index];
+    v17->super._indices.fragmentIndex = [argument index];
   }
 
   else if (stage)
@@ -608,19 +608,19 @@ LABEL_60:
 
   else
   {
-    v17->super._indices.vertexIndex = [a3 index];
+    v17->super._indices.vertexIndex = [argument index];
   }
 
-  if ([a3 type] == 2)
+  if ([argument type] == 2)
   {
     if (v6)
     {
 LABEL_22:
-      [(SCNMTLShaderBindingsGenerator *)self _checkForAssociatedSamplerOnBinding:v17 argument:a3];
+      [(SCNMTLShaderBindingsGenerator *)self _checkForAssociatedSamplerOnBinding:v17 argument:argument];
       goto LABEL_24;
     }
 
-    InputWithName = C3DFXPassGetInputWithName(self->_current.pass, [a3 name]);
+    InputWithName = C3DFXPassGetInputWithName(self->_current.pass, [argument name]);
     if (InputWithName)
     {
       v17->_samplerInput = InputWithName;
@@ -630,7 +630,7 @@ LABEL_22:
 
   else
   {
-    if ([a3 type])
+    if ([argument type])
     {
 LABEL_24:
       if (v6)
@@ -641,11 +641,11 @@ LABEL_26:
       }
 
 LABEL_25:
-      [v5 setObject:v17 forKeyedSubscript:{objc_msgSend(a3, "name")}];
+      [v5 setObject:v17 forKeyedSubscript:{objc_msgSend(argument, "name")}];
       goto LABEL_26;
     }
 
-    if ([a3 bufferDataType] != 1)
+    if ([argument bufferDataType] != 1)
     {
       v35 = scn_default_log();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
@@ -656,8 +656,8 @@ LABEL_25:
 
     if (v6)
     {
-      v43 = [(SCNMTLPassResourceBinding *)v17 bufferSize];
-      if (v43 != [a3 bufferDataSize])
+      bufferSize = [(SCNMTLPassResourceBinding *)v17 bufferSize];
+      if (bufferSize != [argument bufferDataSize])
       {
         v44 = scn_default_log();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
@@ -669,7 +669,7 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v80 = a3;
+    argumentCopy = argument;
     p_isa = &v17->super.super.isa;
     v79 = v5;
     __p = 0;
@@ -679,7 +679,7 @@ LABEL_25:
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v52 = [objc_msgSend(a3 "bufferStructType")];
+    v52 = [objc_msgSend(argument "bufferStructType")];
     v53 = [v52 countByEnumeratingWithState:&v82 objects:v91 count:16];
     if (v53)
     {
@@ -697,19 +697,19 @@ LABEL_25:
           v57 = C3DFXPassGetInputWithName(self->_current.pass, [v56 name]);
           if (v57)
           {
-            v58 = [v56 arrayType];
-            if ([v56 dataType] == 2 && (v59 = objc_msgSend(v58, "elementType"), v59 == SCNMTLDataTypeFromC3DBaseType(v57[10])) || (v60 = objc_msgSend(v56, "dataType"), v60 == SCNMTLDataTypeFromC3DBaseType(v57[10])) && *(v57 + 3) == 1)
+            arrayType = [v56 arrayType];
+            if ([v56 dataType] == 2 && (v59 = objc_msgSend(arrayType, "elementType"), v59 == SCNMTLDataTypeFromC3DBaseType(v57[10])) || (v60 = objc_msgSend(v56, "dataType"), v60 == SCNMTLDataTypeFromC3DBaseType(v57[10])) && *(v57 + 3) == 1)
             {
-              v61 = [v56 offset];
-              if (v58)
+              offset = [v56 offset];
+              if (arrayType)
               {
-                [v58 arrayLength];
-                Size = SCNMTLDataTypeGetSize([v58 elementType]);
-                v63 = [v58 arrayLength];
+                [arrayType arrayLength];
+                Size = SCNMTLDataTypeGetSize([arrayType elementType]);
+                arrayLength = [arrayType arrayLength];
                 v64 = *(v57 + 3);
-                if (v63 < v64)
+                if (arrayLength < v64)
                 {
-                  LODWORD(v64) = v63;
+                  LODWORD(v64) = arrayLength;
                 }
               }
 
@@ -753,7 +753,7 @@ LABEL_25:
 
                 v74 = 16 * v70;
                 *v74 = v57;
-                *(v74 + 8) = v61;
+                *(v74 + 8) = offset;
                 *(v74 + 12) = v67;
                 v69 = 16 * v70 + 16;
                 v75 = (v74 - (v87 - __p));
@@ -772,7 +772,7 @@ LABEL_25:
               {
                 *v87 = v57;
                 v69 = (v68 + 16);
-                *(v68 + 2) = v61;
+                *(v68 + 2) = offset;
                 *(v68 + 3) = v67;
               }
 
@@ -784,9 +784,9 @@ LABEL_25:
               v65 = scn_default_log();
               if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
               {
-                v66 = [v56 name];
+                name = [v56 name];
                 *buf = 138412290;
-                v90 = v66;
+                v90 = name;
                 _os_log_impl(&dword_21BEF7000, v65, OS_LOG_TYPE_DEFAULT, "Warning: struct member does not match pass description : %@", buf, 0xCu);
               }
             }
@@ -804,11 +804,11 @@ LABEL_25:
       v17 = p_isa;
       [p_isa setInputsCount:(v87 - __p) >> 4];
       v5 = v79;
-      a3 = v80;
+      argument = argumentCopy;
       v77 = 16 * [p_isa inputsCount];
       p_isa[6] = malloc_type_malloc(v77, 0x1020040EDED9539uLL);
       memcpy(p_isa[6], __p, v77);
-      [p_isa setBufferSize:{objc_msgSend(v80, "bufferDataSize")}];
+      [p_isa setBufferSize:{objc_msgSend(argumentCopy, "bufferDataSize")}];
       if (__p)
       {
         v87 = __p;

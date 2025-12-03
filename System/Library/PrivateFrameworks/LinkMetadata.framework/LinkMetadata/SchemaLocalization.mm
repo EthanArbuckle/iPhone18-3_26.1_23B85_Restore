@@ -1,6 +1,6 @@
 @interface SchemaLocalization
 + (NSURL)bundleURL;
-+ (id)tableForLibraryKey:(id)a3;
++ (id)tableForLibraryKey:(id)key;
 @end
 
 @implementation SchemaLocalization
@@ -23,7 +23,7 @@
   return v7;
 }
 
-+ (id)tableForLibraryKey:(id)a3
++ (id)tableForLibraryKey:(id)key
 {
   v3 = sub_18F093B8C();
   static SchemaLocalization.tableForLibraryKey(_:)(v3, v4);

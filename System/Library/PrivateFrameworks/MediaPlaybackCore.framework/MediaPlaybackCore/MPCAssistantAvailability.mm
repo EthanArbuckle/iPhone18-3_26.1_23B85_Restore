@@ -1,34 +1,34 @@
 @interface MPCAssistantAvailability
-- (int64_t)assistantStreamingGetAvailability:(id)a3;
-- (void)assistantRadioGetAvailability:(id)a3 completion:(id)a4;
+- (int64_t)assistantStreamingGetAvailability:(id)availability;
+- (void)assistantRadioGetAvailability:(id)availability completion:(id)completion;
 @end
 
 @implementation MPCAssistantAvailability
 
-- (void)assistantRadioGetAvailability:(id)a3 completion:(id)a4
+- (void)assistantRadioGetAvailability:(id)availability completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
-  v20 = [(MPCAssistantAvailability *)self assistantStreamingGetAvailability:*&a3];
+  v20 = [(MPCAssistantAvailability *)self assistantStreamingGetAvailability:*&availability];
   if (v18[3] == 4)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69C6B58]);
     if ([v7 hasLoadedRadioAvailability])
     {
-      v8 = [v7 isRadioAvailable];
+      isRadioAvailable = [v7 isRadioAvailable];
       v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v22) = v8;
+        LODWORD(v22) = isRadioAvailable;
         _os_log_impl(&dword_1C5C61000, v9, OS_LOG_TYPE_DEFAULT, "Using cached availability: %{BOOL}u", buf, 8u);
       }
 
       v10 = 4;
-      if (!v8)
+      if (!isRadioAvailable)
       {
         v10 = 0;
       }
@@ -53,7 +53,7 @@
         _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "Radio availability: %{public}@", buf, 0xCu);
       }
 
-      v6[2](v6, v18[3]);
+      completionCopy[2](completionCopy, v18[3]);
     }
 
     else
@@ -63,14 +63,14 @@
       v14[2] = __69__MPCAssistantAvailability_assistantRadioGetAvailability_completion___block_invoke;
       v14[3] = &unk_1E82307B8;
       v16 = &v17;
-      v15 = v6;
+      v15 = completionCopy;
       [v7 getRadioAvailabilityWithCompletionHandler:v14];
     }
   }
 
   else
   {
-    (v6[2])(v6);
+    (completionCopy[2])(completionCopy);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -128,7 +128,7 @@ void __69__MPCAssistantAvailability_assistantRadioGetAvailability_completion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (int64_t)assistantStreamingGetAvailability:(id)a3
+- (int64_t)assistantStreamingGetAvailability:(id)availability
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
@@ -138,20 +138,20 @@ void __69__MPCAssistantAvailability_assistantRadioGetAvailability_completion___b
     _os_log_impl(&dword_1C5C61000, v3, OS_LOG_TYPE_DEFAULT, "Device supports streaming", &v20, 2u);
   }
 
-  v4 = [MEMORY[0x1E69E4428] sharedMonitor];
-  v5 = [v4 networkType];
+  mEMORY[0x1E69E4428] = [MEMORY[0x1E69E4428] sharedMonitor];
+  networkType = [mEMORY[0x1E69E4428] networkType];
 
   IsWiFi = ICEnvironmentNetworkTypeIsWiFi();
   IsWired = ICEnvironmentNetworkTypeIsWired();
   IsCellular = ICEnvironmentNetworkTypeIsCellular();
-  v9 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v10 = [v9 preferredMusicLowBandwidthResolution];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  preferredMusicLowBandwidthResolution = [standardUserDefaults preferredMusicLowBandwidthResolution];
 
   v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134217984;
-    *v21 = v5;
+    *v21 = networkType;
     _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_DEFAULT, "Network type: %ld", &v20, 0xCu);
   }
 
@@ -165,11 +165,11 @@ void __69__MPCAssistantAvailability_assistantRadioGetAvailability_completion___b
     v22 = 1024;
     v23 = IsCellular;
     v24 = 1024;
-    v25 = v10 > 0;
+    v25 = preferredMusicLowBandwidthResolution > 0;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "Wifi: %{BOOL}u Wired: %{BOOL}u Cellular: %{BOOL}u Allowed: %{BOOL}u", &v20, 0x1Au);
   }
 
-  v13 = v10 > 0;
+  v13 = preferredMusicLowBandwidthResolution > 0;
 
   if ((IsWired | IsWiFi) & 1 | ((IsCellular & 1) == 0))
   {

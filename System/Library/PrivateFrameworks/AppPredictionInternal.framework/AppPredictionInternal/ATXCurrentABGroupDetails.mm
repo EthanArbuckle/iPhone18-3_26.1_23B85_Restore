@@ -1,23 +1,23 @@
 @interface ATXCurrentABGroupDetails
 - (ATXCurrentABGroupDetails)init;
-- (ATXCurrentABGroupDetails)initWithAssetMapping:(id)a3;
-- (id)abGroupIdentifierForFilename:(id)a3;
-- (void)loadAssetFromAssetMapping:(id)a3;
+- (ATXCurrentABGroupDetails)initWithAssetMapping:(id)mapping;
+- (id)abGroupIdentifierForFilename:(id)filename;
+- (void)loadAssetFromAssetMapping:(id)mapping;
 @end
 
 @implementation ATXCurrentABGroupDetails
 
 - (ATXCurrentABGroupDetails)init
 {
-  v3 = [MEMORY[0x277CEB3A0] sharedInstanceWithMobileAssets];
-  v4 = [(ATXCurrentABGroupDetails *)self initWithAssetMapping:v3];
+  mEMORY[0x277CEB3A0] = [MEMORY[0x277CEB3A0] sharedInstanceWithMobileAssets];
+  v4 = [(ATXCurrentABGroupDetails *)self initWithAssetMapping:mEMORY[0x277CEB3A0]];
 
   return v4;
 }
 
-- (ATXCurrentABGroupDetails)initWithAssetMapping:(id)a3
+- (ATXCurrentABGroupDetails)initWithAssetMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v11.receiver = self;
   v11.super_class = ATXCurrentABGroupDetails;
   v5 = [(ATXCurrentABGroupDetails *)&v11 init];
@@ -31,26 +31,26 @@
     subTypeToFinalSubscore = v5->_subTypeToFinalSubscore;
     v5->_subTypeToFinalSubscore = v8;
 
-    [(ATXCurrentABGroupDetails *)v5 loadAssetFromAssetMapping:v4];
+    [(ATXCurrentABGroupDetails *)v5 loadAssetFromAssetMapping:mappingCopy];
   }
 
   return v5;
 }
 
-- (void)loadAssetFromAssetMapping:(id)a3
+- (void)loadAssetFromAssetMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CEBCF0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__ATXCurrentABGroupDetails_loadAssetFromAssetMapping___block_invoke;
   v9[3] = &unk_2785A1068;
-  v10 = v4;
-  v11 = self;
+  v10 = mappingCopy;
+  selfCopy = self;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = mappingCopy;
   [v6 iterConsumerSubTypesWithBlock:v9];
 }
 
@@ -66,35 +66,35 @@ void __54__ATXCurrentABGroupDetails_loadAssetFromAssetMapping___block_invoke(uin
   [v6 setABGroupFromFilename:v7 subType:a2 filenameToABGroup:*(a1 + 48)];
 }
 
-- (id)abGroupIdentifierForFilename:(id)a3
+- (id)abGroupIdentifierForFilename:(id)filename
 {
-  v3 = a3;
+  filenameCopy = filename;
   v4 = objc_alloc(MEMORY[0x277CEB3C8]);
-  v5 = [MEMORY[0x277CEB2B8] abGroupOverride];
-  v6 = [v4 initWithAssetsForResource:v3 ofType:@"plplist" specifiedABGroup:v5];
+  abGroupOverride = [MEMORY[0x277CEB2B8] abGroupOverride];
+  v6 = [v4 initWithAssetsForResource:filenameCopy ofType:@"plplist" specifiedABGroup:abGroupOverride];
 
   if (!v6)
   {
     v7 = __atxlog_handle_default();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(ATXCurrentABGroupDetails *)v3 abGroupIdentifierForFilename:v7];
+      [(ATXCurrentABGroupDetails *)filenameCopy abGroupIdentifierForFilename:v7];
     }
   }
 
-  v8 = [v6 groupIdentifier];
-  v9 = v8;
-  if (v8)
+  groupIdentifier = [v6 groupIdentifier];
+  v9 = groupIdentifier;
+  if (groupIdentifier)
   {
-    v10 = v8;
+    abGroupNilString = groupIdentifier;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CEB2B8] abGroupNilString];
+    abGroupNilString = [MEMORY[0x277CEB2B8] abGroupNilString];
   }
 
-  v11 = v10;
+  v11 = abGroupNilString;
 
   return v11;
 }

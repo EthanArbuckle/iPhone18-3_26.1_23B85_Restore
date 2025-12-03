@@ -1,16 +1,16 @@
 @interface NMSAudiobookCacheItemMetadata
-+ (id)metaDataForMediaItem:(id)a3;
-- (BOOL)_loadForMediaItem:(id)a3;
-- (id)_baseDirectoryForMediaItem:(id)a3;
++ (id)metaDataForMediaItem:(id)item;
+- (BOOL)_loadForMediaItem:(id)item;
+- (id)_baseDirectoryForMediaItem:(id)item;
 @end
 
 @implementation NMSAudiobookCacheItemMetadata
 
-+ (id)metaDataForMediaItem:(id)a3
++ (id)metaDataForMediaItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(NMSAudiobookCacheItemMetadata);
-  v5 = [(NMSAudiobookCacheItemMetadata *)v4 _loadForMediaItem:v3];
+  v5 = [(NMSAudiobookCacheItemMetadata *)v4 _loadForMediaItem:itemCopy];
 
   if (v5)
   {
@@ -25,26 +25,26 @@
   return v6;
 }
 
-- (id)_baseDirectoryForMediaItem:(id)a3
+- (id)_baseDirectoryForMediaItem:(id)item
 {
   v3 = MEMORY[0x277CBEBC0];
   v4 = MEMORY[0x277D2B5F8];
-  v5 = a3;
-  v6 = [v4 mediaFolderPath];
-  v7 = [v3 fileURLWithPath:v6];
+  itemCopy = item;
+  mediaFolderPath = [v4 mediaFolderPath];
+  v7 = [v3 fileURLWithPath:mediaFolderPath];
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v5 persistentID];
+  persistentID = [itemCopy persistentID];
 
-  v10 = [v8 stringWithFormat:@"ManagedPurchases/Books/%llu.m4bpkg/", v9];
+  v10 = [v8 stringWithFormat:@"ManagedPurchases/Books/%llu.m4bpkg/", persistentID];
   v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10 isDirectory:1 relativeToURL:v7];
 
   return v11;
 }
 
-- (BOOL)_loadForMediaItem:(id)a3
+- (BOOL)_loadForMediaItem:(id)item
 {
-  v4 = [(NMSAudiobookCacheItemMetadata *)self _baseDirectoryForMediaItem:a3];
+  v4 = [(NMSAudiobookCacheItemMetadata *)self _baseDirectoryForMediaItem:item];
   v5 = [v4 URLByAppendingPathComponent:@"Metadata.plist"];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5];
   v7 = [v6 objectForKeyedSubscript:@"BLAudiobookCacheMetadataKeyCachedStartTime"];

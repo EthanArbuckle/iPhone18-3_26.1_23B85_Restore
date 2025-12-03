@@ -1,42 +1,42 @@
 @interface BBDataProviderProxy
-- (BBDataProviderProxy)initWithDataProvider:(id)a3 clientReplyQueue:(id)a4;
+- (BBDataProviderProxy)initWithDataProvider:(id)provider clientReplyQueue:(id)queue;
 - (NSString)description;
-- (void)_makeClientRequest:(id)a3;
-- (void)_makeServerRequest:(id)a3;
-- (void)addBulletin:(id)a3 forDestinations:(unint64_t)a4;
-- (void)addBulletin:(id)a3 interrupt:(BOOL)a4;
-- (void)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4 completion:(id)a5;
-- (void)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4 completion:(id)a5;
-- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)a3 completion:(id)a4;
-- (void)clearedInfoForClearingBulletinsFromDate:(id)a3 toDate:(id)a4 lastClearedInfo:(id)a5 completion:(id)a6;
+- (void)_makeClientRequest:(id)request;
+- (void)_makeServerRequest:(id)request;
+- (void)addBulletin:(id)bulletin forDestinations:(unint64_t)destinations;
+- (void)addBulletin:(id)bulletin interrupt:(BOOL)interrupt;
+- (void)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared completion:(id)completion;
+- (void)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info completion:(id)completion;
+- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)info completion:(id)completion;
+- (void)clearedInfoForClearingBulletinsFromDate:(id)date toDate:(id)toDate lastClearedInfo:(id)info completion:(id)completion;
 - (void)dataProviderDidLoad;
 - (void)dealloc;
-- (void)deliverBulletinActionResponse:(id)a3 withCompletion:(id)a4;
-- (void)deliverMessageWithName:(id)a3 userInfo:(id)a4;
-- (void)modifyBulletin:(id)a3;
-- (void)noteSectionInfoDidChange:(id)a3;
+- (void)deliverBulletinActionResponse:(id)response withCompletion:(id)completion;
+- (void)deliverMessageWithName:(id)name userInfo:(id)info;
+- (void)modifyBulletin:(id)bulletin;
+- (void)noteSectionInfoDidChange:(id)change;
 - (void)reloadDefaultSectionInfo;
 - (void)reloadSectionParameters;
-- (void)setServerProxy:(id)a3;
-- (void)updateClearedInfoWithHandler:(id)a3;
-- (void)updateIdentity:(id)a3;
-- (void)updateSectionInfoWithHandler:(id)a3 completion:(id)a4;
-- (void)withdrawBulletinWithPublisherBulletinID:(id)a3 shouldSync:(BOOL)a4;
-- (void)withdrawBulletinsWithRecordID:(id)a3;
+- (void)setServerProxy:(id)proxy;
+- (void)updateClearedInfoWithHandler:(id)handler;
+- (void)updateIdentity:(id)identity;
+- (void)updateSectionInfoWithHandler:(id)handler completion:(id)completion;
+- (void)withdrawBulletinWithPublisherBulletinID:(id)d shouldSync:(BOOL)sync;
+- (void)withdrawBulletinsWithRecordID:(id)d;
 @end
 
 @implementation BBDataProviderProxy
 
-- (BBDataProviderProxy)initWithDataProvider:(id)a3 clientReplyQueue:(id)a4
+- (BBDataProviderProxy)initWithDataProvider:(id)provider clientReplyQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v9 = [(BBDataProviderProxy *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientCalloutQueue, a4);
-    objc_storeStrong(&v10->_dataProvider, a3);
+    objc_storeStrong(&v9->_clientCalloutQueue, queue);
+    objc_storeStrong(&v10->_dataProvider, provider);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.bulletinboard.BBDataProviderProxy.queue", v11);
     queue = v10->_queue;
@@ -72,22 +72,22 @@
   v4 = objc_opt_class();
   dataProvider = self->_dataProvider;
   v6 = objc_opt_class();
-  v7 = [(BBRemoteDataProvider *)self->_dataProvider sectionIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@ %p dataProvider: %@ (%@)>", v4, self, v6, v7];;
+  sectionIdentifier = [(BBRemoteDataProvider *)self->_dataProvider sectionIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@ %p dataProvider: %@ (%@)>", v4, self, v6, sectionIdentifier];;
 
   return v8;
 }
 
-- (void)updateIdentity:(id)a3
+- (void)updateIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__BBDataProviderProxy_updateIdentity___block_invoke;
   v6[3] = &unk_278D2BC20;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identityCopy;
+  v5 = identityCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v6];
 }
 
@@ -102,10 +102,10 @@ void __38__BBDataProviderProxy_updateIdentity___block_invoke(uint64_t a1, uint64
   }
 }
 
-- (void)setServerProxy:(id)a3
+- (void)setServerProxy:(id)proxy
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -115,7 +115,7 @@ void __38__BBDataProviderProxy_updateIdentity___block_invoke(uint64_t a1, uint64
     *buf = 138543618;
     v16 = v8;
     v17 = 2114;
-    v18 = v4;
+    v18 = proxyCopy;
     _os_log_impl(&dword_241EFF000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ setting server proxy: %{public}@", buf, 0x16u);
   }
 
@@ -124,9 +124,9 @@ void __38__BBDataProviderProxy_updateIdentity___block_invoke(uint64_t a1, uint64
   v12[1] = 3221225472;
   v12[2] = __38__BBDataProviderProxy_setServerProxy___block_invoke;
   v12[3] = &unk_278D2A628;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
+  v13 = proxyCopy;
+  selfCopy = self;
+  v10 = proxyCopy;
   dispatch_async(queue, v12);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -214,31 +214,31 @@ void __38__BBDataProviderProxy_setServerProxy___block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_makeServerRequest:(id)a3
+- (void)_makeServerRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   proxyQueue = self->_proxyQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__BBDataProviderProxy__makeServerRequest___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(proxyQueue, v7);
 }
 
-- (void)_makeClientRequest:(id)a3
+- (void)_makeClientRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   clientCalloutQueue = self->_clientCalloutQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__BBDataProviderProxy__makeClientRequest___block_invoke;
   v7[3] = &unk_278D2A900;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(clientCalloutQueue, v7);
 }
 
@@ -253,9 +253,9 @@ uint64_t __42__BBDataProviderProxy__makeClientRequest___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)addBulletin:(id)a3 interrupt:(BOOL)a4
+- (void)addBulletin:(id)bulletin interrupt:(BOOL)interrupt
 {
-  if (a4)
+  if (interrupt)
   {
     v4 = 78;
   }
@@ -265,21 +265,21 @@ uint64_t __42__BBDataProviderProxy__makeClientRequest___block_invoke(uint64_t a1
     v4 = 2;
   }
 
-  [(BBDataProviderProxy *)self addBulletin:a3 forDestinations:v4];
+  [(BBDataProviderProxy *)self addBulletin:bulletin forDestinations:v4];
 }
 
-- (void)addBulletin:(id)a3 forDestinations:(unint64_t)a4
+- (void)addBulletin:(id)bulletin forDestinations:(unint64_t)destinations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bulletinCopy = bulletin;
   v7 = BBLogBulletinLife;
   if (os_log_type_enabled(BBLogBulletinLife, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(BBDataProviderProxy *)self identity];
-    v10 = [v9 sectionIdentifier];
+    identity = [(BBDataProviderProxy *)self identity];
+    sectionIdentifier = [identity sectionIdentifier];
     *buf = 138543362;
-    v17 = v10;
+    v17 = sectionIdentifier;
     _os_log_impl(&dword_241EFF000, v8, OS_LOG_TYPE_DEFAULT, "BBDataProviderProxy %{public}@ has enqueued a bulletin request", buf, 0xCu);
   }
 
@@ -288,9 +288,9 @@ uint64_t __42__BBDataProviderProxy__makeClientRequest___block_invoke(uint64_t a1
   v13[2] = __51__BBDataProviderProxy_addBulletin_forDestinations___block_invoke;
   v13[3] = &unk_278D2BC68;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v11 = v6;
+  v14 = bulletinCopy;
+  destinationsCopy = destinations;
+  v11 = bulletinCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -317,40 +317,40 @@ void __51__BBDataProviderProxy_addBulletin_forDestinations___block_invoke(void *
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modifyBulletin:(id)a3
+- (void)modifyBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__BBDataProviderProxy_modifyBulletin___block_invoke;
   v6[3] = &unk_278D2BC90;
-  v7 = v4;
-  v5 = v4;
+  v7 = bulletinCopy;
+  v5 = bulletinCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v6];
 }
 
-- (void)withdrawBulletinsWithRecordID:(id)a3
+- (void)withdrawBulletinsWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__BBDataProviderProxy_withdrawBulletinsWithRecordID___block_invoke;
   v6[3] = &unk_278D2BC90;
-  v7 = v4;
-  v5 = v4;
+  v7 = dCopy;
+  v5 = dCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v6];
 }
 
-- (void)withdrawBulletinWithPublisherBulletinID:(id)a3 shouldSync:(BOOL)a4
+- (void)withdrawBulletinWithPublisherBulletinID:(id)d shouldSync:(BOOL)sync
 {
-  v6 = a3;
+  dCopy = d;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__BBDataProviderProxy_withdrawBulletinWithPublisherBulletinID_shouldSync___block_invoke;
   v8[3] = &unk_278D2BCB8;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = dCopy;
+  syncCopy = sync;
+  v7 = dCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v8];
 }
 
@@ -400,10 +400,10 @@ void __47__BBDataProviderProxy_reloadDefaultSectionInfo__block_invoke(uint64_t a
   [v4 _makeServerRequest:v6];
 }
 
-- (void)updateClearedInfoWithHandler:(id)a3
+- (void)updateClearedInfoWithHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [BBDataProviderProxy updateClearedInfoWithHandler:];
   }
@@ -413,8 +413,8 @@ void __47__BBDataProviderProxy_reloadDefaultSectionInfo__block_invoke(uint64_t a
   v6[2] = __52__BBDataProviderProxy_updateClearedInfoWithHandler___block_invoke;
   v6[3] = &unk_278D2BD58;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v6];
 }
 
@@ -466,11 +466,11 @@ void __52__BBDataProviderProxy_updateClearedInfoWithHandler___block_invoke_3(voi
   }
 }
 
-- (void)updateSectionInfoWithHandler:(id)a3 completion:(id)a4
+- (void)updateSectionInfoWithHandler:(id)handler completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  completionCopy = completion;
+  if (!handlerCopy)
   {
     [BBDataProviderProxy updateSectionInfoWithHandler:completion:];
   }
@@ -480,10 +480,10 @@ void __52__BBDataProviderProxy_updateClearedInfoWithHandler___block_invoke_3(voi
   v10[2] = __63__BBDataProviderProxy_updateSectionInfoWithHandler_completion___block_invoke;
   v10[3] = &unk_278D2BE20;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = handlerCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = handlerCopy;
   [(BBDataProviderProxy *)self _makeServerRequest:v10];
 }
 
@@ -599,10 +599,10 @@ void __63__BBDataProviderProxy_updateSectionInfoWithHandler_completion___block_i
   if (!self->_dataProviderDidLoad)
   {
     self->_dataProviderDidLoad = 1;
-    v3 = [(BBDataProviderProxy *)self identity];
-    v4 = [v3 traits];
+    identity = [(BBDataProviderProxy *)self identity];
+    traits = [identity traits];
 
-    if ((v4 & 2) != 0)
+    if ((traits & 2) != 0)
     {
 
       [(BBDataProviderProxy *)self _makeClientRequest:&__block_literal_global_24];
@@ -610,22 +610,22 @@ void __63__BBDataProviderProxy_updateSectionInfoWithHandler_completion___block_i
   }
 }
 
-- (void)bulletinsWithRequestParameters:(id)a3 lastCleared:(id)a4 completion:(id)a5
+- (void)bulletinsWithRequestParameters:(id)parameters lastCleared:(id)cleared completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  clearedCopy = cleared;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__BBDataProviderProxy_bulletinsWithRequestParameters_lastCleared_completion___block_invoke;
   v14[3] = &unk_278D2BE90;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = parametersCopy;
+  v16 = clearedCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = clearedCopy;
+  v13 = parametersCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v14];
 }
 
@@ -672,19 +672,19 @@ LABEL_8:
   [v10 _makeServerRequest:v13];
 }
 
-- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)a3 completion:(id)a4
+- (void)clearedInfoForClearingAllBulletinsWithLastClearedInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__BBDataProviderProxy_clearedInfoForClearingAllBulletinsWithLastClearedInfo_completion___block_invoke;
   v10[3] = &unk_278D2BEB8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = infoCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = infoCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v10];
 }
 
@@ -719,25 +719,25 @@ void __88__BBDataProviderProxy_clearedInfoForClearingAllBulletinsWithLastCleared
   [v9 _makeServerRequest:v12];
 }
 
-- (void)clearedInfoForClearingBulletinsFromDate:(id)a3 toDate:(id)a4 lastClearedInfo:(id)a5 completion:(id)a6
+- (void)clearedInfoForClearingBulletinsFromDate:(id)date toDate:(id)toDate lastClearedInfo:(id)info completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  toDateCopy = toDate;
+  infoCopy = info;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __97__BBDataProviderProxy_clearedInfoForClearingBulletinsFromDate_toDate_lastClearedInfo_completion___block_invoke;
   v18[3] = &unk_278D2BEE0;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = dateCopy;
+  v20 = toDateCopy;
+  v21 = infoCopy;
+  v22 = completionCopy;
+  v14 = completionCopy;
+  v15 = infoCopy;
+  v16 = toDateCopy;
+  v17 = dateCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v18];
 }
 
@@ -772,13 +772,13 @@ void __97__BBDataProviderProxy_clearedInfoForClearingBulletinsFromDate_toDate_la
   [v9 _makeServerRequest:v12];
 }
 
-- (void)clearedInfoForBulletins:(id)a3 lastClearedInfo:(id)a4 completion:(id)a5
+- (void)clearedInfoForBulletins:(id)bulletins lastClearedInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BBDataProviderProxy *)self identity];
-  v12 = [v11 traits] & 0x20;
+  bulletinsCopy = bulletins;
+  infoCopy = info;
+  completionCopy = completion;
+  identity = [(BBDataProviderProxy *)self identity];
+  v12 = [identity traits] & 0x20;
   if (v12)
   {
     LOBYTE(v13) = 0;
@@ -786,7 +786,7 @@ void __97__BBDataProviderProxy_clearedInfoForClearingBulletinsFromDate_toDate_la
 
   else
   {
-    v13 = ([v11 traits] >> 8) & 1;
+    v13 = ([identity traits] >> 8) & 1;
   }
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -794,14 +794,14 @@ void __97__BBDataProviderProxy_clearedInfoForClearingBulletinsFromDate_toDate_la
   v17[2] = __74__BBDataProviderProxy_clearedInfoForBulletins_lastClearedInfo_completion___block_invoke;
   v17[3] = &unk_278D2BF08;
   v22 = v12 >> 5;
-  v18 = v8;
-  v19 = v9;
+  v18 = bulletinsCopy;
+  v19 = infoCopy;
   v23 = v13;
-  v20 = self;
-  v21 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = infoCopy;
+  v16 = bulletinsCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v17];
 }
 
@@ -842,45 +842,45 @@ LABEL_7:
   [v9 _makeServerRequest:v12];
 }
 
-- (void)noteSectionInfoDidChange:(id)a3
+- (void)noteSectionInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__BBDataProviderProxy_noteSectionInfoDidChange___block_invoke;
   v6[3] = &unk_278D2BF30;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v6];
 }
 
-- (void)deliverMessageWithName:(id)a3 userInfo:(id)a4
+- (void)deliverMessageWithName:(id)name userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__BBDataProviderProxy_deliverMessageWithName_userInfo___block_invoke;
   v10[3] = &unk_278D2BF58;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = nameCopy;
+  v12 = infoCopy;
+  v8 = infoCopy;
+  v9 = nameCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v10];
 }
 
-- (void)deliverBulletinActionResponse:(id)a3 withCompletion:(id)a4
+- (void)deliverBulletinActionResponse:(id)response withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__BBDataProviderProxy_deliverBulletinActionResponse_withCompletion___block_invoke;
   v10[3] = &unk_278D2BC20;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = responseCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = responseCopy;
   [(BBDataProviderProxy *)self _makeClientRequest:v10];
 }
 

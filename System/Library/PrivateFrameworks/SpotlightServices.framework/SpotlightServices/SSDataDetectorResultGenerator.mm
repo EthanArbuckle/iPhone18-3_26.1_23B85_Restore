@@ -1,15 +1,15 @@
 @interface SSDataDetectorResultGenerator
-- (id)buildCardSectionForEmail:(id)a3;
-- (id)buildCardSectionForPhoneNumber:(id)a3;
-- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)a3 person:(id)a4;
-- (id)buildResultSectionForTrackingNumber:(id)a3 carrier:(id)a4 url:(id)a5 queryId:(unint64_t)a6;
-- (id)buildResultSectionWithCardSections:(id)a3 queryId:(unint64_t)a4 resultBundleId:(id)a5 sectionTitle:(id)a6 completion:(id)a7;
-- (id)buttonItemWithTitle:(id)a3 symbol:(id)a4 command:(id)a5;
-- (id)personWithPhoneNumber:(id)a3 email:(id)a4;
-- (void)buildResultSectionsForDateTimeFromResult:(id)a3 querString:(id)a4 completion:(id)a5 queryId:(unint64_t)a6 searchString:(id)a7;
-- (void)buildResultSectionsForEmailFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
-- (void)buildResultSectionsForPhoneNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
-- (void)buildResultSectionsForTrackingNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5;
+- (id)buildCardSectionForEmail:(id)email;
+- (id)buildCardSectionForPhoneNumber:(id)number;
+- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)title person:(id)person;
+- (id)buildResultSectionForTrackingNumber:(id)number carrier:(id)carrier url:(id)url queryId:(unint64_t)id;
+- (id)buildResultSectionWithCardSections:(id)sections queryId:(unint64_t)id resultBundleId:(id)bundleId sectionTitle:(id)title completion:(id)completion;
+- (id)buttonItemWithTitle:(id)title symbol:(id)symbol command:(id)command;
+- (id)personWithPhoneNumber:(id)number email:(id)email;
+- (void)buildResultSectionsForDateTimeFromResult:(id)result querString:(id)string completion:(id)completion queryId:(unint64_t)id searchString:(id)searchString;
+- (void)buildResultSectionsForEmailFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
+- (void)buildResultSectionsForPhoneNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
+- (void)buildResultSectionsForTrackingNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id;
 @end
 
 @implementation SSDataDetectorResultGenerator
@@ -29,38 +29,38 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   }
 }
 
-- (void)buildResultSectionsForTrackingNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForTrackingNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 subResults];
-  v11 = [v10 firstObject];
-  v12 = [v11 type];
+  completionCopy = completion;
+  resultCopy = result;
+  subResults = [resultCopy subResults];
+  firstObject = [subResults firstObject];
+  type = [firstObject type];
 
-  [v9 coreResult];
+  [resultCopy coreResult];
   v13 = DDResultGetShipmentTrackingUrlString();
   v14 = [MEMORY[0x1E695DFF8] URLWithString:v13];
-  v15 = [v9 value];
+  value = [resultCopy value];
 
-  v16 = [(SSDataDetectorResultGenerator *)self buildResultSectionForTrackingNumber:v15 carrier:v12 url:v14 queryId:a5];
+  v16 = [(SSDataDetectorResultGenerator *)self buildResultSectionForTrackingNumber:value carrier:type url:v14 queryId:id];
 
   v19[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-  v8[2](v8, v17);
+  completionCopy[2](completionCopy, v17);
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)buildResultSectionForTrackingNumber:(id)a3 carrier:(id)a4 url:(id)a5 queryId:(unint64_t)a6
+- (id)buildResultSectionForTrackingNumber:(id)number carrier:(id)carrier url:(id)url queryId:(unint64_t)id
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E69CA3A0];
-  v9 = a5;
-  v10 = a4;
-  v32 = [v8 textWithString:a3];
+  urlCopy = url;
+  carrierCopy = carrier;
+  v32 = [v8 textWithString:number];
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x1E69CA320] punchoutWithURL:v9];
+  v12 = [MEMORY[0x1E69CA320] punchoutWithURL:urlCopy];
 
   v29 = v11;
   [v11 setPunchout:v12];
@@ -71,7 +71,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   [v13 setIsTemplate:1];
   v14 = objc_opt_new();
   [v14 setTitle:v32];
-  v15 = [MEMORY[0x1E69CA3A0] textWithString:v10];
+  v15 = [MEMORY[0x1E69CA3A0] textWithString:carrierCopy];
 
   v35[0] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
@@ -91,24 +91,24 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   v20 = [v19 localizedStringForKey:@"QUICK_ACTION_PACKAGE_TRACKING_SECTION_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
   v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v22 = [v21 localizedStringForKey:@"QUICK_ACTION_PACKAGE_TRACKING_COMPLETION" value:&stru_1F556FE60 table:@"SpotlightServices"];
-  v23 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v18 queryId:a6 resultBundleId:@"com.apple.datadetector.quick_actions.tracking_number" sectionTitle:v20 completion:v22];
+  v23 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v18 queryId:id resultBundleId:@"com.apple.datadetector.quick_actions.tracking_number" sectionTitle:v20 completion:v22];
 
-  v24 = [v29 punchout];
-  v25 = [v23 results];
-  v26 = [v25 firstObject];
-  [v26 setPunchout:v24];
+  punchout = [v29 punchout];
+  results = [v23 results];
+  firstObject = [results firstObject];
+  [firstObject setPunchout:punchout];
 
   v27 = *MEMORY[0x1E69E9840];
 
   return v23;
 }
 
-- (void)buildResultSectionsForPhoneNumberFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForPhoneNumberFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  completionCopy = completion;
   v28 = 0;
-  v9 = [a3 getPhoneValue:&v28 label:0];
+  v9 = [result getPhoneValue:&v28 label:0];
   v10 = v28;
   if (v9)
   {
@@ -122,7 +122,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
 
     if (!v10 || v16)
     {
-      v8[2](v8, MEMORY[0x1E695E0F0]);
+      completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
     }
 
     else
@@ -131,16 +131,16 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
       v30 = v26;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
       v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-      v18 = a5;
+      idCopy = id;
       [v17 localizedStringForKey:@"QUICK_ACTION_PHONE_NUMBER_SECTION_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
       v19 = v27 = v11;
       v20 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v21 = [v20 localizedStringForKey:@"QUICK_ACTION_PHONE_NUMBER_COMPLETION" value:&stru_1F556FE60 table:@"SpotlightServices"];
-      v22 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v25 queryId:v18 resultBundleId:@"com.apple.datadetector.quick_actions.phone_number" sectionTitle:v19 completion:v21];
+      v22 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v25 queryId:idCopy resultBundleId:@"com.apple.datadetector.quick_actions.phone_number" sectionTitle:v19 completion:v21];
 
       v29 = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
-      (v8)[2](v8, v23);
+      (completionCopy)[2](completionCopy, v23);
 
       v11 = v27;
     }
@@ -148,17 +148,17 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
 
   else
   {
-    v8[2](v8, MEMORY[0x1E695E0F0]);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
   }
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)buildCardSectionForPhoneNumber:(id)a3
+- (id)buildCardSectionForPhoneNumber:(id)number
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSDataDetectorResultGenerator *)self personWithPhoneNumber:v4 email:0];
+  numberCopy = number;
+  v5 = [(SSDataDetectorResultGenerator *)self personWithPhoneNumber:numberCopy email:0];
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ADD_NUMBER" value:&stru_1F556FE60 table:@"SpotlightServices"];
   v8 = [(SSDataDetectorResultGenerator *)self buildPersonBasedSubtitleButtonItemWithTitle:v7 person:v5];
@@ -178,7 +178,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   [v12 setTrailingButtonItems:v14];
 
   v15 = objc_opt_new();
-  [v15 setPhoneNumber:v4];
+  [v15 setPhoneNumber:numberCopy];
 
   [v12 setCommand:v15];
   v16 = *MEMORY[0x1E69E9840];
@@ -186,12 +186,12 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   return v12;
 }
 
-- (void)buildResultSectionsForEmailFromResult:(id)a3 completion:(id)a4 queryId:(unint64_t)a5
+- (void)buildResultSectionsForEmailFromResult:(id)result completion:(id)completion queryId:(unint64_t)id
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  completionCopy = completion;
   v26 = 0;
-  v9 = [a3 getMailValue:&v26 label:0];
+  v9 = [result getMailValue:&v26 label:0];
   v10 = v26;
   if (v9)
   {
@@ -204,7 +204,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
 
     if (!v10 || v15)
     {
-      v8[2](v8, MEMORY[0x1E695E0F0]);
+      completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
     }
 
     else
@@ -212,32 +212,32 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
       v25 = [(SSDataDetectorResultGenerator *)self buildCardSectionForEmail:v10];
       v28 = v25;
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-      v23 = a5;
+      idCopy = id;
       v16 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v17 = [v16 localizedStringForKey:@"QUICK_ACTION_EMAIL_SECTION_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
       v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"QUICK_ACTION_EMAIL_COMPLETION" value:&stru_1F556FE60 table:@"SpotlightServices"];
-      v20 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v24 queryId:v23 resultBundleId:@"com.apple.datadetector.quick_actions.email" sectionTitle:v17 completion:v19];
+      v20 = [(SSDataDetectorResultGenerator *)self buildResultSectionWithCardSections:v24 queryId:idCopy resultBundleId:@"com.apple.datadetector.quick_actions.email" sectionTitle:v17 completion:v19];
 
       v27 = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-      (v8)[2](v8, v21);
+      (completionCopy)[2](completionCopy, v21);
     }
   }
 
   else
   {
-    v8[2](v8, MEMORY[0x1E695E0F0]);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0]);
   }
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (id)buildCardSectionForEmail:(id)a3
+- (id)buildCardSectionForEmail:(id)email
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSDataDetectorResultGenerator *)self personWithPhoneNumber:0 email:v4];
+  emailCopy = email;
+  v5 = [(SSDataDetectorResultGenerator *)self personWithPhoneNumber:0 email:emailCopy];
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ADD_EMAIL" value:&stru_1F556FE60 table:@"SpotlightServices"];
   v8 = [(SSDataDetectorResultGenerator *)self buildPersonBasedSubtitleButtonItemWithTitle:v7 person:v5];
@@ -245,7 +245,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   v9 = objc_opt_new();
   [v9 setPerson:v5];
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x1E69CA3A0] textWithString:v4];
+  v11 = [MEMORY[0x1E69CA3A0] textWithString:emailCopy];
   [v10 setTitle:v11];
 
   [v10 setSubtitleButtonItem:v8];
@@ -254,7 +254,7 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   [v10 setTrailingButtonItems:v12];
 
   v13 = objc_opt_new();
-  [v13 setEmail:v4];
+  [v13 setEmail:emailCopy];
 
   [v10 setCommand:v13];
   v14 = *MEMORY[0x1E69E9840];
@@ -262,27 +262,27 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   return v10;
 }
 
-- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)a3 person:(id)a4
+- (id)buildPersonBasedSubtitleButtonItemWithTitle:(id)title person:(id)person
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  personCopy = person;
+  titleCopy = title;
   v8 = objc_opt_new();
   [v8 setAddToExistingContact:0];
-  [v8 setPerson:v6];
+  [v8 setPerson:personCopy];
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CREATE_NEW_CONTACT" value:&stru_1F556FE60 table:@"SpotlightServices"];
   v11 = [(SSDataDetectorResultGenerator *)self buttonItemWithTitle:v10 symbol:@"person.crop.circle" command:v8];
 
   v12 = objc_opt_new();
   [v12 setAddToExistingContact:1];
-  [v12 setPerson:v6];
+  [v12 setPerson:personCopy];
 
   v13 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"ADD_TO_EXISTING_CONTACT" value:&stru_1F556FE60 table:@"SpotlightServices"];
   v15 = [(SSDataDetectorResultGenerator *)self buttonItemWithTitle:v14 symbol:@"person.crop.circle.badge.plus" command:v12];
 
-  v16 = [(SSDataDetectorResultGenerator *)self buttonItemWithTitle:v7 symbol:0 command:0];
+  v16 = [(SSDataDetectorResultGenerator *)self buttonItemWithTitle:titleCopy symbol:0 command:0];
 
   v20[0] = v11;
   v20[1] = v15;
@@ -294,22 +294,22 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   return v16;
 }
 
-- (id)personWithPhoneNumber:(id)a3 email:(id)a4
+- (id)personWithPhoneNumber:(id)number email:(id)email
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  emailCopy = email;
   v7 = objc_opt_new();
-  if (v5)
+  if (numberCopy)
   {
-    v13[0] = v5;
+    v13[0] = numberCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     [v7 setPhoneNumbers:v8];
   }
 
-  if (v6)
+  if (emailCopy)
   {
-    v12 = v6;
+    v12 = emailCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
     [v7 setEmailAddresses:v9];
   }
@@ -319,35 +319,35 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
   return v7;
 }
 
-- (void)buildResultSectionsForDateTimeFromResult:(id)a3 querString:(id)a4 completion:(id)a5 queryId:(unint64_t)a6 searchString:(id)a7
+- (void)buildResultSectionsForDateTimeFromResult:(id)result querString:(id)string completion:(id)completion queryId:(unint64_t)id searchString:(id)searchString
 {
   v86[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v78 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E695DEE8] currentCalendar];
+  resultCopy = result;
+  stringCopy = string;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v82 = 0;
-  v13 = [MEMORY[0x1E695DFE8] systemTimeZone];
+  systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
   v14 = [MEMORY[0x1E695DF00] now];
-  v15 = [v10 type];
+  type = [resultCopy type];
   v16 = *MEMORY[0x1E6999A40];
   v77 = v14;
-  v79 = v10;
-  v17 = self;
-  if ([v15 isEqualToString:*MEMORY[0x1E6999A40]])
+  v79 = resultCopy;
+  selfCopy = self;
+  if ([type isEqualToString:*MEMORY[0x1E6999A40]])
   {
   }
 
   else
   {
-    v18 = [v10 type];
-    v19 = [v18 isEqualToString:*MEMORY[0x1E69999A8]];
+    type2 = [resultCopy type];
+    v19 = [type2 isEqualToString:*MEMORY[0x1E69999A8]];
 
     if (!v19)
     {
-      v25 = [v10 dateFromReferenceDate:v14 referenceTimezone:v13 timezoneRef:0 allDayRef:&v82];
+      v25 = [resultCopy dateFromReferenceDate:v14 referenceTimezone:systemTimeZone timezoneRef:0 allDayRef:&v82];
       v22 = 0;
-      v76 = v13;
+      v76 = systemTimeZone;
       v73 = v16;
       if ((v82 & 1) != 0 || !v25)
       {
@@ -357,30 +357,30 @@ void __70__SSDataDetectorResultGenerator_getResultSections_queryId_completion___
       else
       {
         v23 = v25;
-        v22 = [v12 dateByAddingUnit:32 value:1 toDate:? options:?];
+        v22 = [currentCalendar dateByAddingUnit:32 value:1 toDate:? options:?];
       }
 
 LABEL_11:
       v26 = MEMORY[0x1E696AEC0];
-      v27 = [v79 value];
-      v28 = [v26 stringWithFormat:@"%@ ", v27];
-      v29 = [v78 stringByReplacingOccurrencesOfString:v28 withString:&stru_1F556FE60];
+      value = [v79 value];
+      v28 = [v26 stringWithFormat:@"%@ ", value];
+      v29 = [stringCopy stringByReplacingOccurrencesOfString:v28 withString:&stru_1F556FE60];
 
-      v30 = [v79 value];
-      v31 = [v29 stringByReplacingOccurrencesOfString:v30 withString:&stru_1F556FE60];
+      value2 = [v79 value];
+      v31 = [v29 stringByReplacingOccurrencesOfString:value2 withString:&stru_1F556FE60];
 
       v21 = v23;
-      if (!v23 || (v32 = v17) != 0 && v17->_canceled)
+      if (!v23 || (v32 = selfCopy) != 0 && selfCopy->_canceled)
       {
-        v24 = v11;
-        (*(v11 + 2))(v11, MEMORY[0x1E695E0F0]);
+        v24 = completionCopy;
+        (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
 
 LABEL_31:
-        v13 = v76;
+        systemTimeZone = v76;
         goto LABEL_32;
       }
 
-      v24 = v11;
+      v24 = completionCopy;
       if (v22)
       {
         v33 = [v22 compare:v23];
@@ -399,18 +399,18 @@ LABEL_31:
         v34 = v73;
       }
 
-      if ([v21 compare:v77] == -1 && objc_msgSend(v12, "isDateInToday:", v21))
+      if ([v21 compare:v77] == -1 && objc_msgSend(currentCalendar, "isDateInToday:", v21))
       {
-        v36 = [v79 type];
-        if ([v36 isEqualToString:*MEMORY[0x1E6999A48]])
+        type3 = [v79 type];
+        if ([type3 isEqualToString:*MEMORY[0x1E6999A48]])
         {
 
 LABEL_24:
-          v39 = [v12 dateByAddingUnit:16 value:1 toDate:v21 options:0];
+          v39 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v21 options:0];
 
           if (v22)
           {
-            v40 = [v12 dateByAddingUnit:16 value:1 toDate:v22 options:0];
+            v40 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v22 options:0];
 
             v22 = v40;
           }
@@ -419,8 +419,8 @@ LABEL_24:
           goto LABEL_27;
         }
 
-        v37 = [v79 type];
-        v38 = [v37 isEqualToString:v34];
+        type4 = [v79 type];
+        v38 = [type4 isEqualToString:v34];
 
         if (v38)
         {
@@ -453,8 +453,8 @@ LABEL_27:
       v74 = v22;
       v46 = objc_opt_new();
       v47 = MEMORY[0x1E69CA3A0];
-      v48 = [v44 title];
-      v49 = [v47 textWithString:v48];
+      title = [v44 title];
+      v49 = [v47 textWithString:title];
       [v46 setTitle:v49];
 
       v50 = [objc_alloc(MEMORY[0x1E69C9EF0]) initWithDate:v21];
@@ -487,7 +487,7 @@ LABEL_27:
       v62 = [v61 localizedStringForKey:@"QUICK_ACTION_CALENDAR_EVENT_SECTION_TITLE" value:&stru_1F556FE60 table:@"SpotlightServices"];
       v63 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v64 = [v63 localizedStringForKey:@"QUICK_ACTION_CALENDAR_EVENT_COMPLETION" value:&stru_1F556FE60 table:@"SpotlightServices"];
-      v65 = [(SSDataDetectorResultGenerator *)v69 buildResultSectionWithCardSections:v60 queryId:a6 resultBundleId:@"com.apple.datadetector.quick_actions.calendar" sectionTitle:v62 completion:v64];
+      v65 = [(SSDataDetectorResultGenerator *)v69 buildResultSectionWithCardSections:v60 queryId:id resultBundleId:@"com.apple.datadetector.quick_actions.calendar" sectionTitle:v62 completion:v64];
 
       v83 = v65;
       v66 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v83 count:1];
@@ -500,46 +500,46 @@ LABEL_27:
 
   v80 = 0;
   v81 = 0;
-  v20 = [v10 extractStartDate:&v81 startTimezone:0 endDate:&v80 endTimezone:0 allDayRef:&v82 referenceDate:v14 referenceTimezone:v13];
+  v20 = [resultCopy extractStartDate:&v81 startTimezone:0 endDate:&v80 endTimezone:0 allDayRef:&v82 referenceDate:v14 referenceTimezone:systemTimeZone];
   v21 = v81;
   v22 = v80;
   if (v20)
   {
     v73 = v16;
     v23 = v21;
-    v76 = v13;
+    v76 = systemTimeZone;
     goto LABEL_11;
   }
 
-  v24 = v11;
-  (*(v11 + 2))(v11, MEMORY[0x1E695E0F0]);
+  v24 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0]);
 LABEL_32:
 
   v67 = *MEMORY[0x1E69E9840];
 }
 
-- (id)buildResultSectionWithCardSections:(id)a3 queryId:(unint64_t)a4 resultBundleId:(id)a5 sectionTitle:(id)a6 completion:(id)a7
+- (id)buildResultSectionWithCardSections:(id)sections queryId:(unint64_t)id resultBundleId:(id)bundleId sectionTitle:(id)title completion:(id)completion
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  completionCopy = completion;
+  titleCopy = title;
+  bundleIdCopy = bundleId;
+  sectionsCopy = sections;
   v15 = objc_opt_new();
-  [v15 setCardSections:v14];
+  [v15 setCardSections:sectionsCopy];
 
   v16 = objc_alloc_init(SFSearchResult_SpotlightExtras);
   [(SFSearchResult_SpotlightExtras *)v16 setInlineCard:v15];
   [(SFSearchResult_SpotlightExtras *)v16 setTopHit:SSSetTopHitWithReasonString(2, v16, @"SSDataDetectorResultGenerator direct", 1)];
-  [(SFSearchResult_SpotlightExtras *)v16 setResultBundleId:v13];
+  [(SFSearchResult_SpotlightExtras *)v16 setResultBundleId:bundleIdCopy];
 
   [(SFSearchResult_SpotlightExtras *)v16 setSectionBundleIdentifier:@"com.apple.datadetector.quick_actions"];
-  [(SFSearchResult_SpotlightExtras *)v16 setSectionHeader:v12];
-  [(SFSearchResult_SpotlightExtras *)v16 setQueryId:a4];
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%llu", @"com.apple.datadetector.quick_actions", a4];
+  [(SFSearchResult_SpotlightExtras *)v16 setSectionHeader:titleCopy];
+  [(SFSearchResult_SpotlightExtras *)v16 setQueryId:id];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%llu", @"com.apple.datadetector.quick_actions", id];
   [(SFSearchResult_SpotlightExtras *)v16 setIdentifier:v17];
 
-  [(SFSearchResult_SpotlightExtras *)v16 setCompletion:v11];
+  [(SFSearchResult_SpotlightExtras *)v16 setCompletion:completionCopy];
   [(SFSearchResult_SpotlightExtras *)v16 setApplicationBundleIdentifier:@"com.apple.datadetector.quick_actions"];
   [(SFSearchResult_SpotlightExtras *)v16 setType:2];
   v18 = objc_alloc_init(SFMutableResultSection);
@@ -549,30 +549,30 @@ LABEL_32:
 
   [(SFResultSection *)v18 setBundleIdentifier:@"com.apple.datadetector.quick_actions"];
   [(SFMutableResultSection *)v18 setDomain:10];
-  [(SFResultSection *)v18 setTitle:v12];
+  [(SFResultSection *)v18 setTitle:titleCopy];
 
   v20 = *MEMORY[0x1E69E9840];
 
   return v18;
 }
 
-- (id)buttonItemWithTitle:(id)a3 symbol:(id)a4 command:(id)a5
+- (id)buttonItemWithTitle:(id)title symbol:(id)symbol command:(id)command
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  symbolCopy = symbol;
+  commandCopy = command;
+  titleCopy = title;
   v10 = objc_opt_new();
-  [v10 setTitle:v9];
+  [v10 setTitle:titleCopy];
 
-  if (v7)
+  if (symbolCopy)
   {
     v11 = objc_opt_new();
     [v11 setIsTemplate:1];
-    [v11 setSymbolName:v7];
+    [v11 setSymbolName:symbolCopy];
     [v10 setImage:v11];
   }
 
-  [v10 setCommand:v8];
+  [v10 setCommand:commandCopy];
 
   return v10;
 }

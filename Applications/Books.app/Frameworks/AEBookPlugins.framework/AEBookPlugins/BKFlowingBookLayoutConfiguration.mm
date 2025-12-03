@@ -1,12 +1,12 @@
 @interface BKFlowingBookLayoutConfiguration
-+ (BOOL)spreadPagesAllowedWithViewportSize:(CGSize)a3 fontSizeIndex:(int64_t)a4;
++ (BOOL)spreadPagesAllowedWithViewportSize:(CGSize)size fontSizeIndex:(int64_t)index;
 + (id)_fontSizeCache;
-- (BKFlowingBookLayoutConfiguration)initWithViewController:(id)a3 provider:(id)a4;
+- (BKFlowingBookLayoutConfiguration)initWithViewController:(id)controller provider:(id)provider;
 - (BOOL)_contentHasSpreadPages;
 - (BOOL)_useCompactStrings;
 - (BOOL)hasSpreadPages;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFlowingBookLayoutConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFlowingBookLayoutConfiguration:(id)configuration;
 - (BOOL)pageLabelOnLeft;
 - (BOOL)tocHasSpreadPages;
 - (BOOL)usePaginationLineGrid;
@@ -20,14 +20,14 @@
 - (CGRect)headerFrame;
 - (CGRect)hiddenBottomLeftToolbarFrame;
 - (CGRect)hiddenBottomRightToolbarFrame;
-- (CGRect)insetContentViewFromContentContainerFrame:(CGRect)a3 isPrimary:(BOOL)a4;
-- (CGRect)insetTOCorCoverViewFromContentContainerFrame:(CGRect)a3;
+- (CGRect)insetContentViewFromContentContainerFrame:(CGRect)frame isPrimary:(BOOL)primary;
+- (CGRect)insetTOCorCoverViewFromContentContainerFrame:(CGRect)frame;
 - (CGRect)leftContentContainerFrameForTwoUp;
 - (CGRect)rightContentContainerFrameForTwoUp;
 - (CGRect)scrubberFrame;
 - (CGRect)topLeftToolbarFrame;
 - (CGRect)topRightToolbarFrame;
-- (CGSize)__layoutSizeForSpreadPages:(BOOL)a3;
+- (CGSize)__layoutSizeForSpreadPages:(BOOL)pages;
 - (CGSize)contentLayoutSize;
 - (CGSize)layoutSize;
 - (NSString)lastPageInChapterString;
@@ -35,15 +35,15 @@
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)upsellContentInsets;
 - (double)_averageCharacterWidth;
-- (double)_calculatedWidthOfFontFamily:(id)a3 size:(double)a4;
-- (double)_calculatedWidthOfFontFamily:(id)a3 size:(double)a4 cache:(id)a5 key:(id)a6;
-- (double)_charactersPerLineForContentWidth:(double)a3 columns:(unint64_t)a4;
-- (double)_fontSizeAdjustmentForFontFamily:(id)a3;
+- (double)_calculatedWidthOfFontFamily:(id)family size:(double)size;
+- (double)_calculatedWidthOfFontFamily:(id)family size:(double)size cache:(id)cache key:(id)key;
+- (double)_charactersPerLineForContentWidth:(double)width columns:(unint64_t)columns;
+- (double)_fontSizeAdjustmentForFontFamily:(id)family;
 - (double)_fontSizeWithCurrentStyle;
-- (double)_gutterWidthWithSpreadPages:(BOOL)a3;
+- (double)_gutterWidthWithSpreadPages:(BOOL)pages;
 - (double)_scrubberFrameHorizontalOriginY;
 - (double)_scrubberLength;
-- (double)_semanticSideInsetWithSpreadPages:(BOOL)a3;
+- (double)_semanticSideInsetWithSpreadPages:(BOOL)pages;
 - (double)be_pageLength;
 - (double)charactersPerLine;
 - (double)compactFontSize;
@@ -58,31 +58,31 @@
 - (double)scrubberWidth;
 - (double)semanticSideInset;
 - (double)snapshotArtificialGutterWidth;
-- (id)backToPageWithPageTitle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)backToPageWithPageTitle:(id)title;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)goToPageWithPageTitle:(id)a3;
-- (id)pluralPagesLeftInChapterWithRemainingPageCount:(unint64_t)a3;
-- (id)singularPagesLeftInChapterWithRemainingPageCount:(unint64_t)a3;
+- (id)goToPageWithPageTitle:(id)title;
+- (id)pluralPagesLeftInChapterWithRemainingPageCount:(unint64_t)count;
+- (id)singularPagesLeftInChapterWithRemainingPageCount:(unint64_t)count;
 - (void)invalidate;
-- (void)setLargeSizeFactor:(double)a3;
-- (void)setLayout:(unint64_t)a3;
-- (void)setOverrideFontSize:(double)a3;
-- (void)setStyle:(id)a3;
+- (void)setLargeSizeFactor:(double)factor;
+- (void)setLayout:(unint64_t)layout;
+- (void)setOverrideFontSize:(double)size;
+- (void)setStyle:(id)style;
 @end
 
 @implementation BKFlowingBookLayoutConfiguration
 
-- (BKFlowingBookLayoutConfiguration)initWithViewController:(id)a3 provider:(id)a4
+- (BKFlowingBookLayoutConfiguration)initWithViewController:(id)controller provider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BKFlowingBookPlistConfigurationEnvironment alloc] initWithViewController:v7];
-  [(BKFlowingBookPlistConfigurationEnvironment *)v8 setOverrideProvider:v6];
+  providerCopy = provider;
+  controllerCopy = controller;
+  v8 = [[BKFlowingBookPlistConfigurationEnvironment alloc] initWithViewController:controllerCopy];
+  [(BKFlowingBookPlistConfigurationEnvironment *)v8 setOverrideProvider:providerCopy];
 
-  v9 = [[BKFlowingBookFontSizeConfiguration alloc] initWithViewController:v7 configurationEnvironment:v8];
+  v9 = [[BKFlowingBookFontSizeConfiguration alloc] initWithViewController:controllerCopy configurationEnvironment:v8];
   [(BKFlowingBookPlistConfigurationEnvironment *)v8 setFontSizeConfiguration:v9];
-  v10 = [(BKFlowingBookLayoutConfiguration *)self initWithViewController:v7 configurationEnvironment:v8];
+  v10 = [(BKFlowingBookLayoutConfiguration *)self initWithViewController:controllerCopy configurationEnvironment:v8];
 
   if (v10)
   {
@@ -95,7 +95,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v15.receiver = self;
   v15.super_class = BKFlowingBookLayoutConfiguration;
@@ -108,18 +108,18 @@
     *(v5 + 17) = self->_contentHasSpreadPages;
     *(v5 + 19) = self->_disableContentSpreadPages;
     *(v5 + 18) = [(BKFlowingBookLayoutConfiguration *)self showingTOC];
-    v7 = [(BKFlowingBookLayoutConfiguration *)self style];
-    v8 = [v7 copyWithZone:a3];
+    style = [(BKFlowingBookLayoutConfiguration *)self style];
+    v8 = [style copyWithZone:zone];
     v9 = *(v5 + 1);
     *(v5 + 1) = v8;
 
     objc_storeStrong(v5 + 5, self->_options);
-    v10 = [(BKFlowingBookFontSizeConfiguration *)self->_fontSizeConfiguration copyWithZone:a3];
+    v10 = [(BKFlowingBookFontSizeConfiguration *)self->_fontSizeConfiguration copyWithZone:zone];
     v11 = *(v5 + 6);
     *(v5 + 6) = v10;
 
     objc_opt_class();
-    v12 = [v5 environment];
+    environment = [v5 environment];
     v13 = BUDynamicCast();
 
     [v13 setFontSizeConfiguration:self->_fontSizeConfiguration];
@@ -128,11 +128,11 @@
   return v5;
 }
 
-- (BOOL)isEqualToFlowingBookLayoutConfiguration:(id)a3
+- (BOOL)isEqualToFlowingBookLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_overrideFontSize == *(v4 + 4) && self->_layout == v4[3] && self->_contentHasSpreadPages == *(v4 + 17) && self->_disableContentSpreadPages == *(v4 + 19) && self->_showingTOC == *(v4 + 18) && ((style = self->_style, style == v5[1]) || [(ContentStyle *)style isEqual:?]))
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (self->_overrideFontSize == *(configurationCopy + 4) && self->_layout == configurationCopy[3] && self->_contentHasSpreadPages == *(configurationCopy + 17) && self->_disableContentSpreadPages == *(configurationCopy + 19) && self->_showingTOC == *(configurationCopy + 18) && ((style = self->_style, style == v5[1]) || [(ContentStyle *)style isEqual:?]))
   {
     options = self->_options;
     if (options == v5[5])
@@ -154,10 +154,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -165,9 +165,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKFlowingBookLayoutConfiguration, [(BKFlowingBookLayoutConfiguration *)&v7 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7.receiver = self, v7.super_class = BKFlowingBookLayoutConfiguration, [(BKFlowingBookLayoutConfiguration *)&v7 isEqual:equalCopy]))
     {
-      v5 = [(BKFlowingBookLayoutConfiguration *)self isEqualToFlowingBookLayoutConfiguration:v4];
+      v5 = [(BKFlowingBookLayoutConfiguration *)self isEqualToFlowingBookLayoutConfiguration:equalCopy];
     }
 
     else
@@ -208,26 +208,26 @@
 
 - (double)semanticSideInset
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self contentHasSpreadPages];
+  contentHasSpreadPages = [(BKFlowingBookLayoutConfiguration *)self contentHasSpreadPages];
 
-  [(BKFlowingBookLayoutConfiguration *)self _semanticSideInsetWithSpreadPages:v3];
+  [(BKFlowingBookLayoutConfiguration *)self _semanticSideInsetWithSpreadPages:contentHasSpreadPages];
   return result;
 }
 
-- (double)_semanticSideInsetWithSpreadPages:(BOOL)a3
+- (double)_semanticSideInsetWithSpreadPages:(BOOL)pages
 {
-  v3 = a3;
+  pagesCopy = pages;
   if ([(BKFlowingBookLayoutConfiguration *)self layout]== &dword_0 + 3)
   {
     return 0.0;
   }
 
-  [(BKFlowingBookLayoutConfiguration *)self _gutterWidthWithSpreadPages:v3];
+  [(BKFlowingBookLayoutConfiguration *)self _gutterWidthWithSpreadPages:pagesCopy];
   v7 = v6;
   if ([(BKFlowingBookLayoutConfiguration *)self layout]!= &dword_0 + 2 && [(BKFlowingBookLayoutConfiguration *)self _manageSafeAreaInsets])
   {
-    v8 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v8 safeAreaInsets];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment safeAreaInsets];
     v10 = v9;
     v12 = v11;
 
@@ -249,8 +249,8 @@
 
 - (double)compactFontSize
 {
-  v2 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v2 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v4 = round(sqrt(v3 + -19.3649167) + 16.0);
 
   return v4;
@@ -258,8 +258,8 @@
 
 - (double)regularFontSize
 {
-  v2 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v2 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v4 = round(sqrt(v3 + -28.8790582) + 20.0);
 
   return v4;
@@ -293,15 +293,15 @@
   if ([(BKFlowingBookLayoutConfiguration *)self isScroll])
   {
     v3 = +[BKFlowingBookLayoutConfiguration _fontSizeCache];
-    v4 = [(BKFlowingBookLayoutConfiguration *)self style];
-    v5 = [v4 fontFamily];
+    style = [(BKFlowingBookLayoutConfiguration *)self style];
+    fontFamily = [style fontFamily];
 
-    v6 = [v5 length];
+    v6 = [fontFamily length];
     [(BKFlowingBookLayoutConfiguration *)self _fontSizeWithCurrentStyle];
     v8 = v7;
     if (v6)
     {
-      v9 = [NSString stringWithFormat:@"A:%@:%.2f", v5, *&v7];
+      v9 = [NSString stringWithFormat:@"A:%@:%.2f", fontFamily, *&v7];
       objc_opt_class();
       v10 = [v3 objectForKeyedSubscript:v9];
       v11 = BUDynamicCast();
@@ -314,13 +314,13 @@
 
       else
       {
-        v15 = [(BKFlowingBookLayoutConfiguration *)self style];
-        v16 = [v15 fontFamily];
-        [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:v16 size:v3 cache:v9 key:v8];
+        style2 = [(BKFlowingBookLayoutConfiguration *)self style];
+        fontFamily2 = [style2 fontFamily];
+        [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:fontFamily2 size:v3 cache:v9 key:v8];
         v18 = v17;
 
-        v19 = [(BKFlowingBookLayoutConfiguration *)self _sampleCorpus];
-        v13 = v18 / [v19 length];
+        _sampleCorpus = [(BKFlowingBookLayoutConfiguration *)self _sampleCorpus];
+        v13 = v18 / [_sampleCorpus length];
 
         if (v13 <= 0.0)
         {
@@ -364,18 +364,18 @@ LABEL_16:
   return v13;
 }
 
-- (double)_charactersPerLineForContentWidth:(double)a3 columns:(unint64_t)a4
+- (double)_charactersPerLineForContentWidth:(double)width columns:(unint64_t)columns
 {
-  [(BKFlowingBookLayoutConfiguration *)self _contentWidthForAvailableWidth:a4 columns:a3];
+  [(BKFlowingBookLayoutConfiguration *)self _contentWidthForAvailableWidth:columns columns:width];
   [(BKFlowingBookLayoutConfiguration *)self _charactersPerLineForContentWidthRaw:?];
   v6 = v5;
-  v7 = [(BKFlowingBookLayoutConfiguration *)self style];
+  style = [(BKFlowingBookLayoutConfiguration *)self style];
 
-  if (v7)
+  if (style)
   {
-    v8 = [(BKFlowingBookLayoutConfiguration *)self style];
-    v9 = [v8 fontFamily];
-    [(BKFlowingBookLayoutConfiguration *)self _fontSizeAdjustmentForFontFamily:v9];
+    style2 = [(BKFlowingBookLayoutConfiguration *)self style];
+    fontFamily = [style2 fontFamily];
+    [(BKFlowingBookLayoutConfiguration *)self _fontSizeAdjustmentForFontFamily:fontFamily];
     v6 = v6 * v10;
   }
 
@@ -390,8 +390,8 @@ LABEL_16:
 
 - (double)charactersPerLine
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v5 = v4;
 
   [(BKFlowingBookLayoutConfiguration *)self _charactersPerLineForContentWidth:1 columns:v5];
@@ -403,8 +403,8 @@ LABEL_16:
   v3 = 0.0;
   if (![(BKFlowingBookLayoutConfiguration *)self isScroll])
   {
-    v4 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v4 safeAreaInsets];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment safeAreaInsets];
     v3 = v5;
     v7 = v6;
 
@@ -422,9 +422,9 @@ LABEL_16:
 
 - (double)_scrubberLength
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self scrubberStyle];
+  scrubberStyle = [(BKFlowingBookLayoutConfiguration *)self scrubberStyle];
   options = self->_options;
-  if (v3 == 1)
+  if (scrubberStyle == 1)
   {
 
     [(BCSemanticLayoutOptions *)options scrollerScrubberHeight];
@@ -434,8 +434,8 @@ LABEL_16:
   {
     [(BCSemanticLayoutOptions *)options classicScrubberHeight];
     v6 = v5;
-    v7 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v7 size];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment size];
     v9 = v8;
 
     result = fmax(v6, 44.0);
@@ -468,37 +468,37 @@ LABEL_16:
 
 - (double)_scrubberFrameHorizontalOriginY
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
   [(BKFlowingBookLayoutConfiguration *)self scrubberHeight];
   v5 = v4;
-  [v3 size];
+  [environment size];
   v7 = v6 - v5;
-  [v3 safeAreaInsets];
+  [environment safeAreaInsets];
   v9 = v7 - v8;
   [(BKFlowingBookLayoutConfiguration *)self footerToolbarHeight];
   v11 = v9 - v10;
-  v12 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v13 = [v12 overrideProvider];
-  v14 = [v13 isScrubberDisabled];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  overrideProvider = [environment2 overrideProvider];
+  isScrubberDisabled = [overrideProvider isScrubberDisabled];
 
-  if (v14)
+  if (isScrubberDisabled)
   {
     v11 = v5 + v11;
   }
 
   else
   {
-    v15 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    if ([v15 isCompactHeight])
+    environment3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    if ([environment3 isCompactHeight])
     {
     }
 
     else
     {
-      v16 = [(BKFlowingBookLayoutConfiguration *)self environment];
-      v17 = [v16 isCompactWidth];
+      environment4 = [(BKFlowingBookLayoutConfiguration *)self environment];
+      isCompactWidth = [environment4 isCompactWidth];
 
-      if (!v17)
+      if (!isCompactWidth)
       {
         goto LABEL_9;
       }
@@ -523,8 +523,8 @@ LABEL_9:
 
 - (UIEdgeInsets)contentInsets
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 safeAreaInsets];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment safeAreaInsets];
   v5 = v4;
   v7 = v6;
   [(BKFlowingBookLayoutConfiguration *)self headerToolbarHeight];
@@ -545,7 +545,7 @@ LABEL_9:
 
   else
   {
-    [v3 size];
+    [environment size];
     v16 = v15;
     [(BKFlowingBookLayoutConfiguration *)self _scrubberFrameHorizontalOriginY];
     v14 = v16 - v17;
@@ -565,27 +565,27 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)insetContentViewFromContentContainerFrame:(CGRect)a3 isPrimary:(BOOL)a4
+- (CGRect)insetContentViewFromContentContainerFrame:(CGRect)frame isPrimary:(BOOL)primary
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  primaryCopy = primary;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BKFlowingBookLayoutConfiguration *)self contentInsets];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v17 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v19 = v18;
 
   if (width < v19)
   {
     [(BKFlowingBookLayoutConfiguration *)self gutterWidth];
     v21 = v20 * 0.5;
-    if (v4)
+    if (primaryCopy)
     {
       v16 = v21;
     }
@@ -624,11 +624,11 @@ LABEL_9:
 
   else
   {
-    v4 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    if ([v4 isLandscape])
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    if ([environment isLandscape])
     {
-      v5 = [(BKFlowingBookLayoutConfiguration *)self environment];
-      v3 = [v5 isCompactWidth] ^ 1;
+      environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+      v3 = [environment2 isCompactWidth] ^ 1;
     }
 
     else
@@ -640,16 +640,16 @@ LABEL_9:
   return v3;
 }
 
-+ (BOOL)spreadPagesAllowedWithViewportSize:(CGSize)a3 fontSizeIndex:(int64_t)a4
++ (BOOL)spreadPagesAllowedWithViewportSize:(CGSize)size fontSizeIndex:(int64_t)index
 {
-  v4 = a3.width > 896.0;
-  if (a3.height <= 500.0)
+  v4 = size.width > 896.0;
+  if (size.height <= 500.0)
   {
     v4 = 0;
   }
 
-  v5 = a4 < 2 && v4;
-  if (a3.width <= a3.height)
+  v5 = index < 2 && v4;
+  if (size.width <= size.height)
   {
     return v5;
   }
@@ -672,16 +672,16 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v4 = [v3 isCompactWidth];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  isCompactWidth = [environment isCompactWidth];
 
-  if (v4)
+  if (isCompactWidth)
   {
     return 0;
   }
 
-  v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v6 size];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 size];
   v8 = v7;
 
   [(BKFlowingBookLayoutConfiguration *)self _charactersPerLineForContentWidth:1 columns:v8];
@@ -692,15 +692,15 @@ LABEL_9:
 
 - (double)snapshotArtificialGutterWidth
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   if (BCViewportSize() == 1)
   {
-    v4 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    v5 = [v4 isCompactHeight];
+    environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    isCompactHeight = [environment2 isCompactHeight];
 
     result = 22.0;
-    if (v5)
+    if (isCompactHeight)
     {
       return 27.0;
     }
@@ -715,64 +715,64 @@ LABEL_9:
   return result;
 }
 
-- (void)setLargeSizeFactor:(double)a3
+- (void)setLargeSizeFactor:(double)factor
 {
-  v4 = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
-  [v4 setLargeSizeFactor:a3];
+  bookEnvironment = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
+  [bookEnvironment setLargeSizeFactor:factor];
 }
 
-- (void)setLayout:(unint64_t)a3
+- (void)setLayout:(unint64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    v5 = [(BKFlowingBookLayoutConfiguration *)self allowsScrollMode];
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    allowsScrollMode = [(BKFlowingBookLayoutConfiguration *)self allowsScrollMode];
+    if ((layout & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v6 = 1;
+      layoutCopy2 = 1;
     }
 
     else
     {
-      v6 = a3;
+      layoutCopy2 = layout;
     }
 
-    if (v5)
+    if (allowsScrollMode)
     {
-      v6 = a3;
+      layoutCopy2 = layout;
     }
 
-    self->_layout = v6;
-    v7 = [(BKFlowingBookLayoutConfiguration *)self isScroll];
-    v8 = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
-    [v8 setScroll:v7];
+    self->_layout = layoutCopy2;
+    isScroll = [(BKFlowingBookLayoutConfiguration *)self isScroll];
+    bookEnvironment = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
+    [bookEnvironment setScroll:isScroll];
 
     [(BKFlowingBookLayoutConfiguration *)self invalidate];
   }
 }
 
-- (void)setOverrideFontSize:(double)a3
+- (void)setOverrideFontSize:(double)size
 {
-  if (vabdd_f64(self->_overrideFontSize, a3) > 0.00001)
+  if (vabdd_f64(self->_overrideFontSize, size) > 0.00001)
   {
-    self->_overrideFontSize = a3;
-    v5 = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
-    [v5 setFontSize:a3];
+    self->_overrideFontSize = size;
+    bookEnvironment = [(BKFlowingBookLayoutConfiguration *)self bookEnvironment];
+    [bookEnvironment setFontSize:size];
 
     [(BKFlowingBookLayoutConfiguration *)self invalidate];
   }
 }
 
-- (double)_calculatedWidthOfFontFamily:(id)a3 size:(double)a4
+- (double)_calculatedWidthOfFontFamily:(id)family size:(double)size
 {
-  v6 = a3;
-  if (([(__CFString *)v6 isEqualToString:@"ui-serif"]& 1) != 0)
+  familyCopy = family;
+  if (([(__CFString *)familyCopy isEqualToString:@"ui-serif"]& 1) != 0)
   {
     v7 = @".AppleSystemUIFontSerif";
   }
 
   else
   {
-    if (![(__CFString *)v6 isEqualToString:@"system-ui"])
+    if (![(__CFString *)familyCopy isEqualToString:@"system-ui"])
     {
       goto LABEL_6;
     }
@@ -780,16 +780,16 @@ LABEL_9:
     v7 = @".AppleSystemUIFont";
   }
 
-  v6 = v7;
+  familyCopy = v7;
 LABEL_6:
-  v8 = [UIFont fontWithName:v6 size:a4];
+  v8 = [UIFont fontWithName:familyCopy size:size];
   if (v8)
   {
-    v9 = [(BKFlowingBookLayoutConfiguration *)self _sampleCorpus];
+    _sampleCorpus = [(BKFlowingBookLayoutConfiguration *)self _sampleCorpus];
     v22 = NSFontAttributeName;
     v23 = v8;
     v10 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    [v9 boundingRectWithSize:1 options:v10 attributes:0 context:{1.79769313e308, 1.79769313e308}];
+    [_sampleCorpus boundingRectWithSize:1 options:v10 attributes:0 context:{1.79769313e308, 1.79769313e308}];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -816,13 +816,13 @@ LABEL_6:
   return Width;
 }
 
-- (double)_calculatedWidthOfFontFamily:(id)a3 size:(double)a4 cache:(id)a5 key:(id)a6
+- (double)_calculatedWidthOfFontFamily:(id)family size:(double)size cache:(id)cache key:(id)key
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  familyCopy = family;
+  cacheCopy = cache;
+  keyCopy = key;
   objc_opt_class();
-  v13 = [v11 objectForKeyedSubscript:v10];
+  v13 = [cacheCopy objectForKeyedSubscript:familyCopy];
   v14 = BUDynamicCast();
 
   if (v14)
@@ -833,22 +833,22 @@ LABEL_6:
 
   else
   {
-    [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:v10 size:a4];
+    [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:familyCopy size:size];
     v16 = v17;
     v18 = [NSNumber numberWithDouble:?];
-    [v11 setObject:v18 forKeyedSubscript:v12];
+    [cacheCopy setObject:v18 forKeyedSubscript:keyCopy];
   }
 
   return v16;
 }
 
-- (double)_fontSizeAdjustmentForFontFamily:(id)a3
+- (double)_fontSizeAdjustmentForFontFamily:(id)family
 {
-  v4 = a3;
+  familyCopy = family;
   [(BKFlowingBookLayoutConfiguration *)self _fontSizeWithCurrentStyle];
   v6 = v5;
   v7 = +[BKFlowingBookLayoutConfiguration _fontSizeCache];
-  v8 = [(BKFlowingBookLayoutConfiguration *)self _cacheKeyForFontFamily:v4 size:v6];
+  v8 = [(BKFlowingBookLayoutConfiguration *)self _cacheKeyForFontFamily:familyCopy size:v6];
   objc_opt_class();
   v9 = [v7 objectForKeyedSubscript:v8];
   v10 = BUDynamicCast();
@@ -861,12 +861,12 @@ LABEL_6:
 
   else
   {
-    if ([v4 length])
+    if ([familyCopy length])
     {
       v13 = [(BKFlowingBookLayoutConfiguration *)self _cacheKeyForFontFamily:@".AppleSystemUIFontSerif" size:v6];
       [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:@".AppleSystemUIFontSerif" size:v7 cache:v13 key:v6];
       v15 = v14;
-      [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:v4 size:v6];
+      [(BKFlowingBookLayoutConfiguration *)self _calculatedWidthOfFontFamily:familyCopy size:v6];
       v17 = fmin(fabs(v16), fabs(v15));
       v18 = v16 / v15;
       if (v17 >= 0.00000011920929)
@@ -889,7 +889,7 @@ LABEL_6:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       v22 = 138412802;
-      v23 = v4;
+      v23 = familyCopy;
       v24 = 2048;
       v25 = v6;
       v26 = 2048;
@@ -904,19 +904,19 @@ LABEL_6:
   return v12;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
-  if (self->_style != v5)
+  styleCopy = style;
+  if (self->_style != styleCopy)
   {
-    objc_storeStrong(&self->_style, a3);
-    [(ContentStyle *)v5 setOverrideProvider:self];
+    objc_storeStrong(&self->_style, style);
+    [(ContentStyle *)styleCopy setOverrideProvider:self];
     v6 = +[BCSemanticLayoutOptions logger];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       style = self->_style;
       v8 = 138412290;
-      v9 = style;
+      styleCopy2 = style;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Style changed to:%@", &v8, 0xCu);
     }
   }
@@ -929,8 +929,8 @@ LABEL_6:
   {
     [(ContentStyle *)self->_style fontSize];
     v5 = v4;
-    v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v6 size];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment size];
     [BKFlowingBookFontSizeConfiguration fontSizeFactorForViewportSize:self->_useOldFontStepsAndSpacing useOldFontStepsAndSpacing:?];
     overrideFontSize = v7 * v5;
   }
@@ -991,9 +991,9 @@ LABEL_6:
 
 - (double)headerToolbarHeight
 {
-  v2 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v3 = [v2 overrideProvider];
-  [v3 topBarHeight];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  overrideProvider = [environment overrideProvider];
+  [overrideProvider topBarHeight];
   v5 = v4;
 
   return v5;
@@ -1001,9 +1001,9 @@ LABEL_6:
 
 - (double)footerToolbarHeight
 {
-  v2 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v3 = [v2 overrideProvider];
-  [v3 bottomBarHeight];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  overrideProvider = [environment overrideProvider];
+  [overrideProvider bottomBarHeight];
   v5 = v4;
 
   return v5;
@@ -1028,18 +1028,18 @@ LABEL_6:
 
 - (UIEdgeInsets)bookCoverEdgeInsets
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v4 = [v3 isCompactHeight];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  isCompactHeight = [environment isCompactHeight];
 
-  v5 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v5 statusBarHeight];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 statusBarHeight];
   v7 = v6;
   [(BKFlowingBookLayoutConfiguration *)self headerToolbarHeight];
   v9 = v8;
   [(BKFlowingBookLayoutConfiguration *)self footerToolbarHeight];
   v11 = v10;
 
-  if (v4)
+  if (isCompactHeight)
   {
     v12 = 18.0;
   }
@@ -1050,7 +1050,7 @@ LABEL_6:
   }
 
   v13 = 82.0;
-  if (v4)
+  if (isCompactHeight)
   {
     v13 = 38.0;
   }
@@ -1066,11 +1066,11 @@ LABEL_6:
 
 - (CGRect)contentContainerFrame
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v5 = v4;
-  v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v6 size];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 size];
   v8 = v7;
 
   v9 = 0.0;
@@ -1086,11 +1086,11 @@ LABEL_6:
 
 - (CGRect)leftContentContainerFrameForTwoUp
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v5 = v4 * 0.5;
-  v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v6 size];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 size];
   v8 = v7;
 
   v9 = 0.0;
@@ -1108,14 +1108,14 @@ LABEL_6:
 {
   if ([(BKFlowingBookLayoutConfiguration *)self hasSpreadPages])
   {
-    v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v3 size];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment size];
     x = v4 * 0.5;
-    v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v6 size];
+    environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment2 size];
     width = v7 * 0.5;
-    v9 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v9 size];
+    environment3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment3 size];
     height = v10;
 
     y = 0.0;
@@ -1141,8 +1141,8 @@ LABEL_6:
 
 - (UIEdgeInsets)upsellContentInsets
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 safeAreaInsets];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment safeAreaInsets];
   v5 = v4;
   v7 = v6;
 
@@ -1175,22 +1175,22 @@ LABEL_6:
 
 - (double)gutterWidth
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self contentHasSpreadPages];
+  contentHasSpreadPages = [(BKFlowingBookLayoutConfiguration *)self contentHasSpreadPages];
 
-  [(BKFlowingBookLayoutConfiguration *)self _gutterWidthWithSpreadPages:v3];
+  [(BKFlowingBookLayoutConfiguration *)self _gutterWidthWithSpreadPages:contentHasSpreadPages];
   return result;
 }
 
-- (double)_gutterWidthWithSpreadPages:(BOOL)a3
+- (double)_gutterWidthWithSpreadPages:(BOOL)pages
 {
-  v3 = a3;
-  v5 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v5 size];
+  pagesCopy = pages;
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v7 = v6;
 
   [(BCSemanticLayoutOptions *)self->_options sideInsetFactor];
   v9 = v7 * v8;
-  if (v3)
+  if (pagesCopy)
   {
     v10 = +[UIScreen mainScreen];
     [v10 scale];
@@ -1211,8 +1211,8 @@ LABEL_6:
   v13 = ceil(v9);
   if ([(BKFlowingBookLayoutConfiguration *)self isScroll])
   {
-    v14 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v14 safeAreaInsetsAdjustingForNotch:0];
+    environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment2 safeAreaInsetsAdjustingForNotch:0];
     v16 = v15;
     v18 = v17;
 
@@ -1242,13 +1242,13 @@ LABEL_6:
     v4 = v3;
     [(BKFlowingBookLayoutConfiguration *)self bookCoverEdgeInsets];
     v6 = v5;
-    v7 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v7 size];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment size];
     v9 = v8 * 0.5;
     [(BKFlowingBookLayoutConfiguration *)self bookCoverEdgeInsets];
     v11 = v9 + v10 * -2.0;
-    v12 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v12 size];
+    environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment2 size];
     v14 = v13;
     [(BKFlowingBookLayoutConfiguration *)self bookCoverEdgeInsets];
     v16 = v15;
@@ -1285,11 +1285,11 @@ LABEL_6:
 
 - (CGRect)headerFrame
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 safeAreaInsets];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment safeAreaInsets];
   v5 = v4;
-  v6 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v6 size];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 size];
   v8 = v7;
   [(BKFlowingBookLayoutConfiguration *)self headerToolbarHeight];
   v10 = v9;
@@ -1365,30 +1365,30 @@ LABEL_6:
 
 - (CGRect)footerFrame
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v3 safeAreaInsets];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment safeAreaInsets];
   v5 = v4;
 
   [(BKFlowingBookLayoutConfiguration *)self footerToolbarHeight];
   v7 = v6;
-  v8 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v8 size];
+  environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment2 size];
   v10 = v9;
   v12 = v11;
 
   if (![(BKFlowingBookLayoutConfiguration *)self isScroll])
   {
-    v13 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    if ([v13 isCompactWidth])
+    environment3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    if ([environment3 isCompactWidth])
     {
     }
 
     else
     {
-      v14 = [(BKFlowingBookLayoutConfiguration *)self environment];
-      v15 = [v14 isCompactHeight];
+      environment4 = [(BKFlowingBookLayoutConfiguration *)self environment];
+      isCompactHeight = [environment4 isCompactHeight];
 
-      if (!v15)
+      if (!isCompactHeight)
       {
         [(BKFlowingBookLayoutConfiguration *)self scrubberFrame];
         v17 = (v12 + CGRectGetMidY(v21) - v7) * 0.5;
@@ -1538,8 +1538,8 @@ LABEL_6:
     v34.size.width = v12;
     v34.size.height = v14;
     MinY = CGRectGetMinY(v34);
-    v17 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v17 size];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment size];
     width = v18;
     v35.origin.x = v8;
     v35.origin.y = v10;
@@ -1603,8 +1603,8 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v11 size];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment size];
   v13 = v12;
   v19.origin.x = v4;
   v19.origin.y = v6;
@@ -1687,7 +1687,7 @@ LABEL_6:
 
 - (CGRect)scrubberFrame
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
   [(BKFlowingBookLayoutConfiguration *)self _scrubberFrameHorizontalOriginY];
   [(BKFlowingBookLayoutConfiguration *)self layout];
   [(BKFlowingBookLayoutConfiguration *)self headerToolbarHeight];
@@ -1715,24 +1715,24 @@ LABEL_6:
 
 - (double)scrubberCalloutWidth
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  v4 = [v3 isCompactWidth];
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  isCompactWidth = [environment isCompactWidth];
 
-  if (!v4)
+  if (!isCompactWidth)
   {
     return 403.0;
   }
 
   if ([(BKFlowingBookLayoutConfiguration *)self isScroll])
   {
-    v5 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v5 size];
+    environment2 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment2 size];
     v7 = v6 + -60.0;
-    v8 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v8 safeAreaInsets];
+    environment3 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment3 safeAreaInsets];
     v10 = v7 - v9;
-    v11 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v11 safeAreaInsets];
+    environment4 = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment4 safeAreaInsets];
     v13 = v10 - v12;
   }
 
@@ -1747,8 +1747,8 @@ LABEL_6:
 
 - (BOOL)_useCompactStrings
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  if ([v3 isCompactWidth])
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  if ([environment isCompactWidth])
   {
 
 LABEL_8:
@@ -1777,10 +1777,10 @@ LABEL_8:
 
 - (NSString)lastPageInChapterString
 {
-  v2 = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
+  _useCompactStrings = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
   v3 = AEBundle();
   v4 = v3;
-  if (v2)
+  if (_useCompactStrings)
   {
     v5 = @"Last page";
   }
@@ -1795,9 +1795,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)singularPagesLeftInChapterWithRemainingPageCount:(unint64_t)a3
+- (id)singularPagesLeftInChapterWithRemainingPageCount:(unint64_t)count
 {
-  v4 = [NSNumberFormatter imaxLocalizedUnsignedInteger:a3 usesGroupingSeparator:0];
+  v4 = [NSNumberFormatter imaxLocalizedUnsignedInteger:count usesGroupingSeparator:0];
   LODWORD(self) = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
   v5 = AEBundle();
   v6 = v5;
@@ -1818,9 +1818,9 @@ LABEL_8:
   return v9;
 }
 
-- (id)pluralPagesLeftInChapterWithRemainingPageCount:(unint64_t)a3
+- (id)pluralPagesLeftInChapterWithRemainingPageCount:(unint64_t)count
 {
-  v4 = [NSNumberFormatter imaxLocalizedUnsignedInteger:a3 usesGroupingSeparator:0];
+  v4 = [NSNumberFormatter imaxLocalizedUnsignedInteger:count usesGroupingSeparator:0];
   LODWORD(self) = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
   v5 = AEBundle();
   v6 = v5;
@@ -1841,9 +1841,9 @@ LABEL_8:
   return v9;
 }
 
-- (id)backToPageWithPageTitle:(id)a3
+- (id)backToPageWithPageTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   LODWORD(self) = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
   v5 = AEBundle();
   v6 = v5;
@@ -1859,14 +1859,14 @@ LABEL_8:
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_1E7188 table:0];
 
-  v9 = [NSString stringWithFormat:v8, v4];
+  titleCopy = [NSString stringWithFormat:v8, titleCopy];
 
-  return v9;
+  return titleCopy;
 }
 
-- (id)goToPageWithPageTitle:(id)a3
+- (id)goToPageWithPageTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   LODWORD(self) = [(BKFlowingBookLayoutConfiguration *)self _useCompactStrings];
   v5 = AEBundle();
   v6 = v5;
@@ -1882,9 +1882,9 @@ LABEL_8:
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_1E7188 table:0];
 
-  v9 = [NSString stringWithFormat:v8, v4];
+  titleCopy = [NSString stringWithFormat:v8, titleCopy];
 
-  return v9;
+  return titleCopy;
 }
 
 - (BOOL)hasSpreadPages
@@ -1910,9 +1910,9 @@ LABEL_8:
   return v3;
 }
 
-- (CGSize)__layoutSizeForSpreadPages:(BOOL)a3
+- (CGSize)__layoutSizeForSpreadPages:(BOOL)pages
 {
-  v3 = a3;
+  pagesCopy = pages;
   [(BKFlowingBookLayoutConfiguration *)self contentContainerFrame];
   v6 = v5;
   v8 = v7;
@@ -1925,15 +1925,15 @@ LABEL_8:
   Height = v12 - (v15 + v19);
   if ([(BKFlowingBookLayoutConfiguration *)self _shouldLayoutRectInsetContentRectBySafeAreaInsets])
   {
-    v21 = [(BKFlowingBookLayoutConfiguration *)self environment];
-    [v21 safeAreaInsets];
+    environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+    [environment safeAreaInsets];
     v14 = v14 + v22;
     v16 = v16 + v23;
     v18 = v18 - (v22 + v24);
     Height = Height - (v23 + v25);
   }
 
-  if (v3)
+  if (pagesCopy)
   {
     v32.origin.x = v14;
     v32.origin.y = v16;
@@ -1959,9 +1959,9 @@ LABEL_8:
 
 - (CGSize)layoutSize
 {
-  v3 = [(BKFlowingBookLayoutConfiguration *)self hasSpreadPages];
+  hasSpreadPages = [(BKFlowingBookLayoutConfiguration *)self hasSpreadPages];
 
-  [(BKFlowingBookLayoutConfiguration *)self __layoutSizeForSpreadPages:v3];
+  [(BKFlowingBookLayoutConfiguration *)self __layoutSizeForSpreadPages:hasSpreadPages];
   result.height = v5;
   result.width = v4;
   return result;
@@ -1985,7 +1985,7 @@ LABEL_8:
       v12 = 138412546;
       v13 = v9;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "contentLayoutSize: %@. %@", &v12, 0x16u);
     }
   }
@@ -1997,14 +1997,14 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)insetTOCorCoverViewFromContentContainerFrame:(CGRect)a3
+- (CGRect)insetTOCorCoverViewFromContentContainerFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BKFlowingBookLayoutConfiguration *)self environment];
-  [v8 safeAreaInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  environment = [(BKFlowingBookLayoutConfiguration *)self environment];
+  [environment safeAreaInsets];
   v10 = v9;
   v12 = v11;
 
@@ -2028,13 +2028,13 @@ LABEL_8:
   [(BKFlowingBookLayoutConfiguration *)self contentLayoutSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(BKFlowingBookLayoutConfiguration *)self layout];
+  layout = [(BKFlowingBookLayoutConfiguration *)self layout];
   result = 0.0;
-  if (v7 <= 1)
+  if (layout <= 1)
   {
-    if (v7)
+    if (layout)
     {
-      if (v7 != 1)
+      if (layout != 1)
       {
         return result;
       }
@@ -2055,7 +2055,7 @@ LABEL_10:
     return v4;
   }
 
-  switch(v7)
+  switch(layout)
   {
     case 4:
       goto LABEL_10;

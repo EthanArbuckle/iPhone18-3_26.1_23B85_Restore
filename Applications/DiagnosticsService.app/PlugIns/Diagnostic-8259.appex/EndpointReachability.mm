@@ -1,50 +1,50 @@
 @interface EndpointReachability
-- (BOOL)_flagIsReachable:(unsigned int)a3;
-- (BOOL)_httpSendRequestWithURL:(id)a3 timeout:(int64_t)a4 error:(id *)a5;
-- (id)_calculateTimeIntervalFrom:(id)a3 To:(id)a4;
-- (id)_connectionEstablishmentTime:(id)a3;
-- (id)_dnsResolutionTime:(id)a3;
-- (id)_httpRequestTime:(id)a3;
-- (id)_httpResponseTime:(id)a3;
-- (id)_requestURL:(id)a3;
-- (int64_t)_httpCheckWithURL:(id)a3 timeout:(int64_t)a4;
-- (int64_t)_localNetworkCheckWithHostName:(id)a3;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)_testURL:(id)a3 timeout:(int64_t)a4 completion:(id)a5;
+- (BOOL)_flagIsReachable:(unsigned int)reachable;
+- (BOOL)_httpSendRequestWithURL:(id)l timeout:(int64_t)timeout error:(id *)error;
+- (id)_calculateTimeIntervalFrom:(id)from To:(id)to;
+- (id)_connectionEstablishmentTime:(id)time;
+- (id)_dnsResolutionTime:(id)time;
+- (id)_httpRequestTime:(id)time;
+- (id)_httpResponseTime:(id)time;
+- (id)_requestURL:(id)l;
+- (int64_t)_httpCheckWithURL:(id)l timeout:(int64_t)timeout;
+- (int64_t)_localNetworkCheckWithHostName:(id)name;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)_testURL:(id)l timeout:(int64_t)timeout completion:(id)completion;
 - (void)cancel;
 - (void)initEndpointsInfo;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation EndpointReachability
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[EndpointReachability setupWithInputs:responder:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = inputsCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v11, 0x20u);
   }
 
-  [(EndpointReachability *)self setInputs:v6];
-  v9 = [(EndpointReachability *)self inputs];
+  [(EndpointReachability *)self setInputs:inputsCopy];
+  inputs = [(EndpointReachability *)self inputs];
 
-  if (!v9)
+  if (!inputs)
   {
-    v10 = [(EndpointReachability *)self result];
-    [v10 setStatusCode:&off_100008698];
+    result = [(EndpointReachability *)self result];
+    [result setStatusCode:&off_100008698];
 
     [(EndpointReachability *)self setFinished:1];
   }
@@ -77,13 +77,13 @@
   v57 = &v56;
   v58 = 0x2020000000;
   v59 = 1;
-  v3 = [(EndpointReachability *)self inputs];
-  v4 = [v3 timeout];
-  v5 = [v4 intValue];
+  inputs = [(EndpointReachability *)self inputs];
+  timeout = [inputs timeout];
+  intValue = [timeout intValue];
 
-  if (v5)
+  if (intValue)
   {
-    v6 = v5;
+    v6 = intValue;
   }
 
   else
@@ -106,8 +106,8 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v9 = [(EndpointReachability *)self endpointsInfo];
-  v10 = [v9 countByEnumeratingWithState:&v52 objects:v71 count:16];
+  endpointsInfo = [(EndpointReachability *)self endpointsInfo];
+  v10 = [endpointsInfo countByEnumeratingWithState:&v52 objects:v71 count:16];
   if (v10)
   {
     v12 = *v53;
@@ -119,7 +119,7 @@
       {
         if (*v53 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(endpointsInfo);
         }
 
         v14 = *(*(&v52 + 1) + 8 * i);
@@ -138,7 +138,7 @@
         block[3] = &unk_1000082B8;
         v16 = group;
         v44 = v16;
-        v45 = self;
+        selfCopy = self;
         v50 = &v56;
         v51 = v6;
         v46 = v14;
@@ -148,7 +148,7 @@
         dispatch_group_async(v16, queue, block);
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v52 objects:v71 count:16];
+      v10 = [endpointsInfo countByEnumeratingWithState:&v52 objects:v71 count:16];
     }
 
     while (v10);
@@ -157,22 +157,22 @@
   dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v57 + 24) == 1)
   {
-    v17 = [(EndpointReachability *)self result];
-    [v17 setStatusCode:&off_1000086B0];
+    result = [(EndpointReachability *)self result];
+    [result setStatusCode:&off_1000086B0];
   }
 
   else
   {
-    v17 = [(EndpointReachability *)self result];
-    [v17 setStatusCode:&off_1000086C8];
+    result = [(EndpointReachability *)self result];
+    [result setStatusCode:&off_1000086C8];
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v18 = [(EndpointReachability *)self endpointsInfo];
-  v19 = [v18 countByEnumeratingWithState:&v39 objects:v68 count:16];
+  endpointsInfo2 = [(EndpointReachability *)self endpointsInfo];
+  v19 = [endpointsInfo2 countByEnumeratingWithState:&v39 objects:v68 count:16];
   if (v19)
   {
     v20 = *v40;
@@ -182,18 +182,18 @@
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(endpointsInfo2);
         }
 
         v22 = *(*(&v39 + 1) + 8 * j);
-        v23 = [(EndpointReachability *)self endpointsInfo];
-        v24 = [v23 valueForKey:v22];
+        endpointsInfo3 = [(EndpointReachability *)self endpointsInfo];
+        v24 = [endpointsInfo3 valueForKey:v22];
 
         v25 = [v24 valueForKey:@"metrics"];
         [v35 setObject:v25 forKey:v22];
       }
 
-      v19 = [v18 countByEnumeratingWithState:&v39 objects:v68 count:16];
+      v19 = [endpointsInfo2 countByEnumeratingWithState:&v39 objects:v68 count:16];
     }
 
     while (v19);
@@ -235,8 +235,8 @@
 
   v67[2] = v31;
   v32 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:3];
-  v33 = [(EndpointReachability *)self result];
-  [v33 setData:v32];
+  result2 = [(EndpointReachability *)self result];
+  [result2 setData:v32];
 
   if (!v30)
   {
@@ -285,17 +285,17 @@
   v3 = objc_opt_new();
   [(EndpointReachability *)self setEndpointsInfo:v3];
 
-  v40 = self;
-  v4 = [(EndpointReachability *)self inputs];
-  v5 = [v4 endpointURLs];
-  v6 = [NSSet setWithArray:v5];
-  v7 = [v6 allObjects];
+  selfCopy = self;
+  inputs = [(EndpointReachability *)self inputs];
+  endpointURLs = [inputs endpointURLs];
+  v6 = [NSSet setWithArray:endpointURLs];
+  allObjects = [v6 allObjects];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v7;
+  obj = allObjects;
   v41 = [obj countByEnumeratingWithState:&v45 objects:v53 count:16];
   if (v41)
   {
@@ -322,9 +322,9 @@
         }
 
         v12 = [NSURL URLWithString:v10];
-        v13 = [v12 host];
-        v14 = [v12 port];
-        if (!v14)
+        host = [v12 host];
+        port = [v12 port];
+        if (!port)
         {
           v15 = handleForCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -334,17 +334,17 @@
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: Port number not specified, using default.", buf, 0xCu);
           }
 
-          v16 = [v12 scheme];
-          v17 = [v16 caseInsensitiveCompare:@"http"];
+          scheme = [v12 scheme];
+          v17 = [scheme caseInsensitiveCompare:@"http"];
 
           if (v17)
           {
-            v18 = [v12 scheme];
-            v19 = [v18 caseInsensitiveCompare:@"https"];
+            scheme2 = [v12 scheme];
+            v19 = [scheme2 caseInsensitiveCompare:@"https"];
 
             if (v19)
             {
-              v14 = 0;
+              port = 0;
               goto LABEL_17;
             }
 
@@ -356,36 +356,36 @@
             v20 = 80;
           }
 
-          v14 = [NSNumber numberWithInt:v20];
+          port = [NSNumber numberWithInt:v20];
         }
 
 LABEL_17:
-        v42 = [NSString stringWithFormat:@"%@:%@", v13, v14];
+        v42 = [NSString stringWithFormat:@"%@:%@", host, port];
         v49[0] = @"remoteAddress";
-        v21 = [v8[69] null];
-        v50[0] = v21;
+        null = [v8[69] null];
+        v50[0] = null;
         v49[1] = @"remotePort";
-        v22 = [v8[69] null];
-        v50[1] = v22;
+        null2 = [v8[69] null];
+        v50[1] = null2;
         v49[2] = @"dnsResolutionTime";
-        v23 = [v8[69] null];
-        v50[2] = v23;
+        null3 = [v8[69] null];
+        v50[2] = null3;
         v49[3] = @"connectionEstablishmentTime";
-        v24 = [v8[69] null];
-        v50[3] = v24;
+        null4 = [v8[69] null];
+        v50[3] = null4;
         v49[4] = @"httpRequestTime";
         [v8[69] null];
         v26 = v25 = v8;
         v50[4] = v26;
         v49[5] = @"httpResponseTime";
         [v25[69] null];
-        v28 = v27 = v13;
+        v28 = v27 = host;
         v50[5] = v28;
         v43 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:6];
 
         v29 = objc_opt_new();
-        v30 = [v12 scheme];
-        v31 = [NSString stringWithFormat:@"%@://%@", v30, v42];
+        scheme3 = [v12 scheme];
+        v31 = [NSString stringWithFormat:@"%@://%@", scheme3, v42];
         [v29 setObject:v31 forKey:@"url"];
 
         if (v27)
@@ -395,14 +395,14 @@ LABEL_17:
 
         else
         {
-          v32 = [v25[69] null];
-          [v29 setObject:v32 forKey:@"hostname"];
+          null5 = [v25[69] null];
+          [v29 setObject:null5 forKey:@"hostname"];
         }
 
         v8 = v25;
-        if (v14)
+        if (port)
         {
-          [v29 setObject:v14 forKey:@"port"];
+          [v29 setObject:port forKey:@"port"];
           if (v43)
           {
             goto LABEL_22;
@@ -411,8 +411,8 @@ LABEL_17:
 
         else
         {
-          v33 = [v25[69] null];
-          [v29 setObject:v33 forKey:@"port"];
+          null6 = [v25[69] null];
+          [v29 setObject:null6 forKey:@"port"];
 
           if (v43)
           {
@@ -422,12 +422,12 @@ LABEL_22:
           }
         }
 
-        v34 = [v25[69] null];
-        [v29 setObject:v34 forKey:@"metrics"];
+        null7 = [v25[69] null];
+        [v29 setObject:null7 forKey:@"metrics"];
 
 LABEL_25:
-        v35 = [(EndpointReachability *)v40 endpointsInfo];
-        [v35 setObject:v29 forKey:v42];
+        endpointsInfo = [(EndpointReachability *)selfCopy endpointsInfo];
+        [endpointsInfo setObject:v29 forKey:v42];
 
         v9 = v44 + 1;
       }
@@ -442,29 +442,29 @@ LABEL_25:
   v36 = handleForCategory();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [(EndpointReachability *)v40 endpointsInfo];
+    endpointsInfo2 = [(EndpointReachability *)selfCopy endpointsInfo];
     *buf = 138412290;
-    v52 = v37;
+    v52 = endpointsInfo2;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "endpointsInfo: %@", buf, 0xCu);
   }
 }
 
-- (void)_testURL:(id)a3 timeout:(int64_t)a4 completion:(id)a5
+- (void)_testURL:(id)l timeout:(int64_t)timeout completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v10 = handleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v33 = 136315394;
     v34 = "[EndpointReachability _testURL:timeout:completion:]";
     v35 = 2112;
-    v36 = v8;
+    v36 = lCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: %@", &v33, 0x16u);
   }
 
-  v11 = [(EndpointReachability *)self endpointsInfo];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  endpointsInfo = [(EndpointReachability *)self endpointsInfo];
+  v12 = [endpointsInfo objectForKeyedSubscript:lCopy];
 
   v13 = [v12 objectForKeyedSubscript:@"url"];
   v14 = [NSURL URLWithString:v13];
@@ -488,13 +488,13 @@ LABEL_25:
     v20 = handleForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_100003AE8(v8, v20, v21, v22, v23, v24, v25, v26);
+      sub_100003AE8(lCopy, v20, v21, v22, v23, v24, v25, v26);
     }
   }
 
   else
   {
-    v19 = [(EndpointReachability *)self _httpCheckWithURL:v14 timeout:a4];
+    v19 = [(EndpointReachability *)self _httpCheckWithURL:v14 timeout:timeout];
     if (!v19)
     {
       goto LABEL_12;
@@ -503,44 +503,44 @@ LABEL_25:
     v20 = handleForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      sub_100003B54(v8, v20, v27, v28, v29, v30, v31, v32);
+      sub_100003B54(lCopy, v20, v27, v28, v29, v30, v31, v32);
     }
   }
 
 LABEL_12:
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v19);
+    completionCopy[2](completionCopy, v19);
   }
 }
 
-- (BOOL)_flagIsReachable:(unsigned int)a3
+- (BOOL)_flagIsReachable:(unsigned int)reachable
 {
-  v3 = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  v3 = (reachable & 0x28) != 0;
+  if ((reachable & 0x10) != 0)
   {
     v3 = 0;
   }
 
-  v4 = (a3 & 4) == 0 || v3;
-  return (a3 & 2) != 0 && v4;
+  v4 = (reachable & 4) == 0 || v3;
+  return (reachable & 2) != 0 && v4;
 }
 
-- (int64_t)_localNetworkCheckWithHostName:(id)a3
+- (int64_t)_localNetworkCheckWithHostName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[EndpointReachability _localNetworkCheckWithHostName:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = nameCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
   }
 
-  v6 = [v4 UTF8String];
-  if (v6 && (v7 = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, v6)) != 0)
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String && (v7 = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, uTF8String)) != 0)
   {
     v8 = v7;
     flags = 0;
@@ -557,7 +557,7 @@ LABEL_12:
         }
 
         *buf = 138412546;
-        v23 = v4;
+        v23 = nameCopy;
         v24 = 2080;
         v25 = v11;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ reachable: %s", buf, 0x16u);
@@ -571,7 +571,7 @@ LABEL_12:
       v13 = handleForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_100003BC0(v4, v13, v14, v15, v16, v17, v18, v19);
+        sub_100003BC0(nameCopy, v13, v14, v15, v16, v17, v18, v19);
       }
 
       v12 = -2;
@@ -588,20 +588,20 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_httpSendRequestWithURL:(id)a3 timeout:(int64_t)a4 error:(id *)a5
+- (BOOL)_httpSendRequestWithURL:(id)l timeout:(int64_t)timeout error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v9 = handleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = lCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%@: Sending HTTP Request...", &buf, 0xCu);
   }
 
   v10 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v11 = [NSURLSession sessionWithConfiguration:v10 delegate:self delegateQueue:0];
-  v12 = [NSMutableURLRequest requestWithURL:v8 cachePolicy:1 timeoutInterval:a4];
+  v12 = [NSMutableURLRequest requestWithURL:lCopy cachePolicy:1 timeoutInterval:timeout];
   [v12 setHTTPMethod:@"GET"];
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -643,7 +643,7 @@ LABEL_12:
   {
     v16 = v41[5];
     *v46 = 138412546;
-    v47 = v8;
+    v47 = lCopy;
     v48 = 2112;
     v49 = v16;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%@: HTTP Response Header: %@", v46, 0x16u);
@@ -654,7 +654,7 @@ LABEL_12:
   {
     v18 = *(v31 + 6);
     *v46 = 138412546;
-    v47 = v8;
+    v47 = lCopy;
     v48 = 1024;
     LODWORD(v49) = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@: HTTP Status: %d", v46, 0x12u);
@@ -665,17 +665,17 @@ LABEL_12:
   {
     v20 = v35[5];
     *v46 = 138412546;
-    v47 = v8;
+    v47 = lCopy;
     v48 = 2112;
     v49 = v20;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%@: HTTP Error: %@", v46, 0x16u);
   }
 
   v21 = v35[5];
-  if (a5 && v21)
+  if (error && v21)
   {
     v21 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
   v22 = v21 == 0;
@@ -689,21 +689,21 @@ LABEL_12:
   return v22;
 }
 
-- (int64_t)_httpCheckWithURL:(id)a3 timeout:(int64_t)a4
+- (int64_t)_httpCheckWithURL:(id)l timeout:(int64_t)timeout
 {
-  v6 = a3;
+  lCopy = l;
   v7 = handleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[EndpointReachability _httpCheckWithURL:timeout:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = lCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
   }
 
   v13 = 0;
-  v8 = [(EndpointReachability *)self _httpSendRequestWithURL:v6 timeout:a4 error:&v13];
+  v8 = [(EndpointReachability *)self _httpSendRequestWithURL:lCopy timeout:timeout error:&v13];
   v9 = v13;
   v10 = v9;
   v11 = 0;
@@ -738,12 +738,12 @@ LABEL_12:
   return v11;
 }
 
-- (id)_calculateTimeIntervalFrom:(id)a3 To:(id)a4
+- (id)_calculateTimeIntervalFrom:(id)from To:(id)to
 {
   v5 = 0;
-  if (a3 && a4)
+  if (from && to)
   {
-    [a4 timeIntervalSinceDate:?];
+    [to timeIntervalSinceDate:?];
     v5 = [NSString stringWithFormat:@"%lf", v6];
     v4 = vars8;
   }
@@ -751,62 +751,62 @@ LABEL_12:
   return v5;
 }
 
-- (id)_dnsResolutionTime:(id)a3
+- (id)_dnsResolutionTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 domainLookupStartDate];
-  v6 = [v4 domainLookupEndDate];
+  timeCopy = time;
+  domainLookupStartDate = [timeCopy domainLookupStartDate];
+  domainLookupEndDate = [timeCopy domainLookupEndDate];
 
-  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:v5 To:v6];
+  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:domainLookupStartDate To:domainLookupEndDate];
 
   return v7;
 }
 
-- (id)_connectionEstablishmentTime:(id)a3
+- (id)_connectionEstablishmentTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 connectStartDate];
-  v6 = [v4 connectEndDate];
+  timeCopy = time;
+  connectStartDate = [timeCopy connectStartDate];
+  connectEndDate = [timeCopy connectEndDate];
 
-  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:v5 To:v6];
+  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:connectStartDate To:connectEndDate];
 
   return v7;
 }
 
-- (id)_httpRequestTime:(id)a3
+- (id)_httpRequestTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 requestStartDate];
-  v6 = [v4 requestEndDate];
+  timeCopy = time;
+  requestStartDate = [timeCopy requestStartDate];
+  requestEndDate = [timeCopy requestEndDate];
 
-  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:v5 To:v6];
+  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:requestStartDate To:requestEndDate];
 
   return v7;
 }
 
-- (id)_httpResponseTime:(id)a3
+- (id)_httpResponseTime:(id)time
 {
-  v4 = a3;
-  v5 = [v4 responseStartDate];
-  v6 = [v4 responseEndDate];
+  timeCopy = time;
+  responseStartDate = [timeCopy responseStartDate];
+  responseEndDate = [timeCopy responseEndDate];
 
-  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:v5 To:v6];
+  v7 = [(EndpointReachability *)self _calculateTimeIntervalFrom:responseStartDate To:responseEndDate];
 
   return v7;
 }
 
-- (id)_requestURL:(id)a3
+- (id)_requestURL:(id)l
 {
-  v3 = [a3 request];
-  v4 = [v3 URL];
+  request = [l request];
+  v4 = [request URL];
 
   return v4;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -814,9 +814,9 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "URLSession didReceiveChallenge...", buf, 2u);
   }
 
-  v9 = [v6 protectionSpace];
-  v10 = [v9 authenticationMethod];
-  v11 = [v10 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v11 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   v12 = handleForCategory();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -828,10 +828,10 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Continue without authentication. Accepting server.", v17, 2u);
     }
 
-    v14 = [v6 protectionSpace];
-    v15 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v14 serverTrust]);
+    protectionSpace2 = [challengeCopy protectionSpace];
+    v15 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace2 serverTrust]);
 
-    v7[2](v7, 0, v15);
+    handlerCopy[2](handlerCopy, 0, v15);
   }
 
   else
@@ -842,13 +842,13 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Perform default challenge handling.", v16, 2u);
     }
 
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v7 = a7;
+  handlerCopy = handler;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -856,39 +856,39 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "URLSession willPerformHTTPRedirection...", v9, 2u);
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v31 = a3;
-  v32 = a4;
-  v38 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  metricsCopy = metrics;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v32 originalRequest];
-    v10 = [v9 URL];
+    originalRequest = [taskCopy originalRequest];
+    v10 = [originalRequest URL];
     *buf = 138412546;
     v40 = v10;
     v41 = 2112;
-    v42 = v38;
+    v42 = metricsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Successfully collected URL(%@) metrics %@", buf, 0x16u);
   }
 
-  v11 = [v38 transactionMetrics];
-  v12 = [v11 firstObject];
+  transactionMetrics = [metricsCopy transactionMetrics];
+  firstObject = [transactionMetrics firstObject];
 
-  v35 = [(EndpointReachability *)self _dnsResolutionTime:v12];
-  v34 = [(EndpointReachability *)self _connectionEstablishmentTime:v12];
-  v33 = [(EndpointReachability *)self _httpRequestTime:v12];
-  v13 = [(EndpointReachability *)self _httpResponseTime:v12];
-  v14 = [(EndpointReachability *)self _remoteAddress:v12];
-  v15 = [(EndpointReachability *)self _remotePort:v12];
-  v16 = [(EndpointReachability *)self _requestURL:v12];
-  v37 = [v16 host];
-  v36 = [v16 port];
-  v17 = [NSString stringWithFormat:@"%@:%@", v37, v36];
+  v35 = [(EndpointReachability *)self _dnsResolutionTime:firstObject];
+  v34 = [(EndpointReachability *)self _connectionEstablishmentTime:firstObject];
+  v33 = [(EndpointReachability *)self _httpRequestTime:firstObject];
+  v13 = [(EndpointReachability *)self _httpResponseTime:firstObject];
+  v14 = [(EndpointReachability *)self _remoteAddress:firstObject];
+  v15 = [(EndpointReachability *)self _remotePort:firstObject];
+  v16 = [(EndpointReachability *)self _requestURL:firstObject];
+  host = [v16 host];
+  port = [v16 port];
+  v17 = [NSString stringWithFormat:@"%@:%@", host, port];
   v18 = handleForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -975,13 +975,13 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%@ metrics: %@", buf, 0x16u);
   }
 
-  v28 = self;
-  objc_sync_enter(v28);
-  v29 = [(EndpointReachability *)v28 endpointsInfo];
-  v30 = [v29 objectForKey:v17];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  endpointsInfo = [(EndpointReachability *)selfCopy endpointsInfo];
+  v30 = [endpointsInfo objectForKey:v17];
   [v30 setObject:v20 forKey:@"metrics"];
 
-  objc_sync_exit(v28);
+  objc_sync_exit(selfCopy);
 }
 
 @end

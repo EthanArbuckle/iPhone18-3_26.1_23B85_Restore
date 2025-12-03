@@ -1,7 +1,7 @@
 @interface PXPhotosDetailsHeaderSpec
 - (CGSize)playButtonSize;
-- (PXPhotosDetailsHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3;
+- (PXPhotosDetailsHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor;
 @end
 
 @implementation PXPhotosDetailsHeaderSpec
@@ -24,18 +24,18 @@
   return result;
 }
 
-- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)a3
+- (id)createViewSpecWithDescriptor:(PXViewSpecDescriptor *)descriptor
 {
-  var0 = a3->var0;
-  if (a3->var0 > 4001)
+  var0 = descriptor->var0;
+  if (descriptor->var0 > 4001)
   {
     if (var0 == 4002)
     {
-      a3->var0 = 1000;
+      descriptor->var0 = 1000;
       v10.receiver = self;
       v10.super_class = PXPhotosDetailsHeaderSpec;
-      var2 = a3->var2;
-      v11 = *&a3->var0;
+      var2 = descriptor->var2;
+      v11 = *&descriptor->var0;
       v12 = var2;
       [(PXPhotosDetailsHeaderSpec *)&v10 createViewSpecWithDescriptor:&v11, v9.receiver, v9.super_class, self, PXPhotosDetailsHeaderSpec];
       goto LABEL_11;
@@ -64,8 +64,8 @@
 
   v9.receiver = self;
   v9.super_class = PXPhotosDetailsHeaderSpec;
-  v6 = a3->var2;
-  v11 = *&a3->var0;
+  v6 = descriptor->var2;
+  v11 = *&descriptor->var0;
   v12 = v6;
   [(PXPhotosDetailsHeaderSpec *)&v9 createViewSpecWithDescriptor:&v11, self, PXPhotosDetailsHeaderSpec, v10.receiver, v10.super_class];
   v5 = LABEL_11:;
@@ -74,11 +74,11 @@ LABEL_12:
   return v5;
 }
 
-- (PXPhotosDetailsHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXPhotosDetailsHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = PXPhotosDetailsHeaderSpec;
-  v4 = [(PXPhotosDetailsHeaderSpec *)&v9 initWithExtendedTraitCollection:a3 options:a4];
+  v4 = [(PXPhotosDetailsHeaderSpec *)&v9 initWithExtendedTraitCollection:collection options:options];
   v5 = v4;
   if (v4)
   {

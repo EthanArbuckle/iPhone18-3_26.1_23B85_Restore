@@ -1,26 +1,26 @@
 @interface NUComposition
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToComposition:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToComposition:(id)composition;
 - (BOOL)isResolved;
-- (BOOL)resolve:(id)a3 error:(id *)a4;
+- (BOOL)resolve:(id)resolve error:(id *)error;
 - (NSDictionary)contents;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NUComposition)init;
-- (NUComposition)initWithCompositionSchema:(id)a3;
-- (NUComposition)initWithIdentifier:(id)a3;
+- (NUComposition)initWithCompositionSchema:(id)schema;
+- (NUComposition)initWithIdentifier:(id)identifier;
 - (NUIdentifier)identifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation NUComposition
 
-- (BOOL)resolve:(id)a3 error:(id *)a4
+- (BOOL)resolve:(id)resolve error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  resolveCopy = resolve;
+  if (!resolveCopy)
   {
     v11 = NUAssertLogger_70();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -41,8 +41,8 @@
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -53,8 +53,8 @@
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -63,27 +63,27 @@
     _NUAssertFailHandler("[NUComposition resolve:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 181, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "resolver != nil");
   }
 
-  v7 = v6;
-  v8 = [(NUComposition *)self schema];
-  v9 = [v8 resolveItem:self resolver:v7 error:a4];
+  v7 = resolveCopy;
+  schema = [(NUComposition *)self schema];
+  v9 = [schema resolveItem:self resolver:v7 error:error];
 
   return v9;
 }
 
 - (BOOL)isResolved
 {
-  v2 = self;
-  v3 = [(NUComposition *)self schema];
-  LOBYTE(v2) = [v3 itemIsResolved:v2];
+  selfCopy = self;
+  schema = [(NUComposition *)self schema];
+  LOBYTE(selfCopy) = [schema itemIsResolved:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqualToComposition:(id)a3
+- (BOOL)isEqualToComposition:(id)composition
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  compositionCopy = composition;
+  if (!compositionCopy)
   {
     v25 = NUAssertLogger_70();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -104,8 +104,8 @@
         v32 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v32;
         v67 = 2114;
@@ -116,8 +116,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -126,10 +126,10 @@
     _NUAssertFailHandler("[NUComposition isEqualToComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 144, @"Invalid parameter not satisfying: %s", v37, v38, v39, v40, "other != nil");
   }
 
-  v5 = v4;
-  v6 = [(NUComposition *)self identifier];
-  v7 = [v5 identifier];
-  v8 = [v6 isEqualToIdentifier:v7];
+  v5 = compositionCopy;
+  identifier = [(NUComposition *)self identifier];
+  identifier2 = [v5 identifier];
+  v8 = [identifier isEqualToIdentifier:identifier2];
 
   if (!v8)
   {
@@ -137,15 +137,15 @@
     goto LABEL_31;
   }
 
-  v9 = [(NUComposition *)self schema];
-  if (!v9)
+  schema = [(NUComposition *)self schema];
+  if (!schema)
   {
     v41 = NUAssertLogger_70();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
       v42 = MEMORY[0x1E696AEC0];
-      v43 = [(NUComposition *)self identifier];
-      v44 = [v42 stringWithFormat:@"No schema registered for identifier '%@'", v43];
+      identifier3 = [(NUComposition *)self identifier];
+      v44 = [v42 stringWithFormat:@"No schema registered for identifier '%@'", identifier3];
       *buf = 138543362;
       v66 = v44;
       _os_log_error_impl(&dword_1C0184000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -161,8 +161,8 @@
         v50 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v51 = MEMORY[0x1E696AF00];
         v52 = v50;
-        v53 = [v51 callStackSymbols];
-        v54 = [v53 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v51 callStackSymbols];
+        v54 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v66 = v50;
         v67 = 2114;
@@ -173,24 +173,24 @@
 
     else if (v47)
     {
-      v48 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v49 = [v48 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v49 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v66 = v49;
       _os_log_error_impl(&dword_1C0184000, v46, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v55 = [(NUComposition *)self identifier];
-    _NUAssertFailHandler("[NUComposition isEqualToComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 156, @"No schema registered for identifier '%@'", v56, v57, v58, v59, v55);
+    identifier4 = [(NUComposition *)self identifier];
+    _NUAssertFailHandler("[NUComposition isEqualToComposition:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 156, @"No schema registered for identifier '%@'", v56, v57, v58, v59, identifier4);
   }
 
-  v10 = v9;
+  v10 = schema;
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v11 = [v9 contents];
-  v12 = [v11 countByEnumeratingWithState:&v60 objects:v64 count:16];
+  contents = [schema contents];
+  v12 = [contents countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (!v12)
   {
     v23 = 1;
@@ -205,7 +205,7 @@
     {
       if (*v61 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(contents);
       }
 
       v16 = *(*(&v60 + 1) + 8 * i);
@@ -263,7 +263,7 @@ LABEL_29:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v60 objects:v64 count:16];
+    v13 = [contents countByEnumeratingWithState:&v60 objects:v64 count:16];
     v23 = 1;
     if (v13)
     {
@@ -279,44 +279,44 @@ LABEL_31:
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUComposition *)self isEqualToComposition:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUComposition *)self isEqualToComposition:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(NUComposition *)self identifier];
-  v3 = 0x100FC8C025E859 * [v2 hash];
+  identifier = [(NUComposition *)self identifier];
+  v3 = 0x100FC8C025E859 * [identifier hash];
 
   return v3;
 }
 
 - (NUIdentifier)identifier
 {
-  v2 = [(NUComposition *)self schema];
-  v3 = [v2 identifier];
+  schema = [(NUComposition *)self schema];
+  identifier = [schema identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSDictionary)contents
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(NUComposition *)self schema];
-  if (v3)
+  schema = [(NUComposition *)self schema];
+  if (schema)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v3 contents];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    contents = [schema contents];
+    v6 = [contents countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -327,7 +327,7 @@ LABEL_31:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(contents);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -338,7 +338,7 @@ LABEL_31:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [contents countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -357,14 +357,14 @@ LABEL_31:
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"{\n"];
-  v21 = self;
-  v4 = [(NUComposition *)self contents];
+  selfCopy = self;
+  contents = [(NUComposition *)self contents];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  allKeys = [contents allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -375,16 +375,16 @@ LABEL_31:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [contents objectForKeyedSubscript:v10];
         v12 = [v11 debugDescription];
         [v3 appendFormat:@"\t%@ = %@, \n", v10, v12];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
@@ -393,20 +393,20 @@ LABEL_31:
   [v3 appendString:@"}"];
   v13 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
-  v15 = [(NUComposition *)v21 identifier];
-  v16 = [(NUComposition *)v21 mediaType];
-  if (v16 > 3)
+  identifier = [(NUComposition *)selfCopy identifier];
+  mediaType = [(NUComposition *)selfCopy mediaType];
+  if (mediaType > 3)
   {
     v17 = @"Invalid";
   }
 
   else
   {
-    v17 = off_1E81098D0[v16];
+    v17 = off_1E81098D0[mediaType];
   }
 
   v18 = v17;
-  v19 = [v13 stringWithFormat:@"<%@:%p id=%@ mediaType=%@ contents=%@>", v14, v21, v15, v18, v3];
+  v19 = [v13 stringWithFormat:@"<%@:%p id=%@ mediaType=%@ contents=%@>", v14, selfCopy, identifier, v18, v3];
 
   return v19;
 }
@@ -415,37 +415,37 @@ LABEL_31:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUComposition *)self identifier];
-  v6 = [(NUComposition *)self mediaType];
-  if (v6 > 3)
+  identifier = [(NUComposition *)self identifier];
+  mediaType = [(NUComposition *)self mediaType];
+  if (mediaType > 3)
   {
     v7 = @"Invalid";
   }
 
   else
   {
-    v7 = off_1E81098D0[v6];
+    v7 = off_1E81098D0[mediaType];
   }
 
   v8 = v7;
-  v9 = [(NUComposition *)self contents];
-  v10 = [v3 stringWithFormat:@"<%@:%p id=%@ mediaType=%@ contents=%@>", v4, self, v5, v8, v9];
+  contents = [(NUComposition *)self contents];
+  v10 = [v3 stringWithFormat:@"<%@:%p id=%@ mediaType=%@ contents=%@>", v4, self, identifier, v8, contents];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = [(NUComposition *)self schema];
-  if (!v4)
+  schema = [(NUComposition *)self schema];
+  if (!schema)
   {
     v9 = NUAssertLogger_70();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(NUComposition *)self identifier];
-      v12 = [v10 stringWithFormat:@"No schema registered for identifier '%@'", v11];
+      identifier = [(NUComposition *)self identifier];
+      v12 = [v10 stringWithFormat:@"No schema registered for identifier '%@'", identifier];
       *buf = 138543362;
       v45 = v12;
       _os_log_error_impl(&dword_1C0184000, v9, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -461,8 +461,8 @@ LABEL_31:
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v25;
         v46 = 2114;
@@ -473,19 +473,19 @@ LABEL_31:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v30 = [(NUComposition *)self identifier];
-    _NUAssertFailHandler("[NUComposition copyWithZone:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 61, @"No schema registered for identifier '%@'", v31, v32, v33, v34, v30);
+    identifier2 = [(NUComposition *)self identifier];
+    _NUAssertFailHandler("[NUComposition copyWithZone:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 61, @"No schema registered for identifier '%@'", v31, v32, v33, v34, identifier2);
   }
 
-  v5 = v4;
-  v6 = [v4 copyComposition:self];
+  v5 = schema;
+  v6 = [schema copyComposition:self];
   if (!v6)
   {
     v18 = NUAssertLogger_70();
@@ -507,8 +507,8 @@ LABEL_31:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v45 = v35;
         v46 = 2114;
@@ -519,8 +519,8 @@ LABEL_31:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v45 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -534,11 +534,11 @@ LABEL_31:
   return v7;
 }
 
-- (NUComposition)initWithIdentifier:(id)a3
+- (NUComposition)initWithIdentifier:(id)identifier
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v12 = NUAssertLogger_70();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -559,8 +559,8 @@ LABEL_31:
         v40 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v41 = MEMORY[0x1E696AF00];
         v42 = v40;
-        v43 = [v41 callStackSymbols];
-        v44 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v41 callStackSymbols];
+        v44 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v40;
         v79 = 2114;
@@ -571,8 +571,8 @@ LABEL_31:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -581,7 +581,7 @@ LABEL_31:
     _NUAssertFailHandler("[NUComposition initWithIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 44, @"Invalid parameter not satisfying: %s", v45, v46, v47, v48, "identifier != nil");
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
@@ -604,8 +604,8 @@ LABEL_31:
         v49 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v50 = MEMORY[0x1E696AF00];
         v51 = v49;
-        v52 = [v50 callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v50 callStackSymbols];
+        v53 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v49;
         v79 = 2114;
@@ -616,8 +616,8 @@ LABEL_31:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -650,8 +650,8 @@ LABEL_31:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v60 callStackSymbols];
+        v63 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v59;
         v79 = 2114;
@@ -662,8 +662,8 @@ LABEL_31:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v32 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v32;
       _os_log_error_impl(&dword_1C0184000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -694,8 +694,8 @@ LABEL_31:
         v68 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v69 = MEMORY[0x1E696AF00];
         v70 = v68;
-        v71 = [v69 callStackSymbols];
-        v72 = [v71 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v69 callStackSymbols];
+        v72 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = v68;
         v79 = 2114;
@@ -706,8 +706,8 @@ LABEL_31:
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v78 = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -721,11 +721,11 @@ LABEL_31:
   return v10;
 }
 
-- (NUComposition)initWithCompositionSchema:(id)a3
+- (NUComposition)initWithCompositionSchema:(id)schema
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  schemaCopy = schema;
+  if (!schemaCopy)
   {
     v9 = NUAssertLogger_70();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -746,8 +746,8 @@ LABEL_31:
         v16 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v16;
         v28 = 2114;
@@ -758,8 +758,8 @@ LABEL_31:
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v15;
       _os_log_error_impl(&dword_1C0184000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -768,7 +768,7 @@ LABEL_31:
     _NUAssertFailHandler("[NUComposition initWithCompositionSchema:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Adjustments/NUComposition.m", 33, @"Invalid parameter not satisfying: %s", v21, v22, v23, v24, "compositionSchema != nil");
   }
 
-  v5 = v4;
+  v5 = schemaCopy;
   v25.receiver = self;
   v25.super_class = NUComposition;
   v6 = [(NUComposition *)&v25 init];
@@ -824,8 +824,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -841,8 +841,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

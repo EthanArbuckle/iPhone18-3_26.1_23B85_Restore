@@ -1,10 +1,10 @@
 @interface SBHPageManagementCellViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)scalesListView;
 - (BOOL)wantsCaptureOnlyBackgroundView;
 - (CGPoint)snapshotViewCenter;
 - (CGRect)visibleBounds;
-- (SBHPageManagementCellViewController)initWithListView:(id)a3 folder:(id)a4 metrics:(SBHPageManagementCellMetrics *)a5 toggleButtonAllowed:(BOOL)a6;
+- (SBHPageManagementCellViewController)initWithListView:(id)view folder:(id)folder metrics:(SBHPageManagementCellMetrics *)metrics toggleButtonAllowed:(BOOL)allowed;
 - (SBHPageManagementCellViewControllerDelegate)delegate;
 - (UIBezierPath)snapshotViewVisiblePath;
 - (UIView)listContainerView;
@@ -13,43 +13,43 @@
 - (id)listHighlightView;
 - (void)cancelGestures;
 - (void)cleanUpListView;
-- (void)listViewTapped:(id)a3;
+- (void)listViewTapped:(id)tapped;
 - (void)loadView;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setListHighlighted:(BOOL)a3;
-- (void)setScalesListView:(BOOL)a3;
-- (void)setToggleButtonAlpha:(double)a3;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setListHighlighted:(BOOL)highlighted;
+- (void)setScalesListView:(BOOL)view;
+- (void)setToggleButtonAlpha:(double)alpha;
 @end
 
 @implementation SBHPageManagementCellViewController
 
-- (SBHPageManagementCellViewController)initWithListView:(id)a3 folder:(id)a4 metrics:(SBHPageManagementCellMetrics *)a5 toggleButtonAllowed:(BOOL)a6
+- (SBHPageManagementCellViewController)initWithListView:(id)view folder:(id)folder metrics:(SBHPageManagementCellMetrics *)metrics toggleButtonAllowed:(BOOL)allowed
 {
-  v11 = a3;
-  v12 = a4;
+  viewCopy = view;
+  folderCopy = folder;
   v24.receiver = self;
   v24.super_class = SBHPageManagementCellViewController;
   v13 = [(SBHPageManagementCellViewController *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_listView, a3);
-    objc_storeStrong(&v14->_folder, a4);
-    v15 = *&a5->foregroundInsets.bottom;
-    fullListViewSize = a5->fullListViewSize;
-    scaledListViewSize = a5->scaledListViewSize;
-    *&v14->_metrics.foregroundInsets.top = *&a5->foregroundInsets.top;
+    objc_storeStrong(&v13->_listView, view);
+    objc_storeStrong(&v14->_folder, folder);
+    v15 = *&metrics->foregroundInsets.bottom;
+    fullListViewSize = metrics->fullListViewSize;
+    scaledListViewSize = metrics->scaledListViewSize;
+    *&v14->_metrics.foregroundInsets.top = *&metrics->foregroundInsets.top;
     *&v14->_metrics.foregroundInsets.bottom = v15;
     v14->_metrics.fullListViewSize = fullListViewSize;
     v14->_metrics.scaledListViewSize = scaledListViewSize;
-    v19 = *&a5->backgroundInsets.bottom;
-    v18 = *&a5->listViewVerticalPositionAdjustment;
-    v20 = *&a5->backgroundInsets.top;
-    v14->_metrics.toggleButtonVerticalMargin = a5->toggleButtonVerticalMargin;
+    v19 = *&metrics->backgroundInsets.bottom;
+    v18 = *&metrics->listViewVerticalPositionAdjustment;
+    v20 = *&metrics->backgroundInsets.top;
+    v14->_metrics.toggleButtonVerticalMargin = metrics->toggleButtonVerticalMargin;
     *&v14->_metrics.backgroundInsets.bottom = v19;
     *&v14->_metrics.listViewVerticalPositionAdjustment = v18;
     *&v14->_metrics.backgroundInsets.top = v20;
-    v14->_toggleButtonAllowed = a6;
+    v14->_toggleButtonAllowed = allowed;
     v21 = [[SBHPageManagementListTapGestureRecognizer alloc] initWithTarget:v14 action:sel_listViewTapped_];
     tapGestureRecognizer = v14->_tapGestureRecognizer;
     v14->_tapGestureRecognizer = &v21->super;
@@ -62,9 +62,9 @@
 
 - (void)loadView
 {
-  v3 = [(SBHPageManagementCellViewController *)self listView];
+  listView = [(SBHPageManagementCellViewController *)self listView];
   v4 = [SBHPageManagementCellView alloc];
-  v5 = [(SBHPageManagementCellViewController *)self folder];
+  folder = [(SBHPageManagementCellViewController *)self folder];
   toggleButtonAllowed = self->_toggleButtonAllowed;
   v7 = *&self->_metrics.backgroundInsets.bottom;
   v11[4] = *&self->_metrics.backgroundInsets.top;
@@ -77,38 +77,38 @@
   v9 = *&self->_metrics.foregroundInsets.bottom;
   v11[2] = *&self->_metrics.foregroundInsets.top;
   v11[3] = v9;
-  v10 = [(SBHPageManagementCellView *)v4 initWithListView:v3 folder:v5 metrics:v11 toggleButtonAllowed:toggleButtonAllowed];
+  v10 = [(SBHPageManagementCellView *)v4 initWithListView:listView folder:folder metrics:v11 toggleButtonAllowed:toggleButtonAllowed];
 
-  [v3 addGestureRecognizer:self->_tapGestureRecognizer];
+  [listView addGestureRecognizer:self->_tapGestureRecognizer];
   [(SBHPageManagementCellViewController *)self setView:v10];
 }
 
 - (UIView)listContainerView
 {
-  v2 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v3 = [v2 listContainerView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listContainerView = [pageManagementCellView listContainerView];
 
-  return v3;
+  return listContainerView;
 }
 
-- (void)listViewTapped:(id)a3
+- (void)listViewTapped:(id)tapped
 {
-  v22 = a3;
-  v4 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v5 = [v4 listContainerView];
+  tappedCopy = tapped;
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listContainerView = [pageManagementCellView listContainerView];
 
-  [v22 locationInView:v5];
+  [tappedCopy locationInView:listContainerView];
   v7 = v6;
   v9 = v8;
-  [v5 bounds];
+  [listContainerView bounds];
   v24.x = v7;
   v24.y = v9;
   v10 = CGRectContainsPoint(v25, v24);
-  v11 = [(SBHPageManagementCellViewController *)self delegate];
-  v12 = v11;
-  if (v11)
+  delegate = [(SBHPageManagementCellViewController *)self delegate];
+  v12 = delegate;
+  if (delegate)
   {
-    v13 = [v11 pageManagementCellViewControllerCanReceiveTap:self];
+    v13 = [delegate pageManagementCellViewControllerCanReceiveTap:self];
   }
 
   else
@@ -116,8 +116,8 @@
     v13 = 1;
   }
 
-  v14 = [v22 state];
-  if ((v14 - 1) < 2)
+  state = [tappedCopy state];
+  if ((state - 1) < 2)
   {
     if (v12)
     {
@@ -140,26 +140,26 @@
       v16 = 0;
     }
 
-    v15 = self;
+    selfCopy2 = self;
     goto LABEL_19;
   }
 
-  if ((v14 - 4) < 2)
+  if ((state - 4) < 2)
   {
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
 LABEL_19:
-    [(SBHPageManagementCellViewController *)v15 setListHighlighted:v16];
+    [(SBHPageManagementCellViewController *)selfCopy2 setListHighlighted:v16];
     goto LABEL_20;
   }
 
-  if (v14 == 3)
+  if (state == 3)
   {
     [(SBHPageManagementCellViewController *)self setListHighlighted:0];
-    v18 = [(SBHPageManagementCellViewController *)self listView];
-    v19 = [v18 model];
-    v20 = [v19 isHidden];
-    if ((v10 & v13) == 1 && (v20 & 1) == 0)
+    listView = [(SBHPageManagementCellViewController *)self listView];
+    model = [listView model];
+    isHidden = [model isHidden];
+    if ((v10 & v13) == 1 && (isHidden & 1) == 0)
     {
       [v12 pageManagementCellViewControllerDidReceiveTap:self];
     }
@@ -170,66 +170,66 @@ LABEL_20:
 
 - (BOOL)scalesListView
 {
-  v2 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v3 = [v2 scalesListView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  scalesListView = [pageManagementCellView scalesListView];
 
-  return v3;
+  return scalesListView;
 }
 
-- (void)setScalesListView:(BOOL)a3
+- (void)setScalesListView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v4 setScalesListView:v3];
+  viewCopy = view;
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView setScalesListView:viewCopy];
 }
 
 - (double)toggleButtonAlpha
 {
-  v2 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v2 toggleButtonAlpha];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView toggleButtonAlpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setToggleButtonAlpha:(double)a3
+- (void)setToggleButtonAlpha:(double)alpha
 {
-  v4 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v4 setToggleButtonAlpha:a3];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView setToggleButtonAlpha:alpha];
 }
 
 - (id)listHighlightView
 {
-  v2 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v3 = [v2 listHighlightView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listHighlightView = [pageManagementCellView listHighlightView];
 
-  return v3;
+  return listHighlightView;
 }
 
-- (void)setListHighlighted:(BOOL)a3
+- (void)setListHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v4 setListHighlighted:v3];
+  highlightedCopy = highlighted;
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView setListHighlighted:highlightedCopy];
 }
 
 - (void)cancelGestures
 {
-  v4 = [(SBHPageManagementCellViewController *)self tapGestureRecognizer];
-  [v4 setEnabled:0];
-  [v4 setEnabled:1];
-  v3 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v3 setListHighlighted:0];
+  tapGestureRecognizer = [(SBHPageManagementCellViewController *)self tapGestureRecognizer];
+  [tapGestureRecognizer setEnabled:0];
+  [tapGestureRecognizer setEnabled:1];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView setListHighlighted:0];
 }
 
 - (void)cleanUpListView
 {
   [(SBIconListView *)self->_listView removeGestureRecognizer:self->_tapGestureRecognizer];
-  v3 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  [v3 cleanUpListView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  [pageManagementCellView cleanUpListView];
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -242,15 +242,15 @@ LABEL_20:
     p_iconImageInfo->size.height = v9;
     p_iconImageInfo->scale = v8;
     p_iconImageInfo->continuousCornerRadius = v7;
-    v13 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-    [v13 setIconImageInfo:{v10, v9, v8, v7}];
+    pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+    [pageManagementCellView setIconImageInfo:{v10, v9, v8, v7}];
   }
 }
 
 - (CGRect)visibleBounds
 {
-  v2 = [(SBHPageManagementCellViewController *)self view];
-  [v2 frame];
+  view = [(SBHPageManagementCellViewController *)self view];
+  [view frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -269,22 +269,22 @@ LABEL_20:
 
 - (UIView)snapshotView
 {
-  v3 = [(SBHPageManagementCellViewController *)self delegate];
+  delegate = [(SBHPageManagementCellViewController *)self delegate];
   [(SBHPageManagementCellViewController *)self iconImageInfo];
   v5 = v4;
-  v6 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v7 = [v6 listContainerView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listContainerView = [pageManagementCellView listContainerView];
 
   v8 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v7 frame];
+  [listContainerView frame];
   v9 = [v8 initWithFrame:{0.0, 0.0}];
   [v9 _setContinuousCornerRadius:v5];
-  v10 = [v3 backgroundViewForSnapshotForPageManagementCellViewController:self];
+  v10 = [delegate backgroundViewForSnapshotForPageManagementCellViewController:self];
   [v9 bounds];
   [v10 setFrame:?];
   [v10 _setContinuousCornerRadius:v5];
   [v9 addSubview:v10];
-  v11 = [(SBIconListView *)self->_listView snapshotView];
+  snapshotView = [(SBIconListView *)self->_listView snapshotView];
   listView = self->_listView;
   if (listView)
   {
@@ -296,20 +296,20 @@ LABEL_20:
     memset(v14, 0, sizeof(v14));
   }
 
-  [v11 setTransform:v14];
+  [snapshotView setTransform:v14];
   [(SBIconListView *)self->_listView center];
-  [v11 setCenter:?];
-  [v9 addSubview:v11];
+  [snapshotView setCenter:?];
+  [v9 addSubview:snapshotView];
 
   return v9;
 }
 
 - (CGPoint)snapshotViewCenter
 {
-  v2 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v3 = [v2 listContainerView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listContainerView = [pageManagementCellView listContainerView];
 
-  [v3 center];
+  [listContainerView center];
   v5 = v4;
   v7 = v6;
 
@@ -322,11 +322,11 @@ LABEL_20:
 
 - (UIBezierPath)snapshotViewVisiblePath
 {
-  v3 = [(SBHPageManagementCellViewController *)self pageManagementCellView];
-  v4 = [v3 listContainerView];
+  pageManagementCellView = [(SBHPageManagementCellViewController *)self pageManagementCellView];
+  listContainerView = [pageManagementCellView listContainerView];
 
   [(SBHPageManagementCellViewController *)self iconImageInfo];
-  [v4 frame];
+  [listContainerView frame];
   v5 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:? cornerRadius:?];
 
   return v5;
@@ -338,17 +338,17 @@ LABEL_20:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(SBHPageManagementCellViewController *)self listView];
+  listView = [(SBHPageManagementCellViewController *)self listView];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__SBHPageManagementCellViewController_wantsCaptureOnlyBackgroundView__block_invoke;
   v4[3] = &unk_1E808C778;
   v4[4] = &v5;
-  [v2 enumerateIconViewsUsingBlock:v4];
+  [listView enumerateIconViewsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(listView) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return listView;
 }
 
 void __69__SBHPageManagementCellViewController_wantsCaptureOnlyBackgroundView__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -362,12 +362,12 @@ void __69__SBHPageManagementCellViewController_wantsCaptureOnlyBackgroundView__b
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(SBHPageManagementCellViewController *)self tapGestureRecognizer];
+  recognizerCopy = recognizer;
+  tapGestureRecognizer = [(SBHPageManagementCellViewController *)self tapGestureRecognizer];
 
-  return v6 == v5;
+  return tapGestureRecognizer == recognizerCopy;
 }
 
 - (SBHPageManagementCellViewControllerDelegate)delegate

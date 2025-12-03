@@ -1,24 +1,24 @@
 @interface GCConfigXPCServiceClientConnection
-- (GCConfigXPCServiceClientConnection)initWithConnection:(id)a3;
+- (GCConfigXPCServiceClientConnection)initWithConnection:(id)connection;
 - (GCConfigXPCServiceInterface)server;
-- (void)setServer:(id)a3;
+- (void)setServer:(id)server;
 @end
 
 @implementation GCConfigXPCServiceClientConnection
 
-- (GCConfigXPCServiceClientConnection)initWithConnection:(id)a3
+- (GCConfigXPCServiceClientConnection)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = GCConfigXPCServiceClientConnection;
-  v5 = [(GCIPCRemoteIncomingConnection *)&v9 initWithConnection:v4];
+  v5 = [(GCIPCRemoteIncomingConnection *)&v9 initWithConnection:connectionCopy];
   if (v5)
   {
     v6 = GCConfigXPCServiceInterface();
-    [v4 setExportedInterface:v6];
+    [connectionCopy setExportedInterface:v6];
 
     v7 = GCConfigXPCServiceClientInterface();
-    [v4 setRemoteObjectInterface:v7];
+    [connectionCopy setRemoteObjectInterface:v7];
   }
 
   return v5;
@@ -26,17 +26,17 @@
 
 - (GCConfigXPCServiceInterface)server
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 exportedObject];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  exportedObject = [connection exportedObject];
 
-  return v3;
+  return exportedObject;
 }
 
-- (void)setServer:(id)a3
+- (void)setServer:(id)server
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  [v5 setExportedObject:v4];
+  serverCopy = server;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  [connection setExportedObject:serverCopy];
 }
 
 @end

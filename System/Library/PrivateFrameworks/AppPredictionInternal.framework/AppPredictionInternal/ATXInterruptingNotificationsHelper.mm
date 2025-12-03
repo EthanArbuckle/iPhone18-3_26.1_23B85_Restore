@@ -1,10 +1,10 @@
 @interface ATXInterruptingNotificationsHelper
 - (ATXInterruptingNotificationsHelper)init;
-- (BOOL)checkIfStartEventWasTheInterruptedEvent:(id)a3;
-- (BOOL)doesCurrentAppLaunchInterruptPreviousAppLaunch:(id)a3;
-- (void)checkAppLaunchEndEvent:(id)a3;
-- (void)checkAppLaunchStartEvent:(id)a3;
-- (void)checkNotificationEvent:(id)a3;
+- (BOOL)checkIfStartEventWasTheInterruptedEvent:(id)event;
+- (BOOL)doesCurrentAppLaunchInterruptPreviousAppLaunch:(id)launch;
+- (void)checkAppLaunchEndEvent:(id)event;
+- (void)checkAppLaunchStartEvent:(id)event;
+- (void)checkNotificationEvent:(id)event;
 - (void)recordInterruptingAppSession;
 @end
 
@@ -33,41 +33,41 @@
   return v2;
 }
 
-- (void)checkNotificationEvent:(id)a3
+- (void)checkNotificationEvent:(id)event
 {
-  v9 = a3;
-  v4 = [v9 bundleID];
-  if (v4)
+  eventCopy = event;
+  bundleID = [eventCopy bundleID];
+  if (bundleID)
   {
-    v5 = v4;
-    v6 = [v9 usageType];
+    v5 = bundleID;
+    usageType = [eventCopy usageType];
 
-    if (v6 == 17)
+    if (usageType == 17)
     {
       recentNotifications = self->_recentNotifications;
-      v8 = [v9 bundleID];
-      [(NSMutableDictionary *)recentNotifications setObject:v9 forKeyedSubscript:v8];
+      bundleID2 = [eventCopy bundleID];
+      [(NSMutableDictionary *)recentNotifications setObject:eventCopy forKeyedSubscript:bundleID2];
     }
   }
 }
 
-- (void)checkAppLaunchStartEvent:(id)a3
+- (void)checkAppLaunchStartEvent:(id)event
 {
-  v5 = a3;
-  v7 = v5;
+  eventCopy = event;
+  v7 = eventCopy;
   if (!self->_previousStartEvent)
   {
-    objc_storeStrong(&self->_curenStartEvent, a3);
-    objc_storeStrong(&self->_previousStartEvent, a3);
+    objc_storeStrong(&self->_curenStartEvent, event);
+    objc_storeStrong(&self->_previousStartEvent, event);
     goto LABEL_10;
   }
 
-  if ([(ATXInterruptingNotificationsHelper *)self doesCurrentAppLaunchInterruptPreviousAppLaunch:v5])
+  if ([(ATXInterruptingNotificationsHelper *)self doesCurrentAppLaunchInterruptPreviousAppLaunch:eventCopy])
   {
     [(NSMutableArray *)self->_potentialInterruptingAppLaunchEvents addObject:v7];
     p_curenStartEvent = &self->_curenStartEvent;
 LABEL_8:
-    objc_storeStrong(p_curenStartEvent, a3);
+    objc_storeStrong(p_curenStartEvent, event);
     goto LABEL_9;
   }
 
@@ -83,13 +83,13 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)checkAppLaunchEndEvent:(id)a3
+- (void)checkAppLaunchEndEvent:(id)event
 {
-  v5 = a3;
-  v6 = v5;
+  eventCopy = event;
+  v6 = eventCopy;
   if (!self->_previousEndEvent)
   {
-    v21 = v5;
+    v21 = eventCopy;
     curenEndEvent = self->_curenEndEvent;
     self->_curenEndEvent = v21;
 LABEL_10:
@@ -100,42 +100,42 @@ LABEL_10:
   curenStartEvent = self->_curenStartEvent;
   if (curenStartEvent)
   {
-    v8 = [(BMAppInFocus *)curenStartEvent bundleID];
-    v9 = [v6 bundleID];
-    v10 = [v8 isEqualToString:v9];
+    bundleID = [(BMAppInFocus *)curenStartEvent bundleID];
+    bundleID2 = [v6 bundleID];
+    v10 = [bundleID isEqualToString:bundleID2];
 
     if (v10)
     {
-      objc_storeStrong(&self->_curenEndEvent, a3);
+      objc_storeStrong(&self->_curenEndEvent, event);
       curenEndEvent = [(NSMutableArray *)self->_potentialInterruptingAppLaunchEvents lastObject];
-      v12 = [curenEndEvent bundleID];
-      v13 = [v6 bundleID];
-      v14 = [v12 isEqualToString:v13];
+      bundleID3 = [curenEndEvent bundleID];
+      bundleID4 = [v6 bundleID];
+      v14 = [bundleID3 isEqualToString:bundleID4];
 
       if (v14)
       {
         v15 = objc_alloc(MEMORY[0x277CCA970]);
-        v16 = [(BMAppInFocus *)self->_curenStartEvent absoluteTimestamp];
-        v17 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
-        v18 = [v15 initWithStartDate:v16 endDate:v17];
+        absoluteTimestamp = [(BMAppInFocus *)self->_curenStartEvent absoluteTimestamp];
+        absoluteTimestamp2 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
+        v18 = [v15 initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
 
         [v18 duration];
         if (v19 <= 60.0)
         {
-          v22 = [curenEndEvent bundleID];
-          v23 = [ATXSessionTaggingAppEntity genreIdForBundleId:v22];
-          v36 = [v23 unsignedIntegerValue];
+          bundleID5 = [curenEndEvent bundleID];
+          v23 = [ATXSessionTaggingAppEntity genreIdForBundleId:bundleID5];
+          unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-          v24 = [(BMAppInFocus *)self->_previousEndEvent bundleID];
-          v25 = [ATXSessionTaggingAppEntity genreIdForBundleId:v24];
-          v26 = [v25 unsignedIntegerValue];
+          bundleID6 = [(BMAppInFocus *)self->_previousEndEvent bundleID];
+          v25 = [ATXSessionTaggingAppEntity genreIdForBundleId:bundleID6];
+          unsignedIntegerValue2 = [v25 unsignedIntegerValue];
 
           v27 = objc_alloc(MEMORY[0x277CEB5E8]);
-          v28 = [curenEndEvent bundleID];
-          v29 = [(BMAppInFocus *)self->_previousEndEvent bundleID];
-          v30 = [(BMAppInFocus *)self->_curenStartEvent absoluteTimestamp];
-          v31 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
-          v32 = [v27 initWithInterruptingBundleID:v28 interruptedBundleID:v29 eventStartTime:v30 eventEndTime:v31 interruptingCategory:v36 interruptedCategory:v26];
+          bundleID7 = [curenEndEvent bundleID];
+          bundleID8 = [(BMAppInFocus *)self->_previousEndEvent bundleID];
+          absoluteTimestamp3 = [(BMAppInFocus *)self->_curenStartEvent absoluteTimestamp];
+          absoluteTimestamp4 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
+          v32 = [v27 initWithInterruptingBundleID:bundleID7 interruptedBundleID:bundleID8 eventStartTime:absoluteTimestamp3 eventEndTime:absoluteTimestamp4 interruptingCategory:unsignedIntegerValue interruptedCategory:unsignedIntegerValue2];
           interruptingAppSessionEvent = self->_interruptingAppSessionEvent;
           self->_interruptingAppSessionEvent = v32;
 
@@ -160,41 +160,41 @@ LABEL_11:
   self->_previousEndEvent = v6;
 }
 
-- (BOOL)doesCurrentAppLaunchInterruptPreviousAppLaunch:(id)a3
+- (BOOL)doesCurrentAppLaunchInterruptPreviousAppLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = [(BMAppInFocus *)self->_previousStartEvent bundleID];
-  v6 = [v4 bundleID];
-  v7 = [v5 isEqualToString:v6];
+  launchCopy = launch;
+  bundleID = [(BMAppInFocus *)self->_previousStartEvent bundleID];
+  bundleID2 = [launchCopy bundleID];
+  v7 = [bundleID isEqualToString:bundleID2];
 
   recentNotifications = self->_recentNotifications;
-  v9 = [v4 bundleID];
-  v10 = [(NSMutableDictionary *)recentNotifications objectForKeyedSubscript:v9];
+  bundleID3 = [launchCopy bundleID];
+  v10 = [(NSMutableDictionary *)recentNotifications objectForKeyedSubscript:bundleID3];
 
   v11 = 0;
   if ((v7 & 1) == 0 && v10)
   {
-    v12 = [v4 absoluteTimestamp];
-    v13 = [v10 absoluteTimestamp];
-    [v12 timeIntervalSinceDate:v13];
+    absoluteTimestamp = [launchCopy absoluteTimestamp];
+    absoluteTimestamp2 = [v10 absoluteTimestamp];
+    [absoluteTimestamp timeIntervalSinceDate:absoluteTimestamp2];
     v11 = v14 <= 30.0;
   }
 
   return v11;
 }
 
-- (BOOL)checkIfStartEventWasTheInterruptedEvent:(id)a3
+- (BOOL)checkIfStartEventWasTheInterruptedEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(BMAppInFocus *)self->_potentialInterruptedEndEvent bundleID];
-  v6 = [v4 bundleID];
-  v7 = [v5 isEqualToString:v6];
+  eventCopy = event;
+  bundleID = [(BMAppInFocus *)self->_potentialInterruptedEndEvent bundleID];
+  bundleID2 = [eventCopy bundleID];
+  v7 = [bundleID isEqualToString:bundleID2];
 
   if (v7)
   {
-    v8 = [v4 absoluteTimestamp];
-    v9 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
-    [v8 timeIntervalSinceDate:v9];
+    absoluteTimestamp = [eventCopy absoluteTimestamp];
+    absoluteTimestamp2 = [(BMAppInFocus *)self->_curenEndEvent absoluteTimestamp];
+    [absoluteTimestamp timeIntervalSinceDate:absoluteTimestamp2];
     v11 = v10 <= 10.0;
   }
 

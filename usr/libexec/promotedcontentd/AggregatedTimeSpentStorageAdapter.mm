@@ -2,7 +2,7 @@
 - (NSArray)aggregatedTimeSpentEntries;
 - (NSString)clientIdentifier;
 - (_TtC16promotedcontentd33AggregatedTimeSpentStorageAdapter)init;
-- (_TtC16promotedcontentd33AggregatedTimeSpentStorageAdapter)initWithClientIdentifier:(id)a3 aggregatedTimeSpentEntries:(id)a4;
+- (_TtC16promotedcontentd33AggregatedTimeSpentStorageAdapter)initWithClientIdentifier:(id)identifier aggregatedTimeSpentEntries:(id)entries;
 @end
 
 @implementation AggregatedTimeSpentStorageAdapter
@@ -24,7 +24,7 @@
   return v2.super.isa;
 }
 
-- (_TtC16promotedcontentd33AggregatedTimeSpentStorageAdapter)initWithClientIdentifier:(id)a3 aggregatedTimeSpentEntries:(id)a4
+- (_TtC16promotedcontentd33AggregatedTimeSpentStorageAdapter)initWithClientIdentifier:(id)identifier aggregatedTimeSpentEntries:(id)entries
 {
   v5 = sub_100398F58();
   v7 = v6;

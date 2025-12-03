@@ -1,14 +1,14 @@
 @interface _NSCoreDataTaggedObjectIDFactory
-- (_NSCoreDataTaggedObjectIDFactory)initWithPK64:(int64_t)a3;
+- (_NSCoreDataTaggedObjectIDFactory)initWithPK64:(int64_t)k64;
 - (id)_fallbackFactory;
 - (id)_storeInfo1;
-- (id)managedObjectIDFromURIRepresentation:(id)a3;
-- (id)managedObjectIDFromUTF8String:(const char *)a3 length:(unint64_t)a4;
-- (unsigned)allocateBatch:(id *)a3 count:(unsigned int)a4;
+- (id)managedObjectIDFromURIRepresentation:(id)representation;
+- (id)managedObjectIDFromUTF8String:(const char *)string length:(unint64_t)length;
+- (unsigned)allocateBatch:(id *)batch count:(unsigned int)count;
 - (void)_storeDeallocated;
 - (void)dealloc;
 - (void)release;
-- (void)setObjectStoreIdentifier:(id)a3;
+- (void)setObjectStoreIdentifier:(id)identifier;
 @end
 
 @implementation _NSCoreDataTaggedObjectIDFactory
@@ -62,18 +62,18 @@
   atomic_compare_exchange_strong(v2, &v3, 0);
 }
 
-- (_NSCoreDataTaggedObjectIDFactory)initWithPK64:(int64_t)a3
+- (_NSCoreDataTaggedObjectIDFactory)initWithPK64:(int64_t)k64
 {
-  if (a3 > 0x3FFFFFFFFFFLL)
+  if (k64 > 0x3FFFFFFFFFFLL)
   {
     v6 = [-[_NSCoreDataTaggedObjectIDFactory _fallbackFactory](self "_fallbackFactory")];
 
-    return [v6 initWithPK64:a3];
+    return [v6 initWithPK64:k64];
   }
 
   else
   {
-    result = ((a3 << 21) | (16 * self->_taggedPoolIndex) | 0x8000000000000005);
+    result = ((k64 << 21) | (16 * self->_taggedPoolIndex) | 0x8000000000000005);
     v5 = result ^ *MEMORY[0x1E69E5910];
     if ((~v5 & 0xC000000000000007) != 0)
     {
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (unsigned)allocateBatch:(id *)a3 count:(unsigned int)a4
+- (unsigned)allocateBatch:(id *)batch count:(unsigned int)count
 {
   v5 = (16 * self->_taggedPoolIndex) | 0x8000000000000005;
   v6 = v5 ^ *MEMORY[0x1E69E5910];
@@ -94,18 +94,18 @@
   }
 
   __pattern8 = v5;
-  memset_pattern8(a3, &__pattern8, 8 * a4);
-  return a4;
+  memset_pattern8(batch, &__pattern8, 8 * count);
+  return count;
 }
 
-- (id)managedObjectIDFromUTF8String:(const char *)a3 length:(unint64_t)a4
+- (id)managedObjectIDFromUTF8String:(const char *)string length:(unint64_t)length
 {
   __endptr = 0;
-  v6 = strtouq(a3, &__endptr, 0);
+  v6 = strtouq(string, &__endptr, 0);
   result = 0;
   if (__endptr)
   {
-    v8 = __endptr == a3;
+    v8 = __endptr == string;
   }
 
   else
@@ -152,10 +152,10 @@
   return result;
 }
 
-- (id)managedObjectIDFromURIRepresentation:(id)a3
+- (id)managedObjectIDFromURIRepresentation:(id)representation
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_msgSend(objc_msgSend(a3 "path")];
+  v6 = [objc_msgSend(objc_msgSend(representation "path")];
   v16 = 0;
   v7 = _PFTaggedPointersPool;
   v8 = atomic_load((_PFTaggedPointersPool + 32 * self->_taggedPoolIndex));
@@ -193,14 +193,14 @@
   return v12;
 }
 
-- (void)setObjectStoreIdentifier:(id)a3
+- (void)setObjectStoreIdentifier:(id)identifier
 {
   v4 = (_PFTaggedPointersPool + 32 * self->_taggedPoolIndex + 16);
   v5 = atomic_load(v4);
   v9 = v5;
   if (([v5 isEqual:?] & 1) == 0)
   {
-    v6 = [a3 copy];
+    v6 = [identifier copy];
     v7 = v9;
     v8 = v9;
     atomic_compare_exchange_strong(v4, &v8, v6);

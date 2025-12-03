@@ -2,25 +2,25 @@
 + (id)RequestContext;
 + (id)configurationForRequestContext;
 + (id)storeConfigurationForRequestContext;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSiriOrchestrationLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"RequestContext"])
+  if ([name isEqualToString:@"RequestContext"])
   {
-    v4 = [a1 RequestContext];
+    requestContext = [self RequestContext];
   }
 
   else
   {
-    v4 = 0;
+    requestContext = 0;
   }
 
-  return v4;
+  return requestContext;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForRequestContext
 {
-  v3 = [a1 storeConfigurationForRequestContext];
-  v4 = [a1 syncPolicyForRequestContext];
+  storeConfigurationForRequestContext = [self storeConfigurationForRequestContext];
+  syncPolicyForRequestContext = [self syncPolicyForRequestContext];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"E1673BCB-7DFC-417C-97F1-AB2859DEC326"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.Orchestration.RequestContext" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.Orchestration.RequestContext" eventClass:objc_opt_class() storeConfig:storeConfigurationForRequestContext syncPolicy:syncPolicyForRequestContext legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)RequestContext
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRequestContext];
+  configurationForRequestContext = [self configurationForRequestContext];
   v3 = +[BMSiriRequestContext columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.Orchestration.RequestContext" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Orchestration.RequestContext" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.Orchestration.RequestContext" schema:v9 configuration:configurationForRequestContext];
 
   v11 = *MEMORY[0x1E69E9840];
 

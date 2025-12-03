@@ -1,9 +1,9 @@
 @interface FavoritesPersistenceServiceWrapper
 + (FavoritesPersistenceServiceWrapper)sharedInstance;
-- (BOOL)resetAndReturnError:(id *)a3;
+- (BOOL)resetAndReturnError:(id *)error;
 - (FavoritesPersistenceServiceWrapper)init;
 - (NSArray)entries;
-- (id)setWithEntries:(id)a3 shouldSync:(BOOL)a4 error:(id *)a5;
+- (id)setWithEntries:(id)entries shouldSync:(BOOL)sync error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -40,19 +40,19 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedInstance];
+  selfCopy = self;
+  sharedInstance = [v3 sharedInstance];
   v6 = String._bridgeToObjectiveC()();
-  [v5 removeUnlockHandlerWithIdentifier:v6];
+  [sharedInstance removeUnlockHandlerWithIdentifier:v6];
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for FavoritesPersistenceServiceWrapper();
   [(FavoritesPersistenceServiceWrapper *)&v7 dealloc];
 }
 
 - (NSArray)entries
 {
-  v2 = self;
+  selfCopy = self;
   FavoritesPersistenceServiceWrapper.entries.getter();
 
   sub_1000204F8();
@@ -61,22 +61,22 @@
   return v3.super.isa;
 }
 
-- (id)setWithEntries:(id)a3 shouldSync:(BOOL)a4 error:(id *)a5
+- (id)setWithEntries:(id)entries shouldSync:(BOOL)sync error:(id *)error
 {
   sub_1000204F8();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
-  v10.super.super.isa = FavoritesPersistenceServiceWrapper.set(entries:shouldSync:)(v8, a4).super.super.isa;
+  selfCopy = self;
+  v10.super.super.isa = FavoritesPersistenceServiceWrapper.set(entries:shouldSync:)(v8, sync).super.super.isa;
 
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v12 = _convertErrorToNSError(_:)();
 
       v13 = v12;
       isa = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -94,10 +94,10 @@
   return isa;
 }
 
-- (BOOL)resetAndReturnError:(id *)a3
+- (BOOL)resetAndReturnError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR___FavoritesPersistenceServiceWrapper_lock);
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v3 + 4);
   sub_100001FE0(&v9);
   os_unfair_lock_unlock(v3 + 4);

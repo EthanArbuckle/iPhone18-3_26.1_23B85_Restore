@@ -1,7 +1,7 @@
 @interface BRLTBrailleMusicParserInternal
 + (BRLTBrailleMusicParserInternal)shared;
 - (BRLTBrailleMusicParserInternal)init;
-- (id)translate:(id)a3;
+- (id)translate:(id)translate;
 @end
 
 @implementation BRLTBrailleMusicParserInternal
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (id)translate:(id)a3
+- (id)translate:(id)translate
 {
-  v4 = a3;
-  v5 = self;
+  translateCopy = translate;
+  selfCopy = self;
   v6 = sub_241E35774();
   v8 = v7;
 

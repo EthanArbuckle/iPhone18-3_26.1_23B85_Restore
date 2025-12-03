@@ -1,24 +1,24 @@
 @interface FMDLocalActivationLockInfoNVRAMStore
-- (id)_statusFromStringValue:(id)a3;
+- (id)_statusFromStringValue:(id)value;
 - (id)retrieveActivationLockStatus;
 - (id)retrieveMaskedAppleID;
 - (id)retrieveOfflineFindingInfo;
 - (id)retrieveOfflineFindingStatus;
 - (void)clearMaskedAppleID;
 - (void)clearOfflineFindingInfo;
-- (void)updateActivationLockStatus:(id)a3;
-- (void)updateMaskedAppleID:(id)a3;
-- (void)updateOfflineFindingInfo:(id)a3;
-- (void)updateOfflineFindingStatus:(id)a3;
+- (void)updateActivationLockStatus:(id)status;
+- (void)updateMaskedAppleID:(id)d;
+- (void)updateOfflineFindingInfo:(id)info;
+- (void)updateOfflineFindingStatus:(id)status;
 @end
 
 @implementation FMDLocalActivationLockInfoNVRAMStore
 
-- (void)updateMaskedAppleID:(id)a3
+- (void)updateMaskedAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[FMDNVRAMUtil sharedInstance];
-  [v4 setStringPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-account-masked" value:v3];
+  [v4 setStringPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-account-masked" value:dCopy];
 }
 
 - (id)retrieveMaskedAppleID
@@ -45,11 +45,11 @@
   [v2 clearPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-account-masked"];
 }
 
-- (void)updateActivationLockStatus:(id)a3
+- (void)updateActivationLockStatus:(id)status
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [status BOOLValue];
   v4 = @"NO";
-  if (v3)
+  if (bOOLValue)
   {
     v4 = @"YES";
   }
@@ -69,11 +69,11 @@
   return v5;
 }
 
-- (void)updateOfflineFindingStatus:(id)a3
+- (void)updateOfflineFindingStatus:(id)status
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [status BOOLValue];
   v4 = @"NO";
-  if (v3)
+  if (bOOLValue)
   {
     v4 = @"YES";
   }
@@ -93,11 +93,11 @@
   return v5;
 }
 
-- (void)updateOfflineFindingInfo:(id)a3
+- (void)updateOfflineFindingInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[FMDNVRAMUtil sharedInstance];
-  [v4 setDataPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-spkeys" value:v3];
+  [v4 setDataPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-spkeys" value:infoCopy];
 }
 
 - (id)retrieveOfflineFindingInfo
@@ -114,11 +114,11 @@
   [v2 clearPropertyWithKey:@"40A0DDD2-77F8-4392-B4A3-1E7304206516:fm-spkeys"];
 }
 
-- (id)_statusFromStringValue:(id)a3
+- (id)_statusFromStringValue:(id)value
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  valueCopy = value;
+  v4 = valueCopy;
+  if (!valueCopy)
   {
     v6 = sub_100002880();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -130,7 +130,7 @@
     goto LABEL_10;
   }
 
-  if (([v3 isEqualToString:@"YES"] & 1) == 0)
+  if (([valueCopy isEqualToString:@"YES"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"NO"])
     {

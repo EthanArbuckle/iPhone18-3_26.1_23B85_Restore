@@ -2,10 +2,10 @@
 - (BOOL)protected_hasProgressObservers;
 - (OITSUProgress)init;
 - (double)protected_minProgressObserverValueInterval;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (void)dealloc;
 - (void)protected_progressDidChange;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation OITSUProgress
@@ -47,12 +47,12 @@
   [(OITSUProgress *)&v4 dealloc];
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v5 = 0;
-  if (a4 && a5)
+  if (queue && handler)
   {
-    v5 = [[OITSUProgressObserver alloc] initWithValueInterval:a4 queue:a5 handler:a3];
+    v5 = [[OITSUProgressObserver alloc] initWithValueInterval:queue queue:handler handler:interval];
     mProgressObserversQueue = self->mProgressObserversQueue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -66,9 +66,9 @@
   return v5;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     mProgressObserversQueue = self->mProgressObserversQueue;
     v4[0] = MEMORY[0x277D85DD0];
@@ -76,7 +76,7 @@
     v4[2] = __40__OITSUProgress_removeProgressObserver___block_invoke;
     v4[3] = &unk_2799C6660;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = observer;
     dispatch_async(mProgressObserversQueue, v4);
   }
 }

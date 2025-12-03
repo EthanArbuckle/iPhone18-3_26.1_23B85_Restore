@@ -1,57 +1,57 @@
 @interface ISGenerationResponse
-- (ISGenerationResponse)initWithCoder:(id)a3;
-- (ISGenerationResponse)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5;
-- (ISGenerationResponse)initWithError:(id)a3;
+- (ISGenerationResponse)initWithCoder:(id)coder;
+- (ISGenerationResponse)initWithData:(id)data uuid:(id)uuid validationToken:(id)token;
+- (ISGenerationResponse)initWithError:(id)error;
 - (NSData)data;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISGenerationResponse
 
-- (ISGenerationResponse)initWithData:(id)a3 uuid:(id)a4 validationToken:(id)a5
+- (ISGenerationResponse)initWithData:(id)data uuid:(id)uuid validationToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  uuidCopy = uuid;
+  tokenCopy = token;
   v15.receiver = self;
   v15.super_class = ISGenerationResponse;
   v11 = [(ISGenerationResponse *)&v15 init];
   if (v11)
   {
-    [v8 bytes];
-    [v8 length];
+    [dataCopy bytes];
+    [dataCopy length];
     readonly = xpc_shmem_create_readonly();
     sharedMemory = v11->_sharedMemory;
     v11->_sharedMemory = readonly;
 
-    objc_storeStrong(&v11->_uuid, a4);
-    objc_storeStrong(&v11->_validationToken, a5);
+    objc_storeStrong(&v11->_uuid, uuid);
+    objc_storeStrong(&v11->_validationToken, token);
   }
 
   return v11;
 }
 
-- (ISGenerationResponse)initWithError:(id)a3
+- (ISGenerationResponse)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = ISGenerationResponse;
   v6 = [(ISGenerationResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   error = self->_error;
   if (error)
   {
-    v4 = a3;
+    coderCopy = coder;
     v5 = @"error";
     validationToken = error;
   }
@@ -59,40 +59,40 @@
   else
   {
     sharedMemory = self->_sharedMemory;
-    v9 = a3;
-    [v9 encodeXPCObject:sharedMemory forKey:@"sharedMemory"];
-    [v9 encodeObject:self->_uuid forKey:@"uuid"];
+    coderCopy2 = coder;
+    [coderCopy2 encodeXPCObject:sharedMemory forKey:@"sharedMemory"];
+    [coderCopy2 encodeObject:self->_uuid forKey:@"uuid"];
     validationToken = self->_validationToken;
     v5 = @"validationToken";
-    v4 = v9;
+    coderCopy = coderCopy2;
   }
 
-  [v4 encodeObject:validationToken forKey:v5];
+  [coderCopy encodeObject:validationToken forKey:v5];
 }
 
-- (ISGenerationResponse)initWithCoder:(id)a3
+- (ISGenerationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ISGenerationResponse;
   v5 = [(ISGenerationResponse *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v6;
 
     if (!v5->_error)
     {
-      v8 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9F08] forKey:@"sharedMemory"];
+      v8 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9F08] forKey:@"sharedMemory"];
       sharedMemory = v5->_sharedMemory;
       v5->_sharedMemory = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
       uuid = v5->_uuid;
       v5->_uuid = v10;
 
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
       validationToken = v5->_validationToken;
       v5->_validationToken = v12;
     }

@@ -2,17 +2,17 @@
 - (NSArray)dynamicApplicationShortcutItems;
 - (NSArray)staticApplicationShortcutItems;
 - (SBFApplication)init;
-- (SBFApplication)initWithApplicationBundleIdentifier:(id)a3;
+- (SBFApplication)initWithApplicationBundleIdentifier:(id)identifier;
 - (void)_updateApplicationShortcutServiceFetchResult;
 - (void)dealloc;
 @end
 
 @implementation SBFApplication
 
-- (SBFApplication)initWithApplicationBundleIdentifier:(id)a3
+- (SBFApplication)initWithApplicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(SBFApplication *)a2 initWithApplicationBundleIdentifier:?];
   }
@@ -23,37 +23,37 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_applicationBundleIdentifier, a3);
-    v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+    objc_storeStrong(&v7->_applicationBundleIdentifier, identifier);
+    v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 localizedName];
+      localizedName = [v9 localizedName];
       displayName = v8->_displayName;
-      v8->_displayName = v11;
+      v8->_displayName = localizedName;
 
       v13 = [v10 URL];
       bundleURL = v8->_bundleURL;
       v8->_bundleURL = v13;
 
-      v15 = [v10 typeForInstallMachinery];
-      if (([v15 isEqualToString:@"System"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"Internal"))
+      typeForInstallMachinery = [v10 typeForInstallMachinery];
+      if (([typeForInstallMachinery isEqualToString:@"System"] & 1) != 0 || objc_msgSend(typeForInstallMachinery, "isEqualToString:", @"Internal"))
       {
         v8->_systemOrInternalApplication = 1;
       }
 
-      v16 = [v10 iTunesMetadata];
-      v17 = [v16 storeItemIdentifier];
+      iTunesMetadata = [v10 iTunesMetadata];
+      storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
 
-      if (v17)
+      if (storeItemIdentifier)
       {
-        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v17];
+        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:storeItemIdentifier];
         appStoreItemID = v8->_appStoreItemID;
         v8->_appStoreItemID = v18;
       }
 
-      v20 = [v10 infoDictionary];
-      v21 = [v20 objectForKey:@"UIApplicationShortcutWidget" ofClass:objc_opt_class()];
+      infoDictionary = [v10 infoDictionary];
+      v21 = [infoDictionary objectForKey:@"UIApplicationShortcutWidget" ofClass:objc_opt_class()];
       applicationShortcutWidgetBundleIdentifier = v8->_applicationShortcutWidgetBundleIdentifier;
       v8->_applicationShortcutWidgetBundleIdentifier = v21;
     }
@@ -97,10 +97,10 @@
     applicationShortcutServiceFetchResult = self->_applicationShortcutServiceFetchResult;
   }
 
-  v5 = [(SBSApplicationShortcutServiceFetchResult *)applicationShortcutServiceFetchResult staticApplicationShortcutItems];
+  staticApplicationShortcutItems = [(SBSApplicationShortcutServiceFetchResult *)applicationShortcutServiceFetchResult staticApplicationShortcutItems];
   objc_sync_exit(v3);
 
-  return v5;
+  return staticApplicationShortcutItems;
 }
 
 - (NSArray)dynamicApplicationShortcutItems
@@ -108,10 +108,10 @@
   v3 = self->_applicationShortcutServiceFetchResult;
   objc_sync_enter(v3);
   [(SBFApplication *)self _updateApplicationShortcutServiceFetchResult];
-  v4 = [(SBSApplicationShortcutServiceFetchResult *)self->_applicationShortcutServiceFetchResult dynamicApplicationShortcutItems];
+  dynamicApplicationShortcutItems = [(SBSApplicationShortcutServiceFetchResult *)self->_applicationShortcutServiceFetchResult dynamicApplicationShortcutItems];
   objc_sync_exit(v3);
 
-  return v4;
+  return dynamicApplicationShortcutItems;
 }
 
 - (void)_updateApplicationShortcutServiceFetchResult
@@ -127,8 +127,8 @@
   if (v5 - self->_applicationShortcutServiceFetchResultExpirationReferenceTime >= 2.0)
   {
     v6 = self->_applicationShortcutService;
-    v7 = [(SBFApplication *)self applicationBundleIdentifier];
-    v8 = [(SBSApplicationShortcutService *)v6 applicationShortcutItemsOfTypes:3 forBundleIdentifier:v7];
+    applicationBundleIdentifier = [(SBFApplication *)self applicationBundleIdentifier];
+    v8 = [(SBSApplicationShortcutService *)v6 applicationShortcutItemsOfTypes:3 forBundleIdentifier:applicationBundleIdentifier];
     applicationShortcutServiceFetchResult = self->_applicationShortcutServiceFetchResult;
     self->_applicationShortcutServiceFetchResult = v8;
 

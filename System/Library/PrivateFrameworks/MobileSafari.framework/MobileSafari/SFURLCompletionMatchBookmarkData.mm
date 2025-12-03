@@ -1,27 +1,27 @@
 @interface SFURLCompletionMatchBookmarkData
-- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)a3;
-- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)a3 shouldPreload:(BOOL)a4 isSynthesizedTopHit:(BOOL)a5;
+- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)bookmark;
+- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)bookmark shouldPreload:(BOOL)preload isSynthesizedTopHit:(BOOL)hit;
 - (double)lastVisitedTimeInterval;
-- (float)_topSitesScoreAtTime:(double)a3;
+- (float)_topSitesScoreAtTime:(double)time;
 - (id)_userVisibleURLString;
-- (id)matchDataByMergingWithMatchData:(id)a3;
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3;
-- (void)enumeratePageTitlesUsingBlock:(id)a3;
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3;
+- (id)matchDataByMergingWithMatchData:(id)data;
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block;
+- (void)enumeratePageTitlesUsingBlock:(id)block;
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block;
 @end
 
 @implementation SFURLCompletionMatchBookmarkData
 
-- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)a3
+- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)bookmark
 {
-  v5 = a3;
+  bookmarkCopy = bookmark;
   v10.receiver = self;
   v10.super_class = SFURLCompletionMatchBookmarkData;
   v6 = [(SFURLCompletionMatchBookmarkData *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bookmark, a3);
+    objc_storeStrong(&v6->_bookmark, bookmark);
     v7->_shouldPreload = [(WebBookmark *)v7->_bookmark isBuiltinBookmark]^ 1;
     v7->_onlyContainsCloudTab = 0;
     v8 = v7;
@@ -30,14 +30,14 @@
   return v7;
 }
 
-- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)a3 shouldPreload:(BOOL)a4 isSynthesizedTopHit:(BOOL)a5
+- (SFURLCompletionMatchBookmarkData)initWithBookmark:(id)bookmark shouldPreload:(BOOL)preload isSynthesizedTopHit:(BOOL)hit
 {
-  v7 = [(SFURLCompletionMatchBookmarkData *)self initWithBookmark:a3];
+  v7 = [(SFURLCompletionMatchBookmarkData *)self initWithBookmark:bookmark];
   v8 = v7;
   if (v7)
   {
-    v7->_shouldPreload |= a4;
-    v7->_isSynthesized = a5;
+    v7->_shouldPreload |= preload;
+    v7->_isSynthesized = hit;
     v9 = v7;
   }
 
@@ -46,19 +46,19 @@
 
 - (id)_userVisibleURLString
 {
-  v2 = [(WebBookmark *)self->_bookmark address];
-  if ([v2 _web_isUserVisibleURL])
+  address = [(WebBookmark *)self->_bookmark address];
+  if ([address _web_isUserVisibleURL])
   {
-    v3 = v2;
+    _web_userVisibleString = address;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFF8] safari_urlWithDataAsString:v2];
-    v3 = [v4 _web_userVisibleString];
+    v4 = [MEMORY[0x1E695DFF8] safari_urlWithDataAsString:address];
+    _web_userVisibleString = [v4 _web_userVisibleString];
   }
 
-  return v3;
+  return _web_userVisibleString;
 }
 
 - (double)lastVisitedTimeInterval
@@ -68,27 +68,27 @@
     return 0.0;
   }
 
-  v3 = [(WebBookmark *)self->_bookmark dateLastViewed];
-  [v3 timeIntervalSinceReferenceDate];
+  dateLastViewed = [(WebBookmark *)self->_bookmark dateLastViewed];
+  [dateLastViewed timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (id)matchDataByMergingWithMatchData:(id)a3
+- (id)matchDataByMergingWithMatchData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = [SFURLCompletionMatchBookmarkListData alloc];
   if (isKindOfClass)
   {
-    v7 = [(SFURLCompletionMatchBookmarkListData *)v6 initWithBookmarkData:self andBookmarkData:v4];
+    v7 = [(SFURLCompletionMatchBookmarkListData *)v6 initWithBookmarkData:self andBookmarkData:dataCopy];
   }
 
   else
   {
-    v7 = [(SFURLCompletionMatchBookmarkListData *)v6 initWithBookmarkData:self historyMatchData:v4];
+    v7 = [(SFURLCompletionMatchBookmarkListData *)v6 initWithBookmarkData:self historyMatchData:dataCopy];
   }
 
   v8 = v7;
@@ -96,60 +96,60 @@
   return v8;
 }
 
-- (void)enumeratePageTitlesUsingBlock:(id)a3
+- (void)enumeratePageTitlesUsingBlock:(id)block
 {
   v7 = 0;
   bookmark = self->_bookmark;
-  v5 = a3;
-  v6 = [(WebBookmark *)bookmark title];
-  (*(a3 + 2))(v5, v6, 0, &v7);
+  blockCopy = block;
+  title = [(WebBookmark *)bookmark title];
+  (*(block + 2))(blockCopy, title, 0, &v7);
 }
 
-- (void)enumerateUserVisibleURLsUsingBlock:(id)a3
+- (void)enumerateUserVisibleURLsUsingBlock:(id)block
 {
   v7 = 0;
-  v5 = a3;
-  v6 = [(SFURLCompletionMatchBookmarkData *)self _userVisibleURLString];
-  (*(a3 + 2))(v5, v6, 0, &v7);
+  blockCopy = block;
+  _userVisibleURLString = [(SFURLCompletionMatchBookmarkData *)self _userVisibleURLString];
+  (*(block + 2))(blockCopy, _userVisibleURLString, 0, &v7);
 }
 
-- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)a3
+- (void)enumeratePageTitlesAndUserVisibleURLsUsingBlock:(id)block
 {
   v9 = 0;
   bookmark = self->_bookmark;
-  v6 = a3;
-  v7 = [(WebBookmark *)bookmark title];
-  v8 = [(SFURLCompletionMatchBookmarkData *)self _userVisibleURLString];
-  (*(a3 + 2))(v6, v7, 0, v8, 0, &v9);
+  blockCopy = block;
+  title = [(WebBookmark *)bookmark title];
+  _userVisibleURLString = [(SFURLCompletionMatchBookmarkData *)self _userVisibleURLString];
+  (*(block + 2))(blockCopy, title, 0, _userVisibleURLString, 0, &v9);
 }
 
-- (float)_topSitesScoreAtTime:(double)a3
+- (float)_topSitesScoreAtTime:(double)time
 {
   v4 = 0.0;
   if ([(WebBookmark *)self->_bookmark isReadingListItem])
   {
-    v5 = [(WebBookmark *)self->_bookmark dateLastViewed];
-    v6 = v5;
-    if (v5)
+    dateLastViewed = [(WebBookmark *)self->_bookmark dateLastViewed];
+    v6 = dateLastViewed;
+    if (dateLastViewed)
     {
-      [v5 timeIntervalSinceReferenceDate];
+      [dateLastViewed timeIntervalSinceReferenceDate];
     }
 
     else
     {
-      v7 = [(WebBookmark *)self->_bookmark dateAdded];
-      if (!v7)
+      dateAdded = [(WebBookmark *)self->_bookmark dateAdded];
+      if (!dateAdded)
       {
 LABEL_7:
 
         return v4;
       }
 
-      v8 = v7;
-      [v7 timeIntervalSinceReferenceDate];
+      v8 = dateAdded;
+      [dateAdded timeIntervalSinceReferenceDate];
     }
 
-    v9 = [(WebBookmark *)self->_bookmark address];
+    address = [(WebBookmark *)self->_bookmark address];
     WBSTopSitesScore();
     v4 = v10;
 

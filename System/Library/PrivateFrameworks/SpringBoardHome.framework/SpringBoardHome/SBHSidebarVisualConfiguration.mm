@@ -1,11 +1,11 @@
 @interface SBHSidebarVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)insets;
 - (SBHSidebarVisualConfiguration)init;
-- (double)effectiveContentWidthWithContainerWidth:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (double)effectiveContentWidthWithContainerWidth:(double)width;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (double)effectiveContentWidthWithContainerWidth:(double)a3
+- (double)effectiveContentWidthWithContainerWidth:(double)width
 {
   if ([(SBHSidebarVisualConfiguration *)self isContentFullscreen])
   {
     [(SBHSidebarVisualConfiguration *)self insets];
-    return a3 - v5 - v6;
+    return width - v5 - v6;
   }
 
   else
@@ -55,7 +55,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -72,10 +72,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -87,7 +87,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_insets.top, *&v7->_insets.top), vceqq_f64(*&self->_insets.bottom, *&v7->_insets.bottom)))) & 1) != 0 && self->_contentWidth == v7->_contentWidth && self->_contentFullscreen == v7->_contentFullscreen && self->_searchBarTopOffset == v7->_searchBarTopOffset && self->_firstWidgetTopOffset == v7->_firstWidgetTopOffset;
     }
 
@@ -110,34 +110,34 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHSidebarVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHSidebarVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHSidebarVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHSidebarVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHSidebarVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHSidebarVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHSidebarVisualConfiguration *)self contentWidth];
-  v5 = [v4 appendFloat:@"contentWidth" withName:?];
+  v5 = [succinctDescriptionBuilder appendFloat:@"contentWidth" withName:?];
   [(SBHSidebarVisualConfiguration *)self searchBarTopOffset];
-  v6 = [v4 appendFloat:@"searchBarTopOffset" withName:?];
+  v6 = [succinctDescriptionBuilder appendFloat:@"searchBarTopOffset" withName:?];
   [(SBHSidebarVisualConfiguration *)self firstWidgetTopOffset];
-  v7 = [v4 appendFloat:@"firstWidgetTopOffset" withName:?];
-  v8 = [v4 appendBool:-[SBHSidebarVisualConfiguration isContentFullscreen](self withName:{"isContentFullscreen"), @"isContentFullscreen"}];
+  v7 = [succinctDescriptionBuilder appendFloat:@"firstWidgetTopOffset" withName:?];
+  v8 = [succinctDescriptionBuilder appendBool:-[SBHSidebarVisualConfiguration isContentFullscreen](self withName:{"isContentFullscreen"), @"isContentFullscreen"}];
   v9 = NSStringFromDirectionalEdgeInsets(self->_insets);
-  [v4 appendString:v9 withName:@"insets"];
+  [succinctDescriptionBuilder appendString:v9 withName:@"insets"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

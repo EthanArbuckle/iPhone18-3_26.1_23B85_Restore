@@ -1,19 +1,19 @@
 @interface TSCH3DFrustumSlice
-+ (id)sliceWithOrigin:(line<glm:(tvec3<float>)a4 :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:;
-- (TSCH3DFrustumSlice)initWithOrigin:(line<glm:(tvec3<float>)a4 :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:;
++ (id)sliceWithOrigin:(line<glm:(tvec3<float>)origin :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:;
+- (TSCH3DFrustumSlice)initWithOrigin:(line<glm:(tvec3<float>)origin :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:;
 - (id).cxx_construct;
-- (tvec3<float>)atNormalizedPosition:(tvec2<float>)a3;
+- (tvec3<float>)atNormalizedPosition:(tvec2<float>)position;
 - (tvec3<float>)height;
 - (tvec3<float>)width;
 @end
 
 @implementation TSCH3DFrustumSlice
 
-+ (id)sliceWithOrigin:(line<glm:(tvec3<float>)a4 :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:
++ (id)sliceWithOrigin:(line<glm:(tvec3<float>)origin :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:
 {
-  v5 = *&a4.var2.var0;
-  v6 = *&a4.var0.var0;
-  v8 = [a1 alloc];
+  v5 = *&origin.var2.var0;
+  v6 = *&origin.var0.var0;
+  v8 = [self alloc];
   v18 = *a3;
   v16 = *v6;
   v17 = *(v6 + 2);
@@ -24,10 +24,10 @@
   return v12;
 }
 
-- (TSCH3DFrustumSlice)initWithOrigin:(line<glm:(tvec3<float>)a4 :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:
+- (TSCH3DFrustumSlice)initWithOrigin:(line<glm:(tvec3<float>)origin :(tvec3<float>)a5 detail::tvec3<float>> *)a3 width:height:
 {
-  v5 = *&a4.var2.var0;
-  v6 = *&a4.var0.var0;
+  v5 = *&origin.var2.var0;
+  v6 = *&origin.var0.var0;
   v9.receiver = self;
   v9.super_class = TSCH3DFrustumSlice;
   result = [(TSCH3DFrustumSlice *)&v9 init:a3];
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (tvec3<float>)atNormalizedPosition:(tvec2<float>)a3
+- (tvec3<float>)atNormalizedPosition:(tvec2<float>)position
 {
-  v4 = *(*&a3 + 4);
-  v5 = ((**&a3 * self->_width.var2.var0) + self->_origin._position.var2.var0) + (v4 * self->_height.var2.var0);
-  *v3 = vadd_f32(vadd_f32(vmul_n_f32(*&self->_width.var0.var0, **&a3), *&self->_origin._position.var0.var0), vmul_n_f32(*&self->_height.var0.var0, v4));
+  v4 = *(*&position + 4);
+  v5 = ((**&position * self->_width.var2.var0) + self->_origin._position.var2.var0) + (v4 * self->_height.var2.var0);
+  *v3 = vadd_f32(vadd_f32(vmul_n_f32(*&self->_width.var0.var0, **&position), *&self->_origin._position.var0.var0), vmul_n_f32(*&self->_height.var0.var0, v4));
   v3[1].f32[0] = v5;
   result.var2 = a2;
   result.var0 = self;

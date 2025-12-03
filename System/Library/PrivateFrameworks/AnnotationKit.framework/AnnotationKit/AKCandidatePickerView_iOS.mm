@@ -1,76 +1,76 @@
 @interface AKCandidatePickerView_iOS
-- (AKCandidatePickerView_iOS)initWithFrame:(CGRect)a3 items:(id)a4 annotations:(id)a5 target:(id)a6 action:(SEL)a7 visualStyle:(int64_t)a8;
+- (AKCandidatePickerView_iOS)initWithFrame:(CGRect)frame items:(id)items annotations:(id)annotations target:(id)target action:(SEL)action visualStyle:(int64_t)style;
 - (CGSize)intrinsicContentSize;
 - (SEL)action;
 - (id)target;
-- (int64_t)tagForCandidateItemAtIndex:(unint64_t)a3;
-- (void)_createButtonsWithBlurStyle:(int64_t)a3;
-- (void)_selectBackground:(id)a3 animated:(BOOL)a4;
-- (void)setAction:(SEL)a3;
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (int64_t)tagForCandidateItemAtIndex:(unint64_t)index;
+- (void)_createButtonsWithBlurStyle:(int64_t)style;
+- (void)_selectBackground:(id)background animated:(BOOL)animated;
+- (void)setAction:(SEL)action;
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation AKCandidatePickerView_iOS
 
-- (AKCandidatePickerView_iOS)initWithFrame:(CGRect)a3 items:(id)a4 annotations:(id)a5 target:(id)a6 action:(SEL)a7 visualStyle:(int64_t)a8
+- (AKCandidatePickerView_iOS)initWithFrame:(CGRect)frame items:(id)items annotations:(id)annotations target:(id)target action:(SEL)action visualStyle:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemsCopy = items;
+  annotationsCopy = annotations;
+  targetCopy = target;
   v52.receiver = self;
   v52.super_class = AKCandidatePickerView_iOS;
-  v21 = [(AKCandidatePickerView_iOS *)&v52 initWithFrame:x, y, width, height];
-  v22 = v21;
-  if (v21)
+  height = [(AKCandidatePickerView_iOS *)&v52 initWithFrame:x, y, width, height];
+  v22 = height;
+  if (height)
   {
-    v51 = v18;
-    [(AKCandidatePickerView_iOS *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v23 = [MEMORY[0x277D75348] clearColor];
-    [(AKCandidatePickerView_iOS *)v22 setBackgroundColor:v23];
+    v51 = itemsCopy;
+    [(AKCandidatePickerView_iOS *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(AKCandidatePickerView_iOS *)v22 setBackgroundColor:clearColor];
 
-    v22->_blurStyle = a8;
+    v22->_blurStyle = style;
     v24 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
     visualEffectView = v22->_visualEffectView;
     v22->_visualEffectView = v24;
 
     [(UIVisualEffectView *)v22->_visualEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v26 = [(UIVisualEffectView *)v22->_visualEffectView layer];
-    [v26 setCornerRadius:6.0];
+    layer = [(UIVisualEffectView *)v22->_visualEffectView layer];
+    [layer setCornerRadius:6.0];
 
-    v27 = [(UIVisualEffectView *)v22->_visualEffectView layer];
-    [v27 setMasksToBounds:1];
+    layer2 = [(UIVisualEffectView *)v22->_visualEffectView layer];
+    [layer2 setMasksToBounds:1];
 
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [(UIVisualEffectView *)v22->_visualEffectView setBackgroundColor:v28];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIVisualEffectView *)v22->_visualEffectView setBackgroundColor:clearColor2];
 
     [(AKCandidatePickerView_iOS *)v22 addSubview:v22->_visualEffectView];
-    objc_storeStrong(&v22->_itemTags, a4);
-    objc_storeStrong(&v22->_annotations, a5);
-    objc_storeWeak(&v22->_target, v20);
-    if (a7)
+    objc_storeStrong(&v22->_itemTags, items);
+    objc_storeStrong(&v22->_annotations, annotations);
+    objc_storeWeak(&v22->_target, targetCopy);
+    if (action)
     {
-      v29 = a7;
+      actionCopy = action;
     }
 
     else
     {
-      v29 = 0;
+      actionCopy = 0;
     }
 
-    v22->_action = v29;
+    v22->_action = actionCopy;
     v30 = objc_alloc(MEMORY[0x277D75A68]);
     v31 = [v30 initWithArrangedSubviews:MEMORY[0x277CBEBF8]];
     buttonContainer = v22->_buttonContainer;
     v22->_buttonContainer = v31;
 
     [(UIStackView *)v22->_buttonContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(UIStackView *)v22->_buttonContainer setBackgroundColor:v33];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UIStackView *)v22->_buttonContainer setBackgroundColor:clearColor3];
 
     v34 = MEMORY[0x277CCABB0];
     [(AKCandidatePickerView_iOS *)v22 intrinsicContentSize];
@@ -85,27 +85,27 @@
     v42 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_visualEffectView]|" options:0 metrics:0 views:v38];
     [v41 activateConstraints:v42];
 
-    v43 = [(AKCandidatePickerView_iOS *)v22 visualEffectView];
-    v44 = [v43 contentView];
+    visualEffectView = [(AKCandidatePickerView_iOS *)v22 visualEffectView];
+    contentView = [visualEffectView contentView];
 
-    [v44 addSubview:v22->_buttonContainer];
+    [contentView addSubview:v22->_buttonContainer];
     v45 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-(buttonMargin)-[_buttonContainer]-(buttonMargin)-|" options:0 metrics:v37 views:v38];
-    [v44 addConstraints:v45];
+    [contentView addConstraints:v45];
 
     v46 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|-(buttonMargin)-[_buttonContainer]-(buttonMargin)-|" options:0 metrics:v37 views:v38];
-    [v44 addConstraints:v46];
+    [contentView addConstraints:v46];
 
-    v47 = [MEMORY[0x277CCAAD0] constraintWithItem:v22->_buttonContainer attribute:9 relatedBy:0 toItem:v44 attribute:9 multiplier:1.0 constant:0.0];
-    [v44 addConstraint:v47];
+    v47 = [MEMORY[0x277CCAAD0] constraintWithItem:v22->_buttonContainer attribute:9 relatedBy:0 toItem:contentView attribute:9 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v47];
 
-    v48 = [(AKCandidatePickerView_iOS *)v22 visualEffectView];
-    v49 = [v48 contentView];
-    [v49 setAlpha:0.0];
+    visualEffectView2 = [(AKCandidatePickerView_iOS *)v22 visualEffectView];
+    contentView2 = [visualEffectView2 contentView];
+    [contentView2 setAlpha:0.0];
 
-    [(AKCandidatePickerView_iOS *)v22 _createButtonsWithBlurStyle:a8];
+    [(AKCandidatePickerView_iOS *)v22 _createButtonsWithBlurStyle:style];
     [(AKCandidatePickerView_iOS *)v22 setSelectedIndex:0];
 
-    v18 = v51;
+    itemsCopy = v51;
   }
 
   return v22;
@@ -120,13 +120,13 @@
   return result;
 }
 
-- (void)setBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = !v6;
-  if (v6)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  v9 = !hiddenCopy;
+  if (hiddenCopy)
   {
     v10 = 0.1;
   }
@@ -136,7 +136,7 @@
     v10 = 0.18;
   }
 
-  if (v6)
+  if (hiddenCopy)
   {
     v11 = 0;
   }
@@ -146,7 +146,7 @@
     v11 = [MEMORY[0x277D75210] effectWithStyle:{-[AKCandidatePickerView_iOS blurStyle](self, "blurStyle")}];
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     v12 = MEMORY[0x277D75D18];
     v15[0] = MEMORY[0x277D85DD0];
@@ -160,58 +160,58 @@
     v13[1] = 3221225472;
     v13[2] = sub_23F489E94;
     v13[3] = &unk_278C7C220;
-    v14 = v8;
+    v14 = completionCopy;
     [v12 animateWithDuration:v15 animations:v13 completion:v10];
   }
 
   else
   {
     [(AKCandidatePickerView_iOS *)self setAlpha:v9];
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v5 = [(AKCandidatePickerView_iOS *)self buttons];
-  v6 = [v5 count];
+  buttons = [(AKCandidatePickerView_iOS *)self buttons];
+  v6 = [buttons count];
 
-  if (v6 > a3)
+  if (v6 > index)
   {
-    v7 = [(AKCandidatePickerView_iOS *)self buttons];
-    v8 = [v7 objectAtIndex:a3];
+    buttons2 = [(AKCandidatePickerView_iOS *)self buttons];
+    v8 = [buttons2 objectAtIndex:index];
 
     [(AKCandidatePickerView_iOS *)self _selectBackground:v8 animated:0];
   }
 }
 
-- (int64_t)tagForCandidateItemAtIndex:(unint64_t)a3
+- (int64_t)tagForCandidateItemAtIndex:(unint64_t)index
 {
-  v5 = [(AKCandidatePickerView_iOS *)self buttons];
-  v6 = [v5 count];
+  buttons = [(AKCandidatePickerView_iOS *)self buttons];
+  v6 = [buttons count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(AKCandidatePickerView_iOS *)self buttons];
-  v8 = [v7 objectAtIndex:a3];
+  buttons2 = [(AKCandidatePickerView_iOS *)self buttons];
+  v8 = [buttons2 objectAtIndex:index];
 
   v9 = [v8 tag];
   return v9;
 }
 
-- (void)_createButtonsWithBlurStyle:(int64_t)a3
+- (void)_createButtonsWithBlurStyle:(int64_t)style
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = [(AKCandidatePickerView_iOS *)self buttons];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  buttons = [(AKCandidatePickerView_iOS *)self buttons];
+  [buttons makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v41 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -237,38 +237,38 @@
         }
 
         v12 = *(*(&v46 + 1) + 8 * v11);
-        v13 = [(AKCandidatePickerView_iOS *)self annotations];
-        v14 = [v13 indexOfObject:v12];
+        annotations = [(AKCandidatePickerView_iOS *)self annotations];
+        v14 = [annotations indexOfObject:v12];
 
-        v15 = [(AKCandidatePickerView_iOS *)self itemTags];
-        v16 = [v15 objectAtIndexedSubscript:v14];
-        v17 = [v16 integerValue];
+        itemTags = [(AKCandidatePickerView_iOS *)self itemTags];
+        v16 = [itemTags objectAtIndexedSubscript:v14];
+        integerValue = [v16 integerValue];
 
         v18 = [AKAnnotationImageHelper imageOfSize:v12 forAnnotation:32.0, 32.0];
         v19 = [v18 imageWithRenderingMode:2];
 
         v20 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v7, v8, v9, v10}];
-        v21 = [MEMORY[0x277D75348] clearColor];
-        [v20 setBackgroundColor:v21];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [v20 setBackgroundColor:clearColor];
 
         [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v20 setTag:v17];
-        v22 = [v20 layer];
-        [v22 setCornerRadius:3.0];
+        [v20 setTag:integerValue];
+        layer = [v20 layer];
+        [layer setCornerRadius:3.0];
 
-        if (a3 == 2)
+        if (style == 2)
         {
-          v23 = [MEMORY[0x277D75348] whiteColor];
-          [v20 setTintColor:v23];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
+          [v20 setTintColor:whiteColor];
         }
 
         [v20 setImage:v19 forState:0];
-        v24 = [(AKCandidatePickerView_iOS *)self target];
-        [v20 addTarget:v24 action:-[AKCandidatePickerView_iOS action](self forControlEvents:{"action"), 64}];
+        target = [(AKCandidatePickerView_iOS *)self target];
+        [v20 addTarget:target action:-[AKCandidatePickerView_iOS action](self forControlEvents:{"action"), 64}];
 
         [v20 addTarget:self action:sel__selectBackground_ forControlEvents:1];
-        v25 = [(AKCandidatePickerView_iOS *)self buttonContainer];
-        [v25 addSubview:v20];
+        buttonContainer = [(AKCandidatePickerView_iOS *)self buttonContainer];
+        [buttonContainer addSubview:v20];
 
         v26 = _NSDictionaryOfVariableBindings(&cfstr_ButtonSize.isa, v20, &unk_2851BB6B8, 0);
         v27 = MEMORY[0x277CCAAD0];
@@ -279,7 +279,7 @@
         v30 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:[button(size)]" options:0 metrics:v26 views:v26];
         [v29 activateConstraints:v30];
 
-        [v41 addObject:v20];
+        [array addObject:v20];
         ++v11;
       }
 
@@ -290,15 +290,15 @@
     while (v6);
   }
 
-  [(AKCandidatePickerView_iOS *)self setButtons:v41];
-  if ([v41 count])
+  [(AKCandidatePickerView_iOS *)self setButtons:array];
+  if ([array count])
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v31 = [(AKCandidatePickerView_iOS *)self buttons];
-    v32 = [v31 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    buttons2 = [(AKCandidatePickerView_iOS *)self buttons];
+    v32 = [buttons2 countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v32)
     {
       v33 = v32;
@@ -310,18 +310,18 @@
         {
           if (*v43 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(buttons2);
           }
 
           v36 = *(*(&v42 + 1) + 8 * v35);
-          v37 = [(AKCandidatePickerView_iOS *)self buttonContainer];
-          [v37 addArrangedSubview:v36];
+          buttonContainer2 = [(AKCandidatePickerView_iOS *)self buttonContainer];
+          [buttonContainer2 addArrangedSubview:v36];
 
           ++v35;
         }
 
         while (v33 != v35);
-        v33 = [v31 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v33 = [buttons2 countByEnumeratingWithState:&v42 objects:v50 count:16];
       }
 
       while (v33);
@@ -331,27 +331,27 @@
   [(AKCandidatePickerView_iOS *)self layoutIfNeeded];
 }
 
-- (void)_selectBackground:(id)a3 animated:(BOOL)a4
+- (void)_selectBackground:(id)background animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  backgroundCopy = background;
   v7 = self->_blurStyle == 2;
-  v8 = [(AKCandidatePickerView_iOS *)self buttons];
-  v9 = [v8 mutableCopy];
+  buttons = [(AKCandidatePickerView_iOS *)self buttons];
+  v9 = [buttons mutableCopy];
 
-  [v9 removeObject:v6];
+  [v9 removeObject:backgroundCopy];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_23F48A620;
   v17[3] = &unk_278C7C248;
-  v10 = v6;
+  v10 = backgroundCopy;
   v18 = v10;
   v20 = v7;
   v11 = v9;
   v19 = v11;
   v12 = MEMORY[0x245CAF110](v17);
   v13 = v12;
-  if (v4)
+  if (animatedCopy)
   {
     v14 = MEMORY[0x277D75D18];
     v15[0] = MEMORY[0x277D85DD0];
@@ -388,19 +388,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

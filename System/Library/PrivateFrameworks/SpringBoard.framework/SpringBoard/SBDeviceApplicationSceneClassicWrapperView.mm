@@ -1,50 +1,50 @@
 @interface SBDeviceApplicationSceneClassicWrapperView
-+ (BOOL)shouldUseWrapperViewForSceneHandle:(id)a3;
++ (BOOL)shouldUseWrapperViewForSceneHandle:(id)handle;
 - (BOOL)_isChamoisOrFlexibleWindowing;
 - (BOOL)_isProbablyScreenSized;
 - (BOOL)_shouldRasterizePositioningLayer;
 - (BOOL)wantsBlackBackground;
 - (CGRect)_effectiveSceneBounds;
-- (SBDeviceApplicationSceneClassicWrapperView)initWithSceneHandle:(id)a3;
+- (SBDeviceApplicationSceneClassicWrapperView)initWithSceneHandle:(id)handle;
 - (void)_shouldRasterizePositioningLayer;
-- (void)addContentView:(id)a3;
+- (void)addContentView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)removeContentView:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)removeContentView:(id)view;
+- (void)setOrientation:(int64_t)orientation;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBDeviceApplicationSceneClassicWrapperView
 
-+ (BOOL)shouldUseWrapperViewForSceneHandle:(id)a3
++ (BOOL)shouldUseWrapperViewForSceneHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [v3 application];
-  if ([v4 isClassic])
+  handleCopy = handle;
+  application = [handleCopy application];
+  if ([application isClassic])
   {
     LOBYTE(v5) = 1;
   }
 
-  else if ([v3 isHostedSecureApp])
+  else if ([handleCopy isHostedSecureApp])
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [v3 _windowScene];
-    v7 = [v6 switcherController];
+    _windowScene = [handleCopy _windowScene];
+    switcherController = [_windowScene switcherController];
 
-    v8 = [v4 bundleIdentifier];
-    v9 = [v8 isEqualToString:@"com.apple.purplebuddy"];
+    bundleIdentifier = [application bundleIdentifier];
+    v9 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
-    v10 = [v7 windowManagementContext];
-    if ([v10 isChamoisOrFlexibleWindowing] && (objc_msgSend(v4, "supportsChamoisSceneResizing") & 1) == 0)
+    windowManagementContext = [switcherController windowManagementContext];
+    if ([windowManagementContext isChamoisOrFlexibleWindowing] && (objc_msgSend(application, "supportsChamoisSceneResizing") & 1) == 0)
     {
-      v11 = [v7 activeAndVisibleSceneIdentifiersForApplication:v4];
-      v12 = [v3 sceneIdentifier];
-      v5 = [v11 containsObject:v12] & (v9 ^ 1);
+      v11 = [switcherController activeAndVisibleSceneIdentifiersForApplication:application];
+      sceneIdentifier = [handleCopy sceneIdentifier];
+      v5 = [v11 containsObject:sceneIdentifier] & (v9 ^ 1);
     }
 
     else
@@ -56,17 +56,17 @@
   return v5;
 }
 
-- (SBDeviceApplicationSceneClassicWrapperView)initWithSceneHandle:(id)a3
+- (SBDeviceApplicationSceneClassicWrapperView)initWithSceneHandle:(id)handle
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handleCopy = handle;
   v29.receiver = self;
   v29.super_class = SBDeviceApplicationSceneClassicWrapperView;
   v6 = [(SBDeviceApplicationSceneClassicWrapperView *)&v29 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sceneHandle, a3);
+    objc_storeStrong(&v6->_sceneHandle, handle);
     if (!v7->_positioningView)
     {
       v8 = [_SBDeviceApplicationSceneClassicHostPositioningView alloc];
@@ -76,22 +76,22 @@
       v7->_positioningView = v9;
 
       [(SBDeviceApplicationSceneClassicWrapperView *)v7 addSubview:v7->_positioningView];
-      v11 = [(_SBDeviceApplicationSceneClassicHostPositioningView *)v7->_positioningView layer];
-      [v11 setMinificationFilter:*MEMORY[0x277CDA278]];
-      [v11 setMagnificationFilter:*MEMORY[0x277CDA578]];
+      layer = [(_SBDeviceApplicationSceneClassicHostPositioningView *)v7->_positioningView layer];
+      [layer setMinificationFilter:*MEMORY[0x277CDA278]];
+      [layer setMagnificationFilter:*MEMORY[0x277CDA578]];
       if ((SBFIsChamoisWindowingUIAvailable() & 1) != 0 || SBFIsFlexibleWindowingUIAvailable())
       {
         v12 = +[SBAppSwitcherDomain rootSettings];
-        v13 = [v12 windowingSettings];
+        windowingSettings = [v12 windowingSettings];
         windowingSettings = v7->_windowingSettings;
-        v7->_windowingSettings = v13;
+        v7->_windowingSettings = windowingSettings;
 
         [(PTSettings *)v7->_windowingSettings addKeyObserver:v7];
         v7->_canRasterize = [(SBSwitcherWindowingSettings *)v7->_windowingSettings rasterizeScaledApps];
         v15 = +[SBDefaults localDefaults];
-        v16 = [v15 appSwitcherDefaults];
+        appSwitcherDefaults = [v15 appSwitcherDefaults];
         appSwitcherDefaults = v7->_appSwitcherDefaults;
-        v7->_appSwitcherDefaults = v16;
+        v7->_appSwitcherDefaults = appSwitcherDefaults;
 
         objc_initWeak(&location, v7);
         v18 = v7->_appSwitcherDefaults;
@@ -134,32 +134,32 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
   [(SBDeviceApplicationSceneClassicWrapperView *)&v3 dealloc];
 }
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
   positioningView = self->_positioningView;
-  v5 = a3;
-  [(_SBDeviceApplicationSceneClassicHostPositioningView *)positioningView addSubview:v5];
+  viewCopy = view;
+  [(_SBDeviceApplicationSceneClassicHostPositioningView *)positioningView addSubview:viewCopy];
   [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView bounds];
-  [v5 setFrame:?];
+  [viewCopy setFrame:?];
 }
 
-- (void)removeContentView:(id)a3
+- (void)removeContentView:(id)view
 {
-  v6 = a3;
-  v4 = [v6 superview];
+  viewCopy = view;
+  superview = [viewCopy superview];
   positioningView = self->_positioningView;
 
-  if (v4 == positioningView)
+  if (superview == positioningView)
   {
-    [v6 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(SBDeviceApplicationSceneClassicWrapperView *)self setNeedsLayout];
   }
 }
@@ -173,10 +173,10 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
 
   if (SBFIsFullScreenLetterboxingAvailable())
   {
-    v3 = [(SBApplicationSceneHandle *)self->_sceneHandle application];
-    v4 = [v3 onlySupportsOneOrientation];
+    application = [(SBApplicationSceneHandle *)self->_sceneHandle application];
+    onlySupportsOneOrientation = [application onlySupportsOneOrientation];
 
-    if (v4)
+    if (onlySupportsOneOrientation)
     {
       return 1;
     }
@@ -187,21 +187,21 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
 
 - (BOOL)_isChamoisOrFlexibleWindowing
 {
-  v2 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
-  v3 = [v2 _windowScene];
-  v4 = [v3 switcherController];
-  v5 = [v4 windowManagementContext];
-  v6 = [v5 isChamoisOrFlexibleWindowing];
+  sceneHandle = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  switcherController = [_windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  return v6;
+  return isChamoisOrFlexibleWindowing;
 }
 
 - (BOOL)_isProbablyScreenSized
 {
-  v3 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
-  v4 = [v3 _windowScene];
-  v5 = [v4 screen];
-  [v5 _referenceBounds];
+  sceneHandle = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
+  _windowScene = [sceneHandle _windowScene];
+  screen = [_windowScene screen];
+  [screen _referenceBounds];
   v7 = v6;
   v9 = v8;
   [(SBDeviceApplicationSceneClassicWrapperView *)self bounds];
@@ -256,8 +256,8 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
   v99.receiver = self;
   v99.super_class = SBDeviceApplicationSceneClassicWrapperView;
   [(SBDeviceApplicationSceneClassicWrapperView *)&v99 layoutSubviews];
-  v3 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
-  v4 = [v3 application];
+  sceneHandle = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
+  application = [sceneHandle application];
   [(SBDeviceApplicationSceneClassicWrapperView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -274,9 +274,9 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
     v82 = y;
     v79 = height;
     v80 = width;
-    v20 = [v3 _windowScene];
-    v85 = [v20 switcherController];
-    v89 = [v20 screen];
+    _windowScene = [sceneHandle _windowScene];
+    switcherController = [_windowScene switcherController];
+    screen = [_windowScene screen];
     startingOrientationForClassicPhoneAppRotation = [(SBDeviceApplicationSceneClassicWrapperView *)self orientation];
     v78 = startingOrientationForClassicPhoneAppRotation;
     if (self->_preparingForUserDrivenClassicRotation)
@@ -284,15 +284,15 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
       startingOrientationForClassicPhoneAppRotation = self->_startingOrientationForClassicPhoneAppRotation;
     }
 
-    v22 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
-    v23 = [v22 sceneIfExists];
-    v24 = [v23 settings];
-    [v24 interfaceOrientation];
+    sceneHandle2 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
+    sceneIfExists = [sceneHandle2 sceneIfExists];
+    settings = [sceneIfExists settings];
+    [settings interfaceOrientation];
 
-    [v4 classicAppPhoneAppRunningOnPad];
-    v25 = [v3 sceneIfExists];
-    v26 = [v25 settings];
-    [v26 frame];
+    [application classicAppPhoneAppRunningOnPad];
+    sceneIfExists2 = [sceneHandle sceneIfExists];
+    settings2 = [sceneIfExists2 settings];
+    [settings2 frame];
     v28 = v27;
     v30 = v29;
 
@@ -304,10 +304,10 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
     rect = v32;
     v84 = v33;
     rect1 = v34;
-    v35 = [v85 layoutState];
-    v36 = [v35 interfaceOrientation];
+    layoutState = [switcherController layoutState];
+    interfaceOrientation = [layoutState interfaceOrientation];
 
-    if ((v36 - 3) <= 1)
+    if ((interfaceOrientation - 3) <= 1)
     {
       v103.origin.x = v6;
       v103.origin.y = v8;
@@ -326,7 +326,7 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
     v40 = v39;
     v42 = v41;
     v44 = v43;
-    [v89 _referenceBounds];
+    [screen _referenceBounds];
     v115.origin.x = v38;
     v115.origin.y = v40;
     v74 = v44;
@@ -343,9 +343,9 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
     v116.size.width = v10;
     v116.size.height = v12;
     v46 = CGRectEqualToRect(v106, v116);
-    if ([v4 classicAppNonFullScreenWithHomeAffordance])
+    if ([application classicAppNonFullScreenWithHomeAffordance])
     {
-      v47 = [v4 classicAppPhoneAppRunningOnPad] ^ 1;
+      v47 = [application classicAppPhoneAppRunningOnPad] ^ 1;
     }
 
     else
@@ -361,9 +361,9 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
       if (v46 || !v45)
       {
         v50 = 0.0;
-        if ([v4 classicAppFullScreen])
+        if ([application classicAppFullScreen])
         {
-          [v89 _isEmbeddedScreen];
+          [screen _isEmbeddedScreen];
         }
 
         v47 = 0;
@@ -373,7 +373,7 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
         goto LABEL_35;
       }
 
-      v52 = [v4 classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen];
+      classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen = [application classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen];
       v107.origin.x = v87;
       v107.origin.y = rect;
       v107.size.width = v84;
@@ -402,7 +402,7 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
       else
       {
         v51 = v12 / rect1;
-        if ([v4 classicAppPhoneAppRunningOnPad])
+        if ([application classicAppPhoneAppRunningOnPad])
         {
           v51 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(startingOrientationForClassicPhoneAppRotation, v77, v76);
           sx = v51;
@@ -410,19 +410,19 @@ void __66__SBDeviceApplicationSceneClassicWrapperView_initWithSceneHandle___bloc
       }
 
       v48 = v82;
-      if ([v4 classicAppFullScreen])
+      if ([application classicAppFullScreen])
       {
-        [v89 _isEmbeddedScreen];
+        [screen _isEmbeddedScreen];
       }
 
       v47 = 0;
       v50 = 0.0;
-      if (v52)
+      if (classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen)
       {
 LABEL_35:
         if (SBFIsFullScreenLetterboxingAvailable())
         {
-          v56 = [(SBDeviceApplicationSceneClassicWrapperView *)self wantsBlackBackground];
+          wantsBlackBackground = [(SBDeviceApplicationSceneClassicWrapperView *)self wantsBlackBackground];
           v57 = sx;
           if (sx <= v51)
           {
@@ -434,7 +434,7 @@ LABEL_35:
             v58 = v51;
           }
 
-          if (v56)
+          if (wantsBlackBackground)
           {
             v57 = v58;
             v51 = v58;
@@ -482,11 +482,11 @@ LABEL_35:
 
           else
           {
-            v64 = [v4 includesStatusBarInClassicJailForInterfaceOrientation:v59];
+            v64 = [application includesStatusBarInClassicJailForInterfaceOrientation:v59];
           }
 
-          v65 = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
-          SBClassicUtilitiesInsetAndTranslateLayerForPresentationWithHomeAffordance(v65, v89, 0, v59, 1, v64, [v4 classicAppWithRoundedCorners], v75, v74, v77, v76, v51);
+          layer = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
+          SBClassicUtilitiesInsetAndTranslateLayerForPresentationWithHomeAffordance(layer, screen, 0, v59, 1, v64, [application classicAppWithRoundedCorners], v75, v74, v77, v76, v51);
 
           v12 = v79;
         }
@@ -522,10 +522,10 @@ LABEL_30:
       goto LABEL_35;
     }
 
-    if ([v4 classicAppPhoneAppRunningOnPad])
+    if ([application classicAppPhoneAppRunningOnPad])
     {
       v51 = 1.0;
-      if ([v4 classicAppZoomedInOrRequiresHiDPI])
+      if ([application classicAppZoomedInOrRequiresHiDPI])
       {
         v51 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(startingOrientationForClassicPhoneAppRotation, v77, v76);
       }
@@ -537,7 +537,7 @@ LABEL_30:
     else
     {
       v50 = 0.0;
-      if ([v4 classicAppScaled])
+      if ([application classicAppScaled])
       {
         v111.origin.x = v6;
         v111.origin.y = v8;
@@ -563,7 +563,7 @@ LABEL_30:
         v114.size.height = rect1;
         sx = v54 / CGRectGetWidth(v114);
         v50 = 0.0;
-        if ([v4 classicAppFullScreen])
+        if ([application classicAppFullScreen])
         {
           goto LABEL_35;
         }
@@ -590,18 +590,18 @@ LABEL_30:
   *&v98.tx = *(MEMORY[0x277CBF2C0] + 32);
   [(_SBDeviceApplicationSceneClassicHostPositioningView *)v18 setTransform:&v98];
 LABEL_54:
-  v66 = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
-  [v66 setShouldRasterize:{-[SBDeviceApplicationSceneClassicWrapperView _shouldRasterizePositioningLayer](self, "_shouldRasterizePositioningLayer")}];
-  v67 = [(SBDeviceApplicationSceneClassicWrapperView *)self traitCollection];
-  [v67 displayScale];
-  [v66 setRasterizationScale:?];
+  layer2 = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
+  [layer2 setShouldRasterize:{-[SBDeviceApplicationSceneClassicWrapperView _shouldRasterizePositioningLayer](self, "_shouldRasterizePositioningLayer")}];
+  traitCollection = [(SBDeviceApplicationSceneClassicWrapperView *)self traitCollection];
+  [traitCollection displayScale];
+  [layer2 setRasterizationScale:?];
 
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v68 = [(SBDeviceApplicationSceneClassicWrapperView *)self contentViews];
-  v69 = [v68 countByEnumeratingWithState:&v90 objects:v100 count:16];
+  contentViews = [(SBDeviceApplicationSceneClassicWrapperView *)self contentViews];
+  v69 = [contentViews countByEnumeratingWithState:&v90 objects:v100 count:16];
   if (v69)
   {
     v70 = v69;
@@ -612,13 +612,13 @@ LABEL_54:
       {
         if (*v91 != v71)
         {
-          objc_enumerationMutation(v68);
+          objc_enumerationMutation(contentViews);
         }
 
         [*(*(&v90 + 1) + 8 * i) setFrame:{v6, v8, v10, v12}];
       }
 
-      v70 = [v68 countByEnumeratingWithState:&v90 objects:v100 count:16];
+      v70 = [contentViews countByEnumeratingWithState:&v90 objects:v100 count:16];
     }
 
     while (v70);
@@ -627,18 +627,18 @@ LABEL_54:
 
 - (CGRect)_effectiveSceneBounds
 {
-  v2 = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
-  v3 = [v2 sceneIfExists];
+  sceneHandle = [(SBDeviceApplicationSceneClassicWrapperView *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
-  if (v3)
+  if (sceneIfExists)
   {
-    v4 = [v3 settings];
-    [v4 frame];
+    settings = [sceneIfExists settings];
+    [settings frame];
     v6 = v5;
     v8 = v7;
 
-    v9 = [v3 settings];
-    v10 = [v9 interfaceOrientation] - 3;
+    settings2 = [sceneIfExists settings];
+    v10 = [settings2 interfaceOrientation] - 3;
 
     if (v10 > 1)
     {
@@ -675,9 +675,9 @@ LABEL_54:
   return result;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_windowingSettings == a3 && [a4 isEqualToString:@"rasterizeScaledApps"])
+  if (self->_windowingSettings == settings && [key isEqualToString:@"rasterizeScaledApps"])
   {
     self->_canRasterize = [(SBSwitcherWindowingSettings *)self->_windowingSettings rasterizeScaledApps];
 
@@ -712,11 +712,11 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v3 = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
-  v4 = v3;
-  if (v3)
+  layer = [(_SBDeviceApplicationSceneClassicHostPositioningView *)self->_positioningView layer];
+  v4 = layer;
+  if (layer)
   {
-    [v3 transform:0];
+    [layer transform:0];
   }
 
   v5 = BSFloatIsOne() ^ 1;

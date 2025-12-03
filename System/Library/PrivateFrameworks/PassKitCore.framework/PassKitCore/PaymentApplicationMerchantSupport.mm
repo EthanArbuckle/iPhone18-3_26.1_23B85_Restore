@@ -1,25 +1,25 @@
 @interface PaymentApplicationMerchantSupport
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)fetchSupportedCountries:(BOOL)a3 forPaymentApplicationPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)insertCountryCodes:(id)a3 supported:(BOOL)a4 withPaymentApplication:(id)a5 inDatabase:(id)a6;
-+ (id)predicateForPaymentApplicationPID:(int64_t)a3;
-+ (id)predicateForSupported:(BOOL)a3;
-+ (id)predicateForSupportedCountries:(BOOL)a3 forPaymentApplication:(id)a4;
-+ (id)predicateForSupportedCountries:(BOOL)a3 forPaymentApplicationPID:(int64_t)a4;
-+ (id)supportedCountryCodesForPaymentApplication:(id)a3 inDatabase:(id)a4;
-+ (id)unsupportedCountryCodesForPaymentApplication:(id)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForPaymentApplication:(id)a3 inDatabase:(id)a4;
-+ (void)deleteSupportedCountryCodes:(BOOL)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5;
-+ (void)updateSupportedCountryCodes:(id)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5;
-+ (void)updateUnsupportedCountryCodes:(id)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5;
-- (PaymentApplicationMerchantSupport)initWithMerchantCountryCode:(id)a3 supported:(BOOL)a4 forPaymentApplication:(id)a5 database:(id)a6;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)fetchSupportedCountries:(BOOL)countries forPaymentApplicationPID:(int64_t)d inDatabase:(id)database;
++ (id)insertCountryCodes:(id)codes supported:(BOOL)supported withPaymentApplication:(id)application inDatabase:(id)database;
++ (id)predicateForPaymentApplicationPID:(int64_t)d;
++ (id)predicateForSupported:(BOOL)supported;
++ (id)predicateForSupportedCountries:(BOOL)countries forPaymentApplication:(id)application;
++ (id)predicateForSupportedCountries:(BOOL)countries forPaymentApplicationPID:(int64_t)d;
++ (id)supportedCountryCodesForPaymentApplication:(id)application inDatabase:(id)database;
++ (id)unsupportedCountryCodesForPaymentApplication:(id)application inDatabase:(id)database;
++ (void)deleteEntitiesForPaymentApplication:(id)application inDatabase:(id)database;
++ (void)deleteSupportedCountryCodes:(BOOL)codes forPaymentApplication:(id)application inDatabase:(id)database;
++ (void)updateSupportedCountryCodes:(id)codes forPaymentApplication:(id)application inDatabase:(id)database;
++ (void)updateUnsupportedCountryCodes:(id)codes forPaymentApplication:(id)application inDatabase:(id)database;
+- (PaymentApplicationMerchantSupport)initWithMerchantCountryCode:(id)code supported:(BOOL)supported forPaymentApplication:(id)application database:(id)database;
 @end
 
 @implementation PaymentApplicationMerchantSupport
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"payment_application_pid";
   }
@@ -30,24 +30,24 @@
   }
 }
 
-- (PaymentApplicationMerchantSupport)initWithMerchantCountryCode:(id)a3 supported:(BOOL)a4 forPaymentApplication:(id)a5 database:(id)a6
+- (PaymentApplicationMerchantSupport)initWithMerchantCountryCode:(id)code supported:(BOOL)supported forPaymentApplication:(id)application database:(id)database
 {
-  if (a5)
+  if (application)
   {
-    v8 = a4;
-    v10 = a6;
-    v11 = a5;
-    v12 = a3;
+    supportedCopy = supported;
+    databaseCopy = database;
+    applicationCopy = application;
+    codeCopy = code;
     v13 = objc_alloc_init(NSMutableDictionary);
     v14 = +[NSNull null];
-    v15 = [v11 persistentID];
+    persistentID = [applicationCopy persistentID];
 
-    v16 = [NSNumber numberWithLongLong:v15];
+    v16 = [NSNumber numberWithLongLong:persistentID];
     [v13 setObject:v16 forKeyedSubscript:@"payment_application_pid"];
 
-    if (v12)
+    if (codeCopy)
     {
-      v17 = v12;
+      v17 = codeCopy;
     }
 
     else
@@ -57,45 +57,29 @@
 
     [v13 setObject:v17 forKeyedSubscript:@"merchant_country_code"];
 
-    v18 = [NSNumber numberWithBool:v8];
+    v18 = [NSNumber numberWithBool:supportedCopy];
     [v13 setObject:v18 forKeyedSubscript:@"supported"];
 
-    v19 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:v10];
+    v19 = [(SQLiteEntity *)self initWithPropertyValues:v13 inDatabase:databaseCopy];
     self = v19;
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-+ (id)supportedCountryCodesForPaymentApplication:(id)a3 inDatabase:(id)a4
++ (id)supportedCountryCodesForPaymentApplication:(id)application inDatabase:(id)database
 {
-  if (a3)
+  if (application)
   {
-    v6 = a4;
-    v7 = [a1 supportedCountryCodesForPaymentApplicationPID:objc_msgSend(a3 inDatabase:{"persistentID"), v6}];
-  }
-
-  else
-  {
-    v7 = 0;
-  }
-
-  return v7;
-}
-
-+ (id)unsupportedCountryCodesForPaymentApplication:(id)a3 inDatabase:(id)a4
-{
-  if (a3)
-  {
-    v6 = a4;
-    v7 = [a1 unsupportedCountryCodesForPaymentApplicationPID:objc_msgSend(a3 inDatabase:{"persistentID"), v6}];
+    databaseCopy = database;
+    v7 = [self supportedCountryCodesForPaymentApplicationPID:objc_msgSend(application inDatabase:{"persistentID"), databaseCopy}];
   }
 
   else
@@ -106,12 +90,28 @@
   return v7;
 }
 
-+ (id)fetchSupportedCountries:(BOOL)a3 forPaymentApplicationPID:(int64_t)a4 inDatabase:(id)a5
++ (id)unsupportedCountryCodesForPaymentApplication:(id)application inDatabase:(id)database
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [a1 predicateForSupportedCountries:v6 forPaymentApplicationPID:a4];
-  v10 = [a1 queryWithDatabase:v8 predicate:v9];
+  if (application)
+  {
+    databaseCopy = database;
+    v7 = [self unsupportedCountryCodesForPaymentApplicationPID:objc_msgSend(application inDatabase:{"persistentID"), databaseCopy}];
+  }
+
+  else
+  {
+    v7 = 0;
+  }
+
+  return v7;
+}
+
++ (id)fetchSupportedCountries:(BOOL)countries forPaymentApplicationPID:(int64_t)d inDatabase:(id)database
+{
+  countriesCopy = countries;
+  databaseCopy = database;
+  v9 = [self predicateForSupportedCountries:countriesCopy forPaymentApplicationPID:d];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v9];
 
   v11 = objc_alloc_init(NSMutableArray);
   v18 = @"merchant_country_code";
@@ -137,73 +137,73 @@
   return v14;
 }
 
-+ (void)deleteEntitiesForPaymentApplication:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForPaymentApplication:(id)application inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 deleteSupportedCountryCodes:1 forPaymentApplication:v7 inDatabase:v6];
-  [a1 deleteSupportedCountryCodes:0 forPaymentApplication:v7 inDatabase:v6];
+  databaseCopy = database;
+  applicationCopy = application;
+  [self deleteSupportedCountryCodes:1 forPaymentApplication:applicationCopy inDatabase:databaseCopy];
+  [self deleteSupportedCountryCodes:0 forPaymentApplication:applicationCopy inDatabase:databaseCopy];
 }
 
-+ (void)updateSupportedCountryCodes:(id)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5
++ (void)updateSupportedCountryCodes:(id)codes forPaymentApplication:(id)application inDatabase:(id)database
 {
-  v8 = a3;
+  codesCopy = codes;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000F66D8;
   v12[3] = &unk_100843068;
-  v13 = a4;
-  v14 = a5;
-  v15 = v8;
-  v16 = a1;
-  v9 = v8;
-  v10 = v14;
-  v11 = v13;
+  applicationCopy = application;
+  databaseCopy = database;
+  v15 = codesCopy;
+  selfCopy = self;
+  v9 = codesCopy;
+  v10 = databaseCopy;
+  v11 = applicationCopy;
   sub_1005D4424(v10, v12);
 }
 
-+ (void)updateUnsupportedCountryCodes:(id)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5
++ (void)updateUnsupportedCountryCodes:(id)codes forPaymentApplication:(id)application inDatabase:(id)database
 {
-  v8 = a3;
+  codesCopy = codes;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000F6808;
   v12[3] = &unk_100843068;
-  v13 = a4;
-  v14 = a5;
-  v15 = v8;
-  v16 = a1;
-  v9 = v8;
-  v10 = v14;
-  v11 = v13;
+  applicationCopy = application;
+  databaseCopy = database;
+  v15 = codesCopy;
+  selfCopy = self;
+  v9 = codesCopy;
+  v10 = databaseCopy;
+  v11 = applicationCopy;
   sub_1005D4424(v10, v12);
 }
 
-+ (void)deleteSupportedCountryCodes:(BOOL)a3 forPaymentApplication:(id)a4 inDatabase:(id)a5
++ (void)deleteSupportedCountryCodes:(BOOL)codes forPaymentApplication:(id)application inDatabase:(id)database
 {
-  v6 = a3;
-  v8 = a5;
-  v10 = [a1 predicateForSupportedCountries:v6 forPaymentApplication:a4];
-  v9 = [(SQLiteEntity *)PaymentApplicationMerchantSupport queryWithDatabase:v8 predicate:v10];
+  codesCopy = codes;
+  databaseCopy = database;
+  v10 = [self predicateForSupportedCountries:codesCopy forPaymentApplication:application];
+  v9 = [(SQLiteEntity *)PaymentApplicationMerchantSupport queryWithDatabase:databaseCopy predicate:v10];
 
   [v9 deleteAllEntities];
 }
 
-+ (id)insertCountryCodes:(id)a3 supported:(BOOL)a4 withPaymentApplication:(id)a5 inDatabase:(id)a6
++ (id)insertCountryCodes:(id)codes supported:(BOOL)supported withPaymentApplication:(id)application inDatabase:(id)database
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10 && [v10 count])
+  supportedCopy = supported;
+  codesCopy = codes;
+  applicationCopy = application;
+  databaseCopy = database;
+  if (codesCopy && [codesCopy count])
   {
-    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+    v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(codesCopy, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v10;
-    v14 = v10;
+    v23 = codesCopy;
+    v14 = codesCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
     {
@@ -218,7 +218,7 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [[a1 alloc] initWithMerchantCountryCode:*(*(&v24 + 1) + 8 * i) supported:v8 forPaymentApplication:v11 database:v12];
+          v19 = [[self alloc] initWithMerchantCountryCode:*(*(&v24 + 1) + 8 * i) supported:supportedCopy forPaymentApplication:applicationCopy database:databaseCopy];
           if (v19)
           {
             [v13 addObject:v19];
@@ -243,7 +243,7 @@
 
     v21 = v20;
 
-    v10 = v23;
+    codesCopy = v23;
   }
 
   else
@@ -254,11 +254,11 @@
   return v21;
 }
 
-+ (id)predicateForSupportedCountries:(BOOL)a3 forPaymentApplication:(id)a4
++ (id)predicateForSupportedCountries:(BOOL)countries forPaymentApplication:(id)application
 {
-  if (a4)
+  if (application)
   {
-    [a1 predicateForSupportedCountries:a3 forPaymentApplicationPID:{objc_msgSend(a4, "persistentID")}];
+    [self predicateForSupportedCountries:countries forPaymentApplicationPID:{objc_msgSend(application, "persistentID")}];
   }
 
   else
@@ -270,11 +270,11 @@
   return v4;
 }
 
-+ (id)predicateForSupportedCountries:(BOOL)a3 forPaymentApplicationPID:(int64_t)a4
++ (id)predicateForSupportedCountries:(BOOL)countries forPaymentApplicationPID:(int64_t)d
 {
-  v4 = a3;
-  v6 = [a1 predicateForPaymentApplicationPID:a4];
-  v7 = [a1 predicateForSupported:v4];
+  countriesCopy = countries;
+  v6 = [self predicateForPaymentApplicationPID:d];
+  v7 = [self predicateForSupported:countriesCopy];
   v11[0] = v6;
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
@@ -283,17 +283,17 @@
   return v9;
 }
 
-+ (id)predicateForPaymentApplicationPID:(int64_t)a3
++ (id)predicateForPaymentApplicationPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForSupported:(BOOL)a3
++ (id)predicateForSupported:(BOOL)supported
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:supported];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"supported" equalToValue:v3];
 
   return v4;

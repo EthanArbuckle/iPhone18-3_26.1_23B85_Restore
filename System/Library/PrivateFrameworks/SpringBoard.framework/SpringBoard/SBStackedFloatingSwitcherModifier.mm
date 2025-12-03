@@ -1,15 +1,15 @@
 @interface SBStackedFloatingSwitcherModifier
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
 @end
 
 @implementation SBStackedFloatingSwitcherModifier
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBStackedFloatingSwitcherModifier *)self appLayouts];
-  v7 = [v6 indexOfObject:v5];
+  layoutCopy = layout;
+  appLayouts = [(SBStackedFloatingSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts indexOfObject:layoutCopy];
 
   result = dbl_21F8A7440[v7 == 1];
   if (!v7)
@@ -20,10 +20,10 @@
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   result = 0.0;
-  if (!a4)
+  if (!index)
   {
     return 1.0;
   }

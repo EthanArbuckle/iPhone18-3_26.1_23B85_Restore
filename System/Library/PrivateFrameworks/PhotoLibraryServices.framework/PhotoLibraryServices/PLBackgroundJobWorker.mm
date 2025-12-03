@@ -1,21 +1,21 @@
 @interface PLBackgroundJobWorker
-+ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)a3;
-+ (int64_t)availableDiskSpaceForVolumeURL:(id)a3;
-- (BOOL)hasEnoughDiskSpaceToContinue:(id)a3;
++ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)identifier;
++ (int64_t)availableDiskSpaceForVolumeURL:(id)l;
+- (BOOL)hasEnoughDiskSpaceToContinue:(id)continue;
 - (PLBackgroundJobStatusCenter)statusCenter;
-- (PLBackgroundJobWorker)initWithLibraryBundle:(id)a3;
-- (id)pendingJobsInLibrary:(id)a3;
-- (id)photoLibraryWithDatabaseContext:(id)a3;
+- (PLBackgroundJobWorker)initWithLibraryBundle:(id)bundle;
+- (id)pendingJobsInLibrary:(id)library;
+- (id)photoLibraryWithDatabaseContext:(id)context;
 - (id)redactedDescription;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3;
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4;
+- (id)workItemsNeedingProcessingInLibrary:(id)library;
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias;
 - (unint64_t)type;
-- (void)_handleAllJobsCompleteInLibrary:(id)a3 allowOutsideLimiter:(BOOL)a4;
-- (void)_processNextManagedObjectInLibrary:(id)a3 continueRunning:(BOOL)a4 allowOutsideLimiter:(BOOL)a5 reportProgressUsingBlock:(id)a6;
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5;
-- (void)startWorkInLibrary:(id)a3 withWorkItemsNeedingProcessing:(id)a4 reportProgressUsingBlock:(id)a5 withCompletion:(id)a6;
+- (void)_handleAllJobsCompleteInLibrary:(id)library allowOutsideLimiter:(BOOL)limiter;
+- (void)_processNextManagedObjectInLibrary:(id)library continueRunning:(BOOL)running allowOutsideLimiter:(BOOL)limiter reportProgressUsingBlock:(id)block;
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion;
+- (void)startWorkInLibrary:(id)library withWorkItemsNeedingProcessing:(id)processing reportProgressUsingBlock:(id)block withCompletion:(id)completion;
 - (void)stopAllWork;
-- (void)stopWorkingOnItem:(id)a3;
+- (void)stopWorkingOnItem:(id)item;
 @end
 
 @implementation PLBackgroundJobWorker
@@ -29,64 +29,64 @@
 
 - (unint64_t)type
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-- (void)stopWorkingOnItem:(id)a3
+- (void)stopWorkingOnItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
+  itemCopy = item;
+  selfCopy = self;
   v6 = PLAbstractMethodException();
   objc_exception_throw(v6);
 }
 
-- (void)performWorkOnItem:(id)a3 inLibrary:(id)a4 completion:(id)a5
+- (void)performWorkOnItem:(id)item inLibrary:(id)library completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  itemCopy = item;
+  libraryCopy = library;
+  completionCopy = completion;
+  selfCopy = self;
   v12 = PLAbstractMethodException();
   objc_exception_throw(v12);
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3 validCriterias:(id)a4
+- (id)workItemsNeedingProcessingInLibrary:(id)library validCriterias:(id)criterias
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  libraryCopy = library;
+  criteriasCopy = criterias;
+  selfCopy = self;
   v9 = PLAbstractMethodException();
   objc_exception_throw(v9);
 }
 
-- (id)workItemsNeedingProcessingInLibrary:(id)a3
+- (id)workItemsNeedingProcessingInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = +[PLBackgroundJobCriteria allKnownCriteria];
-  v6 = [(PLBackgroundJobWorker *)self workItemsNeedingProcessingInLibrary:v4 validCriterias:v5];
+  v6 = [(PLBackgroundJobWorker *)self workItemsNeedingProcessingInLibrary:libraryCopy validCriterias:v5];
 
   return v6;
 }
 
-- (id)photoLibraryWithDatabaseContext:(id)a3
+- (id)photoLibraryWithDatabaseContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PLBackgroundJobWorker *)self workerName];
-  v6 = [v4 newShortLivedLibraryWithName:{objc_msgSend(v5, "UTF8String")}];
+  contextCopy = context;
+  workerName = [(PLBackgroundJobWorker *)self workerName];
+  v6 = [contextCopy newShortLivedLibraryWithName:{objc_msgSend(workerName, "UTF8String")}];
 
   return v6;
 }
 
-- (BOOL)hasEnoughDiskSpaceToContinue:(id)a3
+- (BOOL)hasEnoughDiskSpaceToContinue:(id)continue
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  continueCopy = continue;
   v5 = objc_opt_class();
-  v6 = [(PLPhotoLibraryBundle *)self->_libraryBundle pathManager];
-  v7 = [v6 libraryURL];
-  v8 = [v5 availableDiskSpaceForVolumeURL:v7];
+  pathManager = [(PLPhotoLibraryBundle *)self->_libraryBundle pathManager];
+  libraryURL = [pathManager libraryURL];
+  v8 = [v5 availableDiskSpaceForVolumeURL:libraryURL];
 
   if (v8 <= 2)
   {
@@ -96,7 +96,7 @@
     v15[0] = @"stopping due to low available disk space";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v12 = [v9 errorWithDomain:v10 code:46516 userInfo:v11];
-    v4[2](v4, v12);
+    continueCopy[2](continueCopy, v12);
   }
 
   return v8 > 2;
@@ -116,10 +116,10 @@
   }
 
   self->_shouldStop = 1;
-  v5 = [(PLBackgroundJobWorker *)self isInterruptible];
+  isInterruptible = [(PLBackgroundJobWorker *)self isInterruptible];
   v6 = PLBackgroundJobServiceGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (isInterruptible)
   {
     if (v7)
     {
@@ -262,20 +262,20 @@ void __36__PLBackgroundJobWorker_stopAllWork__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)startWorkInLibrary:(id)a3 withWorkItemsNeedingProcessing:(id)a4 reportProgressUsingBlock:(id)a5 withCompletion:(id)a6
+- (void)startWorkInLibrary:(id)library withWorkItemsNeedingProcessing:(id)processing reportProgressUsingBlock:(id)block withCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 copy];
+  libraryCopy = library;
+  processingCopy = processing;
+  blockCopy = block;
+  v13 = [completion copy];
   workerCompleteCompletionHandler = self->_workerCompleteCompletionHandler;
   self->_workerCompleteCompletionHandler = v13;
 
   os_unfair_lock_lock(&self->_lock);
-  if ([v11 count])
+  if ([processingCopy count])
   {
-    [(NSMutableArray *)self->_pendingJobs addObjectsFromArray:v11];
+    [(NSMutableArray *)self->_pendingJobs addObjectsFromArray:processingCopy];
   }
 
   self->_totalJobsCount = [(NSMutableArray *)self->_pendingJobs count];
@@ -292,7 +292,7 @@ void __36__PLBackgroundJobWorker_stopAllWork__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_INFO, "%{public}@ worker has %tu pending jobs. Starting on first one", buf, 0x16u);
   }
 
-  v12[2](v12, 2, 0, self->_workerName);
+  blockCopy[2](blockCopy, 2, 0, self->_workerName);
   WeakRetained = objc_loadWeakRetained(&self->_statusCenter);
   [WeakRetained recordStartingWorker:self withJobCount:{-[NSMutableArray count](self->_pendingJobs, "count")}];
 
@@ -302,16 +302,16 @@ void __36__PLBackgroundJobWorker_stopAllWork__block_invoke_2(uint64_t a1)
   v22[2] = __115__PLBackgroundJobWorker_startWorkInLibrary_withWorkItemsNeedingProcessing_reportProgressUsingBlock_withCompletion___block_invoke;
   v22[3] = &unk_1E7576F38;
   v22[4] = self;
-  v23 = v10;
-  v24 = v12;
-  v20 = v12;
-  v21 = v10;
+  v23 = libraryCopy;
+  v24 = blockCopy;
+  v20 = blockCopy;
+  v21 = libraryCopy;
   [v19 async:v22 identifyingBlock:0 library:v21];
 }
 
-- (id)pendingJobsInLibrary:(id)a3
+- (id)pendingJobsInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -324,7 +324,7 @@ void __36__PLBackgroundJobWorker_stopAllWork__block_invoke_2(uint64_t a1)
   aBlock[3] = &unk_1E7578820;
   v14 = &v15;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = libraryCopy;
   v13 = v5;
   v6 = _Block_copy(aBlock);
   if ([objc_opt_class() usesMultipleLibrariesConcurrently])
@@ -358,14 +358,14 @@ void __46__PLBackgroundJobWorker_pendingJobsInLibrary___block_invoke(uint64_t a1
   *(v3 + 40) = v2;
 }
 
-- (void)_handleAllJobsCompleteInLibrary:(id)a3 allowOutsideLimiter:(BOOL)a4
+- (void)_handleAllJobsCompleteInLibrary:(id)library allowOutsideLimiter:(BOOL)limiter
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!a4 && !+[PLConcurrencyLimiter isRunningUnderLimiter])
+  libraryCopy = library;
+  if (!limiter && !+[PLConcurrencyLimiter isRunningUnderLimiter])
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorker.m" lineNumber:248 description:@"expected to already be on the limiter"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorker.m" lineNumber:248 description:@"expected to already be on the limiter"];
   }
 
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -383,30 +383,30 @@ void __46__PLBackgroundJobWorker_pendingJobsInLibrary___block_invoke(uint64_t a1
   [WeakRetained recordFinishingWorker:self];
 }
 
-- (void)_processNextManagedObjectInLibrary:(id)a3 continueRunning:(BOOL)a4 allowOutsideLimiter:(BOOL)a5 reportProgressUsingBlock:(id)a6
+- (void)_processNextManagedObjectInLibrary:(id)library continueRunning:(BOOL)running allowOutsideLimiter:(BOOL)limiter reportProgressUsingBlock:(id)block
 {
   v55 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (!a5 && !+[PLConcurrencyLimiter isRunningUnderLimiter])
+  libraryCopy = library;
+  blockCopy = block;
+  if (!limiter && !+[PLConcurrencyLimiter isRunningUnderLimiter])
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorker.m" lineNumber:116 description:@"expected to already be on the limiter"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLBackgroundJobWorker.m" lineNumber:116 description:@"expected to already be on the limiter"];
   }
 
   os_unfair_lock_lock(&self->_lock);
   v13 = [(NSMutableArray *)self->_pendingJobs count];
-  v14 = [(NSMutableArray *)self->_pendingJobs firstObject];
+  firstObject = [(NSMutableArray *)self->_pendingJobs firstObject];
   shouldStop = self->_shouldStop;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121__PLBackgroundJobWorker__processNextManagedObjectInLibrary_continueRunning_allowOutsideLimiter_reportProgressUsingBlock___block_invoke;
   aBlock[3] = &unk_1E75760C8;
-  v16 = v12;
+  v16 = blockCopy;
   v47 = v16;
   aBlock[4] = self;
-  v48 = a5;
-  v17 = v11;
+  limiterCopy = limiter;
+  v17 = libraryCopy;
   v46 = v17;
   v18 = _Block_copy(aBlock);
   v19 = v18;
@@ -421,7 +421,7 @@ void __46__PLBackgroundJobWorker_pendingJobsInLibrary___block_invoke(uint64_t a1
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "_photoLibrary is nil when processing next object, setting shouldStop to YES to initiate job completion. Bundle %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (running)
     {
       goto LABEL_17;
     }
@@ -429,7 +429,7 @@ void __46__PLBackgroundJobWorker_pendingJobsInLibrary___block_invoke(uint64_t a1
     goto LABEL_14;
   }
 
-  if (!a4)
+  if (!running)
   {
 LABEL_14:
     v30 = PLBackgroundJobServiceGetLog();
@@ -460,7 +460,7 @@ LABEL_14:
         *&v52[4] = 2048;
         *&v52[6] = totalJobsCount;
         v53 = 2114;
-        v54 = v14;
+        v54 = firstObject;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_INFO, "%{public}@ worker processing object %d of %tu: %{public}@", buf, 0x26u);
       }
 
@@ -474,7 +474,7 @@ LABEL_14:
       v23 = v17;
       v41 = v23;
       v44[1] = v13;
-      v24 = v14;
+      v24 = firstObject;
       v42 = v24;
       v25 = _Block_copy(v40);
       currentManagedObjectCompletionHandler = self->_currentManagedObjectCompletionHandler;
@@ -809,24 +809,24 @@ void __121__PLBackgroundJobWorker__processNextManagedObjectInLibrary_continueRun
 {
   v3 = MEMORY[0x1E696AEC0];
   workerName = self->_workerName;
-  v5 = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
-  [v5 wellKnownPhotoLibraryIdentifier];
+  libraryServicesManager = [(PLPhotoLibraryBundle *)self->_libraryBundle libraryServicesManager];
+  [libraryServicesManager wellKnownPhotoLibraryIdentifier];
   v6 = PLStringFromWellKnownPhotoLibraryIdentifier();
   v7 = [v3 stringWithFormat:@"%@:%@ - %tu", workerName, v6, -[NSMutableArray count](self->_pendingJobs, "count")];
 
   return v7;
 }
 
-- (PLBackgroundJobWorker)initWithLibraryBundle:(id)a3
+- (PLBackgroundJobWorker)initWithLibraryBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v21.receiver = self;
   v21.super_class = PLBackgroundJobWorker;
   v6 = [(PLBackgroundJobWorker *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryBundle, a3);
+    objc_storeStrong(&v6->_libraryBundle, bundle);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     workerName = v7->_workerName;
@@ -834,10 +834,10 @@ void __121__PLBackgroundJobWorker__processNextManagedObjectInLibrary_continueRun
 
     v11 = MEMORY[0x1E696AEC0];
     v12 = v7->_workerName;
-    v13 = [(PLPhotoLibraryBundle *)v7->_libraryBundle pathManager];
-    v14 = [v13 libraryURL];
-    v15 = [v14 absoluteString];
-    v16 = [v11 stringWithFormat:@"%@-@-%@", v12, v15];
+    pathManager = [(PLPhotoLibraryBundle *)v7->_libraryBundle pathManager];
+    libraryURL = [pathManager libraryURL];
+    absoluteString = [libraryURL absoluteString];
+    v16 = [v11 stringWithFormat:@"%@-@-%@", v12, absoluteString];
     workerDetailedName = v7->_workerDetailedName;
     v7->_workerDetailedName = v16;
 
@@ -852,17 +852,17 @@ void __121__PLBackgroundJobWorker__processNextManagedObjectInLibrary_continueRun
   return v7;
 }
 
-+ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)a3
++ (BOOL)supportsWellKnownPhotoLibraryIdentifier:(int64_t)identifier
 {
-  v3 = a1;
+  selfCopy = self;
   v4 = PLAbstractMethodException();
   objc_exception_throw(v4);
 }
 
-+ (int64_t)availableDiskSpaceForVolumeURL:(id)a3
++ (int64_t)availableDiskSpaceForVolumeURL:(id)l
 {
   v9 = 0;
-  v3 = [a3 getResourceValue:&v9 forKey:*MEMORY[0x1E695DD60] error:0];
+  v3 = [l getResourceValue:&v9 forKey:*MEMORY[0x1E695DD60] error:0];
   v4 = v9;
   v5 = v4;
   if (!v3 || ((v6 = [v4 unsignedLongLongValue], !(v6 >> 29)) ? (v7 = 1) : (v7 = 2), v6 >> 30))

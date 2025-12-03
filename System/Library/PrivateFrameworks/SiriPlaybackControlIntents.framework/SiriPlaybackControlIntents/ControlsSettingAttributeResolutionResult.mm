@@ -1,22 +1,22 @@
 @interface ControlsSettingAttributeResolutionResult
-+ (id)confirmationRequiredWithControlsSettingAttributeToConfirm:(id)a3;
-+ (id)disambiguationWithControlsSettingAttributesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedControlsSettingAttribute:(id)a3;
++ (id)confirmationRequiredWithControlsSettingAttributeToConfirm:(id)confirm;
++ (id)disambiguationWithControlsSettingAttributesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedControlsSettingAttribute:(id)attribute;
 @end
 
 @implementation ControlsSettingAttributeResolutionResult
 
-+ (id)successWithResolvedControlsSettingAttribute:(id)a3
++ (id)successWithResolvedControlsSettingAttribute:(id)attribute
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B33E38(v4);
+  attributeCopy = attribute;
+  v5 = sub_268B33E38(attributeCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithControlsSettingAttributesToDisambiguate:(id)a3
++ (id)disambiguationWithControlsSettingAttributesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for ControlsSettingAttribute();
   v3 = sub_268B37CF4();
@@ -26,16 +26,16 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithControlsSettingAttributeToConfirm:(id)a3
++ (id)confirmationRequiredWithControlsSettingAttributeToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_268B34050(a3);
+  confirmCopy = confirm;
+  v5 = sub_268B34050(confirm);
 
   return v5;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   sub_268B2CDF4();
   sub_268B37CF4();

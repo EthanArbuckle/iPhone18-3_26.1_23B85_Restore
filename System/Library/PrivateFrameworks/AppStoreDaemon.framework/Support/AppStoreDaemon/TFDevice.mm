@@ -1,10 +1,10 @@
 @interface TFDevice
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TFDevice
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = TFDevice;
   v3 = [(TFDevice *)&v7 description];
-  v4 = [(TFDevice *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TFDevice *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -79,8 +79,8 @@
   display = self->_display;
   if (display)
   {
-    v13 = [(TFDisplay *)display dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"display"];
+    dictionaryRepresentation = [(TFDisplay *)display dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"display"];
   }
 
   locale = self->_locale;
@@ -126,8 +126,8 @@
   disk = self->_disk;
   if (disk)
   {
-    v21 = [(TFMemoryUsage *)disk dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"disk"];
+    dictionaryRepresentation2 = [(TFMemoryUsage *)disk dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"disk"];
   }
 
   if (*&self->_has)
@@ -139,75 +139,75 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_model)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_osVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_architecture)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_display)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_locale)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timezone)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_carrier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_cellularNetworkType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_disk)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -227,49 +227,49 @@ LABEL_23:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_24:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_25:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_model copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_model copyWithZone:zone];
   v7 = v5[10];
   v5[10] = v6;
 
-  v8 = [(NSString *)self->_osVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_osVersion copyWithZone:zone];
   v9 = v5[11];
   v5[11] = v8;
 
-  v10 = [(NSString *)self->_architecture copyWithZone:a3];
+  v10 = [(NSString *)self->_architecture copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(TFDisplay *)self->_display copyWithZone:a3];
+  v12 = [(TFDisplay *)self->_display copyWithZone:zone];
   v13 = v5[8];
   v5[8] = v12;
 
-  v14 = [(NSString *)self->_locale copyWithZone:a3];
+  v14 = [(NSString *)self->_locale copyWithZone:zone];
   v15 = v5[9];
   v5[9] = v14;
 
-  v16 = [(NSString *)self->_timezone copyWithZone:a3];
+  v16 = [(NSString *)self->_timezone copyWithZone:zone];
   v17 = v5[12];
   v5[12] = v16;
 
-  v18 = [(NSString *)self->_carrier copyWithZone:a3];
+  v18 = [(NSString *)self->_carrier copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
-  v20 = [(NSString *)self->_cellularNetworkType copyWithZone:a3];
+  v20 = [(NSString *)self->_cellularNetworkType copyWithZone:zone];
   v21 = v5[4];
   v5[4] = v20;
 
@@ -279,7 +279,7 @@ LABEL_25:
     *(v5 + 104) |= 2u;
   }
 
-  v22 = [(TFMemoryUsage *)self->_disk copyWithZone:a3];
+  v22 = [(TFMemoryUsage *)self->_disk copyWithZone:zone];
   v23 = v5[7];
   v5[7] = v22;
 
@@ -321,16 +321,16 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_40;
   }
 
   model = self->_model;
-  if (model | *(v4 + 10))
+  if (model | *(equalCopy + 10))
   {
     if (![(NSString *)model isEqual:?])
     {
@@ -339,7 +339,7 @@ LABEL_6:
   }
 
   osVersion = self->_osVersion;
-  if (osVersion | *(v4 + 11))
+  if (osVersion | *(equalCopy + 11))
   {
     if (![(NSString *)osVersion isEqual:?])
     {
@@ -348,7 +348,7 @@ LABEL_6:
   }
 
   architecture = self->_architecture;
-  if (architecture | *(v4 + 1))
+  if (architecture | *(equalCopy + 1))
   {
     if (![(NSString *)architecture isEqual:?])
     {
@@ -357,7 +357,7 @@ LABEL_6:
   }
 
   display = self->_display;
-  if (display | *(v4 + 8))
+  if (display | *(equalCopy + 8))
   {
     if (![(TFDisplay *)display isEqual:?])
     {
@@ -366,7 +366,7 @@ LABEL_6:
   }
 
   locale = self->_locale;
-  if (locale | *(v4 + 9))
+  if (locale | *(equalCopy + 9))
   {
     if (![(NSString *)locale isEqual:?])
     {
@@ -375,7 +375,7 @@ LABEL_6:
   }
 
   timezone = self->_timezone;
-  if (timezone | *(v4 + 12))
+  if (timezone | *(equalCopy + 12))
   {
     if (![(NSString *)timezone isEqual:?])
     {
@@ -384,7 +384,7 @@ LABEL_6:
   }
 
   carrier = self->_carrier;
-  if (carrier | *(v4 + 3))
+  if (carrier | *(equalCopy + 3))
   {
     if (![(NSString *)carrier isEqual:?])
     {
@@ -393,7 +393,7 @@ LABEL_6:
   }
 
   cellularNetworkType = self->_cellularNetworkType;
-  if (cellularNetworkType | *(v4 + 4))
+  if (cellularNetworkType | *(equalCopy + 4))
   {
     if (![(NSString *)cellularNetworkType isEqual:?])
     {
@@ -402,22 +402,22 @@ LABEL_6:
   }
 
   has = self->_has;
-  v14 = *(v4 + 104);
+  v14 = *(equalCopy + 104);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_connection != *(v4 + 10))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_connection != *(equalCopy + 10))
     {
       goto LABEL_40;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
     goto LABEL_40;
   }
 
   disk = self->_disk;
-  if (disk | *(v4 + 7))
+  if (disk | *(equalCopy + 7))
   {
     if (![(TFMemoryUsage *)disk isEqual:?])
     {
@@ -427,12 +427,12 @@ LABEL_40:
     }
 
     has = self->_has;
-    v14 = *(v4 + 104);
+    v14 = *(equalCopy + 104);
   }
 
   if (has)
   {
-    if ((v14 & 1) == 0 || self->_batteryPercentage != *(v4 + 4))
+    if ((v14 & 1) == 0 || self->_batteryPercentage != *(equalCopy + 4))
     {
       goto LABEL_40;
     }
@@ -445,7 +445,7 @@ LABEL_40:
 
   if ((has & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_deviceFamily != *(v4 + 11))
+    if ((v14 & 4) == 0 || self->_deviceFamily != *(equalCopy + 11))
     {
       goto LABEL_40;
     }
@@ -459,7 +459,7 @@ LABEL_40:
   v16 = (v14 & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_devicePlatform != *(v4 + 12))
+    if ((v14 & 8) == 0 || self->_devicePlatform != *(equalCopy + 12))
     {
       goto LABEL_40;
     }

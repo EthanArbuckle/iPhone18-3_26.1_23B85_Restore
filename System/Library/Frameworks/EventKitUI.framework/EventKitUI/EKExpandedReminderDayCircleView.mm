@@ -1,19 +1,19 @@
 @interface EKExpandedReminderDayCircleView
-- (EKExpandedReminderDayCircleView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (EKExpandedReminderDayCircleView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation EKExpandedReminderDayCircleView
 
-- (EKExpandedReminderDayCircleView)initWithFrame:(CGRect)a3
+- (EKExpandedReminderDayCircleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = EKExpandedReminderDayCircleView;
-  v3 = [(EKExpandedReminderDayCircleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(EKExpandedReminderDayCircleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(EKExpandedReminderDayCircleView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(EKExpandedReminderDayCircleView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = CalendarAppCircleNonTodayBGColor();
     circleColor = v3->_circleColor;
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(UIColor *)self->_circleColor set];

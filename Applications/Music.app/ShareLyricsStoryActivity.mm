@@ -1,17 +1,17 @@
 @interface ShareLyricsStoryActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (NSString)activityType;
 - (_TtC5Music24ShareLyricsStoryActivity)init;
 - (id)_bundleIdentifierForActivityImageCreation;
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4;
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion;
 @end
 
 @implementation ShareLyricsStoryActivity
 
 - (NSString)activityType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = String._bridgeToObjectiveC()();
 
   return v3;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_10077238C();
 
   return v4 & 1;
 }
 
-- (void)_prepareWithActivityItems:(id)a3 completion:(id)a4
+- (void)_prepareWithActivityItems:(id)items completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (items)
   {
-    a3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    items = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   if (v6)
@@ -61,8 +61,8 @@
     v7 = 0;
   }
 
-  v9 = self;
-  sub_100771190(a3, v8, v7);
+  selfCopy = self;
+  sub_100771190(items, v8, v7);
   sub_100020438(v8);
 }
 

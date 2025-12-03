@@ -1,11 +1,11 @@
 @interface TrackingProtectionPane
-- (id)_detailedSettingsWithOptions:(unint64_t)a3;
+- (id)_detailedSettingsWithOptions:(unint64_t)options;
 - (id)_loadRemoteContentSpecifier;
-- (id)_preventTrackingSpecifiersWithOptions:(unint64_t)a3;
-- (id)readPreferenceValue:(id)a3;
+- (id)_preventTrackingSpecifiersWithOptions:(unint64_t)options;
+- (id)readPreferenceValue:(id)value;
 - (id)specifiers;
-- (void)_mailPrivacyProtectionLearnMoreLinkTapped:(id)a3;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
+- (void)_mailPrivacyProtectionLearnMoreLinkTapped:(id)tapped;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -21,14 +21,14 @@
   [(TrackingProtectionPane *)self setTitle:v4];
 }
 
-- (id)readPreferenceValue:(id)a3
+- (id)readPreferenceValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[NSUserDefaults em_userDefaults];
   v5 = [v4 integerForKey:EMUserDefaultLoadRemoteContentKey];
 
-  v6 = [v3 identifier];
-  v7 = [v6 isEqualToString:@"justSayNoToTracking"];
+  identifier = [valueCopy identifier];
+  v7 = [identifier isEqualToString:@"justSayNoToTracking"];
 
   if (v7)
   {
@@ -36,8 +36,8 @@
     goto LABEL_5;
   }
 
-  v9 = [v3 identifier];
-  v10 = [v9 isEqualToString:@"justALittleTrackingPlease"];
+  identifier2 = [valueCopy identifier];
+  v10 = [identifier2 isEqualToString:@"justALittleTrackingPlease"];
 
   if (v10)
   {
@@ -47,8 +47,8 @@ LABEL_5:
     goto LABEL_11;
   }
 
-  v12 = [v3 identifier];
-  v13 = [v12 isEqualToString:@"blockRemoteContent"];
+  identifier3 = [valueCopy identifier];
+  v13 = [identifier3 isEqualToString:@"blockRemoteContent"];
 
   if (v13)
   {
@@ -66,23 +66,23 @@ LABEL_11:
   return v14;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  specifierCopy = specifier;
   if (objc_opt_respondsToSelector())
   {
     v8 = +[NSUserDefaults em_userDefaults];
     v9 = EMUserDefaultLoadRemoteContentKey;
     v10 = [v8 integerForKey:EMUserDefaultLoadRemoteContentKey];
-    v11 = [v6 BOOLValue];
-    v12 = [v7 identifier];
-    v13 = [v12 isEqualToString:@"justSayNoToTracking"];
+    bOOLValue = [valueCopy BOOLValue];
+    identifier = [specifierCopy identifier];
+    v13 = [identifier isEqualToString:@"justSayNoToTracking"];
 
     if (v13)
     {
       v14 = v10 | 8;
-      if (v11)
+      if (bOOLValue)
       {
         v14 = 0;
       }
@@ -90,13 +90,13 @@ LABEL_11:
 
     else
     {
-      v15 = [v7 identifier];
-      v16 = [v15 isEqualToString:@"justALittleTrackingPlease"];
+      identifier2 = [specifierCopy identifier];
+      v16 = [identifier2 isEqualToString:@"justALittleTrackingPlease"];
 
       if (v16)
       {
         v14 = v10 | 4;
-        if (v11)
+        if (bOOLValue)
         {
           v14 = v10 & 0xFFFFFFFFFFFFFFFBLL;
         }
@@ -104,11 +104,11 @@ LABEL_11:
 
       else
       {
-        v17 = [v7 identifier];
-        v18 = [v17 isEqualToString:@"blockRemoteContent"];
+        identifier3 = [specifierCopy identifier];
+        v18 = [identifier3 isEqualToString:@"blockRemoteContent"];
 
         v14 = v10 & 0xFFFFFFFFFFFFFFFDLL;
-        if (v11)
+        if (bOOLValue)
         {
           v14 = v10 | 2;
         }
@@ -148,24 +148,24 @@ LABEL_11:
     v5 = [v4 integerForKey:EMUserDefaultLoadRemoteContentKey];
 
     v6 = +[MCProfileConnection sharedConnection];
-    v7 = [v6 isMailPrivacyProtectionAllowed];
+    isMailPrivacyProtectionAllowed = [v6 isMailPrivacyProtectionAllowed];
 
-    if (v7)
+    if (isMailPrivacyProtectionAllowed)
     {
-      v8 = [(TrackingProtectionPane *)self _preventTrackingSpecifiersWithOptions:v5];
-      v17[0] = v8;
+      _loadRemoteContentSpecifier = [(TrackingProtectionPane *)self _preventTrackingSpecifiersWithOptions:v5];
+      v17[0] = _loadRemoteContentSpecifier;
       v9 = [(TrackingProtectionPane *)self _detailedSettingsWithOptions:v5];
       v17[1] = v9;
       v10 = [NSArray arrayWithObjects:v17 count:2];
-      v11 = [v10 ef_flatten];
+      ef_flatten = [v10 ef_flatten];
       v12 = *&self->PSListController_opaque[v3];
-      *&self->PSListController_opaque[v3] = v11;
+      *&self->PSListController_opaque[v3] = ef_flatten;
     }
 
     else
     {
-      v8 = [(TrackingProtectionPane *)self _loadRemoteContentSpecifier];
-      v16 = v8;
+      _loadRemoteContentSpecifier = [(TrackingProtectionPane *)self _loadRemoteContentSpecifier];
+      v16 = _loadRemoteContentSpecifier;
       v13 = [NSArray arrayWithObjects:&v16 count:1];
       v9 = *&self->PSListController_opaque[v3];
       *&self->PSListController_opaque[v3] = v13;
@@ -177,7 +177,7 @@ LABEL_11:
   return v14;
 }
 
-- (id)_preventTrackingSpecifiersWithOptions:(unint64_t)a3
+- (id)_preventTrackingSpecifiersWithOptions:(unint64_t)options
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"PROTECT_FROM_TRACKING" value:&stru_3D2B0 table:@"Preferences"];
@@ -213,7 +213,7 @@ LABEL_11:
   return v17;
 }
 
-- (void)_mailPrivacyProtectionLearnMoreLinkTapped:(id)a3
+- (void)_mailPrivacyProtectionLearnMoreLinkTapped:(id)tapped
 {
   v4 = [OBTextWelcomeController alloc];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -231,8 +231,8 @@ LABEL_11:
   objc_copyWeak(&v19, &location);
   v11 = [UIAction actionWithHandler:&v15];
   v12 = [v10 initWithBarButtonSystemItem:0 primaryAction:{v11, v15, v16, v17, v18}];
-  v13 = [v9 navigationItem];
-  [v13 setRightBarButtonItem:v12];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setRightBarButtonItem:v12];
 
   v14 = [[UINavigationController alloc] initWithRootViewController:v9];
   [(TrackingProtectionPane *)self presentViewController:v14 animated:1 completion:0];
@@ -241,9 +241,9 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (id)_detailedSettingsWithOptions:(unint64_t)a3
+- (id)_detailedSettingsWithOptions:(unint64_t)options
 {
-  if ((a3 & 8) != 0)
+  if ((options & 8) != 0)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"HIDE_IP_ADDRESS" value:&stru_3D2B0 table:@"Preferences"];
@@ -254,8 +254,8 @@ LABEL_11:
     v8 = [PSSpecifier groupSpecifierWithID:0];
     v11[0] = v8;
     v11[1] = v7;
-    v9 = [(TrackingProtectionPane *)self _loadRemoteContentSpecifier];
-    v11[2] = v9;
+    _loadRemoteContentSpecifier = [(TrackingProtectionPane *)self _loadRemoteContentSpecifier];
+    v11[2] = _loadRemoteContentSpecifier;
     v3 = [NSArray arrayWithObjects:v11 count:3];
   }
 

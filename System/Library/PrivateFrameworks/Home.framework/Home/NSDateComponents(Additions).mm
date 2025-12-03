@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __64__NSDateComponents_Additions__hf_dailyWeekdayIntervalComponents__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E02CF8 != -1)
   {
     dispatch_once(&qword_280E02CF8, block);
@@ -44,8 +44,8 @@
   v10[2] = 0x2020000000;
   v10[3] = 1;
   v4 = MEMORY[0x277CBEA60];
-  v5 = [v3 weekdaySymbols];
-  v6 = [v5 count];
+  weekdaySymbols = [v3 weekdaySymbols];
+  v6 = [weekdaySymbols count];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__NSDateComponents_Additions__hf_dailyWeekdayIntervalComponentsWithCalendar___block_invoke;
@@ -130,7 +130,7 @@
 - (uint64_t)hf_isEqualToHomeKitRecurrence:()Additions
 {
   v4 = a3;
-  if (a1 != v4)
+  if (self != v4)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -139,9 +139,9 @@
       goto LABEL_7;
     }
 
-    if (([a1 isEqual:v4] & 1) == 0)
+    if (([self isEqual:v4] & 1) == 0)
     {
-      v6 = [a1 copy];
+      v6 = [self copy];
       [v6 setNanosecond:0x7FFFFFFFFFFFFFFFLL];
       [v6 setSecond:0x7FFFFFFFFFFFFFFFLL];
       v7 = [v4 copy];
@@ -162,8 +162,8 @@ LABEL_7:
 - (double)hf_timeInterval
 {
   v2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:0.0];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateByAddingComponents:a1 toDate:v2 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateByAddingComponents:self toDate:v2 options:0];
 
   [v4 timeIntervalSinceDate:v2];
   v6 = v5;
@@ -173,26 +173,26 @@ LABEL_7:
 
 - (id)hf_absoluteValue
 {
-  v2 = [a1 copy];
-  v3 = [a1 hf_validComponents];
+  v2 = [self copy];
+  hf_validComponents = [self hf_validComponents];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v12 = __47__NSDateComponents_Additions__hf_absoluteValue__block_invoke;
   v13 = &unk_277DF5878;
   v4 = v2;
   v14 = v4;
-  v15 = a1;
+  selfCopy = self;
   v5 = v11;
-  if (v3)
+  if (hf_validComponents)
   {
     v6 = 0;
     v16 = 0;
-    v7 = vcnt_s8(v3);
+    v7 = vcnt_s8(hf_validComponents);
     v7.i16[0] = vaddlv_u8(v7);
     v8 = v7.i32[0];
     do
     {
-      if ((*&v3 & (1 << v6)) != 0)
+      if ((*&hf_validComponents & (1 << v6)) != 0)
       {
         (v12)(v5);
         if (v16)
@@ -220,26 +220,26 @@ LABEL_7:
 
 - (id)hf_negativeValue
 {
-  v2 = [a1 copy];
-  v3 = [a1 hf_validComponents];
+  v2 = [self copy];
+  hf_validComponents = [self hf_validComponents];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v12 = __47__NSDateComponents_Additions__hf_negativeValue__block_invoke;
   v13 = &unk_277DF5878;
   v4 = v2;
   v14 = v4;
-  v15 = a1;
+  selfCopy = self;
   v5 = v11;
-  if (v3)
+  if (hf_validComponents)
   {
     v6 = 0;
     v16 = 0;
-    v7 = vcnt_s8(v3);
+    v7 = vcnt_s8(hf_validComponents);
     v7.i16[0] = vaddlv_u8(v7);
     v8 = v7.i32[0];
     do
     {
-      if ((*&v3 & (1 << v6)) != 0)
+      if ((*&hf_validComponents & (1 << v6)) != 0)
       {
         (v12)(v5);
         if (v16)
@@ -269,8 +269,8 @@ LABEL_7:
 {
   v4 = MEMORY[0x277CBEA80];
   v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [a1 hf_compareNextMatchingDate:v5 withCalendar:v6];
+  currentCalendar = [v4 currentCalendar];
+  v7 = [self hf_compareNextMatchingDate:v5 withCalendar:currentCalendar];
 
   return v7;
 }
@@ -279,7 +279,7 @@ LABEL_7:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [objc_opt_class() hf_zeroDateComponentsWithComponents:objc_msgSend(v7 calendar:{"hf_validComponents") | objc_msgSend(a1, "hf_validComponents"), v6}];
+  v8 = [objc_opt_class() hf_zeroDateComponentsWithComponents:objc_msgSend(v7 calendar:{"hf_validComponents") | objc_msgSend(self, "hf_validComponents"), v6}];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:0.0];
   v10 = [v6 nextDateAfterDate:v9 matchingComponents:v8 options:1024];
 
@@ -294,10 +294,10 @@ LABEL_7:
   v13 = v6;
   v24 = v13;
   v14 = _Block_copy(aBlock);
-  v15 = v14[2](v14, a1);
+  v15 = v14[2](v14, self);
   v16 = v14[2](v14, v7);
 
-  v17 = v15;
+  distantFuture2 = v15;
   if (v15)
   {
     if (v16)
@@ -306,8 +306,8 @@ LABEL_7:
     }
 
 LABEL_7:
-    v20 = [MEMORY[0x277CBEAA8] distantFuture];
-    v18 = [v17 compare:v20];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v18 = [distantFuture2 compare:distantFuture];
 
     if (v15)
     {
@@ -317,14 +317,14 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v17 = [MEMORY[0x277CBEAA8] distantFuture];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
   if (!v16)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  v18 = [v17 compare:v16];
+  v18 = [distantFuture2 compare:v16];
   if (!v15)
   {
 LABEL_4:
@@ -387,7 +387,7 @@ LABEL_5:
 
 - (uint64_t)hf_validComponents
 {
-  v2 = [objc_opt_class() _hf_allPossibleComponents];
+  _hf_allPossibleComponents = [objc_opt_class() _hf_allPossibleComponents];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -396,19 +396,19 @@ LABEL_5:
   v9[1] = 3221225472;
   v10 = __49__NSDateComponents_Additions__hf_validComponents__block_invoke;
   v11 = &unk_277DF58C8;
-  v12 = a1;
+  selfCopy = self;
   v13 = &v14;
   v3 = v9;
-  if (v2)
+  if (_hf_allPossibleComponents)
   {
     v4 = 0;
     v18 = 0;
-    v5 = vcnt_s8(v2);
+    v5 = vcnt_s8(_hf_allPossibleComponents);
     v5.i16[0] = vaddlv_u8(v5);
     v6 = v5.i32[0];
     do
     {
-      if ((*&v2 & (1 << v4)) != 0)
+      if ((*&_hf_allPossibleComponents & (1 << v4)) != 0)
       {
         (v10)(v3);
         if (v18)

@@ -1,41 +1,41 @@
 @interface MPSGraphListData
-- (MPSGraphListData)initWithDevice:(id)a3 list:(id)a4 maxSize:(int64_t)a5 elementType:(id)a6;
+- (MPSGraphListData)initWithDevice:(id)device list:(id)list maxSize:(int64_t)size elementType:(id)type;
 - (id)clonedList;
 - (id)popBackElement;
 @end
 
 @implementation MPSGraphListData
 
-- (MPSGraphListData)initWithDevice:(id)a3 list:(id)a4 maxSize:(int64_t)a5 elementType:(id)a6
+- (MPSGraphListData)initWithDevice:(id)device list:(id)list maxSize:(int64_t)size elementType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(MPSGraphTensorData *)self initEmptyWithShape:MEMORY[0x1E695E0F0] dataType:268435488 device:v10];
-  v14 = [v11 mutableCopy];
+  deviceCopy = device;
+  listCopy = list;
+  typeCopy = type;
+  v13 = [(MPSGraphTensorData *)self initEmptyWithShape:MEMORY[0x1E695E0F0] dataType:268435488 device:deviceCopy];
+  v14 = [listCopy mutableCopy];
   list = v13->_list;
   v13->_list = v14;
 
-  v13->_maxSize = a5;
+  v13->_maxSize = size;
   elementType = v13->_elementType;
-  v13->_elementType = v12;
+  v13->_elementType = typeCopy;
 
   return v13;
 }
 
 - (id)popBackElement
 {
-  v3 = [(NSMutableArray *)self->_list lastObject];
+  lastObject = [(NSMutableArray *)self->_list lastObject];
   [(NSMutableArray *)self->_list removeLastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)clonedList
 {
   v3 = [MPSGraphListData alloc];
-  v4 = [(MPSGraphTensorData *)self device];
-  v5 = [(MPSGraphListData *)v3 initWithDevice:v4 list:self->_list maxSize:self->_maxSize elementType:self->_elementType];
+  device = [(MPSGraphTensorData *)self device];
+  v5 = [(MPSGraphListData *)v3 initWithDevice:device list:self->_list maxSize:self->_maxSize elementType:self->_elementType];
 
   return v5;
 }

@@ -1,37 +1,37 @@
 @interface ContactsSceneDelegate
 + (OS_os_log)log;
-- (BOOL)openContactsURL:(id)a3;
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)openContactsURL:(id)l;
+- (BOOL)runTest:(id)test options:(id)options;
 - (BOOL)showMeContact;
 - (BOOL)splitViewControllerIsDisplayingList;
 - (ContactsSceneDelegate)init;
-- (ContactsSceneDelegate)initWithApplication:(id)a3 capabilitiesManager:(id)a4 schedulerProvider:(id)a5;
+- (ContactsSceneDelegate)initWithApplication:(id)application capabilitiesManager:(id)manager schedulerProvider:(id)provider;
 - (id)contactStoreDataSource;
 - (id)showMeCardShortcutItem;
-- (id)stateRestorationActivityForScene:(id)a3;
+- (id)stateRestorationActivityForScene:(id)scene;
 - (void)checkInLaunchTasksIfNecessary;
 - (void)createNewContact;
 - (void)createShowMeCardApplicationShortcutIfNecessary;
 - (void)displayContactIfNecessary;
-- (void)executeActionDelayedUntilSceneInitialization:(id)a3;
+- (void)executeActionDelayedUntilSceneInitialization:(id)initialization;
 - (void)executeAllDelayedActions;
-- (void)executeSceneInitializationTasksOnce:(id)a3;
-- (void)executeShortcutIfNecessary:(id)a3 completionHandler:(id)a4;
+- (void)executeSceneInitializationTasksOnce:(id)once;
+- (void)executeShortcutIfNecessary:(id)necessary completionHandler:(id)handler;
 - (void)performMigrationOfFacebookContactsToLocalStoreIfNecessary;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)searchForString:(id)a3;
-- (void)showContact:(id)a3 setEditing:(BOOL)a4;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)searchForString:(id)string;
+- (void)showContact:(id)contact setEditing:(BOOL)editing;
 - (void)showNewContact;
-- (void)vCardImportController:(id)a3 didSaveContacts:(id)a4;
-- (void)vCardImportController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5;
+- (void)vCardImportController:(id)controller didSaveContacts:(id)contacts;
+- (void)vCardImportController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated;
 @end
 
 @implementation ContactsSceneDelegate
@@ -41,8 +41,8 @@
   v3 = +[UIApplication sharedApplication];
   v4 = +[CNCapabilitiesManager defaultCapabilitiesManager];
   v5 = +[CNUIContactsEnvironment currentEnvironment];
-  v6 = [v5 defaultSchedulerProvider];
-  v7 = [(ContactsSceneDelegate *)self initWithApplication:v3 capabilitiesManager:v4 schedulerProvider:v6];
+  defaultSchedulerProvider = [v5 defaultSchedulerProvider];
+  v7 = [(ContactsSceneDelegate *)self initWithApplication:v3 capabilitiesManager:v4 schedulerProvider:defaultSchedulerProvider];
 
   return v7;
 }
@@ -62,27 +62,27 @@
 - (void)checkInLaunchTasksIfNecessary
 {
   v3 = +[CNUIContactsEnvironment currentEnvironment];
-  v13 = [v3 launchCheckinRegistrar];
+  launchCheckinRegistrar = [v3 launchCheckinRegistrar];
 
-  v4 = [(ContactsSceneDelegate *)self splitViewController];
-  v5 = [v4 _isCollapsed];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  _isCollapsed = [splitViewController _isCollapsed];
 
-  v6 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
-  if (v6)
+  viewingContactActivityForRestoration = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
+  if (viewingContactActivityForRestoration)
   {
-    v7 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
-    v8 = [v7 activityType];
-    v9 = [v8 isEqualToString:CNUIActivityTypeViewingList];
+    viewingContactActivityForRestoration2 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
+    activityType = [viewingContactActivityForRestoration2 activityType];
+    v9 = [activityType isEqualToString:CNUIActivityTypeViewingList];
 
-    if ((v9 & v5 & 1) == 0)
+    if ((v9 & _isCollapsed & 1) == 0)
     {
-      if (v5)
+      if (_isCollapsed)
       {
 LABEL_8:
         v11 = +[CNUIContactsEnvironment currentEnvironment];
-        v12 = [v11 runningInContactsAppOniPad];
+        runningInContactsAppOniPad = [v11 runningInContactsAppOniPad];
 
-        if (v12)
+        if (runningInContactsAppOniPad)
         {
           v10 = 2;
         }
@@ -108,7 +108,7 @@ LABEL_7:
   else
   {
 
-    if ((v5 & 1) == 0)
+    if ((_isCollapsed & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -116,77 +116,77 @@ LABEL_7:
 
   v10 = 60;
 LABEL_11:
-  [v13 checkInLaunchTasks:v10];
+  [launchCheckinRegistrar checkInLaunchTasks:v10];
 LABEL_12:
 }
 
 - (void)displayContactIfNecessary
 {
-  v3 = [(ContactsSceneDelegate *)self splitViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  traitCollection = [splitViewController traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 != 1)
+  if (horizontalSizeClass != 1)
   {
-    v6 = [(ContactsSceneDelegate *)self splitViewController];
-    v7 = [v6 displayedContact];
-    if (v7)
+    splitViewController2 = [(ContactsSceneDelegate *)self splitViewController];
+    displayedContact = [splitViewController2 displayedContact];
+    if (displayedContact)
     {
     }
 
     else
     {
-      v8 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
+      viewingContactActivityForRestoration = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
 
-      if (!v8)
+      if (!viewingContactActivityForRestoration)
       {
-        v11 = [(ContactsSceneDelegate *)self splitViewController];
-        [v11 showCardForContact:0 fallbackToFirstContact:1];
+        splitViewController3 = [(ContactsSceneDelegate *)self splitViewController];
+        [splitViewController3 showCardForContact:0 fallbackToFirstContact:1];
 
-        v12 = [(ContactsSceneDelegate *)self splitViewController];
-        [v12 showContactList];
+        splitViewController4 = [(ContactsSceneDelegate *)self splitViewController];
+        [splitViewController4 showContactList];
         goto LABEL_7;
       }
     }
   }
 
-  v9 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
+  viewingContactActivityForRestoration2 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
 
-  if (!v9)
+  if (!viewingContactActivityForRestoration2)
   {
     return;
   }
 
-  v12 = [(ContactsSceneDelegate *)self activityRestorer];
-  v10 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
-  [v12 restoreUserActivity:v10];
+  splitViewController4 = [(ContactsSceneDelegate *)self activityRestorer];
+  viewingContactActivityForRestoration3 = [(ContactsSceneDelegate *)self viewingContactActivityForRestoration];
+  [splitViewController4 restoreUserActivity:viewingContactActivityForRestoration3];
 
 LABEL_7:
 }
 
 - (void)performMigrationOfFacebookContactsToLocalStoreIfNecessary
 {
-  v3 = [(ContactsSceneDelegate *)self splitViewController];
-  v2 = [v3 contactNavigationController];
-  [v2 checkForFacebookContactsWithDelay:1 allowAlert:0.5];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  contactNavigationController = [splitViewController contactNavigationController];
+  [contactNavigationController checkForFacebookContactsWithDelay:1 allowAlert:0.5];
 }
 
 - (void)createShowMeCardApplicationShortcutIfNecessary
 {
-  v3 = [(ContactsSceneDelegate *)self capabilitiesManager];
-  v4 = [v3 hasForceTouchCapability];
+  capabilitiesManager = [(ContactsSceneDelegate *)self capabilitiesManager];
+  hasForceTouchCapability = [capabilitiesManager hasForceTouchCapability];
 
-  v5 = [(ContactsSceneDelegate *)self application];
-  v6 = [v5 connectedScenes];
-  v7 = [v6 count];
+  application = [(ContactsSceneDelegate *)self application];
+  connectedScenes = [application connectedScenes];
+  v7 = [connectedScenes count];
 
-  if (v4 && v7 == 1)
+  if (hasForceTouchCapability && v7 == 1)
   {
-    v8 = [(ContactsSceneDelegate *)self showMeCardShortcutItem];
-    v9 = v8;
-    if (v8)
+    showMeCardShortcutItem = [(ContactsSceneDelegate *)self showMeCardShortcutItem];
+    v9 = showMeCardShortcutItem;
+    if (showMeCardShortcutItem)
     {
-      v12 = v8;
+      v12 = showMeCardShortcutItem;
       v10 = [NSArray arrayWithObjects:&v12 count:1];
     }
 
@@ -195,8 +195,8 @@ LABEL_7:
       v10 = &__NSArray0__struct;
     }
 
-    v11 = [(ContactsSceneDelegate *)self application];
-    [v11 setShortcutItems:v10];
+    application2 = [(ContactsSceneDelegate *)self application];
+    [application2 setShortcutItems:v10];
 
     if (v9)
     {
@@ -206,23 +206,23 @@ LABEL_7:
 
 - (void)executeAllDelayedActions
 {
-  v3 = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
-  [v3 _cn_each:&stru_1000207C0];
+  actionsDelayedUntilSceneInitialization = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
+  [actionsDelayedUntilSceneInitialization _cn_each:&stru_1000207C0];
 
-  v4 = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
-  [v4 removeAllObjects];
+  actionsDelayedUntilSceneInitialization2 = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
+  [actionsDelayedUntilSceneInitialization2 removeAllObjects];
 }
 
 - (id)contactStoreDataSource
 {
-  v2 = [(ContactsSceneDelegate *)self splitViewController];
-  v3 = [v2 contactNavigationController];
-  v4 = [v3 dataSource];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  contactNavigationController = [splitViewController contactNavigationController];
+  dataSource = [contactNavigationController dataSource];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = dataSource;
   }
 
   else
@@ -233,32 +233,32 @@ LABEL_7:
   return v5;
 }
 
-- (ContactsSceneDelegate)initWithApplication:(id)a3 capabilitiesManager:(id)a4 schedulerProvider:(id)a5
+- (ContactsSceneDelegate)initWithApplication:(id)application capabilitiesManager:(id)manager schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  applicationCopy = application;
+  managerCopy = manager;
+  providerCopy = provider;
   v42.receiver = self;
   v42.super_class = ContactsSceneDelegate;
   v12 = [(ContactsSceneDelegate *)&v42 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_capabilitiesManager, a4);
-    objc_storeStrong(&v13->_application, a3);
-    objc_storeStrong(&v13->_schedulerProvider, a5);
+    objc_storeStrong(&v12->_capabilitiesManager, manager);
+    objc_storeStrong(&v13->_application, application);
+    objc_storeStrong(&v13->_schedulerProvider, provider);
     v14 = [[ContactsSplitViewController alloc] initWithStyle:2];
     splitViewController = v13->_splitViewController;
     v13->_splitViewController = v14;
 
     v16 = +[CNEnvironment currentEnvironment];
-    v17 = [v16 featureFlags];
-    if ([v17 isFeatureEnabled:29])
+    featureFlags = [v16 featureFlags];
+    if ([featureFlags isFeatureEnabled:29])
     {
       v18 = +[CNUIContactsEnvironment currentEnvironment];
-      v19 = [v18 runningInContactsAppOniPad];
+      runningInContactsAppOniPad = [v18 runningInContactsAppOniPad];
 
-      if (v19)
+      if (runningInContactsAppOniPad)
       {
         v20 = v13->_splitViewController;
         if (objc_opt_respondsToSelector())
@@ -273,9 +273,9 @@ LABEL_7:
     }
 
     v21 = [CNVCardImportController alloc];
-    v22 = [(ContactsSceneDelegate *)v13 splitViewController];
-    v23 = [v22 store];
-    v24 = [v21 initWithContactStore:v23 presentationDelegate:v13];
+    splitViewController = [(ContactsSceneDelegate *)v13 splitViewController];
+    store = [splitViewController store];
+    v24 = [v21 initWithContactStore:store presentationDelegate:v13];
     vCardImportController = v13->_vCardImportController;
     v13->_vCardImportController = v24;
 
@@ -286,20 +286,20 @@ LABEL_7:
 
     [CNContactsAppIntentDependencyManager setupAppIntentDependenciesWithActionPerformer:v13];
     v28 = [CNUIUserActivityRestorer alloc];
-    v29 = [(ContactsSceneDelegate *)v13 splitViewController];
-    v30 = [v29 store];
-    v31 = [v28 initWithContactStore:v30];
+    splitViewController2 = [(ContactsSceneDelegate *)v13 splitViewController];
+    store2 = [splitViewController2 store];
+    v31 = [v28 initWithContactStore:store2];
     activityRestorer = v13->_activityRestorer;
     v13->_activityRestorer = v31;
 
     v33 = [CNUserActivityRestorerDelegate alloc];
-    v34 = [(ContactsSceneDelegate *)v13 splitViewController];
-    v35 = [(CNUserActivityRestorerDelegate *)v33 initWithContactsSplitViewController:v34];
+    splitViewController3 = [(ContactsSceneDelegate *)v13 splitViewController];
+    v35 = [(CNUserActivityRestorerDelegate *)v33 initWithContactsSplitViewController:splitViewController3];
     activityRestorerDelegate = v13->_activityRestorerDelegate;
     v13->_activityRestorerDelegate = v35;
 
-    v37 = [(ContactsSceneDelegate *)v13 activityRestorerDelegate];
-    [(CNUIUserActivityRestorer *)v13->_activityRestorer setDelegate:v37];
+    activityRestorerDelegate = [(ContactsSceneDelegate *)v13 activityRestorerDelegate];
+    [(CNUIUserActivityRestorer *)v13->_activityRestorer setDelegate:activityRestorerDelegate];
 
     v38 = +[NSMutableArray array];
     actionsDelayedUntilSceneInitialization = v13->_actionsDelayedUntilSceneInitialization;
@@ -311,15 +311,15 @@ LABEL_7:
   return v13;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v8;
+    v11 = sceneCopy;
   }
 
   else
@@ -339,38 +339,38 @@ LABEL_7:
     v14 = [[UIWindow alloc] initWithWindowScene:v12];
     [(ContactsSceneDelegate *)self setSceneWindow:v14];
 
-    v15 = [(ContactsSceneDelegate *)self splitViewController];
-    v16 = [(ContactsSceneDelegate *)self sceneWindow];
-    [v16 setRootViewController:v15];
+    splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+    sceneWindow = [(ContactsSceneDelegate *)self sceneWindow];
+    [sceneWindow setRootViewController:splitViewController];
 
     v17 = +[CNUIColorRepository contactsApplicationTintColor];
-    v18 = [(ContactsSceneDelegate *)self sceneWindow];
-    [v18 setTintColor:v17];
+    sceneWindow2 = [(ContactsSceneDelegate *)self sceneWindow];
+    [sceneWindow2 setTintColor:v17];
 
-    v19 = [(ContactsSceneDelegate *)self sceneWindow];
-    [v19 makeKeyAndVisible];
+    sceneWindow3 = [(ContactsSceneDelegate *)self sceneWindow];
+    [sceneWindow3 makeKeyAndVisible];
 
     v20 = +[NSMutableArray array];
-    v21 = [v10 userActivities];
-    v22 = [v21 anyObject];
-    [v20 _cn_addNonNilObject:v22];
+    userActivities = [optionsCopy userActivities];
+    anyObject = [userActivities anyObject];
+    [v20 _cn_addNonNilObject:anyObject];
 
-    v23 = [v9 stateRestorationActivity];
-    [v20 _cn_addNonNilObject:v23];
+    stateRestorationActivity = [sessionCopy stateRestorationActivity];
+    [v20 _cn_addNonNilObject:stateRestorationActivity];
 
-    v24 = [v10 shortcutItem];
+    shortcutItem = [optionsCopy shortcutItem];
 
-    if (v24)
+    if (shortcutItem)
     {
-      v25 = [v10 shortcutItem];
-      [(ContactsSceneDelegate *)self executeShortcutIfNecessary:v25 completionHandler:0];
+      shortcutItem2 = [optionsCopy shortcutItem];
+      [(ContactsSceneDelegate *)self executeShortcutIfNecessary:shortcutItem2 completionHandler:0];
     }
 
     else
     {
       v26 = CNIsSetEmpty;
-      v27 = [v10 URLContexts];
-      LOBYTE(v26) = (*(v26 + 16))(v26, v27);
+      uRLContexts = [optionsCopy URLContexts];
+      LOBYTE(v26) = (*(v26 + 16))(v26, uRLContexts);
 
       if (v26)
       {
@@ -379,42 +379,42 @@ LABEL_7:
         v31[2] = sub_10000AF94;
         v31[3] = &unk_100020760;
         v31[4] = self;
-        v25 = [v20 _cn_firstObjectPassingTest:v31];
-        [(ContactsSceneDelegate *)self setViewingContactActivityForRestoration:v25];
+        shortcutItem2 = [v20 _cn_firstObjectPassingTest:v31];
+        [(ContactsSceneDelegate *)self setViewingContactActivityForRestoration:shortcutItem2];
       }
 
       else
       {
-        v25 = [v10 URLContexts];
-        v28 = [v25 allObjects];
-        v29 = [v28 firstObject];
-        v30 = [v29 URL];
+        shortcutItem2 = [optionsCopy URLContexts];
+        allObjects = [shortcutItem2 allObjects];
+        firstObject = [allObjects firstObject];
+        v30 = [firstObject URL];
         [(ContactsSceneDelegate *)self openContactsURL:v30];
       }
     }
   }
 }
 
-- (void)executeShortcutIfNecessary:(id)a3 completionHandler:(id)a4
+- (void)executeShortcutIfNecessary:(id)necessary completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (necessary)
   {
-    v7 = [a3 type];
-    if ([v7 isEqualToString:@"com.apple.contacts.create-new-contact"])
+    type = [necessary type];
+    if ([type isEqualToString:@"com.apple.contacts.create-new-contact"])
     {
       [(ContactsSceneDelegate *)self showNewContact];
-      v8 = 1;
-      if (!v6)
+      showMeContact = 1;
+      if (!handlerCopy)
       {
         goto LABEL_12;
       }
     }
 
-    else if ([v7 isEqualToString:@"com.apple.contacts.show-me"])
+    else if ([type isEqualToString:@"com.apple.contacts.show-me"])
     {
-      v8 = [(ContactsSceneDelegate *)self showMeContact];
-      if (!v6)
+      showMeContact = [(ContactsSceneDelegate *)self showMeContact];
+      if (!handlerCopy)
       {
         goto LABEL_12;
       }
@@ -425,43 +425,43 @@ LABEL_7:
       v9 = [objc_opt_class() log];
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_10000F52C(v7, v9);
+        sub_10000F52C(type, v9);
       }
 
-      v8 = 0;
-      if (!v6)
+      showMeContact = 0;
+      if (!handlerCopy)
       {
         goto LABEL_12;
       }
     }
 
-    v6[2](v6, v8);
+    handlerCopy[2](handlerCopy, showMeContact);
 LABEL_12:
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = [(ContactsSceneDelegate *)self sceneWindow];
-  [v4 setHidden:1];
+  sceneWindow = [(ContactsSceneDelegate *)self sceneWindow];
+  [sceneWindow setHidden:1];
 
   [(ContactsSceneDelegate *)self setSceneWindow:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v5 = [(ContactsSceneDelegate *)self schedulerProvider];
-  v3 = [v5 backgroundScheduler];
-  v4 = [v3 afterDelay:&stru_100020780 performBlock:4.0];
+  schedulerProvider = [(ContactsSceneDelegate *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider backgroundScheduler];
+  v4 = [backgroundScheduler afterDelay:&stru_100020780 performBlock:4.0];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v3 = [(ContactsSceneDelegate *)self contactStoreDataSource];
-  [v3 setShouldRevalidateFilterOnStoreChange:1];
+  contactStoreDataSource = [(ContactsSceneDelegate *)self contactStoreDataSource];
+  [contactStoreDataSource setShouldRevalidateFilterOnStoreChange:1];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -477,178 +477,178 @@ LABEL_12:
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)executeSceneInitializationTasksOnce:(id)a3
+- (void)executeSceneInitializationTasksOnce:(id)once
 {
-  v4 = a3;
+  onceCopy = once;
   if (![(ContactsSceneDelegate *)self didExecuteSceneInitializationTasks])
   {
-    v4[2]();
+    onceCopy[2]();
     [(ContactsSceneDelegate *)self setDidExecuteSceneInitializationTasks:1];
   }
 }
 
 - (BOOL)splitViewControllerIsDisplayingList
 {
-  v3 = [(ContactsSceneDelegate *)self splitViewController];
-  if ([v3 displayMode] == 2)
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  if ([splitViewController displayMode] == 2)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(ContactsSceneDelegate *)self splitViewController];
-    if ([v5 displayMode] == 4)
+    splitViewController2 = [(ContactsSceneDelegate *)self splitViewController];
+    if ([splitViewController2 displayMode] == 4)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(ContactsSceneDelegate *)self splitViewController];
-      v4 = [v6 displayMode] == 6;
+      splitViewController3 = [(ContactsSceneDelegate *)self splitViewController];
+      v4 = [splitViewController3 displayMode] == 6;
     }
   }
 
   return v4;
 }
 
-- (void)executeActionDelayedUntilSceneInitialization:(id)a3
+- (void)executeActionDelayedUntilSceneInitialization:(id)initialization
 {
-  v7 = a3;
+  initializationCopy = initialization;
   if ([(ContactsSceneDelegate *)self didExecuteSceneInitializationTasks])
   {
-    v7[2]();
+    initializationCopy[2]();
   }
 
   else
   {
-    v4 = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
-    v5 = [v7 copy];
+    actionsDelayedUntilSceneInitialization = [(ContactsSceneDelegate *)self actionsDelayedUntilSceneInitialization];
+    v5 = [initializationCopy copy];
     v6 = objc_retainBlock(v5);
-    [v4 addObject:v6];
+    [actionsDelayedUntilSceneInitialization addObject:v6];
   }
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
-  v4 = [(ContactsSceneDelegate *)self splitViewController];
-  v5 = [v4 isShowingListView];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  isShowingListView = [splitViewController isShowingListView];
 
-  v6 = [(ContactsSceneDelegate *)self splitViewController];
-  v7 = v6;
-  if (v5)
+  splitViewController2 = [(ContactsSceneDelegate *)self splitViewController];
+  v7 = splitViewController2;
+  if (isShowingListView)
   {
-    v8 = [v6 contactNavigationController];
-    [v8 createUserActivity];
+    contactNavigationController = [splitViewController2 contactNavigationController];
+    [contactNavigationController createUserActivity];
 
-    v9 = [(ContactsSceneDelegate *)self splitViewController];
-    v10 = [v9 contactNavigationController];
-    v11 = [v10 userActivity];
+    splitViewController3 = [(ContactsSceneDelegate *)self splitViewController];
+    contactNavigationController2 = [splitViewController3 contactNavigationController];
+    userActivity = [contactNavigationController2 userActivity];
   }
 
   else
   {
-    v12 = [v6 isShowingGroups];
+    isShowingGroups = [splitViewController2 isShowingGroups];
 
-    v9 = [(ContactsSceneDelegate *)self splitViewController];
-    v13 = [v9 contactNavigationController];
-    v10 = v13;
-    if (v12)
+    splitViewController3 = [(ContactsSceneDelegate *)self splitViewController];
+    contactNavigationController3 = [splitViewController3 contactNavigationController];
+    contactNavigationController2 = contactNavigationController3;
+    if (isShowingGroups)
     {
-      [v13 userActivityRepresentingGroupsView];
+      [contactNavigationController3 userActivityRepresentingGroupsView];
     }
 
     else
     {
-      [v13 userActivityRepresentingCurrentlyDisplayedContact];
+      [contactNavigationController3 userActivityRepresentingCurrentlyDisplayedContact];
     }
-    v11 = ;
+    userActivity = ;
   }
 
-  v14 = v11;
+  v14 = userActivity;
 
   return v14;
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v5 = a4;
-  v6 = [(ContactsSceneDelegate *)self activityRestorer];
-  [v6 shouldEnableActivityIndicatorWhenRestoringUserActivityWithType:v5];
+  typeCopy = type;
+  activityRestorer = [(ContactsSceneDelegate *)self activityRestorer];
+  [activityRestorer shouldEnableActivityIndicatorWhenRestoringUserActivityWithType:typeCopy];
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v5 = a4;
-  v6 = [(ContactsSceneDelegate *)self activityRestorer];
-  [v6 restoreUserActivity:v5];
+  activityCopy = activity;
+  activityRestorer = [(ContactsSceneDelegate *)self activityRestorer];
+  [activityRestorer restoreUserActivity:activityCopy];
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v6 = a4;
-  v7 = [(ContactsSceneDelegate *)self activityRestorer];
-  [v7 shouldEnableActivityIndicatorWhenRestoringUserActivityWithType:v6];
+  typeCopy = type;
+  activityRestorer = [(ContactsSceneDelegate *)self activityRestorer];
+  [activityRestorer shouldEnableActivityIndicatorWhenRestoringUserActivityWithType:typeCopy];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v7 = [a4 allObjects];
-  v5 = [v7 firstObject];
-  v6 = [v5 URL];
+  allObjects = [contexts allObjects];
+  firstObject = [allObjects firstObject];
+  v6 = [firstObject URL];
   [(ContactsSceneDelegate *)self openContactsURL:v6];
 }
 
-- (BOOL)openContactsURL:(id)a3
+- (BOOL)openContactsURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ContactsSceneDelegate *)self splitViewController];
-  [v5 cancelSearch];
+  lCopy = l;
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  [splitViewController cancelSearch];
 
-  if ([v4 isFileURL])
+  if ([lCopy isFileURL])
   {
-    v6 = [(ContactsSceneDelegate *)self vCardImportController];
-    v7 = [(ContactsURLParser *)v6 enqueueContactsAtURL:v4];
+    vCardImportController = [(ContactsSceneDelegate *)self vCardImportController];
+    v7 = [(ContactsURLParser *)vCardImportController enqueueContactsAtURL:lCopy];
   }
 
   else
   {
     v8 = [ContactsURLParser alloc];
-    v9 = [(ContactsSceneDelegate *)self splitViewController];
-    v10 = [v9 contactNavigationController];
-    v11 = [v10 dataSource];
-    v6 = [(ContactsURLParser *)v8 initWithURL:v4 dataSource:v11];
+    splitViewController2 = [(ContactsSceneDelegate *)self splitViewController];
+    contactNavigationController = [splitViewController2 contactNavigationController];
+    dataSource = [contactNavigationController dataSource];
+    vCardImportController = [(ContactsURLParser *)v8 initWithURL:lCopy dataSource:dataSource];
 
-    v12 = [(ContactsURLParser *)v6 actionFound];
-    if (v12 == 3)
+    actionFound = [(ContactsURLParser *)vCardImportController actionFound];
+    if (actionFound == 3)
     {
       [(ContactsSceneDelegate *)self createNewContact];
       v16 = 1;
       goto LABEL_10;
     }
 
-    if (v12 == 2)
+    if (actionFound == 2)
     {
-      v13 = self;
-      v14 = v6;
+      selfCopy2 = self;
+      v14 = vCardImportController;
       v15 = 1;
     }
 
     else
     {
-      if (v12 != 1)
+      if (actionFound != 1)
       {
         v16 = 0;
         goto LABEL_10;
       }
 
-      v13 = self;
-      v14 = v6;
+      selfCopy2 = self;
+      v14 = vCardImportController;
       v15 = 0;
     }
 
-    v7 = [(ContactsSceneDelegate *)v13 showContactFromURLReader:v14 setEditing:v15];
+    v7 = [(ContactsSceneDelegate *)selfCopy2 showContactFromURLReader:v14 setEditing:v15];
   }
 
   v16 = v7;
@@ -659,18 +659,18 @@ LABEL_10:
 
 - (id)showMeCardShortcutItem
 {
-  v3 = [(ContactsSceneDelegate *)self splitViewController];
-  v4 = [v3 contactNavigationController];
-  v5 = [v4 contactListViewController];
-  v6 = [v5 preferredForNameMeContact];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  contactNavigationController = [splitViewController contactNavigationController];
+  contactListViewController = [contactNavigationController contactListViewController];
+  preferredForNameMeContact = [contactListViewController preferredForNameMeContact];
 
-  if (v6)
+  if (preferredForNameMeContact)
   {
-    v7 = [(ContactsSceneDelegate *)self bundle];
-    v8 = [v7 localizedStringForKey:@"QUICKACTION_TITLE_SHOW_ME" value:0 table:@"InfoPlist"];
+    bundle = [(ContactsSceneDelegate *)self bundle];
+    v8 = [bundle localizedStringForKey:@"QUICKACTION_TITLE_SHOW_ME" value:0 table:@"InfoPlist"];
 
     v9 = [[UIMutableApplicationShortcutItem alloc] initWithType:@"com.apple.contacts.show-me" localizedTitle:v8];
-    v10 = [UIApplicationShortcutIcon iconWithContact:v6];
+    v10 = [UIApplicationShortcutIcon iconWithContact:preferredForNameMeContact];
     [v9 setIcon:v10];
   }
 
@@ -682,38 +682,38 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  testCopy = test;
   v8 = +[ContactsTestingManager defaultTestingManager];
-  v9 = [(ContactsSceneDelegate *)self splitViewController];
-  v10 = [v8 runTest:v7 options:v6 splitViewController:v9];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  v10 = [v8 runTest:testCopy options:optionsCopy splitViewController:splitViewController];
 
   return v10;
 }
 
 - (void)createNewContact
 {
-  v2 = [(ContactsSceneDelegate *)self splitViewController];
-  [v2 createNewContact];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  [splitViewController createNewContact];
 }
 
 - (BOOL)showMeContact
 {
-  v3 = [(ContactsSceneDelegate *)self splitViewController];
-  v4 = [v3 contactNavigationController];
-  v5 = [v4 dataSource];
-  v6 = [v5 preferredForNameMeContactIdentifier];
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  contactNavigationController = [splitViewController contactNavigationController];
+  dataSource = [contactNavigationController dataSource];
+  preferredForNameMeContactIdentifier = [dataSource preferredForNameMeContactIdentifier];
 
-  if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v6))
+  if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, preferredForNameMeContactIdentifier))
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(ContactsSceneDelegate *)self showContactWithIdentifier:v6 setEditing:0];
+    v7 = [(ContactsSceneDelegate *)self showContactWithIdentifier:preferredForNameMeContactIdentifier setEditing:0];
   }
 
   return v7;
@@ -729,10 +729,10 @@ LABEL_10:
   [(ContactsSceneDelegate *)self executeActionDelayedUntilSceneInitialization:v2];
 }
 
-- (void)showContact:(id)a3 setEditing:(BOOL)a4
+- (void)showContact:(id)contact setEditing:(BOOL)editing
 {
-  v6 = a3;
-  if (!v6)
+  contactCopy = contact;
+  if (!contactCopy)
   {
     v8 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"contact passed to showContact is nil" userInfo:0];
     objc_exception_throw(v8);
@@ -743,36 +743,36 @@ LABEL_10:
   v9[2] = sub_10000BE60;
   v9[3] = &unk_1000207E8;
   v9[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v7 = v6;
+  v10 = contactCopy;
+  editingCopy = editing;
+  v7 = contactCopy;
   [(ContactsSceneDelegate *)self executeActionDelayedUntilSceneInitialization:v9];
 }
 
-- (void)vCardImportController:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5
+- (void)vCardImportController:(id)controller presentViewController:(id)viewController animated:(BOOL)animated
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C3A4;
   v7[3] = &unk_1000207E8;
-  v8 = self;
-  v9 = a4;
-  v10 = a5;
-  v6 = v9;
-  [(ContactsSceneDelegate *)v8 executeActionDelayedUntilSceneInitialization:v7];
+  selfCopy = self;
+  viewControllerCopy = viewController;
+  animatedCopy = animated;
+  v6 = viewControllerCopy;
+  [(ContactsSceneDelegate *)selfCopy executeActionDelayedUntilSceneInitialization:v7];
 }
 
-- (void)vCardImportController:(id)a3 didSaveContacts:(id)a4
+- (void)vCardImportController:(id)controller didSaveContacts:(id)contacts
 {
-  v5 = [a4 firstObject];
-  [(ContactsSceneDelegate *)self showContact:v5];
+  firstObject = [contacts firstObject];
+  [(ContactsSceneDelegate *)self showContact:firstObject];
 }
 
-- (void)searchForString:(id)a3
+- (void)searchForString:(id)string
 {
-  v4 = a3;
-  v5 = [(ContactsSceneDelegate *)self splitViewController];
-  [v5 searchForString:v4];
+  stringCopy = string;
+  splitViewController = [(ContactsSceneDelegate *)self splitViewController];
+  [splitViewController searchForString:stringCopy];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface NTKGladiusLightEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKGladiusLightEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_20848[a3];
+    return off_20848[value];
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKGladiusLightEditOption *)self light];
-  if (v2 > 2)
+  light = [(NTKGladiusLightEditOption *)self light];
+  if (light > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_20860[v2];
+    v3 = off_20860[light];
   }
 
   return [NTKGladiusFaceBundle localizedStringForKey:v3 comment:@"light"];

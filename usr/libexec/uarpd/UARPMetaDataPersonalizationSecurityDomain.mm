@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationSecurityDomain
 - (UARPMetaDataPersonalizationSecurityDomain)init;
-- (UARPMetaDataPersonalizationSecurityDomain)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationSecurityDomain)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationSecurityDomain)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationSecurityDomain)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationSecurityDomain)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationSecurityDomain)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationSecurityDomain *)self init];
   v7 = v6;
   if (!v6)
@@ -37,7 +37,7 @@
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataPersonalizationSecurityDomain;
-  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:v5];
+  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:valueCopy];
   v9 = v8;
   if (v8)
   {
@@ -50,7 +50,7 @@ LABEL_4:
   return v9;
 }
 
-- (UARPMetaDataPersonalizationSecurityDomain)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationSecurityDomain)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationSecurityDomain *)self init];
   v7 = v6;
@@ -61,7 +61,7 @@ LABEL_4:
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataPersonalizationSecurityDomain;
-  v8 = [(UARPMetaData *)&v11 numberWithLength:a3 value:a4];
+  v8 = [(UARPMetaData *)&v11 numberWithLength:length value:value];
   v9 = v8;
   if (v8)
   {
@@ -85,8 +85,8 @@ LABEL_4:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [NSString stringWithFormat:@"<%@: %u>", v3, [(UARPMetaDataPersonalizationSecurityDomain *)self securityDomain]];
+  tlvName = [(UARPMetaData *)self tlvName];
+  v4 = [NSString stringWithFormat:@"<%@: %u>", tlvName, [(UARPMetaDataPersonalizationSecurityDomain *)self securityDomain]];
 
   return v4;
 }

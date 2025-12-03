@@ -1,6 +1,6 @@
 @interface IMSystemProxySettingsFetcher
-- (IMSystemProxySettingsFetcher)initWithHost:(id)a3 port:(unsigned __int16)a4 delegate:(id)a5;
-- (IMSystemProxySettingsFetcher)initWithProxyProtocol:(int64_t)a3 proxyHost:(id)a4 proxyPort:(unsigned __int16)a5 delegate:(id)a6;
+- (IMSystemProxySettingsFetcher)initWithHost:(id)host port:(unsigned __int16)port delegate:(id)delegate;
+- (IMSystemProxySettingsFetcher)initWithProxyProtocol:(int64_t)protocol proxyHost:(id)host proxyPort:(unsigned __int16)port delegate:(id)delegate;
 - (void)_callAccountSettingsDelegateMethod;
 - (void)_callProxySettingsDelegateMethod;
 - (void)_getProxyAccountAndPasswordFromKeychain;
@@ -29,10 +29,10 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (IMSystemProxySettingsFetcher)initWithHost:(id)a3 port:(unsigned __int16)a4 delegate:(id)a5
+- (IMSystemProxySettingsFetcher)initWithHost:(id)host port:(unsigned __int16)port delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  hostCopy = host;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = IMSystemProxySettingsFetcher;
   v11 = [(IMSystemProxySettingsFetcher *)&v14 init];
@@ -40,28 +40,28 @@
   if (v11)
   {
     v11->_proxyProtocol = 4;
-    v11->_delegate = v10;
-    objc_storeStrong(&v11->_host, a3);
-    v12->_port = a4;
+    v11->_delegate = delegateCopy;
+    objc_storeStrong(&v11->_host, host);
+    v12->_port = port;
   }
 
   return v12;
 }
 
-- (IMSystemProxySettingsFetcher)initWithProxyProtocol:(int64_t)a3 proxyHost:(id)a4 proxyPort:(unsigned __int16)a5 delegate:(id)a6
+- (IMSystemProxySettingsFetcher)initWithProxyProtocol:(int64_t)protocol proxyHost:(id)host proxyPort:(unsigned __int16)port delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a6;
+  hostCopy = host;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = IMSystemProxySettingsFetcher;
   v13 = [(IMSystemProxySettingsFetcher *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_proxyProtocol = a3;
-    v13->_delegate = v12;
-    objc_storeStrong(&v13->_proxyHost, a4);
-    v14->_proxyPort = a5;
+    v13->_proxyProtocol = protocol;
+    v13->_delegate = delegateCopy;
+    objc_storeStrong(&v13->_proxyHost, host);
+    v14->_proxyPort = port;
   }
 
   return v14;

@@ -1,11 +1,11 @@
 @interface ACM2SVHTTPGetTrustedDevicesHandler
-- (ACM2SVHTTPGetTrustedDevicesHandler)initWithContext:(id)a3;
-- (id)convertErrorToACMError:(id)a3;
+- (ACM2SVHTTPGetTrustedDevicesHandler)initWithContext:(id)context;
+- (id)convertErrorToACMError:(id)error;
 @end
 
 @implementation ACM2SVHTTPGetTrustedDevicesHandler
 
-- (ACM2SVHTTPGetTrustedDevicesHandler)initWithContext:(id)a3
+- (ACM2SVHTTPGetTrustedDevicesHandler)initWithContext:(id)context
 {
   v6.receiver = self;
   v6.super_class = ACM2SVHTTPGetTrustedDevicesHandler;
@@ -18,36 +18,36 @@
   return v4;
 }
 
-- (id)convertErrorToACMError:(id)a3
+- (id)convertErrorToACMError:(id)error
 {
   if (qword_2A1EB8E98 && (ACFLogSettingsGetLevelMask() & 0x40) != 0)
   {
-    ACFLog(6, "[ACM2SVHTTPGetTrustedDevicesHandler convertErrorToACMError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVHTTPGetTrustedDevicesHandler.m", 33, 0, "Convert error %@ to user-friedly error.", a3);
+    ACFLog(6, "[ACM2SVHTTPGetTrustedDevicesHandler convertErrorToACMError:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACM2SVHTTPGetTrustedDevicesHandler.m", 33, 0, "Convert error %@ to user-friedly error.", error);
   }
 
-  v5 = [a3 domain];
-  if ([v5 isEqualToString:@"ACCAppleConnectErrorDomain"])
+  domain = [error domain];
+  if ([domain isEqualToString:@"ACCAppleConnectErrorDomain"])
   {
-    return a3;
+    return error;
   }
 
-  v7 = [a3 localizedFailureReason];
-  v8 = [a3 localizedDescription];
-  if (![v5 isEqualToString:@"HTTPServerErrorDomain"])
+  localizedFailureReason = [error localizedFailureReason];
+  localizedDescription = [error localizedDescription];
+  if (![domain isEqualToString:@"HTTPServerErrorDomain"])
   {
-    v11 = self;
-    v10 = &v11;
+    selfCopy = self;
+    v10 = &selfCopy;
     goto LABEL_12;
   }
 
-  v9 = [a3 code];
-  if (v9 != -20100 && v9 != -20600)
+  code = [error code];
+  if (code != -20100 && code != -20600)
   {
     v12.receiver = self;
     v10 = &v12;
 LABEL_12:
     v10->super_class = ACM2SVHTTPGetTrustedDevicesHandler;
-    result = [(objc_super *)v10 convertErrorToACMError:a3];
+    result = [(objc_super *)v10 convertErrorToACMError:error];
     if (result)
     {
       return result;
@@ -56,12 +56,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [ACMBaseLocale localizedString:@"Oops, an error occurred. Thanks for your patience, please try again later."];
+  localizedDescription = [ACMBaseLocale localizedString:@"Oops, an error occurred. Thanks for your patience, please try again later."];
 LABEL_13:
-  result = [MEMORY[0x29EDB9FA0] errorWithDomain:@"ACCAppleConnectErrorDomain" code:-200200 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjectsAndKeys:", a3, *MEMORY[0x29EDB9F18], v8, *MEMORY[0x29EDB9ED8], v7, *MEMORY[0x29EDB9EE0], 0, v11)}];
+  result = [MEMORY[0x29EDB9FA0] errorWithDomain:@"ACCAppleConnectErrorDomain" code:-200200 userInfo:{objc_msgSend(MEMORY[0x29EDB8DC0], "dictionaryWithObjectsAndKeys:", error, *MEMORY[0x29EDB9F18], localizedDescription, *MEMORY[0x29EDB9ED8], localizedFailureReason, *MEMORY[0x29EDB9EE0], 0, selfCopy)}];
   if (!result)
   {
-    return a3;
+    return error;
   }
 
   return result;

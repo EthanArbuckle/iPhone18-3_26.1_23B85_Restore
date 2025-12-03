@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_ResetDuplicateProcessingValue
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetDuplicateProcessingValue
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  v6 = [[PLGlobalValues alloc] initWithManagedObjectContext:v5];
-  v7 = [(PLModelMigrationActionCore *)self pathManager];
-  v8 = [PLDuplicateDetector duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:v5 pathManager:v7];
+  contextCopy = context;
+  v6 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
+  v8 = [PLDuplicateDetector duplicateDetectorCompletedPerceptualHashProcessingWithManagedObjectContext:contextCopy pathManager:pathManager];
 
   if (!v8)
   {

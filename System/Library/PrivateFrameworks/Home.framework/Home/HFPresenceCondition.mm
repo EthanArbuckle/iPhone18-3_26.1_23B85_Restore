@@ -1,27 +1,27 @@
 @interface HFPresenceCondition
-- (HFPresenceCondition)initWithPredicate:(id)a3;
-- (HFPresenceCondition)initWithPresenceEvent:(id)a3;
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3;
+- (HFPresenceCondition)initWithPredicate:(id)predicate;
+- (HFPresenceCondition)initWithPresenceEvent:(id)event;
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options;
 @end
 
 @implementation HFPresenceCondition
 
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options
 {
-  v5 = a3;
-  v6 = [(HFPresenceCondition *)self presenceEvent];
-  v7 = [[HFPresenceEventBuilder alloc] initWithEvent:v6];
-  v8 = [(HFPresenceEventBuilder *)v7 users];
-  v9 = [v8 type];
+  optionsCopy = options;
+  presenceEvent = [(HFPresenceCondition *)self presenceEvent];
+  v7 = [[HFPresenceEventBuilder alloc] initWithEvent:presenceEvent];
+  users = [(HFPresenceEventBuilder *)v7 users];
+  type = [users type];
 
-  v10 = [(HFPresenceEventBuilder *)v7 locationEventType];
-  if (v10 == 2)
+  locationEventType = [(HFPresenceEventBuilder *)v7 locationEventType];
+  if (locationEventType == 2)
   {
-    if (v9 != 2)
+    if (type != 2)
     {
-      if (v9 != 1)
+      if (type != 1)
       {
-        if (!v9)
+        if (!type)
         {
           v11 = @"_noUserAtHome";
           goto LABEL_11;
@@ -38,13 +38,13 @@
     goto LABEL_20;
   }
 
-  if (v10 == 1)
+  if (locationEventType == 1)
   {
-    if (v9 != 2)
+    if (type != 2)
     {
-      if (v9 != 1)
+      if (type != 1)
       {
-        if (!v9)
+        if (!type)
         {
           v11 = @"_anyUserAtHome";
 LABEL_11:
@@ -53,7 +53,7 @@ LABEL_11:
         }
 
 LABEL_14:
-        v9 = 0;
+        type = 0;
         v12 = @"HFConditionNamePresence";
         goto LABEL_27;
       }
@@ -62,7 +62,7 @@ LABEL_14:
 LABEL_17:
       v12 = [@"HFConditionNamePresence" stringByAppendingString:v13];
 LABEL_24:
-      v9 = 0;
+      type = 0;
       goto LABEL_27;
     }
 
@@ -73,15 +73,15 @@ LABEL_20:
   }
 
   v12 = @"HFConditionNamePresence";
-  if (v9 != 2)
+  if (type != 2)
   {
     goto LABEL_24;
   }
 
 LABEL_21:
-  v15 = [(HFPresenceCondition *)self presenceEvent];
-  v16 = [v15 users];
-  v17 = [v16 count];
+  presenceEvent2 = [(HFPresenceCondition *)self presenceEvent];
+  users2 = [presenceEvent2 users];
+  v17 = [users2 count];
 
   if (v17 != 1)
   {
@@ -89,34 +89,34 @@ LABEL_21:
   }
 
   v18 = [HFUserNameFormatter alloc];
-  v19 = [v5 home];
-  v20 = [(HFUserNameFormatter *)v18 initWithHome:v19];
+  home = [optionsCopy home];
+  v20 = [(HFUserNameFormatter *)v18 initWithHome:home];
 
   [(HFUserNameFormatter *)v20 setStyle:1];
-  v21 = [v6 users];
-  v22 = [v21 count];
+  users3 = [presenceEvent users];
+  v22 = [users3 count];
 
   if (v22 == 1)
   {
     v36 = [(__CFString *)v12 stringByAppendingString:@"_oneUserFormat"];
 
-    v23 = [v5 home];
-    v24 = [v6 users];
-    v25 = [v24 firstObject];
-    v26 = [v23 hf_handleForUser:v25];
+    home2 = [optionsCopy home];
+    users4 = [presenceEvent users];
+    firstObject = [users4 firstObject];
+    v26 = [home2 hf_handleForUser:firstObject];
 
-    v9 = [(HFUserNameFormatter *)v20 stringForObjectValue:v26];
+    type = [(HFUserNameFormatter *)v20 stringForObjectValue:v26];
 
     v12 = v36;
   }
 
   else
   {
-    v9 = 0;
+    type = 0;
   }
 
 LABEL_27:
-  if ([v5 formattingStyle] != 3)
+  if ([optionsCopy formattingStyle] != 3)
   {
     v27 = [(__CFString *)v12 stringByAppendingString:@"_short"];
 
@@ -127,10 +127,10 @@ LABEL_27:
   if (v28)
   {
     v29 = v28;
-    if (v9)
+    if (type)
     {
       v37 = 0;
-      v30 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@" error:&v37, v9];
+      v30 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@" error:&v37, type];
       v31 = v37;
 
       if (!v30)
@@ -148,11 +148,11 @@ LABEL_27:
     v29 = _HFLocalizedStringWithDefaultValue(@"HFConditionNamePresence_Custom", @"HFConditionNamePresence_Custom", 1);
   }
 
-  if ([v5 formattingContext] != 5)
+  if ([optionsCopy formattingContext] != 5)
   {
-    v33 = [v29 hf_stringByCapitalizingFirstWord];
+    hf_stringByCapitalizingFirstWord = [v29 hf_stringByCapitalizingFirstWord];
 
-    v29 = v33;
+    v29 = hf_stringByCapitalizingFirstWord;
   }
 
   v34 = [[HFConditionUISummary alloc] initWithCondition:self title:v29 description:0];
@@ -160,19 +160,19 @@ LABEL_27:
   return v34;
 }
 
-- (HFPresenceCondition)initWithPredicate:(id)a3
+- (HFPresenceCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v26.receiver = self;
   v26.super_class = HFPresenceCondition;
-  v5 = [(HFCondition *)&v26 initWithPredicate:v4];
+  v5 = [(HFCondition *)&v26 initWithPredicate:predicateCopy];
   if (!v5)
   {
     goto LABEL_20;
   }
 
   objc_opt_class();
-  v6 = v4;
+  v6 = predicateCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -190,28 +190,28 @@ LABEL_27:
     goto LABEL_10;
   }
 
-  v9 = [v8 leftExpression];
-  if ([v9 expressionType] != 3)
+  leftExpression = [v8 leftExpression];
+  if ([leftExpression expressionType] != 3)
   {
     goto LABEL_9;
   }
 
-  v10 = [v8 leftExpression];
-  v11 = [v10 keyPath];
-  v12 = [v11 isEqualToString:*MEMORY[0x277CD0C40]];
+  leftExpression2 = [v8 leftExpression];
+  keyPath = [leftExpression2 keyPath];
+  v12 = [keyPath isEqualToString:*MEMORY[0x277CD0C40]];
 
   if (v12)
   {
-    v9 = [v8 rightExpression];
-    if ([v9 expressionType])
+    leftExpression = [v8 rightExpression];
+    if ([leftExpression expressionType])
     {
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    v14 = [v8 rightExpression];
-    v15 = [v14 constantValue];
+    rightExpression = [v8 rightExpression];
+    constantValue = [rightExpression constantValue];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -221,13 +221,13 @@ LABEL_9:
     }
 
     v17 = objc_opt_class();
-    v18 = [v8 rightExpression];
-    v19 = [v18 constantValue];
-    if (v19)
+    rightExpression2 = [v8 rightExpression];
+    constantValue2 = [rightExpression2 constantValue];
+    if (constantValue2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v20 = v19;
+        v20 = constantValue2;
       }
 
       else
@@ -235,15 +235,15 @@ LABEL_9:
         v20 = 0;
       }
 
-      v21 = v19;
+      v21 = constantValue2;
       if (v20)
       {
         goto LABEL_19;
       }
 
-      v22 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v22 handleFailureInFunction:v23 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
+      [currentHandler handleFailureInFunction:v23 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
     }
 
     v21 = 0;
@@ -265,9 +265,9 @@ LABEL_21:
   return v13;
 }
 
-- (HFPresenceCondition)initWithPresenceEvent:(id)a3
+- (HFPresenceCondition)initWithPresenceEvent:(id)event
 {
-  v4 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerWithPresence:a3];
+  v4 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerWithPresence:event];
   v5 = [(HFPresenceCondition *)self initWithPredicate:v4];
 
   return v5;

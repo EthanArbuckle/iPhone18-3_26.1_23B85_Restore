@@ -1,79 +1,79 @@
 @interface PLJournalEntry
-- (BOOL)_readFromFileHandle:(id)a3 decodePayload:(BOOL)a4 payloadClass:(Class)a5 error:(id *)a6;
-- (BOOL)readFromFileHandle:(id)a3 decodePayload:(BOOL)a4 payloadClass:(Class)a5 entryOffset:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)writeToFileHandle:(id)a3 checksumContext:(id)a4 error:(id *)a5;
-- (PLJournalEntry)initWithPayloadID:(id)a3 payload:(id)a4 payloadClass:(Class)a5 entryType:(int)a6;
+- (BOOL)_readFromFileHandle:(id)handle decodePayload:(BOOL)payload payloadClass:(Class)class error:(id *)error;
+- (BOOL)readFromFileHandle:(id)handle decodePayload:(BOOL)payload payloadClass:(Class)class entryOffset:(unint64_t *)offset error:(id *)error;
+- (BOOL)writeToFileHandle:(id)handle checksumContext:(id)context error:(id *)error;
+- (PLJournalEntry)initWithPayloadID:(id)d payload:(id)payload payloadClass:(Class)class entryType:(int)type;
 - (id)debugDescription;
 - (id)description;
-- (id)descriptionWithBuilder:(id)a3;
+- (id)descriptionWithBuilder:(id)builder;
 - (id)entryTypeDescription;
-- (id)initForDeleteWithPayloadID:(id)a3 payloadClass:(Class)a4;
-- (id)initForInsertWithPayload:(id)a3;
-- (id)initForUpdateWithPayload:(id)a3;
-- (void)_appendHeaderData:(id)a3 headerCRC:(unsigned __int16)a4 payloadData:(id)a5 toFileHandle:(id)a6 checksumContext:(id)a7;
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4 toFileHandle:(id)a5 checksumContext:(id)a6;
+- (id)initForDeleteWithPayloadID:(id)d payloadClass:(Class)class;
+- (id)initForInsertWithPayload:(id)payload;
+- (id)initForUpdateWithPayload:(id)payload;
+- (void)_appendHeaderData:(id)data headerCRC:(unsigned __int16)c payloadData:(id)payloadData toFileHandle:(id)handle checksumContext:(id)context;
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length toFileHandle:(id)handle checksumContext:(id)context;
 @end
 
 @implementation PLJournalEntry
 
 - (id)entryTypeDescription
 {
-  v2 = [(PLJournalEntry *)self header];
-  v3 = [v2 entryType];
-  if (v3 >= 3)
+  header = [(PLJournalEntry *)self header];
+  entryType = [header entryType];
+  if (entryType >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entryType];
   }
 
   else
   {
-    v4 = off_1E7570DD8[v3];
+    v4 = off_1E7570DD8[entryType];
   }
 
   return v4;
 }
 
-- (id)descriptionWithBuilder:(id)a3
+- (id)descriptionWithBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(PLJournalEntry *)self header];
-  v6 = [v5 entryType];
-  if (v6 >= 3)
+  builderCopy = builder;
+  header = [(PLJournalEntry *)self header];
+  entryType = [header entryType];
+  if (entryType >= 3)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", entryType];
   }
 
   else
   {
-    v7 = off_1E7570DD8[v6];
+    v7 = off_1E7570DD8[entryType];
   }
 
-  [v4 appendName:@"type" object:v7];
+  [builderCopy appendName:@"type" object:v7];
 
-  v8 = [(PLJournalEntry *)self payloadID];
+  payloadID = [(PLJournalEntry *)self payloadID];
 
-  if (v8)
+  if (payloadID)
   {
-    v9 = [(PLJournalEntry *)self payloadID];
-    [v4 appendName:@"payloadID" object:v9];
+    payloadID2 = [(PLJournalEntry *)self payloadID];
+    [builderCopy appendName:@"payloadID" object:payloadID2];
   }
 
-  v10 = [(PLJournalEntry *)self header];
-  v11 = [v10 entryType];
+  header2 = [(PLJournalEntry *)self header];
+  entryType2 = [header2 entryType];
 
-  if (v11 != 2)
+  if (entryType2 != 2)
   {
-    [v4 appendName:@"version" integerValue:{-[PLJournalEntry payloadVersion](self, "payloadVersion")}];
+    [builderCopy appendName:@"version" integerValue:{-[PLJournalEntry payloadVersion](self, "payloadVersion")}];
   }
 
-  v12 = [(PLJournalEntry *)self payload];
+  payload = [(PLJournalEntry *)self payload];
 
-  if (v12)
+  if (payload)
   {
-    if ([v4 style] == 3)
+    if ([builderCopy style] == 3)
     {
-      v13 = -[PLJournalEntryPayload prettyDescriptionForEntry:indent:](self->_payload, "prettyDescriptionForEntry:indent:", self, [v4 indent] + 1);
-      [v4 appendName:@"payload" object:v13];
+      v13 = -[PLJournalEntryPayload prettyDescriptionForEntry:indent:](self->_payload, "prettyDescriptionForEntry:indent:", self, [builderCopy indent] + 1);
+      [builderCopy appendName:@"payload" object:v13];
     }
 
     else
@@ -81,13 +81,13 @@
       v14 = MEMORY[0x1E696AEC0];
       v13 = [(PLJournalEntryPayload *)self->_payload descriptionForEntry:self];
       v15 = [v14 stringWithFormat:@"[%@]", v13];
-      [v4 appendName:@"payload" object:v15];
+      [builderCopy appendName:@"payload" object:v15];
     }
   }
 
-  v16 = [v4 build];
+  build = [builderCopy build];
 
-  return v16;
+  return build;
 }
 
 - (id)debugDescription
@@ -106,11 +106,11 @@
   return v4;
 }
 
-- (BOOL)writeToFileHandle:(id)a3 checksumContext:(id)a4 error:(id *)a5
+- (BOOL)writeToFileHandle:(id)handle checksumContext:(id)context error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  contextCopy = context;
   payload = self->_payload;
   if (!payload)
   {
@@ -127,16 +127,16 @@
 
 LABEL_5:
     v14 = objc_alloc_init(MEMORY[0x1E69C65C0]);
-    v15 = [(PLJournalEntryPayloadID *)self->_payloadID payloadUUIDData];
-    if (v15)
+    payloadUUIDData = [(PLJournalEntryPayloadID *)self->_payloadID payloadUUIDData];
+    if (payloadUUIDData)
     {
-      [(PLJournalEntryHeader *)self->_header setPayloadUUID:v15];
+      [(PLJournalEntryHeader *)self->_header setPayloadUUID:payloadUUIDData];
     }
 
     else
     {
-      v16 = [(PLJournalEntryPayloadID *)self->_payloadID payloadIDString];
-      [(PLJournalEntryHeader *)self->_header setPayloadID:v16];
+      payloadIDString = [(PLJournalEntryPayloadID *)self->_payloadID payloadIDString];
+      [(PLJournalEntryHeader *)self->_header setPayloadID:payloadIDString];
     }
 
     if ([v11 length])
@@ -150,20 +150,20 @@ LABEL_5:
     }
 
     [(PLJournalEntryHeader *)self->_header writeTo:v14];
-    v18 = [v14 immutableData];
-    v19 = v18;
-    [v18 bytes];
-    [v18 length];
+    immutableData = [v14 immutableData];
+    v19 = immutableData;
+    [immutableData bytes];
+    [immutableData length];
     CNCRC();
     [(PLJournalEntryHeader *)self->_header setPayloadID:0];
-    [(PLJournalEntry *)self appendHeaderData:v18 headerCRC:0 payloadData:v11 toFileHandle:v8 checksumContext:v9];
+    [(PLJournalEntry *)self appendHeaderData:immutableData headerCRC:0 payloadData:v11 toFileHandle:handleCopy checksumContext:contextCopy];
     v20 = 1;
 
     v13 = v11;
     goto LABEL_11;
   }
 
-  if (!a5)
+  if (!error)
   {
     v20 = 0;
     goto LABEL_12;
@@ -174,88 +174,88 @@ LABEL_5:
   v25[0] = v12;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   [v22 errorWithDomain:*MEMORY[0x1E69BFF48] code:51002 userInfo:v14];
-  *a5 = v20 = 0;
+  *error = v20 = 0;
 LABEL_11:
 
 LABEL_12:
   return v20;
 }
 
-- (void)_appendHeaderData:(id)a3 headerCRC:(unsigned __int16)a4 payloadData:(id)a5 toFileHandle:(id)a6 checksumContext:(id)a7
+- (void)_appendHeaderData:(id)data headerCRC:(unsigned __int16)c payloadData:(id)payloadData toFileHandle:(id)handle checksumContext:(id)context
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  [(PLJournalEntry *)self writeBytes:&kPLJournalEntryMagic length:1 toFileHandle:v14 checksumContext:v15];
-  v23 = __rev16(v10);
-  [(PLJournalEntry *)self writeBytes:&v23 length:2 toFileHandle:v14 checksumContext:v15];
-  if ([v12 length] >= 0x10000)
+  cCopy = c;
+  dataCopy = data;
+  payloadDataCopy = payloadData;
+  handleCopy = handle;
+  contextCopy = context;
+  [(PLJournalEntry *)self writeBytes:&kPLJournalEntryMagic length:1 toFileHandle:handleCopy checksumContext:contextCopy];
+  v23 = __rev16(cCopy);
+  [(PLJournalEntry *)self writeBytes:&v23 length:2 toFileHandle:handleCopy checksumContext:contextCopy];
+  if ([dataCopy length] >= 0x10000)
   {
-    [v12 length];
+    [dataCopy length];
     v16 = _PFAssertFailHandler();
     [(PLJournalEntry *)v16 writeBytes:v17 length:v18 toFileHandle:v19 checksumContext:v20, v21];
   }
 
   else
   {
-    v22 = bswap32([v12 length]) >> 16;
-    [(PLJournalEntry *)self writeBytes:&v22 length:2 toFileHandle:v14 checksumContext:v15];
-    [v14 writeData:v12];
-    [v15 update:v12];
-    if (v13)
+    v22 = bswap32([dataCopy length]) >> 16;
+    [(PLJournalEntry *)self writeBytes:&v22 length:2 toFileHandle:handleCopy checksumContext:contextCopy];
+    [handleCopy writeData:dataCopy];
+    [contextCopy update:dataCopy];
+    if (payloadDataCopy)
     {
-      [v14 writeData:v13];
-      [v15 update:v13];
+      [handleCopy writeData:payloadDataCopy];
+      [contextCopy update:payloadDataCopy];
     }
   }
 }
 
-- (void)writeBytes:(const void *)a3 length:(unint64_t)a4 toFileHandle:(id)a5 checksumContext:(id)a6
+- (void)writeBytes:(const void *)bytes length:(unint64_t)length toFileHandle:(id)handle checksumContext:(id)context
 {
   v9 = MEMORY[0x1E695DEF0];
-  v10 = a6;
-  v11 = a5;
-  v12 = [[v9 alloc] initWithBytesNoCopy:a3 length:a4 freeWhenDone:0];
-  [v10 update:v12];
+  contextCopy = context;
+  handleCopy = handle;
+  v12 = [[v9 alloc] initWithBytesNoCopy:bytes length:length freeWhenDone:0];
+  [contextCopy update:v12];
 
-  [v11 writeData:v12];
+  [handleCopy writeData:v12];
 }
 
-- (BOOL)readFromFileHandle:(id)a3 decodePayload:(BOOL)a4 payloadClass:(Class)a5 entryOffset:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readFromFileHandle:(id)handle decodePayload:(BOOL)payload payloadClass:(Class)class entryOffset:(unint64_t *)offset error:(id *)error
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = [v12 offsetInFile];
+  payloadCopy = payload;
+  handleCopy = handle;
+  offsetInFile = [handleCopy offsetInFile];
   v23 = 0;
-  v14 = [(PLJournalEntry *)self _readFromFileHandle:v12 decodePayload:v10 payloadClass:a5 error:&v23];
+  v14 = [(PLJournalEntry *)self _readFromFileHandle:handleCopy decodePayload:payloadCopy payloadClass:class error:&v23];
   v15 = v23;
   if (v14)
   {
     v16 = 1;
-    if (!a6)
+    if (!offset)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    *a6 = v13;
+    *offset = offsetInFile;
     goto LABEL_9;
   }
 
   while (1)
   {
-    v17 = [v15 code];
-    v16 = v17 == 51001;
-    if (v17 != 51001)
+    code = [v15 code];
+    v16 = code == 51001;
+    if (code != 51001)
     {
       break;
     }
 
-    [v12 seekToFileOffset:++v13];
+    [handleCopy seekToFileOffset:++offsetInFile];
     v22 = v15;
-    v18 = [(PLJournalEntry *)self _readFromFileHandle:v12 decodePayload:v10 payloadClass:a5 error:&v22];
+    v18 = [(PLJournalEntry *)self _readFromFileHandle:handleCopy decodePayload:payloadCopy payloadClass:class error:&v22];
     v19 = v22;
 
     v15 = v19;
@@ -267,40 +267,40 @@ LABEL_8:
     }
   }
 
-  if (a6)
+  if (offset)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (a7)
+  if (error)
   {
     v20 = v15;
-    *a7 = v15;
+    *error = v15;
   }
 
   return v16;
 }
 
-- (BOOL)_readFromFileHandle:(id)a3 decodePayload:(BOOL)a4 payloadClass:(Class)a5 error:(id *)a6
+- (BOOL)_readFromFileHandle:(id)handle decodePayload:(BOOL)payload payloadClass:(Class)class error:(id *)error
 {
-  v8 = a4;
+  payloadCopy = payload;
   v46[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [v10 readDataOfLength:1];
+  handleCopy = handle;
+  v11 = [handleCopy readDataOfLength:1];
   if ([v11 length] == 1)
   {
     if (*[v11 bytes] == 64)
     {
 
-      v12 = [v10 readDataOfLength:2];
+      v12 = [handleCopy readDataOfLength:2];
       if ([v12 length] == 2)
       {
         LOWORD(v46[0]) = 0;
         [v12 getBytes:v46 length:2];
         v13 = LOWORD(v46[0]);
 
-        v14 = [v10 readDataOfLength:2];
+        v14 = [handleCopy readDataOfLength:2];
         if ([v14 length] == 2)
         {
           LOWORD(v46[0]) = 0;
@@ -310,7 +310,7 @@ LABEL_9:
           if (v15)
           {
             v16 = __rev16(v15);
-            v17 = [v10 readDataOfLength:v16];
+            v17 = [handleCopy readDataOfLength:v16];
             if (![v17 length])
             {
               v18 = 51005;
@@ -339,9 +339,9 @@ LABEL_22:
                 {
                   if ([(PLJournalEntryHeader *)self->_header hasPayloadUUID])
                   {
-                    v25 = [(PLJournalEntryHeader *)self->_header payloadUUID];
-                    v26 = v25;
-                    v27 = +[PLJournalEntryPayloadIDFactory payloadIDWithUUIDBytes:](PLJournalEntryPayloadIDFactory, "payloadIDWithUUIDBytes:", [v25 bytes]);
+                    payloadUUID = [(PLJournalEntryHeader *)self->_header payloadUUID];
+                    v26 = payloadUUID;
+                    v27 = +[PLJournalEntryPayloadIDFactory payloadIDWithUUIDBytes:](PLJournalEntryPayloadIDFactory, "payloadIDWithUUIDBytes:", [payloadUUID bytes]);
                     payloadID = self->_payloadID;
                     self->_payloadID = v27;
 
@@ -351,20 +351,20 @@ LABEL_22:
 
                   if ([(PLJournalEntryHeader *)self->_header hasPayloadID])
                   {
-                    v29 = [(PLJournalEntryHeader *)self->_header payloadID];
-                    v30 = [PLJournalEntryPayloadIDFactory payloadIDWithString:v29];
+                    payloadID = [(PLJournalEntryHeader *)self->_header payloadID];
+                    v30 = [PLJournalEntryPayloadIDFactory payloadIDWithString:payloadID];
                     v31 = self->_payloadID;
                     self->_payloadID = v30;
 
 LABEL_32:
-                    objc_storeStrong(&self->_payloadClass, a5);
-                    v32 = [(PLJournalEntryHeader *)self->_header payloadLength];
-                    v33 = [(PLJournalEntryHeader *)self->_header nilProperties];
-                    if (v33)
+                    objc_storeStrong(&self->_payloadClass, class);
+                    payloadLength = [(PLJournalEntryHeader *)self->_header payloadLength];
+                    nilProperties = [(PLJournalEntryHeader *)self->_header nilProperties];
+                    if (nilProperties)
                     {
                       v34 = objc_alloc(MEMORY[0x1E695DFD8]);
-                      v35 = [(PLJournalEntryHeader *)self->_header nilProperties];
-                      v36 = [v34 initWithArray:v35];
+                      nilProperties2 = [(PLJournalEntryHeader *)self->_header nilProperties];
+                      v36 = [v34 initWithArray:nilProperties2];
                     }
 
                     else
@@ -372,10 +372,10 @@ LABEL_32:
                       v36 = 0;
                     }
 
-                    if (v32)
+                    if (payloadLength)
                     {
-                      v37 = [v10 readDataOfLength:v32];
-                      if ([v37 length] >= v32)
+                      v37 = [handleCopy readDataOfLength:payloadLength];
+                      if ([v37 length] >= payloadLength)
                       {
                         v46[0] = 0;
                         v39 = v37;
@@ -396,12 +396,12 @@ LABEL_32:
                           v18 = 51001;
                         }
 
-                        if (v40 && v8)
+                        if (v40 && payloadCopy)
                         {
                           v41 = self->_payloadID;
-                          v42 = [(PLJournalEntryHeader *)self->_header payloadVersion];
+                          payloadVersion = [(PLJournalEntryHeader *)self->_header payloadVersion];
                           v45 = 0;
-                          v43 = [(objc_class *)a5 payloadWithData:v37 forPayloadID:v41 version:v42 andNilProperties:v36 error:&v45];
+                          v43 = [(objc_class *)class payloadWithData:v37 forPayloadID:v41 version:payloadVersion andNilProperties:v36 error:&v45];
                           v19 = v45;
                           payload = self->_payload;
                           self->_payload = v43;
@@ -433,12 +433,12 @@ LABEL_32:
                       v18 = 0;
                       LOBYTE(v15) = 1;
                       v19 = 0;
-                      if ([(PLJournalEntryHeader *)self->_header entryType]== 2 || !v8)
+                      if ([(PLJournalEntryHeader *)self->_header entryType]== 2 || !payloadCopy)
                       {
                         goto LABEL_54;
                       }
 
-                      v38 = [(objc_class *)a5 payloadWithData:0 forPayloadID:self->_payloadID version:[(PLJournalEntryHeader *)self->_header payloadVersion] andNilProperties:v36 error:0];
+                      v38 = [(objc_class *)class payloadWithData:0 forPayloadID:self->_payloadID version:[(PLJournalEntryHeader *)self->_header payloadVersion] andNilProperties:v36 error:0];
                       v18 = 0;
                       v19 = 0;
                       v37 = self->_payload;
@@ -492,95 +492,95 @@ LABEL_12:
   v19 = 0;
   LOBYTE(v15) = 0;
 LABEL_13:
-  if (a6 && v18)
+  if (error && v18)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:v18 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:v18 userInfo:0];
   }
 
   return v15;
 }
 
-- (id)initForDeleteWithPayloadID:(id)a3 payloadClass:(Class)a4
+- (id)initForDeleteWithPayloadID:(id)d payloadClass:(Class)class
 {
-  v7 = a3;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = [(objc_class *)a4 payloadClassID];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:278 description:{@"payloadID must be non-nil (payloadClassID: %@)", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    payloadClassID = [(objc_class *)class payloadClassID];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:278 description:{@"payloadID must be non-nil (payloadClassID: %@)", payloadClassID}];
   }
 
-  v8 = [(PLJournalEntry *)self initWithPayloadID:v7 payload:0 payloadClass:a4 entryType:2];
+  v8 = [(PLJournalEntry *)self initWithPayloadID:dCopy payload:0 payloadClass:class entryType:2];
 
   return v8;
 }
 
-- (id)initForUpdateWithPayload:(id)a3
+- (id)initForUpdateWithPayload:(id)payload
 {
-  v5 = a3;
-  v6 = [v5 payloadID];
+  payloadCopy = payload;
+  payloadID = [payloadCopy payloadID];
 
-  if (!v6)
+  if (!payloadID)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = [objc_opt_class() payloadClassID];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:273 description:{@"payloadID must be non-nil (payloadClassID: %@)", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    payloadClassID = [objc_opt_class() payloadClassID];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:273 description:{@"payloadID must be non-nil (payloadClassID: %@)", payloadClassID}];
   }
 
-  v7 = [v5 payloadID];
-  v8 = [(PLJournalEntry *)self initWithPayloadID:v7 payload:v5 payloadClass:objc_opt_class() entryType:1];
+  payloadID2 = [payloadCopy payloadID];
+  v8 = [(PLJournalEntry *)self initWithPayloadID:payloadID2 payload:payloadCopy payloadClass:objc_opt_class() entryType:1];
 
   return v8;
 }
 
-- (id)initForInsertWithPayload:(id)a3
+- (id)initForInsertWithPayload:(id)payload
 {
-  v5 = a3;
-  v6 = [v5 payloadID];
+  payloadCopy = payload;
+  payloadID = [payloadCopy payloadID];
 
-  if (!v6)
+  if (!payloadID)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = [objc_opt_class() payloadClassID];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:268 description:{@"payloadID must be non-nil (payloadClassID: %@)", v11}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    payloadClassID = [objc_opt_class() payloadClassID];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLJournal.m" lineNumber:268 description:{@"payloadID must be non-nil (payloadClassID: %@)", payloadClassID}];
   }
 
-  v7 = [v5 payloadID];
-  v8 = [(PLJournalEntry *)self initWithPayloadID:v7 payload:v5 payloadClass:objc_opt_class() entryType:0];
+  payloadID2 = [payloadCopy payloadID];
+  v8 = [(PLJournalEntry *)self initWithPayloadID:payloadID2 payload:payloadCopy payloadClass:objc_opt_class() entryType:0];
 
   return v8;
 }
 
-- (PLJournalEntry)initWithPayloadID:(id)a3 payload:(id)a4 payloadClass:(Class)a5 entryType:(int)a6
+- (PLJournalEntry)initWithPayloadID:(id)d payload:(id)payload payloadClass:(Class)class entryType:(int)type
 {
-  v6 = *&a6;
+  v6 = *&type;
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  dCopy = d;
+  payloadCopy = payload;
   v27.receiver = self;
   v27.super_class = PLJournalEntry;
   v13 = [(PLJournalEntry *)&v27 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_payloadID, a3);
+    objc_storeStrong(&v13->_payloadID, d);
     v15 = objc_alloc_init(PLJournalEntryHeader);
     header = v14->_header;
     v14->_header = v15;
 
     [(PLJournalEntryHeader *)v14->_header setEntryType:v6];
-    objc_storeStrong(&v14->_payloadClass, a5);
-    if (v12)
+    objc_storeStrong(&v14->_payloadClass, class);
+    if (payloadCopy)
     {
-      -[PLJournalEntryHeader setPayloadVersion:](v14->_header, "setPayloadVersion:", [v12 payloadVersion]);
+      -[PLJournalEntryHeader setPayloadVersion:](v14->_header, "setPayloadVersion:", [payloadCopy payloadVersion]);
       if (v6 == 1)
       {
         v25 = 0u;
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v17 = [v12 nilProperties];
-        v18 = [v17 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        nilProperties = [payloadCopy nilProperties];
+        v18 = [nilProperties countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v18)
         {
           v19 = v18;
@@ -592,21 +592,21 @@ LABEL_13:
             {
               if (*v24 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(nilProperties);
               }
 
               [(PLJournalEntryHeader *)v14->_header addNilProperties:*(*(&v23 + 1) + 8 * v21++)];
             }
 
             while (v19 != v21);
-            v19 = [v17 countByEnumeratingWithState:&v23 objects:v28 count:16];
+            v19 = [nilProperties countByEnumeratingWithState:&v23 objects:v28 count:16];
           }
 
           while (v19);
         }
       }
 
-      objc_storeStrong(&v14->_payload, a4);
+      objc_storeStrong(&v14->_payload, payload);
     }
   }
 

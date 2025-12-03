@@ -1,10 +1,10 @@
 @interface MSVXPCListener
-- (MSVXPCListener)initWithMachServiceName:(id)a3;
+- (MSVXPCListener)initWithMachServiceName:(id)name;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)suspend;
 @end
 
@@ -18,13 +18,13 @@
   [(NSXPCListener *)self->_localProxy resume];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = MSVXPCListener;
-  v4 = a3;
-  [(MSVXPCListener *)&v5 setDelegate:v4];
-  [(NSXPCListener *)self->_localProxy setDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(MSVXPCListener *)&v5 setDelegate:delegateCopy];
+  [(NSXPCListener *)self->_localProxy setDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
 - (void)suspend
@@ -60,19 +60,19 @@
   [(MSVXPCListener *)&v3 dealloc];
 }
 
-- (MSVXPCListener)initWithMachServiceName:(id)a3
+- (MSVXPCListener)initWithMachServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = MSVXPCListener;
-  v6 = [(MSVXPCListener *)&v10 initWithMachServiceName:v5];
+  v6 = [(MSVXPCListener *)&v10 initWithMachServiceName:nameCopy];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     localProxy = v6->_localProxy;
-    v6->_localProxy = v7;
+    v6->_localProxy = anonymousListener;
 
-    objc_storeStrong(&v6->_registeredServiceName, a3);
+    objc_storeStrong(&v6->_registeredServiceName, name);
     [MSVXPCConnection registerLocalListener:v6 withServiceName:v6->_registeredServiceName];
   }
 

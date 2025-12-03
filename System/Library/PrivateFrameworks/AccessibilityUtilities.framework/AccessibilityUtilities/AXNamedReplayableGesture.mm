@@ -1,50 +1,50 @@
 @interface AXNamedReplayableGesture
-+ (id)gestureWithLegacyFormatDictionary:(id)a3;
-+ (id)gestureWithPoints:(id)a3 times:(id)a4 forces:(id)a5;
-- (AXNamedReplayableGesture)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)gestureShiftedByOffset:(CGPoint)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)gestureWithLegacyFormatDictionary:(id)dictionary;
++ (id)gestureWithPoints:(id)points times:(id)times forces:(id)forces;
+- (AXNamedReplayableGesture)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)gestureShiftedByOffset:(CGPoint)offset;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXNamedReplayableGesture
 
-- (AXNamedReplayableGesture)initWithCoder:(id)a3
+- (AXNamedReplayableGesture)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXNamedReplayableGesture;
-  v5 = [(AXReplayableGesture *)&v9 initWithCoder:v4];
+  v5 = [(AXReplayableGesture *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     v7 = *&v5->_hasLocalizableName;
     *&v5->_hasLocalizableName = v6;
 
-    *(&v5->super.super._arePointsDeviceRelative + 1) = [v4 decodeBoolForKey:@"HasLocalizableName"];
-    *(&v5->super.super._arePointsDeviceRelative + 2) = [v4 decodeBoolForKey:@"ShouldPerformAtOriginalLocation"];
+    *(&v5->super.super._arePointsDeviceRelative + 1) = [coderCopy decodeBoolForKey:@"HasLocalizableName"];
+    *(&v5->super.super._arePointsDeviceRelative + 2) = [coderCopy decodeBoolForKey:@"ShouldPerformAtOriginalLocation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AXNamedReplayableGesture;
-  v4 = a3;
-  [(AXReplayableGesture *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*&self->_hasLocalizableName forKey:{@"Name", v5.receiver, v5.super_class}];
-  [v4 encodeBool:*(&self->super.super._arePointsDeviceRelative + 1) forKey:@"HasLocalizableName"];
-  [v4 encodeBool:*(&self->super.super._arePointsDeviceRelative + 2) forKey:@"ShouldPerformAtOriginalLocation"];
+  coderCopy = coder;
+  [(AXReplayableGesture *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*&self->_hasLocalizableName forKey:{@"Name", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:*(&self->super.super._arePointsDeviceRelative + 1) forKey:@"HasLocalizableName"];
+  [coderCopy encodeBool:*(&self->super.super._arePointsDeviceRelative + 2) forKey:@"ShouldPerformAtOriginalLocation"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *&self->_hasLocalizableName;
     if ((v6 == v5[3] || [v6 isEqualToString:?]) && *(&self->super.super._arePointsDeviceRelative + 1) == *(v5 + 17) && *(&self->super.super._arePointsDeviceRelative + 2) == *(v5 + 18))
     {
@@ -67,10 +67,10 @@
   return v7;
 }
 
-- (id)gestureShiftedByOffset:(CGPoint)a3
+- (id)gestureShiftedByOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v37 = *MEMORY[0x1E69E9840];
   if ([(AXReplayableGesture *)self arePointsDeviceRelative])
   {
@@ -78,8 +78,8 @@
   }
 
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(AXNamedReplayableGesture *)self name];
-  [v5 setName:v6];
+  name = [(AXNamedReplayableGesture *)self name];
+  [v5 setName:name];
 
   [v5 setHasLocalizableName:{-[AXNamedReplayableGesture hasLocalizableName](self, "hasLocalizableName")}];
   [v5 setShouldPerformAtOriginalLocation:{-[AXNamedReplayableGesture shouldPerformAtOriginalLocation](self, "shouldPerformAtOriginalLocation")}];
@@ -104,8 +104,8 @@
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v17 = [v16 allKeys];
-      v18 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      allKeys = [v16 allKeys];
+      v18 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v18)
       {
         v19 = v18;
@@ -116,7 +116,7 @@
           {
             if (*v33 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(allKeys);
             }
 
             v22 = *(*(&v32 + 1) + 8 * j);
@@ -129,7 +129,7 @@
             [v16 setObject:v28 forKeyedSubscript:v22];
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v32 objects:v36 count:16];
+          v19 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
         }
 
         while (v19);
@@ -142,17 +142,17 @@
   return v5;
 }
 
-+ (id)gestureWithLegacyFormatDictionary:(id)a3
++ (id)gestureWithLegacyFormatDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"Points"];
-  v6 = [v4 objectForKeyedSubscript:@"Times"];
-  v7 = [v4 objectForKeyedSubscript:@"Forces"];
-  v8 = [a1 gestureWithPoints:v5 times:v6 forces:v7];
-  v9 = [v4 objectForKeyedSubscript:@"IsDoubleTap"];
-  v10 = [v9 BOOLValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"Points"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Times"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"Forces"];
+  v8 = [self gestureWithPoints:v5 times:v6 forces:v7];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"IsDoubleTap"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     if ([v8 numberOfEvents] != 2)
     {
@@ -175,24 +175,24 @@
     }
   }
 
-  v18 = [v4 objectForKeyedSubscript:@"Name"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"Name"];
   [v8 setName:v18];
 
-  v19 = [v4 objectForKeyedSubscript:@"HasLocalizableName"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"HasLocalizableName"];
   [v8 setHasLocalizableName:{objc_msgSend(v19, "BOOLValue")}];
 
-  v20 = [v4 objectForKeyedSubscript:@"ShouldPerformAtOriginalLocation"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"ShouldPerformAtOriginalLocation"];
   [v8 setShouldPerformAtOriginalLocation:{objc_msgSend(v20, "BOOLValue")}];
 
   return v8;
 }
 
-+ (id)gestureWithPoints:(id)a3 times:(id)a4 forces:(id)a5
++ (id)gestureWithPoints:(id)points times:(id)times forces:(id)forces
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v36 = a1;
+  pointsCopy = points;
+  timesCopy = times;
+  forcesCopy = forces;
+  selfCopy = self;
   v11 = objc_alloc_init(objc_opt_class());
   v42 = 0;
   v43 = &v42;
@@ -208,22 +208,22 @@
   v37[3] = &unk_1E71EC6E8;
   v37[4] = &v42;
   v37[5] = &v38;
-  [v8 enumerateObjectsUsingBlock:v37];
+  [pointsCopy enumerateObjectsUsingBlock:v37];
   v12 = v39[3];
-  if ((v12 & 0x8000000000000000) != 0 || v12 >= [v9 count])
+  if ((v12 & 0x8000000000000000) != 0 || v12 >= [timesCopy count])
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = [v9 objectAtIndexedSubscript:v39[3]];
+    v13 = [timesCopy objectAtIndexedSubscript:v39[3]];
   }
 
-  v35 = v9;
-  v14 = [v8 count];
-  v15 = [v13 firstObject];
-  [v15 doubleValue];
+  v35 = timesCopy;
+  v14 = [pointsCopy count];
+  firstObject = [v13 firstObject];
+  [firstObject doubleValue];
   v17 = v16;
 
   v18 = v43;
@@ -236,15 +236,15 @@
       {
         for (i = 0; i != v14; ++i)
         {
-          v21 = [v8 objectAtIndex:i];
-          if (i >= [v10 count])
+          v21 = [pointsCopy objectAtIndex:i];
+          if (i >= [forcesCopy count])
           {
             v22 = 0;
           }
 
           else
           {
-            v22 = [v10 objectAtIndex:i];
+            v22 = [forcesCopy objectAtIndex:i];
           }
 
           if (v19 < [v21 count])
@@ -280,13 +280,13 @@
 
             if (v19 >= [v11 numberOfEvents])
             {
-              v33 = [v36 _fingerIdentifierForFingerAtIndex:i];
+              v33 = [selfCopy _fingerIdentifierForFingerAtIndex:i];
               [v11 _addPoint:v33 force:v24 forFingerIdentifier:v26 atTime:{v28, v27}];
             }
 
             else
             {
-              v33 = [v36 _fingerIdentifierForFingerAtIndex:i];
+              v33 = [selfCopy _fingerIdentifierForFingerAtIndex:i];
               [v11 _addPoint:v33 force:v19 forFingerIdentifier:v24 atEventIndex:{v26, v28}];
             }
           }

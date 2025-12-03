@@ -7,9 +7,9 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(_MKPlaceInlineMapContentViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_MKPlaceInlineMapContentViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(_MKPlaceInlineMapContentViewAccessibility *)self accessibilityUserDefinedLabel];
   }

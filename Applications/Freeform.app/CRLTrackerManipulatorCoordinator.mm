@@ -1,14 +1,14 @@
 @interface CRLTrackerManipulatorCoordinator
-+ (void)p_dynamicallySubclassGRForNotification:(id)a3;
-+ (void)p_removeDynamicSubclass:(id)a3;
-- (BOOL)relinquishTrackerManipulatorControl:(id)a3;
-- (BOOL)takeControlWithTrackerManipulator:(id)a3;
++ (void)p_dynamicallySubclassGRForNotification:(id)notification;
++ (void)p_removeDynamicSubclass:(id)subclass;
+- (BOOL)relinquishTrackerManipulatorControl:(id)control;
+- (BOOL)takeControlWithTrackerManipulator:(id)manipulator;
 - (CRLTrackerManipulatorCoordinator)init;
 - (void)operationDidEnd;
 - (void)operationWillEnd;
 - (void)p_notifyControlChange;
-- (void)registerTrackerManipulator:(id)a3;
-- (void)unregisterTrackerManipulator:(id)a3;
+- (void)registerTrackerManipulator:(id)manipulator;
+- (void)unregisterTrackerManipulator:(id)manipulator;
 @end
 
 @implementation CRLTrackerManipulatorCoordinator
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (void)registerTrackerManipulator:(id)a3
+- (void)registerTrackerManipulator:(id)manipulator
 {
-  v4 = a3;
+  manipulatorCopy = manipulator;
   if (qword_101AD5CA0 != -1)
   {
     sub_101368324();
@@ -47,12 +47,12 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "registering %@", &v9, 0xCu);
   }
 
-  [(NSMutableSet *)self->mRegisteredTMs addObject:v4];
+  [(NSMutableSet *)self->mRegisteredTMs addObject:manipulatorCopy];
 }
 
-- (void)unregisterTrackerManipulator:(id)a3
+- (void)unregisterTrackerManipulator:(id)manipulator
 {
-  v4 = a3;
+  manipulatorCopy = manipulator;
   if (qword_101AD5CA0 != -1)
   {
     sub_101368338();
@@ -69,17 +69,17 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "unregistering %@", &v9, 0xCu);
   }
 
-  [(NSMutableSet *)self->mRegisteredTMs removeObject:v4];
+  [(NSMutableSet *)self->mRegisteredTMs removeObject:manipulatorCopy];
 }
 
-- (BOOL)takeControlWithTrackerManipulator:(id)a3
+- (BOOL)takeControlWithTrackerManipulator:(id)manipulator
 {
-  v5 = a3;
-  v6 = v5;
+  manipulatorCopy = manipulator;
+  v6 = manipulatorCopy;
   p_mControllingTM = &self->mControllingTM;
-  if (self->mControllingTM != v5)
+  if (self->mControllingTM != manipulatorCopy)
   {
-    if (v5 && ![(CRLTrackerManipulatorCoordinator *)self hasRegisteredTrackerManipulator:v5])
+    if (manipulatorCopy && ![(CRLTrackerManipulatorCoordinator *)self hasRegisteredTrackerManipulator:manipulatorCopy])
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -172,7 +172,7 @@
 
 LABEL_32:
       [objc_opt_class() p_dynamicallySubclassGRForNotification:v6];
-      objc_storeStrong(&self->mControllingTM, a3);
+      objc_storeStrong(&self->mControllingTM, manipulator);
       if (objc_opt_respondsToSelector())
       {
         [*p_mControllingTM willTakeControl];
@@ -244,10 +244,10 @@ LABEL_36:
   return v19;
 }
 
-- (BOOL)relinquishTrackerManipulatorControl:(id)a3
+- (BOOL)relinquishTrackerManipulatorControl:(id)control
 {
   mControllingTM = self->mControllingTM;
-  if (mControllingTM != a3)
+  if (mControllingTM != control)
   {
     goto LABEL_2;
   }
@@ -465,9 +465,9 @@ LABEL_2:
   }
 }
 
-+ (void)p_dynamicallySubclassGRForNotification:(id)a3
++ (void)p_dynamicallySubclassGRForNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -480,10 +480,10 @@ LABEL_2:
       qword_101A34DD0 = v5;
     }
 
-    Class = object_getClass(v3);
-    v8 = [qword_101A34DD0 dictionaryRepresentation];
-    v9 = [v8 allValues];
-    v10 = [v9 containsObject:Class];
+    Class = object_getClass(notificationCopy);
+    dictionaryRepresentation = [qword_101A34DD0 dictionaryRepresentation];
+    allValues = [dictionaryRepresentation allValues];
+    v10 = [allValues containsObject:Class];
 
     if (v10)
     {
@@ -513,7 +513,7 @@ LABEL_2:
 
       v12 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLTrackerManipulatorCoordinator p_dynamicallySubclassGRForNotification:]");
       v13 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLTrackerManipulatorCoordinator.m"];
-      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:179 isFatal:0 description:"trying to subclass something that is already subclassed %@", v3];
+      [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:179 isFatal:0 description:"trying to subclass something that is already subclassed %@", notificationCopy];
 LABEL_14:
 
 LABEL_19:
@@ -526,10 +526,10 @@ LABEL_19:
     if (!v14)
     {
       v15 = [NSString stringWithFormat:@"__TSDResetNotifying%s", class_getName(Class)];
-      v16 = [v15 UTF8String];
+      uTF8String = [v15 UTF8String];
 
       v17 = objc_opt_class();
-      ClassPair = objc_allocateClassPair(v17, v16, 0);
+      ClassPair = objc_allocateClassPair(v17, uTF8String, 0);
       v14 = ClassPair;
       if (!ClassPair)
       {
@@ -575,30 +575,30 @@ LABEL_19:
       [qword_101A34DD0 setObject:v14 forKey:Class];
     }
 
-    object_setClass(v3, v14);
+    object_setClass(notificationCopy, v14);
     goto LABEL_19;
   }
 
 LABEL_20:
 }
 
-+ (void)p_removeDynamicSubclass:(id)a3
++ (void)p_removeDynamicSubclass:(id)subclass
 {
-  v3 = a3;
+  subclassCopy = subclass;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_class();
     objc_sync_enter(v4);
-    Class = object_getClass(v3);
-    v6 = [qword_101A34DD0 dictionaryRepresentation];
-    v7 = [v6 allValues];
-    v8 = [v7 containsObject:Class];
+    Class = object_getClass(subclassCopy);
+    dictionaryRepresentation = [qword_101A34DD0 dictionaryRepresentation];
+    allValues = [dictionaryRepresentation allValues];
+    v8 = [allValues containsObject:Class];
 
     if (v8)
     {
       Superclass = class_getSuperclass(Class);
-      object_setClass(v3, Superclass);
+      object_setClass(subclassCopy, Superclass);
     }
 
     else
@@ -629,7 +629,7 @@ LABEL_20:
 
       v11 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLTrackerManipulatorCoordinator p_removeDynamicSubclass:]");
       v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLTrackerManipulatorCoordinator.m"];
-      [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:212 isFatal:0 description:"removing dynamic subclass from GR %@ that doesn't have one!", v3];
+      [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:212 isFatal:0 description:"removing dynamic subclass from GR %@ that doesn't have one!", subclassCopy];
     }
 
     objc_sync_exit(v4);

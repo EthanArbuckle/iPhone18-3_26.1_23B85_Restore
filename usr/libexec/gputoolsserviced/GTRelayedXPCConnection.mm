@@ -1,18 +1,18 @@
 @interface GTRelayedXPCConnection
-- (GTRelayedXPCConnection)initWithConnection:(id)a3 routingInfo:(MessageRemoteRoutingInfo *)a4;
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4;
-- (void)_setRoutingPropertiesForMessage:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 replyHandler:(id)a4;
-- (void)sendMessageAndWaitForDelivery:(id)a3;
+- (GTRelayedXPCConnection)initWithConnection:(id)connection routingInfo:(MessageRemoteRoutingInfo *)info;
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error;
+- (void)_setRoutingPropertiesForMessage:(id)message;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message replyHandler:(id)handler;
+- (void)sendMessageAndWaitForDelivery:(id)delivery;
 @end
 
 @implementation GTRelayedXPCConnection
 
-- (GTRelayedXPCConnection)initWithConnection:(id)a3 routingInfo:(MessageRemoteRoutingInfo *)a4
+- (GTRelayedXPCConnection)initWithConnection:(id)connection routingInfo:(MessageRemoteRoutingInfo *)info
 {
-  v7 = a3;
-  if (v7)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v13.receiver = self;
     v13.super_class = GTRelayedXPCConnection;
@@ -20,62 +20,62 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_connection, a3);
-      v10 = *&a4->remotePid;
-      *&v9->_routingInfo.hostPort = *&a4->hostPort;
+      objc_storeStrong(&v8->_connection, connection);
+      v10 = *&info->remotePid;
+      *&v9->_routingInfo.hostPort = *&info->hostPort;
       *&v9->_routingInfo.remotePid = v10;
       v9->_handleDeviceLocally = 0;
     }
 
     self = v9;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)_setRoutingPropertiesForMessage:(id)a3
+- (void)_setRoutingPropertiesForMessage:(id)message
 {
-  v4 = a3;
-  MessageRemoteRoutingInfoSet(v4, &self->_routingInfo);
+  messageCopy = message;
+  MessageRemoteRoutingInfoSet(messageCopy, &self->_routingInfo);
   if (self->_handleDeviceLocally)
   {
-    xpc_dictionary_set_flag(v4, "_flags", 4);
+    xpc_dictionary_set_flag(messageCopy, "_flags", 4);
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:v4];
-  [(GTXPCConnection *)self->_connection sendMessage:v4];
+  messageCopy = message;
+  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:messageCopy];
+  [(GTXPCConnection *)self->_connection sendMessage:messageCopy];
 }
 
-- (void)sendMessage:(id)a3 replyHandler:(id)a4
+- (void)sendMessage:(id)message replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:v7];
-  [(GTXPCConnection *)self->_connection sendMessage:v7 replyHandler:v6];
+  handlerCopy = handler;
+  messageCopy = message;
+  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:messageCopy];
+  [(GTXPCConnection *)self->_connection sendMessage:messageCopy replyHandler:handlerCopy];
 }
 
-- (void)sendMessageAndWaitForDelivery:(id)a3
+- (void)sendMessageAndWaitForDelivery:(id)delivery
 {
-  v4 = a3;
-  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:v4];
-  [(GTXPCConnection *)self->_connection sendMessageAndWaitForDelivery:v4];
+  deliveryCopy = delivery;
+  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:deliveryCopy];
+  [(GTXPCConnection *)self->_connection sendMessageAndWaitForDelivery:deliveryCopy];
 }
 
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error
 {
-  v6 = a3;
-  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:v6];
-  v7 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:v6 error:a4];
+  syncCopy = sync;
+  [(GTRelayedXPCConnection *)self _setRoutingPropertiesForMessage:syncCopy];
+  v7 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:syncCopy error:error];
 
   return v7;
 }

@@ -1,6 +1,6 @@
 @interface FinHealthTestDelegate
 - (FinHealthTestDelegate)init;
-- (void)didUpdateFeatures:(id)a3 moreComing:(BOOL)a4 readyForNextBatch:(id)a5 error:(id)a6;
+- (void)didUpdateFeatures:(id)features moreComing:(BOOL)coming readyForNextBatch:(id)batch error:(id)error;
 @end
 
 @implementation FinHealthTestDelegate
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)didUpdateFeatures:(id)a3 moreComing:(BOOL)a4 readyForNextBatch:(id)a5 error:(id)a6
+- (void)didUpdateFeatures:(id)features moreComing:(BOOL)coming readyForNextBatch:(id)batch error:(id)error
 {
-  v7 = a5;
-  v8 = a6;
+  batchCopy = batch;
+  errorCopy = error;
   v9 = FinHealthLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -32,20 +32,20 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s", &v11, 0xCu);
   }
 
-  if (v8)
+  if (errorCopy)
   {
     v10 = FinHealthLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = errorCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "didUpdateFeatures error: %@", &v11, 0xCu);
     }
   }
 
-  else if (v7)
+  else if (batchCopy)
   {
-    v7[2](v7);
+    batchCopy[2](batchCopy);
   }
 }
 

@@ -1,5 +1,5 @@
 @interface TVUpNextQueueListDataProvider
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (_TtC9SeymourUI29TVUpNextQueueListDataProvider)init;
 @end
 
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_20B8601AC(v6);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_20B8601AC(recognizerCopy);
 
   return v9;
 }

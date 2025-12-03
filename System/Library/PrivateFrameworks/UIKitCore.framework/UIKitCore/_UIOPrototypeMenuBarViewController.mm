@@ -1,45 +1,45 @@
 @interface _UIOPrototypeMenuBarViewController
-- (_UIOPrototypeMenuBarViewController)initWithConfiguration:(id)a3 serviceConnection:(id)a4;
+- (_UIOPrototypeMenuBarViewController)initWithConfiguration:(id)configuration serviceConnection:(id)connection;
 - (_UISceneMainMenuHost)host;
-- (id)_categoryMenuIdentifierToFlashForCommandInvocationNotification:(id)a3;
+- (id)_categoryMenuIdentifierToFlashForCommandInvocationNotification:(id)notification;
 - (id)_currentHostKeyboardShortcuts;
-- (id)_prototypeSystemCommandWithTitle:(id)a3 systemImageName:(id)a4 keyCombination:(id)a5;
-- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)a3 parentState:(id)a4;
-- (id)_uiMenuElementForChildMainMenuElement:(id)a3 parentState:(id)a4;
-- (id)_uiMenuElementForMainMenuCommand:(id)a3 parentState:(id)a4;
-- (id)_uiMenuElementsForMainMenuElements:(id)a3 parentState:(id)a4;
-- (id)_uiMenuForMainMenu:(id)a3 state:(id)a4;
+- (id)_prototypeSystemCommandWithTitle:(id)title systemImageName:(id)name keyCombination:(id)combination;
+- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)element parentState:(id)state;
+- (id)_uiMenuElementForChildMainMenuElement:(id)element parentState:(id)state;
+- (id)_uiMenuElementForMainMenuCommand:(id)command parentState:(id)state;
+- (id)_uiMenuElementsForMainMenuElements:(id)elements parentState:(id)state;
+- (id)_uiMenuForMainMenu:(id)menu state:(id)state;
 - (id)hostShortcutsForMainMenu;
-- (void)_dismissDueToUserDismissal:(BOOL)a3 informingApp:(BOOL)a4;
-- (void)_getStateForMenu:(id)a3 handler:(id)a4;
-- (void)_loadAndRenderBaseMenu:(id)a3;
+- (void)_dismissDueToUserDismissal:(BOOL)dismissal informingApp:(BOOL)app;
+- (void)_getStateForMenu:(id)menu handler:(id)handler;
+- (void)_loadAndRenderBaseMenu:(id)menu;
 - (void)_presentMenuBar;
-- (void)handleTap:(id)a3;
-- (void)performBaseMenuRequest:(id)a3 handler:(id)a4;
-- (void)performMainMenuCommandInvocationRequest:(id)a3 responseHandler:(id)a4;
-- (void)performMainMenuDeferredElementRequest:(id)a3 responseHandler:(id)a4;
-- (void)performMainMenuStateRequest:(id)a3 responseHandler:(id)a4;
-- (void)performSessionRequest:(id)a3 handler:(id)a4;
-- (void)receiveCommandInvocationNotification:(id)a3 forServiceConnection:(id)a4;
-- (void)serviceConnectionDidInvalidate:(id)a3;
-- (void)serviceConnectionDidInvalidateMainMenu:(id)a3;
-- (void)serviceConnectionDidRequestDismissal:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleTap:(id)tap;
+- (void)performBaseMenuRequest:(id)request handler:(id)handler;
+- (void)performMainMenuCommandInvocationRequest:(id)request responseHandler:(id)handler;
+- (void)performMainMenuDeferredElementRequest:(id)request responseHandler:(id)handler;
+- (void)performMainMenuStateRequest:(id)request responseHandler:(id)handler;
+- (void)performSessionRequest:(id)request handler:(id)handler;
+- (void)receiveCommandInvocationNotification:(id)notification forServiceConnection:(id)connection;
+- (void)serviceConnectionDidInvalidate:(id)invalidate;
+- (void)serviceConnectionDidInvalidateMainMenu:(id)menu;
+- (void)serviceConnectionDidRequestDismissal:(id)dismissal;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation _UIOPrototypeMenuBarViewController
 
-- (_UIOPrototypeMenuBarViewController)initWithConfiguration:(id)a3 serviceConnection:(id)a4
+- (_UIOPrototypeMenuBarViewController)initWithConfiguration:(id)configuration serviceConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  connectionCopy = connection;
   v9 = [(UIViewController *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_serviceConnection, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_serviceConnection, connection);
     v10->_didInitialAppearanceSetup = 0;
     v10->_isDismissing = 0;
     v10->_isInvalidatingMenu = 0;
@@ -56,11 +56,11 @@
   return v10;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = _UIOPrototypeMenuBarViewController;
-  [(UIViewController *)&v5 viewDidAppear:a3];
+  [(UIViewController *)&v5 viewDidAppear:appear];
   if (!self->_didInitialAppearanceSetup)
   {
     self->_didInitialAppearanceSetup = 1;
@@ -86,29 +86,29 @@
   v5 = +[UIColor blackColor];
   [(UIView *)self->_barBackgroundView setBackgroundColor:v5];
 
-  v6 = [(UIView *)self->_barBackgroundView layer];
-  [v6 setCornerRadius:18.0];
+  layer = [(UIView *)self->_barBackgroundView layer];
+  [layer setCornerRadius:18.0];
 
-  v7 = [(UIView *)self->_barBackgroundView layer];
-  [v7 setMaskedCorners:12];
+  layer2 = [(UIView *)self->_barBackgroundView layer];
+  [layer2 setMaskedCorners:12];
 
-  v8 = [(UIViewController *)self view];
-  [v8 addSubview:self->_barBackgroundView];
+  view = [(UIViewController *)self view];
+  [view addSubview:self->_barBackgroundView];
 
   [(UIView *)self->_barBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   v37 = MEMORY[0x1E69977A0];
-  v39 = [(UIView *)self->_barBackgroundView heightAnchor];
-  v38 = [v39 constraintEqualToConstant:40.0];
+  heightAnchor = [(UIView *)self->_barBackgroundView heightAnchor];
+  v38 = [heightAnchor constraintEqualToConstant:40.0];
   v46[0] = v38;
-  v9 = [(UIView *)self->_barBackgroundView centerXAnchor];
-  v10 = [(UIViewController *)self view];
-  v11 = [v10 centerXAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  centerXAnchor = [(UIView *)self->_barBackgroundView centerXAnchor];
+  view2 = [(UIViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v46[1] = v12;
-  v13 = [(UIView *)self->_barBackgroundView topAnchor];
-  v14 = [(UIViewController *)self view];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  topAnchor = [(UIView *)self->_barBackgroundView topAnchor];
+  view3 = [(UIViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:3];
   [v37 activateConstraints:v17];
@@ -121,8 +121,8 @@
   dismissTapGesture = self->_dismissTapGesture;
   self->_dismissTapGesture = v19;
 
-  v21 = [(UIViewController *)self view];
-  [v21 addGestureRecognizer:self->_dismissTapGesture];
+  view4 = [(UIViewController *)self view];
+  [view4 addGestureRecognizer:self->_dismissTapGesture];
 
   v22 = +[UIButtonConfiguration grayButtonConfiguration];
   [v22 setCornerStyle:4];
@@ -146,18 +146,18 @@
   [(UIButton *)self->_pinMenuBarButton setConfigurationUpdateHandler:&__block_literal_global_65_1];
   [(UIView *)self->_pinMenuBarButton setUserInteractionEnabled:0];
   [(UIView *)self->_pinMenuBarButton setAlpha:0.0];
-  v27 = [(UIViewController *)self view];
-  [v27 addSubview:self->_pinMenuBarButton];
+  view5 = [(UIViewController *)self view];
+  [view5 addSubview:self->_pinMenuBarButton];
 
   [(UIView *)self->_pinMenuBarButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v28 = MEMORY[0x1E69977A0];
-  v29 = [(UIView *)self->_pinMenuBarButton centerYAnchor];
-  v30 = [(UIView *)self->_barBackgroundView centerYAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  centerYAnchor = [(UIView *)self->_pinMenuBarButton centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_barBackgroundView centerYAnchor];
+  v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v45[0] = v31;
-  v32 = [(UIView *)self->_pinMenuBarButton leadingAnchor];
-  v33 = [(UIView *)self->_barBackgroundView trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:20.0];
+  leadingAnchor = [(UIView *)self->_pinMenuBarButton leadingAnchor];
+  trailingAnchor = [(UIView *)self->_barBackgroundView trailingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:20.0];
   v45[1] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
   [v28 activateConstraints:v35];
@@ -169,30 +169,30 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_loadAndRenderBaseMenu:(id)a3
+- (void)_loadAndRenderBaseMenu:(id)menu
 {
-  v4 = a3;
+  menuCopy = menu;
   v5 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61___UIOPrototypeMenuBarViewController__loadAndRenderBaseMenu___block_invoke;
   v7[3] = &unk_1E71051C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = menuCopy;
+  v6 = menuCopy;
   [(_UIOPrototypeMenuBarViewController *)self performBaseMenuRequest:v5 handler:v7];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_dismissTapGesture == v4)
+  tapCopy = tap;
+  v5 = tapCopy;
+  if (self->_dismissTapGesture == tapCopy)
   {
-    v12 = v4;
-    v6 = [(UIGestureRecognizer *)v4 state];
+    v12 = tapCopy;
+    state = [(UIGestureRecognizer *)tapCopy state];
     v5 = v12;
-    if (v6 == 3)
+    if (state == 3)
     {
       [(UITapGestureRecognizer *)v12 locationInView:self->_barBackgroundView];
       v8 = v7;
@@ -221,12 +221,12 @@
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v2 completion:0];
 }
 
-- (void)_dismissDueToUserDismissal:(BOOL)a3 informingApp:(BOOL)a4
+- (void)_dismissDueToUserDismissal:(BOOL)dismissal informingApp:(BOOL)app
 {
   if (!self->_isDismissing)
   {
     self->_isDismissing = 1;
-    if (a3)
+    if (dismissal)
     {
       v6 = objc_opt_new();
       [v6 setSessionToEnd:self->_session];
@@ -243,22 +243,22 @@
     v7[2] = __78___UIOPrototypeMenuBarViewController__dismissDueToUserDismissal_informingApp___block_invoke_2;
     v7[3] = &unk_1E70FA0F0;
     v7[4] = self;
-    v8 = a4;
+    appCopy = app;
     [UIView _animateUsingDefaultTimingWithOptions:0 animations:v9 completion:v7];
   }
 }
 
-- (void)serviceConnectionDidRequestDismissal:(id)a3
+- (void)serviceConnectionDidRequestDismissal:(id)dismissal
 {
-  if (self->_serviceConnection == a3)
+  if (self->_serviceConnection == dismissal)
   {
     [(_UIOPrototypeMenuBarViewController *)self _dismissDueToUserDismissal:1 informingApp:0];
   }
 }
 
-- (void)serviceConnectionDidInvalidateMainMenu:(id)a3
+- (void)serviceConnectionDidInvalidateMainMenu:(id)menu
 {
-  if (self->_serviceConnection == a3)
+  if (self->_serviceConnection == menu)
   {
     v11[9] = v3;
     v11[10] = v4;
@@ -290,12 +290,12 @@
   }
 }
 
-- (void)receiveCommandInvocationNotification:(id)a3 forServiceConnection:(id)a4
+- (void)receiveCommandInvocationNotification:(id)notification forServiceConnection:(id)connection
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (self->_serviceConnection == a4)
+  if (self->_serviceConnection == connection)
   {
-    v5 = [(_UIOPrototypeMenuBarViewController *)self _categoryMenuIdentifierToFlashForCommandInvocationNotification:a3];
+    v5 = [(_UIOPrototypeMenuBarViewController *)self _categoryMenuIdentifierToFlashForCommandInvocationNotification:notification];
     if (v5)
     {
       v30 = 0u;
@@ -318,8 +318,8 @@
             }
 
             v11 = *(*(&v28 + 1) + 8 * i);
-            v12 = [v11 categoryMenuIdentifier];
-            v13 = [v12 isEqual:v5];
+            categoryMenuIdentifier = [v11 categoryMenuIdentifier];
+            v13 = [categoryMenuIdentifier isEqual:v5];
 
             if (v13)
             {
@@ -347,14 +347,14 @@
 
 LABEL_13:
 
-      v15 = [(NSHashTable *)self->_interactingButtons objectEnumerator];
-      v16 = [v15 allObjects];
+      objectEnumerator = [(NSHashTable *)self->_interactingButtons objectEnumerator];
+      allObjects = [objectEnumerator allObjects];
 
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v17 = v16;
+      v17 = allObjects;
       v18 = [v17 countByEnumeratingWithState:&v23 objects:v32 count:16];
       if (v18)
       {
@@ -369,8 +369,8 @@ LABEL_13:
               objc_enumerationMutation(v17);
             }
 
-            v22 = [*(*(&v23 + 1) + 8 * j) contextMenuInteraction];
-            [v22 dismissMenu];
+            contextMenuInteraction = [*(*(&v23 + 1) + 8 * j) contextMenuInteraction];
+            [contextMenuInteraction dismissMenu];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v23 objects:v32 count:16];
@@ -384,11 +384,11 @@ LABEL_13:
   }
 }
 
-- (id)_categoryMenuIdentifierToFlashForCommandInvocationNotification:(id)a3
+- (id)_categoryMenuIdentifierToFlashForCommandInvocationNotification:(id)notification
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 invokedCommandCategoryMenuIdentifierForSession:self->_session];
-  if ([v4 isEquivalentToUIMenuIdentifier:@"com.apple.menu.private-main-menu-uncategorized-commands"])
+  categoryMenuIdentifier2 = [notification invokedCommandCategoryMenuIdentifierForSession:self->_session];
+  if ([categoryMenuIdentifier2 isEquivalentToUIMenuIdentifier:@"com.apple.menu.private-main-menu-uncategorized-commands"])
   {
 
     v16 = 0u;
@@ -411,12 +411,12 @@ LABEL_13:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 categoryMenuIdentifier];
-          v12 = [v11 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
+          categoryMenuIdentifier = [v10 categoryMenuIdentifier];
+          v12 = [categoryMenuIdentifier isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
 
           if (v12)
           {
-            v4 = [v10 categoryMenuIdentifier];
+            categoryMenuIdentifier2 = [v10 categoryMenuIdentifier];
             goto LABEL_12;
           }
         }
@@ -431,27 +431,27 @@ LABEL_13:
       }
     }
 
-    v4 = 0;
+    categoryMenuIdentifier2 = 0;
 LABEL_12:
   }
 
-  return v4;
+  return categoryMenuIdentifier2;
 }
 
-- (void)_getStateForMenu:(id)a3 handler:(id)a4
+- (void)_getStateForMenu:(id)menu handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  menuCopy = menu;
+  handlerCopy = handler;
   if (self->_session)
   {
     v8 = [_UIMainMenuStateRequest alloc];
-    v9 = [v6 identifier];
-    v10 = [(_UIMainMenuStateRequest *)v8 initWithMenuIdentifier:v9 session:self->_session];
+    identifier = [menuCopy identifier];
+    v10 = [(_UIMainMenuStateRequest *)v8 initWithMenuIdentifier:identifier session:self->_session];
 
     if (!self->_uncategorizedMenuState)
     {
-      v11 = [v6 identifier];
-      v12 = [v11 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
+      identifier2 = [menuCopy identifier];
+      v12 = [identifier2 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
 
       if (v12)
       {
@@ -464,7 +464,7 @@ LABEL_12:
     v16[2] = __63___UIOPrototypeMenuBarViewController__getStateForMenu_handler___block_invoke_3;
     v16[3] = &unk_1E7105230;
     v16[4] = self;
-    v17 = v7;
+    v17 = handlerCopy;
     [(_UIOPrototypeMenuBarViewController *)self performMainMenuStateRequest:v10 responseHandler:v16];
   }
 
@@ -473,13 +473,13 @@ LABEL_12:
     v10 = objc_opt_new();
     [(_UIMainMenuStateRequest *)v10 setBeginNewSession:1];
     [(_UIMainMenuStateRequest *)v10 setRequiresHostSideInvokableKeyboardShortcuts:1];
-    v13 = [v6 identifier];
-    [(_UIMainMenuStateRequest *)v10 setInitialMenuStateIdentifier:v13];
+    identifier3 = [menuCopy identifier];
+    [(_UIMainMenuStateRequest *)v10 setInitialMenuStateIdentifier:identifier3];
 
     if (!self->_uncategorizedMenuState)
     {
-      v14 = [v6 identifier];
-      v15 = [v14 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
+      identifier4 = [menuCopy identifier];
+      v15 = [identifier4 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
 
       if (v15)
       {
@@ -493,7 +493,7 @@ LABEL_12:
     v18[2] = __63___UIOPrototypeMenuBarViewController__getStateForMenu_handler___block_invoke;
     v18[3] = &unk_1E7105208;
     objc_copyWeak(&v20, &location);
-    v19 = v7;
+    v19 = handlerCopy;
     [(_UIOPrototypeMenuBarViewController *)self performSessionRequest:v10 handler:v18];
 
     objc_destroyWeak(&v20);
@@ -501,17 +501,17 @@ LABEL_12:
   }
 }
 
-- (id)_uiMenuElementsForMainMenuElements:(id)a3 parentState:(id)a4
+- (id)_uiMenuElementsForMainMenuElements:(id)elements parentState:(id)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  elementsCopy = elements;
+  stateCopy = state;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = elementsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -526,10 +526,10 @@ LABEL_12:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementForChildMainMenuElement:*(*(&v16 + 1) + 8 * i) parentState:v7, v16];
+        v14 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementForChildMainMenuElement:*(*(&v16 + 1) + 8 * i) parentState:stateCopy, v16];
         if (v14)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -539,22 +539,22 @@ LABEL_12:
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_uiMenuElementForChildMainMenuElement:(id)a3 parentState:(id)a4
+- (id)_uiMenuElementForChildMainMenuElement:(id)element parentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  stateCopy = state;
   v8 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = v6;
-    v11 = [v7 childMenuStates];
-    v12 = [v10 identifier];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v10 = elementCopy;
+    childMenuStates = [stateCopy childMenuStates];
+    identifier = [v10 identifier];
+    v13 = [childMenuStates objectForKeyedSubscript:identifier];
 
     v14 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuForMainMenu:v10 state:v13];
 
@@ -566,7 +566,7 @@ LABEL_12:
 
   if (v16)
   {
-    v17 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementForMainMenuCommand:v6 parentState:v7];
+    v17 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementForMainMenuCommand:elementCopy parentState:stateCopy];
 LABEL_7:
     v14 = v17;
     goto LABEL_9;
@@ -577,7 +577,7 @@ LABEL_7:
 
   if (v19)
   {
-    v17 = [(_UIOPrototypeMenuBarViewController *)self _uiDeferredMenuElementForMainMenuDeferredElement:v6 parentState:v7];
+    v17 = [(_UIOPrototypeMenuBarViewController *)self _uiDeferredMenuElementForMainMenuDeferredElement:elementCopy parentState:stateCopy];
     goto LABEL_7;
   }
 
@@ -587,15 +587,15 @@ LABEL_9:
   return v14;
 }
 
-- (id)_uiMenuForMainMenu:(id)a3 state:(id)a4
+- (id)_uiMenuForMainMenu:(id)menu state:(id)state
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  menuCopy = menu;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = [v7 array];
-  v10 = [v6 identifier];
-  v11 = [v10 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
+  stateCopy = state;
+  array = [v7 array];
+  identifier = [menuCopy identifier];
+  v11 = [identifier isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
 
   if (v11)
   {
@@ -604,53 +604,53 @@ LABEL_9:
     v66[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:1];
     v15 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v14];
-    [v9 addObject:v15];
+    [array addObject:v15];
   }
 
-  v16 = [v6 children];
-  v17 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementsForMainMenuElements:v16 parentState:v8];
+  children = [menuCopy children];
+  v17 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuElementsForMainMenuElements:children parentState:stateCopy];
 
-  [v9 addObjectsFromArray:v17];
-  v18 = [v6 identifier];
-  LODWORD(v16) = [v18 isEquivalentToUIMenuIdentifier:@"com.apple.menu.quit"];
+  [array addObjectsFromArray:v17];
+  identifier2 = [menuCopy identifier];
+  LODWORD(children) = [identifier2 isEquivalentToUIMenuIdentifier:@"com.apple.menu.quit"];
 
-  if (v16)
+  if (children)
   {
     v19 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:0x100000 keyEquivalent:@"Q"];
     v20 = @"Close [App]";
-    v21 = self;
+    selfCopy2 = self;
     v22 = 0;
 LABEL_7:
-    v30 = [(_UIOPrototypeMenuBarViewController *)v21 _prototypeSystemCommandWithTitle:v20 systemImageName:v22 keyCombination:v19];
-    [v9 addObject:v30];
+    v30 = [(_UIOPrototypeMenuBarViewController *)selfCopy2 _prototypeSystemCommandWithTitle:v20 systemImageName:v22 keyCombination:v19];
+    [array addObject:v30];
     goto LABEL_21;
   }
 
-  v23 = [v6 identifier];
-  v24 = [v23 isEquivalentToUIMenuIdentifier:@"com.apple.menu.minimize-and-zoom"];
+  identifier3 = [menuCopy identifier];
+  v24 = [identifier3 isEquivalentToUIMenuIdentifier:@"com.apple.menu.minimize-and-zoom"];
 
   if (v24)
   {
     v25 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"Minimize" systemImageName:@"minus.circle" keyCombination:0];
-    [v9 addObject:v25];
+    [array addObject:v25];
 
     v26 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:0x800000 keyEquivalent:@"F"];
     v27 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"Enter Full Screen" systemImageName:@"inset.filled.rectangle" keyCombination:v26];
-    [v9 addObject:v27];
+    [array addObject:v27];
 
     v28 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:8650752 keyEquivalent:@"UIKeyInputLeftArrow"];
     v29 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"Tile Window to the Left" systemImageName:@"inset.filled.lefthalf.rectangle" keyCombination:v28];
-    [v9 addObject:v29];
+    [array addObject:v29];
 
     v19 = [_UIMenuLeafKeyCombination combinationWithModifierFlags:8650752 keyEquivalent:@"UIKeyInputRightArrow"];
     v20 = @"Tile Window to the Right";
     v22 = @"inset.filled.righthalf.rectangle";
-    v21 = self;
+    selfCopy2 = self;
     goto LABEL_7;
   }
 
-  v31 = [v6 identifier];
-  v32 = [v31 isEquivalentToUIMenuIdentifier:@"com.apple.menu.window"];
+  identifier4 = [menuCopy identifier];
+  v32 = [identifier4 isEquivalentToUIMenuIdentifier:@"com.apple.menu.window"];
 
   if (v32)
   {
@@ -658,13 +658,13 @@ LABEL_7:
     v65 = v33;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
     v35 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v34];
-    [v9 addObject:v35];
+    [array addObject:v35];
 
     v36 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"Move to Studio Display" systemImageName:@"display" keyCombination:0];
     v64 = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
     v38 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v37];
-    [v9 addObject:v38];
+    [array addObject:v38];
 
     v19 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"(list of app windows)" systemImageName:0 keyCombination:0];
     v63 = v19;
@@ -673,23 +673,23 @@ LABEL_7:
 
   else
   {
-    v39 = [v6 identifier];
-    v40 = [v39 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
+    identifier5 = [menuCopy identifier];
+    v40 = [identifier5 isEquivalentToUIMenuIdentifier:@"com.apple.menu.help"];
 
     if (v40)
     {
       session = self->_session;
       if (session && self->_uncategorizedMenuState)
       {
-        v42 = [(_UIMainMenuSession *)session uncategorizedMenu];
-        v43 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuForMainMenu:v42 state:self->_uncategorizedMenuState];
+        uncategorizedMenu = [(_UIMainMenuSession *)session uncategorizedMenu];
+        v43 = [(_UIOPrototypeMenuBarViewController *)self _uiMenuForMainMenu:uncategorizedMenu state:self->_uncategorizedMenuState];
 
         if ([v43 _hasVisibleChildren])
         {
           v44 = [UIImage systemImageNamed:@"command.square"];
-          v45 = [v43 children];
-          v46 = [UIMenu menuWithTitle:@"More Keyboard Shortcuts" image:v44 identifier:0 options:256 children:v45];
-          [v9 addObject:v46];
+          children2 = [v43 children];
+          v46 = [UIMenu menuWithTitle:@"More Keyboard Shortcuts" image:v44 identifier:0 options:256 children:children2];
+          [array addObject:v46];
         }
       }
 
@@ -701,8 +701,8 @@ LABEL_7:
 
     else
     {
-      v49 = [v6 identifier];
-      v50 = [v49 isEquivalentToUIMenuIdentifier:@"com.apple.menu.open-recent"];
+      identifier6 = [menuCopy identifier];
+      v50 = [identifier6 isEquivalentToUIMenuIdentifier:@"com.apple.menu.open-recent"];
 
       if (!v50)
       {
@@ -717,7 +717,7 @@ LABEL_7:
       v61[2] = v53;
       v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:3];
       v55 = [UIMenu menuWithTitle:@"Apps get Open/OpenRecent menu items if they support open in place and have declared at least one file type that the app can open. The system will automatically populate recent items.\n\nIf your app wants custom recent items image:replace the .openRecent menu with a different identifier menu (reuse this menu's title for free localization) and use an uncached deferred menu element to provide recent items.\n\nIf your app can open files but doesn't want these menus identifier:remove the Open/OpenRecent menus with the builder." options:0 children:0, 1, v54];
-      [v9 addObject:v55];
+      [array addObject:v55];
 
       v19 = [(_UIOPrototypeMenuBarViewController *)self _prototypeSystemCommandWithTitle:@"Clear Recents" systemImageName:0 keyCombination:0];
       v60 = v19;
@@ -729,57 +729,57 @@ LABEL_7:
   }
 
   v56 = [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v30];
-  [v9 addObject:v56];
+  [array addObject:v56];
 
 LABEL_21:
 LABEL_22:
-  v57 = [v6 uiMenu];
-  v58 = [v57 _menuByReplacingChildren:v9 additionalOptions:256];
+  uiMenu = [menuCopy uiMenu];
+  v58 = [uiMenu _menuByReplacingChildren:array additionalOptions:256];
 
   return v58;
 }
 
-- (id)_prototypeSystemCommandWithTitle:(id)a3 systemImageName:(id)a4 keyCombination:(id)a5
+- (id)_prototypeSystemCommandWithTitle:(id)title systemImageName:(id)name keyCombination:(id)combination
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  titleCopy = title;
+  nameCopy = name;
+  combinationCopy = combination;
+  if (nameCopy)
   {
-    v10 = [UIImage _systemImageNamed:v8];
-    v11 = [UIAction actionWithTitle:v7 image:v10 identifier:0 handler:&__block_literal_global_193];
+    v10 = [UIImage _systemImageNamed:nameCopy];
+    v11 = [UIAction actionWithTitle:titleCopy image:v10 identifier:0 handler:&__block_literal_global_193];
   }
 
   else
   {
-    v11 = [UIAction actionWithTitle:v7 image:0 identifier:0 handler:&__block_literal_global_193];
+    v11 = [UIAction actionWithTitle:titleCopy image:0 identifier:0 handler:&__block_literal_global_193];
   }
 
   [v11 setSubtitle:@"System command"];
-  if (v9)
+  if (combinationCopy)
   {
-    v12 = [_UIMenuLeafKeyboardShortcut shortcutWithBaseKeyCombination:v9];
+    v12 = [_UIMenuLeafKeyboardShortcut shortcutWithBaseKeyCombination:combinationCopy];
     [v11 _setKeyboardShortcut:v12];
   }
 
   return v11;
 }
 
-- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)a3 parentState:(id)a4
+- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)element parentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  stateCopy = state;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99___UIOPrototypeMenuBarViewController__uiDeferredMenuElementForMainMenuDeferredElement_parentState___block_invoke;
   v12[3] = &unk_1E7105280;
   objc_copyWeak(&v16, &location);
-  v8 = v7;
+  v8 = stateCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = elementCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v10 = [v9 uiDeferredMenuElementForProvider:v12];
 
   objc_destroyWeak(&v16);
@@ -788,10 +788,10 @@ LABEL_22:
   return v10;
 }
 
-- (id)_uiMenuElementForMainMenuCommand:(id)a3 parentState:(id)a4
+- (id)_uiMenuElementForMainMenuCommand:(id)command parentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  stateCopy = state;
   objc_initWeak(&location, self);
   session = self->_session;
   v11[0] = MEMORY[0x1E69E9820];
@@ -800,16 +800,16 @@ LABEL_22:
   v11[3] = &unk_1E71052F8;
   objc_copyWeak(&v12, &location);
   v11[4] = self;
-  v9 = [v6 uiMenuLeafForCommandAndAlternatesForSession:session parentState:v7 primaryActionHandler:v11];
+  v9 = [commandCopy uiMenuLeafForCommandAndAlternatesForSession:session parentState:stateCopy primaryActionHandler:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 
   return v9;
 }
 
-- (void)serviceConnectionDidInvalidate:(id)a3
+- (void)serviceConnectionDidInvalidate:(id)invalidate
 {
-  if (self->_serviceConnection == a3)
+  if (self->_serviceConnection == invalidate)
   {
     [(_UIOPrototypeMenuBarViewController *)self _dismissDueToUserDismissal:0 informingApp:0];
   }
@@ -884,8 +884,8 @@ LABEL_22:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 keyboardShortcut];
-        [v6 setObject:v12 forKeyedSubscript:v13];
+        keyboardShortcut = [v12 keyboardShortcut];
+        [v6 setObject:v12 forKeyedSubscript:keyboardShortcut];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -908,10 +908,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)performBaseMenuRequest:(id)a3 handler:(id)a4
+- (void)performBaseMenuRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = [_UIMainMenuBaseMenuRequestAction alloc];
   v11[0] = MEMORY[0x1E69E9820];
@@ -919,19 +919,19 @@ LABEL_11:
   v11[2] = __69___UIOPrototypeMenuBarViewController_performBaseMenuRequest_handler___block_invoke;
   v11[3] = &unk_1E7105320;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v9;
-  v10 = [(_UIMainMenuBaseMenuRequestAction *)v8 initWithBaseMenuRequest:v6 handler:v11];
+  v10 = [(_UIMainMenuBaseMenuRequestAction *)v8 initWithBaseMenuRequest:requestCopy handler:v11];
   [(_UIOServiceConnection *)self->_serviceConnection sendAction:v10];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)performSessionRequest:(id)a3 handler:(id)a4
+- (void)performSessionRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = [_UIMainMenuSessionRequestAction alloc];
   v11[0] = MEMORY[0x1E69E9820];
@@ -939,37 +939,37 @@ LABEL_11:
   v11[2] = __68___UIOPrototypeMenuBarViewController_performSessionRequest_handler___block_invoke;
   v11[3] = &unk_1E7105208;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v9;
-  v10 = [(_UIMainMenuSessionRequestAction *)v8 initWithSessionRequest:v6 handler:v11];
+  v10 = [(_UIMainMenuSessionRequestAction *)v8 initWithSessionRequest:requestCopy handler:v11];
   [(_UIOServiceConnection *)self->_serviceConnection sendAction:v10];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)performMainMenuStateRequest:(id)a3 responseHandler:(id)a4
+- (void)performMainMenuStateRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UIMainMenuStateRequestAction alloc] initWithMenuStateRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [[_UIMainMenuStateRequestAction alloc] initWithMenuStateRequest:requestCopy handler:handlerCopy];
 
   [(_UIOServiceConnection *)self->_serviceConnection sendAction:v8];
 }
 
-- (void)performMainMenuDeferredElementRequest:(id)a3 responseHandler:(id)a4
+- (void)performMainMenuDeferredElementRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[_UIMainMenuDeferredElementRequestAction alloc] initWithDeferredElementRequest:v7 handler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  v8 = [[_UIMainMenuDeferredElementRequestAction alloc] initWithDeferredElementRequest:requestCopy handler:handlerCopy];
 
   [(_UIOServiceConnection *)self->_serviceConnection sendAction:v8];
 }
 
-- (void)performMainMenuCommandInvocationRequest:(id)a3 responseHandler:(id)a4
+- (void)performMainMenuCommandInvocationRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = [_UIMainMenuCommandInvocationRequestAction alloc];
   v11[0] = MEMORY[0x1E69E9820];
@@ -977,9 +977,9 @@ LABEL_11:
   v11[2] = __94___UIOPrototypeMenuBarViewController_performMainMenuCommandInvocationRequest_responseHandler___block_invoke;
   v11[3] = &unk_1E7105348;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v12 = v9;
-  v10 = [(_UIMainMenuCommandInvocationRequestAction *)v8 initWithInvocationRequest:v6 responseHandler:v11];
+  v10 = [(_UIMainMenuCommandInvocationRequestAction *)v8 initWithInvocationRequest:requestCopy responseHandler:v11];
   [(_UIOServiceConnection *)self->_serviceConnection sendAction:v10];
 
   objc_destroyWeak(&v13);

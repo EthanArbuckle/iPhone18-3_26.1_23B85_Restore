@@ -1,67 +1,67 @@
 @interface BRCFSDownloader
-- (BOOL)makeContentLive:(id)a3;
-- (BOOL)scheduleContentDownloadForItem:(id)a3 serverItem:(id)a4 options:(unint64_t)a5 etagIfLoser:(id)a6 stageFileName:(id)a7 error:(id *)a8;
-- (BRCFSDownloader)initWithAccountSession:(id)a3;
-- (id)_getCancelErrorFromCancelReason:(int)a3;
-- (id)_sanitizeRecord:(id)a3;
-- (id)descriptionForItem:(id)a3 context:(id)a4;
-- (id)generateContentStageFileNameForItem:(id)a3 etag:(id)a4;
-- (id)getDownloadEtagForItem:(id)a3 etagIfLoser:(id)a4;
-- (unint64_t)_bumpThrottleForDownload:(id)a3 throttle:(id)a4;
+- (BOOL)makeContentLive:(id)live;
+- (BOOL)scheduleContentDownloadForItem:(id)item serverItem:(id)serverItem options:(unint64_t)options etagIfLoser:(id)loser stageFileName:(id)name error:(id *)error;
+- (BRCFSDownloader)initWithAccountSession:(id)session;
+- (id)_getCancelErrorFromCancelReason:(int)reason;
+- (id)_sanitizeRecord:(id)record;
+- (id)descriptionForItem:(id)item context:(id)context;
+- (id)generateContentStageFileNameForItem:(id)item etag:(id)etag;
+- (id)getDownloadEtagForItem:(id)item etagIfLoser:(id)loser;
+- (unint64_t)_bumpThrottleForDownload:(id)download throttle:(id)throttle;
 - (unint64_t)sizeOfActiveDownloads;
-- (void)_clearDownloadErrorForDocument:(id)a3;
+- (void)_clearDownloadErrorForDocument:(id)document;
 - (void)_close;
-- (void)_finishDownloadCleanup:(id)a3;
-- (void)_finishedDownload:(id)a3 syncContext:(id)a4 operationID:(id)a5 error:(id)a6;
-- (void)_postponeLoserForWinner:(int64_t)a3 etag:(id)a4;
-- (void)_reportDownloadErrorForDocument:(id)a3 error:(id)a4;
-- (void)_sendContentsBatch:(id)a3 sizeHint:(int64_t)a4 maxRecordsCount:(unint64_t)a5 kind:(int)a6;
-- (void)_transferStreamOfSyncContext:(id)a3 didBecomeReadyWithMaxRecordsCount:(unint64_t)a4 sizeHint:(unint64_t)a5 priority:(int64_t)a6 supportedKinds:(id)a7;
-- (void)_willDownload:(id)a3 operationID:(id)a4;
+- (void)_finishDownloadCleanup:(id)cleanup;
+- (void)_finishedDownload:(id)download syncContext:(id)context operationID:(id)d error:(id)error;
+- (void)_postponeLoserForWinner:(int64_t)winner etag:(id)etag;
+- (void)_reportDownloadErrorForDocument:(id)document error:(id)error;
+- (void)_sendContentsBatch:(id)batch sizeHint:(int64_t)hint maxRecordsCount:(unint64_t)count kind:(int)kind;
+- (void)_transferStreamOfSyncContext:(id)context didBecomeReadyWithMaxRecordsCount:(unint64_t)count sizeHint:(unint64_t)hint priority:(int64_t)priority supportedKinds:(id)kinds;
+- (void)_willDownload:(id)download operationID:(id)d;
 - (void)cancel;
-- (void)cancelAndCleanupItemDownloads:(id)a3;
-- (void)cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:(id)a3;
+- (void)cancelAndCleanupItemDownloads:(id)downloads;
+- (void)cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:(id)item;
 - (void)close;
-- (void)deleteJobsMatching:(id)a3;
-- (void)rescheduleJobsPendingRecentsAndFavoritesFetchInZone:(id)a3;
-- (void)rescheduleJobsPendingWinnerForItem:(id)a3;
+- (void)deleteJobsMatching:(id)matching;
+- (void)rescheduleJobsPendingRecentsAndFavoritesFetchInZone:(id)zone;
+- (void)rescheduleJobsPendingWinnerForItem:(id)item;
 - (void)resume;
 - (void)schedule;
 - (void)suspend;
-- (void)transferStreamOfSyncContext:(id)a3 didBecomeReadyWithMaxRecordsCount:(unint64_t)a4 sizeHint:(unint64_t)a5 priority:(int64_t)a6 supportedKinds:(id)a7 completionBlock:(id)a8;
-- (void)updateContentDownloadForMetaOnlyChange:(id)a3 fromEtag:(id)a4 toEtag:(id)a5;
+- (void)transferStreamOfSyncContext:(id)context didBecomeReadyWithMaxRecordsCount:(unint64_t)count sizeHint:(unint64_t)hint priority:(int64_t)priority supportedKinds:(id)kinds completionBlock:(id)block;
+- (void)updateContentDownloadForMetaOnlyChange:(id)change fromEtag:(id)etag toEtag:(id)toEtag;
 @end
 
 @implementation BRCFSDownloader
 
-- (id)getDownloadEtagForItem:(id)a3 etagIfLoser:(id)a4
+- (id)getDownloadEtagForItem:(id)item etagIfLoser:(id)loser
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  loserCopy = loser;
+  v6 = loserCopy;
+  if (loserCopy)
   {
-    v7 = v5;
+    etag = loserCopy;
   }
 
   else
   {
-    v8 = [a3 currentVersion];
-    v9 = [v8 ckInfo];
-    v7 = [v9 etag];
+    currentVersion = [item currentVersion];
+    ckInfo = [currentVersion ckInfo];
+    etag = [ckInfo etag];
   }
 
-  return v7;
+  return etag;
 }
 
-- (BRCFSDownloader)initWithAccountSession:(id)a3
+- (BRCFSDownloader)initWithAccountSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = BRCFSDownloader;
-  v5 = [(BRCFSSchedulerBase *)&v22 initWithSession:v4 name:@"Downloader" tableName:@"client_downloads"];
+  v5 = [(BRCFSSchedulerBase *)&v22 initWithSession:sessionCopy name:@"Downloader" tableName:@"client_downloads"];
   if (v5)
   {
-    v6 = [v4 personaIdentifier];
+    personaIdentifier = [sessionCopy personaIdentifier];
     v7 = BRPersonaSpecificName();
 
     v8 = dispatch_workloop_create([v7 UTF8String]);
@@ -96,13 +96,13 @@
 
 - (void)resume
 {
-  v3 = [(BRCAccountSession *)self->super.super._session clientTruthWorkloop];
+  clientTruthWorkloop = [(BRCAccountSession *)self->super.super._session clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__BRCFSDownloader_resume__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async_and_wait(v3, block);
+  dispatch_async_and_wait(clientTruthWorkloop, block);
 
   [(BRCDeadlineScheduler *)self->_downloadsDeadlineScheduler resume];
   [(BRCFairScheduler *)self->_fairScheduler resume];
@@ -159,53 +159,53 @@ void __25__BRCFSDownloader_resume__block_invoke(uint64_t a1)
   brc_task_tracker_cancel(self->_tracker);
 }
 
-- (void)_willDownload:(id)a3 operationID:(id)a4
+- (void)_willDownload:(id)download operationID:(id)d
 {
   session = self->super.super._session;
-  v6 = a4;
-  v7 = a3;
-  v12 = [(BRCAccountSession *)session clientDB];
-  v8 = [v7 stageID];
-  v9 = [v7 transferID];
-  v10 = [v7 kind];
-  v11 = [v7 etag];
+  dCopy = d;
+  downloadCopy = download;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  stageID = [downloadCopy stageID];
+  transferID = [downloadCopy transferID];
+  kind = [downloadCopy kind];
+  etag = [downloadCopy etag];
 
-  [v12 execute:{@"UPDATE client_downloads SET  transfer_stage = %@, transfer_operation = %@ WHERE throttle_id = %@ AND download_kind = %u AND download_etag = %@", v8, v6, v9, v10, v11}];
+  [clientDB execute:{@"UPDATE client_downloads SET  transfer_stage = %@, transfer_operation = %@ WHERE throttle_id = %@ AND download_kind = %u AND download_etag = %@", stageID, dCopy, transferID, kind, etag}];
 }
 
-- (unint64_t)_bumpThrottleForDownload:(id)a3 throttle:(id)a4
+- (unint64_t)_bumpThrottleForDownload:(id)download throttle:(id)throttle
 {
-  v6 = a4;
-  v7 = a3;
+  throttleCopy = throttle;
+  downloadCopy = download;
   v8 = [BRCDownloadJobIdentifier alloc];
-  v9 = [v7 transferID];
-  v10 = [v9 unsignedLongLongValue];
-  v11 = [v7 etag];
-  v12 = [v7 kind];
+  transferID = [downloadCopy transferID];
+  unsignedLongLongValue = [transferID unsignedLongLongValue];
+  etag = [downloadCopy etag];
+  kind = [downloadCopy kind];
 
-  v13 = [(BRCDownloadJobIdentifier *)v8 initWithDBRowID:v10 etag:v11 kind:v12];
+  v13 = [(BRCDownloadJobIdentifier *)v8 initWithDBRowID:unsignedLongLongValue etag:etag kind:kind];
   v16.receiver = self;
   v16.super_class = BRCFSDownloader;
-  v14 = [(BRCFSSchedulerBase *)&v16 postponeJobID:v13 withThrottle:v6];
+  v14 = [(BRCFSSchedulerBase *)&v16 postponeJobID:v13 withThrottle:throttleCopy];
 
   return v14;
 }
 
-- (id)descriptionForItem:(id)a3 context:(id)a4
+- (id)descriptionForItem:(id)item context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v8 = [MEMORY[0x277D82C18] rawInjection:"ORDER BY download_kind length:{download_etag", 37}];
   v9 = [MEMORY[0x277D82C18] rawInjection:"download_kind length:{download_etag, transfer_operation, transfer_queue, download_error, app_library_rowid", 99}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__BRCFSDownloader_descriptionForItem_context___block_invoke;
   v14[3] = &unk_278501F88;
-  v15 = v7;
-  v16 = self;
-  v17 = v6;
-  v10 = v6;
-  v11 = v7;
+  v15 = contextCopy;
+  selfCopy = self;
+  v17 = itemCopy;
+  v10 = itemCopy;
+  v11 = contextCopy;
   v12 = [(BRCFSSchedulerBase *)self descriptionForJobsMatching:v10 ordering:v8 additionalColumns:v9 additionalValuesHandler:v14 context:v11];
 
   return v12;
@@ -278,18 +278,18 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)_sanitizeRecord:(id)a3
+- (id)_sanitizeRecord:(id)record
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 copy];
+  recordCopy = record;
+  v4 = [recordCopy copy];
   [v4 setTrackChanges:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [recordCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -300,11 +300,11 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:v10];
+        v11 = [recordCopy objectForKeyedSubscript:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
@@ -312,7 +312,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -324,24 +324,24 @@ LABEL_13:
   return v4;
 }
 
-- (void)_finishedDownload:(id)a3 syncContext:(id)a4 operationID:(id)a5 error:(id)a6
+- (void)_finishedDownload:(id)download syncContext:(id)context operationID:(id)d error:(id)error
 {
   v87 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v51 = a4;
-  v50 = a5;
-  v10 = a6;
+  downloadCopy = download;
+  contextCopy = context;
+  dCopy = d;
+  errorCopy = error;
   v11 = +[BRCAccountsManager sharedManager];
-  LODWORD(a5) = [v11 isInSyncBubble];
+  LODWORD(d) = [v11 isInSyncBubble];
 
-  if (a5)
+  if (d)
   {
     [BRCFSDownloader _finishedDownload:syncContext:operationID:error:];
   }
 
-  v54 = [v9 clientZone];
-  v53 = [v9 stageID];
-  v12 = [v9 kind];
+  clientZone = [downloadCopy clientZone];
+  stageID = [downloadCopy stageID];
+  kind = [downloadCopy kind];
   memset(v74, 0, sizeof(v74));
   __brc_create_section(0, "[BRCFSDownloader _finishedDownload:syncContext:operationID:error:]", 547, 0, v74);
   v13 = brc_bread_crumbs();
@@ -349,25 +349,25 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v41 = v74[0];
-    v42 = [v9 transferID];
-    [v9 kind];
+    transferID = [downloadCopy transferID];
+    [downloadCopy kind];
     v43 = BRCPrettyPrintEnum();
-    v44 = [v9 etag];
-    v45 = v44;
+    etag = [downloadCopy etag];
+    v45 = etag;
     v46 = @"failed";
     *buf = 134219266;
     v76 = v41;
     v77 = 2112;
-    if (!v10)
+    if (!errorCopy)
     {
       v46 = @"done";
     }
 
-    v78 = v42;
+    v78 = transferID;
     v79 = 2080;
     v80 = v43;
     v81 = 2112;
-    v82 = v44;
+    v82 = etag;
     v83 = 2112;
     v84 = v46;
     v85 = 2112;
@@ -375,54 +375,54 @@ LABEL_13:
     _os_log_debug_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Downloader[%@-%s-%@]: download %@%@", buf, 0x3Eu);
   }
 
-  if (v53)
+  if (stageID)
   {
-    if (!v10 && v54)
+    if (!errorCopy && clientZone)
     {
       goto LABEL_9;
     }
 
-    v15 = [(BRCAccountSession *)self->super.super._session stageRegistry];
-    v16 = [v9 itemID];
-    [v15 cleanupStagedDownloadWithID:v53 forItemID:v16];
+    stageRegistry = [(BRCAccountSession *)self->super.super._session stageRegistry];
+    itemID = [downloadCopy itemID];
+    [stageRegistry cleanupStagedDownloadWithID:stageID forItemID:itemID];
   }
 
-  if (!v54)
+  if (!clientZone)
   {
-    v20 = 0;
+    asDocument = 0;
     goto LABEL_32;
   }
 
 LABEL_9:
-  if (v12 > 3)
+  if (kind > 3)
   {
-    v20 = 0;
+    asDocument = 0;
   }
 
   else
   {
-    v17 = [(BRCAccountSession *)self->super.super._session itemFetcher];
-    v18 = [v9 transferID];
-    v19 = [v17 itemByRowID:{objc_msgSend(v18, "longLongValue")}];
-    v20 = [v19 asDocument];
+    itemFetcher = [(BRCAccountSession *)self->super.super._session itemFetcher];
+    transferID2 = [downloadCopy transferID];
+    v19 = [itemFetcher itemByRowID:{objc_msgSend(transferID2, "longLongValue")}];
+    asDocument = [v19 asDocument];
 
-    if (!v10 && ([v9 requiresTwoPhase] & 1) != 0)
+    if (!errorCopy && ([downloadCopy requiresTwoPhase] & 1) != 0)
     {
       v21 = 1;
 LABEL_22:
-      [(BRCFSDownloader *)self _clearDownloadErrorForDocument:v20];
-      v30 = [(BRCAccountSession *)self->super.super._session applyScheduler];
-      v31 = [v9 itemID];
-      v32 = [v54 serverRankByItemID:v31];
+      [(BRCFSDownloader *)self _clearDownloadErrorForDocument:asDocument];
+      applyScheduler = [(BRCAccountSession *)self->super.super._session applyScheduler];
+      itemID2 = [downloadCopy itemID];
+      v32 = [clientZone serverRankByItemID:itemID2];
 
-      if (v12 >= 4)
+      if (kind >= 4)
       {
         v33 = 1;
       }
 
       else
       {
-        v33 = dword_2241ABEA0[v12];
+        v33 = dword_2241ABEA0[kind];
       }
 
       v34 = [(BRCAccountSession *)self->super.super._session clientReadWriteDatabaseFacade:0];
@@ -431,50 +431,50 @@ LABEL_22:
       v55[2] = __67__BRCFSDownloader__finishedDownload_syncContext_operationID_error___block_invoke_212;
       v55[3] = &unk_278501FD8;
       v55[4] = self;
-      v56 = v9;
+      v56 = downloadCopy;
       v66 = v21;
-      v57 = v51;
+      v57 = contextCopy;
       v35 = v34;
       v58 = v35;
-      v59 = v53;
-      v64 = v12;
-      v20 = v20;
-      v60 = v20;
+      v59 = stageID;
+      v64 = kind;
+      asDocument = asDocument;
+      v60 = asDocument;
       v63 = v32;
       v65 = v33;
-      v36 = v30;
+      v36 = applyScheduler;
       v61 = v36;
-      v62 = v54;
+      v62 = clientZone;
       [v35 groupInBatch:v55];
 
-      v10 = v49;
+      errorCopy = v49;
       goto LABEL_32;
     }
 
-    v22 = [(BRCAccountSession *)self->super.super._session downloadTrackers];
-    v23 = [v9 etagIfLoser];
-    [v22 document:v20 didCompleteDownloadEtagIfLoser:v23 kind:v12 withError:v10];
+    downloadTrackers = [(BRCAccountSession *)self->super.super._session downloadTrackers];
+    etagIfLoser = [downloadCopy etagIfLoser];
+    [downloadTrackers document:asDocument didCompleteDownloadEtagIfLoser:etagIfLoser kind:kind withError:errorCopy];
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
     v21 = 0;
     goto LABEL_22;
   }
 
-  if (([v54 handleZoneLevelErrorIfNeeded:v10 forItemCreation:0] & 1) == 0)
+  if (([clientZone handleZoneLevelErrorIfNeeded:errorCopy forItemCreation:0] & 1) == 0)
   {
-    if ([v10 brc_isCloudKitCancellationError])
+    if ([errorCopy brc_isCloudKitCancellationError])
     {
       goto LABEL_26;
     }
 
-    v24 = [v51 downloadThrottle];
-    v25 = [(BRCFSDownloader *)self _bumpThrottleForDownload:v9 throttle:v24];
+    downloadThrottle = [contextCopy downloadThrottle];
+    v25 = [(BRCFSDownloader *)self _bumpThrottleForDownload:downloadCopy throttle:downloadThrottle];
 
-    v26 = [v20 appLibrary];
-    v27 = [v26 mangledID];
-    v28 = [BRCUserDefaults defaultsForMangledID:v27];
+    appLibrary = [asDocument appLibrary];
+    mangledID = [appLibrary mangledID];
+    v28 = [BRCUserDefaults defaultsForMangledID:mangledID];
     LODWORD(v25) = v25 > [v28 downloadRetryCountForFailure];
 
     if (!v25)
@@ -485,7 +485,7 @@ LABEL_26:
 
     else
     {
-      [(BRCFSDownloader *)self _reportDownloadErrorForDocument:v20 error:v10];
+      [(BRCFSDownloader *)self _reportDownloadErrorForDocument:asDocument error:errorCopy];
       v29 = 1;
     }
 
@@ -493,12 +493,12 @@ LABEL_26:
     v38 = brc_default_log();
     if (os_log_type_enabled(v38, 0x90u))
     {
-      v47 = [v20 st];
-      v48 = [v47 displayName];
+      v47 = [asDocument st];
+      displayName = [v47 displayName];
       *buf = 138412802;
-      v76 = v48;
+      v76 = displayName;
       v77 = 2112;
-      v78 = v10;
+      v78 = errorCopy;
       v79 = 2112;
       v80 = v37;
       _os_log_error_impl(&dword_223E7A000, v38, 0x90u, "[ERROR] Got error when downloading %@: %@%@", buf, 0x20u);
@@ -506,23 +506,23 @@ LABEL_26:
 
     if ((v29 & 1) == 0)
     {
-      [(BRCFSDownloader *)self _reportDownloadErrorForDocument:v20 error:v10];
+      [(BRCFSDownloader *)self _reportDownloadErrorForDocument:asDocument error:errorCopy];
     }
 
-    v39 = [(BRCAccountSession *)self->super.super._session clientDB];
+    clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __67__BRCFSDownloader__finishedDownload_syncContext_operationID_error___block_invoke;
     v67[3] = &unk_278501E10;
     v72 = 41;
     v67[4] = self;
-    v68 = v9;
-    v69 = v10;
-    v73 = v12;
-    v20 = v20;
-    v70 = v20;
-    v71 = v54;
-    [v39 groupInBatch:v67];
+    v68 = downloadCopy;
+    v69 = errorCopy;
+    v73 = kind;
+    asDocument = asDocument;
+    v70 = asDocument;
+    v71 = clientZone;
+    [clientDB groupInBatch:v67];
   }
 
 LABEL_32:
@@ -679,12 +679,12 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rescheduleJobsPendingWinnerForItem:(id)a3
+- (void)rescheduleJobsPendingWinnerForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super.super._session clientDB];
-  [v5 execute:{@"UPDATE client_downloads SET throttle_state = 1 WHERE throttle_state = %u AND throttle_id = %lld", 42, objc_msgSend(v4, "dbRowID")}];
-  if ([v5 changes])
+  itemCopy = item;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
+  [clientDB execute:{@"UPDATE client_downloads SET throttle_state = 1 WHERE throttle_state = %u AND throttle_id = %lld", 42, objc_msgSend(itemCopy, "dbRowID")}];
+  if ([clientDB changes])
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -693,19 +693,19 @@ LABEL_8:
       [BRCFSDownloader rescheduleJobsPendingWinnerForItem:];
     }
 
-    v8 = [v4 syncContextUsedForTransfers];
-    [v8 signalAllDownloadStreams];
+    syncContextUsedForTransfers = [itemCopy syncContextUsedForTransfers];
+    [syncContextUsedForTransfers signalAllDownloadStreams];
   }
 }
 
-- (void)rescheduleJobsPendingRecentsAndFavoritesFetchInZone:(id)a3
+- (void)rescheduleJobsPendingRecentsAndFavoritesFetchInZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super.super._session clientDB];
-  v6 = [v4 dbRowID];
-  [v5 execute:{@"UPDATE client_downloads SET throttle_state = 1 WHERE throttle_state = 40   AND throttle_state != 0   AND zone_rowid = %@", v6}];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
+  dbRowID = [zoneCopy dbRowID];
+  [clientDB execute:{@"UPDATE client_downloads SET throttle_state = 1 WHERE throttle_state = 40   AND throttle_state != 0   AND zone_rowid = %@", dbRowID}];
 
-  if ([v5 changes])
+  if ([clientDB changes])
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
@@ -714,51 +714,51 @@ LABEL_8:
       [BRCFSDownloader rescheduleJobsPendingWinnerForItem:];
     }
 
-    if ([v4 isSharedZone])
+    if ([zoneCopy isSharedZone])
     {
-      v9 = [v4 asSharedZone];
-      v10 = [v9 transferSyncContext];
-      [v10 signalAllDownloadStreams];
+      asSharedZone = [zoneCopy asSharedZone];
+      transferSyncContext = [asSharedZone transferSyncContext];
+      [transferSyncContext signalAllDownloadStreams];
     }
 
     else
     {
-      v11 = [v4 dbRowID];
-      v9 = [v5 fetch:{@"SELECT distinct app_library_rowid FROM client_downloads WHERE throttle_state = 1   AND throttle_state != 0   AND zone_rowid = %@", v11}];
+      dbRowID2 = [zoneCopy dbRowID];
+      asSharedZone = [clientDB fetch:{@"SELECT distinct app_library_rowid FROM client_downloads WHERE throttle_state = 1   AND throttle_state != 0   AND zone_rowid = %@", dbRowID2}];
 
-      if ([v9 next])
+      if ([asSharedZone next])
       {
         do
         {
-          v12 = [v9 numberAtIndex:0];
+          v12 = [asSharedZone numberAtIndex:0];
           v13 = [(BRCAccountSession *)self->super.super._session appLibraryByRowID:v12];
-          v14 = [v13 transferSyncContext];
-          [v14 signalAllDownloadStreams];
+          transferSyncContext2 = [v13 transferSyncContext];
+          [transferSyncContext2 signalAllDownloadStreams];
         }
 
-        while (([v9 next] & 1) != 0);
+        while (([asSharedZone next] & 1) != 0);
       }
     }
   }
 }
 
-- (void)_finishDownloadCleanup:(id)a3
+- (void)_finishDownloadCleanup:(id)cleanup
 {
-  v6 = a3;
-  v3 = [v6 clientZone];
-  v4 = [v6 itemID];
-  v5 = [v3 popDownloadedBlockForItemID:v4];
+  cleanupCopy = cleanup;
+  clientZone = [cleanupCopy clientZone];
+  itemID = [cleanupCopy itemID];
+  v5 = [clientZone popDownloadedBlockForItemID:itemID];
 
   if (v5)
   {
-    (v5)[2](v5, v6);
+    (v5)[2](v5, cleanupCopy);
   }
 }
 
-- (void)cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:(id)a3
+- (void)cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -779,7 +779,7 @@ LABEL_8:
           objc_enumerationMutation(v5);
         }
 
-        -[BRCFSDownloader cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:cancelReason:](self, "cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:cancelReason:", v4, [*(*(&v11 + 1) + 8 * v9++) intValue], 0, 1, 1);
+        -[BRCFSDownloader cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:cancelReason:](self, "cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:cancelReason:", itemCopy, [*(*(&v11 + 1) + 8 * v9++) intValue], 0, 1, 1);
       }
 
       while (v7 != v9);
@@ -792,16 +792,16 @@ LABEL_8:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getCancelErrorFromCancelReason:(int)a3
+- (id)_getCancelErrorFromCancelReason:(int)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v5 = [MEMORY[0x277CCA9B8] brc_errorRescheduleDownloadForMoreRecentServerVersion];
+    brc_errorRescheduleDownloadForMoreRecentServerVersion = [MEMORY[0x277CCA9B8] brc_errorRescheduleDownloadForMoreRecentServerVersion];
   }
 
   else
   {
-    if (a3)
+    if (reason)
     {
       v3 = brc_bread_crumbs();
       v4 = brc_default_log();
@@ -811,54 +811,54 @@ LABEL_8:
       }
     }
 
-    v5 = [MEMORY[0x277CCA9B8] brc_errorDownloadCancelled];
+    brc_errorRescheduleDownloadForMoreRecentServerVersion = [MEMORY[0x277CCA9B8] brc_errorDownloadCancelled];
   }
 
-  return v5;
+  return brc_errorRescheduleDownloadForMoreRecentServerVersion;
 }
 
-- (void)cancelAndCleanupItemDownloads:(id)a3
+- (void)cancelAndCleanupItemDownloads:(id)downloads
 {
-  v4 = a3;
-  v5 = -[BRCFSDownloader _buildDownloadActiveJobsResultSetForThrottleID:etag:kind:](self, "_buildDownloadActiveJobsResultSetForThrottleID:etag:kind:", [v4 dbRowID], 0, 0xFFFFFFFFLL);
+  downloadsCopy = downloads;
+  v5 = -[BRCFSDownloader _buildDownloadActiveJobsResultSetForThrottleID:etag:kind:](self, "_buildDownloadActiveJobsResultSetForThrottleID:etag:kind:", [downloadsCopy dbRowID], 0, 0xFFFFFFFFLL);
   [(BRCFSDownloader *)self _cancelJobs:v5 state:0];
-  [(BRCFSDownloader *)self _finishDownloadCleanup:v4];
+  [(BRCFSDownloader *)self _finishDownloadCleanup:downloadsCopy];
 }
 
-- (void)deleteJobsMatching:(id)a3
+- (void)deleteJobsMatching:(id)matching
 {
   session = self->super.super._session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
-  v7 = [v5 matchingJobsWhereSQLClause];
-  v8 = [v6 fetch:{@"SELECT throttle_id, download_kind, download_etag, transfer_operation, transfer_stage, app_library_rowid, zone_rowid, throttle_state, transfer_size FROM client_downloads WHERE %@ AND throttle_state > %d", v7, 0}];
+  matchingCopy = matching;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  v8 = [clientDB fetch:{@"SELECT throttle_id, download_kind, download_etag, transfer_operation, transfer_stage, app_library_rowid, zone_rowid, throttle_state, transfer_size FROM client_downloads WHERE %@ AND throttle_state > %d", matchingJobsWhereSQLClause, 0}];
 
   [(BRCFSDownloader *)self _cancelJobs:v8 state:0];
   v9.receiver = self;
   v9.super_class = BRCFSDownloader;
-  [(BRCFSSchedulerBase *)&v9 deleteJobsMatching:v5];
+  [(BRCFSSchedulerBase *)&v9 deleteJobsMatching:matchingCopy];
 }
 
-- (void)updateContentDownloadForMetaOnlyChange:(id)a3 fromEtag:(id)a4 toEtag:(id)a5
+- (void)updateContentDownloadForMetaOnlyChange:(id)change fromEtag:(id)etag toEtag:(id)toEtag
 {
   session = self->super.super._session;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(BRCAccountSession *)session clientDB];
-  v11 = [v10 dbRowID];
+  toEtagCopy = toEtag;
+  etagCopy = etag;
+  changeCopy = change;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  dbRowID = [changeCopy dbRowID];
 
-  [v12 execute:{@"UPDATE client_downloads SET download_etag = %@ WHERE throttle_id = %lld AND download_etag = %@ AND download_kind = %d", v8, v11, v9, 0}];
+  [clientDB execute:{@"UPDATE client_downloads SET download_etag = %@ WHERE throttle_id = %lld AND download_etag = %@ AND download_kind = %d", toEtagCopy, dbRowID, etagCopy, 0}];
 }
 
 - (unint64_t)sizeOfActiveDownloads
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = v3;
-  if (!self->_lastDownloadRefresh || ([v3 timeIntervalSinceDate:?], v5 > self->_activeDownloadSizeRefreshInterval))
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = date;
+  if (!self->_lastDownloadRefresh || ([date timeIntervalSinceDate:?], v5 > self->_activeDownloadSizeRefreshInterval))
   {
-    v6 = [(BRCAccountSession *)self->super.super._session clientDB];
+    clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
     v21 = 0;
     v22 = &v21;
     v23 = 0x3032000000;
@@ -870,7 +870,7 @@ LABEL_8:
     v17 = __40__BRCFSDownloader_sizeOfActiveDownloads__block_invoke;
     v18 = &unk_278502000;
     v20 = &v21;
-    v7 = v6;
+    v7 = clientDB;
     v19 = v7;
     [v7 disableProfilingForQueriesInBlock:&v15];
     objc_storeStrong(&self->_lastDownloadRefresh, v4);
@@ -879,11 +879,11 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       activeDownloadsSize = self->_activeDownloadsSize;
-      v14 = [v22[5] longLongValue];
+      longLongValue = [v22[5] longLongValue];
       *buf = 134218498;
       v28 = activeDownloadsSize;
       v29 = 2048;
-      v30 = v14;
+      v30 = longLongValue;
       v31 = 2112;
       v32 = v8;
       _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Refreshed active download size %llu -> %llu%@", buf, 0x20u);
@@ -909,20 +909,20 @@ uint64_t __40__BRCFSDownloader_sizeOfActiveDownloads__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)makeContentLive:(id)a3
+- (BOOL)makeContentLive:(id)live
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super.super._session clientDB];
+  liveCopy = live;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__BRCFSDownloader_makeContentLive___block_invoke;
   v8[3] = &unk_278500FA8;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
-  LOBYTE(v4) = [v5 groupInTransaction:v8];
+  v9 = liveCopy;
+  selfCopy = self;
+  v6 = liveCopy;
+  LOBYTE(liveCopy) = [clientDB groupInTransaction:v8];
 
-  return v4;
+  return liveCopy;
 }
 
 uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void *a2)
@@ -960,13 +960,13 @@ uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (BOOL)scheduleContentDownloadForItem:(id)a3 serverItem:(id)a4 options:(unint64_t)a5 etagIfLoser:(id)a6 stageFileName:(id)a7 error:(id *)a8
+- (BOOL)scheduleContentDownloadForItem:(id)item serverItem:(id)serverItem options:(unint64_t)options etagIfLoser:(id)loser stageFileName:(id)name error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  itemCopy = item;
+  serverItemCopy = serverItem;
+  loserCopy = loser;
+  nameCopy = name;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(0, "[BRCFSDownloader scheduleContentDownloadForItem:serverItem:options:etagIfLoser:stageFileName:error:]", 999, 0, v31);
   v18 = brc_bread_crumbs();
@@ -974,24 +974,24 @@ uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
     v28 = v31[0];
-    v29 = [v14 itemID];
+    itemID = [itemCopy itemID];
     *buf = 134219010;
     v33 = v28;
     v34 = 2112;
-    v35 = v29;
+    v35 = itemID;
     v36 = 2112;
-    v37 = v14;
+    v37 = itemCopy;
     v38 = 2112;
-    v39 = v15;
+    v39 = serverItemCopy;
     v40 = 2112;
     v41 = v18;
-    v30 = v29;
+    v30 = itemID;
     _os_log_debug_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx scheduling content download for %@\nlocal: %@\nserver: %@%@", buf, 0x34u);
   }
 
-  v20 = [(BRCFSDownloader *)self getDownloadEtagForItem:v14 etagIfLoser:v16];
-  v21 = [BRCFSDownloaderUtil downloadKindWithEtagIfLoser:v16 options:a5];
-  v22 = -[BRCDownloadJobIdentifier initWithDBRowID:etag:kind:]([BRCDownloadJobIdentifier alloc], "initWithDBRowID:etag:kind:", [v14 dbRowID], v20, v21);
+  v20 = [(BRCFSDownloader *)self getDownloadEtagForItem:itemCopy etagIfLoser:loserCopy];
+  v21 = [BRCFSDownloaderUtil downloadKindWithEtagIfLoser:loserCopy options:options];
+  v22 = -[BRCDownloadJobIdentifier initWithDBRowID:etag:kind:]([BRCDownloadJobIdentifier alloc], "initWithDBRowID:etag:kind:", [itemCopy dbRowID], v20, v21);
   if ([(BRCFSSchedulerBase *)self jobStateFor:v22]== 1)
   {
     v23 = brc_bread_crumbs();
@@ -1006,7 +1006,7 @@ uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void 
 
   else
   {
-    v25 = [(BRCFSDownloader *)self _createDownloadingJobForItem:v14 state:1 kind:v21 etag:v20 stageFileName:v17 error:a8];
+    v25 = [(BRCFSDownloader *)self _createDownloadingJobForItem:itemCopy state:1 kind:v21 etag:v20 stageFileName:nameCopy error:error];
   }
 
   __brc_leave_section(v31);
@@ -1017,7 +1017,7 @@ uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void 
 - (void)schedule
 {
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 readerScanBatchSize];
+  readerScanBatchSize = [v3 readerScanBatchSize];
 
   v5 = [MEMORY[0x277D82C08] formatInjection:@"transfer_queue = '_retry' AND transfer_operation IS NULL"];
   v6 = [MEMORY[0x277D82C18] rawInjection:"rowid length:{throttle_id, app_library_rowid, zone_rowid, download_kind", 64}];
@@ -1026,7 +1026,7 @@ uint64_t __35__BRCFSDownloader_makeContentLive___block_invoke(uint64_t a1, void 
   v7[2] = __27__BRCFSDownloader_schedule__block_invoke;
   v7[3] = &unk_278502028;
   v7[4] = self;
-  [(BRCFSSchedulerBase *)self scheduleWithBatchSize:v4 whereSQLClause:v5 columns:v6 actionHandler:v7];
+  [(BRCFSSchedulerBase *)self scheduleWithBatchSize:readerScanBatchSize whereSQLClause:v5 columns:v6 actionHandler:v7];
 }
 
 void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1091,51 +1091,51 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)generateContentStageFileNameForItem:(id)a3 etag:(id)a4
+- (id)generateContentStageFileNameForItem:(id)item etag:(id)etag
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 st];
-  v8 = [v7 logicalName];
-  v9 = [v8 br_pathExtension];
+  etagCopy = etag;
+  itemCopy = item;
+  v7 = [itemCopy st];
+  logicalName = [v7 logicalName];
+  br_pathExtension = [logicalName br_pathExtension];
 
-  v10 = [v9 length];
+  v10 = [br_pathExtension length];
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v6 dbRowID];
+  dbRowID = [itemCopy dbRowID];
 
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = v14;
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = uUIDString;
   if (v10)
   {
-    [v11 stringWithFormat:@"content-%lld-%@-%@.%@", v12, v5, v14, v9];
+    [v11 stringWithFormat:@"content-%lld-%@-%@.%@", dbRowID, etagCopy, uUIDString, br_pathExtension];
   }
 
   else
   {
-    [v11 stringWithFormat:@"content-%lld-%@-%@", v12, v5, v14, v18];
+    [v11 stringWithFormat:@"content-%lld-%@-%@", dbRowID, etagCopy, uUIDString, v18];
   }
   v16 = ;
 
   return v16;
 }
 
-- (void)_sendContentsBatch:(id)a3 sizeHint:(int64_t)a4 maxRecordsCount:(unint64_t)a5 kind:(int)a6
+- (void)_sendContentsBatch:(id)batch sizeHint:(int64_t)hint maxRecordsCount:(unint64_t)count kind:(int)kind
 {
   v91 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  batchCopy = batch;
   v8 = +[BRCAccountsManager sharedManager];
-  v9 = [v8 isInSyncBubble];
+  isInSyncBubble = [v8 isInSyncBubble];
 
-  if (v9)
+  if (isInSyncBubble)
   {
     [BRCFSDownloader _sendContentsBatch:sizeHint:maxRecordsCount:kind:];
   }
 
-  v71 = [v7 syncContext];
-  if ([0 itemsCount] >= a5)
+  syncContext = [batchCopy syncContext];
+  if ([0 itemsCount] >= count)
   {
-    v12 = 0;
+    nextDocumentItem = 0;
     v11 = 0;
     v57 = 0;
     v13 = 0;
@@ -1144,35 +1144,35 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
   }
 
   v11 = 0;
-  v12 = 0;
+  nextDocumentItem = 0;
   v76 = 0;
   v13 = 0;
   v14 = 0;
   v15 = 0;
   *&v10 = 138412546;
   v69 = v10;
-  v72 = a5;
-  v70 = v7;
+  countCopy = count;
+  v70 = batchCopy;
   while (1)
   {
-    v16 = v12;
+    v16 = nextDocumentItem;
     context = objc_autoreleasePoolPush();
-    v12 = [v7 nextDocumentItem];
+    nextDocumentItem = [batchCopy nextDocumentItem];
 
-    if (!v12)
+    if (!nextDocumentItem)
     {
       break;
     }
 
-    v17 = [v7 stageID];
+    stageID = [batchCopy stageID];
 
-    v18 = [v7 etag];
+    etag = [batchCopy etag];
 
-    v73 = [v7 completedUnitCount];
-    v78 = [v7 transferQOS] > 24;
-    v19 = v17;
-    v20 = self;
-    if (!v17)
+    completedUnitCount = [batchCopy completedUnitCount];
+    v78 = [batchCopy transferQOS] > 24;
+    v19 = stageID;
+    selfCopy2 = self;
+    if (!stageID)
     {
       v21 = brc_bread_crumbs();
       v22 = brc_default_log();
@@ -1183,7 +1183,7 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
         _os_log_debug_impl(&dword_223E7A000, v22, OS_LOG_TYPE_DEBUG, "[DEBUG] No stage ID, createing a new one%@", buf, 0xCu);
       }
 
-      v19 = [(BRCFSDownloader *)self generateContentStageFileNameForItem:v12 etag:v18];
+      v19 = [(BRCFSDownloader *)self generateContentStageFileNameForItem:nextDocumentItem etag:etag];
     }
 
     v80 = v19;
@@ -1196,29 +1196,29 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
     {
       v23 = [BRCDownloadContentsBatchOperation alloc];
       session = self->super.super._session;
-      v25 = [(BRCFSSchedulerBase *)self hasWorkGroup];
-      v26 = [(BRCDeadlineScheduler *)self->_downloadsDeadlineScheduler workloop];
-      v27 = [(BRCDownloadContentsBatchOperation *)v23 initWithSyncContext:v71 sessionContext:session group:v25 callBackQueueTarget:v26];
+      hasWorkGroup = [(BRCFSSchedulerBase *)self hasWorkGroup];
+      workloop = [(BRCDeadlineScheduler *)self->_downloadsDeadlineScheduler workloop];
+      v27 = [(BRCDownloadContentsBatchOperation *)v23 initWithSyncContext:syncContext sessionContext:session group:hasWorkGroup callBackQueueTarget:workloop];
 
-      v28 = [(_BRCOperation *)v27 operationID];
+      operationID = [(_BRCOperation *)v27 operationID];
 
       v82[0] = MEMORY[0x277D85DD0];
       v82[1] = 3221225472;
       v82[2] = __68__BRCFSDownloader__sendContentsBatch_sizeHint_maxRecordsCount_kind___block_invoke;
       v82[3] = &unk_278502050;
       v82[4] = self;
-      v20 = self;
-      v83 = v71;
-      v76 = v28;
+      selfCopy2 = self;
+      v83 = syncContext;
+      v76 = operationID;
       v77 = v27;
       v84 = v76;
       [(BRCDownloadContentsBatchOperation *)v27 setPerDownloadCompletionBlock:v82];
     }
 
     v29 = [BRCDownloadContent alloc];
-    if (a6 == 2)
+    if (kind == 2)
     {
-      v30 = v18;
+      v30 = etag;
     }
 
     else
@@ -1226,38 +1226,38 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
       v30 = 0;
     }
 
-    v31 = [v7 kind];
-    v32 = [(BRCAccountSession *)v20->super.super._session stageRegistry];
+    kind = [batchCopy kind];
+    stageRegistry = [(BRCAccountSession *)selfCopy2->super.super._session stageRegistry];
     v33 = v30;
-    v34 = v18;
-    v35 = [(BRCDownloadContent *)v29 initWithDocument:v12 stageID:v80 etagIfLoser:v33 downloadKind:v31 downloadStager:v32];
+    v34 = etag;
+    v35 = [(BRCDownloadContent *)v29 initWithDocument:nextDocumentItem stageID:v80 etagIfLoser:v33 downloadKind:kind downloadStager:stageRegistry];
 
-    if (a6 != 2)
+    if (kind != 2)
     {
-      v36 = [(BRCDownload *)v35 etag];
-      if ([v36 isEqualToString:v18])
+      etag2 = [(BRCDownload *)v35 etag];
+      if ([etag2 isEqualToString:etag])
       {
       }
 
       else
       {
-        v37 = [(BRCDownloadContent *)v12 currentVersion];
-        v38 = [v37 oldVersionIdentifier];
-        v39 = [v38 isEqualToString:v18];
+        currentVersion = [(BRCDownloadContent *)nextDocumentItem currentVersion];
+        oldVersionIdentifier = [currentVersion oldVersionIdentifier];
+        v39 = [oldVersionIdentifier isEqualToString:etag];
 
-        v34 = v18;
+        v34 = etag;
         if ((v39 & 1) == 0)
         {
-          if (([(BRCDownloadContent *)v12 isDocumentBeingCopiedToNewZone]& 1) != 0)
+          if (([(BRCDownloadContent *)nextDocumentItem isDocumentBeingCopiedToNewZone]& 1) != 0)
           {
             v55 = brc_bread_crumbs();
             v56 = brc_default_log();
             v11 = v77;
-            v54 = v72;
+            v54 = countCopy;
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
             {
               *buf = v69;
-              v86 = v12;
+              v86 = nextDocumentItem;
               v87 = 2112;
               v88 = v55;
               _os_log_debug_impl(&dword_223E7A000, v56, OS_LOG_TYPE_DEBUG, "[DEBUG] Seems that item %@ has started a czm after requesting a download%@", buf, 0x16u);
@@ -1269,7 +1269,7 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
             v55 = brc_bread_crumbs();
             v56 = brc_default_log();
             v11 = v77;
-            v54 = v72;
+            v54 = countCopy;
             if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412802;
@@ -1282,23 +1282,23 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
             }
           }
 
-          -[BRCFSDownloader cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:](self, "cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:", v12, [v7 kind], v34, 1);
+          -[BRCFSDownloader cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:](self, "cancelAndCleanupItemDownload:kind:etag:andNotifyDownloadTrackers:", nextDocumentItem, [batchCopy kind], v34, 1);
           goto LABEL_38;
         }
       }
     }
 
-    v40 = self;
+    selfCopy5 = self;
     if (![(BRCDownloadContent *)v35 requiresTwoPhase])
     {
       willRetryOperationProgress = self->_willRetryOperationProgress;
-      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BRCDownloadContent dbRowID](v12, "dbRowID")}];
+      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BRCDownloadContent dbRowID](nextDocumentItem, "dbRowID")}];
       v43 = [(NSMutableDictionary *)willRetryOperationProgress objectForKeyedSubscript:v42];
 
       if (v43)
       {
         v44 = self->_willRetryOperationProgress;
-        v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BRCDownloadContent dbRowID](v12, "dbRowID")}];
+        v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BRCDownloadContent dbRowID](nextDocumentItem, "dbRowID")}];
         [(NSMutableDictionary *)v44 removeObjectForKey:v45];
 
         v46 = brc_bread_crumbs();
@@ -1312,20 +1312,20 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
           _os_log_debug_impl(&dword_223E7A000, v47, OS_LOG_TYPE_DEBUG, "[DEBUG] Re-use progress %@%@", buf, 0x16u);
         }
 
-        v34 = v18;
-        v40 = self;
-        v7 = v70;
+        v34 = etag;
+        selfCopy5 = self;
+        batchCopy = v70;
       }
 
       else
       {
-        v48 = [(BRCDownloadContent *)v12 currentVersion];
-        v49 = [v48 size];
+        currentVersion2 = [(BRCDownloadContent *)nextDocumentItem currentVersion];
+        v49 = [currentVersion2 size];
 
-        v50 = v73;
-        v34 = v18;
-        v7 = v70;
-        if (v73 > v49)
+        v50 = completedUnitCount;
+        v34 = etag;
+        batchCopy = v70;
+        if (completedUnitCount > v49)
         {
           v51 = brc_bread_crumbs();
           v52 = brc_default_log();
@@ -1339,7 +1339,7 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
           v50 = 0;
         }
 
-        v40 = self;
+        selfCopy5 = self;
         v43 = [(NSMutableDictionary *)self->_pendingOperationProgress objectForKeyedSubscript:v80];
         if (!v43 && (![(BRCDownloadContent *)v35 kind]|| [(BRCDownloadContent *)v35 kind]== 3))
         {
@@ -1354,10 +1354,10 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
             _os_log_fault_impl(&dword_223E7A000, v53, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Failed finding a progress for stageID: %@%@", buf, 0x16u);
           }
 
-          v34 = v18;
+          v34 = etag;
         }
 
-        [(BRCDownloadContent *)v43 updateToBeDownloadProgressForDocument:v12 totalUnitCount:v49 completedUnitCount:v50];
+        [(BRCDownloadContent *)v43 updateToBeDownloadProgressForDocument:nextDocumentItem totalUnitCount:v49 completedUnitCount:v50];
       }
 
       [(BRCDownloadContent *)v35 setProgress:v43];
@@ -1365,9 +1365,9 @@ void __27__BRCFSDownloader_schedule__block_invoke(uint64_t a1, void *a2, uint64_
 
     v11 = v77;
     [(BRCDownloadContentsBatchOperation *)v77 addDownload:v35];
-    [(BRCFSDownloader *)v40 _willDownload:v35 operationID:v76];
-    [(BRCDownloadContent *)v12 triggerNotificationIfNeeded];
-    v54 = v72;
+    [(BRCFSDownloader *)selfCopy5 _willDownload:v35 operationID:v76];
+    [(BRCDownloadContent *)nextDocumentItem triggerNotificationIfNeeded];
+    v54 = countCopy;
 LABEL_38:
     v15 |= v78;
 
@@ -1385,9 +1385,9 @@ LABEL_38:
 LABEL_48:
   if (v11)
   {
-    if ([v7 kind] == 3)
+    if ([batchCopy kind] == 3)
     {
-      v58 = [MEMORY[0x277CBC4F8] br_downloadSpeculative];
+      br_downloadSpeculative = [MEMORY[0x277CBC4F8] br_downloadSpeculative];
       if ((v15 & 1) == 0)
       {
         [(BRCDownloadContentsBatchOperation *)v11 setQueuePriority:-8];
@@ -1404,13 +1404,13 @@ LABEL_54:
     {
       if (v15)
       {
-        v58 = [MEMORY[0x277CBC4F8] br_downloadUserInitiated];
+        br_downloadSpeculative = [MEMORY[0x277CBC4F8] br_downloadUserInitiated];
         goto LABEL_54;
       }
 
-      v58 = [MEMORY[0x277CBC4F8] br_downloadUpdatedDocuments];
+      br_downloadSpeculative = [MEMORY[0x277CBC4F8] br_downloadUpdatedDocuments];
       v59 = v11;
-      if (a6 == 2)
+      if (kind == 2)
       {
         v60 = -4;
       }
@@ -1424,17 +1424,17 @@ LABEL_54:
     [(BRCDownloadContentsBatchOperation *)v59 setQueuePriority:v60, v69];
 LABEL_56:
     [(_BRCOperation *)v11 setNonDiscretionary:1, v69];
-    [(_BRCOperation *)v11 setGroup:v58];
+    [(_BRCOperation *)v11 setGroup:br_downloadSpeculative];
     v61 = brc_bread_crumbs();
     v62 = brc_default_log();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
     {
       v63 = v11;
-      v64 = [(BRCTransferBatchOperation *)v11 itemsCount];
-      [v71 contextIdentifier];
+      itemsCount = [(BRCTransferBatchOperation *)v11 itemsCount];
+      [syncContext contextIdentifier];
       v66 = v65 = v34;
       *buf = 134218498;
-      v86 = v64;
+      v86 = itemsCount;
       v11 = v63;
       v87 = 2112;
       v88 = v66;
@@ -1445,7 +1445,7 @@ LABEL_56:
       v34 = v65;
     }
 
-    v67 = [v71 downloadStreamForKind:a6];
+    v67 = [syncContext downloadStreamForKind:kind];
     [v67 addBatchOperation:v11];
   }
 
@@ -1455,23 +1455,23 @@ LABEL_60:
   v68 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postponeLoserForWinner:(int64_t)a3 etag:(id)a4
+- (void)_postponeLoserForWinner:(int64_t)winner etag:(id)etag
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BRCAccountSession *)self->super.super._session clientDB];
-  [v7 execute:{@"UPDATE client_downloads    SET throttle_state = %u  WHERE throttle_id = %lld AND download_kind = %u AND download_etag = %@", 42, a3, 2, v6}];
+  etagCopy = etag;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
+  [clientDB execute:{@"UPDATE client_downloads    SET throttle_state = %u  WHERE throttle_id = %lld AND download_kind = %u AND download_etag = %@", 42, winner, 2, etagCopy}];
 
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
-    v12 = a3;
+    winnerCopy = winner;
     v13 = 2080;
     v14 = BRCPrettyPrintEnum();
     v15 = 2112;
-    v16 = v6;
+    v16 = etagCopy;
     v17 = 2112;
     v18 = v8;
     _os_log_debug_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEBUG, "[DEBUG] Downloader[%lld-%s-%@]: postpone because loser is more recent than live item%@", buf, 0x2Au);
@@ -1480,39 +1480,39 @@ LABEL_60:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transferStreamOfSyncContext:(id)a3 didBecomeReadyWithMaxRecordsCount:(unint64_t)a4 sizeHint:(unint64_t)a5 priority:(int64_t)a6 supportedKinds:(id)a7
+- (void)_transferStreamOfSyncContext:(id)context didBecomeReadyWithMaxRecordsCount:(unint64_t)count sizeHint:(unint64_t)hint priority:(int64_t)priority supportedKinds:(id)kinds
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(BRCAccountSession *)self->super.super._session clientDB];
-  [v12 assertOnQueue];
+  contextCopy = context;
+  kindsCopy = kinds;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
+  [clientDB assertOnQueue];
   v32 = 0x7FFFFFFFFFFFFFFFLL;
   v13 = brc_current_date_nsec();
   if (![(BRCFSSchedulerBase *)self isCancelled])
   {
-    v14 = [v10 contextIdentifier];
-    v15 = [v12 fetch:{@"  SELECT throttle_id, next_retry_stamp, download_kind, download_etag     FROM client_downloads    WHERE throttle_state = 1      AND transfer_queue = %@      AND transfer_operation IS NULL      AND download_priority >= %ld      AND indexset_contains(%p, download_kind)  ORDER BY download_priority DESC, download_request_stamp DESC", v14, a6, v11}];
+    contextIdentifier = [contextCopy contextIdentifier];
+    v15 = [clientDB fetch:{@"  SELECT throttle_id, next_retry_stamp, download_kind, download_etag     FROM client_downloads    WHERE throttle_state = 1      AND transfer_queue = %@      AND transfer_operation IS NULL      AND download_priority >= %ld      AND indexset_contains(%p, download_kind)  ORDER BY download_priority DESC, download_request_stamp DESC", contextIdentifier, priority, kindsCopy}];
 
-    v16 = [v11 firstIndex];
+    firstIndex = [kindsCopy firstIndex];
     if ([v15 next])
     {
-      v28 = v11;
-      v29 = v10;
+      v28 = kindsCopy;
+      v29 = contextCopy;
       v17 = 0;
       do
       {
         v18 = objc_autoreleasePoolPush();
         v19 = [v15 unsignedIntegerAtIndex:0];
         v20 = [v15 longLongAtIndex:1];
-        v16 = [v15 intAtIndex:2];
+        firstIndex = [v15 intAtIndex:2];
         v21 = [v15 stringAtIndex:3];
         v22 = v21;
         if (v20 <= v13)
         {
           [v15 close];
-          v24 = [[BRCFSDownloaderBatchEnumerator alloc] initWithSyncContext:v29 kind:v16 now:v13 retryQueueKick:&v32];
+          v24 = [[BRCFSDownloaderBatchEnumerator alloc] initWithSyncContext:v29 kind:firstIndex now:v13 retryQueueKick:&v32];
 
-          [(BRCFSDownloader *)self _sendContentsBatch:v24 sizeHint:a5 maxRecordsCount:a4 kind:v16];
+          [(BRCFSDownloader *)self _sendContentsBatch:v24 sizeHint:hint maxRecordsCount:count kind:firstIndex];
           v17 = v24;
         }
 
@@ -1525,7 +1525,7 @@ LABEL_60:
           }
 
           v32 = v23;
-          [v12 execute:{@"UPDATE client_downloads    SET transfer_queue = '_retry'  WHERE throttle_id = %ld AND download_kind = %u AND download_etag = %@", v19, v16, v21}];
+          [clientDB execute:{@"UPDATE client_downloads    SET transfer_queue = '_retry'  WHERE throttle_id = %ld AND download_kind = %u AND download_etag = %@", v19, firstIndex, v21}];
         }
 
         objc_autoreleasePoolPop(v18);
@@ -1537,8 +1537,8 @@ LABEL_60:
         [(BRCFSSchedulerBase *)self signalWithDeadline:?];
       }
 
-      v11 = v28;
-      v10 = v29;
+      kindsCopy = v28;
+      contextCopy = v29;
     }
 
     else
@@ -1546,40 +1546,40 @@ LABEL_60:
       v17 = 0;
     }
 
-    v25 = [v10 contextIdentifier];
-    v26 = [v12 numberWithSQL:{@"SELECT MIN(next_retry_stamp) FROM client_downloads   WHERE throttle_state = 1     AND transfer_queue = %@      AND transfer_operation IS NULL      AND indexset_contains(%p, download_kind) ", v25, v11}];
+    contextIdentifier2 = [contextCopy contextIdentifier];
+    v26 = [clientDB numberWithSQL:{@"SELECT MIN(next_retry_stamp) FROM client_downloads   WHERE throttle_state = 1     AND transfer_queue = %@      AND transfer_operation IS NULL      AND indexset_contains(%p, download_kind) ", contextIdentifier2, kindsCopy}];
 
     if (v26)
     {
-      v27 = [v10 downloadStreamForKind:v16];
+      v27 = [contextCopy downloadStreamForKind:firstIndex];
       [v27 signalWithDeadline:{objc_msgSend(v26, "longLongValue")}];
     }
   }
 }
 
-- (void)transferStreamOfSyncContext:(id)a3 didBecomeReadyWithMaxRecordsCount:(unint64_t)a4 sizeHint:(unint64_t)a5 priority:(int64_t)a6 supportedKinds:(id)a7 completionBlock:(id)a8
+- (void)transferStreamOfSyncContext:(id)context didBecomeReadyWithMaxRecordsCount:(unint64_t)count sizeHint:(unint64_t)hint priority:(int64_t)priority supportedKinds:(id)kinds completionBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
-  v31 = [(BRCAccountSession *)self->super.super._session clientDB];
-  v17 = [v31 serialQueue];
+  contextCopy = context;
+  kindsCopy = kinds;
+  blockCopy = block;
+  clientDB = [(BRCAccountSession *)self->super.super._session clientDB];
+  serialQueue = [clientDB serialQueue];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __130__BRCFSDownloader_transferStreamOfSyncContext_didBecomeReadyWithMaxRecordsCount_sizeHint_priority_supportedKinds_completionBlock___block_invoke;
   v32[3] = &unk_278502078;
   v32[4] = self;
-  v18 = v14;
+  v18 = contextCopy;
   v33 = v18;
-  v36 = a4;
-  v37 = a5;
-  v38 = a6;
-  v19 = v15;
+  countCopy = count;
+  hintCopy = hint;
+  priorityCopy = priority;
+  v19 = kindsCopy;
   v34 = v19;
-  v20 = v16;
+  v20 = blockCopy;
   v35 = v20;
-  v21 = v17;
+  v21 = serialQueue;
   v22 = v32;
   v23 = objc_autoreleasePoolPush();
   v39 = 0uLL;
@@ -1624,25 +1624,25 @@ uint64_t __130__BRCFSDownloader_transferStreamOfSyncContext_didBecomeReadyWithMa
   return v2();
 }
 
-- (void)_reportDownloadErrorForDocument:(id)a3 error:(id)a4
+- (void)_reportDownloadErrorForDocument:(id)document error:(id)error
 {
   session = self->super.super._session;
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BRCAccountSession *)session localItemSyncErrorReporter];
-  v8 = [v7 dbRowID];
+  errorCopy = error;
+  documentCopy = document;
+  localItemSyncErrorReporter = [(BRCAccountSession *)session localItemSyncErrorReporter];
+  dbRowID = [documentCopy dbRowID];
 
-  [v9 reportDownloadErrorForItemWithRowID:v8 error:v6 underlyingError:0];
+  [localItemSyncErrorReporter reportDownloadErrorForItemWithRowID:dbRowID error:errorCopy underlyingError:0];
 }
 
-- (void)_clearDownloadErrorForDocument:(id)a3
+- (void)_clearDownloadErrorForDocument:(id)document
 {
   session = self->super.super._session;
-  v4 = a3;
-  v6 = [(BRCAccountSession *)session localItemSyncErrorReporter];
-  v5 = [v4 dbRowID];
+  documentCopy = document;
+  localItemSyncErrorReporter = [(BRCAccountSession *)session localItemSyncErrorReporter];
+  dbRowID = [documentCopy dbRowID];
 
-  [v6 clearDownloadErrorForItemWithRowID:v5];
+  [localItemSyncErrorReporter clearDownloadErrorForItemWithRowID:dbRowID];
 }
 
 void __25__BRCFSDownloader_resume__block_invoke_cold_1()

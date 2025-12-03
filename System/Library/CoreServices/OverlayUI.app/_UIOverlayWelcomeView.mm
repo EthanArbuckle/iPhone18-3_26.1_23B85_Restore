@@ -1,15 +1,15 @@
 @interface _UIOverlayWelcomeView
-- (_UIOverlayWelcomeView)initWithFrame:(CGRect)a3;
+- (_UIOverlayWelcomeView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation _UIOverlayWelcomeView
 
-- (_UIOverlayWelcomeView)initWithFrame:(CGRect)a3
+- (_UIOverlayWelcomeView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = _UIOverlayWelcomeView;
-  v3 = [(_UIOverlayWelcomeView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIOverlayWelcomeView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIVisualEffectView alloc];

@@ -1,9 +1,9 @@
 @interface CryptexTSS
-- (CryptexTSS)initWithFlags:(unint64_t)a3;
-- (id)generateDiavloRequest:(id)a3;
+- (CryptexTSS)initWithFlags:(unint64_t)flags;
+- (id)generateDiavloRequest:(id)request;
 - (id)generatePackedSignatures;
-- (id)tssFormatRequest:(id)a3 withHeaders:(id)a4 withURL:(id)a5;
-- (id)tssFormatResponse:(id)a3 withHeaderData:(id)a4 withCode:(int64_t)a5;
+- (id)tssFormatRequest:(id)request withHeaders:(id)headers withURL:(id)l;
+- (id)tssFormatResponse:(id)response withHeaderData:(id)data withCode:(int64_t)code;
 - (id)tssSendRequest;
 - (id)tssSerializeRequest;
 - (void)activate;
@@ -14,7 +14,7 @@
 
 @implementation CryptexTSS
 
-- (CryptexTSS)initWithFlags:(unint64_t)a3
+- (CryptexTSS)initWithFlags:(unint64_t)flags
 {
   v21.receiver = self;
   v21.super_class = CryptexTSS;
@@ -22,7 +22,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_flags = a3;
+    v4->_flags = flags;
     tssURL = v4->_tssURL;
     v4->_tssURL = @"https://gs.apple.com:443";
 
@@ -73,8 +73,8 @@
   xpc_dictionary_set_string(v3, "@UUID", v8);
 
   LOBYTE(v3) = [(CryptexTSS *)self flags];
-  v4 = [(CryptexTSS *)self tss_request];
-  v5 = v4;
+  tss_request = [(CryptexTSS *)self tss_request];
+  v5 = tss_request;
   if ((v3 & 4) != 0)
   {
     v6 = "@Cryptex1,Ticket";
@@ -85,7 +85,7 @@
     v6 = "@ApImg4Ticket";
   }
 
-  xpc_dictionary_set_BOOL(v4, v6, 1);
+  xpc_dictionary_set_BOOL(tss_request, v6, 1);
 
   v7 = *MEMORY[0x29EDCA608];
 }
@@ -93,8 +93,8 @@
 - (id)generatePackedSignatures
 {
   v34 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(CryptexTSS *)self im4m_array];
+  array = [MEMORY[0x29EDB8DE8] array];
+  im4m_array = [(CryptexTSS *)self im4m_array];
   v5 = _CFXPCCreateCFObjectFromXPCObject();
 
   if (!v5)
@@ -143,10 +143,10 @@
         }
 
         v14 = [*(*(&v27 + 1) + 8 * i) base64EncodedStringWithOptions:0];
-        v15 = [MEMORY[0x29EDB9F50] URLQueryAllowedCharacterSet];
-        v16 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+        uRLQueryAllowedCharacterSet = [MEMORY[0x29EDB9F50] URLQueryAllowedCharacterSet];
+        v16 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-        [v3 addObject:v16];
+        [array addObject:v16];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -155,13 +155,13 @@
     while (v11);
   }
 
-  v17 = [(CryptexTSS *)self im4m_array];
-  count = xpc_array_get_count(v17);
-  LOBYTE(count) = count == [v3 count];
+  im4m_array2 = [(CryptexTSS *)self im4m_array];
+  count = xpc_array_get_count(im4m_array2);
+  LOBYTE(count) = count == [array count];
 
   if (count)
   {
-    v19 = v3;
+    v19 = array;
   }
 
   else
@@ -198,22 +198,22 @@
   return v19;
 }
 
-- (id)generateDiavloRequest:(id)a3
+- (id)generateDiavloRequest:(id)request
 {
   v29 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  v6 = [(CryptexTSS *)self generatePackedSignatures];
-  v7 = [(CryptexTSS *)self info_content];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  generatePackedSignatures = [(CryptexTSS *)self generatePackedSignatures];
+  info_content = [(CryptexTSS *)self info_content];
+  v8 = [info_content base64EncodedStringWithOptions:0];
   [v5 setObject:v8 forKeyedSubscript:@"info"];
 
-  v9 = [v4 base64EncodedStringWithOptions:0];
+  v9 = [requestCopy base64EncodedStringWithOptions:0];
   [v5 setObject:v9 forKeyedSubscript:@"sign_request"];
 
-  [v5 setObject:v6 forKeyedSubscript:@"signatures"];
-  v10 = [(CryptexTSS *)self tssUsage];
-  [v5 setObject:v10 forKeyedSubscript:@"usage"];
+  [v5 setObject:generatePackedSignatures forKeyedSubscript:@"signatures"];
+  tssUsage = [(CryptexTSS *)self tssUsage];
+  [v5 setObject:tssUsage forKeyedSubscript:@"usage"];
 
   v11 = [(CryptexTSS *)self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -232,9 +232,9 @@
     {
       v15 = [(CryptexTSS *)self log];
       os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
-      v16 = [v13 localizedDescription];
+      localizedDescription = [v13 localizedDescription];
       v25 = 138412546;
-      v26 = v16;
+      v26 = localizedDescription;
       v27 = 1024;
       v28 = 22;
       LODWORD(v23) = 18;
@@ -244,9 +244,9 @@
     else
     {
       v18 = MEMORY[0x29EDCA988];
-      v19 = [v13 localizedDescription];
+      localizedDescription2 = [v13 localizedDescription];
       v25 = 138412546;
-      v26 = v19;
+      v26 = localizedDescription2;
       v27 = 1024;
       v28 = 22;
       LODWORD(v23) = 18;
@@ -268,7 +268,7 @@
 - (id)tssSerializeRequest
 {
   v19 = *MEMORY[0x29EDCA608];
-  v3 = [(CryptexTSS *)self tss_request];
+  tss_request = [(CryptexTSS *)self tss_request];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
 
   v5 = [(CryptexTSS *)self log];
@@ -323,20 +323,20 @@
   return v11;
 }
 
-- (id)tssFormatRequest:(id)a3 withHeaders:(id)a4 withURL:(id)a5
+- (id)tssFormatRequest:(id)request withHeaders:(id)headers withURL:(id)l
 {
   v25 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  headersCopy = headers;
+  lCopy = l;
   v10 = objc_alloc_init(MEMORY[0x29EDBA050]);
   [v10 appendFormat:@"---------REQUEST START---------\n"];
-  [v10 appendFormat:@"URL: %@\n", v9];
+  [v10 appendFormat:@"URL: %@\n", lCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v8;
+  v11 = headersCopy;
   v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
@@ -360,7 +360,7 @@
     while (v13);
   }
 
-  v16 = [v7 base64EncodedStringWithOptions:0];
+  v16 = [requestCopy base64EncodedStringWithOptions:0];
   [v10 appendFormat:@"BODY:\n%@\n", v16];
 
   [v10 appendFormat:@"---------REQUEST END---------\n"];
@@ -371,18 +371,18 @@
   return v17;
 }
 
-- (id)tssFormatResponse:(id)a3 withHeaderData:(id)a4 withCode:(int64_t)a5
+- (id)tssFormatResponse:(id)response withHeaderData:(id)data withCode:(int64_t)code
 {
   v7 = MEMORY[0x29EDBA050];
-  v8 = a4;
-  v9 = a3;
+  dataCopy = data;
+  responseCopy = response;
   v10 = objc_alloc_init(v7);
   [v10 appendFormat:@"---------RESPONSE START---------\n"];
-  [v10 appendFormat:@"HTTP Status Code: %ld\n", a5];
-  v11 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithData:v8 encoding:4];
+  [v10 appendFormat:@"HTTP Status Code: %ld\n", code];
+  v11 = [objc_alloc(MEMORY[0x29EDBA0F8]) initWithData:dataCopy encoding:4];
 
   [v10 appendFormat:@"%@\n", v11];
-  v12 = [v9 base64EncodedStringWithOptions:0];
+  v12 = [responseCopy base64EncodedStringWithOptions:0];
 
   [v10 appendFormat:@"BODY:\n%@\n", v12];
   [v10 appendFormat:@"---------RESPONSE END---------\n"];

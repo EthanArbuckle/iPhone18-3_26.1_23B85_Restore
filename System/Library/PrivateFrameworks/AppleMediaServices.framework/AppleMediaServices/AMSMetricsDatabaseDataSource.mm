@@ -1,13 +1,13 @@
 @interface AMSMetricsDatabaseDataSource
 - (AMSMetricsDatabase)database;
-- (AMSMetricsDatabaseDataSource)initWithContainerIdentifier:(id)a3;
-- (BOOL)removeEvents:(id)a3 error:(id *)a4;
-- (BOOL)skipEvents:(id)a3 error:(id *)a4;
-- (BOOL)willStartBatchingWithLogKey:(id)a3 error:(id *)a4;
-- (id)enqueueEvents:(id)a3;
+- (AMSMetricsDatabaseDataSource)initWithContainerIdentifier:(id)identifier;
+- (BOOL)removeEvents:(id)events error:(id *)error;
+- (BOOL)skipEvents:(id)events error:(id *)error;
+- (BOOL)willStartBatchingWithLogKey:(id)key error:(id *)error;
+- (id)enqueueEvents:(id)events;
 - (int64_t)eventCount;
 - (void)didFinishBatching;
-- (void)enumerateSortedEventsForTopic:(id)a3 block:(id)a4;
+- (void)enumerateSortedEventsForTopic:(id)topic block:(id)block;
 - (void)removeAllEvents;
 @end
 
@@ -16,14 +16,14 @@
 - (AMSMetricsDatabase)database
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSMetricsDatabaseDataSource *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   database = self->_database;
   if (!database)
   {
-    v5 = [(AMSMetricsDatabaseDataSource *)self containerIdentifier];
-    v6 = [AMSMetricsDatabase sharedDatabaseWithContainerId:v5];
+    containerIdentifier = [(AMSMetricsDatabaseDataSource *)self containerIdentifier];
+    v6 = [AMSMetricsDatabase sharedDatabaseWithContainerId:containerIdentifier];
     v7 = self->_database;
     self->_database = v6;
 
@@ -36,8 +36,8 @@
         v8 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v8 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 = objc_opt_class();
         v11 = AMSLogKey();
@@ -45,7 +45,7 @@
         v14 = v10;
         v15 = 2114;
         v16 = v11;
-        _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to initialize metrics database", &v13, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to initialize metrics database", &v13, 0x16u);
       }
 
       database = self->_database;
@@ -55,15 +55,15 @@
   return database;
 }
 
-- (AMSMetricsDatabaseDataSource)initWithContainerIdentifier:(id)a3
+- (AMSMetricsDatabaseDataSource)initWithContainerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = AMSMetricsDatabaseDataSource;
   v5 = [(AMSMetricsDatabaseDataSource *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     containerIdentifier = v5->_containerIdentifier;
     v5->_containerIdentifier = v6;
 
@@ -87,7 +87,7 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__AMSMetricsDatabaseDataSource_eventCount__block_invoke;
@@ -95,7 +95,7 @@
   v10[4] = self;
   v10[5] = &v11;
   v4 = v10;
-  v5 = v3;
+  v5 = queue;
   v6 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -145,21 +145,21 @@ void __42__AMSMetricsDatabaseDataSource_eventCount__block_invoke(uint64_t a1)
   }
 }
 
-- (id)enqueueEvents:(id)a3
+- (id)enqueueEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = objc_alloc_init(AMSMutableBinaryPromise);
-  v6 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __46__AMSMetricsDatabaseDataSource_enqueueEvents___block_invoke;
   v15[3] = &unk_1E73B71B0;
-  v16 = v4;
-  v17 = self;
+  v16 = eventsCopy;
+  selfCopy = self;
   v7 = v5;
   v18 = v7;
   v8 = v15;
-  v9 = v4;
+  v9 = eventsCopy;
   v10 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -168,7 +168,7 @@ void __42__AMSMetricsDatabaseDataSource_eventCount__block_invoke(uint64_t a1)
   v20 = v10;
   v21 = v8;
   v11 = v10;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   v12 = v18;
   v13 = v7;
@@ -255,7 +255,7 @@ uint64_t __46__AMSMetricsDatabaseDataSource_enqueueEvents___block_invoke_2(uint6
 
 - (void)removeAllEvents
 {
-  v3 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__AMSMetricsDatabaseDataSource_removeAllEvents__block_invoke;
@@ -270,7 +270,7 @@ uint64_t __46__AMSMetricsDatabaseDataSource_enqueueEvents___block_invoke_2(uint6
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __47__AMSMetricsDatabaseDataSource_removeAllEvents__block_invoke(uint64_t a1)
@@ -308,7 +308,7 @@ void __47__AMSMetricsDatabaseDataSource_removeAllEvents__block_invoke(uint64_t a
 
 - (void)didFinishBatching
 {
-  v3 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__AMSMetricsDatabaseDataSource_didFinishBatching__block_invoke;
@@ -323,7 +323,7 @@ void __47__AMSMetricsDatabaseDataSource_removeAllEvents__block_invoke(uint64_t a
   v9 = v5;
   v10 = v4;
   v6 = v5;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __49__AMSMetricsDatabaseDataSource_didFinishBatching__block_invoke(uint64_t a1)
@@ -367,21 +367,21 @@ uint64_t __49__AMSMetricsDatabaseDataSource_didFinishBatching__block_invoke(uint
   return [*(a1 + 32) setCurrentLockKey:0];
 }
 
-- (void)enumerateSortedEventsForTopic:(id)a3 block:(id)a4
+- (void)enumerateSortedEventsForTopic:(id)topic block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSMetricsDatabaseDataSource *)self queue];
+  topicCopy = topic;
+  blockCopy = block;
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__AMSMetricsDatabaseDataSource_enumerateSortedEventsForTopic_block___block_invoke;
   v14[3] = &unk_1E73B5230;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
+  v15 = topicCopy;
+  v16 = blockCopy;
   v9 = v14;
-  v10 = v7;
-  v11 = v6;
+  v10 = blockCopy;
+  v11 = topicCopy;
   v12 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -390,7 +390,7 @@ uint64_t __49__AMSMetricsDatabaseDataSource_didFinishBatching__block_invoke(uint
   v18 = v12;
   v19 = v9;
   v13 = v12;
-  dispatch_sync(v8, block);
+  dispatch_sync(queue, block);
 }
 
 void __68__AMSMetricsDatabaseDataSource_enumerateSortedEventsForTopic_block___block_invoke(uint64_t a1)
@@ -406,9 +406,9 @@ void __68__AMSMetricsDatabaseDataSource_enumerateSortedEventsForTopic_block___bl
   [v2 enumerateEventsWithTopic:v3 lockKey:v4 objectBlock:v5];
 }
 
-- (BOOL)removeEvents:(id)a3 error:(id *)a4
+- (BOOL)removeEvents:(id)events error:(id *)error
 {
-  v6 = a3;
+  eventsCopy = events;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -419,18 +419,18 @@ void __68__AMSMetricsDatabaseDataSource_enumerateSortedEventsForTopic_block___bl
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v7 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __51__AMSMetricsDatabaseDataSource_removeEvents_error___block_invoke;
   v15[3] = &unk_1E73B9868;
   v17 = &v19;
   v15[4] = self;
-  v8 = v6;
+  v8 = eventsCopy;
   v16 = v8;
   v18 = &v23;
   v9 = v15;
-  v10 = v7;
+  v10 = queue;
   v11 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -442,9 +442,9 @@ void __68__AMSMetricsDatabaseDataSource_enumerateSortedEventsForTopic_block___bl
   dispatch_sync(v10, block);
 
   v13 = *(v20 + 24);
-  if (a4 && (v20[3] & 1) == 0)
+  if (error && (v20[3] & 1) == 0)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -464,9 +464,9 @@ void __51__AMSMetricsDatabaseDataSource_removeEvents_error___block_invoke(uint64
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (BOOL)skipEvents:(id)a3 error:(id *)a4
+- (BOOL)skipEvents:(id)events error:(id *)error
 {
-  v6 = a3;
+  eventsCopy = events;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -477,18 +477,18 @@ void __51__AMSMetricsDatabaseDataSource_removeEvents_error___block_invoke(uint64
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
-  v7 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __49__AMSMetricsDatabaseDataSource_skipEvents_error___block_invoke;
   v15[3] = &unk_1E73B9868;
   v17 = &v19;
   v15[4] = self;
-  v8 = v6;
+  v8 = eventsCopy;
   v16 = v8;
   v18 = &v23;
   v9 = v15;
-  v10 = v7;
+  v10 = queue;
   v11 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -500,9 +500,9 @@ void __51__AMSMetricsDatabaseDataSource_removeEvents_error___block_invoke(uint64
   dispatch_sync(v10, block);
 
   v13 = *(v20 + 24);
-  if (a4 && (v20[3] & 1) == 0)
+  if (error && (v20[3] & 1) == 0)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v19, 8);
@@ -522,9 +522,9 @@ void __49__AMSMetricsDatabaseDataSource_skipEvents_error___block_invoke(uint64_t
   *(*(*(a1 + 48) + 8) + 24) = v5;
 }
 
-- (BOOL)willStartBatchingWithLogKey:(id)a3 error:(id *)a4
+- (BOOL)willStartBatchingWithLogKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -535,7 +535,7 @@ void __49__AMSMetricsDatabaseDataSource_skipEvents_error___block_invoke(uint64_t
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v7 = [(AMSMetricsDatabaseDataSource *)self queue];
+  queue = [(AMSMetricsDatabaseDataSource *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__AMSMetricsDatabaseDataSource_willStartBatchingWithLogKey_error___block_invoke;
@@ -544,7 +544,7 @@ void __49__AMSMetricsDatabaseDataSource_skipEvents_error___block_invoke(uint64_t
   v14[5] = &v19;
   v14[6] = &v15;
   v8 = v14;
-  v9 = v7;
+  v9 = queue;
   v10 = AMSLogKey();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -556,9 +556,9 @@ void __49__AMSMetricsDatabaseDataSource_skipEvents_error___block_invoke(uint64_t
   dispatch_sync(v9, block);
 
   v12 = *(v16 + 24);
-  if (a4 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a4 = v20[5];
+    *error = v20[5];
   }
 
   _Block_object_dispose(&v15, 8);

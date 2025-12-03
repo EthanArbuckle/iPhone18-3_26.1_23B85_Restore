@@ -1,26 +1,26 @@
 @interface ACAccount
 - (id)fmfAccountInfoForProactiveChanges;
-- (id)fmfAccountInfoWithTokens:(BOOL)a3;
+- (id)fmfAccountInfoWithTokens:(BOOL)tokens;
 @end
 
 @implementation ACAccount
 
-- (id)fmfAccountInfoWithTokens:(BOOL)a3
+- (id)fmfAccountInfoWithTokens:(BOOL)tokens
 {
-  v3 = a3;
+  tokensCopy = tokens;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(ACAccount *)self username];
-  [v5 fm_safelyMapKey:@"username" toObject:v6];
+  username = [(ACAccount *)self username];
+  [v5 fm_safelyMapKey:@"username" toObject:username];
 
-  v7 = [(ACAccount *)self aa_personID];
-  [v5 fm_safelyMapKey:@"dsid" toObject:v7];
+  aa_personID = [(ACAccount *)self aa_personID];
+  [v5 fm_safelyMapKey:@"dsid" toObject:aa_personID];
 
-  if (v3)
+  if (tokensCopy)
   {
     v8 = objc_alloc_init(ACAccountStore);
-    v9 = [(ACAccount *)self aa_fmfAccount];
+    aa_fmfAccount = [(ACAccount *)self aa_fmfAccount];
     v21 = 0;
-    v10 = [v8 credentialForAccount:v9 error:&v21];
+    v10 = [v8 credentialForAccount:aa_fmfAccount error:&v21];
     v11 = v21;
 
     if (!v10)

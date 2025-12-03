@@ -1,26 +1,26 @@
 @interface GKNATObserver
-+ (id)allocWithZone:(_NSZone *)a3;
-- (GKNATObserver)initWithOptions:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (GKNATObserver)initWithOptions:(id)options;
 - (GKNATObserverDelegate)delegate;
 - (int)currentNATType;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)shouldTryNATCheck;
 @end
 
 @implementation GKNATObserver
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
-- (GKNATObserver)initWithOptions:(id)a3
+- (GKNATObserver)initWithOptions:(id)options
 {
   v5 = *MEMORY[0x1E69E9840];
   v4.receiver = self;
@@ -29,7 +29,7 @@
   return 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4 = *MEMORY[0x1E69E9840];
   v3.receiver = self;

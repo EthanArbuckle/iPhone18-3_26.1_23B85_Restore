@@ -1,7 +1,7 @@
 @interface WFMenu
 - (UIMenu)platformMenu;
-- (WFMenu)initWithTitle:(id)a3 elements:(id)a4;
-- (id)uiMenuElementForWFMenuElement:(id)a3 shouldShowState:(BOOL)a4;
+- (WFMenu)initWithTitle:(id)title elements:(id)elements;
+- (id)uiMenuElementForWFMenuElement:(id)element shouldShowState:(BOOL)state;
 @end
 
 @implementation WFMenu
@@ -10,15 +10,15 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(WFMenu *)self elements];
-  v5 = [v4 if_firstObjectPassingTest:&__block_literal_global_1309];
+  elements = [(WFMenu *)self elements];
+  v5 = [elements if_firstObjectPassingTest:&__block_literal_global_1309];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(WFMenu *)self elements];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  elements2 = [(WFMenu *)self elements];
+  v7 = [elements2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -29,25 +29,25 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(elements2);
         }
 
         v11 = [(WFMenu *)self uiMenuElementForWFMenuElement:*(*(&v18 + 1) + 8 * i) shouldShowState:v5 != 0];
         [v3 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [elements2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
   v12 = MEMORY[0x1E69DCC60];
-  v13 = [(WFMenu *)self title];
-  v14 = v13;
-  if (v13)
+  title = [(WFMenu *)self title];
+  v14 = title;
+  if (title)
   {
-    v15 = v13;
+    v15 = title;
   }
 
   else
@@ -60,17 +60,17 @@
   return v16;
 }
 
-- (id)uiMenuElementForWFMenuElement:(id)a3 shouldShowState:(BOOL)a4
+- (id)uiMenuElementForWFMenuElement:(id)element shouldShowState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v46[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  elementCopy = element;
+  if (elementCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 menuElementRepresentationShowingStatus:v4];
+      v7 = [elementCopy menuElementRepresentationShowingStatus:stateCopy];
 
       goto LABEL_24;
     }
@@ -80,27 +80,27 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __63__WFMenu_UIKit__uiMenuElementForWFMenuElement_shouldShowState___block_invoke;
   aBlock[3] = &unk_1E8307BC0;
-  v44 = v4;
+  v44 = stateCopy;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = v6;
-  if (v6)
+  v9 = elementCopy;
+  if (elementCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 shouldCollapse];
-      v11 = [v9 menuElements];
-      v12 = v8[2](v8, v11, v10);
+      shouldCollapse = [v9 shouldCollapse];
+      menuElements = [v9 menuElements];
+      v12 = v8[2](v8, menuElements, shouldCollapse);
 
-      if (v10)
+      if (shouldCollapse)
       {
         v13 = MEMORY[0x1E69DCC60];
-        v14 = [v9 title];
-        v15 = v14;
-        if (v14)
+        title = [v9 title];
+        v15 = title;
+        if (title)
         {
-          v16 = v14;
+          v16 = title;
         }
 
         else
@@ -108,32 +108,32 @@
           v16 = &stru_1F480C910;
         }
 
-        v17 = [v13 menuWithTitle:v16 children:v12];
+        title2 = [v13 menuWithTitle:v16 children:v12];
 
-        v18 = [v9 menuElements];
-        v19 = WFMenuCollapsedSubtitleForMenuElements(v18);
-        [(__CFString *)v17 setSubtitle:v19];
+        menuElements2 = [v9 menuElements];
+        v19 = WFMenuCollapsedSubtitleForMenuElements(menuElements2);
+        [(__CFString *)title2 setSubtitle:v19];
 
         v20 = MEMORY[0x1E69DCC60];
-        v21 = [(WFMenu *)self inlineMenuOptions];
-        v46[0] = v17;
+        inlineMenuOptions = [(WFMenu *)self inlineMenuOptions];
+        v46[0] = title2;
         v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
-        v7 = [v20 menuWithTitle:&stru_1F480C910 image:0 identifier:0 options:v21 children:v22];
+        v7 = [v20 menuWithTitle:&stru_1F480C910 image:0 identifier:0 options:inlineMenuOptions children:v22];
       }
 
       else
       {
         if (([v9 onlyDisplayTitleWhenCollapsed] & 1) != 0 || (objc_msgSend(v9, "title"), v34 = objc_claimAutoreleasedReturnValue(), v34, !v34))
         {
-          v17 = &stru_1F480C910;
+          title2 = &stru_1F480C910;
         }
 
         else
         {
-          v17 = [v9 title];
+          title2 = [v9 title];
         }
 
-        v7 = [MEMORY[0x1E69DCC60] menuWithTitle:v17 image:0 identifier:0 options:-[WFMenu inlineMenuOptions](self children:{"inlineMenuOptions"), v12}];
+        v7 = [MEMORY[0x1E69DCC60] menuWithTitle:title2 image:0 identifier:0 options:-[WFMenu inlineMenuOptions](self children:{"inlineMenuOptions"), v12}];
       }
 
       goto LABEL_22;
@@ -143,17 +143,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v25 = MEMORY[0x1E69DC928];
       v36 = MEMORY[0x1E69E9820];
       v37 = 3221225472;
       v38 = __63__WFMenu_UIKit__uiMenuElementForWFMenuElement_shouldShowState___block_invoke_2;
       v39 = &unk_1E8307C10;
       v40 = v23;
-      v41 = v24;
+      v41 = date;
       v42 = v8;
       v26 = v23;
-      v12 = v24;
+      v12 = date;
       v27 = [v25 elementWithProvider:&v36];
       v28 = MEMORY[0x1E69DCC60];
       v29 = [(__CFString *)v26 title:v36];
@@ -168,12 +168,12 @@
         v31 = &stru_1F480C910;
       }
 
-      v32 = [(WFMenu *)self inlineMenuOptions];
+      inlineMenuOptions2 = [(WFMenu *)self inlineMenuOptions];
       v45 = v27;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-      v7 = [v28 menuWithTitle:v31 image:0 identifier:0 options:v32 children:v33];
+      v7 = [v28 menuWithTitle:v31 image:0 identifier:0 options:inlineMenuOptions2 children:v33];
 
-      v17 = v40;
+      title2 = v40;
 LABEL_22:
 
       goto LABEL_23;
@@ -310,20 +310,20 @@ void __63__WFMenu_UIKit__uiMenuElementForWFMenuElement_shouldShowState___block_i
   }
 }
 
-- (WFMenu)initWithTitle:(id)a3 elements:(id)a4
+- (WFMenu)initWithTitle:(id)title elements:(id)elements
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  elementsCopy = elements;
   v15.receiver = self;
   v15.super_class = WFMenu;
   v8 = [(WFMenu *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [elementsCopy copy];
     elements = v8->_elements;
     v8->_elements = v11;
 

@@ -1,17 +1,17 @@
 @interface TSTWrappedFormula
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nodesToCheckForBareArgumentPlaceholders;
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4;
-- (void)reparseWithStorage:(id)a3 adjustExpressionTree:(id)a4;
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options;
+- (void)reparseWithStorage:(id)storage adjustExpressionTree:(id)tree;
 @end
 
 @implementation TSTWrappedFormula
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = TSTWrappedFormula;
-  v4 = [(TSTFormula *)&v14 copyWithZone:a3];
+  v4 = [(TSTFormula *)&v14 copyWithZone:zone];
   v9 = objc_msgSend_functionIndex(self, v5, v6, v7, v8);
   objc_msgSend_setFunctionIndex_(v4, v10, v9, v11, v12);
   return v4;
@@ -49,10 +49,10 @@
   return v33;
 }
 
-- (void)insertFormulaText:(id)a3 printingOptions:(unsigned int)a4
+- (void)insertFormulaText:(id)text printingOptions:(unsigned int)options
 {
-  v4 = *&a4;
-  v31 = a3;
+  v4 = *&options;
+  textCopy = text;
   objc_opt_class();
   v10 = objc_msgSend_expressionTree(self, v6, v7, v8, v9);
   v11 = TSUDynamicCast();
@@ -68,36 +68,36 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  objc_msgSend_insertFormulaText_printingOptions_unwrapped_(v11, v12, v31, v4, 1);
+  objc_msgSend_insertFormulaText_printingOptions_unwrapped_(v11, v12, textCopy, v4, 1);
 }
 
-- (void)reparseWithStorage:(id)a3 adjustExpressionTree:(id)a4
+- (void)reparseWithStorage:(id)storage adjustExpressionTree:(id)tree
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_length(v6, v8, v9, v10, v11))
+  storageCopy = storage;
+  treeCopy = tree;
+  if (objc_msgSend_length(storageCopy, v8, v9, v10, v11))
   {
     v15 = objc_opt_class();
-    v20 = objc_msgSend_range(v6, v16, v17, v18, v19);
-    objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(v6, v21, v15, v20, v21, &unk_2834B1A68);
-    v26 = objc_msgSend_context(v6, v22, v23, v24, v25);
-    v31 = objc_msgSend_stylesheet(v6, v27, v28, v29, v30);
-    v34 = objc_msgSend_i_copyIntoContext_stylesheet_(v6, v32, v26, v31, v33);
+    v20 = objc_msgSend_range(storageCopy, v16, v17, v18, v19);
+    objc_msgSend_enumerateAttachmentsOfClass_inTextRange_usingBlock_(storageCopy, v21, v15, v20, v21, &unk_2834B1A68);
+    v26 = objc_msgSend_context(storageCopy, v22, v23, v24, v25);
+    v31 = objc_msgSend_stylesheet(storageCopy, v27, v28, v29, v30);
+    v34 = objc_msgSend_i_copyIntoContext_stylesheet_(storageCopy, v32, v26, v31, v33);
 
     v35 = [TSTFunctionNode alloc];
-    v40 = objc_msgSend_context(v6, v36, v37, v38, v39);
+    v40 = objc_msgSend_context(storageCopy, v36, v37, v38, v39);
     Index_lastIndex = objc_msgSend_initWithContext_functionIndex_children_firstIndex_lastIndex_(v35, v41, v40, *(&self->super._empty + 1), 0, 0, 0);
 
     v43 = [TSTWPTokenAttachment alloc];
-    v48 = objc_msgSend_context(v6, v44, v45, v46, v47);
+    v48 = objc_msgSend_context(storageCopy, v44, v45, v46, v47);
     v51 = objc_msgSend_initWithContext_expressionNode_(v43, v49, v48, Index_lastIndex, v50);
 
-    v56 = objc_msgSend_range(v6, v52, v53, v54, v55);
+    v56 = objc_msgSend_range(storageCopy, v52, v53, v54, v55);
     objc_msgSend_insertAttachmentOrFootnote_range_(v34, v57, v51, v56, 0);
     if (!objc_msgSend_fixupFormulas(self, v58, v59, v60, v61) || (v62 = objc_opt_class(), v67 = objc_msgSend_range(v34, v63, v64, v65, v66), !objc_msgSend_formulaQuoteContextAtCharIndex_inStorage_(v62, v68, &v68[v67], v34, v69)))
     {
       v70 = [TSTWPTokenAttachment alloc];
-      v75 = objc_msgSend_context(v6, v71, v72, v73, v74);
+      v75 = objc_msgSend_context(storageCopy, v71, v72, v73, v74);
       v80 = objc_msgSend_functionEndNode(Index_lastIndex, v76, v77, v78, v79);
       v83 = objc_msgSend_initWithContext_expressionNode_(v70, v81, v75, v80, v82);
 
@@ -106,7 +106,7 @@
 
     v126.receiver = self;
     v126.super_class = TSTWrappedFormula;
-    [(TSTFormula *)&v126 reparseWithStorage:v34 adjustExpressionTree:v7];
+    [(TSTFormula *)&v126 reparseWithStorage:v34 adjustExpressionTree:treeCopy];
     if ((objc_msgSend_isSyntaxError(self, v87, v88, v89, v90) & 1) == 0)
     {
       objc_opt_class();

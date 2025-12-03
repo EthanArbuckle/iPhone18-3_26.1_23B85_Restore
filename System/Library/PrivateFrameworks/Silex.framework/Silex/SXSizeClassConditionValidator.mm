@@ -1,17 +1,17 @@
 @interface SXSizeClassConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXSizeClassConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  conditionCopy = condition;
+  contextCopy = context;
   v9 = 0;
-  if (![v5 horizontalSizeClass] || (v7 = objc_msgSend(v5, "horizontalSizeClass"), v7 == objc_msgSend(v6, "horizontalSizeClass")))
+  if (![conditionCopy horizontalSizeClass] || (v7 = objc_msgSend(conditionCopy, "horizontalSizeClass"), v7 == objc_msgSend(contextCopy, "horizontalSizeClass")))
   {
-    if (![v5 verticalSizeClass] || (v8 = objc_msgSend(v5, "verticalSizeClass"), v8 == objc_msgSend(v6, "verticalSizeClass")))
+    if (![conditionCopy verticalSizeClass] || (v8 = objc_msgSend(conditionCopy, "verticalSizeClass"), v8 == objc_msgSend(contextCopy, "verticalSizeClass")))
     {
       v9 = 1;
     }

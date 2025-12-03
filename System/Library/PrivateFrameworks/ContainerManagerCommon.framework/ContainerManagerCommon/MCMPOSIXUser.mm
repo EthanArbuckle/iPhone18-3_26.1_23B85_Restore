@@ -1,22 +1,22 @@
 @interface MCMPOSIXUser
-+ (BOOL)_isRoleUserWithUID:(unsigned int)a3 homeDirectoryURL:(id)a4;
-+ (MCMPOSIXUser)posixUserWithName:(id)a3;
-+ (id)_posixUserWithPWD:(container_pwd_s *)a3;
-+ (id)_posixUserWithUID:(unsigned int)a3 name:(id)a4 useUID:(BOOL)a5;
++ (BOOL)_isRoleUserWithUID:(unsigned int)d homeDirectoryURL:(id)l;
++ (MCMPOSIXUser)posixUserWithName:(id)name;
++ (id)_posixUserWithPWD:(container_pwd_s *)d;
++ (id)_posixUserWithUID:(unsigned int)d name:(id)name useUID:(BOOL)iD;
 + (id)currentPOSIXUser;
 + (id)nobody;
 + (id)root;
 + (void)flush;
 - (BOOL)hasUseableHomeDirectory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPOSIXUser:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPOSIXUser:(id)user;
 - (BOOL)isRoleUser;
 - (BOOL)isRoot;
-- (MCMPOSIXUser)initWithUID:(unsigned int)a3 primaryGID:(unsigned int)a4 homeDirectoryURL:(id)a5 unvalidatedHomeDirectoryURL:(id)a6 name:(id)a7 roleUser:(BOOL)a8;
+- (MCMPOSIXUser)initWithUID:(unsigned int)d primaryGID:(unsigned int)iD homeDirectoryURL:(id)l unvalidatedHomeDirectoryURL:(id)rL name:(id)name roleUser:(BOOL)user;
 - (NSString)name;
 - (NSURL)homeDirectoryURL;
 - (NSURL)unvalidatedHomeDirectoryURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDescription;
 - (unint64_t)hash;
@@ -90,45 +90,45 @@
   return result;
 }
 
-- (MCMPOSIXUser)initWithUID:(unsigned int)a3 primaryGID:(unsigned int)a4 homeDirectoryURL:(id)a5 unvalidatedHomeDirectoryURL:(id)a6 name:(id)a7 roleUser:(BOOL)a8
+- (MCMPOSIXUser)initWithUID:(unsigned int)d primaryGID:(unsigned int)iD homeDirectoryURL:(id)l unvalidatedHomeDirectoryURL:(id)rL name:(id)name roleUser:(BOOL)user
 {
   v26 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = MCMPOSIXUser;
   v18 = [(MCMPOSIXUser *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_UID = a3;
-    v18->_primaryGID = a4;
-    objc_storeStrong(&v18->_homeDirectoryURL, a5);
-    objc_storeStrong(&v19->_unvalidatedHomeDirectoryURL, a6);
-    objc_storeStrong(&v19->_name, a7);
-    v19->_root = a3 == 0;
-    v19->_roleUser = a8;
-    if (v16)
+    v18->_UID = d;
+    v18->_primaryGID = iD;
+    objc_storeStrong(&v18->_homeDirectoryURL, l);
+    objc_storeStrong(&v19->_unvalidatedHomeDirectoryURL, rL);
+    objc_storeStrong(&v19->_name, name);
+    v19->_root = d == 0;
+    v19->_roleUser = user;
+    if (rLCopy)
     {
-      v20 = [v16 path];
-      if ([v20 hasPrefix:@"/var/empty"])
+      path = [rLCopy path];
+      if ([path hasPrefix:@"/var/empty"])
       {
         v19->_useableHomeDirectory = 0;
       }
 
       else
       {
-        v21 = [v16 path];
-        if ([v21 hasPrefix:@"/private/var/empty"])
+        path2 = [rLCopy path];
+        if ([path2 hasPrefix:@"/private/var/empty"])
         {
           v19->_useableHomeDirectory = 0;
         }
 
         else
         {
-          v22 = [v16 path];
-          v19->_useableHomeDirectory = [v22 hasPrefix:@"/System/Volumes/Data/private/var/empty"] ^ 1;
+          path3 = [rLCopy path];
+          v19->_useableHomeDirectory = [path3 hasPrefix:@"/System/Volumes/Data/private/var/empty"] ^ 1;
         }
       }
     }
@@ -143,20 +143,20 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (v5)
   {
     *(v5 + 12) = self->_UID;
     *(v5 + 16) = self->_primaryGID;
-    v7 = [(NSString *)self->_name copyWithZone:a3];
+    v7 = [(NSString *)self->_name copyWithZone:zone];
     v8 = *(v6 + 40);
     *(v6 + 40) = v7;
 
-    v9 = [(NSURL *)self->_homeDirectoryURL copyWithZone:a3];
+    v9 = [(NSURL *)self->_homeDirectoryURL copyWithZone:zone];
     v10 = *(v6 + 24);
     *(v6 + 24) = v9;
 
@@ -169,17 +169,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self == v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = self == equalCopy;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MCMPOSIXUser *)self isEqualToPOSIXUser:v4];
+      v5 = [(MCMPOSIXUser *)self isEqualToPOSIXUser:equalCopy];
     }
   }
 
@@ -187,9 +187,9 @@
   return v5;
 }
 
-- (BOOL)isEqualToPOSIXUser:(id)a3
+- (BOOL)isEqualToPOSIXUser:(id)user
 {
-  result = self->_UID == *(a3 + 3);
+  result = self->_UID == *(user + 3);
   v4 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69E9840];
   return result;
@@ -295,9 +295,9 @@ id __27__MCMPOSIXUser_description__block_invoke(uint64_t a1, char a2)
   return v12;
 }
 
-+ (BOOL)_isRoleUserWithUID:(unsigned int)a3 homeDirectoryURL:(id)a4
++ (BOOL)_isRoleUserWithUID:(unsigned int)d homeDirectoryURL:(id)l
 {
-  result = a3 < 0x1F5;
+  result = d < 0x1F5;
   v5 = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E69E9840];
   return result;
@@ -312,27 +312,27 @@ uint64_t __48__MCMPOSIXUser__getCachedUID_flush_onCacheMiss___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)_posixUserWithPWD:(container_pwd_s *)a3
++ (id)_posixUserWithPWD:(container_pwd_s *)d
 {
   v29 = *MEMORY[0x1E69E9840];
   bzero(v28, 0x401uLL);
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var3];
-  var2 = a3->var2;
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:d->var3];
+  var2 = d->var2;
   if (!var2)
   {
     v7 = 0;
     v14 = 0;
     v15 = 1;
 LABEL_12:
-    v17 = [[a1 alloc] initWithUID:a3->var0 primaryGID:a3->var1 homeDirectoryURL:v14 unvalidatedHomeDirectoryURL:v7 name:v5 roleUser:v15];
+    v17 = [[self alloc] initWithUID:d->var0 primaryGID:d->var1 homeDirectoryURL:v14 unvalidatedHomeDirectoryURL:v7 name:v5 roleUser:v15];
     goto LABEL_13;
   }
 
   v7 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:var2 isDirectory:1 relativeToURL:0];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFileSystemRepresentation:a3->var2];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFileSystemRepresentation:d->var2];
   v9 = [v8 stringByRedactingHomeContent:v5];
 
-  v10 = a3->var2;
+  v10 = d->var2;
   if (!container_realpath())
   {
     v16 = container_log_handle_for_category();
@@ -365,7 +365,7 @@ LABEL_12:
 
     v14 = 0;
 LABEL_11:
-    v15 = [a1 _isRoleUserWithUID:a3->var0 homeDirectoryURL:v7];
+    v15 = [self _isRoleUserWithUID:d->var0 homeDirectoryURL:v7];
 
     goto LABEL_12;
   }
@@ -390,18 +390,18 @@ LABEL_13:
   return v18;
 }
 
-+ (id)_posixUserWithUID:(unsigned int)a3 name:(id)a4 useUID:(BOOL)a5
++ (id)_posixUserWithUID:(unsigned int)d name:(id)name useUID:(BOOL)iD
 {
-  v5 = a5;
+  iDCopy = iD;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  nameCopy = name;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__14647;
   v23 = __Block_byref_object_dispose__14648;
   v24 = 0;
-  aBlock[5] = a1;
+  aBlock[5] = self;
   aBlock[6] = 0;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -409,15 +409,15 @@ LABEL_13:
   aBlock[3] = &unk_1E86B1150;
   aBlock[4] = &v19;
   v9 = _Block_copy(aBlock);
-  if (v5)
+  if (iDCopy)
   {
     v10 = container_pwd_for_uid();
   }
 
   else
   {
-    v11 = v8;
-    [v8 UTF8String];
+    v11 = nameCopy;
+    [nameCopy UTF8String];
     v10 = container_pwd_for_name();
   }
 
@@ -429,11 +429,11 @@ LABEL_13:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109890;
-      v26 = a3;
+      dCopy = d;
       v27 = 2112;
-      v28 = v8;
+      v28 = nameCopy;
       v29 = 1026;
-      v30 = v5;
+      v30 = iDCopy;
       v31 = 2082;
       v32 = v12;
       _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "Unable to get user (%u/[%@]/%{public}d); error = %{public}s", buf, 0x22u);
@@ -473,7 +473,7 @@ uint64_t __46__MCMPOSIXUser__posixUserWithUID_name_useUID___block_invoke(uint64_
 + (void)flush
 {
   v4 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _getCachedUID:0 flush:1 onCacheMiss:0];
+  v2 = [self _getCachedUID:0 flush:1 onCacheMiss:0];
   v3 = *MEMORY[0x1E69E9840];
 }
 
@@ -482,7 +482,7 @@ uint64_t __46__MCMPOSIXUser__posixUserWithUID_name_useUID___block_invoke(uint64_
   v4 = *MEMORY[0x1E69E9840];
   v2 = *MEMORY[0x1E69E9840];
 
-  return [a1 posixUserWithUID:0];
+  return [self posixUserWithUID:0];
 }
 
 + (id)nobody
@@ -490,7 +490,7 @@ uint64_t __46__MCMPOSIXUser__posixUserWithUID_name_useUID___block_invoke(uint64_
   v4 = *MEMORY[0x1E69E9840];
   v2 = *MEMORY[0x1E69E9840];
 
-  return [a1 posixUserWithUID:4294967294];
+  return [self posixUserWithUID:4294967294];
 }
 
 id __33__MCMPOSIXUser_posixUserWithUID___block_invoke(uint64_t a1, uint64_t a2)
@@ -514,18 +514,18 @@ id __33__MCMPOSIXUser_posixUserWithUID___block_invoke(uint64_t a1, uint64_t a2)
   return v2;
 }
 
-+ (MCMPOSIXUser)posixUserWithName:(id)a3
++ (MCMPOSIXUser)posixUserWithName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _posixUserWithUID:0 name:v4 useUID:0];
+  nameCopy = name;
+  v5 = [self _posixUserWithUID:0 name:nameCopy useUID:0];
   if (!v5)
   {
     v6 = container_log_handle_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = nameCopy;
       _os_log_error_impl(&dword_1DF2C3000, v6, OS_LOG_TYPE_ERROR, "Could not generate posix user details for user=%{public}@", &v9, 0xCu);
     }
   }
@@ -541,7 +541,7 @@ id __33__MCMPOSIXUser_posixUserWithUID___block_invoke(uint64_t a1, uint64_t a2)
   v3 = geteuid();
   v4 = *MEMORY[0x1E69E9840];
 
-  return [a1 posixUserWithUID:v3];
+  return [self posixUserWithUID:v3];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface IntrinsicSizeAdjustingTableView
 - (CGSize)intrinsicContentSize;
-- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithCoder:(id)a3;
-- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithCoder:(id)coder;
+- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 @end
 
 @implementation IntrinsicSizeAdjustingTableView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
-  [(IntrinsicSizeAdjustingTableView *)v2 layoutIfNeeded];
-  [(IntrinsicSizeAdjustingTableView *)v2 contentSize];
+  selfCopy = self;
+  [(IntrinsicSizeAdjustingTableView *)selfCopy layoutIfNeeded];
+  [(IntrinsicSizeAdjustingTableView *)selfCopy contentSize];
   v4 = v3;
 
   v5 = ceil(v4);
@@ -20,23 +20,23 @@
   return result;
 }
 
-- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for IntrinsicSizeAdjustingTableView();
-  return [(IntrinsicSizeAdjustingTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(IntrinsicSizeAdjustingTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithCoder:(id)a3
+- (_TtC11Diagnostics31IntrinsicSizeAdjustingTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for IntrinsicSizeAdjustingTableView();
-  v4 = a3;
-  v5 = [(IntrinsicSizeAdjustingTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(IntrinsicSizeAdjustingTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

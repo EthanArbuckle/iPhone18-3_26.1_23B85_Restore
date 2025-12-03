@@ -29,20 +29,20 @@
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v2 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__MTEpisode_NMSDownloadableItem__downloadInfo__block_invoke;
   v8[3] = &unk_27993EC08;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v23;
   v8[6] = &v17;
   v8[7] = &v13;
   v8[8] = &v9;
-  [v2 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
-  v3 = [objc_opt_class() _sizeEstimation];
-  v4 = [v3 sizeForFeedURL:v18[5] duration:v10[3] feedProvidedSize:v14[3]];
+  _sizeEstimation = [objc_opt_class() _sizeEstimation];
+  v4 = [_sizeEstimation sizeForFeedURL:v18[5] duration:v10[3] feedProvidedSize:v14[3]];
 
   v5 = [NMSDownloadableItem alloc];
   v6 = [(NMSDownloadableItem *)v5 initWithMediaLibraryIdentifier:0 externalLibraryIdentifier:v24[5] size:v4 itemType:1 manuallyAdded:0];

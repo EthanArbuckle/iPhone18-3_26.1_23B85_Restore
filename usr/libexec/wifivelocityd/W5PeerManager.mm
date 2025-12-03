@@ -1,24 +1,24 @@
 @interface W5PeerManager
 - (BOOL)_discoveryRequestsContainsRapportRequest;
 - (BOOL)_setupRapportClient;
-- (BOOL)registerPeerListeners:(id)a3;
+- (BOOL)registerPeerListeners:(id)listeners;
 - (W5PeerManager)init;
-- (id)_activePeersWithDiscoveryFlags:(int64_t)a3;
-- (id)_sendRapportRequest:(id)a3;
-- (id)_stopPeerDiscoveryWithRequest:(id)a3;
-- (id)queryDatabaseForPeerWithRequest:(id)a3;
-- (id)queryStatusForPeerWithRequest:(id)a3;
-- (id)requestFileFromPeerWithRequest:(id)a3;
-- (id)runDiagnosticsOnPeerWithRequest:(id)a3;
-- (id)runSnifferAtPeerWithRequest:(id)a3;
-- (id)sendDebugConfigurationForPeerWithRequest:(id)a3;
-- (id)sendRequest:(id)a3;
-- (id)startPeerDiscoveryWithRequest:(id)a3;
-- (id)stopPeerDiscoveryWithRequestUUID:(id)a3;
-- (void)_handleRapportDeviceFound:(id)a3;
-- (void)_handleRapportDeviceLost:(id)a3;
-- (void)_newPeersDiscovered:(id)a3;
-- (void)_peersLost:(id)a3;
+- (id)_activePeersWithDiscoveryFlags:(int64_t)flags;
+- (id)_sendRapportRequest:(id)request;
+- (id)_stopPeerDiscoveryWithRequest:(id)request;
+- (id)queryDatabaseForPeerWithRequest:(id)request;
+- (id)queryStatusForPeerWithRequest:(id)request;
+- (id)requestFileFromPeerWithRequest:(id)request;
+- (id)runDiagnosticsOnPeerWithRequest:(id)request;
+- (id)runSnifferAtPeerWithRequest:(id)request;
+- (id)sendDebugConfigurationForPeerWithRequest:(id)request;
+- (id)sendRequest:(id)request;
+- (id)startPeerDiscoveryWithRequest:(id)request;
+- (id)stopPeerDiscoveryWithRequestUUID:(id)d;
+- (void)_handleRapportDeviceFound:(id)found;
+- (void)_handleRapportDeviceLost:(id)lost;
+- (void)_newPeersDiscovered:(id)discovered;
+- (void)_peersLost:(id)lost;
 @end
 
 @implementation W5PeerManager
@@ -87,16 +87,16 @@ LABEL_9:
   return v2;
 }
 
-- (BOOL)registerPeerListeners:(id)a3
+- (BOOL)registerPeerListeners:(id)listeners
 {
-  v4 = a3;
-  v5 = [[W5RapportServer alloc] initWithRequestListeners:v4];
+  listenersCopy = listeners;
+  v5 = [[W5RapportServer alloc] initWithRequestListeners:listenersCopy];
 
   rapportServer = self->_rapportServer;
   self->_rapportServer = v5;
 
-  v7 = [(W5PeerManager *)self _setupRapportClient];
-  if (!v7)
+  _setupRapportClient = [(W5PeerManager *)self _setupRapportClient];
+  if (!_setupRapportClient)
   {
     v9 = sub_100098A04();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -105,14 +105,14 @@ LABEL_9:
     }
   }
 
-  return v7;
+  return _setupRapportClient;
 }
 
-- (id)startPeerDiscoveryWithRequest:(id)a3
+- (id)startPeerDiscoveryWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(W5PeerManager *)self discoveryRequests];
-  v6 = [v5 containsObject:v4];
+  requestCopy = request;
+  discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+  v6 = [discoveryRequests containsObject:requestCopy];
 
   v7 = sub_100098A04();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -127,14 +127,14 @@ LABEL_9:
       v24 = 1024;
       v25 = 81;
       v26 = 2114;
-      v27 = v4;
+      v27 = requestCopy;
       _os_log_send_and_compose_impl();
     }
 
     v18 = NSLocalizedFailureReasonErrorKey;
     v19 = @"W5NotPermittedErr";
     v9 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v10 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:5 userInfo:v9];
+    activePeers = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:5 userInfo:v9];
 LABEL_13:
 
     goto LABEL_14;
@@ -149,55 +149,55 @@ LABEL_13:
     v24 = 1024;
     v25 = 85;
     v26 = 2114;
-    v27 = v4;
+    v27 = requestCopy;
     _os_log_send_and_compose_impl();
   }
 
-  v11 = [(W5PeerManager *)self discoveryRequests];
-  [v11 addObject:v4];
+  discoveryRequests2 = [(W5PeerManager *)self discoveryRequests];
+  [discoveryRequests2 addObject:requestCopy];
 
-  v12 = [v4 configuration];
-  v13 = [v12 discoveryFlags];
+  configuration = [requestCopy configuration];
+  discoveryFlags = [configuration discoveryFlags];
 
-  if ((v13 & 1) == 0)
+  if ((discoveryFlags & 1) == 0)
   {
-    v10 = 0;
+    activePeers = 0;
     goto LABEL_14;
   }
 
-  v14 = [(W5PeerManager *)self rapportClient];
-  [v14 startDiscoveringDevices];
+  rapportClient = [(W5PeerManager *)self rapportClient];
+  [rapportClient startDiscoveringDevices];
 
-  v10 = [(W5PeerManager *)self activePeers];
+  activePeers = [(W5PeerManager *)self activePeers];
 
-  if (v10)
+  if (activePeers)
   {
     v9 = [(W5PeerManager *)self _activePeersWithDiscoveryFlags:1];
     if ([v9 count])
     {
-      v15 = [v4 handler];
-      v16 = [v9 allObjects];
-      (v15)[2](v15, v16, 0);
+      handler = [requestCopy handler];
+      allObjects = [v9 allObjects];
+      (handler)[2](handler, allObjects, 0);
     }
 
-    v10 = 0;
+    activePeers = 0;
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  return v10;
+  return activePeers;
 }
 
-- (id)stopPeerDiscoveryWithRequestUUID:(id)a3
+- (id)stopPeerDiscoveryWithRequestUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(W5PeerManager *)self discoveryRequests];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v32 count:16];
+  discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+  v6 = [discoveryRequests countByEnumeratingWithState:&v18 objects:v32 count:16];
   if (v6)
   {
     v7 = v6;
@@ -208,12 +208,12 @@ LABEL_3:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(discoveryRequests);
       }
 
       v10 = *(*(&v18 + 1) + 8 * v9);
-      v11 = [v10 uuid];
-      v12 = [v11 isEqual:v4];
+      uuid = [v10 uuid];
+      v12 = [uuid isEqual:dCopy];
 
       if (v12)
       {
@@ -222,7 +222,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v32 count:16];
+        v7 = [discoveryRequests countByEnumeratingWithState:&v18 objects:v32 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -257,7 +257,7 @@ LABEL_12:
       v28 = 1024;
       v29 = 117;
       v30 = 2114;
-      v31 = v4;
+      v31 = dCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -272,21 +272,21 @@ LABEL_12:
   return v16;
 }
 
-- (id)_stopPeerDiscoveryWithRequest:(id)a3
+- (id)_stopPeerDiscoveryWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(W5PeerManager *)self discoveryRequests];
-  v6 = [v5 containsObject:v4];
+  requestCopy = request;
+  discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+  v6 = [discoveryRequests containsObject:requestCopy];
 
   if (v6)
   {
-    v7 = [(W5PeerManager *)self discoveryRequests];
-    [v7 removeObject:v4];
+    discoveryRequests2 = [(W5PeerManager *)self discoveryRequests];
+    [discoveryRequests2 removeObject:requestCopy];
 
-    v8 = [(W5PeerManager *)self _discoveryRequestsContainsRapportRequest];
-    v9 = sub_100098A04();
-    v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    _discoveryRequestsContainsRapportRequest = [(W5PeerManager *)self _discoveryRequestsContainsRapportRequest];
+    rapportClient = sub_100098A04();
+    v10 = os_log_type_enabled(rapportClient, OS_LOG_TYPE_DEFAULT);
+    if (_discoveryRequestsContainsRapportRequest)
     {
       if (v10)
       {
@@ -315,12 +315,12 @@ LABEL_12:
         _os_log_send_and_compose_impl();
       }
 
-      v9 = [(W5PeerManager *)self rapportClient];
-      [v9 stopDiscoveryingDevices];
+      rapportClient = [(W5PeerManager *)self rapportClient];
+      [rapportClient stopDiscoveryingDevices];
     }
 
-    v14 = [(W5PeerManager *)self discoveryRequests];
-    v15 = [v14 count];
+    discoveryRequests3 = [(W5PeerManager *)self discoveryRequests];
+    v15 = [discoveryRequests3 count];
 
     if (v15)
     {
@@ -340,8 +340,8 @@ LABEL_12:
       _os_log_send_and_compose_impl();
     }
 
-    v12 = [(W5PeerManager *)self activePeers];
-    [v12 removeAllObjects];
+    activePeers = [(W5PeerManager *)self activePeers];
+    [activePeers removeAllObjects];
     v13 = 0;
   }
 
@@ -357,14 +357,14 @@ LABEL_12:
       v24 = 1024;
       v25 = 127;
       v26 = 2114;
-      v27 = v4;
+      v27 = requestCopy;
       _os_log_send_and_compose_impl();
     }
 
     v18 = NSLocalizedFailureReasonErrorKey;
     v19 = @"W5NotPermittedErr";
-    v12 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-    v13 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:5 userInfo:v12];
+    activePeers = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+    v13 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:5 userInfo:activePeers];
   }
 
 LABEL_17:
@@ -372,14 +372,14 @@ LABEL_17:
   return v13;
 }
 
-- (void)_newPeersDiscovered:(id)a3
+- (void)_newPeersDiscovered:(id)discovered
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  discoveredCopy = discovered;
+  v5 = [discoveredCopy mutableCopy];
   v6 = sub_100098A04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(W5PeerManager *)self activePeers];
+    activePeers = [(W5PeerManager *)self activePeers];
     v39 = 136315906;
     v40 = "[W5PeerManager _newPeersDiscovered:]";
     v41 = 2080;
@@ -387,7 +387,7 @@ LABEL_17:
     v43 = 1024;
     v44 = 156;
     v45 = 2114;
-    v46 = v7;
+    v46 = activePeers;
     LODWORD(v29) = 38;
     v28 = &v39;
     _os_log_send_and_compose_impl();
@@ -397,7 +397,7 @@ LABEL_17:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v4;
+  obj = discoveredCopy;
   v8 = [obj countByEnumeratingWithState:&v35 objects:v50 count:16];
   if (v8)
   {
@@ -440,8 +440,8 @@ LABEL_17:
 
         else
         {
-          v17 = [(W5PeerManager *)self activePeers];
-          [v17 addObject:v13];
+          activePeers2 = [(W5PeerManager *)self activePeers];
+          [activePeers2 addObject:v13];
 
           v10 |= [v13 discoveryFlags];
         }
@@ -464,8 +464,8 @@ LABEL_17:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v18 = [(W5PeerManager *)self discoveryRequests];
-    v19 = [v18 countByEnumeratingWithState:&v31 objects:v49 count:16];
+    discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+    v19 = [discoveryRequests countByEnumeratingWithState:&v31 objects:v49 count:16];
     if (v19)
     {
       v20 = v19;
@@ -476,7 +476,7 @@ LABEL_17:
         {
           if (*v32 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(discoveryRequests);
           }
 
           v23 = *(*(&v31 + 1) + 8 * j);
@@ -496,17 +496,17 @@ LABEL_17:
             _os_log_send_and_compose_impl();
           }
 
-          v25 = [v23 configuration];
-          v26 = [v25 discoveryFlags] & v10;
+          configuration = [v23 configuration];
+          v26 = [configuration discoveryFlags] & v10;
 
           if (v26)
           {
-            v27 = [v23 handler];
-            (v27)[2](v27, v5, 0);
+            handler = [v23 handler];
+            (handler)[2](handler, v5, 0);
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v31 objects:v49 count:16];
+        v20 = [discoveryRequests countByEnumeratingWithState:&v31 objects:v49 count:16];
       }
 
       while (v20);
@@ -515,8 +515,8 @@ LABEL_17:
 
   else
   {
-    v18 = sub_100098A04();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    discoveryRequests = sub_100098A04();
+    if (os_log_type_enabled(discoveryRequests, OS_LOG_TYPE_DEFAULT))
     {
       v39 = 136315650;
       v40 = "[W5PeerManager _newPeersDiscovered:]";
@@ -529,13 +529,13 @@ LABEL_17:
   }
 }
 
-- (void)_peersLost:(id)a3
+- (void)_peersLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v5 = sub_100098A04();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(W5PeerManager *)self activePeers];
+    activePeers = [(W5PeerManager *)self activePeers];
     v38 = 136315906;
     v39 = "[W5PeerManager _peersLost:]";
     v40 = 2080;
@@ -543,7 +543,7 @@ LABEL_17:
     v42 = 1024;
     v43 = 185;
     v44 = 2114;
-    v45 = v6;
+    v45 = activePeers;
     LODWORD(v29) = 38;
     v28 = &v38;
     _os_log_send_and_compose_impl();
@@ -553,7 +553,7 @@ LABEL_17:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v4;
+  v7 = lostCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v49 count:16];
   if (v8)
   {
@@ -591,8 +591,8 @@ LABEL_17:
             _os_log_send_and_compose_impl();
           }
 
-          v17 = [(W5PeerManager *)self activePeers];
-          [v17 removeObject:v13];
+          activePeers2 = [(W5PeerManager *)self activePeers];
+          [activePeers2 removeObject:v13];
 
           v10 |= [v13 discoveryFlags];
         }
@@ -613,8 +613,8 @@ LABEL_17:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = [(W5PeerManager *)self discoveryRequests];
-  v19 = [v18 countByEnumeratingWithState:&v30 objects:v48 count:16];
+  discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+  v19 = [discoveryRequests countByEnumeratingWithState:&v30 objects:v48 count:16];
   if (v19)
   {
     v20 = v19;
@@ -625,7 +625,7 @@ LABEL_17:
       {
         if (*v31 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(discoveryRequests);
         }
 
         v23 = *(*(&v30 + 1) + 8 * j);
@@ -645,43 +645,43 @@ LABEL_17:
           _os_log_send_and_compose_impl();
         }
 
-        v25 = [v23 configuration];
-        v26 = [v25 discoveryFlags] & v10;
+        configuration = [v23 configuration];
+        v26 = [configuration discoveryFlags] & v10;
 
         if (v26)
         {
-          v27 = [v23 handler];
-          (v27)[2](v27, 0, v7);
+          handler = [v23 handler];
+          (handler)[2](handler, 0, v7);
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v30 objects:v48 count:16];
+      v20 = [discoveryRequests countByEnumeratingWithState:&v30 objects:v48 count:16];
     }
 
     while (v20);
   }
 }
 
-- (id)_activePeersWithDiscoveryFlags:(int64_t)a3
+- (id)_activePeersWithDiscoveryFlags:(int64_t)flags
 {
-  v5 = [NSPredicate predicateWithFormat:@"SELF.discoveryFlags == %d", a3];
-  v6 = [NSPredicate predicateWithFormat:@"SELF.discoveryFlags == %d", a3 | 2, v5];
+  flags = [NSPredicate predicateWithFormat:@"SELF.discoveryFlags == %d", flags];
+  v6 = [NSPredicate predicateWithFormat:@"SELF.discoveryFlags == %d", flags | 2, flags];
   v12[1] = v6;
   v7 = [NSArray arrayWithObjects:v12 count:2];
   v8 = [NSCompoundPredicate orPredicateWithSubpredicates:v7];
 
-  v9 = [(W5PeerManager *)self activePeers];
-  v10 = [v9 filteredSetUsingPredicate:v8];
+  activePeers = [(W5PeerManager *)self activePeers];
+  v10 = [activePeers filteredSetUsingPredicate:v8];
 
   return v10;
 }
 
-- (id)queryStatusForPeerWithRequest:(id)a3
+- (id)queryStatusForPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [(W5PeerManager *)self _sendRapportRequest:v4];
+    v5 = [(W5PeerManager *)self _sendRapportRequest:requestCopy];
   }
 
   else
@@ -692,18 +692,18 @@ LABEL_17:
   return v5;
 }
 
-- (id)requestFileFromPeerWithRequest:(id)a3
+- (id)requestFileFromPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [v4 peer];
-    v6 = [v5 companionLinkDevice];
+    peer = [requestCopy peer];
+    companionLinkDevice = [peer companionLinkDevice];
 
-    if (v6)
+    if (companionLinkDevice)
     {
-      v7 = [(W5PeerManager *)self rapportClient];
-      v8 = [v7 sendMessageToDevice:v6 request:v4];
+      rapportClient = [(W5PeerManager *)self rapportClient];
+      v8 = [rapportClient sendMessageToDevice:companionLinkDevice request:requestCopy];
     }
 
     else
@@ -711,7 +711,7 @@ LABEL_17:
       v10 = sub_100098A04();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 peer];
+        [requestCopy peer];
         v14 = 136315906;
         v15 = "[W5PeerManager requestFileFromPeerWithRequest:]";
         v16 = 2080;
@@ -724,8 +724,8 @@ LABEL_17:
 
       v12 = NSLocalizedFailureReasonErrorKey;
       v13 = @"W5ParamErr";
-      v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-      v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v7];
+      rapportClient = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+      v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:rapportClient];
     }
 
     v9 = v8;
@@ -739,12 +739,12 @@ LABEL_17:
   return v9;
 }
 
-- (id)runSnifferAtPeerWithRequest:(id)a3
+- (id)runSnifferAtPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [(W5PeerManager *)self _sendRapportRequest:v4];
+    v5 = [(W5PeerManager *)self _sendRapportRequest:requestCopy];
   }
 
   else
@@ -755,12 +755,12 @@ LABEL_17:
   return v5;
 }
 
-- (id)sendDebugConfigurationForPeerWithRequest:(id)a3
+- (id)sendDebugConfigurationForPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [(W5PeerManager *)self _sendRapportRequest:v4];
+    v5 = [(W5PeerManager *)self _sendRapportRequest:requestCopy];
   }
 
   else
@@ -771,18 +771,18 @@ LABEL_17:
   return v5;
 }
 
-- (id)runDiagnosticsOnPeerWithRequest:(id)a3
+- (id)runDiagnosticsOnPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [v4 peer];
-    v6 = [v5 companionLinkDevice];
+    peer = [requestCopy peer];
+    companionLinkDevice = [peer companionLinkDevice];
 
-    if (v6)
+    if (companionLinkDevice)
     {
-      v7 = [(W5PeerManager *)self rapportClient];
-      v8 = [v7 sendMessageToDevice:v6 request:v4];
+      rapportClient = [(W5PeerManager *)self rapportClient];
+      v8 = [rapportClient sendMessageToDevice:companionLinkDevice request:requestCopy];
     }
 
     else
@@ -790,7 +790,7 @@ LABEL_17:
       v10 = sub_100098A04();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 peer];
+        [requestCopy peer];
         v14 = 136315906;
         v15 = "[W5PeerManager runDiagnosticsOnPeerWithRequest:]";
         v16 = 2080;
@@ -803,8 +803,8 @@ LABEL_17:
 
       v12 = NSLocalizedFailureReasonErrorKey;
       v13 = @"W5ParamErr";
-      v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-      v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v7];
+      rapportClient = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+      v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:rapportClient];
     }
 
     v9 = v8;
@@ -818,12 +818,12 @@ LABEL_17:
   return v9;
 }
 
-- (id)queryDatabaseForPeerWithRequest:(id)a3
+- (id)queryDatabaseForPeerWithRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 discoveryFlags] == 1)
+  requestCopy = request;
+  if ([requestCopy discoveryFlags] == 1)
   {
-    v5 = [(W5PeerManager *)self _sendRapportRequest:v4];
+    v5 = [(W5PeerManager *)self _sendRapportRequest:requestCopy];
   }
 
   else
@@ -834,16 +834,16 @@ LABEL_17:
   return v5;
 }
 
-- (id)_sendRapportRequest:(id)a3
+- (id)_sendRapportRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [v5 companionLinkDevice];
+  requestCopy = request;
+  peer = [requestCopy peer];
+  companionLinkDevice = [peer companionLinkDevice];
 
-  if (v6)
+  if (companionLinkDevice)
   {
-    v7 = [(W5PeerManager *)self rapportClient];
-    v8 = [v7 sendMessageToDevice:v6 request:v4];
+    rapportClient = [(W5PeerManager *)self rapportClient];
+    v8 = [rapportClient sendMessageToDevice:companionLinkDevice request:requestCopy];
   }
 
   else
@@ -851,7 +851,7 @@ LABEL_17:
     v9 = sub_100098A04();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 peer];
+      [requestCopy peer];
       v14 = 136315906;
       v15 = "[W5PeerManager _sendRapportRequest:]";
       v16 = 2080;
@@ -864,8 +864,8 @@ LABEL_17:
 
     v12 = NSLocalizedFailureReasonErrorKey;
     v13 = @"W5ParamErr";
-    v7 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-    v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v7];
+    rapportClient = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
+    v8 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:rapportClient];
   }
 
   v10 = v8;
@@ -878,9 +878,9 @@ LABEL_17:
   v3 = objc_alloc_init(W5RapportClient);
   [(W5PeerManager *)self setRapportClient:v3];
 
-  v4 = [(W5PeerManager *)self rapportClient];
+  rapportClient = [(W5PeerManager *)self rapportClient];
 
-  if (v4)
+  if (rapportClient)
   {
     objc_initWeak(&location, self);
     v10[0] = _NSConcreteStackBlock;
@@ -888,39 +888,39 @@ LABEL_17:
     v10[2] = sub_1000937F8;
     v10[3] = &unk_1000E29C8;
     objc_copyWeak(&v11, &location);
-    v5 = [(W5PeerManager *)self rapportClient];
-    [v5 setDeviceFoundHandler:v10];
+    rapportClient2 = [(W5PeerManager *)self rapportClient];
+    [rapportClient2 setDeviceFoundHandler:v10];
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100093854;
     v8[3] = &unk_1000E29C8;
     objc_copyWeak(&v9, &location);
-    v6 = [(W5PeerManager *)self rapportClient];
-    [v6 setDeviceLostHandler:v8];
+    rapportClient3 = [(W5PeerManager *)self rapportClient];
+    [rapportClient3 setDeviceLostHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  return v4 != 0;
+  return rapportClient != 0;
 }
 
-- (void)_handleRapportDeviceFound:(id)a3
+- (void)_handleRapportDeviceFound:(id)found
 {
-  v4 = a3;
-  v5 = [[W5Peer alloc] initWithCompanionLinkDevice:v4];
+  foundCopy = found;
+  v5 = [[W5Peer alloc] initWithCompanionLinkDevice:foundCopy];
 
   v7 = v5;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
   [(W5PeerManager *)self _newPeersDiscovered:v6];
 }
 
-- (void)_handleRapportDeviceLost:(id)a3
+- (void)_handleRapportDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [[W5Peer alloc] initWithCompanionLinkDevice:v4];
+  lostCopy = lost;
+  v5 = [[W5Peer alloc] initWithCompanionLinkDevice:lostCopy];
 
   v7 = v5;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
@@ -933,8 +933,8 @@ LABEL_17:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(W5PeerManager *)self discoveryRequests];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  discoveryRequests = [(W5PeerManager *)self discoveryRequests];
+  v3 = [discoveryRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = *v10;
@@ -944,20 +944,20 @@ LABEL_17:
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(discoveryRequests);
         }
 
-        v6 = [*(*(&v9 + 1) + 8 * i) configuration];
-        v7 = [v6 discoveryFlags];
+        configuration = [*(*(&v9 + 1) + 8 * i) configuration];
+        discoveryFlags = [configuration discoveryFlags];
 
-        if (v7)
+        if (discoveryFlags)
         {
           LOBYTE(v3) = 1;
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [discoveryRequests countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -972,39 +972,39 @@ LABEL_11:
   return v3;
 }
 
-- (id)sendRequest:(id)a3
+- (id)sendRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 peer];
-  v6 = [v5 companionLinkDevice];
+  requestCopy = request;
+  peer = [requestCopy peer];
+  companionLinkDevice = [peer companionLinkDevice];
 
   v7 = sub_100098A04();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (companionLinkDevice)
   {
     if (v8)
     {
-      v9 = [v4 peer];
-      v15 = [v4 requestInfo];
+      peer2 = [requestCopy peer];
+      requestInfo = [requestCopy requestInfo];
       _os_log_send_and_compose_impl();
     }
 
-    v10 = [(W5PeerManager *)self rapportClient];
-    v11 = [v10 sendMessageToDevice:v6 request:v4];
+    rapportClient = [(W5PeerManager *)self rapportClient];
+    v11 = [rapportClient sendMessageToDevice:companionLinkDevice request:requestCopy];
   }
 
   else
   {
     if (v8)
     {
-      v14 = [v4 peer];
+      peer3 = [requestCopy peer];
       _os_log_send_and_compose_impl();
     }
 
     v16 = NSLocalizedFailureReasonErrorKey;
     v17 = @"W5ParamErr";
-    v10 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v11 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v10];
+    rapportClient = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+    v11 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:rapportClient];
   }
 
   v12 = v11;

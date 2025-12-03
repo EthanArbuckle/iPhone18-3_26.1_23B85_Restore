@@ -1,12 +1,12 @@
 @interface TVPPlayerReporter
 + (void)initialize;
 - (TVPPlayer)player;
-- (TVPPlayerReporter)initWithPlayer:(id)a3;
+- (TVPPlayerReporter)initWithPlayer:(id)player;
 - (id)_rtcAgentUserInfo;
 - (id)reportingHierarchyToken;
-- (void)_playerCurrentMediaItemDidChange:(id)a3;
-- (void)_playerCurrentMediaItemWillChange:(id)a3;
-- (void)_playerStateWillChange:(id)a3;
+- (void)_playerCurrentMediaItemDidChange:(id)change;
+- (void)_playerCurrentMediaItemWillChange:(id)change;
+- (void)_playerStateWillChange:(id)change;
 - (void)_sendPlaybackStartupEventsIfNecessary;
 - (void)_setupRTCAgent;
 - (void)dealloc;
@@ -30,20 +30,20 @@ uint64_t __31__TVPPlayerReporter_initialize__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (TVPPlayerReporter)initWithPlayer:(id)a3
+- (TVPPlayerReporter)initWithPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   v9.receiver = self;
   v9.super_class = TVPPlayerReporter;
   v5 = [(TVPPlayerReporter *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_player, v4);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel__playerStateWillChange_ name:@"TVPPlaybackStateWillChangeNotification" object:v4];
-    [v7 addObserver:v6 selector:sel__playerCurrentMediaItemWillChange_ name:@"TVPPlaybackCurrentMediaItemWillChangeNotification" object:v4];
-    [v7 addObserver:v6 selector:sel__playerCurrentMediaItemDidChange_ name:@"TVPPlaybackCurrentMediaItemDidChangeNotification" object:v4];
+    objc_storeWeak(&v5->_player, playerCopy);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__playerStateWillChange_ name:@"TVPPlaybackStateWillChangeNotification" object:playerCopy];
+    [defaultCenter addObserver:v6 selector:sel__playerCurrentMediaItemWillChange_ name:@"TVPPlaybackCurrentMediaItemWillChangeNotification" object:playerCopy];
+    [defaultCenter addObserver:v6 selector:sel__playerCurrentMediaItemDidChange_ name:@"TVPPlaybackCurrentMediaItemDidChangeNotification" object:playerCopy];
   }
 
   return v6;
@@ -51,8 +51,8 @@ uint64_t __31__TVPPlayerReporter_initialize__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TVPPlayerReporter;
@@ -61,9 +61,9 @@ uint64_t __31__TVPPlayerReporter_initialize__block_invoke()
 
 - (void)sendPlaybackStartupMetricsManually
 {
-  v3 = [(TVPPlayerReporter *)self rtcAgent];
+  rtcAgent = [(TVPPlayerReporter *)self rtcAgent];
 
-  if (v3)
+  if (rtcAgent)
   {
 
     [(TVPPlayerReporter *)self _sendPlaybackStartupEventsIfNecessary];
@@ -90,11 +90,11 @@ uint64_t __31__TVPPlayerReporter_initialize__block_invoke()
   return reportingHierarchyToken;
 }
 
-- (void)_playerStateWillChange:(id)a3
+- (void)_playerStateWillChange:(id)change
 {
-  v11 = [a3 userInfo];
-  v4 = [v11 objectForKey:@"TVPPlaybackStateOldStateKey"];
-  v5 = [v11 objectForKey:@"TVPPlaybackStateNewStateKey"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKey:@"TVPPlaybackStateOldStateKey"];
+  v5 = [userInfo objectForKey:@"TVPPlaybackStateNewStateKey"];
   v6 = +[TVPPlaybackState stopped];
   v7 = v6;
   if (v4 == v6)
@@ -135,16 +135,16 @@ LABEL_7:
 - (void)_setupRTCAgent
 {
   v35[7] = *MEMORY[0x277D85DE8];
-  v3 = [(TVPPlayerReporter *)self rtcAgent];
+  rtcAgent = [(TVPPlayerReporter *)self rtcAgent];
 
-  if (!v3)
+  if (!rtcAgent)
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v5)
+    if (bundleIdentifier)
     {
-      v6 = v5;
+      v6 = bundleIdentifier;
     }
 
     else
@@ -175,10 +175,10 @@ LABEL_7:
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:7];
     v14 = [v13 mutableCopy];
 
-    v15 = [(TVPPlayerReporter *)self player];
-    v16 = [v15 currentMediaItem];
+    player = [(TVPPlayerReporter *)self player];
+    currentMediaItem = [player currentMediaItem];
 
-    v17 = [v16 mediaItemMetadataForProperty:@"TVPMediaItemMetadataRTCParentHierarchyToken"];
+    v17 = [currentMediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataRTCParentHierarchyToken"];
     v18 = sLogObject_4;
     v19 = os_log_type_enabled(sLogObject_4, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -206,7 +206,7 @@ LABEL_7:
         v28[1] = 3221225472;
         v28[2] = __35__TVPPlayerReporter__setupRTCAgent__block_invoke;
         v28[3] = &unk_279D7BDF0;
-        v29 = v16;
+        v29 = currentMediaItem;
         v17 = v17;
         v30 = v17;
         v31 = v20;
@@ -229,12 +229,12 @@ LABEL_7:
     }
 
     v23 = objc_alloc(MEMORY[0x277D43FE0]);
-    v24 = [(TVPPlayerReporter *)self _rtcAgentUserInfo];
-    v25 = [v23 initWithSessionInfo:v14 userInfo:v24 frameworksToCheck:MEMORY[0x277CBEBF8]];
+    _rtcAgentUserInfo = [(TVPPlayerReporter *)self _rtcAgentUserInfo];
+    v25 = [v23 initWithSessionInfo:v14 userInfo:_rtcAgentUserInfo frameworksToCheck:MEMORY[0x277CBEBF8]];
     [(TVPPlayerReporter *)self setRtcAgent:v25];
 
-    v26 = [(TVPPlayerReporter *)self rtcAgent];
-    [v26 startConfigurationWithCompletionHandler:&__block_literal_global_23];
+    rtcAgent2 = [(TVPPlayerReporter *)self rtcAgent];
+    [rtcAgent2 startConfigurationWithCompletionHandler:&__block_literal_global_23];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -259,16 +259,16 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
   }
 }
 
-- (void)_playerCurrentMediaItemWillChange:(id)a3
+- (void)_playerCurrentMediaItemWillChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 currentMediaItem];
-  if (v5)
+  object = [change object];
+  currentMediaItem = [object currentMediaItem];
+  if (currentMediaItem)
   {
-    v6 = [v4 state];
+    state = [object state];
     v7 = +[TVPPlaybackState stopped];
 
-    if (v6 == v7)
+    if (state == v7)
     {
       v8 = sLogObject_4;
       if (os_log_type_enabled(sLogObject_4, OS_LOG_TYPE_DEFAULT))
@@ -285,12 +285,12 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
   }
 }
 
-- (void)_playerCurrentMediaItemDidChange:(id)a3
+- (void)_playerCurrentMediaItemDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 currentMediaItem];
+  object = [change object];
+  currentMediaItem = [object currentMediaItem];
   [(TVPPlayerReporter *)self _tearDownRTCAgent];
-  if (v4)
+  if (currentMediaItem)
   {
     [(TVPPlayerReporter *)self _setupRTCAgent];
   }
@@ -299,9 +299,9 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
 - (void)_sendPlaybackStartupEventsIfNecessary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(TVPPlayerReporter *)self player];
-  v4 = [v3 currentMediaItem];
-  v5 = [v4 mediaItemMetadataForProperty:@"TVPMediaItemPlaybackReportingEventCollection"];
+  player = [(TVPPlayerReporter *)self player];
+  currentMediaItem = [player currentMediaItem];
+  v5 = [currentMediaItem mediaItemMetadataForProperty:@"TVPMediaItemPlaybackReportingEventCollection"];
 
   if (!v5)
   {
@@ -314,22 +314,22 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
   }
 
   [v5 setComplete:1];
-  v6 = [v5 rtcReportingEventDict];
-  if (!v6)
+  rtcReportingEventDict = [v5 rtcReportingEventDict];
+  if (!rtcReportingEventDict)
   {
     goto LABEL_36;
   }
 
-  v7 = v6;
-  v8 = [v5 videoType];
-  v9 = v8;
+  v7 = rtcReportingEventDict;
+  videoType = [v5 videoType];
+  v9 = videoType;
   v10 = @"UNDETERMINED";
-  if (v8 == 2)
+  if (videoType == 2)
   {
     v10 = @"HLS";
   }
 
-  if (v8 == 1)
+  if (videoType == 1)
   {
     v11 = @"FILE";
   }
@@ -339,10 +339,10 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
     v11 = v10;
   }
 
-  v12 = [(TVPPlayerReporter *)self _rtcAgentUserInfo];
-  [v12 setObject:v11 forKey:@"assetType"];
-  v13 = [(TVPPlayerReporter *)self rtcAgent];
-  [v13 fetchReportingStatesWithUserInfo:v12 fetchComplete:&__block_literal_global_49];
+  _rtcAgentUserInfo = [(TVPPlayerReporter *)self _rtcAgentUserInfo];
+  [_rtcAgentUserInfo setObject:v11 forKey:@"assetType"];
+  rtcAgent = [(TVPPlayerReporter *)self rtcAgent];
+  [rtcAgent fetchReportingStatesWithUserInfo:_rtcAgentUserInfo fetchComplete:&__block_literal_global_49];
 
   v14 = [v7 objectForKey:TVPPlaybackReportingEventPlaybackStartupResult];
   if ([v14 isEqualToString:TVPPlaybackReportingEventValueSuccess])
@@ -365,9 +365,9 @@ void __35__TVPPlayerReporter__setupRTCAgent__block_invoke_20(uint64_t a1, void *
     v15 = 200;
   }
 
-  v16 = [(TVPPlayerReporter *)self player];
-  v17 = [v16 currentMediaItem];
-  v18 = [v17 mediaItemMetadataForProperty:@"TVPMediaItemMetadataRentalID"];
+  player2 = [(TVPPlayerReporter *)self player];
+  currentMediaItem2 = [player2 currentMediaItem];
+  v18 = [currentMediaItem2 mediaItemMetadataForProperty:@"TVPMediaItemMetadataRentalID"];
 
   if (!v9)
   {
@@ -401,8 +401,8 @@ LABEL_25:
 
   else
   {
-    v20 = [(TVPPlayerReporter *)self player];
-    [v20 duration];
+    player3 = [(TVPPlayerReporter *)self player];
+    [player3 duration];
     v22 = v21;
 
     if (v22 == 3.40282347e38)
@@ -440,9 +440,9 @@ LABEL_31:
   [(TVPPlayerReporter *)self _sendRTCEvent:@"playbackStartup" withCategory:v19 type:v15 values:v7];
   if (MGGetBoolAnswer())
   {
-    v28 = [(TVPPlayerReporter *)self player];
+    player4 = [(TVPPlayerReporter *)self player];
     v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"app playback startup metrics: %@", v7];
-    [v28 setPlaybackHUDString:v29];
+    [player4 setPlaybackHUDString:v29];
   }
 
 LABEL_36:
@@ -452,24 +452,24 @@ LABEL_36:
 - (id)_rtcAgentUserInfo
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 executablePath];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  executablePath = [mainBundle executablePath];
 
-  v6 = [v5 lastPathComponent];
-  v7 = v6;
+  lastPathComponent = [executablePath lastPathComponent];
+  v7 = lastPathComponent;
   v8 = @"(UNKNOWN)";
-  if (v6)
+  if (lastPathComponent)
   {
-    v8 = v6;
+    v8 = lastPathComponent;
   }
 
   v9 = v8;
 
-  v10 = [(TVPPlayerReporter *)self player];
-  v11 = [v10 currentMediaItem];
-  v12 = [v11 mediaItemMetadataForProperty:@"TVPMediaItemMetadataServiceIdentifier"];
-  v13 = [v11 mediaItemMetadataForProperty:@"TVPMediaItemMetadataStoreFrontIdentifier"];
-  v14 = [v11 mediaItemMetadataForProperty:@"TVPMediaItemMetadataAVURLAssetAlternativeConfigurationOptions"];
+  player = [(TVPPlayerReporter *)self player];
+  currentMediaItem = [player currentMediaItem];
+  v12 = [currentMediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataServiceIdentifier"];
+  v13 = [currentMediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataStoreFrontIdentifier"];
+  v14 = [currentMediaItem mediaItemMetadataForProperty:@"TVPMediaItemMetadataAVURLAssetAlternativeConfigurationOptions"];
   if (![v12 length])
   {
     v15 = [v14 objectForKey:*MEMORY[0x277CE61E8]];
@@ -482,9 +482,9 @@ LABEL_36:
     else
     {
       v16 = MEMORY[0x277CCACA8];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v17 = [v19 bundleIdentifier];
-      v12 = [v16 stringWithFormat:@"(%@)", v17];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier = [mainBundle2 bundleIdentifier];
+      v12 = [v16 stringWithFormat:@"(%@)", bundleIdentifier];
     }
   }
 

@@ -1,14 +1,14 @@
 @interface PPNamedEntityReadOnlyServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPNamedEntityReadOnlyServerDelegate)init;
 @end
 
 @implementation PPNamedEntityReadOnlyServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v4 = MEMORY[0x277CCAE90];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [v4 interfaceWithProtocol:&unk_2847A55C8];
   v7 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2847B9ED0];
   v8 = objc_opt_new();
@@ -35,7 +35,7 @@
   v14[3] = &unk_2789790A8;
   v15 = v17;
   v11 = v17;
-  v12 = [PPXPCServerHelper shouldAcceptConnection:v5 serviceName:@"com.apple.proactive.PersonalizationPortrait.NamedEntity.readOnly" allowedServerInterface:v6 allowedClientInterface:v7 requestHandler:v11 validateConnection:v10 setupClientProxy:v18 interruptionHandler:v16 invalidationHandler:v14];
+  v12 = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.NamedEntity.readOnly" allowedServerInterface:v6 allowedClientInterface:v7 requestHandler:v11 validateConnection:v10 setupClientProxy:v18 interruptionHandler:v16 invalidationHandler:v14];
 
   return v12;
 }

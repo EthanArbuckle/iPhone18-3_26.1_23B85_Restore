@@ -1,13 +1,13 @@
 @interface CuratedCollectionDescriptionCellModel
 - (BOOL)hasAuthorImage;
 - (BOOL)hasAuthorName;
-- (CuratedCollectionDescriptionCellModel)initWithCollection:(id)a3 collectionDescription:(id)a4;
+- (CuratedCollectionDescriptionCellModel)initWithCollection:(id)collection collectionDescription:(id)description;
 - (NSString)authorName;
 - (NSString)collectionMetadata;
 - (NSString)companyName;
-- (void)_loadCompanyLogoForSize:(CGSize)a3 authorError:(id)a4 completion:(id)a5;
+- (void)_loadCompanyLogoForSize:(CGSize)size authorError:(id)error completion:(id)completion;
 - (void)cancelAuthorImageDownload;
-- (void)loadAuthorImageForSize:(CGSize)a3 completion:(id)a4;
+- (void)loadAuthorImageForSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation CuratedCollectionDescriptionCellModel
@@ -16,22 +16,22 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Number of places [Curated Collection]" value:@"localized string not found" table:0];
-  v5 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v4, [v5 numberOfItems]);
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", v4, [collection numberOfItems]);
 
   v7 = +[NSDate date];
   v8 = +[NSCalendar currentCalendar];
-  v9 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v10 = [v9 lastModifiedDate];
-  v11 = [v8 components:16 fromDate:v10 toDate:v7 options:0];
+  collection2 = [(CuratedCollectionDescriptionCellModel *)self collection];
+  lastModifiedDate = [collection2 lastModifiedDate];
+  v11 = [v8 components:16 fromDate:lastModifiedDate toDate:v7 options:0];
 
   v12 = 0;
   if ([v11 day] <= 14)
   {
     v13 = qword_10195D030;
-    v14 = [(CuratedCollectionDescriptionCellModel *)self collection];
-    v15 = [v14 lastModifiedDate];
-    v16 = [v13 localizedStringForDate:v15 relativeToDate:v7];
+    collection3 = [(CuratedCollectionDescriptionCellModel *)self collection];
+    lastModifiedDate2 = [collection3 lastModifiedDate];
+    v16 = [v13 localizedStringForDate:lastModifiedDate2 relativeToDate:v7];
 
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"[Curated Collection] Updated" value:@"localized string not found" table:0];
@@ -53,14 +53,14 @@
   }
 
   v23 = +[UIApplication sharedApplication];
-  v24 = [v23 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [v23 userInterfaceLayoutDirection];
 
-  if (v24 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
-    v25 = [v21 reverseObjectEnumerator];
-    v26 = [v25 allObjects];
+    reverseObjectEnumerator = [v21 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v21 = v26;
+    v21 = allObjects;
   }
 
   v27 = [v21 componentsJoinedByString:v20];
@@ -70,86 +70,86 @@
 
 - (NSString)companyName
 {
-  v2 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v3 = [v2 publisherAttribution];
-  v4 = [v3 displayName];
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  publisherAttribution = [collection publisherAttribution];
+  displayName = [publisherAttribution displayName];
 
-  return v4;
+  return displayName;
 }
 
 - (NSString)authorName
 {
   if ([(CuratedCollectionDescriptionCellModel *)self hasAuthorName])
   {
-    v3 = [(CuratedCollectionDescriptionCellModel *)self collection];
-    v4 = [v3 authorName];
+    collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+    authorName = [collection authorName];
   }
 
   else
   {
-    v4 = [(CuratedCollectionDescriptionCellModel *)self companyName];
+    authorName = [(CuratedCollectionDescriptionCellModel *)self companyName];
   }
 
-  return v4;
+  return authorName;
 }
 
 - (void)cancelAuthorImageDownload
 {
   v5 = +[MKAppImageManager sharedImageManager];
-  v3 = [(CuratedCollectionDescriptionCellModel *)self photoInfo];
-  v4 = [v3 url];
+  photoInfo = [(CuratedCollectionDescriptionCellModel *)self photoInfo];
+  v4 = [photoInfo url];
   [v5 cancelLoadAppImageAtURL:v4];
 }
 
-- (void)_loadCompanyLogoForSize:(CGSize)a3 authorError:(id)a4 completion:(id)a5
+- (void)_loadCompanyLogoForSize:(CGSize)size authorError:(id)error completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  completionCopy = completion;
   v9 = +[MKSystemController sharedInstance];
   [v9 screenScale];
   v11 = v10;
 
-  v12 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v13 = [v12 publisherAttribution];
-  v14 = [v13 iconIdentifier];
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  publisherAttribution = [collection publisherAttribution];
+  iconIdentifier = [publisherAttribution iconIdentifier];
 
-  v15 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v16 = [v15 publisherAttribution];
-  v17 = [v16 displayName];
+  collection2 = [(CuratedCollectionDescriptionCellModel *)self collection];
+  publisherAttribution2 = [collection2 publisherAttribution];
+  displayName = [publisherAttribution2 displayName];
 
   v18 = +[MKPlaceCollectionsPublisherIconManager sharedInstance];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1007033E0;
   v21[3] = &unk_101627390;
-  v22 = v7;
-  v23 = v8;
-  v19 = v7;
-  v20 = v8;
-  [v18 iconForPublisherNamed:v17 usingId:v14 contentScale:v21 onCompletion:v11];
+  v22 = errorCopy;
+  v23 = completionCopy;
+  v19 = errorCopy;
+  v20 = completionCopy;
+  [v18 iconForPublisherNamed:displayName usingId:iconIdentifier contentScale:v21 onCompletion:v11];
 }
 
-- (void)loadAuthorImageForSize:(CGSize)a3 completion:(id)a4
+- (void)loadAuthorImageForSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   v8 = +[MKSystemController sharedInstance];
   [v8 screenScale];
   v10 = v9;
 
-  v11 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v12 = [v11 authorPhoto];
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  authorPhoto = [collection authorPhoto];
 
-  v13 = [v12 bestPhotoForSize:1 allowSmaller:{v10 * width, v10 * height}];
+  v13 = [authorPhoto bestPhotoForSize:1 allowSmaller:{v10 * width, v10 * height}];
   [(CuratedCollectionDescriptionCellModel *)self setPhotoInfo:v13];
 
   if ([(CuratedCollectionDescriptionCellModel *)self hasAuthorImage])
   {
     objc_initWeak(&location, self);
     v14 = +[MKAppImageManager sharedImageManager];
-    v15 = [(CuratedCollectionDescriptionCellModel *)self photoInfo];
-    v16 = [v15 url];
+    photoInfo = [(CuratedCollectionDescriptionCellModel *)self photoInfo];
+    v16 = [photoInfo url];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1007036BC;
@@ -157,7 +157,7 @@
     objc_copyWeak(v19, &location);
     v19[1] = *&width;
     v19[2] = *&height;
-    v18 = v7;
+    v18 = completionCopy;
     [v14 loadAppImageAtURL:v16 completionHandler:v17];
 
     objc_destroyWeak(v19);
@@ -166,40 +166,40 @@
 
   else
   {
-    [(CuratedCollectionDescriptionCellModel *)self _loadCompanyLogoForSize:0 authorError:v7 completion:width, height];
+    [(CuratedCollectionDescriptionCellModel *)self _loadCompanyLogoForSize:0 authorError:completionCopy completion:width, height];
   }
 }
 
 - (BOOL)hasAuthorName
 {
-  v2 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v3 = [v2 authorName];
-  v4 = v3 != 0;
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  authorName = [collection authorName];
+  v4 = authorName != 0;
 
   return v4;
 }
 
 - (BOOL)hasAuthorImage
 {
-  v2 = [(CuratedCollectionDescriptionCellModel *)self collection];
-  v3 = [v2 authorPhoto];
-  v4 = v3 != 0;
+  collection = [(CuratedCollectionDescriptionCellModel *)self collection];
+  authorPhoto = [collection authorPhoto];
+  v4 = authorPhoto != 0;
 
   return v4;
 }
 
-- (CuratedCollectionDescriptionCellModel)initWithCollection:(id)a3 collectionDescription:(id)a4
+- (CuratedCollectionDescriptionCellModel)initWithCollection:(id)collection collectionDescription:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = CuratedCollectionDescriptionCellModel;
   v9 = [(CuratedCollectionDescriptionCellModel *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_collection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_collection, collection);
+    v11 = [descriptionCopy copy];
     collectionDescription = v10->_collectionDescription;
     v10->_collectionDescription = v11;
 

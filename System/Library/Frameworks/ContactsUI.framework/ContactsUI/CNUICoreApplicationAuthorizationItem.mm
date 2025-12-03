@@ -1,34 +1,34 @@
 @interface CNUICoreApplicationAuthorizationItem
 - (BOOL)hasChanges;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNUICoreApplicationAuthorizationItem)init;
-- (CNUICoreApplicationAuthorizationItem)initWithCoder:(id)a3;
-- (CNUICoreApplicationAuthorizationItem)initWithIcon:(id)a3 name:(id)a4 bundleIdentifier:(id)a5 deviceType:(int64_t)a6 authorization:(int64_t)a7 shouldTakeSnapshot:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CNUICoreApplicationAuthorizationItem)initWithCoder:(id)coder;
+- (CNUICoreApplicationAuthorizationItem)initWithIcon:(id)icon name:(id)name bundleIdentifier:(id)identifier deviceType:(int64_t)type authorization:(int64_t)authorization shouldTakeSnapshot:(BOOL)snapshot;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)itemBySettingIcon:(id)a3;
+- (id)itemBySettingIcon:(id)icon;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNUICoreApplicationAuthorizationItem
 
 - (BOOL)hasChanges
 {
-  v2 = self;
-  v3 = [(CNUICoreApplicationAuthorizationItem *)self snapshot];
-  LOBYTE(v2) = [(CNUICoreApplicationAuthorizationItem *)v2 isEqual:v3];
+  selfCopy = self;
+  snapshot = [(CNUICoreApplicationAuthorizationItem *)self snapshot];
+  LOBYTE(selfCopy) = [(CNUICoreApplicationAuthorizationItem *)selfCopy isEqual:snapshot];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (id)itemBySettingIcon:(id)a3
+- (id)itemBySettingIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(CNUICoreApplicationAuthorizationItem *)self name];
-  v7 = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
-  v8 = [v5 initWithIcon:v4 name:v6 bundleIdentifier:v7 deviceType:-[CNUICoreApplicationAuthorizationItem deviceType](self authorization:{"deviceType"), -[CNUICoreApplicationAuthorizationItem authorization](self, "authorization")}];
+  name = [(CNUICoreApplicationAuthorizationItem *)self name];
+  bundleIdentifier = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
+  v8 = [v5 initWithIcon:iconCopy name:name bundleIdentifier:bundleIdentifier deviceType:-[CNUICoreApplicationAuthorizationItem deviceType](self authorization:{"deviceType"), -[CNUICoreApplicationAuthorizationItem authorization](self, "authorization")}];
 
   return v8;
 }
@@ -36,66 +36,66 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUICoreApplicationAuthorizationItem *)self icon];
-  v5 = [v3 appendName:@"icon" BOOLValue:v4 != 0];
+  icon = [(CNUICoreApplicationAuthorizationItem *)self icon];
+  v5 = [v3 appendName:@"icon" BOOLValue:icon != 0];
 
-  v6 = [(CNUICoreApplicationAuthorizationItem *)self name];
-  v7 = [v3 appendName:@"name" object:v6];
+  name = [(CNUICoreApplicationAuthorizationItem *)self name];
+  v7 = [v3 appendName:@"name" object:name];
 
-  v8 = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
-  v9 = [v3 appendName:@"bundleIdentifier" object:v8];
+  bundleIdentifier = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
+  v9 = [v3 appendName:@"bundleIdentifier" object:bundleIdentifier];
 
   v10 = [v3 appendName:@"deviceType" integerValue:{-[CNUICoreApplicationAuthorizationItem deviceType](self, "deviceType")}];
   v11 = [v3 appendName:@"authorizationLevel" integerValue:{-[CNUICoreApplicationAuthorizationItem authorization](self, "authorization")}];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E6996730];
-  v4 = [(CNUICoreApplicationAuthorizationItem *)self icon];
-  v5 = [v3 objectHash:v4];
+  icon = [(CNUICoreApplicationAuthorizationItem *)self icon];
+  v5 = [v3 objectHash:icon];
 
   v6 = MEMORY[0x1E6996730];
-  v7 = [(CNUICoreApplicationAuthorizationItem *)self name];
-  v8 = [v6 objectHash:v7] - v5 + 32 * v5;
+  name = [(CNUICoreApplicationAuthorizationItem *)self name];
+  v8 = [v6 objectHash:name] - v5 + 32 * v5;
 
   v9 = MEMORY[0x1E6996730];
-  v10 = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
-  v11 = [v9 objectHash:v10] - v8 + 32 * v8;
+  bundleIdentifier = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
+  v11 = [v9 objectHash:bundleIdentifier] - v8 + 32 * v8;
 
-  v12 = [(CNUICoreApplicationAuthorizationItem *)self deviceType];
-  if (v12 >= 0)
+  deviceType = [(CNUICoreApplicationAuthorizationItem *)self deviceType];
+  if (deviceType >= 0)
   {
-    v13 = v12;
+    v13 = deviceType;
   }
 
   else
   {
-    v13 = -v12;
+    v13 = -deviceType;
   }
 
   v14 = v13 - v11 + 32 * v11;
-  v15 = [(CNUICoreApplicationAuthorizationItem *)self authorization];
-  if (v15 >= 0)
+  authorization = [(CNUICoreApplicationAuthorizationItem *)self authorization];
+  if (authorization >= 0)
   {
-    v16 = v15;
+    v16 = authorization;
   }
 
   else
   {
-    v16 = -v15;
+    v16 = -authorization;
   }
 
   return v16 - v14 + 32 * v14 + 486695567;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -103,10 +103,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNUICoreApplicationAuthorizationItem icon](self, "icon"), v6 = -[CNUICoreApplicationAuthorizationItem icon](v4, "icon"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNUICoreApplicationAuthorizationItem name](self, "name"), v8 = -[CNUICoreApplicationAuthorizationItem name](v4, "name"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNUICoreApplicationAuthorizationItem bundleIdentifier](self, "bundleIdentifier"), v10 = -[CNUICoreApplicationAuthorizationItem bundleIdentifier](v4, "bundleIdentifier"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && (v11 = -[CNUICoreApplicationAuthorizationItem deviceType](self, "deviceType"), v11 == -[CNUICoreApplicationAuthorizationItem deviceType](v4, "deviceType")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNUICoreApplicationAuthorizationItem icon](self, "icon"), v6 = -[CNUICoreApplicationAuthorizationItem icon](equalCopy, "icon"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNUICoreApplicationAuthorizationItem name](self, "name"), v8 = -[CNUICoreApplicationAuthorizationItem name](equalCopy, "name"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNUICoreApplicationAuthorizationItem bundleIdentifier](self, "bundleIdentifier"), v10 = -[CNUICoreApplicationAuthorizationItem bundleIdentifier](equalCopy, "bundleIdentifier"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && (v11 = -[CNUICoreApplicationAuthorizationItem deviceType](self, "deviceType"), v11 == -[CNUICoreApplicationAuthorizationItem deviceType](equalCopy, "deviceType")))
     {
-      v12 = [(CNUICoreApplicationAuthorizationItem *)self authorization];
-      v13 = v12 == [(CNUICoreApplicationAuthorizationItem *)v4 authorization];
+      authorization = [(CNUICoreApplicationAuthorizationItem *)self authorization];
+      v13 = authorization == [(CNUICoreApplicationAuthorizationItem *)equalCopy authorization];
     }
 
     else
@@ -118,59 +118,59 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(CNUICoreApplicationAuthorizationItem *)self icon];
-  v6 = [(CNUICoreApplicationAuthorizationItem *)self name];
-  v7 = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
-  v8 = [v4 initWithIcon:v5 name:v6 bundleIdentifier:v7 deviceType:-[CNUICoreApplicationAuthorizationItem deviceType](self authorization:"deviceType") shouldTakeSnapshot:{-[CNUICoreApplicationAuthorizationItem authorization](self, "authorization"), 0}];
+  icon = [(CNUICoreApplicationAuthorizationItem *)self icon];
+  name = [(CNUICoreApplicationAuthorizationItem *)self name];
+  bundleIdentifier = [(CNUICoreApplicationAuthorizationItem *)self bundleIdentifier];
+  v8 = [v4 initWithIcon:icon name:name bundleIdentifier:bundleIdentifier deviceType:-[CNUICoreApplicationAuthorizationItem deviceType](self authorization:"deviceType") shouldTakeSnapshot:{-[CNUICoreApplicationAuthorizationItem authorization](self, "authorization"), 0}];
 
-  v9 = [(CNUICoreApplicationAuthorizationItem *)self snapshot];
+  snapshot = [(CNUICoreApplicationAuthorizationItem *)self snapshot];
   v10 = v8[6];
-  v8[6] = v9;
+  v8[6] = snapshot;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   icon = self->_icon;
-  v5 = a3;
-  [v5 encodeObject:icon forKey:@"_icon"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
-  [v5 encodeInteger:self->_deviceType forKey:@"_deviceType"];
-  [v5 encodeInteger:self->_authorization forKey:@"_authorization"];
-  [v5 encodeObject:self->_snapshot forKey:@"_snapshot"];
+  coderCopy = coder;
+  [coderCopy encodeObject:icon forKey:@"_icon"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"_bundleIdentifier"];
+  [coderCopy encodeInteger:self->_deviceType forKey:@"_deviceType"];
+  [coderCopy encodeInteger:self->_authorization forKey:@"_authorization"];
+  [coderCopy encodeObject:self->_snapshot forKey:@"_snapshot"];
 }
 
-- (CNUICoreApplicationAuthorizationItem)initWithCoder:(id)a3
+- (CNUICoreApplicationAuthorizationItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CNUICoreApplicationAuthorizationItem;
   v5 = [(CNUICoreApplicationAuthorizationItem *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_icon"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_icon"];
     v7 = [v6 copy];
     icon = v5->_icon;
     v5->_icon = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     v10 = [v9 copy];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_bundleIdentifier"];
     v13 = [v12 copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v13;
 
-    v5->_deviceType = [v4 decodeIntegerForKey:@"_deviceType"];
-    v5->_authorization = [v4 decodeIntegerForKey:@"_authorization"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_snapshot"];
+    v5->_deviceType = [coderCopy decodeIntegerForKey:@"_deviceType"];
+    v5->_authorization = [coderCopy decodeIntegerForKey:@"_authorization"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_snapshot"];
     v16 = [v15 copy];
     snapshot = v5->_snapshot;
     v5->_snapshot = v16;
@@ -181,12 +181,12 @@
   return v5;
 }
 
-- (CNUICoreApplicationAuthorizationItem)initWithIcon:(id)a3 name:(id)a4 bundleIdentifier:(id)a5 deviceType:(int64_t)a6 authorization:(int64_t)a7 shouldTakeSnapshot:(BOOL)a8
+- (CNUICoreApplicationAuthorizationItem)initWithIcon:(id)icon name:(id)name bundleIdentifier:(id)identifier deviceType:(int64_t)type authorization:(int64_t)authorization shouldTakeSnapshot:(BOOL)snapshot
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (!v15)
+  iconCopy = icon;
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (!nameCopy)
   {
     v29 = MEMORY[0x1E695DF30];
     v30 = *MEMORY[0x1E695D940];
@@ -194,8 +194,8 @@
     goto LABEL_11;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = identifierCopy;
+  if (!identifierCopy)
   {
     v29 = MEMORY[0x1E695DF30];
     v30 = *MEMORY[0x1E695D940];
@@ -210,11 +210,11 @@ LABEL_11:
   v18 = [(CNUICoreApplicationAuthorizationItem *)&v33 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [iconCopy copy];
     icon = v18->_icon;
     v18->_icon = v19;
 
-    v21 = [v15 copy];
+    v21 = [nameCopy copy];
     name = v18->_name;
     v18->_name = v21;
 
@@ -222,20 +222,20 @@ LABEL_11:
     bundleIdentifier = v18->_bundleIdentifier;
     v18->_bundleIdentifier = v23;
 
-    v18->_deviceType = a6;
-    v18->_authorization = a7;
-    if (a8)
+    v18->_deviceType = type;
+    v18->_authorization = authorization;
+    if (snapshot)
     {
-      v25 = [(CNUICoreApplicationAuthorizationItem *)v18 copy];
+      null = [(CNUICoreApplicationAuthorizationItem *)v18 copy];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
     snapshot = v18->_snapshot;
-    v18->_snapshot = v25;
+    v18->_snapshot = null;
 
     v27 = v18;
   }
@@ -245,7 +245,7 @@ LABEL_11:
 
 - (CNUICoreApplicationAuthorizationItem)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }

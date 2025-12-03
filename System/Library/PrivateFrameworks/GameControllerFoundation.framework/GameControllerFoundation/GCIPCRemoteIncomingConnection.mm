@@ -1,9 +1,9 @@
 @interface GCIPCRemoteIncomingConnection
 + (id)sharedConnectionWorkloop;
-- (GCIPCRemoteIncomingConnection)initWithConnection:(id)a3;
+- (GCIPCRemoteIncomingConnection)initWithConnection:(id)connection;
 - (id)remoteProxy;
-- (id)remoteProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteProxyWithErrorHandler:(id)a3;
+- (id)remoteProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteProxyWithErrorHandler:(id)handler;
 @end
 
 @implementation GCIPCRemoteIncomingConnection
@@ -31,17 +31,17 @@ void __57__GCIPCRemoteIncomingConnection_sharedConnectionWorkloop__block_invoke(
   dispatch_activate(v2);
 }
 
-- (GCIPCRemoteIncomingConnection)initWithConnection:(id)a3
+- (GCIPCRemoteIncomingConnection)initWithConnection:(id)connection
 {
   v8.receiver = self;
   v8.super_class = GCIPCRemoteIncomingConnection;
-  v3 = [(GCIPCRemoteConnection *)&v8 initWithConnection:a3];
+  v3 = [(GCIPCRemoteConnection *)&v8 initWithConnection:connection];
   v4 = v3;
   if (v3)
   {
-    v5 = [(GCIPCRemoteConnection *)v3 connection];
-    v6 = [objc_opt_class() sharedConnectionWorkloop];
-    [v5 _setQueue:v6];
+    connection = [(GCIPCRemoteConnection *)v3 connection];
+    sharedConnectionWorkloop = [objc_opt_class() sharedConnectionWorkloop];
+    [connection _setQueue:sharedConnectionWorkloop];
   }
 
   return v4;
@@ -49,26 +49,26 @@ void __57__GCIPCRemoteIncomingConnection_sharedConnectionWorkloop__block_invoke(
 
 - (id)remoteProxy
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 remoteObjectProxy];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)remoteProxyWithErrorHandler:(id)a3
+- (id)remoteProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

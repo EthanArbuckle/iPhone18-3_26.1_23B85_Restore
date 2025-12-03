@@ -1,9 +1,9 @@
 @interface TUIProactiveCandidateCell
-- (TUIProactiveCandidateCell)initWithCoder:(id)a3;
-- (TUIProactiveCandidateCell)initWithFrame:(CGRect)a3;
+- (TUIProactiveCandidateCell)initWithCoder:(id)coder;
+- (TUIProactiveCandidateCell)initWithFrame:(CGRect)frame;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setCandidate:(id)a3;
+- (void)setCandidate:(id)candidate;
 - (void)updateSlotContentView;
 @end
 
@@ -11,28 +11,28 @@
 
 - (void)updateSlotContentView
 {
-  v40 = [(TUIProactiveCandidateCell *)self candidate];
-  if (![v40 slotID])
+  candidate = [(TUIProactiveCandidateCell *)self candidate];
+  if (![candidate slotID])
   {
-    v3 = [(TUIProactiveCandidateCell *)self slotContentView];
-    v37 = [v3 layer];
-    [v37 setContents:0];
+    slotContentView = [(TUIProactiveCandidateCell *)self slotContentView];
+    layer = [slotContentView layer];
+    [layer setContents:0];
     goto LABEL_14;
   }
 
-  v3 = [MEMORY[0x1E6979320] objectForSlot:{objc_msgSend(v40, "slotID")}];
+  slotContentView = [MEMORY[0x1E6979320] objectForSlot:{objc_msgSend(candidate, "slotID")}];
   [(TUIProactiveCandidateCell *)self bounds];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
-  if ([v40 isStickerCandidate])
+  if ([candidate isStickerCandidate])
   {
-    v12 = [(TUICandidateBaseCell *)self style];
-    [v12 minimumCellPadding];
+    style = [(TUICandidateBaseCell *)self style];
+    [style minimumCellPadding];
     v14 = v13 * 0.5;
-    v15 = [(TUICandidateBaseCell *)self style];
-    [v15 minimumCellPadding];
+    style2 = [(TUICandidateBaseCell *)self style];
+    [style2 minimumCellPadding];
     v17 = v16 * 0.5;
     v42.origin.x = x;
     v42.origin.y = y;
@@ -45,41 +45,41 @@
     height = v43.size.height;
   }
 
-  v18 = [(TUICandidateBaseCell *)self style];
-  [v18 extraCellPadding];
+  style3 = [(TUICandidateBaseCell *)self style];
+  [style3 extraCellPadding];
   v20 = y + v19 * 0.5;
 
-  v21 = [(TUIProactiveCandidateCell *)self slotContentView];
-  [v21 setFrame:{x, v20, width, height}];
+  slotContentView2 = [(TUIProactiveCandidateCell *)self slotContentView];
+  [slotContentView2 setFrame:{x, v20, width, height}];
 
-  v22 = [(TUIProactiveCandidateCell *)self slotContentView];
-  v23 = [v22 layer];
-  [v23 setContents:v3];
+  slotContentView3 = [(TUIProactiveCandidateCell *)self slotContentView];
+  layer2 = [slotContentView3 layer];
+  [layer2 setContents:slotContentView];
 
   v24 = TUIScreenScaleForView(self);
-  v25 = [(TUIProactiveCandidateCell *)self slotContentView];
-  v26 = [v25 layer];
-  [v26 setContentsScale:v24];
+  slotContentView4 = [(TUIProactiveCandidateCell *)self slotContentView];
+  layer3 = [slotContentView4 layer];
+  [layer3 setContentsScale:v24];
 
   v27 = TUIScreenScaleForView(self);
-  v28 = [(TUIProactiveCandidateCell *)self slotContentView];
-  v29 = [v28 layer];
-  [v29 setRasterizationScale:v27];
+  slotContentView5 = [(TUIProactiveCandidateCell *)self slotContentView];
+  layer4 = [slotContentView5 layer];
+  [layer4 setRasterizationScale:v27];
 
-  v30 = [(TUICandidateBaseCell *)self style];
+  style4 = [(TUICandidateBaseCell *)self style];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v31 = [(TUICandidateBaseCell *)self style];
-  v32 = [v31 proactiveCandidateContentsGravity];
+  style5 = [(TUICandidateBaseCell *)self style];
+  proactiveCandidateContentsGravity = [style5 proactiveCandidateContentsGravity];
 
-  if (!v32)
+  if (!proactiveCandidateContentsGravity)
   {
 LABEL_9:
-    if ([v40 isStickerCandidate])
+    if ([candidate isStickerCandidate])
     {
       v38 = MEMORY[0x1E6979DE8];
     }
@@ -90,42 +90,42 @@ LABEL_9:
     }
 
     v39 = *v38;
-    v33 = [(TUIProactiveCandidateCell *)self slotContentView];
-    v34 = [v33 layer];
-    [v34 setContentsGravity:v39];
+    slotContentView6 = [(TUIProactiveCandidateCell *)self slotContentView];
+    layer5 = [slotContentView6 layer];
+    [layer5 setContentsGravity:v39];
     goto LABEL_13;
   }
 
-  v33 = [(TUICandidateBaseCell *)self style];
-  v34 = [v33 proactiveCandidateContentsGravity];
-  v35 = [(TUIProactiveCandidateCell *)self slotContentView];
-  v36 = [v35 layer];
-  [v36 setContentsGravity:v34];
+  slotContentView6 = [(TUICandidateBaseCell *)self style];
+  layer5 = [slotContentView6 proactiveCandidateContentsGravity];
+  slotContentView7 = [(TUIProactiveCandidateCell *)self slotContentView];
+  layer6 = [slotContentView7 layer];
+  [layer6 setContentsGravity:layer5];
 
 LABEL_13:
-  v37 = [(TUIProactiveCandidateCell *)self slotContentView];
-  [v37 setAutoresizingMask:18];
+  layer = [(TUIProactiveCandidateCell *)self slotContentView];
+  [layer setAutoresizingMask:18];
 LABEL_14:
 }
 
-- (void)setCandidate:(id)a3
+- (void)setCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   candidate = self->_candidate;
-  if (candidate != v5)
+  if (candidate != candidateCopy)
   {
-    v7 = v5;
-    candidate = [candidate isEqual:v5];
-    v5 = v7;
+    v7 = candidateCopy;
+    candidate = [candidate isEqual:candidateCopy];
+    candidateCopy = v7;
     if ((candidate & 1) == 0)
     {
-      objc_storeStrong(&self->_candidate, a3);
+      objc_storeStrong(&self->_candidate, candidate);
       candidate = [(TUIProactiveCandidateCell *)self updateSlotContentView];
-      v5 = v7;
+      candidateCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](candidate, v5);
+  MEMORY[0x1EEE66BB8](candidate, candidateCopy);
 }
 
 - (void)layoutSubviews
@@ -136,11 +136,11 @@ LABEL_14:
   [(TUIProactiveCandidateCell *)self updateSlotContentView];
 }
 
-- (TUIProactiveCandidateCell)initWithCoder:(id)a3
+- (TUIProactiveCandidateCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUIProactiveCandidateCell;
-  v3 = [(TUIProactiveCandidateCell *)&v6 initWithCoder:a3];
+  v3 = [(TUIProactiveCandidateCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -150,11 +150,11 @@ LABEL_14:
   return v4;
 }
 
-- (TUIProactiveCandidateCell)initWithFrame:(CGRect)a3
+- (TUIProactiveCandidateCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUIProactiveCandidateCell;
-  v3 = [(TUICandidateBaseCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateBaseCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -169,9 +169,9 @@ LABEL_14:
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(TUIProactiveCandidateCell *)self setSlotContentView:v3];
 
-  v5 = [(TUIProactiveCandidateCell *)self contentView];
-  v4 = [(TUIProactiveCandidateCell *)self slotContentView];
-  [v5 addSubview:v4];
+  contentView = [(TUIProactiveCandidateCell *)self contentView];
+  slotContentView = [(TUIProactiveCandidateCell *)self slotContentView];
+  [contentView addSubview:slotContentView];
 }
 
 @end

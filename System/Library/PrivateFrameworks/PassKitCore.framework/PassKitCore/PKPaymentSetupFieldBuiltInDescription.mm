@@ -1,10 +1,10 @@
 @interface PKPaymentSetupFieldBuiltInDescription
-- (PKPaymentSetupFieldBuiltInDescription)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInDescription)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInDescription
 
-- (PKPaymentSetupFieldBuiltInDescription)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInDescription)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PKPaymentSetupFieldBuiltInDescription;

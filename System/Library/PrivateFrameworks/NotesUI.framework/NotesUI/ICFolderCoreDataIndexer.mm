@@ -2,38 +2,38 @@
 - (BOOL)hideUnmigratedLocalLegacyAccounts;
 - (BOOL)includeMigratedICloudLegacyAccounts;
 - (BOOL)includeMigratedLocalLegacyAccounts;
-- (BOOL)isCustomFolder:(id)a3;
-- (BOOL)isDefaultFolder:(id)a3;
-- (BOOL)itemIdentifiersContainCustomFolder:(id)a3;
-- (ICFolderCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4 overrideContainerIdentifier:(id)a5;
+- (BOOL)isCustomFolder:(id)folder;
+- (BOOL)isDefaultFolder:(id)folder;
+- (BOOL)itemIdentifiersContainCustomFolder:(id)folder;
+- (ICFolderCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext overrideContainerIdentifier:(id)identifier;
 - (NSSet)allSmartFolderObjectIDs;
 - (NSSet)allVirtualSmartFolderIdentifiers;
 - (id)activeFetchedResultsControllers;
 - (id)expansionStateContext;
 - (id)firstRelevantItemIdentifier;
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5;
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller;
 - (id)legacyFolderFetchPredicate;
 - (id)modernDescendantsPredicate;
 - (id)modernFolderFetchPredicate;
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
-- (id)nextRelevantItemIdentifierAfter:(id)a3;
-- (id)rootFolderListSectionIdentifiersForSection:(id)a3;
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3;
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3;
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5;
-- (id)sortedFolderItemIdentifiersForItemIdentifiers:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5;
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (id)nextRelevantItemIdentifierAfter:(id)after;
+- (id)rootFolderListSectionIdentifiersForSection:(id)section;
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section;
+- (id)sectionIdentifiersForSectionType:(unint64_t)type;
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (id)sortedFolderItemIdentifiersForItemIdentifiers:(id)identifiers legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (unint64_t)countOfLegacyAccounts;
 - (unint64_t)countOfModernAccounts;
 - (unint64_t)totalFolderCount;
-- (void)addAccountItemsIfNeededForFolderSectionIdentifier:(id)a3;
-- (void)addChildFoldersOfParentFolder:(id)a3 toSectionSnapshot:(id)a4;
+- (void)addAccountItemsIfNeededForFolderSectionIdentifier:(id)identifier;
+- (void)addChildFoldersOfParentFolder:(id)folder toSectionSnapshot:(id)snapshot;
 - (void)addSystemSectionIfNeeded;
-- (void)deleteObjectWithIDFromIndex:(id)a3 inSection:(id)a4;
-- (void)deleteWithDecisionController:(id)a3 completion:(id)a4;
+- (void)deleteObjectWithIDFromIndex:(id)index inSection:(id)section;
+- (void)deleteWithDecisionController:(id)controller completion:(id)completion;
 - (void)didIndex;
-- (void)setAncestorObjectID:(id)a3;
-- (void)setShouldIncludeSmartFolders:(BOOL)a3;
-- (void)sortIdentifiersWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
+- (void)setAncestorObjectID:(id)d;
+- (void)setShouldIncludeSmartFolders:(BOOL)folders;
+- (void)sortIdentifiersWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (void)willIndex;
 @end
 
@@ -48,9 +48,9 @@
     v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"account.didChooseToMigrate == nil OR account.didChooseToMigrate == NO"];
     if ([(ICFolderCoreDataIndexer *)self includeMigratedLocalLegacyAccounts]|| [(ICFolderCoreDataIndexer *)self includeMigratedICloudLegacyAccounts])
     {
-      v5 = [(ICFolderCoreDataIndexer *)self includeMigratedLocalLegacyAccounts];
+      includeMigratedLocalLegacyAccounts = [(ICFolderCoreDataIndexer *)self includeMigratedLocalLegacyAccounts];
       v6 = MEMORY[0x1E696AE18];
-      v7 = [MEMORY[0x1E696AD98] numberWithInteger:!v5];
+      v7 = [MEMORY[0x1E696AD98] numberWithInteger:!includeMigratedLocalLegacyAccounts];
       v8 = [v6 predicateWithFormat:@"account.type == %@", v7];
 
       v9 = MEMORY[0x1E696AB28];
@@ -97,31 +97,31 @@
 
 - (BOOL)includeMigratedLocalLegacyAccounts
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x1E69B7B30]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7B30]];
 
   return v3;
 }
 
 - (BOOL)includeMigratedICloudLegacyAccounts
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:*MEMORY[0x1E69B7B28]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7B28]];
 
   return v3;
 }
 
 - (BOOL)hideUnmigratedLocalLegacyAccounts
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if ([v2 BOOLForKey:*MEMORY[0x1E69B7AF0]])
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if ([standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7AF0]])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 BOOLForKey:*MEMORY[0x1E69B7AE8]];
+    v3 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7AE8]];
   }
 
   return v3;
@@ -137,22 +137,22 @@
     [v4 addObject:v5];
   }
 
-  v6 = [(ICFolderCoreDataIndexer *)self accountObjectID];
+  accountObjectID = [(ICFolderCoreDataIndexer *)self accountObjectID];
 
-  if (v6)
+  if (accountObjectID)
   {
     v7 = MEMORY[0x1E696AE18];
-    v8 = [(ICFolderCoreDataIndexer *)self accountObjectID];
-    v9 = [v7 predicateWithFormat:@"account == %@", v8];
+    accountObjectID2 = [(ICFolderCoreDataIndexer *)self accountObjectID];
+    v9 = [v7 predicateWithFormat:@"account == %@", accountObjectID2];
     [v4 addObject:v9];
   }
 
-  v10 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+  ancestorObjectID = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
 
-  if (v10)
+  if (ancestorObjectID)
   {
-    v11 = [(ICFolderCoreDataIndexer *)self modernDescendantsPredicate];
-    [v4 addObject:v11];
+    modernDescendantsPredicate = [(ICFolderCoreDataIndexer *)self modernDescendantsPredicate];
+    [v4 addObject:modernDescendantsPredicate];
   }
 
   v12 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v4];
@@ -191,10 +191,10 @@ id __53__ICFolderCoreDataIndexer_modernDescendantsPredicate__block_invoke(uint64
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-  v3 = [v2 allValues];
+  folderListSectionIdentifiersToFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+  allValues = [folderListSectionIdentifiersToFolderItemIdentifiers allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -206,13 +206,13 @@ id __53__ICFolderCoreDataIndexer_modernDescendantsPredicate__block_invoke(uint64
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) count];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -229,18 +229,18 @@ id __53__ICFolderCoreDataIndexer_modernDescendantsPredicate__block_invoke(uint64
 - (id)activeFetchedResultsControllers
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
-  if (v4)
+  modernFetchedResultsController = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
+  if (modernFetchedResultsController)
   {
-    v5 = v4;
-    v6 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
-    if (v6)
+    v5 = modernFetchedResultsController;
+    ancestorObjectID = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+    if (ancestorObjectID)
     {
-      v7 = v6;
-      v8 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
-      v9 = [v8 ic_isModernContainerType];
+      v7 = ancestorObjectID;
+      ancestorObjectID2 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+      ic_isModernContainerType = [ancestorObjectID2 ic_isModernContainerType];
 
-      if (!v9)
+      if (!ic_isModernContainerType)
       {
         goto LABEL_7;
       }
@@ -250,42 +250,42 @@ id __53__ICFolderCoreDataIndexer_modernDescendantsPredicate__block_invoke(uint64
     {
     }
 
-    v10 = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
-    [v3 addObject:v10];
+    modernFetchedResultsController2 = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
+    [v3 addObject:modernFetchedResultsController2];
   }
 
 LABEL_7:
-  v11 = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
-  if (!v11 || ![(ICFolderCoreDataIndexer *)self shouldIncludeLegacyAccounts])
+  legacyFetchedResultsController = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
+  if (!legacyFetchedResultsController || ![(ICFolderCoreDataIndexer *)self shouldIncludeLegacyAccounts])
   {
     goto LABEL_14;
   }
 
-  v12 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
-  if (!v12)
+  ancestorObjectID3 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+  if (!ancestorObjectID3)
   {
 
     goto LABEL_13;
   }
 
-  v13 = v12;
-  v14 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
-  v15 = [v14 ic_isLegacyContainerType];
+  v13 = ancestorObjectID3;
+  ancestorObjectID4 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+  ic_isLegacyContainerType = [ancestorObjectID4 ic_isLegacyContainerType];
 
-  if (v15)
+  if (ic_isLegacyContainerType)
   {
 LABEL_13:
-    v11 = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
-    [v3 addObject:v11];
+    legacyFetchedResultsController = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
+    [v3 addObject:legacyFetchedResultsController];
 LABEL_14:
   }
 
   if ([(ICFolderCoreDataIndexer *)self shouldIncludeTags])
   {
-    v16 = [(ICFolderCoreDataIndexer *)self tagIndexer];
-    v17 = [v16 activeFetchedResultsControllers];
-    v18 = [v17 allObjects];
-    [v3 addObjectsFromArray:v18];
+    tagIndexer = [(ICFolderCoreDataIndexer *)self tagIndexer];
+    activeFetchedResultsControllers = [tagIndexer activeFetchedResultsControllers];
+    allObjects = [activeFetchedResultsControllers allObjects];
+    [v3 addObjectsFromArray:allObjects];
   }
 
   v19 = [v3 copy];
@@ -295,13 +295,13 @@ LABEL_14:
 
 - (void)willIndex
 {
-  v3 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__ICFolderCoreDataIndexer_willIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __36__ICFolderCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
@@ -342,13 +342,13 @@ void __36__ICFolderCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
 
 - (void)didIndex
 {
-  v3 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__ICFolderCoreDataIndexer_didIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __35__ICFolderCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
@@ -456,19 +456,19 @@ LABEL_20:
 LABEL_21:
 }
 
-- (ICFolderCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4 overrideContainerIdentifier:(id)a5
+- (ICFolderCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext overrideContainerIdentifier:(id)identifier
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  identifierCopy = identifier;
   v39.receiver = self;
   v39.super_class = ICFolderCoreDataIndexer;
-  v11 = [(ICCoreDataIndexer *)&v39 initWithLegacyManagedObjectContext:v8 modernManagedObjectContext:v9];
+  v11 = [(ICCoreDataIndexer *)&v39 initWithLegacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_overrideContainerIdentifier, a5);
+    objc_storeStrong(&v11->_overrideContainerIdentifier, identifier);
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("com.apple.notes.folder-list-index-access-queue", v13);
     indexAccessQueue = v12->_indexAccessQueue;
@@ -487,26 +487,26 @@ LABEL_21:
     v12->_shouldIncludeSubfolders = 1;
     v12->_shouldIncludeLegacyAccounts = 1;
     v12->_shouldAutoExpandSingleSection = 1;
-    if (v8)
+    if (contextCopy)
     {
       v16 = MEMORY[0x1E695D5E0];
       v17 = ICLegacyEntityNameFolder();
       v18 = [v16 fetchRequestWithEntityName:v17];
 
-      v19 = [(ICFolderCoreDataIndexer *)v12 legacyFolderFetchPredicate];
-      [v18 setPredicate:v19];
+      legacyFolderFetchPredicate = [(ICFolderCoreDataIndexer *)v12 legacyFolderFetchPredicate];
+      [v18 setPredicate:legacyFolderFetchPredicate];
 
       v20 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"name" ascending:1];
       v41[0] = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
       [v18 setSortDescriptors:v21];
 
-      v22 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v18 managedObjectContext:v8 sectionNameKeyPath:0 cacheName:0];
+      v22 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v18 managedObjectContext:contextCopy sectionNameKeyPath:0 cacheName:0];
       legacyFetchedResultsController = v12->_legacyFetchedResultsController;
       v12->_legacyFetchedResultsController = v22;
     }
 
-    if (v9)
+    if (objectContextCopy)
     {
       v24 = MEMORY[0x1E695D5E0];
       v25 = objc_opt_class();
@@ -514,8 +514,8 @@ LABEL_21:
       v27 = [v24 fetchRequestWithEntityName:v26];
 
       [v27 setReturnsObjectsAsFaults:0];
-      v28 = [(ICFolderCoreDataIndexer *)v12 modernFolderFetchPredicate];
-      [v27 setPredicate:v28];
+      modernFolderFetchPredicate = [(ICFolderCoreDataIndexer *)v12 modernFolderFetchPredicate];
+      [v27 setPredicate:modernFolderFetchPredicate];
 
       v29 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"folderType" ascending:1];
       v40[0] = v29;
@@ -524,13 +524,13 @@ LABEL_21:
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
       [v27 setSortDescriptors:v31];
 
-      v32 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v27 managedObjectContext:v9 sectionNameKeyPath:0 cacheName:0];
+      v32 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v27 managedObjectContext:objectContextCopy sectionNameKeyPath:0 cacheName:0];
       modernFetchedResultsController = v12->_modernFetchedResultsController;
       v12->_modernFetchedResultsController = v32;
 
       v34 = [ICTagCoreDataIndexer alloc];
       v35 = +[ICFolderListSectionIdentifier tagSectionIdentifier];
-      v36 = [(ICTagCoreDataIndexer *)v34 initWithModernManagedObjectContext:v9 sectionIdentifier:v35];
+      v36 = [(ICTagCoreDataIndexer *)v34 initWithModernManagedObjectContext:objectContextCopy sectionIdentifier:v35];
       tagIndexer = v12->_tagIndexer;
       v12->_tagIndexer = v36;
     }
@@ -541,159 +541,159 @@ LABEL_21:
 
 - (unint64_t)countOfLegacyAccounts
 {
-  v2 = [(ICFolderCoreDataIndexer *)self legacyAccountManagedObjectIDs];
-  v3 = [v2 count];
+  legacyAccountManagedObjectIDs = [(ICFolderCoreDataIndexer *)self legacyAccountManagedObjectIDs];
+  v3 = [legacyAccountManagedObjectIDs count];
 
   return v3;
 }
 
 - (unint64_t)countOfModernAccounts
 {
-  v2 = [(ICFolderCoreDataIndexer *)self modernAccountManagedObjectIDs];
-  v3 = [v2 count];
+  modernAccountManagedObjectIDs = [(ICFolderCoreDataIndexer *)self modernAccountManagedObjectIDs];
+  v3 = [modernAccountManagedObjectIDs count];
 
   return v3;
 }
 
-- (void)setAncestorObjectID:(id)a3
+- (void)setAncestorObjectID:(id)d
 {
-  objc_storeStrong(&self->_ancestorObjectID, a3);
-  v4 = [(ICFolderCoreDataIndexer *)self modernFolderFetchPredicate];
-  v5 = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
-  v6 = [v5 fetchRequest];
-  [v6 setPredicate:v4];
+  objc_storeStrong(&self->_ancestorObjectID, d);
+  modernFolderFetchPredicate = [(ICFolderCoreDataIndexer *)self modernFolderFetchPredicate];
+  modernFetchedResultsController = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
+  fetchRequest = [modernFetchedResultsController fetchRequest];
+  [fetchRequest setPredicate:modernFolderFetchPredicate];
 
-  v9 = [(ICFolderCoreDataIndexer *)self legacyFolderFetchPredicate];
-  v7 = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
-  v8 = [v7 fetchRequest];
-  [v8 setPredicate:v9];
+  legacyFolderFetchPredicate = [(ICFolderCoreDataIndexer *)self legacyFolderFetchPredicate];
+  legacyFetchedResultsController = [(ICFolderCoreDataIndexer *)self legacyFetchedResultsController];
+  fetchRequest2 = [legacyFetchedResultsController fetchRequest];
+  [fetchRequest2 setPredicate:legacyFolderFetchPredicate];
 }
 
-- (void)setShouldIncludeSmartFolders:(BOOL)a3
+- (void)setShouldIncludeSmartFolders:(BOOL)folders
 {
-  self->_shouldIncludeSmartFolders = a3;
-  v6 = [(ICFolderCoreDataIndexer *)self modernFolderFetchPredicate];
-  v4 = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
-  v5 = [v4 fetchRequest];
-  [v5 setPredicate:v6];
+  self->_shouldIncludeSmartFolders = folders;
+  modernFolderFetchPredicate = [(ICFolderCoreDataIndexer *)self modernFolderFetchPredicate];
+  modernFetchedResultsController = [(ICFolderCoreDataIndexer *)self modernFetchedResultsController];
+  fetchRequest = [modernFetchedResultsController fetchRequest];
+  [fetchRequest setPredicate:modernFolderFetchPredicate];
 }
 
 - (NSSet)allSmartFolderObjectIDs
 {
-  v2 = [(ICFolderCoreDataIndexer *)self smartFolderManagedObjectIDs];
-  v3 = [v2 copy];
+  smartFolderManagedObjectIDs = [(ICFolderCoreDataIndexer *)self smartFolderManagedObjectIDs];
+  v3 = [smartFolderManagedObjectIDs copy];
 
   return v3;
 }
 
 - (NSSet)allVirtualSmartFolderIdentifiers
 {
-  v2 = [(ICFolderCoreDataIndexer *)self virtualSmartFolderIdentifiers];
-  v3 = [v2 copy];
+  virtualSmartFolderIdentifiers = [(ICFolderCoreDataIndexer *)self virtualSmartFolderIdentifiers];
+  v3 = [virtualSmartFolderIdentifiers copy];
 
   return v3;
 }
 
 - (id)firstRelevantItemIdentifier
 {
-  v3 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-  v4 = [v3 firstObject];
+  folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+  firstObject = [folderListSectionIdentifiers firstObject];
 
-  if (![v4 sectionType])
+  if (![firstObject sectionType])
   {
-    v5 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-    v6 = [v5 count];
+    folderListSectionIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+    v6 = [folderListSectionIdentifiers2 count];
 
     if (v6 >= 2)
     {
-      v7 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-      v8 = [v7 objectAtIndex:1];
+      folderListSectionIdentifiers3 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+      v8 = [folderListSectionIdentifiers3 objectAtIndex:1];
 
-      v4 = v8;
+      firstObject = v8;
     }
   }
 
-  v9 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
-  v10 = [v9 objectForKeyedSubscript:v4];
-  v11 = [v10 firstObject];
-  v12 = v11;
-  if (v11)
+  folderListSectionIdentifiersToVirtualSmartFolderIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
+  v10 = [folderListSectionIdentifiersToVirtualSmartFolderIdentifiers objectForKeyedSubscript:firstObject];
+  firstObject2 = [v10 firstObject];
+  v12 = firstObject2;
+  if (firstObject2)
   {
-    v13 = v11;
+    firstObject3 = firstObject2;
   }
 
   else
   {
-    v14 = [(ICFolderCoreDataIndexer *)self rootFolderListSectionIdentifiersForSection:v4];
-    v13 = [v14 firstObject];
+    v14 = [(ICFolderCoreDataIndexer *)self rootFolderListSectionIdentifiersForSection:firstObject];
+    firstObject3 = [v14 firstObject];
   }
 
-  return v13;
+  return firstObject3;
 }
 
 - (void)addSystemSectionIfNeeded
 {
-  v3 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
+  folderListSectionIdentifiersToVirtualSmartFolderIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
   v4 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [folderListSectionIdentifiersToVirtualSmartFolderIdentifiers objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    orderedSet = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   }
 
-  v8 = v7;
+  v8 = orderedSet;
 
-  v9 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+  modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __51__ICFolderCoreDataIndexer_addSystemSectionIfNeeded__block_invoke;
   v18 = &unk_1E8468F80;
-  v19 = self;
+  selfCopy = self;
   v10 = v8;
   v20 = v10;
-  [v9 performBlockAndWait:&v15];
+  [modernManagedObjectContext performBlockAndWait:&v15];
 
   if ([v10 count])
   {
-    v11 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+    folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
     v12 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-    [v11 addObject:v12];
+    [folderListSectionIdentifiers addObject:v12];
 
-    v13 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
+    folderListSectionIdentifiersToVirtualSmartFolderIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToVirtualSmartFolderIdentifiers];
     v14 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-    [v13 setObject:v10 forKeyedSubscript:v14];
+    [folderListSectionIdentifiersToVirtualSmartFolderIdentifiers2 setObject:v10 forKeyedSubscript:v14];
   }
 }
 
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
+  sectionCopy = section;
+  controllerCopy = controller;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__46;
   v24 = __Block_byref_object_dispose__46;
-  v25 = [MEMORY[0x1E695DF70] array];
-  v10 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__ICFolderCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResultsController___block_invoke;
   block[3] = &unk_1E846C008;
   block[4] = self;
-  v11 = v9;
+  v11 = controllerCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = sectionCopy;
   v18 = &v20;
-  v19 = a4;
+  indexCopy = index;
   v17 = v12;
-  dispatch_sync(v10, block);
+  dispatch_sync(indexAccessQueue, block);
 
   v13 = [v21[5] copy];
   _Block_object_dispose(&v20, 8);
@@ -1132,55 +1132,55 @@ LABEL_75:
   }
 }
 
-- (void)addAccountItemsIfNeededForFolderSectionIdentifier:(id)a3
+- (void)addAccountItemsIfNeededForFolderSectionIdentifier:(id)identifier
 {
-  v11 = a3;
+  identifierCopy = identifier;
   if ([(ICFolderCoreDataIndexer *)self shouldIncludeAccount]!= 2)
   {
-    v4 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-    v5 = [v4 objectForKeyedSubscript:v11];
+    folderListSectionIdentifiersToFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+    v5 = [folderListSectionIdentifiersToFolderItemIdentifiers objectForKeyedSubscript:identifierCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      orderedSet = v5;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     }
 
-    v8 = v7;
+    v8 = orderedSet;
 
     if ([(ICFolderCoreDataIndexer *)self shouldIncludeAccount]== 1 || [(ICFolderCoreDataIndexer *)self itemIdentifiersContainCustomFolder:v8])
     {
-      v9 = [v11 accountObjectID];
-      [v8 ic_addNonNilObject:v9];
+      accountObjectID = [identifierCopy accountObjectID];
+      [v8 ic_addNonNilObject:accountObjectID];
     }
 
-    v10 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-    [v10 setObject:v8 forKeyedSubscript:v11];
+    folderListSectionIdentifiersToFolderItemIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+    [folderListSectionIdentifiersToFolderItemIdentifiers2 setObject:v8 forKeyedSubscript:identifierCopy];
   }
 }
 
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v8 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v9 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __105__ICFolderCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectContext_modernManagedObjectContext___block_invoke;
   v16[3] = &unk_1E846A3A0;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = contextCopy;
+  v18 = objectContextCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_sync(v9, v16);
+  v11 = objectContextCopy;
+  v12 = contextCopy;
+  dispatch_sync(indexAccessQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -1375,41 +1375,41 @@ void __105__ICFolderCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectC
   }
 }
 
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3
+- (id)sectionIdentifiersForSectionType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-    v4 = [v3 array];
+    folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+    array = [folderListSectionIdentifiers array];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v4;
+  return array;
 }
 
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 1)
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  if (type == 1)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    v11 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __112__ICFolderCoreDataIndexer_sectionSnapshotsForSectionType_legacyManagedObjectContext_modernManagedObjectContext___block_invoke;
     block[3] = &unk_1E846B298;
     block[4] = self;
-    v16 = v8;
-    v18 = v10;
+    v16 = contextCopy;
+    v18 = dictionary;
     v19 = 1;
-    v17 = v9;
-    v12 = v10;
-    dispatch_sync(v11, block);
+    v17 = objectContextCopy;
+    v12 = dictionary;
+    dispatch_sync(indexAccessQueue, block);
 
     v13 = [v12 copy];
   }
@@ -1626,22 +1626,22 @@ LABEL_39:
   }
 }
 
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section
 {
-  v5 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-  if ([v5 count] <= a3)
+  folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+  if ([folderListSectionIdentifiers count] <= section)
   {
     v8 = 0;
     goto LABEL_5;
   }
 
-  v6 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-  v7 = [v6 count];
+  folderListSectionIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+  v7 = [folderListSectionIdentifiers2 count];
 
   if (v7 >= 2)
   {
-    v5 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
-    v8 = [v5 objectAtIndexedSubscript:a3];
+    folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+    v8 = [folderListSectionIdentifiers objectAtIndexedSubscript:section];
 LABEL_5:
 
     goto LABEL_7;
@@ -1653,12 +1653,12 @@ LABEL_7:
   return v8;
 }
 
-- (id)nextRelevantItemIdentifierAfter:(id)a3
+- (id)nextRelevantItemIdentifierAfter:(id)after
 {
-  v4 = a3;
-  v5 = [(ICFolderCoreDataIndexer *)self firstRelevantItemIdentifier];
+  afterCopy = after;
+  firstRelevantItemIdentifier = [(ICFolderCoreDataIndexer *)self firstRelevantItemIdentifier];
   objc_opt_class();
-  v6 = [v4 lastObject];
+  lastObject = [afterCopy lastObject];
   v7 = ICDynamicCast();
 
   if (v7)
@@ -1670,8 +1670,8 @@ LABEL_7:
       v10 = v8;
       v8 = v9;
 
-      v11 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToParentFolderItemIdentifier];
-      v9 = [v11 objectForKeyedSubscript:v8];
+      folderItemIdentifiersToParentFolderItemIdentifier = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToParentFolderItemIdentifier];
+      v9 = [folderItemIdentifiersToParentFolderItemIdentifier objectForKeyedSubscript:v8];
     }
 
     while (v9);
@@ -1681,7 +1681,7 @@ LABEL_7:
     v29 = __Block_byref_object_copy__46;
     v30 = __Block_byref_object_dispose__46;
     v31 = 0;
-    v12 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+    folderListSectionIdentifiersToFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __59__ICFolderCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invoke;
@@ -1689,7 +1689,7 @@ LABEL_7:
     v13 = v8;
     v24 = v13;
     v25 = &v26;
-    [v12 enumerateKeysAndObjectsUsingBlock:&v20];
+    [folderListSectionIdentifiersToFolderItemIdentifiers enumerateKeysAndObjectsUsingBlock:&v20];
 
     if (v27[5])
     {
@@ -1709,18 +1709,18 @@ LABEL_7:
 
         v17 = [v14 objectAtIndex:v16];
 
-        v5 = v17;
+        firstRelevantItemIdentifier = v17;
       }
     }
 
-    v18 = v5;
+    v18 = firstRelevantItemIdentifier;
 
     _Block_object_dispose(&v26, 8);
   }
 
   else
   {
-    v18 = v5;
+    v18 = firstRelevantItemIdentifier;
   }
 
   return v18;
@@ -1736,11 +1736,11 @@ void __59__ICFolderCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invok
   }
 }
 
-- (void)deleteObjectWithIDFromIndex:(id)a3 inSection:(id)a4
+- (void)deleteObjectWithIDFromIndex:(id)index inSection:(id)section
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  sectionCopy = section;
   objc_opt_class();
   v8 = ICDynamicCast();
   if (v8)
@@ -1749,8 +1749,8 @@ void __59__ICFolderCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invok
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    folderItemIdentifiersToChildFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
+    v10 = [folderItemIdentifiersToChildFolderItemIdentifiers objectForKeyedSubscript:indexCopy];
 
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
@@ -1775,15 +1775,15 @@ void __59__ICFolderCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invok
       while (v12);
     }
 
-    v15 = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
+    indexAccessQueue = [(ICFolderCoreDataIndexer *)self indexAccessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__ICFolderCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___block_invoke;
     block[3] = &unk_1E8468D98;
     block[4] = self;
-    v18 = v6;
+    v18 = indexCopy;
     v19 = v8;
-    dispatch_sync(v15, block);
+    dispatch_sync(indexAccessQueue, block);
   }
 
   else
@@ -1791,7 +1791,7 @@ void __59__ICFolderCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invok
     v16 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [(ICFolderCoreDataIndexer *)v6 deleteObjectWithIDFromIndex:v7 inSection:v16];
+      [(ICFolderCoreDataIndexer *)indexCopy deleteObjectWithIDFromIndex:sectionCopy inSection:v16];
     }
   }
 }
@@ -1830,15 +1830,15 @@ void __65__ICFolderCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___block
   [v9 setObject:v10 forKeyedSubscript:*(a1 + 48)];
 }
 
-- (void)deleteWithDecisionController:(id)a3 completion:(id)a4
+- (void)deleteWithDecisionController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sourceObjects];
-  v9 = [v8 valueForKey:@"objectID"];
+  completionCopy = completion;
+  controllerCopy = controller;
+  sourceObjects = [controllerCopy sourceObjects];
+  v9 = [sourceObjects valueForKey:@"objectID"];
 
-  v10 = [v7 sourceObjects];
-  v11 = [v10 ic_compactMap:&__block_literal_global_52];
+  sourceObjects2 = [controllerCopy sourceObjects];
+  v11 = [sourceObjects2 ic_compactMap:&__block_literal_global_52];
 
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v9];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1847,12 +1847,12 @@ void __65__ICFolderCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___block
   v16[3] = &unk_1E846C058;
   v17 = v9;
   v18 = v12;
-  v19 = self;
-  v20 = v6;
+  selfCopy = self;
+  v20 = completionCopy;
   v13 = v12;
   v14 = v9;
-  v15 = v6;
-  [v7 performDecisionWithCompletion:v16];
+  v15 = completionCopy;
+  [controllerCopy performDecisionWithCompletion:v16];
 }
 
 ICFolderListSectionIdentifier *__67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion___block_invoke(uint64_t a1, void *a2)
@@ -1946,23 +1946,23 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
 
 - (id)expansionStateContext
 {
-  v2 = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  ancestorObjectID = [(ICFolderCoreDataIndexer *)self ancestorObjectID];
+  uRIRepresentation = [ancestorObjectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (void)addChildFoldersOfParentFolder:(id)a3 toSectionSnapshot:(id)a4
+- (void)addChildFoldersOfParentFolder:(id)folder toSectionSnapshot:(id)snapshot
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  folderCopy = folder;
+  snapshotCopy = snapshot;
+  folderItemIdentifiersToChildFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
+  v9 = [folderItemIdentifiersToChildFolderItemIdentifiers objectForKeyedSubscript:folderCopy];
 
-  v10 = [v9 array];
-  [v7 appendItems:v10 intoParent:v6];
+  array = [v9 array];
+  [snapshotCopy appendItems:array intoParent:folderCopy];
 
   v18 = 0u;
   v19 = 0u;
@@ -1984,7 +1984,7 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
           objc_enumerationMutation(v11);
         }
 
-        [(ICFolderCoreDataIndexer *)self addChildFoldersOfParentFolder:*(*(&v16 + 1) + 8 * v15++) toSectionSnapshot:v7, v16];
+        [(ICFolderCoreDataIndexer *)self addChildFoldersOfParentFolder:*(*(&v16 + 1) + 8 * v15++) toSectionSnapshot:snapshotCopy, v16];
       }
 
       while (v13 != v15);
@@ -1995,21 +1995,21 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
   }
 }
 
-- (void)sortIdentifiersWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (void)sortIdentifiersWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
   v50 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v6 = a4;
-  v7 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  folderListSectionIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiers];
   v8 = +[ICFolderListSectionIdentifier sortDescriptors];
-  [v7 sortUsingDescriptors:v8];
+  [folderListSectionIdentifiers sortUsingDescriptors:v8];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v9 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-  v10 = [v9 copy];
+  folderListSectionIdentifiersToFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+  v10 = [folderListSectionIdentifiersToFolderItemIdentifiers copy];
 
   obj = v10;
   v11 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -2027,26 +2027,26 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
         }
 
         v15 = *(*(&v44 + 1) + 8 * i);
-        v16 = [v15 accountObjectID];
+        accountObjectID = [v15 accountObjectID];
 
-        if (v16)
+        if (accountObjectID)
         {
           v41[0] = MEMORY[0x1E69E9820];
           v41[1] = 3221225472;
           v41[2] = __100__ICFolderCoreDataIndexer_sortIdentifiersWithLegacyManagedObjectContext_modernManagedObjectContext___block_invoke;
           v41[3] = &unk_1E8468F80;
-          v42 = v6;
+          v42 = objectContextCopy;
           v43 = v15;
           [v42 performBlockAndWait:v41];
         }
 
-        v17 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-        v18 = [v17 objectForKeyedSubscript:v15];
+        folderListSectionIdentifiersToFolderItemIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+        v18 = [folderListSectionIdentifiersToFolderItemIdentifiers2 objectForKeyedSubscript:v15];
 
-        v19 = [(ICFolderCoreDataIndexer *)self sortedFolderItemIdentifiersForItemIdentifiers:v18 legacyManagedObjectContext:v36 modernManagedObjectContext:v6];
+        v19 = [(ICFolderCoreDataIndexer *)self sortedFolderItemIdentifiersForItemIdentifiers:v18 legacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy];
         v20 = [v19 mutableCopy];
-        v21 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-        [v21 setObject:v20 forKeyedSubscript:v15];
+        folderListSectionIdentifiersToFolderItemIdentifiers3 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+        [folderListSectionIdentifiersToFolderItemIdentifiers3 setObject:v20 forKeyedSubscript:v15];
       }
 
       v12 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -2059,8 +2059,8 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
-  v23 = [v22 copy];
+  folderItemIdentifiersToChildFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
+  v23 = [folderItemIdentifiersToChildFolderItemIdentifiers copy];
 
   v35 = v23;
   v24 = [v23 countByEnumeratingWithState:&v37 objects:v48 count:16];
@@ -2078,13 +2078,13 @@ uint64_t __67__ICFolderCoreDataIndexer_deleteWithDecisionController_completion__
         }
 
         v28 = *(*(&v37 + 1) + 8 * j);
-        v29 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
-        v30 = [v29 objectForKeyedSubscript:v28];
+        folderItemIdentifiersToChildFolderItemIdentifiers2 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
+        v30 = [folderItemIdentifiersToChildFolderItemIdentifiers2 objectForKeyedSubscript:v28];
 
-        v31 = [(ICFolderCoreDataIndexer *)self sortedFolderItemIdentifiersForItemIdentifiers:v30 legacyManagedObjectContext:v36 modernManagedObjectContext:v6];
+        v31 = [(ICFolderCoreDataIndexer *)self sortedFolderItemIdentifiersForItemIdentifiers:v30 legacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy];
         v32 = [v31 mutableCopy];
-        v33 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
-        [v33 setObject:v32 forKeyedSubscript:v28];
+        folderItemIdentifiersToChildFolderItemIdentifiers3 = [(ICFolderCoreDataIndexer *)self folderItemIdentifiersToChildFolderItemIdentifiers];
+        [folderItemIdentifiersToChildFolderItemIdentifiers3 setObject:v32 forKeyedSubscript:v28];
       }
 
       v25 = [v35 countByEnumeratingWithState:&v37 objects:v48 count:16];
@@ -2103,44 +2103,44 @@ void __100__ICFolderCoreDataIndexer_sortIdentifiersWithLegacyManagedObjectContex
   [*(a1 + 32) ic_refreshObject:v4 mergeChanges:1];
 }
 
-- (id)sortedFolderItemIdentifiersForItemIdentifiers:(id)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5
+- (id)sortedFolderItemIdentifiersForItemIdentifiers:(id)identifiers legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  array = [MEMORY[0x1E695DF70] array];
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
   v59 = __Block_byref_object_copy__46;
   v60 = __Block_byref_object_dispose__46;
   v61 = 0;
-  v12 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
   v53 = __Block_byref_object_copy__46;
   v54 = __Block_byref_object_dispose__46;
   v55 = 0;
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __127__ICFolderCoreDataIndexer_sortedFolderItemIdentifiersForItemIdentifiers_legacyManagedObjectContext_modernManagedObjectContext___block_invoke;
   v41[3] = &unk_1E846C0C8;
-  v16 = v8;
+  v16 = identifiersCopy;
   v42 = v16;
-  v17 = v13;
+  v17 = array3;
   v43 = v17;
-  v18 = v10;
+  v18 = objectContextCopy;
   v44 = v18;
-  v45 = self;
-  v19 = v14;
+  selfCopy = self;
+  v19 = array4;
   v46 = v19;
-  v20 = v15;
+  v20 = array5;
   v47 = v20;
-  v21 = v11;
+  v21 = array;
   v48 = v21;
   v49 = &v56;
   [v18 performBlockAndWait:v41];
@@ -2152,22 +2152,22 @@ void __100__ICFolderCoreDataIndexer_sortIdentifiersWithLegacyManagedObjectContex
   v34 = v22;
   v23 = v17;
   v35 = v23;
-  v24 = v9;
+  v24 = contextCopy;
   v36 = v24;
-  v37 = self;
+  selfCopy2 = self;
   v25 = v19;
   v38 = v25;
-  v26 = v12;
+  v26 = array2;
   v39 = v26;
   v40 = &v50;
   [v24 performBlockAndWait:&v30];
-  v27 = [MEMORY[0x1E695DFA0] orderedSet];
-  [v27 addObjectsFromArray:v23];
-  [v27 addObjectsFromArray:v25];
-  [v27 addObjectsFromArray:v57[5]];
-  [v27 addObjectsFromArray:v51[5]];
-  [v27 addObjectsFromArray:v20];
-  v28 = [v27 copy];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  [orderedSet addObjectsFromArray:v23];
+  [orderedSet addObjectsFromArray:v25];
+  [orderedSet addObjectsFromArray:v57[5]];
+  [orderedSet addObjectsFromArray:v51[5]];
+  [orderedSet addObjectsFromArray:v20];
+  v28 = [orderedSet copy];
 
   _Block_object_dispose(&v50, 8);
   _Block_object_dispose(&v56, 8);
@@ -2311,32 +2311,32 @@ void __127__ICFolderCoreDataIndexer_sortedFolderItemIdentifiersForItemIdentifier
   *(v13 + 40) = v12;
 }
 
-- (id)rootFolderListSectionIdentifiersForSection:(id)a3
+- (id)rootFolderListSectionIdentifiersForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  sectionCopy = section;
+  folderListSectionIdentifiersToFolderItemIdentifiers = [(ICFolderCoreDataIndexer *)self folderListSectionIdentifiersToFolderItemIdentifiers];
+  v6 = [folderListSectionIdentifiersToFolderItemIdentifiers objectForKeyedSubscript:sectionCopy];
 
   if (v6)
   {
-    v7 = v6;
+    orderedSet = v6;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
   }
 
-  v8 = v7;
+  v8 = orderedSet;
 
   v9 = MEMORY[0x1E695DFB8];
-  v10 = [v8 array];
+  array = [v8 array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__ICFolderCoreDataIndexer_rootFolderListSectionIdentifiersForSection___block_invoke;
   v14[3] = &unk_1E846B2E8;
   v14[4] = self;
-  v11 = [v10 ic_objectsPassingTest:v14];
+  v11 = [array ic_objectsPassingTest:v14];
   v12 = [v9 orderedSetWithArray:v11];
 
   return v12;
@@ -2352,27 +2352,27 @@ BOOL __70__ICFolderCoreDataIndexer_rootFolderListSectionIdentifiersForSection___
   return v5 == 0;
 }
 
-- (BOOL)isCustomFolder:(id)a3
+- (BOOL)isCustomFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [folderCopy managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__ICFolderCoreDataIndexer_isCustomFolder___block_invoke;
   v7[3] = &unk_1E846B1D8;
-  v5 = v3;
+  v5 = folderCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(managedObjectContext) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return managedObjectContext;
 }
 
 void __42__ICFolderCoreDataIndexer_isCustomFolder___block_invoke(uint64_t a1)
@@ -2401,27 +2401,27 @@ void __42__ICFolderCoreDataIndexer_isCustomFolder___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v4 ^ 1;
 }
 
-- (BOOL)isDefaultFolder:(id)a3
+- (BOOL)isDefaultFolder:(id)folder
 {
-  v3 = a3;
+  folderCopy = folder;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [folderCopy managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__ICFolderCoreDataIndexer_isDefaultFolder___block_invoke;
   v7[3] = &unk_1E846B1D8;
-  v5 = v3;
+  v5 = folderCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(managedObjectContext) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return managedObjectContext;
 }
 
 void __43__ICFolderCoreDataIndexer_isDefaultFolder___block_invoke(uint64_t a1)
@@ -2450,15 +2450,15 @@ void __43__ICFolderCoreDataIndexer_isDefaultFolder___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (BOOL)itemIdentifiersContainCustomFolder:(id)a3
+- (BOOL)itemIdentifiersContainCustomFolder:(id)folder
 {
-  v4 = [a3 array];
+  array = [folder array];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__ICFolderCoreDataIndexer_itemIdentifiersContainCustomFolder___block_invoke;
   v6[3] = &unk_1E846B2E8;
   v6[4] = self;
-  LOBYTE(self) = [v4 ic_containsObjectPassingTest:v6];
+  LOBYTE(self) = [array ic_containsObjectPassingTest:v6];
 
   return self;
 }

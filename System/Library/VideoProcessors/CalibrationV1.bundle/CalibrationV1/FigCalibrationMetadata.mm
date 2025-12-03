@@ -5,10 +5,10 @@
 - (__n128)auxiliaryIntrinsicMatrix;
 - (__n128)referenceExtrinsicMatrix;
 - (__n128)referenceIntrinsicMatrix;
-- (__n128)setAuxiliaryExtrinsicMatrix:(__n128)a3;
-- (__n128)setAuxiliaryIntrinsicMatrix:(__n128)a3;
-- (__n128)setReferenceExtrinsicMatrix:(__n128)a3;
-- (__n128)setReferenceIntrinsicMatrix:(__n128)a3;
+- (__n128)setAuxiliaryExtrinsicMatrix:(__n128)matrix;
+- (__n128)setAuxiliaryIntrinsicMatrix:(__n128)matrix;
+- (__n128)setReferenceExtrinsicMatrix:(__n128)matrix;
+- (__n128)setReferenceIntrinsicMatrix:(__n128)matrix;
 - (id)description;
 @end
 
@@ -160,49 +160,49 @@
 
 - (__n128)referenceIntrinsicMatrix
 {
-  result = *(a1 + 96);
-  v2 = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 96);
+  v2 = *(self + 112);
+  v3 = *(self + 128);
   return result;
 }
 
-- (__n128)setReferenceIntrinsicMatrix:(__n128)a3
+- (__n128)setReferenceIntrinsicMatrix:(__n128)matrix
 {
   result[6] = a2;
-  result[7] = a3;
+  result[7] = matrix;
   result[8] = a4;
   return result;
 }
 
 - (__n128)auxiliaryIntrinsicMatrix
 {
-  result = *(a1 + 144);
-  v2 = *(a1 + 160);
-  v3 = *(a1 + 176);
+  result = *(self + 144);
+  v2 = *(self + 160);
+  v3 = *(self + 176);
   return result;
 }
 
-- (__n128)setAuxiliaryIntrinsicMatrix:(__n128)a3
+- (__n128)setAuxiliaryIntrinsicMatrix:(__n128)matrix
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = matrix;
   result[11] = a4;
   return result;
 }
 
 - (__n128)referenceExtrinsicMatrix
 {
-  result = *(a1 + 192);
-  v2 = *(a1 + 208);
-  v3 = *(a1 + 224);
-  v4 = *(a1 + 240);
+  result = *(self + 192);
+  v2 = *(self + 208);
+  v3 = *(self + 224);
+  v4 = *(self + 240);
   return result;
 }
 
-- (__n128)setReferenceExtrinsicMatrix:(__n128)a3
+- (__n128)setReferenceExtrinsicMatrix:(__n128)matrix
 {
   result[12] = a2;
-  result[13] = a3;
+  result[13] = matrix;
   result[14] = a4;
   result[15] = a5;
   return result;
@@ -210,17 +210,17 @@
 
 - (__n128)auxiliaryExtrinsicMatrix
 {
-  result = *(a1 + 256);
-  v2 = *(a1 + 272);
-  v3 = *(a1 + 288);
-  v4 = *(a1 + 304);
+  result = *(self + 256);
+  v2 = *(self + 272);
+  v3 = *(self + 288);
+  v4 = *(self + 304);
   return result;
 }
 
-- (__n128)setAuxiliaryExtrinsicMatrix:(__n128)a3
+- (__n128)setAuxiliaryExtrinsicMatrix:(__n128)matrix
 {
   result[16] = a2;
-  result[17] = a3;
+  result[17] = matrix;
   result[18] = a4;
   result[19] = a5;
   return result;

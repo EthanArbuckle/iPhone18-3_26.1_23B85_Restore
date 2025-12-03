@@ -1,12 +1,12 @@
 @interface EDMailboxPredictionController
 + (OS_os_log)log;
-- (EDMailboxPredictionController)initWithMessagePersistence:(id)a3 mailboxPersistence:(id)a4 hookRegistry:(id)a5 userProfileProvider:(id)a6;
-- (id)_accountsForMessages:(id)a3;
+- (EDMailboxPredictionController)initWithMessagePersistence:(id)persistence mailboxPersistence:(id)mailboxPersistence hookRegistry:(id)registry userProfileProvider:(id)provider;
+- (id)_accountsForMessages:(id)messages;
 - (id)_createPredictor;
-- (id)_processPredictionForMessages:(id)a3;
-- (id)predictMailboxForMovingObjectIDs:(id)a3 completionHandler:(id)a4;
-- (void)_invalidateCacheForAddedMessage:(id)a3;
-- (void)_predictMailboxForMovingMessages:(id)a3 cancelationToken:(id)a4 completionHandler:(id)a5;
+- (id)_processPredictionForMessages:(id)messages;
+- (id)predictMailboxForMovingObjectIDs:(id)ds completionHandler:(id)handler;
+- (void)_invalidateCacheForAddedMessage:(id)message;
+- (void)_predictMailboxForMovingMessages:(id)messages cancelationToken:(id)token completionHandler:(id)handler;
 @end
 
 @implementation EDMailboxPredictionController
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __36__EDMailboxPredictionController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_52 != -1)
   {
     dispatch_once(&log_onceToken_52, block);
@@ -36,56 +36,56 @@ void __36__EDMailboxPredictionController_log__block_invoke(uint64_t a1)
   log_log_52 = v1;
 }
 
-- (EDMailboxPredictionController)initWithMessagePersistence:(id)a3 mailboxPersistence:(id)a4 hookRegistry:(id)a5 userProfileProvider:(id)a6
+- (EDMailboxPredictionController)initWithMessagePersistence:(id)persistence mailboxPersistence:(id)mailboxPersistence hookRegistry:(id)registry userProfileProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  persistenceCopy = persistence;
+  mailboxPersistenceCopy = mailboxPersistence;
+  registryCopy = registry;
+  providerCopy = provider;
   v24.receiver = self;
   v24.super_class = EDMailboxPredictionController;
   v15 = [(EDMailboxPredictionController *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mailboxPersistence, a4);
-    objc_storeStrong(&v16->_messagePersistence, a3);
-    objc_storeStrong(&v16->_userProfileProvider, a6);
-    objc_storeStrong(&v16->_messagePersistence, a3);
+    objc_storeStrong(&v15->_mailboxPersistence, mailboxPersistence);
+    objc_storeStrong(&v16->_messagePersistence, persistence);
+    objc_storeStrong(&v16->_userProfileProvider, provider);
+    objc_storeStrong(&v16->_messagePersistence, persistence);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_get_global_queue(0, 0);
     v19 = dispatch_queue_create_with_target_V2("com.apple.mail.MailboxPrediction.processing", v17, v18);
     processingQueue = v16->_processingQueue;
     v16->_processingQueue = v19;
 
-    objc_storeStrong(&v16->_hookRegistry, a5);
-    v21 = [(EDMailboxPredictionController *)v16 _createPredictor];
+    objc_storeStrong(&v16->_hookRegistry, registry);
+    _createPredictor = [(EDMailboxPredictionController *)v16 _createPredictor];
     cachingPredictor = v16->_cachingPredictor;
-    v16->_cachingPredictor = v21;
+    v16->_cachingPredictor = _createPredictor;
 
-    [v13 registerMessageChangeHookResponder:v16];
+    [registryCopy registerMessageChangeHookResponder:v16];
   }
 
   return v16;
 }
 
-- (id)predictMailboxForMovingObjectIDs:(id)a3 completionHandler:(id)a4
+- (id)predictMailboxForMovingObjectIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E699B7F8]);
-  if ([v6 count] < 4)
+  if ([dsCopy count] < 4)
   {
-    v9 = v6;
+    v9 = dsCopy;
   }
 
   else
   {
-    v9 = [v6 subarrayWithRange:{0, 3}];
+    v9 = [dsCopy subarrayWithRange:{0, 3}];
   }
 
   v10 = v9;
-  v11 = [(EDMailboxPredictionController *)self processingQueue];
+  processingQueue = [(EDMailboxPredictionController *)self processingQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__EDMailboxPredictionController_predictMailboxForMovingObjectIDs_completionHandler___block_invoke;
@@ -94,10 +94,10 @@ void __36__EDMailboxPredictionController_log__block_invoke(uint64_t a1)
   v19 = v10;
   v12 = v8;
   v20 = v12;
-  v21 = v7;
-  v13 = v7;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v10;
-  dispatch_async(v11, v18);
+  dispatch_async(processingQueue, v18);
 
   v15 = v21;
   v16 = v12;
@@ -113,20 +113,20 @@ void __84__EDMailboxPredictionController_predictMailboxForMovingObjectIDs_comple
   [*(a1 + 32) _predictMailboxForMovingMessages:v3 cancelationToken:*(a1 + 48) completionHandler:*(a1 + 56)];
 }
 
-- (void)_predictMailboxForMovingMessages:(id)a3 cancelationToken:(id)a4 completionHandler:(id)a5
+- (void)_predictMailboxForMovingMessages:(id)messages cancelationToken:(id)token completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] >= 4)
+  messagesCopy = messages;
+  tokenCopy = token;
+  handlerCopy = handler;
+  if ([messagesCopy count] >= 4)
   {
-    v11 = [v8 subarrayWithRange:{0, 3}];
+    v11 = [messagesCopy subarrayWithRange:{0, 3}];
 
-    v8 = v11;
+    messagesCopy = v11;
   }
 
-  v12 = [v8 ef_map:&__block_literal_global_43];
+  v12 = [messagesCopy ef_map:&__block_literal_global_43];
   v13 = +[EDMailboxPredictionController log];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -135,9 +135,9 @@ void __84__EDMailboxPredictionController_predictMailboxForMovingObjectIDs_comple
     _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Predicting move mailbox for messages: %{public}@", buf, 0xCu);
   }
 
-  if (([v9 isCanceled] & 1) == 0)
+  if (([tokenCopy isCanceled] & 1) == 0)
   {
-    v14 = [(EDMailboxPredictionController *)self _processPredictionForMessages:v8];
+    v14 = [(EDMailboxPredictionController *)self _processPredictionForMessages:messagesCopy];
     if (v14)
     {
       v15 = +[EDMailboxPredictionController log];
@@ -147,14 +147,14 @@ void __84__EDMailboxPredictionController_predictMailboxForMovingObjectIDs_comple
         _os_log_impl(&dword_1C61EF000, v15, OS_LOG_TYPE_DEFAULT, "Found mailbox for moving message(s).", buf, 2u);
       }
 
-      v16 = [(EDMailboxPredictionController *)self mailboxPersistence];
+      mailboxPersistence = [(EDMailboxPredictionController *)self mailboxPersistence];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __101__EDMailboxPredictionController__predictMailboxForMovingMessages_cancelationToken_completionHandler___block_invoke_6;
       v19[3] = &unk_1E8253398;
       v20 = v14;
-      v21 = v10;
-      [v16 allMailboxesWithCompletionHandler:v19];
+      v21 = handlerCopy;
+      [mailboxPersistence allMailboxesWithCompletionHandler:v19];
     }
 
     else
@@ -165,7 +165,7 @@ void __84__EDMailboxPredictionController_predictMailboxForMovingObjectIDs_comple
         [EDMailboxPredictionController _predictMailboxForMovingMessages:v17 cancelationToken:? completionHandler:?];
       }
 
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -211,30 +211,30 @@ uint64_t __101__EDMailboxPredictionController__predictMailboxForMovingMessages_c
   return v4;
 }
 
-- (id)_processPredictionForMessages:(id)a3
+- (id)_processPredictionForMessages:(id)messages
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDMailboxPredictionController *)self processingQueue];
-  dispatch_assert_queue_V2(v5);
+  messagesCopy = messages;
+  processingQueue = [(EDMailboxPredictionController *)self processingQueue];
+  dispatch_assert_queue_V2(processingQueue);
 
-  v6 = [(EDMailboxPredictionController *)self cachingPredictor];
-  v7 = [v6 predictMailboxIDsForMessages:v4 limit:7];
+  cachingPredictor = [(EDMailboxPredictionController *)self cachingPredictor];
+  v7 = [cachingPredictor predictMailboxIDsForMessages:messagesCopy limit:7];
   v8 = [v7 ef_compactMap:&__block_literal_global_11];
 
   if ([v8 count])
   {
-    v9 = [(EDMailboxPredictionController *)self _accountsForMessages:v4];
+    v9 = [(EDMailboxPredictionController *)self _accountsForMessages:messagesCopy];
     if ([v9 count]== 1)
     {
-      v10 = [v9 anyObject];
-      v11 = [v10 identifier];
+      anyObject = [v9 anyObject];
+      identifier = [anyObject identifier];
 
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __63__EDMailboxPredictionController__processPredictionForMessages___block_invoke_14;
       v19[3] = &unk_1E82533C0;
-      v19[4] = v11;
+      v19[4] = identifier;
       v12 = [v8 ef_filter:v19];
       v13 = +[EDMailboxPredictionController log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -248,20 +248,20 @@ uint64_t __101__EDMailboxPredictionController__predictMailboxForMovingMessages_c
         _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "Found %u mailbox(es) for moving message(s). Filtered from %u.", buf, 0xEu);
       }
 
-      v16 = [v12 firstObject];
+      firstObject = [v12 firstObject];
     }
 
     else
     {
-      v11 = +[EDMailboxPredictionController log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      identifier = +[EDMailboxPredictionController log];
+      if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
         v21 = [v9 count];
-        _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%u accounts. No prediction for moving message(s).", buf, 8u);
+        _os_log_impl(&dword_1C61EF000, identifier, OS_LOG_TYPE_DEFAULT, "%u accounts. No prediction for moving message(s).", buf, 8u);
       }
 
-      v16 = 0;
+      firstObject = 0;
     }
   }
 
@@ -274,12 +274,12 @@ uint64_t __101__EDMailboxPredictionController__predictMailboxForMovingMessages_c
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Found no mailbox for moving message(s).", buf, 2u);
     }
 
-    v16 = 0;
+    firstObject = 0;
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return firstObject;
 }
 
 id __63__EDMailboxPredictionController__processPredictionForMessages___block_invoke(uint64_t a1, uint64_t a2)
@@ -307,16 +307,16 @@ uint64_t __63__EDMailboxPredictionController__processPredictionForMessages___blo
   return v5;
 }
 
-- (id)_accountsForMessages:(id)a3
+- (id)_accountsForMessages:(id)messages
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messagesCopy = messages;
   v4 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = messagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -330,10 +330,10 @@ uint64_t __63__EDMailboxPredictionController__processPredictionForMessages___blo
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) account];
-        if (v9)
+        account = [*(*(&v12 + 1) + 8 * i) account];
+        if (account)
         {
-          [v4 addObject:v9];
+          [v4 addObject:account];
         }
       }
 
@@ -348,18 +348,18 @@ uint64_t __63__EDMailboxPredictionController__processPredictionForMessages___blo
   return v4;
 }
 
-- (void)_invalidateCacheForAddedMessage:(id)a3
+- (void)_invalidateCacheForAddedMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(EDMailboxPredictionController *)self processingQueue];
+  messageCopy = message;
+  processingQueue = [(EDMailboxPredictionController *)self processingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__EDMailboxPredictionController__invalidateCacheForAddedMessage___block_invoke;
   v7[3] = &unk_1E8250128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(processingQueue, v7);
 }
 
 void __65__EDMailboxPredictionController__invalidateCacheForAddedMessage___block_invoke(uint64_t a1)
@@ -371,10 +371,10 @@ void __65__EDMailboxPredictionController__invalidateCacheForAddedMessage___block
 - (id)_createPredictor
 {
   v3 = [EDHeuristicsMailboxPredictor alloc];
-  v4 = [(EDMailboxPredictionController *)self userProfileProvider];
-  v5 = [(EDMailboxPredictionController *)self messagePersistence];
-  v6 = [(EDMailboxPredictionController *)self mailboxPersistence];
-  v7 = [(EDHeuristicsMailboxPredictor *)v3 initWithUserProfileProvider:v4 messagePersistence:v5 mailboxPersistence:v6 parameters:&unk_1F45E70B8];
+  userProfileProvider = [(EDMailboxPredictionController *)self userProfileProvider];
+  messagePersistence = [(EDMailboxPredictionController *)self messagePersistence];
+  mailboxPersistence = [(EDMailboxPredictionController *)self mailboxPersistence];
+  v7 = [(EDHeuristicsMailboxPredictor *)v3 initWithUserProfileProvider:userProfileProvider messagePersistence:messagePersistence mailboxPersistence:mailboxPersistence parameters:&unk_1F45E70B8];
 
   v8 = [[EDCachingMailboxPredictor alloc] initWithPredictor:v7];
 

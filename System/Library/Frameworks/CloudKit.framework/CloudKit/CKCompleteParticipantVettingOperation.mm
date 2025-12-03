@@ -1,15 +1,15 @@
 @interface CKCompleteParticipantVettingOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (CKCompleteParticipantVettingOperation)init;
-- (CKCompleteParticipantVettingOperation)initWithVettingToken:(id)a3 vettingRecord:(id)a4 displayedHostname:(id)a5;
+- (CKCompleteParticipantVettingOperation)initWithVettingToken:(id)token vettingRecord:(id)record displayedHostname:(id)hostname;
 - (id)activityCreate;
 - (id)completeParticipantVettingCompletionBlock;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
-- (void)fillFromOperationInfo:(id)a3;
-- (void)fillOutOperationInfo:(id)a3;
-- (void)setCompleteParticipantVettingCompletionBlock:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
+- (void)fillFromOperationInfo:(id)info;
+- (void)fillOutOperationInfo:(id)info;
+- (void)setCompleteParticipantVettingCompletionBlock:(id)block;
 @end
 
 @implementation CKCompleteParticipantVettingOperation
@@ -29,44 +29,44 @@
   return v3;
 }
 
-- (CKCompleteParticipantVettingOperation)initWithVettingToken:(id)a3 vettingRecord:(id)a4 displayedHostname:(id)a5
+- (CKCompleteParticipantVettingOperation)initWithVettingToken:(id)token vettingRecord:(id)record displayedHostname:(id)hostname
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  recordCopy = record;
+  hostnameCopy = hostname;
   v15 = objc_msgSend_init(self, v11, v12);
   if (v15)
   {
-    v16 = objc_msgSend_copy(v8, v13, v14);
+    v16 = objc_msgSend_copy(tokenCopy, v13, v14);
     vettingToken = v15->_vettingToken;
     v15->_vettingToken = v16;
 
-    v19 = objc_msgSend_objectForKeyedSubscript_(v9, v18, @"email");
+    v19 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v18, @"email");
     v22 = objc_msgSend_copy(v19, v20, v21);
     vettingEmail = v15->_vettingEmail;
     v15->_vettingEmail = v22;
 
-    v25 = objc_msgSend_objectForKeyedSubscript_(v9, v24, @"phone");
+    v25 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v24, @"phone");
     v28 = objc_msgSend_copy(v25, v26, v27);
     vettingPhone = v15->_vettingPhone;
     v15->_vettingPhone = v28;
 
-    v31 = objc_msgSend_objectForKeyedSubscript_(v9, v30, @"shareRoutingKey");
+    v31 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v30, @"shareRoutingKey");
     v34 = objc_msgSend_copy(v31, v32, v33);
     routingKey = v15->_routingKey;
     v15->_routingKey = v34;
 
-    v37 = objc_msgSend_objectForKeyedSubscript_(v9, v36, @"encryptedKey");
+    v37 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v36, @"encryptedKey");
     v40 = objc_msgSend_copy(v37, v38, v39);
     encryptedKey = v15->_encryptedKey;
     v15->_encryptedKey = v40;
 
-    v43 = objc_msgSend_objectForKeyedSubscript_(v9, v42, @"baseToken");
+    v43 = objc_msgSend_objectForKeyedSubscript_(recordCopy, v42, @"baseToken");
     v46 = objc_msgSend_copy(v43, v44, v45);
     baseToken = v15->_baseToken;
     v15->_baseToken = v46;
 
-    v50 = objc_msgSend_copy(v10, v48, v49);
+    v50 = objc_msgSend_copy(hostnameCopy, v48, v49);
     displayedHostname = v15->_displayedHostname;
     v15->_displayedHostname = v50;
   }
@@ -74,9 +74,9 @@
   return v15;
 }
 
-- (void)setCompleteParticipantVettingCompletionBlock:(id)a3
+- (void)setCompleteParticipantVettingCompletionBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (__sTestOverridesAvailable[0] == 1 && objc_msgSend__ckRaiseInGeneratedCallbackImplementation(self, v4, v5))
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v4, *MEMORY[0x1E695D920], @"Callback check triggered");
@@ -90,16 +90,16 @@
     v12[2] = sub_1885EA24C;
     v12[3] = &unk_1E70BC940;
     v12[4] = self;
-    v13 = v6;
+    v13 = blockCopy;
     dispatch_sync(v11, v12);
 
     completeParticipantVettingCompletionBlock = v13;
     goto LABEL_9;
   }
 
-  if (self->_completeParticipantVettingCompletionBlock != v6)
+  if (self->_completeParticipantVettingCompletionBlock != blockCopy)
   {
-    v9 = objc_msgSend_copy(v6, v7, v8);
+    v9 = objc_msgSend_copy(blockCopy, v7, v8);
     completeParticipantVettingCompletionBlock = self->_completeParticipantVettingCompletionBlock;
     self->_completeParticipantVettingCompletionBlock = v9;
 LABEL_9:
@@ -142,67 +142,67 @@ LABEL_9:
   return v6;
 }
 
-- (void)fillOutOperationInfo:(id)a3
+- (void)fillOutOperationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_vettingToken(self, v5, v6);
-  objc_msgSend_setVettingToken_(v4, v8, v7);
+  objc_msgSend_setVettingToken_(infoCopy, v8, v7);
 
   v11 = objc_msgSend_vettingEmail(self, v9, v10);
-  objc_msgSend_setVettingEmail_(v4, v12, v11);
+  objc_msgSend_setVettingEmail_(infoCopy, v12, v11);
 
   v15 = objc_msgSend_vettingPhone(self, v13, v14);
-  objc_msgSend_setVettingPhone_(v4, v16, v15);
+  objc_msgSend_setVettingPhone_(infoCopy, v16, v15);
 
   v19 = objc_msgSend_routingKey(self, v17, v18);
-  objc_msgSend_setRoutingKey_(v4, v20, v19);
+  objc_msgSend_setRoutingKey_(infoCopy, v20, v19);
 
   v23 = objc_msgSend_encryptedKey(self, v21, v22);
-  objc_msgSend_setEncryptedKey_(v4, v24, v23);
+  objc_msgSend_setEncryptedKey_(infoCopy, v24, v23);
 
   v27 = objc_msgSend_baseToken(self, v25, v26);
-  objc_msgSend_setBaseToken_(v4, v28, v27);
+  objc_msgSend_setBaseToken_(infoCopy, v28, v27);
 
   v31 = objc_msgSend_displayedHostname(self, v29, v30);
-  objc_msgSend_setDisplayedHostname_(v4, v32, v31);
+  objc_msgSend_setDisplayedHostname_(infoCopy, v32, v31);
 
   v33.receiver = self;
   v33.super_class = CKCompleteParticipantVettingOperation;
-  [(CKOperation *)&v33 fillOutOperationInfo:v4];
+  [(CKOperation *)&v33 fillOutOperationInfo:infoCopy];
 }
 
-- (void)fillFromOperationInfo:(id)a3
+- (void)fillFromOperationInfo:(id)info
 {
   v33.receiver = self;
   v33.super_class = CKCompleteParticipantVettingOperation;
-  v4 = a3;
-  [(CKOperation *)&v33 fillFromOperationInfo:v4];
-  v7 = objc_msgSend_vettingToken(v4, v5, v6, v33.receiver, v33.super_class);
+  infoCopy = info;
+  [(CKOperation *)&v33 fillFromOperationInfo:infoCopy];
+  v7 = objc_msgSend_vettingToken(infoCopy, v5, v6, v33.receiver, v33.super_class);
   objc_msgSend_setVettingToken_(self, v8, v7);
 
-  v11 = objc_msgSend_vettingEmail(v4, v9, v10);
+  v11 = objc_msgSend_vettingEmail(infoCopy, v9, v10);
   objc_msgSend_setVettingEmail_(self, v12, v11);
 
-  v15 = objc_msgSend_vettingPhone(v4, v13, v14);
+  v15 = objc_msgSend_vettingPhone(infoCopy, v13, v14);
   objc_msgSend_setVettingPhone_(self, v16, v15);
 
-  v19 = objc_msgSend_routingKey(v4, v17, v18);
+  v19 = objc_msgSend_routingKey(infoCopy, v17, v18);
   objc_msgSend_setRoutingKey_(self, v20, v19);
 
-  v23 = objc_msgSend_encryptedKey(v4, v21, v22);
+  v23 = objc_msgSend_encryptedKey(infoCopy, v21, v22);
   objc_msgSend_setEncryptedKey_(self, v24, v23);
 
-  v27 = objc_msgSend_baseToken(v4, v25, v26);
+  v27 = objc_msgSend_baseToken(infoCopy, v25, v26);
   objc_msgSend_setBaseToken_(self, v28, v27);
 
-  v31 = objc_msgSend_displayedHostname(v4, v29, v30);
+  v31 = objc_msgSend_displayedHostname(infoCopy, v29, v30);
 
   objc_msgSend_setDisplayedHostname_(self, v32, v31);
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v6 = objc_msgSend_vettingToken(self, a2, a3);
+  v6 = objc_msgSend_vettingToken(self, a2, run);
   if (!v6)
   {
     goto LABEL_15;
@@ -252,26 +252,26 @@ LABEL_11:
   {
     v34.receiver = self;
     v34.super_class = CKCompleteParticipantVettingOperation;
-    return [(CKOperation *)&v34 CKOperationShouldRun:a3];
+    return [(CKOperation *)&v34 CKOperationShouldRun:run];
   }
 
 LABEL_15:
-  if (a3)
+  if (run)
   {
     v20 = objc_msgSend_vettingToken(self, v7, v8);
     v23 = objc_msgSend_vettingEmail(self, v21, v22);
     v26 = objc_msgSend_vettingPhone(self, v24, v25);
     v29 = objc_msgSend_routingKey(self, v27, v28);
     v32 = objc_msgSend_encryptedKey(self, v30, v31);
-    *a3 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"Incomplete vetting info: vettingToken: %@, vettingEmail: %@, vettingPhone: %@, routingKey: %@, encryptedKey: %@", v20, v23, v26, v29, v32);
+    *run = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v33, @"CKErrorDomain", 12, @"Incomplete vetting info: vettingToken: %@, vettingEmail: %@, vettingPhone: %@, routingKey: %@, encryptedKey: %@", v20, v23, v26, v29, v32);
   }
 
   return 0;
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -324,7 +324,7 @@ LABEL_15:
   if (v19)
   {
     v22 = objc_msgSend_completeParticipantVettingCompletionBlock(self, v20, v21);
-    v25 = objc_msgSend_CKClientSuitableError(v4, v23, v24);
+    v25 = objc_msgSend_CKClientSuitableError(errorCopy, v23, v24);
     v28 = objc_msgSend_reconstructedShareURL(self, v26, v27);
     v31 = objc_msgSend_shareMetadata(self, v29, v30);
     (v22)[2](v22, v25, v28, v31);
@@ -334,7 +334,7 @@ LABEL_15:
 
   v33.receiver = self;
   v33.super_class = CKCompleteParticipantVettingOperation;
-  [(CKOperation *)&v33 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v33 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -411,10 +411,10 @@ LABEL_15:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -458,7 +458,7 @@ LABEL_15:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKCompleteParticipantVettingOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }

@@ -1,12 +1,12 @@
 @interface TVSetupRemoteLauncher
-+ (void)launchRemoteWithDeviceIdentifier:(id)a3;
++ (void)launchRemoteWithDeviceIdentifier:(id)identifier;
 @end
 
 @implementation TVSetupRemoteLauncher
 
-+ (void)launchRemoteWithDeviceIdentifier:(id)a3
++ (void)launchRemoteWithDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -25,7 +25,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v15, 8);
-  v6 = [[v4 alloc] initWithDeviceIdentifier:v3 identifierType:0 deviceType:1 launchContext:11 launchMethod:1];
+  v6 = [[v4 alloc] initWithDeviceIdentifier:identifierCopy identifierType:0 deviceType:1 launchContext:11 launchMethod:1];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -44,8 +44,8 @@
 
   v8 = v7;
   _Block_object_dispose(&v15, 8);
-  v9 = [v7 sharedInstance];
-  [v9 presentWithContext:v6];
+  sharedInstance = [v7 sharedInstance];
+  [sharedInstance presentWithContext:v6];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface PKPassLiveRender
-- (PKPassLiveRender)initWithCoder:(id)a3;
-- (PKPassLiveRender)initWithEnabled:(BOOL)a3;
+- (PKPassLiveRender)initWithCoder:(id)coder;
+- (PKPassLiveRender)initWithEnabled:(BOOL)enabled;
 - (id)_init;
 - (id)description;
 @end
 
 @implementation PKPassLiveRender
 
-- (PKPassLiveRender)initWithEnabled:(BOOL)a3
+- (PKPassLiveRender)initWithEnabled:(BOOL)enabled
 {
   result = [(PKPassLiveRender *)self _init];
   if (result)
   {
-    result->_enabled = a3;
+    result->_enabled = enabled;
   }
 
   return result;
@@ -25,16 +25,16 @@
   return [(PKPassLiveRender *)&v3 init];
 }
 
-- (PKPassLiveRender)initWithCoder:(id)a3
+- (PKPassLiveRender)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassLiveRender *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKPassLiveRender *)self _init];
+  if (_init)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
+    _init->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)description

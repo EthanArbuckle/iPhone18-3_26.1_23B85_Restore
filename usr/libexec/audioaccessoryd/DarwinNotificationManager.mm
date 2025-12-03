@@ -29,10 +29,10 @@
 - (void)setUp
 {
   sub_100115C10();
-  v3 = self;
+  selfCopy = self;
   v4 = static OS_dispatch_queue.main.getter();
   v5 = swift_allocObject();
-  *(v5 + 16) = v3;
+  *(v5 + 16) = selfCopy;
   v8[4] = sub_100116134;
   v8[5] = v5;
   v8[0] = _NSConcreteStackBlock;
@@ -40,7 +40,7 @@
   v8[2] = sub_100115F4C;
   v8[3] = &unk_1002BDAD0;
   v6 = _Block_copy(v8);
-  v7 = v3;
+  v7 = selfCopy;
 
   xpc_set_event_stream_handler("com.apple.notifyd.matching", v4, v6);
   _Block_release(v6);

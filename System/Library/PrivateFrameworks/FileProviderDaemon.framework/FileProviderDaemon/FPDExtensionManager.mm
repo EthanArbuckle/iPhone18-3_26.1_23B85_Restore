@@ -1,54 +1,54 @@
 @interface FPDExtensionManager
-- (FPDExtensionManager)initWithServer:(id)a3 updateHandler:(id)a4;
+- (FPDExtensionManager)initWithServer:(id)server updateHandler:(id)handler;
 - (FPDServer)server;
 - (id)_deserializedAlternateContentsDictionary;
 - (id)_deserializedPausedSyncItemDictionary;
-- (id)_domainForURL:(id)a3;
+- (id)_domainForURL:(id)l;
 - (id)allProviders;
-- (id)alternateContentsDictionaryForProviderIdentifier:(id)a3;
-- (id)alternateContentsURLForItemID:(id)a3;
+- (id)alternateContentsDictionaryForProviderIdentifier:(id)identifier;
+- (id)alternateContentsURLForItemID:(id)d;
 - (id)clouddocsExtensionIdentifier;
-- (id)defaultProviderWithTopLevelBundleIdentifier:(id)a3;
-- (id)domainForActionOperationLocator:(id)a3;
-- (id)domainForURL:(id)a3 reason:(unint64_t *)a4;
-- (id)domainWithID:(id)a3 reason:(unint64_t *)a4;
-- (id)domainsForAppBundleIdentifier:(id)a3;
+- (id)defaultProviderWithTopLevelBundleIdentifier:(id)identifier;
+- (id)domainForActionOperationLocator:(id)locator;
+- (id)domainForURL:(id)l reason:(unint64_t *)reason;
+- (id)domainWithID:(id)d reason:(unint64_t *)reason;
+- (id)domainsForAppBundleIdentifier:(id)identifier;
 - (id)extensionPointRecords;
-- (id)extensionsByID:(id)a3;
+- (id)extensionsByID:(id)d;
 - (id)nonEvictableSizeByProviderDomain;
 - (id)providerDomainsByID;
-- (id)providerDomainsByIDFromExtensionsByID:(id)a3;
-- (id)providerWithIdentifier:(id)a3 checkInvalidation:(BOOL)a4 reason:(unint64_t *)a5;
-- (id)providersWithGroupContainers:(id)a3 bundleIdentifier:(id)a4;
-- (id)providersWithTopLevelBundleIdentifier:(id)a3;
-- (id)syncPausedBundleIDForItemID:(id)a3;
-- (id)syncPausedFilesForBundleID:(id)a3;
-- (id)uniquedExtensions:(id)a3;
+- (id)providerDomainsByIDFromExtensionsByID:(id)d;
+- (id)providerWithIdentifier:(id)identifier checkInvalidation:(BOOL)invalidation reason:(unint64_t *)reason;
+- (id)providersWithGroupContainers:(id)containers bundleIdentifier:(id)identifier;
+- (id)providersWithTopLevelBundleIdentifier:(id)identifier;
+- (id)syncPausedBundleIDForItemID:(id)d;
+- (id)syncPausedFilesForBundleID:(id)d;
+- (id)uniquedExtensions:(id)extensions;
 - (void)_deserializedAlternateContentsDictionary;
-- (void)_garbageCollectRemovedProvidersForInstalledProviderIdentifiers:(id)a3;
+- (void)_garbageCollectRemovedProvidersForInstalledProviderIdentifiers:(id)identifiers;
 - (void)_loadAlternateContentsDictionary;
 - (void)_loadPausedSyncItemsDictionary;
-- (void)_serializeAlternateContentsURLDictionary:(id)a3;
-- (void)_serializePausedSyncItemsDictionary:(id)a3;
+- (void)_serializeAlternateContentsURLDictionary:(id)dictionary;
+- (void)_serializePausedSyncItemsDictionary:(id)dictionary;
 - (void)_startLSObserver;
-- (void)_updateProviderListForFilteredFPDExtensions:(id)a3;
-- (void)_updateProviderListForMatchingExtensionRecords:(id)a3;
+- (void)_updateProviderListForFilteredFPDExtensions:(id)extensions;
+- (void)_updateProviderListForMatchingExtensionRecords:(id)records;
 - (void)afterFirstDiscovery;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dropLegacyDaemonCoreSpotlightIndexIfNeeded;
-- (void)garbageCollectDomainsExceptIdentifiers:(id)a3 fromDirectory:(id)a4 isUserData:(BOOL)a5;
+- (void)garbageCollectDomainsExceptIdentifiers:(id)identifiers fromDirectory:(id)directory isUserData:(BOOL)data;
 - (void)garbageCollectOnFirstLaunch;
-- (void)handleAllExtensionsStarted:(id)a3;
+- (void)handleAllExtensionsStarted:(id)started;
 - (void)loadProvidersAndMonitor;
-- (void)migrateEnabledStateIfNecessary:(id)a3;
-- (void)observerDidObserveDatabaseChange:(id)a3;
-- (void)purge:(id)a3;
-- (void)removePausedSyncItemID:(id)a3 forBundleID:(id)a4;
-- (void)setAlternateContentsURL:(id)a3 forItemID:(id)a4;
-- (void)setPausedSyncItemID:(id)a3 forBundleID:(id)a4;
-- (void)synchronousProviderUpdate:(BOOL)a3;
-- (void)updateProviderOnAppearingVolume:(id)a3;
-- (void)updateProviderOnDisappearingVolume:(id)a3 reason:(id)a4;
+- (void)migrateEnabledStateIfNecessary:(id)necessary;
+- (void)observerDidObserveDatabaseChange:(id)change;
+- (void)purge:(id)purge;
+- (void)removePausedSyncItemID:(id)d forBundleID:(id)iD;
+- (void)setAlternateContentsURL:(id)l forItemID:(id)d;
+- (void)setPausedSyncItemID:(id)d forBundleID:(id)iD;
+- (void)synchronousProviderUpdate:(BOOL)update;
+- (void)updateProviderOnAppearingVolume:(id)volume;
+- (void)updateProviderOnDisappearingVolume:(id)volume reason:(id)reason;
 - (void)updateProvidersIfNecessary;
 @end
 
@@ -69,15 +69,15 @@
 - (void)updateProvidersIfNecessary
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69DF068] sharedManager];
-  [v4 personaGenerationIdentifierWithError:0];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  [mEMORY[0x1E69DF068] personaGenerationIdentifierWithError:0];
 
   v5 = __swp(v2, &updateProvidersIfNecessary_personaGeneration);
   if (v2 == v5)
   {
-    v6 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v11 = 0;
-    [v6 getKnowledgeUUID:0 andSequenceNumber:&v11];
+    [defaultWorkspace getKnowledgeUUID:0 andSequenceNumber:&v11];
     v7 = v11;
 
     [v7 unsignedLongLongValue];
@@ -120,10 +120,10 @@
 {
   v3 = self->_providersByIdentifier;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
   objc_sync_exit(v3);
 
-  return v4;
+  return allValues;
 }
 
 - (FPDServer)server
@@ -133,17 +133,17 @@
   return WeakRetained;
 }
 
-- (FPDExtensionManager)initWithServer:(id)a3 updateHandler:(id)a4
+- (FPDExtensionManager)initWithServer:(id)server updateHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = FPDExtensionManager;
   v8 = [(FPDExtensionManager *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_server, v6);
+    objc_storeWeak(&v8->_server, serverCopy);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     providersByIdentifier = v9->_providersByIdentifier;
     v9->_providersByIdentifier = v10;
@@ -153,15 +153,15 @@
     callbackQueue = v9->_callbackQueue;
     v9->_callbackQueue = v13;
 
-    v15 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     sessionQueueForExtensionIdentifier = v9->_sessionQueueForExtensionIdentifier;
-    v9->_sessionQueueForExtensionIdentifier = v15;
+    v9->_sessionQueueForExtensionIdentifier = strongToWeakObjectsMapTable;
 
     v17 = [[FPDPushConnection alloc] initWithExtensionManager:v9];
     pushConnection = v9->_pushConnection;
     v9->_pushConnection = v17;
 
-    v19 = _Block_copy(v7);
+    v19 = _Block_copy(handlerCopy);
     updateHandler = v9->_updateHandler;
     v9->_updateHandler = v19;
 
@@ -193,22 +193,22 @@
   [objc_msgSend(WeakRetained "fpfsClass")];
 }
 
-- (void)garbageCollectDomainsExceptIdentifiers:(id)a3 fromDirectory:(id)a4 isUserData:(BOOL)a5
+- (void)garbageCollectDomainsExceptIdentifiers:(id)identifiers fromDirectory:(id)directory isUserData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v25 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  identifiersCopy = identifiers;
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   section = __fp_create_section();
   v9 = fp_current_or_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v25 fp_shortDescription];
-    [(FPDExtensionManager *)v10 garbageCollectDomainsExceptIdentifiers:v40 fromDirectory:section isUserData:v9];
+    fp_shortDescription = [directoryCopy fp_shortDescription];
+    [(FPDExtensionManager *)fp_shortDescription garbageCollectDomainsExceptIdentifiers:v40 fromDirectory:section isUserData:v9];
   }
 
-  [v8 enumeratorAtURL:v25 includingPropertiesForKeys:0 options:1 errorHandler:&__block_literal_global_24];
+  [defaultManager enumeratorAtURL:directoryCopy includingPropertiesForKeys:0 options:1 errorHandler:&__block_literal_global_24];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -218,7 +218,7 @@
   {
     v13 = *v29;
     v14 = "database";
-    if (v5)
+    if (dataCopy)
     {
       v14 = "and archiving user data";
     }
@@ -235,32 +235,32 @@
 
         v16 = *(*(&v28 + 1) + 8 * i);
         v17 = [v16 fp_fpfsProviderDomainID:0 skipTypeCheck:1 error:0];
-        if ([v17 length] && (objc_msgSend(v7, "containsObject:", v17) & 1) == 0)
+        if ([v17 length] && (objc_msgSend(identifiersCopy, "containsObject:", v17) & 1) == 0)
         {
           v18 = fp_current_or_default_log();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v16 fp_shortDescription];
+            fp_shortDescription2 = [v16 fp_shortDescription];
             *buf = 136315650;
             v34 = v26;
             v35 = 2114;
             v36 = v17;
             v37 = 2114;
-            v38 = v22;
+            v38 = fp_shortDescription2;
             _os_log_debug_impl(&dword_1CEFC7000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] collecting %s for domain %{public}@ at %{public}@ because its provider is uninstalled or domain is lost", buf, 0x20u);
           }
 
           v27 = 0;
-          v19 = [v8 removeItemAtURL:v16 error:&v27];
+          v19 = [defaultManager removeItemAtURL:v16 error:&v27];
           v20 = v27;
           if ((v19 & 1) == 0)
           {
             v21 = fp_current_or_default_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v16 fp_shortDescription];
+              fp_shortDescription3 = [v16 fp_shortDescription];
               *buf = 138412546;
-              v34 = v23;
+              v34 = fp_shortDescription3;
               v35 = 2112;
               v36 = v20;
               _os_log_error_impl(&dword_1CEFC7000, v21, OS_LOG_TYPE_ERROR, "[ERROR] can't remove: %@: %@", buf, 0x16u);
@@ -279,26 +279,26 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_garbageCollectRemovedProvidersForInstalledProviderIdentifiers:(id)a3
+- (void)_garbageCollectRemovedProvidersForInstalledProviderIdentifiers:(id)identifiers
 {
   v113 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
+  identifiersCopy = identifiers;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v63 = fileProviderDirectory();
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
-  v73 = v5;
-  v7 = [v5 enumeratorAtURL:v6 includingPropertiesForKeys:0 options:1 errorHandler:0];
+  v73 = defaultManager;
+  v7 = [defaultManager enumeratorAtURL:v6 includingPropertiesForKeys:0 options:1 errorHandler:0];
 
   v8 = objc_opt_new();
-  v68 = v4;
-  v64 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v68 = identifiersCopy;
+  v64 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v9 = [FPDAppMonitor alloc];
-  v61 = self;
-  v10 = [(FPDExtensionManager *)self server];
-  v11 = [(FPDAppMonitor *)v9 initWithServer:v10];
+  selfCopy = self;
+  server = [(FPDExtensionManager *)self server];
+  v11 = [(FPDAppMonitor *)v9 initWithServer:server];
 
   v62 = v11;
-  v65 = [(FPDAppMonitor *)v11 listOfPlaceholderApps];
+  listOfPlaceholderApps = [(FPDAppMonitor *)v11 listOfPlaceholderApps];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
@@ -326,15 +326,15 @@
         {
           v17 = [v16 URLByAppendingPathComponent:@"Domains.plist"];
           v18 = MEMORY[0x1E695DF20];
-          v19 = [v17 path];
-          v20 = [v18 dictionaryWithContentsOfFile:v19];
+          path = [v17 path];
+          v20 = [v18 dictionaryWithContentsOfFile:path];
 
           if (v20)
           {
             v71 = v17;
-            v21 = [v16 lastPathComponent];
+            lastPathComponent = [v16 lastPathComponent];
             v72 = v20;
-            if ([v68 containsObject:v21])
+            if ([v68 containsObject:lastPathComponent])
             {
 LABEL_21:
               v75 = objc_opt_new();
@@ -342,8 +342,8 @@ LABEL_21:
               v91 = 0u;
               v92 = 0u;
               v93 = 0u;
-              v32 = [v20 keyEnumerator];
-              v33 = [v32 countByEnumeratingWithState:&v90 objects:v110 count:16];
+              keyEnumerator = [v20 keyEnumerator];
+              v33 = [keyEnumerator countByEnumeratingWithState:&v90 objects:v110 count:16];
               if (v33)
               {
                 v34 = v33;
@@ -354,14 +354,14 @@ LABEL_21:
                   {
                     if (*v91 != v35)
                     {
-                      objc_enumerationMutation(v32);
+                      objc_enumerationMutation(keyEnumerator);
                     }
 
                     v37 = *(*(&v90 + 1) + 8 * i);
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v38 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:v21 domainIdentifier:v37];
+                      v38 = [MEMORY[0x1E696AEC0] fp_providerDomainIDFromProviderID:lastPathComponent domainIdentifier:v37];
                       v39 = fp_current_or_default_log();
                       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
                       {
@@ -374,7 +374,7 @@ LABEL_21:
                     }
                   }
 
-                  v34 = [v32 countByEnumeratingWithState:&v90 objects:v110 count:16];
+                  v34 = [keyEnumerator countByEnumeratingWithState:&v90 objects:v110 count:16];
                 }
 
                 while (v34);
@@ -383,7 +383,7 @@ LABEL_21:
               v14 = v67;
               v13 = v69;
               v20 = v72;
-              v31 = v75;
+              path2 = v75;
             }
 
             else
@@ -393,7 +393,7 @@ LABEL_21:
               v97 = 0u;
               v94 = 0u;
               v95 = 0u;
-              v74 = v65;
+              v74 = listOfPlaceholderApps;
               v22 = [v74 countByEnumeratingWithState:&v94 objects:v111 count:16];
               if (v22)
               {
@@ -411,7 +411,7 @@ LABEL_21:
                     v26 = *(*(&v94 + 1) + 8 * j);
                     v27 = objc_autoreleasePoolPush();
                     v28 = [v26 stringByAppendingString:@"."];
-                    v29 = [v21 hasPrefix:v28];
+                    v29 = [lastPathComponent hasPrefix:v28];
 
                     objc_autoreleasePoolPop(v27);
                     if (v29)
@@ -438,12 +438,12 @@ LABEL_21:
                 *buf = 138543618;
                 v103 = v66;
                 v104 = 2114;
-                v105 = v21;
+                v105 = lastPathComponent;
                 _os_log_debug_impl(&dword_1CEFC7000, v30, OS_LOG_TYPE_DEBUG, "[DEBUG] Will collect %{public}@ because %{public}@ is no longer installed", buf, 0x16u);
               }
 
-              v31 = [v66 path];
-              [v64 addObject:v31];
+              path2 = [v66 path];
+              [v64 addObject:path2];
               v14 = v67;
               v13 = v69;
               v20 = v72;
@@ -464,14 +464,14 @@ LABEL_21:
   }
 
   v40 = [MEMORY[0x1E695DFF8] fileURLWithPath:v63 isDirectory:1];
-  [(FPDExtensionManager *)v61 garbageCollectDomainsExceptIdentifiers:v8 fromDirectory:v40 isUserData:0];
+  [(FPDExtensionManager *)selfCopy garbageCollectDomainsExceptIdentifiers:v8 fromDirectory:v40 isUserData:0];
 
-  v41 = [MEMORY[0x1E695DFF8] fp_cloudStorageDirectory];
-  [(FPDExtensionManager *)v61 garbageCollectDomainsExceptIdentifiers:v8 fromDirectory:v41 isUserData:1];
+  fp_cloudStorageDirectory = [MEMORY[0x1E695DFF8] fp_cloudStorageDirectory];
+  [(FPDExtensionManager *)selfCopy garbageCollectDomainsExceptIdentifiers:v8 fromDirectory:fp_cloudStorageDirectory isUserData:1];
 
   if ([MEMORY[0x1E6964E78] isIndexingAvailable])
   {
-    v42 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+    defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
@@ -492,16 +492,16 @@ LABEL_21:
           }
 
           v47 = *(*(&v86 + 1) + 8 * k);
-          v48 = [v47 lastPathComponent];
+          lastPathComponent2 = [v47 lastPathComponent];
           v82[0] = MEMORY[0x1E69E9820];
           v82[1] = 3221225472;
           v82[2] = __86__FPDExtensionManager__garbageCollectRemovedProvidersForInstalledProviderIdentifiers___block_invoke;
           v82[3] = &unk_1E83BDF78;
-          v83 = v48;
+          v83 = lastPathComponent2;
           v84 = v73;
           v85 = v47;
-          v49 = v48;
-          [v42 deleteAllSearchableItemsForBundleID:v49 completionHandler:v82];
+          v49 = lastPathComponent2;
+          [defaultSearchableIndex deleteAllSearchableItemsForBundleID:v49 completionHandler:v82];
         }
 
         v44 = [v76 countByEnumeratingWithState:&v86 objects:v109 count:16];
@@ -517,8 +517,8 @@ LABEL_21:
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v42 = v64;
-    v50 = [v42 countByEnumeratingWithState:&v78 objects:v108 count:16];
+    defaultSearchableIndex = v64;
+    v50 = [defaultSearchableIndex countByEnumeratingWithState:&v78 objects:v108 count:16];
     if (v50)
     {
       v51 = v50;
@@ -529,11 +529,11 @@ LABEL_21:
         {
           if (*v79 != v52)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(defaultSearchableIndex);
           }
 
           v54 = *(*(&v78 + 1) + 8 * m);
-          v55 = [v54 lastPathComponent];
+          lastPathComponent3 = [v54 lastPathComponent];
           v77 = 0;
           v56 = [v73 removeItemAtPath:v54 error:&v77];
           v57 = v77;
@@ -542,19 +542,19 @@ LABEL_21:
             v58 = fp_current_or_default_log();
             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
             {
-              v59 = [v57 fp_prettyDescription];
+              fp_prettyDescription = [v57 fp_prettyDescription];
               *buf = 138543874;
-              v103 = v55;
+              v103 = lastPathComponent3;
               v104 = 2114;
               v105 = v54;
               v106 = 2114;
-              v107 = v59;
+              v107 = fp_prettyDescription;
               _os_log_error_impl(&dword_1CEFC7000, v58, OS_LOG_TYPE_ERROR, "[ERROR] Failed to remove domains entry for provider identifier %{public}@ at path %{public}@: %{public}@", buf, 0x20u);
             }
           }
         }
 
-        v51 = [v42 countByEnumeratingWithState:&v78 objects:v108 count:16];
+        v51 = [defaultSearchableIndex countByEnumeratingWithState:&v78 objects:v108 count:16];
       }
 
       while (v51);
@@ -617,17 +617,17 @@ LABEL_10:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAllExtensionsStarted:(id)a3
+- (void)handleAllExtensionsStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__FPDExtensionManager_handleAllExtensionsStarted___block_invoke;
   v9[3] = &unk_1E83BE158;
   v9[4] = self;
-  v10 = v4;
+  v10 = startedCopy;
   v5 = handleAllExtensionsStarted__onceToken;
-  v6 = v4;
+  v6 = startedCopy;
   if (v5 != -1)
   {
     dispatch_once(&handleAllExtensionsStarted__onceToken, v9);
@@ -812,26 +812,26 @@ void __46__FPDExtensionManager_loadProvidersAndMonitor__block_invoke(uint64_t a1
   [(LSObserver *)self->_observer setName:v6];
 
   [(LSObserver *)self->_observer startObserving];
-  v7 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-  v8 = [v7 addMonitor:self subjectMask:1];
+  subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+  v8 = [subjectMonitorRegistry addMonitor:self subjectMask:1];
   apSubscription = self->_apSubscription;
   self->_apSubscription = v8;
 
   [(FPDExtensionManager *)self forceSynchronousProviderUpdate];
 }
 
-- (void)purge:(id)a3
+- (void)purge:(id)purge
 {
-  v4 = a3;
-  v5 = [(FPDExtensionManager *)self server];
-  v6 = [v5 volumeManager];
+  purgeCopy = purge;
+  server = [(FPDExtensionManager *)self server];
+  volumeManager = [server volumeManager];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__FPDExtensionManager_purge___block_invoke;
   v8[3] = &unk_1E83BDF50;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateLibrariesWithBlock:v8];
+  v9 = purgeCopy;
+  v7 = purgeCopy;
+  [volumeManager enumerateLibrariesWithBlock:v8];
 }
 
 uint64_t __29__FPDExtensionManager_purge___block_invoke(uint64_t a1, void *a2)
@@ -935,7 +935,7 @@ void __44__FPDExtensionManager_extensionPointRecords__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDidObserveDatabaseChange:(id)a3
+- (void)observerDidObserveDatabaseChange:(id)change
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -946,12 +946,12 @@ void __44__FPDExtensionManager_extensionPointRecords__block_invoke(uint64_t a1)
   dispatch_async(callbackQueue, block);
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
-  v7 = [(FPDExtensionManager *)self allProviders];
-  v8 = [v7 fp_map:&__block_literal_global_37_0];
+  changedCopy = changed;
+  allProviders = [(FPDExtensionManager *)self allProviders];
+  v8 = [allProviders fp_map:&__block_literal_global_37_0];
   v9 = [v5 setWithArray:v8];
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -960,7 +960,7 @@ void __44__FPDExtensionManager_extensionPointRecords__block_invoke(uint64_t a1)
   v15[3] = &unk_1E83C10F8;
   v10 = v9;
   v16 = v10;
-  v11 = [v6 fp_filter:v15];
+  v11 = [changedCopy fp_filter:v15];
 
   if ([v11 count])
   {
@@ -1021,12 +1021,12 @@ uint64_t __68__FPDExtensionManager_appProtectionSubjectsChanged_forSubscription_
   return [*(a1 + 32) forceSynchronousProviderUpdate];
 }
 
-- (void)synchronousProviderUpdate:(BOOL)a3
+- (void)synchronousProviderUpdate:(BOOL)update
 {
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   FPPerformWithDefaultPersona();
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 void __49__FPDExtensionManager_synchronousProviderUpdate___block_invoke(uint64_t a1, void *a2)
@@ -1096,23 +1096,23 @@ void __49__FPDExtensionManager_synchronousProviderUpdate___block_invoke(uint64_t
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateProviderOnAppearingVolume:(id)a3
+- (void)updateProviderOnAppearingVolume:(id)volume
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  volumeCopy = volume;
   v5 = dispatch_group_create();
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = v6->_providersByIdentifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = selfCopy->_providersByIdentifier;
   objc_sync_enter(v7);
-  v8 = [(NSMutableDictionary *)v6->_providersByIdentifier allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_providersByIdentifier allValues];
   objc_sync_exit(v7);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v8;
+  obj = allValues;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -1127,15 +1127,15 @@ void __49__FPDExtensionManager_synchronousProviderUpdate___block_invoke(uint64_t
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 domainQueue];
+        domainQueue = [v12 domainQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __55__FPDExtensionManager_updateProviderOnAppearingVolume___block_invoke;
         block[3] = &unk_1E83BDE60;
         block[4] = v12;
-        v19 = v4;
+        v19 = volumeCopy;
         v20 = v5;
-        dispatch_sync(v13, block);
+        dispatch_sync(domainQueue, block);
       }
 
       v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -1144,13 +1144,13 @@ void __49__FPDExtensionManager_synchronousProviderUpdate___block_invoke(uint64_t
     while (v9);
   }
 
-  objc_sync_exit(v6);
-  callbackQueue = v6->_callbackQueue;
+  objc_sync_exit(selfCopy);
+  callbackQueue = selfCopy->_callbackQueue;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __55__FPDExtensionManager_updateProviderOnAppearingVolume___block_invoke_3;
   v17[3] = &unk_1E83BE068;
-  v17[4] = v6;
+  v17[4] = selfCopy;
   dispatch_group_notify(v5, callbackQueue, v17);
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1169,23 +1169,23 @@ void __55__FPDExtensionManager_updateProviderOnAppearingVolume___block_invoke(ui
   [v3 startDomains:v2 completion:v4];
 }
 
-- (void)updateProviderOnDisappearingVolume:(id)a3 reason:(id)a4
+- (void)updateProviderOnDisappearingVolume:(id)volume reason:(id)reason
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = v8->_providersByIdentifier;
+  volumeCopy = volume;
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = selfCopy->_providersByIdentifier;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)v8->_providersByIdentifier allValues];
+  allValues = [(NSMutableDictionary *)selfCopy->_providersByIdentifier allValues];
   objc_sync_exit(v9);
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v10;
+  v11 = allValues;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -1200,7 +1200,7 @@ void __55__FPDExtensionManager_updateProviderOnAppearingVolume___block_invoke(ui
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v18 + 1) + 8 * v14++) invalidateAllDomainsOnVolume:v6 reason:v7];
+        [*(*(&v18 + 1) + 8 * v14++) invalidateAllDomainsOnVolume:volumeCopy reason:reasonCopy];
       }
 
       while (v12 != v14);
@@ -1210,13 +1210,13 @@ void __55__FPDExtensionManager_updateProviderOnAppearingVolume___block_invoke(ui
     while (v12);
   }
 
-  objc_sync_exit(v8);
-  callbackQueue = v8->_callbackQueue;
+  objc_sync_exit(selfCopy);
+  callbackQueue = selfCopy->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block_invoke;
   block[3] = &unk_1E83BE068;
-  block[4] = v8;
+  block[4] = selfCopy;
   dispatch_async(callbackQueue, block);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1228,15 +1228,15 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
   [WeakRetained signalProviderChanges];
 }
 
-- (void)migrateEnabledStateIfNecessary:(id)a3
+- (void)migrateEnabledStateIfNecessary:(id)necessary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = fileProviderDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"LegacyEnabledStateHasBeenMigrated"];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if ((v7 & 1) == 0)
   {
@@ -1244,7 +1244,7 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v3;
+    v8 = necessaryCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -1286,16 +1286,16 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)extensionsByID:(id)a3
+- (id)extensionsByID:(id)d
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dCopy = d;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(dCopy, "count")}];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = dCopy;
   v5 = [obj countByEnumeratingWithState:&v39 objects:v51 count:16];
   if (v5)
   {
@@ -1314,13 +1314,13 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
         }
 
         v10 = *(*(&v39 + 1) + 8 * i);
-        v11 = [v10 identifier];
+        identifier = [v10 identifier];
 
-        if (v11)
+        if (identifier)
         {
           v12 = v10;
-          v13 = [v12 identifier];
-          v14 = [v4 objectForKeyedSubscript:v13];
+          identifier2 = [v12 identifier];
+          v14 = [v4 objectForKeyedSubscript:identifier2];
 
           v15 = v12;
           if (!v14)
@@ -1331,23 +1331,23 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
           v16 = fp_current_or_default_log();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v12 identifier];
-            v18 = [v14 identifier];
-            v19 = [v12 identifier];
+            identifier3 = [v12 identifier];
+            identifier4 = [v14 identifier];
+            identifier5 = [v12 identifier];
             *buf = 138412802;
-            v44 = v17;
+            v44 = identifier3;
             v45 = 2112;
-            v46 = v18;
+            v46 = identifier4;
             v47 = 2112;
-            v48 = v19;
+            v48 = identifier5;
             _os_log_impl(&dword_1CEFC7000, v16, OS_LOG_TYPE_INFO, "[INFO] %@ and %@ are backing the same identifier, %@:", buf, 0x20u);
 
             v8 = v37;
           }
 
-          v20 = [v12 bundleVersion];
-          v21 = [v14 bundleVersion];
-          v22 = [v20 compare:v21 options:64];
+          bundleVersion = [v12 bundleVersion];
+          bundleVersion2 = [v14 bundleVersion];
+          v22 = [bundleVersion compare:bundleVersion2 options:64];
 
           v23 = fp_current_or_default_log();
           v24 = v23;
@@ -1357,18 +1357,18 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
             {
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
-                v25 = [v12 identifier];
-                v26 = [v12 bundleVersion];
-                v27 = [v14 identifier];
-                v28 = [v14 bundleVersion];
+                identifier6 = [v12 identifier];
+                bundleVersion3 = [v12 bundleVersion];
+                identifier7 = [v14 identifier];
+                bundleVersion4 = [v14 bundleVersion];
                 *buf = 138413058;
-                v44 = v25;
+                v44 = identifier6;
                 v45 = 2112;
-                v46 = v26;
+                v46 = bundleVersion3;
                 v47 = 2112;
-                v48 = v27;
+                v48 = identifier7;
                 v49 = 2112;
-                v50 = v28;
+                v50 = bundleVersion4;
                 _os_log_impl(&dword_1CEFC7000, v24, OS_LOG_TYPE_INFO, "[INFO] Ignoring provider %@ (%@) in favor of provider %@ (%@)", buf, 0x2Au);
 
                 v8 = v37;
@@ -1379,26 +1379,26 @@ void __65__FPDExtensionManager_updateProviderOnDisappearingVolume_reason___block
 LABEL_23:
 
 LABEL_24:
-              v33 = [v12 identifier];
-              [v4 setObject:v15 forKeyedSubscript:v33];
+              identifier8 = [v12 identifier];
+              [v4 setObject:v15 forKeyedSubscript:identifier8];
 
               goto LABEL_25;
             }
 
             if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
             {
-              v29 = [v14 identifier];
-              v30 = [v14 bundleVersion];
-              v31 = [v12 identifier];
-              v32 = [v12 bundleVersion];
+              identifier9 = [v14 identifier];
+              bundleVersion5 = [v14 bundleVersion];
+              identifier10 = [v12 identifier];
+              bundleVersion6 = [v12 bundleVersion];
               *buf = 138413058;
-              v44 = v29;
+              v44 = identifier9;
               v45 = 2112;
-              v46 = v30;
+              v46 = bundleVersion5;
               v47 = 2112;
-              v48 = v31;
+              v48 = identifier10;
               v49 = 2112;
-              v50 = v32;
+              v50 = bundleVersion6;
               _os_log_impl(&dword_1CEFC7000, v24, OS_LOG_TYPE_INFO, "[INFO] Ignoring provider %@ (%@) in favor of provider %@ (%@)", buf, 0x2Au);
 LABEL_21:
 
@@ -1408,18 +1408,18 @@ LABEL_21:
 
           else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v14 identifier];
-            v30 = [v12 identifier];
-            v31 = [v12 bundleVersion];
-            v32 = [v12 identifier];
+            identifier9 = [v14 identifier];
+            bundleVersion5 = [v12 identifier];
+            identifier10 = [v12 bundleVersion];
+            bundleVersion6 = [v12 identifier];
             *buf = 138413058;
-            v44 = v29;
+            v44 = identifier9;
             v45 = 2112;
-            v46 = v30;
+            v46 = bundleVersion5;
             v47 = 2112;
-            v48 = v31;
+            v48 = identifier10;
             v49 = 2112;
-            v50 = v32;
+            v50 = bundleVersion6;
             _os_log_error_impl(&dword_1CEFC7000, v24, OS_LOG_TYPE_ERROR, "[ERROR] Provider %@ and %@ have the same version number (%@). %@ will win nondeterministically.", buf, 0x2Au);
             goto LABEL_21;
           }
@@ -1450,16 +1450,16 @@ LABEL_25:
   return v4;
 }
 
-- (id)uniquedExtensions:(id)a3
+- (id)uniquedExtensions:(id)extensions
 {
   v60 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  extensionsCopy = extensions;
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v5 = v3;
+  v5 = extensionsCopy;
   v6 = v4;
   v7 = v5;
   v8 = [v5 countByEnumeratingWithState:&v45 objects:v59 count:16];
@@ -1484,13 +1484,13 @@ LABEL_25:
         v13 = *(*(&v45 + 1) + 8 * i);
         if (([v13 supportsFPFS] & 1) == 0)
         {
-          v14 = [v13 extensionStorageURLs];
-          v15 = [v14 firstObject];
+          extensionStorageURLs = [v13 extensionStorageURLs];
+          firstObject = [extensionStorageURLs firstObject];
 
-          if (v15)
+          if (firstObject)
           {
             v16 = v13;
-            v17 = [v6 objectForKeyedSubscript:v15];
+            v17 = [v6 objectForKeyedSubscript:firstObject];
             if (!v17)
             {
               goto LABEL_24;
@@ -1499,21 +1499,21 @@ LABEL_25:
             v18 = fp_current_or_default_log();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
             {
-              v19 = [v16 identifier];
-              v20 = [v17 identifier];
-              v21 = [v15 fp_shortDescription];
+              identifier = [v16 identifier];
+              identifier2 = [v17 identifier];
+              fp_shortDescription = [firstObject fp_shortDescription];
               *buf = 138412802;
-              v50 = v19;
+              v50 = identifier;
               v51 = 2112;
-              v52 = v20;
+              v52 = identifier2;
               v53 = 2112;
-              v54 = v21;
+              v54 = fp_shortDescription;
               _os_log_impl(&dword_1CEFC7000, v18, OS_LOG_TYPE_INFO, "[INFO] %@ and %@ are backing the same location, %@:", buf, 0x20u);
             }
 
-            v22 = [v16 bundleVersion];
-            v23 = [v17 bundleVersion];
-            v24 = [v22 compare:v23 options:64];
+            bundleVersion = [v16 bundleVersion];
+            bundleVersion2 = [v17 bundleVersion];
+            v24 = [bundleVersion compare:bundleVersion2 options:64];
 
             v25 = fp_current_or_default_log();
             v26 = v25;
@@ -1523,18 +1523,18 @@ LABEL_25:
               {
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                 {
-                  v27 = [v16 identifier];
-                  v28 = [v16 bundleVersion];
-                  v29 = [v17 identifier];
-                  v30 = [v17 bundleVersion];
+                  identifier3 = [v16 identifier];
+                  bundleVersion3 = [v16 bundleVersion];
+                  identifier4 = [v17 identifier];
+                  bundleVersion4 = [v17 bundleVersion];
                   *buf = v41;
-                  v50 = v27;
+                  v50 = identifier3;
                   v51 = 2112;
-                  v52 = v28;
+                  v52 = bundleVersion3;
                   v53 = 2112;
-                  v54 = v29;
+                  v54 = identifier4;
                   v55 = 2112;
-                  v56 = v30;
+                  v56 = bundleVersion4;
                   _os_log_impl(&dword_1CEFC7000, v26, OS_LOG_TYPE_INFO, "[INFO] Ignoring provider %@ (%@) in favor of provider %@ (%@)", buf, 0x2Au);
 
                   v6 = v42;
@@ -1547,7 +1547,7 @@ LABEL_23:
                 v7 = v44;
 
 LABEL_24:
-                [v6 setObject:v16 forKeyedSubscript:v15];
+                [v6 setObject:v16 forKeyedSubscript:firstObject];
 
 LABEL_25:
                 continue;
@@ -1558,18 +1558,18 @@ LABEL_25:
                 goto LABEL_23;
               }
 
-              v31 = [v17 identifier];
-              v32 = [v17 bundleVersion];
-              v33 = [v16 identifier];
-              v34 = [v16 bundleVersion];
+              identifier5 = [v17 identifier];
+              bundleVersion5 = [v17 bundleVersion];
+              identifier6 = [v16 identifier];
+              bundleVersion6 = [v16 bundleVersion];
               *buf = v41;
-              v50 = v31;
+              v50 = identifier5;
               v51 = 2112;
-              v52 = v32;
+              v52 = bundleVersion5;
               v53 = 2112;
-              v54 = v33;
+              v54 = identifier6;
               v55 = 2112;
-              v56 = v34;
+              v56 = bundleVersion6;
               _os_log_impl(&dword_1CEFC7000, v26, OS_LOG_TYPE_INFO, "[INFO] Ignoring provider %@ (%@) in favor of provider %@ (%@)", buf, 0x2Au);
             }
 
@@ -1580,18 +1580,18 @@ LABEL_25:
                 goto LABEL_23;
               }
 
-              v31 = [v17 identifier];
-              v32 = [v16 identifier];
-              v33 = [v16 bundleVersion];
-              v34 = [v16 identifier];
+              identifier5 = [v17 identifier];
+              bundleVersion5 = [v16 identifier];
+              identifier6 = [v16 bundleVersion];
+              bundleVersion6 = [v16 identifier];
               *buf = v41;
-              v50 = v31;
+              v50 = identifier5;
               v51 = 2112;
-              v52 = v32;
+              v52 = bundleVersion5;
               v53 = 2112;
-              v54 = v33;
+              v54 = identifier6;
               v55 = 2112;
-              v56 = v34;
+              v56 = bundleVersion6;
               _os_log_error_impl(&dword_1CEFC7000, v26, OS_LOG_TYPE_ERROR, "[ERROR] Provider %@ and %@ have the same version number (%@). %@ will win nondeterministically.", buf, 0x2Au);
             }
 
@@ -1617,30 +1617,30 @@ LABEL_25:
 
   [v7 fp_filter:&__block_literal_global_55];
   v36 = v35 = v6;
-  v37 = [v35 allValues];
-  v38 = [v37 arrayByAddingObjectsFromArray:v36];
+  allValues = [v35 allValues];
+  v38 = [allValues arrayByAddingObjectsFromArray:v36];
 
   v39 = *MEMORY[0x1E69E9840];
 
   return v38;
 }
 
-- (void)_updateProviderListForMatchingExtensionRecords:(id)a3
+- (void)_updateProviderListForMatchingExtensionRecords:(id)records
 {
   v4 = MEMORY[0x1E695E000];
-  v5 = a3;
+  recordsCopy = records;
   v6 = [[v4 alloc] initWithSuiteName:@"com.apple.fileproviderd"];
   v7 = [v6 stringForKey:@"provider-filter"];
-  v8 = [v7 lowercaseString];
+  lowercaseString = [v7 lowercaseString];
 
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___block_invoke;
   v14 = &unk_1E83C1188;
-  v15 = v8;
-  v16 = self;
-  v9 = v8;
-  v10 = [v5 fp_map:&v11];
+  v15 = lowercaseString;
+  selfCopy = self;
+  v9 = lowercaseString;
+  v10 = [recordsCopy fp_map:&v11];
 
   [(FPDExtensionManager *)self _updateProviderListForFilteredFPDExtensions:v10, v11, v12, v13, v14];
 }
@@ -1675,14 +1675,14 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
   return v13;
 }
 
-- (void)_updateProviderListForFilteredFPDExtensions:(id)a3
+- (void)_updateProviderListForFilteredFPDExtensions:(id)extensions
 {
   v70 = *MEMORY[0x1E69E9840];
-  v38 = a3;
+  extensionsCopy = extensions;
   context = objc_autoreleasePoolPush();
   section = __fp_create_section();
   v4 = fp_current_or_default_log();
-  v43 = self;
+  selfCopy = self;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
@@ -1692,10 +1692,10 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
 
   v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_opt_new();
-  v6 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
-  v7 = [v6 mutableCopy];
+  allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+  v7 = [allValues mutableCopy];
 
-  v36 = [(FPDExtensionManager *)self uniquedExtensions:v38];
+  v36 = [(FPDExtensionManager *)self uniquedExtensions:extensionsCopy];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -1716,20 +1716,20 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
 
         v11 = *(*(&v56 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 identifier];
-        if (v13)
+        identifier = [v11 identifier];
+        if (identifier)
         {
-          v14 = [(NSMutableDictionary *)v43->_providersByIdentifier objectForKeyedSubscript:v13];
+          v14 = [(NSMutableDictionary *)selfCopy->_providersByIdentifier objectForKeyedSubscript:identifier];
           v15 = v14;
           if (v14 && [v14 isEqual:v11])
           {
-            [v42 setObject:v15 forKeyedSubscript:v13];
+            [v42 setObject:v15 forKeyedSubscript:identifier];
             [v7 removeObject:v15];
           }
 
           else
           {
-            [v42 setObject:v11 forKeyedSubscript:v13];
+            [v42 setObject:v11 forKeyedSubscript:identifier];
             [v5 addObject:v11];
           }
         }
@@ -1758,7 +1758,7 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v64 = v38;
+    v64 = extensionsCopy;
     v65 = 2114;
     v66 = v7;
     v67 = 2114;
@@ -1785,12 +1785,12 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
         }
 
         v20 = *(*(&v52 + 1) + 8 * j);
-        v21 = [v20 descriptor];
-        v22 = [v21 topLevelBundleIdentifier];
+        descriptor = [v20 descriptor];
+        topLevelBundleIdentifier = [descriptor topLevelBundleIdentifier];
 
-        if (v22)
+        if (topLevelBundleIdentifier)
         {
-          [(FPDPushConnection *)v43->_pushConnection setMessageDelegate:0 forApplicationBundleIdentifier:v22];
+          [(FPDPushConnection *)selfCopy->_pushConnection setMessageDelegate:0 forApplicationBundleIdentifier:topLevelBundleIdentifier];
         }
 
         [v20 invalidateWithReason:@"extension was unregistered"];
@@ -1823,14 +1823,14 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
 
         v27 = *(*(&v48 + 1) + 8 * k);
         dispatch_group_enter(v23);
-        v28 = [v27 descriptor];
-        v29 = [v28 topLevelBundleIdentifier];
+        descriptor2 = [v27 descriptor];
+        topLevelBundleIdentifier2 = [descriptor2 topLevelBundleIdentifier];
 
-        if (v29 && [v27 isAppExtensionReachable])
+        if (topLevelBundleIdentifier2 && [v27 isAppExtensionReachable])
         {
-          pushConnection = v43->_pushConnection;
-          v31 = [v27 asAppExtensionBackedProvider];
-          [(FPDPushConnection *)pushConnection setMessageDelegate:v31 forApplicationBundleIdentifier:v29];
+          pushConnection = selfCopy->_pushConnection;
+          asAppExtensionBackedProvider = [v27 asAppExtensionBackedProvider];
+          [(FPDPushConnection *)pushConnection setMessageDelegate:asAppExtensionBackedProvider forApplicationBundleIdentifier:topLevelBundleIdentifier2];
         }
 
         v46[0] = MEMORY[0x1E69E9820];
@@ -1847,22 +1847,22 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
     while (v24);
   }
 
-  v32 = v43->_providersByIdentifier;
+  v32 = selfCopy->_providersByIdentifier;
   objc_sync_enter(v32);
-  if (([(NSMutableDictionary *)v43->_providersByIdentifier isEqual:v42]& 1) == 0)
+  if (([(NSMutableDictionary *)selfCopy->_providersByIdentifier isEqual:v42]& 1) == 0)
   {
-    [(NSMutableDictionary *)v43->_providersByIdentifier setDictionary:v42];
+    [(NSMutableDictionary *)selfCopy->_providersByIdentifier setDictionary:v42];
   }
 
   objc_sync_exit(v32);
 
-  [(FPDExtensionManager *)v43 garbageCollectOnFirstLaunch];
-  callbackQueue = v43->_callbackQueue;
+  [(FPDExtensionManager *)selfCopy garbageCollectOnFirstLaunch];
+  callbackQueue = selfCopy->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__FPDExtensionManager__updateProviderListForFilteredFPDExtensions___block_invoke_2;
   block[3] = &unk_1E83BE158;
-  block[4] = v43;
+  block[4] = selfCopy;
   v45 = v42;
   v34 = v42;
   dispatch_group_notify(v23, callbackQueue, block);
@@ -1873,16 +1873,16 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (id)providerDomainsByIDFromExtensionsByID:(id)a3
+- (id)providerDomainsByIDFromExtensionsByID:(id)d
 {
   v70 = *MEMORY[0x1E69E9840];
-  v50 = a3;
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dCopy = d;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = [v50 allValues];
+  obj = [dCopy allValues];
   v54 = [obj countByEnumeratingWithState:&v61 objects:v69 count:16];
   if (v54)
   {
@@ -1899,20 +1899,20 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
         }
 
         v5 = *(*(&v61 + 1) + 8 * v4);
-        v6 = [v5 nsDomainsByID];
-        v7 = [v6 count] == 0;
+        nsDomainsByID = [v5 nsDomainsByID];
+        v7 = [nsDomainsByID count] == 0;
 
         if (!v7)
         {
-          v8 = [v5 shouldHideDomainDisplayName];
-          v9 = [v5 relevantDomainsByID];
-          v10 = [v9 allValues];
+          shouldHideDomainDisplayName = [v5 shouldHideDomainDisplayName];
+          relevantDomainsByID = [v5 relevantDomainsByID];
+          allValues = [relevantDomainsByID allValues];
 
           v59 = 0u;
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v11 = v10;
+          v11 = allValues;
           v12 = [v11 countByEnumeratingWithState:&v57 objects:v68 count:16];
           if (v12)
           {
@@ -1930,9 +1930,9 @@ id __70__FPDExtensionManager__updateProviderListForMatchingExtensionRecords___bl
                 v16 = v15;
                 if (v15)
                 {
-                  [v15 setShouldHideDomainDisplayName:v8];
-                  v17 = [v16 identifier];
-                  [v3 setObject:v16 forKeyedSubscript:v17];
+                  [v15 setShouldHideDomainDisplayName:shouldHideDomainDisplayName];
+                  identifier = [v16 identifier];
+                  [dictionary setObject:v16 forKeyedSubscript:identifier];
                 }
               }
 
@@ -1948,24 +1948,24 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v19 = [v5 descriptor];
-        v20 = [v19 defaultDomainVisible];
+        descriptor = [v5 descriptor];
+        defaultDomainVisible = [descriptor defaultDomainVisible];
 
-        if (v20)
+        if (defaultDomainVisible)
         {
-          v21 = [v5 relevantDomainsByID];
-          v18 = [v21 objectForKeyedSubscript:v51];
+          relevantDomainsByID2 = [v5 relevantDomainsByID];
+          v18 = [relevantDomainsByID2 objectForKeyedSubscript:v51];
 
           v22 = [v5 providerDomainForDomain:v18];
           v11 = v22;
           if (v22)
           {
             [v22 setShouldHideDomainDisplayName:1];
-            v23 = [v5 providedItemsURLs];
-            [v11 setStorageURLs:v23];
+            providedItemsURLs = [v5 providedItemsURLs];
+            [v11 setStorageURLs:providedItemsURLs];
 
-            v24 = [v11 identifier];
-            [v3 setObject:v11 forKeyedSubscript:v24];
+            identifier2 = [v11 identifier];
+            [dictionary setObject:v11 forKeyedSubscript:identifier2];
           }
 
           goto LABEL_17;
@@ -2007,15 +2007,15 @@ LABEL_18:
 
     [v28 setTopLevelBundleIdentifier:@"com.apple.FileProvider.LocalStorage"];
     v30 = [MEMORY[0x1E69DF088] personaAttributesForPersonaType:0];
-    v31 = [v30 userPersonaUniqueString];
+    userPersonaUniqueString = [v30 userPersonaUniqueString];
 
-    v32 = [MEMORY[0x1E69DF068] sharedManager];
-    v33 = [v32 currentPersona];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
     v56 = 0;
-    v34 = [v33 userPersonaUniqueString];
-    v35 = v34;
-    if (v34 == v31 || ([v34 isEqualToString:v31] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
+    userPersonaUniqueString2 = [currentPersona userPersonaUniqueString];
+    v35 = userPersonaUniqueString2;
+    if (userPersonaUniqueString2 == userPersonaUniqueString || ([userPersonaUniqueString2 isEqualToString:userPersonaUniqueString] & 1) != 0 || !voucher_process_can_use_arbitrary_personas())
     {
       v40 = 0;
     }
@@ -2023,7 +2023,7 @@ LABEL_18:
     else
     {
       v55 = 0;
-      v36 = [v33 copyCurrentPersonaContextWithError:&v55];
+      v36 = [currentPersona copyCurrentPersonaContextWithError:&v55];
       v37 = v55;
       v38 = v56;
       v56 = v36;
@@ -2037,7 +2037,7 @@ LABEL_18:
         }
       }
 
-      v40 = [v33 generateAndRestorePersonaContextWithPersonaUniqueString:v31];
+      v40 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:userPersonaUniqueString];
 
       if (v40)
       {
@@ -2059,8 +2059,8 @@ LABEL_18:
       [v28 setStorageURLs:v45];
     }
 
-    v46 = [v28 identifier];
-    [v3 setObject:v28 forKeyedSubscript:v46];
+    identifier3 = [v28 identifier];
+    [dictionary setObject:v28 forKeyedSubscript:identifier3];
 
     v47 = fp_current_or_default_log();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
@@ -2075,23 +2075,23 @@ LABEL_18:
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)nonEvictableSizeByProviderDomain
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = self->_providersByIdentifier;
   objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
   objc_sync_exit(v4);
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v5;
+  obj = allValues;
   v22 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v22)
   {
@@ -2106,8 +2106,8 @@ LABEL_18:
         }
 
         v7 = *(*(&v27 + 1) + 8 * i);
-        v8 = [v7 nsDomainsByID];
-        v9 = [v8 count] == 0;
+        nsDomainsByID = [v7 nsDomainsByID];
+        v9 = [nsDomainsByID count] == 0;
 
         if (!v9)
         {
@@ -2115,10 +2115,10 @@ LABEL_18:
           v26 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = [v7 relevantDomainsByID];
-          v11 = [v10 allValues];
+          relevantDomainsByID = [v7 relevantDomainsByID];
+          allValues2 = [relevantDomainsByID allValues];
 
-          v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v12 = [allValues2 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v12)
           {
             v13 = *v24;
@@ -2128,19 +2128,19 @@ LABEL_18:
               {
                 if (*v24 != v13)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(allValues2);
                 }
 
                 v15 = *(*(&v23 + 1) + 8 * j);
                 if ([v15 isUsingFPFS])
                 {
-                  v16 = [v15 providerDomainID];
+                  providerDomainID = [v15 providerDomainID];
                   v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v15, "nonEvictableSpace")}];
-                  [v3 setObject:v17 forKeyedSubscript:v16];
+                  [dictionary setObject:v17 forKeyedSubscript:providerDomainID];
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v12 = [allValues2 countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v12);
@@ -2156,23 +2156,23 @@ LABEL_18:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)providerWithIdentifier:(id)a3 checkInvalidation:(BOOL)a4 reason:(unint64_t *)a5
+- (id)providerWithIdentifier:(id)identifier checkInvalidation:(BOOL)invalidation reason:(unint64_t *)reason
 {
-  v6 = a4;
-  v8 = a3;
+  invalidationCopy = invalidation;
+  identifierCopy = identifier;
   v9 = self->_providersByIdentifier;
   objc_sync_enter(v9);
-  v10 = [(NSMutableDictionary *)self->_providersByIdentifier objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_providersByIdentifier objectForKeyedSubscript:identifierCopy];
   v11 = v10;
-  if (!a5 || v10)
+  if (!reason || v10)
   {
-    if (([v10 invalidated] & v6) == 1)
+    if (([v10 invalidated] & invalidationCopy) == 1)
     {
       v12 = 0;
-      *a5 = 2;
+      *reason = 2;
     }
 
     else
@@ -2184,7 +2184,7 @@ LABEL_18:
   else
   {
     v12 = 0;
-    *a5 = 0;
+    *reason = 0;
   }
 
   objc_sync_exit(v9);
@@ -2192,26 +2192,26 @@ LABEL_18:
   return v12;
 }
 
-- (id)domainWithID:(id)a3 reason:(unint64_t *)a4
+- (id)domainWithID:(id)d reason:(unint64_t *)reason
 {
-  v6 = a3;
-  v7 = [v6 fp_toProviderID];
-  v8 = [(FPDExtensionManager *)self providerWithIdentifier:v7 checkInvalidation:0 reason:a4];
+  dCopy = d;
+  fp_toProviderID = [dCopy fp_toProviderID];
+  v8 = [(FPDExtensionManager *)self providerWithIdentifier:fp_toProviderID checkInvalidation:0 reason:reason];
 
-  v9 = [v6 fp_toDomainIdentifier];
+  fp_toDomainIdentifier = [dCopy fp_toDomainIdentifier];
 
-  v10 = [v8 domainForIdentifier:v9 reason:a4];
+  v10 = [v8 domainForIdentifier:fp_toDomainIdentifier reason:reason];
 
   return v10;
 }
 
-- (id)domainForURL:(id)a3 reason:(unint64_t *)a4
+- (id)domainForURL:(id)l reason:(unint64_t *)reason
 {
-  v6 = a3;
-  if (([v6 hasDirectoryPath] & 1) != 0 || !objc_msgSend(v6, "fp_isSymlink"))
+  lCopy = l;
+  if (([lCopy hasDirectoryPath] & 1) != 0 || !objc_msgSend(lCopy, "fp_isSymlink"))
   {
-    v8 = [(FPDExtensionManager *)self _domainForURL:v6];
-    if (!a4)
+    v8 = [(FPDExtensionManager *)self _domainForURL:lCopy];
+    if (!reason)
     {
       goto LABEL_8;
     }
@@ -2219,10 +2219,10 @@ LABEL_18:
 
   else
   {
-    v7 = [v6 URLByDeletingLastPathComponent];
-    v8 = [(FPDExtensionManager *)self _domainForURL:v7];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    v8 = [(FPDExtensionManager *)self _domainForURL:uRLByDeletingLastPathComponent];
 
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_8;
     }
@@ -2230,7 +2230,7 @@ LABEL_18:
 
   if (!v8)
   {
-    *a4 = 3;
+    *reason = 3;
   }
 
 LABEL_8:
@@ -2238,23 +2238,23 @@ LABEL_8:
   return v8;
 }
 
-- (id)_domainForURL:(id)a3
+- (id)_domainForURL:(id)l
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v5 = self->_providersByIdentifier;
     objc_sync_enter(v5);
-    v6 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+    allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
     objc_sync_exit(v5);
 
-    v7 = [v4 fp_realpathURL];
+    fp_realpathURL = [lCopy fp_realpathURL];
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v8 = v6;
+    v8 = allValues;
     v9 = [v8 countByEnumeratingWithState:&v37 objects:v48 count:16];
     if (v9)
     {
@@ -2270,7 +2270,7 @@ LABEL_8:
 
           v12 = *(*(&v37 + 1) + 8 * i);
           v13 = objc_autoreleasePoolPush();
-          v14 = [v12 domainForRealPathURLFast:v7];
+          v14 = [v12 domainForRealPathURLFast:fp_realpathURL];
           objc_autoreleasePoolPop(v13);
           if (v14)
           {
@@ -2310,7 +2310,7 @@ LABEL_12:
 
         v19 = *(*(&v33 + 1) + 8 * v18);
         v20 = objc_autoreleasePoolPush();
-        v21 = [v19 domainForRealPathURLSlow:{v7, v33}];
+        v21 = [v19 domainForRealPathURLSlow:{fp_realpathURL, v33}];
         objc_autoreleasePoolPop(v20);
         if (v21)
         {
@@ -2342,9 +2342,9 @@ LABEL_18:
 
     if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
     {
-      v25 = [v21 fp_prettyDescription];
+      fp_prettyDescription = [v21 fp_prettyDescription];
       *buf = 138412290;
-      v42 = v25;
+      v42 = fp_prettyDescription;
       _os_signpost_emit_with_name_impl(&dword_1CEFC7000, v22, OS_SIGNPOST_EVENT, v24, "Slow domain lookup", "%@", buf, 0xCu);
     }
 
@@ -2355,15 +2355,15 @@ LABEL_27:
       v27 = fp_current_or_default_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        v30 = [v4 fp_shortDescription];
+        fp_shortDescription = [lCopy fp_shortDescription];
         v31 = [v8 count];
-        v32 = [v26 fp_prettyDescription];
+        fp_prettyDescription2 = [v26 fp_prettyDescription];
         *buf = 138412802;
-        v42 = v30;
+        v42 = fp_shortDescription;
         v43 = 2048;
         v44 = v31;
         v45 = 2112;
-        v46 = v32;
+        v46 = fp_prettyDescription2;
         _os_log_debug_impl(&dword_1CEFC7000, v27, OS_LOG_TYPE_DEBUG, "[DEBUG] testing if %@ is in our %lu registered file providers: it's in %@", buf, 0x20u);
       }
     }
@@ -2373,7 +2373,7 @@ LABEL_27:
       v27 = fp_current_or_default_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
-        [(FPDExtensionManager *)v4 _domainForURL:v15, v27];
+        [(FPDExtensionManager *)lCopy _domainForURL:v15, v27];
       }
 
       v26 = 0;
@@ -2390,36 +2390,36 @@ LABEL_27:
   return v26;
 }
 
-- (id)domainForActionOperationLocator:(id)a3
+- (id)domainForActionOperationLocator:(id)locator
 {
-  v4 = a3;
-  if ([v4 isProviderItem])
+  locatorCopy = locator;
+  if ([locatorCopy isProviderItem])
   {
-    v5 = [v4 asFPItem];
+    asFPItem = [locatorCopy asFPItem];
 
-    v6 = [v5 itemID];
-    v7 = [(FPDExtensionManager *)self domainFromItemID:v6 reason:0];
+    itemID = [asFPItem itemID];
+    v7 = [(FPDExtensionManager *)self domainFromItemID:itemID reason:0];
   }
 
   else
   {
-    v5 = [v4 asURL];
+    asFPItem = [locatorCopy asURL];
 
-    v7 = [(FPDExtensionManager *)self domainForURL:v5 reason:0];
+    v7 = [(FPDExtensionManager *)self domainForURL:asFPItem reason:0];
   }
 
   return v7;
 }
 
-- (id)domainsForAppBundleIdentifier:(id)a3
+- (id)domainsForAppBundleIdentifier:(id)identifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = self->_providersByIdentifier;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
-  v7 = [v6 copy];
+  allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+  v7 = [allValues copy];
 
   objc_sync_exit(v5);
   v33 = 0u;
@@ -2449,10 +2449,10 @@ LABEL_27:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v11 = [v10 domainsByID];
-        v12 = [v11 allValues];
+        domainsByID = [v10 domainsByID];
+        allValues2 = [domainsByID allValues];
 
-        v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v13 = [allValues2 countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v13)
         {
           v14 = *v28;
@@ -2462,13 +2462,13 @@ LABEL_27:
             {
               if (*v28 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allValues2);
               }
 
               v16 = *(*(&v27 + 1) + 8 * i);
               v17 = [v10 providerDomainForDomain:v16];
-              v18 = [v17 topLevelBundleIdentifier];
-              v19 = [v4 isEqualToString:v18];
+              topLevelBundleIdentifier = [v17 topLevelBundleIdentifier];
+              v19 = [identifierCopy isEqualToString:topLevelBundleIdentifier];
 
               if (v19)
               {
@@ -2476,7 +2476,7 @@ LABEL_27:
               }
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v13 = [allValues2 countByEnumeratingWithState:&v27 objects:v35 count:16];
           }
 
           while (v13);
@@ -2497,13 +2497,13 @@ LABEL_27:
   return v26;
 }
 
-- (id)providersWithTopLevelBundleIdentifier:(id)a3
+- (id)providersWithTopLevelBundleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_providersByIdentifier;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_providersByIdentifier allValues];
   objc_sync_exit(v5);
 
   v19 = objc_opt_new();
@@ -2511,7 +2511,7 @@ LABEL_27:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = allValues;
   v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -2527,16 +2527,16 @@ LABEL_27:
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 descriptor];
-        v13 = [v12 topLevelBundleIdentifier];
-        if ([v13 isEqualToString:v4])
+        descriptor = [v10 descriptor];
+        topLevelBundleIdentifier = [descriptor topLevelBundleIdentifier];
+        if ([topLevelBundleIdentifier isEqualToString:identifierCopy])
         {
         }
 
         else
         {
-          v14 = [v10 identifier];
-          v15 = [v14 isEqualToString:v4];
+          identifier = [v10 identifier];
+          v15 = [identifier isEqualToString:identifierCopy];
 
           if (!v15)
           {
@@ -2546,8 +2546,8 @@ LABEL_27:
 
         if ([v10 isAppExtensionReachable])
         {
-          v16 = [v10 asAppExtensionBackedProvider];
-          [v19 addObject:v16];
+          asAppExtensionBackedProvider = [v10 asAppExtensionBackedProvider];
+          [v19 addObject:asAppExtensionBackedProvider];
         }
 
 LABEL_11:
@@ -2565,13 +2565,13 @@ LABEL_11:
   return v19;
 }
 
-- (id)defaultProviderWithTopLevelBundleIdentifier:(id)a3
+- (id)defaultProviderWithTopLevelBundleIdentifier:(id)identifier
 {
-  v3 = [(FPDExtensionManager *)self providersWithTopLevelBundleIdentifier:a3];
+  v3 = [(FPDExtensionManager *)self providersWithTopLevelBundleIdentifier:identifier];
   [v3 sortUsingComparator:&__block_literal_global_92];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 uint64_t __67__FPDExtensionManager_defaultProviderWithTopLevelBundleIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2584,20 +2584,20 @@ uint64_t __67__FPDExtensionManager_defaultProviderWithTopLevelBundleIdentifier__
   return v7;
 }
 
-- (id)providersWithGroupContainers:(id)a3 bundleIdentifier:(id)a4
+- (id)providersWithGroupContainers:(id)containers bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FPDExtensionManager *)self allProviders];
+  containersCopy = containers;
+  identifierCopy = identifier;
+  allProviders = [(FPDExtensionManager *)self allProviders];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __69__FPDExtensionManager_providersWithGroupContainers_bundleIdentifier___block_invoke;
   v17 = &unk_1E83C11D0;
-  v18 = v7;
-  v19 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = [v8 fp_filter:&v14];
+  v18 = identifierCopy;
+  v19 = containersCopy;
+  v9 = containersCopy;
+  v10 = identifierCopy;
+  v11 = [allProviders fp_filter:&v14];
 
   v12 = [v11 fp_map:{&__block_literal_global_96_0, v14, v15, v16, v17}];
 
@@ -2652,10 +2652,10 @@ id __69__FPDExtensionManager_providersWithGroupContainers_bundleIdentifier___blo
   return v3;
 }
 
-- (void)setAlternateContentsURL:(id)a3 forItemID:(id)a4
+- (void)setAlternateContentsURL:(id)l forItemID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
+  lCopy = l;
+  dCopy = d;
   alternateContentsURLDictionary = self->_alternateContentsURLDictionary;
   if (!alternateContentsURLDictionary)
   {
@@ -2669,25 +2669,25 @@ id __69__FPDExtensionManager_providersWithGroupContainers_bundleIdentifier___blo
     __assert_rtn("-[FPDExtensionManager setAlternateContentsURL:forItemID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1083, [v12 UTF8String]);
   }
 
-  v8 = v6;
+  v8 = dCopy;
   v9 = alternateContentsURLDictionary;
   objc_sync_enter(v9);
-  v10 = [v8 providerID];
-  if (v10)
+  providerID = [v8 providerID];
+  if (providerID)
   {
-    v11 = [(NSMutableDictionary *)self->_alternateContentsURLDictionary objectForKeyedSubscript:v10];
-    if (!v11)
+    dictionary = [(NSMutableDictionary *)self->_alternateContentsURLDictionary objectForKeyedSubscript:providerID];
+    if (!dictionary)
     {
-      if (!v14)
+      if (!lCopy)
       {
         goto LABEL_8;
       }
 
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_alternateContentsURLDictionary setObject:v11 forKeyedSubscript:v10];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_alternateContentsURLDictionary setObject:dictionary forKeyedSubscript:providerID];
     }
 
-    [v11 setObject:v14 forKeyedSubscript:v8];
+    [dictionary setObject:lCopy forKeyedSubscript:v8];
   }
 
   [(FPDExtensionManager *)self _serializeAlternateContentsURLDictionary:self->_alternateContentsURLDictionary];
@@ -2696,9 +2696,9 @@ LABEL_8:
   objc_sync_exit(v9);
 }
 
-- (id)alternateContentsURLForItemID:(id)a3
+- (id)alternateContentsURLForItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   alternateContentsURLDictionary = self->_alternateContentsURLDictionary;
   if (!alternateContentsURLDictionary)
   {
@@ -2712,12 +2712,12 @@ LABEL_8:
     __assert_rtn("-[FPDExtensionManager alternateContentsURLForItemID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1104, [v13 UTF8String]);
   }
 
-  v6 = v4;
+  v6 = dCopy;
   v7 = alternateContentsURLDictionary;
   objc_sync_enter(v7);
   v8 = self->_alternateContentsURLDictionary;
-  v9 = [v6 providerID];
-  v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
+  providerID = [v6 providerID];
+  v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:providerID];
   v11 = [v10 objectForKeyedSubscript:v6];
 
   objc_sync_exit(v7);
@@ -2725,9 +2725,9 @@ LABEL_8:
   return v11;
 }
 
-- (id)alternateContentsDictionaryForProviderIdentifier:(id)a3
+- (id)alternateContentsDictionaryForProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   alternateContentsURLDictionary = self->_alternateContentsURLDictionary;
   if (!alternateContentsURLDictionary)
   {
@@ -2741,7 +2741,7 @@ LABEL_8:
     __assert_rtn("-[FPDExtensionManager alternateContentsDictionaryForProviderIdentifier:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1112, [v11 UTF8String]);
   }
 
-  v6 = v4;
+  v6 = identifierCopy;
   v7 = alternateContentsURLDictionary;
   objc_sync_enter(v7);
   v8 = [(NSMutableDictionary *)self->_alternateContentsURLDictionary objectForKeyedSubscript:v6];
@@ -2754,28 +2754,28 @@ LABEL_8:
 
 - (void)_loadAlternateContentsDictionary
 {
-  v3 = [(FPDExtensionManager *)self _deserializedAlternateContentsDictionary];
-  v4 = [v3 mutableCopy];
+  _deserializedAlternateContentsDictionary = [(FPDExtensionManager *)self _deserializedAlternateContentsDictionary];
+  dictionary = [_deserializedAlternateContentsDictionary mutableCopy];
 
-  if (!v4)
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   alternateContentsURLDictionary = self->_alternateContentsURLDictionary;
-  self->_alternateContentsURLDictionary = v4;
+  self->_alternateContentsURLDictionary = dictionary;
 }
 
-- (void)_serializeAlternateContentsURLDictionary:(id)a3
+- (void)_serializeAlternateContentsURLDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v29 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v29 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v3;
+  obj = dictionaryCopy;
   v30 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v30)
   {
@@ -2816,15 +2816,15 @@ LABEL_8:
 
               v12 = *(*(&v37 + 1) + 8 * i);
               v13 = [v7 objectForKeyedSubscript:v12];
-              v14 = [v13 path];
-              if (v14)
+              path = [v13 path];
+              if (path)
               {
-                v15 = [v12 domainIdentifier];
-                v16 = v15;
+                domainIdentifier = [v12 domainIdentifier];
+                v16 = domainIdentifier;
                 v17 = v34;
-                if (v15)
+                if (domainIdentifier)
                 {
-                  v17 = v15;
+                  v17 = domainIdentifier;
                 }
 
                 v18 = v17;
@@ -2836,8 +2836,8 @@ LABEL_8:
                   [v6 setObject:v19 forKeyedSubscript:v18];
                 }
 
-                v20 = [v12 identifier];
-                [v19 setObject:v14 forKeyedSubscript:v20];
+                identifier = [v12 identifier];
+                [v19 setObject:path forKeyedSubscript:identifier];
               }
 
               else
@@ -2931,7 +2931,7 @@ LABEL_30:
       v41 = [v7 countByEnumeratingWithState:&v60 objects:v70 count:16];
       if (v41)
       {
-        v36 = self;
+        selfCopy = self;
         v37 = v8;
         obj = v7;
         v49 = 0;
@@ -3088,7 +3088,7 @@ LABEL_30:
         v8 = v37;
         if (v49)
         {
-          [(FPDExtensionManager *)v36 _serializeAlternateContentsURLDictionary:v40];
+          [(FPDExtensionManager *)selfCopy _serializeAlternateContentsURLDictionary:v40];
         }
 
         v5 = v38;
@@ -3113,12 +3113,12 @@ LABEL_30:
 
   else
   {
-    v31 = [v6 domain];
-    if ([v31 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v6 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v32 = [v6 code];
+      code = [v6 code];
 
-      if (v32 == 260)
+      if (code == 260)
       {
         v40 = 0;
         goto LABEL_53;
@@ -3151,10 +3151,10 @@ LABEL_53:
 {
   if ([MEMORY[0x1E6964E78] isIndexingAvailable])
   {
-    v3 = self;
-    objc_sync_enter(v3);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     AppBooleanValue = CFPreferencesGetAppBooleanValue(@"com.apple.fileproviderd.did-drop-daemon-corespotlight-index", @"com.apple.fileproviderd", 0);
-    objc_sync_exit(v3);
+    objc_sync_exit(selfCopy);
 
     if (!AppBooleanValue)
     {
@@ -3169,7 +3169,7 @@ LABEL_53:
       v7[1] = 3221225472;
       v7[2] = __65__FPDExtensionManager_dropLegacyDaemonCoreSpotlightIndexIfNeeded__block_invoke;
       v7[3] = &unk_1E83BDFC8;
-      v7[4] = v3;
+      v7[4] = selfCopy;
       [v5 deleteAllSearchableItemsWithReason:4 completionHandler:v7];
     }
   }
@@ -3220,8 +3220,8 @@ void __65__FPDExtensionManager_dropLegacyDaemonCoreSpotlightIndexIfNeeded__block
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_providersByIdentifier keyEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  keyEnumerator = [(NSMutableDictionary *)self->_providersByIdentifier keyEnumerator];
+  v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -3231,7 +3231,7 @@ void __65__FPDExtensionManager_dropLegacyDaemonCoreSpotlightIndexIfNeeded__block
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -3242,7 +3242,7 @@ void __65__FPDExtensionManager_dropLegacyDaemonCoreSpotlightIndexIfNeeded__block
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -3263,28 +3263,28 @@ LABEL_11:
 
 - (void)_loadPausedSyncItemsDictionary
 {
-  v3 = [(FPDExtensionManager *)self _deserializedPausedSyncItemDictionary];
-  v4 = [v3 mutableCopy];
+  _deserializedPausedSyncItemDictionary = [(FPDExtensionManager *)self _deserializedPausedSyncItemDictionary];
+  dictionary = [_deserializedPausedSyncItemDictionary mutableCopy];
 
-  if (!v4)
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   syncPausedItemsDictionary = self->_syncPausedItemsDictionary;
-  self->_syncPausedItemsDictionary = v4;
+  self->_syncPausedItemsDictionary = dictionary;
 }
 
-- (void)_serializePausedSyncItemsDictionary:(id)a3
+- (void)_serializePausedSyncItemsDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v29 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  dictionaryCopy = dictionary;
+  v29 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v3;
+  obj = dictionaryCopy;
   v30 = [obj countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v30)
   {
@@ -3327,11 +3327,11 @@ LABEL_11:
               v14 = [v8 objectForKeyedSubscript:v13];
               if (v14)
               {
-                v15 = [v13 domainIdentifier];
-                v16 = v15;
-                if (v15)
+                domainIdentifier = [v13 domainIdentifier];
+                v16 = domainIdentifier;
+                if (domainIdentifier)
                 {
-                  v17 = v15;
+                  v17 = domainIdentifier;
                 }
 
                 else
@@ -3348,8 +3348,8 @@ LABEL_11:
                   [v7 setObject:v19 forKeyedSubscript:v18];
                 }
 
-                v20 = [v13 identifier];
-                [v19 setObject:v14 forKeyedSubscript:v20];
+                identifier = [v13 identifier];
+                [v19 setObject:v14 forKeyedSubscript:identifier];
               }
 
               else
@@ -3443,7 +3443,7 @@ LABEL_31:
       v40 = [v7 countByEnumeratingWithState:&v57 objects:v67 count:16];
       if (v40)
       {
-        v36 = self;
+        selfCopy = self;
         v37 = v5;
         v9 = 0;
         v38 = *v58;
@@ -3580,7 +3580,7 @@ LABEL_31:
 
         if (v9)
         {
-          [(FPDExtensionManager *)v36 _serializePausedSyncItemsDictionary:v39];
+          [(FPDExtensionManager *)selfCopy _serializePausedSyncItemsDictionary:v39];
         }
 
         v5 = v37;
@@ -3605,12 +3605,12 @@ LABEL_31:
 
   else
   {
-    v31 = [v6 domain];
-    if ([v31 isEqualToString:*MEMORY[0x1E696A250]])
+    domain = [v6 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v32 = [v6 code];
+      code = [v6 code];
 
-      if (v32 == 260)
+      if (code == 260)
       {
         v39 = 0;
         goto LABEL_50;
@@ -3639,11 +3639,11 @@ LABEL_50:
   return v39;
 }
 
-- (void)setPausedSyncItemID:(id)a3 forBundleID:(id)a4
+- (void)setPausedSyncItemID:(id)d forBundleID:(id)iD
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   syncPausedItemsDictionary = self->_syncPausedItemsDictionary;
   if (!syncPausedItemsDictionary)
   {
@@ -3658,14 +3658,14 @@ LABEL_50:
     __assert_rtn("-[FPDExtensionManager setPausedSyncItemID:forBundleID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1421, [v19 UTF8String]);
   }
 
-  v9 = v7;
+  v9 = iDCopy;
   obj = syncPausedItemsDictionary;
   objc_sync_enter(obj);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v6;
+  v10 = dCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -3680,24 +3680,24 @@ LABEL_50:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 providerID];
-        if (v15)
+        providerID = [v14 providerID];
+        if (providerID)
         {
-          v16 = [(NSMutableDictionary *)self->_syncPausedItemsDictionary objectForKeyedSubscript:v15];
-          if (!v16)
+          dictionary = [(NSMutableDictionary *)self->_syncPausedItemsDictionary objectForKeyedSubscript:providerID];
+          if (!dictionary)
           {
-            v16 = [MEMORY[0x1E695DF90] dictionary];
-            [(NSMutableDictionary *)self->_syncPausedItemsDictionary setObject:v16 forKeyedSubscript:v15];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
+            [(NSMutableDictionary *)self->_syncPausedItemsDictionary setObject:dictionary forKeyedSubscript:providerID];
           }
 
-          v17 = [v16 objectForKeyedSubscript:v14];
+          v17 = [dictionary objectForKeyedSubscript:v14];
           if (v17)
           {
 
             goto LABEL_16;
           }
 
-          [v16 setObject:v9 forKeyedSubscript:v14];
+          [dictionary setObject:v9 forKeyedSubscript:v14];
         }
       }
 
@@ -3718,11 +3718,11 @@ LABEL_16:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePausedSyncItemID:(id)a3 forBundleID:(id)a4
+- (void)removePausedSyncItemID:(id)d forBundleID:(id)iD
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   syncPausedItemsDictionary = self->_syncPausedItemsDictionary;
   if (!syncPausedItemsDictionary)
   {
@@ -3737,14 +3737,14 @@ LABEL_16:
     __assert_rtn("-[FPDExtensionManager removePausedSyncItemID:forBundleID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1446, [v20 UTF8String]);
   }
 
-  v9 = v7;
+  v9 = iDCopy;
   obj = syncPausedItemsDictionary;
   objc_sync_enter(obj);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v6;
+  v10 = dCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -3759,10 +3759,10 @@ LABEL_16:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 providerID];
-        if (v15)
+        providerID = [v14 providerID];
+        if (providerID)
         {
-          v16 = [(NSMutableDictionary *)self->_syncPausedItemsDictionary objectForKeyedSubscript:v15];
+          v16 = [(NSMutableDictionary *)self->_syncPausedItemsDictionary objectForKeyedSubscript:providerID];
           v17 = v16;
           if (v16)
           {
@@ -3787,9 +3787,9 @@ LABEL_16:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)syncPausedBundleIDForItemID:(id)a3
+- (id)syncPausedBundleIDForItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   syncPausedItemsDictionary = self->_syncPausedItemsDictionary;
   if (!syncPausedItemsDictionary)
   {
@@ -3803,12 +3803,12 @@ LABEL_16:
     __assert_rtn("-[FPDExtensionManager syncPausedBundleIDForItemID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1466, [v13 UTF8String]);
   }
 
-  v6 = v4;
+  v6 = dCopy;
   v7 = syncPausedItemsDictionary;
   objc_sync_enter(v7);
   v8 = self->_syncPausedItemsDictionary;
-  v9 = [v6 providerID];
-  v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:v9];
+  providerID = [v6 providerID];
+  v10 = [(NSMutableDictionary *)v8 objectForKeyedSubscript:providerID];
   v11 = [v10 objectForKeyedSubscript:v6];
 
   objc_sync_exit(v7);
@@ -3816,10 +3816,10 @@ LABEL_16:
   return v11;
 }
 
-- (id)syncPausedFilesForBundleID:(id)a3
+- (id)syncPausedFilesForBundleID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   if (!self->_syncPausedItemsDictionary)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ _syncPausedItemsDictionary shouldn't be nil"];
@@ -3833,7 +3833,7 @@ LABEL_16:
     __assert_rtn("-[FPDExtensionManager syncPausedFilesForBundleID:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionManager.m", 1474, [v16 UTF8String]);
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v6 = objc_opt_new();
   obj = self->_syncPausedItemsDictionary;
   objc_sync_enter(obj);
@@ -3841,8 +3841,8 @@ LABEL_16:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(NSMutableDictionary *)self->_syncPausedItemsDictionary allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [(NSMutableDictionary *)self->_syncPausedItemsDictionary allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = *v21;
@@ -3852,7 +3852,7 @@ LABEL_16:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
@@ -3864,7 +3864,7 @@ LABEL_16:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v8);
@@ -3989,7 +3989,7 @@ void __49__FPDExtensionManager_synchronousProviderUpdate___block_invoke_cold_2(u
 - (void)_deserializedAlternateContentsDictionary
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 fp_prettyDescription];
+  fp_prettyDescription = [self fp_prettyDescription];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

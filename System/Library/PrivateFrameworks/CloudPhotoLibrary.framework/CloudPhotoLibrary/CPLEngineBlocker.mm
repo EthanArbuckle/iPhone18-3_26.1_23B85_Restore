@@ -1,5 +1,5 @@
 @interface CPLEngineBlocker
-- (CPLEngineBlocker)initWithWriteTransactionBlocker:(id)a3 schedulerBlocker:(id)a4;
+- (CPLEngineBlocker)initWithWriteTransactionBlocker:(id)blocker schedulerBlocker:(id)schedulerBlocker;
 - (void)dealloc;
 - (void)unblock;
 @end
@@ -26,18 +26,18 @@
   [(CPLEngineBlocker *)&v3 dealloc];
 }
 
-- (CPLEngineBlocker)initWithWriteTransactionBlocker:(id)a3 schedulerBlocker:(id)a4
+- (CPLEngineBlocker)initWithWriteTransactionBlocker:(id)blocker schedulerBlocker:(id)schedulerBlocker
 {
-  v7 = a3;
-  v8 = a4;
+  blockerCopy = blocker;
+  schedulerBlockerCopy = schedulerBlocker;
   v12.receiver = self;
   v12.super_class = CPLEngineBlocker;
   v9 = [(CPLEngineBlocker *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_writeTransactionBlocker, a3);
-    objc_storeStrong(&v10->_schedulerBlocker, a4);
+    objc_storeStrong(&v9->_writeTransactionBlocker, blocker);
+    objc_storeStrong(&v10->_schedulerBlocker, schedulerBlocker);
     v10->_blocking = 1;
   }
 

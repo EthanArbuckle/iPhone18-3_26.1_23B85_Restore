@@ -1,5 +1,5 @@
 @interface SpotlightSenderState
-- (BOOL)clientDisabled:(int64_t)a3;
+- (BOOL)clientDisabled:(int64_t)disabled;
 - (SpotlightSenderState)init;
 - (void)_updateFromPreferences;
 @end
@@ -35,13 +35,13 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(CSReceiverServerPreferences *)self->_serverPreferences disabledServices];
+  disabledServices = [(CSReceiverServerPreferences *)self->_serverPreferences disabledServices];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__SpotlightSenderState__updateFromPreferences__block_invoke;
   v6[3] = &unk_278934158;
   v6[4] = &v7;
-  [v2 enumerateObjectsUsingBlock:v6];
+  [disabledServices enumerateObjectsUsingBlock:v6];
 
   if (*(v8 + 6) != sClintServiceDisabledBitMap)
   {
@@ -96,20 +96,20 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)clientDisabled:(int64_t)a3
+- (BOOL)clientDisabled:(int64_t)disabled
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
+  disabledCopy = disabled;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   check = 0;
-  notify_check([(CSReceiverServerPreferences *)v4->_serverPreferences notifyToken], &check);
+  notify_check([(CSReceiverServerPreferences *)selfCopy->_serverPreferences notifyToken], &check);
   if (check == 1)
   {
-    [(SpotlightSenderState *)v4 _updateFromPreferences];
+    [(SpotlightSenderState *)selfCopy _updateFromPreferences];
   }
 
-  v5 = sClintServiceDisabledBitMap >> v3;
-  objc_sync_exit(v4);
+  v5 = sClintServiceDisabledBitMap >> disabledCopy;
+  objc_sync_exit(selfCopy);
 
   return v5 & 1;
 }

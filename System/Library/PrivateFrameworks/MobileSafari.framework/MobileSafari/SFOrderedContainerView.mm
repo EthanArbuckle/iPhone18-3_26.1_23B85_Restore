@@ -1,63 +1,63 @@
 @interface SFOrderedContainerView
 - (SFOrderedContainerViewDelegate)delegate;
-- (void)_sf_setOrderedSubviews:(id *)a3 count:(unint64_t)a4;
-- (void)didAddSubview:(id)a3;
-- (void)updateOrderedSubviews:(id *)a3 count:(unint64_t)a4;
-- (void)willMoveToWindow:(id)a3;
+- (void)_sf_setOrderedSubviews:(id *)subviews count:(unint64_t)count;
+- (void)didAddSubview:(id)subview;
+- (void)updateOrderedSubviews:(id *)subviews count:(unint64_t)count;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SFOrderedContainerView
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = SFOrderedContainerView;
   [(SFOrderedContainerView *)&v6 willMoveToWindow:?];
-  if (a3)
+  if (window)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained updateOrderedSubviewsForOrderedContainerView:self];
   }
 }
 
-- (void)_sf_setOrderedSubviews:(id *)a3 count:(unint64_t)a4
+- (void)_sf_setOrderedSubviews:(id *)subviews count:(unint64_t)count
 {
   self->_settingOrderedSubviews = 1;
   v5.receiver = self;
   v5.super_class = SFOrderedContainerView;
-  [(UIView *)&v5 _sf_setOrderedSubviews:a3 count:a4];
+  [(UIView *)&v5 _sf_setOrderedSubviews:subviews count:count];
   self->_settingOrderedSubviews = 0;
 }
 
-- (void)updateOrderedSubviews:(id *)a3 count:(unint64_t)a4
+- (void)updateOrderedSubviews:(id *)subviews count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v7 = a3;
-    v8 = a4;
+    subviewsCopy = subviews;
+    countCopy = count;
     do
     {
-      v9 = [*v7 superview];
+      superview = [*subviewsCopy superview];
 
-      if (v9 != self)
+      if (superview != self)
       {
-        *v7 = 0;
+        *subviewsCopy = 0;
       }
 
-      ++v7;
-      --v8;
+      ++subviewsCopy;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
-  [(SFOrderedContainerView *)self _sf_setOrderedSubviews:a3 count:a4];
+  [(SFOrderedContainerView *)self _sf_setOrderedSubviews:subviews count:count];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
-  v4 = [(SFOrderedContainerView *)self window];
-  if (v4)
+  window = [(SFOrderedContainerView *)self window];
+  if (window)
   {
     settingOrderedSubviews = self->_settingOrderedSubviews;
 

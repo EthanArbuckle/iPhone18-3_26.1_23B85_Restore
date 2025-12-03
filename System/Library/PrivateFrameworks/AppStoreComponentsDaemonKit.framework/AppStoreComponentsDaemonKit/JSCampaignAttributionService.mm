@@ -1,11 +1,11 @@
 @interface JSCampaignAttributionService
 - (_TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService)init;
-- (id)processRedirectURL:(id)a3;
+- (id)processRedirectURL:(id)l;
 @end
 
 @implementation JSCampaignAttributionService
 
-- (id)processRedirectURL:(id)a3
+- (id)processRedirectURL:(id)l
 {
   v4 = sub_222738BBC();
   v5 = *(v4 - 8);
@@ -15,11 +15,11 @@
   v9 = sub_22273919C();
   v11 = v10;
   sub_22262E364(0, &qword_281312B48, 0x277CD4640);
-  v12 = self;
+  selfCopy = self;
   v13 = sub_2227396EC();
-  v14 = *(&v12->super.isa + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_process);
-  sub_22266BCCC(v12 + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_accounts, v23);
-  (*(v5 + 16))(v8, v12 + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_bag, v4);
+  v14 = *(&selfCopy->super.isa + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_process);
+  sub_22266BCCC(selfCopy + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_accounts, v23);
+  (*(v5 + 16))(v8, selfCopy + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit28JSCampaignAttributionService_bag, v4);
   v18 = v9;
   v19 = v11;
   v20 = v8;

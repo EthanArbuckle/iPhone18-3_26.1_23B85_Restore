@@ -1,8 +1,8 @@
 @interface CRKClassKitFacadeFactory
 + (BOOL)currentPlatformRequiresPersonaAdoption;
 + (BOOL)dataSeparationEnabled;
-+ (id)makeBaseClassKitFacadeWithPersonaAdoption:(BOOL)a3;
-+ (id)makeInstructorClassKitFacadeWithPersonaAdoption:(BOOL)a3;
++ (id)makeBaseClassKitFacadeWithPersonaAdoption:(BOOL)adoption;
++ (id)makeInstructorClassKitFacadeWithPersonaAdoption:(BOOL)adoption;
 + (id)makeStudentClassKitFacade;
 @end
 
@@ -10,10 +10,10 @@
 
 + (id)makeStudentClassKitFacade
 {
-  v3 = [a1 makeBaseClassKitFacadeWithPersonaAdoption:1];
+  v3 = [self makeBaseClassKitFacadeWithPersonaAdoption:1];
   v4 = [CRKDynamicDataObserverClassKitFacade dynamicDataObserverFacadeWithClassKitFacade:v3 expectedUserRole:1];
 
-  if (([a1 dataSeparationEnabled] & 1) == 0)
+  if (([self dataSeparationEnabled] & 1) == 0)
   {
     v5 = [[CRKDataSeparationBlockingClassKitFacade alloc] initWithClassKitFacade:v4];
 
@@ -23,14 +23,14 @@
   return v4;
 }
 
-+ (id)makeInstructorClassKitFacadeWithPersonaAdoption:(BOOL)a3
++ (id)makeInstructorClassKitFacadeWithPersonaAdoption:(BOOL)adoption
 {
-  v4 = [a1 makeBaseClassKitFacadeWithPersonaAdoption:a3];
+  v4 = [self makeBaseClassKitFacadeWithPersonaAdoption:adoption];
   v5 = [CRKDynamicDataObserverClassKitFacade dynamicDataObserverFacadeWithClassKitFacade:v4 expectedUserRole:2];
 
-  v6 = [a1 dataSeparationEnabled];
+  dataSeparationEnabled = [self dataSeparationEnabled];
   v7 = off_278DC0348;
-  if (!v6)
+  if (!dataSeparationEnabled)
   {
     v7 = off_278DBFF30;
   }
@@ -40,11 +40,11 @@
   return v8;
 }
 
-+ (id)makeBaseClassKitFacadeWithPersonaAdoption:(BOOL)a3
++ (id)makeBaseClassKitFacadeWithPersonaAdoption:(BOOL)adoption
 {
-  v3 = a3;
+  adoptionCopy = adoption;
   v5 = objc_opt_new();
-  if (v3 && [a1 currentPlatformRequiresPersonaAdoption])
+  if (adoptionCopy && [self currentPlatformRequiresPersonaAdoption])
   {
     v6 = [CRKPersonaAdoptingClassKitFacade alloc];
     v7 = objc_opt_new();
@@ -75,10 +75,10 @@
 + (BOOL)dataSeparationEnabled
 {
   v2 = objc_opt_new();
-  v3 = [v2 makeFeatureFlags];
-  v4 = [v3 isDataSeparationEnabled];
+  makeFeatureFlags = [v2 makeFeatureFlags];
+  isDataSeparationEnabled = [makeFeatureFlags isDataSeparationEnabled];
 
-  return v4;
+  return isDataSeparationEnabled;
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface RFMapMarkerIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFMapMarkerIdentifier)initWithCoder:(id)a3;
-- (RFMapMarkerIdentifier)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFMapMarkerIdentifier)initWithCoder:(id)coder;
+- (RFMapMarkerIdentifier)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFMapMarkerIdentifier
 
-- (RFMapMarkerIdentifier)initWithProtobuf:(id)a3
+- (RFMapMarkerIdentifier)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = RFMapMarkerIdentifier;
   v5 = [(RFMapMarkerIdentifier *)&v12 init];
   if (v5)
   {
-    v6 = [v4 muid];
+    muid = [protobufCopy muid];
 
-    if (v6)
+    if (muid)
     {
-      v7 = [v4 muid];
-      [(RFMapMarkerIdentifier *)v5 setMuid:v7];
+      muid2 = [protobufCopy muid];
+      [(RFMapMarkerIdentifier *)v5 setMuid:muid2];
     }
 
-    v8 = [v4 resultProviderID];
+    resultProviderID = [protobufCopy resultProviderID];
 
-    if (v8)
+    if (resultProviderID)
     {
-      v9 = [v4 resultProviderID];
-      [(RFMapMarkerIdentifier *)v5 setResultProviderID:v9];
+      resultProviderID2 = [protobufCopy resultProviderID];
+      [(RFMapMarkerIdentifier *)v5 setResultProviderID:resultProviderID2];
     }
 
-    if ([v4 isForCameraPositionOnly])
+    if ([protobufCopy isForCameraPositionOnly])
     {
-      -[RFMapMarkerIdentifier setIsForCameraPositionOnly:](v5, "setIsForCameraPositionOnly:", [v4 isForCameraPositionOnly]);
+      -[RFMapMarkerIdentifier setIsForCameraPositionOnly:](v5, "setIsForCameraPositionOnly:", [protobufCopy isForCameraPositionOnly]);
     }
 
     v10 = v5;
@@ -48,31 +48,31 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFMapMarkerIdentifier *)self muid];
-  v4 = [v3 hash];
-  v5 = [(RFMapMarkerIdentifier *)self resultProviderID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFMapMarkerIdentifier *)self isForCameraPositionOnly];
+  muid = [(RFMapMarkerIdentifier *)self muid];
+  v4 = [muid hash];
+  resultProviderID = [(RFMapMarkerIdentifier *)self resultProviderID];
+  v6 = [resultProviderID hash] ^ v4;
+  isForCameraPositionOnly = [(RFMapMarkerIdentifier *)self isForCameraPositionOnly];
 
-  return v6 ^ v7;
+  return v6 ^ isForCameraPositionOnly;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(RFMapMarkerIdentifier *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFMapMarkerIdentifier *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFMapMarkerIdentifier *)self muid];
-      v8 = [(RFMapMarkerIdentifier *)v6 muid];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      muid = [(RFMapMarkerIdentifier *)self muid];
+      muid2 = [(RFMapMarkerIdentifier *)v6 muid];
+      if ((muid != 0) == (muid2 == 0))
       {
         LOBYTE(v11) = 0;
 LABEL_24:
@@ -80,47 +80,47 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v9 = [(RFMapMarkerIdentifier *)self muid];
-      if (v9)
+      muid3 = [(RFMapMarkerIdentifier *)self muid];
+      if (muid3)
       {
-        v10 = [(RFMapMarkerIdentifier *)self muid];
-        v3 = [(RFMapMarkerIdentifier *)v6 muid];
-        if (![v10 isEqual:v3])
+        muid4 = [(RFMapMarkerIdentifier *)self muid];
+        muid5 = [(RFMapMarkerIdentifier *)v6 muid];
+        if (![muid4 isEqual:muid5])
         {
           LOBYTE(v11) = 0;
           goto LABEL_22;
         }
 
-        v22 = v10;
+        v22 = muid4;
       }
 
-      v12 = [(RFMapMarkerIdentifier *)self resultProviderID];
-      v13 = [(RFMapMarkerIdentifier *)v6 resultProviderID];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      resultProviderID = [(RFMapMarkerIdentifier *)self resultProviderID];
+      resultProviderID2 = [(RFMapMarkerIdentifier *)v6 resultProviderID];
+      v14 = resultProviderID2;
+      if ((resultProviderID != 0) == (resultProviderID2 == 0))
       {
 
         LOBYTE(v11) = 0;
         goto LABEL_21;
       }
 
-      v15 = [(RFMapMarkerIdentifier *)self resultProviderID];
-      if (v15)
+      resultProviderID3 = [(RFMapMarkerIdentifier *)self resultProviderID];
+      if (resultProviderID3)
       {
-        v19 = v3;
-        v16 = [(RFMapMarkerIdentifier *)self resultProviderID];
-        v20 = [(RFMapMarkerIdentifier *)v6 resultProviderID];
-        v21 = v16;
-        if (![v16 isEqual:?])
+        v19 = muid5;
+        resultProviderID4 = [(RFMapMarkerIdentifier *)self resultProviderID];
+        resultProviderID5 = [(RFMapMarkerIdentifier *)v6 resultProviderID];
+        v21 = resultProviderID4;
+        if (![resultProviderID4 isEqual:?])
         {
           LOBYTE(v11) = 0;
-          v3 = v19;
+          muid5 = v19;
 LABEL_19:
 
 LABEL_20:
 LABEL_21:
-          v10 = v22;
-          if (!v9)
+          muid4 = v22;
+          if (!muid3)
           {
 LABEL_23:
 
@@ -132,12 +132,12 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v3 = v19;
+        muid5 = v19;
       }
 
-      v17 = [(RFMapMarkerIdentifier *)self isForCameraPositionOnly];
-      v11 = v17 ^ [(RFMapMarkerIdentifier *)v6 isForCameraPositionOnly]^ 1;
-      if (!v15)
+      isForCameraPositionOnly = [(RFMapMarkerIdentifier *)self isForCameraPositionOnly];
+      v11 = isForCameraPositionOnly ^ [(RFMapMarkerIdentifier *)v6 isForCameraPositionOnly]^ 1;
+      if (!resultProviderID3)
       {
         goto LABEL_20;
       }
@@ -153,15 +153,15 @@ LABEL_25:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFMapMarkerIdentifier *)self muid];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  muid = [(RFMapMarkerIdentifier *)self muid];
+  v6 = [muid copy];
   [v4 setMuid:v6];
 
-  v7 = [(RFMapMarkerIdentifier *)self resultProviderID];
-  v8 = [v7 copy];
+  resultProviderID = [(RFMapMarkerIdentifier *)self resultProviderID];
+  v8 = [resultProviderID copy];
   [v4 setResultProviderID:v8];
 
   [v4 setIsForCameraPositionOnly:{-[RFMapMarkerIdentifier isForCameraPositionOnly](self, "isForCameraPositionOnly")}];
@@ -171,31 +171,31 @@ LABEL_25:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFMapMarkerIdentifier alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapMarkerIdentifier *)v2 jsonData];
+  jsonData = [(_SFPBRFMapMarkerIdentifier *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFMapMarkerIdentifier alloc] initWithFacade:self];
-  v3 = [(_SFPBRFMapMarkerIdentifier *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFMapMarkerIdentifier *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFMapMarkerIdentifier alloc] initWithFacade:self];
-  v5 = [(_SFPBRFMapMarkerIdentifier *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFMapMarkerIdentifier *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFMapMarkerIdentifier)initWithCoder:(id)a3
+- (RFMapMarkerIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFMapMarkerIdentifier alloc] initWithData:v5];
   v7 = [(RFMapMarkerIdentifier *)self initWithProtobuf:v6];

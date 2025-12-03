@@ -1,19 +1,19 @@
 @interface RTStateModelAlgorithms
-+ (double)timeByAddingUnit:(unint64_t)a3 value:(int64_t)a4 toTime:(double)a5;
-+ (id)adjustedDate:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6;
-+ (id)adjustedDate:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6 outDeltaDays:(int64_t *)a7;
-+ (id)adjustedDateInterval:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6;
-+ (id)bucketizeDates:(id)a3 bucketInterval:(double)a4 latestDate:(id)a5;
++ (double)timeByAddingUnit:(unint64_t)unit value:(int64_t)value toTime:(double)time;
++ (id)adjustedDate:(id)date betweenMinDate:(id)minDate maxDate:(id)maxDate strideDays:(unint64_t)days;
++ (id)adjustedDate:(id)date betweenMinDate:(id)minDate maxDate:(id)maxDate strideDays:(unint64_t)days outDeltaDays:(int64_t *)deltaDays;
++ (id)adjustedDateInterval:(id)interval betweenMinDate:(id)date maxDate:(id)maxDate strideDays:(unint64_t)days;
++ (id)bucketizeDates:(id)dates bucketInterval:(double)interval latestDate:(id)date;
 @end
 
 @implementation RTStateModelAlgorithms
 
-+ (id)bucketizeDates:(id)a3 bucketInterval:(double)a4 latestDate:(id)a5
++ (id)bucketizeDates:(id)dates bucketInterval:(double)interval latestDate:(id)date
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (!v7)
+  datesCopy = dates;
+  dateCopy = date;
+  if (!datesCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -26,11 +26,11 @@
     }
   }
 
-  if ([v7 count])
+  if ([datesCopy count])
   {
-    if (!v8)
+    if (!dateCopy)
     {
-      v8 = [v7 valueForKeyPath:@"@max.self"];
+      dateCopy = [datesCopy valueForKeyPath:@"@max.self"];
     }
 
     v10 = objc_opt_new();
@@ -38,8 +38,8 @@
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v33 = v7;
-    v11 = v7;
+    v33 = datesCopy;
+    v11 = datesCopy;
     v12 = [v11 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v12)
     {
@@ -54,9 +54,9 @@
             objc_enumerationMutation(v11);
           }
 
-          [v8 timeIntervalSinceDate:*(*(&v38 + 1) + 8 * i)];
+          [dateCopy timeIntervalSinceDate:*(*(&v38 + 1) + 8 * i)];
           v17 = v16;
-          v18 = [MEMORY[0x277CCABB0] numberWithInteger:(v16 / a4)];
+          v18 = [MEMORY[0x277CCABB0] numberWithInteger:(v16 / interval)];
           v19 = [v10 objectForKey:v18];
           if (!v19)
           {
@@ -99,7 +99,7 @@
           v27 = [v22 objectForKeyedSubscript:*(*(&v34 + 1) + 8 * j)];
           [v27 timeIntervalToLatestDateSum];
           v29 = v28 / [v27 numOfDates];
-          v30 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v8 sinceDate:-v29];
+          v30 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:dateCopy sinceDate:-v29];
           [v27 setAverageDate:v30];
 
           [v27 timeIntervalToLatestDateSum2];
@@ -112,7 +112,7 @@
       while (v24);
     }
 
-    v7 = v33;
+    datesCopy = v33;
   }
 
   else
@@ -123,25 +123,25 @@
   return v22;
 }
 
-+ (id)adjustedDate:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6
++ (id)adjustedDate:(id)date betweenMinDate:(id)minDate maxDate:(id)maxDate strideDays:(unint64_t)days
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [objc_opt_class() adjustedDate:v11 betweenMinDate:v10 maxDate:v9 strideDays:a6 outDeltaDays:0];
+  maxDateCopy = maxDate;
+  minDateCopy = minDate;
+  dateCopy = date;
+  v12 = [objc_opt_class() adjustedDate:dateCopy betweenMinDate:minDateCopy maxDate:maxDateCopy strideDays:days outDeltaDays:0];
 
   return v12;
 }
 
-+ (id)adjustedDate:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6 outDeltaDays:(int64_t *)a7
++ (id)adjustedDate:(id)date betweenMinDate:(id)minDate maxDate:(id)maxDate strideDays:(unint64_t)days outDeltaDays:(int64_t *)deltaDays
 {
   v32 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  dateCopy = date;
+  minDateCopy = minDate;
+  maxDateCopy = maxDate;
+  if (dateCopy)
   {
-    if (v12)
+    if (minDateCopy)
     {
       goto LABEL_3;
     }
@@ -159,23 +159,23 @@
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: date (in %s:%d)", &v28, 0x12u);
     }
 
-    if (v12)
+    if (minDateCopy)
     {
 LABEL_3:
-      if (v13)
+      if (maxDateCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_21:
-      v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      currentCalendar = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+      if (os_log_type_enabled(currentCalendar, OS_LOG_TYPE_ERROR))
       {
         v28 = 136315394;
         v29 = "+[RTStateModelAlgorithms adjustedDate:betweenMinDate:maxDate:strideDays:outDeltaDays:]";
         v30 = 1024;
         v31 = 90;
-        _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: maxDate (in %s:%d)", &v28, 0x12u);
+        _os_log_error_impl(&dword_2304B3000, currentCalendar, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: maxDate (in %s:%d)", &v28, 0x12u);
       }
 
       v14 = 0;
@@ -193,42 +193,42 @@ LABEL_21:
     _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: minDate (in %s:%d)", &v28, 0x12u);
   }
 
-  if (!v13)
+  if (!maxDateCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_4:
   v14 = 0;
-  if (v11 && v12)
+  if (dateCopy && minDateCopy)
   {
-    if (a6 <= 1)
+    if (days <= 1)
     {
-      v15 = 1;
+      daysCopy = 1;
     }
 
     else
     {
-      v15 = a6;
+      daysCopy = days;
     }
 
-    v16 = [MEMORY[0x277CBEA80] currentCalendar];
-    v17 = [v11 startOfDay];
-    v18 = [v12 startOfDay];
-    v19 = [v16 components:16 fromDate:v17 toDate:v18 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    startOfDay = [dateCopy startOfDay];
+    startOfDay2 = [minDateCopy startOfDay];
+    v19 = [currentCalendar components:16 fromDate:startOfDay toDate:startOfDay2 options:0];
     v20 = [v19 day];
 
-    v21 = (v15 + v20 - 1) / v15 * v15;
-    v22 = [v11 dateByAddingUnit:16 value:v21];
-    if ([v22 isBeforeDate:v12])
+    v21 = (daysCopy + v20 - 1) / daysCopy * daysCopy;
+    v22 = [dateCopy dateByAddingUnit:16 value:v21];
+    if ([v22 isBeforeDate:minDateCopy])
     {
-      v23 = [v22 dateByAddingUnit:16 value:v15];
+      v23 = [v22 dateByAddingUnit:16 value:daysCopy];
 
-      v21 += v15;
+      v21 += daysCopy;
       v22 = v23;
     }
 
-    if ([v22 isBeforeDate:v12])
+    if ([v22 isBeforeDate:minDateCopy])
     {
       v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -241,11 +241,11 @@ LABEL_4:
       }
     }
 
-    else if ([v22 isOnOrBefore:v13])
+    else if ([v22 isOnOrBefore:maxDateCopy])
     {
-      if (a7)
+      if (deltaDays)
       {
-        *a7 = v21;
+        *deltaDays = v21;
       }
 
       v14 = v22;
@@ -261,23 +261,23 @@ LABEL_30:
   return v14;
 }
 
-+ (id)adjustedDateInterval:(id)a3 betweenMinDate:(id)a4 maxDate:(id)a5 strideDays:(unint64_t)a6
++ (id)adjustedDateInterval:(id)interval betweenMinDate:(id)date maxDate:(id)maxDate strideDays:(unint64_t)days
 {
-  v9 = a3;
+  intervalCopy = interval;
   v21 = 0;
-  v10 = a5;
-  v11 = a4;
+  maxDateCopy = maxDate;
+  dateCopy = date;
   v12 = objc_opt_class();
-  v13 = [v9 startDate];
-  v14 = [v12 adjustedDate:v13 betweenMinDate:v11 maxDate:v10 strideDays:a6 outDeltaDays:&v21];
+  startDate = [intervalCopy startDate];
+  v14 = [v12 adjustedDate:startDate betweenMinDate:dateCopy maxDate:maxDateCopy strideDays:days outDeltaDays:&v21];
 
   if (v14)
   {
     v15 = objc_opt_new();
     [v15 setDay:v21];
-    v16 = [MEMORY[0x277CBEA80] currentCalendar];
-    v17 = [v9 endDate];
-    v18 = [v16 dateByAddingComponents:v15 toDate:v17 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    endDate = [intervalCopy endDate];
+    v18 = [currentCalendar dateByAddingComponents:v15 toDate:endDate options:0];
 
     v19 = 0;
     if (([v14 isAfterDate:v18] & 1) == 0)
@@ -294,11 +294,11 @@ LABEL_30:
   return v19;
 }
 
-+ (double)timeByAddingUnit:(unint64_t)a3 value:(int64_t)a4 toTime:(double)a5
++ (double)timeByAddingUnit:(unint64_t)unit value:(int64_t)value toTime:(double)time
 {
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a5];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 dateByAddingUnit:a3 value:a4 toDate:v7 options:0];
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:time];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar dateByAddingUnit:unit value:value toDate:v7 options:0];
 
   [v9 timeIntervalSinceReferenceDate];
   v11 = v10;

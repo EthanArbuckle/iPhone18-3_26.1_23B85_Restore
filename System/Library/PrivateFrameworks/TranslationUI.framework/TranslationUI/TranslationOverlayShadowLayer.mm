@@ -1,7 +1,7 @@
 @interface TranslationOverlayShadowLayer
 - (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)init;
-- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithCoder:(id)a3;
-- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithLayer:(id)a3;
+- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithCoder:(id)coder;
+- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -9,8 +9,8 @@
 
 - (void)layoutSublayers
 {
-  v11 = self;
-  [(TranslationOverlayShadowLayer *)v11 bounds];
+  selfCopy = self;
+  [(TranslationOverlayShadowLayer *)selfCopy bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -18,7 +18,7 @@
   v10 = objc_opt_self();
   [v10 begin];
   [v10 setDisableActions_];
-  [*(&v11->super.super.isa + OBJC_IVAR____TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer_sublayer) setFrame_];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR____TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer_sublayer) setFrame_];
   [v10 commit];
 }
 
@@ -32,7 +32,7 @@
   return [(TranslationOverlayShadowLayer *)&v6 init];
 }
 
-- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithLayer:(id)a3
+- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -50,16 +50,16 @@
   return v7;
 }
 
-- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithCoder:(id)a3
+- (_TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC13TranslationUIP33_F1DE10BA1EA2E7A7FF1CDCD88519CF9529TranslationOverlayShadowLayer_sublayer;
   v7 = objc_allocWithZone(MEMORY[0x277CD9ED0]);
-  v8 = a3;
+  coderCopy = coder;
   *(&self->super.super.isa + v6) = [v7 init];
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(TranslationOverlayShadowLayer *)&v11 initWithCoder:v8];
+  v9 = [(TranslationOverlayShadowLayer *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

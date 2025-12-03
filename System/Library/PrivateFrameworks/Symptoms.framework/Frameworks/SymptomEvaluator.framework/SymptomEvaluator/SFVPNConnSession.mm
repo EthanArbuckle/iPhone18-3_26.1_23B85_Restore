@@ -1,15 +1,15 @@
 @interface SFVPNConnSession
-- (SFVPNConnSession)initWithQueue:(id)a3 configID:(id)a4;
+- (SFVPNConnSession)initWithQueue:(id)queue configID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation SFVPNConnSession
 
-- (SFVPNConnSession)initWithQueue:(id)a3 configID:(id)a4
+- (SFVPNConnSession)initWithQueue:(id)queue configID:(id)d
 {
   v5.receiver = self;
   v5.super_class = SFVPNConnSession;
-  return [(SFNetworkExtensionSessionMonitor *)&v5 initWithQueue:a3 configID:a4 neSessionType:1 statusChangedCallback:0];
+  return [(SFNetworkExtensionSessionMonitor *)&v5 initWithQueue:queue configID:d neSessionType:1 statusChangedCallback:0];
 }
 
 - (void)dealloc
@@ -19,9 +19,9 @@
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v4 = v3;
-    v5 = [(SFNetworkExtensionSessionMonitor *)self configurationID];
+    configurationID = [(SFNetworkExtensionSessionMonitor *)self configurationID];
     *buf = 138412290;
-    v9 = v5;
+    v9 = configurationID;
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_DEBUG, "NEStateRelay: Deallocating VPNConnSession for configuration ID: %@", buf, 0xCu);
   }
 

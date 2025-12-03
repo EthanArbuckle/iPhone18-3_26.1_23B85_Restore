@@ -1,26 +1,26 @@
 @interface ICMusicSubscriptionCarrierBundlingEligibilityOperation
-- (ICMusicSubscriptionCarrierBundlingEligibilityOperation)initWithRequestContext:(id)a3;
+- (ICMusicSubscriptionCarrierBundlingEligibilityOperation)initWithRequestContext:(id)context;
 - (id)_newDefaultRequestBodyDictionary;
-- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)a3 error:(id)a4;
-- (void)_finishEnrichmentWithBodyDictionary:(id)a3 completionHandler:(id)a4;
-- (void)_sendEnrichmentRequestWithURL:(id)a3 preflightResponse:(id)a4 completionHandler:(id)a5;
-- (void)_sendPreflightRequestWithCompletionHandler:(id)a3;
-- (void)_sendSilentSMSRequestWithMessage:(id)a3 number:(id)a4 preflightResponse:(id)a5 completionHandler:(id)a6;
+- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)code error:(id)error;
+- (void)_finishEnrichmentWithBodyDictionary:(id)dictionary completionHandler:(id)handler;
+- (void)_sendEnrichmentRequestWithURL:(id)l preflightResponse:(id)response completionHandler:(id)handler;
+- (void)_sendPreflightRequestWithCompletionHandler:(id)handler;
+- (void)_sendSilentSMSRequestWithMessage:(id)message number:(id)number preflightResponse:(id)response completionHandler:(id)handler;
 - (void)execute;
 @end
 
 @implementation ICMusicSubscriptionCarrierBundlingEligibilityOperation
 
-- (void)_sendSilentSMSRequestWithMessage:(id)a3 number:(id)a4 preflightResponse:(id)a5 completionHandler:(id)a6
+- (void)_sendSilentSMSRequestWithMessage:(id)message number:(id)number preflightResponse:(id)response completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  numberCopy = number;
+  responseCopy = response;
+  handlerCopy = handler;
   v14 = +[ICTelephonyController sharedController];
   v36 = 0;
-  v15 = [v14 sendSMSWithText:v10 toPhoneNumber:v11 error:&v36];
+  v15 = [v14 sendSMSWithText:messageCopy toPhoneNumber:numberCopy error:&v36];
   v16 = v36;
 
   v17 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
@@ -30,7 +30,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v38 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_INFO, "%{public}@ Silent SMS succeeded.", buf, 0xCu);
     }
 
@@ -43,7 +43,7 @@
     {
       requestContext = self->_requestContext;
       *buf = 138543618;
-      v38 = self;
+      selfCopy2 = self;
       v39 = 2114;
       v40 = requestContext;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Failed to send silent SMS for %{public}@.", buf, 0x16u);
@@ -53,12 +53,12 @@
   }
 
   v21 = self->_requestContext;
-  v22 = [v12 headerEnrichmentSessionIdentifier];
+  headerEnrichmentSessionIdentifier = [responseCopy headerEnrichmentSessionIdentifier];
   v23 = [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionaryWithResponseCode:v19 error:v16];
   v24 = v23;
-  if (v22)
+  if (headerEnrichmentSessionIdentifier)
   {
-    [v23 setObject:v22 forKey:@"sessionId"];
+    [v23 setObject:headerEnrichmentSessionIdentifier forKey:@"sessionId"];
   }
 
   if (self->_deepLink)
@@ -72,14 +72,14 @@
   v30[3] = &unk_1E7BF5E18;
   v30[4] = self;
   v31 = v21;
-  v32 = v10;
-  v33 = v11;
-  v34 = v12;
-  v35 = v13;
-  v25 = v12;
-  v26 = v11;
-  v27 = v10;
-  v28 = v13;
+  v32 = messageCopy;
+  v33 = numberCopy;
+  v34 = responseCopy;
+  v35 = handlerCopy;
+  v25 = responseCopy;
+  v26 = numberCopy;
+  v27 = messageCopy;
+  v28 = handlerCopy;
   v29 = v21;
   [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _finishEnrichmentWithBodyDictionary:v24 completionHandler:v30];
 }
@@ -166,15 +166,15 @@ LABEL_6:
 LABEL_15:
 }
 
-- (void)_sendPreflightRequestWithCompletionHandler:(id)a3
+- (void)_sendPreflightRequestWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
-  v6 = v5;
+  handlerCopy = handler;
+  _newDefaultRequestBodyDictionary = [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
+  v6 = _newDefaultRequestBodyDictionary;
   phoneNumber = self->_phoneNumber;
   if (phoneNumber)
   {
-    [v5 setObject:phoneNumber forKey:@"phoneNumber"];
+    [_newDefaultRequestBodyDictionary setObject:phoneNumber forKey:@"phoneNumber"];
   }
 
   if (self->_deepLink)
@@ -195,11 +195,11 @@ LABEL_15:
   v19 = v6;
   v20 = v9;
   v21 = v10;
-  v22 = v4;
+  v22 = handlerCopy;
   v12 = v10;
   v13 = v9;
   v14 = v6;
-  v15 = v4;
+  v15 = handlerCopy;
   v16 = v8;
   [v11 getBagForRequestContext:v16 withCompletionHandler:v17];
 }
@@ -420,23 +420,23 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)_sendEnrichmentRequestWithURL:(id)a3 preflightResponse:(id)a4 completionHandler:(id)a5
+- (void)_sendEnrichmentRequestWithURL:(id)l preflightResponse:(id)response completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = self->_requestContext;
   deepLink = self->_deepLink;
-  v13 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:v8];
+  v13 = [objc_alloc(MEMORY[0x1E695AC18]) initWithURL:lCopy];
   [v13 setHTTPMethod:@"POST"];
   [v13 setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
   [v13 setValue:@"ValidateMobile" forHTTPHeaderField:@"SOAPAction"];
-  v14 = [v9 headerEnrichmentMessage];
-  v15 = v14;
-  if (v14)
+  headerEnrichmentMessage = [responseCopy headerEnrichmentMessage];
+  v15 = headerEnrichmentMessage;
+  if (headerEnrichmentMessage)
   {
-    v16 = [v14 dataUsingEncoding:4];
+    v16 = [headerEnrichmentMessage dataUsingEncoding:4];
     [v13 setHTTPBody:v16];
   }
 
@@ -447,7 +447,7 @@ LABEL_20:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v19, OS_LOG_TYPE_INFO, "%{public}@ Sending header enrichment request.", buf, 0xCu);
   }
 
@@ -458,16 +458,16 @@ LABEL_20:
   v25[1] = 3221225472;
   v25[2] = __124__ICMusicSubscriptionCarrierBundlingEligibilityOperation__sendEnrichmentRequestWithURL_preflightResponse_completionHandler___block_invoke_81;
   v25[3] = &unk_1E7BF5DC8;
-  v26 = v8;
-  v27 = self;
-  v29 = v9;
-  v30 = v10;
+  v26 = lCopy;
+  selfCopy2 = self;
+  v29 = responseCopy;
+  v30 = handlerCopy;
   v28 = v11;
   v31 = deepLink;
-  v21 = v9;
-  v22 = v10;
+  v21 = responseCopy;
+  v22 = handlerCopy;
   v23 = v11;
-  v24 = v8;
+  v24 = lCopy;
   [v18 enqueueDataRequest:v20 withCompletionHandler:v25];
 }
 
@@ -696,61 +696,61 @@ ICURLSession *__124__ICMusicSubscriptionCarrierBundlingEligibilityOperation__sen
   return v1;
 }
 
-- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)a3 error:(id)a4
+- (id)_newDefaultRequestBodyDictionaryWithResponseCode:(int64_t)code error:(id)error
 {
-  v6 = a4;
-  v7 = [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a3];
-  [v7 setObject:v8 forKey:@"responseCode"];
+  errorCopy = error;
+  _newDefaultRequestBodyDictionary = [(ICMusicSubscriptionCarrierBundlingEligibilityOperation *)self _newDefaultRequestBodyDictionary];
+  code = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", code];
+  [_newDefaultRequestBodyDictionary setObject:code forKey:@"responseCode"];
 
-  if (v6)
+  if (errorCopy)
   {
-    v9 = [v6 domain];
-    if (v9)
+    domain = [errorCopy domain];
+    if (domain)
     {
-      [v7 setObject:v9 forKey:@"error-domain"];
+      [_newDefaultRequestBodyDictionary setObject:domain forKey:@"error-domain"];
     }
 
-    v10 = [v6 code];
-    if (v10)
+    code2 = [errorCopy code];
+    if (code2)
     {
-      v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-      [v7 setObject:v11 forKey:@"error-code"];
+      v11 = [MEMORY[0x1E696AD98] numberWithInteger:code2];
+      [_newDefaultRequestBodyDictionary setObject:v11 forKey:@"error-code"];
     }
 
-    v12 = [v6 userInfo];
-    v13 = [v12 objectForKey:*MEMORY[0x1E696A578]];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
     if (v13)
     {
-      [v7 setObject:v13 forKey:@"error-title"];
+      [_newDefaultRequestBodyDictionary setObject:v13 forKey:@"error-title"];
     }
 
-    v14 = [v12 objectForKey:*MEMORY[0x1E696A588]];
+    v14 = [userInfo objectForKey:*MEMORY[0x1E696A588]];
     if (v14)
     {
-      [v7 setObject:v14 forKey:@"error-message"];
+      [_newDefaultRequestBodyDictionary setObject:v14 forKey:@"error-message"];
     }
 
-    v15 = [v12 objectForKey:*MEMORY[0x1E696AA08]];
+    v15 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
     if (v15)
     {
       v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v15];
-      [v7 setObject:v16 forKey:@"error-underlying"];
+      [_newDefaultRequestBodyDictionary setObject:v16 forKey:@"error-underlying"];
     }
   }
 
-  return v7;
+  return _newDefaultRequestBodyDictionary;
 }
 
 - (id)_newDefaultRequestBodyDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(ICRequestContext *)self->_requestContext deviceInfo];
-  v5 = [v4 deviceGUID];
+  deviceInfo = [(ICRequestContext *)self->_requestContext deviceInfo];
+  deviceGUID = [deviceInfo deviceGUID];
 
-  if (v5)
+  if (deviceGUID)
   {
-    [v3 setObject:v5 forKey:@"guid"];
+    [v3 setObject:deviceGUID forKey:@"guid"];
   }
 
   cellularProviderName = self->_cellularProviderName;
@@ -780,10 +780,10 @@ ICURLSession *__124__ICMusicSubscriptionCarrierBundlingEligibilityOperation__sen
   return v3;
 }
 
-- (void)_finishEnrichmentWithBodyDictionary:(id)a3 completionHandler:(id)a4
+- (void)_finishEnrichmentWithBodyDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   v8 = self->_requestContext;
   v9 = self->_cellularProviderName;
   v10 = self->_phoneNumber;
@@ -794,14 +794,14 @@ ICURLSession *__124__ICMusicSubscriptionCarrierBundlingEligibilityOperation__sen
   v17[3] = &unk_1E7BF5D58;
   v17[4] = self;
   v18 = v8;
-  v19 = v6;
+  v19 = dictionaryCopy;
   v20 = v9;
   v21 = v10;
-  v22 = v7;
+  v22 = handlerCopy;
   v12 = v10;
   v13 = v9;
-  v14 = v6;
-  v15 = v7;
+  v14 = dictionaryCopy;
+  v15 = handlerCopy;
   v16 = v8;
   [v11 getBagForRequestContext:v16 withCompletionHandler:v17];
 }
@@ -1051,36 +1051,36 @@ LABEL_24:
 - (void)execute
 {
   v4 = +[ICDeviceInfo currentDeviceInfo];
-  v5 = [v4 isPhoneNumberAccessRestricted];
+  isPhoneNumberAccessRestricted = [v4 isPhoneNumberAccessRestricted];
 
-  if (v5)
+  if (isPhoneNumberAccessRestricted)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionCarrierBundlingEligibilityOperation.m" lineNumber:47 description:@"Phone number access is restricted."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionCarrierBundlingEligibilityOperation.m" lineNumber:47 description:@"Phone number access is restricted."];
   }
 
   v6 = self->_requestContext;
   v7 = MEMORY[0x1B8C781E0](self->_responseHandler);
   v8 = +[ICTelephonyController sharedController];
-  v9 = [v8 providerName];
+  providerName = [v8 providerName];
   cellularProviderName = self->_cellularProviderName;
-  self->_cellularProviderName = v9;
+  self->_cellularProviderName = providerName;
 
-  v11 = [v8 mobileSubscriberCountryCode];
+  mobileSubscriberCountryCode = [v8 mobileSubscriberCountryCode];
   mobileSubscriberCountryCode = self->_mobileSubscriberCountryCode;
-  self->_mobileSubscriberCountryCode = v11;
+  self->_mobileSubscriberCountryCode = mobileSubscriberCountryCode;
 
-  v13 = [v8 mobileSubscriberNetworkCode];
+  mobileSubscriberNetworkCode = [v8 mobileSubscriberNetworkCode];
   mobileSubscriberNetworkCode = self->_mobileSubscriberNetworkCode;
-  self->_mobileSubscriberNetworkCode = v13;
+  self->_mobileSubscriberNetworkCode = mobileSubscriberNetworkCode;
 
-  v15 = [v8 phoneNumber];
+  phoneNumber = [v8 phoneNumber];
   phoneNumber = self->_phoneNumber;
-  self->_phoneNumber = v15;
+  self->_phoneNumber = phoneNumber;
 
-  v17 = [v8 IMEI];
+  iMEI = [v8 IMEI];
   IMEI = self->_IMEI;
-  self->_IMEI = v17;
+  self->_IMEI = iMEI;
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -1354,16 +1354,16 @@ LABEL_6:
   [*(a1 + 32) finishWithError:*(*(v8 + 8) + 40)];
 }
 
-- (ICMusicSubscriptionCarrierBundlingEligibilityOperation)initWithRequestContext:(id)a3
+- (ICMusicSubscriptionCarrierBundlingEligibilityOperation)initWithRequestContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICMusicSubscriptionCarrierBundlingEligibilityOperation;
   v6 = [(ICAsyncOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestContext, a3);
+    objc_storeStrong(&v6->_requestContext, context);
   }
 
   return v7;

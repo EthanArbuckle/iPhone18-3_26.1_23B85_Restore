@@ -1,6 +1,6 @@
 @interface _UIHorizontalIndexTitleBar
-- (BOOL)_isViewEntryCell:(id)a3;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)_isViewEntryCell:(id)cell;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (NSDirectionalEdgeInsets)_combinedSectionInset;
 - (UIEdgeInsets)_parentContentInset;
 - (UIEdgeInsets)sectionInset;
@@ -8,21 +8,21 @@
 - (_UIHorizontalIndexTitleBarCell)focusedCell;
 - (_UIHorizontalIndexTitleBarDelegate)delegate;
 - (id)_existingCellForSelectedIndexPath;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)preferredFocusEnvironments;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)_cancelDelayedFocusAction;
 - (void)_flipIfRightToLeft;
-- (void)_selectEntryForTitleIndex:(int64_t)a3;
+- (void)_selectEntryForTitleIndex:(int64_t)index;
 - (void)_selectFocusedCell;
 - (void)_sendDelayedFocusActionIfNecessary;
-- (void)_setParentContentInset:(UIEdgeInsets)a3;
-- (void)_updateWithEntries:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_setParentContentInset:(UIEdgeInsets)inset;
+- (void)_updateWithEntries:(id)entries;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)commonInit;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setEntries:(id)a3;
-- (void)setSectionInset:(UIEdgeInsets)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setEntries:(id)entries;
+- (void)setSectionInset:(UIEdgeInsets)inset;
 @end
 
 @implementation _UIHorizontalIndexTitleBar
@@ -60,69 +60,69 @@
   v6 = v5;
   v8 = v7;
   v9 = [UICollectionView alloc];
-  v10 = [(_UIHorizontalIndexTitleBar *)self layout];
-  v11 = [(UICollectionView *)v9 initWithFrame:v10 collectionViewLayout:0.0, 0.0, v6, v8];
+  layout = [(_UIHorizontalIndexTitleBar *)self layout];
+  v11 = [(UICollectionView *)v9 initWithFrame:layout collectionViewLayout:0.0, 0.0, v6, v8];
   [(_UIHorizontalIndexTitleBar *)self setCollectionView:v11];
 
-  v12 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v12 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_UIHorizontalIndexTitleBarCell"];
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"_UIHorizontalIndexTitleBarCell"];
 
-  v13 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v13 setDataSource:self];
+  collectionView2 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView2 setDataSource:self];
 
-  v14 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v14 setDelegate:self];
+  collectionView3 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView3 setDelegate:self];
 
-  v15 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v15 setAllowsSelection:1];
+  collectionView4 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView4 setAllowsSelection:1];
 
-  v16 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v16 _setSafeAreaInsetsFrozen:1];
+  collectionView5 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView5 _setSafeAreaInsetsFrozen:1];
 
-  v17 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v17 setClipsToBounds:0];
+  collectionView6 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView6 setClipsToBounds:0];
 
-  v18 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [(UIView *)self addSubview:v18];
+  collectionView7 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [(UIView *)self addSubview:collectionView7];
 
-  v19 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v19 setAutoresizingMask:18];
+  collectionView8 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView8 setAutoresizingMask:18];
 
-  v20 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:1];
+  collectionView9 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView9 setTranslatesAutoresizingMaskIntoConstraints:1];
 
   v21 = objc_alloc_init(UIFocusGuide);
   [(_UIHorizontalIndexTitleBar *)self setHorizontalIndexTitleBarFocusGuide:v21];
 
-  v22 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  v51[0] = v22;
+  collectionView10 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  v51[0] = collectionView10;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
-  v24 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  [v24 setPreferredFocusEnvironments:v23];
+  horizontalIndexTitleBarFocusGuide = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  [horizontalIndexTitleBarFocusGuide setPreferredFocusEnvironments:v23];
 
-  v25 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  [(UIView *)self addLayoutGuide:v25];
+  horizontalIndexTitleBarFocusGuide2 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  [(UIView *)self addLayoutGuide:horizontalIndexTitleBarFocusGuide2];
 
   v39 = MEMORY[0x1E69977A0];
-  v45 = [(UIView *)self leftAnchor];
-  v46 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  v44 = [v46 leftAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leftAnchor = [(UIView *)self leftAnchor];
+  horizontalIndexTitleBarFocusGuide3 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  leftAnchor2 = [horizontalIndexTitleBarFocusGuide3 leftAnchor];
+  v43 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v50[0] = v43;
-  v41 = [(UIView *)self topAnchor];
-  v42 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  v40 = [v42 topAnchor];
-  v38 = [v41 constraintEqualToAnchor:v40 constant:1.0];
+  topAnchor = [(UIView *)self topAnchor];
+  horizontalIndexTitleBarFocusGuide4 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  topAnchor2 = [horizontalIndexTitleBarFocusGuide4 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:1.0];
   v50[1] = v38;
-  v26 = [(UIView *)self rightAnchor];
-  v27 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  v28 = [v27 rightAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28];
+  rightAnchor = [(UIView *)self rightAnchor];
+  horizontalIndexTitleBarFocusGuide5 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  rightAnchor2 = [horizontalIndexTitleBarFocusGuide5 rightAnchor];
+  v29 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v50[2] = v29;
-  v30 = [(UIView *)self bottomAnchor];
-  v31 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
-  v32 = [v31 bottomAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32 constant:-1.0];
+  bottomAnchor = [(UIView *)self bottomAnchor];
+  horizontalIndexTitleBarFocusGuide6 = [(_UIHorizontalIndexTitleBar *)self horizontalIndexTitleBarFocusGuide];
+  bottomAnchor2 = [horizontalIndexTitleBarFocusGuide6 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-1.0];
   v50[3] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:4];
   [v39 activateConstraints:v34];
@@ -136,93 +136,93 @@
 
 - (void)_flipIfRightToLeft
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  traitCollection = [(UIView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if ((v4 == 1) != [(UIView *)self _flipsHorizontalAxis])
+  if ((layoutDirection == 1) != [(UIView *)self _flipsHorizontalAxis])
   {
 
-    [(UIView *)self _setFlipsHorizontalAxis:v4 == 1];
+    [(UIView *)self _setFlipsHorizontalAxis:layoutDirection == 1];
   }
 }
 
-- (void)_updateWithEntries:(id)a3
+- (void)_updateWithEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   [(_UIHorizontalIndexTitleBar *)self setSelectedEntry:0];
   [(_UIHorizontalIndexTitleBar *)self setSelectedEntryIndexPath:0];
-  [(_UIHorizontalIndexTitleBar *)self setEntries:v4];
+  [(_UIHorizontalIndexTitleBar *)self setEntries:entriesCopy];
 
-  v5 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  [v5 reloadData];
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (void)_selectEntryForTitleIndex:(int64_t)a3
+- (void)_selectEntryForTitleIndex:(int64_t)index
 {
-  v5 = [(_UIHorizontalIndexTitleBar *)self entries];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  entries = [(_UIHorizontalIndexTitleBar *)self entries];
+  v6 = [entries objectAtIndexedSubscript:index];
   [(_UIHorizontalIndexTitleBar *)self setSelectedEntry:v6];
 
-  v7 = [MEMORY[0x1E696AC88] indexPathForItem:a3 inSection:0];
+  v7 = [MEMORY[0x1E696AC88] indexPathForItem:index inSection:0];
   [(_UIHorizontalIndexTitleBar *)self setSelectedEntryIndexPath:v7];
 
-  v8 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  v9 = [v8 indexPathsForSelectedItems];
-  v14 = [v9 firstObject];
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (!v14 || (-[_UIHorizontalIndexTitleBar selectedEntryIndexPath](self, "selectedEntryIndexPath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v14 isEqual:v10], v10, (v11 & 1) == 0))
+  if (!firstObject || (-[_UIHorizontalIndexTitleBar selectedEntryIndexPath](self, "selectedEntryIndexPath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [firstObject isEqual:v10], v10, (v11 & 1) == 0))
   {
-    v12 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-    v13 = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
-    [v12 selectItemAtIndexPath:v13 animated:1 scrollPosition:16];
+    collectionView2 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+    selectedEntryIndexPath = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
+    [collectionView2 selectItemAtIndexPath:selectedEntryIndexPath animated:1 scrollPosition:16];
   }
 }
 
-- (BOOL)_isViewEntryCell:(id)a3
+- (BOOL)_isViewEntryCell:(id)cell
 {
-  v4 = [a3 superview];
-  v5 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  LOBYTE(self) = v4 == v5;
+  superview = [cell superview];
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  LOBYTE(self) = superview == collectionView;
 
   return self;
 }
 
-- (void)setSectionInset:(UIEdgeInsets)a3
+- (void)setSectionInset:(UIEdgeInsets)inset
 {
-  self->_sectionInset = a3;
-  v3 = [(_UIHorizontalIndexTitleBar *)self layout];
-  [v3 invalidateLayout];
+  self->_sectionInset = inset;
+  layout = [(_UIHorizontalIndexTitleBar *)self layout];
+  [layout invalidateLayout];
 }
 
-- (void)_setParentContentInset:(UIEdgeInsets)a3
+- (void)_setParentContentInset:(UIEdgeInsets)inset
 {
-  self->_parentContentInset = a3;
-  v3 = [(_UIHorizontalIndexTitleBar *)self layout];
-  [v3 invalidateLayout];
+  self->_parentContentInset = inset;
+  layout = [(_UIHorizontalIndexTitleBar *)self layout];
+  [layout invalidateLayout];
 }
 
 - (void)_selectFocusedCell
 {
-  v3 = [(_UIHorizontalIndexTitleBar *)self focusedCell];
-  v4 = v3;
-  if (v3)
+  focusedCell = [(_UIHorizontalIndexTitleBar *)self focusedCell];
+  v4 = focusedCell;
+  if (focusedCell)
   {
-    v10 = v3;
-    v5 = [v3 isSelected];
+    v10 = focusedCell;
+    isSelected = [focusedCell isSelected];
     v4 = v10;
-    if ((v5 & 1) == 0)
+    if ((isSelected & 1) == 0)
     {
       [(_UIHorizontalIndexTitleBar *)self _cancelDelayedFocusAction];
-      v6 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-      v7 = [v6 indexPathForCell:v10];
+      collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+      v7 = [collectionView indexPathForCell:v10];
 
       if (v7)
       {
-        v8 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-        [v8 selectItemAtIndexPath:v7 animated:1 scrollPosition:0];
+        collectionView2 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+        [collectionView2 selectItemAtIndexPath:v7 animated:1 scrollPosition:0];
 
-        v9 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-        [(_UIHorizontalIndexTitleBar *)self collectionView:v9 didSelectItemAtIndexPath:v7];
+        collectionView3 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+        [(_UIHorizontalIndexTitleBar *)self collectionView:collectionView3 didSelectItemAtIndexPath:v7];
       }
 
       v4 = v10;
@@ -256,10 +256,10 @@
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIView *)self traitCollection];
-  v20 = [v19 layoutDirection];
+  traitCollection = [(UIView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v20 == 1)
+  if (layoutDirection == 1)
   {
     v21 = v18;
   }
@@ -269,7 +269,7 @@
     v21 = v14;
   }
 
-  if (v20 == 1)
+  if (layoutDirection == 1)
   {
     v22 = v14;
   }
@@ -290,13 +290,13 @@
 
 - (id)_existingCellForSelectedIndexPath
 {
-  v3 = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
+  selectedEntryIndexPath = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
 
-  if (v3)
+  if (selectedEntryIndexPath)
   {
-    v4 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-    v5 = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
-    v6 = [v4 cellForItemAtIndexPath:v5];
+    collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+    selectedEntryIndexPath2 = [(_UIHorizontalIndexTitleBar *)self selectedEntryIndexPath];
+    v6 = [collectionView cellForItemAtIndexPath:selectedEntryIndexPath2];
   }
 
   else
@@ -307,13 +307,13 @@
   return v6;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  entriesCopy = entries;
+  v7 = entriesCopy;
+  if (entriesCopy)
   {
-    v5 = v4;
+    v5 = entriesCopy;
   }
 
   else
@@ -325,24 +325,24 @@
   self->_entries = v5;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 nextFocusedView];
-  if ([(_UIHorizontalIndexTitleBar *)self _isViewEntryCell:v5])
+  contextCopy = context;
+  nextFocusedView = [contextCopy nextFocusedView];
+  if ([(_UIHorizontalIndexTitleBar *)self _isViewEntryCell:nextFocusedView])
   {
 
 LABEL_5:
     v10.receiver = self;
     v10.super_class = _UIHorizontalIndexTitleBar;
-    v8 = [(UIView *)&v10 shouldUpdateFocusInContext:v4];
+    v8 = [(UIView *)&v10 shouldUpdateFocusInContext:contextCopy];
     goto LABEL_6;
   }
 
-  v6 = [(_UIHorizontalIndexTitleBar *)self focusedCell];
-  v7 = [(_UIHorizontalIndexTitleBar *)self _existingCellForSelectedIndexPath];
+  focusedCell = [(_UIHorizontalIndexTitleBar *)self focusedCell];
+  _existingCellForSelectedIndexPath = [(_UIHorizontalIndexTitleBar *)self _existingCellForSelectedIndexPath];
 
-  if (v6 == v7)
+  if (focusedCell == _existingCellForSelectedIndexPath)
   {
     goto LABEL_5;
   }
@@ -353,20 +353,20 @@ LABEL_6:
   return v8;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = _UIHorizontalIndexTitleBar;
-  [(UIView *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedView];
-  v8 = [v7 superview];
-  v9 = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  [(UIView *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedView = [contextCopy nextFocusedView];
+  superview = [nextFocusedView superview];
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
 
-  if (v8 == v9)
+  if (superview == collectionView)
   {
-    v10 = [v6 nextFocusedItem];
-    [(_UIHorizontalIndexTitleBar *)self setFocusedCell:v10];
+    nextFocusedItem = [contextCopy nextFocusedItem];
+    [(_UIHorizontalIndexTitleBar *)self setFocusedCell:nextFocusedItem];
   }
 
   else
@@ -380,46 +380,46 @@ LABEL_6:
 - (id)preferredFocusEnvironments
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(_UIHorizontalIndexTitleBar *)self collectionView];
-  v5[0] = v2;
+  collectionView = [(_UIHorizontalIndexTitleBar *)self collectionView];
+  v5[0] = collectionView;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(_UIHorizontalIndexTitleBar *)self entries:a3];
+  v4 = [(_UIHorizontalIndexTitleBar *)self entries:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIHorizontalIndexTitleBar *)self entries];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+  pathCopy = path;
+  viewCopy = view;
+  entries = [(_UIHorizontalIndexTitleBar *)self entries];
+  v9 = [entries objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:@"_UIHorizontalIndexTitleBarCell" forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"_UIHorizontalIndexTitleBarCell" forIndexPath:pathCopy];
 
   [v10 updateForEntry:v9];
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_UIHorizontalIndexTitleBar *)self entries];
-  v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+  pathCopy = path;
+  entries = [(_UIHorizontalIndexTitleBar *)self entries];
+  v8 = [entries objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   [(_UIHorizontalIndexTitleBar *)self setSelectedEntry:v8];
-  [(_UIHorizontalIndexTitleBar *)self setSelectedEntryIndexPath:v5];
+  [(_UIHorizontalIndexTitleBar *)self setSelectedEntryIndexPath:pathCopy];
 
-  v7 = [(_UIHorizontalIndexTitleBar *)self delegate];
-  [v7 horizontalIndexBar:self selectedEntry:v8];
+  delegate = [(_UIHorizontalIndexTitleBar *)self delegate];
+  [delegate horizontalIndexBar:self selectedEntry:v8];
 }
 
 - (UIEdgeInsets)sectionInset

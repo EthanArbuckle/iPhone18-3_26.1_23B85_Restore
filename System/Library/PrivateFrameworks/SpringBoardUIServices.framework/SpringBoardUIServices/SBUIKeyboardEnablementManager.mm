@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (SBUIKeyboardEnablementManager)init;
 - (id)description;
-- (void)disableAutomaticAppearanceForContext:(id)a3;
-- (void)enableAutomaticAppearanceForContext:(id)a3;
+- (void)disableAutomaticAppearanceForContext:(id)context;
+- (void)enableAutomaticAppearanceForContext:(id)context;
 @end
 
 @implementation SBUIKeyboardEnablementManager
@@ -45,26 +45,26 @@ uint64_t __47__SBUIKeyboardEnablementManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)disableAutomaticAppearanceForContext:(id)a3
+- (void)disableAutomaticAppearanceForContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (![(NSHashTable *)self->_disabledContexts containsObject:?])
   {
-    [(NSHashTable *)self->_disabledContexts addObject:v5];
+    [(NSHashTable *)self->_disabledContexts addObject:contextCopy];
     UIKeyboardDisableAutomaticAppearance();
-    v4 = [MEMORY[0x1E69DCD68] sharedInstance];
-    [v4 _beginDisablingAnimations];
+    mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
+    [mEMORY[0x1E69DCD68] _beginDisablingAnimations];
   }
 }
 
-- (void)enableAutomaticAppearanceForContext:(id)a3
+- (void)enableAutomaticAppearanceForContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if ([(NSHashTable *)self->_disabledContexts containsObject:?])
   {
-    [(NSHashTable *)self->_disabledContexts removeObject:v5];
-    v4 = [MEMORY[0x1E69DCD68] sharedInstance];
-    [v4 _endDisablingAnimations];
+    [(NSHashTable *)self->_disabledContexts removeObject:contextCopy];
+    mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
+    [mEMORY[0x1E69DCD68] _endDisablingAnimations];
 
     if (![(NSHashTable *)self->_disabledContexts count])
     {

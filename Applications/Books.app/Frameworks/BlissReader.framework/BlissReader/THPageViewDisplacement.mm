@@ -1,27 +1,27 @@
 @interface THPageViewDisplacement
-- (THPageViewDisplacement)initWithView:(id)a3 scrollView:(id)a4;
-- (void)animateFadeWithDuration:(double)a3 forPageIndex:(unint64_t)a4 enumerator:(id)a5;
-- (void)animateOpacityAndDisplaymentProgess:(double)a3 delay:(double)a4 duration:(double)a5 initialPageIndex:(unint64_t)a6 enumerator:(id)a7;
-- (void)animateOverscrollWithDuration:(unint64_t)a3 enumerator:(id)a4;
-- (void)animateShowWithDuration:(double)a3 forPageIndex:(unint64_t)a4 enumerator:(id)a5;
-- (void)animateZoomWithDuration:(double)a3 initialPageIndex:(unint64_t)a4 minViewScale:(double)a5 maxViewScale:(double)a6 currentViewScale:(double)a7 enumerator:(id)a8;
+- (THPageViewDisplacement)initWithView:(id)view scrollView:(id)scrollView;
+- (void)animateFadeWithDuration:(double)duration forPageIndex:(unint64_t)index enumerator:(id)enumerator;
+- (void)animateOpacityAndDisplaymentProgess:(double)progess delay:(double)delay duration:(double)duration initialPageIndex:(unint64_t)index enumerator:(id)enumerator;
+- (void)animateOverscrollWithDuration:(unint64_t)duration enumerator:(id)enumerator;
+- (void)animateShowWithDuration:(double)duration forPageIndex:(unint64_t)index enumerator:(id)enumerator;
+- (void)animateZoomWithDuration:(double)duration initialPageIndex:(unint64_t)index minViewScale:(double)scale maxViewScale:(double)viewScale currentViewScale:(double)currentViewScale enumerator:(id)enumerator;
 - (void)dealloc;
-- (void)startRevealTOCWithPageIndex:(unint64_t)a3 enumerator:(id)a4;
-- (void)updateDisplacementAnimated:(BOOL)a3 restoreOrigin:(BOOL)a4 enumerator:(id)a5;
-- (void)updateZoomInitialPageIndex:(unint64_t)a3 minViewScale:(double)a4 maxViewScale:(double)a5 currentViewScale:(double)a6 enumerator:(id)a7;
+- (void)startRevealTOCWithPageIndex:(unint64_t)index enumerator:(id)enumerator;
+- (void)updateDisplacementAnimated:(BOOL)animated restoreOrigin:(BOOL)origin enumerator:(id)enumerator;
+- (void)updateZoomInitialPageIndex:(unint64_t)index minViewScale:(double)scale maxViewScale:(double)viewScale currentViewScale:(double)currentViewScale enumerator:(id)enumerator;
 @end
 
 @implementation THPageViewDisplacement
 
-- (THPageViewDisplacement)initWithView:(id)a3 scrollView:(id)a4
+- (THPageViewDisplacement)initWithView:(id)view scrollView:(id)scrollView
 {
   v8.receiver = self;
   v8.super_class = THPageViewDisplacement;
   v6 = [(THPageViewDisplacement *)&v8 init];
   if (v6)
   {
-    v6->_view = a3;
-    v6->_scrollView = a4;
+    v6->_view = view;
+    v6->_scrollView = scrollView;
     v6->_numberOfPagesShown = 1;
   }
 
@@ -35,92 +35,92 @@
   [(THPageViewDisplacement *)&v3 dealloc];
 }
 
-- (void)animateZoomWithDuration:(double)a3 initialPageIndex:(unint64_t)a4 minViewScale:(double)a5 maxViewScale:(double)a6 currentViewScale:(double)a7 enumerator:(id)a8
+- (void)animateZoomWithDuration:(double)duration initialPageIndex:(unint64_t)index minViewScale:(double)scale maxViewScale:(double)viewScale currentViewScale:(double)currentViewScale enumerator:(id)enumerator
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1785EC;
   v12[3] = &unk_45E200;
-  *&v12[6] = a6;
-  *&v12[7] = a5;
+  *&v12[6] = viewScale;
+  *&v12[7] = scale;
   v12[4] = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-  v12[5] = a4;
-  *&v12[8] = a7;
-  *&v12[9] = a3;
-  (*(a8 + 2))(a8, v12);
+  v12[5] = index;
+  *&v12[8] = currentViewScale;
+  *&v12[9] = duration;
+  (*(enumerator + 2))(enumerator, v12);
 }
 
-- (void)animateOpacityAndDisplaymentProgess:(double)a3 delay:(double)a4 duration:(double)a5 initialPageIndex:(unint64_t)a6 enumerator:(id)a7
+- (void)animateOpacityAndDisplaymentProgess:(double)progess delay:(double)delay duration:(double)duration initialPageIndex:(unint64_t)index enumerator:(id)enumerator
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_178880;
   v12[3] = &unk_45E228;
   v12[4] = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-  v12[5] = a6;
-  *&v12[6] = a3;
-  *&v12[7] = a5;
-  *&v12[8] = a4;
-  (*(a7 + 2))(a7, v12);
+  v12[5] = index;
+  *&v12[6] = progess;
+  *&v12[7] = duration;
+  *&v12[8] = delay;
+  (*(enumerator + 2))(enumerator, v12);
 }
 
-- (void)updateZoomInitialPageIndex:(unint64_t)a3 minViewScale:(double)a4 maxViewScale:(double)a5 currentViewScale:(double)a6 enumerator:(id)a7
+- (void)updateZoomInitialPageIndex:(unint64_t)index minViewScale:(double)scale maxViewScale:(double)viewScale currentViewScale:(double)currentViewScale enumerator:(id)enumerator
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_178ADC;
   v9[3] = &unk_45E228;
-  *&v9[6] = a5;
-  *&v9[7] = a4;
-  *&v9[8] = a6;
+  *&v9[6] = viewScale;
+  *&v9[7] = scale;
+  *&v9[8] = currentViewScale;
   v9[4] = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-  v9[5] = a3;
-  (*(a7 + 2))(a7, v9);
+  v9[5] = index;
+  (*(enumerator + 2))(enumerator, v9);
 }
 
-- (void)animateFadeWithDuration:(double)a3 forPageIndex:(unint64_t)a4 enumerator:(id)a5
+- (void)animateFadeWithDuration:(double)duration forPageIndex:(unint64_t)index enumerator:(id)enumerator
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_178D18;
   v5[3] = &unk_45E248;
-  v5[4] = a4;
-  *&v5[5] = a3;
-  (*(a5 + 2))(a5, v5);
+  v5[4] = index;
+  *&v5[5] = duration;
+  (*(enumerator + 2))(enumerator, v5);
 }
 
-- (void)animateShowWithDuration:(double)a3 forPageIndex:(unint64_t)a4 enumerator:(id)a5
+- (void)animateShowWithDuration:(double)duration forPageIndex:(unint64_t)index enumerator:(id)enumerator
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_178EFC;
   v5[3] = &unk_45E248;
-  v5[4] = a4;
-  *&v5[5] = a3;
-  (*(a5 + 2))(a5, v5);
+  v5[4] = index;
+  *&v5[5] = duration;
+  (*(enumerator + 2))(enumerator, v5);
 }
 
-- (void)animateOverscrollWithDuration:(unint64_t)a3 enumerator:(id)a4
+- (void)animateOverscrollWithDuration:(unint64_t)duration enumerator:(id)enumerator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1790DC;
   v4[3] = &unk_45E268;
-  v4[4] = a3;
-  (*(a4 + 2))(a4, v4);
+  v4[4] = duration;
+  (*(enumerator + 2))(enumerator, v4);
 }
 
-- (void)startRevealTOCWithPageIndex:(unint64_t)a3 enumerator:(id)a4
+- (void)startRevealTOCWithPageIndex:(unint64_t)index enumerator:(id)enumerator
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_179270;
   v4[3] = &unk_45E288;
-  v4[4] = a3;
-  (*(a4 + 2))(a4, v4);
+  v4[4] = index;
+  (*(enumerator + 2))(enumerator, v4);
 }
 
-- (void)updateDisplacementAnimated:(BOOL)a3 restoreOrigin:(BOOL)a4 enumerator:(id)a5
+- (void)updateDisplacementAnimated:(BOOL)animated restoreOrigin:(BOOL)origin enumerator:(id)enumerator
 {
   [(TSKScrollView *)self->_scrollView tsk_bounds];
   x = v41.origin.x;
@@ -183,12 +183,12 @@
   *&rect.size.height = 3221225472;
   v34 = sub_17965C;
   v35 = &unk_45E2F0;
-  v40 = a4;
+  originCopy = origin;
   v37 = rect.origin.y;
   v38 = numberOfPagesShown;
   v36 = v15;
   v39 = v31;
-  (*(a5 + 2))(a5, &rect.size);
+  (*(enumerator + 2))(enumerator, &rect.size);
 }
 
 @end

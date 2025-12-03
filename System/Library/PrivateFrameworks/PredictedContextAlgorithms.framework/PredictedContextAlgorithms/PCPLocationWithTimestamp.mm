@@ -1,12 +1,12 @@
 @interface PCPLocationWithTimestamp
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPLocationWithTimestamp
@@ -17,70 +17,70 @@
   v8.receiver = self;
   v8.super_class = PCPLocationWithTimestamp;
   v4 = [(PCPLocationWithTimestamp *)&v8 description];
-  v5 = [(PCPLocationWithTimestamp *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPLocationWithTimestamp *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   location = self->_location;
   if (location)
   {
-    v5 = [(PCPLocation *)location dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"location"];
+    dictionaryRepresentation = [(PCPLocation *)location dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timeCFAbsolute];
-    [v3 setObject:v6 forKey:@"timeCFAbsolute"];
+    [dictionary setObject:v6 forKey:@"timeCFAbsolute"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     timeCFAbsolute = self->_timeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_location)
   {
-    v5 = v4;
-    [v4 setLocation:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setLocation:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_timeCFAbsolute;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = *&self->_timeCFAbsolute;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PCPLocation *)self->_location copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PCPLocation *)self->_location copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -93,16 +93,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   location = self->_location;
-  if (location | *(v4 + 2))
+  if (location | *(equalCopy + 2))
   {
     if (![(PCPLocation *)location isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_timeCFAbsolute == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_timeCFAbsolute == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -167,11 +167,11 @@ LABEL_9:
   return v6 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   location = self->_location;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (location)
   {
     if (!v6)
@@ -179,7 +179,7 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(PCPLocation *)location mergeFrom:?];
   }
 
@@ -190,15 +190,15 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(PCPLocationWithTimestamp *)self setLocation:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
-    self->_timeCFAbsolute = *(v4 + 1);
+    self->_timeCFAbsolute = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

@@ -1,17 +1,17 @@
 @interface CKDBatchFetchUserPrivacySettingsURLRequest
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDBatchFetchUserPrivacySettingsURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDBatchFetchUserPrivacySettingsURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)requestOperationClasses
@@ -40,9 +40,9 @@
   return v10;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = objc_msgSend_userPrivacySettingsBatchLookupResponse(a3, a2, a3);
+  v4 = objc_msgSend_userPrivacySettingsBatchLookupResponse(object, a2, object);
   v7 = objc_msgSend_containerPrivacySettings(v4, v5, v6);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;

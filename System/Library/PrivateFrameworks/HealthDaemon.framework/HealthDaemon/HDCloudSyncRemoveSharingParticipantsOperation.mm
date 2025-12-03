@@ -1,12 +1,12 @@
 @interface HDCloudSyncRemoveSharingParticipantsOperation
-- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 participantsToRemove:(id)a5;
+- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state participantsToRemove:(id)remove;
 - (void)main;
 @end
 
 @implementation HDCloudSyncRemoveSharingParticipantsOperation
 
-- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,17 +16,17 @@
   return 0;
 }
 
-- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 participantsToRemove:(id)a5
+- (HDCloudSyncRemoveSharingParticipantsOperation)initWithConfiguration:(id)configuration cloudState:(id)state participantsToRemove:(id)remove
 {
-  v8 = a5;
+  removeCopy = remove;
   v16.receiver = self;
   v16.super_class = HDCloudSyncRemoveSharingParticipantsOperation;
-  v9 = [(HDCloudSyncOperation *)&v16 initWithConfiguration:a3 cloudState:a4];
+  v9 = [(HDCloudSyncOperation *)&v16 initWithConfiguration:configuration cloudState:state];
   v10 = v9;
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v8 copy];
+    v11 = [removeCopy copy];
     participantsToRemove = v10->_participantsToRemove;
     v10->_participantsToRemove = v11;
 
@@ -42,32 +42,32 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   v103 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
-  v6 = [v5 count];
-  v7 = [(HDCloudSyncOperation *)v2 progress];
-  [v7 setTotalUnitCount:v6];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
+  v6 = [allCKContainers count];
+  progress = [(HDCloudSyncOperation *)selfCopy progress];
+  [progress setTotalUnitCount:v6];
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
+  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v8 = [(HDCloudSyncOperation *)v2 configuration];
-  v9 = [v8 repository];
-  v10 = [v9 allCKContainers];
+  configuration2 = [(HDCloudSyncOperation *)selfCopy configuration];
+  repository2 = [configuration2 repository];
+  allCKContainers2 = [repository2 allCKContainers];
 
-  obj = v10;
-  v70 = [v10 countByEnumeratingWithState:&v77 objects:v87 count:16];
+  obj = allCKContainers2;
+  v70 = [allCKContainers2 countByEnumeratingWithState:&v77 objects:v87 count:16];
   if (v70)
   {
     v69 = *v78;
     *&v11 = 138543618;
     v64 = v11;
-    v65 = v2;
+    v65 = selfCopy;
     do
     {
       for (i = 0; i != v70; ++i)
@@ -78,13 +78,13 @@
         }
 
         v13 = *(*(&v77 + 1) + 8 * i);
-        [(HDSynchronousTaskGroup *)v2->_taskGroup beginTask];
-        v14 = v2->_participantsToRemove;
+        [(HDSynchronousTaskGroup *)selfCopy->_taskGroup beginTask];
+        v14 = selfCopy->_participantsToRemove;
         v15 = v13;
-        v16 = [(HDCloudSyncOperation *)v2 configuration];
-        v17 = [v16 cachedCloudState];
+        configuration3 = [(HDCloudSyncOperation *)selfCopy configuration];
+        cachedCloudState = [configuration3 cachedCloudState];
         v86 = 0;
-        v18 = [v17 zonesByIdentifierWithError:&v86];
+        v18 = [cachedCloudState zonesByIdentifierWithError:&v86];
         v19 = v86;
 
         v71 = v18;
@@ -96,8 +96,8 @@
           memset(buf, 0, sizeof(buf));
           v101 = 0u;
           v102 = 0u;
-          v76 = [v18 allValues];
-          v24 = [v76 countByEnumeratingWithState:buf objects:v96 count:16];
+          allValues = [v18 allValues];
+          v24 = [allValues countByEnumeratingWithState:buf objects:v96 count:16];
           if (v24)
           {
             v25 = v24;
@@ -112,14 +112,14 @@
               {
                 if (**&buf[16] != v26)
                 {
-                  objc_enumerationMutation(v76);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v28 = *(*&buf[8] + 8 * v27);
-                v29 = [v28 zoneIdentifier];
-                v30 = [v29 containerIdentifier];
-                v31 = [v15 containerIdentifier];
-                v32 = [v30 isEqualToString:v31];
+                zoneIdentifier = [v28 zoneIdentifier];
+                containerIdentifier = [zoneIdentifier containerIdentifier];
+                containerIdentifier2 = [v15 containerIdentifier];
+                v32 = [containerIdentifier isEqualToString:containerIdentifier2];
 
                 if (v32)
                 {
@@ -142,16 +142,16 @@
                     _HKInitializeLogging();
                     v44 = *MEMORY[0x277CCC328];
                     v45 = os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR);
-                    v2 = v65;
+                    selfCopy = v65;
                     i = v68;
                     if (v45)
                     {
                       v61 = v44;
-                      v62 = [v28 zoneIdentifier];
+                      zoneIdentifier2 = [v28 zoneIdentifier];
                       *v90 = 138543874;
                       v91 = v65;
                       v92 = 2114;
-                      v93 = v62;
+                      v93 = zoneIdentifier2;
                       v94 = 2114;
                       v95 = v19;
                       _os_log_error_impl(&dword_228986000, v61, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch CKShare for cached zone %{public}@, %{public}@", v90, 0x20u);
@@ -168,8 +168,8 @@
                   v84 = 0u;
                   v81 = 0u;
                   v82 = 0u;
-                  v36 = [v33 participants];
-                  v37 = [v36 countByEnumeratingWithState:&v81 objects:v88 count:16];
+                  participants = [v33 participants];
+                  v37 = [participants countByEnumeratingWithState:&v81 objects:v88 count:16];
                   if (v37)
                   {
                     v38 = v37;
@@ -181,7 +181,7 @@
                       {
                         if (*v82 != v40)
                         {
-                          objc_enumerationMutation(v36);
+                          objc_enumerationMutation(participants);
                         }
 
                         v42 = *(*(&v81 + 1) + 8 * j);
@@ -192,7 +192,7 @@
                         }
                       }
 
-                      v38 = [v36 countByEnumeratingWithState:&v81 objects:v88 count:16];
+                      v38 = [participants countByEnumeratingWithState:&v81 objects:v88 count:16];
                     }
 
                     while (v38);
@@ -216,7 +216,7 @@
               }
 
               while (v27 != v25);
-              v25 = [v76 countByEnumeratingWithState:buf objects:v96 count:16];
+              v25 = [allValues countByEnumeratingWithState:buf objects:v96 count:16];
               if (v25)
               {
                 continue;
@@ -229,7 +229,7 @@
           v43 = v72;
           v22 = v72;
           v19 = 0;
-          v2 = v65;
+          selfCopy = v65;
           i = v68;
 LABEL_41:
 
@@ -243,7 +243,7 @@ LABEL_41:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *v96 = v64;
-            *&v96[4] = v2;
+            *&v96[4] = selfCopy;
             *&v96[12] = 2114;
             *&v96[14] = v19;
             _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get cached zones, %{public}@", v96, 0x16u);
@@ -269,26 +269,26 @@ LABEL_41:
             {
               v53 = v52;
               v54 = [v50 count];
-              v55 = [v51 containerIdentifier];
+              containerIdentifier3 = [v51 containerIdentifier];
               *buf = 138543874;
-              *&buf[4] = v2;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2048;
               *&buf[14] = v54;
               *&buf[22] = 2114;
-              *&buf[24] = v55;
+              *&buf[24] = containerIdentifier3;
               _os_log_impl(&dword_228986000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: Saving %ld updated share records in %{public}@", buf, 0x20u);
             }
 
             v56 = [HDCloudSyncModifyRecordsOperation alloc];
-            v57 = [(HDCloudSyncOperation *)v2 configuration];
-            v58 = [(HDCloudSyncModifyRecordsOperation *)v56 initWithConfiguration:v57 container:v51 recordsToSave:v50 recordIDsToDelete:0];
+            configuration4 = [(HDCloudSyncOperation *)selfCopy configuration];
+            v58 = [(HDCloudSyncModifyRecordsOperation *)v56 initWithConfiguration:configuration4 container:v51 recordsToSave:v50 recordIDsToDelete:0];
 
             [(HDCloudSyncModifyRecordsOperation *)v58 setTreatAnyErrorAsFatal:1];
             *v96 = MEMORY[0x277D85DD0];
             *&v96[8] = 3221225472;
             *&v96[16] = __78__HDCloudSyncRemoveSharingParticipantsOperation__saveUpdatedShares_container___block_invoke;
             v97 = &unk_278616348;
-            v98 = v2;
+            v98 = selfCopy;
             v59 = v51;
             v99 = v59;
             [(HDCloudSyncOperation *)v58 setOnError:v96];
@@ -296,7 +296,7 @@ LABEL_41:
             v88[1] = 3221225472;
             v88[2] = __78__HDCloudSyncRemoveSharingParticipantsOperation__saveUpdatedShares_container___block_invoke_299;
             v88[3] = &unk_278614BA8;
-            v88[4] = v2;
+            v88[4] = selfCopy;
             v60 = v59;
             v89 = v60;
             [(HDCloudSyncOperation *)v58 setOnSuccess:v88];
@@ -307,13 +307,13 @@ LABEL_41:
 
           else
           {
-            [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+            [(HDSynchronousTaskGroup *)selfCopy->_taskGroup finishTask];
           }
         }
 
         else
         {
-          [(HDSynchronousTaskGroup *)v2->_taskGroup failTaskWithError:v47];
+          [(HDSynchronousTaskGroup *)selfCopy->_taskGroup failTaskWithError:v47];
         }
       }
 
@@ -323,7 +323,7 @@ LABEL_41:
     while (v70);
   }
 
-  [(HDSynchronousTaskGroup *)v2->_taskGroup finishTask];
+  [(HDSynchronousTaskGroup *)selfCopy->_taskGroup finishTask];
   v63 = *MEMORY[0x277D85DE8];
 }
 

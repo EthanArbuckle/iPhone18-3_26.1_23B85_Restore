@@ -3,52 +3,52 @@
 - (BOOL)isMigrationInvitation;
 - (BOOL)refreshDisplayName;
 - (BOOL)responseReceived;
-- (BOOL)shouldRetrySendingInvitationForError:(id)a3;
-- (HMDOutgoingHomeInvitation)initWithCoder:(id)a3;
-- (HMDOutgoingHomeInvitation)initWithUUID:(id)a3 invitee:(id)a4 invitationState:(int64_t)a5 forHome:(id)a6 expiryDate:(id)a7 messageIdentifier:(id)a8;
+- (BOOL)shouldRetrySendingInvitationForError:(id)error;
+- (HMDOutgoingHomeInvitation)initWithCoder:(id)coder;
+- (HMDOutgoingHomeInvitation)initWithUUID:(id)d invitee:(id)invitee invitationState:(int64_t)state forHome:(id)home expiryDate:(id)date messageIdentifier:(id)identifier;
 - (NSArray)accessoryInvitationsInformation;
 - (NSArray)operationIdentifiers;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)describeWithFormat;
-- (id)emptyModelObjectWithChangeType:(unint64_t)a3;
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4;
+- (id)emptyModelObjectWithChangeType:(unint64_t)type;
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version;
 - (id)shortDescription;
-- (void)_transactionOutgoingInvitationUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)notifyStateChangedForMessage:(id)a3;
-- (void)setOperationIdentifiers:(id)a3;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
-- (void)updateInvitationState:(int64_t)a3;
+- (void)_transactionOutgoingInvitationUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)notifyStateChangedForMessage:(id)message;
+- (void)setOperationIdentifiers:(id)identifiers;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
+- (void)updateInvitationState:(int64_t)state;
 @end
 
 @implementation HMDOutgoingHomeInvitation
 
 - (BOOL)isMigrationInvitation
 {
-  v2 = [(HMDOutgoingHomeInvitation *)self user];
-  v3 = [v2 isPending];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  isPending = [user isPending];
 
-  return v3;
+  return isPending;
 }
 
-- (BOOL)shouldRetrySendingInvitationForError:(id)a3
+- (BOOL)shouldRetrySendingInvitationForError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     goto LABEL_10;
   }
 
   if ([(HMDOutgoingHomeInvitation *)self isMigrationInvitation])
   {
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:*MEMORY[0x277CBBF50]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277CBBF50]])
     {
-      v6 = [v4 code];
+      code = [errorCopy code];
 
-      if (v6 == 33)
+      if (code == 33)
       {
         goto LABEL_10;
       }
@@ -58,12 +58,12 @@
     {
     }
 
-    v8 = [v4 domain];
-    if ([v8 isEqualToString:*MEMORY[0x277CCFD28]])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:*MEMORY[0x277CCFD28]])
     {
-      v9 = [v4 code];
+      code2 = [errorCopy code];
 
-      if (v9 == 3511)
+      if (code2 == 3511)
       {
 LABEL_10:
         v7 = 0;
@@ -85,83 +85,83 @@ LABEL_13:
   return v7;
 }
 
-- (id)modelObjectWithChangeType:(unint64_t)a3 version:(int64_t)a4
+- (id)modelObjectWithChangeType:(unint64_t)type version:(int64_t)version
 {
-  v5 = [(HMDOutgoingHomeInvitation *)self emptyModelObjectWithChangeType:a3, a4];
-  v6 = [(HMDOutgoingHomeInvitation *)self user];
-  v7 = [v6 dictionaryEncoding];
-  [v5 setUser:v7];
+  version = [(HMDOutgoingHomeInvitation *)self emptyModelObjectWithChangeType:type, version];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  dictionaryEncoding = [user dictionaryEncoding];
+  [version setUser:dictionaryEncoding];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDHomeInvitation invitationState](self, "invitationState")}];
-  [v5 setInvitationState:v8];
+  [version setInvitationState:v8];
 
-  v9 = [(HMDHomeInvitation *)self endDate];
-  [v5 setExpiryDate:v9];
+  endDate = [(HMDHomeInvitation *)self endDate];
+  [version setExpiryDate:endDate];
 
-  v10 = [(HMDOutgoingHomeInvitation *)self messageIdentifier];
-  v11 = [v10 UUIDString];
-  [v5 setMessageIdentifier:v11];
+  messageIdentifier = [(HMDOutgoingHomeInvitation *)self messageIdentifier];
+  uUIDString = [messageIdentifier UUIDString];
+  [version setMessageIdentifier:uUIDString];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDOutgoingHomeInvitation responseReceived](self, "responseReceived")}];
-  [v5 setResponseReceived:v12];
+  [version setResponseReceived:v12];
 
-  v13 = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
-  [v5 setInviteeDestinationAddress:v13];
+  inviteeDestinationAddress = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
+  [version setInviteeDestinationAddress:inviteeDestinationAddress];
 
-  v14 = [(HMDHomeInvitation *)self idsInvitationUUID];
-  [v5 setIdsInvitationUUID:v14];
+  idsInvitationUUID = [(HMDHomeInvitation *)self idsInvitationUUID];
+  [version setIdsInvitationUUID:idsInvitationUUID];
 
   v15 = MEMORY[0x277CCABB0];
-  v16 = [(HMDOutgoingHomeInvitation *)self user];
-  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "announceAccessLevel")}];
-  [v5 setAnnounceAccessLevel:v17];
+  user2 = [(HMDOutgoingHomeInvitation *)self user];
+  v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(user2, "announceAccessLevel")}];
+  [version setAnnounceAccessLevel:v17];
 
-  v18 = [(HMDOutgoingHomeInvitation *)self user];
-  v19 = [v18 accessCode];
-  [v5 setAccessCode:v19];
+  user3 = [(HMDOutgoingHomeInvitation *)self user];
+  accessCode = [user3 accessCode];
+  [version setAccessCode:accessCode];
 
-  v20 = [(HMDOutgoingHomeInvitation *)self user];
-  v21 = [v20 uuid];
-  [v5 setPendingUserUUID:v21];
+  user4 = [(HMDOutgoingHomeInvitation *)self user];
+  uuid = [user4 uuid];
+  [version setPendingUserUUID:uuid];
 
-  v22 = [(HMDOutgoingHomeInvitation *)self user];
-  v23 = [v22 restrictedGuestAccessSettings];
-  v24 = [v23 uuidsOfAllowedAccessories];
-  [v5 setUuidsOfAllowedAccessories:v24];
+  user5 = [(HMDOutgoingHomeInvitation *)self user];
+  restrictedGuestAccessSettings = [user5 restrictedGuestAccessSettings];
+  uuidsOfAllowedAccessories = [restrictedGuestAccessSettings uuidsOfAllowedAccessories];
+  [version setUuidsOfAllowedAccessories:uuidsOfAllowedAccessories];
 
-  return v5;
+  return version;
 }
 
-- (id)emptyModelObjectWithChangeType:(unint64_t)a3
+- (id)emptyModelObjectWithChangeType:(unint64_t)type
 {
   v5 = [HMDOutgoingHomeInvitationModel alloc];
-  v6 = [(HMDHomeInvitation *)self identifier];
-  v7 = [(HMDHomeInvitation *)self home];
-  v8 = [v7 uuid];
-  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:a3 uuid:v6 parentUUID:v8];
+  identifier = [(HMDHomeInvitation *)self identifier];
+  home = [(HMDHomeInvitation *)self home];
+  uuid = [home uuid];
+  v9 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:type uuid:identifier parentUUID:uuid];
 
   return v9;
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  messageCopy = message;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [v6 uuid];
-    v13 = [v6 parentUUID];
+    uuid = [removedCopy uuid];
+    parentUUID = [removedCopy parentUUID];
     v15 = 138543874;
     v16 = v11;
     v17 = 2112;
-    v18 = v12;
+    v18 = uuid;
     v19 = 2112;
-    v20 = v13;
+    v20 = parentUUID;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Outgoing invitations have no objects to remove. Transaction UUID: %@, Parent UUID: %@", &v15, 0x20u);
   }
 
@@ -169,127 +169,127 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transactionOutgoingInvitationUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)_transactionOutgoingInvitationUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 user];
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
+  user = [valuesCopy user];
 
-  if (v11)
+  if (user)
   {
-    v12 = [v9 user];
-    [(HMDOutgoingHomeInvitation *)self updateUser:v12];
+    user2 = [valuesCopy user];
+    [(HMDOutgoingHomeInvitation *)self updateUser:user2];
   }
 
-  v13 = [v9 expiryDate];
+  expiryDate = [valuesCopy expiryDate];
 
-  if (v13)
+  if (expiryDate)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [(HMDHomeInvitation *)v15 endDate];
-      v19 = [v9 expiryDate];
+      endDate = [(HMDHomeInvitation *)selfCopy endDate];
+      expiryDate2 = [valuesCopy expiryDate];
       v53 = 138543874;
       v54 = v17;
       v55 = 2112;
-      v56 = v18;
+      v56 = endDate;
       v57 = 2112;
-      v58 = v19;
+      v58 = expiryDate2;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Expiry date is updated from: %@ to %@", &v53, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
-    v20 = [v9 expiryDate];
-    [(HMDHomeInvitation *)v15 setEndDate:v20];
+    expiryDate3 = [valuesCopy expiryDate];
+    [(HMDHomeInvitation *)selfCopy setEndDate:expiryDate3];
   }
 
-  v21 = [v9 messageIdentifier];
+  messageIdentifier = [valuesCopy messageIdentifier];
 
-  if (v21)
+  if (messageIdentifier)
   {
     v22 = objc_alloc(MEMORY[0x277CCAD78]);
-    v23 = [v9 messageIdentifier];
-    v24 = [v22 initWithUUIDString:v23];
+    messageIdentifier2 = [valuesCopy messageIdentifier];
+    v24 = [v22 initWithUUIDString:messageIdentifier2];
     messageIdentifier = self->_messageIdentifier;
     self->_messageIdentifier = v24;
   }
 
-  v26 = [v9 inviteeDestinationAddress];
+  inviteeDestinationAddress = [valuesCopy inviteeDestinationAddress];
 
-  if (v26)
+  if (inviteeDestinationAddress)
   {
-    v27 = [v9 inviteeDestinationAddress];
-    [(HMDOutgoingHomeInvitation *)self setInviteeDestinationAddress:v27];
+    inviteeDestinationAddress2 = [valuesCopy inviteeDestinationAddress];
+    [(HMDOutgoingHomeInvitation *)self setInviteeDestinationAddress:inviteeDestinationAddress2];
   }
 
-  v28 = [v9 idsInvitationUUID];
+  idsInvitationUUID = [valuesCopy idsInvitationUUID];
 
-  if (v28)
+  if (idsInvitationUUID)
   {
-    v29 = [v9 idsInvitationUUID];
-    [(HMDHomeInvitation *)self setIdsInvitationUUID:v29];
+    idsInvitationUUID2 = [valuesCopy idsInvitationUUID];
+    [(HMDHomeInvitation *)self setIdsInvitationUUID:idsInvitationUUID2];
   }
 
-  v30 = [v9 dateSent];
+  dateSent = [valuesCopy dateSent];
 
-  if (v30)
+  if (dateSent)
   {
-    v31 = [v9 dateSent];
-    [(HMDOutgoingHomeInvitation *)self setDateSent:v31];
+    dateSent2 = [valuesCopy dateSent];
+    [(HMDOutgoingHomeInvitation *)self setDateSent:dateSent2];
   }
 
-  v32 = [v9 accessCode];
+  accessCode = [valuesCopy accessCode];
 
-  if (v32)
+  if (accessCode)
   {
-    v33 = [v9 accessCode];
-    [(HMDOutgoingHomeInvitation *)self setAccessCode:v33];
+    accessCode2 = [valuesCopy accessCode];
+    [(HMDOutgoingHomeInvitation *)self setAccessCode:accessCode2];
   }
 
-  v34 = [v9 announceAccessLevel];
+  announceAccessLevel = [valuesCopy announceAccessLevel];
 
-  if (v34)
+  if (announceAccessLevel)
   {
-    v35 = [v9 announceAccessLevel];
-    [(HMDOutgoingHomeInvitation *)self setAnnounceAccessLevel:v35];
+    announceAccessLevel2 = [valuesCopy announceAccessLevel];
+    [(HMDOutgoingHomeInvitation *)self setAnnounceAccessLevel:announceAccessLevel2];
   }
 
-  v36 = [v9 pendingUserUUID];
+  pendingUserUUID = [valuesCopy pendingUserUUID];
 
-  if (v36)
+  if (pendingUserUUID)
   {
-    v37 = [v9 pendingUserUUID];
-    [(HMDOutgoingHomeInvitation *)self setPendingUserUUID:v37];
+    pendingUserUUID2 = [valuesCopy pendingUserUUID];
+    [(HMDOutgoingHomeInvitation *)self setPendingUserUUID:pendingUserUUID2];
   }
 
-  v38 = [v9 invitationState];
+  invitationState = [valuesCopy invitationState];
 
-  if (v38)
+  if (invitationState)
   {
-    v39 = [v9 invitationState];
-    if ([v39 integerValue] == 2)
+    invitationState2 = [valuesCopy invitationState];
+    if ([invitationState2 integerValue] == 2)
     {
-      v40 = [(HMDHomeInvitation *)self invitationState];
+      invitationState3 = [(HMDHomeInvitation *)self invitationState];
 
-      if (v40 != 2)
+      if (invitationState3 != 2)
       {
         v41 = objc_autoreleasePoolPush();
-        v42 = self;
+        selfCopy2 = self;
         v43 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
           v44 = HMFGetLogIdentifier();
-          v45 = [(HMDHomeInvitation *)v42 invitationState];
+          invitationState4 = [(HMDHomeInvitation *)selfCopy2 invitationState];
           v53 = 138543618;
           v54 = v44;
           v55 = 2048;
-          v56 = v45;
+          v56 = invitationState4;
           _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_INFO, "%{public}@Invitation state cannot be set back to pending, maintaining current state as %lu", &v53, 0x16u);
         }
 
@@ -302,40 +302,40 @@ LABEL_13:
     {
     }
 
-    v46 = [v9 invitationState];
-    -[HMDOutgoingHomeInvitation updateInvitationState:](self, "updateInvitationState:", [v46 integerValue]);
+    invitationState5 = [valuesCopy invitationState];
+    -[HMDOutgoingHomeInvitation updateInvitationState:](self, "updateInvitationState:", [invitationState5 integerValue]);
   }
 
 LABEL_29:
-  v47 = [v9 uuidsOfAllowedAccessories];
+  uuidsOfAllowedAccessories = [valuesCopy uuidsOfAllowedAccessories];
 
-  if (v47)
+  if (uuidsOfAllowedAccessories)
   {
-    v48 = [v9 uuidsOfAllowedAccessories];
-    [(HMDOutgoingHomeInvitation *)self setUuidsOfAllowedAccessories:v48];
+    uuidsOfAllowedAccessories2 = [valuesCopy uuidsOfAllowedAccessories];
+    [(HMDOutgoingHomeInvitation *)self setUuidsOfAllowedAccessories:uuidsOfAllowedAccessories2];
   }
 
-  v49 = [v10 transactionResult];
-  [v49 markChanged];
-  v50 = [v10 responseHandler];
+  transactionResult = [messageCopy transactionResult];
+  [transactionResult markChanged];
+  responseHandler = [messageCopy responseHandler];
 
-  if (v50)
+  if (responseHandler)
   {
-    v51 = [v10 responseHandler];
-    v51[2](v51, 0, 0);
+    responseHandler2 = [messageCopy responseHandler];
+    responseHandler2[2](responseHandler2, 0, 0);
   }
 
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
-  v10 = a4;
-  v7 = a5;
+  valuesCopy = values;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v10;
+    v8 = valuesCopy;
   }
 
   else
@@ -346,16 +346,16 @@ LABEL_29:
   v9 = v8;
   if (v9)
   {
-    [(HMDOutgoingHomeInvitation *)self _transactionOutgoingInvitationUpdated:0 newValues:v9 message:v7];
+    [(HMDOutgoingHomeInvitation *)self _transactionOutgoingInvitationUpdated:0 newValues:v9 message:messageCopy];
   }
 }
 
-- (void)setOperationIdentifiers:(id)a3
+- (void)setOperationIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock_with_options();
   operationIdentifiers = self->_operationIdentifiers;
-  self->_operationIdentifiers = v4;
+  self->_operationIdentifiers = identifiersCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -369,37 +369,37 @@ LABEL_29:
   return v3;
 }
 
-- (void)updateInvitationState:(int64_t)a3
+- (void)updateInvitationState:(int64_t)state
 {
-  v5 = [(HMDHomeInvitation *)self invitationState];
+  invitationState = [(HMDHomeInvitation *)self invitationState];
   v6.receiver = self;
   v6.super_class = HMDOutgoingHomeInvitation;
-  [(HMDHomeInvitation *)&v6 updateInvitationState:a3];
-  if ([(HMDHomeInvitation *)self invitationState]!= v5)
+  [(HMDHomeInvitation *)&v6 updateInvitationState:state];
+  if ([(HMDHomeInvitation *)self invitationState]!= invitationState)
   {
     [(HMDOutgoingHomeInvitation *)self notifyStateChangedForMessage:0];
   }
 }
 
-- (void)notifyStateChangedForMessage:(id)a3
+- (void)notifyStateChangedForMessage:(id)message
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeInvitation *)self invitationData];
-  v27[0] = v5;
+  messageCopy = message;
+  invitationData = [(HMDHomeInvitation *)self invitationData];
+  v27[0] = invitationData;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v7 = encodeRootObject();
 
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-  v9 = [(HMDOutgoingHomeInvitation *)self accessoryInvitationsInformation];
-  if (v9)
+  accessoryInvitationsInformation = [(HMDOutgoingHomeInvitation *)self accessoryInvitationsInformation];
+  if (accessoryInvitationsInformation)
   {
     v25[0] = @"kInvitationIdentifierKey";
-    v10 = [(HMDHomeInvitation *)self identifier];
-    v11 = [v10 UUIDString];
+    identifier = [(HMDHomeInvitation *)self identifier];
+    uUIDString = [identifier UUIDString];
     v25[1] = @"kAccessoryInvitationsKey";
-    v26[0] = v11;
-    v26[1] = v9;
+    v26[0] = uUIDString;
+    v26[1] = accessoryInvitationsInformation;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
     [v8 addObject:v12];
   }
@@ -410,42 +410,42 @@ LABEL_29:
   v24[0] = v7;
   v24[1] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
-  v15 = [v4 identifier];
+  identifier2 = [messageCopy identifier];
 
-  if (v15)
+  if (identifier2)
   {
-    v16 = v15;
+    uUID = identifier2;
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v17 = v16;
+  v17 = uUID;
 
   v18 = [MEMORY[0x277D0F818] entitledMessageWithName:@"kUserInvitationsUpdatedNotificationKey" identifier:v17 messagePayload:v14];
-  v19 = [(HMDHomeInvitation *)self home];
-  v20 = [v19 msgDispatcher];
-  v21 = [v19 uuid];
-  [v20 sendMessage:v18 target:v21];
+  home = [(HMDHomeInvitation *)self home];
+  msgDispatcher = [home msgDispatcher];
+  uuid = [home uuid];
+  [msgDispatcher sendMessage:v18 target:uuid];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)refreshDisplayName
 {
-  v3 = [(HMDOutgoingHomeInvitation *)self user];
-  v4 = [v3 refreshDisplayName];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  refreshDisplayName = [user refreshDisplayName];
 
-  if (!v4)
+  if (!refreshDisplayName)
   {
     return 0;
   }
 
-  v5 = [(HMDHomeInvitation *)self invitationData];
+  invitationData = [(HMDHomeInvitation *)self invitationData];
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 ? v5 : 0;
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 ? invitationData : 0;
   v7 = v6;
 
   if (!v7)
@@ -453,50 +453,50 @@ LABEL_29:
     return 0;
   }
 
-  v8 = [(HMDOutgoingHomeInvitation *)self user];
-  v9 = [v8 displayName];
-  [v7 setInviteeName:v9];
+  user2 = [(HMDOutgoingHomeInvitation *)self user];
+  displayName = [user2 displayName];
+  [v7 setInviteeName:displayName];
 
   return 1;
 }
 
 - (id)describeWithFormat
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v10.receiver = self;
   v10.super_class = HMDOutgoingHomeInvitation;
-  v4 = [(HMDHomeInvitation *)&v10 describeWithFormat];
-  [v3 appendFormat:@"%@", v4];
+  describeWithFormat = [(HMDHomeInvitation *)&v10 describeWithFormat];
+  [string appendFormat:@"%@", describeWithFormat];
 
-  v5 = [(HMDOutgoingHomeInvitation *)self user];
-  v6 = [v5 userID];
-  v7 = [(HMDOutgoingHomeInvitation *)self user];
-  v8 = [v7 displayName];
-  [v3 appendFormat:@"type = Outgoing, invitee email = %@ invitee name = %@", v6, v8];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  userID = [user userID];
+  user2 = [(HMDOutgoingHomeInvitation *)self user];
+  displayName = [user2 displayName];
+  [string appendFormat:@"type = Outgoing, invitee email = %@ invitee name = %@", userID, displayName];
 
-  return v3;
+  return string;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HMDOutgoingHomeInvitation;
-  [(HMDHomeInvitation *)&v16 encodeWithCoder:v4];
-  if ([v4 hmd_isForXPCTransport])
+  [(HMDHomeInvitation *)&v16 encodeWithCoder:coderCopy];
+  if ([coderCopy hmd_isForXPCTransport])
   {
     v5 = MEMORY[0x277CBEB18];
-    v6 = [(HMDHomeInvitation *)self operations];
-    v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    operations = [(HMDHomeInvitation *)self operations];
+    v7 = [v5 arrayWithCapacity:{objc_msgSend(operations, "count")}];
 
-    [v4 encodeObject:v7 forKey:@"HM.accessoryInvitations"];
+    [coderCopy encodeObject:v7 forKey:@"HM.accessoryInvitations"];
   }
 
-  v8 = [(HMDOutgoingHomeInvitation *)self user];
-  v9 = [v8 isRemoteGateway];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  isRemoteGateway = [user isRemoteGateway];
 
-  v10 = [(HMDOutgoingHomeInvitation *)self user];
-  if (v9)
+  user2 = [(HMDOutgoingHomeInvitation *)self user];
+  if (isRemoteGateway)
   {
     v11 = @"HM.residentDevice";
   }
@@ -506,46 +506,46 @@ LABEL_29:
     v11 = @"HM.user";
   }
 
-  [v4 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:user2 forKey:v11];
 
-  v12 = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
+  inviteeDestinationAddress = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
 
-  if (v12)
+  if (inviteeDestinationAddress)
   {
-    v13 = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
-    [v4 encodeObject:v13 forKey:@"HM.inviteeDestinationAddress"];
+    inviteeDestinationAddress2 = [(HMDOutgoingHomeInvitation *)self inviteeDestinationAddress];
+    [coderCopy encodeObject:inviteeDestinationAddress2 forKey:@"HM.inviteeDestinationAddress"];
   }
 
-  v14 = [(HMDOutgoingHomeInvitation *)self user];
-  v15 = [v14 restrictedGuestAccessSettings];
-  [v4 encodeObject:v15 forKey:*MEMORY[0x277CD0D20]];
+  user3 = [(HMDOutgoingHomeInvitation *)self user];
+  restrictedGuestAccessSettings = [user3 restrictedGuestAccessSettings];
+  [coderCopy encodeObject:restrictedGuestAccessSettings forKey:*MEMORY[0x277CD0D20]];
 }
 
-- (HMDOutgoingHomeInvitation)initWithCoder:(id)a3
+- (HMDOutgoingHomeInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.invitationData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.invitationData"];
   v20.receiver = self;
   v20.super_class = HMDOutgoingHomeInvitation;
-  v6 = [(HMDHomeInvitation *)&v20 initWithCoder:v4 invitationData:v5];
+  v6 = [(HMDHomeInvitation *)&v20 initWithCoder:coderCopy invitationData:v5];
   if (v6)
   {
-    if ([v4 containsValueForKey:@"HM.residentDevice"])
+    if ([coderCopy containsValueForKey:@"HM.residentDevice"])
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.residentDevice"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.residentDevice"];
       user = v6->_user;
       v6->_user = v7;
     }
 
     else
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.user"];
       v10 = v6->_user;
       v6->_user = v9;
 
       user = [(HMDUser *)v6->_user displayName];
-      v11 = [v5 inviteeName];
-      v12 = [user isEqual:v11];
+      inviteeName = [v5 inviteeName];
+      v12 = [user isEqual:inviteeName];
 
       if ((v12 & 1) == 0)
       {
@@ -553,17 +553,17 @@ LABEL_29:
       }
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.inviteeDestinationAddress"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.inviteeDestinationAddress"];
     inviteeDestinationAddress = v6->_inviteeDestinationAddress;
     v6->_inviteeDestinationAddress = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD0D20]];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CD0D20]];
     [(HMDUser *)v6->_user setRestrictedGuestAccessSettings:v15];
 
-    v16 = [(HMDUser *)v6->_user restrictedGuestAccessSettings];
-    v17 = [v16 uuidsOfAllowedAccessories];
+    restrictedGuestAccessSettings = [(HMDUser *)v6->_user restrictedGuestAccessSettings];
+    uuidsOfAllowedAccessories = [restrictedGuestAccessSettings uuidsOfAllowedAccessories];
     uuidsOfAllowedAccessories = v6->_uuidsOfAllowedAccessories;
-    v6->_uuidsOfAllowedAccessories = v17;
+    v6->_uuidsOfAllowedAccessories = uuidsOfAllowedAccessories;
   }
 
   return v6;
@@ -572,25 +572,25 @@ LABEL_29:
 - (NSArray)accessoryInvitationsInformation
 {
   v2 = MEMORY[0x277CBEB18];
-  v3 = [(HMDHomeInvitation *)self operations];
-  v4 = [v2 arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  operations = [(HMDHomeInvitation *)self operations];
+  v4 = [v2 arrayWithCapacity:{objc_msgSend(operations, "count")}];
 
   return v4;
 }
 
 - (BOOL)isComplete
 {
-  v3 = [(HMDOutgoingHomeInvitation *)self responseReceived];
-  if (v3)
+  responseReceived = [(HMDOutgoingHomeInvitation *)self responseReceived];
+  if (responseReceived)
   {
-    v3 = [(HMDHomeInvitation *)self isAccepted];
-    if (v3)
+    responseReceived = [(HMDHomeInvitation *)self isAccepted];
+    if (responseReceived)
     {
-      LOBYTE(v3) = ![(HMDHomeInvitation *)self isDeclined];
+      LOBYTE(responseReceived) = ![(HMDHomeInvitation *)self isDeclined];
     }
   }
 
-  return v3;
+  return responseReceived;
 }
 
 - (BOOL)responseReceived
@@ -606,12 +606,12 @@ LABEL_29:
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDOutgoingHomeInvitation *)self shortDescription];
-  v5 = [(HMDOutgoingHomeInvitation *)self user];
-  v6 = [(HMDHomeInvitation *)self invitationState];
-  v7 = [(HMDHomeInvitation *)self operations];
-  v8 = [(HMDOutgoingHomeInvitation *)self dateSent];
-  v9 = [v3 stringWithFormat:@"<%@, Invitee = %@, State = %tu, Operations = %@ dateSent = %@>", v4, v5, v6, v7, v8];
+  shortDescription = [(HMDOutgoingHomeInvitation *)self shortDescription];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  invitationState = [(HMDHomeInvitation *)self invitationState];
+  operations = [(HMDHomeInvitation *)self operations];
+  dateSent = [(HMDOutgoingHomeInvitation *)self dateSent];
+  v9 = [v3 stringWithFormat:@"<%@, Invitee = %@, State = %tu, Operations = %@ dateSent = %@>", shortDescription, user, invitationState, operations, dateSent];
 
   return v9;
 }
@@ -620,11 +620,11 @@ LABEL_29:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDHomeInvitation *)self identifier];
-  v6 = [(HMDOutgoingHomeInvitation *)self user];
-  v7 = [(HMDHomeInvitation *)self invitationState];
-  v8 = [(HMDHomeInvitation *)self operations];
-  v9 = [v3 stringWithFormat:@"<%@ %p, Identifier = %@, Invitee = %@, State = %tu, Operations = %@>", v4, self, v5, v6, v7, v8];
+  identifier = [(HMDHomeInvitation *)self identifier];
+  user = [(HMDOutgoingHomeInvitation *)self user];
+  invitationState = [(HMDHomeInvitation *)self invitationState];
+  operations = [(HMDHomeInvitation *)self operations];
+  v9 = [v3 stringWithFormat:@"<%@ %p, Identifier = %@, Invitee = %@, State = %tu, Operations = %@>", v4, self, identifier, user, invitationState, operations];
 
   return v9;
 }
@@ -633,33 +633,33 @@ LABEL_29:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDHomeInvitation *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  identifier = [(HMDHomeInvitation *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   return v6;
 }
 
-- (HMDOutgoingHomeInvitation)initWithUUID:(id)a3 invitee:(id)a4 invitationState:(int64_t)a5 forHome:(id)a6 expiryDate:(id)a7 messageIdentifier:(id)a8
+- (HMDOutgoingHomeInvitation)initWithUUID:(id)d invitee:(id)invitee invitationState:(int64_t)state forHome:(id)home expiryDate:(id)date messageIdentifier:(id)identifier
 {
-  v15 = a4;
-  obj = a8;
-  v27 = a8;
+  inviteeCopy = invitee;
+  obj = identifier;
+  identifierCopy = identifier;
   v16 = MEMORY[0x277CD1CC0];
-  v17 = a7;
-  v18 = a6;
-  v19 = a3;
+  dateCopy = date;
+  homeCopy = home;
+  dCopy = d;
   v20 = [v16 alloc];
-  v21 = [v15 userID];
-  v22 = [v15 displayName];
-  v23 = [v20 initWithUUID:v19 inviteeUserID:v21 inviteeName:v22 invitationState:a5 expiryDate:v17];
+  userID = [inviteeCopy userID];
+  displayName = [inviteeCopy displayName];
+  v23 = [v20 initWithUUID:dCopy inviteeUserID:userID inviteeName:displayName invitationState:state expiryDate:dateCopy];
 
   v28.receiver = self;
   v28.super_class = HMDOutgoingHomeInvitation;
-  v24 = [(HMDHomeInvitation *)&v28 initWithInvitationData:v23 forHome:v18];
+  v24 = [(HMDHomeInvitation *)&v28 initWithInvitationData:v23 forHome:homeCopy];
 
   if (v24)
   {
-    objc_storeStrong(&v24->_user, a4);
+    objc_storeStrong(&v24->_user, invitee);
     objc_storeStrong(&v24->_messageIdentifier, obj);
   }
 

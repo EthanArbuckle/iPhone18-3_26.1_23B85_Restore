@@ -1,22 +1,22 @@
 @interface TPSGenerativeModelsAvailabilityValidation
 - (TPSGenerativeModelsAvailabilityValidation)init;
-- (TPSGenerativeModelsAvailabilityValidation)initWithTargetContext:(id)a3;
-- (void)validateWithCompletion:(id)a3;
+- (TPSGenerativeModelsAvailabilityValidation)initWithTargetContext:(id)context;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSGenerativeModelsAvailabilityValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_232DB6568(v5, v4);
+  selfCopy = self;
+  sub_232DB6568(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (TPSGenerativeModelsAvailabilityValidation)initWithTargetContext:(id)a3
+- (TPSGenerativeModelsAvailabilityValidation)initWithTargetContext:(id)context
 {
   sub_232E01470();
   v4 = sub_232E01450();

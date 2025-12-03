@@ -1,25 +1,25 @@
 @interface PKApplyActionContentActionItemRow
 - (NSCopying)identifier;
-- (PKApplyActionContentActionItemRow)initWithApplyActionContentActionItem:(id)a3 selectionHandler:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureCell:(id)a3;
+- (PKApplyActionContentActionItemRow)initWithApplyActionContentActionItem:(id)item selectionHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureCell:(id)cell;
 - (void)handleCellSelection;
 @end
 
 @implementation PKApplyActionContentActionItemRow
 
-- (PKApplyActionContentActionItemRow)initWithApplyActionContentActionItem:(id)a3 selectionHandler:(id)a4
+- (PKApplyActionContentActionItemRow)initWithApplyActionContentActionItem:(id)item selectionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = PKApplyActionContentActionItemRow;
   v9 = [(PKApplyActionContentActionItemRow *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionItem, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_actionItem, item);
+    v11 = [handlerCopy copy];
     selectionHandler = v10->_selectionHandler;
     v10->_selectionHandler = v11;
   }
@@ -37,8 +37,8 @@
   actionItem = self->_actionItem;
   if (actionItem)
   {
-    v7 = [(PKApplyActionContentActionItem *)actionItem identifier];
-    [v3 appendString:v7];
+    identifier = [(PKApplyActionContentActionItem *)actionItem identifier];
+    [v3 appendString:identifier];
   }
 
   v8 = [v3 copy];
@@ -46,24 +46,24 @@
   return v8;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   [(PKApplyActionContentActionItemRow *)self cellClass];
   if (objc_opt_isKindOfClass())
   {
-    [v4 setActionItem:self->_actionItem];
+    [cellCopy setActionItem:self->_actionItem];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PKApplyActionContentActionItemRow allocWithZone:?];
-  v6 = [(PKApplyActionContentActionItem *)self->_actionItem copyWithZone:a3];
+  v6 = [(PKApplyActionContentActionItem *)self->_actionItem copyWithZone:zone];
   actionItem = v5->_actionItem;
   v5->_actionItem = v6;
 
-  v8 = [self->_selectionHandler copyWithZone:a3];
+  v8 = [self->_selectionHandler copyWithZone:zone];
   selectionHandler = v5->_selectionHandler;
   v5->_selectionHandler = v8;
 

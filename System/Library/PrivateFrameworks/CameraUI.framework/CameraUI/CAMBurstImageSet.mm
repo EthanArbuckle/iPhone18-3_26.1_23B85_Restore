@@ -1,15 +1,15 @@
 @interface CAMBurstImageSet
 + (id)burstImageSet;
-+ (id)burstImageSetWithOptions:(id)a3;
++ (id)burstImageSetWithOptions:(id)options;
 - (CAMBurstImageSet)init;
-- (CAMBurstImageSet)initWithOptions:(id)a3;
+- (CAMBurstImageSet)initWithOptions:(id)options;
 - (id)bestImageIdentifiers;
 - (id)coverImageIdentifier;
-- (id)imageClusterForIndex:(unint64_t)a3;
-- (id)statsForImageWithIdentifier:(id)a3;
+- (id)imageClusterForIndex:(unint64_t)index;
+- (id)statsForImageWithIdentifier:(id)identifier;
 - (unint64_t)imageClusterCount;
 - (void)dealloc;
-- (void)setLoggingListener:(void *)a3 withUserInfo:(void *)a4;
+- (void)setLoggingListener:(void *)listener withUserInfo:(void *)info;
 @end
 
 @implementation CAMBurstImageSet
@@ -21,9 +21,9 @@
   return v2;
 }
 
-+ (id)burstImageSetWithOptions:(id)a3
++ (id)burstImageSetWithOptions:(id)options
 {
-  v3 = [[CAMBurstImageSet alloc] initWithOptions:a3];
+  v3 = [[CAMBurstImageSet alloc] initWithOptions:options];
 
   return v3;
 }
@@ -53,14 +53,14 @@
   return v2;
 }
 
-- (CAMBurstImageSet)initWithOptions:(id)a3
+- (CAMBurstImageSet)initWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = CAMBurstImageSet;
   v4 = [(CAMBurstImageSet *)&v6 init];
   if (v4)
   {
-    v4->_priv = [[CAMBurstImageSetInternal alloc] initWithOptions:a3];
+    v4->_priv = [[CAMBurstImageSetInternal alloc] initWithOptions:options];
   }
 
   return v4;
@@ -80,14 +80,14 @@
   {
     [(CAMBurstImageSet *)self secondsSinceStart];
     v6 = v5;
-    v7 = [(CAMBurstImageSetInternal *)self->_priv bestImageIdentifiers];
+    bestImageIdentifiers = [(CAMBurstImageSetInternal *)self->_priv bestImageIdentifiers];
     if ([(CAMBurstImageSetInternal *)self->_priv burstLogFileName])
     {
       context = objc_autoreleasePoolPush();
       v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
       [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithDouble:", v6), @"BurstSet_TimeDoneCapturing"}];
-      v23 = v7;
-      v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v7];
+      v23 = bestImageIdentifiers;
+      v9 = [MEMORY[0x1E695DEC8] arrayWithArray:bestImageIdentifiers];
       v10 = MEMORY[0x1E696AD98];
       [(CAMBurstImageSet *)self secondsSinceStart];
       [v8 setObject:objc_msgSend(v10 forKey:{"numberWithDouble:"), @"BurstSet_TimeDone"}];
@@ -135,8 +135,8 @@
       [v8 setObject:v12 forKey:kBurstDoc_AllImageStats[0]];
       if ([(CAMBurstImageSetInternal *)self->_priv burstLogFileName])
       {
-        v19 = [(CAMBurstImageSetInternal *)self->_priv burstLogFileName];
-        [v8 setObject:v19 forKey:kBurstDoc_LogFile[0]];
+        burstLogFileName = [(CAMBurstImageSetInternal *)self->_priv burstLogFileName];
+        [v8 setObject:burstLogFileName forKey:kBurstDoc_LogFile[0]];
       }
 
       [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", -[CAMBurstImageSetInternal maxNumPendingFrames](self->_priv, "maxNumPendingFrames")), @"BurstSet_Setting_MaxNumPendingFrames"}];
@@ -150,21 +150,21 @@
       v20 = [-[CAMBurstImageSetInternal burstDocumentDirectory](self->_priv "burstDocumentDirectory")];
       if ([(CAMBurstImageSetInternal *)self->_priv burstCoverSelection])
       {
-        v21 = [(CAMBurstImageSetInternal *)self->_priv burstCoverSelection];
+        burstCoverSelection = [(CAMBurstImageSetInternal *)self->_priv burstCoverSelection];
       }
 
       else
       {
-        v21 = @"nil";
+        burstCoverSelection = @"nil";
       }
 
-      [v8 setObject:v21 forKey:@"BurstSet_CoverImage"];
+      [v8 setObject:burstCoverSelection forKey:@"BurstSet_CoverImage"];
       [v8 writeToFile:v20 atomically:1];
       objc_autoreleasePoolPop(context);
       return v23;
     }
 
-    return v7;
+    return bestImageIdentifiers;
   }
 }
 
@@ -179,15 +179,15 @@
       v5 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v4];
       if ([(CAMBurstImageSetInternal *)self->_priv burstCoverSelection])
       {
-        v6 = [(CAMBurstImageSetInternal *)self->_priv burstCoverSelection];
+        burstCoverSelection = [(CAMBurstImageSetInternal *)self->_priv burstCoverSelection];
       }
 
       else
       {
-        v6 = @"nil";
+        burstCoverSelection = @"nil";
       }
 
-      [v5 setObject:v6 forKey:@"BurstSet_CoverImage"];
+      [v5 setObject:burstCoverSelection forKey:@"BurstSet_CoverImage"];
     }
 
     priv = self->_priv;
@@ -200,15 +200,15 @@
 
 - (unint64_t)imageClusterCount
 {
-  v2 = [(CAMBurstImageSetInternal *)self->_priv clusterArray];
+  clusterArray = [(CAMBurstImageSetInternal *)self->_priv clusterArray];
 
-  return [(NSMutableArray *)v2 count];
+  return [(NSMutableArray *)clusterArray count];
 }
 
-- (id)imageClusterForIndex:(unint64_t)a3
+- (id)imageClusterForIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableArray *)[(CAMBurstImageSetInternal *)self->_priv clusterArray] objectAtIndex:a3];
+  v3 = [(NSMutableArray *)[(CAMBurstImageSetInternal *)self->_priv clusterArray] objectAtIndex:index];
   if (!v3)
   {
     return 0;
@@ -220,8 +220,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 burstImages];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  burstImages = [v4 burstImages];
+  v7 = [burstImages countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -232,13 +232,13 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(burstImages);
         }
 
         [v5 addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * i), "imageId")}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [burstImages countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -247,18 +247,18 @@
   return v5;
 }
 
-- (id)statsForImageWithIdentifier:(id)a3
+- (id)statsForImageWithIdentifier:(id)identifier
 {
-  v4 = [(CAMBurstImageSetInternal *)self->_priv statsByImageIdentifier];
+  statsByImageIdentifier = [(CAMBurstImageSetInternal *)self->_priv statsByImageIdentifier];
 
-  return [(NSMutableDictionary *)v4 objectForKey:a3];
+  return [(NSMutableDictionary *)statsByImageIdentifier objectForKey:identifier];
 }
 
-- (void)setLoggingListener:(void *)a3 withUserInfo:(void *)a4
+- (void)setLoggingListener:(void *)listener withUserInfo:(void *)info
 {
   v6 = *MEMORY[0x1E69E9840];
   v4 = 64;
-  BurstLoggingSetCallback(a3, a4);
+  BurstLoggingSetCallback(listener, info);
   sysctlbyname("kern.osversion", v5, &v4, 0, 0);
   BurstLoggingMessage("BURST ANALYSIS VERSION = %s (%s)\n", [kCAMBurstImageSet_VersionString UTF8String], v5);
 }

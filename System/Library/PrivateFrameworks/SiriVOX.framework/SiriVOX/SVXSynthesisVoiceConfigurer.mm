@@ -1,32 +1,32 @@
 @interface SVXSynthesisVoiceConfigurer
-- (SVXSynthesisVoiceConfigurer)initWithConfigurationManager:(id)a3 speechSynthesisUtils:(id)a4 sessionUtils:(id)a5 voiceGenderConverter:(id)a6;
-- (id)_determineLanguageCodeWithContext:(id)a3 outputVoiceInfo:(id)a4 preferences:(id)a5;
-- (id)_determineVoiceNameWithContext:(id)a3 languageCode:(id)a4 outputVoiceInfo:(id)a5 gender:(int64_t)a6;
-- (id)voiceForContext:(id)a3 preferences:(id)a4;
-- (int64_t)_determineGenderWithContext:(id)a3 outputVoiceInfo:(id)a4 languageCode:(id)a5;
+- (SVXSynthesisVoiceConfigurer)initWithConfigurationManager:(id)manager speechSynthesisUtils:(id)utils sessionUtils:(id)sessionUtils voiceGenderConverter:(id)converter;
+- (id)_determineLanguageCodeWithContext:(id)context outputVoiceInfo:(id)info preferences:(id)preferences;
+- (id)_determineVoiceNameWithContext:(id)context languageCode:(id)code outputVoiceInfo:(id)info gender:(int64_t)gender;
+- (id)voiceForContext:(id)context preferences:(id)preferences;
+- (int64_t)_determineGenderWithContext:(id)context outputVoiceInfo:(id)info languageCode:(id)code;
 @end
 
 @implementation SVXSynthesisVoiceConfigurer
 
-- (id)_determineVoiceNameWithContext:(id)a3 languageCode:(id)a4 outputVoiceInfo:(id)a5 gender:(int64_t)a6
+- (id)_determineVoiceNameWithContext:(id)context languageCode:(id)code outputVoiceInfo:(id)info gender:(int64_t)gender
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  contextCopy = context;
+  codeCopy = code;
+  infoCopy = info;
+  if (contextCopy)
   {
-    v13 = [v10 voiceName];
+    voiceName = [contextCopy voiceName];
   }
 
   else
   {
-    v13 = 0;
+    voiceName = 0;
   }
 
-  if ([(__CFString *)v13 length])
+  if ([(__CFString *)voiceName length])
   {
-    v14 = v13;
+    name = voiceName;
     goto LABEL_16;
   }
 
@@ -35,26 +35,26 @@
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [v12 description];
+    v18 = [infoCopy description];
     v32 = 136315906;
     v33 = "[SVXSynthesisVoiceConfigurer _determineVoiceNameWithContext:languageCode:outputVoiceInfo:gender:]";
     v34 = 2112;
-    v35 = v11;
+    v35 = codeCopy;
     v36 = 2048;
-    v37 = a6;
+    genderCopy = gender;
     v38 = 2112;
-    v39 = v18;
+    genderCopy2 = v18;
     _os_log_impl(&dword_2695B9000, v17, OS_LOG_TYPE_DEFAULT, "%s languageCode: %@, gender: %ld, outputVoiceInfo: %@", &v32, 0x2Au);
   }
 
-  v19 = [v12 languageCode];
-  if ([v19 isEqualToString:v11])
+  languageCode = [infoCopy languageCode];
+  if ([languageCode isEqualToString:codeCopy])
   {
-    v20 = [(SVXVoiceGenderConverter *)self->_voiceGenderConverter getSpeechGenderFromVoiceInfo:v12];
+    v20 = [(SVXVoiceGenderConverter *)self->_voiceGenderConverter getSpeechGenderFromVoiceInfo:infoCopy];
 
-    if (v20 == a6)
+    if (v20 == gender)
     {
-      v14 = [v12 name];
+      name = [infoCopy name];
 
       v21 = *v15;
       if (os_log_type_enabled(*v15, OS_LOG_TYPE_DEFAULT))
@@ -62,11 +62,11 @@
         v32 = 136315906;
         v33 = "[SVXSynthesisVoiceConfigurer _determineVoiceNameWithContext:languageCode:outputVoiceInfo:gender:]";
         v34 = 2112;
-        v35 = v14;
+        v35 = name;
         v36 = 2112;
-        v37 = v11;
+        genderCopy = codeCopy;
         v38 = 2048;
-        v39 = a6;
+        genderCopy2 = gender;
         _os_log_impl(&dword_2695B9000, v21, OS_LOG_TYPE_DEFAULT, "%s Using voice name %@ for %@, %ld", &v32, 0x2Au);
       }
 
@@ -79,10 +79,10 @@
   }
 
   v22 = AFOutputVoiceLanguageForRecognitionLanguage();
-  v23 = [(SVXVoiceGenderConverter *)self->_voiceGenderConverter getAFVoiceGenderFromTTSAssetVoiceGender:a6];
-  v24 = [MEMORY[0x277CEF2D8] sharedInstance];
-  v25 = [v24 voiceNamesForOutputLanguageCode:v22 gender:v23];
-  v14 = [v25 firstObject];
+  v23 = [(SVXVoiceGenderConverter *)self->_voiceGenderConverter getAFVoiceGenderFromTTSAssetVoiceGender:gender];
+  mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+  v25 = [mEMORY[0x277CEF2D8] voiceNamesForOutputLanguageCode:v22 gender:v23];
+  name = [v25 firstObject];
 
   v26 = *v15;
   if (os_log_type_enabled(*v15, OS_LOG_TYPE_DEFAULT))
@@ -90,18 +90,18 @@
     v32 = 136316162;
     v33 = "[SVXSynthesisVoiceConfigurer _determineVoiceNameWithContext:languageCode:outputVoiceInfo:gender:]";
     v34 = 2112;
-    v35 = v14;
+    v35 = name;
     v36 = 2112;
-    v37 = v11;
+    genderCopy = codeCopy;
     v38 = 2112;
-    v39 = v22;
+    genderCopy2 = v22;
     v40 = 2048;
-    v41 = a6;
+    genderCopy3 = gender;
     _os_log_impl(&dword_2695B9000, v26, OS_LOG_TYPE_DEFAULT, "%s Using fallback voice name %@ for language code: %@ outputLanguageCode: %@, %ld", &v32, 0x34u);
   }
 
 LABEL_16:
-  if ([(__CFString *)v14 isEqualToString:@"hattori"])
+  if ([(__CFString *)name isEqualToString:@"hattori"])
   {
     v27 = *MEMORY[0x277CEF098];
     v28 = @"hiro";
@@ -117,7 +117,7 @@ LABEL_16:
 
   else
   {
-    if (![(__CFString *)v14 isEqualToString:@"oren"])
+    if (![(__CFString *)name isEqualToString:@"oren"])
     {
       goto LABEL_24;
     }
@@ -135,25 +135,25 @@ LABEL_16:
     v28 = @"sakura";
   }
 
-  v14 = v28;
+  name = v28;
 LABEL_24:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return name;
 }
 
-- (int64_t)_determineGenderWithContext:(id)a3 outputVoiceInfo:(id)a4 languageCode:(id)a5
+- (int64_t)_determineGenderWithContext:(id)context outputVoiceInfo:(id)info languageCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && (v11 = -[SVXVoiceGenderConverter getSpeechGenderFromGender:](self->_voiceGenderConverter, "getSpeechGenderFromGender:", [v8 gender])) != 0 || (v11 = -[SVXVoiceGenderConverter getSpeechGenderFromVoiceInfo:](self->_voiceGenderConverter, "getSpeechGenderFromVoiceInfo:", v9)) != 0)
+  contextCopy = context;
+  infoCopy = info;
+  codeCopy = code;
+  if (contextCopy && (v11 = -[SVXVoiceGenderConverter getSpeechGenderFromGender:](self->_voiceGenderConverter, "getSpeechGenderFromGender:", [contextCopy gender])) != 0 || (v11 = -[SVXVoiceGenderConverter getSpeechGenderFromVoiceInfo:](self->_voiceGenderConverter, "getSpeechGenderFromVoiceInfo:", infoCopy)) != 0)
   {
     v12 = v11;
   }
 
-  else if ([MEMORY[0x277CEF528] defaultGenderForOutputVoiceLanguageCode:v10] == 1)
+  else if ([MEMORY[0x277CEF528] defaultGenderForOutputVoiceLanguageCode:codeCopy] == 1)
   {
     v12 = 1;
   }
@@ -166,62 +166,62 @@ LABEL_24:
   return v12;
 }
 
-- (id)_determineLanguageCodeWithContext:(id)a3 outputVoiceInfo:(id)a4 preferences:(id)a5
+- (id)_determineLanguageCodeWithContext:(id)context outputVoiceInfo:(id)info preferences:(id)preferences
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  contextCopy = context;
+  infoCopy = info;
+  preferencesCopy = preferences;
+  if (contextCopy)
   {
-    v11 = [v8 languageCode];
+    languageCode = [contextCopy languageCode];
   }
 
   else
   {
-    v11 = 0;
+    languageCode = 0;
   }
 
-  if (![v11 length])
+  if (![languageCode length])
   {
-    v12 = [v9 languageCode];
+    languageCode2 = [infoCopy languageCode];
 
-    v11 = v12;
+    languageCode = languageCode2;
   }
 
-  if (![v11 length])
+  if (![languageCode length])
   {
-    v13 = [(SVXSessionUtils *)self->_sessionUtils getLanguageCodeWithAllowsFallback:1 preferences:v10];
+    v13 = [(SVXSessionUtils *)self->_sessionUtils getLanguageCodeWithAllowsFallback:1 preferences:preferencesCopy];
 
-    v11 = v13;
+    languageCode = v13;
   }
 
-  return v11;
+  return languageCode;
 }
 
-- (id)voiceForContext:(id)a3 preferences:(id)a4
+- (id)voiceForContext:(id)context preferences:(id)preferences
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  preferencesCopy = preferences;
   configurationManager = self->_configurationManager;
-  v8 = a3;
-  v9 = [(SVXSpeechSynthesisConfigurationStateManager *)configurationManager currentConfiguration];
-  v10 = [v9 outputVoiceInfo];
-  v11 = v10;
-  if (v10)
+  contextCopy = context;
+  currentConfiguration = [(SVXSpeechSynthesisConfigurationStateManager *)configurationManager currentConfiguration];
+  outputVoiceInfo = [currentConfiguration outputVoiceInfo];
+  v11 = outputVoiceInfo;
+  if (outputVoiceInfo)
   {
-    v12 = v10;
+    v12 = outputVoiceInfo;
   }
 
   else
   {
-    v12 = [(SVXSpeechSynthesisUtils *)self->_speechSynthesisUtils getOutputVoiceInfoWithAllowsFallback:1 preferences:v6];
+    v12 = [(SVXSpeechSynthesisUtils *)self->_speechSynthesisUtils getOutputVoiceInfoWithAllowsFallback:1 preferences:preferencesCopy];
   }
 
   v13 = v12;
 
-  v14 = [(SVXSynthesisVoiceConfigurer *)self _determineLanguageCodeWithContext:v8 outputVoiceInfo:v13 preferences:v6];
-  v15 = [(SVXSynthesisVoiceConfigurer *)self _determineGenderWithContext:v8 outputVoiceInfo:v13 languageCode:v14];
-  v16 = [(SVXSynthesisVoiceConfigurer *)self _determineVoiceNameWithContext:v8 languageCode:v14 outputVoiceInfo:v13 gender:v15];
+  v14 = [(SVXSynthesisVoiceConfigurer *)self _determineLanguageCodeWithContext:contextCopy outputVoiceInfo:v13 preferences:preferencesCopy];
+  v15 = [(SVXSynthesisVoiceConfigurer *)self _determineGenderWithContext:contextCopy outputVoiceInfo:v13 languageCode:v14];
+  v16 = [(SVXSynthesisVoiceConfigurer *)self _determineVoiceNameWithContext:contextCopy languageCode:v14 outputVoiceInfo:v13 gender:v15];
 
   v17 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -244,22 +244,22 @@ LABEL_24:
   return v18;
 }
 
-- (SVXSynthesisVoiceConfigurer)initWithConfigurationManager:(id)a3 speechSynthesisUtils:(id)a4 sessionUtils:(id)a5 voiceGenderConverter:(id)a6
+- (SVXSynthesisVoiceConfigurer)initWithConfigurationManager:(id)manager speechSynthesisUtils:(id)utils sessionUtils:(id)sessionUtils voiceGenderConverter:(id)converter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  utilsCopy = utils;
+  sessionUtilsCopy = sessionUtils;
+  converterCopy = converter;
   v18.receiver = self;
   v18.super_class = SVXSynthesisVoiceConfigurer;
   v15 = [(SVXSynthesisVoiceConfigurer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_configurationManager, a3);
-    objc_storeStrong(&v16->_speechSynthesisUtils, a4);
-    objc_storeStrong(&v16->_sessionUtils, a5);
-    objc_storeStrong(&v16->_voiceGenderConverter, a6);
+    objc_storeStrong(&v15->_configurationManager, manager);
+    objc_storeStrong(&v16->_speechSynthesisUtils, utils);
+    objc_storeStrong(&v16->_sessionUtils, sessionUtils);
+    objc_storeStrong(&v16->_voiceGenderConverter, converter);
   }
 
   return v16;

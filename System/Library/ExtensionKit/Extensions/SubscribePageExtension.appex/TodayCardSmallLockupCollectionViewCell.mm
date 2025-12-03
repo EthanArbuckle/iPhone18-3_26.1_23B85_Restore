@@ -1,13 +1,13 @@
 @interface TodayCardSmallLockupCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation TodayCardSmallLockupCollectionViewCell
 
-- (_TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell_lockupView;
   *(&self->super.super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for TodayCardLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -16,9 +16,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell_lockupView) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell_lockupView) sizeThatFits:{fits.width, fits.height}];
   result.height = v4;
   result.width = v3;
   return result;
@@ -31,7 +31,7 @@
   v2 = v13.receiver;
   [(TodayCardSmallLockupCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC22SubscribePageExtension38TodayCardSmallLockupCollectionViewCell_lockupView];
-  v4 = [v2 contentView];
+  contentView = [v2 contentView];
   sub_100009D34();
   sub_1007477B4();
   v6 = v5;

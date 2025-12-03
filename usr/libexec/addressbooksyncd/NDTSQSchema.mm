@@ -3,26 +3,26 @@
 - (unint64_t)lastInsertedRowId;
 - (void)begin;
 - (void)commit;
-- (void)executeSql:(id)a3;
-- (void)parseSql:(id)a3 andRun:(id)a4;
+- (void)executeSql:(id)sql;
+- (void)parseSql:(id)sql andRun:(id)run;
 - (void)rollback;
 @end
 
 @implementation NDTSQSchema
 
-- (void)executeSql:(id)a3
+- (void)executeSql:(id)sql
 {
-  v4 = a3;
+  sqlCopy = sql;
   v5 = [(NDTSQSchema *)self db];
-  [v5 executeSql:v4];
+  [v5 executeSql:sqlCopy];
 }
 
-- (void)parseSql:(id)a3 andRun:(id)a4
+- (void)parseSql:(id)sql andRun:(id)run
 {
-  v6 = a4;
-  v7 = a3;
+  runCopy = run;
+  sqlCopy = sql;
   v8 = [(NDTSQSchema *)self db];
-  [v8 parseSql:v7 andRun:v6];
+  [v8 parseSql:sqlCopy andRun:runCopy];
 }
 
 - (void)begin

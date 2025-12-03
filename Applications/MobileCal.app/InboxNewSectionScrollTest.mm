@@ -1,24 +1,24 @@
 @interface InboxNewSectionScrollTest
-- (InboxNewSectionScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5;
-- (void)_inboxDidAppear:(id)a3;
+- (InboxNewSectionScrollTest)initWithApplication:(id)application model:(id)model options:(id)options;
+- (void)_inboxDidAppear:(id)appear;
 - (void)dealloc;
 - (void)runTest;
 @end
 
 @implementation InboxNewSectionScrollTest
 
-- (InboxNewSectionScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5
+- (InboxNewSectionScrollTest)initWithApplication:(id)application model:(id)model options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = InboxNewSectionScrollTest;
-  v10 = [(ApplicationTest *)&v16 initWithApplication:v8 model:a4 options:v9];
+  v10 = [(ApplicationTest *)&v16 initWithApplication:applicationCopy model:model options:optionsCopy];
   if (v10)
   {
     v11 = [TestScroller alloc];
-    v12 = [objc_opt_class() testName];
-    v13 = [(TestScroller *)v11 initWithOptions:v9 testName:v12 application:v8];
+    testName = [objc_opt_class() testName];
+    v13 = [(TestScroller *)v11 initWithOptions:optionsCopy testName:testName application:applicationCopy];
     scroller = v10->_scroller;
     v10->_scroller = v13;
   }
@@ -38,37 +38,37 @@
 
 - (void)runTest
 {
-  v8 = [(ApplicationTest *)self application];
+  application = [(ApplicationTest *)self application];
   if ([(TestScroller *)self->_scroller inputInvalid])
   {
-    v3 = [objc_opt_class() testName];
-    [v8 startedTest:v3];
-    [v8 failedTest:v3 withFailure:@"input invalid was marked as true when trying to run test"];
+    testName = [objc_opt_class() testName];
+    [application startedTest:testName];
+    [application failedTest:testName withFailure:@"input invalid was marked as true when trying to run test"];
   }
 
   else
   {
-    v3 = [v8 rootNavigationController];
-    v4 = [v3 resetToYearView];
+    testName = [application rootNavigationController];
+    resetToYearView = [testName resetToYearView];
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:self selector:"_inboxDidAppear:" name:@"InboxViewController_ViewDidAppearNotification" object:0];
 
-    v6 = [v3 showInboxAnimated:1 completion:0];
+    v6 = [testName showInboxAnimated:1 completion:0];
     inboxViewController = self->_inboxViewController;
     self->_inboxViewController = v6;
   }
 }
 
-- (void)_inboxDidAppear:(id)a3
+- (void)_inboxDidAppear:(id)appear
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"InboxViewController_ViewDidAppearNotification" object:0];
 
-  v5 = [(InboxViewController *)self->_inboxViewController switcherViewController];
-  v6 = [v5 showNewSection];
-  v7 = [objc_opt_class() testName];
-  v8 = [v6 tableView];
-  if (v8)
+  switcherViewController = [(InboxViewController *)self->_inboxViewController switcherViewController];
+  showNewSection = [switcherViewController showNewSection];
+  testName = [objc_opt_class() testName];
+  tableView = [showNewSection tableView];
+  if (tableView)
   {
     v9 = dispatch_time(0, 4000000000);
     v11[0] = _NSConcreteStackBlock;
@@ -76,15 +76,15 @@
     v11[2] = sub_1000E0560;
     v11[3] = &unk_10020EC68;
     v11[4] = self;
-    v12 = v8;
+    v12 = tableView;
     dispatch_after(v9, &_dispatch_main_q, v11);
   }
 
   else
   {
-    v10 = [(ApplicationTest *)self application];
-    [v10 startedTest:v7];
-    [v10 failedTest:v7 withFailure:@"Table view doesn't exist"];
+    application = [(ApplicationTest *)self application];
+    [application startedTest:testName];
+    [application failedTest:testName withFailure:@"Table view doesn't exist"];
   }
 }
 

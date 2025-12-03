@@ -6,10 +6,10 @@
 - (void)_observersQueue_copyChangeObserversForWriteIfNeeded;
 - (void)_publishChanges;
 - (void)_willChange;
-- (void)enumerateObserversUsingBlock:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
+- (void)enumerateObserversUsingBlock:(id)block;
+- (void)performChanges:(id)changes;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
 @end
 
 @implementation CAMObservable
@@ -31,23 +31,23 @@
   return v2;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v12 = v4;
+  changesCopy = changes;
+  v12 = changesCopy;
   if (self->_isEnumeratingObservers)
   {
     pendingChangeBlocks = self->_pendingChangeBlocks;
     if (pendingChangeBlocks)
     {
-      v6 = [v4 copy];
+      v6 = [changesCopy copy];
       [(NSMutableArray *)pendingChangeBlocks addObject:v6];
     }
 
     else
     {
       v8 = MEMORY[0x1E695DF70];
-      v9 = [v4 copy];
+      v9 = [changesCopy copy];
       v10 = [v8 arrayWithObject:v9];
       v11 = self->_pendingChangeBlocks;
       self->_pendingChangeBlocks = v10;
@@ -57,25 +57,25 @@
   else
   {
     [(CAMObservable *)self _willChange];
-    v7 = [(CAMObservable *)self mutableChangeObject];
-    v12[2](v12, v7);
+    mutableChangeObject = [(CAMObservable *)self mutableChangeObject];
+    v12[2](v12, mutableChangeObject);
 
     [(CAMObservable *)self _didChange];
   }
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__CAMObservable_registerChangeObserver_context___block_invoke;
   block[3] = &unk_1E76F97F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
@@ -106,18 +106,18 @@ void __48__CAMObservable_registerChangeObserver_context___block_invoke(uint64_t 
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
-  v6 = a3;
+  observerCopy = observer;
   observersQueue = self->_observersQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__CAMObservable_unregisterChangeObserver_context___block_invoke;
   block[3] = &unk_1E76F97F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = observerCopy;
+  contextCopy = context;
+  v8 = observerCopy;
   dispatch_sync(observersQueue, block);
 }
 
@@ -134,10 +134,10 @@ void __48__CAMObservable_registerChangeObserver_context___block_invoke(uint64_t 
   objc_exception_throw(v7);
 }
 
-- (void)enumerateObserversUsingBlock:(id)a3
+- (void)enumerateObserversUsingBlock:(id)block
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   isEnumeratingObservers = self->_isEnumeratingObservers;
   self->_isEnumeratingObservers = 1;
   v21 = 0;
@@ -158,8 +158,8 @@ void __48__CAMObservable_registerChangeObserver_context___block_invoke(uint64_t 
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v22[5] keyEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v27 count:16];
+  keyEnumerator = [v22[5] keyEnumerator];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v27 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -169,18 +169,18 @@ void __48__CAMObservable_registerChangeObserver_context___block_invoke(uint64_t 
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v22[5] objectForKey:v10];
         for (j = 0; j < [v11 count]; ++j)
         {
-          v4[2](v4, v10, [v11 pointerAtIndex:j]);
+          blockCopy[2](blockCopy, v10, [v11 pointerAtIndex:j]);
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v27 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v27 count:16];
     }
 
     while (v7);
@@ -311,13 +311,13 @@ void __37__CAMObservable__applyPendingChanges__block_invoke(uint64_t a1, void *a
   v18 = *MEMORY[0x1E69E9840];
   if (self->_observersQueue_shouldCopyChangeObserversOnWrite)
   {
-    v3 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    keyEnumerator = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts keyEnumerator];
+    v5 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -328,24 +328,24 @@ void __37__CAMObservable__applyPendingChanges__block_invoke(uint64_t a1, void *a
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
           v10 = [(NSMapTable *)self->_observersQueue_changeObserversWithContexts objectForKey:v9];
           v11 = [v10 copy];
 
-          [(NSMapTable *)v3 setObject:v11 forKey:v9];
+          [(NSMapTable *)weakToStrongObjectsMapTable setObject:v11 forKey:v9];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [keyEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
     }
 
     observersQueue_changeObserversWithContexts = self->_observersQueue_changeObserversWithContexts;
-    self->_observersQueue_changeObserversWithContexts = v3;
+    self->_observersQueue_changeObserversWithContexts = weakToStrongObjectsMapTable;
 
     self->_observersQueue_shouldCopyChangeObserversOnWrite = 0;
   }

@@ -1,52 +1,52 @@
 @interface NEAgentFilterExtension
-+ (BOOL)authenticateFlowWithState:(cfil_crypto_state *)a3 crypto_key:(id)a4 flow:(id)a5 salt:(unsigned int)a6 isKernelSocket:(BOOL)a7;
-- (NEAgentFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginEndpoint:(id)a5 pluginProcessIdentity:(id)a6 queue:(id)a7 factory:(id)a8;
-- (NEAgentFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7;
-- (NSObject)generateClientKey:(int)a3 salt:;
++ (BOOL)authenticateFlowWithState:(cfil_crypto_state *)state crypto_key:(id)crypto_key flow:(id)flow salt:(unsigned int)salt isKernelSocket:(BOOL)socket;
+- (NEAgentFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginEndpoint:(id)endpoint pluginProcessIdentity:(id)identity queue:(id)queue factory:(id)factory;
+- (NEAgentFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory;
+- (NSObject)generateClientKey:(int)key salt:;
 - (NSXPCInterface)driverInterface;
 - (NSXPCInterface)managerInterface;
 - (uint64_t)copyProcessIdentities;
-- (unsigned)sanitizeFilterFlow:(unsigned int *)a1;
-- (void)applySettings:(id)a3 completionHandler:(id)a4;
-- (void)cleanupControlExtensionWithRequestIdentifier:(void *)a1;
-- (void)cleanupDataExtensionWithRequestIdentifier:(void *)a1;
+- (unsigned)sanitizeFilterFlow:(unsigned int *)flow;
+- (void)applySettings:(id)settings completionHandler:(id)handler;
+- (void)cleanupControlExtensionWithRequestIdentifier:(void *)identifier;
+- (void)cleanupDataExtensionWithRequestIdentifier:(void *)identifier;
 - (void)cleanupOnStartFailure;
-- (void)createPacketChannelForExtension:(id)a3 completionHandler:(id)a4;
+- (void)createPacketChannelForExtension:(id)extension completionHandler:(id)handler;
 - (void)dealloc;
-- (void)extension:(id)a3 didFailWithError:(id)a4;
-- (void)extension:(id)a3 didStartWithError:(id)a4;
-- (void)extensionDidStop:(id)a3;
-- (void)fetchCurrentRulesForFlow:(id)a3 completionHandler:(id)a4;
-- (void)getFilterClientConnectionWithCompletionHandler:(int)a3 completionHandler:(id)a4;
-- (void)handleAppsUninstalled:(id)a3;
-- (void)handleAppsUpdateBegins:(id)a3;
-- (void)handleAppsUpdateEnding:(id)a3;
-- (void)handleAppsUpdateEnds:(id)a3;
-- (void)handleDisposeWithCompletionHandler:(id)a3;
-- (void)handleExtensionExit:(void *)a1;
-- (void)handleInitWithCompletionHandler:(id)a3;
-- (void)handleStopCompleteWithError:(uint64_t)a1;
+- (void)extension:(id)extension didFailWithError:(id)error;
+- (void)extension:(id)extension didStartWithError:(id)error;
+- (void)extensionDidStop:(id)stop;
+- (void)fetchCurrentRulesForFlow:(id)flow completionHandler:(id)handler;
+- (void)getFilterClientConnectionWithCompletionHandler:(int)handler completionHandler:(id)completionHandler;
+- (void)handleAppsUninstalled:(id)uninstalled;
+- (void)handleAppsUpdateBegins:(id)begins;
+- (void)handleAppsUpdateEnding:(id)ending;
+- (void)handleAppsUpdateEnds:(id)ends;
+- (void)handleDisposeWithCompletionHandler:(id)handler;
+- (void)handleExtensionExit:(void *)exit;
+- (void)handleInitWithCompletionHandler:(id)handler;
+- (void)handleStopCompleteWithError:(uint64_t)error;
 - (void)notifyRulesChanged;
-- (void)provideRemediationMap:(id)a3;
-- (void)provideURLAppendStringMap:(id)a3;
-- (void)report:(id)a3;
+- (void)provideRemediationMap:(id)map;
+- (void)provideURLAppendStringMap:(id)map;
+- (void)report:(id)report;
 - (void)sendBrowserContentFilterServerRequest;
-- (void)sendFilterStatus:(uint64_t)a3 withError:;
+- (void)sendFilterStatus:(uint64_t)status withError:;
 - (void)sendSocketContentFilterRequest;
-- (void)sleepWithCompletionHandler:(id)a3;
+- (void)sleepWithCompletionHandler:(id)handler;
 - (void)startFilter;
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)stopFilterExtensionWithReason:(_BYTE *)a1;
-- (void)updateConfiguration:(id)a3;
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)stopFilterExtensionWithReason:(_BYTE *)reason;
+- (void)updateConfiguration:(id)configuration;
 - (void)wakeup;
 @end
 
 @implementation NEAgentFilterExtension
 
-- (void)applySettings:(id)a3 completionHandler:(id)a4
+- (void)applySettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  handlerCopy = handler;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_managerObjectFactory);
@@ -64,7 +64,7 @@
   v10[4] = self;
   v9 = [WeakRetained managerObjectWithErrorHandler:v10];
 
-  [v9 applySettings:v6 completionHandler:v7];
+  [v9 applySettings:settingsCopy completionHandler:handlerCopy];
 }
 
 void __58__NEAgentFilterExtension_applySettings_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -83,21 +83,21 @@ void __58__NEAgentFilterExtension_applySettings_completionHandler___block_invoke
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendFilterStatus:(uint64_t)a3 withError:
+- (void)sendFilterStatus:(uint64_t)status withError:
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    v7 = [WeakRetained managerObject];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    managerObject = [WeakRetained managerObject];
 
-    v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"NEFilterErrorDomain" code:a3 userInfo:0];
-    [v7 setStatus:a2 error:v6];
+    v6 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"NEFilterErrorDomain" code:status userInfo:0];
+    [managerObject setStatus:a2 error:v6];
   }
 }
 
-- (void)createPacketChannelForExtension:(id)a3 completionHandler:(id)a4
+- (void)createPacketChannelForExtension:(id)extension completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_managerObjectFactory);
@@ -115,7 +115,7 @@ void __58__NEAgentFilterExtension_applySettings_completionHandler___block_invoke
   v8[4] = self;
   v7 = [WeakRetained managerObjectWithErrorHandler:v8];
 
-  [v7 createPacketChannelWithCompletionHandler:v5];
+  [v7 createPacketChannelWithCompletionHandler:handlerCopy];
 }
 
 void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -134,10 +134,10 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provideURLAppendStringMap:(id)a3
+- (void)provideURLAppendStringMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mapCopy = map;
   if (self)
   {
     Property = objc_getProperty(self, v4, 48, 1);
@@ -164,7 +164,7 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
       v10 = 0;
     }
 
-    [v10 provideURLAppendStringMap:v5];
+    [v10 provideURLAppendStringMap:mapCopy];
   }
 
   else
@@ -188,10 +188,10 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)provideRemediationMap:(id)a3
+- (void)provideRemediationMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  mapCopy = map;
   if (self)
   {
     Property = objc_getProperty(self, v4, 48, 1);
@@ -218,7 +218,7 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
       v10 = 0;
     }
 
-    [v10 provideRemediationMap:v5];
+    [v10 provideRemediationMap:mapCopy];
   }
 
   else
@@ -244,22 +244,22 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
 
 - (void)notifyRulesChanged
 {
-  v2 = self;
+  selfCopy = self;
   v15 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = objc_getProperty(self, a2, 48, 1);
   }
 
-  v3 = self;
+  selfCopy2 = self;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if (v2)
+    if (selfCopy)
     {
-      Property = objc_getProperty(v2, v5, 48, 1);
+      Property = objc_getProperty(selfCopy, v5, 48, 1);
     }
 
     else
@@ -277,9 +277,9 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      if (v2)
+      if (selfCopy)
       {
-        objc_getProperty(v2, v9, 48, 1);
+        objc_getProperty(selfCopy, v9, 48, 1);
       }
 
       v11 = objc_opt_class();
@@ -293,10 +293,10 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
   }
 }
 
-- (void)getFilterClientConnectionWithCompletionHandler:(int)a3 completionHandler:(id)a4
+- (void)getFilterClientConnectionWithCompletionHandler:(int)handler completionHandler:(id)completionHandler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionHandlerCopy = completionHandler;
   if (self)
   {
     Property = objc_getProperty(self, v6, 48, 1);
@@ -313,18 +313,18 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
 
   if (isKindOfClass)
   {
-    v12 = [(NEAgentFilterExtension *)self generateClientKey:a3 salt:0];
+    v12 = [(NEAgentFilterExtension *)self generateClientKey:handler salt:0];
     if (!v12)
     {
       v13 = ne_log_obj();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        LODWORD(v25) = a3;
+        LODWORD(v25) = handler;
         _os_log_error_impl(&dword_1BA83C000, v13, OS_LOG_TYPE_ERROR, "getFilterClientConnection called, but failed to create client crypto key for pid %d", buf, 8u);
       }
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
     }
 
     if (self)
@@ -343,7 +343,7 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
     block[3] = &unk_1E7F0AAA0;
     block[4] = self;
     v22 = v12;
-    v23 = v7;
+    v23 = completionHandlerCopy;
     v15 = v12;
     dispatch_async(v14, block);
   }
@@ -365,16 +365,16 @@ void __76__NEAgentFilterExtension_createPacketChannelForExtension_completionHand
       _os_log_error_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_ERROR, "getFilterClientConnection called, but dataSessionContext is not a flow data provider: %@", buf, 0xCu);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0);
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (NSObject)generateClientKey:(int)a3 salt:
+- (NSObject)generateClientKey:(int)key salt:
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
 LABEL_13:
     v9 = 0;
@@ -396,25 +396,25 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v14 = 67109120;
-      v15 = pid;
+      keyCopy2 = pid;
       _os_log_error_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_ERROR, "failed to get upid for pid %d", &v14, 8u);
     }
 
     goto LABEL_13;
   }
 
-  a3 = v17;
+  key = v17;
 LABEL_5:
   buffer = 0u;
   v17 = 0u;
-  v6 = *(a1 + 136);
+  v6 = *(self + 136);
   if ((ne_filter_crypto_generate_client_key() & 1) == 0)
   {
     v8 = ne_log_obj();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v14 = 67109120;
-      v15 = a3;
+      keyCopy2 = key;
       _os_log_error_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_ERROR, "failed to generate client crypto key for salt %u", &v14, 8u);
     }
 
@@ -428,7 +428,7 @@ LABEL_5:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 67109120;
-      v15 = a3;
+      keyCopy2 = key;
       _os_log_error_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_ERROR, "failed to create NSData for client crypto key for salt %u", &v14, 8u);
     }
 
@@ -559,11 +559,11 @@ uint64_t __91__NEAgentFilterExtension_getFilterClientConnectionWithCompletionHan
   return v9(v6, Property, v8);
 }
 
-- (void)report:(id)a3
+- (void)report:(id)report
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  reportCopy = report;
+  v5 = reportCopy;
   if (!self)
   {
 LABEL_18:
@@ -571,7 +571,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!reportCopy)
   {
     v13 = ne_log_obj();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -584,30 +584,30 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v6 = [v4 flow];
-  v7 = [(NEAgentFilterExtension *)self sanitizeFilterFlow:v6];
+  flow = [reportCopy flow];
+  v7 = [(NEAgentFilterExtension *)self sanitizeFilterFlow:flow];
 
-  v8 = [v5 action];
-  if ((v8 - 1) >= 4)
+  action = [v5 action];
+  if ((action - 1) >= 4)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v8;
+    v9 = action;
   }
 
-  v10 = [v5 event];
+  event = [v5 event];
   v15 = 0;
-  if ((v10 - 1) >= 3)
+  if ((event - 1) >= 3)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v10;
+    v11 = event;
   }
 
   if (v7 && v9 && v11)
@@ -629,11 +629,11 @@ LABEL_20:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)sanitizeFilterFlow:(unsigned int *)a1
+- (unsigned)sanitizeFilterFlow:(unsigned int *)flow
 {
   v32 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (flow)
   {
     v4 = ne_log_obj();
     v5 = v4;
@@ -661,7 +661,7 @@ LABEL_20:
 
     if (v7)
     {
-      v8 = [(NEAgentFilterExtension *)a1 generateClientKey:0 salt:?];
+      v8 = [(NEAgentFilterExtension *)flow generateClientKey:0 salt:?];
       v9 = [v5 pid];
       if (!v8)
       {
@@ -671,8 +671,8 @@ LABEL_20:
 
     else
     {
-      v8 = [(NEAgentFilterExtension *)a1 generateClientKey:a1[3] salt:?];
-      v9 = a1[3];
+      v8 = [(NEAgentFilterExtension *)flow generateClientKey:flow[3] salt:?];
+      v9 = flow[3];
       if (!v8)
       {
 LABEL_15:
@@ -685,7 +685,7 @@ LABEL_15:
         }
 
 LABEL_18:
-        a1 = 0;
+        flow = 0;
 LABEL_19:
 
         goto LABEL_20;
@@ -697,7 +697,7 @@ LABEL_19:
       goto LABEL_15;
     }
 
-    v10 = [NEAgentFilterExtension authenticateFlowWithState:*(a1 + 17) crypto_key:v8 flow:v5 salt:v9 isKernelSocket:v7 == 0];
+    v10 = [NEAgentFilterExtension authenticateFlowWithState:*(flow + 17) crypto_key:v8 flow:v5 salt:v9 isKernelSocket:v7 == 0];
 
     if (v10)
     {
@@ -705,12 +705,12 @@ LABEL_19:
       if (objc_opt_isKindOfClass())
       {
         v11 = v5;
-        a1 = [v11 copy];
-        [a1 setCrypto_signature:0];
-        [a1 setPid:0];
-        [a1 setEpid:0];
-        [a1 setUuid:0];
-        [a1 setEuuid:0];
+        flow = [v11 copy];
+        [flow setCrypto_signature:0];
+        [flow setPid:0];
+        [flow setEpid:0];
+        [flow setUuid:0];
+        [flow setEuuid:0];
         v12 = ne_log_obj();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
@@ -727,11 +727,11 @@ LABEL_19:
           *buf = 138412546;
           *v31 = v24;
           *&v31[8] = 2112;
-          *&v31[10] = a1;
+          *&v31[10] = flow;
           _os_log_debug_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_DEBUG, "Sanitized %@ socket flow: %@", buf, 0x16u);
         }
 
-        v13 = [v11 euuid];
+        euuid = [v11 euuid];
       }
 
       else
@@ -749,49 +749,49 @@ LABEL_19:
             _os_log_error_impl(&dword_1BA83C000, v18, OS_LOG_TYPE_ERROR, "Unknown flow class %@", buf, 0xCu);
           }
 
-          a1 = 0;
-          v13 = 0;
+          flow = 0;
+          euuid = 0;
           goto LABEL_35;
         }
 
-        a1 = [v5 copy];
-        [a1 setCrypto_signature:0];
-        [a1 setPid:0];
-        [a1 setEpid:0];
-        [a1 setRequest:0];
-        [a1 setResponse:0];
-        [a1 setParentURL:0];
+        flow = [v5 copy];
+        [flow setCrypto_signature:0];
+        [flow setPid:0];
+        [flow setEpid:0];
+        [flow setRequest:0];
+        [flow setResponse:0];
+        [flow setParentURL:0];
         v11 = ne_log_obj();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          *v31 = a1;
+          *v31 = flow;
           _os_log_debug_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_DEBUG, "Sanitized browser flow: %@", buf, 0xCu);
         }
 
-        v13 = 0;
+        euuid = 0;
       }
 
-      if (!a1)
+      if (!flow)
       {
 LABEL_36:
-        v5 = v13;
+        v5 = euuid;
         v23 = ne_log_obj();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          *v31 = a1;
+          *v31 = flow;
           _os_log_debug_impl(&dword_1BA83C000, v23, OS_LOG_TYPE_DEBUG, "Sanitizing flow after: %@", buf, 0xCu);
         }
 
         goto LABEL_19;
       }
 
-      v17 = [a1 URL];
+      v17 = [flow URL];
       v18 = trimURL(v17);
 
-      [a1 setURL:v18];
-      v19 = [a1 sourceAppIdentifier];
+      [flow setURL:v18];
+      sourceAppIdentifier = [flow sourceAppIdentifier];
       v20 = ne_log_obj();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
@@ -799,9 +799,9 @@ LABEL_36:
         *buf = 67109634;
         *v31 = v25;
         *&v31[4] = 2112;
-        *&v31[6] = v13;
+        *&v31[6] = euuid;
         *&v31[14] = 2112;
-        *&v31[16] = v19;
+        *&v31[16] = sourceAppIdentifier;
         _os_log_debug_impl(&dword_1BA83C000, v20, OS_LOG_TYPE_DEBUG, "LOOKUP: Sanitization (2) looking up pid %d, euuid %@, bundle id: %@", buf, 0x1Cu);
       }
 
@@ -811,22 +811,22 @@ LABEL_36:
       v28[1] = 3221225472;
       v28[2] = __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke;
       v28[3] = &unk_1E7F0A348;
-      a1 = a1;
-      v29 = a1;
-      [(NEAppInfoCache *)v21 appInfoForPid:v22 UUID:v13 bundleID:v19 completionHandler:v28];
+      flow = flow;
+      flowCopy = flow;
+      [(NEAppInfoCache *)v21 appInfoForPid:v22 UUID:euuid bundleID:sourceAppIdentifier completionHandler:v28];
 
 LABEL_35:
       goto LABEL_36;
     }
 
-    a1 = 0;
+    flow = 0;
   }
 
 LABEL_20:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return flow;
 }
 
 void __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke(uint64_t a1, void *a2)
@@ -863,10 +863,10 @@ void __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke(uint64_t a1,
   }
 }
 
-- (void)fetchCurrentRulesForFlow:(id)a3 completionHandler:(id)a4
+- (void)fetchCurrentRulesForFlow:(id)flow completionHandler:(id)handler
 {
-  v10 = a4;
-  v7 = [(NEAgentFilterExtension *)self sanitizeFilterFlow:a3];
+  handlerCopy = handler;
+  v7 = [(NEAgentFilterExtension *)self sanitizeFilterFlow:flow];
   if (v7)
   {
     if (self)
@@ -879,34 +879,34 @@ void __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke(uint64_t a1,
       Property = 0;
     }
 
-    [Property handleNewFlow:v7 completionHandler:v10];
+    [Property handleNewFlow:v7 completionHandler:handlerCopy];
   }
 
   else
   {
     v9 = objc_alloc_init(NEFilterControlVerdict);
-    v10[2](v10, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
 - (void)sendSocketContentFilterRequest
 {
-  v2 = self;
+  selfCopy = self;
   v16 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = objc_getProperty(self, a2, 48, 1);
   }
 
-  v3 = self;
+  selfCopy2 = self;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    if (v2)
+    if (selfCopy)
     {
-      WeakRetained = objc_loadWeakRetained(&v2->_managerObjectFactory);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_managerObjectFactory);
     }
 
     else
@@ -918,14 +918,14 @@ void __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke(uint64_t a1,
     v13[1] = 3221225472;
     v13[2] = __56__NEAgentFilterExtension_sendSocketContentFilterRequest__block_invoke;
     v13[3] = &unk_1E7F0B4A8;
-    v13[4] = v2;
+    v13[4] = selfCopy;
     v6 = [WeakRetained managerObjectWithErrorHandler:v13];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __56__NEAgentFilterExtension_sendSocketContentFilterRequest__block_invoke_67;
     v12[3] = &unk_1E7F0A2C8;
-    v12[4] = v2;
+    v12[4] = selfCopy;
     [v6 createContentFilterSocketWithCompletionHandler:v12];
   }
 
@@ -934,9 +934,9 @@ void __45__NEAgentFilterExtension_sanitizeFilterFlow___block_invoke(uint64_t a1,
     v7 = ne_log_obj();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      if (v2)
+      if (selfCopy)
       {
-        objc_getProperty(v2, v8, 48, 1);
+        objc_getProperty(selfCopy, v8, 48, 1);
       }
 
       v10 = objc_opt_class();
@@ -1139,20 +1139,20 @@ LABEL_26:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained managerObject];
+  managerObject = [WeakRetained managerObject];
 
-  [v3 acceptAgentClients];
+  [managerObject acceptAgentClients];
 }
 
-- (void)extensionDidStop:(id)a3
+- (void)extensionDidStop:(id)stop
 {
-  v4 = a3;
-  v5 = v4;
+  stopCopy = stop;
+  v5 = stopCopy;
   if (self)
   {
     v6 = 48;
-    _cmd = v4;
-    Property = objc_getProperty(self, v4, 48, 1);
+    _cmd = stopCopy;
+    Property = objc_getProperty(self, stopCopy, 48, 1);
     v8 = _cmd;
     if (Property == _cmd || (v6 = 56, v9 = objc_getProperty(self, _cmd, 56, 1), v8 = _cmd, v9 == _cmd))
     {
@@ -1168,13 +1168,13 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v4 = objc_getProperty(self, v11, 56, 1);
+    stopCopy = objc_getProperty(self, v11, 56, 1);
     v5 = _cmd;
-    if (!v4)
+    if (!stopCopy)
     {
-      v4 = objc_getProperty(self, _cmd, 144, 1);
+      stopCopy = objc_getProperty(self, _cmd, 144, 1);
       v5 = _cmd;
-      if (v4)
+      if (stopCopy)
       {
         v12 = objc_getProperty(self, _cmd, 144, 1);
         v12[2]();
@@ -1186,13 +1186,13 @@ LABEL_7:
 
 LABEL_9:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](stopCopy, v5);
 }
 
-- (void)extension:(id)a3 didFailWithError:(id)a4
+- (void)extension:(id)extension didFailWithError:(id)error
 {
-  _cmd = a3;
-  v7 = a4;
+  _cmd = extension;
+  errorCopy = error;
   if (!self)
   {
     goto LABEL_5;
@@ -1237,17 +1237,17 @@ LABEL_11:
   [(NEAgentFilterExtension *)self handleExtensionExit:v8];
 }
 
-- (void)handleExtensionExit:(void *)a1
+- (void)handleExtensionExit:(void *)exit
 {
   v4 = a2;
-  if (a1)
+  if (exit)
   {
-    Property = objc_getProperty(a1, v3, 80, 1);
+    Property = objc_getProperty(exit, v3, 80, 1);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__NEAgentFilterExtension_handleExtensionExit___block_invoke;
     v6[3] = &unk_1E7F0A0E8;
-    v6[4] = a1;
+    v6[4] = exit;
     v7 = v4;
     dispatch_async(Property, v6);
   }
@@ -1372,16 +1372,16 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extension:(id)a3 didStartWithError:(id)a4
+- (void)extension:(id)extension didStartWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v7;
+  extensionCopy = extension;
+  errorCopy = error;
+  v9 = errorCopy;
   if (!self)
   {
-    if (!v6)
+    if (!extensionCopy)
     {
-      if (!v7)
+      if (!errorCopy)
       {
         goto LABEL_15;
       }
@@ -1391,7 +1391,7 @@ LABEL_16:
 
     v11 = 0;
 LABEL_4:
-    if (v11 == v6)
+    if (v11 == extensionCopy)
     {
       if (v9)
       {
@@ -1415,7 +1415,7 @@ LABEL_4:
     goto LABEL_15;
   }
 
-  if (objc_getProperty(self, v8, 48, 1) != v6)
+  if (objc_getProperty(self, v8, 48, 1) != extensionCopy)
   {
     v11 = objc_getProperty(self, v10, 56, 1);
     goto LABEL_4;
@@ -1424,18 +1424,18 @@ LABEL_4:
   if (v9)
   {
 LABEL_10:
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
     v15 = 1;
 LABEL_14:
-    [(NEAgentFilterExtension *)v13 sendFilterStatus:v14 withError:v15];
+    [(NEAgentFilterExtension *)selfCopy2 sendFilterStatus:v14 withError:v15];
     goto LABEL_15;
   }
 
   if (!self->_controlExtensionInitialized)
   {
 LABEL_13:
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2;
     v15 = 0;
     goto LABEL_14;
@@ -1463,17 +1463,17 @@ void __54__NEAgentFilterExtension_extension_didStartWithError___block_invoke(uin
   [(NEAgentFilterExtension *)WeakRetained handleStopCompleteWithError:v3];
 }
 
-- (void)handleStopCompleteWithError:(uint64_t)a1
+- (void)handleStopCompleteWithError:(uint64_t)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = v3 != 0;
     v12 = v3;
     if (v3)
     {
-      v5 = [v3 domain];
-      if (v5 && (v6 = v5, [v12 domain], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"NEAgentErrorDomain"), v7, v6, v8))
+      domain = [v3 domain];
+      if (domain && (v6 = domain, [v12 domain], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"NEAgentErrorDomain"), v7, v6, v8))
       {
         if ([v12 code] == 3)
         {
@@ -1483,9 +1483,9 @@ void __54__NEAgentFilterExtension_extension_didStartWithError___block_invoke(uin
 
         else
         {
-          v11 = [v12 code];
+          code = [v12 code];
           v10 = 0;
-          if (v11 == 2)
+          if (code == 2)
           {
             v9 = 2;
           }
@@ -1510,14 +1510,14 @@ void __54__NEAgentFilterExtension_extension_didStartWithError___block_invoke(uin
       v9 = 0;
     }
 
-    [(NEAgentFilterExtension *)a1 sendFilterStatus:v10 withError:v9];
+    [(NEAgentFilterExtension *)error sendFilterStatus:v10 withError:v9];
     v3 = v12;
   }
 }
 
-- (void)updateConfiguration:(id)a3
+- (void)updateConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -1533,8 +1533,8 @@ void __54__NEAgentFilterExtension_extension_didStartWithError___block_invoke(uin
   v8[2] = __46__NEAgentFilterExtension_updateConfiguration___block_invoke;
   v8[3] = &unk_1E7F0A0E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(Property, v8);
 }
 
@@ -1589,10 +1589,10 @@ void __46__NEAgentFilterExtension_updateConfiguration___block_invoke(uint64_t a1
   }
 }
 
-- (void)sleepWithCompletionHandler:(id)a3
+- (void)sleepWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = v4;
+  handlerCopy = handler;
+  v6 = handlerCopy;
   if (self && self->_dataExtensionInitialized)
   {
     Property = objc_getProperty(self, v5, 48, 1);
@@ -1607,7 +1607,7 @@ void __46__NEAgentFilterExtension_updateConfiguration___block_invoke(uint64_t a1
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
@@ -1695,7 +1695,7 @@ uint64_t __53__NEAgentFilterExtension_sleepWithCompletionHandler___block_invoke_
 
 - (void)startFilter
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 80, 1);
@@ -1705,7 +1705,7 @@ uint64_t __53__NEAgentFilterExtension_sleepWithCompletionHandler___block_invoke_
   block[1] = 3221225472;
   block[2] = __37__NEAgentFilterExtension_startFilter__block_invoke;
   block[3] = &unk_1E7F0B0E8;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super, block);
 }
 
@@ -1782,19 +1782,19 @@ void __46__NEAgentFilterExtension_startFilterExtension__block_invoke(uint64_t a1
   [(NEAgentFilterExtension *)WeakRetained handleStopCompleteWithError:v3];
 }
 
-- (void)startWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)startWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__NEAgentFilterExtension_startWithConfiguration_completionHandler___block_invoke;
   v14[3] = &unk_1E7F0A200;
-  v15 = v6;
-  v16 = v7;
+  v15 = configurationCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = configurationCopy;
+  v9 = handlerCopy;
   v10 = v8;
   v12 = v14;
   if (self)
@@ -2338,40 +2338,40 @@ uint64_t __80__NEAgentFilterExtension_startDataExtensionWithConfiguration_comple
 
 - (void)cleanupOnStartFailure
 {
-  if (a1)
+  if (self)
   {
-    if (objc_getProperty(a1, a2, 64, 1))
+    if (objc_getProperty(self, a2, 64, 1))
     {
-      v4 = objc_getProperty(a1, v3, 32, 1);
-      [v4 cancelExtensionRequestWithIdentifier:{objc_getProperty(a1, v5, 64, 1)}];
+      v4 = objc_getProperty(self, v3, 32, 1);
+      [v4 cancelExtensionRequestWithIdentifier:{objc_getProperty(self, v5, 64, 1)}];
     }
 
-    if (objc_getProperty(a1, v3, 72, 1))
+    if (objc_getProperty(self, v3, 72, 1))
     {
-      v7 = objc_getProperty(a1, v6, 40, 1);
-      [v7 cancelExtensionRequestWithIdentifier:{objc_getProperty(a1, v8, 72, 1)}];
+      v7 = objc_getProperty(self, v6, 40, 1);
+      [v7 cancelExtensionRequestWithIdentifier:{objc_getProperty(self, v8, 72, 1)}];
     }
 
-    objc_setProperty_atomic(a1, v6, 0, 48);
-    objc_setProperty_atomic(a1, v9, 0, 64);
-    a1[8] = 0;
-    objc_setProperty_atomic(a1, v10, 0, 56);
-    objc_setProperty_atomic(a1, v11, 0, 72);
-    a1[9] = 0;
+    objc_setProperty_atomic(self, v6, 0, 48);
+    objc_setProperty_atomic(self, v9, 0, 64);
+    self[8] = 0;
+    objc_setProperty_atomic(self, v10, 0, 56);
+    objc_setProperty_atomic(self, v11, 0, 72);
+    self[9] = 0;
   }
 }
 
 - (uint64_t)copyProcessIdentities
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (objc_getProperty(a1, v3, 56, 1))
+  if (objc_getProperty(self, v3, 56, 1))
   {
-    Property = objc_getProperty(a1, v4, 56, 1);
+    Property = objc_getProperty(self, v4, 56, 1);
     if (Property)
     {
       Property = objc_getProperty(Property, v6, 64, 1);
@@ -2385,7 +2385,7 @@ uint64_t __80__NEAgentFilterExtension_startDataExtensionWithConfiguration_comple
     v7 = 0;
   }
 
-  if (!objc_getProperty(a1, v4, 48, 1))
+  if (!objc_getProperty(self, v4, 48, 1))
   {
     v11 = 0;
     if (v7)
@@ -2417,7 +2417,7 @@ LABEL_17:
     goto LABEL_20;
   }
 
-  v9 = objc_getProperty(a1, v8, 48, 1);
+  v9 = objc_getProperty(self, v8, 48, 1);
   if (v9)
   {
     v9 = objc_getProperty(v9, v10, 64, 1);
@@ -2736,9 +2736,9 @@ uint64_t __42__NEAgentFilterExtension_managerInterface__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)handleAppsUpdateEnds:(id)a3
+- (void)handleAppsUpdateEnds:(id)ends
 {
-  v5 = a3;
+  endsCopy = ends;
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -2754,8 +2754,8 @@ uint64_t __42__NEAgentFilterExtension_managerInterface__block_invoke()
   v8[2] = __47__NEAgentFilterExtension_handleAppsUpdateEnds___block_invoke;
   v8[3] = &unk_1E7F0A0E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = endsCopy;
+  v7 = endsCopy;
   dispatch_async(Property, v8);
 }
 
@@ -2876,9 +2876,9 @@ LABEL_26:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppsUpdateEnding:(id)a3
+- (void)handleAppsUpdateEnding:(id)ending
 {
-  v5 = a3;
+  endingCopy = ending;
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -2894,8 +2894,8 @@ LABEL_26:
   v8[2] = __49__NEAgentFilterExtension_handleAppsUpdateEnding___block_invoke;
   v8[3] = &unk_1E7F0A0E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = endingCopy;
+  v7 = endingCopy;
   dispatch_async(Property, v8);
 }
 
@@ -2978,9 +2978,9 @@ LABEL_14:
   }
 }
 
-- (void)handleAppsUpdateBegins:(id)a3
+- (void)handleAppsUpdateBegins:(id)begins
 {
-  v5 = a3;
+  beginsCopy = begins;
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -2996,8 +2996,8 @@ LABEL_14:
   v8[2] = __49__NEAgentFilterExtension_handleAppsUpdateBegins___block_invoke;
   v8[3] = &unk_1E7F0A0E8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = beginsCopy;
+  v7 = beginsCopy;
   dispatch_async(Property, v8);
 }
 
@@ -3081,10 +3081,10 @@ LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopFilterExtensionWithReason:(_BYTE *)a1
+- (void)stopFilterExtensionWithReason:(_BYTE *)reason
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (reason)
   {
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3094,27 +3094,27 @@ LABEL_18:
       _os_log_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEFAULT, "Stopping filter with reason %s", &v7, 0xCu);
     }
 
-    if (a1[8])
+    if (reason[8])
     {
-      [objc_getProperty(a1 v5];
+      [objc_getProperty(reason v5];
     }
 
-    if (a1[9])
+    if (reason[9])
     {
-      [objc_getProperty(a1 v5];
+      [objc_getProperty(reason v5];
     }
 
-    objc_setProperty_atomic(a1, v5, 0, 104);
-    *(a1 + 4) = 0;
+    objc_setProperty_atomic(reason, v5, 0, 104);
+    *(reason + 4) = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleAppsUninstalled:(id)a3
+- (void)handleAppsUninstalled:(id)uninstalled
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ([a3 containsObject:self->_pluginType])
+  if ([uninstalled containsObject:self->_pluginType])
   {
     v4 = ne_log_obj();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3131,9 +3131,9 @@ LABEL_18:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDisposeWithCompletionHandler:(id)a3
+- (void)handleDisposeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self)
   {
     Property = objc_getProperty(self, v4, 80, 1);
@@ -3149,8 +3149,8 @@ LABEL_18:
   v8[2] = __61__NEAgentFilterExtension_handleDisposeWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7F0B588;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(Property, v8);
 }
 
@@ -3192,17 +3192,17 @@ LABEL_6:
   return result;
 }
 
-- (void)handleInitWithCompletionHandler:(id)a3
+- (void)handleInitWithCompletionHandler:(id)handler
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__NEAgentFilterExtension_handleInitWithCompletionHandler___block_invoke;
   v15[3] = &unk_1E7F0A0C0;
   v15[4] = self;
-  v16 = v4;
-  v5 = v4;
+  v16 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v15;
   if (self)
   {
@@ -3461,17 +3461,17 @@ void __71__NEAgentFilterExtension_handleDataExtensionInitWithCompletionHandler__
   }
 }
 
-- (void)cleanupDataExtensionWithRequestIdentifier:(void *)a1
+- (void)cleanupDataExtensionWithRequestIdentifier:(void *)identifier
 {
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
-    Property = objc_getProperty(a1, v3, 80, 1);
+    Property = objc_getProperty(identifier, v3, 80, 1);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __68__NEAgentFilterExtension_cleanupDataExtensionWithRequestIdentifier___block_invoke;
     v6[3] = &unk_1E7F0A0E8;
-    v6[4] = a1;
+    v6[4] = identifier;
     v7 = v4;
     dispatch_async(Property, v6);
   }
@@ -3830,17 +3830,17 @@ void __74__NEAgentFilterExtension_handleControlExtensionInitWithCompletionHandle
   }
 }
 
-- (void)cleanupControlExtensionWithRequestIdentifier:(void *)a1
+- (void)cleanupControlExtensionWithRequestIdentifier:(void *)identifier
 {
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
-    Property = objc_getProperty(a1, v3, 80, 1);
+    Property = objc_getProperty(identifier, v3, 80, 1);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __71__NEAgentFilterExtension_cleanupControlExtensionWithRequestIdentifier___block_invoke;
     v6[3] = &unk_1E7F0A0E8;
-    v6[4] = a1;
+    v6[4] = identifier;
     v7 = v4;
     dispatch_async(Property, v6);
   }
@@ -3916,13 +3916,13 @@ uint64_t __71__NEAgentFilterExtension_cleanupControlExtensionWithRequestIdentifi
   [(NEAgentFilterExtension *)&v7 dealloc];
 }
 
-- (NEAgentFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginEndpoint:(id)a5 pluginProcessIdentity:(id)a6 queue:(id)a7 factory:(id)a8
+- (NEAgentFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginEndpoint:(id)endpoint pluginProcessIdentity:(id)identity queue:(id)queue factory:(id)factory
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  typeCopy = type;
+  endpointCopy = endpoint;
+  identityCopy = identity;
+  queueCopy = queue;
+  factoryCopy = factory;
   v34.receiver = self;
   v34.super_class = NEAgentFilterExtension;
   v20 = [(NEAgentFilterExtension *)&v34 init];
@@ -3932,23 +3932,23 @@ uint64_t __71__NEAgentFilterExtension_cleanupControlExtensionWithRequestIdentifi
     goto LABEL_9;
   }
 
-  objc_storeWeak(&v20->_managerObjectFactory, v19);
-  objc_storeStrong(&v21->_queue, a7);
+  objc_storeWeak(&v20->_managerObjectFactory, factoryCopy);
+  objc_storeStrong(&v21->_queue, queue);
   v22 = objc_alloc(MEMORY[0x1E695DEC8]);
-  v23 = [v17 uuid];
-  v24 = [v22 initWithObjects:{v23, 0}];
+  uuid = [identityCopy uuid];
+  v24 = [v22 initWithObjects:{uuid, 0}];
   extensionUUIDs = v21->_extensionUUIDs;
   v21->_extensionUUIDs = v24;
 
-  objc_storeStrong(&v21->_pluginType, a3);
-  if (a4 == 4)
+  objc_storeStrong(&v21->_pluginType, type);
+  if (class == 4)
   {
     v26 = off_1E7F047B0;
   }
 
   else
   {
-    if (a4 != 6)
+    if (class != 6)
     {
 LABEL_13:
       v30 = 0;
@@ -3958,7 +3958,7 @@ LABEL_13:
     v26 = off_1E7F047F8;
   }
 
-  v27 = [(NEExtensionProviderHostContext *)objc_alloc(*v26) initWithVendorEndpoint:v16 processIdentity:v17 delegate:v21];
+  v27 = [(NEExtensionProviderHostContext *)objc_alloc(*v26) initWithVendorEndpoint:endpointCopy processIdentity:identityCopy delegate:v21];
   dataSessionContext = v21->_dataSessionContext;
   v21->_dataSessionContext = v27;
 
@@ -3967,7 +3967,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v21->_dataExtensionIdentifier, a3);
+  objc_storeStrong(&v21->_dataExtensionIdentifier, type);
   inited = ne_filter_crypto_init_master();
   v21->_crypto_state = inited;
   if (!inited)
@@ -3990,13 +3990,13 @@ LABEL_14:
   return v30;
 }
 
-- (NEAgentFilterExtension)initWithPluginType:(id)a3 pluginClass:(int64_t)a4 pluginInfo:(id)a5 queue:(id)a6 factory:(id)a7
+- (NEAgentFilterExtension)initWithPluginType:(id)type pluginClass:(int64_t)class pluginInfo:(id)info queue:(id)queue factory:(id)factory
 {
   v46 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  infoCopy = info;
+  queueCopy = queue;
+  factoryCopy = factory;
   v41.receiver = self;
   v41.super_class = NEAgentFilterExtension;
   v17 = [(NEAgentFilterExtension *)&v41 init];
@@ -4006,34 +4006,34 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  objc_storeWeak(&v17->_managerObjectFactory, v16);
-  objc_storeStrong(&v18->_queue, a6);
+  objc_storeWeak(&v17->_managerObjectFactory, factoryCopy);
+  objc_storeStrong(&v18->_queue, queue);
   *&v18->_dataExtensionInitialized = 0;
-  objc_storeStrong(&v18->_pluginType, a3);
-  v19 = [v14 objectForKeyedSubscript:@"extension-identifier"];
+  objc_storeStrong(&v18->_pluginType, type);
+  v19 = [infoCopy objectForKeyedSubscript:@"extension-identifier"];
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v21 = [NELaunchServices pluginProxyWithIdentifier:v19 type:v13 pluginClass:a4 extensionPoint:0];
+  v21 = [NELaunchServices pluginProxyWithIdentifier:v19 type:typeCopy pluginClass:class extensionPoint:0];
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 machOUUIDs];
-    [v20 addObjectsFromArray:v23];
+    machOUUIDs = [v21 machOUUIDs];
+    [v20 addObjectsFromArray:machOUUIDs];
 
-    v24 = [v22 pluginIdentifier];
+    pluginIdentifier = [v22 pluginIdentifier];
     dataExtensionIdentifier = v18->_dataExtensionIdentifier;
-    v18->_dataExtensionIdentifier = v24;
+    v18->_dataExtensionIdentifier = pluginIdentifier;
   }
 
-  v26 = [NELaunchServices pluginProxyWithIdentifier:0 type:v13 pluginClass:4 extensionPoint:@"com.apple.networkextension.filter-control"];
+  v26 = [NELaunchServices pluginProxyWithIdentifier:0 type:typeCopy pluginClass:4 extensionPoint:@"com.apple.networkextension.filter-control"];
   v27 = v26;
   if (v26)
   {
-    v28 = [v26 machOUUIDs];
-    [v20 addObjectsFromArray:v28];
+    machOUUIDs2 = [v26 machOUUIDs];
+    [v20 addObjectsFromArray:machOUUIDs2];
 
-    v29 = [v27 pluginIdentifier];
+    pluginIdentifier2 = [v27 pluginIdentifier];
     controlExtensionIdentifier = v18->_controlExtensionIdentifier;
-    v18->_controlExtensionIdentifier = v29;
+    v18->_controlExtensionIdentifier = pluginIdentifier2;
   }
 
   if (!v18->_dataExtensionIdentifier)
@@ -4050,7 +4050,7 @@ LABEL_15:
     *buf = 138412546;
     v43 = @"com.apple.networkextension.filter-data";
     v44 = 2112;
-    v45 = v13;
+    v45 = typeCopy;
     v36 = "Failed to find a %@ extension inside of app %@";
     v37 = v35;
     v38 = 22;
@@ -4093,33 +4093,33 @@ LABEL_16:
   return v34;
 }
 
-+ (BOOL)authenticateFlowWithState:(cfil_crypto_state *)a3 crypto_key:(id)a4 flow:(id)a5 salt:(unsigned int)a6 isKernelSocket:(BOOL)a7
++ (BOOL)authenticateFlowWithState:(cfil_crypto_state *)state crypto_key:(id)crypto_key flow:(id)flow salt:(unsigned int)salt isKernelSocket:(BOOL)socket
 {
-  v7 = a7;
+  socketCopy = socket;
   v113 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  if (v10 && [v10 bytes] && objc_msgSend(v10, "length") == 32)
+  crypto_keyCopy = crypto_key;
+  flowCopy = flow;
+  if (crypto_keyCopy && [crypto_keyCopy bytes] && objc_msgSend(crypto_keyCopy, "length") == 32)
   {
-    v12 = [v11 crypto_signature];
-    if (v12)
+    crypto_signature = [flowCopy crypto_signature];
+    if (crypto_signature)
     {
-      v13 = v12;
-      v14 = [v11 crypto_signature];
-      v15 = [v14 length];
+      v13 = crypto_signature;
+      crypto_signature2 = [flowCopy crypto_signature];
+      v15 = [crypto_signature2 length];
 
       if (v15)
       {
-        v112 = 0;
+        outBytes = 0;
         v110 = 0u;
         v111 = 0u;
         v108 = 0u;
         v109 = 0u;
         *buf = 0u;
         memset(v107, 0, sizeof(v107));
-        if (v11)
+        if (flowCopy)
         {
-          Property = objc_getProperty(v11, v16, 128, 1);
+          Property = objc_getProperty(flowCopy, v16, 128, 1);
         }
 
         else
@@ -4131,9 +4131,9 @@ LABEL_16:
 
         if (v18)
         {
-          if (v11)
+          if (flowCopy)
           {
-            v20 = objc_getProperty(v11, v19, 128, 1);
+            v20 = objc_getProperty(flowCopy, v19, 128, 1);
           }
 
           else
@@ -4145,61 +4145,61 @@ LABEL_16:
           [v21 getUUIDBytes:buf];
         }
 
-        DWORD2(v107[0]) = [v11 direction] != 1;
-        DWORD2(v107[4]) = [v11 pid];
-        if ([v11 epid])
+        DWORD2(v107[0]) = [flowCopy direction] != 1;
+        DWORD2(v107[4]) = [flowCopy pid];
+        if ([flowCopy epid])
         {
-          v22 = [v11 epid];
+          epid = [flowCopy epid];
         }
 
         else
         {
-          v22 = [v11 pid];
+          epid = [flowCopy pid];
         }
 
-        HIDWORD(v107[4]) = v22;
-        LODWORD(v108) = [v11 rpid];
-        *(&v111 + 1) = [v11 inBytes];
-        v112 = [v11 outBytes];
+        HIDWORD(v107[4]) = epid;
+        LODWORD(v108) = [flowCopy rpid];
+        *(&v111 + 1) = [flowCopy inBytes];
+        outBytes = [flowCopy outBytes];
         v27 = "Closed";
-        if (![v11 inBytes] && !objc_msgSend(v11, "outBytes"))
+        if (![flowCopy inBytes] && !objc_msgSend(flowCopy, "outBytes"))
         {
           v27 = "New";
         }
 
         v85 = v27;
-        if (v11)
+        if (flowCopy)
         {
-          if (v11[13])
+          if (flowCopy[13])
           {
-            v28 = [v11 sourceAppIdentifier];
+            sourceAppIdentifier = [flowCopy sourceAppIdentifier];
 
-            if (v28)
+            if (sourceAppIdentifier)
             {
-              v29 = [v11 sourceAppIdentifier];
-              [v29 UTF8String];
+              sourceAppIdentifier2 = [flowCopy sourceAppIdentifier];
+              [sourceAppIdentifier2 UTF8String];
 
-              v30 = [v11 sourceAppIdentifier];
-              [v30 length];
+              sourceAppIdentifier3 = [flowCopy sourceAppIdentifier];
+              [sourceAppIdentifier3 length];
             }
           }
         }
 
-        v31 = [v11 URL];
+        v31 = [flowCopy URL];
 
         if (v31)
         {
-          v32 = [v11 URL];
-          v33 = [v32 absoluteString];
-          [v33 UTF8String];
+          v32 = [flowCopy URL];
+          absoluteString = [v32 absoluteString];
+          [absoluteString UTF8String];
 
-          v34 = [v11 URL];
-          v35 = [v34 absoluteString];
-          [v35 length];
+          v34 = [flowCopy URL];
+          absoluteString2 = [v34 absoluteString];
+          [absoluteString2 length];
         }
 
         objc_opt_class();
-        v82 = a6;
+        saltCopy = salt;
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v40 = 0;
@@ -4208,21 +4208,21 @@ LABEL_16:
           goto LABEL_60;
         }
 
-        v36 = v11;
+        v36 = flowCopy;
         v38 = v36;
-        if (v11)
+        if (flowCopy)
         {
           v39 = objc_getProperty(v36, v37, 128, 1);
           if (v39)
           {
 
 LABEL_36:
-            v42 = [v38 remoteFlowEndpoint];
+            remoteFlowEndpoint = [v38 remoteFlowEndpoint];
 
-            if (v42)
+            if (remoteFlowEndpoint)
             {
-              v43 = [v38 remoteFlowEndpoint];
-              address = nw_endpoint_get_address(v43);
+              remoteFlowEndpoint2 = [v38 remoteFlowEndpoint];
+              address = nw_endpoint_get_address(remoteFlowEndpoint2);
 
               if (address)
               {
@@ -4243,15 +4243,15 @@ LABEL_42:
               }
             }
 
-            v47 = [v38 localFlowEndpoint];
+            localFlowEndpoint = [v38 localFlowEndpoint];
 
-            if (!v47)
+            if (!localFlowEndpoint)
             {
               goto LABEL_50;
             }
 
-            v48 = [v38 localFlowEndpoint];
-            v49 = nw_endpoint_get_address(v48);
+            localFlowEndpoint2 = [v38 localFlowEndpoint];
+            v49 = nw_endpoint_get_address(localFlowEndpoint2);
 
             if (!v49)
             {
@@ -4277,13 +4277,13 @@ LABEL_42:
 
             *(&v107[2] + 8) = v51;
 LABEL_50:
-            v52 = [v38 remoteHostname];
-            if (v52 && (v53 = v52, [v38 remoteHostname], v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v54, "length"), v54, v53, v55))
+            remoteHostname = [v38 remoteHostname];
+            if (remoteHostname && (v53 = remoteHostname, [v38 remoteHostname], v54 = objc_claimAutoreleasedReturnValue(), v55 = objc_msgSend(v54, "length"), v54, v53, v55))
             {
-              v56 = [v38 remoteHostname];
-              v57 = [v56 UTF8String];
+              remoteHostname2 = [v38 remoteHostname];
+              uTF8String = [remoteHostname2 UTF8String];
 
-              v81 = strlen(v57);
+              v81 = strlen(uTF8String);
             }
 
             else
@@ -4292,19 +4292,19 @@ LABEL_50:
             }
 
             DWORD1(v107[4]) = [v38 socketProtocol];
-            v58 = [v38 uuid];
-            [v58 getUUIDBytes:&v108 + 4];
+            uuid = [v38 uuid];
+            [uuid getUUIDBytes:&v108 + 4];
 
-            v59 = [v38 euuid];
-            [v59 getUUIDBytes:&v109 + 4];
+            euuid = [v38 euuid];
+            [euuid getUUIDBytes:&v109 + 4];
 
-            v60 = [v38 ruuid];
-            [v60 getUUIDBytes:&v110 + 4];
+            ruuid = [v38 ruuid];
+            [ruuid getUUIDBytes:&v110 + 4];
 
-            LODWORD(v60) = [v38 socketProtocol];
-            v61 = [v38 socketFamily];
+            LODWORD(ruuid) = [v38 socketProtocol];
+            socketFamily = [v38 socketFamily];
 
-            if (v60 == 6)
+            if (ruuid == 6)
             {
               v62 = "TCP";
             }
@@ -4315,7 +4315,7 @@ LABEL_50:
             }
 
             v63 = "v6";
-            if (v61 == 2)
+            if (socketFamily == 2)
             {
               v63 = "v4";
             }
@@ -4324,11 +4324,11 @@ LABEL_50:
             v84 = v63;
             v40 = v81;
 LABEL_60:
-            [v10 bytes];
-            v64 = [v11 crypto_signature];
-            v65 = [v64 bytes];
-            v66 = [v11 crypto_signature];
-            LODWORD(v80) = [v66 length];
+            [crypto_keyCopy bytes];
+            crypto_signature3 = [flowCopy crypto_signature];
+            bytes = [crypto_signature3 bytes];
+            crypto_signature4 = [flowCopy crypto_signature];
+            LODWORD(v80) = [crypto_signature4 length];
             LODWORD(v79) = v40;
             v24 = ne_filter_crypto_validate_data();
 
@@ -4338,7 +4338,7 @@ LABEL_60:
             {
               if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
               {
-                if (v7)
+                if (socketCopy)
                 {
                   v69 = "Kernel ";
                 }
@@ -4348,12 +4348,12 @@ LABEL_60:
                   v69 = "";
                 }
 
-                if ([v11 direction] == 1)
+                if ([flowCopy direction] == 1)
                 {
                   v70 = "IN";
                 }
 
-                else if ([v11 direction] == 2)
+                else if ([flowCopy direction] == 2)
                 {
                   v70 = "OUT";
                 }
@@ -4363,10 +4363,10 @@ LABEL_60:
                   v70 = "ANY";
                 }
 
-                v73 = [v11 crypto_signature];
-                v74 = [v11 inBytes];
-                v75 = [v11 outBytes];
-                v76 = [v11 sourceAppIdentifier];
+                crypto_signature5 = [flowCopy crypto_signature];
+                inBytes = [flowCopy inBytes];
+                outBytes2 = [flowCopy outBytes];
+                sourceAppIdentifier4 = [flowCopy sourceAppIdentifier];
                 *v86 = 136317442;
                 v87 = v69;
                 v88 = 2080;
@@ -4378,15 +4378,15 @@ LABEL_60:
                 v94 = 2080;
                 v95 = v70;
                 v96 = 1024;
-                v97 = v82;
+                v97 = saltCopy;
                 v98 = 2112;
-                v99 = v73;
+                v99 = crypto_signature5;
                 v100 = 2048;
-                v101 = v74;
+                v101 = inBytes;
                 v102 = 2048;
-                v103 = v75;
+                v103 = outBytes2;
                 v104 = 2112;
-                v105 = v76;
+                v105 = sourceAppIdentifier4;
                 _os_log_debug_impl(&dword_1BA83C000, v68, OS_LOG_TYPE_DEBUG, "Signature validation (%s%s - %s %s %s) succeeded for salt %d with signature %@ (inBytes %llu outBytes %llu) (app %@)", v86, 0x62u);
 LABEL_82:
               }
@@ -4394,7 +4394,7 @@ LABEL_82:
 
             else if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
             {
-              if (v7)
+              if (socketCopy)
               {
                 v71 = "Kernel ";
               }
@@ -4404,12 +4404,12 @@ LABEL_82:
                 v71 = "";
               }
 
-              if ([v11 direction] == 1)
+              if ([flowCopy direction] == 1)
               {
                 v72 = "IN";
               }
 
-              else if ([v11 direction] == 2)
+              else if ([flowCopy direction] == 2)
               {
                 v72 = "OUT";
               }
@@ -4419,10 +4419,10 @@ LABEL_82:
                 v72 = "ANY";
               }
 
-              v73 = [v11 crypto_signature];
-              v77 = [v11 inBytes];
-              v78 = [v11 outBytes];
-              v76 = [v11 sourceAppIdentifier];
+              crypto_signature5 = [flowCopy crypto_signature];
+              inBytes2 = [flowCopy inBytes];
+              outBytes3 = [flowCopy outBytes];
+              sourceAppIdentifier4 = [flowCopy sourceAppIdentifier];
               *v86 = 136317442;
               v87 = v71;
               v88 = 2080;
@@ -4434,15 +4434,15 @@ LABEL_82:
               v94 = 2080;
               v95 = v72;
               v96 = 1024;
-              v97 = v82;
+              v97 = saltCopy;
               v98 = 2112;
-              v99 = v73;
+              v99 = crypto_signature5;
               v100 = 2048;
-              v101 = v77;
+              v101 = inBytes2;
               v102 = 2048;
-              v103 = v78;
+              v103 = outBytes3;
               v104 = 2112;
-              v105 = v76;
+              v105 = sourceAppIdentifier4;
               _os_log_error_impl(&dword_1BA83C000, v68, OS_LOG_TYPE_ERROR, "Signature validation (%s%s - %s %s %s) failed for salt %d with signature %@ (inBytes %llu outBytes %llu) (app %@)", v86, 0x62u);
               goto LABEL_82;
             }

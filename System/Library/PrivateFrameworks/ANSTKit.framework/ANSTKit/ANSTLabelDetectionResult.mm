@@ -1,7 +1,7 @@
 @interface ANSTLabelDetectionResult
 + (id)new;
 - (ANSTLabelDetectionResult)init;
-- (ANSTLabelDetectionResult)initWithLabels:(id)a3;
+- (ANSTLabelDetectionResult)initWithLabels:(id)labels;
 @end
 
 @implementation ANSTLabelDetectionResult
@@ -15,21 +15,21 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTLabelDetectionResult)initWithLabels:(id)a3
+- (ANSTLabelDetectionResult)initWithLabels:(id)labels
 {
-  v5 = a3;
+  labelsCopy = labels;
   v9.receiver = self;
   v9.super_class = ANSTLabelDetectionResult;
-  v6 = [(ANSTResult *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(ANSTResult *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, labels);
   }
 
   return v7;

@@ -1,16 +1,16 @@
 @interface PLBatteryUIResponseTypeUrsaIssues
 - (id)result;
-- (void)configure:(id)a3;
+- (void)configure:(id)configure;
 - (void)run;
 @end
 
 @implementation PLBatteryUIResponseTypeUrsaIssues
 
-- (void)configure:(id)a3
+- (void)configure:(id)configure
 {
   v4 = [(PLOperator *)PLEnergyIssuesService entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"UrsaDefinition"];
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v6 = [v5 dateByAddingTimeInterval:-1209600.0];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v6 = [monotonicDate dateByAddingTimeInterval:-1209600.0];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, MAX(%@) AS %@, MAX(%@) AS %@, MAX(%@) AS %@, MAX(%@) AS %@, MAX(%@) AS %@, COUNT(*) AS %@", @"driMessage", @"hitIn", @"hitIn", @"fixedIn", @"fixedIn", @"impact", @"impact", @"radar", @"radar", @"timestampEnd", @"timestampEnd", @"isCritical"];
   v8 = MEMORY[0x277CCACA8];
@@ -27,9 +27,9 @@
     [(PLBatteryUIResponseTypeUrsaIssues *)v13 configure:v14];
   }
 
-  v15 = [MEMORY[0x277D3F2A0] sharedCore];
-  v16 = [v15 storage];
-  v17 = [v16 entriesForKey:v4 withQuery:v13];
+  mEMORY[0x277D3F2A0] = [MEMORY[0x277D3F2A0] sharedCore];
+  storage = [mEMORY[0x277D3F2A0] storage];
+  v17 = [storage entriesForKey:v4 withQuery:v13];
   [(PLBatteryUIResponseTypeUrsaIssues *)self setDbResult:v17];
 }
 
@@ -39,17 +39,17 @@
   v3 = objc_opt_new();
   [(PLBatteryUIResponseTypeUrsaIssues *)self setIssues:v3];
 
-  v4 = [(PLBatteryUIResponseTypeUrsaIssues *)self dbResult];
+  dbResult = [(PLBatteryUIResponseTypeUrsaIssues *)self dbResult];
 
-  if (v4)
+  if (dbResult)
   {
     v5 = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(PLBatteryUIResponseTypeUrsaIssues *)self dbResult];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    dbResult2 = [(PLBatteryUIResponseTypeUrsaIssues *)self dbResult];
+    v7 = [dbResult2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -61,21 +61,21 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dbResult2);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
           if (v11)
           {
-            v12 = [v11 dictionary];
-            [v5 addObject:v12];
+            dictionary = [v11 dictionary];
+            [v5 addObject:dictionary];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [dbResult2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -83,8 +83,8 @@
 
     if ([v5 count])
     {
-      v13 = [(PLBatteryUIResponseTypeUrsaIssues *)self issues];
-      [v13 setObject:v5 forKey:@"UrsaDefinition"];
+      issues = [(PLBatteryUIResponseTypeUrsaIssues *)self issues];
+      [issues setObject:v5 forKey:@"UrsaDefinition"];
     }
   }
 
@@ -93,8 +93,8 @@
 
 - (id)result
 {
-  v2 = [(PLBatteryUIResponseTypeUrsaIssues *)self issues];
-  v3 = [v2 copy];
+  issues = [(PLBatteryUIResponseTypeUrsaIssues *)self issues];
+  v3 = [issues copy];
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface CHBValueAxis
-+ (id)readFrom:(XlChartPlotAxis *)a3 state:(id)a4;
++ (id)readFrom:(XlChartPlotAxis *)from state:(id)state;
 @end
 
 @implementation CHBValueAxis
 
-+ (id)readFrom:(XlChartPlotAxis *)a3 state:(id)a4
++ (id)readFrom:(XlChartPlotAxis *)from state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
     v6 = [CHDValueAxis alloc];
-    v7 = [v5 resources];
-    v8 = [(CHDValueAxis *)v6 initWithResources:v7];
+    resources = [stateCopy resources];
+    v8 = [(CHDValueAxis *)v6 initWithResources:resources];
 
-    var0 = a3[1].var0;
+    var0 = from[1].var0;
     if (var0)
     {
-      if ((XlChartValueRange::isAutoMax(a3[1].var0) & 1) == 0)
+      if ((XlChartValueRange::isAutoMax(from[1].var0) & 1) == 0)
       {
         v10 = var0[3];
         isLogScale = XlChartValueRange::isLogScale(var0);
@@ -88,7 +88,7 @@
       }
     }
 
-    v25 = *&a3[1].var1;
+    v25 = *&from[1].var1;
     if (v25)
     {
       v26 = *(v25 + 16);

@@ -1,23 +1,23 @@
 @interface ComponentAirPodsBase
-- (BOOL)_isBeatsDevice:(id)a3;
+- (BOOL)_isBeatsDevice:(id)device;
 - (BOOL)spatialAudioEnabled;
-- (BOOL)spatialAudioSupportedForDevice:(id)a3;
+- (BOOL)spatialAudioSupportedForDevice:(id)device;
 - (ComponentAirPodsBase)init;
-- (id)aacpInfoFromAccessoryInfo:(id)a3;
-- (id)audioOutputForDevice:(id)a3;
-- (id)budSide:(id)a3;
-- (id)caseInfoFromAccessoryInfo:(id)a3;
-- (id)generationStringForProductId:(unsigned int)a3;
-- (id)getAutoEQStateForDevice:(id)a3;
-- (id)getBatteryInfoForDevice:(id)a3;
+- (id)aacpInfoFromAccessoryInfo:(id)info;
+- (id)audioOutputForDevice:(id)device;
+- (id)budSide:(id)side;
+- (id)caseInfoFromAccessoryInfo:(id)info;
+- (id)generationStringForProductId:(unsigned int)id;
+- (id)getAutoEQStateForDevice:(id)device;
+- (id)getBatteryInfoForDevice:(id)device;
 - (id)getCBDevices;
 - (id)getPairedAppleAudioDevices;
-- (id)inEarStatusForDevice:(id)a3;
-- (id)microphoneCalibrationResultForDevice:(id)a3;
-- (id)stringForInEarStatus:(int)a3;
-- (id)stringForListeningMode:(unsigned int)a3;
-- (void)addEnumValueIfNotZero:(int64_t)a3 forKey:(id)a4 toDictionary:(id)a5;
-- (void)addObjectIfNotNil:(id)a3 forKey:(id)a4 toDictionary:(id)a5;
+- (id)inEarStatusForDevice:(id)device;
+- (id)microphoneCalibrationResultForDevice:(id)device;
+- (id)stringForInEarStatus:(int)status;
+- (id)stringForListeningMode:(unsigned int)mode;
+- (void)addEnumValueIfNotZero:(int64_t)zero forKey:(id)key toDictionary:(id)dictionary;
+- (void)addObjectIfNotNil:(id)nil forKey:(id)key toDictionary:(id)dictionary;
 @end
 
 @implementation ComponentAirPodsBase
@@ -58,17 +58,17 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(ComponentAirPodsBase *)self btManager];
-  v6 = [v5 pairedDevices];
-  [v4 addObjectsFromArray:v6];
+  btManager = [(ComponentAirPodsBase *)self btManager];
+  pairedDevices = [btManager pairedDevices];
+  [v4 addObjectsFromArray:pairedDevices];
 
-  v7 = [(ComponentAirPodsBase *)self btManager];
-  v8 = [v7 connectedDevices];
-  [v4 addObjectsFromArray:v8];
+  btManager2 = [(ComponentAirPodsBase *)self btManager];
+  connectedDevices = [btManager2 connectedDevices];
+  [v4 addObjectsFromArray:connectedDevices];
 
-  v9 = [(ComponentAirPodsBase *)self btManager];
-  v10 = [v9 connectingDevices];
-  [v4 addObjectsFromArray:v10];
+  btManager3 = [(ComponentAirPodsBase *)self btManager];
+  connectingDevices = [btManager3 connectingDevices];
+  [v4 addObjectsFromArray:connectingDevices];
 
   v24 = 0u;
   v25 = 0u;
@@ -151,10 +151,10 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 serialNumber];
-        if (v11)
+        serialNumber = [v10 serialNumber];
+        if (serialNumber)
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:serialNumber];
         }
       }
 
@@ -167,14 +167,14 @@
   return v4;
 }
 
-- (id)audioOutputForDevice:(id)a3
+- (id)audioOutputForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(NSMutableDictionary);
-  if ([v3 getAdaptiveVolumeSupport])
+  if ([deviceCopy getAdaptiveVolumeSupport])
   {
-    v5 = [v3 getAdaptiveVolumeMode];
-    if (v5 == 2)
+    getAdaptiveVolumeMode = [deviceCopy getAdaptiveVolumeMode];
+    if (getAdaptiveVolumeMode == 2)
     {
       v6 = @"Disabled";
     }
@@ -184,7 +184,7 @@
       v6 = @"Unknown";
     }
 
-    if (v5 == 1)
+    if (getAdaptiveVolumeMode == 1)
     {
       v7 = @"Enabled";
     }
@@ -197,10 +197,10 @@
     [v4 setObject:v7 forKeyedSubscript:@"PersonalizedVolume"];
   }
 
-  if ([v3 getConversationDetectSupport])
+  if ([deviceCopy getConversationDetectSupport])
   {
-    v8 = [v3 getConversationDetectMode];
-    if (v8 == 2)
+    getConversationDetectMode = [deviceCopy getConversationDetectMode];
+    if (getConversationDetectMode == 2)
     {
       v9 = @"Disabled";
     }
@@ -210,7 +210,7 @@
       v9 = @"Unknown";
     }
 
-    if (v8 == 1)
+    if (getConversationDetectMode == 1)
     {
       v10 = @"Enabled";
     }
@@ -224,14 +224,14 @@
   }
 
   v11 = +[HUAccessoryHearingSettings sharedInstance];
-  v12 = [v3 address];
-  v13 = [v11 activeHearingProtectionAvailableForAddress:v12];
+  address = [deviceCopy address];
+  v13 = [v11 activeHearingProtectionAvailableForAddress:address];
 
   if (v13)
   {
     v14 = +[HUAccessoryHearingSettings sharedInstance];
-    v15 = [v3 address];
-    v16 = [v14 activeHearingProtectionEnabledForAddress:v15];
+    address2 = [deviceCopy address];
+    v16 = [v14 activeHearingProtectionEnabledForAddress:address2];
 
     if (v16)
     {
@@ -249,12 +249,12 @@
   return v4;
 }
 
-- (id)inEarStatusForDevice:(id)a3
+- (id)inEarStatusForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_alloc_init(NSMutableDictionary);
   v9 = 0;
-  [v4 inEarStatusPrimary:&v9 + 4 secondary:&v9];
+  [deviceCopy inEarStatusPrimary:&v9 + 4 secondary:&v9];
 
   v6 = [(ComponentAirPodsBase *)self stringForInEarStatus:HIDWORD(v9)];
   [v5 setObject:v6 forKeyedSubscript:@"primaryBud"];
@@ -265,23 +265,23 @@
   return v5;
 }
 
-- (id)stringForInEarStatus:(int)a3
+- (id)stringForInEarStatus:(int)status
 {
-  if (a3 > 2)
+  if (status > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000104D8 + a3);
+    return *(&off_1000104D8 + status);
   }
 }
 
-- (id)budSide:(id)a3
+- (id)budSide:(id)side
 {
   v9 = 3;
-  [a3 primaryBudSide:&v9];
+  [side primaryBudSide:&v9];
   v3 = @"BudSideUnknown";
   v4 = @"roleLeft";
   if (v9 == 2)
@@ -321,23 +321,23 @@
   return v7;
 }
 
-- (id)stringForListeningMode:(unsigned int)a3
+- (id)stringForListeningMode:(unsigned int)mode
 {
-  if (a3 - 1 > 3)
+  if (mode - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000104F0 + a3 - 1);
+    return *(&off_1000104F0 + mode - 1);
   }
 }
 
-- (id)generationStringForProductId:(unsigned int)a3
+- (id)generationStringForProductId:(unsigned int)id
 {
-  v3 = a3 - 2;
-  if (a3 - 8194 <= 0x2D)
+  v3 = id - 2;
+  if (id - 8194 <= 0x2D)
   {
     if (((1 << v3) & 0x40FF) != 0)
     {
@@ -353,9 +353,9 @@
   return @"Unknown";
 }
 
-- (id)getBatteryInfoForDevice:(id)a3
+- (id)getBatteryInfoForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (qword_100015120 != -1)
   {
     dispatch_once(&qword_100015120, &stru_100010468);
@@ -375,7 +375,7 @@
     *&v6 = 134218242;
     v30 = v6;
     v31 = *v40;
-    v32 = v3;
+    v32 = deviceCopy;
     do
     {
       v9 = 0;
@@ -388,19 +388,19 @@
         }
 
         v10 = *(*(&v39 + 1) + 8 * v9);
-        v11 = [v10 identifier];
-        v12 = [v3 identifier];
-        v13 = [v11 containsString:v12];
+        identifier = [v10 identifier];
+        identifier2 = [deviceCopy identifier];
+        v13 = [identifier containsString:identifier2];
 
         if (v13)
         {
           v14 = objc_alloc_init(NSMutableArray);
-          v15 = [v10 parts];
-          if (v15 <= 1)
+          parts = [v10 parts];
+          if (parts <= 1)
           {
-            if (v15)
+            if (parts)
             {
-              if (v15 != 1)
+              if (parts != 1)
               {
                 goto LABEL_31;
               }
@@ -418,11 +418,11 @@
 
           else
           {
-            if (v15 != 2)
+            if (parts != 2)
             {
-              if (v15 != 3)
+              if (parts != 3)
               {
-                if (v15 == 4)
+                if (parts == 4)
                 {
                   v16 = v14;
                   v17 = @"caseBatteryLevel";
@@ -433,12 +433,12 @@ LABEL_31:
                 v25 = DiagnosticLogHandleForCategory();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                 {
-                  v26 = [v10 parts];
-                  v27 = [v3 identifier];
+                  parts2 = [v10 parts];
+                  identifier3 = [deviceCopy identifier];
                   *buf = v30;
-                  v45 = v26;
+                  v45 = parts2;
                   v46 = 2112;
-                  v47 = v27;
+                  v47 = identifier3;
                   _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Unsupported battery component part %ld found for device with identifier %@", buf, 0x16u);
                 }
 
@@ -474,7 +474,7 @@ LABEL_21:
                 }
 
                 v8 = v31;
-                v3 = v32;
+                deviceCopy = v32;
                 v7 = v33;
                 goto LABEL_29;
               }
@@ -506,18 +506,18 @@ LABEL_29:
   return v4;
 }
 
-- (id)getAutoEQStateForDevice:(id)a3
+- (id)getAutoEQStateForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 gyroInformation];
+  deviceCopy = device;
+  gyroInformation = [deviceCopy gyroInformation];
   v5 = objc_alloc_init(NSMutableDictionary);
-  if (v4 && [v4 count])
+  if (gyroInformation && [gyroInformation count])
   {
-    v6 = [v3 gyroInformation];
-    v7 = [v6 objectForKeyedSubscript:@"GYRO_INFO_LEFT_BUD_IS_JAMMED"];
+    gyroInformation2 = [deviceCopy gyroInformation];
+    v7 = [gyroInformation2 objectForKeyedSubscript:@"GYRO_INFO_LEFT_BUD_IS_JAMMED"];
 
-    v8 = [v3 gyroInformation];
-    v9 = [v8 objectForKeyedSubscript:@"GYRO_INFO_RIGHT_BUD_IS_JAMMED"];
+    gyroInformation3 = [deviceCopy gyroInformation];
+    v9 = [gyroInformation3 objectForKeyedSubscript:@"GYRO_INFO_RIGHT_BUD_IS_JAMMED"];
 
     if (v7)
     {
@@ -543,11 +543,11 @@ LABEL_29:
   return v5;
 }
 
-- (id)aacpInfoFromAccessoryInfo:(id)a3
+- (id)aacpInfoFromAccessoryInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 objectForKeyedSubscript:@"AACPVersionInfo"];
+  v5 = [infoCopy objectForKeyedSubscript:@"AACPVersionInfo"];
 
   if ([v5 count] < 0xB)
   {
@@ -597,11 +597,11 @@ LABEL_29:
   return v4;
 }
 
-- (id)caseInfoFromAccessoryInfo:(id)a3
+- (id)caseInfoFromAccessoryInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 objectForKeyedSubscript:@"CaseInfo"];
+  v5 = [infoCopy objectForKeyedSubscript:@"CaseInfo"];
 
   if (v5)
   {
@@ -616,12 +616,12 @@ LABEL_29:
   return v4;
 }
 
-- (BOOL)spatialAudioSupportedForDevice:(id)a3
+- (BOOL)spatialAudioSupportedForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 getAACPCapabilityBit:64])
+  deviceCopy = device;
+  if ([deviceCopy getAACPCapabilityBit:64])
   {
-    v4 = [v3 getSpatialAudioPlatformSupport] == 1;
+    v4 = [deviceCopy getSpatialAudioPlatformSupport] == 1;
   }
 
   else
@@ -649,27 +649,27 @@ LABEL_29:
   return !v2;
 }
 
-- (BOOL)_isBeatsDevice:(id)a3
+- (BOOL)_isBeatsDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 productId];
-  if (v4 == 8209)
+  deviceCopy = device;
+  productId = [deviceCopy productId];
+  if (productId == 8209)
   {
     v5 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Device (%@) is a AirPods-like Beats device that does not report as an Apple Audio Device", &v7, 0xCu);
     }
   }
 
-  return v4 == 8209;
+  return productId == 8209;
 }
 
-- (id)microphoneCalibrationResultForDevice:(id)a3
+- (id)microphoneCalibrationResultForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -685,7 +685,7 @@ LABEL_29:
     v16[1] = 3221225472;
     v16[2] = sub_100008594;
     v16[3] = &unk_100010490;
-    v17 = v4;
+    v17 = deviceCopy;
     objc_copyWeak(&v20, &location);
     v19 = &v22;
     v7 = v6;
@@ -720,22 +720,22 @@ LABEL_29:
   return v11;
 }
 
-- (void)addObjectIfNotNil:(id)a3 forKey:(id)a4 toDictionary:(id)a5
+- (void)addObjectIfNotNil:(id)nil forKey:(id)key toDictionary:(id)dictionary
 {
-  if (a3)
+  if (nil)
   {
-    [a5 setObject:a3 forKeyedSubscript:a4];
+    [dictionary setObject:nil forKeyedSubscript:key];
   }
 }
 
-- (void)addEnumValueIfNotZero:(int64_t)a3 forKey:(id)a4 toDictionary:(id)a5
+- (void)addEnumValueIfNotZero:(int64_t)zero forKey:(id)key toDictionary:(id)dictionary
 {
-  if (a3)
+  if (zero)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = [NSNumber numberWithInteger:a3];
-    [v7 setObject:v9 forKeyedSubscript:v8];
+    dictionaryCopy = dictionary;
+    keyCopy = key;
+    v9 = [NSNumber numberWithInteger:zero];
+    [dictionaryCopy setObject:v9 forKeyedSubscript:keyCopy];
   }
 }
 

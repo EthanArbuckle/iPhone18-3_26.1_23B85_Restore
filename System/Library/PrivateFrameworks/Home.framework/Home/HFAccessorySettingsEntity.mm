@@ -1,17 +1,17 @@
 @interface HFAccessorySettingsEntity
-+ (id)settingsAtURL:(id)a3 error:(id *)a4;
-- (HFAccessorySettingsEntity)initWithDictionary:(id)a3;
++ (id)settingsAtURL:(id)l error:(id *)error;
+- (HFAccessorySettingsEntity)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation HFAccessorySettingsEntity
 
-+ (id)settingsAtURL:(id)a3 error:(id *)a4
++ (id)settingsAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  if ([v5 checkResourceIsReachableAndReturnError:a4])
+  lCopy = l;
+  if ([lCopy checkResourceIsReachableAndReturnError:error])
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:v5];
+    v6 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfURL:lCopy];
     v7 = objc_opt_new();
     v8 = [v6 objectForKey:@"CodexRoot"];
     [v7 na_safeSetObject:v8 forKey:@"Children"];
@@ -94,24 +94,24 @@ void __49__HFAccessorySettingsEntity_settingsAtURL_error___block_invoke(uint64_t
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFAccessorySettingsEntity *)self keyPath];
-  [v3 appendString:v4 withName:@"keyPath"];
+  keyPath = [(HFAccessorySettingsEntity *)self keyPath];
+  [v3 appendString:keyPath withName:@"keyPath"];
 
-  v5 = [(HFAccessorySettingsEntity *)self sortKey];
-  [v3 appendString:v5 withName:@"sortKey"];
+  sortKey = [(HFAccessorySettingsEntity *)self sortKey];
+  [v3 appendString:sortKey withName:@"sortKey"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (HFAccessorySettingsEntity)initWithDictionary:(id)a3
+- (HFAccessorySettingsEntity)initWithDictionary:(id)dictionary
 {
-  v150 = a3;
-  if (!v150)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
-    v133 = [MEMORY[0x277CCA890] currentHandler];
-    [v133 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingsEntity.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingsEntity.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"dictionary"}];
   }
 
   v172.receiver = self;
@@ -199,7 +199,7 @@ void __49__HFAccessorySettingsEntity_settingsAtURL_error___block_invoke(uint64_t
   v170 = v56;
   v57 = v145;
   v171 = v57;
-  v58 = [v150 na_dictionaryByMappingValues:v169];
+  v58 = [dictionaryCopy na_dictionaryByMappingValues:v169];
 
   v166[0] = MEMORY[0x277D85DD0];
   v166[1] = 3221225472;
@@ -402,9 +402,9 @@ LABEL_26:
             else
             {
               v106 = [v66 objectForKeyedSubscript:@"AlwaysShowGroup"];
-              v107 = [v106 BOOLValue];
+              bOOLValue = [v106 BOOLValue];
 
-              v104 = v107 ^ 1u;
+              v104 = bOOLValue ^ 1u;
               v55 = v146;
             }
           }

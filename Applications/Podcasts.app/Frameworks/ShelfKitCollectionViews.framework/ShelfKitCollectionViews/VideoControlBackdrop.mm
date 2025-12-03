@@ -1,30 +1,30 @@
 @interface VideoControlBackdrop
-- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation VideoControlBackdrop
 
-- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews20VideoControlBackdrop_primaryBackgroundView) = 0;
-  v8 = [objc_allocWithZone(UIView) initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v8 = [objc_allocWithZone(UIView) initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews20VideoControlBackdrop_contentView) = v8;
   v11.receiver = self;
   v11.super_class = type metadata accessor for VideoControlBackdrop();
-  v9 = [(VideoControlBackdrop *)&v11 initWithFrame:x, y, width, height];
-  [(VideoControlBackdrop *)v9 setClipsToBounds:1];
-  [(VideoControlBackdrop *)v9 addSubview:*(&v9->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews20VideoControlBackdrop_contentView)];
+  height = [(VideoControlBackdrop *)&v11 initWithFrame:x, y, width, height];
+  [(VideoControlBackdrop *)height setClipsToBounds:1];
+  [(VideoControlBackdrop *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews20VideoControlBackdrop_contentView)];
 
-  return v9;
+  return height;
 }
 
-- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews20VideoControlBackdrop)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews20VideoControlBackdrop_primaryBackgroundView) = 0;
   result = sub_30D648();
@@ -34,7 +34,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2F863C();
 }
 

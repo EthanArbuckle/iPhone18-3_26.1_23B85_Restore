@@ -1,14 +1,14 @@
 @interface SCMediaAnalysisServiceResult
 - (_TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult)init;
-- (_TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult)initWithIsNudity:(BOOL)a3 isGoreAndViolence:(BOOL)a4;
+- (_TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult)initWithIsNudity:(BOOL)nudity isGoreAndViolence:(BOOL)violence;
 @end
 
 @implementation SCMediaAnalysisServiceResult
 
-- (_TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult)initWithIsNudity:(BOOL)a3 isGoreAndViolence:(BOOL)a4
+- (_TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult)initWithIsNudity:(BOOL)nudity isGoreAndViolence:(BOOL)violence
 {
-  *(&self->super.isa + OBJC_IVAR____TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult_isNudity) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult_isGoreAndViolence) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult_isNudity) = nudity;
+  *(&self->super.isa + OBJC_IVAR____TtC24SensitiveContentAnalysis28SCMediaAnalysisServiceResult_isGoreAndViolence) = violence;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SCMediaAnalysisServiceResult();
   return [(SCMediaAnalysisServiceResult *)&v5 init];

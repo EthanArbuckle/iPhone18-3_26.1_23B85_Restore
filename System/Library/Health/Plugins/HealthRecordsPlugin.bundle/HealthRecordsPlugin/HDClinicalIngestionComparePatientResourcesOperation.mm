@@ -1,25 +1,25 @@
 @interface HDClinicalIngestionComparePatientResourcesOperation
-- (HDClinicalIngestionComparePatientResourcesOperation)initWithTask:(id)a3 account:(id)a4 existingResourceData:(id)a5 incomingResourceData:(id)a6;
-- (void)_cancelWithError:(id)a3;
+- (HDClinicalIngestionComparePatientResourcesOperation)initWithTask:(id)task account:(id)account existingResourceData:(id)data incomingResourceData:(id)resourceData;
+- (void)_cancelWithError:(id)error;
 - (void)main;
 @end
 
 @implementation HDClinicalIngestionComparePatientResourcesOperation
 
-- (HDClinicalIngestionComparePatientResourcesOperation)initWithTask:(id)a3 account:(id)a4 existingResourceData:(id)a5 incomingResourceData:(id)a6
+- (HDClinicalIngestionComparePatientResourcesOperation)initWithTask:(id)task account:(id)account existingResourceData:(id)data incomingResourceData:(id)resourceData
 {
-  v10 = a5;
-  v11 = a6;
+  dataCopy = data;
+  resourceDataCopy = resourceData;
   v18.receiver = self;
   v18.super_class = HDClinicalIngestionComparePatientResourcesOperation;
-  v12 = [(HDClinicalIngestionPerAccountOperation *)&v18 initWithTask:a3 account:a4 nextOperation:0];
+  v12 = [(HDClinicalIngestionPerAccountOperation *)&v18 initWithTask:task account:account nextOperation:0];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [dataCopy copy];
     existingResourceData = v12->_existingResourceData;
     v12->_existingResourceData = v13;
 
-    v15 = [v11 copy];
+    v15 = [resourceDataCopy copy];
     incomingResourceData = v12->_incomingResourceData;
     v12->_incomingResourceData = v15;
   }
@@ -36,14 +36,14 @@
     sub_A9C78(v3, self);
   }
 
-  v4 = [(HDClinicalIngestionOperation *)self profile];
-  v5 = [v4 database];
-  v6 = [v5 isProtectedDataAvailable];
+  profile = [(HDClinicalIngestionOperation *)self profile];
+  database = [profile database];
+  isProtectedDataAvailable = [database isProtectedDataAvailable];
 
-  if (v6)
+  if (isProtectedDataAvailable)
   {
-    v7 = [(HDClinicalIngestionOperation *)self task];
-    v8 = [v7 healthRecordsServiceClient];
+    task = [(HDClinicalIngestionOperation *)self task];
+    healthRecordsServiceClient = [task healthRecordsServiceClient];
 
     v9 = dispatch_semaphore_create(0);
     existingResourceData = self->_existingResourceData;
@@ -55,7 +55,7 @@
     v14[4] = self;
     v12 = v9;
     v15 = v12;
-    [v8 compareExistingPatientResourceData:existingResourceData incomingPatientResourceData:incomingResourceData completion:v14];
+    [healthRecordsServiceClient compareExistingPatientResourceData:existingResourceData incomingPatientResourceData:incomingResourceData completion:v14];
     dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
     _HKInitializeLogging();
     v13 = HKLogHealthRecords;
@@ -67,14 +67,14 @@
 
   else
   {
-    v8 = +[NSError hk_protectedDataInaccessibilityError];
-    [(HDClinicalIngestionComparePatientResourcesOperation *)self _cancelWithError:v8];
+    healthRecordsServiceClient = +[NSError hk_protectedDataInaccessibilityError];
+    [(HDClinicalIngestionComparePatientResourcesOperation *)self _cancelWithError:healthRecordsServiceClient];
   }
 }
 
-- (void)_cancelWithError:(id)a3
+- (void)_cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
@@ -82,7 +82,7 @@
     sub_A9E58(v5, self);
   }
 
-  [(HDClinicalIngestionOperation *)self setOperationError:v4];
+  [(HDClinicalIngestionOperation *)self setOperationError:errorCopy];
   [(HDClinicalIngestionComparePatientResourcesOperation *)self cancel];
 }
 

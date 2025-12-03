@@ -1,8 +1,8 @@
 @interface _GCDevicePhysicalInputButtonElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputButtonElementParameters)init;
 - (double)pressedThreshold;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sources;
 - (uint64_t)eventAnalogPressValueField;
 - (uint64_t)eventForceValueField;
@@ -17,9 +17,9 @@
 - (uint64_t)setEventTouchValueField:(uint64_t)result;
 - (uint64_t)setPressedThreshold:(uint64_t)result;
 - (uint64_t)touch;
-- (void)setForce:(uint64_t)a3;
-- (void)setSources:(uint64_t)a3;
-- (void)setTouch:(void *)a1;
+- (void)setForce:(uint64_t)force;
+- (void)setSources:(uint64_t)sources;
+- (void)setTouch:(void *)touch;
 @end
 
 @implementation _GCDevicePhysicalInputButtonElementParameters
@@ -38,11 +38,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _GCDevicePhysicalInputButtonElementParameters;
-  v4 = [(_GCDevicePhysicalInputElementParameters *)&v10 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputElementParameters *)&v10 copyWithZone:zone];
   objc_storeStrong(v4 + 6, self->_sources);
   *(v4 + 40) = self->_analog;
   *(v4 + 11) = LODWORD(self->_pressedThreshold);
@@ -61,15 +61,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = _GCDevicePhysicalInputButtonElementParameters;
-  if ([(_GCDevicePhysicalInputElementParameters *)&v10 isEqual:v4]&& ((sources = self->_sources, sources == v4[6]) || [(NSSet *)sources isEqual:?]) && self->_analog == *(v4 + 40) && self->_pressedThreshold == *(v4 + 11) && self->_eventPressedValueField == v4[9] && self->_eventAnalogPressValueField == v4[10] && self->_eventTouchValueField == v4[11] && self->_eventForceValueField == v4[12] && ((touch = self->_touch, touch == v4[7]) || [(_GCDevicePhysicalInputTouchInputParameters *)touch isEqual:?]))
+  if ([(_GCDevicePhysicalInputElementParameters *)&v10 isEqual:equalCopy]&& ((sources = self->_sources, sources == equalCopy[6]) || [(NSSet *)sources isEqual:?]) && self->_analog == *(equalCopy + 40) && self->_pressedThreshold == *(equalCopy + 11) && self->_eventPressedValueField == equalCopy[9] && self->_eventAnalogPressValueField == equalCopy[10] && self->_eventTouchValueField == equalCopy[11] && self->_eventForceValueField == equalCopy[12] && ((touch = self->_touch, touch == equalCopy[7]) || [(_GCDevicePhysicalInputTouchInputParameters *)touch isEqual:?]))
   {
     force = self->_force;
-    if (force == v4[8])
+    if (force == equalCopy[8])
     {
       v8 = 1;
     }
@@ -90,35 +90,35 @@
 
 - (id)sources
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[6];
+    v2 = self[6];
     if (v2)
     {
-      v1 = v2;
+      selfCopy = v2;
     }
 
     else
     {
       v3 = MEMORY[0x1E69A06B8];
-      v4 = [(_GCDevicePhysicalInputElementParameters *)a1 aliases];
-      v5 = [(_GCDevicePhysicalInputElementParameters *)v1 localizedName];
-      v6 = [(_GCDevicePhysicalInputElementParameters *)v1 symbol];
-      [v3 sourceWithElementAliases:v4 localizedName:v5 symbol:v6];
+      aliases = [(_GCDevicePhysicalInputElementParameters *)self aliases];
+      localizedName = [(_GCDevicePhysicalInputElementParameters *)selfCopy localizedName];
+      symbol = [(_GCDevicePhysicalInputElementParameters *)selfCopy symbol];
+      [v3 sourceWithElementAliases:aliases localizedName:localizedName symbol:symbol];
       objc_claimAutoreleasedReturnValue();
-      v1 = [OUTLINED_FUNCTION_8_0() setWithObject:v3];
+      selfCopy = [OUTLINED_FUNCTION_8_0() setWithObject:v3];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)isAnalog
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
   }
 
   else
@@ -131,12 +131,12 @@
 
 - (double)pressedThreshold
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 44);
+  LODWORD(result) = *(self + 44);
   return result;
 }
 
@@ -200,34 +200,34 @@
   return result;
 }
 
-- (void)setTouch:(void *)a1
+- (void)setTouch:(void *)touch
 {
   v3 = a2;
-  if (a1)
+  if (touch)
   {
     v8 = v3;
     v4 = [v3 copy];
-    v5 = a1[7];
-    a1[7] = v4;
+    v5 = touch[7];
+    touch[7] = v4;
 
-    v6 = [(_GCDevicePhysicalInputTouchInputParameters *)a1[7] sources];
+    sources = [(_GCDevicePhysicalInputTouchInputParameters *)touch[7] sources];
 
     v3 = v8;
-    if (!v6)
+    if (!sources)
     {
-      v7 = [(_GCDevicePhysicalInputButtonElementParameters *)a1 sources];
-      [(_GCDevicePhysicalInputTouchInputParameters *)a1[7] setSources:v7];
+      sources2 = [(_GCDevicePhysicalInputButtonElementParameters *)touch sources];
+      [(_GCDevicePhysicalInputTouchInputParameters *)touch[7] setSources:sources2];
 
       v3 = v8;
     }
   }
 }
 
-- (void)setSources:(uint64_t)a3
+- (void)setSources:(uint64_t)sources
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 48);
+    OUTLINED_FUNCTION_1_6(self, a2, sources, 48);
   }
 }
 
@@ -251,11 +251,11 @@
   return result;
 }
 
-- (void)setForce:(uint64_t)a3
+- (void)setForce:(uint64_t)force
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_1_6(a1, a2, a3, 64);
+    OUTLINED_FUNCTION_1_6(self, a2, force, 64);
   }
 }
 

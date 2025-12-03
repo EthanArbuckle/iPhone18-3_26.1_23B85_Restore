@@ -6,8 +6,8 @@
 
 - (id)mui_messageListSearchPredicate
 {
-  v1 = [a1 suggestionTokens];
-  v2 = [v1 ef_compactMap:&__block_literal_global_0];
+  suggestionTokens = [self suggestionTokens];
+  v2 = [suggestionTokens ef_compactMap:&__block_literal_global_0];
 
   if ([v2 count])
   {

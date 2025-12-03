@@ -1,13 +1,13 @@
 @interface FMDeviceDetailCardViewController
-- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithCoder:(id)a3;
-- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithCoder:(id)coder;
+- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMDeviceDetailCardViewController
 
-- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithCoder:(id)a3
+- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithCoder:(id)coder
 {
   type metadata accessor for FMSelectedSection();
   swift_storeEnumTagMultiPayload();
@@ -17,19 +17,19 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100081288(a3);
+  selfCopy = self;
+  sub_100081288(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_100081720(a3);
+  selfCopy = self;
+  sub_100081720(disappear);
 }
 
-- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy32FMDeviceDetailCardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

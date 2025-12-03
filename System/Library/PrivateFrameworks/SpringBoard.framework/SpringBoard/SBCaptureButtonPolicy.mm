@@ -1,52 +1,52 @@
 @interface SBCaptureButtonPolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBCaptureButtonPolicy)initWithConsoleModeEnabled:(BOOL)a3 wakeEnabled:(BOOL)a4 directLaunchAfterUnsuppressEnabled:(BOOL)a5 directLaunchAfterUnsuppressGracePeriod:(double)a6 deviceStationaryDetectionEnabled:(BOOL)a7 deviceStationaryDetectionEnabledWhenUnlocked:(BOOL)a8 deviceStationaryDetectionStationaryThreshold:(double)a9 deviceStationaryDetectionStationaryPickUpBuffer:(double)a10 deviceStationaryDetectionStationaryDebounceInterval:(double)a11 suppressionEnabled:(BOOL)a12 launchIfUnobstructedWhileButtonDownEnabled:(BOOL)a13 launchIfUnobstructedPromptlyAfterButtonUpEnabled:(BOOL)a14 wakingBacklightStates:(id)a15 visionIntelligenceEnabled:(BOOL)a16;
-- (SBCaptureButtonPolicy)initWithDictionary:(id)a3;
+- (SBCaptureButtonPolicy)initWithConsoleModeEnabled:(BOOL)enabled wakeEnabled:(BOOL)wakeEnabled directLaunchAfterUnsuppressEnabled:(BOOL)unsuppressEnabled directLaunchAfterUnsuppressGracePeriod:(double)period deviceStationaryDetectionEnabled:(BOOL)detectionEnabled deviceStationaryDetectionEnabledWhenUnlocked:(BOOL)unlocked deviceStationaryDetectionStationaryThreshold:(double)threshold deviceStationaryDetectionStationaryPickUpBuffer:(double)self0 deviceStationaryDetectionStationaryDebounceInterval:(double)self1 suppressionEnabled:(BOOL)self2 launchIfUnobstructedWhileButtonDownEnabled:(BOOL)self3 launchIfUnobstructedPromptlyAfterButtonUpEnabled:(BOOL)self4 wakingBacklightStates:(id)self5 visionIntelligenceEnabled:(BOOL)self6;
+- (SBCaptureButtonPolicy)initWithDictionary:(id)dictionary;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 @end
 
 @implementation SBCaptureButtonPolicy
 
-- (SBCaptureButtonPolicy)initWithConsoleModeEnabled:(BOOL)a3 wakeEnabled:(BOOL)a4 directLaunchAfterUnsuppressEnabled:(BOOL)a5 directLaunchAfterUnsuppressGracePeriod:(double)a6 deviceStationaryDetectionEnabled:(BOOL)a7 deviceStationaryDetectionEnabledWhenUnlocked:(BOOL)a8 deviceStationaryDetectionStationaryThreshold:(double)a9 deviceStationaryDetectionStationaryPickUpBuffer:(double)a10 deviceStationaryDetectionStationaryDebounceInterval:(double)a11 suppressionEnabled:(BOOL)a12 launchIfUnobstructedWhileButtonDownEnabled:(BOOL)a13 launchIfUnobstructedPromptlyAfterButtonUpEnabled:(BOOL)a14 wakingBacklightStates:(id)a15 visionIntelligenceEnabled:(BOOL)a16
+- (SBCaptureButtonPolicy)initWithConsoleModeEnabled:(BOOL)enabled wakeEnabled:(BOOL)wakeEnabled directLaunchAfterUnsuppressEnabled:(BOOL)unsuppressEnabled directLaunchAfterUnsuppressGracePeriod:(double)period deviceStationaryDetectionEnabled:(BOOL)detectionEnabled deviceStationaryDetectionEnabledWhenUnlocked:(BOOL)unlocked deviceStationaryDetectionStationaryThreshold:(double)threshold deviceStationaryDetectionStationaryPickUpBuffer:(double)self0 deviceStationaryDetectionStationaryDebounceInterval:(double)self1 suppressionEnabled:(BOOL)self2 launchIfUnobstructedWhileButtonDownEnabled:(BOOL)self3 launchIfUnobstructedPromptlyAfterButtonUpEnabled:(BOOL)self4 wakingBacklightStates:(id)self5 visionIntelligenceEnabled:(BOOL)self6
 {
-  v27 = a15;
+  statesCopy = states;
   v31.receiver = self;
   v31.super_class = SBCaptureButtonPolicy;
   v28 = [(SBCaptureButtonPolicy *)&v31 init];
   v29 = v28;
   if (v28)
   {
-    v28->_consoleModeMitigationEnabled = a3;
-    v28->_wakeEnabled = a4;
-    v28->_directLaunchAfterUnsuppressEnabled = a5;
-    v28->_deviceStationaryDetectionEnabled = a7;
-    v28->_deviceStationaryDetectionEnabledWhenUnlocked = a8;
-    v28->_directLaunchAfterUnsuppressGracePeriod = a6;
-    v28->_deviceStationaryDetectionStationaryThreshold = a9;
-    v28->_deviceStationaryDetectionStationaryPickUpBuffer = a10;
-    v28->_deviceStationaryDetectionStationaryDebounceInterval = a11;
-    v28->_suppressionEnabled = a12;
-    v28->_launchIfUnobstructedWhileButtonDownEnabled = a13;
-    v28->_launchIfUnobstructedPromptlyAfterButtonUpEnabled = a14;
-    objc_storeStrong(&v28->_wakingBacklightStates, a15);
-    v29->_visionIntelligenceEnabled = a16;
+    v28->_consoleModeMitigationEnabled = enabled;
+    v28->_wakeEnabled = wakeEnabled;
+    v28->_directLaunchAfterUnsuppressEnabled = unsuppressEnabled;
+    v28->_deviceStationaryDetectionEnabled = detectionEnabled;
+    v28->_deviceStationaryDetectionEnabledWhenUnlocked = unlocked;
+    v28->_directLaunchAfterUnsuppressGracePeriod = period;
+    v28->_deviceStationaryDetectionStationaryThreshold = threshold;
+    v28->_deviceStationaryDetectionStationaryPickUpBuffer = buffer;
+    v28->_deviceStationaryDetectionStationaryDebounceInterval = interval;
+    v28->_suppressionEnabled = suppressionEnabled;
+    v28->_launchIfUnobstructedWhileButtonDownEnabled = downEnabled;
+    v28->_launchIfUnobstructedPromptlyAfterButtonUpEnabled = upEnabled;
+    objc_storeStrong(&v28->_wakingBacklightStates, states);
+    v29->_visionIntelligenceEnabled = intelligenceEnabled;
   }
 
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   consoleModeMitigationEnabled = self->_consoleModeMitigationEnabled;
   v78[0] = MEMORY[0x277D85DD0];
   v78[1] = 3221225472;
   v78[2] = __33__SBCaptureButtonPolicy_isEqual___block_invoke;
   v78[3] = &unk_2783ACE58;
-  v7 = v4;
+  v7 = equalCopy;
   v79 = v7;
   v8 = [v5 appendBool:consoleModeMitigationEnabled counterpart:v78];
   wakeEnabled = self->_wakeEnabled;
@@ -160,30 +160,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_consoleModeMitigationEnabled];
-  v5 = [v3 appendBool:self->_wakeEnabled];
-  v6 = [v3 appendBool:self->_directLaunchAfterUnsuppressEnabled];
-  v7 = [v3 appendDouble:self->_directLaunchAfterUnsuppressGracePeriod];
-  v8 = [v3 appendBool:self->_deviceStationaryDetectionEnabled];
-  v9 = [v3 appendBool:self->_deviceStationaryDetectionEnabledWhenUnlocked];
-  v10 = [v3 appendDouble:self->_deviceStationaryDetectionStationaryThreshold];
-  v11 = [v3 appendDouble:self->_deviceStationaryDetectionStationaryPickUpBuffer];
-  v12 = [v3 appendDouble:self->_deviceStationaryDetectionStationaryDebounceInterval];
-  v13 = [v3 appendBool:self->_suppressionEnabled];
-  v14 = [v3 appendBool:self->_launchIfUnobstructedWhileButtonDownEnabled];
-  v15 = [v3 appendBool:self->_launchIfUnobstructedPromptlyAfterButtonUpEnabled];
-  v16 = [v3 appendObject:self->_wakingBacklightStates];
-  v17 = [v3 appendBool:self->_visionIntelligenceEnabled];
-  v18 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_consoleModeMitigationEnabled];
+  v5 = [builder appendBool:self->_wakeEnabled];
+  v6 = [builder appendBool:self->_directLaunchAfterUnsuppressEnabled];
+  v7 = [builder appendDouble:self->_directLaunchAfterUnsuppressGracePeriod];
+  v8 = [builder appendBool:self->_deviceStationaryDetectionEnabled];
+  v9 = [builder appendBool:self->_deviceStationaryDetectionEnabledWhenUnlocked];
+  v10 = [builder appendDouble:self->_deviceStationaryDetectionStationaryThreshold];
+  v11 = [builder appendDouble:self->_deviceStationaryDetectionStationaryPickUpBuffer];
+  v12 = [builder appendDouble:self->_deviceStationaryDetectionStationaryDebounceInterval];
+  v13 = [builder appendBool:self->_suppressionEnabled];
+  v14 = [builder appendBool:self->_launchIfUnobstructedWhileButtonDownEnabled];
+  v15 = [builder appendBool:self->_launchIfUnobstructedPromptlyAfterButtonUpEnabled];
+  v16 = [builder appendObject:self->_wakingBacklightStates];
+  v17 = [builder appendBool:self->_visionIntelligenceEnabled];
+  v18 = [builder hash];
 
   return v18;
 }
 
 - (NSString)description
 {
-  v2 = [(SBCaptureButtonPolicy *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(SBCaptureButtonPolicy *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
@@ -245,45 +245,45 @@ __CFString *__49__SBCaptureButtonPolicy_dictionaryRepresentation__block_invoke(u
   return SBBacklightStateDescription(v2);
 }
 
-- (SBCaptureButtonPolicy)initWithDictionary:(id)a3
+- (SBCaptureButtonPolicy)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v39 = [v3 objectForKeyedSubscript:@"ConsoleModeMitigationEnabled"];
-  v33 = [v39 BOOLValue];
-  v38 = [v3 objectForKeyedSubscript:@"WakeEnabled"];
-  v31 = [v38 BOOLValue];
-  v37 = [v3 objectForKeyedSubscript:@"DirectLaunchAfterUnsuppressEnabled"];
-  v30 = [v37 BOOLValue];
-  v36 = [v3 objectForKeyedSubscript:@"DirectLaunchAfterUnsuppressGracePeriod"];
+  dictionaryCopy = dictionary;
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"ConsoleModeMitigationEnabled"];
+  bOOLValue = [v39 BOOLValue];
+  v38 = [dictionaryCopy objectForKeyedSubscript:@"WakeEnabled"];
+  bOOLValue2 = [v38 BOOLValue];
+  v37 = [dictionaryCopy objectForKeyedSubscript:@"DirectLaunchAfterUnsuppressEnabled"];
+  bOOLValue3 = [v37 BOOLValue];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"DirectLaunchAfterUnsuppressGracePeriod"];
   [v36 doubleValue];
   v5 = v4;
-  v34 = [v3 objectForKeyedSubscript:@"DeviceStationaryDetectionEnabled"];
-  v27 = [v34 BOOLValue];
-  v32 = [v3 objectForKeyedSubscript:@"DeviceStationaryDetectionEnabledWhenUnlocked"];
-  v26 = [v32 BOOLValue];
-  v29 = [v3 objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryThreshold"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"DeviceStationaryDetectionEnabled"];
+  bOOLValue4 = [v34 BOOLValue];
+  v32 = [dictionaryCopy objectForKeyedSubscript:@"DeviceStationaryDetectionEnabledWhenUnlocked"];
+  bOOLValue5 = [v32 BOOLValue];
+  v29 = [dictionaryCopy objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryThreshold"];
   [v29 doubleValue];
   v7 = v6;
-  v28 = [v3 objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryPickUpBuffer"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryPickUpBuffer"];
   [v28 doubleValue];
   v9 = v8;
-  v25 = [v3 objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryDebounceInterval"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"DeviceStationaryDetectionStationaryDebounceInterval"];
   [v25 doubleValue];
   v11 = v10;
-  v12 = [v3 objectForKeyedSubscript:@"SuppressionEnabled"];
-  v13 = [v12 BOOLValue];
-  v14 = [v3 objectForKeyedSubscript:@"LaunchIfUnobstructedWhileButtonDownEnabled"];
-  v15 = [v14 BOOLValue];
-  v16 = [v3 objectForKeyedSubscript:@"LaunchIfUnobstructedPromptlyAfterButtonUpEnabled"];
-  v17 = [v16 BOOLValue];
-  v18 = [v3 objectForKeyedSubscript:@"WakingBacklightStates"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"SuppressionEnabled"];
+  bOOLValue6 = [v12 BOOLValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"LaunchIfUnobstructedWhileButtonDownEnabled"];
+  bOOLValue7 = [v14 BOOLValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"LaunchIfUnobstructedPromptlyAfterButtonUpEnabled"];
+  bOOLValue8 = [v16 BOOLValue];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"WakingBacklightStates"];
   v19 = [v18 bs_compactMap:&__block_literal_global_50_2];
-  v20 = [v3 objectForKeyedSubscript:@"VisionIntelligenceEnabled"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"VisionIntelligenceEnabled"];
 
   LOBYTE(v24) = [v20 BOOLValue];
-  BYTE1(v23) = v17;
-  LOBYTE(v23) = v15;
-  v21 = [(SBCaptureButtonPolicy *)self initWithConsoleModeEnabled:v33 wakeEnabled:v31 directLaunchAfterUnsuppressEnabled:v30 directLaunchAfterUnsuppressGracePeriod:v27 deviceStationaryDetectionEnabled:v26 deviceStationaryDetectionEnabledWhenUnlocked:v13 deviceStationaryDetectionStationaryThreshold:v5 deviceStationaryDetectionStationaryPickUpBuffer:v7 deviceStationaryDetectionStationaryDebounceInterval:v9 suppressionEnabled:v11 launchIfUnobstructedWhileButtonDownEnabled:v23 launchIfUnobstructedPromptlyAfterButtonUpEnabled:v19 wakingBacklightStates:v24 visionIntelligenceEnabled:?];
+  BYTE1(v23) = bOOLValue8;
+  LOBYTE(v23) = bOOLValue7;
+  v21 = [(SBCaptureButtonPolicy *)self initWithConsoleModeEnabled:bOOLValue wakeEnabled:bOOLValue2 directLaunchAfterUnsuppressEnabled:bOOLValue3 directLaunchAfterUnsuppressGracePeriod:bOOLValue4 deviceStationaryDetectionEnabled:bOOLValue5 deviceStationaryDetectionEnabledWhenUnlocked:bOOLValue6 deviceStationaryDetectionStationaryThreshold:v5 deviceStationaryDetectionStationaryPickUpBuffer:v7 deviceStationaryDetectionStationaryDebounceInterval:v9 suppressionEnabled:v11 launchIfUnobstructedWhileButtonDownEnabled:v23 launchIfUnobstructedPromptlyAfterButtonUpEnabled:v19 wakingBacklightStates:v24 visionIntelligenceEnabled:?];
 
   return v21;
 }

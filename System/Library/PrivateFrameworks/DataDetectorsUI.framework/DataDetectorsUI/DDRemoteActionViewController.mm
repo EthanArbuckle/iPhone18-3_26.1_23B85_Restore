@@ -1,37 +1,37 @@
 @interface DDRemoteActionViewController
 + (BOOL)controllerIsAvailable;
-+ (id)prepareViewController:(id)a3 forAction:(id)a4 actionController:(id)a5;
++ (id)prepareViewController:(id)controller forAction:(id)action actionController:(id)actionController;
 - (CGSize)preferredContentSize;
 - (DDAction)action;
 - (DDActionController)actionController;
 - (id)serviceViewControllerProxy;
-- (void)_prepareForAction:(id)a3 inActionController:(id)a4;
-- (void)actionCanBeCancelledExternally:(BOOL)a3;
-- (void)getIsBeingPresentedInPopover:(id)a3;
+- (void)_prepareForAction:(id)action inActionController:(id)controller;
+- (void)actionCanBeCancelledExternally:(BOOL)externally;
+- (void)getIsBeingPresentedInPopover:(id)popover;
 - (void)viewControllerReady;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation DDRemoteActionViewController
 
-- (void)_prepareForAction:(id)a3 inActionController:(id)a4
+- (void)_prepareForAction:(id)action inActionController:(id)controller
 {
   self->_waitingForRemoteConfiguration = 1;
-  v6 = a4;
-  v7 = a3;
-  [(DDRemoteActionViewController *)self setAction:v7];
-  [(DDRemoteActionViewController *)self setActionController:v6];
+  controllerCopy = controller;
+  actionCopy = action;
+  [(DDRemoteActionViewController *)self setAction:actionCopy];
+  [(DDRemoteActionViewController *)self setActionController:controllerCopy];
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v9 <= 6 && ((1 << v9) & 0x62) != 0)
+  if (userInterfaceIdiom <= 6 && ((1 << userInterfaceIdiom) & 0x62) != 0)
   {
     [(DDRemoteActionViewController *)self setModalPresentationStyle:7];
   }
 
-  v11 = [(DDRemoteActionViewController *)self serviceViewControllerProxy];
-  [v11 prepareForAction:v7];
+  serviceViewControllerProxy = [(DDRemoteActionViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy prepareForAction:actionCopy];
 }
 
 + (BOOL)controllerIsAvailable
@@ -71,10 +71,10 @@ void __53__DDRemoteActionViewController_controllerIsAvailable__block_invoke()
   self->_waitingForRemoteConfiguration = 0;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
+  errorCopy = error;
+  v5 = errorCopy;
   if (self->_waitingForRemoteConfiguration)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -94,7 +94,7 @@ void __53__DDRemoteActionViewController_controllerIsAvailable__block_invoke()
     goto LABEL_18;
   }
 
-  if ([v4 code] == 1)
+  if ([errorCopy code] == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -145,21 +145,21 @@ LABEL_15:
   return result;
 }
 
-+ (id)prepareViewController:(id)a3 forAction:(id)a4 actionController:(id)a5
++ (id)prepareViewController:(id)controller forAction:(id)action actionController:(id)actionController
 {
-  v8 = a4;
-  v9 = a5;
+  actionCopy = action;
+  actionControllerCopy = actionController;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__DDRemoteActionViewController_prepareViewController_forAction_actionController___block_invoke;
   v15[3] = &unk_2782915F0;
-  v16 = v8;
-  v17 = v9;
-  v14.receiver = a1;
+  v16 = actionCopy;
+  v17 = actionControllerCopy;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___DDRemoteActionViewController;
-  v10 = v9;
-  v11 = v8;
-  v12 = objc_msgSendSuper2(&v14, sel_requestViewController_fromServiceWithBundleIdentifier_connectionHandler_, a3, @"com.apple.datadetectors.DDActionsService", v15);
+  v10 = actionControllerCopy;
+  v11 = actionCopy;
+  v12 = objc_msgSendSuper2(&v14, sel_requestViewController_fromServiceWithBundleIdentifier_connectionHandler_, controller, @"com.apple.datadetectors.DDActionsService", v15);
 
   return v12;
 }
@@ -189,24 +189,24 @@ void __81__DDRemoteActionViewController_prepareViewController_forAction_actionCo
 {
   v4.receiver = self;
   v4.super_class = DDRemoteActionViewController;
-  v2 = [(_UIRemoteViewController *)&v4 serviceViewControllerProxy];
+  serviceViewControllerProxy = [(_UIRemoteViewController *)&v4 serviceViewControllerProxy];
 
-  return v2;
+  return serviceViewControllerProxy;
 }
 
-- (void)actionCanBeCancelledExternally:(BOOL)a3
+- (void)actionCanBeCancelledExternally:(BOOL)externally
 {
-  v3 = a3;
+  externallyCopy = externally;
   WeakRetained = objc_loadWeakRetained(&self->_actionController);
   v5 = objc_loadWeakRetained(&self->_action);
-  [WeakRetained action:v5 presentationShouldBeModal:!v3];
+  [WeakRetained action:v5 presentationShouldBeModal:!externallyCopy];
 }
 
-- (void)getIsBeingPresentedInPopover:(id)a3
+- (void)getIsBeingPresentedInPopover:(id)popover
 {
-  v5 = a3;
+  popoverCopy = popover;
   WeakRetained = objc_loadWeakRetained(&self->_actionController);
-  (*(a3 + 2))(v5, [WeakRetained isPresentingInPopover]);
+  (*(popover + 2))(popoverCopy, [WeakRetained isPresentingInPopover]);
 }
 
 - (DDAction)action

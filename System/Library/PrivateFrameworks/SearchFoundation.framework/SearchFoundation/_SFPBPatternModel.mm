@@ -1,56 +1,56 @@
 @interface _SFPBPatternModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPatternModel)initWithDictionary:(id)a3;
-- (_SFPBPatternModel)initWithFacade:(id)a3;
-- (_SFPBPatternModel)initWithJSON:(id)a3;
+- (_SFPBPatternModel)initWithDictionary:(id)dictionary;
+- (_SFPBPatternModel)initWithFacade:(id)facade;
+- (_SFPBPatternModel)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setPattern_bundle_id:(id)a3;
-- (void)setPattern_id:(id)a3;
-- (void)setPattern_parameters:(id)a3;
-- (void)setPattern_template_directory:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPattern_bundle_id:(id)pattern_bundle_id;
+- (void)setPattern_id:(id)pattern_id;
+- (void)setPattern_parameters:(id)pattern_parameters;
+- (void)setPattern_template_directory:(id)pattern_template_directory;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPatternModel
 
-- (_SFPBPatternModel)initWithFacade:(id)a3
+- (_SFPBPatternModel)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPatternModel *)self init];
   if (v5)
   {
-    v6 = [v4 pattern_id];
+    pattern_id = [facadeCopy pattern_id];
 
-    if (v6)
+    if (pattern_id)
     {
-      v7 = [v4 pattern_id];
-      [(_SFPBPatternModel *)v5 setPattern_id:v7];
+      pattern_id2 = [facadeCopy pattern_id];
+      [(_SFPBPatternModel *)v5 setPattern_id:pattern_id2];
     }
 
-    v8 = [v4 pattern_parameters];
+    pattern_parameters = [facadeCopy pattern_parameters];
 
-    if (v8)
+    if (pattern_parameters)
     {
-      v9 = [v4 pattern_parameters];
-      [(_SFPBPatternModel *)v5 setPattern_parameters:v9];
+      pattern_parameters2 = [facadeCopy pattern_parameters];
+      [(_SFPBPatternModel *)v5 setPattern_parameters:pattern_parameters2];
     }
 
-    v10 = [v4 pattern_bundle_id];
+    pattern_bundle_id = [facadeCopy pattern_bundle_id];
 
-    if (v10)
+    if (pattern_bundle_id)
     {
-      v11 = [v4 pattern_bundle_id];
-      [(_SFPBPatternModel *)v5 setPattern_bundle_id:v11];
+      pattern_bundle_id2 = [facadeCopy pattern_bundle_id];
+      [(_SFPBPatternModel *)v5 setPattern_bundle_id:pattern_bundle_id2];
     }
 
-    v12 = [v4 pattern_template_directory];
+    pattern_template_directory = [facadeCopy pattern_template_directory];
 
-    if (v12)
+    if (pattern_template_directory)
     {
-      v13 = [v4 pattern_template_directory];
-      [(_SFPBPatternModel *)v5 setPattern_template_directory:v13];
+      pattern_template_directory2 = [facadeCopy pattern_template_directory];
+      [(_SFPBPatternModel *)v5 setPattern_template_directory:pattern_template_directory2];
     }
 
     v14 = v5;
@@ -59,15 +59,15 @@
   return v5;
 }
 
-- (_SFPBPatternModel)initWithDictionary:(id)a3
+- (_SFPBPatternModel)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBPatternModel;
   v5 = [(_SFPBPatternModel *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"patternId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"patternId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBPatternModel *)v5 setPattern_id:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"patternParameters"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"patternParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
       [(_SFPBPatternModel *)v5 setPattern_parameters:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"patternBundleId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"patternBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(_SFPBPatternModel *)v5 setPattern_bundle_id:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"patternTemplateDirectory"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"patternTemplateDirectory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -105,30 +105,30 @@
   return v5;
 }
 
-- (_SFPBPatternModel)initWithJSON:(id)a3
+- (_SFPBPatternModel)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPatternModel *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPatternModel *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPatternModel *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -141,45 +141,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_pattern_bundle_id)
   {
-    v4 = [(_SFPBPatternModel *)self pattern_bundle_id];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"patternBundleId"];
+    pattern_bundle_id = [(_SFPBPatternModel *)self pattern_bundle_id];
+    v5 = [pattern_bundle_id copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"patternBundleId"];
   }
 
   if (self->_pattern_id)
   {
-    v6 = [(_SFPBPatternModel *)self pattern_id];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"patternId"];
+    pattern_id = [(_SFPBPatternModel *)self pattern_id];
+    v7 = [pattern_id copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"patternId"];
   }
 
   if (self->_pattern_parameters)
   {
-    v8 = [(_SFPBPatternModel *)self pattern_parameters];
-    v9 = [v8 base64EncodedStringWithOptions:0];
+    pattern_parameters = [(_SFPBPatternModel *)self pattern_parameters];
+    v9 = [pattern_parameters base64EncodedStringWithOptions:0];
     if (v9)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"patternParameters"];
+      [dictionary setObject:v9 forKeyedSubscript:@"patternParameters"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"patternParameters"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"patternParameters"];
     }
   }
 
   if (self->_pattern_template_directory)
   {
-    v11 = [(_SFPBPatternModel *)self pattern_template_directory];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"patternTemplateDirectory"];
+    pattern_template_directory = [(_SFPBPatternModel *)self pattern_template_directory];
+    v12 = [pattern_template_directory copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"patternTemplateDirectory"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -190,28 +190,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_pattern_template_directory hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBPatternModel *)self pattern_id];
-  v6 = [v4 pattern_id];
-  if ((v5 != 0) == (v6 == 0))
+  pattern_id = [(_SFPBPatternModel *)self pattern_id];
+  pattern_id2 = [equalCopy pattern_id];
+  if ((pattern_id != 0) == (pattern_id2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBPatternModel *)self pattern_id];
-  if (v7)
+  pattern_id3 = [(_SFPBPatternModel *)self pattern_id];
+  if (pattern_id3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPatternModel *)self pattern_id];
-    v10 = [v4 pattern_id];
-    v11 = [v9 isEqual:v10];
+    v8 = pattern_id3;
+    pattern_id4 = [(_SFPBPatternModel *)self pattern_id];
+    pattern_id5 = [equalCopy pattern_id];
+    v11 = [pattern_id4 isEqual:pattern_id5];
 
     if (!v11)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v5 = [(_SFPBPatternModel *)self pattern_parameters];
-  v6 = [v4 pattern_parameters];
-  if ((v5 != 0) == (v6 == 0))
+  pattern_id = [(_SFPBPatternModel *)self pattern_parameters];
+  pattern_id2 = [equalCopy pattern_parameters];
+  if ((pattern_id != 0) == (pattern_id2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBPatternModel *)self pattern_parameters];
-  if (v12)
+  pattern_parameters = [(_SFPBPatternModel *)self pattern_parameters];
+  if (pattern_parameters)
   {
-    v13 = v12;
-    v14 = [(_SFPBPatternModel *)self pattern_parameters];
-    v15 = [v4 pattern_parameters];
-    v16 = [v14 isEqual:v15];
+    v13 = pattern_parameters;
+    pattern_parameters2 = [(_SFPBPatternModel *)self pattern_parameters];
+    pattern_parameters3 = [equalCopy pattern_parameters];
+    v16 = [pattern_parameters2 isEqual:pattern_parameters3];
 
     if (!v16)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v5 = [(_SFPBPatternModel *)self pattern_bundle_id];
-  v6 = [v4 pattern_bundle_id];
-  if ((v5 != 0) == (v6 == 0))
+  pattern_id = [(_SFPBPatternModel *)self pattern_bundle_id];
+  pattern_id2 = [equalCopy pattern_bundle_id];
+  if ((pattern_id != 0) == (pattern_id2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBPatternModel *)self pattern_bundle_id];
-  if (v17)
+  pattern_bundle_id = [(_SFPBPatternModel *)self pattern_bundle_id];
+  if (pattern_bundle_id)
   {
-    v18 = v17;
-    v19 = [(_SFPBPatternModel *)self pattern_bundle_id];
-    v20 = [v4 pattern_bundle_id];
-    v21 = [v19 isEqual:v20];
+    v18 = pattern_bundle_id;
+    pattern_bundle_id2 = [(_SFPBPatternModel *)self pattern_bundle_id];
+    pattern_bundle_id3 = [equalCopy pattern_bundle_id];
+    v21 = [pattern_bundle_id2 isEqual:pattern_bundle_id3];
 
     if (!v21)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v5 = [(_SFPBPatternModel *)self pattern_template_directory];
-  v6 = [v4 pattern_template_directory];
-  if ((v5 != 0) != (v6 == 0))
+  pattern_id = [(_SFPBPatternModel *)self pattern_template_directory];
+  pattern_id2 = [equalCopy pattern_template_directory];
+  if ((pattern_id != 0) != (pattern_id2 == 0))
   {
-    v22 = [(_SFPBPatternModel *)self pattern_template_directory];
-    if (!v22)
+    pattern_template_directory = [(_SFPBPatternModel *)self pattern_template_directory];
+    if (!pattern_template_directory)
     {
 
 LABEL_25:
@@ -286,10 +286,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_SFPBPatternModel *)self pattern_template_directory];
-    v25 = [v4 pattern_template_directory];
-    v26 = [v24 isEqual:v25];
+    v23 = pattern_template_directory;
+    pattern_template_directory2 = [(_SFPBPatternModel *)self pattern_template_directory];
+    pattern_template_directory3 = [equalCopy pattern_template_directory];
+    v26 = [pattern_template_directory2 isEqual:pattern_template_directory3];
 
     if (v26)
     {
@@ -309,64 +309,64 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBPatternModel *)self pattern_id];
-  if (v4)
+  toCopy = to;
+  pattern_id = [(_SFPBPatternModel *)self pattern_id];
+  if (pattern_id)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBPatternModel *)self pattern_parameters];
-  if (v5)
+  pattern_parameters = [(_SFPBPatternModel *)self pattern_parameters];
+  if (pattern_parameters)
   {
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_SFPBPatternModel *)self pattern_bundle_id];
-  if (v6)
+  pattern_bundle_id = [(_SFPBPatternModel *)self pattern_bundle_id];
+  if (pattern_bundle_id)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBPatternModel *)self pattern_template_directory];
-  if (v7)
+  pattern_template_directory = [(_SFPBPatternModel *)self pattern_template_directory];
+  if (pattern_template_directory)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setPattern_template_directory:(id)a3
+- (void)setPattern_template_directory:(id)pattern_template_directory
 {
-  v4 = [a3 copy];
+  v4 = [pattern_template_directory copy];
   pattern_template_directory = self->_pattern_template_directory;
   self->_pattern_template_directory = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPattern_bundle_id:(id)a3
+- (void)setPattern_bundle_id:(id)pattern_bundle_id
 {
-  v4 = [a3 copy];
+  v4 = [pattern_bundle_id copy];
   pattern_bundle_id = self->_pattern_bundle_id;
   self->_pattern_bundle_id = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPattern_parameters:(id)a3
+- (void)setPattern_parameters:(id)pattern_parameters
 {
-  v4 = [a3 copy];
+  v4 = [pattern_parameters copy];
   pattern_parameters = self->_pattern_parameters;
   self->_pattern_parameters = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPattern_id:(id)a3
+- (void)setPattern_id:(id)pattern_id
 {
-  v4 = [a3 copy];
+  v4 = [pattern_id copy];
   pattern_id = self->_pattern_id;
   self->_pattern_id = v4;
 

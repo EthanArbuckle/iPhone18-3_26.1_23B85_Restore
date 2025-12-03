@@ -1,17 +1,17 @@
 @interface CalDAVNotificationContainerSyncTaskGroup
-- (BOOL)shouldFetchResourceWithEtag:(id)a3 propertiesToValues:(id)a4;
-- (CalDAVNotificationContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 accountInfoProvider:(id)a6 taskManager:(id)a7;
+- (BOOL)shouldFetchResourceWithEtag:(id)etag propertiesToValues:(id)values;
+- (CalDAVNotificationContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token accountInfoProvider:(id)provider taskManager:(id)manager;
 - (id)copyAdditionalResourcePropertiesToFetch;
-- (id)copyGetTaskWithURL:(id)a3;
+- (id)copyGetTaskWithURL:(id)l;
 @end
 
 @implementation CalDAVNotificationContainerSyncTaskGroup
 
-- (CalDAVNotificationContainerSyncTaskGroup)initWithFolderURL:(id)a3 previousCTag:(id)a4 previousSyncToken:(id)a5 accountInfoProvider:(id)a6 taskManager:(id)a7
+- (CalDAVNotificationContainerSyncTaskGroup)initWithFolderURL:(id)l previousCTag:(id)tag previousSyncToken:(id)token accountInfoProvider:(id)provider taskManager:(id)manager
 {
   v12.receiver = self;
   v12.super_class = CalDAVNotificationContainerSyncTaskGroup;
-  v7 = [(CoreDAVContainerSyncTaskGroup *)&v12 initWithFolderURL:a3 previousCTag:a4 previousSyncToken:a5 actions:0 syncItemOrder:0 context:0 accountInfoProvider:a6 taskManager:a7];
+  v7 = [(CoreDAVContainerSyncTaskGroup *)&v12 initWithFolderURL:l previousCTag:tag previousSyncToken:token actions:0 syncItemOrder:0 context:0 accountInfoProvider:provider taskManager:manager];
   v8 = v7;
   if (v7)
   {
@@ -24,19 +24,19 @@
   return v8;
 }
 
-- (id)copyGetTaskWithURL:(id)a3
+- (id)copyGetTaskWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[CalDAVGetNotificationItemTask alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[CalDAVGetNotificationItemTask alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-- (BOOL)shouldFetchResourceWithEtag:(id)a3 propertiesToValues:(id)a4
+- (BOOL)shouldFetchResourceWithEtag:(id)etag propertiesToValues:(id)values
 {
-  v5 = [a4 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"notificationtype"];
-  v6 = [(CalDAVNotificationContainerSyncTaskGroup *)self notificationTypeNamesToFetch];
-  v7 = [v5 notificationNameIn:v6];
+  v5 = [values CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:@"notificationtype"];
+  notificationTypeNamesToFetch = [(CalDAVNotificationContainerSyncTaskGroup *)self notificationTypeNamesToFetch];
+  v7 = [v5 notificationNameIn:notificationTypeNamesToFetch];
 
   return v7;
 }

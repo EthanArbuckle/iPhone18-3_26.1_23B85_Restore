@@ -1,16 +1,16 @@
 @interface WFContactFieldParameter
 - (BOOL)shouldAlignLabels;
 - (NSString)keyboardType;
-- (WFContactFieldParameter)initWithDefinition:(id)a3;
+- (WFContactFieldParameter)initWithDefinition:(id)definition;
 @end
 
 @implementation WFContactFieldParameter
 
 - (BOOL)shouldAlignLabels
 {
-  v2 = [(WFContactFieldParameter *)self textAlignment];
+  textAlignment = [(WFContactFieldParameter *)self textAlignment];
   v3 = *MEMORY[0x1E69E12C8];
-  v4 = v2;
+  v4 = textAlignment;
   v5 = v3;
   v6 = v5;
   if (v4 == v5)
@@ -32,15 +32,15 @@
 
 - (NSString)keyboardType
 {
-  v2 = [(WFContactFieldParameter *)self supportedContactProperties];
-  if ([v2 count] != 1)
+  supportedContactProperties = [(WFContactFieldParameter *)self supportedContactProperties];
+  if ([supportedContactProperties count] != 1)
   {
     goto LABEL_6;
   }
 
-  if (([v2 containsObject:@"Email"] & 1) == 0)
+  if (([supportedContactProperties containsObject:@"Email"] & 1) == 0)
   {
-    if ([v2 containsObject:@"Phone"])
+    if ([supportedContactProperties containsObject:@"Phone"])
     {
       v3 = MEMORY[0x1E69E12A0];
       goto LABEL_7;
@@ -59,15 +59,15 @@ LABEL_7:
   return v4;
 }
 
-- (WFContactFieldParameter)initWithDefinition:(id)a3
+- (WFContactFieldParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v29.receiver = self;
   v29.super_class = WFContactFieldParameter;
-  v5 = [(WFParameter *)&v29 initWithDefinition:v4];
+  v5 = [(WFParameter *)&v29 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AllowsTextEntry"];
+    v6 = [definitionCopy objectForKey:@"AllowsTextEntry"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_1501(v6, v7);
     v9 = v8;
@@ -78,34 +78,34 @@ LABEL_7:
 
     v5->_allowsTextEntry = [v8 BOOLValue];
 
-    v10 = [v4 objectForKey:@"TextAlignment"];
+    v10 = [definitionCopy objectForKey:@"TextAlignment"];
     v11 = objc_opt_class();
     v12 = WFEnforceClass_1501(v10, v11);
     textAlignment = v5->_textAlignment;
     v5->_textAlignment = v12;
 
-    v14 = [v4 objectForKey:@"AutocapitalizationType"];
+    v14 = [definitionCopy objectForKey:@"AutocapitalizationType"];
     autocapitalizationType = v5->_autocapitalizationType;
     v5->_autocapitalizationType = v14;
 
-    v16 = [v4 objectForKey:@"DisableAutocorrection"];
+    v16 = [definitionCopy objectForKey:@"DisableAutocorrection"];
     v17 = objc_opt_class();
     v18 = WFEnforceClass_1501(v16, v17);
-    v19 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
     v20 = MEMORY[0x1E69E1278];
-    if (!v19)
+    if (!bOOLValue)
     {
       v20 = MEMORY[0x1E69E1270];
     }
 
     objc_storeStrong(&v5->_autocorrectionType, *v20);
 
-    v21 = [v4 objectForKey:@"HidesLabel"];
+    v21 = [definitionCopy objectForKey:@"HidesLabel"];
     v22 = objc_opt_class();
     v23 = WFEnforceClass_1501(v21, v22);
     v5->_hidesLabel = [v23 BOOLValue];
 
-    v24 = [v4 objectForKey:@"AllowsCustomHandles"];
+    v24 = [definitionCopy objectForKey:@"AllowsCustomHandles"];
     v25 = objc_opt_class();
     v26 = WFEnforceClass_1501(v24, v25);
     v5->_allowsCustomHandles = [v26 BOOLValue];

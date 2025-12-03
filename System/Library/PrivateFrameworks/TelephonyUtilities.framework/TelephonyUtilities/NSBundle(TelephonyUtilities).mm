@@ -7,10 +7,10 @@
 
 - (id)tu_assumedIdentity
 {
-  v1 = [a1 bundleIdentifier];
-  if ([v1 length])
+  bundleIdentifier = [self bundleIdentifier];
+  if ([bundleIdentifier length])
   {
-    v2 = [objc_opt_class() tu_assumedIdentityForBundleIdentifier:v1];
+    v2 = [objc_opt_class() tu_assumedIdentityForBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -28,17 +28,17 @@
   {
     if ([v3 isEqualToString:@"com.apple.TelephonyUtilities"])
     {
-      v4 = "/System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd";
+      uTF8String = "/System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd";
       v5 = 1;
     }
 
     else
     {
-      v4 = [v3 UTF8String];
+      uTF8String = [v3 UTF8String];
       v5 = 0;
     }
 
-    v6 = tu_tcc_identity_create(v5, v4);
+    v6 = tu_tcc_identity_create(v5, uTF8String);
   }
 
   else

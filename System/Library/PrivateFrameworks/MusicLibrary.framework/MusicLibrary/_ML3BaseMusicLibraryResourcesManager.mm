@@ -1,39 +1,39 @@
 @interface _ML3BaseMusicLibraryResourcesManager
-- (BOOL)_mediaResourceRequiresLibraryContainerAccess:(int)a3;
-- (_ML3BaseMusicLibraryResourcesManager)initWithAccountInfo:(id)a3;
-- (_ML3BaseMusicLibraryResourcesManager)initWithCoder:(id)a3;
-- (_ML3BaseMusicLibraryResourcesManager)initWithLibraryContainerIdentifier:(id)a3;
-- (id)_libraryContainerPathForDSID:(id)a3;
+- (BOOL)_mediaResourceRequiresLibraryContainerAccess:(int)access;
+- (_ML3BaseMusicLibraryResourcesManager)initWithAccountInfo:(id)info;
+- (_ML3BaseMusicLibraryResourcesManager)initWithCoder:(id)coder;
+- (_ML3BaseMusicLibraryResourcesManager)initWithLibraryContainerIdentifier:(id)identifier;
+- (id)_libraryContainerPathForDSID:(id)d;
 - (id)_mediaPath;
 - (id)_mediaRelativeMusicAssetsDirectoryPath;
-- (id)_musicAssetsPathRelativeToBasePath:(id)a3;
-- (id)_pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 isFolder:(BOOL *)a6;
+- (id)_musicAssetsPathRelativeToBasePath:(id)path;
+- (id)_pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base isFolder:(BOOL *)isFolder;
 - (id)libraryContainerPath;
-- (id)libraryContainerPathByAppendingPathComponent:(id)a3;
-- (id)libraryContainerRelativePath:(id)a3;
-- (id)mediaFolderRelativePath:(id)a3;
+- (id)libraryContainerPathByAppendingPathComponent:(id)component;
+- (id)libraryContainerRelativePath:(id)path;
+- (id)mediaFolderRelativePath:(id)path;
 - (id)musicAssetsContainerPath;
-- (id)pathForBaseLocationPath:(int64_t)a3;
-- (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)pathForBaseLocationPath:(int64_t)path;
+- (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ML3BaseMusicLibraryResourcesManager
 
 - (id)libraryContainerPath
 {
-  v3 = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
-  v4 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
+  _mediaPath = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
+  libraryContainerIdentifier = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
 
-  if (v4)
+  if (libraryContainerIdentifier)
   {
-    v5 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
-    v6 = [v3 stringByAppendingPathComponent:v5];
+    libraryContainerIdentifier2 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
+    v6 = [_mediaPath stringByAppendingPathComponent:libraryContainerIdentifier2];
 
-    v3 = v6;
+    _mediaPath = v6;
   }
 
-  return v3;
+  return _mediaPath;
 }
 
 - (id)_mediaPath
@@ -49,19 +49,19 @@
   return v5;
 }
 
-- (id)_pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 isFolder:(BOOL *)a6
+- (id)_pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base isFolder:(BOOL *)isFolder
 {
-  v7 = a5;
-  v8 = *&a3;
+  baseCopy = base;
+  v8 = *&folder;
   v130[4] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = v11;
-  if (v7)
+  pathCopy = path;
+  v12 = pathCopy;
+  if (baseCopy)
   {
     goto LABEL_6;
   }
 
-  if (v11 && [(__CFString *)v11 length])
+  if (pathCopy && [(__CFString *)pathCopy length])
   {
     goto LABEL_8;
   }
@@ -69,23 +69,23 @@
   if (![(_ML3BaseMusicLibraryResourcesManager *)self _mediaResourceRequiresLibraryContainerAccess:v8])
   {
 LABEL_6:
-    v13 = &stru_28408B690;
+    libraryContainerPath = &stru_28408B690;
   }
 
   else
   {
-    v13 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
+    libraryContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
   }
 
-  v12 = v13;
+  v12 = libraryContainerPath;
 LABEL_8:
   v14 = [(_ML3BaseMusicLibraryResourcesManager *)self _controlDirectoryPathWithBasePath:v12];
   v15 = v14;
   switch(v8)
   {
     case 0:
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:298 description:@"Invalid resource"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:298 description:@"Invalid resource"];
 
       goto LABEL_10;
     case 1:
@@ -148,7 +148,7 @@ LABEL_55:
         v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:12];
         v128[0] = v89;
         v127[1] = @"RelativeToBase";
-        v38 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+        v38 = [MEMORY[0x277CCABB0] numberWithBool:baseCopy];
         v39 = v38;
         v127[2] = @"BasePath";
         v40 = @"nil";
@@ -191,7 +191,7 @@ LABEL_55:
         v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:13];
         v124[0] = v91;
         v123[1] = @"RelativeToBase";
-        v62 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+        v62 = [MEMORY[0x277CCABB0] numberWithBool:baseCopy];
         v63 = v62;
         v123[2] = @"BasePath";
         v64 = @"nil";
@@ -234,7 +234,7 @@ LABEL_55:
         v88 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:14];
         v120[0] = v88;
         v119[1] = @"RelativeToBase";
-        v23 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+        v23 = [MEMORY[0x277CCABB0] numberWithBool:baseCopy];
         v24 = v23;
         v119[2] = @"BasePath";
         v25 = @"nil";
@@ -284,7 +284,7 @@ LABEL_56:
         v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:15];
         v116[0] = v90;
         v115[1] = @"RelativeToBase";
-        v50 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+        v50 = [MEMORY[0x277CCABB0] numberWithBool:baseCopy];
         v51 = v50;
         v115[2] = @"BasePath";
         v52 = @"nil";
@@ -310,8 +310,8 @@ LABEL_56:
       }
 
       v56 = MEMORY[0x277CCACA8];
-      v20 = [v15 msv_stringByResolvingRealPath];
-      v114[0] = v20;
+      msv_stringByResolvingRealPath = [v15 msv_stringByResolvingRealPath];
+      v114[0] = msv_stringByResolvingRealPath;
       v114[1] = @"iTunes";
       v114[2] = @"MediaLibrary.sqlitedb";
       v57 = MEMORY[0x277CBEA60];
@@ -320,20 +320,20 @@ LABEL_56:
       goto LABEL_61;
     case 16:
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v20 = v19;
+      msv_stringByResolvingRealPath = v19;
       v21 = @"MLSections";
       goto LABEL_39;
     case 17:
       v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v20 = v19;
+      msv_stringByResolvingRealPath = v19;
       v21 = @"SortingDetails";
 LABEL_39:
       v18 = [v19 pathForResource:v21 ofType:@"plist"];
       goto LABEL_62;
     case 18:
       v56 = MEMORY[0x277CCACA8];
-      v20 = MLMobileUserHomeDirectory();
-      v113[0] = v20;
+      msv_stringByResolvingRealPath = MLMobileUserHomeDirectory();
+      v113[0] = msv_stringByResolvingRealPath;
       v113[1] = @"Library";
       v113[2] = @"MusicLibrary";
       v113[3] = @"FailedArtworkConversion.plist";
@@ -342,8 +342,8 @@ LABEL_39:
       goto LABEL_60;
     case 19:
       v56 = MEMORY[0x277CCACA8];
-      v20 = MLMobileUserHomeDirectory();
-      v112[0] = v20;
+      msv_stringByResolvingRealPath = MLMobileUserHomeDirectory();
+      v112[0] = msv_stringByResolvingRealPath;
       v112[1] = @"Library";
       v112[2] = @"MusicLibrary";
       v112[3] = @"Backups";
@@ -358,7 +358,7 @@ LABEL_61:
 LABEL_62:
 LABEL_63:
       v17 = 0;
-      if (!a6)
+      if (!isFolder)
       {
         goto LABEL_70;
       }
@@ -399,7 +399,7 @@ LABEL_67:
       v18 = v47;
 LABEL_68:
       v17 = 1;
-      if (a6)
+      if (isFolder)
       {
         goto LABEL_69;
       }
@@ -409,13 +409,13 @@ LABEL_68:
 LABEL_10:
       v17 = 0;
       v18 = 0;
-      if (!a6)
+      if (!isFolder)
       {
         goto LABEL_70;
       }
 
 LABEL_69:
-      *a6 = v17;
+      *isFolder = v17;
 LABEL_70:
       if (!v18 || ![v18 length])
       {
@@ -425,7 +425,7 @@ LABEL_70:
           *buf = 67109890;
           v104 = v8;
           v105 = 1024;
-          v106 = v7;
+          v106 = baseCopy;
           v107 = 2114;
           v108 = v12;
           v109 = 2114;
@@ -439,7 +439,7 @@ LABEL_70:
         v73 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v8];
         v101[0] = v73;
         v100[1] = @"RelativeToBase";
-        v74 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+        v74 = [MEMORY[0x277CCABB0] numberWithBool:baseCopy];
         v75 = v74;
         v100[2] = @"BasePath";
         v76 = @"nil";
@@ -462,12 +462,12 @@ LABEL_70:
 
 - (id)_mediaRelativeMusicAssetsDirectoryPath
 {
-  v3 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
+  libraryContainerIdentifier = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
 
-  if (v3)
+  if (libraryContainerIdentifier)
   {
-    v4 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
-    v5 = [@"Music" stringByAppendingPathComponent:v4];
+    libraryContainerIdentifier2 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
+    v5 = [@"Music" stringByAppendingPathComponent:libraryContainerIdentifier2];
   }
 
   else
@@ -478,36 +478,36 @@ LABEL_70:
   return v5;
 }
 
-- (id)_musicAssetsPathRelativeToBasePath:(id)a3
+- (id)_musicAssetsPathRelativeToBasePath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_ML3BaseMusicLibraryResourcesManager *)self musicAssetsContainerPath];
-  v6 = v5;
-  if (v4)
+  pathCopy = path;
+  musicAssetsContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)self musicAssetsContainerPath];
+  v6 = musicAssetsContainerPath;
+  if (pathCopy)
   {
-    v6 = v5;
-    if ([v4 length])
+    v6 = musicAssetsContainerPath;
+    if ([pathCopy length])
     {
-      v7 = [v5 rangeOfString:v4];
+      v7 = [musicAssetsContainerPath rangeOfString:pathCopy];
       if (v7 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v8 = os_log_create("com.apple.amp.medialibrary", "Default");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
         {
           v10 = 138543619;
-          v11 = v4;
+          v11 = pathCopy;
           v12 = 2113;
-          v13 = v5;
+          v13 = musicAssetsContainerPath;
           _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_FAULT, "_musicAssetsPathWithBasePath recieved invalid base path %{public}@ for music assets path %{private}@", &v10, 0x16u);
         }
 
-        v6 = v5;
+        v6 = musicAssetsContainerPath;
       }
 
       else
       {
-        v6 = [v5 substringFromIndex:v7];
+        v6 = [musicAssetsContainerPath substringFromIndex:v7];
       }
     }
   }
@@ -515,13 +515,13 @@ LABEL_70:
   return v6;
 }
 
-- (id)_libraryContainerPathForDSID:(id)a3
+- (id)_libraryContainerPathForDSID:(id)d
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   memset(v59, 0, sizeof(v59));
   CC_SHA1_Init(v59);
-  v5 = v4;
+  v5 = dCopy;
   CC_SHA1_Update(v59, [v5 UTF8String], objc_msgSend(v5, "length"));
 
   memset(&v60[8], 0, 64);
@@ -719,9 +719,9 @@ LABEL_47:
   if (*v60 != 2000)
   {
 LABEL_52:
-    v57 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v57 handleFailureInFunction:v58 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler handleFailureInFunction:v58 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v53 = &stru_28408B690;
     goto LABEL_49;
@@ -763,33 +763,33 @@ LABEL_53:
   v53 = @"0";
 LABEL_49:
 
-  v54 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
-  v55 = [v54 stringByAppendingPathComponent:v53];
+  libraryContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
+  v55 = [libraryContainerPath stringByAppendingPathComponent:v53];
 
   return v55;
 }
 
-- (BOOL)_mediaResourceRequiresLibraryContainerAccess:(int)a3
+- (BOOL)_mediaResourceRequiresLibraryContainerAccess:(int)access
 {
-  if (a3 > 0x19)
+  if (access > 0x19)
   {
     goto LABEL_7;
   }
 
   result = 1;
-  if (((1 << a3) & 0x200F8FE) != 0)
+  if (((1 << access) & 0x200F8FE) != 0)
   {
     return result;
   }
 
-  if (((1 << a3) & 0x1FF0700) == 0)
+  if (((1 << access) & 0x1FF0700) == 0)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:201 description:@"Invalid resource"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:201 description:@"Invalid resource"];
 
 LABEL_7:
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:232 description:@"Invalid resource"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_ML3BaseMusicLibraryResourcesManager.m" lineNumber:232 description:@"Invalid resource"];
   }
 
   return 0;
@@ -797,27 +797,27 @@ LABEL_7:
 
 - (id)musicAssetsContainerPath
 {
-  v3 = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
-  v4 = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaRelativeMusicAssetsDirectoryPath];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  _mediaPath = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
+  _mediaRelativeMusicAssetsDirectoryPath = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaRelativeMusicAssetsDirectoryPath];
+  v5 = [_mediaPath stringByAppendingPathComponent:_mediaRelativeMusicAssetsDirectoryPath];
 
   return v5;
 }
 
-- (id)mediaFolderRelativePath:(id)a3
+- (id)mediaFolderRelativePath:(id)path
 {
-  v4 = a3;
-  v5 = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
-  v6 = [v4 relativePathFromBasePath:v5];
+  pathCopy = path;
+  _mediaPath = [(_ML3BaseMusicLibraryResourcesManager *)self _mediaPath];
+  v6 = [pathCopy relativePathFromBasePath:_mediaPath];
 
   return v6;
 }
 
-- (id)pathForBaseLocationPath:(int64_t)a3
+- (id)pathForBaseLocationPath:(int64_t)path
 {
-  if (a3 <= 299)
+  if (path <= 299)
   {
-    switch(a3)
+    switch(path)
     {
       case 100:
         v3 = 9;
@@ -831,15 +831,15 @@ LABEL_7:
     }
   }
 
-  else if (a3 > 499)
+  else if (path > 499)
   {
-    if (a3 == 500)
+    if (path == 500)
     {
       v3 = 22;
       goto LABEL_19;
     }
 
-    if (a3 == 600)
+    if (path == 600)
     {
       v3 = 23;
       goto LABEL_19;
@@ -848,13 +848,13 @@ LABEL_7:
 
   else
   {
-    if (a3 == 300)
+    if (path == 300)
     {
       v3 = 21;
       goto LABEL_19;
     }
 
-    if (a3 == 400)
+    if (path == 400)
     {
       v3 = 20;
 LABEL_19:
@@ -863,12 +863,12 @@ LABEL_19:
     }
   }
 
-  if ((a3 & 0xF00) != 0)
+  if ((path & 0xF00) != 0)
   {
-    v4 = a3;
+    pathCopy = path;
     v5 = [(_ML3BaseMusicLibraryResourcesManager *)self _pathForResourceFileOrFolder:11 basePath:0 relativeToBase:0 isFolder:0];
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"F%02lld", v4];
-    v7 = [v5 stringByAppendingPathComponent:v6];
+    pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"F%02lld", pathCopy];
+    v7 = [v5 stringByAppendingPathComponent:pathCopy];
   }
 
   else
@@ -881,28 +881,28 @@ LABEL_20:
   return v7;
 }
 
-- (id)pathForResourceFileOrFolder:(int)a3 basePath:(id)a4 relativeToBase:(BOOL)a5 createParentFolderIfNecessary:(BOOL)a6
+- (id)pathForResourceFileOrFolder:(int)folder basePath:(id)path relativeToBase:(BOOL)base createParentFolderIfNecessary:(BOOL)necessary
 {
-  v6 = a6;
+  necessaryCopy = necessary;
   v22 = 0;
-  v7 = [(_ML3BaseMusicLibraryResourcesManager *)self _pathForResourceFileOrFolder:*&a3 basePath:a4 relativeToBase:a5 isFolder:&v22];
+  v7 = [(_ML3BaseMusicLibraryResourcesManager *)self _pathForResourceFileOrFolder:*&folder basePath:path relativeToBase:base isFolder:&v22];
   v8 = v7;
   if (v22 == 1)
   {
-    v9 = v7;
+    stringByDeletingLastPathComponent = v7;
   }
 
   else
   {
-    v9 = [v7 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v7 stringByDeletingLastPathComponent];
   }
 
-  v10 = v9;
-  v11 = [v9 pathComponents];
-  v12 = v11;
-  if (v6 && [v11 count] >= 2)
+  v10 = stringByDeletingLastPathComponent;
+  pathComponents = [stringByDeletingLastPathComponent pathComponents];
+  v12 = pathComponents;
+  if (necessaryCopy && [pathComponents count] >= 2)
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v14 = [v12 objectAtIndex:0];
     v15 = [v12 count];
     if (v15 >= 2)
@@ -914,9 +914,9 @@ LABEL_20:
         v19 = [v12 objectAtIndex:i];
         v14 = [v14 stringByAppendingPathComponent:v19];
 
-        if (([v13 fileExistsAtPath:v14 isDirectory:0] & 1) == 0)
+        if (([defaultManager fileExistsAtPath:v14 isDirectory:0] & 1) == 0)
         {
-          [v13 createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
+          [defaultManager createDirectoryAtPath:v14 withIntermediateDirectories:1 attributes:0 error:0];
         }
       }
     }
@@ -927,49 +927,49 @@ LABEL_20:
   return v20;
 }
 
-- (id)libraryContainerRelativePath:(id)a3
+- (id)libraryContainerRelativePath:(id)path
 {
-  v4 = a3;
-  v5 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
-  v6 = [v4 relativePathFromBasePath:v5];
+  pathCopy = path;
+  libraryContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
+  v6 = [pathCopy relativePathFromBasePath:libraryContainerPath];
 
   return v6;
 }
 
-- (id)libraryContainerPathByAppendingPathComponent:(id)a3
+- (id)libraryContainerPathByAppendingPathComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  componentCopy = component;
+  libraryContainerPath = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerPath];
+  v6 = [libraryContainerPath stringByAppendingPathComponent:componentCopy];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
-  [v4 encodeObject:v5 forKey:@"ah"];
+  coderCopy = coder;
+  libraryContainerIdentifier = [(_ML3BaseMusicLibraryResourcesManager *)self libraryContainerIdentifier];
+  [coderCopy encodeObject:libraryContainerIdentifier forKey:@"ah"];
 }
 
-- (_ML3BaseMusicLibraryResourcesManager)initWithCoder:(id)a3
+- (_ML3BaseMusicLibraryResourcesManager)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ah"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ah"];
 
   v6 = [(_ML3BaseMusicLibraryResourcesManager *)self initWithLibraryContainerIdentifier:v5];
   return v6;
 }
 
-- (_ML3BaseMusicLibraryResourcesManager)initWithLibraryContainerIdentifier:(id)a3
+- (_ML3BaseMusicLibraryResourcesManager)initWithLibraryContainerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = _ML3BaseMusicLibraryResourcesManager;
   v5 = [(_ML3BaseMusicLibraryResourcesManager *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     libraryContainerIdentifier = v5->_libraryContainerIdentifier;
     v5->_libraryContainerIdentifier = v6;
   }
@@ -977,19 +977,19 @@ LABEL_20:
   return v5;
 }
 
-- (_ML3BaseMusicLibraryResourcesManager)initWithAccountInfo:(id)a3
+- (_ML3BaseMusicLibraryResourcesManager)initWithAccountInfo:(id)info
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accountDSID];
+  infoCopy = info;
+  accountDSID = [infoCopy accountDSID];
 
-  if (v5)
+  if (accountDSID)
   {
-    v6 = [v4 accountDSID];
+    accountDSID2 = [infoCopy accountDSID];
     memset(v61, 0, sizeof(v61));
     v60 = 4001;
     CC_SHA1_Init(v61);
-    v7 = v6;
+    v7 = accountDSID2;
     CC_SHA1_Update(v61, [v7 UTF8String], objc_msgSend(v7, "length"));
 
     memset(&v62[8], 0, 64);
@@ -1174,9 +1174,9 @@ LABEL_52:
         }
 
 LABEL_54:
-        v58 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v59 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-        [v58 handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v59 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
         v8 = &stru_28408B690;
         goto LABEL_52;

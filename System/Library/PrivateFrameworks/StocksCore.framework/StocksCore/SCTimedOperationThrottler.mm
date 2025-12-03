@@ -1,24 +1,24 @@
 @interface SCTimedOperationThrottler
 - (BOOL)suspended;
-- (SCTimedOperationThrottler)initWithDelegate:(id)a3;
+- (SCTimedOperationThrottler)initWithDelegate:(id)delegate;
 - (SCWOperationThrottlerDelegate)delegate;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
 - (void)tickle;
-- (void)tickleWithCompletion:(id)a3;
+- (void)tickleWithCompletion:(id)completion;
 @end
 
 @implementation SCTimedOperationThrottler
 
-- (SCTimedOperationThrottler)initWithDelegate:(id)a3
+- (SCTimedOperationThrottler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SCTimedOperationThrottler;
   v5 = [(SCTimedOperationThrottler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[SCWOperationThrottler alloc] initWithDelegate:v6];
     operationThrottler = v6->_operationThrottler;
     v6->_operationThrottler = v7;
@@ -29,34 +29,34 @@
 
 - (void)tickle
 {
-  v2 = [(SCTimedOperationThrottler *)self operationThrottler];
-  [v2 tickle];
+  operationThrottler = [(SCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickle];
 }
 
-- (void)tickleWithCompletion:(id)a3
+- (void)tickleWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SCTimedOperationThrottler *)self operationThrottler];
-  [v5 tickleWithCompletion:v4];
+  completionCopy = completion;
+  operationThrottler = [(SCTimedOperationThrottler *)self operationThrottler];
+  [operationThrottler tickleWithCompletion:completionCopy];
 }
 
 - (BOOL)suspended
 {
-  v2 = [(SCTimedOperationThrottler *)self operationThrottler];
-  v3 = [v2 suspended];
+  operationThrottler = [(SCTimedOperationThrottler *)self operationThrottler];
+  suspended = [operationThrottler suspended];
 
-  return v3;
+  return suspended;
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __84__SCTimedOperationThrottler_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v12 = &unk_1E85E34E0;
-  v13 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = completionCopy;
   v14 = v6;
   v7 = _Block_copy(&v9);
   v8 = [(SCTimedOperationThrottler *)self delegate:v9];

@@ -1,24 +1,24 @@
 @interface PBKApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
-- (void)_presentEditPassesWithCompletion:(id)a3;
-- (void)deleteInEditPassesList:(id)a3 testOptions:(id)a4;
-- (void)deletePassFromLibrary:(id)a3 testOptions:(id)a4;
-- (void)getPassesFromLibrary:(id)a3 testOptions:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
+- (void)_presentEditPassesWithCompletion:(id)completion;
+- (void)deleteInEditPassesList:(id)list testOptions:(id)options;
+- (void)deletePassFromLibrary:(id)library testOptions:(id)options;
+- (void)getPassesFromLibrary:(id)library testOptions:(id)options;
 - (void)gotoBaseTestState;
-- (void)loadGroupsSynchronously:(id)a3 testOptions:(id)a4;
-- (void)presentEditPassesList:(id)a3;
-- (void)scrollCardList:(id)a3 testOptions:(id)a4;
-- (void)scrollEditPassesList:(id)a3 testOptions:(id)a4;
-- (void)selectCard:(id)a3 testOptions:(id)a4;
-- (void)selectInEditPassesList:(id)a3 testOptions:(id)a4;
+- (void)loadGroupsSynchronously:(id)synchronously testOptions:(id)options;
+- (void)presentEditPassesList:(id)list;
+- (void)scrollCardList:(id)list testOptions:(id)options;
+- (void)scrollEditPassesList:(id)list testOptions:(id)options;
+- (void)selectCard:(id)card testOptions:(id)options;
+- (void)selectInEditPassesList:(id)list testOptions:(id)options;
 @end
 
 @implementation PBKApplication
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  optionsCopy = options;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -27,22 +27,22 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v9 = [v6 substringToIndex:1];
-  v10 = [v9 lowercaseString];
-  v11 = [v6 substringFromIndex:1];
-  v12 = [NSString stringWithFormat:@"%@%@:testOptions:", v10, v11];
+  v9 = [testCopy substringToIndex:1];
+  lowercaseString = [v9 lowercaseString];
+  v11 = [testCopy substringFromIndex:1];
+  v12 = [NSString stringWithFormat:@"%@%@:testOptions:", lowercaseString, v11];
 
   v13 = NSSelectorFromString(v12);
   if (objc_opt_respondsToSelector())
   {
-    [(PBKApplication *)self performSelector:v13 withObject:v6 withObject:v7];
+    [(PBKApplication *)self performSelector:v13 withObject:testCopy withObject:optionsCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = PBKApplication;
-    [(PBKApplication *)&v15 runTest:v6 options:v7];
+    [(PBKApplication *)&v15 runTest:testCopy options:optionsCopy];
   }
 
   return 1;
@@ -58,17 +58,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v4 = [(PBKApplication *)self delegate];
-  v5 = [v4 cardsViewController];
+  delegate = [(PBKApplication *)self delegate];
+  cardsViewController = [delegate cardsViewController];
 
-  v6 = [v5 groupStackView];
-  [v6 gotoBaseTestState];
+  groupStackView = [cardsViewController groupStackView];
+  [groupStackView gotoBaseTestState];
 }
 
-- (void)scrollCardList:(id)a3 testOptions:(id)a4
+- (void)scrollCardList:(id)list testOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  optionsCopy = options;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,12 +78,12 @@
   }
 
   [(PBKApplication *)self gotoBaseTestState];
-  [(PBKApplication *)self startedTest:v6];
-  v9 = [(PBKApplication *)self delegate];
-  v10 = [v9 cardsViewController];
+  [(PBKApplication *)self startedTest:listCopy];
+  delegate = [(PBKApplication *)self delegate];
+  cardsViewController = [delegate cardsViewController];
 
-  v11 = [v10 view];
-  [v11 bounds];
+  view = [cardsViewController view];
+  [view bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -91,7 +91,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v6;
+    v30 = listCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Starting %@", buf, 0xCu);
   }
 
@@ -100,9 +100,9 @@
   v24 = 3221225472;
   v25 = sub_10000E544;
   v26 = &unk_10001CE18;
-  v27 = v6;
-  v28 = self;
-  v21 = v6;
+  v27 = listCopy;
+  selfCopy = self;
+  v21 = listCopy;
   v22 = [v20 initWithTestName:v21 scrollBounds:0 amplitude:&v23 direction:v13 + 100.0 completionHandler:{v15 + 100.0, v17 + -200.0, v19 + -200.0, 200.0}];
   [v22 setPreventSheetDismissal:{1, v23, v24, v25, v26}];
   [v22 setShouldFlick:1];
@@ -110,55 +110,55 @@
   [RPTTestRunner runTestWithParameters:v22];
 }
 
-- (void)selectCard:(id)a3 testOptions:(id)a4
+- (void)selectCard:(id)card testOptions:(id)options
 {
-  v5 = a3;
+  cardCopy = card;
   [(PBKApplication *)self gotoBaseTestState];
-  [(PBKApplication *)self startedTest:v5];
+  [(PBKApplication *)self startedTest:cardCopy];
 
-  v6 = [(PBKApplication *)self delegate];
-  v8 = [v6 cardsViewController];
+  delegate = [(PBKApplication *)self delegate];
+  cardsViewController = [delegate cardsViewController];
 
-  v7 = [v8 groupStackView];
-  [v7 beginSelectCardTest];
+  groupStackView = [cardsViewController groupStackView];
+  [groupStackView beginSelectCardTest];
 }
 
-- (void)getPassesFromLibrary:(id)a3 testOptions:(id)a4
+- (void)getPassesFromLibrary:(id)library testOptions:(id)options
 {
-  v5 = a3;
+  libraryCopy = library;
   v7 = +[PKPassLibrary sharedInstance];
-  [(PBKApplication *)self startedTest:v5];
-  v6 = [v7 passes];
-  [(PBKApplication *)self finishedTest:v5];
+  [(PBKApplication *)self startedTest:libraryCopy];
+  passes = [v7 passes];
+  [(PBKApplication *)self finishedTest:libraryCopy];
 }
 
-- (void)loadGroupsSynchronously:(id)a3 testOptions:(id)a4
+- (void)loadGroupsSynchronously:(id)synchronously testOptions:(id)options
 {
-  v5 = a3;
-  [(PBKApplication *)self startedTest:v5];
+  synchronouslyCopy = synchronously;
+  [(PBKApplication *)self startedTest:synchronouslyCopy];
   v6 = objc_alloc_init(PKGroupsController);
   [v6 loadGroupsSynchronously];
-  [(PBKApplication *)self finishedTest:v5];
+  [(PBKApplication *)self finishedTest:synchronouslyCopy];
 }
 
-- (void)deletePassFromLibrary:(id)a3 testOptions:(id)a4
+- (void)deletePassFromLibrary:(id)library testOptions:(id)options
 {
-  v8 = a3;
+  libraryCopy = library;
   v5 = +[PKPassLibrary sharedInstance];
   v6 = [v5 passesOfType:0];
-  [(PBKApplication *)self startedTest:v8];
+  [(PBKApplication *)self startedTest:libraryCopy];
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    [v5 removePass:v7];
+    firstObject = [v6 firstObject];
+    [v5 removePass:firstObject];
   }
 
-  [(PBKApplication *)self finishedTest:v8];
+  [(PBKApplication *)self finishedTest:libraryCopy];
 }
 
-- (void)_presentEditPassesWithCompletion:(id)a3
+- (void)_presentEditPassesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -167,23 +167,23 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(PBKApplication *)self delegate];
-  v7 = [v6 cardsViewController];
+  delegate = [(PBKApplication *)self delegate];
+  cardsViewController = [delegate cardsViewController];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000E9C0;
   v10[3] = &unk_10001D3B8;
   v11 = objc_alloc_init(PKEditPassesNavigationController);
-  v12 = v4;
+  v12 = completionCopy;
   v8 = v11;
-  v9 = v4;
-  [v7 presentViewController:v8 animated:1 completion:v10];
+  v9 = completionCopy;
+  [cardsViewController presentViewController:v8 animated:1 completion:v10];
 }
 
-- (void)presentEditPassesList:(id)a3
+- (void)presentEditPassesList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -192,21 +192,21 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  [(PBKApplication *)self startedTest:v4];
+  [(PBKApplication *)self startedTest:listCopy];
   v6 = dispatch_get_global_queue(-32768, 0);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000EB20;
   v8[3] = &unk_10001CE18;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = listCopy;
+  v7 = listCopy;
   dispatch_async(v6, v8);
 }
 
-- (void)scrollEditPassesList:(id)a3 testOptions:(id)a4
+- (void)scrollEditPassesList:(id)list testOptions:(id)options
 {
-  v5 = a3;
+  listCopy = list;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -219,15 +219,15 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000EF74;
   v8[3] = &unk_10001D408;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = listCopy;
+  selfCopy = self;
+  v7 = listCopy;
   [(PBKApplication *)self _presentEditPassesWithCompletion:v8];
 }
 
-- (void)selectInEditPassesList:(id)a3 testOptions:(id)a4
+- (void)selectInEditPassesList:(id)list testOptions:(id)options
 {
-  v5 = a3;
+  listCopy = list;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,14 +240,14 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000F330;
   v8[3] = &unk_10001D3E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = listCopy;
+  v7 = listCopy;
   [(PBKApplication *)self _presentEditPassesWithCompletion:v8];
 }
 
-- (void)deleteInEditPassesList:(id)a3 testOptions:(id)a4
+- (void)deleteInEditPassesList:(id)list testOptions:(id)options
 {
-  v5 = a3;
+  listCopy = list;
   v6 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,8 +260,8 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000F4AC;
   v8[3] = &unk_10001D3E0;
-  v9 = v5;
-  v7 = v5;
+  v9 = listCopy;
+  v7 = listCopy;
   [(PBKApplication *)self _presentEditPassesWithCompletion:v8];
 }
 

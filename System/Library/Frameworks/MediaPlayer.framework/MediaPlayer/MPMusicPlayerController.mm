@@ -2,73 +2,73 @@
 + (MPMusicPlayerApplicationController)applicationQueuePlayer;
 + (MPMusicPlayerController)alloc;
 + (MPMusicPlayerController)systemMusicPlayer;
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3;
-- (BOOL)setNowPlayingUID:(unint64_t)a3 error:(id *)a4;
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog;
+- (BOOL)setNowPlayingUID:(unint64_t)d error:(id *)error;
 - (MPMediaItem)nowPlayingItem;
 - (MPMusicPlaybackState)playbackState;
-- (MPMusicPlayerController)initWithClientIdentifier:(id)a3 queue:(id)a4;
+- (MPMusicPlayerController)initWithClientIdentifier:(id)identifier queue:(id)queue;
 - (MPMusicRepeatMode)repeatMode;
 - (MPMusicShuffleMode)shuffleMode;
 - (MPNowPlayingInfoAudioFormat)nowPlayingAudioFormat;
 - (NSUInteger)indexOfNowPlayingItem;
 - (double)currentPlaybackTime;
 - (float)currentPlaybackRate;
-- (id)_mediaItemFromNowPlaying:(id)a3;
+- (id)_mediaItemFromNowPlaying:(id)playing;
 - (id)_nowPlaying;
 - (id)_queueDescriptor;
 - (id)_snapshot;
-- (id)nowPlayingAtIndex:(int64_t)a3;
-- (id)nowPlayingItemAtIndex:(unint64_t)a3;
+- (id)nowPlayingAtIndex:(int64_t)index;
+- (id)nowPlayingItemAtIndex:(unint64_t)index;
 - (id)queueAsQuery;
 - (id)queueAsRadioStation;
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3;
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog;
 - (int64_t)_serverRepeatMode;
 - (int64_t)_serverShuffleMode;
 - (unint64_t)nowPlayingUID;
-- (unint64_t)nowPlayingUIDAtIndex:(unint64_t)a3;
+- (unint64_t)nowPlayingUIDAtIndex:(unint64_t)index;
 - (unint64_t)numberOfItems;
 - (void)_clearConnection;
 - (void)_establishConnectionIfNeeded;
-- (void)_handleMediaServicesLost:(id)a3;
-- (void)_handleMediaServicesReset:(id)a3;
-- (void)_onQueue_applyServerStateUpdateRecord:(id)a3;
-- (void)_postPrivateQueueDidChangeNotificationWithContentItemIDs:(id)a3;
-- (void)_setNowPlayingItem:(id)a3 itemIdentifier:(id)a4;
-- (void)_setServerRepeatMode:(int64_t)a3;
-- (void)_setServerShuffleMode:(int64_t)a3;
+- (void)_handleMediaServicesLost:(id)lost;
+- (void)_handleMediaServicesReset:(id)reset;
+- (void)_onQueue_applyServerStateUpdateRecord:(id)record;
+- (void)_postPrivateQueueDidChangeNotificationWithContentItemIDs:(id)ds;
+- (void)_setNowPlayingItem:(id)item itemIdentifier:(id)identifier;
+- (void)_setServerRepeatMode:(int64_t)mode;
+- (void)_setServerShuffleMode:(int64_t)mode;
 - (void)_validateServer;
-- (void)_wakeServerIfConnectedForReason:(id)a3;
+- (void)_wakeServerIfConnectedForReason:(id)reason;
 - (void)appendQueueDescriptor:(MPMusicPlayerQueueDescriptor *)descriptor;
-- (void)applyServerStateUpdateRecord:(id)a3;
+- (void)applyServerStateUpdateRecord:(id)record;
 - (void)beginSeekingBackward;
 - (void)beginSeekingForward;
 - (void)dealloc;
 - (void)endSeeking;
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4;
-- (void)onServer:(id)a3;
-- (void)onServerAsync:(id)a3 errorHandler:(id)a4 timeout:(double)a5 retryEnabled:(BOOL)a6;
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler;
+- (void)onServer:(id)server;
+- (void)onServerAsync:(id)async errorHandler:(id)handler timeout:(double)timeout retryEnabled:(BOOL)enabled;
 - (void)pause;
-- (void)pauseWithFadeoutDuration:(double)a3;
+- (void)pauseWithFadeoutDuration:(double)duration;
 - (void)play;
 - (void)prepareToPlay;
-- (void)prepareToPlayWithCompletionHandler:(id)a3 timeout:(double)a4;
+- (void)prepareToPlayWithCompletionHandler:(id)handler timeout:(double)timeout;
 - (void)prependQueueDescriptor:(MPMusicPlayerQueueDescriptor *)descriptor;
 - (void)serverItemDidEnd;
-- (void)serverPlaybackModeDidChangeAffectingQueue:(BOOL)a3;
+- (void)serverPlaybackModeDidChangeAffectingQueue:(BOOL)queue;
 - (void)serverQueueDidEnd;
-- (void)setCurrentPlaybackRate:(float)a3;
-- (void)setCurrentPlaybackTime:(double)a3;
+- (void)setCurrentPlaybackRate:(float)rate;
+- (void)setCurrentPlaybackTime:(double)time;
 - (void)setNowPlayingItem:(MPMediaItem *)nowPlayingItem;
-- (void)setPrioritizeStartupOverQuality:(BOOL)a3;
+- (void)setPrioritizeStartupOverQuality:(BOOL)quality;
 - (void)setQueueWithDescriptor:(MPMusicPlayerQueueDescriptor *)descriptor;
 - (void)setQueueWithItemCollection:(MPMediaItemCollection *)itemCollection;
-- (void)setQueueWithQuery:(id)a3 firstItem:(id)a4;
-- (void)setQueueWithRadioStation:(id)a3;
+- (void)setQueueWithQuery:(id)query firstItem:(id)item;
+- (void)setQueueWithRadioStation:(id)station;
 - (void)setQueueWithStoreIDs:(NSArray *)storeIDs;
 - (void)setRepeatMode:(MPMusicRepeatMode)repeatMode;
-- (void)setServerNowPlaying:(id)a3;
-- (void)setServerQueueDescriptor:(id)a3;
-- (void)setServerTimeSnapshot:(id)a3;
+- (void)setServerNowPlaying:(id)playing;
+- (void)setServerQueueDescriptor:(id)descriptor;
+- (void)setServerTimeSnapshot:(id)snapshot;
 - (void)setShuffleMode:(MPMusicShuffleMode)shuffleMode;
 - (void)shuffle;
 - (void)skipToBeginning;
@@ -76,40 +76,40 @@
 - (void)skipToNextItem;
 - (void)skipToPreviousItem;
 - (void)stop;
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
 @end
 
 @implementation MPMusicPlayerController
 
-- (void)_postPrivateQueueDidChangeNotificationWithContentItemIDs:(id)a3
+- (void)_postPrivateQueueDidChangeNotificationWithContentItemIDs:(id)ds
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   dispatch_assert_queue_V2(self->_queue);
   if ([(NSString *)self->_clientIdentifier isEqualToString:@"MusicKit_applicationMusicPlayer"])
   {
     v5 = self->_lastContentItemIDs;
     v6 = v5;
-    if (v5 == v4)
+    if (v5 == dsCopy)
     {
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v7 = [(NSArray *)v5 isEqual:v4];
+    v7 = [(NSArray *)v5 isEqual:dsCopy];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(NSArray *)v4 copy];
+      v8 = [(NSArray *)dsCopy copy];
       lastContentItemIDs = self->_lastContentItemIDs;
       self->_lastContentItemIDs = v8;
 
-      if (v4)
+      if (dsCopy)
       {
         v11 = @"_contentItemIDs";
-        v12[0] = v4;
+        v12[0] = dsCopy;
         v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
       }
 
@@ -118,8 +118,8 @@ LABEL_8:
         v6 = 0;
       }
 
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 postNotificationName:@"_MPMusicPlayerControllerQueueDidChangeNotification" object:self userInfo:v6];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_MPMusicPlayerControllerQueueDidChangeNotification" object:self userInfo:v6];
 
       goto LABEL_8;
     }
@@ -128,19 +128,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (id)_mediaItemFromNowPlaying:(id)a3
+- (id)_mediaItemFromNowPlaying:(id)playing
 {
-  v4 = a3;
-  v5 = [v4 item];
+  playingCopy = playing;
+  item = [playingCopy item];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = item;
     objc_initWeak(&location, self);
     v7 = [_MPMusicPlayerControllerArtworkToken alloc];
-    v8 = [v4 artworkIdentifier];
-    v9 = [v4 itemIdentifier];
-    v10 = [(_MPMusicPlayerControllerArtworkToken *)v7 initWithArtworkIdentifier:v8 contentItemID:v9];
+    artworkIdentifier = [playingCopy artworkIdentifier];
+    itemIdentifier = [playingCopy itemIdentifier];
+    v10 = [(_MPMusicPlayerControllerArtworkToken *)v7 initWithArtworkIdentifier:artworkIdentifier contentItemID:itemIdentifier];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -156,8 +156,8 @@ LABEL_9:
   }
 
   v12 = [_MPMusicPlayerMediaItemProxy alloc];
-  v13 = [v4 itemIdentifier];
-  v14 = [(_MPMusicPlayerMediaItemProxy *)v12 initWithItemIdentifier:v13 item:v5];
+  itemIdentifier2 = [playingCopy itemIdentifier];
+  v14 = [(_MPMusicPlayerMediaItemProxy *)v12 initWithItemIdentifier:itemIdentifier2 item:item];
 
   return v14;
 }
@@ -372,11 +372,11 @@ void __43__MPMusicPlayerController__queueDescriptor__block_invoke_2(uint64_t a1,
   *(v9 + 72) = v5;
 }
 
-- (void)onServerAsync:(id)a3 errorHandler:(id)a4 timeout:(double)a5 retryEnabled:(BOOL)a6
+- (void)onServerAsync:(id)async errorHandler:(id)handler timeout:(double)timeout retryEnabled:(BOOL)enabled
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  asyncCopy = async;
+  handlerCopy = handler;
   [(MPMusicPlayerController *)self _establishConnectionIfNeeded];
   v12 = objc_alloc(MEMORY[0x1E69B13F0]);
   v38[0] = MEMORY[0x1E69E9820];
@@ -391,9 +391,9 @@ void __43__MPMusicPlayerController__queueDescriptor__block_invoke_2(uint64_t a1,
   v36[2] = __75__MPMusicPlayerController_onServerAsync_errorHandler_timeout_retryEnabled___block_invoke_164;
   v36[3] = &unk_1E76809C0;
   v36[4] = self;
-  v15 = v11;
+  v15 = handlerCopy;
   v37 = v15;
-  v16 = [v14 initWithTimeout:v36 interruptionHandler:a5];
+  v16 = [v14 initWithTimeout:v36 interruptionHandler:timeout];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__MPMusicPlayerController_onServerAsync_errorHandler_timeout_retryEnabled___block_invoke_168;
@@ -409,10 +409,10 @@ void __43__MPMusicPlayerController__queueDescriptor__block_invoke_2(uint64_t a1,
   v28[2] = __75__MPMusicPlayerController_onServerAsync_errorHandler_timeout_retryEnabled___block_invoke_2;
   v28[3] = &unk_1E7680A38;
   v21 = v19;
-  v32 = a6;
+  enabledCopy = enabled;
   v28[4] = self;
   v29 = v21;
-  v22 = v10;
+  v22 = asyncCopy;
   v30 = v22;
   v23 = v15;
   v31 = v23;
@@ -533,9 +533,9 @@ void __75__MPMusicPlayerController_onServerAsync_errorHandler_timeout_retryEnabl
   }
 }
 
-- (void)onServer:(id)a3
+- (void)onServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   [(MPMusicPlayerController *)self _establishConnectionIfNeeded];
   v5 = objc_alloc(MEMORY[0x1E69B13F0]);
   v11[0] = MEMORY[0x1E69E9820];
@@ -552,7 +552,7 @@ void __75__MPMusicPlayerController_onServerAsync_errorHandler_timeout_retryEnabl
   v10[4] = self;
   v8 = [v7 initWithTimeout:v10 interruptionHandler:4.0];
   v9 = [(NSXPCConnection *)self->_connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_163_51645];
-  v4[2](v4, v9);
+  serverCopy[2](serverCopy, v9);
 
   [v6 disarm];
   [v8 disarm];
@@ -611,37 +611,37 @@ void __36__MPMusicPlayerController_onServer___block_invoke_161(uint64_t a1, void
   }
 }
 
-- (void)_handleMediaServicesReset:(id)a3
+- (void)_handleMediaServicesReset:(id)reset
 {
   if (self->_mediaServiceLost)
   {
     self->_mediaServiceLost = 0;
-    v5 = [a3 name];
-    [(MPMusicPlayerController *)self _wakeServerIfConnectedForReason:v5];
+    name = [reset name];
+    [(MPMusicPlayerController *)self _wakeServerIfConnectedForReason:name];
   }
 }
 
-- (void)_handleMediaServicesLost:(id)a3
+- (void)_handleMediaServicesLost:(id)lost
 {
   if (!self->_mediaServiceLost)
   {
     self->_mediaServiceLost = 1;
-    v5 = [a3 name];
-    [(MPMusicPlayerController *)self _wakeServerIfConnectedForReason:v5];
+    name = [lost name];
+    [(MPMusicPlayerController *)self _wakeServerIfConnectedForReason:name];
   }
 }
 
-- (void)_wakeServerIfConnectedForReason:(id)a3
+- (void)_wakeServerIfConnectedForReason:(id)reason
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_serverValidated)
   {
     v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = v4;
+      v7 = reasonCopy;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "Wake server reason:%{public}@", &v6, 0xCu);
     }
 
@@ -718,11 +718,11 @@ void __42__MPMusicPlayerController__validateServer__block_invoke(uint64_t a1, vo
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"MPMusicPlayerController.m" lineNumber:987 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[MPMusicPlayerController class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMusicPlayerController.m" lineNumber:987 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[MPMusicPlayerController class]"}];
   }
 }
 
@@ -773,9 +773,9 @@ void __43__MPMusicPlayerController__clearConnection__block_invoke(uint64_t a1)
   }
 }
 
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change
 {
-  v5 = [(MPMusicPlayerController *)self queue:a3];
+  v5 = [(MPMusicPlayerController *)self queue:controller];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MPMusicPlayerController_volumeController_mutedStateDidChange___block_invoke;
@@ -790,15 +790,15 @@ void __64__MPMusicPlayerController_volumeController_mutedStateDidChange___block_
   [v2 postNotificationName:@"MPMusicPlayerControllerVolumeDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
-  v5 = [(MPMusicPlayerController *)self queue];
+  queue = [(MPMusicPlayerController *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__MPMusicPlayerController_volumeController_volumeValueDidChange___block_invoke;
   block[3] = &unk_1E7682518;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 void __65__MPMusicPlayerController_volumeController_volumeValueDidChange___block_invoke(uint64_t a1)
@@ -807,13 +807,13 @@ void __65__MPMusicPlayerController_volumeController_volumeValueDidChange___block
   [v2 postNotificationName:@"MPMusicPlayerControllerVolumeDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)visualIdenticalityIdentifierForCatalog:(id)a3
+- (id)visualIdenticalityIdentifierForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  v4 = v3;
-  if (v3)
+  token = [catalog token];
+  v4 = token;
+  if (token)
   {
-    v5 = *(v3 + 8);
+    v5 = *(token + 8);
   }
 
   else
@@ -826,26 +826,26 @@ void __65__MPMusicPlayerController_volumeController_volumeValueDidChange___block
   return v5;
 }
 
-- (void)loadRepresentationForArtworkCatalog:(id)a3 completionHandler:(id)a4
+- (void)loadRepresentationForArtworkCatalog:(id)catalog completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 token];
+  catalogCopy = catalog;
+  handlerCopy = handler;
+  token = [catalogCopy token];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__MPMusicPlayerController_loadRepresentationForArtworkCatalog_completionHandler___block_invoke;
   v14[3] = &unk_1E7680930;
-  v15 = v8;
-  v16 = v6;
-  v17 = v7;
+  v15 = token;
+  v16 = catalogCopy;
+  v17 = handlerCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__MPMusicPlayerController_loadRepresentationForArtworkCatalog_completionHandler___block_invoke_3;
   v12[3] = &unk_1E76816D0;
   v13 = v17;
   v9 = v17;
-  v10 = v6;
-  v11 = v8;
+  v10 = catalogCopy;
+  v11 = token;
   [(MPMusicPlayerController *)self onServerAsync:v14 errorHandler:v12 timeout:0 retryEnabled:4.0];
 }
 
@@ -936,12 +936,12 @@ LABEL_4:
 LABEL_7:
 }
 
-- (BOOL)areRepresentationsAvailableForCatalog:(id)a3
+- (BOOL)areRepresentationsAvailableForCatalog:(id)catalog
 {
-  v3 = [a3 token];
-  if (v3)
+  token = [catalog token];
+  if (token)
   {
-    v4 = v3[1];
+    v4 = token[1];
   }
 
   else
@@ -968,62 +968,62 @@ LABEL_7:
   [(MPMusicPlayerController *)self applyServerStateUpdateRecord:v3];
 }
 
-- (void)serverPlaybackModeDidChangeAffectingQueue:(BOOL)a3
+- (void)serverPlaybackModeDidChangeAffectingQueue:(BOOL)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v5 = objc_alloc_init(MPMusicPlayerServerStateUpdateRecord);
   [(MPMusicPlayerServerStateUpdateRecord *)v5 setHasRepeatMode:1];
-  [(MPMusicPlayerServerStateUpdateRecord *)v5 setQueueDidChange:v3];
+  [(MPMusicPlayerServerStateUpdateRecord *)v5 setQueueDidChange:queueCopy];
   [(MPMusicPlayerController *)self applyServerStateUpdateRecord:v5];
 }
 
-- (void)setServerTimeSnapshot:(id)a3
+- (void)setServerTimeSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = objc_alloc_init(MPMusicPlayerServerStateUpdateRecord);
   [(MPMusicPlayerServerStateUpdateRecord *)v5 setHasTimeSnapshot:1];
-  [(MPMusicPlayerServerStateUpdateRecord *)v5 setTimeSnapshot:v4];
+  [(MPMusicPlayerServerStateUpdateRecord *)v5 setTimeSnapshot:snapshotCopy];
 
   [(MPMusicPlayerController *)self applyServerStateUpdateRecord:v5];
 }
 
-- (void)setServerNowPlaying:(id)a3
+- (void)setServerNowPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   v5 = objc_alloc_init(MPMusicPlayerServerStateUpdateRecord);
   [(MPMusicPlayerServerStateUpdateRecord *)v5 setHasNowPlaying:1];
-  [(MPMusicPlayerServerStateUpdateRecord *)v5 setNowPlaying:v4];
+  [(MPMusicPlayerServerStateUpdateRecord *)v5 setNowPlaying:playingCopy];
 
   [(MPMusicPlayerController *)self applyServerStateUpdateRecord:v5];
 }
 
-- (void)setServerQueueDescriptor:(id)a3
+- (void)setServerQueueDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc_init(MPMusicPlayerServerStateUpdateRecord);
   [(MPMusicPlayerServerStateUpdateRecord *)v5 setHasQueueDescriptor:1];
-  [(MPMusicPlayerServerStateUpdateRecord *)v5 setQueueDescriptor:v4];
+  [(MPMusicPlayerServerStateUpdateRecord *)v5 setQueueDescriptor:descriptorCopy];
 
   [(MPMusicPlayerServerStateUpdateRecord *)v5 setQueueDidChange:1];
   [(MPMusicPlayerController *)self applyServerStateUpdateRecord:v5];
 }
 
-- (void)_onQueue_applyServerStateUpdateRecord:(id)a3
+- (void)_onQueue_applyServerStateUpdateRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v4 hasQueueDescriptor])
+  if ([recordCopy hasQueueDescriptor])
   {
-    v5 = [v4 queueDescriptor];
+    queueDescriptor = [recordCopy queueDescriptor];
     serverQueueDescriptor = self->_serverQueueDescriptor;
-    self->_serverQueueDescriptor = v5;
+    self->_serverQueueDescriptor = queueDescriptor;
   }
 
-  v7 = [v4 hasNowPlaying];
-  if (v7)
+  hasNowPlaying = [recordCopy hasNowPlaying];
+  if (hasNowPlaying)
   {
-    v8 = [v4 nowPlaying];
-    objc_storeStrong(&self->_serverNowPlaying, v8);
+    nowPlaying = [recordCopy nowPlaying];
+    objc_storeStrong(&self->_serverNowPlaying, nowPlaying);
     if (self->_isPreparedToPlay || self->_targetQueueDescriptor || !self->_serverNowPlaying)
     {
       v9 = 0;
@@ -1046,25 +1046,25 @@ LABEL_7:
   else
   {
     v9 = 0;
-    v8 = 0;
+    nowPlaying = 0;
   }
 
-  if ([v4 hasTimeSnapshot])
+  if ([recordCopy hasTimeSnapshot])
   {
-    v10 = [v4 timeSnapshot];
-    objc_storeStrong(&self->_serverTimeSnapshot, v10);
+    timeSnapshot = [recordCopy timeSnapshot];
+    objc_storeStrong(&self->_serverTimeSnapshot, timeSnapshot);
     lastServerTimeSnapshot = self->_lastServerTimeSnapshot;
     if (lastServerTimeSnapshot)
     {
-      v12 = [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)lastServerTimeSnapshot state];
-      if (v12 == [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)v10 state])
+      state = [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)lastServerTimeSnapshot state];
+      if (state == [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)timeSnapshot state])
       {
         [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)self->_lastServerTimeSnapshot rate];
         v14 = v13;
-        [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)v10 rate];
+        [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)timeSnapshot rate];
         v16 = v15;
         v17 = v14 != v15;
-        if ([(MPMusicPlayerControllerNowPlayingTimeSnapshot *)v10 state]!= 1)
+        if ([(MPMusicPlayerControllerNowPlayingTimeSnapshot *)timeSnapshot state]!= 1)
         {
           if (v14 == v16)
           {
@@ -1077,11 +1077,11 @@ LABEL_7:
         goto LABEL_16;
       }
 
-      if ([(MPMusicPlayerControllerNowPlayingTimeSnapshot *)v10 state]== 1)
+      if ([(MPMusicPlayerControllerNowPlayingTimeSnapshot *)timeSnapshot state]== 1)
       {
         v17 = 1;
 LABEL_16:
-        [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)v10 rate];
+        [(MPMusicPlayerControllerNowPlayingTimeSnapshot *)timeSnapshot rate];
         if (v18 == 0.0 || !v17)
         {
           goto LABEL_19;
@@ -1090,75 +1090,75 @@ LABEL_16:
     }
 
 LABEL_18:
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
 
 LABEL_19:
     v20 = self->_lastServerTimeSnapshot;
-    self->_lastServerTimeSnapshot = v10;
+    self->_lastServerTimeSnapshot = timeSnapshot;
   }
 
-  if (([v4 hasRepeatMode] & 1) != 0 || objc_msgSend(v4, "hasShuffleMode"))
+  if (([recordCopy hasRepeatMode] & 1) != 0 || objc_msgSend(recordCopy, "hasShuffleMode"))
   {
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
   }
 
-  if ([v4 hasContentItemIDs])
+  if ([recordCopy hasContentItemIDs])
   {
-    v22 = [v4 contentItemIDs];
-    [(MPMusicPlayerController *)self _postPrivateQueueDidChangeNotificationWithContentItemIDs:v22];
+    contentItemIDs = [recordCopy contentItemIDs];
+    [(MPMusicPlayerController *)self _postPrivateQueueDidChangeNotificationWithContentItemIDs:contentItemIDs];
   }
 
-  if ([v4 queueDidChange])
+  if ([recordCopy queueDidChange])
   {
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v23 postNotificationName:@"MPMusicPlayerControllerQueueDidChangeNotification" object:self];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 postNotificationName:@"MPMusicPlayerControllerQueueDidChangeNotification" object:self];
   }
 
-  if ([v4 itemDidEnd])
+  if ([recordCopy itemDidEnd])
   {
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 postNotificationName:@"MPMusicPlayerControllerItemPlaybackDidEndNotification" object:self];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 postNotificationName:@"MPMusicPlayerControllerItemPlaybackDidEndNotification" object:self];
   }
 
-  if ([v4 queueDidEnd])
+  if ([recordCopy queueDidEnd])
   {
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 postNotificationName:@"_MPMusicPlayerControllerQueueDidEndNotification" object:self];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 postNotificationName:@"_MPMusicPlayerControllerQueueDidEndNotification" object:self];
   }
 
-  if (v7)
+  if (hasNowPlaying)
   {
-    v26 = [(MPMusicPlayerControllerNowPlaying *)self->_lastServerNowPlaying itemIdentifier];
-    v27 = [v8 itemIdentifier];
-    if (v26 == v27 || [v26 isEqual:v27])
+    itemIdentifier = [(MPMusicPlayerControllerNowPlaying *)self->_lastServerNowPlaying itemIdentifier];
+    itemIdentifier2 = [nowPlaying itemIdentifier];
+    if (itemIdentifier == itemIdentifier2 || [itemIdentifier isEqual:itemIdentifier2])
     {
-      v28 = [v4 hasTimeMetadata];
+      hasTimeMetadata = [recordCopy hasTimeMetadata];
 
-      if ((v28 & 1) == 0)
+      if ((hasTimeMetadata & 1) == 0)
       {
 LABEL_38:
-        v30 = [(MPMusicPlayerControllerNowPlaying *)self->_lastServerNowPlaying artworkIdentifier];
-        v31 = [v8 artworkIdentifier];
-        v32 = v31;
-        if (v30 == v31)
+        artworkIdentifier = [(MPMusicPlayerControllerNowPlaying *)self->_lastServerNowPlaying artworkIdentifier];
+        artworkIdentifier2 = [nowPlaying artworkIdentifier];
+        v32 = artworkIdentifier2;
+        if (artworkIdentifier == artworkIdentifier2)
         {
         }
 
         else
         {
-          v33 = [v30 isEqual:v31];
+          v33 = [artworkIdentifier isEqual:artworkIdentifier2];
 
           if (v33)
           {
 LABEL_43:
-            objc_storeStrong(&self->_lastServerNowPlaying, v8);
+            objc_storeStrong(&self->_lastServerNowPlaying, nowPlaying);
             goto LABEL_44;
           }
 
-          v30 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v30 postNotificationName:@"_MPMusicPlayerControllerArtworkDidChangeNotification" object:self];
+          artworkIdentifier = [MEMORY[0x1E696AD88] defaultCenter];
+          [artworkIdentifier postNotificationName:@"_MPMusicPlayerControllerArtworkDidChangeNotification" object:self];
         }
 
         goto LABEL_43;
@@ -1169,37 +1169,37 @@ LABEL_43:
     {
     }
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 postNotificationName:@"MPMusicPlayerControllerNowPlayingItemDidChangeNotification" object:self];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 postNotificationName:@"MPMusicPlayerControllerNowPlayingItemDidChangeNotification" object:self];
 
     goto LABEL_38;
   }
 
 LABEL_44:
-  if ([v4 audioFormatDidChange])
+  if ([recordCopy audioFormatDidChange])
   {
-    v34 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v34 postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 postNotificationName:@"MPMusicPlayerControllerPlaybackStateDidChangeNotification" object:self];
   }
 
   if (v9)
   {
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 postNotificationName:@"MPMediaPlaybackIsPreparedToPlayDidChangeNotification" object:self];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 postNotificationName:@"MPMediaPlaybackIsPreparedToPlayDidChangeNotification" object:self];
   }
 }
 
-- (void)applyServerStateUpdateRecord:(id)a3
+- (void)applyServerStateUpdateRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__MPMusicPlayerController_applyServerStateUpdateRecord___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1281,7 +1281,7 @@ LABEL_44:
   }
 }
 
-- (void)setCurrentPlaybackRate:(float)a3
+- (void)setCurrentPlaybackRate:(float)rate
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -1292,7 +1292,7 @@ LABEL_44:
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134217984;
-    v13 = a3;
+    rateCopy = rate;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "setCurrentPlaybackRate", "rate=%g", buf, 0xCu);
   }
 
@@ -1303,7 +1303,7 @@ LABEL_44:
   v10[1] = 3221225472;
   v10[2] = __50__MPMusicPlayerController_setCurrentPlaybackRate___block_invoke;
   v10[3] = &__block_descriptor_44_e41_v16__0___MPMusicPlayerControllerServer__8l;
-  v11 = a3;
+  rateCopy2 = rate;
   v10[4] = v6;
   [(MPMusicPlayerController *)self onServer:v10];
 }
@@ -1333,14 +1333,14 @@ void __50__MPMusicPlayerController_setCurrentPlaybackRate___block_invoke_2(uint6
 
 - (float)currentPlaybackRate
 {
-  v2 = [(MPMusicPlayerController *)self _snapshot];
-  [v2 rate];
+  _snapshot = [(MPMusicPlayerController *)self _snapshot];
+  [_snapshot rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCurrentPlaybackTime:(double)a3
+- (void)setCurrentPlaybackTime:(double)time
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -1351,7 +1351,7 @@ void __50__MPMusicPlayerController_setCurrentPlaybackRate___block_invoke_2(uint6
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134217984;
-    v12 = a3;
+    timeCopy = time;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "setCurrentPlaybackTime", "time=%g", buf, 0xCu);
   }
 
@@ -1362,7 +1362,7 @@ void __50__MPMusicPlayerController_setCurrentPlaybackRate___block_invoke_2(uint6
   v10[1] = 3221225472;
   v10[2] = __50__MPMusicPlayerController_setCurrentPlaybackTime___block_invoke;
   v10[3] = &__block_descriptor_48_e41_v16__0___MPMusicPlayerControllerServer__8l;
-  *&v10[4] = a3;
+  *&v10[4] = time;
   v10[5] = v6;
   [(MPMusicPlayerController *)self onServer:v10];
 }
@@ -1392,8 +1392,8 @@ void __50__MPMusicPlayerController_setCurrentPlaybackTime___block_invoke_2(uint6
 
 - (double)currentPlaybackTime
 {
-  v2 = [(MPMusicPlayerController *)self _snapshot];
-  [v2 currentTime];
+  _snapshot = [(MPMusicPlayerController *)self _snapshot];
+  [_snapshot currentTime];
   v4 = v3;
 
   return v4;
@@ -1529,7 +1529,7 @@ LABEL_11:
       v16[1] = 3221225472;
       v16[2] = __40__MPMusicPlayerController_prepareToPlay__block_invoke;
       v16[3] = &unk_1E76808A0;
-      v18 = self;
+      selfCopy = self;
       v19 = v9;
       v17 = v15;
       v3 = v15;
@@ -1602,16 +1602,16 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
 
 - (MPNowPlayingInfoAudioFormat)nowPlayingAudioFormat
 {
-  v2 = [(MPMusicPlayerController *)self _nowPlaying];
-  v3 = [v2 audioFormat];
+  _nowPlaying = [(MPMusicPlayerController *)self _nowPlaying];
+  audioFormat = [_nowPlaying audioFormat];
 
-  return v3;
+  return audioFormat;
 }
 
 - (unint64_t)numberOfItems
 {
-  v2 = [(MPMusicPlayerController *)self _nowPlaying];
-  v3 = [v2 count];
+  _nowPlaying = [(MPMusicPlayerController *)self _nowPlaying];
+  v3 = [_nowPlaying count];
 
   return v3;
 }
@@ -1645,7 +1645,7 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   }
 }
 
-- (void)pauseWithFadeoutDuration:(double)a3
+- (void)pauseWithFadeoutDuration:(double)duration
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -1655,9 +1655,9 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   v8 = v7;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
-    v9 = a3;
+    durationCopy = duration;
     *buf = 134217984;
-    v15 = v9;
+    v15 = durationCopy;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "pauseWithFadeoutDuration", "duration=%f", buf, 0xCu);
   }
 
@@ -1668,7 +1668,7 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   v13[1] = 3221225472;
   v13[2] = __52__MPMusicPlayerController_pauseWithFadeoutDuration___block_invoke;
   v13[3] = &__block_descriptor_40_e41_v16__0___MPMusicPlayerControllerServer__8l;
-  *&v13[4] = a3;
+  *&v13[4] = duration;
   [(MPMusicPlayerController *)self onServer:v13];
   v11 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v12 = v11;
@@ -1708,15 +1708,15 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   }
 }
 
-- (id)nowPlayingItemAtIndex:(unint64_t)a3
+- (id)nowPlayingItemAtIndex:(unint64_t)index
 {
-  v4 = [(MPMusicPlayerController *)self nowPlayingAtIndex:a3];
+  v4 = [(MPMusicPlayerController *)self nowPlayingAtIndex:index];
   v5 = [(MPMusicPlayerController *)self _mediaItemFromNowPlaying:v4];
 
   return v5;
 }
 
-- (id)nowPlayingAtIndex:(int64_t)a3
+- (id)nowPlayingAtIndex:(int64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -1727,7 +1727,7 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = index;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "nowPlayingAtIndex", "index=%lld", &buf, 0xCu);
   }
 
@@ -1742,7 +1742,7 @@ void __40__MPMusicPlayerController_prepareToPlay__block_invoke_2(void *a1, void 
   v14[2] = __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke;
   v14[3] = &unk_1E7680740;
   v14[4] = &buf;
-  v14[5] = a3;
+  v14[5] = index;
   [(MPMusicPlayerController *)self onServer:v14];
   v9 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v10 = v9;
@@ -1795,11 +1795,11 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
 
 - (id)queueAsRadioStation
 {
-  v2 = [(MPMusicPlayerController *)self _queueDescriptor];
+  _queueDescriptor = [(MPMusicPlayerController *)self _queueDescriptor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 radioStation];
+    radioStation = [_queueDescriptor radioStation];
   }
 
   else
@@ -1807,55 +1807,55 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v2 playParametersQueue];
-      v5 = [v4 firstObject];
+      playParametersQueue = [_queueDescriptor playParametersQueue];
+      firstObject = [playParametersQueue firstObject];
 
-      v3 = [[MPRadioStation alloc] initWithPlayParameters:v5];
+      radioStation = [[MPRadioStation alloc] initWithPlayParameters:firstObject];
     }
 
     else
     {
-      v3 = 0;
+      radioStation = 0;
     }
   }
 
-  return v3;
+  return radioStation;
 }
 
 - (id)queueAsQuery
 {
-  v2 = [(MPMusicPlayerController *)self _queueDescriptor];
+  _queueDescriptor = [(MPMusicPlayerController *)self _queueDescriptor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 query];
+    query = [_queueDescriptor query];
   }
 
   else
   {
-    v3 = 0;
+    query = 0;
   }
 
-  return v3;
+  return query;
 }
 
-- (void)setQueueWithRadioStation:(id)a3
+- (void)setQueueWithRadioStation:(id)station
 {
-  v4 = a3;
-  v5 = [[MPMusicPlayerRadioStationQueueDescriptor alloc] initWithRadioStation:v4];
+  stationCopy = station;
+  v5 = [[MPMusicPlayerRadioStationQueueDescriptor alloc] initWithRadioStation:stationCopy];
 
   [(MPMusicPlayerController *)self setQueueWithDescriptor:v5];
 }
 
-- (void)setQueueWithQuery:(id)a3 firstItem:(id)a4
+- (void)setQueueWithQuery:(id)query firstItem:(id)item
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [[MPMusicPlayerMediaItemQueueDescriptor alloc] initWithQuery:v6];
+  itemCopy = item;
+  queryCopy = query;
+  v7 = [[MPMusicPlayerMediaItemQueueDescriptor alloc] initWithQuery:queryCopy];
 
-  if (v8)
+  if (itemCopy)
   {
-    [(MPMusicPlayerMediaItemQueueDescriptor *)v7 setStartItem:v8];
+    [(MPMusicPlayerMediaItemQueueDescriptor *)v7 setStartItem:itemCopy];
   }
 
   [(MPMusicPlayerController *)self setQueueWithDescriptor:v7];
@@ -1945,9 +1945,9 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
   }
 }
 
-- (void)prepareToPlayWithCompletionHandler:(id)a3 timeout:(double)a4
+- (void)prepareToPlayWithCompletionHandler:(id)handler timeout:(double)timeout
 {
-  v6 = a3;
+  handlerCopy = handler;
   if ([(MPMusicPlayerController *)self isPreparedToPlay])
   {
     v7 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -1957,7 +1957,7 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "prepareToPlay short-circuit [already prepared to play]", buf, 2u);
     }
 
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -1991,8 +1991,8 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
       v22[3] = &unk_1E76807E0;
       v26 = v11;
       v23 = v16;
-      v24 = self;
-      v25 = v6;
+      selfCopy = self;
+      v25 = handlerCopy;
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __70__MPMusicPlayerController_prepareToPlayWithCompletionHandler_timeout___block_invoke_103;
@@ -2001,7 +2001,7 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
       v19[4] = self;
       v20 = v25;
       v17 = v16;
-      [(MPMusicPlayerController *)self onServerAsync:v22 errorHandler:v19 timeout:1 retryEnabled:a4];
+      [(MPMusicPlayerController *)self onServerAsync:v22 errorHandler:v19 timeout:1 retryEnabled:timeout];
     }
 
     else
@@ -2013,7 +2013,7 @@ void __45__MPMusicPlayerController_nowPlayingAtIndex___block_invoke_2(uint64_t a
       }
 
       v18 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPMusicPlayerControllerErrorDomain" code:1 userInfo:0];
-      (v6)[2](v6, v18);
+      (handlerCopy)[2](handlerCopy, v18);
     }
   }
 }
@@ -2181,7 +2181,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A238D000, p_super, OS_LOG_TYPE_ERROR, "[MPMusicPlayerController:%p] appendQueueDescriptor | ignoring append [userQueueModificationsDisabled]", buf, 0xCu);
     }
   }
@@ -2195,7 +2195,7 @@ LABEL_7:
     if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
     {
       *buf = 138543362;
-      v17 = v4;
+      selfCopy = v4;
       _os_signpost_emit_with_name_impl(&dword_1A238D000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "appendQueueDescriptor", "descriptor=%{public}@", buf, 0xCu);
     }
 
@@ -2249,7 +2249,7 @@ void __49__MPMusicPlayerController_appendQueueDescriptor___block_invoke_2(uint64
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A238D000, p_super, OS_LOG_TYPE_ERROR, "[MPMusicPlayerController:%p] prependQueueDescriptor | ignoring prepend [userQueueModificationsDisabled]", buf, 0xCu);
     }
   }
@@ -2263,7 +2263,7 @@ void __49__MPMusicPlayerController_appendQueueDescriptor___block_invoke_2(uint64
     if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v9))
     {
       *buf = 138543362;
-      v17 = v4;
+      selfCopy = v4;
       _os_signpost_emit_with_name_impl(&dword_1A238D000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "prependQueueDescriptor", "descriptor=%{public}@", buf, 0xCu);
     }
 
@@ -2376,25 +2376,25 @@ void __50__MPMusicPlayerController_prependQueueDescriptor___block_invoke_2(uint6
 
 - (NSUInteger)indexOfNowPlayingItem
 {
-  v2 = [(MPMusicPlayerController *)self _nowPlaying];
-  v3 = [v2 index];
+  _nowPlaying = [(MPMusicPlayerController *)self _nowPlaying];
+  index = [_nowPlaying index];
 
-  return v3;
+  return index;
 }
 
-- (void)_setNowPlayingItem:(id)a3 itemIdentifier:(id)a4
+- (void)_setNowPlayingItem:(id)item itemIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  itemCopy = item;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (itemCopy)
   {
-    v9 = v6;
+    v9 = itemCopy;
   }
 
   else
   {
-    v9 = v7;
+    v9 = identifierCopy;
   }
 
   v10 = v9;
@@ -2413,10 +2413,10 @@ void __50__MPMusicPlayerController_prependQueueDescriptor___block_invoke_2(uint6
   v19[1] = 3221225472;
   v19[2] = __61__MPMusicPlayerController__setNowPlayingItem_itemIdentifier___block_invoke;
   v19[3] = &unk_1E7680768;
-  v20 = v6;
+  v20 = itemCopy;
   v21 = v8;
   v15 = v8;
-  v16 = v6;
+  v16 = itemCopy;
   [(MPMusicPlayerController *)self onServer:v19];
   v17 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v18 = v17;
@@ -2444,15 +2444,15 @@ void __61__MPMusicPlayerController__setNowPlayingItem_itemIdentifier___block_inv
   }
 }
 
-- (unint64_t)nowPlayingUIDAtIndex:(unint64_t)a3
+- (unint64_t)nowPlayingUIDAtIndex:(unint64_t)index
 {
-  v3 = [(MPMusicPlayerController *)self nowPlayingAtIndex:a3];
-  v4 = [v3 itemUID];
+  v3 = [(MPMusicPlayerController *)self nowPlayingAtIndex:index];
+  itemUID = [v3 itemUID];
 
-  return v4;
+  return itemUID;
 }
 
-- (BOOL)setNowPlayingUID:(unint64_t)a3 error:(id *)a4
+- (BOOL)setNowPlayingUID:(unint64_t)d error:(id *)error
 {
   v7 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v8 = os_signpost_id_generate(v7);
@@ -2476,7 +2476,7 @@ void __61__MPMusicPlayerController__setNowPlayingItem_itemIdentifier___block_inv
   v16[2] = __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke;
   v16[3] = &unk_1E7680740;
   v16[4] = buf;
-  v16[5] = a3;
+  v16[5] = d;
   [(MPMusicPlayerController *)self onServer:v16];
   v11 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v12 = v11;
@@ -2486,9 +2486,9 @@ void __61__MPMusicPlayerController__setNowPlayingItem_itemIdentifier___block_inv
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v12, OS_SIGNPOST_INTERVAL_END, v8, "setNowPlayingUID", &unk_1A2797D62, v15, 2u);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v18 + 5);
+    *error = *(v18 + 5);
   }
 
   v13 = *(v18 + 5) != 0;
@@ -2531,10 +2531,10 @@ void __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke_2(uint6
 
 - (unint64_t)nowPlayingUID
 {
-  v2 = [(MPMusicPlayerController *)self _nowPlaying];
-  v3 = [v2 itemUID];
+  _nowPlaying = [(MPMusicPlayerController *)self _nowPlaying];
+  itemUID = [_nowPlaying itemUID];
 
-  return v3;
+  return itemUID;
 }
 
 - (void)setNowPlayingItem:(MPMediaItem *)nowPlayingItem
@@ -2542,21 +2542,21 @@ void __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke_2(uint6
   v8 = nowPlayingItem;
   if ([(MPMusicPlayerController *)self isPreparedToPlay]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v4 = v8;
+    item = v8;
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
-      v6 = [(MPMediaItem *)v7 itemIdentifier];
-      v4 = [(MPMediaItem *)v7 item];
+      v7 = item;
+      itemIdentifier = [(MPMediaItem *)v7 itemIdentifier];
+      item = [(MPMediaItem *)v7 item];
     }
 
     else
     {
-      v6 = 0;
+      itemIdentifier = 0;
     }
 
-    [(MPMusicPlayerController *)self _setNowPlayingItem:v4 itemIdentifier:v6];
+    [(MPMusicPlayerController *)self _setNowPlayingItem:item itemIdentifier:itemIdentifier];
   }
 
   else
@@ -2567,26 +2567,26 @@ void __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke_2(uint6
 
 - (MPMediaItem)nowPlayingItem
 {
-  v3 = [(MPMusicPlayerController *)self _nowPlaying];
-  v4 = [(MPMusicPlayerController *)self _mediaItemFromNowPlaying:v3];
+  _nowPlaying = [(MPMusicPlayerController *)self _nowPlaying];
+  v4 = [(MPMusicPlayerController *)self _mediaItemFromNowPlaying:_nowPlaying];
 
   return v4;
 }
 
-- (void)setPrioritizeStartupOverQuality:(BOOL)a3
+- (void)setPrioritizeStartupOverQuality:(BOOL)quality
 {
-  v3 = a3;
-  self->_prioritizeStartupOverQuality = a3;
-  v5 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+  qualityCopy = quality;
+  self->_prioritizeStartupOverQuality = quality;
+  targetQueueDescriptor = [(MPMusicPlayerController *)self targetQueueDescriptor];
 
-  if (v5)
+  if (targetQueueDescriptor)
   {
-    v6 = [(MPMusicPlayerController *)self targetQueueDescriptor];
-    [v6 setPrioritizeStartupOverQuality:v3];
+    targetQueueDescriptor2 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+    [targetQueueDescriptor2 setPrioritizeStartupOverQuality:qualityCopy];
   }
 }
 
-- (void)_setServerShuffleMode:(int64_t)a3
+- (void)_setServerShuffleMode:(int64_t)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -2597,7 +2597,7 @@ void __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke_2(uint6
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134217984;
-    v13 = a3;
+    modeCopy = mode;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "setShuffleMode", "shuffleMode=%ld", buf, 0xCu);
   }
 
@@ -2605,7 +2605,7 @@ void __50__MPMusicPlayerController_setNowPlayingUID_error___block_invoke_2(uint6
   v11[1] = 3221225472;
   v11[2] = __49__MPMusicPlayerController__setServerShuffleMode___block_invoke;
   v11[3] = &__block_descriptor_40_e41_v16__0___MPMusicPlayerControllerServer__8l;
-  v11[4] = a3;
+  v11[4] = mode;
   [(MPMusicPlayerController *)self onServer:v11];
   v9 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v10 = v9;
@@ -2662,7 +2662,7 @@ uint64_t __45__MPMusicPlayerController__serverShuffleMode__block_invoke(uint64_t
   return [a2 getShuffleModeWithReply:v3];
 }
 
-- (void)_setServerRepeatMode:(int64_t)a3
+- (void)_setServerRepeatMode:(int64_t)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
@@ -2673,7 +2673,7 @@ uint64_t __45__MPMusicPlayerController__serverShuffleMode__block_invoke(uint64_t
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 134217984;
-    v13 = a3;
+    modeCopy = mode;
     _os_signpost_emit_with_name_impl(&dword_1A238D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "setRepeatMode", "repeatMode=%ld", buf, 0xCu);
   }
 
@@ -2681,7 +2681,7 @@ uint64_t __45__MPMusicPlayerController__serverShuffleMode__block_invoke(uint64_t
   v11[1] = 3221225472;
   v11[2] = __48__MPMusicPlayerController__setServerRepeatMode___block_invoke;
   v11[3] = &__block_descriptor_40_e41_v16__0___MPMusicPlayerControllerServer__8l;
-  v11[4] = a3;
+  v11[4] = mode;
   [(MPMusicPlayerController *)self onServer:v11];
   v9 = os_log_create("com.apple.amp.mediaplayer", "SDKPlayback");
   v10 = v9;
@@ -2741,9 +2741,9 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 - (void)setShuffleMode:(MPMusicShuffleMode)shuffleMode
 {
   self->_shuffleMode = shuffleMode;
-  v5 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+  targetQueueDescriptor = [(MPMusicPlayerController *)self targetQueueDescriptor];
 
-  if (v5)
+  if (targetQueueDescriptor)
   {
     if ((self->_shuffleMode - 1) >= 3)
     {
@@ -2755,8 +2755,8 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
       v6 = self->_shuffleMode - 1;
     }
 
-    v7 = [(MPMusicPlayerController *)self targetQueueDescriptor];
-    [v7 setShuffleType:v6];
+    targetQueueDescriptor2 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+    [targetQueueDescriptor2 setShuffleType:v6];
   }
 
   if ([(MPMusicPlayerController *)self isPreparedToPlay])
@@ -2779,9 +2779,9 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 - (void)setRepeatMode:(MPMusicRepeatMode)repeatMode
 {
   self->_repeatMode = repeatMode;
-  v5 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+  targetQueueDescriptor = [(MPMusicPlayerController *)self targetQueueDescriptor];
 
-  if (v5)
+  if (targetQueueDescriptor)
   {
     if ((self->_repeatMode - 1) >= 3)
     {
@@ -2793,8 +2793,8 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
       v6 = self->_repeatMode - 1;
     }
 
-    v7 = [(MPMusicPlayerController *)self targetQueueDescriptor];
-    [v7 setRepeatType:v6];
+    targetQueueDescriptor2 = [(MPMusicPlayerController *)self targetQueueDescriptor];
+    [targetQueueDescriptor2 setRepeatType:v6];
   }
 
   if ([(MPMusicPlayerController *)self isPreparedToPlay])
@@ -2816,10 +2816,10 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 
 - (MPMusicPlaybackState)playbackState
 {
-  v2 = [(MPMusicPlayerController *)self _snapshot];
-  v3 = [v2 state];
+  _snapshot = [(MPMusicPlayerController *)self _snapshot];
+  state = [_snapshot state];
 
-  return v3;
+  return state;
 }
 
 - (void)dealloc
@@ -2830,14 +2830,14 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
   [(MPMusicPlayerController *)&v3 dealloc];
 }
 
-- (MPMusicPlayerController)initWithClientIdentifier:(id)a3 queue:(id)a4
+- (MPMusicPlayerController)initWithClientIdentifier:(id)identifier queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   if ([(MPMusicPlayerController *)self isMemberOfClass:objc_opt_class()])
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"MPMusicPlayerController.m" lineNumber:122 description:@"Must initialize a concrete instance of MPMusicPlayerController."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMusicPlayerController.m" lineNumber:122 description:@"Must initialize a concrete instance of MPMusicPlayerController."];
   }
 
   v25.receiver = self;
@@ -2847,9 +2847,9 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
   if (v9)
   {
     v9->_serverValidated = 0;
-    if (v8)
+    if (queueCopy)
     {
-      v11 = v8;
+      v11 = queueCopy;
       queue = v10->_queue;
       v10->_queue = v11;
     }
@@ -2863,7 +2863,7 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
     }
 
     v10->_lock._os_unfair_lock_opaque = 0;
-    v15 = [v7 copy];
+    v15 = [identifierCopy copy];
     clientIdentifier = v10->_clientIdentifier;
     v10->_clientIdentifier = v15;
 
@@ -2875,11 +2875,11 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 
     [(MPVolumeController *)v10->_volumeController setDelegate:v10];
     *&v10->_shuffleMode = vdupq_n_s64(1uLL);
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v10 selector:sel__handleMediaServicesLost_ name:*MEMORY[0x1E6958110] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleMediaServicesLost_ name:*MEMORY[0x1E6958110] object:0];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v10 selector:sel__handleMediaServicesReset_ name:*MEMORY[0x1E6958128] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__handleMediaServicesReset_ name:*MEMORY[0x1E6958128] object:0];
   }
 
   return v10;
@@ -2887,7 +2887,7 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 
 + (MPMusicPlayerController)alloc
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     return [MPMusicPlayerSystemController alloc];
@@ -2895,7 +2895,7 @@ uint64_t __44__MPMusicPlayerController__serverRepeatMode__block_invoke(uint64_t 
 
   else
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___MPMusicPlayerController;
     return objc_msgSendSuper2(&v4, sel_alloc);
   }

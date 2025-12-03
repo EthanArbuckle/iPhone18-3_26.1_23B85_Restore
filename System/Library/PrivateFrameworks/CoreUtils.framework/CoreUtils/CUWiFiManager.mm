@@ -2,31 +2,31 @@
 - (CUWiFiManager)init;
 - (int)_wifiStateUncached;
 - (unsigned)_wifiFlagsUncached;
-- (void)_activateSafeInvokeBlock:(id)a3;
+- (void)_activateSafeInvokeBlock:(id)block;
 - (void)_interrupted;
 - (void)_invalidated;
 - (void)_update;
 - (void)_updateInfraDisabled;
 - (void)_updateTrafficPeerStatusMonitor;
-- (void)_updateTrafficPeerStatusUpdated:(id)a3 isAvailable:(BOOL)a4 error:(id)a5;
+- (void)_updateTrafficPeerStatusUpdated:(id)updated isAvailable:(BOOL)available error:(id)error;
 - (void)_updateTrafficPeers;
-- (void)_updateTrafficPeersWithService:(unsigned int)a3;
+- (void)_updateTrafficPeersWithService:(unsigned int)service;
 - (void)_updateWakeOnWireless;
 - (void)_updateWiFiState;
 - (void)_wifiEnsureStarted;
 - (void)_wifiEnsureStopped;
-- (void)_wifiHandleEvent:(id)a3;
-- (void)_wifiJoinNotification:(__WiFiNetwork *)a3 status:(id)a4 reason:(id)a5;
+- (void)_wifiHandleEvent:(id)event;
+- (void)_wifiJoinNotification:(__WiFiNetwork *)notification status:(id)status reason:(id)reason;
 - (void)_wifiStateChanged;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)performUpdate:(id)a3;
-- (void)setControlFlags:(unsigned int)a3;
-- (void)setInfraDisabled:(BOOL)a3;
-- (void)setLabel:(id)a3;
-- (void)setTrafficPeers:(id)a3;
-- (void)setWakeOnWirelessEnabled:(BOOL)a3;
+- (void)performUpdate:(id)update;
+- (void)setControlFlags:(unsigned int)flags;
+- (void)setInfraDisabled:(BOOL)disabled;
+- (void)setLabel:(id)label;
+- (void)setTrafficPeers:(id)peers;
+- (void)setWakeOnWirelessEnabled:(BOOL)enabled;
 @end
 
 @implementation CUWiFiManager
@@ -34,9 +34,9 @@
 - (void)_wifiStateChanged
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(CUWiFiManager *)self _wifiFlagsUncached];
-  v4 = [(CUWiFiManager *)self _wifiStateUncached];
-  if (__PAIR64__(v4, v3) == *&self->_wifiFlags)
+  _wifiFlagsUncached = [(CUWiFiManager *)self _wifiFlagsUncached];
+  _wifiStateUncached = [(CUWiFiManager *)self _wifiStateUncached];
+  if (__PAIR64__(_wifiStateUncached, _wifiFlagsUncached) == *&self->_wifiFlags)
   {
     ucat = self->_ucat;
     if (ucat->var0 > 10)
@@ -54,15 +54,15 @@
       ucat = self->_ucat;
     }
 
-    if (v4 <= 19)
+    if (_wifiStateUncached <= 19)
     {
-      if (!v4)
+      if (!_wifiStateUncached)
       {
         v6 = "Unknown";
         goto LABEL_48;
       }
 
-      if (v4 == 10)
+      if (_wifiStateUncached == 10)
       {
         v6 = "Off";
         goto LABEL_48;
@@ -71,7 +71,7 @@
 
     else
     {
-      switch(v4)
+      switch(_wifiStateUncached)
       {
         case 20:
           v6 = "NotConnected";
@@ -82,7 +82,7 @@
         case 40:
           v6 = "Connected";
 LABEL_48:
-          v18 = CUPrintFlags(v3, byte_191FFA1B8, 1);
+          v18 = CUPrintFlags(_wifiFlagsUncached, byte_191FFA1B8, 1);
           LogPrintF_safe(ucat, "[CUWiFiManager _wifiStateChanged]", 0xAu, "WiFi state unchanged: %s, flags=%@", v14, v15, v16, v17, v6);
 
           return;
@@ -130,15 +130,15 @@ LABEL_48:
 
     v9 = "?";
 LABEL_22:
-    if (v4 <= 19)
+    if (_wifiStateUncached <= 19)
     {
-      if (!v4)
+      if (!_wifiStateUncached)
       {
         v10 = "Unknown";
         goto LABEL_34;
       }
 
-      if (v4 == 10)
+      if (_wifiStateUncached == 10)
       {
         v10 = "Off";
         goto LABEL_34;
@@ -147,7 +147,7 @@ LABEL_22:
 
     else
     {
-      switch(v4)
+      switch(_wifiStateUncached)
       {
         case 20:
           v10 = "NotConnected";
@@ -158,7 +158,7 @@ LABEL_22:
         case 40:
           v10 = "Connected";
 LABEL_34:
-          v11 = CUPrintFlags(v3, byte_191FFA1B8, 1);
+          v11 = CUPrintFlags(_wifiFlagsUncached, byte_191FFA1B8, 1);
           *buf = 136315650;
           v20 = v9;
           v21 = 2080;
@@ -177,8 +177,8 @@ LABEL_34:
 
 LABEL_35:
 
-  self->_wifiFlags = v3;
-  self->_wifiState = v4;
+  self->_wifiFlags = _wifiFlagsUncached;
+  self->_wifiState = _wifiStateUncached;
   v12 = _Block_copy(self->_wifiStateChangedHandler);
   v13 = v12;
   if (v12)
@@ -260,13 +260,13 @@ LABEL_35:
   return v2;
 }
 
-- (void)_wifiJoinNotification:(__WiFiNetwork *)a3 status:(id)a4 reason:(id)a5
+- (void)_wifiJoinNotification:(__WiFiNetwork *)notification status:(id)status reason:(id)reason
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CUWiFiManager *)self _wifiFlagsUncached];
-  v10 = [(CUWiFiManager *)self _wifiStateUncached];
+  statusCopy = status;
+  reasonCopy = reason;
+  _wifiFlagsUncached = [(CUWiFiManager *)self _wifiFlagsUncached];
+  _wifiStateUncached = [(CUWiFiManager *)self _wifiStateUncached];
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
@@ -280,26 +280,26 @@ LABEL_35:
       ucat = self->_ucat;
     }
 
-    v23 = CUPrintFlags(v9, byte_191FFA1B8, 1);
-    LogPrintF_safe(ucat, "[CUWiFiManager _wifiJoinNotification:status:reason:]", 0x1Eu, "WiFi Join notification: status=%@, state=%s, flags=%@, reason=%@", v12, v13, v14, v15, v7);
+    v23 = CUPrintFlags(_wifiFlagsUncached, byte_191FFA1B8, 1);
+    LogPrintF_safe(ucat, "[CUWiFiManager _wifiJoinNotification:status:reason:]", 0x1Eu, "WiFi Join notification: status=%@, state=%s, flags=%@, reason=%@", v12, v13, v14, v15, statusCopy);
   }
 
 LABEL_6:
   v16 = 30;
-  if (([v7 isEqual:*MEMORY[0x1E69B2018]] & 1) == 0)
+  if (([statusCopy isEqual:*MEMORY[0x1E69B2018]] & 1) == 0)
   {
-    if ([v7 isEqual:*MEMORY[0x1E69B2090]])
+    if ([statusCopy isEqual:*MEMORY[0x1E69B2090]])
     {
       v16 = 30;
     }
 
     else
     {
-      v16 = v10;
+      v16 = _wifiStateUncached;
     }
   }
 
-  if (v16 != self->_wifiState || v9 != self->_wifiFlags)
+  if (v16 != self->_wifiState || _wifiFlagsUncached != self->_wifiFlags)
   {
     v17 = logger_9879();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -369,7 +369,7 @@ LABEL_25:
         case 40:
           v20 = "Connected";
 LABEL_37:
-          v21 = CUPrintFlags(v9, byte_191FFA1B8, 1);
+          v21 = CUPrintFlags(_wifiFlagsUncached, byte_191FFA1B8, 1);
           *buf = 136315650;
           v25 = v19;
           v26 = 2080;
@@ -379,7 +379,7 @@ LABEL_37:
           _os_log_impl(&dword_191EAF000, v17, OS_LOG_TYPE_DEFAULT, "WiFi state changed: %s -> %s, flags=%@", buf, 0x20u);
 
 LABEL_38:
-          self->_wifiFlags = v9;
+          self->_wifiFlags = _wifiFlagsUncached;
           self->_wifiState = v16;
           wifiStateChangedHandler = self->_wifiStateChangedHandler;
           if (wifiStateChangedHandler)
@@ -398,25 +398,25 @@ LABEL_38:
 LABEL_40:
 }
 
-- (void)_wifiHandleEvent:(id)a3
+- (void)_wifiHandleEvent:(id)event
 {
-  v11 = a3;
+  eventCopy = event;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
-    v5 = v11;
+    v5 = eventCopy;
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      v6 = [v5 type];
-      LogPrintF_safe(ucat, "[CUWiFiManager _wifiHandleEvent:]", 0x1Eu, "WiFi event:type=%ld", v7, v8, v9, v10, v6);
+      type = [v5 type];
+      LogPrintF_safe(ucat, "[CUWiFiManager _wifiHandleEvent:]", 0x1Eu, "WiFi event:type=%ld", v7, v8, v9, v10, type);
       goto LABEL_5;
     }
 
     if (_LogCategory_Initialize(self->_ucat, 0x1Eu))
     {
       ucat = self->_ucat;
-      v5 = v11;
+      v5 = eventCopy;
       goto LABEL_3;
     }
   }
@@ -1225,13 +1225,13 @@ LABEL_10:
   }
 }
 
-- (void)_updateTrafficPeerStatusUpdated:(id)a3 isAvailable:(BOOL)a4 error:(id)a5
+- (void)_updateTrafficPeerStatusUpdated:(id)updated isAvailable:(BOOL)available error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  availableCopy = available;
+  updatedCopy = updated;
+  errorCopy = error;
   v10 = getAWDLTrafficRegistrationServiceAirPlay();
-  v71 = v8;
+  v71 = updatedCopy;
   v11 = v10;
   if (v11 == v71)
   {
@@ -1467,7 +1467,7 @@ LABEL_65:
   trafficFlagsUnavailable = self->_trafficFlagsUnavailable;
   v62 = trafficFlagsUnavailable | v20;
   v63 = trafficFlagsUnavailable & ~v20;
-  if (!v6)
+  if (!availableCopy)
   {
     v63 = v62;
   }
@@ -1479,7 +1479,7 @@ LABEL_65:
     if (ucat->var0 != -1)
     {
 LABEL_69:
-      v70 = NSPrintF("%{error}", v13, v14, v15, v16, v17, v18, v19, v9);
+      v70 = NSPrintF("%{error}", v13, v14, v15, v16, v17, v18, v19, errorCopy);
       LogPrintF(ucat, "[CUWiFiManager _updateTrafficPeerStatusUpdated:isAvailable:error:]", 0x1Eu, "P2P state monitor update: service=%@, isAvailable=%s, error=%@, trafficFlags=0x%X", v65, v66, v67, v68, v71);
 
       goto LABEL_71;
@@ -1535,8 +1535,8 @@ LABEL_71:
             v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           }
 
-          v8 = [v7 trafficFlags];
-          if ((v8 & 0x100) != 0)
+          trafficFlags = [v7 trafficFlags];
+          if ((trafficFlags & 0x100) != 0)
           {
             v9 = getAWDLTrafficRegistrationServiceAirPlay();
             v10 = v9;
@@ -1553,7 +1553,7 @@ LABEL_71:
             [v3 addObject:v11];
           }
 
-          if ((v8 & 0x200) != 0)
+          if ((trafficFlags & 0x200) != 0)
           {
             v12 = getAWDLTrafficRegistrationServiceSidecar();
             v13 = v12;
@@ -1570,7 +1570,7 @@ LABEL_71:
             [v3 addObject:v14];
           }
 
-          if ((v8 & 0x400) != 0)
+          if ((trafficFlags & 0x400) != 0)
           {
             v15 = getAWDLTrafficRegistrationServiceDeviceToDeviceMigration();
             v16 = v15;
@@ -1587,7 +1587,7 @@ LABEL_71:
             [v3 addObject:v17];
           }
 
-          if ((v8 & 0x1000) != 0)
+          if ((trafficFlags & 0x1000) != 0)
           {
             v18 = getAWDLTrafficRegistrationServiceUniversalControl();
             v19 = v18;
@@ -1604,7 +1604,7 @@ LABEL_71:
             [v3 addObject:v20];
           }
 
-          if ((v8 & 0x2000) != 0)
+          if ((trafficFlags & 0x2000) != 0)
           {
             v21 = getAWDLTrafficRegistrationServiceMPRemoteCamera();
             v22 = v21;
@@ -1621,7 +1621,7 @@ LABEL_71:
             [v3 addObject:v23];
           }
 
-          if ((v8 & 0x4000) != 0)
+          if ((trafficFlags & 0x4000) != 0)
           {
             v24 = getAWDLTrafficRegistrationServiceRemoteCamera();
             v25 = v24;
@@ -1638,7 +1638,7 @@ LABEL_71:
             [v3 addObject:v26];
           }
 
-          if ((v8 & 0x8000) != 0)
+          if ((trafficFlags & 0x8000) != 0)
           {
             v27 = getAWDLTrafficRegistrationServiceTVRemoteCamera();
             v28 = v27;
@@ -1655,7 +1655,7 @@ LABEL_71:
             [v3 addObject:v29];
           }
 
-          if ((v8 & 0x10000) != 0)
+          if ((trafficFlags & 0x10000) != 0)
           {
             v30 = getAWDLTrafficRegistrationServiceRemoteScreen();
             v31 = v30;
@@ -1672,7 +1672,7 @@ LABEL_71:
             [v3 addObject:v32];
           }
 
-          if ((v8 & 0x40000) != 0)
+          if ((trafficFlags & 0x40000) != 0)
           {
             v33 = getAWDLTrafficRegistrationServiceMacVirtualDisplay();
             v34 = v33;
@@ -1708,7 +1708,7 @@ LABEL_71:
         {
           v44 = [(NSSet *)v41 isEqual:v42];
 
-          v52 = self;
+          selfCopy7 = self;
           if (v44)
           {
             goto LABEL_86;
@@ -1718,10 +1718,10 @@ LABEL_71:
         else
         {
 
-          v52 = self;
+          selfCopy7 = self;
         }
 
-        ucat = v52->_ucat;
+        ucat = selfCopy7->_ucat;
         if (ucat->var0 > 30)
         {
           goto LABEL_72;
@@ -1729,7 +1729,7 @@ LABEL_71:
 
         if (ucat->var0 == -1)
         {
-          if (!_LogCategory_Initialize(v52->_ucat, 0x1Eu))
+          if (!_LogCategory_Initialize(selfCopy7->_ucat, 0x1Eu))
           {
             goto LABEL_72;
           }
@@ -1795,15 +1795,15 @@ LABEL_72:
       }
 
 LABEL_85:
-      v52 = self;
+      selfCopy7 = self;
       goto LABEL_86;
     }
 
-    v52 = self;
+    selfCopy7 = self;
     if (!self->_wifiP2PStateMonitor)
     {
 LABEL_86:
-      [(CUWiFiManager *)v52 _updateWiFiState];
+      [(CUWiFiManager *)selfCopy7 _updateWiFiState];
 
       return;
     }
@@ -1815,12 +1815,12 @@ LABEL_86:
       {
 LABEL_65:
         LogPrintF(v53, "[CUWiFiManager _updateTrafficPeerStatusMonitor]", 0x1Eu, "P2P state monitor stop", v36, v37, v38, v39, v73);
-        v52 = self;
+        selfCopy7 = self;
         goto LABEL_83;
       }
 
       v68 = _LogCategory_Initialize(v53, 0x1Eu);
-      v52 = self;
+      selfCopy7 = self;
       if (v68)
       {
         v53 = self->_ucat;
@@ -1829,15 +1829,15 @@ LABEL_65:
     }
 
 LABEL_83:
-    p_wifiP2PStateMonitor = &v52->_wifiP2PStateMonitor;
-    [(WiFiP2PAWDLStateMonitor *)v52->_wifiP2PStateMonitor endMonitoring];
+    p_wifiP2PStateMonitor = &selfCopy7->_wifiP2PStateMonitor;
+    [(WiFiP2PAWDLStateMonitor *)selfCopy7->_wifiP2PStateMonitor endMonitoring];
     v70 = *p_wifiP2PStateMonitor;
     *p_wifiP2PStateMonitor = 0;
 
     v71 = self->_wifiP2PStateServices;
     self->_wifiP2PStateServices = 0;
 
-    v52 = self;
+    selfCopy7 = self;
     self->_trafficFlagsUnavailable = 0;
     trafficFlagsUnavailableUpdatedHandler = self->_trafficFlagsUnavailableUpdatedHandler;
     if (trafficFlagsUnavailableUpdatedHandler)
@@ -1858,9 +1858,9 @@ void __48__CUWiFiManager__updateTrafficPeerStatusMonitor__block_invoke(uint64_t 
   [WeakRetained _updateTrafficPeerStatusUpdated:v8 isAvailable:a3 error:v7];
 }
 
-- (void)_updateTrafficPeersWithService:(unsigned int)a3
+- (void)_updateTrafficPeersWithService:(unsigned int)service
 {
-  v3 = *&a3;
+  v3 = *&service;
   v90 = *MEMORY[0x1E69E9840];
   v65 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ((v3 & 0x100) != 0)
@@ -1917,7 +1917,7 @@ void __48__CUWiFiManager__updateTrafficPeerStatusMonitor__block_invoke(uint64_t 
 LABEL_22:
     v62 = v10;
     [v65 setObject:? forKeyedSubscript:?];
-    v64 = self;
+    selfCopy = self;
     v11 = self->_trafficPeers;
     v78 = 0u;
     v79 = 0u;
@@ -1938,10 +1938,10 @@ LABEL_22:
             objc_enumerationMutation(v11);
           }
 
-          v17 = [*(*(&v78 + 1) + 8 * i) trafficFlags];
-          if ((v17 & v3) != 0)
+          trafficFlags = [*(*(&v78 + 1) + 8 * i) trafficFlags];
+          if ((trafficFlags & v3) != 0)
           {
-            if ((v17 & 4) != 0)
+            if ((trafficFlags & 4) != 0)
             {
               v18 = 9;
             }
@@ -1951,7 +1951,7 @@ LABEL_22:
               v18 = 1;
             }
 
-            v14 = v18 & 0xFFFFFFF9 | (2 * (v17 & 3)) | v14;
+            v14 = v18 & 0xFFFFFFF9 | (2 * (trafficFlags & 3)) | v14;
           }
         }
 
@@ -1991,10 +1991,10 @@ LABEL_22:
           v25 = *(*(&v74 + 1) + 8 * j);
           if (([v25 trafficFlags] & 0x43200) != 0)
           {
-            v26 = [v25 sessionID];
-            if (v26)
+            sessionID = [v25 sessionID];
+            if (sessionID)
             {
-              [v65 setObject:v26 forKeyedSubscript:@"TR_SIDECAR_SESSION_UUID"];
+              [v65 setObject:sessionID forKeyedSubscript:@"TR_SIDECAR_SESSION_UUID"];
             }
           }
         }
@@ -2023,7 +2023,7 @@ LABEL_22:
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v29 = v64->_trafficPeersCurrent;
+    v29 = selfCopy->_trafficPeersCurrent;
     v30 = [(NSArray *)v29 countByEnumeratingWithState:&v70 objects:v87 count:16];
     v31 = @"TR_IFNAME";
     v32 = @"awdl0";
@@ -2043,14 +2043,14 @@ LABEL_22:
           v36 = *(*(&v70 + 1) + 8 * k);
           if (([v36 trafficFlags] & v3) != 0)
           {
-            v37 = [v36 peerMACAddressData];
-            v38 = v37;
-            if (v37)
+            peerMACAddressData = [v36 peerMACAddressData];
+            v38 = peerMACAddressData;
+            if (peerMACAddressData)
             {
               v85[0] = v31;
               v85[1] = @"TR_PEER_ADDRESS";
               v86[0] = v32;
-              v86[1] = v37;
+              v86[1] = peerMACAddressData;
               [MEMORY[0x1E695DF20] dictionaryWithObjects:v86 forKeys:v85 count:2];
               v39 = v32;
               v41 = v40 = v31;
@@ -2090,14 +2090,14 @@ LABEL_22:
           v47 = *(*(&v66 + 1) + 8 * m);
           if (([v47 trafficFlags] & v3) != 0)
           {
-            v48 = [v47 peerMACAddressData];
-            v49 = v48;
-            if (v48)
+            peerMACAddressData2 = [v47 peerMACAddressData];
+            v49 = peerMACAddressData2;
+            if (peerMACAddressData2)
             {
               v82[0] = v31;
               v82[1] = @"TR_PEER_ADDRESS";
               v83[0] = v32;
-              v83[1] = v48;
+              v83[1] = peerMACAddressData2;
               v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2];
               [v28 addObject:v50];
             }
@@ -2112,7 +2112,7 @@ LABEL_22:
 
     [v65 setObject:v28 forKeyedSubscript:@"TR_PEER_CONTEXTS"];
     v55 = WiFiDeviceClientTrafficRegistration();
-    ucat = v64->_ucat;
+    ucat = selfCopy->_ucat;
     var0 = ucat->var0;
     if (v55)
     {
@@ -2120,12 +2120,12 @@ LABEL_22:
       {
         if (var0 == -1)
         {
-          if (!_LogCategory_Initialize(v64->_ucat, 0x5Au))
+          if (!_LogCategory_Initialize(selfCopy->_ucat, 0x5Au))
           {
             goto LABEL_82;
           }
 
-          ucat = v64->_ucat;
+          ucat = selfCopy->_ucat;
         }
 
         LogPrintF(ucat, "[CUWiFiManager _updateTrafficPeersWithService:]", 0x5Au, "### Traffic register failed: '%@', %#m\n", v51, v52, v53, v54, v62);
@@ -2136,12 +2136,12 @@ LABEL_22:
     {
       if (var0 == -1)
       {
-        if (!_LogCategory_Initialize(v64->_ucat, 0x1Eu))
+        if (!_LogCategory_Initialize(selfCopy->_ucat, 0x1Eu))
         {
           goto LABEL_82;
         }
 
-        ucat = v64->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       [(NSArray *)v42 count];
@@ -2149,8 +2149,8 @@ LABEL_22:
     }
 
 LABEL_82:
-    v64->_lastTrafficRegistrationErrorCode = v55;
-    [(CUWiFiManager *)v64 _updateWiFiState];
+    selfCopy->_lastTrafficRegistrationErrorCode = v55;
+    [(CUWiFiManager *)selfCopy _updateWiFiState];
 
     goto LABEL_83;
   }
@@ -2475,7 +2475,7 @@ LABEL_10:
   objc_sync_exit(obj);
 }
 
-- (void)performUpdate:(id)a3
+- (void)performUpdate:(id)update
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2483,9 +2483,9 @@ LABEL_10:
   block[2] = __31__CUWiFiManager_performUpdate___block_invoke;
   block[3] = &unk_1E73A4F68;
   block[4] = self;
-  v5 = a3;
+  updateCopy = update;
   dispatch_async(dispatchQueue, block);
-  v5[2](v5);
+  updateCopy[2](updateCopy);
 
   v6 = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -2634,29 +2634,29 @@ LABEL_6:
   }
 }
 
-- (void)_activateSafeInvokeBlock:(id)a3
+- (void)_activateSafeInvokeBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_activateCalled)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__CUWiFiManager__activateSafeInvokeBlock___block_invoke;
     v7[3] = &unk_1E73A49A0;
-    v7[4] = v5;
-    v8 = v4;
+    v7[4] = selfCopy;
+    v8 = blockCopy;
     dispatch_async(dispatchQueue, v7);
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 _BYTE *__42__CUWiFiManager__activateSafeInvokeBlock___block_invoke(uint64_t a1)
@@ -2672,23 +2672,23 @@ _BYTE *__42__CUWiFiManager__activateSafeInvokeBlock___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__CUWiFiManager_activateWithCompletion___block_invoke;
   v8[3] = &unk_1E73A49A0;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 uint64_t __40__CUWiFiManager_activateWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)
@@ -2728,13 +2728,13 @@ LABEL_5:
   return result;
 }
 
-- (void)setWakeOnWirelessEnabled:(BOOL)a3
+- (void)setWakeOnWirelessEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__CUWiFiManager_setWakeOnWirelessEnabled___block_invoke;
   v3[3] = &unk_1E73A42C8;
-  v4 = a3;
+  enabledCopy = enabled;
   v3[4] = self;
   [(CUWiFiManager *)self _activateSafeInvokeBlock:v3];
 }
@@ -2752,9 +2752,9 @@ uint64_t __42__CUWiFiManager_setWakeOnWirelessEnabled___block_invoke(uint64_t re
   return result;
 }
 
-- (void)setTrafficPeers:(id)a3
+- (void)setTrafficPeers:(id)peers
 {
-  v4 = [a3 copy];
+  v4 = [peers copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __33__CUWiFiManager_setTrafficPeers___block_invoke;
@@ -2765,23 +2765,23 @@ uint64_t __42__CUWiFiManager_setWakeOnWirelessEnabled___block_invoke(uint64_t re
   [(CUWiFiManager *)self _activateSafeInvokeBlock:v6];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADE8B90;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
-- (void)setInfraDisabled:(BOOL)a3
+- (void)setInfraDisabled:(BOOL)disabled
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__CUWiFiManager_setInfraDisabled___block_invoke;
   v3[3] = &unk_1E73A42C8;
-  v4 = a3;
+  disabledCopy = disabled;
   v3[4] = self;
   [(CUWiFiManager *)self _activateSafeInvokeBlock:v3];
 }
@@ -2799,13 +2799,13 @@ uint64_t __34__CUWiFiManager_setInfraDisabled___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setControlFlags:(unsigned int)a3
+- (void)setControlFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __33__CUWiFiManager_setControlFlags___block_invoke;
   v3[3] = &unk_1E73A42A0;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(CUWiFiManager *)self _activateSafeInvokeBlock:v3];
 }

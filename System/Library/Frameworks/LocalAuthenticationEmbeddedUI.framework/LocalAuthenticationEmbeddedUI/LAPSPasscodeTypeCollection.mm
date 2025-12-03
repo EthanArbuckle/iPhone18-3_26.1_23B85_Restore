@@ -1,7 +1,7 @@
 @interface LAPSPasscodeTypeCollection
-+ (id)_allWhere:(id)a3;
++ (id)_allWhere:(id)where;
 + (id)allPasscodeTypes;
-+ (id)allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:(int64_t)a3;
++ (id)allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:(int64_t)to;
 @end
 
 @implementation LAPSPasscodeTypeCollection
@@ -42,32 +42,32 @@ uint64_t __46__LAPSPasscodeTypeCollection_allPasscodeTypes__block_invoke(uint64_
   return v10;
 }
 
-+ (id)allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:(int64_t)a3
++ (id)allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo:(int64_t)to
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __84__LAPSPasscodeTypeCollection_allPasscodeTypesWhereComplexityIsGreaterThanOrEqualTo___block_invoke;
   v5[3] = &__block_descriptor_40_e26_B16__0__LAPSPasscodeType_8l;
-  v5[4] = a3;
-  v3 = [a1 _allWhere:v5];
+  v5[4] = to;
+  v3 = [self _allWhere:v5];
 
   return v3;
 }
 
-+ (id)_allWhere:(id)a3
++ (id)_allWhere:(id)where
 {
-  v4 = a3;
+  whereCopy = where;
   v5 = objc_alloc(MEMORY[0x277CBEB70]);
-  v6 = [a1 allPasscodeTypes];
-  v7 = [a1 allPasscodeTypes];
+  allPasscodeTypes = [self allPasscodeTypes];
+  allPasscodeTypes2 = [self allPasscodeTypes];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__LAPSPasscodeTypeCollection__allWhere___block_invoke;
   v13[3] = &unk_278A65390;
-  v14 = v4;
-  v8 = v4;
-  v9 = [v7 indexesOfObjectsPassingTest:v13];
-  v10 = [v6 objectsAtIndexes:v9];
+  v14 = whereCopy;
+  v8 = whereCopy;
+  v9 = [allPasscodeTypes2 indexesOfObjectsPassingTest:v13];
+  v10 = [allPasscodeTypes objectsAtIndexes:v9];
   v11 = [v5 initWithArray:v10];
 
   return v11;

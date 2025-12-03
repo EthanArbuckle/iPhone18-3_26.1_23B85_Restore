@@ -7,7 +7,7 @@
 - (id)ac_sha512HashString
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = [a1 dataUsingEncoding:10];
+  v1 = [self dataUsingEncoding:10];
   v2 = v1;
   if (v1 && CC_SHA512([v1 bytes], objc_msgSend(v1, "length"), md))
   {

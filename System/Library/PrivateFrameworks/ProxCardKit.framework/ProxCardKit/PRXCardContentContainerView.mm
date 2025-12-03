@@ -1,17 +1,17 @@
 @interface PRXCardContentContainerView
 - (CGRect)originalFrame;
-- (PRXCardContentContainerView)initWithFrame:(CGRect)a3;
+- (PRXCardContentContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PRXCardContentContainerView
 
-- (PRXCardContentContainerView)initWithFrame:(CGRect)a3
+- (PRXCardContentContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = PRXCardContentContainerView;
   v7 = [(PRXCardContentContainerView *)&v9 initWithFrame:?];
@@ -24,15 +24,15 @@
   v18.receiver = self;
   v18.super_class = PRXCardContentContainerView;
   [(PRXCardContentContainerView *)&v18 layoutSubviews];
-  v3 = [(PRXCardContentContainerView *)self subviews];
-  v4 = [v3 count];
+  subviews = [(PRXCardContentContainerView *)self subviews];
+  v4 = [subviews count];
 
   if (v4 == 1)
   {
     [(PRXCardContentContainerView *)self frame];
     v6 = v5;
-    v7 = [(PRXCardContentContainerView *)self subviews];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    subviews2 = [(PRXCardContentContainerView *)self subviews];
+    v8 = [subviews2 objectAtIndexedSubscript:0];
 
     [v8 frame];
     v10 = v9;

@@ -1,19 +1,19 @@
 @interface WFApertureStatusViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation WFApertureStatusViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"minimalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFProgressAccessoryView" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFDialogAttribution" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"minimalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"attribution" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFApertureStatusViewController" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFProgressAccessoryView" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFDialogAttribution" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

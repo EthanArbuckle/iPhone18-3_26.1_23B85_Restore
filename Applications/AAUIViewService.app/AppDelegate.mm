@@ -1,14 +1,14 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v5 = a4;
+  activityCopy = activity;
   v6 = objc_alloc_init(AAUIViewServiceURLHandler);
-  v7 = [(AAUIViewServiceURLHandler *)v6 handleUniversalLinkInUserActivity:v5];
+  v7 = [(AAUIViewServiceURLHandler *)v6 handleUniversalLinkInUserActivity:activityCopy];
 
   return v7;
 }

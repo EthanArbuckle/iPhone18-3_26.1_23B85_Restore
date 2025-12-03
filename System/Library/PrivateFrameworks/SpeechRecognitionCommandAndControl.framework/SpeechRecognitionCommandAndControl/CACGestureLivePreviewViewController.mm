@@ -1,7 +1,7 @@
 @interface CACGestureLivePreviewViewController
 - (id)newPathEffectView;
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5;
-- (void)removeTrackingForFingerIdentifier:(id)a3;
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time;
+- (void)removeTrackingForFingerIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
@@ -12,20 +12,20 @@
   v4.receiver = self;
   v4.super_class = CACGestureLivePreviewViewController;
   [(CACGestureLivePreviewViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(CACGestureLivePreviewViewController *)self setMappedPathEffectViews:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(CACGestureLivePreviewViewController *)self setMappedPathEffectViews:dictionary];
 }
 
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  allKeys = [identifierCopy allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v9)
   {
     v11 = v9;
@@ -39,18 +39,18 @@
       {
         if (*v27 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v26 + 1) + 8 * v13);
-        v15 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
-        v16 = [v15 objectForKey:v14];
+        mappedPathEffectViews = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
+        v16 = [mappedPathEffectViews objectForKey:v14];
 
         if (!v16)
         {
-          v17 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
-          v18 = [(CACGestureLivePreviewViewController *)self newPathEffectView];
-          [v17 setObject:v18 forKey:v14];
+          mappedPathEffectViews2 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
+          newPathEffectView = [(CACGestureLivePreviewViewController *)self newPathEffectView];
+          [mappedPathEffectViews2 setObject:newPathEffectView forKey:v14];
 
           v19 = CACLogGestureRecording();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -61,38 +61,38 @@
           }
         }
 
-        v20 = [v7 objectForKey:v14];
+        v20 = [identifierCopy objectForKey:v14];
         [v20 CGPointValue];
         v22 = v21;
         v24 = v23;
 
-        [v16 addPoint:v22 force:v24 timestamp:{1.0, a5}];
+        [v16 addPoint:v22 force:v24 timestamp:{1.0, time}];
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v26 objects:v32 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)removeTrackingForFingerIdentifier:(id)a3
+- (void)removeTrackingForFingerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = CACLogGestureRecording();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CACGestureLivePreviewViewController *)v4 removeTrackingForFingerIdentifier:v5];
+    [(CACGestureLivePreviewViewController *)identifierCopy removeTrackingForFingerIdentifier:v5];
   }
 
-  v6 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
-  v7 = [v6 objectForKey:v4];
+  mappedPathEffectViews = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
+  v7 = [mappedPathEffectViews objectForKey:identifierCopy];
 
   [v7 buildOut];
-  v8 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
-  [v8 removeObjectForKey:v4];
+  mappedPathEffectViews2 = [(CACGestureLivePreviewViewController *)self mappedPathEffectViews];
+  [mappedPathEffectViews2 removeObjectForKey:identifierCopy];
 }
 
 - (id)newPathEffectView
@@ -109,24 +109,24 @@
   }
 
   [(CACGestureLivePreviewPathEffectView *)v4 setAlpha:v6];
-  v7 = [(CACGestureLivePreviewViewController *)self view];
-  [v7 addSubview:v4];
+  view = [(CACGestureLivePreviewViewController *)self view];
+  [view addSubview:v4];
   v17 = MEMORY[0x277CCAAD0];
-  v22 = [(CACGestureLivePreviewPathEffectView *)v4 leftAnchor];
-  v21 = [v7 leftAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leftAnchor = [(CACGestureLivePreviewPathEffectView *)v4 leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v23[0] = v20;
-  v19 = [(CACGestureLivePreviewPathEffectView *)v4 rightAnchor];
-  v18 = [v7 rightAnchor];
-  v8 = [v19 constraintEqualToAnchor:v18];
+  rightAnchor = [(CACGestureLivePreviewPathEffectView *)v4 rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v8 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v23[1] = v8;
-  v9 = [(CACGestureLivePreviewPathEffectView *)v4 bottomAnchor];
-  v10 = [v7 bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(CACGestureLivePreviewPathEffectView *)v4 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[2] = v11;
-  v12 = [(CACGestureLivePreviewPathEffectView *)v4 topAnchor];
-  v13 = [v7 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [(CACGestureLivePreviewPathEffectView *)v4 topAnchor];
+  topAnchor2 = [view topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:4];
   [v17 activateConstraints:v15];

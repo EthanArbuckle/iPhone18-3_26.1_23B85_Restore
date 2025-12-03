@@ -1,19 +1,19 @@
 @interface AREnvironmentProbeManager
-- (AREnvironmentProbeManager)initWithMode:(int64_t)a3;
-- (BOOL)_addProbeWithAnchor:(id)a3 timestamp:(double)a4 textureImmediately:(BOOL)a5;
+- (AREnvironmentProbeManager)initWithMode:(int64_t)mode;
+- (BOOL)_addProbeWithAnchor:(id)anchor timestamp:(double)timestamp textureImmediately:(BOOL)immediately;
 - (BOOL)_isBusy;
 - (BOOL)_textureDataIsBusy;
 - (id).cxx_construct;
 - (id)_fullDescription;
-- (id)updateProbesForTimestamp:(double)a3 planes:()vector<ARTexturedPlane imageData:(std:(id)a5 :(id)a6 allocator<ARTexturedPlane>> *)a4 pose:(id)a7 enableDirectTexturingForProbesWithIdentifier:;
-- (void)_insertIntoQueue:(id)a3;
-- (void)_requestTextureForProbe:(id)a3;
-- (void)_updateProbesFromExistingAnchors:(id)a3;
+- (id)updateProbesForTimestamp:(double)timestamp planes:()vector<ARTexturedPlane imageData:(std:(id)data :(id)a6 allocator<ARTexturedPlane>> *)a4 pose:(id)pose enableDirectTexturingForProbesWithIdentifier:;
+- (void)_insertIntoQueue:(id)queue;
+- (void)_requestTextureForProbe:(id)probe;
+- (void)_updateProbesFromExistingAnchors:(id)anchors;
 @end
 
 @implementation AREnvironmentProbeManager
 
-- (AREnvironmentProbeManager)initWithMode:(int64_t)a3
+- (AREnvironmentProbeManager)initWithMode:(int64_t)mode
 {
   v32.receiver = self;
   v32.super_class = AREnvironmentProbeManager;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v6 = objc_opt_new();
     initialProbeIdentifiers = v5->_initialProbeIdentifiers;
     v5->_initialProbeIdentifiers = v6;
@@ -133,14 +133,14 @@
   return v5;
 }
 
-- (void)_insertIntoQueue:(id)a3
+- (void)_insertIntoQueue:(id)queue
 {
-  v10 = a3;
+  queueCopy = queue;
   v4 = [(NSMutableArray *)self->_probeUpdateQueue indexOfObject:?];
   probeUpdateQueue = self->_probeUpdateQueue;
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)probeUpdateQueue addObject:v10];
+    [(NSMutableArray *)probeUpdateQueue addObject:queueCopy];
   }
 
   else
@@ -149,18 +149,18 @@
     [v6 lastUpdateTimestamp];
     v8 = v7;
 
-    [(NSMutableArray *)self->_probeUpdateQueue replaceObjectAtIndex:v4 withObject:v10];
+    [(NSMutableArray *)self->_probeUpdateQueue replaceObjectAtIndex:v4 withObject:queueCopy];
     v9 = [(NSMutableArray *)self->_probeUpdateQueue objectAtIndexedSubscript:v4];
     [v9 setLastUpdateTimestamp:v8];
   }
 }
 
-- (id)updateProbesForTimestamp:(double)a3 planes:()vector<ARTexturedPlane imageData:(std:(id)a5 :(id)a6 allocator<ARTexturedPlane>> *)a4 pose:(id)a7 enableDirectTexturingForProbesWithIdentifier:
+- (id)updateProbesForTimestamp:(double)timestamp planes:()vector<ARTexturedPlane imageData:(std:(id)data :(id)a6 allocator<ARTexturedPlane>> *)a4 pose:(id)pose enableDirectTexturingForProbesWithIdentifier:
 {
   v219 = *MEMORY[0x1E69E9840];
-  v167 = a5;
+  dataCopy = data;
   v12 = a6;
-  v166 = a7;
+  poseCopy = pose;
   v156 = v12;
   if (v12)
   {
@@ -181,12 +181,12 @@
 
   v17 = v12 != 0;
   dispatch_semaphore_wait(self->_semaphore, 0xFFFFFFFFFFFFFFFFLL);
-  objc_storeStrong(&self->_lastImageData, a5);
+  objc_storeStrong(&self->_lastImageData, data);
   *self->_anon_80 = v163;
   *&self->_anon_80[16] = v161;
   *&self->_anon_80[32] = v159;
   *&self->_anon_80[48] = v157;
-  if (v167)
+  if (dataCopy)
   {
     v18 = v17;
   }
@@ -202,10 +202,10 @@
   v19 = objc_opt_new();
   v169 = objc_opt_new();
   dispatch_semaphore_wait(self->_textureDataSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  [(NSMutableArray *)self->_directTexturingIdentifiers addObjectsFromArray:v166];
+  [(NSMutableArray *)self->_directTexturingIdentifiers addObjectsFromArray:poseCopy];
   [v169 addObjectsFromArray:self->_anchorsToRemove];
   [(NSMutableArray *)self->_anchorsToRemove removeAllObjects];
-  v20 = [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier allValues];
+  allValues = [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier allValues];
   v200 = 0u;
   v201 = 0u;
   v198 = 0u;
@@ -225,19 +225,19 @@
         }
 
         v25 = *(*(&v198 + 1) + 8 * i);
-        if (([v20 containsObject:v25] & 1) == 0)
+        if (([allValues containsObject:v25] & 1) == 0)
         {
           v26 = [(NSMutableDictionary *)self->_probesByIdentifier objectForKeyedSubscript:v25];
-          if (([v25 isEqual:self->_universeProbeIdentifier] & 1) == 0 && (objc_msgSend(v26, "lastUpdateTimestamp"), a3 - v27 > 3.0) || objc_msgSend(v25, "isEqual:", self->_universeProbeIdentifier) && (objc_msgSend(v26, "lastUpdateTimestamp"), a3 - v28 > 15.0))
+          if (([v25 isEqual:self->_universeProbeIdentifier] & 1) == 0 && (objc_msgSend(v26, "lastUpdateTimestamp"), timestamp - v27 > 3.0) || objc_msgSend(v25, "isEqual:", self->_universeProbeIdentifier) && (objc_msgSend(v26, "lastUpdateTimestamp"), timestamp - v28 > 15.0))
           {
             requestedProbeIdentifiers = self->_requestedProbeIdentifiers;
-            v30 = [v26 identifier];
-            LOBYTE(requestedProbeIdentifiers) = [(NSMutableArray *)requestedProbeIdentifiers containsObject:v30];
+            identifier = [v26 identifier];
+            LOBYTE(requestedProbeIdentifiers) = [(NSMutableArray *)requestedProbeIdentifiers containsObject:identifier];
 
             if ((requestedProbeIdentifiers & 1) == 0)
             {
               v31 = [v26 copy];
-              [v31 setLastUpdateTimestamp:a3];
+              [v31 setLastUpdateTimestamp:timestamp];
               [(AREnvironmentProbeManager *)self _insertIntoQueue:v31];
             }
           }
@@ -273,7 +273,7 @@
           v36 = [(NSMutableDictionary *)self->_probesByIdentifier objectForKeyedSubscript:*(*(&v194 + 1) + 8 * j)];
           v37 = [v36 copy];
 
-          [v37 setLastUpdateTimestamp:a3];
+          [v37 setLastUpdateTimestamp:timestamp];
           [(AREnvironmentProbeManager *)self _insertIntoQueue:v37];
         }
 
@@ -294,8 +294,8 @@
       v193 = 0u;
       v190 = 0u;
       v191 = 0u;
-      v38 = [(NSMutableDictionary *)self->_probesByIdentifier allValues];
-      v39 = [v38 countByEnumeratingWithState:&v190 objects:v216 count:16];
+      allValues2 = [(NSMutableDictionary *)self->_probesByIdentifier allValues];
+      v39 = [allValues2 countByEnumeratingWithState:&v190 objects:v216 count:16];
       if (v39)
       {
         v40 = *v191;
@@ -305,7 +305,7 @@
           {
             if (*v191 != v40)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(allValues2);
             }
 
             v42 = *(*(&v190 + 1) + 8 * k);
@@ -323,14 +323,14 @@
               }
             }
 
-            v46 = [v42 identifier];
+            identifier2 = [v42 identifier];
             universeProbeIdentifier = self->_universeProbeIdentifier;
-            self->_universeProbeIdentifier = v46;
+            self->_universeProbeIdentifier = identifier2;
 
             goto LABEL_47;
           }
 
-          v39 = [v38 countByEnumeratingWithState:&v190 objects:v216 count:16];
+          v39 = [allValues2 countByEnumeratingWithState:&v190 objects:v216 count:16];
           if (v39)
           {
             continue;
@@ -358,7 +358,7 @@ LABEL_47:
           *buf = 138543874;
           *&buf[4] = v54;
           v207 = 2048;
-          v208 = self;
+          selfCopy4 = self;
           v209 = 2114;
           v210 = v51;
           _os_log_impl(&dword_1C241C000, v52, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Added universe probe: %{public}@", buf, 0x20u);
@@ -367,7 +367,7 @@ LABEL_47:
         [(NSMutableDictionary *)self->_probesByIdentifier setObject:v51 forKeyedSubscript:self->_universeProbeIdentifier];
         [v172 addObject:v51];
         v55 = [(AREnvironmentProbeAnchor *)v51 copy];
-        [v55 setLastUpdateTimestamp:a3];
+        [v55 setLastUpdateTimestamp:timestamp];
         [(AREnvironmentProbeManager *)self _insertIntoQueue:v55];
       }
     }
@@ -446,7 +446,7 @@ LABEL_47:
         v74 = [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier objectForKeyedSubscript:v73];
         v75 = [(NSMutableDictionary *)self->_probesByIdentifier objectForKeyedSubscript:v74];
         *buf = v72 + 25;
-        if (!*(std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::__emplace_unique_key_args<std::array<unsigned char,16ul>,std::piecewise_construct_t const&,std::tuple<std::array<unsigned char,16ul> const&>,std::tuple<>>(&v188, v72 + 25) + 64) || ([v75 lastUpdateTimestamp], a3 - v76 > 3.0))
+        if (!*(std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::__emplace_unique_key_args<std::array<unsigned char,16ul>,std::piecewise_construct_t const&,std::tuple<std::array<unsigned char,16ul> const&>,std::tuple<>>(&v188, v72 + 25) + 64) || ([v75 lastUpdateTimestamp], timestamp - v76 > 3.0))
         {
           std::__tree<std::array<unsigned char,16ul>>::__emplace_unique_key_args<std::array<unsigned char,16ul>,std::array<unsigned char,16ul> const&>(&v177, v72 + 25);
         }
@@ -525,7 +525,7 @@ LABEL_47:
                 *buf = 138544130;
                 *&buf[4] = v94;
                 v207 = 2048;
-                v208 = self;
+                selfCopy4 = self;
                 v209 = 2114;
                 v210 = v170;
                 v211 = 2114;
@@ -538,17 +538,17 @@ LABEL_47:
             if (*(std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::__emplace_unique_key_args<std::array<unsigned char,16ul>,std::piecewise_construct_t const&,std::tuple<std::array<unsigned char,16ul> const&>,std::tuple<>>(&v188, v80 + 25) + 64))
             {
               [v82 lastUpdateTimestamp];
-              if (a3 - v95 > 3.0)
+              if (timestamp - v95 > 3.0)
               {
-                v96 = [v82 colorHistogram];
-                [(AREnvironmentProbeAnchor *)v91 setColorHistogram:v96];
+                colorHistogram = [v82 colorHistogram];
+                [(AREnvironmentProbeAnchor *)v91 setColorHistogram:colorHistogram];
 
                 [v82 opaquePixelPercentage];
                 [(AREnvironmentProbeAnchor *)v91 setOpaquePixelPercentage:?];
               }
             }
 
-            [(ARAnchor *)v91 setLastUpdateTimestamp:a3];
+            [(ARAnchor *)v91 setLastUpdateTimestamp:timestamp];
             [(AREnvironmentProbeManager *)self _insertIntoQueue:v91];
           }
 
@@ -624,7 +624,7 @@ LABEL_47:
           *buf = 138544130;
           *&buf[4] = v113;
           v207 = 2048;
-          v208 = self;
+          selfCopy4 = self;
           v209 = 2114;
           v210 = v100;
           v211 = 2114;
@@ -636,7 +636,7 @@ LABEL_47:
         [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier setObject:v101 forKeyedSubscript:v100];
         [v172 addObject:v110];
         v114 = [(AREnvironmentProbeAnchor *)v110 copy];
-        [v114 setLastUpdateTimestamp:a3];
+        [v114 setLastUpdateTimestamp:timestamp];
         [(AREnvironmentProbeManager *)self _insertIntoQueue:v114];
 
         v115 = *(v99 + 1);
@@ -688,7 +688,7 @@ LABEL_47:
             *buf = 138544130;
             *&buf[4] = v123;
             v207 = 2048;
-            v208 = self;
+            selfCopy4 = self;
             v209 = 2114;
             v210 = v118;
             v211 = 2114;
@@ -740,7 +740,7 @@ LABEL_47:
     std::__tree<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::__map_value_compare<std::array<unsigned char,16ul>,std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>,std::less<std::array<unsigned char,16ul>>,true>,std::allocator<std::__value_type<std::array<unsigned char,16ul>,ARTexturedPlane>>>::destroy(&v188, v189[0]);
   }
 
-  if (v167 && [v167 pixelBuffer] && -[NSMutableArray count](self->_probeUpdateQueue, "count") && a3 - self->_lastProbeUpdateTime > self->_minimumProbeUpdateInterval)
+  if (dataCopy && [dataCopy pixelBuffer] && -[NSMutableArray count](self->_probeUpdateQueue, "count") && timestamp - self->_lastProbeUpdateTime > self->_minimumProbeUpdateInterval)
   {
     v126 = [(NSMutableArray *)self->_probeUpdateQueue objectAtIndex:0];
     [v126 referenceTransform];
@@ -759,14 +759,14 @@ LABEL_47:
     v164 = v221.columns[0];
     v158 = v221.columns[1];
     v160 = v221.columns[3];
-    [v167 cameraIntrinsics];
+    [dataCopy cameraIntrinsics];
     v152 = v132;
-    CVPixelBufferGetWidth([v167 pixelBuffer]);
-    Height = CVPixelBufferGetHeight([v167 pixelBuffer]);
+    CVPixelBufferGetWidth([dataCopy pixelBuffer]);
+    Height = CVPixelBufferGetHeight([dataCopy pixelBuffer]);
     if (ARIsBoxInViewFrustum(v171, v168, v155, v154, v153, Height, v134, v135, v136, v137, v138, v139, v140, v141, v142, v143, v164, v158, v162, v160, v152))
     {
-      self->_lastProbeUpdateTime = a3;
-      [v126 setLastUpdateTimestamp:a3];
+      self->_lastProbeUpdateTime = timestamp;
+      [v126 setLastUpdateTimestamp:timestamp];
       [(NSMutableArray *)self->_probeUpdateQueue removeObjectAtIndex:0];
       [(AREnvironmentProbeManager *)self _requestTextureForProbe:v126];
     }
@@ -826,10 +826,10 @@ LABEL_47:
   return currentProbeUpdate;
 }
 
-- (void)_updateProbesFromExistingAnchors:(id)a3
+- (void)_updateProbesFromExistingAnchors:(id)anchors
 {
   v108 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorsCopy = anchors;
   dispatch_semaphore_wait(self->_textureDataSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v76 = objc_opt_new();
   v75 = objc_opt_new();
@@ -838,7 +838,7 @@ LABEL_47:
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v5 = v4;
+  v5 = anchorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v93 objects:v107 count:16];
   if (v6)
   {
@@ -854,8 +854,8 @@ LABEL_47:
 
         v9 = *(*(&v93 + 1) + 8 * i);
         probesByIdentifier = self->_probesByIdentifier;
-        v11 = [v9 identifier];
-        v12 = [(NSMutableDictionary *)probesByIdentifier objectForKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        v12 = [(NSMutableDictionary *)probesByIdentifier objectForKeyedSubscript:identifier];
         LODWORD(probesByIdentifier) = v12 == 0;
 
         if (probesByIdentifier)
@@ -932,14 +932,14 @@ LABEL_47:
 
         v25 = *(*(&v85 + 1) + 8 * k);
         directTexturingIdentifiers = self->_directTexturingIdentifiers;
-        v27 = [v25 identifier];
-        v28 = [(NSMutableArray *)directTexturingIdentifiers containsObject:v27];
+        identifier2 = [v25 identifier];
+        v28 = [(NSMutableArray *)directTexturingIdentifiers containsObject:identifier2];
 
         if (v28)
         {
           v29 = self->_directTexturingIdentifiers;
-          v30 = [v25 identifier];
-          [(NSMutableArray *)v29 removeObject:v30];
+          identifier3 = [v25 identifier];
+          [(NSMutableArray *)v29 removeObject:identifier3];
         }
 
         v31 = [(AREnvironmentProbeManager *)self _addProbeWithAnchor:v25 timestamp:v28 textureImmediately:0.0];
@@ -954,7 +954,7 @@ LABEL_47:
             *buf = 138543874;
             v100 = v35;
             v101 = 2048;
-            v102 = self;
+            selfCopy3 = self;
             v103 = 2114;
             v104 = v25;
             _os_log_impl(&dword_1C241C000, v32, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Added probe: %{public}@", buf, 0x20u);
@@ -970,7 +970,7 @@ LABEL_47:
             *buf = 138543874;
             v100 = v37;
             v101 = 2048;
-            v102 = self;
+            selfCopy3 = self;
             v103 = 2114;
             v104 = v25;
             _os_log_impl(&dword_1C241C000, v32, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Removed redundant probe: %{public}@", buf, 0x20u);
@@ -1006,8 +1006,8 @@ LABEL_47:
 
         v41 = *(*(&v81 + 1) + 8 * m);
         v42 = self->_probesByIdentifier;
-        v43 = [v41 identifier];
-        v44 = [(NSMutableDictionary *)v42 objectForKeyedSubscript:v43];
+        identifier4 = [v41 identifier];
+        v44 = [(NSMutableDictionary *)v42 objectForKeyedSubscript:identifier4];
         [v44 lastUpdateTimestamp];
         v46 = v45;
         [v41 lastUpdateTimestamp];
@@ -1016,24 +1016,24 @@ LABEL_47:
         if (!v48)
         {
           v49 = self->_probesByIdentifier;
-          v50 = [v41 identifier];
-          v51 = [(NSMutableDictionary *)v49 objectForKeyedSubscript:v50];
+          identifier5 = [v41 identifier];
+          v51 = [(NSMutableDictionary *)v49 objectForKeyedSubscript:identifier5];
 
           v52 = self->_probesByIdentifier;
-          v53 = [v41 identifier];
-          [(NSMutableDictionary *)v52 setObject:v41 forKeyedSubscript:v53];
+          identifier6 = [v41 identifier];
+          [(NSMutableDictionary *)v52 setObject:v41 forKeyedSubscript:identifier6];
 
           updatedProbeIdentifiers = self->_updatedProbeIdentifiers;
-          v55 = [v41 identifier];
-          LODWORD(updatedProbeIdentifiers) = [(NSMutableArray *)updatedProbeIdentifiers containsObject:v55];
+          identifier7 = [v41 identifier];
+          LODWORD(updatedProbeIdentifiers) = [(NSMutableArray *)updatedProbeIdentifiers containsObject:identifier7];
 
           if (updatedProbeIdentifiers)
           {
-            v56 = [v51 environmentTexture];
-            [v41 setEnvironmentTexture:v56];
+            environmentTexture = [v51 environmentTexture];
+            [v41 setEnvironmentTexture:environmentTexture];
 
-            v57 = [v51 colorHistogram];
-            [v41 setColorHistogram:v57];
+            colorHistogram = [v51 colorHistogram];
+            [v41 setColorHistogram:colorHistogram];
 
             [v51 opaquePixelPercentage];
             [v41 setOpaquePixelPercentage:?];
@@ -1074,23 +1074,23 @@ LABEL_47:
           *buf = 138543874;
           v100 = v65;
           v101 = 2048;
-          v102 = self;
+          selfCopy3 = self;
           v103 = 2114;
           v104 = v62;
           _os_log_impl(&dword_1C241C000, v63, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Removed probe: %{public}@", buf, 0x20u);
         }
 
         v66 = self->_probesByIdentifier;
-        v67 = [v62 identifier];
-        [(NSMutableDictionary *)v66 removeObjectForKey:v67];
+        identifier8 = [v62 identifier];
+        [(NSMutableDictionary *)v66 removeObjectForKey:identifier8];
 
         initialProbeIdentifiers = self->_initialProbeIdentifiers;
-        v69 = [v62 identifier];
-        [(NSMutableArray *)initialProbeIdentifiers removeObject:v69];
+        identifier9 = [v62 identifier];
+        [(NSMutableArray *)initialProbeIdentifiers removeObject:identifier9];
 
         [(NSMutableArray *)self->_probeUpdateQueue removeObject:v62];
-        v70 = [v62 identifier];
-        LODWORD(initialProbeIdentifiers) = [v70 isEqual:self->_universeProbeIdentifier];
+        identifier10 = [v62 identifier];
+        LODWORD(initialProbeIdentifiers) = [identifier10 isEqual:self->_universeProbeIdentifier];
 
         if (initialProbeIdentifiers)
         {
@@ -1108,23 +1108,23 @@ LABEL_47:
   dispatch_semaphore_signal(self->_textureDataSemaphore);
 }
 
-- (BOOL)_addProbeWithAnchor:(id)a3 timestamp:(double)a4 textureImmediately:(BOOL)a5
+- (BOOL)_addProbeWithAnchor:(id)anchor timestamp:(double)timestamp textureImmediately:(BOOL)immediately
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
+  immediatelyCopy = immediately;
+  anchorCopy = anchor;
+  v9 = anchorCopy;
   if (self->_mode != 2)
   {
     goto LABEL_10;
   }
 
-  v10 = [v8 trackedPlaneIdentifier];
+  trackedPlaneIdentifier = [anchorCopy trackedPlaneIdentifier];
 
-  if (v10)
+  if (trackedPlaneIdentifier)
   {
-    v11 = [v9 trackedPlaneIdentifier];
-    v12 = [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier objectForKeyedSubscript:v11];
-    LOBYTE(v5) = v12 == 0;
+    trackedPlaneIdentifier2 = [v9 trackedPlaneIdentifier];
+    v12 = [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier objectForKeyedSubscript:trackedPlaneIdentifier2];
+    LOBYTE(immediatelyCopy) = v12 == 0;
 
     if (v12)
     {
@@ -1133,48 +1133,48 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v13 = [v9 identifier];
-    [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier setObject:v13 forKeyedSubscript:v11];
+    identifier = [v9 identifier];
+    [(NSMutableDictionary *)self->_probeIdentifiersByPlaneIdentifier setObject:identifier forKeyedSubscript:trackedPlaneIdentifier2];
 
     probesByIdentifier = self->_probesByIdentifier;
-    v15 = [v9 identifier];
-    [(NSMutableDictionary *)probesByIdentifier setObject:v9 forKeyedSubscript:v15];
+    identifier2 = [v9 identifier];
+    [(NSMutableDictionary *)probesByIdentifier setObject:v9 forKeyedSubscript:identifier2];
 
 LABEL_15:
-    LOBYTE(v5) = 1;
+    LOBYTE(immediatelyCopy) = 1;
     goto LABEL_16;
   }
 
-  if (([v9 extent], fabsf(v16) != INFINITY) && (objc_msgSend(v9, "extent"), fabsf(v17) != INFINITY) && (objc_msgSend(v9, "extent"), fabsf(v18) != INFINITY) || !self->_universeProbeIdentifier || v5)
+  if (([v9 extent], fabsf(v16) != INFINITY) && (objc_msgSend(v9, "extent"), fabsf(v17) != INFINITY) && (objc_msgSend(v9, "extent"), fabsf(v18) != INFINITY) || !self->_universeProbeIdentifier || immediatelyCopy)
   {
 LABEL_10:
     v19 = self->_probesByIdentifier;
-    v20 = [v9 identifier];
-    [(NSMutableDictionary *)v19 setObject:v9 forKeyedSubscript:v20];
+    identifier3 = [v9 identifier];
+    [(NSMutableDictionary *)v19 setObject:v9 forKeyedSubscript:identifier3];
 
     dispatch_semaphore_wait(self->_semaphore, 0xFFFFFFFFFFFFFFFFLL);
-    LODWORD(v20) = self->_isReady;
+    LODWORD(identifier3) = self->_isReady;
     dispatch_semaphore_signal(self->_semaphore);
-    if (v20 == 1)
+    if (identifier3 == 1)
     {
-      v11 = [v9 copy];
-      [v11 setLastUpdateTimestamp:a4];
-      if (v5)
+      trackedPlaneIdentifier2 = [v9 copy];
+      [trackedPlaneIdentifier2 setLastUpdateTimestamp:timestamp];
+      if (immediatelyCopy)
       {
-        [(AREnvironmentProbeManager *)self _requestTextureForProbe:v11];
+        [(AREnvironmentProbeManager *)self _requestTextureForProbe:trackedPlaneIdentifier2];
       }
 
       else
       {
-        [(AREnvironmentProbeManager *)self _insertIntoQueue:v11];
+        [(AREnvironmentProbeManager *)self _insertIntoQueue:trackedPlaneIdentifier2];
       }
     }
 
     else
     {
       initialProbeIdentifiers = self->_initialProbeIdentifiers;
-      v11 = [v9 identifier];
-      [(NSMutableArray *)initialProbeIdentifiers addObject:v11];
+      trackedPlaneIdentifier2 = [v9 identifier];
+      [(NSMutableArray *)initialProbeIdentifiers addObject:trackedPlaneIdentifier2];
     }
 
     goto LABEL_15;
@@ -1182,31 +1182,31 @@ LABEL_10:
 
 LABEL_17:
 
-  return v5;
+  return immediatelyCopy;
 }
 
-- (void)_requestTextureForProbe:(id)a3
+- (void)_requestTextureForProbe:(id)probe
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  probeCopy = probe;
   v5 = _ARLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 identifier];
+    identifier = [probeCopy identifier];
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 2048;
     *&buf[14] = self;
     *&buf[22] = 2114;
-    *&buf[24] = v8;
+    *&buf[24] = identifier;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Requesting texture for probe %{public}@", buf, 0x20u);
   }
 
   requestedProbeIdentifiers = self->_requestedProbeIdentifiers;
-  v10 = [v4 identifier];
-  [(NSMutableArray *)requestedProbeIdentifiers addObject:v10];
+  identifier2 = [probeCopy identifier];
+  [(NSMutableArray *)requestedProbeIdentifiers addObject:identifier2];
 
   dispatch_semaphore_wait(self->_semaphore, 0xFFFFFFFFFFFFFFFFLL);
   v11 = self->_lastImageData;
@@ -1219,28 +1219,28 @@ LABEL_17:
   kdebug_trace();
   memset(buf, 0, 512);
   ARLabHistogramCreate(buf);
-  v13 = [v4 colorHistogram];
-  v14 = v13 == 0;
+  colorHistogram = [probeCopy colorHistogram];
+  v14 = colorHistogram == 0;
 
   if (!v14)
   {
-    v15 = [v4 colorHistogram];
-    [v15 getBytes:&buf[4] length:1024];
+    colorHistogram2 = [probeCopy colorHistogram];
+    [colorHistogram2 getBytes:&buf[4] length:1024];
 
-    [v4 opaquePixelPercentage];
+    [probeCopy opaquePixelPercentage];
     *buf = v16;
   }
 
   cubemapGenerator = self->_cubemapGenerator;
-  [v4 referenceTransform];
+  [probeCopy referenceTransform];
   v39 = v19;
   v40 = v18;
   v37 = v21;
   v38 = v20;
-  [v4 extent];
+  [probeCopy extent];
   v36 = v22;
   memcpy(__dst, buf, sizeof(__dst));
-  v23 = [(ARImageData *)v11 pixelBuffer];
+  pixelBuffer = [(ARImageData *)v11 pixelBuffer];
   [(ARImageData *)v11 cameraIntrinsics];
   v34 = v25;
   v35 = v24;
@@ -1254,10 +1254,10 @@ LABEL_17:
   v45[2] = __53__AREnvironmentProbeManager__requestTextureForProbe___block_invoke;
   v45[3] = &unk_1E817C960;
   v45[4] = self;
-  v31 = v4;
+  v31 = probeCopy;
   v46 = v31;
   LODWORD(v32) = v30;
-  [(ARCubemapGenerator *)cubemapGenerator cubemapWithTransform:__dst extent:v12 lastHistogram:v23 fromMeshes:v45 cameraImage:v40 cameraTransform:v39 cameraIntrinsics:v38 cameraExposure:v37 cameraExposureOffset:v36 completionHandler:v44, v43, v42, v41, v35, v34, v33, v28, v32];
+  [(ARCubemapGenerator *)cubemapGenerator cubemapWithTransform:__dst extent:v12 lastHistogram:pixelBuffer fromMeshes:v45 cameraImage:v40 cameraTransform:v39 cameraIntrinsics:v38 cameraExposure:v37 cameraExposureOffset:v36 completionHandler:v44, v43, v42, v41, v35, v34, v33, v28, v32];
 }
 
 void __53__AREnvironmentProbeManager__requestTextureForProbe___block_invoke(uint64_t a1, void *a2, _DWORD *a3)

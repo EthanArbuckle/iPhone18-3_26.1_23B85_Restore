@@ -1,22 +1,22 @@
 @interface PKAccountTableCell
-+ (BOOL)isShowingBalanceForAccount:(id)a3;
-+ (id)subtitleColorForAccount:(id)a3;
-+ (id)subtitleForAccount:(id)a3;
-- (id)_accessoryForAccount:(id)a3;
-- (id)_titleForAccount:(id)a3;
-- (void)_configureCellForAccount:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
++ (BOOL)isShowingBalanceForAccount:(id)account;
++ (id)subtitleColorForAccount:(id)account;
++ (id)subtitleForAccount:(id)account;
+- (id)_accessoryForAccount:(id)account;
+- (id)_titleForAccount:(id)account;
+- (void)_configureCellForAccount:(id)account;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PKAccountTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PKAccountTableCell;
-  v4 = a3;
-  [(PSSubtitleDisclosureTableCell *)&v6 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"pkAccount", v6.receiver, v6.super_class}];
+  specifierCopy = specifier;
+  [(PSSubtitleDisclosureTableCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"pkAccount", v6.receiver, v6.super_class}];
 
   if (v5)
   {
@@ -24,32 +24,32 @@
   }
 }
 
-- (void)_configureCellForAccount:(id)a3
+- (void)_configureCellForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(PKAccountTableCell *)self textLabel];
-  v6 = [(PKAccountTableCell *)self _titleForAccount:v4];
-  [v5 setText:v6];
+  accountCopy = account;
+  textLabel = [(PKAccountTableCell *)self textLabel];
+  v6 = [(PKAccountTableCell *)self _titleForAccount:accountCopy];
+  [textLabel setText:v6];
 
-  v14 = [(PKAccountTableCell *)self detailTextLabel];
-  v7 = [objc_opt_class() subtitleForAccount:v4];
-  [v14 setText:v7];
+  detailTextLabel = [(PKAccountTableCell *)self detailTextLabel];
+  v7 = [objc_opt_class() subtitleForAccount:accountCopy];
+  [detailTextLabel setText:v7];
 
-  v8 = [objc_opt_class() subtitleColorForAccount:v4];
-  [v14 setTextColor:v8];
+  v8 = [objc_opt_class() subtitleColorForAccount:accountCopy];
+  [detailTextLabel setTextColor:v8];
 
   v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD38], *MEMORY[0x1E69DDC20]);
-  [v14 setFont:v9];
+  [detailTextLabel setFont:v9];
 
-  v10 = [(PKAccountTableCell *)self imageView];
-  [v10 setContentMode:2];
-  v11 = [v10 layer];
-  [v11 setCornerRadius:6.0];
+  imageView = [(PKAccountTableCell *)self imageView];
+  [imageView setContentMode:2];
+  layer = [imageView layer];
+  [layer setCornerRadius:6.0];
 
-  v12 = [v10 layer];
-  [v12 setMasksToBounds:1];
+  layer2 = [imageView layer];
+  [layer2 setMasksToBounds:1];
 
-  v13 = [(PKAccountTableCell *)self _accessoryForAccount:v4];
+  v13 = [(PKAccountTableCell *)self _accessoryForAccount:accountCopy];
 
   if (v13)
   {
@@ -63,9 +63,9 @@
   }
 }
 
-- (id)_titleForAccount:(id)a3
+- (id)_titleForAccount:(id)account
 {
-  if ([a3 feature] == 5)
+  if ([account feature] == 5)
   {
     v3 = PKLocalizedFeatureString();
   }
@@ -78,10 +78,10 @@
   return v3;
 }
 
-- (id)_accessoryForAccount:(id)a3
+- (id)_accessoryForAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 feature] == 5 && PKSavingsAccountIsThresholdExceededActive())
+  accountCopy = account;
+  if ([accountCopy feature] == 5 && PKSavingsAccountIsThresholdExceededActive())
   {
     v4 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8]];
     v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.circle" withConfiguration:v4];
@@ -98,9 +98,9 @@
   return v7;
 }
 
-+ (id)subtitleColorForAccount:(id)a3
++ (id)subtitleColorForAccount:(id)account
 {
-  if (([a3 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (([account state] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [MEMORY[0x1E69DC888] systemRedColor];
   }
@@ -114,37 +114,37 @@
   return v3;
 }
 
-+ (id)subtitleForAccount:(id)a3
++ (id)subtitleForAccount:(id)account
 {
-  v4 = a3;
-  [v4 feature];
-  v5 = [v4 state];
-  if (v5 == 3 || v5 == 2)
+  accountCopy = account;
+  [accountCopy feature];
+  state = [accountCopy state];
+  if (state == 3 || state == 2)
   {
     goto LABEL_14;
   }
 
-  if (v5 != 1 || ![a1 isShowingBalanceForAccount:v4])
+  if (state != 1 || ![self isShowingBalanceForAccount:accountCopy])
   {
     v10 = 0;
     goto LABEL_15;
   }
 
-  if ([v4 type] == 4)
+  if ([accountCopy type] == 4)
   {
-    v6 = [v4 savingsDetails];
-    v7 = [v6 accountSummary];
-    v8 = [v6 currencyCode];
-    v9 = [v7 currentBalance];
+    savingsDetails = [accountCopy savingsDetails];
+    accountSummary = [savingsDetails accountSummary];
+    currencyCode = [savingsDetails currencyCode];
+    currentBalance = [accountSummary currentBalance];
   }
 
   else
   {
-    v9 = 0;
-    v8 = 0;
+    currentBalance = 0;
+    currencyCode = 0;
   }
 
-  if (![v8 length] || !v9 || objc_msgSend(v9, "pk_isNotANumber"))
+  if (![currencyCode length] || !currentBalance || objc_msgSend(currentBalance, "pk_isNotANumber"))
   {
 
 LABEL_14:
@@ -153,7 +153,7 @@ LABEL_14:
   }
 
   v12 = PKCurrencyAmountMake();
-  v13 = [v12 formattedStringValue];
+  formattedStringValue = [v12 formattedStringValue];
   v10 = PKLocalizedFeatureString();
 
 LABEL_15:
@@ -161,28 +161,28 @@ LABEL_15:
   return v10;
 }
 
-+ (BOOL)isShowingBalanceForAccount:(id)a3
++ (BOOL)isShowingBalanceForAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 state] == 1)
+  accountCopy = account;
+  if ([accountCopy state] == 1)
   {
     if (PKSavingsFDICSignageEnabled())
     {
-      v4 = [v3 FDICBehaviorShowSettingsBalance];
+      fDICBehaviorShowSettingsBalance = [accountCopy FDICBehaviorShowSettingsBalance];
     }
 
     else
     {
-      v4 = 1;
+      fDICBehaviorShowSettingsBalance = 1;
     }
   }
 
   else
   {
-    v4 = 0;
+    fDICBehaviorShowSettingsBalance = 0;
   }
 
-  return v4;
+  return fDICBehaviorShowSettingsBalance;
 }
 
 @end

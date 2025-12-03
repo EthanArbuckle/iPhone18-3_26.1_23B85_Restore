@@ -1,16 +1,16 @@
 @interface CPListSection
 + (id)allowedItemClasses;
-- (CPListSection)initWithCoder:(id)a3;
+- (CPListSection)initWithCoder:(id)coder;
 - (CPListSection)initWithItems:(NSArray *)items header:(NSString *)header headerSubtitle:(NSString *)headerSubtitle headerImage:(UIImage *)headerImage headerButton:(CPButton *)headerButton sectionIndexTitle:(NSString *)sectionIndexTitle;
 - (CPListSection)initWithItems:(NSArray *)items header:(NSString *)header sectionIndexTitle:(NSString *)sectionIndexTitle;
 - (CPListTemplate)listTemplate;
 - (NSUInteger)indexOfItem:(id)item;
 - (id)itemAtIndex:(NSUInteger)index;
 - (int64_t)numberOfItems;
-- (void)_commonInitWithItems:(id)a3 header:(id)a4 headerSubtitle:(id)a5 headerImage:(id)a6 headerButton:(id)a7 sectionIndexTitle:(id)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceItemAtIndex:(unint64_t)a3 withItem:(id)a4;
-- (void)replaceItems:(id)a3;
+- (void)_commonInitWithItems:(id)items header:(id)header headerSubtitle:(id)subtitle headerImage:(id)image headerButton:(id)button sectionIndexTitle:(id)title;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceItemAtIndex:(unint64_t)index withItem:(id)item;
+- (void)replaceItems:(id)items;
 - (void)setHeaderImage:(UIImage *)headerImage;
 @end
 
@@ -54,34 +54,34 @@
   return v21;
 }
 
-- (void)_commonInitWithItems:(id)a3 header:(id)a4 headerSubtitle:(id)a5 headerImage:(id)a6 headerButton:(id)a7 sectionIndexTitle:(id)a8
+- (void)_commonInitWithItems:(id)items header:(id)header headerSubtitle:(id)subtitle headerImage:(id)image headerButton:(id)button sectionIndexTitle:(id)title
 {
-  v16 = a3;
-  v17 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v20 = a8;
+  itemsCopy = items;
+  headerCopy = header;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  buttonCopy = button;
+  titleCopy = title;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __103__CPListSection__commonInitWithItems_header_headerSubtitle_headerImage_headerButton_sectionIndexTitle___block_invoke;
   v24[3] = &unk_278A10F28;
   v24[4] = self;
   v24[5] = a2;
-  [v16 enumerateObjectsUsingBlock:v24];
-  v18 = [MEMORY[0x277CCAD78] UUID];
+  [itemsCopy enumerateObjectsUsingBlock:v24];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   identifier = self->_identifier;
-  self->_identifier = v18;
+  self->_identifier = uUID;
 
-  objc_storeStrong(&self->_items, a3);
-  objc_storeStrong(&self->_header, a4);
-  objc_storeStrong(&self->_sectionIndexTitle, a8);
-  objc_storeStrong(&self->_headerImage, a6);
-  objc_storeStrong(&self->_headerSubtitle, a5);
-  objc_storeStrong(&self->_headerButton, a7);
+  objc_storeStrong(&self->_items, items);
+  objc_storeStrong(&self->_header, header);
+  objc_storeStrong(&self->_sectionIndexTitle, title);
+  objc_storeStrong(&self->_headerImage, image);
+  objc_storeStrong(&self->_headerSubtitle, subtitle);
+  objc_storeStrong(&self->_headerButton, button);
   if (![(NSString *)self->_headerSubtitle length]&& !self->_headerImage && !self->_headerButton)
   {
-    self->_sectionHeaderStyle = [v17 length] != 0;
+    self->_sectionHeaderStyle = [headerCopy length] != 0;
   }
 }
 
@@ -103,16 +103,16 @@ void __103__CPListSection__commonInitWithItems_header_headerSubtitle_headerImage
 
 - (int64_t)numberOfItems
 {
-  v2 = [(CPListSection *)self items];
-  v3 = [v2 count];
+  items = [(CPListSection *)self items];
+  v3 = [items count];
 
   return v3;
 }
 
 - (id)itemAtIndex:(NSUInteger)index
 {
-  v4 = [(CPListSection *)self items];
-  v5 = [v4 objectAtIndexedSubscript:index];
+  items = [(CPListSection *)self items];
+  v5 = [items objectAtIndexedSubscript:index];
 
   return v5;
 }
@@ -122,22 +122,22 @@ void __103__CPListSection__commonInitWithItems_header_headerSubtitle_headerImage
   v4 = item;
   if ([v4 conformsToProtocol:&unk_284A1A6E0])
   {
-    v5 = [v4 identifier];
+    identifier = [v4 identifier];
   }
 
   else
   {
-    v5 = 0;
+    identifier = 0;
   }
 
-  v6 = [(CPListSection *)self items];
+  items = [(CPListSection *)self items];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __29__CPListSection_indexOfItem___block_invoke;
   v10[3] = &unk_278A10F50;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 indexOfObjectPassingTest:v10];
+  v11 = identifier;
+  v7 = identifier;
+  v8 = [items indexOfObjectPassingTest:v10];
 
   return v8;
 }
@@ -160,112 +160,112 @@ uint64_t __29__CPListSection_indexOfItem___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)replaceItemAtIndex:(unint64_t)a3 withItem:(id)a4
+- (void)replaceItemAtIndex:(unint64_t)index withItem:(id)item
 {
-  v7 = a4;
-  v8 = [objc_opt_class() allowedItemClasses];
-  v17 = v7;
-  if (([v8 containsObject:object_getClass(v17)] & 1) == 0)
+  itemCopy = item;
+  allowedItemClasses = [objc_opt_class() allowedItemClasses];
+  v17 = itemCopy;
+  if (([allowedItemClasses containsObject:object_getClass(v17)] & 1) == 0)
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE660];
     v11 = NSStringFromSelector(a2);
-    [v9 raise:v10 format:{@"Unsupported object %@ passed to %@. Allowed classes: %@", v17, v11, v8, 0}];
+    [v9 raise:v10 format:{@"Unsupported object %@ passed to %@. Allowed classes: %@", v17, v11, allowedItemClasses, 0}];
   }
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [(CPListSection *)self items];
-  v14 = [v12 arrayWithArray:v13];
+  items = [(CPListSection *)self items];
+  v14 = [v12 arrayWithArray:items];
 
-  [v14 replaceObjectAtIndex:a3 withObject:v17];
+  [v14 replaceObjectAtIndex:index withObject:v17];
   v15 = [v14 copy];
   items = self->_items;
   self->_items = v15;
 }
 
-- (void)replaceItems:(id)a3
+- (void)replaceItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   items = self->_items;
   self->_items = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (CPListSection)initWithCoder:(id)a3
+- (CPListSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CPListSection;
   v5 = [(CPListSection *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [objc_opt_class() allowedItemClasses];
-    v12 = [v10 setByAddingObjectsFromSet:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kCPSectionItemsKey"];
+    allowedItemClasses = [objc_opt_class() allowedItemClasses];
+    v12 = [v10 setByAddingObjectsFromSet:allowedItemClasses];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"kCPSectionItemsKey"];
     items = v5->_items;
     v5->_items = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderKey"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderKey"];
     header = v5->_header;
     v5->_header = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionIndexTitleKey"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionIndexTitleKey"];
     sectionIndexTitle = v5->_sectionIndexTitle;
     v5->_sectionIndexTitle = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderSubtitleKey"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderSubtitleKey"];
     headerSubtitle = v5->_headerSubtitle;
     v5->_headerSubtitle = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderImageKey"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderImageKey"];
     headerImage = v5->_headerImage;
     v5->_headerImage = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderButtonKey"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderButtonKey"];
     headerButton = v5->_headerButton;
     v5->_headerButton = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderStyleKey"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPSectionHeaderStyleKey"];
     v5->_sectionHeaderStyle = [v25 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPListSection *)self identifier];
-  [v4 encodeObject:v5 forKey:@"kCPSectionIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(CPListSection *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPSectionIdentifierKey"];
 
-  v6 = [(CPListSection *)self items];
-  [v4 encodeObject:v6 forKey:@"kCPSectionItemsKey"];
+  items = [(CPListSection *)self items];
+  [coderCopy encodeObject:items forKey:@"kCPSectionItemsKey"];
 
-  v7 = [(CPListSection *)self header];
-  [v4 encodeObject:v7 forKey:@"kCPSectionHeaderKey"];
+  header = [(CPListSection *)self header];
+  [coderCopy encodeObject:header forKey:@"kCPSectionHeaderKey"];
 
-  v8 = [(CPListSection *)self sectionIndexTitle];
-  [v4 encodeObject:v8 forKey:@"kCPSectionIndexTitleKey"];
+  sectionIndexTitle = [(CPListSection *)self sectionIndexTitle];
+  [coderCopy encodeObject:sectionIndexTitle forKey:@"kCPSectionIndexTitleKey"];
 
-  v9 = [(CPListSection *)self headerSubtitle];
-  [v4 encodeObject:v9 forKey:@"kCPSectionHeaderSubtitleKey"];
+  headerSubtitle = [(CPListSection *)self headerSubtitle];
+  [coderCopy encodeObject:headerSubtitle forKey:@"kCPSectionHeaderSubtitleKey"];
 
-  v10 = [(CPListSection *)self headerImage];
-  [v4 encodeObject:v10 forKey:@"kCPSectionHeaderImageKey"];
+  headerImage = [(CPListSection *)self headerImage];
+  [coderCopy encodeObject:headerImage forKey:@"kCPSectionHeaderImageKey"];
 
-  v11 = [(CPListSection *)self headerButton];
-  [v4 encodeObject:v11 forKey:@"kCPSectionHeaderButtonKey"];
+  headerButton = [(CPListSection *)self headerButton];
+  [coderCopy encodeObject:headerButton forKey:@"kCPSectionHeaderButtonKey"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPListSection sectionHeaderStyle](self, "sectionHeaderStyle")}];
-  [v4 encodeObject:v12 forKey:@"kCPSectionHeaderStyleKey"];
+  [coderCopy encodeObject:v12 forKey:@"kCPSectionHeaderStyleKey"];
 }
 
 - (void)setHeaderImage:(UIImage *)headerImage
@@ -307,8 +307,8 @@ uint64_t __29__CPListSection_indexOfItem___block_invoke(uint64_t a1, void *a2)
 LABEL_14:
   WeakRetained = objc_loadWeakRetained(&self->_listTemplate);
   v9 = self->_headerImage;
-  v10 = [(CPListSection *)self identifier];
-  [WeakRetained updateHeaderImage:v9 forSectionIdentifier:v10];
+  identifier = [(CPListSection *)self identifier];
+  [WeakRetained updateHeaderImage:v9 forSectionIdentifier:identifier];
 
 LABEL_15:
 }

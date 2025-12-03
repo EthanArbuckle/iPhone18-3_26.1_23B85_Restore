@@ -1,10 +1,10 @@
 @interface OrganDonationRegisteredDataSource
-- (void)listenForMedicalIDUpdatesWithNotification:(id)a3;
+- (void)listenForMedicalIDUpdatesWithNotification:(id)notification;
 @end
 
 @implementation OrganDonationRegisteredDataSource
 
-- (void)listenForMedicalIDUpdatesWithNotification:(id)a3
+- (void)listenForMedicalIDUpdatesWithNotification:(id)notification
 {
   v3 = sub_1BA4A1018();
   v4 = *(v3 - 8);

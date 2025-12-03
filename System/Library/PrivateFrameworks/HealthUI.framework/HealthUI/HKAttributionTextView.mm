@@ -1,13 +1,13 @@
 @interface HKAttributionTextView
-- (HKAttributionTextView)initWithAttributedText:(id)a3 selectable:(BOOL)a4;
+- (HKAttributionTextView)initWithAttributedText:(id)text selectable:(BOOL)selectable;
 @end
 
 @implementation HKAttributionTextView
 
-- (HKAttributionTextView)initWithAttributedText:(id)a3 selectable:(BOOL)a4
+- (HKAttributionTextView)initWithAttributedText:(id)text selectable:(BOOL)selectable
 {
-  v4 = a4;
-  v6 = a3;
+  selectableCopy = selectable;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = HKAttributionTextView;
   v7 = [(HKAttributionTextView *)&v14 init];
@@ -15,18 +15,18 @@
   if (v7)
   {
     [(HKAttributionTextView *)v7 setEditable:0];
-    v9 = [(HKAttributionTextView *)v8 textContainer];
-    [v9 setLineFragmentPadding:0.0];
+    textContainer = [(HKAttributionTextView *)v8 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(HKAttributionTextView *)v8 setScrollEnabled:0];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(HKAttributionTextView *)v8 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(HKAttributionTextView *)v8 setBackgroundColor:clearColor];
 
-    [(HKAttributionTextView *)v8 setAttributedText:v6];
+    [(HKAttributionTextView *)v8 setAttributedText:textCopy];
     v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
     [(HKAttributionTextView *)v8 setFont:v11];
 
-    if (v4)
+    if (selectableCopy)
     {
       [(HKAttributionTextView *)v8 setSelectable:1];
       HKHealthKeyColor();

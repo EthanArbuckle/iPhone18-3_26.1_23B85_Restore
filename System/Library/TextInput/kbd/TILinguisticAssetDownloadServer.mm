@@ -1,14 +1,14 @@
 @interface TILinguisticAssetDownloadServer
 + (id)_dispatchQueue;
 + (id)sharedServer;
-+ (int64_t)serverResultForAssetManagerResult:(int64_t)a3;
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7;
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4;
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5;
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4;
++ (int64_t)serverResultForAssetManagerResult:(int64_t)result;
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler;
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback;
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler;
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion;
 - (void)start;
 - (void)stop;
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4;
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback;
 @end
 
 @implementation TILinguisticAssetDownloadServer
@@ -49,64 +49,64 @@
   TIDispatchAsync();
 }
 
-+ (int64_t)serverResultForAssetManagerResult:(int64_t)a3
++ (int64_t)serverResultForAssetManagerResult:(int64_t)result
 {
-  if ((a3 + 1) >= 4)
+  if ((result + 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return result;
   }
 }
 
-- (void)requestLinguisticAssetsForLanguage:(id)a3 completion:(id)a4
+- (void)requestLinguisticAssetsForLanguage:(id)language completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v7 = +[TILinguisticAssetDownloadServer _dispatchQueue];
-  v10 = v6;
-  v8 = v6;
-  v9 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  v9 = languageCopy;
   TIDispatchAsync();
 }
 
-- (void)addLinguisticAssetsAssertionForLanguage:(id)a3 assertionID:(id)a4 region:(id)a5 clientID:(id)a6 withHandler:(id)a7
+- (void)addLinguisticAssetsAssertionForLanguage:(id)language assertionID:(id)d region:(id)region clientID:(id)iD withHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  iDCopy = iD;
+  regionCopy = region;
+  dCopy = d;
+  languageCopy = language;
   v16 = +[TIAssetManager sharedAssetManager];
-  [v16 addLinguisticAssetsAssertionForLanguage:v15 assertionID:v14 region:v13 clientID:v12 withHandler:v11];
+  [v16 addLinguisticAssetsAssertionForLanguage:languageCopy assertionID:dCopy region:regionCopy clientID:iDCopy withHandler:handlerCopy];
 }
 
-- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)a3 forClientID:(id)a4 withHandler:(id)a5
+- (void)removeLinguisticAssetsAssertionWithIdentifier:(id)identifier forClientID:(id)d withHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  identifierCopy = identifier;
   v10 = +[TIAssetManager sharedAssetManager];
-  [v10 removeLinguisticAssetsAssertionWithIdentifier:v9 forClientID:v8 withHandler:v7];
+  [v10 removeLinguisticAssetsAssertionWithIdentifier:identifierCopy forClientID:dCopy withHandler:handlerCopy];
 }
 
-- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)fetchAssetUpdateStatusForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
+  callbackCopy = callback;
+  identifierCopy = identifier;
   v7 = +[TIAssetManager sharedAssetManager];
-  [v7 fetchAssetUpdateStatusForInputModeIdentifier:v6 callback:v5];
+  [v7 fetchAssetUpdateStatusForInputModeIdentifier:identifierCopy callback:callbackCopy];
 }
 
-- (void)updateAssetForInputModeIdentifier:(id)a3 callback:(id)a4
+- (void)updateAssetForInputModeIdentifier:(id)identifier callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
+  callbackCopy = callback;
+  identifierCopy = identifier;
   v7 = +[TIAssetManager sharedAssetManager];
-  [v7 updateAssetForInputModeIdentifier:v6 callback:v5];
+  [v7 updateAssetForInputModeIdentifier:identifierCopy callback:callbackCopy];
 }
 
 @end

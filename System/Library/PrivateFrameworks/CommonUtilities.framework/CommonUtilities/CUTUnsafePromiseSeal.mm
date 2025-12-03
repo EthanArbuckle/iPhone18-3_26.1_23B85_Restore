@@ -1,7 +1,7 @@
 @interface CUTUnsafePromiseSeal
 - (CUTUnsafePromiseSeal)init;
-- (void)failWithError:(id)a3;
-- (void)fulfillWithValue:(id)a3;
+- (void)failWithError:(id)error;
+- (void)fulfillWithValue:(id)value;
 @end
 
 @implementation CUTUnsafePromiseSeal
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (void)fulfillWithValue:(id)a3
+- (void)fulfillWithValue:(id)value
 {
-  v4 = a3;
-  v6 = [(CUTUnsafePromiseSeal *)self promise];
-  v5 = [[CUTResult alloc] initWithSuccess:v4];
+  valueCopy = value;
+  promise = [(CUTUnsafePromiseSeal *)self promise];
+  v5 = [[CUTResult alloc] initWithSuccess:valueCopy];
 
-  [v6 _fulfillWithResult:v5];
+  [promise _fulfillWithResult:v5];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
-  v6 = [(CUTUnsafePromiseSeal *)self promise];
-  v5 = [[CUTResult alloc] initWithError:v4];
+  errorCopy = error;
+  promise = [(CUTUnsafePromiseSeal *)self promise];
+  v5 = [[CUTResult alloc] initWithError:errorCopy];
 
-  [v6 _fulfillWithResult:v5];
+  [promise _fulfillWithResult:v5];
 }
 
 @end

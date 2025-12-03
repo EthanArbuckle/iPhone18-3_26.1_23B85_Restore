@@ -1,20 +1,20 @@
 @interface NSKeyValueMethodGetter
-- (NSKeyValueMethodGetter)initWithContainerClassID:(id)a3 key:(id)a4 method:(objc_method *)a5;
+- (NSKeyValueMethodGetter)initWithContainerClassID:(id)d key:(id)key method:(objc_method *)method;
 @end
 
 @implementation NSKeyValueMethodGetter
 
-- (NSKeyValueMethodGetter)initWithContainerClassID:(id)a3 key:(id)a4 method:(objc_method *)a5
+- (NSKeyValueMethodGetter)initWithContainerClassID:(id)d key:(id)key method:(objc_method *)method
 {
-  v5 = a5;
+  methodCopy = method;
   v24[3] = *MEMORY[0x1E69E9840];
-  if (method_getNumberOfArguments(a5) != 2)
+  if (method_getNumberOfArguments(method) != 2)
   {
     goto LABEL_54;
   }
 
-  Name = method_getName(v5);
-  v10 = method_copyReturnType(v5);
+  Name = method_getName(methodCopy);
+  v10 = method_copyReturnType(methodCopy);
   v11 = v10;
   v12 = *v10;
   v13 = _NSGetBoolValueWithMethod;
@@ -191,19 +191,19 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  Implementation = method_getImplementation(v5);
+  Implementation = method_getImplementation(methodCopy);
   free(v11);
   if (Implementation)
   {
-    v5 = 0;
+    methodCopy = 0;
     v21 = 0;
 LABEL_52:
     v24[1] = 0;
     v24[2] = 0;
     v23.receiver = self;
     v23.super_class = NSKeyValueMethodGetter;
-    v24[0] = v5;
-    return [(NSKeyValueAccessor *)&v23 initWithContainerClassID:a3 key:a4 implementation:Implementation selector:Name extraArguments:v24 count:v21];
+    v24[0] = methodCopy;
+    return [(NSKeyValueAccessor *)&v23 initWithContainerClassID:d key:key implementation:Implementation selector:Name extraArguments:v24 count:v21];
   }
 
 LABEL_54:

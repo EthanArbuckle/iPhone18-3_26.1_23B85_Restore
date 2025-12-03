@@ -7,25 +7,25 @@
 
 + (id)ic_filledTintedButtonConfiguration
 {
-  v0 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v1 = [MEMORY[0x1E69DC888] tintColor];
-  v2 = [v0 background];
-  [v2 setBackgroundColor:v1];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  background = [filledButtonConfiguration background];
+  [background setBackgroundColor:tintColor];
 
-  return v0;
+  return filledButtonConfiguration;
 }
 
 + (id)ic_plainButtonConfiguration
 {
-  v0 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  v1 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [v1 setBackgroundColor:v2];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [clearConfiguration setBackgroundColor:clearColor];
 
-  [v0 setBackground:v1];
-  [v0 setTitleTextAttributesTransformer:&__block_literal_global_67];
+  [plainButtonConfiguration setBackground:clearConfiguration];
+  [plainButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_67];
 
-  return v0;
+  return plainButtonConfiguration;
 }
 
 @end

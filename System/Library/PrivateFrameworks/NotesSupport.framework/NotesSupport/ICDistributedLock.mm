@@ -1,8 +1,8 @@
 @interface ICDistributedLock
-+ (id)lockWithPath:(id)a3;
++ (id)lockWithPath:(id)path;
 - (BOOL)tryLock;
 - (ICDistributedLock)init;
-- (ICDistributedLock)initWithPath:(id)a3;
+- (ICDistributedLock)initWithPath:(id)path;
 - (NSDate)lockDate;
 - (id)description;
 - (void)breakLock;
@@ -19,14 +19,14 @@
   objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:v3 userInfo:0]);
 }
 
-+ (id)lockWithPath:(id)a3
++ (id)lockWithPath:(id)path
 {
-  v3 = [objc_allocWithZone(a1) initWithPath:a3];
+  v3 = [objc_allocWithZone(self) initWithPath:path];
 
   return v3;
 }
 
-- (ICDistributedLock)initWithPath:(id)a3
+- (ICDistributedLock)initWithPath:(id)path
 {
   if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
   {
@@ -34,7 +34,7 @@
     v7.super_class = ICDistributedLock;
     v5 = [(ICDistributedLock *)&v7 init];
     v5->threadLock = [objc_allocWithZone(MEMORY[0x1E696AD10]) init];
-    v5->lockName = [a3 copyWithZone:0];
+    v5->lockName = [path copyWithZone:0];
     v5->hasLock = 0;
   }
 

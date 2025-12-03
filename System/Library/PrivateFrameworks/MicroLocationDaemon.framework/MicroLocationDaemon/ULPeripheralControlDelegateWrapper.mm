@@ -1,12 +1,12 @@
 @interface ULPeripheralControlDelegateWrapper
-- (ULPeripheralControlDelegateWrapper)initWithCppInterface:(ULPeripheralControlDelegateCppInterface *)a3;
+- (ULPeripheralControlDelegateWrapper)initWithCppInterface:(ULPeripheralControlDelegateCppInterface *)interface;
 - (void)onPeripheralAvailable;
 - (void)onPeripheralUnavailable;
 @end
 
 @implementation ULPeripheralControlDelegateWrapper
 
-- (ULPeripheralControlDelegateWrapper)initWithCppInterface:(ULPeripheralControlDelegateCppInterface *)a3
+- (ULPeripheralControlDelegateWrapper)initWithCppInterface:(ULPeripheralControlDelegateCppInterface *)interface
 {
   v7.receiver = self;
   v7.super_class = ULPeripheralControlDelegateWrapper;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ULPeripheralControlDelegateWrapper *)v4 setCppInterface:a3];
+    [(ULPeripheralControlDelegateWrapper *)v4 setCppInterface:interface];
   }
 
   return v5;

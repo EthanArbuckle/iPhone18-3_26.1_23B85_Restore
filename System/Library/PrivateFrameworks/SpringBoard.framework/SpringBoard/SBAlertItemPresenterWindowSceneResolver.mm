@@ -1,42 +1,42 @@
 @interface SBAlertItemPresenterWindowSceneResolver
-- (SBAlertItemPresenterWindowSceneResolver)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4;
-- (id)resolvedSharedModalAlertItemPresenterForAlertItem:(id)a3;
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (SBAlertItemPresenterWindowSceneResolver)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager;
+- (id)resolvedSharedModalAlertItemPresenterForAlertItem:(id)item;
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBAlertItemPresenterWindowSceneResolver
 
-- (SBAlertItemPresenterWindowSceneResolver)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4
+- (SBAlertItemPresenterWindowSceneResolver)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = SBAlertItemPresenterWindowSceneResolver;
   v8 = [(SBAlertItemPresenterWindowSceneResolver *)&v14 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     modalAlertPresenters = v8->_modalAlertPresenters;
-    v8->_modalAlertPresenters = v9;
+    v8->_modalAlertPresenters = weakToStrongObjectsMapTable;
 
     v11 = v8->_modalAlertPresenters;
-    v12 = [v6 windowScene];
-    [(NSMapTable *)v11 setObject:v6 forKey:v12];
+    windowScene = [presenterCopy windowScene];
+    [(NSMapTable *)v11 setObject:presenterCopy forKey:windowScene];
 
-    objc_storeStrong(&v8->_windowSceneManager, a4);
+    objc_storeStrong(&v8->_windowSceneManager, manager);
   }
 
   return v8;
 }
 
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  connectCopy = connect;
+  presenterCopy = presenter;
+  if (connectCopy)
   {
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -45,7 +45,7 @@
   else
   {
     [SBAlertItemPresenterWindowSceneResolver windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -53,46 +53,46 @@
 
   [SBAlertItemPresenterWindowSceneResolver windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
 LABEL_3:
-  v8 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
-  v9 = [v7 windowScene];
-  v10 = [v8 objectForKey:v9];
+  modalAlertPresenters = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
+  windowScene = [presenterCopy windowScene];
+  v10 = [modalAlertPresenters objectForKey:windowScene];
 
   if (!v10)
   {
-    v11 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
-    [v11 setObject:v7 forKey:v12];
+    modalAlertPresenters2 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
+    [modalAlertPresenters2 setObject:presenterCopy forKey:connectCopy];
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v8 = a3;
-  if (!v8)
+  disconnectCopy = disconnect;
+  if (!disconnectCopy)
   {
     [(SBAlertItemPresenterWindowSceneResolver *)a2 windowSceneDidDisconnect:?];
   }
 
-  v5 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
-  v6 = [v5 objectForKey:v8];
+  modalAlertPresenters = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
+  v6 = [modalAlertPresenters objectForKey:disconnectCopy];
   [v6 invalidate];
 
-  v7 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
-  [v7 removeObjectForKey:v8];
+  modalAlertPresenters2 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
+  [modalAlertPresenters2 removeObjectForKey:disconnectCopy];
 }
 
-- (id)resolvedSharedModalAlertItemPresenterForAlertItem:(id)a3
+- (id)resolvedSharedModalAlertItemPresenterForAlertItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 alertController];
-  v6 = [v5 _sbWindowScene];
+  itemCopy = item;
+  alertController = [itemCopy alertController];
+  _sbWindowScene = [alertController _sbWindowScene];
 
-  if (!v6 && (objc_opt_self(), v7 = objc_claimAutoreleasedReturnValue(), [v4 _preferredActivationWindowScene], v8 = objc_claimAutoreleasedReturnValue(), SBSafeCast(v7, v8), v6 = objc_claimAutoreleasedReturnValue(), v8, v7, !v6) || (-[SBAlertItemPresenterWindowSceneResolver modalAlertPresenters](self, "modalAlertPresenters"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", v6), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if (!_sbWindowScene && (objc_opt_self(), v7 = objc_claimAutoreleasedReturnValue(), [itemCopy _preferredActivationWindowScene], v8 = objc_claimAutoreleasedReturnValue(), SBSafeCast(v7, v8), _sbWindowScene = objc_claimAutoreleasedReturnValue(), v8, v7, !_sbWindowScene) || (-[SBAlertItemPresenterWindowSceneResolver modalAlertPresenters](self, "modalAlertPresenters"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKey:", _sbWindowScene), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
-    v11 = [(SBAlertItemPresenterWindowSceneResolver *)self windowSceneManager];
-    v12 = [v11 windowSceneForAlertItems];
+    windowSceneManager = [(SBAlertItemPresenterWindowSceneResolver *)self windowSceneManager];
+    windowSceneForAlertItems = [windowSceneManager windowSceneForAlertItems];
 
-    v13 = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
-    v10 = [v13 objectForKey:v12];
+    modalAlertPresenters = [(SBAlertItemPresenterWindowSceneResolver *)self modalAlertPresenters];
+    v10 = [modalAlertPresenters objectForKey:windowSceneForAlertItems];
   }
 
   return v10;

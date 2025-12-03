@@ -4,8 +4,8 @@
 - (MRUImageLoaderCoordinator)init;
 - (void)recalculateArtworkIdentifiers;
 - (void)recalculateRequestSize;
-- (void)registerLoader:(id)a3;
-- (void)unregisterLoader:(id)a3;
+- (void)registerLoader:(id)loader;
+- (void)unregisterLoader:(id)loader;
 @end
 
 @implementation MRUImageLoaderCoordinator
@@ -38,9 +38,9 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
   v2 = [(MRUImageLoaderCoordinator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    *(v2 + 2) = weakObjectsHashTable;
 
     *(v2 + 24) = *MEMORY[0x1E695F060];
     v5 = [MEMORY[0x1E695DFD8] set];
@@ -51,22 +51,22 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
   return v2;
 }
 
-- (void)registerLoader:(id)a3
+- (void)registerLoader:(id)loader
 {
-  v4 = a3;
-  v5 = [(MRUImageLoaderCoordinator *)self loaders];
-  [v5 addObject:v4];
+  loaderCopy = loader;
+  loaders = [(MRUImageLoaderCoordinator *)self loaders];
+  [loaders addObject:loaderCopy];
 
   [(MRUImageLoaderCoordinator *)self recalculateRequestSize];
 
   [(MRUImageLoaderCoordinator *)self recalculateArtworkIdentifiers];
 }
 
-- (void)unregisterLoader:(id)a3
+- (void)unregisterLoader:(id)loader
 {
-  v4 = a3;
-  v5 = [(MRUImageLoaderCoordinator *)self loaders];
-  [v5 removeObject:v4];
+  loaderCopy = loader;
+  loaders = [(MRUImageLoaderCoordinator *)self loaders];
+  [loaders removeObject:loaderCopy];
 
   [(MRUImageLoaderCoordinator *)self recalculateRequestSize];
 
@@ -76,15 +76,15 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
 - (void)recalculateArtworkIdentifiers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUImageLoaderCoordinator *)self loaders];
-  v4 = [v3 allObjects];
+  loaders = [(MRUImageLoaderCoordinator *)self loaders];
+  allObjects = [loaders allObjects];
 
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(allObjects, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v7)
   {
@@ -100,13 +100,13 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 lastVendedArtworkIdentifier];
+        lastVendedArtworkIdentifier = [v11 lastVendedArtworkIdentifier];
 
-        if (v12)
+        if (lastVendedArtworkIdentifier)
         {
-          v13 = [v11 lastVendedArtworkIdentifier];
-          v14 = [v13 stringRepresentation];
-          [v5 addObject:v14];
+          lastVendedArtworkIdentifier2 = [v11 lastVendedArtworkIdentifier];
+          stringRepresentation = [lastVendedArtworkIdentifier2 stringRepresentation];
+          [v5 addObject:stringRepresentation];
         }
       }
 
@@ -116,29 +116,29 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
     while (v8);
   }
 
-  v15 = [(MRUImageLoaderCoordinator *)self registeredLoaderArtworkIdentifiers];
-  v16 = [v5 isEqualToSet:v15];
+  registeredLoaderArtworkIdentifiers = [(MRUImageLoaderCoordinator *)self registeredLoaderArtworkIdentifiers];
+  v16 = [v5 isEqualToSet:registeredLoaderArtworkIdentifiers];
 
   if ((v16 & 1) == 0)
   {
     [(MRUImageLoaderCoordinator *)self setRegisteredLoaderArtworkIdentifiers:v5];
-    v17 = [MEMORY[0x1E69B0B08] currentSettings];
-    v18 = [v17 verboseImageLoadingLogging];
+    currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+    verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-    if (v18)
+    if (verboseImageLoadingLogging)
     {
       v19 = MCLogCategoryImageLoading();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(MRUImageLoaderCoordinator *)self registeredLoaderArtworkIdentifiers];
+        registeredLoaderArtworkIdentifiers2 = [(MRUImageLoaderCoordinator *)self registeredLoaderArtworkIdentifiers];
         *buf = 138412290;
-        v27 = v20;
+        v27 = registeredLoaderArtworkIdentifiers2;
         _os_log_impl(&dword_1A20FC000, v19, OS_LOG_TYPE_DEFAULT, "[MRUImageLoaderCoordinator] [MRUImageLoaderCoordinator] artwork identifiers changed: %@.", buf, 0xCu);
       }
     }
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 postNotificationName:@"MRUImageLoaderCoordinatorArtworkIdentifiersDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MRUImageLoaderCoordinatorArtworkIdentifiersDidChangeNotification" object:0];
   }
 }
 
@@ -149,8 +149,8 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(MRUImageLoaderCoordinator *)self loaders];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  loaders = [(MRUImageLoaderCoordinator *)self loaders];
+  v4 = [loaders countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -163,7 +163,7 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(loaders);
         }
 
         [*(*(&v20 + 1) + 8 * i) scaledFittingSize];
@@ -182,7 +182,7 @@ uint64_t __46__MRUImageLoaderCoordinator_sharedCoordinator__block_invoke()
         v7 = v12;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v5 = [loaders countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v5);

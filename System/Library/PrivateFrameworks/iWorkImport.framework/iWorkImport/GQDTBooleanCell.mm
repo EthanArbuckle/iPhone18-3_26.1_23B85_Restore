@@ -6,9 +6,9 @@
 
 - (__CFString)createStringValue
 {
-  v3 = [(GQDTBooleanCell *)self BOOLValue];
+  bOOLValue = [(GQDTBooleanCell *)self BOOLValue];
   mProcessorBundle = self->mProcessorBundle;
-  if (v3)
+  if (bOOLValue)
   {
     v5 = @"TRUE";
   }

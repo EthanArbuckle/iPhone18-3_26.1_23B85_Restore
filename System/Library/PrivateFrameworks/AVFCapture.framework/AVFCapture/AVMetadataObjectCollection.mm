@@ -1,12 +1,12 @@
 @interface AVMetadataObjectCollection
-+ (id)collectionWithTime:(id *)a3 metadataObjectTypes:(id)a4 handledMetadataObjectTypes:(id)a5 metadataObjects:(id)a6;
-- (AVMetadataObjectCollection)initWithTime:(id *)a3 metadataObjectTypes:(id)a4 handledMetadataObjectTypes:(id)a5 metadataObjects:(id)a6;
++ (id)collectionWithTime:(id *)time metadataObjectTypes:(id)types handledMetadataObjectTypes:(id)objectTypes metadataObjects:(id)objects;
+- (AVMetadataObjectCollection)initWithTime:(id *)time metadataObjectTypes:(id)types handledMetadataObjectTypes:(id)objectTypes metadataObjects:(id)objects;
 - (void)dealloc;
 @end
 
 @implementation AVMetadataObjectCollection
 
-- (AVMetadataObjectCollection)initWithTime:(id *)a3 metadataObjectTypes:(id)a4 handledMetadataObjectTypes:(id)a5 metadataObjects:(id)a6
+- (AVMetadataObjectCollection)initWithTime:(id *)time metadataObjectTypes:(id)types handledMetadataObjectTypes:(id)objectTypes metadataObjects:(id)objects
 {
   v14.receiver = self;
   v14.super_class = AVMetadataObjectCollection;
@@ -14,22 +14,22 @@
   v11 = v10;
   if (v10)
   {
-    v12 = *&a3->var0;
-    *(v10 + 3) = a3->var3;
+    v12 = *&time->var0;
+    *(v10 + 3) = time->var3;
     *(v10 + 8) = v12;
-    *(v10 + 4) = [a4 copy];
-    v11->_handledMetadataObjectTypes = [a5 copy];
-    v11->_metadataObjects = a6;
+    *(v10 + 4) = [types copy];
+    v11->_handledMetadataObjectTypes = [objectTypes copy];
+    v11->_metadataObjects = objects;
   }
 
   return v11;
 }
 
-+ (id)collectionWithTime:(id *)a3 metadataObjectTypes:(id)a4 handledMetadataObjectTypes:(id)a5 metadataObjects:(id)a6
++ (id)collectionWithTime:(id *)time metadataObjectTypes:(id)types handledMetadataObjectTypes:(id)objectTypes metadataObjects:(id)objects
 {
   v10 = objc_alloc(objc_opt_class());
-  v12 = *a3;
-  return [v10 initWithTime:&v12 metadataObjectTypes:a4 handledMetadataObjectTypes:a5 metadataObjects:a6];
+  v12 = *time;
+  return [v10 initWithTime:&v12 metadataObjectTypes:types handledMetadataObjectTypes:objectTypes metadataObjects:objects];
 }
 
 - (void)dealloc

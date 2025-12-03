@@ -6,13 +6,13 @@
 
 - (id)_pkDebugStringRepresentation
 {
-  if (a1)
+  if (self)
   {
-    a1 = PKDebugStringRepresentation(a1);
+    self = PKDebugStringRepresentation(self);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

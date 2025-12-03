@@ -1,10 +1,10 @@
 @interface IDSLocalDeliveryMessage
-+ (id)socketPairMessageWithCommand:(int64_t)a3 streamID:(unsigned __int16)a4 sequenceNumber:(unsigned int)a5 messageID:(unsigned int)a6 expectsPeerResponse:(BOOL)a7 wantsAppAck:(BOOL)a8 compressPayload:(BOOL)a9 compressed:(BOOL)a10 didWakeHint:(BOOL)a11 peerResponseIdentifier:(id)a12 messageUUID:(id)a13 payload:(id)a14 protobuf:(id)a15 resourcePath:(id)a16 resourceMetadata:(id)a17 expiryDate:(id)a18;
-+ (unsigned)_niceToSocketCommand:(int64_t)a3;
++ (id)socketPairMessageWithCommand:(int64_t)command streamID:(unsigned __int16)d sequenceNumber:(unsigned int)number messageID:(unsigned int)iD expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressPayload:(BOOL)payload compressed:(BOOL)self0 didWakeHint:(BOOL)self1 peerResponseIdentifier:(id)self2 messageUUID:(id)self3 payload:(id)self4 protobuf:(id)self5 resourcePath:(id)self6 resourceMetadata:(id)self7 expiryDate:(id)self8;
++ (unsigned)_niceToSocketCommand:(int64_t)command;
 - (IDSLocalDeliveryMessage)init;
 - (id)socketPairMessage;
 - (void)kickProgressBlock;
-- (void)setCompletionBlock:(id)a3;
+- (void)setCompletionBlock:(id)block;
 @end
 
 @implementation IDSLocalDeliveryMessage
@@ -38,35 +38,35 @@
   {
     if (self->_shouldEnforceRemoteTimeout)
     {
-      v26 = [(IDSLocalDeliveryMessage *)self expirationDate];
+      expirationDate = [(IDSLocalDeliveryMessage *)self expirationDate];
     }
 
     else
     {
-      v26 = 0;
+      expirationDate = 0;
     }
 
     v23 = objc_opt_class();
-    v25 = [(IDSLocalDeliveryMessage *)self command];
-    v22 = [v25 integerValue];
-    v24 = [(IDSLocalDeliveryMessage *)self domainHash];
-    v21 = [v24 unsignedShortValue];
-    v20 = [(IDSLocalDeliveryMessage *)self messageID];
-    v6 = [(IDSLocalDeliveryMessage *)self messageID];
+    command = [(IDSLocalDeliveryMessage *)self command];
+    integerValue = [command integerValue];
+    domainHash = [(IDSLocalDeliveryMessage *)self domainHash];
+    unsignedShortValue = [domainHash unsignedShortValue];
+    messageID = [(IDSLocalDeliveryMessage *)self messageID];
+    messageID2 = [(IDSLocalDeliveryMessage *)self messageID];
     expectsPeerResponse = self->_expectsPeerResponse;
-    v19 = v6;
+    v19 = messageID2;
     v16 = *&self->_compressPayload;
     wantsAppAck = self->_wantsAppAck;
     didWakeHint = self->_didWakeHint;
     peerResponseIdentifier = self->_peerResponseIdentifier;
     messageUUID = self->_messageUUID;
-    v10 = [(IDSLocalDeliveryMessage *)self payload];
-    v11 = [(IDSLocalDeliveryMessage *)self protobuf];
-    v12 = [(IDSLocalDeliveryMessage *)self resourcePath];
-    v13 = [(IDSLocalDeliveryMessage *)self resourceMetadata];
+    payload = [(IDSLocalDeliveryMessage *)self payload];
+    protobuf = [(IDSLocalDeliveryMessage *)self protobuf];
+    resourcePath = [(IDSLocalDeliveryMessage *)self resourcePath];
+    resourceMetadata = [(IDSLocalDeliveryMessage *)self resourceMetadata];
     BYTE2(v15) = didWakeHint;
     LOWORD(v15) = v16;
-    v5 = [v23 socketPairMessageWithCommand:v22 streamID:v21 sequenceNumber:v20 messageID:v19 expectsPeerResponse:expectsPeerResponse wantsAppAck:wantsAppAck compressPayload:v15 compressed:peerResponseIdentifier didWakeHint:messageUUID peerResponseIdentifier:v10 messageUUID:v11 payload:v12 protobuf:v13 resourcePath:v26 resourceMetadata:? expiryDate:?];
+    v5 = [v23 socketPairMessageWithCommand:integerValue streamID:unsignedShortValue sequenceNumber:messageID messageID:v19 expectsPeerResponse:expectsPeerResponse wantsAppAck:wantsAppAck compressPayload:v15 compressed:peerResponseIdentifier didWakeHint:messageUUID peerResponseIdentifier:payload messageUUID:protobuf payload:resourcePath protobuf:resourceMetadata resourcePath:expirationDate resourceMetadata:? expiryDate:?];
 
     [(IDSSocketPairMessage *)v5 setContext:self];
     objc_storeStrong(p_underlyingSocketPairMessage, v5);
@@ -75,20 +75,20 @@
   return v5;
 }
 
-- (void)setCompletionBlock:(id)a3
+- (void)setCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 0;
-  if (v4)
+  if (blockCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1004C6534;
     v8[3] = &unk_100BDE528;
-    v9 = v4;
+    v9 = blockCopy;
     v10 = v11;
     v5 = objc_retainBlock(v8);
   }
@@ -130,15 +130,15 @@
   }
 }
 
-+ (unsigned)_niceToSocketCommand:(int64_t)a3
++ (unsigned)_niceToSocketCommand:(int64_t)command
 {
   result = 58;
-  if (a3 > 180)
+  if (command > 180)
   {
-    if (a3 <= 194)
+    if (command <= 194)
     {
       v4 = 51;
-      if (a3 == 190)
+      if (command == 190)
       {
         v5 = 35;
       }
@@ -148,7 +148,7 @@
         v5 = 58;
       }
 
-      if (a3 == 182)
+      if (command == 182)
       {
         v6 = 45;
       }
@@ -158,7 +158,7 @@
         v6 = v5;
       }
 
-      v7 = a3 == 181;
+      v7 = command == 181;
 LABEL_18:
       if (v7)
       {
@@ -173,7 +173,7 @@ LABEL_18:
 
     else
     {
-      switch(a3)
+      switch(command)
       {
         case 227:
           result = 6;
@@ -225,7 +225,7 @@ LABEL_18:
           break;
         default:
           v4 = 36;
-          if (a3 == 196)
+          if (command == 196)
           {
             v6 = 40;
           }
@@ -235,7 +235,7 @@ LABEL_18:
             v6 = 58;
           }
 
-          v7 = a3 == 195;
+          v7 = command == 195;
           goto LABEL_18;
       }
     }
@@ -243,7 +243,7 @@ LABEL_18:
 
   else
   {
-    switch(a3)
+    switch(command)
     {
       case 100:
         result = 27;
@@ -355,7 +355,7 @@ LABEL_18:
         result = 20;
         break;
       default:
-        if (a3 == 180)
+        if (command == 180)
         {
           result = 34;
         }
@@ -372,19 +372,19 @@ LABEL_18:
   return result;
 }
 
-+ (id)socketPairMessageWithCommand:(int64_t)a3 streamID:(unsigned __int16)a4 sequenceNumber:(unsigned int)a5 messageID:(unsigned int)a6 expectsPeerResponse:(BOOL)a7 wantsAppAck:(BOOL)a8 compressPayload:(BOOL)a9 compressed:(BOOL)a10 didWakeHint:(BOOL)a11 peerResponseIdentifier:(id)a12 messageUUID:(id)a13 payload:(id)a14 protobuf:(id)a15 resourcePath:(id)a16 resourceMetadata:(id)a17 expiryDate:(id)a18
++ (id)socketPairMessageWithCommand:(int64_t)command streamID:(unsigned __int16)d sequenceNumber:(unsigned int)number messageID:(unsigned int)iD expectsPeerResponse:(BOOL)response wantsAppAck:(BOOL)ack compressPayload:(BOOL)payload compressed:(BOOL)self0 didWakeHint:(BOOL)self1 peerResponseIdentifier:(id)self2 messageUUID:(id)self3 payload:(id)self4 protobuf:(id)self5 resourcePath:(id)self6 resourceMetadata:(id)self7 expiryDate:(id)self8
 {
-  v33 = a7;
-  v34 = a8;
-  v36 = a4;
-  v20 = a12;
-  v21 = a13;
+  responseCopy = response;
+  ackCopy = ack;
+  dCopy = d;
+  identifierCopy = identifier;
+  uIDCopy = uID;
   v22 = a14;
-  v23 = a15;
-  v24 = a16;
-  v25 = a17;
-  v26 = a18;
-  v27 = [a1 _niceToSocketCommand:a3];
+  protobufCopy = protobuf;
+  pathCopy = path;
+  metadataCopy = metadata;
+  dateCopy = date;
+  v27 = [self _niceToSocketCommand:command];
   v28 = 0;
   switch(v27)
   {
@@ -392,13 +392,13 @@ LABEL_18:
       v29 = IDSSocketPairDataMessage;
       goto LABEL_50;
     case 3u:
-      v30 = [[IDSSocketPairProtobufMessage alloc] initWithSequenceNumber:a5 streamID:v36 expectsPeerResponse:v33 wantsAppAck:v34 compressed:a10 didWakeHint:a11 peerResponseIdentifier:v20 messageUUID:v21 expiryDate:v26 protobuf:v23];
+      v30 = [[IDSSocketPairProtobufMessage alloc] initWithSequenceNumber:number streamID:dCopy expectsPeerResponse:responseCopy wantsAppAck:ackCopy compressed:compressed didWakeHint:hint peerResponseIdentifier:identifierCopy messageUUID:uIDCopy expiryDate:dateCopy protobuf:protobufCopy];
       goto LABEL_51;
     case 6u:
       v29 = IDSSocketPairDictionaryMessage;
       goto LABEL_50;
     case 7u:
-      v30 = [[IDSSocketPairAppAckMessage alloc] initWithSequenceNumber:a5 streamID:v36 peerResponseIdentifier:v20];
+      v30 = [[IDSSocketPairAppAckMessage alloc] initWithSequenceNumber:number streamID:dCopy peerResponseIdentifier:identifierCopy];
       goto LABEL_51;
     case 8u:
       v29 = IDSSocketPairSessionInvitationMessage;
@@ -440,9 +440,9 @@ LABEL_18:
       v29 = IDSSocketPairSMSFailure;
       goto LABEL_50;
     case 0x16u:
-      BYTE2(v32) = a11;
-      LOWORD(v32) = __PAIR16__(a10, a9);
-      v30 = [[IDSSocketPairResourceTransferSender alloc] initWithResourceAtPath:v24 metadata:v25 sequenceNumber:a5 streamID:v36 expectsPeerResponse:v33 wantsAppAck:v34 compressPayload:v32 compressed:v20 didWakeHint:v21 peerResponseIdentifier:v26 messageUUID:? expiryDate:?];
+      BYTE2(v32) = hint;
+      LOWORD(v32) = __PAIR16__(compressed, payload);
+      v30 = [[IDSSocketPairResourceTransferSender alloc] initWithResourceAtPath:pathCopy metadata:metadataCopy sequenceNumber:number streamID:dCopy expectsPeerResponse:responseCopy wantsAppAck:ackCopy compressPayload:v32 compressed:identifierCopy didWakeHint:uIDCopy peerResponseIdentifier:dateCopy messageUUID:? expiryDate:?];
       goto LABEL_51;
     case 0x19u:
       v29 = IDSSocketPairProxyOutgoingNiceMessage;
@@ -534,7 +534,7 @@ LABEL_18:
     case 0x39u:
       v29 = IDSSocketPairTranscriptBackground;
 LABEL_50:
-      v30 = [[v29 alloc] initWithSequenceNumber:a5 streamID:v36 expectsPeerResponse:v33 wantsAppAck:v34 compressed:a10 didWakeHint:a11 peerResponseIdentifier:v20 messageUUID:v21 data:v22 expiryDate:v26];
+      v30 = [[v29 alloc] initWithSequenceNumber:number streamID:dCopy expectsPeerResponse:responseCopy wantsAppAck:ackCopy compressed:compressed didWakeHint:hint peerResponseIdentifier:identifierCopy messageUUID:uIDCopy data:v22 expiryDate:dateCopy];
 LABEL_51:
       v28 = v30;
       break;

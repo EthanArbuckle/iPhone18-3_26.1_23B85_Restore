@@ -1,42 +1,42 @@
 @interface NTKPigmentSyncProvider
-+ (BOOL)areCollections:(id)a3 equalToCollections:(id)a4;
++ (BOOL)areCollections:(id)collections equalToCollections:(id)toCollections;
 - (BOOL)isSyncing;
-- (BOOL)prepareForSyncing:(BOOL)a3;
+- (BOOL)prepareForSyncing:(BOOL)syncing;
 - (BOOL)shouldForceFullSync;
-- (NTKPigmentSyncProvider)initWithDelegate:(id)a3;
+- (NTKPigmentSyncProvider)initWithDelegate:(id)delegate;
 - (NTKPigmentSyncProviderDelegate)delegate;
 - (id)allAvailableFacesSupportingPigment;
 - (id)compareLocalSyncDifferences;
-- (id)nextSyncData:(id *)a3;
+- (id)nextSyncData:(id *)data;
 - (void)_requestDeltaSyncIfNeeded;
 - (void)colorBundleContentChanged;
-- (void)colorEditOptionStore:(id)a3 didChangeForDomain:(id)a4;
-- (void)enumerateAllFacesPigmentDomains:(id)a3;
+- (void)colorEditOptionStore:(id)store didChangeForDomain:(id)domain;
+- (void)enumerateAllFacesPigmentDomains:(id)domains;
 - (void)faceBundlesUpdated;
-- (void)finishSyncing:(BOOL)a3;
+- (void)finishSyncing:(BOOL)syncing;
 - (void)saveSyncVersion;
 @end
 
 @implementation NTKPigmentSyncProvider
 
-- (NTKPigmentSyncProvider)initWithDelegate:(id)a3
+- (NTKPigmentSyncProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = NTKPigmentSyncProvider;
   v5 = [(NTKPigmentSyncProvider *)&v24 init];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_create("com.apple.NanoTimeKit.NTKPigmentSyncProvider", v6);
     privateQueue = v5->_privateQueue;
     v5->_privateQueue = v7;
 
-    v9 = [MEMORY[0x277CBBB68] sharedRenderingContext];
-    v10 = [v9 device];
+    mEMORY[0x277CBBB68] = [MEMORY[0x277CBBB68] sharedRenderingContext];
+    device = [mEMORY[0x277CBBB68] device];
     device = v5->_device;
-    v5->_device = v10;
+    v5->_device = device;
 
     v12 = +[NTKPigmentEditOptionStore sharedInstance];
     pigmentStore = v5->_pigmentStore;
@@ -49,11 +49,11 @@
     storageController = v5->_storageController;
     v5->_storageController = v16;
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v5 selector:sel_colorBundleContentChanged name:@"NTKColorBundleContentChangedNotificationName" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_colorBundleContentChanged name:@"NTKColorBundleContentChangedNotificationName" object:0];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v5 selector:sel_faceBundlesUpdated name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_faceBundlesUpdated name:@"NTKFaceBundleManagerDidUpdateBundlesNotificationName" object:0];
 
     v20 = v5->_privateQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -105,7 +105,7 @@ LABEL_6:
   return [*(a1 + 32) _requestDeltaSyncIfNeeded];
 }
 
-- (BOOL)prepareForSyncing:(BOOL)a3
+- (BOOL)prepareForSyncing:(BOOL)syncing
 {
   v8 = 0;
   v9 = &v8;
@@ -116,7 +116,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __44__NTKPigmentSyncProvider_prepareForSyncing___block_invoke;
   block[3] = &unk_278786280;
-  v7 = a3;
+  syncingCopy = syncing;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(privateQueue, block);
@@ -227,10 +227,10 @@ void __44__NTKPigmentSyncProvider_prepareForSyncing___block_invoke_34(uint64_t a
   }
 }
 
-- (void)enumerateAllFacesPigmentDomains:(id)a3
+- (void)enumerateAllFacesPigmentDomains:(id)domains
 {
-  v4 = a3;
-  if (NTKInternalBuild(v4, v5) && (CLKIsNTKDaemon() & 1) == 0 && (CLKIsNTKXCTests() & 1) == 0)
+  domainsCopy = domains;
+  if (NTKInternalBuild(domainsCopy, v5) && (CLKIsNTKDaemon() & 1) == 0 && (CLKIsNTKXCTests() & 1) == 0)
   {
     v6 = _NTKLoggingObjectForDomain(46, "NTKLoggingDomainPigment");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -239,14 +239,14 @@ void __44__NTKPigmentSyncProvider_prepareForSyncing___block_invoke_34(uint64_t a
     }
   }
 
-  v7 = [(NTKPigmentSyncProvider *)self allAvailableFacesSupportingPigment];
+  allAvailableFacesSupportingPigment = [(NTKPigmentSyncProvider *)self allAvailableFacesSupportingPigment];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__NTKPigmentSyncProvider_enumerateAllFacesPigmentDomains___block_invoke;
   v9[3] = &unk_2787862A8;
-  v10 = v4;
-  v8 = v4;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = domainsCopy;
+  v8 = domainsCopy;
+  [allAvailableFacesSupportingPigment enumerateObjectsUsingBlock:v9];
 }
 
 void __58__NTKPigmentSyncProvider_enumerateAllFacesPigmentDomains___block_invoke(uint64_t a1, void *a2)
@@ -285,7 +285,7 @@ void __58__NTKPigmentSyncProvider_enumerateAllFacesPigmentDomains___block_invoke
   }
 }
 
-- (id)nextSyncData:(id *)a3
+- (id)nextSyncData:(id *)data
 {
   v14 = 0;
   v15 = &v14;
@@ -308,9 +308,9 @@ void __58__NTKPigmentSyncProvider_enumerateAllFacesPigmentDomains___block_invoke
   block[5] = &v8;
   block[6] = &v14;
   dispatch_sync(privateQueue, block);
-  if (a3)
+  if (data)
   {
-    *a3 = v9[5];
+    *data = v9[5];
   }
 
   v5 = v15[5];
@@ -423,7 +423,7 @@ LABEL_11:
   return v3;
 }
 
-- (void)finishSyncing:(BOOL)a3
+- (void)finishSyncing:(BOOL)syncing
 {
   privateQueue = self->_privateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -431,7 +431,7 @@ LABEL_11:
   v4[2] = __40__NTKPigmentSyncProvider_finishSyncing___block_invoke;
   v4[3] = &unk_27877F7E8;
   v4[4] = self;
-  v5 = a3;
+  syncingCopy = syncing;
   dispatch_sync(privateQueue, v4);
 }
 
@@ -500,18 +500,18 @@ void __40__NTKPigmentSyncProvider_finishSyncing___block_invoke_2(uint64_t a1, ui
 
 - (void)saveSyncVersion
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-  [v3 setObject:v2 forKey:@"NTKPigmentSyncProviderSyncVersion"];
+  [standardUserDefaults setObject:v2 forKey:@"NTKPigmentSyncProviderSyncVersion"];
 }
 
 - (BOOL)shouldForceFullSync
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"NTKPigmentSyncProviderSyncVersion"];
-  v4 = [v3 integerValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"NTKPigmentSyncProviderSyncVersion"];
+  integerValue = [v3 integerValue];
 
-  return v4 != 2;
+  return integerValue != 2;
 }
 
 - (void)colorBundleContentChanged
@@ -562,7 +562,7 @@ uint64_t __44__NTKPigmentSyncProvider_faceBundlesUpdated__block_invoke(uint64_t 
   return [*(a1 + 32) _requestDeltaSyncIfNeeded];
 }
 
-- (void)colorEditOptionStore:(id)a3 didChangeForDomain:(id)a4
+- (void)colorEditOptionStore:(id)store didChangeForDomain:(id)domain
 {
   privateQueue = self->_privateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -589,8 +589,8 @@ uint64_t __66__NTKPigmentSyncProvider_colorEditOptionStore_didChangeForDomain___
 - (void)_requestDeltaSyncIfNeeded
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
-  if (!v3)
+  sharedCollections = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
+  if (!sharedCollections)
   {
     v10 = _NTKLoggingObjectForDomain(5, "NTKLoggingDomainSync");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -606,9 +606,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v4 = [(NTKPigmentSyncProvider *)self compareLocalSyncDifferences];
+  compareLocalSyncDifferences = [(NTKPigmentSyncProvider *)self compareLocalSyncDifferences];
   domainsRequiringDeltaSync = self->_domainsRequiringDeltaSync;
-  self->_domainsRequiringDeltaSync = v4;
+  self->_domainsRequiringDeltaSync = compareLocalSyncDifferences;
 
   if (![(NSMutableSet *)self->_domainsRequiringDeltaSync count]&& ![(NTKPigmentSyncProvider *)self shouldForceFullSync])
   {
@@ -649,8 +649,8 @@ LABEL_16:
       _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "#sync Requesting delta sync due to changes in pigment set for domains (%lu)", &v14, 0xCu);
     }
 
-    v13 = [(NTKPigmentSyncProvider *)self delegate];
-    [v13 syncProviderDidRequiresDeltaSync:self];
+    delegate = [(NTKPigmentSyncProvider *)self delegate];
+    [delegate syncProviderDidRequiresDeltaSync:self];
   }
 
 LABEL_17:
@@ -659,9 +659,9 @@ LABEL_17:
 - (id)compareLocalSyncDifferences
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(NTKPigmentEditOptionStore *)self->_pigmentStore sharedCollections];
-  v5 = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
-  if (([objc_opt_class() areCollections:v4 equalToCollections:v5] & 1) == 0)
+  sharedCollections = [(NTKPigmentEditOptionStore *)self->_pigmentStore sharedCollections];
+  sharedCollections2 = [(NTKPigmentPersistentStorageController *)self->_storageController sharedCollections];
+  if (([objc_opt_class() areCollections:sharedCollections equalToCollections:sharedCollections2] & 1) == 0)
   {
     [v3 addObject:@"sharedCollections"];
   }
@@ -671,10 +671,10 @@ LABEL_17:
   v11[2] = __53__NTKPigmentSyncProvider_compareLocalSyncDifferences__block_invoke;
   v11[3] = &unk_2787862F8;
   v11[4] = self;
-  v12 = v5;
+  v12 = sharedCollections2;
   v6 = v3;
   v13 = v6;
-  v7 = v5;
+  v7 = sharedCollections2;
   [(NTKPigmentSyncProvider *)self enumerateAllFacesPigmentDomains:v11];
   v8 = v13;
   v9 = v6;
@@ -736,8 +736,8 @@ void __53__NTKPigmentSyncProvider_compareLocalSyncDifferences__block_invoke(uint
         v12 = [NTKFace defaultFaceFromFaceDescriptor:*(*(&v15 + 1) + 8 * i) forDevice:self->_device, v15];
         if ([v12 supportsPigmentEditOption])
         {
-          v13 = [objc_opt_class() pigmentFaceDomain];
-          if (v13)
+          pigmentFaceDomain = [objc_opt_class() pigmentFaceDomain];
+          if (pigmentFaceDomain)
           {
             [v6 addObject:v12];
           }
@@ -753,15 +753,15 @@ void __53__NTKPigmentSyncProvider_compareLocalSyncDifferences__block_invoke(uint
   return v6;
 }
 
-+ (BOOL)areCollections:(id)a3 equalToCollections:(id)a4
++ (BOOL)areCollections:(id)collections equalToCollections:(id)toCollections
 {
-  v5 = a3;
-  v6 = a4;
+  collectionsCopy = collections;
+  toCollectionsCopy = toCollections;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v7 = [v5 count];
-  v16 = v7 == [v6 count];
+  v7 = [collectionsCopy count];
+  v16 = v7 == [toCollectionsCopy count];
   if (*(v14 + 24) == 1)
   {
     v10[0] = MEMORY[0x277D85DD0];
@@ -769,8 +769,8 @@ void __53__NTKPigmentSyncProvider_compareLocalSyncDifferences__block_invoke(uint
     v10[2] = __60__NTKPigmentSyncProvider_areCollections_equalToCollections___block_invoke;
     v10[3] = &unk_278786320;
     v12 = &v13;
-    v11 = v6;
-    [v5 enumerateKeysAndObjectsUsingBlock:v10];
+    v11 = toCollectionsCopy;
+    [collectionsCopy enumerateKeysAndObjectsUsingBlock:v10];
 
     v8 = *(v14 + 24);
   }

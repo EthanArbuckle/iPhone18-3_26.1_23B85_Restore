@@ -3,15 +3,15 @@
 + (void)_runThread;
 + (void)initialize;
 - (BOOL)isPending;
-- (id)_initWithTarget:(id)a3 selector:(SEL)a4 threadKeyOrThread:(id)a5;
+- (id)_initWithTarget:(id)target selector:(SEL)selector threadKeyOrThread:(id)thread;
 - (void)_dispatch;
 - (void)_dispatchMainThread;
 - (void)_dispatchSCRCThread;
 - (void)cancel;
 - (void)dealloc;
-- (void)dispatchAfterDelay:(double)a3;
-- (void)dispatchAfterDelay:(double)a3 withBlock:(id)a4;
-- (void)dispatchAfterDelay:(double)a3 withObject:(id)a4;
+- (void)dispatchAfterDelay:(double)delay;
+- (void)dispatchAfterDelay:(double)delay withBlock:(id)block;
+- (void)dispatchAfterDelay:(double)delay withObject:(id)object;
 - (void)invalidate;
 @end
 
@@ -19,22 +19,22 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = MEMORY[0x277CCACC8];
 
-    [v3 detachNewThreadSelector:sel__runThread toTarget:a1 withObject:0];
+    [v3 detachNewThreadSelector:sel__runThread toTarget:self withObject:0];
   }
 }
 
 + (void)_runThread
 {
-  [a1 _assignThreadPriority];
+  [self _assignThreadPriority];
   Current = CFRunLoopGetCurrent();
   _TimerRunLoop = CFRetain(Current);
   v6.version = 0;
   memset(&v6.retain, 0, 24);
-  v6.info = a1;
+  v6.info = self;
   v4 = CFAbsoluteTimeGetCurrent();
   v5 = CFRunLoopTimerCreate(0, v4 + 630720000.0, 630720000.0, 0, 0, _handlerMainThread, &v6);
   CFRunLoopAddTimer(_TimerRunLoop, v5, *MEMORY[0x277CBF048]);
@@ -59,17 +59,17 @@
   }
 }
 
-- (id)_initWithTarget:(id)a3 selector:(SEL)a4 threadKeyOrThread:(id)a5
+- (id)_initWithTarget:(id)target selector:(SEL)selector threadKeyOrThread:(id)thread
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  threadCopy = thread;
   v22.receiver = self;
   v22.super_class = SCRCTargetSelectorTimer;
-  v10 = [(SCRCTargetSelector *)&v22 initWithTarget:v8 selector:a4];
+  v10 = [(SCRCTargetSelector *)&v22 initWithTarget:targetCopy selector:selector];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_key, a5);
+    objc_storeStrong(&v10->_key, thread);
     v11->_isCanceled = 1;
     v12 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v11->_lock;
@@ -184,7 +184,7 @@ LABEL_14:
   [(SCRCTargetSelectorTimer *)&v3 dealloc];
 }
 
-- (void)dispatchAfterDelay:(double)a3
+- (void)dispatchAfterDelay:(double)delay
 {
   [(NSLock *)self->_lock lock];
   if (self->_timer)
@@ -197,7 +197,7 @@ LABEL_14:
     self->_isPending = 1;
     timer = self->_timer;
     Current = CFAbsoluteTimeGetCurrent();
-    CFRunLoopTimerSetNextFireDate(timer, Current + a3);
+    CFRunLoopTimerSetNextFireDate(timer, Current + delay);
   }
 
   else
@@ -208,13 +208,13 @@ LABEL_14:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)dispatchAfterDelay:(double)a3 withBlock:(id)a4
+- (void)dispatchAfterDelay:(double)delay withBlock:(id)block
 {
-  v10 = a4;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
   if (self->_timer)
   {
-    v6 = MEMORY[0x266744B50](v10);
+    v6 = MEMORY[0x266744B50](blockCopy);
     block = self->_block;
     self->_block = v6;
 
@@ -222,25 +222,25 @@ LABEL_14:
     self->_isPending = 1;
     timer = self->_timer;
     Current = CFAbsoluteTimeGetCurrent();
-    CFRunLoopTimerSetNextFireDate(timer, Current + a3);
+    CFRunLoopTimerSetNextFireDate(timer, Current + delay);
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)dispatchAfterDelay:(double)a3 withObject:(id)a4
+- (void)dispatchAfterDelay:(double)delay withObject:(id)object
 {
-  v10 = a4;
+  objectCopy = object;
   [(NSLock *)self->_lock lock];
   v7 = self->_object;
-  objc_storeStrong(&self->_object, a4);
+  objc_storeStrong(&self->_object, object);
   timer = self->_timer;
   if (timer)
   {
     self->_isCanceled = 0;
     self->_isPending = 1;
     Current = CFAbsoluteTimeGetCurrent();
-    CFRunLoopTimerSetNextFireDate(timer, Current + a3);
+    CFRunLoopTimerSetNextFireDate(timer, Current + delay);
   }
 
   [(NSLock *)self->_lock unlock];
@@ -358,9 +358,9 @@ LABEL_14:
 
   else
   {
-    v7 = [(SCRCTargetSelector *)self selector];
+    selector = [(SCRCTargetSelector *)self selector];
     block = [(SCRCTargetSelector *)self target];
-    [key performSelector:v7 onTarget:block count:1 objects:v8];
+    [key performSelector:selector onTarget:block count:1 objects:v8];
   }
 
   [(NSLock *)self->_lock lock];

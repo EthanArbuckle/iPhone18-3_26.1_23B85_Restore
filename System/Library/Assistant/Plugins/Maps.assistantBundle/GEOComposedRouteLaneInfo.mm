@@ -1,12 +1,12 @@
 @interface GEOComposedRouteLaneInfo
-+ (id)_debug_laneWithDirections:(id)a3 good:(BOOL)a4 preferred:(BOOL)a5;
++ (id)_debug_laneWithDirections:(id)directions good:(BOOL)good preferred:(BOOL)preferred;
 @end
 
 @implementation GEOComposedRouteLaneInfo
 
-+ (id)_debug_laneWithDirections:(id)a3 good:(BOOL)a4 preferred:(BOOL)a5
++ (id)_debug_laneWithDirections:(id)directions good:(BOOL)good preferred:(BOOL)preferred
 {
-  v7 = a3;
+  directionsCopy = directions;
   v8 = objc_alloc_init(GEOComposedRouteLaneInfo);
   if (v8)
   {
@@ -15,8 +15,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v7;
-    v10 = v7;
+    v19 = directionsCopy;
+    v10 = directionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -45,10 +45,10 @@
     }
 
     [v8 setDirections:v9];
-    *(v8 + OBJC_IVAR___GEOComposedRouteLaneInfo__good) = a4;
-    *(v8 + OBJC_IVAR___GEOComposedRouteLaneInfo__preferred) = a5;
+    *(v8 + OBJC_IVAR___GEOComposedRouteLaneInfo__good) = good;
+    *(v8 + OBJC_IVAR___GEOComposedRouteLaneInfo__preferred) = preferred;
 
-    v7 = v19;
+    directionsCopy = v19;
   }
 
   return v8;

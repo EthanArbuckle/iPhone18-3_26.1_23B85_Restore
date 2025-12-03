@@ -1,25 +1,25 @@
 @interface JSTreatmentStore
 - (_TtC11AppStoreKit16JSTreatmentStore)init;
-- (id)treatmentForArea:(id)a3;
-- (id)treatmentsForAreas:(id)a3;
+- (id)treatmentForArea:(id)area;
+- (id)treatmentsForAreas:(id)areas;
 @end
 
 @implementation JSTreatmentStore
 
-- (id)treatmentForArea:(id)a3
+- (id)treatmentForArea:(id)area
 {
   v4 = sub_1E1AF5DFC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1E17F1A4C(v4, v6);
 
   return v8;
 }
 
-- (id)treatmentsForAreas:(id)a3
+- (id)treatmentsForAreas:(id)areas
 {
   v4 = sub_1E1AF621C();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1E17F1F00(v4);
 
   return v6;

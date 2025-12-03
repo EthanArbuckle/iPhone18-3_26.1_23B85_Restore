@@ -1,106 +1,106 @@
 @interface PKStroke
-+ ($FF38E1E694A259ECA75E65D4243A6BF6)averagePointForSynthesisFromSourceStrokes:(SEL)a3;
-+ (CGRect)_calculateBounds:(id)a3 transform:(CGAffineTransform *)a4 ink:(id)a5 inkTransform:(CGAffineTransform *)a6 strokePath:(id)a7;
-+ (PKCompressedStrokePoint)_compressStrokePoint:(SEL)a3 withTimestamp:(_PKStrokePoint *)a4;
-+ (PKStroke)allocWithZone:(_NSZone *)a3;
-+ (_PKStrokePoint)_decompressStrokePoint:(SEL)a3 withTimestamp:(PKCompressedStrokePoint *)a4;
-+ (id)_commonGroupIDForStrokes:(id)a3;
-+ (id)_createStrokesFromCHDrawing:(id)a3 transform:(CGAffineTransform *)a4 inputScale:(double)a5 sourceStrokes:(id)a6 strokeClass:(Class)a7 newInk:(id)a8 suggestedHeight:(double)a9 shouldSetSynthesizedFlag:(BOOL)a10;
-+ (id)_snapToShape:(id)a3 inputScale:(double)a4;
-+ (id)_strokesByCullingStrokes:(id)a3 toRectangle:(CGRect)a4;
-+ (id)_testStrokeFromPoints:(PKCompressedStrokePoint *)a3 length:(int64_t)a4 ink:(id)a5;
-+ (id)copyStrokes:(id)a3 hidden:(BOOL)a4;
-+ (id)sliceWithEraser:(const void *)a3 toClip:(id)a4;
-+ (id)sliceWithEraser:(const void *)a3 toClip:(id)a4 clipType:(int)a5;
-+ (int64_t)_requiredContentVersionForStrokePath:(id)a3 ink:(id)a4;
-+ (void)_applyPropertiesToNewStrokes:(id)a3 fromOldStrokes:(id)a4;
-+ (void)_consumeRenderVertexes:(id)a3 ink:(id)a4 inkTransform:(CGAffineTransform *)a5 strokePath:(id)a6;
-- (BOOL)_containsSamePointsAsStroke:(id)a3;
++ ($FF38E1E694A259ECA75E65D4243A6BF6)averagePointForSynthesisFromSourceStrokes:(SEL)strokes;
++ (CGRect)_calculateBounds:(id)bounds transform:(CGAffineTransform *)transform ink:(id)ink inkTransform:(CGAffineTransform *)inkTransform strokePath:(id)path;
++ (PKCompressedStrokePoint)_compressStrokePoint:(SEL)point withTimestamp:(_PKStrokePoint *)timestamp;
++ (PKStroke)allocWithZone:(_NSZone *)zone;
++ (_PKStrokePoint)_decompressStrokePoint:(SEL)point withTimestamp:(PKCompressedStrokePoint *)timestamp;
++ (id)_commonGroupIDForStrokes:(id)strokes;
++ (id)_createStrokesFromCHDrawing:(id)drawing transform:(CGAffineTransform *)transform inputScale:(double)scale sourceStrokes:(id)strokes strokeClass:(Class)class newInk:(id)ink suggestedHeight:(double)height shouldSetSynthesizedFlag:(BOOL)self0;
++ (id)_snapToShape:(id)shape inputScale:(double)scale;
++ (id)_strokesByCullingStrokes:(id)strokes toRectangle:(CGRect)rectangle;
++ (id)_testStrokeFromPoints:(PKCompressedStrokePoint *)points length:(int64_t)length ink:(id)ink;
++ (id)copyStrokes:(id)strokes hidden:(BOOL)hidden;
++ (id)sliceWithEraser:(const void *)eraser toClip:(id)clip;
++ (id)sliceWithEraser:(const void *)eraser toClip:(id)clip clipType:(int)type;
++ (int64_t)_requiredContentVersionForStrokePath:(id)path ink:(id)ink;
++ (void)_applyPropertiesToNewStrokes:(id)strokes fromOldStrokes:(id)oldStrokes;
++ (void)_consumeRenderVertexes:(id)vertexes ink:(id)ink inkTransform:(CGAffineTransform *)transform strokePath:(id)path;
+- (BOOL)_containsSamePointsAsStroke:(id)stroke;
 - (BOOL)_isBitmapEraserStroke;
 - (BOOL)_isInternal;
 - (BOOL)_isMaskedStroke;
 - (BOOL)_newAsciiBitfield;
-- (BOOL)_newAsciiBitfieldWithWidth:(int64_t)a3 height:(int64_t)a4;
+- (BOOL)_newAsciiBitfieldWithWidth:(int64_t)width height:(int64_t)height;
 - (BOOL)_pathHasAzimuthAngles;
 - (BOOL)_pathHasClockwisePointOrdering;
 - (BOOL)_shouldBeClippedAgainstLegacyCanvas;
-- (BOOL)_visitVisibleSubstrokes:(id)a3 inDrawing:(id)a4;
-- (BOOL)intersectsClipperPath:(void *)a3;
-- (BOOL)intersectsClosedStroke:(id)a3;
-- (BOOL)intersectsClosedStrokeMasked:(id)a3;
-- (BOOL)intersectsLineFrom:(CGPoint)a3 to:(CGPoint)a4 minThreshold:(double)a5;
-- (BOOL)intersectsLineFromMasked:(CGPoint)a3 to:(CGPoint)a4 minThreshold:(double)a5;
-- (BOOL)intersectsPoint:(CGPoint)a3;
-- (BOOL)intersectsPoint:(CGPoint)a3 boundsOutset:(double)a4 minimumStrokeThreshold:(double)a5;
-- (BOOL)intersectsPointMasked:(CGPoint)a3 boundsOutset:(double)a4 minimumStrokeThreshold:(double)a5;
-- (BOOL)intersectsRect:(CGRect)a3;
-- (BOOL)intersectsRectMasked:(CGRect)a3;
+- (BOOL)_visitVisibleSubstrokes:(id)substrokes inDrawing:(id)drawing;
+- (BOOL)intersectsClipperPath:(void *)path;
+- (BOOL)intersectsClosedStroke:(id)stroke;
+- (BOOL)intersectsClosedStrokeMasked:(id)masked;
+- (BOOL)intersectsLineFrom:(CGPoint)from to:(CGPoint)to minThreshold:(double)threshold;
+- (BOOL)intersectsLineFromMasked:(CGPoint)masked to:(CGPoint)to minThreshold:(double)threshold;
+- (BOOL)intersectsPoint:(CGPoint)point;
+- (BOOL)intersectsPoint:(CGPoint)point boundsOutset:(double)outset minimumStrokeThreshold:(double)threshold;
+- (BOOL)intersectsPointMasked:(CGPoint)masked boundsOutset:(double)outset minimumStrokeThreshold:(double)threshold;
+- (BOOL)intersectsRect:(CGRect)rect;
+- (BOOL)intersectsRectMasked:(CGRect)masked;
 - (CGAffineTransform)_inkTransform;
 - (CGPath)_newPathRepresentation;
 - (CGPath)newPathRepresentationMasked;
-- (CGPath)newSelectionPathRepresentationWithPointsCount:(int *)a3;
+- (CGPath)newSelectionPathRepresentationWithPointsCount:(int *)count;
 - (CGPoint)_anchorPointForTexture;
-- (CGPoint)_locationAtIndex:(unint64_t)a3;
-- (CGPoint)_locationAtIndex:(unint64_t)a3 applyStrokeTransform:(BOOL)a4;
-- (CGPoint)intersectionFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
+- (CGPoint)_locationAtIndex:(unint64_t)index;
+- (CGPoint)_locationAtIndex:(unint64_t)index applyStrokeTransform:(BOOL)transform;
+- (CGPoint)intersectionFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
 - (CGRect)_calculateBounds;
 - (CGRect)_untransformedBounds;
 - (NSArray)maskedPathRanges;
 - (NSUUID)_strokeDataUUID;
 - (PKContentVersion)requiredContentVersion;
 - (PKStroke)init;
-- (PKStroke)initWithData:(id)a3 id:(id)a4 flags:(id)a5 ink:(id)a6 transform:(CGAffineTransform *)a7 substrokes:(id)a8;
-- (PKStroke)initWithData:(id)a3 id:(id)a4 hidden:(BOOL)a5 ink:(id)a6 transform:(CGAffineTransform *)a7 substrokes:(id)a8;
+- (PKStroke)initWithData:(id)data id:(id)id flags:(id)flags ink:(id)ink transform:(CGAffineTransform *)transform substrokes:(id)substrokes;
+- (PKStroke)initWithData:(id)data id:(id)id hidden:(BOOL)hidden ink:(id)ink transform:(CGAffineTransform *)transform substrokes:(id)substrokes;
 - (PKStroke)initWithInk:(PKInk *)ink strokePath:(PKStrokePath *)strokePath transform:(CGAffineTransform *)transform mask:(UIBezierPath *)mask;
 - (PKStroke)initWithInk:(PKInk *)ink strokePath:(PKStrokePath *)strokePath transform:(CGAffineTransform *)transform mask:(UIBezierPath *)mask randomSeed:(uint32_t)randomSeed;
-- (PKStroke)strokeWithInk:(id)a3;
+- (PKStroke)strokeWithInk:(id)ink;
 - (UIBezierPath)mask;
 - (double)_maxWidthForStroke;
-- (double)_particleOffsetAt:(double)a3 forSecondaryParticles:(BOOL)a4;
-- (double)_thresholdForPoint:(_PKStrokePoint *)a3;
-- (double)_timestampAtIndex:(unint64_t)a3;
+- (double)_particleOffsetAt:(double)at forSecondaryParticles:(BOOL)particles;
+- (double)_thresholdForPoint:(_PKStrokePoint *)point;
+- (double)_timestampAtIndex:(unint64_t)index;
 - (double)endTimestamp;
 - (double)startTimestamp;
 - (double)timestamp;
-- (double)timestampAtIndex:(unint64_t)a3;
+- (double)timestampAtIndex:(unint64_t)index;
 - (id)_ascii;
-- (id)_initWithPath:(CGPath *)a3 ink:(id)a4 maxSegmentLength:(double)a5 inputScale:(double)a6 velocityForDistanceFunction:(id)a7;
-- (id)_mergeWithStroke:(id)a3 inDrawing:(id)a4;
-- (id)_newStrokeWithSubstrokes:(id)a3 inDrawing:(id)a4;
-- (id)_sliceWithSlicingBlock:(id)a3 inDrawing:(id)a4 newRootStroke:(id *)a5;
-- (id)_strokeWithUUID:(id)a3 dataUUID:(id)a4;
-- (id)_substrokeWithRange:(_NSRange)a3;
-- (id)_updateStroke:(id)a3 inDrawing:(id)a4;
+- (id)_initWithPath:(CGPath *)path ink:(id)ink maxSegmentLength:(double)length inputScale:(double)scale velocityForDistanceFunction:(id)function;
+- (id)_mergeWithStroke:(id)stroke inDrawing:(id)drawing;
+- (id)_newStrokeWithSubstrokes:(id)substrokes inDrawing:(id)drawing;
+- (id)_sliceWithSlicingBlock:(id)block inDrawing:(id)drawing newRootStroke:(id *)stroke;
+- (id)_strokeWithUUID:(id)d dataUUID:(id)iD;
+- (id)_substrokeWithRange:(_NSRange)range;
+- (id)_updateStroke:(id)stroke inDrawing:(id)drawing;
 - (id)debugQuickLookObject;
-- (id)descriptionAtDepth:(int64_t)a3;
-- (id)sliceWithEraser:(const void *)a3;
-- (id)sliceWithMask:(const void *)a3;
+- (id)descriptionAtDepth:(int64_t)depth;
+- (id)sliceWithEraser:(const void *)eraser;
+- (id)sliceWithMask:(const void *)mask;
 - (int64_t)_inputType;
-- (int64_t)_visibleSubstrokeCountInDrawing:(id)a3;
+- (int64_t)_visibleSubstrokeCountInDrawing:(id)drawing;
 - (uint32_t)randomSeed;
 - (unint64_t)_pointsCount;
 - (unint64_t)hash;
-- (void)_addVisibleSubstrokesTo:(id)a3 inDrawing:(id)a4;
-- (void)_appendPointsOfInterestForSelection:(void *)a3 step:(double)a4;
-- (void)_appendPointsOfInterestForSelectionMasked:(void *)a3;
-- (void)_applyTransform:(CGAffineTransform *)a3;
-- (void)_setHidden:(BOOL)a3;
-- (void)_setIsInProgressScribbleStroke:(BOOL)a3;
-- (void)_setIsNewCopy:(BOOL)a3;
-- (void)_setIsPastedStroke:(BOOL)a3;
-- (void)_setIsSafeForStyleInventory:(BOOL)a3;
-- (void)_setIsSharedStroke:(BOOL)a3;
-- (void)_setIsSynthesizedInk:(BOOL)a3;
-- (void)_setRandomSeed:(unsigned int)a3;
-- (void)debugRender:(CGContext *)a3;
-- (void)debugRenderMasked:(CGContext *)a3;
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4;
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4;
-- (void)generateClipPaths:(void *)a3 transform:(CGAffineTransform *)a4;
-- (void)generateClipperPath:(void *)a3;
+- (void)_addVisibleSubstrokesTo:(id)to inDrawing:(id)drawing;
+- (void)_appendPointsOfInterestForSelection:(void *)selection step:(double)step;
+- (void)_appendPointsOfInterestForSelectionMasked:(void *)masked;
+- (void)_applyTransform:(CGAffineTransform *)transform;
+- (void)_setHidden:(BOOL)hidden;
+- (void)_setIsInProgressScribbleStroke:(BOOL)stroke;
+- (void)_setIsNewCopy:(BOOL)copy;
+- (void)_setIsPastedStroke:(BOOL)stroke;
+- (void)_setIsSafeForStyleInventory:(BOOL)inventory;
+- (void)_setIsSharedStroke:(BOOL)stroke;
+- (void)_setIsSynthesizedInk:(BOOL)ink;
+- (void)_setRandomSeed:(unsigned int)seed;
+- (void)debugRender:(CGContext *)render;
+- (void)debugRenderMasked:(CGContext *)masked;
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block;
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block;
+- (void)generateClipPaths:(void *)paths transform:(CGAffineTransform *)transform;
+- (void)generateClipperPath:(void *)path;
 - (void)generateMask;
-- (void)interpolatePointDataWithStep:(double)a3 from:(double)a4 to:(double)a5 usingBlock:(id)a6;
-- (void)interpolatePointDataWithStep:(double)a3 usingBlock:(id)a4;
+- (void)interpolatePointDataWithStep:(double)step from:(double)from to:(double)to usingBlock:(id)block;
+- (void)interpolatePointDataWithStep:(double)step usingBlock:(id)block;
 @end
 
 @implementation PKStroke
@@ -112,11 +112,11 @@
   return [(PKStroke *)&v3 init];
 }
 
-- (void)generateClipPaths:(void *)a3 transform:(CGAffineTransform *)a4
+- (void)generateClipPaths:(void *)paths transform:(CGAffineTransform *)transform
 {
   v66 = *MEMORY[0x1E69E9840];
-  v7 = [(PKStroke *)self _clipPlane];
-  if (v7)
+  _clipPlane = [(PKStroke *)self _clipPlane];
+  if (_clipPlane)
   {
     [(PKStroke *)self _untransformedBounds];
     v68 = CGRectInset(v67, -100.0, -100.0);
@@ -165,7 +165,7 @@
     v63 = v15;
     v64 = CGRectGetMinY(v75);
     v65 = v58;
-    [v7 normal];
+    [_clipPlane normal];
     v17 = v16;
     v19 = v18;
     v20 = 0;
@@ -177,9 +177,9 @@
       v22 = *(&v58 + v20);
       v21 = *(&v58 + v20 + 8);
       *__p = *(&v58 + v20 + 16);
-      [v7 distanceToPoint:{v22, v21}];
+      [_clipPlane distanceToPoint:{v22, v21}];
       v24 = v23;
-      [v7 distanceToPoint:{*__p, *&__p[1]}];
+      [_clipPlane distanceToPoint:{*__p, *&__p[1]}];
       if (v24 < 0.0 || v25 >= 0.0)
       {
         if (v24 >= 0.0 || v25 < 0.0)
@@ -232,7 +232,7 @@
       v42 = -_D0;
       do
       {
-        v43 = vmovn_s64(vcvtq_s64_f64(vmulq_f64(vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, *&v34[v35 + 8]), *&a4->a, *&v34[v35])), v50)));
+        v43 = vmovn_s64(vcvtq_s64_f64(vmulq_f64(vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, *&v34[v35 + 8]), *&transform->a, *&v34[v35])), v50)));
         *&v44 = v43.i32[0];
         *(&v44 + 1) = v43.i32[1];
         v51 = v44;
@@ -268,7 +268,7 @@
         }
       }
 
-      std::vector<std::vector<ClipperLib::IntPoint>>::push_back[abi:ne200100](a3, __p);
+      std::vector<std::vector<ClipperLib::IntPoint>>::push_back[abi:ne200100](paths, __p);
       if (__p[0])
       {
         __p[1] = __p[0];
@@ -294,8 +294,8 @@
   }
 
   v3 = [(PKStroke *)self ink];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"com.apple.ink.eraser"];
+  identifier = [v3 identifier];
+  v5 = [identifier isEqualToString:@"com.apple.ink.eraser"];
 
   if (v5)
   {
@@ -319,7 +319,7 @@
   return !CGRectEqualToRect(v12, v14);
 }
 
-+ ($FF38E1E694A259ECA75E65D4243A6BF6)averagePointForSynthesisFromSourceStrokes:(SEL)a3
++ ($FF38E1E694A259ECA75E65D4243A6BF6)averagePointForSynthesisFromSourceStrokes:(SEL)strokes
 {
   v7 = a4;
   if ([v7 count])
@@ -354,63 +354,63 @@
   return result;
 }
 
-+ (id)_createStrokesFromCHDrawing:(id)a3 transform:(CGAffineTransform *)a4 inputScale:(double)a5 sourceStrokes:(id)a6 strokeClass:(Class)a7 newInk:(id)a8 suggestedHeight:(double)a9 shouldSetSynthesizedFlag:(BOOL)a10
++ (id)_createStrokesFromCHDrawing:(id)drawing transform:(CGAffineTransform *)transform inputScale:(double)scale sourceStrokes:(id)strokes strokeClass:(Class)class newInk:(id)ink suggestedHeight:(double)height shouldSetSynthesizedFlag:(BOOL)self0
 {
   v162[1] = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v128 = a6;
-  v17 = a8;
-  v130 = v16;
-  if (![v16 strokeCount])
+  drawingCopy = drawing;
+  strokesCopy = strokes;
+  inkCopy = ink;
+  v130 = drawingCopy;
+  if (![drawingCopy strokeCount])
   {
-    v127 = 0;
+    array = 0;
     goto LABEL_92;
   }
 
-  v124 = v17;
-  v123 = [v128 indexesOfObjectsPassingTest:&__block_literal_global_38];
+  v124 = inkCopy;
+  v123 = [strokesCopy indexesOfObjectsPassingTest:&__block_literal_global_38];
   if ([v123 count])
   {
-    v18 = [v128 objectsAtIndexes:v123];
+    v18 = [strokesCopy objectsAtIndexes:v123];
 
     v19 = v18;
   }
 
   else
   {
-    v19 = v128;
+    v19 = strokesCopy;
   }
 
-  v128 = v19;
-  v20 = [v19 firstObject];
-  v21 = v20;
-  if (v17 && v20)
+  strokesCopy = v19;
+  firstObject = [v19 firstObject];
+  v21 = firstObject;
+  if (inkCopy && firstObject)
   {
-    v22 = [a7 alloc];
-    v23 = [v21 _strokeData];
+    v22 = [class alloc];
+    _strokeData = [v21 _strokeData];
     [v21 transform];
-    v10 = [v21 mask];
-    v24 = [v22 initWithInk:v17 strokePath:v23 transform:&v144 mask:v10];
+    mask = [v21 mask];
+    v24 = [v22 initWithInk:inkCopy strokePath:_strokeData transform:&v144 mask:mask];
 
-    v20 = v24;
+    firstObject = v24;
     if (!v24)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v20)
+  else if (!firstObject)
   {
 LABEL_11:
     v25 = [PKStrokePoint alloc];
     v26 = [(PKStrokePoint *)v25 initWithLocation:*MEMORY[0x1E695EFF8] timeOffset:*(MEMORY[0x1E695EFF8] + 8) size:0.0 opacity:3.0 force:3.0 azimuth:1.0 altitude:1.0, 0.0, 0];
-    v27 = [a7 alloc];
-    v28 = v17;
-    if (!v17)
+    v27 = [class alloc];
+    v28 = inkCopy;
+    if (!inkCopy)
     {
       v29 = [PKInk alloc];
-      v10 = [MEMORY[0x1E69DC888] blackColor];
-      v28 = [(PKInk *)v29 initWithInkType:@"com.apple.ink.monoline" color:v10];
+      mask = [MEMORY[0x1E69DC888] blackColor];
+      v28 = [(PKInk *)v29 initWithInkType:@"com.apple.ink.monoline" color:mask];
     }
 
     v30 = [PKStrokePath alloc];
@@ -428,17 +428,17 @@ LABEL_11:
     {
     }
 
-    v20 = v35;
+    firstObject = v35;
   }
 
-  v129 = v20;
-  v36 = [v20 path];
-  if ([v36 count])
+  v129 = firstObject;
+  path = [firstObject path];
+  if ([path count])
   {
     v37 = [v129 ink];
-    v38 = [v37 _isFountainPenInk];
+    _isFountainPenInk = [v37 _isFountainPenInk];
 
-    v126 = v38 ^ 1;
+    v126 = _isFountainPenInk ^ 1;
   }
 
   else
@@ -455,8 +455,8 @@ LABEL_11:
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  [PKStroke averagePointForSynthesisFromSourceStrokes:v128];
-  v127 = [MEMORY[0x1E695DF70] array];
+  [PKStroke averagePointForSynthesisFromSourceStrokes:strokesCopy];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; [v130 strokeCount] > i; ++i)
   {
     v40 = [v130 pointCountForStrokeIndex:i];
@@ -469,7 +469,7 @@ LABEL_11:
       for (j = 0; j != v40; ++j)
       {
         [v130 pointForStrokeIndex:i pointIndex:j];
-        v44 = vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v42), *&a4->a, v43));
+        v44 = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v42), *&transform->a, v43));
         v45 = __p;
         v46 = v142;
         v47 = v142 - __p;
@@ -529,27 +529,27 @@ LABEL_11:
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
         v56 = [v129 ink];
-        v57 = [v56 identifier];
+        identifier = [v56 identifier];
         v58 = [v129 ink];
         [v58 _weight];
         v60 = v59;
         v61 = [v129 ink];
-        v62 = [v61 _weightIsUndefined];
+        _weightIsUndefined = [v61 _weightIsUndefined];
         *buf = 138412802;
-        *&buf[4] = v57;
+        *&buf[4] = identifier;
         *&buf[12] = 2048;
         *&buf[14] = v60;
         *&buf[22] = 1024;
-        *&buf[24] = v62;
+        *&buf[24] = _weightIsUndefined;
         _os_log_impl(&dword_1C7CCA000, v55, OS_LOG_TYPE_INFO, "Synthesize stroke with ink: %@, weight: %g, undefined: %d", buf, 0x1Cu);
       }
 
       if (v126)
       {
         v131 = objc_alloc_init(PKAveragePointGenerator);
-        if ([v128 count])
+        if ([strokesCopy count])
         {
-          [(PKAveragePointGenerator *)v131 addStrokes:v128];
+          [(PKAveragePointGenerator *)v131 addStrokes:strokesCopy];
         }
 
         else
@@ -579,9 +579,9 @@ LABEL_11:
             v96 = 1;
           }
 
-          if (*&buf[24] >= a9 * 0.142857143 + 2.0)
+          if (*&buf[24] >= height * 0.142857143 + 2.0)
           {
-            v102 = a9 * 0.142857143 + 2.0;
+            v102 = height * 0.142857143 + 2.0;
           }
 
           else
@@ -589,7 +589,7 @@ LABEL_11:
             v102 = *&buf[24];
           }
 
-          if (a9 <= 0.0)
+          if (height <= 0.0)
           {
             v103 = *&buf[24];
           }
@@ -625,9 +625,9 @@ LABEL_11:
         v106 = [PKStrokePath alloc];
         v107 = v139;
         v108 = v140;
-        v109 = [v129 _inputType];
-        v110 = [MEMORY[0x1E696AFB0] UUID];
-        v111 = [(PKStrokePath *)v106 initWithPoints:v107 count:0x8E38E38E38E38E39 * ((v108 - v107) >> 2) immutableCount:0x8E38E38E38E38E39 * ((v108 - v107) >> 2) inputType:v109 timestamp:v110 UUID:v98];
+        _inputType = [v129 _inputType];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        v111 = [(PKStrokePath *)v106 initWithPoints:v107 count:0x8E38E38E38E38E39 * ((v108 - v107) >> 2) immutableCount:0x8E38E38E38E38E39 * ((v108 - v107) >> 2) inputType:_inputType timestamp:uUID UUID:v98];
 
         v112 = objc_alloc(objc_opt_class());
         v113 = [v129 ink];
@@ -637,7 +637,7 @@ LABEL_11:
         *&v136.aspectRatio = *(MEMORY[0x1E695EFD0] + 32);
         v115 = [v112 initWithInk:v113 strokePath:v111 transform:&v136 mask:0];
 
-        [v127 addObject:v115];
+        [array addObject:v115];
         if (v139)
         {
           v140 = v139;
@@ -687,7 +687,7 @@ LABEL_11:
           while (v65);
         }
 
-        *(&v146 + 1) = v69 / (v40 * 0.0166666667 * a5);
+        *(&v146 + 1) = v69 / (v40 * 0.0166666667 * scale);
         v159 = v150;
         v160 = v151;
         v161 = v152;
@@ -697,13 +697,13 @@ LABEL_11:
         v158 = v149;
         *buf = v144;
         *&buf[16] = v145;
-        v72 = [(PKAveragePointGenerator *)v131 strokeFromPoints:&__p sourceStroke:v129 inputScale:buf averageInputPoint:a5];
+        v72 = [(PKAveragePointGenerator *)v131 strokeFromPoints:&__p sourceStroke:v129 inputScale:buf averageInputPoint:scale];
         v73 = v72;
         v74 = sqrt(v64 * v64 + v63 * v63);
         if (fabs(v74 + -1.0) >= 0.00999999978)
         {
-          v75 = [v72 _strokeData];
-          v76 = [v75 count];
+          _strokeData2 = [v72 _strokeData];
+          v76 = [_strokeData2 count];
           std::vector<PKCompressedStrokePoint>::vector[abi:ne200100](&v136, v76);
           if (v76)
           {
@@ -712,9 +712,9 @@ LABEL_11:
             {
               LODWORD(v155) = 0;
               memset(buf, 0, sizeof(buf));
-              if (v75)
+              if (_strokeData2)
               {
-                [v75 _compressedPointAt:k];
+                [_strokeData2 _compressedPointAt:k];
                 v79 = *&buf[12] + -2.0;
               }
 
@@ -738,11 +738,11 @@ LABEL_11:
           v84 = [PKStrokePath alloc];
           timestamp = v136.timestamp;
           x = v136.location.x;
-          v87 = [v129 _inputType];
+          _inputType2 = [v129 _inputType];
           [v73 timestamp];
           v89 = v88;
-          v90 = [MEMORY[0x1E696AFB0] UUID];
-          v91 = [(PKStrokePath *)v84 initWithPoints:*&timestamp count:0x8E38E38E38E38E39 * ((*&x - *&timestamp) >> 2) immutableCount:0x8E38E38E38E38E39 * ((*&x - *&timestamp) >> 2) inputType:v87 timestamp:v90 UUID:v89];
+          uUID2 = [MEMORY[0x1E696AFB0] UUID];
+          v91 = [(PKStrokePath *)v84 initWithPoints:*&timestamp count:0x8E38E38E38E38E39 * ((*&x - *&timestamp) >> 2) immutableCount:0x8E38E38E38E38E39 * ((*&x - *&timestamp) >> 2) inputType:_inputType2 timestamp:uUID2 UUID:v89];
 
           v92 = objc_alloc(objc_opt_class());
           v93 = [v73 ink];
@@ -768,7 +768,7 @@ LABEL_11:
           v73 = v116;
         }
 
-        [v127 addObject:v73];
+        [array addObject:v73];
       }
 
       if (__p)
@@ -779,13 +779,13 @@ LABEL_11:
     }
   }
 
-  if (a10)
+  if (flag)
   {
     v134 = 0u;
     v135 = 0u;
     v132 = 0u;
     v133 = 0u;
-    v117 = v127;
+    v117 = array;
     v118 = [v117 countByEnumeratingWithState:&v132 objects:v153 count:16];
     if (v118)
     {
@@ -809,62 +809,62 @@ LABEL_11:
     }
   }
 
-  v17 = v124;
+  inkCopy = v124;
 LABEL_92:
 
-  return v127;
+  return array;
 }
 
-+ (PKStroke)allocWithZone:(_NSZone *)a3
++ (PKStroke)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_PKStrokeConcrete allocWithZone:a3];
+    return [_PKStrokeConcrete allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___PKStroke;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (id)_initWithPath:(CGPath *)a3 ink:(id)a4 maxSegmentLength:(double)a5 inputScale:(double)a6 velocityForDistanceFunction:(id)a7
+- (id)_initWithPath:(CGPath *)path ink:(id)ink maxSegmentLength:(double)length inputScale:(double)scale velocityForDistanceFunction:(id)function
 {
-  v12 = a4;
-  v13 = a7;
+  inkCopy = ink;
+  functionCopy = function;
   v14 = objc_alloc_init(PKStrokeGenerator);
-  v15 = [(PKStrokeGenerator *)v14 strokeFromPath:a3 ink:v12 inputScale:v13 maxSegmentLength:objc_opt_class() velocityForDistanceFunction:a6 strokeClass:a5];
+  v15 = [(PKStrokeGenerator *)v14 strokeFromPath:path ink:inkCopy inputScale:functionCopy maxSegmentLength:objc_opt_class() velocityForDistanceFunction:scale strokeClass:length];
 
   return v15;
 }
 
-- (PKStroke)initWithData:(id)a3 id:(id)a4 hidden:(BOOL)a5 ink:(id)a6 transform:(CGAffineTransform *)a7 substrokes:(id)a8
+- (PKStroke)initWithData:(id)data id:(id)id hidden:(BOOL)hidden ink:(id)ink transform:(CGAffineTransform *)transform substrokes:(id)substrokes
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = [v14 _legacyRandomSeed];
-  v19 = *&a7->c;
-  v22[0] = *&a7->a;
+  hiddenCopy = hidden;
+  dataCopy = data;
+  idCopy = id;
+  inkCopy = ink;
+  substrokesCopy = substrokes;
+  _legacyRandomSeed = [dataCopy _legacyRandomSeed];
+  v19 = *&transform->c;
+  v22[0] = *&transform->a;
   v22[1] = v19;
-  v22[2] = *&a7->tx;
-  v20 = [(PKStroke *)self initWithData:v14 id:v15 flags:v11 | (32 * v18) | 0x2000000000 ink:v16 transform:v22 substrokes:v17];
+  v22[2] = *&transform->tx;
+  v20 = [(PKStroke *)self initWithData:dataCopy id:idCopy flags:hiddenCopy | (32 * _legacyRandomSeed) | 0x2000000000 ink:inkCopy transform:v22 substrokes:substrokesCopy];
 
   return v20;
 }
 
-- (PKStroke)initWithData:(id)a3 id:(id)a4 flags:(id)a5 ink:(id)a6 transform:(CGAffineTransform *)a7 substrokes:(id)a8
+- (PKStroke)initWithData:(id)data id:(id)id flags:(id)flags ink:(id)ink transform:(CGAffineTransform *)transform substrokes:(id)substrokes
 {
-  v9 = *(&a5.var0.var1 + 1);
-  v11 = a3;
-  v12 = a4;
+  v9 = *(&flags.var0.var1 + 1);
+  dataCopy = data;
+  idCopy = id;
   v13 = v9;
-  v14 = a7;
+  transformCopy = transform;
   PKCrash();
 }
 
@@ -890,26 +890,26 @@ LABEL_92:
   PKCrash();
 }
 
-- (PKStroke)strokeWithInk:(id)a3
+- (PKStroke)strokeWithInk:(id)ink
 {
-  v4 = a3;
-  v5 = [(PKStroke *)self path];
+  inkCopy = ink;
+  path = [(PKStroke *)self path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 regenerateStrokeWithInk:v4 randomSeed:-[PKStroke randomSeed](self strokeClass:{"randomSeed"), objc_opt_class()}];
+    v6 = [path regenerateStrokeWithInk:inkCopy randomSeed:-[PKStroke randomSeed](self strokeClass:{"randomSeed"), objc_opt_class()}];
     [(PKStroke *)self transform];
     [v6 _setTransform:v10];
-    v7 = [(PKStroke *)self _strokeMask];
-    [v6 _setStrokeMask:v7];
+    _strokeMask = [(PKStroke *)self _strokeMask];
+    [v6 _setStrokeMask:_strokeMask];
   }
 
   else
   {
     v8 = objc_alloc(objc_opt_class());
     [(PKStroke *)self transform];
-    v7 = [(PKStroke *)self mask];
-    v6 = [v8 initWithInk:v4 strokePath:v5 transform:v10 mask:v7];
+    _strokeMask = [(PKStroke *)self mask];
+    v6 = [v8 initWithInk:inkCopy strokePath:path transform:v10 mask:_strokeMask];
   }
 
   return v6;
@@ -917,102 +917,102 @@ LABEL_92:
 
 - (NSUUID)_strokeDataUUID
 {
-  v2 = [(PKStroke *)self path];
-  v3 = [v2 _strokeDataUUID];
+  path = [(PKStroke *)self path];
+  _strokeDataUUID = [path _strokeDataUUID];
 
-  return v3;
+  return _strokeDataUUID;
 }
 
-- (void)_setIsSynthesizedInk:(BOOL)a3
+- (void)_setIsSynthesizedInk:(BOOL)ink
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  inkCopy = ink;
+  _flags = [(PKStroke *)self _flags];
   v6 = 0x10000000000;
-  if (!v3)
+  if (!inkCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFFEFFFFFFFFFFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFFEFFFFFFFFFFLL | v6];
 }
 
-- (void)_setIsSafeForStyleInventory:(BOOL)a3
+- (void)_setIsSafeForStyleInventory:(BOOL)inventory
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  inventoryCopy = inventory;
+  _flags = [(PKStroke *)self _flags];
   v6 = 0x40000000000;
-  if (!v3)
+  if (!inventoryCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFFBFFFFFFFFFFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFFBFFFFFFFFFFLL | v6];
 }
 
-- (void)_setIsPastedStroke:(BOOL)a3
+- (void)_setIsPastedStroke:(BOOL)stroke
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  strokeCopy = stroke;
+  _flags = [(PKStroke *)self _flags];
   v6 = 0x80000000000;
-  if (!v3)
+  if (!strokeCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFF7FFFFFFFFFFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFF7FFFFFFFFFFLL | v6];
 }
 
-- (void)_setIsSharedStroke:(BOOL)a3
+- (void)_setIsSharedStroke:(BOOL)stroke
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  strokeCopy = stroke;
+  _flags = [(PKStroke *)self _flags];
   v6 = 0x100000000000;
-  if (!v3)
+  if (!strokeCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFEFFFFFFFFFFFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFEFFFFFFFFFFFLL | v6];
 }
 
-- (void)_setHidden:(BOOL)a3
+- (void)_setHidden:(BOOL)hidden
 {
-  v4 = [(PKStroke *)self _flags]& 0xFFFFFFFFFFFFFFFELL | a3;
+  v4 = [(PKStroke *)self _flags]& 0xFFFFFFFFFFFFFFFELL | hidden;
 
   [(PKStroke *)self _setFlags:v4];
 }
 
-- (void)_setIsNewCopy:(BOOL)a3
+- (void)_setIsNewCopy:(BOOL)copy
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  copyCopy = copy;
+  _flags = [(PKStroke *)self _flags];
   v6 = 16;
-  if (!v3)
+  if (!copyCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFFFFFFFFFFFEFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFFFFFFFFFFFEFLL | v6];
 }
 
-- (void)_setIsInProgressScribbleStroke:(BOOL)a3
+- (void)_setIsInProgressScribbleStroke:(BOOL)stroke
 {
-  v3 = a3;
-  v5 = [(PKStroke *)self _flags];
+  strokeCopy = stroke;
+  _flags = [(PKStroke *)self _flags];
   v6 = 0x4000000000;
-  if (!v3)
+  if (!strokeCopy)
   {
     v6 = 0;
   }
 
-  [(PKStroke *)self _setFlags:v5 & 0xFFFFFFBFFFFFFFFFLL | v6];
+  [(PKStroke *)self _setFlags:_flags & 0xFFFFFFBFFFFFFFFFLL | v6];
 }
 
 - (CGPath)_newPathRepresentation
 {
-  v3 = [(PKStroke *)self _strokeMask];
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v3)
+  if (_strokeMask)
   {
 
     return [(PKStroke *)self newPathRepresentationMasked];
@@ -1020,24 +1020,24 @@ LABEL_92:
 
   else
   {
-    v5 = [(PKStroke *)self path];
-    v6 = [v5 _newPathRepresentation];
+    path = [(PKStroke *)self path];
+    _newPathRepresentation = [path _newPathRepresentation];
 
-    return v6;
+    return _newPathRepresentation;
   }
 }
 
 - (unint64_t)_pointsCount
 {
-  v2 = [(PKStroke *)self path];
-  v3 = [v2 _pointsCount];
+  path = [(PKStroke *)self path];
+  _pointsCount = [path _pointsCount];
 
-  return v3;
+  return _pointsCount;
 }
 
-- (void)_setRandomSeed:(unsigned int)a3
+- (void)_setRandomSeed:(unsigned int)seed
 {
-  v4 = [(PKStroke *)self _flags]& 0xFFFFFFC00000001FLL | (32 * a3) | 0x2000000000;
+  v4 = [(PKStroke *)self _flags]& 0xFFFFFFC00000001FLL | (32 * seed) | 0x2000000000;
 
   [(PKStroke *)self _setFlags:v4];
 }
@@ -1051,8 +1051,8 @@ LABEL_92:
 
   else
   {
-    v3 = [(PKStroke *)self _strokeData];
-    LODWORD(v4) = [v3 _legacyRandomSeed];
+    _strokeData = [(PKStroke *)self _strokeData];
+    LODWORD(v4) = [_strokeData _legacyRandomSeed];
   }
 
   return v4;
@@ -1060,26 +1060,26 @@ LABEL_92:
 
 - (UIBezierPath)mask
 {
-  v2 = [(PKStroke *)self _strokeMask];
-  v3 = [v2 bezierPath];
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  bezierPath = [_strokeMask bezierPath];
 
-  return v3;
+  return bezierPath;
 }
 
 - (NSArray)maskedPathRanges
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKStroke *)self _strokeMask];
-  v4 = v3;
-  if (v3)
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  v4 = _strokeMask;
+  if (_strokeMask)
   {
     v5 = MEMORY[0x1E695DF70];
-    v6 = [v3 centerlineSlices];
-    v7 = [v5 arrayWithCapacity:(v6[1] - *v6) >> 4];
-    v8 = [v4 centerlineSlices];
-    v9 = *v8;
-    v10 = v8[1];
-    if (*v8 != v10)
+    centerlineSlices = [_strokeMask centerlineSlices];
+    v7 = [v5 arrayWithCapacity:(centerlineSlices[1] - *centerlineSlices) >> 4];
+    centerlineSlices2 = [v4 centerlineSlices];
+    v9 = *centerlineSlices2;
+    v10 = centerlineSlices2[1];
+    if (*centerlineSlices2 != v10)
     {
       do
       {
@@ -1096,8 +1096,8 @@ LABEL_92:
   else
   {
     v12 = [PKFloatRange alloc];
-    v13 = [(PKStroke *)self path];
-    v14 = -[PKFloatRange initWithLowerBound:upperBound:](v12, "initWithLowerBound:upperBound:", 0.0, ([v13 count] - 1));
+    path = [(PKStroke *)self path];
+    v14 = -[PKFloatRange initWithLowerBound:upperBound:](v12, "initWithLowerBound:upperBound:", 0.0, ([path count] - 1));
     v16[0] = v14;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   }
@@ -1107,16 +1107,16 @@ LABEL_92:
 
 - (unint64_t)hash
 {
-  v2 = [(PKStroke *)self _strokeUUID];
-  v3 = [v2 hash];
+  _strokeUUID = [(PKStroke *)self _strokeUUID];
+  v3 = [_strokeUUID hash];
 
   return v3;
 }
 
 - (double)timestamp
 {
-  v2 = [(PKStroke *)self path];
-  [v2 _timestamp];
+  path = [(PKStroke *)self path];
+  [path _timestamp];
   v4 = v3;
 
   return v4;
@@ -1124,10 +1124,10 @@ LABEL_92:
 
 - (int64_t)_inputType
 {
-  v2 = [(PKStroke *)self path];
-  v3 = [v2 _inputType];
+  path = [(PKStroke *)self path];
+  _inputType = [path _inputType];
 
-  return v3;
+  return _inputType;
 }
 
 - (BOOL)_isInternal
@@ -1148,31 +1148,31 @@ LABEL_92:
 
     else
     {
-      v6 = [(PKStroke *)self _clipPlane];
-      v4 = v6 != 0;
+      _clipPlane = [(PKStroke *)self _clipPlane];
+      v4 = _clipPlane != 0;
     }
   }
 
   return v4;
 }
 
-+ (void)_consumeRenderVertexes:(id)a3 ink:(id)a4 inkTransform:(CGAffineTransform *)a5 strokePath:(id)a6
++ (void)_consumeRenderVertexes:(id)vertexes ink:(id)ink inkTransform:(CGAffineTransform *)transform strokePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [v9 behavior];
-  v12 = [v11 particleDescriptor];
+  vertexesCopy = vertexes;
+  inkCopy = ink;
+  pathCopy = path;
+  behavior = [inkCopy behavior];
+  particleDescriptor = [behavior particleDescriptor];
 
-  if (v12)
+  if (particleDescriptor)
   {
-    [v12 particleSize];
-    [v12 particleRotation];
+    [particleDescriptor particleSize];
+    [particleDescriptor particleRotation];
   }
 
   else
   {
-    [v9 particleRotation];
+    [inkCopy particleRotation];
   }
 
   operator new();
@@ -1314,12 +1314,12 @@ void __63__PKStroke__consumeRenderVertexes_ink_inkTransform_strokePath___block_i
 
   else
   {
-    v7 = [(PKStroke *)self _strokeMask];
+    _strokeMask = [(PKStroke *)self _strokeMask];
     [(PKStroke *)self _transform];
     v8 = [(PKStroke *)self ink];
     [(PKStroke *)self _inkTransform];
-    v9 = [(PKStroke *)self path];
-    [PKStroke _calculateBounds:v7 transform:v19 ink:v8 inkTransform:&v18 strokePath:v9];
+    path = [(PKStroke *)self path];
+    [PKStroke _calculateBounds:_strokeMask transform:v19 ink:v8 inkTransform:&v18 strokePath:path];
     v3 = v10;
     v4 = v11;
     v5 = v12;
@@ -1337,31 +1337,31 @@ void __63__PKStroke__consumeRenderVertexes_ink_inkTransform_strokePath___block_i
   return result;
 }
 
-+ (CGRect)_calculateBounds:(id)a3 transform:(CGAffineTransform *)a4 ink:(id)a5 inkTransform:(CGAffineTransform *)a6 strokePath:(id)a7
++ (CGRect)_calculateBounds:(id)bounds transform:(CGAffineTransform *)transform ink:(id)ink inkTransform:(CGAffineTransform *)inkTransform strokePath:(id)path
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = v13;
-  if (v11)
+  boundsCopy = bounds;
+  inkCopy = ink;
+  pathCopy = path;
+  v14 = pathCopy;
+  if (boundsCopy)
   {
-    v15 = *&a4->c;
-    v60 = *&a4->a;
+    v15 = *&transform->c;
+    v60 = *&transform->a;
     v61 = v15;
-    v62 = *&a4->tx;
-    [v11 _boundsWithTransform:&v60];
+    v62 = *&transform->tx;
+    [boundsCopy _boundsWithTransform:&v60];
     x = v16;
     y = v18;
     width = v20;
     height = v22;
   }
 
-  else if ([v13 count])
+  else if ([pathCopy count])
   {
-    v24 = *&a4->c;
-    v41 = *&a4->a;
+    v24 = *&transform->c;
+    v41 = *&transform->a;
     v42 = v24;
-    v43 = *&a4->tx;
+    v43 = *&transform->tx;
     v56 = 0;
     v57 = &v56;
     v58 = 0x2020000000;
@@ -1393,11 +1393,11 @@ void __63__PKStroke__consumeRenderVertexes_ink_inkTransform_strokePath___block_i
     v38[3] = &unk_1E82D8FF8;
     v26 = v25;
     v39 = v26;
-    v27 = *&a6->c;
-    v60 = *&a6->a;
+    v27 = *&inkTransform->c;
+    v60 = *&inkTransform->a;
     v61 = v27;
-    v62 = *&a6->tx;
-    [PKStroke _consumeRenderVertexes:v38 ink:v12 inkTransform:&v60 strokePath:v14];
+    v62 = *&inkTransform->tx;
+    [PKStroke _consumeRenderVertexes:v38 ink:inkCopy inkTransform:&v60 strokePath:v14];
     v28 = v53[3];
     v29 = v57[3];
     if (v28 >= v29 && (v30 = v45[3], v31 = v49[3], v30 >= v31))
@@ -1507,29 +1507,29 @@ void __67__PKStroke__calculateBounds_transform_ink_inkTransform_strokePath___blo
   return self;
 }
 
-- (void)_applyTransform:(CGAffineTransform *)a3
+- (void)_applyTransform:(CGAffineTransform *)transform
 {
   [(PKStroke *)self _transform];
-  v5 = *&a3->c;
-  *&v6.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v6.a = *&transform->a;
   *&v6.c = v5;
-  *&v6.tx = *&a3->tx;
+  *&v6.tx = *&transform->tx;
   CGAffineTransformConcat(&v8, &t1, &v6);
   t1 = v8;
   [(PKStroke *)self _setTransform:&t1];
 }
 
-- (id)_strokeWithUUID:(id)a3 dataUUID:(id)a4
+- (id)_strokeWithUUID:(id)d dataUUID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  iDCopy = iD;
   PKCrash();
 }
 
-- (id)_newStrokeWithSubstrokes:(id)a3 inDrawing:(id)a4
+- (id)_newStrokeWithSubstrokes:(id)substrokes inDrawing:(id)drawing
 {
-  v5 = a3;
-  v6 = a4;
+  substrokesCopy = substrokes;
+  drawingCopy = drawing;
   PKCrash();
 }
 
@@ -1543,14 +1543,14 @@ void __67__PKStroke__calculateBounds_transform_ink_inkTransform_strokePath___blo
   return CGRectApplyAffineTransform(v5, &v3);
 }
 
-- (void)_appendPointsOfInterestForSelection:(void *)a3 step:(double)a4
+- (void)_appendPointsOfInterestForSelection:(void *)selection step:(double)step
 {
-  v7 = [(PKStroke *)self _strokeMask];
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v7)
+  if (_strokeMask)
   {
 
-    [(PKStroke *)self _appendPointsOfInterestForSelectionMasked:a3];
+    [(PKStroke *)self _appendPointsOfInterestForSelectionMasked:selection];
   }
 
   else
@@ -1560,8 +1560,8 @@ void __67__PKStroke__calculateBounds_transform_ink_inkTransform_strokePath___blo
     v8[2] = __53__PKStroke__appendPointsOfInterestForSelection_step___block_invoke;
     v8[3] = &unk_1E82D9020;
     v8[4] = self;
-    v8[5] = a3;
-    [(PKStroke *)self interpolatePointDataWithStep:v8 usingBlock:a4];
+    v8[5] = selection;
+    [(PKStroke *)self interpolatePointDataWithStep:v8 usingBlock:step];
   }
 }
 
@@ -1700,17 +1700,17 @@ void __53__PKStroke__appendPointsOfInterestForSelection_step___block_invoke(uint
 
 - (double)_maxWidthForStroke
 {
-  v2 = [(PKStroke *)self path];
-  [v2 _maxWidth];
+  path = [(PKStroke *)self path];
+  [path _maxWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (id)descriptionAtDepth:(int64_t)a3
+- (id)descriptionAtDepth:(int64_t)depth
 {
   v4 = &stru_1F476BD20;
-  v5 = [&stru_1F476BD20 stringByPaddingToLength:2 * a3 withString:@" " startingAtIndex:0];
+  v5 = [&stru_1F476BD20 stringByPaddingToLength:2 * depth withString:@" " startingAtIndex:0];
   memset(&v16, 0, sizeof(v16));
   [(PKStroke *)self transform];
   transform = v16;
@@ -1739,8 +1739,8 @@ void __53__PKStroke__appendPointsOfInterestForSelection_step___block_invoke(uint
 LABEL_13:
   v10 = MEMORY[0x1E696AEC0];
   v11 = [(PKStroke *)self ink];
-  v12 = [v11 identifier];
-  v13 = [v10 stringWithFormat:@"%@<PKStroke: %p %@ %@>", v5, self, v12, v4];
+  identifier = [v11 identifier];
+  v13 = [v10 stringWithFormat:@"%@<PKStroke: %p %@ %@>", v5, self, identifier, v4];
 
   return v13;
 }
@@ -1752,7 +1752,7 @@ LABEL_13:
   [(PKStroke *)self bounds];
   v6 = [PKStroke _asciiDimensionForBoundsDimension:v5];
   v7 = [(PKStroke *)self _newAsciiBitfieldWithWidth:v4 height:v6];
-  v8 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (v6 >= 1)
   {
     for (i = 0; i != v6; ++i)
@@ -1772,17 +1772,17 @@ LABEL_13:
           }
 
           v12 = v11;
-          [v8 appendString:v12];
+          [string appendString:v12];
         }
       }
 
-      [v8 appendString:@"\n"];
+      [string appendString:@"\n"];
     }
   }
 
   free(v7);
 
-  return v8;
+  return string;
 }
 
 - (BOOL)_newAsciiBitfield
@@ -1795,10 +1795,10 @@ LABEL_13:
   return [(PKStroke *)self _newAsciiBitfieldWithWidth:v4 height:v6];
 }
 
-- (BOOL)_newAsciiBitfieldWithWidth:(int64_t)a3 height:(int64_t)a4
+- (BOOL)_newAsciiBitfieldWithWidth:(int64_t)width height:(int64_t)height
 {
-  v7 = a4 * a3;
-  v8 = malloc_type_calloc(a4 * a3, 1uLL, 0x100004077774924uLL);
+  v7 = height * width;
+  v8 = malloc_type_calloc(height * width, 1uLL, 0x100004077774924uLL);
   [(PKStroke *)self bounds];
   v10 = v9;
   v12 = v11;
@@ -1818,8 +1818,8 @@ LABEL_13:
   v18[5] = v16;
   v18[6] = v10;
   v18[7] = v12;
-  v18[8] = a3;
-  v18[9] = a4;
+  v18[8] = width;
+  v18[9] = height;
   v18[10] = v8;
   [(PKStroke *)self interpolatePointDataWithStep:v18 usingBlock:1.0];
   return v8;
@@ -1867,17 +1867,17 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
   return v5;
 }
 
-+ (id)copyStrokes:(id)a3 hidden:(BOOL)a4
++ (id)copyStrokes:(id)strokes hidden:(BOOL)hidden
 {
-  v4 = a4;
+  hiddenCopy = hidden;
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  strokesCopy = strokes;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(strokesCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = strokesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -1892,16 +1892,16 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 _isHidden] == v4)
+        if ([v11 _isHidden] == hiddenCopy)
         {
           [v6 addObject:v11];
         }
 
         else
         {
-          v12 = [v11 copyForMutation];
-          [v12 _setHidden:v4];
-          [v6 addObject:v12];
+          copyForMutation = [v11 copyForMutation];
+          [copyForMutation _setHidden:hiddenCopy];
+          [v6 addObject:copyForMutation];
         }
       }
 
@@ -1914,23 +1914,23 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
   return v6;
 }
 
-- (id)_substrokeWithRange:(_NSRange)a3
+- (id)_substrokeWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = +[PKContentVersionUtility sharedUtility];
-  v7 = [(PKContentVersionUtility *)v6 programLinkedOnOrAfterDawnburst];
+  programLinkedOnOrAfterDawnburst = [(PKContentVersionUtility *)v6 programLinkedOnOrAfterDawnburst];
 
-  v8 = 0;
+  copyForMutation = 0;
   if (location < [(PKStroke *)self _pointsCount])
   {
-    v9 = length + location + (v7 ^ 1u) - 1;
+    v9 = length + location + (programLinkedOnOrAfterDawnburst ^ 1u) - 1;
     v10 = v9 - location;
     if (v9 >= location)
     {
       if (v9 >= [(PKStroke *)self _pointsCount])
       {
-        v8 = 0;
+        copyForMutation = 0;
       }
 
       else
@@ -1970,17 +1970,17 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
           while (v13);
         }
 
-        v17 = [MEMORY[0x1E696AFB0] UUID];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
         v18 = [PKStrokePath alloc];
         v19 = __p[0];
-        v20 = [(PKStroke *)self path];
-        v21 = [v20 _inputType];
-        v22 = [(PKStroke *)self path];
-        [v22 _timestamp];
-        v23 = [(PKStrokePath *)v18 initWithPoints:v19 count:v11 immutableCount:v11 inputType:v21 timestamp:v17 UUID:?];
+        path = [(PKStroke *)self path];
+        _inputType = [path _inputType];
+        path2 = [(PKStroke *)self path];
+        [path2 _timestamp];
+        v23 = [(PKStrokePath *)v18 initWithPoints:v19 count:v11 immutableCount:v11 inputType:_inputType timestamp:uUID UUID:?];
 
-        v8 = [(PKStroke *)self copyForMutation];
-        [v8 setPath:v23];
+        copyForMutation = [(PKStroke *)self copyForMutation];
+        [copyForMutation setPath:v23];
 
         if (__p[0])
         {
@@ -1991,23 +1991,23 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
     }
   }
 
-  return v8;
+  return copyForMutation;
 }
 
-- (CGPoint)_locationAtIndex:(unint64_t)a3
+- (CGPoint)_locationAtIndex:(unint64_t)index
 {
-  [(PKStroke *)self _locationAtIndex:a3 applyStrokeTransform:1];
+  [(PKStroke *)self _locationAtIndex:index applyStrokeTransform:1];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)_locationAtIndex:(unint64_t)a3 applyStrokeTransform:(BOOL)a4
+- (CGPoint)_locationAtIndex:(unint64_t)index applyStrokeTransform:(BOOL)transform
 {
-  v4 = a4;
-  v7 = [(PKStroke *)self path];
-  [v7 locationAtIndex:a3];
-  if (v4)
+  transformCopy = transform;
+  path = [(PKStroke *)self path];
+  [path locationAtIndex:index];
+  if (transformCopy)
   {
     v13 = v9;
     v14 = v8;
@@ -2029,49 +2029,49 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
   return result;
 }
 
-- (void)enumeratePointsWithDistanceStep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithDistanceStep:(double)step usingBlock:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   v6 = [[PKStrokeProviderSlice alloc] initWithStroke:self tStart:0.0 tEnd:[(PKStroke *)self _pointsCount]];
-  [(PKStrokeProviderSlice *)v6 enumeratePointsWithDistanceStep:v7 usingBlock:a3];
+  [(PKStrokeProviderSlice *)v6 enumeratePointsWithDistanceStep:blockCopy usingBlock:step];
 }
 
-- (void)enumeratePointsWithTimestep:(double)a3 usingBlock:(id)a4
+- (void)enumeratePointsWithTimestep:(double)timestep usingBlock:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   v6 = [[PKStrokeProviderSlice alloc] initWithStroke:self tStart:0.0 tEnd:[(PKStroke *)self _pointsCount]];
-  [(PKStrokeProviderSlice *)v6 enumeratePointsWithTimestep:v7 usingBlock:a3];
+  [(PKStrokeProviderSlice *)v6 enumeratePointsWithTimestep:blockCopy usingBlock:timestep];
 }
 
-- (double)timestampAtIndex:(unint64_t)a3
+- (double)timestampAtIndex:(unint64_t)index
 {
-  v4 = [(PKStroke *)self path];
-  [v4 timestampAtIndex:a3];
+  path = [(PKStroke *)self path];
+  [path timestampAtIndex:index];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_timestampAtIndex:(unint64_t)a3
+- (double)_timestampAtIndex:(unint64_t)index
 {
-  [(PKStroke *)self timestampAtIndex:a3];
+  [(PKStroke *)self timestampAtIndex:index];
   v5 = v4;
-  v6 = [(PKStroke *)self path];
-  [v6 _timestamp];
+  path = [(PKStroke *)self path];
+  [path _timestamp];
   v8 = v5 + v7;
 
   return v8;
 }
 
-- (BOOL)_containsSamePointsAsStroke:(id)a3
+- (BOOL)_containsSamePointsAsStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   [(PKStroke *)self _bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 _bounds];
+  [strokeCopy _bounds];
   v29.origin.x = v13;
   v29.origin.y = v14;
   v29.size.width = v15;
@@ -2080,14 +2080,14 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
   v28.origin.y = v8;
   v28.size.width = v10;
   v28.size.height = v12;
-  if (CGRectEqualToRect(v28, v29) && (v17 = -[PKStroke _pointsCount](self, "_pointsCount"), v17 == [v4 _pointsCount]))
+  if (CGRectEqualToRect(v28, v29) && (v17 = -[PKStroke _pointsCount](self, "_pointsCount"), v17 == [strokeCopy _pointsCount]))
   {
     v18 = 0;
     do
     {
-      v19 = [(PKStroke *)self _pointsCount];
-      v20 = v19 <= v18;
-      if (v19 <= v18)
+      _pointsCount = [(PKStroke *)self _pointsCount];
+      v20 = _pointsCount <= v18;
+      if (_pointsCount <= v18)
       {
         break;
       }
@@ -2095,7 +2095,7 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
       [(PKStroke *)self _locationAtIndex:v18];
       v22 = v21;
       v24 = v23;
-      [v4 _locationAtIndex:v18];
+      [strokeCopy _locationAtIndex:v18];
       if (vabdd_f64(v22, v26) >= 0.01)
       {
         break;
@@ -2117,8 +2117,8 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
 
 - (double)startTimestamp
 {
-  v2 = [(PKStroke *)self path];
-  [v2 timestampAtIndex:0];
+  path = [(PKStroke *)self path];
+  [path timestampAtIndex:0];
   v4 = v3;
 
   return v4;
@@ -2126,49 +2126,49 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
 
 - (double)endTimestamp
 {
-  v3 = [(PKStroke *)self path];
-  [v3 timestampAtIndex:{-[PKStroke _pointsCount](self, "_pointsCount") - 1}];
+  path = [(PKStroke *)self path];
+  [path timestampAtIndex:{-[PKStroke _pointsCount](self, "_pointsCount") - 1}];
   v5 = v4;
 
   return v5;
 }
 
-+ (int64_t)_requiredContentVersionForStrokePath:(id)a3 ink:(id)a4
++ (int64_t)_requiredContentVersionForStrokePath:(id)path ink:(id)ink
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 requiredContentVersion];
-  if (v7 >= 3 && [v6 _isFountainPenInk] && !objc_msgSend(v5, "hasAzimuthAngles"))
+  pathCopy = path;
+  inkCopy = ink;
+  requiredContentVersion = [inkCopy requiredContentVersion];
+  if (requiredContentVersion >= 3 && [inkCopy _isFountainPenInk] && !objc_msgSend(pathCopy, "hasAzimuthAngles"))
   {
-    v7 = 2;
+    requiredContentVersion = 2;
   }
 
-  return v7;
+  return requiredContentVersion;
 }
 
 - (PKContentVersion)requiredContentVersion
 {
-  v3 = [(PKStroke *)self _strokeData];
+  _strokeData = [(PKStroke *)self _strokeData];
   v4 = [(PKStroke *)self ink];
-  v5 = [PKStroke _requiredContentVersionForStrokePath:v3 ink:v4];
+  v5 = [PKStroke _requiredContentVersionForStrokePath:_strokeData ink:v4];
 
   return v5;
 }
 
-+ (id)_strokesByCullingStrokes:(id)a3 toRectangle:(CGRect)a4
++ (id)_strokesByCullingStrokes:(id)strokes toRectangle:(CGRect)rectangle
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v33 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v26, "count")}];
+  strokesCopy = strokes;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(strokesCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v26;
+  obj = strokesCopy;
   v9 = 0;
   v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
@@ -2193,12 +2193,12 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
         {
           if (v9)
           {
-            v14 = [v8 lastObject];
-            v15 = [v14 _renderGroupID];
+            lastObject = [v8 lastObject];
+            _renderGroupID = [lastObject _renderGroupID];
 
-            v16 = [v13 _renderGroupID];
-            v17 = v16;
-            if (v15 && v16 && [v15 isEqual:v16])
+            _renderGroupID2 = [v13 _renderGroupID];
+            v17 = _renderGroupID2;
+            if (_renderGroupID && _renderGroupID2 && [_renderGroupID isEqual:_renderGroupID2])
             {
               [v8 addObject:v9];
             }
@@ -2220,11 +2220,11 @@ int64_t __46__PKStroke__newAsciiBitfieldWithWidth_height___block_invoke(uint64_t
             goto LABEL_18;
           }
 
-          v18 = [v8 lastObject];
-          v19 = [v18 _renderGroupID];
-          v20 = [v13 _renderGroupID];
-          v21 = v19;
-          v22 = v20;
+          lastObject2 = [v8 lastObject];
+          _renderGroupID3 = [lastObject2 _renderGroupID];
+          _renderGroupID4 = [v13 _renderGroupID];
+          v21 = _renderGroupID3;
+          v22 = _renderGroupID4;
           if (!(v21 | v22))
           {
 
@@ -2261,11 +2261,11 @@ LABEL_18:
   return v8;
 }
 
-- (CGPoint)intersectionFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
+- (CGPoint)intersectionFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
   v20 = *MEMORY[0x1E69E9840];
-  v19[0] = a3;
-  v19[1] = a4;
+  v19[0] = point;
+  v19[1] = toPoint;
   v12 = 0;
   v13 = &v12;
   v14 = 0x4012000000;
@@ -2350,42 +2350,42 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
   return result;
 }
 
-+ (id)_testStrokeFromPoints:(PKCompressedStrokePoint *)a3 length:(int64_t)a4 ink:(id)a5
++ (id)_testStrokeFromPoints:(PKCompressedStrokePoint *)points length:(int64_t)length ink:(id)ink
 {
-  v8 = a5;
-  if (!v8)
+  inkCopy = ink;
+  if (!inkCopy)
   {
-    v9 = [MEMORY[0x1E69DC888] blackColor];
-    v8 = [PKInk inkWithIdentifier:@"com.apple.ink.pen" color:v9 weight:-1.0];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    inkCopy = [PKInk inkWithIdentifier:@"com.apple.ink.pen" color:blackColor weight:-1.0];
   }
 
   v10 = [PKStrokePath alloc];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [(PKStrokePath *)v10 initWithPoints:a3 count:a4 immutableCount:a4 inputType:0 timestamp:v11 UUID:0.0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v12 = [(PKStrokePath *)v10 initWithPoints:points count:length immutableCount:length inputType:0 timestamp:uUID UUID:0.0];
 
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   v14 = *(MEMORY[0x1E695EFD0] + 16);
   v17[0] = *MEMORY[0x1E695EFD0];
   v17[1] = v14;
   v17[2] = *(MEMORY[0x1E695EFD0] + 32);
-  v15 = [v13 initWithInk:v8 strokePath:v12 transform:v17 mask:0];
+  v15 = [v13 initWithInk:inkCopy strokePath:v12 transform:v17 mask:0];
 
   return v15;
 }
 
 - (BOOL)_pathHasClockwisePointOrdering
 {
-  v3 = [(PKStroke *)self path];
-  v4 = [(PKStroke *)self _pointsCount];
-  v5 = v4;
-  if (v4)
+  path = [(PKStroke *)self path];
+  _pointsCount = [(PKStroke *)self _pointsCount];
+  v5 = _pointsCount;
+  if (_pointsCount)
   {
     v6 = 0;
-    v7 = v4 - 1;
+    v7 = _pointsCount - 1;
     v8 = 0.0;
     do
     {
-      [v3 locationAtIndex:v6];
+      [path locationAtIndex:v6];
       v10 = v9;
       v12 = v11;
       if (v7 == v6)
@@ -2398,7 +2398,7 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
         v13 = v6 + 1;
       }
 
-      [v3 locationAtIndex:v13];
+      [path locationAtIndex:v13];
       ++v6;
       v8 = v8 + v10 * v15 - v14 * v12;
     }
@@ -2412,21 +2412,21 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
 
 - (BOOL)_pathHasAzimuthAngles
 {
-  v2 = [(PKStroke *)self path];
-  v3 = [v2 hasAzimuthAngles];
+  path = [(PKStroke *)self path];
+  hasAzimuthAngles = [path hasAzimuthAngles];
 
-  return v3;
+  return hasAzimuthAngles;
 }
 
-+ (id)_commonGroupIDForStrokes:(id)a3
++ (id)_commonGroupIDForStrokes:(id)strokes
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  strokesCopy = strokes;
+  v4 = [strokesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = 0;
@@ -2438,15 +2438,15 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(strokesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if (v6)
         {
-          v10 = [v9 _groupID];
-          v11 = v10;
-          if (!v10 || ([v10 isEqual:v6] & 1) == 0)
+          _groupID = [v9 _groupID];
+          v11 = _groupID;
+          if (!_groupID || ([_groupID isEqual:v6] & 1) == 0)
           {
             v5 = 0;
           }
@@ -2454,13 +2454,13 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
 
         else
         {
-          v12 = [v9 _groupID];
-          v5 = v12 != 0;
-          v6 = v12;
+          _groupID2 = [v9 _groupID];
+          v5 = _groupID2 != 0;
+          v6 = _groupID2;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [strokesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v4);
@@ -2488,18 +2488,18 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
   return v13;
 }
 
-+ (void)_applyPropertiesToNewStrokes:(id)a3 fromOldStrokes:(id)a4
++ (void)_applyPropertiesToNewStrokes:(id)strokes fromOldStrokes:(id)oldStrokes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [PKStroke _commonGroupIDForStrokes:a4];
+  strokesCopy = strokes;
+  v6 = [PKStroke _commonGroupIDForStrokes:oldStrokes];
   if (v6)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = v5;
+    v7 = strokesCopy;
     v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v8)
     {
@@ -2529,24 +2529,24 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
 - (BOOL)_isBitmapEraserStroke
 {
   v2 = [(PKStroke *)self ink];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:@"com.apple.ink.eraser"];
+  identifier = [v2 identifier];
+  v4 = [identifier isEqualToString:@"com.apple.ink.eraser"];
 
   return v4;
 }
 
 - (BOOL)_isMaskedStroke
 {
-  v3 = [(PKStroke *)self _clipPlane];
-  if (v3)
+  _clipPlane = [(PKStroke *)self _clipPlane];
+  if (_clipPlane)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PKStroke *)self _renderMask];
-    v4 = v5 != 0;
+    _renderMask = [(PKStroke *)self _renderMask];
+    v4 = _renderMask != 0;
   }
 
   return v4;
@@ -2561,26 +2561,26 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
   return result;
 }
 
-- (double)_particleOffsetAt:(double)a3 forSecondaryParticles:(BOOL)a4
+- (double)_particleOffsetAt:(double)at forSecondaryParticles:(BOOL)particles
 {
-  v4 = a4;
-  v41 = *&a3;
+  particlesCopy = particles;
+  v41 = *&at;
   v6 = [(PKStroke *)self ink];
-  v7 = [v6 behavior];
+  behavior = [v6 behavior];
 
-  v8 = [v7 renderingDescriptor];
-  v9 = [v8 type];
+  renderingDescriptor = [behavior renderingDescriptor];
+  type = [renderingDescriptor type];
 
-  if (v9 != 1)
+  if (type != 1)
   {
     goto LABEL_8;
   }
 
-  if (v4)
+  if (particlesCopy)
   {
-    v10 = [v7 secondaryParticleDescriptor];
+    secondaryParticleDescriptor = [behavior secondaryParticleDescriptor];
 
-    if (!v10)
+    if (!secondaryParticleDescriptor)
     {
       goto LABEL_9;
     }
@@ -2596,7 +2596,7 @@ void *__42__PKStroke_intersectionFromPoint_toPoint___block_invoke(uint64_t a1, _
     }
 
 LABEL_8:
-    if (v4)
+    if (particlesCopy)
     {
 LABEL_9:
       [(PKStroke *)self _secondaryParticleOffset];
@@ -2612,7 +2612,7 @@ LABEL_13:
 
   if (*v41.i64 == 0.0)
   {
-    if (v4)
+    if (particlesCopy)
     {
       goto LABEL_9;
     }
@@ -2620,8 +2620,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v15 = [(PKStroke *)self path];
-  v16 = [v15 count];
+  path = [(PKStroke *)self path];
+  v16 = [path count];
   *v17.i64 = v16;
   if (v16 < *v41.i64)
   {
@@ -2632,17 +2632,17 @@ LABEL_13:
       _os_log_error_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_ERROR, "parametricValue should not be greater than the point count of the path.", buf, 2u);
     }
 
-    *v17.i64 = [v15 count];
+    *v17.i64 = [path count];
     v41 = v17;
   }
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0;
   v21 = vcvtmd_u64_f64(*v41.i64);
   do
   {
-    v22 = [v15 objectAtIndexedSubscript:v20];
-    [v19 addObject:v22];
+    v22 = [path objectAtIndexedSubscript:v20];
+    [array addObject:v22];
 
     ++v20;
   }
@@ -2653,26 +2653,26 @@ LABEL_13:
   v24.f64[1] = NAN;
   if (*vbslq_s8(vnegq_f64(v24), v23, v41).i64 != 0.0)
   {
-    v25 = [v15 interpolatedPointAt:?];
-    [v19 addObject:v25];
+    v25 = [path interpolatedPointAt:?];
+    [array addObject:v25];
   }
 
-  if ([v19 count] > 1)
+  if ([array count] > 1)
   {
     v28 = [PKStrokePath alloc];
-    v29 = [v15 creationDate];
-    v30 = [(PKStrokePath *)v28 initWithControlPoints:v19 creationDate:v29];
+    creationDate = [path creationDate];
+    v30 = [(PKStrokePath *)v28 initWithControlPoints:array creationDate:creationDate];
 
     v31 = [PKStroke alloc];
     v32 = [(PKStroke *)self ink];
     [(PKStroke *)self transform];
-    v33 = [(PKStroke *)self mask];
-    v34 = [(PKStroke *)v31 initWithInk:v32 strokePath:v30 transform:buf mask:v33 randomSeed:[(PKStroke *)self randomSeed]];
+    mask = [(PKStroke *)self mask];
+    v34 = [(PKStroke *)v31 initWithInk:v32 strokePath:v30 transform:buf mask:mask randomSeed:[(PKStroke *)self randomSeed]];
 
     [(PKStroke *)self _particleOffset];
     v36 = v35;
     [(PKStroke *)self _secondaryParticleOffset];
-    v27 = [(PKStroke *)v34 _copyWithNewParticleOffset:v36 secondaryParticleOffset:v37];
+    selfCopy = [(PKStroke *)v34 _copyWithNewParticleOffset:v36 secondaryParticleOffset:v37];
   }
 
   else
@@ -2684,23 +2684,23 @@ LABEL_13:
       _os_log_error_impl(&dword_1C7CCA000, v26, OS_LOG_TYPE_ERROR, "Should be able to get at least two points for a partial stroke.", buf, 2u);
     }
 
-    v27 = self;
+    selfCopy = self;
   }
 
   v38 = MTLCreateSystemDefaultDevice();
   v39 = [PKMetalResourceHandler sharedResourceHandlerWithDevice:v38];
   v40 = [PKMetalRenderer initWithDrawingPixelSize:v38 actualSize:v39 device:0 resourceHandler:? sixChannelBlendingMode:?];
-  v13 = [PKMetalRenderer particleOffsetAtEndOfStroke:v40 forSecondaryParticles:v27];
+  v13 = [PKMetalRenderer particleOffsetAtEndOfStroke:v40 forSecondaryParticles:selfCopy];
 
 LABEL_15:
   return v13;
 }
 
-+ (id)_snapToShape:(id)a3 inputScale:(double)a4
++ (id)_snapToShape:(id)shape inputScale:(double)scale
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  shapeCopy = shape;
+  array = [MEMORY[0x1E695DF70] array];
   v7 = objc_alloc_init(PKShapeDrawingController);
   v8 = v7;
   if (v7)
@@ -2712,7 +2712,7 @@ LABEL_15:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = shapeCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -2730,24 +2730,24 @@ LABEL_15:
         v14 = *(*(&v20 + 1) + 8 * i);
         if ([v14 _shapeType])
         {
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
 
         else
         {
           v19 = 0;
           memset(v18, 0, sizeof(v18));
-          v15 = [(PKShapeDrawingController *)v8 shapeFromStroke:v14 inputScale:v18 averageInputPoint:0 allowedShapeTypes:a4];
-          v16 = [v15 strokes];
-          if (v16)
+          v15 = [(PKShapeDrawingController *)v8 shapeFromStroke:v14 inputScale:v18 averageInputPoint:0 allowedShapeTypes:scale];
+          strokes = [v15 strokes];
+          if (strokes)
           {
-            [v6 addObjectsFromArray:v16];
+            [array addObjectsFromArray:strokes];
             v11 = 1;
           }
 
           else
           {
-            [v6 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -2759,7 +2759,7 @@ LABEL_15:
 
     if (v11)
     {
-      v10 = v6;
+      v10 = array;
     }
 
     else
@@ -2775,38 +2775,38 @@ LABEL_15:
   return v10;
 }
 
-- (void)interpolatePointDataWithStep:(double)a3 usingBlock:(id)a4
+- (void)interpolatePointDataWithStep:(double)step usingBlock:(id)block
 {
-  v8 = a4;
-  v6 = [(PKStroke *)self _pointsCount];
-  v7 = v6 - 1;
-  if (!v6)
+  blockCopy = block;
+  _pointsCount = [(PKStroke *)self _pointsCount];
+  v7 = _pointsCount - 1;
+  if (!_pointsCount)
   {
     v7 = 0;
   }
 
-  [(PKStroke *)self interpolatePointDataWithStep:v8 from:a3 to:0.0 usingBlock:v7];
+  [(PKStroke *)self interpolatePointDataWithStep:blockCopy from:step to:0.0 usingBlock:v7];
 }
 
-- (void)interpolatePointDataWithStep:(double)a3 from:(double)a4 to:(double)a5 usingBlock:(id)a6
+- (void)interpolatePointDataWithStep:(double)step from:(double)from to:(double)to usingBlock:(id)block
 {
-  v10 = a6;
-  v11 = [(PKStroke *)self _strokeData];
-  v12 = [v11 count];
+  blockCopy = block;
+  _strokeData = [(PKStroke *)self _strokeData];
+  v12 = [_strokeData count];
 
   if (v12)
   {
     v32 = 0;
-    v13 = a4;
-    v14 = a5;
-    if (a4 <= a5)
+    fromCopy = from;
+    toCopy = to;
+    if (from <= to)
     {
-      v15 = a4 - a4;
-      v31 = a5 - a5;
-      v16 = a4;
+      v15 = from - from;
+      v31 = to - to;
+      fromCopy2 = from;
       do
       {
-        if (v16 == v13)
+        if (fromCopy2 == fromCopy)
         {
           v17 = v15;
         }
@@ -2816,16 +2816,16 @@ LABEL_15:
           v17 = 0.0;
         }
 
-        if (v16 == v14 || (a3 >= 1.0 ? (v18 = v16 == v13) : (v18 = 1), v18))
+        if (fromCopy2 == toCopy || (step >= 1.0 ? (v18 = fromCopy2 == fromCopy) : (v18 = 1), v18))
         {
           v20 = v31;
-          if (v16 != v14)
+          if (fromCopy2 != toCopy)
           {
             v20 = 1.0;
           }
 
           v21 = v20 - v17;
-          v22 = vcvtpd_s64_f64(v21 / a3);
+          v22 = vcvtpd_s64_f64(v21 / step);
           if (v22 < 1)
           {
             v23 = 0.0;
@@ -2836,17 +2836,17 @@ LABEL_15:
             v23 = v21 / v22;
           }
 
-          v24 = v16 != v13;
+          v24 = fromCopy2 != fromCopy;
           if (v24 <= v22)
           {
             do
             {
-              v25 = [(PKStroke *)self _strokeData];
-              [v25 locationOnSegment:v16 t:v17 + v23 * v24];
+              _strokeData2 = [(PKStroke *)self _strokeData];
+              [_strokeData2 locationOnSegment:fromCopy2 t:v17 + v23 * v24];
               v27 = v26;
               v29 = v28;
 
-              v10[2](v10, &v32, v27, v29, v17 + v23 * v24 + v16);
+              blockCopy[2](blockCopy, &v32, v27, v29, v17 + v23 * v24 + fromCopy2);
               if (v32)
               {
                 break;
@@ -2859,9 +2859,9 @@ LABEL_15:
 
         else
         {
-          v19 = [(PKStroke *)self _strokeData];
-          [v19 locationAtIndex:v16];
-          (v10[2])(v10, &v32);
+          _strokeData3 = [(PKStroke *)self _strokeData];
+          [_strokeData3 locationAtIndex:fromCopy2];
+          (blockCopy[2])(blockCopy, &v32);
 
           if (v32)
           {
@@ -2869,39 +2869,39 @@ LABEL_15:
           }
         }
 
-        ++v16;
+        ++fromCopy2;
       }
 
-      while (v16 <= v14);
+      while (fromCopy2 <= toCopy);
     }
   }
 }
 
-- (void)debugRender:(CGContext *)a3
+- (void)debugRender:(CGContext *)render
 {
   if (![(PKStroke *)self hasSubstrokes])
   {
-    v5 = [(PKStroke *)self _strokeMask];
+    _strokeMask = [(PKStroke *)self _strokeMask];
 
-    if (v5)
+    if (_strokeMask)
     {
 
-      [(PKStroke *)self debugRenderMasked:a3];
+      [(PKStroke *)self debugRenderMasked:render];
     }
 
     else
     {
       memset(&v17, 0, sizeof(v17));
-      CGContextGetCTM(&v17, a3);
-      CGContextSetLineWidth(a3, 2.0 / v17.a);
+      CGContextGetCTM(&v17, render);
+      CGContextSetLineWidth(render, 2.0 / v17.a);
       if (![(PKStroke *)self _isHidden])
       {
-        CGContextSetRGBStrokeColor(a3, 1.0, 0.0, 0.0, 0.5);
+        CGContextSetRGBStrokeColor(render, 1.0, 0.0, 0.0, 0.5);
         [(PKStroke *)self _bounds];
-        CGContextStrokeRect(a3, v19);
+        CGContextStrokeRect(render, v19);
       }
 
-      CGContextSetRGBStrokeColor(a3, 1.0, 0.578, 0.0, 1.0);
+      CGContextSetRGBStrokeColor(render, 1.0, 0.578, 0.0, 1.0);
       Mutable = CGPathCreateMutable();
       v15[0] = 0;
       v15[1] = v15;
@@ -2921,8 +2921,8 @@ LABEL_15:
       v7[4] = v15;
       v11 = Mutable;
       [(PKStroke *)self interpolatePointDataWithStep:v7 usingBlock:0.1];
-      CGContextAddPath(a3, Mutable);
-      CGContextStrokePath(a3);
+      CGContextAddPath(render, Mutable);
+      CGContextStrokePath(render);
       _Block_object_dispose(v15, 8);
     }
   }
@@ -2947,23 +2947,23 @@ void __33__PKStroke_Slicing__debugRender___block_invoke(uint64_t a1, double a2, 
   }
 }
 
-- (CGPath)newSelectionPathRepresentationWithPointsCount:(int *)a3
+- (CGPath)newSelectionPathRepresentationWithPointsCount:(int *)count
 {
-  v5 = [(PKStroke *)self _strokeData];
-  *a3 = vcvtd_n_s64_f64([v5 _pointsCount], 2uLL);
+  _strokeData = [(PKStroke *)self _strokeData];
+  *count = vcvtd_n_s64_f64([_strokeData _pointsCount], 2uLL);
 
   return [(PKStroke *)self _newPathRepresentation];
 }
 
-- (double)_thresholdForPoint:(_PKStrokePoint *)a3
+- (double)_thresholdForPoint:(_PKStrokePoint *)point
 {
   aspectRatio = 1.0;
-  if (a3->aspectRatio >= 1.0)
+  if (point->aspectRatio >= 1.0)
   {
-    aspectRatio = a3->aspectRatio;
+    aspectRatio = point->aspectRatio;
   }
 
-  result = (a3->radius + a3->edgeWidth) * aspectRatio;
+  result = (point->radius + point->edgeWidth) * aspectRatio;
   if (result < 3.5)
   {
     return 3.5;
@@ -2972,13 +2972,13 @@ void __33__PKStroke_Slicing__debugRender___block_invoke(uint64_t a1, double a2, 
   return result;
 }
 
-- (BOOL)intersectsPoint:(CGPoint)a3
+- (BOOL)intersectsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKStroke *)self _strokeMask];
+  y = point.y;
+  x = point.x;
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v6)
+  if (_strokeMask)
   {
 
     return [(PKStroke *)self intersectsPointMasked:x, y];
@@ -2991,16 +2991,16 @@ void __33__PKStroke_Slicing__debugRender___block_invoke(uint64_t a1, double a2, 
   }
 }
 
-- (BOOL)intersectsPoint:(CGPoint)a3 boundsOutset:(double)a4 minimumStrokeThreshold:(double)a5
+- (BOOL)intersectsPoint:(CGPoint)point boundsOutset:(double)outset minimumStrokeThreshold:(double)threshold
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = [(PKStroke *)self _strokeMask];
+  y = point.y;
+  x = point.x;
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v10)
+  if (_strokeMask)
   {
 
-    return [(PKStroke *)self intersectsPointMasked:x boundsOutset:y minimumStrokeThreshold:a4, a5];
+    return [(PKStroke *)self intersectsPointMasked:x boundsOutset:y minimumStrokeThreshold:outset, threshold];
   }
 
   else
@@ -3010,7 +3010,7 @@ void __33__PKStroke_Slicing__debugRender___block_invoke(uint64_t a1, double a2, 
     v16 = 0x2020000000;
     v17 = 0;
     [(PKStroke *)self _bounds];
-    v21 = CGRectInset(v20, -a4, -a4);
+    v21 = CGRectInset(v20, -outset, -outset);
     v19.x = x;
     v19.y = y;
     if (CGRectContainsPoint(v21, v19))
@@ -3019,7 +3019,7 @@ void __33__PKStroke_Slicing__debugRender___block_invoke(uint64_t a1, double a2, 
       v13[1] = 3221225472;
       v13[2] = __73__PKStroke_Slicing__intersectsPoint_boundsOutset_minimumStrokeThreshold___block_invoke;
       v13[3] = &unk_1E82D9958;
-      *&v13[6] = a5;
+      *&v13[6] = threshold;
       *&v13[7] = x;
       *&v13[8] = y;
       v13[4] = self;
@@ -3099,24 +3099,24 @@ uint64_t __73__PKStroke_Slicing__intersectsPoint_boundsOutset_minimumStrokeThres
   return result;
 }
 
-- (BOOL)intersectsLineFrom:(CGPoint)a3 to:(CGPoint)a4 minThreshold:(double)a5
+- (BOOL)intersectsLineFrom:(CGPoint)from to:(CGPoint)to minThreshold:(double)threshold
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
-  v11 = [(PKStroke *)self _strokeMask];
+  y = to.y;
+  x = to.x;
+  v8 = from.y;
+  v9 = from.x;
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v11)
+  if (_strokeMask)
   {
 
-    return [(PKStroke *)self intersectsLineFromMasked:v9 to:v8 minThreshold:x, y, a5];
+    return [(PKStroke *)self intersectsLineFromMasked:v9 to:v8 minThreshold:x, y, threshold];
   }
 
   else
   {
     [(PKStroke *)self _bounds];
-    v30 = CGRectInset(v29, -a5, -a5);
+    v30 = CGRectInset(v29, -threshold, -threshold);
     v13 = v30.origin.x;
     v14 = v30.origin.y;
     width = v30.size.width;
@@ -3246,13 +3246,13 @@ LABEL_8:
   return result;
 }
 
-- (void)generateClipperPath:(void *)a3
+- (void)generateClipperPath:(void *)path
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   [(PKStroke *)self _transform];
-  std::vector<ClipperLib::IntPoint>::reserve(a3, [(PKStroke *)self _pointsCount]);
+  std::vector<ClipperLib::IntPoint>::reserve(path, [(PKStroke *)self _pointsCount]);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __41__PKStroke_Slicing__generateClipperPath___block_invoke;
@@ -3260,14 +3260,14 @@ LABEL_8:
   v13 = v17;
   v14 = v18;
   v15 = v19;
-  v16 = a3;
+  pathCopy = path;
   [(PKStroke *)self interpolatePointDataWithStep:v12 usingBlock:1.0];
-  v6 = *a3;
-  v5 = *(a3 + 1);
-  if (v5 - *a3 == 24)
+  v6 = *path;
+  v5 = *(path + 1);
+  if (v5 - *path == 24)
   {
     v11 = *(v6 + 8);
-    v7 = *(a3 + 2);
+    v7 = *(path + 2);
     if (v5 >= v7)
     {
       v8 = 0xAAAAAAAAAAAAAAABLL * ((v7 - v6) >> 3);
@@ -3291,12 +3291,12 @@ LABEL_8:
         v10 = v9;
       }
 
-      std::__allocate_at_least[abi:ne200100]<std::allocator<ClipperLib::IntPoint>>(a3, v10);
+      std::__allocate_at_least[abi:ne200100]<std::allocator<ClipperLib::IntPoint>>(path, v10);
     }
 
     *v5 = *v6 + 1;
     *(v5 + 8) = v11;
-    *(a3 + 1) = v5 + 24;
+    *(path + 1) = v5 + 24;
   }
 }
 
@@ -3314,14 +3314,14 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
   return result;
 }
 
-- (BOOL)intersectsClosedStroke:(id)a3
+- (BOOL)intersectsClosedStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = [(PKStroke *)self _strokeMask];
+  strokeCopy = stroke;
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v5)
+  if (_strokeMask)
   {
-    v6 = [(PKStroke *)self intersectsClosedStrokeMasked:v4];
+    v6 = [(PKStroke *)self intersectsClosedStrokeMasked:strokeCopy];
   }
 
   else
@@ -3329,7 +3329,7 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
     __p = 0;
     v9 = 0;
     v10 = 0;
-    [v4 generateClipperPath:&__p];
+    [strokeCopy generateClipperPath:&__p];
     v6 = [(PKStroke *)self intersectsClipperPath:&__p];
     if (__p)
     {
@@ -3341,7 +3341,7 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
   return v6;
 }
 
-- (BOOL)intersectsClipperPath:(void *)a3
+- (BOOL)intersectsClipperPath:(void *)path
 {
   v43 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -3375,7 +3375,7 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
   v36 = 0;
   v28 = 0;
   v29 = &unk_1F4769880;
-  ClipperLib::ClipperBase::AddPath(&v18 + *(v18 - 3), a3, 1, 1);
+  ClipperLib::ClipperBase::AddPath(&v18 + *(v18 - 3), path, 1, 1);
   v10 = 0u;
   memset(v11, 0, sizeof(v11));
   v9 = 0u;
@@ -3435,15 +3435,15 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
   return v6;
 }
 
-- (BOOL)intersectsRect:(CGRect)a3
+- (BOOL)intersectsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PKStroke *)self _strokeMask];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (v8)
+  if (_strokeMask)
   {
 
     return [(PKStroke *)self intersectsRectMasked:x, y, width, height];
@@ -3470,27 +3470,27 @@ double __41__PKStroke_Slicing__generateClipperPath___block_invoke(uint64_t a1, d
   }
 }
 
-- (id)_sliceWithSlicingBlock:(id)a3 inDrawing:(id)a4 newRootStroke:(id *)a5
+- (id)_sliceWithSlicingBlock:(id)block inDrawing:(id)drawing newRootStroke:(id *)stroke
 {
-  v37 = a3;
-  v8 = a4;
-  v9 = a5;
-  v38 = v8;
-  v10 = self;
-  objc_storeStrong(v9, self);
-  if (![(PKStroke *)v10 hasSubstrokes])
+  blockCopy = block;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  v38 = drawingCopy;
+  selfCopy = self;
+  objc_storeStrong(strokeCopy, self);
+  if (![(PKStroke *)selfCopy hasSubstrokes])
   {
-    v24 = v37[2](v37, v10);
+    v24 = blockCopy[2](blockCopy, selfCopy);
     v25 = v24;
     if (v24 && [v24 count])
     {
-      if ([v25 count] != 1 || (objc_msgSend(v25, "firstObject"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "_strokeUUID"), v27 = objc_claimAutoreleasedReturnValue(), -[PKStroke _strokeUUID](v10, "_strokeUUID"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqual:", v28), v28, v27, v26, (v29 & 1) == 0))
+      if ([v25 count] != 1 || (objc_msgSend(v25, "firstObject"), v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v26, "_strokeUUID"), v27 = objc_claimAutoreleasedReturnValue(), -[PKStroke _strokeUUID](selfCopy, "_strokeUUID"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v27, "isEqual:", v28), v28, v27, v26, (v29 & 1) == 0))
       {
-        v30 = [(PKStroke *)v10 _newStrokeWithSubstrokes:v25 inDrawing:v38];
+        v30 = [(PKStroke *)selfCopy _newStrokeWithSubstrokes:v25 inDrawing:v38];
 
-        objc_storeStrong(v9, v30);
+        objc_storeStrong(strokeCopy, v30);
         v31 = [v25 arrayByAddingObject:v30];
-        v10 = v30;
+        selfCopy = v30;
 LABEL_21:
 
         goto LABEL_26;
@@ -3499,16 +3499,16 @@ LABEL_21:
 
     else
     {
-      v32 = *v9;
-      *v9 = 0;
+      v32 = *strokeCopy;
+      *strokeCopy = 0;
     }
 
     v31 = MEMORY[0x1E695E0F0];
     goto LABEL_21;
   }
 
-  v11 = [(PKStroke *)v10 _substrokesInDrawing:v38];
-  v12 = [MEMORY[0x1E695DF70] array];
+  v11 = [(PKStroke *)selfCopy _substrokesInDrawing:v38];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = [v11 count];
   if (v13 < 1)
   {
@@ -3517,8 +3517,8 @@ LABEL_21:
 
   else
   {
-    v36 = v10;
-    v35 = v9;
+    v36 = selfCopy;
+    v35 = strokeCopy;
     v14 = 0;
     v15 = 0;
     v16 = 0;
@@ -3527,8 +3527,8 @@ LABEL_21:
     {
       v18 = [v11 objectAtIndexedSubscript:{v14, v35}];
       v39 = 0;
-      v19 = [v18 _sliceWithSlicingBlock:v37 inDrawing:v38 newRootStroke:&v39];
-      [v12 addObjectsFromArray:v19];
+      v19 = [v18 _sliceWithSlicingBlock:blockCopy inDrawing:v38 newRootStroke:&v39];
+      [array addObjectsFromArray:v19];
       v16 |= v39 != v18;
       v20 = v39 != 0;
       if ((v16 & 1) != 0 && !v17)
@@ -3560,24 +3560,24 @@ LABEL_21:
         *v35 = 0;
 
         v31 = MEMORY[0x1E695E0F0];
-        v10 = v36;
+        selfCopy = v36;
         goto LABEL_25;
       }
 
-      v10 = v36;
+      selfCopy = v36;
       v22 = [(PKStroke *)v36 _newStrokeWithSubstrokes:v17 inDrawing:v38];
-      [v12 addObject:v22];
+      [array addObject:v22];
       v23 = *v35;
       *v35 = v22;
     }
 
     else
     {
-      v10 = v36;
+      selfCopy = v36;
     }
   }
 
-  v31 = v12;
+  v31 = array;
 LABEL_25:
 
 LABEL_26:
@@ -3585,7 +3585,7 @@ LABEL_26:
   return v31;
 }
 
-- (int64_t)_visibleSubstrokeCountInDrawing:(id)a3
+- (int64_t)_visibleSubstrokeCountInDrawing:(id)drawing
 {
   v6 = 0;
   v7 = &v6;
@@ -3596,7 +3596,7 @@ LABEL_26:
   v5[2] = __53__PKStroke_Slicing___visibleSubstrokeCountInDrawing___block_invoke;
   v5[3] = &unk_1E82D99A8;
   v5[4] = &v6;
-  [(PKStroke *)self _visitVisibleSubstrokes:v5 inDrawing:a3];
+  [(PKStroke *)self _visitVisibleSubstrokes:v5 inDrawing:drawing];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -3612,16 +3612,16 @@ uint64_t __53__PKStroke_Slicing___visibleSubstrokeCountInDrawing___block_invoke(
   return 1;
 }
 
-- (void)_addVisibleSubstrokesTo:(id)a3 inDrawing:(id)a4
+- (void)_addVisibleSubstrokesTo:(id)to inDrawing:(id)drawing
 {
-  v6 = a3;
+  toCopy = to;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PKStroke_Slicing___addVisibleSubstrokesTo_inDrawing___block_invoke;
   v8[3] = &unk_1E82D9670;
-  v9 = v6;
-  v7 = v6;
-  [(PKStroke *)self _visitVisibleSubstrokes:v8 inDrawing:a4];
+  v9 = toCopy;
+  v7 = toCopy;
+  [(PKStroke *)self _visitVisibleSubstrokes:v8 inDrawing:drawing];
 }
 
 uint64_t __55__PKStroke_Slicing___addVisibleSubstrokesTo_inDrawing___block_invoke(uint64_t a1, void *a2)
@@ -3635,15 +3635,15 @@ uint64_t __55__PKStroke_Slicing___addVisibleSubstrokesTo_inDrawing___block_invok
   return 1;
 }
 
-- (BOOL)_visitVisibleSubstrokes:(id)a3 inDrawing:(id)a4
+- (BOOL)_visitVisibleSubstrokes:(id)substrokes inDrawing:(id)drawing
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  substrokesCopy = substrokes;
+  drawingCopy = drawing;
   v19 = 0;
   if (![(PKStroke *)self _isHidden]&& ([(PKStroke *)self hasSubstrokes]|| [(PKStroke *)self _pointsCount]))
   {
-    v9 = v6[2](v6, self, &v19);
+    v9 = substrokesCopy[2](substrokesCopy, self, &v19);
     v8 = v19;
     if (v9 && (v19 & 1) == 0)
     {
@@ -3651,7 +3651,7 @@ uint64_t __55__PKStroke_Slicing___addVisibleSubstrokesTo_inDrawing___block_invok
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v10 = [(PKStroke *)self _substrokesInDrawing:v7, 0];
+      v10 = [(PKStroke *)self _substrokesInDrawing:drawingCopy, 0];
       v11 = [v10 countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v11)
       {
@@ -3665,7 +3665,7 @@ LABEL_9:
             objc_enumerationMutation(v10);
           }
 
-          v19 = [*(*(&v15 + 1) + 8 * v13) _visitVisibleSubstrokes:v6 inDrawing:v7];
+          v19 = [*(*(&v15 + 1) + 8 * v13) _visitVisibleSubstrokes:substrokesCopy inDrawing:drawingCopy];
           if (v19)
           {
             break;
@@ -3696,21 +3696,21 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (id)_updateStroke:(id)a3 inDrawing:(id)a4
+- (id)_updateStroke:(id)stroke inDrawing:(id)drawing
 {
-  v5 = a3;
-  v6 = a4;
+  strokeCopy = stroke;
+  drawingCopy = drawing;
   PKCrash();
 }
 
-- (id)_mergeWithStroke:(id)a3 inDrawing:(id)a4
+- (id)_mergeWithStroke:(id)stroke inDrawing:(id)drawing
 {
-  v5 = a3;
-  v6 = a4;
+  strokeCopy = stroke;
+  drawingCopy = drawing;
   PKCrash();
 }
 
-- (void)_appendPointsOfInterestForSelectionMasked:(void *)a3
+- (void)_appendPointsOfInterestForSelectionMasked:(void *)masked
 {
   v4 = 0u;
   v5 = 0u;
@@ -3719,38 +3719,38 @@ LABEL_9:
   operator new();
 }
 
-- (id)sliceWithEraser:(const void *)a3
+- (id)sliceWithEraser:(const void *)eraser
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v8[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [PKStroke sliceWithEraser:a3 toClip:v4 clipType:2];
+  v5 = [PKStroke sliceWithEraser:eraser toClip:v4 clipType:2];
 
   v6 = [v5 objectAtIndexedSubscript:0];
 
   return v6;
 }
 
-- (id)sliceWithMask:(const void *)a3
+- (id)sliceWithMask:(const void *)mask
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v8[0] = self;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  v5 = [PKStroke sliceWithEraser:a3 toClip:v4 clipType:0];
+  v5 = [PKStroke sliceWithEraser:mask toClip:v4 clipType:0];
 
   v6 = [v5 objectAtIndexedSubscript:0];
 
   return v6;
 }
 
-+ (id)sliceWithEraser:(const void *)a3 toClip:(id)a4
++ (id)sliceWithEraser:(const void *)eraser toClip:(id)clip
 {
-  v4 = [a1 sliceWithEraser:a3 toClip:a4 clipType:2];
+  v4 = [self sliceWithEraser:eraser toClip:clip clipType:2];
 
   return v4;
 }
 
-+ (id)sliceWithEraser:(const void *)a3 toClip:(id)a4 clipType:(int)a5
++ (id)sliceWithEraser:(const void *)eraser toClip:(id)clip clipType:(int)type
 {
   v136 = *MEMORY[0x1E69E9840];
   v127 = 0;
@@ -3782,13 +3782,13 @@ LABEL_9:
   v120 = 0;
   v129 = 0;
   v121 = ZFillCallback;
-  v90 = a4;
-  v6 = [v90 count];
+  clipCopy = clip;
+  v6 = [clipCopy count];
   if (v6 >= 1)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v90 objectAtIndexedSubscript:{i, v83, v84}];
+      v8 = [clipCopy objectAtIndexedSubscript:{i, v83, v84}];
       v9 = v8;
       memset(v101, 0, 48);
       if (v8)
@@ -3800,8 +3800,8 @@ LABEL_9:
       if (CGAffineTransformIsIdentity(&v109))
       {
         v10 = *(v111 - 3);
-        v11 = [v9 _strokeMask];
-        ClipperLib::ClipperBase::AddPaths(&v111 + v10, [v11 maskPaths], 0, 1);
+        _strokeMask = [v9 _strokeMask];
+        ClipperLib::ClipperBase::AddPaths(&v111 + v10, [_strokeMask maskPaths], 0, 1);
       }
 
       else
@@ -3812,11 +3812,11 @@ LABEL_9:
         CGAffineTransformConcat(&v108, &t1, &t2);
         CGAffineTransformMakeScale(&t1, 100.0, 100.0);
         CGAffineTransformConcat(&v109, &v108, &t1);
-        v12 = [v9 _strokeMask];
-        v13 = [v12 maskPaths];
+        _strokeMask2 = [v9 _strokeMask];
+        maskPaths = [_strokeMask2 maskPaths];
 
-        v14 = *v13;
-        v15 = *(v13 + 8);
+        v14 = *maskPaths;
+        v15 = *(maskPaths + 8);
         while (v14 != v15)
         {
           memset(&v108, 0, 24);
@@ -3859,7 +3859,7 @@ LABEL_9:
   v102 = 0;
   v103 = 0;
   v104 = 0;
-  ClipperLib::Clipper::Execute(&v111, a5, v101, 0, 0);
+  ClipperLib::Clipper::Execute(&v111, type, v101, 0, 0);
   if (*&v101[40] == *&v101[32])
   {
     v86 = 0;
@@ -3867,7 +3867,7 @@ LABEL_9:
 
   else
   {
-    v19 = [v90 count];
+    v19 = [clipCopy count];
     v98 = 0;
     v99 = 0;
     v100 = 0;
@@ -3894,9 +3894,9 @@ LABEL_9:
         v23 = 0;
         v24 = *v20;
         pointa = vdivq_f64(vcvtq_f64_s64(**(*v20 + 8)), v91);
-        while (v23 < [v90 count])
+        while (v23 < [clipCopy count])
         {
-          v25 = [v90 objectAtIndexedSubscript:v23];
+          v25 = [clipCopy objectAtIndexedSubscript:v23];
           [v25 _bounds];
           v139 = CGRectInset(v138, -1.0, -1.0);
           x = v139.origin.x;
@@ -4000,7 +4000,7 @@ LABEL_98:
         }
       }
 
-      v89 = [v90 objectAtIndexedSubscript:v42];
+      v89 = [clipCopy objectAtIndexedSubscript:v42];
       v44 = v98;
       v45 = (v98 + 24 * v42);
       if (v45[1] - *v45 == 8)
@@ -4069,17 +4069,17 @@ LABEL_62:
         {
           for (k = 0; k < v53; ++k)
           {
-            v55 = [v89 copyForSubstroke];
+            copyForSubstroke = [v89 copyForSubstroke];
             v56 = objc_alloc_init(PKStrokeMask);
-            [v55 _setStrokeMask:v56];
+            [copyForSubstroke _setStrokeMask:v56];
             if (v87)
             {
-              [v55 _setGroupID:0];
-              [v55 _setShapeType:0];
+              [copyForSubstroke _setGroupID:0];
+              [copyForSubstroke _setShapeType:0];
             }
 
-            v57 = [(PKStrokeMask *)v56 maskPaths];
-            std::vector<std::vector<ClipperLib::IntPoint>>::push_back[abi:ne200100](v57, (*(__p + k) + 8));
+            maskPaths2 = [(PKStrokeMask *)v56 maskPaths];
+            std::vector<std::vector<ClipperLib::IntPoint>>::push_back[abi:ne200100](maskPaths2, (*(__p + k) + 8));
             v58 = v42;
             v59 = *(__p + k);
             v60 = *(v59 + 32);
@@ -4093,11 +4093,11 @@ LABEL_62:
               ++v60;
             }
 
-            [(PKStrokeMask *)v56 calculateCenterlineSlices:v55];
+            [(PKStrokeMask *)v56 calculateCenterlineSlices:copyForSubstroke];
             v42 = v58;
-            v63 = [(PKStrokeMask *)v56 maskPaths];
-            v64 = *v63;
-            v65 = *(v63 + 8);
+            maskPaths3 = [(PKStrokeMask *)v56 maskPaths];
+            v64 = *maskPaths3;
+            v65 = *(maskPaths3 + 8);
             while (v64 != v65)
             {
               v67 = *v64;
@@ -4154,10 +4154,10 @@ LABEL_62:
               CGAffineTransformMakeScale(&v94, 100.0, 100.0);
               CGAffineTransformConcat(&t1, &t2, &v94);
               CGAffineTransformInvert(&v108, &t1);
-              v74 = [(PKStrokeMask *)v56 maskPaths];
-              v75 = *v74;
-              v76 = v74[1];
-              if (*v74 != v76)
+              maskPaths4 = [(PKStrokeMask *)v56 maskPaths];
+              v75 = *maskPaths4;
+              v76 = maskPaths4[1];
+              if (*maskPaths4 != v76)
               {
                 v77 = *&v108.a;
                 v78 = *&v108.c;
@@ -4179,7 +4179,7 @@ LABEL_62:
               }
             }
 
-            [v88 addObject:v55];
+            [v88 addObject:copyForSubstroke];
           }
         }
 
@@ -4235,11 +4235,11 @@ LABEL_99:
 - (CGPath)newPathRepresentationMasked
 {
   Mutable = CGPathCreateMutable();
-  v4 = [(PKStroke *)self _strokeMask];
-  v5 = [v4 maskPaths];
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  maskPaths = [_strokeMask maskPaths];
 
-  v6 = *v5;
-  for (i = *(v5 + 8); v6 != i; v6 += 3)
+  v6 = *maskPaths;
+  for (i = *(maskPaths + 8); v6 != i; v6 += 3)
   {
     CGPathMoveToPoint(Mutable, 0, **v6 / 100.0, (*v6)[1] / 100.0);
     v8 = *v6;
@@ -4258,15 +4258,15 @@ LABEL_99:
   return Mutable;
 }
 
-- (void)debugRenderMasked:(CGContext *)a3
+- (void)debugRenderMasked:(CGContext *)masked
 {
-  CGContextSetRGBStrokeColor(a3, 0.0, 0.97, 0.0, 1.0);
+  CGContextSetRGBStrokeColor(masked, 0.0, 0.97, 0.0, 1.0);
   Mutable = CGPathCreateMutable();
-  v6 = [(PKStroke *)self _strokeMask];
-  v7 = [v6 maskPaths];
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  maskPaths = [_strokeMask maskPaths];
 
-  v8 = *v7;
-  for (i = *(v7 + 8); v8 != i; v8 += 3)
+  v8 = *maskPaths;
+  for (i = *(maskPaths + 8); v8 != i; v8 += 3)
   {
     CGPathMoveToPoint(Mutable, 0, **v8 / 100.0, (*v8)[1] / 100.0);
     v10 = *v8;
@@ -4282,19 +4282,19 @@ LABEL_99:
     CGPathCloseSubpath(Mutable);
   }
 
-  CGContextSaveGState(a3);
+  CGContextSaveGState(masked);
   [(PKStroke *)self _transform];
-  CGContextConcatCTM(a3, &transform);
-  CGContextAddPath(a3, Mutable);
-  CGContextStrokePath(a3);
-  CGContextRestoreGState(a3);
+  CGContextConcatCTM(masked, &transform);
+  CGContextAddPath(masked, Mutable);
+  CGContextStrokePath(masked);
+  CGContextRestoreGState(masked);
   CGPathRelease(Mutable);
-  CGContextSetRGBStrokeColor(a3, 1.0, 0.578, 0.0, 1.0);
-  v14 = [(PKStroke *)self _strokeMask];
-  v15 = [v14 centerlineSlices];
+  CGContextSetRGBStrokeColor(masked, 1.0, 0.578, 0.0, 1.0);
+  _strokeMask2 = [(PKStroke *)self _strokeMask];
+  centerlineSlices = [_strokeMask2 centerlineSlices];
 
-  v17 = *v15;
-  for (j = *(v15 + 8); v17 != j; v17 += 2)
+  v17 = *centerlineSlices;
+  for (j = *(centerlineSlices + 8); v17 != j; v17 += 2)
   {
     v18 = *v17;
     v19 = v17[1];
@@ -4311,8 +4311,8 @@ LABEL_99:
     v21[5] = &transform;
     v21[6] = v20;
     [(PKStroke *)self interpolatePointDataWithStep:v21 from:0.1 to:v18 usingBlock:v19];
-    CGContextAddPath(a3, v20);
-    CGContextStrokePath(a3);
+    CGContextAddPath(masked, v20);
+    CGContextStrokePath(masked);
     CGPathRelease(v20);
     _Block_object_dispose(&transform, 8);
   }
@@ -4359,9 +4359,9 @@ void __39__PKStroke_Slicing__debugRenderMasked___block_invoke(void *a1, double a
 
 - (void)generateMask
 {
-  v3 = [(PKStroke *)self _strokeMask];
+  _strokeMask = [(PKStroke *)self _strokeMask];
 
-  if (!v3)
+  if (!_strokeMask)
   {
     v4 = objc_alloc_init(PKStrokeMask);
     [(PKStroke *)self _setStrokeMask:v4];
@@ -4402,11 +4402,11 @@ void __39__PKStroke_Slicing__debugRenderMasked___block_invoke(void *a1, double a
     v13 = v7;
     v8 = [(PKStroke *)self ink];
     [(PKStroke *)self _inkTransform];
-    v9 = [(PKStroke *)self path];
-    [PKStroke _consumeRenderVertexes:v12 ink:v8 inkTransform:&v11 strokePath:v9];
+    path = [(PKStroke *)self path];
+    [PKStroke _consumeRenderVertexes:v12 ink:v8 inkTransform:&v11 strokePath:path];
 
-    v10 = [(PKStrokeMask *)v7 maskPaths];
-    ClipperLib::SimplifyPolygons(v10, v10, 1);
+    maskPaths = [(PKStrokeMask *)v7 maskPaths];
+    ClipperLib::SimplifyPolygons(maskPaths, maskPaths, 1);
 
     _Block_object_dispose(v19, 8);
     if (__p)
@@ -4575,11 +4575,11 @@ void __33__PKStroke_Slicing__generateMask__block_invoke_2(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)intersectsPointMasked:(CGPoint)a3 boundsOutset:(double)a4 minimumStrokeThreshold:(double)a5
+- (BOOL)intersectsPointMasked:(CGPoint)masked boundsOutset:(double)outset minimumStrokeThreshold:(double)threshold
 {
   v44 = *MEMORY[0x1E69E9840];
   [(PKStroke *)self _bounds];
-  v47 = CGRectInset(v46, -a4, -a4);
+  v47 = CGRectInset(v46, -outset, -outset);
   v45.y = v15;
   v45.x = v16;
   if (CGRectContainsPoint(v47, v45))
@@ -4619,12 +4619,12 @@ void __33__PKStroke_Slicing__generateMask__block_invoke_2(uint64_t a1, uint64_t 
     *(&v8 + 1) = v7.i32[1];
     *&v17.a = v8;
     v17.c = -0.0078125;
-    v9 = [(PKStroke *)self _strokeMask];
-    v10 = [v9 maskPaths];
+    _strokeMask = [(PKStroke *)self _strokeMask];
+    maskPaths = [_strokeMask maskPaths];
 
-    v11 = *v10;
-    v12 = v10[1];
-    if (*v10 == v12)
+    v11 = *maskPaths;
+    v12 = maskPaths[1];
+    if (*maskPaths == v12)
     {
       v13 = 0;
     }
@@ -4671,15 +4671,15 @@ void __33__PKStroke_Slicing__generateMask__block_invoke_2(uint64_t a1, uint64_t 
   return v13 & 1;
 }
 
-- (BOOL)intersectsLineFromMasked:(CGPoint)a3 to:(CGPoint)a4 minThreshold:(double)a5
+- (BOOL)intersectsLineFromMasked:(CGPoint)masked to:(CGPoint)to minThreshold:(double)threshold
 {
-  y = a4.y;
-  x = a4.x;
-  v35 = a3.y;
-  v37 = a3.x;
+  y = to.y;
+  x = to.x;
+  v35 = masked.y;
+  v37 = masked.x;
   v71 = *MEMORY[0x1E69E9840];
   [(PKStroke *)self _bounds];
-  v74 = CGRectInset(v73, -a5, -a5);
+  v74 = CGRectInset(v73, -threshold, -threshold);
   v7 = v74.origin.x;
   v8 = v74.origin.y;
   width = v74.size.width;
@@ -4750,8 +4750,8 @@ void __33__PKStroke_Slicing__generateMask__block_invoke_2(uint64_t a1, uint64_t 
     v56 = 0;
     v57 = &unk_1F4769880;
     v16 = *(*v49 - 24);
-    v17 = [(PKStroke *)self _strokeMask];
-    ClipperLib::ClipperBase::AddPaths(&v49[v16], [v17 maskPaths], 1, 1);
+    _strokeMask = [(PKStroke *)self _strokeMask];
+    ClipperLib::ClipperBase::AddPaths(&v49[v16], [_strokeMask maskPaths], 1, 1);
 
     memset(v43, 0, 29);
     v42 = 0u;
@@ -4818,11 +4818,11 @@ void __33__PKStroke_Slicing__generateMask__block_invoke_2(uint64_t a1, uint64_t 
   *(&v23 + 1) = v22.i32[1];
   *v49 = v23;
   *&v49[16] = 0xBF80000000000000;
-  v24 = [(PKStroke *)self _strokeMask];
-  v25 = [v24 maskPaths];
+  _strokeMask2 = [(PKStroke *)self _strokeMask];
+  maskPaths = [_strokeMask2 maskPaths];
 
-  v26 = *v25;
-  v27 = v25[1];
+  v26 = *maskPaths;
+  v27 = maskPaths[1];
   if (v26 == v27)
   {
 LABEL_25:
@@ -4841,10 +4841,10 @@ LABEL_25:
   return v28 & 1;
 }
 
-- (BOOL)intersectsClosedStrokeMasked:(id)a3
+- (BOOL)intersectsClosedStrokeMasked:(id)masked
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  maskedCopy = masked;
   v39 = 0;
   v40 = 0;
   v41 = 0;
@@ -4881,7 +4881,7 @@ LABEL_25:
   v21 = 0;
   v22 = 0;
   __p = 0;
-  std::vector<ClipperLib::IntPoint>::reserve(&__p, [v4 _pointsCount]);
+  std::vector<ClipperLib::IntPoint>::reserve(&__p, [maskedCopy _pointsCount]);
   memset(&v13, 0, sizeof(v13));
   [(PKStroke *)self _transform];
   CGAffineTransformInvert(&v13, &v12);
@@ -4891,11 +4891,11 @@ LABEL_25:
   v10[2] = __50__PKStroke_Slicing__intersectsClosedStrokeMasked___block_invoke;
   v10[3] = &unk_1E82D9A68;
   v10[4] = &v14;
-  [v4 interpolatePointDataWithStep:v10 usingBlock:1.0];
+  [maskedCopy interpolatePointDataWithStep:v10 usingBlock:1.0];
   ClipperLib::ClipperBase::AddPath(&v24 + *(v24 - 3), (v15 + 6), 0, 1);
   v5 = *(v24 - 3);
-  v6 = [(PKStroke *)self _strokeMask];
-  ClipperLib::ClipperBase::AddPaths(&v24 + v5, [v6 maskPaths], 1, 1);
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  ClipperLib::ClipperBase::AddPaths(&v24 + v5, [_strokeMask maskPaths], 1, 1);
 
   memset(&v12, 0, 24);
   ClipperLib::Clipper::Execute(&v24, 0, &v12, 0, 0);
@@ -4948,12 +4948,12 @@ double __50__PKStroke_Slicing__intersectsClosedStrokeMasked___block_invoke(uint6
   return result;
 }
 
-- (BOOL)intersectsRectMasked:(CGRect)a3
+- (BOOL)intersectsRectMasked:(CGRect)masked
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = masked.size.height;
+  width = masked.size.width;
+  y = masked.origin.y;
+  x = masked.origin.x;
   v47 = *MEMORY[0x1E69E9840];
   v37 = 0;
   v38 = 0;
@@ -4996,8 +4996,8 @@ double __50__PKStroke_Slicing__intersectsClosedStrokeMasked___block_invoke(uint6
   generateRectClipperPath(&v16, &__p, x, y, width, height);
   ClipperLib::ClipperBase::AddPath(&v22 + *(v22 - 3), &v18, 0, 1);
   v8 = *(v22 - 3);
-  v9 = [(PKStroke *)self _strokeMask];
-  ClipperLib::ClipperBase::AddPaths(&v22 + v8, [v9 maskPaths], 1, 1);
+  _strokeMask = [(PKStroke *)self _strokeMask];
+  ClipperLib::ClipperBase::AddPaths(&v22 + v8, [_strokeMask maskPaths], 1, 1);
 
   memset(&v16, 0, 24);
   ClipperLib::Clipper::Execute(&v22, 0, &v16, 0, 0);
@@ -5040,26 +5040,26 @@ double __50__PKStroke_Slicing__intersectsClosedStrokeMasked___block_invoke(uint6
   return *&b != *&a;
 }
 
-+ (PKCompressedStrokePoint)_compressStrokePoint:(SEL)a3 withTimestamp:(_PKStrokePoint *)a4
++ (PKCompressedStrokePoint)_compressStrokePoint:(SEL)point withTimestamp:(_PKStrokePoint *)timestamp
 {
-  v5 = *&a4->force;
-  v9[2] = *&a4->aspectRatio;
+  v5 = *&timestamp->force;
+  v9[2] = *&timestamp->aspectRatio;
   v9[3] = v5;
-  v6 = *&a4->radius2;
-  v9[4] = *&a4->altitude;
+  v6 = *&timestamp->radius2;
+  v9[4] = *&timestamp->altitude;
   v9[5] = v6;
-  v7 = *&a4->location.y;
-  v9[0] = *&a4->timestamp;
+  v7 = *&timestamp->location.y;
+  v9[0] = *&timestamp->timestamp;
   v9[1] = v7;
   return PKCompressStrokePoint(v9, a5, retstr);
 }
 
-+ (_PKStrokePoint)_decompressStrokePoint:(SEL)a3 withTimestamp:(PKCompressedStrokePoint *)a4
++ (_PKStrokePoint)_decompressStrokePoint:(SEL)point withTimestamp:(PKCompressedStrokePoint *)timestamp
 {
-  v5 = *&a4->var3;
-  *&v7.var0.var0 = *&a4->var0.var0;
+  v5 = *&timestamp->var3;
+  *&v7.var0.var0 = *&timestamp->var0.var0;
   *&v7.var3 = v5;
-  *&v7.var10 = *&a4->var10;
+  *&v7.var10 = *&timestamp->var10;
   PKDecompressStrokePoint(&v7, a5, retstr);
   return result;
 }

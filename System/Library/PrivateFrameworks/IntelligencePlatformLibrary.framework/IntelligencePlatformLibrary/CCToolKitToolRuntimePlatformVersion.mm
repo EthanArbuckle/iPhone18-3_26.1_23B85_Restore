@@ -1,26 +1,26 @@
 @interface CCToolKitToolRuntimePlatformVersion
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimePlatformVersion)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimePlatformVersion)initWithMajor:(id)a3 minor:(id)a4 patch:(id)a5 isWildcard:(id)a6 error:(id *)a7;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolRuntimePlatformVersion)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRuntimePlatformVersion)initWithMajor:(id)major minor:(id)minor patch:(id)patch isWildcard:(id)wildcard error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRuntimePlatformVersion
 
-- (CCToolKitToolRuntimePlatformVersion)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRuntimePlatformVersion)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"major"];
-    v10 = [v6 objectForKeyedSubscript:@"minor"];
-    v11 = [v6 objectForKeyedSubscript:@"patch"];
-    v12 = [v6 objectForKeyedSubscript:@"isWildcard"];
-    v13 = [[CCToolKitToolRuntimePlatformVersion alloc] initWithMajor:v9 minor:v10 patch:v11 isWildcard:v12 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"major"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"minor"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"patch"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isWildcard"];
+    v13 = [[CCToolKitToolRuntimePlatformVersion alloc] initWithMajor:v9 minor:v10 patch:v11 isWildcard:v12 error:error];
   }
 
   else
@@ -64,39 +64,39 @@
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v10 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasMajor)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] int32Value:self->_major];
-    v10[2](v10, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_hasMinor)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 int32Value:self->_minor];
-    v10[2](v10, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_hasPatch)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 int32Value:self->_patch];
-    v10[2](v10, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_hasIsWildcard)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 BOOLValue:self->_isWildcard];
-    v10[2](v10, v9);
+    blockCopy[2](blockCopy, v9);
   }
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -107,7 +107,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v66 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -384,14 +384,14 @@ LABEL_76:
       {
         v56 = objc_opt_class();
         NSStringFromClass(v56);
-        v57 = a4;
-        v59 = v58 = v6;
+        errorCopy = error;
+        v59 = v58 = dataCopy;
         v60 = *&v7[*v10];
         v11 = CCSkipFieldErrorForMessage();
 
-        v6 = v58;
-        a4 = v57;
-        self = v66;
+        dataCopy = v58;
+        error = errorCopy;
+        self = selfCopy;
       }
 
 LABEL_77:
@@ -431,15 +431,15 @@ LABEL_86:
   return v64;
 }
 
-- (CCToolKitToolRuntimePlatformVersion)initWithMajor:(id)a3 minor:(id)a4 patch:(id)a5 isWildcard:(id)a6 error:(id *)a7
+- (CCToolKitToolRuntimePlatformVersion)initWithMajor:(id)major minor:(id)minor patch:(id)patch isWildcard:(id)wildcard error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  majorCopy = major;
+  minorCopy = minor;
+  patchCopy = patch;
+  wildcardCopy = wildcard;
   v16 = objc_opt_new();
   v17 = 0x1E696A000uLL;
-  if (v12)
+  if (majorCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -449,26 +449,26 @@ LABEL_86:
       goto LABEL_8;
     }
 
-    [v12 intValue];
+    [majorCopy intValue];
     CCPBDataWriterWriteInt32Field();
-    if (!v13)
+    if (!minorCopy)
     {
 LABEL_4:
       v20 = v19;
-      if (v14)
+      if (patchCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_12:
       v19 = v20;
-      if (!v15)
+      if (!wildcardCopy)
       {
 LABEL_15:
-        v26 = [v16 immutableData];
-        self = [(CCItemMessage *)self initWithData:v26 error:a7];
+        immutableData = [v16 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v22 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -479,7 +479,7 @@ LABEL_15:
   else
   {
     v19 = 0;
-    if (!v13)
+    if (!minorCopy)
     {
       goto LABEL_4;
     }
@@ -494,10 +494,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v13 intValue];
+  [minorCopy intValue];
   CCPBDataWriterWriteInt32Field();
   v17 = 0x1E696A000uLL;
-  if (!v14)
+  if (!patchCopy)
   {
     goto LABEL_12;
   }
@@ -509,10 +509,10 @@ LABEL_5:
 
   if (v21)
   {
-    [v14 intValue];
+    [patchCopy intValue];
     CCPBDataWriterWriteInt32Field();
     v17 = 0x1E696A000;
-    if (!v15)
+    if (!wildcardCopy)
     {
       goto LABEL_15;
     }
@@ -526,7 +526,7 @@ LABEL_13:
 
     if (v25)
     {
-      [v15 BOOLValue];
+      [wildcardCopy BOOLValue];
       CCPBDataWriterWriteBOOLField();
       v19 = v20;
       goto LABEL_15;
@@ -534,17 +534,17 @@ LABEL_13:
 
 LABEL_16:
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     v19 = v20;
     goto LABEL_17;
   }
 
 LABEL_8:
   CCSetError();
-  v22 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v22;
+  return selfCopy;
 }
 
 @end

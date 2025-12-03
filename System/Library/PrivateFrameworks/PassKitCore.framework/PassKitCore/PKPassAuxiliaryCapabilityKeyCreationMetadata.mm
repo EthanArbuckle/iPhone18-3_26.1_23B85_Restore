@@ -1,10 +1,10 @@
 @interface PKPassAuxiliaryCapabilityKeyCreationMetadata
-+ (id)createMetadataFromDictionary:(id)a3 forCapability:(id)a4;
-+ (id)createMetadataFromDictionary:(id)a3 forDecryptionCapabilityType:(unint64_t)a4;
-+ (id)createMetadataFromDictionary:(id)a3 forSignatureCapabilityType:(unint64_t)a4;
-- (PKPassAuxiliaryCapabilityKeyCreationMetadata)initWithDictionary:(id)a3;
++ (id)createMetadataFromDictionary:(id)dictionary forCapability:(id)capability;
++ (id)createMetadataFromDictionary:(id)dictionary forDecryptionCapabilityType:(unint64_t)type;
++ (id)createMetadataFromDictionary:(id)dictionary forSignatureCapabilityType:(unint64_t)type;
+- (PKPassAuxiliaryCapabilityKeyCreationMetadata)initWithDictionary:(id)dictionary;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decryptionISO18013;
 - (id)signatureAliroHome;
 - (id)signatureAliroHydra;
@@ -24,9 +24,9 @@
   return [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)&v3 init];
 }
 
-- (PKPassAuxiliaryCapabilityKeyCreationMetadata)initWithDictionary:(id)a3
+- (PKPassAuxiliaryCapabilityKeyCreationMetadata)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
 
     return [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _init];
@@ -39,20 +39,20 @@
   }
 }
 
-+ (id)createMetadataFromDictionary:(id)a3 forCapability:(id)a4
++ (id)createMetadataFromDictionary:(id)dictionary forCapability:(id)capability
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 role];
-  if (v8 == 2)
+  dictionaryCopy = dictionary;
+  capabilityCopy = capability;
+  role = [capabilityCopy role];
+  if (role == 2)
   {
-    v9 = [a1 createMetadataFromDictionary:v6 forSignatureCapabilityType:{objc_msgSend(v7, "type")}];
+    v9 = [self createMetadataFromDictionary:dictionaryCopy forSignatureCapabilityType:{objc_msgSend(capabilityCopy, "type")}];
     goto LABEL_5;
   }
 
-  if (v8 == 1)
+  if (role == 1)
   {
-    v9 = [a1 createMetadataFromDictionary:v6 forDecryptionCapabilityType:{objc_msgSend(v7, "type")}];
+    v9 = [self createMetadataFromDictionary:dictionaryCopy forDecryptionCapabilityType:{objc_msgSend(capabilityCopy, "type")}];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -64,21 +64,21 @@ LABEL_7:
   return v10;
 }
 
-+ (id)createMetadataFromDictionary:(id)a3 forDecryptionCapabilityType:(unint64_t)a4
++ (id)createMetadataFromDictionary:(id)dictionary forDecryptionCapabilityType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __105__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDictionary_forDecryptionCapabilityType___block_invoke;
   aBlock[3] = &__block_descriptor_40_e5__8__0l;
-  aBlock[4] = a4;
+  aBlock[4] = type;
   v6 = _Block_copy(aBlock);
   v7 = v6[2]();
   if (v7)
   {
     v8 = v7;
-    v9 = [[v7 alloc] initWithDictionary:v5];
+    v9 = [[v7 alloc] initWithDictionary:dictionaryCopy];
     if (v9)
     {
       goto LABEL_7;
@@ -90,7 +90,7 @@ LABEL_7:
       *buf = 138412546;
       v14 = v8;
       v15 = 2112;
-      v16 = v5;
+      v16 = dictionaryCopy;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Failed to initialize %@ metadata from %@", buf, 0x16u);
     }
   }
@@ -116,21 +116,21 @@ id __105__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   return v2;
 }
 
-+ (id)createMetadataFromDictionary:(id)a3 forSignatureCapabilityType:(unint64_t)a4
++ (id)createMetadataFromDictionary:(id)dictionary forSignatureCapabilityType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDictionary_forSignatureCapabilityType___block_invoke;
   aBlock[3] = &__block_descriptor_40_e5__8__0l;
-  aBlock[4] = a4;
+  aBlock[4] = type;
   v6 = _Block_copy(aBlock);
   v7 = v6[2]();
   if (v7)
   {
     v8 = v7;
-    v9 = [[v7 alloc] initWithDictionary:v5];
+    v9 = [[v7 alloc] initWithDictionary:dictionaryCopy];
     if (v9)
     {
       goto LABEL_7;
@@ -142,7 +142,7 @@ id __105__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
       *buf = 138412546;
       v14 = v8;
       v15 = 2112;
-      v16 = v5;
+      v16 = dictionaryCopy;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Failed to initialize %@ metadata from %@", buf, 0x16u);
     }
   }
@@ -169,7 +169,7 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKPassAuxiliaryCapabilityKeyCreationMetadata);
   [(PKPassAuxiliaryCapabilityKeyCreationMetadata *)self _copyInto:v4];
@@ -181,15 +181,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureCarConnectivityConsortium
@@ -197,15 +197,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureFido
@@ -213,15 +213,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureIdentityAccount
@@ -229,15 +229,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureUnifiedAccessHydra
@@ -245,15 +245,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureUnifiedAccessHome
@@ -261,15 +261,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureAliroHydra
@@ -277,15 +277,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)signatureAliroHome
@@ -293,15 +293,15 @@ id __104__PKPassAuxiliaryCapabilityKeyCreationMetadata_createMetadataFromDiction
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

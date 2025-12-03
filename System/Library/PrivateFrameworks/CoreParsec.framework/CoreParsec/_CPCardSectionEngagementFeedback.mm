@@ -1,9 +1,9 @@
 @interface _CPCardSectionEngagementFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCardSectionEngagementFeedback)init;
-- (_CPCardSectionEngagementFeedback)initWithFacade:(id)a3;
+- (_CPCardSectionEngagementFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCardSectionEngagementFeedback
@@ -18,34 +18,34 @@
   return v7 ^ [(NSString *)self->_resultId hash]^ (2654435761 * self->_actionTarget);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_31;
   }
 
-  v6 = [(_CPCardSectionEngagementFeedback *)self destination];
-  v7 = [v4 destination];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPCardSectionEngagementFeedback *)self destination];
+  destination2 = [equalCopy destination];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_30;
   }
 
-  v8 = [(_CPCardSectionEngagementFeedback *)self destination];
-  if (v8)
+  destination3 = [(_CPCardSectionEngagementFeedback *)self destination];
+  if (destination3)
   {
-    v9 = v8;
-    v10 = [(_CPCardSectionEngagementFeedback *)self destination];
-    v11 = [v4 destination];
-    v12 = [v10 isEqual:v11];
+    v9 = destination3;
+    destination4 = [(_CPCardSectionEngagementFeedback *)self destination];
+    destination5 = [equalCopy destination];
+    v12 = [destination4 isEqual:destination5];
 
     if (!v12)
     {
@@ -58,31 +58,31 @@
   }
 
   triggerEvent = self->_triggerEvent;
-  if (triggerEvent != [v4 triggerEvent])
+  if (triggerEvent != [equalCopy triggerEvent])
   {
     goto LABEL_31;
   }
 
   actionCardType = self->_actionCardType;
-  if (actionCardType != [v4 actionCardType])
+  if (actionCardType != [equalCopy actionCardType])
   {
     goto LABEL_31;
   }
 
-  v6 = [(_CPCardSectionEngagementFeedback *)self cardSection];
-  v7 = [v4 cardSection];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPCardSectionEngagementFeedback *)self cardSection];
+  destination2 = [equalCopy cardSection];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_30;
   }
 
-  v15 = [(_CPCardSectionEngagementFeedback *)self cardSection];
-  if (v15)
+  cardSection = [(_CPCardSectionEngagementFeedback *)self cardSection];
+  if (cardSection)
   {
-    v16 = v15;
-    v17 = [(_CPCardSectionEngagementFeedback *)self cardSection];
-    v18 = [v4 cardSection];
-    v19 = [v17 isEqual:v18];
+    v16 = cardSection;
+    cardSection2 = [(_CPCardSectionEngagementFeedback *)self cardSection];
+    cardSection3 = [equalCopy cardSection];
+    v19 = [cardSection2 isEqual:cardSection3];
 
     if (!v19)
     {
@@ -95,25 +95,25 @@
   }
 
   destinationWasPARPunchout = self->_destinationWasPARPunchout;
-  if (destinationWasPARPunchout != [v4 destinationWasPARPunchout])
+  if (destinationWasPARPunchout != [equalCopy destinationWasPARPunchout])
   {
     goto LABEL_31;
   }
 
-  v6 = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
-  v7 = [v4 parPunchoutActionTarget];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
+  destination2 = [equalCopy parPunchoutActionTarget];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_30;
   }
 
-  v21 = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
-  if (v21)
+  parPunchoutActionTarget = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
+  if (parPunchoutActionTarget)
   {
-    v22 = v21;
-    v23 = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
-    v24 = [v4 parPunchoutActionTarget];
-    v25 = [v23 isEqual:v24];
+    v22 = parPunchoutActionTarget;
+    parPunchoutActionTarget2 = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
+    parPunchoutActionTarget3 = [equalCopy parPunchoutActionTarget];
+    v25 = [parPunchoutActionTarget2 isEqual:parPunchoutActionTarget3];
 
     if (!v25)
     {
@@ -125,20 +125,20 @@
   {
   }
 
-  v6 = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
-  v7 = [v4 cardSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
+  destination2 = [equalCopy cardSectionId];
+  if ((destination != 0) == (destination2 == 0))
   {
     goto LABEL_30;
   }
 
-  v26 = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
-  if (v26)
+  cardSectionId = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
+  if (cardSectionId)
   {
-    v27 = v26;
-    v28 = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
-    v29 = [v4 cardSectionId];
-    v30 = [v28 isEqual:v29];
+    v27 = cardSectionId;
+    cardSectionId2 = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
+    cardSectionId3 = [equalCopy cardSectionId];
+    v30 = [cardSectionId2 isEqual:cardSectionId3];
 
     if (!v30)
     {
@@ -150,29 +150,29 @@
   {
   }
 
-  v6 = [(_CPCardSectionEngagementFeedback *)self resultId];
-  v7 = [v4 resultId];
-  if ((v6 != 0) == (v7 == 0))
+  destination = [(_CPCardSectionEngagementFeedback *)self resultId];
+  destination2 = [equalCopy resultId];
+  if ((destination != 0) == (destination2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v31 = [(_CPCardSectionEngagementFeedback *)self resultId];
-  if (!v31)
+  resultId = [(_CPCardSectionEngagementFeedback *)self resultId];
+  if (!resultId)
   {
 
 LABEL_34:
     actionTarget = self->_actionTarget;
-    v36 = actionTarget == [v4 actionTarget];
+    v36 = actionTarget == [equalCopy actionTarget];
     goto LABEL_32;
   }
 
-  v32 = v31;
-  v33 = [(_CPCardSectionEngagementFeedback *)self resultId];
-  v34 = [v4 resultId];
-  v35 = [v33 isEqual:v34];
+  v32 = resultId;
+  resultId2 = [(_CPCardSectionEngagementFeedback *)self resultId];
+  resultId3 = [equalCopy resultId];
+  v35 = [resultId2 isEqual:resultId3];
 
   if (v35)
   {
@@ -186,20 +186,20 @@ LABEL_32:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPCardSectionEngagementFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPCardSectionEngagementFeedback *)self destination];
+  destination = [(_CPCardSectionEngagementFeedback *)self destination];
 
-  if (v5)
+  if (destination)
   {
-    v6 = [(_CPCardSectionEngagementFeedback *)self destination];
+    destination2 = [(_CPCardSectionEngagementFeedback *)self destination];
     PBDataWriterWriteSubmessage();
   }
 
@@ -215,11 +215,11 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_CPCardSectionEngagementFeedback *)self cardSection];
+  cardSection = [(_CPCardSectionEngagementFeedback *)self cardSection];
 
-  if (v9)
+  if (cardSection)
   {
-    v10 = [(_CPCardSectionEngagementFeedback *)self cardSection];
+    cardSection2 = [(_CPCardSectionEngagementFeedback *)self cardSection];
     PBDataWriterWriteSubmessage();
   }
 
@@ -229,25 +229,25 @@ LABEL_32:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
+  parPunchoutActionTarget = [(_CPCardSectionEngagementFeedback *)self parPunchoutActionTarget];
 
-  if (v12)
+  if (parPunchoutActionTarget)
   {
     parPunchoutActionTarget = self->_parPunchoutActionTarget;
     PBDataWriterWriteStringField();
   }
 
-  v14 = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
+  cardSectionId = [(_CPCardSectionEngagementFeedback *)self cardSectionId];
 
-  if (v14)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v16 = [(_CPCardSectionEngagementFeedback *)self resultId];
+  resultId = [(_CPCardSectionEngagementFeedback *)self resultId];
 
-  if (v16)
+  if (resultId)
   {
     resultId = self->_resultId;
     PBDataWriterWriteStringField();
@@ -276,54 +276,54 @@ LABEL_32:
   return v2;
 }
 
-- (_CPCardSectionEngagementFeedback)initWithFacade:(id)a3
+- (_CPCardSectionEngagementFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v20.receiver = self;
   v20.super_class = _CPCardSectionEngagementFeedback;
   v5 = [(_CPCardSectionEngagementFeedback *)&v20 init];
   if (v5)
   {
-    -[_CPCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 destination];
+    -[_CPCardSectionEngagementFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    destination = [facadeCopy destination];
 
-    if (v6)
+    if (destination)
     {
       v7 = [_CPPunchoutForFeedback alloc];
-      v8 = [v4 destination];
-      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:v8];
+      destination2 = [facadeCopy destination];
+      v9 = [(_CPPunchoutForFeedback *)v7 initWithFacade:destination2];
       [(_CPCardSectionEngagementFeedback *)v5 setDestination:v9];
     }
 
-    -[_CPCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [v4 triggerEvent]);
-    -[_CPCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [v4 actionCardType]);
-    v10 = [v4 cardSection];
+    -[_CPCardSectionEngagementFeedback setTriggerEvent:](v5, "setTriggerEvent:", [facadeCopy triggerEvent]);
+    -[_CPCardSectionEngagementFeedback setActionCardType:](v5, "setActionCardType:", [facadeCopy actionCardType]);
+    cardSection = [facadeCopy cardSection];
 
-    if (v10)
+    if (cardSection)
     {
       v11 = [_CPCardSectionForFeedback alloc];
-      v12 = [v4 cardSection];
-      v13 = [(_CPCardSectionForFeedback *)v11 initWithFacade:v12];
+      cardSection2 = [facadeCopy cardSection];
+      v13 = [(_CPCardSectionForFeedback *)v11 initWithFacade:cardSection2];
       [(_CPCardSectionEngagementFeedback *)v5 setCardSection:v13];
     }
 
-    v14 = [v4 cardSectionId];
+    cardSectionId = [facadeCopy cardSectionId];
 
-    if (v14)
+    if (cardSectionId)
     {
-      v15 = [v4 cardSectionId];
-      [(_CPCardSectionEngagementFeedback *)v5 setCardSectionId:v15];
+      cardSectionId2 = [facadeCopy cardSectionId];
+      [(_CPCardSectionEngagementFeedback *)v5 setCardSectionId:cardSectionId2];
     }
 
-    v16 = [v4 resultId];
+    resultId = [facadeCopy resultId];
 
-    if (v16)
+    if (resultId)
     {
-      v17 = [v4 resultId];
-      [(_CPCardSectionEngagementFeedback *)v5 setResultId:v17];
+      resultId2 = [facadeCopy resultId];
+      [(_CPCardSectionEngagementFeedback *)v5 setResultId:resultId2];
     }
 
-    -[_CPCardSectionEngagementFeedback setActionTarget:](v5, "setActionTarget:", [v4 actionTarget]);
+    -[_CPCardSectionEngagementFeedback setActionTarget:](v5, "setActionTarget:", [facadeCopy actionTarget]);
     v18 = v5;
   }
 

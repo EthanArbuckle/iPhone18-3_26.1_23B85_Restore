@@ -1,6 +1,6 @@
 @interface ContinuousReadingViewController
 - (BOOL)isUserInteractingWithContainer;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (ContinuousReadingViewControllerDelegate)delegate;
 - (UIScrollView)_outerScrollView;
 - (_SFWebView)currentWebView;
@@ -8,17 +8,17 @@
 - (double)_scrollOffsetYForPreviousDocument;
 - (void)_commitToNextContinuousDocument;
 - (void)_commitToPreviousContinuousDocument;
-- (void)_willCommitToContinuousDocumentInPreviewView:(id)a3;
-- (void)didCreateWebViewForNextDocument:(id)a3;
-- (void)didCreateWebViewForPreviousDocument:(id)a3;
-- (void)innerScrollViewDidScroll:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setBannerTheme:(id)a3 animated:(BOOL)a4;
-- (void)setInterceptsScrollToTopTap:(BOOL)a3;
-- (void)setPreviewView:(id)a3;
-- (void)setPreviousItemPreviewView:(id)a3;
+- (void)_willCommitToContinuousDocumentInPreviewView:(id)view;
+- (void)didCreateWebViewForNextDocument:(id)document;
+- (void)didCreateWebViewForPreviousDocument:(id)document;
+- (void)innerScrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setBannerTheme:(id)theme animated:(BOOL)animated;
+- (void)setInterceptsScrollToTopTap:(BOOL)tap;
+- (void)setPreviewView:(id)view;
+- (void)setPreviousItemPreviewView:(id)view;
 - (void)updateContinuousPreviewViewSizeAttributes;
 - (void)updateOuterScrollView;
 @end
@@ -46,8 +46,8 @@
 
     [(UIScrollView *)self->_outerScrollView setScrollsToTop:0];
     [(UIScrollView *)self->_outerScrollView setScrollEnabled:0];
-    v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIScrollView *)self->_outerScrollView setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIScrollView *)self->_outerScrollView setBackgroundColor:systemBackgroundColor];
 
     self->_suppressingAutoScroll = 1;
     outerScrollView = self->_outerScrollView;
@@ -76,48 +76,48 @@
     v12 = v11;
     v14 = v13;
     v15 = v5 - (v9 + v13);
-    v16 = [v26 scrollView];
-    [v16 contentInset];
+    scrollView = [v26 scrollView];
+    [scrollView contentInset];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView contentView];
-    if (v26 != v21)
+    contentView = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView contentView];
+    if (v26 != contentView)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v21 _overrideLayoutParametersWithMinimumLayoutSize:v15 minimumUnobscuredSizeOverride:v7 maximumUnobscuredSizeOverride:{v15, v7, v5, v7}];
+        [contentView _overrideLayoutParametersWithMinimumLayoutSize:v15 minimumUnobscuredSizeOverride:v7 maximumUnobscuredSizeOverride:{v15, v7, v5, v7}];
       }
 
       else
       {
-        [v21 _overrideLayoutParametersWithMinimumLayoutSize:v15 maximumUnobscuredSizeOverride:{v7, v5, v7}];
+        [contentView _overrideLayoutParametersWithMinimumLayoutSize:v15 maximumUnobscuredSizeOverride:{v7, v5, v7}];
       }
 
-      v22 = [v21 scrollView];
-      [v22 _sf_setContentInsetAdjustments:{0.0, v18, 0.0, v20}];
+      scrollView2 = [contentView scrollView];
+      [scrollView2 _sf_setContentInsetAdjustments:{0.0, v18, 0.0, v20}];
 
-      [v21 _setObscuredInsets:{v25, v10, v12, v14}];
+      [contentView _setObscuredInsets:{v25, v10, v12, v14}];
     }
 
-    v23 = [(ContinuousReadingPreviewView *)self->_previewView contentView];
+    contentView2 = [(ContinuousReadingPreviewView *)self->_previewView contentView];
 
-    if (v23 != v26)
+    if (contentView2 != v26)
     {
       if (objc_opt_respondsToSelector())
       {
-        [v23 _overrideLayoutParametersWithMinimumLayoutSize:v15 minimumUnobscuredSizeOverride:v7 maximumUnobscuredSizeOverride:{v15, v7, v5, v7}];
+        [contentView2 _overrideLayoutParametersWithMinimumLayoutSize:v15 minimumUnobscuredSizeOverride:v7 maximumUnobscuredSizeOverride:{v15, v7, v5, v7}];
       }
 
       else
       {
-        [v23 _overrideLayoutParametersWithMinimumLayoutSize:v15 maximumUnobscuredSizeOverride:{v7, v5, v7}];
+        [contentView2 _overrideLayoutParametersWithMinimumLayoutSize:v15 maximumUnobscuredSizeOverride:{v7, v5, v7}];
       }
 
-      v24 = [v23 scrollView];
-      [v24 _sf_setContentInsetAdjustments:{0.0, v18, 0.0, v20}];
+      scrollView3 = [contentView2 scrollView];
+      [scrollView3 _sf_setContentInsetAdjustments:{0.0, v18, 0.0, v20}];
 
-      [v23 _setObscuredInsets:{v25, v10, v12, v14}];
+      [contentView2 _setObscuredInsets:{v25, v10, v12, v14}];
     }
 
     WeakRetained = v26;
@@ -126,8 +126,8 @@
 
 - (void)updateOuterScrollView
 {
-  v11 = [(ContinuousReadingViewController *)self _outerScrollView];
-  [v11 frame];
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  [_outerScrollView frame];
   v4 = v3;
   v6 = v5;
   if ([(ContinuousReadingPreviewView *)self->_previewView canShowContentView])
@@ -140,7 +140,7 @@
     v7 = v6;
   }
 
-  [v11 setContentSize:{v4, v7}];
+  [_outerScrollView setContentSize:{v4, v7}];
   if ([(ContinuousReadingPreviewView *)self->_previousItemPreviewView canShowContentView])
   {
     v8 = 0.0;
@@ -156,50 +156,50 @@
     v10 = *(MEMORY[0x277D768C8] + 24);
   }
 
-  [v11 setContentInset:{v6, v8, v9, v10}];
+  [_outerScrollView setContentInset:{v6, v8, v9, v10}];
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   previewView = self->_previewView;
-  if (previewView != v5)
+  if (previewView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(ContinuousReadingPreviewView *)previewView removeFromSuperview];
-    objc_storeStrong(&self->_previewView, a3);
+    objc_storeStrong(&self->_previewView, view);
     [(ContinuousReadingPreviewView *)v7 setBannerTheme:self->_bannerTheme animated:0];
     [(ContinuousReadingViewController *)self updateOuterScrollView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setPreviousItemPreviewView:(id)a3
+- (void)setPreviousItemPreviewView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   previousItemPreviewView = self->_previousItemPreviewView;
-  if (previousItemPreviewView != v5)
+  if (previousItemPreviewView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(ContinuousReadingPreviewView *)previousItemPreviewView removeFromSuperview];
-    objc_storeStrong(&self->_previousItemPreviewView, a3);
+    objc_storeStrong(&self->_previousItemPreviewView, view);
     [(ContinuousReadingPreviewView *)v7 setBannerTheme:self->_bannerTheme animated:0];
     [(ContinuousReadingViewController *)self updateOuterScrollView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
 - (BOOL)isUserInteractingWithContainer
 {
-  v3 = [(ContinuousReadingViewController *)self _outerScrollView];
-  if ([v3 isTracking])
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  if ([_outerScrollView isTracking])
   {
     v4 = 1;
   }
 
   else
   {
-    [v3 contentOffset];
+    [_outerScrollView contentOffset];
     v6 = v5;
     [(ContinuousReadingViewController *)self scrollOffsetYForCurrentDocument];
     v4 = v6 != v7;
@@ -208,67 +208,33 @@
   return v4;
 }
 
-- (void)setBannerTheme:(id)a3 animated:(BOOL)a4
+- (void)setBannerTheme:(id)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_bannerTheme, a3);
-  v7 = a3;
-  [(ContinuousReadingPreviewView *)self->_previousItemPreviewView setBannerTheme:v7 animated:v4];
-  [(ContinuousReadingPreviewView *)self->_previewView setBannerTheme:v7 animated:v4];
+  animatedCopy = animated;
+  objc_storeStrong(&self->_bannerTheme, theme);
+  themeCopy = theme;
+  [(ContinuousReadingPreviewView *)self->_previousItemPreviewView setBannerTheme:themeCopy animated:animatedCopy];
+  [(ContinuousReadingPreviewView *)self->_previewView setBannerTheme:themeCopy animated:animatedCopy];
 }
 
-- (void)setInterceptsScrollToTopTap:(BOOL)a3
+- (void)setInterceptsScrollToTopTap:(BOOL)tap
 {
-  if (self->_interceptsScrollToTopTap != a3)
+  if (self->_interceptsScrollToTopTap != tap)
   {
-    v4 = a3;
-    self->_interceptsScrollToTopTap = a3;
-    v5 = [(ContinuousReadingViewController *)self _outerScrollView];
-    [v5 setScrollEnabled:v4];
-    [v5 setScrollsToTop:v4];
+    tapCopy = tap;
+    self->_interceptsScrollToTopTap = tap;
+    _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+    [_outerScrollView setScrollEnabled:tapCopy];
+    [_outerScrollView setScrollsToTop:tapCopy];
   }
 }
 
-- (void)didCreateWebViewForNextDocument:(id)a3
+- (void)didCreateWebViewForNextDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ContinuousReadingPreviewView *)self->_previewView contentView];
+  documentCopy = document;
+  contentView = [(ContinuousReadingPreviewView *)self->_previewView contentView];
 
-  if (v5 != v4)
-  {
-    v6 = *MEMORY[0x277CBF348];
-    v7 = *(MEMORY[0x277CBF348] + 8);
-    WeakRetained = objc_loadWeakRetained(&self->_currentWebView);
-    [WeakRetained frame];
-    v10 = v9;
-    v12 = v11;
-
-    v13 = *(MEMORY[0x277CBF2C0] + 16);
-    v17[0] = *MEMORY[0x277CBF2C0];
-    v17[1] = v13;
-    v17[2] = *(MEMORY[0x277CBF2C0] + 32);
-    [v4 setTransform:v17];
-    [v4 setFrame:{v6, v7, v10, v12}];
-    v14 = [v4 scrollView];
-    [v14 setClipsToBounds:1];
-
-    v15 = [v4 scrollView];
-    [v15 setScrollsToTop:0];
-
-    [(ContinuousReadingPreviewView *)self->_previewView setContentView:v4];
-    v16 = [(ContinuousReadingViewController *)self _outerScrollView];
-    [v4 setClippingView:v16];
-
-    [(ContinuousReadingViewController *)self updateOuterScrollView];
-  }
-}
-
-- (void)didCreateWebViewForPreviousDocument:(id)a3
-{
-  v4 = a3;
-  v5 = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView contentView];
-
-  if (v5 != v4)
+  if (contentView != documentCopy)
   {
     v6 = *MEMORY[0x277CBF348];
     v7 = *(MEMORY[0x277CBF348] + 8);
@@ -281,95 +247,129 @@
     v17[0] = *MEMORY[0x277CBF2C0];
     v17[1] = v13;
     v17[2] = *(MEMORY[0x277CBF2C0] + 32);
-    [v4 setTransform:v17];
-    [v4 setFrame:{v6, v7, v10, v12}];
-    v14 = [v4 scrollView];
-    [v14 setClipsToBounds:1];
+    [documentCopy setTransform:v17];
+    [documentCopy setFrame:{v6, v7, v10, v12}];
+    scrollView = [documentCopy scrollView];
+    [scrollView setClipsToBounds:1];
 
-    v15 = [v4 scrollView];
-    [v15 setScrollsToTop:0];
+    scrollView2 = [documentCopy scrollView];
+    [scrollView2 setScrollsToTop:0];
 
-    [(ContinuousReadingPreviewView *)self->_previousItemPreviewView setContentView:v4];
-    v16 = [(ContinuousReadingViewController *)self _outerScrollView];
-    [v4 setClippingView:v16];
+    [(ContinuousReadingPreviewView *)self->_previewView setContentView:documentCopy];
+    _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+    [documentCopy setClippingView:_outerScrollView];
 
     [(ContinuousReadingViewController *)self updateOuterScrollView];
   }
 }
 
-- (void)innerScrollViewDidScroll:(id)a3
+- (void)didCreateWebViewForPreviousDocument:(id)document
 {
-  v15 = a3;
+  documentCopy = document;
+  contentView = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView contentView];
+
+  if (contentView != documentCopy)
+  {
+    v6 = *MEMORY[0x277CBF348];
+    v7 = *(MEMORY[0x277CBF348] + 8);
+    WeakRetained = objc_loadWeakRetained(&self->_currentWebView);
+    [WeakRetained frame];
+    v10 = v9;
+    v12 = v11;
+
+    v13 = *(MEMORY[0x277CBF2C0] + 16);
+    v17[0] = *MEMORY[0x277CBF2C0];
+    v17[1] = v13;
+    v17[2] = *(MEMORY[0x277CBF2C0] + 32);
+    [documentCopy setTransform:v17];
+    [documentCopy setFrame:{v6, v7, v10, v12}];
+    scrollView = [documentCopy scrollView];
+    [scrollView setClipsToBounds:1];
+
+    scrollView2 = [documentCopy scrollView];
+    [scrollView2 setScrollsToTop:0];
+
+    [(ContinuousReadingPreviewView *)self->_previousItemPreviewView setContentView:documentCopy];
+    _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+    [documentCopy setClippingView:_outerScrollView];
+
+    [(ContinuousReadingViewController *)self updateOuterScrollView];
+  }
+}
+
+- (void)innerScrollViewDidScroll:(id)scroll
+{
+  scrollCopy = scroll;
   if (![(ContinuousReadingPreviewView *)self->_previewView canShowContentView]&& ![(ContinuousReadingPreviewView *)self->_previousItemPreviewView canShowContentView]|| self->_suppressingAutoScroll)
   {
     goto LABEL_12;
   }
 
-  v4 = [(ContinuousReadingViewController *)self _outerScrollView];
-  [v15 bounds];
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  [scrollCopy bounds];
   MaxY = CGRectGetMaxY(v17);
-  [v15 contentSize];
+  [scrollCopy contentSize];
   v7 = MaxY - v6;
-  [v15 contentInset];
+  [scrollCopy contentInset];
   v9 = v7 - v8;
   if (v7 - v8 >= 0.0)
   {
-    v14 = [(ContinuousReadingPreviewView *)self->_previewView canShowContentView];
+    canShowContentView = [(ContinuousReadingPreviewView *)self->_previewView canShowContentView];
     goto LABEL_10;
   }
 
-  [v15 bounds];
+  [scrollCopy bounds];
   MinY = CGRectGetMinY(v18);
-  [v15 contentInset];
+  [scrollCopy contentInset];
   v12 = MinY + v11;
-  v13 = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView canShowContentView];
-  v14 = v12 > 0.0 || v13;
-  if (v12 <= 0.0 || v13)
+  canShowContentView2 = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView canShowContentView];
+  canShowContentView = v12 > 0.0 || canShowContentView2;
+  if (v12 <= 0.0 || canShowContentView2)
   {
     goto LABEL_10;
   }
 
   if ([(ContinuousReadingPreviewView *)self->_previewView canShowContentView])
   {
-    v14 = 1;
+    canShowContentView = 1;
 LABEL_10:
-    [v4 setScrollEnabled:v14 & 1];
+    [_outerScrollView setScrollEnabled:canShowContentView & 1];
   }
 
 LABEL_12:
 }
 
-- (void)_willCommitToContinuousDocumentInPreviewView:(id)a3
+- (void)_willCommitToContinuousDocumentInPreviewView:(id)view
 {
-  v4 = a3;
-  v5 = [(ContinuousReadingViewController *)self _outerScrollView];
-  [v5 setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  viewCopy = view;
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  [_outerScrollView setContentOffset:0 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-  v6 = [(ContinuousReadingViewController *)self _outerScrollView];
-  v7 = [v4 contentView];
-  [v6 addSubview:v7];
+  _outerScrollView2 = [(ContinuousReadingViewController *)self _outerScrollView];
+  contentView = [viewCopy contentView];
+  [_outerScrollView2 addSubview:contentView];
 
-  v8 = [v4 contentView];
+  contentView2 = [viewCopy contentView];
 
-  v15 = [v8 scrollView];
+  scrollView = [contentView2 scrollView];
 
-  [v15 _sf_setContentInsetAdjustments:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
-  [v15 contentOffset];
+  [scrollView _sf_setContentInsetAdjustments:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  [scrollView contentOffset];
   v10 = v9;
   v12 = v11;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained continuousReadingViewControllerNextWebViewLandingOffset:self includeBottomBar:0];
-  [v15 setContentOffset:{v10, v12 - v14}];
+  [scrollView setContentOffset:{v10, v12 - v14}];
 }
 
 - (void)_commitToNextContinuousDocument
 {
   [(ContinuousReadingViewController *)self _willCommitToContinuousDocumentInPreviewView:self->_previewView];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(ContinuousReadingPreviewView *)self->_previewView continuousReadingItem];
+  continuousReadingItem = [(ContinuousReadingPreviewView *)self->_previewView continuousReadingItem];
   self->_committingToContinuousDocument = 1;
   [WeakRetained continuousReadingViewControllerWillCommitToLoadNextItem:self];
-  [WeakRetained continuousReadingViewController:self didCommitToLoadItem:v3];
+  [WeakRetained continuousReadingViewController:self didCommitToLoadItem:continuousReadingItem];
   self->_committingToContinuousDocument = 0;
 }
 
@@ -377,17 +377,17 @@ LABEL_12:
 {
   [(ContinuousReadingViewController *)self _willCommitToContinuousDocumentInPreviewView:self->_previousItemPreviewView];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView continuousReadingItem];
+  continuousReadingItem = [(ContinuousReadingPreviewView *)self->_previousItemPreviewView continuousReadingItem];
   self->_committingToContinuousDocument = 1;
   [WeakRetained continuousReadingViewControllerCommitToLoadPreviousItem:self];
-  [WeakRetained continuousReadingViewController:self didCommitToLoadItem:v3];
+  [WeakRetained continuousReadingViewController:self didCommitToLoadItem:continuousReadingItem];
   self->_committingToContinuousDocument = 0;
 }
 
 - (double)_scrollOffsetYForNextDocument
 {
-  v2 = [(ContinuousReadingViewController *)self _outerScrollView];
-  [v2 frame];
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  [_outerScrollView frame];
   Height = CGRectGetHeight(v5);
 
   return Height;
@@ -395,26 +395,26 @@ LABEL_12:
 
 - (double)_scrollOffsetYForPreviousDocument
 {
-  v2 = [(ContinuousReadingViewController *)self _outerScrollView];
-  [v2 frame];
+  _outerScrollView = [(ContinuousReadingViewController *)self _outerScrollView];
+  [_outerScrollView frame];
   v3 = -CGRectGetHeight(v5);
 
   return v3;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (!self->_suppressingAutoScroll)
   {
-    v10 = v4;
-    [v4 contentOffset];
+    v10 = scrollCopy;
+    [scrollCopy contentOffset];
     if (v5 >= 0.0 || [(ContinuousReadingPreviewView *)self->_previousItemPreviewView canShowContentView])
     {
       [v10 contentOffset];
       v7 = v6;
       [(ContinuousReadingViewController *)self scrollOffsetYForCurrentDocument];
-      v4 = v10;
+      scrollCopy = v10;
       if (v7 == v8)
       {
         goto LABEL_8;
@@ -429,16 +429,16 @@ LABEL_12:
       [v10 setContentOffset:{0.0, 0.0}];
     }
 
-    v4 = v10;
+    scrollCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a5->y;
-  [(ContinuousReadingViewController *)self _scrollOffsetYForNextDocument:a3];
+  y = offset->y;
+  [(ContinuousReadingViewController *)self _scrollOffsetYForNextDocument:dragging];
   if (y == v7)
   {
     self->_scrollingToNextContinuousDocument = 1;
@@ -481,10 +481,10 @@ void __94__ContinuousReadingViewController_scrollViewWillEndDragging_withVelocit
   [WeakRetained setTransform:v4];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v10 = a3;
-  [v10 contentOffset];
+  deceleratingCopy = decelerating;
+  [deceleratingCopy contentOffset];
   v5 = v4;
   [(ContinuousReadingViewController *)self _scrollOffsetYForNextDocument];
   if (v5 == v6)
@@ -495,7 +495,7 @@ void __94__ContinuousReadingViewController_scrollViewWillEndDragging_withVelocit
 
   else
   {
-    [v10 contentOffset];
+    [deceleratingCopy contentOffset];
     v8 = v7;
     [(ContinuousReadingViewController *)self _scrollOffsetYForPreviousDocument];
     if (v8 == v9)
@@ -505,7 +505,7 @@ void __94__ContinuousReadingViewController_scrollViewWillEndDragging_withVelocit
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained continuousReadingViewControllerDidObserveScrollToTopTap:self];

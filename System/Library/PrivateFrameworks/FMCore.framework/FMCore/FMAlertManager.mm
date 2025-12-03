@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (FMAlertManager)init;
 - (id)initSingleton;
-- (void)activateAlert:(id)a3;
+- (void)activateAlert:(id)alert;
 @end
 
 @implementation FMAlertManager
@@ -56,118 +56,118 @@ void __32__FMAlertManager_sharedInstance__block_invoke()
       [(FMAlertManager *)v3 initSingleton];
     }
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [(FMAlertManager *)v2 setActiveAlerts:v4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(FMAlertManager *)v2 setActiveAlerts:dictionary];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    [(FMAlertManager *)v2 setActiveCFNotificationsByCategory:v5];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(FMAlertManager *)v2 setActiveCFNotificationsByCategory:dictionary2];
   }
 
   return v2;
 }
 
-- (void)activateAlert:(id)a3
+- (void)activateAlert:(id)alert
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  alertCopy = alert;
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 alertId];
+    alertId = [alertCopy alertId];
     *buf = 138412546;
-    v49 = v6;
+    v49 = alertId;
     v50 = 2048;
-    v51 = [v4 category];
+    category = [alertCopy category];
     _os_log_impl(&dword_24A2EE000, v5, OS_LOG_TYPE_INFO, "Will display %@:%ld", buf, 0x16u);
   }
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v4 category];
-  if (v8 != *MEMORY[0x277D07B58])
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  category2 = [alertCopy category];
+  if (category2 != *MEMORY[0x277D07B58])
   {
-    v9 = [(FMAlertManager *)self activeCFNotificationsByCategory];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "category")}];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    activeCFNotificationsByCategory = [(FMAlertManager *)self activeCFNotificationsByCategory];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(alertCopy, "category")}];
+    v11 = [activeCFNotificationsByCategory objectForKeyedSubscript:v10];
 
     if (v11)
     {
-      v12 = [(FMAlertManager *)self activeAlerts];
-      v13 = [v12 objectForKeyedSubscript:v11];
+      activeAlerts = [(FMAlertManager *)self activeAlerts];
+      v13 = [activeAlerts objectForKeyedSubscript:v11];
 
-      v14 = [(FMAlertManager *)self activeCFNotificationsByCategory];
+      activeCFNotificationsByCategory2 = [(FMAlertManager *)self activeCFNotificationsByCategory];
       v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "category")}];
-      [v14 removeObjectForKey:v15];
+      [activeCFNotificationsByCategory2 removeObjectForKey:v15];
 
-      v16 = [(FMAlertManager *)self activeAlerts];
-      [v16 removeObjectForKey:v11];
+      activeAlerts2 = [(FMAlertManager *)self activeAlerts];
+      [activeAlerts2 removeObjectForKey:v11];
 
       v17 = +[FMXPCTransactionManager sharedInstance];
       v18 = [(FMAlertManager *)self _xpcTransactionNameFor:v13];
       [v17 endTransaction:v18];
 
-      v19 = [v11 unsignedLongValue];
-      CFUserNotificationCancel(v19);
-      CFRelease(v19);
+      unsignedLongValue = [v11 unsignedLongValue];
+      CFUserNotificationCancel(unsignedLongValue);
+      CFRelease(unsignedLongValue);
     }
   }
 
   v20 = *MEMORY[0x277CBF1E8];
-  v21 = [v4 defaultButtonTitle];
-  [v7 fm_safelyMapKey:v20 toObject:v21];
+  defaultButtonTitle = [alertCopy defaultButtonTitle];
+  [dictionary fm_safelyMapKey:v20 toObject:defaultButtonTitle];
 
   v22 = *MEMORY[0x277CBF1C0];
-  v23 = [v4 alternateButtonTitle];
-  [v7 fm_safelyMapKey:v22 toObject:v23];
+  alternateButtonTitle = [alertCopy alternateButtonTitle];
+  [dictionary fm_safelyMapKey:v22 toObject:alternateButtonTitle];
 
   v24 = *MEMORY[0x277CBF198];
-  v25 = [v4 msgText];
-  [v7 fm_safelyMapKey:v24 toObject:v25];
+  msgText = [alertCopy msgText];
+  [dictionary fm_safelyMapKey:v24 toObject:msgText];
 
   v26 = *MEMORY[0x277CBF188];
-  v27 = [v4 msgTitle];
-  [v7 fm_safelyMapKey:v26 toObject:v27];
+  msgTitle = [alertCopy msgTitle];
+  [dictionary fm_safelyMapKey:v26 toObject:msgTitle];
 
-  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "showMsgInLockScreen")}];
-  [v7 setObject:v28 forKeyedSubscript:*MEMORY[0x277CBF1B0]];
+  v28 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(alertCopy, "showMsgInLockScreen")}];
+  [dictionary setObject:v28 forKeyedSubscript:*MEMORY[0x277CBF1B0]];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "dismissMsgOnUnlock") ^ 1}];
-  [v7 setObject:v29 forKeyedSubscript:*MEMORY[0x277D67340]];
+  v29 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(alertCopy, "dismissMsgOnUnlock") ^ 1}];
+  [dictionary setObject:v29 forKeyedSubscript:*MEMORY[0x277D67340]];
 
-  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v4, "dismissMsgOnLock")}];
-  [v7 setObject:v30 forKeyedSubscript:*MEMORY[0x277D67320]];
+  v30 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(alertCopy, "dismissMsgOnLock")}];
+  [dictionary setObject:v30 forKeyedSubscript:*MEMORY[0x277D67320]];
 
   v31 = MEMORY[0x277CBEC38];
-  [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D67298]];
-  [v7 setObject:v31 forKeyedSubscript:*MEMORY[0x277D67278]];
-  v32 = [v4 additionalSettings];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D67298]];
+  [dictionary setObject:v31 forKeyedSubscript:*MEMORY[0x277D67278]];
+  additionalSettings = [alertCopy additionalSettings];
 
-  if (v32)
+  if (additionalSettings)
   {
-    v33 = [v4 additionalSettings];
-    [v7 addEntriesFromDictionary:v33];
+    additionalSettings2 = [alertCopy additionalSettings];
+    [dictionary addEntriesFromDictionary:additionalSettings2];
   }
 
   *buf = 0;
   v34 = *MEMORY[0x277CBECE8];
-  [v4 timeout];
-  v36 = CFUserNotificationCreate(v34, v35, 3uLL, buf, v7);
+  [alertCopy timeout];
+  v36 = CFUserNotificationCreate(v34, v35, 3uLL, buf, dictionary);
   if (v36)
   {
     v37 = v36;
-    v38 = [(FMAlertManager *)self activeAlerts];
+    activeAlerts3 = [(FMAlertManager *)self activeAlerts];
     v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v37];
-    [v38 setObject:v4 forKeyedSubscript:v39];
+    [activeAlerts3 setObject:alertCopy forKeyedSubscript:v39];
 
-    if ([v4 category])
+    if ([alertCopy category])
     {
       v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v37];
-      v41 = [(FMAlertManager *)self activeCFNotificationsByCategory];
-      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "category")}];
-      [v41 setObject:v40 forKeyedSubscript:v42];
+      activeCFNotificationsByCategory3 = [(FMAlertManager *)self activeCFNotificationsByCategory];
+      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(alertCopy, "category")}];
+      [activeCFNotificationsByCategory3 setObject:v40 forKeyedSubscript:v42];
     }
 
     v43 = +[FMXPCTransactionManager sharedInstance];
-    v44 = [(FMAlertManager *)self _xpcTransactionNameFor:v4];
+    v44 = [(FMAlertManager *)self _xpcTransactionNameFor:alertCopy];
     [v43 beginTransaction:v44];
 
     block[0] = MEMORY[0x277D85DD0];
@@ -183,7 +183,7 @@ void __32__FMAlertManager_sharedInstance__block_invoke()
     v45 = LogCategory_Unspecified();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
-      [(FMAlertManager *)v4 activateAlert:buf, v45];
+      [(FMAlertManager *)alertCopy activateAlert:buf, v45];
     }
   }
 

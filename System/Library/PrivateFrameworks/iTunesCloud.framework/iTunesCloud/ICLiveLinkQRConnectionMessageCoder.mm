@@ -1,15 +1,15 @@
 @interface ICLiveLinkQRConnectionMessageCoder
-- (id)messageFromData:(id)a3;
-- (id)traceIdentifierForMessage:(id)a3;
+- (id)messageFromData:(id)data;
+- (id)traceIdentifierForMessage:(id)message;
 @end
 
 @implementation ICLiveLinkQRConnectionMessageCoder
 
-- (id)traceIdentifierForMessage:(id)a3
+- (id)traceIdentifierForMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
-    return *(a3 + 5);
+    return *(message + 5);
   }
 
   else
@@ -18,10 +18,10 @@
   }
 }
 
-- (id)messageFromData:(id)a3
+- (id)messageFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[_ICLLProtocolMessage alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[_ICLLProtocolMessage alloc] initWithData:dataCopy];
 
   return v4;
 }

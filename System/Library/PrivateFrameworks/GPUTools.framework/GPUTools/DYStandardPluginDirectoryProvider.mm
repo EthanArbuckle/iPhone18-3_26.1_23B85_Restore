@@ -1,9 +1,9 @@
 @interface DYStandardPluginDirectoryProvider
 + (id)_developerDirectory;
 - (DYStandardPluginDirectoryProvider)init;
-- (DYStandardPluginDirectoryProvider)initWithBundle:(id)a3 includeDeveloperDirectory:(BOOL)a4 includeBundleDirectory:(BOOL)a5;
+- (DYStandardPluginDirectoryProvider)initWithBundle:(id)bundle includeDeveloperDirectory:(BOOL)directory includeBundleDirectory:(BOOL)bundleDirectory;
 - (void)dealloc;
-- (void)enumerateDirectories:(id)a3;
+- (void)enumerateDirectories:(id)directories;
 @end
 
 @implementation DYStandardPluginDirectoryProvider
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __56__DYStandardPluginDirectoryProvider__developerDirectory__block_invoke;
   block[3] = &unk_279309890;
-  block[4] = a1;
+  block[4] = self;
   if (_developerDirectory_once != -1)
   {
     dispatch_once(&_developerDirectory_once, block);
@@ -58,16 +58,16 @@ void __56__DYStandardPluginDirectoryProvider__developerDirectory__block_invoke(u
   return 0;
 }
 
-- (DYStandardPluginDirectoryProvider)initWithBundle:(id)a3 includeDeveloperDirectory:(BOOL)a4 includeBundleDirectory:(BOOL)a5
+- (DYStandardPluginDirectoryProvider)initWithBundle:(id)bundle includeDeveloperDirectory:(BOOL)directory includeBundleDirectory:(BOOL)bundleDirectory
 {
   v10.receiver = self;
   v10.super_class = DYStandardPluginDirectoryProvider;
   v8 = [(DYPluginDirectoryProvider *)&v10 init];
   if (v8)
   {
-    v8->_bundle = a3;
-    v8->_includeDeveloperDirectory = a4;
-    v8->_includeBundleDirectory = a5;
+    v8->_bundle = bundle;
+    v8->_includeDeveloperDirectory = directory;
+    v8->_includeBundleDirectory = bundleDirectory;
     v8->super._developerDirectory = [objc_opt_class() _developerDirectory];
   }
 
@@ -81,20 +81,20 @@ void __56__DYStandardPluginDirectoryProvider__developerDirectory__block_invoke(u
   [(DYStandardPluginDirectoryProvider *)&v3 dealloc];
 }
 
-- (void)enumerateDirectories:(id)a3
+- (void)enumerateDirectories:(id)directories
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  v6 = [(NSURL *)[(NSBundle *)self->_bundle bundleURL] URLByStandardizingPath];
+  uRLByStandardizingPath = [(NSURL *)[(NSBundle *)self->_bundle bundleURL] URLByStandardizingPath];
   if (self->_includeBundleDirectory)
   {
-    (*(a3 + 2))(a3, v6);
+    (*(directories + 2))(directories, uRLByStandardizingPath);
   }
 
-  (*(a3 + 2))(a3, [(NSURL *)[(NSBundle *)self->_bundle builtInPlugInsURL] URLByStandardizingPath]);
+  (*(directories + 2))(directories, [(NSURL *)[(NSBundle *)self->_bundle builtInPlugInsURL] URLByStandardizingPath]);
   if (getenv("GT_SIBLING_PLUGINS"))
   {
-    (*(a3 + 2))(a3, [(NSURL *)v6 URLByDeletingLastPathComponent]);
+    (*(directories + 2))(directories, [(NSURL *)uRLByStandardizingPath URLByDeletingLastPathComponent]);
   }
 
   if (self->_includeDeveloperDirectory)
@@ -103,7 +103,7 @@ void __56__DYStandardPluginDirectoryProvider__developerDirectory__block_invoke(u
     {
       v7 = [(NSDictionary *)[(NSBundle *)self->_bundle infoDictionary] objectForKey:@"CFBundleName"];
       v8 = [(DYPluginDirectoryProvider *)self getPlatformDirectoriesWithBundleName:v7];
-      (*(a3 + 2))(a3, -[NSURL URLByAppendingPathComponent:](self->super._developerDirectory, "URLByAppendingPathComponent:", [MEMORY[0x277CCACA8] stringWithFormat:@"Library/%@/PlugIns", v7]));
+      (*(directories + 2))(directories, -[NSURL URLByAppendingPathComponent:](self->super._developerDirectory, "URLByAppendingPathComponent:", [MEMORY[0x277CCACA8] stringWithFormat:@"Library/%@/PlugIns", v7]));
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
@@ -123,7 +123,7 @@ void __56__DYStandardPluginDirectoryProvider__developerDirectory__block_invoke(u
               objc_enumerationMutation(v8);
             }
 
-            (*(a3 + 2))(a3, *(*(&v14 + 1) + 8 * v12++));
+            (*(directories + 2))(directories, *(*(&v14 + 1) + 8 * v12++));
           }
 
           while (v10 != v12);

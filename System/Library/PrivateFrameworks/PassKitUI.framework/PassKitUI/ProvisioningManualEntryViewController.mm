@@ -1,25 +1,25 @@
 @interface ProvisioningManualEntryViewController
-- (BOOL)fieldCell:(id)a3 supportsKeyboardAccessory:(unint64_t)a4;
-- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithCoder:(id)a3;
-- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6;
+- (BOOL)fieldCell:(id)cell supportsKeyboardAccessory:(unint64_t)accessory;
+- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithCoder:(id)coder;
+- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model;
 - (id)defaultFields;
 - (id)defaultHeaderViewSubTitle;
 - (id)defaultHeaderViewTitle;
 - (id)visibleFieldIdentifiers;
 - (void)_skipCardButtonPressed;
 - (void)_tapToProvisionButtonPressed;
-- (void)cameraCaptureViewController:(id)a3 didRecognizeObjects:(id)a4;
-- (void)fieldCell:(id)a3 didTapKeyboardAccessory:(unint64_t)a4;
-- (void)fieldCellEditableTextFieldValueDidChange:(id)a3;
-- (void)handleNextButtonTapped:(id)a3;
+- (void)cameraCaptureViewController:(id)controller didRecognizeObjects:(id)objects;
+- (void)fieldCell:(id)cell didTapKeyboardAccessory:(unint64_t)accessory;
+- (void)fieldCellEditableTextFieldValueDidChange:(id)change;
+- (void)handleNextButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation ProvisioningManualEntryViewController
 
-- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithCoder:(id)a3
+- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_coordinator) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_showTapToProvisionButton) = 0;
@@ -31,17 +31,17 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD659E98();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(PKPaymentSetupFieldsViewController *)&v8 viewDidAppear:v3];
+  [(PKPaymentSetupFieldsViewController *)&v8 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_reporter];
   if (!v5)
   {
@@ -63,13 +63,13 @@ LABEL_4:
   __break(1u);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v4 = v6.receiver;
-  [(ProvisioningManualEntryViewController *)&v6 viewDidDisappear:v3];
+  [(ProvisioningManualEntryViewController *)&v6 viewDidDisappear:disappearCopy];
   if ([v4 isMovingFromParentViewController])
   {
     v5 = *&v4[OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_reporter];
@@ -85,7 +85,7 @@ LABEL_4:
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_coordinator);
   if (v2)
   {
-    v4 = self;
+    selfCopy = self;
     v3 = v2;
     sub_1BD81521C();
   }
@@ -93,11 +93,11 @@ LABEL_4:
 
 - (void)_tapToProvisionButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD65A3EC();
 }
 
-- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithWebService:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 setupFieldsModel:(id)a6
+- (_TtC9PassKitUI37ProvisioningManualEntryViewController)initWithWebService:(id)service context:(int64_t)context setupDelegate:(id)delegate setupFieldsModel:(id)model
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -106,7 +106,7 @@ LABEL_4:
 
 - (id)visibleFieldIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BD65A578();
 
   if (v3)
@@ -122,11 +122,11 @@ LABEL_4:
   return v4;
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BE053624();
     swift_unknownObjectRelease();
@@ -135,7 +135,7 @@ LABEL_4:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1BD65A824();
@@ -145,7 +145,7 @@ LABEL_4:
 
 - (id)defaultHeaderViewTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD65A940();
 
   v3 = sub_1BE052404();
@@ -155,7 +155,7 @@ LABEL_4:
 
 - (id)defaultHeaderViewSubTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD65A940();
   v4 = v3;
 
@@ -174,10 +174,10 @@ LABEL_4:
 
 - (id)defaultFields
 {
-  v2 = [objc_opt_self() defaultPaymentSetupProvisioningFields];
-  if (v2)
+  defaultPaymentSetupProvisioningFields = [objc_opt_self() defaultPaymentSetupProvisioningFields];
+  if (defaultPaymentSetupProvisioningFields)
   {
-    v3 = v2;
+    v3 = defaultPaymentSetupProvisioningFields;
     sub_1BE052744();
 
     v4 = sub_1BE052724();
@@ -191,21 +191,21 @@ LABEL_4:
   return v4;
 }
 
-- (void)fieldCellEditableTextFieldValueDidChange:(id)a3
+- (void)fieldCellEditableTextFieldValueDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD65ADE8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BD65ADE8(change);
 }
 
-- (BOOL)fieldCell:(id)a3 supportsKeyboardAccessory:(unint64_t)a4
+- (BOOL)fieldCell:(id)cell supportsKeyboardAccessory:(unint64_t)accessory
 {
-  if (a4 == 2)
+  if (accessory == 2)
   {
     return *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9PassKitUI37ProvisioningManualEntryViewController_showCameraCaptureButton);
   }
 
-  if (a4 != 1)
+  if (accessory != 1)
   {
     return 0;
   }
@@ -214,29 +214,29 @@ LABEL_4:
   v10 = v5;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  return [(PKPaymentSetupFieldsViewController *)&v8 fieldCell:a3 supportsKeyboardAccessory:1];
+  return [(PKPaymentSetupFieldsViewController *)&v8 fieldCell:cell supportsKeyboardAccessory:1];
 }
 
-- (void)fieldCell:(id)a3 didTapKeyboardAccessory:(unint64_t)a4
+- (void)fieldCell:(id)cell didTapKeyboardAccessory:(unint64_t)accessory
 {
-  if (a4 == 1)
+  if (accessory == 1)
   {
     v8.receiver = self;
     v8.super_class = swift_getObjectType();
-    [(PKPaymentSetupFieldsViewController *)&v8 fieldCell:a3 didTapKeyboardAccessory:1];
+    [(PKPaymentSetupFieldsViewController *)&v8 fieldCell:cell didTapKeyboardAccessory:1];
   }
 
-  else if (a4 == 2)
+  else if (accessory == 2)
   {
-    v5 = a3;
-    v7 = self;
+    cellCopy = cell;
+    selfCopy = self;
     sub_1BD65B028();
   }
 }
 
-- (void)cameraCaptureViewController:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraCaptureViewController:(id)controller didRecognizeObjects:(id)objects
 {
-  if (a4)
+  if (objects)
   {
     v6 = sub_1BE052744();
   }
@@ -246,9 +246,9 @@ LABEL_4:
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1BD65C260(a3, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1BD65C260(controller, v6);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface VoiceOverNavigateImagesController
 - (VoiceOverNavigateImagesController)init;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverNavigateImagesController
@@ -52,14 +52,14 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v6 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 voiceOverNavigateImagesOption];
+  voiceOverNavigateImagesOption = [v7 voiceOverNavigateImagesOption];
 
-  v9 = [v6 row];
+  v9 = [pathCopy row];
   v10 = 2;
   if (v9 != &dword_0 + 1)
   {
@@ -71,7 +71,7 @@
     v10 = 1;
   }
 
-  if (v8 == v10)
+  if (voiceOverNavigateImagesOption == v10)
   {
     v11 = 3;
   }
@@ -81,14 +81,14 @@
     v11 = 0;
   }
 
-  [v12 setAccessoryType:v11];
+  [cellCopy setAccessoryType:v11];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
   v9 = 2;
   if (v8 != &dword_0 + 1)
   {
@@ -110,7 +110,7 @@
 
   v12.receiver = self;
   v12.super_class = VoiceOverNavigateImagesController;
-  [(VoiceOverNavigateImagesController *)&v12 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(VoiceOverNavigateImagesController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 
   [*&self->AXUISettingsListController_opaque[OBJC_IVAR___PSListController__table] reloadData];
 }

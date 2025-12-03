@@ -1,14 +1,14 @@
 @interface TKLocalSEPSystemKey
-+ (BOOL)hasSystemKey:(unsigned int)a3 ACMHandle:(id)a4;
++ (BOOL)hasSystemKey:(unsigned int)key ACMHandle:(id)handle;
 + (void)initSystemKeyIDs;
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4;
-- (id)_initWithObjectID:(id)a3 authContext:(id)a4 caller:(id)a5 isIDUnknown:(BOOL *)a6 error:(id *)a7;
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5;
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error;
+- (id)_initWithObjectID:(id)d authContext:(id)context caller:(id)caller isIDUnknown:(BOOL *)unknown error:(id *)error;
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error;
 - (id)description;
 - (id)keySize;
 - (id)objectID;
-- (id)publicKeyWithError:(id *)a3;
-- (id)signDigest:(id)a3 error:(id *)a4;
+- (id)publicKeyWithError:(id *)error;
+- (id)signDigest:(id)digest error:(id *)error;
 @end
 
 @implementation TKLocalSEPSystemKey
@@ -23,7 +23,7 @@
 
 - (id)objectID
 {
-  v3 = [MEMORY[0x1E695DEF0] data];
+  data = [MEMORY[0x1E695DEF0] data];
   AKSSystemKeyType = self->_AKSSystemKeyType;
   if (AKSSystemKeyType > 6)
   {
@@ -118,10 +118,10 @@ LABEL_20:
 LABEL_24:
   v10 = v8;
 
-  v3 = v10;
+  data = v10;
 LABEL_25:
 
-  return v3;
+  return data;
 }
 
 uint64_t __39__TKLocalSEPSystemKey_initSystemKeyIDs__block_invoke()
@@ -179,20 +179,20 @@ uint64_t __39__TKLocalSEPSystemKey_initSystemKeyIDs__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)hasSystemKey:(unsigned int)a3 ACMHandle:(id)a4
++ (BOOL)hasSystemKey:(unsigned int)key ACMHandle:(id)handle
 {
-  v5 = a4;
+  handleCopy = handle;
   v6 = 0;
-  if (a3 <= 0xE)
+  if (key <= 0xE)
   {
-    if (((1 << a3) & 0x4684) != 0)
+    if (((1 << key) & 0x4684) != 0)
     {
-      v7 = hasSystemKey_ACMHandle__supported[a3];
+      v7 = hasSystemKey_ACMHandle__supported[key];
       if (!v7)
       {
         v8 = aks_system_key_collection();
         v9 = v8;
-        if (a3 != 14 && v8)
+        if (key != 14 && v8)
         {
           v9 = aks_system_key_collection();
         }
@@ -214,7 +214,7 @@ uint64_t __39__TKLocalSEPSystemKey_initSystemKeyIDs__block_invoke()
           v7 = 1;
         }
 
-        hasSystemKey_ACMHandle__supported[a3] = v7;
+        hasSystemKey_ACMHandle__supported[key] = v7;
       }
 
 LABEL_21:
@@ -222,18 +222,18 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (((1 << a3) & 0xA) != 0)
+    if (((1 << key) & 0xA) != 0)
     {
       v6 = 1;
     }
 
-    else if (a3 == 6)
+    else if (key == 6)
     {
       v7 = hasSystemKey_ACMHandle__supported_348;
       if (!hasSystemKey_ACMHandle__supported_348)
       {
         v11 = objc_alloc_init(TKAKSParameters);
-        [(TKAKSParameters *)v11 setData:v5 forKey:3];
+        [(TKAKSParameters *)v11 setData:handleCopy forKey:3];
         [(TKAKSParameters *)v11 bytes];
         [(TKAKSParameters *)v11 length];
         if (aks_system_key_collection())
@@ -267,11 +267,11 @@ LABEL_22:
   return v6;
 }
 
-- (id)_initWithObjectID:(id)a3 authContext:(id)a4 caller:(id)a5 isIDUnknown:(BOOL *)a6 error:(id *)a7
+- (id)_initWithObjectID:(id)d authContext:(id)context caller:(id)caller isIDUnknown:(BOOL *)unknown error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = [(TKLocalSEPKey *)self _initWithAuthContext:a4 caller:a5];
+  dCopy = d;
+  v13 = [(TKLocalSEPKey *)self _initWithAuthContext:context caller:caller];
   if (!v13)
   {
     goto LABEL_19;
@@ -279,7 +279,7 @@ LABEL_22:
 
   [objc_opt_class() initSystemKeyIDs];
   v13[10] = 16;
-  if ([v12 isEqualToData:sikData])
+  if ([dCopy isEqualToData:sikData])
   {
     v14 = 1;
 LABEL_4:
@@ -288,7 +288,7 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if ([v12 isEqualToData:gidData])
+  if ([dCopy isEqualToData:gidData])
   {
     v15 = 3;
 LABEL_7:
@@ -299,7 +299,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v12 isEqualToData:proposedUikData])
+  if ([dCopy isEqualToData:proposedUikData])
   {
     v17 = 2;
 LABEL_10:
@@ -308,37 +308,37 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v12 isEqualToData:committedUikData])
+  if ([dCopy isEqualToData:committedUikData])
   {
     v14 = 2;
     goto LABEL_4;
   }
 
-  if ([v12 isEqualToData:proposedOikData])
+  if ([dCopy isEqualToData:proposedOikData])
   {
     v17 = 6;
     goto LABEL_10;
   }
 
-  if ([v12 isEqualToData:committedOikData])
+  if ([dCopy isEqualToData:committedOikData])
   {
     v34 = 6;
     goto LABEL_36;
   }
 
-  if ([v12 isEqualToData:proposedDakData])
+  if ([dCopy isEqualToData:proposedDakData])
   {
     v17 = 9;
     goto LABEL_10;
   }
 
-  if ([v12 isEqualToData:committedDakData])
+  if ([dCopy isEqualToData:committedDakData])
   {
     v34 = 9;
     goto LABEL_36;
   }
 
-  if ([v12 isEqualToData:proposedHavenData])
+  if ([dCopy isEqualToData:proposedHavenData])
   {
     v13[10] = 7;
     v35 = 3;
@@ -346,20 +346,20 @@ LABEL_10:
 
   else
   {
-    if (![v12 isEqualToData:committedHavenData])
+    if (![dCopy isEqualToData:committedHavenData])
     {
-      if ([v12 isEqualToData:proposedSDakData])
+      if ([dCopy isEqualToData:proposedSDakData])
       {
         v17 = 10;
         goto LABEL_10;
       }
 
-      if (![v12 isEqualToData:committedSDakData])
+      if (![dCopy isEqualToData:committedSDakData])
       {
-        if (![v12 isEqualToData:dcikData])
+        if (![dCopy isEqualToData:dcikData])
         {
           v28 = 0;
-          *a6 = 1;
+          *unknown = 1;
           goto LABEL_29;
         }
 
@@ -390,12 +390,12 @@ LABEL_12:
     v18 = @"com.apple.security.attestation.access";
   }
 
-  if (![v13 callerHasEntitlement:v18 error:a7])
+  if (![v13 callerHasEntitlement:v18 error:error])
   {
     goto LABEL_28;
   }
 
-  v19 = [v13 authContextWithError:a7];
+  v19 = [v13 authContextWithError:error];
   if (!v19)
   {
 LABEL_27:
@@ -407,18 +407,18 @@ LABEL_28:
 
   v20 = objc_opt_class();
   v21 = v13[10];
-  v22 = [v19 ACMHandle];
-  LOBYTE(v20) = [v20 hasSystemKey:v21 ACMHandle:v22];
+  aCMHandle = [v19 ACMHandle];
+  LOBYTE(v20) = [v20 hasSystemKey:v21 ACMHandle:aCMHandle];
 
   if ((v20 & 1) == 0)
   {
-    if (a7)
+    if (error)
     {
       v29 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A278];
       v37[0] = @"Requested system key not supported by the platform";
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      *a7 = [v29 errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:v30];
+      *error = [v29 errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:v30];
     }
 
     v31 = TK_LOG_sepkey_0();
@@ -592,14 +592,14 @@ LABEL_30:
   return v14;
 }
 
-- (id)publicKeyWithError:(id *)a3
+- (id)publicKeyWithError:(id *)error
 {
   AKSSystemKeyType = self->_AKSSystemKeyType;
   AKSSystemKeyGeneration = self->_AKSSystemKeyGeneration;
   v7 = aks_system_key_get_public();
   if (v7)
   {
-    [(TKLocalSEPKey *)self error:a3 withAKSReturn:v7 ACMHandle:0 AKSOperation:0 params:0 message:@"unable to get public key"];
+    [(TKLocalSEPKey *)self error:error withAKSReturn:v7 ACMHandle:0 AKSOperation:0 params:0 message:@"unable to get public key"];
     v8 = 0;
   }
 
@@ -616,35 +616,35 @@ LABEL_30:
   return v8;
 }
 
-- (id)signDigest:(id)a3 error:(id *)a4
+- (id)signDigest:(id)digest error:(id *)error
 {
-  v6 = a3;
-  if (self->_AKSSystemKeyType == 7 && ![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.private.playgrounds-local-signing-allowed" error:a4])
+  digestCopy = digest;
+  if (self->_AKSSystemKeyType == 7 && ![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.private.playgrounds-local-signing-allowed" error:error])
   {
     v16 = 0;
   }
 
   else
   {
-    v7 = [(TKLocalSEPKey *)self authContextWithError:a4];
+    v7 = [(TKLocalSEPKey *)self authContextWithError:error];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 ACMHandle];
-      v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:v9];
+      aCMHandle = [v7 ACMHandle];
+      v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
       AKSSystemKeyType = self->_AKSSystemKeyType;
       AKSSystemKeyGeneration = self->_AKSSystemKeyGeneration;
       [v10 bytes];
       [v10 length];
-      [v6 bytes];
-      [v6 length];
+      [digestCopy bytes];
+      [digestCopy length];
       v13 = aks_system_key_sign();
       if (v13)
       {
         v14 = v13;
-        v15 = [v8 ACMHandle];
-        [(TKLocalSEPKey *)self error:a4 withAKSReturn:v14 ACMHandle:v15 AKSOperation:@"osgn" params:v10 message:@"unable to sign digest"];
+        aCMHandle2 = [v8 ACMHandle];
+        [(TKLocalSEPKey *)self error:error withAKSReturn:v14 ACMHandle:aCMHandle2 AKSOperation:@"osgn" params:v10 message:@"unable to sign digest"];
 
         v16 = 0;
       }
@@ -670,30 +670,30 @@ LABEL_30:
   return v16;
 }
 
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.security.attestation.access" error:a5])
+  keyCopy = key;
+  nonceCopy = nonce;
+  if (![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.security.attestation.access" error:error])
   {
     v21 = 0;
     goto LABEL_51;
   }
 
-  v11 = [(TKLocalSEPKey *)self authContextWithError:a5];
+  v11 = [(TKLocalSEPKey *)self authContextWithError:error];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 ACMHandle];
-    v14 = [(TKLocalSEPKey *)self parametersWithACMHandle:v13];
+    aCMHandle = [v11 ACMHandle];
+    v14 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
-    if (v10)
+    if (nonceCopy)
     {
-      [v14 setData:v10 forKey:4];
+      [v14 setData:nonceCopy forKey:4];
     }
 
-    v15 = v9;
+    v15 = keyCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -728,9 +728,9 @@ LABEL_30:
         goto LABEL_17;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
       }
 
       v33 = TK_LOG_sepkey_0();
@@ -813,9 +813,9 @@ LABEL_17:
         goto LABEL_35;
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
       }
 
       v33 = TK_LOG_sepkey_0();
@@ -866,9 +866,9 @@ LABEL_55:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
-          *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
         }
 
         v33 = TK_LOG_sepkey_0();
@@ -913,8 +913,8 @@ LABEL_35:
 
     if (v18)
     {
-      v35 = [v12 ACMHandle];
-      [(TKLocalSEPKey *)self error:a5 withAKSReturn:v18 ACMHandle:v35 AKSOperation:@"oa" params:v14 message:@"unable to attest key"];
+      aCMHandle2 = [v12 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v18 ACMHandle:aCMHandle2 AKSOperation:@"oa" params:v14 message:@"unable to attest key"];
 
       v21 = 0;
       v15 = v49;
@@ -944,15 +944,15 @@ LABEL_51:
   return v21;
 }
 
-- (BOOL)lifetimeControlWithType:(int64_t)a3 error:(id *)a4
+- (BOOL)lifetimeControlWithType:(int64_t)type error:(id *)error
 {
-  v7 = [(TKLocalSEPKey *)self authContextWithError:a4];
+  v7 = [(TKLocalSEPKey *)self authContextWithError:error];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1 && self->_AKSSystemKeyGeneration == 3)
+      if (type == 1 && self->_AKSSystemKeyGeneration == 3)
       {
         goto LABEL_8;
       }
@@ -961,8 +961,8 @@ LABEL_51:
     else if (self->_AKSSystemKeyGeneration == 2)
     {
 LABEL_8:
-      v10 = [v7 ACMHandle];
-      v11 = [(TKLocalSEPKey *)self parametersWithACMHandle:v10];
+      aCMHandle = [v7 ACMHandle];
+      v11 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
       AKSSystemKeyType = self->_AKSSystemKeyType;
       [v11 bytes];
@@ -981,8 +981,8 @@ LABEL_8:
       }
 
       v14 = v13;
-      v15 = [v8 ACMHandle];
-      [(TKLocalSEPKey *)self error:a4 withAKSReturn:v14 ACMHandle:v15 AKSOperation:@"oko" params:v11 message:@"unable to bump/commit key"];
+      aCMHandle2 = [v8 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v14 ACMHandle:aCMHandle2 AKSOperation:@"oko" params:v11 message:@"unable to bump/commit key"];
 
 LABEL_14:
       v9 = 0;
@@ -991,9 +991,9 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:0];
     }
 
     v11 = TK_LOG_sepkey_0();

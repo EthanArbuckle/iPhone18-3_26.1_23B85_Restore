@@ -1,33 +1,33 @@
 @interface PKTransactionCloudKitDebugDetailsViewController
-- (PKTransactionCloudKitDebugDetailsViewController)initWithTransaction:(id)a3;
-- (id)_cellWithTitleText:(id)a3 valueText:(id)a4;
-- (id)_recordNameForSection:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (PKTransactionCloudKitDebugDetailsViewController)initWithTransaction:(id)transaction;
+- (id)_cellWithTitleText:(id)text valueText:(id)valueText;
+- (id)_recordNameForSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_callCloudRecordObjectDescriptionBlocks;
 - (void)_loadCloudData;
 - (void)_processCloudRecords;
-- (void)cloudRecordObjectDescriptionWithCompletion:(id)a3;
+- (void)cloudRecordObjectDescriptionWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PKTransactionCloudKitDebugDetailsViewController
 
-- (PKTransactionCloudKitDebugDetailsViewController)initWithTransaction:(id)a3
+- (PKTransactionCloudKitDebugDetailsViewController)initWithTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v13.receiver = self;
   v13.super_class = PKTransactionCloudKitDebugDetailsViewController;
   v6 = [(PKTransactionCloudKitDebugDetailsViewController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transaction, a3);
-    v8 = [MEMORY[0x1E69B86F8] sharedInstance];
+    objc_storeStrong(&v6->_transaction, transaction);
+    mEMORY[0x1E69B86F8] = [MEMORY[0x1E69B86F8] sharedInstance];
     cloudStoreService = v7->_cloudStoreService;
-    v7->_cloudStoreService = v8;
+    v7->_cloudStoreService = mEMORY[0x1E69B86F8];
 
     v7->_inBridge = PKBridgeUsesDarkAppearance();
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -45,20 +45,20 @@
   v4.receiver = self;
   v4.super_class = PKTransactionCloudKitDebugDetailsViewController;
   [(PKTransactionCloudKitDebugDetailsViewController *)&v4 viewDidLoad];
-  v3 = [(PKTransactionCloudKitDebugDetailsViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  tableView = [(PKTransactionCloudKitDebugDetailsViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 }
 
-- (void)cloudRecordObjectDescriptionWithCompletion:(id)a3
+- (void)cloudRecordObjectDescriptionWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
+    v7 = completionCopy;
     if (self->_loadingCloudRecordObject)
     {
       cloudStoreObjectHandlers = self->_cloudStoreObjectHandlers;
-      v6 = _Block_copy(v4);
+      v6 = _Block_copy(completionCopy);
       [(NSMutableSet *)cloudStoreObjectHandlers addObject:v6];
     }
 
@@ -68,25 +68,25 @@
       v7[2](v7, v6);
     }
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if (self->_loadingCloudRecordObject || !self->_cloudRecordObject)
   {
     return 1;
   }
 
-  v5 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordNameForSection:a4];
+  v5 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordNameForSection:section];
   v6 = [(NSMutableDictionary *)self->_keysForRecordName objectForKey:v5];
   v7 = [v6 count];
 
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_loadingCloudRecordObject || !self->_cloudRecordObject)
   {
@@ -99,14 +99,14 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (self->_cloudRecordObject)
   {
-    v4 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordForSection:a4];
+    v4 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordForSection:section];
     v5 = MEMORY[0x1E696AEC0];
-    v6 = [v4 recordType];
-    v7 = [v5 stringWithFormat:@"recordType: %@", v6];
+    recordType = [v4 recordType];
+    v7 = [v5 stringWithFormat:@"recordType: %@", recordType];
   }
 
   else
@@ -117,11 +117,11 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (self->_loadingCloudRecordObject)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -135,7 +135,7 @@ LABEL_5:
 
   if (self->_cloudRecordObject)
   {
-    v9 = -[PKTransactionCloudKitDebugDetailsViewController _recordNameForSection:](self, "_recordNameForSection:", [v7 section]);
+    v9 = -[PKTransactionCloudKitDebugDetailsViewController _recordNameForSection:](self, "_recordNameForSection:", [pathCopy section]);
     v11 = [(NSMutableDictionary *)self->_keysForRecordName objectForKey:v9];
     v12 = [v11 objectAtIndex:{objc_msgSend(v8, "row")}];
 
@@ -157,8 +157,8 @@ LABEL_6:
 - (void)_callCloudRecordObjectDescriptionBlocks
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableSet *)self->_cloudStoreObjectHandlers allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSMutableSet *)self->_cloudStoreObjectHandlers allObjects];
+  v4 = [allObjects copy];
 
   [(NSMutableSet *)self->_cloudStoreObjectHandlers removeAllObjects];
   v14 = 0u;
@@ -196,39 +196,39 @@ LABEL_6:
   }
 }
 
-- (id)_cellWithTitleText:(id)a3 valueText:(id)a4
+- (id)_cellWithTitleText:(id)text valueText:(id)valueText
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKTransactionCloudKitDebugDetailsViewController *)self tableView];
-  v9 = [v8 dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
+  valueTextCopy = valueText;
+  textCopy = text;
+  tableView = [(PKTransactionCloudKitDebugDetailsViewController *)self tableView];
+  v9 = [tableView dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTitleValueLabelCellReuseIdentifier"];
 
   [v9 setSelectionStyle:0];
-  v10 = [v9 keyLabel];
-  [v10 setText:v7];
+  keyLabel = [v9 keyLabel];
+  [keyLabel setText:textCopy];
 
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [v10 setTextColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [keyLabel setTextColor:labelColor];
 
   if (self->_inBridge)
   {
     v12 = PKBridgeTextColor();
-    [v10 setTextColor:v12];
+    [keyLabel setTextColor:v12];
   }
 
-  v13 = [v9 valueLabel];
-  [v13 setText:v6];
+  valueLabel = [v9 valueLabel];
+  [valueLabel setText:valueTextCopy];
 
   return v9;
 }
 
-- (id)_recordNameForSection:(int64_t)a3
+- (id)_recordNameForSection:(int64_t)section
 {
-  v3 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordForSection:a3];
-  v4 = [v3 recordID];
-  v5 = [v4 recordName];
+  v3 = [(PKTransactionCloudKitDebugDetailsViewController *)self _recordForSection:section];
+  recordID = [v3 recordID];
+  recordName = [recordID recordName];
 
-  return v5;
+  return recordName;
 }
 
 - (void)_loadCloudData
@@ -240,25 +240,25 @@ LABEL_6:
     if (!self->_loadingCloudRecordObject)
     {
       v5 = [(PKPaymentTransaction *)self->_transaction recordTypesAndNamesForCodingType:2];
-      v6 = [v5 firstObject];
-      v7 = [v6 allValues];
-      v8 = [v7 firstObject];
+      firstObject = [v5 firstObject];
+      allValues = [firstObject allValues];
+      firstObject2 = [allValues firstObject];
 
-      v9 = [MEMORY[0x1E69B8EA8] recordNamePrefix];
-      v10 = [v8 stringByReplacingOccurrencesOfString:v9 withString:&stru_1F3BD7330];
+      recordNamePrefix = [MEMORY[0x1E69B8EA8] recordNamePrefix];
+      v10 = [firstObject2 stringByReplacingOccurrencesOfString:recordNamePrefix withString:&stru_1F3BD7330];
 
       if (v10)
       {
         self->_loadingCloudRecordObject = 1;
         v11 = [objc_alloc(MEMORY[0x1E69B8700]) initWithItemType:1 recordName:v10];
-        v12 = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
-        [v11 setAccountIdentifier:v12];
+        accountIdentifier = [(PKPaymentTransaction *)self->_transaction accountIdentifier];
+        [v11 setAccountIdentifier:accountIdentifier];
 
-        v13 = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
-        [v11 setTransactionSourceIdentifier:v13];
+        transactionSourceIdentifier = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
+        [v11 setTransactionSourceIdentifier:transactionSourceIdentifier];
 
-        v14 = [(PKPaymentTransaction *)self->_transaction altDSID];
-        [v11 setAltDSID:v14];
+        altDSID = [(PKPaymentTransaction *)self->_transaction altDSID];
+        [v11 setAltDSID:altDSID];
 
         [v11 setAccountType:{-[PKPaymentTransaction accountType](self->_transaction, "accountType")}];
         cloudStoreService = self->_cloudStoreService;
@@ -325,7 +325,7 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v35 = self;
+  selfCopy = self;
   obj = self->_records;
   v40 = [(NSArray *)obj countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v40)
@@ -343,35 +343,35 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
 
         v44 = v3;
         v4 = *(*(&v53 + 1) + 8 * v3);
-        v5 = [v4 recordID];
-        v6 = [v5 recordName];
+        recordID = [v4 recordID];
+        recordName = [recordID recordName];
 
-        v7 = [v4 valuesByKey];
-        v8 = [v4 encryptedValues];
-        v9 = [v7 allKeys];
-        v41 = [v8 allKeys];
+        valuesByKey = [v4 valuesByKey];
+        encryptedValues = [v4 encryptedValues];
+        allKeys = [valuesByKey allKeys];
+        allKeys2 = [encryptedValues allKeys];
         v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
         [v10 addObject:@"recordName"];
-        v43 = v6;
-        [v11 addObject:v6];
+        v43 = recordName;
+        [v11 addObject:recordName];
         [v10 addObject:@"creationDate"];
-        v12 = [v4 creationDate];
-        [v11 addObject:v12];
+        creationDate = [v4 creationDate];
+        [v11 addObject:creationDate];
 
         [v10 addObject:@"modificationDate"];
-        v13 = [v4 modificationDate];
-        [v11 addObject:v13];
+        modificationDate = [v4 modificationDate];
+        [v11 addObject:modificationDate];
 
         [v10 addObject:@"modifiedByDevice"];
-        v14 = [v4 modifiedByDevice];
-        [v11 addObject:v14];
+        modifiedByDevice = [v4 modifiedByDevice];
+        [v11 addObject:modifiedByDevice];
 
         v51 = 0u;
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v15 = v9;
+        v15 = allKeys;
         v16 = [v15 countByEnumeratingWithState:&v49 objects:v58 count:16];
         if (v16)
         {
@@ -387,7 +387,7 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
               }
 
               v20 = *(*(&v49 + 1) + 8 * i);
-              v21 = [v7 objectForKey:v20];
+              v21 = [valuesByKey objectForKey:v20];
               [v10 addObject:v20];
               [v11 addObject:v21];
             }
@@ -404,7 +404,7 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v22 = v41;
+        v22 = allKeys2;
         v23 = [v22 countByEnumeratingWithState:&v45 objects:v57 count:16];
         if (v23)
         {
@@ -420,7 +420,7 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
               }
 
               v27 = *(*(&v45 + 1) + 8 * j);
-              v28 = [v8 objectForKey:v27];
+              v28 = [encryptedValues objectForKey:v27];
               [v10 addObject:v27];
               [v11 addObject:v28];
             }
@@ -448,12 +448,12 @@ void __65__PKTransactionCloudKitDebugDetailsViewController__loadCloudData__block
   }
 
   v31 = [v39 copy];
-  keysForRecordName = v35->_keysForRecordName;
-  v35->_keysForRecordName = v31;
+  keysForRecordName = selfCopy->_keysForRecordName;
+  selfCopy->_keysForRecordName = v31;
 
   v33 = [v38 copy];
-  valuesForRecordName = v35->_valuesForRecordName;
-  v35->_valuesForRecordName = v33;
+  valuesForRecordName = selfCopy->_valuesForRecordName;
+  selfCopy->_valuesForRecordName = v33;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface SBSystemActionBannerTransitionAnimator
 + (id)settings;
-+ (void)performAnimationsForTransition:(id)a3 completion:(id)a4;
-- (BOOL)_viewHasGaussianBlurFilter:(id)a3;
++ (void)performAnimationsForTransition:(id)transition completion:(id)completion;
+- (BOOL)_viewHasGaussianBlurFilter:(id)filter;
 - (id)settings;
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3 inputRadius:(double)a4;
-- (void)_removeBlurFilterFromView:(id)a3;
-- (void)performActionsForTransition:(id)a3;
-- (void)prepareForTransition:(id)a3;
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed inputRadius:(double)radius;
+- (void)_removeBlurFilterFromView:(id)view;
+- (void)performActionsForTransition:(id)transition;
+- (void)prepareForTransition:(id)transition;
 @end
 
 @implementation SBSystemActionBannerTransitionAnimator
@@ -30,14 +30,14 @@ void __50__SBSystemActionBannerTransitionAnimator_settings__block_invoke()
   settings_settings = v0;
 }
 
-+ (void)performAnimationsForTransition:(id)a3 completion:(id)a4
++ (void)performAnimationsForTransition:(id)transition completion:(id)completion
 {
   v6 = MEMORY[0x277D75D18];
-  v7 = a4;
-  v8 = a3;
-  v10 = [a1 settings];
-  v9 = [v10 customBannerTransitionStyleSystemAction];
-  [v6 sb_animateWithSettings:v9 mode:3 animations:v8 completion:v7];
+  completionCopy = completion;
+  transitionCopy = transition;
+  settings = [self settings];
+  customBannerTransitionStyleSystemAction = [settings customBannerTransitionStyleSystemAction];
+  [v6 sb_animateWithSettings:customBannerTransitionStyleSystemAction mode:3 animations:transitionCopy completion:completionCopy];
 }
 
 - (id)settings
@@ -47,23 +47,23 @@ void __50__SBSystemActionBannerTransitionAnimator_settings__block_invoke()
   return [v2 settings];
 }
 
-- (void)prepareForTransition:(id)a3
+- (void)prepareForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 transitionView];
-  v6 = [(BNBannerTransitionAnimator *)self isPresenting];
+  transitionCopy = transition;
+  transitionView = [transitionCopy transitionView];
+  isPresenting = [(BNBannerTransitionAnimator *)self isPresenting];
   v7 = 0.0;
-  if (v6)
+  if (isPresenting)
   {
     v7 = 20.0;
   }
 
-  [(SBSystemActionBannerTransitionAnimator *)self _addGaussianBlurToViewIfNeeded:v5 inputRadius:v7];
+  [(SBSystemActionBannerTransitionAnimator *)self _addGaussianBlurToViewIfNeeded:transitionView inputRadius:v7];
 
   if ([(BNBannerTransitionAnimator *)self isPresenting])
   {
-    v8 = [v4 transitionView];
-    [v8 frame];
+    transitionView2 = [transitionCopy transitionView];
+    [transitionView2 frame];
     v10 = v9;
     v12 = v11;
     v13 = *MEMORY[0x277CBF348];
@@ -71,86 +71,86 @@ void __50__SBSystemActionBannerTransitionAnimator_settings__block_invoke()
 
     if (v10 == v13 && v12 == v14)
     {
-      [v4 finalContentFrame];
+      [transitionCopy finalContentFrame];
       v17 = v16;
-      [v4 finalFrame];
+      [transitionCopy finalFrame];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24 - v17;
-      v26 = [v4 transitionView];
-      [v26 setFrame:{v19, v25, v21, v23}];
+      transitionView3 = [transitionCopy transitionView];
+      [transitionView3 setFrame:{v19, v25, v21, v23}];
 
-      v27 = [v4 transitionView];
-      [v27 setAlpha:0.0];
+      transitionView4 = [transitionCopy transitionView];
+      [transitionView4 setAlpha:0.0];
 
-      v28 = [v4 transitionView];
+      transitionView5 = [transitionCopy transitionView];
       CGAffineTransformMakeScale(&v30, 0.6, 0.6);
-      [v28 setTransform:&v30];
+      [transitionView5 setTransform:&v30];
 
       [(UIViewFloatAnimatableProperty *)self->_blurProgressProperty setValue:1.0];
     }
   }
 
-  v29 = [v4 transitionView];
-  [v29 setClipsToBounds:0];
+  transitionView6 = [transitionCopy transitionView];
+  [transitionView6 setClipsToBounds:0];
 }
 
-- (void)performActionsForTransition:(id)a3
+- (void)performActionsForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 transitionView];
+  transitionCopy = transition;
+  transitionView = [transitionCopy transitionView];
   if ([(BNBannerTransitionAnimator *)self isPresenting])
   {
-    [v5 setAlpha:1.0];
+    [transitionView setAlpha:1.0];
     v6 = *(MEMORY[0x277CBF2C0] + 16);
     *&v27.a = *MEMORY[0x277CBF2C0];
     *&v27.c = v6;
     *&v27.tx = *(MEMORY[0x277CBF2C0] + 32);
-    [v5 setTransform:&v27];
-    [v4 finalFrame];
+    [transitionView setTransform:&v27];
+    [transitionCopy finalFrame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    [v5 setFrame:{v8, v10, v12, v14}];
-    v15 = [v5 layer];
-    [v15 setValue:&unk_28336F180 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [transitionView setFrame:{v8, v10, v12, v14}];
+    layer = [transitionView layer];
+    [layer setValue:&unk_28336F180 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
     [(UIViewFloatAnimatableProperty *)self->_blurProgressProperty setValue:0.0];
   }
 
   else
   {
-    [v4 initialContentFrame];
+    [transitionCopy initialContentFrame];
     v17 = v16;
-    [v4 initialFrame];
+    [transitionCopy initialFrame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    [v5 setFrame:{v19, v21 - v17, v23, v25}];
-    [v5 setAlpha:0.0];
+    [transitionView setFrame:{v19, v21 - v17, v23, v25}];
+    [transitionView setAlpha:0.0];
     CGAffineTransformMakeScale(&v27, 0.6, 0.6);
-    [v5 setTransform:&v27];
-    v26 = [v5 layer];
-    [v26 setValue:&unk_28336F190 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [transitionView setTransform:&v27];
+    layer2 = [transitionView layer];
+    [layer2 setValue:&unk_28336F190 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 
-- (BOOL)_viewHasGaussianBlurFilter:(id)a3
+- (BOOL)_viewHasGaussianBlurFilter:(id)filter
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 layer];
-  v4 = [v3 filters];
+  layer = [filter layer];
+  filters = [layer filters];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -162,11 +162,11 @@ void __50__SBSystemActionBannerTransitionAnimator_settings__block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filters);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) name];
-        v11 = [v10 isEqualToString:v8];
+        name = [*(*(&v14 + 1) + 8 * i) name];
+        v11 = [name isEqualToString:v8];
 
         if (v11)
         {
@@ -175,7 +175,7 @@ void __50__SBSystemActionBannerTransitionAnimator_settings__block_invoke()
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -191,31 +191,31 @@ LABEL_11:
   return v12;
 }
 
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3 inputRadius:(double)a4
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed inputRadius:(double)radius
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![(SBSystemActionBannerTransitionAnimator *)self _viewHasGaussianBlurFilter:v6])
+  neededCopy = needed;
+  if (![(SBSystemActionBannerTransitionAnimator *)self _viewHasGaussianBlurFilter:neededCopy])
   {
     v7 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v7 setName:@"gaussianBlur"];
     [v7 setValue:@"default" forKey:@"inputQuality"];
     [v7 setValue:@"default" forKey:@"inputIntermediateBitDepth"];
-    v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
     [v7 setValue:v8 forKey:@"inputRadius"];
 
     v9 = MEMORY[0x277CBEC28];
     [v7 setValue:MEMORY[0x277CBEC28] forKey:@"inputNormalizeEdges"];
     [v7 setValue:v9 forKey:@"inputHardEdges"];
-    v10 = [v6 layer];
-    v11 = [v10 filters];
-    v12 = [v11 mutableCopy];
+    layer = [neededCopy layer];
+    filters = [layer filters];
+    v12 = [filters mutableCopy];
 
     [v12 addObject:v7];
-    v13 = [v6 layer];
+    layer2 = [neededCopy layer];
     v26[0] = v7;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-    [v13 setFilters:v14];
+    [layer2 setFilters:v14];
   }
 
   if ([(BNBannerTransitionAnimator *)self isPresenting])
@@ -238,7 +238,7 @@ LABEL_11:
     v19[3] = &unk_2783A8D08;
     objc_copyWeak(&v21, &from);
     objc_copyWeak(&v22, &location);
-    v20 = v6;
+    v20 = neededCopy;
     [v17 _createTransformerWithInputAnimatableProperties:v18 presentationValueChangedCallback:v19];
 
     objc_destroyWeak(&v22);
@@ -273,10 +273,10 @@ void __85__SBSystemActionBannerTransitionAnimator__addGaussianBlurToViewIfNeeded
   }
 }
 
-- (void)_removeBlurFilterFromView:(id)a3
+- (void)_removeBlurFilterFromView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 setFilters:0];
+  layer = [view layer];
+  [layer setFilters:0];
 }
 
 @end

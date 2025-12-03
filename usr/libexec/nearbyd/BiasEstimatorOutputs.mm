@@ -1,20 +1,20 @@
 @interface BiasEstimatorOutputs
-- (BOOL)isEqual:(id)a3;
-- (BiasEstimatorOutputs)initWithBiasEstimatorOutputs:(id)a3;
-- (BiasEstimatorOutputs)initWithCoder:(id)a3;
-- (BiasEstimatorOutputs)initWithOuputProbabilities:(id)a3 rawRange:(double)a4 correctedRange:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BiasEstimatorOutputs)initWithBiasEstimatorOutputs:(id)outputs;
+- (BiasEstimatorOutputs)initWithCoder:(id)coder;
+- (BiasEstimatorOutputs)initWithOuputProbabilities:(id)probabilities rawRange:(double)range correctedRange:(double)correctedRange;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)populateOrderedBiasEstimatorOutputs;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BiasEstimatorOutputs
 
-- (BiasEstimatorOutputs)initWithOuputProbabilities:(id)a3 rawRange:(double)a4 correctedRange:(double)a5
+- (BiasEstimatorOutputs)initWithOuputProbabilities:(id)probabilities rawRange:(double)range correctedRange:(double)correctedRange
 {
-  v8 = a3;
+  probabilitiesCopy = probabilities;
   v22.receiver = self;
   v22.super_class = BiasEstimatorOutputs;
   v9 = [(BiasEstimatorOutputs *)&v22 init];
@@ -25,7 +25,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = v8;
+    v11 = probabilitiesCopy;
     v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v12)
     {
@@ -56,17 +56,17 @@
     }
 
     [(BiasEstimatorOutputs *)v9 setOutProbabilities:v10];
-    [(BiasEstimatorOutputs *)v9 setRawRange:a4];
-    [(BiasEstimatorOutputs *)v9 setCorrectedRange:a5];
+    [(BiasEstimatorOutputs *)v9 setRawRange:range];
+    [(BiasEstimatorOutputs *)v9 setCorrectedRange:correctedRange];
   }
 
   return v9;
 }
 
-- (BiasEstimatorOutputs)initWithBiasEstimatorOutputs:(id)a3
+- (BiasEstimatorOutputs)initWithBiasEstimatorOutputs:(id)outputs
 {
-  v5 = a3;
-  if (!v5)
+  outputsCopy = outputs;
+  if (!outputsCopy)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"UWBSignalFeatures.mm" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"outputs"}];
@@ -77,42 +77,42 @@
   v6 = [(BiasEstimatorOutputs *)&v14 init];
   if (v6)
   {
-    v7 = [v5 outProbabilities];
-    v8 = [v7 copy];
+    outProbabilities = [outputsCopy outProbabilities];
+    v8 = [outProbabilities copy];
     outProbabilities = v6->_outProbabilities;
     v6->_outProbabilities = v8;
 
-    [v5 rawRange];
+    [outputsCopy rawRange];
     v6->_rawRange = v10;
-    [v5 correctedRange];
+    [outputsCopy correctedRange];
     v6->_correctedRange = v11;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithBiasEstimatorOutputs:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_outProbabilities forKey:@"outputProbabilities"];
-  [v4 encodeDouble:@"rawRange" forKey:self->_rawRange];
-  [v4 encodeDouble:@"correctedRange" forKey:self->_correctedRange];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_outProbabilities forKey:@"outputProbabilities"];
+  [coderCopy encodeDouble:@"rawRange" forKey:self->_rawRange];
+  [coderCopy encodeDouble:@"correctedRange" forKey:self->_correctedRange];
 }
 
-- (BiasEstimatorOutputs)initWithCoder:(id)a3
+- (BiasEstimatorOutputs)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"outputProbabilities"];
-  [v4 decodeDoubleForKey:@"rawRange"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"outputProbabilities"];
+  [coderCopy decodeDoubleForKey:@"rawRange"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"correctedRange"];
+  [coderCopy decodeDoubleForKey:@"correctedRange"];
   v9 = v8;
   v13.receiver = self;
   v13.super_class = BiasEstimatorOutputs;
@@ -128,13 +128,13 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -153,9 +153,9 @@ LABEL_12:
     outProbabilities = self->_outProbabilities;
     if (!outProbabilities)
     {
-      v14 = [(BiasEstimatorOutputs *)v6 outProbabilities];
+      outProbabilities = [(BiasEstimatorOutputs *)v6 outProbabilities];
 
-      if (!v14)
+      if (!outProbabilities)
       {
         v16 = 1;
         goto LABEL_7;
@@ -164,8 +164,8 @@ LABEL_12:
       outProbabilities = self->_outProbabilities;
     }
 
-    v15 = [(BiasEstimatorOutputs *)v6 outProbabilities];
-    v16 = [(NSArray *)outProbabilities isEqualToArray:v15];
+    outProbabilities2 = [(BiasEstimatorOutputs *)v6 outProbabilities];
+    v16 = [(NSArray *)outProbabilities isEqualToArray:outProbabilities2];
 
 LABEL_7:
     v17 = rawRange == v9;

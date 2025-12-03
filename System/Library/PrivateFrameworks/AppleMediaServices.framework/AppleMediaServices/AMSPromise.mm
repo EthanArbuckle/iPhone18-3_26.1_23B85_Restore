@@ -1,22 +1,22 @@
 @interface AMSPromise
-+ (AMSPromise)promiseWithAll:(id)a3 timeout:(double)a4;
-+ (AMSPromise)promiseWithAny:(id)a3 timeout:(double)a4;
-+ (AMSPromise)promiseWithError:(id)a3;
-+ (AMSPromise)promiseWithErrorCode:(int64_t)a3 title:(id)a4 message:(id)a5 underlyingError:(id)a6;
-+ (AMSPromise)promiseWithFlattenedPromises:(id)a3;
-+ (AMSPromise)promiseWithPromiseResult:(id)a3;
-+ (AMSPromise)promiseWithResult:(id)a3;
-+ (AMSPromise)promiseWithSome:(id)a3 timeout:(double)a4;
-+ (BOOL)_errorIsCanceledError:(id)a3;
-+ (BOOL)_errorIsTimeOutError:(id)a3;
-+ (id)promiseFinishedWithDefaultErrorOrResult:(id)a3;
-+ (void)_configureFlattenedPromise:(id)a3 withPromises:(id)a4 results:(id)a5 previousError:(id)a6 currentPromiseIndex:(unint64_t)a7;
-+ (void)_enumeratePromises:(id)a3 startingAt:(int64_t)a4 block:(id)a5;
++ (AMSPromise)promiseWithAll:(id)all timeout:(double)timeout;
++ (AMSPromise)promiseWithAny:(id)any timeout:(double)timeout;
++ (AMSPromise)promiseWithError:(id)error;
++ (AMSPromise)promiseWithErrorCode:(int64_t)code title:(id)title message:(id)message underlyingError:(id)error;
++ (AMSPromise)promiseWithFlattenedPromises:(id)promises;
++ (AMSPromise)promiseWithPromiseResult:(id)result;
++ (AMSPromise)promiseWithResult:(id)result;
++ (AMSPromise)promiseWithSome:(id)some timeout:(double)timeout;
++ (BOOL)_errorIsCanceledError:(id)error;
++ (BOOL)_errorIsTimeOutError:(id)error;
++ (id)promiseFinishedWithDefaultErrorOrResult:(id)result;
++ (void)_configureFlattenedPromise:(id)promise withPromises:(id)promises results:(id)results previousError:(id)error currentPromiseIndex:(unint64_t)index;
++ (void)_enumeratePromises:(id)promises startingAt:(int64_t)at block:(id)block;
 - (AMSPromise)init;
-- (AMSPromise)initWithPromiseResult:(id)a3;
-- (AMSPromise)initWithTimeout:(double)a3;
-- (AMSPromise)promiseWithTimeout:(double)a3;
-- (BOOL)finishWithPromiseResult:(id)a3;
+- (AMSPromise)initWithPromiseResult:(id)result;
+- (AMSPromise)initWithTimeout:(double)timeout;
+- (AMSPromise)promiseWithTimeout:(double)timeout;
+- (BOOL)finishWithPromiseResult:(id)result;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)isFinishedWithLock;
@@ -24,28 +24,28 @@
 - (NSCondition)condition;
 - (id)BOOLCompletionHandlerAdapter;
 - (id)binaryPromiseAdapter;
-- (id)binaryPromiseAdapterForClass:(Class)a3;
-- (id)catchWithBinaryPromiseBlock:(id)a3;
-- (id)catchWithBlock:(id)a3;
+- (id)binaryPromiseAdapterForClass:(Class)class;
+- (id)catchWithBinaryPromiseBlock:(id)block;
+- (id)catchWithBlock:(id)block;
 - (id)completionHandlerAdapter;
-- (id)continueWithBinaryPromiseBlock:(id)a3;
-- (id)continueWithBlock:(id)a3;
+- (id)continueWithBinaryPromiseBlock:(id)block;
+- (id)continueWithBlock:(id)block;
 - (id)errorOnlyCompletionHandlerAdapter;
 - (id)mutablePromiseAdapter;
 - (id)nilValueCompletionHandlerAdapter;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultWithError:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)thenWithBinaryPromiseBlock:(id)a3;
-- (id)thenWithBlock:(id)a3;
-- (id)valueFromAddingBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addBlock:(id)a3 orCallWithResult:(id)a4;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)flushCompletionBlocksWithResult:(id)a3;
-- (void)resultBeforeDate:(id)a3 completion:(id)a4;
-- (void)resultWithTimeout:(double)a3 completion:(id)a4;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultWithError:(id *)error;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)thenWithBinaryPromiseBlock:(id)block;
+- (id)thenWithBlock:(id)block;
+- (id)valueFromAddingBlock:(id)block orCallWithResult:(id)result;
+- (void)addBlock:(id)block orCallWithResult:(id)result;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)flushCompletionBlocksWithResult:(id)result;
+- (void)resultBeforeDate:(id)date completion:(id)completion;
+- (void)resultWithTimeout:(double)timeout completion:(id)completion;
 - (void)stopRetainingSelf;
 @end
 
@@ -53,20 +53,20 @@
 
 - (BOOL)isFinishedWithLock
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_stateLock);
-  v3 = [(AMSPromise *)v2 promiseResult];
-  LOBYTE(v2) = v3 != 0;
+  promiseResult = [(AMSPromise *)selfCopy promiseResult];
+  LOBYTE(selfCopy) = promiseResult != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isFinished
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(AMSPromise *)self isFinishedWithLock];
+  isFinishedWithLock = [(AMSPromise *)self isFinishedWithLock];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return isFinishedWithLock;
 }
 
 - (AMSPromise)init
@@ -97,9 +97,9 @@
 
 - (void)stopRetainingSelf
 {
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
-  [(AMSPromise *)v3 setRetainedSelf:0];
+  [(AMSPromise *)selfCopy setRetainedSelf:0];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
@@ -121,9 +121,9 @@
   os_unfair_lock_lock_with_options();
   if ([(AMSPromise *)self isFinishedWithLock])
   {
-    v3 = [(AMSPromise *)self promiseResult];
-    v4 = [v3 error];
-    v5 = [AMSPromise _errorIsTimeOutError:v4];
+    promiseResult = [(AMSPromise *)self promiseResult];
+    error = [promiseResult error];
+    v5 = [AMSPromise _errorIsTimeOutError:error];
   }
 
   else
@@ -140,9 +140,9 @@
   os_unfair_lock_lock_with_options();
   if ([(AMSPromise *)self isFinishedWithLock])
   {
-    v3 = [(AMSPromise *)self promiseResult];
-    v4 = [v3 error];
-    v5 = [AMSPromise _errorIsCanceledError:v4];
+    promiseResult = [(AMSPromise *)self promiseResult];
+    error = [promiseResult error];
+    v5 = [AMSPromise _errorIsCanceledError:error];
   }
 
   else
@@ -169,100 +169,100 @@
   return v3;
 }
 
-- (AMSPromise)initWithTimeout:(double)a3
+- (AMSPromise)initWithTimeout:(double)timeout
 {
   v4 = [(AMSPromise *)self init];
   if (v4)
   {
-    [AMSMutablePromise startTimeoutForPromise:v4 timeout:a3];
+    [AMSMutablePromise startTimeoutForPromise:v4 timeout:timeout];
   }
 
   return v4;
 }
 
-- (AMSPromise)initWithPromiseResult:(id)a3
+- (AMSPromise)initWithPromiseResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = AMSPromise;
   v6 = [(AMSPromise *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_promiseResult, a3);
+    objc_storeStrong(&v6->_promiseResult, result);
     v7->_stateLock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-+ (AMSPromise)promiseWithErrorCode:(int64_t)a3 title:(id)a4 message:(id)a5 underlyingError:(id)a6
++ (AMSPromise)promiseWithErrorCode:(int64_t)code title:(id)title message:(id)message underlyingError:(id)error
 {
-  v7 = AMSError(a3, a4, a5, a6);
-  v8 = [a1 promiseWithError:v7];
+  v7 = AMSError(code, title, message, error);
+  v8 = [self promiseWithError:v7];
 
   return v8;
 }
 
-+ (AMSPromise)promiseWithError:(id)a3
++ (AMSPromise)promiseWithError:(id)error
 {
-  v4 = a3;
-  if (AMSPromiseClassCompatibleWithFinishedPromise(a1))
+  errorCopy = error;
+  if (AMSPromiseClassCompatibleWithFinishedPromise(self))
   {
-    v5 = [AMSFinishedPromise promiseWithError:v4];
+    v5 = [AMSFinishedPromise promiseWithError:errorCopy];
   }
 
   else
   {
-    v5 = objc_alloc_init(a1);
-    [AMSMutablePromise finishPromise:v5 withError:v4];
+    v5 = objc_alloc_init(self);
+    [AMSMutablePromise finishPromise:v5 withError:errorCopy];
   }
 
   return v5;
 }
 
-+ (AMSPromise)promiseWithResult:(id)a3
++ (AMSPromise)promiseWithResult:(id)result
 {
-  v4 = a3;
-  if (AMSPromiseClassCompatibleWithFinishedPromise(a1))
+  resultCopy = result;
+  if (AMSPromiseClassCompatibleWithFinishedPromise(self))
   {
-    v5 = [AMSFinishedPromise promiseWithResult:v4];
+    v5 = [AMSFinishedPromise promiseWithResult:resultCopy];
   }
 
   else
   {
-    v5 = objc_alloc_init(a1);
-    [AMSMutablePromise finishPromise:v5 withResult:v4];
+    v5 = objc_alloc_init(self);
+    [AMSMutablePromise finishPromise:v5 withResult:resultCopy];
   }
 
   return v5;
 }
 
-+ (AMSPromise)promiseWithPromiseResult:(id)a3
++ (AMSPromise)promiseWithPromiseResult:(id)result
 {
-  v4 = a3;
-  if (AMSPromiseClassCompatibleWithFinishedPromise(a1))
+  resultCopy = result;
+  if (AMSPromiseClassCompatibleWithFinishedPromise(self))
   {
-    v5 = [AMSFinishedPromise promiseWithPromiseResult:v4];
+    v5 = [AMSFinishedPromise promiseWithPromiseResult:resultCopy];
   }
 
   else
   {
-    v5 = objc_alloc_init(a1);
-    v6 = [v4 result];
-    v7 = [v4 error];
-    [AMSMutablePromise finishPromise:v5 withResult:v6 error:v7];
+    v5 = objc_alloc_init(self);
+    result = [resultCopy result];
+    error = [resultCopy error];
+    [AMSMutablePromise finishPromise:v5 withResult:result error:error];
   }
 
   return v5;
 }
 
-+ (AMSPromise)promiseWithAll:(id)a3 timeout:(double)a4
++ (AMSPromise)promiseWithAll:(id)all timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [[AMSMutablePromise alloc] initWithTimeout:a4];
+  allCopy = all;
+  v7 = [[AMSMutablePromise alloc] initWithTimeout:timeout];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v6 count])
+  if ([allCopy count])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -271,7 +271,7 @@
     v14 = v8;
     v9 = v7;
     v15 = v9;
-    [a1 _enumeratePromises:v6 startingAt:0 block:v13];
+    [self _enumeratePromises:allCopy startingAt:0 block:v13];
     v10 = v15;
     v11 = v9;
   }
@@ -324,18 +324,18 @@ LABEL_11:
   return v9;
 }
 
-+ (AMSPromise)promiseWithAny:(id)a3 timeout:(double)a4
++ (AMSPromise)promiseWithAny:(id)any timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [[AMSMutablePromise alloc] initWithTimeout:a4];
-  if ([v6 count])
+  anyCopy = any;
+  v7 = [[AMSMutablePromise alloc] initWithTimeout:timeout];
+  if ([anyCopy count])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __37__AMSPromise_promiseWithAny_timeout___block_invoke;
     v10[3] = &unk_1E73BACD0;
     v11 = v7;
-    [a1 _enumeratePromises:v6 startingAt:0 block:v10];
+    [self _enumeratePromises:anyCopy startingAt:0 block:v10];
   }
 
   else
@@ -365,22 +365,22 @@ uint64_t __37__AMSPromise_promiseWithAny_timeout___block_invoke(uint64_t a1, voi
   return v9;
 }
 
-+ (AMSPromise)promiseWithFlattenedPromises:(id)a3
++ (AMSPromise)promiseWithFlattenedPromises:(id)promises
 {
-  v3 = a3;
+  promisesCopy = promises;
   v4 = objc_alloc_init(AMSMutablePromise);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [AMSPromise _configureFlattenedPromise:v4 withPromises:v3 results:v5 previousError:0 currentPromiseIndex:0];
+  [AMSPromise _configureFlattenedPromise:v4 withPromises:promisesCopy results:v5 previousError:0 currentPromiseIndex:0];
 
   return v4;
 }
 
-+ (AMSPromise)promiseWithSome:(id)a3 timeout:(double)a4
++ (AMSPromise)promiseWithSome:(id)some timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [[AMSMutablePromise alloc] initWithTimeout:a4];
+  someCopy = some;
+  v7 = [[AMSMutablePromise alloc] initWithTimeout:timeout];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v6 count])
+  if ([someCopy count])
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v15[0] = MEMORY[0x1E69E9820];
@@ -392,7 +392,7 @@ uint64_t __37__AMSPromise_promiseWithAny_timeout___block_invoke(uint64_t a1, voi
     v10 = v7;
     v18 = v10;
     v11 = v9;
-    [a1 _enumeratePromises:v6 startingAt:0 block:v15];
+    [self _enumeratePromises:someCopy startingAt:0 block:v15];
     v12 = v18;
     v13 = v10;
   }
@@ -445,9 +445,9 @@ uint64_t __38__AMSPromise_promiseWithSome_timeout___block_invoke(id *a1, void *a
   return v11;
 }
 
-- (AMSPromise)promiseWithTimeout:(double)a3
+- (AMSPromise)promiseWithTimeout:(double)timeout
 {
-  v4 = [[AMSMutablePromise alloc] initWithTimeout:a3];
+  v4 = [[AMSMutablePromise alloc] initWithTimeout:timeout];
   [AMSMutablePromise finishPromise:v4 withPromise:self];
 
   return v4;
@@ -461,16 +461,16 @@ id __42__AMSPromise_unwrappedPromiseWithPromise___block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(AMSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __28__AMSPromise_addErrorBlock___block_invoke;
   v11[3] = &unk_1E73B36D0;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__AMSPromise_addErrorBlock___block_invoke_2;
@@ -482,16 +482,16 @@ id __42__AMSPromise_unwrappedPromiseWithPromise___block_invoke(uint64_t a1, void
   [(AMSPromise *)self addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(AMSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __29__AMSPromise_addFinishBlock___block_invoke;
   v11[3] = &unk_1E73B36D0;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__AMSPromise_addFinishBlock___block_invoke_2;
@@ -503,16 +503,16 @@ id __42__AMSPromise_unwrappedPromiseWithPromise___block_invoke(uint64_t a1, void
   [(AMSPromise *)self addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AMSPromise *)self completionBlocks];
+  blockCopy = block;
+  completionBlocks = [(AMSPromise *)self completionBlocks];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __30__AMSPromise_addSuccessBlock___block_invoke;
   v11[3] = &unk_1E73B36D0;
-  v12 = v5;
-  v13 = v4;
+  v12 = completionBlocks;
+  v13 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __30__AMSPromise_addSuccessBlock___block_invoke_2;
@@ -524,32 +524,32 @@ id __42__AMSPromise_unwrappedPromiseWithPromise___block_invoke(uint64_t a1, void
   [(AMSPromise *)self addBlock:v11 orCallWithResult:v8];
 }
 
-- (void)resultBeforeDate:(id)a3 completion:(id)a4
+- (void)resultBeforeDate:(id)date completion:(id)completion
 {
-  v6 = a4;
-  [a3 timeIntervalSinceNow];
+  completionCopy = completion;
+  [date timeIntervalSinceNow];
   v7 = [(AMSPromise *)self promiseWithTimeout:?];
-  [v7 resultWithCompletion:v6];
+  [v7 resultWithCompletion:completionCopy];
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   +[AMSConcurrency logFaultFromSwiftConcurrencyOnInternalBuild];
   os_unfair_lock_lock(&self->_stateLock);
   if ([(AMSPromise *)self isFinishedWithLock])
   {
-    v7 = [(AMSPromise *)self promiseResult];
+    promiseResult = [(AMSPromise *)self promiseResult];
     os_unfair_lock_unlock(&self->_stateLock);
 LABEL_11:
-    v13 = [(NSCondition *)v7 result];
+    result = [(NSCondition *)promiseResult result];
 
-    if (a4 && !v13)
+    if (error && !result)
     {
-      *a4 = [(NSCondition *)v7 error];
+      *error = [(NSCondition *)promiseResult error];
     }
 
-    v11 = [(NSCondition *)v7 result];
+    result2 = [(NSCondition *)promiseResult result];
   }
 
   else
@@ -564,104 +564,104 @@ LABEL_11:
       condition = self->_condition;
     }
 
-    v7 = condition;
+    promiseResult = condition;
     os_unfair_lock_unlock(&self->_stateLock);
-    [(NSCondition *)v7 lock];
+    [(NSCondition *)promiseResult lock];
     do
     {
       if ([(AMSPromise *)self conditionHasSignaled])
       {
-        [(NSCondition *)v7 unlock];
+        [(NSCondition *)promiseResult unlock];
         os_unfair_lock_lock_with_options();
-        v12 = [(AMSPromise *)self promiseResult];
+        promiseResult2 = [(AMSPromise *)self promiseResult];
         os_unfair_lock_unlock(&self->_stateLock);
 
-        v7 = v12;
+        promiseResult = promiseResult2;
         goto LABEL_11;
       }
     }
 
-    while ([(NSCondition *)v7 waitUntilDate:v6]);
-    [(NSCondition *)v7 unlock];
-    if (a4)
+    while ([(NSCondition *)promiseResult waitUntilDate:dateCopy]);
+    [(NSCondition *)promiseResult unlock];
+    if (error)
     {
       AMSError(1, @"Promise timed out", 0, 0);
-      *a4 = v11 = 0;
+      *error = result2 = 0;
     }
 
     else
     {
-      v11 = 0;
+      result2 = 0;
     }
   }
 
-  return v11;
+  return result2;
 }
 
-- (id)resultWithError:(id *)a3
+- (id)resultWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [(AMSPromise *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [(AMSPromise *)self resultBeforeDate:distantFuture error:error];
 
   return v6;
 }
 
-- (void)resultWithTimeout:(double)a3 completion:(id)a4
+- (void)resultWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(AMSPromise *)self promiseWithTimeout:a3];
-  [v7 resultWithCompletion:v6];
+  completionCopy = completion;
+  v7 = [(AMSPromise *)self promiseWithTimeout:timeout];
+  [v7 resultWithCompletion:completionCopy];
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(AMSPromise *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(AMSPromise *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (void)addBlock:(id)a3 orCallWithResult:(id)a4
+- (void)addBlock:(id)block orCallWithResult:(id)result
 {
-  v10 = a3;
-  v6 = a4;
+  blockCopy = block;
+  resultCopy = result;
   os_unfair_lock_lock_with_options();
-  v7 = [(AMSPromise *)self promiseResult];
-  if (v7)
+  promiseResult = [(AMSPromise *)self promiseResult];
+  if (promiseResult)
   {
     os_unfair_lock_unlock(&self->_stateLock);
     v8 = objc_autoreleasePoolPush();
-    v6[2](v6, v7);
+    resultCopy[2](resultCopy, promiseResult);
     objc_autoreleasePoolPop(v8);
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10[2]();
+    blockCopy[2]();
     objc_autoreleasePoolPop(v9);
     os_unfair_lock_unlock(&self->_stateLock);
   }
 }
 
-- (id)valueFromAddingBlock:(id)a3 orCallWithResult:(id)a4
+- (id)valueFromAddingBlock:(id)block orCallWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  resultCopy = result;
   os_unfair_lock_lock_with_options();
-  v8 = [(AMSPromise *)self promiseResult];
-  if (v8)
+  promiseResult = [(AMSPromise *)self promiseResult];
+  if (promiseResult)
   {
     os_unfair_lock_unlock(&self->_stateLock);
     v9 = objc_autoreleasePoolPush();
-    v10 = v7[2](v7, v8);
+    v10 = resultCopy[2](resultCopy, promiseResult);
     objc_autoreleasePoolPop(v9);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v10 = v6[2](v6);
+    v10 = blockCopy[2](blockCopy);
     objc_autoreleasePoolPop(v11);
     os_unfair_lock_unlock(&self->_stateLock);
   }
@@ -669,22 +669,22 @@ LABEL_11:
   return v10;
 }
 
-- (void)flushCompletionBlocksWithResult:(id)a3
+- (void)flushCompletionBlocksWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(AMSPromise *)self completionBlocks];
-  [v5 flushCompletionBlocksWithPromiseResult:v4];
+  resultCopy = result;
+  completionBlocks = [(AMSPromise *)self completionBlocks];
+  [completionBlocks flushCompletionBlocksWithPromiseResult:resultCopy];
 }
 
-- (id)catchWithBinaryPromiseBlock:(id)a3
+- (id)catchWithBinaryPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__AMSPromise_catchWithBinaryPromiseBlock___block_invoke;
   v8[3] = &unk_1E73BAD68;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSPromise *)self continueWithBinaryPromiseBlock:v8];
 
   return v6;
@@ -710,15 +710,15 @@ id __42__AMSPromise_catchWithBinaryPromiseBlock___block_invoke(uint64_t a1, void
   return v8;
 }
 
-- (id)catchWithBlock:(id)a3
+- (id)catchWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__AMSPromise_catchWithBlock___block_invoke;
   v8[3] = &unk_1E73BAD90;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSPromise *)self continueWithBlock:v8];
 
   return v6;
@@ -744,15 +744,15 @@ id __29__AMSPromise_catchWithBlock___block_invoke(uint64_t a1, void *a2, void *a
   return v8;
 }
 
-- (id)continueWithBinaryPromiseBlock:(id)a3
+- (id)continueWithBinaryPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__AMSPromise_continueWithBinaryPromiseBlock___block_invoke;
   v10[3] = &unk_1E73BADE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __45__AMSPromise_continueWithBinaryPromiseBlock___block_invoke_3;
@@ -812,15 +812,15 @@ id __45__AMSPromise_continueWithBinaryPromiseBlock___block_invoke_3(uint64_t a1,
   return v8;
 }
 
-- (id)continueWithBlock:(id)a3
+- (id)continueWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__AMSPromise_continueWithBlock___block_invoke;
   v10[3] = &unk_1E73BADE0;
   v10[4] = self;
-  v11 = v4;
+  v11 = blockCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__AMSPromise_continueWithBlock___block_invoke_3;
@@ -880,15 +880,15 @@ id __32__AMSPromise_continueWithBlock___block_invoke_3(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)thenWithBinaryPromiseBlock:(id)a3
+- (id)thenWithBinaryPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__AMSPromise_thenWithBinaryPromiseBlock___block_invoke;
   v8[3] = &unk_1E73BAD68;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSPromise *)self continueWithBinaryPromiseBlock:v8];
 
   return v6;
@@ -914,15 +914,15 @@ id __41__AMSPromise_thenWithBinaryPromiseBlock___block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (id)thenWithBlock:(id)a3
+- (id)thenWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __28__AMSPromise_thenWithBlock___block_invoke;
   v8[3] = &unk_1E73BAD90;
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = [(AMSPromise *)self continueWithBlock:v8];
 
   return v6;
@@ -1044,25 +1044,25 @@ void __46__AMSPromise_nilValueCompletionHandlerAdapter__block_invoke(uint64_t a1
   }
 }
 
-+ (void)_configureFlattenedPromise:(id)a3 withPromises:(id)a4 results:(id)a5 previousError:(id)a6 currentPromiseIndex:(unint64_t)a7
++ (void)_configureFlattenedPromise:(id)promise withPromises:(id)promises results:(id)results previousError:(id)error currentPromiseIndex:(unint64_t)index
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v12 objectAtIndexedSubscript:a7];
+  promiseCopy = promise;
+  promisesCopy = promises;
+  resultsCopy = results;
+  errorCopy = error;
+  v15 = [promisesCopy objectAtIndexedSubscript:index];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __96__AMSPromise__configureFlattenedPromise_withPromises_results_previousError_currentPromiseIndex___block_invoke;
   v30[3] = &unk_1E73BAE30;
-  v16 = v13;
+  v16 = resultsCopy;
   v31 = v16;
-  v35 = a7;
-  v17 = v12;
+  indexCopy = index;
+  v17 = promisesCopy;
   v32 = v17;
-  v18 = v11;
+  v18 = promiseCopy;
   v33 = v18;
-  v19 = v14;
+  v19 = errorCopy;
   v34 = v19;
   [v15 addSuccessBlock:v30];
   v24[0] = MEMORY[0x1E69E9820];
@@ -1070,7 +1070,7 @@ void __46__AMSPromise_nilValueCompletionHandlerAdapter__block_invoke(uint64_t a1
   v24[2] = __96__AMSPromise__configureFlattenedPromise_withPromises_results_previousError_currentPromiseIndex___block_invoke_2;
   v24[3] = &unk_1E73BAE58;
   v28 = v16;
-  v29 = a7;
+  indexCopy2 = index;
   v25 = v19;
   v26 = v17;
   v27 = v18;
@@ -1130,26 +1130,26 @@ void __96__AMSPromise__configureFlattenedPromise_withPromises_results_previousEr
   }
 }
 
-+ (void)_enumeratePromises:(id)a3 startingAt:(int64_t)a4 block:(id)a5
++ (void)_enumeratePromises:(id)promises startingAt:(int64_t)at block:(id)block
 {
-  v7 = a3;
-  v8 = a5;
+  promisesCopy = promises;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__AMSPromise__enumeratePromises_startingAt_block___block_invoke;
   aBlock[3] = &unk_1E73BAE80;
-  v9 = v7;
+  v9 = promisesCopy;
   v31 = v9;
-  v10 = v8;
+  v10 = blockCopy;
   v32 = v10;
   v11 = _Block_copy(aBlock);
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  while (a4 < [v9 count] && (v27[3] & 1) != 0)
+  while (at < [v9 count] && (v27[3] & 1) != 0)
   {
-    v12 = [v9 objectAtIndexedSubscript:a4];
+    v12 = [v9 objectAtIndexedSubscript:at];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __50__AMSPromise__enumeratePromises_startingAt_block___block_invoke_2;
@@ -1158,7 +1158,7 @@ void __96__AMSPromise__configureFlattenedPromise_withPromises_results_previousEr
     v20 = v13;
     v14 = v11;
     v22 = v14;
-    v25 = a4;
+    atCopy = at;
     v21 = v9;
     v23 = v10;
     v24 = &v26;
@@ -1168,10 +1168,10 @@ void __96__AMSPromise__configureFlattenedPromise_withPromises_results_previousEr
     v15[3] = &unk_1E73BAEF8;
     v17 = &v26;
     v16 = v14;
-    v18 = a4;
+    atCopy2 = at;
     [v13 addBlock:v19 orCallWithResult:v15];
 
-    ++a4;
+    ++at;
   }
 
   _Block_object_dispose(&v26, 8);
@@ -1237,13 +1237,13 @@ void __50__AMSPromise__enumeratePromises_startingAt_block___block_invoke_4(void 
   *(*(a1[5] + 8) + 24) = (*(v3 + 16))(v3, v6, v5, a1[6]);
 }
 
-+ (BOOL)_errorIsCanceledError:(id)a3
++ (BOOL)_errorIsCanceledError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A250]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v5 = [v3 code] == 3072;
+    v5 = [errorCopy code] == 3072;
   }
 
   else
@@ -1254,13 +1254,13 @@ void __50__AMSPromise__enumeratePromises_startingAt_block___block_invoke_4(void 
   return v5;
 }
 
-+ (BOOL)_errorIsTimeOutError:(id)a3
++ (BOOL)_errorIsTimeOutError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"AMSErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"AMSErrorDomain"])
   {
-    v5 = [v3 code] == 1;
+    v5 = [errorCopy code] == 1;
   }
 
   else
@@ -1271,15 +1271,15 @@ void __50__AMSPromise__enumeratePromises_startingAt_block___block_invoke_4(void 
   return v5;
 }
 
-- (id)binaryPromiseAdapterForClass:(Class)a3
+- (id)binaryPromiseAdapterForClass:(Class)class
 {
-  v5[4] = a3;
+  v5[4] = class;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__AMSPromise_binaryPromiseAdapterForClass___block_invoke;
   v6[3] = &unk_1E73BAF20;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = class;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __43__AMSPromise_binaryPromiseAdapterForClass___block_invoke_3;
@@ -1324,28 +1324,28 @@ id __43__AMSPromise_binaryPromiseAdapterForClass___block_invoke_3(uint64_t a1, v
   return v6;
 }
 
-- (BOOL)finishWithPromiseResult:(id)a3
+- (BOOL)finishWithPromiseResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 result];
-  v6 = [v4 error];
+  resultCopy = result;
+  result = [resultCopy result];
+  error = [resultCopy error];
 
-  LOBYTE(self) = [AMSMutablePromise finishPromise:self withResult:v5 error:v6];
+  LOBYTE(self) = [AMSMutablePromise finishPromise:self withResult:result error:error];
   return self;
 }
 
-+ (id)promiseFinishedWithDefaultErrorOrResult:(id)a3
++ (id)promiseFinishedWithDefaultErrorOrResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10 = AMSErrorWithFormat(12, @"No result found.", @"Completed promise without result.", v5, v6, v7, v8, v9, v13);
-  if (v4)
+  if (resultCopy)
   {
-    [a1 promiseWithResult:v4];
+    [self promiseWithResult:resultCopy];
   }
 
   else
   {
-    [a1 promiseWithError:v10];
+    [self promiseWithError:v10];
   }
   v11 = ;
 

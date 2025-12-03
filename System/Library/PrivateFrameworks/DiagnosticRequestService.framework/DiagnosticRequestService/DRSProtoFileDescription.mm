@@ -1,12 +1,12 @@
 @interface DRSProtoFileDescription
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoFileDescription
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = DRSProtoFileDescription;
   v4 = [(DRSProtoFileDescription *)&v8 description];
-  v5 = [(DRSProtoFileDescription *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoFileDescription *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   logType = self->_logType;
   if (logType)
   {
-    [v3 setObject:logType forKey:@"log_type"];
+    [dictionary setObject:logType forKey:@"log_type"];
   }
 
   if (*&self->_has)
@@ -48,57 +48,57 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_logType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     logSize = self->_logSize;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_fileName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_logType)
   {
-    [v4 setLogType:?];
-    v4 = v5;
+    [toCopy setLogType:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_logSize;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = self->_logSize;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_fileName)
   {
     [v5 setFileName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_logType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_logType copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -108,23 +108,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_fileName copyWithZone:a3];
+  v8 = [(NSString *)self->_fileName copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   logType = self->_logType;
-  if (logType | *(v4 + 3))
+  if (logType | *(equalCopy + 3))
   {
     if (![(NSString *)logType isEqual:?])
     {
@@ -132,16 +132,16 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_logSize != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_logSize != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -149,7 +149,7 @@ LABEL_11:
   }
 
   fileName = self->_fileName;
-  if (fileName | *(v4 + 2))
+  if (fileName | *(equalCopy + 2))
   {
     v8 = [(NSString *)fileName isEqual:?];
   }
@@ -180,26 +180,26 @@ LABEL_12:
   return v4 ^ v3 ^ [(NSString *)self->_fileName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
     [(DRSProtoFileDescription *)self setLogType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_logSize = v4[1];
+    self->_logSize = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(DRSProtoFileDescription *)self setFileName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

@@ -1,24 +1,24 @@
 @interface HMDMatterUARPUploader
-- (BOOL)accessoryReachable:(id)a3 error:(id *)a4;
-- (BOOL)accessoryUnreachable:(id)a3 error:(id *)a4;
-- (BOOL)applyStagedAssetsForAccessory:(id)a3 error:(id *)a4;
-- (BOOL)cancelAssetStagingForAccessory:(id)a3 asset:(id)a4;
-- (BOOL)offerAssetToAccessory:(id)a3 asset:(id)a4 error:(id *)a5;
-- (BOOL)pauseAssetTransfersForAccessory:(id)a3;
-- (BOOL)recvDataFromAccessory:(id)a3 data:(id)a4 error:(id *)a5;
-- (BOOL)rescindStagedAssetsForAccessory:(id)a3 error:(id *)a4;
-- (BOOL)resumeAssetTransfersForAccessory:(id)a3;
+- (BOOL)accessoryReachable:(id)reachable error:(id *)error;
+- (BOOL)accessoryUnreachable:(id)unreachable error:(id *)error;
+- (BOOL)applyStagedAssetsForAccessory:(id)accessory error:(id *)error;
+- (BOOL)cancelAssetStagingForAccessory:(id)accessory asset:(id)asset;
+- (BOOL)offerAssetToAccessory:(id)accessory asset:(id)asset error:(id *)error;
+- (BOOL)pauseAssetTransfersForAccessory:(id)accessory;
+- (BOOL)recvDataFromAccessory:(id)accessory data:(id)data error:(id *)error;
+- (BOOL)rescindStagedAssetsForAccessory:(id)accessory error:(id *)error;
+- (BOOL)resumeAssetTransfersForAccessory:(id)accessory;
 @end
 
 @implementation HMDMatterUARPUploader
 
-- (BOOL)cancelAssetStagingForAccessory:(id)a3 asset:(id)a4
+- (BOOL)cancelAssetStagingForAccessory:(id)accessory asset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  assetCopy = asset;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -35,12 +35,12 @@
   return 0;
 }
 
-- (BOOL)resumeAssetTransfersForAccessory:(id)a3
+- (BOOL)resumeAssetTransfersForAccessory:(id)accessory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -57,12 +57,12 @@
   return 0;
 }
 
-- (BOOL)pauseAssetTransfersForAccessory:(id)a3
+- (BOOL)pauseAssetTransfersForAccessory:(id)accessory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -79,12 +79,12 @@
   return 0;
 }
 
-- (BOOL)rescindStagedAssetsForAccessory:(id)a3 error:(id *)a4
+- (BOOL)rescindStagedAssetsForAccessory:(id)accessory error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -101,12 +101,12 @@
   return 0;
 }
 
-- (BOOL)applyStagedAssetsForAccessory:(id)a3 error:(id *)a4
+- (BOOL)applyStagedAssetsForAccessory:(id)accessory error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -123,13 +123,13 @@
   return 0;
 }
 
-- (BOOL)offerAssetToAccessory:(id)a3 asset:(id)a4 error:(id *)a5
+- (BOOL)offerAssetToAccessory:(id)accessory asset:(id)asset error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  assetCopy = asset;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -146,13 +146,13 @@
   return 0;
 }
 
-- (BOOL)recvDataFromAccessory:(id)a3 data:(id)a4 error:(id *)a5
+- (BOOL)recvDataFromAccessory:(id)accessory data:(id)data error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accessoryCopy = accessory;
+  dataCopy = data;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -169,12 +169,12 @@
   return 0;
 }
 
-- (BOOL)accessoryUnreachable:(id)a3 error:(id *)a4
+- (BOOL)accessoryUnreachable:(id)unreachable error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  unreachableCopy = unreachable;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -184,7 +184,7 @@
     v14 = 2080;
     v15 = "[HMDMatterUARPUploader accessoryUnreachable:error:]";
     v16 = 2112;
-    v17 = v5;
+    v17 = unreachableCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@%s: accessory %@ is now unreachable.", &v12, 0x20u);
   }
 
@@ -193,12 +193,12 @@
   return 1;
 }
 
-- (BOOL)accessoryReachable:(id)a3 error:(id *)a4
+- (BOOL)accessoryReachable:(id)reachable error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reachableCopy = reachable;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -208,7 +208,7 @@
     v14 = 2080;
     v15 = "[HMDMatterUARPUploader accessoryReachable:error:]";
     v16 = 2112;
-    v17 = v5;
+    v17 = reachableCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@%s: accessory %@ is now reachable.", &v12, 0x20u);
   }
 

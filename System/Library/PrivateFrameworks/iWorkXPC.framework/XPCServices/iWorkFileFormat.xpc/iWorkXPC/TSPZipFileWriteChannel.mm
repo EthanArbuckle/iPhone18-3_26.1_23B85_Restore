@@ -1,8 +1,8 @@
 @interface TSPZipFileWriteChannel
 - (TSPZipFileWriteChannel)init;
-- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)a3;
-- (void)flushWithCompletion:(id)a3;
-- (void)writeData:(id)a3 handler:(id)a4;
+- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)writer;
+- (void)flushWithCompletion:(id)completion;
+- (void)writeData:(id)data handler:(id)handler;
 @end
 
 @implementation TSPZipFileWriteChannel
@@ -49,16 +49,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)a3
+- (TSPZipFileWriteChannel)initWithArchiveWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = TSPZipFileWriteChannel;
   v6 = [(TSPZipFileWriteChannel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archiveWriter, a3);
+    objc_storeStrong(&v6->_archiveWriter, writer);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("TSPZipFileWriteChannel.Writer", v8);
     writerQueue = v7->_writerQueue;
@@ -68,10 +68,10 @@
   return v7;
 }
 
-- (void)writeData:(id)a3 handler:(id)a4
+- (void)writeData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = atomic_load(&self->_isClosed);
   if (v8)
   {
@@ -95,9 +95,9 @@
     abort();
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    size = dispatch_data_get_size(v6);
+    size = dispatch_data_get_size(dataCopy);
   }
 
   else
@@ -111,15 +111,15 @@
   v22[1] = 3221225472;
   v22[2] = sub_100023F80;
   v22[3] = &unk_1001C6D28;
-  v12 = v7;
+  v12 = handlerCopy;
   v23 = v12;
   v24 = size;
-  [(TSUZipWriter *)archiveWriter addData:v6 queue:writerQueue completion:v22];
+  [(TSUZipWriter *)archiveWriter addData:dataCopy queue:writerQueue completion:v22];
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)
   {
@@ -140,7 +140,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_10002424C;
   v8[3] = &unk_1001C58E0;
-  v7 = v4;
+  v7 = completionCopy;
   v9 = v7;
   [(TSPZipFileWriteChannel *)self addBarrier:v8];
 }

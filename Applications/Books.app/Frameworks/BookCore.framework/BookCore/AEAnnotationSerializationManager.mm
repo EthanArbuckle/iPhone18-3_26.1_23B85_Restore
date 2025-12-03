@@ -1,16 +1,16 @@
 @interface AEAnnotationSerializationManager
 + (BOOL)managedBooksAllowedToSync;
-+ (id)annotationSerializationManagerWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7;
-+ (id)annotationSerializationManagerWithBookMetadataProvider:(id)a3;
-- (AEAnnotationSerializationManager)initWithBookMetadataProvider:(id)a3;
-- (BOOL)isAssetOfflineWithAssetID:(id)a3;
-- (BOOL)p_ensureDirectoryPathExists:(id)a3;
-- (BOOL)takeBookOfflineIfManagedWithAnnotationProvider:(id)a3 assetID:(id)a4;
-- (id)annotationProviderForOfflineDBWithAssetID:(id)a3;
-- (id)p_filenameForOfflineDBWithAssetID:(id)a3;
-- (id)urlForOfflineDBWithAssetID:(id)a3;
-- (void)protected_takeAssetOfflineWithProvider:(id)a3 assetID:(id)a4 copyData:(BOOL)a5;
-- (void)removeOfflineDBFilesWithAssetID:(id)a3 exceptBookVersionString:(id)a4;
++ (id)annotationSerializationManagerWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book;
++ (id)annotationSerializationManagerWithBookMetadataProvider:(id)provider;
+- (AEAnnotationSerializationManager)initWithBookMetadataProvider:(id)provider;
+- (BOOL)isAssetOfflineWithAssetID:(id)d;
+- (BOOL)p_ensureDirectoryPathExists:(id)exists;
+- (BOOL)takeBookOfflineIfManagedWithAnnotationProvider:(id)provider assetID:(id)d;
+- (id)annotationProviderForOfflineDBWithAssetID:(id)d;
+- (id)p_filenameForOfflineDBWithAssetID:(id)d;
+- (id)urlForOfflineDBWithAssetID:(id)d;
+- (void)protected_takeAssetOfflineWithProvider:(id)provider assetID:(id)d copyData:(BOOL)data;
+- (void)removeOfflineDBFilesWithAssetID:(id)d exceptBookVersionString:(id)string;
 @end
 
 @implementation AEAnnotationSerializationManager
@@ -18,45 +18,45 @@
 + (BOOL)managedBooksAllowedToSync
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isEnterpriseBookMetadataSyncAllowed];
+  isEnterpriseBookMetadataSyncAllowed = [v2 isEnterpriseBookMetadataSyncAllowed];
 
-  return v3;
+  return isEnterpriseBookMetadataSyncAllowed;
 }
 
-+ (id)annotationSerializationManagerWithAssetID:(id)a3 assetURL:(id)a4 bookVersionString:(id)a5 pathToAssetContextDirectory:(id)a6 isManagedBook:(BOOL)a7
++ (id)annotationSerializationManagerWithAssetID:(id)d assetURL:(id)l bookVersionString:(id)string pathToAssetContextDirectory:(id)directory isManagedBook:(BOOL)book
 {
-  v7 = [AESingleBookMetadataProvider singleBookMetadataProviderWithAssetID:a3 assetURL:a4 bookVersionString:a5 pathToAssetContextDirectory:a6 isManagedBook:a7];
+  v7 = [AESingleBookMetadataProvider singleBookMetadataProviderWithAssetID:d assetURL:l bookVersionString:string pathToAssetContextDirectory:directory isManagedBook:book];
   v8 = [objc_opt_class() annotationSerializationManagerWithBookMetadataProvider:v7];
 
   return v8;
 }
 
-+ (id)annotationSerializationManagerWithBookMetadataProvider:(id)a3
++ (id)annotationSerializationManagerWithBookMetadataProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBookMetadataProvider:v3];
+  providerCopy = provider;
+  v4 = [objc_alloc(objc_opt_class()) initWithBookMetadataProvider:providerCopy];
 
   return v4;
 }
 
-- (AEAnnotationSerializationManager)initWithBookMetadataProvider:(id)a3
+- (AEAnnotationSerializationManager)initWithBookMetadataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = AEAnnotationSerializationManager;
   v5 = [(AEAnnotationSerializationManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AEAnnotationSerializationManager *)v5 setBookMetadataProvider:v4];
+    [(AEAnnotationSerializationManager *)v5 setBookMetadataProvider:providerCopy];
   }
 
   return v6;
 }
 
-- (id)annotationProviderForOfflineDBWithAssetID:(id)a3
+- (id)annotationProviderForOfflineDBWithAssetID:(id)d
 {
-  v3 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:a3];
+  v3 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:d];
   if (v3)
   {
     v11 = [[AEAnnotationProvider alloc] initWithPersistentStoreURL:v3];
@@ -74,34 +74,34 @@
   return v11;
 }
 
-- (id)urlForOfflineDBWithAssetID:(id)a3
+- (id)urlForOfflineDBWithAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
-  v6 = [v5 isManagedWithAssetID:v4];
+  dCopy = d;
+  bookMetadataProvider = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  v6 = [bookMetadataProvider isManagedWithAssetID:dCopy];
 
-  v7 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  bookMetadataProvider2 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
 
-  if (!v7)
+  if (!bookMetadataProvider2)
   {
     v13 = 0;
     goto LABEL_9;
   }
 
-  v8 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
-  v9 = v8;
+  bookMetadataProvider3 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  v9 = bookMetadataProvider3;
   if (v6)
   {
-    v10 = [v8 assetURLForAssetID:v4];
+    v10 = [bookMetadataProvider3 assetURLForAssetID:dCopy];
 
-    v11 = [v10 URLByDeletingLastPathComponent];
-    v12 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:v4];
-    v13 = [v11 URLByAppendingPathComponent:v12];
+    uRLByDeletingLastPathComponent = [v10 URLByDeletingLastPathComponent];
+    v12 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:dCopy];
+    v13 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v12];
   }
 
   else
   {
-    v10 = [v8 pathToContextDirectoryForAssetID:v4];
+    v10 = [bookMetadataProvider3 pathToContextDirectoryForAssetID:dCopy];
 
     if (!v10)
     {
@@ -113,10 +113,10 @@
     v17 = 0;
     [v14 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v17];
 
-    v15 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:v4];
-    v11 = [v10 stringByAppendingPathComponent:v15];
+    v15 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:dCopy];
+    uRLByDeletingLastPathComponent = [v10 stringByAppendingPathComponent:v15];
 
-    v13 = [NSURL fileURLWithPath:v11];
+    v13 = [NSURL fileURLWithPath:uRLByDeletingLastPathComponent];
   }
 
 LABEL_8:
@@ -125,32 +125,32 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)isAssetOfflineWithAssetID:(id)a3
+- (BOOL)isAssetOfflineWithAssetID:(id)d
 {
-  v3 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:a3];
+  v3 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:d];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  path = [v3 path];
+  v6 = [v4 fileExistsAtPath:path];
 
   return v6;
 }
 
-- (void)removeOfflineDBFilesWithAssetID:(id)a3 exceptBookVersionString:(id)a4
+- (void)removeOfflineDBFilesWithAssetID:(id)d exceptBookVersionString:(id)string
 {
-  v6 = a3;
-  v7 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  dCopy = d;
+  bookMetadataProvider = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
 
-  if (v7)
+  if (bookMetadataProvider)
   {
-    v8 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
-    v9 = [v8 pathToContextDirectoryForAssetID:v6];
+    bookMetadataProvider2 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+    v9 = [bookMetadataProvider2 pathToContextDirectoryForAssetID:dCopy];
 
     v27 = v9;
     if (v9)
     {
-      if (a4)
+      if (string)
       {
-        v10 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:v6];
+        v10 = [(AEAnnotationSerializationManager *)self p_filenameForOfflineDBWithAssetID:dCopy];
       }
 
       else
@@ -180,7 +180,7 @@ LABEL_9:
         if (v15)
         {
           v16 = v15;
-          v26 = v6;
+          v26 = dCopy;
           v17 = *v30;
           do
           {
@@ -198,9 +198,9 @@ LABEL_9:
                 v21 = v10;
                 v22 = [v27 stringByAppendingPathComponent:v19];
                 v23 = v11;
-                v24 = [v11[90] defaultManager];
+                defaultManager = [v11[90] defaultManager];
                 v28 = 0;
-                [v24 removeItemAtPath:v22 error:&v28];
+                [defaultManager removeItemAtPath:v22 error:&v28];
                 v25 = v28;
 
                 if (v25)
@@ -219,7 +219,7 @@ LABEL_9:
 
           while (v16);
           v14 = v13;
-          v6 = v26;
+          dCopy = v26;
         }
 
         else
@@ -231,55 +231,55 @@ LABEL_9:
   }
 }
 
-- (BOOL)takeBookOfflineIfManagedWithAnnotationProvider:(id)a3 assetID:(id)a4
+- (BOOL)takeBookOfflineIfManagedWithAnnotationProvider:(id)provider assetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  providerCopy = provider;
+  dCopy = d;
+  bookMetadataProvider = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
 
-  if (v8)
+  if (bookMetadataProvider)
   {
-    v9 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
-    v10 = [v9 isManagedWithAssetID:v7];
+    bookMetadataProvider2 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+    v10 = [bookMetadataProvider2 isManagedWithAssetID:dCopy];
 
     if (v10)
     {
-      v11 = [(AEAnnotationSerializationManager *)self isAssetOfflineWithAssetID:v7];
-      v12 = [objc_opt_class() managedBooksAllowedToSync];
-      LOBYTE(v8) = 0;
-      if ((v11 & 1) == 0 && (v12 & 1) == 0)
+      v11 = [(AEAnnotationSerializationManager *)self isAssetOfflineWithAssetID:dCopy];
+      managedBooksAllowedToSync = [objc_opt_class() managedBooksAllowedToSync];
+      LOBYTE(bookMetadataProvider) = 0;
+      if ((v11 & 1) == 0 && (managedBooksAllowedToSync & 1) == 0)
       {
-        LOBYTE(v8) = 1;
-        [(AEAnnotationSerializationManager *)self protected_takeAssetOfflineWithProvider:v6 assetID:v7 copyData:1];
+        LOBYTE(bookMetadataProvider) = 1;
+        [(AEAnnotationSerializationManager *)self protected_takeAssetOfflineWithProvider:providerCopy assetID:dCopy copyData:1];
       }
     }
 
     else
     {
-      LOBYTE(v8) = 0;
+      LOBYTE(bookMetadataProvider) = 0;
     }
   }
 
-  return v8;
+  return bookMetadataProvider;
 }
 
-- (BOOL)p_ensureDirectoryPathExists:(id)a3
+- (BOOL)p_ensureDirectoryPathExists:(id)exists
 {
-  v3 = a3;
-  if (!v3)
+  existsCopy = exists;
+  if (!existsCopy)
   {
     goto LABEL_4;
   }
 
   v4 = +[NSFileManager defaultManager];
   v15 = 0;
-  [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v15];
+  [v4 createDirectoryAtPath:existsCopy withIntermediateDirectories:1 attributes:0 error:&v15];
   v5 = v15;
 
   v13 = v5 == 0;
   if (v5)
   {
-    sub_1EB3D8(v3, v6, v7, v8, v9, v10, v11, v12);
+    sub_1EB3D8(existsCopy, v6, v7, v8, v9, v10, v11, v12);
 LABEL_4:
     v13 = 0;
   }
@@ -287,24 +287,24 @@ LABEL_4:
   return v13;
 }
 
-- (void)protected_takeAssetOfflineWithProvider:(id)a3 assetID:(id)a4 copyData:(BOOL)a5
+- (void)protected_takeAssetOfflineWithProvider:(id)provider assetID:(id)d copyData:(BOOL)data
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(AEAnnotationSerializationManager *)self isAssetOfflineWithAssetID:v9])
+  providerCopy = provider;
+  dCopy = d;
+  if ([(AEAnnotationSerializationManager *)self isAssetOfflineWithAssetID:dCopy])
   {
-    sub_1EB4B4(v9, buf, v10, v11, v12, v13, v14, v15);
+    sub_1EB4B4(dCopy, buf, v10, v11, v12, v13, v14, v15);
     v16 = *buf;
   }
 
   else
   {
-    v16 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:v9];
+    v16 = [(AEAnnotationSerializationManager *)self urlForOfflineDBWithAssetID:dCopy];
     v17 = BKMobileCloudSyncAnnotationsLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v9;
+      *&buf[4] = dCopy;
       v33 = 2112;
       v34 = v16;
       _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Taking asset offline. assetID: %@, db url: %@", buf, 0x16u);
@@ -312,9 +312,9 @@ LABEL_4:
 
     if (v16 && ([v16 URLByDeletingLastPathComponent], v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "path"), v19 = objc_claimAutoreleasedReturnValue(), v20 = -[AEAnnotationSerializationManager p_ensureDirectoryPathExists:](self, "p_ensureDirectoryPathExists:", v19), v19, v18, v20))
     {
-      if (a5)
+      if (data)
       {
-        [AEAnnotation predicateForAnnotationsWithAssetID:v9 includingDeleted:0];
+        [AEAnnotation predicateForAnnotationsWithAssetID:dCopy includingDeleted:0];
       }
 
       else
@@ -323,7 +323,7 @@ LABEL_4:
       }
       v22 = ;
       v31 = 0;
-      [v8 exportAnnotationsMatchingPredicate:v22 toURL:v16 withType:0 error:&v31];
+      [providerCopy exportAnnotationsMatchingPredicate:v22 toURL:v16 withType:0 error:&v31];
       v23 = v31;
       v21 = v23;
       if (v23)
@@ -343,13 +343,13 @@ LABEL_4:
   }
 }
 
-- (id)p_filenameForOfflineDBWithAssetID:(id)a3
+- (id)p_filenameForOfflineDBWithAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
-  v6 = [v5 bookVersionStringForAssetID:v4];
+  dCopy = d;
+  bookMetadataProvider = [(AEAnnotationSerializationManager *)self bookMetadataProvider];
+  v6 = [bookMetadataProvider bookVersionStringForAssetID:dCopy];
 
-  if (v4)
+  if (dCopy)
   {
     v15 = &stru_2D2930;
     if (v6)
@@ -357,7 +357,7 @@ LABEL_4:
       v15 = v6;
     }
 
-    v16 = [NSString stringWithFormat:@"%@:%@:%@:.sqlite", @"offlineNotes", v4, v15];
+    v16 = [NSString stringWithFormat:@"%@:%@:%@:.sqlite", @"offlineNotes", dCopy, v15];
   }
 
   else

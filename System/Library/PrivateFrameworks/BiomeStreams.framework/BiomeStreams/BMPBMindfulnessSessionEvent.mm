@@ -1,17 +1,17 @@
 @interface BMPBMindfulnessSessionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSessionType:(id)a3;
-- (int)StringAsStateType:(id)a3;
+- (int)StringAsSessionType:(id)type;
+- (int)StringAsStateType:(id)type;
 - (int)sessionType;
 - (int)stateType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStateType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStateType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBMindfulnessSessionEvent
@@ -29,20 +29,20 @@
   }
 }
 
-- (int)StringAsSessionType:(id)a3
+- (int)StringAsSessionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Breathe"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Breathe"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Reflect"])
+  else if ([typeCopy isEqualToString:@"Reflect"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Meditation"])
+  else if ([typeCopy isEqualToString:@"Meditation"])
   {
     v4 = 2;
   }
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)setHasStateType:(BOOL)a3
+- (void)setHasStateType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -83,30 +83,30 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsStateType:(id)a3
+- (int)StringAsStateType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Start"])
+  else if ([typeCopy isEqualToString:@"Start"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Stop"])
+  else if ([typeCopy isEqualToString:@"Stop"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Pause"])
+  else if ([typeCopy isEqualToString:@"Pause"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Resume"])
+  else if ([typeCopy isEqualToString:@"Resume"])
   {
     v4 = 4;
   }
@@ -125,15 +125,15 @@
   v8.receiver = self;
   v8.super_class = BMPBMindfulnessSessionEvent;
   v4 = [(BMPBMindfulnessSessionEvent *)&v8 description];
-  v5 = [(BMPBMindfulnessSessionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBMindfulnessSessionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -148,7 +148,7 @@
       v6 = off_1E6E53B88[sessionType];
     }
 
-    [v3 setObject:v6 forKey:@"sessionType"];
+    [dictionary setObject:v6 forKey:@"sessionType"];
 
     has = self->_has;
   }
@@ -166,22 +166,22 @@
       v8 = off_1E6E53BA0[stateType];
     }
 
-    [v3 setObject:v8 forKey:@"stateType"];
+    [dictionary setObject:v8 forKey:@"stateType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     sessionType = self->_sessionType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -189,31 +189,31 @@
   {
     stateType = self->_stateType;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_sessionType;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_sessionType;
+    *(toCopy + 16) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[3] = self->_stateType;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_stateType;
+    *(toCopy + 16) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -231,33 +231,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_sessionType != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_sessionType != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 16))
+  else if (*(equalCopy + 16))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 2) == 0;
+  v5 = (*(equalCopy + 16) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_stateType != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_stateType != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
@@ -296,20 +296,20 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if (v5)
   {
-    self->_sessionType = *(v4 + 2);
+    self->_sessionType = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_stateType = *(v4 + 3);
+    self->_stateType = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 }

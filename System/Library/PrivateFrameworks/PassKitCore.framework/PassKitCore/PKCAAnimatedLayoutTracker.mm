@@ -1,19 +1,19 @@
 @interface PKCAAnimatedLayoutTracker
 + (PKCAAnimatedLayoutTracker)_create;
 - (id)beginTrackingAnimation;
-- (void)_addAbsoluteCompletion:(uint64_t)a1;
+- (void)_addAbsoluteCompletion:(uint64_t)completion;
 - (void)_beginTrackingAbsoluteAnimation;
 - (void)_effectiveTracker;
 - (void)_executeAbsoluteCompletionsIfPossible;
-- (void)_performAbsoluteTransactionWithBlock:(void *)a3 completion:;
-- (void)_performIsolatedAbsoluteTransactionWithBlock:(void *)a3 completion:;
+- (void)_performAbsoluteTransactionWithBlock:(void *)block completion:;
+- (void)_performIsolatedAbsoluteTransactionWithBlock:(void *)block completion:;
 - (void)_resume;
 - (void)_suspend;
-- (void)addCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
 - (void)dealloc;
-- (void)performIsolatedTransactionWithBlock:(id)a3 completion:(id)a4;
-- (void)performTransactionWithBlock:(id)a3 completion:(id)a4;
-- (void)trackAnimation:(id)a3;
+- (void)performIsolatedTransactionWithBlock:(id)block completion:(id)completion;
+- (void)performTransactionWithBlock:(id)block completion:(id)completion;
+- (void)trackAnimation:(id)animation;
 @end
 
 @implementation PKCAAnimatedLayoutTracker
@@ -49,25 +49,25 @@
 
 - (id)beginTrackingAnimation
 {
-  v2 = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
-  v3 = [(PKCAAnimatedLayoutTracker *)v2 _beginTrackingAbsoluteAnimation];
+  _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+  _beginTrackingAbsoluteAnimation = [(PKCAAnimatedLayoutTracker *)_effectiveTracker _beginTrackingAbsoluteAnimation];
 
-  return v3;
+  return _beginTrackingAbsoluteAnimation;
 }
 
 - (void)_effectiveTracker
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = a1;
-  v2 = v1;
-  v3 = *(v1 + 5);
+  selfCopy = self;
+  v2 = selfCopy;
+  v3 = *(selfCopy + 5);
   if (!v3)
   {
-    return v1;
+    return selfCopy;
   }
 
   do
@@ -120,17 +120,17 @@
   return result;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
-  [(PKCAAnimatedLayoutTracker *)v5 _addAbsoluteCompletion:v4];
+  completionCopy = completion;
+  _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+  [(PKCAAnimatedLayoutTracker *)_effectiveTracker _addAbsoluteCompletion:completionCopy];
 }
 
-- (void)_addAbsoluteCompletion:(uint64_t)a1
+- (void)_addAbsoluteCompletion:(uint64_t)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     if (!v3)
     {
@@ -138,53 +138,53 @@
       return;
     }
 
-    v4 = *(a1 + 48);
+    v4 = *(completion + 48);
     aBlock = v3;
     if (!v4)
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v6 = *(a1 + 48);
-      *(a1 + 48) = v5;
+      v6 = *(completion + 48);
+      *(completion + 48) = v5;
 
-      v4 = *(a1 + 48);
+      v4 = *(completion + 48);
     }
 
     v7 = _Block_copy(aBlock);
     [v4 addObject:v7];
 
-    [(PKCAAnimatedLayoutTracker *)a1 _executeAbsoluteCompletionsIfPossible];
+    [(PKCAAnimatedLayoutTracker *)completion _executeAbsoluteCompletionsIfPossible];
     v3 = aBlock;
   }
 }
 
-- (void)performTransactionWithBlock:(id)a3 completion:(id)a4
+- (void)performTransactionWithBlock:(id)block completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
-  [(PKCAAnimatedLayoutTracker *)v8 _performAbsoluteTransactionWithBlock:v7 completion:v6];
+  completionCopy = completion;
+  blockCopy = block;
+  _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+  [(PKCAAnimatedLayoutTracker *)_effectiveTracker _performAbsoluteTransactionWithBlock:blockCopy completion:completionCopy];
 }
 
-- (void)_performAbsoluteTransactionWithBlock:(void *)a3 completion:
+- (void)_performAbsoluteTransactionWithBlock:(void *)block completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (!a1)
+  blockCopy = block;
+  if (!self)
   {
     goto LABEL_4;
   }
 
   if (v5)
   {
-    v7 = [(PKCAAnimatedLayoutTracker *)a1 _beginTrackingAbsoluteAnimation];
+    _beginTrackingAbsoluteAnimation = [(PKCAAnimatedLayoutTracker *)self _beginTrackingAbsoluteAnimation];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __77__PKCAAnimatedLayoutTracker__performAbsoluteTransactionWithBlock_completion___block_invoke;
     v9[3] = &unk_1E79CD0E0;
-    v10 = v6;
-    v11 = v7;
-    v8 = v7;
-    [(PKCAAnimatedLayoutTracker *)a1 _performIsolatedAbsoluteTransactionWithBlock:v5 completion:v9];
+    v10 = blockCopy;
+    v11 = _beginTrackingAbsoluteAnimation;
+    v8 = _beginTrackingAbsoluteAnimation;
+    [(PKCAAnimatedLayoutTracker *)self _performIsolatedAbsoluteTransactionWithBlock:v5 completion:v9];
 
 LABEL_4:
     return;
@@ -193,19 +193,19 @@ LABEL_4:
   __break(1u);
 }
 
-- (void)performIsolatedTransactionWithBlock:(id)a3 completion:(id)a4
+- (void)performIsolatedTransactionWithBlock:(id)block completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
-  [(PKCAAnimatedLayoutTracker *)v8 _performIsolatedAbsoluteTransactionWithBlock:v7 completion:v6];
+  completionCopy = completion;
+  blockCopy = block;
+  _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+  [(PKCAAnimatedLayoutTracker *)_effectiveTracker _performIsolatedAbsoluteTransactionWithBlock:blockCopy completion:completionCopy];
 }
 
-- (void)_performIsolatedAbsoluteTransactionWithBlock:(void *)a3 completion:
+- (void)_performIsolatedAbsoluteTransactionWithBlock:(void *)block completion:
 {
   v18 = a2;
-  v5 = a3;
-  if (a1)
+  blockCopy = block;
+  if (self)
   {
     if (v18)
     {
@@ -214,8 +214,8 @@ LABEL_4:
       if (!v6 || ((v8 = v6->_suspended, v9 = __CFADD__(v8, 1), v10 = v8 + 1, !v9) ? (v11 = 0) : (v11 = 1), v6->_suspended = v10, v11 << 63 >> 63 == v11))
       {
         v12 = objc_autoreleasePoolPush();
-        v14 = *(a1 + 40);
-        v13 = (a1 + 40);
+        v14 = *(self + 40);
+        v13 = (self + 40);
         v15 = v14;
         objc_storeStrong(v13, v7);
         v18[2]();
@@ -223,9 +223,9 @@ LABEL_4:
         *v13 = v15;
 
         objc_autoreleasePoolPop(v12);
-        if (v5)
+        if (blockCopy)
         {
-          [(PKCAAnimatedLayoutTracker *)v7 addCompletion:v5];
+          [(PKCAAnimatedLayoutTracker *)v7 addCompletion:blockCopy];
         }
 
         if (!v7)
@@ -252,25 +252,25 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)trackAnimation:(id)a3
+- (void)trackAnimation:(id)animation
 {
-  v4 = a3;
-  if (!v4 || (v5 = v4, [v4 delegate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  animationCopy = animation;
+  if (!animationCopy || (v5 = animationCopy, [animationCopy delegate], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     __break(1u);
   }
 
   else
   {
-    v7 = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
-    v8 = [(PKCAAnimatedLayoutTracker *)v7 _beginTrackingAbsoluteAnimation];
+    _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+    _beginTrackingAbsoluteAnimation = [(PKCAAnimatedLayoutTracker *)_effectiveTracker _beginTrackingAbsoluteAnimation];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __44__PKCAAnimatedLayoutTracker_trackAnimation___block_invoke;
     v10[3] = &unk_1E79C5268;
-    v11 = v8;
-    v9 = v8;
+    v11 = _beginTrackingAbsoluteAnimation;
+    v9 = _beginTrackingAbsoluteAnimation;
     [v5 pkui_setCompletionHandler:v10];
   }
 }
@@ -288,11 +288,11 @@ void __60__PKCAAnimatedLayoutTracker__beginTrackingAbsoluteAnimation__block_invo
 - (void)_executeAbsoluteCompletionsIfPossible
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1 && !*(a1 + 32) && *(a1 + 8) <= *(a1 + 24) + *(a1 + 16))
+  if (self && !*(self + 32) && *(self + 8) <= *(self + 24) + *(self + 16))
   {
-    v2 = *(a1 + 48);
-    v3 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v2 = *(self + 48);
+    v3 = *(self + 48);
+    *(self + 48) = 0;
 
     if ([v2 count])
     {
@@ -370,10 +370,10 @@ uint64_t __77__PKCAAnimatedLayoutTracker__performAbsoluteTransactionWithBlock_co
 
 - (void)_suspend
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(PKCAAnimatedLayoutTracker *)a1 _effectiveTracker];
-    if (v1 && ((v2 = v1[4], v3 = __CFADD__(v2, 1), v4 = v2 + 1, !v3) ? (v5 = 0) : (v5 = 1), v1[4] = v4, (v5 << 63 >> 63) ^ v5))
+    _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+    if (_effectiveTracker && ((v2 = _effectiveTracker[4], v3 = __CFADD__(v2, 1), v4 = v2 + 1, !v3) ? (v5 = 0) : (v5 = 1), _effectiveTracker[4] = v4, (v5 << 63 >> 63) ^ v5))
     {
       __break(1u);
     }
@@ -386,22 +386,22 @@ uint64_t __77__PKCAAnimatedLayoutTracker__performAbsoluteTransactionWithBlock_co
 
 - (void)_resume
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(PKCAAnimatedLayoutTracker *)a1 _effectiveTracker];
-    if (v1)
+    _effectiveTracker = [(PKCAAnimatedLayoutTracker *)self _effectiveTracker];
+    if (_effectiveTracker)
     {
-      v2 = v1[4];
-      v1[4] = v2 - 1;
+      v2 = _effectiveTracker[4];
+      _effectiveTracker[4] = v2 - 1;
       if (!v2)
       {
         __break(1u);
         return;
       }
 
-      v3 = v1;
-      [(PKCAAnimatedLayoutTracker *)v1 _executeAbsoluteCompletionsIfPossible];
-      v1 = v3;
+      v3 = _effectiveTracker;
+      [(PKCAAnimatedLayoutTracker *)_effectiveTracker _executeAbsoluteCompletionsIfPossible];
+      _effectiveTracker = v3;
     }
   }
 }

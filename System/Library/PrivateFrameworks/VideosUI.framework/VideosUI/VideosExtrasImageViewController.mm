@@ -1,25 +1,25 @@
 @interface VideosExtrasImageViewController
 - (BOOL)prefersStatusBarHidden;
 - (UIImage)image;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handlePinch:(id)a3;
-- (void)_handleSingleTap:(id)a3;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handlePinch:(id)pinch;
+- (void)_handleSingleTap:(id)tap;
 - (void)dealloc;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)setAllowsPinchingImageForInteractiveZoomingImageTransition:(BOOL)a3;
-- (void)setDescriptionString:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageIndex:(unint64_t)a3;
-- (void)setOverlayHidden:(BOOL)a3;
-- (void)setSubtitleString:(id)a3;
-- (void)setTitleString:(id)a3;
-- (void)setZoomingImageTransitionIdentifier:(id)a3;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
+- (void)performZoomingImageTransitionWithContext:(id)context;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)setAllowsPinchingImageForInteractiveZoomingImageTransition:(BOOL)transition;
+- (void)setDescriptionString:(id)string;
+- (void)setImage:(id)image;
+- (void)setImageIndex:(unint64_t)index;
+- (void)setOverlayHidden:(BOOL)hidden;
+- (void)setSubtitleString:(id)string;
+- (void)setTitleString:(id)string;
+- (void)setZoomingImageTransitionIdentifier:(id)identifier;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VideosExtrasImageViewController
@@ -27,12 +27,12 @@
 - (void)dealloc
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasImageViewController *)self gestureRecognizers];
+  gestureRecognizers = [(VideosExtrasImageViewController *)self gestureRecognizers];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -44,14 +44,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) removeTarget:self action:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -64,10 +64,10 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = [(VideosExtrasImageViewController *)self navigationController];
-  v3 = [v2 isNavigationBarHidden];
+  navigationController = [(VideosExtrasImageViewController *)self navigationController];
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-  return v3;
+  return isNavigationBarHidden;
 }
 
 - (void)viewDidLoad
@@ -75,8 +75,8 @@
   v53.receiver = self;
   v53.super_class = VideosExtrasImageViewController;
   [(VideosExtrasImageViewController *)&v53 viewDidLoad];
-  v3 = [(VideosExtrasImageViewController *)self view];
-  [v3 bounds];
+  view = [(VideosExtrasImageViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -84,8 +84,8 @@
   v12 = objc_alloc_init(VideosExtrasZoomableImageView);
   [(VideosExtrasZoomableImageView *)v12 setFrame:v5, v7, v9, v11];
   [(VideosExtrasZoomableImageView *)v12 setAutoresizingMask:18];
-  v13 = v3;
-  [v3 addSubview:v12];
+  v13 = view;
+  [view addSubview:v12];
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDoubleTap_];
   [v15 setNumberOfTapsRequired:2];
@@ -99,9 +99,9 @@
   [v14 addObject:v16];
   if ([(VideosExtrasImageViewController *)self allowsPinchingImageForInteractiveZoomingImageTransition])
   {
-    v17 = [(VideosExtrasZoomableImageView *)v12 pinchGestureRecognizer];
-    [v17 addTarget:self action:sel__handlePinch_];
-    [v14 addObject:v17];
+    pinchGestureRecognizer = [(VideosExtrasZoomableImageView *)v12 pinchGestureRecognizer];
+    [pinchGestureRecognizer addTarget:self action:sel__handlePinch_];
+    [v14 addObject:pinchGestureRecognizer];
   }
 
   [(VideosExtrasImageViewController *)self setGestureRecognizers:v14];
@@ -123,112 +123,112 @@
   [(VideosExtrasImageViewController *)self setActivityIndicatorView:v47];
   v45 = v12;
   [(VideosExtrasImageViewController *)self setZoomableImageView:v12];
-  v19 = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
-  [v13 addSubview:v19];
-  v20 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
-  [v20 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-  [v20 setNumberOfLines:0];
+  initForAutolayout = [objc_alloc(MEMORY[0x1E69DD250]) initForAutolayout];
+  [v13 addSubview:initForAutolayout];
+  initForAutolayout2 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+  [initForAutolayout2 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+  [initForAutolayout2 setNumberOfLines:0];
   LODWORD(v21) = 1148846080;
-  [v20 setContentCompressionResistancePriority:1 forAxis:v21];
-  v44 = v20;
-  [v19 addSubview:v20];
-  v22 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
-  [v22 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-  [v22 setNumberOfLines:0];
+  [initForAutolayout2 setContentCompressionResistancePriority:1 forAxis:v21];
+  v44 = initForAutolayout2;
+  [initForAutolayout addSubview:initForAutolayout2];
+  initForAutolayout3 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+  [initForAutolayout3 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+  [initForAutolayout3 setNumberOfLines:0];
   LODWORD(v23) = 1148829696;
-  [v22 setContentCompressionResistancePriority:1 forAxis:v23];
-  [v19 addSubview:v22];
+  [initForAutolayout3 setContentCompressionResistancePriority:1 forAxis:v23];
+  [initForAutolayout addSubview:initForAutolayout3];
   v46 = v14;
-  v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
-  [v24 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
-  [v24 setNumberOfLines:0];
+  initForAutolayout4 = [objc_alloc(MEMORY[0x1E69DCC10]) initForAutolayout];
+  [initForAutolayout4 MPU_setAutomaticallyUpdatesTextStyleFontsToPreferredTextStyleFonts:1];
+  [initForAutolayout4 setNumberOfLines:0];
   LODWORD(v25) = 1148813312;
-  [v24 setContentCompressionResistancePriority:1 forAxis:v25];
-  [v19 addSubview:v24];
+  [initForAutolayout4 setContentCompressionResistancePriority:1 forAxis:v25];
+  [initForAutolayout addSubview:initForAutolayout4];
   v26 = *MEMORY[0x1E69DDCE0];
   v27 = *(MEMORY[0x1E69DDCE0] + 8);
   v28 = *(MEMORY[0x1E69DDCE0] + 16);
   v29 = *(MEMORY[0x1E69DDCE0] + 24);
-  v52 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v20 toView:v19 alongEdges:10 insets:{*MEMORY[0x1E69DDCE0], v27, v28, v29}];
-  v51 = [MEMORY[0x1E696ACD8] constraintWithItem:v20 attribute:3 relatedBy:1 toItem:v19 attribute:3 multiplier:1.0 constant:0.0];
-  v50 = [MEMORY[0x1E696ACD8] constraintWithItem:v20 attribute:11 relatedBy:-1 toItem:v19 attribute:4 multiplier:1.0 constant:0.0];
-  v42 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v22 toView:v19 alongEdges:10 insets:{v26, v27, v28, v29}];
-  v43 = v22;
-  v41 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:3 relatedBy:1 toItem:v19 attribute:3 multiplier:1.0 constant:0.0];
-  v40 = [MEMORY[0x1E696ACD8] constraintWithItem:v22 attribute:11 relatedBy:-1 toItem:v19 attribute:4 multiplier:1.0 constant:0.0];
-  v39 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:v24 toView:v19 alongEdges:10 insets:{v26, v27, v28, v29}];
-  v38 = [MEMORY[0x1E696ACD8] constraintWithItem:v24 attribute:3 relatedBy:1 toItem:v19 attribute:3 multiplier:1.0 constant:0.0];
-  v30 = [MEMORY[0x1E696ACD8] constraintWithItem:v24 attribute:11 relatedBy:-1 toItem:v19 attribute:4 multiplier:1.0 constant:0.0];
-  [v19 addConstraints:v52];
-  [v19 addConstraint:v51];
-  [v19 addConstraint:v50];
-  [v19 addConstraints:v42];
-  [v19 addConstraint:v41];
-  [v19 addConstraint:v40];
-  [v19 addConstraints:v39];
-  [v19 addConstraint:v38];
+  v52 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:initForAutolayout2 toView:initForAutolayout alongEdges:10 insets:{*MEMORY[0x1E69DDCE0], v27, v28, v29}];
+  v51 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout2 attribute:3 relatedBy:1 toItem:initForAutolayout attribute:3 multiplier:1.0 constant:0.0];
+  v50 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout2 attribute:11 relatedBy:-1 toItem:initForAutolayout attribute:4 multiplier:1.0 constant:0.0];
+  v42 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:initForAutolayout3 toView:initForAutolayout alongEdges:10 insets:{v26, v27, v28, v29}];
+  v43 = initForAutolayout3;
+  v41 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout3 attribute:3 relatedBy:1 toItem:initForAutolayout attribute:3 multiplier:1.0 constant:0.0];
+  v40 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout3 attribute:11 relatedBy:-1 toItem:initForAutolayout attribute:4 multiplier:1.0 constant:0.0];
+  v39 = [MEMORY[0x1E696ACD8] constraintsByAttachingView:initForAutolayout4 toView:initForAutolayout alongEdges:10 insets:{v26, v27, v28, v29}];
+  v38 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout4 attribute:3 relatedBy:1 toItem:initForAutolayout attribute:3 multiplier:1.0 constant:0.0];
+  v30 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout4 attribute:11 relatedBy:-1 toItem:initForAutolayout attribute:4 multiplier:1.0 constant:0.0];
+  [initForAutolayout addConstraints:v52];
+  [initForAutolayout addConstraint:v51];
+  [initForAutolayout addConstraint:v50];
+  [initForAutolayout addConstraints:v42];
+  [initForAutolayout addConstraint:v41];
+  [initForAutolayout addConstraint:v40];
+  [initForAutolayout addConstraints:v39];
+  [initForAutolayout addConstraint:v38];
   v31 = v30;
-  [v19 addConstraint:v30];
-  v32 = [MEMORY[0x1E696ACD8] constraintWithItem:v19 attribute:9 relatedBy:0 toItem:v13 attribute:9 multiplier:1.0 constant:0.0];
-  v33 = [MEMORY[0x1E696ACD8] constraintWithItem:v19 attribute:7 relatedBy:0 toItem:v13 attribute:7 multiplier:0.75 constant:0.0];
+  [initForAutolayout addConstraint:v30];
+  v32 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout attribute:9 relatedBy:0 toItem:v13 attribute:9 multiplier:1.0 constant:0.0];
+  v33 = [MEMORY[0x1E696ACD8] constraintWithItem:initForAutolayout attribute:7 relatedBy:0 toItem:v13 attribute:7 multiplier:0.75 constant:0.0];
   v34 = MEMORY[0x1E696ACD8];
-  v35 = [(VideosExtrasImageViewController *)self view];
-  v36 = [v35 safeAreaLayoutGuide];
-  v37 = [v34 constraintWithItem:v19 attribute:4 relatedBy:0 toItem:v36 attribute:4 multiplier:1.0 constant:-20.0];
+  view2 = [(VideosExtrasImageViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  v37 = [v34 constraintWithItem:initForAutolayout attribute:4 relatedBy:0 toItem:safeAreaLayoutGuide attribute:4 multiplier:1.0 constant:-20.0];
 
   [v13 addConstraint:v32];
   [v13 addConstraint:v33];
   [v13 addConstraint:v37];
-  [(VideosExtrasImageViewController *)self setTextContainmentView:v19];
+  [(VideosExtrasImageViewController *)self setTextContainmentView:initForAutolayout];
   [(VideosExtrasImageViewController *)self setTitleLabel:v44];
   [(VideosExtrasImageViewController *)self setSubtitleLabel:v43];
-  [(VideosExtrasImageViewController *)self setDescriptionLabel:v24];
+  [(VideosExtrasImageViewController *)self setDescriptionLabel:initForAutolayout4];
 }
 
 - (void)updateViewConstraints
 {
-  v3 = [(VideosExtrasImageViewController *)self view];
-  v4 = [(VideosExtrasImageViewController *)self titleLabel];
-  v5 = [(VideosExtrasImageViewController *)self subtitleLabel];
-  v6 = [(VideosExtrasImageViewController *)self descriptionLabel];
-  v7 = [v4 attributedText];
-  if ([v7 length])
+  view = [(VideosExtrasImageViewController *)self view];
+  titleLabel = [(VideosExtrasImageViewController *)self titleLabel];
+  subtitleLabel = [(VideosExtrasImageViewController *)self subtitleLabel];
+  descriptionLabel = [(VideosExtrasImageViewController *)self descriptionLabel];
+  attributedText = [titleLabel attributedText];
+  if ([attributedText length])
   {
     goto LABEL_4;
   }
 
-  v8 = [v5 attributedText];
-  if ([v8 length])
+  attributedText2 = [subtitleLabel attributedText];
+  if ([attributedText2 length])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v51 = [v6 attributedText];
-  v52 = [v51 length];
+  attributedText3 = [descriptionLabel attributedText];
+  v52 = [attributedText3 length];
 
   if (v52)
   {
 LABEL_5:
-    v9 = [v6 attributedText];
-    v10 = [v9 length];
+    attributedText4 = [descriptionLabel attributedText];
+    v10 = [attributedText4 length];
 
     v11 = MEMORY[0x1E69DDD08];
-    v12 = v6;
+    v12 = descriptionLabel;
     if (!v10)
     {
-      v13 = [v5 attributedText];
-      v14 = [v13 length];
+      attributedText5 = [subtitleLabel attributedText];
+      v14 = [attributedText5 length];
 
       if (v14)
       {
-        v12 = v5;
+        v12 = subtitleLabel;
       }
 
       else
       {
-        v12 = v4;
+        v12 = titleLabel;
       }
 
       if (v14)
@@ -244,32 +244,32 @@ LABEL_5:
 
     v15 = v12;
     v16 = *v11;
-    v17 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
-    if (v17)
+    bottomLabelConstraint = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+    if (bottomLabelConstraint)
     {
-      v18 = v17;
+      v18 = bottomLabelConstraint;
       v19 = v16;
-      v65 = v5;
-      v20 = v4;
-      v21 = v3;
-      v22 = v6;
-      v23 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
-      v24 = [v23 firstItem];
-      v25 = v24;
-      if (v24 == v15)
+      v65 = subtitleLabel;
+      v20 = titleLabel;
+      v21 = view;
+      v22 = descriptionLabel;
+      bottomLabelConstraint2 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+      firstItem = [bottomLabelConstraint2 firstItem];
+      v25 = firstItem;
+      if (firstItem == v15)
       {
         [(VideosExtrasImageViewController *)self bottomLabelConstraint];
         v26 = v64 = v15;
-        v27 = [v26 textStyle];
-        v63 = [v27 isEqualToString:v19];
+        textStyle = [v26 textStyle];
+        v63 = [textStyle isEqualToString:v19];
 
         v15 = v64;
         v16 = v19;
 
-        v6 = v22;
-        v3 = v21;
-        v4 = v20;
-        v5 = v65;
+        descriptionLabel = v22;
+        view = v21;
+        titleLabel = v20;
+        subtitleLabel = v65;
         if (v63)
         {
           goto LABEL_17;
@@ -279,86 +279,86 @@ LABEL_5:
       else
       {
 
-        v6 = v22;
-        v3 = v21;
-        v4 = v20;
-        v5 = v65;
+        descriptionLabel = v22;
+        view = v21;
+        titleLabel = v20;
+        subtitleLabel = v65;
         v16 = v19;
       }
 
-      v28 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
-      [v3 removeConstraint:v28];
+      bottomLabelConstraint3 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+      [view removeConstraint:bottomLabelConstraint3];
 
       [(VideosExtrasImageViewController *)self setBottomLabelConstraint:0];
     }
 
 LABEL_17:
-    v29 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+    bottomLabelConstraint4 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
 
-    if (!v29)
+    if (!bottomLabelConstraint4)
     {
       v30 = MEMORY[0x1E69AD980];
-      v31 = [(VideosExtrasImageViewController *)self textContainmentView];
-      v32 = [v30 contentSizeAutoupdatingConstraintWithItem:v15 attribute:11 relatedBy:0 toItem:v31 attribute:4 multiplier:v16 textStyle:1.0 defaultSizeConstant:-10.0];
+      textContainmentView = [(VideosExtrasImageViewController *)self textContainmentView];
+      v32 = [v30 contentSizeAutoupdatingConstraintWithItem:v15 attribute:11 relatedBy:0 toItem:textContainmentView attribute:4 multiplier:v16 textStyle:1.0 defaultSizeConstant:-10.0];
       [(VideosExtrasImageViewController *)self setBottomLabelConstraint:v32];
 
-      v33 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
-      [v3 addConstraint:v33];
+      bottomLabelConstraint5 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+      [view addConstraint:bottomLabelConstraint5];
     }
 
-    v34 = [v4 attributedText];
-    if ([v34 length])
+    attributedText6 = [titleLabel attributedText];
+    if ([attributedText6 length])
     {
-      v35 = [v5 attributedText];
-      v36 = [v35 length];
+      attributedText7 = [subtitleLabel attributedText];
+      v36 = [attributedText7 length];
 
       if (v36)
       {
 LABEL_24:
-        v38 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
-        if (!v38)
+        subtitleLeadingConstraint = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
+        if (!subtitleLeadingConstraint)
         {
-          v38 = [v4 attributedText];
-          if ([v38 length])
+          subtitleLeadingConstraint = [titleLabel attributedText];
+          if ([subtitleLeadingConstraint length])
           {
-            v48 = [v5 attributedText];
-            v49 = [v48 length];
+            attributedText8 = [subtitleLabel attributedText];
+            v49 = [attributedText8 length];
 
             if (!v49)
             {
               goto LABEL_26;
             }
 
-            v50 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:v5 toView:v4 attribute:11 withTextStyle:*MEMORY[0x1E69DDD00] nonStandardLeading:25.0];
+            v50 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:subtitleLabel toView:titleLabel attribute:11 withTextStyle:*MEMORY[0x1E69DDD00] nonStandardLeading:25.0];
             [(VideosExtrasImageViewController *)self setSubtitleLeadingConstraint:v50];
 
-            v38 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
-            [v3 addConstraint:v38];
+            subtitleLeadingConstraint = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
+            [view addConstraint:subtitleLeadingConstraint];
           }
         }
 
 LABEL_26:
-        v39 = [v5 attributedText];
-        v40 = [v39 length];
+        attributedText9 = [subtitleLabel attributedText];
+        v40 = [attributedText9 length];
 
-        v41 = v5;
-        if (v40 || ([v4 attributedText], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "length"), v42, v41 = v4, v43))
+        v41 = subtitleLabel;
+        if (v40 || ([titleLabel attributedText], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_msgSend(v42, "length"), v42, v41 = titleLabel, v43))
         {
           v44 = v41;
           if (v44)
           {
-            v45 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
-            v46 = [v45 secondItem];
+            descriptionLeadingConstraint = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+            secondItem = [descriptionLeadingConstraint secondItem];
 
-            if (v46 == v44)
+            if (secondItem == v44)
             {
               goto LABEL_44;
             }
 
             v47 = 0;
 LABEL_43:
-            v59 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
-            [v3 removeConstraint:v59];
+            descriptionLeadingConstraint2 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+            [view removeConstraint:descriptionLeadingConstraint2];
 
             [(VideosExtrasImageViewController *)self setDescriptionLeadingConstraint:0];
             if (v47)
@@ -369,15 +369,15 @@ LABEL_46:
             }
 
 LABEL_44:
-            v60 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+            descriptionLeadingConstraint3 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
 
-            if (!v60)
+            if (!descriptionLeadingConstraint3)
             {
-              v61 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:v6 toView:v44 attribute:11 withTextStyle:*MEMORY[0x1E69DDD08] nonStandardLeading:30.0];
+              v61 = [MEMORY[0x1E69AD980] constraintWithAutoupdatingBaselineOfView:descriptionLabel toView:v44 attribute:11 withTextStyle:*MEMORY[0x1E69DDD08] nonStandardLeading:30.0];
               [(VideosExtrasImageViewController *)self setDescriptionLeadingConstraint:v61];
 
-              v62 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
-              [v3 addConstraint:v62];
+              descriptionLeadingConstraint4 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+              [view addConstraint:descriptionLeadingConstraint4];
             }
 
             goto LABEL_46;
@@ -398,39 +398,39 @@ LABEL_44:
     {
     }
 
-    v37 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
-    [v3 removeConstraint:v37];
+    subtitleLeadingConstraint2 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
+    [view removeConstraint:subtitleLeadingConstraint2];
 
     [(VideosExtrasImageViewController *)self setSubtitleLeadingConstraint:0];
     goto LABEL_24;
   }
 
-  v53 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+  bottomLabelConstraint6 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
 
-  if (v53)
+  if (bottomLabelConstraint6)
   {
-    v54 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
-    [v3 removeConstraint:v54];
+    bottomLabelConstraint7 = [(VideosExtrasImageViewController *)self bottomLabelConstraint];
+    [view removeConstraint:bottomLabelConstraint7];
 
     [(VideosExtrasImageViewController *)self setBottomLabelConstraint:0];
   }
 
-  v55 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
+  subtitleLeadingConstraint3 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
 
-  if (v55)
+  if (subtitleLeadingConstraint3)
   {
-    v56 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
-    [v3 removeConstraint:v56];
+    subtitleLeadingConstraint4 = [(VideosExtrasImageViewController *)self subtitleLeadingConstraint];
+    [view removeConstraint:subtitleLeadingConstraint4];
 
     [(VideosExtrasImageViewController *)self setSubtitleLeadingConstraint:0];
   }
 
-  v57 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+  descriptionLeadingConstraint5 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
 
-  if (v57)
+  if (descriptionLeadingConstraint5)
   {
-    v58 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
-    [v3 removeConstraint:v58];
+    descriptionLeadingConstraint6 = [(VideosExtrasImageViewController *)self descriptionLeadingConstraint];
+    [view removeConstraint:descriptionLeadingConstraint6];
 
     [(VideosExtrasImageViewController *)self setDescriptionLeadingConstraint:0];
   }
@@ -441,228 +441,228 @@ LABEL_47:
   [(VideosExtrasImageViewController *)&v66 updateViewConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasImageViewController;
-  [(VideosExtrasImageViewController *)&v4 viewWillAppear:a3];
+  [(VideosExtrasImageViewController *)&v4 viewWillAppear:appear];
   [(VideosExtrasImageViewController *)self setOverlayHidden:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = VideosExtrasImageViewController;
-  [(VideosExtrasImageViewController *)&v6 viewDidAppear:a3];
-  v4 = [(VideosExtrasImageViewController *)self view];
-  v5 = [(VideosExtrasImageViewController *)self titleLabel];
-  [v4 bringSubviewToFront:v5];
+  [(VideosExtrasImageViewController *)&v6 viewDidAppear:appear];
+  view = [(VideosExtrasImageViewController *)self view];
+  titleLabel = [(VideosExtrasImageViewController *)self titleLabel];
+  [view bringSubviewToFront:titleLabel];
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VideosExtrasImageViewController *)self zoomableImageView];
-  [v5 prepareZoomingImageTransitionWithContext:v4];
+  contextCopy = context;
+  zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+  [zoomableImageView prepareZoomingImageTransitionWithContext:contextCopy];
 
-  v6 = [v4 appearState];
-  if (v6 == 1)
+  appearState = [contextCopy appearState];
+  if (appearState == 1)
   {
 
     [(VideosExtrasImageViewController *)self setOverlayHidden:0];
   }
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VideosExtrasImageViewController *)self zoomableImageView];
-  [v5 performZoomingImageTransitionWithContext:v4];
+  contextCopy = context;
+  zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+  [zoomableImageView performZoomingImageTransitionWithContext:contextCopy];
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VideosExtrasImageViewController *)self zoomableImageView];
-  [v7 finalizeZoomingImageTransitionWithContext:v6 transitionFinished:v4];
+  finishedCopy = finished;
+  contextCopy = context;
+  zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+  [zoomableImageView finalizeZoomingImageTransitionWithContext:contextCopy transitionFinished:finishedCopy];
 }
 
 - (UIImage)image
 {
-  v2 = [(VideosExtrasImageViewController *)self zoomableImageView];
-  v3 = [v2 image];
+  zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+  image = [zoomableImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
+  imageCopy = image;
   if (([(VideosExtrasImageViewController *)self isViewLoaded]& 1) == 0)
   {
-    v4 = [(VideosExtrasImageViewController *)self view];
+    view = [(VideosExtrasImageViewController *)self view];
   }
 
-  v5 = [(VideosExtrasImageViewController *)self zoomableImageView];
-  v6 = [v5 image];
+  zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+  image = [zoomableImageView image];
 
-  if (v6 != v8)
+  if (image != imageCopy)
   {
-    [v5 setImage:v8];
-    v7 = [(VideosExtrasImageViewController *)self activityIndicatorView];
-    if ((((v8 != 0) ^ [v7 isAnimating]) & 1) == 0)
+    [zoomableImageView setImage:imageCopy];
+    activityIndicatorView = [(VideosExtrasImageViewController *)self activityIndicatorView];
+    if ((((imageCopy != 0) ^ [activityIndicatorView isAnimating]) & 1) == 0)
     {
-      if (v8)
+      if (imageCopy)
       {
-        [v7 stopAnimating];
+        [activityIndicatorView stopAnimating];
       }
 
       else
       {
-        [v7 startAnimating];
+        [activityIndicatorView startAnimating];
       }
     }
   }
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (([(VideosExtrasImageViewController *)self isViewLoaded]& 1) == 0)
   {
-    v4 = [(VideosExtrasImageViewController *)self view];
+    view = [(VideosExtrasImageViewController *)self view];
   }
 
-  [(UILabel *)self->_titleLabel setAttributedText:v6];
-  v5 = [(VideosExtrasImageViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  [(UILabel *)self->_titleLabel setAttributedText:stringCopy];
+  view2 = [(VideosExtrasImageViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
-- (void)setSubtitleString:(id)a3
+- (void)setSubtitleString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (([(VideosExtrasImageViewController *)self isViewLoaded]& 1) == 0)
   {
-    v4 = [(VideosExtrasImageViewController *)self view];
+    view = [(VideosExtrasImageViewController *)self view];
   }
 
-  [(UILabel *)self->_subtitleLabel setAttributedText:v6];
-  v5 = [(VideosExtrasImageViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  [(UILabel *)self->_subtitleLabel setAttributedText:stringCopy];
+  view2 = [(VideosExtrasImageViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
-- (void)setDescriptionString:(id)a3
+- (void)setDescriptionString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if (([(VideosExtrasImageViewController *)self isViewLoaded]& 1) == 0)
   {
-    v4 = [(VideosExtrasImageViewController *)self view];
+    view = [(VideosExtrasImageViewController *)self view];
   }
 
-  [(UILabel *)self->_descriptionLabel setAttributedText:v6];
-  v5 = [(VideosExtrasImageViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  [(UILabel *)self->_descriptionLabel setAttributedText:stringCopy];
+  view2 = [(VideosExtrasImageViewController *)self view];
+  [view2 setNeedsUpdateConstraints];
 }
 
-- (void)setImageIndex:(unint64_t)a3
+- (void)setImageIndex:(unint64_t)index
 {
-  self->_imageIndex = a3;
-  v4 = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
-  [v4 setItemIndex:a3];
+  self->_imageIndex = index;
+  interactiveTransitionSourceContext = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
+  [interactiveTransitionSourceContext setItemIndex:index];
 }
 
-- (void)setAllowsPinchingImageForInteractiveZoomingImageTransition:(BOOL)a3
+- (void)setAllowsPinchingImageForInteractiveZoomingImageTransition:(BOOL)transition
 {
-  if (self->_allowsPinchingImageForInteractiveZoomingImageTransition != a3)
+  if (self->_allowsPinchingImageForInteractiveZoomingImageTransition != transition)
   {
-    v4 = a3;
-    self->_allowsPinchingImageForInteractiveZoomingImageTransition = a3;
-    v6 = [(VideosExtrasImageViewController *)self zoomableImageView];
-    v10 = [v6 pinchGestureRecognizer];
+    transitionCopy = transition;
+    self->_allowsPinchingImageForInteractiveZoomingImageTransition = transition;
+    zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+    pinchGestureRecognizer = [zoomableImageView pinchGestureRecognizer];
 
-    if (v10)
+    if (pinchGestureRecognizer)
     {
-      if (v4)
+      if (transitionCopy)
       {
-        [v10 addTarget:self action:sel__handlePinch_];
-        v7 = [(VideosExtrasImageViewController *)self gestureRecognizers];
-        v8 = [v7 arrayByAddingObject:v10];
+        [pinchGestureRecognizer addTarget:self action:sel__handlePinch_];
+        gestureRecognizers = [(VideosExtrasImageViewController *)self gestureRecognizers];
+        v8 = [gestureRecognizers arrayByAddingObject:pinchGestureRecognizer];
         [(VideosExtrasImageViewController *)self setGestureRecognizers:v8];
       }
 
       else
       {
-        [v10 removeTarget:self action:0];
-        v9 = [(VideosExtrasImageViewController *)self gestureRecognizers];
-        v7 = [v9 mutableCopy];
+        [pinchGestureRecognizer removeTarget:self action:0];
+        gestureRecognizers2 = [(VideosExtrasImageViewController *)self gestureRecognizers];
+        gestureRecognizers = [gestureRecognizers2 mutableCopy];
 
-        [v7 removeObject:v10];
-        [(VideosExtrasImageViewController *)self setGestureRecognizers:v7];
+        [gestureRecognizers removeObject:pinchGestureRecognizer];
+        [(VideosExtrasImageViewController *)self setGestureRecognizers:gestureRecognizers];
       }
     }
   }
 }
 
-- (void)setZoomingImageTransitionIdentifier:(id)a3
+- (void)setZoomingImageTransitionIdentifier:(id)identifier
 {
-  if (self->_zoomingImageTransitionIdentifier != a3)
+  if (self->_zoomingImageTransitionIdentifier != identifier)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    identifierCopy = identifier;
+    v5 = [identifierCopy copy];
     zoomingImageTransitionIdentifier = self->_zoomingImageTransitionIdentifier;
     self->_zoomingImageTransitionIdentifier = v5;
 
-    v7 = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
-    [v7 setIdentifier:v4];
+    interactiveTransitionSourceContext = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
+    [interactiveTransitionSourceContext setIdentifier:identifierCopy];
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
-  v8 = a3;
-  if ([v8 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
-    v4 = [(VideosExtrasImageViewController *)self zoomableImageView];
-    [v4 zoomScale];
+    zoomableImageView = [(VideosExtrasImageViewController *)self zoomableImageView];
+    [zoomableImageView zoomScale];
     v6 = v5;
-    [v4 minimumZoomScale];
+    [zoomableImageView minimumZoomScale];
     if (v6 >= v7 + 0.00000011920929)
     {
-      [v4 setZoomScale:1 animated:?];
+      [zoomableImageView setZoomScale:1 animated:?];
     }
 
     else
     {
-      [v8 locationInView:v4];
-      [v4 zoomToPoint:1 animated:?];
+      [tapCopy locationInView:zoomableImageView];
+      [zoomableImageView zoomToPoint:1 animated:?];
     }
   }
 }
 
-- (void)_handlePinch:(id)a3
+- (void)_handlePinch:(id)pinch
 {
-  v7 = a3;
-  v4 = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
-  if (!v4)
+  pinchCopy = pinch;
+  interactiveTransitionSourceContext = [(VideosExtrasImageViewController *)self interactiveTransitionSourceContext];
+  if (!interactiveTransitionSourceContext)
   {
-    v4 = objc_alloc_init(VideosExtrasZoomingImageInteractiveTransitionSourceContext);
-    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)v4 setItemIndex:[(VideosExtrasImageViewController *)self imageIndex]];
-    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)v4 setPinchGestureRecognizer:v7];
-    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)v4 setSupportedZoomingImageTransitionDirections:2];
-    v5 = [(VideosExtrasImageViewController *)self zoomingImageTransitionIdentifier];
-    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)v4 setIdentifier:v5];
+    interactiveTransitionSourceContext = objc_alloc_init(VideosExtrasZoomingImageInteractiveTransitionSourceContext);
+    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)interactiveTransitionSourceContext setItemIndex:[(VideosExtrasImageViewController *)self imageIndex]];
+    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)interactiveTransitionSourceContext setPinchGestureRecognizer:pinchCopy];
+    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)interactiveTransitionSourceContext setSupportedZoomingImageTransitionDirections:2];
+    zoomingImageTransitionIdentifier = [(VideosExtrasImageViewController *)self zoomingImageTransitionIdentifier];
+    [(VideosExtrasZoomingImageInteractiveTransitionSourceContext *)interactiveTransitionSourceContext setIdentifier:zoomingImageTransitionIdentifier];
 
-    [(VideosExtrasImageViewController *)self setInteractiveTransitionSourceContext:v4];
+    [(VideosExtrasImageViewController *)self setInteractiveTransitionSourceContext:interactiveTransitionSourceContext];
   }
 
-  v6 = [(VideosExtrasImageViewController *)self targetForAction:sel_handlePinchGestureForZoomingImageInteractiveTransitionWithContext_ withSender:v4];
-  [v6 handlePinchGestureForZoomingImageInteractiveTransitionWithContext:v4];
+  v6 = [(VideosExtrasImageViewController *)self targetForAction:sel_handlePinchGestureForZoomingImageInteractiveTransitionWithContext_ withSender:interactiveTransitionSourceContext];
+  [v6 handlePinchGestureForZoomingImageInteractiveTransitionWithContext:interactiveTransitionSourceContext];
 }
 
-- (void)_handleSingleTap:(id)a3
+- (void)_handleSingleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
     v4 = [(VideosExtrasImageViewController *)self overlayHidden]^ 1;
 
@@ -670,16 +670,16 @@ LABEL_47:
   }
 }
 
-- (void)setOverlayHidden:(BOOL)a3
+- (void)setOverlayHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_overlayHidden = a3;
-  v5 = [(VideosExtrasImageViewController *)self navigationController];
-  [v5 _setNavigationBarHidden:v3 edge:15 duration:0.3];
+  hiddenCopy = hidden;
+  self->_overlayHidden = hidden;
+  navigationController = [(VideosExtrasImageViewController *)self navigationController];
+  [navigationController _setNavigationBarHidden:hiddenCopy edge:15 duration:0.3];
 
   textContainmentView = self->_textContainmentView;
 
-  [(UIView *)textContainmentView setHidden:v3];
+  [(UIView *)textContainmentView setHidden:hiddenCopy];
 }
 
 @end

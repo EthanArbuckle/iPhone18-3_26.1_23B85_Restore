@@ -1,31 +1,31 @@
 @interface HMDCloudAccount
-- (HMDCloudAccount)initWithClientQueue:(id)a3;
-- (void)addAccountOperation:(id)a3;
+- (HMDCloudAccount)initWithClientQueue:(id)queue;
+- (void)addAccountOperation:(id)operation;
 @end
 
 @implementation HMDCloudAccount
 
-- (void)addAccountOperation:(id)a3
+- (void)addAccountOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = [HMDCloudAccountOperation alloc];
-  v6 = [(HMDCloudAccount *)self clientQueue];
-  v8 = [(HMDCloudAccountOperation *)v5 initWithBlock:v4 clientQueue:v6];
+  clientQueue = [(HMDCloudAccount *)self clientQueue];
+  v8 = [(HMDCloudAccountOperation *)v5 initWithBlock:operationCopy clientQueue:clientQueue];
 
-  v7 = [(HMDCloudAccount *)self queue];
-  [v7 addOperation:v8];
+  queue = [(HMDCloudAccount *)self queue];
+  [queue addOperation:v8];
 }
 
-- (HMDCloudAccount)initWithClientQueue:(id)a3
+- (HMDCloudAccount)initWithClientQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = HMDCloudAccount;
   v6 = [(HMDCloudAccount *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientQueue, a3);
+    objc_storeStrong(&v6->_clientQueue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v7->_queue;
     v7->_queue = v8;

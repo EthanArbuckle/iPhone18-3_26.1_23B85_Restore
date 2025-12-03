@@ -1,25 +1,25 @@
 @interface SystemApertureContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation SystemApertureContainerView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureContainerView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = SystemApertureContainerView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -31,7 +31,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemApertureContainerView.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = SystemApertureContainerView.sizeThatFits(_:for:)(a4, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  v8 = SystemApertureContainerView.sizeThatFits(_:for:)(mode, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -59,7 +59,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemApertureContainerView.accessibilityLabel.getter();
   v5 = v4;
 
@@ -76,9 +76,9 @@
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -90,7 +90,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   SystemApertureContainerView.accessibilityLabel.setter(v4, v6);
 }
 

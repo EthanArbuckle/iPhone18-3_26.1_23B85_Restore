@@ -1,11 +1,11 @@
 @interface HMDMatterV2KeyCountLogEventFactory
 + (id)logCategory;
 - (HMDHouseholdMetricsDataSource)dataSource;
-- (HMDMatterV2KeyCountLogEventFactory)initWithDataSource:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
+- (HMDMatterV2KeyCountLogEventFactory)initWithDataSource:(id)source;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
 @end
 
 @implementation HMDMatterV2KeyCountLogEventFactory
@@ -17,13 +17,13 @@
   return WeakRetained;
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] == 1)
+  eventsCopy = events;
+  if ([eventsCopy count] == 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [eventsCopy objectAtIndexedSubscript:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,15 +37,15 @@
 
     v7 = v6;
 
-    v8 = [v7 serializedMetrics];
+    serializedMetrics = [v7 serializedMetrics];
   }
 
   else
   {
-    if ([v4 count])
+    if ([eventsCopy count])
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -53,26 +53,26 @@
         v15 = 138543618;
         v16 = v12;
         v17 = 2048;
-        v18 = [v4 count];
+        v18 = [eventsCopy count];
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@We are trying to serialize %lu HMDMatterV2KeyCountLogEvent objects, which is impossible", &v15, 0x16u);
       }
 
       objc_autoreleasePoolPop(v9);
     }
 
-    v8 = 0;
+    serializedMetrics = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return serializedMetrics;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [[HMDMatterV2KeyCountLogEvent alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[HMDMatterV2KeyCountLogEvent alloc] initWithDictionary:dictionaryCopy];
 
   if (v4)
   {
@@ -90,16 +90,16 @@
   return v5;
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  dCopy = d;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v7 = [eventsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -111,7 +111,7 @@
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -130,15 +130,15 @@
 
         if (v14)
         {
-          v15 = [v14 numV2Keys];
-          if (v9 <= v15)
+          numV2Keys = [v14 numV2Keys];
+          if (v9 <= numV2Keys)
           {
-            v9 = v15;
+            v9 = numV2Keys;
           }
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v8 = [eventsCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v8);
@@ -149,7 +149,7 @@
     v9 = 0;
   }
 
-  v16 = [[HMDMatterV2KeyCountLogEvent alloc] initWithHomeUUID:v6 numV2Keys:v9];
+  v16 = [[HMDMatterV2KeyCountLogEvent alloc] initWithHomeUUID:dCopy numV2Keys:v9];
   v24 = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
 
@@ -158,19 +158,19 @@
   return v17;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(HMDMatterV2KeyCountLogEventFactory *)self dataSource];
-  v9 = [v8 homeDataSources];
+  dataSource = [(HMDMatterV2KeyCountLogEventFactory *)self dataSource];
+  homeDataSources = [dataSource homeDataSources];
 
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+  v10 = [homeDataSources countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v10)
   {
     v11 = v10;
@@ -181,12 +181,12 @@
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(homeDataSources);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 uuid];
-        v16 = [v15 isEqual:v6];
+        uuid = [v14 uuid];
+        v16 = [uuid isEqual:dCopy];
 
         if (v16)
         {
@@ -198,7 +198,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      v11 = [homeDataSources countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v11)
       {
         continue;
@@ -209,7 +209,7 @@
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -217,7 +217,7 @@
     *buf = 138543618;
     v30 = v20;
     v31 = 2112;
-    v32 = v6;
+    v32 = dCopy;
     _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@No home found with UUID %@", buf, 0x16u);
   }
 
@@ -230,16 +230,16 @@ LABEL_13:
   return v21;
 }
 
-- (HMDMatterV2KeyCountLogEventFactory)initWithDataSource:(id)a3
+- (HMDMatterV2KeyCountLogEventFactory)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = HMDMatterV2KeyCountLogEventFactory;
   v5 = [(HMDMatterV2KeyCountLogEventFactory *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;

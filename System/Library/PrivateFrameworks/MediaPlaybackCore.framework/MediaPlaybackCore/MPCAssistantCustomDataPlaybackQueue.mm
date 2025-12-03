@@ -1,6 +1,6 @@
 @interface MPCAssistantCustomDataPlaybackQueue
-+ (id)customDataQueueWithContextID:(id)a3 identifier:(id)a4 customData:(id)a5;
-- (MPCAssistantCustomDataPlaybackQueue)initWithContextID:(id)a3 identifier:(id)a4 customData:(id)a5;
++ (id)customDataQueueWithContextID:(id)d identifier:(id)identifier customData:(id)data;
+- (MPCAssistantCustomDataPlaybackQueue)initWithContextID:(id)d identifier:(id)identifier customData:(id)data;
 - (_MRSystemAppPlaybackQueue)createRemotePlaybackQueue;
 - (id)description;
 @end
@@ -12,22 +12,22 @@
   v3 = MRSystemAppPlaybackQueueCreate();
   [(MPCAssistantPlaybackQueue *)self shouldImmediatelyStartPlayback];
   MRSystemAppPlaybackQueueSetIsRequestingImmediatePlayback();
-  v4 = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
+  siriRecommendationID = [(MPCAssistantPlaybackQueue *)self siriRecommendationID];
   MRSystemAppPlaybackQueueSetSiriRecommendationIdentifier();
 
-  v5 = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
+  siriAssetInfo = [(MPCAssistantPlaybackQueue *)self siriAssetInfo];
   MRSystemAppPlaybackQueueSetSiriAssetInfo();
 
-  v6 = [(MPCAssistantPlaybackQueue *)self featureName];
+  featureName = [(MPCAssistantPlaybackQueue *)self featureName];
   MRSystemAppPlaybackQueueSetFeatureName();
 
-  v7 = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
+  siriWHAMetricsInfo = [(MPCAssistantPlaybackQueue *)self siriWHAMetricsInfo];
   MRSystemAppPlaybackQueueSetSiriWHAMetricsInfo();
 
-  v8 = [(MPCAssistantCustomDataPlaybackQueue *)self identifier];
+  identifier = [(MPCAssistantCustomDataPlaybackQueue *)self identifier];
   MRSystemAppPlaybackQueueSetCustomDataIdentifier();
 
-  v9 = [(MPCAssistantCustomDataPlaybackQueue *)self customData];
+  customData = [(MPCAssistantCustomDataPlaybackQueue *)self customData];
   MRSystemAppPlaybackQueueSetCustomData();
 
   return v3;
@@ -44,20 +44,20 @@
   return v5;
 }
 
-- (MPCAssistantCustomDataPlaybackQueue)initWithContextID:(id)a3 identifier:(id)a4 customData:(id)a5
+- (MPCAssistantCustomDataPlaybackQueue)initWithContextID:(id)d identifier:(id)identifier customData:(id)data
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = MPCAssistantCustomDataPlaybackQueue;
-  v10 = [(MPCAssistantPlaybackQueue *)&v16 initWithContextID:a3];
+  v10 = [(MPCAssistantPlaybackQueue *)&v16 initWithContextID:d];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [dataCopy copy];
     customData = v10->_customData;
     v10->_customData = v13;
   }
@@ -65,12 +65,12 @@
   return v10;
 }
 
-+ (id)customDataQueueWithContextID:(id)a3 identifier:(id)a4 customData:(id)a5
++ (id)customDataQueueWithContextID:(id)d identifier:(id)identifier customData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithContextID:v10 identifier:v9 customData:v8];
+  dataCopy = data;
+  identifierCopy = identifier;
+  dCopy = d;
+  v11 = [[self alloc] initWithContextID:dCopy identifier:identifierCopy customData:dataCopy];
 
   return v11;
 }

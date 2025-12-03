@@ -1,24 +1,24 @@
 @interface SUUIArtworkProvidingFactory
-+ (id)artworkCacheCandidatesForProvider:(id)a3;
-+ (id)artworkProviderForStoreResponse:(id)a3;
++ (id)artworkCacheCandidatesForProvider:(id)provider;
++ (id)artworkProviderForStoreResponse:(id)response;
 @end
 
 @implementation SUUIArtworkProvidingFactory
 
-+ (id)artworkProviderForStoreResponse:(id)a3
++ (id)artworkProviderForStoreResponse:(id)response
 {
-  v3 = a3;
-  if ([SUUIArtworkList canHandleArtworkFormat:v3])
+  responseCopy = response;
+  if ([SUUIArtworkList canHandleArtworkFormat:responseCopy])
   {
-    v4 = [[SUUIArtworkList alloc] initWithArtworkListArray:v3];
+    v4 = [[SUUIArtworkList alloc] initWithArtworkListArray:responseCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
   }
 
-  if ([SUUIArtworkTemplate canHandleArtworkFormat:v3])
+  if ([SUUIArtworkTemplate canHandleArtworkFormat:responseCopy])
   {
-    v4 = [[SUUIArtworkTemplate alloc] initWithTemplateDictionary:v3];
+    v4 = [[SUUIArtworkTemplate alloc] initWithTemplateDictionary:responseCopy];
     goto LABEL_5;
   }
 
@@ -28,13 +28,13 @@ LABEL_7:
   return v5;
 }
 
-+ (id)artworkCacheCandidatesForProvider:(id)a3
++ (id)artworkCacheCandidatesForProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 artworks];
+    artworks = [providerCopy artworks];
   }
 
   else
@@ -42,17 +42,17 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v3 servedArtworks];
-      v4 = [v5 allObjects];
+      servedArtworks = [providerCopy servedArtworks];
+      artworks = [servedArtworks allObjects];
     }
 
     else
     {
-      v4 = 0;
+      artworks = 0;
     }
   }
 
-  return v4;
+  return artworks;
 }
 
 @end

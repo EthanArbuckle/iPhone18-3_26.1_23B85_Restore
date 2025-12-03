@@ -1,6 +1,6 @@
 @interface MPSCNNConvolutionTranspose
 - (MPSCNNConvolutionTranspose)initWithCoder:(NSCoder *)aDecoder device:(id)device;
-- (MPSCNNConvolutionTranspose)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7;
+- (MPSCNNConvolutionTranspose)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags;
 - (MPSCNNConvolutionTranspose)initWithDevice:(id)device weights:(id)weights;
 - (MPSCNNConvolutionTransposeGradientState)resultStateForSourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
 - (MPSCNNConvolutionTransposeGradientState)temporaryResultStateForCommandBuffer:(id)commandBuffer sourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
@@ -10,27 +10,27 @@
 - (MPSImage)encodeToCommandBuffer:(id)commandBuffer sourceImage:(MPSImage *)sourceImage convolutionGradientState:(MPSCNNConvolutionGradientState *)convolutionGradientState destinationState:(MPSCNNConvolutionTransposeGradientState *)outState destinationStateIsTemporary:(BOOL)isTemporary;
 - (MPSImageBatch)encodeBatchToCommandBuffer:(id)commandBuffer sourceImages:(MPSImageBatch *)sourceImage convolutionGradientStates:(MPSCNNConvolutionGradientStateBatch *)convolutionGradientState;
 - (MPSImageBatch)encodeBatchToCommandBuffer:(id)commandBuffer sourceImages:(MPSImageBatch *)sourceImages convolutionGradientStates:(MPSCNNConvolutionGradientStateBatch *)convolutionGradientStates destinationStates:(MPSCNNConvolutionTransposeGradientStateBatch *)outStates destinationStateIsTemporary:(BOOL)isTemporary;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationStates:(id *)a5 destinationStateIsTemporary:(BOOL)a6;
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 convolutionState:(id)a5;
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationState:(id *)a5 destinationStateIsTemporary:(BOOL)a6;
-- (id)initialize:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8;
-- (id)initialize:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5;
-- (void)copyToGradientState:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationStates:(id *)states destinationStateIsTemporary:(BOOL)temporary;
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image convolutionState:(id)state;
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationState:(id *)state destinationStateIsTemporary:(BOOL)temporary;
+- (id)initialize:(id)initialize convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected;
+- (id)initialize:(id)initialize weights:(id)weights fullyConnected:(BOOL)connected;
+- (void)copyToGradientState:(id)state sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage;
 - (void)dealloc;
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationStates:(id)a5 destinationImages:(id)a6;
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationStates:(id)states destinationImages:(id)destinationImages;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceImages:(MPSImageBatch *)sourceImage convolutionGradientStates:(MPSCNNConvolutionGradientStateBatch *)convolutionGradientState destinationImages:(MPSImageBatch *)destinationImage;
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationState:(id)a5 destinationImage:(id)a6;
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationState:(id)state destinationImage:(id)destinationImage;
 - (void)encodeToCommandBuffer:(id)commandBuffer sourceImage:(MPSImage *)sourceImage convolutionGradientState:(MPSCNNConvolutionGradientState *)convolutionGradientState destinationImage:(MPSImage *)destinationImage;
-- (void)encodeWithCoder:(id)a3;
-- (void)reloadWeightsAndBiasesWithDataSource:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)reloadWeightsAndBiasesWithDataSource:(id)source;
 @end
 
 @implementation MPSCNNConvolutionTranspose
 
-- (MPSCNNConvolutionTranspose)initWithDevice:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7
+- (MPSCNNConvolutionTranspose)initWithDevice:(id)device convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags
 {
   v14.receiver = self;
   v14.super_class = MPSCNNConvolutionTranspose;
@@ -38,7 +38,7 @@
   if (result)
   {
     result->super._isBackwards = 1;
-    return objc_msgSend_initialize_convolutionDescriptor_kernelWeights_biasTerms_flags_fullyConnected_(result, v13, a3, a4, a5, a6, a7, 0);
+    return objc_msgSend_initialize_convolutionDescriptor_kernelWeights_biasTerms_flags_fullyConnected_(result, v13, device, descriptor, weights, terms, flags, 0);
   }
 
   return result;
@@ -58,9 +58,9 @@
   return result;
 }
 
-- (id)initialize:(id)a3 weights:(id)a4 fullyConnected:(BOOL)a5
+- (id)initialize:(id)initialize weights:(id)weights fullyConnected:(BOOL)connected
 {
-  v11 = objc_msgSend_descriptor(a4, a2, a3, a4, a5, v5, v6, v7);
+  v11 = objc_msgSend_descriptor(weights, a2, initialize, weights, connected, v5, v6, v7);
   if (!v11[1])
   {
     v26 = v11;
@@ -162,166 +162,166 @@
   self->_kernelOffsetX = 0;
   self->_kernelOffsetY = 0;
   v21 = [MPSCNNConvolution alloc];
-  self->_convolution = objc_msgSend_initWithDevice_weights_fullyConnected_convolutionTranspose_(v21, v22, a3, a4, 0, 1, v23, v24);
+  self->_convolution = objc_msgSend_initWithDevice_weights_fullyConnected_convolutionTranspose_(v21, v22, initialize, weights, 0, 1, v23, v24);
   self->super._encode = sub_239BFC494;
   self->super._batchEncode = sub_239BFC6B8;
   self->super._encodeData = self;
   return self;
 }
 
-- (id)initialize:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const float *)a5 biasTerms:(const float *)a6 flags:(unint64_t)a7 fullyConnected:(BOOL)a8
+- (id)initialize:(id)initialize convolutionDescriptor:(id)descriptor kernelWeights:(const float *)weights biasTerms:(const float *)terms flags:(unint64_t)flags fullyConnected:(BOOL)connected
 {
-  if (!a5)
+  if (!weights)
   {
-    v17 = self;
-    v18 = a4;
+    selfCopy = self;
+    descriptorCopy = descriptor;
     v19 = MTLReportFailureTypeEnabled();
-    a4 = v18;
+    descriptor = descriptorCopy;
     v20 = v19;
-    self = v17;
+    self = selfCopy;
     if (v20)
     {
       MTLReportFailure();
-      a4 = v18;
-      self = v17;
+      descriptor = descriptorCopy;
+      self = selfCopy;
     }
   }
 
-  if (!*(a4 + 1))
+  if (!*(descriptor + 1))
   {
-    v21 = self;
-    v22 = a4;
+    selfCopy2 = self;
+    descriptorCopy2 = descriptor;
     v23 = MTLReportFailureTypeEnabled();
-    a4 = v22;
+    descriptor = descriptorCopy2;
     v24 = v23;
-    self = v21;
+    self = selfCopy2;
     if (v24)
     {
       MTLReportFailure();
-      a4 = v22;
-      self = v21;
+      descriptor = descriptorCopy2;
+      self = selfCopy2;
     }
   }
 
-  if (!*(a4 + 2))
+  if (!*(descriptor + 2))
   {
-    v25 = self;
-    v26 = a4;
+    selfCopy3 = self;
+    descriptorCopy3 = descriptor;
     v27 = MTLReportFailureTypeEnabled();
-    a4 = v26;
+    descriptor = descriptorCopy3;
     v28 = v27;
-    self = v25;
+    self = selfCopy3;
     if (v28)
     {
       MTLReportFailure();
-      a4 = v26;
-      self = v25;
+      descriptor = descriptorCopy3;
+      self = selfCopy3;
     }
   }
 
-  if (!*(a4 + 3))
+  if (!*(descriptor + 3))
   {
-    v29 = self;
-    v30 = a4;
+    selfCopy4 = self;
+    descriptorCopy4 = descriptor;
     v31 = MTLReportFailureTypeEnabled();
-    a4 = v30;
+    descriptor = descriptorCopy4;
     v32 = v31;
-    self = v29;
+    self = selfCopy4;
     if (v32)
     {
       MTLReportFailure();
-      a4 = v30;
-      self = v29;
+      descriptor = descriptorCopy4;
+      self = selfCopy4;
     }
   }
 
-  if (!*(a4 + 4))
+  if (!*(descriptor + 4))
   {
-    v33 = self;
-    v34 = a4;
+    selfCopy5 = self;
+    descriptorCopy5 = descriptor;
     v35 = MTLReportFailureTypeEnabled();
-    a4 = v34;
+    descriptor = descriptorCopy5;
     v36 = v35;
-    self = v33;
+    self = selfCopy5;
     if (v36)
     {
       MTLReportFailure();
-      a4 = v34;
-      self = v33;
+      descriptor = descriptorCopy5;
+      self = selfCopy5;
     }
   }
 
-  if (!*(a4 + 6))
+  if (!*(descriptor + 6))
   {
-    v37 = self;
-    v38 = a4;
+    selfCopy6 = self;
+    descriptorCopy6 = descriptor;
     v39 = MTLReportFailureTypeEnabled();
-    a4 = v38;
+    descriptor = descriptorCopy6;
     v40 = v39;
-    self = v37;
+    self = selfCopy6;
     if (v40)
     {
       MTLReportFailure();
-      a4 = v38;
-      self = v37;
+      descriptor = descriptorCopy6;
+      self = selfCopy6;
     }
   }
 
-  if (!*(a4 + 7))
+  if (!*(descriptor + 7))
   {
-    v41 = self;
-    v42 = a4;
+    selfCopy7 = self;
+    descriptorCopy7 = descriptor;
     v43 = MTLReportFailureTypeEnabled();
-    a4 = v42;
+    descriptor = descriptorCopy7;
     v44 = v43;
-    self = v41;
+    self = selfCopy7;
     if (v44)
     {
       MTLReportFailure();
-      a4 = v42;
-      self = v41;
+      descriptor = descriptorCopy7;
+      self = selfCopy7;
     }
   }
 
-  if (!*(a4 + 8))
+  if (!*(descriptor + 8))
   {
-    v45 = self;
-    v46 = a4;
+    selfCopy8 = self;
+    descriptorCopy8 = descriptor;
     v47 = MTLReportFailureTypeEnabled();
-    a4 = v46;
+    descriptor = descriptorCopy8;
     v48 = v47;
-    self = v45;
+    self = selfCopy8;
     if (v48)
     {
       MTLReportFailure();
-      a4 = v46;
-      self = v45;
+      descriptor = descriptorCopy8;
+      self = selfCopy8;
     }
   }
 
-  self->super._kernelWidth = *(a4 + 1);
-  self->super._kernelHeight = *(a4 + 2);
-  self->_inputFeatureChannels = *(a4 + 3);
-  v11 = *(a4 + 5);
-  self->_outputFeatureChannels = *(a4 + 4);
+  self->super._kernelWidth = *(descriptor + 1);
+  self->super._kernelHeight = *(descriptor + 2);
+  self->_inputFeatureChannels = *(descriptor + 3);
+  v11 = *(descriptor + 5);
+  self->_outputFeatureChannels = *(descriptor + 4);
   self->_featureChannelsLayout = v11;
-  self->super._strideInPixelsX = *(a4 + 6);
-  self->super._strideInPixelsY = *(a4 + 7);
-  self->super._dilationRateX = *(a4 + 12);
-  self->super._dilationRateY = *(a4 + 13);
-  self->_groups = *(a4 + 8);
+  self->super._strideInPixelsX = *(descriptor + 6);
+  self->super._strideInPixelsY = *(descriptor + 7);
+  self->super._dilationRateX = *(descriptor + 12);
+  self->super._dilationRateY = *(descriptor + 13);
+  self->_groups = *(descriptor + 8);
   self->super._checkFlags |= 2u;
-  v12 = self;
-  v13 = a4;
-  self->_fusedNeuronDescriptor = objc_msgSend_fusedNeuronDescriptor(a4, a2, a3, a4, a5, a6, a7, a8);
-  v12->_kernelOffsetX = 0;
-  v12->_kernelOffsetY = 0;
+  selfCopy9 = self;
+  descriptorCopy9 = descriptor;
+  self->_fusedNeuronDescriptor = objc_msgSend_fusedNeuronDescriptor(descriptor, a2, initialize, descriptor, weights, terms, flags, connected);
+  selfCopy9->_kernelOffsetX = 0;
+  selfCopy9->_kernelOffsetY = 0;
   v14 = [MPSCNNConvolution alloc];
-  v12->_convolution = objc_msgSend_initWithDevice_convolutionDescriptor_kernelWeights_biasTerms_flags_fullyConnected_convolutionTranspose_(v14, v15, a3, v13, a5, a6, 0, 0, 1);
-  v12->super._encode = sub_239BFC494;
-  v12->super._batchEncode = sub_239BFC6B8;
-  v12->super._encodeData = v12;
-  return v12;
+  selfCopy9->_convolution = objc_msgSend_initWithDevice_convolutionDescriptor_kernelWeights_biasTerms_flags_fullyConnected_convolutionTranspose_(v14, v15, initialize, descriptorCopy9, weights, terms, 0, 0, 1);
+  selfCopy9->super._encode = sub_239BFC494;
+  selfCopy9->super._batchEncode = sub_239BFC6B8;
+  selfCopy9->super._encodeData = selfCopy9;
+  return selfCopy9;
 }
 
 - (MPSCNNConvolutionTranspose)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -362,25 +362,25 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v114.receiver = self;
   v114.super_class = MPSCNNConvolutionTranspose;
   [(MPSCNNKernel *)&v114 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, 256, @"MPSCNNConvolutionTransposeVers", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->super._kernelWidth, @"MPSCNNConvolutionTransposeWidth", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, self->super._kernelHeight, @"MPSCNNConvolutionTransposeHeight", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, self->_inputFeatureChannels, @"MPSCNNConvolutionTransposeInputFeatureChannels", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, self->_outputFeatureChannels, @"MPSCNNConvolutionTransposeOutputFeatureChannels", v26, v27, v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, self->super._strideInPixelsX, @"MPSCNNConvolutionTransposeStrideInPixelsX", v31, v32, v33, v34);
-  objc_msgSend_encodeInt64_forKey_(a3, v35, self->super._strideInPixelsY, @"MPSCNNConvolutionTransposeStrideInPixelsY", v36, v37, v38, v39);
-  objc_msgSend_encodeInt64_forKey_(a3, v40, self->super._dilationRateX, @"MPSCNNConvolutionTransposeDilationRateX", v41, v42, v43, v44);
-  objc_msgSend_encodeInt64_forKey_(a3, v45, self->super._dilationRateY, @"MPSCNNConvolutionTransposeDilationRateY", v46, v47, v48, v49);
-  objc_msgSend_encodeInt64_forKey_(a3, v50, self->_groups, @"MPSCNNConvolutionTransposeGroups", v51, v52, v53, v54);
-  objc_msgSend_encodeInt64_forKey_(a3, v55, self->_featureChannelsLayout, @"MPSCNNConvolutionTransposeFeatureChannelsLayout", v56, v57, v58, v59);
-  objc_msgSend_encodeInt64_forKey_(a3, v60, self->_kernelOffsetX, @"MPSCNNConvolutionTransposeKernelOffsetX", v61, v62, v63, v64);
-  objc_msgSend_encodeInt64_forKey_(a3, v65, self->_kernelOffsetY, @"MPSCNNConvolutionTransposeKernelOffsetY", v66, v67, v68, v69);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, 256, @"MPSCNNConvolutionTransposeVers", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->super._kernelWidth, @"MPSCNNConvolutionTransposeWidth", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, self->super._kernelHeight, @"MPSCNNConvolutionTransposeHeight", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, self->_inputFeatureChannels, @"MPSCNNConvolutionTransposeInputFeatureChannels", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, self->_outputFeatureChannels, @"MPSCNNConvolutionTransposeOutputFeatureChannels", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, self->super._strideInPixelsX, @"MPSCNNConvolutionTransposeStrideInPixelsX", v31, v32, v33, v34);
+  objc_msgSend_encodeInt64_forKey_(coder, v35, self->super._strideInPixelsY, @"MPSCNNConvolutionTransposeStrideInPixelsY", v36, v37, v38, v39);
+  objc_msgSend_encodeInt64_forKey_(coder, v40, self->super._dilationRateX, @"MPSCNNConvolutionTransposeDilationRateX", v41, v42, v43, v44);
+  objc_msgSend_encodeInt64_forKey_(coder, v45, self->super._dilationRateY, @"MPSCNNConvolutionTransposeDilationRateY", v46, v47, v48, v49);
+  objc_msgSend_encodeInt64_forKey_(coder, v50, self->_groups, @"MPSCNNConvolutionTransposeGroups", v51, v52, v53, v54);
+  objc_msgSend_encodeInt64_forKey_(coder, v55, self->_featureChannelsLayout, @"MPSCNNConvolutionTransposeFeatureChannelsLayout", v56, v57, v58, v59);
+  objc_msgSend_encodeInt64_forKey_(coder, v60, self->_kernelOffsetX, @"MPSCNNConvolutionTransposeKernelOffsetX", v61, v62, v63, v64);
+  objc_msgSend_encodeInt64_forKey_(coder, v65, self->_kernelOffsetY, @"MPSCNNConvolutionTransposeKernelOffsetY", v66, v67, v68, v69);
   fusedNeuronDescriptor = self->_fusedNeuronDescriptor;
   if (fusedNeuronDescriptor)
   {
@@ -396,8 +396,8 @@
         v82 = strlen(v80);
         if (v82)
         {
-          objc_msgSend_encodeBytes_length_forKey_(a3, v83, v81, v82 + 1, @"MPSCNNConvolutionTransposeFusedNeuronClassKey", v84, v85, v86);
-          objc_msgSend_encodeObject_forKey_(a3, v87, fusedNeuronDescriptor, @"MPSCNNConvolutionTransposeNeuron", v88, v89, v90, v91);
+          objc_msgSend_encodeBytes_length_forKey_(coder, v83, v81, v82 + 1, @"MPSCNNConvolutionTransposeFusedNeuronClassKey", v84, v85, v86);
+          objc_msgSend_encodeObject_forKey_(coder, v87, fusedNeuronDescriptor, @"MPSCNNConvolutionTransposeNeuron", v88, v89, v90, v91);
         }
       }
     }
@@ -419,8 +419,8 @@
       v104 = strlen(v102);
       if (v104)
       {
-        objc_msgSend_encodeBytes_length_forKey_(a3, v105, v103, v104 + 1, @"MPSCNNConvolutionTransposeConvolutionClassKey", v106, v107, v108);
-        objc_msgSend_encodeObject_forKey_(a3, v109, convolution, @"MPSCNNConvolutionTransposeConvolutionKey", v110, v111, v112, v113);
+        objc_msgSend_encodeBytes_length_forKey_(coder, v105, v103, v104 + 1, @"MPSCNNConvolutionTransposeConvolutionClassKey", v106, v107, v108);
+        objc_msgSend_encodeObject_forKey_(coder, v109, convolution, @"MPSCNNConvolutionTransposeConvolutionKey", v110, v111, v112, v113);
       }
     }
   }
@@ -428,11 +428,11 @@
   objc_autoreleasePoolPop(v93);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v17.receiver = self;
   v17.super_class = MPSCNNConvolutionTranspose;
-  v6 = [(MPSCNNKernel *)&v17 copyWithZone:a3 device:a4];
+  v6 = [(MPSCNNKernel *)&v17 copyWithZone:zone device:device];
   v6[25] = self->super._kernelWidth;
   v6[26] = self->super._kernelHeight;
   v6[41] = self->_inputFeatureChannels;
@@ -460,7 +460,7 @@
 
   else
   {
-    v15 = objc_msgSend_copyWithZone_device_(convolution, v7, a3, v13, v8, v9, v10, v11);
+    v15 = objc_msgSend_copyWithZone_device_(convolution, v7, zone, v13, v8, v9, v10, v11);
   }
 
   v6[47] = v15;
@@ -474,12 +474,12 @@
   [(MPSCNNKernel *)&v3 dealloc];
 }
 
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 convolutionState:(id)a5
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image convolutionState:(id)state
 {
   v8.receiver = self;
   v8.super_class = MPSCNNConvolutionTranspose;
-  v6 = [(MPSCNNKernel *)&v8 encodeToCommandBuffer:a3 sourceImage:a4 inState:?];
-  MPSDecrementReadCount(a5);
+  v6 = [(MPSCNNKernel *)&v8 encodeToCommandBuffer:buffer sourceImage:image inState:?];
+  MPSDecrementReadCount(state);
   return v6;
 }
 
@@ -531,17 +531,17 @@
   return [(MPSCNNKernel *)&v8 encodeBatchToCommandBuffer:commandBuffer sourceImages:sourceImages sourceStates:convolutionGradientStates destinationStates:outStates destinationStateIsTemporary:isTemporary];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationState:(id)a5 destinationImage:(id)a6
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationState:(id)state destinationImage:(id)destinationImage
 {
   v8.receiver = self;
   v8.super_class = MPSCNNConvolutionTranspose;
-  [(MPSCNNKernel *)&v8 encodeToCommandBuffer:a3 sourceImage:a4 inState:a5 destinationImage:a6];
-  if (a5)
+  [(MPSCNNKernel *)&v8 encodeToCommandBuffer:buffer sourceImage:image inState:state destinationImage:destinationImage];
+  if (state)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = *(a5 + 44);
+      stateCopy = *(state + 44);
     }
 
     else
@@ -552,24 +552,24 @@
         return;
       }
 
-      v7 = a5;
+      stateCopy = state;
     }
 
-    MPSDecrementReadCount(v7);
+    MPSDecrementReadCount(stateCopy);
   }
 }
 
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationStates:(id)a5 destinationImages:(id)a6
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationStates:(id)states destinationImages:(id)destinationImages
 {
   v28.receiver = self;
   v28.super_class = MPSCNNConvolutionTranspose;
-  [(MPSCNNKernel *)&v28 encodeBatchToCommandBuffer:a3 sourceImages:a4 inStates:a5 destinationImages:a6];
-  if (a5)
+  [(MPSCNNKernel *)&v28 encodeBatchToCommandBuffer:buffer sourceImages:images inStates:states destinationImages:destinationImages];
+  if (states)
   {
-    objc_msgSend_objectAtIndexedSubscript_(a5, v7, 0, v8, v9, v10, v11, v12);
+    objc_msgSend_objectAtIndexedSubscript_(states, v7, 0, v8, v9, v10, v11, v12);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v20 = objc_msgSend_objectAtIndexedSubscript_(a5, v14, 0, v15, v16, v17, v18, v19);
+    v20 = objc_msgSend_objectAtIndexedSubscript_(states, v14, 0, v15, v16, v17, v18, v19);
     if (isKindOfClass)
     {
       v21 = *(v20 + 352);
@@ -583,14 +583,14 @@
         return;
       }
 
-      v21 = objc_msgSend_objectAtIndexedSubscript_(a5, v22, 0, v23, v24, v25, v26, v27);
+      v21 = objc_msgSend_objectAtIndexedSubscript_(states, v22, 0, v23, v24, v25, v26, v27);
     }
 
     MPSDecrementReadCount(v21);
   }
 }
 
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationState:(id *)a5 destinationStateIsTemporary:(BOOL)a6
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationState:(id *)state destinationStateIsTemporary:(BOOL)temporary
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -600,7 +600,7 @@
   return 0;
 }
 
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationStates:(id *)a5 destinationStateIsTemporary:(BOOL)a6
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationStates:(id *)states destinationStateIsTemporary:(BOOL)temporary
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -610,20 +610,20 @@
   return 0;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v90.receiver = self;
   v90.super_class = MPSCNNConvolutionTranspose;
-  v15 = [(MPSCNNKernel *)&v90 destinationImageDescriptorForSourceImages:a3 sourceStates:0 paddingMethod:a5 sourceOffset:&v92 kernelOffset:v91];
+  v15 = [(MPSCNNKernel *)&v90 destinationImageDescriptorForSourceImages:images sourceStates:0 paddingMethod:method sourceOffset:&v92 kernelOffset:v91];
   v17 = v91[0];
   v16 = v91[1];
-  if (a4 && objc_msgSend_objectAtIndexedSubscript_(a4, v9, 0, v10, v11, v12, v13, v14))
+  if (states && objc_msgSend_objectAtIndexedSubscript_(states, v9, 0, v10, v11, v12, v13, v14))
   {
-    objc_msgSend_objectAtIndexedSubscript_(a4, v9, 0, v10, v11, v12, v13, v14);
+    objc_msgSend_objectAtIndexedSubscript_(states, v9, 0, v10, v11, v12, v13, v14);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = objc_msgSend_objectAtIndexedSubscript_(a4, v18, 0, v19, v20, v21, v22, v23);
+      v24 = objc_msgSend_objectAtIndexedSubscript_(states, v18, 0, v19, v20, v21, v22, v23);
       v32 = v24;
       if (v24)
       {
@@ -659,11 +659,11 @@
       *(&v92 + 1) = (v62 >> 63) + v61;
     }
 
-    objc_msgSend_objectAtIndexedSubscript_(a4, v18, 0, v19, v20, v21, v22, v23);
+    objc_msgSend_objectAtIndexedSubscript_(states, v18, 0, v19, v20, v21, v22, v23);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v63 = objc_msgSend_objectAtIndexedSubscript_(a4, v9, 0, v10, v11, v12, v13, v14);
+      v63 = objc_msgSend_objectAtIndexedSubscript_(states, v9, 0, v10, v11, v12, v13, v14);
       v64 = v63[6];
       v65 = v63[7];
       objc_msgSend_setWidth_(v15, v66, v63[31], v67, v68, v69, v70, v71);
@@ -696,22 +696,22 @@
 
   self->_kernelOffsetX = v17;
   self->_kernelOffsetY = v16;
-  if (a6)
+  if (offset)
   {
-    *&a6->var0 = v92;
+    *&offset->var0 = v92;
   }
 
   objc_msgSend_setFeatureChannels_(v15, v9, self->_outputFeatureChannels, v10, v11, v12, v13, v14);
   return v15;
 }
 
-- (void)copyToGradientState:(id)a3 sourceImage:(id)a4 sourceStates:(id)a5 destinationImage:(id)a6
+- (void)copyToGradientState:(id)state sourceImage:(id)image sourceStates:(id)states destinationImage:(id)destinationImage
 {
   v8.receiver = self;
   v8.super_class = MPSCNNConvolutionTranspose;
-  [(MPSCNNKernel *)&v8 copyToGradientState:a3 sourceImage:a4 sourceStates:a5 destinationImage:a6];
-  *(a3 + 45) = self->_kernelOffsetX;
-  *(a3 + 46) = self->_kernelOffsetY;
+  [(MPSCNNKernel *)&v8 copyToGradientState:state sourceImage:image sourceStates:states destinationImage:destinationImage];
+  *(state + 45) = self->_kernelOffsetX;
+  *(state + 46) = self->_kernelOffsetY;
 }
 
 - (id)debugDescription
@@ -967,21 +967,21 @@ LABEL_13:
   return v102;
 }
 
-- (void)reloadWeightsAndBiasesWithDataSource:(id)a3
+- (void)reloadWeightsAndBiasesWithDataSource:(id)source
 {
-  objc_msgSend_dataSource(self, a2, a3, v3, v4, v5, v6, v7);
-  if (objc_msgSend_dataSource(self, v10, v11, v12, v13, v14, v15, v16) == a3 || !MTLReportFailureTypeEnabled())
+  objc_msgSend_dataSource(self, a2, source, v3, v4, v5, v6, v7);
+  if (objc_msgSend_dataSource(self, v10, v11, v12, v13, v14, v15, v16) == source || !MTLReportFailureTypeEnabled())
   {
-    v24 = self;
+    selfCopy2 = self;
   }
 
   else
   {
     MTLReportFailure();
-    v24 = self;
+    selfCopy2 = self;
   }
 
-  objc_msgSend_reloadWeightsAndBiasesFromDataSource(v24, v17, v18, v19, v20, v21, v22, v23);
+  objc_msgSend_reloadWeightsAndBiasesFromDataSource(selfCopy2, v17, v18, v19, v20, v21, v22, v23);
 }
 
 @end

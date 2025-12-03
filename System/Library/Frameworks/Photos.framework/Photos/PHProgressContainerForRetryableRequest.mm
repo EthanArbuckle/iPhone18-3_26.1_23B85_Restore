@@ -1,14 +1,14 @@
 @interface PHProgressContainerForRetryableRequest
 - (PHProgressContainerForRetryableRequest)init;
-- (void)setRequestProgress:(id)a3;
+- (void)setRequestProgress:(id)progress;
 @end
 
 @implementation PHProgressContainerForRetryableRequest
 
-- (void)setRequestProgress:(id)a3
+- (void)setRequestProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(NSProgress *)self->_totalProgress totalUnitCount];
+  progressCopy = progress;
+  totalUnitCount = [(NSProgress *)self->_totalProgress totalUnitCount];
   currentRequestProgress = self->_currentRequestProgress;
   if (currentRequestProgress)
   {
@@ -21,10 +21,10 @@
     v7 = 0;
   }
 
-  self->_currentRequestProgress = v4;
-  v8 = v4;
+  self->_currentRequestProgress = progressCopy;
+  v8 = progressCopy;
 
-  [(NSProgress *)self->_totalProgress addChild:self->_currentRequestProgress withPendingUnitCount:v5];
+  [(NSProgress *)self->_totalProgress addChild:self->_currentRequestProgress withPendingUnitCount:totalUnitCount];
 }
 
 - (PHProgressContainerForRetryableRequest)init

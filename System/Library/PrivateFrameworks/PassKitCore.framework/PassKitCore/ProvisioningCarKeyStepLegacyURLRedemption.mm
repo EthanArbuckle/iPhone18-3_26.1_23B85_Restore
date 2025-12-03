@@ -1,14 +1,14 @@
 @interface ProvisioningCarKeyStepLegacyURLRedemption
-- (void)passLibraryDidChangeWithNotification:(id)a3;
+- (void)passLibraryDidChangeWithNotification:(id)notification;
 @end
 
 @implementation ProvisioningCarKeyStepLegacyURLRedemption
 
-- (void)passLibraryDidChangeWithNotification:(id)a3
+- (void)passLibraryDidChangeWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1AD4C1B14(v3);
+  sub_1AD4C1B14(notificationCopy);
 }
 
 @end

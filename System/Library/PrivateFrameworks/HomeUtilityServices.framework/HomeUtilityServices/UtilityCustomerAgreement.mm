@@ -2,8 +2,8 @@
 - (NSArray)programs;
 - (NSString)alternateSupplier;
 - (_TtC19HomeUtilityServices24UtilityCustomerAgreement)init;
-- (_TtC19HomeUtilityServices24UtilityCustomerAgreement)initWithCustomerAgreementID:(id)a3 accountID:(id)a4 meters:(id)a5 programs:(id)a6 alternateSupplier:(id)a7;
-- (void)setAlternateSupplier:(id)a3;
+- (_TtC19HomeUtilityServices24UtilityCustomerAgreement)initWithCustomerAgreementID:(id)d accountID:(id)iD meters:(id)meters programs:(id)programs alternateSupplier:(id)supplier;
+- (void)setAlternateSupplier:(id)supplier;
 @end
 
 @implementation UtilityCustomerAgreement
@@ -44,9 +44,9 @@
   return v4;
 }
 
-- (void)setAlternateSupplier:(id)a3
+- (void)setAlternateSupplier:(id)supplier
 {
-  if (a3)
+  if (supplier)
   {
     v4 = sub_20E0091D4();
     v6 = v5;
@@ -65,7 +65,7 @@
   v7[1] = v6;
 }
 
-- (_TtC19HomeUtilityServices24UtilityCustomerAgreement)initWithCustomerAgreementID:(id)a3 accountID:(id)a4 meters:(id)a5 programs:(id)a6 alternateSupplier:(id)a7
+- (_TtC19HomeUtilityServices24UtilityCustomerAgreement)initWithCustomerAgreementID:(id)d accountID:(id)iD meters:(id)meters programs:(id)programs alternateSupplier:(id)supplier
 {
   v10 = sub_20E0091D4();
   v12 = v11;
@@ -73,15 +73,15 @@
   v15 = v14;
   type metadata accessor for UtilityMeter();
   v16 = sub_20E009424();
-  if (a6)
+  if (programs)
   {
     type metadata accessor for UtilityProgram();
-    a6 = sub_20E009424();
+    programs = sub_20E009424();
   }
 
-  if (a7)
+  if (supplier)
   {
-    a7 = sub_20E0091D4();
+    supplier = sub_20E0091D4();
     v18 = v17;
   }
 
@@ -99,10 +99,10 @@
   v21 = (self + OBJC_IVAR____TtC19HomeUtilityServices24UtilityCustomerAgreement_accountID);
   *v21 = v13;
   v21[1] = v15;
-  *(self + OBJC_IVAR____TtC19HomeUtilityServices24UtilityCustomerAgreement_programs) = a6;
+  *(self + OBJC_IVAR____TtC19HomeUtilityServices24UtilityCustomerAgreement_programs) = programs;
   *(self + OBJC_IVAR____TtC19HomeUtilityServices24UtilityCustomerAgreement_meters) = v16;
   swift_beginAccess();
-  *v19 = a7;
+  *v19 = supplier;
   v19[1] = v18;
   v23.receiver = self;
   v23.super_class = type metadata accessor for UtilityCustomerAgreement();

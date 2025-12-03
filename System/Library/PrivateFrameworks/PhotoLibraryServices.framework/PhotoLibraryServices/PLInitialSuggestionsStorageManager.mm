@@ -1,37 +1,37 @@
 @interface PLInitialSuggestionsStorageManager
-+ (BOOL)deleteInitialSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4;
-+ (BOOL)saveInitialSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (BOOL)updateInitialSuggestionsWithIdentifiers:(id)a3 dateLastUsed:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-+ (id)initialSearchSuggestionsForPhotoLibrary:(id)a3 psiDatabase:(id)a4 error:(id *)a5;
++ (BOOL)deleteInitialSuggestionsForPhotoLibrary:(id)library error:(id *)error;
++ (BOOL)saveInitialSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error;
++ (BOOL)updateInitialSuggestionsWithIdentifiers:(id)identifiers dateLastUsed:(id)used photoLibrary:(id)library error:(id *)error;
++ (id)initialSearchSuggestionsForPhotoLibrary:(id)library psiDatabase:(id)database error:(id *)error;
 @end
 
 @implementation PLInitialSuggestionsStorageManager
 
-+ (BOOL)deleteInitialSuggestionsForPhotoLibrary:(id)a3 error:(id *)a4
++ (BOOL)deleteInitialSuggestionsForPhotoLibrary:(id)library error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   if (PLIsAssetsd())
   {
-    v8 = [v7 libraryServicesManager];
-    v9 = [v8 searchIndexingEngine];
-    [v9 safePerformBlockAndWaitWithPSIDatabase:&__block_literal_global_63];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
+    [searchIndexingEngine safePerformBlockAndWaitWithPSIDatabase:&__block_literal_global_63];
 
     v10 = 1;
   }
 
   else
   {
-    v11 = [v7 assetsdClient];
-    v12 = [v11 libraryInternalClient];
+    assetsdClient = [libraryCopy assetsdClient];
+    libraryInternalClient = [assetsdClient libraryInternalClient];
     v18 = 0;
-    v10 = [v12 deleteAllInitialSuggestionsWithError:&v18];
+    v10 = [libraryInternalClient deleteAllInitialSuggestionsWithError:&v18];
     v13 = v18;
 
     if ((v10 & 1) == 0)
@@ -44,10 +44,10 @@
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to delete initial suggestions. Error: %@", buf, 0xCu);
       }
 
-      if (a4)
+      if (error)
       {
         v15 = v13;
-        *a4 = v13;
+        *error = v13;
       }
     }
   }
@@ -55,41 +55,41 @@
   return v10;
 }
 
-+ (BOOL)updateInitialSuggestionsWithIdentifiers:(id)a3 dateLastUsed:(id)a4 photoLibrary:(id)a5 error:(id *)a6
++ (BOOL)updateInitialSuggestionsWithIdentifiers:(id)identifiers dateLastUsed:(id)used photoLibrary:(id)library error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  identifiersCopy = identifiers;
+  usedCopy = used;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   if (PLIsAssetsd())
   {
-    v14 = [v11 _pl_map:&__block_literal_global_60_49057];
-    v15 = [v13 libraryServicesManager];
-    v16 = [v15 searchIndexingEngine];
+    v14 = [identifiersCopy _pl_map:&__block_literal_global_60_49057];
+    libraryServicesManager = [libraryCopy libraryServicesManager];
+    searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __110__PLInitialSuggestionsStorageManager_updateInitialSuggestionsWithIdentifiers_dateLastUsed_photoLibrary_error___block_invoke_2;
     v27[3] = &unk_1E756D418;
     v28 = v14;
-    v29 = v12;
+    v29 = usedCopy;
     v17 = v14;
-    [v16 safePerformBlockWithPSIDatabase:v27];
+    [searchIndexingEngine safePerformBlockWithPSIDatabase:v27];
 
 LABEL_6:
     v21 = 1;
     goto LABEL_7;
   }
 
-  v18 = [v13 assetsdClient];
-  v19 = [v18 libraryInternalClient];
+  assetsdClient = [libraryCopy assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
   v26 = 0;
-  v20 = [v19 updateInitialSuggestionsWithIdentifiers:v11 dateLastUsed:v12 error:&v26];
+  v20 = [libraryInternalClient updateInitialSuggestionsWithIdentifiers:identifiersCopy dateLastUsed:usedCopy error:&v26];
   v17 = v26;
 
   if (v20)
@@ -101,17 +101,17 @@ LABEL_6:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v31 = v11;
+    v31 = identifiersCopy;
     v32 = 2112;
     v33 = v17;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to update timestamps for initial suggestions with identifiers %@. Error: %@", buf, 0x16u);
   }
 
-  if (a6)
+  if (error)
   {
     v24 = v17;
     v21 = 0;
-    *a6 = v17;
+    *error = v17;
   }
 
   else
@@ -132,45 +132,45 @@ PSIInitialSuggestionIdentifier *__110__PLInitialSuggestionsStorageManager_update
   return v3;
 }
 
-+ (BOOL)saveInitialSuggestions:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (BOOL)saveInitialSuggestions:(id)suggestions photoLibrary:(id)library error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  suggestionsCopy = suggestions;
+  libraryCopy = library;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = NSStringFromSelector(a2);
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:103 description:{@"%@ can only be called from assetsd", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:103 description:{@"%@ can only be called from assetsd", v16}];
 
-    if (v9)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!libraryCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [v8 _pl_map:&__block_literal_global_49063];
-  v11 = [v9 libraryServicesManager];
+  v10 = [suggestionsCopy _pl_map:&__block_literal_global_49063];
+  libraryServicesManager = [libraryCopy libraryServicesManager];
 
-  v12 = [v11 searchIndexingEngine];
+  searchIndexingEngine = [libraryServicesManager searchIndexingEngine];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __80__PLInitialSuggestionsStorageManager_saveInitialSuggestions_photoLibrary_error___block_invoke_2;
   v18[3] = &unk_1E756D3F0;
   v19 = v10;
   v13 = v10;
-  [v12 safePerformBlockAndWaitWithPSIDatabase:v18];
+  [searchIndexingEngine safePerformBlockAndWaitWithPSIDatabase:v18];
 
   return 1;
 }
@@ -192,15 +192,15 @@ PSIInitialSuggestion *__80__PLInitialSuggestionsStorageManager_saveInitialSugges
   return v11;
 }
 
-+ (id)initialSearchSuggestionsForPhotoLibrary:(id)a3 psiDatabase:(id)a4 error:(id *)a5
++ (id)initialSearchSuggestionsForPhotoLibrary:(id)library psiDatabase:(id)database error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v32 = v8;
-  if (v8)
+  libraryCopy = library;
+  databaseCopy = database;
+  v32 = libraryCopy;
+  if (libraryCopy)
   {
-    if (v9)
+    if (databaseCopy)
     {
       goto LABEL_3;
     }
@@ -208,31 +208,31 @@ PSIInitialSuggestion *__80__PLInitialSuggestionsStorageManager_saveInitialSugges
 
   else
   {
-    v27 = v9;
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    v27 = databaseCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-    v9 = v27;
+    databaseCopy = v27;
     if (v27)
     {
       goto LABEL_3;
     }
   }
 
-  v29 = v9;
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:a1 file:@"PLInitialSuggestionsStorageManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"psiDatabase"}];
+  v29 = databaseCopy;
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLInitialSuggestionsStorageManager.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"psiDatabase"}];
 
-  v9 = v29;
+  databaseCopy = v29;
 LABEL_3:
-  v31 = v9;
-  v10 = [v9 fetchInitialSuggestions];
+  v31 = databaseCopy;
+  fetchInitialSuggestions = [databaseCopy fetchInitialSuggestions];
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v10;
+  obj = fetchInitialSuggestions;
   v12 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v12)
   {
@@ -251,8 +251,8 @@ LABEL_3:
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v16 = [v15 groups];
-        v17 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        groups = [v15 groups];
+        v17 = [groups countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v17)
         {
           v18 = *v45;
@@ -262,23 +262,23 @@ LABEL_3:
             {
               if (*v45 != v18)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(groups);
               }
 
               v20 = *(*(&v44 + 1) + 8 * j);
               if ([v20 category] == 1300 || objc_msgSend(v20, "category") == 1301 || objc_msgSend(v20, "category") == 1330 || objc_msgSend(v20, "category") == 1331)
               {
-                v21 = [v20 lookupIdentifier];
+                lookupIdentifier = [v20 lookupIdentifier];
 
-                if (v21)
+                if (lookupIdentifier)
                 {
-                  v22 = [v20 lookupIdentifier];
-                  [v11 addObject:v22];
+                  lookupIdentifier2 = [v20 lookupIdentifier];
+                  [v11 addObject:lookupIdentifier2];
                 }
               }
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+            v17 = [groups countByEnumeratingWithState:&v44 objects:v52 count:16];
           }
 
           while (v17);

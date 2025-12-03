@@ -1,29 +1,29 @@
 @interface IMDCollaborationNoticeController
 + (id)sharedController;
-- (BOOL)_hasAdministrativePrivilegesForHighlight:(id)a3 chatGUID:(id)a4;
-- (BOOL)_highlightEligibleForSuggestAddingUser:(id)a3;
+- (BOOL)_hasAdministrativePrivilegesForHighlight:(id)highlight chatGUID:(id)d;
+- (BOOL)_highlightEligibleForSuggestAddingUser:(id)user;
 - (IMDCollaborationNoticeController)init;
 - (NSDictionary)highlightURLsForChatGUID;
-- (id)noticesForChatGUIDs:(id)a3;
-- (void)_chatGUIDsForNotice:(id)a3 completionBlock:(id)a4;
-- (void)_chatGUIDsForNoticeURL:(id)a3 completionBlock:(id)a4;
-- (void)_generateParticipantChangeNoticesForChat:(id)a3 highlight:(id)a4 participant:(id)a5 noticeType:(int64_t)a6 checkedPrivileges:(BOOL)a7 messageGUID:(id)a8;
-- (void)_generateParticipantChangeNoticesForChat:(id)a3 highlights:(id)a4 participants:(id)a5 noticeType:(int64_t)a6;
-- (void)_handleChatParticipantsDidChange:(id)a3;
-- (void)_isShareBearURL:(id)a3 completionHandler:(id)a4;
-- (void)_mapChatGUIDsToHighlight:(id)a3 completionBlock:(id)a4;
-- (void)_processNotice:(id)a3;
-- (void)_shouldPostParticipantChangeNoticesForChat:(id)a3 withParticipants:(id)a4 forNoticeType:(int64_t)a5;
+- (id)noticesForChatGUIDs:(id)ds;
+- (void)_chatGUIDsForNotice:(id)notice completionBlock:(id)block;
+- (void)_chatGUIDsForNoticeURL:(id)l completionBlock:(id)block;
+- (void)_generateParticipantChangeNoticesForChat:(id)chat highlight:(id)highlight participant:(id)participant noticeType:(int64_t)type checkedPrivileges:(BOOL)privileges messageGUID:(id)d;
+- (void)_generateParticipantChangeNoticesForChat:(id)chat highlights:(id)highlights participants:(id)participants noticeType:(int64_t)type;
+- (void)_handleChatParticipantsDidChange:(id)change;
+- (void)_isShareBearURL:(id)l completionHandler:(id)handler;
+- (void)_mapChatGUIDsToHighlight:(id)highlight completionBlock:(id)block;
+- (void)_processNotice:(id)notice;
+- (void)_shouldPostParticipantChangeNoticesForChat:(id)chat withParticipants:(id)participants forNoticeType:(int64_t)type;
 - (void)_updateMappingHighlightsToChats;
-- (void)broadcastNoticesDidChangeForChatGUIDs:(id)a3;
-- (void)dismissNotice:(id)a3 notify:(BOOL)a4;
-- (void)dispatcher:(id)a3 didReceiveDismissalReflectionForNoticeGUIDs:(id)a4;
-- (void)dispatcher:(id)a3 didReceiveDismissalRequest:(id)a4 fromID:(id)a5;
-- (void)dispatcher:(id)a3 didReceiveNotice:(id)a4 fromID:(id)a5;
-- (void)highlightCenterHighlightsDidChange:(id)a3;
-- (void)receiveHighlightEvent:(id)a3 fromSender:(id)a4 guidString:(id)a5 date:(id)a6;
-- (void)setHighlightURLsForChatGUID:(id)a3;
-- (void)updateNotice:(id)a3;
+- (void)broadcastNoticesDidChangeForChatGUIDs:(id)ds;
+- (void)dismissNotice:(id)notice notify:(BOOL)notify;
+- (void)dispatcher:(id)dispatcher didReceiveDismissalReflectionForNoticeGUIDs:(id)ds;
+- (void)dispatcher:(id)dispatcher didReceiveDismissalRequest:(id)request fromID:(id)d;
+- (void)dispatcher:(id)dispatcher didReceiveNotice:(id)notice fromID:(id)d;
+- (void)highlightCenterHighlightsDidChange:(id)change;
+- (void)receiveHighlightEvent:(id)event fromSender:(id)sender guidString:(id)string date:(id)date;
+- (void)setHighlightURLsForChatGUID:(id)d;
+- (void)updateNotice:(id)notice;
 @end
 
 @implementation IMDCollaborationNoticeController
@@ -84,9 +84,9 @@
       v2->_noticeDispatcher = v13;
 
       [(IMDCollaborationNoticeDispatcher *)v2->_noticeDispatcher setDelegate:v2];
-      v15 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary = [MEMORY[0x277CBEAC0] dictionary];
       highlightURLsForChatGUID = v2->_highlightURLsForChatGUID;
-      v2->_highlightURLsForChatGUID = v15;
+      v2->_highlightURLsForChatGUID = dictionary;
 
       v17 = [MEMORY[0x277CBEB98] set];
       highlightURLs = v2->_highlightURLs;
@@ -97,8 +97,8 @@
       noticeStore = v2->_noticeStore;
       v2->_noticeStore = v19;
 
-      v21 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v21 addObserver:v2 selector:sel__handleChatParticipantsDidChange_ name:@"__kIMDChatParticipantsDidChangeNotification" object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__handleChatParticipantsDidChange_ name:@"__kIMDChatParticipantsDidChangeNotification" object:0];
     }
   }
 
@@ -114,14 +114,14 @@
   v10 = sub_22B4D7800;
   v11 = sub_22B4D7968;
   v12 = 0;
-  v3 = [(IMDCollaborationNoticeController *)self noticeDataQueue];
+  noticeDataQueue = [(IMDCollaborationNoticeController *)self noticeDataQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22B6B6068;
   v6[3] = &unk_278707ED0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(noticeDataQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -129,33 +129,33 @@
   return v4;
 }
 
-- (void)setHighlightURLsForChatGUID:(id)a3
+- (void)setHighlightURLsForChatGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
-  v6 = [v4 isEqualToDictionary:v5];
+  dCopy = d;
+  highlightURLsForChatGUID = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
+  v6 = [dCopy isEqualToDictionary:highlightURLsForChatGUID];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(IMDCollaborationNoticeController *)self noticeDataQueue];
+    noticeDataQueue = [(IMDCollaborationNoticeController *)self noticeDataQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_22B6B619C;
     v8[3] = &unk_278702FA0;
     v8[4] = self;
-    v9 = v4;
-    dispatch_barrier_sync(v7, v8);
+    v9 = dCopy;
+    dispatch_barrier_sync(noticeDataQueue, v8);
   }
 }
 
-- (id)noticesForChatGUIDs:(id)a3
+- (id)noticesForChatGUIDs:(id)ds
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v40 = [MEMORY[0x277CBEB98] setWithArray:v4];
-    v5 = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
+    v40 = [MEMORY[0x277CBEB98] setWithArray:dsCopy];
+    highlightURLsForChatGUID = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
     v6 = [MEMORY[0x277CBEB58] set];
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
@@ -163,14 +163,14 @@
     v47[3] = &unk_278704928;
     v7 = v6;
     v48 = v7;
-    v8 = v5;
+    v8 = highlightURLsForChatGUID;
     v49 = v8;
-    [v4 enumerateObjectsUsingBlock:v47];
+    [dsCopy enumerateObjectsUsingBlock:v47];
     if ([v7 count])
     {
-      v9 = [(IMDCollaborationNoticeController *)self noticeStore];
-      v10 = [v7 allObjects];
-      v39 = [v9 noticesForURLs:v10];
+      noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
+      allObjects = [v7 allObjects];
+      v39 = [noticeStore noticesForURLs:allObjects];
 
       v11 = MEMORY[0x277CCAC30];
       v45[0] = MEMORY[0x277D85DD0];
@@ -189,7 +189,7 @@
           *buf = 138412546;
           v51 = v14;
           v52 = 2112;
-          v53 = v4;
+          v53 = dsCopy;
           _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Found %@ notices for chatGUIDs: %@ before deduplication", buf, 0x16u);
         }
       }
@@ -199,8 +199,8 @@
       if ([v15 count] >= 2)
       {
         v17 = [MEMORY[0x277D1A938] deduplicateNotices:v15];
-        v18 = [v17 duplicateNotices];
-        v19 = [v18 count] == 0;
+        duplicateNotices = [v17 duplicateNotices];
+        v19 = [duplicateNotices count] == 0;
 
         if (!v19)
         {
@@ -210,12 +210,12 @@
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               v21 = MEMORY[0x277CCABB0];
-              v22 = [v17 duplicateNotices];
-              v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(v22, "count")}];
+              duplicateNotices2 = [v17 duplicateNotices];
+              v23 = [v21 numberWithUnsignedInteger:{objc_msgSend(duplicateNotices2, "count")}];
               *buf = 138412546;
               v51 = v23;
               v52 = 2112;
-              v53 = v4;
+              v53 = dsCopy;
               _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Dismissing %@ duplicate notices for chatGUIDs: %@.", buf, 0x16u);
             }
           }
@@ -224,8 +224,8 @@
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v24 = [v17 duplicateNotices];
-          v25 = [v24 countByEnumeratingWithState:&v41 objects:v56 count:16];
+          duplicateNotices3 = [v17 duplicateNotices];
+          v25 = [duplicateNotices3 countByEnumeratingWithState:&v41 objects:v56 count:16];
           if (v25)
           {
             v26 = *v42;
@@ -235,24 +235,24 @@
               {
                 if (*v42 != v26)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(duplicateNotices3);
                 }
 
                 [(IMDCollaborationNoticeController *)self dismissNotice:*(*(&v41 + 1) + 8 * i) notify:0];
               }
 
-              v25 = [v24 countByEnumeratingWithState:&v41 objects:v56 count:16];
+              v25 = [duplicateNotices3 countByEnumeratingWithState:&v41 objects:v56 count:16];
             }
 
             while (v25);
           }
         }
 
-        v28 = [v17 deduplicatedNotices];
-        v29 = v28;
-        if (v28)
+        deduplicatedNotices = [v17 deduplicatedNotices];
+        v29 = deduplicatedNotices;
+        if (deduplicatedNotices)
         {
-          v30 = v28;
+          v30 = deduplicatedNotices;
         }
 
         else
@@ -275,7 +275,7 @@
           v52 = 2112;
           v53 = v33;
           v54 = 2112;
-          v55 = v4;
+          v55 = dsCopy;
           _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "Returning %@ deduplicated notices out of %@ total notices found for chatGUIDs: %@", buf, 0x20u);
         }
       }
@@ -289,7 +289,7 @@
         if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v51 = v4;
+          v51 = dsCopy;
           _os_log_impl(&dword_22B4CC000, v35, OS_LOG_TYPE_INFO, "No URLs found for chatGUIDs: %@", buf, 0xCu);
         }
       }
@@ -318,12 +318,12 @@
   return v16;
 }
 
-- (void)broadcastNoticesDidChangeForChatGUIDs:(id)a3
+- (void)broadcastNoticesDidChangeForChatGUIDs:(id)ds
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  dsCopy = ds;
+  v4 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
     if (IMOSLoggingEnabled())
     {
@@ -339,8 +339,8 @@
     }
 
     v6 = +[IMDBroadcastController sharedProvider];
-    v7 = [v6 broadcasterForChatListeners];
-    [v7 collaborationNoticesDidChangeForChatGUIDs:v4];
+    broadcasterForChatListeners = [v6 broadcasterForChatListeners];
+    [broadcasterForChatListeners collaborationNoticesDidChangeForChatGUIDs:v4];
   }
 
   else if (IMOSLoggingEnabled())
@@ -357,11 +357,11 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissNotice:(id)a3 notify:(BOOL)a4
+- (void)dismissNotice:(id)notice notify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  noticeCopy = notice;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -370,15 +370,15 @@
       *buf = 136315650;
       v16 = "[IMDCollaborationNoticeController dismissNotice:notify:]";
       v17 = 2112;
-      v18 = v6;
+      v18 = noticeCopy;
       v19 = 1024;
-      v20 = v4;
+      v20 = notifyCopy;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "%s for notice: %@, notify: %{BOOL}d", buf, 0x1Cu);
     }
   }
 
-  v8 = [(IMDCollaborationNoticeController *)self noticeStore];
-  v9 = [v8 deleteNotice:v6];
+  noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
+  v9 = [noticeStore deleteNotice:noticeCopy];
 
   if (v9)
   {
@@ -386,9 +386,9 @@
     v12[1] = 3221225472;
     v12[2] = sub_22B6B6D10;
     v12[3] = &unk_278707C28;
-    v14 = v4;
+    v14 = notifyCopy;
     v12[4] = self;
-    v13 = v6;
+    v13 = noticeCopy;
     [(IMDCollaborationNoticeController *)self _chatGUIDsForNotice:v13 completionBlock:v12];
   }
 
@@ -397,20 +397,20 @@
     v10 = IMLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D9118(v6);
+      sub_22B7D9118(noticeCopy);
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)highlightCenterHighlightsDidChange:(id)a3
+- (void)highlightCenterHighlightsDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDCollaborationNoticeController *)self highlightCenter];
+  changeCopy = change;
+  highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
 
-  if (v5 == v4)
+  if (highlightCenter == changeCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -429,15 +429,15 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receiveHighlightEvent:(id)a3 fromSender:(id)a4 guidString:(id)a5 date:(id)a6
+- (void)receiveHighlightEvent:(id)event fromSender:(id)sender guidString:(id)string date:(id)date
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v26 = a5;
-  v12 = a6;
+  eventCopy = event;
+  senderCopy = sender;
+  stringCopy = string;
+  dateCopy = date;
   v13 = +[IMDCollaborationNoticeTypeGenerator sharedGenerator];
-  v14 = [v13 typeForHighlightEvent:v10];
+  v14 = [v13 typeForHighlightEvent:eventCopy];
 
   if (IMOSLoggingEnabled())
   {
@@ -446,19 +446,19 @@
     {
       v16 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
       *buf = 138412802;
-      v35 = v10;
+      v35 = eventCopy;
       v36 = 2112;
       v37 = v16;
       v38 = 2112;
-      v39 = v11;
+      v39 = senderCopy;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "highlightEvent: %@ (type: %@) from sender: %@", buf, 0x20u);
     }
   }
 
   if (v14 == -1)
   {
-    v17 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277D1AC40] = IMLogHandleForCategory();
+    if (os_log_type_enabled(mEMORY[0x277D1AC40], OS_LOG_TYPE_ERROR))
     {
       sub_22B7D9210();
     }
@@ -466,9 +466,9 @@
 
   else
   {
-    v17 = [MEMORY[0x277D1AC40] sharedManager];
-    v18 = [v10 highlightURL];
-    v19 = [v17 urlMinusFragment:v18 onlyCKURL:1];
+    mEMORY[0x277D1AC40] = [MEMORY[0x277D1AC40] sharedManager];
+    highlightURL = [eventCopy highlightURL];
+    v19 = [mEMORY[0x277D1AC40] urlMinusFragment:highlightURL onlyCKURL:1];
 
     if (v19)
     {
@@ -483,23 +483,23 @@
         }
       }
 
-      v21 = [(IMDCollaborationNoticeController *)self highlightURLs];
-      v22 = [v21 containsObject:v19];
+      highlightURLs = [(IMDCollaborationNoticeController *)self highlightURLs];
+      v22 = [highlightURLs containsObject:v19];
 
       if (v22)
       {
-        v23 = [(IMDCollaborationNoticeController *)self highlightCenter];
+        highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = sub_22B6B7344;
         v27[3] = &unk_278707F48;
         v28 = v19;
         v33 = v14;
-        v29 = v26;
-        v30 = v11;
-        v31 = v12;
-        v32 = self;
-        [v23 getCollaborationHighlightForURL:v28 completionHandler:v27];
+        v29 = stringCopy;
+        v30 = senderCopy;
+        v31 = dateCopy;
+        selfCopy = self;
+        [highlightCenter getCollaborationHighlightForURL:v28 completionHandler:v27];
 
         v24 = v28;
       }
@@ -527,51 +527,51 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processNotice:(id)a3
+- (void)_processNotice:(id)notice
 {
-  v4 = a3;
-  v5 = [(IMDCollaborationNoticeController *)self noticeStore];
-  [v5 saveNotice:v4];
+  noticeCopy = notice;
+  noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
+  [noticeStore saveNotice:noticeCopy];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_22B6B78E8;
   v6[3] = &unk_2787042B8;
   v6[4] = self;
-  [(IMDCollaborationNoticeController *)self _chatGUIDsForNotice:v4 completionBlock:v6];
+  [(IMDCollaborationNoticeController *)self _chatGUIDsForNotice:noticeCopy completionBlock:v6];
 }
 
-- (void)updateNotice:(id)a3
+- (void)updateNotice:(id)notice
 {
-  v4 = a3;
-  v5 = [(IMDCollaborationNoticeController *)self noticeStore];
-  v6 = [v5 deleteNotice:v4];
+  noticeCopy = notice;
+  noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
+  v6 = [noticeStore deleteNotice:noticeCopy];
 
-  v7 = [(IMDCollaborationNoticeController *)self noticeStore];
-  [v7 saveNotice:v4];
+  noticeStore2 = [(IMDCollaborationNoticeController *)self noticeStore];
+  [noticeStore2 saveNotice:noticeCopy];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_22B6B7A64;
   v8[3] = &unk_2787042B8;
   v8[4] = self;
-  [(IMDCollaborationNoticeController *)self _chatGUIDsForNotice:v4 completionBlock:v8];
+  [(IMDCollaborationNoticeController *)self _chatGUIDsForNotice:noticeCopy completionBlock:v8];
 }
 
 - (void)_updateMappingHighlightsToChats
 {
   v30 = *MEMORY[0x277D85DE8];
   v16 = [MEMORY[0x277CBEB58] set];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = dispatch_group_create();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [(IMDCollaborationNoticeController *)self highlightCenter];
-  v6 = [v5 highlights];
+  highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
+  highlights = [highlightCenter highlights];
 
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v7 = [highlights countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -582,7 +582,7 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(highlights);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
@@ -597,13 +597,13 @@
           v20[4] = self;
           v21 = v16;
           v22 = v12;
-          v23 = v3;
+          v23 = dictionary;
           v24 = v4;
           [(IMDCollaborationNoticeController *)self _mapChatGUIDsToHighlight:v11 completionBlock:v20];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [highlights countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v8);
@@ -615,21 +615,21 @@
   block[3] = &unk_2787038F8;
   block[4] = self;
   v18 = v16;
-  v19 = v3;
-  v13 = v3;
+  v19 = dictionary;
+  v13 = dictionary;
   v14 = v16;
   dispatch_group_notify(v4, MEMORY[0x277D85CD0], block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatcher:(id)a3 didReceiveNotice:(id)a4 fromID:(id)a5
+- (void)dispatcher:(id)dispatcher didReceiveNotice:(id)notice fromID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [IMDCollaborationNoticeDispatcher unarchiveNoticeTransmissionEvent:v9];
+  dispatcherCopy = dispatcher;
+  noticeCopy = notice;
+  dCopy = d;
+  v11 = [IMDCollaborationNoticeDispatcher unarchiveNoticeTransmissionEvent:noticeCopy];
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -638,29 +638,29 @@
       v16 = 138412546;
       v17 = v11;
       v18 = 2112;
-      v19 = v10;
+      v19 = dCopy;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Received notice: %@ from %@", &v16, 0x16u);
     }
   }
 
-  v13 = [v9 guidString];
-  v14 = [v9 date];
-  [(IMDCollaborationNoticeController *)self receiveHighlightEvent:v11 fromSender:v10 guidString:v13 date:v14];
+  guidString = [noticeCopy guidString];
+  date = [noticeCopy date];
+  [(IMDCollaborationNoticeController *)self receiveHighlightEvent:v11 fromSender:dCopy guidString:guidString date:date];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatcher:(id)a3 didReceiveDismissalReflectionForNoticeGUIDs:(id)a4
+- (void)dispatcher:(id)dispatcher didReceiveDismissalReflectionForNoticeGUIDs:(id)ds
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dsCopy = ds;
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = dispatch_group_create();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = dsCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
@@ -677,8 +677,8 @@
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
-        v13 = [(IMDCollaborationNoticeController *)self noticeStore];
-        v14 = [v13 deleteNoticeWithGUIDString:v12];
+        noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
+        v14 = [noticeStore deleteNoticeWithGUIDString:v12];
 
         dispatch_group_enter(v7);
         v20[0] = MEMORY[0x277D85DD0];
@@ -712,14 +712,14 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatcher:(id)a3 didReceiveDismissalRequest:(id)a4 fromID:(id)a5
+- (void)dispatcher:(id)dispatcher didReceiveDismissalRequest:(id)request fromID:(id)d
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(IMDCollaborationNoticeController *)self highlightCenter];
-  v8 = [v6 collaborationId];
+  requestCopy = request;
+  highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
+  collaborationId = [requestCopy collaborationId];
   v36 = 0;
-  v9 = [v7 collaborationHighlightForIdentifier:v8 error:&v36];
+  v9 = [highlightCenter collaborationHighlightForIdentifier:collaborationId error:&v36];
   v10 = v36;
 
   if (v10)
@@ -727,18 +727,18 @@
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D93A4(v6);
+      sub_22B7D93A4(requestCopy);
     }
   }
 
   else if (v9 && ([v9 URL], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v13 = [MEMORY[0x277CBEB18] array];
-    v14 = [(IMDCollaborationNoticeController *)self noticeStore];
+    array = [MEMORY[0x277CBEB18] array];
+    noticeStore = [(IMDCollaborationNoticeController *)self noticeStore];
     v15 = [v9 URL];
     v38[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
-    v17 = [v14 noticesForURLs:v16];
+    v17 = [noticeStore noticesForURLs:v16];
 
     v34 = 0u;
     v35 = 0u;
@@ -760,8 +760,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v22 = [*(*(&v32 + 1) + 8 * v21) guidString];
-          [v13 addObject:v22];
+          guidString = [*(*(&v32 + 1) + 8 * v21) guidString];
+          [array addObject:guidString];
 
           ++v21;
         }
@@ -773,12 +773,12 @@
       while (v19);
     }
 
-    v23 = [(IMDCollaborationNoticeController *)self noticeStore];
-    v24 = [v6 collaborationId];
-    v25 = [v23 deleteAllNoticesWithCollaborationIdentifier:v24];
+    noticeStore2 = [(IMDCollaborationNoticeController *)self noticeStore];
+    collaborationId2 = [requestCopy collaborationId];
+    v25 = [noticeStore2 deleteAllNoticesWithCollaborationIdentifier:collaborationId2];
 
-    v26 = [(IMDCollaborationNoticeController *)self noticeDispatcher];
-    [(IMDCollaborationNoticeController *)self dispatcher:v26 didReceiveDismissalReflectionForNoticeGUIDs:v13];
+    noticeDispatcher = [(IMDCollaborationNoticeController *)self noticeDispatcher];
+    [(IMDCollaborationNoticeController *)self dispatcher:noticeDispatcher didReceiveDismissalReflectionForNoticeGUIDs:array];
 
     v27 = [v9 URL];
     v30[0] = MEMORY[0x277D85DD0];
@@ -786,8 +786,8 @@
     v30[2] = sub_22B6B8A64;
     v30[3] = &unk_278703068;
     v30[4] = self;
-    v31 = v13;
-    v28 = v13;
+    v31 = array;
+    v28 = array;
     [(IMDCollaborationNoticeController *)self _chatGUIDsForNoticeURL:v27 completionBlock:v30];
   }
 
@@ -796,79 +796,79 @@
     v11 = IMLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7D9448(v6);
+      sub_22B7D9448(requestCopy);
     }
   }
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_mapChatGUIDsToHighlight:(id)a3 completionBlock:(id)a4
+- (void)_mapChatGUIDsToHighlight:(id)highlight completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  highlightCopy = highlight;
+  blockCopy = block;
   v8 = objc_alloc_init(MEMORY[0x277D1AC78]);
-  v9 = [(IMDCollaborationNoticeController *)self highlightCenter];
+  highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_22B6B8BB4;
   v12[3] = &unk_278707F98;
-  v13 = v6;
-  v14 = v7;
-  v10 = v6;
-  v11 = v7;
-  [v8 fetchAttributionsForHighlight:v9 highlight:v10 completionBlock:v12];
+  v13 = highlightCopy;
+  v14 = blockCopy;
+  v10 = highlightCopy;
+  v11 = blockCopy;
+  [v8 fetchAttributionsForHighlight:highlightCenter highlight:v10 completionBlock:v12];
 }
 
-- (void)_chatGUIDsForNotice:(id)a3 completionBlock:(id)a4
+- (void)_chatGUIDsForNotice:(id)notice completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 metadata];
-  v9 = [v8 targetChatGUIDs];
-  v10 = [v9 count];
+  blockCopy = block;
+  noticeCopy = notice;
+  metadata = [noticeCopy metadata];
+  targetChatGUIDs = [metadata targetChatGUIDs];
+  v10 = [targetChatGUIDs count];
 
-  [v7 metadata];
+  [noticeCopy metadata];
   if (v10)
     v11 = {;
 
-    v12 = [v11 targetChatGUIDs];
-    v13 = [v12 allObjects];
-    v6[2](v6, v13);
+    targetChatGUIDs2 = [v11 targetChatGUIDs];
+    allObjects = [targetChatGUIDs2 allObjects];
+    blockCopy[2](blockCopy, allObjects);
   }
 
   else
     v14 = {;
 
-    v15 = [v14 contentURL];
+    contentURL = [v14 contentURL];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_22B6B8EE0;
     v16[3] = &unk_278707FC0;
-    v17 = v6;
-    [(IMDCollaborationNoticeController *)self _chatGUIDsForNoticeURL:v15 completionBlock:v16];
+    v17 = blockCopy;
+    [(IMDCollaborationNoticeController *)self _chatGUIDsForNoticeURL:contentURL completionBlock:v16];
   }
 }
 
-- (void)_chatGUIDsForNoticeURL:(id)a3 completionBlock:(id)a4
+- (void)_chatGUIDsForNoticeURL:(id)l completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  lCopy = l;
+  blockCopy = block;
+  if (lCopy)
   {
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [(IMDCollaborationNoticeController *)self highlightCenter];
+    array = [MEMORY[0x277CBEB18] array];
+    highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_22B6B9048;
     v12[3] = &unk_278708010;
-    v13 = v6;
-    v15 = v8;
-    v16 = v7;
-    v14 = self;
-    v10 = v8;
-    [v9 getCollaborationHighlightForURL:v13 completionHandler:v12];
+    v13 = lCopy;
+    v15 = array;
+    v16 = blockCopy;
+    selfCopy = self;
+    v10 = array;
+    [highlightCenter getCollaborationHighlightForURL:v13 completionHandler:v12];
   }
 
   else
@@ -879,33 +879,33 @@
       sub_22B7D9574();
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
-- (void)_handleChatParticipantsDidChange:(id)a3
+- (void)_handleChatParticipantsDidChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v5;
+      v16 = object;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Participants changed in [%@]", &v15, 0xCu);
     }
   }
 
-  if (v5)
+  if (object)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:@"__kIMDChatParticipantsDidChangeAddedParticipantsKey"];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKey:@"__kIMDChatParticipantsDidChangeAddedParticipantsKey"];
 
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:@"__kIMDChatParticipantsDidChangeRemovedParticipantsKey"];
+    userInfo2 = [changeCopy userInfo];
+    v10 = [userInfo2 objectForKey:@"__kIMDChatParticipantsDidChangeRemovedParticipantsKey"];
 
     if ([v8 count] || objc_msgSend(v10, "count"))
     {
@@ -930,38 +930,38 @@
         v13 = 9;
       }
 
-      [(IMDCollaborationNoticeController *)self _shouldPostParticipantChangeNoticesForChat:v5 withParticipants:v12 forNoticeType:v13];
+      [(IMDCollaborationNoticeController *)self _shouldPostParticipantChangeNoticesForChat:object withParticipants:v12 forNoticeType:v13];
     }
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_shouldPostParticipantChangeNoticesForChat:(id)a3 withParticipants:(id)a4 forNoticeType:(int64_t)a5
+- (void)_shouldPostParticipantChangeNoticesForChat:(id)chat withParticipants:(id)participants forNoticeType:(int64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  chatCopy = chat;
+  participantsCopy = participants;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v16 = 134218242;
-      v17 = a5;
+      typeCopy = type;
       v18 = 2112;
-      v19 = v9;
+      v19 = participantsCopy;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Notice type: %ld with participants: %@", &v16, 0x16u);
     }
   }
 
-  v11 = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
-  v12 = [v8 guid];
-  v13 = [v11 objectForKey:v12];
+  highlightURLsForChatGUID = [(IMDCollaborationNoticeController *)self highlightURLsForChatGUID];
+  guid = [chatCopy guid];
+  v13 = [highlightURLsForChatGUID objectForKey:guid];
 
   if ([v13 count])
   {
-    [(IMDCollaborationNoticeController *)self _generateParticipantChangeNoticesForChat:v8 highlights:v13 participants:v9 noticeType:a5];
+    [(IMDCollaborationNoticeController *)self _generateParticipantChangeNoticesForChat:chatCopy highlights:v13 participants:participantsCopy noticeType:type];
   }
 
   else if (IMOSLoggingEnabled())
@@ -977,16 +977,16 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateParticipantChangeNoticesForChat:(id)a3 highlights:(id)a4 participants:(id)a5 noticeType:(int64_t)a6
+- (void)_generateParticipantChangeNoticesForChat:(id)chat highlights:(id)highlights participants:(id)participants noticeType:(int64_t)type
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v22 = a4;
+  chatCopy = chat;
+  highlightsCopy = highlights;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = a5;
+  obj = participants;
   v23 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v23)
   {
@@ -1007,7 +1007,7 @@
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v12 = v22;
+        v12 = highlightsCopy;
         v13 = [v12 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v13)
         {
@@ -1024,17 +1024,17 @@
               }
 
               v17 = *(*(&v31 + 1) + 8 * v16);
-              v18 = [(IMDCollaborationNoticeController *)self highlightCenter];
+              highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
               v26[0] = MEMORY[0x277D85DD0];
               v26[1] = 3221225472;
               v26[2] = sub_22B6B99E0;
               v26[3] = &unk_2787080B0;
               v26[4] = self;
-              v27 = v9;
+              v27 = chatCopy;
               v28 = v17;
               v29 = v11;
-              v30 = a6;
-              [v18 getCollaborationHighlightForURL:v17 completionHandler:v26];
+              typeCopy = type;
+              [highlightCenter getCollaborationHighlightForURL:v17 completionHandler:v26];
 
               ++v16;
             }
@@ -1059,26 +1059,26 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateParticipantChangeNoticesForChat:(id)a3 highlight:(id)a4 participant:(id)a5 noticeType:(int64_t)a6 checkedPrivileges:(BOOL)a7 messageGUID:(id)a8
+- (void)_generateParticipantChangeNoticesForChat:(id)chat highlight:(id)highlight participant:(id)participant noticeType:(int64_t)type checkedPrivileges:(BOOL)privileges messageGUID:(id)d
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (a7 || ([v14 guid], v18 = objc_claimAutoreleasedReturnValue(), v19 = -[IMDCollaborationNoticeController _hasAdministrativePrivilegesForHighlight:chatGUID:](self, "_hasAdministrativePrivilegesForHighlight:chatGUID:", v15, v18), v18, v19))
+  chatCopy = chat;
+  highlightCopy = highlight;
+  participantCopy = participant;
+  dCopy = d;
+  if (privileges || ([chatCopy guid], v18 = objc_claimAutoreleasedReturnValue(), v19 = -[IMDCollaborationNoticeController _hasAdministrativePrivilegesForHighlight:chatGUID:](self, "_hasAdministrativePrivilegesForHighlight:chatGUID:", highlightCopy, v18), v18, v19))
   {
     v20 = MEMORY[0x277CC1E48];
-    v21 = [v15 URL];
+    v21 = [highlightCopy URL];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_22B6BA660;
     v23[3] = &unk_2787080D8;
-    v24 = v15;
-    v25 = v14;
-    v29 = a6;
-    v26 = v17;
-    v27 = v16;
-    v28 = self;
+    v24 = highlightCopy;
+    v25 = chatCopy;
+    typeCopy = type;
+    v26 = dCopy;
+    v27 = participantCopy;
+    selfCopy = self;
     [v20 getAppLinkWithURL:v21 completionHandler:v23];
   }
 
@@ -1093,23 +1093,23 @@
   }
 }
 
-- (BOOL)_hasAdministrativePrivilegesForHighlight:(id)a3 chatGUID:(id)a4
+- (BOOL)_hasAdministrativePrivilegesForHighlight:(id)highlight chatGUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDCollaborationNoticeController *)self highlightCenter];
-  v9 = [v8 originalSenderForCollaborationHighlight:v6];
+  highlightCopy = highlight;
+  dCopy = d;
+  highlightCenter = [(IMDCollaborationNoticeController *)self highlightCenter];
+  v9 = [highlightCenter originalSenderForCollaborationHighlight:highlightCopy];
 
-  v10 = [v9 handle];
-  if ([v10 length] && (+[IMDAccountController sharedInstance](IMDAccountController, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "accountAssociatedWithHandle:", v10), v11, v12))
+  handle = [v9 handle];
+  if ([handle length] && (+[IMDAccountController sharedInstance](IMDAccountController, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "accountAssociatedWithHandle:", handle), v11, v12))
   {
     if (IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v6 URL];
+        v14 = [highlightCopy URL];
         v18 = 138412290;
         v19 = v14;
         _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Has privileges to change membership for URL: %@", &v18, 0xCu);
@@ -1128,15 +1128,15 @@
   return v15;
 }
 
-- (BOOL)_highlightEligibleForSuggestAddingUser:(id)a3
+- (BOOL)_highlightEligibleForSuggestAddingUser:(id)user
 {
-  v4 = a3;
-  v5 = [(IMDCollaborationNoticeController *)self noticeDispatcher];
-  v6 = [v5 rateLimiter];
-  v7 = [v4 URL];
-  v8 = [v6 dateLastUpdatedForURL:v7];
+  userCopy = user;
+  noticeDispatcher = [(IMDCollaborationNoticeController *)self noticeDispatcher];
+  rateLimiter = [noticeDispatcher rateLimiter];
+  v7 = [userCopy URL];
+  creationDate = [rateLimiter dateLastUpdatedForURL:v7];
 
-  if (!v8)
+  if (!creationDate)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1148,28 +1148,28 @@
       }
     }
 
-    v8 = [v4 creationDate];
+    creationDate = [userCopy creationDate];
   }
 
-  [v8 timeIntervalSinceNow];
+  [creationDate timeIntervalSinceNow];
   v11 = (v10 / -86400.0) < 90;
 
   return v11;
 }
 
-- (void)_isShareBearURL:(id)a3 completionHandler:(id)a4
+- (void)_isShareBearURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CC1E48];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_22B6BAF58;
   v10[3] = &unk_278708100;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   [v7 getAppLinkWithURL:v9 completionHandler:v10];
 }
 

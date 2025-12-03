@@ -1,9 +1,9 @@
 @interface RPInternalSettingsController
-- (id)getSwitchState:(__CFString *)a3;
+- (id)getSwitchState:(__CFString *)state;
 - (id)specifiers;
 - (void)killReplayd;
-- (void)setRPEnableLockedRecording:(id)a3 specifier:(id)a4;
-- (void)setSwitchState:(__CFString *)a3 value:(id)a4;
+- (void)setRPEnableLockedRecording:(id)recording specifier:(id)specifier;
+- (void)setSwitchState:(__CFString *)state value:(id)value;
 @end
 
 @implementation RPInternalSettingsController
@@ -12,8 +12,8 @@
 {
   v10.receiver = self;
   v10.super_class = RPInternalSettingsController;
-  v3 = [(RPInternalSettingsController *)&v10 specifiers];
-  v4 = [v3 count];
+  specifiers = [(RPInternalSettingsController *)&v10 specifiers];
+  v4 = [specifiers count];
 
   if (!v4)
   {
@@ -25,14 +25,14 @@
 
   v8.receiver = self;
   v8.super_class = RPInternalSettingsController;
-  v6 = [(RPInternalSettingsController *)&v8 specifiers];
+  specifiers2 = [(RPInternalSettingsController *)&v8 specifiers];
 
-  return v6;
+  return specifiers2;
 }
 
-- (id)getSwitchState:(__CFString *)a3
+- (id)getSwitchState:(__CFString *)state
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.replayd");
+  v3 = CFPreferencesCopyAppValue(state, @"com.apple.replayd");
   v4 = v3;
   if (v3)
   {
@@ -50,9 +50,9 @@
   return v6;
 }
 
-- (void)setSwitchState:(__CFString *)a3 value:(id)a4
+- (void)setSwitchState:(__CFString *)state value:(id)value
 {
-  if ([a4 BOOLValue])
+  if ([value BOOLValue])
   {
     v5 = kCFBooleanTrue;
   }
@@ -62,14 +62,14 @@
     v5 = 0;
   }
 
-  CFPreferencesSetAppValue(a3, v5, @"com.apple.replayd");
+  CFPreferencesSetAppValue(state, v5, @"com.apple.replayd");
 
   CFPreferencesAppSynchronize(@"com.apple.replayd");
 }
 
-- (void)setRPEnableLockedRecording:(id)a3 specifier:(id)a4
+- (void)setRPEnableLockedRecording:(id)recording specifier:(id)specifier
 {
-  [(RPInternalSettingsController *)self setSwitchState:@"RPEnableLockedRecording" value:a3];
+  [(RPInternalSettingsController *)self setSwitchState:@"RPEnableLockedRecording" value:recording];
 
   [(RPInternalSettingsController *)self killReplayd];
 }

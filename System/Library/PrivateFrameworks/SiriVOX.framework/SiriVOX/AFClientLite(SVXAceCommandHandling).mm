@@ -31,7 +31,7 @@
   v17 = v12;
   v14 = v12;
   v15 = MEMORY[0x26D642680](v16);
-  [a1 handleCommand:v8 afterCurrentRequest:0 commandHandler:v13 completion:v15];
+  [self handleCommand:v8 afterCurrentRequest:0 commandHandler:v13 completion:v15];
 }
 
 @end

@@ -1,58 +1,58 @@
 @interface CRTable
 + (id)CRProperties;
 + (void)registerWithICCRCoder;
-- (BOOL)containsColumn:(id)a3;
-- (BOOL)containsRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsColumn:(id)column;
+- (BOOL)containsRow:(id)row;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRightToLeft;
 - (BOOL)wantsUndoCommands;
-- (CRTable)initWithDocument:(id)a3 columnDirection:(id)a4;
-- (CRTable)initWithDocument:(id)a3 columnDirection:(id)a4 crColumns:(id)a5 crRows:(id)a6 cellColumns:(id)a7;
-- (CRTable)initWithDocument:(id)a3 isRightToLeft:(BOOL)a4;
-- (CRTable)initWithIdentity:(id)a3 fields:(id)a4;
+- (CRTable)initWithDocument:(id)document columnDirection:(id)direction;
+- (CRTable)initWithDocument:(id)document columnDirection:(id)direction crColumns:(id)columns crRows:(id)rows cellColumns:(id)cellColumns;
+- (CRTable)initWithDocument:(id)document isRightToLeft:(BOOL)left;
+- (CRTable)initWithIdentity:(id)identity fields:(id)fields;
 - (ICCRDictionary)cellColumns;
 - (ICCRTombstoneOrderedSet)crColumns;
 - (ICCRTombstoneOrderedSet)crRows;
 - (ICCRUndoDelegate)delegate;
 - (NSString)columnDirection;
-- (id)columnIndexesForIdentifiers:(id)a3;
-- (id)columnsIntersectingWithColumns:(id)a3;
+- (id)columnIndexesForIdentifiers:(id)identifiers;
+- (id)columnsIntersectingWithColumns:(id)columns;
 - (id)crTableColumnDirection;
-- (id)identifierForColumnAtIndex:(unint64_t)a3;
-- (id)identifierForRowAtIndex:(unint64_t)a3;
-- (id)identifiersForColumnIndexes:(id)a3;
-- (id)identifiersForRowIndexes:(id)a3;
-- (id)insertColumnAtIndex:(unint64_t)a3;
-- (id)insertColumns:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (id)insertRowAtIndex:(unint64_t)a3;
-- (id)insertRows:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (id)objectForColumnID:(id)a3 rowID:(id)a4;
-- (id)objectForColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4;
-- (id)rowIndexesForIdentifiers:(id)a3;
-- (id)rowsIntersectingWithRows:(id)a3;
-- (id)subtableWithDocument:(id)a3 forSelectionContainingColumnIndices:(id)a4 rowIndices:(id)a5;
+- (id)identifierForColumnAtIndex:(unint64_t)index;
+- (id)identifierForRowAtIndex:(unint64_t)index;
+- (id)identifiersForColumnIndexes:(id)indexes;
+- (id)identifiersForRowIndexes:(id)indexes;
+- (id)insertColumnAtIndex:(unint64_t)index;
+- (id)insertColumns:(unint64_t)columns atIndex:(unint64_t)index;
+- (id)insertRowAtIndex:(unint64_t)index;
+- (id)insertRows:(unint64_t)rows atIndex:(unint64_t)index;
+- (id)objectForColumnID:(id)d rowID:(id)iD;
+- (id)objectForColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex;
+- (id)rowIndexesForIdentifiers:(id)identifiers;
+- (id)rowsIntersectingWithRows:(id)rows;
+- (id)subtableWithDocument:(id)document forSelectionContainingColumnIndices:(id)indices rowIndices:(id)rowIndices;
 - (unint64_t)columnCount;
-- (unint64_t)columnIndexForIdentifier:(id)a3;
+- (unint64_t)columnIndexForIdentifier:(id)identifier;
 - (unint64_t)countOfPopulatedCells;
 - (unint64_t)hash;
 - (unint64_t)rowCount;
-- (unint64_t)rowIndexForIdentifier:(id)a3;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
-- (void)enumerateCellObjectsInCellSelectionContainingColumnIndices:(id)a3 rowIndices:(id)a4 copyItems:(BOOL)a5 usingBlock:(id)a6;
-- (void)enumerateColumnsWithBlock:(id)a3;
-- (void)enumerateRowsWithBlock:(id)a3;
-- (void)moveColumnAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)moveRowAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)removeColumnAtIndex:(unint64_t)a3;
-- (void)removeRowAtIndex:(unint64_t)a3;
+- (unint64_t)rowIndexForIdentifier:(id)identifier;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
+- (void)enumerateCellObjectsInCellSelectionContainingColumnIndices:(id)indices rowIndices:(id)rowIndices copyItems:(BOOL)items usingBlock:(id)block;
+- (void)enumerateColumnsWithBlock:(id)block;
+- (void)enumerateRowsWithBlock:(id)block;
+- (void)moveColumnAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)moveRowAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)removeColumnAtIndex:(unint64_t)index;
+- (void)removeRowAtIndex:(unint64_t)index;
 - (void)reverseColumnDirection;
-- (void)setColumnDirection:(id)a3;
-- (void)setObject:(id)a3 columnID:(id)a4 rowID:(id)a5;
-- (void)setObject:(id)a3 columnIndex:(unint64_t)a4 rowIndex:(unint64_t)a5;
-- (void)undoablyInsertContents:(id)a3 atColumn:(id)a4;
-- (void)undoablyInsertContents:(id)a3 atRow:(id)a4;
-- (void)undoablyRemoveContentsOfColumn:(id)a3;
-- (void)undoablyRemoveContentsOfRow:(id)a3;
+- (void)setColumnDirection:(id)direction;
+- (void)setObject:(id)object columnID:(id)d rowID:(id)iD;
+- (void)setObject:(id)object columnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex;
+- (void)undoablyInsertContents:(id)contents atColumn:(id)column;
+- (void)undoablyInsertContents:(id)contents atRow:(id)row;
+- (void)undoablyRemoveContentsOfColumn:(id)column;
+- (void)undoablyRemoveContentsOfRow:(id)row;
 @end
 
 @implementation CRTable
@@ -64,9 +64,9 @@
   [ICCRCoder registerClass:v2 forType:@"com.apple.notes.CRTable"];
 }
 
-- (CRTable)initWithDocument:(id)a3 isRightToLeft:(BOOL)a4
+- (CRTable)initWithDocument:(id)document isRightToLeft:(BOOL)left
 {
-  if (a4)
+  if (left)
   {
     v4 = @"CRTableColumnDirectionRightToLeft";
   }
@@ -76,70 +76,70 @@
     v4 = @"CRTableColumnDirectionLeftToRight";
   }
 
-  return [(CRTable *)self initWithDocument:a3 columnDirection:v4];
+  return [(CRTable *)self initWithDocument:document columnDirection:v4];
 }
 
-- (CRTable)initWithDocument:(id)a3 columnDirection:(id)a4
+- (CRTable)initWithDocument:(id)document columnDirection:(id)direction
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ICCRRegisterLatest alloc] initWithContents:v6 document:v7];
+  directionCopy = direction;
+  documentCopy = document;
+  v8 = [[ICCRRegisterLatest alloc] initWithContents:directionCopy document:documentCopy];
 
-  v9 = [[ICCRTombstoneOrderedSet alloc] initWithDocument:v7];
-  v10 = [[ICCRTombstoneOrderedSet alloc] initWithDocument:v7];
-  v11 = [[ICCRDictionary alloc] initWithDocument:v7];
-  v12 = [(CRTable *)self initWithDocument:v7 columnDirection:v8 crColumns:v9 crRows:v10 cellColumns:v11];
+  v9 = [[ICCRTombstoneOrderedSet alloc] initWithDocument:documentCopy];
+  v10 = [[ICCRTombstoneOrderedSet alloc] initWithDocument:documentCopy];
+  v11 = [[ICCRDictionary alloc] initWithDocument:documentCopy];
+  v12 = [(CRTable *)self initWithDocument:documentCopy columnDirection:v8 crColumns:v9 crRows:v10 cellColumns:v11];
 
   return v12;
 }
 
-- (CRTable)initWithDocument:(id)a3 columnDirection:(id)a4 crColumns:(id)a5 crRows:(id)a6 cellColumns:(id)a7
+- (CRTable)initWithDocument:(id)document columnDirection:(id)direction crColumns:(id)columns crRows:(id)rows cellColumns:(id)cellColumns
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  directionCopy = direction;
+  columnsCopy = columns;
+  rowsCopy = rows;
+  cellColumnsCopy = cellColumns;
   v16 = MEMORY[0x277CCAD78];
-  v17 = a3;
-  v18 = [v16 TTZero];
+  documentCopy = document;
+  tTZero = [v16 TTZero];
   v21.receiver = self;
   v21.super_class = CRTable;
-  v19 = [(ICCRObject *)&v21 initWithDocument:v17 identity:v18];
+  v19 = [(ICCRObject *)&v21 initWithDocument:documentCopy identity:tTZero];
 
   if (v19)
   {
-    [(ICCRObject *)v19 setFieldKey:@"crTableColumnDirection" value:v12];
-    [v13 setDelegate:v19];
-    [(ICCRObject *)v19 setFieldKey:@"crColumns" value:v13];
-    [v14 setDelegate:v19];
-    [(ICCRObject *)v19 setFieldKey:@"crRows" value:v14];
-    [(ICCRObject *)v19 setFieldKey:@"cellColumns" value:v15];
+    [(ICCRObject *)v19 setFieldKey:@"crTableColumnDirection" value:directionCopy];
+    [columnsCopy setDelegate:v19];
+    [(ICCRObject *)v19 setFieldKey:@"crColumns" value:columnsCopy];
+    [rowsCopy setDelegate:v19];
+    [(ICCRObject *)v19 setFieldKey:@"crRows" value:rowsCopy];
+    [(ICCRObject *)v19 setFieldKey:@"cellColumns" value:cellColumnsCopy];
   }
 
   return v19;
 }
 
-- (CRTable)initWithIdentity:(id)a3 fields:(id)a4
+- (CRTable)initWithIdentity:(id)identity fields:(id)fields
 {
   v13.receiver = self;
   v13.super_class = CRTable;
-  v4 = [(ICCRObject *)&v13 initWithIdentity:a3 fields:a4];
+  v4 = [(ICCRObject *)&v13 initWithIdentity:identity fields:fields];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CRTable *)v4 crColumns];
-    [v6 setDelegate:v5];
+    crColumns = [(CRTable *)v4 crColumns];
+    [crColumns setDelegate:v5];
 
-    v7 = [(CRTable *)v5 crRows];
-    [v7 setDelegate:v5];
+    crRows = [(CRTable *)v5 crRows];
+    [crRows setDelegate:v5];
 
-    v8 = [(CRTable *)v5 crTableColumnDirection];
+    crTableColumnDirection = [(CRTable *)v5 crTableColumnDirection];
 
-    if (!v8)
+    if (!crTableColumnDirection)
     {
       v9 = [ICCRRegisterLatest alloc];
-      v10 = [(ICCRObject *)v5 document];
-      v11 = [(ICCRRegisterLatest *)v9 initWithContents:@"CRTableColumnDirectionLeftToRight" document:v10];
+      document = [(ICCRObject *)v5 document];
+      v11 = [(ICCRRegisterLatest *)v9 initWithContents:@"CRTableColumnDirectionLeftToRight" document:document];
       [(ICCRObject *)v5 setFieldKey:@"crTableColumnDirection" value:v11];
     }
   }
@@ -149,37 +149,37 @@
 
 - (NSString)columnDirection
 {
-  v2 = [(CRTable *)self crTableColumnDirection];
-  v3 = [v2 contents];
+  crTableColumnDirection = [(CRTable *)self crTableColumnDirection];
+  contents = [crTableColumnDirection contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setColumnDirection:(id)a3
+- (void)setColumnDirection:(id)direction
 {
-  v4 = a3;
+  directionCopy = direction;
   if ([(CRTable *)self wantsUndoCommands])
   {
-    v5 = [(CRTable *)self columnDirection];
-    v6 = [(CRTable *)self delegate];
+    columnDirection = [(CRTable *)self columnDirection];
+    delegate = [(CRTable *)self delegate];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__CRTable_setColumnDirection___block_invoke;
     v9[3] = &unk_2781998D8;
-    v10 = v5;
-    v7 = v5;
-    [v6 addUndoCommandsForObject:self block:v9];
+    v10 = columnDirection;
+    v7 = columnDirection;
+    [delegate addUndoCommandsForObject:self block:v9];
   }
 
-  v8 = [(CRTable *)self crTableColumnDirection];
-  [v8 setContents:v4];
+  crTableColumnDirection = [(CRTable *)self crTableColumnDirection];
+  [crTableColumnDirection setContents:directionCopy];
 }
 
 - (id)crTableColumnDirection
 {
   objc_opt_class();
-  v3 = [(ICCRObject *)self fields];
-  v4 = [v3 objectForKeyedSubscript:@"crTableColumnDirection"];
+  fields = [(ICCRObject *)self fields];
+  v4 = [fields objectForKeyedSubscript:@"crTableColumnDirection"];
   v5 = ICDynamicCast();
 
   return v5;
@@ -188,8 +188,8 @@
 - (ICCRTombstoneOrderedSet)crColumns
 {
   objc_opt_class();
-  v3 = [(ICCRObject *)self fields];
-  v4 = [v3 objectForKeyedSubscript:@"crColumns"];
+  fields = [(ICCRObject *)self fields];
+  v4 = [fields objectForKeyedSubscript:@"crColumns"];
   v5 = ICDynamicCast();
 
   return v5;
@@ -198,8 +198,8 @@
 - (ICCRTombstoneOrderedSet)crRows
 {
   objc_opt_class();
-  v3 = [(ICCRObject *)self fields];
-  v4 = [v3 objectForKeyedSubscript:@"crRows"];
+  fields = [(ICCRObject *)self fields];
+  v4 = [fields objectForKeyedSubscript:@"crRows"];
   v5 = ICDynamicCast();
 
   return v5;
@@ -208,8 +208,8 @@
 - (ICCRDictionary)cellColumns
 {
   objc_opt_class();
-  v3 = [(ICCRObject *)self fields];
-  v4 = [v3 objectForKeyedSubscript:@"cellColumns"];
+  fields = [(ICCRObject *)self fields];
+  v4 = [fields objectForKeyedSubscript:@"cellColumns"];
   v5 = ICDynamicCast();
 
   return v5;
@@ -233,101 +233,101 @@
 
 - (unint64_t)columnCount
 {
-  v2 = [(CRTable *)self crColumns];
-  v3 = [v2 count];
+  crColumns = [(CRTable *)self crColumns];
+  v3 = [crColumns count];
 
   return v3;
 }
 
 - (unint64_t)rowCount
 {
-  v2 = [(CRTable *)self crRows];
-  v3 = [v2 count];
+  crRows = [(CRTable *)self crRows];
+  v3 = [crRows count];
 
   return v3;
 }
 
-- (id)columnsIntersectingWithColumns:(id)a3
+- (id)columnsIntersectingWithColumns:(id)columns
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crColumns];
+  columnsCopy = columns;
+  crColumns = [(CRTable *)self crColumns];
   v6 = MEMORY[0x277CCAC30];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__CRTable_columnsIntersectingWithColumns___block_invoke;
   v11[3] = &unk_278199900;
-  v12 = v5;
-  v7 = v5;
+  v12 = crColumns;
+  v7 = crColumns;
   v8 = [v6 predicateWithBlock:v11];
-  v9 = [v4 filteredArrayUsingPredicate:v8];
+  v9 = [columnsCopy filteredArrayUsingPredicate:v8];
 
   return v9;
 }
 
-- (id)rowsIntersectingWithRows:(id)a3
+- (id)rowsIntersectingWithRows:(id)rows
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crRows];
+  rowsCopy = rows;
+  crRows = [(CRTable *)self crRows];
   v6 = MEMORY[0x277CCAC30];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__CRTable_rowsIntersectingWithRows___block_invoke;
   v11[3] = &unk_278199900;
-  v12 = v5;
-  v7 = v5;
+  v12 = crRows;
+  v7 = crRows;
   v8 = [v6 predicateWithBlock:v11];
-  v9 = [v4 filteredArrayUsingPredicate:v8];
+  v9 = [rowsCopy filteredArrayUsingPredicate:v8];
 
   return v9;
 }
 
-- (id)identifierForRowAtIndex:(unint64_t)a3
+- (id)identifierForRowAtIndex:(unint64_t)index
 {
-  v5 = [(CRTable *)self crRows];
-  if ([v5 count] <= a3)
+  crRows = [(CRTable *)self crRows];
+  if ([crRows count] <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(CRTable *)self crRows];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    crRows2 = [(CRTable *)self crRows];
+    v7 = [crRows2 objectAtIndexedSubscript:index];
   }
 
   return v7;
 }
 
-- (id)identifierForColumnAtIndex:(unint64_t)a3
+- (id)identifierForColumnAtIndex:(unint64_t)index
 {
-  v5 = [(CRTable *)self crColumns];
-  if ([v5 count] <= a3)
+  crColumns = [(CRTable *)self crColumns];
+  if ([crColumns count] <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(CRTable *)self crColumns];
-    v7 = [v6 objectAtIndexedSubscript:a3];
+    crColumns2 = [(CRTable *)self crColumns];
+    v7 = [crColumns2 objectAtIndexedSubscript:index];
   }
 
   return v7;
 }
 
-- (id)identifiersForRowIndexes:(id)a3
+- (id)identifiersForRowIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __36__CRTable_identifiersForRowIndexes___block_invoke;
   v13 = &unk_278197968;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -341,19 +341,19 @@ void __36__CRTable_identifiersForRowIndexes___block_invoke(uint64_t a1, uint64_t
   [v2 addObject:v3];
 }
 
-- (id)identifiersForColumnIndexes:(id)a3
+- (id)identifiersForColumnIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __39__CRTable_identifiersForColumnIndexes___block_invoke;
   v13 = &unk_278197968;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
 
   v8 = [v7 copy];
 
@@ -367,34 +367,34 @@ void __39__CRTable_identifiersForColumnIndexes___block_invoke(uint64_t a1, uint6
   [v2 addObject:v3];
 }
 
-- (unint64_t)rowIndexForIdentifier:(id)a3
+- (unint64_t)rowIndexForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crRows];
-  v6 = [v5 indexOfEqualObject:v4];
+  identifierCopy = identifier;
+  crRows = [(CRTable *)self crRows];
+  v6 = [crRows indexOfEqualObject:identifierCopy];
 
   return v6;
 }
 
-- (unint64_t)columnIndexForIdentifier:(id)a3
+- (unint64_t)columnIndexForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crColumns];
-  v6 = [v5 indexOfEqualObject:v4];
+  identifierCopy = identifier;
+  crColumns = [(CRTable *)self crColumns];
+  v6 = [crColumns indexOfEqualObject:identifierCopy];
 
   return v6;
 }
 
-- (id)rowIndexesForIdentifiers:(id)a3
+- (id)rowIndexesForIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -427,16 +427,16 @@ void __39__CRTable_identifiersForColumnIndexes___block_invoke(uint64_t a1, uint6
   return v12;
 }
 
-- (id)columnIndexesForIdentifiers:(id)a3
+- (id)columnIndexesForIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -469,40 +469,40 @@ void __39__CRTable_identifiersForColumnIndexes___block_invoke(uint64_t a1, uint6
   return v12;
 }
 
-- (BOOL)containsRow:(id)a3
+- (BOOL)containsRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crRows];
-  v6 = [v5 containsObjectEqualTo:v4];
+  rowCopy = row;
+  crRows = [(CRTable *)self crRows];
+  v6 = [crRows containsObjectEqualTo:rowCopy];
 
   return v6;
 }
 
-- (BOOL)containsColumn:(id)a3
+- (BOOL)containsColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crColumns];
-  v6 = [v5 containsObjectEqualTo:v4];
+  columnCopy = column;
+  crColumns = [(CRTable *)self crColumns];
+  v6 = [crColumns containsObjectEqualTo:columnCopy];
 
   return v6;
 }
 
-- (id)insertRowAtIndex:(unint64_t)a3
+- (id)insertRowAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [(CRTable *)self crRows];
-  [v6 insertObject:v5 atIndex:a3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  crRows = [(CRTable *)self crRows];
+  [crRows insertObject:uUID atIndex:index];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __28__CRTable_insertRowAtIndex___block_invoke;
   v13[3] = &unk_278199928;
-  v14 = v7;
-  v15 = self;
-  v8 = v5;
+  v14 = dictionary;
+  selfCopy = self;
+  v8 = uUID;
   v16 = v8;
-  v9 = v7;
+  v9 = dictionary;
   [(CRTable *)self enumerateColumnsWithBlock:v13];
   [(CRTable *)self undoablyInsertContents:v9 atRow:v8];
   v10 = v16;
@@ -520,22 +520,22 @@ void __28__CRTable_insertRowAtIndex___block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)insertColumnAtIndex:(unint64_t)a3
+- (id)insertColumnAtIndex:(unint64_t)index
 {
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [(CRTable *)self crColumns];
-  [v6 insertObject:v5 atIndex:a3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  crColumns = [(CRTable *)self crColumns];
+  [crColumns insertObject:uUID atIndex:index];
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __31__CRTable_insertColumnAtIndex___block_invoke;
   v13[3] = &unk_278199928;
-  v14 = v7;
-  v15 = self;
-  v8 = v5;
+  v14 = dictionary;
+  selfCopy = self;
+  v8 = uUID;
   v16 = v8;
-  v9 = v7;
+  v9 = dictionary;
   [(CRTable *)self enumerateRowsWithBlock:v13];
   [(CRTable *)self undoablyInsertContents:v9 atColumn:v8];
   v10 = v16;
@@ -553,14 +553,14 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)insertRows:(unint64_t)a3 atIndex:(unint64_t)a4
+- (id)insertRows:(unint64_t)rows atIndex:(unint64_t)index
 {
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-  while (a3)
+  while (rows)
   {
-    v8 = [(CRTable *)self insertRowAtIndex:a4];
+    v8 = [(CRTable *)self insertRowAtIndex:index];
     [v7 addObject:v8];
-    --a3;
+    --rows;
   }
 
   v9 = [v7 copy];
@@ -568,14 +568,14 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (id)insertColumns:(unint64_t)a3 atIndex:(unint64_t)a4
+- (id)insertColumns:(unint64_t)columns atIndex:(unint64_t)index
 {
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
-  while (a3)
+  while (columns)
   {
-    v8 = [(CRTable *)self insertColumnAtIndex:a4];
+    v8 = [(CRTable *)self insertColumnAtIndex:index];
     [v7 addObject:v8];
-    --a3;
+    --columns;
   }
 
   v9 = [v7 copy];
@@ -583,41 +583,41 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (void)removeRowAtIndex:(unint64_t)a3
+- (void)removeRowAtIndex:(unint64_t)index
 {
-  v5 = [(CRTable *)self crRows];
-  v7 = [v5 objectAtIndexedSubscript:a3];
+  crRows = [(CRTable *)self crRows];
+  v7 = [crRows objectAtIndexedSubscript:index];
 
   [(CRTable *)self undoablyRemoveContentsOfRow:v7];
-  v6 = [(CRTable *)self crRows];
-  [v6 removeObjectAtIndex:a3];
+  crRows2 = [(CRTable *)self crRows];
+  [crRows2 removeObjectAtIndex:index];
 }
 
-- (void)undoablyRemoveContentsOfRow:(id)a3
+- (void)undoablyRemoveContentsOfRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[CRTable columnCount](self, "columnCount")}];
   if ([(CRTable *)self columnCount])
   {
     v6 = 0;
     do
     {
-      v7 = [(CRTable *)self crColumns];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      crColumns = [(CRTable *)self crColumns];
+      v8 = [crColumns objectAtIndexedSubscript:v6];
 
-      v9 = [(CRTable *)self cellColumns];
-      v10 = [v9 objectForKeyedSubscript:v8];
+      cellColumns = [(CRTable *)self cellColumns];
+      v10 = [cellColumns objectForKeyedSubscript:v8];
 
       if (v10)
       {
-        v11 = [v10 objectForKeyedSubscript:v4];
+        v11 = [v10 objectForKeyedSubscript:rowCopy];
         [v5 setObject:v11 forKeyedSubscript:v8];
 
-        [v10 removeObjectForKey:v4];
+        [v10 removeObjectForKey:rowCopy];
         if (![v10 count])
         {
-          v12 = [(CRTable *)self cellColumns];
-          [v12 removeObjectForKey:v8];
+          cellColumns2 = [(CRTable *)self cellColumns];
+          [cellColumns2 removeObjectForKey:v8];
         }
       }
 
@@ -629,67 +629,67 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
 
   if ([(CRTable *)self wantsUndoCommands])
   {
-    v13 = [(CRTable *)self delegate];
+    delegate = [(CRTable *)self delegate];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __39__CRTable_undoablyRemoveContentsOfRow___block_invoke;
     v14[3] = &unk_278199950;
     v15 = v5;
-    v16 = v4;
-    [v13 addUndoCommandsForObject:self block:v14];
+    v16 = rowCopy;
+    [delegate addUndoCommandsForObject:self block:v14];
   }
 }
 
-- (void)undoablyInsertContents:(id)a3 atRow:(id)a4
+- (void)undoablyInsertContents:(id)contents atRow:(id)row
 {
-  v6 = a4;
+  rowCopy = row;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__CRTable_undoablyInsertContents_atRow___block_invoke;
   v11[3] = &unk_278199978;
   v11[4] = self;
-  v7 = v6;
+  v7 = rowCopy;
   v12 = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [contents enumerateKeysAndObjectsUsingBlock:v11];
   if ([(CRTable *)self wantsUndoCommands])
   {
-    v8 = [(CRTable *)self delegate];
+    delegate = [(CRTable *)self delegate];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __40__CRTable_undoablyInsertContents_atRow___block_invoke_2;
     v9[3] = &unk_2781998D8;
     v10 = v7;
-    [v8 addUndoCommandsForObject:self block:v9];
+    [delegate addUndoCommandsForObject:self block:v9];
   }
 }
 
-- (void)removeColumnAtIndex:(unint64_t)a3
+- (void)removeColumnAtIndex:(unint64_t)index
 {
-  v5 = [(CRTable *)self crColumns];
-  v7 = [v5 objectAtIndexedSubscript:a3];
+  crColumns = [(CRTable *)self crColumns];
+  v7 = [crColumns objectAtIndexedSubscript:index];
 
   [(CRTable *)self undoablyRemoveContentsOfColumn:v7];
-  v6 = [(CRTable *)self crColumns];
-  [v6 removeObjectAtIndex:a3];
+  crColumns2 = [(CRTable *)self crColumns];
+  [crColumns2 removeObjectAtIndex:index];
 }
 
-- (void)moveRowAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveRowAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v6 = [(CRTable *)self crRows];
-  [v6 moveObjectFromIndex:a3 toIndex:a4];
+  crRows = [(CRTable *)self crRows];
+  [crRows moveObjectFromIndex:index toIndex:toIndex];
 }
 
-- (void)moveColumnAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveColumnAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v6 = [(CRTable *)self crColumns];
-  [v6 moveObjectFromIndex:a3 toIndex:a4];
+  crColumns = [(CRTable *)self crColumns];
+  [crColumns moveObjectFromIndex:index toIndex:toIndex];
 }
 
-- (void)undoablyRemoveContentsOfColumn:(id)a3
+- (void)undoablyRemoveContentsOfColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(CRTable *)self cellColumns];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  columnCopy = column;
+  cellColumns = [(CRTable *)self cellColumns];
+  v6 = [cellColumns objectForKeyedSubscript:columnCopy];
 
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
   v14[0] = MEMORY[0x277D85DD0];
@@ -699,57 +699,57 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   v8 = v7;
   v15 = v8;
   [v6 enumerateKeysObjectsAndTimestampsUsingBlock:v14];
-  v9 = [(CRTable *)self cellColumns];
-  [v9 removeObjectForKey:v4];
+  cellColumns2 = [(CRTable *)self cellColumns];
+  [cellColumns2 removeObjectForKey:columnCopy];
 
   if ([(CRTable *)self wantsUndoCommands])
   {
-    v10 = [(CRTable *)self delegate];
+    delegate = [(CRTable *)self delegate];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__CRTable_undoablyRemoveContentsOfColumn___block_invoke_2;
     v11[3] = &unk_278199950;
     v12 = v8;
-    v13 = v4;
-    [v10 addUndoCommandsForObject:self block:v11];
+    v13 = columnCopy;
+    [delegate addUndoCommandsForObject:self block:v11];
   }
 }
 
-- (void)undoablyInsertContents:(id)a3 atColumn:(id)a4
+- (void)undoablyInsertContents:(id)contents atColumn:(id)column
 {
-  v6 = a4;
+  columnCopy = column;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__CRTable_undoablyInsertContents_atColumn___block_invoke;
   v11[3] = &unk_278199978;
   v11[4] = self;
-  v7 = v6;
+  v7 = columnCopy;
   v12 = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [contents enumerateKeysAndObjectsUsingBlock:v11];
   if ([(CRTable *)self wantsUndoCommands])
   {
-    v8 = [(CRTable *)self delegate];
+    delegate = [(CRTable *)self delegate];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __43__CRTable_undoablyInsertContents_atColumn___block_invoke_2;
     v9[3] = &unk_2781998D8;
     v10 = v7;
-    [v8 addUndoCommandsForObject:self block:v9];
+    [delegate addUndoCommandsForObject:self block:v9];
   }
 }
 
 - (BOOL)isRightToLeft
 {
-  v2 = [(CRTable *)self columnDirection];
-  v3 = [v2 isEqualToString:@"CRTableColumnDirectionRightToLeft"];
+  columnDirection = [(CRTable *)self columnDirection];
+  v3 = [columnDirection isEqualToString:@"CRTableColumnDirectionRightToLeft"];
 
   return v3;
 }
 
 - (void)reverseColumnDirection
 {
-  v4 = [(CRTable *)self columnDirection];
-  if ([v4 isEqualToString:@"CRTableColumnDirectionLeftToRight"])
+  columnDirection = [(CRTable *)self columnDirection];
+  if ([columnDirection isEqualToString:@"CRTableColumnDirectionLeftToRight"])
   {
     v3 = @"CRTableColumnDirectionRightToLeft";
   }
@@ -762,94 +762,94 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   [(CRTable *)self setColumnDirection:v3];
 }
 
-- (id)objectForColumnIndex:(unint64_t)a3 rowIndex:(unint64_t)a4
+- (id)objectForColumnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex
 {
-  v7 = [(CRTable *)self crColumns];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [(CRTable *)self crRows];
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  crColumns = [(CRTable *)self crColumns];
+  v8 = [crColumns objectAtIndexedSubscript:index];
+  crRows = [(CRTable *)self crRows];
+  v10 = [crRows objectAtIndexedSubscript:rowIndex];
   v11 = [(CRTable *)self objectForColumnID:v8 rowID:v10];
 
   return v11;
 }
 
-- (id)objectForColumnID:(id)a3 rowID:(id)a4
+- (id)objectForColumnID:(id)d rowID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRTable *)self cellColumns];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  iDCopy = iD;
+  dCopy = d;
+  cellColumns = [(CRTable *)self cellColumns];
+  v9 = [cellColumns objectForKeyedSubscript:dCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v6];
+  v10 = [v9 objectForKeyedSubscript:iDCopy];
 
   return v10;
 }
 
-- (void)setObject:(id)a3 columnIndex:(unint64_t)a4 rowIndex:(unint64_t)a5
+- (void)setObject:(id)object columnIndex:(unint64_t)index rowIndex:(unint64_t)rowIndex
 {
-  v8 = a3;
-  v12 = [(CRTable *)self crColumns];
-  v9 = [v12 objectAtIndexedSubscript:a4];
-  v10 = [(CRTable *)self crRows];
-  v11 = [v10 objectAtIndexedSubscript:a5];
-  [(CRTable *)self setObject:v8 columnID:v9 rowID:v11];
+  objectCopy = object;
+  crColumns = [(CRTable *)self crColumns];
+  v9 = [crColumns objectAtIndexedSubscript:index];
+  crRows = [(CRTable *)self crRows];
+  v11 = [crRows objectAtIndexedSubscript:rowIndex];
+  [(CRTable *)self setObject:objectCopy columnID:v9 rowID:v11];
 }
 
-- (void)setObject:(id)a3 columnID:(id)a4 rowID:(id)a5
+- (void)setObject:(id)object columnID:(id)d rowID:(id)iD
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CRTable *)self cellColumns];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  objectCopy = object;
+  dCopy = d;
+  iDCopy = iD;
+  cellColumns = [(CRTable *)self cellColumns];
+  v11 = [cellColumns objectForKeyedSubscript:dCopy];
 
   if (!v11)
   {
     v12 = [ICCRDictionary alloc];
-    v13 = [(ICCRObject *)self document];
-    v11 = [(ICCRDictionary *)v12 initWithDocument:v13];
+    document = [(ICCRObject *)self document];
+    v11 = [(ICCRDictionary *)v12 initWithDocument:document];
 
-    v14 = [(CRTable *)self cellColumns];
-    [v14 setObject:v11 forKey:v8];
+    cellColumns2 = [(CRTable *)self cellColumns];
+    [cellColumns2 setObject:v11 forKey:dCopy];
   }
 
-  [(ICCRDictionary *)v11 setObject:v15 forKey:v9];
+  [(ICCRDictionary *)v11 setObject:objectCopy forKey:iDCopy];
 }
 
-- (void)enumerateColumnsWithBlock:(id)a3
+- (void)enumerateColumnsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crColumns];
+  blockCopy = block;
+  crColumns = [(CRTable *)self crColumns];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__CRTable_enumerateColumnsWithBlock___block_invoke;
   v7[3] = &unk_2781999C8;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [crColumns enumerateObjectsUsingBlock:v7];
 }
 
-- (void)enumerateRowsWithBlock:(id)a3
+- (void)enumerateRowsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CRTable *)self crRows];
+  blockCopy = block;
+  crRows = [(CRTable *)self crRows];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__CRTable_enumerateRowsWithBlock___block_invoke;
   v7[3] = &unk_2781999C8;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [crRows enumerateObjectsUsingBlock:v7];
 }
 
-- (void)enumerateCellObjectsInCellSelectionContainingColumnIndices:(id)a3 rowIndices:(id)a4 copyItems:(BOOL)a5 usingBlock:(id)a6
+- (void)enumerateCellObjectsInCellSelectionContainingColumnIndices:(id)indices rowIndices:(id)rowIndices copyItems:(BOOL)items usingBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v10)
+  indicesCopy = indices;
+  rowIndicesCopy = rowIndices;
+  blockCopy = block;
+  if (indicesCopy)
   {
-    v13 = v10;
+    v13 = indicesCopy;
   }
 
   else
@@ -858,9 +858,9 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   }
 
   v14 = v13;
-  if (v11)
+  if (rowIndicesCopy)
   {
-    v15 = v11;
+    v15 = rowIndicesCopy;
   }
 
   else
@@ -880,9 +880,9 @@ void __31__CRTable_insertColumnAtIndex___block_invoke(uint64_t a1, void *a2)
   v17 = v14;
   v23 = v25;
   v20 = v17;
-  v21 = self;
-  v24 = a5;
-  v18 = v12;
+  selfCopy = self;
+  itemsCopy = items;
+  v18 = blockCopy;
   v22 = v18;
   [v16 enumerateIndexesUsingBlock:v19];
 
@@ -949,14 +949,14 @@ void __102__CRTable_enumerateCellObjectsInCellSelectionContainingColumnIndices_r
   }
 }
 
-- (id)subtableWithDocument:(id)a3 forSelectionContainingColumnIndices:(id)a4 rowIndices:(id)a5
+- (id)subtableWithDocument:(id)document forSelectionContainingColumnIndices:(id)indices rowIndices:(id)rowIndices
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  documentCopy = document;
+  indicesCopy = indices;
+  rowIndicesCopy = rowIndices;
+  if (indicesCopy)
   {
-    v11 = v9;
+    v11 = indicesCopy;
   }
 
   else
@@ -965,11 +965,11 @@ void __102__CRTable_enumerateCellObjectsInCellSelectionContainingColumnIndices_r
   }
 
   v12 = v11;
-  v32 = v10;
-  v33 = v9;
-  if (v10)
+  v32 = rowIndicesCopy;
+  v33 = indicesCopy;
+  if (rowIndicesCopy)
   {
-    v13 = v10;
+    v13 = rowIndicesCopy;
   }
 
   else
@@ -978,7 +978,7 @@ void __102__CRTable_enumerateCellObjectsInCellSelectionContainingColumnIndices_r
   }
 
   v14 = v13;
-  v15 = [objc_alloc(objc_opt_class()) initWithDocument:v8 isRightToLeft:{-[CRTable isRightToLeft](self, "isRightToLeft")}];
+  v15 = [objc_alloc(objc_opt_class()) initWithDocument:documentCopy isRightToLeft:{-[CRTable isRightToLeft](self, "isRightToLeft")}];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __79__CRTable_subtableWithDocument_forSelectionContainingColumnIndices_rowIndices___block_invoke;
@@ -1075,11 +1075,11 @@ void __79__CRTable_subtableWithDocument_forSelectionContainingColumnIndices_rowI
     v4 = 0;
     do
     {
-      v5 = [(CRTable *)self crColumns];
-      v6 = [v5 objectAtIndexedSubscript:v4];
+      crColumns = [(CRTable *)self crColumns];
+      v6 = [crColumns objectAtIndexedSubscript:v4];
 
-      v7 = [(CRTable *)self cellColumns];
-      v8 = [v7 objectForKeyedSubscript:v6];
+      cellColumns = [(CRTable *)self cellColumns];
+      v8 = [cellColumns objectForKeyedSubscript:v6];
 
       if (v8)
       {
@@ -1097,40 +1097,40 @@ void __79__CRTable_subtableWithDocument_forSelectionContainingColumnIndices_rowI
 
 - (unint64_t)hash
 {
-  v3 = [(CRTable *)self crTableColumnDirection];
-  v4 = [v3 hash];
-  v5 = [(CRTable *)self crColumns];
-  v6 = ([v5 hash] << 8) ^ (v4 << 12);
-  v7 = [(CRTable *)self crRows];
-  v8 = v6 ^ (16 * [v7 hash]);
-  v9 = [(CRTable *)self cellColumns];
-  v10 = [v9 hash];
+  crTableColumnDirection = [(CRTable *)self crTableColumnDirection];
+  v4 = [crTableColumnDirection hash];
+  crColumns = [(CRTable *)self crColumns];
+  v6 = ([crColumns hash] << 8) ^ (v4 << 12);
+  crRows = [(CRTable *)self crRows];
+  v8 = v6 ^ (16 * [crRows hash]);
+  cellColumns = [(CRTable *)self cellColumns];
+  v10 = [cellColumns hash];
 
   return v8 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CRTable *)self crTableColumnDirection];
-    v7 = [v5 crTableColumnDirection];
-    if ([v6 isEqualContents:v7])
+    v5 = equalCopy;
+    crTableColumnDirection = [(CRTable *)self crTableColumnDirection];
+    crTableColumnDirection2 = [v5 crTableColumnDirection];
+    if ([crTableColumnDirection isEqualContents:crTableColumnDirection2])
     {
-      v8 = [(CRTable *)self crRows];
-      v9 = [v5 crRows];
-      if ([v8 isEqual:v9])
+      crRows = [(CRTable *)self crRows];
+      crRows2 = [v5 crRows];
+      if ([crRows isEqual:crRows2])
       {
-        v10 = [(CRTable *)self crColumns];
-        v11 = [v5 crColumns];
-        if ([v10 isEqual:v11])
+        crColumns = [(CRTable *)self crColumns];
+        crColumns2 = [v5 crColumns];
+        if ([crColumns isEqual:crColumns2])
         {
-          v15 = [(CRTable *)self cellColumns];
-          v12 = [v5 cellColumns];
-          v13 = [v15 isEqual:v12];
+          cellColumns = [(CRTable *)self cellColumns];
+          cellColumns2 = [v5 cellColumns];
+          v13 = [cellColumns isEqual:cellColumns2];
         }
 
         else
@@ -1159,14 +1159,14 @@ void __79__CRTable_subtableWithDocument_forSelectionContainingColumnIndices_rowI
   return v13;
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRTable *)self crRows];
+  blockCopy = block;
+  objectCopy = object;
+  crRows = [(CRTable *)self crRows];
 
-  v9 = [(CRTable *)self delegate];
-  if (v8 == v7)
+  delegate = [(CRTable *)self delegate];
+  if (crRows == objectCopy)
   {
     v10 = v14;
     v14[0] = MEMORY[0x277D85DD0];
@@ -1184,9 +1184,9 @@ void __79__CRTable_subtableWithDocument_forSelectionContainingColumnIndices_rowI
 
   v10[2] = v11;
   v10[3] = &unk_278199A40;
-  v10[4] = v6;
-  v12 = v6;
-  [v9 addUndoCommandsForObject:self block:v10];
+  v10[4] = blockCopy;
+  v12 = blockCopy;
+  [delegate addUndoCommandsForObject:self block:v10];
 }
 
 void __42__CRTable_addUndoCommandsForObject_block___block_invoke(uint64_t a1, void *a2)
@@ -1205,10 +1205,10 @@ void __42__CRTable_addUndoCommandsForObject_block___block_invoke_2(uint64_t a1, 
 
 - (BOOL)wantsUndoCommands
 {
-  v2 = [(CRTable *)self delegate];
-  v3 = [v2 wantsUndoCommands];
+  delegate = [(CRTable *)self delegate];
+  wantsUndoCommands = [delegate wantsUndoCommands];
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 - (ICCRUndoDelegate)delegate

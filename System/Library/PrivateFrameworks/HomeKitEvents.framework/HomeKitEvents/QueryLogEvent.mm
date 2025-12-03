@@ -2,7 +2,7 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (_TtC13HomeKitEvents13QueryLogEvent)init;
-- (_TtC13HomeKitEvents13QueryLogEvent)initWithStartTime:(double)a3;
+- (_TtC13HomeKitEvents13QueryLogEvent)initWithStartTime:(double)time;
 - (double)startTime;
 @end
 
@@ -33,7 +33,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_2542355D8();
 
   sub_254236630();
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (_TtC13HomeKitEvents13QueryLogEvent)initWithStartTime:(double)a3
+- (_TtC13HomeKitEvents13QueryLogEvent)initWithStartTime:(double)time
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

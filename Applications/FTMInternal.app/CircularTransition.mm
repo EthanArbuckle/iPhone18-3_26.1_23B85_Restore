@@ -1,14 +1,14 @@
 @interface CircularTransition
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CircularTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1001C0FB0(a3);
+  selfCopy = self;
+  sub_1001C0FB0(transition);
   swift_unknownObjectRelease();
 }
 

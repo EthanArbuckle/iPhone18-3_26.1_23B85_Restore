@@ -1,42 +1,42 @@
 @interface FCUserEventHistoryStorage
 - (BOOL)isEmpty;
 - (FCUserEventHistoryMetadata)metadata;
-- (FCUserEventHistoryStorage)initWithRootDirectory:(id)a3 configurationManager:(id)a4;
+- (FCUserEventHistoryStorage)initWithRootDirectory:(id)directory configurationManager:(id)manager;
 - (NSArray)sessionIDs;
 - (NSArray)sessions;
 - (NSDate)earliestSessionDate;
-- (id)_deleteSessionsWithIdentifiers:(id)a3 pruned:(BOOL)a4;
-- (id)_filePathForSessionID:(id)a3;
-- (id)pruneWithPolicies:(id)a3;
-- (id)pruneWithPolicy:(id)a3;
+- (id)_deleteSessionsWithIdentifiers:(id)identifiers pruned:(BOOL)pruned;
+- (id)_filePathForSessionID:(id)d;
+- (id)pruneWithPolicies:(id)policies;
+- (id)pruneWithPolicy:(id)policy;
 - (id)rootDirectory;
 - (id)sizeString;
-- (int64_t)_sizeForSessionAtPath:(id)a3;
+- (int64_t)_sizeForSessionAtPath:(id)path;
 - (unint64_t)size;
-- (void)_pruneSessions:(id)a3;
-- (void)_pruneSessionsWithIdentifiers:(id)a3;
+- (void)_pruneSessions:(id)sessions;
+- (void)_pruneSessionsWithIdentifiers:(id)identifiers;
 - (void)_pruneSessionsWithInvalidIdentifiers;
-- (void)_pruneToMaxSessionAge:(unint64_t)a3;
-- (void)_pruneToMaxSessionCount:(unint64_t)a3;
-- (void)_pruneToMaxSize:(int64_t)a3;
-- (void)addObserver:(id)a3;
+- (void)_pruneToMaxSessionAge:(unint64_t)age;
+- (void)_pruneToMaxSessionCount:(unint64_t)count;
+- (void)_pruneToMaxSize:(int64_t)size;
+- (void)addObserver:(id)observer;
 - (void)clearAllSessions;
 - (void)clearHistory;
-- (void)clearSessionsWithIDs:(id)a3;
-- (void)readBaseDirectoryWithAccessor:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setMetadataWithAggregateStoreGenerationTime:(int64_t)a3 aggregateTotalCount:(int64_t)a4 meanCountOfEvents:(double)a5 standardDeviationOfEvents:(double)a6 totalEventsCount:(int64_t)a7 headlineEventCount:(int64_t)a8 headlinesWithValidTitleEmbeddingsEventCount:(int64_t)a9 headlinesWithInvalidTitleEmbeddingsEventCount:(int64_t)a10 headlinesWithValidBodyEmbeddingsEventCount:(int64_t)a11 headlinesWithInvalidBodyEmbeddingsEventCount:(int64_t)a12 eventCounts:(id)a13 aggregateStoreData:(id)a14;
-- (void)storeSessionID:(id)a3 compressedSessionData:(id)a4 notify:(BOOL)a5;
-- (void)storeSessionID:(id)a3 sessionData:(id)a4;
-- (void)writeJSON:(id)a3;
+- (void)clearSessionsWithIDs:(id)ds;
+- (void)readBaseDirectoryWithAccessor:(id)accessor;
+- (void)removeObserver:(id)observer;
+- (void)setMetadataWithAggregateStoreGenerationTime:(int64_t)time aggregateTotalCount:(int64_t)count meanCountOfEvents:(double)events standardDeviationOfEvents:(double)ofEvents totalEventsCount:(int64_t)eventsCount headlineEventCount:(int64_t)eventCount headlinesWithValidTitleEmbeddingsEventCount:(int64_t)embeddingsEventCount headlinesWithInvalidTitleEmbeddingsEventCount:(int64_t)self0 headlinesWithValidBodyEmbeddingsEventCount:(int64_t)self1 headlinesWithInvalidBodyEmbeddingsEventCount:(int64_t)self2 eventCounts:(id)self3 aggregateStoreData:(id)self4;
+- (void)storeSessionID:(id)d compressedSessionData:(id)data notify:(BOOL)notify;
+- (void)storeSessionID:(id)d sessionData:(id)data;
+- (void)writeJSON:(id)n;
 @end
 
 @implementation FCUserEventHistoryStorage
 
-- (FCUserEventHistoryStorage)initWithRootDirectory:(id)a3 configurationManager:(id)a4
+- (FCUserEventHistoryStorage)initWithRootDirectory:(id)directory configurationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = FCUserEventHistoryStorage;
   v8 = [(FCUserEventHistoryStorage *)&v19 init];
@@ -47,14 +47,14 @@
     v8->_observers = v9;
 
     objc_initWeak(&location, v8);
-    objc_storeStrong(&v8->_configurationManager, a4);
+    objc_storeStrong(&v8->_configurationManager, manager);
     v11 = objc_alloc(MEMORY[0x1E69B68D8]);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__FCUserEventHistoryStorage_initWithRootDirectory_configurationManager___block_invoke;
     v15[3] = &unk_1E7C3C818;
     objc_copyWeak(&v17, &location);
-    v16 = v6;
+    v16 = directoryCopy;
     v12 = [v11 initWithConstructor:v15];
     lazyRootDirectory = v8->_lazyRootDirectory;
     v8->_lazyRootDirectory = v12;
@@ -195,21 +195,21 @@ LABEL_19:
 
 - (id)rootDirectory
 {
-  v2 = [(FCUserEventHistoryStorage *)self lazyRootDirectory];
-  v3 = [v2 value];
+  lazyRootDirectory = [(FCUserEventHistoryStorage *)self lazyRootDirectory];
+  value = [lazyRootDirectory value];
 
-  return v3;
+  return value;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCUserEventHistoryStorage *)self observers];
-    v6 = [v5 containsObject:v4];
+    observers = [(FCUserEventHistoryStorage *)self observers];
+    v6 = [observers containsObject:observerCopy];
 
     if (v6)
     {
@@ -217,13 +217,13 @@ LABEL_19:
       if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v11 = v4;
+        v11 = observerCopy;
         _os_log_error_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_ERROR, "%p is already an observer", buf, 0xCu);
       }
     }
 
-    v8 = [(FCUserEventHistoryStorage *)self observers];
-    [v8 addObject:v4];
+    observers2 = [(FCUserEventHistoryStorage *)self observers];
+    [observers2 addObject:observerCopy];
   }
 
   else
@@ -233,7 +233,7 @@ LABEL_19:
       goto LABEL_8;
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v11 = "[FCUserEventHistoryStorage addObserver:]";
     v12 = 2080;
@@ -241,7 +241,7 @@ LABEL_19:
     v14 = 1024;
     v15 = 93;
     v16 = 2114;
-    v17 = v8;
+    v17 = observers2;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -249,15 +249,15 @@ LABEL_8:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observerCopy = observer;
   [MEMORY[0x1E696AF00] isMainThread];
-  if (v4)
+  if (observerCopy)
   {
-    v5 = [(FCUserEventHistoryStorage *)self observers];
-    [v5 removeObject:v4];
+    observers = [(FCUserEventHistoryStorage *)self observers];
+    [observers removeObject:observerCopy];
   }
 
   else
@@ -267,7 +267,7 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
+    observers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "observer != nil"];
     *buf = 136315906;
     v8 = "[FCUserEventHistoryStorage removeObserver:]";
     v9 = 2080;
@@ -275,7 +275,7 @@ LABEL_8:
     v11 = 1024;
     v12 = 105;
     v13 = 2114;
-    v14 = v5;
+    v14 = observers;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
@@ -283,15 +283,15 @@ LABEL_5:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)pruneWithPolicies:(id)a3
+- (id)pruneWithPolicies:(id)policies
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  policiesCopy = policies;
   v5 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v21 = v4;
+    v21 = policiesCopy;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "User event history storage pruning with policies %{public}@", buf, 0xCu);
   }
 
@@ -299,8 +299,8 @@ LABEL_5:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v4 policies];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  policies = [policiesCopy policies];
+  v7 = [policies countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -311,37 +311,37 @@ LABEL_5:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(policies);
         }
 
         v11 = [(FCUserEventHistoryStorage *)self pruneWithPolicy:*(*(&v15 + 1) + 8 * i)];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [policies countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
+  prunedSessionIDs = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return prunedSessionIDs;
 }
 
-- (id)pruneWithPolicy:(id)a3
+- (id)pruneWithPolicy:(id)policy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 <= 1)
+  policyCopy = policy;
+  type = [policyCopy type];
+  if (type <= 1)
   {
-    if (v5)
+    if (type)
     {
-      if (v5 == 1)
+      if (type == 1)
       {
-        -[FCUserEventHistoryStorage _pruneToMaxSize:](self, "_pruneToMaxSize:", [v4 value]);
+        -[FCUserEventHistoryStorage _pruneToMaxSize:](self, "_pruneToMaxSize:", [policyCopy value]);
       }
     }
 
@@ -362,13 +362,13 @@ LABEL_5:
 
   else
   {
-    switch(v5)
+    switch(type)
     {
       case 2:
-        -[FCUserEventHistoryStorage _pruneToMaxSessionCount:](self, "_pruneToMaxSessionCount:", [v4 value]);
+        -[FCUserEventHistoryStorage _pruneToMaxSessionCount:](self, "_pruneToMaxSessionCount:", [policyCopy value]);
         break;
       case 3:
-        -[FCUserEventHistoryStorage _pruneToMaxSessionAge:](self, "_pruneToMaxSessionAge:", [v4 value]);
+        -[FCUserEventHistoryStorage _pruneToMaxSessionAge:](self, "_pruneToMaxSessionAge:", [policyCopy value]);
         break;
       case 4:
         [(FCUserEventHistoryStorage *)self _pruneSessionsWithInvalidIdentifiers];
@@ -376,38 +376,38 @@ LABEL_5:
     }
   }
 
-  v6 = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
+  prunedSessionIDs = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return prunedSessionIDs;
 }
 
-- (void)clearSessionsWithIDs:(id)a3
+- (void)clearSessionsWithIDs:(id)ds
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     *buf = 134217984;
-    v17 = [v4 count];
+    v17 = [dsCopy count];
     _os_log_impl(&dword_1B63EF000, v6, OS_LOG_TYPE_DEFAULT, "User event history storage will attempt to clear %lu sessions", buf, 0xCu);
   }
 
-  v7 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:v4 pruned:0];
+  v7 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:dsCopy pruned:0];
   v8 = [v7 count];
-  if (v8 >= [v4 count])
+  if (v8 >= [dsCopy count])
   {
     v12 = [v7 count];
-    if (v12 <= [v4 count])
+    if (v12 <= [dsCopy count])
     {
       v13 = FCUserEventsStorageLog;
       if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v13;
-        v14 = [v4 count];
+        v14 = [dsCopy count];
         *buf = 134217984;
         v17 = v14;
         _os_log_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_DEFAULT, "Successfully cleared %lu sessions", buf, 0xCu);
@@ -417,7 +417,7 @@ LABEL_5:
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Somehow cleared %lu sessions even though only %lu sessions were requested to be cleared", objc_msgSend(v7, "count"), objc_msgSend(v4, "count")];
+      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Somehow cleared %lu sessions even though only %lu sessions were requested to be cleared", objc_msgSend(v7, "count"), objc_msgSend(dsCopy, "count")];
       *buf = 136315906;
       v17 = "[FCUserEventHistoryStorage clearSessionsWithIDs:]";
       v18 = 2080;
@@ -437,11 +437,11 @@ LABEL_5:
     if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v4 count];
+      v11 = [dsCopy count];
       *buf = 134218242;
       v17 = v11;
       v18 = 2114;
-      v19 = v4;
+      v19 = dsCopy;
       _os_log_error_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_ERROR, "Failed to find %lu sessions to clear. %{public}@", buf, 0x16u);
 LABEL_11:
     }
@@ -450,20 +450,20 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)readBaseDirectoryWithAccessor:(id)a3
+- (void)readBaseDirectoryWithAccessor:(id)accessor
 {
-  v5 = a3;
-  v6 = [(FCUserEventHistoryStorage *)self rootDirectory];
-  (*(a3 + 2))(v5, v6);
+  accessorCopy = accessor;
+  rootDirectory = [(FCUserEventHistoryStorage *)self rootDirectory];
+  (*(accessor + 2))(accessorCopy, rootDirectory);
 }
 
-- (void)writeJSON:(id)a3
+- (void)writeJSON:(id)n
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCUserEventHistoryStorage *)self rootDirectory];
-  v6 = [v5 URLByDeletingLastPathComponent];
-  v7 = [v6 URLByAppendingPathComponent:@"personalization-sessions-json" isDirectory:1];
+  nCopy = n;
+  rootDirectory = [(FCUserEventHistoryStorage *)self rootDirectory];
+  uRLByDeletingLastPathComponent = [rootDirectory URLByDeletingLastPathComponent];
+  v7 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"personalization-sessions-json" isDirectory:1];
 
   if ([v7 fc_directoryExists])
   {
@@ -477,10 +477,10 @@ LABEL_2:
     }
 
     v9 = MEMORY[0x1E695DFD8];
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v7 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v7 path];
     v41 = 0;
-    v12 = [v10 contentsOfDirectoryAtPath:v11 error:&v41];
+    v12 = [defaultManager contentsOfDirectoryAtPath:path error:&v41];
     v13 = v41;
     v14 = [v9 setWithArray:v12];
     v15 = [v14 fc_setByTransformingWithBlock:&__block_literal_global_41];
@@ -491,27 +491,27 @@ LABEL_2:
       if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
       {
         v17 = v16;
-        v18 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
         *buf = 138412290;
-        v44 = v18;
+        v44 = localizedDescription;
         _os_log_error_impl(&dword_1B63EF000, v17, OS_LOG_TYPE_ERROR, "Failed to get existing contents of JSON folder %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v25 = [(FCUserEventHistoryStorage *)self sessions];
+      sessions = [(FCUserEventHistoryStorage *)self sessions];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __39__FCUserEventHistoryStorage_writeJSON___block_invoke_26;
       v39[3] = &unk_1E7C3C840;
       v26 = v15;
       v40 = v26;
-      v27 = [v25 fc_arrayOfObjectsFailingTest:v39];
+      v27 = [sessions fc_arrayOfObjectsFailingTest:v39];
 
       v28 = MEMORY[0x1E695DFD8];
-      v29 = [(FCUserEventHistoryStorage *)self sessionIDs];
-      v30 = [v28 setWithArray:v29];
+      sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
+      v30 = [v28 setWithArray:sessionIDs];
       v31 = [v26 fc_setByMinusingSet:v30];
 
       v37[0] = MEMORY[0x1E69E9820];
@@ -525,7 +525,7 @@ LABEL_2:
       v34[1] = 3221225472;
       v34[2] = __39__FCUserEventHistoryStorage_writeJSON___block_invoke_29;
       v34[3] = &unk_1E7C3C890;
-      v36 = v4;
+      v36 = nCopy;
       v35 = v32;
       [v27 enumerateObjectsUsingBlock:v34];
     }
@@ -541,9 +541,9 @@ LABEL_2:
     _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "Creating user event history JSON directory at path %{public}@", buf, 0xCu);
   }
 
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v42 = 0;
-  v21 = [v20 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v42];
+  v21 = [defaultManager2 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v42];
   v13 = v42;
 
   v22 = FCUserEventsStorageLog;
@@ -572,11 +572,11 @@ LABEL_2:
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
   {
     v23 = v22;
-    v24 = [v13 localizedDescription];
+    localizedDescription2 = [v13 localizedDescription];
     *buf = 138543618;
     v44 = v7;
     v45 = 2114;
-    v46 = v24;
+    v46 = localizedDescription2;
     _os_log_error_impl(&dword_1B63EF000, v23, OS_LOG_TYPE_ERROR, "Error creating user event history JSON directory at %{public}@. Error: %{public}@", buf, 0x16u);
   }
 
@@ -693,10 +693,10 @@ LABEL_9:
 
 - (unint64_t)size
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(FCUserEventHistoryStorage *)self rootDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  rootDirectory = [(FCUserEventHistoryStorage *)self rootDirectory];
   v10 = 0;
-  v5 = [v3 fc_sizeOfItemAtURL:v4 error:&v10];
+  v5 = [defaultManager fc_sizeOfItemAtURL:rootDirectory error:&v10];
   v6 = v10;
 
   if (v6)
@@ -736,11 +736,11 @@ uint64_t __33__FCUserEventHistoryStorage_size__block_invoke(uint64_t a1)
 
 - (NSArray)sessionIDs
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(FCUserEventHistoryStorage *)self rootDirectory];
-  v5 = [v4 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  rootDirectory = [(FCUserEventHistoryStorage *)self rootDirectory];
+  path = [rootDirectory path];
   v13 = 0;
-  v6 = [v3 contentsOfDirectoryAtPath:v5 error:&v13];
+  v6 = [defaultManager contentsOfDirectoryAtPath:path error:&v13];
   v7 = v13;
 
   if (v6)
@@ -755,7 +755,7 @@ uint64_t __33__FCUserEventHistoryStorage_size__block_invoke(uint64_t a1)
     v10[2] = __39__FCUserEventHistoryStorage_sessionIDs__block_invoke;
     v10[3] = &unk_1E7C397D0;
     v11 = v7;
-    v12 = self;
+    selfCopy = self;
     v8 = __39__FCUserEventHistoryStorage_sessionIDs__block_invoke(v10);
   }
 
@@ -785,13 +785,13 @@ uint64_t __39__FCUserEventHistoryStorage_sessionIDs__block_invoke(uint64_t a1)
 
 - (NSArray)sessions
 {
-  v3 = [(FCUserEventHistoryStorage *)self sessionIDs];
+  sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__FCUserEventHistoryStorage_sessions__block_invoke;
   v6[3] = &unk_1E7C3C8E0;
   v6[4] = self;
-  v4 = [v3 fc_arrayByTransformingWithBlock:v6];
+  v4 = [sessionIDs fc_arrayByTransformingWithBlock:v6];
 
   return v4;
 }
@@ -836,21 +836,21 @@ uint64_t __37__FCUserEventHistoryStorage_sessions__block_invoke_2(uint64_t a1)
   return 0;
 }
 
-- (void)storeSessionID:(id)a3 compressedSessionData:(id)a4 notify:(BOOL)a5
+- (void)storeSessionID:(id)d compressedSessionData:(id)data notify:(BOOL)notify
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dataCopy = data;
   v10 = FCPersistenceQueue();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__FCUserEventHistoryStorage_storeSessionID_compressedSessionData_notify___block_invoke;
   v13[3] = &unk_1E7C3C908;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = dCopy;
+  v15 = dataCopy;
+  notifyCopy = notify;
+  v11 = dataCopy;
+  v12 = dCopy;
   dispatch_async(v10, v13);
 }
 
@@ -963,11 +963,11 @@ void __73__FCUserEventHistoryStorage_storeSessionID_compressedSessionData_notify
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeSessionID:(id)a3 sessionData:(id)a4
+- (void)storeSessionID:(id)d sessionData:(id)data
 {
-  v6 = a3;
+  dCopy = d;
   v12 = 0;
-  v7 = [a4 compressedDataUsingAlgorithm:0 error:&v12];
+  v7 = [data compressedDataUsingAlgorithm:0 error:&v12];
   v8 = v12;
   v9 = v8;
   if (v8)
@@ -982,7 +982,7 @@ void __73__FCUserEventHistoryStorage_storeSessionID_compressedSessionData_notify
 
   else
   {
-    [(FCUserEventHistoryStorage *)self storeSessionID:v6 compressedSessionData:v7 notify:1];
+    [(FCUserEventHistoryStorage *)self storeSessionID:dCopy compressedSessionData:v7 notify:1];
   }
 }
 
@@ -1006,16 +1006,16 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
 - (void)clearAllSessions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(FCUserEventHistoryStorage *)self sessionIDs];
-  if (v3)
+  sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
+  if (sessionIDs)
   {
-    v4 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:v3 pruned:0];
+    v4 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:sessionIDs pruned:0];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(FCUserEventHistoryStorage *)self observers];
-    v6 = [v5 copy];
+    observers = [(FCUserEventHistoryStorage *)self observers];
+    v6 = [observers copy];
 
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v7)
@@ -1056,20 +1056,20 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
 
 - (BOOL)isEmpty
 {
-  v2 = [(FCUserEventHistoryStorage *)self sessionIDs];
-  v3 = [v2 count] == 0;
+  sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
+  v3 = [sessionIDs count] == 0;
 
   return v3;
 }
 
 - (NSDate)earliestSessionDate
 {
-  v2 = [(FCUserEventHistoryStorage *)self sessionIDs];
-  v3 = [v2 lastObject];
+  sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
+  lastObject = [sessionIDs lastObject];
 
-  if (v3)
+  if (lastObject)
   {
-    v4 = [FCUserEventHistorySession dateFromSessionID:v3];
+    v4 = [FCUserEventHistorySession dateFromSessionID:lastObject];
   }
 
   else
@@ -1122,48 +1122,48 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
   return v5;
 }
 
-- (void)setMetadataWithAggregateStoreGenerationTime:(int64_t)a3 aggregateTotalCount:(int64_t)a4 meanCountOfEvents:(double)a5 standardDeviationOfEvents:(double)a6 totalEventsCount:(int64_t)a7 headlineEventCount:(int64_t)a8 headlinesWithValidTitleEmbeddingsEventCount:(int64_t)a9 headlinesWithInvalidTitleEmbeddingsEventCount:(int64_t)a10 headlinesWithValidBodyEmbeddingsEventCount:(int64_t)a11 headlinesWithInvalidBodyEmbeddingsEventCount:(int64_t)a12 eventCounts:(id)a13 aggregateStoreData:(id)a14
+- (void)setMetadataWithAggregateStoreGenerationTime:(int64_t)time aggregateTotalCount:(int64_t)count meanCountOfEvents:(double)events standardDeviationOfEvents:(double)ofEvents totalEventsCount:(int64_t)eventsCount headlineEventCount:(int64_t)eventCount headlinesWithValidTitleEmbeddingsEventCount:(int64_t)embeddingsEventCount headlinesWithInvalidTitleEmbeddingsEventCount:(int64_t)self0 headlinesWithValidBodyEmbeddingsEventCount:(int64_t)self1 headlinesWithInvalidBodyEmbeddingsEventCount:(int64_t)self2 eventCounts:(id)self3 aggregateStoreData:(id)self4
 {
   v32 = *MEMORY[0x1E69E9840];
-  v21 = a14;
-  v22 = a13;
-  v23 = [[FCUserEventHistoryMetadata alloc] initWithAggregateStoreGenerationTime:a3 aggregateTotalCount:a4 meanCountOfEvents:[(FCUserEventHistoryStorage *)self currentSize] sessionsOnDiskSize:a7 standardDeviationOfEvents:a8 totalEventsCount:a9 headlineEventCount:a5 headlinesWithValidTitleEmbeddingsEventCount:a6 headlinesWithInvalidTitleEmbeddingsEventCount:a10 headlinesWithValidBodyEmbeddingsEventCount:a11 headlinesWithInvalidBodyEmbeddingsEventCount:a12 eventCounts:v22 aggregateStoreData:v21];
+  dataCopy = data;
+  countsCopy = counts;
+  v23 = [[FCUserEventHistoryMetadata alloc] initWithAggregateStoreGenerationTime:time aggregateTotalCount:count meanCountOfEvents:[(FCUserEventHistoryStorage *)self currentSize] sessionsOnDiskSize:eventsCount standardDeviationOfEvents:eventCount totalEventsCount:embeddingsEventCount headlineEventCount:events headlinesWithValidTitleEmbeddingsEventCount:ofEvents headlinesWithInvalidTitleEmbeddingsEventCount:titleEmbeddingsEventCount headlinesWithValidBodyEmbeddingsEventCount:bodyEmbeddingsEventCount headlinesWithInvalidBodyEmbeddingsEventCount:invalidBodyEmbeddingsEventCount eventCounts:countsCopy aggregateStoreData:dataCopy];
 
   [(FCUserEventHistoryStorage *)self setMetadata:v23];
   v24 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
   {
     v25 = v24;
-    v26 = [(FCUserEventHistoryStorage *)self metadata];
+    metadata = [(FCUserEventHistoryStorage *)self metadata];
     *buf = 138543362;
-    v31 = v26;
+    v31 = metadata;
     _os_log_impl(&dword_1B63EF000, v25, OS_LOG_TYPE_DEFAULT, "Metadata set as %{public}@", buf, 0xCu);
   }
 
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_filePathForSessionID:(id)a3
+- (id)_filePathForSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCUserEventHistoryStorage *)self rootDirectory];
-  v6 = [v5 path];
-  v7 = [v6 stringByAppendingPathComponent:v4];
+  dCopy = d;
+  rootDirectory = [(FCUserEventHistoryStorage *)self rootDirectory];
+  path = [rootDirectory path];
+  v7 = [path stringByAppendingPathComponent:dCopy];
 
   return v7;
 }
 
-- (id)_deleteSessionsWithIdentifiers:(id)a3 pruned:(BOOL)a4
+- (id)_deleteSessionsWithIdentifiers:(id)identifiers pruned:(BOOL)pruned
 {
-  v23 = a4;
+  prunedCopy = pruned;
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v24 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v6)
   {
@@ -1183,14 +1183,14 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
         v11 = *(*(&v27 + 1) + 8 * i);
         v12 = [(FCUserEventHistoryStorage *)self _filePathForSessionID:v11, v22];
         v13 = [(FCUserEventHistoryStorage *)self _sizeForSessionAtPath:v12];
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v26 = 0;
-        v15 = [v14 removeItemAtPath:v12 error:&v26];
+        v15 = [defaultManager removeItemAtPath:v12 error:&v26];
         v16 = v26;
 
         if (v15)
         {
-          if (v23)
+          if (prunedCopy)
           {
             [(FCUserEventHistoryStorage *)self setPrunedSessionSize:[(FCUserEventHistoryStorage *)self prunedSessionSize]+ v13];
           }
@@ -1204,13 +1204,13 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
           if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
           {
             v18 = v17;
-            v19 = [v16 localizedDescription];
+            localizedDescription = [v16 localizedDescription];
             *buf = v22;
             v32 = v11;
             v33 = 2114;
             v34 = v12;
             v35 = 2114;
-            v36 = v19;
+            v36 = localizedDescription;
             _os_log_error_impl(&dword_1B63EF000, v18, OS_LOG_TYPE_ERROR, "Encountered error removing session %{public}@ at path %{public}@. Error: %{public}@", buf, 0x20u);
           }
         }
@@ -1227,36 +1227,36 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
   return v24;
 }
 
-- (void)_pruneSessions:(id)a3
+- (void)_pruneSessions:(id)sessions
 {
-  v4 = [a3 fc_arrayByTransformingWithBlock:&__block_literal_global_55];
+  v4 = [sessions fc_arrayByTransformingWithBlock:&__block_literal_global_55];
   [(FCUserEventHistoryStorage *)self _pruneSessionsWithIdentifiers:v4];
 }
 
-- (void)_pruneSessionsWithIdentifiers:(id)a3
+- (void)_pruneSessionsWithIdentifiers:(id)identifiers
 {
-  v7 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:a3 pruned:1];
-  v4 = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
-  v5 = v4;
-  if (!v4)
+  v7 = [(FCUserEventHistoryStorage *)self _deleteSessionsWithIdentifiers:identifiers pruned:1];
+  prunedSessionIDs = [(FCUserEventHistoryStorage *)self prunedSessionIDs];
+  v5 = prunedSessionIDs;
+  if (!prunedSessionIDs)
   {
-    v4 = MEMORY[0x1E695E0F0];
+    prunedSessionIDs = MEMORY[0x1E695E0F0];
   }
 
-  v6 = [v4 arrayByAddingObjectsFromArray:v7];
+  v6 = [prunedSessionIDs arrayByAddingObjectsFromArray:v7];
   [(FCUserEventHistoryStorage *)self setPrunedSessionIDs:v6];
 
   [(FCUserEventHistoryStorage *)self setCurrentSize:[(FCUserEventHistoryStorage *)self size]];
 }
 
-- (void)_pruneToMaxSize:(int64_t)a3
+- (void)_pruneToMaxSize:(int64_t)size
 {
-  v4 = self;
+  selfCopy = self;
   v53 = *MEMORY[0x1E69E9840];
   v5 = [(FCUserEventHistoryStorage *)self size];
   v6 = v5;
-  v7 = v5 - a3;
-  if (v5 > a3)
+  v7 = v5 - size;
+  if (v5 > size)
   {
     v8 = FCUserEventsStorageLog;
     if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
@@ -1264,7 +1264,7 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
       v9 = MEMORY[0x1E696AAF0];
       v10 = v8;
       v11 = [v9 stringFromByteCount:v6 countStyle:0];
-      v12 = [MEMORY[0x1E696AAF0] stringFromByteCount:a3 countStyle:0];
+      v12 = [MEMORY[0x1E696AAF0] stringFromByteCount:size countStyle:0];
       v13 = [MEMORY[0x1E696AAF0] stringFromByteCount:v7 countStyle:0];
       *buf = 138543874;
       v48 = v11;
@@ -1275,8 +1275,8 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
       _os_log_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_DEFAULT, "Current size %{public}@ does violate max size %{public}@, attempting to prune %{public}@ from sessions", buf, 0x20u);
     }
 
-    v14 = [(FCUserEventHistoryStorage *)v4 sessions];
-    if (!v14)
+    sessions = [(FCUserEventHistoryStorage *)selfCopy sessions];
+    if (!sessions)
     {
       v28 = FCUserEventsStorageLog;
       if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
@@ -1293,13 +1293,13 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v16 = [v14 reverseObjectEnumerator];
-    v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    reverseObjectEnumerator = [sessions reverseObjectEnumerator];
+    v17 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
-      v39 = v14;
-      v40 = v4;
+      v39 = sessions;
+      v40 = selfCopy;
       v19 = *v42;
       while (2)
       {
@@ -1307,7 +1307,7 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
         {
           if (*v42 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v21 = *(*(&v41 + 1) + 8 * i);
@@ -1318,11 +1318,11 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
           if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
           {
             v24 = v23;
-            v25 = [v21 sessionID];
+            sessionID = [v21 sessionID];
             v26 = [MEMORY[0x1E696AAF0] stringFromByteCount:v22 countStyle:0];
             v27 = [MEMORY[0x1E696AAF0] stringFromByteCount:v7 countStyle:0];
             *buf = 138543874;
-            v48 = v25;
+            v48 = sessionID;
             v49 = 2114;
             v50 = v26;
             v51 = 2114;
@@ -1333,13 +1333,13 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
           if (v7 <= 0)
           {
 
-            v14 = v39;
-            v4 = v40;
+            sessions = v39;
+            selfCopy = v40;
             goto LABEL_23;
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v41 objects:v46 count:16];
         if (v18)
         {
           continue;
@@ -1348,8 +1348,8 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
         break;
       }
 
-      v14 = v39;
-      v4 = v40;
+      sessions = v39;
+      selfCopy = v40;
     }
 
     else
@@ -1358,20 +1358,20 @@ void __56__FCUserEventHistoryStorage_storeSessionID_sessionData___block_invoke(u
       if (v7 < 1)
       {
 LABEL_23:
-        [(FCUserEventHistoryStorage *)v4 _pruneSessions:v15];
+        [(FCUserEventHistoryStorage *)selfCopy _pruneSessions:v15];
         v30 = FCUserEventsStorageLog;
         if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
         {
           v31 = v30;
           v32 = [v15 count];
-          v33 = [MEMORY[0x1E696AAF0] stringFromByteCount:-[FCUserEventHistoryStorage prunedSessionSize](v4 countStyle:{"prunedSessionSize"), 0}];
-          v34 = [(FCUserEventHistoryStorage *)v4 sizeString];
+          v33 = [MEMORY[0x1E696AAF0] stringFromByteCount:-[FCUserEventHistoryStorage prunedSessionSize](selfCopy countStyle:{"prunedSessionSize"), 0}];
+          sizeString = [(FCUserEventHistoryStorage *)selfCopy sizeString];
           *buf = 134218498;
           v48 = v32;
           v49 = 2114;
           v50 = v33;
           v51 = 2114;
-          v52 = v34;
+          v52 = sizeString;
           _os_log_impl(&dword_1B63EF000, v31, OS_LOG_TYPE_DEFAULT, "Finished pruning %lu sessions account for %{public}@, session size after pruning %{public}@", buf, 0x20u);
         }
 
@@ -1399,7 +1399,7 @@ LABEL_26:
   v45[2] = __45__FCUserEventHistoryStorage__pruneToMaxSize___block_invoke;
   v45[3] = &__block_descriptor_48_e5_v8__0l;
   v45[4] = v5;
-  v45[5] = a3;
+  v45[5] = size;
   __45__FCUserEventHistoryStorage__pruneToMaxSize___block_invoke(v45);
 LABEL_27:
   v35 = *MEMORY[0x1E69E9840];
@@ -1426,46 +1426,46 @@ void __45__FCUserEventHistoryStorage__pruneToMaxSize___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pruneToMaxSessionCount:(unint64_t)a3
+- (void)_pruneToMaxSessionCount:(unint64_t)count
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v20 = a3;
+    countCopy = count;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to prune to max session count %lu", buf, 0xCu);
   }
 
-  v6 = [(FCUserEventHistoryStorage *)self sessions];
-  v7 = v6;
-  if (v6)
+  sessions = [(FCUserEventHistoryStorage *)self sessions];
+  v7 = sessions;
+  if (sessions)
   {
-    v8 = v6;
-    if ([v8 count] <= a3)
+    v8 = sessions;
+    if ([v8 count] <= count)
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __53__FCUserEventHistoryStorage__pruneToMaxSessionCount___block_invoke_61;
       v16[3] = &unk_1E7C3C970;
       v17 = v8;
-      v18 = a3;
+      countCopy2 = count;
       __53__FCUserEventHistoryStorage__pruneToMaxSessionCount___block_invoke_61(v16);
       v13 = v17;
     }
 
     else
     {
-      v9 = [v8 count] - a3;
+      v9 = [v8 count] - count;
       v10 = FCUserEventsStorageLog;
       if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
         v12 = [v8 count];
         *buf = 134218496;
-        v20 = v12;
+        countCopy = v12;
         v21 = 2048;
-        v22 = a3;
+        countCopy3 = count;
         v23 = 2048;
         v24 = v9;
         _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "Current session count %lu violates max session count %lu, attempting to prune %lu sessions", buf, 0x20u);
@@ -1509,35 +1509,35 @@ void __53__FCUserEventHistoryStorage__pruneToMaxSessionCount___block_invoke_61(u
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pruneToMaxSessionAge:(unint64_t)a3
+- (void)_pruneToMaxSessionAge:(unint64_t)age
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    ageCopy = age;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to prune to max session age %lu", buf, 0xCu);
   }
 
-  v6 = [(FCUserEventHistoryStorage *)self sessions];
-  if (v6)
+  sessions = [(FCUserEventHistoryStorage *)self sessions];
+  if (sessions)
   {
-    v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-a3];
+    v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-age];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __51__FCUserEventHistoryStorage__pruneToMaxSessionAge___block_invoke_65;
     v15[3] = &unk_1E7C3C840;
     v8 = v7;
     v16 = v8;
-    v9 = [v6 fc_arrayOfObjectsFailingTest:v15];
+    v9 = [sessions fc_arrayOfObjectsFailingTest:v15];
     v10 = FCUserEventsStorageLog;
     if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
       v12 = [v9 count];
       *buf = 134218242;
-      v18 = v12;
+      ageCopy = v12;
       v19 = 2114;
       v20 = v9;
       _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "Found %lu sessions violating max age. Pruning %{public}@", buf, 0x16u);
@@ -1577,8 +1577,8 @@ uint64_t __51__FCUserEventHistoryStorage__pruneToMaxSessionAge___block_invoke_65
     _os_log_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEFAULT, "Attempting to prune invalid sessions", &v10, 2u);
   }
 
-  v4 = [(FCUserEventHistoryStorage *)self sessionIDs];
-  v5 = [v4 fc_arrayOfObjectsFailingTest:&__block_literal_global_68_1];
+  sessionIDs = [(FCUserEventHistoryStorage *)self sessionIDs];
+  v5 = [sessionIDs fc_arrayOfObjectsFailingTest:&__block_literal_global_68_1];
 
   v6 = FCUserEventsStorageLog;
   if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_DEFAULT))
@@ -1603,14 +1603,14 @@ BOOL __65__FCUserEventHistoryStorage__pruneSessionsWithInvalidIdentifiers__block
   return v3;
 }
 
-- (int64_t)_sizeForSessionAtPath:(id)a3
+- (int64_t)_sizeForSessionAtPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
   v11 = 0;
-  v6 = [v4 fc_sizeOfItemAtURL:v5 error:&v11];
+  v6 = [defaultManager fc_sizeOfItemAtURL:v5 error:&v11];
   v7 = v11;
 
   if (v7)
@@ -1619,7 +1619,7 @@ BOOL __65__FCUserEventHistoryStorage__pruneSessionsWithInvalidIdentifiers__block
     if (os_log_type_enabled(FCUserEventsStorageLog, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v3;
+      v13 = pathCopy;
       _os_log_error_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_ERROR, "Error getting size of session at %{public}@", buf, 0xCu);
     }
 

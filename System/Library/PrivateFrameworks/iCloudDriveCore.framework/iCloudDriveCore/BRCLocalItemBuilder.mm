@@ -1,31 +1,31 @@
 @interface BRCLocalItemBuilder
-- (BRCLocalItemBuilder)initWithSession:(id)a3;
-- (id)newLocalItemFromPQLResultSet:(id)a3 error:(id *)a4;
-- (id)newZoneRootWithItemID:(id)a3;
+- (BRCLocalItemBuilder)initWithSession:(id)session;
+- (id)newLocalItemFromPQLResultSet:(id)set error:(id *)error;
+- (id)newZoneRootWithItemID:(id)d;
 @end
 
 @implementation BRCLocalItemBuilder
 
-- (BRCLocalItemBuilder)initWithSession:(id)a3
+- (BRCLocalItemBuilder)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = BRCLocalItemBuilder;
   v6 = [(BRCLocalItemBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
   }
 
   return v7;
 }
 
-- (id)newLocalItemFromPQLResultSet:(id)a3 error:(id *)a4
+- (id)newLocalItemFromPQLResultSet:(id)set error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 intAtIndex:15];
-  v8 = [v6 db];
+  setCopy = set;
+  v7 = [setCopy intAtIndex:15];
+  v8 = [setCopy db];
   if (v7 > 4)
   {
     if (v7 <= 7)
@@ -34,7 +34,7 @@
       {
         v9 = BRCFinderBookmarkItem;
 LABEL_22:
-        v10 = [[v9 alloc] initFromPQLResultSet:v6 session:self->_session db:v8 error:a4];
+        v10 = [[v9 alloc] initFromPQLResultSet:setCopy session:self->_session db:v8 error:error];
         goto LABEL_23;
       }
 
@@ -110,10 +110,10 @@ LABEL_23:
   return v10;
 }
 
-- (id)newZoneRootWithItemID:(id)a3
+- (id)newZoneRootWithItemID:(id)d
 {
-  v4 = a3;
-  v5 = [[BRCZoneRootItem alloc] initWithZoneRootItemID:v4 session:self->_session];
+  dCopy = d;
+  v5 = [[BRCZoneRootItem alloc] initWithZoneRootItemID:dCopy session:self->_session];
 
   return v5;
 }

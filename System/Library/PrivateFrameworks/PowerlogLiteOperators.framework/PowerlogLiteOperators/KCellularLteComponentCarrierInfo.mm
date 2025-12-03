@@ -1,36 +1,36 @@
 @interface KCellularLteComponentCarrierInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPccBandwidth:(id)a3;
-- (int)StringAsScc0Bandwidth:(id)a3;
-- (int)StringAsScc1Bandwidth:(id)a3;
+- (int)StringAsPccBandwidth:(id)bandwidth;
+- (int)StringAsScc0Bandwidth:(id)bandwidth;
+- (int)StringAsScc1Bandwidth:(id)bandwidth;
 - (int)pccBandwidth;
 - (int)scc0Bandwidth;
 - (int)scc1Bandwidth;
 - (unint64_t)hash;
-- (void)addCarrierInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPccBandwidth:(BOOL)a3;
-- (void)setHasPccEarfcn:(BOOL)a3;
-- (void)setHasPccRfBand:(BOOL)a3;
-- (void)setHasScc0Bandwidth:(BOOL)a3;
-- (void)setHasScc0Earfcn:(BOOL)a3;
-- (void)setHasScc0RfBand:(BOOL)a3;
-- (void)setHasScc1Bandwidth:(BOOL)a3;
-- (void)setHasScc1Earfcn:(BOOL)a3;
-- (void)setHasScc1RfBand:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCarrierInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPccBandwidth:(BOOL)bandwidth;
+- (void)setHasPccEarfcn:(BOOL)earfcn;
+- (void)setHasPccRfBand:(BOOL)band;
+- (void)setHasScc0Bandwidth:(BOOL)bandwidth;
+- (void)setHasScc0Earfcn:(BOOL)earfcn;
+- (void)setHasScc0RfBand:(BOOL)band;
+- (void)setHasScc1Bandwidth:(BOOL)bandwidth;
+- (void)setHasScc1Earfcn:(BOOL)earfcn;
+- (void)setHasScc1RfBand:(BOOL)band;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularLteComponentCarrierInfo
 
-- (void)setHasPccEarfcn:(BOOL)a3
+- (void)setHasPccEarfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 4;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasScc0Earfcn:(BOOL)a3
+- (void)setHasScc0Earfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 32;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasScc1Earfcn:(BOOL)a3
+- (void)setHasScc1Earfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 256;
   }
@@ -86,9 +86,9 @@
   }
 }
 
-- (void)setHasPccBandwidth:(BOOL)a3
+- (void)setHasPccBandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 2;
   }
@@ -101,40 +101,40 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (int)StringAsPccBandwidth:(id)a3
+- (int)StringAsPccBandwidth:(id)bandwidth
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
+  bandwidthCopy = bandwidth;
+  if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
   {
     v4 = 6;
   }
@@ -160,9 +160,9 @@
   }
 }
 
-- (void)setHasScc0Bandwidth:(BOOL)a3
+- (void)setHasScc0Bandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 16;
   }
@@ -175,40 +175,40 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsScc0Bandwidth:(id)a3
+- (int)StringAsScc0Bandwidth:(id)bandwidth
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
+  bandwidthCopy = bandwidth;
+  if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
   {
     v4 = 6;
   }
@@ -234,9 +234,9 @@
   }
 }
 
-- (void)setHasScc1Bandwidth:(BOOL)a3
+- (void)setHasScc1Bandwidth:(BOOL)bandwidth
 {
-  if (a3)
+  if (bandwidth)
   {
     v3 = 128;
   }
@@ -249,40 +249,40 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsScc1Bandwidth:(id)a3
+- (int)StringAsScc1Bandwidth:(id)bandwidth
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
+  bandwidthCopy = bandwidth;
+  if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N6"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N15"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N25"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N50"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N75"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_N100"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
+  else if ([bandwidthCopy isEqualToString:@"KLTE_TX_BW_CONFIG_COUNT"])
   {
     v4 = 6;
   }
@@ -295,9 +295,9 @@
   return v4;
 }
 
-- (void)setHasPccRfBand:(BOOL)a3
+- (void)setHasPccRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 8;
   }
@@ -310,9 +310,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasScc0RfBand:(BOOL)a3
+- (void)setHasScc0RfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 64;
   }
@@ -325,9 +325,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasScc1RfBand:(BOOL)a3
+- (void)setHasScc1RfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 512;
   }
@@ -340,27 +340,27 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)addCarrierInfo:(id)a3
+- (void)addCarrierInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   carrierInfos = self->_carrierInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!carrierInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_carrierInfos;
     self->_carrierInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     carrierInfos = self->_carrierInfos;
   }
 
-  [(NSMutableArray *)carrierInfos addObject:v4];
+  [(NSMutableArray *)carrierInfos addObject:infoCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 1024;
   }
@@ -379,8 +379,8 @@
   v8.receiver = self;
   v8.super_class = KCellularLteComponentCarrierInfo;
   v4 = [(KCellularLteComponentCarrierInfo *)&v8 description];
-  v5 = [(KCellularLteComponentCarrierInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularLteComponentCarrierInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -388,12 +388,12 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v16 forKey:@"timestamp"];
+    [dictionary setObject:v16 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -414,7 +414,7 @@ LABEL_3:
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_pccEarfcn];
-  [v3 setObject:v17 forKey:@"pcc_earfcn"];
+  [dictionary setObject:v17 forKey:@"pcc_earfcn"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -430,7 +430,7 @@ LABEL_4:
 
 LABEL_28:
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scc0Earfcn];
-  [v3 setObject:v18 forKey:@"scc0_earfcn"];
+  [dictionary setObject:v18 forKey:@"scc0_earfcn"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -446,7 +446,7 @@ LABEL_5:
 
 LABEL_29:
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scc1Earfcn];
-  [v3 setObject:v19 forKey:@"scc1_earfcn"];
+  [dictionary setObject:v19 forKey:@"scc1_earfcn"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -472,7 +472,7 @@ LABEL_30:
     v21 = off_27825EB60[pccBandwidth];
   }
 
-  [v3 setObject:v21 forKey:@"pcc_bandwidth"];
+  [dictionary setObject:v21 forKey:@"pcc_bandwidth"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -498,7 +498,7 @@ LABEL_34:
     v23 = off_27825EB60[scc0Bandwidth];
   }
 
-  [v3 setObject:v23 forKey:@"scc0_bandwidth"];
+  [dictionary setObject:v23 forKey:@"scc0_bandwidth"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -524,7 +524,7 @@ LABEL_38:
     v25 = off_27825EB60[scc1Bandwidth];
   }
 
-  [v3 setObject:v25 forKey:@"scc1_bandwidth"];
+  [dictionary setObject:v25 forKey:@"scc1_bandwidth"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -540,7 +540,7 @@ LABEL_9:
 
 LABEL_42:
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_pccRfBand];
-  [v3 setObject:v26 forKey:@"pcc_rf_band"];
+  [dictionary setObject:v26 forKey:@"pcc_rf_band"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -556,13 +556,13 @@ LABEL_10:
 
 LABEL_43:
   v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scc0RfBand];
-  [v3 setObject:v27 forKey:@"scc0_rf_band"];
+  [dictionary setObject:v27 forKey:@"scc0_rf_band"];
 
   if ((*&self->_has & 0x200) != 0)
   {
 LABEL_11:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_scc1RfBand];
-    [v3 setObject:v5 forKey:@"scc1_rf_band"];
+    [dictionary setObject:v5 forKey:@"scc1_rf_band"];
   }
 
 LABEL_12:
@@ -588,8 +588,8 @@ LABEL_12:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -598,24 +598,24 @@ LABEL_12:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"carrier_info"];
+    [dictionary setObject:v6 forKey:@"carrier_info"];
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v13 forKey:@"subs_id"];
+    [dictionary setObject:v13 forKey:@"subs_id"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -792,14 +792,14 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -818,8 +818,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 7) = self->_pccEarfcn;
-  *(v4 + 32) |= 4u;
+  *(toCopy + 7) = self->_pccEarfcn;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -833,8 +833,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(v4 + 10) = self->_scc0Earfcn;
-  *(v4 + 32) |= 0x20u;
+  *(toCopy + 10) = self->_scc0Earfcn;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -848,8 +848,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(v4 + 13) = self->_scc1Earfcn;
-  *(v4 + 32) |= 0x100u;
+  *(toCopy + 13) = self->_scc1Earfcn;
+  *(toCopy + 32) |= 0x100u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -863,8 +863,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(v4 + 6) = self->_pccBandwidth;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 6) = self->_pccBandwidth;
+  *(toCopy + 32) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -878,8 +878,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(v4 + 9) = self->_scc0Bandwidth;
-  *(v4 + 32) |= 0x10u;
+  *(toCopy + 9) = self->_scc0Bandwidth;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -893,8 +893,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(v4 + 12) = self->_scc1Bandwidth;
-  *(v4 + 32) |= 0x80u;
+  *(toCopy + 12) = self->_scc1Bandwidth;
+  *(toCopy + 32) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -905,8 +905,8 @@ LABEL_9:
     }
 
 LABEL_29:
-    *(v4 + 11) = self->_scc0RfBand;
-    *(v4 + 32) |= 0x40u;
+    *(toCopy + 11) = self->_scc0RfBand;
+    *(toCopy + 32) |= 0x40u;
     if ((*&self->_has & 0x200) == 0)
     {
       goto LABEL_12;
@@ -916,8 +916,8 @@ LABEL_29:
   }
 
 LABEL_28:
-  *(v4 + 8) = self->_pccRfBand;
-  *(v4 + 32) |= 8u;
+  *(toCopy + 8) = self->_pccRfBand;
+  *(toCopy + 32) |= 8u;
   has = self->_has;
   if ((has & 0x40) != 0)
   {
@@ -928,19 +928,19 @@ LABEL_10:
   if ((has & 0x200) != 0)
   {
 LABEL_11:
-    *(v4 + 14) = self->_scc1RfBand;
-    *(v4 + 32) |= 0x200u;
+    *(toCopy + 14) = self->_scc1RfBand;
+    *(toCopy + 32) |= 0x200u;
   }
 
 LABEL_12:
-  v10 = v4;
+  v10 = toCopy;
   if ([(KCellularLteComponentCarrierInfo *)self carrierInfosCount])
   {
     [v10 clearCarrierInfos];
-    v6 = [(KCellularLteComponentCarrierInfo *)self carrierInfosCount];
-    if (v6)
+    carrierInfosCount = [(KCellularLteComponentCarrierInfo *)self carrierInfosCount];
+    if (carrierInfosCount)
     {
-      v7 = v6;
+      v7 = carrierInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(KCellularLteComponentCarrierInfo *)self carrierInfoAtIndex:i];
@@ -956,10 +956,10 @@ LABEL_12:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1118,7 +1118,7 @@ LABEL_12:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addCarrierInfo:v13];
       }
 
@@ -1138,19 +1138,19 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_60;
     }
@@ -1163,7 +1163,7 @@ LABEL_12:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_pccEarfcn != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_pccEarfcn != *(equalCopy + 7))
     {
       goto LABEL_60;
     }
@@ -1176,7 +1176,7 @@ LABEL_12:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_scc0Earfcn != *(v4 + 10))
+    if ((v6 & 0x20) == 0 || self->_scc0Earfcn != *(equalCopy + 10))
     {
       goto LABEL_60;
     }
@@ -1189,20 +1189,20 @@ LABEL_12:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 32) & 0x100) == 0 || self->_scc1Earfcn != *(v4 + 13))
+    if ((*(equalCopy + 32) & 0x100) == 0 || self->_scc1Earfcn != *(equalCopy + 13))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 32) & 0x100) != 0)
+  else if ((*(equalCopy + 32) & 0x100) != 0)
   {
     goto LABEL_60;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_pccBandwidth != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_pccBandwidth != *(equalCopy + 6))
     {
       goto LABEL_60;
     }
@@ -1215,7 +1215,7 @@ LABEL_12:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_scc0Bandwidth != *(v4 + 9))
+    if ((v6 & 0x10) == 0 || self->_scc0Bandwidth != *(equalCopy + 9))
     {
       goto LABEL_60;
     }
@@ -1228,7 +1228,7 @@ LABEL_12:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_scc1Bandwidth != *(v4 + 12))
+    if ((v6 & 0x80) == 0 || self->_scc1Bandwidth != *(equalCopy + 12))
     {
       goto LABEL_60;
     }
@@ -1241,7 +1241,7 @@ LABEL_12:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_pccRfBand != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_pccRfBand != *(equalCopy + 8))
     {
       goto LABEL_60;
     }
@@ -1254,7 +1254,7 @@ LABEL_12:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_scc0RfBand != *(v4 + 11))
+    if ((v6 & 0x40) == 0 || self->_scc0RfBand != *(equalCopy + 11))
     {
       goto LABEL_60;
     }
@@ -1267,19 +1267,19 @@ LABEL_12:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 32) & 0x200) == 0 || self->_scc1RfBand != *(v4 + 14))
+    if ((*(equalCopy + 32) & 0x200) == 0 || self->_scc1RfBand != *(equalCopy + 14))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 32) & 0x200) != 0)
+  else if ((*(equalCopy + 32) & 0x200) != 0)
   {
     goto LABEL_60;
   }
 
   carrierInfos = self->_carrierInfos;
-  if (carrierInfos | *(v4 + 2))
+  if (carrierInfos | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)carrierInfos isEqual:?])
     {
@@ -1289,12 +1289,12 @@ LABEL_60:
     }
 
     has = self->_has;
-    v6 = *(v4 + 32);
+    v6 = *(equalCopy + 32);
   }
 
   if ((has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_subsId != *(v4 + 15))
+    if ((v6 & 0x400) == 0 || self->_subsId != *(equalCopy + 15))
     {
       goto LABEL_60;
     }
@@ -1463,17 +1463,17 @@ LABEL_22:
   return v15 ^ v16 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
     if ((v6 & 4) == 0)
     {
 LABEL_3:
@@ -1491,9 +1491,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_pccEarfcn = *(v4 + 7);
+  self->_pccEarfcn = *(fromCopy + 7);
   *&self->_has |= 4u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x20) == 0)
   {
 LABEL_4:
@@ -1506,9 +1506,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_scc0Earfcn = *(v4 + 10);
+  self->_scc0Earfcn = *(fromCopy + 10);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x100) == 0)
   {
 LABEL_5:
@@ -1521,9 +1521,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_scc1Earfcn = *(v4 + 13);
+  self->_scc1Earfcn = *(fromCopy + 13);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 2) == 0)
   {
 LABEL_6:
@@ -1536,9 +1536,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_pccBandwidth = *(v4 + 6);
+  self->_pccBandwidth = *(fromCopy + 6);
   *&self->_has |= 2u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x10) == 0)
   {
 LABEL_7:
@@ -1551,9 +1551,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_scc0Bandwidth = *(v4 + 9);
+  self->_scc0Bandwidth = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x80) == 0)
   {
 LABEL_8:
@@ -1566,9 +1566,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_scc1Bandwidth = *(v4 + 12);
+  self->_scc1Bandwidth = *(fromCopy + 12);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 8) == 0)
   {
 LABEL_9:
@@ -1581,9 +1581,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_pccRfBand = *(v4 + 8);
+  self->_pccRfBand = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x40) == 0)
   {
 LABEL_10:
@@ -1596,12 +1596,12 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_scc0RfBand = *(v4 + 11);
+  self->_scc0RfBand = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 32) & 0x200) != 0)
+  if ((*(fromCopy + 32) & 0x200) != 0)
   {
 LABEL_11:
-    self->_scc1RfBand = *(v4 + 14);
+    self->_scc1RfBand = *(fromCopy + 14);
     *&self->_has |= 0x200u;
   }
 
@@ -1610,7 +1610,7 @@ LABEL_12:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

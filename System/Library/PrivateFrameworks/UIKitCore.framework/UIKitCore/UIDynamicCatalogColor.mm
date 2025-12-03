@@ -1,36 +1,36 @@
 @interface UIDynamicCatalogColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_debugCatalogBundleIdentifier;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)description;
-- (id)initWithName:(void *)a3 assetManager:(void *)a4 genericColor:;
-- (void)encodeWithCoder:(id)a3;
+- (id)initWithName:(void *)name assetManager:(void *)manager genericColor:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDynamicCatalogColor
 
-- (id)initWithName:(void *)a3 assetManager:(void *)a4 genericColor:
+- (id)initWithName:(void *)name assetManager:(void *)manager genericColor:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (!a1)
+  nameCopy = name;
+  managerCopy = manager;
+  if (!self)
   {
     goto LABEL_7;
   }
 
   if (v8)
   {
-    if (v9)
+    if (nameCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:a1 file:@"UIColor.m" lineNumber:5051 description:{@"Invalid parameter not satisfying: %@", @"assetManager != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:self file:@"UIColor.m" lineNumber:5051 description:{@"Invalid parameter not satisfying: %@", @"assetManager != nil"}];
 
-    if (v10)
+    if (managerCopy)
     {
       goto LABEL_5;
     }
@@ -38,73 +38,73 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:a1 file:@"UIColor.m" lineNumber:5050 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:self file:@"UIColor.m" lineNumber:5050 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
 
-  if (!v9)
+  if (!nameCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if (v10)
+  if (managerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_10:
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:a1 file:@"UIColor.m" lineNumber:5052 description:{@"Invalid parameter not satisfying: %@", @"genericColor != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:sel_initWithName_assetManager_genericColor_ object:self file:@"UIColor.m" lineNumber:5052 description:{@"Invalid parameter not satisfying: %@", @"genericColor != nil"}];
 
 LABEL_5:
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = UIDynamicCatalogColor;
   v11 = objc_msgSendSuper2(&v16, sel_init);
-  a1 = v11;
+  self = v11;
   if (v11)
   {
     objc_storeStrong(v11 + 3, a2);
-    objc_storeStrong(a1 + 4, a3);
-    objc_storeStrong(a1 + 5, a4);
-    *(a1 + 12) = 0;
+    objc_storeStrong(self + 4, name);
+    objc_storeStrong(self + 5, manager);
+    *(self + 12) = 0;
   }
 
 LABEL_7:
 
-  return a1;
+  return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"UIDynamicCatalogName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"UIDynamicCatalogName"];
   assetManager = self->_assetManager;
   if (assetManager)
   {
-    v7 = [(_UIAssetManager *)assetManager bundle];
-    v8 = [v7 bundleIdentifier];
-    [v5 encodeObject:v8 forKey:@"UIDynamicCatalogBundleIdentifier"];
+    bundle = [(_UIAssetManager *)assetManager bundle];
+    bundleIdentifier = [bundle bundleIdentifier];
+    [coderCopy encodeObject:bundleIdentifier forKey:@"UIDynamicCatalogBundleIdentifier"];
 
-    v9 = [v7 executablePath];
-    v10 = [v9 lastPathComponent];
-    [v5 encodeObject:v10 forKey:@"UIDynamicCatalogBundleLibraryName"];
+    executablePath = [bundle executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
+    [coderCopy encodeObject:lastPathComponent forKey:@"UIDynamicCatalogBundleLibraryName"];
   }
 
   else
   {
-    [v5 encodeBool:1 forKey:@"UIDynamicCatalogUseNibBundle"];
+    [coderCopy encodeBool:1 forKey:@"UIDynamicCatalogUseNibBundle"];
   }
 
   v11.receiver = self;
   v11.super_class = UIDynamicCatalogColor;
-  [(UIColor *)&v11 encodeWithCoder:v5];
+  [(UIColor *)&v11 encodeWithCoder:coderCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -112,17 +112,17 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_assetManager == v4->_assetManager && [(NSString *)self->_name isEqualToString:v4->_name];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_assetManager == equalCopy->_assetManager && [(NSString *)self->_name isEqualToString:equalCopy->_name];
   }
 
   return v5;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_cachedColorLock);
-  v5 = _UIThemeKeyValueFromTraitCollection(v4);
+  v5 = _UIThemeKeyValueFromTraitCollection(collectionCopy);
   v6 = v5;
   cachedColor = self->_cachedColor;
   if (cachedColor && self->_cachedThemeKey == v5)
@@ -133,7 +133,7 @@ LABEL_7:
   else
   {
     os_unfair_lock_unlock(&self->_cachedColorLock);
-    v9 = [(_UIAssetManager *)self->_assetManager resolvedColorNamed:self->_name withTraitCollection:v4];
+    v9 = [(_UIAssetManager *)self->_assetManager resolvedColorNamed:self->_name withTraitCollection:collectionCopy];
     genericColor = v9;
     if (!v9)
     {
@@ -164,10 +164,10 @@ LABEL_7:
 
 - (id)_debugCatalogBundleIdentifier
 {
-  v2 = [(_UIAssetManager *)self->_assetManager bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(_UIAssetManager *)self->_assetManager bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

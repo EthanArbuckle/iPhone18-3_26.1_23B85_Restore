@@ -1,27 +1,27 @@
 @interface EntryMapEntriesViewController
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation EntryMapEntriesViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004CE198();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1004CE410(a3);
+  selfCopy = self;
+  sub_1004CE410(appearing);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1004CE4FC(a3);
+  selfCopy = self;
+  sub_1004CE4FC(disappear);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface GEOPlaceCardDiskSpaceProvider
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3;
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency;
 @end
 
 @implementation GEOPlaceCardDiskSpaceProvider
 
-- (unint64_t)purgableDiskSpaceForUrgency:(int)a3
+- (unint64_t)purgableDiskSpaceForUrgency:(int)urgency
 {
-  if ([(GEOPlaceCardDiskSpaceProvider *)self minimumUrgency]> a3)
+  if ([(GEOPlaceCardDiskSpaceProvider *)self minimumUrgency]> urgency)
   {
     return 0;
   }
 
   v4 = +[GEOPlaceDataLocalProxy shared];
-  v5 = [v4 calculateFreeableSpaceSync];
+  calculateFreeableSpaceSync = [v4 calculateFreeableSpaceSync];
 
-  return v5;
+  return calculateFreeableSpaceSync;
 }
 
 @end

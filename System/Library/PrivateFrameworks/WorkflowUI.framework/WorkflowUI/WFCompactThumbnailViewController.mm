@@ -14,8 +14,8 @@
 
 - (void)invalidateContentSize
 {
-  v3 = [(WFCompactThumbnailViewController *)self delegate];
-  [v3 thumbnailViewControllerDidInvalidateSize:self];
+  delegate = [(WFCompactThumbnailViewController *)self delegate];
+  [delegate thumbnailViewControllerDidInvalidateSize:self];
 }
 
 @end

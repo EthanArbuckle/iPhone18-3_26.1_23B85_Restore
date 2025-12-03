@@ -1,6 +1,6 @@
 @interface EDTable
-+ (id)tableWithResources:(id)a3;
-- (EDTable)initWithResources:(id)a3;
++ (id)tableWithResources:(id)resources;
+- (EDTable)initWithResources:(id)resources;
 - (id)dataAreaBorderDxf;
 - (id)dataAreaDxf;
 - (id)description;
@@ -10,18 +10,18 @@
 - (id)tableBorderDxf;
 - (id)totalsRowBorderDxf;
 - (id)totalsRowDxf;
-- (void)setDataAreaBorderDxf:(id)a3;
-- (void)setDataAreaDxf:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setHeaderRowBorderDxf:(id)a3;
-- (void)setHeaderRowDxf:(id)a3;
-- (void)setName:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setStyleName:(id)a3;
-- (void)setTableBorderDxf:(id)a3;
-- (void)setTableRange:(id)a3;
-- (void)setTotalsRowBorderDxf:(id)a3;
-- (void)setTotalsRowDxf:(id)a3;
+- (void)setDataAreaBorderDxf:(id)dxf;
+- (void)setDataAreaDxf:(id)dxf;
+- (void)setDisplayName:(id)name;
+- (void)setHeaderRowBorderDxf:(id)dxf;
+- (void)setHeaderRowDxf:(id)dxf;
+- (void)setName:(id)name;
+- (void)setStyle:(id)style;
+- (void)setStyleName:(id)name;
+- (void)setTableBorderDxf:(id)dxf;
+- (void)setTableRange:(id)range;
+- (void)setTotalsRowBorderDxf:(id)dxf;
+- (void)setTotalsRowDxf:(id)dxf;
 @end
 
 @implementation EDTable
@@ -29,9 +29,9 @@
 - (id)style
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained tableStyles];
+  tableStyles = [WeakRetained tableStyles];
 
-  v5 = [v4 objectWithName:self->mStyleName];
+  v5 = [tableStyles objectWithName:self->mStyleName];
 
   return v5;
 }
@@ -39,23 +39,23 @@
 - (id)tableBorderDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mTableBorderDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mTableBorderDxfIndex];
 
   return v5;
 }
 
-- (EDTable)initWithResources:(id)a3
+- (EDTable)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v13.receiver = self;
   v13.super_class = EDTable;
   v5 = [(EDTable *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     *&v7 = -1;
     *(&v7 + 1) = -1;
     *&v6->mStyleIndex = v7;
@@ -77,195 +77,195 @@
   return v6;
 }
 
-+ (id)tableWithResources:(id)a3
++ (id)tableWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained tableStyles];
+  tableStyles = [WeakRetained tableStyles];
 
-  self->mStyleIndex = [v5 addObject:v6];
+  self->mStyleIndex = [tableStyles addObject:styleCopy];
 }
 
 - (id)headerRowDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mHeaderRowDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mHeaderRowDxfIndex];
 
   return v5;
 }
 
-- (void)setHeaderRowDxf:(id)a3
+- (void)setHeaderRowDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mHeaderRowDxfIndex = [v5 addObject:v6];
+  self->mHeaderRowDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)totalsRowDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mTotalsRowDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mTotalsRowDxfIndex];
 
   return v5;
 }
 
-- (void)setTotalsRowDxf:(id)a3
+- (void)setTotalsRowDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mTotalsRowDxfIndex = [v5 addObject:v6];
+  self->mTotalsRowDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)dataAreaDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mDataAreaDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mDataAreaDxfIndex];
 
   return v5;
 }
 
-- (void)setDataAreaDxf:(id)a3
+- (void)setDataAreaDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mDataAreaDxfIndex = [v5 addObject:v6];
+  self->mDataAreaDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)headerRowBorderDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mHeaderRowBorderDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mHeaderRowBorderDxfIndex];
 
   return v5;
 }
 
-- (void)setHeaderRowBorderDxf:(id)a3
+- (void)setHeaderRowBorderDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mHeaderRowBorderDxfIndex = [v5 addObject:v6];
+  self->mHeaderRowBorderDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)totalsRowBorderDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mTotalsRowBorderDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mTotalsRowBorderDxfIndex];
 
   return v5;
 }
 
-- (void)setTotalsRowBorderDxf:(id)a3
+- (void)setTotalsRowBorderDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mTotalsRowBorderDxfIndex = [v5 addObject:v6];
+  self->mTotalsRowBorderDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)dataAreaBorderDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mDataAreaBorderDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mDataAreaBorderDxfIndex];
 
   return v5;
 }
 
-- (void)setDataAreaBorderDxf:(id)a3
+- (void)setDataAreaBorderDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mDataAreaBorderDxfIndex = [v5 addObject:v6];
+  self->mDataAreaBorderDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
-- (void)setTableBorderDxf:(id)a3
+- (void)setTableBorderDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mTableBorderDxfIndex = [v5 addObject:v6];
+  self->mTableBorderDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mName = self->mName;
   p_mName = &self->mName;
-  if (mName != v5)
+  if (mName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mDisplayName = self->mDisplayName;
   p_mDisplayName = &self->mDisplayName;
-  if (mDisplayName != v5)
+  if (mDisplayName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDisplayName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mDisplayName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setStyleName:(id)a3
+- (void)setStyleName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mStyleName = self->mStyleName;
   p_mStyleName = &self->mStyleName;
-  if (mStyleName != v5)
+  if (mStyleName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mStyleName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mStyleName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setTableRange:(id)a3
+- (void)setTableRange:(id)range
 {
-  v5 = a3;
+  rangeCopy = range;
   mTableRange = self->mTableRange;
   p_mTableRange = &self->mTableRange;
-  if (mTableRange != v5)
+  if (mTableRange != rangeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTableRange, a3);
-    v5 = v8;
+    v8 = rangeCopy;
+    objc_storeStrong(p_mTableRange, range);
+    rangeCopy = v8;
   }
 }
 

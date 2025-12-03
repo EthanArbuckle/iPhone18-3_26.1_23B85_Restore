@@ -16,9 +16,9 @@
   }
 
   v5 = +[UMUserManager sharedManager];
-  v6 = [v5 isMultiUser];
+  isMultiUser = [v5 isMultiUser];
 
-  if (v6)
+  if (isMultiUser)
   {
     return 0;
   }
@@ -30,8 +30,8 @@
   {
     _LSVersionNumberMakeWithString();
     v9 = +[NSBundle mainBundle];
-    v10 = [v9 infoDictionary];
-    v11 = [v10 objectForKey:@"CFBundleShortVersionString"];
+    infoDictionary = [v9 infoDictionary];
+    v11 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
     _LSVersionNumberMakeWithString();
     MajorComponent = _LSVersionNumberGetMajorComponent();
@@ -51,8 +51,8 @@
 + (void)finishShowingWelcomeScreen
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 infoDictionary];
-  v5 = [v3 objectForKey:@"CFBundleShortVersionString"];
+  infoDictionary = [v2 infoDictionary];
+  v5 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
 
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 setObject:v5 forKey:@"voicememos.welcome.last_completed"];

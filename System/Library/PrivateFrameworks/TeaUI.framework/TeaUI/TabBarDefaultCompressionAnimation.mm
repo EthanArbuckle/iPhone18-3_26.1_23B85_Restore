@@ -1,29 +1,29 @@
 @interface TabBarDefaultCompressionAnimation
-- (double)maximumBarHeightForTraitCollection:(id)a3;
-- (void)reloadWithTraitCollection:(id)a3;
-- (void)updateWithPercentage:(double)a3;
+- (double)maximumBarHeightForTraitCollection:(id)collection;
+- (void)reloadWithTraitCollection:(id)collection;
+- (void)updateWithPercentage:(double)percentage;
 @end
 
 @implementation TabBarDefaultCompressionAnimation
 
-- (void)updateWithPercentage:(double)a3
+- (void)updateWithPercentage:(double)percentage
 {
-  v3 = self;
+  selfCopy = self;
   TabBarDefaultCompressionAnimation.update(withPercentage:)();
 }
 
-- (double)maximumBarHeightForTraitCollection:(id)a3
+- (double)maximumBarHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v6 = TabBarDefaultCompressionAnimation.maximumBarHeight(for:)();
 
   return v6;
 }
 
-- (void)reloadWithTraitCollection:(id)a3
+- (void)reloadWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v7.value.super.isa = self;
   isa = v7.value.super.isa;
   TabBarDefaultCompressionAnimation.reload(with:)(v7);

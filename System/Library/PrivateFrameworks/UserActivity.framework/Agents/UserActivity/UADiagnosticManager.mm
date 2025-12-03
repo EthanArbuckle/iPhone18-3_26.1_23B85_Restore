@@ -1,16 +1,16 @@
 @interface UADiagnosticManager
 + (id)sharedManager;
 - (UADiagnosticManager)init;
-- (id)firstPartyActivityTypeOrUnknown:(id)a3;
-- (void)submitDidSendLocalPasteboard:(id)a3;
+- (id)firstPartyActivityTypeOrUnknown:(id)unknown;
+- (void)submitDidSendLocalPasteboard:(id)pasteboard;
 - (void)submitRemotePasteboardBecameAvailable;
-- (void)submitRemotePasteboardBecameUnavailable:(unint64_t)a3;
-- (void)submitRemotePasteboardTypeInfoRequested:(id)a3;
-- (void)submitRemotePasteboardWasRequested:(id)a3;
-- (void)submitUserActivityBecameCurrent:(id)a3 withToken:(id *)a4;
-- (void)submitUserActivityWasContinuedInfo:(id)a3;
-- (void)submitUserActivityWasDiscovered:(id)a3;
-- (void)submitUserActivityWasSuggestedInfo:(id)a3;
+- (void)submitRemotePasteboardBecameUnavailable:(unint64_t)unavailable;
+- (void)submitRemotePasteboardTypeInfoRequested:(id)requested;
+- (void)submitRemotePasteboardWasRequested:(id)requested;
+- (void)submitUserActivityBecameCurrent:(id)current withToken:(id *)token;
+- (void)submitUserActivityWasContinuedInfo:(id)info;
+- (void)submitUserActivityWasDiscovered:(id)discovered;
+- (void)submitUserActivityWasSuggestedInfo:(id)info;
 @end
 
 @implementation UADiagnosticManager
@@ -34,16 +34,16 @@
   return [(UADiagnosticManager *)&v3 init];
 }
 
-- (void)submitUserActivityBecameCurrent:(id)a3 withToken:(id *)a4
+- (void)submitUserActivityBecameCurrent:(id)current withToken:(id *)token
 {
-  v6 = a3;
-  if (!a4 || (v7 = *&a4->var0[4], v12[0] = *a4->var0, v12[1] = v7, sub_100001FA4(v12), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  currentCopy = current;
+  if (!token || (v7 = *&token->var0[4], v12[0] = *token->var0, v12[1] = v7, sub_100001FA4(v12), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = @"unknown";
   }
 
   v9 = objc_alloc_init(UAActivityBecameCurrentEvent);
-  v10 = [(UADiagnosticManager *)self firstPartyActivityTypeOrUnknown:v6];
+  v10 = [(UADiagnosticManager *)self firstPartyActivityTypeOrUnknown:currentCopy];
   [(UAActivityBecameCurrentEvent *)v9 setActivityType:v10];
 
   [(UAActivityBecameCurrentEvent *)v9 setBundleIdentifier:v8];
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)submitUserActivityWasDiscovered:(id)a3
+- (void)submitUserActivityWasDiscovered:(id)discovered
 {
-  v4 = a3;
+  discoveredCopy = discovered;
   v5 = objc_alloc_init(UAActivityWasDiscoveredEvent);
-  v6 = [(UADiagnosticManager *)self firstPartyActivityTypeOrUnknown:v4];
+  v6 = [(UADiagnosticManager *)self firstPartyActivityTypeOrUnknown:discoveredCopy];
 
   [(UAActivityWasDiscoveredEvent *)v5 setActivityType:v6];
   [(UAAnalyticsEvent *)v5 sendEvent];
@@ -74,12 +74,12 @@
   }
 }
 
-- (void)submitUserActivityWasSuggestedInfo:(id)a3
+- (void)submitUserActivityWasSuggestedInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
-    v4 = [[UAActivityWasSuggestedEvent alloc] initWithAnalyticsInfo:v3];
+    infoCopy = info;
+    v4 = [[UAActivityWasSuggestedEvent alloc] initWithAnalyticsInfo:infoCopy];
 
     [(UAActivityWasSuggestedEvent *)v4 sendEvent];
     v5 = sub_100001A30(@"Diagnostic");
@@ -92,19 +92,19 @@
   }
 }
 
-- (void)submitUserActivityWasContinuedInfo:(id)a3
+- (void)submitUserActivityWasContinuedInfo:(id)info
 {
-  v3 = a3;
-  if (([v3 payloadRequested] & 1) != 0 || !objc_msgSend(v3, "isCancelled"))
+  infoCopy = info;
+  if (([infoCopy payloadRequested] & 1) != 0 || !objc_msgSend(infoCopy, "isCancelled"))
   {
-    v4 = [[UAActivityWasContinuedEvent alloc] initWithAnalyticsInfo:v3];
+    v4 = [[UAActivityWasContinuedEvent alloc] initWithAnalyticsInfo:infoCopy];
     [(UAAnalyticsEvent *)v4 sendEvent];
     v5 = sub_100001A30(@"Diagnostic");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v3 uuid];
+      uuid = [infoCopy uuid];
       v7 = 138412547;
-      v8 = v6;
+      v8 = uuid;
       v9 = 2113;
       v10 = v4;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Submitted UAActivityWasContinuedEvent for %@: %{private}@", &v7, 0x16u);
@@ -122,12 +122,12 @@
   }
 }
 
-- (id)firstPartyActivityTypeOrUnknown:(id)a3
+- (id)firstPartyActivityTypeOrUnknown:(id)unknown
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@":com.apple."] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"NSUserActivityTypeBrowsingWeb"))
+  unknownCopy = unknown;
+  if (([unknownCopy hasPrefix:@":com.apple."] & 1) != 0 || (objc_msgSend(unknownCopy, "hasPrefix:", @"com.apple.") & 1) != 0 || objc_msgSend(unknownCopy, "isEqualToString:", @"NSUserActivityTypeBrowsingWeb"))
   {
-    v4 = v3;
+    v4 = unknownCopy;
   }
 
   else
@@ -139,7 +139,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138478083;
-    v8 = v3;
+    v8 = unknownCopy;
     v9 = 2113;
     v10 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Metric AT for %{private}@ is %{private}@", &v7, 0x16u);
@@ -148,14 +148,14 @@
   return v4;
 }
 
-- (void)submitRemotePasteboardWasRequested:(id)a3
+- (void)submitRemotePasteboardWasRequested:(id)requested
 {
-  v3 = a3;
-  [v3 sendEvent];
+  requestedCopy = requested;
+  [requestedCopy sendEvent];
   v4 = sub_100001A30(@"Diagnostic");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 description];
+    v5 = [requestedCopy description];
     v6 = sub_100009684(v5);
     v7 = 138477827;
     v8 = v6;
@@ -163,14 +163,14 @@
   }
 }
 
-- (void)submitDidSendLocalPasteboard:(id)a3
+- (void)submitDidSendLocalPasteboard:(id)pasteboard
 {
-  v3 = a3;
-  [v3 sendEvent];
+  pasteboardCopy = pasteboard;
+  [pasteboardCopy sendEvent];
   v4 = sub_100001A30(@"Diagnostic");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 description];
+    v5 = [pasteboardCopy description];
     v6 = sub_100009684(v5);
     v7 = 138477827;
     v8 = v6;
@@ -178,14 +178,14 @@
   }
 }
 
-- (void)submitRemotePasteboardTypeInfoRequested:(id)a3
+- (void)submitRemotePasteboardTypeInfoRequested:(id)requested
 {
-  v3 = a3;
-  [v3 sendEvent];
+  requestedCopy = requested;
+  [requestedCopy sendEvent];
   v4 = sub_100001A30(@"Diagnostic");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [v3 description];
+    v5 = [requestedCopy description];
     v6 = sub_100009684(v5);
     v7 = 138477827;
     v8 = v6;
@@ -208,10 +208,10 @@
   }
 }
 
-- (void)submitRemotePasteboardBecameUnavailable:(unint64_t)a3
+- (void)submitRemotePasteboardBecameUnavailable:(unint64_t)unavailable
 {
   v4 = objc_alloc_init(UARemotePasteboardBecameUnavailableEvent);
-  [(UARemotePasteboardBecameUnavailableEvent *)v4 setReason:a3];
+  [(UARemotePasteboardBecameUnavailableEvent *)v4 setReason:unavailable];
   [(UAAnalyticsEvent *)v4 sendEvent];
   v5 = sub_100001A30(@"Diagnostic");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))

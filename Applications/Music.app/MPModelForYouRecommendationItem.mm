@@ -6,28 +6,28 @@
 
 - (NSString)title
 {
-  v3 = [(MPModelForYouRecommendationItem *)self itemType];
-  if (v3 == 3)
+  itemType = [(MPModelForYouRecommendationItem *)self itemType];
+  if (itemType == 3)
   {
-    v6 = [(MPModelForYouRecommendationItem *)self radioStation];
+    radioStation = [(MPModelForYouRecommendationItem *)self radioStation];
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (itemType == 2)
   {
-    v6 = [(MPModelForYouRecommendationItem *)self playlist];
+    radioStation = [(MPModelForYouRecommendationItem *)self playlist];
 LABEL_7:
-    v4 = v6;
-    v5 = [v6 name];
+    album = radioStation;
+    name = [radioStation name];
     goto LABEL_8;
   }
 
-  if (v3 == 1)
+  if (itemType == 1)
   {
-    v4 = [(MPModelForYouRecommendationItem *)self album];
-    v5 = [v4 title];
+    album = [(MPModelForYouRecommendationItem *)self album];
+    name = [album title];
 LABEL_8:
-    v7 = v5;
+    v7 = name;
 
     goto LABEL_10;
   }

@@ -1,57 +1,57 @@
 @interface PKApplyWebServiceTermsRequest
-- (PKApplyWebServiceTermsRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceTermsRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceTermsRequest
 
-- (PKApplyWebServiceTermsRequest)initWithCoder:(id)a3
+- (PKApplyWebServiceTermsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKApplyWebServiceTermsRequest;
-  v5 = [(PKApplyWebServiceRequest *)&v27 initWithCoder:v4];
+  v5 = [(PKApplyWebServiceRequest *)&v27 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v5->_termsAccepted = [v4 decodeBoolForKey:@"termsAccepted"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v5->_termsAccepted = [coderCopy decodeBoolForKey:@"termsAccepted"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     baseURL = v5->_baseURL;
     v5->_baseURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationTermsIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationTermsIdentifier"];
     applicationTermsIdentifier = v5->_applicationTermsIdentifier;
     v5->_applicationTermsIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerTermsIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerTermsIdentifier"];
     offerTermsIdentifier = v5->_offerTermsIdentifier;
     v5->_offerTermsIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathTermsIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathTermsIdentifier"];
     pathTermsIdentifier = v5->_pathTermsIdentifier;
     v5->_pathTermsIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathIdentifier"];
     pathIdentifier = v5->_pathIdentifier;
     v5->_pathIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceMetadata"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceMetadata"];
     deviceMetadata = v5->_deviceMetadata;
     v5->_deviceMetadata = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
     installmentConfiguration = v5->_installmentConfiguration;
     v5->_installmentConfiguration = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
     odiAssessment = v5->_odiAssessment;
     v5->_odiAssessment = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationContext"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationContext"];
     authenticationContext = v5->_authenticationContext;
     v5->_authenticationContext = v24;
   }
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKApplyWebServiceTermsRequest;
-  v4 = a3;
-  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_termsAccepted forKey:@"termsAccepted"];
-  [v4 encodeObject:self->_baseURL forKey:@"baseURL"];
-  [v4 encodeObject:self->_applicationTermsIdentifier forKey:@"applicationTermsIdentifier"];
-  [v4 encodeObject:self->_offerTermsIdentifier forKey:@"offerTermsIdentifier"];
-  [v4 encodeObject:self->_pathTermsIdentifier forKey:@"pathTermsIdentifier"];
-  [v4 encodeObject:self->_pathIdentifier forKey:@"pathIdentifier"];
-  [v4 encodeObject:self->_deviceMetadata forKey:@"deviceMetadata"];
-  [v4 encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
-  [v4 encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
-  [v4 encodeObject:self->_authenticationContext forKey:@"authenticationContext"];
+  coderCopy = coder;
+  [(PKApplyWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:{@"applicationIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_termsAccepted forKey:@"termsAccepted"];
+  [coderCopy encodeObject:self->_baseURL forKey:@"baseURL"];
+  [coderCopy encodeObject:self->_applicationTermsIdentifier forKey:@"applicationTermsIdentifier"];
+  [coderCopy encodeObject:self->_offerTermsIdentifier forKey:@"offerTermsIdentifier"];
+  [coderCopy encodeObject:self->_pathTermsIdentifier forKey:@"pathTermsIdentifier"];
+  [coderCopy encodeObject:self->_pathIdentifier forKey:@"pathIdentifier"];
+  [coderCopy encodeObject:self->_deviceMetadata forKey:@"deviceMetadata"];
+  [coderCopy encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
+  [coderCopy encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
+  [coderCopy encodeObject:self->_authenticationContext forKey:@"authenticationContext"];
 }
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -104,7 +104,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v9 = PKLogFacilityTypeGetObject(0xEuLL);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -149,11 +149,11 @@ LABEL_13:
 
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v10 = [(PKApplyWebServiceRequest *)self _createMutableBody];
-  v11 = v10;
+  _createMutableBody = [(PKApplyWebServiceRequest *)self _createMutableBody];
+  v11 = _createMutableBody;
   if (self->_applicationTermsIdentifier || self->_offerTermsIdentifier)
   {
-    [v10 setObject:? forKey:?];
+    [_createMutableBody setObject:? forKey:?];
   }
 
   pathTermsIdentifier = self->_pathTermsIdentifier;
@@ -171,10 +171,10 @@ LABEL_13:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:self->_termsAccepted];
   [v11 setObject:v19 forKey:@"termsAccepted"];
 
-  v20 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  if (v20)
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v11 setObject:v20 forKey:@"deviceMetadata"];
+    [v11 setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
   }
 
   installmentConfiguration = self->_installmentConfiguration;
@@ -195,22 +195,22 @@ LABEL_13:
     goto LABEL_31;
   }
 
-  v24 = [(PKApplyWebServiceRequestAuthenticationContext *)authenticationContext certificates];
-  if (![v24 count])
+  certificates = [(PKApplyWebServiceRequestAuthenticationContext *)authenticationContext certificates];
+  if (![certificates count])
   {
     goto LABEL_30;
   }
 
-  v25 = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext signature];
+  signature = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext signature];
 
-  if (v25)
+  if (signature)
   {
-    v26 = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext certificates];
-    v24 = [v26 pk_arrayByApplyingBlock:&__block_literal_global_569];
+    certificates2 = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext certificates];
+    certificates = [certificates2 pk_arrayByApplyingBlock:&__block_literal_global_569];
 
-    [v11 setObject:v24 forKeyedSubscript:@"certificates"];
-    v27 = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext signature];
-    v28 = [v27 base64EncodedStringWithOptions:0];
+    [v11 setObject:certificates forKeyedSubscript:@"certificates"];
+    signature2 = [(PKApplyWebServiceRequestAuthenticationContext *)self->_authenticationContext signature];
+    v28 = [signature2 base64EncodedStringWithOptions:0];
     [v11 setObject:v28 forKeyedSubscript:@"signature"];
 
 LABEL_30:

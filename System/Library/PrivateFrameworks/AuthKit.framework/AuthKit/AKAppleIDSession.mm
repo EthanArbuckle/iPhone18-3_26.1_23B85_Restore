@@ -1,29 +1,29 @@
 @interface AKAppleIDSession
 - (AKAppleIDSession)init;
-- (AKAppleIDSession)initWithCoder:(id)a3;
-- (AKAppleIDSession)initWithIdentifier:(id)a3;
-- (BOOL)_canHandleAnisetteURLResponse:(id)a3;
-- (BOOL)shouldDenyRequestForURL:(id)a3 task:(id)a4;
-- (id)_generateAppleIDHeadersForRequest:(id)a3 error:(id *)a4;
-- (id)_genericAppleIDHeadersDictionaryForRequest:(id)a3;
+- (AKAppleIDSession)initWithCoder:(id)coder;
+- (AKAppleIDSession)initWithIdentifier:(id)identifier;
+- (BOOL)_canHandleAnisetteURLResponse:(id)response;
+- (BOOL)shouldDenyRequestForURL:(id)l task:(id)task;
+- (id)_generateAppleIDHeadersForRequest:(id)request error:(id *)error;
+- (id)_genericAppleIDHeadersDictionaryForRequest:(id)request;
 - (id)_nativeAnisetteController;
 - (id)_pairedDeviceAnisetteController;
-- (id)appleIDHeadersForRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)appleIDHeadersForRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)relevantHTTPStatusCodes;
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDHeadersForResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDRequestOrHeadersForResponse:(id)a5 completionHandler:(id)a6;
-- (void)_generateAppleIDHeadersForSessionTask:(id)a3 withCompletion:(id)a4;
-- (void)_handleAnisetteReprovisionWithRequestURL:(id)a3 anisetteController:(id)a4 completion:(id)a5;
-- (void)_handleAnisetteURLResponse:(id)a3 forRequest:(id)a4 withCompletion:(id)a5;
-- (void)_handleURLSwitchingResponse:(id)a3 forRequest:(id)a4 withCompletion:(id)a5;
-- (void)_reportOnRequest:(id)a3 response:(id)a4 attestationData:(id)a5;
-- (void)_resetDeviceIdentityWithCompletion:(id)a3;
-- (void)appleIDHeadersForRequest:(id)a3 completion:(id)a4;
-- (void)appleIDHeadersUsingAnisetteWithCompletion:(id)a3;
-- (void)appleIDHeadersWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleResponse:(id)a3 forRequest:(id)a4 shouldRetry:(BOOL *)a5;
+- (void)URLSession:(id)session task:(id)task getAppleIDHeadersForResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task getAppleIDRequestOrHeadersForResponse:(id)response completionHandler:(id)handler;
+- (void)_generateAppleIDHeadersForSessionTask:(id)task withCompletion:(id)completion;
+- (void)_handleAnisetteReprovisionWithRequestURL:(id)l anisetteController:(id)controller completion:(id)completion;
+- (void)_handleAnisetteURLResponse:(id)response forRequest:(id)request withCompletion:(id)completion;
+- (void)_handleURLSwitchingResponse:(id)response forRequest:(id)request withCompletion:(id)completion;
+- (void)_reportOnRequest:(id)request response:(id)response attestationData:(id)data;
+- (void)_resetDeviceIdentityWithCompletion:(id)completion;
+- (void)appleIDHeadersForRequest:(id)request completion:(id)completion;
+- (void)appleIDHeadersUsingAnisetteWithCompletion:(id)completion;
+- (void)appleIDHeadersWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleResponse:(id)response forRequest:(id)request shouldRetry:(BOOL *)retry;
 @end
 
 @implementation AKAppleIDSession
@@ -39,7 +39,7 @@
 
 - (id)relevantHTTPStatusCodes
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F07B4F88, &unk_1F07B4FA0, &unk_1F07B4FB8, &unk_1F07B4FD0, &unk_1F07B4FE8, &unk_1F07B5000, &unk_1F07B5018, 0}];
 }
@@ -78,97 +78,97 @@
   return v4;
 }
 
-- (AKAppleIDSession)initWithIdentifier:(id)a3
+- (AKAppleIDSession)initWithIdentifier:(id)identifier
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, identifier);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v3;
   v10.super_class = AKAppleIDSession;
-  v12 = [(AKAppleIDSession *)&v10 init];
-  objc_storeStrong(&v12, v12);
-  if (v12)
+  selfCopy = [(AKAppleIDSession *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] copy];
-    serviceID = v12->_serviceID;
-    v12->_serviceID = v4;
+    serviceID = selfCopy->_serviceID;
+    selfCopy->_serviceID = v4;
     MEMORY[0x1E69E5920](serviceID);
     v6 = objc_alloc_init(MEMORY[0x1E696AD10]);
-    anisetteControllerLock = v12->_anisetteControllerLock;
-    v12->_anisetteControllerLock = v6;
+    anisetteControllerLock = selfCopy->_anisetteControllerLock;
+    selfCopy->_anisetteControllerLock = v6;
     MEMORY[0x1E69E5920](anisetteControllerLock);
-    [(NSLock *)v12->_anisetteControllerLock setName:@"AKAnisetteControllerLock"];
+    [(NSLock *)selfCopy->_anisetteControllerLock setName:@"AKAnisetteControllerLock"];
   }
 
-  v9 = MEMORY[0x1E69E5928](v12);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (AKAppleIDSession)initWithCoder:(id)a3
+- (AKAppleIDSession)initWithCoder:(id)coder
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v16;
-  v16 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v3;
   v14.super_class = AKAppleIDSession;
-  v16 = [(AKAppleIDSession *)&v14 init];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(AKAppleIDSession *)&v14 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_serviceID"];
-    serviceID = v16->_serviceID;
-    v16->_serviceID = v4;
+    serviceID = selfCopy->_serviceID;
+    selfCopy->_serviceID = v4;
     MEMORY[0x1E69E5920](serviceID);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_pairedDevice"];
-    pairedDevice = v16->_pairedDevice;
-    v16->_pairedDevice = v6;
+    pairedDevice = selfCopy->_pairedDevice;
+    selfCopy->_pairedDevice = v6;
     MEMORY[0x1E69E5920](pairedDevice);
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_proxiedAnisetteData"];
-    proxiedAnisetteData = v16->_proxiedAnisetteData;
-    v16->_proxiedAnisetteData = v8;
+    proxiedAnisetteData = selfCopy->_proxiedAnisetteData;
+    selfCopy->_proxiedAnisetteData = v8;
     MEMORY[0x1E69E5920](proxiedAnisetteData);
     v10 = objc_alloc_init(MEMORY[0x1E696AD10]);
-    anisetteControllerLock = v16->_anisetteControllerLock;
-    v16->_anisetteControllerLock = v10;
+    anisetteControllerLock = selfCopy->_anisetteControllerLock;
+    selfCopy->_anisetteControllerLock = v10;
     MEMORY[0x1E69E5920](anisetteControllerLock);
-    [(NSLock *)v16->_anisetteControllerLock setName:@"AKAnisetteControllerLock"];
+    [(NSLock *)selfCopy->_anisetteControllerLock setName:@"AKAnisetteControllerLock"];
   }
 
-  v13 = MEMORY[0x1E69E5928](v16);
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_serviceID forKey:@"_serviceID"];
-  [location[0] encodeObject:v4->_pairedDevice forKey:@"_pairedDevice"];
-  [location[0] encodeObject:v4->_proxiedAnisetteData forKey:@"_proxiedAnisetteData"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_serviceID forKey:@"_serviceID"];
+  [location[0] encodeObject:selfCopy->_pairedDevice forKey:@"_pairedDevice"];
+  [location[0] encodeObject:selfCopy->_proxiedAnisetteData forKey:@"_proxiedAnisetteData"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v8 = self;
+  selfCopy = self;
   v7[2] = a2;
-  v7[1] = a3;
+  v7[1] = zone;
   v7[0] = [[AKAppleIDSession alloc] initWithIdentifier:self->_serviceID];
-  objc_storeStrong(v7[0] + 7, v8->_anisetteDataProvider);
-  objc_storeStrong(v7[0] + 6, v8->_pairedDevice);
-  v3 = [(AKAnisetteData *)v8->_proxiedAnisetteData copy];
+  objc_storeStrong(v7[0] + 7, selfCopy->_anisetteDataProvider);
+  objc_storeStrong(v7[0] + 6, selfCopy->_pairedDevice);
+  v3 = [(AKAnisetteData *)selfCopy->_proxiedAnisetteData copy];
   v4 = *(v7[0] + 4);
   *(v7[0] + 4) = v3;
   MEMORY[0x1E69E5920](v4);
@@ -177,19 +177,19 @@
   return v6;
 }
 
-- (BOOL)shouldDenyRequestForURL:(id)a3 task:(id)a4
+- (BOOL)shouldDenyRequestForURL:(id)l task:(id)task
 {
   v27 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, task);
   v12 = +[AKDevice currentDevice];
-  v13 = [v12 isInternalBuild];
+  isInternalBuild = [v12 isInternalBuild];
   MEMORY[0x1E69E5920](v12);
-  if ((v13 & 1) == 0)
+  if ((isInternalBuild & 1) == 0)
   {
     goto LABEL_14;
   }
@@ -198,10 +198,10 @@
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [location[0] absoluteString];
-    __os_log_helper_16_2_2_8_64_8_66(v26, v10, v21);
+    absoluteString = [location[0] absoluteString];
+    __os_log_helper_16_2_2_8_64_8_66(v26, absoluteString, v21);
     _os_log_debug_impl(&dword_193225000, v20, v19, "Checking for deny listing URL:%@ Task: %{public}@ ...", v26, 0x16u);
-    MEMORY[0x1E69E5920](v10);
+    MEMORY[0x1E69E5920](absoluteString);
   }
 
   objc_storeStrong(&v20, 0);
@@ -222,18 +222,18 @@
   }
 
   v6 = v18;
-  v7 = [location[0] absoluteString];
+  absoluteString2 = [location[0] absoluteString];
   v8 = [v6 isEqualToString:?];
-  MEMORY[0x1E69E5920](v7);
+  MEMORY[0x1E69E5920](absoluteString2);
   if (v8)
   {
     oslog = _AKTrafficLogSubsystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [location[0] absoluteString];
-      __os_log_helper_16_2_2_8_64_8_66(v24, v5, v21);
+      absoluteString3 = [location[0] absoluteString];
+      __os_log_helper_16_2_2_8_64_8_66(v24, absoluteString3, v21);
       _os_log_debug_impl(&dword_193225000, oslog, OS_LOG_TYPE_DEBUG, "Denying Anisette to URL:%@ Task: %{public}@ ...", v24, 0x16u);
-      MEMORY[0x1E69E5920](v5);
+      MEMORY[0x1E69E5920](absoluteString3);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -259,23 +259,23 @@ LABEL_14:
   return v23 & 1;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDRequestOrHeadersForResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task getAppleIDRequestOrHeadersForResponse:(id)response completionHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, task);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, response);
   v45 = 0;
-  objc_storeStrong(&v45, a6);
-  v17 = [v47 originalRequest];
-  v44 = [v17 URL];
-  MEMORY[0x1E69E5920](v17);
-  if ([(AKAppleIDSession *)v49 shouldDenyRequestForURL:v44 task:v47])
+  objc_storeStrong(&v45, handler);
+  originalRequest = [v47 originalRequest];
+  v44 = [originalRequest URL];
+  MEMORY[0x1E69E5920](originalRequest);
+  if ([(AKAppleIDSession *)selfCopy shouldDenyRequestForURL:v44 task:v47])
   {
     (*(v45 + 2))(v45, 0, 0);
     v43 = 1;
@@ -289,9 +289,9 @@ LABEL_14:
       v34 = MEMORY[0x1E69E5928](v46);
       if ([v34 statusCode] == 434 || objc_msgSend(v34, "statusCode") == 433)
       {
-        v10 = v49;
+        v10 = selfCopy;
         v9 = v34;
-        v11 = [v47 originalRequest];
+        originalRequest2 = [v47 originalRequest];
         v25 = MEMORY[0x1E69E9820];
         v26 = -1073741824;
         v27 = 0;
@@ -299,10 +299,10 @@ LABEL_14:
         v29 = &unk_1E73D7CD0;
         v30 = MEMORY[0x1E69E5928](v44);
         v31 = MEMORY[0x1E69E5928](v47);
-        v32 = MEMORY[0x1E69E5928](v49);
+        v32 = MEMORY[0x1E69E5928](selfCopy);
         v33 = MEMORY[0x1E69E5928](v45);
-        [(AKAppleIDSession *)v10 _handleAnisetteURLResponse:v9 forRequest:v11 withCompletion:&v25];
-        MEMORY[0x1E69E5920](v11);
+        [(AKAppleIDSession *)v10 _handleAnisetteURLResponse:v9 forRequest:originalRequest2 withCompletion:&v25];
+        MEMORY[0x1E69E5920](originalRequest2);
         objc_storeStrong(&v33, 0);
         objc_storeStrong(&v32, 0);
         objc_storeStrong(&v31, 0);
@@ -311,9 +311,9 @@ LABEL_14:
 
       else if ([v34 statusCode] == 435)
       {
-        v7 = v49;
+        v7 = selfCopy;
         v6 = v34;
-        v8 = [v47 originalRequest];
+        originalRequest3 = [v47 originalRequest];
         v18 = MEMORY[0x1E69E9820];
         v19 = -1073741824;
         v20 = 0;
@@ -321,8 +321,8 @@ LABEL_14:
         v22 = &unk_1E73D7CF8;
         v23 = MEMORY[0x1E69E5928](v44);
         v24 = MEMORY[0x1E69E5928](v45);
-        [(AKAppleIDSession *)v7 _handleURLSwitchingResponse:v6 forRequest:v8 withCompletion:&v18];
-        MEMORY[0x1E69E5920](v8);
+        [(AKAppleIDSession *)v7 _handleURLSwitchingResponse:v6 forRequest:originalRequest3 withCompletion:&v18];
+        MEMORY[0x1E69E5920](originalRequest3);
         objc_storeStrong(&v24, 0);
         objc_storeStrong(&v23, 0);
       }
@@ -349,7 +349,7 @@ LABEL_14:
 
   else
   {
-    v13 = v49;
+    v13 = selfCopy;
     v12 = v47;
     v37 = MEMORY[0x1E69E9820];
     v38 = -1073741824;
@@ -469,23 +469,23 @@ void __92__AKAppleIDSession_URLSession_task_getAppleIDRequestOrHeadersForRespons
   *MEMORY[0x1E69E9840];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 getAppleIDHeadersForResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task getAppleIDHeadersForResponse:(id)response completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, task);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, response);
   v34 = 0;
-  objc_storeStrong(&v34, a6);
-  v14 = [v36 originalRequest];
-  v33 = [v14 URL];
-  MEMORY[0x1E69E5920](v14);
-  if ([(AKAppleIDSession *)v38 shouldDenyRequestForURL:v33 task:v36])
+  objc_storeStrong(&v34, handler);
+  originalRequest = [v36 originalRequest];
+  v33 = [originalRequest URL];
+  MEMORY[0x1E69E5920](originalRequest);
+  if ([(AKAppleIDSession *)selfCopy shouldDenyRequestForURL:v33 task:v36])
   {
     (*(v34 + 2))(v34, 0, 0);
     v32 = 1;
@@ -496,9 +496,9 @@ void __92__AKAppleIDSession_URLSession_task_getAppleIDRequestOrHeadersForRespons
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v38;
+      v7 = selfCopy;
       v6 = v35;
-      v8 = [v36 originalRequest];
+      originalRequest2 = [v36 originalRequest];
       v15 = MEMORY[0x1E69E9820];
       v16 = -1073741824;
       v17 = 0;
@@ -506,10 +506,10 @@ void __92__AKAppleIDSession_URLSession_task_getAppleIDRequestOrHeadersForRespons
       v19 = &unk_1E73D7CD0;
       v20 = MEMORY[0x1E69E5928](v33);
       v21 = MEMORY[0x1E69E5928](v36);
-      v22 = MEMORY[0x1E69E5928](v38);
+      v22 = MEMORY[0x1E69E5928](selfCopy);
       v23 = MEMORY[0x1E69E5928](v34);
-      [(AKAppleIDSession *)v7 _handleAnisetteURLResponse:v6 forRequest:v8 withCompletion:&v15];
-      MEMORY[0x1E69E5920](v8);
+      [(AKAppleIDSession *)v7 _handleAnisetteURLResponse:v6 forRequest:originalRequest2 withCompletion:&v15];
+      MEMORY[0x1E69E5920](originalRequest2);
       objc_storeStrong(&v23, 0);
       objc_storeStrong(&v22, 0);
       objc_storeStrong(&v21, 0);
@@ -535,7 +535,7 @@ void __92__AKAppleIDSession_URLSession_task_getAppleIDRequestOrHeadersForRespons
 
   else
   {
-    v10 = v38;
+    v10 = selfCopy;
     v9 = v36;
     v26 = MEMORY[0x1E69E9820];
     v27 = -1073741824;
@@ -611,29 +611,29 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   objc_storeStrong(location, 0);
 }
 
-- (id)appleIDHeadersForRequest:(id)a3
+- (id)appleIDHeadersForRequest:(id)request
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKAppleIDSession *)v6 _generateAppleIDHeadersForRequest:location[0] error:0];
+  objc_storeStrong(location, request);
+  v4 = [(AKAppleIDSession *)selfCopy _generateAppleIDHeadersForRequest:location[0] error:0];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-- (void)appleIDHeadersForRequest:(id)a3 completion:(id)a4
+- (void)appleIDHeadersForRequest:(id)request completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, completion);
   v8 = 0;
   v6 = 0;
-  v5 = [(AKAppleIDSession *)v11 _generateAppleIDHeadersForRequest:location[0] error:&v6];
+  v5 = [(AKAppleIDSession *)selfCopy _generateAppleIDHeadersForRequest:location[0] error:&v6];
   objc_storeStrong(&v8, v6);
   v7 = v5;
   if (v9)
@@ -647,21 +647,21 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   objc_storeStrong(location, 0);
 }
 
-- (void)appleIDHeadersWithCompletion:(id)a3
+- (void)appleIDHeadersWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [(AKAppleIDSession *)v23 _genericAppleIDHeadersDictionaryForRequest:0];
+  objc_storeStrong(location, completion);
+  v21 = [(AKAppleIDSession *)selfCopy _genericAppleIDHeadersDictionaryForRequest:0];
   v20 = 0;
-  v11 = [(AKAppleIDSession *)v23 _nativeAnisetteController];
+  _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
   v18 = v20;
-  v10 = [v11 attestationDataForRequestData:0 error:&v18];
+  v10 = [_nativeAnisetteController attestationDataForRequestData:0 error:&v18];
   objc_storeStrong(&v20, v18);
   v19 = v10;
-  MEMORY[0x1E69E5920](v11);
+  MEMORY[0x1E69E5920](_nativeAnisetteController);
   if (v20)
   {
     v17 = _AKTrafficLogSubsystem();
@@ -694,15 +694,15 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
     }
 
     objc_storeStrong(&v14, 0);
-    [(AKAppleIDSession *)v23 _reportOnRequest:0 response:0 attestationData:v19];
-    v7 = [v19 attestationHeaders];
-    MEMORY[0x1E69E5920](v7);
-    if (v7)
+    [(AKAppleIDSession *)selfCopy _reportOnRequest:0 response:0 attestationData:v19];
+    attestationHeaders = [v19 attestationHeaders];
+    MEMORY[0x1E69E5920](attestationHeaders);
+    if (attestationHeaders)
     {
       v5 = v21;
-      v6 = [v19 attestationHeaders];
+      attestationHeaders2 = [v19 attestationHeaders];
       [v5 addEntriesFromDictionary:?];
-      MEMORY[0x1E69E5920](v6);
+      MEMORY[0x1E69E5920](attestationHeaders2);
     }
 
     if (location[0])
@@ -723,21 +723,21 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   *MEMORY[0x1E69E9840];
 }
 
-- (void)appleIDHeadersUsingAnisetteWithCompletion:(id)a3
+- (void)appleIDHeadersUsingAnisetteWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = [(AKAppleIDSession *)v21 _genericAppleIDHeadersDictionaryForRequest:0];
+  objc_storeStrong(location, completion);
+  v19 = [(AKAppleIDSession *)selfCopy _genericAppleIDHeadersDictionaryForRequest:0];
   v18 = 0;
-  v8 = [(AKAppleIDSession *)v21 _nativeAnisetteController];
+  _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
   v16 = v18;
-  v7 = [v8 anisetteDataWithError:&v16];
+  v7 = [_nativeAnisetteController anisetteDataWithError:&v16];
   objc_storeStrong(&v18, v16);
   v17 = v7;
-  MEMORY[0x1E69E5920](v8);
+  MEMORY[0x1E69E5920](_nativeAnisetteController);
   if (v18)
   {
     v15 = _AKTrafficLogSubsystem();
@@ -799,25 +799,25 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   *MEMORY[0x1E69E9840];
 }
 
-- (void)handleResponse:(id)a3 forRequest:(id)a4 shouldRetry:(BOOL *)a5
+- (void)handleResponse:(id)response forRequest:(id)request shouldRetry:(BOOL *)retry
 {
   v31 = *MEMORY[0x1E69E9840];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
-  v26 = a5;
+  objc_storeStrong(&v27, request);
+  retryCopy = retry;
   v21 = 0;
   v22 = &v21;
   v23 = 0x20000000;
   v24 = 32;
   v25 = 0;
-  if ([(AKAppleIDSession *)v29 _canHandleAnisetteURLResponse:location[0]])
+  if ([(AKAppleIDSession *)selfCopy _canHandleAnisetteURLResponse:location[0]])
   {
     v18 = dispatch_semaphore_create(0);
-    v7 = v29;
+    v7 = selfCopy;
     v5 = location[0];
     v6 = v27;
     v12 = MEMORY[0x1E69E9820];
@@ -850,9 +850,9 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
     objc_storeStrong(&v20, 0);
   }
 
-  if (v26)
+  if (retryCopy)
   {
-    *v26 = v22[3] & 1;
+    *retryCopy = v22[3] & 1;
   }
 
   _Block_object_dispose(&v21, 8);
@@ -861,13 +861,13 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   *MEMORY[0x1E69E9840];
 }
 
-- (id)_genericAppleIDHeadersDictionaryForRequest:(id)a3
+- (id)_genericAppleIDHeadersDictionaryForRequest:(id)request
 {
   v16[1] = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v12 = 0;
   v11 = [location[0] valueForHTTPHeaderField:@"X-Apple-I-Client-Time"];
@@ -883,9 +883,9 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
 
   else
   {
-    v5 = [MEMORY[0x1E695AC18] ak_clientTimeHeader];
+    ak_clientTimeHeader = [MEMORY[0x1E695AC18] ak_clientTimeHeader];
     v6 = v12;
-    v12 = v5;
+    v12 = ak_clientTimeHeader;
     MEMORY[0x1E69E5920](v6);
   }
 
@@ -894,21 +894,21 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
     [v13 addEntriesFromDictionary:v12];
   }
 
-  v10 = [MEMORY[0x1E695AC18] ak_localeHeader];
-  if ([v10 count])
+  ak_localeHeader = [MEMORY[0x1E695AC18] ak_localeHeader];
+  if ([ak_localeHeader count])
   {
-    [v13 addEntriesFromDictionary:v10];
+    [v13 addEntriesFromDictionary:ak_localeHeader];
   }
 
-  v9 = [MEMORY[0x1E695AC18] ak_timeZoneHeader];
-  if ([v9 count])
+  ak_timeZoneHeader = [MEMORY[0x1E695AC18] ak_timeZoneHeader];
+  if ([ak_timeZoneHeader count])
   {
-    [v13 addEntriesFromDictionary:v9];
+    [v13 addEntriesFromDictionary:ak_timeZoneHeader];
   }
 
   v8 = MEMORY[0x1E69E5928](v13);
-  objc_storeStrong(&v9, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&ak_timeZoneHeader, 0);
+  objc_storeStrong(&ak_localeHeader, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -918,25 +918,25 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   return v8;
 }
 
-- (id)_generateAppleIDHeadersForRequest:(id)a3 error:(id *)a4
+- (id)_generateAppleIDHeadersForRequest:(id)request error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33[1] = a4;
-  v33[0] = [(AKAppleIDSession *)v35 _genericAppleIDHeadersDictionaryForRequest:location[0]];
+  objc_storeStrong(location, request);
+  v33[1] = error;
+  v33[0] = [(AKAppleIDSession *)selfCopy _genericAppleIDHeadersDictionaryForRequest:location[0]];
   v32 = [location[0] URL];
   v31 = 0;
   v4 = [AKAttestationRequestData alloc];
   v30 = [(AKAttestationRequestData *)v4 initWithRequest:location[0] requiredHeaders:0];
-  v14 = [(AKAppleIDSession *)v35 _nativeAnisetteController];
+  _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
   v28 = v31;
-  v13 = [v14 attestationDataForRequestData:v30 error:&v28];
+  v13 = [_nativeAnisetteController attestationDataForRequestData:v30 error:&v28];
   objc_storeStrong(&v31, v28);
   v29 = v13;
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](_nativeAnisetteController);
   if (v31)
   {
     v27 = _AKTrafficLogSubsystem();
@@ -965,14 +965,14 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
 
   if (v29)
   {
-    [(AKAppleIDSession *)v35 _reportOnRequest:location[0] response:0 attestationData:v29];
+    [(AKAppleIDSession *)selfCopy _reportOnRequest:location[0] response:0 attestationData:v29];
     v10 = v33[0];
-    v11 = [v29 attestationHeaders];
+    attestationHeaders = [v29 attestationHeaders];
     [v10 addEntriesFromDictionary:?];
-    MEMORY[0x1E69E5920](v11);
+    MEMORY[0x1E69E5920](attestationHeaders);
   }
 
-  if (v35->_proxiedAnisetteData)
+  if (selfCopy->_proxiedAnisetteData)
   {
     v23 = _AKTrafficLogSubsystem();
     v22 = OS_LOG_TYPE_DEBUG;
@@ -983,7 +983,7 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
     }
 
     objc_storeStrong(&v23, 0);
-    v21 = [MEMORY[0x1E695AC18] ak_proxiedHeadersForDevice:v35->_pairedDevice anisetteData:v35->_proxiedAnisetteData];
+    v21 = [MEMORY[0x1E695AC18] ak_proxiedHeadersForDevice:selfCopy->_pairedDevice anisetteData:selfCopy->_proxiedAnisetteData];
     if (v21)
     {
       [v33[0] addEntriesFromDictionary:v21];
@@ -994,9 +994,9 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
 
   else
   {
-    v9 = [(AKAppleIDSession *)v35 _pairedDeviceAnisetteController];
-    MEMORY[0x1E69E5920](v9);
-    if (v9)
+    _pairedDeviceAnisetteController = [(AKAppleIDSession *)selfCopy _pairedDeviceAnisetteController];
+    MEMORY[0x1E69E5920](_pairedDeviceAnisetteController);
+    if (_pairedDeviceAnisetteController)
     {
       v20 = _AKTrafficLogSubsystem();
       v19 = OS_LOG_TYPE_DEBUG;
@@ -1008,15 +1008,15 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
 
       objc_storeStrong(&v20, 0);
       v18 = 0;
-      v8 = [(AKAppleIDSession *)v35 _pairedDeviceAnisetteController];
+      _pairedDeviceAnisetteController2 = [(AKAppleIDSession *)selfCopy _pairedDeviceAnisetteController];
       obj = v18;
-      v7 = [v8 anisetteDataForURLRequest:location[0] error:&obj];
+      v7 = [_pairedDeviceAnisetteController2 anisetteDataForURLRequest:location[0] error:&obj];
       objc_storeStrong(&v18, obj);
       v17 = v7;
-      MEMORY[0x1E69E5920](v8);
+      MEMORY[0x1E69E5920](_pairedDeviceAnisetteController2);
       if (v17)
       {
-        v15 = [MEMORY[0x1E695AC18] ak_proxiedHeadersForDevice:v35->_pairedDevice anisetteData:v17];
+        v15 = [MEMORY[0x1E695AC18] ak_proxiedHeadersForDevice:selfCopy->_pairedDevice anisetteData:v17];
         if (v15)
         {
           [v33[0] addEntriesFromDictionary:v15];
@@ -1042,15 +1042,15 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   return v6;
 }
 
-- (void)_generateAppleIDHeadersForSessionTask:(id)a3 withCompletion:(id)a4
+- (void)_generateAppleIDHeadersForSessionTask:(id)task withCompletion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, task);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
-  v24 = [location[0] originalRequest];
+  objc_storeStrong(&v25, completion);
+  originalRequest = [location[0] originalRequest];
   v17[1] = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
@@ -1059,20 +1059,20 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   v22 = MEMORY[0x1E69E5928](v25);
   v23 = MEMORY[0x193B165F0]();
   v4 = [AKAttestationRequestData alloc];
-  v17[0] = [(AKAttestationRequestData *)v4 initWithRequest:v24 requiredHeaders:0];
-  v7 = [(AKAppleIDSession *)v27 _nativeAnisetteController];
+  v17[0] = [(AKAttestationRequestData *)v4 initWithRequest:originalRequest requiredHeaders:0];
+  _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
   v6 = v17[0];
   v8 = MEMORY[0x1E69E9820];
   v9 = -1073741824;
   v10 = 0;
   v11 = __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion___block_invoke_2;
   v12 = &unk_1E73D7DC0;
-  v13 = MEMORY[0x1E69E5928](v24);
+  v13 = MEMORY[0x1E69E5928](originalRequest);
   v14 = MEMORY[0x1E69E5928](location[0]);
-  v15 = MEMORY[0x1E69E5928](v27);
+  v15 = MEMORY[0x1E69E5928](selfCopy);
   v16 = MEMORY[0x1E69E5928](v23);
-  [v7 attestationDataForRequestData:v6 completion:?];
-  MEMORY[0x1E69E5920](v7);
+  [_nativeAnisetteController attestationDataForRequestData:v6 completion:?];
+  MEMORY[0x1E69E5920](_nativeAnisetteController);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -1080,7 +1080,7 @@ void __83__AKAppleIDSession_URLSession_task_getAppleIDHeadersForResponse_complet
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v22, 0);
-  objc_storeStrong(&v24, 0);
+  objc_storeStrong(&originalRequest, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(location, 0);
 }
@@ -1267,29 +1267,29 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_canHandleAnisetteURLResponse:(id)a3
+- (BOOL)_canHandleAnisetteURLResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] statusCode];
+  objc_storeStrong(location, response);
+  statusCode = [location[0] statusCode];
   v4 = 1;
-  if (v5 != 431)
+  if (statusCode != 431)
   {
     v4 = 1;
-    if (v5 != 434)
+    if (statusCode != 434)
     {
       v4 = 1;
-      if (v5 != 433)
+      if (statusCode != 433)
       {
         v4 = 1;
-        if (v5 != 441)
+        if (statusCode != 441)
         {
           v4 = 1;
-          if (v5 != 443)
+          if (statusCode != 443)
           {
-            v4 = v5 == 442;
+            v4 = statusCode == 442;
           }
         }
       }
@@ -1297,25 +1297,25 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
   }
 
   objc_storeStrong(location, 0);
-  return v4 || v5 == 444;
+  return v4 || statusCode == 444;
 }
 
-- (void)_handleAnisetteURLResponse:(id)a3 forRequest:(id)a4 withCompletion:(id)a5
+- (void)_handleAnisetteURLResponse:(id)response forRequest:(id)request withCompletion:(id)completion
 {
   v93 = *MEMORY[0x1E69E9840];
-  v87 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v85 = 0;
-  objc_storeStrong(&v85, a4);
+  objc_storeStrong(&v85, request);
   v84 = 0;
-  objc_storeStrong(&v84, a5);
+  objc_storeStrong(&v84, completion);
   v83 = [v85 URL];
   v33 = +[AKConfiguration sharedConfiguration];
-  v34 = [v33 shouldEnableAttestationLogging];
+  shouldEnableAttestationLogging = [v33 shouldEnableAttestationLogging];
   MEMORY[0x1E69E5920](v33);
-  if (v34 == 1)
+  if (shouldEnableAttestationLogging == 1)
   {
     v82 = _AKTrafficLogSubsystem();
     v81 = OS_LOG_TYPE_DEBUG;
@@ -1328,58 +1328,58 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
     objc_storeStrong(&v82, 0);
   }
 
-  v30 = [location[0] allHeaderFields];
-  v80 = [v30 objectForKey:@"x-apple-server-time"];
-  MEMORY[0x1E69E5920](v30);
+  allHeaderFields = [location[0] allHeaderFields];
+  v80 = [allHeaderFields objectForKey:@"x-apple-server-time"];
+  MEMORY[0x1E69E5920](allHeaderFields);
   if ([v80 length])
   {
-    v29 = [(AKAppleIDSession *)v87 _nativeAnisetteController];
-    [v29 setTimeAdjustmentWithServerTime:v80 completion:&__block_literal_global_34];
-    MEMORY[0x1E69E5920](v29);
+    _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
+    [_nativeAnisetteController setTimeAdjustmentWithServerTime:v80 completion:&__block_literal_global_34];
+    MEMORY[0x1E69E5920](_nativeAnisetteController);
   }
 
-  if ([(AKAppleIDSession *)v87 _canHandleAnisetteURLResponse:location[0]])
+  if ([(AKAppleIDSession *)selfCopy _canHandleAnisetteURLResponse:location[0]])
   {
     v76 = MEMORY[0x1E69E5928](location[0]);
     v75 = 0;
-    v26 = [v76 allHeaderFields];
-    v25 = [v26 objectForKey:@"X-Apple-I-MD-Cmd-Target"];
+    allHeaderFields2 = [v76 allHeaderFields];
+    v25 = [allHeaderFields2 objectForKey:@"X-Apple-I-MD-Cmd-Target"];
     v27 = [v25 isEqual:@"paired"];
     MEMORY[0x1E69E5920](v25);
-    MEMORY[0x1E69E5920](v26);
+    MEMORY[0x1E69E5920](allHeaderFields2);
     v74 = v27;
     if (v27)
     {
-      v5 = [(AKAppleIDSession *)v87 _pairedDeviceAnisetteController];
+      _pairedDeviceAnisetteController = [(AKAppleIDSession *)selfCopy _pairedDeviceAnisetteController];
     }
 
     else
     {
-      v5 = [(AKAppleIDSession *)v87 _nativeAnisetteController];
+      _pairedDeviceAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
     }
 
     v6 = v75;
-    v75 = v5;
+    v75 = _pairedDeviceAnisetteController;
     MEMORY[0x1E69E5920](v6);
     if (v75)
     {
-      v19 = [location[0] statusCode];
-      switch(v19)
+      statusCode = [location[0] statusCode];
+      switch(statusCode)
       {
         case 433:
           v12 = v75;
-          v13 = [v83 host];
+          host = [v83 host];
           v49 = MEMORY[0x1E69E9820];
           v50 = -1073741824;
           v51 = 0;
           v52 = __73__AKAppleIDSession__handleAnisetteURLResponse_forRequest_withCompletion___block_invoke_84;
           v53 = &unk_1E73D7DE8;
-          v54 = MEMORY[0x1E69E5928](v87);
+          v54 = MEMORY[0x1E69E5928](selfCopy);
           v55 = MEMORY[0x1E69E5928](v83);
           v56 = MEMORY[0x1E69E5928](v75);
           v57 = MEMORY[0x1E69E5928](v84);
-          [v12 shouldAllowReprovisionForHostName:v13 completion:&v49];
-          MEMORY[0x1E69E5920](v13);
+          [v12 shouldAllowReprovisionForHostName:host completion:&v49];
+          MEMORY[0x1E69E5920](host);
           v77 = 2;
           objc_storeStrong(&v57, 0);
           objc_storeStrong(&v56, 0);
@@ -1396,14 +1396,14 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
           }
 
           objc_storeStrong(&v70, 0);
-          v18 = [v76 allHeaderFields];
-          v68 = [v18 objectForKey:@"X-Apple-I-MD-DATA"];
-          MEMORY[0x1E69E5920](v18);
-          v67 = [v68 aaf_toBase64DecodedData];
-          if (v67)
+          allHeaderFields3 = [v76 allHeaderFields];
+          v68 = [allHeaderFields3 objectForKey:@"X-Apple-I-MD-DATA"];
+          MEMORY[0x1E69E5920](allHeaderFields3);
+          aaf_toBase64DecodedData = [v68 aaf_toBase64DecodedData];
+          if (aaf_toBase64DecodedData)
           {
             v15 = v75;
-            v14 = v67;
+            v14 = aaf_toBase64DecodedData;
             v58 = MEMORY[0x1E69E9820];
             v59 = -1073741824;
             v60 = 0;
@@ -1431,11 +1431,11 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
           }
 
           v77 = 2;
-          objc_storeStrong(&v67, 0);
+          objc_storeStrong(&aaf_toBase64DecodedData, 0);
           objc_storeStrong(&v68, 0);
           break;
         case 441:
-          v11 = [(AKAppleIDSession *)v87 _nativeAnisetteController];
+          _nativeAnisetteController2 = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
           v42 = MEMORY[0x1E69E9820];
           v43 = -1073741824;
           v44 = 0;
@@ -1443,8 +1443,8 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
           v46 = &unk_1E73D7E10;
           v48 = MEMORY[0x1E69E5928](v84);
           v47 = MEMORY[0x1E69E5928](v83);
-          [v11 resetDeviceIdentityWithCompletion:&v42];
-          MEMORY[0x1E69E5920](v11);
+          [_nativeAnisetteController2 resetDeviceIdentityWithCompletion:&v42];
+          MEMORY[0x1E69E5920](_nativeAnisetteController2);
           v77 = 2;
           objc_storeStrong(&v47, 0);
           objc_storeStrong(&v48, 0);
@@ -1495,7 +1495,7 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
           break;
       }
 
-      [(AKAppleIDSession *)v87 _reportOnRequest:0 response:location[0] attestationData:?];
+      [(AKAppleIDSession *)selfCopy _reportOnRequest:0 response:location[0] attestationData:?];
       v77 = 0;
     }
 
@@ -1509,11 +1509,11 @@ void __73__AKAppleIDSession__generateAppleIDHeadersForSessionTask_withCompletion
         v22 = v72;
         v24 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v76, "statusCode")}];
         v20 = v83;
-        v23 = [v76 allHeaderFields];
-        v71 = MEMORY[0x1E69E5928](v23);
+        allHeaderFields4 = [v76 allHeaderFields];
+        v71 = MEMORY[0x1E69E5928](allHeaderFields4);
         __os_log_helper_16_2_3_8_64_8_64_8_64(v90, v24, v20, v71);
         _os_log_error_impl(&dword_193225000, v21, v22, "No instance of AKAnisetteProvisioningController to handle HTTP code %@ in response to %@ %@.", v90, 0x20u);
-        MEMORY[0x1E69E5920](v23);
+        MEMORY[0x1E69E5920](allHeaderFields4);
         MEMORY[0x1E69E5920](v24);
         objc_storeStrong(&v71, 0);
       }
@@ -1691,17 +1691,17 @@ void __73__AKAppleIDSession__handleAnisetteURLResponse_forRequest_withCompletion
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleAnisetteReprovisionWithRequestURL:(id)a3 anisetteController:(id)a4 completion:(id)a5
+- (void)_handleAnisetteReprovisionWithRequestURL:(id)l anisetteController:(id)controller completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, controller);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, completion);
   v21 = _AKTrafficLogSubsystem();
   v20 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1714,9 +1714,9 @@ void __73__AKAppleIDSession__handleAnisetteURLResponse_forRequest_withCompletion
   v19 = [MEMORY[0x1E696ABC0] ak_errorWithCode:433];
   v18 = [MEMORY[0x1E696ABC0] ak_generalErrorWithCode:-8022 errorDomain:@"AKAnisetteError" underlyingError:v19];
   v17 = [MEMORY[0x1E6985DB0] ak_analyticsEventWithEventName:@"com.apple.authkit.midInvalidated" error:v18];
-  v5 = [location[0] host];
+  host = [location[0] host];
   [v17 setObject:? forKeyedSubscript:?];
-  MEMORY[0x1E69E5920](v5);
+  MEMORY[0x1E69E5920](host);
   v6 = +[AKAnalyticsReporterRTC rtcAnalyticsReporter];
   [v6 sendEvent:v17];
   MEMORY[0x1E69E5920](v6);
@@ -1832,17 +1832,17 @@ void __91__AKAppleIDSession__handleAnisetteReprovisionWithRequestURL_anisetteCon
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleURLSwitchingResponse:(id)a3 forRequest:(id)a4 withCompletion:(id)a5
+- (void)_handleURLSwitchingResponse:(id)response forRequest:(id)request withCompletion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, request);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, completion);
   v42 = [v44 URL];
   v41 = _AKLogSystem();
   v40 = OS_LOG_TYPE_DEFAULT;
@@ -1868,12 +1868,12 @@ void __91__AKAppleIDSession__handleAnisetteReprovisionWithRequestURL_anisetteCon
   MEMORY[0x1E69E5920](v11);
   if ([v36 count] >= 2)
   {
-    v30 = [v36 firstObject];
-    v29 = [v36 lastObject];
+    firstObject = [v36 firstObject];
+    lastObject = [v36 lastObject];
     v28 = [location[0] valueForHTTPHeaderField:@"X-Apple-I-Data"];
     if ([v28 length])
     {
-      v23 = [AKURLBag bagForAltDSID:v30];
+      v23 = [AKURLBag bagForAltDSID:firstObject];
       v6 = v23;
       v5 = v28;
       v14 = MEMORY[0x1E69E9820];
@@ -1882,7 +1882,7 @@ void __91__AKAppleIDSession__handleAnisetteReprovisionWithRequestURL_anisetteCon
       v17 = __74__AKAppleIDSession__handleURLSwitchingResponse_forRequest_withCompletion___block_invoke;
       v18 = &unk_1E73D7E60;
       v19 = MEMORY[0x1E69E5928](v23);
-      v20 = MEMORY[0x1E69E5928](v29);
+      v20 = MEMORY[0x1E69E5928](lastObject);
       v22 = MEMORY[0x1E69E5928](v43);
       v21 = MEMORY[0x1E69E5928](v37);
       [v6 forceUpdateBagWithUrlSwitchData:v5 completion:&v14];
@@ -1914,8 +1914,8 @@ void __91__AKAppleIDSession__handleAnisetteReprovisionWithRequestURL_anisetteCon
     }
 
     objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v29, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&lastObject, 0);
+    objc_storeStrong(&firstObject, 0);
   }
 
   else
@@ -2005,44 +2005,44 @@ void __74__AKAppleIDSession__handleURLSwitchingResponse_forRequest_withCompletio
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_reportOnRequest:(id)a3 response:(id)a4 attestationData:(id)a5
+- (void)_reportOnRequest:(id)request response:(id)response attestationData:(id)data
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
+  objc_storeStrong(&v30, response);
   v29 = 0;
-  objc_storeStrong(&v29, a5);
+  objc_storeStrong(&v29, data);
   v20 = +[AKDevice currentDevice];
-  v21 = [v20 isInternalBuild];
+  isInternalBuild = [v20 isInternalBuild];
   MEMORY[0x1E69E5920](v20);
-  if (v21)
+  if (isInternalBuild)
   {
     v27 = 0;
     v26 = objc_opt_new();
     if (location[0] || v29)
     {
       v12 = [location[0] URL];
-      v11 = [v12 host];
+      host = [v12 host];
       [v26 setEndPointVIP:?];
-      MEMORY[0x1E69E5920](v11);
+      MEMORY[0x1E69E5920](host);
       MEMORY[0x1E69E5920](v12);
-      v13 = [location[0] HTTPMethod];
+      hTTPMethod = [location[0] HTTPMethod];
       [v26 setRequestMethod:?];
-      MEMORY[0x1E69E5920](v13);
-      v14 = [location[0] HTTPBody];
-      [v26 setBodySize:{objc_msgSend(v14, "length")}];
-      MEMORY[0x1E69E5920](v14);
+      MEMORY[0x1E69E5920](hTTPMethod);
+      hTTPBody = [location[0] HTTPBody];
+      [v26 setBodySize:{objc_msgSend(hTTPBody, "length")}];
+      MEMORY[0x1E69E5920](hTTPBody);
       v25 = 0;
       v15 = MEMORY[0x1E696ACB0];
-      v17 = [v29 attestationHeaders];
+      attestationHeaders = [v29 attestationHeaders];
       v23 = v25;
       v16 = [v15 dataWithJSONObject:? options:? error:?];
       objc_storeStrong(&v25, v23);
       v24 = v16;
-      MEMORY[0x1E69E5920](v17);
+      MEMORY[0x1E69E5920](attestationHeaders);
       if (!v25)
       {
         v5 = [v24 length];
@@ -2057,26 +2057,26 @@ void __74__AKAppleIDSession__handleURLSwitchingResponse_forRequest_withCompletio
     else if (v30)
     {
       v10 = [v30 URL];
-      v9 = [v10 host];
+      host2 = [v10 host];
       [v26 setEndPointVIP:?];
-      MEMORY[0x1E69E5920](v9);
+      MEMORY[0x1E69E5920](host2);
       MEMORY[0x1E69E5920](v10);
-      v22 = [v30 statusCode];
+      statusCode = [v30 statusCode];
       v27 = [v30 statusCode] / 100 != 2;
       v8 = [v30 URL];
-      v7 = [v8 host];
+      host3 = [v8 host];
       [v26 setEndPointVIP:?];
-      MEMORY[0x1E69E5920](v7);
+      MEMORY[0x1E69E5920](host3);
       MEMORY[0x1E69E5920](v8);
-      [v26 setErrorCode:v22];
+      [v26 setErrorCode:statusCode];
       [v26 setErrorDomain:@"AKAuthenticationServerError"];
     }
 
     if (v27)
     {
-      v6 = [(AKAppleIDSession *)v32 _nativeAnisetteController];
-      [v6 postAttestationAnalytics:v26 completion:&__block_literal_global_100];
-      MEMORY[0x1E69E5920](v6);
+      _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
+      [_nativeAnisetteController postAttestationAnalytics:v26 completion:&__block_literal_global_100];
+      MEMORY[0x1E69E5920](_nativeAnisetteController);
       v28 = 0;
     }
 
@@ -2121,15 +2121,15 @@ void __62__AKAppleIDSession__reportOnRequest_response_attestationData___block_in
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_resetDeviceIdentityWithCompletion:(id)a3
+- (void)_resetDeviceIdentityWithCompletion:(id)completion
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKAppleIDSession *)v5 _nativeAnisetteController];
-  [v3 resetDeviceIdentityWithCompletion:location[0]];
-  MEMORY[0x1E69E5920](v3);
+  objc_storeStrong(location, completion);
+  _nativeAnisetteController = [(AKAppleIDSession *)selfCopy _nativeAnisetteController];
+  [_nativeAnisetteController resetDeviceIdentityWithCompletion:location[0]];
+  MEMORY[0x1E69E5920](_nativeAnisetteController);
   objc_storeStrong(location, 0);
 }
 

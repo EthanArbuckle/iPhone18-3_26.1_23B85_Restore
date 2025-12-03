@@ -1,15 +1,15 @@
 @interface JavaUtilLinkedList
-- (BOOL)addAllWithInt:(int)a3 withJavaUtilCollection:(id)a4;
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)removeLastOccurrenceWithId:(id)a3;
-- (JavaUtilLinkedList)initWithJavaUtilCollection:(id)a3;
+- (BOOL)addAllWithInt:(int)int withJavaUtilCollection:(id)collection;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)removeLastOccurrenceWithId:(id)id;
+- (JavaUtilLinkedList)initWithJavaUtilCollection:(id)collection;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descendingIterator;
 - (id)getLast;
-- (id)getWithInt:(int)a3;
-- (id)listIteratorWithInt:(int)a3;
+- (id)getWithInt:(int)int;
+- (id)listIteratorWithInt:(int)int;
 - (id)peek;
 - (id)peekFirst;
 - (id)peekFirstImpl;
@@ -18,43 +18,43 @@
 - (id)pollFirst;
 - (id)pollLast;
 - (id)removeLastImpl;
-- (id)removeWithInt:(int)a3;
-- (id)setWithInt:(int)a3 withId:(id)a4;
+- (id)removeWithInt:(int)int;
+- (id)setWithInt:(int)int withId:(id)id;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (uint64_t)getFirstImpl;
 - (uint64_t)removeFirstImpl;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addWithInt:(int)a3 withId:(id)a4;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addWithInt:(int)int withId:(id)id;
 - (void)clear;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilLinkedList
 
-- (JavaUtilLinkedList)initWithJavaUtilCollection:(id)a3
+- (JavaUtilLinkedList)initWithJavaUtilCollection:(id)collection
 {
   JavaUtilLinkedList_init(self);
-  [(JavaUtilLinkedList *)self addAllWithJavaUtilCollection:a3];
+  [(JavaUtilLinkedList *)self addAllWithJavaUtilCollection:collection];
   return self;
 }
 
-- (void)addWithInt:(int)a3 withId:(id)a4
+- (void)addWithInt:(int)int withId:(id)id
 {
-  if (a3 < 0 || (v6 = *(&self->super.super.modCount_ + 1), v6 < a3))
+  if (int < 0 || (v6 = *(&self->super.super.modCount_ + 1), v6 < int))
   {
     v13 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v13);
   }
 
   Weak = *&self->size_;
-  if (a3 < v6 >> 1)
+  if (int < v6 >> 1)
   {
-    v9 = a3 + 1;
+    v9 = int + 1;
     while (Weak)
     {
       Weak = *(Weak + 3);
@@ -67,12 +67,12 @@
     goto LABEL_14;
   }
 
-  if (v6 > a3)
+  if (v6 > int)
   {
     while (Weak)
     {
       Weak = objc_loadWeak(Weak + 2);
-      if (--v6 <= a3)
+      if (--v6 <= int)
       {
         goto LABEL_11;
       }
@@ -89,7 +89,7 @@ LABEL_11:
   }
 
   v10 = objc_loadWeak(Weak + 2);
-  v11 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(a4, v10, Weak);
+  v11 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(id, v10, Weak);
   if (!v10)
   {
     goto LABEL_14;
@@ -102,26 +102,26 @@ LABEL_11:
   ++self->super.super.modCount_;
 }
 
-- (BOOL)addAllWithInt:(int)a3 withJavaUtilCollection:(id)a4
+- (BOOL)addAllWithInt:(int)int withJavaUtilCollection:(id)collection
 {
-  if (a3 < 0 || (v4 = a3, *(&self->super.super.modCount_ + 1) < a3))
+  if (int < 0 || (v4 = int, *(&self->super.super.modCount_ + 1) < int))
   {
     v18 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v18);
   }
 
-  v6 = a4;
-  if (!a4)
+  collectionCopy = collection;
+  if (!collection)
   {
     goto LABEL_27;
   }
 
-  v7 = [a4 size];
+  v7 = [collection size];
   if (v7)
   {
-    if (v6 == self)
+    if (collectionCopy == self)
     {
-      v6 = new_JavaUtilArrayList_initWithJavaUtilCollection_(v6);
+      collectionCopy = new_JavaUtilArrayList_initWithJavaUtilCollection_(collectionCopy);
     }
 
     Weak = *&self->size_;
@@ -170,7 +170,7 @@ LABEL_16:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(JavaUtilArrayList *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v12 = [(JavaUtilArrayList *)collectionCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -183,7 +183,7 @@ LABEL_16:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(collectionCopy);
           }
 
           Weak = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(*(*(&v19 + 1) + 8 * v15), v16, 0);
@@ -193,7 +193,7 @@ LABEL_16:
         }
 
         while (v13 != v15);
-        v13 = [(JavaUtilArrayList *)v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [(JavaUtilArrayList *)collectionCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
@@ -213,20 +213,20 @@ LABEL_16:
   return v7 != 0;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     goto LABEL_17;
   }
 
-  v3 = a3;
-  v5 = [a3 size];
+  collectionCopy = collection;
+  v5 = [collection size];
   if (v5)
   {
-    if (v3 == self)
+    if (collectionCopy == self)
     {
-      v3 = new_JavaUtilArrayList_initWithJavaUtilCollection_(v3);
+      collectionCopy = new_JavaUtilArrayList_initWithJavaUtilCollection_(collectionCopy);
     }
 
     v6 = *&self->size_;
@@ -237,7 +237,7 @@ LABEL_16:
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [(JavaUtilArrayList *)v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [(JavaUtilArrayList *)collectionCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         v9 = v8;
@@ -250,7 +250,7 @@ LABEL_16:
           {
             if (*v16 != v10)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(collectionCopy);
             }
 
             v13 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(*(*(&v15 + 1) + 8 * v11), v12, 0);
@@ -266,7 +266,7 @@ LABEL_16:
           }
 
           while (v9 != v11);
-          v9 = [(JavaUtilArrayList *)v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [(JavaUtilArrayList *)collectionCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v9);
@@ -310,9 +310,9 @@ LABEL_17:
 {
   v6.receiver = self;
   v6.super_class = JavaUtilLinkedList;
-  v3 = [(JavaUtilLinkedList *)&v6 clone];
+  clone = [(JavaUtilLinkedList *)&v6 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     JreThrowNullPointerException();
   }
@@ -322,16 +322,16 @@ LABEL_17:
     JreThrowClassCastException();
   }
 
-  *(v3 + 3) = 0;
+  *(clone + 3) = 0;
   v4 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(0, 0, 0);
-  JreStrongAssignAndConsume(v3 + 2, v4);
-  objc_storeWeak((*(v3 + 2) + 16), *(v3 + 2));
-  JreStrongAssign((*(v3 + 2) + 24), *(v3 + 2));
-  [v3 addAllWithJavaUtilCollection:self];
-  return v3;
+  JreStrongAssignAndConsume(clone + 2, v4);
+  objc_storeWeak((*(clone + 2) + 16), *(clone + 2));
+  JreStrongAssign((*(clone + 2) + 24), *(clone + 2));
+  [clone addAllWithJavaUtilCollection:self];
+  return clone;
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   v3 = *&self->size_;
   if (!v3)
@@ -340,13 +340,13 @@ LABEL_17:
   }
 
   v5 = *(v3 + 24);
-  if (a3)
+  if (id)
   {
     if (v5 != v3)
     {
       while (v5)
       {
-        result = [a3 isEqual:*(v5 + 8)];
+        result = [id isEqual:*(v5 + 8)];
         if (!result)
         {
           v5 = *(v5 + 24);
@@ -388,18 +388,18 @@ LABEL_15:
   return 0;
 }
 
-- (id)getWithInt:(int)a3
+- (id)getWithInt:(int)int
 {
-  if (a3 < 0 || (v4 = *(&self->super.super.modCount_ + 1), v4 <= a3))
+  if (int < 0 || (v4 = *(&self->super.super.modCount_ + 1), v4 <= int))
   {
     v8 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v8);
   }
 
   Weak = *&self->size_;
-  if (a3 < v4 >> 1)
+  if (int < v4 >> 1)
   {
-    v6 = a3 + 1;
+    v6 = int + 1;
     while (Weak)
     {
       Weak = *(Weak + 3);
@@ -423,7 +423,7 @@ LABEL_15:
     --v4;
   }
 
-  while (v4 > a3);
+  while (v4 > int);
 LABEL_10:
   if (!Weak)
   {
@@ -436,7 +436,7 @@ LABEL_12:
 
 - (uint64_t)getFirstImpl
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     goto LABEL_5;
@@ -482,7 +482,7 @@ LABEL_5:
   return *(Weak + 1);
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   v3 = *&self->size_;
   if (!v3)
@@ -491,14 +491,14 @@ LABEL_5:
   }
 
   v5 = *(v3 + 24);
-  if (a3)
+  if (id)
   {
     if (v5 != v3)
     {
       v7 = 0;
       while (v5)
       {
-        if ([a3 isEqual:*(v5 + 8)])
+        if ([id isEqual:*(v5 + 8)])
         {
           return v7;
         }
@@ -540,7 +540,7 @@ LABEL_16:
   return -1;
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   v3 = *&self->size_;
   if (!v3)
@@ -552,14 +552,14 @@ LABEL_16:
   Weak = objc_loadWeak((v3 + 16));
   v8 = Weak;
   v9 = *&self->size_;
-  if (a3)
+  if (id)
   {
     if (Weak != v9)
     {
       v10 = v6 - 1;
       while (v8)
       {
-        if ([a3 isEqual:*(v8 + 1)])
+        if ([id isEqual:*(v8 + 1)])
         {
           return v10;
         }
@@ -601,26 +601,26 @@ LABEL_16:
   return -1;
 }
 
-- (id)listIteratorWithInt:(int)a3
+- (id)listIteratorWithInt:(int)int
 {
   v5 = [JavaUtilLinkedList_LinkIterator alloc];
-  sub_1001A67CC(v5, self, a3);
+  sub_1001A67CC(v5, self, int);
 
   return v5;
 }
 
-- (id)removeWithInt:(int)a3
+- (id)removeWithInt:(int)int
 {
-  if (a3 < 0 || (v5 = *(&self->super.super.modCount_ + 1), v5 <= a3))
+  if (int < 0 || (v5 = *(&self->super.super.modCount_ + 1), v5 <= int))
   {
     v12 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v12);
   }
 
   Weak = *&self->size_;
-  if (a3 < v5 >> 1)
+  if (int < v5 >> 1)
   {
-    v7 = a3 + 1;
+    v7 = int + 1;
     while (Weak)
     {
       Weak = *(Weak + 3);
@@ -644,7 +644,7 @@ LABEL_16:
     --v5;
   }
 
-  while (v5 > a3);
+  while (v5 > int);
 LABEL_10:
   if (!Weak || (v8 = objc_loadWeak(Weak + 2)) == 0 || (v9 = v8, v10 = *(Weak + 3), JreStrongAssign(v8 + 3, v10), !v10))
   {
@@ -660,7 +660,7 @@ LABEL_14:
 
 - (uint64_t)removeFirstImpl
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     goto LABEL_6;
@@ -679,37 +679,37 @@ LABEL_6:
     JreThrowNullPointerException();
   }
 
-  objc_storeWeak(v4 + 2, *(a1 + 16));
-  --*(a1 + 12);
-  ++*(a1 + 8);
+  objc_storeWeak(v4 + 2, *(self + 16));
+  --*(self + 12);
+  ++*(self + 8);
   return *(v3 + 8);
 }
 
 - (id)removeLastImpl
 {
-  v1 = *(a1 + 16);
+  v1 = *(self + 16);
   if (!v1)
   {
     goto LABEL_6;
   }
 
   Weak = objc_loadWeak((v1 + 16));
-  if (Weak == *(a1 + 16))
+  if (Weak == *(self + 16))
   {
     v7 = new_JavaUtilNoSuchElementException_init();
     objc_exception_throw(v7);
   }
 
   v4 = Weak;
-  if (!Weak || (v5 = objc_loadWeak(Weak + 2), objc_storeWeak((*(a1 + 16) + 16), v5), !v5))
+  if (!Weak || (v5 = objc_loadWeak(Weak + 2), objc_storeWeak((*(self + 16) + 16), v5), !v5))
   {
 LABEL_6:
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(v5 + 3, *(a1 + 16));
-  --*(a1 + 12);
-  ++*(a1 + 8);
+  JreStrongAssign(v5 + 3, *(self + 16));
+  --*(self + 12);
+  ++*(self + 8);
   return v4[1];
 }
 
@@ -793,27 +793,27 @@ LABEL_6:
   }
 }
 
-- (BOOL)removeLastOccurrenceWithId:(id)a3
+- (BOOL)removeLastOccurrenceWithId:(id)id
 {
   v5 = [JavaUtilLinkedList_ReverseLinkIterator alloc];
   sub_1001A6E54(v5, self);
   v6 = v5;
 
-  return sub_1001A5FDC(a3, v6);
+  return sub_1001A5FDC(id, v6);
 }
 
-- (id)setWithInt:(int)a3 withId:(id)a4
+- (id)setWithInt:(int)int withId:(id)id
 {
-  if (a3 < 0 || (v5 = *(&self->super.super.modCount_ + 1), v5 <= a3))
+  if (int < 0 || (v5 = *(&self->super.super.modCount_ + 1), v5 <= int))
   {
     v11 = new_JavaLangIndexOutOfBoundsException_init();
     objc_exception_throw(v11);
   }
 
   Weak = *&self->size_;
-  if (a3 < v5 >> 1)
+  if (int < v5 >> 1)
   {
-    v8 = a3 + 1;
+    v8 = int + 1;
     while (Weak)
     {
       Weak = *(Weak + 3);
@@ -837,7 +837,7 @@ LABEL_6:
     --v5;
   }
 
-  while (v5 > a3);
+  while (v5 > int);
 LABEL_10:
   if (!Weak)
   {
@@ -846,7 +846,7 @@ LABEL_12:
   }
 
   v9 = *(Weak + 1);
-  JreStrongAssign(Weak + 1, a4);
+  JreStrongAssign(Weak + 1, id);
   return v9;
 }
 
@@ -941,19 +941,19 @@ LABEL_7:
   return v5;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     goto LABEL_15;
   }
 
-  v3 = a3;
-  if (*(&self->super.super.modCount_ + 1) > *(a3 + 2))
+  arrayCopy = array;
+  if (*(&self->super.super.modCount_ + 1) > *(array + 2))
   {
-    v3 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], *(&self->super.super.modCount_ + 1));
+    arrayCopy = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], *(&self->super.super.modCount_ + 1));
     objc_opt_class();
-    if (v3)
+    if (arrayCopy)
     {
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -971,13 +971,13 @@ LABEL_7:
   v6 = *(v5 + 24);
   if (v6 != v5)
   {
-    if (v3)
+    if (arrayCopy)
     {
       v7 = 0;
       while (v6)
       {
         v8 = v7++;
-        IOSObjectArray_Set(v3, v8, *(v6 + 8));
+        IOSObjectArray_Set(arrayCopy, v8, *(v6 + 8));
         v6 = *(v6 + 24);
         if (v6 == *&self->size_)
         {
@@ -991,23 +991,23 @@ LABEL_15:
   }
 
   v7 = 0;
-  if (!v3)
+  if (!arrayCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_11:
-  if (v7 < v3[2])
+  if (v7 < arrayCopy[2])
   {
-    IOSObjectArray_Set(v3, v7, 0);
+    IOSObjectArray_Set(arrayCopy, v7, 0);
   }
 
-  return v3;
+  return arrayCopy;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultWriteObject], objc_msgSend(a3, "writeIntWithInt:", *(&self->super.super.modCount_ + 1)), (v5 = -[JavaUtilAbstractSequentialList iterator](self, "iterator")) == 0))
+  if (!stream || ([stream defaultWriteObject], objc_msgSend(stream, "writeIntWithInt:", *(&self->super.super.modCount_ + 1)), (v5 = -[JavaUtilAbstractSequentialList iterator](self, "iterator")) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -1017,22 +1017,22 @@ LABEL_11:
   {
     do
     {
-      [a3 writeObjectWithId:{objc_msgSend(v6, "next")}];
+      [stream writeObjectWithId:{objc_msgSend(v6, "next")}];
     }
 
     while (([v6 hasNext] & 1) != 0);
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  *(&self->super.super.modCount_ + 1) = [a3 readInt];
+  [stream defaultReadObject];
+  *(&self->super.super.modCount_ + 1) = [stream readInt];
   v5 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_(0, 0, 0);
   JreStrongAssignAndConsume(&self->size_, v5);
   v6 = *&self->size_;
@@ -1047,7 +1047,7 @@ LABEL_11:
     do
     {
       v8 = v6;
-      v6 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_([a3 readObject], v6, 0);
+      v6 = new_JavaUtilLinkedList_Link_initWithId_withJavaUtilLinkedList_Link_withJavaUtilLinkedList_Link_([stream readObject], v6, 0);
       JreStrongAssign(&v8->next_, v6);
       --v7;
     }
@@ -1079,30 +1079,30 @@ LABEL_11:
   [(JavaUtilLinkedList *)&v5 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v5 = a3->var3[0];
+  v5 = state->var3[0];
   if (!v5)
   {
-    a3->var2 = &self->super.super.modCount_;
+    state->var2 = &self->super.super.modCount_;
     v5 = *(*&self->size_ + 24);
   }
 
-  a3->var1 = a4;
-  for (i = 0; v5 != *&self->size_ && i < a5; v5 = *(v5 + 24))
+  state->var1 = objects;
+  for (i = 0; v5 != *&self->size_ && i < count; v5 = *(v5 + 24))
   {
-    a4[i++] = *(v5 + 8);
+    objects[i++] = *(v5 + 8);
   }
 
-  a3->var3[0] = v5;
+  state->var3[0] = v5;
   return i;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilLinkedList *)self clone];
+  clone = [(JavaUtilLinkedList *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

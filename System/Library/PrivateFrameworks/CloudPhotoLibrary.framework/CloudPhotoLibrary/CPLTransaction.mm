@@ -1,8 +1,8 @@
 @interface CPLTransaction
 + (id)transactions;
 + (unint64_t)transactionCount;
-+ (void)beginTransactionWithIdentifier:(id)a3 description:(id)a4 keepPower:(BOOL)a5;
-+ (void)endTransactionWithIdentifier:(id)a3;
++ (void)beginTransactionWithIdentifier:(id)identifier description:(id)description keepPower:(BOOL)power;
++ (void)endTransactionWithIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)endTransaction;
 @end
@@ -198,17 +198,17 @@ void __30__CPLTransaction_transactions__block_invoke(uint64_t a1)
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)endTransactionWithIdentifier:(id)a3
++ (void)endTransactionWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v17 = __47__CPLTransaction_endTransactionWithIdentifier___block_invoke;
   v18 = &unk_1E861FEE8;
-  v6 = v5;
+  v6 = identifierCopy;
   v19 = v6;
   v20 = a2;
-  v21 = a1;
+  selfCopy = self;
   v7 = v16;
   os_unfair_lock_lock(&_lock);
   if (!_transactionIdentifiers)
@@ -290,19 +290,19 @@ uint64_t __47__CPLTransaction_endTransactionWithIdentifier___block_invoke(void *
   return result;
 }
 
-+ (void)beginTransactionWithIdentifier:(id)a3 description:(id)a4 keepPower:(BOOL)a5
++ (void)beginTransactionWithIdentifier:(id)identifier description:(id)description keepPower:(BOOL)power
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v21 = __71__CPLTransaction_beginTransactionWithIdentifier_description_keepPower___block_invoke;
   v22 = &unk_1E861F360;
-  v9 = v7;
+  v9 = identifierCopy;
   v23 = v9;
-  v10 = v8;
+  v10 = descriptionCopy;
   v24 = v10;
-  v25 = a5;
+  powerCopy = power;
   v11 = v20;
   os_unfair_lock_lock(&_lock);
   if (!_transactionIdentifiers)

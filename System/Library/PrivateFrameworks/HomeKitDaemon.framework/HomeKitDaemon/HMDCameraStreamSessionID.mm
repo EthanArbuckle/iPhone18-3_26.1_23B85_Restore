@@ -1,44 +1,44 @@
 @interface HMDCameraStreamSessionID
-- (HMDCameraStreamSessionID)initWithAccessory:(id)a3 service:(id)a4 sessionID:(id)a5 message:(id)a6;
+- (HMDCameraStreamSessionID)initWithAccessory:(id)accessory service:(id)service sessionID:(id)d message:(id)message;
 @end
 
 @implementation HMDCameraStreamSessionID
 
-- (HMDCameraStreamSessionID)initWithAccessory:(id)a3 service:(id)a4 sessionID:(id)a5 message:(id)a6
+- (HMDCameraStreamSessionID)initWithAccessory:(id)accessory service:(id)service sessionID:(id)d message:(id)message
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  dCopy = d;
+  messageCopy = message;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v11)
+  if (!serviceCopy)
   {
 LABEL_7:
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v12)
+  if (!dCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v14 = v13;
-  if (v13)
+  v14 = messageCopy;
+  if (messageCopy)
   {
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v10 name];
-    v17 = [v11 instanceID];
-    v18 = [v15 stringWithFormat:@"%@/%@/%@", v16, v17, v12];
+    name = [accessoryCopy name];
+    instanceID = [serviceCopy instanceID];
+    dCopy = [v15 stringWithFormat:@"%@/%@/%@", name, instanceID, dCopy];
 
-    v19 = [(HMDCameraSessionID *)self initWithSessionID:v12 message:v14 description:v18];
+    v19 = [(HMDCameraSessionID *)self initWithSessionID:dCopy message:v14 description:dCopy];
     return v19;
   }
 

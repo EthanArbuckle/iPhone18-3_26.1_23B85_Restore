@@ -4,23 +4,23 @@
 - (MPMediaItemArtwork)initWithBoundsSize:(CGSize)boundsSize requestHandler:(void *)requestHandler;
 - (MPMediaItemArtwork)initWithImage:(UIImage *)image;
 - (UIImage)imageWithSize:(CGSize)size;
-- (id)jpegDataWithSize:(CGSize)a3;
-- (id)pngDataWithSize:(CGSize)a3;
+- (id)jpegDataWithSize:(CGSize)size;
+- (id)pngDataWithSize:(CGSize)size;
 @end
 
 @implementation MPMediaItemArtwork
 
-- (id)pngDataWithSize:(CGSize)a3
+- (id)pngDataWithSize:(CGSize)size
 {
-  v3 = [(MPMediaItemArtwork *)self imageWithSize:a3.width, a3.height];
+  v3 = [(MPMediaItemArtwork *)self imageWithSize:size.width, size.height];
   v4 = UIImagePNGRepresentation(v3);
 
   return v4;
 }
 
-- (id)jpegDataWithSize:(CGSize)a3
+- (id)jpegDataWithSize:(CGSize)size
 {
-  v3 = [(MPMediaItemArtwork *)self imageWithSize:a3.width, a3.height];
+  v3 = [(MPMediaItemArtwork *)self imageWithSize:size.width, size.height];
   v4 = UIImageJPEGRepresentation(v3, *MEMORY[0x1E69B1368]);
 
   return v4;
@@ -72,16 +72,16 @@
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"requestHandler must be non-nil"];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (MPMediaItemArtwork)initWithImage:(UIImage *)image
@@ -100,16 +100,16 @@
     v13 = v5;
     self = [(MPMediaItemArtwork *)self initWithBoundsSize:v12 requestHandler:v7, v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"image must be non-nil"];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (MPMediaItemArtwork)init

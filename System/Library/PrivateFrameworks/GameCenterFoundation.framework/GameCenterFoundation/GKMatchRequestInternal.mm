@@ -1,7 +1,7 @@
 @interface GKMatchRequestInternal
 + (id)secureCodedPropertyKeys;
 - (BOOL)hasGuestPlayers;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GKMatchRequestInternal)init;
 - (unint64_t)hash;
 @end
@@ -25,112 +25,112 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v5 = v4;
-  v6 = [(GKMatchRequestInternal *)self minPlayers];
-  if (v6 != [v5 minPlayers])
+  v5 = equalCopy;
+  minPlayers = [(GKMatchRequestInternal *)self minPlayers];
+  if (minPlayers != [v5 minPlayers])
   {
     goto LABEL_15;
   }
 
-  v7 = [(GKMatchRequestInternal *)self maxPlayers];
-  if (v7 != [v5 maxPlayers])
+  maxPlayers = [(GKMatchRequestInternal *)self maxPlayers];
+  if (maxPlayers != [v5 maxPlayers])
   {
     goto LABEL_15;
   }
 
-  v8 = [(GKMatchRequestInternal *)self defaultNumberOfPlayers];
-  if (v8 != [v5 defaultNumberOfPlayers])
+  defaultNumberOfPlayers = [(GKMatchRequestInternal *)self defaultNumberOfPlayers];
+  if (defaultNumberOfPlayers != [v5 defaultNumberOfPlayers])
   {
     goto LABEL_15;
   }
 
-  v9 = [(GKMatchRequestInternal *)self matchType];
-  if (v9 != [v5 matchType])
+  matchType = [(GKMatchRequestInternal *)self matchType];
+  if (matchType != [v5 matchType])
   {
     goto LABEL_15;
   }
 
-  v10 = [(GKMatchRequestInternal *)self playerGroup];
-  if (v10 != [v5 playerGroup])
+  playerGroup = [(GKMatchRequestInternal *)self playerGroup];
+  if (playerGroup != [v5 playerGroup])
   {
     goto LABEL_15;
   }
 
-  v11 = [(GKMatchRequestInternal *)self playerAttributes];
-  if (v11 != [v5 playerAttributes])
+  playerAttributes = [(GKMatchRequestInternal *)self playerAttributes];
+  if (playerAttributes != [v5 playerAttributes])
   {
     goto LABEL_15;
   }
 
-  v12 = [(GKMatchRequestInternal *)self localPlayerID];
-  v13 = [v5 localPlayerID];
-  if (v12 == v13)
+  localPlayerID = [(GKMatchRequestInternal *)self localPlayerID];
+  localPlayerID2 = [v5 localPlayerID];
+  if (localPlayerID == localPlayerID2)
   {
     goto LABEL_11;
   }
 
-  v14 = [(GKMatchRequestInternal *)self localPlayerID];
-  v15 = [v5 localPlayerID];
-  if (![v14 isEqualToString:v15])
+  localPlayerID3 = [(GKMatchRequestInternal *)self localPlayerID];
+  localPlayerID4 = [v5 localPlayerID];
+  if (![localPlayerID3 isEqualToString:localPlayerID4])
   {
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  v102 = v15;
-  v103 = v14;
+  v102 = localPlayerID4;
+  v103 = localPlayerID3;
 LABEL_11:
-  v16 = [(GKMatchRequestInternal *)self recipients];
-  v17 = [v5 recipients];
-  if (v16 == v17)
+  recipients = [(GKMatchRequestInternal *)self recipients];
+  recipients2 = [v5 recipients];
+  if (recipients == recipients2)
   {
     goto LABEL_18;
   }
 
-  v18 = [(GKMatchRequestInternal *)self recipients];
-  v19 = [v5 recipients];
-  if ([v18 isEqualToArray:v19])
+  recipients3 = [(GKMatchRequestInternal *)self recipients];
+  recipients4 = [v5 recipients];
+  if ([recipients3 isEqualToArray:recipients4])
   {
-    v100 = v19;
-    v101 = v18;
+    v100 = recipients4;
+    v101 = recipients3;
 LABEL_18:
-    v22 = [(GKMatchRequestInternal *)self recipientPlayerIDs];
-    v23 = [v5 recipientPlayerIDs];
-    v24 = v23;
-    if (v22 != v23)
+    recipientPlayerIDs = [(GKMatchRequestInternal *)self recipientPlayerIDs];
+    recipientPlayerIDs2 = [v5 recipientPlayerIDs];
+    v24 = recipientPlayerIDs2;
+    if (recipientPlayerIDs != recipientPlayerIDs2)
     {
-      v25 = v13;
-      v26 = v17;
-      v27 = v16;
-      v28 = v23;
-      v29 = v22;
-      v30 = [(GKMatchRequestInternal *)self recipientPlayerIDs];
-      v93 = [v5 recipientPlayerIDs];
-      v94 = v30;
-      if (![v30 isEqualToArray:?])
+      v25 = localPlayerID2;
+      v26 = recipients2;
+      v27 = recipients;
+      v28 = recipientPlayerIDs2;
+      v29 = recipientPlayerIDs;
+      recipientPlayerIDs3 = [(GKMatchRequestInternal *)self recipientPlayerIDs];
+      recipientPlayerIDs4 = [v5 recipientPlayerIDs];
+      v94 = recipientPlayerIDs3;
+      if (![recipientPlayerIDs3 isEqualToArray:?])
       {
         v31 = 0;
-        v22 = v29;
+        recipientPlayerIDs = v29;
         v24 = v28;
-        v16 = v27;
-        v17 = v26;
-        v13 = v25;
+        recipients = v27;
+        recipients2 = v26;
+        localPlayerID2 = v25;
 LABEL_66:
 
 LABEL_67:
-        v19 = v100;
-        v18 = v101;
-        if (v16 == v17)
+        recipients4 = v100;
+        recipients3 = v101;
+        if (recipients == recipients2)
         {
           goto LABEL_69;
         }
@@ -138,31 +138,31 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      v22 = v29;
+      recipientPlayerIDs = v29;
       v24 = v28;
-      v16 = v27;
-      v17 = v26;
-      v13 = v25;
+      recipients = v27;
+      recipients2 = v26;
+      localPlayerID2 = v25;
     }
 
-    v32 = [(GKMatchRequestInternal *)self messagesBasedRecipients];
-    v98 = [v5 messagesBasedRecipients];
-    v99 = v32;
-    if (v32 != v98)
+    messagesBasedRecipients = [(GKMatchRequestInternal *)self messagesBasedRecipients];
+    messagesBasedRecipients2 = [v5 messagesBasedRecipients];
+    v99 = messagesBasedRecipients;
+    if (messagesBasedRecipients != messagesBasedRecipients2)
     {
-      v33 = [(GKMatchRequestInternal *)self messagesBasedRecipients];
-      v88 = [v5 messagesBasedRecipients];
-      v89 = v33;
-      if (![v33 isEqualToArray:v88])
+      messagesBasedRecipients3 = [(GKMatchRequestInternal *)self messagesBasedRecipients];
+      messagesBasedRecipients4 = [v5 messagesBasedRecipients];
+      v89 = messagesBasedRecipients3;
+      if (![messagesBasedRecipients3 isEqualToArray:messagesBasedRecipients4])
       {
         v95 = 0;
-        v34 = v98;
+        v34 = messagesBasedRecipients2;
         v35 = v99;
 LABEL_64:
 
 LABEL_65:
         v31 = v95;
-        if (v22 == v24)
+        if (recipientPlayerIDs == v24)
         {
           goto LABEL_67;
         }
@@ -171,27 +171,27 @@ LABEL_65:
       }
     }
 
-    v36 = [(GKMatchRequestInternal *)self inviteMessage];
-    v91 = [v5 inviteMessage];
-    v92 = v36;
-    v90 = v17;
-    if (v36 != v91)
+    inviteMessage = [(GKMatchRequestInternal *)self inviteMessage];
+    inviteMessage2 = [v5 inviteMessage];
+    v92 = inviteMessage;
+    v90 = recipients2;
+    if (inviteMessage != inviteMessage2)
     {
-      v37 = [(GKMatchRequestInternal *)self inviteMessage];
-      v84 = [v5 inviteMessage];
-      v85 = v37;
-      if (![v37 isEqualToString:?])
+      inviteMessage3 = [(GKMatchRequestInternal *)self inviteMessage];
+      inviteMessage4 = [v5 inviteMessage];
+      v85 = inviteMessage3;
+      if (![inviteMessage3 isEqualToString:?])
       {
         v95 = 0;
         v38 = v92;
         v35 = v99;
-        v39 = v91;
+        v39 = inviteMessage2;
 LABEL_62:
 
 LABEL_63:
-        v34 = v98;
-        v17 = v90;
-        if (v35 == v98)
+        v34 = messagesBasedRecipients2;
+        recipients2 = v90;
+        if (v35 == messagesBasedRecipients2)
         {
           goto LABEL_65;
         }
@@ -200,31 +200,31 @@ LABEL_63:
       }
     }
 
-    v40 = [(GKMatchRequestInternal *)self localizableInviteMessage];
+    localizableInviteMessage = [(GKMatchRequestInternal *)self localizableInviteMessage];
     [v5 localizableInviteMessage];
-    v87 = v86 = v22;
-    if (v40 == v87)
+    v87 = v86 = recipientPlayerIDs;
+    if (localizableInviteMessage == v87)
     {
-      v96 = v16;
+      v96 = recipients;
     }
 
     else
     {
       v77 = v24;
-      v41 = [(GKMatchRequestInternal *)self localizableInviteMessage];
-      v79 = [v5 localizableInviteMessage];
-      v80 = v41;
-      if (![v41 isEqualToDictionary:?])
+      localizableInviteMessage2 = [(GKMatchRequestInternal *)self localizableInviteMessage];
+      localizableInviteMessage3 = [v5 localizableInviteMessage];
+      v80 = localizableInviteMessage2;
+      if (![localizableInviteMessage2 isEqualToDictionary:?])
       {
         v95 = 0;
         v38 = v92;
         v48 = v87;
         v24 = v77;
-        v39 = v91;
+        v39 = inviteMessage2;
 LABEL_60:
 
 LABEL_61:
-        v22 = v86;
+        recipientPlayerIDs = v86;
         v35 = v99;
         if (v38 == v39)
         {
@@ -234,30 +234,30 @@ LABEL_61:
         goto LABEL_62;
       }
 
-      v96 = v16;
+      v96 = recipients;
       v24 = v77;
     }
 
-    v42 = [(GKMatchRequestInternal *)self sessionToken];
-    v81 = [v5 sessionToken];
-    v82 = v42;
-    v83 = v40;
-    if (v42 == v81)
+    sessionToken = [(GKMatchRequestInternal *)self sessionToken];
+    sessionToken2 = [v5 sessionToken];
+    v82 = sessionToken;
+    v83 = localizableInviteMessage;
+    if (sessionToken == sessionToken2)
     {
-      v16 = v96;
+      recipients = v96;
     }
 
     else
     {
-      v43 = [(GKMatchRequestInternal *)self sessionToken];
-      v75 = [v5 sessionToken];
-      v76 = v43;
-      v44 = [v43 isEqual:?];
-      v16 = v96;
+      sessionToken3 = [(GKMatchRequestInternal *)self sessionToken];
+      sessionToken4 = [v5 sessionToken];
+      v76 = sessionToken3;
+      v44 = [sessionToken3 isEqual:?];
+      recipients = v96;
       if (!v44)
       {
         v45 = 0;
-        v46 = v81;
+        v46 = sessionToken2;
         v47 = v82;
 LABEL_43:
         v95 = v45;
@@ -266,14 +266,14 @@ LABEL_43:
       }
     }
 
-    v49 = [(GKMatchRequestInternal *)self version];
-    if (v49 != [v5 version] || (v50 = -[GKMatchRequestInternal isPreloadedMatch](self, "isPreloadedMatch"), v50 != objc_msgSend(v5, "isPreloadedMatch")) || (v51 = -[GKMatchRequestInternal restrictToAutomatch](self, "restrictToAutomatch"), v51 != objc_msgSend(v5, "restrictToAutomatch")) || (v52 = -[GKMatchRequestInternal isLateJoin](self, "isLateJoin"), v52 != objc_msgSend(v5, "isLateJoin")))
+    version = [(GKMatchRequestInternal *)self version];
+    if (version != [v5 version] || (v50 = -[GKMatchRequestInternal isPreloadedMatch](self, "isPreloadedMatch"), v50 != objc_msgSend(v5, "isPreloadedMatch")) || (v51 = -[GKMatchRequestInternal restrictToAutomatch](self, "restrictToAutomatch"), v51 != objc_msgSend(v5, "restrictToAutomatch")) || (v52 = -[GKMatchRequestInternal isLateJoin](self, "isLateJoin"), v52 != objc_msgSend(v5, "isLateJoin")))
     {
       v45 = 0;
       v53 = 0;
-      v46 = v81;
+      v46 = sessionToken2;
       v47 = v82;
-      if (v82 != v81)
+      if (v82 != sessionToken2)
       {
         goto LABEL_43;
       }
@@ -282,10 +282,10 @@ LABEL_58:
 
       v95 = v53;
 LABEL_59:
-      v40 = v83;
+      localizableInviteMessage = v83;
       v48 = v87;
       v38 = v92;
-      v39 = v91;
+      v39 = inviteMessage2;
       if (v83 == v87)
       {
         goto LABEL_61;
@@ -294,19 +294,19 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    v72 = v12;
-    v73 = v13;
-    v97 = v16;
+    v72 = localPlayerID;
+    v73 = localPlayerID2;
+    v97 = recipients;
     v78 = v24;
-    v54 = [(GKMatchRequestInternal *)self queueName];
+    queueName = [(GKMatchRequestInternal *)self queueName];
     [v5 queueName];
-    v55 = v74 = v54;
-    if (v54 != v55)
+    v55 = v74 = queueName;
+    if (queueName != v55)
     {
-      v56 = [(GKMatchRequestInternal *)self queueName];
-      v70 = [v5 queueName];
-      v71 = v56;
-      if (![v56 isEqualToString:?])
+      queueName2 = [(GKMatchRequestInternal *)self queueName];
+      queueName3 = [v5 queueName];
+      v71 = queueName2;
+      if (![queueName2 isEqualToString:?])
       {
         v57 = 0;
 LABEL_56:
@@ -314,13 +314,13 @@ LABEL_56:
 LABEL_57:
         v45 = v57;
         v53 = v57;
-        v46 = v81;
+        v46 = sessionToken2;
         v47 = v82;
         v24 = v78;
-        v16 = v97;
-        v12 = v72;
-        v13 = v73;
-        if (v82 != v81)
+        recipients = v97;
+        localPlayerID = v72;
+        localPlayerID2 = v73;
+        if (v82 != sessionToken2)
         {
           goto LABEL_43;
         }
@@ -329,16 +329,16 @@ LABEL_57:
       }
     }
 
-    v58 = [(GKMatchRequestInternal *)self properties];
+    properties = [(GKMatchRequestInternal *)self properties];
     [v5 properties];
-    v60 = v59 = v58;
-    if (v58 == v60 || (-[GKMatchRequestInternal properties](self, "properties"), v61 = objc_claimAutoreleasedReturnValue(), [v5 properties], v68 = objc_claimAutoreleasedReturnValue(), v69 = v61, objc_msgSend(v61, "isEqualToDictionary:")))
+    v60 = v59 = properties;
+    if (properties == v60 || (-[GKMatchRequestInternal properties](self, "properties"), v61 = objc_claimAutoreleasedReturnValue(), [v5 properties], v68 = objc_claimAutoreleasedReturnValue(), v69 = v61, objc_msgSend(v61, "isEqualToDictionary:")))
     {
-      v62 = [(GKMatchRequestInternal *)self recipientProperties];
-      v63 = [v5 recipientProperties];
-      v64 = v62;
-      v65 = v63;
-      if (v62 == v63)
+      recipientProperties = [(GKMatchRequestInternal *)self recipientProperties];
+      recipientProperties2 = [v5 recipientProperties];
+      v64 = recipientProperties;
+      v65 = recipientProperties2;
+      if (recipientProperties == recipientProperties2)
       {
 
         v57 = 1;
@@ -346,9 +346,9 @@ LABEL_57:
 
       else
       {
-        v66 = [(GKMatchRequestInternal *)self recipientProperties];
-        v67 = [v5 recipientProperties];
-        v57 = [v66 isEqualToDictionary:v67];
+        recipientProperties3 = [(GKMatchRequestInternal *)self recipientProperties];
+        recipientProperties4 = [v5 recipientProperties];
+        v57 = [recipientProperties3 isEqualToDictionary:recipientProperties4];
       }
 
       if (v59 == v60)
@@ -376,7 +376,7 @@ LABEL_55:
 LABEL_68:
 
 LABEL_69:
-  if (v12 != v13)
+  if (localPlayerID != localPlayerID2)
   {
   }
 
@@ -395,10 +395,10 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(GKMatchRequestInternal *)self minPlayers];
-  v4 = ([(GKMatchRequestInternal *)self maxPlayers]<< 20) | (v3 << 26);
-  v5 = [(GKMatchRequestInternal *)self matchType];
-  return [(GKMatchRequestInternal *)self version]| (v5 << 16) | v4;
+  minPlayers = [(GKMatchRequestInternal *)self minPlayers];
+  v4 = ([(GKMatchRequestInternal *)self maxPlayers]<< 20) | (minPlayers << 26);
+  matchType = [(GKMatchRequestInternal *)self matchType];
+  return [(GKMatchRequestInternal *)self version]| (matchType << 16) | v4;
 }
 
 + (id)secureCodedPropertyKeys
@@ -496,17 +496,17 @@ void __49__GKMatchRequestInternal_secureCodedPropertyKeys__block_invoke()
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(GKMatchRequestInternal *)self recipients];
+  recipients = [(GKMatchRequestInternal *)self recipients];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__GKMatchRequestInternal_hasGuestPlayers__block_invoke;
   v4[3] = &unk_2785E26A8;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [recipients enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(recipients) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return recipients;
 }
 
 uint64_t __41__GKMatchRequestInternal_hasGuestPlayers__block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

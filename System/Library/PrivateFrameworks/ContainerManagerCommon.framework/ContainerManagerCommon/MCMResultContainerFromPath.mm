@@ -1,19 +1,19 @@
 @interface MCMResultContainerFromPath
-- (BOOL)encodeResultOntoReply:(id)a3;
-- (MCMResultContainerFromPath)initWithUUID:(id)a3 containerPathIdentifier:(id)a4 identifier:(id)a5 containerClass:(unint64_t)a6 POSIXUser:(id)a7 personaUniqueString:(id)a8 sandboxToken:(id)a9 existed:(BOOL)a10 url:(id)a11 info:(id)a12 transient:(BOOL)a13 userManagedAssetsRelPath:(id)a14 creator:(id)a15 relativePath:(id)a16;
+- (BOOL)encodeResultOntoReply:(id)reply;
+- (MCMResultContainerFromPath)initWithUUID:(id)d containerPathIdentifier:(id)identifier identifier:(id)a5 containerClass:(unint64_t)class POSIXUser:(id)user personaUniqueString:(id)string sandboxToken:(id)token existed:(BOOL)self0 url:(id)self1 info:(id)self2 transient:(BOOL)self3 userManagedAssetsRelPath:(id)self4 creator:(id)self5 relativePath:(id)self6;
 - (NSString)relativePath;
-- (void)setRelativePath:(id)a3;
+- (void)setRelativePath:(id)path;
 @end
 
 @implementation MCMResultContainerFromPath
 
-- (void)setRelativePath:(id)a3
+- (void)setRelativePath:(id)path
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_relativePath = &self->_relativePath;
 
-  objc_storeStrong(p_relativePath, a3);
+  objc_storeStrong(p_relativePath, path);
 }
 
 - (NSString)relativePath
@@ -24,29 +24,29 @@
   return result;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v10.receiver = self;
   v10.super_class = MCMResultContainerFromPath;
-  v5 = [(MCMResultWithContainerBase *)&v10 encodeResultOntoReply:v4];
+  v5 = [(MCMResultWithContainerBase *)&v10 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
-    if (v6)
+    error = [(MCMResultBase *)self error];
+    if (error)
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v7 = [(MCMResultContainerFromPath *)self relativePath];
+    relativePath = [(MCMResultContainerFromPath *)self relativePath];
 
-    if (v7)
+    if (relativePath)
     {
-      v6 = [(MCMResultContainerFromPath *)self relativePath];
-      xpc_dictionary_set_string(v4, "ReplyRelativePath", [v6 UTF8String]);
+      error = [(MCMResultContainerFromPath *)self relativePath];
+      xpc_dictionary_set_string(replyCopy, "ReplyRelativePath", [error UTF8String]);
       goto LABEL_5;
     }
   }
@@ -57,17 +57,17 @@ LABEL_6:
   return v5;
 }
 
-- (MCMResultContainerFromPath)initWithUUID:(id)a3 containerPathIdentifier:(id)a4 identifier:(id)a5 containerClass:(unint64_t)a6 POSIXUser:(id)a7 personaUniqueString:(id)a8 sandboxToken:(id)a9 existed:(BOOL)a10 url:(id)a11 info:(id)a12 transient:(BOOL)a13 userManagedAssetsRelPath:(id)a14 creator:(id)a15 relativePath:(id)a16
+- (MCMResultContainerFromPath)initWithUUID:(id)d containerPathIdentifier:(id)identifier identifier:(id)a5 containerClass:(unint64_t)class POSIXUser:(id)user personaUniqueString:(id)string sandboxToken:(id)token existed:(BOOL)self0 url:(id)self1 info:(id)self2 transient:(BOOL)self3 userManagedAssetsRelPath:(id)self4 creator:(id)self5 relativePath:(id)self6
 {
   v31 = *MEMORY[0x1E69E9840];
-  v27 = a16;
+  relativePathCopy = relativePath;
   v30.receiver = self;
   v30.super_class = MCMResultContainerFromPath;
-  v18 = [(MCMResultWithContainerBase *)&v30 initWithUUID:a3 containerPathIdentifier:a4 identifier:a5 containerClass:a6 POSIXUser:a7 personaUniqueString:a8 sandboxToken:a9 existed:a10 url:a11 info:a12 transient:a13 userManagedAssetsRelPath:a14 creator:a15];
+  v18 = [(MCMResultWithContainerBase *)&v30 initWithUUID:d containerPathIdentifier:identifier identifier:a5 containerClass:class POSIXUser:user personaUniqueString:string sandboxToken:token existed:existed url:url info:info transient:transient userManagedAssetsRelPath:path creator:creator];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_relativePath, a16);
+    objc_storeStrong(&v18->_relativePath, relativePath);
   }
 
   v20 = *MEMORY[0x1E69E9840];

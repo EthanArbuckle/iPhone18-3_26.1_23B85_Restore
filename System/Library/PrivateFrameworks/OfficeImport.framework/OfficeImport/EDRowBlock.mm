@@ -1,29 +1,29 @@
 @interface EDRowBlock
 + (id)rowBlock;
-- (EDCellHeader)addCellWithColumnNumber:(unsigned int)a3 type:(int)a4 isFormulaCell:(BOOL)a5 rowInfo:(EDRowInfo *)a6 rowBlocks:(id)a7;
-- (EDCellHeader)cellAtIndex:(unsigned int)a3 rowInfo:(EDRowInfo *)a4;
-- (EDCellHeader)cellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4;
+- (EDCellHeader)addCellWithColumnNumber:(unsigned int)number type:(int)type isFormulaCell:(BOOL)cell rowInfo:(EDRowInfo *)info rowBlocks:(id)blocks;
+- (EDCellHeader)cellAtIndex:(unsigned int)index rowInfo:(EDRowInfo *)info;
+- (EDCellHeader)cellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info;
 - (EDRowBlock)init;
-- (EDRowInfo)addRowInfoWithRowNumber:(unsigned int)a3 cellCountHint:(unsigned int)a4;
-- (EDRowInfo)rowInfoAtIndex:(unsigned int)a3;
-- (EDRowInfo)rowInfoWithRowNumber:(unsigned int)a3 createIfNil:(BOOL)a4;
+- (EDRowInfo)addRowInfoWithRowNumber:(unsigned int)number cellCountHint:(unsigned int)hint;
+- (EDRowInfo)rowInfoAtIndex:(unsigned int)index;
+- (EDRowInfo)rowInfoWithRowNumber:(unsigned int)number createIfNil:(BOOL)nil;
 - (id)description;
 - (unint64_t)index;
 - (unint64_t)startOfCellsOrThrow;
-- (unsigned)expectedIndexOfCellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4;
+- (unsigned)expectedIndexOfCellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info;
 - (unsigned)firstRowNumber;
-- (unsigned)indexOfCellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4;
-- (unsigned)indexOfRowInfoWithRowNumber:(unsigned int)a3;
+- (unsigned)indexOfCellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info;
+- (unsigned)indexOfRowInfoWithRowNumber:(unsigned int)number;
 - (unsigned)lastRowNumber;
 - (unsigned)rowCount;
-- (void)archiveByAppendingToMutableData:(__CFData *)a3;
-- (void)checkCellOffsetOrThrow:(unint64_t)a3;
+- (void)archiveByAppendingToMutableData:(__CFData *)data;
+- (void)checkCellOffsetOrThrow:(unint64_t)throw;
 - (void)dealloc;
 - (void)doneWithContent;
 - (void)incrementIndex;
-- (void)removeCellAtIndex:(unsigned int)a3 rowInfo:(EDRowInfo *)a4;
-- (void)setIndex:(unint64_t)a3;
-- (void)unarchiveFromData:(__CFData *)a3 offset:(unint64_t *)a4;
+- (void)removeCellAtIndex:(unsigned int)index rowInfo:(EDRowInfo *)info;
+- (void)setIndex:(unint64_t)index;
+- (void)unarchiveFromData:(__CFData *)data offset:(unint64_t *)offset;
 @end
 
 @implementation EDRowBlock
@@ -164,7 +164,7 @@
   return mPackedData;
 }
 
-- (EDRowInfo)rowInfoAtIndex:(unsigned int)a3
+- (EDRowInfo)rowInfoAtIndex:(unsigned int)index
 {
   result = self->mPackedData;
   if (result)
@@ -177,21 +177,21 @@
     MutableBytePtr = CFDataGetMutableBytePtr(result);
     v7 = CFDataGetMutableBytePtr(self->mCellOffsets);
     v8 = !MutableBytePtr || v7 == 0;
-    if (v8 || *MutableBytePtr <= a3)
+    if (v8 || *MutableBytePtr <= index)
     {
       return 0;
     }
 
     else
     {
-      return &MutableBytePtr[24 * a3 + 24];
+      return &MutableBytePtr[24 * index + 24];
     }
   }
 
   return result;
 }
 
-- (unsigned)indexOfRowInfoWithRowNumber:(unsigned int)a3
+- (unsigned)indexOfRowInfoWithRowNumber:(unsigned int)number
 {
   mPackedData = self->mPackedData;
   if (mPackedData)
@@ -216,13 +216,13 @@ LABEL_12:
         }
 
         v12 = *&v10[24 * (v9 - 1) + 4];
-        if (v12 == a3)
+        if (v12 == number)
         {
           break;
         }
 
         --v9;
-        if (v12 < a3)
+        if (v12 < number)
         {
           goto LABEL_12;
         }
@@ -235,14 +235,14 @@ LABEL_12:
   return mPackedData;
 }
 
-- (EDRowInfo)rowInfoWithRowNumber:(unsigned int)a3 createIfNil:(BOOL)a4
+- (EDRowInfo)rowInfoWithRowNumber:(unsigned int)number createIfNil:(BOOL)nil
 {
-  v4 = a4;
-  v5 = *&a3;
+  nilCopy = nil;
+  v5 = *&number;
   v7 = [(EDRowBlock *)self indexOfRowInfoWithRowNumber:?];
   if (v7 == -1)
   {
-    if (v4)
+    if (nilCopy)
     {
 
       return [(EDRowBlock *)self addRowInfoWithRowNumber:v5 cellCountHint:0];
@@ -261,14 +261,14 @@ LABEL_12:
   }
 }
 
-- (EDCellHeader)cellAtIndex:(unsigned int)a3 rowInfo:(EDRowInfo *)a4
+- (EDCellHeader)cellAtIndex:(unsigned int)index rowInfo:(EDRowInfo *)info
 {
-  if (!a4)
+  if (!info)
   {
     return 0;
   }
 
-  if (a4->var2 <= a3)
+  if (info->var2 <= index)
   {
     return 0;
   }
@@ -291,16 +291,16 @@ LABEL_12:
   {
     if (v9)
     {
-      return &MutableBytePtr[a4->var3 + *&v9[4 * a3 + a4->var4]];
+      return &MutableBytePtr[info->var3 + *&v9[4 * index + info->var4]];
     }
   }
 
   return result;
 }
 
-- (unsigned)expectedIndexOfCellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4
+- (unsigned)expectedIndexOfCellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info
 {
-  if (!a4)
+  if (!info)
   {
     return -1;
   }
@@ -319,7 +319,7 @@ LABEL_12:
     v11 = v9;
     if (v9)
     {
-      v12 = a4->var2 - 1;
+      v12 = info->var2 - 1;
       if (v12 < 0)
       {
         return 0;
@@ -327,11 +327,11 @@ LABEL_12:
 
       else
       {
-        for (i = 0; i <= v12; v14 > a3 ? (v12 = v10 - 1) : (i = v10 + 1))
+        for (i = 0; i <= v12; v14 > number ? (v12 = v10 - 1) : (i = v10 + 1))
         {
           v10 = (v12 + i) >> 1;
-          v14 = columnNumberForEDCell(&MutableBytePtr[a4->var3 + *&v11[4 * v10 + a4->var4]]);
-          if (v14 == a3)
+          v14 = columnNumberForEDCell(&MutableBytePtr[info->var3 + *&v11[4 * v10 + info->var4]]);
+          if (v14 == number)
           {
             break;
           }
@@ -343,11 +343,11 @@ LABEL_12:
   return v10;
 }
 
-- (unsigned)indexOfCellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4
+- (unsigned)indexOfCellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info
 {
   v7 = [EDRowBlock expectedIndexOfCellWithColumnNumber:"expectedIndexOfCellWithColumnNumber:rowInfo:" rowInfo:?];
-  v8 = [(EDRowBlock *)self cellAtIndex:v7 rowInfo:a4];
-  if (!v8 || columnNumberForEDCell(v8) != a3)
+  v8 = [(EDRowBlock *)self cellAtIndex:v7 rowInfo:info];
+  if (!v8 || columnNumberForEDCell(v8) != number)
   {
     LODWORD(v7) = -1;
   }
@@ -355,20 +355,20 @@ LABEL_12:
   return v7;
 }
 
-- (EDCellHeader)cellWithColumnNumber:(unsigned int)a3 rowInfo:(EDRowInfo *)a4
+- (EDCellHeader)cellWithColumnNumber:(unsigned int)number rowInfo:(EDRowInfo *)info
 {
-  v6 = [(EDRowBlock *)self indexOfCellWithColumnNumber:*&a3 rowInfo:?];
+  v6 = [(EDRowBlock *)self indexOfCellWithColumnNumber:*&number rowInfo:?];
   if (v6 == -1)
   {
     return 0;
   }
 
-  return [(EDRowBlock *)self cellAtIndex:v6 rowInfo:a4];
+  return [(EDRowBlock *)self cellAtIndex:v6 rowInfo:info];
 }
 
-- (EDRowInfo)addRowInfoWithRowNumber:(unsigned int)a3 cellCountHint:(unsigned int)a4
+- (EDRowInfo)addRowInfoWithRowNumber:(unsigned int)number cellCountHint:(unsigned int)hint
 {
-  if ([(EDRowBlock *)self firstRowNumber]!= -1 && [(EDRowBlock *)self firstRowNumber]+ 32 <= a3)
+  if ([(EDRowBlock *)self firstRowNumber]!= -1 && [(EDRowBlock *)self firstRowNumber]+ 32 <= number)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[EDRowBlock addRowInfoWithRowNumber:cellCountHint:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/Excel/DOM/EDRowBlock.mm"];
@@ -377,7 +377,7 @@ LABEL_12:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if ([(EDRowBlock *)self firstRowNumber]!= -1 && a3 + 32 <= [(EDRowBlock *)self lastRowNumber])
+  if ([(EDRowBlock *)self firstRowNumber]!= -1 && number + 32 <= [(EDRowBlock *)self lastRowNumber])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[EDRowBlock addRowInfoWithRowNumber:cellCountHint:]"];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/compatibility/Excel/DOM/EDRowBlock.mm"];
@@ -386,15 +386,15 @@ LABEL_12:
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (a4)
+  if (hint)
   {
     mPackedData = self->mPackedData;
     if (mPackedData)
     {
       if (self->mCellOffsets)
       {
-        CFDataIncreaseLength(mPackedData, 8 * a4 + 24);
-        CFDataIncreaseLength(self->mCellOffsets, 4 * a4);
+        CFDataIncreaseLength(mPackedData, 8 * hint + 24);
+        CFDataIncreaseLength(self->mCellOffsets, 4 * hint);
       }
     }
   }
@@ -432,8 +432,8 @@ LABEL_12:
     }
 
     v21 = *&MutableBytePtr[v20 + 4];
-    v22 = v21 == a3;
-    if (v21 >= a3)
+    v22 = v21 == number;
+    if (v21 >= number)
     {
       v23 = 0;
     }
@@ -542,18 +542,18 @@ LABEL_46:
   v41 = *(v36 + 16) + 4 * v37;
 LABEL_47:
   v15 = &v26[24 * v27];
-  initEDRowInfo(v15, a3);
+  initEDRowInfo(v15, number);
   v15->var3 = v40;
   v15->var4 = v41;
   return v15;
 }
 
-- (EDCellHeader)addCellWithColumnNumber:(unsigned int)a3 type:(int)a4 isFormulaCell:(BOOL)a5 rowInfo:(EDRowInfo *)a6 rowBlocks:(id)a7
+- (EDCellHeader)addCellWithColumnNumber:(unsigned int)number type:(int)type isFormulaCell:(BOOL)cell rowInfo:(EDRowInfo *)info rowBlocks:(id)blocks
 {
-  v8 = a5;
-  v10 = *&a3;
-  v12 = a7;
-  if (!*a6)
+  cellCopy = cell;
+  v10 = *&number;
+  blocksCopy = blocks;
+  if (!*info)
   {
     goto LABEL_24;
   }
@@ -584,7 +584,7 @@ LABEL_47:
   }
 
   Length = CFDataGetLength(self->mPackedData);
-  var4 = (*a6)->var4;
+  var4 = (*info)->var4;
   if (CFDataGetLength(self->mCellOffsets) < var4)
   {
 LABEL_23:
@@ -593,13 +593,13 @@ LABEL_23:
   }
 
   v55 = Length;
-  var2 = (*a6)->var2;
+  var2 = (*info)->var2;
   if (var2)
   {
     v21 = var2 - 1;
     while (1)
     {
-      v22 = columnNumberForEDCell((MutableBytePtr + (*a6)->var3 + *&v17[4 * v21 + (*a6)->var4]));
+      v22 = columnNumberForEDCell((MutableBytePtr + (*info)->var3 + *&v17[4 * v21 + (*info)->var4]));
       if (v22 == v10)
       {
         break;
@@ -619,14 +619,14 @@ LABEL_23:
     }
 
     var2 = (var2 - 1);
-    [(EDRowBlock *)self removeCellAtIndex:var2 rowInfo:a6];
+    [(EDRowBlock *)self removeCellAtIndex:var2 rowInfo:info];
   }
 
 LABEL_15:
   v58 = v17;
-  v59 = sizeofEDCellType(a4, v8);
+  v59 = sizeofEDCellType(type, cellCopy);
   v24 = MutableBytePtr[4];
-  v25 = (*a6 - MutableBytePtr - 24) / 0x18uLL;
+  v25 = (*info - MutableBytePtr - 24) / 0x18uLL;
   if (v24 + v59 <= CFDataGetLength(self->mPackedData))
   {
     v26 = v59;
@@ -645,7 +645,7 @@ LABEL_15:
 
     v54 = v25;
     v56 = (MutableBytePtr + CFDataGetLength(self->mPackedData));
-    *a6 = &MutableBytePtr[6 * v25 + 6];
+    *info = &MutableBytePtr[6 * v25 + 6];
     v26 = v59;
   }
 
@@ -668,17 +668,17 @@ LABEL_24:
 
 LABEL_22:
   v60 = v27;
-  v29 = (*a6)->var4;
+  v29 = (*info)->var4;
   if (v27 < v29)
   {
     goto LABEL_23;
   }
 
-  var3 = (*a6)->var3;
+  var3 = (*info)->var3;
   if (var2)
   {
     v32 = *&v58[4 * (var2 - 1) + v29];
-    v52 = (*a6)->var3;
+    v52 = (*info)->var3;
     v33 = MutableBytePtr + var3;
     v34 = v32;
     v35 = &v33[v32];
@@ -712,15 +712,15 @@ LABEL_22:
     memmove(MutableBytePtr + var3 + v26, MutableBytePtr + var3, v38 - var3);
   }
 
-  v39 = *a6;
-  v40 = (*a6)->var4;
-  v41 = (*a6)->var4;
+  v39 = *info;
+  v40 = (*info)->var4;
+  v41 = (*info)->var4;
   if (v60 <= v40)
   {
-    v42 = (*a6)->var4;
+    v42 = (*info)->var4;
     [TCMessageException raise:TCUnknownProblemMessage];
-    v39 = *a6;
-    v41 = (*a6)->var4;
+    v39 = *info;
+    v41 = (*info)->var4;
     LODWORD(v40) = v42;
   }
 
@@ -730,8 +730,8 @@ LABEL_22:
   {
     v61 = v40;
     [TCMessageException raise:TCUnknownProblemMessage];
-    v39 = *a6;
-    v41 = (*a6)->var4;
+    v39 = *info;
+    v41 = (*info)->var4;
     LODWORD(v40) = v61;
   }
 
@@ -742,7 +742,7 @@ LABEL_22:
   if (v46 > v44)
   {
     memmove(&v45[4 * v43], &v45[4 * var2], v46 - v44);
-    v39 = *a6;
+    v39 = *info;
     v46 = MutableBytePtr[5];
   }
 
@@ -750,7 +750,7 @@ LABEL_22:
   ++v39->var2;
   MutableBytePtr[4] += v26;
   MutableBytePtr[5] = v46 + 4;
-  [v12 updateMaxPopulatedRow:var1 column:v10];
+  [blocksCopy updateMaxPopulatedRow:var1 column:v10];
   if (var2)
   {
     v48 = *&v45[4 * (var2 - 1)] + v53;
@@ -762,13 +762,13 @@ LABEL_22:
   }
 
   *&v45[4 * var2] = v48;
-  v49 = *a6;
-  v50 = (*a6)->var2;
+  v49 = *info;
+  v50 = (*info)->var2;
   if (v50 >= v57)
   {
     [TCMessageException raise:TCUnknownProblemMessage];
-    v49 = *a6;
-    v50 = (*a6)->var2;
+    v49 = *info;
+    v50 = (*info)->var2;
   }
 
   if (v43 < v50)
@@ -782,7 +782,7 @@ LABEL_22:
   }
 
   v16 = (MutableBytePtr + v49->var3 + *&v45[4 * var2]);
-  initEDCell((MutableBytePtr + v49->var3 + *&v45[4 * v62]), v10, a4, v8);
+  initEDCell((MutableBytePtr + v49->var3 + *&v45[4 * v62]), v10, type, cellCopy);
 LABEL_25:
 
   return v16;
@@ -797,7 +797,7 @@ LABEL_25:
   return v2;
 }
 
-- (void)removeCellAtIndex:(unsigned int)a3 rowInfo:(EDRowInfo *)a4
+- (void)removeCellAtIndex:(unsigned int)index rowInfo:(EDRowInfo *)info
 {
   mPackedData = self->mPackedData;
   if (mPackedData && self->mCellOffsets)
@@ -808,17 +808,17 @@ LABEL_25:
     {
       v11 = v9;
       v12 = (MutableBytePtr + CFDataGetLength(self->mPackedData));
-      v13 = *&v11[4 * a3 + (*a4)->var4];
-      v14 = (MutableBytePtr + (*a4)->var3 + v13);
+      v13 = *&v11[4 * index + (*info)->var4];
+      v14 = (MutableBytePtr + (*info)->var3 + v13);
       if (&v14[1] > v12)
       {
         [TCMessageException raise:TCUnknownProblemMessage];
       }
 
-      v15 = a3;
+      indexCopy = index;
       v16 = sizeofEDCell(v14);
-      updateRowInfoOffsetsInPackedDataForNewCell(MutableBytePtr, v12, (*a4 - MutableBytePtr - 24) / 0x18uLL, -v16, -4);
-      v17 = ((*a4)->var3 + v13);
+      updateRowInfoOffsetsInPackedDataForNewCell(MutableBytePtr, v12, (*info - MutableBytePtr - 24) / 0x18uLL, -v16, -4);
+      v17 = ((*info)->var3 + v13);
       [(EDRowBlock *)self checkCellOffsetOrThrow:v17];
       v18 = MutableBytePtr[4];
       if (v18 > v17 + v16)
@@ -826,28 +826,28 @@ LABEL_25:
         memmove(MutableBytePtr + v17, MutableBytePtr + v17 + v16, v18 - (v17 + v16));
       }
 
-      v19 = *a4;
-      var2 = (*a4)->var2 - 1;
+      v19 = *info;
+      var2 = (*info)->var2 - 1;
       v19->var2 = var2;
       var4 = v19->var4;
-      v22 = var4 + 4 * a3;
+      v22 = var4 + 4 * index;
       v23 = &v11[var4];
       v24 = MutableBytePtr[5];
       if (v22 + 4 < v24)
       {
-        memmove(&v23[4 * a3], &v23[4 * a3 + 4], (v24 - v22) - 4);
-        v19 = *a4;
-        var2 = (*a4)->var2;
+        memmove(&v23[4 * index], &v23[4 * index + 4], (v24 - v22) - 4);
+        v19 = *info;
+        var2 = (*info)->var2;
       }
 
-      if (var2 > a3)
+      if (var2 > index)
       {
         do
         {
-          *&v23[4 * v15++] -= v16;
+          *&v23[4 * indexCopy++] -= v16;
         }
 
-        while (v15 < v19->var2);
+        while (indexCopy < v19->var2);
       }
 
       v25 = MutableBytePtr[5] - 4;
@@ -857,7 +857,7 @@ LABEL_25:
   }
 }
 
-- (void)checkCellOffsetOrThrow:(unint64_t)a3
+- (void)checkCellOffsetOrThrow:(unint64_t)throw
 {
   mPackedData = self->mPackedData;
   if (mPackedData && self->mCellOffsets)
@@ -871,13 +871,13 @@ LABEL_25:
         [TCMessageException raise:TCUnknownProblemMessage];
       }
 
-      if ([(EDRowBlock *)self startOfCellsOrThrow]> a3 || (v9 = *(MutableBytePtr + 4), v9 <= a3))
+      if ([(EDRowBlock *)self startOfCellsOrThrow]> throw || (v9 = *(MutableBytePtr + 4), v9 <= throw))
       {
         [TCMessageException raise:TCUnknownProblemMessage];
         v9 = *(MutableBytePtr + 4);
       }
 
-      if (v9 - 8 <= a3)
+      if (v9 - 8 <= throw)
       {
         v10 = TCUnknownProblemMessage;
 
@@ -887,24 +887,24 @@ LABEL_25:
   }
 }
 
-- (void)unarchiveFromData:(__CFData *)a3 offset:(unint64_t *)a4
+- (void)unarchiveFromData:(__CFData *)data offset:(unint64_t *)offset
 {
-  if (a3)
+  if (data)
   {
-    BytePtr = CFDataGetBytePtr(a3);
+    BytePtr = CFDataGetBytePtr(data);
     if (BytePtr)
     {
       v8 = BytePtr;
       CFDataSetLength(self->mPackedData, 0);
       CFDataSetLength(self->mCellOffsets, 0);
-      v9 = &v8[*a4];
-      v10 = *a4 + *(v9 + 4) + *(v9 + 5);
-      if (v10 <= CFDataGetLength(a3))
+      v9 = &v8[*offset];
+      v10 = *offset + *(v9 + 4) + *(v9 + 5);
+      if (v10 <= CFDataGetLength(data))
       {
         CFDataAppendBytes(self->mPackedData, v9, *(v9 + 4));
         v13 = *(v9 + 4);
         v12 = *(v9 + 5);
-        *a4 += v13;
+        *offset += v13;
         CFDataAppendBytes(self->mCellOffsets, &v9[v13], v12);
         v11 = *(v9 + 5);
       }
@@ -914,12 +914,12 @@ LABEL_25:
         v11 = *(v9 + 5) + *(v9 + 4);
       }
 
-      *a4 += v11;
+      *offset += v11;
     }
   }
 }
 
-- (void)archiveByAppendingToMutableData:(__CFData *)a3
+- (void)archiveByAppendingToMutableData:(__CFData *)data
 {
   mPackedData = self->mPackedData;
   if (mPackedData && self->mCellOffsets)
@@ -939,15 +939,15 @@ LABEL_25:
     if (!v8)
     {
       v9 = v7;
-      CFDataAppendBytes(a3, MutableBytePtr, *(MutableBytePtr + 4));
+      CFDataAppendBytes(data, MutableBytePtr, *(MutableBytePtr + 4));
       v10 = *(MutableBytePtr + 5);
 
-      CFDataAppendBytes(a3, v9, v10);
+      CFDataAppendBytes(data, v9, v10);
     }
   }
 }
 
-- (void)setIndex:(unint64_t)a3
+- (void)setIndex:(unint64_t)index
 {
   mPackedData = self->mPackedData;
   if (mPackedData && self->mCellOffsets)
@@ -966,7 +966,7 @@ LABEL_25:
 
     if (!v8)
     {
-      *(MutableBytePtr + 1) = a3;
+      *(MutableBytePtr + 1) = index;
     }
   }
 }

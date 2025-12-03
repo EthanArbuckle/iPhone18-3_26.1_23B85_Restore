@@ -1,31 +1,31 @@
 @interface NTKFontLoader
-+ (id)fontDescriptorForSectName:(id)a3 uniqueCacheIdentifier:(id)a4 fromMachO:(const mach_header_64 *)a5;
-+ (id)registerFontDescriptorsForSectName:(id)a3 fromMachO:(const mach_header_64 *)a4;
-+ (void)_registerFontDescriptor:(id)a3;
++ (id)fontDescriptorForSectName:(id)name uniqueCacheIdentifier:(id)identifier fromMachO:(const mach_header_64 *)o;
++ (id)registerFontDescriptorsForSectName:(id)name fromMachO:(const mach_header_64 *)o;
++ (void)_registerFontDescriptor:(id)descriptor;
 @end
 
 @implementation NTKFontLoader
 
-+ (id)fontDescriptorForSectName:(id)a3 uniqueCacheIdentifier:(id)a4 fromMachO:(const mach_header_64 *)a5
++ (id)fontDescriptorForSectName:(id)name uniqueCacheIdentifier:(id)identifier fromMachO:(const mach_header_64 *)o
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   if (fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO__onceToken != -1)
   {
     +[NTKFontLoader fontDescriptorForSectName:uniqueCacheIdentifier:fromMachO:];
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v8, v7];
-  FontDescriptorFromData = [fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO____fontDescriptorCache objectForKey:v9];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", identifierCopy, nameCopy];
+  FontDescriptorFromData = [fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO____fontDescriptorCache objectForKey:nameCopy];
   if (!FontDescriptorFromData)
   {
     size = 0;
-    v11 = getsectiondata(a5, "__FONT_DATA", [v7 cStringUsingEncoding:4], &size);
+    v11 = getsectiondata(o, "__FONT_DATA", [nameCopy cStringUsingEncoding:4], &size);
     if (v11)
     {
       v12 = CFDataCreateWithBytesNoCopy(*MEMORY[0x277CBECE8], v11, size, *MEMORY[0x277CBED00]);
       FontDescriptorFromData = CTFontManagerCreateFontDescriptorFromData(v12);
-      [fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO____fontDescriptorCache setObject:FontDescriptorFromData forKey:v9];
+      [fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO____fontDescriptorCache setObject:FontDescriptorFromData forKey:nameCopy];
       CFRelease(v12);
     }
 
@@ -45,9 +45,9 @@ void __75__NTKFontLoader_fontDescriptorForSectName_uniqueCacheIdentifier_fromMac
   fontDescriptorForSectName_uniqueCacheIdentifier_fromMachO____fontDescriptorCache = v0;
 }
 
-+ (id)registerFontDescriptorsForSectName:(id)a3 fromMachO:(const mach_header_64 *)a4
++ (id)registerFontDescriptorsForSectName:(id)name fromMachO:(const mach_header_64 *)o
 {
-  v5 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -55,7 +55,7 @@ void __75__NTKFontLoader_fontDescriptorForSectName_uniqueCacheIdentifier_fromMac
   v17 = __Block_byref_object_dispose__9;
   v18 = objc_opt_new();
   size = 0;
-  v6 = getsectiondata(a4, "__FONT_DATA", [v5 cStringUsingEncoding:4], &size);
+  v6 = getsectiondata(o, "__FONT_DATA", [nameCopy cStringUsingEncoding:4], &size);
   if (v6)
   {
     v7 = CFDataCreateWithBytesNoCopy(*MEMORY[0x277CBECE8], v6, size, *MEMORY[0x277CBED00]);
@@ -97,9 +97,9 @@ void __62__NTKFontLoader_registerFontDescriptorsForSectName_fromMachO___block_in
   }
 }
 
-+ (void)_registerFontDescriptor:(id)a3
++ (void)_registerFontDescriptor:(id)descriptor
 {
-  v3 = CTFontCreateWithFontDescriptor(a3, 12.0, 0);
+  v3 = CTFontCreateWithFontDescriptor(descriptor, 12.0, 0);
   v4 = CTFontCopyGraphicsFont(v3, 0);
   error = 0;
   CTFontManagerRegisterGraphicsFont(v4, &error);

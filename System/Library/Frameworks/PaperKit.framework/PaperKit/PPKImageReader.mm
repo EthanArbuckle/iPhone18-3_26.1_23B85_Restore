@@ -1,15 +1,15 @@
 @interface PPKImageReader
 + (id)_privateImageMetadataDescriptors;
-+ (id)imageDescriptionFromSource:(uint64_t)a1;
-- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)a3;
-- (id)_readDataFromTagAtPath:(id)a3 inMetadata:(CGImageMetadata *)a4;
++ (id)imageDescriptionFromSource:(uint64_t)source;
+- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)provider;
+- (id)_readDataFromTagAtPath:(id)path inMetadata:(CGImageMetadata *)metadata;
 @end
 
 @implementation PPKImageReader
 
-- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)a3
+- (id)_readAnnotationsFromDataProvider:(CGDataProvider *)provider
 {
-  v4 = CGImageSourceCreateWithDataProvider(a3, 0);
+  v4 = CGImageSourceCreateWithDataProvider(provider, 0);
   if (v4)
   {
     v5 = v4;
@@ -17,8 +17,8 @@
     if (v6)
     {
       v7 = v6;
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, kMetadataEncryptedModelTag];
-      v9 = [(PPKImageReader *)self _readDataFromTagAtPath:v8 inMetadata:v7];
+      kMetadataEncryptedModelTag = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, kMetadataEncryptedModelTag];
+      v9 = [(PPKImageReader *)self _readDataFromTagAtPath:kMetadataEncryptedModelTag inMetadata:v7];
       v10 = +[PPKPayloadEncryption sharedInstance];
       v11 = [(PPKPayloadEncryption *)v10 decryptData:v9];
 
@@ -31,8 +31,8 @@
           _os_log_impl(&dword_1D38C4000, v12, OS_LOG_TYPE_DEFAULT, "Did not find enc_model, attempting to read unencrypted model", buf, 2u);
         }
 
-        v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, kMetadataModelTag];
-        v11 = [(PPKImageReader *)self _readDataFromTagAtPath:v13 inMetadata:v7];
+        kMetadataModelTag = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", kMetadataPrefixPaperKit, kMetadataModelTag];
+        v11 = [(PPKImageReader *)self _readDataFromTagAtPath:kMetadataModelTag inMetadata:v7];
       }
 
       CFRelease(v7);
@@ -54,9 +54,9 @@
   return v11;
 }
 
-- (id)_readDataFromTagAtPath:(id)a3 inMetadata:(CGImageMetadata *)a4
+- (id)_readDataFromTagAtPath:(id)path inMetadata:(CGImageMetadata *)metadata
 {
-  v4 = CGImageMetadataCopyTagWithPath(a4, 0, a3);
+  v4 = CGImageMetadataCopyTagWithPath(metadata, 0, path);
   if (v4)
   {
     v5 = v4;
@@ -116,7 +116,7 @@
   return v4;
 }
 
-+ (id)imageDescriptionFromSource:(uint64_t)a1
++ (id)imageDescriptionFromSource:(uint64_t)source
 {
   v21 = *MEMORY[0x1E69E9840];
   objc_opt_self();

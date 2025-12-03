@@ -1,15 +1,15 @@
 @interface GNSSLocationServiceDelegate
-- (BOOL)clientConnection:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)isExecutableAllowed:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)executablePathOfConnection:(id)a3;
+- (BOOL)clientConnection:(id)connection hasEntitlement:(id)entitlement;
+- (BOOL)isExecutableAllowed:(id)allowed;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)executablePathOfConnection:(id)connection;
 @end
 
 @implementation GNSSLocationServiceDelegate
 
-- (BOOL)clientConnection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)clientConnection:(id)connection hasEntitlement:(id)entitlement
 {
-  v5 = [a3 valueForEntitlement:a4];
+  v5 = [connection valueForEntitlement:entitlement];
   self->hasEntitlementToRunRaven = v5 != 0;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -24,11 +24,11 @@
   return v7;
 }
 
-- (id)executablePathOfConnection:(id)a3
+- (id)executablePathOfConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   bzero(buffer, 0x1000uLL);
-  if (proc_pidpath([v3 processIdentifier], buffer, 0x1000u) < 1)
+  if (proc_pidpath([connectionCopy processIdentifier], buffer, 0x1000u) < 1)
   {
     v4 = 0;
   }
@@ -41,21 +41,21 @@
   return v4;
 }
 
-- (BOOL)isExecutableAllowed:(id)a3
+- (BOOL)isExecutableAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = [NSSet setWithObjects:@"locationd", 0];
-  v6 = [(GNSSLocationServiceDelegate *)self executablePathOfConnection:v4];
-  v7 = [v6 lastPathComponent];
+  v6 = [(GNSSLocationServiceDelegate *)self executablePathOfConnection:allowedCopy];
+  lastPathComponent = [v6 lastPathComponent];
 
-  LOBYTE(v6) = [v5 containsObject:v7];
+  LOBYTE(v6) = [v5 containsObject:lastPathComponent];
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  if (![(GNSSLocationServiceDelegate *)self clientConnection:v5 hasEntitlement:@"com.apple.private.corelocation.GNSSLocationService"])
+  connectionCopy = connection;
+  if (![(GNSSLocationServiceDelegate *)self clientConnection:connectionCopy hasEntitlement:@"com.apple.private.corelocation.GNSSLocationService"])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -66,30 +66,30 @@
     goto LABEL_8;
   }
 
-  if (![(GNSSLocationServiceDelegate *)self isExecutableAllowed:v5])
+  if (![(GNSSLocationServiceDelegate *)self isExecutableAllowed:connectionCopy])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(GNSSLocationServiceDelegate *)self executablePathOfConnection:v5];
-      v10 = [v9 lastPathComponent];
+      v9 = [(GNSSLocationServiceDelegate *)self executablePathOfConnection:connectionCopy];
+      lastPathComponent = [v9 lastPathComponent];
       v12 = 138412290;
-      v13 = v10;
+      v13 = lastPathComponent;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "CLGLS,GNSSLocationService,Application not allowed to establish connection,%@", &v12, 0xCu);
     }
 
 LABEL_8:
-    [v5 invalidate];
+    [connectionCopy invalidate];
     v8 = 0;
     goto LABEL_9;
   }
 
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GNSSLocationServiceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = objc_opt_new();
   [v7 setEntitlementsForRaven:self->hasEntitlementToRunRaven];
-  [v5 setExportedObject:v7];
-  [v5 resume];
+  [connectionCopy setExportedObject:v7];
+  [connectionCopy resume];
 
   v8 = 1;
 LABEL_9:

@@ -1,33 +1,33 @@
 @interface RTWiFiFootprintMonitor
-+ (id)footprintStateToString:(int64_t)a3;
-- (RTWiFiFootprintMonitor)initWithWiFiManager:(id)a3;
-- (int64_t)_footprintStateForScanResults:(id)a3;
++ (id)footprintStateToString:(int64_t)string;
+- (RTWiFiFootprintMonitor)initWithWiFiManager:(id)manager;
+- (int64_t)_footprintStateForScanResults:(id)results;
 - (void)_checkFootprint;
-- (void)_processScanResults:(id)a3;
+- (void)_processScanResults:(id)results;
 - (void)_pruneScanResults;
-- (void)_shutdownWithHandler:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)_start;
 - (void)_stop;
-- (void)fetchConstantFootprintStatusForScanResults:(id)a3 withHandler:(id)a4;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)onWiFiManagerNotificationPowerStatusChanged:(id)a3;
-- (void)onWiFiManagerNotificationScanResults:(id)a3;
-- (void)setFootprintState:(int64_t)a3;
+- (void)fetchConstantFootprintStatusForScanResults:(id)results withHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)onWiFiManagerNotificationPowerStatusChanged:(id)changed;
+- (void)onWiFiManagerNotificationScanResults:(id)results;
+- (void)setFootprintState:(int64_t)state;
 @end
 
 @implementation RTWiFiFootprintMonitor
 
-- (RTWiFiFootprintMonitor)initWithWiFiManager:(id)a3
+- (RTWiFiFootprintMonitor)initWithWiFiManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = RTWiFiFootprintMonitor;
   v6 = [(RTNotifier *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wifiManager, a3);
+    objc_storeStrong(&v6->_wifiManager, manager);
     v7->_footprintState = -1;
     v8 = objc_opt_new();
     scanResults = v7->_scanResults;
@@ -49,20 +49,20 @@
 
   v7 = +[(RTNotification *)RTWiFiFootprintStateNotification];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277CCAA00] defaultsDomain];
+  defaultsDomain = [MEMORY[0x277CCAA00] defaultsDomain];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v8 stringWithFormat:@"%@-%@-%@", v9, v11, v7];
+  v12 = [v8 stringWithFormat:@"%@-%@-%@", defaultsDomain, v11, v7];
 
   v13 = [RTPersistentTimer alloc];
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = [(RTNotifier *)self queue];
+  date = [MEMORY[0x277CBEAA8] date];
+  queue = [(RTNotifier *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __32__RTWiFiFootprintMonitor__start__block_invoke;
   v17[3] = &unk_2788C4EA0;
   v17[4] = self;
-  v16 = [(RTPersistentTimer *)v13 initWithFireDate:v14 interval:v12 serviceIdentifier:v15 queue:v17 handler:30.0];
+  v16 = [(RTPersistentTimer *)v13 initWithFireDate:date interval:v12 serviceIdentifier:queue queue:v17 handler:30.0];
   [(RTWiFiFootprintMonitor *)self setScanTimer:v16];
 }
 
@@ -70,36 +70,36 @@
 {
   [(RTNotifier *)self->_wifiManager removeObserver:self];
   [(RTWiFiManager *)self->_wifiManager cancelScan];
-  v3 = [(RTWiFiFootprintMonitor *)self scanTimer];
-  [v3 invalidate];
+  scanTimer = [(RTWiFiFootprintMonitor *)self scanTimer];
+  [scanTimer invalidate];
 
   [(RTWiFiFootprintMonitor *)self setScanTimer:0];
 
   [(RTWiFiFootprintMonitor *)self setFootprintState:-1];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(RTWiFiFootprintMonitor *)self _stop];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = +[(RTNotification *)RTWiFiFootprintStateNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
-    if ([(RTNotifier *)self getNumberOfObservers:v5]== 1)
+    if ([(RTNotifier *)self getNumberOfObservers:nameCopy]== 1)
     {
       [(RTWiFiFootprintMonitor *)self _start];
     }
@@ -111,22 +111,22 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = nameCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v9, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  nameCopy = name;
   v6 = +[(RTNotification *)RTWiFiFootprintStateNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [nameCopy isEqualToString:v6];
 
   if (v7)
   {
-    if (![(RTNotifier *)self getNumberOfObservers:v5])
+    if (![(RTNotifier *)self getNumberOfObservers:nameCopy])
     {
       [(RTWiFiFootprintMonitor *)self _stop];
     }
@@ -138,24 +138,24 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = nameCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "unsupported notification, %@", &v9, 0xCu);
     }
   }
 }
 
-- (void)onWiFiManagerNotificationScanResults:(id)a3
+- (void)onWiFiManagerNotificationScanResults:(id)results
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  resultsCopy = results;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__RTWiFiFootprintMonitor_onWiFiManagerNotificationScanResults___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = resultsCopy;
+  v6 = resultsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __63__RTWiFiFootprintMonitor_onWiFiManagerNotificationScanResults___block_invoke(uint64_t a1)
@@ -165,18 +165,18 @@ void __63__RTWiFiFootprintMonitor_onWiFiManagerNotificationScanResults___block_i
   [v1 _processScanResults:v2];
 }
 
-- (void)onWiFiManagerNotificationPowerStatusChanged:(id)a3
+- (void)onWiFiManagerNotificationPowerStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  changedCopy = changed;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__RTWiFiFootprintMonitor_onWiFiManagerNotificationPowerStatusChanged___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __70__RTWiFiFootprintMonitor_onWiFiManagerNotificationPowerStatusChanged___block_invoke(uint64_t a1)
@@ -187,13 +187,13 @@ uint64_t __70__RTWiFiFootprintMonitor_onWiFiManagerNotificationPowerStatusChange
   return [v1 _handlePowerStatusChanged:v2];
 }
 
-- (void)setFootprintState:(int64_t)a3
+- (void)setFootprintState:(int64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
   footprintState = self->_footprintState;
-  if (footprintState != a3)
+  if (footprintState != state)
   {
-    self->_footprintState = a3;
+    self->_footprintState = state;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
@@ -214,21 +214,21 @@ uint64_t __70__RTWiFiFootprintMonitor_onWiFiManagerNotificationPowerStatusChange
   }
 }
 
-- (void)fetchConstantFootprintStatusForScanResults:(id)a3 withHandler:(id)a4
+- (void)fetchConstantFootprintStatusForScanResults:(id)results withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resultsCopy = results;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__RTWiFiFootprintMonitor_fetchConstantFootprintStatusForScanResults_withHandler___block_invoke;
     block[3] = &unk_2788C6210;
-    v11 = v7;
+    v11 = handlerCopy;
     block[4] = self;
-    v10 = v6;
-    dispatch_async(v8, block);
+    v10 = resultsCopy;
+    dispatch_async(queue, block);
   }
 }
 
@@ -241,10 +241,10 @@ uint64_t __81__RTWiFiFootprintMonitor_fetchConstantFootprintStatusForScanResults
   return v3(v1, v2);
 }
 
-- (int64_t)_footprintStateForScanResults:(id)a3
+- (int64_t)_footprintStateForScanResults:(id)results
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-125.0];
   v36[0] = 0;
@@ -258,7 +258,7 @@ uint64_t __81__RTWiFiFootprintMonitor_fetchConstantFootprintStatusForScanResults
   v6 = v5;
   v34 = v6;
   v35 = v36;
-  [v3 enumerateObjectsWithOptions:2 usingBlock:v33];
+  [resultsCopy enumerateObjectsWithOptions:2 usingBlock:v33];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
@@ -271,7 +271,7 @@ uint64_t __81__RTWiFiFootprintMonitor_fetchConstantFootprintStatusForScanResults
   v31 = v36;
   v7 = v4;
   v29 = v7;
-  [v3 enumerateObjectsWithOptions:2 usingBlock:v28];
+  [resultsCopy enumerateObjectsWithOptions:2 usingBlock:v28];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -531,23 +531,23 @@ void __56__RTWiFiFootprintMonitor__footprintStateForScanResults___block_invoke_5
 
 - (void)_checkFootprint
 {
-  v3 = [(RTWiFiFootprintMonitor *)self scanResults];
-  [(RTWiFiFootprintMonitor *)self setFootprintState:[(RTWiFiFootprintMonitor *)self _footprintStateForScanResults:v3]];
+  scanResults = [(RTWiFiFootprintMonitor *)self scanResults];
+  [(RTWiFiFootprintMonitor *)self setFootprintState:[(RTWiFiFootprintMonitor *)self _footprintStateForScanResults:scanResults]];
 
   [(RTWiFiFootprintMonitor *)self _pruneScanResults];
 }
 
-- (void)_processScanResults:(id)a3
+- (void)_processScanResults:(id)results
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityWiFi);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v12 = [v4 count];
+      v12 = [resultsCopy count];
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "process %lu scan results", buf, 0xCu);
     }
   }
@@ -559,11 +559,11 @@ void __56__RTWiFiFootprintMonitor__footprintStateForScanResults___block_invoke_5
   v9[3] = &unk_2788CA7F0;
   v7 = v6;
   v10 = v7;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [resultsCopy enumerateObjectsUsingBlock:v9];
   if ([v7 count])
   {
-    v8 = [(RTWiFiFootprintMonitor *)self scanResults];
-    [v8 addObject:v7];
+    scanResults = [(RTWiFiFootprintMonitor *)self scanResults];
+    [scanResults addObject:v7];
   }
 
   [(RTWiFiFootprintMonitor *)self _checkFootprint];
@@ -600,7 +600,7 @@ void __46__RTWiFiFootprintMonitor__processScanResults___block_invoke(uint64_t a1
 {
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-125.0];
   v4 = objc_opt_new();
-  v5 = [(RTWiFiFootprintMonitor *)self scanResults];
+  scanResults = [(RTWiFiFootprintMonitor *)self scanResults];
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __43__RTWiFiFootprintMonitor__pruneScanResults__block_invoke;
@@ -609,7 +609,7 @@ void __46__RTWiFiFootprintMonitor__processScanResults___block_invoke(uint64_t a1
   v14 = v4;
   v6 = v4;
   v7 = v3;
-  [v5 enumerateObjectsUsingBlock:&v9];
+  [scanResults enumerateObjectsUsingBlock:&v9];
 
   v8 = [(RTWiFiFootprintMonitor *)self scanResults:v9];
   [v8 removeObjectsInArray:v6];
@@ -648,16 +648,16 @@ void __43__RTWiFiFootprintMonitor__pruneScanResults__block_invoke_2(uint64_t a1,
   }
 }
 
-+ (id)footprintStateToString:(int64_t)a3
++ (id)footprintStateToString:(int64_t)string
 {
-  if ((a3 + 1) > 2)
+  if ((string + 1) > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788CA810[a3 + 1];
+    return off_2788CA810[string + 1];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneSearchSimilaritiesDefaultSimilarity
 + (void)initialize;
 - (OrgApacheLuceneSearchSimilaritiesDefaultSimilarity)init;
-- (float)decodeNormValueWithLong:(int64_t)a3;
-- (float)lengthNormWithOrgApacheLuceneIndexFieldInvertState:(id)a3;
+- (float)decodeNormValueWithLong:(int64_t)long;
+- (float)lengthNormWithOrgApacheLuceneIndexFieldInvertState:(id)state;
 @end
 
 @implementation OrgApacheLuceneSearchSimilaritiesDefaultSimilarity
@@ -14,7 +14,7 @@
   return self;
 }
 
-- (float)decodeNormValueWithLong:(int64_t)a3
+- (float)decodeNormValueWithLong:(int64_t)long
 {
   if (!qword_100554018)
   {
@@ -22,21 +22,21 @@
   }
 
   v3 = *(qword_100554018 + 8);
-  if (v3 <= a3)
+  if (v3 <= long)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v3, a3);
+    IOSArray_throwOutOfBoundsWithMsg(v3, long);
   }
 
-  return *(qword_100554018 + 12 + 4 * a3);
+  return *(qword_100554018 + 12 + 4 * long);
 }
 
-- (float)lengthNormWithOrgApacheLuceneIndexFieldInvertState:(id)a3
+- (float)lengthNormWithOrgApacheLuceneIndexFieldInvertState:(id)state
 {
   if (!self->discountOverlaps_)
   {
-    if (a3)
+    if (state)
     {
-      v5 = [a3 getLength];
+      getLength = [state getLength];
       goto LABEL_6;
     }
 
@@ -44,23 +44,23 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!state)
   {
     goto LABEL_7;
   }
 
-  v4 = [a3 getLength];
-  v5 = v4 - [a3 getNumOverlap];
+  getLength2 = [state getLength];
+  getLength = getLength2 - [state getNumOverlap];
 LABEL_6:
-  [a3 getBoost];
+  [state getBoost];
   v7 = v6;
-  v8 = 1.0 / JavaLangMath_sqrtWithDouble_(v5);
+  v8 = 1.0 / JavaLangMath_sqrtWithDouble_(getLength);
   return v7 * v8;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_100554018, [IOSFloatArray newArrayWithLength:256]);
     for (i = 0; i != 256; ++i)

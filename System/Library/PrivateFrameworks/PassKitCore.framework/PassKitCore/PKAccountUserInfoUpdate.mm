@@ -1,23 +1,23 @@
 @interface PKAccountUserInfoUpdate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKAccountUserInfoUpdate)initWithCoder:(id)a3;
-- (PKAccountUserInfoUpdate)initWithRecord:(id)a3;
+- (PKAccountUserInfoUpdate)initWithCoder:(id)coder;
+- (PKAccountUserInfoUpdate)initWithRecord:(id)record;
 - (unint64_t)hash;
-- (void)encodeWithRecord:(id)a3;
+- (void)encodeWithRecord:(id)record;
 @end
 
 @implementation PKAccountUserInfoUpdate
 
-- (PKAccountUserInfoUpdate)initWithCoder:(id)a3
+- (PKAccountUserInfoUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKAccountUserInfoUpdate;
   v5 = [(PKAccountUserInfoUpdate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userInfoUpdatedDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userInfoUpdatedDate"];
     updatedDate = v5->_updatedDate;
     v5->_updatedDate = v6;
   }
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (PKAccountUserInfoUpdate)initWithRecord:(id)a3
+- (PKAccountUserInfoUpdate)initWithRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v9.receiver = self;
   v9.super_class = PKAccountUserInfoUpdate;
   v5 = [(PKAccountUserInfoUpdate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 pk_encryptedDateForKey:@"userInfoUpdatedDate"];
+    v6 = [recordCopy pk_encryptedDateForKey:@"userInfoUpdatedDate"];
     updatedDate = v5->_updatedDate;
     v5->_updatedDate = v6;
   }
@@ -41,20 +41,20 @@
   return v5;
 }
 
-- (void)encodeWithRecord:(id)a3
+- (void)encodeWithRecord:(id)record
 {
-  v4 = [a3 encryptedValues];
-  [v4 setObject:self->_updatedDate forKey:@"userInfoUpdatedDate"];
+  encryptedValues = [record encryptedValues];
+  [encryptedValues setObject:self->_updatedDate forKey:@"userInfoUpdatedDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     updatedDate = self->_updatedDate;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (updatedDate && v6)
     {
       v7 = [(NSDate *)updatedDate isEqual:?];
@@ -76,9 +76,9 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_updatedDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_updatedDate];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

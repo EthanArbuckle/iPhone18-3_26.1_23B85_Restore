@@ -1,32 +1,32 @@
 @interface FBDisplayLayoutElement
-- (FBDisplayLayoutElement)initWithDisplayType:(int64_t)a3 identifier:(id)a4 elementClass:(Class)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBDisplayLayoutElement)initWithDisplayType:(int64_t)type identifier:(id)identifier elementClass:(Class)class;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)activateWithBuilder:(id)a3;
+- (void)activateWithBuilder:(id)builder;
 - (void)deactivate;
 - (void)dealloc;
-- (void)updateWithBuilder:(id)a3;
+- (void)updateWithBuilder:(id)builder;
 @end
 
 @implementation FBDisplayLayoutElement
 
-- (FBDisplayLayoutElement)initWithDisplayType:(int64_t)a3 identifier:(id)a4 elementClass:(Class)a5
+- (FBDisplayLayoutElement)initWithDisplayType:(int64_t)type identifier:(id)identifier elementClass:(Class)class
 {
-  v9 = a4;
-  if (!v9)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [FBDisplayLayoutElement initWithDisplayType:a2 identifier:? elementClass:?];
   }
 
-  v10 = v9;
+  v10 = identifierCopy;
   v21.receiver = self;
   v21.super_class = FBDisplayLayoutElement;
   v11 = [(FBDisplayLayoutElement *)&v21 init];
   if (v11)
   {
-    if (a3)
+    if (type)
     {
       v12 = 0;
     }
@@ -39,7 +39,7 @@
     publisher = v11->_publisher;
     v11->_publisher = v12;
 
-    v11->_displayType = a3;
+    v11->_displayType = type;
     v14 = [v10 copy];
     identifier = v11->_identifier;
     v11->_identifier = v14;
@@ -48,8 +48,8 @@
     key = v11->_key;
     v11->_key = v16;
 
-    v11->_elementClass = a5;
-    v18 = [[a5 alloc] initWithIdentifier:v11->_identifier];
+    v11->_elementClass = class;
+    v18 = [[class alloc] initWithIdentifier:v11->_identifier];
     element = v11->_element;
     v11->_element = v18;
   }
@@ -62,7 +62,7 @@
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_activeAssertion == ((void *)0)"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v3 = NSStringFromSelector(a1);
+    v3 = NSStringFromSelector(self);
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     OUTLINED_FUNCTION_1();
@@ -79,14 +79,14 @@
   __break(0);
 }
 
-- (void)activateWithBuilder:(id)a3
+- (void)activateWithBuilder:(id)builder
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  builderCopy = builder;
+  v7 = builderCopy;
+  if (builderCopy)
   {
-    (*(v4 + 2))(v4, self->_element);
-    v4 = v7;
+    (*(builderCopy + 2))(builderCopy, self->_element);
+    builderCopy = v7;
   }
 
   if (!self->_activeAssertion)
@@ -95,18 +95,18 @@
     activeAssertion = self->_activeAssertion;
     self->_activeAssertion = v5;
 
-    v4 = v7;
+    builderCopy = v7;
   }
 }
 
-- (void)updateWithBuilder:(id)a3
+- (void)updateWithBuilder:(id)builder
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  builderCopy = builder;
+  v8 = builderCopy;
+  if (builderCopy)
   {
-    (*(v4 + 2))(v4, self->_element);
-    v4 = v8;
+    (*(builderCopy + 2))(builderCopy, self->_element);
+    builderCopy = v8;
   }
 
   if (self->_activeAssertion)
@@ -118,7 +118,7 @@
     self->_activeAssertion = v6;
 
     [v5 invalidate];
-    v4 = v8;
+    builderCopy = v8;
   }
 }
 
@@ -135,10 +135,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBDisplayLayoutElement *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBDisplayLayoutElement *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -157,26 +157,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBDisplayLayoutElement *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBDisplayLayoutElement *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBDisplayLayoutElement *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBDisplayLayoutElement *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__FBDisplayLayoutElement_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E783B240;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

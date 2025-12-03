@@ -1,57 +1,57 @@
 @interface CoreIRButton
-- (BOOL)isEqual:(id)a3;
-- (CoreIRButton)initWithCoder:(id)a3;
-- (CoreIRButton)initWithUsagePage:(unsigned int)a3 usageID:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CoreIRButton)initWithCoder:(id)coder;
+- (CoreIRButton)initWithUsagePage:(unsigned int)page usageID:(unsigned int)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CoreIRButton
 
-- (CoreIRButton)initWithUsagePage:(unsigned int)a3 usageID:(unsigned int)a4
+- (CoreIRButton)initWithUsagePage:(unsigned int)page usageID:(unsigned int)d
 {
   v7.receiver = self;
   v7.super_class = CoreIRButton;
   result = [(CoreIRButton *)&v7 init];
   if (result)
   {
-    result->_usagePage = a3;
-    result->_usageID = a4;
+    result->_usagePage = page;
+    result->_usageID = d;
   }
 
   return result;
 }
 
-- (CoreIRButton)initWithCoder:(id)a3
+- (CoreIRButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CoreIRButton;
   v4 = [(CoreIRButton *)&v6 init];
   if (v4)
   {
-    v4->_usagePage = [a3 decodeInt32ForKey:@"UsagePage"];
-    v4->_usageID = [a3 decodeInt32ForKey:@"UsageID"];
+    v4->_usagePage = [coder decodeInt32ForKey:@"UsagePage"];
+    v4->_usageID = [coder decodeInt32ForKey:@"UsageID"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:self->_usagePage forKey:@"UsagePage"];
+  [coder encodeInt32:self->_usagePage forKey:@"UsagePage"];
   usageID = self->_usageID;
 
-  [a3 encodeInt32:usageID forKey:@"UsageID"];
+  [coder encodeInt32:usageID forKey:@"UsageID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CoreIRButton *)self usagePage];
-  v6 = [(CoreIRButton *)self usageID];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  usagePage = [(CoreIRButton *)self usagePage];
+  usageID = [(CoreIRButton *)self usageID];
 
-  return [v4 initWithUsagePage:v5 usageID:v6];
+  return [v4 initWithUsagePage:usagePage usageID:usageID];
 }
 
 - (id)description
@@ -61,9 +61,9 @@
   return [-[CoreIRButton description](&v3 description)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -74,14 +74,14 @@
     return 0;
   }
 
-  v5 = [(CoreIRButton *)self usagePage];
-  if (v5 != [a3 usagePage])
+  usagePage = [(CoreIRButton *)self usagePage];
+  if (usagePage != [equal usagePage])
   {
     return 0;
   }
 
-  v6 = [(CoreIRButton *)self usageID];
-  return v6 == [a3 usageID];
+  usageID = [(CoreIRButton *)self usageID];
+  return usageID == [equal usageID];
 }
 
 @end

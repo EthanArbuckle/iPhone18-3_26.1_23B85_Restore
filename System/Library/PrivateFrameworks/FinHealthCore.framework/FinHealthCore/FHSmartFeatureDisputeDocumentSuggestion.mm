@@ -1,59 +1,59 @@
 @interface FHSmartFeatureDisputeDocumentSuggestion
-- (BOOL)isEqual:(id)a3;
-- (FHSmartFeatureDisputeDocumentSuggestion)initWithCoder:(id)a3;
-- (FHSmartFeatureDisputeDocumentSuggestion)initWithRankedValue:(id)a3 type:(unint64_t)a4;
-- (id)_initWithUUID:(id)a3 rankScore:(id)a4 type:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (FHSmartFeatureDisputeDocumentSuggestion)initWithCoder:(id)coder;
+- (FHSmartFeatureDisputeDocumentSuggestion)initWithRankedValue:(id)value type:(unint64_t)type;
+- (id)_initWithUUID:(id)d rankScore:(id)score type:(unint64_t)type;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHSmartFeatureDisputeDocumentSuggestion
 
-- (FHSmartFeatureDisputeDocumentSuggestion)initWithRankedValue:(id)a3 type:(unint64_t)a4
+- (FHSmartFeatureDisputeDocumentSuggestion)initWithRankedValue:(id)value type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [v6 featureLabel];
-  v8 = [v6 featureRank];
+  valueCopy = value;
+  featureLabel = [valueCopy featureLabel];
+  featureRank = [valueCopy featureRank];
 
-  v9 = [(FHSmartFeatureDisputeDocumentSuggestion *)self _initWithUUID:v7 rankScore:v8 type:a4];
+  v9 = [(FHSmartFeatureDisputeDocumentSuggestion *)self _initWithUUID:featureLabel rankScore:featureRank type:type];
   return v9;
 }
 
-- (id)_initWithUUID:(id)a3 rankScore:(id)a4 type:(unint64_t)a5
+- (id)_initWithUUID:(id)d rankScore:(id)score type:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  scoreCopy = score;
   v11 = [(FHSmartFeatureDisputeDocumentSuggestion *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_UUID, a3);
-    objc_storeStrong(&v12->_rankScore, a4);
-    v12->_type = a5;
+    objc_storeStrong(&v11->_UUID, d);
+    objc_storeStrong(&v12->_rankScore, score);
+    v12->_type = type;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     UUID = self->_UUID;
-    v7 = [(FHSmartFeatureDisputeDocumentSuggestion *)v5 UUID];
-    if ([(NSString *)UUID isEqualToString:v7])
+    uUID = [(FHSmartFeatureDisputeDocumentSuggestion *)v5 UUID];
+    if ([(NSString *)UUID isEqualToString:uUID])
     {
       rankScore = self->_rankScore;
-      v9 = [(FHSmartFeatureDisputeDocumentSuggestion *)v5 rankScore];
-      if ([(NSDecimalNumber *)rankScore isEqualToNumber:v9])
+      rankScore = [(FHSmartFeatureDisputeDocumentSuggestion *)v5 rankScore];
+      if ([(NSDecimalNumber *)rankScore isEqualToNumber:rankScore])
       {
         type = self->_type;
         v11 = type == [(FHSmartFeatureDisputeDocumentSuggestion *)v5 type];
@@ -97,32 +97,32 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"uuid"];
-  [v5 encodeObject:self->_rankScore forKey:@"rankScore"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"uuid"];
+  [coderCopy encodeObject:self->_rankScore forKey:@"rankScore"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (FHSmartFeatureDisputeDocumentSuggestion)initWithCoder:(id)a3
+- (FHSmartFeatureDisputeDocumentSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FHSmartFeatureDisputeDocumentSuggestion;
   v5 = [(FHSmartFeatureDisputeDocumentSuggestion *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rankScore"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rankScore"];
     rankScore = v5->_rankScore;
     v5->_rankScore = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

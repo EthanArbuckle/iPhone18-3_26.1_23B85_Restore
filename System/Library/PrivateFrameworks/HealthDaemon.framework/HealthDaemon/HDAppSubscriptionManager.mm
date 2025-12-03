@@ -1,18 +1,18 @@
 @interface HDAppSubscriptionManager
-- (BOOL)unitTesting_isAwaitingLaunchForBundleID:(id)a3 dataTypeCode:(int64_t)a4;
-- (BOOL)unitTesting_isObservingDataTypeCode:(int64_t)a3;
+- (BOOL)unitTesting_isAwaitingLaunchForBundleID:(id)d dataTypeCode:(int64_t)code;
+- (BOOL)unitTesting_isObservingDataTypeCode:(int64_t)code;
 - (HDAppSubscriptionManager)init;
-- (HDAppSubscriptionManager)initWithProfile:(id)a3 backgroundAppRefreshSettings:(id)a4;
-- (id)_updateOrCreateSubscription:(void *)a1 value:(void *)a2 type:(uint64_t)a3;
-- (void)_isBackgroundAppRefreshDisabledForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_queue_scheduleLaunches:(void *)a3 anchor:(uint64_t)a4 type:;
-- (void)ackForBundleID:(id)a3 dataTypes:(id)a4 anchor:(id)a5 ackTime:(id)a6;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)removeBundleID:(id)a3;
-- (void)removeSubscriptionForBundleID:(id)a3 dataCode:(int64_t)a4;
-- (void)setAnchor:(id)a3 forDataCode:(int64_t)a4 type:(int64_t)a5;
-- (void)subscribeForBundleID:(id)a3 dataCode:(int64_t)a4 frequencyInSeconds:(unint64_t)a5 appSDKVersionToken:(unint64_t)a6;
+- (HDAppSubscriptionManager)initWithProfile:(id)profile backgroundAppRefreshSettings:(id)settings;
+- (id)_updateOrCreateSubscription:(void *)subscription value:(void *)value type:(uint64_t)type;
+- (void)_isBackgroundAppRefreshDisabledForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_queue_scheduleLaunches:(void *)launches anchor:(uint64_t)anchor type:;
+- (void)ackForBundleID:(id)d dataTypes:(id)types anchor:(id)anchor ackTime:(id)time;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)removeBundleID:(id)d;
+- (void)removeSubscriptionForBundleID:(id)d dataCode:(int64_t)code;
+- (void)setAnchor:(id)anchor forDataCode:(int64_t)code type:(int64_t)type;
+- (void)subscribeForBundleID:(id)d dataCode:(int64_t)code frequencyInSeconds:(unint64_t)seconds appSDKVersionToken:(unint64_t)token;
 @end
 
 @implementation HDAppSubscriptionManager
@@ -27,25 +27,25 @@
   return 0;
 }
 
-- (HDAppSubscriptionManager)initWithProfile:(id)a3 backgroundAppRefreshSettings:(id)a4
+- (HDAppSubscriptionManager)initWithProfile:(id)profile backgroundAppRefreshSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  settingsCopy = settings;
   v28.receiver = self;
   v28.super_class = HDAppSubscriptionManager;
   v8 = [(HDAppSubscriptionManager *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_appRefreshSettings, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_appRefreshSettings, settings);
     v10 = HKCreateSerialDispatchQueue();
     launchQueue = v9->_launchQueue;
     v9->_launchQueue = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingTypeCodesToAnchors = v9->_pendingTypeCodesToAnchors;
-    v9->_pendingTypeCodesToAnchors = v12;
+    v9->_pendingTypeCodesToAnchors = dictionary;
 
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     observedDataTypeCodes = v9->_observedDataTypeCodes;
@@ -55,13 +55,13 @@
     outstandingLaunchesByBundleIdentifier = v9->_outstandingLaunchesByBundleIdentifier;
     v9->_outstandingLaunchesByBundleIdentifier = v16;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     launchTimers = v9->_launchTimers;
-    v9->_launchTimers = v18;
+    v9->_launchTimers = dictionary2;
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     launchTimerLaunchTimes = v9->_launchTimerLaunchTimes;
-    v9->_launchTimerLaunchTimes = v20;
+    v9->_launchTimerLaunchTimes = dictionary3;
 
     v22 = objc_alloc_init(HDBackgroundAppLauncher);
     backgroundAppLauncher = v9->_backgroundAppLauncher;
@@ -71,17 +71,17 @@
     [WeakRetained registerProfileReadyObserver:v9 queue:v9->_launchQueue];
 
     v25 = objc_loadWeakRetained(&v9->_profile);
-    v26 = [v25 database];
-    [v26 addProtectedDataObserver:v9 queue:v9->_launchQueue];
+    database = [v25 database];
+    [database addProtectedDataObserver:v9 queue:v9->_launchQueue];
   }
 
   return v9;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   objc_initWeak(&location, self);
   appRefreshSettings = self->_appRefreshSettings;
   v11[0] = MEMORY[0x277D85DD0];
@@ -157,19 +157,19 @@ void __50__HDAppSubscriptionManager_profileDidBecomeReady___block_invoke(uint64_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_scheduleLaunches:(void *)a3 anchor:(uint64_t)a4 type:
+- (void)_queue_scheduleLaunches:(void *)launches anchor:(uint64_t)anchor type:
 {
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a1)
+  launchesCopy = launches;
+  if (self)
   {
-    if (*(a1 + 32))
+    if (*(self + 32))
     {
       if (HDBackgroundObservationSupportedForDataTypeCode(a2))
       {
-        v54 = a4;
-        v58 = v7;
-        if (a2 < 0 || (v8 = *(a1 + 16), [MEMORY[0x277CCABB0] numberWithInteger:a2], v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v8) = objc_msgSend(v8, "containsObject:", v9), v9, (v8 & 1) != 0))
+        anchorCopy = anchor;
+        v58 = launchesCopy;
+        if (a2 < 0 || (v8 = *(self + 16), [MEMORY[0x277CCABB0] numberWithInteger:a2], v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(v8) = objc_msgSend(v8, "containsObject:", v9), v9, (v8 & 1) != 0))
         {
           v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -177,8 +177,8 @@ void __50__HDAppSubscriptionManager_profileDidBecomeReady___block_invoke(uint64_
           *(&buf + 1) = 3221225472;
           v82 = __93__HDAppSubscriptionManager__updateObservationStatusForDataTypeCode_lastAppLaunchTimes_error___block_invoke;
           v83 = &unk_2786168E0;
-          v12 = a1;
-          v84 = a1;
+          selfCopy = self;
+          selfCopy2 = self;
           v55 = a2;
           v87 = a2;
           v13 = v11;
@@ -204,14 +204,14 @@ void __50__HDAppSubscriptionManager_profileDidBecomeReady___block_invoke(uint64_
               v25 = v58;
             }
 
-            v26 = *(a1 + 64);
+            v26 = *(self + 64);
             v27 = MEMORY[0x277CCABB0];
             v28 = v25;
             v29 = [v27 numberWithInteger:v55];
             v30 = [v26 objectForKeyedSubscript:v29];
-            v31 = [HDAppSubscriptionManager _updateOrCreateSubscription:v30 value:v28 type:v54];
+            v31 = [HDAppSubscriptionManager _updateOrCreateSubscription:v30 value:v28 type:anchorCopy];
 
-            v32 = *(a1 + 64);
+            v32 = *(self + 64);
             v33 = [MEMORY[0x277CCABB0] numberWithInteger:v55];
             [v32 setObject:v31 forKeyedSubscript:v33];
 
@@ -231,7 +231,7 @@ void __50__HDAppSubscriptionManager_profileDidBecomeReady___block_invoke(uint64_
           {
 LABEL_44:
 
-            v7 = v58;
+            launchesCopy = v58;
             goto LABEL_45;
           }
 
@@ -249,16 +249,16 @@ LABEL_44:
           }
 
           v20 = [MEMORY[0x277CCD720] dataTypeWithCode:a2];
-          v21 = [v20 identifier];
+          identifier = [v20 identifier];
           _HKInitializeLogging();
           v22 = *MEMORY[0x277CCC288];
           v23 = os_log_type_enabled(*MEMORY[0x277CCC288], OS_LOG_TYPE_DEFAULT);
-          if (v21)
+          if (identifier)
           {
             if (v23)
             {
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v21;
+              *(&buf + 4) = identifier;
               v24 = "Scheduling launches for %@";
 LABEL_31:
               _os_log_impl(&dword_228986000, v22, OS_LOG_TYPE_DEFAULT, v24, &buf, 0xCu);
@@ -303,9 +303,9 @@ LABEL_33:
                 }
 
                 v42 = *(*(&v72 + 1) + 8 * i);
-                v43 = [v42 bundleIdentifier];
-                WeakRetained = objc_loadWeakRetained((v12 + 40));
-                [HDAppSubscriptionAppLaunchEntity appSDKVersionTokenForBundleID:v43 profile:WeakRetained error:0];
+                bundleIdentifier = [v42 bundleIdentifier];
+                WeakRetained = objc_loadWeakRetained((selfCopy + 40));
+                [HDAppSubscriptionAppLaunchEntity appSDKVersionTokenForBundleID:bundleIdentifier profile:WeakRetained error:0];
 
                 if (dyld_version_token_at_least())
                 {
@@ -317,10 +317,10 @@ LABEL_33:
                   v71 = &v76;
                   v67 = v37;
                   v68 = v42;
-                  v45 = v43;
+                  v45 = bundleIdentifier;
                   v69 = v45;
                   v70 = v38;
-                  [v12 _isBackgroundAppRefreshDisabledForBundleIdentifier:v45 completion:v66];
+                  [selfCopy _isBackgroundAppRefreshDisabledForBundleIdentifier:v45 completion:v66];
                 }
 
                 else
@@ -337,19 +337,19 @@ LABEL_33:
             while (v39);
           }
 
-          v46 = *(v12 + 56);
+          v46 = *(selfCopy + 56);
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __107__HDAppSubscriptionManager__updateSubscriptionsBasedOnBARSwitchState_lastLaunchTimes_dataCode_anchor_type___block_invoke_320;
           block[3] = &unk_27861CF48;
-          block[4] = v12;
+          block[4] = selfCopy;
           v61 = v37;
           v47 = v51;
           v62 = v47;
           v64 = v55;
           v48 = v52;
           v63 = v48;
-          v65 = v54;
+          v65 = anchorCopy;
           v49 = v37;
           dispatch_group_notify(v38, v46, block);
 
@@ -359,7 +359,7 @@ LABEL_33:
 
         _HKInitializeLogging();
         v19 = *MEMORY[0x277CCC288];
-        v7 = v58;
+        launchesCopy = v58;
         if (os_log_type_enabled(*MEMORY[0x277CCC288], OS_LOG_TYPE_INFO))
         {
           LODWORD(buf) = 134217984;
@@ -775,10 +775,10 @@ LABEL_58:
   v73 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_isBackgroundAppRefreshDisabledForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_isBackgroundAppRefreshDisabledForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (([(HDBackgroundAppRefreshSettings *)self->_appRefreshSettings backgroundAppRefreshEnabledGlobally]& 1) != 0)
   {
     appRefreshSettings = self->_appRefreshSettings;
@@ -786,53 +786,53 @@ LABEL_58:
     v9[1] = 3221225472;
     v9[2] = __90__HDAppSubscriptionManager__isBackgroundAppRefreshDisabledForBundleIdentifier_completion___block_invoke;
     v9[3] = &unk_27861CF70;
-    v10 = v7;
-    [(HDBackgroundAppRefreshSettings *)appRefreshSettings backgroundAppRefreshEnabledForApp:v6 completion:v9];
+    v10 = completionCopy;
+    [(HDBackgroundAppRefreshSettings *)appRefreshSettings backgroundAppRefreshEnabledForApp:identifierCopy completion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (id)_updateOrCreateSubscription:(void *)a1 value:(void *)a2 type:(uint64_t)a3
+- (id)_updateOrCreateSubscription:(void *)subscription value:(void *)value type:(uint64_t)type
 {
-  v5 = a1;
-  v6 = a2;
-  if (v5)
+  subscriptionCopy = subscription;
+  valueCopy = value;
+  if (subscriptionCopy)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      [v5 updateAssociationAnchor:v6];
+      [subscriptionCopy updateAssociationAnchor:valueCopy];
     }
 
-    else if (!a3)
+    else if (!type)
     {
-      [v5 updateDataAnchor:v6];
+      [subscriptionCopy updateDataAnchor:valueCopy];
     }
 
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v7 = objc_alloc(MEMORY[0x277CCD858]);
     v8 = 0;
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
 LABEL_9:
-      v10 = v5;
+      v10 = subscriptionCopy;
       goto LABEL_12;
     }
 
     v7 = objc_alloc(MEMORY[0x277CCD858]);
-    v8 = v6;
+    v8 = valueCopy;
     v9 = 0;
   }
 
@@ -1229,26 +1229,26 @@ void __64__HDAppSubscriptionManager__updateBundleID_dataCode_launchTime___block_
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v18 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_launchQueue);
-  if (v4)
+  if (availableCopy)
   {
     v6 = +[HDMutableDatabaseTransactionContext contextForWriting];
     v7 = [v6 mutableCopy];
 
     [v7 setCacheScope:1];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v9 = [WeakRetained database];
+    database = [WeakRetained database];
     v14[4] = self;
     v15 = 0;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__HDAppSubscriptionManager_database_protectedDataDidBecomeAvailable___block_invoke;
     v14[3] = &unk_278616048;
-    v10 = [v9 performTransactionWithContext:v7 error:&v15 block:v14 inaccessibilityHandler:0];
+    v10 = [database performTransactionWithContext:v7 error:&v15 block:v14 inaccessibilityHandler:0];
     v11 = v15;
 
     if ((v10 & 1) == 0)
@@ -1303,18 +1303,18 @@ void __69__HDAppSubscriptionManager_database_protectedDataDidBecomeAvailable___b
   [*(*(a1 + 32) + 64) removeObjectForKey:v5];
 }
 
-- (void)removeSubscriptionForBundleID:(id)a3 dataCode:(int64_t)a4
+- (void)removeSubscriptionForBundleID:(id)d dataCode:(int64_t)code
 {
-  v6 = a3;
+  dCopy = d;
   launchQueue = self->_launchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HDAppSubscriptionManager_removeSubscriptionForBundleID_dataCode___block_invoke;
   block[3] = &unk_278614E78;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  codeCopy = code;
+  v8 = dCopy;
   dispatch_async(launchQueue, block);
 }
 
@@ -1330,17 +1330,17 @@ void __67__HDAppSubscriptionManager_removeSubscriptionForBundleID_dataCode___blo
   }
 }
 
-- (void)removeBundleID:(id)a3
+- (void)removeBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   launchQueue = self->_launchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__HDAppSubscriptionManager_removeBundleID___block_invoke;
   v7[3] = &unk_278613920;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(launchQueue, v7);
 }
 
@@ -1358,20 +1358,20 @@ void __43__HDAppSubscriptionManager_removeBundleID___block_invoke(uint64_t a1)
   }
 }
 
-- (void)subscribeForBundleID:(id)a3 dataCode:(int64_t)a4 frequencyInSeconds:(unint64_t)a5 appSDKVersionToken:(unint64_t)a6
+- (void)subscribeForBundleID:(id)d dataCode:(int64_t)code frequencyInSeconds:(unint64_t)seconds appSDKVersionToken:(unint64_t)token
 {
-  v10 = a3;
+  dCopy = d;
   launchQueue = self->_launchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__HDAppSubscriptionManager_subscribeForBundleID_dataCode_frequencyInSeconds_appSDKVersionToken___block_invoke;
   block[3] = &unk_27861D088;
   block[4] = self;
-  v14 = v10;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v12 = v10;
+  v14 = dCopy;
+  codeCopy = code;
+  secondsCopy = seconds;
+  tokenCopy = token;
+  v12 = dCopy;
   dispatch_async(launchQueue, block);
 }
 
@@ -1450,42 +1450,42 @@ void __96__HDAppSubscriptionManager_subscribeForBundleID_dataCode_frequencyInSec
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAnchor:(id)a3 forDataCode:(int64_t)a4 type:(int64_t)a5
+- (void)setAnchor:(id)anchor forDataCode:(int64_t)code type:(int64_t)type
 {
-  v8 = a3;
+  anchorCopy = anchor;
   launchQueue = self->_launchQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__HDAppSubscriptionManager_setAnchor_forDataCode_type___block_invoke;
   v11[3] = &unk_278616F60;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = anchorCopy;
+  codeCopy = code;
+  typeCopy = type;
+  v10 = anchorCopy;
   dispatch_async(launchQueue, v11);
 }
 
-- (void)ackForBundleID:(id)a3 dataTypes:(id)a4 anchor:(id)a5 ackTime:(id)a6
+- (void)ackForBundleID:(id)d dataTypes:(id)types anchor:(id)anchor ackTime:(id)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  typesCopy = types;
+  anchorCopy = anchor;
+  timeCopy = time;
   launchQueue = self->_launchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HDAppSubscriptionManager_ackForBundleID_dataTypes_anchor_ackTime___block_invoke;
   block[3] = &unk_27861D0B0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  v21 = typesCopy;
+  v22 = anchorCopy;
+  v23 = timeCopy;
+  v15 = timeCopy;
+  v16 = anchorCopy;
+  v17 = typesCopy;
+  v18 = dCopy;
   dispatch_async(launchQueue, block);
 }
 
@@ -1645,19 +1645,19 @@ void __68__HDAppSubscriptionManager_ackForBundleID_dataTypes_anchor_ackTime___bl
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)unitTesting_isObservingDataTypeCode:(int64_t)a3
+- (BOOL)unitTesting_isObservingDataTypeCode:(int64_t)code
 {
   observedDataTypeCodes = self->_observedDataTypeCodes;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:code];
   LOBYTE(observedDataTypeCodes) = [(NSMutableSet *)observedDataTypeCodes containsObject:v4];
 
   return observedDataTypeCodes;
 }
 
-- (BOOL)unitTesting_isAwaitingLaunchForBundleID:(id)a3 dataTypeCode:(int64_t)a4
+- (BOOL)unitTesting_isAwaitingLaunchForBundleID:(id)d dataTypeCode:(int64_t)code
 {
-  v5 = [(NSMutableDictionary *)self->_outstandingLaunchesByBundleIdentifier objectForKeyedSubscript:a3];
-  if (a4 == -1)
+  v5 = [(NSMutableDictionary *)self->_outstandingLaunchesByBundleIdentifier objectForKeyedSubscript:d];
+  if (code == -1)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:-1];
     v7 = [v5 objectForKeyedSubscript:v6];
@@ -1666,7 +1666,7 @@ void __68__HDAppSubscriptionManager_ackForBundleID_dataTypes_anchor_ackTime___bl
 
   else
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:code];
     v7 = [v5 objectForKeyedSubscript:v6];
     v8 = [(NSMutableArray *)v7 currentReferenceCount]!= 0;
   }

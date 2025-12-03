@@ -1,7 +1,7 @@
 @interface MPSkipIntervalCommand
-- (MPSkipIntervalCommand)initWithMediaRemoteCommandType:(unsigned int)a3;
+- (MPSkipIntervalCommand)initWithMediaRemoteCommandType:(unsigned int)type;
 - (id)_mediaRemoteCommandInfoOptions;
-- (id)newCommandEventWithInterval:(double)a3;
+- (id)newCommandEventWithInterval:(double)interval;
 - (void)setPreferredIntervals:(NSArray *)preferredIntervals;
 @end
 
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (id)newCommandEventWithInterval:(double)a3
+- (id)newCommandEventWithInterval:(double)interval
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPRemoteCommand *)self mediaRemoteCommandType];
+  mediaRemoteCommandType = [(MPRemoteCommand *)self mediaRemoteCommandType];
   v10 = *MEMORY[0x1E69B1238];
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:interval];
   v11[0] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v8 = [(MPRemoteCommand *)self newCommandEventWithCommandType:v5 options:v7];
+  v8 = [(MPRemoteCommand *)self newCommandEventWithCommandType:mediaRemoteCommandType options:v7];
 
   return v8;
 }
@@ -52,11 +52,11 @@
   }
 }
 
-- (MPSkipIntervalCommand)initWithMediaRemoteCommandType:(unsigned int)a3
+- (MPSkipIntervalCommand)initWithMediaRemoteCommandType:(unsigned int)type
 {
   v7.receiver = self;
   v7.super_class = MPSkipIntervalCommand;
-  v3 = [(MPRemoteCommand *)&v7 initWithMediaRemoteCommandType:*&a3];
+  v3 = [(MPRemoteCommand *)&v7 initWithMediaRemoteCommandType:*&type];
   v4 = v3;
   if (v3)
   {

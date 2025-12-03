@@ -1,19 +1,19 @@
 @interface LAPSPasscodeChangeAuthorizerBuilder
-+ (id)authorizerWithOptions:(id)a3;
++ (id)authorizerWithOptions:(id)options;
 @end
 
 @implementation LAPSPasscodeChangeAuthorizerBuilder
 
-+ (id)authorizerWithOptions:(id)a3
++ (id)authorizerWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc(MEMORY[0x277D240A8]);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__LAPSPasscodeChangeAuthorizerBuilder_authorizerWithOptions___block_invoke;
   v9[3] = &unk_278A658E0;
-  v10 = v3;
-  v5 = v3;
+  v10 = optionsCopy;
+  v5 = optionsCopy;
   v6 = __61__LAPSPasscodeChangeAuthorizerBuilder_authorizerWithOptions___block_invoke(v9);
   v7 = [v4 initWithAuthorizer:v6];
 

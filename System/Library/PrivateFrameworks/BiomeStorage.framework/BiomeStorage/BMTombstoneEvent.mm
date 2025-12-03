@@ -1,26 +1,26 @@
 @interface BMTombstoneEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMTombstoneEvent)initWithCoder:(id)a3;
-- (BMTombstoneEvent)initWithProto:(id)a3;
-- (BMTombstoneEvent)initWithProtoData:(id)a3;
-- (BMTombstoneEvent)initWithSegmentName:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 eventTimestamp:(double)a6 reason:(unint64_t)a7 policyID:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithSegmentName:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 eventTimestamp:(double)a6 reason:(unint64_t)a7 policyID:(id)a8 processName:(id)a9;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMTombstoneEvent)initWithCoder:(id)coder;
+- (BMTombstoneEvent)initWithProto:(id)proto;
+- (BMTombstoneEvent)initWithProtoData:(id)data;
+- (BMTombstoneEvent)initWithSegmentName:(id)name offset:(unint64_t)offset length:(unint64_t)length eventTimestamp:(double)timestamp reason:(unint64_t)reason policyID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithSegmentName:(id)name offset:(unint64_t)offset length:(unint64_t)length eventTimestamp:(double)timestamp reason:(unint64_t)reason policyID:(id)d processName:(id)processName;
 - (id)encodeAsProto;
 - (id)jsonDictionary;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMTombstoneEvent
 
 - (id)encodeAsProto
 {
-  v2 = [(BMTombstoneEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMTombstoneEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
@@ -47,42 +47,42 @@
   return v3;
 }
 
-- (BMTombstoneEvent)initWithSegmentName:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 eventTimestamp:(double)a6 reason:(unint64_t)a7 policyID:(id)a8
+- (BMTombstoneEvent)initWithSegmentName:(id)name offset:(unint64_t)offset length:(unint64_t)length eventTimestamp:(double)timestamp reason:(unint64_t)reason policyID:(id)d
 {
   v14 = MEMORY[0x1E696AE30];
-  v15 = a8;
-  v16 = a3;
-  v17 = [v14 processInfo];
-  v18 = [v17 processName];
+  dCopy = d;
+  nameCopy = name;
+  processInfo = [v14 processInfo];
+  processName = [processInfo processName];
 
-  v19 = [(BMTombstoneEvent *)self _initWithSegmentName:v16 offset:a4 length:a5 eventTimestamp:a7 reason:v15 policyID:v18 processName:a6];
+  v19 = [(BMTombstoneEvent *)self _initWithSegmentName:nameCopy offset:offset length:length eventTimestamp:reason reason:dCopy policyID:processName processName:timestamp];
   return v19;
 }
 
-- (id)_initWithSegmentName:(id)a3 offset:(unint64_t)a4 length:(unint64_t)a5 eventTimestamp:(double)a6 reason:(unint64_t)a7 policyID:(id)a8 processName:(id)a9
+- (id)_initWithSegmentName:(id)name offset:(unint64_t)offset length:(unint64_t)length eventTimestamp:(double)timestamp reason:(unint64_t)reason policyID:(id)d processName:(id)processName
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  nameCopy = name;
+  dCopy = d;
+  processNameCopy = processName;
   v27.receiver = self;
   v27.super_class = BMTombstoneEvent;
   v19 = [(BMTombstoneEvent *)&v27 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    v20 = [v16 copy];
+    v20 = [nameCopy copy];
     segmentName = v19->_segmentName;
     v19->_segmentName = v20;
 
-    v19->_offset = a4;
-    v19->_length = a5;
-    v19->_eventTimestamp = a6;
-    v19->_deletionReason = a7;
-    v22 = [v17 copy];
+    v19->_offset = offset;
+    v19->_length = length;
+    v19->_eventTimestamp = timestamp;
+    v19->_deletionReason = reason;
+    v22 = [dCopy copy];
     policyID = v19->_policyID;
     v19->_policyID = v22;
 
-    v24 = [v18 copy];
+    v24 = [processNameCopy copy];
     processName = v19->_processName;
     v19->_processName = v24;
   }
@@ -107,13 +107,13 @@
   return v9 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     segmentName = self->_segmentName;
     if ((!(segmentName | *(v5 + 2)) || [(NSString *)segmentName isEqual:?]) && self->_offset == *(v5 + 3) && self->_length == *(v5 + 4) && self->_eventTimestamp == v5[7] && self->_deletionReason == *(v5 + 5) && ((policyID = self->_policyID, !(policyID | *(v5 + 6))) || [(NSString *)policyID isEqual:?]))
     {
@@ -143,12 +143,12 @@
   return v9;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
     v8 = v7;
     if (v7)
     {
@@ -161,7 +161,7 @@
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [BMTombstoneEvent eventWithData:a4 dataVersion:v9];
+      [BMTombstoneEvent eventWithData:version dataVersion:v9];
     }
 
     v8 = 0;
@@ -175,13 +175,13 @@
   v18[7] = *MEMORY[0x1E69E9840];
   v17[0] = @"segmentName";
   segmentName = self->_segmentName;
-  v4 = segmentName;
+  null = segmentName;
   if (!segmentName)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v4;
+  v18[0] = null;
   v17[1] = @"offset";
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:self->_offset];
   v18[1] = v5;
@@ -203,25 +203,25 @@
   v18[3] = v8;
   v17[4] = @"policyID";
   policyID = self->_policyID;
-  v10 = policyID;
+  null2 = policyID;
   if (!policyID)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v10;
+  v18[4] = null2;
   v17[5] = @"eventTimestamp";
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_eventTimestamp];
   v18[5] = v11;
   v17[6] = @"processName";
   processName = self->_processName;
-  v13 = processName;
+  null3 = processName;
   if (!processName)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[6] = v13;
+  v18[6] = null3;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:7];
   if (!processName)
   {
@@ -240,17 +240,17 @@
   return v14;
 }
 
-- (BMTombstoneEvent)initWithProto:(id)a3
+- (BMTombstoneEvent)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPBTombstoneEvent *)v5 segmentName];
-    v7 = [(BMPBTombstoneEvent *)v5 offset];
+    v5 = protoCopy;
+    segmentName = [(BMPBTombstoneEvent *)v5 segmentName];
+    offset = [(BMPBTombstoneEvent *)v5 offset];
     v8 = [(BMPBTombstoneEvent *)v5 length];
-    v9 = [(BMPBTombstoneEvent *)v5 eventTimestamp];
+    eventTimestamp = [(BMPBTombstoneEvent *)v5 eventTimestamp];
     v10 = [(BMPBTombstoneEvent *)v5 reason]- 1;
     if (v10 < 4)
     {
@@ -262,53 +262,53 @@
       v11 = 0;
     }
 
-    v12 = [(BMPBTombstoneEvent *)v5 policyID];
-    v13 = [(BMPBTombstoneEvent *)v5 processName];
-    self = [(BMTombstoneEvent *)self _initWithSegmentName:v6 offset:v7 length:v8 eventTimestamp:v11 reason:v12 policyID:v13 processName:v9];
+    policyID = [(BMPBTombstoneEvent *)v5 policyID];
+    processName = [(BMPBTombstoneEvent *)v5 processName];
+    self = [(BMTombstoneEvent *)self _initWithSegmentName:segmentName offset:offset length:v8 eventTimestamp:v11 reason:policyID policyID:processName processName:eventTimestamp];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BMTombstoneEvent)initWithProtoData:(id)a3
+- (BMTombstoneEvent)initWithProtoData:(id)data
 {
-  v4 = a3;
-  v5 = [[BMPBTombstoneEvent alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[BMPBTombstoneEvent alloc] initWithData:dataCopy];
 
   if (v5)
   {
     self = [(BMTombstoneEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMTombstoneEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"data"];
-  [v4 encodeInt64:objc_msgSend(objc_opt_class() forKey:{"latestDataVersion"), @"dver"}];
+  coderCopy = coder;
+  encodeAsProto = [(BMTombstoneEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"data"];
+  [coderCopy encodeInt64:objc_msgSend(objc_opt_class() forKey:{"latestDataVersion"), @"dver"}];
 }
 
-- (BMTombstoneEvent)initWithCoder:(id)a3
+- (BMTombstoneEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-  if (!v5 || (v6 = [v4 decodeInt64ForKey:@"dver"], HIDWORD(v6)))
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  if (!v5 || (v6 = [coderCopy decodeInt64ForKey:@"dver"], HIDWORD(v6)))
   {
     v7 = 0;
   }

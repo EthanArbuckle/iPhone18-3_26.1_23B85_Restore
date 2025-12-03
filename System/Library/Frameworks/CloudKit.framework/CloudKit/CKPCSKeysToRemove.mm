@@ -1,13 +1,13 @@
 @interface CKPCSKeysToRemove
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (CKPCSKeysToRemove)initWithCoder:(id)a3;
-- (CKPCSKeysToRemove)initWithEtag:(id)a3 keys:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKPCSKeysToRemove)initWithCoder:(id)coder;
+- (CKPCSKeysToRemove)initWithEtag:(id)etag keys:(id)keys;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)initInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKPCSKeysToRemove
@@ -31,20 +31,20 @@
   return v2;
 }
 
-- (CKPCSKeysToRemove)initWithEtag:(id)a3 keys:(id)a4
+- (CKPCSKeysToRemove)initWithEtag:(id)etag keys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  etagCopy = etag;
+  keysCopy = keys;
   v18.receiver = self;
   v18.super_class = CKPCSKeysToRemove;
   v10 = [(CKPCSKeysToRemove *)&v18 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v11 = objc_msgSend_copy(etagCopy, v8, v9);
     etag = v10->_etag;
     v10->_etag = v11;
 
-    v15 = objc_msgSend_CKDeepCopy(v7, v13, v14);
+    v15 = objc_msgSend_CKDeepCopy(keysCopy, v13, v14);
     keys = v10->_keys;
     v10->_keys = v15;
   }
@@ -60,15 +60,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     v9 = objc_msgSend_etag(self, v7, v8);
-    v12 = objc_msgSend_etag(v4, v10, v11);
+    v12 = objc_msgSend_etag(equalCopy, v10, v11);
     LODWORD(v14) = objc_msgSend_isEqualToString_(v9, v13, v12);
 
     if (v14)
@@ -83,7 +83,7 @@
       v25 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v24, v38, 2);
       v27 = objc_msgSend_sortedArrayUsingDescriptors_(v23, v26, v25);
 
-      v14 = objc_msgSend_keys(v4, v28, v29);
+      v14 = objc_msgSend_keys(equalCopy, v28, v29);
       v37[0] = v17;
       v37[1] = v20;
       v31 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v30, v37, 2);
@@ -126,7 +126,7 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v7 = objc_msgSend_etag(self, v5, v6);
@@ -140,26 +140,26 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_etag(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v7, @"Etag");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"Etag");
 
   v12 = objc_msgSend_keys(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v4, v11, v12, @"Keys");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v12, @"Keys");
 }
 
-- (CKPCSKeysToRemove)initWithCoder:(id)a3
+- (CKPCSKeysToRemove)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CKPCSKeysToRemove;
   v5 = [(CKPCSKeysToRemove *)&v20 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"Etag");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"Etag");
     etag = v5->_etag;
     v5->_etag = v8;
 
@@ -168,7 +168,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v15 = objc_msgSend_setWithObjects_(v10, v14, v11, v12, v13, 0);
-    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v16, v15, @"Keys");
+    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v16, v15, @"Keys");
     keys = v5->_keys;
     v5->_keys = v17;
   }

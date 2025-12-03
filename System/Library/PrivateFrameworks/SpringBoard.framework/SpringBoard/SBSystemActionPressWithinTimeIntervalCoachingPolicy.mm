@@ -1,11 +1,11 @@
 @interface SBSystemActionPressWithinTimeIntervalCoachingPolicy
-- (BOOL)wantsCoachingDismissedForAction:(id)a3;
-- (BOOL)wantsCoachingPresentedForAction:(id)a3;
+- (BOOL)wantsCoachingDismissedForAction:(id)action;
+- (BOOL)wantsCoachingPresentedForAction:(id)action;
 - (SBSystemActionPressWithinTimeIntervalCoachingPolicy)init;
 - (void)_reset;
-- (void)noteDidBeginPreview:(id)a3 forAction:(id)a4;
-- (void)noteDidEndPreview:(id)a3 forAction:(id)a4;
-- (void)noteDidInvalidateExpansionOfPreview:(id)a3 forAction:(id)a4 withResult:(unint64_t)a5;
+- (void)noteDidBeginPreview:(id)preview forAction:(id)action;
+- (void)noteDidEndPreview:(id)preview forAction:(id)action;
+- (void)noteDidInvalidateExpansionOfPreview:(id)preview forAction:(id)action withResult:(unint64_t)result;
 @end
 
 @implementation SBSystemActionPressWithinTimeIntervalCoachingPolicy
@@ -18,19 +18,19 @@
   if (v2)
   {
     v3 = +[SBSystemActionDomain rootSettings];
-    v4 = [v3 coachingSettings];
-    v5 = [v4 pressWithinTimeIntervalPolicySettings];
+    coachingSettings = [v3 coachingSettings];
+    pressWithinTimeIntervalPolicySettings = [coachingSettings pressWithinTimeIntervalPolicySettings];
     settings = v2->_settings;
-    v2->_settings = v5;
+    v2->_settings = pressWithinTimeIntervalPolicySettings;
   }
 
   return v2;
 }
 
-- (void)noteDidBeginPreview:(id)a3 forAction:(id)a4
+- (void)noteDidBeginPreview:(id)preview forAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  actionCopy = action;
   countedActions = self->_countedActions;
   if (!countedActions)
   {
@@ -41,18 +41,18 @@
     countedActions = self->_countedActions;
   }
 
-  [(NSCountedSet *)countedActions addObject:v7];
+  [(NSCountedSet *)countedActions addObject:actionCopy];
   latestPreviewsByAction = self->_latestPreviewsByAction;
   if (!latestPreviewsByAction)
   {
-    v12 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     v13 = self->_latestPreviewsByAction;
-    self->_latestPreviewsByAction = v12;
+    self->_latestPreviewsByAction = weakToWeakObjectsMapTable;
 
     latestPreviewsByAction = self->_latestPreviewsByAction;
   }
 
-  [(NSMapTable *)latestPreviewsByAction setObject:v6 forKey:v7];
+  [(NSMapTable *)latestPreviewsByAction setObject:previewCopy forKey:actionCopy];
   [(NSTimer *)self->_resetTimer invalidate];
   objc_initWeak(&location, self);
   v14 = MEMORY[0x277CBEBB8];
@@ -82,21 +82,21 @@ void __85__SBSystemActionPressWithinTimeIntervalCoachingPolicy_noteDidBeginPrevi
   }
 }
 
-- (void)noteDidInvalidateExpansionOfPreview:(id)a3 forAction:(id)a4 withResult:(unint64_t)a5
+- (void)noteDidInvalidateExpansionOfPreview:(id)preview forAction:(id)action withResult:(unint64_t)result
 {
-  v7 = a4;
-  if (!a5)
+  actionCopy = action;
+  if (!result)
   {
-    v10 = v7;
-    v8 = [(NSCountedSet *)self->_countedActions countForObject:v7];
-    v7 = v10;
+    v10 = actionCopy;
+    v8 = [(NSCountedSet *)self->_countedActions countForObject:actionCopy];
+    actionCopy = v10;
     if (v8)
     {
       v9 = v8;
       do
       {
         [(NSCountedSet *)self->_countedActions removeObject:v10];
-        v7 = v10;
+        actionCopy = v10;
         --v9;
       }
 
@@ -105,26 +105,26 @@ void __85__SBSystemActionPressWithinTimeIntervalCoachingPolicy_noteDidBeginPrevi
   }
 }
 
-- (void)noteDidEndPreview:(id)a3 forAction:(id)a4
+- (void)noteDidEndPreview:(id)preview forAction:(id)action
 {
-  v9 = a4;
+  actionCopy = action;
   latestPreviewsByAction = self->_latestPreviewsByAction;
-  v7 = a3;
-  v8 = [(NSMapTable *)latestPreviewsByAction objectForKey:v9];
+  previewCopy = preview;
+  v8 = [(NSMapTable *)latestPreviewsByAction objectForKey:actionCopy];
 
-  if (v8 == v7)
+  if (v8 == previewCopy)
   {
-    [(NSMapTable *)self->_latestPreviewsByAction removeObjectForKey:v9];
+    [(NSMapTable *)self->_latestPreviewsByAction removeObjectForKey:actionCopy];
   }
 }
 
-- (BOOL)wantsCoachingPresentedForAction:(id)a3
+- (BOOL)wantsCoachingPresentedForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(NSCountedSet *)self->_countedActions countForObject:v4];
+  actionCopy = action;
+  v5 = [(NSCountedSet *)self->_countedActions countForObject:actionCopy];
   if (v5)
   {
-    v6 = SBSystemActionCoachingPolicyWantsCoachingPresented(v4, v5, [(SBSystemActionPressWithinTimeIntervalCoachingPolicySettings *)self->_settings presentationThresholdForActionsWithStatefulPreviews], [(SBSystemActionPressWithinTimeIntervalCoachingPolicySettings *)self->_settings presentationThresholdForActionsWithStatelessPreviews]);
+    v6 = SBSystemActionCoachingPolicyWantsCoachingPresented(actionCopy, v5, [(SBSystemActionPressWithinTimeIntervalCoachingPolicySettings *)self->_settings presentationThresholdForActionsWithStatefulPreviews], [(SBSystemActionPressWithinTimeIntervalCoachingPolicySettings *)self->_settings presentationThresholdForActionsWithStatelessPreviews]);
   }
 
   else
@@ -135,9 +135,9 @@ void __85__SBSystemActionPressWithinTimeIntervalCoachingPolicy_noteDidBeginPrevi
   return v6;
 }
 
-- (BOOL)wantsCoachingDismissedForAction:(id)a3
+- (BOOL)wantsCoachingDismissedForAction:(id)action
 {
-  v3 = [(NSMapTable *)self->_latestPreviewsByAction objectForKey:a3];
+  v3 = [(NSMapTable *)self->_latestPreviewsByAction objectForKey:action];
   v4 = v3 == 0;
 
   return v4;
@@ -145,17 +145,17 @@ void __85__SBSystemActionPressWithinTimeIntervalCoachingPolicy_noteDidBeginPrevi
 
 - (void)_reset
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 32) invalidate];
-    v2 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    [*(self + 32) invalidate];
+    v2 = *(self + 32);
+    *(self + 32) = 0;
 
-    v3 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    v3 = *(self + 16);
+    *(self + 16) = 0;
 
-    v4 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v4 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 

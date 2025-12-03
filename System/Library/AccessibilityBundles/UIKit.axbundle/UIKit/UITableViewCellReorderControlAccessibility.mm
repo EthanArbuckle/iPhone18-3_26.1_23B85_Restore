@@ -7,11 +7,11 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v10 = 0;
   objc_opt_class();
-  v6 = [(UITableViewCellReorderControlAccessibility *)v13 _accessibilityAncestorIsKindOf:objc_opt_class()];
+  v6 = [(UITableViewCellReorderControlAccessibility *)selfCopy _accessibilityAncestorIsKindOf:objc_opt_class()];
   v9 = __UIAccessibilityCastAsSafeCategory();
   MEMORY[0x29EDC9740](v6);
   v8 = MEMORY[0x29EDC9748](v9);
@@ -21,7 +21,7 @@
   v11 = v5 & 1;
   if (v5)
   {
-    v7 = [(UITableViewCellReorderControlAccessibility *)v13 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+    v7 = [(UITableViewCellReorderControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 showingDeleteConfirmation])
     {
@@ -30,7 +30,7 @@
 
     else
     {
-      v4 = [(UITableViewCellReorderControlAccessibility *)v13 safeValueForKey:@"alpha"];
+      v4 = [(UITableViewCellReorderControlAccessibility *)selfCopy safeValueForKey:@"alpha"];
       [v4 floatValue];
       v14 = v2 > 0.0;
       MEMORY[0x29EDC9740](v4);
@@ -62,15 +62,15 @@
     v33 = MEMORY[0x29EDC9748](v34);
     objc_storeStrong(&v34, 0);
     v36 = v33;
-    v32 = [v33 _accessibilityRetrieveTableViewCellTextForReorderControl];
-    if ([v32 length])
+    _accessibilityRetrieveTableViewCellTextForReorderControl = [v33 _accessibilityRetrieveTableViewCellTextForReorderControl];
+    if ([_accessibilityRetrieveTableViewCellTextForReorderControl length])
     {
-      v31 = MEMORY[0x29EDC9748](v32);
-      if ([v32 isAXAttributedString])
+      v31 = MEMORY[0x29EDC9748](_accessibilityRetrieveTableViewCellTextForReorderControl);
+      if ([_accessibilityRetrieveTableViewCellTextForReorderControl isAXAttributedString])
       {
-        v2 = [v32 string];
+        string = [_accessibilityRetrieveTableViewCellTextForReorderControl string];
         v3 = v31;
-        v31 = v2;
+        v31 = string;
         MEMORY[0x29EDC9740](v3);
       }
 
@@ -80,11 +80,11 @@
       v28 = [v30 rangeOfString:{v31, MEMORY[0x29EDC9740](v22).n128_f64[0]}];
       v29 = v4;
       v27 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v30];
-      if ([v32 isAXAttributedString])
+      if ([_accessibilityRetrieveTableViewCellTextForReorderControl isAXAttributedString])
       {
         v26[0] = 0;
         v26[1] = 0;
-        v25 = [v32 attributesAtIndex:0 effectiveRange:v26];
+        v25 = [_accessibilityRetrieveTableViewCellTextForReorderControl attributesAtIndex:0 effectiveRange:v26];
         memset(__b, 0, sizeof(__b));
         obj = MEMORY[0x29EDC9748](v25);
         v20 = [obj countByEnumeratingWithState:__b objects:v40 count:16];
@@ -123,20 +123,20 @@
         objc_storeStrong(&v25, 0);
       }
 
-      v11 = [v38[0] accessibilityLanguage];
+      accessibilityLanguage = [v38[0] accessibilityLanguage];
       v12 = 0;
-      if (v11)
+      if (accessibilityLanguage)
       {
         v12 = v28 != 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      *&v6 = MEMORY[0x29EDC9740](v11).n128_u64[0];
+      *&v6 = MEMORY[0x29EDC9740](accessibilityLanguage).n128_u64[0];
       if (v12)
       {
         v9 = v27;
-        v10 = [v38[0] accessibilityLanguage];
+        accessibilityLanguage2 = [v38[0] accessibilityLanguage];
         [v9 setAttribute:? forKey:? withRange:?];
-        MEMORY[0x29EDC9740](v10);
+        MEMORY[0x29EDC9740](accessibilityLanguage2);
       }
 
       v39 = MEMORY[0x29EDC9748](v27);
@@ -152,7 +152,7 @@
       v37 = 1;
     }
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&_accessibilityRetrieveTableViewCellTextForReorderControl, 0);
     objc_storeStrong(&v36, 0);
   }
 

@@ -1,27 +1,27 @@
 @interface VKCTextSelectionLongPressDelegateHandler
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
 - (VKCTextSelectionLongPressHandlerDelegate)delegate;
 @end
 
 @implementation VKCTextSelectionLongPressDelegateHandler
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VKCTextSelectionLongPressDelegateHandler *)self delegate];
-  LOBYTE(self) = [v8 longPressHandler:self gestureRecognizer:v7 shouldRequireFailureOfGestureRecognizer:v6];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  delegate = [(VKCTextSelectionLongPressDelegateHandler *)self delegate];
+  LOBYTE(self) = [delegate longPressHandler:self gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
 
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VKCTextSelectionLongPressDelegateHandler *)self delegate];
-  LOBYTE(self) = [v8 longPressHandler:self gestureRecognizer:v7 shouldRecieveTouch:v6];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  delegate = [(VKCTextSelectionLongPressDelegateHandler *)self delegate];
+  LOBYTE(self) = [delegate longPressHandler:self gestureRecognizer:recognizerCopy shouldRecieveTouch:touchCopy];
 
   return self;
 }

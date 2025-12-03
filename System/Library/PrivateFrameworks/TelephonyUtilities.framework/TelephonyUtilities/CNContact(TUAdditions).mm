@@ -7,11 +7,11 @@
 - (id)personNameComponents
 {
   v2 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v3 = [a1 givenName];
-  if ([v3 length])
+  givenName = [self givenName];
+  if ([givenName length])
   {
-    v4 = [a1 givenName];
-    [v2 setGivenName:v4];
+    givenName2 = [self givenName];
+    [v2 setGivenName:givenName2];
   }
 
   else
@@ -19,11 +19,11 @@
     [v2 setGivenName:0];
   }
 
-  v5 = [a1 middleName];
-  if ([v5 length])
+  middleName = [self middleName];
+  if ([middleName length])
   {
-    v6 = [a1 middleName];
-    [v2 setMiddleName:v6];
+    middleName2 = [self middleName];
+    [v2 setMiddleName:middleName2];
   }
 
   else
@@ -31,11 +31,11 @@
     [v2 setMiddleName:0];
   }
 
-  v7 = [a1 familyName];
-  if ([v7 length])
+  familyName = [self familyName];
+  if ([familyName length])
   {
-    v8 = [a1 familyName];
-    [v2 setFamilyName:v8];
+    familyName2 = [self familyName];
+    [v2 setFamilyName:familyName2];
   }
 
   else
@@ -43,11 +43,11 @@
     [v2 setFamilyName:0];
   }
 
-  v9 = [a1 namePrefix];
-  if ([v9 length])
+  namePrefix = [self namePrefix];
+  if ([namePrefix length])
   {
-    v10 = [a1 namePrefix];
-    [v2 setNamePrefix:v10];
+    namePrefix2 = [self namePrefix];
+    [v2 setNamePrefix:namePrefix2];
   }
 
   else
@@ -55,11 +55,11 @@
     [v2 setNamePrefix:0];
   }
 
-  v11 = [a1 nameSuffix];
-  if ([v11 length])
+  nameSuffix = [self nameSuffix];
+  if ([nameSuffix length])
   {
-    v12 = [a1 nameSuffix];
-    [v2 setNameSuffix:v12];
+    nameSuffix2 = [self nameSuffix];
+    [v2 setNameSuffix:nameSuffix2];
   }
 
   else
@@ -67,11 +67,11 @@
     [v2 setNameSuffix:0];
   }
 
-  v13 = [a1 nickname];
-  if ([v13 length])
+  nickname = [self nickname];
+  if ([nickname length])
   {
-    v14 = [a1 nickname];
-    [v2 setNickname:v14];
+    nickname2 = [self nickname];
+    [v2 setNickname:nickname2];
   }
 
   else
@@ -80,11 +80,11 @@
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v16 = [a1 phoneticGivenName];
-  if ([v16 length])
+  phoneticGivenName = [self phoneticGivenName];
+  if ([phoneticGivenName length])
   {
-    v17 = [a1 phoneticGivenName];
-    [v15 setGivenName:v17];
+    phoneticGivenName2 = [self phoneticGivenName];
+    [v15 setGivenName:phoneticGivenName2];
   }
 
   else
@@ -92,11 +92,11 @@
     [v15 setGivenName:0];
   }
 
-  v18 = [a1 phoneticMiddleName];
-  if ([v18 length])
+  phoneticMiddleName = [self phoneticMiddleName];
+  if ([phoneticMiddleName length])
   {
-    v19 = [a1 phoneticMiddleName];
-    [v15 setMiddleName:v19];
+    phoneticMiddleName2 = [self phoneticMiddleName];
+    [v15 setMiddleName:phoneticMiddleName2];
   }
 
   else
@@ -104,11 +104,11 @@
     [v15 setMiddleName:0];
   }
 
-  v20 = [a1 phoneticFamilyName];
-  if ([v20 length])
+  phoneticFamilyName = [self phoneticFamilyName];
+  if ([phoneticFamilyName length])
   {
-    v21 = [a1 phoneticFamilyName];
-    [v15 setFamilyName:v21];
+    phoneticFamilyName2 = [self phoneticFamilyName];
+    [v15 setFamilyName:phoneticFamilyName2];
   }
 
   else

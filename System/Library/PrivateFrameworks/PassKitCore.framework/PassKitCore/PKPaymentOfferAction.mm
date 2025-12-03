@@ -1,36 +1,36 @@
 @interface PKPaymentOfferAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)actionURL;
-- (PKPaymentOfferAction)initWithCoder:(id)a3;
-- (PKPaymentOfferAction)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentOfferAction)initWithCoder:(id)coder;
+- (PKPaymentOfferAction)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateChallenge:(id)a3 verifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateChallenge:(id)challenge verifier:(id)verifier;
 @end
 
 @implementation PKPaymentOfferAction
 
-- (PKPaymentOfferAction)initWithDictionary:(id)a3
+- (PKPaymentOfferAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PKPaymentOfferAction;
   v5 = [(PKPaymentOfferAction *)&v14 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKURLForKey:@"actionURL"];
+    v8 = [dictionaryCopy PKURLForKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v8;
 
-    v5->_useAuthenticationSession = [v4 PKBoolForKey:@"useAuthenticationSession"];
-    v10 = [v4 PKDictionaryForKey:@"dynamicContent"];
+    v5->_useAuthenticationSession = [dictionaryCopy PKBoolForKey:@"useAuthenticationSession"];
+    v10 = [dictionaryCopy PKDictionaryForKey:@"dynamicContent"];
     if ([v10 count])
     {
       v11 = [[PKPaymentOfferDynamicContent alloc] initWithDictionary:v10];
@@ -42,31 +42,31 @@
   return v5;
 }
 
-- (void)populateChallenge:(id)a3 verifier:(id)a4
+- (void)populateChallenge:(id)challenge verifier:(id)verifier
 {
-  v6 = a3;
-  v7 = a4;
+  challengeCopy = challenge;
+  verifierCopy = verifier;
   challenge = self->_challenge;
-  self->_challenge = v6;
-  v10 = v6;
+  self->_challenge = challengeCopy;
+  v10 = challengeCopy;
 
   verifier = self->_verifier;
-  self->_verifier = v7;
+  self->_verifier = verifierCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_identifier forKeyedSubscript:@"identifier"];
-  v4 = [(PKPaymentOfferAction *)self actionURL];
-  v5 = [v4 absoluteString];
-  [v3 setObject:v5 forKeyedSubscript:@"actionURL"];
+  actionURL = [(PKPaymentOfferAction *)self actionURL];
+  absoluteString = [actionURL absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"actionURL"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_useAuthenticationSession];
   [v3 setObject:v6 forKeyedSubscript:@"useAuthenticationSession"];
 
-  v7 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"dynamicContent"];
+  dictionaryRepresentation = [(PKPaymentOfferDynamicContent *)self->_dynamicContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"dynamicContent"];
 
   [v3 setObject:self->_challenge forKeyedSubscript:@"challenge"];
   [v3 setObject:self->_verifier forKeyedSubscript:@"verifier"];
@@ -80,8 +80,8 @@
   if (self->_verifier)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self->_actionURL resolvingAgainstBaseURL:0];
-    v4 = [v3 queryItems];
-    v5 = [v4 mutableCopy];
+    queryItems = [v3 queryItems];
+    v5 = [queryItems mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -110,18 +110,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -265,8 +265,8 @@ LABEL_36:
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
   [v3 appendFormat:@"identifier: '%@'; ", self->_identifier];
-  v4 = [(PKPaymentOfferAction *)self actionURL];
-  [v3 appendFormat:@"actionURL: '%@'; ", v4];
+  actionURL = [(PKPaymentOfferAction *)self actionURL];
+  [v3 appendFormat:@"actionURL: '%@'; ", actionURL];
 
   if (self->_useAuthenticationSession)
   {
@@ -286,32 +286,32 @@ LABEL_36:
   return v3;
 }
 
-- (PKPaymentOfferAction)initWithCoder:(id)a3
+- (PKPaymentOfferAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKPaymentOfferAction;
   v5 = [(PKPaymentOfferAction *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionURL"];
     actionURL = v5->_actionURL;
     v5->_actionURL = v8;
 
-    v5->_useAuthenticationSession = [v4 decodeBoolForKey:@"useAuthenticationSession"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
+    v5->_useAuthenticationSession = [coderCopy decodeBoolForKey:@"useAuthenticationSession"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dynamicContent"];
     dynamicContent = v5->_dynamicContent;
     v5->_dynamicContent = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
     challenge = v5->_challenge;
     v5->_challenge = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verifier"];
     verifier = v5->_verifier;
     v5->_verifier = v14;
   }
@@ -319,39 +319,39 @@ LABEL_36:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_actionURL forKey:@"actionURL"];
-  [v5 encodeBool:self->_useAuthenticationSession forKey:@"useAuthenticationSession"];
-  [v5 encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
-  [v5 encodeObject:self->_challenge forKey:@"challenge"];
-  [v5 encodeObject:self->_verifier forKey:@"verifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_actionURL forKey:@"actionURL"];
+  [coderCopy encodeBool:self->_useAuthenticationSession forKey:@"useAuthenticationSession"];
+  [coderCopy encodeObject:self->_dynamicContent forKey:@"dynamicContent"];
+  [coderCopy encodeObject:self->_challenge forKey:@"challenge"];
+  [coderCopy encodeObject:self->_verifier forKey:@"verifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferAction allocWithZone:](PKPaymentOfferAction init];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   identifier = v5->_identifier;
   v5->_identifier = v6;
 
-  v8 = [(NSURL *)self->_actionURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_actionURL copyWithZone:zone];
   actionURL = v5->_actionURL;
   v5->_actionURL = v8;
 
   v5->_useAuthenticationSession = self->_useAuthenticationSession;
-  v10 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:a3];
+  v10 = [(PKPaymentOfferDynamicContent *)self->_dynamicContent copyWithZone:zone];
   dynamicContent = v5->_dynamicContent;
   v5->_dynamicContent = v10;
 
-  v12 = [(NSString *)self->_challenge copyWithZone:a3];
+  v12 = [(NSString *)self->_challenge copyWithZone:zone];
   challenge = v5->_challenge;
   v5->_challenge = v12;
 
-  v14 = [(NSString *)self->_verifier copyWithZone:a3];
+  v14 = [(NSString *)self->_verifier copyWithZone:zone];
   verifier = v5->_verifier;
   v5->_verifier = v14;
 

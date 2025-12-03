@@ -1,18 +1,18 @@
 @interface DefaultsObserver
 - (_TtC5BooksP33_8A1BE8AE8AE70CC0220B9F5FF837F82D16DefaultsObserver)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DefaultsObserver
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (!a4)
+  if (!object)
   {
     memset(v13, 0, sizeof(v13));
-    v11 = a5;
-    v12 = self;
-    if (a5)
+    changeCopy = change;
+    selfCopy = self;
+    if (change)
     {
       goto LABEL_3;
     }
@@ -22,12 +22,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = a5;
-  v9 = self;
+  changeCopy2 = change;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_1007A3504();
   swift_unknownObjectRelease();
-  if (!a5)
+  if (!change)
   {
     goto LABEL_5;
   }

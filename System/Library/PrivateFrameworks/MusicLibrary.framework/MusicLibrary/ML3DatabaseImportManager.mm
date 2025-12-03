@@ -1,69 +1,69 @@
 @interface ML3DatabaseImportManager
 - (ML3DatabaseImportManager)init;
-- (float)currentOperationProgressWithError:(id *)a3;
+- (float)currentOperationProgressWithError:(id *)error;
 - (id)_importOperations;
 - (id)_suspendedImportOperations;
-- (void)_handleImportOperationCancelled:(id)a3;
-- (void)_handleImportOperationCompleted:(id)a3;
+- (void)_handleImportOperationCancelled:(id)cancelled;
+- (void)_handleImportOperationCompleted:(id)completed;
 - (void)cancelAllImportOperations;
-- (void)cancelImportOperationsForSource:(unint64_t)a3 withCompletionHandler:(id)a4;
-- (void)cancelImportOperationsOriginatingFromClient:(id)a3;
-- (void)performImport:(id)a3 fromSource:(unint64_t)a4 progressBlock:(id)a5 withCompletionHandler:(id)a6;
+- (void)cancelImportOperationsForSource:(unint64_t)source withCompletionHandler:(id)handler;
+- (void)cancelImportOperationsOriginatingFromClient:(id)client;
+- (void)performImport:(id)import fromSource:(unint64_t)source progressBlock:(id)block withCompletionHandler:(id)handler;
 - (void)resumeSuspendedImportOperations;
 - (void)suspendImportOperations;
 @end
 
 @implementation ML3DatabaseImportManager
 
-- (void)_handleImportOperationCancelled:(id)a3
+- (void)_handleImportOperationCancelled:(id)cancelled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = os_log_create("com.apple.amp.medialibrary", "Service");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = cancelledCopy;
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_ERROR, "Operation %{public}@ cancelled.", &v9, 0xCu);
   }
 
-  if ([v4 isSuspended])
+  if ([cancelledCopy isSuspended])
   {
     v6 = os_log_create("com.apple.amp.medialibrary", "Service");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = cancelledCopy;
       _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Operation %{public}@ suspended--adding to suspension queue.", &v9, 0xCu);
     }
 
-    [(NSMutableArray *)self->_suspendedImportOperations addObject:v4];
+    [(NSMutableArray *)self->_suspendedImportOperations addObject:cancelledCopy];
   }
 
   else
   {
-    v7 = [v4 _clientCompletionHandler];
-    if (v7)
+    _clientCompletionHandler = [cancelledCopy _clientCompletionHandler];
+    if (_clientCompletionHandler)
     {
       v8 = [ML3MediaLibraryWriter writerErrorWithCode:400 description:@"Operation was cancelled by the media library service."];
-      (v7)[2](v7, 0, v8, 0);
+      (_clientCompletionHandler)[2](_clientCompletionHandler, 0, v8, 0);
     }
   }
 }
 
-- (void)_handleImportOperationCompleted:(id)a3
+- (void)_handleImportOperationCompleted:(id)completed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 success];
-  v6 = [v4 error];
-  v7 = [v4 error];
+  completedCopy = completed;
+  success = [completedCopy success];
+  error = [completedCopy error];
+  error2 = [completedCopy error];
   lastImportError = self->_lastImportError;
-  self->_lastImportError = v7;
+  self->_lastImportError = error2;
 
   v9 = os_log_create("com.apple.amp.medialibrary", "Service");
   v10 = v9;
-  if (v5)
+  if (success)
   {
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -71,7 +71,7 @@
     }
 
     *v20 = 138543362;
-    *&v20[4] = v4;
+    *&v20[4] = completedCopy;
     v11 = "Successfully executed import operation %{public}@";
     v12 = v10;
     v13 = OS_LOG_TYPE_DEFAULT;
@@ -85,7 +85,7 @@
     }
 
     *v20 = 138543362;
-    *&v20[4] = v6;
+    *&v20[4] = error;
     v11 = "Import operation failed: %{public}@";
     v12 = v10;
     v13 = OS_LOG_TYPE_ERROR;
@@ -94,18 +94,18 @@
   _os_log_impl(&dword_22D2FA000, v12, v13, v11, v20, 0xCu);
 LABEL_7:
 
-  v14 = [v4 _clientCompletionHandler];
-  if (v14)
+  _clientCompletionHandler = [completedCopy _clientCompletionHandler];
+  if (_clientCompletionHandler)
   {
-    v15 = [v4 success];
-    v16 = [v4 error];
-    v17 = [v4 returnData];
-    (v14)[2](v14, v15, v16, v17);
+    success2 = [completedCopy success];
+    error3 = [completedCopy error];
+    returnData = [completedCopy returnData];
+    (_clientCompletionHandler)[2](_clientCompletionHandler, success2, error3, returnData);
   }
 
-  v18 = [v4 import];
-  v19 = [v18 library];
-  [v19 notifyLibraryImportDidFinish];
+  import = [completedCopy import];
+  library = [import library];
+  [library notifyLibraryImportDidFinish];
 }
 
 - (id)_suspendedImportOperations
@@ -117,8 +117,8 @@ LABEL_7:
 
 - (id)_importOperations
 {
-  v2 = [(NSOperationQueue *)self->_importOperationQueue operations];
-  v3 = [v2 copy];
+  operations = [(NSOperationQueue *)self->_importOperationQueue operations];
+  v3 = [operations copy];
 
   return v3;
 }
@@ -165,11 +165,11 @@ LABEL_7:
           _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Resuming import operation %{public}@", buf, 0xCu);
         }
 
-        v12 = [v10 import];
-        v13 = [v10 importSource];
-        v14 = [v10 _clientCompletionHandler];
-        v15 = [v10 progressBlock];
-        [(ML3DatabaseImportManager *)self performImport:v12 fromSource:v13 progressBlock:v15 withCompletionHandler:v14];
+        import = [v10 import];
+        importSource = [v10 importSource];
+        _clientCompletionHandler = [v10 _clientCompletionHandler];
+        progressBlock = [v10 progressBlock];
+        [(ML3DatabaseImportManager *)self performImport:import fromSource:importSource progressBlock:progressBlock withCompletionHandler:_clientCompletionHandler];
       }
 
       v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -190,9 +190,9 @@ LABEL_7:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v16 = self;
-    v3 = [(NSOperationQueue *)self->_importOperationQueue operations];
-    v4 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    selfCopy = self;
+    operations = [(NSOperationQueue *)self->_importOperationQueue operations];
+    v4 = [operations countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v4)
     {
       v5 = v4;
@@ -204,16 +204,16 @@ LABEL_7:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(operations);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 import];
-          v11 = [v10 isSuspendable];
+          import = [v9 import];
+          isSuspendable = [import isSuspendable];
 
           v12 = os_log_create("com.apple.amp.medialibrary", "Service");
           v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-          if (v11)
+          if (isSuspendable)
           {
             if (v13)
             {
@@ -238,7 +238,7 @@ LABEL_7:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v5 = [operations countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v5);
@@ -256,10 +256,10 @@ LABEL_7:
       _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Waiting for suspended import operations to finish...", buf, 2u);
     }
 
-    if ((v6 & 1) != 0 && ![(NSOperationQueue *)v16->_importOperationQueue isSuspended])
+    if ((v6 & 1) != 0 && ![(NSOperationQueue *)selfCopy->_importOperationQueue isSuspended])
     {
-      [(NSOperationQueue *)v16->_importOperationQueue waitUntilAllOperationsAreFinished];
-      [(NSOperationQueue *)v16->_importOperationQueue setSuspended:1];
+      [(NSOperationQueue *)selfCopy->_importOperationQueue waitUntilAllOperationsAreFinished];
+      [(NSOperationQueue *)selfCopy->_importOperationQueue setSuspended:1];
     }
 
     v15 = os_log_create("com.apple.amp.medialibrary", "Service");
@@ -271,16 +271,16 @@ LABEL_7:
   }
 }
 
-- (void)cancelImportOperationsForSource:(unint64_t)a3 withCompletionHandler:(id)a4
+- (void)cancelImportOperationsForSource:(unint64_t)source withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSOperationQueue *)self->_importOperationQueue operations];
+  handlerCopy = handler;
+  operations = [(NSOperationQueue *)self->_importOperationQueue operations];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -291,40 +291,40 @@ LABEL_7:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(operations);
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v12 importSource] == a3)
+        if ([v12 importSource] == source)
         {
           [v12 cancel];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [operations countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
-- (void)cancelImportOperationsOriginatingFromClient:(id)a3
+- (void)cancelImportOperationsOriginatingFromClient:(id)client
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = os_log_create("com.apple.amp.medialibrary", "Service");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
+    bundleID = [clientCopy bundleID];
     *buf = 138543618;
-    v38 = v6;
+    v38 = bundleID;
     v39 = 1024;
-    v40 = [v4 processID];
+    processID = [clientCopy processID];
     _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "Cancelling any active or suspended import operations in progress for process %{public}@ (process ID = %d)", buf, 0x12u);
   }
 
@@ -332,8 +332,8 @@ LABEL_7:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(NSOperationQueue *)self->_importOperationQueue operations];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  operations = [(NSOperationQueue *)self->_importOperationQueue operations];
+  v8 = [operations countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
@@ -344,13 +344,13 @@ LABEL_7:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(operations);
         }
 
         v12 = *(*(&v31 + 1) + 8 * i);
-        v13 = [v12 import];
-        v14 = [v13 client];
-        v15 = [v14 isEqual:v4];
+        import = [v12 import];
+        client = [import client];
+        v15 = [client isEqual:clientCopy];
 
         if (v15)
         {
@@ -358,18 +358,18 @@ LABEL_7:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v9 = [operations countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v9);
   }
 
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v26 = self;
+  selfCopy = self;
   v17 = self->_suspendedImportOperations;
   v18 = [(NSMutableArray *)v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v18)
@@ -386,13 +386,13 @@ LABEL_7:
         }
 
         v22 = *(*(&v27 + 1) + 8 * j);
-        v23 = [v22 import];
-        v24 = [v23 client];
-        v25 = [v24 isEqual:v4];
+        import2 = [v22 import];
+        client2 = [import2 client];
+        v25 = [client2 isEqual:clientCopy];
 
         if (v25)
         {
-          [v16 addObject:v22];
+          [array addObject:v22];
         }
       }
 
@@ -402,7 +402,7 @@ LABEL_7:
     while (v19);
   }
 
-  [(NSMutableArray *)v26->_suspendedImportOperations removeObjectsInArray:v16];
+  [(NSMutableArray *)selfCopy->_suspendedImportOperations removeObjectsInArray:array];
 }
 
 - (void)cancelAllImportOperations
@@ -419,16 +419,16 @@ LABEL_7:
   [(NSMutableArray *)self->_suspendedImportOperations removeAllObjects];
 }
 
-- (float)currentOperationProgressWithError:(id *)a3
+- (float)currentOperationProgressWithError:(id *)error
 {
-  v4 = [(NSOperationQueue *)self->_importOperationQueue operations];
-  v5 = [v4 firstObject];
+  operations = [(NSOperationQueue *)self->_importOperationQueue operations];
+  firstObject = [operations firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
-    v8 = 0;
+    error = 0;
     v7 = -1.0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -436,14 +436,14 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  [v5 progress];
+  [firstObject progress];
   v7 = v6;
-  v8 = [v5 error];
-  if (a3)
+  error = [firstObject error];
+  if (error)
   {
 LABEL_3:
-    v9 = v8;
-    *a3 = v8;
+    v9 = error;
+    *error = error;
   }
 
 LABEL_4:
@@ -451,14 +451,14 @@ LABEL_4:
   return v7;
 }
 
-- (void)performImport:(id)a3 fromSource:(unint64_t)a4 progressBlock:(id)a5 withCompletionHandler:(id)a6
+- (void)performImport:(id)import fromSource:(unint64_t)source progressBlock:(id)block withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [ML3ImportOperation importOperationWithSourceType:a4 databaseImport:v10];
-  [v13 _setClientCompletionHandler:v12];
-  [v13 setProgressBlock:v11];
+  importCopy = import;
+  blockCopy = block;
+  handlerCopy = handler;
+  v13 = [ML3ImportOperation importOperationWithSourceType:source databaseImport:importCopy];
+  [v13 _setClientCompletionHandler:handlerCopy];
+  [v13 setProgressBlock:blockCopy];
   objc_initWeak(&location, v13);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;

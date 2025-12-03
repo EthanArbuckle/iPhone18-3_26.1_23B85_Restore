@@ -1,34 +1,34 @@
 @interface APOdmlAppInfo
-- (APOdmlAppInfo)initWithBundleID:(id)a3 adamID:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (APOdmlAppInfo)initWithBundleID:(id)d adamID:(unint64_t)iD;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation APOdmlAppInfo
 
-- (APOdmlAppInfo)initWithBundleID:(id)a3 adamID:(unint64_t)a4
+- (APOdmlAppInfo)initWithBundleID:(id)d adamID:(unint64_t)iD
 {
-  v6 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = APOdmlAppInfo;
   v7 = [(APOdmlAppInfo *)&v12 init];
   v9 = v7;
   if (v7)
   {
-    objc_msgSend_setBundleID_(v7, v8, v6);
-    objc_msgSend_setAdamID_(v9, v10, a4);
+    objc_msgSend_setBundleID_(v7, v8, dCopy);
+    objc_msgSend_setAdamID_(v9, v10, iD);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     v9 = objc_msgSend_adamID(self, v7, v8);
-    v12 = v9 == objc_msgSend_adamID(v4, v10, v11);
+    v12 = v9 == objc_msgSend_adamID(equalCopy, v10, v11);
   }
 
   else

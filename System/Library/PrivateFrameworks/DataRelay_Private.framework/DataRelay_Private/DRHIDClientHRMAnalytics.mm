@@ -1,6 +1,6 @@
 @interface DRHIDClientHRMAnalytics
 - (DRHIDClientHRMAnalytics)init;
-- (void)handleEvent:(id)a3 withService:(id)a4;
+- (void)handleEvent:(id)event withService:(id)service;
 - (void)reset;
 @end
 
@@ -20,21 +20,21 @@
   return v3;
 }
 
-- (void)handleEvent:(id)a3 withService:(id)a4
+- (void)handleEvent:(id)event withService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1 && objc_msgSend(v6, "integerValueForField:", 0x10000) == 65290 && objc_msgSend(v6, "integerValueForField:", 65537) == 19)
+  eventCopy = event;
+  serviceCopy = service;
+  if ([eventCopy type] == 1 && objc_msgSend(eventCopy, "integerValueForField:", 0x10000) == 65290 && objc_msgSend(eventCopy, "integerValueForField:", 65537) == 19)
   {
-    v8 = [v6 integerValueForField:65539];
+    v8 = [eventCopy integerValueForField:65539];
     v9 = [MEMORY[0x277CBEB28] dataWithCapacity:v8 + 1];
     v12 = 2;
     [v9 appendBytes:&v12 length:1];
-    [v9 appendBytes:objc_msgSend(v6 length:{"dataValueForField:", 65540), v8}];
+    [v9 appendBytes:objc_msgSend(eventCopy length:{"dataValueForField:", 65540), v8}];
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v10 setObject:v9 forKey:@"data"];
-    v11 = [(DRHIDClient *)self dataHandler];
-    (v11)[2](v11, 2, [v7 serviceID], 2, v10);
+    dataHandler = [(DRHIDClient *)self dataHandler];
+    (dataHandler)[2](dataHandler, 2, [serviceCopy serviceID], 2, v10);
   }
 }
 
@@ -48,8 +48,8 @@
   v4.receiver = self;
   v4.super_class = DRHIDClientHRMAnalytics;
   [(DRHIDClient *)&v4 reset];
-  v3 = [(DRHIDClient *)self HIDClient];
-  [v3 setMatching:&unk_285B1CAC0];
+  hIDClient = [(DRHIDClient *)self HIDClient];
+  [hIDClient setMatching:&unk_285B1CAC0];
 }
 
 @end

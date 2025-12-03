@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneDocumentField_TermVectorEnum
-+ (id)toTermVectorWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5;
++ (id)toTermVectorWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean withBoolean:(BOOL)a5;
 + (void)initialize;
 @end
 
 @implementation OrgApacheLuceneDocumentField_TermVectorEnum
 
-+ (id)toTermVectorWithBoolean:(BOOL)a3 withBoolean:(BOOL)a4 withBoolean:(BOOL)a5
++ (id)toTermVectorWithBoolean:(BOOL)boolean withBoolean:(BOOL)withBoolean withBoolean:(BOOL)a5
 {
   v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  withBooleanCopy = withBoolean;
+  booleanCopy = boolean;
   if ((atomic_load_explicit(OrgApacheLuceneDocumentField_TermVectorEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100066704();
@@ -30,12 +30,12 @@
   }
 
   v12 = &OrgApacheLuceneDocumentField_TermVectorEnum_values_[v11];
-  if (v6)
+  if (withBooleanCopy)
   {
     v10 = v12;
   }
 
-  if (v7)
+  if (booleanCopy)
   {
     v8 = v10;
   }
@@ -45,7 +45,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneDocumentField_TermVector__1Enum alloc];
     JavaLangEnum_initWithNSString_withInt_(v2, @"NO", 0);

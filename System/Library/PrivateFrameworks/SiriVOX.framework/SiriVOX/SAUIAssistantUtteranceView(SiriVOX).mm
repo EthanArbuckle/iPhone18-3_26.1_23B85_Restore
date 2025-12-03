@@ -8,44 +8,44 @@
 - (void)svx_applyParsedExpression:()SiriVOX
 {
   v9 = a3;
-  v4 = [v9 parseableExpression];
-  v5 = [v4 expressionString];
-  v6 = [a1 text];
-  v7 = [v5 isEqualToString:v6];
+  parseableExpression = [v9 parseableExpression];
+  expressionString = [parseableExpression expressionString];
+  text = [self text];
+  v7 = [expressionString isEqualToString:text];
 
   if (v7)
   {
-    v8 = [v9 parsedOutput];
-    [a1 setSpeakableText:v8];
+    parsedOutput = [v9 parsedOutput];
+    [self setSpeakableText:parsedOutput];
   }
 }
 
 - (id)svx_parseableExpression
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [a1 context];
+  context = [self context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 context];
-    v4 = [v3 svx_isDeferredExpressionContextObject];
+    context2 = [self context];
+    svx_isDeferredExpressionContextObject = [context2 svx_isDeferredExpressionContextObject];
 
-    if (v4)
+    if (svx_isDeferredExpressionContextObject)
     {
       v5 = objc_alloc_init(MEMORY[0x277D47AA0]);
-      v6 = [MEMORY[0x277CCAD78] UUID];
-      v7 = [v6 UUIDString];
-      [v5 setAceId:v7];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [v5 setAceId:uUIDString];
 
-      v8 = [a1 context];
+      context3 = [self context];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v5 setContext:v8];
+        [v5 setContext:context3];
       }
 
-      v9 = [a1 speakableText];
-      [v5 setExpressionString:v9];
+      speakableText = [self speakableText];
+      [v5 setExpressionString:speakableText];
 
       goto LABEL_10;
     }
@@ -59,11 +59,11 @@
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [a1 context];
+    context4 = [self context];
     v15 = 136315394;
     v16 = "[SAUIAssistantUtteranceView(SiriVOX) svx_parseableExpression]";
     v17 = 2112;
-    v18 = v12;
+    v18 = context4;
     _os_log_impl(&dword_2695B9000, v11, OS_LOG_TYPE_INFO, "%s Don't know how to generate a parseable expression for context object: %@", &v15, 0x16u);
   }
 

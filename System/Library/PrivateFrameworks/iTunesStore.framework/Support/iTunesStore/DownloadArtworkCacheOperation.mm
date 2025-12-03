@@ -1,15 +1,15 @@
 @interface DownloadArtworkCacheOperation
-- (DownloadArtworkCacheOperation)initWithDownloadIdentifier:(int64_t)a3 thumbnailURL:(id)a4;
-- (DownloadArtworkCacheOperation)initWithStoreDownloadIdentifier:(int64_t)a3 thumbnailURL:(id)a4;
+- (DownloadArtworkCacheOperation)initWithDownloadIdentifier:(int64_t)identifier thumbnailURL:(id)l;
+- (DownloadArtworkCacheOperation)initWithStoreDownloadIdentifier:(int64_t)identifier thumbnailURL:(id)l;
 - (NSData)artworkData;
-- (void)_setArtworkData:(id)a3;
+- (void)_setArtworkData:(id)data;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation DownloadArtworkCacheOperation
 
-- (DownloadArtworkCacheOperation)initWithDownloadIdentifier:(int64_t)a3 thumbnailURL:(id)a4
+- (DownloadArtworkCacheOperation)initWithDownloadIdentifier:(int64_t)identifier thumbnailURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = DownloadArtworkCacheOperation;
@@ -17,14 +17,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_downloadID = a3;
-    v6->_thumbnailURL = [a4 copy];
+    v6->_downloadID = identifier;
+    v6->_thumbnailURL = [l copy];
   }
 
   return v7;
 }
 
-- (DownloadArtworkCacheOperation)initWithStoreDownloadIdentifier:(int64_t)a3 thumbnailURL:(id)a4
+- (DownloadArtworkCacheOperation)initWithStoreDownloadIdentifier:(int64_t)identifier thumbnailURL:(id)l
 {
   v9.receiver = self;
   v9.super_class = DownloadArtworkCacheOperation;
@@ -32,9 +32,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_downloadID = a3;
+    v6->_downloadID = identifier;
     v6->_isStoreDownload = 1;
-    v6->_thumbnailURL = [a4 copy];
+    v6->_thumbnailURL = [l copy];
   }
 
   return v7;
@@ -70,15 +70,15 @@
         v14 = +[SSLogConfig sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
+      shouldLog = [v14 shouldLog];
       if ([v14 shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog;
       }
 
       if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_INFO))
@@ -152,15 +152,15 @@
         v25 = +[SSLogConfig sharedConfig];
       }
 
-      v26 = [v25 shouldLog];
+      shouldLog2 = [v25 shouldLog];
       if ([v25 shouldLogToDisk])
       {
-        v27 = v26 | 2;
+        v27 = shouldLog2 | 2;
       }
 
       else
       {
-        v27 = v26;
+        v27 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -204,15 +204,15 @@
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog3 = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog3 | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_INFO))
@@ -248,14 +248,14 @@ LABEL_43:
   [(DownloadArtworkCacheOperation *)self setSuccess:v5 != 0];
 }
 
-- (void)_setArtworkData:(id)a3
+- (void)_setArtworkData:(id)data
 {
   [(DownloadArtworkCacheOperation *)self lock];
   artworkData = self->_artworkData;
-  if (artworkData != a3)
+  if (artworkData != data)
   {
 
-    self->_artworkData = a3;
+    self->_artworkData = data;
   }
 
   [(DownloadArtworkCacheOperation *)self unlock];

@@ -1,25 +1,25 @@
 @interface DNDSLocationLifetimeMonitor
 - (DNDSLifetimeMonitorDelegate)delegate;
-- (DNDSLocationLifetimeMonitor)initWithMeDeviceService:(id)a3;
+- (DNDSLocationLifetimeMonitor)initWithMeDeviceService:(id)service;
 - (DNDSLocationLifetimeMonitorDataSource)dataSource;
 - (NSArray)activeLifetimeAssertionUUIDs;
 - (NSString)sysdiagnoseDataIdentifier;
 - (unint64_t)availableRegions;
-- (void)_queue_refreshMonitorForDate:(id)a3;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
-- (void)meDeviceService:(id)a3 didReceiveMeDeviceStateUpdate:(id)a4;
-- (void)refreshMonitorForDate:(id)a3;
+- (void)_queue_refreshMonitorForDate:(id)date;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error;
+- (void)meDeviceService:(id)service didReceiveMeDeviceStateUpdate:(id)update;
+- (void)refreshMonitorForDate:(id)date;
 @end
 
 @implementation DNDSLocationLifetimeMonitor
 
-- (DNDSLocationLifetimeMonitor)initWithMeDeviceService:(id)a3
+- (DNDSLocationLifetimeMonitor)initWithMeDeviceService:(id)service
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  serviceCopy = service;
   v24.receiver = self;
   v24.super_class = DNDSLocationLifetimeMonitor;
   v6 = [(DNDSLocationLifetimeMonitor *)&v24 init];
@@ -30,8 +30,8 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_meDeviceService, a3);
-    [v5 addListener:v6];
+    objc_storeStrong(&v6->_meDeviceService, service);
+    [serviceCopy addListener:v6];
     v10 = [[DNDSUntilExitLocationLifetimeMonitor alloc] initWithAggregateMonitor:v6];
     untilExitMonitor = v6->_untilExitMonitor;
     v6->_untilExitMonitor = v10;
@@ -47,10 +47,10 @@
     children = v6->_children;
     v6->_children = v15;
 
-    v17 = [v5 meDeviceState];
-    v18 = [v17 meDeviceStatus];
+    meDeviceState = [serviceCopy meDeviceState];
+    meDeviceStatus = [meDeviceState meDeviceStatus];
 
-    if (v18 == 2)
+    if (meDeviceStatus == 2)
     {
       v19 = v6->_queue;
       v22[0] = MEMORY[0x277D85DD0];
@@ -81,42 +81,42 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
 
 - (NSArray)activeLifetimeAssertionUUIDs
 {
-  v3 = [(DNDSExplicitRegionLocationLifetimeMonitor *)self->_explicitRegionMonitor activeLifetimeAssertionUUIDs];
-  v4 = [(DNDSUntilExitLocationLifetimeMonitor *)self->_untilExitMonitor activeLifetimeAssertionUUIDs];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  activeLifetimeAssertionUUIDs = [(DNDSExplicitRegionLocationLifetimeMonitor *)self->_explicitRegionMonitor activeLifetimeAssertionUUIDs];
+  activeLifetimeAssertionUUIDs2 = [(DNDSUntilExitLocationLifetimeMonitor *)self->_untilExitMonitor activeLifetimeAssertionUUIDs];
+  v5 = [activeLifetimeAssertionUUIDs arrayByAddingObjectsFromArray:activeLifetimeAssertionUUIDs2];
 
   return v5;
 }
 
-- (void)refreshMonitorForDate:(id)a3
+- (void)refreshMonitorForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__DNDSLocationLifetimeMonitor_refreshMonitorForDate___block_invoke;
   v7[3] = &unk_278F89F48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_sync(queue, v7);
 }
 
 - (unint64_t)availableRegions
 {
-  v3 = [(CLLocationManager *)self->_locationManager monitoredRegions];
-  v4 = [v3 count];
+  monitoredRegions = [(CLLocationManager *)self->_locationManager monitoredRegions];
+  v4 = [monitoredRegions count];
   v5 = ~v4 + [(DNDSUntilExitLocationLifetimeMonitor *)self->_untilExitMonitor hasCurrentRegion];
 
   return v5 + 20;
 }
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  regionCopy = region;
+  errorCopy = error;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -140,7 +140,7 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
         v16 = *(*(&v18 + 1) + 8 * v15);
         if (objc_opt_respondsToSelector())
         {
-          [v16 locationManager:v8 monitoringDidFailForRegion:v9 withError:{v10, v18}];
+          [v16 locationManager:managerCopy monitoringDidFailForRegion:regionCopy withError:{errorCopy, v18}];
         }
 
         ++v15;
@@ -156,11 +156,11 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  managerCopy = manager;
+  regionCopy = region;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -184,7 +184,7 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
         v15 = *(*(&v17 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 locationManager:v8 didDetermineState:a4 forRegion:{v9, v17}];
+          [v15 locationManager:managerCopy didDetermineState:state forRegion:{regionCopy, v17}];
         }
 
         ++v14;
@@ -200,11 +200,11 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -228,7 +228,7 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 locationManager:v6 didUpdateLocations:{v7, v15}];
+          [v13 locationManager:managerCopy didUpdateLocations:{locationsCopy, v15}];
         }
 
         ++v12;
@@ -244,11 +244,11 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -272,7 +272,7 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 locationManager:v6 didFailWithError:{v7, v15}];
+          [v13 locationManager:managerCopy didFailWithError:{errorCopy, v15}];
         }
 
         ++v12;
@@ -288,17 +288,17 @@ void __55__DNDSLocationLifetimeMonitor_initWithMeDeviceService___block_invoke(ui
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)meDeviceService:(id)a3 didReceiveMeDeviceStateUpdate:(id)a4
+- (void)meDeviceService:(id)service didReceiveMeDeviceStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__DNDSLocationLifetimeMonitor_meDeviceService_didReceiveMeDeviceStateUpdate___block_invoke;
   v8[3] = &unk_278F89F48;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updateCopy;
+  selfCopy = self;
+  v7 = updateCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -336,13 +336,13 @@ uint64_t __77__DNDSLocationLifetimeMonitor_meDeviceService_didReceiveMeDeviceSta
   return MEMORY[0x2821F96F8](result, v4);
 }
 
-- (void)_queue_refreshMonitorForDate:(id)a3
+- (void)_queue_refreshMonitorForDate:(id)date
 {
   queue = self->_queue;
-  v5 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(queue);
-  [(DNDSExplicitRegionLocationLifetimeMonitor *)self->_explicitRegionMonitor refreshMonitorForDate:v5];
-  [(DNDSUntilExitLocationLifetimeMonitor *)self->_untilExitMonitor refreshMonitorForDate:v5];
+  [(DNDSExplicitRegionLocationLifetimeMonitor *)self->_explicitRegionMonitor refreshMonitorForDate:dateCopy];
+  [(DNDSUntilExitLocationLifetimeMonitor *)self->_untilExitMonitor refreshMonitorForDate:dateCopy];
 }
 
 - (NSString)sysdiagnoseDataIdentifier

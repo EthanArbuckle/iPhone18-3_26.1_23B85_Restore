@@ -8,16 +8,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTurnSignalCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTurnSignalCharacteristic *)self turnSignalValue];
+  turnSignalValue = [(CAFTurnSignalCharacteristic *)self turnSignalValue];
 
-  return NSStringFromTurnSignal(v2);
+  return NSStringFromTurnSignal(turnSignalValue);
 }
 
 + (id)secondaryCharacteristicFormats

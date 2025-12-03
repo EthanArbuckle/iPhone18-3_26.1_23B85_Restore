@@ -56,17 +56,17 @@
   [v4 size];
   v6 = v5;
   [v4 size];
-  v7 = [a1 pixelWidth];
-  if (v7 >= [a1 pixelHeight])
+  pixelWidth = [self pixelWidth];
+  if (pixelWidth >= [self pixelHeight])
   {
-    [a1 pixelWidth];
-    [a1 pixelHeight];
+    [self pixelWidth];
+    [self pixelHeight];
   }
 
   else
   {
-    v8 = [a1 pixelHeight];
-    v6 = v6 * (v8 / [a1 pixelWidth]);
+    pixelHeight = [self pixelHeight];
+    v6 = v6 * (pixelHeight / [self pixelWidth]);
   }
 
   [v4 centerX];
@@ -100,7 +100,7 @@
   v37 = [MEMORY[0x1E69787D0] fetchFacesInAsset:? options:?];
   if (v37 && [v37 count])
   {
-    v41 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -123,7 +123,7 @@
 
           v7 = *(*(&v45 + 1) + 8 * i);
           memset(&v44, 0, sizeof(v44));
-          [a1 vcp_faceRectFrom:v7];
+          [self vcp_faceRectFrom:v7];
           v44.origin.x = v10;
           v44.origin.y = v11;
           v44.size.width = v8;
@@ -144,7 +144,7 @@
             v5 = v13;
           }
 
-          v14 = [a1 vcp_flagsForPHFace:v7 withFaceRect:?];
+          v14 = [self vcp_flagsForPHFace:v7 withFaceRect:?];
           v15 = MediaAnalysisFacePosition(&v44);
           [v7 poseYaw];
           *&v16 = v16;
@@ -178,7 +178,7 @@
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:4];
           v58[1] = v26;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
-          [v41 addObject:v27];
+          [array addObject:v27];
 
           *a3 |= v14;
         }
@@ -198,7 +198,7 @@
 
     if ([obj count])
     {
-      v29 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v30 = MediaAnalysisShotType(v28);
       v53 = @"attributes";
       v51 = @"shotType";
@@ -207,13 +207,13 @@
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       v54 = v32;
       v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-      [v29 addObject:v33];
+      [array2 addObject:v33];
 
       *a3 |= 0x20uLL;
       v49[0] = @"FaceResults";
       v49[1] = @"ShotTypeResults";
-      v50[0] = v41;
-      v50[1] = v29;
+      v50[0] = array;
+      v50[1] = array2;
       v49[2] = @"FaceQualityFlag";
       v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v43];
       v50[2] = v34;
@@ -227,39 +227,39 @@
 - (id)vcp_PHFaces:()VCPPHFaces
 {
   v4 = a3;
-  v5 = [a1 photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v6 setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
   if ([MEMORY[0x1E69789B0] mad_clusterVideoFaces])
   {
-    [v6 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
   if ([v4 count])
   {
-    [v6 setFetchPropertySets:v4];
+    [librarySpecificFetchOptions setFetchPropertySets:v4];
   }
 
-  v7 = [MEMORY[0x1E69787D0] fetchFacesInAsset:a1 options:v6];
+  v7 = [MEMORY[0x1E69787D0] fetchFacesInAsset:self options:librarySpecificFetchOptions];
 
   return v7;
 }
 
 - (uint64_t)vcp_quickFaceClassificationDone
 {
-  v2 = [a1 faceAdjustmentVersion];
-  v3 = [a1 adjustmentVersion];
-  if ([v2 isEqualToDate:v3])
+  faceAdjustmentVersion = [self faceAdjustmentVersion];
+  adjustmentVersion = [self adjustmentVersion];
+  if ([faceAdjustmentVersion isEqualToDate:adjustmentVersion])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 faceAdjustmentVersion];
-    v6 = [MEMORY[0x1E6978628] quickClassificationFaceAdjustmentVersion];
-    v4 = [v5 isEqualToDate:v6];
+    faceAdjustmentVersion2 = [self faceAdjustmentVersion];
+    quickClassificationFaceAdjustmentVersion = [MEMORY[0x1E6978628] quickClassificationFaceAdjustmentVersion];
+    v4 = [faceAdjustmentVersion2 isEqualToDate:quickClassificationFaceAdjustmentVersion];
   }
 
   return v4;
@@ -268,13 +268,13 @@
 - (uint64_t)vcp_needsFaceProcessing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [a1 faceAdjustmentVersion];
+  faceAdjustmentVersion = [self faceAdjustmentVersion];
 
-  if (v2)
+  if (faceAdjustmentVersion)
   {
-    v3 = [a1 faceAdjustmentVersion];
-    v4 = [a1 adjustmentVersion];
-    v5 = [v3 isEqualToDate:v4];
+    faceAdjustmentVersion2 = [self faceAdjustmentVersion];
+    adjustmentVersion = [self adjustmentVersion];
+    v5 = [faceAdjustmentVersion2 isEqualToDate:adjustmentVersion];
 
     if (v5)
     {
@@ -284,47 +284,47 @@
         return result;
       }
 
-      v7 = [a1 photoLibrary];
-      v8 = [v7 mad_faceProcessingInternalVersion];
+      photoLibrary = [self photoLibrary];
+      mad_faceProcessingInternalVersion = [photoLibrary mad_faceProcessingInternalVersion];
 
-      if (v8 == [a1 faceAnalysisVersion])
+      if (mad_faceProcessingInternalVersion == [self faceAnalysisVersion])
       {
         return 0;
       }
 
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v13 = [a1 localIdentifier];
+        localIdentifier = [self localIdentifier];
         v14 = 138412802;
-        v15 = v13;
+        v15 = localIdentifier;
         v16 = 1024;
-        *v17 = [a1 faceAnalysisVersion];
+        *v17 = [self faceAnalysisVersion];
         *&v17[4] = 1024;
-        *&v17[6] = v8;
+        *&v17[6] = mad_faceProcessingInternalVersion;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][FaceAnalysisStateCheck] faceAnalysisVersion %d (target %d)", &v14, 0x18u);
       }
     }
 
     else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v10 = [a1 localIdentifier];
-      v11 = [a1 faceAdjustmentVersion];
-      v12 = [a1 adjustmentVersion];
+      localIdentifier2 = [self localIdentifier];
+      faceAdjustmentVersion3 = [self faceAdjustmentVersion];
+      adjustmentVersion2 = [self adjustmentVersion];
       v14 = 138412802;
-      v15 = v10;
+      v15 = localIdentifier2;
       v16 = 2112;
-      *v17 = v11;
+      *v17 = faceAdjustmentVersion3;
       *&v17[8] = 2112;
-      v18 = v12;
+      v18 = adjustmentVersion2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][FaceAnalysisStateCheck] faceAdjustmentVersion %@ != adjustmentTimestamp %@", &v14, 0x20u);
     }
   }
 
   else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
-    v9 = [a1 localIdentifier];
+    localIdentifier3 = [self localIdentifier];
     v14 = 138412290;
-    v15 = v9;
+    v15 = localIdentifier3;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[%@][FaceAnalysisStateCheck] no faceAdjustmentVersion", &v14, 0xCu);
   }
 

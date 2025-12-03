@@ -4,8 +4,8 @@
 - (BOOL)isFinished;
 - (TPSAsyncOperation)init;
 - (void)cancel;
-- (void)finishWithError:(id)a3;
-- (void)lockExec:(id)a3;
+- (void)finishWithError:(id)error;
+- (void)lockExec:(id)exec;
 - (void)start;
 @end
 
@@ -24,24 +24,24 @@
   return result;
 }
 
-- (void)lockExec:(id)a3
+- (void)lockExec:(id)exec
 {
-  v4 = a3;
+  execCopy = exec;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  execCopy[2](execCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(TPSAsyncOperation *)self preCompletionBlock];
+  errorCopy = error;
+  preCompletionBlock = [(TPSAsyncOperation *)self preCompletionBlock];
 
-  if (v5)
+  if (preCompletionBlock)
   {
-    v6 = [(TPSAsyncOperation *)self preCompletionBlock];
-    v6[2]();
+    preCompletionBlock2 = [(TPSAsyncOperation *)self preCompletionBlock];
+    preCompletionBlock2[2]();
   }
 
   [(TPSAsyncOperation *)self willChangeValueForKey:@"isFinished"];
@@ -50,11 +50,11 @@
   v9 = 3221225472;
   v10 = __37__TPSAsyncOperation_finishWithError___block_invoke;
   v11 = &unk_1E8101390;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v13 = errorCopy;
+  v7 = errorCopy;
   [(TPSAsyncOperation *)self lockExec:&v8];
-  [(TPSAsyncOperation *)self didChangeValueForKey:@"isExecuting", v8, v9, v10, v11, v12];
+  [(TPSAsyncOperation *)self didChangeValueForKey:@"isExecuting", v8, v9, v10, v11, selfCopy];
   [(TPSAsyncOperation *)self didChangeValueForKey:@"isFinished"];
 }
 

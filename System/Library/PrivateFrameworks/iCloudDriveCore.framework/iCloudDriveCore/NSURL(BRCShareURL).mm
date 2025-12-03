@@ -9,39 +9,39 @@
 
 - (id)brc_applicationName
 {
-  v1 = [a1 path];
-  v2 = [v1 pathComponents];
+  path = [self path];
+  pathComponents = [path pathComponents];
 
-  if ([v2 count] >= 2)
+  if ([pathComponents count] >= 2)
   {
-    v4 = [v2 objectAtIndexedSubscript:1];
-    v5 = [v4 stringByRemovingPercentEncoding];
-    v6 = [v5 lowercaseString];
+    v4 = [pathComponents objectAtIndexedSubscript:1];
+    stringByRemovingPercentEncoding = [v4 stringByRemovingPercentEncoding];
+    lowercaseString = [stringByRemovingPercentEncoding lowercaseString];
 
-    if (([v6 isEqualToString:@"pages"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"keynote") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"numbers"))
+    if (([lowercaseString isEqualToString:@"pages"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"keynote") & 1) != 0 || objc_msgSend(lowercaseString, "isEqualToString:", @"numbers"))
     {
-      v3 = [v6 capitalizedString];
+      capitalizedString = [lowercaseString capitalizedString];
     }
 
     else
     {
-      v3 = 0;
+      capitalizedString = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    capitalizedString = 0;
   }
 
-  return v3;
+  return capitalizedString;
 }
 
 - (id)brc_applicationBundleID
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 brc_applicationName];
-  v3 = [v1 brc_applicationBundleIDForExtension:v2];
+  brc_applicationName = [self brc_applicationName];
+  v3 = [v1 brc_applicationBundleIDForExtension:brc_applicationName];
 
   return v3;
 }
@@ -49,17 +49,17 @@
 - (id)brc_applicationContainerID
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [a1 brc_applicationName];
-  v3 = [v1 brc_applicationContainerIDForExtension:v2];
+  brc_applicationName = [self brc_applicationName];
+  v3 = [v1 brc_applicationContainerIDForExtension:brc_applicationName];
 
   return v3;
 }
 
 - (void)brc_iWorkPathExtensions
 {
-  v1 = [a1 brc_applicationName];
-  v2 = [v1 lowercaseString];
-  v3 = [v2 isEqualToString:@"pages"];
+  brc_applicationName = [self brc_applicationName];
+  lowercaseString = [brc_applicationName lowercaseString];
+  v3 = [lowercaseString isEqualToString:@"pages"];
 
   if (v3)
   {
@@ -68,8 +68,8 @@
 
   else
   {
-    v5 = [v1 lowercaseString];
-    v6 = [v5 isEqualToString:@"keynote"];
+    lowercaseString2 = [brc_applicationName lowercaseString];
+    v6 = [lowercaseString2 isEqualToString:@"keynote"];
 
     if (v6)
     {
@@ -78,8 +78,8 @@
 
     else
     {
-      v7 = [v1 lowercaseString];
-      v8 = [v7 isEqualToString:@"numbers"];
+      lowercaseString3 = [brc_applicationName lowercaseString];
+      v8 = [lowercaseString3 isEqualToString:@"numbers"];
 
       if (v8)
       {

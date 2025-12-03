@@ -1,52 +1,52 @@
 @interface BWStillImageBufferRouterNode
-- (BWStillImageBufferRouterNode)initWithInputPortTypes:(id)a3 HDRSupported:(BOOL)a4 SISSupported:(BOOL)a5 GNRSISSupported:(BOOL)a6 LTMHDRSupported:(BOOL)a7 depthDataDeliveryEnabled:(BOOL)a8;
-- (uint64_t)_outputForInput:(void *)a3 resolvedStillImageCaptureSettings:(void *)a4 metadata:;
-- (void)_defaultOutputsForInput:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BWStillImageBufferRouterNode)initWithInputPortTypes:(id)types HDRSupported:(BOOL)supported SISSupported:(BOOL)sSupported GNRSISSupported:(BOOL)iSSupported LTMHDRSupported:(BOOL)rSupported depthDataDeliveryEnabled:(BOOL)enabled;
+- (uint64_t)_outputForInput:(void *)input resolvedStillImageCaptureSettings:(void *)settings metadata:;
+- (void)_defaultOutputsForInput:(uint64_t)input;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageBufferRouterNode
 
-- (BWStillImageBufferRouterNode)initWithInputPortTypes:(id)a3 HDRSupported:(BOOL)a4 SISSupported:(BOOL)a5 GNRSISSupported:(BOOL)a6 LTMHDRSupported:(BOOL)a7 depthDataDeliveryEnabled:(BOOL)a8
+- (BWStillImageBufferRouterNode)initWithInputPortTypes:(id)types HDRSupported:(BOOL)supported SISSupported:(BOOL)sSupported GNRSISSupported:(BOOL)iSSupported LTMHDRSupported:(BOOL)rSupported depthDataDeliveryEnabled:(BOOL)enabled
 {
   v45.receiver = self;
   v45.super_class = BWStillImageBufferRouterNode;
   v14 = [(BWNode *)&v45 init];
   if (v14)
   {
-    v14->_inputPortTypes = a3;
-    v15 = [a3 containsObject:*off_1E798A0C0];
-    v39 = a8;
+    v14->_inputPortTypes = types;
+    v15 = [types containsObject:*off_1E798A0C0];
+    enabledCopy = enabled;
     if (v15)
     {
-      LOBYTE(v15) = [a3 containsObject:*off_1E798A0D8];
+      LOBYTE(v15) = [types containsObject:*off_1E798A0D8];
     }
 
     v14->_usingBravoDevice = v15;
-    v16 = [a3 containsObject:*off_1E798A0E0];
+    v16 = [types containsObject:*off_1E798A0E0];
     if (v16)
     {
-      LOBYTE(v16) = [a3 containsObject:*off_1E798A0E8];
+      LOBYTE(v16) = [types containsObject:*off_1E798A0E8];
     }
 
     v14->_usingPearlDevice = v16;
-    v14->_HDRSupported = a4;
-    v14->_SISSupported = a5;
-    v14->_GNRSISSupported = a6;
-    v14->_LTMHDRSupported = a7;
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    v14->_HDRSupported = supported;
+    v14->_SISSupported = sSupported;
+    v14->_GNRSISSupported = iSSupported;
+    v14->_LTMHDRSupported = rSupported;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v18 = [a3 countByEnumeratingWithState:&v41 objects:v40 count:16];
+    v18 = [types countByEnumeratingWithState:&v41 objects:v40 count:16];
     if (v18)
     {
       v19 = v18;
@@ -54,14 +54,14 @@
       v21 = *v42;
       do
       {
-        v22 = a3;
+        typesCopy = types;
         v23 = 0;
         v20 = v20;
         do
         {
           if (*v42 != v21)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(typesCopy);
           }
 
           v24 = *(*(&v41 + 1) + 8 * v23);
@@ -74,20 +74,20 @@
           [(BWNodeInput *)v25 setName:BWPortTypeToDisplayString(v24, v27)];
           [(BWNode *)v14 addInput:v25];
           ++v20;
-          [v17 setObject:v25 forKeyedSubscript:v24];
+          [dictionary setObject:v25 forKeyedSubscript:v24];
 
           ++v23;
         }
 
         while (v19 != v23);
-        a3 = v22;
-        v19 = [v22 countByEnumeratingWithState:&v41 objects:v40 count:16];
+        types = typesCopy;
+        v19 = [typesCopy countByEnumeratingWithState:&v41 objects:v40 count:16];
       }
 
       while (v19);
     }
 
-    v14->_portTypeToInput = [v17 copy];
+    v14->_portTypeToInput = [dictionary copy];
     v28 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v14];
     v29 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWNodeOutput *)v28 setFormatRequirements:v29];
@@ -98,7 +98,7 @@
     [(BWNode *)v14 addOutput:v28];
     v14->_defaultOutput = v28;
 
-    if (v14->_HDRSupported && !v14->_LTMHDRSupported && !v39)
+    if (v14->_HDRSupported && !v14->_LTMHDRSupported && !enabledCopy)
     {
       v30 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v14];
       v31 = objc_alloc_init(BWVideoFormatRequirements);
@@ -131,7 +131,7 @@
       [(BWNodeOutput *)v34 setFormatRequirements:v35];
 
       [(BWNodeOutput *)v34 setPassthroughMode:1];
-      -[BWNodeOutput setIndexOfInputWhichDrivesThisOutput:](v34, "setIndexOfInputWhichDrivesThisOutput:", [a3 indexOfObject:*off_1E798A0D8]);
+      -[BWNodeOutput setIndexOfInputWhichDrivesThisOutput:](v34, "setIndexOfInputWhichDrivesThisOutput:", [types indexOfObject:*off_1E798A0D8]);
       [(BWNodeOutput *)v34 setName:@"Bravo Telephoto"];
       [(BWNode *)v14 addOutput:v34];
       v14->_bravoTelephotoOutput = v34;
@@ -144,7 +144,7 @@
       [(BWNodeOutput *)v36 setFormatRequirements:v37];
 
       [(BWNodeOutput *)v36 setPassthroughMode:1];
-      -[BWNodeOutput setIndexOfInputWhichDrivesThisOutput:](v36, "setIndexOfInputWhichDrivesThisOutput:", [a3 indexOfObject:*off_1E798A0E8]);
+      -[BWNodeOutput setIndexOfInputWhichDrivesThisOutput:](v36, "setIndexOfInputWhichDrivesThisOutput:", [types indexOfObject:*off_1E798A0E8]);
       [(BWNodeOutput *)v36 setName:@"Pearl IR / Depth"];
       [(BWNode *)v14 addOutput:v36];
       v14->_pearlInfraredOutput = v36;
@@ -161,16 +161,16 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  if (![a4 index])
+  if (![input index])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BWNode *)self outputs];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    outputs = [(BWNode *)self outputs];
+    v7 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -182,14 +182,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputs);
           }
 
-          [*(*(&v12 + 1) + 8 * v10++) setFormat:objc_msgSend(a4, "format")];
+          [*(*(&v12 + 1) + 8 * v10++) setFormat:objc_msgSend(input, "format")];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -197,16 +197,16 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BWNode *)self outputs];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    outputs = [(BWNode *)self outputs];
+    v7 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -218,14 +218,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) makeConfiguredFormatLive];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -233,7 +233,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if ([(BWNode *)self allInputsHaveReachedState:0])
   {
@@ -241,8 +241,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(BWNode *)self outputs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    outputs = [(BWNode *)self outputs];
+    v5 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -254,14 +254,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) markEndOfLiveOutput];
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -269,14 +269,14 @@
   }
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
-  v4 = *&a3;
+  v4 = *&number;
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:a4];
+  v5 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:input];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -303,29 +303,29 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v9 = [(BWStillImageBufferRouterNode *)self _outputForInput:v8 resolvedStillImageCaptureSettings:v6 metadata:v7];
   if (v9)
   {
 
-    [v9 emitSampleBuffer:a3];
+    [v9 emitSampleBuffer:buffer];
   }
 }
 
-- (uint64_t)_outputForInput:(void *)a3 resolvedStillImageCaptureSettings:(void *)a4 metadata:
+- (uint64_t)_outputForInput:(void *)input resolvedStillImageCaptureSettings:(void *)settings metadata:
 {
   if (result)
   {
     v6 = result;
-    v7 = [a4 objectForKeyedSubscript:*off_1E798B540];
-    v8 = [a3 captureStreamSettingsForPortType:v7];
+    v7 = [settings objectForKeyedSubscript:*off_1E798B540];
+    v8 = [input captureStreamSettingsForPortType:v7];
     if ([v8 validBracketedCaptureSequenceNumbers])
     {
-      v9 = [objc_msgSend(a4 objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
-      v10 = [objc_msgSend(a4 objectForKeyedSubscript:{*off_1E798B1B8), "intValue"}];
+      v9 = [objc_msgSend(settings objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
+      v10 = [objc_msgSend(settings objectForKeyedSubscript:{*off_1E798B1B8), "intValue"}];
       v11 = (v9 & 1) != 0 ? &unk_1F2244A88 : [MEMORY[0x1E696AD98] numberWithInt:v10];
       if (![objc_msgSend(v8 "validBracketedCaptureSequenceNumbers")])
       {
@@ -333,12 +333,12 @@
       }
     }
 
-    v12 = [a3 captureFlags];
-    v13 = [a3 captureType];
+    captureFlags = [input captureFlags];
+    captureType = [input captureType];
     result = 0;
-    if (v13 <= 0xD)
+    if (captureType <= 0xD)
     {
-      if (((1 << v13) & 0x3CC6) != 0)
+      if (((1 << captureType) & 0x3CC6) != 0)
       {
         OUTLINED_FUNCTION_33();
         if (!v14)
@@ -368,7 +368,7 @@ LABEL_37:
         return *(v6 + *v15);
       }
 
-      if (((1 << v13) & 0x30) != 0)
+      if (((1 << captureType) & 0x30) != 0)
       {
         OUTLINED_FUNCTION_33();
         if (v14 && ([v7 isEqualToString:*off_1E798A0D8] & 1) != 0)
@@ -387,16 +387,16 @@ LABEL_37:
 
       else
       {
-        if (v13 != 3)
+        if (captureType != 3)
         {
           return result;
         }
 
-        v17 = [objc_msgSend(a4 objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
-        if ((v12 & 0x400) != 0)
+        v17 = [objc_msgSend(settings objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}];
+        if ((captureFlags & 0x400) != 0)
         {
           v18 = v17;
-          v19 = [a4 objectForKeyedSubscript:*off_1E798A830];
+          v19 = [settings objectForKeyedSubscript:*off_1E798A830];
           if (v19)
           {
             [v19 doubleValue];
@@ -426,7 +426,7 @@ LABEL_37:
           return *(v6 + *v15);
         }
 
-        if ((v12 & 0x800) != 0)
+        if ((captureFlags & 0x800) != 0)
         {
           if (!*(v6 + 128))
           {
@@ -469,53 +469,53 @@ LABEL_37:
   return result;
 }
 
-- (void)_defaultOutputsForInput:(uint64_t)a1
+- (void)_defaultOutputsForInput:(uint64_t)input
 {
-  if (!a1)
+  if (!input)
   {
     return 0;
   }
 
-  v3 = [*(a1 + 136) objectAtIndexedSubscript:{objc_msgSend(a2, "index")}];
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (*(a1 + 128) == 1 && [v3 isEqualToString:*off_1E798A0D8])
+  v3 = [*(input + 136) objectAtIndexedSubscript:{objc_msgSend(a2, "index")}];
+  array = [MEMORY[0x1E695DF70] array];
+  if (*(input + 128) == 1 && [v3 isEqualToString:*off_1E798A0D8])
   {
     v5 = 176;
 LABEL_8:
-    v6 = *(a1 + v5);
+    v6 = *(input + v5);
 LABEL_12:
-    [v4 addObject:v6];
-    return v4;
+    [array addObject:v6];
+    return array;
   }
 
-  if (*(a1 + 129) == 1 && [v3 isEqualToString:*off_1E798A0E8])
+  if (*(input + 129) == 1 && [v3 isEqualToString:*off_1E798A0E8])
   {
     v5 = 184;
     goto LABEL_8;
   }
 
-  [v4 addObject:*(a1 + 152)];
-  if (*(a1 + 160))
+  [array addObject:*(input + 152)];
+  if (*(input + 160))
   {
-    [v4 addObject:?];
+    [array addObject:?];
   }
 
-  v6 = *(a1 + 168);
+  v6 = *(input + 168);
   if (v6)
   {
     goto LABEL_12;
   }
 
-  return v4;
+  return array;
 }
 
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input
 {
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:a5];
+  v7 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:input];
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v8)
   {
@@ -531,7 +531,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) emitStillImagePrewarmMessageWithSettings:a3 resourceConfig:a4];
+        [*(*(&v13 + 1) + 8 * v11++) emitStillImagePrewarmMessageWithSettings:settings resourceConfig:config];
       }
 
       while (v9 != v11);
@@ -542,13 +542,13 @@ LABEL_12:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:a4];
+  v5 = [(BWStillImageBufferRouterNode *)self _defaultOutputsForInput:input];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
@@ -564,7 +564,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) emitNodeError:a3];
+        [*(*(&v11 + 1) + 8 * v9++) emitNodeError:error];
       }
 
       while (v7 != v9);

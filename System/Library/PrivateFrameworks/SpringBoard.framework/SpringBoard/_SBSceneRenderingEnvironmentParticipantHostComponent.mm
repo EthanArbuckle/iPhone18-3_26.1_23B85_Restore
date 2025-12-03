@@ -1,81 +1,81 @@
 @interface _SBSceneRenderingEnvironmentParticipantHostComponent
-- (void)_setParticipant:(id)a3;
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)setScene:(id)a3;
+- (void)_setParticipant:(id)participant;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)setScene:(id)scene;
 @end
 
 @implementation _SBSceneRenderingEnvironmentParticipantHostComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v11.receiver = self;
   v11.super_class = _SBSceneRenderingEnvironmentParticipantHostComponent;
-  v5 = a3;
-  [(FBSSceneComponent *)&v11 setScene:v5];
-  v6 = [SBApp sceneRenderingEnvironmentManager];
-  if (!v6)
+  sceneCopy = scene;
+  [(FBSSceneComponent *)&v11 setScene:sceneCopy];
+  sceneRenderingEnvironmentManager = [SBApp sceneRenderingEnvironmentManager];
+  if (!sceneRenderingEnvironmentManager)
   {
     [(_SBSceneRenderingEnvironmentParticipantHostComponent *)a2 setScene:?];
   }
 
-  v7 = [v5 loggingIdentifier];
-  v8 = [v5 settings];
+  loggingIdentifier = [sceneCopy loggingIdentifier];
+  settings = [sceneCopy settings];
 
-  v9 = [v8 displayConfiguration];
-  v10 = [v6 registerParticipantForSceneWithIdentifier:v7 displayConfiguration:v9];
+  displayConfiguration = [settings displayConfiguration];
+  v10 = [sceneRenderingEnvironmentManager registerParticipantForSceneWithIdentifier:loggingIdentifier displayConfiguration:displayConfiguration];
   [(_SBSceneRenderingEnvironmentParticipantHostComponent *)self _setParticipant:v10];
 }
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v6 = a4;
-  v7 = [v6 settings];
-  v15 = [v7 displayConfiguration];
+  settingsCopy = settings;
+  settings = [settingsCopy settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v8 = [v6 previousSettings];
+  previousSettings = [settingsCopy previousSettings];
 
-  v9 = [v8 displayConfiguration];
+  displayConfiguration2 = [previousSettings displayConfiguration];
 
-  v10 = v15;
-  if (v15 != v9)
+  v10 = displayConfiguration;
+  if (displayConfiguration != displayConfiguration2)
   {
-    v11 = [SBApp sceneRenderingEnvironmentManager];
-    if (!v11)
+    sceneRenderingEnvironmentManager = [SBApp sceneRenderingEnvironmentManager];
+    if (!sceneRenderingEnvironmentManager)
     {
       [_SBSceneRenderingEnvironmentParticipantHostComponent scene:a2 willUpdateSettings:self];
     }
 
-    v12 = [(FBSSceneComponent *)self hostScene];
-    v13 = [v12 loggingIdentifier];
-    v14 = [v11 registerParticipantForSceneWithIdentifier:v13 displayConfiguration:v15];
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    loggingIdentifier = [hostScene loggingIdentifier];
+    v14 = [sceneRenderingEnvironmentManager registerParticipantForSceneWithIdentifier:loggingIdentifier displayConfiguration:displayConfiguration];
     [(_SBSceneRenderingEnvironmentParticipantHostComponent *)self _setParticipant:v14];
 
-    v10 = v15;
+    v10 = displayConfiguration;
   }
 }
 
-- (void)_setParticipant:(id)a3
+- (void)_setParticipant:(id)participant
 {
-  v5 = a3;
+  participantCopy = participant;
   participant = self->_participant;
-  if (participant != v5)
+  if (participant != participantCopy)
   {
-    v10 = v5;
+    v10 = participantCopy;
     [(SBSceneRenderingEnvironmentParticipant *)participant invalidate];
-    objc_storeStrong(&self->_participant, a3);
-    v7 = [(FBSSceneComponent *)self hostScene];
-    v8 = [v7 renderingEnvironment];
-    v9 = [(SBSceneRenderingEnvironmentParticipant *)v10 renderingEnvironmentIdentifier];
-    [v8 setSystemDisplayIdentifier:v9];
+    objc_storeStrong(&self->_participant, participant);
+    hostScene = [(FBSSceneComponent *)self hostScene];
+    renderingEnvironment = [hostScene renderingEnvironment];
+    renderingEnvironmentIdentifier = [(SBSceneRenderingEnvironmentParticipant *)v10 renderingEnvironmentIdentifier];
+    [renderingEnvironment setSystemDisplayIdentifier:renderingEnvironmentIdentifier];
 
-    v5 = v10;
+    participantCopy = v10;
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
-  [(SBSceneRenderingEnvironmentParticipant *)self->_participant invalidate:a3];
+  [(SBSceneRenderingEnvironmentParticipant *)self->_participant invalidate:invalidate];
   participant = self->_participant;
   self->_participant = 0;
 }

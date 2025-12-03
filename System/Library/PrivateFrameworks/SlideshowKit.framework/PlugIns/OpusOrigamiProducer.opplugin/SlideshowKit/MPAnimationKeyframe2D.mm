@@ -1,33 +1,33 @@
 @interface MPAnimationKeyframe2D
-+ (id)keyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4;
-+ (id)keyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4 offsetType:(unint64_t)a5;
++ (id)keyframe2DWithPoint:(CGPoint)point atTime:(double)time;
++ (id)keyframe2DWithPoint:(CGPoint)point atTime:(double)time offsetType:(unint64_t)type;
 - (CGPoint)point;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initKeyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4 offsetType:(unint64_t)a5;
-- (void)setPoint:(CGPoint)a3;
+- (id)initKeyframe2DWithPoint:(CGPoint)point atTime:(double)time offsetType:(unint64_t)type;
+- (void)setPoint:(CGPoint)point;
 @end
 
 @implementation MPAnimationKeyframe2D
 
-+ (id)keyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4
++ (id)keyframe2DWithPoint:(CGPoint)point atTime:(double)time
 {
-  v4 = [[a1 alloc] initKeyframe2DWithPoint:0 atTime:a3.x offsetType:{a3.y, a4}];
+  v4 = [[self alloc] initKeyframe2DWithPoint:0 atTime:point.x offsetType:{point.y, time}];
 
   return v4;
 }
 
-+ (id)keyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4 offsetType:(unint64_t)a5
++ (id)keyframe2DWithPoint:(CGPoint)point atTime:(double)time offsetType:(unint64_t)type
 {
-  v5 = [[a1 alloc] initKeyframe2DWithPoint:a5 atTime:a3.x offsetType:{a3.y, a4}];
+  v5 = [[self alloc] initKeyframe2DWithPoint:type atTime:point.x offsetType:{point.y, time}];
 
   return v5;
 }
 
-- (id)initKeyframe2DWithPoint:(CGPoint)a3 atTime:(double)a4 offsetType:(unint64_t)a5
+- (id)initKeyframe2DWithPoint:(CGPoint)point atTime:(double)time offsetType:(unint64_t)type
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v10.receiver = self;
   v10.super_class = MPAnimationKeyframe2D;
   result = [(MPAnimationKeyframe *)&v10 init];
@@ -35,18 +35,18 @@
   {
     *(result + 8) = x;
     *(result + 9) = y;
-    *(result + 4) = a4;
-    *(result + 5) = a5;
+    *(result + 4) = time;
+    *(result + 5) = type;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPAnimationKeyframe2D;
-  v4 = [(MPAnimationKeyframe *)&v6 copyWithZone:a3];
+  v4 = [(MPAnimationKeyframe *)&v6 copyWithZone:zone];
   [v4 setPoint:{self->_point.x, self->_point.y}];
   return v4;
 }
@@ -80,21 +80,21 @@
   return result;
 }
 
-- (void)setPoint:(CGPoint)a3
+- (void)setPoint:(CGPoint)point
 {
-  self->_point = a3;
+  self->_point = point;
   if (self->super._keyframe)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     [(MPAnimationPath *)self->super._parentPath animatedParent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent = [(MPAnimationPath *)self->super._parentPath animatedParent];
       v12.x = x;
       v12.y = y;
-      v7 = [v6 convertMPAttributeToMCAttribute:NSStringFromCGPoint(v12) withKey:{-[MPAnimationPath animatedKey](self->super._parentPath, "animatedKey")}];
+      v7 = [animatedParent convertMPAttributeToMCAttribute:NSStringFromCGPoint(v12) withKey:{-[MPAnimationPath animatedKey](self->super._parentPath, "animatedKey")}];
       v8 = CGPointFromString(v7);
       x = v8.x;
       y = v8.y;
@@ -110,9 +110,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [(MPAnimationPath *)self->super._parentPath animatedParent];
+      animatedParent2 = [(MPAnimationPath *)self->super._parentPath animatedParent];
 
-      [v10 duplicateAnimationPaths];
+      [animatedParent2 duplicateAnimationPaths];
     }
   }
 }

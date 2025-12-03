@@ -1,42 +1,42 @@
 @interface _SFPBPhotosLibraryImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPhotosLibraryImage)initWithDictionary:(id)a3;
-- (_SFPBPhotosLibraryImage)initWithFacade:(id)a3;
-- (_SFPBPhotosLibraryImage)initWithJSON:(id)a3;
+- (_SFPBPhotosLibraryImage)initWithDictionary:(id)dictionary;
+- (_SFPBPhotosLibraryImage)initWithFacade:(id)facade;
+- (_SFPBPhotosLibraryImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPeopleInPhoto:(id)a3;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setPeopleInPhoto:(id)a3;
-- (void)setPhotoIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPeopleInPhoto:(id)photo;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setPeopleInPhoto:(id)photo;
+- (void)setPhotoIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPhotosLibraryImage
 
-- (_SFPBPhotosLibraryImage)initWithFacade:(id)a3
+- (_SFPBPhotosLibraryImage)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPhotosLibraryImage *)self init];
   if (v5)
   {
-    v6 = [v4 photoIdentifier];
+    photoIdentifier = [facadeCopy photoIdentifier];
 
-    if (v6)
+    if (photoIdentifier)
     {
-      v7 = [v4 photoIdentifier];
-      [(_SFPBPhotosLibraryImage *)v5 setPhotoIdentifier:v7];
+      photoIdentifier2 = [facadeCopy photoIdentifier];
+      [(_SFPBPhotosLibraryImage *)v5 setPhotoIdentifier:photoIdentifier2];
     }
 
-    if ([v4 hasIsSyndicated])
+    if ([facadeCopy hasIsSyndicated])
     {
-      -[_SFPBPhotosLibraryImage setIsSyndicated:](v5, "setIsSyndicated:", [v4 isSyndicated]);
+      -[_SFPBPhotosLibraryImage setIsSyndicated:](v5, "setIsSyndicated:", [facadeCopy isSyndicated]);
     }
 
-    v8 = [v4 peopleInPhoto];
-    if (v8)
+    peopleInPhoto = [facadeCopy peopleInPhoto];
+    if (peopleInPhoto)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -50,8 +50,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = [v4 peopleInPhoto];
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    peopleInPhoto2 = [facadeCopy peopleInPhoto];
+    v11 = [peopleInPhoto2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -62,7 +62,7 @@
         {
           if (*v22 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(peopleInPhoto2);
           }
 
           v15 = [[_SFPBPerson alloc] initWithFacade:*(*(&v21 + 1) + 8 * i)];
@@ -72,19 +72,19 @@
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v12 = [peopleInPhoto2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v12);
     }
 
     [(_SFPBPhotosLibraryImage *)v5 setPeopleInPhotos:v9];
-    v16 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v16)
+    if (applicationBundleIdentifier)
     {
-      v17 = [v4 applicationBundleIdentifier];
-      [(_SFPBPhotosLibraryImage *)v5 setApplicationBundleIdentifier:v17];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBPhotosLibraryImage *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v18 = v5;
@@ -94,16 +94,16 @@
   return v5;
 }
 
-- (_SFPBPhotosLibraryImage)initWithDictionary:(id)a3
+- (_SFPBPhotosLibraryImage)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = _SFPBPhotosLibraryImage;
   v5 = [(_SFPBPhotosLibraryImage *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"photoIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"photoIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,14 +111,14 @@
       [(_SFPBPhotosLibraryImage *)v5 setPhotoIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSyndicated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSyndicated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPhotosLibraryImage setIsSyndicated:](v5, "setIsSyndicated:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"peopleInPhoto"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"peopleInPhoto"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -161,7 +161,7 @@
       v8 = v22;
     }
 
-    v17 = [v4 objectForKeyedSubscript:{@"applicationBundleIdentifier", v22, v23, v24}];
+    v17 = [dictionaryCopy objectForKeyedSubscript:{@"applicationBundleIdentifier", v22, v23, v24}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,30 +176,30 @@
   return v5;
 }
 
-- (_SFPBPhotosLibraryImage)initWithJSON:(id)a3
+- (_SFPBPhotosLibraryImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPhotosLibraryImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPhotosLibraryImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPhotosLibraryImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -213,23 +213,23 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_isSyndicated)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBPhotosLibraryImage isSyndicated](self, "isSyndicated")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isSyndicated"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isSyndicated"];
   }
 
   if ([(NSArray *)self->_peopleInPhotos count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -249,16 +249,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -268,19 +268,19 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"peopleInPhoto"];
+    [dictionary setObject:array forKeyedSubscript:@"peopleInPhoto"];
   }
 
   if (self->_photoIdentifier)
   {
-    v15 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"photoIdentifier"];
+    photoIdentifier = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
+    v16 = [photoIdentifier copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"photoIdentifier"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,28 +300,28 @@
   return v5 ^ [(NSString *)self->_applicationBundleIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
-  v6 = [v4 photoIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  photoIdentifier = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
+  photoIdentifier2 = [equalCopy photoIdentifier];
+  if ((photoIdentifier != 0) == (photoIdentifier2 == 0))
   {
     goto LABEL_17;
   }
 
-  v7 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
-  if (v7)
+  photoIdentifier3 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
+  if (photoIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
-    v10 = [v4 photoIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = photoIdentifier3;
+    photoIdentifier4 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
+    photoIdentifier5 = [equalCopy photoIdentifier];
+    v11 = [photoIdentifier4 isEqual:photoIdentifier5];
 
     if (!v11)
     {
@@ -334,25 +334,25 @@
   }
 
   isSyndicated = self->_isSyndicated;
-  if (isSyndicated != [v4 isSyndicated])
+  if (isSyndicated != [equalCopy isSyndicated])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
-  v6 = [v4 peopleInPhotos];
-  if ((v5 != 0) == (v6 == 0))
+  photoIdentifier = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
+  photoIdentifier2 = [equalCopy peopleInPhotos];
+  if ((photoIdentifier != 0) == (photoIdentifier2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
-  if (v13)
+  peopleInPhotos = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
+  if (peopleInPhotos)
   {
-    v14 = v13;
-    v15 = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
-    v16 = [v4 peopleInPhotos];
-    v17 = [v15 isEqual:v16];
+    v14 = peopleInPhotos;
+    peopleInPhotos2 = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
+    peopleInPhotos3 = [equalCopy peopleInPhotos];
+    v17 = [peopleInPhotos2 isEqual:peopleInPhotos3];
 
     if (!v17)
     {
@@ -364,17 +364,17 @@
   {
   }
 
-  v5 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  photoIdentifier = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
+  photoIdentifier2 = [equalCopy applicationBundleIdentifier];
+  if ((photoIdentifier != 0) == (photoIdentifier2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v18 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
-  if (!v18)
+  applicationBundleIdentifier = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
+  if (!applicationBundleIdentifier)
   {
 
 LABEL_21:
@@ -382,10 +382,10 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v19 = v18;
-  v20 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
-  v21 = [v4 applicationBundleIdentifier];
-  v22 = [v20 isEqual:v21];
+  v19 = applicationBundleIdentifier;
+  applicationBundleIdentifier2 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
+  applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+  v22 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
   if (v22)
   {
@@ -399,12 +399,12 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
-  if (v5)
+  toCopy = to;
+  photoIdentifier = [(_SFPBPhotosLibraryImage *)self photoIdentifier];
+  if (photoIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -414,12 +414,12 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
+  peopleInPhotos = [(_SFPBPhotosLibraryImage *)self peopleInPhotos];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [peopleInPhotos countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -431,7 +431,7 @@ LABEL_19:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(peopleInPhotos);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -440,14 +440,14 @@ LABEL_19:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [peopleInPhotos countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
-  if (v12)
+  applicationBundleIdentifier = [(_SFPBPhotosLibraryImage *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -455,45 +455,45 @@ LABEL_19:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPeopleInPhoto:(id)a3
+- (void)addPeopleInPhoto:(id)photo
 {
-  v4 = a3;
+  photoCopy = photo;
   peopleInPhotos = self->_peopleInPhotos;
-  v8 = v4;
+  v8 = photoCopy;
   if (!peopleInPhotos)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_peopleInPhotos;
-    self->_peopleInPhotos = v6;
+    self->_peopleInPhotos = array;
 
-    v4 = v8;
+    photoCopy = v8;
     peopleInPhotos = self->_peopleInPhotos;
   }
 
-  [(NSArray *)peopleInPhotos addObject:v4];
+  [(NSArray *)peopleInPhotos addObject:photoCopy];
 }
 
-- (void)setPeopleInPhoto:(id)a3
+- (void)setPeopleInPhoto:(id)photo
 {
-  v4 = [a3 copy];
+  v4 = [photo copy];
   peopleInPhotos = self->_peopleInPhotos;
   self->_peopleInPhotos = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPhotoIdentifier:(id)a3
+- (void)setPhotoIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   photoIdentifier = self->_photoIdentifier;
   self->_photoIdentifier = v4;
 

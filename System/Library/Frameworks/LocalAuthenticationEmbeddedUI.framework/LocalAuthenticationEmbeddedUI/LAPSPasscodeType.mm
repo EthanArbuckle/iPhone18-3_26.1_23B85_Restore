@@ -4,12 +4,12 @@
 + (id)numericCustomDigitsType;
 + (id)numericFourDigitsType;
 + (id)numericSixDigitsType;
-+ (id)typeAllowingString:(id)a3;
-- (BOOL)allowsLength:(int64_t)a3;
-- (BOOL)allowsString:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LAPSPasscodeType)initWithIdentifier:(int64_t)a3 length:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)typeAllowingString:(id)string;
+- (BOOL)allowsLength:(int64_t)length;
+- (BOOL)allowsString:(id)string;
+- (BOOL)isEqual:(id)equal;
+- (LAPSPasscodeType)initWithIdentifier:(int64_t)identifier length:(unint64_t)length;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localizedName;
 - (int64_t)complexityRating;
@@ -17,25 +17,25 @@
 
 @implementation LAPSPasscodeType
 
-- (LAPSPasscodeType)initWithIdentifier:(int64_t)a3 length:(unint64_t)a4
+- (LAPSPasscodeType)initWithIdentifier:(int64_t)identifier length:(unint64_t)length
 {
   v7.receiver = self;
   v7.super_class = LAPSPasscodeType;
   result = [(LAPSPasscodeType *)&v7 init];
   if (result)
   {
-    result->_identifier = a3;
-    result->_length = a4;
+    result->_identifier = identifier;
+    result->_length = length;
   }
 
   return result;
 }
 
-+ (id)typeAllowingString:(id)a3
++ (id)typeAllowingString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[LAPSPasscodeType numericFourDigitsType];
-  v5 = [v4 allowsString:v3];
+  v5 = [v4 allowsString:stringCopy];
 
   if (v5)
   {
@@ -45,7 +45,7 @@
   else
   {
     v7 = +[LAPSPasscodeType numericSixDigitsType];
-    v8 = [v7 allowsString:v3];
+    v8 = [v7 allowsString:stringCopy];
 
     if (v8)
     {
@@ -55,7 +55,7 @@
     else
     {
       v9 = +[LAPSPasscodeType numericCustomDigitsType];
-      v10 = [v9 allowsString:v3];
+      v10 = [v9 allowsString:stringCopy];
 
       if (v10)
       {
@@ -65,7 +65,7 @@
       else
       {
         v11 = +[LAPSPasscodeType alphanumericType];
-        v12 = [v11 allowsString:v3];
+        v12 = [v11 allowsString:stringCopy];
 
         if (v12)
         {
@@ -75,7 +75,7 @@
         else
         {
           v13 = +[LAPSPasscodeType noneType];
-          if (([v13 allowsString:v3] & 1) == 0)
+          if (([v13 allowsString:stringCopy] & 1) == 0)
           {
             +[LAPSPasscodeType typeAllowingString:];
           }
@@ -139,23 +139,23 @@
   }
 }
 
-- (BOOL)allowsLength:(int64_t)a3
+- (BOOL)allowsLength:(int64_t)length
 {
   if ([(LAPSPasscodeType *)self hasFixedLength])
   {
-    return [(LAPSPasscodeType *)self length]== a3;
+    return [(LAPSPasscodeType *)self length]== length;
   }
 
   else
   {
-    return a3 > 0;
+    return length > 0;
   }
 }
 
-- (BOOL)allowsString:(id)a3
+- (BOOL)allowsString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -163,7 +163,7 @@
     v9[3] = &unk_278A65FB0;
     v9[4] = self;
     v5 = __33__LAPSPasscodeType_allowsString___block_invoke(v9);
-    v7 = [v5 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}] != 0x7FFFFFFFFFFFFFFFLL && v6 == objc_msgSend(v4, "length");
+    v7 = [v5 rangeOfFirstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}] != 0x7FFFFFFFFFFFFFFFLL && v6 == objc_msgSend(stringCopy, "length");
   }
 
   else
@@ -254,24 +254,24 @@ __CFString *__33__LAPSPasscodeType_allowsString___block_invoke_2(uint64_t a1)
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [LAPSPasscodeType alloc];
-  v5 = [(LAPSPasscodeType *)self identifier];
+  identifier = [(LAPSPasscodeType *)self identifier];
   v6 = [(LAPSPasscodeType *)self length];
 
-  return [(LAPSPasscodeType *)v4 initWithIdentifier:v5 length:v6];
+  return [(LAPSPasscodeType *)v4 initWithIdentifier:identifier length:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
-    if (v6 == [(LAPSPasscodeType *)self identifier])
+    v5 = equalCopy;
+    identifier = [v5 identifier];
+    if (identifier == [(LAPSPasscodeType *)self identifier])
     {
       v7 = [v5 length];
       v8 = v7 == [(LAPSPasscodeType *)self length];
@@ -293,15 +293,15 @@ __CFString *__33__LAPSPasscodeType_allowsString___block_invoke_2(uint64_t a1)
 
 - (id)description
 {
-  v2 = [(LAPSPasscodeType *)self identifier];
-  if (v2 > 4)
+  identifier = [(LAPSPasscodeType *)self identifier];
+  if (identifier > 4)
   {
     return @"LAPSPasscodeTypeIdentifierUnknown";
   }
 
   else
   {
-    return off_278A65FF8[v2];
+    return off_278A65FF8[identifier];
   }
 }
 

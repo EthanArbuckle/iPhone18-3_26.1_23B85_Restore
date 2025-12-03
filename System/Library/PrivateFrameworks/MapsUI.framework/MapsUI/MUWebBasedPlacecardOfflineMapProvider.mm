@@ -3,8 +3,8 @@
 - (NSProgress)downloadProgress;
 - (_TtC6MapsUI37MUWebBasedPlacecardOfflineMapProvider)init;
 - (int64_t)downloadState;
-- (void)offlineMapProviderUpdated:(id)a3;
-- (void)setNativeOfflineMapProvider:(id)a3;
+- (void)offlineMapProviderUpdated:(id)updated;
+- (void)setNativeOfflineMapProvider:(id)provider;
 @end
 
 @implementation MUWebBasedPlacecardOfflineMapProvider
@@ -19,11 +19,11 @@
   return v5;
 }
 
-- (void)setNativeOfflineMapProvider:(id)a3
+- (void)setNativeOfflineMapProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C570D570(a3);
+  selfCopy = self;
+  sub_1C570D570(provider);
 
   swift_unknownObjectRelease();
 }
@@ -45,13 +45,13 @@
 {
   v3 = OBJC_IVAR____TtC6MapsUI37MUWebBasedPlacecardOfflineMapProvider_nativeOfflineMapProvider;
   swift_beginAccess();
-  v4 = *(&self->super.isa + v3);
-  if (v4)
+  downloadProgress = *(&self->super.isa + v3);
+  if (downloadProgress)
   {
-    v4 = [v4 downloadProgress];
+    downloadProgress = [downloadProgress downloadProgress];
   }
 
-  return v4;
+  return downloadProgress;
 }
 
 - (_TtC6MapsUI37MUWebBasedPlacecardOfflineMapProvider)init
@@ -61,12 +61,12 @@
   return result;
 }
 
-- (void)offlineMapProviderUpdated:(id)a3
+- (void)offlineMapProviderUpdated:(id)updated
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v4 = self;
-  sub_1C570D42C(v4);
+  selfCopy = self;
+  sub_1C570D42C(selfCopy);
   swift_unknownObjectRelease();
 }
 

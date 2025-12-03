@@ -1,45 +1,45 @@
 @interface RoutePlanningTiming
 + (id)leaveNowTiming;
-+ (id)timingWithArrivalDate:(id)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5;
-+ (id)timingWithDepartureDate:(id)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5;
-+ (id)timingWithTimePoint:(GEOTimepoint *)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoutePlanningTiming:(id)a3;
++ (id)timingWithArrivalDate:(id)date departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone;
++ (id)timingWithDepartureDate:(id)date departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone;
++ (id)timingWithTimePoint:(GEOTimepoint *)point departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoutePlanningTiming:(id)timing;
 - (GEOTimepoint)timepoint;
 - (NSTimeZone)arrivalTimeZone;
 - (NSTimeZone)bestTimeZone;
 - (NSTimeZone)departureTimeZone;
-- (RoutePlanningTiming)initWithDepartureDate:(id)a3 arrivalDate:(id)a4 departureTimeZone:(id)a5 arrivalTimeZone:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RoutePlanningTiming)initWithDepartureDate:(id)date arrivalDate:(id)arrivalDate departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation RoutePlanningTiming
 
-- (RoutePlanningTiming)initWithDepartureDate:(id)a3 arrivalDate:(id)a4 departureTimeZone:(id)a5 arrivalTimeZone:(id)a6
+- (RoutePlanningTiming)initWithDepartureDate:(id)date arrivalDate:(id)arrivalDate departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dateCopy = date;
+  arrivalDateCopy = arrivalDate;
+  zoneCopy = zone;
+  timeZoneCopy = timeZone;
   v25.receiver = self;
   v25.super_class = RoutePlanningTiming;
   v14 = [(RoutePlanningTiming *)&v25 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dateCopy copy];
     departureDate = v14->_departureDate;
     v14->_departureDate = v15;
 
-    v17 = [v11 copy];
+    v17 = [arrivalDateCopy copy];
     arrivalDate = v14->_arrivalDate;
     v14->_arrivalDate = v17;
 
-    v19 = [v12 copy];
+    v19 = [zoneCopy copy];
     departureTimeZone = v14->_departureTimeZone;
     v14->_departureTimeZone = v19;
 
-    v21 = [v13 copy];
+    v21 = [timeZoneCopy copy];
     arrivalTimeZone = v14->_arrivalTimeZone;
     v14->_arrivalTimeZone = v21;
 
@@ -49,58 +49,58 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RoutePlanningTiming *)self departureDate];
-  v6 = [(RoutePlanningTiming *)self arrivalDate];
-  v7 = [(RoutePlanningTiming *)self departureTimeZone];
-  v8 = [(RoutePlanningTiming *)self arrivalTimeZone];
-  v9 = [v4 initWithDepartureDate:v5 arrivalDate:v6 departureTimeZone:v7 arrivalTimeZone:v8];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  departureDate = [(RoutePlanningTiming *)self departureDate];
+  arrivalDate = [(RoutePlanningTiming *)self arrivalDate];
+  departureTimeZone = [(RoutePlanningTiming *)self departureTimeZone];
+  arrivalTimeZone = [(RoutePlanningTiming *)self arrivalTimeZone];
+  v9 = [v4 initWithDepartureDate:departureDate arrivalDate:arrivalDate departureTimeZone:departureTimeZone arrivalTimeZone:arrivalTimeZone];
 
   return v9;
 }
 
 + (id)leaveNowTiming
 {
-  v2 = [[a1 alloc] initWithDepartureDate:0 arrivalDate:0 departureTimeZone:0 arrivalTimeZone:0];
+  v2 = [[self alloc] initWithDepartureDate:0 arrivalDate:0 departureTimeZone:0 arrivalTimeZone:0];
 
   return v2;
 }
 
-+ (id)timingWithDepartureDate:(id)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5
++ (id)timingWithDepartureDate:(id)date departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithDepartureDate:v10 arrivalDate:0 departureTimeZone:v9 arrivalTimeZone:v8];
+  timeZoneCopy = timeZone;
+  zoneCopy = zone;
+  dateCopy = date;
+  v11 = [[self alloc] initWithDepartureDate:dateCopy arrivalDate:0 departureTimeZone:zoneCopy arrivalTimeZone:timeZoneCopy];
 
   return v11;
 }
 
-+ (id)timingWithArrivalDate:(id)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5
++ (id)timingWithArrivalDate:(id)date departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithDepartureDate:0 arrivalDate:v10 departureTimeZone:v9 arrivalTimeZone:v8];
+  timeZoneCopy = timeZone;
+  zoneCopy = zone;
+  dateCopy = date;
+  v11 = [[self alloc] initWithDepartureDate:0 arrivalDate:dateCopy departureTimeZone:zoneCopy arrivalTimeZone:timeZoneCopy];
 
   return v11;
 }
 
-+ (id)timingWithTimePoint:(GEOTimepoint *)a3 departureTimeZone:(id)a4 arrivalTimeZone:(id)a5
++ (id)timingWithTimePoint:(GEOTimepoint *)point departureTimeZone:(id)zone arrivalTimeZone:(id)timeZone
 {
-  v8 = a4;
-  v9 = a5;
-  if ((~*&a3->var3 & 6) != 0)
+  zoneCopy = zone;
+  timeZoneCopy = timeZone;
+  if ((~*&point->var3 & 6) != 0)
   {
     v14 = 0;
     v13 = 0;
     goto LABEL_16;
   }
 
-  var2 = a3->var2;
-  v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3->var1];
+  var2 = point->var2;
+  v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:point->var1];
   v12 = v11;
   if (var2 == 1)
   {
@@ -145,7 +145,7 @@ LABEL_14:
 LABEL_15:
 
 LABEL_16:
-  v18 = [[a1 alloc] initWithDepartureDate:v13 arrivalDate:v14 departureTimeZone:v8 arrivalTimeZone:v9];
+  v18 = [[self alloc] initWithDepartureDate:v13 arrivalDate:v14 departureTimeZone:zoneCopy arrivalTimeZone:timeZoneCopy];
 
   return v18;
 }
@@ -166,45 +166,45 @@ LABEL_16:
   return v2;
 }
 
-- (BOOL)isEqualToRoutePlanningTiming:(id)a3
+- (BOOL)isEqualToRoutePlanningTiming:(id)timing
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  timingCopy = timing;
+  v7 = timingCopy;
+  if (timingCopy)
   {
-    if (self != v6)
+    if (self != timingCopy)
     {
-      v8 = [(RoutePlanningTiming *)self departureDate];
-      if (v8 || ([(RoutePlanningTiming *)v7 departureDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      departureDate = [(RoutePlanningTiming *)self departureDate];
+      if (departureDate || ([(RoutePlanningTiming *)v7 departureDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v4 = [(RoutePlanningTiming *)self departureDate];
-        v9 = [(RoutePlanningTiming *)v7 departureDate];
-        v10 = [v4 isEqualToDate:v9];
+        departureDate2 = [(RoutePlanningTiming *)self departureDate];
+        departureDate3 = [(RoutePlanningTiming *)v7 departureDate];
+        v10 = [departureDate2 isEqualToDate:departureDate3];
 
-        if (v8)
+        if (departureDate)
         {
 LABEL_11:
 
-          v12 = [(RoutePlanningTiming *)self arrivalDate];
-          if (v12 || ([(RoutePlanningTiming *)v7 arrivalDate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+          arrivalDate = [(RoutePlanningTiming *)self arrivalDate];
+          if (arrivalDate || ([(RoutePlanningTiming *)v7 arrivalDate], (departureDate2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v13 = [(RoutePlanningTiming *)self arrivalDate];
-            v14 = [(RoutePlanningTiming *)v7 arrivalDate];
-            v15 = [v13 isEqualToDate:v14];
+            arrivalDate2 = [(RoutePlanningTiming *)self arrivalDate];
+            arrivalDate3 = [(RoutePlanningTiming *)v7 arrivalDate];
+            v15 = [arrivalDate2 isEqualToDate:arrivalDate3];
 
-            if (v12)
+            if (arrivalDate)
             {
 LABEL_17:
 
-              v16 = [(RoutePlanningTiming *)self departureTimeZone];
-              v17 = [(RoutePlanningTiming *)v7 departureTimeZone];
-              v18 = [v16 _navigation_hasSameOffsetFromGMTAsTimeZone:v17];
+              departureTimeZone = [(RoutePlanningTiming *)self departureTimeZone];
+              departureTimeZone2 = [(RoutePlanningTiming *)v7 departureTimeZone];
+              v18 = [departureTimeZone _navigation_hasSameOffsetFromGMTAsTimeZone:departureTimeZone2];
 
-              v19 = [(RoutePlanningTiming *)self arrivalTimeZone];
-              v20 = [(RoutePlanningTiming *)v7 arrivalTimeZone];
-              LOBYTE(v17) = [v19 _navigation_hasSameOffsetFromGMTAsTimeZone:v20];
+              arrivalTimeZone = [(RoutePlanningTiming *)self arrivalTimeZone];
+              arrivalTimeZone2 = [(RoutePlanningTiming *)v7 arrivalTimeZone];
+              LOBYTE(departureTimeZone2) = [arrivalTimeZone _navigation_hasSameOffsetFromGMTAsTimeZone:arrivalTimeZone2];
 
-              v11 = v10 & v15 & v18 & v17;
+              v11 = v10 & v15 & v18 & departureTimeZone2;
               goto LABEL_18;
             }
           }
@@ -239,13 +239,13 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(RoutePlanningTiming *)self isEqualToRoutePlanningTiming:v4];
+    v5 = [(RoutePlanningTiming *)self isEqualToRoutePlanningTiming:equalCopy];
   }
 
   else
@@ -258,14 +258,14 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(RoutePlanningTiming *)self departureDate];
-  v4 = [v3 hash];
-  v5 = [(RoutePlanningTiming *)self arrivalDate];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RoutePlanningTiming *)self departureTimeZone];
-  v8 = [v7 hash];
-  v9 = [(RoutePlanningTiming *)self arrivalTimeZone];
-  v10 = v8 ^ [v9 hash];
+  departureDate = [(RoutePlanningTiming *)self departureDate];
+  v4 = [departureDate hash];
+  arrivalDate = [(RoutePlanningTiming *)self arrivalDate];
+  v6 = [arrivalDate hash] ^ v4;
+  departureTimeZone = [(RoutePlanningTiming *)self departureTimeZone];
+  v8 = [departureTimeZone hash];
+  arrivalTimeZone = [(RoutePlanningTiming *)self arrivalTimeZone];
+  v10 = v8 ^ [arrivalTimeZone hash];
 
   return v6 ^ v10;
 }

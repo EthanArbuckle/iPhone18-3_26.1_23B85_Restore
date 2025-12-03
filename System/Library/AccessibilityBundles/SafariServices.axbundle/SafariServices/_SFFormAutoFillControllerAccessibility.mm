@@ -1,22 +1,22 @@
 @interface _SFFormAutoFillControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)fieldWillFocusWithInputSession:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)fieldWillFocusWithInputSession:(id)session;
 @end
 
 @implementation _SFFormAutoFillControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFFormAutoFillController" hasInstanceMethod:@"fieldWillFocusWithInputSession:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFFormAutoFillController" hasInstanceVariable:@"_autoFillInputView" withType:"_SFAutoFillInputView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFFormAutoFillController" hasInstanceMethod:@"fieldWillFocusWithInputSession:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFFormAutoFillController" hasInstanceVariable:@"_autoFillInputView" withType:"_SFAutoFillInputView"];
 }
 
-- (void)fieldWillFocusWithInputSession:(id)a3
+- (void)fieldWillFocusWithInputSession:(id)session
 {
   v3.receiver = self;
   v3.super_class = _SFFormAutoFillControllerAccessibility;
-  [(_SFFormAutoFillControllerAccessibility *)&v3 fieldWillFocusWithInputSession:a3];
+  [(_SFFormAutoFillControllerAccessibility *)&v3 fieldWillFocusWithInputSession:session];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

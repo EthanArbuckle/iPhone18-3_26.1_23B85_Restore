@@ -2,40 +2,40 @@
 + (id)commandToHandlerBlock;
 + (id)localCommandToHandlerBlock;
 + (id)sharedInstance;
-- (BOOL)_messageRequestsServiceForSendingBypass:(id)a3;
+- (BOOL)_messageRequestsServiceForSendingBypass:(id)bypass;
 - (IMDRelayPushHandler)init;
-- (IMDRelayPushHandler)initWithIDSAccount:(id)a3;
-- (id)_cachedListenersForGUID:(id)a3;
-- (id)_guidsForMessage:(id)a3 messageGUID:(id)a4 routingBehaviors:(unint64_t)a5;
-- (id)_handlerForServiceName:(id)a3;
-- (id)_handlersForExplicitServiceWithMessage:(id)a3;
-- (id)_messageDictionaryForLocalMessage:(id)a3 type:(id)a4;
-- (id)_messageReplayObjectWithService:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6;
-- (id)_messageReplayObjectWithService:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6;
-- (id)_serviceNameForMessage:(id)a3;
-- (id)_serviceNameOrCompatibilityServiceNameFromDictionary:(id)a3;
-- (unint64_t)_listenerMatchTypeForCommand:(int64_t)a3 message:(id)a4;
-- (unint64_t)_listenerMatchTypeForLocalMessageType:(id)a3 message:(id)a4;
-- (unint64_t)_routingBehaviorsForCommand:(int64_t)a3;
-- (unint64_t)_routingBehaviorsForLocalMessageType:(id)a3;
+- (IMDRelayPushHandler)initWithIDSAccount:(id)account;
+- (id)_cachedListenersForGUID:(id)d;
+- (id)_guidsForMessage:(id)message messageGUID:(id)d routingBehaviors:(unint64_t)behaviors;
+- (id)_handlerForServiceName:(id)name;
+- (id)_handlersForExplicitServiceWithMessage:(id)message;
+- (id)_messageDictionaryForLocalMessage:(id)message type:(id)type;
+- (id)_messageReplayObjectWithService:(id)service account:(id)account incomingData:(id)data fromID:(id)d;
+- (id)_messageReplayObjectWithService:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d;
+- (id)_serviceNameForMessage:(id)message;
+- (id)_serviceNameOrCompatibilityServiceNameFromDictionary:(id)dictionary;
+- (unint64_t)_listenerMatchTypeForCommand:(int64_t)command message:(id)message;
+- (unint64_t)_listenerMatchTypeForLocalMessageType:(id)type message:(id)message;
+- (unint64_t)_routingBehaviorsForCommand:(int64_t)command;
+- (unint64_t)_routingBehaviorsForLocalMessageType:(id)type;
 - (void)_acceptIncomingPushes;
-- (void)_cacheListeners:(id)a3 forGUID:(id)a4;
-- (void)_calculateHandlersForLocalMessage:(id)a3 userInfo:(id)a4 completionBlock:(id)a5;
-- (void)_calculateHandlersForMatchType:(unint64_t)a3 routingBehaviors:(unint64_t)a4 message:(id)a5 messageGUID:(id)a6 fromIdentifier:(id)a7 completionBlock:(id)a8;
-- (void)_calculateHandlersForMessage:(id)a3 messageGUID:(id)a4 fromIdentifier:(id)a5 command:(id)a6 completionBlock:(id)a7;
-- (void)_handleMessageProcessedWithGUID:(id)a3;
+- (void)_cacheListeners:(id)listeners forGUID:(id)d;
+- (void)_calculateHandlersForLocalMessage:(id)message userInfo:(id)info completionBlock:(id)block;
+- (void)_calculateHandlersForMatchType:(unint64_t)type routingBehaviors:(unint64_t)behaviors message:(id)message messageGUID:(id)d fromIdentifier:(id)identifier completionBlock:(id)block;
+- (void)_calculateHandlersForMessage:(id)message messageGUID:(id)d fromIdentifier:(id)identifier command:(id)command completionBlock:(id)block;
+- (void)_handleMessageProcessedWithGUID:(id)d;
 - (void)_ignoreIncomingPushes;
-- (void)_service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7 isBeingReplayed:(BOOL)a8;
-- (void)_service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7 isBeingReplayed:(BOOL)a8;
+- (void)_service:(id)_service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context isBeingReplayed:(BOOL)replayed;
+- (void)_service:(id)_service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context isBeingReplayed:(BOOL)replayed;
 - (void)_updateListenerIfNeeded;
-- (void)addListener:(id)a3;
+- (void)addListener:(id)listener;
 - (void)dealloc;
-- (void)removeListener:(id)a3;
-- (void)replayMessage:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)setRegistered:(BOOL)a3;
+- (void)removeListener:(id)listener;
+- (void)replayMessage:(id)message;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context;
+- (void)setRegistered:(BOOL)registered;
 @end
 
 @implementation IMDRelayPushHandler
@@ -52,44 +52,44 @@
   return v3;
 }
 
-- (void)_handleMessageProcessedWithGUID:(id)a3
+- (void)_handleMessageProcessedWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(IMDRelayPushHandler *)self guidToListenersCache];
-  [v5 removeObjectForKey:v4];
+  dCopy = d;
+  guidToListenersCache = [(IMDRelayPushHandler *)self guidToListenersCache];
+  [guidToListenersCache removeObjectForKey:dCopy];
 }
 
-- (void)_cacheListeners:(id)a3 forGUID:(id)a4
+- (void)_cacheListeners:(id)listeners forGUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDRelayPushHandler *)self guidToListenersCache];
+  listenersCopy = listeners;
+  dCopy = d;
+  guidToListenersCache = [(IMDRelayPushHandler *)self guidToListenersCache];
 
-  if (!v8)
+  if (!guidToListenersCache)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEA78]);
     [(IMDRelayPushHandler *)self setGuidToListenersCache:v9];
 
-    v10 = [(IMDRelayPushHandler *)self guidToListenersCache];
-    [v10 setCountLimit:50000];
+    guidToListenersCache2 = [(IMDRelayPushHandler *)self guidToListenersCache];
+    [guidToListenersCache2 setCountLimit:50000];
   }
 
   v11 = IMLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_22B7D8DF0(v6, v7, v11);
+    sub_22B7D8DF0(listenersCopy, dCopy, v11);
   }
 
-  v12 = [(IMDRelayPushHandler *)self guidToListenersCache];
-  [v12 setObject:v6 forKey:v7];
+  guidToListenersCache3 = [(IMDRelayPushHandler *)self guidToListenersCache];
+  [guidToListenersCache3 setObject:listenersCopy forKey:dCopy];
 }
 
-- (id)_cachedListenersForGUID:(id)a3
+- (id)_cachedListenersForGUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDRelayPushHandler *)self guidToListenersCache];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  guidToListenersCache = [(IMDRelayPushHandler *)self guidToListenersCache];
+  v6 = [guidToListenersCache objectForKey:dCopy];
 
   v7 = [v6 count];
   v8 = IMLogHandleForCategory();
@@ -101,14 +101,14 @@
       v12 = 138412546;
       v13 = v6;
       v14 = 2112;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Reusing cached listeners %@ for GUID %@", &v12, 0x16u);
     }
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_22B7D8E80(v4, v9);
+    sub_22B7D8E80(dCopy, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -140,16 +140,16 @@
   return v3;
 }
 
-- (IMDRelayPushHandler)initWithIDSAccount:(id)a3
+- (IMDRelayPushHandler)initWithIDSAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = IMDRelayPushHandler;
   v5 = [(IMDRelayPushHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IMDRelayPushHandler *)v5 setAccount:v4];
+    [(IMDRelayPushHandler *)v5 setAccount:accountCopy];
   }
 
   return v6;
@@ -185,7 +185,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22B4CC000, v3, OS_LOG_TYPE_INFO, "Deallocing Push Handler %p", buf, 0xCu);
     }
   }
@@ -226,9 +226,9 @@
       v7 = objc_alloc(MEMORY[0x277D18778]);
       v8 = *MEMORY[0x277D186A8];
       v9 = MEMORY[0x277CBEB98];
-      v10 = [objc_opt_class() commandToHandlerBlock];
-      v11 = [v10 allKeys];
-      v12 = [v9 setWithArray:v11];
+      commandToHandlerBlock = [objc_opt_class() commandToHandlerBlock];
+      allKeys = [commandToHandlerBlock allKeys];
+      v12 = [v9 setWithArray:allKeys];
       v13 = [v7 initWithService:v8 commands:v12];
       v14 = self->_relayService;
       self->_relayService = v13;
@@ -237,9 +237,9 @@
       [(IDSService *)self->_relayService addDelegate:self queue:MEMORY[0x277D85CD0]];
       v16 = objc_alloc(MEMORY[0x277D18778]);
       v17 = MEMORY[0x277CBEB98];
-      v18 = [objc_opt_class() commandToHandlerBlock];
-      v19 = [v18 allKeys];
-      v20 = [v17 setWithArray:v19];
+      commandToHandlerBlock2 = [objc_opt_class() commandToHandlerBlock];
+      allKeys2 = [commandToHandlerBlock2 allKeys];
+      v20 = [v17 setWithArray:allKeys2];
       v21 = [v16 initWithService:@"com.apple.private.alloy.sms.watch" commands:v20];
       v22 = self->_smsWatchService;
       self->_smsWatchService = v21;
@@ -313,9 +313,9 @@
   }
 }
 
-- (void)setRegistered:(BOOL)a3
+- (void)setRegistered:(BOOL)registered
 {
-  v3 = a3;
+  registeredCopy = registered;
   v10 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
   {
@@ -323,7 +323,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (registeredCopy)
       {
         v6 = @"YES";
       }
@@ -334,7 +334,7 @@
     }
   }
 
-  if (v3)
+  if (registeredCopy)
   {
     [(IMDRelayPushHandler *)self _acceptIncomingPushes];
   }
@@ -347,28 +347,28 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v7 = a3;
+  listenerCopy = listener;
   if (([(NSMutableArray *)self->_handlers containsObjectIdenticalTo:?]& 1) == 0)
   {
     handlers = self->_handlers;
     if (!handlers)
     {
-      v5 = [MEMORY[0x277CBEB18] nonRetainingArray];
+      nonRetainingArray = [MEMORY[0x277CBEB18] nonRetainingArray];
       v6 = self->_handlers;
-      self->_handlers = v5;
+      self->_handlers = nonRetainingArray;
 
       handlers = self->_handlers;
     }
 
-    [(NSMutableArray *)handlers addObject:v7];
+    [(NSMutableArray *)handlers addObject:listenerCopy];
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  [(NSMutableArray *)self->_handlers removeObjectIdenticalTo:a3];
+  [(NSMutableArray *)self->_handlers removeObjectIdenticalTo:listener];
   if (![(NSMutableArray *)self->_handlers count])
   {
     handlers = self->_handlers;
@@ -376,43 +376,43 @@
   }
 }
 
-- (id)_messageReplayObjectWithService:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6
+- (id)_messageReplayObjectWithService:(id)service account:(id)account incomingData:(id)data fromID:(id)d
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 serviceName];
-  v12 = [v10 loginID];
+  dCopy = d;
+  dataCopy = data;
+  accountCopy = account;
+  serviceName = [accountCopy serviceName];
+  loginID = [accountCopy loginID];
 
-  v13 = [objc_alloc(MEMORY[0x277D18798]) initWithData:v9 accountUniqueID:0 fromID:v8 loginID:v12 serviceName:v11];
+  v13 = [objc_alloc(MEMORY[0x277D18798]) initWithData:dataCopy accountUniqueID:0 fromID:dCopy loginID:loginID serviceName:serviceName];
 
   return v13;
 }
 
-- (id)_messageReplayObjectWithService:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6
+- (id)_messageReplayObjectWithService:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 serviceName];
-  v12 = [v10 loginID];
+  dCopy = d;
+  messageCopy = message;
+  accountCopy = account;
+  serviceName = [accountCopy serviceName];
+  loginID = [accountCopy loginID];
 
-  v13 = [objc_alloc(MEMORY[0x277D187A0]) initWithDictionary:v9 accountUniqueID:0 fromID:v8 loginID:v12 serviceName:v11];
+  v13 = [objc_alloc(MEMORY[0x277D187A0]) initWithDictionary:messageCopy accountUniqueID:0 fromID:dCopy loginID:loginID serviceName:serviceName];
 
   return v13;
 }
 
-- (void)replayMessage:(id)a3
+- (void)replayMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMEventCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v25 = 138412290;
-      v26 = v4;
+      v26 = messageCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Received dictionary to replay %@", &v25, 0xCu);
     }
   }
@@ -420,13 +420,13 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = messageCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [v7 serviceName];
-      v9 = [v8 isEqualToString:*MEMORY[0x277D186A8]];
+      serviceName = [v7 serviceName];
+      v9 = [serviceName isEqualToString:*MEMORY[0x277D186A8]];
       v10 = 24;
       if (v9)
       {
@@ -436,12 +436,12 @@
       v11 = *(&self->super.isa + v10);
 
       v12 = self->_account;
-      v13 = [v7 dictionaryValue];
-      v14 = [v7 fromID];
-      v15 = v14;
+      dictionaryValue = [v7 dictionaryValue];
+      fromID = [v7 fromID];
+      v15 = fromID;
       if (v11)
       {
-        v16 = v13 == 0;
+        v16 = dictionaryValue == 0;
       }
 
       else
@@ -449,9 +449,9 @@
         v16 = 1;
       }
 
-      if (!v16 && v14 != 0)
+      if (!v16 && fromID != 0)
       {
-        [(IMDRelayPushHandler *)self _service:v11 account:v12 incomingTopLevelMessage:v13 fromID:v14 messageContext:0 isBeingReplayed:1];
+        [(IMDRelayPushHandler *)self _service:v11 account:v12 incomingTopLevelMessage:dictionaryValue fromID:fromID messageContext:0 isBeingReplayed:1];
 LABEL_29:
 
         goto LABEL_30;
@@ -470,7 +470,7 @@ LABEL_29:
         v27 = 2112;
         v28 = v12;
         v29 = 2112;
-        v30 = v13;
+        v30 = dictionaryValue;
         v31 = 2112;
         v32 = v15;
         _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "SMSReplay: Something was null. service %@ account %@ message %@ fromID %@", &v25, 0x2Au);
@@ -485,8 +485,8 @@ LABEL_20:
     if (objc_opt_isKindOfClass())
     {
       v19 = v6;
-      v20 = [v19 serviceName];
-      v21 = [v20 isEqualToString:*MEMORY[0x277D186A8]];
+      serviceName2 = [v19 serviceName];
+      v21 = [serviceName2 isEqualToString:*MEMORY[0x277D186A8]];
       v22 = 24;
       if (v21)
       {
@@ -496,12 +496,12 @@ LABEL_20:
       v11 = *(&self->super.isa + v22);
 
       v12 = self->_account;
-      v13 = [v19 dataValue];
-      v23 = [v19 fromID];
-      v15 = v23;
-      if (v11 && v13 && v23)
+      dictionaryValue = [v19 dataValue];
+      fromID2 = [v19 fromID];
+      v15 = fromID2;
+      if (v11 && dictionaryValue && fromID2)
       {
-        [(IMDRelayPushHandler *)self _service:v11 account:v12 incomingData:v13 fromID:v23 context:0 isBeingReplayed:1];
+        [(IMDRelayPushHandler *)self _service:v11 account:v12 incomingData:dictionaryValue fromID:fromID2 context:0 isBeingReplayed:1];
         goto LABEL_29;
       }
 
@@ -518,7 +518,7 @@ LABEL_20:
         v27 = 2112;
         v28 = v12;
         v29 = 2112;
-        v30 = v13;
+        v30 = dictionaryValue;
         v31 = 2112;
         v32 = v15;
         _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "SMSReplay: Something was null. service %@ account %@ data %@ fromID %@", &v25, 0x2Au);
@@ -538,25 +538,25 @@ LABEL_30:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7 isBeingReplayed:(BOOL)a8
+- (void)_service:(id)_service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context isBeingReplayed:(BOOL)replayed
 {
   v60 = *MEMORY[0x277D85DE8];
-  v53 = a3;
-  v48 = a4;
-  v12 = a5;
-  v56 = a6;
-  v52 = a7;
+  _serviceCopy = _service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v49 = [objc_alloc(MEMORY[0x277D19290]) initWithIdentifier:@"IncomingMessagePowerAssertion" timeout:10.0];
   v13 = *MEMORY[0x277D18810];
-  v14 = [v12 objectForKey:*MEMORY[0x277D18810]];
-  v55 = [v12 objectForKey:*MEMORY[0x277D187F8]];
-  v54 = [v55 _FTOptionallyDecompressData];
+  v14 = [messageCopy objectForKey:*MEMORY[0x277D18810]];
+  v55 = [messageCopy objectForKey:*MEMORY[0x277D187F8]];
+  _FTOptionallyDecompressData = [v55 _FTOptionallyDecompressData];
   v51 = JWDecodeDictionary();
   v15 = *MEMORY[0x277D18848];
   v16 = [v14 objectForKey:*MEMORY[0x277D18848]];
   v17 = objc_opt_class();
-  v18 = sub_22B69C444(v17, v12, @"mc");
-  v19 = [v18 BOOLValue];
+  v18 = sub_22B69C444(v17, messageCopy, @"mc");
+  bOOLValue = [v18 BOOLValue];
 
   v20 = [v14 objectForKey:@"U"];
   objc_opt_class();
@@ -586,7 +586,7 @@ LABEL_7:
 
   if (v25)
   {
-    v26 = v19;
+    v26 = bOOLValue;
   }
 
   else
@@ -600,9 +600,9 @@ LABEL_7:
     [v27 addMessagesID:v25];
   }
 
-  v28 = [v53 deviceForFromID:v56];
-  v29 = [v28 pushToken];
-  if (v16 || ([v14 objectForKey:qword_27D8CC850], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v12, "objectForKey:", v15), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+  v28 = [_serviceCopy deviceForFromID:dCopy];
+  pushToken = [v28 pushToken];
+  if (v16 || ([v14 objectForKey:qword_27D8CC850], (v16 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(messageCopy, "objectForKey:", v15), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     if ([v16 integerValue] == 227)
     {
@@ -622,12 +622,12 @@ LABEL_7:
 
       if (v28)
       {
-        v32 = [v12 objectForKey:v13];
+        v32 = [messageCopy objectForKey:v13];
         v33 = v32;
         if (v32)
         {
           v43 = [v32 objectForKey:IMDRelayLocalMessageDictionaryDictKey];
-          v44 = [v43 _FTOptionallyDecompressData];
+          _FTOptionallyDecompressData2 = [v43 _FTOptionallyDecompressData];
           v45 = JWDecodeDictionary();
           v46 = [v33 objectForKey:IMDRelayLocalMessageDictionaryTypeKey];
           if (IMOSLoggingEnabled())
@@ -641,12 +641,12 @@ LABEL_7:
             }
           }
 
-          v35 = [objc_opt_class() localCommandToHandlerBlock];
-          v36 = [v35 objectForKey:v46];
+          localCommandToHandlerBlock = [objc_opt_class() localCommandToHandlerBlock];
+          v36 = [localCommandToHandlerBlock objectForKey:v46];
 
           if (v36)
           {
-            (v36)[2](v36, self, v16, v45, v14, v52, v56, v29, a8);
+            (v36)[2](v36, self, v16, v45, v14, contextCopy, dCopy, pushToken, replayed);
           }
         }
 
@@ -671,23 +671,23 @@ LABEL_7:
 
     else
     {
-      v37 = [objc_opt_class() commandToHandlerBlock];
-      v38 = [v37 objectForKey:v16];
+      commandToHandlerBlock = [objc_opt_class() commandToHandlerBlock];
+      v38 = [commandToHandlerBlock objectForKey:v16];
 
       if (v38)
       {
-        v39 = [v16 integerValue];
-        v40 = v12;
-        if (v39 != 126)
+        integerValue = [v16 integerValue];
+        v40 = messageCopy;
+        if (integerValue != 126)
         {
-          v40 = v12;
-          if (v39 != 139)
+          v40 = messageCopy;
+          if (integerValue != 139)
           {
             v40 = v51;
           }
         }
 
-        (v38)[2](v38, self, v16, v40, v14, v52, v56, v29, a8);
+        (v38)[2](v38, self, v16, v40, v14, contextCopy, dCopy, pushToken, replayed);
       }
     }
   }
@@ -695,44 +695,44 @@ LABEL_7:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v27 = [v13 _copyMessageDictionaryForLogging];
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  _copyMessageDictionaryForLogging = [messageCopy _copyMessageDictionaryForLogging];
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v31 = v27;
+      v31 = _copyMessageDictionaryForLogging;
       v32 = 2112;
-      v33 = v11;
+      v33 = serviceCopy;
       v34 = 2112;
-      v35 = v12;
+      v35 = accountCopy;
       v36 = 1024;
-      v37 = [v12 accountType];
+      accountType = [accountCopy accountType];
       _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Received message %@ for service %@ on account %@ with type %d ", buf, 0x26u);
     }
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = [MEMORY[0x277D1ACB8] sharedInstance];
-  if ([v18 isUnderFirstDataProtectionLock])
+  mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+  if ([mEMORY[0x277D1ACB8] isUnderFirstDataProtectionLock])
   {
   }
 
   else
   {
     v19 = +[IMDReplayController sharedInstance];
-    v20 = [v19 isRecordingReplayDB];
+    isRecordingReplayDB = [v19 isRecordingReplayDB];
 
-    if (!v20)
+    if (!isRecordingReplayDB)
     {
       goto LABEL_18;
     }
@@ -748,7 +748,7 @@ LABEL_7:
     }
   }
 
-  v22 = [(IMDRelayPushHandler *)self _messageReplayObjectWithService:v11 account:v12 incomingTopLevelMessage:v13 fromID:v14];
+  v22 = [(IMDRelayPushHandler *)self _messageReplayObjectWithService:serviceCopy account:accountCopy incomingTopLevelMessage:messageCopy fromID:dCopy];
   v23 = +[IMDReplayController sharedInstance];
   v29 = 0;
   [v23 storeMessage:v22 type:2 error:&v29];
@@ -769,78 +769,78 @@ LABEL_7:
 
 LABEL_18:
   objc_autoreleasePoolPop(v17);
-  [(IMDRelayPushHandler *)self _service:v11 account:v12 incomingTopLevelMessage:v13 fromID:v14 messageContext:v15 isBeingReplayed:0];
+  [(IMDRelayPushHandler *)self _service:serviceCopy account:accountCopy incomingTopLevelMessage:messageCopy fromID:dCopy messageContext:contextCopy isBeingReplayed:0];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7 isBeingReplayed:(BOOL)a8
+- (void)_service:(id)_service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context isBeingReplayed:(BOOL)replayed
 {
-  v28 = a6;
-  v12 = a7;
-  v13 = a3;
-  v14 = [a5 _FTOptionallyDecompressData];
+  dCopy = d;
+  contextCopy = context;
+  _serviceCopy = _service;
+  _FTOptionallyDecompressData = [data _FTOptionallyDecompressData];
   v15 = JWDecodeDictionary();
   v16 = MEMORY[0x277CBEAC0];
-  v17 = [v12 outgoingResponseIdentifier];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
   v18 = IDSGetUUIDData();
-  v19 = [v16 dictionaryWithObjectsAndKeys:{v18, @"U", v28, qword_27D8CC860, 0}];
+  v19 = [v16 dictionaryWithObjectsAndKeys:{v18, @"U", dCopy, qword_27D8CC860, 0}];
 
-  v20 = [v13 deviceForFromID:v28];
+  v20 = [_serviceCopy deviceForFromID:dCopy];
 
-  v21 = [v20 pushToken];
-  v22 = [objc_opt_class() commandToHandlerBlock];
-  v23 = [v12 originalCommand];
-  v24 = [v22 objectForKey:v23];
+  pushToken = [v20 pushToken];
+  commandToHandlerBlock = [objc_opt_class() commandToHandlerBlock];
+  originalCommand = [contextCopy originalCommand];
+  v24 = [commandToHandlerBlock objectForKey:originalCommand];
 
   if (v24)
   {
-    v25 = [v12 originalCommand];
-    LOBYTE(v26) = a8;
-    (v24)[2](v24, self, v25, v15, v19, v12, v28, v21, v26);
+    originalCommand2 = [contextCopy originalCommand];
+    LOBYTE(v26) = replayed;
+    (v24)[2](v24, self, originalCommand2, v15, v19, contextCopy, dCopy, pushToken, v26);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v27 = self;
+  selfCopy = self;
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138413314;
-      v30 = v13;
+      v30 = dataCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = serviceCopy;
       v33 = 2112;
-      v34 = v12;
+      v34 = accountCopy;
       v35 = 1024;
-      v36 = [v12 accountType];
+      accountType = [accountCopy accountType];
       v37 = 2112;
-      v38 = v15;
+      v38 = contextCopy;
       _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Received Incomming Data %@ for service %@ on account %@ with type %d and context %@", buf, 0x30u);
     }
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = [MEMORY[0x277D1ACB8] sharedInstance];
-  if ([v18 isUnderFirstDataProtectionLock])
+  mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+  if ([mEMORY[0x277D1ACB8] isUnderFirstDataProtectionLock])
   {
   }
 
   else
   {
     v19 = +[IMDReplayController sharedInstance];
-    v20 = [v19 isRecordingReplayDB];
+    isRecordingReplayDB = [v19 isRecordingReplayDB];
 
-    if (!v20)
+    if (!isRecordingReplayDB)
     {
       goto LABEL_18;
     }
@@ -856,10 +856,10 @@ LABEL_18:
     }
   }
 
-  v22 = [(IMDRelayPushHandler *)v27 _messageReplayObjectWithService:v11 account:v12 incomingData:v13 fromID:v14, v27];
+  selfCopy = [(IMDRelayPushHandler *)selfCopy _messageReplayObjectWithService:serviceCopy account:accountCopy incomingData:dataCopy fromID:dCopy, selfCopy];
   v23 = +[IMDReplayController sharedInstance];
   v28 = 0;
-  [v23 storeMessage:v22 type:2 error:&v28];
+  [v23 storeMessage:selfCopy type:2 error:&v28];
   v24 = v28;
 
   if (v24 && IMOSLoggingEnabled())
@@ -868,7 +868,7 @@ LABEL_18:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v30 = v22;
+      v30 = selfCopy;
       v31 = 2112;
       v32 = v24;
       _os_log_impl(&dword_22B4CC000, v25, OS_LOG_TYPE_INFO, "ReplayController: Got error trying to store sms relay message %@ error %@", buf, 0x16u);
@@ -877,32 +877,32 @@ LABEL_18:
 
 LABEL_18:
   objc_autoreleasePoolPop(v17);
-  [(IMDRelayPushHandler *)v27 _service:v11 account:v12 incomingData:v13 fromID:v14 context:v15 isBeingReplayed:0];
+  [(IMDRelayPushHandler *)selfCopy _service:serviceCopy account:accountCopy incomingData:dataCopy fromID:dCopy context:contextCopy isBeingReplayed:0];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v22 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = @"NO";
-      if (v8)
+      if (successCopy)
       {
         v16 = @"YES";
       }
 
       v18 = 138412546;
-      v19 = v13;
+      v19 = identifierCopy;
       v20 = 2112;
       v21 = v16;
       _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Message with ID %@ Sent Success %@", &v18, 0x16u);
@@ -912,10 +912,10 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_serviceNameOrCompatibilityServiceNameFromDictionary:(id)a3
+- (id)_serviceNameOrCompatibilityServiceNameFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:IMDRelayMessageItemDictionaryServiceKey];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:IMDRelayMessageItemDictionaryServiceKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -924,7 +924,7 @@ LABEL_18:
 
     if (!v6)
     {
-      v7 = [v3 objectForKeyedSubscript:IMDRelayMessageItemDictionaryCompatibilityServiceKey];
+      v7 = [dictionaryCopy objectForKeyedSubscript:IMDRelayMessageItemDictionaryCompatibilityServiceKey];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -946,16 +946,16 @@ LABEL_18:
   return v9;
 }
 
-- (id)_serviceNameForMessage:(id)a3
+- (id)_serviceNameForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IMDRelayPushHandler *)self _serviceNameOrCompatibilityServiceNameFromDictionary:v4];
+    v5 = [(IMDRelayPushHandler *)self _serviceNameOrCompatibilityServiceNameFromDictionary:messageCopy];
     if (!v5)
     {
-      v6 = [v4 objectForKeyedSubscript:IMDRelayMessageItemDictionary];
+      v6 = [messageCopy objectForKeyedSubscript:IMDRelayMessageItemDictionary];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -985,26 +985,26 @@ LABEL_18:
   return v7;
 }
 
-- (id)_guidsForMessage:(id)a3 messageGUID:(id)a4 routingBehaviors:(unint64_t)a5
+- (id)_guidsForMessage:(id)message messageGUID:(id)d routingBehaviors:(unint64_t)behaviors
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  behaviorsCopy = behaviors;
+  messageCopy = message;
+  dCopy = d;
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v10 = v9;
-  if (v8 && (v5 & 2) != 0)
+  if (dCopy && (behaviorsCopy & 2) != 0)
   {
-    [v9 addObject:v8];
+    [v9 addObject:dCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v7 objectForKeyedSubscript:@"message"];
+    v11 = [messageCopy objectForKeyedSubscript:@"message"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1014,7 +1014,7 @@ LABEL_18:
       }
     }
 
-    v14 = [v7 objectForKeyedSubscript:IMDCTMessageDictionaryGUIDKey];
+    v14 = [messageCopy objectForKeyedSubscript:IMDCTMessageDictionaryGUIDKey];
     v15 = v14;
     if (v14)
     {
@@ -1023,7 +1023,7 @@ LABEL_18:
 
     else
     {
-      v16 = [v7 objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
+      v16 = [messageCopy objectForKeyedSubscript:IMDRelayLocalMessageDictionaryGUIDKey];
     }
 
     v18 = v16;
@@ -1034,29 +1034,29 @@ LABEL_18:
       [v10 addObject:v18];
     }
 
-    v17 = [v10 allObjects];
+    allObjects = [v10 allObjects];
   }
 
   else
   {
-    v17 = [v10 allObjects];
+    allObjects = [v10 allObjects];
   }
 
-  return v17;
+  return allObjects;
 }
 
-- (id)_handlerForServiceName:(id)a3
+- (id)_handlerForServiceName:(id)name
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(IMDRelayPushHandler *)self copyHandlersForEnumerating];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    copyHandlersForEnumerating = [(IMDRelayPushHandler *)self copyHandlersForEnumerating];
+    v6 = [copyHandlersForEnumerating countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -1069,15 +1069,15 @@ LABEL_18:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(copyHandlersForEnumerating);
           }
 
           v11 = *(*(&v17 + 1) + 8 * v9);
           if (objc_opt_respondsToSelector())
           {
-            v12 = [v11 service];
-            v13 = [v12 internalName];
-            v14 = [v13 isEqualToString:v4];
+            service = [v11 service];
+            internalName = [service internalName];
+            v14 = [internalName isEqualToString:nameCopy];
 
             if (v14)
             {
@@ -1090,7 +1090,7 @@ LABEL_18:
         }
 
         while (v6 != v9);
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [copyHandlersForEnumerating countByEnumeratingWithState:&v17 objects:v21 count:16];
         v8 = &selRef_repairOffGridStatusWithHandleID_fromHandleID_completion_;
         if (v6)
         {
@@ -1114,41 +1114,41 @@ LABEL_14:
   return v6;
 }
 
-- (void)_calculateHandlersForMessage:(id)a3 messageGUID:(id)a4 fromIdentifier:(id)a5 command:(id)a6 completionBlock:(id)a7
+- (void)_calculateHandlersForMessage:(id)message messageGUID:(id)d fromIdentifier:(id)identifier command:(id)command completionBlock:(id)block
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v16 = a3;
-  v15 = [a6 integerValue];
-  [(IMDRelayPushHandler *)self _calculateHandlersForMatchType:[(IMDRelayPushHandler *)self _listenerMatchTypeForCommand:v15 message:v16] routingBehaviors:[(IMDRelayPushHandler *)self _routingBehaviorsForCommand:v15] message:v16 messageGUID:v14 fromIdentifier:v13 completionBlock:v12];
+  blockCopy = block;
+  identifierCopy = identifier;
+  dCopy = d;
+  messageCopy = message;
+  integerValue = [command integerValue];
+  [(IMDRelayPushHandler *)self _calculateHandlersForMatchType:[(IMDRelayPushHandler *)self _listenerMatchTypeForCommand:integerValue message:messageCopy] routingBehaviors:[(IMDRelayPushHandler *)self _routingBehaviorsForCommand:integerValue] message:messageCopy messageGUID:dCopy fromIdentifier:identifierCopy completionBlock:blockCopy];
 }
 
-- (id)_messageDictionaryForLocalMessage:(id)a3 type:(id)a4
+- (id)_messageDictionaryForLocalMessage:(id)message type:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  typeCopy = type;
   if (qword_27D8D0048 != -1)
   {
     sub_22B7D8F9C();
   }
 
-  v7 = [qword_27D8D0040 objectForKeyedSubscript:v6];
+  v7 = [qword_27D8D0040 objectForKeyedSubscript:typeCopy];
   if (!v7)
   {
-    v8 = v5;
+    v8 = messageCopy;
     goto LABEL_7;
   }
 
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [messageCopy objectForKeyedSubscript:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
 LABEL_7:
-    v5 = v8;
-    v9 = v5;
+    messageCopy = v8;
+    v9 = messageCopy;
     goto LABEL_13;
   }
 
@@ -1158,9 +1158,9 @@ LABEL_7:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v13 = 138740739;
-      v14 = v5;
+      v14 = messageCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = typeCopy;
       v17 = 2112;
       v18 = v7;
       v19 = 2112;
@@ -1177,22 +1177,22 @@ LABEL_13:
   return v9;
 }
 
-- (void)_calculateHandlersForLocalMessage:(id)a3 userInfo:(id)a4 completionBlock:(id)a5
+- (void)_calculateHandlersForLocalMessage:(id)message userInfo:(id)info completionBlock:(id)block
 {
   v8 = IMDRelayLocalMessageDictionaryTypeKey;
-  v9 = a5;
-  v10 = a3;
-  v12 = [a4 objectForKeyedSubscript:v8];
-  v11 = [(IMDRelayPushHandler *)self _messageDictionaryForLocalMessage:v10 type:v12];
+  blockCopy = block;
+  messageCopy = message;
+  v12 = [info objectForKeyedSubscript:v8];
+  v11 = [(IMDRelayPushHandler *)self _messageDictionaryForLocalMessage:messageCopy type:v12];
 
-  [(IMDRelayPushHandler *)self _calculateHandlersForMatchType:[(IMDRelayPushHandler *)self _listenerMatchTypeForLocalMessageType:v12 message:v11] routingBehaviors:[(IMDRelayPushHandler *)self _routingBehaviorsForLocalMessageType:v12] message:v11 messageGUID:0 fromIdentifier:0 completionBlock:v9];
+  [(IMDRelayPushHandler *)self _calculateHandlersForMatchType:[(IMDRelayPushHandler *)self _listenerMatchTypeForLocalMessageType:v12 message:v11] routingBehaviors:[(IMDRelayPushHandler *)self _routingBehaviorsForLocalMessageType:v12] message:v11 messageGUID:0 fromIdentifier:0 completionBlock:blockCopy];
 }
 
-- (id)_handlersForExplicitServiceWithMessage:(id)a3
+- (id)_handlersForExplicitServiceWithMessage:(id)message
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDRelayPushHandler *)self _serviceNameForMessage:v4];
+  messageCopy = message;
+  v5 = [(IMDRelayPushHandler *)self _serviceNameForMessage:messageCopy];
   v6 = [(IMDRelayPushHandler *)self _handlerForServiceName:v5];
   v7 = v6;
   if (v6)
@@ -1216,7 +1216,7 @@ LABEL_13:
       v14 = 2112;
       v15 = v5;
       v16 = 2117;
-      v17 = v4;
+      v17 = messageCopy;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Routing payload to %@ due to explicitly specified service %@, payload=%{sensitive}@", &v12, 0x20u);
     }
   }
@@ -1226,51 +1226,51 @@ LABEL_13:
   return v8;
 }
 
-- (void)_calculateHandlersForMatchType:(unint64_t)a3 routingBehaviors:(unint64_t)a4 message:(id)a5 messageGUID:(id)a6 fromIdentifier:(id)a7 completionBlock:(id)a8
+- (void)_calculateHandlersForMatchType:(unint64_t)type routingBehaviors:(unint64_t)behaviors message:(id)message messageGUID:(id)d fromIdentifier:(id)identifier completionBlock:(id)block
 {
   v98 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v51 = a7;
-  v16 = a8;
-  v50 = self;
-  v52 = v14;
-  v46 = v15;
-  v17 = [(IMDRelayPushHandler *)self _guidsForMessage:v14 messageGUID:v15 routingBehaviors:a4];
+  messageCopy = message;
+  dCopy = d;
+  identifierCopy = identifier;
+  blockCopy = block;
+  selfCopy = self;
+  v52 = messageCopy;
+  v46 = dCopy;
+  v17 = [(IMDRelayPushHandler *)self _guidsForMessage:messageCopy messageGUID:dCopy routingBehaviors:behaviors];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B6AC03C;
   aBlock[3] = &unk_278707CC8;
   v48 = v17;
   v83 = v48;
-  v84 = self;
-  v86 = a4;
-  v47 = v16;
+  selfCopy2 = self;
+  behaviorsCopy = behaviors;
+  v47 = blockCopy;
   v85 = v47;
   v49 = _Block_copy(aBlock);
-  if (a3 != 1 && (a4 & 4) != 0)
+  if (type != 1 && (behaviors & 4) != 0)
   {
-    v58 = [(IMDRelayPushHandler *)self _handlersForExplicitServiceWithMessage:v14];
-    if ([v58 count])
+    copyHandlersForEnumerating = [(IMDRelayPushHandler *)self _handlersForExplicitServiceWithMessage:messageCopy];
+    if ([copyHandlersForEnumerating count])
     {
 LABEL_4:
-      v49[2](v49, v58);
+      v49[2](v49, copyHandlersForEnumerating);
       goto LABEL_66;
     }
   }
 
-  v58 = [(IMDRelayPushHandler *)self copyHandlersForEnumerating];
-  if (a3 > 1)
+  copyHandlersForEnumerating = [(IMDRelayPushHandler *)self copyHandlersForEnumerating];
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v62 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v72 = 0u;
       v73 = 0u;
       v71 = 0u;
       v70 = 0u;
-      v58 = v58;
-      v55 = [v58 countByEnumeratingWithState:&v70 objects:v88 count:16];
+      copyHandlersForEnumerating = copyHandlersForEnumerating;
+      v55 = [copyHandlersForEnumerating countByEnumeratingWithState:&v70 objects:v88 count:16];
       if (v55)
       {
         v53 = 0;
@@ -1281,7 +1281,7 @@ LABEL_4:
           {
             if (*v71 != v54)
             {
-              objc_enumerationMutation(v58);
+              objc_enumerationMutation(copyHandlersForEnumerating);
             }
 
             obja = *(*(&v70 + 1) + 8 * i);
@@ -1291,8 +1291,8 @@ LABEL_4:
               v69 = 0u;
               v66 = 0u;
               v67 = 0u;
-              v29 = [obja accounts];
-              v30 = [v29 countByEnumeratingWithState:&v66 objects:v87 count:16];
+              accounts = [obja accounts];
+              v30 = [accounts countByEnumeratingWithState:&v66 objects:v87 count:16];
               if (v30)
               {
                 v31 = *v67;
@@ -1302,14 +1302,14 @@ LABEL_4:
                   {
                     if (*v67 != v31)
                     {
-                      objc_enumerationMutation(v29);
+                      objc_enumerationMutation(accounts);
                     }
 
                     v33 = *(*(&v66 + 1) + 8 * j);
                     v34 = MEMORY[0x277D1A898];
                     v35 = +[IMDAccountController sharedInstance];
-                    v36 = [v35 accounts];
-                    LODWORD(v34) = [v34 isAccountUsableForSendingWithAllAccounts:v36 account:v33];
+                    accounts2 = [v35 accounts];
+                    LODWORD(v34) = [v34 isAccountUsableForSendingWithAllAccounts:accounts2 account:v33];
 
                     if (v34)
                     {
@@ -1317,13 +1317,13 @@ LABEL_4:
                     }
                   }
 
-                  v30 = [v29 countByEnumeratingWithState:&v66 objects:v87 count:16];
+                  v30 = [accounts countByEnumeratingWithState:&v66 objects:v87 count:16];
                 }
 
                 while (v30);
               }
 
-              v37 = [obja chatForOutgoingMessage:v52 fromIdentifier:v51 isInProxyMode:0 createIfNotExists:0];
+              v37 = [obja chatForOutgoingMessage:v52 fromIdentifier:identifierCopy isInProxyMode:0 createIfNotExists:0];
               if ([v37 isNewerThan:v53])
               {
                 v38 = v37;
@@ -1333,7 +1333,7 @@ LABEL_4:
             }
           }
 
-          v55 = [v58 countByEnumeratingWithState:&v70 objects:v88 count:16];
+          v55 = [copyHandlersForEnumerating countByEnumeratingWithState:&v70 objects:v88 count:16];
         }
 
         while (v55);
@@ -1354,13 +1354,13 @@ LABEL_4:
       v63[1] = 3221225472;
       v63[2] = sub_22B6AC230;
       v63[3] = &unk_278707CF0;
-      v63[4] = v50;
+      v63[4] = selfCopy;
       v64 = v52;
       v65 = v49;
       [v42 calculateServiceForSendingToHandles:v41 accounts:v62 context:v44 completionBlock:v63];
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       v80 = 0u;
       v81 = 0u;
@@ -1386,7 +1386,7 @@ LABEL_4:
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v22 = v58;
+            v22 = copyHandlersForEnumerating;
             v23 = [v22 countByEnumeratingWithState:&v74 objects:v96 count:16];
             if (v23)
             {
@@ -1456,7 +1456,7 @@ LABEL_28:
 
   else
   {
-    if (!a3)
+    if (!type)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1464,7 +1464,7 @@ LABEL_28:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 138739971;
-          v90 = v14;
+          v90 = messageCopy;
           _os_log_impl(&dword_22B4CC000, v28, OS_LOG_TYPE_INFO, "Broadcasting payload to all registered listeners, payload=%{sensitive}@", buf, 0xCu);
         }
       }
@@ -1472,9 +1472,9 @@ LABEL_28:
       goto LABEL_4;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      v18 = [(IMDRelayPushHandler *)self _handlersForExplicitServiceWithMessage:v14];
+      v18 = [(IMDRelayPushHandler *)self _handlersForExplicitServiceWithMessage:messageCopy];
       v49[2](v49, v18);
     }
   }
@@ -1484,20 +1484,20 @@ LABEL_66:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_messageRequestsServiceForSendingBypass:(id)a3
+- (BOOL)_messageRequestsServiceForSendingBypass:(id)bypass
 {
-  v3 = [a3 objectForKeyedSubscript:IMDRelayMessageItemDictionarySkipServiceForSendingKey];
+  v3 = [bypass objectForKeyedSubscript:IMDRelayMessageItemDictionarySkipServiceForSendingKey];
   objc_opt_class();
   v4 = (objc_opt_isKindOfClass() & 1) != 0 && ([v3 BOOLValue] & 1) != 0;
 
   return v4;
 }
 
-- (unint64_t)_listenerMatchTypeForCommand:(int64_t)a3 message:(id)a4
+- (unint64_t)_listenerMatchTypeForCommand:(int64_t)command message:(id)message
 {
-  v6 = a4;
-  v7 = a3 - 101;
-  if ((a3 - 101) > 0x30)
+  messageCopy = message;
+  v7 = command - 101;
+  if ((command - 101) > 0x30)
   {
     goto LABEL_9;
   }
@@ -1511,10 +1511,10 @@ LABEL_66:
 
     if (((1 << v7) & 0xC0000000000) != 0)
     {
-      v9 = [MEMORY[0x277D07DB0] sharedInstance];
-      if ([v9 deviceType] == 2)
+      mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+      if ([mEMORY[0x277D07DB0] deviceType] == 2)
       {
-        v10 = [(IMDRelayPushHandler *)self _messageRequestsServiceForSendingBypass:v6];
+        v10 = [(IMDRelayPushHandler *)self _messageRequestsServiceForSendingBypass:messageCopy];
 
         if (!v10)
         {
@@ -1543,10 +1543,10 @@ LABEL_12:
   return v8;
 }
 
-- (unint64_t)_listenerMatchTypeForLocalMessageType:(id)a3 message:(id)a4
+- (unint64_t)_listenerMatchTypeForLocalMessageType:(id)type message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  messageCopy = message;
   if (qword_27D8D0060 != -1)
   {
     sub_22B7D8FB0();
@@ -1555,28 +1555,28 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = 0;
+    integerValue = 0;
     goto LABEL_10;
   }
 
-  v8 = [qword_27D8D0050 objectForKeyedSubscript:v6];
-  v9 = [v8 integerValue];
+  v8 = [qword_27D8D0050 objectForKeyedSubscript:typeCopy];
+  integerValue = [v8 integerValue];
 
-  v10 = [MEMORY[0x277D07DB0] sharedInstance];
-  if ([v10 deviceType] != 2)
+  mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+  if ([mEMORY[0x277D07DB0] deviceType] != 2)
   {
     goto LABEL_8;
   }
 
-  v11 = [(IMDRelayPushHandler *)self _messageRequestsServiceForSendingBypass:v7];
+  v11 = [(IMDRelayPushHandler *)self _messageRequestsServiceForSendingBypass:messageCopy];
 
   if (!v11)
   {
-    v12 = [qword_27D8D0058 objectForKeyedSubscript:v6];
-    v10 = v12;
+    v12 = [qword_27D8D0058 objectForKeyedSubscript:typeCopy];
+    mEMORY[0x277D07DB0] = v12;
     if (v12)
     {
-      v9 = [v12 integerValue];
+      integerValue = [v12 integerValue];
     }
 
 LABEL_8:
@@ -1584,14 +1584,14 @@ LABEL_8:
 
 LABEL_10:
 
-  return v9;
+  return integerValue;
 }
 
-- (unint64_t)_routingBehaviorsForCommand:(int64_t)a3
+- (unint64_t)_routingBehaviorsForCommand:(int64_t)command
 {
   result = 0;
-  v4 = a3 - 101;
-  if ((a3 - 101) <= 0x30)
+  v4 = command - 101;
+  if ((command - 101) <= 0x30)
   {
     if (((1 << v4) & 0x1400000400003) != 0)
     {
@@ -1603,7 +1603,7 @@ LABEL_10:
       return 8;
     }
 
-    else if (a3 == 146)
+    else if (command == 146)
     {
       return 6;
     }
@@ -1612,27 +1612,27 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)_routingBehaviorsForLocalMessageType:(id)a3
+- (unint64_t)_routingBehaviorsForLocalMessageType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (qword_27D8D0070 != -1)
   {
     sub_22B7D8FC4();
   }
 
-  v4 = [qword_27D8D0068 objectForKeyedSubscript:v3];
+  v4 = [qword_27D8D0068 objectForKeyedSubscript:typeCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 @end

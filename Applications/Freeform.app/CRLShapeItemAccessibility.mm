@@ -9,11 +9,11 @@
 - (CRLPathSourceAccessibility)crlaxPathSource
 {
   v8 = 0;
-  v2 = [(CRLShapeItemAccessibility *)self crlaxTarget];
-  v3 = [v2 pathSource];
+  crlaxTarget = [(CRLShapeItemAccessibility *)self crlaxTarget];
+  pathSource = [crlaxTarget pathSource];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, pathSource, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -26,18 +26,18 @@
 
 - (NSString)crlaxShapeTypeLabel
 {
-  v2 = [(CRLShapeItemAccessibility *)self crlaxPathSource];
-  v3 = [v2 crlaxLabel];
+  crlaxPathSource = [(CRLShapeItemAccessibility *)self crlaxPathSource];
+  crlaxLabel = [crlaxPathSource crlaxLabel];
 
-  return v3;
+  return crlaxLabel;
 }
 
 - (NSString)crlaxShapeTypeHint
 {
-  v2 = [(CRLShapeItemAccessibility *)self crlaxPathSource];
-  v3 = [v2 crlaxHint];
+  crlaxPathSource = [(CRLShapeItemAccessibility *)self crlaxPathSource];
+  crlaxHint = [crlaxPathSource crlaxHint];
 
-  return v3;
+  return crlaxHint;
 }
 
 @end

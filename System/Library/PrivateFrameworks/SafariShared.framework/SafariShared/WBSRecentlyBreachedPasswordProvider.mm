@@ -2,8 +2,8 @@
 + (WBSRecentlyBreachedPasswordProvider)sharedProvider;
 - (NSArray)recentlyBreachedSavedAccountsIfAvailable;
 - (WBSRecentlyBreachedPasswordProvider)init;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_getRecentlyBreachedSavedAccountsWithCompletionHandler:(id)a3;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_getRecentlyBreachedSavedAccountsWithCompletionHandler:(id)handler;
 - (void)clearRecentlyBreachedSavedAccounts;
 - (void)dealloc;
 @end
@@ -23,8 +23,8 @@
     helperProxy = v3->_helperProxy;
     v3->_helperProxy = v4;
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69C8D50] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accountStoreDidChange_ name:*MEMORY[0x1E69C8D50] object:0];
 
     v7 = v3;
   }
@@ -134,16 +134,16 @@ void __79__WBSRecentlyBreachedPasswordProvider_recentlyBreachedSavedAccountsIfAv
   os_unfair_lock_unlock(v2);
 }
 
-- (void)_getRecentlyBreachedSavedAccountsWithCompletionHandler:(id)a3
+- (void)_getRecentlyBreachedSavedAccountsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   helperProxy = self->_helperProxy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__WBSRecentlyBreachedPasswordProvider__getRecentlyBreachedSavedAccountsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB71F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(WBSPasswordBreachHelperProxy *)helperProxy recentlyBreachedResultRecordDictionariesWithCompletionHandler:v7];
 }
 
@@ -166,7 +166,7 @@ void __94__WBSRecentlyBreachedPasswordProvider__getRecentlyBreachedSavedAccounts
   }
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   os_unfair_lock_lock(&self->_lock);
   self->_recentlyBreachedSavedAccountsLookupStarted = 0;

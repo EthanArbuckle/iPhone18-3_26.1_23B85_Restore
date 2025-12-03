@@ -1,10 +1,10 @@
 @interface UIStatusBarAnimationParameters
 + (id)fencingAnimation;
-+ (void)animateWithParameters:(id)a3 fromCurrentState:(BOOL)a4 frameInterval:(double)a5 animations:(id)a6 completion:(id)a7;
++ (void)animateWithParameters:(id)parameters fromCurrentState:(BOOL)state frameInterval:(double)interval animations:(id)animations completion:(id)completion;
 - (BSAnimationSettings)bsAnimationSettings;
 - (UIStatusBarAnimationParameters)initWithDefaultParameters;
 - (UIStatusBarAnimationParameters)initWithEmptyParameters;
-- (void)setStartTime:(double)a3;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation UIStatusBarAnimationParameters
@@ -24,9 +24,9 @@
 
 + (id)fencingAnimation
 {
-  v2 = [[a1 alloc] initWithEmptyParameters];
+  initWithEmptyParameters = [[self alloc] initWithEmptyParameters];
 
-  return v2;
+  return initWithEmptyParameters;
 }
 
 - (BSAnimationSettings)bsAnimationSettings
@@ -55,56 +55,56 @@
   return [(UIStatusBarAnimationParameters *)&v3 init];
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v4 = 0.0;
   }
 
   else
   {
-    v4 = fmax(CACurrentMediaTime() - a3, 0.0);
+    v4 = fmax(CACurrentMediaTime() - time, 0.0);
   }
 
   self->_delay = v4;
 }
 
-+ (void)animateWithParameters:(id)a3 fromCurrentState:(BOOL)a4 frameInterval:(double)a5 animations:(id)a6 completion:(id)a7
++ (void)animateWithParameters:(id)parameters fromCurrentState:(BOOL)state frameInterval:(double)interval animations:(id)animations completion:(id)completion
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  if (v11)
+  stateCopy = state;
+  parametersCopy = parameters;
+  animationsCopy = animations;
+  completionCopy = completion;
+  if (parametersCopy)
   {
-    if ([v11 shouldAnimate])
+    if ([parametersCopy shouldAnimate])
     {
-      [v11 duration];
+      [parametersCopy duration];
       v15 = v14;
-      [v11 delay];
+      [parametersCopy delay];
       v17 = v16;
-      v18 = [v11 curve];
+      curve = [parametersCopy curve];
       v19 = 0;
       v20 = 4;
-      if (!v10)
+      if (!stateCopy)
       {
         v20 = 0;
       }
 
-      v21 = v20 | (v18 << 16);
-      if (a5 != 0.0)
+      v21 = v20 | (curve << 16);
+      if (interval != 0.0)
       {
-        v19 = ((240.0 / round(1.0 / a5)) << 24) - 0x1000000;
+        v19 = ((240.0 / round(1.0 / interval)) << 24) - 0x1000000;
       }
 
-      v22 = [v11 animationFactory];
+      animationFactory = [parametersCopy animationFactory];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __109__UIStatusBarAnimationParameters_animateWithParameters_fromCurrentState_frameInterval_animations_completion___block_invoke;
       v26[3] = &unk_1E70F0F78;
-      v27 = v12;
-      [UIView _animateWithDuration:v19 | v21 delay:v22 options:v26 factory:v13 animations:v15 completion:v17];
+      v27 = animationsCopy;
+      [UIView _animateWithDuration:v19 | v21 delay:animationFactory options:v26 factory:completionCopy animations:v15 completion:v17];
     }
 
     else
@@ -113,22 +113,22 @@
       v23[1] = 3221225472;
       v23[2] = __109__UIStatusBarAnimationParameters_animateWithParameters_fromCurrentState_frameInterval_animations_completion___block_invoke_2;
       v23[3] = &unk_1E70F77D0;
-      v24 = v12;
-      v25 = v13;
+      v24 = animationsCopy;
+      v25 = completionCopy;
       [UIView performWithoutAnimation:v23];
     }
   }
 
   else
   {
-    if (v12)
+    if (animationsCopy)
     {
-      v12[2](v12);
+      animationsCopy[2](animationsCopy);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 }

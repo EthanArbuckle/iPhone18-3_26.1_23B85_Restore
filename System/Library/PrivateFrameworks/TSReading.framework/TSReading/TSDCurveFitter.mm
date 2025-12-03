@@ -1,10 +1,10 @@
 @interface TSDCurveFitter
 + (id)curveFitter;
 - (TSDCurveFitter)init;
-- (id)bezierPathFittingPointArray:(id *)a3 count:(int64_t)a4;
-- (id)bezierPathFittingPoints:(id)a3;
-- (void)fitCurveToPointArray:(id *)a3 count:(int64_t)a4 bezierCallback:(void *)a5 context:(void *)a6;
-- (void)fitCurveToPoints:(id)a3 bezierCallback:(void *)a4 context:(void *)a5;
+- (id)bezierPathFittingPointArray:(id *)array count:(int64_t)count;
+- (id)bezierPathFittingPoints:(id)points;
+- (void)fitCurveToPointArray:(id *)array count:(int64_t)count bezierCallback:(void *)callback context:(void *)context;
+- (void)fitCurveToPoints:(id)points bezierCallback:(void *)callback context:(void *)context;
 @end
 
 @implementation TSDCurveFitter
@@ -30,23 +30,23 @@
   return result;
 }
 
-- (id)bezierPathFittingPoints:(id)a3
+- (id)bezierPathFittingPoints:(id)points
 {
   v5 = +[TSDBezierPath bezierPath];
-  [(TSDCurveFitter *)self fitCurveToPoints:a3 bezierCallback:p_bezierPathFittingPointsCallback context:v5];
+  [(TSDCurveFitter *)self fitCurveToPoints:points bezierCallback:p_bezierPathFittingPointsCallback context:v5];
   return v5;
 }
 
-- (id)bezierPathFittingPointArray:(id *)a3 count:(int64_t)a4
+- (id)bezierPathFittingPointArray:(id *)array count:(int64_t)count
 {
   v7 = +[TSDBezierPath bezierPath];
-  [(TSDCurveFitter *)self fitCurveToPointArray:a3 count:a4 bezierCallback:p_bezierPathFittingPointsCallback context:v7];
+  [(TSDCurveFitter *)self fitCurveToPointArray:array count:count bezierCallback:p_bezierPathFittingPointsCallback context:v7];
   return v7;
 }
 
-- (void)fitCurveToPoints:(id)a3 bezierCallback:(void *)a4 context:(void *)a5
+- (void)fitCurveToPoints:(id)points bezierCallback:(void *)callback context:(void *)context
 {
-  v9 = [a3 count];
+  v9 = [points count];
   if (v9)
   {
     v10 = v9;
@@ -58,7 +58,7 @@
       v14 = v11 + 1;
       do
       {
-        [objc_msgSend(a3 objectAtIndex:{v13), "CGPointValue"}];
+        [objc_msgSend(points objectAtIndex:{v13), "CGPointValue"}];
         *(v14 - 1) = v15;
         *v14 = v16;
         ++v13;
@@ -68,21 +68,21 @@
       while (v10 != v13);
     }
 
-    [(TSDCurveFitter *)self fitCurveToPointArray:v12 count:v10 bezierCallback:a4 context:a5];
+    [(TSDCurveFitter *)self fitCurveToPointArray:v12 count:v10 bezierCallback:callback context:context];
 
     free(v12);
   }
 }
 
-- (void)fitCurveToPointArray:(id *)a3 count:(int64_t)a4 bezierCallback:(void *)a5 context:(void *)a6
+- (void)fitCurveToPointArray:(id *)array count:(int64_t)count bezierCallback:(void *)callback context:(void *)context
 {
   mErrorIterations = self->mErrorIterations;
-  v20 = a5;
-  v21 = a6;
-  v18 = a4;
-  v9 = malloc_type_malloc(8 * a4, 0x2004093837F09uLL);
+  callbackCopy = callback;
+  contextCopy = context;
+  countCopy = count;
+  v9 = malloc_type_malloc(8 * count, 0x2004093837F09uLL);
   v17 = v9;
-  if (a4)
+  if (count)
   {
     v10 = 0;
     do
@@ -90,14 +90,14 @@
       v9[v10++] = malloc_type_malloc(0x20uLL, 0x1000040451B5BE8uLL);
     }
 
-    while (a4 != v10);
-    if (a4 < 2)
+    while (count != v10);
+    if (count < 2)
     {
       goto LABEL_10;
     }
 
-    v11.n128_f64[0] = a3[1].var0 - a3->var0;
-    v12.n128_f64[0] = a3[1].var1 - a3->var1;
+    v11.n128_f64[0] = array[1].var0 - array->var0;
+    v12.n128_f64[0] = array[1].var1 - array->var1;
     v13 = sqrt(v12.n128_f64[0] * v12.n128_f64[0] + v11.n128_f64[0] * v11.n128_f64[0]);
     if (v13 != 0.0)
     {
@@ -105,7 +105,7 @@
       v12.n128_f64[0] = v12.n128_f64[0] / v13;
     }
 
-    v14 = vsubq_f64(a3[a4 - 2], a3[a4 - 1]);
+    v14 = vsubq_f64(array[count - 2], array[count - 1]);
     v15 = vmulq_f64(v14, v14);
     v15.n128_f64[0] = sqrt(v15.n128_f64[1] + v14.n128_f64[0] * v14.n128_f64[0]);
     if (v15.n128_f64[0] != 0.0)
@@ -115,8 +115,8 @@
     }
 
     v15.n128_u64[0] = v14.n128_u64[1];
-    FitCubic(a3, 0, a4 - 1, &v17, v11, v12, v14, v15, self->mErrorDistance);
-    if (v18)
+    FitCubic(array, 0, count - 1, &v17, v11, v12, v14, v15, self->mErrorDistance);
+    if (countCopy)
     {
 LABEL_10:
       v16 = 0;
@@ -125,8 +125,8 @@ LABEL_10:
         free(v17[v16++]);
       }
 
-      while (v16 < v18);
-      v18 = 0;
+      while (v16 < countCopy);
+      countCopy = 0;
     }
 
     v9 = v17;

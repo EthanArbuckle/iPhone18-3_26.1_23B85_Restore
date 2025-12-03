@@ -10,7 +10,7 @@
   v16 = *MEMORY[0x29EDCA608];
   v14.receiver = self;
   v14.super_class = STAlwaysAllowListControllerAccessibility;
-  v2 = [(STAlwaysAllowListControllerAccessibility *)&v14 specifiers];
+  specifiers = [(STAlwaysAllowListControllerAccessibility *)&v14 specifiers];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -42,7 +42,7 @@
 
   v8 = *MEMORY[0x29EDCA608];
 
-  return v2;
+  return specifiers;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

@@ -1,15 +1,15 @@
 @interface DESMetadataSchema
-- (DESMetadataSchema)initWith:(id)a3 key:(id)a4 attachments:(id)a5 error:(id *)a6;
+- (DESMetadataSchema)initWith:(id)with key:(id)key attachments:(id)attachments error:(id *)error;
 @end
 
 @implementation DESMetadataSchema
 
-- (DESMetadataSchema)initWith:(id)a3 key:(id)a4 attachments:(id)a5 error:(id *)a6
+- (DESMetadataSchema)initWith:(id)with key:(id)key attachments:(id)attachments error:(id *)error
 {
   v116[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  withCopy = with;
+  keyCopy = key;
+  attachmentsCopy = attachments;
   v95.receiver = self;
   v95.super_class = DESMetadataSchema;
   v13 = [(DESMetadataSchema *)&v95 init];
@@ -18,25 +18,25 @@
     goto LABEL_36;
   }
 
-  v14 = [v10 objectForKey:v11];
+  v14 = [withCopy objectForKey:keyCopy];
   if (!v14)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"No schema for metadata key %@, skip encoding.", v11];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No schema for metadata key %@, skip encoding.", keyCopy];
     v20 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_31;
     }
 
     v21 = MEMORY[0x277CCA9B8];
-    v22 = a6;
+    errorCopy5 = error;
     v115 = *MEMORY[0x277CCA470];
-    v116[0] = v19;
+    v116[0] = keyCopy;
     v23 = MEMORY[0x277CBEAC0];
     v24 = v116;
     v25 = &v115;
@@ -47,29 +47,29 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Schema for %@ is not a dictionary.", v11];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Schema for %@ is not a dictionary.", keyCopy];
     v26 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_31;
     }
 
     v21 = MEMORY[0x277CCA9B8];
-    v22 = a6;
+    errorCopy5 = error;
     v113 = *MEMORY[0x277CCA470];
-    v114 = v19;
+    v114 = keyCopy;
     v23 = MEMORY[0x277CBEAC0];
     v24 = &v114;
     v25 = &v113;
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v13->_key, a4);
+  objc_storeStrong(&v13->_key, key);
   v16 = [v14 objectForKey:@"type"];
   v17 = [v16 isEqualToString:@"categorical"];
 
@@ -88,16 +88,16 @@
       v39 = [v14 objectForKey:@"type"];
       v40 = [v39 isEqualToString:@"fedstats"];
 
-      if (!a6 || (v40 & 1) != 0)
+      if (!error || (v40 & 1) != 0)
       {
         goto LABEL_32;
       }
 
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, type is neither categorical nor numeric for %@.", v11];
+      keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, type is neither categorical nor numeric for %@.", keyCopy];
       v21 = MEMORY[0x277CCA9B8];
-      v22 = a6;
+      errorCopy5 = error;
       v111 = *MEMORY[0x277CCA470];
-      v112 = v19;
+      v112 = keyCopy;
       v23 = MEMORY[0x277CBEAC0];
       v24 = &v112;
       v25 = &v111;
@@ -113,9 +113,9 @@
   if (objc_opt_isKindOfClass())
   {
     v30 = [v14 objectForKey:@"buckets"];
-    v31 = [v30 integerValue];
+    integerValue = [v30 integerValue];
 
-    if (v31)
+    if (integerValue)
     {
       v32 = [v14 objectForKey:@"buckets"];
       v13->_buckets = [v32 integerValue];
@@ -132,9 +132,9 @@
 
         if (isKindOfClass)
         {
-          v19 = [v14 objectForKey:@"dictionary"];
+          keyCopy = [v14 objectForKey:@"dictionary"];
 LABEL_21:
-          v37 = [[DESCategoricalMetadataEncoder alloc] initWithSingleSchema:v19];
+          v37 = [[DESCategoricalMetadataEncoder alloc] initWithSingleSchema:keyCopy];
           if (v37)
           {
             encoder = v13->_encoder;
@@ -146,20 +146,20 @@ LABEL_36:
             goto LABEL_37;
           }
 
-          v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create CategoricalMetadataEncoder for: %@", v11];
+          keyCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create CategoricalMetadataEncoder for: %@", keyCopy];
           v58 = +[DESLogging coreChannel];
           if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
           {
             +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
           }
 
-          if (a6)
+          if (error)
           {
             v87 = MEMORY[0x277CCA9B8];
             v98 = *MEMORY[0x277CCA470];
-            v99 = v41;
+            v99 = keyCopy2;
             [*(v15 + 2752) dictionaryWithObjects:&v99 forKeys:&v98 count:1];
-            v60 = v59 = a6;
+            v60 = v59 = error;
             *v59 = [v87 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v60];
           }
 
@@ -172,22 +172,22 @@ LABEL_36:
 
         if (v47)
         {
-          v41 = [v14 objectForKey:@"dictionary_path"];
+          keyCopy2 = [v14 objectForKey:@"dictionary_path"];
           v91 = 0u;
           v92 = 0u;
           v93 = 0u;
           v94 = 0u;
-          obj = v12;
-          v19 = [obj countByEnumeratingWithState:&v91 objects:v108 count:16];
-          if (!v19)
+          obj = attachmentsCopy;
+          keyCopy = [obj countByEnumeratingWithState:&v91 objects:v108 count:16];
+          if (!keyCopy)
           {
 LABEL_66:
 
             goto LABEL_21;
           }
 
-          v83 = a6;
-          v84 = v12;
+          errorCopy4 = error;
+          v84 = attachmentsCopy;
           v86 = *v92;
 LABEL_41:
           v48 = 0;
@@ -199,43 +199,43 @@ LABEL_41:
             }
 
             v49 = *(*(&v91 + 1) + 8 * v48);
-            v50 = [v49 lastPathComponent];
-            v51 = [v50 isEqualToString:v41];
+            lastPathComponent = [v49 lastPathComponent];
+            v51 = [lastPathComponent isEqualToString:keyCopy2];
 
             if (v51)
             {
               break;
             }
 
-            if (v19 == ++v48)
+            if (keyCopy == ++v48)
             {
-              v19 = [obj countByEnumeratingWithState:&v91 objects:v108 count:16];
-              if (v19)
+              keyCopy = [obj countByEnumeratingWithState:&v91 objects:v108 count:16];
+              if (keyCopy)
               {
                 goto LABEL_41;
               }
 
-              a6 = v83;
-              v12 = v84;
+              error = errorCopy4;
+              attachmentsCopy = v84;
               goto LABEL_65;
             }
           }
 
           v90 = 0;
           v61 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v49 options:1 error:&v90];
-          v19 = v90;
+          keyCopy = v90;
           v88 = v61;
           if (!v61)
           {
-            v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unreadable dictionary_path %@ for %@, error: %@", v41, v11, v19];
+            v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unreadable dictionary_path %@ for %@, error: %@", keyCopy2, keyCopy, keyCopy];
             v67 = +[DESLogging coreChannel];
-            v12 = v84;
+            attachmentsCopy = v84;
             if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
             {
               +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
             }
 
-            if (!v83)
+            if (!errorCopy4)
             {
               goto LABEL_83;
             }
@@ -244,22 +244,22 @@ LABEL_41:
             v69 = *MEMORY[0x277CCA470];
             v106[0] = *MEMORY[0x277CCA7E8];
             v106[1] = v69;
-            v107[0] = v19;
+            v107[0] = keyCopy;
             v107[1] = v88;
             v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v107 forKeys:v106 count:2];
-            *v83 = [v68 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v70];
+            *errorCopy4 = [v68 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v70];
 LABEL_82:
 
 LABEL_83:
             goto LABEL_30;
           }
 
-          v89 = v19;
+          v89 = keyCopy;
           v62 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v61 options:0 error:&v89];
           v63 = v89;
 
           objc_opt_class();
-          v12 = v84;
+          attachmentsCopy = v84;
           v82 = v63;
           if (objc_opt_isKindOfClass())
           {
@@ -268,10 +268,10 @@ LABEL_83:
             v65 = objc_opt_isKindOfClass();
 
             v66 = v62;
-            a6 = v83;
+            error = errorCopy4;
             if (v65)
             {
-              v19 = [v66 objectForKey:@"dictionary"];
+              keyCopy = [v66 objectForKey:@"dictionary"];
 
               obj = v63;
 LABEL_65:
@@ -281,14 +281,14 @@ LABEL_65:
 
             v81 = v66;
             v77 = v63;
-            v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unparsable dictionary read from dictionary_path %@ for %@, error: %@", v41, v11, v63];
+            v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unparsable dictionary read from dictionary_path %@ for %@, error: %@", keyCopy2, keyCopy, v63];
             v78 = +[DESLogging coreChannel];
             if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
             {
               +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
             }
 
-            if (!v83)
+            if (!errorCopy4)
             {
               goto LABEL_81;
             }
@@ -305,15 +305,15 @@ LABEL_65:
           else
           {
             v81 = v62;
-            v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unparsable dictionary_path %@ for %@, error: %@", v41, v11, v63];
+            v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, unparsable dictionary_path %@ for %@, error: %@", keyCopy2, keyCopy, v63];
             v72 = +[DESLogging coreChannel];
-            a6 = v83;
+            error = errorCopy4;
             if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
             {
               +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
             }
 
-            if (!v83)
+            if (!errorCopy4)
             {
               v77 = v82;
               goto LABEL_81;
@@ -329,32 +329,32 @@ LABEL_65:
           }
 
           v79 = [v74 dictionaryWithObjects:v75 forKeys:v76 count:1];
-          *a6 = [v73 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v79];
+          *error = [v73 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v79];
 
           v77 = v82;
           v71 = v80;
 LABEL_81:
 
-          v19 = v77;
+          keyCopy = v77;
           v70 = v81;
           goto LABEL_82;
         }
 
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, neither dictionary nor dictionary_path has the correct format for: %@", v11];
+        keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, neither dictionary nor dictionary_path has the correct format for: %@", keyCopy];
         v57 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
           +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_31;
         }
 
         v53 = MEMORY[0x277CCA9B8];
         v100 = *MEMORY[0x277CCA470];
-        v101 = v19;
+        v101 = keyCopy;
         v54 = MEMORY[0x277CBEAC0];
         v55 = &v101;
         v56 = &v100;
@@ -365,33 +365,33 @@ LABEL_81:
         v43 = objc_alloc_init(DESNumericMetadataEncoder);
         if (v43)
         {
-          v19 = v13->_encoder;
+          keyCopy = v13->_encoder;
           v13->_encoder = v43;
           goto LABEL_35;
         }
 
-        v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create NumericMetadataEncoder for: %@", v11];
+        keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create NumericMetadataEncoder for: %@", keyCopy];
         v52 = +[DESLogging coreChannel];
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
           +[DESDediscoUploader uploadViaDedisco:jsonResult:recipe:bundleIdentifier:submissionCount:error:];
         }
 
-        if (!a6)
+        if (!error)
         {
           goto LABEL_31;
         }
 
         v53 = MEMORY[0x277CCA9B8];
         v96 = *MEMORY[0x277CCA470];
-        v97 = v19;
+        v97 = keyCopy;
         v54 = MEMORY[0x277CBEAC0];
         v55 = &v97;
         v56 = &v96;
       }
 
-      v41 = [v54 dictionaryWithObjects:v55 forKeys:v56 count:1];
-      *a6 = [v53 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v41];
+      keyCopy2 = [v54 dictionaryWithObjects:v55 forKeys:v56 count:1];
+      *error = [v53 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:keyCopy2];
 LABEL_30:
 
 LABEL_31:
@@ -403,19 +403,19 @@ LABEL_31:
   {
   }
 
-  if (a6)
+  if (error)
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, buckets %ld is <= 0 for %@.", v13->_buckets, v11];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Malformed schema, buckets %ld is <= 0 for %@.", v13->_buckets, keyCopy];
     v21 = MEMORY[0x277CCA9B8];
-    v22 = a6;
+    errorCopy5 = error;
     v109 = *MEMORY[0x277CCA470];
-    v110 = v19;
+    v110 = keyCopy;
     v23 = MEMORY[0x277CBEAC0];
     v24 = &v110;
     v25 = &v109;
 LABEL_29:
-    v41 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
-    *v22 = [v21 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:v41];
+    keyCopy2 = [v23 dictionaryWithObjects:v24 forKeys:v25 count:1];
+    *errorCopy5 = [v21 errorWithDomain:@"kDESDistributedEvaluationErrorDomain" code:2007 userInfo:keyCopy2];
     goto LABEL_30;
   }
 

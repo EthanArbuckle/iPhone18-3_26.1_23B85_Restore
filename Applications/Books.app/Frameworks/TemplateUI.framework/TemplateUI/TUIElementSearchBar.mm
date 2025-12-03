@@ -1,9 +1,9 @@
 @interface TUIElementSearchBar
 + (id)attributesToIgnoreWhenResolving;
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6;
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context;
 + (id)supportedAttributes;
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementSearchBar
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_4A184;
   block[3] = &unk_25F0F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2E6130 != -1)
   {
     dispatch_once(&qword_2E6130, block);
@@ -37,44 +37,44 @@
   return v3;
 }
 
-+ (id)builderWithNode:(id)a3 object:(id)a4 attributes:(id)a5 context:(id)a6
++ (id)builderWithNode:(id)node object:(id)object attributes:(id)attributes context:(id)context
 {
-  v8 = a6;
-  v9 = a5;
+  contextCopy = context;
+  attributesCopy = attributes;
   v10 = objc_alloc_init(_TUIElementSearchBarBuilder);
-  v11 = [v9 bindingNameForAttribute:36 node:a3.var0];
-  v12 = [v9 stringForAttribute:202 node:a3.var0];
+  v11 = [attributesCopy bindingNameForAttribute:36 node:node.var0];
+  v12 = [attributesCopy stringForAttribute:202 node:node.var0];
   [(_TUIElementSearchBarBuilder *)v10 setText:v12];
 
-  [v9 insetsForAttribute:112 node:a3.var0];
+  [attributesCopy insetsForAttribute:112 node:node.var0];
   [(_TUIElementSearchBarBuilder *)v10 setEditingInsets:?];
-  v13 = [v9 fontSpecForNode:a3.var0];
-  v14 = [v13 attributesForAttributedString];
+  v13 = [attributesCopy fontSpecForNode:node.var0];
+  attributesForAttributedString = [v13 attributesForAttributedString];
 
-  v15 = [v9 stringForAttribute:138 node:a3.var0];
+  v15 = [attributesCopy stringForAttribute:138 node:node.var0];
   [(_TUIElementSearchBarBuilder *)v10 setName:v15];
 
-  v16 = [v9 stringForAttribute:177 node:a3.var0];
+  v16 = [attributesCopy stringForAttribute:177 node:node.var0];
   [(_TUIElementSearchBarBuilder *)v10 setReturnKeyType:v16];
 
-  v17 = [v8 viewStateForNode:a3.var0 binding:v11];
+  v17 = [contextCopy viewStateForNode:node.var0 binding:v11];
 
   [(_TUIElementSearchBarBuilder *)v10 setViewState:v17];
-  v18 = [v9 stringForAttribute:47 node:a3.var0];
+  v18 = [attributesCopy stringForAttribute:47 node:node.var0];
   [(_TUIElementSearchBarBuilder *)v10 setCancelText:v18];
 
-  -[_TUIElementSearchBarBuilder setShowCancel:](v10, "setShowCancel:", [v9 BOOLForAttribute:192 node:a3.var0]);
+  -[_TUIElementSearchBarBuilder setShowCancel:](v10, "setShowCancel:", [attributesCopy BOOLForAttribute:192 node:node.var0]);
   v19 = objc_alloc_init(TUITextContentStyler);
-  v20 = [v9 colorForAttribute:30 node:a3.var0];
+  v20 = [attributesCopy colorForAttribute:30 node:node.var0];
   [(TUIBackgroundColorStyler *)v19 setBackgroundColor:v20];
 
-  v21 = [v9 colorForAttribute:51 node:a3.var0];
+  v21 = [attributesCopy colorForAttribute:51 node:node.var0];
   [(TUITextContentStyler *)v19 setTextColor:v21];
 
-  v22 = [v14 font];
-  [(TUITextContentStyler *)v19 setFont:v22];
+  font = [attributesForAttributedString font];
+  [(TUITextContentStyler *)v19 setFont:font];
 
-  v23 = [v9 colorForAttribute:205 node:a3.var0];
+  v23 = [attributesCopy colorForAttribute:205 node:node.var0];
 
   [(TUITextContentStyler *)v19 setTintColor:v23];
   [(_TUIElementSearchBarBuilder *)v10 setStyle:v19];
@@ -82,88 +82,88 @@
   return v10;
 }
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v15 = a3;
-  [v8 insetsForAttribute:208 node:var0];
-  [v15 setTouchInsets:{UIEdgeInsetsZero.top - v9, UIEdgeInsetsZero.left - v10, UIEdgeInsetsZero.bottom - v11, UIEdgeInsetsZero.right - v12}];
-  [v15 setEnabled:{objc_msgSend(v8, "BOOLForAttribute:withDefault:node:", 74, 1, var0)}];
-  [v8 floatForAttribute:157 withDefault:var0 node:1.0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [attributesCopy insetsForAttribute:208 node:var0];
+  [boxCopy setTouchInsets:{UIEdgeInsetsZero.top - v9, UIEdgeInsetsZero.left - v10, UIEdgeInsetsZero.bottom - v11, UIEdgeInsetsZero.right - v12}];
+  [boxCopy setEnabled:{objc_msgSend(attributesCopy, "BOOLForAttribute:withDefault:node:", 74, 1, var0)}];
+  [attributesCopy floatForAttribute:157 withDefault:var0 node:1.0];
   v14 = v13;
 
-  [v15 setPressedScale:v14];
+  [boxCopy setPressedScale:v14];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 finalizeStateMapWithContext:v9];
-  [v7 setStateMap:v10];
+  objectCopy = object;
+  builderCopy = builder;
+  contextCopy = context;
+  v10 = [builderCopy finalizeStateMapWithContext:contextCopy];
+  [objectCopy setStateMap:v10];
 
   v11 = [TUIElementActionTriggerHandler alloc];
-  v12 = [v8 finalizeTriggers];
-  v13 = [v9 actionObject];
-  v14 = [v9 actionDelegate];
-  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:v12 actionObject:v13 actionDelegate:v14];
+  finalizeTriggers = [builderCopy finalizeTriggers];
+  actionObject = [contextCopy actionObject];
+  actionDelegate = [contextCopy actionDelegate];
+  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:finalizeTriggers actionObject:actionObject actionDelegate:actionDelegate];
 
-  v16 = [v8 finalizeAnimationGroups];
-  [v7 setAnimationGroups:v16];
+  finalizeAnimationGroups = [builderCopy finalizeAnimationGroups];
+  [objectCopy setAnimationGroups:finalizeAnimationGroups];
 
-  v17 = TUIBoxChildrenWithProtocolAndRole(v7, &OBJC_PROTOCOL___TUIPlaceholderTextBox, 6);
-  v18 = [v17 firstObject];
+  v17 = TUIBoxChildrenWithProtocolAndRole(objectCopy, &OBJC_PROTOCOL___TUIPlaceholderTextBox, 6);
+  firstObject = [v17 firstObject];
 
-  v41 = v18;
-  v19 = [v18 placeholderString];
-  v20 = [v8 viewState];
-  v46 = [v8 text];
-  v21 = [v8 name];
-  v45 = [v8 returnKeyType];
-  [v8 editingInsets];
+  v41 = firstObject;
+  placeholderString = [firstObject placeholderString];
+  viewState = [builderCopy viewState];
+  text = [builderCopy text];
+  name = [builderCopy name];
+  returnKeyType = [builderCopy returnKeyType];
+  [builderCopy editingInsets];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [v8 style];
-  v42 = v9;
-  v31 = [v9 environment];
-  v44 = TUIKeyboardAppearanceFromEnvironmentStyle([v31 style]);
+  style = [builderCopy style];
+  v42 = contextCopy;
+  environment = [contextCopy environment];
+  v44 = TUIKeyboardAppearanceFromEnvironmentStyle([environment style]);
 
-  v43 = [v8 showCancel];
-  v32 = [v8 cancelText];
-  objc_initWeak(location, v7);
-  [v7 setTriggerHandler:v15];
+  showCancel = [builderCopy showCancel];
+  cancelText = [builderCopy cancelText];
+  objc_initWeak(location, objectCopy);
+  [objectCopy setTriggerHandler:v15];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_4AA98;
   v47[3] = &unk_25F138;
   v33 = v15;
   v48 = v33;
-  v34 = v20;
+  v34 = viewState;
   v49 = v34;
   objc_copyWeak(v56, location);
-  v35 = v21;
+  v35 = name;
   v50 = v35;
   v56[1] = v23;
   v56[2] = v25;
   v56[3] = v27;
   v56[4] = v29;
-  v36 = v19;
+  v36 = placeholderString;
   v51 = v36;
-  v37 = v30;
+  v37 = style;
   v52 = v37;
-  v38 = v46;
+  v38 = text;
   v53 = v38;
-  v39 = v45;
+  v39 = returnKeyType;
   v54 = v39;
   v56[5] = v44;
-  v40 = v32;
+  v40 = cancelText;
   v55 = v40;
-  v57 = v43;
-  [v7 setRenderModelBlock:v47];
+  v57 = showCancel;
+  [objectCopy setRenderModelBlock:v47];
 
   objc_destroyWeak(v56);
   objc_destroyWeak(location);

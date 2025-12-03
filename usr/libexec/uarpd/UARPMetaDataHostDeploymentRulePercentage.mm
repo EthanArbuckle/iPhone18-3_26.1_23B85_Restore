@@ -1,7 +1,7 @@
 @interface UARPMetaDataHostDeploymentRulePercentage
 - (UARPMetaDataHostDeploymentRulePercentage)init;
-- (UARPMetaDataHostDeploymentRulePercentage)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataHostDeploymentRulePercentage)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataHostDeploymentRulePercentage)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataHostDeploymentRulePercentage)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (UARPMetaDataHostDeploymentRulePercentage)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataHostDeploymentRulePercentage)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataHostDeploymentRulePercentage *)self init];
   if (!v6)
   {
@@ -41,7 +41,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = v5;
+  v7 = valueCopy;
   v8 = [v7 objectForKeyedSubscript:@"Percentage Limit"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -96,21 +96,21 @@ LABEL_14:
   return v16;
 }
 
-- (UARPMetaDataHostDeploymentRulePercentage)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataHostDeploymentRulePercentage)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataHostDeploymentRulePercentage *)self init];
   if (v6)
   {
-    if (a3 != 5)
+    if (length != 5)
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v6->_untilYear = uarpNtohs(*a4);
-    v6->_untilMonth = *(a4 + 2);
-    v6->_untilDay = *(a4 + 3);
-    v6->_percentageLimit = *(a4 + 4);
+    v6->_untilYear = uarpNtohs(*value);
+    v6->_untilMonth = *(value + 2);
+    v6->_untilDay = *(value + 3);
+    v6->_percentageLimit = *(value + 4);
     v7 = objc_opt_new();
     [v7 setDateFormat:@"yyyy-MM-dd"];
     untilMonth = v6->_untilMonth;
@@ -141,10 +141,10 @@ LABEL_6:
 {
   v3 = objc_opt_new();
   [v3 setDateFormat:@"yyyy-MM-dd"];
-  v4 = [(UARPMetaData *)self tlvName];
+  tlvName = [(UARPMetaData *)self tlvName];
   percentageLimit = self->_percentageLimit;
   v6 = [v3 stringFromDate:self->_untilDate];
-  v7 = [NSString stringWithFormat:@"<%@: %lu until %@>", v4, percentageLimit, v6];
+  v7 = [NSString stringWithFormat:@"<%@: %lu until %@>", tlvName, percentageLimit, v6];
 
   return v7;
 }

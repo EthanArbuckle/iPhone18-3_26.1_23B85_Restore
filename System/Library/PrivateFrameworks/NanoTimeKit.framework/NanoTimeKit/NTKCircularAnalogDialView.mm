@@ -1,148 +1,148 @@
 @interface NTKCircularAnalogDialView
 + (id)_disabledLayerActions;
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4 hideHourTicks:(BOOL)a5;
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4 smallTicksMatchingMinutes:(BOOL)a5;
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 options:(id *)a4 device:(id)a5;
-- (double)_tickOpactiyAtIndex:(int64_t)a3 bezelTextWidthInRadius:(double)a4 invisibleTicksAlpha:(double)a5 visibleTicksAlpha:(double)a6;
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4;
-- (void)_toggleRasterization:(BOOL)a3;
-- (void)applyColorTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)applyColorTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5;
-- (void)fillDialTransitionWithFraction:(double)a3 bezelTextWidthRadians:(double)a4;
-- (void)layoutLayerTicks:(id)a3 rotationAngleInDegree:(double)a4 smallTicks:(BOOL)a5;
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device;
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device hideHourTicks:(BOOL)ticks;
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device smallTicksMatchingMinutes:(BOOL)minutes;
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame options:(id *)options device:(id)device;
+- (double)_tickOpactiyAtIndex:(int64_t)index bezelTextWidthInRadius:(double)radius invisibleTicksAlpha:(double)alpha visibleTicksAlpha:(double)ticksAlpha;
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value;
+- (void)_toggleRasterization:(BOOL)rasterization;
+- (void)applyColorTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)applyColorTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette;
+- (void)fillDialTransitionWithFraction:(double)fraction bezelTextWidthRadians:(double)radians;
+- (void)layoutLayerTicks:(id)ticks rotationAngleInDegree:(double)degree smallTicks:(BOOL)smallTicks;
 - (void)layoutSubviews;
-- (void)setDialBackgroundColor:(id)a3;
-- (void)setHideHourTicks:(BOOL)a3;
-- (void)setHourTicksOpacity:(double)a3 bezelTextWidthRadians:(double)a4;
-- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)a3 invisbleTicksAlpha:(double)a4;
-- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)a3 finalBezelTextWidthInRadius:(double)a4 fraction:(double)a5;
+- (void)setDialBackgroundColor:(id)color;
+- (void)setHideHourTicks:(BOOL)ticks;
+- (void)setHourTicksOpacity:(double)opacity bezelTextWidthRadians:(double)radians;
+- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)radius invisbleTicksAlpha:(double)alpha;
+- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)radius finalBezelTextWidthInRadius:(double)inRadius fraction:(double)fraction;
 @end
 
 @implementation NTKCircularAnalogDialView
 
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  ___LayoutConstants_block_invoke_35(v9, &v15);
+  ___LayoutConstants_block_invoke_35(deviceCopy, &v15);
   v12 = 0;
   v13 = v15;
   v14 = v16;
-  v10 = [(NTKCircularAnalogDialView *)self initWithFrame:&v12 options:v9 device:x, y, width, height];
+  height = [(NTKCircularAnalogDialView *)self initWithFrame:&v12 options:deviceCopy device:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4 smallTicksMatchingMinutes:(BOOL)a5
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device smallTicksMatchingMinutes:(BOOL)minutes
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  minutesCopy = minutes;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  v11 = a4;
-  ___LayoutConstants_block_invoke_35(v11, &v17);
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_35(deviceCopy, &v17);
   v15 = v17;
   v16 = v18;
-  v14 = v5;
-  v12 = [(NTKCircularAnalogDialView *)self initWithFrame:&v14 options:v11 device:x, y, width, height];
+  v14 = minutesCopy;
+  height = [(NTKCircularAnalogDialView *)self initWithFrame:&v14 options:deviceCopy device:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 forDevice:(id)a4 hideHourTicks:(BOOL)a5
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame forDevice:(id)device hideHourTicks:(BOOL)ticks
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  ticksCopy = ticks;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
-  v11 = a4;
-  ___LayoutConstants_block_invoke_35(v11, &v18);
+  deviceCopy = device;
+  ___LayoutConstants_block_invoke_35(deviceCopy, &v18);
   v16 = v18;
   v17 = v19;
   v12 = 256;
-  if (!v5)
+  if (!ticksCopy)
   {
     v12 = 0;
   }
 
   v15 = v12;
-  v13 = [(NTKCircularAnalogDialView *)self initWithFrame:&v15 options:v11 device:x, y, width, height];
+  height = [(NTKCircularAnalogDialView *)self initWithFrame:&v15 options:deviceCopy device:x, y, width, height];
 
-  return v13;
+  return height;
 }
 
-- (NTKCircularAnalogDialView)initWithFrame:(CGRect)a3 options:(id *)a4 device:(id)a5
+- (NTKCircularAnalogDialView)initWithFrame:(CGRect)frame options:(id *)options device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v52.receiver = self;
   v52.super_class = NTKCircularAnalogDialView;
-  v13 = [(NTKCircularAnalogDialView *)&v52 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(NTKCircularAnalogDialView *)&v52 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    p_options = &v13->_options;
-    v16 = a4->var3.height;
-    v17 = *&a4->var2.height;
-    *&v13->_options.smallTicksMatchingMinutes = *&a4->var0;
-    *&v13->_options.hourTickSize.height = v17;
-    v13->_options.smallTickSize.height = v16;
-    objc_storeStrong(&v13->_device, a5);
-    v49 = v12;
-    v18 = [[NTKWhistlerAnalogColorPalette alloc] initWithDevice:v12];
+    p_options = &height->_options;
+    v16 = options->var3.height;
+    v17 = *&options->var2.height;
+    *&height->_options.smallTicksMatchingMinutes = *&options->var0;
+    *&height->_options.hourTickSize.height = v17;
+    height->_options.smallTickSize.height = v16;
+    objc_storeStrong(&height->_device, device);
+    v49 = deviceCopy;
+    v18 = [[NTKWhistlerAnalogColorPalette alloc] initWithDevice:deviceCopy];
     colorPalette = v14->_colorPalette;
     v14->_colorPalette = v18;
 
-    v20 = [MEMORY[0x277D75348] blackColor];
-    [(NTKCircularAnalogDialView *)v14 setBackgroundColor:v20];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKCircularAnalogDialView *)v14 setBackgroundColor:blackColor];
 
-    v21 = [(NTKCircularAnalogDialView *)v14 layer];
-    [v21 bounds];
+    layer = [(NTKCircularAnalogDialView *)v14 layer];
+    [layer bounds];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v30 = v26 * 0.5;
     v31 = v28 * 0.5;
-    v32 = [objc_opt_class() _disabledLayerActions];
+    _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
     v33 = objc_opt_new();
     dialBackgroundLayer = v14->_dialBackgroundLayer;
     v14->_dialBackgroundLayer = v33;
 
     [(CALayer *)v14->_dialBackgroundLayer setPosition:v30, v31];
     [(CALayer *)v14->_dialBackgroundLayer setBounds:v23, v25, v27, v29];
-    [(CALayer *)v14->_dialBackgroundLayer setActions:v32];
+    [(CALayer *)v14->_dialBackgroundLayer setActions:_disabledLayerActions];
     [(CALayer *)v14->_dialBackgroundLayer setCornerRadius:v30];
-    [v21 addSublayer:v14->_dialBackgroundLayer];
+    [layer addSublayer:v14->_dialBackgroundLayer];
     v35 = objc_opt_new();
     ticksLayer = v14->_ticksLayer;
     v14->_ticksLayer = v35;
 
     [(CALayer *)v14->_ticksLayer setPosition:v30, v31];
     [(CALayer *)v14->_ticksLayer setBounds:v23, v25, v27, v29];
-    [(CALayer *)v14->_ticksLayer setActions:v32];
-    [v21 addSublayer:v14->_ticksLayer];
-    v50 = [MEMORY[0x277CBEB18] array];
-    v37 = [MEMORY[0x277CBEB18] array];
-    v51 = [MEMORY[0x277CBEB18] array];
+    [(CALayer *)v14->_ticksLayer setActions:_disabledLayerActions];
+    [layer addSublayer:v14->_ticksLayer];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v38 = 0;
     v39 = 120;
     if (p_options->smallTicksMatchingMinutes)
@@ -158,23 +158,23 @@
       [v41 setBounds:{0.0, 0.0, v14->_options.smallTickSize.width, v14->_options.smallTickSize.height}];
       [v41 setCornerRadius:v14->_options.smallTickSize.width * 0.5];
       [v41 setPosition:{v30, v14->_options.smallTickSize.height * 0.5}];
-      [v41 setActions:v32];
+      [v41 setActions:_disabledLayerActions];
       [(CALayer *)v14->_ticksLayer addSublayer:v41];
-      [(NSArray *)v37 addObject:v41];
+      [(NSArray *)array2 addObject:v41];
       if (v40)
       {
-        [v41 setHidden:!a4->var1];
-        [(NSArray *)v51 addObject:v41];
-        if (!a4->var1)
+        [v41 setHidden:!options->var1];
+        [(NSArray *)array3 addObject:v41];
+        if (!options->var1)
         {
           v42 = objc_opt_new();
           [v42 setBounds:{0.0, 0.0, v14->_options.hourTickSize.width, v14->_options.hourTickSize.height}];
           [v42 setCornerRadius:v14->_options.hourTickSize.width * 0.5];
           [v42 setPosition:{v30, v14->_options.hourTickSize.height * 0.5}];
-          [v42 setActions:v32];
+          [v42 setActions:_disabledLayerActions];
           [(CALayer *)v14->_ticksLayer addSublayer:v42];
-          [(NSArray *)v50 addObject:v42];
-          [v42 setHidden:a4->var1];
+          [(NSArray *)array addObject:v42];
+          [v42 setHidden:options->var1];
         }
       }
 
@@ -183,18 +183,18 @@
 
     while (v14->_numberOfTicks > v38);
     allHourTicks = v14->_allHourTicks;
-    v14->_allHourTicks = v50;
-    v44 = v50;
+    v14->_allHourTicks = array;
+    v44 = array;
 
     allSmallTicks = v14->_allSmallTicks;
-    v14->_allSmallTicks = v37;
-    v46 = v37;
+    v14->_allSmallTicks = array2;
+    v46 = array2;
 
     smallMatchingHourTicks = v14->_smallMatchingHourTicks;
-    v14->_smallMatchingHourTicks = v51;
+    v14->_smallMatchingHourTicks = array3;
 
     [(NTKCircularAnalogDialView *)v14 _toggleRasterization:1];
-    v12 = v49;
+    deviceCopy = v49;
   }
 
   return v14;
@@ -224,10 +224,10 @@
   }
 }
 
-- (void)layoutLayerTicks:(id)a3 rotationAngleInDegree:(double)a4 smallTicks:(BOOL)a5
+- (void)layoutLayerTicks:(id)ticks rotationAngleInDegree:(double)degree smallTicks:(BOOL)smallTicks
 {
-  v5 = a5;
-  v7 = a3;
+  smallTicksCopy = smallTicks;
+  ticksCopy = ticks;
   v16 = *(MEMORY[0x277CBF2C0] + 16);
   *&v19.a = *MEMORY[0x277CBF2C0];
   *&v19.c = v16;
@@ -241,7 +241,7 @@
   *&v18.c = v16;
   *&v18.tx = *&v19.tx;
   CGAffineTransformTranslate(&v19, &v18, 0.0, tickPadding);
-  [v7 size];
+  [ticksCopy size];
   v14 = v9 * 0.5 - v13 * 0.5 - self->_tickPadding;
   v17 = v19;
   CGAffineTransformTranslate(&v18, &v17, 0.0, v14);
@@ -253,7 +253,7 @@
   v17 = v18;
   CGAffineTransformTranslate(&v18, &v17, 0.0, -v14);
   v19 = v18;
-  if (v5)
+  if (smallTicksCopy)
   {
     v17 = v19;
     CGAffineTransformTranslate(&v18, &v17, 0.0, (height - v11) * 0.5);
@@ -261,37 +261,37 @@
   }
 
   v18 = v19;
-  [v7 setAffineTransform:&v18];
+  [ticksCopy setAffineTransform:&v18];
 }
 
-- (void)setDialBackgroundColor:(id)a3
+- (void)setDialBackgroundColor:(id)color
 {
   dialBackgroundLayer = self->_dialBackgroundLayer;
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
 
-  [(CALayer *)dialBackgroundLayer setBackgroundColor:v6];
+  [(CALayer *)dialBackgroundLayer setBackgroundColor:cGColor];
 }
 
-- (void)applyColorTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)applyColorTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 circularDialFillColor];
-  v33 = [v9 circularDialFillColor];
-  v34 = v10;
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  circularDialFillColor = [paletteCopy circularDialFillColor];
+  circularDialFillColor2 = [colorPaletteCopy circularDialFillColor];
+  v34 = circularDialFillColor;
   v11 = NTKInterpolateBetweenColors();
   dialBackgroundLayer = self->_dialBackgroundLayer;
   v32 = v11;
   -[CALayer setBackgroundColor:](dialBackgroundLayer, "setBackgroundColor:", [v32 CGColor]);
-  if ([v8 isMulticolorPalette])
+  if ([paletteCopy isMulticolorPalette])
   {
-    v13 = 1;
+    isMulticolorPalette = 1;
   }
 
   else
   {
-    v13 = [v9 isMulticolorPalette];
+    isMulticolorPalette = [colorPaletteCopy isMulticolorPalette];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -299,21 +299,21 @@
   aBlock[2] = __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalette_toColorPalette___block_invoke;
   aBlock[3] = &unk_278782B10;
   aBlock[4] = self;
-  v14 = v8;
+  v14 = paletteCopy;
   v50 = v14;
-  v15 = v9;
+  v15 = colorPaletteCopy;
   v51 = v15;
-  v52 = a3;
+  fractionCopy = fraction;
   v16 = _Block_copy(aBlock);
-  v31 = [v14 circularDialSubtickColor];
-  v17 = [v15 circularDialSubtickColor];
+  circularDialSubtickColor = [v14 circularDialSubtickColor];
+  circularDialSubtickColor2 = [v15 circularDialSubtickColor];
   v18 = NTKInterpolateBetweenColors();
   allSmallTicks = self->_allSmallTicks;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalette_toColorPalette___block_invoke_2;
   v45[3] = &unk_278782B38;
-  v48 = v13;
+  v48 = isMulticolorPalette;
   v46 = v18;
   v47 = v16;
   v30 = v18;
@@ -325,19 +325,19 @@
   v41[3] = &unk_278782B60;
   v42 = v14;
   v43 = v15;
-  v44 = a3;
+  fractionCopy2 = fraction;
   v20 = v15;
   v21 = v14;
   v22 = _Block_copy(v41);
-  v23 = [v21 circularDialTickColor];
-  v24 = [v20 circularDialTickColor];
+  circularDialTickColor = [v21 circularDialTickColor];
+  circularDialTickColor2 = [v20 circularDialTickColor];
   v25 = NTKInterpolateBetweenColors();
   allHourTicks = self->_allHourTicks;
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalette_toColorPalette___block_invoke_4;
   v37[3] = &unk_278782B38;
-  v40 = v13;
+  v40 = isMulticolorPalette;
   v38 = v25;
   v39 = v22;
   v27 = v25;
@@ -420,20 +420,20 @@ void __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalet
   }
 }
 
-- (void)applyColorTransitionFraction:(double)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5
+- (void)applyColorTransitionFraction:(double)fraction fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette dialFillColorForColorPalette:v7];
-  v33 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette dialFillColorForColorPalette:v8];
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  v9 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette dialFillColorForColorPalette:paletteCopy];
+  v33 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette dialFillColorForColorPalette:colorPaletteCopy];
   v34 = v9;
   v10 = NTKInterpolateBetweenColors();
   dialBackgroundLayer = self->_dialBackgroundLayer;
   v32 = v10;
   -[CALayer setBackgroundColor:](dialBackgroundLayer, "setBackgroundColor:", [v32 CGColor]);
-  v12 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette minuteTicksColorForColorPalette:v7];
-  v30 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette minuteTicksColorForColorPalette:v8];
+  v12 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette minuteTicksColorForColorPalette:paletteCopy];
+  v30 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette minuteTicksColorForColorPalette:colorPaletteCopy];
   v31 = v12;
   v13 = NTKInterpolateBetweenColors();
   v47 = 0u;
@@ -466,9 +466,9 @@ void __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalet
     while (v16);
   }
 
-  v35 = v7;
-  v19 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette hourTicksColorForColorPalette:v7];
-  v20 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette hourTicksColorForColorPalette:v8];
+  v35 = paletteCopy;
+  v19 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette hourTicksColorForColorPalette:paletteCopy];
+  v20 = [(NTKWhistlerAnalogColorPalette *)self->_colorPalette hourTicksColorForColorPalette:colorPaletteCopy];
   v29 = v19;
   v21 = NTKInterpolateBetweenColors();
   v43 = 0u;
@@ -514,7 +514,7 @@ void __90__NTKCircularAnalogDialView_applyColorTransitionFraction_fromColorPalet
   v39 = v42;
   v27 = _Block_copy(aBlock);
   v27[2](v27, v35);
-  v27[2](v27, v8);
+  v27[2](v27, colorPaletteCopy);
   CLKInterpolateBetweenFloatsClipped();
   self->_tickPadding = v28;
   [(NTKCircularAnalogDialView *)self setNeedsLayout];
@@ -532,13 +532,13 @@ double __98__NTKCircularAnalogDialView_applyColorTransitionFraction_fromFaceColo
   return *(a1 + v4);
 }
 
-- (id)_instantaneousAnimationForKeyPath:(id)a3 value:(id)a4
+- (id)_instantaneousAnimationForKeyPath:(id)path value:(id)value
 {
   v4 = MEMORY[0x277CD9E10];
-  v5 = a4;
+  valueCopy = value;
   v6 = [v4 animationWithKeyPath:@"instanceDelay"];
-  [v6 setFromValue:v5];
-  [v6 setToValue:v5];
+  [v6 setFromValue:valueCopy];
+  [v6 setToValue:valueCopy];
 
   [v6 setBeginTime:0.00000011920929];
   [v6 setDuration:0.00001];
@@ -547,26 +547,26 @@ double __98__NTKCircularAnalogDialView_applyColorTransitionFraction_fromFaceColo
   return v6;
 }
 
-- (void)setHideHourTicks:(BOOL)a3
+- (void)setHideHourTicks:(BOOL)ticks
 {
-  self->_options.hideHourTicks = a3;
+  self->_options.hideHourTicks = ticks;
   allHourTicks = self->_allHourTicks;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__NTKCircularAnalogDialView_setHideHourTicks___block_invoke;
   v9[3] = &__block_descriptor_33_e24_v32__0__CALayer_8Q16_B24l;
-  v10 = a3;
+  ticksCopy = ticks;
   [(NSArray *)allHourTicks enumerateObjectsUsingBlock:v9];
   smallMatchingHourTicks = self->_smallMatchingHourTicks;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__NTKCircularAnalogDialView_setHideHourTicks___block_invoke_2;
   v7[3] = &__block_descriptor_33_e24_v32__0__CALayer_8Q16_B24l;
-  v8 = a3;
+  ticksCopy2 = ticks;
   [(NSArray *)smallMatchingHourTicks enumerateObjectsUsingBlock:v7];
 }
 
-- (void)setHourTicksOpacity:(double)a3 bezelTextWidthRadians:(double)a4
+- (void)setHourTicksOpacity:(double)opacity bezelTextWidthRadians:(double)radians
 {
   allHourTicks = self->_allHourTicks;
   v10[0] = MEMORY[0x277D85DD0];
@@ -574,8 +574,8 @@ double __98__NTKCircularAnalogDialView_applyColorTransitionFraction_fromFaceColo
   v10[2] = __71__NTKCircularAnalogDialView_setHourTicksOpacity_bezelTextWidthRadians___block_invoke;
   v10[3] = &unk_278782BC8;
   v10[4] = self;
-  *&v10[5] = a4;
-  *&v10[6] = a3;
+  *&v10[5] = radians;
+  *&v10[6] = opacity;
   [(NSArray *)allHourTicks enumerateObjectsUsingBlock:v10];
   smallMatchingHourTicks = self->_smallMatchingHourTicks;
   v9[0] = MEMORY[0x277D85DD0];
@@ -583,8 +583,8 @@ double __98__NTKCircularAnalogDialView_applyColorTransitionFraction_fromFaceColo
   v9[2] = __71__NTKCircularAnalogDialView_setHourTicksOpacity_bezelTextWidthRadians___block_invoke_2;
   v9[3] = &unk_278782BC8;
   v9[4] = self;
-  *&v9[5] = a4;
-  *&v9[6] = a3;
+  *&v9[5] = radians;
+  *&v9[6] = opacity;
   [(NSArray *)smallMatchingHourTicks enumerateObjectsUsingBlock:v9];
 }
 
@@ -606,9 +606,9 @@ void __71__NTKCircularAnalogDialView_setHourTicksOpacity_bezelTextWidthRadians__
   [v6 setOpacity:v5];
 }
 
-- (void)fillDialTransitionWithFraction:(double)a3 bezelTextWidthRadians:(double)a4
+- (void)fillDialTransitionWithFraction:(double)fraction bezelTextWidthRadians:(double)radians
 {
-  v6 = ([(NSArray *)self->_allSmallTicks count]* a3);
+  v6 = ([(NSArray *)self->_allSmallTicks count]* fraction);
   v7 = [(NSArray *)self->_allSmallTicks count];
   v8 = [(NSArray *)self->_allHourTicks count];
   allSmallTicks = self->_allSmallTicks;
@@ -617,7 +617,7 @@ void __71__NTKCircularAnalogDialView_setHourTicksOpacity_bezelTextWidthRadians__
   v10[2] = __82__NTKCircularAnalogDialView_fillDialTransitionWithFraction_bezelTextWidthRadians___block_invoke;
   v10[3] = &unk_278782BF0;
   v10[4] = self;
-  *&v10[5] = a4;
+  *&v10[5] = radians;
   v10[6] = v6;
   v10[7] = v7 / v8;
   [(NSArray *)allSmallTicks enumerateObjectsUsingBlock:v10];
@@ -646,16 +646,16 @@ void __82__NTKCircularAnalogDialView_fillDialTransitionWithFraction_bezelTextWid
   }
 }
 
-- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)a3 finalBezelTextWidthInRadius:(double)a4 fraction:(double)a5
+- (void)transitTicksWithInitialBezelTextWidthInRadius:(double)radius finalBezelTextWidthInRadius:(double)inRadius fraction:(double)fraction
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __112__NTKCircularAnalogDialView_transitTicksWithInitialBezelTextWidthInRadius_finalBezelTextWidthInRadius_fraction___block_invoke;
   aBlock[3] = &unk_278782BF0;
   aBlock[4] = self;
-  *&aBlock[5] = a3;
-  *&aBlock[6] = a4;
-  *&aBlock[7] = a5;
+  *&aBlock[5] = radius;
+  *&aBlock[6] = inRadius;
+  *&aBlock[7] = fraction;
   v6 = _Block_copy(aBlock);
   v7 = v6;
   if (!self->_options.hideHourTicks)
@@ -665,7 +665,7 @@ void __82__NTKCircularAnalogDialView_fillDialTransitionWithFraction_bezelTextWid
     v10 = 3221225472;
     v11 = __112__NTKCircularAnalogDialView_transitTicksWithInitialBezelTextWidthInRadius_finalBezelTextWidthInRadius_fraction___block_invoke_2;
     v12 = &unk_278782C18;
-    v13 = self;
+    selfCopy = self;
     v14 = v6;
     [(NSArray *)allHourTicks enumerateObjectsUsingBlock:&v9];
   }
@@ -685,15 +685,15 @@ void __112__NTKCircularAnalogDialView_transitTicksWithInitialBezelTextWidthInRad
   [v8 setOpacity:v7];
 }
 
-- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)a3 invisbleTicksAlpha:(double)a4
+- (void)transitInvisibleTicksAlphaWithBezelTextWidthInRadius:(double)radius invisbleTicksAlpha:(double)alpha
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __101__NTKCircularAnalogDialView_transitInvisibleTicksAlphaWithBezelTextWidthInRadius_invisbleTicksAlpha___block_invoke;
   aBlock[3] = &unk_278782BC8;
   aBlock[4] = self;
-  *&aBlock[5] = a3;
-  *&aBlock[6] = a4;
+  *&aBlock[5] = radius;
+  *&aBlock[6] = alpha;
   v5 = _Block_copy(aBlock);
   allHourTicks = self->_allHourTicks;
   v8[0] = MEMORY[0x277D85DD0];
@@ -757,36 +757,36 @@ void __50__NTKCircularAnalogDialView__disabledLayerActions__block_invoke()
   _disabledLayerActions__dictionary_2 = v1;
 }
 
-- (double)_tickOpactiyAtIndex:(int64_t)a3 bezelTextWidthInRadius:(double)a4 invisibleTicksAlpha:(double)a5 visibleTicksAlpha:(double)a6
+- (double)_tickOpactiyAtIndex:(int64_t)index bezelTextWidthInRadius:(double)radius invisibleTicksAlpha:(double)alpha visibleTicksAlpha:(double)ticksAlpha
 {
-  v8 = a4 * 0.5;
+  v8 = radius * 0.5;
   CLKDegreesToRadians();
   if (v9 >= v8)
   {
-    return a6;
+    return ticksAlpha;
   }
 
   else
   {
-    return a5;
+    return alpha;
   }
 }
 
-- (void)_toggleRasterization:(BOOL)a3
+- (void)_toggleRasterization:(BOOL)rasterization
 {
-  v3 = a3;
-  v5 = [(NTKCircularAnalogDialView *)self layer];
-  v6 = v5;
-  if (v3)
+  rasterizationCopy = rasterization;
+  layer = [(NTKCircularAnalogDialView *)self layer];
+  v6 = layer;
+  if (rasterizationCopy)
   {
-    [v5 setShouldRasterize:1];
+    [layer setShouldRasterize:1];
     [(CLKDevice *)self->_device screenScale];
     [v6 setRasterizationScale:?];
   }
 
   else
   {
-    [v5 setShouldRasterize:0];
+    [layer setShouldRasterize:0];
   }
 }
 

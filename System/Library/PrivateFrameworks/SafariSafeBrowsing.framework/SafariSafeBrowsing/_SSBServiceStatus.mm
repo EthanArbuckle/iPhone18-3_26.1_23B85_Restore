@@ -2,16 +2,16 @@
 - (NSArray)activeTransactions;
 - (NSArray)databaseUpdatersStatuses;
 - (NSString)name;
-- (_SSBServiceStatus)initWithServiceStatus:(ServiceStatus *)a3;
+- (_SSBServiceStatus)initWithServiceStatus:(ServiceStatus *)status;
 - (id).cxx_construct;
-- (id)bundleIdentifierForConnectionAtIndex:(unint64_t)a3;
-- (int)processIdentifierForConnectionAtIndex:(unint64_t)a3;
+- (id)bundleIdentifierForConnectionAtIndex:(unint64_t)index;
+- (int)processIdentifierForConnectionAtIndex:(unint64_t)index;
 - (unint64_t)databaseUpdaterState;
 @end
 
 @implementation _SSBServiceStatus
 
-- (_SSBServiceStatus)initWithServiceStatus:(ServiceStatus *)a3
+- (_SSBServiceStatus)initWithServiceStatus:(ServiceStatus *)status
 {
   v9.receiver = self;
   v9.super_class = _SSBServiceStatus;
@@ -24,25 +24,25 @@
       operator delete(v4->_serviceStatus.m_name.__rep_.__l.__data_);
     }
 
-    v6 = *a3->m_name.__rep_.__s.__data_;
-    *(&v5->_serviceStatus.m_name.__rep_.__l + 2) = *(&a3->m_name.__rep_.__l + 2);
+    v6 = *status->m_name.__rep_.__s.__data_;
+    *(&v5->_serviceStatus.m_name.__rep_.__l + 2) = *(&status->m_name.__rep_.__l + 2);
     *v5->_serviceStatus.m_name.__rep_.__s.__data_ = v6;
-    *(&a3->m_name.__rep_.__l + 23) = 0;
-    a3->m_name.__rep_.__s.__data_[0] = 0;
-    v5->_serviceStatus.var0 = a3->var0;
+    *(&status->m_name.__rep_.__l + 23) = 0;
+    status->m_name.__rep_.__s.__data_[0] = 0;
+    v5->_serviceStatus.var0 = status->var0;
     std::vector<std::string>::__vdeallocate(&v5[1]);
-    *&v5[1].super.isa = *a3[1].m_name.__rep_.__s.__data_;
-    v5[1]._serviceStatus.m_name.__rep_.__l.__size_ = *(&a3[1].m_name.__rep_.__l + 2);
-    a3[1].m_name.__rep_.__l.__data_ = 0;
-    a3[1].m_name.__rep_.__l.__size_ = 0;
-    *(&a3[1].m_name.__rep_.__l + 2) = 0;
+    *&v5[1].super.isa = *status[1].m_name.__rep_.__s.__data_;
+    v5[1]._serviceStatus.m_name.__rep_.__l.__size_ = *(&status[1].m_name.__rep_.__l + 2);
+    status[1].m_name.__rep_.__l.__data_ = 0;
+    status[1].m_name.__rep_.__l.__size_ = 0;
+    *(&status[1].m_name.__rep_.__l + 2) = 0;
     std::vector<SafeBrowsing::ServiceStatus::Connection>::__vdeallocate(&v5[1]._serviceStatus.m_name.__rep_.__l + 2);
-    *(&v5[1]._serviceStatus.m_name.__rep_.__l + 1) = *&a3[1].var0;
-    v5[2].super.isa = a3[2].m_name.__rep_.__l.__size_;
-    *&a3[1].var0 = 0;
-    a3[2].m_name.__rep_.__l.__data_ = 0;
-    a3[2].m_name.__rep_.__l.__size_ = 0;
-    std::vector<SafeBrowsing::ServiceStatus::DatabaseUpdaterStatus>::__move_assign(&v5[2]._serviceStatus, &a3[2].m_name.__rep_.__l + 1);
+    *(&v5[1]._serviceStatus.m_name.__rep_.__l + 1) = *&status[1].var0;
+    v5[2].super.isa = status[2].m_name.__rep_.__l.__size_;
+    *&status[1].var0 = 0;
+    status[2].m_name.__rep_.__l.__data_ = 0;
+    status[2].m_name.__rep_.__l.__size_ = 0;
+    std::vector<SafeBrowsing::ServiceStatus::DatabaseUpdaterStatus>::__move_assign(&v5[2]._serviceStatus, &status[2].m_name.__rep_.__l + 1);
     v7 = v5;
   }
 
@@ -79,60 +79,60 @@
   return v3;
 }
 
-- (int)processIdentifierForConnectionAtIndex:(unint64_t)a3
+- (int)processIdentifierForConnectionAtIndex:(unint64_t)index
 {
   v4 = *(&self[1]._serviceStatus.m_name.__rep_.__l + 2);
   v5 = (*&self[1]._serviceStatus.var0 - v4) >> 5;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
-    v7 = self;
+    selfCopy = self;
     v8 = MEMORY[0x277CBEAD8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector(a2);
     [v8 raise:*MEMORY[0x277CBE730] format:{@"-[%@ %@]", v10, v11}];
 
-    v4 = *(&v7[1]._serviceStatus.m_name.__rep_.__l + 2);
-    v5 = (*&v7[1]._serviceStatus.var0 - v4) >> 5;
+    v4 = *(&selfCopy[1]._serviceStatus.m_name.__rep_.__l + 2);
+    v5 = (*&selfCopy[1]._serviceStatus.var0 - v4) >> 5;
   }
 
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     __break(1u);
   }
 
   else
   {
-    LODWORD(self) = *(v4 + 32 * a3);
+    LODWORD(self) = *(v4 + 32 * index);
   }
 
   return self;
 }
 
-- (id)bundleIdentifierForConnectionAtIndex:(unint64_t)a3
+- (id)bundleIdentifierForConnectionAtIndex:(unint64_t)index
 {
   v4 = *(self + 8);
   v5 = (*(self + 9) - v4) >> 5;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
-    v7 = self;
+    selfCopy = self;
     v8 = MEMORY[0x277CBEAD8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector(a2);
     [v8 raise:*MEMORY[0x277CBE730] format:{@"-[%@ %@]", v10, v11}];
 
-    v4 = v7[8];
-    v5 = (v7[9] - v4) >> 5;
+    v4 = selfCopy[8];
+    v5 = (selfCopy[9] - v4) >> 5;
   }
 
-  if (v5 <= a3)
+  if (v5 <= index)
   {
     __break(1u);
     return self;
   }
 
-  v12 = v4 + 32 * a3;
+  v12 = v4 + 32 * index;
   v13 = (v12 + 8);
   v14 = *(v12 + 31);
   if (v14 < 0)

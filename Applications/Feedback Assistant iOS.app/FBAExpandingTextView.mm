@@ -1,25 +1,25 @@
 @interface FBAExpandingTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)resignFirstResponder;
-- (FBAExpandingTextView)initWithFrame:(CGRect)a3;
+- (FBAExpandingTextView)initWithFrame:(CGRect)frame;
 - (NSString)placeholderText;
-- (_TtC18Feedback_Assistant20FBAExpandingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (double)heightNeededForContentWidth:(double)a3;
+- (_TtC18Feedback_Assistant20FBAExpandingTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (double)heightNeededForContentWidth:(double)width;
 - (void)dealloc;
-- (void)didChange:(id)a3;
+- (void)didChange:(id)change;
 - (void)layoutSubviews;
-- (void)setContentSize:(CGSize)a3;
-- (void)setPlaceholderAttributedText:(id)a3;
-- (void)setPlaceholderText:(id)a3;
+- (void)setContentSize:(CGSize)size;
+- (void)setPlaceholderAttributedText:(id)text;
+- (void)setPlaceholderText:(id)text;
 @end
 
 @implementation FBAExpandingTextView
 
-- (FBAExpandingTextView)initWithFrame:(CGRect)a3
+- (FBAExpandingTextView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = FBAExpandingTextView;
-  v3 = [(FBAExpandingTextView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FBAExpandingTextView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -31,9 +31,9 @@
     v6 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [(FBAExpandingTextView *)v4 setPlaceholderLabel:v6];
 
-    v7 = [(FBAExpandingTextView *)v4 placeholderLabel];
+    placeholderLabel = [(FBAExpandingTextView *)v4 placeholderLabel];
     v8 = +[UIColor secondaryLabelColor];
-    [v7 setTextColor:v8];
+    [placeholderLabel setTextColor:v8];
 
     v9 = [UITraitCollection traitCollectionWithUserInterfaceStyle:0];
     v10 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
@@ -48,14 +48,14 @@
     v14 = [UIColor _dynamicColorWithColorsByTraitCollection:v13];
     [(FBAExpandingTextView *)v4 setBackgroundColor:v14];
 
-    v15 = [(FBAExpandingTextView *)v4 placeholderLabel];
-    [v15 setLineBreakMode:0];
+    placeholderLabel2 = [(FBAExpandingTextView *)v4 placeholderLabel];
+    [placeholderLabel2 setLineBreakMode:0];
 
-    v16 = [(FBAExpandingTextView *)v4 placeholderLabel];
-    [v16 setNumberOfLines:0];
+    placeholderLabel3 = [(FBAExpandingTextView *)v4 placeholderLabel];
+    [placeholderLabel3 setNumberOfLines:0];
 
-    v17 = [(FBAExpandingTextView *)v4 placeholderLabel];
-    [(FBAExpandingTextView *)v4 addSubview:v17];
+    placeholderLabel4 = [(FBAExpandingTextView *)v4 placeholderLabel];
+    [(FBAExpandingTextView *)v4 addSubview:placeholderLabel4];
   }
 
   return v4;
@@ -64,52 +64,52 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for FBAExpandingTextView();
   [(FBAExpandingTextView *)&v6 dealloc];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("paste:" != a3)
+  senderCopy = sender;
+  if ("paste:" != action)
   {
     goto LABEL_5;
   }
 
-  v7 = [(FBAExpandingTextView *)self delegate];
+  delegate = [(FBAExpandingTextView *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
 LABEL_5:
     v10.receiver = self;
     v10.super_class = FBAExpandingTextView;
-    v8 = [(FBAExpandingTextView *)&v10 canPerformAction:a3 withSender:v6];
+    canPerformPaste = [(FBAExpandingTextView *)&v10 canPerformAction:action withSender:senderCopy];
     goto LABEL_6;
   }
 
-  v8 = [v7 canPerformPaste];
+  canPerformPaste = [delegate canPerformPaste];
 
 LABEL_6:
-  return v8;
+  return canPerformPaste;
 }
 
-- (void)didChange:(id)a3
+- (void)didChange:(id)change
 {
   [(FBAExpandingTextView *)self frame];
   v5 = v4;
   [(FBAExpandingTextView *)self heightNeededForContentWidth:v4];
   [(FBAExpandingTextView *)self setContentSize:v5, v6];
-  v8 = [(FBAExpandingTextView *)self placeholderLabel];
-  v7 = [(FBAExpandingTextView *)self textStorage];
-  [v8 setHidden:{objc_msgSend(v7, "length") != 0}];
+  placeholderLabel = [(FBAExpandingTextView *)self placeholderLabel];
+  textStorage = [(FBAExpandingTextView *)self textStorage];
+  [placeholderLabel setHidden:{objc_msgSend(textStorage, "length") != 0}];
 }
 
-- (double)heightNeededForContentWidth:(double)a3
+- (double)heightNeededForContentWidth:(double)width
 {
   if (!qword_10010B0B8)
   {
@@ -120,22 +120,22 @@ LABEL_6:
     qword_10010B0B8 = v6;
   }
 
-  v8 = [(FBAExpandingTextView *)self text];
-  [qword_10010B0B8 setText:v8];
+  text = [(FBAExpandingTextView *)self text];
+  [qword_10010B0B8 setText:text];
 
-  v9 = [(FBAExpandingTextView *)self font];
-  [qword_10010B0B8 setFont:v9];
+  font = [(FBAExpandingTextView *)self font];
+  [qword_10010B0B8 setFont:font];
 
   [(FBAExpandingTextView *)self textContainerInset];
   [qword_10010B0B8 setTextContainerInset:?];
-  [qword_10010B0B8 sizeThatFits:{a3, 1.79769313e308}];
+  [qword_10010B0B8 sizeThatFits:{width, 1.79769313e308}];
   return v10 + 8.0;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(FBAExpandingTextView *)self contentSize];
   v7 = v6;
   v9.receiver = self;
@@ -143,43 +143,43 @@ LABEL_6:
   [(FBAExpandingTextView *)&v9 setContentSize:width, height];
   if (v7 != height)
   {
-    v8 = [(FBAExpandingTextView *)self delegate];
+    delegate = [(FBAExpandingTextView *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 textViewDidChangeContentHeight:self];
+      [delegate textViewDidChangeContentHeight:self];
     }
   }
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v7 = a3;
-  v4 = [(FBAExpandingTextView *)self placeholderLabel];
-  v5 = [v4 text];
-  v6 = [v5 isEqualToString:v7];
+  textCopy = text;
+  placeholderLabel = [(FBAExpandingTextView *)self placeholderLabel];
+  text = [placeholderLabel text];
+  v6 = [text isEqualToString:textCopy];
 
   if ((v6 & 1) == 0)
   {
-    [v4 setText:v7];
-    [v4 sizeToFit];
+    [placeholderLabel setText:textCopy];
+    [placeholderLabel sizeToFit];
     [(FBAExpandingTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlaceholderAttributedText:(id)a3
+- (void)setPlaceholderAttributedText:(id)text
 {
-  v9 = a3;
-  v4 = [(FBAExpandingTextView *)self placeholderLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 isEqualToAttributedString:v9];
+  textCopy = text;
+  placeholderLabel = [(FBAExpandingTextView *)self placeholderLabel];
+  attributedText = [placeholderLabel attributedText];
+  v6 = [attributedText isEqualToAttributedString:textCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(FBAExpandingTextView *)self placeholderLabel];
-    [v7 setAttributedText:v9];
+    placeholderLabel2 = [(FBAExpandingTextView *)self placeholderLabel];
+    [placeholderLabel2 setAttributedText:textCopy];
 
-    v8 = [(FBAExpandingTextView *)self placeholderLabel];
-    [v8 sizeToFit];
+    placeholderLabel3 = [(FBAExpandingTextView *)self placeholderLabel];
+    [placeholderLabel3 sizeToFit];
 
     [(FBAExpandingTextView *)self setNeedsLayout];
   }
@@ -187,10 +187,10 @@ LABEL_6:
 
 - (NSString)placeholderText
 {
-  v2 = [(FBAExpandingTextView *)self placeholderLabel];
-  v3 = [v2 text];
+  placeholderLabel = [(FBAExpandingTextView *)self placeholderLabel];
+  text = [placeholderLabel text];
 
-  return v3;
+  return text;
 }
 
 - (void)layoutSubviews
@@ -198,31 +198,31 @@ LABEL_6:
   v15.receiver = self;
   v15.super_class = FBAExpandingTextView;
   [(FBAExpandingTextView *)&v15 layoutSubviews];
-  v3 = [(FBAExpandingTextView *)self placeholderLabel];
-  v4 = [(FBAExpandingTextView *)self textStorage];
-  [v3 setHidden:{objc_msgSend(v4, "length") != 0}];
+  placeholderLabel = [(FBAExpandingTextView *)self placeholderLabel];
+  textStorage = [(FBAExpandingTextView *)self textStorage];
+  [placeholderLabel setHidden:{objc_msgSend(textStorage, "length") != 0}];
 
   [(FBAExpandingTextView *)self bounds];
   v6 = v5 + 10.0;
   v8 = v7 + 5.0;
   v10 = v9 + -20.0;
   v12 = v11 + -10.0;
-  v13 = [(FBAExpandingTextView *)self placeholderLabel];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  placeholderLabel2 = [(FBAExpandingTextView *)self placeholderLabel];
+  [placeholderLabel2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = [(FBAExpandingTextView *)self placeholderLabel];
-  [v14 sizeToFit];
+  placeholderLabel3 = [(FBAExpandingTextView *)self placeholderLabel];
+  [placeholderLabel3 sizeToFit];
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000468AC();
 
   return v3 & 1;
 }
 
-- (_TtC18Feedback_Assistant20FBAExpandingTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC18Feedback_Assistant20FBAExpandingTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

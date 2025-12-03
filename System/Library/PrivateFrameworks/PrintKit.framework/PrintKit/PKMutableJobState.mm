@@ -1,10 +1,10 @@
 @interface PKMutableJobState
 - (PKMutableJobState)init;
-- (PKMutableJobState)initWithCoder:(id)a3;
-- (PKMutableJobState)initWithUserCodableDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKMutableJobState)initWithCoder:(id)coder;
+- (PKMutableJobState)initWithUserCodableDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userCodableDictionary;
-- (void)visitProperties:(Visitor *)a3;
+- (void)visitProperties:(Visitor *)properties;
 @end
 
 @implementation PKMutableJobState
@@ -16,7 +16,7 @@
   return [(PKMutableJobState *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v17 = *MEMORY[0x277D85DE8];
   v14 = 0;
@@ -82,16 +82,16 @@ LABEL_16:
   return v11;
 }
 
-- (PKMutableJobState)initWithCoder:(id)a3
+- (PKMutableJobState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKMutableJobState;
   v5 = [(PKMutableJobState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    DecodeVisitor::visitProperties(v5, v4);
+    DecodeVisitor::visitProperties(v5, coderCopy);
   }
 
   return v6;
@@ -119,9 +119,9 @@ void __42__PKMutableJobState_userCodableDictionary__block_invoke(uint64_t a1, vo
   [*(a1 + 32) setObject:v9 forKeyedSubscript:v10];
 }
 
-- (PKMutableJobState)initWithUserCodableDictionary:(id)a3
+- (PKMutableJobState)initWithUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKMutableJobState;
   v5 = [(PKMutableJobState *)&v9 init];
@@ -131,7 +131,7 @@ void __42__PKMutableJobState_userCodableDictionary__block_invoke(uint64_t a1, vo
     v7[1] = 3221225472;
     v7[2] = __51__PKMutableJobState_initWithUserCodableDictionary___block_invoke;
     v7[3] = &unk_279A92468;
-    v8 = v4;
+    v8 = dictionaryCopy;
     UserCodedSerializationVisitor::visitProperties(v5, v7);
   }
 
@@ -153,34 +153,34 @@ void __51__PKMutableJobState_initWithUserCodableDictionary___block_invoke(uint64
   }
 }
 
-- (void)visitProperties:(Visitor *)a3
+- (void)visitProperties:(Visitor *)properties
 {
-  (*(a3->var0 + 2))(a3, a2);
-  (*(a3->var0 + 5))(a3, @"localJobID", &self->_localJobID);
-  (*(a3->var0 + 9))(a3, @"printerEndpointData", &self->_printerEndpointData);
-  (*(a3->var0 + 7))(a3, @"printerDisplayName", &self->_printerDisplayName);
-  (*(a3->var0 + 7))(a3, @"printerLocation", &self->_printerLocation);
+  (*(properties->var0 + 2))(properties, a2);
+  (*(properties->var0 + 5))(properties, @"localJobID", &self->_localJobID);
+  (*(properties->var0 + 9))(properties, @"printerEndpointData", &self->_printerEndpointData);
+  (*(properties->var0 + 7))(properties, @"printerDisplayName", &self->_printerDisplayName);
+  (*(properties->var0 + 7))(properties, @"printerLocation", &self->_printerLocation);
   printerKind = self->_printerKind;
-  (*(a3->var0 + 5))(a3, @"printerKind", &printerKind);
+  (*(properties->var0 + 5))(properties, @"printerKind", &printerKind);
   self->_printerKind = printerKind;
-  (*(a3->var0 + 21))(a3, @"settings", &self->_settings);
-  (*(a3->var0 + 11))(a3, @"timeAtCreation", &self->_timeAtCreation);
+  (*(properties->var0 + 21))(properties, @"settings", &self->_settings);
+  (*(properties->var0 + 11))(properties, @"timeAtCreation", &self->_timeAtCreation);
   printerKind = self->_state;
-  (*(a3->var0 + 5))(a3, @"state", &printerKind);
+  (*(properties->var0 + 5))(properties, @"state", &printerKind);
   self->_state = printerKind;
-  (*(a3->var0 + 5))(a3, @"mediaSheetsCompleted", &self->_mediaSheetsCompleted);
-  (*(a3->var0 + 11))(a3, @"timeAtProcessing", &self->_timeAtProcessing);
-  (*(a3->var0 + 11))(a3, @"timeAtCompleted", &self->_timeAtCompleted);
-  (*(a3->var0 + 5))(a3, @"mediaSheets", &self->_mediaSheets);
-  (*(a3->var0 + 5))(a3, @"mediaProgress", &self->_mediaProgress);
-  (*(a3->var0 + 5))(a3, @"remoteJobId", &self->_remoteJobId);
-  (*(a3->var0 + 7))(a3, @"PIN", &self->_PIN);
-  (*(a3->var0 + 7))(a3, @"jobPrinterStateMessage", &self->_jobPrinterStateMessage);
-  (*(a3->var0 + 15))(a3, @"jobPrinterStateReasons", &self->_jobPrinterStateReasons);
-  (*(a3->var0 + 7))(a3, @"jobStateMessage", &self->_jobStateMessage);
-  (*(a3->var0 + 15))(a3, @"jobStateReasons", &self->_jobStateReasons);
-  (*(a3->var0 + 9))(a3, @"thumbnailImage", &self->_thumbnailImage);
-  (*(a3->var0 + 24))(a3);
+  (*(properties->var0 + 5))(properties, @"mediaSheetsCompleted", &self->_mediaSheetsCompleted);
+  (*(properties->var0 + 11))(properties, @"timeAtProcessing", &self->_timeAtProcessing);
+  (*(properties->var0 + 11))(properties, @"timeAtCompleted", &self->_timeAtCompleted);
+  (*(properties->var0 + 5))(properties, @"mediaSheets", &self->_mediaSheets);
+  (*(properties->var0 + 5))(properties, @"mediaProgress", &self->_mediaProgress);
+  (*(properties->var0 + 5))(properties, @"remoteJobId", &self->_remoteJobId);
+  (*(properties->var0 + 7))(properties, @"PIN", &self->_PIN);
+  (*(properties->var0 + 7))(properties, @"jobPrinterStateMessage", &self->_jobPrinterStateMessage);
+  (*(properties->var0 + 15))(properties, @"jobPrinterStateReasons", &self->_jobPrinterStateReasons);
+  (*(properties->var0 + 7))(properties, @"jobStateMessage", &self->_jobStateMessage);
+  (*(properties->var0 + 15))(properties, @"jobStateReasons", &self->_jobStateReasons);
+  (*(properties->var0 + 9))(properties, @"thumbnailImage", &self->_thumbnailImage);
+  (*(properties->var0 + 24))(properties);
 }
 
 @end

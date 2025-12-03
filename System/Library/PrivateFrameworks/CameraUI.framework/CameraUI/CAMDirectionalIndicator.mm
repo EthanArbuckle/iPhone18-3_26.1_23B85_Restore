@@ -1,22 +1,22 @@
 @interface CAMDirectionalIndicator
 + (CGSize)_circleSize;
 + (id)_createCircleImage;
-- (CAMDirectionalIndicator)initWithFrame:(CGRect)a3;
+- (CAMDirectionalIndicator)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
-- (void)_updateArrowColorAnimated:(BOOL)a3;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
+- (void)_updateArrowColorAnimated:(BOOL)animated;
 - (void)_updateArrowLineWidth;
-- (void)_updateArrowShapeAnimated:(BOOL)a3;
-- (void)setDirection:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)_updateArrowShapeAnimated:(BOOL)animated;
+- (void)setDirection:(int64_t)direction animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation CAMDirectionalIndicator
 
 + (CGSize)_circleSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = 1.0 / v3;
 
   v5 = v4 + 27.0;
@@ -30,11 +30,11 @@
 {
   v2 = *MEMORY[0x1E695F058];
   v3 = *(MEMORY[0x1E695F058] + 8);
-  [a1 _circleSize];
+  [self _circleSize];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v10 = v9;
   v16.width = v5;
   v16.height = v7;
@@ -54,12 +54,12 @@
   return v13;
 }
 
-- (CAMDirectionalIndicator)initWithFrame:(CGRect)a3
+- (CAMDirectionalIndicator)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = CAMDirectionalIndicator;
-  v3 = [(CAMDirectionalIndicator *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMDirectionalIndicator *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69794A0]);
@@ -67,23 +67,23 @@
     [v4 setLineCap:*MEMORY[0x1E6979E80]];
     [v4 setLineJoin:*MEMORY[0x1E6979E90]];
     objc_storeStrong(&v3->__arrowLayer, v4);
-    v5 = [(CAMDirectionalIndicator *)v3 layer];
-    [v5 addSublayer:v4];
+    layer = [(CAMDirectionalIndicator *)v3 layer];
+    [layer addSublayer:v4];
 
-    v6 = [objc_opt_class() _createCircleImage];
-    v7 = [v6 CGImage];
-    v8 = [(CAMDirectionalIndicator *)v3 layer];
-    [v8 setContents:v7];
+    _createCircleImage = [objc_opt_class() _createCircleImage];
+    cGImage = [_createCircleImage CGImage];
+    layer2 = [(CAMDirectionalIndicator *)v3 layer];
+    [layer2 setContents:cGImage];
 
     v9 = *MEMORY[0x1E6979DD0];
-    v10 = [(CAMDirectionalIndicator *)v3 layer];
-    [v10 setContentsGravity:v9];
+    layer3 = [(CAMDirectionalIndicator *)v3 layer];
+    [layer3 setContentsGravity:v9];
 
-    v11 = [(CAMDirectionalIndicator *)v3 traitCollection];
-    [v11 displayScale];
+    traitCollection = [(CAMDirectionalIndicator *)v3 traitCollection];
+    [traitCollection displayScale];
     v13 = v12;
-    v14 = [(CAMDirectionalIndicator *)v3 layer];
-    [v14 setContentsScale:v13];
+    layer4 = [(CAMDirectionalIndicator *)v3 layer];
+    [layer4 setContentsScale:v13];
 
     [(CAMDirectionalIndicator *)v3 _updateArrowColorAnimated:0];
     [(CAMDirectionalIndicator *)v3 _updateArrowLineWidth];
@@ -105,32 +105,32 @@
   return result;
 }
 
-- (void)setDirection:(int64_t)a3 animated:(BOOL)a4
+- (void)setDirection:(int64_t)direction animated:(BOOL)animated
 {
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
-    self->_direction = a3;
-    [(CAMDirectionalIndicator *)self _updateArrowShapeAnimated:a4];
+    self->_direction = direction;
+    [(CAMDirectionalIndicator *)self _updateArrowShapeAnimated:animated];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CAMDirectionalIndicator *)self isSelected];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  isSelected = [(CAMDirectionalIndicator *)self isSelected];
   v8.receiver = self;
   v8.super_class = CAMDirectionalIndicator;
-  [(CAMDirectionalIndicator *)&v8 setSelected:v5];
-  if (v7 != v5)
+  [(CAMDirectionalIndicator *)&v8 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
-    [(CAMDirectionalIndicator *)self _updateArrowColorAnimated:v4];
+    [(CAMDirectionalIndicator *)self _updateArrowColorAnimated:animatedCopy];
   }
 }
 
-- (void)_updateArrowShapeAnimated:(BOOL)a3
+- (void)_updateArrowShapeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMDirectionalIndicator *)self bounds];
   UIRectGetCenter();
   CAMPixelWidthForView(self);
@@ -165,10 +165,10 @@
   v29.size.height = height;
   MaxX = CGRectGetMaxX(v29);
   Mutable = CGPathCreateMutable();
-  v15 = [(CAMDirectionalIndicator *)self direction];
-  if (v15)
+  direction = [(CAMDirectionalIndicator *)self direction];
+  if (direction)
   {
-    if (v15 != 1)
+    if (direction != 1)
     {
       goto LABEL_6;
     }
@@ -186,12 +186,12 @@
   CGPathAddLineToPoint(Mutable, 0, MidX, MaxY);
   CGPathAddLineToPoint(Mutable, 0, MaxX, v16);
 LABEL_6:
-  v23 = [(CAMDirectionalIndicator *)self _arrowLayer];
-  if (v3)
+  _arrowLayer = [(CAMDirectionalIndicator *)self _arrowLayer];
+  if (animatedCopy)
   {
     v17 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
     [v17 setAdditive:1];
-    [v17 setFromValue:{objc_msgSend(v23, "path")}];
+    [v17 setFromValue:{objc_msgSend(_arrowLayer, "path")}];
     [v17 setToValue:Mutable];
     LODWORD(v18) = 1045220557;
     LODWORD(v19) = 1041865114;
@@ -201,10 +201,10 @@ LABEL_6:
     [v17 setTimingFunction:v22];
 
     [v17 setDuration:0.5];
-    [v23 addAnimation:v17 forKey:@"invertDirection"];
+    [_arrowLayer addAnimation:v17 forKey:@"invertDirection"];
   }
 
-  [v23 setPath:Mutable];
+  [_arrowLayer setPath:Mutable];
   CGPathRelease(Mutable);
 }
 
@@ -212,21 +212,21 @@ LABEL_6:
 {
   v3 = 2.0;
   v4 = 2.0 - CAMPixelWidthForView(self);
-  v5 = [(CAMDirectionalIndicator *)self traitCollection];
-  v6 = [v5 legibilityWeight];
+  traitCollection = [(CAMDirectionalIndicator *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
 
-  if (v6 != 1)
+  if (legibilityWeight != 1)
   {
     v3 = v4;
   }
 
-  v7 = [(CAMDirectionalIndicator *)self _arrowLayer];
-  [v7 setLineWidth:v3];
+  _arrowLayer = [(CAMDirectionalIndicator *)self _arrowLayer];
+  [_arrowLayer setLineWidth:v3];
 }
 
-- (void)_updateArrowColorAnimated:(BOOL)a3
+- (void)_updateArrowColorAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(CAMDirectionalIndicator *)self isSelected]& 1) != 0)
   {
     CAMYellowColor();
@@ -237,27 +237,27 @@ LABEL_6:
     [MEMORY[0x1E69DC888] whiteColor];
   }
   v5 = ;
-  v6 = [v5 CGColor];
+  cGColor = [v5 CGColor];
 
-  v16 = [(CAMDirectionalIndicator *)self _arrowLayer];
-  v7 = [v16 presentationLayer];
-  if (v7)
+  _arrowLayer = [(CAMDirectionalIndicator *)self _arrowLayer];
+  presentationLayer = [_arrowLayer presentationLayer];
+  if (presentationLayer)
   {
-    v8 = v7;
+    v8 = presentationLayer;
   }
 
   else
   {
-    v8 = v16;
+    v8 = _arrowLayer;
   }
 
   v9 = v8;
 
-  if (v3)
+  if (animatedCopy)
   {
     v10 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeColor"];
     [v10 setFromValue:{objc_msgSend(v9, "strokeColor")}];
-    [v10 setToValue:v6];
+    [v10 setToValue:cGColor];
     LODWORD(v11) = 1045220557;
     LODWORD(v12) = 1041865114;
     LODWORD(v13) = 1.0;
@@ -266,22 +266,22 @@ LABEL_6:
     [v10 setTimingFunction:v15];
 
     [v10 setDuration:0.5];
-    [v16 addAnimation:v10 forKey:@"selectionColor"];
+    [_arrowLayer addAnimation:v10 forKey:@"selectionColor"];
   }
 
-  [v16 setStrokeColor:v6];
+  [_arrowLayer setStrokeColor:cGColor];
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  v4 = [(CAMDirectionalIndicator *)self direction];
+  direction = [(CAMDirectionalIndicator *)self direction];
   v5 = @"chevron.down";
-  if (v4 != 1)
+  if (direction != 1)
   {
     v5 = 0;
   }
 
-  if (v4)
+  if (direction)
   {
     v6 = v5;
   }
@@ -292,8 +292,8 @@ LABEL_6:
   }
 
   v7 = MEMORY[0x1E69DCAB8];
-  v8 = [(CAMDirectionalIndicator *)self traitCollection];
-  v9 = [v7 systemImageNamed:v6 compatibleWithTraitCollection:v8];
+  traitCollection = [(CAMDirectionalIndicator *)self traitCollection];
+  v9 = [v7 systemImageNamed:v6 compatibleWithTraitCollection:traitCollection];
 
   v10 = objc_alloc(MEMORY[0x1E69DC618]);
   v11 = [v10 initWithTitle:0 image:v9 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];

@@ -1,16 +1,16 @@
 @interface VKTimer
-- (VKTimer)initWithTarget:(id)a3 selector:(SEL)a4 queue:(id)a5;
+- (VKTimer)initWithTarget:(id)target selector:(SEL)selector queue:(id)queue;
 - (void)dealloc;
 - (void)disable;
-- (void)fireAfter:(double)a3;
+- (void)fireAfter:(double)after;
 @end
 
 @implementation VKTimer
 
 - (void)disable
 {
-  v3 = [MEMORY[0x1E695DF00] distantFuture];
-  [v3 timeIntervalSinceReferenceDate];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture timeIntervalSinceReferenceDate];
   self->_nextFireDate = v4;
 
   source = self->_source;
@@ -18,11 +18,11 @@
   dispatch_source_set_timer(source, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
 }
 
-- (void)fireAfter:(double)a3
+- (void)fireAfter:(double)after
 {
-  self->_nextFireDate = CFAbsoluteTimeGetCurrent() + a3;
+  self->_nextFireDate = CFAbsoluteTimeGetCurrent() + after;
   source = self->_source;
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (after * 1000000000.0));
 
   dispatch_source_set_timer(source, v6, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
 }
@@ -38,11 +38,11 @@
   [(VKTimer *)&v4 dealloc];
 }
 
-- (VKTimer)initWithTarget:(id)a3 selector:(SEL)a4 queue:(id)a5
+- (VKTimer)initWithTarget:(id)target selector:(SEL)selector queue:(id)queue
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9)
+  targetCopy = target;
+  queueCopy = queue;
+  if (!queueCopy)
   {
     goto LABEL_6;
   }
@@ -52,23 +52,23 @@
   self = [(VKTimer *)&v22 init];
   if (self)
   {
-    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v9);
+    v10 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     source = self->_source;
     self->_source = v10;
 
     if (self->_source)
     {
-      v12 = self;
+      selfCopy = self;
       v13 = self->_source;
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __41__VKTimer_initWithTarget_selector_queue___block_invoke;
       v17[3] = &unk_1E7B39630;
-      v14 = v12;
+      v14 = selfCopy;
       v18 = v14;
       v20 = v14;
-      v21 = a4;
-      v19 = v8;
+      selectorCopy = selector;
+      v19 = targetCopy;
       dispatch_source_set_event_handler(v13, v17);
       v14->_nextFireDate = 3153600000.0;
       dispatch_resume(self->_source);
@@ -77,16 +77,16 @@
     }
 
 LABEL_6:
-    v15 = 0;
+    selfCopy2 = 0;
     goto LABEL_7;
   }
 
 LABEL_5:
   self = self;
-  v15 = self;
+  selfCopy2 = self;
 LABEL_7:
 
-  return v15;
+  return selfCopy2;
 }
 
 uint64_t __41__VKTimer_initWithTarget_selector_queue___block_invoke(uint64_t a1)

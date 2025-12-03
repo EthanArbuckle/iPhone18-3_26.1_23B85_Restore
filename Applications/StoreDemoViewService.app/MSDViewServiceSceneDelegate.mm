@@ -1,19 +1,19 @@
 @interface MSDViewServiceSceneDelegate
-- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)invalidation;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation MSDViewServiceSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  sceneCopy = scene;
+  sessionCopy = session;
   v9 = sub_1000015E4();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -25,27 +25,27 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    v10 = sceneCopy;
     [v10 setDisablesControlCenter:1];
     [v10 setDisablesSiri:1];
     [v10 setDesiredHardwareButtonEvents:63];
-    v11 = [v10 configurationContext];
-    v12 = [v11 userInfo];
-    v13 = [v12 objectForKey:@"DisableIdleTimer"];
+    configurationContext = [v10 configurationContext];
+    userInfo = [configurationContext userInfo];
+    v13 = [userInfo objectForKey:@"DisableIdleTimer"];
 
     if (v13)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
         v15 = sub_1000015E4();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          sub_100005900(v14, v15);
+          sub_100005900(bOOLValue, v15);
         }
 
-        [v10 setIdleTimerDisabled:v14 forReason:@"DisableIdleTimerCommonKey"];
+        [v10 setIdleTimerDisabled:bOOLValue forReason:@"DisableIdleTimerCommonKey"];
       }
     }
 
@@ -53,21 +53,21 @@
     v17 = [[SecureUIWindow alloc] initWithWindowScene:v10];
     [(MSDViewServiceSceneDelegate *)self setWindow:v17];
 
-    v18 = [(MSDViewServiceSceneDelegate *)self window];
-    [v18 setRootViewController:v16];
+    window = [(MSDViewServiceSceneDelegate *)self window];
+    [window setRootViewController:v16];
 
-    v19 = [(MSDViewServiceSceneDelegate *)self window];
-    [v19 makeKeyAndVisible];
+    window2 = [(MSDViewServiceSceneDelegate *)self window];
+    [window2 makeKeyAndVisible];
   }
 
   else
   {
-    sub_10000585C(v8, v20);
+    sub_10000585C(sessionCopy, v20);
     v16 = *v20;
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = sub_1000015E4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -80,7 +80,7 @@
   [(MSDViewServiceSceneDelegate *)self setWindow:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v3 = sub_1000015E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -91,7 +91,7 @@
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v3 = sub_1000015E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -102,7 +102,7 @@
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = sub_1000015E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -113,7 +113,7 @@
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = sub_1000015E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -124,7 +124,7 @@
   }
 }
 
-- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)a3
+- (void)remoteAlertSceneDidInvalidateForRemoteAlertServiceInvalidation:(id)invalidation
 {
   v3 = sub_1000015E4();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

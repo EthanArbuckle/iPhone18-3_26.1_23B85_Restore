@@ -1,17 +1,17 @@
 @interface ICPinOperationResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (ICPinOperationResponseParserDelegate)initWithEntityType:(int64_t)a3 pinAction:(int64_t)a4;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didFinishWithState:(int64_t)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (ICPinOperationResponseParserDelegate)initWithEntityType:(int64_t)type pinAction:(int64_t)action;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didFinishWithState:(int64_t)state;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
 @end
 
 @implementation ICPinOperationResponseParserDelegate
 
-- (void)parser:(id)a3 didFinishWithState:(int64_t)a4
+- (void)parser:(id)parser didFinishWithState:(int64_t)state
 {
-  v5 = a3;
+  parserCopy = parser;
   pinStatus = self->_pinStatus;
   if (*&self->_overallStatus == 0xC8000000C8)
   {
@@ -82,15 +82,15 @@ LABEL_17:
   [(ICPinOperationResponseParserDelegate *)self setActionFailed:self->_pinStatus != 200];
 }
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  if (a4 == 1835821428 && self->_pinStatus == 200)
+  parserCopy = parser;
+  if (code == 1835821428 && self->_pinStatus == 200)
   {
     if (self->_currentCloudID)
     {
       addedItems = self->_addedItems;
-      v9 = v6;
+      v9 = parserCopy;
       v8 = [NSNumber numberWithUnsignedLongLong:?];
       [(NSMutableSet *)addedItems addObject:v8];
     }
@@ -102,26 +102,26 @@ LABEL_17:
         goto LABEL_8;
       }
 
-      v9 = v6;
+      v9 = parserCopy;
       [(NSMutableSet *)self->_addedItems addObject:?];
     }
 
-    v6 = v9;
+    parserCopy = v9;
   }
 
 LABEL_8:
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 <= 1835624803)
+  parserCopy = parser;
+  if (code <= 1835624803)
   {
-    if (a4 != 1634353513)
+    if (code != 1634353513)
     {
-      if (a4 == 1634366576)
+      if (code == 1634366576)
       {
-        v20 = bswap32(*a5);
+        v20 = bswap32(*bytes);
         if (self->_pinAction != v20)
         {
           v13 = os_log_create("com.apple.amp.itunescloudd", "Default");
@@ -129,7 +129,7 @@ LABEL_8:
           {
             pinAction = self->_pinAction;
             v22 = 134218496;
-            v23 = self;
+            selfCopy2 = self;
             v24 = 1024;
             v25 = pinAction;
             v26 = 1024;
@@ -146,24 +146,24 @@ LABEL_24:
         goto LABEL_28;
       }
 
-      if (a4 != 1634888036)
+      if (code != 1634888036)
       {
         goto LABEL_28;
       }
     }
 
-    v16 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v16 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     currentCloudLibraryID = self->_currentCloudLibraryID;
     self->_currentCloudLibraryID = v16;
 
     goto LABEL_28;
   }
 
-  if (a4 > 1836282995)
+  if (code > 1836282995)
   {
-    if (a4 == 1836282996)
+    if (code == 1836282996)
     {
-      v19 = bswap32(*a5);
+      v19 = bswap32(*bytes);
       if (self->_processingItemListing)
       {
         self->_pinStatus = v19;
@@ -175,38 +175,38 @@ LABEL_24:
       }
     }
 
-    else if (a4 == 1836413042)
+    else if (code == 1836413042)
     {
-      self->_updateRequired = *a5 != 0;
+      self->_updateRequired = *bytes != 0;
     }
   }
 
   else
   {
-    if (a4 == 1835624804)
+    if (code == 1835624804)
     {
-      if (a6 == 8)
+      if (length == 8)
       {
-        v18 = ((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7];
+        v18 = ((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7];
       }
 
       else
       {
-        if (a6 != 4)
+        if (length != 4)
         {
           goto LABEL_28;
         }
 
-        v18 = bswap32(*a5);
+        v18 = bswap32(*bytes);
       }
 
       self->_currentCloudID = v18;
       goto LABEL_28;
     }
 
-    if (a4 == 1835625316)
+    if (code == 1835625316)
     {
-      v11 = *a5;
+      v11 = *bytes;
       entityType = self->_entityType;
       if (v11 != DAAPPinTypeFromICLibraryPinEntityType())
       {
@@ -215,7 +215,7 @@ LABEL_24:
         {
           v14 = self->_entityType;
           v22 = 134218496;
-          v23 = self;
+          selfCopy2 = self;
           v24 = 1024;
           v25 = v14;
           v26 = 1024;
@@ -234,9 +234,9 @@ LABEL_23:
 LABEL_28:
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1835821428)
+  if (code == 1835821428)
   {
     currentCloudLibraryID = self->_currentCloudLibraryID;
     self->_currentCloudID = 0;
@@ -246,14 +246,14 @@ LABEL_28:
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 > 1835625315)
+  if (code > 1835625315)
   {
-    if (a4 <= 1835821427)
+    if (code <= 1835821427)
     {
-      if (a4 == 1835625316)
+      if (code == 1835625316)
       {
         return result;
       }
@@ -262,11 +262,11 @@ LABEL_28:
       goto LABEL_14;
     }
 
-    if (a4 != 1835821428 && a4 != 1836282996)
+    if (code != 1835821428 && code != 1836282996)
     {
       v5 = 1836413042;
 LABEL_14:
-      if (a4 != v5)
+      if (code != v5)
       {
         return 0;
       }
@@ -275,9 +275,9 @@ LABEL_14:
 
   else
   {
-    if (a4 <= 1634366575)
+    if (code <= 1634366575)
     {
-      if (a4 == 1634353513)
+      if (code == 1634353513)
       {
         return result;
       }
@@ -286,7 +286,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (a4 != 1634366576 && a4 != 1634888036)
+    if (code != 1634366576 && code != 1634888036)
     {
       v5 = 1835624804;
       goto LABEL_14;
@@ -296,7 +296,7 @@ LABEL_14:
   return result;
 }
 
-- (ICPinOperationResponseParserDelegate)initWithEntityType:(int64_t)a3 pinAction:(int64_t)a4
+- (ICPinOperationResponseParserDelegate)initWithEntityType:(int64_t)type pinAction:(int64_t)action
 {
   v11.receiver = self;
   v11.super_class = ICPinOperationResponseParserDelegate;
@@ -304,8 +304,8 @@ LABEL_14:
   v7 = v6;
   if (v6)
   {
-    v6->_entityType = a3;
-    v6->_pinAction = a4;
+    v6->_entityType = type;
+    v6->_pinAction = action;
     v8 = +[NSMutableSet set];
     addedItems = v7->_addedItems;
     v7->_addedItems = v8;

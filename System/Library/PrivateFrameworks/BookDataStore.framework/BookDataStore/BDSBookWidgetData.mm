@@ -1,39 +1,39 @@
 @interface BDSBookWidgetData
-- (BDSBookWidgetData)initWithAssetID:(id)a3 title:(id)a4 pageProgressionDirection:(id)a5 coverURL:(id)a6 readingProgress:(id)a7 totalDuration:(id)a8 cloudAssetType:(id)a9 libraryAssetType:(id)a10;
-- (BDSBookWidgetData)initWithCoder:(id)a3;
-- (BOOL)hasSignificantDifferenceWith:(id)a3;
+- (BDSBookWidgetData)initWithAssetID:(id)d title:(id)title pageProgressionDirection:(id)direction coverURL:(id)l readingProgress:(id)progress totalDuration:(id)duration cloudAssetType:(id)type libraryAssetType:(id)self0;
+- (BDSBookWidgetData)initWithCoder:(id)coder;
+- (BOOL)hasSignificantDifferenceWith:(id)with;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSBookWidgetData
 
-- (BDSBookWidgetData)initWithAssetID:(id)a3 title:(id)a4 pageProgressionDirection:(id)a5 coverURL:(id)a6 readingProgress:(id)a7 totalDuration:(id)a8 cloudAssetType:(id)a9 libraryAssetType:(id)a10
+- (BDSBookWidgetData)initWithAssetID:(id)d title:(id)title pageProgressionDirection:(id)direction coverURL:(id)l readingProgress:(id)progress totalDuration:(id)duration cloudAssetType:(id)type libraryAssetType:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v17 = a9;
-  v18 = a10;
+  dCopy = d;
+  titleCopy = title;
+  directionCopy = direction;
+  lCopy = l;
+  progressCopy = progress;
+  durationCopy = duration;
+  typeCopy = type;
+  assetTypeCopy = assetType;
   v29.receiver = self;
   v29.super_class = BDSBookWidgetData;
   v19 = [(BDSBookWidgetData *)&v29 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_assetID, a3);
-    objc_storeStrong(&v20->_title, a4);
-    objc_storeStrong(&v20->_pageProgressionDirection, a5);
-    objc_storeStrong(&v20->_coverURL, a6);
-    objc_storeStrong(&v20->_readingProgress, a7);
-    objc_storeStrong(&v20->_totalDuration, a8);
-    objc_storeStrong(&v20->_cloudAssetType, a9);
-    if (v18)
+    objc_storeStrong(&v19->_assetID, d);
+    objc_storeStrong(&v20->_title, title);
+    objc_storeStrong(&v20->_pageProgressionDirection, direction);
+    objc_storeStrong(&v20->_coverURL, l);
+    objc_storeStrong(&v20->_readingProgress, progress);
+    objc_storeStrong(&v20->_totalDuration, duration);
+    objc_storeStrong(&v20->_cloudAssetType, type);
+    if (assetTypeCopy)
     {
-      v21 = v18;
+      v21 = assetTypeCopy;
     }
 
     else
@@ -47,43 +47,43 @@
   return v20;
 }
 
-- (BDSBookWidgetData)initWithCoder:(id)a3
+- (BDSBookWidgetData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = BDSBookWidgetData;
   v5 = [(BDSBookWidgetData *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetID"];
     assetID = v5->_assetID;
     v5->_assetID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pageProgressionDirection"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pageProgressionDirection"];
     pageProgressionDirection = v5->_pageProgressionDirection;
     v5->_pageProgressionDirection = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coverURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coverURL"];
     coverURL = v5->_coverURL;
     v5->_coverURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readingProgress"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readingProgress"];
     readingProgress = v5->_readingProgress;
     v5->_readingProgress = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalDuration"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalDuration"];
     totalDuration = v5->_totalDuration;
     v5->_totalDuration = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudAssetType"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudAssetType"];
     cloudAssetType = v5->_cloudAssetType;
     v5->_cloudAssetType = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryContentAssetType"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryContentAssetType"];
     libraryAssetType = v5->_libraryAssetType;
     v5->_libraryAssetType = v20;
   }
@@ -91,50 +91,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSBookWidgetData *)self assetID];
-  [v4 encodeObject:v5 forKey:@"assetID"];
+  coderCopy = coder;
+  assetID = [(BDSBookWidgetData *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"assetID"];
 
-  v6 = [(BDSBookWidgetData *)self title];
-  [v4 encodeObject:v6 forKey:@"title"];
+  title = [(BDSBookWidgetData *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v7 = [(BDSBookWidgetData *)self pageProgressionDirection];
-  [v4 encodeObject:v7 forKey:@"pageProgressionDirection"];
+  pageProgressionDirection = [(BDSBookWidgetData *)self pageProgressionDirection];
+  [coderCopy encodeObject:pageProgressionDirection forKey:@"pageProgressionDirection"];
 
-  v8 = [(BDSBookWidgetData *)self coverURL];
-  [v4 encodeObject:v8 forKey:@"coverURL"];
+  coverURL = [(BDSBookWidgetData *)self coverURL];
+  [coderCopy encodeObject:coverURL forKey:@"coverURL"];
 
-  v9 = [(BDSBookWidgetData *)self readingProgress];
-  [v4 encodeObject:v9 forKey:@"readingProgress"];
+  readingProgress = [(BDSBookWidgetData *)self readingProgress];
+  [coderCopy encodeObject:readingProgress forKey:@"readingProgress"];
 
-  v10 = [(BDSBookWidgetData *)self totalDuration];
-  [v4 encodeObject:v10 forKey:@"totalDuration"];
+  totalDuration = [(BDSBookWidgetData *)self totalDuration];
+  [coderCopy encodeObject:totalDuration forKey:@"totalDuration"];
 
-  v11 = [(BDSBookWidgetData *)self cloudAssetType];
-  [v4 encodeObject:v11 forKey:@"cloudAssetType"];
+  cloudAssetType = [(BDSBookWidgetData *)self cloudAssetType];
+  [coderCopy encodeObject:cloudAssetType forKey:@"cloudAssetType"];
 
-  v12 = [(BDSBookWidgetData *)self libraryAssetType];
-  [v4 encodeObject:v12 forKey:@"libraryContentAssetType"];
+  libraryAssetType = [(BDSBookWidgetData *)self libraryAssetType];
+  [coderCopy encodeObject:libraryAssetType forKey:@"libraryContentAssetType"];
 }
 
-- (BOOL)hasSignificantDifferenceWith:(id)a3
+- (BOOL)hasSignificantDifferenceWith:(id)with
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  withCopy = with;
+  v5 = withCopy;
+  if (withCopy)
   {
-    if (v4 == self)
+    if (withCopy == self)
     {
       goto LABEL_59;
     }
 
-    v6 = [(BDSBookWidgetData *)self assetID];
-    v7 = [(BDSBookWidgetData *)v5 assetID];
-    v8 = v6;
-    v9 = v7;
+    assetID = [(BDSBookWidgetData *)self assetID];
+    assetID2 = [(BDSBookWidgetData *)v5 assetID];
+    v8 = assetID;
+    v9 = assetID2;
     v10 = v9;
     if (v8 == v9)
     {
@@ -159,10 +159,10 @@ LABEL_43:
       }
     }
 
-    v14 = [(BDSBookWidgetData *)self readingProgress];
-    v15 = [(BDSBookWidgetData *)v5 readingProgress];
-    v11 = v14;
-    v16 = v15;
+    readingProgress = [(BDSBookWidgetData *)self readingProgress];
+    readingProgress2 = [(BDSBookWidgetData *)v5 readingProgress];
+    v11 = readingProgress;
+    v16 = readingProgress2;
     v17 = v16;
     if (v11 == v16)
     {
@@ -187,10 +187,10 @@ LABEL_41:
       }
     }
 
-    v20 = [(BDSBookWidgetData *)self totalDuration];
-    v21 = [(BDSBookWidgetData *)v5 totalDuration];
-    v18 = v20;
-    v22 = v21;
+    totalDuration = [(BDSBookWidgetData *)self totalDuration];
+    totalDuration2 = [(BDSBookWidgetData *)v5 totalDuration];
+    v18 = totalDuration;
+    v22 = totalDuration2;
     v23 = v22;
     if (v18 == v22)
     {
@@ -215,10 +215,10 @@ LABEL_39:
       }
     }
 
-    v26 = [(BDSBookWidgetData *)self title];
-    v27 = [(BDSBookWidgetData *)v5 title];
-    v24 = v26;
-    v28 = v27;
+    title = [(BDSBookWidgetData *)self title];
+    title2 = [(BDSBookWidgetData *)v5 title];
+    v24 = title;
+    v28 = title2;
     v58 = v28;
     if (v24 == v28)
     {
@@ -244,10 +244,10 @@ LABEL_37:
     }
 
     v57 = v24;
-    v30 = [(BDSBookWidgetData *)self coverURL];
-    v31 = [(BDSBookWidgetData *)v5 coverURL];
-    v29 = v30;
-    v32 = v31;
+    coverURL = [(BDSBookWidgetData *)self coverURL];
+    coverURL2 = [(BDSBookWidgetData *)v5 coverURL];
+    v29 = coverURL;
+    v32 = coverURL2;
     v33 = v32;
     v55 = v32;
     if (v29 == v32)
@@ -273,10 +273,10 @@ LABEL_35:
     }
 
     v54 = v29;
-    v34 = [(BDSBookWidgetData *)self cloudAssetType];
-    v35 = [(BDSBookWidgetData *)v5 cloudAssetType];
-    v36 = v34;
-    v37 = v35;
+    cloudAssetType = [(BDSBookWidgetData *)self cloudAssetType];
+    cloudAssetType2 = [(BDSBookWidgetData *)v5 cloudAssetType];
+    v36 = cloudAssetType;
+    v37 = cloudAssetType2;
     v38 = v37;
     v51 = v37;
     v52 = v36;
@@ -304,7 +304,7 @@ LABEL_44:
             *buf = 138412546;
             v60 = v5;
             v61 = 2112;
-            v62 = self;
+            selfCopy2 = self;
             goto LABEL_46;
           }
 
@@ -326,10 +326,10 @@ LABEL_59:
       }
     }
 
-    v42 = [(BDSBookWidgetData *)self libraryAssetType];
-    v43 = [(BDSBookWidgetData *)v5 libraryAssetType];
-    v36 = v42;
-    v44 = v43;
+    libraryAssetType = [(BDSBookWidgetData *)self libraryAssetType];
+    libraryAssetType2 = [(BDSBookWidgetData *)v5 libraryAssetType];
+    v36 = libraryAssetType;
+    v44 = libraryAssetType2;
     v45 = v44;
     if (v36 == v44)
     {
@@ -360,7 +360,7 @@ LABEL_59:
     *buf = 138412546;
     v60 = 0;
     v61 = 2112;
-    v62 = self;
+    selfCopy2 = self;
 LABEL_46:
     _os_log_impl(&dword_1E45E0000, v13, OS_LOG_TYPE_DEFAULT, "Found changes between %@ and %@:", buf, 0x16u);
   }
@@ -377,23 +377,23 @@ LABEL_60:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BDSBookWidgetData *)self assetID];
-  v5 = [(BDSBookWidgetData *)self title];
-  v6 = [(BDSBookWidgetData *)self pageProgressionDirection];
-  v7 = [(BDSBookWidgetData *)self cloudAssetType];
-  v8 = [(BDSBookWidgetData *)self libraryAssetType];
-  v9 = [(BDSBookWidgetData *)self readingProgress];
-  [v9 doubleValue];
+  assetID = [(BDSBookWidgetData *)self assetID];
+  title = [(BDSBookWidgetData *)self title];
+  pageProgressionDirection = [(BDSBookWidgetData *)self pageProgressionDirection];
+  cloudAssetType = [(BDSBookWidgetData *)self cloudAssetType];
+  libraryAssetType = [(BDSBookWidgetData *)self libraryAssetType];
+  readingProgress = [(BDSBookWidgetData *)self readingProgress];
+  [readingProgress doubleValue];
   v11 = v10 * 100.0;
-  v12 = [(BDSBookWidgetData *)self totalDuration];
-  v13 = [(BDSBookWidgetData *)self coverURL];
+  totalDuration = [(BDSBookWidgetData *)self totalDuration];
+  coverURL = [(BDSBookWidgetData *)self coverURL];
   v14 = &stru_1F5E67610;
-  if (!v13)
+  if (!coverURL)
   {
     v14 = @" missing coverURL";
   }
 
-  v15 = [v3 stringWithFormat:@"[%@ '%@' %@ %@ %@ (%.0f%%) %@%@]", v4, v5, v6, v7, v8, *&v11, v12, v14];
+  v15 = [v3 stringWithFormat:@"[%@ '%@' %@ %@ %@ (%.0f%%) %@%@]", assetID, title, pageProgressionDirection, cloudAssetType, libraryAssetType, *&v11, totalDuration, v14];
 
   return v15;
 }

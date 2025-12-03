@@ -1,15 +1,15 @@
 @interface PGSocialGroupsElector
 - (PGSocialGroupsElector)init;
-- (id)electedSocialGroupsMaxNumberOfElectedSocialGroups:(int64_t)a3 progressReporter:(id)a4 error:(id *)a5;
+- (id)electedSocialGroupsMaxNumberOfElectedSocialGroups:(int64_t)groups progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGSocialGroupsElector
 
-- (id)electedSocialGroupsMaxNumberOfElectedSocialGroups:(int64_t)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)electedSocialGroupsMaxNumberOfElectedSocialGroups:(int64_t)groups progressReporter:(id)reporter error:(id *)error
 {
-  v7 = a4;
-  v8 = self;
-  SocialGroupsElector.electSocialGroups(maxNumberOfElectedSocialGroups:progressReporter:)(a3, v7);
+  reporterCopy = reporter;
+  selfCopy = self;
+  SocialGroupsElector.electSocialGroups(maxNumberOfElectedSocialGroups:progressReporter:)(groups, reporterCopy);
 
   type metadata accessor for ElectedSocialGroup();
   v9 = sub_22F741160();

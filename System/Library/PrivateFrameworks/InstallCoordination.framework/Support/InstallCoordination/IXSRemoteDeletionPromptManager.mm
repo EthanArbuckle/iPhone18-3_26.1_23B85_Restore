@@ -1,7 +1,7 @@
 @interface IXSRemoteDeletionPromptManager
 + (id)sharedInstance;
 - (BOOL)iCloudIsEnabledForMessages;
-- (BOOL)isValidBundleIDForRemoteAlert:(id)a3 withAppType:(unint64_t *)a4 numAppsInstalled:(unint64_t *)a5;
+- (BOOL)isValidBundleIDForRemoteAlert:(id)alert withAppType:(unint64_t *)type numAppsInstalled:(unint64_t *)installed;
 - (IXSRemoteDeletionPromptManager)init;
 - (unint64_t)sharedMediaInMessagesCount;
 - (void)dismissRemoteAlert;
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100071328;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121E40 != -1)
   {
     dispatch_once(&qword_100121E40, block);
@@ -43,11 +43,11 @@
 
 - (void)dismissRemoteAlert
 {
-  v2 = [(IXSRemoteDeletionPromptManager *)self connection];
-  v3 = v2;
-  if (v2)
+  connection = [(IXSRemoteDeletionPromptManager *)self connection];
+  v3 = connection;
+  if (connection)
   {
-    [v2 dismissAlert];
+    [connection dismissAlert];
   }
 
   else
@@ -64,13 +64,13 @@
 {
   if (qword_100121E48)
   {
-    v2 = [qword_100121E48 sharedInstance];
-    v3 = [v2 isEnabled];
+    sharedInstance = [qword_100121E48 sharedInstance];
+    isEnabled = [sharedInstance isEnabled];
 
     v4 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      if (v3)
+      if (isEnabled)
       {
         v5 = 89;
       }
@@ -96,10 +96,10 @@
       sub_1000A3A9C();
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(isEnabled) = 0;
   }
 
-  return v3;
+  return isEnabled;
 }
 
 - (unint64_t)sharedMediaInMessagesCount
@@ -116,8 +116,8 @@
 
   if (v2)
   {
-    v3 = sub_1000031B0(off_100121958);
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    sharedPhotoLibrary = sub_1000031B0(off_100121958);
+    if (os_log_type_enabled(sharedPhotoLibrary, OS_LOG_TYPE_ERROR))
     {
       sub_1000A3B1C();
     }
@@ -127,10 +127,10 @@
 
   else
   {
-    v3 = [qword_100121E58 sharedPhotoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
-    [v4 setIncludeGuestAssets:1];
-    v5 = [qword_100121E50 fetchGuestAssetsWithOptions:v4];
+    sharedPhotoLibrary = [qword_100121E58 sharedPhotoLibrary];
+    librarySpecificFetchOptions = [sharedPhotoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
+    v5 = [qword_100121E50 fetchGuestAssetsWithOptions:librarySpecificFetchOptions];
     v6 = [v5 count];
     v7 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -146,17 +146,17 @@
   return v6;
 }
 
-- (BOOL)isValidBundleIDForRemoteAlert:(id)a3 withAppType:(unint64_t *)a4 numAppsInstalled:(unint64_t *)a5
+- (BOOL)isValidBundleIDForRemoteAlert:(id)alert withAppType:(unint64_t *)type numAppsInstalled:(unint64_t *)installed
 {
-  v7 = a3;
+  alertCopy = alert;
   v33 = 0;
-  v8 = sub_10003AF28(v7, 17, &v33);
+  v8 = sub_10003AF28(alertCopy, 17, &v33);
   v9 = v33;
   v10 = v9;
   if (v8 && v9 && (([v9 objectForKeyedSubscript:@"TEST_MODE_APP_DELETION_UI_SAD_APP_TYPE_KEY"], v11 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v12 = v11, (objc_opt_isKindOfClass() & 1) == 0) ? (v13 = 0) : (v13 = v12), v12, v12, v13))
   {
-    v14 = [v13 unsignedIntegerValue];
-    if (v14 == 4)
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
+    if (unsignedIntegerValue == 4)
     {
 
       goto LABEL_15;
@@ -165,17 +165,17 @@
 
   else
   {
-    v13 = [&off_10010DF58 objectForKey:v7];
-    v14 = [v13 unsignedIntegerValue];
+    v13 = [&off_10010DF58 objectForKey:alertCopy];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
   }
 
-  v15 = v14;
+  v15 = unsignedIntegerValue;
 
   if (v15)
   {
     if (v15 == 2)
     {
-      v18 = sub_100071B4C(v7);
+      v18 = sub_100071B4C(alertCopy);
     }
 
     else
@@ -187,7 +187,7 @@
 
         v18 = 0;
         v15 = 3;
-        if (!a4)
+        if (!type)
         {
           goto LABEL_23;
         }
@@ -199,7 +199,7 @@
     }
 
     LOBYTE(v17) = 1;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_23;
     }
@@ -208,7 +208,7 @@
   }
 
 LABEL_15:
-  v19 = v7;
+  v19 = alertCopy;
   v33 = 0;
   v20 = sub_10003AF28(v19, 17, &v33);
   v21 = v33;
@@ -243,7 +243,7 @@ LABEL_15:
     LOBYTE(v17) = 0;
     v15 = 0;
     v18 = 0;
-    if (a4)
+    if (type)
     {
       goto LABEL_22;
     }
@@ -257,27 +257,27 @@ LABEL_32:
   {
     LOBYTE(v17) = 1;
     v15 = 4;
-    if (!a4)
+    if (!type)
     {
       goto LABEL_23;
     }
 
 LABEL_22:
-    *a4 = v15;
+    *type = v15;
     goto LABEL_23;
   }
 
   LOBYTE(v17) = 0;
   v15 = 0;
-  if (a4)
+  if (type)
   {
     goto LABEL_22;
   }
 
 LABEL_23:
-  if (a5)
+  if (installed)
   {
-    *a5 = v18;
+    *installed = v18;
   }
 
   return v17;

@@ -3,7 +3,7 @@
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (id)insertAssetResourceUploadJobConfigurationFromDataInManagedObjectContext:(id)a3;
+- (id)insertAssetResourceUploadJobConfigurationFromDataInManagedObjectContext:(id)context;
 @end
 
 @implementation PLAssetResourceUploadJobConfigurationEntryPayload
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __89__PLAssetResourceUploadJobConfigurationEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_38410 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_38410, block);
@@ -38,7 +38,7 @@ void __89__PLAssetResourceUploadJobConfigurationEntryPayload_persistedPropertyNa
   block[1] = 3221225472;
   block[2] = __68__PLAssetResourceUploadJobConfigurationEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_38412 != -1)
   {
     dispatch_once(&modelProperties_onceToken_38412, block);
@@ -95,13 +95,13 @@ uint64_t __68__PLAssetResourceUploadJobConfigurationEntryPayload_modelProperties
   return v5;
 }
 
-- (id)insertAssetResourceUploadJobConfigurationFromDataInManagedObjectContext:(id)a3
+- (id)insertAssetResourceUploadJobConfigurationFromDataInManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  v7 = [(PLAssetResourceUploadJobConfigurationEntryPayload *)self bundleIdentifier];
-  v8 = [PLAssetResourceUploadJobConfiguration insertIntoManagedObjectContext:v4 uuid:v6 bundleID:v7];
+  contextCopy = context;
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  bundleIdentifier = [(PLAssetResourceUploadJobConfigurationEntryPayload *)self bundleIdentifier];
+  v8 = [PLAssetResourceUploadJobConfiguration insertIntoManagedObjectContext:contextCopy uuid:payloadIDString bundleID:bundleIdentifier];
 
   [v8 setState:{-[PLAssetResourceUploadJobConfigurationEntryPayload state](self, "state")}];
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v8 payloadAttributesToUpdate:0];

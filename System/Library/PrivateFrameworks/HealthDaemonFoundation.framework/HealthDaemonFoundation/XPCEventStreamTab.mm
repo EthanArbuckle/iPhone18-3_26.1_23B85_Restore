@@ -1,26 +1,26 @@
 @interface XPCEventStreamTab
 - (NSObject)object;
-- (XPCEventStreamTab)initWithStream:(id)a3 object:(id)a4 queue:(id)a5 handler:(id)a6;
+- (XPCEventStreamTab)initWithStream:(id)stream object:(id)object queue:(id)queue handler:(id)handler;
 @end
 
 @implementation XPCEventStreamTab
 
-- (XPCEventStreamTab)initWithStream:(id)a3 object:(id)a4 queue:(id)a5 handler:(id)a6
+- (XPCEventStreamTab)initWithStream:(id)stream object:(id)object queue:(id)queue handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  streamCopy = stream;
+  objectCopy = object;
+  queueCopy = queue;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = XPCEventStreamTab;
   v15 = [(XPCEventStreamTab *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_stream, a3);
-    objc_storeWeak(&v16->_object, v12);
-    objc_storeStrong(&v16->_queue, a5);
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v15->_stream, stream);
+    objc_storeWeak(&v16->_object, objectCopy);
+    objc_storeStrong(&v16->_queue, queue);
+    v17 = _Block_copy(handlerCopy);
     handler = v16->_handler;
     v16->_handler = v17;
   }

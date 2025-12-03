@@ -1,23 +1,23 @@
 @interface FlexMLSongRendition
-- (FlexMLSongRendition)initWithSong:(id)a3 options:(id)a4 andSummary:(id)a5 forDuration:(id *)a6;
+- (FlexMLSongRendition)initWithSong:(id)song options:(id)options andSummary:(id)summary forDuration:(id *)duration;
 - (void)_buildTracks;
-- (void)_calculateDuration:(id *)a3;
+- (void)_calculateDuration:(id *)duration;
 @end
 
 @implementation FlexMLSongRendition
 
-- (FlexMLSongRendition)initWithSong:(id)a3 options:(id)a4 andSummary:(id)a5 forDuration:(id *)a6
+- (FlexMLSongRendition)initWithSong:(id)song options:(id)options andSummary:(id)summary forDuration:(id *)duration
 {
-  v11 = a5;
+  summaryCopy = summary;
   v24.receiver = self;
   v24.super_class = FlexMLSongRendition;
-  v12 = [(FMSongRendition *)&v24 initWithSong:a3 andOptions:a4];
+  v12 = [(FMSongRendition *)&v24 initWithSong:song andOptions:options];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_summary, a5);
-    v22 = *&a6->var0;
-    var3 = a6->var3;
+    objc_storeStrong(&v12->_summary, summary);
+    v22 = *&duration->var0;
+    var3 = duration->var3;
     objc_msgSend__calculateDuration_(v13, v14, &v22, v15, v16);
     objc_msgSend__buildTracks(v13, v17, v18, v19, v20);
   }
@@ -25,13 +25,13 @@
   return v13;
 }
 
-- (void)_calculateDuration:(id *)a3
+- (void)_calculateDuration:(id *)duration
 {
-  v7 = objc_msgSend_song(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_song(self, a2, duration, v3, v4);
   v12 = objc_msgSend_sampleRate(v7, v8, v9, v10, v11);
 
   memset(&v39, 0, sizeof(v39));
-  time = *a3;
+  time = *duration;
   CMTimeConvertScale(&v39, &time, v12, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   memset(&time, 0, sizeof(time));
   v17 = objc_msgSend_summary(self, v13, v14, v15, v16);

@@ -1,7 +1,7 @@
 @interface AmberDylibAppleConnectSSOAuthenticator
 - (AmberDylibAppleConnectSSOAuthenticator)init;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
 @end
 
 @implementation AmberDylibAppleConnectSSOAuthenticator
@@ -22,29 +22,29 @@
   return v3;
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
-  v11 = a4;
-  v5 = [v11 credential];
+  authorizationCopy = authorization;
+  credential = [authorizationCopy credential];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v11 credential];
-    v8 = [v7 authenticatedResponse];
+    credential2 = [authorizationCopy credential];
+    authenticatedResponse = [credential2 authenticatedResponse];
 
-    v9 = [v8 allHeaderFields];
-    v10 = [v9 objectForKeyedSubscript:@"token"];
+    allHeaderFields = [authenticatedResponse allHeaderFields];
+    v10 = [allHeaderFields objectForKeyedSubscript:@"token"];
     [(AmberDylibAppleConnectSSOAuthenticator *)self setToken:v10];
   }
 
   [(AmberDylibAppleConnectSSOAuthenticator *)self setDone:1];
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   [(AmberDylibAppleConnectSSOAuthenticator *)self setError:?];
   [(AmberDylibAppleConnectSSOAuthenticator *)self setDone:1];
 }

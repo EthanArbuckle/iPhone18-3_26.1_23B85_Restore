@@ -1,5 +1,5 @@
 @interface MeasureUIApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformMagicTap;
 - (int64_t)_accessibilityOrientationForCompareGeometry;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,19 +7,19 @@
 
 @implementation MeasureUIApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.ViewController" hasInstanceMethod:@"accessibilityEditView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.EditView" hasInstanceMethod:@"didTapEditButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.ViewController" hasInstanceMethod:@"accessibilityEditView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.EditView" hasInstanceMethod:@"didTapEditButton" withFullSignature:{"v", 0}];
 }
 
 - (int64_t)_accessibilityOrientationForCompareGeometry
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
-  v3 = [v2 activeInterfaceOrientation];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  activeInterfaceOrientation = [mEMORY[0x29EDC7938] activeInterfaceOrientation];
 
-  return v3;
+  return activeInterfaceOrientation;
 }
 
 - (BOOL)accessibilityPerformMagicTap

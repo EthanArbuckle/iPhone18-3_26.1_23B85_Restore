@@ -1,21 +1,21 @@
 @interface VOTBrailleGesturePatternRecognitionEngine
-- (BOOL)_bothObjectsAreNilOrBothAreNonNil:(id)a3 object:(id)a4;
-- (BOOL)_halfPattern:(id)a3 hasSameDotsAsHalfPattern:(id)a4;
-- (CGPoint)_averageOfOldPoint:(CGPoint)a3 newPoint:(CGPoint)a4 dataCount:(unint64_t)a5;
+- (BOOL)_bothObjectsAreNilOrBothAreNonNil:(id)nil object:(id)object;
+- (BOOL)_halfPattern:(id)pattern hasSameDotsAsHalfPattern:(id)halfPattern;
+- (CGPoint)_averageOfOldPoint:(CGPoint)point newPoint:(CGPoint)newPoint dataCount:(unint64_t)count;
 - (VOTBrailleGesturePatternRecognitionEngine)init;
 - (VOTBrailleGesturePatternRecognitionEngineDelegate)delegate;
-- (double)_totalDistanceBetweenCorrespondingPointsInTouches:(id)a3 andTouches:(id)a4;
-- (id)_averagePointValueWithDataCount:(unint64_t)a3 currentPointValue:(id)a4 newPointValue:(id)a5;
-- (id)_closestHalfPatternForOrderedTouches:(id)a3 possibleMatches:(id)a4 side:(unint64_t)a5;
-- (id)_halfPatternFromOrderedTouches:(id)a3 correspondingHalfPattern:(id)a4;
-- (id)_halfPatternFromTouches:(id)a3 side:(unint64_t)a4;
-- (id)_orderedTouchesFromHalfPattern:(id)a3;
-- (id)_sortTouches:(id)a3 fromTopToBottomForSide:(unint64_t)a4;
-- (id)printBrailleForTouchPoints:(id)a3 shouldLearn:(BOOL)a4 error:(id *)a5;
-- (unsigned)printBrailleCharacterFromBraillePattern:(id)a3;
-- (void)_populateLeftTouchPoints:(id)a3 rightTouchPoints:(id)a4 fromTouchPoints:(id)a5;
-- (void)calibrateWithTouchPoints:(id)a3;
-- (void)setTypingMode:(int64_t)a3 keyboardSize:(CGSize)a4 shouldUseEightDotBraille:(BOOL)a5 shouldReverseDots:(BOOL)a6;
+- (double)_totalDistanceBetweenCorrespondingPointsInTouches:(id)touches andTouches:(id)andTouches;
+- (id)_averagePointValueWithDataCount:(unint64_t)count currentPointValue:(id)value newPointValue:(id)pointValue;
+- (id)_closestHalfPatternForOrderedTouches:(id)touches possibleMatches:(id)matches side:(unint64_t)side;
+- (id)_halfPatternFromOrderedTouches:(id)touches correspondingHalfPattern:(id)pattern;
+- (id)_halfPatternFromTouches:(id)touches side:(unint64_t)side;
+- (id)_orderedTouchesFromHalfPattern:(id)pattern;
+- (id)_sortTouches:(id)touches fromTopToBottomForSide:(unint64_t)side;
+- (id)printBrailleForTouchPoints:(id)points shouldLearn:(BOOL)learn error:(id *)error;
+- (unsigned)printBrailleCharacterFromBraillePattern:(id)pattern;
+- (void)_populateLeftTouchPoints:(id)points rightTouchPoints:(id)touchPoints fromTouchPoints:(id)fromTouchPoints;
+- (void)calibrateWithTouchPoints:(id)points;
+- (void)setTypingMode:(int64_t)mode keyboardSize:(CGSize)size shouldUseEightDotBraille:(BOOL)braille shouldReverseDots:(BOOL)dots;
 - (void)unlearnLastGesture;
 @end
 
@@ -53,13 +53,13 @@
   return v3;
 }
 
-- (id)printBrailleForTouchPoints:(id)a3 shouldLearn:(BOOL)a4 error:(id *)a5
+- (id)printBrailleForTouchPoints:(id)points shouldLearn:(BOOL)learn error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  learnCopy = learn;
+  pointsCopy = points;
   v9 = +[NSMutableArray array];
   v10 = +[NSMutableArray array];
-  [(VOTBrailleGesturePatternRecognitionEngine *)self _populateLeftTouchPoints:v9 rightTouchPoints:v10 fromTouchPoints:v8];
+  [(VOTBrailleGesturePatternRecognitionEngine *)self _populateLeftTouchPoints:v9 rightTouchPoints:v10 fromTouchPoints:pointsCopy];
 
   if (self->_shouldUseEightDotBraille)
   {
@@ -76,7 +76,7 @@
     v13 = [(VOTBrailleGesturePatternRecognitionEngine *)self _halfPatternFromTouches:v9 side:0];
     v14 = [(VOTBrailleGesturePatternRecognitionEngine *)self _halfPatternFromTouches:v10 side:1];
     v15 = [[VOTBrailleGesturePattern alloc] initWithLeftDots:v13 rightDots:v14];
-    if (v6)
+    if (learnCopy)
     {
       [(VOTBrailleGestureDataRepository *)self->_repository updateDriftWithPattern:v15];
       [(NSMutableArray *)self->_lastBrailleGestures addObject:v15];
@@ -85,10 +85,10 @@
     v12 = [NSString stringWithFormat:@"%C", [(VOTBrailleGesturePatternRecognitionEngine *)self printBrailleCharacterFromBraillePattern:v15]];
   }
 
-  else if (a5)
+  else if (error)
   {
     [NSError errorWithDomain:@"VOTBrailleGestureErrorDomain" code:1 userInfo:0];
-    *a5 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -104,8 +104,8 @@
   if ([(NSMutableArray *)self->_lastBrailleGestures count])
   {
     repository = self->_repository;
-    v4 = [(NSMutableArray *)self->_lastBrailleGestures lastObject];
-    [(VOTBrailleGestureDataRepository *)repository removeDriftAddedByPattern:v4];
+    lastObject = [(NSMutableArray *)self->_lastBrailleGestures lastObject];
+    [(VOTBrailleGestureDataRepository *)repository removeDriftAddedByPattern:lastObject];
 
     lastBrailleGestures = self->_lastBrailleGestures;
 
@@ -113,34 +113,34 @@
   }
 }
 
-- (void)setTypingMode:(int64_t)a3 keyboardSize:(CGSize)a4 shouldUseEightDotBraille:(BOOL)a5 shouldReverseDots:(BOOL)a6
+- (void)setTypingMode:(int64_t)mode keyboardSize:(CGSize)size shouldUseEightDotBraille:(BOOL)braille shouldReverseDots:(BOOL)dots
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  if (self->_typingMode != a3 || (self->_keyboardSize.width == a4.width ? (v12 = self->_keyboardSize.height == a4.height) : (v12 = 0), !v12 || self->_shouldUseEightDotBraille != a5 || self->_shouldReverseDots != a6))
+  brailleCopy = braille;
+  height = size.height;
+  width = size.width;
+  if (self->_typingMode != mode || (self->_keyboardSize.width == size.width ? (v12 = self->_keyboardSize.height == size.height) : (v12 = 0), !v12 || self->_shouldUseEightDotBraille != braille || self->_shouldReverseDots != dots))
   {
     [(VOTBrailleGesturePatternRecognitionEngine *)self resetLastGestures];
     [(VOTBrailleGestureDataRepository *)self->_repository saveDrift];
-    self->_typingMode = a3;
+    self->_typingMode = mode;
     self->_keyboardSize.width = width;
     self->_keyboardSize.height = height;
-    self->_shouldUseEightDotBraille = v7;
-    self->_shouldReverseDots = a6;
-    v13 = [[VOTBrailleGestureDataRepository alloc] initWithTypingMode:self->_typingMode keyboardSize:v7 shouldUseEightDotBraille:width, height];
+    self->_shouldUseEightDotBraille = brailleCopy;
+    self->_shouldReverseDots = dots;
+    height = [[VOTBrailleGestureDataRepository alloc] initWithTypingMode:self->_typingMode keyboardSize:brailleCopy shouldUseEightDotBraille:width, height];
     repository = self->_repository;
-    self->_repository = v13;
+    self->_repository = height;
 
-    _objc_release_x1(v13, repository);
+    _objc_release_x1(height, repository);
   }
 }
 
-- (void)calibrateWithTouchPoints:(id)a3
+- (void)calibrateWithTouchPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v5 = +[NSMutableArray array];
   v6 = +[NSMutableArray array];
-  [(VOTBrailleGesturePatternRecognitionEngine *)self _populateLeftTouchPoints:v5 rightTouchPoints:v6 fromTouchPoints:v4];
+  [(VOTBrailleGesturePatternRecognitionEngine *)self _populateLeftTouchPoints:v5 rightTouchPoints:v6 fromTouchPoints:pointsCopy];
 
   v7 = [(VOTBrailleGesturePatternRecognitionEngine *)self _sortTouches:v5 fromTopToBottomForSide:0];
   v8 = [(VOTBrailleGesturePatternRecognitionEngine *)self _sortTouches:v6 fromTopToBottomForSide:1];
@@ -247,17 +247,17 @@ LABEL_22:
   [(VOTBrailleGestureDataRepository *)self->_repository calibrateWithDotNumberPositions:v14, v23, v24];
 }
 
-- (void)_populateLeftTouchPoints:(id)a3 rightTouchPoints:(id)a4 fromTouchPoints:(id)a5
+- (void)_populateLeftTouchPoints:(id)points rightTouchPoints:(id)touchPoints fromTouchPoints:(id)fromTouchPoints
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pointsCopy = points;
+  touchPointsCopy = touchPoints;
+  fromTouchPointsCopy = fromTouchPoints;
   width = self->_keyboardSize.width;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v12 = [fromTouchPointsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
     v13 = v12;
@@ -269,7 +269,7 @@ LABEL_22:
       {
         if (*v25 != v15)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(fromTouchPointsCopy);
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
@@ -277,32 +277,32 @@ LABEL_22:
         typingMode = self->_typingMode;
         if (typingMode == 4)
         {
-          v20 = v9;
+          v20 = touchPointsCopy;
         }
 
         else
         {
-          v20 = v8;
+          v20 = pointsCopy;
         }
 
         if (typingMode == 1)
         {
-          v20 = v9;
+          v20 = touchPointsCopy;
         }
 
         if (typingMode == 4)
         {
-          v21 = v8;
+          v21 = pointsCopy;
         }
 
         else
         {
-          v21 = v9;
+          v21 = touchPointsCopy;
         }
 
         if (typingMode == 1)
         {
-          v21 = v8;
+          v21 = pointsCopy;
         }
 
         if (v18 < v14)
@@ -312,7 +312,7 @@ LABEL_22:
 
         if (typingMode == 2 || typingMode == 5)
         {
-          v23 = v8;
+          v23 = pointsCopy;
         }
 
         else
@@ -323,27 +323,27 @@ LABEL_22:
         [v23 addObject:v17];
       }
 
-      v13 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v13 = [fromTouchPointsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v13);
   }
 }
 
-- (unsigned)printBrailleCharacterFromBraillePattern:(id)a3
+- (unsigned)printBrailleCharacterFromBraillePattern:(id)pattern
 {
-  v4 = a3;
-  v5 = [(VOTBrailleGesturePatternRecognitionEngine *)self shouldUseEightDotBraille];
-  v6 = [(VOTBrailleGesturePatternRecognitionEngine *)self shouldReverseDots];
-  v7 = [v4 leftDots];
-  v8 = [v7 topDot];
+  patternCopy = pattern;
+  shouldUseEightDotBraille = [(VOTBrailleGesturePatternRecognitionEngine *)self shouldUseEightDotBraille];
+  shouldReverseDots = [(VOTBrailleGesturePatternRecognitionEngine *)self shouldReverseDots];
+  leftDots = [patternCopy leftDots];
+  topDot = [leftDots topDot];
 
-  v9 = [v4 leftDots];
-  v10 = [v9 middleDot];
+  leftDots2 = [patternCopy leftDots];
+  middleDot = [leftDots2 middleDot];
 
-  if (v5)
+  if (shouldUseEightDotBraille)
   {
-    if (v6)
+    if (shouldReverseDots)
     {
       v11 = 10304;
     }
@@ -353,7 +353,7 @@ LABEL_22:
       v11 = 10241;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v12 = 4;
     }
@@ -363,7 +363,7 @@ LABEL_22:
       v12 = 2;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v13 = 2;
     }
@@ -373,7 +373,7 @@ LABEL_22:
       v13 = 4;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v14 = 1;
     }
@@ -383,7 +383,7 @@ LABEL_22:
       v14 = 64;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v15 = 128;
     }
@@ -393,7 +393,7 @@ LABEL_22:
       v15 = 8;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v16 = 32;
     }
@@ -403,7 +403,7 @@ LABEL_22:
       v16 = 16;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v17 = 16;
     }
@@ -413,12 +413,12 @@ LABEL_22:
       v17 = 32;
     }
 
-    if (!v8)
+    if (!topDot)
     {
       v11 = 10240;
     }
 
-    if (v10)
+    if (middleDot)
     {
       v18 = v12;
     }
@@ -429,18 +429,18 @@ LABEL_22:
     }
 
     v19 = v18 | v11;
-    v20 = [v4 leftDots];
-    v21 = [v20 bottomDot];
+    leftDots3 = [patternCopy leftDots];
+    bottomDot = [leftDots3 bottomDot];
 
-    if (!v21)
+    if (!bottomDot)
     {
       v13 = 0;
     }
 
-    v22 = [v4 leftDots];
-    v23 = [v22 fourthDot];
+    leftDots4 = [patternCopy leftDots];
+    fourthDot = [leftDots4 fourthDot];
 
-    if (v23)
+    if (fourthDot)
     {
       v24 = v14;
     }
@@ -451,10 +451,10 @@ LABEL_22:
     }
 
     v25 = v19 + v13 + v24;
-    v26 = [v4 rightDots];
-    v27 = [v26 topDot];
+    rightDots = [patternCopy rightDots];
+    topDot2 = [rightDots topDot];
 
-    if (v27)
+    if (topDot2)
     {
       v28 = v15;
     }
@@ -464,10 +464,10 @@ LABEL_22:
       v28 = 0;
     }
 
-    v29 = [v4 rightDots];
-    v30 = [v29 middleDot];
+    rightDots2 = [patternCopy rightDots];
+    middleDot2 = [rightDots2 middleDot];
 
-    if (v30)
+    if (middleDot2)
     {
       v31 = v16;
     }
@@ -478,10 +478,10 @@ LABEL_22:
     }
 
     v32 = v28 + v31;
-    v33 = [v4 rightDots];
-    v34 = [v33 bottomDot];
+    rightDots3 = [patternCopy rightDots];
+    bottomDot2 = [rightDots3 bottomDot];
 
-    if (v34)
+    if (bottomDot2)
     {
       v35 = v17;
     }
@@ -492,13 +492,13 @@ LABEL_22:
     }
 
     v36 = v25 + v32 + v35;
-    v37 = [v4 rightDots];
+    rightDots4 = [patternCopy rightDots];
 
-    v38 = [v37 fourthDot];
+    fourthDot2 = [rightDots4 fourthDot];
 
-    if (v38)
+    if (fourthDot2)
     {
-      if (v6)
+      if (shouldReverseDots)
       {
         v39 = 8;
       }
@@ -514,7 +514,7 @@ LABEL_22:
 
   else
   {
-    if (v6)
+    if (shouldReverseDots)
     {
       v40 = 10244;
     }
@@ -524,7 +524,7 @@ LABEL_22:
       v40 = 10241;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v41 = 1;
     }
@@ -534,7 +534,7 @@ LABEL_22:
       v41 = 4;
     }
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v42 = 32;
     }
@@ -544,12 +544,12 @@ LABEL_22:
       v42 = 8;
     }
 
-    if (!v8)
+    if (!topDot)
     {
       v40 = 10240;
     }
 
-    if (v10)
+    if (middleDot)
     {
       v43 = v40 | 2;
     }
@@ -559,18 +559,18 @@ LABEL_22:
       v43 = v40;
     }
 
-    v44 = [v4 leftDots];
-    v45 = [v44 bottomDot];
+    leftDots5 = [patternCopy leftDots];
+    bottomDot3 = [leftDots5 bottomDot];
 
-    if (!v45)
+    if (!bottomDot3)
     {
       v41 = 0;
     }
 
-    v46 = [v4 rightDots];
-    v47 = [v46 topDot];
+    rightDots5 = [patternCopy rightDots];
+    topDot3 = [rightDots5 topDot];
 
-    if (v47)
+    if (topDot3)
     {
       v48 = v42;
     }
@@ -581,10 +581,10 @@ LABEL_22:
     }
 
     v49 = v41 + v48 + v43;
-    v50 = [v4 rightDots];
-    v51 = [v50 middleDot];
+    rightDots6 = [patternCopy rightDots];
+    middleDot3 = [rightDots6 middleDot];
 
-    if (v51)
+    if (middleDot3)
     {
       v36 = v49 + 16;
     }
@@ -594,11 +594,11 @@ LABEL_22:
       v36 = v49;
     }
 
-    v52 = [v4 rightDots];
+    rightDots7 = [patternCopy rightDots];
 
-    v53 = [v52 bottomDot];
+    bottomDot4 = [rightDots7 bottomDot];
 
-    if (v6)
+    if (shouldReverseDots)
     {
       v54 = 8;
     }
@@ -609,7 +609,7 @@ LABEL_22:
     }
 
     v55 = v36 + v54;
-    if (v53)
+    if (bottomDot4)
     {
       return v55;
     }
@@ -618,10 +618,10 @@ LABEL_22:
   return v36;
 }
 
-- (id)_halfPatternFromTouches:(id)a3 side:(unint64_t)a4
+- (id)_halfPatternFromTouches:(id)touches side:(unint64_t)side
 {
-  v6 = [(VOTBrailleGesturePatternRecognitionEngine *)self _sortTouches:a3 fromTopToBottomForSide:?];
-  v7 = -[VOTBrailleGestureDataRepository halfPatternsForNumberOfDots:side:](self->_repository, "halfPatternsForNumberOfDots:side:", [v6 count], a4);
+  v6 = [(VOTBrailleGesturePatternRecognitionEngine *)self _sortTouches:touches fromTopToBottomForSide:?];
+  v7 = -[VOTBrailleGestureDataRepository halfPatternsForNumberOfDots:side:](self->_repository, "halfPatternsForNumberOfDots:side:", [v6 count], side);
   if ([v7 count] == 1)
   {
     [v7 firstObject];
@@ -629,7 +629,7 @@ LABEL_22:
 
   else
   {
-    [(VOTBrailleGesturePatternRecognitionEngine *)self _closestHalfPatternForOrderedTouches:v6 possibleMatches:v7 side:a4];
+    [(VOTBrailleGesturePatternRecognitionEngine *)self _closestHalfPatternForOrderedTouches:v6 possibleMatches:v7 side:side];
   }
   v8 = ;
   v9 = [(VOTBrailleGesturePatternRecognitionEngine *)self _halfPatternFromOrderedTouches:v6 correspondingHalfPattern:v8];
@@ -637,14 +637,14 @@ LABEL_22:
   return v9;
 }
 
-- (id)_closestHalfPatternForOrderedTouches:(id)a3 possibleMatches:(id)a4 side:(unint64_t)a5
+- (id)_closestHalfPatternForOrderedTouches:(id)touches possibleMatches:(id)matches side:(unint64_t)side
 {
-  v7 = a3;
+  touchesCopy = touches;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = a4;
+  obj = matches;
   v8 = [obj countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v8)
   {
@@ -665,7 +665,7 @@ LABEL_22:
 
         v15 = *(*(&v25 + 1) + 8 * i);
         v16 = [(VOTBrailleGesturePatternRecognitionEngine *)self _orderedTouchesFromHalfPattern:v15, v23];
-        [(VOTBrailleGesturePatternRecognitionEngine *)self _totalDistanceBetweenCorrespondingPointsInTouches:v7 andTouches:v16];
+        [(VOTBrailleGesturePatternRecognitionEngine *)self _totalDistanceBetweenCorrespondingPointsInTouches:touchesCopy andTouches:v16];
         v18 = v17;
 
         v19 = VOTLogBrailleGestures();
@@ -673,7 +673,7 @@ LABEL_22:
         {
           v20 = [(VOTBrailleGesturePatternRecognitionEngine *)self _orderedTouchesFromHalfPattern:v15];
           *buf = v23;
-          v30 = v7;
+          v30 = touchesCopy;
           v31 = 2114;
           v32 = v15;
           v33 = 2114;
@@ -706,69 +706,69 @@ LABEL_22:
   return v11;
 }
 
-- (id)_halfPatternFromOrderedTouches:(id)a3 correspondingHalfPattern:(id)a4
+- (id)_halfPatternFromOrderedTouches:(id)touches correspondingHalfPattern:(id)pattern
 {
-  v5 = a3;
-  v6 = a4;
+  touchesCopy = touches;
+  patternCopy = pattern;
   v7 = objc_alloc_init(VOTBrailleGestureHalfPattern);
-  v8 = [v6 topDot];
+  topDot = [patternCopy topDot];
 
-  if (v8)
+  if (topDot)
   {
-    v9 = [v5 objectAtIndexedSubscript:0];
+    v9 = [touchesCopy objectAtIndexedSubscript:0];
     [(VOTBrailleGestureHalfPattern *)v7 setTopDot:v9];
 
-    v8 = 1;
+    topDot = 1;
   }
 
-  v10 = [v6 middleDot];
+  middleDot = [patternCopy middleDot];
 
-  if (v10)
+  if (middleDot)
   {
-    v11 = v8 + 1;
-    v12 = [v5 objectAtIndexedSubscript:v8];
+    v11 = topDot + 1;
+    v12 = [touchesCopy objectAtIndexedSubscript:topDot];
     [(VOTBrailleGestureHalfPattern *)v7 setMiddleDot:v12];
 
-    v8 = v11;
+    topDot = v11;
   }
 
-  v13 = [v6 bottomDot];
+  bottomDot = [patternCopy bottomDot];
 
-  if (v13)
+  if (bottomDot)
   {
-    v14 = v8 + 1;
-    v15 = [v5 objectAtIndexedSubscript:v8];
+    v14 = topDot + 1;
+    v15 = [touchesCopy objectAtIndexedSubscript:topDot];
     [(VOTBrailleGestureHalfPattern *)v7 setBottomDot:v15];
 
-    v8 = v14;
+    topDot = v14;
   }
 
-  v16 = [v6 fourthDot];
+  fourthDot = [patternCopy fourthDot];
 
-  if (v16)
+  if (fourthDot)
   {
-    v17 = [v5 objectAtIndexedSubscript:v8];
+    v17 = [touchesCopy objectAtIndexedSubscript:topDot];
     [(VOTBrailleGestureHalfPattern *)v7 setFourthDot:v17];
   }
 
   return v7;
 }
 
-- (double)_totalDistanceBetweenCorrespondingPointsInTouches:(id)a3 andTouches:(id)a4
+- (double)_totalDistanceBetweenCorrespondingPointsInTouches:(id)touches andTouches:(id)andTouches
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  touchesCopy = touches;
+  andTouchesCopy = andTouches;
+  if ([touchesCopy count])
   {
     v8 = 0;
     v9 = 0.0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v8];
+      v10 = [touchesCopy objectAtIndexedSubscript:v8];
       [v10 CGPointValue];
       v12 = v11;
       v14 = v13;
-      v15 = [v7 objectAtIndexedSubscript:v8];
+      v15 = [andTouchesCopy objectAtIndexedSubscript:v8];
       [v15 CGPointValue];
       [(VOTBrailleGesturePatternRecognitionEngine *)self _distanceBetweenPoint:v12 andPoint:v14, v16, v17];
       v9 = v9 + v18;
@@ -776,7 +776,7 @@ LABEL_22:
       ++v8;
     }
 
-    while ([v6 count] > v8);
+    while ([touchesCopy count] > v8);
   }
 
   else
@@ -787,73 +787,73 @@ LABEL_22:
   return v9;
 }
 
-- (id)_orderedTouchesFromHalfPattern:(id)a3
+- (id)_orderedTouchesFromHalfPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   v4 = [NSMutableArray arrayWithCapacity:3];
-  v5 = [v3 topDot];
+  topDot = [patternCopy topDot];
 
-  if (v5)
+  if (topDot)
   {
-    v6 = [v3 topDot];
-    [v4 addObject:v6];
+    topDot2 = [patternCopy topDot];
+    [v4 addObject:topDot2];
   }
 
-  v7 = [v3 middleDot];
+  middleDot = [patternCopy middleDot];
 
-  if (v7)
+  if (middleDot)
   {
-    v8 = [v3 middleDot];
-    [v4 addObject:v8];
+    middleDot2 = [patternCopy middleDot];
+    [v4 addObject:middleDot2];
   }
 
-  v9 = [v3 bottomDot];
+  bottomDot = [patternCopy bottomDot];
 
-  if (v9)
+  if (bottomDot)
   {
-    v10 = [v3 bottomDot];
-    [v4 addObject:v10];
+    bottomDot2 = [patternCopy bottomDot];
+    [v4 addObject:bottomDot2];
   }
 
-  v11 = [v3 fourthDot];
+  fourthDot = [patternCopy fourthDot];
 
-  if (v11)
+  if (fourthDot)
   {
-    v12 = [v3 fourthDot];
-    [v4 addObject:v12];
+    fourthDot2 = [patternCopy fourthDot];
+    [v4 addObject:fourthDot2];
   }
 
   return v4;
 }
 
-- (id)_sortTouches:(id)a3 fromTopToBottomForSide:(unint64_t)a4
+- (id)_sortTouches:(id)touches fromTopToBottomForSide:(unint64_t)side
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F2038;
   v6[3] = &unk_1001CAEA8;
   v6[4] = self;
-  v6[5] = a4;
-  v4 = [a3 sortedArrayUsingComparator:v6];
+  v6[5] = side;
+  v4 = [touches sortedArrayUsingComparator:v6];
 
   return v4;
 }
 
-- (BOOL)_halfPattern:(id)a3 hasSameDotsAsHalfPattern:(id)a4
+- (BOOL)_halfPattern:(id)pattern hasSameDotsAsHalfPattern:(id)halfPattern
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 topDot];
-  v9 = [v7 topDot];
-  if ([(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:v8 object:v9])
+  patternCopy = pattern;
+  halfPatternCopy = halfPattern;
+  topDot = [patternCopy topDot];
+  topDot2 = [halfPatternCopy topDot];
+  if ([(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:topDot object:topDot2])
   {
-    v10 = [v6 middleDot];
-    v11 = [v7 middleDot];
-    if ([(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:v10 object:v11])
+    middleDot = [patternCopy middleDot];
+    middleDot2 = [halfPatternCopy middleDot];
+    if ([(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:middleDot object:middleDot2])
     {
-      v12 = [v6 bottomDot];
-      v13 = [v7 bottomDot];
-      v14 = [(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:v12 object:v13];
+      bottomDot = [patternCopy bottomDot];
+      bottomDot2 = [halfPatternCopy bottomDot];
+      v14 = [(VOTBrailleGesturePatternRecognitionEngine *)self _bothObjectsAreNilOrBothAreNonNil:bottomDot object:bottomDot2];
     }
 
     else
@@ -870,11 +870,11 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)_bothObjectsAreNilOrBothAreNonNil:(id)a3 object:(id)a4
+- (BOOL)_bothObjectsAreNilOrBothAreNonNil:(id)nil object:(id)object
 {
-  if (a3)
+  if (nil)
   {
-    v4 = a4 == 0;
+    v4 = object == 0;
   }
 
   else
@@ -883,26 +883,26 @@ LABEL_22:
   }
 
   v5 = !v4;
-  return !(a3 | a4) || v5;
+  return !(nil | object) || v5;
 }
 
-- (id)_averagePointValueWithDataCount:(unint64_t)a3 currentPointValue:(id)a4 newPointValue:(id)a5
+- (id)_averagePointValueWithDataCount:(unint64_t)count currentPointValue:(id)value newPointValue:(id)pointValue
 {
-  v8 = a5;
-  v9 = v8;
-  if (a4)
+  pointValueCopy = pointValue;
+  v9 = pointValueCopy;
+  if (value)
   {
-    [a4 ax_CGPointValue];
+    [value ax_CGPointValue];
     v11 = v10;
     v13 = v12;
     [v9 ax_CGPointValue];
-    [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldPoint:a3 newPoint:v11 dataCount:v13, v14, v15];
+    [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldPoint:count newPoint:v11 dataCount:v13, v14, v15];
     v16 = [NSValue ax_valueWithCGPoint:?];
   }
 
   else
   {
-    v16 = v8;
+    v16 = pointValueCopy;
   }
 
   v17 = v16;
@@ -910,13 +910,13 @@ LABEL_22:
   return v17;
 }
 
-- (CGPoint)_averageOfOldPoint:(CGPoint)a3 newPoint:(CGPoint)a4 dataCount:(unint64_t)a5
+- (CGPoint)_averageOfOldPoint:(CGPoint)point newPoint:(CGPoint)newPoint dataCount:(unint64_t)count
 {
-  y = a4.y;
-  v7 = a3.y;
-  [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldFloat:a3.x newFloat:a4.x dataCount:?];
+  y = newPoint.y;
+  v7 = point.y;
+  [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldFloat:point.x newFloat:newPoint.x dataCount:?];
   v10 = v9;
-  [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldFloat:a5 newFloat:v7 dataCount:y];
+  [(VOTBrailleGesturePatternRecognitionEngine *)self _averageOfOldFloat:count newFloat:v7 dataCount:y];
   v12 = v11;
   v13 = v10;
   result.y = v12;

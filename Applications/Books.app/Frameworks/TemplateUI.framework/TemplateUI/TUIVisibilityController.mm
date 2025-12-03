@@ -1,24 +1,24 @@
 @interface TUIVisibilityController
 + (id)sharedQueue;
-- (CGRect)_computeClippedBoundsForProvider:(id)a3;
-- (TUIVisibilityController)initWithRootProvider:(id)a3 queue:(id)a4;
-- (id)newCollectorForProvider:(id)a3 withIdentifier:(id)a4 parentIdentifier:(id)a5;
-- (id)newTrackerWithDefaultThreshold:(double)a3 block:(id)a4;
-- (void)_appendVisibilityUpdatesAtTime:(double)a3 forCollector:(id)a4 toUpdates:(id)a5;
-- (void)_appendVisibleBoundsUpdatesAtTime:(double)a3 forCollector:(id)a4 toUpdates:(id)a5;
-- (void)_scheduleUpdate:(id)a3;
-- (void)_scheduleUpdates:(id)a3;
-- (void)q_commitWithTime:(double)a3;
+- (CGRect)_computeClippedBoundsForProvider:(id)provider;
+- (TUIVisibilityController)initWithRootProvider:(id)provider queue:(id)queue;
+- (id)newCollectorForProvider:(id)provider withIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier;
+- (id)newTrackerWithDefaultThreshold:(double)threshold block:(id)block;
+- (void)_appendVisibilityUpdatesAtTime:(double)time forCollector:(id)collector toUpdates:(id)updates;
+- (void)_appendVisibleBoundsUpdatesAtTime:(double)time forCollector:(id)collector toUpdates:(id)updates;
+- (void)_scheduleUpdate:(id)update;
+- (void)_scheduleUpdates:(id)updates;
+- (void)q_commitWithTime:(double)time;
 - (void)q_processUpdates;
-- (void)q_setNeedsUpdateForCollector:(id)a3;
-- (void)queueUpdateForCollector:(id)a3 time:(double)a4 block:(id)a5;
-- (void)queueUpdateVisible:(BOOL)a3 forCollector:(id)a4 time:(double)a5;
-- (void)queueUpdateWithBlock:(id)a3;
-- (void)queueVisibleBoundsUpdateForCollector:(id)a3 time:(double)a4;
-- (void)removeCollector:(id)a3;
-- (void)removeTracker:(id)a3;
+- (void)q_setNeedsUpdateForCollector:(id)collector;
+- (void)queueUpdateForCollector:(id)collector time:(double)time block:(id)block;
+- (void)queueUpdateVisible:(BOOL)visible forCollector:(id)collector time:(double)time;
+- (void)queueUpdateWithBlock:(id)block;
+- (void)queueVisibleBoundsUpdateForCollector:(id)collector time:(double)time;
+- (void)removeCollector:(id)collector;
+- (void)removeTracker:(id)tracker;
 - (void)updateVisible;
-- (void)updateVisibleAtTime:(double)a3;
+- (void)updateVisibleAtTime:(double)time;
 @end
 
 @implementation TUIVisibilityController
@@ -35,19 +35,19 @@
   return v3;
 }
 
-- (TUIVisibilityController)initWithRootProvider:(id)a3 queue:(id)a4
+- (TUIVisibilityController)initWithRootProvider:(id)provider queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = TUIVisibilityController;
   v8 = [(TUIVisibilityController *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     v9->_lock._os_unfair_lock_opaque = 0;
-    v10 = [[TUIVisibilityCollector alloc] initWithController:v9 provider:v6 identifier:0];
+    v10 = [[TUIVisibilityCollector alloc] initWithController:v9 provider:providerCopy identifier:0];
     rootCollector = v9->_rootCollector;
     v9->_rootCollector = v10;
 
@@ -67,10 +67,10 @@
   return v9;
 }
 
-- (id)newTrackerWithDefaultThreshold:(double)a3 block:(id)a4
+- (id)newTrackerWithDefaultThreshold:(double)threshold block:(id)block
 {
-  v6 = a4;
-  v7 = [[TUIVisibilityTracker alloc] initWithThreshold:v6 block:self->_queue queue:a3];
+  blockCopy = block;
+  v7 = [[TUIVisibilityTracker alloc] initWithThreshold:blockCopy block:self->_queue queue:threshold];
 
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
@@ -87,18 +87,18 @@
   return v11;
 }
 
-- (void)_scheduleUpdate:(id)a3
+- (void)_scheduleUpdate:(id)update
 {
-  v4 = a3;
-  [v4 time];
+  updateCopy = update;
+  [updateCopy time];
   v6 = v5;
-  if ([v4 flags])
+  if ([updateCopy flags])
   {
-    v9 = [v4 flags];
+    flags = [updateCopy flags];
     p_lock = &self->_lock;
     os_unfair_lock_lock_with_options();
     l_processUpdatesScheduled = self->_l_processUpdatesScheduled;
-    if (!l_processUpdatesScheduled && (v9 & 2) == 0)
+    if (!l_processUpdatesScheduled && (flags & 2) == 0)
     {
       if (v6 - self->_lastUpdate <= 0.1 && [(NSMutableArray *)self->_l_updates count])
       {
@@ -107,7 +107,7 @@
 
 LABEL_9:
       self->_l_processUpdatesScheduled = 1;
-      [(NSMutableArray *)self->_l_updates addObject:v4];
+      [(NSMutableArray *)self->_l_updates addObject:updateCopy];
       os_unfair_lock_unlock(p_lock);
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -133,18 +133,18 @@ LABEL_9:
   }
 
 LABEL_4:
-  [(NSMutableArray *)self->_l_updates addObject:v4];
+  [(NSMutableArray *)self->_l_updates addObject:updateCopy];
   os_unfair_lock_unlock(p_lock);
 LABEL_10:
 }
 
-- (void)_scheduleUpdates:(id)a3
+- (void)_scheduleUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   os_unfair_lock_lock_with_options();
   if (self->_l_processUpdatesScheduled)
   {
-    [(NSMutableArray *)self->_l_updates addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_l_updates addObjectsFromArray:updatesCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -152,7 +152,7 @@ LABEL_10:
   else
   {
     self->_l_processUpdatesScheduled = 1;
-    [(NSMutableArray *)self->_l_updates addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_l_updates addObjectsFromArray:updatesCopy];
 
     os_unfair_lock_unlock(&self->_lock);
     queue = self->_queue;
@@ -212,8 +212,8 @@ LABEL_10:
             [(TUIVisibilityController *)self q_commitWithTime:v5];
           }
 
-          v15 = [v11 block];
-          v15[2]();
+          block = [v11 block];
+          block[2]();
 
           goto LABEL_19;
         }
@@ -229,8 +229,8 @@ LABEL_10:
           v4 = 0;
         }
 
-        v14 = [v11 block];
-        v14[2]();
+        block2 = [v11 block];
+        block2[2]();
 
         if ((v4 & 1) == 0)
         {
@@ -270,7 +270,7 @@ LABEL_24:
   }
 }
 
-- (void)q_commitWithTime:(double)a3
+- (void)q_commitWithTime:(double)time
 {
   v17 = 0u;
   v18 = 0u;
@@ -299,7 +299,7 @@ LABEL_24:
         v13 = v12;
         if (v16 == 1 && v12 != 0)
         {
-          [v10 q_notifyObserversWithRootNode:v12 time:a3];
+          [v10 q_notifyObserversWithRootNode:v12 time:time];
         }
       }
 
@@ -313,52 +313,52 @@ LABEL_24:
   self->_q_needsUpdate = 0;
 }
 
-- (void)removeTracker:(id)a3
+- (void)removeTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1C038;
   v7[3] = &unk_25DCA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = trackerCopy;
+  v6 = trackerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)queueUpdateWithBlock:(id)a3
+- (void)queueUpdateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[_TUIVisibilityUpdate alloc] initWithTime:2 flags:v4 block:0.0];
+  blockCopy = block;
+  v5 = [[_TUIVisibilityUpdate alloc] initWithTime:2 flags:blockCopy block:0.0];
 
   [(TUIVisibilityController *)self _scheduleUpdate:v5];
 }
 
-- (void)q_setNeedsUpdateForCollector:(id)a3
+- (void)q_setNeedsUpdateForCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   q_needsUpdate = self->_q_needsUpdate;
-  v8 = v4;
+  v8 = collectorCopy;
   if (!q_needsUpdate)
   {
     v6 = [NSHashTable hashTableWithOptions:512];
     v7 = self->_q_needsUpdate;
     self->_q_needsUpdate = v6;
 
-    v4 = v8;
+    collectorCopy = v8;
     q_needsUpdate = self->_q_needsUpdate;
   }
 
-  [(NSHashTable *)q_needsUpdate addObject:v4];
+  [(NSHashTable *)q_needsUpdate addObject:collectorCopy];
 }
 
-- (void)queueUpdateForCollector:(id)a3 time:(double)a4 block:(id)a5
+- (void)queueUpdateForCollector:(id)collector time:(double)time block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 provider];
-  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:v10];
+  collectorCopy = collector;
+  blockCopy = block;
+  provider = [collectorCopy provider];
+  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:provider];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -373,29 +373,29 @@ LABEL_24:
   v28 = v14;
   v29 = v16;
   v30 = v18;
-  v25 = self;
-  v26 = v9;
-  v24 = v8;
-  v20 = v9;
-  v21 = v8;
-  v22 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v23 block:a4];
+  selfCopy = self;
+  v26 = blockCopy;
+  v24 = collectorCopy;
+  v20 = blockCopy;
+  v21 = collectorCopy;
+  v22 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v23 block:time];
   [(TUIVisibilityController *)self _scheduleUpdate:v22];
 }
 
-- (void)queueVisibleBoundsUpdateForCollector:(id)a3 time:(double)a4
+- (void)queueVisibleBoundsUpdateForCollector:(id)collector time:(double)time
 {
-  v6 = a3;
+  collectorCopy = collector;
   v7 = objc_opt_new();
-  [(TUIVisibilityController *)self _appendVisibleBoundsUpdatesAtTime:v6 forCollector:v7 toUpdates:a4];
+  [(TUIVisibilityController *)self _appendVisibleBoundsUpdatesAtTime:collectorCopy forCollector:v7 toUpdates:time];
 
   [(TUIVisibilityController *)self _scheduleUpdates:v7];
 }
 
-- (void)queueUpdateVisible:(BOOL)a3 forCollector:(id)a4 time:(double)a5
+- (void)queueUpdateVisible:(BOOL)visible forCollector:(id)collector time:(double)time
 {
-  v8 = a4;
-  v9 = [v8 provider];
-  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:v9];
+  collectorCopy = collector;
+  provider = [collectorCopy provider];
+  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:provider];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -410,30 +410,30 @@ LABEL_24:
   v25 = v13;
   v26 = v15;
   v27 = v17;
-  v28 = a3;
-  v22 = v8;
-  v23 = self;
-  v19 = v8;
-  v20 = [(_TUIVisibilityUpdate *)v18 initWithTime:0 flags:v21 block:a5];
+  visibleCopy = visible;
+  v22 = collectorCopy;
+  selfCopy = self;
+  v19 = collectorCopy;
+  v20 = [(_TUIVisibilityUpdate *)v18 initWithTime:0 flags:v21 block:time];
   [(TUIVisibilityController *)self _scheduleUpdate:v20];
 }
 
-- (CGRect)_computeClippedBoundsForProvider:(id)a3
+- (CGRect)_computeClippedBoundsForProvider:(id)provider
 {
-  v4 = a3;
-  [v4 visibilityProviderVisibleBounds];
+  providerCopy = provider;
+  [providerCopy visibilityProviderVisibleBounds];
   x = v5;
   y = v7;
   width = v9;
   height = v11;
-  v13 = [(TUIVisibilityCollector *)self->_rootCollector provider];
-  v14 = [v13 visibilityProviderHostingLayer];
+  provider = [(TUIVisibilityCollector *)self->_rootCollector provider];
+  visibilityProviderHostingLayer = [provider visibilityProviderHostingLayer];
 
-  v15 = [v4 visibilityProviderHostingLayer];
-  v16 = v15;
-  if (v14)
+  visibilityProviderHostingLayer2 = [providerCopy visibilityProviderHostingLayer];
+  v16 = visibilityProviderHostingLayer2;
+  if (visibilityProviderHostingLayer)
   {
-    v17 = v15 == 0;
+    v17 = visibilityProviderHostingLayer2 == 0;
   }
 
   else
@@ -441,7 +441,7 @@ LABEL_24:
     v17 = 1;
   }
 
-  if (!v17 && v14 != v15)
+  if (!v17 && visibilityProviderHostingLayer != visibilityProviderHostingLayer2)
   {
     v49.origin.x = x;
     v49.origin.y = y;
@@ -449,14 +449,14 @@ LABEL_24:
     v49.size.height = height;
     if (!CGRectIsEmpty(v49))
     {
-      v19 = [(TUIVisibilityCollector *)self->_rootCollector provider];
-      [v19 visibilityProviderVisibleBounds];
+      provider2 = [(TUIVisibilityCollector *)self->_rootCollector provider];
+      [provider2 visibilityProviderVisibleBounds];
       v21 = v20;
       v23 = v22;
       v25 = v24;
       v27 = v26;
 
-      [v14 convertRect:v16 toLayer:{v21, v23, v25, v27}];
+      [visibilityProviderHostingLayer convertRect:v16 toLayer:{v21, v23, v25, v27}];
       v59.origin.x = v28;
       v59.origin.y = v29;
       v59.size.width = v30;
@@ -478,10 +478,10 @@ LABEL_24:
     v52.size.height = height;
     if (!CGRectIsEmpty(v52))
     {
-      v32 = [v16 superlayer];
-      if (v32)
+      superlayer = [v16 superlayer];
+      if (superlayer)
       {
-        v33 = v32;
+        v33 = superlayer;
         do
         {
           if ([v33 masksToBounds])
@@ -507,25 +507,25 @@ LABEL_24:
             }
           }
 
-          if (v33 == v14)
+          if (v33 == visibilityProviderHostingLayer)
           {
             break;
           }
 
-          v38 = [v33 superlayer];
+          superlayer2 = [v33 superlayer];
 
-          v33 = v38;
+          v33 = superlayer2;
         }
 
-        while (v38);
+        while (superlayer2);
       }
     }
   }
 
-  v39 = [(TUIVisibilityCollector *)self->_rootCollector provider];
-  v40 = [v39 visibilityProviderWindowLayer];
+  provider3 = [(TUIVisibilityCollector *)self->_rootCollector provider];
+  visibilityProviderWindowLayer = [provider3 visibilityProviderWindowLayer];
 
-  if (v40)
+  if (visibilityProviderWindowLayer)
   {
     if (v16)
     {
@@ -535,8 +535,8 @@ LABEL_24:
       v55.size.height = height;
       if (!CGRectIsEmpty(v55))
       {
-        [v40 bounds];
-        [v40 convertRect:v16 toLayer:?];
+        [visibilityProviderWindowLayer bounds];
+        [visibilityProviderWindowLayer convertRect:v16 toLayer:?];
         v61.origin.x = v41;
         v61.origin.y = v42;
         v61.size.width = v43;
@@ -565,13 +565,13 @@ LABEL_24:
   return result;
 }
 
-- (id)newCollectorForProvider:(id)a3 withIdentifier:(id)a4 parentIdentifier:(id)a5
+- (id)newCollectorForProvider:(id)provider withIdentifier:(id)identifier parentIdentifier:(id)parentIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  providerCopy = provider;
+  identifierCopy = identifier;
+  if (parentIdentifier)
   {
-    v10 = [(NSMutableDictionary *)self->_collectorsMap objectForKeyedSubscript:a5];
+    v10 = [(NSMutableDictionary *)self->_collectorsMap objectForKeyedSubscript:parentIdentifier];
   }
 
   else
@@ -580,17 +580,17 @@ LABEL_24:
   }
 
   v11 = v10;
-  v12 = [[TUIVisibilityCollector alloc] initWithController:self provider:v8 identifier:v9];
-  [(NSMutableDictionary *)self->_collectorsMap setObject:v12 forKeyedSubscript:v9];
+  v12 = [[TUIVisibilityCollector alloc] initWithController:self provider:providerCopy identifier:identifierCopy];
+  [(NSMutableDictionary *)self->_collectorsMap setObject:v12 forKeyedSubscript:identifierCopy];
   [(TUIVisibilityCollector *)v11 _addChild:v12];
 
   return v12;
 }
 
-- (void)removeCollector:(id)a3
+- (void)removeCollector:(id)collector
 {
-  v4 = [a3 identifier];
-  [(NSMutableDictionary *)self->_collectorsMap removeObjectForKey:v4];
+  identifier = [collector identifier];
+  [(NSMutableDictionary *)self->_collectorsMap removeObjectForKey:identifier];
 }
 
 - (void)updateVisible
@@ -600,12 +600,12 @@ LABEL_24:
   [(TUIVisibilityController *)self updateVisibleAtTime:v3];
 }
 
-- (void)_appendVisibleBoundsUpdatesAtTime:(double)a3 forCollector:(id)a4 toUpdates:(id)a5
+- (void)_appendVisibleBoundsUpdatesAtTime:(double)time forCollector:(id)collector toUpdates:(id)updates
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 provider];
-  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:v10];
+  collectorCopy = collector;
+  updatesCopy = updates;
+  provider = [collectorCopy provider];
+  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:provider];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -616,21 +616,21 @@ LABEL_24:
   v31[1] = 3221225472;
   v31[2] = sub_1CACC;
   v31[3] = &unk_25E148;
-  v20 = v8;
+  v20 = collectorCopy;
   v34 = v12;
   v35 = v14;
   v36 = v16;
   v37 = v18;
   v32 = v20;
-  v33 = self;
-  v21 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v31 block:a3];
-  [v9 addObject:v21];
-  v22 = [v20 children];
+  selfCopy = self;
+  v21 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v31 block:time];
+  [updatesCopy addObject:v21];
+  children = [v20 children];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = [v22 countByEnumeratingWithState:&v27 objects:v38 count:16];
+  v23 = [children countByEnumeratingWithState:&v27 objects:v38 count:16];
   if (v23)
   {
     v24 = v23;
@@ -642,54 +642,54 @@ LABEL_24:
       {
         if (*v28 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(children);
         }
 
-        [(TUIVisibilityController *)self _appendVisibleBoundsUpdatesAtTime:*(*(&v27 + 1) + 8 * v26) forCollector:v9 toUpdates:a3];
+        [(TUIVisibilityController *)self _appendVisibleBoundsUpdatesAtTime:*(*(&v27 + 1) + 8 * v26) forCollector:updatesCopy toUpdates:time];
         v26 = v26 + 1;
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v27 objects:v38 count:16];
+      v24 = [children countByEnumeratingWithState:&v27 objects:v38 count:16];
     }
 
     while (v24);
   }
 }
 
-- (void)_appendVisibilityUpdatesAtTime:(double)a3 forCollector:(id)a4 toUpdates:(id)a5
+- (void)_appendVisibilityUpdatesAtTime:(double)time forCollector:(id)collector toUpdates:(id)updates
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 provider];
-  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:v10];
+  collectorCopy = collector;
+  updatesCopy = updates;
+  provider = [collectorCopy provider];
+  [(TUIVisibilityController *)self _computeClippedBoundsForProvider:provider];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  LOBYTE(v10) = [v8 _computeVisible];
+  LOBYTE(provider) = [collectorCopy _computeVisible];
   v19 = [_TUIVisibilityUpdate alloc];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1CD30;
   v31[3] = &unk_25E120;
-  v20 = v8;
+  v20 = collectorCopy;
   v34 = v12;
   v35 = v14;
   v36 = v16;
   v37 = v18;
-  v38 = v10;
+  v38 = provider;
   v32 = v20;
-  v33 = self;
-  v21 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v31 block:a3];
-  [v9 addObject:v21];
-  v22 = [v20 children];
+  selfCopy = self;
+  v21 = [(_TUIVisibilityUpdate *)v19 initWithTime:1 flags:v31 block:time];
+  [updatesCopy addObject:v21];
+  children = [v20 children];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v23 = [v22 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  v23 = [children countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v23)
   {
     v24 = v23;
@@ -701,25 +701,25 @@ LABEL_24:
       {
         if (*v28 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(children);
         }
 
-        [(TUIVisibilityController *)self _appendVisibilityUpdatesAtTime:*(*(&v27 + 1) + 8 * v26) forCollector:v9 toUpdates:a3];
+        [(TUIVisibilityController *)self _appendVisibilityUpdatesAtTime:*(*(&v27 + 1) + 8 * v26) forCollector:updatesCopy toUpdates:time];
         v26 = v26 + 1;
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v24 = [children countByEnumeratingWithState:&v27 objects:v39 count:16];
     }
 
     while (v24);
   }
 }
 
-- (void)updateVisibleAtTime:(double)a3
+- (void)updateVisibleAtTime:(double)time
 {
   v5 = objc_opt_new();
-  [(TUIVisibilityController *)self _appendVisibilityUpdatesAtTime:self->_rootCollector forCollector:v5 toUpdates:a3];
+  [(TUIVisibilityController *)self _appendVisibilityUpdatesAtTime:self->_rootCollector forCollector:v5 toUpdates:time];
   [(TUIVisibilityController *)self _scheduleUpdates:v5];
 }
 

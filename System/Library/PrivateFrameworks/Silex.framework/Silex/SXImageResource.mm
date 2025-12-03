@@ -1,41 +1,41 @@
 @interface SXImageResource
-- (CGSize)sizeThatFills:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFills:(CGSize)fills;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
-- (double)heightForImageWidth:(double)a3;
-- (double)widthForImageHeight:(double)a3;
+- (double)heightForImageWidth:(double)width;
+- (double)widthForImageHeight:(double)height;
 @end
 
 @implementation SXImageResource
 
-- (double)heightForImageWidth:(double)a3
+- (double)heightForImageWidth:(double)width
 {
   [(SXImageResource *)self dimensions];
   v6 = 0.0;
   if (v4 != *MEMORY[0x1E695F060] || v5 != *(MEMORY[0x1E695F060] + 8))
   {
-    return v5 * (a3 / v4);
+    return v5 * (width / v4);
   }
 
   return v6;
 }
 
-- (double)widthForImageHeight:(double)a3
+- (double)widthForImageHeight:(double)height
 {
   [(SXImageResource *)self dimensions];
   v6 = 0.0;
   if (v4 != *MEMORY[0x1E695F060] || v5 != *(MEMORY[0x1E695F060] + 8))
   {
-    return v4 * (a3 / v5);
+    return v4 * (height / v5);
   }
 
   return v6;
 }
 
-- (CGSize)sizeThatFills:(CGSize)a3
+- (CGSize)sizeThatFills:(CGSize)fills
 {
-  height = a3.height;
-  width = a3.width;
+  height = fills.height;
+  width = fills.width;
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
   [(SXImageResource *)self dimensions];
@@ -62,10 +62,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
   [(SXImageResource *)self dimensions];

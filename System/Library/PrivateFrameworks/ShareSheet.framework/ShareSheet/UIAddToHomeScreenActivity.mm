@@ -1,8 +1,8 @@
 @interface UIAddToHomeScreenActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation UIAddToHomeScreenActivity
@@ -29,10 +29,10 @@
   return v3;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   if (_ShareSheetIsBrowser())
   {
     if (canPerformWithActivityItems__onceToken != -1)
@@ -58,7 +58,7 @@ LABEL_9:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v4 = v3;
+      v4 = itemsCopy;
       v8 = [v4 countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v8)
       {
@@ -77,9 +77,9 @@ LABEL_9:
             if (objc_opt_respondsToSelector())
             {
               v19 = [v12 URL];
-              v6 = [v19 isHTTPOrHTTPSURL];
+              isHTTPOrHTTPSURL = [v19 isHTTPOrHTTPSURL];
 
-              if ((v6 & 1) == 0)
+              if ((isHTTPOrHTTPSURL & 1) == 0)
               {
                 v20 = share_sheet_log();
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -150,11 +150,11 @@ LABEL_23:
           }
 
           v21 = [v4 URL];
-          v22 = [v21 isHTTPOrHTTPSURL];
+          isHTTPOrHTTPSURL2 = [v21 isHTTPOrHTTPSURL];
 
-          if (v22)
+          if (isHTTPOrHTTPSURL2)
           {
-            v6 = 1;
+            isHTTPOrHTTPSURL = 1;
             goto LABEL_11;
           }
 
@@ -206,10 +206,10 @@ LABEL_37:
   }
 
 LABEL_10:
-  v6 = 0;
+  isHTTPOrHTTPSURL = 0;
 LABEL_11:
 
-  return v6;
+  return isHTTPOrHTTPSURL;
 }
 
 void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke()
@@ -218,15 +218,15 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
   canPerformWithActivityItems__addToHomeScreenDisabled = [v0 isEphemeralMultiUser];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v41 = *MEMORY[0x1E69E9840];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v4)
   {
     v5 = *v36;
@@ -236,7 +236,7 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
       {
         if (*v36 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v7 = *(*(&v35 + 1) + 8 * i);
@@ -244,9 +244,9 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
         if (objc_opt_isKindOfClass())
         {
           v8 = [v7 URL];
-          v9 = [v8 isHTTPOrHTTPSURL];
+          isHTTPOrHTTPSURL = [v8 isHTTPOrHTTPSURL];
 
-          if (v9)
+          if (isHTTPOrHTTPSURL)
           {
             objc_initWeak(&location, self);
             v18 = objc_alloc(getSFAddToHomeScreenViewControllerClass());
@@ -266,7 +266,7 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v4 = [itemsCopy countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v4)
       {
         continue;
@@ -280,7 +280,7 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v3;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v11)
   {
@@ -299,9 +299,9 @@ void __57__UIAddToHomeScreenActivity_canPerformWithActivityItems___block_invoke(
         {
           v15 = v14;
           v16 = [v15 URL];
-          v17 = [v16 isHTTPOrHTTPSURL];
+          isHTTPOrHTTPSURL2 = [v16 isHTTPOrHTTPSURL];
 
-          if (v17)
+          if (isHTTPOrHTTPSURL2)
           {
             v21 = objc_alloc(getSFAddToHomeScreenViewControllerClass());
             if (objc_opt_respondsToSelector())

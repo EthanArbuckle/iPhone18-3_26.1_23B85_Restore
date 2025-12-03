@@ -1,56 +1,56 @@
 @interface NTKCFaceDetailKaleidoscopeContentSectionController
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4;
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4;
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode;
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options;
 - (UIViewController)parentViewController;
 - (id)delegate;
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4;
+- (void)_customizeActionRow:(id)row withEditOption:(id)option;
 - (void)_finalizeEditor;
 - (void)_presentPhotoPicker;
-- (void)_setPhotoFromAsset:(id)a3;
-- (void)_setPhotoFromDictionary:(id)a3;
-- (void)_setRawPhoto:(id)a3;
-- (void)setExternalAsset:(id)a3;
-- (void)setSelectedOptions:(id)a3;
+- (void)_setPhotoFromAsset:(id)asset;
+- (void)_setPhotoFromDictionary:(id)dictionary;
+- (void)_setRawPhoto:(id)photo;
+- (void)setExternalAsset:(id)asset;
+- (void)setSelectedOptions:(id)options;
 @end
 
 @implementation NTKCFaceDetailKaleidoscopeContentSectionController
 
-+ (BOOL)hasSectionForFace:(id)a3 forEditMode:(int64_t)a4
++ (BOOL)hasSectionForFace:(id)face forEditMode:(int64_t)mode
 {
-  v5 = a3;
-  v6 = [v5 faceStyle] == &dword_14 + 3 || objc_msgSend(v5, "faceStyle") == &stru_B8.addr + 7;
-  v7 = a4 == 12 && v6;
+  faceCopy = face;
+  v6 = [faceCopy faceStyle] == &dword_14 + 3 || objc_msgSend(faceCopy, "faceStyle") == &stru_B8.addr + 7;
+  v7 = mode == 12 && v6;
 
   return v7;
 }
 
-- (BOOL)collectionChanged:(id)a3 withSelectedOptions:(id)a4
+- (BOOL)collectionChanged:(id)changed withSelectedOptions:(id)options
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = a3;
-  v8 = sub_6824(&v13);
-  v9 = v13;
+  changedCopy = changed;
+  optionsCopy = options;
+  changedCopy2 = changed;
+  v8 = sub_6824(&changedCopy);
+  v9 = changedCopy;
 
   v12.receiver = self;
   v12.super_class = NTKCFaceDetailKaleidoscopeContentSectionController;
-  LOBYTE(v7) = [(NTKCFaceDetailKaleidoscopeContentSectionController *)&v12 collectionChanged:v9 withSelectedOptions:v6];
+  LOBYTE(changedCopy2) = [(NTKCFaceDetailKaleidoscopeContentSectionController *)&v12 collectionChanged:v9 withSelectedOptions:optionsCopy];
 
-  v10 = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self cell];
+  cell = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self cell];
 
-  [v10 setUserOptionIndex:v8];
-  return v7;
+  [cell setUserOptionIndex:v8];
+  return changedCopy2;
 }
 
-- (void)setSelectedOptions:(id)a3
+- (void)setSelectedOptions:(id)options
 {
   v10.receiver = self;
   v10.super_class = NTKCFaceDetailKaleidoscopeContentSectionController;
-  v4 = a3;
-  [(NTKCFaceDetailKaleidoscopeContentSectionController *)&v10 setSelectedOptions:v4];
+  optionsCopy = options;
+  [(NTKCFaceDetailKaleidoscopeContentSectionController *)&v10 setSelectedOptions:optionsCopy];
   v5 = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self collection:v10.receiver];
   v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 mode]);
-  v7 = [v4 objectForKeyedSubscript:v6];
+  v7 = [optionsCopy objectForKeyedSubscript:v6];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -58,9 +58,9 @@
     v8 = v7;
     if ([v8 asset] != self->_currentAsset)
     {
-      v9 = [v8 asset];
-      self->_currentAsset = v9;
-      if (!self->_externalAssetSet && v9 == stru_3D8.segname && ![(NTKCompanionKaleidoscopeEditor *)self->_editor photosCount])
+      asset = [v8 asset];
+      self->_currentAsset = asset;
+      if (!self->_externalAssetSet && asset == stru_3D8.segname && ![(NTKCompanionKaleidoscopeEditor *)self->_editor photosCount])
       {
         [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _handleDidSelectActionRowForOption:v8];
       }
@@ -68,38 +68,38 @@
   }
 }
 
-- (void)_customizeActionRow:(id)a3 withEditOption:(id)a4
+- (void)_customizeActionRow:(id)row withEditOption:(id)option
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setShowsTopSeparator:1];
-  v9 = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _actionNameForOption:v6];
+  optionCopy = option;
+  rowCopy = row;
+  [rowCopy setShowsTopSeparator:1];
+  v9 = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _actionNameForOption:optionCopy];
 
-  v8 = [v7 textLabel];
+  textLabel = [rowCopy textLabel];
 
-  [v8 setText:v9];
+  [textLabel setText:v9];
 }
 
 - (void)_presentPhotoPicker
 {
-  v3 = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self parentViewController];
+  parentViewController = [(NTKCFaceDetailKaleidoscopeContentSectionController *)self parentViewController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_6CFC;
   v4[3] = &unk_24938;
   v4[4] = self;
-  [NTKCPhotosAddController presentSinglePhotoAddControllerFromViewController:v3 withCompletion:v4];
+  [NTKCPhotosAddController presentSinglePhotoAddControllerFromViewController:parentViewController withCompletion:v4];
 }
 
-- (void)setExternalAsset:(id)a3
+- (void)setExternalAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   self->_externalAssetSet = 1;
   [(NTKCFaceDetailKaleidoscopeContentSectionController *)self setHasSpacerRow:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _setPhotoFromAsset:v4];
+    [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _setPhotoFromAsset:assetCopy];
   }
 
   else
@@ -107,14 +107,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _setRawPhoto:v4];
+      [(NTKCFaceDetailKaleidoscopeContentSectionController *)self _setRawPhoto:assetCopy];
     }
   }
 }
 
-- (void)_setPhotoFromDictionary:(id)a3
+- (void)_setPhotoFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_initWeak(&location, self);
   editor = self->_editor;
   v6[0] = _NSConcreteStackBlock;
@@ -122,14 +122,14 @@
   v6[2] = sub_6F28;
   v6[3] = &unk_24960;
   objc_copyWeak(&v7, &location);
-  [(NTKCompanionKaleidoscopeEditor *)editor setPhoto:v4 completion:v6];
+  [(NTKCompanionKaleidoscopeEditor *)editor setPhoto:dictionaryCopy completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_setPhotoFromAsset:(id)a3
+- (void)_setPhotoFromAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   objc_initWeak(&location, self);
   editor = self->_editor;
   v6[0] = _NSConcreteStackBlock;
@@ -137,14 +137,14 @@
   v6[2] = sub_7048;
   v6[3] = &unk_24960;
   objc_copyWeak(&v7, &location);
-  [(NTKCompanionKaleidoscopeEditor *)editor setAsset:v4 completion:v6];
+  [(NTKCompanionKaleidoscopeEditor *)editor setAsset:assetCopy completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
 
-- (void)_setRawPhoto:(id)a3
+- (void)_setRawPhoto:(id)photo
 {
-  v4 = a3;
+  photoCopy = photo;
   objc_initWeak(&location, self);
   editor = self->_editor;
   v6[0] = _NSConcreteStackBlock;
@@ -152,7 +152,7 @@
   v6[2] = sub_7168;
   v6[3] = &unk_24960;
   objc_copyWeak(&v7, &location);
-  [(NTKCompanionKaleidoscopeEditor *)editor setRawImage:v4 completion:v6];
+  [(NTKCompanionKaleidoscopeEditor *)editor setRawImage:photoCopy completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }

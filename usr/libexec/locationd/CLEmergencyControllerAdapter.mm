@@ -6,12 +6,12 @@
 
 - (void)checkEmergencyCallStatus
 {
-  v2 = [qword_1026380F0 currentCalls];
+  currentCalls = [qword_1026380F0 currentCalls];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v3 = [currentCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -22,7 +22,7 @@ LABEL_3:
     {
       if (*v9 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(currentCalls);
       }
 
       v7 = *(*(&v8 + 1) + 8 * v6);
@@ -36,7 +36,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [currentCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (v4)
         {
           goto LABEL_3;

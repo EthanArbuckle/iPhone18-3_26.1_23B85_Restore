@@ -1,7 +1,7 @@
 @interface ICLibraryAuthServiceBulkClientTokenRequest
-- (ICLibraryAuthServiceBulkClientTokenRequest)initWithStoreRequestContext:(id)a3 accountDSIDs:(id)a4;
+- (ICLibraryAuthServiceBulkClientTokenRequest)initWithStoreRequestContext:(id)context accountDSIDs:(id)ds;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICLibraryAuthServiceBulkClientTokenRequest
@@ -255,31 +255,31 @@ void __53__ICLibraryAuthServiceBulkClientTokenRequest_execute__block_invoke_33(u
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__ICLibraryAuthServiceBulkClientTokenRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICLibraryAuthServiceBulkClientTokenRequest)initWithStoreRequestContext:(id)a3 accountDSIDs:(id)a4
+- (ICLibraryAuthServiceBulkClientTokenRequest)initWithStoreRequestContext:(id)context accountDSIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = ICLibraryAuthServiceBulkClientTokenRequest;
   v9 = [(ICRequestOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storeRequestContext, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_storeRequestContext, context);
+    v11 = [dsCopy copy];
     accountDSIDs = v10->_accountDSIDs;
     v10->_accountDSIDs = v11;
   }

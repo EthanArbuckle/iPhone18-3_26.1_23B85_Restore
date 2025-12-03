@@ -1,10 +1,10 @@
 @interface CDPUIPiggybackingViewModel
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CDPUIPiggybackingViewModel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CDPUIPiggybackingViewModel allocWithZone:?]];
   v5 = [(NSString *)self->_iconName copy];

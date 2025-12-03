@@ -3,12 +3,12 @@
 - (SCATCursorControllerDelegate)delegate;
 - (id)description;
 - (void)_createSignalQualityLayerIfNecessary;
-- (void)didUpdateSignalQuality:(int64_t)a3;
-- (void)hide:(BOOL)a3 animate:(BOOL)a4;
-- (void)updateLevel:(int64_t)a3 animated:(BOOL)a4 options:(int)a5;
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8;
-- (void)updateTheme:(int64_t)a3 animated:(BOOL)a4 options:(int)a5;
-- (void)updateTheme:(int64_t)a3 level:(int64_t)a4 path:(id)a5 frame:(CGRect)a6 cornerRadius:(double)a7 isSimpleRect:(BOOL)a8 animated:(BOOL)a9 options:(int)a10;
+- (void)didUpdateSignalQuality:(int64_t)quality;
+- (void)hide:(BOOL)hide animate:(BOOL)animate;
+- (void)updateLevel:(int64_t)level animated:(BOOL)animated options:(int)options;
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options;
+- (void)updateTheme:(int64_t)theme animated:(BOOL)animated options:(int)options;
+- (void)updateTheme:(int64_t)theme level:(int64_t)level path:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)self0;
 @end
 
 @implementation SCATCursorController
@@ -43,17 +43,17 @@
     v10 = objc_alloc_init(CALayer);
     [v10 setAllowsGroupBlending:0];
     [(SCATCursorController *)v2 setCursorContainerLayer:v10];
-    v11 = [(SCATCursorController *)v2 cursorContainerLayer];
-    v12 = [(SCATCursorController *)v2 cursorForegroundLayer];
-    [v11 addSublayer:v12];
+    cursorContainerLayer = [(SCATCursorController *)v2 cursorContainerLayer];
+    cursorForegroundLayer = [(SCATCursorController *)v2 cursorForegroundLayer];
+    [cursorContainerLayer addSublayer:cursorForegroundLayer];
 
-    v13 = [(SCATCursorController *)v2 cursorContainerLayer];
-    v14 = [(SCATCursorController *)v2 cursorBackgroundLayer];
-    [v13 addSublayer:v14];
+    cursorContainerLayer2 = [(SCATCursorController *)v2 cursorContainerLayer];
+    cursorBackgroundLayer = [(SCATCursorController *)v2 cursorBackgroundLayer];
+    [cursorContainerLayer2 addSublayer:cursorBackgroundLayer];
 
-    v15 = [(SCATCursorController *)v2 cursorContainerLayer];
-    v16 = [(SCATCursorController *)v2 cursorCompositingLayer];
-    [v15 addSublayer:v16];
+    cursorContainerLayer3 = [(SCATCursorController *)v2 cursorContainerLayer];
+    cursorCompositingLayer = [(SCATCursorController *)v2 cursorCompositingLayer];
+    [cursorContainerLayer3 addSublayer:cursorCompositingLayer];
   }
 
   return v2;
@@ -61,131 +61,131 @@
 
 - (id)description
 {
-  v3 = [(SCATCursorController *)self cursorForegroundLayer];
-  v4 = [(SCATCursorController *)self cursorBackgroundLayer];
-  v5 = [NSString stringWithFormat:@"SCATCursorController:<%p>. %@. %@", self, v3, v4];
+  cursorForegroundLayer = [(SCATCursorController *)self cursorForegroundLayer];
+  cursorBackgroundLayer = [(SCATCursorController *)self cursorBackgroundLayer];
+  v5 = [NSString stringWithFormat:@"SCATCursorController:<%p>. %@. %@", self, cursorForegroundLayer, cursorBackgroundLayer];
 
   return v5;
 }
 
-- (void)updateTheme:(int64_t)a3 level:(int64_t)a4 path:(id)a5 frame:(CGRect)a6 cornerRadius:(double)a7 isSimpleRect:(BOOL)a8 animated:(BOOL)a9 options:(int)a10
+- (void)updateTheme:(int64_t)theme level:(int64_t)level path:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)self0
 {
-  v10 = *&a10;
-  v11 = a9;
-  v12 = a8;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v21 = a5;
-  [(SCATCursorController *)self updateTheme:a3 animated:v11 options:v10];
-  [(SCATCursorController *)self updateLevel:a4 animated:v11 options:v10];
-  [(SCATCursorController *)self updatePath:v21 frame:v12 cornerRadius:v11 isSimpleRect:v10 animated:x options:y, width, height, a7];
+  v10 = *&options;
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
+  [(SCATCursorController *)self updateTheme:theme animated:animatedCopy options:v10];
+  [(SCATCursorController *)self updateLevel:level animated:animatedCopy options:v10];
+  [(SCATCursorController *)self updatePath:pathCopy frame:rectCopy cornerRadius:animatedCopy isSimpleRect:v10 animated:x options:y, width, height, radius];
 }
 
-- (void)updateTheme:(int64_t)a3 animated:(BOOL)a4 options:(int)a5
+- (void)updateTheme:(int64_t)theme animated:(BOOL)animated options:(int)options
 {
-  v5 = *&a5;
-  v6 = a4;
-  v9 = [(SCATCursorController *)self cursorBackgroundLayer];
-  [v9 updateTheme:a3 animated:v6 options:v5];
+  v5 = *&options;
+  animatedCopy = animated;
+  cursorBackgroundLayer = [(SCATCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updateTheme:theme animated:animatedCopy options:v5];
 
-  v10 = [(SCATCursorController *)self cursorForegroundLayer];
-  [v10 updateTheme:a3 animated:v6 options:v5];
+  cursorForegroundLayer = [(SCATCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updateTheme:theme animated:animatedCopy options:v5];
 
-  v11 = [(SCATCursorController *)self cursorCompositingLayer];
-  [v11 updateTheme:a3 animated:v6 options:v5];
+  cursorCompositingLayer = [(SCATCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updateTheme:theme animated:animatedCopy options:v5];
 }
 
-- (void)updateLevel:(int64_t)a3 animated:(BOOL)a4 options:(int)a5
+- (void)updateLevel:(int64_t)level animated:(BOOL)animated options:(int)options
 {
-  v5 = *&a5;
-  v6 = a4;
-  v9 = [(SCATCursorController *)self cursorBackgroundLayer];
-  [v9 updateLevel:a3 animated:v6 options:v5];
+  v5 = *&options;
+  animatedCopy = animated;
+  cursorBackgroundLayer = [(SCATCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updateLevel:level animated:animatedCopy options:v5];
 
-  v10 = [(SCATCursorController *)self cursorForegroundLayer];
-  [v10 updateLevel:a3 animated:v6 options:v5];
+  cursorForegroundLayer = [(SCATCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updateLevel:level animated:animatedCopy options:v5];
 
-  v11 = [(SCATCursorController *)self cursorCompositingLayer];
-  [v11 updateLevel:a3 animated:v6 options:v5];
+  cursorCompositingLayer = [(SCATCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updateLevel:level animated:animatedCopy options:v5];
 }
 
-- (void)updatePath:(id)a3 frame:(CGRect)a4 cornerRadius:(double)a5 isSimpleRect:(BOOL)a6 animated:(BOOL)a7 options:(int)a8
+- (void)updatePath:(id)path frame:(CGRect)frame cornerRadius:(double)radius isSimpleRect:(BOOL)rect animated:(BOOL)animated options:(int)options
 {
-  v8 = *&a8;
-  v9 = a7;
-  v10 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v23 = a3;
+  v8 = *&options;
+  animatedCopy = animated;
+  rectCopy = rect;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pathCopy = path;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  if (v23)
+  if (pathCopy)
   {
-    v17 = [(SCATCursorController *)self cursorContainerLayer];
-    [v17 setFrame:{x, y, width, height}];
+    cursorContainerLayer = [(SCATCursorController *)self cursorContainerLayer];
+    [cursorContainerLayer setFrame:{x, y, width, height}];
   }
 
   +[CATransaction commit];
   v18 = CGPointZero.y;
-  v19 = [(SCATCursorController *)self cursorBackgroundLayer];
-  [v19 updatePath:v23 frame:v10 cornerRadius:v9 isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, a5}];
+  cursorBackgroundLayer = [(SCATCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer updatePath:pathCopy frame:rectCopy cornerRadius:animatedCopy isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, radius}];
 
-  v20 = [(SCATCursorController *)self cursorForegroundLayer];
-  [v20 updatePath:v23 frame:v10 cornerRadius:v9 isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, a5}];
+  cursorForegroundLayer = [(SCATCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer updatePath:pathCopy frame:rectCopy cornerRadius:animatedCopy isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, radius}];
 
-  v21 = [(SCATCursorController *)self cursorCompositingLayer];
-  [v21 updatePath:v23 frame:v10 cornerRadius:v9 isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, a5}];
+  cursorCompositingLayer = [(SCATCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer updatePath:pathCopy frame:rectCopy cornerRadius:animatedCopy isSimpleRect:v8 animated:CGPointZero.x options:{v18, width, height, radius}];
 
   if ([(SCATCursorController *)self isFocusedItemCursorController])
   {
     [(SCATCursorController *)self _createSignalQualityLayerIfNecessary];
-    v22 = [(SCATCursorController *)self tadmorSignalQualityLayer];
-    [v22 updatePath:v23 frame:v10 isSimpleRect:{CGPointZero.x, v18, width, height}];
+    tadmorSignalQualityLayer = [(SCATCursorController *)self tadmorSignalQualityLayer];
+    [tadmorSignalQualityLayer updatePath:pathCopy frame:rectCopy isSimpleRect:{CGPointZero.x, v18, width, height}];
   }
 }
 
-- (void)hide:(BOOL)a3 animate:(BOOL)a4
+- (void)hide:(BOOL)hide animate:(BOOL)animate
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SCATCursorController *)self cursorForegroundLayer];
-  [v7 ensureHidden:v5 animated:v4];
+  animateCopy = animate;
+  hideCopy = hide;
+  cursorForegroundLayer = [(SCATCursorController *)self cursorForegroundLayer];
+  [cursorForegroundLayer ensureHidden:hideCopy animated:animateCopy];
 
-  v8 = [(SCATCursorController *)self cursorBackgroundLayer];
-  [v8 ensureHidden:v5 animated:v4];
+  cursorBackgroundLayer = [(SCATCursorController *)self cursorBackgroundLayer];
+  [cursorBackgroundLayer ensureHidden:hideCopy animated:animateCopy];
 
-  v9 = [(SCATCursorController *)self cursorCompositingLayer];
-  [v9 ensureHidden:v5 animated:v4];
+  cursorCompositingLayer = [(SCATCursorController *)self cursorCompositingLayer];
+  [cursorCompositingLayer ensureHidden:hideCopy animated:animateCopy];
 }
 
 - (void)_createSignalQualityLayerIfNecessary
 {
   if ([(SCATCursorController *)self isFocusedItemCursorController])
   {
-    v3 = [(SCATCursorController *)self tadmorSignalQualityLayer];
+    tadmorSignalQualityLayer = [(SCATCursorController *)self tadmorSignalQualityLayer];
 
-    if (!v3)
+    if (!tadmorSignalQualityLayer)
     {
       v4 = objc_opt_new();
       [(SCATCursorController *)self setTadmorSignalQualityLayer:v4];
 
-      v6 = [(SCATCursorController *)self cursorContainerLayer];
-      v5 = [(SCATCursorController *)self tadmorSignalQualityLayer];
-      [v6 addSublayer:v5];
+      cursorContainerLayer = [(SCATCursorController *)self cursorContainerLayer];
+      tadmorSignalQualityLayer2 = [(SCATCursorController *)self tadmorSignalQualityLayer];
+      [cursorContainerLayer addSublayer:tadmorSignalQualityLayer2];
     }
   }
 }
 
-- (void)didUpdateSignalQuality:(int64_t)a3
+- (void)didUpdateSignalQuality:(int64_t)quality
 {
   if ([(SCATCursorController *)self isFocusedItemCursorController])
   {
-    v5 = [(SCATCursorController *)self tadmorSignalQualityLayer];
-    [v5 didUpdateSignalQuality:a3];
+    tadmorSignalQualityLayer = [(SCATCursorController *)self tadmorSignalQualityLayer];
+    [tadmorSignalQualityLayer didUpdateSignalQuality:quality];
   }
 }
 

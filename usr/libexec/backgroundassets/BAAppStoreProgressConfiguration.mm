@@ -1,10 +1,10 @@
 @interface BAAppStoreProgressConfiguration
 - (BAAppStoreProgressConfiguration)init;
-- (BAAppStoreProgressConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppBundleIdentifiers:(id)a3;
-- (void)setHandlerQueue:(id)a3;
-- (void)setUpdateHandler:(id)a3;
+- (BAAppStoreProgressConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppBundleIdentifiers:(id)identifiers;
+- (void)setHandlerQueue:(id)queue;
+- (void)setUpdateHandler:(id)handler;
 @end
 
 @implementation BAAppStoreProgressConfiguration
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (BAAppStoreProgressConfiguration)initWithCoder:(id)a3
+- (BAAppStoreProgressConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = BAAppStoreProgressConfiguration;
   v5 = [(BAAppStoreProgressConfiguration *)&v14 init];
@@ -50,7 +50,7 @@
     v5->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"BA_AppBundleIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"BA_AppBundleIdentifiers"];
     appBundleIdentifiers = v6->_appBundleIdentifiers;
     v6->_appBundleIdentifiers = v9;
 
@@ -62,20 +62,20 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   os_unfair_lock_lock(&self->_lock);
-  [v4 encodeObject:self->_appBundleIdentifiers forKey:@"BA_AppBundleIdentifiers"];
+  [coderCopy encodeObject:self->_appBundleIdentifiers forKey:@"BA_AppBundleIdentifiers"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setAppBundleIdentifiers:(id)a3
+- (void)setAppBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [identifiersCopy copy];
   appBundleIdentifiers = self->_appBundleIdentifiers;
   self->_appBundleIdentifiers = v5;
 
@@ -85,8 +85,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(NSMutableDictionary *)self->_duplicateEventCache allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_duplicateEventCache allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -97,7 +97,7 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v15 + 1) + 8 * i);
@@ -107,7 +107,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -118,11 +118,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setUpdateHandler:(id)a3
+- (void)setUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   updateHandler = self->_updateHandler;
   self->_updateHandler = v5;
@@ -130,12 +130,12 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setHandlerQueue:(id)a3
+- (void)setHandlerQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
   handlerQueue = self->_handlerQueue;
-  self->_handlerQueue = v4;
+  self->_handlerQueue = queueCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

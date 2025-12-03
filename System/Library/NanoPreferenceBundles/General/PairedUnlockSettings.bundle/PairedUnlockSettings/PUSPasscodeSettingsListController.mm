@@ -18,43 +18,43 @@
 - (id)showComplicationDataWhenUnlockedEnabledValue;
 - (id)simplePasscodeEnabledValue;
 - (id)specifiers;
-- (id)wristDetectValue:(id)a3;
+- (id)wristDetectValue:(id)value;
 - (unint64_t)_passcodeMinimumLength;
-- (void)_addActivityFlag:(int)a3;
+- (void)_addActivityFlag:(int)flag;
 - (void)_cancelRemoteAction;
 - (void)_checkGizmoLockState;
 - (void)_checkHasCredentialedPasses;
 - (void)_checkHasPaymentPasses;
-- (void)_handleError:(id)a3;
+- (void)_handleError:(id)error;
 - (void)_handleUnknownError;
 - (void)_promptForGizmoUnlock;
-- (void)_removeActivityFlag:(int)a3;
+- (void)_removeActivityFlag:(int)flag;
 - (void)_resetSimplePasscodeChangeIfNeeded;
-- (void)_setGizmoState:(id)a3;
-- (void)_setWristDetectFooter:(id)a3 reload:(BOOL)a4;
+- (void)_setGizmoState:(id)state;
+- (void)_setWristDetectFooter:(id)footer reload:(BOOL)reload;
 - (void)_showWristDetectDisableConfirmation;
-- (void)_startRemoteAction:(int64_t)a3;
+- (void)_startRemoteAction:(int64_t)action;
 - (void)_updateLockoutState;
 - (void)_updateSimplePasscodeState;
 - (void)_updateUnlockPhoneEnabled;
 - (void)_updateUnlockState;
-- (void)alertView:(id)a3 willDismissWithButtonIndex:(int64_t)a4;
+- (void)alertView:(id)view willDismissWithButtonIndex:(int64_t)index;
 - (void)changePasscode;
-- (void)confirmDisablePasscode:(id)a3;
-- (void)confirmDisableWristDetect:(id)a3;
+- (void)confirmDisablePasscode:(id)passcode;
+- (void)confirmDisableWristDetect:(id)detect;
 - (void)dealloc;
-- (void)endLockout:(id)a3;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)endLockout:(id)lockout;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 - (void)reloadUI;
-- (void)setActivityFlags:(int)a3;
-- (void)setAutoUnlockEnabledValue:(id)a3;
-- (void)setEraseDataEnabledValue:(id)a3;
-- (void)setShowComplicationDataWhenUnlockedEnabledValue:(id)a3;
-- (void)setSimplePasscodeEnabledValue:(id)a3;
-- (void)setWristDetectValue:(id)a3 specifier:(id)a4;
-- (void)togglePasscode:(id)a3;
-- (void)unlockConnection:(id)a3 remoteDeviceDidCompleteRemoteAction:(BOOL)a4 remoteDeviceState:(id)a5 error:(id)a6;
-- (void)unlockConnection:(id)a3 remoteDeviceDidNotifyState:(id)a4;
+- (void)setActivityFlags:(int)flags;
+- (void)setAutoUnlockEnabledValue:(id)value;
+- (void)setEraseDataEnabledValue:(id)value;
+- (void)setShowComplicationDataWhenUnlockedEnabledValue:(id)value;
+- (void)setSimplePasscodeEnabledValue:(id)value;
+- (void)setWristDetectValue:(id)value specifier:(id)specifier;
+- (void)togglePasscode:(id)passcode;
+- (void)unlockConnection:(id)connection remoteDeviceDidCompleteRemoteAction:(BOOL)action remoteDeviceState:(id)state error:(id)error;
+- (void)unlockConnection:(id)connection remoteDeviceDidNotifyState:(id)state;
 @end
 
 @implementation PUSPasscodeSettingsListController
@@ -144,18 +144,18 @@
   [(PUSPasscodeSettingsListController *)&v8 dealloc];
 }
 
-- (void)_setGizmoState:(id)a3
+- (void)_setGizmoState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v6 = pu_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = stateCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Updating gizmo state %@", buf, 0xCu);
   }
 
-  objc_storeStrong(&self->_gizmoState, a3);
+  objc_storeStrong(&self->_gizmoState, state);
   if (![(PURemoteDeviceState *)self->_gizmoState isPasscodeLocked])
   {
     v8 = pu_log();
@@ -168,10 +168,10 @@
     goto LABEL_7;
   }
 
-  v7 = [(PUSPasscodeSettingsListController *)self _endLockoutAvailable];
+  _endLockoutAvailable = [(PUSPasscodeSettingsListController *)self _endLockoutAvailable];
   v8 = pu_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v7)
+  if (_endLockoutAvailable)
   {
     if (v9)
     {
@@ -302,22 +302,22 @@ LABEL_14:
   objc_destroyWeak(buf);
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v6 = pu_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v4;
+    v15 = errorCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Received error %{public}@", buf, 0xCu);
   }
 
-  if ([v5 isEqualToString:@"com.apple.paired-unlock"])
+  if ([domain isEqualToString:@"com.apple.paired-unlock"])
   {
-    v7 = [v4 code];
-    if (v7 == &dword_4 + 2)
+    code = [errorCopy code];
+    if (code == &dword_4 + 2)
     {
       if (self->_pendingAction == 2)
       {
@@ -327,16 +327,16 @@ LABEL_14:
 
     else
     {
-      if (v7 == &dword_4 + 1)
+      if (code == &dword_4 + 1)
       {
         pendingAction = self->_pendingAction;
         if (pendingAction > 2)
         {
           if (pendingAction == 3)
           {
-            v10 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+            isUnlockOnly = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
             v9 = @"BUSY_TITLE_PASSCODE_DISABLE";
-            if (v10)
+            if (isUnlockOnly)
             {
               v9 = @"BUSY_TITLE_PASSCODE_DISABLE_UNLOCK_ONLY";
             }
@@ -379,14 +379,14 @@ LABEL_14:
         goto LABEL_23;
       }
 
-      if (v7 == &dword_0 + 2)
+      if (code == &dword_0 + 2)
       {
         [(PUSPasscodeSettingsListController *)self _promptForGizmoUnlock];
       }
     }
   }
 
-  else if (([v5 isEqualToString:SFUnlockErrorDomian] & 1) == 0)
+  else if (([domain isEqualToString:SFUnlockErrorDomian] & 1) == 0)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -407,18 +407,18 @@ LABEL_23:
   v8[3] = &unk_104F0;
   v8[4] = self;
   v3 = objc_retainBlock(v8);
-  v4 = [(PUSPasscodeSettingsListController *)self transitionCoordinator];
+  transitionCoordinator = [(PUSPasscodeSettingsListController *)self transitionCoordinator];
 
-  if (v4)
+  if (transitionCoordinator)
   {
-    v5 = [(PUSPasscodeSettingsListController *)self transitionCoordinator];
+    transitionCoordinator2 = [(PUSPasscodeSettingsListController *)self transitionCoordinator];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_2780;
     v6[3] = &unk_10568;
     v6[4] = self;
     v7 = v3;
-    [v5 animateAlongsideTransition:0 completion:v6];
+    [transitionCoordinator2 animateAlongsideTransition:0 completion:v6];
   }
 
   else
@@ -450,7 +450,7 @@ LABEL_23:
 - (void)_updateSimplePasscodeState
 {
   v3 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanosystemsettings"];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   v8 = 0;
   v5 = [v3 BOOLForKey:@"simple-passcode" keyExistsAndHasValidFormat:&v8];
   v6[0] = _NSConcreteStackBlock;
@@ -462,7 +462,7 @@ LABEL_23:
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)_startRemoteAction:(int64_t)a3
+- (void)_startRemoteAction:(int64_t)action
 {
   v5 = pu_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -473,16 +473,16 @@ LABEL_23:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Starting remote action %@", buf, 0xCu);
   }
 
-  v7 = [(PUSPasscodeSettingsListController *)self presentedViewController];
+  presentedViewController = [(PUSPasscodeSettingsListController *)self presentedViewController];
 
-  if (!v7)
+  if (!presentedViewController)
   {
-    self->_pendingAction = a3;
+    self->_pendingAction = action;
     [(PUSPasscodeSettingsListController *)self _addActivityFlag:4];
-    v8 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
-    if (a3 == 3)
+    isUnlockOnly = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+    if (action == 3)
     {
-      v9 = v8;
+      v9 = isUnlockOnly;
     }
 
     else
@@ -490,24 +490,24 @@ LABEL_23:
       v9 = 0;
     }
 
-    if (((a3 == 2) & v8) != 0)
+    if (((action == 2) & isUnlockOnly) != 0)
     {
-      v10 = 1;
+      actionCopy = 1;
     }
 
     else
     {
-      v10 = a3;
+      actionCopy = action;
     }
 
     if ([(PUSPasscodeSettingsListController *)self _gizmoSupportsSEPWristDetectSetting])
     {
-      if (a3 == 5)
+      if (action == 5)
       {
         goto LABEL_17;
       }
 
-      if (a3 == 6)
+      if (action == 6)
       {
         if (v9 & 1 | (([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet]& 1) == 0))
         {
@@ -528,8 +528,8 @@ LABEL_17:
           v12 = 2;
         }
 
-        [(PUConnection *)self->_connection requestRemoteDeviceRemoteAction:a3 type:v12];
-        if (a3 == 4)
+        [(PUConnection *)self->_connection requestRemoteDeviceRemoteAction:action type:v12];
+        if (action == 4)
         {
           unlockPairingAssertion = self->_unlockPairingAssertion;
           if (unlockPairingAssertion)
@@ -548,7 +548,7 @@ LABEL_17:
           {
             v14 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel"];
             [v14 setBool:0 forKey:@"DisableWristDetection"];
-            v15 = [v14 synchronize];
+            synchronize = [v14 synchronize];
             syncManager = self->_syncManager;
             v17 = [NSSet setWithObject:@"DisableWristDetection"];
             [(NPSManager *)syncManager synchronizeNanoDomain:@"com.apple.Carousel" keys:v17];
@@ -562,12 +562,12 @@ LABEL_17:
       }
     }
 
-    else if ((a3 == 6) | v9 & 1)
+    else if ((action == 6) | v9 & 1)
     {
       goto LABEL_17;
     }
 
-    v11 = [[PUSRemotePasscodeViewController alloc] initWithAction:v10];
+    v11 = [[PUSRemotePasscodeViewController alloc] initWithAction:actionCopy];
     [(PUSRemotePasscodeViewController *)v11 setPasscodeDelegate:self];
     [(PUSPasscodeSettingsListController *)self presentViewController:v11 animated:1 completion:0];
 
@@ -598,35 +598,35 @@ LABEL_17:
   [(PUSPasscodeSettingsListController *)self _finishRemoteAction:0];
 }
 
-- (void)unlockConnection:(id)a3 remoteDeviceDidCompleteRemoteAction:(BOOL)a4 remoteDeviceState:(id)a5 error:(id)a6
+- (void)unlockConnection:(id)connection remoteDeviceDidCompleteRemoteAction:(BOOL)action remoteDeviceState:(id)state error:(id)error
 {
-  v7 = a4;
-  v9 = a5;
-  v10 = a6;
+  actionCopy = action;
+  stateCopy = state;
+  errorCopy = error;
   v11 = pu_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v18 = v7;
+    v18 = actionCopy;
     v19 = 2112;
-    v20 = v9;
+    v20 = stateCopy;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Remote action completed:%{BOOL}u, gizmo state: %@", buf, 0x12u);
   }
 
-  if (v7)
+  if (actionCopy)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_34D0;
     block[3] = &unk_104C8;
-    v15 = v9;
-    v16 = self;
+    v15 = stateCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  else if (v10)
+  else if (errorCopy)
   {
-    [(PUSPasscodeSettingsListController *)self _handleError:v10];
+    [(PUSPasscodeSettingsListController *)self _handleError:errorCopy];
   }
 
   else
@@ -639,19 +639,19 @@ LABEL_17:
   v12[2] = sub_35FC;
   v12[3] = &unk_10590;
   v12[4] = self;
-  v13 = v7;
+  v13 = actionCopy;
   dispatch_async(&_dispatch_main_q, v12);
 }
 
-- (void)unlockConnection:(id)a3 remoteDeviceDidNotifyState:(id)a4
+- (void)unlockConnection:(id)connection remoteDeviceDidNotifyState:(id)state
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_36B4;
   v6[3] = &unk_104C8;
-  v7 = a4;
-  v8 = self;
-  v5 = v7;
+  stateCopy = state;
+  selfCopy = self;
+  v5 = stateCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
@@ -664,21 +664,21 @@ LABEL_17:
     v4 = [(PUSPasscodeSettingsListController *)self loadSpecifiersFromPlistName:@"PasscodeSettings" target:self];
     if (self->_activityFlags || self->_gizmoIsInLockout)
     {
-      v5 = 1;
+      isPasscodeLocked = 1;
     }
 
     else
     {
-      v5 = [(PURemoteDeviceState *)self->_gizmoState isPasscodeLocked];
+      isPasscodeLocked = [(PURemoteDeviceState *)self->_gizmoState isPasscodeLocked];
     }
 
     v6 = [v4 specifierForID:@"TOGGLE_PASSCODE_ID"];
     v7 = +[MCProfileConnection sharedConnection];
     v8 = [v7 BOOLRestrictionForFeature:MCFeatureAlphanumericPasscodeRequired];
-    v9 = [(PUSPasscodeSettingsListController *)self _passcodeModificationAllowed];
-    v10 = v9;
+    _passcodeModificationAllowed = [(PUSPasscodeSettingsListController *)self _passcodeModificationAllowed];
+    v10 = _passcodeModificationAllowed;
     v11 = 0;
-    if ((v5 & 1) == 0 && v9)
+    if ((isPasscodeLocked & 1) == 0 && _passcodeModificationAllowed)
     {
       if ([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet])
       {
@@ -695,16 +695,16 @@ LABEL_17:
     v12 = pu_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
+      hasPasscodeSet = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
       gizmoIsInLockout = self->_gizmoIsInLockout;
       *buf = 67110144;
-      v79 = v5;
+      v79 = isPasscodeLocked;
       v80 = 1024;
       v81 = v8 == 1;
       v82 = 1024;
       v83 = v10;
       v84 = 1024;
-      v85 = v13;
+      v85 = hasPasscodeSet;
       v86 = 1024;
       v87 = gizmoIsInLockout;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "busyOrDisabled:%{BOOL}u, requireUnlockOnly:%{BOOL}u, passcodeModificationAllowed:%{BOOL}u, hasPasscodeSet:%{BOOL}u, gizmoIsInLockout:%{BOOL}u", buf, 0x20u);
@@ -716,10 +716,10 @@ LABEL_17:
 
     if ([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet])
     {
-      v16 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+      isUnlockOnly = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = v17;
-      if (v16)
+      if (isUnlockOnly)
       {
         v19 = @"PASSCODE_DISABLE_UNLOCK_ONLY";
       }
@@ -741,7 +741,7 @@ LABEL_17:
     [v6 setName:v20];
 
     v21 = [v4 specifierForID:@"CHANGE_PASSCODE_ID"];
-    if (v5)
+    if (isPasscodeLocked)
     {
       v22 = 0;
     }
@@ -756,7 +756,7 @@ LABEL_17:
       v22 = 0;
     }
 
-    v76 = v5;
+    v76 = isPasscodeLocked;
     v73 = v6;
     v23 = [NSNumber numberWithInt:v22];
     [v21 setProperty:v23 forKey:v77];
@@ -788,24 +788,24 @@ LABEL_17:
 
     v71 = v21;
     v30 = +[MCProfileConnection sharedConnection];
-    v31 = [v30 isPasscodeSet];
+    isPasscodeSet = [v30 isPasscodeSet];
 
     v74 = [v4 specifierForID:@"SIMPLE_PASSCODE_SWITCH_ID"];
-    v32 = [(PUSPasscodeSettingsListController *)self _passcodeMinimumLength];
-    v33 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+    _passcodeMinimumLength = [(PUSPasscodeSettingsListController *)self _passcodeMinimumLength];
+    isUnlockOnly2 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
     v34 = pu_log();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109632;
-      v79 = v31;
+      v79 = isPasscodeSet;
       v80 = 1024;
-      v81 = v32 > 4;
+      v81 = _passcodeMinimumLength > 4;
       v82 = 1024;
-      v83 = v33;
+      v83 = isUnlockOnly2;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "thisDeviceHasPasscode:%{BOOL}u, nonSimplePasscodeRequired:%{BOOL}u, isUnlockOnly:%{BOOL}u", buf, 0x14u);
     }
 
-    if (v33)
+    if (isUnlockOnly2)
     {
       v35 = pu_log();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -830,7 +830,7 @@ LABEL_17:
 
       else
       {
-        v37 = (v32 < 5) & v10;
+        v37 = (_passcodeMinimumLength < 5) & v10;
       }
     }
 
@@ -846,7 +846,7 @@ LABEL_17:
     [v39 setProperty:v42 forKey:PSFooterTextGroupKey];
 
     v44 = [v4 specifierForID:@"AUTO_UNLOCK_SWITCH_ID"];
-    if ((v76 & 1) != 0 || ([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet]& v31) != 1)
+    if ((v76 & 1) != 0 || ([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet]& isPasscodeSet) != 1)
     {
       v45 = 0;
     }
@@ -862,7 +862,7 @@ LABEL_17:
     v47 = [v4 specifierForID:@"AUTO_UNLOCK_GROUP_ID"];
     v48 = [NSBundle bundleForClass:objc_opt_class()];
     v49 = v48;
-    if (v31)
+    if (isPasscodeSet)
     {
       v50 = @"AUTO_UNLOCK_DESCRIPTION";
     }
@@ -879,15 +879,15 @@ LABEL_17:
     v69 = v44;
     if (v76)
     {
-      v53 = 0;
+      hasPasscodeSet2 = 0;
     }
 
     else
     {
-      v53 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
+      hasPasscodeSet2 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
     }
 
-    v54 = [NSNumber numberWithInt:v53];
+    v54 = [NSNumber numberWithInt:hasPasscodeSet2];
     [v52 setProperty:v54 forKey:v77];
 
     v55 = [v4 specifierForID:@"ERASE_DATA_GROUP_ID"];
@@ -901,15 +901,15 @@ LABEL_17:
     {
       if (v76)
       {
-        v60 = 0;
+        hasPasscodeSet3 = 0;
       }
 
       else
       {
-        v60 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
+        hasPasscodeSet3 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
       }
 
-      v62 = [NSNumber numberWithInt:v60];
+      v62 = [NSNumber numberWithInt:hasPasscodeSet3];
       [v59 setProperty:v62 forKey:v77];
     }
 
@@ -946,7 +946,7 @@ LABEL_17:
   return v3;
 }
 
-- (void)confirmDisablePasscode:(id)a3
+- (void)confirmDisablePasscode:(id)passcode
 {
   if ([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet])
   {
@@ -955,18 +955,18 @@ LABEL_17:
   }
 }
 
-- (void)togglePasscode:(id)a3
+- (void)togglePasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   if (([(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet]& 1) != 0)
   {
     if (self->_gizmoHasPaymentPasses)
     {
       v5 = objc_alloc_init(PSConfirmationSpecifier);
-      v6 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+      isUnlockOnly = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
       v7 = [NSBundle bundleForClass:objc_opt_class()];
       v8 = v7;
-      if (v6)
+      if (isUnlockOnly)
       {
         v9 = @"PASSCODE_DISABLE_WARNING_TITLE_UNLOCK_ONLY";
       }
@@ -979,17 +979,17 @@ LABEL_17:
       v10 = [v7 localizedStringForKey:v9 value:&stru_10840 table:@"PasscodeSettings"];
 
       gizmoHasCredentialedPasses = self->_gizmoHasCredentialedPasses;
-      v12 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
+      isUnlockOnly2 = [(PURemoteDeviceState *)self->_gizmoState isUnlockOnly];
       v13 = [NSBundle bundleForClass:objc_opt_class()];
       v14 = v13;
       v15 = @"PASSCODE_DISABLE_WARNING_BODY_CARDS_AND_KEYS";
-      if (v12)
+      if (isUnlockOnly2)
       {
         v15 = @"PASSCODE_DISABLE_WARNING_BODY_CARDS_AND_KEYS_UNLOCK_ONLY";
       }
 
       v16 = @"PASSCODE_DISABLE_WARNING_BODY_CARDS_UNLOCK_ONLY";
-      if (!v12)
+      if (!isUnlockOnly2)
       {
         v16 = @"PASSCODE_DISABLE_WARNING_BODY_CARDS";
       }
@@ -1029,7 +1029,7 @@ LABEL_17:
 
     else
     {
-      [(PUSPasscodeSettingsListController *)self confirmDisablePasscode:v4];
+      [(PUSPasscodeSettingsListController *)self confirmDisablePasscode:passcodeCopy];
     }
   }
 
@@ -1048,9 +1048,9 @@ LABEL_17:
   }
 }
 
-- (void)endLockout:(id)a3
+- (void)endLockout:(id)lockout
 {
-  v4 = a3;
+  lockoutCopy = lockout;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v6[0] = _NSConcreteStackBlock;
@@ -1071,17 +1071,17 @@ LABEL_17:
     activityFlags = self->_activityFlags;
     pendingAction = self->_pendingAction;
     v6 = +[MCProfileConnection sharedConnection];
-    v7 = [v6 isPasscodeSet];
-    v8 = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
+    isPasscodeSet = [v6 isPasscodeSet];
+    hasPasscodeSet = [(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet];
     devicesArePairedForUnlocking = self->_devicesArePairedForUnlocking;
     v15[0] = 67110144;
     v15[1] = activityFlags;
     v16 = 1024;
     v17 = pendingAction;
     v18 = 1024;
-    v19 = v7;
+    v19 = isPasscodeSet;
     v20 = 1024;
-    v21 = v8;
+    v21 = hasPasscodeSet;
     v22 = 1024;
     v23 = devicesArePairedForUnlocking;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "activityFlags:0x%X, _pendingAction:%u, isPasscodeSet:%{BOOL}u, hasPasscodeSet:%{BOOL}u, devicesArePairedForUnlocking:%{BOOL}u", v15, 0x20u);
@@ -1090,7 +1090,7 @@ LABEL_17:
   if (![(PURemoteDeviceState *)self->_gizmoState hasPasscodeSet])
   {
     v10 = 0;
-    v11 = 0;
+    isPasscodeSet2 = 0;
     if ((self->_activityFlags & 4) == 0)
     {
       goto LABEL_12;
@@ -1103,7 +1103,7 @@ LABEL_8:
     }
 
 LABEL_10:
-    v11 = 0;
+    isPasscodeSet2 = 0;
     goto LABEL_12;
   }
 
@@ -1120,17 +1120,17 @@ LABEL_10:
 
 LABEL_11:
   v12 = +[MCProfileConnection sharedConnection];
-  v11 = [v12 isPasscodeSet];
+  isPasscodeSet2 = [v12 isPasscodeSet];
 
 LABEL_12:
-  v13 = [NSNumber numberWithBool:v11];
+  v13 = [NSNumber numberWithBool:isPasscodeSet2];
 
   return v13;
 }
 
-- (void)setAutoUnlockEnabledValue:(id)a3
+- (void)setAutoUnlockEnabledValue:(id)value
 {
-  if ([a3 BOOLValue])
+  if ([value BOOLValue])
   {
     if (([(PURemoteDeviceState *)self->_gizmoState isWristDetectEnabled]& 1) != 0)
     {
@@ -1176,40 +1176,40 @@ LABEL_12:
 
 - (id)simplePasscodeEnabledValue
 {
-  v3 = [(PUSPasscodeSettingsListController *)self _passcodeMinimumLength];
-  v4 = [(PUSPasscodeSettingsListController *)self _passcodeModificationAllowed];
+  _passcodeMinimumLength = [(PUSPasscodeSettingsListController *)self _passcodeMinimumLength];
+  _passcodeModificationAllowed = [(PUSPasscodeSettingsListController *)self _passcodeModificationAllowed];
   wantsSimplePasscode = self->_wantsSimplePasscode;
-  if (v3 >= 5)
+  if (_passcodeMinimumLength >= 5)
   {
     wantsSimplePasscode = 0;
   }
 
-  return [NSNumber numberWithInt:wantsSimplePasscode & v4];
+  return [NSNumber numberWithInt:wantsSimplePasscode & _passcodeModificationAllowed];
 }
 
 - (unint64_t)_passcodeMinimumLength
 {
   if ([(PUSPasscodeSettingsListController *)self _gizmoSupportPasscodePolicySync])
   {
-    v3 = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
-    v4 = [v3 passcodeMinimumLength];
+    passcodePolicy = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
+    passcodeMinimumLength = [passcodePolicy passcodeMinimumLength];
   }
 
   else
   {
     v5 = +[MCProfileConnection sharedConnection];
-    v3 = [v5 valueRestrictionForFeature:MCFeatureMinimumPasscodeLength];
+    passcodePolicy = [v5 valueRestrictionForFeature:MCFeatureMinimumPasscodeLength];
 
-    if (!v3)
+    if (!passcodePolicy)
     {
       v6 = 0;
       goto LABEL_6;
     }
 
-    v4 = [v3 unsignedIntegerValue];
+    passcodeMinimumLength = [passcodePolicy unsignedIntegerValue];
   }
 
-  v6 = v4;
+  v6 = passcodeMinimumLength;
 LABEL_6:
 
   return v6;
@@ -1219,27 +1219,27 @@ LABEL_6:
 {
   if ([(PUSPasscodeSettingsListController *)self _gizmoSupportPasscodePolicySync])
   {
-    v3 = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
-    v4 = [v3 isModificationAllowed];
+    passcodePolicy = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
+    isModificationAllowed = [passcodePolicy isModificationAllowed];
   }
 
   else
   {
-    v3 = +[MCProfileConnection sharedConnection];
-    v4 = [v3 isPasscodeModificationAllowed];
+    passcodePolicy = +[MCProfileConnection sharedConnection];
+    isModificationAllowed = [passcodePolicy isPasscodeModificationAllowed];
   }
 
-  v5 = v4;
+  v5 = isModificationAllowed;
 
   return v5;
 }
 
-- (void)setSimplePasscodeEnabledValue:(id)a3
+- (void)setSimplePasscodeEnabledValue:(id)value
 {
-  v4 = [a3 BOOLValue];
-  if (self->_wantsSimplePasscode != v4)
+  bOOLValue = [value BOOLValue];
+  if (self->_wantsSimplePasscode != bOOLValue)
   {
-    [(PUSPasscodeSettingsListController *)self _storeAndSyncSimplePasscodeEnabled:v4];
+    [(PUSPasscodeSettingsListController *)self _storeAndSyncSimplePasscodeEnabled:bOOLValue];
     self->_justChangedWantsSimplePasscode = 1;
 
     [(PUSPasscodeSettingsListController *)self _startRemoteAction:2];
@@ -1249,20 +1249,20 @@ LABEL_6:
 - (id)eraseDataEnabledValue
 {
   v2 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanosystemsettings"];
-  v3 = [v2 synchronize];
+  synchronize = [v2 synchronize];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 BOOLForKey:@"erase-data-enabled"]);
 
   return v4;
 }
 
-- (void)setEraseDataEnabledValue:(id)a3
+- (void)setEraseDataEnabledValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.nanosystemsettings"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  [v9 setBool:v5 forKey:@"erase-data-enabled"];
-  v6 = [v9 synchronize];
+  [v9 setBool:bOOLValue forKey:@"erase-data-enabled"];
+  synchronize = [v9 synchronize];
   syncManager = self->_syncManager;
   v8 = [NSSet setWithObject:@"erase-data-enabled"];
   [(NPSManager *)syncManager synchronizeNanoDomain:@"com.apple.nanosystemsettings" keys:v8];
@@ -1272,20 +1272,20 @@ LABEL_6:
 {
   if ([objc_opt_class() _supportsSettingShowComplicationDataWhenPasscodeLocked])
   {
-    v3 = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
     v12 = 0;
     v4 = [(NPSDomainAccessor *)self->_chronoSupportDomain BOOLForKey:@"showComplicationDataWhenPasscodeLocked" keyExistsAndHasValidFormat:&v12];
     v5 = pu_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = [NSNumber numberWithBool:v4];
-      v7 = [v6 stringValue];
+      stringValue = [v6 stringValue];
       v8 = [NSNumber numberWithBool:v12];
-      v9 = [v8 stringValue];
+      stringValue2 = [v8 stringValue];
       *buf = 138412546;
-      v14 = v7;
+      v14 = stringValue;
       v15 = 2112;
-      v16 = v9;
+      v16 = stringValue2;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Accessing value for showComplicationDataWhenUnlockedEnabled: %@ keyExists: %@", buf, 0x16u);
     }
 
@@ -1308,45 +1308,45 @@ LABEL_6:
   return v10;
 }
 
-- (void)setShowComplicationDataWhenUnlockedEnabledValue:(id)a3
+- (void)setShowComplicationDataWhenUnlockedEnabledValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([objc_opt_class() _supportsSettingShowComplicationDataWhenPasscodeLocked])
   {
     v5 = pu_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 stringValue];
+      stringValue = [valueCopy stringValue];
       *buf = 138412290;
-      v13 = v6;
+      v13 = stringValue;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Setting value for showComplicationDataWhenUnlockedEnabled: %@", buf, 0xCu);
     }
 
-    [(NPSDomainAccessor *)self->_chronoSupportDomain setObject:v4 forKey:@"showComplicationDataWhenPasscodeLocked"];
-    v7 = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
-    v8 = [(NPSDomainAccessor *)self->_chronoSupportDomain domain];
+    [(NPSDomainAccessor *)self->_chronoSupportDomain setObject:valueCopy forKey:@"showComplicationDataWhenPasscodeLocked"];
+    synchronize = [(NPSDomainAccessor *)self->_chronoSupportDomain synchronize];
+    domain = [(NPSDomainAccessor *)self->_chronoSupportDomain domain];
     v11 = @"showComplicationDataWhenPasscodeLocked";
     v9 = [NSArray arrayWithObjects:&v11 count:1];
     v10 = [NSSet setWithArray:v9];
-    [(NPSManager *)self->_syncManager synchronizeNanoDomain:v8 keys:v10];
+    [(NPSManager *)self->_syncManager synchronizeNanoDomain:domain keys:v10];
   }
 }
 
 + (BOOL)_supportsSettingShowComplicationDataWhenPasscodeLocked
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
 
   v4 = [[NSUUID alloc] initWithUUIDString:@"D5834418-F4A0-4C74-AA38-8ED5F7765BD1"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
 
-- (void)setWristDetectValue:(id)a3 specifier:(id)a4
+- (void)setWristDetectValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  if ([a3 BOOLValue])
+  specifierCopy = specifier;
+  if ([value BOOLValue])
   {
     v7 = pu_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1375,29 +1375,29 @@ LABEL_6:
     [(PUSPasscodeSettingsListController *)self _showWristDetectDisableConfirmation];
   }
 
-  [(PUSPasscodeSettingsListController *)self _setWristDetectFooter:v6 reload:1];
+  [(PUSPasscodeSettingsListController *)self _setWristDetectFooter:specifierCopy reload:1];
 }
 
-- (id)wristDetectValue:(id)a3
+- (id)wristDetectValue:(id)value
 {
-  v3 = [(PUSPasscodeSettingsListController *)self readPreferenceValue:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PUSPasscodeSettingsListController *)self readPreferenceValue:value];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = +[MCProfileConnection sharedConnection];
   v6 = [v5 isSettingLockedDownByRestrictions:MCFeatureWatchWristDetectRequired];
 
-  return [NSNumber numberWithBool:v4 | v6];
+  return [NSNumber numberWithBool:bOOLValue | v6];
 }
 
-- (void)_setWristDetectFooter:(id)a3 reload:(BOOL)a4
+- (void)_setWristDetectFooter:(id)footer reload:(BOOL)reload
 {
-  v4 = a4;
-  v6 = [(PUSPasscodeSettingsListController *)self readPreferenceValue:a3];
-  v7 = [v6 BOOLValue];
+  reloadCopy = reload;
+  v6 = [(PUSPasscodeSettingsListController *)self readPreferenceValue:footer];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v7)
+  if (bOOLValue)
   {
     v10 = @"WRIST_DETECTION_FOOTER";
   }
@@ -1411,7 +1411,7 @@ LABEL_6:
 
   v11 = [(PUSPasscodeSettingsListController *)self specifierForID:@"WRIST_DETECTION_GROUP_ID"];
   [v11 setProperty:v12 forKey:PSFooterTextGroupKey];
-  if (v4)
+  if (reloadCopy)
   {
     [(PUSPasscodeSettingsListController *)self reloadSpecifier:v11];
   }
@@ -1560,23 +1560,23 @@ LABEL_6:
 
 - (BOOL)_endLockoutAvailable
 {
-  v3 = [(PUSPasscodeSettingsListController *)self gizmoIsInLockout];
-  if (v3)
+  gizmoIsInLockout = [(PUSPasscodeSettingsListController *)self gizmoIsInLockout];
+  if (gizmoIsInLockout)
   {
-    LOBYTE(v3) = ![(PUSPasscodeSettingsListController *)self _gizmoHardwareSupportsSEP];
+    LOBYTE(gizmoIsInLockout) = ![(PUSPasscodeSettingsListController *)self _gizmoHardwareSupportsSEP];
   }
 
-  return v3;
+  return gizmoIsInLockout;
 }
 
 - (BOOL)_gizmoHardwareSupportsSEP
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getDevices];
+  getDevices = [v2 getDevices];
 
-  if ([v3 count])
+  if ([getDevices count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [getDevices objectAtIndexedSubscript:0];
   }
 
   else
@@ -1585,26 +1585,26 @@ LABEL_6:
   }
 
   v5 = [v4 valueForProperty:NRDevicePropertyHasSEP];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)_gizmoSupportsSEPWristDetectSetting
 {
-  v3 = [(PUSPasscodeSettingsListController *)self _gizmoHardwareSupportsSEP];
+  _gizmoHardwareSupportsSEP = [(PUSPasscodeSettingsListController *)self _gizmoHardwareSupportsSEP];
   [(PURemoteDeviceState *)self->_gizmoState version];
-  return v3 & NRVersionIsGreaterThanOrEqual();
+  return _gizmoHardwareSupportsSEP & NRVersionIsGreaterThanOrEqual();
 }
 
-- (void)confirmDisableWristDetect:(id)a3
+- (void)confirmDisableWristDetect:(id)detect
 {
-  v4 = [(PUSPasscodeSettingsListController *)self _gizmoSupportsSEPWristDetectSetting];
+  _gizmoSupportsSEPWristDetectSetting = [(PUSPasscodeSettingsListController *)self _gizmoSupportsSEPWristDetectSetting];
   v5 = pu_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [NSNumber numberWithUnsignedInt:[(PURemoteDeviceState *)self->_gizmoState version]];
-    v7 = [NSNumber numberWithBool:v4];
+    v7 = [NSNumber numberWithBool:_gizmoSupportsSEPWristDetectSetting];
     v8 = 138412546;
     v9 = v6;
     v10 = 2112;
@@ -1617,23 +1617,23 @@ LABEL_6:
 
 - (BOOL)_gizmoSupportsKappaDetection
 {
-  v2 = [sub_5E78() isKappaDetectionSupportedOnActiveWatch];
-  if (v2)
+  isKappaDetectionSupportedOnActiveWatch = [sub_5E78() isKappaDetectionSupportedOnActiveWatch];
+  if (isKappaDetectionSupportedOnActiveWatch)
   {
     v3 = sub_5E78();
 
-    LOBYTE(v2) = [v3 isKappaVisible];
+    LOBYTE(isKappaDetectionSupportedOnActiveWatch) = [v3 isKappaVisible];
   }
 
-  return v2;
+  return isKappaDetectionSupportedOnActiveWatch;
 }
 
 - (BOOL)_gizmoSupportHeartRateAlert
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"E17D2903-B868-4E6C-8E76-6D4939BEED44"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
@@ -1641,9 +1641,9 @@ LABEL_6:
 - (BOOL)_gizmoSupportEnvironmentalDosimetry
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"F5C2DAD0-38FB-4B3B-86D3-B264F4F8CBDA"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
@@ -1651,9 +1651,9 @@ LABEL_6:
 - (BOOL)_gizmoSupportsScandium
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"BD3A4341-7090-4622-9694-2AC0F536C478"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
@@ -1661,26 +1661,26 @@ LABEL_6:
 - (BOOL)_gizmoSupportsRespiratoryRate
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"5C64C95B-8E7C-46AB-A110-1E51C93D7B7F"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
 
 - (BOOL)_gizmoSupportPasscodePolicySync
 {
-  v2 = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
+  passcodePolicy = [(PURemoteDeviceState *)self->_gizmoState passcodePolicy];
 
-  return v2 != 0;
+  return passcodePolicy != 0;
 }
 
 - (BOOL)_gizmoSupportEucalyptus
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"C0F3C2C3-0CDE-4DF9-A95A-789AC9A0348B"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
@@ -1688,16 +1688,16 @@ LABEL_6:
 - (BOOL)_gizmoSupportWatchGestures
 {
   v2 = +[NRPairedDeviceRegistry sharedInstance];
-  v3 = [v2 getActivePairedDevice];
+  getActivePairedDevice = [v2 getActivePairedDevice];
   v4 = [[NSUUID alloc] initWithUUIDString:@"0E581E21-36BA-4770-9408-0467585E8495"];
-  v5 = [v3 supportsCapability:v4];
+  v5 = [getActivePairedDevice supportsCapability:v4];
 
   return v5;
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
-  [(PUSPasscodeSettingsListController *)self reloadSpecifiers:a3];
+  [(PUSPasscodeSettingsListController *)self reloadSpecifiers:notification];
   v6 = +[MCProfileConnection sharedConnection];
   if ([v6 isPasscodeModificationAllowed])
   {
@@ -1705,9 +1705,9 @@ LABEL_6:
 
   else
   {
-    v5 = [(PUSPasscodeSettingsListController *)self presentedViewController];
+    presentedViewController = [(PUSPasscodeSettingsListController *)self presentedViewController];
 
-    if (v5)
+    if (presentedViewController)
     {
 
       [(PUSPasscodeSettingsListController *)self _cancelRemoteAction];
@@ -1715,46 +1715,46 @@ LABEL_6:
   }
 }
 
-- (void)alertView:(id)a3 willDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view willDismissWithButtonIndex:(int64_t)index
 {
-  if (!a4 && self->_awaitingUnlockAlertView == a3)
+  if (!index && self->_awaitingUnlockAlertView == view)
   {
-    v7 = [(PUSPasscodeSettingsListController *)self navigationController];
-    v5 = [v7 navigationController];
-    v6 = [v5 popViewControllerAnimated:1];
+    navigationController = [(PUSPasscodeSettingsListController *)self navigationController];
+    v7NavigationController = [navigationController navigationController];
+    v6 = [v7NavigationController popViewControllerAnimated:1];
   }
 }
 
-- (void)setActivityFlags:(int)a3
+- (void)setActivityFlags:(int)flags
 {
   activityFlags = self->_activityFlags;
-  self->_activityFlags = a3;
+  self->_activityFlags = flags;
   v6 = pu_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109376;
     v7[1] = activityFlags;
     v8 = 1024;
-    v9 = a3;
+    flagsCopy = flags;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Activity flag updates from 0x%X to 0x%X", v7, 0xEu);
   }
 
-  if ((a3 == 0) == (activityFlags != 0))
+  if ((flags == 0) == (activityFlags != 0))
   {
     [(PUSPasscodeSettingsListController *)self reloadUI];
   }
 }
 
-- (void)_addActivityFlag:(int)a3
+- (void)_addActivityFlag:(int)flag
 {
-  v4 = [(PUSPasscodeSettingsListController *)self activityFlags]| a3;
+  v4 = [(PUSPasscodeSettingsListController *)self activityFlags]| flag;
 
   [(PUSPasscodeSettingsListController *)self setActivityFlags:v4];
 }
 
-- (void)_removeActivityFlag:(int)a3
+- (void)_removeActivityFlag:(int)flag
 {
-  v4 = [(PUSPasscodeSettingsListController *)self activityFlags]& ~a3;
+  v4 = [(PUSPasscodeSettingsListController *)self activityFlags]& ~flag;
 
   [(PUSPasscodeSettingsListController *)self setActivityFlags:v4];
 }

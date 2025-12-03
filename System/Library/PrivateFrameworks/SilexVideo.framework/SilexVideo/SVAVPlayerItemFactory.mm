@@ -1,39 +1,39 @@
 @interface SVAVPlayerItemFactory
-- (SVAVPlayerItemFactory)initWithAutomaticallyLoadedAssetKeys:(id)a3 assetFactory:(id)a4 preferredForwardBufferDuration:(double)a5;
-- (id)createPlayerItemWithURL:(id)a3;
+- (SVAVPlayerItemFactory)initWithAutomaticallyLoadedAssetKeys:(id)keys assetFactory:(id)factory preferredForwardBufferDuration:(double)duration;
+- (id)createPlayerItemWithURL:(id)l;
 @end
 
 @implementation SVAVPlayerItemFactory
 
-- (SVAVPlayerItemFactory)initWithAutomaticallyLoadedAssetKeys:(id)a3 assetFactory:(id)a4 preferredForwardBufferDuration:(double)a5
+- (SVAVPlayerItemFactory)initWithAutomaticallyLoadedAssetKeys:(id)keys assetFactory:(id)factory preferredForwardBufferDuration:(double)duration
 {
-  v8 = a3;
-  v9 = a4;
+  keysCopy = keys;
+  factoryCopy = factory;
   v14.receiver = self;
   v14.super_class = SVAVPlayerItemFactory;
   v10 = [(SVAVPlayerItemFactory *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [keysCopy copy];
     automaticallyLoadedAssetKeys = v10->_automaticallyLoadedAssetKeys;
     v10->_automaticallyLoadedAssetKeys = v11;
 
-    objc_storeStrong(&v10->_assetFactory, a4);
-    v10->_preferredForwardBufferDuration = a5;
+    objc_storeStrong(&v10->_assetFactory, factory);
+    v10->_preferredForwardBufferDuration = duration;
   }
 
   return v10;
 }
 
-- (id)createPlayerItemWithURL:(id)a3
+- (id)createPlayerItemWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SVAVPlayerItemFactory *)self assetFactory];
-  v6 = [v5 createURLAssetWithURL:v4];
+  lCopy = l;
+  assetFactory = [(SVAVPlayerItemFactory *)self assetFactory];
+  v6 = [assetFactory createURLAssetWithURL:lCopy];
 
   v7 = MEMORY[0x277CE65B0];
-  v8 = [(SVAVPlayerItemFactory *)self automaticallyLoadedAssetKeys];
-  v9 = [v7 playerItemWithAsset:v6 automaticallyLoadedAssetKeys:v8];
+  automaticallyLoadedAssetKeys = [(SVAVPlayerItemFactory *)self automaticallyLoadedAssetKeys];
+  v9 = [v7 playerItemWithAsset:v6 automaticallyLoadedAssetKeys:automaticallyLoadedAssetKeys];
 
   [(SVAVPlayerItemFactory *)self preferredForwardBufferDuration];
   [v9 setPreferredForwardBufferDuration:?];

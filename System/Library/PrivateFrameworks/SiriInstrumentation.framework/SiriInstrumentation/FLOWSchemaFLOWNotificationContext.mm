@@ -1,41 +1,41 @@
 @interface FLOWSchemaFLOWNotificationContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWNotificationContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWNotificationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWNotificationContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWNotificationContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsHighlight:(BOOL)a3;
-- (void)setHasIsSummarized:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsHighlight:(BOOL)highlight;
+- (void)setHasIsSummarized:(BOOL)summarized;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWNotificationContext
 
-- (FLOWSchemaFLOWNotificationContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWNotificationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = FLOWSchemaFLOWNotificationContext;
   v5 = [(FLOWSchemaFLOWNotificationContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isLongNotification"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isLongNotification"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWNotificationContext setIsLongNotification:](v5, "setIsLongNotification:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isSummarized"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isSummarized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWNotificationContext setIsSummarized:](v5, "setIsSummarized:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isHighlight"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isHighlight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWNotificationContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWNotificationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWNotificationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWNotificationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWNotificationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,12 +84,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isHighlight + 1);
   if ((v4 & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWNotificationContext isHighlight](self, "isHighlight")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isHighlight"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isHighlight"];
 
     v4 = *(&self->_isHighlight + 1);
     if ((v4 & 1) == 0)
@@ -110,19 +110,19 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWNotificationContext isLongNotification](self, "isLongNotification")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isLongNotification"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isLongNotification"];
 
   if ((*(&self->_isHighlight + 1) & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWNotificationContext isSummarized](self, "isSummarized")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSummarized"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSummarized"];
   }
 
 LABEL_5:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   v5 = *(&self->_isHighlight + 1);
-  v6 = v4[11];
+  v6 = equalCopy[11];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -183,13 +183,13 @@ LABEL_4:
   if (v5)
   {
     isLongNotification = self->_isLongNotification;
-    if (isLongNotification != [v4 isLongNotification])
+    if (isLongNotification != [equalCopy isLongNotification])
     {
       goto LABEL_14;
     }
 
     v5 = *(&self->_isHighlight + 1);
-    v6 = v4[11];
+    v6 = equalCopy[11];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -201,10 +201,10 @@ LABEL_4:
   if (v8)
   {
     isSummarized = self->_isSummarized;
-    if (isSummarized == [v4 isSummarized])
+    if (isSummarized == [equalCopy isSummarized])
     {
       v5 = *(&self->_isHighlight + 1);
-      v6 = v4[11];
+      v6 = equalCopy[11];
       goto LABEL_10;
     }
 
@@ -223,7 +223,7 @@ LABEL_10:
   if (v10)
   {
     isHighlight = self->_isHighlight;
-    if (isHighlight != [v4 isHighlight])
+    if (isHighlight != [equalCopy isHighlight])
     {
       goto LABEL_14;
     }
@@ -235,15 +235,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isHighlight + 1);
-  v6 = v4;
+  v6 = toCopy;
   if (v5)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     v5 = *(&self->_isHighlight + 1);
     if ((v5 & 2) == 0)
     {
@@ -263,20 +263,20 @@ LABEL_3:
   }
 
   PBDataWriterWriteBOOLField();
-  v4 = v6;
+  toCopy = v6;
   if ((*(&self->_isHighlight + 1) & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)setHasIsHighlight:(BOOL)a3
+- (void)setHasIsHighlight:(BOOL)highlight
 {
-  if (a3)
+  if (highlight)
   {
     v3 = 4;
   }
@@ -289,9 +289,9 @@ LABEL_5:
   *(&self->_isHighlight + 1) = *(&self->_isHighlight + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsSummarized:(BOOL)a3
+- (void)setHasIsSummarized:(BOOL)summarized
 {
-  if (a3)
+  if (summarized)
   {
     v3 = 2;
   }

@@ -1,106 +1,106 @@
 @interface ADManagedStorageConnection
-- (id)_defaultStoreSpecificKeyForName:(id)a3 key:(id)a4;
-- (id)_defaultStoreSpecificKeyPrefixForName:(id)a3;
-- (id)_storeWithName:(id)a3;
-- (void)fetchManagedStoreObjectForKey:(id)a3 reply:(id)a4;
-- (void)getKnowledgeStoreDataForKey:(id)a3 inStoreWithName:(id)a4 completion:(id)a5;
-- (void)resetKnowledgeStoreWithName:(id)a3 completion:(id)a4;
-- (void)setKnowledgeStoreData:(id)a3 forKey:(id)a4 inStoreWithName:(id)a5 completion:(id)a6;
-- (void)setManagedStoreObject:(id)a3 forKey:(id)a4;
+- (id)_defaultStoreSpecificKeyForName:(id)name key:(id)key;
+- (id)_defaultStoreSpecificKeyPrefixForName:(id)name;
+- (id)_storeWithName:(id)name;
+- (void)fetchManagedStoreObjectForKey:(id)key reply:(id)reply;
+- (void)getKnowledgeStoreDataForKey:(id)key inStoreWithName:(id)name completion:(id)completion;
+- (void)resetKnowledgeStoreWithName:(id)name completion:(id)completion;
+- (void)setKnowledgeStoreData:(id)data forKey:(id)key inStoreWithName:(id)name completion:(id)completion;
+- (void)setManagedStoreObject:(id)object forKey:(id)key;
 @end
 
 @implementation ADManagedStorageConnection
 
-- (void)resetKnowledgeStoreWithName:(id)a3 completion:(id)a4
+- (void)resetKnowledgeStoreWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  completionCopy = completion;
   v8 = sub_10025176C();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002517C0;
   block[3] = &unk_10051E088;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = nameCopy;
+  v9 = nameCopy;
+  v10 = completionCopy;
   dispatch_async(v8, block);
 }
 
-- (void)getKnowledgeStoreDataForKey:(id)a3 inStoreWithName:(id)a4 completion:(id)a5
+- (void)getKnowledgeStoreDataForKey:(id)key inStoreWithName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = sub_10025176C();
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100251B24;
   v15[3] = &unk_10051E0D8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = keyCopy;
+  selfCopy = self;
+  v18 = nameCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = nameCopy;
+  v14 = keyCopy;
   dispatch_async(v11, v15);
 }
 
-- (void)setKnowledgeStoreData:(id)a3 forKey:(id)a4 inStoreWithName:(id)a5 completion:(id)a6
+- (void)setKnowledgeStoreData:(id)data forKey:(id)key inStoreWithName:(id)name completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  keyCopy = key;
+  nameCopy = name;
+  completionCopy = completion;
   v14 = sub_10025176C();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100251D70;
   block[3] = &unk_10051D2A0;
-  v23 = v10;
-  v24 = v13;
-  v20 = v12;
-  v21 = v11;
-  v22 = self;
-  v15 = v10;
-  v16 = v11;
-  v17 = v12;
-  v18 = v13;
+  v23 = dataCopy;
+  v24 = completionCopy;
+  v20 = nameCopy;
+  v21 = keyCopy;
+  selfCopy = self;
+  v15 = dataCopy;
+  v16 = keyCopy;
+  v17 = nameCopy;
+  v18 = completionCopy;
   dispatch_async(v14, block);
 }
 
-- (id)_defaultStoreSpecificKeyForName:(id)a3 key:(id)a4
+- (id)_defaultStoreSpecificKeyForName:(id)name key:(id)key
 {
-  v6 = a4;
-  v7 = [(ADManagedStorageConnection *)self _defaultStoreSpecificKeyPrefixForName:a3];
-  v8 = [v7 stringByAppendingString:v6];
+  keyCopy = key;
+  v7 = [(ADManagedStorageConnection *)self _defaultStoreSpecificKeyPrefixForName:name];
+  v8 = [v7 stringByAppendingString:keyCopy];
 
   return v8;
 }
 
-- (id)_defaultStoreSpecificKeyPrefixForName:(id)a3
+- (id)_defaultStoreSpecificKeyPrefixForName:(id)name
 {
-  if (a3)
+  if (name)
   {
-    v3 = a3;
+    nameCopy = name;
   }
 
   else
   {
-    v3 = @"_NULL_STORE";
+    nameCopy = @"_NULL_STORE";
   }
 
-  return [(__CFString *)v3 stringByAppendingString:@" - "];
+  return [(__CFString *)nameCopy stringByAppendingString:@" - "];
 }
 
-- (id)_storeWithName:(id)a3
+- (id)_storeWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_storeMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_storeMap objectForKey:nameCopy];
     if (!v5)
     {
       v5 = +[CKKnowledgeStore defaultSynchedKnowledgeStore];
@@ -116,7 +116,7 @@
           storeMap = self->_storeMap;
         }
 
-        [(NSMutableDictionary *)storeMap setObject:v5 forKey:v4];
+        [(NSMutableDictionary *)storeMap setObject:v5 forKey:nameCopy];
       }
     }
   }
@@ -129,20 +129,20 @@
   return v5;
 }
 
-- (void)fetchManagedStoreObjectForKey:(id)a3 reply:(id)a4
+- (void)fetchManagedStoreObjectForKey:(id)key reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  keyCopy = key;
   v7 = +[ADCommandCenter sharedCommandCenter];
-  [v7 fetchManagedStoreObjectForKey:v6 completion:v5];
+  [v7 fetchManagedStoreObjectForKey:keyCopy completion:replyCopy];
 }
 
-- (void)setManagedStoreObject:(id)a3 forKey:(id)a4
+- (void)setManagedStoreObject:(id)object forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  objectCopy = object;
   v7 = +[ADCommandCenter sharedCommandCenter];
-  [v7 setManagedStoreObject:v6 forKey:v5];
+  [v7 setManagedStoreObject:objectCopy forKey:keyCopy];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ADSearchCriteria
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ADSearchCriteria
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ADSearchCriteria);
   v9 = objc_msgSend_languageLocale(self, v5, v6, v7, v8);

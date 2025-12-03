@@ -1,6 +1,6 @@
 @interface _NSAttributedStringAgentService
 + (id)sharedApplication;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_NSAttributedStringAgentService)init;
 @end
 
@@ -26,9 +26,9 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 sharedApplication];
+  sharedApplication = [v2 sharedApplication];
 
-  return v4;
+  return sharedApplication;
 }
 
 - (_NSAttributedStringAgentService)init
@@ -44,9 +44,9 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = +[NSAttributedString _allowedTokensClasses];
   v6 = +[NSAttributedString _allowedOptionClasses];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____NSAttributedStringAgentProtocol];
@@ -56,10 +56,10 @@
   [v7 setClasses:v6 forSelector:"readFromData:orFileURL:options:extensionTokens:withReply:" argumentIndex:2 ofReply:0];
   [v7 setClasses:v5 forSelector:"readFromData:orFileURL:options:extensionTokens:withReply:" argumentIndex:3 ofReply:0];
   [v7 setClasses:v6 forSelector:"readFromData:orFileURL:options:extensionTokens:withReply:" argumentIndex:1 ofReply:1];
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
   v8 = objc_opt_new();
-  [v4 setExportedObject:v8];
-  [v4 resume];
+  [connectionCopy setExportedObject:v8];
+  [connectionCopy resume];
 
   return 1;
 }

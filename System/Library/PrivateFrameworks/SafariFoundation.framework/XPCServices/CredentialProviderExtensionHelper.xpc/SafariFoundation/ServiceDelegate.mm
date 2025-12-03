@@ -1,12 +1,12 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SFCredentialProviderExtensionHelperProtocol];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
@@ -35,10 +35,10 @@
   [v5 setClasses:v8 forSelector:"saveCredentialIdentities:completion:" argumentIndex:0 ofReply:0];
   [v5 setClasses:v8 forSelector:"removeCredentialIdentities:completion:" argumentIndex:0 ofReply:0];
   [v5 setClasses:v8 forSelector:"removeAllCredentialIdentitiesWithCompletion:" argumentIndex:0 ofReply:0];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
   v19 = objc_alloc_init(CredentialProviderExtensionHelper);
-  [v4 setExportedObject:v19];
-  [v4 resume];
+  [connectionCopy setExportedObject:v19];
+  [connectionCopy resume];
 
   return 1;
 }

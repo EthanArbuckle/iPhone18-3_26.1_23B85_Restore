@@ -1,17 +1,17 @@
 @interface SBFocusActivityPickerTransientOverlayViewController
-- (BOOL)_shouldUseCondensedFrame:(CGRect)a3;
+- (BOOL)_shouldUseCondensedFrame:(CGRect)frame;
 - (CGRect)_contractedFrame;
 - (CGRect)_contractedFrameNotTargetingSystemAperture;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (SBFocusActivityPickerTransientOverlayViewControllerDelegate)delegate;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
-- (void)_dismiss:(BOOL)a3;
-- (void)_handleTap:(id)a3;
-- (void)_performTransitionForPresentation:(BOOL)a3 contextProvider:(id)a4 actions:(id)a5 usingAnimationWorkaround:(BOOL)a6;
+- (void)_dismiss:(BOOL)_dismiss;
+- (void)_handleTap:(id)tap;
+- (void)_performTransitionForPresentation:(BOOL)presentation contextProvider:(id)provider actions:(id)actions usingAnimationWorkaround:(BOOL)workaround;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBFocusActivityPickerTransientOverlayViewController
@@ -21,13 +21,13 @@
   v14.receiver = self;
   v14.super_class = SBFocusActivityPickerTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v14 viewDidLoad];
-  v3 = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
+  view = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
   v4 = [MEMORY[0x277D26718] materialViewWithRecipe:20 options:2 initialWeighting:0.0];
   backgroundMaterialView = self->_backgroundMaterialView;
   self->_backgroundMaterialView = v4;
 
   v6 = self->_backgroundMaterialView;
-  [v3 bounds];
+  [view bounds];
   [(MTMaterialView *)v6 setFrame:?];
   [(MTMaterialView *)self->_backgroundMaterialView setAutoresizingMask:18];
   [(SBTransientOverlayViewController *)self addPresentationBackgroundView:self->_backgroundMaterialView];
@@ -35,36 +35,36 @@
   tapGesture = self->_tapGesture;
   self->_tapGesture = v7;
 
-  [v3 addGestureRecognizer:self->_tapGesture];
+  [view addGestureRecognizer:self->_tapGesture];
   v9 = objc_alloc_init(MEMORY[0x277D0AA08]);
   activityPickerViewController = self->_activityPickerViewController;
   self->_activityPickerViewController = v9;
 
   v11 = self->_activityPickerViewController;
-  v12 = [(SBFocusActivityPickerTransientOverlayViewController *)self traitCollection];
-  -[FCUIActivityPickerViewController setFooterPinnedToBottom:](v11, "setFooterPinnedToBottom:", [v12 userInterfaceIdiom] == 0);
+  traitCollection = [(SBFocusActivityPickerTransientOverlayViewController *)self traitCollection];
+  -[FCUIActivityPickerViewController setFooterPinnedToBottom:](v11, "setFooterPinnedToBottom:", [traitCollection userInterfaceIdiom] == 0);
 
-  v13 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
-  [v3 bounds];
-  [v13 setFrame:?];
-  [v3 addSubview:v13];
-  [v13 setAlpha:0.0];
-  [(SBFocusActivityPickerTransientOverlayViewController *)self bs_addChildViewController:self->_activityPickerViewController withSuperview:v3];
+  view2 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view addSubview:view2];
+  [view2 setAlpha:0.0];
+  [(SBFocusActivityPickerTransientOverlayViewController *)self bs_addChildViewController:self->_activityPickerViewController withSuperview:view];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SBFocusActivityPickerTransientOverlayViewController;
   [(SBFocusActivityPickerTransientOverlayViewController *)&v5 viewWillDisappear:?];
-  [(SBFocusActivityPickerTransientOverlayViewController *)self _dismiss:v3];
+  [(SBFocusActivityPickerTransientOverlayViewController *)self _dismiss:disappearCopy];
 }
 
 - (CGRect)_contractedFrame
 {
-  v3 = [SBApp systemApertureControllerForMainDisplay];
-  if (!v3 || (-[SBFocusActivityPickerTransientOverlayViewController view](self, "view"), v4 = objc_claimAutoreleasedReturnValue(), [v3 defaultIslandFrameInCoordinateSpace:v4], v6 = v5, v8 = v7, v10 = v9, v12 = v11, v4, !-[SBFocusActivityPickerTransientOverlayViewController _shouldUseCondensedFrame:](self, "_shouldUseCondensedFrame:", v6, v8, v10, v12)))
+  systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+  if (!systemApertureControllerForMainDisplay || (-[SBFocusActivityPickerTransientOverlayViewController view](self, "view"), v4 = objc_claimAutoreleasedReturnValue(), [systemApertureControllerForMainDisplay defaultIslandFrameInCoordinateSpace:v4], v6 = v5, v8 = v7, v10 = v9, v12 = v11, v4, !-[SBFocusActivityPickerTransientOverlayViewController _shouldUseCondensedFrame:](self, "_shouldUseCondensedFrame:", v6, v8, v10, v12)))
   {
     [(SBFocusActivityPickerTransientOverlayViewController *)self _contractedFrameNotTargetingSystemAperture];
     v6 = v13;
@@ -84,13 +84,13 @@
   return result;
 }
 
-- (BOOL)_shouldUseCondensedFrame:(CGRect)a3
+- (BOOL)_shouldUseCondensedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (CGRectIsNull(frame))
   {
     return 0;
   }
@@ -104,8 +104,8 @@
     return 0;
   }
 
-  v9 = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
-  [v9 bounds];
+  view = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
+  [view bounds];
   MidY = CGRectGetMidY(v13);
   v14.origin.x = x;
   v14.origin.y = y;
@@ -118,18 +118,18 @@
 
 - (CGRect)_contractedFrameNotTargetingSystemAperture
 {
-  v3 = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
   [(SBFocusActivityPickerTransientOverlayViewController *)self sizeForChildContentContainer:self->_activityPickerViewController withParentContainerSize:v5, v7];
   v17 = v8;
   BSRectWithSize();
-  v9 = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
-  [v9 bounds];
-  v10 = [(SBFocusActivityPickerTransientOverlayViewController *)self traitCollection];
-  [v10 displayScale];
+  view2 = [(SBFocusActivityPickerTransientOverlayViewController *)self view];
+  [view2 bounds];
+  traitCollection = [(SBFocusActivityPickerTransientOverlayViewController *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredXInRectScale();
   v12 = v11;
 
@@ -144,24 +144,24 @@
   return result;
 }
 
-- (void)_performTransitionForPresentation:(BOOL)a3 contextProvider:(id)a4 actions:(id)a5 usingAnimationWorkaround:(BOOL)a6
+- (void)_performTransitionForPresentation:(BOOL)presentation contextProvider:(id)provider actions:(id)actions usingAnimationWorkaround:(BOOL)workaround
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 isAnimated])
+  workaroundCopy = workaround;
+  providerCopy = provider;
+  actionsCopy = actions;
+  if ([providerCopy isAnimated])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __138__SBFocusActivityPickerTransientOverlayViewController__performTransitionForPresentation_contextProvider_actions_usingAnimationWorkaround___block_invoke;
     v14[3] = &unk_2783B42A0;
-    v17 = a3;
+    presentationCopy = presentation;
     v14[4] = self;
-    v16 = v11;
-    v15 = v10;
+    v16 = actionsCopy;
+    v15 = providerCopy;
     v12 = MEMORY[0x223D6F7F0](v14);
     v13 = v12;
-    if (v6)
+    if (workaroundCopy)
     {
       dispatch_async(MEMORY[0x277D85CD0], v12);
     }
@@ -174,8 +174,8 @@
 
   else
   {
-    (*(v11 + 2))(v11, 0);
-    [v10 completeTransition:1];
+    (*(actionsCopy + 2))(actionsCopy, 0);
+    [providerCopy completeTransition:1];
   }
 }
 
@@ -401,9 +401,9 @@ void __104__SBFocusActivityPickerTransientOverlayViewController_newTransientOver
   [*(a1 + 40) performAlongsideTransitions];
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  if (self->_activityPickerViewController == a3)
+  if (self->_activityPickerViewController == container)
   {
     CCUIDefaultExpandedContentModuleWidth();
 
@@ -414,7 +414,7 @@ void __104__SBFocusActivityPickerTransientOverlayViewController_newTransientOver
   {
     v6.receiver = self;
     v6.super_class = SBFocusActivityPickerTransientOverlayViewController;
-    [(SBFocusActivityPickerTransientOverlayViewController *)&v6 sizeForChildContentContainer:a4.width withParentContainerSize:a4.height];
+    [(SBFocusActivityPickerTransientOverlayViewController *)&v6 sizeForChildContentContainer:size.width withParentContainerSize:size.height];
   }
 
   result.height = v5;
@@ -422,17 +422,17 @@ void __104__SBFocusActivityPickerTransientOverlayViewController_newTransientOver
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = SBFocusActivityPickerTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  if (v7)
+  [(SBTransientOverlayViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
   }
 
   else
@@ -449,7 +449,7 @@ void __104__SBFocusActivityPickerTransientOverlayViewController_newTransientOver
     v8[4] = self;
     *&v8[5] = width;
     *&v8[6] = height;
-    [v7 animateAlongsideTransition:v8 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   }
 }
 
@@ -473,17 +473,17 @@ void __106__SBFocusActivityPickerTransientOverlayViewController_viewWillTransiti
   [v13 layoutIfNeeded];
 }
 
-- (void)_dismiss:(BOOL)a3
+- (void)_dismiss:(BOOL)_dismiss
 {
-  v3 = a3;
+  _dismissCopy = _dismiss;
   v5 = +[SBWorkspace mainWorkspace];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SBFocusActivityPickerTransientOverlayViewController__dismiss___block_invoke;
   v6[3] = &unk_2783A9F58;
   v6[4] = self;
-  v7 = v3;
-  [v5 dismissTransientOverlayViewController:self animated:v3 completion:v6];
+  v7 = _dismissCopy;
+  [v5 dismissTransientOverlayViewController:self animated:_dismissCopy completion:v6];
 }
 
 void __64__SBFocusActivityPickerTransientOverlayViewController__dismiss___block_invoke(uint64_t a1)
@@ -492,9 +492,9 @@ void __64__SBFocusActivityPickerTransientOverlayViewController__dismiss___block_
   [WeakRetained focusActivityPickerTransientOverlayViewController:*(a1 + 32) didDismiss:*(a1 + 40)];
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  if (self->_tapGesture == a3)
+  if (self->_tapGesture == tap)
   {
     [(SBFocusActivityPickerTransientOverlayViewController *)self _dismiss:1];
   }

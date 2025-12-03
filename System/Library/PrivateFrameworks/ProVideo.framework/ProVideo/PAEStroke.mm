@@ -1,21 +1,21 @@
 @interface PAEStroke
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAEStroke)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAEStroke)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEStroke
 
-- (PAEStroke)initWithAPIManager:(id)a3
+- (PAEStroke)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEStroke;
-  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
   result->_thresholdDefault = 0.5001;
   return result;
 }
@@ -66,7 +66,7 @@
   return v3 != 0;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448];
@@ -94,7 +94,7 @@
   v27 = 0.0;
   [v5 getFloatValue:&v27 fromParm:7 atFxTime:&v29];
   v13 = v28;
-  if (a3 == 7 && (v28 & 1) != 0)
+  if (changed == 7 && (v28 & 1) != 0)
   {
     v12 = v27;
     if (v27 == self->_thresholdDefault)
@@ -135,9 +135,9 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (a3 != 7 || (v13 & 1) != 0)
+  if (changed != 7 || (v13 & 1) != 0)
   {
-    if ((a3 != 5) | v13 & 1)
+    if ((changed != 5) | v13 & 1)
     {
       goto LABEL_34;
     }
@@ -187,7 +187,7 @@ LABEL_34:
     [v6 setBoolValue:1 toParm:14 atFxTime:&v29];
   }
 
-  if (a3 == 12)
+  if (changed == 12)
   {
     LOBYTE(v24) = 0;
     [v5 getBoolValue:&v24 fromParm:12 atFxTime:&v29];
@@ -209,7 +209,7 @@ LABEL_34:
     goto LABEL_50;
   }
 
-  if (a3 == 1)
+  if (changed == 1)
   {
     v25 = 0;
     [v5 getIntValue:&v25 fromParm:1 atFxTime:&v29];
@@ -253,24 +253,24 @@ LABEL_50:
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  v6 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (a3)
+  if (width)
   {
-    if (a4)
+    if (height)
     {
-      self = [(PROAPIAccessing *)v6->super.super._apiManager apiForProtocol:&unk_28735E258];
+      self = [(PROAPIAccessing *)selfCopy->super.super._apiManager apiForProtocol:&unk_28735E258];
       if (self)
       {
-        v11 = self;
+        selfCopy2 = self;
         v21 = 0.0;
-        [(PAEStroke *)self getFloatValue:&v21 fromParm:4 atFxTime:a6->var0.var1];
+        [(PAEStroke *)self getFloatValue:&v21 fromParm:4 atFxTime:info->var0.var1];
         v20 = 0;
-        [(PAEStroke *)v11 getIntValue:&v20 fromParm:5 atFxTime:a6->var0.var1];
+        [(PAEStroke *)selfCopy2 getIntValue:&v20 fromParm:5 atFxTime:info->var0.var1];
         v19 = 0.0;
-        [(PAEStroke *)v11 getFloatValue:&v19 fromParm:6 atFxTime:a6->var0.var1];
+        [(PAEStroke *)selfCopy2 getFloatValue:&v19 fromParm:6 atFxTime:info->var0.var1];
         v12 = v21 * -0.5;
         if (v20 != 1)
         {
@@ -287,10 +287,10 @@ LABEL_50:
         v15 = v21 + v19 + v12;
         if (v15 > 0.0)
         {
-          var1 = a5->var1;
+          var1 = input->var1;
           v17 = 2 * vcvtps_s32_f32(v15);
-          *a3 = a5->var0 + v17;
-          *a4 = var1 + v17;
+          *width = input->var0 + v17;
+          *height = var1 + v17;
         }
 
         LOBYTE(self) = 1;
@@ -301,7 +301,7 @@ LABEL_50:
   return self;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -325,45 +325,45 @@ LABEL_50:
   {
     v57 = v10;
     LOBYTE(v12) = 0;
-    if ([a4 imageType] == 3 && v57)
+    if ([input imageType] == 3 && v57)
     {
       v85[0] = 0;
-      [v8 getIntValue:v85 fromParm:1 atFxTime:a5->var0.var1];
+      [v8 getIntValue:v85 fromParm:1 atFxTime:info->var0.var1];
       v83 = 0;
       v84 = 0;
       v81 = 0;
       v82 = 0;
-      [v8 getRedValue:&v84 greenValue:&v83 blueValue:&v82 alphaValue:&v81 fromParm:2 atFxTime:a5->var0.var1];
+      [v8 getRedValue:&v84 greenValue:&v83 blueValue:&v82 alphaValue:&v81 fromParm:2 atFxTime:info->var0.var1];
       v79 = 0;
       v80 = 0;
       v77 = 0;
       v78 = 0;
       v76 = 0;
-      [v8 getGradientStartEnd:&v80 startY:&v79 endX:&v78 endY:&v77 type:&v76 fromParm:3 atFxTime:a5->var0.var1];
+      [v8 getGradientStartEnd:&v80 startY:&v79 endX:&v78 endY:&v77 type:&v76 fromParm:3 atFxTime:info->var0.var1];
       v75 = 0.0;
-      [v8 getFloatValue:&v75 fromParm:4 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v75 fromParm:4 atFxTime:info->var0.var1];
       v74 = 0;
-      [v8 getIntValue:&v74 fromParm:5 atFxTime:a5->var0.var1];
+      [v8 getIntValue:&v74 fromParm:5 atFxTime:info->var0.var1];
       v73 = 0.0;
-      [v8 getFloatValue:&v73 fromParm:6 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v73 fromParm:6 atFxTime:info->var0.var1];
       v72 = 0.0;
-      [v8 getFloatValue:&v72 fromParm:7 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v72 fromParm:7 atFxTime:info->var0.var1];
       v72 = fmin(fmax(v72, 0.01), 0.99);
       v71 = 0;
-      [v8 getFloatValue:&v71 fromParm:8 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v71 fromParm:8 atFxTime:info->var0.var1];
       v70 = 0;
-      [v8 getFloatValue:&v70 fromParm:9 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v70 fromParm:9 atFxTime:info->var0.var1];
       v69 = 0;
-      [v8 getFloatValue:&v69 fromParm:13 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v69 fromParm:13 atFxTime:info->var0.var1];
       v68 = 0;
-      [v8 getFloatValue:&v68 fromParm:10 atFxTime:a5->var0.var1];
+      [v8 getFloatValue:&v68 fromParm:10 atFxTime:info->var0.var1];
       v67 = 0;
-      [v8 getBoolValue:&v67 fromParm:12 atFxTime:a5->var0.var1];
+      [v8 getBoolValue:&v67 fromParm:12 atFxTime:info->var0.var1];
       v66 = 0;
-      [v8 getIntValue:&v66 fromParm:11 atFxTime:a5->var0.var1];
-      if (a4)
+      [v8 getIntValue:&v66 fromParm:11 atFxTime:info->var0.var1];
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
         v64 = v65;
         if (v65)
         {
@@ -377,8 +377,8 @@ LABEL_50:
         v64 = 0;
       }
 
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
-      [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
+      [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
       HGTransform::HGTransform(v59);
       HGTransform::Scale(v59, v60, v62, 1.0);
       HGTransform::Translate(v59, v61, v63, 0.0);
@@ -497,7 +497,7 @@ LABEL_50:
       v42 = v41;
       v12 = HGObject::operator new(0x80uLL);
       HGBitmap::HGBitmap(v12, v40, v42, 28);
-      [v8 getGradientSamples:*(v12 + 10) numSamples:v39 depth:4 fromParm:3 atFxTime:a5->var0.var1];
+      [v8 getGradientSamples:*(v12 + 10) numSamples:v39 depth:4 fromParm:3 atFxTime:info->var0.var1];
       if (v39 > 0.0)
       {
         v43 = 0;
@@ -571,15 +571,15 @@ LABEL_50:
   return v12;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

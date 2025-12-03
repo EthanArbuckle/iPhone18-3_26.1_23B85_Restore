@@ -1,15 +1,15 @@
 @interface CMNatalieData
-- (CMNatalieData)initWithCoder:(id)a3;
-- (CMNatalieData)initWithStartDate:(double)a3 recordId:(int64_t)a4 activityType:(int64_t)a5 mets:(double)a6 natalies:(double)a7 basalNatalies:(double)a8 sourceId:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMNatalieData)initWithCoder:(id)coder;
+- (CMNatalieData)initWithStartDate:(double)date recordId:(int64_t)id activityType:(int64_t)type mets:(double)mets natalies:(double)natalies basalNatalies:(double)basalNatalies sourceId:(id)sourceId;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMNatalieData
 
-- (CMNatalieData)initWithStartDate:(double)a3 recordId:(int64_t)a4 activityType:(int64_t)a5 mets:(double)a6 natalies:(double)a7 basalNatalies:(double)a8 sourceId:(id)a9
+- (CMNatalieData)initWithStartDate:(double)date recordId:(int64_t)id activityType:(int64_t)type mets:(double)mets natalies:(double)natalies basalNatalies:(double)basalNatalies sourceId:(id)sourceId
 {
   v21.receiver = self;
   v21.super_class = CMNatalieData;
@@ -17,13 +17,13 @@
   v19 = v16;
   if (v16)
   {
-    v16->fStartDate = a3;
-    v16->fRecordId = a4;
-    v16->fActivityType = a5;
-    v16->fMets = a6;
-    v16->fNatalies = a7;
-    v16->fBasalNatalies = a8;
-    v16->fSourceId = objc_msgSend_copy(a9, v17, v18);
+    v16->fStartDate = date;
+    v16->fRecordId = id;
+    v16->fActivityType = type;
+    v16->fMets = mets;
+    v16->fNatalies = natalies;
+    v16->fBasalNatalies = basalNatalies;
+    v16->fSourceId = objc_msgSend_copy(sourceId, v17, v18);
   }
 
   return v19;
@@ -36,34 +36,34 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (CMNatalieData)initWithCoder:(id)a3
+- (CMNatalieData)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = CMNatalieData;
   v5 = [(CMLogItem *)&v18 initWithCoder:?];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kNatalieDataCodingKeyStartDate");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kNatalieDataCodingKeyStartDate");
     v5->fStartDate = v6;
-    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(a3, v7, @"kNatalieDataCodingKeyRecordId");
-    v5->fActivityType = objc_msgSend_decodeIntegerForKey_(a3, v8, @"kNatalieDataCodingKeySession");
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kNatalieDataCodingKeyMets");
+    v5->fRecordId = objc_msgSend_decodeIntegerForKey_(coder, v7, @"kNatalieDataCodingKeyRecordId");
+    v5->fActivityType = objc_msgSend_decodeIntegerForKey_(coder, v8, @"kNatalieDataCodingKeySession");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kNatalieDataCodingKeyMets");
     v5->fMets = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kNatalieDataCodingKeyNatalies");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kNatalieDataCodingKeyNatalies");
     v5->fNatalies = v12;
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"kNatalieDataCodingKeyBasalNatalies");
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"kNatalieDataCodingKeyBasalNatalies");
     v5->fBasalNatalies = v14;
     v15 = objc_opt_class();
-    v5->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(a3, v16, v15, @"kNatalieDataCodingKeySourceId");
+    v5->fSourceId = objc_msgSend_decodeObjectOfClass_forKey_(coder, v16, v15, @"kNatalieDataCodingKeySourceId");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fStartDate = self->fStartDate;
   fMets = self->fMets;
   fNatalies = self->fNatalies;
@@ -75,18 +75,18 @@
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_recordId_activityType_mets_natalies_basalNatalies_sourceId_, fRecordId);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = CMNatalieData;
   [(CMLogItem *)&v12 encodeWithCoder:?];
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kNatalieDataCodingKeyStartDate", self->fStartDate);
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->fRecordId, @"kNatalieDataCodingKeyRecordId");
-  objc_msgSend_encodeInteger_forKey_(a3, v7, self->fActivityType, @"kNatalieDataCodingKeySession");
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kNatalieDataCodingKeyMets", self->fMets);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kNatalieDataCodingKeyNatalies", self->fNatalies);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kNatalieDataCodingKeyBasalNatalies", self->fBasalNatalies);
-  objc_msgSend_encodeObject_forKey_(a3, v11, self->fSourceId, @"kNatalieDataCodingKeySourceId");
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kNatalieDataCodingKeyStartDate", self->fStartDate);
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->fRecordId, @"kNatalieDataCodingKeyRecordId");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, self->fActivityType, @"kNatalieDataCodingKeySession");
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kNatalieDataCodingKeyMets", self->fMets);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kNatalieDataCodingKeyNatalies", self->fNatalies);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kNatalieDataCodingKeyBasalNatalies", self->fBasalNatalies);
+  objc_msgSend_encodeObject_forKey_(coder, v11, self->fSourceId, @"kNatalieDataCodingKeySourceId");
 }
 
 - (id)description

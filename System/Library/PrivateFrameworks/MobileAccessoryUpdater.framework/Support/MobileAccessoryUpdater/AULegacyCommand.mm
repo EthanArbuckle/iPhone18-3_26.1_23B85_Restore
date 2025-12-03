@@ -1,28 +1,28 @@
 @interface AULegacyCommand
-- (AULegacyCommand)initWithCommand:(int)a3 forFilter:(id)a4 options:(id)a5;
+- (AULegacyCommand)initWithCommand:(int)command forFilter:(id)filter options:(id)options;
 @end
 
 @implementation AULegacyCommand
 
-- (AULegacyCommand)initWithCommand:(int)a3 forFilter:(id)a4 options:(id)a5
+- (AULegacyCommand)initWithCommand:(int)command forFilter:(id)filter options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
+  filterCopy = filter;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = AULegacyCommand;
   v10 = [(AULegacyCommand *)&v27 init];
   v11 = v10;
   if (v10)
   {
-    v10->_commandType = a3;
-    v12 = [v8 copy];
+    v10->_commandType = command;
+    v12 = [filterCopy copy];
     filter = v11->_filter;
     v11->_filter = v12;
 
     v11->_isConnectionEvent = 0;
-    if (v9)
+    if (optionsCopy)
     {
-      v14 = xpc_copy(v9);
+      v14 = xpc_copy(optionsCopy);
       eventOptions = v11->_eventOptions;
       v11->_eventOptions = v14;
 

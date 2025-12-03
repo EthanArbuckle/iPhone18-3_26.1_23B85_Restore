@@ -1,66 +1,66 @@
 @interface ATXModeEntityModelTrainer
-+ (double)maxScoreWithThresholdGivenModeEntityScores:(id)a3;
-+ (double)scoreThresholdGivenModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4;
-+ (id)eventProviderForMode:(unint64_t)a3;
-+ (id)eventProviderForScorableTime:(id)a3;
-+ (id)thresholdedModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4 threshold:(double)a5;
++ (double)maxScoreWithThresholdGivenModeEntityScores:(id)scores;
++ (double)scoreThresholdGivenModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier;
++ (id)eventProviderForMode:(unint64_t)mode;
++ (id)eventProviderForScorableTime:(id)time;
++ (id)thresholdedModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier threshold:(double)threshold;
 - (ATXModeEntityModelTrainer)init;
-- (ATXModeEntityModelTrainer)initWithCacheBasePath:(id)a3 modeEntityStore:(id)a4 globalAppModeAffinityModel:(id)a5 globalInterruptingAppModel:(id)a6 globalWidgetPopularityModel:(id)a7;
-- (BOOL)persistModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4 modeIdentifier:(id)a5 modeConfigurationType:(int64_t)a6;
+- (ATXModeEntityModelTrainer)initWithCacheBasePath:(id)path modeEntityStore:(id)store globalAppModeAffinityModel:(id)model globalInterruptingAppModel:(id)appModel globalWidgetPopularityModel:(id)popularityModel;
+- (BOOL)persistModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type;
 - (BOOL)shouldDeferTrainingDueToRestoredBackup;
 - (BOOL)shouldDeferTrainingDueToUpgrade;
-- (id)pathForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationType:(int64_t)a5;
-- (void)trainWithTask:(id)a3 shouldSkipRetrainingIfTrainedRecently:(BOOL)a4 shouldDeferTrainingOnRestoreOrUpgrade:(BOOL)a5;
+- (id)pathForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type;
+- (void)trainWithTask:(id)task shouldSkipRetrainingIfTrainedRecently:(BOOL)recently shouldDeferTrainingOnRestoreOrUpgrade:(BOOL)upgrade;
 @end
 
 @implementation ATXModeEntityModelTrainer
 
 - (ATXModeEntityModelTrainer)init
 {
-  v3 = [MEMORY[0x277CEBCB0] modeCachesRootDirectory];
+  modeCachesRootDirectory = [MEMORY[0x277CEBCB0] modeCachesRootDirectory];
   v4 = objc_opt_new();
   v5 = +[ATXGlobalAppModeAffinityModel modelWithAllInstalledAppsKnownToSpringBoard];
   v6 = +[ATXGlobalInterruptingAppModel modelWithAllInstalledAppsKnownToSpringBoard];
   v7 = +[ATXGlobalWidgetPopularityModel modelWithAllAvailableWidgets];
-  v8 = [(ATXModeEntityModelTrainer *)self initWithCacheBasePath:v3 modeEntityStore:v4 globalAppModeAffinityModel:v5 globalInterruptingAppModel:v6 globalWidgetPopularityModel:v7];
+  v8 = [(ATXModeEntityModelTrainer *)self initWithCacheBasePath:modeCachesRootDirectory modeEntityStore:v4 globalAppModeAffinityModel:v5 globalInterruptingAppModel:v6 globalWidgetPopularityModel:v7];
 
   return v8;
 }
 
-- (ATXModeEntityModelTrainer)initWithCacheBasePath:(id)a3 modeEntityStore:(id)a4 globalAppModeAffinityModel:(id)a5 globalInterruptingAppModel:(id)a6 globalWidgetPopularityModel:(id)a7
+- (ATXModeEntityModelTrainer)initWithCacheBasePath:(id)path modeEntityStore:(id)store globalAppModeAffinityModel:(id)model globalInterruptingAppModel:(id)appModel globalWidgetPopularityModel:(id)popularityModel
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  storeCopy = store;
+  modelCopy = model;
+  appModelCopy = appModel;
+  popularityModelCopy = popularityModel;
   v21.receiver = self;
   v21.super_class = ATXModeEntityModelTrainer;
   v17 = [(ATXModeEntityModelTrainer *)&v21 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [pathCopy copy];
     cacheBasePath = v17->_cacheBasePath;
     v17->_cacheBasePath = v18;
 
-    objc_storeStrong(&v17->_modeEntityStore, a4);
-    objc_storeStrong(&v17->_globalAppModeAffinityModel, a5);
-    objc_storeStrong(&v17->_globalInterruptingAppModel, a6);
-    objc_storeStrong(&v17->_globalWidgetPopularityModel, a7);
+    objc_storeStrong(&v17->_modeEntityStore, store);
+    objc_storeStrong(&v17->_globalAppModeAffinityModel, model);
+    objc_storeStrong(&v17->_globalInterruptingAppModel, appModel);
+    objc_storeStrong(&v17->_globalWidgetPopularityModel, popularityModel);
   }
 
   return v17;
 }
 
-- (void)trainWithTask:(id)a3 shouldSkipRetrainingIfTrainedRecently:(BOOL)a4 shouldDeferTrainingOnRestoreOrUpgrade:(BOOL)a5
+- (void)trainWithTask:(id)task shouldSkipRetrainingIfTrainedRecently:(BOOL)recently shouldDeferTrainingOnRestoreOrUpgrade:(BOOL)upgrade
 {
-  v5 = a5;
-  v74 = a4;
+  upgradeCopy = upgrade;
+  recentlyCopy = recently;
   v89 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v5 && ([(ATXModeEntityModelTrainer *)self shouldDeferTrainingDueToRestoredBackup]|| [(ATXModeEntityModelTrainer *)self shouldDeferTrainingDueToUpgrade]))
+  taskCopy = task;
+  if (upgradeCopy && ([(ATXModeEntityModelTrainer *)self shouldDeferTrainingDueToRestoredBackup]|| [(ATXModeEntityModelTrainer *)self shouldDeferTrainingDueToUpgrade]))
   {
-    [v7 setDone];
+    [taskCopy setDone];
     goto LABEL_64;
   }
 
@@ -71,7 +71,7 @@
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Started training Mode Entity Models...", buf, 2u);
   }
 
-  [v7 setProgressUnits:5];
+  [taskCopy setProgressUnits:5];
   v9 = objc_opt_new();
   v80 = 0u;
   v81 = 0u;
@@ -96,7 +96,7 @@ LABEL_9:
 
       v12 = *(*(&v80 + 1) + 8 * v11);
       v13 = objc_autoreleasePoolPush();
-      v14 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
       v15 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -106,7 +106,7 @@ LABEL_9:
         _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Training Mode Entity Models for Mode %@...", buf, 0xCu);
       }
 
-      if (v74)
+      if (recentlyCopy)
       {
         [v12 unsignedIntegerValue];
         v17 = ATXModeToString();
@@ -136,8 +136,8 @@ LABEL_9:
       }
 
       v24 = -[ATXAppModeModel initWithMode:modeEntityStore:globalAppModeAffinityModel:]([ATXAppModeModel alloc], "initWithMode:modeEntityStore:globalAppModeAffinityModel:", [v12 unsignedIntegerValue], self->_modeEntityStore, self->_globalAppModeAffinityModel);
-      v25 = [(ATXAppModeModel *)v24 scoredEntitiesWithXPCActivity:v7];
-      if ([v7 didDefer])
+      v25 = [(ATXAppModeModel *)v24 scoredEntitiesWithXPCActivity:taskCopy];
+      if ([taskCopy didDefer])
       {
         v27 = __atxlog_handle_notification_management();
         if (!os_log_type_enabled(&v27->super, OS_LOG_TYPE_DEFAULT))
@@ -158,7 +158,7 @@ LABEL_55:
       v26 = ATXModeToString();
       [(ATXModeEntityModelTrainer *)self persistModeEntityScores:v25 modeEntityTypeIdentifier:@"apps" modeIdentifier:v26 modeConfigurationType:0];
 
-      if ([v7 didDefer])
+      if ([taskCopy didDefer])
       {
         v27 = __atxlog_handle_notification_management();
         if (!os_log_type_enabled(&v27->super, OS_LOG_TYPE_DEFAULT))
@@ -175,9 +175,9 @@ LABEL_55:
 
       v79 = v25;
       context = v13;
-      v27 = [[ATXAppModeDenyListModel alloc] initWithMode:v14 modeEntityStore:self->_modeEntityStore globalInterruptingAppModel:self->_globalInterruptingAppModel];
-      v28 = [(ATXAppModeDenyListModel *)v27 scoredEntitiesWithXPCActivity:v7];
-      if ([v7 didDefer])
+      v27 = [[ATXAppModeDenyListModel alloc] initWithMode:unsignedIntegerValue modeEntityStore:self->_modeEntityStore globalInterruptingAppModel:self->_globalInterruptingAppModel];
+      v28 = [(ATXAppModeDenyListModel *)v27 scoredEntitiesWithXPCActivity:taskCopy];
+      if ([taskCopy didDefer])
       {
         v59 = __atxlog_handle_notification_management();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -202,7 +202,7 @@ LABEL_62:
       v29 = ATXModeToString();
       [(ATXModeEntityModelTrainer *)self persistModeEntityScores:v28 modeEntityTypeIdentifier:@"apps" modeIdentifier:v29 modeConfigurationType:1];
 
-      if ([v7 didDefer])
+      if ([taskCopy didDefer])
       {
         v59 = __atxlog_handle_notification_management();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
@@ -220,15 +220,15 @@ LABEL_60:
 
       v75 = v27;
       v76 = v24;
-      v30 = [[ATXContactModeModel alloc] initWithMode:v14 contactStore:v9];
-      v31 = [(ATXContactModeModel *)v30 scoredEntities];
-      v32 = [(ATXContactModeModel *)v30 purgeDeletedContacts:v31];
+      v30 = [[ATXContactModeModel alloc] initWithMode:unsignedIntegerValue contactStore:v9];
+      scoredEntities = [(ATXContactModeModel *)v30 scoredEntities];
+      v32 = [(ATXContactModeModel *)v30 purgeDeletedContacts:scoredEntities];
 
       v33 = ATXModeToString();
       v78 = v32;
       [(ATXModeEntityModelTrainer *)self persistModeEntityScores:v32 modeEntityTypeIdentifier:@"contacts" modeIdentifier:v33 modeConfigurationType:0];
 
-      if ([v7 didDefer])
+      if ([taskCopy didDefer])
       {
         v34 = __atxlog_handle_notification_management();
         v35 = v75;
@@ -246,16 +246,16 @@ LABEL_60:
       else
       {
         v69 = v30;
-        v34 = [[ATXContactModeDenyListModel alloc] initWithMode:v14 contactStore:v9];
+        v34 = [[ATXContactModeDenyListModel alloc] initWithMode:unsignedIntegerValue contactStore:v9];
         [(ATXContactModeDenyListModel *)v34 scoredEntities];
         v39 = v38 = v9;
         [(ATXContactModeDenyListModel *)v34 purgeDeletedContacts:v39];
-        v41 = v40 = v7;
+        v41 = v40 = taskCopy;
 
         v42 = ATXModeToString();
         v70 = v41;
         v43 = v41;
-        v7 = v40;
+        taskCopy = v40;
         [(ATXModeEntityModelTrainer *)self persistModeEntityScores:v43 modeEntityTypeIdentifier:@"contacts" modeIdentifier:v42 modeConfigurationType:1];
 
         if ([v40 didDefer])
@@ -277,13 +277,13 @@ LABEL_60:
 
         else
         {
-          v68 = [[ATXNotificationModeModel alloc] initWithMode:v14 contactStore:v38];
+          v68 = [[ATXNotificationModeModel alloc] initWithMode:unsignedIntegerValue contactStore:v38];
           v46 = [(ATXNotificationModeModel *)v68 scoredEntitiesWithScoredAppEntities:v79 scoredContactEntities:v32];
           v47 = ATXModeToString();
           v66 = v46;
           [(ATXModeEntityModelTrainer *)self persistModeEntityScores:v46 modeEntityTypeIdentifier:@"notifications" modeIdentifier:v47 modeConfigurationType:0];
 
-          if ([v7 didDefer])
+          if ([taskCopy didDefer])
           {
             p_super = __atxlog_handle_notification_management();
             v35 = v75;
@@ -301,7 +301,7 @@ LABEL_60:
 
           else
           {
-            v64 = [[ATXWidgetModeModel alloc] initWithMode:v14 globalWidgetPopularityModel:self->_globalWidgetPopularityModel];
+            v64 = [[ATXWidgetModeModel alloc] initWithMode:unsignedIntegerValue globalWidgetPopularityModel:self->_globalWidgetPopularityModel];
             v50 = [(ATXWidgetModeModel *)v64 scoredEntitiesWithScoredAppEntities:v79];
             v51 = ATXModeToString();
             v63 = v50;
@@ -317,9 +317,9 @@ LABEL_60:
               _os_log_impl(&dword_2263AA000, v52, OS_LOG_TYPE_DEFAULT, "Finished training of widget scores in Mode Entity Scorer for mode %@.", buf, 0xCu);
             }
 
-            v54 = [v7 didDefer];
+            didDefer = [taskCopy didDefer];
             v35 = v75;
-            if (v54)
+            if (didDefer)
             {
               v55 = __atxlog_handle_notification_management();
               if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
@@ -335,10 +335,10 @@ LABEL_60:
             {
               ++v65;
               v55 = allModesForTraining();
-              [v7 setProgressUnits:{(v65 / -[NSObject count](v55, "count") * 95.0)}];
+              [taskCopy setProgressUnits:{(v65 / -[NSObject count](v55, "count") * 95.0)}];
             }
 
-            v37 = v54 ^ 1;
+            v37 = didDefer ^ 1;
             p_super = &v64->super;
           }
         }
@@ -369,7 +369,7 @@ LABEL_47:
     }
   }
 
-  [v7 setDone];
+  [taskCopy setDone];
   v10 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -446,17 +446,17 @@ LABEL_64:
   return v9 < 604800.0;
 }
 
-- (id)pathForModeEntityTypeIdentifier:(id)a3 modeIdentifier:(id)a4 modeConfigurationType:(int64_t)a5
+- (id)pathForModeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type
 {
   cacheBasePath = self->_cacheBasePath;
   v8 = MEMORY[0x277CCACA8];
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithFormat:@"%@_%@", v10, v9];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  modeIdentifierCopy = [[v8 alloc] initWithFormat:@"%@_%@", identifierCopy, modeIdentifierCopy];
 
-  v12 = [(NSString *)cacheBasePath stringByAppendingPathComponent:v11];
+  v12 = [(NSString *)cacheBasePath stringByAppendingPathComponent:modeIdentifierCopy];
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v13 = objc_alloc(MEMORY[0x277CCACA8]);
     v14 = NSStringForATXModeConfigurationType();
@@ -468,14 +468,14 @@ LABEL_64:
   return v12;
 }
 
-- (BOOL)persistModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4 modeIdentifier:(id)a5 modeConfigurationType:(int64_t)a6
+- (BOOL)persistModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier modeConfigurationType:(int64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  [objc_opt_class() scoreThresholdGivenModeEntityScores:v12 modeEntityTypeIdentifier:v10];
-  v14 = [objc_opt_class() thresholdedModeEntityScores:v12 modeEntityTypeIdentifier:v10 threshold:v13];
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  scoresCopy = scores;
+  [objc_opt_class() scoreThresholdGivenModeEntityScores:scoresCopy modeEntityTypeIdentifier:identifierCopy];
+  v14 = [objc_opt_class() thresholdedModeEntityScores:scoresCopy modeEntityTypeIdentifier:identifierCopy threshold:v13];
 
   v15 = objc_autoreleasePoolPush();
   v16 = objc_autoreleasePoolPush();
@@ -485,7 +485,7 @@ LABEL_64:
   objc_autoreleasePoolPop(v16);
   if (v17 || !v18)
   {
-    v19 = [(ATXModeEntityModelTrainer *)self pathForModeEntityTypeIdentifier:v10 modeIdentifier:v11 modeConfigurationType:a6];
+    v19 = [(ATXModeEntityModelTrainer *)self pathForModeEntityTypeIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy modeConfigurationType:type];
     v26 = 0;
     v20 = [v17 writeToFile:v19 options:1073741825 error:&v26];
     v21 = v26;
@@ -496,7 +496,7 @@ LABEL_64:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v10;
+        v29 = identifierCopy;
         _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_DEFAULT, "SUCCESS: Finished writing mode entity scores for mode entity type: %@.", buf, 0xCu);
       }
     }
@@ -523,19 +523,19 @@ LABEL_64:
   return v20;
 }
 
-+ (id)thresholdedModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4 threshold:(double)a5
++ (id)thresholdedModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier threshold:(double)threshold
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (([v8 isEqualToString:@"apps"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"contacts"))
+  scoresCopy = scores;
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"apps"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"contacts"))
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = v7;
+    v10 = scoresCopy;
     v11 = [v10 countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v11)
     {
@@ -552,11 +552,11 @@ LABEL_64:
 
           v15 = *(*(&v26 + 1) + 8 * i);
           v16 = [v10 objectForKeyedSubscript:{v15, v26}];
-          v17 = [v16 scoreMetadata];
-          [v17 score];
+          scoreMetadata = [v16 scoreMetadata];
+          [scoreMetadata score];
           v19 = v18;
 
-          if (v19 >= a5)
+          if (v19 >= threshold)
           {
             [v9 setObject:v16 forKeyedSubscript:v15];
           }
@@ -581,14 +581,14 @@ LABEL_64:
       v34 = 2048;
       v35 = v23;
       v36 = 2048;
-      v37 = a5;
+      thresholdCopy = threshold;
       _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "%s Filtered out %ld/%ld entities because their scores were < %f", buf, 0x2Au);
     }
   }
 
   else
   {
-    v9 = v7;
+    v9 = scoresCopy;
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -596,19 +596,19 @@ LABEL_64:
   return v9;
 }
 
-+ (double)scoreThresholdGivenModeEntityScores:(id)a3 modeEntityTypeIdentifier:(id)a4
++ (double)scoreThresholdGivenModeEntityScores:(id)scores modeEntityTypeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  scoresCopy = scores;
+  identifierCopy = identifier;
   v8 = +[_ATXGlobals sharedInstance];
   [v8 scoreThresholdForSavingAppsToModeFiles];
   v10 = v9;
   [v8 scoreThresholdForSavingContactsToModeFiles];
   v12 = v11;
-  if (([v7 isEqualToString:@"apps"] & 1) == 0)
+  if (([identifierCopy isEqualToString:@"apps"] & 1) == 0)
   {
     v10 = 1.0;
-    if (![v7 isEqualToString:@"contacts"])
+    if (![identifierCopy isEqualToString:@"contacts"])
     {
       goto LABEL_6;
     }
@@ -616,7 +616,7 @@ LABEL_64:
     v10 = v12;
   }
 
-  [a1 maxScoreWithThresholdGivenModeEntityScores:v6];
+  [self maxScoreWithThresholdGivenModeEntityScores:scoresCopy];
   if (v13 >= v10)
   {
     v10 = v13;
@@ -627,16 +627,16 @@ LABEL_6:
   return v10;
 }
 
-+ (double)maxScoreWithThresholdGivenModeEntityScores:(id)a3
++ (double)maxScoreWithThresholdGivenModeEntityScores:(id)scores
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scoresCopy = scores;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = scoresCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -654,8 +654,8 @@ LABEL_6:
 
         v10 = [v5 objectForKeyedSubscript:{*(*(&v24 + 1) + 8 * v9), v24}];
         v11 = objc_alloc(MEMORY[0x277CCABB0]);
-        v12 = [v10 scoreMetadata];
-        [v12 score];
+        scoreMetadata = [v10 scoreMetadata];
+        [scoreMetadata score];
         v13 = [v11 initWithDouble:?];
 
         [v4 addObject:v13];
@@ -674,8 +674,8 @@ LABEL_6:
   v16 = [v4 sortedArrayUsingDescriptors:v15];
 
   v17 = +[_ATXGlobals sharedInstance];
-  v18 = [v17 maxElementsToPerisistPerEntityForModeBackup];
-  if ([v16 count] <= v18)
+  maxElementsToPerisistPerEntityForModeBackup = [v17 maxElementsToPerisistPerEntityForModeBackup];
+  if ([v16 count] <= maxElementsToPerisistPerEntityForModeBackup)
   {
     if (![v16 count])
     {
@@ -684,15 +684,15 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v18 = [v16 count];
+    maxElementsToPerisistPerEntityForModeBackup = [v16 count];
   }
 
-  else if (!v18)
+  else if (!maxElementsToPerisistPerEntityForModeBackup)
   {
     goto LABEL_14;
   }
 
-  v19 = [v16 objectAtIndexedSubscript:{v18 - 1, v24}];
+  v19 = [v16 objectAtIndexedSubscript:{maxElementsToPerisistPerEntityForModeBackup - 1, v24}];
   [v19 doubleValue];
   v21 = v20;
 
@@ -701,13 +701,13 @@ LABEL_15:
   return v21;
 }
 
-+ (id)eventProviderForScorableTime:(id)a3
++ (id)eventProviderForScorableTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 eventProviderForMode:{objc_msgSend(v4, "atxMode")}];
+    v5 = [self eventProviderForMode:{objc_msgSend(timeCopy, "atxMode")}];
   }
 
   else
@@ -715,7 +715,7 @@ LABEL_15:
     v6 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ATXModeEntityModelTrainer *)v4 eventProviderForScorableTime:v6];
+      [(ATXModeEntityModelTrainer *)timeCopy eventProviderForScorableTime:v6];
     }
 
     v7 = MEMORY[0x277CBEAD8];
@@ -730,23 +730,23 @@ LABEL_15:
   return v5;
 }
 
-+ (id)eventProviderForMode:(unint64_t)a3
++ (id)eventProviderForMode:(unint64_t)mode
 {
-  if (a3 - 8 >= 4)
+  if (mode - 8 >= 4)
   {
-    if (a3 == 12)
+    if (mode == 12)
     {
       v6 = objc_opt_new();
-      v7 = 12;
+      modeCopy = 12;
     }
 
     else
     {
       v6 = [ATXUnifiedModeStreamModeEventProvider alloc];
-      v7 = a3;
+      modeCopy = mode;
     }
 
-    v4 = [(ATXModeTransitionModeEventProvider *)v6 initWithMode:v7];
+    v4 = [(ATXModeTransitionModeEventProvider *)v6 initWithMode:modeCopy];
   }
 
   else

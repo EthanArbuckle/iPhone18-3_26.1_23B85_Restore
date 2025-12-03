@@ -1,25 +1,25 @@
 @interface ActuationWaveform
-+ (id)stringFromBaseType:(unint64_t)a3;
-+ (unint64_t)baseTypeFromString:(id)a3;
-- (ActuationWaveform)initWithDictionary:(id)a3;
++ (id)stringFromBaseType:(unint64_t)type;
++ (unint64_t)baseTypeFromString:(id)string;
+- (ActuationWaveform)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionary;
-- (id)parameterizeWaveformWithStrength:(float)a3 timeDilation:(float)a4 actuatorLimits:(id)a5 options:(unsigned int)a6;
+- (id)parameterizeWaveformWithStrength:(float)strength timeDilation:(float)dilation actuatorLimits:(id)limits options:(unsigned int)options;
 @end
 
 @implementation ActuationWaveform
 
-+ (unint64_t)baseTypeFromString:(id)a3
++ (unint64_t)baseTypeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && ([v3 isEqualToString:@"Gaussian"] & 1) != 0;
+  stringCopy = string;
+  v4 = stringCopy;
+  v5 = stringCopy && ([stringCopy isEqualToString:@"Gaussian"] & 1) != 0;
 
   return v5;
 }
 
-+ (id)stringFromBaseType:(unint64_t)a3
++ (id)stringFromBaseType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"Gaussian";
   }
@@ -30,9 +30,9 @@
   }
 }
 
-- (ActuationWaveform)initWithDictionary:(id)a3
+- (ActuationWaveform)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = ActuationWaveform;
   v5 = [(ActuationWaveform *)&v37 init];
@@ -43,7 +43,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"BaseWaveform"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"BaseWaveform"];
   v7 = v6;
   if (v6)
   {
@@ -66,18 +66,18 @@ LABEL_20:
     v5->_tones = 0;
 
     v11 = [ActuationMultipliers alloc];
-    v12 = [v4 objectForKeyedSubscript:@"BaseMultipliers"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"BaseMultipliers"];
     v13 = [(ActuationMultipliers *)v11 initWithDictionary:v12];
     baseMultipliers = v5->_baseMultipliers;
     v5->_baseMultipliers = v13;
 
     v15 = [ActuationMultipliers alloc];
-    v16 = [v4 objectForKeyedSubscript:@"ToneMultipliers"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"ToneMultipliers"];
     v17 = [(ActuationMultipliers *)v15 initWithDictionary:v16];
     toneMultipliers = v5->_toneMultipliers;
     v5->_toneMultipliers = v17;
 
-    v29 = [v4 objectForKeyedSubscript:@"Tones"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"Tones"];
     if (v29 && [v29 count])
     {
       v19 = objc_opt_new();
@@ -154,26 +154,26 @@ LABEL_22:
   v7 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:3];
   [v3 setObject:v7 forKeyedSubscript:@"BaseWaveform"];
 
-  v8 = [(ActuationWaveform *)self baseMultipliers];
-  v9 = [v8 dictionary];
-  [v3 setObject:v9 forKeyedSubscript:@"BaseMultipliers"];
+  baseMultipliers = [(ActuationWaveform *)self baseMultipliers];
+  dictionary = [baseMultipliers dictionary];
+  [v3 setObject:dictionary forKeyedSubscript:@"BaseMultipliers"];
 
-  v10 = [(ActuationWaveform *)self tones];
-  LOBYTE(v8) = v10 == 0;
+  tones = [(ActuationWaveform *)self tones];
+  LOBYTE(baseMultipliers) = tones == 0;
 
-  if ((v8 & 1) == 0)
+  if ((baseMultipliers & 1) == 0)
   {
-    v11 = [(ActuationWaveform *)self toneMultipliers];
-    v12 = [v11 dictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"ToneMultipliers"];
+    toneMultipliers = [(ActuationWaveform *)self toneMultipliers];
+    dictionary2 = [toneMultipliers dictionary];
+    [v3 setObject:dictionary2 forKeyedSubscript:@"ToneMultipliers"];
 
     v13 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(ActuationWaveform *)self tones];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tones2 = [(ActuationWaveform *)self tones];
+    v15 = [tones2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
       v16 = *v22;
@@ -183,14 +183,14 @@ LABEL_22:
         {
           if (*v22 != v16)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(tones2);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * i) dictionary];
-          [v13 addObject:v18];
+          dictionary3 = [*(*(&v21 + 1) + 8 * i) dictionary];
+          [v13 addObject:dictionary3];
         }
 
-        v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v15 = [tones2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v15);
@@ -204,13 +204,13 @@ LABEL_22:
   return v19;
 }
 
-- (id)parameterizeWaveformWithStrength:(float)a3 timeDilation:(float)a4 actuatorLimits:(id)a5 options:(unsigned int)a6
+- (id)parameterizeWaveformWithStrength:(float)strength timeDilation:(float)dilation actuatorLimits:(id)limits options:(unsigned int)options
 {
-  v6 = a6;
-  v10 = a5;
+  optionsCopy = options;
+  limitsCopy = limits;
   v11 = [NSMutableData alloc];
-  v12 = [(ActuationWaveform *)self tones];
-  v13 = [v11 initWithCapacity:{5 * objc_msgSend(v12, "count") + 3}];
+  tones = [(ActuationWaveform *)self tones];
+  v13 = [v11 initWithCapacity:{5 * objc_msgSend(tones, "count") + 3}];
 
   if (![(ActuationWaveform *)self baseType])
   {
@@ -218,73 +218,73 @@ LABEL_22:
     goto LABEL_50;
   }
 
-  if (v6)
+  if (optionsCopy)
   {
-    v16 = [(ActuationWaveform *)self baseMultipliers];
-    [v16 light];
+    baseMultipliers = [(ActuationWaveform *)self baseMultipliers];
+    [baseMultipliers light];
     v18 = v17;
 
-    v19 = [(ActuationWaveform *)self toneMultipliers];
-    [v19 light];
+    toneMultipliers = [(ActuationWaveform *)self toneMultipliers];
+    [toneMultipliers light];
 LABEL_10:
-    v14 = v18 * a3;
-    a3 = v20 * a3;
+    strengthCopy = v18 * strength;
+    strength = v20 * strength;
 
     goto LABEL_11;
   }
 
-  if ((v6 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
-    v21 = [(ActuationWaveform *)self baseMultipliers];
-    [v21 medium];
+    baseMultipliers2 = [(ActuationWaveform *)self baseMultipliers];
+    [baseMultipliers2 medium];
     v18 = v22;
 
-    v19 = [(ActuationWaveform *)self toneMultipliers];
-    [v19 medium];
+    toneMultipliers = [(ActuationWaveform *)self toneMultipliers];
+    [toneMultipliers medium];
     goto LABEL_10;
   }
 
-  if ((v6 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v23 = [(ActuationWaveform *)self baseMultipliers];
-    [v23 firm];
+    baseMultipliers3 = [(ActuationWaveform *)self baseMultipliers];
+    [baseMultipliers3 firm];
     v18 = v24;
 
-    v19 = [(ActuationWaveform *)self toneMultipliers];
-    [v19 firm];
+    toneMultipliers = [(ActuationWaveform *)self toneMultipliers];
+    [toneMultipliers firm];
     goto LABEL_10;
   }
 
-  v14 = a3;
+  strengthCopy = strength;
 LABEL_11:
   [(ActuationWaveform *)self baseAmplitude];
   v26 = v25;
-  [v10 amplitudeMin];
+  [limitsCopy amplitudeMin];
   v28 = v27;
-  [v10 amplitudeMax];
-  v29 = fminf(fmaxf(v14, 0.0), 2.0);
+  [limitsCopy amplitudeMax];
+  v29 = fminf(fmaxf(strengthCopy, 0.0), 2.0);
   v30 = v26 * v29;
   v31 = v30 < *&v32;
   *&v32 = v30;
   if (!v31)
   {
-    [v10 amplitudeMax];
+    [limitsCopy amplitudeMax];
   }
 
   if (v28 <= *&v32)
   {
-    [v10 amplitudeMax];
+    [limitsCopy amplitudeMax];
     v31 = v30 < *&v33;
     *&v33 = v30;
     if (!v31)
     {
-      [v10 amplitudeMax];
+      [limitsCopy amplitudeMax];
     }
   }
 
   else
   {
-    [v10 amplitudeMin];
+    [limitsCopy amplitudeMin];
   }
 
   v34 = 1.0;
@@ -295,37 +295,37 @@ LABEL_11:
 
   [(ActuationWaveform *)self baseDuration];
   v36 = v35;
-  [v10 durationMin];
+  [limitsCopy durationMin];
   v38 = v37;
-  [v10 durationMax];
-  v39 = v36 * a4;
+  [limitsCopy durationMax];
+  v39 = v36 * dilation;
   v31 = v39 < *&v40;
   *&v40 = v39;
   if (!v31)
   {
-    [v10 durationMax];
+    [limitsCopy durationMax];
   }
 
   if (v38 <= *&v40)
   {
-    [v10 durationMax];
+    [limitsCopy durationMax];
     v31 = v39 < *&v41;
     *&v41 = v39;
     if (!v31)
     {
-      [v10 durationMax];
+      [limitsCopy durationMax];
     }
   }
 
   else
   {
-    [v10 durationMin];
+    [limitsCopy durationMin];
   }
 
   v42 = 1.0;
   if (v39 > 0.0)
   {
-    v42 = (*&v41 / v39) * a4;
+    v42 = (*&v41 / v39) * dilation;
   }
 
   v71[0] = [(ActuationWaveform *)self baseType];
@@ -340,8 +340,8 @@ LABEL_11:
 
   v71[2] = v45 & ~(v45 >> 31);
   [v13 appendBytes:v71 length:3];
-  v46 = [(ActuationWaveform *)self tones];
-  v47 = v46 == 0;
+  tones2 = [(ActuationWaveform *)self tones];
+  v47 = tones2 == 0;
 
   if (!v47)
   {
@@ -349,11 +349,11 @@ LABEL_11:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v48 = [(ActuationWaveform *)self tones];
-    v49 = [v48 countByEnumeratingWithState:&v67 objects:v72 count:16];
+    tones3 = [(ActuationWaveform *)self tones];
+    v49 = [tones3 countByEnumeratingWithState:&v67 objects:v72 count:16];
     if (v49)
     {
-      v50 = fminf(fmaxf(a3, 0.0), 2.0);
+      v50 = fminf(fmaxf(strength, 0.0), 2.0);
       v51 = *v68;
       do
       {
@@ -361,7 +361,7 @@ LABEL_11:
         {
           if (*v68 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(tones3);
           }
 
           v53 = *(*(&v67 + 1) + 8 * i);
@@ -413,7 +413,7 @@ LABEL_11:
           [v13 appendBytes:&v65 length:5];
         }
 
-        v49 = [v48 countByEnumeratingWithState:&v67 objects:v72 count:16];
+        v49 = [tones3 countByEnumeratingWithState:&v67 objects:v72 count:16];
       }
 
       while (v49);

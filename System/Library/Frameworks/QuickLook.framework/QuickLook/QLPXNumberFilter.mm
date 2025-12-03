@@ -1,19 +1,19 @@
 @interface QLPXNumberFilter
-- (QLPXNumberFilter)initWithInput:(double)a3;
+- (QLPXNumberFilter)initWithInput:(double)input;
 - (double)currentTime;
-- (void)_setOutput:(double)a3;
+- (void)_setOutput:(double)output;
 - (void)_updateIfNeeded;
 - (void)_updateOutputIfNeeded;
 - (void)didPerformChanges;
 - (void)invalidateOutput;
-- (void)performChanges:(id)a3;
-- (void)setInput:(double)a3;
-- (void)setTime:(double)a3;
+- (void)performChanges:(id)changes;
+- (void)setInput:(double)input;
+- (void)setTime:(double)time;
 @end
 
 @implementation QLPXNumberFilter
 
-- (QLPXNumberFilter)initWithInput:(double)a3
+- (QLPXNumberFilter)initWithInput:(double)input
 {
   v8.receiver = self;
   v8.super_class = QLPXNumberFilter;
@@ -21,28 +21,28 @@
   v5 = v4;
   if (v4)
   {
-    v4->_input = a3;
-    [(QLPXNumberFilter *)v4 initialOutputForInput:a3];
+    v4->_input = input;
+    [(QLPXNumberFilter *)v4 initialOutputForInput:input];
     v5->_output = v6;
   }
 
   return v5;
 }
 
-- (void)_setOutput:(double)a3
+- (void)_setOutput:(double)output
 {
-  if (self->_output != a3)
+  if (self->_output != output)
   {
-    self->_output = a3;
+    self->_output = output;
     [(QLPXObservable *)self signalChange:2];
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = QLPXNumberFilter;
-  [(QLPXObservable *)&v3 performChanges:a3];
+  [(QLPXObservable *)&v3 performChanges:changes];
 }
 
 - (void)didPerformChanges
@@ -53,22 +53,22 @@
   [(QLPXNumberFilter *)self _updateIfNeeded];
 }
 
-- (void)setInput:(double)a3
+- (void)setInput:(double)input
 {
-  if (self->_input != a3)
+  if (self->_input != input)
   {
-    self->_input = a3;
+    self->_input = input;
     [(QLPXObservable *)self signalChange:1];
 
     [(QLPXNumberFilter *)self _invalidateOutput];
   }
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  if (self->_time != a3)
+  if (self->_time != time)
   {
-    self->_time = a3;
+    self->_time = time;
     [(QLPXNumberFilter *)self _invalidateOutput];
   }
 }

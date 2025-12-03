@@ -1,33 +1,33 @@
 @interface IDSProtoKeyTransparencyTrustedDevice
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTrustedServices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTrustedServices:(id)services;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSProtoKeyTransparencyTrustedDevice
 
-- (void)addTrustedServices:(id)a3
+- (void)addTrustedServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   trustedServices = self->_trustedServices;
-  v8 = v4;
+  v8 = servicesCopy;
   if (!trustedServices)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_trustedServices;
     self->_trustedServices = v6;
 
-    v4 = v8;
+    servicesCopy = v8;
     trustedServices = self->_trustedServices;
   }
 
-  [(NSMutableArray *)trustedServices addObject:v4];
+  [(NSMutableArray *)trustedServices addObject:servicesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = IDSProtoKeyTransparencyTrustedDevice;
   v3 = [(IDSProtoKeyTransparencyTrustedDevice *)&v7 description];
-  v4 = [(IDSProtoKeyTransparencyTrustedDevice *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(IDSProtoKeyTransparencyTrustedDevice *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -73,8 +73,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -107,9 +107,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_pushToken)
   {
     PBDataWriterWriteDataField();
@@ -162,39 +162,39 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_pushToken)
   {
-    [v9 setPushToken:?];
+    [toCopy setPushToken:?];
   }
 
   if ([(IDSProtoKeyTransparencyTrustedDevice *)self trustedServicesCount])
   {
-    [v9 clearTrustedServices];
-    v4 = [(IDSProtoKeyTransparencyTrustedDevice *)self trustedServicesCount];
-    if (v4)
+    [toCopy clearTrustedServices];
+    trustedServicesCount = [(IDSProtoKeyTransparencyTrustedDevice *)self trustedServicesCount];
+    if (trustedServicesCount)
     {
-      v5 = v4;
+      v5 = trustedServicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(IDSProtoKeyTransparencyTrustedDevice *)self trustedServicesAtIndex:i];
-        [v9 addTrustedServices:v7];
+        [toCopy addTrustedServices:v7];
       }
     }
   }
 
   if (self->_buildVersion)
   {
-    [v9 setBuildVersion:?];
+    [toCopy setBuildVersion:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_productName)
   {
-    [v9 setProductName:?];
-    v8 = v9;
+    [toCopy setProductName:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -204,10 +204,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_pushToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_pushToken copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -231,7 +231,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{a3, v19}];
+        v13 = [*(*(&v19 + 1) + 8 * v12) copyWithZone:{zone, v19}];
         [v5 addTrustedServices:v13];
 
         v12 = v12 + 1;
@@ -244,11 +244,11 @@
     while (v10);
   }
 
-  v14 = [(NSString *)self->_buildVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_buildVersion copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
-  v16 = [(NSString *)self->_productName copyWithZone:a3];
+  v16 = [(NSString *)self->_productName copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
@@ -261,16 +261,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   pushToken = self->_pushToken;
-  if (pushToken | *(v4 + 4))
+  if (pushToken | *(equalCopy + 4))
   {
     if (![(NSData *)pushToken isEqual:?])
     {
@@ -279,7 +279,7 @@
   }
 
   trustedServices = self->_trustedServices;
-  if (trustedServices | *(v4 + 5))
+  if (trustedServices | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)trustedServices isEqual:?])
     {
@@ -288,7 +288,7 @@
   }
 
   buildVersion = self->_buildVersion;
-  if (buildVersion | *(v4 + 2))
+  if (buildVersion | *(equalCopy + 2))
   {
     if (![(NSString *)buildVersion isEqual:?])
     {
@@ -297,7 +297,7 @@
   }
 
   productName = self->_productName;
-  if (productName | *(v4 + 3))
+  if (productName | *(equalCopy + 3))
   {
     if (![(NSString *)productName isEqual:?])
     {
@@ -305,10 +305,10 @@
     }
   }
 
-  v9 = (*(v4 + 48) & 1) == 0;
+  v9 = (*(equalCopy + 48) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) != 0 && self->_transparencyVersion == *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) != 0 && self->_transparencyVersion == *(equalCopy + 1))
     {
       v9 = 1;
       goto LABEL_15;
@@ -342,10 +342,10 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(IDSProtoKeyTransparencyTrustedDevice *)self setPushToken:?];
   }
@@ -354,7 +354,7 @@ LABEL_15:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -378,19 +378,19 @@ LABEL_15:
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(IDSProtoKeyTransparencyTrustedDevice *)self setBuildVersion:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(IDSProtoKeyTransparencyTrustedDevice *)self setProductName:?];
   }
 
-  if (*(v4 + 48))
+  if (*(fromCopy + 48))
   {
-    self->_transparencyVersion = *(v4 + 1);
+    self->_transparencyVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

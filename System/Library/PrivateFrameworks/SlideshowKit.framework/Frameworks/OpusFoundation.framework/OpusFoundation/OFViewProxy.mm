@@ -1,21 +1,21 @@
 @interface OFViewProxy
-- (OFViewProxy)initWithCoder:(id)a3;
-- (OFViewProxy)initWithFrame:(CGRect)a3;
-- (void)addLayoutStep:(id)a3;
-- (void)addLayoutSteps:(id)a3;
+- (OFViewProxy)initWithCoder:(id)coder;
+- (OFViewProxy)initWithFrame:(CGRect)frame;
+- (void)addLayoutStep:(id)step;
+- (void)addLayoutSteps:(id)steps;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)runMagicLayout;
-- (void)setAnchorPoint:(CGPoint)a3;
+- (void)setAnchorPoint:(CGPoint)point;
 @end
 
 @implementation OFViewProxy
 
-- (OFViewProxy)initWithCoder:(id)a3
+- (OFViewProxy)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFViewProxy;
-  v3 = [(OFViewProxy *)&v6 initWithCoder:a3];
+  v3 = [(OFViewProxy *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (OFViewProxy)initWithFrame:(CGRect)a3
+- (OFViewProxy)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = OFViewProxy;
-  v3 = [(OFViewProxy *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(OFViewProxy *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -49,10 +49,10 @@
   [(OFViewProxy *)&v3 dealloc];
 }
 
-- (void)setAnchorPoint:(CGPoint)a3
+- (void)setAnchorPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [-[OFViewProxy layer](self "layer")];
   if (v6 != x || v7 != y)
   {
@@ -67,10 +67,10 @@
     [(OFViewProxy *)self bounds];
     v18 = v10 * v17;
     memset(&v27, 0, sizeof(v27));
-    v19 = [(OFViewProxy *)self layer];
-    if (v19)
+    layer = [(OFViewProxy *)self layer];
+    if (layer)
     {
-      [v19 transform];
+      [layer transform];
     }
 
     else
@@ -126,8 +126,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [(OFViewProxy *)self subviews];
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    subviews = [(OFViewProxy *)self subviews];
+    v9 = [subviews countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -138,7 +138,7 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews);
           }
 
           v13 = *(*(&v15 + 1) + 8 * j);
@@ -152,7 +152,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v10 = [subviews countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v10);
@@ -160,9 +160,9 @@
   }
 }
 
-- (void)addLayoutStep:(id)a3
+- (void)addLayoutStep:(id)step
 {
-  if (a3)
+  if (step)
   {
     layoutSteps = self->_layoutSteps;
     if (!layoutSteps)
@@ -171,15 +171,15 @@
       self->_layoutSteps = layoutSteps;
     }
 
-    [(NSMutableArray *)layoutSteps addObject:a3];
+    [(NSMutableArray *)layoutSteps addObject:step];
 
     [(OFViewProxy *)self setNeedsLayout];
   }
 }
 
-- (void)addLayoutSteps:(id)a3
+- (void)addLayoutSteps:(id)steps
 {
-  if ([a3 count])
+  if ([steps count])
   {
     layoutSteps = self->_layoutSteps;
     if (!layoutSteps)
@@ -188,7 +188,7 @@
       self->_layoutSteps = layoutSteps;
     }
 
-    [(NSMutableArray *)layoutSteps addObjectsFromArray:a3];
+    [(NSMutableArray *)layoutSteps addObjectsFromArray:steps];
 
     [(OFViewProxy *)self setNeedsLayout];
   }

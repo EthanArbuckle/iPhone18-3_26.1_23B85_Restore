@@ -2,10 +2,10 @@
 - (_TSF_TSDKextNotifier)init;
 - (void)dealloc;
 - (void)init;
-- (void)notifyWhenServiceIsAvailable:(id)a3;
-- (void)notifyWhenServiceIsUnavailable:(id)a3;
-- (void)serviceMatched:(id)a3;
-- (void)serviceTerminated:(id)a3;
+- (void)notifyWhenServiceIsAvailable:(id)available;
+- (void)notifyWhenServiceIsUnavailable:(id)unavailable;
+- (void)serviceMatched:(id)matched;
+- (void)serviceTerminated:(id)terminated;
 @end
 
 @implementation _TSF_TSDKextNotifier
@@ -46,17 +46,17 @@
   return v2;
 }
 
-- (void)serviceMatched:(id)a3
+- (void)serviceMatched:(id)matched
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchedCopy = matched;
   v5 = objc_autoreleasePoolPush();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSString *)self->super._identifier UTF8String];
+    uTF8String = [(NSString *)self->super._identifier UTF8String];
     v7 = [(NSMutableArray *)self->_matchNotificationsArray count];
     *buf = 136315394;
-    v20 = v6;
+    v20 = uTF8String;
     v21 = 1024;
     v22 = v7;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDKextNotifier serviceMatched %s matchedCount dispatching notifications to %d registered", buf, 0x12u);
@@ -99,18 +99,18 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceTerminated:(id)a3
+- (void)serviceTerminated:(id)terminated
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  terminatedCopy = terminated;
   if ([(_TSF_TSDIOKServiceMatcher *)self getMatchedCount]<= 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSString *)self->super._identifier UTF8String];
+      uTF8String = [(NSString *)self->super._identifier UTF8String];
       v6 = [(NSMutableArray *)self->_terminateNotificationsArray count];
       *buf = 136315394;
-      v20 = v5;
+      v20 = uTF8String;
       v21 = 1024;
       v22 = v6;
       _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDKextNotifier serviceTerminated %s, dispatching notifications to %d registered", buf, 0x12u);
@@ -155,10 +155,10 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyWhenServiceIsAvailable:(id)a3
+- (void)notifyWhenServiceIsAvailable:(id)available
 {
-  v4 = a3;
-  v5 = v4;
+  availableCopy = available;
+  v5 = availableCopy;
   v6 = _sharedTSDIOKServiceMatcherNotificationsQueue;
   if (_sharedTSDIOKServiceMatcherNotificationsQueue)
   {
@@ -167,7 +167,7 @@
     v7[2] = __53___TSF_TSDKextNotifier_notifyWhenServiceIsAvailable___block_invoke;
     v7[3] = &unk_279DBD938;
     v7[4] = self;
-    v8 = v4;
+    v8 = availableCopy;
     dispatch_async(v6, v7);
   }
 
@@ -177,10 +177,10 @@
   }
 }
 
-- (void)notifyWhenServiceIsUnavailable:(id)a3
+- (void)notifyWhenServiceIsUnavailable:(id)unavailable
 {
-  v4 = a3;
-  v5 = v4;
+  unavailableCopy = unavailable;
+  v5 = unavailableCopy;
   v6 = _sharedTSDIOKServiceMatcherNotificationsQueue;
   if (_sharedTSDIOKServiceMatcherNotificationsQueue)
   {
@@ -189,7 +189,7 @@
     v7[2] = __55___TSF_TSDKextNotifier_notifyWhenServiceIsUnavailable___block_invoke;
     v7[3] = &unk_279DBD938;
     v7[4] = self;
-    v8 = v4;
+    v8 = unavailableCopy;
     dispatch_async(v6, v7);
   }
 

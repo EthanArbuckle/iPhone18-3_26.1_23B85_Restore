@@ -1,71 +1,71 @@
 @interface PHCloudFeedEntryChangeRequest
-+ (id)changeRequestForEntry:(id)a3;
++ (id)changeRequestForEntry:(id)entry;
 + (id)creationRequestForEntry;
 - (BOOL)entryIsMine;
-- (PHCloudFeedEntryChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHCloudFeedEntryChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHCloudFeedEntryChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHCloudFeedEntryChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedEntry;
-- (id)_managedObjectsFromOids:(id)a3 inLibrary:(id)a4;
-- (id)_xpcArrayFromOids:(id)a3;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)_managedObjectsFromOids:(id)oids inLibrary:(id)library;
+- (id)_xpcArrayFromOids:(id)oids;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (int64_t)entryType;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setEntryAssets:(id)a3;
-- (void)setEntryComments:(id)a3;
-- (void)setEntryIsMine:(BOOL)a3;
-- (void)setEntryLikes:(id)a3;
-- (void)setEntryType:(int64_t)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setEntryAssets:(id)assets;
+- (void)setEntryComments:(id)comments;
+- (void)setEntryIsMine:(BOOL)mine;
+- (void)setEntryLikes:(id)likes;
+- (void)setEntryType:(int64_t)type;
 @end
 
 @implementation PHCloudFeedEntryChangeRequest
 
-- (void)setEntryLikes:(id)a3
+- (void)setEntryLikes:(id)likes
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  likesCopy = likes;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v6 = [v4 fetchedObjectIDs];
+  fetchedObjectIDs = [likesCopy fetchedObjectIDs];
 
   entryLikes = self->_entryLikes;
-  self->_entryLikes = v6;
+  self->_entryLikes = fetchedObjectIDs;
 }
 
-- (void)setEntryComments:(id)a3
+- (void)setEntryComments:(id)comments
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  commentsCopy = comments;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v6 = [v4 fetchedObjectIDs];
+  fetchedObjectIDs = [commentsCopy fetchedObjectIDs];
 
   entryComments = self->_entryComments;
-  self->_entryComments = v6;
+  self->_entryComments = fetchedObjectIDs;
 }
 
-- (void)setEntryAssets:(id)a3
+- (void)setEntryAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  assetsCopy = assets;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v6 = [v4 fetchedObjectIDs];
+  fetchedObjectIDs = [assetsCopy fetchedObjectIDs];
 
   entryAssets = self->_entryAssets;
-  self->_entryAssets = v6;
+  self->_entryAssets = fetchedObjectIDs;
 }
 
-- (id)_xpcArrayFromOids:(id)a3
+- (id)_xpcArrayFromOids:(id)oids
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  oidsCopy = oids;
   v4 = xpc_array_create(0, 0);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = oidsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -92,11 +92,11 @@
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  xdict = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 encodeToXPCDict:xdict];
+  xdict = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:xdict];
 
   if ([(NSArray *)self->_entryAssets count])
   {
@@ -119,29 +119,29 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (PHCloudFeedEntryChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHCloudFeedEntryChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v21.receiver = self;
   v21.super_class = PHCloudFeedEntryChangeRequest;
   v11 = [(PHChangeRequest *)&v21 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
-    v14 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:v8 key:"entryAssets" request:v9];
+    v14 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:dictCopy key:"entryAssets" request:requestCopy];
     entryAssets = v11->_entryAssets;
     v11->_entryAssets = v14;
 
-    v16 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:v8 key:"entryComments" request:v9];
+    v16 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:dictCopy key:"entryComments" request:requestCopy];
     entryComments = v11->_entryComments;
     v11->_entryComments = v16;
 
-    v18 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:v8 key:"entryLikes" request:v9];
+    v18 = [(PHChangeRequest *)v11 objectIDsFromXPCDict:dictCopy key:"entryLikes" request:requestCopy];
     entryLikes = v11->_entryLikes;
     v11->_entryLikes = v18;
   }
@@ -149,16 +149,16 @@
   return v11;
 }
 
-- (PHCloudFeedEntryChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHCloudFeedEntryChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = PHCloudFeedEntryChangeRequest;
   v8 = [(PHChangeRequest *)&v12 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
   }
@@ -166,64 +166,64 @@
   return v8;
 }
 
-- (void)setEntryType:(int64_t)a3
+- (void)setEntryType:(int64_t)type
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"entryType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"entryType"];
 }
 
 - (int64_t)entryType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"entryType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"entryType"];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (void)setEntryIsMine:(BOOL)a3
+- (void)setEntryIsMine:(BOOL)mine
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  mineCopy = mine;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"entryIsMine"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:mineCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"entryIsMine"];
 }
 
 - (BOOL)entryIsMine
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"entryIsMine"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"entryIsMine"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (id)_managedObjectsFromOids:(id)a3 inLibrary:(id)a4
+- (id)_managedObjectsFromOids:(id)oids inLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  oidsCopy = oids;
+  libraryCopy = library;
+  if ([oidsCopy count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v5;
+    v8 = oidsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -239,9 +239,9 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v6 managedObjectContext];
+          managedObjectContext = [libraryCopy managedObjectContext];
           v17 = 0;
-          v15 = [v14 existingObjectWithID:v13 error:&v17];
+          v15 = [managedObjectContext existingObjectWithID:v13 error:&v17];
 
           if (v15)
           {
@@ -264,19 +264,19 @@
   return v7;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
-  v5 = a3;
+  libraryCopy = library;
   if ([(PHCloudFeedEntryChangeRequest *)self entryType]== 1)
   {
     v6 = objc_alloc(MEMORY[0x1E69BE308]);
-    v7 = [v5 managedObjectContext];
-    v8 = [v6 initWithContext:v7];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v8 = [v6 initWithContext:managedObjectContext];
 
     entryAssets = self->_entryAssets;
     v10 = v8;
-    v11 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:entryAssets inLibrary:v5];
-    [v10 setEntryAssets:v11];
+    managedObjectContext3 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:entryAssets inLibrary:libraryCopy];
+    [v10 setEntryAssets:managedObjectContext3];
 LABEL_5:
 
     goto LABEL_7;
@@ -285,22 +285,22 @@ LABEL_5:
   if ([(PHCloudFeedEntryChangeRequest *)self entryType]== 2)
   {
     v12 = objc_alloc(MEMORY[0x1E69BE310]);
-    v13 = [v5 managedObjectContext];
-    v14 = [v12 initWithContext:v13];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    v14 = [v12 initWithContext:managedObjectContext2];
 
     entryComments = self->_entryComments;
     v10 = v14;
-    v16 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:entryComments inLibrary:v5];
+    v16 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:entryComments inLibrary:libraryCopy];
     [v10 setEntryComments:v16];
 
-    v11 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:self->_entryLikes inLibrary:v5];
-    [v10 setEntryLikeComments:v11];
+    managedObjectContext3 = [(PHCloudFeedEntryChangeRequest *)self _managedObjectsFromOids:self->_entryLikes inLibrary:libraryCopy];
+    [v10 setEntryLikeComments:managedObjectContext3];
     goto LABEL_5;
   }
 
   v17 = objc_alloc(MEMORY[0x1E69BE320]);
-  v11 = [v5 managedObjectContext];
-  v10 = [v17 initWithContext:v11];
+  managedObjectContext3 = [libraryCopy managedObjectContext];
+  v10 = [v17 initWithContext:managedObjectContext3];
 LABEL_7:
 
   [v10 setEntryType:{-[PHCloudFeedEntryChangeRequest entryType](self, "entryType")}];
@@ -308,16 +308,16 @@ LABEL_7:
   v18 = [MEMORY[0x1E695DF00] now];
   [v10 setEntryDate:v18];
 
-  v19 = [(PHChangeRequest *)self uuid];
-  [v10 setUuid:v19];
+  uuid = [(PHChangeRequest *)self uuid];
+  [v10 setUuid:uuid];
 
   return v10;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedEntry
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
@@ -337,23 +337,23 @@ LABEL_7:
   return v2;
 }
 
-+ (id)changeRequestForEntry:(id)a3
++ (id)changeRequestForEntry:(id)entry
 {
-  v3 = a3;
+  entryCopy = entry;
   v4 = [PHCloudFeedEntryChangeRequest alloc];
-  v5 = [v3 uuid];
-  v6 = [v3 objectID];
+  uuid = [entryCopy uuid];
+  objectID = [entryCopy objectID];
 
-  v7 = [(PHCloudFeedEntryChangeRequest *)v4 initWithUUID:v5 objectID:v6];
+  v7 = [(PHCloudFeedEntryChangeRequest *)v4 initWithUUID:uuid objectID:objectID];
 
   return v7;
 }
 
 + (id)creationRequestForEntry
 {
-  v2 = [[PHCloudFeedEntryChangeRequest alloc] initForNewObject];
+  initForNewObject = [[PHCloudFeedEntryChangeRequest alloc] initForNewObject];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

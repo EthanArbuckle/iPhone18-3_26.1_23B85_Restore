@@ -4,76 +4,76 @@
 - (PXCMMInvitation)invitation;
 - (PXDisplayMomentShare)momentShare;
 - (PXMomentShareStatusPresentation)init;
-- (PXMomentShareStatusPresentation)initWithMomentShare:(id)a3 presentationStyle:(int64_t)a4;
-- (PXMomentShareStatusPresentation)initWithMomentShareStatus:(id)a3 presentationStyle:(int64_t)a4;
+- (PXMomentShareStatusPresentation)initWithMomentShare:(id)share presentationStyle:(int64_t)style;
+- (PXMomentShareStatusPresentation)initWithMomentShareStatus:(id)status presentationStyle:(int64_t)style;
 - (void)_updateCPLStatus;
 - (void)_updateCountsAndStatus;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAction:(id)a3;
-- (void)setActionConfirmationAlertButtonTitle:(id)a3;
-- (void)setActionConfirmationAlertSubtitle:(id)a3;
-- (void)setActionConfirmationAlertTitle:(id)a3;
-- (void)setActionTitle:(id)a3;
-- (void)setActivityProgress:(float)a3;
-- (void)setActivityTitle:(id)a3;
-- (void)setAssetsSaveStatusTitle:(id)a3;
-- (void)setAssetsTitle:(id)a3;
-- (void)setByline:(id)a3;
-- (void)setExpirationTitle:(id)a3;
-- (void)setIdleTitle:(id)a3;
-- (void)setNumberOfAssetsCopied:(int64_t)a3;
-- (void)setNumberOfAssetsNotCopied:(int64_t)a3;
-- (void)setPauseTitle:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setType:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAction:(id)action;
+- (void)setActionConfirmationAlertButtonTitle:(id)title;
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle;
+- (void)setActionConfirmationAlertTitle:(id)title;
+- (void)setActionTitle:(id)title;
+- (void)setActivityProgress:(float)progress;
+- (void)setActivityTitle:(id)title;
+- (void)setAssetsSaveStatusTitle:(id)title;
+- (void)setAssetsTitle:(id)title;
+- (void)setByline:(id)byline;
+- (void)setExpirationTitle:(id)title;
+- (void)setIdleTitle:(id)title;
+- (void)setNumberOfAssetsCopied:(int64_t)copied;
+- (void)setNumberOfAssetsNotCopied:(int64_t)copied;
+- (void)setPauseTitle:(id)title;
+- (void)setState:(int64_t)state;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation PXMomentShareStatusPresentation
 
 - (void)_updateCPLStatus
 {
-  v3 = [(PXCPLUIStatusProvider *)self->_statusProvider status];
-  IsPaused = _IsPaused(v3);
-  v5 = [(PXMomentShareStatusPresentation *)self isPaused];
+  status = [(PXCPLUIStatusProvider *)self->_statusProvider status];
+  IsPaused = _IsPaused(status);
+  isPaused = [(PXMomentShareStatusPresentation *)self isPaused];
   if (IsPaused)
   {
-    v6 = [v3 failureDescription];
-    v7 = [v3 actionTitle];
-    v8 = [v3 actionConfirmationAlertTitle];
-    v32 = [v3 actionConfirmationAlertSubtitle];
-    v31 = [v3 actionConfirmationAlertButtonTitle];
+    failureDescription = [status failureDescription];
+    actionTitle = [status actionTitle];
+    actionConfirmationAlertTitle = [status actionConfirmationAlertTitle];
+    actionConfirmationAlertSubtitle = [status actionConfirmationAlertSubtitle];
+    actionConfirmationAlertButtonTitle = [status actionConfirmationAlertButtonTitle];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke;
     aBlock[3] = &unk_1E774C648;
-    v9 = v3;
+    v9 = status;
     v34 = v9;
     v10 = _Block_copy(aBlock);
 
-    v11 = [v9 serviceAction];
+    serviceAction = [v9 serviceAction];
   }
 
   else
   {
     v10 = 0;
-    v31 = 0;
-    v32 = 0;
-    v7 = 0;
-    v6 = 0;
-    v8 = 0;
-    v11 = 0;
+    actionConfirmationAlertButtonTitle = 0;
+    actionConfirmationAlertSubtitle = 0;
+    actionTitle = 0;
+    failureDescription = 0;
+    actionConfirmationAlertTitle = 0;
+    serviceAction = 0;
   }
 
-  v12 = [(PXMomentShareStatusPresentation *)self pauseStatusDescription];
-  if (v6 != v12 && ![v6 isEqualToString:v12])
+  pauseStatusDescription = [(PXMomentShareStatusPresentation *)self pauseStatusDescription];
+  if (failureDescription != pauseStatusDescription && ![failureDescription isEqualToString:pauseStatusDescription])
   {
     goto LABEL_20;
   }
 
-  v28 = v5;
-  v13 = [(PXMomentShareStatusPresentation *)self pauseResolutionActionTitle];
-  if (v7 != v13 && ![v7 isEqualToString:v13])
+  v28 = isPaused;
+  pauseResolutionActionTitle = [(PXMomentShareStatusPresentation *)self pauseResolutionActionTitle];
+  if (actionTitle != pauseResolutionActionTitle && ![actionTitle isEqualToString:pauseResolutionActionTitle])
   {
 LABEL_19:
 
@@ -81,21 +81,21 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v14 = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertTitle];
-  v15 = v8;
-  v16 = v14;
+  pauseResolutionActionConfirmationAlertTitle = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertTitle];
+  v15 = actionConfirmationAlertTitle;
+  v16 = pauseResolutionActionConfirmationAlertTitle;
   v30 = v15;
-  if (v15 != v14 && ![v15 isEqualToString:v14])
+  if (v15 != pauseResolutionActionConfirmationAlertTitle && ![v15 isEqualToString:pauseResolutionActionConfirmationAlertTitle])
   {
 LABEL_18:
 
-    v8 = v30;
+    actionConfirmationAlertTitle = v30;
     goto LABEL_19;
   }
 
   v27 = v10;
-  v17 = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertSubtitle];
-  if (v32 != v17 && ![v32 isEqualToString:v17])
+  pauseResolutionActionConfirmationAlertSubtitle = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertSubtitle];
+  if (actionConfirmationAlertSubtitle != pauseResolutionActionConfirmationAlertSubtitle && ![actionConfirmationAlertSubtitle isEqualToString:pauseResolutionActionConfirmationAlertSubtitle])
   {
 LABEL_17:
 
@@ -103,41 +103,41 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v18 = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertButtonTitle];
-  if (v31 != v18 && ![v31 isEqualToString:v18])
+  pauseResolutionActionConfirmationAlertButtonTitle = [(PXMomentShareStatusPresentation *)self pauseResolutionActionConfirmationAlertButtonTitle];
+  if (actionConfirmationAlertButtonTitle != pauseResolutionActionConfirmationAlertButtonTitle && ![actionConfirmationAlertButtonTitle isEqualToString:pauseResolutionActionConfirmationAlertButtonTitle])
   {
 
-    v11 = v26;
+    serviceAction = v26;
     goto LABEL_17;
   }
 
   v29 = (v26 != [(PXMomentShareStatusPresentation *)self pauseResolutionActionType]) | IsPaused ^ v28;
 
-  v11 = v26;
-  v8 = v30;
+  serviceAction = v26;
+  actionConfirmationAlertTitle = v30;
   v10 = v27;
   if ((v29 & 1) == 0)
   {
     v19 = 0;
-    v21 = v31;
-    v20 = v32;
+    v21 = actionConfirmationAlertButtonTitle;
+    v20 = actionConfirmationAlertSubtitle;
     goto LABEL_22;
   }
 
 LABEL_21:
   [(PXMomentShareStatusPresentation *)self setIsPaused:IsPaused];
-  [(PXMomentShareStatusPresentation *)self setPauseStatusDescription:v6];
-  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionTitle:v7];
-  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertTitle:v8];
-  v20 = v32;
-  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertSubtitle:v32];
-  v21 = v31;
-  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertButtonTitle:v31];
+  [(PXMomentShareStatusPresentation *)self setPauseStatusDescription:failureDescription];
+  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionTitle:actionTitle];
+  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertTitle:actionConfirmationAlertTitle];
+  v20 = actionConfirmationAlertSubtitle;
+  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertSubtitle:actionConfirmationAlertSubtitle];
+  v21 = actionConfirmationAlertButtonTitle;
+  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionConfirmationAlertButtonTitle:actionConfirmationAlertButtonTitle];
   [(PXMomentShareStatusPresentation *)self setPauseResolutionAction:v10];
-  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionType:v11];
+  [(PXMomentShareStatusPresentation *)self setPauseResolutionActionType:serviceAction];
   v19 = 1;
 LABEL_22:
-  v22 = v3;
+  v22 = status;
   v23 = v22;
   if (v22)
   {
@@ -190,20 +190,20 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (MomentShareStatusObservationContext == a5)
+  observableCopy = observable;
+  if (MomentShareStatusObservationContext == context)
   {
     [(PXMomentShareStatusPresentation *)self _updateCountsAndStatus];
   }
 
   else
   {
-    if (PXCPLUIStatusProviderObservationContext_230086 != a5)
+    if (PXCPLUIStatusProviderObservationContext_230086 != context)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:637 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:637 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -214,69 +214,69 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
 
 - (void)_updateCountsAndStatus
 {
-  v3 = [(PXMomentShareStatusPresentation *)self momentShareStatus];
-  v4 = [v3 momentShare];
-  if (v4)
+  momentShareStatus = [(PXMomentShareStatusPresentation *)self momentShareStatus];
+  momentShare = [momentShareStatus momentShare];
+  if (momentShare)
   {
-    v60 = [v3 copyingAssetsFetchResult];
-    v61 = [v60 count];
-    v57 = [v3 copiedAssetsFetchResult];
-    v64 = [v57 count];
-    v5 = [v3 allAssetsFetchResult];
-    v58 = [v5 count];
+    copyingAssetsFetchResult = [momentShareStatus copyingAssetsFetchResult];
+    v61 = [copyingAssetsFetchResult count];
+    copiedAssetsFetchResult = [momentShareStatus copiedAssetsFetchResult];
+    v64 = [copiedAssetsFetchResult count];
+    allAssetsFetchResult = [momentShareStatus allAssetsFetchResult];
+    v58 = [allAssetsFetchResult count];
 
-    v6 = [v4 cloudPhotoCount];
-    v7 = [v4 cloudVideoCount];
-    v8 = [v4 photosCount];
-    v9 = [v4 videosCount];
-    v10 = [v3 invitation];
-    v11 = [v10 owner];
-    v12 = [v11 localizedName];
+    cloudPhotoCount = [momentShare cloudPhotoCount];
+    cloudVideoCount = [momentShare cloudVideoCount];
+    photosCount = [momentShare photosCount];
+    videosCount = [momentShare videosCount];
+    invitation = [momentShareStatus invitation];
+    owner = [invitation owner];
+    localizedName = [owner localizedName];
 
-    v68 = self;
+    selfCopy = self;
     presentationStyle = self->_presentationStyle;
-    v66 = [v4 px_momentShareType];
+    px_momentShareType = [momentShare px_momentShareType];
     v54 = PLLocalizedCountDescription();
-    [v4 expiryDate];
+    [momentShare expiryDate];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v14 = [v4 expiryDate];
-      PXCMMStringForExpiryDate(v14, 1);
+      expiryDate = [momentShare expiryDate];
+      PXCMMStringForExpiryDate(expiryDate, 1);
     }
 
-    v15 = v9 + v8;
+    v15 = videosCount + photosCount;
 
-    if (v12)
+    if (localizedName)
     {
       PXLocalizedStringFromTable(@"PXCMMFromSender", @"PhotosUICore");
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
 
-    v16 = v7 + v6;
-    v17 = [(PXMomentShareStatusPresentation *)v68 isPaused];
-    v18 = [v4 aggregateMediaType];
-    v19 = v66;
-    v55 = v4;
-    v56 = v3;
-    if (v66 != 1)
+    v16 = cloudVideoCount + cloudPhotoCount;
+    isPaused = [(PXMomentShareStatusPresentation *)selfCopy isPaused];
+    aggregateMediaType = [momentShare aggregateMediaType];
+    v19 = px_momentShareType;
+    v55 = momentShare;
+    v56 = momentShareStatus;
+    if (px_momentShareType != 1)
     {
-      if (!v66)
+      if (!px_momentShareType)
       {
         v20 = v15 > v58 && v15 <= v16;
         if (v15 > v16 && presentationStyle <= 3)
         {
-          if (v17)
+          if (isPaused)
           {
-            PXLocalizedAssetCountForUsage(v15 - v16, v18, 0, 3);
+            PXLocalizedAssetCountForUsage(v15 - v16, aggregateMediaType, 0, 3);
           }
 
-          PXLocalizedAssetCountForUsage(v15, v18, 0, 2);
+          PXLocalizedAssetCountForUsage(v15, aggregateMediaType, 0, 2);
         }
 
         if (presentationStyle == 2 && v20)
         {
-          PXLocalizedAssetCountForUsage(v15 - v58, v18, 0, 4);
+          PXLocalizedAssetCountForUsage(v15 - v58, aggregateMediaType, 0, 4);
         }
 
         if (presentationStyle == 1)
@@ -289,7 +289,7 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
           v35 = 0;
         }
 
-        PXLocalizedAssetCountForUsage(v15, v18, 0, v35);
+        PXLocalizedAssetCountForUsage(v15, aggregateMediaType, 0, v35);
       }
 
       v25 = 0;
@@ -297,16 +297,16 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
       v23 = 0;
       v24 = v61;
       v30 = v64;
-      v36 = v9 + v8;
+      v36 = videosCount + photosCount;
       goto LABEL_48;
     }
 
-    v22 = [v4 status] == 3 && v15 > v58;
-    v53 = v9 + v8;
-    if (v9 + v8 == v64)
+    v22 = [momentShare status] == 3 && v15 > v58;
+    v53 = videosCount + photosCount;
+    if (videosCount + photosCount == v64)
     {
-      v88 = v8;
-      v89 = v9;
+      v88 = photosCount;
+      v89 = videosCount;
       v90 = 0;
       v23 = PXLocalizedStringForDetailedCounts(&v88, @"PXCMMFooterPhotosSavedAllTitle", @"PXCMMFooterVideosSavedAllTitle", @"PXCMMFooterItemsSavedAllTitle");
     }
@@ -315,14 +315,14 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
     {
       if (v61 > 0)
       {
-        Result = PXCMMMediaTypeForFetchResult(v60);
+        Result = PXCMMMediaTypeForFetchResult(copyingAssetsFetchResult);
         PXLocalizedAssetCountForUsage(v61, Result, 0, 8);
       }
 
       if (v64 >= 1)
       {
-        v88 = v8;
-        v89 = v9;
+        v88 = photosCount;
+        v89 = videosCount;
         v90 = 0;
         PXLocalizedStringForDetailedCounts(&v88, @"PXCMMFooter_%ld_PhotosSavedTitleFormat", @"PXCMMFooter_%ld_VideosSavedTitleFormat", @"PXCMMFooter_%ld_ItemsSavedTitleFormat");
         objc_claimAutoreleasedReturnValue();
@@ -334,9 +334,9 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
 
     if (v22)
     {
-      if (v17)
+      if (isPaused)
       {
-        PXLocalizedAssetCountForUsage(v53 - v58, v18, 0, 6);
+        PXLocalizedAssetCountForUsage(v53 - v58, aggregateMediaType, 0, 6);
       }
 
       if (presentationStyle > 4)
@@ -347,7 +347,7 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
       else if (presentationStyle == 2)
       {
         v46 = 4;
-        if ([(PXMomentShareStatusPresentation *)v68 isReadyForUpdates]&& v53 > v16)
+        if ([(PXMomentShareStatusPresentation *)selfCopy isReadyForUpdates]&& v53 > v16)
         {
           v47 = +[PXCompleteMyMomentSettings sharedInstance];
           if ([v47 disableDescriptiveWaiting])
@@ -367,15 +367,15 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
         v46 = 4;
       }
 
-      PXLocalizedAssetCountForUsage(v53 - v58, v18, 0, v46);
+      PXLocalizedAssetCountForUsage(v53 - v58, aggregateMediaType, 0, v46);
     }
 
     v24 = v61;
     if (v61 >= 1)
     {
-      v33 = PXCMMMediaTypeForFetchResult(v60);
+      v33 = PXCMMMediaTypeForFetchResult(copyingAssetsFetchResult);
       v34 = v64 + v61;
-      if (v17)
+      if (isPaused)
       {
         PXLocalizedAssetCountForUsage(v34, v33, 0, 9);
       }
@@ -385,15 +385,15 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
 
     if (v64 < 1)
     {
-      v36 = v9 + v8;
+      v36 = videosCount + photosCount;
       if ((presentationStyle - 3) < 2 || !presentationStyle)
       {
-        PXLocalizedAssetCountForUsage(v53, v18, 0, 0);
+        PXLocalizedAssetCountForUsage(v53, aggregateMediaType, 0, 0);
       }
 
       if (presentationStyle == 2)
       {
-        PXLocalizedAssetCountForUsage(v53, v18, 0, 4);
+        PXLocalizedAssetCountForUsage(v53, aggregateMediaType, 0, 4);
       }
 
       v25 = 0;
@@ -410,12 +410,12 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
       {
         if (presentationStyle == 3)
         {
-          PXLocalizedAssetCountForUsage(v64, v18, 0, 0);
+          PXLocalizedAssetCountForUsage(v64, aggregateMediaType, 0, 0);
         }
 
         if (presentationStyle == 4)
         {
-          PXLocalizedAssetCountForUsage(v64, v18, 0, 0);
+          PXLocalizedAssetCountForUsage(v64, aggregateMediaType, 0, 0);
         }
       }
 
@@ -424,7 +424,7 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
         if (!presentationStyle)
         {
           v50 = v23;
-          v51 = PXCMMMediaTypeForFetchResult(v57);
+          v51 = PXCMMMediaTypeForFetchResult(copiedAssetsFetchResult);
           v52 = PXLocalizedAssetMessageForUsage(v51, 0, 0);
 
           v29 = v52;
@@ -437,7 +437,7 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
         if (presentationStyle == 1)
         {
           v26 = v23;
-          v27 = PXCMMMediaTypeForFetchResult(v57);
+          v27 = PXCMMMediaTypeForFetchResult(copiedAssetsFetchResult);
           v28 = PXLocalizedAssetMessageForUsage(v27, 1, 0);
           v24 = v61;
           v29 = v28;
@@ -445,7 +445,7 @@ void __51__PXMomentShareStatusPresentation__updateCPLStatus__block_invoke(uint64
           v25 = 6;
 LABEL_83:
           v19 = 1;
-          v36 = v9 + v8;
+          v36 = videosCount + photosCount;
           v30 = v64;
 LABEL_48:
           v63 = v23;
@@ -484,10 +484,10 @@ LABEL_48:
           v43 = @" ";
           v44 = v63;
           v45 = v54;
-          [(PXMomentShareStatusPresentation *)v68 performChanges:v69];
+          [(PXMomentShareStatusPresentation *)selfCopy performChanges:v69];
 
-          v4 = v55;
-          v3 = v56;
+          momentShare = v55;
+          momentShareStatus = v56;
           goto LABEL_49;
         }
       }
@@ -502,7 +502,7 @@ LABEL_80:
     {
       if (presentationStyle == 4)
       {
-        PXLocalizedAssetCountForUsage(v53, v18, 0, 0);
+        PXLocalizedAssetCountForUsage(v53, aggregateMediaType, 0, 0);
       }
 
       if (presentationStyle != 3)
@@ -515,14 +515,14 @@ LABEL_80:
     {
       if (presentationStyle == 1)
       {
-        v48 = PXCMMMediaTypeForFetchResult(v57);
+        v48 = PXCMMMediaTypeForFetchResult(copiedAssetsFetchResult);
         PXLocalizedAssetCountForUsage(v64, v48, 0, 18);
       }
 
       goto LABEL_80;
     }
 
-    v49 = PXCMMMediaTypeForFetchResult(v57);
+    v49 = PXCMMMediaTypeForFetchResult(copiedAssetsFetchResult);
     PXLocalizedAssetCountForUsage(v53 - v64, v49, 0, 20);
   }
 
@@ -553,50 +553,50 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   [v5 setNumberOfAssetsCopied:*(a1 + 152)];
 }
 
-- (void)setNumberOfAssetsCopied:(int64_t)a3
+- (void)setNumberOfAssetsCopied:(int64_t)copied
 {
-  if (self->_numberOfAssetsCopied != a3)
+  if (self->_numberOfAssetsCopied != copied)
   {
-    self->_numberOfAssetsCopied = a3;
+    self->_numberOfAssetsCopied = copied;
     [(PXMomentShareStatusPresentation *)self signalChange:0x10000];
   }
 }
 
-- (void)setNumberOfAssetsNotCopied:(int64_t)a3
+- (void)setNumberOfAssetsNotCopied:(int64_t)copied
 {
-  if (self->_numberOfAssetsNotCopied != a3)
+  if (self->_numberOfAssetsNotCopied != copied)
   {
-    self->_numberOfAssetsNotCopied = a3;
+    self->_numberOfAssetsNotCopied = copied;
     [(PXMomentShareStatusPresentation *)self signalChange:0x4000];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(PXMomentShareStatusPresentation *)self signalChange:0x2000];
   }
 }
 
-- (void)setActivityProgress:(float)a3
+- (void)setActivityProgress:(float)progress
 {
-  if (self->_activityProgress != a3)
+  if (self->_activityProgress != progress)
   {
-    self->_activityProgress = a3;
+    self->_activityProgress = progress;
     [(PXMomentShareStatusPresentation *)self signalChange:4096];
   }
 }
 
-- (void)setByline:(id)a3
+- (void)setByline:(id)byline
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_byline != v4)
+  bylineCopy = byline;
+  v5 = bylineCopy;
+  if (self->_byline != bylineCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = bylineCopy;
+    v6 = [(NSString *)bylineCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -610,11 +610,11 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    v4 = [a3 copy];
+    v4 = [action copy];
     action = self->_action;
     self->_action = v4;
 
@@ -622,14 +622,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setActionConfirmationAlertButtonTitle:(id)a3
+- (void)setActionConfirmationAlertButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionConfirmationAlertButtonTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_actionConfirmationAlertButtonTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -643,14 +643,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setActionConfirmationAlertSubtitle:(id)a3
+- (void)setActionConfirmationAlertSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionConfirmationAlertSubtitle != v4)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (self->_actionConfirmationAlertSubtitle != subtitleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = subtitleCopy;
+    v6 = [(NSString *)subtitleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -664,14 +664,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setActionConfirmationAlertTitle:(id)a3
+- (void)setActionConfirmationAlertTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionConfirmationAlertTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_actionConfirmationAlertTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -685,14 +685,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setActionTitle:(id)a3
+- (void)setActionTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_actionTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_actionTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -706,14 +706,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setPauseTitle:(id)a3
+- (void)setPauseTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_pauseTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_pauseTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -727,14 +727,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setIdleTitle:(id)a3
+- (void)setIdleTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_idleTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_idleTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -748,14 +748,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setActivityTitle:(id)a3
+- (void)setActivityTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_activityTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_activityTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -769,14 +769,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setExpirationTitle:(id)a3
+- (void)setExpirationTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_expirationTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_expirationTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -790,14 +790,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setAssetsSaveStatusTitle:(id)a3
+- (void)setAssetsSaveStatusTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_assetsSaveStatusTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_assetsSaveStatusTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -811,14 +811,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setAssetsTitle:(id)a3
+- (void)setAssetsTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_assetsTitle != v4)
+  titleCopy = title;
+  v5 = titleCopy;
+  if (self->_assetsTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -832,11 +832,11 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   }
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(PXMomentShareStatusPresentation *)self signalChange:1];
   }
 }
@@ -853,7 +853,7 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v3, OS_LOG_TYPE_DEFAULT, "[PXMomentShareStatusPresentation] Did transition to %@", buf, 0xCu);
     }
   }
@@ -861,18 +861,18 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
 
 - (PXCMMInvitation)invitation
 {
-  v2 = [(PXMomentShareStatusPresentation *)self momentShareStatus];
-  v3 = [v2 invitation];
+  momentShareStatus = [(PXMomentShareStatusPresentation *)self momentShareStatus];
+  invitation = [momentShareStatus invitation];
 
-  return v3;
+  return invitation;
 }
 
 - (PXDisplayMomentShare)momentShare
 {
-  v2 = [(PXMomentShareStatusPresentation *)self momentShareStatus];
-  v3 = [v2 momentShare];
+  momentShareStatus = [(PXMomentShareStatusPresentation *)self momentShareStatus];
+  momentShare = [momentShareStatus momentShare];
 
-  return v3;
+  return momentShare;
 }
 
 - (NSString)description
@@ -1004,34 +1004,34 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
     idleTitle = @"-";
   }
 
-  v19 = [(PXMomentShareStatus *)self->_momentShareStatus momentShare];
-  v20 = [v27 stringWithFormat:@"<%@:%p, style:%@, type:%@, state:%@, activity:%@, progress:%f, pause:%@, action:%@, alert:%@/%@/%@, assets:%@, expiration:%@, idle:%@, share:%@>", v26, self, v25, v24, v23, v22, *&activityProgress, pauseTitle, actionTitle, actionConfirmationAlertTitle, actionConfirmationAlertSubtitle, actionConfirmationAlertButtonTitle, assetsTitle, expirationTitle, idleTitle, v19];
+  momentShare = [(PXMomentShareStatus *)self->_momentShareStatus momentShare];
+  v20 = [v27 stringWithFormat:@"<%@:%p, style:%@, type:%@, state:%@, activity:%@, progress:%f, pause:%@, action:%@, alert:%@/%@/%@, assets:%@, expiration:%@, idle:%@, share:%@>", v26, self, v25, v24, v23, v22, *&activityProgress, pauseTitle, actionTitle, actionConfirmationAlertTitle, actionConfirmationAlertSubtitle, actionConfirmationAlertButtonTitle, assetsTitle, expirationTitle, idleTitle, momentShare];
 
   return v20;
 }
 
-- (PXMomentShareStatusPresentation)initWithMomentShare:(id)a3 presentationStyle:(int64_t)a4
+- (PXMomentShareStatusPresentation)initWithMomentShare:(id)share presentationStyle:(int64_t)style
 {
-  v7 = a3;
-  if (!v7)
+  shareCopy = share;
+  if (!shareCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"momentShare"}];
   }
 
-  v8 = [[PXPhotoKitMomentShareStatus alloc] initWithPhotoKitMomentShare:v7];
-  v9 = [(PXMomentShareStatusPresentation *)self initWithMomentShareStatus:v8 presentationStyle:a4];
+  v8 = [[PXPhotoKitMomentShareStatus alloc] initWithPhotoKitMomentShare:shareCopy];
+  v9 = [(PXMomentShareStatusPresentation *)self initWithMomentShareStatus:v8 presentationStyle:style];
 
   return v9;
 }
 
-- (PXMomentShareStatusPresentation)initWithMomentShareStatus:(id)a3 presentationStyle:(int64_t)a4
+- (PXMomentShareStatusPresentation)initWithMomentShareStatus:(id)status presentationStyle:(int64_t)style
 {
-  v8 = a3;
-  if (!v8)
+  statusCopy = status;
+  if (!statusCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatus"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"momentShareStatus"}];
   }
 
   v15.receiver = self;
@@ -1040,14 +1040,14 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
   v10 = v9;
   if (v9)
   {
-    v9->_presentationStyle = a4;
-    objc_storeStrong(&v9->_momentShareStatus, a3);
+    v9->_presentationStyle = style;
+    objc_storeStrong(&v9->_momentShareStatus, status);
     [(PXMomentShareStatus *)v10->_momentShareStatus registerChangeObserver:v10 context:MomentShareStatusObservationContext];
     if ((v10->_presentationStyle & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
-      v11 = [v8 statusProvider];
+      statusProvider = [statusCopy statusProvider];
       statusProvider = v10->_statusProvider;
-      v10->_statusProvider = v11;
+      v10->_statusProvider = statusProvider;
 
       [(PXCPLUIStatusProvider *)v10->_statusProvider registerChangeObserver:v10 context:PXCPLUIStatusProviderObservationContext_230086];
       [(PXMomentShareStatusPresentation *)v10 _updateCPLStatus];
@@ -1061,16 +1061,16 @@ void __57__PXMomentShareStatusPresentation__updateCountsAndStatus__block_invoke(
 
 - (PXMomentShareStatusPresentation)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:123 description:{@"%s is not available as initializer", "-[PXMomentShareStatusPresentation init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:123 description:{@"%s is not available as initializer", "-[PXMomentShareStatusPresentation init]"}];
 
   abort();
 }
 
 + (PXMomentShareStatusPresentation)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXMomentShareStatusPresentation.m" lineNumber:127 description:{@"%s is not available as initializer", "+[PXMomentShareStatusPresentation new]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMomentShareStatusPresentation.m" lineNumber:127 description:{@"%s is not available as initializer", "+[PXMomentShareStatusPresentation new]"}];
 
   abort();
 }

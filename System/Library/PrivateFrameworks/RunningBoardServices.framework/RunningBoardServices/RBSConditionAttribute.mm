@@ -1,63 +1,63 @@
 @interface RBSConditionAttribute
-+ (id)attributeWithCondition:(id)a3 value:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSConditionAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)attributeWithCondition:(id)condition value:(int64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (RBSConditionAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)_initWithCondition:(uint64_t)a3 value:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)_initWithCondition:(uint64_t)condition value:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSConditionAttribute
 
-+ (id)attributeWithCondition:(id)a3 value:(int64_t)a4
++ (id)attributeWithCondition:(id)condition value:(int64_t)value
 {
-  v5 = a3;
-  v6 = [[RBSConditionAttribute alloc] _initWithCondition:v5 value:a4];
+  conditionCopy = condition;
+  v6 = [[RBSConditionAttribute alloc] _initWithCondition:conditionCopy value:value];
 
   return v6;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSConditionAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeObject:self->_condition forKey:{@"_condition", v5.receiver, v5.super_class}];
-  [v4 encodeInt64:self->_value forKey:@"_value"];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeObject:self->_condition forKey:{@"_condition", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt64:self->_value forKey:@"_value"];
 }
 
-- (RBSConditionAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSConditionAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RBSConditionAttribute;
-  v5 = [(RBSAttribute *)&v10 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v10 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_condition"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_condition"];
     v7 = [v6 copy];
     condition = v5->_condition;
     v5->_condition = v7;
 
-    v5->_value = [v4 decodeInt64ForKey:@"_value"];
+    v5->_value = [coderCopy decodeInt64ForKey:@"_value"];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = RBSConditionAttribute;
-  if (![(RBSAttribute *)&v10 isEqual:v4]|| self->_value != v4[2])
+  if (![(RBSAttribute *)&v10 isEqual:equalCopy]|| self->_value != equalCopy[2])
   {
     goto LABEL_9;
   }
 
   condition = self->_condition;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (condition == v6)
   {
     v9 = 1;
@@ -90,25 +90,25 @@ LABEL_10:
   return v6;
 }
 
-- (void)_initWithCondition:(uint64_t)a3 value:
+- (void)_initWithCondition:(uint64_t)condition value:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = RBSConditionAttribute;
-    a1 = objc_msgSendSuper2(&v9, sel__init);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel__init);
+    if (self)
     {
       v6 = [v5 copy];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = self[1];
+      self[1] = v6;
 
-      a1[2] = a3;
+      self[2] = condition;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

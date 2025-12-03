@@ -1,11 +1,11 @@
 @interface PUGridRenderedStripAccessibility
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 - (void)_axClearData;
-- (void)_axGenerateIsElement:(id)a3;
-- (void)_axGenerateLabel:(id)a3;
+- (void)_axGenerateIsElement:(id)element;
+- (void)_axGenerateLabel:(id)label;
 - (void)_axInitializeDataForElement;
 - (void)_render;
 - (void)dealloc;
@@ -37,29 +37,29 @@
   [(PUGridRenderedStripAccessibility *)self _axClearData];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   if ([(PUGridRenderedStripAccessibility *)self isAccessibilityElement]&& (UIAccessibilityPointForPoint(), v6 = v5, v8 = v7, [(PUGridRenderedStripAccessibility *)self accessibilityFrame], v12.x = v6, v12.y = v8, CGRectContainsPoint(v13, v12)))
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)_axGenerateLabel:(id)a3
+- (void)_axGenerateLabel:(id)label
 {
-  v14 = a3;
-  v4 = [v14 indexOfObject:self];
+  labelCopy = label;
+  v4 = [labelCopy indexOfObject:self];
   if (v4 < 0)
   {
 LABEL_6:
-    v9 = 0;
+    accessibilityLabel = 0;
   }
 
   else
@@ -67,7 +67,7 @@ LABEL_6:
     v5 = v4;
     while (1)
     {
-      v6 = [v14 objectAtIndex:v5];
+      v6 = [labelCopy objectAtIndex:v5];
       NSClassFromString(&cfstr_Pxphotossectio.isa);
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -82,17 +82,17 @@ LABEL_6:
       }
     }
 
-    v10 = [v14 objectAtIndex:v5];
-    v9 = [v10 accessibilityLabel];
+    v10 = [labelCopy objectAtIndex:v5];
+    accessibilityLabel = [v10 accessibilityLabel];
   }
 
-  if ([v9 length])
+  if ([accessibilityLabel length])
   {
     v11 = MEMORY[0x29EDBA0F8];
     v12 = accessibilityPULocalizedString(@"small.photos.group.with.title");
-    v13 = [v11 stringWithFormat:v12, v9];
+    v13 = [v11 stringWithFormat:v12, accessibilityLabel];
 
-    v9 = v12;
+    accessibilityLabel = v12;
   }
 
   else
@@ -103,10 +103,10 @@ LABEL_6:
   [(PUGridRenderedStripAccessibility *)self setAccessibilityLabel:v13];
 }
 
-- (void)_axGenerateIsElement:(id)a3
+- (void)_axGenerateIsElement:(id)element
 {
-  v11 = a3;
-  v4 = [v11 indexOfObject:self];
+  elementCopy = element;
+  v4 = [elementCopy indexOfObject:self];
   v5 = v4;
   if (v4 < 1)
   {
@@ -118,7 +118,7 @@ LABEL_6:
   v7 = v4;
   while (1)
   {
-    v8 = [v11 objectAtIndex:v6 - 2];
+    v8 = [elementCopy objectAtIndex:v6 - 2];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,8 +133,8 @@ LABEL_6:
     NSClassFromString(&cfstr_Pxphotossectio.isa);
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 accessibilityLabel];
-      v10 = [v9 length];
+      accessibilityLabel = [v8 accessibilityLabel];
+      v10 = [accessibilityLabel length];
 
       if (v10)
       {
@@ -157,8 +157,8 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:@"AXPhotoCollectionViewScrolled" object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:@"AXPhotoCollectionViewScrolled" object:0];
 
   v4.receiver = self;
   v4.super_class = PUGridRenderedStripAccessibility;
@@ -169,16 +169,16 @@ LABEL_14:
 {
   if ([(PUGridRenderedStripAccessibility *)self _accessibilityBoolValueForKey:@"AXDidRegister"])
   {
-    v3 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v3 addObserver:self selector:sel__axClearData name:@"AXPhotoCollectionViewScrolled" object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__axClearData name:@"AXPhotoCollectionViewScrolled" object:0];
 
     [(PUGridRenderedStripAccessibility *)self _accessibilitySetBoolValue:1 forKey:@"AXDidRegister"];
   }
 
-  v4 = [(PUGridRenderedStripAccessibility *)self superview];
-  v5 = [v4 subviews];
+  superview = [(PUGridRenderedStripAccessibility *)self superview];
+  subviews = [superview subviews];
 
-  v6 = [v5 sortedArrayUsingSelector:sel__accessibilitySimpleSort_];
+  v6 = [subviews sortedArrayUsingSelector:sel__accessibilitySimpleSort_];
 
   [(PUGridRenderedStripAccessibility *)self _axGenerateIsElement:v6];
   v7.receiver = self;
@@ -205,12 +205,12 @@ LABEL_14:
 
   else
   {
-    v4 = [(PUGridRenderedStripAccessibility *)self superview];
-    v5 = [v4 subviews];
+    superview = [(PUGridRenderedStripAccessibility *)self superview];
+    subviews = [superview subviews];
 
-    if ([v5 indexOfObject:self] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([subviews indexOfObject:self] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = 0;
+      isAccessibilityElement = 0;
     }
 
     else
@@ -218,19 +218,19 @@ LABEL_14:
       [(PUGridRenderedStripAccessibility *)self _axInitializeDataForElement];
       v7.receiver = self;
       v7.super_class = PUGridRenderedStripAccessibility;
-      v3 = [(PUGridRenderedStripAccessibility *)&v7 isAccessibilityElement];
+      isAccessibilityElement = [(PUGridRenderedStripAccessibility *)&v7 isAccessibilityElement];
     }
   }
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(PUGridRenderedStripAccessibility *)self superview];
-  v4 = [v3 subviews];
+  superview = [(PUGridRenderedStripAccessibility *)self superview];
+  subviews = [superview subviews];
 
-  v5 = [v4 sortedArrayUsingSelector:sel__accessibilitySimpleSort_];
+  v5 = [subviews sortedArrayUsingSelector:sel__accessibilitySimpleSort_];
 
   v6 = [v5 indexOfObject:self];
   [(PUGridRenderedStripAccessibility *)self frame];
@@ -283,12 +283,12 @@ LABEL_14:
     while (v16 != v6);
   }
 
-  v24 = [(PUGridRenderedStripAccessibility *)self superview];
+  superview2 = [(PUGridRenderedStripAccessibility *)self superview];
   v35.origin.x = x;
   v35.origin.y = y;
   v35.size.width = width;
   v35.size.height = height;
-  v36 = UIAccessibilityConvertFrameToScreenCoordinates(v35, v24);
+  v36 = UIAccessibilityConvertFrameToScreenCoordinates(v35, superview2);
   v25 = v36.origin.x;
   v26 = v36.origin.y;
   v27 = v36.size.width;
@@ -309,23 +309,23 @@ LABEL_14:
 {
   v9.receiver = self;
   v9.super_class = PUGridRenderedStripAccessibility;
-  v3 = [(PUGridRenderedStripAccessibility *)&v9 accessibilityLabel];
+  accessibilityLabel = [(PUGridRenderedStripAccessibility *)&v9 accessibilityLabel];
 
-  if (v3)
+  if (accessibilityLabel)
   {
-    v8 = self;
-    v4 = &v8;
+    selfCopy = self;
+    v4 = &selfCopy;
   }
 
   else
   {
     [(PUGridRenderedStripAccessibility *)self _axInitializeDataForElement];
-    v7 = self;
-    v4 = &v7;
+    selfCopy2 = self;
+    v4 = &selfCopy2;
   }
 
   v4[1] = PUGridRenderedStripAccessibility;
-  v5 = objc_msgSendSuper2(v4, sel_accessibilityLabel, v7);
+  v5 = objc_msgSendSuper2(v4, sel_accessibilityLabel, selfCopy2);
 
   return v5;
 }

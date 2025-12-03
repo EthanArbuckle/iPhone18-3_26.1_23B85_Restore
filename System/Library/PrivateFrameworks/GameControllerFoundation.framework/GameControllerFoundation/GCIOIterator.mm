@@ -1,7 +1,7 @@
 @interface GCIOIterator
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqualTo:(id)to;
 - (GCIOIterator)init;
-- (GCIOIterator)initWithPort:(unsigned int)a3 objectClass:(Class)a4 error:(id *)a5;
+- (GCIOIterator)initWithPort:(unsigned int)port objectClass:(Class)class error:(id *)error;
 - (NSString)className;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -14,28 +14,28 @@
 
 @implementation GCIOIterator
 
-- (GCIOIterator)initWithPort:(unsigned int)a3 objectClass:(Class)a4 error:(id *)a5
+- (GCIOIterator)initWithPort:(unsigned int)port objectClass:(Class)class error:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = GCIOIterator;
   v9 = [(GCIOIterator *)&v18 init];
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     [GCIOIterator initWithPort:a2 objectClass:v9 error:?];
     goto LABEL_5;
   }
 
-  v10 = IOObjectRetain(a3);
+  v10 = IOObjectRetain(port);
   if (!v10)
   {
-    v9->_port = a3;
-    objc_storeStrong(&v9->_objectClass, a4);
-    a5 = v9;
+    v9->_port = port;
+    objc_storeStrong(&v9->_objectClass, class);
+    error = v9;
     goto LABEL_7;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A5A0];
@@ -46,16 +46,16 @@
     v20[0] = @"Invalid port.";
     v20[1] = @"Error incrementing port retain count.";
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-    *a5 = [v11 errorWithDomain:v12 code:v13 userInfo:v15];
+    *error = [v11 errorWithDomain:v12 code:v13 userInfo:v15];
 
 LABEL_5:
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
   v16 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
 - (GCIOIterator)init
@@ -85,20 +85,20 @@ LABEL_7:
   if (self)
   {
     v4 = IOObjectCopyClass(self->_port);
-    v6 = [objc_getProperty(self v5];
+    className = [objc_getProperty(self v5];
     port = self->_port;
   }
 
   else
   {
     v4 = IOObjectCopyClass(0);
-    v6 = [0 className];
+    className = [0 className];
     port = 0;
   }
 
-  v8 = [v2 stringWithFormat:@"<%@<Kernel/%@> port='%#08x'>", v4, v6, port];
+  port = [v2 stringWithFormat:@"<%@<Kernel/%@> port='%#08x'>", v4, className, port];
 
-  return v8;
+  return port;
 }
 
 - (id)redactedDescription
@@ -107,20 +107,20 @@ LABEL_7:
   if (self)
   {
     v4 = IOObjectCopyClass(self->_port);
-    v6 = [objc_getProperty(self v5];
+    className = [objc_getProperty(self v5];
     port = self->_port;
   }
 
   else
   {
     v4 = IOObjectCopyClass(0);
-    v6 = [0 className];
+    className = [0 className];
     port = 0;
   }
 
-  v8 = [v2 stringWithFormat:@"<%@<Kernel/%@> port='%#08x'>", v4, v6, port];
+  port = [v2 stringWithFormat:@"<%@<Kernel/%@> port='%#08x'>", v4, className, port];
 
-  return v8;
+  return port;
 }
 
 - (NSString)debugDescription
@@ -131,20 +131,20 @@ LABEL_7:
   if (self)
   {
     v6 = IOObjectCopyClass(self->_port);
-    v8 = [objc_getProperty(self v7];
+    className = [objc_getProperty(self v7];
     port = self->_port;
   }
 
   else
   {
     v6 = IOObjectCopyClass(0);
-    v8 = [0 className];
+    className = [0 className];
     port = 0;
   }
 
-  v10 = [v3 stringWithFormat:@"<%@ %p %@<Kernel/%@> port='%#08x'>", v5, self, v6, v8, port];
+  port = [v3 stringWithFormat:@"<%@ %p %@<Kernel/%@> port='%#08x'>", v5, self, v6, className, port];
 
-  return v10;
+  return port;
 }
 
 - (NSString)className
@@ -154,21 +154,21 @@ LABEL_7:
   return v2;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     port = self->_port;
-    if (v4)
+    if (toCopy)
     {
-      v6 = v4[2];
+      port = toCopy[2];
     }
 
     else
     {
-      v6 = 0;
+      port = 0;
     }
   }
 
@@ -182,11 +182,11 @@ LABEL_7:
     }
 
     v7 = self->_port;
-    v6 = [(GCIOObject *)v4 port];
+    port = [(GCIOObject *)toCopy port];
     port = v7;
   }
 
-  v8 = IOObjectIsEqualTo(port, v6) != 0;
+  v8 = IOObjectIsEqualTo(port, port) != 0;
 LABEL_8:
 
   return v8;
@@ -250,17 +250,17 @@ LABEL_5:
     {
       v13 = IOObjectCopyClass(v5);
       v14 = v13;
-      v15 = [v10 code];
-      v16 = [v10 localizedFailureReason];
+      code = [v10 code];
+      localizedFailureReason = [v10 localizedFailureReason];
 
       *buf = 138413058;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v13;
       v26 = 1024;
-      v27 = v15;
+      v27 = code;
       v28 = 2114;
-      v29 = v16;
+      v29 = localizedFailureReason;
       _os_log_error_impl(&dword_1D2C3B000, v11, OS_LOG_TYPE_ERROR, "%@ Error instantiating wrapper for next object '%{public}@': %{mach.errno}d %{public}@", buf, 0x26u);
     }
   }

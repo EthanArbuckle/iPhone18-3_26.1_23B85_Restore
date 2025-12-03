@@ -4,7 +4,7 @@
 + (id)normalized4D;
 + (id)normalizedCenteredCube;
 + (id)normalizedCube;
-+ (id)resourceForBox2:(box<glm::detail::tvec2<float>>)a3;
++ (id)resourceForBox2:(box<glm::detail::tvec2<float>>)box2;
 @end
 
 @implementation TSCH3DQuadResource
@@ -69,11 +69,11 @@
   return v3;
 }
 
-+ (id)resourceForBox2:(box<glm::detail::tvec2<float>>)a3
++ (id)resourceForBox2:(box<glm::detail::tvec2<float>>)box2
 {
-  min = a3._min;
+  min = box2._min;
   v48 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec4DataBuffer, a2, v3, v4, v5, 0, *&a3._max);
+  v7 = objc_msgSend_bufferWithCapacity_(TSCH3Dvec4DataBuffer, a2, v3, v4, v5, 0, *&box2._max);
   v12 = objc_msgSend_container(v7, v8, v9, v10, v11);
   v13 = min[1];
   v40[0] = *min;

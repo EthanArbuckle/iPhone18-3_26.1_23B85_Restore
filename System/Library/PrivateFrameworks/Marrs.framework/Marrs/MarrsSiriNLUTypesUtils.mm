@@ -1,33 +1,33 @@
 @interface MarrsSiriNLUTypesUtils
-+ (BOOL)isRequestEmpty:(id)a3;
-+ (BOOL)isResponseEmpty:(id)a3;
-+ (id)QRTokenFromTokenValue:(id)a3;
++ (BOOL)isRequestEmpty:(id)empty;
++ (BOOL)isResponseEmpty:(id)empty;
++ (id)QRTokenFromTokenValue:(id)value;
 + (id)emptyResponse;
-+ (id)firstRewriteHypothesisOfResponse:(id)a3;
-+ (id)firstRewrittenUtteranceOfResponse:(id)a3;
-+ (id)firstRewrittenUtteranceOfResponse:(id)a3 WithDefaultValue:(id)a4;
-+ (id)firstUtteranceOfRequest:(id)a3;
-+ (id)firstUtteranceOfRequest:(id)a3 WithDefaultValue:(id)a4;
-+ (id)interactionFromTokenValues:(id)a3 responseTokenValues:(id)a4 utteranceString:(id)a5 locale:(id)a6;
-+ (id)requestFromMdfDictionary:(id)a3 turnsKey:(id)a4 tokensKey:(id)a5 utteranceKey:(id)a6 valueKey:(id)a7 siriResponseKey:(id)a8 locale:(id)a9;
-+ (id)utteranceFromTokenValues:(id)a3 utteranceString:(id)a4;
++ (id)firstRewriteHypothesisOfResponse:(id)response;
++ (id)firstRewrittenUtteranceOfResponse:(id)response;
++ (id)firstRewrittenUtteranceOfResponse:(id)response WithDefaultValue:(id)value;
++ (id)firstUtteranceOfRequest:(id)request;
++ (id)firstUtteranceOfRequest:(id)request WithDefaultValue:(id)value;
++ (id)interactionFromTokenValues:(id)values responseTokenValues:(id)tokenValues utteranceString:(id)string locale:(id)locale;
++ (id)requestFromMdfDictionary:(id)dictionary turnsKey:(id)key tokensKey:(id)tokensKey utteranceKey:(id)utteranceKey valueKey:(id)valueKey siriResponseKey:(id)responseKey locale:(id)locale;
++ (id)utteranceFromTokenValues:(id)values utteranceString:(id)string;
 @end
 
 @implementation MarrsSiriNLUTypesUtils
 
-+ (id)interactionFromTokenValues:(id)a3 responseTokenValues:(id)a4 utteranceString:(id)a5 locale:(id)a6
++ (id)interactionFromTokenValues:(id)values responseTokenValues:(id)tokenValues utteranceString:(id)string locale:(id)locale
 {
   v29 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v9 = a4;
-  v22 = a5;
-  v23 = a6;
+  valuesCopy = values;
+  tokenValuesCopy = tokenValues;
+  stringCopy = string;
+  localeCopy = locale;
   v10 = objc_alloc_init(MEMORY[0x277D5DE60]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v9;
+  v11 = tokenValuesCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
@@ -53,10 +53,10 @@
     while (v12);
   }
 
-  v18 = [MarrsSiriNLUTypesUtils utteranceFromTokenValues:v21 utteranceString:v22];
+  v18 = [MarrsSiriNLUTypesUtils utteranceFromTokenValues:valuesCopy utteranceString:stringCopy];
   [v10 addOriginalUtterances:v18];
 
-  [v10 setLocale:v23];
+  [v10 setLocale:localeCopy];
   [v10 setTap2edit:0];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -64,17 +64,17 @@
   return v10;
 }
 
-+ (id)utteranceFromTokenValues:(id)a3 utteranceString:(id)a4
++ (id)utteranceFromTokenValues:(id)values utteranceString:(id)string
 {
   v24 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
+  valuesCopy = values;
+  stringCopy = string;
   v5 = objc_alloc_init(MEMORY[0x277D5DE70]);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v17;
+  v6 = valuesCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -103,7 +103,7 @@
     while (v7);
   }
 
-  [v5 setUtterance:v18];
+  [v5 setUtterance:stringCopy];
   [v5 setConfidence:1.0];
   v14 = objc_alloc_init(MEMORY[0x277D5DDD0]);
   [v5 setAsrId:v14];
@@ -113,11 +113,11 @@
   return v5;
 }
 
-+ (id)QRTokenFromTokenValue:(id)a3
++ (id)QRTokenFromTokenValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_alloc_init(MEMORY[0x277D5DE68]);
-  [v4 setValue:v3];
+  [v4 setValue:valueCopy];
   [v4 setAsrConfidence:1000.0];
   [v4 setStartIndex:0];
   [v4 setEndIndex:0];
@@ -127,20 +127,20 @@
   return v4;
 }
 
-+ (id)requestFromMdfDictionary:(id)a3 turnsKey:(id)a4 tokensKey:(id)a5 utteranceKey:(id)a6 valueKey:(id)a7 siriResponseKey:(id)a8 locale:(id)a9
++ (id)requestFromMdfDictionary:(id)dictionary turnsKey:(id)key tokensKey:(id)tokensKey utteranceKey:(id)utteranceKey valueKey:(id)valueKey siriResponseKey:(id)responseKey locale:(id)locale
 {
   v64 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v46 = a5;
-  v43 = a6;
-  v16 = a7;
-  v44 = a8;
-  v42 = a9;
-  v38 = v14;
-  v39 = v15;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  tokensKeyCopy = tokensKey;
+  utteranceKeyCopy = utteranceKey;
+  valueKeyCopy = valueKey;
+  responseKeyCopy = responseKey;
+  localeCopy = locale;
+  v38 = dictionaryCopy;
+  v39 = keyCopy;
   v45 = objc_alloc_init(MEMORY[0x277D5DE48]);
-  [v14 objectForKeyedSubscript:v15];
+  [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -160,7 +160,7 @@
         }
 
         v19 = *(*(&v57 + 1) + 8 * i);
-        v20 = [v19 objectForKeyedSubscript:v46];
+        v20 = [v19 objectForKeyedSubscript:tokensKeyCopy];
         v21 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v20, "count")}];
         v55 = 0u;
         v56 = 0u;
@@ -180,7 +180,7 @@
                 objc_enumerationMutation(v22);
               }
 
-              v26 = [*(*(&v53 + 1) + 8 * j) objectForKeyedSubscript:v16];
+              v26 = [*(*(&v53 + 1) + 8 * j) objectForKeyedSubscript:valueKeyCopy];
               [v21 addObject:v26];
             }
 
@@ -190,8 +190,8 @@
           while (v23);
         }
 
-        v48 = [v19 objectForKeyedSubscript:v43];
-        v27 = [v19 objectForKeyedSubscript:v44];
+        v48 = [v19 objectForKeyedSubscript:utteranceKeyCopy];
+        v27 = [v19 objectForKeyedSubscript:responseKeyCopy];
         v28 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v27, "count")}];
         v51 = 0u;
         v52 = 0u;
@@ -211,7 +211,7 @@
                 objc_enumerationMutation(v29);
               }
 
-              v33 = [*(*(&v49 + 1) + 8 * k) objectForKeyedSubscript:v16];
+              v33 = [*(*(&v49 + 1) + 8 * k) objectForKeyedSubscript:valueKeyCopy];
               [v28 addObject:v33];
             }
 
@@ -221,7 +221,7 @@
           while (v30);
         }
 
-        v34 = [MarrsSiriNLUTypesUtils interactionFromTokenValues:v21 responseTokenValues:v28 utteranceString:v48 locale:v42];
+        v34 = [MarrsSiriNLUTypesUtils interactionFromTokenValues:v21 responseTokenValues:v28 utteranceString:v48 locale:localeCopy];
         [v45 addOriginalInteractions:v34];
       }
 
@@ -239,63 +239,63 @@
   return v45;
 }
 
-+ (id)firstRewriteHypothesisOfResponse:(id)a3
++ (id)firstRewriteHypothesisOfResponse:(id)response
 {
-  v3 = a3;
-  if ([MarrsSiriNLUTypesUtils isResponseEmpty:v3])
+  responseCopy = response;
+  if ([MarrsSiriNLUTypesUtils isResponseEmpty:responseCopy])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 rewriteHypotheses];
-    v4 = [v5 objectAtIndexedSubscript:0];
+    rewriteHypotheses = [responseCopy rewriteHypotheses];
+    v4 = [rewriteHypotheses objectAtIndexedSubscript:0];
   }
 
   return v4;
 }
 
-+ (id)firstUtteranceOfRequest:(id)a3
++ (id)firstUtteranceOfRequest:(id)request
 {
-  v3 = [a1 firstUtteranceOfRequest:a3 WithDefaultValue:&stru_2835DF758];
+  v3 = [self firstUtteranceOfRequest:request WithDefaultValue:&stru_2835DF758];
 
   return v3;
 }
 
-+ (id)firstUtteranceOfRequest:(id)a3 WithDefaultValue:(id)a4
++ (id)firstUtteranceOfRequest:(id)request WithDefaultValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  if ([MarrsSiriNLUTypesUtils isRequestEmpty:v5])
+  requestCopy = request;
+  valueCopy = value;
+  if ([MarrsSiriNLUTypesUtils isRequestEmpty:requestCopy])
   {
-    v7 = v6;
+    utterance = valueCopy;
   }
 
   else
   {
-    v8 = [v5 originalInteractions];
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [v9 originalUtterances];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v7 = [v11 utterance];
+    originalInteractions = [requestCopy originalInteractions];
+    v9 = [originalInteractions objectAtIndexedSubscript:0];
+    originalUtterances = [v9 originalUtterances];
+    v11 = [originalUtterances objectAtIndexedSubscript:0];
+    utterance = [v11 utterance];
   }
 
-  return v7;
+  return utterance;
 }
 
-+ (BOOL)isRequestEmpty:(id)a3
++ (BOOL)isRequestEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = [v3 originalInteractions];
-  v5 = [v4 count];
+  emptyCopy = empty;
+  originalInteractions = [emptyCopy originalInteractions];
+  v5 = [originalInteractions count];
 
   if (v5)
   {
-    v6 = [v3 originalInteractions];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 originalUtterances];
-    v9 = [v8 count] == 0;
+    originalInteractions2 = [emptyCopy originalInteractions];
+    v7 = [originalInteractions2 objectAtIndexedSubscript:0];
+    originalUtterances = [v7 originalUtterances];
+    v9 = [originalUtterances count] == 0;
   }
 
   else
@@ -317,36 +317,36 @@
   return v2;
 }
 
-+ (id)firstRewrittenUtteranceOfResponse:(id)a3
++ (id)firstRewrittenUtteranceOfResponse:(id)response
 {
-  v3 = [MarrsSiriNLUTypesUtils firstRewrittenUtteranceOfResponse:a3 WithDefaultValue:&stru_2835DF758];
+  v3 = [MarrsSiriNLUTypesUtils firstRewrittenUtteranceOfResponse:response WithDefaultValue:&stru_2835DF758];
 
   return v3;
 }
 
-+ (id)firstRewrittenUtteranceOfResponse:(id)a3 WithDefaultValue:(id)a4
++ (id)firstRewrittenUtteranceOfResponse:(id)response WithDefaultValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  if ([MarrsSiriNLUTypesUtils isResponseEmpty:v5])
+  responseCopy = response;
+  valueCopy = value;
+  if ([MarrsSiriNLUTypesUtils isResponseEmpty:responseCopy])
   {
-    v7 = v6;
+    utterance = valueCopy;
   }
 
   else
   {
-    v8 = [v5 rewriteHypotheses];
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v7 = [v9 utterance];
+    rewriteHypotheses = [responseCopy rewriteHypotheses];
+    v9 = [rewriteHypotheses objectAtIndexedSubscript:0];
+    utterance = [v9 utterance];
   }
 
-  return v7;
+  return utterance;
 }
 
-+ (BOOL)isResponseEmpty:(id)a3
++ (BOOL)isResponseEmpty:(id)empty
 {
-  v3 = [a3 rewriteHypotheses];
-  v4 = [v3 count] == 0;
+  rewriteHypotheses = [empty rewriteHypotheses];
+  v4 = [rewriteHypotheses count] == 0;
 
   return v4;
 }

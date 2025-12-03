@@ -1,25 +1,25 @@
 @interface UIKitMainMenuController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (void)_performMainMenuShortcutKeyCommand:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)delete:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (void)_performMainMenuShortcutKeyCommand:(id)command;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)delete:(id)delete;
 @end
 
 @implementation UIKitMainMenuController
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  UIKitMainMenuController.buildMenu(with:)(a3);
+  selfCopy = self;
+  UIKitMainMenuController.buildMenu(with:)(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -28,7 +28,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   UIKitMainMenuController.delete(_:)();
@@ -36,11 +36,11 @@
   _sypSgWOhTm_4(v6, &lazy cache variable for type metadata for Any?, MEMORY[0x1E69E7CA0] + 8, MEMORY[0x1E69E6720], type metadata accessor for _ContiguousArrayStorage<MenuBuilderInstruction>);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -49,20 +49,20 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = UIKitMainMenuController.canPerformAction(_:withSender:)(a3, v10);
+  v8 = UIKitMainMenuController.canPerformAction(_:withSender:)(action, v10);
 
   _sypSgWOhTm_4(v10, &lazy cache variable for type metadata for Any?, MEMORY[0x1E69E7CA0] + 8, MEMORY[0x1E69E6720], type metadata accessor for _ContiguousArrayStorage<MenuBuilderInstruction>);
   return v8 & 1;
 }
 
-- (void)_performMainMenuShortcutKeyCommand:(id)a3
+- (void)_performMainMenuShortcutKeyCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  UIKitMainMenuController._performMainMenuShortcutKeyCommand(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  UIKitMainMenuController._performMainMenuShortcutKeyCommand(_:)(commandCopy);
 }
 
 @end

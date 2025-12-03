@@ -1,47 +1,47 @@
 @interface HKSleepSchedule
-+ (id)_sleepScheduleWithDate:(id)a3 weekdays:(unint64_t)a4 wakeTimeComponents:(id)a5 bedTimeComponents:(id)a6 overrideDayIndex:(id)a7 device:(id)a8 metadata:(id)a9 config:(id)a10;
-- (BOOL)hasEquivalentOverrideDayToSleepSchedule:(id)a3;
-- (BOOL)hasEquivalentTimesToSleepSchedule:(id)a3;
-- (BOOL)isEquivalent:(id)a3;
++ (id)_sleepScheduleWithDate:(id)date weekdays:(unint64_t)weekdays wakeTimeComponents:(id)components bedTimeComponents:(id)timeComponents overrideDayIndex:(id)index device:(id)device metadata:(id)metadata config:(id)self0;
+- (BOOL)hasEquivalentOverrideDayToSleepSchedule:(id)schedule;
+- (BOOL)hasEquivalentTimesToSleepSchedule:(id)schedule;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKSleepSchedule)init;
-- (HKSleepSchedule)initWithCoder:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)bedtimeDateIntervalForMorningIndex:(int64_t)a3 calendar:(id)a4;
-- (id)bedtimeDateIntervalForWakeTime:(id)a3 calendar:(id)a4;
+- (HKSleepSchedule)initWithCoder:(id)coder;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)bedtimeDateIntervalForMorningIndex:(int64_t)index calendar:(id)calendar;
+- (id)bedtimeDateIntervalForWakeTime:(id)time calendar:(id)calendar;
 - (id)description;
-- (id)wakeDateComponentsForMorningIndex:(int64_t)a3 calendar:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)wakeDateComponentsForMorningIndex:(int64_t)index calendar:(id)calendar;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSleepSchedule
 
-+ (id)_sleepScheduleWithDate:(id)a3 weekdays:(unint64_t)a4 wakeTimeComponents:(id)a5 bedTimeComponents:(id)a6 overrideDayIndex:(id)a7 device:(id)a8 metadata:(id)a9 config:(id)a10
++ (id)_sleepScheduleWithDate:(id)date weekdays:(unint64_t)weekdays wakeTimeComponents:(id)components bedTimeComponents:(id)timeComponents overrideDayIndex:(id)index device:(id)device metadata:(id)metadata config:(id)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a10;
+  componentsCopy = components;
+  timeComponentsCopy = timeComponents;
+  indexCopy = index;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __128__HKSleepSchedule__sleepScheduleWithDate_weekdays_wakeTimeComponents_bedTimeComponents_overrideDayIndex_device_metadata_config___block_invoke;
   aBlock[3] = &unk_1E7385A38;
-  v36 = v19;
-  v37 = a4;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v20 = v19;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = a9;
-  v25 = a8;
-  v26 = a3;
+  v36 = configCopy;
+  weekdaysCopy = weekdays;
+  v33 = componentsCopy;
+  v34 = timeComponentsCopy;
+  v35 = indexCopy;
+  v20 = configCopy;
+  v21 = indexCopy;
+  v22 = timeComponentsCopy;
+  v23 = componentsCopy;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  dateCopy = date;
   v27 = _Block_copy(aBlock);
   v28 = +[HKObjectType sleepScheduleType];
-  v31.receiver = a1;
+  v31.receiver = self;
   v31.super_class = &OBJC_METACLASS___HKSleepSchedule;
-  v29 = objc_msgSendSuper2(&v31, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v28, v26, v26, v25, v24, v27);
+  v29 = objc_msgSendSuper2(&v31, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v28, dateCopy, dateCopy, deviceCopy, metadataCopy, v27);
 
   return v29;
 }
@@ -74,23 +74,23 @@ void __128__HKSleepSchedule__sleepScheduleWithDate_weekdays_wakeTimeComponents_b
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HKSample *)self startDate];
+  startDate = [(HKSample *)self startDate];
   v6 = NSStringFromHKSleepScheduleWeekdays([(HKSleepSchedule *)self weekdays]);
-  v7 = [(HKSleepSchedule *)self wakeTimeComponents];
-  v8 = [v7 hk_dateOptionalDescription];
-  v9 = [(HKSleepSchedule *)self bedTimeComponents];
-  v10 = [v9 hk_dateOptionalDescription];
-  v11 = [(HKSleepSchedule *)self overrideDayIndex];
-  v12 = [v3 stringWithFormat:@"<%@:%p date: %@, days: %@, waketime: %@, bedtime: %@, day index: %@>", v4, self, v5, v6, v8, v10, v11, 0];
+  wakeTimeComponents = [(HKSleepSchedule *)self wakeTimeComponents];
+  hk_dateOptionalDescription = [wakeTimeComponents hk_dateOptionalDescription];
+  bedTimeComponents = [(HKSleepSchedule *)self bedTimeComponents];
+  hk_dateOptionalDescription2 = [bedTimeComponents hk_dateOptionalDescription];
+  overrideDayIndex = [(HKSleepSchedule *)self overrideDayIndex];
+  v12 = [v3 stringWithFormat:@"<%@:%p date: %@, days: %@, waketime: %@, bedtime: %@, day index: %@>", v4, self, startDate, v6, hk_dateOptionalDescription, hk_dateOptionalDescription2, overrideDayIndex, 0];
 
   return v12;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v14.receiver = self;
   v14.super_class = HKSleepSchedule;
-  v5 = [(HKSample *)&v14 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKSample *)&v14 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (!v5)
   {
@@ -128,19 +128,19 @@ LABEL_11:
   return v12;
 }
 
-- (id)wakeDateComponentsForMorningIndex:(int64_t)a3 calendar:(id)a4
+- (id)wakeDateComponentsForMorningIndex:(int64_t)index calendar:(id)calendar
 {
-  v6 = a4;
-  v7 = [(HKSleepSchedule *)self wakeTimeComponents];
+  calendarCopy = calendar;
+  wakeTimeComponents = [(HKSleepSchedule *)self wakeTimeComponents];
 
-  if (v7)
+  if (wakeTimeComponents)
   {
-    v8 = [MEMORY[0x1E695DF10] hk_componentsWithDayIndex:a3 calendar:v6];
-    v9 = [(HKSleepSchedule *)self wakeTimeComponents];
-    [v8 setHour:{objc_msgSend(v9, "hour")}];
+    v8 = [MEMORY[0x1E695DF10] hk_componentsWithDayIndex:index calendar:calendarCopy];
+    wakeTimeComponents2 = [(HKSleepSchedule *)self wakeTimeComponents];
+    [v8 setHour:{objc_msgSend(wakeTimeComponents2, "hour")}];
 
-    v10 = [(HKSleepSchedule *)self wakeTimeComponents];
-    [v8 setMinute:{objc_msgSend(v10, "minute")}];
+    wakeTimeComponents3 = [(HKSleepSchedule *)self wakeTimeComponents];
+    [v8 setMinute:{objc_msgSend(wakeTimeComponents3, "minute")}];
   }
 
   else
@@ -151,17 +151,17 @@ LABEL_11:
   return v8;
 }
 
-- (id)bedtimeDateIntervalForWakeTime:(id)a3 calendar:(id)a4
+- (id)bedtimeDateIntervalForWakeTime:(id)time calendar:(id)calendar
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKSleepSchedule *)self bedTimeComponents];
-  v9 = [v7 nextDateAfterDate:v6 matchingComponents:v8 options:516];
+  timeCopy = time;
+  calendarCopy = calendar;
+  bedTimeComponents = [(HKSleepSchedule *)self bedTimeComponents];
+  v9 = [calendarCopy nextDateAfterDate:timeCopy matchingComponents:bedTimeComponents options:516];
 
-  if (v9 && [v6 hk_isAfterOrEqualToDate:v9])
+  if (v9 && [timeCopy hk_isAfterOrEqualToDate:v9])
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:v6];
+    v10 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v9 endDate:timeCopy];
   }
 
   else
@@ -174,11 +174,11 @@ LABEL_11:
       v16 = 138544130;
       v17 = objc_opt_class();
       v18 = 2112;
-      v19 = v6;
+      v19 = timeCopy;
       v20 = 2112;
       v21 = v9;
       v22 = 2112;
-      v23 = self;
+      selfCopy = self;
       v15 = v17;
       _os_log_error_impl(&dword_19197B000, v14, OS_LOG_TYPE_ERROR, "[%{public}@] Found invalid bedtime interval (%@ - %@) for schedule: %@", &v16, 0x2Au);
     }
@@ -191,15 +191,15 @@ LABEL_11:
   return v10;
 }
 
-- (id)bedtimeDateIntervalForMorningIndex:(int64_t)a3 calendar:(id)a4
+- (id)bedtimeDateIntervalForMorningIndex:(int64_t)index calendar:(id)calendar
 {
-  v6 = a4;
-  v7 = [(HKSleepSchedule *)self wakeDateComponentsForMorningIndex:a3 calendar:v6];
-  v8 = [v7 date];
+  calendarCopy = calendar;
+  v7 = [(HKSleepSchedule *)self wakeDateComponentsForMorningIndex:index calendar:calendarCopy];
+  date = [v7 date];
 
-  if (v8)
+  if (date)
   {
-    v9 = [(HKSleepSchedule *)self bedtimeDateIntervalForWakeTime:v8 calendar:v6];
+    v9 = [(HKSleepSchedule *)self bedtimeDateIntervalForWakeTime:date calendar:calendarCopy];
   }
 
   else
@@ -210,30 +210,30 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)hasEquivalentTimesToSleepSchedule:(id)a3
+- (BOOL)hasEquivalentTimesToSleepSchedule:(id)schedule
 {
-  v4 = a3;
-  v5 = [(HKSleepSchedule *)self wakeTimeComponents];
-  v6 = [v4 wakeTimeComponents];
-  v7 = v6;
-  if (v5 == v6)
+  scheduleCopy = schedule;
+  wakeTimeComponents = [(HKSleepSchedule *)self wakeTimeComponents];
+  wakeTimeComponents2 = [scheduleCopy wakeTimeComponents];
+  v7 = wakeTimeComponents2;
+  if (wakeTimeComponents == wakeTimeComponents2)
   {
   }
 
   else
   {
-    v8 = [v4 wakeTimeComponents];
-    if (!v8)
+    wakeTimeComponents3 = [scheduleCopy wakeTimeComponents];
+    if (!wakeTimeComponents3)
     {
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    v9 = v8;
-    v10 = [(HKSleepSchedule *)self wakeTimeComponents];
-    v11 = [v4 wakeTimeComponents];
-    v12 = [v10 isEqual:v11];
+    v9 = wakeTimeComponents3;
+    wakeTimeComponents4 = [(HKSleepSchedule *)self wakeTimeComponents];
+    wakeTimeComponents5 = [scheduleCopy wakeTimeComponents];
+    v12 = [wakeTimeComponents4 isEqual:wakeTimeComponents5];
 
     if (!v12)
     {
@@ -241,10 +241,10 @@ LABEL_10:
     }
   }
 
-  v5 = [(HKSleepSchedule *)self bedTimeComponents];
-  v13 = [v4 bedTimeComponents];
-  v7 = v13;
-  if (v5 == v13)
+  wakeTimeComponents = [(HKSleepSchedule *)self bedTimeComponents];
+  bedTimeComponents = [scheduleCopy bedTimeComponents];
+  v7 = bedTimeComponents;
+  if (wakeTimeComponents == bedTimeComponents)
   {
 
 LABEL_13:
@@ -252,16 +252,16 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [v4 bedTimeComponents];
-  if (!v14)
+  bedTimeComponents2 = [scheduleCopy bedTimeComponents];
+  if (!bedTimeComponents2)
   {
     goto LABEL_10;
   }
 
-  v15 = v14;
-  v16 = [(HKSleepSchedule *)self bedTimeComponents];
-  v17 = [v4 bedTimeComponents];
-  v18 = [v16 isEqual:v17];
+  v15 = bedTimeComponents2;
+  bedTimeComponents3 = [(HKSleepSchedule *)self bedTimeComponents];
+  bedTimeComponents4 = [scheduleCopy bedTimeComponents];
+  v18 = [bedTimeComponents3 isEqual:bedTimeComponents4];
 
   if (v18)
   {
@@ -275,18 +275,18 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)hasEquivalentOverrideDayToSleepSchedule:(id)a3
+- (BOOL)hasEquivalentOverrideDayToSleepSchedule:(id)schedule
 {
-  v4 = a3;
-  if (-[HKSleepSchedule weekdays](self, "weekdays") || [v4 weekdays])
+  scheduleCopy = schedule;
+  if (-[HKSleepSchedule weekdays](self, "weekdays") || [scheduleCopy weekdays])
   {
     goto LABEL_3;
   }
 
-  v7 = [(HKSleepSchedule *)self overrideDayIndex];
-  v8 = [v4 overrideDayIndex];
-  v9 = v8;
-  if (v7 == v8)
+  overrideDayIndex = [(HKSleepSchedule *)self overrideDayIndex];
+  overrideDayIndex2 = [scheduleCopy overrideDayIndex];
+  v9 = overrideDayIndex2;
+  if (overrideDayIndex == overrideDayIndex2)
   {
 
 LABEL_10:
@@ -294,13 +294,13 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  v10 = [v4 overrideDayIndex];
-  if (v10)
+  overrideDayIndex3 = [scheduleCopy overrideDayIndex];
+  if (overrideDayIndex3)
   {
-    v11 = v10;
-    v12 = [(HKSleepSchedule *)self overrideDayIndex];
-    v13 = [v4 overrideDayIndex];
-    v14 = [v12 isEqual:v13];
+    v11 = overrideDayIndex3;
+    overrideDayIndex4 = [(HKSleepSchedule *)self overrideDayIndex];
+    overrideDayIndex5 = [scheduleCopy overrideDayIndex];
+    v14 = [overrideDayIndex4 isEqual:overrideDayIndex5];
 
     if (v14)
     {
@@ -319,36 +319,36 @@ LABEL_4:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKSleepSchedule;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_weekdays forKey:{@"Weekdays", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_wakeTimeComponents forKey:@"WakeTimeComponents"];
-  [v4 encodeObject:self->_bedTimeComponents forKey:@"BedTimeComponents"];
-  [v4 encodeObject:self->_overrideDayIndex forKey:@"OverrideDayIndex"];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_weekdays forKey:{@"Weekdays", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_wakeTimeComponents forKey:@"WakeTimeComponents"];
+  [coderCopy encodeObject:self->_bedTimeComponents forKey:@"BedTimeComponents"];
+  [coderCopy encodeObject:self->_overrideDayIndex forKey:@"OverrideDayIndex"];
 }
 
-- (HKSleepSchedule)initWithCoder:(id)a3
+- (HKSleepSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKSleepSchedule;
-  v5 = [(HKSample *)&v13 initWithCoder:v4];
+  v5 = [(HKSample *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_weekdays = [v4 decodeIntegerForKey:@"Weekdays"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WakeTimeComponents"];
+    v5->_weekdays = [coderCopy decodeIntegerForKey:@"Weekdays"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WakeTimeComponents"];
     wakeTimeComponents = v5->_wakeTimeComponents;
     v5->_wakeTimeComponents = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BedTimeComponents"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BedTimeComponents"];
     bedTimeComponents = v5->_bedTimeComponents;
     v5->_bedTimeComponents = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OverrideDayIndex"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OverrideDayIndex"];
     overrideDayIndex = v5->_overrideDayIndex;
     v5->_overrideDayIndex = v10;
   }
@@ -356,13 +356,13 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v29.receiver = self;
     v29.super_class = HKSleepSchedule;
     if (![(HKSample *)&v29 isEquivalent:v5])
@@ -370,31 +370,31 @@ LABEL_4:
       goto LABEL_20;
     }
 
-    v6 = [(HKSleepSchedule *)self weekdays];
-    if (v6 != [v5 weekdays])
+    weekdays = [(HKSleepSchedule *)self weekdays];
+    if (weekdays != [v5 weekdays])
     {
       goto LABEL_20;
     }
 
-    v7 = [(HKSleepSchedule *)self wakeTimeComponents];
-    v8 = [v5 wakeTimeComponents];
-    v9 = v8;
-    if (v7 == v8)
+    wakeTimeComponents = [(HKSleepSchedule *)self wakeTimeComponents];
+    wakeTimeComponents2 = [v5 wakeTimeComponents];
+    v9 = wakeTimeComponents2;
+    if (wakeTimeComponents == wakeTimeComponents2)
     {
     }
 
     else
     {
-      v10 = [v5 wakeTimeComponents];
-      if (!v10)
+      wakeTimeComponents3 = [v5 wakeTimeComponents];
+      if (!wakeTimeComponents3)
       {
         goto LABEL_19;
       }
 
-      v11 = v10;
-      v12 = [(HKSleepSchedule *)self wakeTimeComponents];
-      v13 = [v5 wakeTimeComponents];
-      v14 = [v12 isEqual:v13];
+      v11 = wakeTimeComponents3;
+      wakeTimeComponents4 = [(HKSleepSchedule *)self wakeTimeComponents];
+      wakeTimeComponents5 = [v5 wakeTimeComponents];
+      v14 = [wakeTimeComponents4 isEqual:wakeTimeComponents5];
 
       if (!v14)
       {
@@ -402,25 +402,25 @@ LABEL_4:
       }
     }
 
-    v7 = [(HKSleepSchedule *)self bedTimeComponents];
-    v16 = [v5 bedTimeComponents];
-    v9 = v16;
-    if (v7 == v16)
+    wakeTimeComponents = [(HKSleepSchedule *)self bedTimeComponents];
+    bedTimeComponents = [v5 bedTimeComponents];
+    v9 = bedTimeComponents;
+    if (wakeTimeComponents == bedTimeComponents)
     {
     }
 
     else
     {
-      v17 = [v5 bedTimeComponents];
-      if (!v17)
+      bedTimeComponents2 = [v5 bedTimeComponents];
+      if (!bedTimeComponents2)
       {
         goto LABEL_19;
       }
 
-      v18 = v17;
-      v19 = [(HKSleepSchedule *)self bedTimeComponents];
-      v20 = [v5 bedTimeComponents];
-      v21 = [v19 isEqual:v20];
+      v18 = bedTimeComponents2;
+      bedTimeComponents3 = [(HKSleepSchedule *)self bedTimeComponents];
+      bedTimeComponents4 = [v5 bedTimeComponents];
+      v21 = [bedTimeComponents3 isEqual:bedTimeComponents4];
 
       if (!v21)
       {
@@ -428,10 +428,10 @@ LABEL_4:
       }
     }
 
-    v7 = [(HKSleepSchedule *)self overrideDayIndex];
-    v22 = [v5 overrideDayIndex];
-    v9 = v22;
-    if (v7 == v22)
+    wakeTimeComponents = [(HKSleepSchedule *)self overrideDayIndex];
+    overrideDayIndex = [v5 overrideDayIndex];
+    v9 = overrideDayIndex;
+    if (wakeTimeComponents == overrideDayIndex)
     {
 
 LABEL_24:
@@ -439,13 +439,13 @@ LABEL_24:
       goto LABEL_21;
     }
 
-    v23 = [v5 overrideDayIndex];
-    if (v23)
+    overrideDayIndex2 = [v5 overrideDayIndex];
+    if (overrideDayIndex2)
     {
-      v24 = v23;
-      v25 = [(HKSleepSchedule *)self overrideDayIndex];
-      v26 = [v5 overrideDayIndex];
-      v27 = [v25 isEqual:v26];
+      v24 = overrideDayIndex2;
+      overrideDayIndex3 = [(HKSleepSchedule *)self overrideDayIndex];
+      overrideDayIndex4 = [v5 overrideDayIndex];
+      v27 = [overrideDayIndex3 isEqual:overrideDayIndex4];
 
       if (v27)
       {

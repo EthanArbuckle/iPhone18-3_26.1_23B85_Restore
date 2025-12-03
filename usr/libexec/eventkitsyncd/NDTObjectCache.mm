@@ -1,71 +1,71 @@
 @interface NDTObjectCache
-- (NDTObjectCache)initWithCapacity:(int64_t)a3;
+- (NDTObjectCache)initWithCapacity:(int64_t)capacity;
 - (double)hitRatio;
-- (id)cachedCopy:(id)a3;
+- (id)cachedCopy:(id)copy;
 - (id)description;
 - (void)purge;
 @end
 
 @implementation NDTObjectCache
 
-- (NDTObjectCache)initWithCapacity:(int64_t)a3
+- (NDTObjectCache)initWithCapacity:(int64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = NDTObjectCache;
   v4 = [(NDTObjectCache *)&v8 init];
   if (v4)
   {
-    v5 = [[NSMutableOrderedSet alloc] initWithCapacity:a3];
+    v5 = [[NSMutableOrderedSet alloc] initWithCapacity:capacity];
     cache = v4->_cache;
     v4->_cache = v5;
 
-    v4->_capacity = a3;
+    v4->_capacity = capacity;
     v4->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v4;
 }
 
-- (id)cachedCopy:(id)a3
+- (id)cachedCopy:(id)copy
 {
-  v4 = a3;
+  copyCopy = copy;
   os_unfair_lock_lock(&self->_lock);
   [(NDTObjectCache *)self setAccesses:[(NDTObjectCache *)self accesses]+ 1];
-  v5 = [(NDTObjectCache *)self cache];
-  v6 = [v5 indexOfObject:v4];
+  cache = [(NDTObjectCache *)self cache];
+  v6 = [cache indexOfObject:copyCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 copy];
+    v7 = [copyCopy copy];
     while (1)
     {
-      v8 = [(NDTObjectCache *)self cache];
-      v9 = [v8 count];
-      v10 = [(NDTObjectCache *)self capacity];
+      cache2 = [(NDTObjectCache *)self cache];
+      v9 = [cache2 count];
+      capacity = [(NDTObjectCache *)self capacity];
 
-      if (v9 < v10)
+      if (v9 < capacity)
       {
         break;
       }
 
-      v11 = [(NDTObjectCache *)self cache];
-      v12 = [(NDTObjectCache *)self cache];
-      [v11 removeObjectAtIndex:{objc_msgSend(v12, "count") - 1}];
+      cache3 = [(NDTObjectCache *)self cache];
+      cache4 = [(NDTObjectCache *)self cache];
+      [cache3 removeObjectAtIndex:{objc_msgSend(cache4, "count") - 1}];
     }
   }
 
   else
   {
     [(NDTObjectCache *)self setHits:[(NDTObjectCache *)self hits]+ 1];
-    v13 = [(NDTObjectCache *)self cache];
-    v7 = [v13 objectAtIndex:v6];
+    cache5 = [(NDTObjectCache *)self cache];
+    v7 = [cache5 objectAtIndex:v6];
 
-    v14 = [(NDTObjectCache *)self cache];
-    [v14 removeObjectAtIndex:v6];
+    cache6 = [(NDTObjectCache *)self cache];
+    [cache6 removeObjectAtIndex:v6];
   }
 
-  v15 = [(NDTObjectCache *)self cache];
-  [v15 insertObject:v7 atIndex:0];
+  cache7 = [(NDTObjectCache *)self cache];
+  [cache7 insertObject:v7 atIndex:0];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -75,8 +75,8 @@
 - (void)purge
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NDTObjectCache *)self cache];
-  [v3 removeAllObjects];
+  cache = [(NDTObjectCache *)self cache];
+  [cache removeAllObjects];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -91,8 +91,8 @@
 
   else
   {
-    v3 = [(NDTObjectCache *)self hits];
-    v4 = v3 / [(NDTObjectCache *)self accesses];
+    hits = [(NDTObjectCache *)self hits];
+    v4 = hits / [(NDTObjectCache *)self accesses];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -103,9 +103,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(NDTObjectCache *)self capacity];
+  capacity = [(NDTObjectCache *)self capacity];
   [(NDTObjectCache *)self hitRatio];
-  v7 = [NSString stringWithFormat:@"<%@:%p capacity:%d, hitRatio:%f>", v4, self, v5, v6];
+  v7 = [NSString stringWithFormat:@"<%@:%p capacity:%d, hitRatio:%f>", v4, self, capacity, v6];
 
   return v7;
 }

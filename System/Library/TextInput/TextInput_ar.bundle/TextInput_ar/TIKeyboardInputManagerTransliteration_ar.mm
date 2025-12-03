@@ -2,10 +2,10 @@
 + (id)arabicPrefixes;
 + (id)rtlMarkExcludedClientIdentifiers;
 - (BOOL)shouldExcludeRtlMarkHandling;
-- (void)addInput:(id)a3 withContext:(id)a4;
-- (void)addRtlMark:(id)a3;
-- (void)handleSpaceDeletionWithContext:(id)a3;
-- (void)removeRtlMark:(id)a3;
+- (void)addInput:(id)input withContext:(id)context;
+- (void)addRtlMark:(id)mark;
+- (void)handleSpaceDeletionWithContext:(id)context;
+- (void)removeRtlMark:(id)mark;
 @end
 
 @implementation TIKeyboardInputManagerTransliteration_ar
@@ -36,77 +36,77 @@
 
 - (BOOL)shouldExcludeRtlMarkHandling
 {
-  v3 = [objc_opt_class() rtlMarkExcludedClientIdentifiers];
-  v4 = [(TIKeyboardInputManagerTransliteration_ar *)self keyboardState];
-  v5 = [v4 clientIdentifier];
-  v6 = [v3 containsObject:v5];
+  rtlMarkExcludedClientIdentifiers = [objc_opt_class() rtlMarkExcludedClientIdentifiers];
+  keyboardState = [(TIKeyboardInputManagerTransliteration_ar *)self keyboardState];
+  clientIdentifier = [keyboardState clientIdentifier];
+  v6 = [rtlMarkExcludedClientIdentifiers containsObject:clientIdentifier];
 
   return v6;
 }
 
-- (void)addInput:(id)a3 withContext:(id)a4
+- (void)addInput:(id)input withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  contextCopy = context;
   if (![(TIKeyboardInputManagerTransliteration_ar *)self shouldExcludeRtlMarkHandling])
   {
-    [(TIKeyboardInputManagerTransliteration_ar *)self addRtlMark:v7];
+    [(TIKeyboardInputManagerTransliteration_ar *)self addRtlMark:contextCopy];
   }
 
   v8.receiver = self;
   v8.super_class = TIKeyboardInputManagerTransliteration_ar;
-  [(TIKeyboardInputManagerTransliteration_ar *)&v8 addInput:v6 withContext:v7];
+  [(TIKeyboardInputManagerTransliteration_ar *)&v8 addInput:inputCopy withContext:contextCopy];
   if (![(TIKeyboardInputManagerTransliteration_ar *)self shouldExcludeRtlMarkHandling])
   {
-    [(TIKeyboardInputManagerTransliteration_ar *)self removeRtlMark:v7];
+    [(TIKeyboardInputManagerTransliteration_ar *)self removeRtlMark:contextCopy];
   }
 
-  [(TIKeyboardInputManagerTransliteration_ar *)self handleSpaceDeletionWithContext:v7];
+  [(TIKeyboardInputManagerTransliteration_ar *)self handleSpaceDeletionWithContext:contextCopy];
 }
 
-- (void)addRtlMark:(id)a3
+- (void)addRtlMark:(id)mark
 {
-  v11 = a3;
-  v3 = [v11 revisionHistory];
-  v4 = [v3 documentText];
-  v5 = [v4 length];
+  markCopy = mark;
+  revisionHistory = [markCopy revisionHistory];
+  documentText = [revisionHistory documentText];
+  v5 = [documentText length];
 
   if (!v5)
   {
     goto LABEL_3;
   }
 
-  v6 = [v11 revisionHistory];
-  v7 = [v6 documentText];
-  v8 = [v11 revisionHistory];
-  v9 = [v8 documentText];
-  v10 = [v7 characterAtIndex:{objc_msgSend(v9, "length") - 1}];
+  revisionHistory2 = [markCopy revisionHistory];
+  documentText2 = [revisionHistory2 documentText];
+  revisionHistory3 = [markCopy revisionHistory];
+  documentText3 = [revisionHistory3 documentText];
+  v10 = [documentText2 characterAtIndex:{objc_msgSend(documentText3, "length") - 1}];
 
   if (v10 == 10)
   {
 LABEL_3:
-    [v11 insertText:@"\u200F"];
+    [markCopy insertText:@"\u200F"];
   }
 }
 
-- (void)removeRtlMark:(id)a3
+- (void)removeRtlMark:(id)mark
 {
-  v20 = a3;
-  v3 = [v20 revisionHistory];
-  v4 = [v3 documentText];
+  markCopy = mark;
+  revisionHistory = [markCopy revisionHistory];
+  documentText = [revisionHistory documentText];
 
-  v5 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 componentsSeparatedByCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v6 = [documentText componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v6 count] >= 2)
   {
-    if ([v4 characterAtIndex:0] == 8207)
+    if ([documentText characterAtIndex:0] == 8207)
     {
-      [v20 deleteBackward:{objc_msgSend(v4, "length")}];
-      v7 = [v4 substringFromIndex:1];
+      [markCopy deleteBackward:{objc_msgSend(documentText, "length")}];
+      v7 = [documentText substringFromIndex:1];
       if ([v7 length])
       {
-        [v20 insertText:v7];
+        [markCopy insertText:v7];
       }
     }
 
@@ -133,7 +133,7 @@ LABEL_3:
       v13 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 2}];
       v14 = v12 + [v13 length];
 
-      [v20 deleteBackward:v14 + 1];
+      [markCopy deleteBackward:v14 + 1];
       v15 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") - 2}];
       LODWORD(v14) = [v15 isEqualToString:@"\u200F"];
 
@@ -153,7 +153,7 @@ LABEL_3:
 
       if ([v19 length])
       {
-        [v20 insertText:v19];
+        [markCopy insertText:v19];
       }
     }
   }
@@ -161,14 +161,14 @@ LABEL_3:
 LABEL_15:
 }
 
-- (void)handleSpaceDeletionWithContext:(id)a3
+- (void)handleSpaceDeletionWithContext:(id)context
 {
   v43 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [v3 revisionHistory];
-  v5 = [v4 documentText];
+  contextCopy = context;
+  revisionHistory = [contextCopy revisionHistory];
+  documentText = [revisionHistory documentText];
 
-  v6 = [v5 length];
+  v6 = [documentText length];
   [objc_opt_class() arabicPrefixes];
   v36 = 0u;
   v37 = 0u;
@@ -176,7 +176,7 @@ LABEL_15:
   v7 = v39 = 0u;
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
   v26 = v7;
-  v27 = v3;
+  v27 = contextCopy;
   if (v8)
   {
     v9 = v8;
@@ -191,7 +191,7 @@ LABEL_3:
       }
 
       v12 = [MEMORY[0x29EDBA0F8] stringWithFormat:@" %@ ", *(*(&v36 + 1) + 8 * v11)];
-      if ([v5 hasSuffix:v12])
+      if ([documentText hasSuffix:v12])
       {
         goto LABEL_32;
       }
@@ -231,7 +231,7 @@ LABEL_23:
         }
 
         v12 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ ", *(*(&v28 + 1) + 8 * v24)];
-        if (v6 == [v12 length] && (objc_msgSend(v5, "hasSuffix:", v12) & 1) != 0)
+        if (v6 == [v12 length] && (objc_msgSend(documentText, "hasSuffix:", v12) & 1) != 0)
         {
           goto LABEL_31;
         }
@@ -273,10 +273,10 @@ LABEL_12:
 
         v18 = *(*(&v32 + 1) + 8 * v17);
         v12 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@ ", v18];
-        if ([v5 hasSuffix:v12])
+        if ([documentText hasSuffix:v12])
         {
           v19 = [v18 length];
-          if (v6 >= v19 + 2 && [v5 characterAtIndex:v6 - 2 - v19] == 10)
+          if (v6 >= v19 + 2 && [documentText characterAtIndex:v6 - 2 - v19] == 10)
           {
             break;
           }
@@ -295,9 +295,9 @@ LABEL_12:
       }
 
 LABEL_31:
-      v3 = v27;
+      contextCopy = v27;
 LABEL_32:
-      [v3 deleteTextBackward:@" "];
+      [contextCopy deleteTextBackward:@" "];
     }
   }
 

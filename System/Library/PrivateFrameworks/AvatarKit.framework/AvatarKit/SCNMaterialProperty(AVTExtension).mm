@@ -10,7 +10,7 @@
   v6[1] = a3;
   v6[2] = a4;
   v6[3] = a5;
-  return [a1 setContentsTransform:v6];
+  return [self setContentsTransform:v6];
 }
 
 @end

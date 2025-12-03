@@ -1,7 +1,7 @@
 @interface PHFigDecoder
 + (id)sharedDecoder;
-- (id)decodeImageFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)cancelInFlightAsyncDecodeForRequestHandle:(id)a3;
+- (id)decodeImageFromData:(id)data orFileURL:(id)l options:(id)options completion:(id)completion;
+- (void)cancelInFlightAsyncDecodeForRequestHandle:(id)handle;
 @end
 
 @implementation PHFigDecoder
@@ -25,60 +25,60 @@ uint64_t __29__PHFigDecoder_sharedDecoder__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)cancelInFlightAsyncDecodeForRequestHandle:(id)a3
+- (void)cancelInFlightAsyncDecodeForRequestHandle:(id)handle
 {
-  v3 = a3;
-  if ([v3 figRequestID] && objc_msgSend(v3, "figDecompressionContainer"))
+  handleCopy = handle;
+  if ([handleCopy figRequestID] && objc_msgSend(handleCopy, "figDecompressionContainer"))
   {
-    [v3 figRequestID];
+    [handleCopy figRequestID];
     CMPhotoDecompressionContainerCancelAsyncRequest();
-    [v3 figGainMapRequestID];
+    [handleCopy figGainMapRequestID];
     CMPhotoDecompressionContainerCancelAsyncRequest();
   }
 }
 
-- (id)decodeImageFromData:(id)a3 orFileURL:(id)a4 options:(id)a5 completion:(id)a6
+- (id)decodeImageFromData:(id)data orFileURL:(id)l options:(id)options completion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  lCopy = l;
+  optionsCopy = options;
+  completionCopy = completion;
   PFSharedFigDecodeSession();
-  v14 = [v12 shouldLoadGainMap];
-  if (v11)
+  shouldLoadGainMap = [optionsCopy shouldLoadGainMap];
+  if (lCopy)
   {
-    v15 = v11;
+    v15 = lCopy;
   }
 
   else
   {
-    v15 = v10;
+    v15 = dataCopy;
   }
 
   v59 = v15;
   v16 = malloc_type_calloc(1uLL, 0x70uLL, 0x10A0040365111DBuLL);
-  objc_storeStrong(v16 + 6, a5);
-  *v16 = [v12 maximumLongSideLength];
-  *(v16 + 1) = [v12 resizeMode];
-  *(v16 + 16) = [v12 optimizeForDrawing];
-  *(v16 + 17) = [v12 highPriority];
-  *(v16 + 18) = [v12 waitUntilComplete];
-  v17 = v14;
-  objc_storeStrong(v16 + 8, a3);
-  v18 = a4;
-  v19 = v13;
-  objc_storeStrong(v16 + 7, v18);
-  v20 = _Block_copy(v13);
+  objc_storeStrong(v16 + 6, options);
+  *v16 = [optionsCopy maximumLongSideLength];
+  *(v16 + 1) = [optionsCopy resizeMode];
+  *(v16 + 16) = [optionsCopy optimizeForDrawing];
+  *(v16 + 17) = [optionsCopy highPriority];
+  *(v16 + 18) = [optionsCopy waitUntilComplete];
+  v17 = shouldLoadGainMap;
+  objc_storeStrong(v16 + 8, data);
+  lCopy2 = l;
+  v19 = completionCopy;
+  objc_storeStrong(v16 + 7, lCopy2);
+  v20 = _Block_copy(completionCopy);
   v21 = *(v16 + 9);
   *(v16 + 9) = v20;
 
   *(v16 + 11) = 0;
-  *(v16 + 19) = [v12 allowFallbackDecoder];
-  *(v16 + 20) = [v12 preferSWDecode];
-  *(v16 + 21) = [v12 useLowMemoryMode];
+  *(v16 + 19) = [optionsCopy allowFallbackDecoder];
+  *(v16 + 20) = [optionsCopy preferSWDecode];
+  *(v16 + 21) = [optionsCopy useLowMemoryMode];
   *(v16 + 12) = 0;
-  if (v14)
+  if (shouldLoadGainMap)
   {
     v22 = 2;
   }
@@ -92,7 +92,7 @@ uint64_t __29__PHFigDecoder_sharedDecoder__block_invoke()
   atomic_store(0, v16 + 9);
   CMPhotoDecompressionSessionReserveRequestID();
   v23 = _figDecodeOptionsFromContext(v16, 0, 0);
-  if (![v12 waitUntilComplete])
+  if (![optionsCopy waitUntilComplete])
   {
     cf = 0;
     Container = CMPhotoDecompressionSessionCreateContainer();
@@ -134,7 +134,7 @@ uint64_t __29__PHFigDecoder_sharedDecoder__block_invoke()
       if (*(v16 + 19) == 1)
       {
         v42 = +[PHImageIODecoder sharedDecoder];
-        v43 = [v42 decodeImageFromData:v10 orFileURL:v11 options:v12 completion:v55];
+        v43 = [v42 decodeImageFromData:dataCopy orFileURL:lCopy options:optionsCopy completion:v55];
       }
 
       else
@@ -207,9 +207,9 @@ LABEL_44:
     goto LABEL_48;
   }
 
-  v24 = v12;
-  v25 = v10;
-  v58 = v11;
+  v24 = optionsCopy;
+  v25 = dataCopy;
+  v58 = lCopy;
   v56 = v19;
   cf = 0;
   CGImageForIndex = CMPhotoDecompressionCreateCGImageForIndex();
@@ -218,7 +218,7 @@ LABEL_44:
     if (*(v16 + 19) == 1)
     {
       v27 = CGImageForIndex;
-      v54 = v10;
+      v54 = dataCopy;
       v28 = v25;
       v29 = PLImageManagerGetLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -235,7 +235,7 @@ LABEL_44:
 
       v25 = v28;
       v32 = v56;
-      v10 = v54;
+      dataCopy = v54;
       v33 = v24;
     }
 

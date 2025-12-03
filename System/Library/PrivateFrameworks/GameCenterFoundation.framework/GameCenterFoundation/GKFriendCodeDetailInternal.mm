@@ -1,20 +1,20 @@
 @interface GKFriendCodeDetailInternal
 + (id)secureCodedPropertyKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation GKFriendCodeDetailInternal
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(GKFriendCodeDetailInternal *)self creatorPlayerID];
-  [v4 setCreatorPlayerID:v5];
+  creatorPlayerID = [(GKFriendCodeDetailInternal *)self creatorPlayerID];
+  [v4 setCreatorPlayerID:creatorPlayerID];
 
   [v4 setFriendCodeState:{-[GKFriendCodeDetailInternal friendCodeState](self, "friendCodeState")}];
   [v4 setFriendCodeUsageCount:{-[GKFriendCodeDetailInternal friendCodeUsageCount](self, "friendCodeUsageCount")}];
-  v6 = [(GKFriendCodeDetailInternal *)self alreadyUsedPlayerIDs];
-  [v4 setAlreadyUsedPlayerIDs:v6];
+  alreadyUsedPlayerIDs = [(GKFriendCodeDetailInternal *)self alreadyUsedPlayerIDs];
+  [v4 setAlreadyUsedPlayerIDs:alreadyUsedPlayerIDs];
 
   return v4;
 }

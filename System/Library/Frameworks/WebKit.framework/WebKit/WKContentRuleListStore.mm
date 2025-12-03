@@ -1,31 +1,31 @@
 @interface WKContentRuleListStore
 + (WKContentRuleListStore)defaultStore;
 + (WKContentRuleListStore)storeWithURL:(NSURL *)url;
-+ (WKContentRuleListStore)storeWithURLAndLegacyFilename:(id)a3;
++ (WKContentRuleListStore)storeWithURLAndLegacyFilename:(id)filename;
 + (id)defaultStoreWithLegacyFilename;
 - (Ref<API::ContentRuleListStore,)_protectedContentListStore;
-- (uint64_t)compileContentRuleListForIdentifier:(const void *)a1 encodedContentRuleList:completionHandler:;
-- (uint64_t)compileContentRuleListForIdentifier:(uint64_t)a1 encodedContentRuleList:completionHandler:;
-- (uint64_t)getAvailableContentRuleListIdentifiers:(const void *)a1;
-- (uint64_t)getAvailableContentRuleListIdentifiers:(uint64_t)a1;
-- (uint64_t)lookUpContentRuleListForIdentifier:(const void *)a1 completionHandler:;
-- (uint64_t)lookUpContentRuleListForIdentifier:(uint64_t)a1 completionHandler:;
-- (uint64_t)removeContentRuleListForIdentifier:(const void *)a1 completionHandler:;
-- (uint64_t)removeContentRuleListForIdentifier:(uint64_t)a1 completionHandler:;
-- (void)_corruptContentRuleListActionsMatchingEverythingForIdentifier:(id)a3;
-- (void)_corruptContentRuleListHeaderForIdentifier:(id)a3 usingCurrentVersion:(BOOL)a4;
-- (void)_getContentRuleListSourceForIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)_invalidateContentRuleListHeaderForIdentifier:(id)a3;
-- (void)_invalidateContentRuleListVersionForIdentifier:(id)a3;
+- (uint64_t)compileContentRuleListForIdentifier:(const void *)identifier encodedContentRuleList:completionHandler:;
+- (uint64_t)compileContentRuleListForIdentifier:(uint64_t)identifier encodedContentRuleList:completionHandler:;
+- (uint64_t)getAvailableContentRuleListIdentifiers:(const void *)identifiers;
+- (uint64_t)getAvailableContentRuleListIdentifiers:(uint64_t)identifiers;
+- (uint64_t)lookUpContentRuleListForIdentifier:(const void *)identifier completionHandler:;
+- (uint64_t)lookUpContentRuleListForIdentifier:(uint64_t)identifier completionHandler:;
+- (uint64_t)removeContentRuleListForIdentifier:(const void *)identifier completionHandler:;
+- (uint64_t)removeContentRuleListForIdentifier:(uint64_t)identifier completionHandler:;
+- (void)_corruptContentRuleListActionsMatchingEverythingForIdentifier:(id)identifier;
+- (void)_corruptContentRuleListHeaderForIdentifier:(id)identifier usingCurrentVersion:(BOOL)version;
+- (void)_getContentRuleListSourceForIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_invalidateContentRuleListHeaderForIdentifier:(id)identifier;
+- (void)_invalidateContentRuleListVersionForIdentifier:(id)identifier;
 - (void)_removeAllContentRuleLists;
 - (void)compileContentRuleListForIdentifier:(NSString *)identifier encodedContentRuleList:(NSString *)encodedContentRuleList completionHandler:(void *)completionHandler;
-- (void)compileContentRuleListForIdentifier:(uint64_t)a3 encodedContentRuleList:(const std::error_category *)a4 completionHandler:;
+- (void)compileContentRuleListForIdentifier:(uint64_t)identifier encodedContentRuleList:(const std::error_category *)list completionHandler:;
 - (void)dealloc;
 - (void)getAvailableContentRuleListIdentifiers:(void *)completionHandler;
 - (void)lookUpContentRuleListForIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
-- (void)lookUpContentRuleListForIdentifier:(uint64_t)a3 completionHandler:(const std::error_category *)a4;
+- (void)lookUpContentRuleListForIdentifier:(uint64_t)identifier completionHandler:(const std::error_category *)handler;
 - (void)removeContentRuleListForIdentifier:(NSString *)identifier completionHandler:(void *)completionHandler;
-- (void)removeContentRuleListForIdentifier:(const std::error_category *)a3 completionHandler:;
+- (void)removeContentRuleListForIdentifier:(const std::error_category *)identifier completionHandler:;
 @end
 
 @implementation WKContentRuleListStore
@@ -72,7 +72,7 @@
 
 + (WKContentRuleListStore)defaultStore
 {
-  v2 = *(API::ContentRuleListStore::defaultStoreSingleton(a1) + 1);
+  v2 = *(API::ContentRuleListStore::defaultStoreSingleton(self) + 1);
   if (!v2)
   {
     return v2;
@@ -318,7 +318,7 @@
   }
 }
 
-- (void)_invalidateContentRuleListVersionForIdentifier:(id)a3
+- (void)_invalidateContentRuleListVersionForIdentifier:(id)identifier
 {
   if (self)
   {
@@ -332,7 +332,7 @@
     v10 = 0;
   }
 
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, identifier);
   API::ContentRuleListStore::invalidateContentRuleListVersion(v4, &v9, v5);
   v7 = v9;
   v9 = 0;
@@ -349,9 +349,9 @@
   }
 }
 
-- (void)_corruptContentRuleListHeaderForIdentifier:(id)a3 usingCurrentVersion:(BOOL)a4
+- (void)_corruptContentRuleListHeaderForIdentifier:(id)identifier usingCurrentVersion:(BOOL)version
 {
-  v4 = a4;
+  versionCopy = version;
   if (self)
   {
     [(WKContentRuleListStore *)self _protectedContentListStore];
@@ -364,8 +364,8 @@
     v11 = 0;
   }
 
-  MEMORY[0x19EB02040](&v10, a3);
-  API::ContentRuleListStore::corruptContentRuleListHeader(v6, &v10, v4);
+  MEMORY[0x19EB02040](&v10, identifier);
+  API::ContentRuleListStore::corruptContentRuleListHeader(v6, &v10, versionCopy);
   v8 = v10;
   v10 = 0;
   if (v8 && atomic_fetch_add_explicit(v8, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -381,7 +381,7 @@
   }
 }
 
-- (void)_corruptContentRuleListActionsMatchingEverythingForIdentifier:(id)a3
+- (void)_corruptContentRuleListActionsMatchingEverythingForIdentifier:(id)identifier
 {
   if (self)
   {
@@ -395,7 +395,7 @@
     v10 = 0;
   }
 
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, identifier);
   API::ContentRuleListStore::corruptContentRuleListActionsMatchingEverything(v4, &v9, v5);
   v7 = v9;
   v9 = 0;
@@ -412,7 +412,7 @@
   }
 }
 
-- (void)_invalidateContentRuleListHeaderForIdentifier:(id)a3
+- (void)_invalidateContentRuleListHeaderForIdentifier:(id)identifier
 {
   if (self)
   {
@@ -426,7 +426,7 @@
     v10 = 0;
   }
 
-  MEMORY[0x19EB02040](&v9, a3);
+  MEMORY[0x19EB02040](&v9, identifier);
   API::ContentRuleListStore::invalidateContentRuleListHeader(v4, &v9, v5);
   v7 = v9;
   v9 = 0;
@@ -443,9 +443,9 @@
   }
 }
 
-- (void)_getContentRuleListSourceForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)_getContentRuleListSourceForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = [a4 copy];
+  v6 = [handler copy];
   if (self)
   {
     [(WKContentRuleListStore *)self _protectedContentListStore];
@@ -457,7 +457,7 @@
     v15 = 0;
   }
 
-  MEMORY[0x19EB02040](&v14, a3);
+  MEMORY[0x19EB02040](&v14, identifier);
   if (v6)
   {
     v7 = v6;
@@ -496,7 +496,7 @@
 
 + (id)defaultStoreWithLegacyFilename
 {
-  v2 = *(API::ContentRuleListStore::defaultStoreSingleton(a1) + 1);
+  v2 = *(API::ContentRuleListStore::defaultStoreSingleton(self) + 1);
   if (!v2)
   {
     return v2;
@@ -513,9 +513,9 @@
   return result;
 }
 
-+ (WKContentRuleListStore)storeWithURLAndLegacyFilename:(id)a3
++ (WKContentRuleListStore)storeWithURLAndLegacyFilename:(id)filename
 {
-  MEMORY[0x19EB02040](&v11, [objc_msgSend(a3 "absoluteURL")]);
+  MEMORY[0x19EB02040](&v11, [objc_msgSend(filename "absoluteURL")]);
   v3 = API::Object::newObject(0x18uLL, 48);
   v4 = *(API::ContentRuleListStore::ContentRuleListStore(v3, &v11) + 1);
   if (v4)
@@ -552,29 +552,29 @@
   return v4;
 }
 
-- (uint64_t)compileContentRuleListForIdentifier:(uint64_t)a1 encodedContentRuleList:completionHandler:
+- (uint64_t)compileContentRuleListForIdentifier:(uint64_t)identifier encodedContentRuleList:completionHandler:
 {
-  *a1 = &unk_1F10F4A28;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *identifier = &unk_1F10F4A28;
+  _Block_release(*(identifier + 8));
+  return identifier;
 }
 
-- (uint64_t)compileContentRuleListForIdentifier:(const void *)a1 encodedContentRuleList:completionHandler:
+- (uint64_t)compileContentRuleListForIdentifier:(const void *)identifier encodedContentRuleList:completionHandler:
 {
-  *a1 = &unk_1F10F4A28;
-  _Block_release(a1[1]);
+  *identifier = &unk_1F10F4A28;
+  _Block_release(identifier[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(identifier, v2);
 }
 
-- (void)compileContentRuleListForIdentifier:(uint64_t)a3 encodedContentRuleList:(const std::error_category *)a4 completionHandler:
+- (void)compileContentRuleListForIdentifier:(uint64_t)identifier encodedContentRuleList:(const std::error_category *)list completionHandler:
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v5 = *a2;
   *a2 = 0;
-  *&v13.__val_ = a3;
-  v13.__cat_ = a4;
-  if (!a3)
+  *&v13.__val_ = identifier;
+  v13.__cat_ = list;
+  if (!identifier)
   {
     if (*(v5 + 8))
     {
@@ -586,7 +586,7 @@
       }
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
 LABEL_18:
     CFRelease(*(v5 + 8));
     return;
@@ -624,7 +624,7 @@ LABEL_18:
   }
 
   [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:6 userInfo:v10];
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v10)
   {
   }
@@ -635,29 +635,29 @@ LABEL_18:
   }
 }
 
-- (uint64_t)lookUpContentRuleListForIdentifier:(uint64_t)a1 completionHandler:
+- (uint64_t)lookUpContentRuleListForIdentifier:(uint64_t)identifier completionHandler:
 {
-  *a1 = &unk_1F10F4A50;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *identifier = &unk_1F10F4A50;
+  _Block_release(*(identifier + 8));
+  return identifier;
 }
 
-- (uint64_t)lookUpContentRuleListForIdentifier:(const void *)a1 completionHandler:
+- (uint64_t)lookUpContentRuleListForIdentifier:(const void *)identifier completionHandler:
 {
-  *a1 = &unk_1F10F4A50;
-  _Block_release(a1[1]);
+  *identifier = &unk_1F10F4A50;
+  _Block_release(identifier[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(identifier, v2);
 }
 
-- (void)lookUpContentRuleListForIdentifier:(uint64_t)a3 completionHandler:(const std::error_category *)a4
+- (void)lookUpContentRuleListForIdentifier:(uint64_t)identifier completionHandler:(const std::error_category *)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v5 = *a2;
   *a2 = 0;
-  *&v14.__val_ = a3;
-  v14.__cat_ = a4;
-  if (!a3)
+  *&v14.__val_ = identifier;
+  v14.__cat_ = handler;
+  if (!identifier)
   {
     if (*(v5 + 8))
     {
@@ -669,7 +669,7 @@ LABEL_18:
       }
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     goto LABEL_20;
   }
 
@@ -715,7 +715,7 @@ LABEL_18:
   }
 
   [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:v12 userInfo:v10];
-  (*(*(a1 + 8) + 16))();
+  (*(*(self + 8) + 16))();
   if (v10)
   {
   }
@@ -727,7 +727,7 @@ LABEL_20:
   }
 }
 
-- (uint64_t)getAvailableContentRuleListIdentifiers:(uint64_t)a1
+- (uint64_t)getAvailableContentRuleListIdentifiers:(uint64_t)identifiers
 {
   v7[0] = *a2;
   v3 = a2[1];
@@ -735,7 +735,7 @@ LABEL_20:
   a2[1] = 0;
   v7[1] = v3;
   WTF::createNSArray<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> &>(v7, &v8);
-  (*(*(a1 + 8) + 16))();
+  (*(*(identifiers + 8) + 16))();
   v5 = v8;
   v8 = 0;
   if (v5)
@@ -745,34 +745,34 @@ LABEL_20:
   return WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(v7, v4);
 }
 
-- (uint64_t)getAvailableContentRuleListIdentifiers:(const void *)a1
+- (uint64_t)getAvailableContentRuleListIdentifiers:(const void *)identifiers
 {
-  *a1 = &unk_1F10F4A78;
-  _Block_release(a1[1]);
+  *identifiers = &unk_1F10F4A78;
+  _Block_release(identifiers[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(identifiers, v2);
 }
 
-- (uint64_t)removeContentRuleListForIdentifier:(uint64_t)a1 completionHandler:
+- (uint64_t)removeContentRuleListForIdentifier:(uint64_t)identifier completionHandler:
 {
-  *a1 = &unk_1F10F4AA0;
-  _Block_release(*(a1 + 8));
-  return a1;
+  *identifier = &unk_1F10F4AA0;
+  _Block_release(*(identifier + 8));
+  return identifier;
 }
 
-- (uint64_t)removeContentRuleListForIdentifier:(const void *)a1 completionHandler:
+- (uint64_t)removeContentRuleListForIdentifier:(const void *)identifier completionHandler:
 {
-  *a1 = &unk_1F10F4AA0;
-  _Block_release(a1[1]);
+  *identifier = &unk_1F10F4AA0;
+  _Block_release(identifier[1]);
 
-  return WTF::fastFree(a1, v2);
+  return WTF::fastFree(identifier, v2);
 }
 
-- (void)removeContentRuleListForIdentifier:(const std::error_category *)a3 completionHandler:
+- (void)removeContentRuleListForIdentifier:(const std::error_category *)identifier completionHandler:
 {
   v14[1] = *MEMORY[0x1E69E9840];
   *&v12.__val_ = a2;
-  v12.__cat_ = a3;
+  v12.__cat_ = identifier;
   if (a2)
   {
     v13 = *MEMORY[0x1E696A478];
@@ -807,7 +807,7 @@ LABEL_20:
     }
 
     [MEMORY[0x1E696ABC0] errorWithDomain:@"WKErrorDomain" code:8 userInfo:v8];
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
     if (v8)
     {
     }
@@ -815,7 +815,7 @@ LABEL_20:
 
   else
   {
-    v10 = *(*(a1 + 8) + 16);
+    v10 = *(*(self + 8) + 16);
 
     v10();
   }

@@ -1,20 +1,20 @@
 @interface HMDXPCEventRouterServer
 + (id)logCategory;
-- (BOOL)shouldAllowEvent:(id)a3 topic:(id)a4 connection:(id)a5;
-- (HMDXPCEventRouterServer)initWithMessageUUID:(id)a3 dataSource:(id)a4 changeRegistrationsMessageName:(id)a5 updateEventsMessageName:(id)a6 messageDispatcher:(id)a7 queue:(id)a8 notificationCenter:(id)a9 persistentConnectionServerFactory:(id)a10;
-- (HMDXPCEventRouterServer)initWithMessageUUID:(id)a3 dataSource:(id)a4 changeRegistrationsMessageName:(id)a5 updateEventsMessageName:(id)a6 messageDispatcher:(id)a7 queue:(id)a8 notificationCenter:(id)a9 subscriptionProvider:(id)a10 registrationEventRouter:(id)a11 storeReadHandle:(id)a12;
+- (BOOL)shouldAllowEvent:(id)event topic:(id)topic connection:(id)connection;
+- (HMDXPCEventRouterServer)initWithMessageUUID:(id)d dataSource:(id)source changeRegistrationsMessageName:(id)name updateEventsMessageName:(id)messageName messageDispatcher:(id)dispatcher queue:(id)queue notificationCenter:(id)center persistentConnectionServerFactory:(id)self0;
+- (HMDXPCEventRouterServer)initWithMessageUUID:(id)d dataSource:(id)source changeRegistrationsMessageName:(id)name updateEventsMessageName:(id)messageName messageDispatcher:(id)dispatcher queue:(id)queue notificationCenter:(id)center subscriptionProvider:(id)self0 registrationEventRouter:(id)self1 storeReadHandle:(id)self2;
 - (HMDXPCEventRouterServerDataSource)dataSource;
 - (id)dumpStateDescription;
 - (id)logIdentifier;
-- (id)server:(id)a3 expandedTopicsForTopics:(id)a4;
-- (id)server:(id)a3 upstreamTopicsForTopic:(id)a4;
-- (uint64_t)isConnectionActive:(uint64_t)a1;
-- (void)_handleChangeRegistrationsRequest:(id)a3;
-- (void)handleConnectionActiveStateChange:(id)a3;
-- (void)handleXPCConnectionInvalidated:(id)a3;
+- (id)server:(id)server expandedTopicsForTopics:(id)topics;
+- (id)server:(id)server upstreamTopicsForTopic:(id)topic;
+- (uint64_t)isConnectionActive:(uint64_t)active;
+- (void)_handleChangeRegistrationsRequest:(id)request;
+- (void)handleConnectionActiveStateChange:(id)change;
+- (void)handleXPCConnectionInvalidated:(id)invalidated;
 - (void)registerForMessages;
-- (void)sendUpdatedCachedEvents:(id)a3 toConnection:(id)a4;
-- (void)sendUpdatedEvents:(id)a3 toConnection:(id)a4;
+- (void)sendUpdatedCachedEvents:(id)events toConnection:(id)connection;
+- (void)sendUpdatedEvents:(id)events toConnection:(id)connection;
 @end
 
 @implementation HMDXPCEventRouterServer
@@ -29,49 +29,49 @@
 - (id)dumpStateDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDXPCEventRouterServer *)self persistentConnectionServer];
-  v4 = [v3 dumpStateDescription];
-  v5 = [v2 stringWithFormat:@"[HMDXPCEventRouterServer server: %@]", v4];
+  persistentConnectionServer = [(HMDXPCEventRouterServer *)self persistentConnectionServer];
+  dumpStateDescription = [persistentConnectionServer dumpStateDescription];
+  v5 = [v2 stringWithFormat:@"[HMDXPCEventRouterServer server: %@]", dumpStateDescription];
 
   return v5;
 }
 
-- (id)server:(id)a3 expandedTopicsForTopics:(id)a4
+- (id)server:(id)server expandedTopicsForTopics:(id)topics
 {
-  v5 = a4;
-  v6 = [(HMDXPCEventRouterServer *)self dataSource];
-  v7 = [v6 expandedTopicsForTopics:v5];
+  topicsCopy = topics;
+  dataSource = [(HMDXPCEventRouterServer *)self dataSource];
+  v7 = [dataSource expandedTopicsForTopics:topicsCopy];
 
   if (v7)
   {
-    v8 = v7;
+    array = v7;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
   return v9;
 }
 
-- (id)server:(id)a3 upstreamTopicsForTopic:(id)a4
+- (id)server:(id)server upstreamTopicsForTopic:(id)topic
 {
-  v4 = [HMDHomeEventsGenerated upstreamClientTopicForTopic:a4];
+  v4 = [HMDHomeEventsGenerated upstreamClientTopicForTopic:topic];
   v5 = [MEMORY[0x277CBEB98] na_setWithSafeObject:v4];
 
   return v5;
 }
 
-- (BOOL)shouldAllowEvent:(id)a3 topic:(id)a4 connection:(id)a5
+- (BOOL)shouldAllowEvent:(id)event topic:(id)topic connection:(id)connection
 {
-  v5 = a5;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = connectionCopy;
   }
 
   else
@@ -83,26 +83,26 @@
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 isEntitledForSPIAccess];
+    isEntitledForSPIAccess = [v7 isEntitledForSPIAccess];
   }
 
   else
   {
-    v9 = 0;
+    isEntitledForSPIAccess = 0;
   }
 
-  return v9;
+  return isEntitledForSPIAccess;
 }
 
-- (void)sendUpdatedCachedEvents:(id)a3 toConnection:(id)a4
+- (void)sendUpdatedCachedEvents:(id)events toConnection:(id)connection
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = connectionCopy;
   }
 
   else
@@ -113,7 +113,7 @@
   v9 = v8;
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
   if (v9)
@@ -124,15 +124,15 @@
       *buf = 138543874;
       v33 = v14;
       v34 = 2048;
-      v35 = [v6 count];
+      v35 = [eventsCopy count];
       v36 = 2112;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Sending cached events: %ld to connection: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
     v15 = objc_autoreleasePoolPush();
-    v16 = v11;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -140,26 +140,26 @@
       *buf = 138543874;
       v33 = v18;
       v34 = 2112;
-      v35 = v6;
+      v35 = eventsCopy;
       v36 = 2112;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Sending cached events: %@ to connection: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [v6 na_map:&__block_literal_global_43];
+    v19 = [eventsCopy na_map:&__block_literal_global_43];
     v20 = objc_alloc_init(MEMORY[0x277CD1F40]);
     v21 = [v19 mutableCopy];
     [v20 setCachedEvents:v21];
 
-    v22 = [v20 data];
-    v31 = v22;
+    data = [v20 data];
+    v31 = data;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
 
     v24 = MEMORY[0x277D0F818];
-    v25 = [(HMDXPCEventRouterServer *)v16 updateEventsMessageName];
-    v26 = [(HMDXPCEventRouterServer *)v16 messageTargetUUID];
-    v27 = [v24 entitledMessageWithName:v25 identifier:v26 messagePayload:v23];
+    updateEventsMessageName = [(HMDXPCEventRouterServer *)v16 updateEventsMessageName];
+    messageTargetUUID = [(HMDXPCEventRouterServer *)v16 messageTargetUUID];
+    v27 = [v24 entitledMessageWithName:updateEventsMessageName identifier:messageTargetUUID messagePayload:v23];
 
     [v9 sendMessage:v27 completionHandler:0];
   }
@@ -172,7 +172,7 @@
       *buf = 138543618;
       v33 = v28;
       v34 = 2112;
-      v35 = v7;
+      v35 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Could not obtain xpc connection from %@", buf, 0x16u);
     }
 
@@ -182,15 +182,15 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendUpdatedEvents:(id)a3 toConnection:(id)a4
+- (void)sendUpdatedEvents:(id)events toConnection:(id)connection
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  connectionCopy = connection;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = connectionCopy;
   }
 
   else
@@ -201,7 +201,7 @@
   v9 = v8;
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   v13 = v12;
   if (v9)
@@ -212,15 +212,15 @@
       *buf = 138543874;
       v33 = v14;
       v34 = 2048;
-      v35 = [v6 count];
+      v35 = [eventsCopy count];
       v36 = 2112;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Sending events: %ld to connection: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
     v15 = objc_autoreleasePoolPush();
-    v16 = v11;
+    v16 = selfCopy;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -228,26 +228,26 @@
       *buf = 138543874;
       v33 = v18;
       v34 = 2112;
-      v35 = v6;
+      v35 = eventsCopy;
       v36 = 2112;
-      v37 = v7;
+      v37 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_DEBUG, "%{public}@Sending events: %@ to connection: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v19 = [v6 na_map:&__block_literal_global_40];
+    v19 = [eventsCopy na_map:&__block_literal_global_40];
     v20 = objc_alloc_init(MEMORY[0x277CD1F40]);
     v21 = [v19 mutableCopy];
     [v20 setEvents:v21];
 
-    v22 = [v20 data];
-    v31 = v22;
+    data = [v20 data];
+    v31 = data;
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
 
     v24 = MEMORY[0x277D0F818];
-    v25 = [(HMDXPCEventRouterServer *)v16 updateEventsMessageName];
-    v26 = [(HMDXPCEventRouterServer *)v16 messageTargetUUID];
-    v27 = [v24 entitledMessageWithName:v25 identifier:v26 messagePayload:v23];
+    updateEventsMessageName = [(HMDXPCEventRouterServer *)v16 updateEventsMessageName];
+    messageTargetUUID = [(HMDXPCEventRouterServer *)v16 messageTargetUUID];
+    v27 = [v24 entitledMessageWithName:updateEventsMessageName identifier:messageTargetUUID messagePayload:v23];
 
     [v9 sendMessage:v27 completionHandler:0];
   }
@@ -260,7 +260,7 @@
       *buf = 138543618;
       v33 = v28;
       v34 = 2112;
-      v35 = v7;
+      v35 = connectionCopy;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_ERROR, "%{public}@Could not obtain xpc connection from %@", buf, 0x16u);
     }
 
@@ -270,18 +270,18 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleConnectionActiveStateChange:(id)a3
+- (void)handleConnectionActiveStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDXPCEventRouterServer *)self workQueue];
+  changeCopy = change;
+  workQueue = [(HMDXPCEventRouterServer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__HMDXPCEventRouterServer_handleConnectionActiveStateChange___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __61__HMDXPCEventRouterServer_handleConnectionActiveStateChange___block_invoke(uint64_t a1)
@@ -335,22 +335,22 @@ void __61__HMDXPCEventRouterServer_handleConnectionActiveStateChange___block_inv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)isConnectionActive:(uint64_t)a1
+- (uint64_t)isConnectionActive:(uint64_t)active
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (active)
   {
-    v5 = [v3 processInfo];
-    v6 = [v5 shouldMonitor];
+    processInfo = [v3 processInfo];
+    shouldMonitor = [processInfo shouldMonitor];
 
-    if (v6)
+    if (shouldMonitor)
     {
-      v7 = [v4 sendPolicyParameters];
+      sendPolicyParameters = [v4 sendPolicyParameters];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = sendPolicyParameters;
       }
 
       else
@@ -360,30 +360,30 @@ void __61__HMDXPCEventRouterServer_handleConnectionActiveStateChange___block_inv
 
       v9 = v8;
 
-      a1 = [v9 isActive];
+      active = [v9 isActive];
     }
 
     else
     {
-      a1 = 1;
+      active = 1;
     }
   }
 
-  return a1;
+  return active;
 }
 
-- (void)handleXPCConnectionInvalidated:(id)a3
+- (void)handleXPCConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v5 = [(HMDXPCEventRouterServer *)self workQueue];
+  invalidatedCopy = invalidated;
+  workQueue = [(HMDXPCEventRouterServer *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDXPCEventRouterServer_handleXPCConnectionInvalidated___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = invalidatedCopy;
+  selfCopy = self;
+  v6 = invalidatedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __58__HMDXPCEventRouterServer_handleXPCConnectionInvalidated___block_invoke(uint64_t a1)
@@ -411,19 +411,19 @@ void __58__HMDXPCEventRouterServer_handleXPCConnectionInvalidated___block_invoke
   }
 }
 
-- (void)_handleChangeRegistrationsRequest:(id)a3
+- (void)_handleChangeRegistrationsRequest:(id)request
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDXPCEventRouterServer *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  workQueue = [(HMDXPCEventRouterServer *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 transport];
+  transport = [requestCopy transport];
 
-  if (!v6)
+  if (!transport)
   {
     v30 = objc_autoreleasePoolPush();
-    v31 = self;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
@@ -438,10 +438,10 @@ void __58__HMDXPCEventRouterServer_handleXPCConnectionInvalidated___block_invoke
     goto LABEL_24;
   }
 
-  if (([v4 isEntitledForSPIAccess] & 1) == 0)
+  if (([requestCopy isEntitledForSPIAccess] & 1) == 0)
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -455,15 +455,15 @@ void __58__HMDXPCEventRouterServer_handleXPCConnectionInvalidated___block_invoke
     v34 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
 LABEL_24:
     v9 = v34;
-    [v4 respondWithError:v34];
+    [requestCopy respondWithError:v34];
     goto LABEL_25;
   }
 
-  v7 = [v4 transport];
+  transport2 = [requestCopy transport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = transport2;
   }
 
   else
@@ -477,7 +477,7 @@ LABEL_24:
   {
     v10 = [(HMDXPCEventRouterServer *)self isConnectionActive:v9];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     v14 = v13;
     if (v10)
@@ -491,12 +491,12 @@ LABEL_24:
       }
 
       objc_autoreleasePoolPop(v11);
-      v16 = [v4 dataForKey:*MEMORY[0x277CD15C0]];
+      v16 = [requestCopy dataForKey:*MEMORY[0x277CD15C0]];
       if (v16)
       {
         v17 = [objc_alloc(MEMORY[0x277CD1F38]) initWithData:v16];
-        v18 = [v17 topicFilterAdditions];
-        v19 = [v18 na_map:&__block_literal_global_26];
+        topicFilterAdditions = [v17 topicFilterAdditions];
+        v19 = [topicFilterAdditions na_map:&__block_literal_global_26];
         v20 = v19;
         v21 = MEMORY[0x277CBEBF8];
         if (v19)
@@ -511,8 +511,8 @@ LABEL_24:
 
         v23 = v22;
 
-        v24 = [v17 topicFilterRemovals];
-        v25 = [v24 na_map:&__block_literal_global_29_7563];
+        topicFilterRemovals = [v17 topicFilterRemovals];
+        v25 = [topicFilterRemovals na_map:&__block_literal_global_29_7563];
         v26 = v25;
         if (v25)
         {
@@ -526,20 +526,20 @@ LABEL_24:
 
         v28 = v27;
 
-        v29 = [(HMDXPCEventRouterServer *)v12 persistentConnectionServer];
+        persistentConnectionServer = [(HMDXPCEventRouterServer *)selfCopy3 persistentConnectionServer];
         v50[0] = MEMORY[0x277D85DD0];
         v50[1] = 3221225472;
         v50[2] = __61__HMDXPCEventRouterServer__handleChangeRegistrationsRequest___block_invoke_3;
         v50[3] = &unk_2797354B8;
-        v50[4] = v12;
-        v51 = v4;
-        [v29 changeRegistrationsForConnection:v9 topicFilterAdditions:v23 topicFilterRemovals:v28 completion:v50];
+        v50[4] = selfCopy3;
+        v51 = requestCopy;
+        [persistentConnectionServer changeRegistrationsForConnection:v9 topicFilterAdditions:v23 topicFilterRemovals:v28 completion:v50];
       }
 
       else
       {
         v46 = objc_autoreleasePoolPush();
-        v47 = v12;
+        v47 = selfCopy3;
         v48 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
         {
@@ -551,7 +551,7 @@ LABEL_24:
 
         objc_autoreleasePoolPop(v46);
         v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        [v4 respondWithError:v17];
+        [requestCopy respondWithError:v17];
       }
     }
 
@@ -568,14 +568,14 @@ LABEL_24:
       }
 
       objc_autoreleasePoolPop(v11);
-      [v4 respondWithSuccess];
+      [requestCopy respondWithSuccess];
     }
   }
 
   else
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy4 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
     {
@@ -587,7 +587,7 @@ LABEL_24:
 
     objc_autoreleasePoolPop(v40);
     v44 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2 description:@"Transport is not XPC" reason:@"Need xpc connection" suggestion:0];
-    [v4 respondWithError:v44];
+    [requestCopy respondWithError:v44];
 
     v9 = 0;
   }
@@ -645,54 +645,54 @@ id __61__HMDXPCEventRouterServer__handleChangeRegistrationsRequest___block_invok
 - (void)registerForMessages
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDXPCEventRouterServer *)self messageDispatcher];
-  v4 = [(HMDXPCEventRouterServer *)self changeRegistrationsMessageName];
+  messageDispatcher = [(HMDXPCEventRouterServer *)self messageDispatcher];
+  changeRegistrationsMessageName = [(HMDXPCEventRouterServer *)self changeRegistrationsMessageName];
   v5 = [HMDXPCMessagePolicy policyWithEntitlements:5];
   v10[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  [v3 registerForMessage:v4 receiver:self policies:v6 selector:sel__handleChangeRegistrationsRequest_];
+  [messageDispatcher registerForMessage:changeRegistrationsMessageName receiver:self policies:v6 selector:sel__handleChangeRegistrationsRequest_];
 
-  v7 = [(HMDXPCEventRouterServer *)self notificationCenter];
-  [v7 addObserver:self selector:sel_handleXPCConnectionInvalidated_ name:@"HMDXPCClientConnectionDidInvalidateNotification" object:0];
+  notificationCenter = [(HMDXPCEventRouterServer *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleXPCConnectionInvalidated_ name:@"HMDXPCClientConnectionDidInvalidateNotification" object:0];
 
-  v8 = [(HMDXPCEventRouterServer *)self notificationCenter];
-  [v8 addObserver:self selector:sel_handleConnectionActiveStateChange_ name:@"HMDHomeManagerConnectionActiveStateUpdatedNotification" object:0];
+  notificationCenter2 = [(HMDXPCEventRouterServer *)self notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleConnectionActiveStateChange_ name:@"HMDHomeManagerConnectionActiveStateUpdatedNotification" object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDXPCEventRouterServer *)self messageUUID];
-  v3 = [v2 UUIDString];
+  messageUUID = [(HMDXPCEventRouterServer *)self messageUUID];
+  uUIDString = [messageUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMDXPCEventRouterServer)initWithMessageUUID:(id)a3 dataSource:(id)a4 changeRegistrationsMessageName:(id)a5 updateEventsMessageName:(id)a6 messageDispatcher:(id)a7 queue:(id)a8 notificationCenter:(id)a9 persistentConnectionServerFactory:(id)a10
+- (HMDXPCEventRouterServer)initWithMessageUUID:(id)d dataSource:(id)source changeRegistrationsMessageName:(id)name updateEventsMessageName:(id)messageName messageDispatcher:(id)dispatcher queue:(id)queue notificationCenter:(id)center persistentConnectionServerFactory:(id)self0
 {
-  v29 = a3;
-  v17 = a4;
-  v28 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v18 = a9;
-  v19 = a10;
+  dCopy = d;
+  sourceCopy = source;
+  nameCopy = name;
+  messageNameCopy = messageName;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  centerCopy = center;
+  factoryCopy = factory;
   v30.receiver = self;
   v30.super_class = HMDXPCEventRouterServer;
   v20 = [(HMDXPCEventRouterServer *)&v30 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_messageUUID, a3);
-    objc_storeWeak(&v21->_dataSource, v17);
-    objc_storeStrong(&v21->_messageDispatcher, a7);
-    objc_storeStrong(&v21->_workQueue, a8);
-    objc_storeStrong(&v21->_notificationCenter, a9);
-    objc_storeStrong(&v21->_changeRegistrationsMessageName, a5);
-    objc_storeStrong(&v21->_updateEventsMessageName, a6);
-    v22 = v19[2](v19);
+    objc_storeStrong(&v20->_messageUUID, d);
+    objc_storeWeak(&v21->_dataSource, sourceCopy);
+    objc_storeStrong(&v21->_messageDispatcher, dispatcher);
+    objc_storeStrong(&v21->_workQueue, queue);
+    objc_storeStrong(&v21->_notificationCenter, center);
+    objc_storeStrong(&v21->_changeRegistrationsMessageName, name);
+    objc_storeStrong(&v21->_updateEventsMessageName, messageName);
+    v22 = factoryCopy[2](factoryCopy);
     persistentConnectionServer = v21->_persistentConnectionServer;
     v21->_persistentConnectionServer = v22;
 
@@ -703,25 +703,25 @@ id __61__HMDXPCEventRouterServer__handleChangeRegistrationsRequest___block_invok
   return v21;
 }
 
-- (HMDXPCEventRouterServer)initWithMessageUUID:(id)a3 dataSource:(id)a4 changeRegistrationsMessageName:(id)a5 updateEventsMessageName:(id)a6 messageDispatcher:(id)a7 queue:(id)a8 notificationCenter:(id)a9 subscriptionProvider:(id)a10 registrationEventRouter:(id)a11 storeReadHandle:(id)a12
+- (HMDXPCEventRouterServer)initWithMessageUUID:(id)d dataSource:(id)source changeRegistrationsMessageName:(id)name updateEventsMessageName:(id)messageName messageDispatcher:(id)dispatcher queue:(id)queue notificationCenter:(id)center subscriptionProvider:(id)self0 registrationEventRouter:(id)self1 storeReadHandle:(id)self2
 {
-  v16 = a8;
-  v17 = a10;
-  v18 = a11;
-  v19 = a12;
+  queueCopy = queue;
+  providerCopy = provider;
+  routerCopy = router;
+  handleCopy = handle;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __217__HMDXPCEventRouterServer_initWithMessageUUID_dataSource_changeRegistrationsMessageName_updateEventsMessageName_messageDispatcher_queue_notificationCenter_subscriptionProvider_registrationEventRouter_storeReadHandle___block_invoke;
   v28[3] = &unk_279721CD0;
-  v29 = v16;
-  v30 = v17;
-  v31 = v18;
-  v32 = v19;
-  v20 = v19;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = [(HMDXPCEventRouterServer *)self initWithMessageUUID:a3 dataSource:a4 changeRegistrationsMessageName:a5 updateEventsMessageName:a6 messageDispatcher:a7 queue:v23 notificationCenter:a9 persistentConnectionServerFactory:v28];
+  v29 = queueCopy;
+  v30 = providerCopy;
+  v31 = routerCopy;
+  v32 = handleCopy;
+  v20 = handleCopy;
+  v21 = routerCopy;
+  v22 = providerCopy;
+  v23 = queueCopy;
+  v24 = [(HMDXPCEventRouterServer *)self initWithMessageUUID:d dataSource:source changeRegistrationsMessageName:name updateEventsMessageName:messageName messageDispatcher:dispatcher queue:v23 notificationCenter:center persistentConnectionServerFactory:v28];
 
   return v24;
 }

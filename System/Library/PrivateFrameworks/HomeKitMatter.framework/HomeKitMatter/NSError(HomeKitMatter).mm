@@ -7,16 +7,16 @@
 
 - (uint64_t)isHMMTRError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"HMMTRErrorDomain"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"HMMTRErrorDomain"];
 
   return v2;
 }
 
 - (uint64_t)hmmtr_isMatterError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CD5120]];
+  domain = [self domain];
+  v2 = [domain isEqualToString:*MEMORY[0x277CD5120]];
 
   return v2;
 }

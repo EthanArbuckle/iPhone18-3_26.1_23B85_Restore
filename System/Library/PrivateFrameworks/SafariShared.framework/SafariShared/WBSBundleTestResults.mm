@@ -1,28 +1,28 @@
 @interface WBSBundleTestResults
-- (WBSBundleTestResults)initWithFileURL:(id)a3 error:(id *)a4;
-- (void)endTest:(id)a3 inBundle:(id)a4;
-- (void)reportActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10;
-- (void)reportError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7;
-- (void)reportPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6;
-- (void)reportResults:(id)a3 resultsName:(id)a4 descriptiveResultsName:(id)a5 uniformTypeIdentifier:(id)a6 forStage:(id)a7 forTest:(id)a8 inBundle:(id)a9;
+- (WBSBundleTestResults)initWithFileURL:(id)l error:(id *)error;
+- (void)endTest:(id)test inBundle:(id)bundle;
+- (void)reportActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0;
+- (void)reportError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
+- (void)reportPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
+- (void)reportResults:(id)results resultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)bundle;
 @end
 
 @implementation WBSBundleTestResults
 
-- (WBSBundleTestResults)initWithFileURL:(id)a3 error:(id *)a4
+- (WBSBundleTestResults)initWithFileURL:(id)l error:(id *)error
 {
-  v7 = a3;
-  if (([v7 isFileURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:22 userInfo:0];
-      *a4 = v16 = 0;
+      *error = selfCopy = 0;
       goto LABEL_8;
     }
 
 LABEL_7:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -34,16 +34,16 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:a4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v10 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:error];
 
   if (!v10)
   {
     goto LABEL_7;
   }
 
-  objc_storeStrong(&self->_fileURL, a3);
+  objc_storeStrong(&self->_fileURL, l);
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.SafariShared.WBSFileTestsResults.%@.%p.internalQueue", objc_opt_class(), self];
   v12 = dispatch_queue_create([v11 UTF8String], 0);
   internalQueue = self->_internalQueue;
@@ -54,26 +54,26 @@ LABEL_7:
   self->_pendingReports = v14;
 
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v16;
+  return selfCopy;
 }
 
-- (void)endTest:(id)a3 inBundle:(id)a4
+- (void)endTest:(id)test inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  bundleCopy = bundle;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__WBSBundleTestResults_endTest_inBundle___block_invoke;
   block[3] = &unk_1E7FB7258;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = bundleCopy;
+  v13 = testCopy;
+  v9 = testCopy;
+  v10 = bundleCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -143,15 +143,15 @@ LABEL_11:
   [*(*(a1 + 32) + 16) removeAllObjects];
 }
 
-- (void)reportResults:(id)a3 resultsName:(id)a4 descriptiveResultsName:(id)a5 uniformTypeIdentifier:(id)a6 forStage:(id)a7 forTest:(id)a8 inBundle:(id)a9
+- (void)reportResults:(id)results resultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [a3 copy];
+  nameCopy = name;
+  resultsNameCopy = resultsName;
+  identifierCopy = identifier;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  v21 = [results copy];
   internalQueue = self->_internalQueue;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -159,18 +159,18 @@ LABEL_11:
   v30[3] = &unk_1E7FB7280;
   v30[4] = self;
   v31 = v21;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v19;
-  v37 = v20;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
-  v28 = v15;
+  v32 = nameCopy;
+  v33 = resultsNameCopy;
+  v34 = identifierCopy;
+  v35 = stageCopy;
+  v36 = testCopy;
+  v37 = bundleCopy;
+  v23 = bundleCopy;
+  v24 = testCopy;
+  v25 = stageCopy;
+  v26 = identifierCopy;
+  v27 = resultsNameCopy;
+  v28 = nameCopy;
   v29 = v21;
   dispatch_async(internalQueue, v30);
 }
@@ -182,17 +182,17 @@ void __121__WBSBundleTestResults_reportResults_resultsName_descriptiveResultsNam
   [v1 addObject:v2];
 }
 
-- (void)reportActualResults:(id)a3 expectedResults:(id)a4 expectedResultsName:(id)a5 descriptiveResultsName:(id)a6 uniformTypeIdentifier:(id)a7 forStage:(id)a8 forTest:(id)a9 inBundle:(id)a10
+- (void)reportActualResults:(id)results expectedResults:(id)expectedResults expectedResultsName:(id)name descriptiveResultsName:(id)resultsName uniformTypeIdentifier:(id)identifier forStage:(id)stage forTest:(id)test inBundle:(id)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a4;
-  v23 = [a3 copy];
-  v24 = [v22 copy];
+  nameCopy = name;
+  resultsNameCopy = resultsName;
+  identifierCopy = identifier;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  expectedResultsCopy = expectedResults;
+  v23 = [results copy];
+  v24 = [expectedResultsCopy copy];
 
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -202,18 +202,18 @@ void __121__WBSBundleTestResults_reportResults_resultsName_descriptiveResultsNam
   block[4] = self;
   v35 = v23;
   v36 = v24;
-  v37 = v16;
-  v38 = v17;
-  v39 = v18;
-  v40 = v19;
-  v41 = v20;
-  v42 = v21;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
-  v29 = v18;
-  v30 = v17;
-  v31 = v16;
+  v37 = nameCopy;
+  v38 = resultsNameCopy;
+  v39 = identifierCopy;
+  v40 = stageCopy;
+  v41 = testCopy;
+  v42 = bundleCopy;
+  v26 = bundleCopy;
+  v27 = testCopy;
+  v28 = stageCopy;
+  v29 = identifierCopy;
+  v30 = resultsNameCopy;
+  v31 = nameCopy;
   v32 = v24;
   v33 = v23;
   dispatch_async(internalQueue, block);
@@ -226,12 +226,12 @@ void __151__WBSBundleTestResults_reportActualResults_expectedResults_expectedRes
   [v1 addObject:v2];
 }
 
-- (void)reportPerformance:(id)a3 forStage:(id)a4 forTest:(id)a5 inBundle:(id)a6
+- (void)reportPerformance:(id)performance forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 copy];
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  v13 = [performance copy];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -239,12 +239,12 @@ void __151__WBSBundleTestResults_reportActualResults_expectedResults_expectedRes
   block[3] = &unk_1E7FB72D0;
   block[4] = self;
   v20 = v13;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = stageCopy;
+  v22 = testCopy;
+  v23 = bundleCopy;
+  v15 = bundleCopy;
+  v16 = testCopy;
+  v17 = stageCopy;
   v18 = v13;
   dispatch_async(internalQueue, block);
 }
@@ -256,14 +256,14 @@ void __68__WBSBundleTestResults_reportPerformance_forStage_forTest_inBundle___bl
   [v1 addObject:v2];
 }
 
-- (void)reportError:(id)a3 descriptiveResultsName:(id)a4 forStage:(id)a5 forTest:(id)a6 inBundle:(id)a7
+- (void)reportError:(id)error descriptiveResultsName:(id)name forStage:(id)stage forTest:(id)test inBundle:(id)bundle
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  errorCopy = error;
+  nameCopy = name;
+  stageCopy = stage;
+  testCopy = test;
+  bundleCopy = bundle;
+  if (errorCopy)
   {
     internalQueue = self->_internalQueue;
     v18[0] = MEMORY[0x1E69E9820];
@@ -271,11 +271,11 @@ void __68__WBSBundleTestResults_reportPerformance_forStage_forTest_inBundle___bl
     v18[2] = __85__WBSBundleTestResults_reportError_descriptiveResultsName_forStage_forTest_inBundle___block_invoke;
     v18[3] = &unk_1E7FB72F8;
     v18[4] = self;
-    v19 = v12;
-    v20 = v13;
-    v21 = v14;
-    v22 = v15;
-    v23 = v16;
+    v19 = errorCopy;
+    v20 = nameCopy;
+    v21 = stageCopy;
+    v22 = testCopy;
+    v23 = bundleCopy;
     dispatch_async(internalQueue, v18);
   }
 }

@@ -1,25 +1,25 @@
 @interface MFIMAPOfflineCopyOnStupidServerOperation
-- (BOOL)getMessageId:(id *)a3 andInternalDate:(id *)a4 forDestinationUid:(unsigned int)a5;
-- (id)_deserializeOpSpecificValuesFromData:(id)a3 cursor:(unint64_t *)a4;
+- (BOOL)getMessageId:(id *)id andInternalDate:(id *)date forDestinationUid:(unsigned int)uid;
+- (id)_deserializeOpSpecificValuesFromData:(id)data cursor:(unint64_t *)cursor;
 - (unsigned)approximateSize;
 - (void)dealloc;
-- (void)expungeTemporaryUid:(unsigned int)a3;
-- (void)serializeIntoData:(id)a3;
-- (void)setMessageId:(id)a3 andInternalDate:(id)a4 forMessageWithSourceUid:(unsigned int)a5;
+- (void)expungeTemporaryUid:(unsigned int)uid;
+- (void)serializeIntoData:(id)data;
+- (void)setMessageId:(id)id andInternalDate:(id)date forMessageWithSourceUid:(unsigned int)uid;
 @end
 
 @implementation MFIMAPOfflineCopyOnStupidServerOperation
 
-- (void)serializeIntoData:(id)a3
+- (void)serializeIntoData:(id)data
 {
   v5.receiver = self;
   v5.super_class = MFIMAPOfflineCopyOnStupidServerOperation;
   [(MFIMAPOperation *)&v5 serializeIntoData:?];
-  _serializeStringArrayToData(self->messageIds, a3);
-  _serializeUidArrayToData(self->internalDates, a3);
+  _serializeStringArrayToData(self->messageIds, data);
+  _serializeUidArrayToData(self->internalDates, data);
 }
 
-- (id)_deserializeOpSpecificValuesFromData:(id)a3 cursor:(unint64_t *)a4
+- (id)_deserializeOpSpecificValuesFromData:(id)data cursor:(unint64_t *)cursor
 {
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
@@ -27,7 +27,7 @@
   v6 = [MFIMAPOperation _deserializeOpSpecificValuesFromData:sel__deserializeOpSpecificValuesFromData_cursor_ cursor:?];
   if (v6)
   {
-    StringArrayFromData = _createStringArrayFromData(a3, a4);
+    StringArrayFromData = _createStringArrayFromData(data, cursor);
     v8 = [(__CFArray *)StringArrayFromData count];
     if (v8)
     {
@@ -62,7 +62,7 @@
       }
     }
 
-    *(v6 + 7) = _createUidArrayFromData(a3, a4);
+    *(v6 + 7) = _createUidArrayFromData(data, cursor);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -88,13 +88,13 @@
   [(MFIMAPOperation *)&v5 dealloc];
 }
 
-- (BOOL)getMessageId:(id *)a3 andInternalDate:(id *)a4 forDestinationUid:(unsigned int)a5
+- (BOOL)getMessageId:(id *)id andInternalDate:(id *)date forDestinationUid:(unsigned int)uid
 {
   falseFlags = self->super._opSpecific.store.falseFlags;
   if (falseFlags)
   {
     Count = CFArrayGetCount(falseFlags);
-    if (Count < 1 || (v18.length = Count, v18.location = 0, FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->super._opSpecific.copy.dstUids, v18, a5), FirstIndexOfValue == -1))
+    if (Count < 1 || (v18.length = Count, v18.location = 0, FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->super._opSpecific.copy.dstUids, v18, uid), FirstIndexOfValue == -1))
     {
       LOBYTE(falseFlags) = 0;
     }
@@ -102,7 +102,7 @@
     else
     {
       v12 = FirstIndexOfValue;
-      if (a3)
+      if (id)
       {
         messageIds = self->messageIds;
         if (messageIds)
@@ -110,16 +110,16 @@
           if (v12 < CFArrayGetCount(messageIds))
           {
             ValueAtIndex = CFArrayGetValueAtIndex(self->messageIds, v12);
-            *a3 = ValueAtIndex;
+            *id = ValueAtIndex;
             if (![ValueAtIndex length])
             {
-              *a3 = &stru_2869E1DA0;
+              *id = &stru_2869E1DA0;
             }
           }
         }
       }
 
-      if (a4)
+      if (date)
       {
         internalDates = self->internalDates;
         if (internalDates)
@@ -129,7 +129,7 @@
             v16 = CFArrayGetValueAtIndex(self->internalDates, v12);
             if (v16)
             {
-              *a4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v16];
+              *date = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v16];
             }
           }
         }
@@ -142,9 +142,9 @@
   return falseFlags;
 }
 
-- (void)setMessageId:(id)a3 andInternalDate:(id)a4 forMessageWithSourceUid:(unsigned int)a5
+- (void)setMessageId:(id)id andInternalDate:(id)date forMessageWithSourceUid:(unsigned int)uid
 {
-  newValues = a3;
+  newValues = id;
   trueFlags = self->super._opSpecific.store.trueFlags;
   if (!trueFlags)
   {
@@ -160,20 +160,20 @@
   v11 = Count;
   v28.location = 0;
   v28.length = Count;
-  FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->super._opSpecific.copy.srcUids, v28, a5);
+  FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->super._opSpecific.copy.srcUids, v28, uid);
   if (FirstIndexOfValue == -1)
   {
     return;
   }
 
   v13 = FirstIndexOfValue;
-  if (!a4)
+  if (!date)
   {
     internalDates = self->internalDates;
     if (!internalDates || v13 >= CFArrayGetCount(internalDates))
     {
 LABEL_13:
-      if (!a3)
+      if (!id)
       {
         goto LABEL_24;
       }
@@ -190,7 +190,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [a4 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v15 = v14;
   v26 = v14;
   Mutable = self->internalDates;
@@ -220,7 +220,7 @@ LABEL_12:
   }
 
   CFArrayAppendValue(self->internalDates, v15);
-  if (!a3)
+  if (!id)
   {
 LABEL_24:
     newValues = &stru_2869E1DA0;
@@ -235,7 +235,7 @@ LABEL_24:
   }
 
 LABEL_19:
-  if (![a3 length])
+  if (![id length])
   {
     goto LABEL_24;
   }
@@ -273,7 +273,7 @@ LABEL_27:
   CFArrayAppendValue(self->messageIds, newValues);
 }
 
-- (void)expungeTemporaryUid:(unsigned int)a3
+- (void)expungeTemporaryUid:(unsigned int)uid
 {
   falseFlags = self->super._opSpecific.store.falseFlags;
   if (falseFlags)
@@ -281,7 +281,7 @@ LABEL_27:
     Count = CFArrayGetCount(falseFlags);
     v13.location = 0;
     v13.length = Count;
-    LastIndexOfValue = CFArrayGetLastIndexOfValue(self->super._opSpecific.copy.dstUids, v13, a3);
+    LastIndexOfValue = CFArrayGetLastIndexOfValue(self->super._opSpecific.copy.dstUids, v13, uid);
     if (LastIndexOfValue != -1)
     {
       v8 = LastIndexOfValue;
@@ -326,17 +326,17 @@ LABEL_27:
 {
   v6.receiver = self;
   v6.super_class = MFIMAPOfflineCopyOnStupidServerOperation;
-  v3 = [(MFIMAPOperation *)&v6 approximateSize];
-  if (v3)
+  approximateSize = [(MFIMAPOperation *)&v6 approximateSize];
+  if (approximateSize)
   {
     messageIds = self->messageIds;
     if (messageIds)
     {
-      v3 += CFArrayGetCount(messageIds);
+      approximateSize += CFArrayGetCount(messageIds);
     }
   }
 
-  return v3;
+  return approximateSize;
 }
 
 @end

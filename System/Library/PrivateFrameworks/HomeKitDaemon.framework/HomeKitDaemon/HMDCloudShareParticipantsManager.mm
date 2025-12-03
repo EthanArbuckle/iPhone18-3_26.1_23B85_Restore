@@ -1,19 +1,19 @@
 @interface HMDCloudShareParticipantsManager
 + (id)logCategory;
-- (BOOL)isAcceptedParticipatingUser:(id)a3;
-- (HMDCloudShareParticipantsManager)initWithQueue:(id)a3 cloudZone:(id)a4 home:(id)a5;
+- (BOOL)isAcceptedParticipatingUser:(id)user;
+- (HMDCloudShareParticipantsManager)initWithQueue:(id)queue cloudZone:(id)zone home:(id)home;
 - (HMDCloudShareParticipantsManagerDataSource)dataSource;
 - (HMDCloudShareParticipantsManagerDelegate)delegate;
 - (HMDHome)home;
 - (NSSet)participatingUsers;
 - (id)logIdentifier;
-- (void)_inviteUser:(id)a3 usingDevice:(id)a4;
+- (void)_inviteUser:(id)user usingDevice:(id)device;
 - (void)clearParticipants;
 - (void)configure;
-- (void)handleHomeDataLoadedNotification:(id)a3;
-- (void)handleHomeUserAddedNotification:(id)a3;
-- (void)handleHomeUserRemovedNotification:(id)a3;
-- (void)inviteUser:(id)a3 usingDevice:(id)a4;
+- (void)handleHomeDataLoadedNotification:(id)notification;
+- (void)handleHomeUserAddedNotification:(id)notification;
+- (void)handleHomeUserRemovedNotification:(id)notification;
+- (void)inviteUser:(id)user usingDevice:(id)device;
 - (void)updateShareParticipants;
 @end
 
@@ -42,19 +42,19 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCloudShareParticipantsManager *)self cloudZone];
-  v3 = [v2 zoneID];
-  v4 = [v3 name];
+  cloudZone = [(HMDCloudShareParticipantsManager *)self cloudZone];
+  zoneID = [cloudZone zoneID];
+  name = [zoneID name];
 
-  return v4;
+  return name;
 }
 
-- (void)handleHomeDataLoadedNotification:(id)a3
+- (void)handleHomeDataLoadedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -62,28 +62,28 @@
     *buf = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Handling home data loaded notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudShareParticipantsManager *)v6 workQueue];
+  workQueue = [(HMDCloudShareParticipantsManager *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HMDCloudShareParticipantsManager_handleHomeDataLoadedNotification___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeUserRemovedNotification:(id)a3
+- (void)handleHomeUserRemovedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -91,28 +91,28 @@
     *buf = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Handling home user removed notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudShareParticipantsManager *)v6 workQueue];
+  workQueue = [(HMDCloudShareParticipantsManager *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__HMDCloudShareParticipantsManager_handleHomeUserRemovedNotification___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeUserAddedNotification:(id)a3
+- (void)handleHomeUserAddedNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -120,18 +120,18 @@
     *buf = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Handling home user added notification: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCloudShareParticipantsManager *)v6 workQueue];
+  workQueue = [(HMDCloudShareParticipantsManager *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDCloudShareParticipantsManager_handleHomeUserAddedNotification___block_invoke;
   block[3] = &unk_27868A728;
-  block[4] = v6;
-  dispatch_async(v9, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -226,18 +226,18 @@ id __82__HMDCloudShareParticipantsManager__fetchInvitationToUser_shouldGrantWrit
   return v10;
 }
 
-- (void)_inviteUser:(id)a3 usingDevice:(id)a4
+- (void)_inviteUser:(id)user usingDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudShareParticipantsManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  userCopy = user;
+  deviceCopy = device;
+  workQueue = [(HMDCloudShareParticipantsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDCloudShareParticipantsManager *)self dataSource];
+  dataSource = [(HMDCloudShareParticipantsManager *)self dataSource];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 manager:self shouldGrantWriteAccessToUser:v6];
+    v10 = [dataSource manager:self shouldGrantWriteAccessToUser:userCopy];
   }
 
   else
@@ -245,16 +245,16 @@ id __82__HMDCloudShareParticipantsManager__fetchInvitationToUser_shouldGrantWrit
     v10 = 0;
   }
 
-  v11 = [(HMDCloudShareParticipantsManager *)self cloudZone];
-  v12 = [v6 uuid];
-  v13 = [v11 participantWithClientIdentifier:v12];
+  cloudZone = [(HMDCloudShareParticipantsManager *)self cloudZone];
+  uuid = [userCopy uuid];
+  v13 = [cloudZone participantWithClientIdentifier:uuid];
 
   if ([v13 hasAccepted])
   {
     if (v10 != [v13 hasWriteAccess])
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -270,28 +270,28 @@ id __82__HMDCloudShareParticipantsManager__fetchInvitationToUser_shouldGrantWrit
         v33 = 2112;
         v34 = v19;
         v35 = 2112;
-        v36 = v6;
+        v36 = userCopy;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Updating write access from %@ to %@ for user %@", buf, 0x2Au);
 
         v14 = v25;
       }
 
       objc_autoreleasePoolPop(v14);
-      v20 = [(HMDCloudShareParticipantsManager *)v15 cloudZone];
-      v21 = [v20 setWriteAccessEnabled:v10 forParticipant:v13];
+      cloudZone2 = [(HMDCloudShareParticipantsManager *)selfCopy cloudZone];
+      v21 = [cloudZone2 setWriteAccessEnabled:v10 forParticipant:v13];
     }
   }
 
   else
   {
-    v22 = [(HMDCloudShareParticipantsManager *)self _fetchInvitationToUser:v6 shouldGrantWriteAccess:v10];
+    v22 = [(HMDCloudShareParticipantsManager *)self _fetchInvitationToUser:userCopy shouldGrantWriteAccess:v10];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invoke;
     v26[3] = &unk_27867C0F0;
     v26[4] = self;
-    v27 = v6;
-    v28 = v7;
+    v27 = userCopy;
+    v28 = deviceCopy;
     v23 = [v22 addCompletionBlock:v26];
   }
 
@@ -377,23 +377,23 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isAcceptedParticipatingUser:(id)a3
+- (BOOL)isAcceptedParticipatingUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HMDCloudShareParticipantsManager *)self cloudZone];
-  v6 = [v4 uuid];
+  userCopy = user;
+  cloudZone = [(HMDCloudShareParticipantsManager *)self cloudZone];
+  uuid = [userCopy uuid];
 
-  v7 = [v5 participantWithClientIdentifier:v6];
+  v7 = [cloudZone participantWithClientIdentifier:uuid];
 
-  LOBYTE(v5) = [v7 hasAccepted];
-  return v5;
+  LOBYTE(cloudZone) = [v7 hasAccepted];
+  return cloudZone;
 }
 
 - (void)clearParticipants
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -404,14 +404,14 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCloudShareParticipantsManager *)v4 cloudZone];
-  v8 = [v7 participants];
+  cloudZone = [(HMDCloudShareParticipantsManager *)selfCopy cloudZone];
+  participants = [cloudZone participants];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v8;
+  v9 = participants;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -428,8 +428,8 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        v15 = [(HMDCloudShareParticipantsManager *)v4 cloudZone];
-        v16 = [v15 revokeShareAccessForParticipant:v14];
+        cloudZone2 = [(HMDCloudShareParticipantsManager *)selfCopy cloudZone];
+        v16 = [cloudZone2 revokeShareAccessForParticipant:v14];
 
         ++v13;
       }
@@ -444,18 +444,18 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inviteUser:(id)a3 usingDevice:(id)a4
+- (void)inviteUser:(id)user usingDevice:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCloudShareParticipantsManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  userCopy = user;
+  deviceCopy = device;
+  workQueue = [(HMDCloudShareParticipantsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (([v6 isCurrentUser] & 1) != 0 || (-[HMDCloudShareParticipantsManager dataSource](self, "dataSource"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "manager:shouldShareWithUser:", self, v6), v9, (v10 & 1) == 0))
+  if (([userCopy isCurrentUser] & 1) != 0 || (-[HMDCloudShareParticipantsManager dataSource](self, "dataSource"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "manager:shouldShareWithUser:", self, userCopy), v9, (v10 & 1) == 0))
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -463,9 +463,9 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
       v21 = 138543874;
       v22 = v19;
       v23 = 2112;
-      v24 = v6;
+      v24 = userCopy;
       v25 = 2112;
-      v26 = v7;
+      v26 = deviceCopy;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Not inviting ineligible user %@ using device: %@", &v21, 0x20u);
     }
 
@@ -475,23 +475,23 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v6 shortDescription];
+      shortDescription = [userCopy shortDescription];
       v21 = 138543874;
       v22 = v14;
       v23 = 2112;
-      v24 = v15;
+      v24 = shortDescription;
       v25 = 2112;
-      v26 = v7;
+      v26 = deviceCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Inviting user %@ using device: %@", &v21, 0x20u);
     }
 
     objc_autoreleasePoolPop(v11);
-    [(HMDCloudShareParticipantsManager *)v12 _inviteUser:v6 usingDevice:v7];
+    [(HMDCloudShareParticipantsManager *)selfCopy2 _inviteUser:userCopy usingDevice:deviceCopy];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -500,15 +500,15 @@ void __60__HMDCloudShareParticipantsManager__inviteUser_usingDevice___block_invo
 - (void)updateShareParticipants
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudShareParticipantsManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCloudShareParticipantsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCloudShareParticipantsManager *)self home];
-  v5 = v4;
-  if (!v4)
+  home = [(HMDCloudShareParticipantsManager *)self home];
+  v5 = home;
+  if (!home)
   {
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy2 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
@@ -528,13 +528,13 @@ LABEL_39:
     goto LABEL_44;
   }
 
-  v6 = [v4 homeManager];
-  v7 = [v6 hasLoadedData];
+  homeManager = [home homeManager];
+  hasLoadedData = [homeManager hasLoadedData];
 
-  if ((v7 & 1) == 0)
+  if ((hasLoadedData & 1) == 0)
   {
     v44 = objc_autoreleasePoolPush();
-    v45 = self;
+    selfCopy2 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
@@ -550,11 +550,11 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v8 = [(HMDCloudShareParticipantsManager *)self dataSource];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v8 areShareModificationsEnabledForManager:self] & 1) == 0)
+  dataSource = [(HMDCloudShareParticipantsManager *)self dataSource];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([dataSource areShareModificationsEnabledForManager:self] & 1) == 0)
   {
     v51 = objc_autoreleasePoolPush();
-    v52 = self;
+    selfCopy3 = self;
     v53 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
     {
@@ -570,7 +570,7 @@ LABEL_39:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy4 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -581,15 +581,15 @@ LABEL_39:
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDCloudShareParticipantsManager *)v10 cloudZone];
-    v14 = [v13 participants];
+    cloudZone = [(HMDCloudShareParticipantsManager *)selfCopy4 cloudZone];
+    participants = [cloudZone participants];
 
-    v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
+    v15 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(participants, "count")}];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
-    obj = v14;
+    obj = participants;
     v16 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
     if (v16)
     {
@@ -605,8 +605,8 @@ LABEL_39:
           }
 
           v20 = *(*(&v74 + 1) + 8 * i);
-          v21 = [v20 clientIdentifier];
-          [v15 setObject:v20 forKeyedSubscript:v21];
+          clientIdentifier = [v20 clientIdentifier];
+          [v15 setObject:v20 forKeyedSubscript:clientIdentifier];
         }
 
         v17 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
@@ -619,8 +619,8 @@ LABEL_39:
     v73 = 0u;
     v71 = 0u;
     v70 = 0u;
-    v22 = [v5 users];
-    v23 = [v22 countByEnumeratingWithState:&v70 objects:v83 count:16];
+    users = [v5 users];
+    v23 = [users countByEnumeratingWithState:&v70 objects:v83 count:16];
     if (v23)
     {
       v24 = v23;
@@ -631,27 +631,27 @@ LABEL_39:
         {
           if (*v71 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(users);
           }
 
           v27 = *(*(&v70 + 1) + 8 * j);
-          if (([v27 isCurrentUser] & 1) == 0 && objc_msgSend(v8, "manager:shouldShareWithUser:", v10, v27))
+          if (([v27 isCurrentUser] & 1) == 0 && objc_msgSend(dataSource, "manager:shouldShareWithUser:", selfCopy4, v27))
           {
-            [(HMDCloudShareParticipantsManager *)v10 _inviteUser:v27 usingDevice:0];
-            v28 = [v27 uuid];
-            [v15 setObject:0 forKeyedSubscript:v28];
+            [(HMDCloudShareParticipantsManager *)selfCopy4 _inviteUser:v27 usingDevice:0];
+            uuid = [v27 uuid];
+            [v15 setObject:0 forKeyedSubscript:uuid];
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v70 objects:v83 count:16];
+        v24 = [users countByEnumeratingWithState:&v70 objects:v83 count:16];
       }
 
       while (v24);
     }
 
-    v59 = v10;
+    v59 = selfCopy4;
     v60 = v5;
-    v56 = v8;
+    v56 = dataSource;
 
     v68 = 0u;
     v69 = 0u;
@@ -687,11 +687,11 @@ LABEL_39:
           }
 
           objc_autoreleasePoolPop(v33);
-          v37 = [(HMDCloudShareParticipantsManager *)v34 cloudZone];
-          v38 = [v37 revokeShareAccessForParticipant:v32];
+          cloudZone2 = [(HMDCloudShareParticipantsManager *)v34 cloudZone];
+          v38 = [cloudZone2 revokeShareAccessForParticipant:v32];
           v39 = MEMORY[0x277D2C938];
-          v40 = [(HMDCloudShareParticipantsManager *)v34 workQueue];
-          v41 = [v39 schedulerWithDispatchQueue:v40];
+          workQueue2 = [(HMDCloudShareParticipantsManager *)v34 workQueue];
+          v41 = [v39 schedulerWithDispatchQueue:workQueue2];
           v42 = [v38 reschedule:v41];
           v62[0] = MEMORY[0x277D85DD0];
           v62[1] = 3221225472;
@@ -710,7 +710,7 @@ LABEL_39:
     }
 
     v5 = v60;
-    v8 = v56;
+    dataSource = v56;
   }
 
 LABEL_44:
@@ -733,30 +733,30 @@ void __59__HMDCloudShareParticipantsManager_updateShareParticipants__block_invok
 - (void)configure
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudShareParticipantsManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCloudShareParticipantsManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCloudShareParticipantsManager *)self home];
-  v5 = v4;
-  if (v4)
+  home = [(HMDCloudShareParticipantsManager *)self home];
+  v5 = home;
+  if (home)
   {
-    v6 = [v4 homeManager];
-    if (v6)
+    homeManager = [home homeManager];
+    if (homeManager)
     {
-      v7 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v7 addObserver:self selector:sel_handleHomeUserAddedNotification_ name:@"HMDHomeUserAddedNotification" object:v5];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_handleHomeUserAddedNotification_ name:@"HMDHomeUserAddedNotification" object:v5];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 addObserver:self selector:sel_handleHomeUserRemovedNotification_ name:@"HMDHomeUserRemovedNotification" object:v5];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_handleHomeUserRemovedNotification_ name:@"HMDHomeUserRemovedNotification" object:v5];
 
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel_handleHomeDataLoadedNotification_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:v6];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel_handleHomeDataLoadedNotification_ name:@"HMDHomeManagerHomeDataLoadedNotification" object:homeManager];
     }
 
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -773,7 +773,7 @@ void __59__HMDCloudShareParticipantsManager_updateShareParticipants__block_invok
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -791,14 +791,14 @@ void __59__HMDCloudShareParticipantsManager_updateShareParticipants__block_invok
 
 - (NSSet)participatingUsers
 {
-  v3 = [(HMDCloudShareParticipantsManager *)self cloudZone];
-  v4 = [v3 participants];
+  cloudZone = [(HMDCloudShareParticipantsManager *)self cloudZone];
+  participants = [cloudZone participants];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HMDCloudShareParticipantsManager_participatingUsers__block_invoke;
   v7[3] = &unk_27867C0C0;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [participants na_map:v7];
 
   return v5;
 }
@@ -815,20 +815,20 @@ id __54__HMDCloudShareParticipantsManager_participatingUsers__block_invoke(uint6
   return v6;
 }
 
-- (HMDCloudShareParticipantsManager)initWithQueue:(id)a3 cloudZone:(id)a4 home:(id)a5
+- (HMDCloudShareParticipantsManager)initWithQueue:(id)queue cloudZone:(id)zone home:(id)home
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  zoneCopy = zone;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HMDCloudShareParticipantsManager;
   v12 = [(HMDCloudShareParticipantsManager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeStrong(&v13->_cloudZone, a4);
-    objc_storeWeak(&v13->_home, v11);
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeStrong(&v13->_cloudZone, zone);
+    objc_storeWeak(&v13->_home, homeCopy);
   }
 
   return v13;

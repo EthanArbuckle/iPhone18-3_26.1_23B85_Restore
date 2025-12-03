@@ -1,15 +1,15 @@
 @interface BFFNavigationObserver
-+ (id)observerWithObserver:(id)a3;
++ (id)observerWithObserver:(id)observer;
 - (BFFNavigationControllerDelegate)observer;
 @end
 
 @implementation BFFNavigationObserver
 
-+ (id)observerWithObserver:(id)a3
++ (id)observerWithObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   v4 = objc_opt_new();
-  [v4 setObserver:v3];
+  [v4 setObserver:observerCopy];
 
   return v4;
 }

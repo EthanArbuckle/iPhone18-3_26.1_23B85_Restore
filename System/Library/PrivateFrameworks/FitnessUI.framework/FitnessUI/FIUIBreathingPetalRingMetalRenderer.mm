@@ -1,53 +1,53 @@
 @interface FIUIBreathingPetalRingMetalRenderer
 - (CGPoint)ringCenter;
-- (FIUIBreathingPetalRingMetalRenderer)initWithMetalKitView:(id)a3 petalColor:(int64_t)a4 numberOfPetals:(int64_t)a5 showBlurTrails:(BOOL)a6;
-- (void)_clearCirclesInRange:(_NSRange)a3;
+- (FIUIBreathingPetalRingMetalRenderer)initWithMetalKitView:(id)view petalColor:(int64_t)color numberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails;
+- (void)_clearCirclesInRange:(_NSRange)range;
 - (void)_createBuffers;
 - (void)_loadTextures;
-- (void)_setCircleAtIndex:(int64_t)a3 center:(CGPoint)a4 radius:(float)a5 blurriness:(float)a6 alpha:(float)a7;
+- (void)_setCircleAtIndex:(int64_t)index center:(CGPoint)center radius:(float)radius blurriness:(float)blurriness alpha:(float)alpha;
 - (void)_setupIndexes;
-- (void)_setupProjectionMatrixForSize:(CGSize)a3;
+- (void)_setupProjectionMatrixForSize:(CGSize)size;
 - (void)_setupRenderPipeline;
 - (void)_setupVertices;
 - (void)_updateVertices;
-- (void)drawInMTKView:(id)a3;
-- (void)importDataFromPetalRingMetalRenderer:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
-- (void)setNumberOfVisiblePetals:(int64_t)a3 showBlurTrails:(BOOL)a4;
-- (void)setRingCenter:(CGPoint)a3;
-- (void)setRingRadius:(float)a3;
+- (void)drawInMTKView:(id)view;
+- (void)importDataFromPetalRingMetalRenderer:(id)renderer;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
+- (void)setNumberOfVisiblePetals:(int64_t)petals showBlurTrails:(BOOL)trails;
+- (void)setRingCenter:(CGPoint)center;
+- (void)setRingRadius:(float)radius;
 @end
 
 @implementation FIUIBreathingPetalRingMetalRenderer
 
-- (FIUIBreathingPetalRingMetalRenderer)initWithMetalKitView:(id)a3 petalColor:(int64_t)a4 numberOfPetals:(int64_t)a5 showBlurTrails:(BOOL)a6
+- (FIUIBreathingPetalRingMetalRenderer)initWithMetalKitView:(id)view petalColor:(int64_t)color numberOfPetals:(int64_t)petals showBlurTrails:(BOOL)trails
 {
-  v11 = a3;
+  viewCopy = view;
   v21.receiver = self;
   v21.super_class = FIUIBreathingPetalRingMetalRenderer;
   v12 = [(FIUIBreathingPetalRingMetalRenderer *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mtkView, a3);
+    objc_storeStrong(&v12->_mtkView, view);
     [(MTKView *)v13->_mtkView setColorPixelFormat:80];
     [(MTKView *)v13->_mtkView setClearColor:0.0, 0.0, 0.0, 0.0];
-    v14 = [(MTKView *)v13->_mtkView device];
+    device = [(MTKView *)v13->_mtkView device];
     device = v13->_device;
-    v13->_device = v14;
+    v13->_device = device;
 
-    v16 = [(MTLDevice *)v13->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v13->_device newCommandQueue];
     commandQueue = v13->_commandQueue;
-    v13->_commandQueue = v16;
+    v13->_commandQueue = newCommandQueue;
 
-    v13->_petalColor = a4;
-    v13->_numberOfPetals = a5;
-    v13->_showBlurTrails = a6;
+    v13->_petalColor = color;
+    v13->_numberOfPetals = petals;
+    v13->_showBlurTrails = trails;
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _createBuffers];
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _loadTextures];
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _setupIndexes];
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _setupVertices];
-    [v11 bounds];
+    [viewCopy bounds];
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _setupProjectionMatrixForSize:v18, v19];
     [(FIUIBreathingPetalRingMetalRenderer *)v13 _setupRenderPipeline];
   }
@@ -110,9 +110,9 @@
   while (v3);
 }
 
-- (void)_setupProjectionMatrixForSize:(CGSize)a3
+- (void)_setupProjectionMatrixForSize:(CGSize)size
 {
-  v3 = a3.height / a3.width;
+  v3 = size.height / size.width;
   LODWORD(v4) = 0;
   *(&v4 + 1) = 2.0 / (-v3 - v3);
   LODWORD(v5) = 0x80000000;
@@ -155,49 +155,49 @@
   v7 = [v5 newFunctionWithName:@"petalRingVertexShader"];
   v8 = [v5 newFunctionWithName:@"petalRingFragmentShader"];
   v9 = objc_alloc_init(MEMORY[0x1E69741E0]);
-  v10 = [v9 attributes];
-  v11 = [v10 objectAtIndexedSubscript:0];
+  attributes = [v9 attributes];
+  v11 = [attributes objectAtIndexedSubscript:0];
   [v11 setFormat:29];
 
-  v12 = [v9 attributes];
-  v13 = [v12 objectAtIndexedSubscript:0];
+  attributes2 = [v9 attributes];
+  v13 = [attributes2 objectAtIndexedSubscript:0];
   [v13 setOffset:0];
 
-  v14 = [v9 attributes];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  attributes3 = [v9 attributes];
+  v15 = [attributes3 objectAtIndexedSubscript:0];
   [v15 setBufferIndex:2];
 
-  v16 = [v9 attributes];
-  v17 = [v16 objectAtIndexedSubscript:1];
+  attributes4 = [v9 attributes];
+  v17 = [attributes4 objectAtIndexedSubscript:1];
   [v17 setFormat:29];
 
-  v18 = [v9 attributes];
-  v19 = [v18 objectAtIndexedSubscript:1];
+  attributes5 = [v9 attributes];
+  v19 = [attributes5 objectAtIndexedSubscript:1];
   [v19 setOffset:8];
 
-  v20 = [v9 attributes];
-  v21 = [v20 objectAtIndexedSubscript:1];
+  attributes6 = [v9 attributes];
+  v21 = [attributes6 objectAtIndexedSubscript:1];
   [v21 setBufferIndex:2];
 
-  v22 = [v9 layouts];
-  v23 = [v22 objectAtIndexedSubscript:2];
+  layouts = [v9 layouts];
+  v23 = [layouts objectAtIndexedSubscript:2];
   [v23 setStride:16];
 
-  v24 = [v9 layouts];
-  v25 = [v24 objectAtIndexedSubscript:2];
+  layouts2 = [v9 layouts];
+  v25 = [layouts2 objectAtIndexedSubscript:2];
   [v25 setStepRate:1];
 
-  v26 = [v9 layouts];
-  v27 = [v26 objectAtIndexedSubscript:2];
+  layouts3 = [v9 layouts];
+  v27 = [layouts3 objectAtIndexedSubscript:2];
   [v27 setStepFunction:1];
 
   [v3 setVertexDescriptor:v9];
   [v3 setVertexFunction:v7];
   [v3 setFragmentFunction:v8];
-  v28 = [(MTKView *)self->_mtkView colorPixelFormat];
-  v29 = [v3 colorAttachments];
-  v30 = [v29 objectAtIndexedSubscript:0];
-  [v30 setPixelFormat:v28];
+  colorPixelFormat = [(MTKView *)self->_mtkView colorPixelFormat];
+  colorAttachments = [v3 colorAttachments];
+  v30 = [colorAttachments objectAtIndexedSubscript:0];
+  [v30 setPixelFormat:colorPixelFormat];
 
   v31 = self->_device;
   v36 = v6;
@@ -208,13 +208,13 @@
   self->_renderPipeline = v32;
 }
 
-- (void)importDataFromPetalRingMetalRenderer:(id)a3
+- (void)importDataFromPetalRingMetalRenderer:(id)renderer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  rendererCopy = renderer;
+  v5 = rendererCopy;
+  if (rendererCopy)
   {
-    self->_numberOfVisiblePetals = [v4 numberOfVisiblePetals];
+    self->_numberOfVisiblePetals = [rendererCopy numberOfVisiblePetals];
     v21 = 0u;
     memset(v22, 0, sizeof(v22));
     v19 = 0u;
@@ -258,32 +258,32 @@
   }
 }
 
-- (void)setNumberOfVisiblePetals:(int64_t)a3 showBlurTrails:(BOOL)a4
+- (void)setNumberOfVisiblePetals:(int64_t)petals showBlurTrails:(BOOL)trails
 {
-  v4 = a3;
-  self->_numberOfVisiblePetals = a3;
-  if (a4)
+  petalsCopy = petals;
+  self->_numberOfVisiblePetals = petals;
+  if (trails)
   {
-    v6 = 10 - a3;
-    [(FIUIBreathingPetalRingMetalRenderer *)self _clearCirclesInRange:a3, 10 - a3];
-    v4 += 10;
+    v6 = 10 - petals;
+    [(FIUIBreathingPetalRingMetalRenderer *)self _clearCirclesInRange:petals, 10 - petals];
+    petalsCopy += 10;
   }
 
   else
   {
-    v6 = 20 - a3;
+    v6 = 20 - petals;
   }
 
-  [(FIUIBreathingPetalRingMetalRenderer *)self _clearCirclesInRange:v4, v6];
+  [(FIUIBreathingPetalRingMetalRenderer *)self _clearCirclesInRange:petalsCopy, v6];
 }
 
-- (void)_clearCirclesInRange:(_NSRange)a3
+- (void)_clearCirclesInRange:(_NSRange)range
 {
-  if (a3.location < a3.location + a3.length)
+  if (range.location < range.location + range.length)
   {
     v3 = 0;
-    v4 = vdupq_n_s64(a3.length - 1);
-    v5 = &self[1]._anon_28[16 * a3.location + 176];
+    v4 = vdupq_n_s64(range.length - 1);
+    v5 = &self[1]._anon_28[16 * range.location + 176];
     do
     {
       v6 = vdupq_n_s64(v3);
@@ -308,26 +308,26 @@
       v5 += 64;
     }
 
-    while (((a3.length + 3) & 0xFFFFFFFFFFFFFFFCLL) != v3);
+    while (((range.length + 3) & 0xFFFFFFFFFFFFFFFCLL) != v3);
   }
 }
 
-- (void)setRingRadius:(float)a3
+- (void)setRingRadius:(float)radius
 {
-  if (!FIUIIsEqual(self->_ringRadius, a3))
+  if (!FIUIIsEqual(self->_ringRadius, radius))
   {
-    self->_ringRadius = a3;
+    self->_ringRadius = radius;
 
     [(FIUIBreathingPetalRingMetalRenderer *)self _updateVertices];
   }
 }
 
-- (void)setRingCenter:(CGPoint)a3
+- (void)setRingCenter:(CGPoint)center
 {
-  y = a3.y;
-  if (self->_ringCenter.x != a3.x || self->_ringCenter.y != a3.y)
+  y = center.y;
+  if (self->_ringCenter.x != center.x || self->_ringCenter.y != center.y)
   {
-    x = a3.x;
+    x = center.x;
     [(MTKView *)self->_mtkView bounds];
     v7.f64[0] = x;
     self->_ringCenter.x = x;
@@ -339,15 +339,15 @@
   }
 }
 
-- (void)_setCircleAtIndex:(int64_t)a3 center:(CGPoint)a4 radius:(float)a5 blurriness:(float)a6 alpha:(float)a7
+- (void)_setCircleAtIndex:(int64_t)index center:(CGPoint)center radius:(float)radius blurriness:(float)blurriness alpha:(float)alpha
 {
-  y = a4.y;
-  v8 = vmulq_f64(a4, xmmword_1E5DB1F50);
-  *(&self[1].super.isa + a3) = vadd_f32(*self->_ringCenterVector, vcvt_f32_f64(v8));
-  *v8.f64 = (a5 + a5) * (a5 + a5);
-  *(v8.f64 + 1) = 1.0 / (a5 * a6);
-  *&v8.f64[1] = a7;
-  *&self[1]._anon_28[16 * a3 + 120] = v8;
+  y = center.y;
+  v8 = vmulq_f64(center, xmmword_1E5DB1F50);
+  *(&self[1].super.isa + index) = vadd_f32(*self->_ringCenterVector, vcvt_f32_f64(v8));
+  *v8.f64 = (radius + radius) * (radius + radius);
+  *(v8.f64 + 1) = 1.0 / (radius * blurriness);
+  *&v8.f64[1] = alpha;
+  *&self[1]._anon_28[16 * index + 120] = v8;
 }
 
 - (void)_updateVertices
@@ -384,12 +384,12 @@
   while (v7 != 24);
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
+  height = change.height;
+  width = change.width;
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  viewCopy = view;
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B938];
   if (os_log_type_enabled(*MEMORY[0x1E696B938], OS_LOG_TYPE_DEFAULT))
@@ -399,7 +399,7 @@
     v16.height = height;
     v10 = NSStringFromCGSize(v16);
     v11 = 138412546;
-    v12 = v7;
+    v12 = viewCopy;
     v13 = 2114;
     v14 = v10;
     _os_log_impl(&dword_1E5D0F000, v9, OS_LOG_TYPE_DEFAULT, "mktView:%@ drawableSizeWillChange: %{public}@", &v11, 0x16u);
@@ -408,14 +408,14 @@
   [(FIUIBreathingPetalRingMetalRenderer *)self _setupProjectionMatrixForSize:width, height];
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v11 = a3;
-  v4 = [(FIUIBreathingPetalRingMetalRenderer *)self stateUpdateBlock];
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  stateUpdateBlock = [(FIUIBreathingPetalRingMetalRenderer *)self stateUpdateBlock];
+  v5 = stateUpdateBlock;
+  if (stateUpdateBlock)
   {
-    (*(v4 + 16))(v4);
+    (*(stateUpdateBlock + 16))(stateUpdateBlock);
     showBlurTrails = self->_showBlurTrails;
     self->_uniforms.numberOfPetals = self->_numberOfPetals;
     self->_uniforms.showBlurTrails = showBlurTrails;
@@ -432,12 +432,12 @@
     memcpy(&self->_anon_28[168], &self[1]._anon_28[120], 0x148uLL);
   }
 
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v7 setLabel:@"Drawable Command Buffer"];
-  v8 = [v11 currentRenderPassDescriptor];
-  if (v8)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"Drawable Command Buffer"];
+  currentRenderPassDescriptor = [viewCopy currentRenderPassDescriptor];
+  if (currentRenderPassDescriptor)
   {
-    v9 = [v7 renderCommandEncoderWithDescriptor:v8];
+    v9 = [commandBuffer renderCommandEncoderWithDescriptor:currentRenderPassDescriptor];
     [v9 setLabel:@"Drawable Render Encoder"];
     [v9 setRenderPipelineState:self->_renderPipeline];
     [v9 setVertexBytes:self->_anon_220 length:400 atIndex:2];
@@ -446,12 +446,12 @@
     [v9 setFragmentTexture:self->_circleGradient atIndex:0];
     [v9 drawIndexedPrimitives:3 indexCount:72 indexType:0 indexBuffer:self->_indexBuffer indexBufferOffset:0];
     [v9 endEncoding];
-    v10 = [v11 currentDrawable];
-    [v7 presentDrawable:v10];
+    currentDrawable = [viewCopy currentDrawable];
+    [commandBuffer presentDrawable:currentDrawable];
   }
 
-  [v7 commit];
-  [v7 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 }
 
 - (CGPoint)ringCenter

@@ -1,63 +1,63 @@
 @interface FUDatePicker
-- (FUDatePicker)initWithFrame:(CGRect)a3;
-- (FUDatePicker)initWithFrame:(CGRect)a3 tintColor:(id)a4 initialWheelType:(int64_t)a5 shouldEnableCrown:(BOOL)a6 minimumDate:(id)a7 maximumDate:(id)a8;
+- (FUDatePicker)initWithFrame:(CGRect)frame;
+- (FUDatePicker)initWithFrame:(CGRect)frame tintColor:(id)color initialWheelType:(int64_t)type shouldEnableCrown:(BOOL)crown minimumDate:(id)date maximumDate:(id)maximumDate;
 - (FUDatePickerDelegate)delegate;
 - (id)_enumerateDayValues;
-- (id)_enumerateDayValuesFromFormatter:(id)a3;
-- (id)_wheelOfType:(int64_t)a3;
-- (id)scrollWheel:(id)a3 titleForItemAtIndex:(unint64_t)a4;
-- (unint64_t)numberOfRowsInScrollWheel:(id)a3;
-- (void)_updateDayRangeReloadingWheel:(BOOL)a3;
-- (void)_updateSpinnersAnimated:(BOOL)a3;
+- (id)_enumerateDayValuesFromFormatter:(id)formatter;
+- (id)_wheelOfType:(int64_t)type;
+- (id)scrollWheel:(id)wheel titleForItemAtIndex:(unint64_t)index;
+- (unint64_t)numberOfRowsInScrollWheel:(id)wheel;
+- (void)_updateDayRangeReloadingWheel:(BOOL)wheel;
+- (void)_updateSpinnersAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)scrollWheel:(id)a3 didChangeCurrentIndexTo:(unint64_t)a4;
-- (void)setDate:(id)a3 animated:(BOOL)a4;
-- (void)tappedScrollWheel:(id)a3;
+- (void)scrollWheel:(id)wheel didChangeCurrentIndexTo:(unint64_t)to;
+- (void)setDate:(id)date animated:(BOOL)animated;
+- (void)tappedScrollWheel:(id)wheel;
 @end
 
 @implementation FUDatePicker
 
-- (FUDatePicker)initWithFrame:(CGRect)a3
+- (FUDatePicker)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E69DC888] systemGreenColor];
-  v9 = [(FUDatePicker *)self initWithFrame:v8 tintColor:2 initialWheelType:0 shouldEnableCrown:0 minimumDate:0 maximumDate:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  height = [(FUDatePicker *)self initWithFrame:systemGreenColor tintColor:2 initialWheelType:0 shouldEnableCrown:0 minimumDate:0 maximumDate:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (FUDatePicker)initWithFrame:(CGRect)a3 tintColor:(id)a4 initialWheelType:(int64_t)a5 shouldEnableCrown:(BOOL)a6 minimumDate:(id)a7 maximumDate:(id)a8
+- (FUDatePicker)initWithFrame:(CGRect)frame tintColor:(id)color initialWheelType:(int64_t)type shouldEnableCrown:(BOOL)crown minimumDate:(id)date maximumDate:(id)maximumDate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  dateCopy = date;
+  maximumDateCopy = maximumDate;
   v144.receiver = self;
   v144.super_class = FUDatePicker;
-  v20 = [(FUDatePicker *)&v144 initWithFrame:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(FUDatePicker *)&v144 initWithFrame:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    v138 = v19;
-    v139 = v18;
-    objc_storeStrong(&v20->_tintColor, a4);
-    v21->_initialWheelType = a5;
-    objc_storeStrong(&v21->_minimumDate, a7);
-    objc_storeStrong(&v21->_maximumDate, a8);
+    v138 = maximumDateCopy;
+    v139 = dateCopy;
+    objc_storeStrong(&height->_tintColor, color);
+    v21->_initialWheelType = type;
+    objc_storeStrong(&v21->_minimumDate, date);
+    objc_storeStrong(&v21->_maximumDate, maximumDate);
     v22 = 1;
     v21->_firstResponderShouldChange = 1;
-    v23 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v24 = [MEMORY[0x1E695DF58] currentLocale];
-    v25 = [v24 localeIdentifier];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v26 = [MEMORY[0x1E695DF00] date];
-    v27 = [v23 dateByAddingUnit:4 value:-30 toDate:v26 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    v27 = [currentCalendar dateByAddingUnit:4 value:-30 toDate:date options:0];
     date = v21->_date;
     v21->_date = v27;
 
@@ -71,33 +71,33 @@
     v21->_dateFormatter = v29;
 
     [(NSDateFormatter *)v21->_dateFormatter setDateFormat:@"y"];
-    v140 = v25;
-    if (([v25 isEqualToString:@"ja_JP_TRADITIONAL"] & 1) == 0)
+    v140 = localeIdentifier;
+    if (([localeIdentifier isEqualToString:@"ja_JP_TRADITIONAL"] & 1) == 0)
     {
-      v22 = [v25 containsString:@"calendar=japanese"];
+      v22 = [localeIdentifier containsString:@"calendar=japanese"];
     }
 
     v21->_displayEra = v22;
-    v31 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
     v32 = *MEMORY[0x1E695D9B0];
-    v33 = [v31 objectForKey:*MEMORY[0x1E695D9B0]];
+    v33 = [currentLocale2 objectForKey:*MEMORY[0x1E695D9B0]];
     v34 = [v33 isEqualToString:@"ja"];
 
     if (v34)
     {
-      v35 = [(NSDateFormatter *)v21->_dateFormatter veryShortMonthSymbols];
+      veryShortMonthSymbols = [(NSDateFormatter *)v21->_dateFormatter veryShortMonthSymbols];
       monthNames = v21->_monthNames;
-      v21->_monthNames = v35;
+      v21->_monthNames = veryShortMonthSymbols;
 
-      v37 = [(FUDatePicker *)v21 _enumerateDayValues];
+      _enumerateDayValues = [(FUDatePicker *)v21 _enumerateDayValues];
       dayValues = v21->_dayValues;
-      v21->_dayValues = v37;
+      v21->_dayValues = _enumerateDayValues;
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DF58] currentLocale];
-      v40 = [v39 objectForKey:v32];
+      currentLocale3 = [MEMORY[0x1E695DF58] currentLocale];
+      v40 = [currentLocale3 objectForKey:v32];
       v41 = [v40 isEqualToString:@"fi"];
 
       v42 = v21->_dateFormatter;
@@ -129,17 +129,17 @@
     yearsWithNames = v21->_yearsWithNames;
     v21->_yearsWithNames = v50;
 
-    v52 = [MEMORY[0x1E695DF00] date];
-    v53 = [v23 dateByAddingUnit:4 value:-150 toDate:v52 options:0];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v53 = [currentCalendar dateByAddingUnit:4 value:-150 toDate:date2 options:0];
 
     v137 = v53;
-    v54 = [v23 components:6 fromDate:v53];
+    v54 = [currentCalendar components:6 fromDate:v53];
     v55 = 150;
     do
     {
       [v54 setYear:{objc_msgSend(v54, "year") + 1}];
       v56 = v21->_yearsWithNames;
-      v57 = [v23 dateFromComponents:v54];
+      v57 = [currentCalendar dateFromComponents:v54];
       [(NSMutableArray *)v56 addObject:v57];
 
       --v55;
@@ -152,8 +152,8 @@
     v142[1] = 0;
     v141[0] = 0;
     v141[1] = 0;
-    v58 = [MEMORY[0x1E695DF58] currentLocale];
-    v59 = GetFormatAndDateFieldRangesFor_yMMMMd(v58, v143, v142, v141);
+    currentLocale4 = [MEMORY[0x1E695DF58] currentLocale];
+    v59 = GetFormatAndDateFieldRangesFor_yMMMMd(currentLocale4, v143, v142, v141);
 
     v60 = v142[0];
     v61 = v143[0];
@@ -264,8 +264,8 @@
       v21->_dayOrder = v80;
     }
 
-    v81 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v81 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v83 = v82;
 
     v84 = objc_alloc_init(FUScrollWheel);
@@ -275,15 +275,15 @@
     [(FUScrollWheel *)v21->_monthWheel setDataSource:v21];
     [(FUScrollWheel *)v21->_monthWheel setDelegate:v21];
     [(FUScrollWheel *)v21->_monthWheel setItemTitleAligmnent:1];
-    v86 = [(FUScrollWheel *)v21->_monthWheel layer];
+    layer = [(FUScrollWheel *)v21->_monthWheel layer];
     v87 = 12.0 / v83;
-    [v86 setCornerRadius:12.0 / v83];
+    [layer setCornerRadius:12.0 / v83];
 
-    v88 = [(FUScrollWheel *)v21->_monthWheel layer];
-    [v88 setBorderColor:{objc_msgSend(v17, "CGColor")}];
+    layer2 = [(FUScrollWheel *)v21->_monthWheel layer];
+    [layer2 setBorderColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-    v89 = [(FUScrollWheel *)v21->_monthWheel layer];
-    [v89 setBorderWidth:1.0];
+    layer3 = [(FUScrollWheel *)v21->_monthWheel layer];
+    [layer3 setBorderWidth:1.0];
 
     v90 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     monthLabel = v21->_monthLabel;
@@ -300,15 +300,15 @@
     v97 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0 weight:*MEMORY[0x1E69DB958]];
     [(UILabel *)v95 setFont:v97];
 
-    v98 = [(UILabel *)v21->_monthLabel layer];
-    [v98 setBackgroundColor:{objc_msgSend(v17, "CGColor")}];
+    layer4 = [(UILabel *)v21->_monthLabel layer];
+    [layer4 setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-    v99 = [(UILabel *)v21->_monthLabel layer];
-    [v99 setCornerRadius:3.0];
+    layer5 = [(UILabel *)v21->_monthLabel layer];
+    [layer5 setCornerRadius:3.0];
 
     v100 = v21->_monthLabel;
-    v101 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v100 setTextColor:v101];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v100 setTextColor:blackColor];
 
     [(FUDatePicker *)v21 addSubview:v21->_monthLabel];
     [(FUDatePicker *)v21 addSubview:v21->_monthWheel];
@@ -319,15 +319,15 @@
     [(FUScrollWheel *)v21->_dayWheel setDataSource:v21];
     [(FUScrollWheel *)v21->_dayWheel setDelegate:v21];
     [(FUScrollWheel *)v21->_dayWheel setItemTitleAligmnent:1];
-    v104 = [(FUScrollWheel *)v21->_dayWheel layer];
-    [v104 setCornerRadius:v87];
+    layer6 = [(FUScrollWheel *)v21->_dayWheel layer];
+    [layer6 setCornerRadius:v87];
 
-    v105 = [(FUScrollWheel *)v21->_dayWheel layer];
-    v106 = [MEMORY[0x1E69DC888] grayColor];
-    [v105 setBorderColor:{objc_msgSend(v106, "CGColor")}];
+    layer7 = [(FUScrollWheel *)v21->_dayWheel layer];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [layer7 setBorderColor:{objc_msgSend(grayColor, "CGColor")}];
 
-    v107 = [(FUScrollWheel *)v21->_dayWheel layer];
-    [v107 setBorderWidth:1.0];
+    layer8 = [(FUScrollWheel *)v21->_dayWheel layer];
+    [layer8 setBorderWidth:1.0];
 
     v108 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     dayLabel = v21->_dayLabel;
@@ -343,15 +343,15 @@
     v114 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0 weight:v96];
     [(UILabel *)v113 setFont:v114];
 
-    v115 = [(UILabel *)v21->_dayLabel layer];
-    [v115 setBackgroundColor:{objc_msgSend(v17, "CGColor")}];
+    layer9 = [(UILabel *)v21->_dayLabel layer];
+    [layer9 setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-    v116 = [(UILabel *)v21->_dayLabel layer];
-    [v116 setCornerRadius:3.0];
+    layer10 = [(UILabel *)v21->_dayLabel layer];
+    [layer10 setCornerRadius:3.0];
 
     v117 = v21->_dayLabel;
-    v118 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v117 setTextColor:v118];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v117 setTextColor:blackColor2];
 
     [(FUDatePicker *)v21 addSubview:v21->_dayLabel];
     [(FUDatePicker *)v21 addSubview:v21->_dayWheel];
@@ -362,15 +362,15 @@
     [(FUScrollWheel *)v21->_yearWheel setDataSource:v21];
     [(FUScrollWheel *)v21->_yearWheel setDelegate:v21];
     [(FUScrollWheel *)v21->_yearWheel setItemTitleAligmnent:1];
-    v121 = [(FUScrollWheel *)v21->_yearWheel layer];
-    [v121 setCornerRadius:v87];
+    layer11 = [(FUScrollWheel *)v21->_yearWheel layer];
+    [layer11 setCornerRadius:v87];
 
-    v122 = [(FUScrollWheel *)v21->_yearWheel layer];
-    v123 = [MEMORY[0x1E69DC888] grayColor];
-    [v122 setBorderColor:{objc_msgSend(v123, "CGColor")}];
+    layer12 = [(FUScrollWheel *)v21->_yearWheel layer];
+    grayColor2 = [MEMORY[0x1E69DC888] grayColor];
+    [layer12 setBorderColor:{objc_msgSend(grayColor2, "CGColor")}];
 
-    v124 = [(FUScrollWheel *)v21->_yearWheel layer];
-    [v124 setBorderWidth:1.0];
+    layer13 = [(FUScrollWheel *)v21->_yearWheel layer];
+    [layer13 setBorderWidth:1.0];
 
     v125 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     yearLabel = v21->_yearLabel;
@@ -386,49 +386,49 @@
     v131 = [MEMORY[0x1E69DB878] systemFontOfSize:10.0 weight:v96];
     [(UILabel *)v130 setFont:v131];
 
-    v132 = [(UILabel *)v21->_yearLabel layer];
-    [v132 setBackgroundColor:{objc_msgSend(v17, "CGColor")}];
+    layer14 = [(UILabel *)v21->_yearLabel layer];
+    [layer14 setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
 
-    v133 = [(UILabel *)v21->_yearLabel layer];
-    [v133 setCornerRadius:3.0];
+    layer15 = [(UILabel *)v21->_yearLabel layer];
+    [layer15 setCornerRadius:3.0];
 
     v134 = v21->_yearLabel;
-    v135 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v134 setTextColor:v135];
+    blackColor3 = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v134 setTextColor:blackColor3];
 
     [(FUDatePicker *)v21 addSubview:v21->_yearLabel];
     [(FUDatePicker *)v21 addSubview:v21->_yearWheel];
     [(FUDatePicker *)v21 _updateDayRangeReloadingWheel:1];
     [(FUDatePicker *)v21 _updateSpinnersAnimated:0];
 
-    v19 = v138;
-    v18 = v139;
+    maximumDateCopy = v138;
+    dateCopy = v139;
   }
 
   return v21;
 }
 
-- (id)_wheelOfType:(int64_t)a3
+- (id)_wheelOfType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    a2 = *(&self->super.super.super.isa + *off_1E878C090[a3]);
+    a2 = *(&self->super.super.super.isa + *off_1E878C090[type]);
   }
 
   return a2;
 }
 
-- (id)_enumerateDayValuesFromFormatter:(id)a3
+- (id)_enumerateDayValuesFromFormatter:(id)formatter
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  formatterCopy = formatter;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v6 setDay:1];
   [v6 setMonth:1];
-  v7 = [v5 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:self->_numRowsDate];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [v9 objectForKey:*MEMORY[0x1E695D9B0]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
   v11 = [v10 isEqualToString:@"fi"];
 
   if (self->_numRowsDate)
@@ -436,7 +436,7 @@
     v12 = 0;
     do
     {
-      v13 = [v4 stringFromDate:v7];
+      v13 = [formatterCopy stringFromDate:v7];
       v14 = v13;
       if (v11)
       {
@@ -449,7 +449,7 @@
         [v8 addObject:v13];
       }
 
-      v16 = [v5 dateByAddingUnit:16 value:1 toDate:v7 options:0];
+      v16 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v7 options:0];
 
       ++v12;
       v7 = v16;
@@ -616,44 +616,44 @@
   [v31 setActiveScrollWheel];
 }
 
-- (void)setDate:(id)a3 animated:(BOOL)a4
+- (void)setDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [a3 copy];
+  animatedCopy = animated;
+  v6 = [date copy];
   date = self->_date;
   self->_date = v6;
 
   [(FUDatePicker *)self _updateDayRangeReloadingWheel:0];
 
-  [(FUDatePicker *)self _updateSpinnersAnimated:v4];
+  [(FUDatePicker *)self _updateSpinnersAnimated:animatedCopy];
 }
 
-- (void)_updateSpinnersAnimated:(BOOL)a3
+- (void)_updateSpinnersAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v5 components:30 fromDate:self->_date];
+  animatedCopy = animated;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar components:30 fromDate:self->_date];
 
-  -[FUScrollWheel setCurrentIndex:animated:](self->_monthWheel, "setCurrentIndex:animated:", [v9 month] - self->_monthOffset, v3);
-  -[FUScrollWheel setCurrentIndex:animated:](self->_dayWheel, "setCurrentIndex:animated:", [v9 day] - self->_dayOffset, v3);
+  -[FUScrollWheel setCurrentIndex:animated:](self->_monthWheel, "setCurrentIndex:animated:", [v9 month] - self->_monthOffset, animatedCopy);
+  -[FUScrollWheel setCurrentIndex:animated:](self->_dayWheel, "setCurrentIndex:animated:", [v9 day] - self->_dayOffset, animatedCopy);
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v6 setYear:{objc_msgSend(v9, "year")}];
   [v6 setEra:{objc_msgSend(v9, "era")}];
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v8 = [v7 dateFromComponents:v6];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v8 = [currentCalendar2 dateFromComponents:v6];
 
-  [(FUScrollWheel *)self->_yearWheel setCurrentIndex:[(NSMutableArray *)self->_yearsWithNames indexOfObject:v8] animated:v3];
+  [(FUScrollWheel *)self->_yearWheel setCurrentIndex:[(NSMutableArray *)self->_yearsWithNames indexOfObject:v8] animated:animatedCopy];
 }
 
-- (void)_updateDayRangeReloadingWheel:(BOOL)a3
+- (void)_updateDayRangeReloadingWheel:(BOOL)wheel
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v5 rangeOfUnit:16 inUnit:8 forDate:self->_date];
+  wheelCopy = wheel;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar rangeOfUnit:16 inUnit:8 forDate:self->_date];
   v7 = v6;
 
   self->_numRowsDate = v7;
-  if (v3)
+  if (wheelCopy)
   {
     self->_firstResponderShouldChange = 0;
     [(FUScrollWheel *)self->_dayWheel reloadData];
@@ -661,34 +661,34 @@
   }
 }
 
-- (id)scrollWheel:(id)a3 titleForItemAtIndex:(unint64_t)a4
+- (id)scrollWheel:(id)wheel titleForItemAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_monthWheel == v6)
+  wheelCopy = wheel;
+  v7 = wheelCopy;
+  if (self->_monthWheel == wheelCopy)
   {
-    v9 = [(NSArray *)self->_monthNames objectAtIndexedSubscript:a4];
-    v10 = [v9 localizedUppercaseString];
+    v9 = [(NSArray *)self->_monthNames objectAtIndexedSubscript:index];
+    localizedUppercaseString = [v9 localizedUppercaseString];
     goto LABEL_6;
   }
 
-  if (self->_dayWheel != v6)
+  if (self->_dayWheel != wheelCopy)
   {
-    if (self->_yearWheel != v6)
+    if (self->_yearWheel != wheelCopy)
     {
       v8 = &stru_1F5F88F90;
       goto LABEL_9;
     }
 
-    v9 = [(NSMutableArray *)self->_yearsWithNames objectAtIndexedSubscript:a4];
+    v9 = [(NSMutableArray *)self->_yearsWithNames objectAtIndexedSubscript:index];
     if (self->_displayEra)
     {
-      v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v13 = [v12 components:2 fromDate:v9];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      v13 = [currentCalendar components:2 fromDate:v9];
 
-      v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v15 = [v14 eraSymbols];
-      v16 = [v15 objectAtIndex:{objc_msgSend(v13, "era")}];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      eraSymbols = [currentCalendar2 eraSymbols];
+      v16 = [eraSymbols objectAtIndex:{objc_msgSend(v13, "era")}];
       v17 = [v16 substringToIndex:1];
 
       v18 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v9];
@@ -697,28 +697,28 @@
       goto LABEL_7;
     }
 
-    v10 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v9];
+    localizedUppercaseString = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v9];
 LABEL_6:
-    v8 = v10;
+    v8 = localizedUppercaseString;
 LABEL_7:
 
     goto LABEL_9;
   }
 
-  v8 = [(NSArray *)self->_dayValues objectAtIndexedSubscript:a4];
+  v8 = [(NSArray *)self->_dayValues objectAtIndexedSubscript:index];
 LABEL_9:
 
   return v8;
 }
 
-- (unint64_t)numberOfRowsInScrollWheel:(id)a3
+- (unint64_t)numberOfRowsInScrollWheel:(id)wheel
 {
-  if (self->_dayWheel == a3)
+  if (self->_dayWheel == wheel)
   {
     v3 = &OBJC_IVAR___FUDatePicker__numRowsDate;
   }
 
-  else if (self->_monthWheel == a3)
+  else if (self->_monthWheel == wheel)
   {
     v3 = &OBJC_IVAR___FUDatePicker__numRowsMonth;
   }
@@ -731,94 +731,94 @@ LABEL_9:
   return *(&self->super.super.super.isa + *v3);
 }
 
-- (void)tappedScrollWheel:(id)a3
+- (void)tappedScrollWheel:(id)wheel
 {
-  v25 = a3;
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 scale];
+  wheelCopy = wheel;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
   monthWheel = self->_monthWheel;
-  if (monthWheel != v25)
+  if (monthWheel != wheelCopy)
   {
-    v8 = [(FUScrollWheel *)self->_monthWheel layer];
-    [v8 setCornerRadius:6.0];
+    layer = [(FUScrollWheel *)self->_monthWheel layer];
+    [layer setCornerRadius:6.0];
 
-    v9 = [(FUScrollWheel *)self->_monthWheel layer];
-    v10 = [MEMORY[0x1E69DC888] grayColor];
-    [v9 setBorderColor:{objc_msgSend(v10, "CGColor")}];
+    layer2 = [(FUScrollWheel *)self->_monthWheel layer];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [layer2 setBorderColor:{objc_msgSend(grayColor, "CGColor")}];
 
-    v11 = [(FUScrollWheel *)self->_monthWheel layer];
-    [v11 setBorderWidth:2.0 / v6];
+    layer3 = [(FUScrollWheel *)self->_monthWheel layer];
+    [layer3 setBorderWidth:2.0 / v6];
   }
 
-  [(UILabel *)self->_monthLabel setHidden:monthWheel != v25];
+  [(UILabel *)self->_monthLabel setHidden:monthWheel != wheelCopy];
   dayWheel = self->_dayWheel;
-  if (dayWheel != v25)
+  if (dayWheel != wheelCopy)
   {
-    v13 = [(FUScrollWheel *)self->_dayWheel layer];
-    [v13 setCornerRadius:6.0];
+    layer4 = [(FUScrollWheel *)self->_dayWheel layer];
+    [layer4 setCornerRadius:6.0];
 
-    v14 = [(FUScrollWheel *)self->_dayWheel layer];
-    v15 = [MEMORY[0x1E69DC888] grayColor];
-    [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+    layer5 = [(FUScrollWheel *)self->_dayWheel layer];
+    grayColor2 = [MEMORY[0x1E69DC888] grayColor];
+    [layer5 setBorderColor:{objc_msgSend(grayColor2, "CGColor")}];
 
-    v16 = [(FUScrollWheel *)self->_dayWheel layer];
-    [v16 setBorderWidth:2.0 / v6];
+    layer6 = [(FUScrollWheel *)self->_dayWheel layer];
+    [layer6 setBorderWidth:2.0 / v6];
   }
 
-  [(UILabel *)self->_dayLabel setHidden:dayWheel != v25];
+  [(UILabel *)self->_dayLabel setHidden:dayWheel != wheelCopy];
   yearWheel = self->_yearWheel;
-  if (yearWheel != v25)
+  if (yearWheel != wheelCopy)
   {
-    v18 = [(FUScrollWheel *)self->_yearWheel layer];
-    [v18 setCornerRadius:6.0];
+    layer7 = [(FUScrollWheel *)self->_yearWheel layer];
+    [layer7 setCornerRadius:6.0];
 
-    v19 = [(FUScrollWheel *)self->_yearWheel layer];
-    v20 = [MEMORY[0x1E69DC888] grayColor];
-    [v19 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+    layer8 = [(FUScrollWheel *)self->_yearWheel layer];
+    grayColor3 = [MEMORY[0x1E69DC888] grayColor];
+    [layer8 setBorderColor:{objc_msgSend(grayColor3, "CGColor")}];
 
-    v21 = [(FUScrollWheel *)self->_yearWheel layer];
-    [v21 setBorderWidth:2.0 / v6];
+    layer9 = [(FUScrollWheel *)self->_yearWheel layer];
+    [layer9 setBorderWidth:2.0 / v6];
   }
 
-  [(UILabel *)self->_yearLabel setHidden:yearWheel != v25];
-  v22 = [(FUScrollWheel *)v25 layer];
-  [v22 setCornerRadius:6.0];
+  [(UILabel *)self->_yearLabel setHidden:yearWheel != wheelCopy];
+  layer10 = [(FUScrollWheel *)wheelCopy layer];
+  [layer10 setCornerRadius:6.0];
 
-  v23 = [(FUScrollWheel *)v25 layer];
-  [v23 setBorderColor:{-[UIColor CGColor](self->_tintColor, "CGColor")}];
+  layer11 = [(FUScrollWheel *)wheelCopy layer];
+  [layer11 setBorderColor:{-[UIColor CGColor](self->_tintColor, "CGColor")}];
 
-  v24 = [(FUScrollWheel *)v25 layer];
-  [v24 setBorderWidth:3.0 / v6];
+  layer12 = [(FUScrollWheel *)wheelCopy layer];
+  [layer12 setBorderWidth:3.0 / v6];
 }
 
-- (void)scrollWheel:(id)a3 didChangeCurrentIndexTo:(unint64_t)a4
+- (void)scrollWheel:(id)wheel didChangeCurrentIndexTo:(unint64_t)to
 {
-  v24 = a3;
+  wheelCopy = wheel;
   v5 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v5 setCalendar:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [v5 setCalendar:currentCalendar];
 
   [v5 setMonth:{self->_monthOffset + -[FUScrollWheel currentIndex](self->_monthWheel, "currentIndex")}];
-  v7 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
   v8 = [(NSMutableArray *)self->_yearsWithNames objectAtIndex:[(FUScrollWheel *)self->_yearWheel currentIndex]];
-  v9 = [v7 components:6 fromDate:v8];
+  v9 = [currentCalendar2 components:6 fromDate:v8];
 
   [v5 setYear:{objc_msgSend(v9, "year")}];
   [v5 setEra:{objc_msgSend(v9, "era")}];
   [v5 setDay:1];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v11 = [v10 dateFromComponents:v5];
+  currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v11 = [currentCalendar3 dateFromComponents:v5];
 
-  v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v12 rangeOfUnit:16 inUnit:8 forDate:v11];
+  currentCalendar4 = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar4 rangeOfUnit:16 inUnit:8 forDate:v11];
   v14 = v13;
 
-  v15 = [(FUScrollWheel *)self->_dayWheel currentIndex];
-  if (v14 >= self->_dayOffset + v15)
+  currentIndex = [(FUScrollWheel *)self->_dayWheel currentIndex];
+  if (v14 >= self->_dayOffset + currentIndex)
   {
-    v16 = self->_dayOffset + v15;
+    v16 = self->_dayOffset + currentIndex;
   }
 
   else
@@ -827,8 +827,8 @@ LABEL_9:
   }
 
   [v5 setDay:v16];
-  v17 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v18 = [v17 dateFromComponents:v5];
+  currentCalendar5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  v18 = [currentCalendar5 dateFromComponents:v5];
   date = self->_date;
   self->_date = v18;
 
@@ -841,7 +841,7 @@ LABEL_9:
     [(FUDatePicker *)self _updateSpinnersAnimated:1];
   }
 
-  else if (self->_monthWheel == v24 || self->_yearWheel == v24)
+  else if (self->_monthWheel == wheelCopy || self->_yearWheel == wheelCopy)
   {
     [(FUDatePicker *)self _updateDayRangeReloadingWheel:1];
   }

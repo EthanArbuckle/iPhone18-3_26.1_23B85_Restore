@@ -12,160 +12,160 @@
 - (NSDictionary)tiffDictionary;
 - (PFImageMetadataBuilder)init;
 - (void)_updateCreationDate;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setCaption:(id)a3;
-- (void)setCreationDate:(id)a3 timeZone:(id)a4;
-- (void)setKeywords:(id)a3;
-- (void)setPeopleNames:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setCaption:(id)caption;
+- (void)setCreationDate:(id)date timeZone:(id)zone;
+- (void)setKeywords:(id)keywords;
+- (void)setPeopleNames:(id)names;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PFImageMetadataBuilder
 
 - (NSDictionary)tiffDictionary
 {
-  v2 = [(PFImageMetadataBuilder *)self tiffMutableDictionary];
-  v3 = [v2 copy];
+  tiffMutableDictionary = [(PFImageMetadataBuilder *)self tiffMutableDictionary];
+  v3 = [tiffMutableDictionary copy];
 
   return v3;
 }
 
 - (NSDictionary)exifDictionary
 {
-  v2 = [(PFImageMetadataBuilder *)self exifMutableDictionary];
-  v3 = [v2 copy];
+  exifMutableDictionary = [(PFImageMetadataBuilder *)self exifMutableDictionary];
+  v3 = [exifMutableDictionary copy];
 
   return v3;
 }
 
 - (NSDictionary)iptcDictionary
 {
-  v2 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  v3 = [v2 copy];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  v3 = [iptcMutableDictionary copy];
 
   return v3;
 }
 
-- (void)setPeopleNames:(id)a3
+- (void)setPeopleNames:(id)names
 {
-  v4 = [a3 copy];
+  v4 = [names copy];
   v8.receiver = self;
   v8.super_class = PFImageMetadataBuilder;
   [(PFMetadataBuilder *)&v8 setPeopleNames:v4];
 
   v7.receiver = self;
   v7.super_class = PFImageMetadataBuilder;
-  v5 = [(PFMetadataBuilder *)&v7 peopleNames];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DDC0]];
+  peopleNames = [(PFMetadataBuilder *)&v7 peopleNames];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  [iptcMutableDictionary setObject:peopleNames forKeyedSubscript:*MEMORY[0x1E696DDC0]];
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   v8.receiver = self;
   v8.super_class = PFImageMetadataBuilder;
   [(PFMetadataBuilder *)&v8 setAccessibilityDescription:v4];
 
   v7.receiver = self;
   v7.super_class = PFImageMetadataBuilder;
-  v5 = [(PFMetadataBuilder *)&v7 accessibilityDescription];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DDA8]];
+  accessibilityDescription = [(PFMetadataBuilder *)&v7 accessibilityDescription];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  [iptcMutableDictionary setObject:accessibilityDescription forKeyedSubscript:*MEMORY[0x1E696DDA8]];
 }
 
-- (void)setKeywords:(id)a3
+- (void)setKeywords:(id)keywords
 {
-  v4 = [a3 copy];
+  v4 = [keywords copy];
   v8.receiver = self;
   v8.super_class = PFImageMetadataBuilder;
   [(PFMetadataBuilder *)&v8 setKeywords:v4];
 
   v7.receiver = self;
   v7.super_class = PFImageMetadataBuilder;
-  v5 = [(PFMetadataBuilder *)&v7 keywords];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DDD0]];
+  keywords = [(PFMetadataBuilder *)&v7 keywords];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  [iptcMutableDictionary setObject:keywords forKeyedSubscript:*MEMORY[0x1E696DDD0]];
 }
 
-- (void)setCaption:(id)a3
+- (void)setCaption:(id)caption
 {
-  v4 = [a3 copy];
+  v4 = [caption copy];
   v8.receiver = self;
   v8.super_class = PFImageMetadataBuilder;
   [(PFMetadataBuilder *)&v8 setCaption:v4];
 
   v7.receiver = self;
   v7.super_class = PFImageMetadataBuilder;
-  v5 = [(PFMetadataBuilder *)&v7 caption];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DD68]];
+  caption = [(PFMetadataBuilder *)&v7 caption];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  [iptcMutableDictionary setObject:caption forKeyedSubscript:*MEMORY[0x1E696DD68]];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   v8.receiver = self;
   v8.super_class = PFImageMetadataBuilder;
   [(PFMetadataBuilder *)&v8 setTitle:v4];
 
   v7.receiver = self;
   v7.super_class = PFImageMetadataBuilder;
-  v5 = [(PFMetadataBuilder *)&v7 title];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DDD8]];
+  title = [(PFMetadataBuilder *)&v7 title];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  [iptcMutableDictionary setObject:title forKeyedSubscript:*MEMORY[0x1E696DDD8]];
 }
 
 - (void)_updateCreationDate
 {
-  v19 = [objc_opt_class() iptcDateFormatter];
-  v3 = [objc_opt_class() iptcTimeFormatter];
-  v4 = [(PFMetadataBuilder *)self creationTimeZone];
-  v5 = [(PFMetadataBuilder *)self creationDate];
-  [v19 setTimeZone:v4];
-  [v3 setTimeZone:v4];
-  v6 = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
-  v7 = [v19 stringFromDate:v5];
-  [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696DD88]];
+  iptcDateFormatter = [objc_opt_class() iptcDateFormatter];
+  iptcTimeFormatter = [objc_opt_class() iptcTimeFormatter];
+  creationTimeZone = [(PFMetadataBuilder *)self creationTimeZone];
+  creationDate = [(PFMetadataBuilder *)self creationDate];
+  [iptcDateFormatter setTimeZone:creationTimeZone];
+  [iptcTimeFormatter setTimeZone:creationTimeZone];
+  iptcMutableDictionary = [(PFImageMetadataBuilder *)self iptcMutableDictionary];
+  v7 = [iptcDateFormatter stringFromDate:creationDate];
+  [iptcMutableDictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E696DD88]];
 
-  v18 = v3;
-  v8 = [v3 stringFromDate:v5];
-  v17 = v6;
-  [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DDE0]];
+  v18 = iptcTimeFormatter;
+  v8 = [iptcTimeFormatter stringFromDate:creationDate];
+  v17 = iptcMutableDictionary;
+  [iptcMutableDictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DDE0]];
 
-  v9 = [objc_opt_class() _exifDateTimeFormatter];
-  v10 = [objc_opt_class() _exifSubsecTimeFormatter];
-  v11 = [objc_opt_class() _exifTimeZoneOffsetFormatter];
-  [v9 setTimeZone:v4];
-  [v10 setTimeZone:v4];
-  [v11 setTimeZone:v4];
-  v12 = [(PFImageMetadataBuilder *)self exifMutableDictionary];
-  v13 = [v9 stringFromDate:v5];
-  v14 = [v10 stringFromDate:v5];
-  v15 = [v11 stringFromDate:v5];
-  if (![v4 secondsFromGMT])
+  _exifDateTimeFormatter = [objc_opt_class() _exifDateTimeFormatter];
+  _exifSubsecTimeFormatter = [objc_opt_class() _exifSubsecTimeFormatter];
+  _exifTimeZoneOffsetFormatter = [objc_opt_class() _exifTimeZoneOffsetFormatter];
+  [_exifDateTimeFormatter setTimeZone:creationTimeZone];
+  [_exifSubsecTimeFormatter setTimeZone:creationTimeZone];
+  [_exifTimeZoneOffsetFormatter setTimeZone:creationTimeZone];
+  exifMutableDictionary = [(PFImageMetadataBuilder *)self exifMutableDictionary];
+  v13 = [_exifDateTimeFormatter stringFromDate:creationDate];
+  v14 = [_exifSubsecTimeFormatter stringFromDate:creationDate];
+  v15 = [_exifTimeZoneOffsetFormatter stringFromDate:creationDate];
+  if (![creationTimeZone secondsFromGMT])
   {
 
     v15 = @"+00:00";
   }
 
-  [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696D998]];
-  [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB28]];
-  [v12 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DAA0]];
-  [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696D990]];
-  [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB20]];
-  [v12 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DA90]];
-  [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB18]];
-  [v12 setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DA88]];
-  v16 = [(PFImageMetadataBuilder *)self tiffMutableDictionary];
-  [v16 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696DF20]];
+  [exifMutableDictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E696D998]];
+  [exifMutableDictionary setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB28]];
+  [exifMutableDictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DAA0]];
+  [exifMutableDictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E696D990]];
+  [exifMutableDictionary setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB20]];
+  [exifMutableDictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DA90]];
+  [exifMutableDictionary setObject:v14 forKeyedSubscript:*MEMORY[0x1E696DB18]];
+  [exifMutableDictionary setObject:v15 forKeyedSubscript:*MEMORY[0x1E696DA88]];
+  tiffMutableDictionary = [(PFImageMetadataBuilder *)self tiffMutableDictionary];
+  [tiffMutableDictionary setObject:v13 forKeyedSubscript:*MEMORY[0x1E696DF20]];
 }
 
-- (void)setCreationDate:(id)a3 timeZone:(id)a4
+- (void)setCreationDate:(id)date timeZone:(id)zone
 {
   v5.receiver = self;
   v5.super_class = PFImageMetadataBuilder;
-  [(PFMetadataBuilder *)&v5 setCreationDate:a3 timeZone:a4];
+  [(PFMetadataBuilder *)&v5 setCreationDate:date timeZone:zone];
   [(PFImageMetadataBuilder *)self _updateCreationDate];
 }
 
@@ -176,17 +176,17 @@
   v2 = [(PFMetadataBuilder *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     iptcMutableDictionary = v2->_iptcMutableDictionary;
-    v2->_iptcMutableDictionary = v3;
+    v2->_iptcMutableDictionary = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     exifMutableDictionary = v2->_exifMutableDictionary;
-    v2->_exifMutableDictionary = v5;
+    v2->_exifMutableDictionary = dictionary2;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     tiffMutableDictionary = v2->_tiffMutableDictionary;
-    v2->_tiffMutableDictionary = v7;
+    v2->_tiffMutableDictionary = dictionary3;
   }
 
   return v2;
@@ -198,7 +198,7 @@
   block[1] = 3221225472;
   block[2] = __43__PFImageMetadataBuilder__gpsDateFormatter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_gpsDateFormatter_onceToken != -1)
   {
     dispatch_once(&_gpsDateFormatter_onceToken, block);
@@ -226,7 +226,7 @@ uint64_t __43__PFImageMetadataBuilder__gpsDateFormatter__block_invoke(uint64_t a
   block[1] = 3221225472;
   block[2] = __43__PFImageMetadataBuilder__gpsTimeFormatter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_gpsTimeFormatter_onceToken != -1)
   {
     dispatch_once(&_gpsTimeFormatter_onceToken, block);

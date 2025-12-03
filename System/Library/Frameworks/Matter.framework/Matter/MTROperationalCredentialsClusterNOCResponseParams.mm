@@ -1,9 +1,9 @@
 @interface MTROperationalCredentialsClusterNOCResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterNOCResponseParams)init;
-- (MTROperationalCredentialsClusterNOCResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTROperationalCredentialsClusterNOCResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterNOCResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterNOCResponseParams);
-  v5 = [(MTROperationalCredentialsClusterNOCResponseParams *)self statusCode];
-  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setStatusCode:v5];
+  statusCode = [(MTROperationalCredentialsClusterNOCResponseParams *)self statusCode];
+  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setStatusCode:statusCode];
 
-  v6 = [(MTROperationalCredentialsClusterNOCResponseParams *)self fabricIndex];
-  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setFabricIndex:v6];
+  fabricIndex = [(MTROperationalCredentialsClusterNOCResponseParams *)self fabricIndex];
+  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setFabricIndex:fabricIndex];
 
-  v7 = [(MTROperationalCredentialsClusterNOCResponseParams *)self debugText];
-  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setDebugText:v7];
+  debugText = [(MTROperationalCredentialsClusterNOCResponseParams *)self debugText];
+  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setDebugText:debugText];
 
-  v8 = [(MTROperationalCredentialsClusterNOCResponseParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setTimedInvokeTimeoutMs:v8];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterNOCResponseParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterNOCResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -106,7 +106,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROperationalCredentialsClusterNOCResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROperationalCredentialsClusterNOCResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROperationalCredentialsClusterNOCResponseParams;
@@ -114,7 +114,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROperationalCredentialsClusterNOCResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROperationalCredentialsClusterNOCResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -130,14 +130,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTROperationalCredentialsClusterNOCResponseParams *)self setStatusCode:v5];
 
-  if (*(a3 + 1) == 1)
+  if (*(struct + 1) == 1)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(a3 + 1)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(struct + 1)];
     [(MTROperationalCredentialsClusterNOCResponseParams *)self setFabricIndex:v6];
   }
 
@@ -146,8 +146,8 @@ LABEL_6:
     [(MTROperationalCredentialsClusterNOCResponseParams *)self setFabricIndex:0];
   }
 
-  v8 = *(a3 + 8);
-  v7 = a3 + 8;
+  v8 = *(struct + 8);
+  v7 = struct + 8;
   if (v8 != 1)
   {
     [(MTROperationalCredentialsClusterNOCResponseParams *)self setDebugText:0];
@@ -158,9 +158,9 @@ LABEL_6:
   v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v9 length:v9[1] encoding:4];
   [(MTROperationalCredentialsClusterNOCResponseParams *)self setDebugText:v10];
 
-  v11 = [(MTROperationalCredentialsClusterNOCResponseParams *)self debugText];
+  debugText = [(MTROperationalCredentialsClusterNOCResponseParams *)self debugText];
 
-  if (v11)
+  if (debugText)
   {
 LABEL_8:
     v13 = 0;

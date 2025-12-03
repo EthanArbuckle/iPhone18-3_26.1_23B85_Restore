@@ -7,8 +7,8 @@
 - (PGGraphMomentNodeCollection)momentNodes
 {
   v3 = +[PGGraphPartOfWeekEdge filter];
-  v4 = [v3 inRelation];
-  v5 = [(MANodeCollection *)PGGraphMomentNodeCollection nodesRelatedToNodes:self withRelation:v4];
+  inRelation = [v3 inRelation];
+  v5 = [(MANodeCollection *)PGGraphMomentNodeCollection nodesRelatedToNodes:self withRelation:inRelation];
 
   return v5;
 }

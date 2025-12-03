@@ -1,16 +1,16 @@
 @interface AllRefinementsTogglesCellLogicController
-- (void)toggleValueDidChange:(id)a3 newValue:(BOOL)a4 selectionSequenceNumber:(id)a5;
+- (void)toggleValueDidChange:(id)change newValue:(BOOL)value selectionSequenceNumber:(id)number;
 @end
 
 @implementation AllRefinementsTogglesCellLogicController
 
-- (void)toggleValueDidChange:(id)a3 newValue:(BOOL)a4 selectionSequenceNumber:(id)a5
+- (void)toggleValueDidChange:(id)change newValue:(BOOL)value selectionSequenceNumber:(id)number
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
-  [v8 setIsSelected:v5];
-  [v8 setSelectionSequenceNumber:v7];
+  valueCopy = value;
+  numberCopy = number;
+  changeCopy = change;
+  [changeCopy setIsSelected:valueCopy];
+  [changeCopy setSelectionSequenceNumber:numberCopy];
 }
 
 @end

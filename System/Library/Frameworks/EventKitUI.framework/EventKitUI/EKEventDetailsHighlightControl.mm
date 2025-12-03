@@ -3,15 +3,15 @@
 + (double)interLabelBaselineDeltaConstant;
 + (double)topMarginConstant;
 + (id)titleFont;
-- (EKEventDetailsHighlightControl)initWithFrame:(CGRect)a3 leadingMargin:(double)a4;
+- (EKEventDetailsHighlightControl)initWithFrame:(CGRect)frame leadingMargin:(double)margin;
 - (void)_updateSubtitleAndActionText;
 - (void)_updateTitleAndSubtitleConstraints;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)setActionText:(id)a3 color:(id)a4;
-- (void)setSubtitleAttributedText:(id)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setActionText:(id)text color:(id)color;
+- (void)setSubtitleAttributedText:(id)text;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation EKEventDetailsHighlightControl
@@ -26,8 +26,8 @@
 
 + (double)topMarginConstant
 {
-  v2 = [a1 titleFont];
-  [v2 _bodyLeading];
+  titleFont = [self titleFont];
+  [titleFont _bodyLeading];
   v4 = v3 * 1.11111111;
 
   return v4;
@@ -35,8 +35,8 @@
 
 + (double)interLabelBaselineDeltaConstant
 {
-  v2 = [objc_opt_class() subtitleFont];
-  [v2 _bodyLeading];
+  subtitleFont = [objc_opt_class() subtitleFont];
+  [subtitleFont _bodyLeading];
   v4 = v3;
 
   return v4;
@@ -44,26 +44,26 @@
 
 + (double)bottomMarginConstant
 {
-  v2 = [a1 titleFont];
-  [v2 _bodyLeading];
+  titleFont = [self titleFont];
+  [titleFont _bodyLeading];
   v4 = v3 * 0.666666667;
 
   return v4;
 }
 
-- (EKEventDetailsHighlightControl)initWithFrame:(CGRect)a3 leadingMargin:(double)a4
+- (EKEventDetailsHighlightControl)initWithFrame:(CGRect)frame leadingMargin:(double)margin
 {
   v102[3] = *MEMORY[0x1E69E9840];
   v98.receiver = self;
   v98.super_class = EKEventDetailsHighlightControl;
-  v5 = [(EKEventDetailsHighlightControl *)&v98 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(EKEventDetailsHighlightControl *)&v98 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_contentSizeCategoryDidChangeNotification_ name:*MEMORY[0x1E69DDC48] object:0];
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKEventDetailsHighlightControl *)v5 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKEventDetailsHighlightControl *)v5 setBackgroundColor:clearColor];
 
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
     v9 = *MEMORY[0x1E695F058];
@@ -87,30 +87,30 @@
     v5->_iconStack = v19;
 
     v21 = v5->_titleLabel;
-    v22 = [objc_opt_class() titleFont];
-    [(UILabel *)v21 setFont:v22];
+    titleFont = [objc_opt_class() titleFont];
+    [(UILabel *)v21 setFont:titleFont];
 
     [(UILabel *)v5->_titleLabel setTextAlignment:4];
     v23 = v5->_titleLabel;
-    v24 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v23 setTextColor:v24];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v23 setTextColor:labelColor];
 
     [(UILabel *)v5->_titleLabel setLineBreakMode:0];
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
     v25 = v5->_subtitleLabel;
-    v26 = [objc_opt_class() subtitleFont];
-    [(UILabel *)v25 setFont:v26];
+    subtitleFont = [objc_opt_class() subtitleFont];
+    [(UILabel *)v25 setFont:subtitleFont];
 
     [(UILabel *)v5->_subtitleLabel setTextAlignment:4];
     [(UILabel *)v5->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v5->_subtitleLabel setLineBreakMode:0];
     v27 = v5->_subtitleLabel;
-    v28 = [objc_opt_class() subtitleColor];
-    [(UILabel *)v27 setTextColor:v28];
+    subtitleColor = [objc_opt_class() subtitleColor];
+    [(UILabel *)v27 setTextColor:subtitleColor];
 
     v29 = v5->_actionLabel;
-    v30 = [objc_opt_class() subtitleFont];
-    [(UILabel *)v29 setFont:v30];
+    subtitleFont2 = [objc_opt_class() subtitleFont];
+    [(UILabel *)v29 setFont:subtitleFont2];
 
     [(UILabel *)v5->_actionLabel setTextAlignment:4];
     [(UILabel *)v5->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -170,7 +170,7 @@
 
     v93 = _NSDictionaryOfVariableBindings(&cfstr_TitlelabelSubt.isa, v5->_titleLabel, v5->_subtitleLabel, v5->_iconStack, v5->_actionLabel, 0);
     v101[0] = @"iconStackLeading";
-    v56 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v56 = [MEMORY[0x1E696AD98] numberWithDouble:margin];
     v102[0] = v56;
     v102[1] = &unk_1F4F32350;
     v101[1] = @"iconStackTrailing";
@@ -229,9 +229,9 @@
     v87 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:[_actionLabel]-(>=0)-|" options:0 metrics:v92 views:v93];
     [v57 addObjectsFromArray:v87];
 
-    v88 = [(UIImageView *)v5->_iconStack centerYAnchor];
-    v89 = [(UILabel *)v5->_titleLabel centerYAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89];
+    centerYAnchor = [(UIImageView *)v5->_iconStack centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v5->_titleLabel centerYAnchor];
+    v90 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v57 addObject:v90];
 
     [(EKEventDetailsHighlightControl *)v5 addConstraints:v57];
@@ -245,8 +245,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = EKEventDetailsHighlightControl;
@@ -260,17 +260,17 @@
   p_titleAndSubtitleVisibleContraints = &self->_titleAndSubtitleVisibleContraints;
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_titleAndSubtitleVisibleContraints];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_justTitleAndActionVisibleContraints];
-  v4 = [(UILabel *)self->_titleLabel text];
+  text = [(UILabel *)self->_titleLabel text];
 
-  v5 = [(UILabel *)self->_subtitleLabel text];
+  text2 = [(UILabel *)self->_subtitleLabel text];
 
-  if (v4)
+  if (text)
   {
-    if (!v5)
+    if (!text2)
     {
-      v6 = [(UILabel *)self->_actionLabel text];
+      text3 = [(UILabel *)self->_actionLabel text];
 
-      if (v6)
+      if (text3)
       {
         p_titleAndSubtitleVisibleContraints = &self->_justTitleAndActionVisibleContraints;
       }
@@ -285,7 +285,7 @@
   else
   {
     p_titleAndSubtitleVisibleContraints = &self->_justSubtitleVisibleContraints;
-    if (!v5)
+    if (!text2)
     {
       goto LABEL_8;
     }
@@ -297,9 +297,9 @@ LABEL_8:
   [(EKEventDetailsHighlightControl *)self setNeedsUpdateConstraints];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:text];
 
   [(EKEventDetailsHighlightControl *)self _updateTitleAndSubtitleConstraints];
 }
@@ -308,9 +308,9 @@ LABEL_8:
 {
   v29[2] = *MEMORY[0x1E69E9840];
   v3 = 0x1E69DD000uLL;
-  v4 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-  v5 = [(EKEventDetailsHighlightControl *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:v5];
+  _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+  traitCollection = [(EKEventDetailsHighlightControl *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] _setCurrentTraitCollection:traitCollection];
 
   if ([(NSString *)self->_subtitleText length]&& self->_actionText)
   {
@@ -318,21 +318,21 @@ LABEL_8:
     v7 = [(NSString *)self->_subtitleText stringByAppendingString:@" "];
     v27 = *MEMORY[0x1E69DB648];
     v8 = v27;
-    v9 = [objc_opt_class() subtitleFont];
-    v29[0] = v9;
+    subtitleFont = [objc_opt_class() subtitleFont];
+    v29[0] = subtitleFont;
     v28 = *MEMORY[0x1E69DB650];
     v10 = v28;
-    v11 = [objc_opt_class() subtitleColor];
-    v29[1] = v11;
+    subtitleColor = [objc_opt_class() subtitleColor];
+    v29[1] = subtitleColor;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v27 count:2];
     v13 = [v6 initWithString:v7 attributes:v12];
 
     v14 = objc_alloc(MEMORY[0x1E696AAB0]);
     actionText = self->_actionText;
     v25[0] = v8;
-    v16 = [objc_opt_class() subtitleFont];
+    subtitleFont2 = [objc_opt_class() subtitleFont];
     v25[1] = v10;
-    v26[0] = v16;
+    v26[0] = subtitleFont2;
     v26[1] = self->_actionColor;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
     v18 = [v14 initWithString:actionText attributes:v17];
@@ -359,9 +359,9 @@ LABEL_8:
     v19 = objc_alloc(MEMORY[0x1E696AAB0]);
     v20 = self->_actionText;
     v23[0] = *MEMORY[0x1E69DB648];
-    v21 = [objc_opt_class() subtitleFont];
+    subtitleFont3 = [objc_opt_class() subtitleFont];
     v23[1] = *MEMORY[0x1E69DB650];
-    v24[0] = v21;
+    v24[0] = subtitleFont3;
     v24[1] = self->_actionColor;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
     v13 = [v19 initWithString:v20 attributes:v22];
@@ -374,50 +374,50 @@ LABEL_8:
 
 LABEL_9:
   [(EKEventDetailsHighlightControl *)self _updateTitleAndSubtitleConstraints];
-  [*(v3 + 440) _setCurrentTraitCollection:v4];
+  [*(v3 + 440) _setCurrentTraitCollection:_currentTraitCollection];
 }
 
-- (void)setActionText:(id)a3 color:(id)a4
+- (void)setActionText:(id)text color:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  colorCopy = color;
   actionText = self->_actionText;
-  self->_actionText = v6;
-  v9 = v6;
+  self->_actionText = textCopy;
+  v9 = textCopy;
 
   actionColor = self->_actionColor;
-  self->_actionColor = v7;
+  self->_actionColor = colorCopy;
 
   [(EKEventDetailsHighlightControl *)self _updateSubtitleAndActionText];
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  objc_storeStrong(&self->_subtitleText, a3);
+  objc_storeStrong(&self->_subtitleText, text);
 
   [(EKEventDetailsHighlightControl *)self _updateSubtitleAndActionText];
 }
 
-- (void)setSubtitleAttributedText:(id)a3
+- (void)setSubtitleAttributedText:(id)text
 {
-  [(UILabel *)self->_subtitleLabel setAttributedText:a3];
+  [(UILabel *)self->_subtitleLabel setAttributedText:text];
 
   [(EKEventDetailsHighlightControl *)self _updateTitleAndSubtitleConstraints];
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   titleLabel = self->_titleLabel;
-  v5 = [objc_opt_class() titleFont];
-  [(UILabel *)titleLabel setFont:v5];
+  titleFont = [objc_opt_class() titleFont];
+  [(UILabel *)titleLabel setFont:titleFont];
 
   subtitleLabel = self->_subtitleLabel;
-  v7 = [objc_opt_class() subtitleFont];
-  [(UILabel *)subtitleLabel setFont:v7];
+  subtitleFont = [objc_opt_class() subtitleFont];
+  [(UILabel *)subtitleLabel setFont:subtitleFont];
 
   actionLabel = self->_actionLabel;
-  v9 = [objc_opt_class() subtitleFont];
-  [(UILabel *)actionLabel setFont:v9];
+  subtitleFont2 = [objc_opt_class() subtitleFont];
+  [(UILabel *)actionLabel setFont:subtitleFont2];
 
   topMarginConstraint = self->_topMarginConstraint;
   [objc_opt_class() topMarginConstant];

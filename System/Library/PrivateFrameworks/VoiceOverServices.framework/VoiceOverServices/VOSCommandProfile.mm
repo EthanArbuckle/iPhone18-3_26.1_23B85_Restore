@@ -1,61 +1,61 @@
 @interface VOSCommandProfile
-+ (BOOL)_overlay:(id)a3 shouldIncludeItem:(id)a4;
-+ (id)_parseProfileProperties:(id)a3 overlayProperties:(id)a4;
-+ (id)_profileKeyChordsFromDictionaryValue:(id)a3;
-+ (void)_addGesturesToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5;
-+ (void)_addKeyboardShortcutsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5;
-+ (void)_addQuickNavShortcutsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5;
-+ (void)_addSecondaryCommandsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5;
-- (BOOL)commandHasAnyBindings:(id)a3 withResolver:(id)a4;
-- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)a3 withResolver:(id)a4;
-- (VOSCommandProfile)initWithCoder:(id)a3;
-- (VOSCommandProfile)initWithProfileProperties:(id)a3 overlayProperties:(id)a4;
++ (BOOL)_overlay:(id)_overlay shouldIncludeItem:(id)item;
++ (id)_parseProfileProperties:(id)properties overlayProperties:(id)overlayProperties;
++ (id)_profileKeyChordsFromDictionaryValue:(id)value;
++ (void)_addGesturesToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties;
++ (void)_addKeyboardShortcutsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties;
++ (void)_addQuickNavShortcutsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties;
++ (void)_addSecondaryCommandsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties;
+- (BOOL)commandHasAnyBindings:(id)bindings withResolver:(id)resolver;
+- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)enabled withResolver:(id)resolver;
+- (VOSCommandProfile)initWithCoder:(id)coder;
+- (VOSCommandProfile)initWithProfileProperties:(id)properties overlayProperties:(id)overlayProperties;
 - (VOSCommandProfileDelegate)delegate;
-- (id)_initWithModes:(id)a3;
-- (id)_profileCommandForCommand:(id)a3 inMode:(id)a4;
-- (id)_profileModeForResolver:(id)a3;
-- (id)_profileModeForScreenreaderMode:(id)a3;
-- (id)_resolvedSecondaryCommandForProfileCommand:(id)a3 resolver:(id)a4;
-- (id)addGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)addKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)allCommandsWithResolver:(id)a3;
-- (id)allShortcutBindingsWithResolver:(id)a3;
-- (id)allSiriShortcutCommandsWithResolver:(id)a3;
-- (id)commandForKeyChord:(id)a3 withResolver:(id)a4;
-- (id)commandForTouchGesture:(id)a3 withResolver:(id)a4;
+- (id)_initWithModes:(id)modes;
+- (id)_profileCommandForCommand:(id)command inMode:(id)mode;
+- (id)_profileModeForResolver:(id)resolver;
+- (id)_profileModeForScreenreaderMode:(id)mode;
+- (id)_resolvedSecondaryCommandForProfileCommand:(id)command resolver:(id)resolver;
+- (id)addGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver;
+- (id)addKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver;
+- (id)allCommandsWithResolver:(id)resolver;
+- (id)allShortcutBindingsWithResolver:(id)resolver;
+- (id)allSiriShortcutCommandsWithResolver:(id)resolver;
+- (id)commandForKeyChord:(id)chord withResolver:(id)resolver;
+- (id)commandForTouchGesture:(id)gesture withResolver:(id)resolver;
 - (id)debugDescription;
-- (id)gestureBindingsForCommand:(id)a3 withResolver:(id)a4;
-- (id)removeGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (id)removeKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5;
-- (id)shortcutBindingsForCommand:(id)a3 withResolver:(id)a4;
-- (id)userPresentableAllShortcutBindingsWithResolver:(id)a3;
-- (id)validateCanAddGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (id)validateCanAddKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5;
-- (unint64_t)availabilityForCommand:(id)a3 withResolver:(id)a4;
-- (unint64_t)availabilityForGesture:(id)a3 withResolver:(id)a4;
-- (unint64_t)availabilityForShortcut:(id)a3 withResolver:(id)a4;
+- (id)gestureBindingsForCommand:(id)command withResolver:(id)resolver;
+- (id)removeGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver;
+- (id)removeKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver;
+- (id)shortcutBindingsForCommand:(id)command withResolver:(id)resolver;
+- (id)userPresentableAllShortcutBindingsWithResolver:(id)resolver;
+- (id)validateCanAddGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver;
+- (id)validateCanAddKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver;
+- (unint64_t)availabilityForCommand:(id)command withResolver:(id)resolver;
+- (unint64_t)availabilityForGesture:(id)gesture withResolver:(id)resolver;
+- (unint64_t)availabilityForShortcut:(id)shortcut withResolver:(id)resolver;
 @end
 
 @implementation VOSCommandProfile
 
-- (VOSCommandProfile)initWithProfileProperties:(id)a3 overlayProperties:(id)a4
+- (VOSCommandProfile)initWithProfileProperties:(id)properties overlayProperties:(id)overlayProperties
 {
-  v5 = [VOSCommandProfile _parseProfileProperties:a3 overlayProperties:a4];
+  v5 = [VOSCommandProfile _parseProfileProperties:properties overlayProperties:overlayProperties];
   v6 = [(VOSCommandProfile *)self _initWithModes:v5];
 
   return v6;
 }
 
-- (id)_initWithModes:(id)a3
+- (id)_initWithModes:(id)modes
 {
-  v5 = a3;
+  modesCopy = modes;
   v9.receiver = self;
   v9.super_class = VOSCommandProfile;
   v6 = [(VOSCommandProfile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modes, a3);
+    objc_storeStrong(&v6->_modes, modes);
   }
 
   return v7;
@@ -91,8 +91,8 @@
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v38 = [v5 commands];
-        v6 = [v38 countByEnumeratingWithState:&v51 objects:v62 count:16];
+        commands = [v5 commands];
+        v6 = [commands countByEnumeratingWithState:&v51 objects:v62 count:16];
         if (v6)
         {
           v7 = v6;
@@ -103,13 +103,13 @@
             {
               if (*v52 != v8)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(commands);
               }
 
               v10 = *(*(&v51 + 1) + 8 * i);
               [v3 appendFormat:@"  %@\n", v10];
-              v11 = [v10 gestures];
-              v12 = [v11 count];
+              gestures = [v10 gestures];
+              v12 = [gestures count];
 
               if (v12)
               {
@@ -118,8 +118,8 @@
                 v50 = 0u;
                 v47 = 0u;
                 v48 = 0u;
-                v13 = [v10 gestures];
-                v14 = [v13 countByEnumeratingWithState:&v47 objects:v61 count:16];
+                gestures2 = [v10 gestures];
+                v14 = [gestures2 countByEnumeratingWithState:&v47 objects:v61 count:16];
                 if (v14)
                 {
                   v15 = v14;
@@ -130,21 +130,21 @@
                     {
                       if (*v48 != v16)
                       {
-                        objc_enumerationMutation(v13);
+                        objc_enumerationMutation(gestures2);
                       }
 
                       [v3 appendFormat:@"    %@\n", *(*(&v47 + 1) + 8 * j)];
                     }
 
-                    v15 = [v13 countByEnumeratingWithState:&v47 objects:v61 count:16];
+                    v15 = [gestures2 countByEnumeratingWithState:&v47 objects:v61 count:16];
                   }
 
                   while (v15);
                 }
               }
 
-              v18 = [v10 keyboardShortcuts];
-              v19 = [v18 count];
+              keyboardShortcuts = [v10 keyboardShortcuts];
+              v19 = [keyboardShortcuts count];
 
               if (v19)
               {
@@ -153,8 +153,8 @@
                 v46 = 0u;
                 v43 = 0u;
                 v44 = 0u;
-                v20 = [v10 keyboardShortcuts];
-                v21 = [v20 countByEnumeratingWithState:&v43 objects:v60 count:16];
+                keyboardShortcuts2 = [v10 keyboardShortcuts];
+                v21 = [keyboardShortcuts2 countByEnumeratingWithState:&v43 objects:v60 count:16];
                 if (v21)
                 {
                   v22 = v21;
@@ -165,21 +165,21 @@
                     {
                       if (*v44 != v23)
                       {
-                        objc_enumerationMutation(v20);
+                        objc_enumerationMutation(keyboardShortcuts2);
                       }
 
                       [v3 appendFormat:@"    %@\n", *(*(&v43 + 1) + 8 * k)];
                     }
 
-                    v22 = [v20 countByEnumeratingWithState:&v43 objects:v60 count:16];
+                    v22 = [keyboardShortcuts2 countByEnumeratingWithState:&v43 objects:v60 count:16];
                   }
 
                   while (v22);
                 }
               }
 
-              v25 = [v10 quickNavShortcuts];
-              v26 = [v25 count];
+              quickNavShortcuts = [v10 quickNavShortcuts];
+              v26 = [quickNavShortcuts count];
 
               if (v26)
               {
@@ -188,8 +188,8 @@
                 v42 = 0u;
                 v39 = 0u;
                 v40 = 0u;
-                v27 = [v10 quickNavShortcuts];
-                v28 = [v27 countByEnumeratingWithState:&v39 objects:v59 count:16];
+                quickNavShortcuts2 = [v10 quickNavShortcuts];
+                v28 = [quickNavShortcuts2 countByEnumeratingWithState:&v39 objects:v59 count:16];
                 if (v28)
                 {
                   v29 = v28;
@@ -200,13 +200,13 @@
                     {
                       if (*v40 != v30)
                       {
-                        objc_enumerationMutation(v27);
+                        objc_enumerationMutation(quickNavShortcuts2);
                       }
 
                       [v3 appendFormat:@"    %@\n", *(*(&v39 + 1) + 8 * m)];
                     }
 
-                    v29 = [v27 countByEnumeratingWithState:&v39 objects:v59 count:16];
+                    v29 = [quickNavShortcuts2 countByEnumeratingWithState:&v39 objects:v59 count:16];
                   }
 
                   while (v29);
@@ -214,7 +214,7 @@
               }
             }
 
-            v7 = [v38 countByEnumeratingWithState:&v51 objects:v62 count:16];
+            v7 = [commands countByEnumeratingWithState:&v51 objects:v62 count:16];
           }
 
           while (v7);
@@ -235,14 +235,14 @@
   return v3;
 }
 
-- (VOSCommandProfile)initWithCoder:(id)a3
+- (VOSCommandProfile)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = [v4 setWithObjects:{v6, v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClasses:v8 forKey:@"modes"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"modes"];
 
   v10 = [v9 mutableCopy];
   v11 = [(VOSCommandProfile *)self _initWithModes:v10];
@@ -250,60 +250,60 @@
   return v11;
 }
 
-- (id)commandForTouchGesture:(id)a3 withResolver:(id)a4
+- (id)commandForTouchGesture:(id)gesture withResolver:(id)resolver
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:a3];
-  v38 = self;
-  v8 = [(VOSCommandProfile *)self _profileModeForResolver:v6];
-  v9 = [v6 screenreaderMode];
+  resolverCopy = resolver;
+  v7 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:gesture];
+  selfCopy = self;
+  v8 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
+  screenreaderMode = [resolverCopy screenreaderMode];
   v10 = +[VOSScreenreaderMode BrailleScreenInput];
-  if (v9 != v10)
+  if (screenreaderMode != v10)
   {
     goto LABEL_2;
   }
 
-  v29 = [v6 bsiTypingMode];
+  bsiTypingMode = [resolverCopy bsiTypingMode];
 
-  if (v29 == 1)
+  if (bsiTypingMode == 1)
   {
     v30 = [VOSGesture horizontalMirrorGestureForGesture:v7];
-    v9 = v30;
+    screenreaderMode = v30;
     if (!v30)
     {
       goto LABEL_3;
     }
 
-    v9 = v30;
+    screenreaderMode = v30;
     v10 = v7;
-    v7 = v9;
+    v7 = screenreaderMode;
 LABEL_2:
 
 LABEL_3:
   }
 
-  v11 = [v6 screenreaderMode];
+  screenreaderMode2 = [resolverCopy screenreaderMode];
   v12 = +[VOSScreenreaderMode Default];
-  if (v11 != v12)
+  if (screenreaderMode2 != v12)
   {
     goto LABEL_5;
   }
 
-  v31 = [v6 shouldApplyRTL];
+  shouldApplyRTL = [resolverCopy shouldApplyRTL];
 
-  if (v31)
+  if (shouldApplyRTL)
   {
     v32 = [VOSGesture rtlGestureForGesture:v7];
-    v11 = v32;
+    screenreaderMode2 = v32;
     if (!v32)
     {
       goto LABEL_6;
     }
 
-    v11 = v32;
+    screenreaderMode2 = v32;
     v12 = v7;
-    v7 = v11;
+    v7 = screenreaderMode2;
 LABEL_5:
 
 LABEL_6:
@@ -313,15 +313,15 @@ LABEL_6:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v13 = [v8 commands];
-  v14 = [v13 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  commands = [v8 commands];
+  v14 = [commands countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v14)
   {
     v15 = v14;
     v16 = *v45;
     v36 = v8;
-    v37 = v6;
-    v39 = v13;
+    v37 = resolverCopy;
+    v39 = commands;
     v35 = *v45;
     do
     {
@@ -329,7 +329,7 @@ LABEL_6:
       {
         if (*v45 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(commands);
         }
 
         v18 = *(*(&v44 + 1) + 8 * i);
@@ -337,8 +337,8 @@ LABEL_6:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v19 = [v18 gestures];
-        v20 = [v19 countByEnumeratingWithState:&v40 objects:v48 count:16];
+        gestures = [v18 gestures];
+        v20 = [gestures countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v20)
         {
           v21 = v20;
@@ -349,21 +349,21 @@ LABEL_6:
             {
               if (*v41 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(gestures);
               }
 
-              v24 = [*(*(&v40 + 1) + 8 * j) gesture];
-              v25 = [v24 isEqual:v7];
+              gesture = [*(*(&v40 + 1) + 8 * j) gesture];
+              v25 = [gesture isEqual:v7];
 
               if (v25)
               {
-                v26 = [v18 command];
-                if (v26)
+                command = [v18 command];
+                if (command)
                 {
-                  v6 = v37;
-                  v27 = v38;
+                  resolverCopy = v37;
+                  v27 = selfCopy;
                   v8 = v36;
-                  if ([(VOSCommandProfile *)v38 availabilityForCommand:v26 withResolver:v37]== 1)
+                  if ([(VOSCommandProfile *)selfCopy availabilityForCommand:command withResolver:v37]== 1)
                   {
                     v28 = VOTLogCommon();
                     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -371,30 +371,30 @@ LABEL_6:
                       [VOSCommandProfile commandForTouchGesture:withResolver:];
                     }
 
-                    v26 = 0;
+                    command = 0;
                   }
                 }
 
                 else
                 {
                   v8 = v36;
-                  v6 = v37;
-                  v27 = v38;
+                  resolverCopy = v37;
+                  v27 = selfCopy;
                 }
 
-                if (![(VOSCommandProfile *)v27 _checkCommandCapabilities:v26])
+                if (![(VOSCommandProfile *)v27 _checkCommandCapabilities:command])
                 {
 
-                  v26 = 0;
+                  command = 0;
                 }
 
-                v13 = v39;
+                commands = v39;
 
                 goto LABEL_39;
               }
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v40 objects:v48 count:16];
+            v21 = [gestures countByEnumeratingWithState:&v40 objects:v48 count:16];
             if (v21)
             {
               continue;
@@ -404,14 +404,14 @@ LABEL_6:
           }
         }
 
-        v13 = v39;
+        commands = v39;
         v16 = v35;
       }
 
       v15 = [v39 countByEnumeratingWithState:&v44 objects:v49 count:16];
-      v26 = 0;
+      command = 0;
       v8 = v36;
-      v6 = v37;
+      resolverCopy = v37;
     }
 
     while (v15);
@@ -419,50 +419,50 @@ LABEL_6:
 
   else
   {
-    v26 = 0;
+    command = 0;
   }
 
 LABEL_39:
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return command;
 }
 
-- (id)commandForKeyChord:(id)a3 withResolver:(id)a4
+- (id)commandForKeyChord:(id)chord withResolver:(id)resolver
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VOSCommandProfile *)self _profileModeForResolver:v7];
+  chordCopy = chord;
+  resolverCopy = resolver;
+  v8 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [v8 commands];
-  v31 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  commands = [v8 commands];
+  v31 = [commands countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (!v31)
   {
-    v21 = 0;
+    command = 0;
     goto LABEL_33;
   }
 
   v10 = *v39;
   v32 = v8;
-  v33 = v9;
+  v33 = commands;
   v29 = *v39;
-  v30 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v31; ++i)
     {
       if (*v39 != v10)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(commands);
       }
 
       v12 = *(*(&v38 + 1) + 8 * i);
-      if ([v7 isQuickNavKeyboardMode])
+      if ([resolverCopy isQuickNavKeyboardMode])
       {
         [v12 quickNavShortcuts];
       }
@@ -494,22 +494,22 @@ LABEL_39:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v34 + 1) + 8 * j) keyChord];
-          v20 = [v19 isEqual:v6];
+          keyChord = [*(*(&v34 + 1) + 8 * j) keyChord];
+          v20 = [keyChord isEqual:chordCopy];
 
           if (v20)
           {
             if ([v12 hasSecondaryCommands])
             {
-              v22 = v30;
-              v23 = [(VOSCommandProfile *)v30 _resolvedSecondaryCommandForProfileCommand:v12 resolver:v7];
+              v22 = selfCopy;
+              v23 = [(VOSCommandProfile *)selfCopy _resolvedSecondaryCommandForProfileCommand:v12 resolver:resolverCopy];
               v8 = v32;
               if (v23)
               {
-                v21 = v23;
+                command = v23;
 LABEL_27:
-                v9 = v33;
-                if ([(VOSCommandProfile *)v22 availabilityForCommand:v21 withResolver:v7]== 1)
+                commands = v33;
+                if ([(VOSCommandProfile *)v22 availabilityForCommand:command withResolver:resolverCopy]== 1)
                 {
                   v26 = VOTLogCommon();
                   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -517,7 +517,7 @@ LABEL_27:
                     [VOSCommandProfile commandForTouchGesture:withResolver:];
                   }
 
-                  v21 = 0;
+                  command = 0;
                   v8 = v32;
                 }
 
@@ -527,24 +527,24 @@ LABEL_27:
 
             else
             {
-              v24 = [v7 resolvingEventOccurredBlock];
+              resolvingEventOccurredBlock = [resolverCopy resolvingEventOccurredBlock];
 
               v8 = v32;
-              v22 = v30;
-              if (v24)
+              v22 = selfCopy;
+              if (resolvingEventOccurredBlock)
               {
-                v25 = [v7 resolvingEventOccurredBlock];
-                (v25)[2](v25, 0, v7);
+                resolvingEventOccurredBlock2 = [resolverCopy resolvingEventOccurredBlock];
+                (resolvingEventOccurredBlock2)[2](resolvingEventOccurredBlock2, 0, resolverCopy);
               }
             }
 
-            v21 = [v12 command];
-            if (v21)
+            command = [v12 command];
+            if (command)
             {
               goto LABEL_27;
             }
 
-            v9 = v33;
+            commands = v33;
 LABEL_32:
 
             goto LABEL_33;
@@ -562,11 +562,11 @@ LABEL_32:
 
 LABEL_17:
 
-      v9 = v33;
+      commands = v33;
       v10 = v29;
     }
 
-    v21 = 0;
+    command = 0;
     v8 = v32;
     v31 = [v33 countByEnumeratingWithState:&v38 objects:v43 count:16];
   }
@@ -576,35 +576,35 @@ LABEL_33:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return command;
 }
 
-- (id)_resolvedSecondaryCommandForProfileCommand:(id)a3 resolver:(id)a4
+- (id)_resolvedSecondaryCommandForProfileCommand:(id)command resolver:(id)resolver
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 pressCount];
-  v8 = [v5 secondaryCommandsForPressCount:v7];
+  commandCopy = command;
+  resolverCopy = resolver;
+  pressCount = [resolverCopy pressCount];
+  v8 = [commandCopy secondaryCommandsForPressCount:pressCount];
   v9 = [v8 count];
-  if (v7 >= 2 && !v9)
+  if (pressCount >= 2 && !v9)
   {
-    v10 = [v6 resolvingEventOccurredBlock];
+    resolvingEventOccurredBlock = [resolverCopy resolvingEventOccurredBlock];
 
-    if (v10)
+    if (resolvingEventOccurredBlock)
     {
-      v11 = [v6 resolvingEventOccurredBlock];
-      (v11)[2](v11, 1, v6);
+      resolvingEventOccurredBlock2 = [resolverCopy resolvingEventOccurredBlock];
+      (resolvingEventOccurredBlock2)[2](resolvingEventOccurredBlock2, 1, resolverCopy);
     }
 
-    v12 = [v5 secondaryCommandsForPressCount:1];
+    v12 = [commandCopy secondaryCommandsForPressCount:1];
 
     v8 = v12;
   }
 
   if ([v8 count])
   {
-    v13 = [v6 context];
+    context = [resolverCopy context];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -626,16 +626,16 @@ LABEL_9:
         }
 
         v20 = *(*(&v25 + 1) + 8 * v19);
-        if ([v20 context] == v13)
+        if ([v20 context] == context)
         {
           break;
         }
 
         if (![v20 context])
         {
-          v21 = [v20 command];
+          command = [v20 command];
 
-          v17 = v21;
+          v17 = command;
         }
 
         if (v16 == ++v19)
@@ -650,9 +650,9 @@ LABEL_9:
         }
       }
 
-      v22 = [v20 command];
+      command2 = [v20 command];
 
-      if (v22)
+      if (command2)
       {
         goto LABEL_24;
       }
@@ -665,32 +665,32 @@ LABEL_22:
     }
 
     v17 = v17;
-    v22 = v17;
+    command2 = v17;
 LABEL_24:
   }
 
   else
   {
-    v22 = 0;
+    command2 = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return command2;
 }
 
-- (id)allCommandsWithResolver:(id)a3
+- (id)allCommandsWithResolver:(id)resolver
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VOSCommandProfile *)self _profileModeForResolver:v4];
+  resolverCopy = resolver;
+  v5 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
   v6 = [MEMORY[0x277CBEB58] set];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v5 commands];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  commands = [v5 commands];
+  v8 = [commands countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -701,14 +701,14 @@ LABEL_24:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(commands);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * i) command];
-        [v6 addObject:v12];
+        command = [*(*(&v24 + 1) + 8 * i) command];
+        [v6 addObject:command];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [commands countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);
@@ -719,33 +719,33 @@ LABEL_24:
   v19 = 3221225472;
   v20 = __45__VOSCommandProfile_allCommandsWithResolver___block_invoke;
   v21 = &unk_2784F38E0;
-  v22 = self;
-  v23 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v23 = resolverCopy;
+  v14 = resolverCopy;
   v15 = [v13 predicateWithBlock:&v18];
-  [v6 filterUsingPredicate:{v15, v18, v19, v20, v21, v22}];
+  [v6 filterUsingPredicate:{v15, v18, v19, v20, v21, selfCopy}];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)allSiriShortcutCommandsWithResolver:(id)a3
+- (id)allSiriShortcutCommandsWithResolver:(id)resolver
 {
-  v4 = [(VOSCommandProfile *)self delegate];
-  v5 = [v4 availableSiriShortcuts:self];
+  delegate = [(VOSCommandProfile *)self delegate];
+  v5 = [delegate availableSiriShortcuts:self];
   v6 = [v5 ax_mappedArrayUsingBlock:&__block_literal_global_13];
 
   return v6;
 }
 
-- (id)allShortcutBindingsWithResolver:(id)a3
+- (id)allShortcutBindingsWithResolver:(id)resolver
 {
   v35 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  resolverCopy = resolver;
   v6 = [v4 set];
-  v7 = [v5 copy];
+  v7 = [resolverCopy copy];
 
   v8 = +[VOSScreenreaderMode Default];
   [v7 setScreenreaderMode:v8];
@@ -800,8 +800,8 @@ LABEL_24:
                 objc_enumerationMutation(v15);
               }
 
-              v20 = [*(*(&v25 + 1) + 8 * j) keyChord];
-              [v6 addObject:v20];
+              keyChord = [*(*(&v25 + 1) + 8 * j) keyChord];
+              [v6 addObject:keyChord];
             }
 
             v17 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -822,11 +822,11 @@ LABEL_24:
   return v6;
 }
 
-- (id)userPresentableAllShortcutBindingsWithResolver:(id)a3
+- (id)userPresentableAllShortcutBindingsWithResolver:(id)resolver
 {
-  v3 = [(VOSCommandProfile *)self allShortcutBindingsWithResolver:a3];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_317_0];
+  v3 = [(VOSCommandProfile *)self allShortcutBindingsWithResolver:resolver];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&__block_literal_global_317_0];
 
   return v5;
 }
@@ -876,20 +876,20 @@ uint64_t __68__VOSCommandProfile_userPresentableAllShortcutBindingsWithResolver_
   return v8;
 }
 
-- (id)gestureBindingsForCommand:(id)a3 withResolver:(id)a4
+- (id)gestureBindingsForCommand:(id)command withResolver:(id)resolver
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  resolverCopy = resolver;
   v8 = [MEMORY[0x277CBEB58] set];
-  v26 = v7;
-  v9 = [(VOSCommandProfile *)self _profileModeForResolver:v7];
+  v26 = resolverCopy;
+  v9 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [v9 commands];
-  v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  commands = [v9 commands];
+  v11 = [commands countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
@@ -900,12 +900,12 @@ uint64_t __68__VOSCommandProfile_userPresentableAllShortcutBindingsWithResolver_
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(commands);
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 command];
-        v17 = [v16 isEqual:v6];
+        command = [v15 command];
+        v17 = [command isEqual:commandCopy];
 
         if (v17)
         {
@@ -913,8 +913,8 @@ uint64_t __68__VOSCommandProfile_userPresentableAllShortcutBindingsWithResolver_
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v18 = [v15 gestures];
-          v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          gestures = [v15 gestures];
+          v19 = [gestures countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v19)
           {
             v20 = v19;
@@ -925,14 +925,14 @@ uint64_t __68__VOSCommandProfile_userPresentableAllShortcutBindingsWithResolver_
               {
                 if (*v28 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(gestures);
                 }
 
-                v23 = [*(*(&v27 + 1) + 8 * j) gesture];
-                [v8 addObject:v23];
+                gesture = [*(*(&v27 + 1) + 8 * j) gesture];
+                [v8 addObject:gesture];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v20 = [gestures countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v20);
@@ -942,7 +942,7 @@ uint64_t __68__VOSCommandProfile_userPresentableAllShortcutBindingsWithResolver_
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v12 = [commands countByEnumeratingWithState:&v31 objects:v36 count:16];
       if (v12)
       {
         continue;
@@ -959,19 +959,19 @@ LABEL_18:
   return v8;
 }
 
-- (id)shortcutBindingsForCommand:(id)a3 withResolver:(id)a4
+- (id)shortcutBindingsForCommand:(id)command withResolver:(id)resolver
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  resolverCopy = resolver;
   v8 = [MEMORY[0x277CBEB58] set];
-  [(VOSCommandProfile *)self _profileModeForResolver:v7];
+  [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v25 = v33 = 0u;
-  v9 = [v25 commands];
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  commands = [v25 commands];
+  v10 = [commands countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -982,16 +982,16 @@ LABEL_18:
       {
         if (*v31 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(commands);
         }
 
         v14 = *(*(&v30 + 1) + 8 * i);
-        v15 = [v14 command];
-        v16 = [v15 isEqual:v6];
+        command = [v14 command];
+        v16 = [command isEqual:commandCopy];
 
         if (v16)
         {
-          if ([v7 isQuickNavKeyboardMode])
+          if ([resolverCopy isQuickNavKeyboardMode])
           {
             [v14 quickNavShortcuts];
           }
@@ -1019,8 +1019,8 @@ LABEL_18:
                   objc_enumerationMutation(v17);
                 }
 
-                v22 = [*(*(&v26 + 1) + 8 * j) keyChord];
-                [v8 addObject:v22];
+                keyChord = [*(*(&v26 + 1) + 8 * j) keyChord];
+                [v8 addObject:keyChord];
               }
 
               v19 = [v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -1033,7 +1033,7 @@ LABEL_18:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v11 = [commands countByEnumeratingWithState:&v30 objects:v35 count:16];
       if (v11)
       {
         continue;
@@ -1050,89 +1050,89 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)commandHasAnyBindings:(id)a3 withResolver:(id)a4
+- (BOOL)commandHasAnyBindings:(id)bindings withResolver:(id)resolver
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VOSCommandProfile *)self gestureBindingsForCommand:v6 withResolver:v7];
+  bindingsCopy = bindings;
+  resolverCopy = resolver;
+  v8 = [(VOSCommandProfile *)self gestureBindingsForCommand:bindingsCopy withResolver:resolverCopy];
   v9 = [v8 count];
 
-  if (v9 || (-[VOSCommandProfile shortcutBindingsForCommand:withResolver:](self, "shortcutBindingsForCommand:withResolver:", v6, v7), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11))
+  if (v9 || (-[VOSCommandProfile shortcutBindingsForCommand:withResolver:](self, "shortcutBindingsForCommand:withResolver:", bindingsCopy, resolverCopy), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11))
   {
     v12 = 1;
   }
 
   else
   {
-    v14 = [v7 copy];
+    v14 = [resolverCopy copy];
     [v14 setKeyboardMode:1];
-    v15 = [(VOSCommandProfile *)self shortcutBindingsForCommand:v6 withResolver:v14];
+    v15 = [(VOSCommandProfile *)self shortcutBindingsForCommand:bindingsCopy withResolver:v14];
     v12 = [v15 count] != 0;
   }
 
   return v12;
 }
 
-- (unint64_t)availabilityForGesture:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForGesture:(id)gesture withResolver:(id)resolver
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 screenreaderMode];
+  gestureCopy = gesture;
+  resolverCopy = resolver;
+  screenreaderMode = [resolverCopy screenreaderMode];
   v8 = +[VOSScreenreaderMode Default];
 
-  if (v7 == v8)
+  if (screenreaderMode == v8)
   {
     v12 = +[VOSGesture OneFingerSingleTap];
-    if (v12 == v5)
+    if (v12 == gestureCopy)
     {
       goto LABEL_37;
     }
 
     v13 = +[VOSGesture OneFingerDoubleTap];
-    if (v13 != v5)
+    if (v13 != gestureCopy)
     {
       v14 = +[VOSGesture OneFingerFlickLeft];
       v15 = v14;
-      if (v14 != v5)
+      if (v14 != gestureCopy)
       {
         v16 = +[VOSGesture OneFingerFlickRight];
 
-        if (v16 == v5)
+        if (v16 == gestureCopy)
         {
           goto LABEL_38;
         }
 
         v17 = +[VOSGesture TwoFingerSingleTapAndHold];
 
-        if (v17 == v5)
+        if (v17 == gestureCopy)
         {
           goto LABEL_38;
         }
 
         v18 = +[VOSGesture OneFingerSingleTapAndHold];
-        if (v18 != v5)
+        if (v18 != gestureCopy)
         {
           v19 = +[VOSGesture OneFingerDoubleTapAndHold];
-          if (v19 != v5)
+          if (v19 != gestureCopy)
           {
             v20 = +[VOSGesture TwoFingerDoubleTapAndHold];
-            if (v20 != v5)
+            if (v20 != gestureCopy)
             {
               v21 = +[VOSGesture ThreeFingerSingleTapAndHold];
               v22 = v21;
-              if (v21 != v5)
+              if (v21 != gestureCopy)
               {
                 v23 = +[VOSGesture ThreeFingerDoubleTapAndHold];
 
-                if (v23 == v5)
+                if (v23 == gestureCopy)
                 {
 LABEL_65:
                   v11 = 2;
 LABEL_39:
-                  if (([v6 isIPad] & 1) == 0)
+                  if (([resolverCopy isIPad] & 1) == 0)
                   {
                     v37 = +[VOSGesture fiveFingerGestures];
-                    v38 = [v37 containsObject:v5];
+                    v38 = [v37 containsObject:gestureCopy];
 
                     if (v38)
                     {
@@ -1141,13 +1141,13 @@ LABEL_39:
                   }
 
                   v39 = +[VOSGesture oneFingerSplitGestures];
-                  if ([v39 containsObject:v5])
+                  if ([v39 containsObject:gestureCopy])
                   {
                     goto LABEL_49;
                   }
 
                   v40 = +[VOSGesture twoFingerSplitGestures];
-                  v41 = [v40 containsObject:v5];
+                  v41 = [v40 containsObject:gestureCopy];
 
                   if (v41)
                   {
@@ -1164,22 +1164,22 @@ LABEL_57:
                 }
 
                 v12 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickLeft];
-                if (v12 != v5)
+                if (v12 != gestureCopy)
                 {
                   v24 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickRight];
 
-                  if (v24 != v5)
+                  if (v24 != gestureCopy)
                   {
                     v18 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickUp];
-                    if (v18 != v5)
+                    if (v18 != gestureCopy)
                     {
                       v25 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickDown];
 
-                      if (v25 != v5)
+                      if (v25 != gestureCopy)
                       {
                         v26 = +[VOSGesture TwoFingerPinch];
 
-                        if (v26 == v5)
+                        if (v26 == gestureCopy)
                         {
                           v11 = 2;
                         }
@@ -1222,11 +1222,11 @@ LABEL_64:
 
   v9 = +[VOSScreenreaderMode Handwriting];
 
-  if (v7 != v9)
+  if (screenreaderMode != v9)
   {
     v10 = +[VOSScreenreaderMode BrailleScreenInput];
 
-    if (v7 != v10)
+    if (screenreaderMode != v10)
     {
 LABEL_4:
       v11 = 0;
@@ -1234,25 +1234,25 @@ LABEL_4:
     }
 
     v33 = +[VOSGesture TwoFingerRotateCounterclockwise];
-    if (v33 != v5)
+    if (v33 != gestureCopy)
     {
       v34 = +[VOSGesture TwoFingerRotateClockwise];
 
-      if (v34 == v5)
+      if (v34 == gestureCopy)
       {
         goto LABEL_50;
       }
 
       v35 = +[VOSGesture TwoFingerScrub];
 
-      if (v35 == v5)
+      if (v35 == gestureCopy)
       {
 LABEL_60:
         v11 = 1;
         goto LABEL_51;
       }
 
-      if ([VOSGestureCategory isTapGesture:v5]|| [VOSGestureCategory isTapAndHoldGesture:v5])
+      if ([VOSGestureCategory isTapGesture:gestureCopy]|| [VOSGestureCategory isTapAndHoldGesture:gestureCopy])
       {
 LABEL_50:
         v11 = 2;
@@ -1260,14 +1260,14 @@ LABEL_50:
       }
 
       v36 = +[VOSGesture oneFingerSplitGestures];
-      if ([v36 containsObject:v5])
+      if ([v36 containsObject:gestureCopy])
       {
 
         goto LABEL_60;
       }
 
       v49 = +[VOSGesture twoFingerSplitGestures];
-      v50 = [v49 containsObject:v5];
+      v50 = [v49 containsObject:gestureCopy];
 
       if (v50)
       {
@@ -1275,18 +1275,18 @@ LABEL_50:
       }
 
       v33 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickLeft];
-      if (v33 != v5)
+      if (v33 != gestureCopy)
       {
         v51 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickRight];
-        if (v51 != v5)
+        if (v51 != gestureCopy)
         {
           v52 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickUp];
           v53 = v52;
-          if (v52 != v5)
+          if (v52 != gestureCopy)
           {
             v54 = +[VOSGesture ThreeFingerDoubleTapHoldAndFlickDown];
 
-            if (v54 != v5)
+            if (v54 != gestureCopy)
             {
               goto LABEL_4;
             }
@@ -1301,14 +1301,14 @@ LABEL_50:
   }
 
   v27 = +[VOSGesture TwoFingerRotateCounterclockwise];
-  if (v27 == v5)
+  if (v27 == gestureCopy)
   {
     goto LABEL_46;
   }
 
   v28 = +[VOSGesture TwoFingerRotateClockwise];
   v29 = v28;
-  if (v28 == v5)
+  if (v28 == gestureCopy)
   {
 
 LABEL_46:
@@ -1317,7 +1317,7 @@ LABEL_46:
 
   v30 = +[VOSGesture TwoFingerScrub];
 
-  if (v30 == v5)
+  if (v30 == gestureCopy)
   {
 LABEL_47:
     v32 = 1;
@@ -1326,7 +1326,7 @@ LABEL_47:
 
   v31 = +[VOSGesture TwoFingerPinch];
 
-  if (v31 == v5)
+  if (v31 == gestureCopy)
   {
     v32 = 2;
   }
@@ -1338,10 +1338,10 @@ LABEL_47:
 
 LABEL_48:
   v42 = +[VOSGesture oneFingerGestures];
-  v43 = [v42 containsObject:v5];
+  v43 = [v42 containsObject:gestureCopy];
 
   v39 = +[VOSGesture oneFingerSplitGestures];
-  if ([v39 containsObject:v5])
+  if ([v39 containsObject:gestureCopy])
   {
 LABEL_49:
 
@@ -1361,7 +1361,7 @@ LABEL_49:
   }
 
   v47 = +[VOSGesture twoFingerSplitGestures];
-  v48 = [v47 containsObject:v5];
+  v48 = [v47 containsObject:gestureCopy];
 
   if ((v48 & 1) == 0)
   {
@@ -1374,13 +1374,13 @@ LABEL_51:
   return v11;
 }
 
-- (unint64_t)availabilityForShortcut:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForShortcut:(id)shortcut withResolver:(id)resolver
 {
-  v4 = a4;
-  v5 = [v4 screenreaderMode];
-  v6 = [v4 isQuickNavKeyboardMode];
+  resolverCopy = resolver;
+  screenreaderMode = [resolverCopy screenreaderMode];
+  isQuickNavKeyboardMode = [resolverCopy isQuickNavKeyboardMode];
 
-  if (v6)
+  if (isQuickNavKeyboardMode)
   {
     v7 = 1;
   }
@@ -1389,11 +1389,11 @@ LABEL_51:
   {
     v8 = +[VOSScreenreaderMode Default];
 
-    if (v5 != v8)
+    if (screenreaderMode != v8)
     {
       v9 = +[VOSScreenreaderMode Handwriting];
 
-      if (v5 != v9)
+      if (screenreaderMode != v9)
       {
         +[VOSScreenreaderMode BrailleScreenInput];
       }
@@ -1405,18 +1405,18 @@ LABEL_51:
   return v7;
 }
 
-- (unint64_t)availabilityForCommand:(id)a3 withResolver:(id)a4
+- (unint64_t)availabilityForCommand:(id)command withResolver:(id)resolver
 {
-  v5 = a3;
-  v6 = a4;
-  if ((AXIsInternalInstall() & 1) != 0 || (+[VOSCommandCategory internalOnly](VOSCommandCategory, "internalOnly"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsCommand:v5], v7, (v8 & 1) == 0))
+  commandCopy = command;
+  resolverCopy = resolver;
+  if ((AXIsInternalInstall() & 1) != 0 || (+[VOSCommandCategory internalOnly](VOSCommandCategory, "internalOnly"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsCommand:commandCopy], v7, (v8 & 1) == 0))
   {
-    v10 = [v6 screenreaderMode];
+    screenreaderMode = [resolverCopy screenreaderMode];
     v11 = +[VOSScreenreaderMode Default];
 
-    if (v10 == v11)
+    if (screenreaderMode == v11)
     {
-      if ([v6 isIPad] & 1) != 0 || (objc_msgSend(v6, "isWatch"))
+      if ([resolverCopy isIPad] & 1) != 0 || (objc_msgSend(resolverCopy, "isWatch"))
       {
         v9 = -1;
       }
@@ -1425,7 +1425,7 @@ LABEL_51:
       {
         v17 = +[VOSCommand ToggleDock];
 
-        if (v17 == v5)
+        if (v17 == commandCopy)
         {
           v9 = 1;
         }
@@ -1436,11 +1436,11 @@ LABEL_51:
         }
       }
 
-      if (([v6 isIPhone] & 1) == 0)
+      if (([resolverCopy isIPhone] & 1) == 0)
       {
         v18 = +[VOSCommand ToggleReachability];
 
-        if (v18 == v5)
+        if (v18 == commandCopy)
         {
           v9 = 1;
           goto LABEL_22;
@@ -1459,17 +1459,17 @@ LABEL_22:
     {
       v12 = +[VOSScreenreaderMode Handwriting];
       v13 = v12;
-      if (v10 == v12)
+      if (screenreaderMode == v12)
       {
 
 LABEL_12:
         v15 = +[VOSCommand GesturedTextInputLaunchApp];
 
-        if (v15 != v5)
+        if (v15 != commandCopy)
         {
           v16 = +[VOSScreenreaderMode Handwriting];
 
-          if (v10 != v16)
+          if (screenreaderMode != v16)
           {
             +[VOSScreenreaderMode BrailleScreenInput];
           }
@@ -1480,7 +1480,7 @@ LABEL_12:
 
       v14 = +[VOSScreenreaderMode BrailleScreenInput];
 
-      if (v10 == v14)
+      if (screenreaderMode == v14)
       {
         goto LABEL_12;
       }
@@ -1497,34 +1497,34 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)a3 withResolver:(id)a4
+- (BOOL)commandHasModifiedBindingsWhenZoomEnabled:(id)enabled withResolver:(id)resolver
 {
-  v4 = [(VOSCommandProfile *)self gestureBindingsForCommand:a3 withResolver:a4];
+  v4 = [(VOSCommandProfile *)self gestureBindingsForCommand:enabled withResolver:resolver];
   v5 = +[VOSGesture conflictingZoomGestures];
   v6 = [v4 intersectsSet:v5];
 
   return v6;
 }
 
-- (id)addGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)addGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:a3];
-  v11 = [(VOSCommandProfile *)self _profileModeForResolver:v9];
+  commandCopy = command;
+  resolverCopy = resolver;
+  v10 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:gesture];
+  v11 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
 
-  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:v8 inMode:v11];
+  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:commandCopy inMode:v11];
   if (!v12)
   {
-    v12 = [_VOSProfileCommand profileCommandWithCommand:v8];
+    v12 = [_VOSProfileCommand profileCommandWithCommand:commandCopy];
   }
 
   v13 = +[VOSCommand None];
   v14 = [(VOSCommandProfile *)self _profileCommandForCommand:v13 inMode:v11];
 
   v15 = [_VOSProfileGesture profileGestureWithGesture:v10];
-  v16 = [v14 gestures];
-  v17 = [v16 containsObject:v15];
+  gestures = [v14 gestures];
+  v17 = [gestures containsObject:v15];
 
   if (v17)
   {
@@ -1537,13 +1537,13 @@ LABEL_23:
   return 0;
 }
 
-- (id)removeGesture:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)removeGesture:(id)gesture fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:a3];
-  v11 = [(VOSCommandProfile *)self _profileModeForResolver:v9];
-  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:v8 inMode:v11];
+  commandCopy = command;
+  resolverCopy = resolver;
+  v10 = [(VOSCommandProfile *)self _modifiedGestureRespectingHandednessSetting:gesture];
+  v11 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
+  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:commandCopy inMode:v11];
   v13 = v12;
   if (v12)
   {
@@ -1551,13 +1551,13 @@ LABEL_23:
     if (v14)
     {
       [v13 removeGesture:v14];
-      v15 = [v13 gestures];
-      v16 = [v15 count];
+      gestures = [v13 gestures];
+      v16 = [gestures count];
 
       if (!v16)
       {
         v17 = +[VOSCommand None];
-        v18 = [(VOSCommandProfile *)self addGesture:v10 toCommand:v17 withResolver:v9];
+        v18 = [(VOSCommandProfile *)self addGesture:v10 toCommand:v17 withResolver:resolverCopy];
       }
 
       v19 = 0;
@@ -1565,30 +1565,30 @@ LABEL_23:
 
     else
     {
-      v19 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove gesture '%@' from command '%@' with resolver '%@'. profileGesture was nil.", v10, v8, v9}];
+      v19 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove gesture '%@' from command '%@' with resolver '%@'. profileGesture was nil.", v10, commandCopy, resolverCopy}];
     }
   }
 
   else
   {
-    v19 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove gesture '%@' from command '%@' with resolver '%@'. profileCommand was nil.", v10, v8, v9}];
+    v19 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove gesture '%@' from command '%@' with resolver '%@'. profileCommand was nil.", v10, commandCopy, resolverCopy}];
   }
 
   return v19;
 }
 
-- (id)addKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)addKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(VOSCommandProfile *)self _profileModeForResolver:v9];
-  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:v8 inMode:v11];
+  commandCopy = command;
+  resolverCopy = resolver;
+  chordCopy = chord;
+  v11 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
+  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:commandCopy inMode:v11];
   if (v12)
   {
-    v13 = [_VOSProfileKeyChord profileKeyChordWithKeyChord:v10];
+    v13 = [_VOSProfileKeyChord profileKeyChordWithKeyChord:chordCopy];
 
-    if ([v9 isQuickNavKeyboardMode])
+    if ([resolverCopy isQuickNavKeyboardMode])
     {
       [v12 addQuickNavShortcut:v13];
     }
@@ -1599,39 +1599,39 @@ LABEL_23:
     }
 
     v14 = 0;
-    v10 = v13;
+    chordCopy = v13;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot add keychord '%@' to command '%@' with resolver '%@'. ProfileCommand was nil.", v10, v8, v9}];
+    v14 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot add keychord '%@' to command '%@' with resolver '%@'. ProfileCommand was nil.", chordCopy, commandCopy, resolverCopy}];
   }
 
   return v14;
 }
 
-- (id)removeKeyChord:(id)a3 fromCommand:(id)a4 withResolver:(id)a5
+- (id)removeKeyChord:(id)chord fromCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VOSCommandProfile *)self _profileModeForResolver:v10];
-  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:v9 inMode:v11];
+  chordCopy = chord;
+  commandCopy = command;
+  resolverCopy = resolver;
+  v11 = [(VOSCommandProfile *)self _profileModeForResolver:resolverCopy];
+  v12 = [(VOSCommandProfile *)self _profileCommandForCommand:commandCopy inMode:v11];
   if (v12)
   {
-    if ([v10 isQuickNavKeyboardMode])
+    if ([resolverCopy isQuickNavKeyboardMode])
     {
-      [v12 profileQuickNavShortcutForKeyChord:v8];
+      [v12 profileQuickNavShortcutForKeyChord:chordCopy];
     }
 
     else
     {
-      [v12 profileKeyboardShortcutForKeyChord:v8];
+      [v12 profileKeyboardShortcutForKeyChord:chordCopy];
     }
     v14 = ;
     if (v14)
     {
-      if ([v10 isQuickNavKeyboardMode])
+      if ([resolverCopy isQuickNavKeyboardMode])
       {
         [v12 removeQuickNavShortcut:v14];
       }
@@ -1646,25 +1646,25 @@ LABEL_23:
 
     else
     {
-      v13 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove keychord '%@' from command '%@' with resolver '%@'. profileKeyChord was nil.", v8, v9, v10}];
+      v13 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove keychord '%@' from command '%@' with resolver '%@'. profileKeyChord was nil.", chordCopy, commandCopy, resolverCopy}];
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove keychord '%@' from command '%@' with resolver '%@'. profileCommand was nil.", v8, v9, v10}];
+    v13 = [MEMORY[0x277CCA9B8] ax_errorWithDomain:@"VoiceOverCommands" description:{@"Cannot remove keychord '%@' from command '%@' with resolver '%@'. profileCommand was nil.", chordCopy, commandCopy, resolverCopy}];
   }
 
   return v13;
 }
 
-- (id)validateCanAddGesture:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanAddGesture:(id)gesture toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a4;
-  v9 = [(VOSCommandProfile *)self commandForTouchGesture:a3 withResolver:a5];
-  LODWORD(a3) = [v9 isEqual:v8];
+  commandCopy = command;
+  v9 = [(VOSCommandProfile *)self commandForTouchGesture:gesture withResolver:resolver];
+  LODWORD(gesture) = [v9 isEqual:commandCopy];
 
-  if (a3)
+  if (gesture)
   {
     v10 = [[VOSCommandProfileValidation alloc] initWithType:1];
   }
@@ -1684,13 +1684,13 @@ LABEL_23:
   return v13;
 }
 
-- (id)validateCanAddKeyChord:(id)a3 toCommand:(id)a4 withResolver:(id)a5
+- (id)validateCanAddKeyChord:(id)chord toCommand:(id)command withResolver:(id)resolver
 {
-  v8 = a4;
-  v9 = [(VOSCommandProfile *)self commandForKeyChord:a3 withResolver:a5];
-  LODWORD(a3) = [v9 isEqual:v8];
+  commandCopy = command;
+  v9 = [(VOSCommandProfile *)self commandForKeyChord:chord withResolver:resolver];
+  LODWORD(chord) = [v9 isEqual:commandCopy];
 
-  if (a3)
+  if (chord)
   {
     v10 = [[VOSCommandProfileValidation alloc] initWithType:3];
   }
@@ -1714,18 +1714,18 @@ LABEL_23:
   return v11;
 }
 
-- (id)_profileModeForResolver:(id)a3
+- (id)_profileModeForResolver:(id)resolver
 {
-  v4 = [a3 screenreaderMode];
-  v5 = [(VOSCommandProfile *)self _profileModeForScreenreaderMode:v4];
+  screenreaderMode = [resolver screenreaderMode];
+  v5 = [(VOSCommandProfile *)self _profileModeForScreenreaderMode:screenreaderMode];
 
   return v5;
 }
 
-- (id)_profileModeForScreenreaderMode:(id)a3
+- (id)_profileModeForScreenreaderMode:(id)mode
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1745,8 +1745,8 @@ LABEL_23:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 mode];
-        v11 = [v10 isEqual:v4];
+        mode = [v9 mode];
+        v11 = [mode isEqual:modeCopy];
 
         if (v11)
         {
@@ -1772,17 +1772,17 @@ LABEL_11:
   return v6;
 }
 
-- (id)_profileCommandForCommand:(id)a3 inMode:(id)a4
+- (id)_profileCommandForCommand:(id)command inMode:(id)mode
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  commandCopy = command;
+  modeCopy = mode;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [v6 commands];
-  v8 = [v7 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  commands = [modeCopy commands];
+  v8 = [commands countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1793,12 +1793,12 @@ LABEL_11:
       {
         if (*v38 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(commands);
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v12 command];
-        v14 = [v13 isEqual:v5];
+        command = [v12 command];
+        v14 = [command isEqual:commandCopy];
 
         if (v14)
         {
@@ -1808,7 +1808,7 @@ LABEL_11:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v9 = [commands countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v9)
       {
         continue;
@@ -1818,26 +1818,26 @@ LABEL_11:
     }
   }
 
-  v15 = [v5 commandType];
-  if (v15 == 1)
+  commandType = [commandCopy commandType];
+  if (commandType == 1)
   {
     goto LABEL_22;
   }
 
-  if (v15)
+  if (commandType)
   {
 LABEL_27:
     v19 = 0;
     goto LABEL_28;
   }
 
-  v16 = [v6 mode];
+  mode = [modeCopy mode];
   v17 = +[VOSScreenreaderMode Handwriting];
   v18 = v17;
-  if (v16 == v17)
+  if (mode == v17)
   {
     v20 = +[VOSCommandCategory handwriting];
-    v21 = [v20 containsCommand:v5];
+    v21 = [v20 containsCommand:commandCopy];
 
     if (v21)
     {
@@ -1849,13 +1849,13 @@ LABEL_27:
   {
   }
 
-  v22 = [v6 mode];
+  mode2 = [modeCopy mode];
   v23 = +[VOSScreenreaderMode BrailleScreenInput];
   v24 = v23;
-  if (v22 == v23)
+  if (mode2 == v23)
   {
     v25 = +[VOSCommandCategory brailleScreenInput];
-    v26 = [v25 containsCommand:v5];
+    v26 = [v25 containsCommand:commandCopy];
 
     if (v26)
     {
@@ -1867,13 +1867,13 @@ LABEL_27:
   {
   }
 
-  v27 = [v6 mode];
+  mode3 = [modeCopy mode];
   v28 = +[VOSScreenreaderMode Default];
   v29 = v28;
-  if (v27 == v28)
+  if (mode3 == v28)
   {
     v30 = +[VOSCommandCategory allCategories];
-    v31 = [VOSCommandCategory categories:v30 containsCommand:v5];
+    v31 = [VOSCommandCategory categories:v30 containsCommand:commandCopy];
 
     if (v31)
     {
@@ -1886,7 +1886,7 @@ LABEL_27:
   }
 
   v32 = +[VOSCommand None];
-  v33 = [v5 isEqual:v32];
+  v33 = [commandCopy isEqual:v32];
 
   if ((v33 & 1) == 0)
   {
@@ -1900,10 +1900,10 @@ LABEL_27:
   }
 
 LABEL_22:
-  v19 = [_VOSProfileCommand profileCommandWithCommand:v5];
+  v19 = [_VOSProfileCommand profileCommandWithCommand:commandCopy];
   if (v19)
   {
-    [v6 addCommand:v19];
+    [modeCopy addCommand:v19];
   }
 
 LABEL_28:
@@ -1913,37 +1913,37 @@ LABEL_28:
   return v19;
 }
 
-+ (BOOL)_overlay:(id)a3 shouldIncludeItem:(id)a4
++ (BOOL)_overlay:(id)_overlay shouldIncludeItem:(id)item
 {
-  v4 = 1;
-  if (a3 && a4)
+  bOOLValue = 1;
+  if (_overlay && item)
   {
-    v5 = [a3 objectForKeyedSubscript:a4];
+    v5 = [_overlay objectForKeyedSubscript:item];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)_parseProfileProperties:(id)a3 overlayProperties:(id)a4
++ (id)_parseProfileProperties:(id)properties overlayProperties:(id)overlayProperties
 {
   v6 = MEMORY[0x277CBEB58];
-  v7 = a4;
-  v8 = a3;
+  overlayPropertiesCopy = overlayProperties;
+  propertiesCopy = properties;
   v9 = [v6 set];
-  v10 = [v8 objectForKeyedSubscript:@"ScreenReaderModes"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"ScreenReaderModes"];
 
-  v11 = [v7 objectForKeyedSubscript:@"ScreenReaderModes"];
+  v11 = [overlayPropertiesCopy objectForKeyedSubscript:@"ScreenReaderModes"];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_invoke_2;
   v17[3] = &unk_2784F39B8;
-  v21 = a1;
+  selfCopy = self;
   v18 = v11;
   v12 = v9;
   v19 = v12;
@@ -2033,18 +2033,18 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
   }
 }
 
-+ (void)_addGesturesToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5
++ (void)_addGesturesToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 _overlay:v10 shouldIncludeItem:@"TouchGesture"])
+  commandCopy = command;
+  propertiesCopy = properties;
+  overlayPropertiesCopy = overlayProperties;
+  if ([self _overlay:overlayPropertiesCopy shouldIncludeItem:@"TouchGesture"])
   {
-    v11 = [v10 objectForKeyedSubscript:@"TouchGesture"];
+    v11 = [overlayPropertiesCopy objectForKeyedSubscript:@"TouchGesture"];
     if (!v11)
     {
-      v11 = [v9 objectForKeyedSubscript:@"TouchGesture"];
+      v11 = [propertiesCopy objectForKeyedSubscript:@"TouchGesture"];
     }
 
     objc_opt_class();
@@ -2091,7 +2091,7 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
           v18 = [_VOSProfileGesture profileGestureWithStringValue:*(*(&v20 + 1) + 8 * v17), v20];
           if (v18)
           {
-            [v8 addGesture:v18];
+            [commandCopy addGesture:v18];
           }
 
           ++v17;
@@ -2108,25 +2108,25 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addKeyboardShortcutsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5
++ (void)_addKeyboardShortcutsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 _overlay:v10 shouldIncludeItem:@"KeyChord"])
+  commandCopy = command;
+  propertiesCopy = properties;
+  overlayPropertiesCopy = overlayProperties;
+  if ([self _overlay:overlayPropertiesCopy shouldIncludeItem:@"KeyChord"])
   {
-    v11 = [v10 objectForKeyedSubscript:@"KeyChord"];
+    v11 = [overlayPropertiesCopy objectForKeyedSubscript:@"KeyChord"];
     if (!v11)
     {
-      v11 = [v9 objectForKeyedSubscript:@"KeyChord"];
+      v11 = [propertiesCopy objectForKeyedSubscript:@"KeyChord"];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [a1 _profileKeyChordsFromDictionaryValue:{v11, 0}];
+    v12 = [self _profileKeyChordsFromDictionaryValue:{v11, 0}];
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -2142,7 +2142,7 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
             objc_enumerationMutation(v12);
           }
 
-          [v8 addKeyboardShortcut:*(*(&v18 + 1) + 8 * v16++)];
+          [commandCopy addKeyboardShortcut:*(*(&v18 + 1) + 8 * v16++)];
         }
 
         while (v14 != v16);
@@ -2156,25 +2156,25 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addQuickNavShortcutsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5
++ (void)_addQuickNavShortcutsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 _overlay:v10 shouldIncludeItem:@"QuickNav"])
+  commandCopy = command;
+  propertiesCopy = properties;
+  overlayPropertiesCopy = overlayProperties;
+  if ([self _overlay:overlayPropertiesCopy shouldIncludeItem:@"QuickNav"])
   {
-    v11 = [v10 objectForKeyedSubscript:@"QuickNav"];
+    v11 = [overlayPropertiesCopy objectForKeyedSubscript:@"QuickNav"];
     if (!v11)
     {
-      v11 = [v9 objectForKeyedSubscript:@"QuickNav"];
+      v11 = [propertiesCopy objectForKeyedSubscript:@"QuickNav"];
     }
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [a1 _profileKeyChordsFromDictionaryValue:{v11, 0}];
+    v12 = [self _profileKeyChordsFromDictionaryValue:{v11, 0}];
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -2190,7 +2190,7 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
             objc_enumerationMutation(v12);
           }
 
-          [v8 addQuickNavShortcut:*(*(&v18 + 1) + 8 * v16++)];
+          [commandCopy addQuickNavShortcut:*(*(&v18 + 1) + 8 * v16++)];
         }
 
         while (v14 != v16);
@@ -2204,10 +2204,10 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addSecondaryCommandsToCommand:(id)a3 fromCommandProperties:(id)a4 overlayProperties:(id)a5
++ (void)_addSecondaryCommandsToCommand:(id)command fromCommandProperties:(id)properties overlayProperties:(id)overlayProperties
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"SecondaryCommands"];
+  commandCopy = command;
+  v7 = [properties objectForKeyedSubscript:@"SecondaryCommands"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2215,7 +2215,7 @@ void __63__VOSCommandProfile__parseProfileProperties_overlayProperties___block_i
     v9[1] = 3221225472;
     v9[2] = __92__VOSCommandProfile__addSecondaryCommandsToCommand_fromCommandProperties_overlayProperties___block_invoke;
     v9[3] = &unk_2784F39E0;
-    v10 = v6;
+    v10 = commandCopy;
     [v7 enumerateKeysAndObjectsUsingBlock:v9];
     v8 = v10;
 LABEL_6:
@@ -2297,14 +2297,14 @@ LABEL_7:
 LABEL_16:
 }
 
-+ (id)_profileKeyChordsFromDictionaryValue:(id)a3
++ (id)_profileKeyChordsFromDictionaryValue:(id)value
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -2313,7 +2313,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20[0] = v3;
+    v20[0] = valueCopy;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     goto LABEL_5;
   }
@@ -2322,7 +2322,7 @@ LABEL_5:
 LABEL_7:
   if ([v5 count])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -2345,7 +2345,7 @@ LABEL_7:
           v12 = [_VOSProfileKeyChord profileKeyChordWithStringValue:*(*(&v15 + 1) + 8 * i), v15];
           if (v12)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -2358,12 +2358,12 @@ LABEL_7:
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 - (VOSCommandProfileDelegate)delegate

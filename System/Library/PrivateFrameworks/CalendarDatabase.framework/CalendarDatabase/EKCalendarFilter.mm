@@ -1,29 +1,29 @@
 @interface EKCalendarFilter
-+ (void)_addCalendarUIDsFromPrefs:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5;
-+ (void)_addCalendarWithUID:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5;
-+ (void)_addCalendarsForStoreWithUID:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5;
++ (void)_addCalendarUIDsFromPrefs:(id)prefs toSet:(id)set database:(CalDatabase *)database;
++ (void)_addCalendarWithUID:(id)d toSet:(id)set database:(CalDatabase *)database;
++ (void)_addCalendarsForStoreWithUID:(id)d toSet:(id)set database:(CalDatabase *)database;
 - (BOOL)_isFilteringAllWhileLocked;
-- (BOOL)isCalendarUIDVisible:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCalendarUIDVisible:(id)visible;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFilteringAll;
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 entityType:(int)a4 calendarUIDs:(id)a5;
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 showingCalendars:(id)a4;
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 showingCalendarsWithUIDs:(id)a4;
-- (id)_UIDAntiSetWithCalendars:(id)a3;
-- (id)_UIDSetWithCalendars:(id)a3;
-- (id)_addFilterToQuery:(id)a3 creator:(void *)a4 userInfo:(void *)a5;
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database entityType:(int)type calendarUIDs:(id)ds;
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database showingCalendars:(id)calendars;
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database showingCalendarsWithUIDs:(id)ds;
+- (id)_UIDAntiSetWithCalendars:(id)calendars;
+- (id)_UIDSetWithCalendars:(id)calendars;
+- (id)_addFilterToQuery:(id)query creator:(void *)creator userInfo:(void *)info;
 - (id)_generateUIDSetToFilterAllCalendars;
-- (id)_generateUIDSetToFilterCalendars:(id)a3;
-- (id)_generateUIDSetToShowCalendarUIDs:(id)a3;
-- (id)_generateUIDSetToShowCalendars:(id)a3;
-- (id)_visibleCalendarsWithOptions:(int)a3;
-- (id)calendarIDClauseForQueryWithVariableName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filterQueryForKey:(id)a3 prefix:(id)a4 whereClause:(id)a5 creator:(void *)a6 userInfo:(void *)a7;
-- (id)filterQueryForQueryString:(id)a3 creator:(void *)a4 userInfo:(void *)a5;
+- (id)_generateUIDSetToFilterCalendars:(id)calendars;
+- (id)_generateUIDSetToShowCalendarUIDs:(id)ds;
+- (id)_generateUIDSetToShowCalendars:(id)calendars;
+- (id)_visibleCalendarsWithOptions:(int)options;
+- (id)calendarIDClauseForQueryWithVariableName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filterQueryForKey:(id)key prefix:(id)prefix whereClause:(id)clause creator:(void *)creator userInfo:(void *)info;
+- (id)filterQueryForQueryString:(id)string creator:(void *)creator userInfo:(void *)info;
 - (id)filteredCalendars;
-- (id)initFilteringAllWithDatabase:(CalDatabase *)a3;
-- (int)visibleCalendarCountWithOptions:(int)a3;
+- (id)initFilteringAllWithDatabase:(CalDatabase *)database;
+- (int)visibleCalendarCountWithOptions:(int)options;
 - (void)dealloc;
 - (void)validate;
 @end
@@ -32,13 +32,13 @@
 
 - (BOOL)_isFilteringAllWhileLocked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, 2);
-  v4 = [(EKCalendarFilter *)v2 _UIDSetWithCalendars:v3];
-  [v4 minusSet:v2->_calendarUIDs];
-  LOBYTE(v2) = [v4 count] == 0;
+  v4 = [(EKCalendarFilter *)selfCopy _UIDSetWithCalendars:v3];
+  [v4 minusSet:selfCopy->_calendarUIDs];
+  LOBYTE(selfCopy) = [v4 count] == 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -55,28 +55,28 @@
   [(EKCalendarFilter *)&v4 dealloc];
 }
 
-- (id)initFilteringAllWithDatabase:(CalDatabase *)a3
+- (id)initFilteringAllWithDatabase:(CalDatabase *)database
 {
-  v3 = [(EKCalendarFilter *)self initWithDatabase:a3 entityType:2 calendarUIDs:0];
+  v3 = [(EKCalendarFilter *)self initWithDatabase:database entityType:2 calendarUIDs:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [(EKCalendarFilter *)v3 _generateUIDSetToFilterAllCalendars];
+    _generateUIDSetToFilterAllCalendars = [(EKCalendarFilter *)v3 _generateUIDSetToFilterAllCalendars];
     calendarUIDs = v4->_calendarUIDs;
-    v4->_calendarUIDs = v5;
+    v4->_calendarUIDs = _generateUIDSetToFilterAllCalendars;
   }
 
   return v4;
 }
 
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 showingCalendars:(id)a4
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database showingCalendars:(id)calendars
 {
-  v6 = a4;
-  v7 = [(EKCalendarFilter *)self initWithDatabase:a3 entityType:2 calendarUIDs:0];
+  calendarsCopy = calendars;
+  v7 = [(EKCalendarFilter *)self initWithDatabase:database entityType:2 calendarUIDs:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [(EKCalendarFilter *)v7 _generateUIDSetToShowCalendars:v6];
+    v9 = [(EKCalendarFilter *)v7 _generateUIDSetToShowCalendars:calendarsCopy];
     calendarUIDs = v8->_calendarUIDs;
     v8->_calendarUIDs = v9;
   }
@@ -84,14 +84,14 @@
   return v8;
 }
 
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 showingCalendarsWithUIDs:(id)a4
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database showingCalendarsWithUIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(EKCalendarFilter *)self initWithDatabase:a3 entityType:2 calendarUIDs:0];
+  dsCopy = ds;
+  v7 = [(EKCalendarFilter *)self initWithDatabase:database entityType:2 calendarUIDs:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [(EKCalendarFilter *)v7 _generateUIDSetToShowCalendarUIDs:v6];
+    v9 = [(EKCalendarFilter *)v7 _generateUIDSetToShowCalendarUIDs:dsCopy];
     calendarUIDs = v8->_calendarUIDs;
     v8->_calendarUIDs = v9;
   }
@@ -99,9 +99,9 @@
   return v8;
 }
 
-- (EKCalendarFilter)initWithDatabase:(CalDatabase *)a3 entityType:(int)a4 calendarUIDs:(id)a5
+- (EKCalendarFilter)initWithDatabase:(CalDatabase *)database entityType:(int)type calendarUIDs:(id)ds
 {
-  v8 = a5;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = EKCalendarFilter;
   v9 = [(EKCalendarFilter *)&v14 init];
@@ -113,12 +113,12 @@
     *&v9->_lock.__opaque[16] = 0u;
     *&v9->_lock.__opaque[32] = 0u;
     *&v9->_lock.__opaque[48] = 0;
-    v9->_database = CFRetain(a3);
-    v11 = [v8 mutableCopy];
+    v9->_database = CFRetain(database);
+    v11 = [dsCopy mutableCopy];
     calendarUIDs = v10->_calendarUIDs;
     v10->_calendarUIDs = v11;
 
-    v10->_entityType = a4;
+    v10->_entityType = type;
   }
 
   return v10;
@@ -129,24 +129,24 @@
   v3 = CalDatabaseLockForThread(self->_database);
   if (v3)
   {
-    v4 = [(EKCalendarFilter *)self _isFilteringAllWhileLocked];
+    _isFilteringAllWhileLocked = [(EKCalendarFilter *)self _isFilteringAllWhileLocked];
     CalDatabaseUnlockForThread(self->_database);
-    LOBYTE(v3) = v4;
+    LOBYTE(v3) = _isFilteringAllWhileLocked;
   }
 
   return v3;
 }
 
-- (id)_UIDSetWithCalendars:(id)a3
+- (id)_UIDSetWithCalendars:(id)calendars
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  calendarsCopy = calendars;
   v5 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = calendarsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -179,16 +179,16 @@
   return v5;
 }
 
-- (id)_UIDAntiSetWithCalendars:(id)a3
+- (id)_UIDAntiSetWithCalendars:(id)calendars
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  calendarsCopy = calendars;
   v5 = [MEMORY[0x1E695DFA8] setWithCapacity:0];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = calendarsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -223,12 +223,12 @@
   return v5;
 }
 
-- (id)_generateUIDSetToShowCalendars:(id)a3
+- (id)_generateUIDSetToShowCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   if (CalDatabaseLockForThread(self->_database))
   {
-    v5 = [(EKCalendarFilter *)self _UIDSetWithCalendars:v4];
+    v5 = [(EKCalendarFilter *)self _UIDSetWithCalendars:calendarsCopy];
     v6 = _CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, 0);
     v7 = [(EKCalendarFilter *)self _UIDSetWithCalendars:v6];
     [v7 minusSet:v5];
@@ -243,12 +243,12 @@
   return v7;
 }
 
-- (id)_generateUIDSetToFilterCalendars:(id)a3
+- (id)_generateUIDSetToFilterCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   if (CalDatabaseLockForThread(self->_database))
   {
-    v5 = [(EKCalendarFilter *)self _UIDSetWithCalendars:v4];
+    v5 = [(EKCalendarFilter *)self _UIDSetWithCalendars:calendarsCopy];
     CalDatabaseUnlockForThread(self->_database);
   }
 
@@ -260,14 +260,14 @@
   return v5;
 }
 
-- (id)_generateUIDSetToShowCalendarUIDs:(id)a3
+- (id)_generateUIDSetToShowCalendarUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (CalDatabaseLockForThread(self->_database))
   {
     v5 = _CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, 0);
     v6 = [(EKCalendarFilter *)self _UIDSetWithCalendars:v5];
-    [v6 minusSet:v4];
+    [v6 minusSet:dsCopy];
     CalDatabaseUnlockForThread(self->_database);
   }
 
@@ -345,10 +345,10 @@
   return v3;
 }
 
-- (id)_visibleCalendarsWithOptions:(int)a3
+- (id)_visibleCalendarsWithOptions:(int)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = _CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, a3 | 2u);
+  v4 = _CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, options | 2u);
   if (v4)
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
@@ -399,10 +399,10 @@
   return v5;
 }
 
-- (int)visibleCalendarCountWithOptions:(int)a3
+- (int)visibleCalendarCountWithOptions:(int)options
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, a3 | 2u);
+  v4 = CalDatabaseCopyOfAllCalendarsInStoreWithOptions(self->_database, 0, options | 2u);
   v5 = v4;
   if (v4)
   {
@@ -454,9 +454,9 @@
   return v9;
 }
 
-- (BOOL)isCalendarUIDVisible:(id)a3
+- (BOOL)isCalendarUIDVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if ([(EKCalendarFilter *)self isShowingAll])
   {
     LOBYTE(v5) = 1;
@@ -464,13 +464,13 @@
 
   else
   {
-    v5 = [(NSMutableSet *)self->_calendarUIDs containsObject:v4]^ 1;
+    v5 = [(NSMutableSet *)self->_calendarUIDs containsObject:visibleCopy]^ 1;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EKCalendarFilter alloc];
   entityType = self->_entityType;
@@ -480,13 +480,13 @@
   return [(EKCalendarFilter *)v4 initWithDatabase:database entityType:entityType calendarUIDs:calendarUIDs];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSMutableSet *)self->_calendarUIDs count];
     if (v6 == [*(v5 + 9) count])
     {
@@ -527,34 +527,34 @@ LABEL_13:
   return v11;
 }
 
-+ (void)_addCalendarWithUID:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5
++ (void)_addCalendarWithUID:(id)d toSet:(id)set database:(CalDatabase *)database
 {
-  v10 = a3;
-  v7 = a4;
-  [v10 intValue];
-  v8 = CalDatabaseCopyCalendarWithUID(a5);
+  dCopy = d;
+  setCopy = set;
+  [dCopy intValue];
+  v8 = CalDatabaseCopyCalendarWithUID(database);
   if (v8)
   {
     v9 = v8;
     if (!CalCalendarIsHidden(v8))
     {
-      [v7 addObject:v10];
+      [setCopy addObject:dCopy];
     }
 
     CFRelease(v9);
   }
 }
 
-+ (void)_addCalendarUIDsFromPrefs:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5
++ (void)_addCalendarUIDsFromPrefs:(id)prefs toSet:(id)set database:(CalDatabase *)database
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  prefsCopy = prefs;
+  setCopy = set;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = [prefsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
     v11 = v10;
@@ -566,21 +566,21 @@ LABEL_13:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(prefsCopy);
         }
 
         v14 = *(*(&v16 + 1) + 8 * v13);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a1 _addCalendarWithUID:v14 toSet:v9 database:a5];
+          [self _addCalendarWithUID:v14 toSet:setCopy database:database];
         }
 
         ++v13;
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v11 = [prefsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v11);
@@ -589,11 +589,11 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_addCalendarsForStoreWithUID:(id)a3 toSet:(id)a4 database:(CalDatabase *)a5
++ (void)_addCalendarsForStoreWithUID:(id)d toSet:(id)set database:(CalDatabase *)database
 {
-  v16 = a4;
-  [a3 intValue];
-  v7 = CalDatabaseCopyStoreWithUID(a5);
+  setCopy = set;
+  [d intValue];
+  v7 = CalDatabaseCopyStoreWithUID(database);
   if (v7)
   {
     v8 = v7;
@@ -611,7 +611,7 @@ LABEL_13:
           if (!CalCalendarIsHidden(ValueAtIndex) && CalCalendarCanContainEntityTypeAndStoreAllowsIt(ValueAtIndex, 2))
           {
             v15 = [MEMORY[0x1E696AD98] numberWithInt:CalCalendarGetUID()];
-            [v16 addObject:v15];
+            [setCopy addObject:v15];
           }
         }
       }
@@ -692,32 +692,32 @@ LABEL_16:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_addFilterToQuery:(id)a3 creator:(void *)a4 userInfo:(void *)a5
+- (id)_addFilterToQuery:(id)query creator:(void *)creator userInfo:(void *)info
 {
-  v5 = (a4)(self, self->_database, a3, a5);
+  v5 = (creator)(self, self->_database, query, info);
 
   return v5;
 }
 
-- (id)filterQueryForQueryString:(id)a3 creator:(void *)a4 userInfo:(void *)a5
+- (id)filterQueryForQueryString:(id)string creator:(void *)creator userInfo:(void *)info
 {
-  v8 = a3;
+  stringCopy = string;
   pthread_mutex_lock(&self->_lock);
-  v9 = [(EKCalendarFilter *)self _addFilterToQuery:v8 creator:a4 userInfo:a5];
+  v9 = [(EKCalendarFilter *)self _addFilterToQuery:stringCopy creator:creator userInfo:info];
 
   pthread_mutex_unlock(&self->_lock);
 
   return v9;
 }
 
-- (id)filterQueryForKey:(id)a3 prefix:(id)a4 whereClause:(id)a5 creator:(void *)a6 userInfo:(void *)a7
+- (id)filterQueryForKey:(id)key prefix:(id)prefix whereClause:(id)clause creator:(void *)creator userInfo:(void *)info
 {
-  v11 = a4;
-  v12 = a5;
+  prefixCopy = prefix;
+  clauseCopy = clause;
   pthread_mutex_lock(&self->_lock);
-  v13 = (a6)(self, self->_database, a7);
+  v13 = (creator)(self, self->_database, info);
   v14 = v13;
-  if (!v12 || !v13)
+  if (!clauseCopy || !v13)
   {
     if (!v13)
     {
@@ -727,39 +727,39 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  if (![v13 length] || !objc_msgSend(v12, "length"))
+  if (![v13 length] || !objc_msgSend(clauseCopy, "length"))
   {
 LABEL_7:
     if ([v14 length])
     {
       v16 = v14;
 LABEL_12:
-      v15 = [v16 copy];
+      clauseCopy = [v16 copy];
       goto LABEL_13;
     }
 
 LABEL_9:
-    if (!v12 || ![v12 length])
+    if (!clauseCopy || ![clauseCopy length])
     {
       v17 = 0;
       goto LABEL_17;
     }
 
-    v16 = v12;
+    v16 = clauseCopy;
     goto LABEL_12;
   }
 
-  v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ AND %@", v14, v12];
+  clauseCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ AND %@", v14, clauseCopy];
 LABEL_13:
-  v17 = v15;
-  if (v15 && [v15 length])
+  v17 = clauseCopy;
+  if (clauseCopy && [clauseCopy length])
   {
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ WHERE %@", v11, v17];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ WHERE %@", prefixCopy, v17];
     goto LABEL_18;
   }
 
 LABEL_17:
-  v18 = [v11 copy];
+  v18 = [prefixCopy copy];
 LABEL_18:
   v19 = v18;
   pthread_mutex_unlock(&self->_lock);
@@ -767,14 +767,14 @@ LABEL_18:
   return v19;
 }
 
-- (id)calendarIDClauseForQueryWithVariableName:(id)a3
+- (id)calendarIDClauseForQueryWithVariableName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(NSMutableSet *)self->_calendarUIDs count])
   {
     if ([(EKCalendarFilter *)self _isFilteringAllWhileLocked])
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ in ()", v4];
+      nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ in ()", nameCopy];
     }
 
     else
@@ -794,42 +794,42 @@ LABEL_18:
           if ([v8 count] == 1)
           {
             v14 = MEMORY[0x1E696AEC0];
-            v13 = [v8 anyObject];
-            [v14 stringWithFormat:@"%@ = %@", v4, v13];
+            anyObject = [v8 anyObject];
+            [v14 stringWithFormat:@"%@ = %@", nameCopy, anyObject];
           }
 
           else
           {
-            v15 = [v8 allObjects];
-            v13 = [v15 componentsJoinedByString:{@", "}];
+            allObjects = [v8 allObjects];
+            anyObject = [allObjects componentsJoinedByString:{@", "}];
 
-            [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ IN (%@)", v4, v13];
+            [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ IN (%@)", nameCopy, anyObject];
           }
         }
 
         else
         {
-          v12 = [v10 allObjects];
-          v13 = [v12 componentsJoinedByString:{@", "}];
+          allObjects2 = [v10 allObjects];
+          anyObject = [allObjects2 componentsJoinedByString:{@", "}];
 
-          [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ NOT IN (%@)", v4, v13];
+          [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ NOT IN (%@)", nameCopy, anyObject];
         }
-        v5 = ;
+        nameCopy = ;
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ IN ()", v4];
+        nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ IN ()", nameCopy];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    nameCopy = 0;
   }
 
-  return v5;
+  return nameCopy;
 }
 
 @end

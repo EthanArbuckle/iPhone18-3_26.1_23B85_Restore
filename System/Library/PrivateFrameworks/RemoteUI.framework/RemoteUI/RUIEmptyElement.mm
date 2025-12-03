@@ -1,13 +1,13 @@
 @interface RUIEmptyElement
 - (_TtC8RemoteUI15RUIEmptyElement)init;
-- (_TtC8RemoteUI15RUIEmptyElement)initWithAttributes:(id)a3 parent:(id)a4;
+- (_TtC8RemoteUI15RUIEmptyElement)initWithAttributes:(id)attributes parent:(id)parent;
 @end
 
 @implementation RUIEmptyElement
 
-- (_TtC8RemoteUI15RUIEmptyElement)initWithAttributes:(id)a3 parent:(id)a4
+- (_TtC8RemoteUI15RUIEmptyElement)initWithAttributes:(id)attributes parent:(id)parent
 {
-  if (a3)
+  if (attributes)
   {
     v5 = sub_21BA87BCC();
   }
@@ -17,8 +17,8 @@
     v5 = 0;
   }
 
-  v6 = a4;
-  return sub_21BA4245C(v5, a4);
+  parentCopy = parent;
+  return sub_21BA4245C(v5, parent);
 }
 
 - (_TtC8RemoteUI15RUIEmptyElement)init

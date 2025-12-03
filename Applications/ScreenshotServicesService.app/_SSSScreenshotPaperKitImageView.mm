@@ -1,7 +1,7 @@
 @interface _SSSScreenshotPaperKitImageView
 - (BOOL)annotationsEnabled;
 - (BOOL)editable;
-- (BOOL)isGeneratedImageHDR:(id)a3;
+- (BOOL)isGeneratedImageHDR:(id)r;
 - (BOOL)useTrilinearMinificationFilter;
 - (CGSize)sizeMultiplier;
 - (NSString)imageDescription;
@@ -12,32 +12,32 @@
 - (UIImage)image;
 - (UIView)rulerHostView;
 - (_SSSScreenshotPaperKitImageViewDelegate)delegate;
-- (double)headroomNeededForScreenshot:(id)a3;
+- (double)headroomNeededForScreenshot:(id)screenshot;
 - (double)vellumOpacity;
-- (id)generateImageDataForScreenshot:(id)a3 shouldApplyCrop:(BOOL)a4 allowHDR:(BOOL)a5 targetSize:(CGSize)a6 imageType:(id)a7;
-- (id)generateImageForScreenshot:(id)a3;
-- (id)generateImageForScreenshot:(id)a3 shouldApplyCrop:(BOOL)a4 allowHDR:(BOOL)a5 targetSize:(CGSize)a6;
-- (id)imageGeneratorCachedImageForScreenshot:(id)a3 allowHDR:(BOOL)a4;
+- (id)generateImageDataForScreenshot:(id)screenshot shouldApplyCrop:(BOOL)crop allowHDR:(BOOL)r targetSize:(CGSize)size imageType:(id)type;
+- (id)generateImageForScreenshot:(id)screenshot;
+- (id)generateImageForScreenshot:(id)screenshot shouldApplyCrop:(BOOL)crop allowHDR:(BOOL)r targetSize:(CGSize)size;
+- (id)imageGeneratorCachedImageForScreenshot:(id)screenshot allowHDR:(BOOL)r;
 - (unint64_t)changeCounter;
-- (void)_toolPicker:(id)a3 startEditingOpacityWithAccessoryView:(id)a4;
-- (void)cropControllerDidUpdateScrollView:(id)a3;
-- (void)cropControllerDidZoomInScrollView:(id)a3;
+- (void)_toolPicker:(id)picker startEditingOpacityWithAccessoryView:(id)view;
+- (void)cropControllerDidUpdateScrollView:(id)view;
+- (void)cropControllerDidZoomInScrollView:(id)view;
 - (void)deselectAllAnnotations;
-- (void)imageGeneratorImageMarkedAsBeingEdited:(id)a3;
+- (void)imageGeneratorImageMarkedAsBeingEdited:(id)edited;
 - (void)layoutSubviews;
-- (void)setAnnotationsEnabled:(BOOL)a3;
-- (void)setChangeCounter:(unint64_t)a3;
-- (void)setCropInfo:(SSSCropInfo *)a3;
-- (void)setEditable:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setRulerHostView:(id)a3;
-- (void)setSizeMultiplier:(CGSize)a3;
-- (void)setUseTrilinearMinificationFilter:(BOOL)a3;
-- (void)setVellumOpacity:(double)a3;
-- (void)toolPickerVisibilityDidChange:(id)a3;
-- (void)updateCacheWithSdrImage:(id)a3 hdrImage:(id)a4;
+- (void)setAnnotationsEnabled:(BOOL)enabled;
+- (void)setChangeCounter:(unint64_t)counter;
+- (void)setCropInfo:(SSSCropInfo *)info;
+- (void)setEditable:(BOOL)editable;
+- (void)setImage:(id)image;
+- (void)setRulerHostView:(id)view;
+- (void)setSizeMultiplier:(CGSize)multiplier;
+- (void)setUseTrilinearMinificationFilter:(BOOL)filter;
+- (void)setVellumOpacity:(double)opacity;
+- (void)toolPickerVisibilityDidChange:(id)change;
+- (void)updateCacheWithSdrImage:(id)image hdrImage:(id)hdrImage;
 - (void)updateCanvasViewAfterLoadingImage;
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3;
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary;
 @end
 
 @implementation _SSSScreenshotPaperKitImageView
@@ -64,20 +64,20 @@
   return *(self + v3);
 }
 
-- (void)updateCacheWithSdrImage:(id)a3 hdrImage:(id)a4
+- (void)updateCacheWithSdrImage:(id)image hdrImage:(id)hdrImage
 {
   v7 = OBJC_IVAR____SSSScreenshotPaperKitImageView_cachedSDRImage;
   swift_beginAccess();
   v8 = *(self + v7);
-  *(self + v7) = a3;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  *(self + v7) = image;
+  imageCopy = image;
+  hdrImageCopy = hdrImage;
+  selfCopy = self;
 
   v12 = OBJC_IVAR____SSSScreenshotPaperKitImageView_cachedHDRImage;
   swift_beginAccess();
-  v13 = *(v11 + v12);
-  *(v11 + v12) = a4;
+  v13 = *(selfCopy + v12);
+  *(selfCopy + v12) = hdrImage;
 }
 
 - (double)vellumOpacity
@@ -87,13 +87,13 @@
   return *(self + v3);
 }
 
-- (void)setVellumOpacity:(double)a3
+- (void)setVellumOpacity:(double)opacity
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitImageView_vellumOpacity;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = self;
+  *(self + v5) = opacity;
+  selfCopy = self;
   sub_100069B54(v6);
 }
 
@@ -104,7 +104,7 @@
   v4 = *(self + v3);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     v7 = dispatch thunk of CanvasElementViewController.drawingGestureRecognizer.getter();
   }
@@ -124,11 +124,11 @@
   return *(self + v3);
 }
 
-- (void)setChangeCounter:(unint64_t)a3
+- (void)setChangeCounter:(unint64_t)counter
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitImageView_changeCounter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = counter;
 }
 
 - (UIImage)image
@@ -138,18 +138,18 @@
   return *(self + v3);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitImageView_image;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = image;
+  imageCopy = image;
+  selfCopy = self;
 
   sub_100069FF0();
-  [(_SSSScreenshotPaperKitImageView *)v8 setNeedsLayout];
-  [(_SSSScreenshotPaperKitImageView *)v8 invalidateIntrinsicContentSize];
+  [(_SSSScreenshotPaperKitImageView *)selfCopy setNeedsLayout];
+  [(_SSSScreenshotPaperKitImageView *)selfCopy invalidateIntrinsicContentSize];
 }
 
 - (SSSCropInfo)cropInfo
@@ -163,13 +163,13 @@
   return result;
 }
 
-- (void)setCropInfo:(SSSCropInfo *)a3
+- (void)setCropInfo:(SSSCropInfo *)info
 {
-  width = a3->currentRect.size.width;
-  height = a3->currentRect.size.height;
+  width = info->currentRect.size.width;
+  height = info->currentRect.size.height;
   v6 = (self + OBJC_IVAR____SSSScreenshotPaperKitImageView_cropInfo);
-  origin = a3->currentRect.origin;
-  totalSize = a3->totalSize;
+  origin = info->currentRect.origin;
+  totalSize = info->totalSize;
   swift_beginAccess();
   *v6 = totalSize;
   v6[1] = origin;
@@ -189,10 +189,10 @@
   return result;
 }
 
-- (void)setSizeMultiplier:(CGSize)a3
+- (void)setSizeMultiplier:(CGSize)multiplier
 {
-  height = a3.height;
-  width = a3.width;
+  height = multiplier.height;
+  width = multiplier.width;
   v6 = (self + OBJC_IVAR____SSSScreenshotPaperKitImageView_sizeMultiplier);
   swift_beginAccess();
   *v6 = width;
@@ -207,11 +207,11 @@
   return *(self + v3);
 }
 
-- (void)setUseTrilinearMinificationFilter:(BOOL)a3
+- (void)setUseTrilinearMinificationFilter:(BOOL)filter
 {
   v5 = OBJC_IVAR____SSSScreenshotPaperKitImageView_useTrilinearMinificationFilter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = filter;
   [(_SSSScreenshotPaperKitImageView *)self setNeedsLayout];
 }
 
@@ -222,16 +222,16 @@
   return *(self + v3);
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v4 = self;
-  sub_10006ACDC(a3);
+  selfCopy = self;
+  sub_10006ACDC(editable);
 }
 
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary
 {
-  v4 = self;
-  sub_10006B044(a3);
+  selfCopy = self;
+  sub_10006B044(necessary);
 }
 
 - (UIView)rulerHostView
@@ -241,11 +241,11 @@
   return *(self + v3);
 }
 
-- (void)setRulerHostView:(id)a3
+- (void)setRulerHostView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_10006B2D0(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10006B2D0(view);
 }
 
 - (BOOL)annotationsEnabled
@@ -255,24 +255,24 @@
   return *(self + v3);
 }
 
-- (void)setAnnotationsEnabled:(BOOL)a3
+- (void)setAnnotationsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_10006B414(a3);
+  selfCopy = self;
+  sub_10006B414(enabled);
 }
 
-- (void)cropControllerDidZoomInScrollView:(id)a3
+- (void)cropControllerDidZoomInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006B4BC(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10006B4BC(viewCopy);
 }
 
-- (void)cropControllerDidUpdateScrollView:(id)a3
+- (void)cropControllerDidUpdateScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006B6C4(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10006B6C4(viewCopy);
 }
 
 - (NSString)imageDescription
@@ -302,7 +302,7 @@
   v4 = *(self + v3);
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     v7 = dispatch thunk of CanvasElementViewController.canvasView.getter();
 
@@ -315,63 +315,63 @@
 
 - (void)updateCanvasViewAfterLoadingImage
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006BCF0();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006CA50();
 }
 
-- (double)headroomNeededForScreenshot:(id)a3
+- (double)headroomNeededForScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = self;
+  screenshotCopy = screenshot;
+  selfCopy = self;
   v6 = sub_1000705E4();
 
   return v6;
 }
 
-- (BOOL)isGeneratedImageHDR:(id)a3
+- (BOOL)isGeneratedImageHDR:(id)r
 {
-  v4 = a3;
-  v5 = self;
+  rCopy = r;
+  selfCopy = self;
   v6 = sub_1000705E4();
 
   return v6 > 1.0;
 }
 
-- (id)generateImageForScreenshot:(id)a3
+- (id)generateImageForScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10006CC68(v4, 0, 1, 0.0);
+  screenshotCopy = screenshot;
+  selfCopy = self;
+  v6 = sub_10006CC68(screenshotCopy, 0, 1, 0.0);
 
   return v6;
 }
 
-- (id)generateImageForScreenshot:(id)a3 shouldApplyCrop:(BOOL)a4 allowHDR:(BOOL)a5 targetSize:(CGSize)a6
+- (id)generateImageForScreenshot:(id)screenshot shouldApplyCrop:(BOOL)crop allowHDR:(BOOL)r targetSize:(CGSize)size
 {
-  width = a6.width;
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10006CC68(v10, a4, a5, width);
+  width = size.width;
+  screenshotCopy = screenshot;
+  selfCopy = self;
+  v12 = sub_10006CC68(screenshotCopy, crop, r, width);
 
   return v12;
 }
 
-- (void)imageGeneratorImageMarkedAsBeingEdited:(id)a3
+- (void)imageGeneratorImageMarkedAsBeingEdited:(id)edited
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006D2F0(v4);
+  editedCopy = edited;
+  selfCopy = self;
+  sub_10006D2F0(editedCopy);
 }
 
-- (id)imageGeneratorCachedImageForScreenshot:(id)a3 allowHDR:(BOOL)a4
+- (id)imageGeneratorCachedImageForScreenshot:(id)screenshot allowHDR:(BOOL)r
 {
-  if (a4)
+  if (r)
   {
     v4 = OBJC_IVAR____SSSScreenshotPaperKitImageView_cachedHDRImage;
   }
@@ -386,19 +386,19 @@
   return *v5;
 }
 
-- (id)generateImageDataForScreenshot:(id)a3 shouldApplyCrop:(BOOL)a4 allowHDR:(BOOL)a5 targetSize:(CGSize)a6 imageType:(id)a7
+- (id)generateImageDataForScreenshot:(id)screenshot shouldApplyCrop:(BOOL)crop allowHDR:(BOOL)r targetSize:(CGSize)size imageType:(id)type
 {
-  width = a6.width;
+  width = size.width;
   v13 = type metadata accessor for UTType();
   v14 = *(v13 - 8);
   __chkstk_darwin(v13);
   v16 = &v26 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = a3;
-  v18 = a7;
-  v19 = self;
+  screenshotCopy = screenshot;
+  typeCopy = type;
+  selfCopy = self;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
-  v20 = sub_10006F4F8(v17, a4, a5, width);
+  v20 = sub_10006F4F8(screenshotCopy, crop, r, width);
   v22 = v21;
 
   (*(v14 + 8))(v16, v13);
@@ -413,20 +413,20 @@
   return v23;
 }
 
-- (void)toolPickerVisibilityDidChange:(id)a3
+- (void)toolPickerVisibilityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_10006F888(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10006F888(changeCopy);
 }
 
-- (void)_toolPicker:(id)a3 startEditingOpacityWithAccessoryView:(id)a4
+- (void)_toolPicker:(id)picker startEditingOpacityWithAccessoryView:(id)view
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong _paperKitImageView:self startEditingOpacityInAccessoryView:a4];
+    [Strong _paperKitImageView:self startEditingOpacityInAccessoryView:view];
     swift_unknownObjectRelease();
   }
 }

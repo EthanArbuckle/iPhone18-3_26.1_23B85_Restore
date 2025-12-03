@@ -1,15 +1,15 @@
 @interface SHAudioRecorder
-+ (BOOL)hasAudioQueueFailedWithStatus:(int)a3 annotateError:(id *)a4;
-+ (BOOL)isAudioQueueRunning:(OpaqueAudioQueue *)a3;
++ (BOOL)hasAudioQueueFailedWithStatus:(int)status annotateError:(id *)error;
++ (BOOL)isAudioQueueRunning:(OpaqueAudioQueue *)running;
 - (AudioStreamBasicDescription)audioStreamBasicDescription;
 - (BOOL)isRunning;
-- (BOOL)stopAudioQueueAndClearBuffersWithError:(id *)a3;
-- (SHAudioRecorder)initWithRecordingSource:(int64_t)a3;
+- (BOOL)stopAudioQueueAndClearBuffersWithError:(id *)error;
+- (SHAudioRecorder)initWithRecordingSource:(int64_t)source;
 - (SHAudioRecorderDelegate)delegate;
 - (void)dealloc;
-- (void)setAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3;
-- (void)startAudioQueueAfterRetrySecondsWithCompletion:(id)a3;
-- (void)startRecordingWithCompletion:(id)a3;
+- (void)setAudioStreamBasicDescription:(AudioStreamBasicDescription *)description;
+- (void)startAudioQueueAfterRetrySecondsWithCompletion:(id)completion;
+- (void)startRecordingWithCompletion:(id)completion;
 @end
 
 @implementation SHAudioRecorder
@@ -29,7 +29,7 @@
   [(SHAudioRecorder *)&v4 dealloc];
 }
 
-- (SHAudioRecorder)initWithRecordingSource:(int64_t)a3
+- (SHAudioRecorder)initWithRecordingSource:(int64_t)source
 {
   v10.receiver = self;
   v10.super_class = SHAudioRecorder;
@@ -40,7 +40,7 @@
     identifier = v4->_identifier;
     v4->_identifier = v5;
 
-    v4->_recordingSource = a3;
+    v4->_recordingSource = source;
     v7 = dispatch_queue_create("com.apple.ShazamKit.shazamaudiorecorder.dispatch", 0);
     audioRecorderDispatchQueue = v4->_audioRecorderDispatchQueue;
     v4->_audioRecorderDispatchQueue = v7;
@@ -57,16 +57,16 @@
   return [v3 isAudioQueueRunning:audioQueue];
 }
 
-- (void)startRecordingWithCompletion:(id)a3
+- (void)startRecordingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (![(SHAudioRecorder *)self isRunning])
   {
     v6 = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:1 channels:44100.0];
-    v7 = [v6 streamDescription];
-    v8 = v7[4];
-    v9 = *(v7 + 1);
-    *&self->_audioStreamBasicDescription.mSampleRate = *v7;
+    streamDescription = [v6 streamDescription];
+    v8 = streamDescription[4];
+    v9 = *(streamDescription + 1);
+    *&self->_audioStreamBasicDescription.mSampleRate = *streamDescription;
     *&self->_audioStreamBasicDescription.mBytesPerPacket = v9;
     *&self->_audioStreamBasicDescription.mBitsPerChannel = v8;
     v10 = AudioQueueNewInput(&self->_audioStreamBasicDescription, sub_100026918, self, 0, 0, ([(SHAudioRecorder *)self recordingSource]!= 2) << 11, &self->_audioQueue);
@@ -108,7 +108,7 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to set audio queue property", buf, 2u);
           }
 
-          v4[2](v4, 0, v21);
+          completionCopy[2](completionCopy, 0, v21);
           v12 = v21;
           goto LABEL_20;
         }
@@ -144,15 +144,15 @@ LABEL_18:
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to start audio queue with error %@, retry one more time", buf, 0xCu);
           }
 
-          v29 = [(SHAudioRecorder *)self delegate];
-          [v29 recorder:self failedToStartWithError:v27];
+          delegate = [(SHAudioRecorder *)self delegate];
+          [delegate recorder:self failedToStartWithError:v27];
 
-          [(SHAudioRecorder *)self startAudioQueueAfterRetrySecondsWithCompletion:v4];
+          [(SHAudioRecorder *)self startAudioQueueAfterRetrySecondsWithCompletion:completionCopy];
         }
 
         else
         {
-          v4[2](v4, 1, 0);
+          completionCopy[2](completionCopy, 1, 0);
         }
 
         goto LABEL_20;
@@ -169,7 +169,7 @@ LABEL_18:
       }
     }
 
-    v4[2](v4, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
 LABEL_20:
 
     goto LABEL_21;
@@ -182,20 +182,20 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Already running audio queue", buf, 2u);
   }
 
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_21:
 }
 
-+ (BOOL)isAudioQueueRunning:(OpaqueAudioQueue *)a3
++ (BOOL)isAudioQueueRunning:(OpaqueAudioQueue *)running
 {
   ioDataSize = 4;
   outData = 0;
   v5 = 0;
-  v3 = [a1 hasAudioQueueFailedWithStatus:AudioQueueGetProperty(a3 annotateError:{0x6171726Eu, &outData, &ioDataSize), &v5}];
+  v3 = [self hasAudioQueueFailedWithStatus:AudioQueueGetProperty(running annotateError:{0x6171726Eu, &outData, &ioDataSize), &v5}];
   return (outData != 0) & ~v3;
 }
 
-- (BOOL)stopAudioQueueAndClearBuffersWithError:(id *)a3
+- (BOOL)stopAudioQueueAndClearBuffersWithError:(id *)error
 {
   audioQueue = self->_audioQueue;
   if (!audioQueue)
@@ -204,14 +204,14 @@ LABEL_21:
   }
 
   v6 = AudioQueueStop(audioQueue, 1u);
-  v7 = [objc_opt_class() hasAudioQueueFailedWithStatus:v6 annotateError:a3];
+  v7 = [objc_opt_class() hasAudioQueueFailedWithStatus:v6 annotateError:error];
   v8 = v7;
-  if (a3 && v7)
+  if (error && v7)
   {
     v9 = sh_log_object();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = *a3;
+      v10 = *error;
       v20 = 138412290;
       v21 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to stop audio queue %@", &v20, 0xCu);
@@ -220,13 +220,13 @@ LABEL_21:
 
   v11 = v8 ^ 1;
   v12 = AudioQueueRemovePropertyListener(self->_audioQueue, 0x6171726Eu, sub_100026A1C, self);
-  v13 = [objc_opt_class() hasAudioQueueFailedWithStatus:v12 annotateError:a3];
-  if (a3 && v13)
+  v13 = [objc_opt_class() hasAudioQueueFailedWithStatus:v12 annotateError:error];
+  if (error && v13)
   {
     v14 = sh_log_object();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a3;
+      v15 = *error;
       v20 = 138412290;
       v21 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to remove isRunning property listener %@", &v20, 0xCu);
@@ -234,14 +234,14 @@ LABEL_21:
   }
 
   v16 = AudioQueueDispose(self->_audioQueue, 0);
-  if ([objc_opt_class() hasAudioQueueFailedWithStatus:v16 annotateError:a3])
+  if ([objc_opt_class() hasAudioQueueFailedWithStatus:v16 annotateError:error])
   {
-    if (a3)
+    if (error)
     {
       v17 = sh_log_object();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = *a3;
+        v18 = *error;
         v20 = 138412290;
         v21 = v18;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to dispose audio queue %@", &v20, 0xCu);
@@ -257,30 +257,30 @@ LABEL_21:
   return v11;
 }
 
-+ (BOOL)hasAudioQueueFailedWithStatus:(int)a3 annotateError:(id *)a4
++ (BOOL)hasAudioQueueFailedWithStatus:(int)status annotateError:(id *)error
 {
-  if (a3 && a4)
+  if (status && error)
   {
-    *a4 = [NSError errorWithDomain:NSOSStatusErrorDomain code:a3 userInfo:0];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:status userInfo:0];
   }
 
-  return a3 != 0;
+  return status != 0;
 }
 
-- (void)startAudioQueueAfterRetrySecondsWithCompletion:(id)a3
+- (void)startAudioQueueAfterRetrySecondsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_time(0, 1000000000);
-  v6 = [(SHAudioRecorder *)self audioRecorderDispatchQueue];
+  audioRecorderDispatchQueue = [(SHAudioRecorder *)self audioRecorderDispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100026EE4;
   block[3] = &unk_10007D9A0;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
-  dispatch_after(v5, v6, block);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_after(v5, audioRecorderDispatchQueue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -302,11 +302,11 @@ LABEL_21:
   return self;
 }
 
-- (void)setAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3
+- (void)setAudioStreamBasicDescription:(AudioStreamBasicDescription *)description
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_audioStreamBasicDescription.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&description->mSampleRate;
+  v4 = *&description->mBytesPerPacket;
+  *&self->_audioStreamBasicDescription.mBitsPerChannel = *&description->mBitsPerChannel;
   *&self->_audioStreamBasicDescription.mBytesPerPacket = v4;
   *&self->_audioStreamBasicDescription.mSampleRate = v3;
 }

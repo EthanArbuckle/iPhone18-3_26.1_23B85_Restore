@@ -1,6 +1,6 @@
 @interface DetailCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)didTapWithAccessoryView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)didTapWithAccessoryView:(id)view;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)wasTapped;
@@ -13,7 +13,7 @@
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore24DetailCollectionViewCell_selectionHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 
@@ -23,14 +23,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B9594();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1002B9EA0(width);
   v7 = v6;
 
@@ -41,15 +41,15 @@
   return result;
 }
 
-- (void)didTapWithAccessoryView:(id)a3
+- (void)didTapWithAccessoryView:(id)view
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore24DetailCollectionViewCell_accessoryAction);
   if (v3)
   {
     v8[3] = sub_100005744(0, &unk_100984370);
-    v8[0] = a3;
-    v6 = a3;
-    v7 = self;
+    v8[0] = view;
+    viewCopy = view;
+    selfCopy = self;
     sub_10000827C(v3);
     v3(v8);
     sub_10001F63C(v3);
@@ -59,7 +59,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002BAA00();
 }
 

@@ -1,22 +1,22 @@
 @interface SAExecutableCallTree
-- (void)initWithTasks:(void *)a1 rootObjects:(void *)a2;
+- (void)initWithTasks:(void *)tasks rootObjects:(void *)objects;
 @end
 
 @implementation SAExecutableCallTree
 
-- (void)initWithTasks:(void *)a1 rootObjects:(void *)a2
+- (void)initWithTasks:(void *)tasks rootObjects:(void *)objects
 {
-  if (!a1)
+  if (!tasks)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = tasks;
   v7.super_class = SAExecutableCallTree;
   v3 = objc_msgSendSuper2(&v7, sel_initWithRootObjects_);
   if (v3)
   {
-    v4 = [a2 copy];
+    v4 = [objects copy];
     v5 = v3[2];
     v3[2] = v4;
   }

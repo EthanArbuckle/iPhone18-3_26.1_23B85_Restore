@@ -1,8 +1,8 @@
 @interface InvitationStateObserver
 - (_TtC23ActivitySharingServices23InvitationStateObserver)init;
-- (void)cloudKitManager:(id)a3 didHandleServerPushWithCloudKitGroup:(id)a4;
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4;
-- (void)friendListDidUpdate:(id)a3;
+- (void)cloudKitManager:(id)manager didHandleServerPushWithCloudKitGroup:(id)group;
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status;
+- (void)friendListDidUpdate:(id)update;
 @end
 
 @implementation InvitationStateObserver
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (void)cloudKitManager:(id)a3 didUpdateAccountStatus:(int64_t)a4
+- (void)cloudKitManager:(id)manager didUpdateAccountStatus:(int64_t)status
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v6 = *(*(v5 - 8) + 64);
@@ -26,19 +26,19 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v11 = self;
+  selfCopy = self;
   sub_221FA7A78(0, 0, v8, &unk_221FB9140, v10);
 }
 
-- (void)cloudKitManager:(id)a3 didHandleServerPushWithCloudKitGroup:(id)a4
+- (void)cloudKitManager:(id)manager didHandleServerPushWithCloudKitGroup:(id)group
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v16 - v8;
   v10 = qword_281307080;
-  v11 = a4;
-  v12 = self;
+  groupCopy = group;
+  selfCopy = self;
   if (v10 != -1)
   {
     swift_once();
@@ -52,12 +52,12 @@
   v15 = swift_allocObject();
   v15[2] = 0;
   v15[3] = 0;
-  v15[4] = v12;
-  v15[5] = v11;
+  v15[4] = selfCopy;
+  v15[5] = groupCopy;
   sub_221FA7A78(0, 0, v9, &unk_221FB9120, v15);
 }
 
-- (void)friendListDidUpdate:(id)a3
+- (void)friendListDidUpdate:(id)update
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CFEC3A0, &qword_221FB8B70);
   v5 = *(*(v4 - 8) + 64);
@@ -69,7 +69,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_221FA7A78(0, 0, v7, &unk_221FB90F0, v9);
 }
 

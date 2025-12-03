@@ -1,8 +1,8 @@
 @interface SBFullScreenSessionMetric
-- (BOOL)_sendCoreAnalyticsEventWithStartReason:(id)a3 endReason:(id)a4 duration:(double)a5 primaryBundleIdentifier:(id)a6 doNotDisturbActive:(BOOL)a7 hardwareKeyboardAttached:(BOOL)a8;
-- (BOOL)sendCoreAnalyticsEventWithName:(id)a3 payload:(id)a4;
+- (BOOL)_sendCoreAnalyticsEventWithStartReason:(id)reason endReason:(id)endReason duration:(double)duration primaryBundleIdentifier:(id)identifier doNotDisturbActive:(BOOL)active hardwareKeyboardAttached:(BOOL)attached;
+- (BOOL)sendCoreAnalyticsEventWithName:(id)name payload:(id)payload;
 - (SBFullScreenSessionMetric)init;
-- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)a3 fromContext:(id)a4;
+- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)role fromContext:(id)context;
 @end
 
 @implementation SBFullScreenSessionMetric
@@ -368,24 +368,24 @@ uint64_t __33__SBFullScreenSessionMetric_init__block_invoke_5(uint64_t a1, void 
   return [v5 _sendCoreAnalyticsEventWithStartReason:v6 endReason:v8 duration:v9 primaryBundleIdentifier:v4 doNotDisturbActive:v10 hardwareKeyboardAttached:v7];
 }
 
-- (BOOL)sendCoreAnalyticsEventWithName:(id)a3 payload:(id)a4
+- (BOOL)sendCoreAnalyticsEventWithName:(id)name payload:(id)payload
 {
-  v7 = a4;
-  v4 = v7;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   v5 = AnalyticsSendEventLazy();
 
   return v5;
 }
 
-- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)a3 fromContext:(id)a4
+- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)role fromContext:(id)context
 {
-  v5 = [a4 eventPayload];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D67588]];
+  eventPayload = [context eventPayload];
+  v6 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D67588]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__SBFullScreenSessionMetric__bundleIdentifierForElementWithLayoutRole_fromContext___block_invoke;
   v10[3] = &__block_descriptor_40_e22_B16__0__NSDictionary_8l;
-  v10[4] = a3;
+  v10[4] = role;
   v7 = [v6 bs_firstObjectPassingTest:v10];
   v8 = [v7 objectForKey:*MEMORY[0x277D67568]];
 
@@ -400,29 +400,29 @@ BOOL __83__SBFullScreenSessionMetric__bundleIdentifierForElementWithLayoutRole_f
   return v4;
 }
 
-- (BOOL)_sendCoreAnalyticsEventWithStartReason:(id)a3 endReason:(id)a4 duration:(double)a5 primaryBundleIdentifier:(id)a6 doNotDisturbActive:(BOOL)a7 hardwareKeyboardAttached:(BOOL)a8
+- (BOOL)_sendCoreAnalyticsEventWithStartReason:(id)reason endReason:(id)endReason duration:(double)duration primaryBundleIdentifier:(id)identifier doNotDisturbActive:(BOOL)active hardwareKeyboardAttached:(BOOL)attached
 {
-  v8 = a8;
-  v9 = a7;
+  attachedCopy = attached;
+  activeCopy = active;
   v24[6] = *MEMORY[0x277D85DE8];
   v23[0] = @"StartReason";
   v23[1] = @"EndReason";
-  v24[0] = a3;
-  v24[1] = a4;
+  v24[0] = reason;
+  v24[1] = endReason;
   v23[2] = @"Duration";
   v14 = MEMORY[0x277CCABB0];
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v14 numberWithDouble:a5];
+  identifierCopy = identifier;
+  endReasonCopy = endReason;
+  reasonCopy = reason;
+  v18 = [v14 numberWithDouble:duration];
   v24[2] = v18;
-  v24[3] = v15;
+  v24[3] = identifierCopy;
   v23[3] = @"PrimaryBundleID";
   v23[4] = @"IsDoNotDisturbActive";
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:activeCopy];
   v24[4] = v19;
   v23[5] = @"IsHardwareKeyboardAttached";
-  v20 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+  v20 = [MEMORY[0x277CCABB0] numberWithBool:attachedCopy];
   v24[5] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:6];
 

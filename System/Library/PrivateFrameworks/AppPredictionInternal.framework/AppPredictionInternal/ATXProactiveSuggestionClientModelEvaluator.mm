@@ -1,10 +1,10 @@
 @interface ATXProactiveSuggestionClientModelEvaluator
-+ (id)eventAndRecentCacheUpdatePublisher:(id)a3;
-+ (id)resultFromResults:(id)a3 withSessionType:(unint64_t)a4 executableType:(int64_t)a5 removeDockedApps:(BOOL)a6;
++ (id)eventAndRecentCacheUpdatePublisher:(id)publisher;
++ (id)resultFromResults:(id)results withSessionType:(unint64_t)type executableType:(int64_t)executableType removeDockedApps:(BOOL)apps;
 - (ATXProactiveSuggestionClientModelEvaluator)init;
-- (ATXProactiveSuggestionClientModelEvaluator)initWithPublishers:(id)a3;
-- (ATXProactiveSuggestionClientModelEvaluator)initWithStartTime:(id)a3 endTime:(id)a4;
-- (id)evaluationResultsForClientModelName:(id)a3;
+- (ATXProactiveSuggestionClientModelEvaluator)initWithPublishers:(id)publishers;
+- (ATXProactiveSuggestionClientModelEvaluator)initWithStartTime:(id)time endTime:(id)endTime;
+- (id)evaluationResultsForClientModelName:(id)name;
 - (id)uiPublisherWithDeduplicatedEngagements;
 @end
 
@@ -12,40 +12,40 @@
 
 - (ATXProactiveSuggestionClientModelEvaluator)init
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:-2592000.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:-2592000.0];
   [v4 timeIntervalSinceReferenceDate];
   v6 = v5;
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
   v8 = MEMORY[0x277CCABB0];
-  [v3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v9 = [v8 numberWithDouble:?];
   v10 = [(ATXProactiveSuggestionClientModelEvaluator *)self initWithStartTime:v7 endTime:v9];
 
   return v10;
 }
 
-- (ATXProactiveSuggestionClientModelEvaluator)initWithStartTime:(id)a3 endTime:(id)a4
+- (ATXProactiveSuggestionClientModelEvaluator)initWithStartTime:(id)time endTime:(id)endTime
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ATXProactiveSuggestionClientModelEvaluatorPublishers alloc] initWithStartTime:v7 endTime:v6];
+  endTimeCopy = endTime;
+  timeCopy = time;
+  v8 = [[ATXProactiveSuggestionClientModelEvaluatorPublishers alloc] initWithStartTime:timeCopy endTime:endTimeCopy];
 
   v9 = [(ATXProactiveSuggestionClientModelEvaluator *)self initWithPublishers:v8];
   return v9;
 }
 
-- (ATXProactiveSuggestionClientModelEvaluator)initWithPublishers:(id)a3
+- (ATXProactiveSuggestionClientModelEvaluator)initWithPublishers:(id)publishers
 {
-  v5 = a3;
+  publishersCopy = publishers;
   v9.receiver = self;
   v9.super_class = ATXProactiveSuggestionClientModelEvaluator;
   v6 = [(ATXProactiveSuggestionClientModelEvaluator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_publishers, a3);
+    objc_storeStrong(&v6->_publishers, publishers);
   }
 
   return v7;
@@ -54,14 +54,14 @@
 - (id)uiPublisherWithDeduplicatedEngagements
 {
   v3 = objc_opt_new();
-  v4 = [(ATXProactiveSuggestionClientModelEvaluatorPublishers *)self->_publishers uiPublisher];
+  uiPublisher = [(ATXProactiveSuggestionClientModelEvaluatorPublishers *)self->_publishers uiPublisher];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__ATXProactiveSuggestionClientModelEvaluator_uiPublisherWithDeduplicatedEngagements__block_invoke;
   v9[3] = &unk_27859A798;
   v10 = v3;
   v5 = v3;
-  v6 = [v4 filterWithIsIncluded:v9];
+  v6 = [uiPublisher filterWithIsIncluded:v9];
   v7 = [v6 mapWithTransform:&__block_literal_global_195];
 
   return v7;
@@ -233,10 +233,10 @@ void __115__ATXProactiveSuggestionClientModelEvaluator_uiResultForSuggestionExec
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)evaluationResultsForClientModelName:(id)a3
+- (id)evaluationResultsForClientModelName:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -277,17 +277,17 @@ void __115__ATXProactiveSuggestionClientModelEvaluator_uiResultForSuggestionExec
               }
 
               v12 = *(*(&v22 + 1) + 8 * i);
-              v13 = [v7 integerValue];
-              v14 = [v12 integerValue];
-              v15 = [(ATXProactiveSuggestionClientModelEvaluator *)self resultForClientModelName:v4 suggestionExecutableType:v14 sessionType:v13 removeDockedApps:0];
+              integerValue = [v7 integerValue];
+              integerValue2 = [v12 integerValue];
+              v15 = [(ATXProactiveSuggestionClientModelEvaluator *)self resultForClientModelName:nameCopy suggestionExecutableType:integerValue2 sessionType:integerValue removeDockedApps:0];
               if ([v15 numberOfSessionsWithPredictions])
               {
                 [v5 addObject:v15];
               }
 
-              if (v14 == 1)
+              if (integerValue2 == 1)
               {
-                v16 = [(ATXProactiveSuggestionClientModelEvaluator *)self resultForClientModelName:v4 suggestionExecutableType:1 sessionType:v13 removeDockedApps:1];
+                v16 = [(ATXProactiveSuggestionClientModelEvaluator *)self resultForClientModelName:nameCopy suggestionExecutableType:1 sessionType:integerValue removeDockedApps:1];
 
                 if ([v16 numberOfSessionsWithPredictions])
                 {
@@ -322,17 +322,17 @@ void __115__ATXProactiveSuggestionClientModelEvaluator_uiResultForSuggestionExec
   return v5;
 }
 
-+ (id)eventAndRecentCacheUpdatePublisher:(id)a3
++ (id)eventAndRecentCacheUpdatePublisher:(id)publisher
 {
   v4 = MEMORY[0x277D42648];
-  v5 = a3;
+  publisherCopy = publisher;
   v6 = [v4 tupleWithFirst:0 second:0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__ATXProactiveSuggestionClientModelEvaluator_eventAndRecentCacheUpdatePublisher___block_invoke;
   v9[3] = &__block_descriptor_40_e70____PASTuple2_24__0___PASTuple2_8__NSObject_ATXBMStoreEventProtocol__16l;
-  v9[4] = a1;
-  v7 = [v5 scanWithInitial:v6 nextPartialResult:v9];
+  v9[4] = self;
+  v7 = [publisherCopy scanWithInitial:v6 nextPartialResult:v9];
 
   return v7;
 }
@@ -373,16 +373,16 @@ id __81__ATXProactiveSuggestionClientModelEvaluator_eventAndRecentCacheUpdatePub
   return v11;
 }
 
-+ (id)resultFromResults:(id)a3 withSessionType:(unint64_t)a4 executableType:(int64_t)a5 removeDockedApps:(BOOL)a6
++ (id)resultFromResults:(id)results withSessionType:(unint64_t)type executableType:(int64_t)executableType removeDockedApps:(BOOL)apps
 {
-  v6 = a6;
+  appsCopy = apps;
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = a3;
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  resultsCopy = results;
+  v10 = [resultsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -393,18 +393,18 @@ id __81__ATXProactiveSuggestionClientModelEvaluator_eventAndRecentCacheUpdatePub
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        if ([v14 sessionType] == a4 && objc_msgSend(v14, "executableType") == a5 && objc_msgSend(v14, "removeDockedApps") == v6)
+        if ([v14 sessionType] == type && objc_msgSend(v14, "executableType") == executableType && objc_msgSend(v14, "removeDockedApps") == appsCopy)
         {
           v15 = v14;
           goto LABEL_13;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [resultsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
         continue;

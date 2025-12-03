@@ -1,16 +1,16 @@
 @interface UITableViewCellContentMirror
-- (UITableViewCellContentMirror)initWithFrame:(CGRect)a3;
+- (UITableViewCellContentMirror)initWithFrame:(CGRect)frame;
 - (id)cell;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation UITableViewCellContentMirror
 
-- (UITableViewCellContentMirror)initWithFrame:(CGRect)a3
+- (UITableViewCellContentMirror)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UITableViewCellContentMirror;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,29 +26,29 @@
 
 - (id)cell
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
   }
 
   else
   {
-    v4 = 0;
+    superview2 = 0;
   }
 
-  return v4;
+  return superview2;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UITableViewCellContentMirror *)self cell];
-  [v8 _drawContentInRect:*(self + 408) & 1 selected:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cell = [(UITableViewCellContentMirror *)self cell];
+  [cell _drawContentInRect:*(self + 408) & 1 selected:{x, y, width, height}];
 }
 
 @end

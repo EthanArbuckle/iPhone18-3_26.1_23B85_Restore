@@ -1,34 +1,34 @@
 @interface GCControllerButtonInput
-- (BOOL)_setTouched:(BOOL)a3 queue:(id)a4;
-- (BOOL)_setValue:(float)a3 queue:(id)a4;
+- (BOOL)_setTouched:(BOOL)touched queue:(id)queue;
+- (BOOL)_setValue:(float)value queue:(id)queue;
 - (BOOL)isPressed;
 - (BOOL)isTouched;
-- (GCControllerButtonInput)initWithDescriptionName:(id)a3;
+- (GCControllerButtonInput)initWithDescriptionName:(id)name;
 - (float)value;
 - (id)debugDescription;
 - (id)description;
 - (int)getAndResetTimesPressed;
 - (void)isPressed;
 - (void)isTouched;
-- (void)setDeadzone:(float)a3;
+- (void)setDeadzone:(float)deadzone;
 - (void)setValue:(float)value;
 - (void)value;
 @end
 
 @implementation GCControllerButtonInput
 
-- (GCControllerButtonInput)initWithDescriptionName:(id)a3
+- (GCControllerButtonInput)initWithDescriptionName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = GCControllerButtonInput;
   v5 = [(GCControllerElement *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (nameCopy)
     {
-      v7 = [v4 copy];
+      v7 = [nameCopy copy];
       [(GCControllerElement *)v6 setPrimaryAlias:v7];
     }
 
@@ -43,20 +43,20 @@
   return v6;
 }
 
-- (BOOL)_setValue:(float)a3 queue:(id)a4
+- (BOOL)_setValue:(float)value queue:(id)queue
 {
   v75 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = clamp(a3, 0.0, 1.0);
+  queueCopy = queue;
+  v7 = clamp(value, 0.0, 1.0);
   value = self->_value;
   if (value != v7)
   {
     v9 = _gc_log_signpost();
-    v10 = [(GCControllerElement *)self device];
-    v47 = [(GCControllerElement *)self primaryAlias];
-    v11 = [(GCControllerElement *)self device];
-    v12 = [v11 physicalInputProfile];
-    [v12 lastEventTimestamp];
+    device = [(GCControllerElement *)self device];
+    primaryAlias = [(GCControllerElement *)self primaryAlias];
+    device2 = [(GCControllerElement *)self device];
+    physicalInputProfile = [device2 physicalInputProfile];
+    [physicalInputProfile lastEventTimestamp];
     v14 = v13;
 
     v15 = _gc_log_signpost();
@@ -69,9 +69,9 @@
       if (os_signpost_enabled(v34))
       {
         *buf = 134218755;
-        v68 = v10;
+        v68 = device;
         v69 = 2117;
-        v70 = v47;
+        v70 = primaryAlias;
         v71 = 2048;
         v72 = v14;
         v73 = 2053;
@@ -104,9 +104,9 @@
           if (v37)
           {
             *buf = 134218499;
-            v68 = v10;
+            v68 = device;
             v69 = 2117;
-            v70 = v47;
+            v70 = primaryAlias;
             v71 = 2048;
             v72 = v14;
             _os_signpost_emit_with_name_impl(&dword_1D2CD5000, log, OS_SIGNPOST_INTERVAL_BEGIN, v23, "GCPhysicalInputProfile.Button.value.callback", "{device: %p, primaryAlias: %{sensitive}@, lastEventTimestamp: %f}", buf, 0x20u);
@@ -125,7 +125,7 @@
       v66 = deadzone < v7;
       v62 = v9;
       v64 = v23;
-      dispatch_async(v6, block);
+      dispatch_async(queueCopy, block);
     }
 
     if (!self->_touchedAndValueDistinct && v7 > 0.0019531 == v18 <= 0.0019531)
@@ -149,9 +149,9 @@
             if (v43)
             {
               *buf = 134218499;
-              v68 = v10;
+              v68 = device;
               v69 = 2117;
-              v70 = v47;
+              v70 = primaryAlias;
               v71 = 2048;
               v72 = v14;
               _os_signpost_emit_with_name_impl(&dword_1D2CD5000, logb, OS_SIGNPOST_INTERVAL_BEGIN, v26, "GCPhysicalInputProfile.Button.touched.callback", "{device: %p, primaryAlias: %{sensitive}@, lastEventTimestamp: %f}", buf, 0x20u);
@@ -171,7 +171,7 @@
         v60 = v7 > 0.0019531;
         v55 = v9;
         v57 = v26;
-        dispatch_async(v6, v54);
+        dispatch_async(queueCopy, v54);
       }
     }
 
@@ -193,9 +193,9 @@
           if (v40)
           {
             *buf = 134218499;
-            v68 = v10;
+            v68 = device;
             v69 = 2117;
-            v70 = v47;
+            v70 = primaryAlias;
             v71 = 2048;
             v72 = v14;
             _os_signpost_emit_with_name_impl(&dword_1D2CD5000, loga, OS_SIGNPOST_INTERVAL_BEGIN, v29, "GCPhysicalInputProfile.Button.pressed.callback", "{device: %p, primaryAlias: %{sensitive}@, lastEventTimestamp: %f}", buf, 0x20u);
@@ -214,7 +214,7 @@
       v53 = deadzone < v7;
       v49 = v9;
       v51 = v29;
-      dispatch_async(v6, v48);
+      dispatch_async(queueCopy, v48);
     }
 
     if (v18 <= deadzone && deadzone < v7)
@@ -270,19 +270,19 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90(uint64_t a1
   }
 }
 
-- (BOOL)_setTouched:(BOOL)a3 queue:(id)a4
+- (BOOL)_setTouched:(BOOL)touched queue:(id)queue
 {
-  v4 = a3;
+  touchedCopy = touched;
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_touchedAndValueDistinct && self->_touched != v4)
+  queueCopy = queue;
+  if (self->_touchedAndValueDistinct && self->_touched != touchedCopy)
   {
     v8 = _gc_log_signpost();
-    v9 = [(GCControllerElement *)self device];
-    v10 = [(GCControllerElement *)self primaryAlias];
-    v11 = [(GCControllerElement *)self device];
-    v12 = [v11 physicalInputProfile];
-    [v12 lastEventTimestamp];
+    device = [(GCControllerElement *)self device];
+    primaryAlias = [(GCControllerElement *)self primaryAlias];
+    device2 = [(GCControllerElement *)self device];
+    physicalInputProfile = [device2 physicalInputProfile];
+    [physicalInputProfile lastEventTimestamp];
     v14 = v13;
 
     v15 = _gc_log_signpost();
@@ -295,24 +295,24 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90(uint64_t a1
       if (os_signpost_enabled(v27))
       {
         *buf = 134218755;
-        v40 = v9;
+        v40 = device;
         v41 = 2117;
-        v42 = v10;
+        v42 = primaryAlias;
         v43 = 2048;
         v44 = v14;
         v45 = 1029;
-        v46 = v4;
+        v46 = touchedCopy;
         _os_signpost_emit_with_name_impl(&dword_1D2CD5000, v27, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "GCPhysicalInputProfile.Button.touched.set", "{device: %p, primaryAlias: %{sensitive}@, lastEventTimestamp: %f, value: %{sensitive}u", buf, 0x26u);
       }
     }
 
-    self->_touched = v4;
+    self->_touched = touchedCopy;
     v18 = _Block_copy(self->_touchedChangedHandler);
     value = self->_value;
-    v20 = [(GCControllerButtonInput *)self isPressed];
+    isPressed = [(GCControllerButtonInput *)self isPressed];
     if (v18)
     {
-      v21 = v20;
+      v21 = isPressed;
       v22 = os_signpost_id_generate(v8);
       v23 = _gc_log_signpost();
       v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
@@ -329,9 +329,9 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90(uint64_t a1
           if (v30)
           {
             *buf = 134218499;
-            v40 = v9;
+            v40 = device;
             v41 = 2117;
-            v42 = v10;
+            v42 = primaryAlias;
             v43 = 2048;
             v44 = v14;
             _os_signpost_emit_with_name_impl(&dword_1D2CD5000, log, OS_SIGNPOST_INTERVAL_BEGIN, v22, "GCPhysicalInputProfile.Button.touched.callback", "{device: %p, primaryAlias: %{sensitive}@, lastEventTimestamp: %f}", buf, 0x20u);
@@ -348,10 +348,10 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90(uint64_t a1
       block[4] = self;
       v36 = value;
       v37 = v21;
-      v38 = v4;
+      v38 = touchedCopy;
       v33 = v8;
       v35 = v22;
-      dispatch_async(v6, block);
+      dispatch_async(queueCopy, block);
     }
 
     v7 = 1;
@@ -422,9 +422,9 @@ void __45__GCControllerButtonInput__setTouched_queue___block_invoke(uint64_t a1,
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCControllerElement *)self primaryAlias];
+  primaryAlias = [(GCControllerElement *)self primaryAlias];
   [(GCControllerButtonInput *)self value];
-  v6 = [v3 stringWithFormat:@"%@ (value: %.3f, pressed: %d)", v4, v5, -[GCControllerButtonInput isPressed](self, "isPressed")];
+  v6 = [v3 stringWithFormat:@"%@ (value: %.3f, pressed: %d)", primaryAlias, v5, -[GCControllerButtonInput isPressed](self, "isPressed")];
 
   return v6;
 }
@@ -442,41 +442,41 @@ void __45__GCControllerButtonInput__setTouched_queue___block_invoke(uint64_t a1,
 
 - (void)setValue:(float)value
 {
-  v12 = [(GCControllerElement *)self device];
-  if (v12)
+  device = [(GCControllerElement *)self device];
+  if (device)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = v12;
+    v6 = device;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v7 = [v12 isSnapshot];
-    v6 = v12;
-    if ((v7 & 1) == 0)
+    isSnapshot = [device isSnapshot];
+    v6 = device;
+    if ((isSnapshot & 1) == 0)
     {
       goto LABEL_9;
     }
 
-    v8 = [v12 handlerQueue];
+    handlerQueue = [device handlerQueue];
   }
 
   else
   {
-    v8 = MEMORY[0x1E69E96A0];
+    handlerQueue = MEMORY[0x1E69E96A0];
     v9 = MEMORY[0x1E69E96A0];
   }
 
-  v10 = self;
+  selfCopy = self;
   *&v11 = value;
-  if ([(GCControllerButtonInput *)v10 _setValue:v8 queue:v11])
+  if ([(GCControllerButtonInput *)selfCopy _setValue:handlerQueue queue:v11])
   {
-    [0 addObject:v10];
+    [0 addObject:selfCopy];
   }
 
-  v6 = v12;
+  v6 = device;
 LABEL_9:
 }
 
@@ -495,14 +495,14 @@ LABEL_9:
   return value;
 }
 
-- (void)setDeadzone:(float)a3
+- (void)setDeadzone:(float)deadzone
 {
-  if (a3 <= 0.0019531)
+  if (deadzone <= 0.0019531)
   {
-    a3 = 0.0019531;
+    deadzone = 0.0019531;
   }
 
-  self->_deadzone = a3;
+  self->_deadzone = deadzone;
 }
 
 void __43__GCControllerButtonInput__setValue_queue___block_invoke_cold_1(uint64_t a1)
@@ -541,11 +541,11 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90_cold_1(uint
   v2 = _gc_log_signpost();
   if (os_signpost_enabled(v2))
   {
-    v3 = [a1 device];
-    v4 = [a1 primaryAlias];
-    v5 = [a1 device];
-    v6 = [v5 physicalInputProfile];
-    [v6 lastEventTimestamp];
+    device = [self device];
+    primaryAlias = [self primaryAlias];
+    device2 = [self device];
+    physicalInputProfile = [device2 physicalInputProfile];
+    [physicalInputProfile lastEventTimestamp];
     OUTLINED_FUNCTION_3_10();
     OUTLINED_FUNCTION_0_28();
     _os_signpost_emit_with_name_impl(v7, v8, v9, v10, v11, v12, v13, 0x26u);
@@ -560,11 +560,11 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90_cold_1(uint
   v2 = _gc_log_signpost();
   if (os_signpost_enabled(v2))
   {
-    v3 = [a1 device];
-    v4 = [a1 primaryAlias];
-    v5 = [a1 device];
-    v6 = [v5 physicalInputProfile];
-    [v6 lastEventTimestamp];
+    device = [self device];
+    primaryAlias = [self primaryAlias];
+    device2 = [self device];
+    physicalInputProfile = [device2 physicalInputProfile];
+    [physicalInputProfile lastEventTimestamp];
     OUTLINED_FUNCTION_3_10();
     OUTLINED_FUNCTION_0_28();
     _os_signpost_emit_with_name_impl(v7, v8, v9, v10, v11, v12, v13, 0x26u);
@@ -579,11 +579,11 @@ void __43__GCControllerButtonInput__setValue_queue___block_invoke_90_cold_1(uint
   v2 = _gc_log_signpost();
   if (os_signpost_enabled(v2))
   {
-    v3 = [a1 device];
-    v4 = [a1 primaryAlias];
-    v5 = [a1 device];
-    v6 = [v5 physicalInputProfile];
-    [v6 lastEventTimestamp];
+    device = [self device];
+    primaryAlias = [self primaryAlias];
+    device2 = [self device];
+    physicalInputProfile = [device2 physicalInputProfile];
+    [physicalInputProfile lastEventTimestamp];
     OUTLINED_FUNCTION_0_28();
     _os_signpost_emit_with_name_impl(v7, v8, v9, v10, v11, v12, v13, 0x2Au);
   }

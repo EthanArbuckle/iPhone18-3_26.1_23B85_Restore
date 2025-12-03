@@ -4,7 +4,7 @@
 - (void)closeTorchDevice;
 - (void)dealloc;
 - (void)openTorchDevice;
-- (void)turnTorch:(BOOL)a3;
+- (void)turnTorch:(BOOL)torch;
 @end
 
 @implementation VCCameraTorchManager
@@ -100,14 +100,14 @@
   }
 }
 
-- (void)turnTorch:(BOOL)a3
+- (void)turnTorch:(BOOL)torch
 {
   v23 = *MEMORY[0x1E69E9840];
   flashlight = self->_flashlight;
   if (flashlight)
   {
     v12 = 0;
-    if (a3)
+    if (torch)
     {
       v4 = 1.0;
     }
@@ -176,7 +176,7 @@
   v12 = *MEMORY[0x1E69E9840];
   v3 = *a2;
   v4 = 136315906;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2080;
   v7 = "[VCCameraTorchManager openTorchDevice]";
   v8 = 1024;

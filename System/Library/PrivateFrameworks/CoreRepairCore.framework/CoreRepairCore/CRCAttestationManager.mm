@@ -1,6 +1,6 @@
 @interface CRCAttestationManager
-- (BOOL)sendCertIssueRequestWith:(id)a3 serverCertResponse:(id *)a4 error:(id *)a5;
-- (BOOL)transformServerCertResponseUsing:(id)a3 serverCertResponseArray:(id *)a4 error:(id *)a5;
+- (BOOL)sendCertIssueRequestWith:(id)with serverCertResponse:(id *)response error:(id *)error;
+- (BOOL)transformServerCertResponseUsing:(id)using serverCertResponseArray:(id *)array error:(id *)error;
 @end
 
 @implementation CRCAttestationManager
@@ -126,20 +126,20 @@ uint64_t __71__CRCAttestationManager_sendChallengeRequestWith_serverResponse_err
   return [v2 resume];
 }
 
-- (BOOL)transformServerCertResponseUsing:(id)a3 serverCertResponseArray:(id *)a4 error:(id *)a5
+- (BOOL)transformServerCertResponseUsing:(id)using serverCertResponseArray:(id *)array error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  usingCopy = using;
   v8 = [@"-----BEGIN CERTIFICATE-----" mutableCopy];
   v9 = [@"-----BEGIN CERTIFICATE-----" mutableCopy];
   v37 = objc_opt_new();
-  v38 = v7;
-  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v7 encoding:4];
+  v38 = usingCopy;
+  v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:usingCopy encoding:4];
   v11 = [v10 componentsSeparatedByString:@"-----BEGIN CERTIFICATE-----"];
   v12 = v11;
   if (v11 && [v11 count] == 3)
   {
-    v36 = a4;
+    arrayCopy = array;
     v13 = [v12 objectAtIndexedSubscript:1];
     [v8 appendString:v13];
 
@@ -174,11 +174,11 @@ uint64_t __71__CRCAttestationManager_sendChallengeRequestWith_serverResponse_err
       [v37 addObject:v16];
     }
 
-    if (v36)
+    if (arrayCopy)
     {
       v20 = v37;
       v21 = 0;
-      *v36 = v37;
+      *arrayCopy = v37;
     }
 
     else
@@ -187,21 +187,21 @@ uint64_t __71__CRCAttestationManager_sendChallengeRequestWith_serverResponse_err
     }
 
     v32 = 1;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
     v33 = v21;
-    *a5 = v21;
+    *error = v21;
     goto LABEL_16;
   }
 
   v22 = v10;
   v23 = v9;
   v24 = v8;
-  v25 = a5;
+  errorCopy = error;
   v26 = handleForCategory(0);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -218,12 +218,12 @@ LABEL_15:
   v21 = [v27 errorWithDomain:@"com.apple.corerepair" code:-38 userInfo:v31];
 
   v32 = 0;
-  a5 = v25;
+  error = errorCopy;
   v8 = v24;
   v9 = v23;
   v10 = v22;
   v19 = v37;
-  if (a5)
+  if (error)
   {
     goto LABEL_15;
   }
@@ -234,10 +234,10 @@ LABEL_16:
   return v32;
 }
 
-- (BOOL)sendCertIssueRequestWith:(id)a3 serverCertResponse:(id *)a4 error:(id *)a5
+- (BOOL)sendCertIssueRequestWith:(id)with serverCertResponse:(id *)response error:(id *)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  withCopy = with;
   v8 = [CRFDRBaseDeviceHandler isFDRDataClassSupported:@"ChMf"];
   v9 = [MEMORY[0x1E695DFF8] URLWithString:@"https://sklaxm.apple.com/axiom/components/attest"];
   v60 = 0;

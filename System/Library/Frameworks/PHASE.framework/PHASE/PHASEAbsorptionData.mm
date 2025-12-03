@@ -1,8 +1,8 @@
 @interface PHASEAbsorptionData
 + (id)objectForDefault;
 - (PHASEAbsorptionData)init;
-- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)a3;
-- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)a3 frequencyBands:(id)a4;
+- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)coefficients;
+- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)coefficients frequencyBands:(id)bands;
 @end
 
 @implementation PHASEAbsorptionData
@@ -14,11 +14,11 @@
   return 0;
 }
 
-- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)a3
+- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)coefficients
 {
   v42 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  if ([v27 count])
+  coefficientsCopy = coefficients;
+  if ([coefficientsCopy count])
   {
     v32.receiver = self;
     v32.super_class = PHASEAbsorptionData;
@@ -31,7 +31,7 @@
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v6 = v27;
+      v6 = coefficientsCopy;
       v7 = [v6 countByEnumeratingWithState:&v28 objects:v41 count:16];
       if (v7)
       {
@@ -48,12 +48,12 @@
             v10 = *(*(&v28 + 1) + 8 * i);
             [v10 value];
             v12 = v11;
-            v13 = [v10 value];
+            value = [v10 value];
             v14 = fminf(fmaxf(v12, 0.0), 1.0);
             v15 = v10;
             if (v16 != v14)
             {
-              v17 = **(Phase::Logger::GetInstance(v13) + 448);
+              v17 = **(Phase::Logger::GetInstance(value) + 448);
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
               {
                 [v10 value];
@@ -92,7 +92,7 @@
     }
 
     self = v4;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
@@ -107,18 +107,18 @@
       _os_log_impl(&dword_23A302000, v24, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEAbsorptionData:initWithAbsorptionCoefficients]: absorptionCoeffients is empty", buf, 0x12u);
     }
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)a3 frequencyBands:(id)a4
+- (PHASEAbsorptionData)initWithAbsorptionCoefficients:(id)coefficients frequencyBands:(id)bands
 {
   v43 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v28 = a4;
-  if (![v27 count])
+  coefficientsCopy = coefficients;
+  bandsCopy = bands;
+  if (![coefficientsCopy count])
   {
     v22 = **(Phase::Logger::GetInstance(0) + 448);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -133,11 +133,11 @@ LABEL_18:
     }
 
 LABEL_22:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
-  if (![v28 count])
+  if (![bandsCopy count])
   {
     v22 = **(Phase::Logger::GetInstance(0) + 448);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -153,8 +153,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v6 = [v27 count];
-  v7 = [v28 count];
+  v6 = [coefficientsCopy count];
+  v7 = [bandsCopy count];
   if (v6 != v7)
   {
     v24 = **(Phase::Logger::GetInstance(v7) + 448);
@@ -165,9 +165,9 @@ LABEL_22:
       v37 = 1024;
       v38 = 336;
       v39 = 2048;
-      v40 = [v27 count];
+      v40 = [coefficientsCopy count];
       v41 = 2048;
-      v42 = [v28 count];
+      v42 = [bandsCopy count];
       _os_log_impl(&dword_23A302000, v24, OS_LOG_TYPE_ERROR, "%25s:%-5d [PHASEAbsorptionData:initWithAbsorptionCoefficients:frequencyBands]: aborptionCoefficent count %zu must match frequencyBands count %zu", buf, 0x26u);
     }
 
@@ -185,7 +185,7 @@ LABEL_22:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = v27;
+    v10 = coefficientsCopy;
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v11)
     {
@@ -203,7 +203,7 @@ LABEL_22:
           v15 = *(*(&v29 + 1) + 8 * i);
           [v15 floatValue];
           v16 = [PHASESubband alloc];
-          v17 = [v28 objectAtIndexedSubscript:v12];
+          v17 = [bandsCopy objectAtIndexedSubscript:v12];
           [v17 floatValue];
           v18 = [PHASESubband initWithFrequency:v16 value:"initWithFrequency:value:"];
 
@@ -225,10 +225,10 @@ LABEL_22:
   }
 
   self = v8;
-  v21 = self;
+  selfCopy = self;
 LABEL_23:
 
-  return v21;
+  return selfCopy;
 }
 
 + (id)objectForDefault

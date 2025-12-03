@@ -1,56 +1,56 @@
 @interface RMSService
-+ (id)protobufsFromServices:(id)a3;
-+ (id)servicesFromProtobufs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToService:(id)a3;
-- (RMSService)initWithData:(id)a3;
-- (RMSService)initWithProtobuf:(id)a3;
++ (id)protobufsFromServices:(id)services;
++ (id)servicesFromProtobufs:(id)protobufs;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToService:(id)service;
+- (RMSService)initWithData:(id)data;
+- (RMSService)initWithProtobuf:(id)protobuf;
 - (id)data;
 - (id)protobuf;
 @end
 
 @implementation RMSService
 
-- (RMSService)initWithProtobuf:(id)a3
+- (RMSService)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = RMSService;
   v5 = [(RMSService *)&v17 init];
   if (v5)
   {
-    v6 = [v4 displayName];
+    displayName = [protobufCopy displayName];
     displayName = v5->_displayName;
-    v5->_displayName = v6;
+    v5->_displayName = displayName;
 
-    v8 = [v4 networkName];
+    networkName = [protobufCopy networkName];
     networkName = v5->_networkName;
-    v5->_networkName = v8;
+    v5->_networkName = networkName;
 
-    v10 = [v4 hostName];
+    hostName = [protobufCopy hostName];
     hostName = v5->_hostName;
-    v5->_hostName = v10;
+    v5->_hostName = hostName;
 
-    v5->_port = [v4 port];
-    v5->_serviceType = [v4 serviceType];
-    v5->_serviceDiscoverySource = [v4 serviceDiscoverySource];
-    v5->_serviceFlags = [v4 serviceFlags];
-    v12 = [v4 homeSharingGroupKey];
+    v5->_port = [protobufCopy port];
+    v5->_serviceType = [protobufCopy serviceType];
+    v5->_serviceDiscoverySource = [protobufCopy serviceDiscoverySource];
+    v5->_serviceFlags = [protobufCopy serviceFlags];
+    homeSharingGroupKey = [protobufCopy homeSharingGroupKey];
     homeSharingGroupKey = v5->_homeSharingGroupKey;
-    v5->_homeSharingGroupKey = v12;
+    v5->_homeSharingGroupKey = homeSharingGroupKey;
 
-    v14 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [protobufCopy uniqueIdentifier];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v14;
+    v5->_uniqueIdentifier = uniqueIdentifier;
   }
 
   return v5;
 }
 
-- (RMSService)initWithData:(id)a3
+- (RMSService)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[RMSServiceMessage alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[RMSServiceMessage alloc] initWithData:dataCopy];
 
   v6 = [(RMSService *)self initWithProtobuf:v5];
   return v6;
@@ -74,32 +74,32 @@
 
 - (id)data
 {
-  v2 = [(RMSService *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(RMSService *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMSService *)self isEqualToService:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMSService *)self isEqualToService:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToService:(id)a3
+- (BOOL)isEqualToService:(id)service
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  serviceCopy = service;
+  v5 = serviceCopy;
+  if (!serviceCopy)
   {
     goto LABEL_47;
   }
 
   serviceType = self->_serviceType;
-  if (serviceType != [v4 serviceType])
+  if (serviceType != [serviceCopy serviceType])
   {
     goto LABEL_47;
   }
@@ -108,18 +108,18 @@
   v8 = networkName;
   if (!networkName)
   {
-    v9 = [v5 networkName];
-    if (!v9)
+    networkName = [v5 networkName];
+    if (!networkName)
     {
       goto LABEL_10;
     }
 
-    serviceType = v9;
+    serviceType = networkName;
     v8 = self->_networkName;
   }
 
-  v10 = [v5 networkName];
-  v11 = [(NSString *)v8 isEqualToString:v10];
+  networkName2 = [v5 networkName];
+  v11 = [(NSString *)v8 isEqualToString:networkName2];
 
   if (networkName)
   {
@@ -143,18 +143,18 @@ LABEL_10:
   v13 = hostName;
   if (!hostName)
   {
-    v14 = [v5 hostName];
-    if (!v14)
+    hostName = [v5 hostName];
+    if (!hostName)
     {
       goto LABEL_17;
     }
 
-    serviceType = v14;
+    serviceType = hostName;
     v13 = self->_hostName;
   }
 
-  v15 = [v5 hostName];
-  v16 = [(NSString *)v13 isEqualToString:v15];
+  hostName2 = [v5 hostName];
+  v16 = [(NSString *)v13 isEqualToString:hostName2];
 
   if (hostName)
   {
@@ -184,18 +184,18 @@ LABEL_17:
   v19 = displayName;
   if (!displayName)
   {
-    v20 = [v5 displayName];
-    if (!v20)
+    displayName = [v5 displayName];
+    if (!displayName)
     {
       goto LABEL_25;
     }
 
-    port = v20;
+    port = displayName;
     v19 = self->_displayName;
   }
 
-  v21 = [v5 displayName];
-  v22 = [(NSString *)v19 isEqualToString:v21];
+  displayName2 = [v5 displayName];
+  v22 = [(NSString *)v19 isEqualToString:displayName2];
 
   if (displayName)
   {
@@ -219,18 +219,18 @@ LABEL_25:
   v24 = homeSharingGroupKey;
   if (!homeSharingGroupKey)
   {
-    v25 = [v5 homeSharingGroupKey];
-    if (!v25)
+    homeSharingGroupKey = [v5 homeSharingGroupKey];
+    if (!homeSharingGroupKey)
     {
       goto LABEL_32;
     }
 
-    port = v25;
+    port = homeSharingGroupKey;
     v24 = self->_homeSharingGroupKey;
   }
 
-  v26 = [v5 homeSharingGroupKey];
-  v27 = [(NSString *)v24 isEqualToString:v26];
+  homeSharingGroupKey2 = [v5 homeSharingGroupKey];
+  v27 = [(NSString *)v24 isEqualToString:homeSharingGroupKey2];
 
   if (homeSharingGroupKey)
   {
@@ -254,18 +254,18 @@ LABEL_32:
   v29 = uniqueIdentifier;
   if (!uniqueIdentifier)
   {
-    v30 = [v5 uniqueIdentifier];
-    if (!v30)
+    uniqueIdentifier = [v5 uniqueIdentifier];
+    if (!uniqueIdentifier)
     {
       goto LABEL_39;
     }
 
-    port = v30;
+    port = uniqueIdentifier;
     v29 = self->_uniqueIdentifier;
   }
 
-  v31 = [v5 uniqueIdentifier];
-  v32 = [(NSString *)v29 isEqualToString:v31];
+  uniqueIdentifier2 = [v5 uniqueIdentifier];
+  v32 = [(NSString *)v29 isEqualToString:uniqueIdentifier2];
 
   if (!uniqueIdentifier)
   {
@@ -292,18 +292,18 @@ LABEL_39:
     v34 = device;
     if (!device)
     {
-      v35 = [v5 device];
-      if (!v35)
+      device = [v5 device];
+      if (!device)
       {
         goto LABEL_46;
       }
 
-      port = v35;
+      port = device;
       v34 = self->_device;
     }
 
-    v36 = [v5 device];
-    v37 = [v34 isEqual:v36];
+    device2 = [v5 device];
+    v37 = [v34 isEqual:device2];
 
     if (!device)
     {
@@ -322,16 +322,16 @@ LABEL_48:
   return v38;
 }
 
-+ (id)servicesFromProtobufs:(id)a3
++ (id)servicesFromProtobufs:(id)protobufs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  protobufsCopy = protobufs;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = protobufsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -361,16 +361,16 @@ LABEL_48:
   return v4;
 }
 
-+ (id)protobufsFromServices:(id)a3
++ (id)protobufsFromServices:(id)services
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  servicesCopy = services;
   v4 = objc_opt_new();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = servicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -385,8 +385,8 @@ LABEL_48:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) protobuf];
-        [v4 addObject:v10];
+        protobuf = [*(*(&v12 + 1) + 8 * i) protobuf];
+        [v4 addObject:protobuf];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];

@@ -1,32 +1,32 @@
 @interface TileValue
-+ (id)insertValue:(id)a3 inDatabase:(id)a4;
++ (id)insertValue:(id)value inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (TileValue)initWithValue:(id)a3 inDatabase:(id)a4;
+- (TileValue)initWithValue:(id)value inDatabase:(id)database;
 - (id)passTileValue;
 - (int64_t)type;
 @end
 
 @implementation TileValue
 
-- (TileValue)initWithValue:(id)a3 inDatabase:(id)a4
+- (TileValue)initWithValue:(id)value inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
+  databaseCopy = database;
+  valueCopy = value;
   v8 = objc_alloc_init(NSMutableDictionary);
-  [v7 type];
+  [valueCopy type];
 
   v9 = PKPassTileValueTypeToString();
   [v8 setObjectOrNull:v9 forKey:@"type"];
 
-  v10 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v10 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v10;
 }
 
-+ (id)insertValue:(id)a3 inDatabase:(id)a4
++ (id)insertValue:(id)value inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  valueCopy = value;
+  databaseCopy = database;
+  if (valueCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -38,9 +38,9 @@
     v10[1] = 3221225472;
     v10[2] = sub_100122410;
     v10[3] = &unk_100840570;
-    v14 = a1;
-    v11 = v6;
-    v12 = v7;
+    selfCopy = self;
+    v11 = valueCopy;
+    v12 = databaseCopy;
     v13 = &v15;
     sub_1005D4424(v12, v10);
     v8 = v16[5];
@@ -58,10 +58,10 @@
 
 - (BOOL)deleteFromDatabase
 {
-  v3 = [(TileValue *)self type];
-  if ((v3 - 1) <= 2)
+  type = [(TileValue *)self type];
+  if ((type - 1) <= 2)
   {
-    [(__objc2_class *)*off_100847750[v3 - 1] deleteEntitiesForBaseValue:self inDatabase:self->super._database];
+    [(__objc2_class *)*off_100847750[type - 1] deleteEntitiesForBaseValue:self inDatabase:self->super._database];
   }
 
   v5.receiver = self;
@@ -79,48 +79,48 @@
 
 - (id)passTileValue
 {
-  v3 = [(TileValue *)self type];
-  v4 = [PKPassTileValue _createForType:v3 resolved:0];
+  type = [(TileValue *)self type];
+  v4 = [PKPassTileValue _createForType:type resolved:0];
   v5 = v4;
-  if (v3 > 1)
+  if (type > 1)
   {
-    if (v3 == 2)
+    if (type == 2)
     {
       v6 = TileValueNumber;
-      v7 = [v4 valueTypeNumber];
+      valueTypeNumber = [v4 valueTypeNumber];
     }
 
     else
     {
-      if (v3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
       v6 = TileValueForeignReference;
-      v7 = [v4 valueTypeForeignReference];
+      valueTypeNumber = [v4 valueTypeForeignReference];
     }
   }
 
-  else if (v3)
+  else if (type)
   {
-    if (v3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
     v6 = TileValueDate;
-    v7 = [v4 valueTypeDate];
+    valueTypeNumber = [v4 valueTypeDate];
   }
 
   else
   {
     v6 = TileValueText;
-    v7 = [v4 valueTypeText];
+    valueTypeNumber = [v4 valueTypeText];
   }
 
-  v8 = v7;
-  [(__objc2_class *)v6 inflateValue:v7 forBaseValue:self inDatabase:self->super._database];
+  v8 = valueTypeNumber;
+  [(__objc2_class *)v6 inflateValue:valueTypeNumber forBaseValue:self inDatabase:self->super._database];
 
 LABEL_11:
 

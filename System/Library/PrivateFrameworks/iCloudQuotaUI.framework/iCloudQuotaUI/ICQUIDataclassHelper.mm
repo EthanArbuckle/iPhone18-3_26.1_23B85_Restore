@@ -1,31 +1,31 @@
 @interface ICQUIDataclassHelper
-+ (BOOL)isBackupEnabledForAccount:(id)a3;
++ (BOOL)isBackupEnabledForAccount:(id)account;
 + (BOOL)isSharedPhotoLibraryEnabled;
-+ (id)dataclassesToEnableForAccount:(id)a3 excludedApps:(id)a4;
-+ (id)enabledAppsForAccount:(id)a3 deprioritizedApps:(id)a4;
-+ (id)footerTextForSyncWithiCloudSpecifiersFromDataclasses:(id)a3 forAccount:(id)a4;
-+ (id)iconForDataclass:(id)a3;
-+ (id)localizedTextForDataclass:(id)a3;
-+ (id)unsyncedDataclassesExcludingPhotosForAccount:(id)a3;
-+ (void)enableDataclass:(id)a3 forAccount:(id)a4 completion:(id)a5;
++ (id)dataclassesToEnableForAccount:(id)account excludedApps:(id)apps;
++ (id)enabledAppsForAccount:(id)account deprioritizedApps:(id)apps;
++ (id)footerTextForSyncWithiCloudSpecifiersFromDataclasses:(id)dataclasses forAccount:(id)account;
++ (id)iconForDataclass:(id)dataclass;
++ (id)localizedTextForDataclass:(id)dataclass;
++ (id)unsyncedDataclassesExcludingPhotosForAccount:(id)account;
++ (void)enableDataclass:(id)dataclass forAccount:(id)account completion:(id)completion;
 @end
 
 @implementation ICQUIDataclassHelper
 
-+ (id)dataclassesToEnableForAccount:(id)a3 excludedApps:(id)a4
++ (id)dataclassesToEnableForAccount:(id)account excludedApps:(id)apps
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 provisionedDataclasses];
-  v8 = [v7 allObjects];
+  accountCopy = account;
+  appsCopy = apps;
+  provisionedDataclasses = [accountCopy provisionedDataclasses];
+  allObjects = [provisionedDataclasses allObjects];
 
   v18 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -41,16 +41,16 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if (([v5 isEnabledForDataclass:{v14, v18}] & 1) == 0)
+        if (([accountCopy isEnabledForDataclass:{v14, v18}] & 1) == 0)
         {
-          v15 = [MEMORY[0x277CEC7A0] sharedManager];
-          if ([v15 canAutoEnableDataclass:v14 forAccount:v5])
+          mEMORY[0x277CEC7A0] = [MEMORY[0x277CEC7A0] sharedManager];
+          if ([mEMORY[0x277CEC7A0] canAutoEnableDataclass:v14 forAccount:accountCopy])
           {
           }
 
           else
           {
-            v16 = [a1 _isPhotosDataclass:v14];
+            v16 = [self _isPhotosDataclass:v14];
 
             if ((v16 & 1) == 0)
             {
@@ -58,7 +58,7 @@
             }
           }
 
-          if (([v6 containsObject:v14] & 1) == 0)
+          if (([appsCopy containsObject:v14] & 1) == 0)
           {
             [v18 addObject:v14];
           }
@@ -74,10 +74,10 @@
   return v18;
 }
 
-+ (id)enabledAppsForAccount:(id)a3 deprioritizedApps:(id)a4
++ (id)enabledAppsForAccount:(id)account deprioritizedApps:(id)apps
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  appsCopy = apps;
   if (enabledAppsForAccount_deprioritizedApps__onceToken != -1)
   {
     +[ICQUIDataclassHelper enabledAppsForAccount:deprioritizedApps:];
@@ -89,8 +89,8 @@
   v17[1] = 3221225472;
   v17[2] = __64__ICQUIDataclassHelper_enabledAppsForAccount_deprioritizedApps___block_invoke_2;
   v17[3] = &unk_27A65C1C8;
-  v18 = v5;
-  v9 = v5;
+  v18 = accountCopy;
+  v9 = accountCopy;
   v10 = [v8 predicateWithBlock:v17];
   v11 = [v7 filteredArrayUsingPredicate:v10];
   v12 = [v11 mutableCopy];
@@ -99,8 +99,8 @@
   v15[1] = 3221225472;
   v15[2] = __64__ICQUIDataclassHelper_enabledAppsForAccount_deprioritizedApps___block_invoke_3;
   v15[3] = &unk_27A65AF08;
-  v16 = v6;
-  v13 = v6;
+  v16 = appsCopy;
+  v13 = appsCopy;
   [v12 sortUsingComparator:v15];
 
   return v12;
@@ -158,29 +158,29 @@ uint64_t __64__ICQUIDataclassHelper_enabledAppsForAccount_deprioritizedApps___bl
   }
 }
 
-+ (id)unsyncedDataclassesExcludingPhotosForAccount:(id)a3
++ (id)unsyncedDataclassesExcludingPhotosForAccount:(id)account
 {
   v10 = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277CB8960];
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  accountCopy = account;
   v6 = [v4 arrayWithObjects:&v9 count:1];
-  v7 = [a1 dataclassesToEnableForAccount:v5 excludedApps:{v6, v9, v10}];
+  v7 = [self dataclassesToEnableForAccount:accountCopy excludedApps:{v6, v9, v10}];
 
   return v7;
 }
 
-+ (id)localizedTextForDataclass:(id)a3
++ (id)localizedTextForDataclass:(id)dataclass
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isEqualToString:*MEMORY[0x277CB8960]])
+  dataclassCopy = dataclass;
+  v4 = dataclassCopy;
+  if ([dataclassCopy isEqualToString:*MEMORY[0x277CB8960]])
   {
     v4 = *MEMORY[0x277CB89D0];
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CB8920]])
+  if ([dataclassCopy isEqualToString:*MEMORY[0x277CB8920]])
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v5 localizedStringForKey:@"ICLOUD_BACKUP" value:&stru_28844FC60 table:@"Localizable"];
@@ -188,7 +188,7 @@ uint64_t __64__ICQUIDataclassHelper_enabledAppsForAccount_deprioritizedApps___bl
 
   else
   {
-    if ([v3 isEqualToString:*MEMORY[0x277CB89C8]])
+    if ([dataclassCopy isEqualToString:*MEMORY[0x277CB89C8]])
     {
       v7 = MEMORY[0x277CCA8D8];
       v5 = [CPSystemRootDirectory() stringByAppendingPathComponent:@"System/Library/PreferenceBundles/AccountSettings/AppleAccountSettings.bundle"];
@@ -210,11 +210,11 @@ LABEL_9:
   return v9;
 }
 
-+ (id)iconForDataclass:(id)a3
++ (id)iconForDataclass:(id)dataclass
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 isEqualToString:*MEMORY[0x277CB8960]])
+  dataclassCopy = dataclass;
+  v4 = dataclassCopy;
+  if ([dataclassCopy isEqualToString:*MEMORY[0x277CB8960]])
   {
     v4 = *MEMORY[0x277CB89D0];
   }
@@ -224,17 +224,17 @@ LABEL_9:
   return v5;
 }
 
-+ (id)footerTextForSyncWithiCloudSpecifiersFromDataclasses:(id)a3 forAccount:(id)a4
++ (id)footerTextForSyncWithiCloudSpecifiersFromDataclasses:(id)dataclasses forAccount:(id)account
 {
-  v4 = a3;
-  if ([v4 count] == 2)
+  dataclassesCopy = dataclasses;
+  if ([dataclassesCopy count] == 2)
   {
-    v5 = [v4 allObjects];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    allObjects = [dataclassesCopy allObjects];
+    v6 = [allObjects objectAtIndexedSubscript:0];
     v7 = [ICQUIDataclassHelper localizedTextForDataclass:v6];
 
-    v8 = [v4 allObjects];
-    v9 = [v8 objectAtIndexedSubscript:1];
+    allObjects2 = [dataclassesCopy allObjects];
+    v9 = [allObjects2 objectAtIndexedSubscript:1];
     v10 = [ICQUIDataclassHelper localizedTextForDataclass:v9];
 
     v11 = MEMORY[0x277CCACA8];
@@ -247,18 +247,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 count] == 3)
+  if ([dataclassesCopy count] == 3)
   {
-    v15 = [v4 allObjects];
-    v16 = [v15 objectAtIndexedSubscript:0];
+    allObjects3 = [dataclassesCopy allObjects];
+    v16 = [allObjects3 objectAtIndexedSubscript:0];
     v7 = [ICQUIDataclassHelper localizedTextForDataclass:v16];
 
-    v17 = [v4 allObjects];
-    v18 = [v17 objectAtIndexedSubscript:1];
+    allObjects4 = [dataclassesCopy allObjects];
+    v18 = [allObjects4 objectAtIndexedSubscript:1];
     v10 = [ICQUIDataclassHelper localizedTextForDataclass:v18];
 
-    v19 = [v4 allObjects];
-    v20 = [v19 objectAtIndexedSubscript:2];
+    allObjects5 = [dataclassesCopy allObjects];
+    v20 = [allObjects5 objectAtIndexedSubscript:2];
     v12 = [ICQUIDataclassHelper localizedTextForDataclass:v20];
 
     v21 = MEMORY[0x277CCACA8];
@@ -269,17 +269,17 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([v4 count] >= 4)
+  if ([dataclassesCopy count] >= 4)
   {
-    v24 = [v4 allObjects];
-    v25 = [v24 objectAtIndexedSubscript:0];
+    allObjects6 = [dataclassesCopy allObjects];
+    v25 = [allObjects6 objectAtIndexedSubscript:0];
     v7 = [ICQUIDataclassHelper localizedTextForDataclass:v25];
 
-    v26 = [v4 allObjects];
-    v27 = [v26 objectAtIndexedSubscript:1];
+    allObjects7 = [dataclassesCopy allObjects];
+    v27 = [allObjects7 objectAtIndexedSubscript:1];
     v10 = [ICQUIDataclassHelper localizedTextForDataclass:v27];
 
-    v28 = [v4 count] - 2;
+    v28 = [dataclassesCopy count] - 2;
     v29 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"SYNC_WITH_ICLOUD_MORE_THAN_THREE_APPS_DISABLED" value:&stru_28844FC60 table:@"Localizable"];
@@ -293,17 +293,17 @@ LABEL_7:
   return v14;
 }
 
-+ (void)enableDataclass:(id)a3 forAccount:(id)a4 completion:(id)a5
++ (void)enableDataclass:(id)dataclass forAccount:(id)account completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEnabledForDataclass:v7])
+  dataclassCopy = dataclass;
+  accountCopy = account;
+  completionCopy = completion;
+  if ([accountCopy isEnabledForDataclass:dataclassCopy])
   {
     v10 = _ICQGetLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ICQUIDataclassHelper enableDataclass:v7 forAccount:v10 completion:?];
+      [ICQUIDataclassHelper enableDataclass:dataclassCopy forAccount:v10 completion:?];
     }
 
     block[0] = MEMORY[0x277D85DD0];
@@ -311,26 +311,26 @@ LABEL_7:
     block[2] = __62__ICQUIDataclassHelper_enableDataclass_forAccount_completion___block_invoke;
     block[3] = &unk_27A65AD40;
     v11 = &v21;
-    v21 = v9;
-    v12 = v9;
+    v21 = completionCopy;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    [v8 setEnabled:1 forDataclass:*MEMORY[0x277CB89D8]];
-    v13 = [v8 accountStore];
+    [accountCopy setEnabled:1 forDataclass:*MEMORY[0x277CB89D8]];
+    accountStore = [accountCopy accountStore];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __62__ICQUIDataclassHelper_enableDataclass_forAccount_completion___block_invoke_2;
     v16[3] = &unk_27A65C1F0;
     v11 = &v17;
-    v17 = v7;
-    v14 = v8;
+    v17 = dataclassCopy;
+    v14 = accountCopy;
     v18 = v14;
-    v19 = v9;
-    v15 = v9;
-    [v13 saveAccount:v14 withCompletionHandler:v16];
+    v19 = completionCopy;
+    v15 = completionCopy;
+    [accountStore saveAccount:v14 withCompletionHandler:v16];
   }
 }
 
@@ -358,27 +358,27 @@ void __62__ICQUIDataclassHelper_enableDataclass_forAccount_completion___block_in
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-+ (BOOL)isBackupEnabledForAccount:(id)a3
++ (BOOL)isBackupEnabledForAccount:(id)account
 {
   v3 = MEMORY[0x277D7F3E0];
   v4 = MEMORY[0x277CB8F48];
-  v5 = a3;
-  v6 = [v4 defaultStore];
-  LOBYTE(v3) = [v3 isBackupEnabledForAccount:v5 accountStore:v6];
+  accountCopy = account;
+  defaultStore = [v4 defaultStore];
+  LOBYTE(v3) = [v3 isBackupEnabledForAccount:accountCopy accountStore:defaultStore];
 
   return v3;
 }
 
 + (BOOL)isSharedPhotoLibraryEnabled
 {
-  v2 = [MEMORY[0x277CD9948] systemPhotoLibraryURL];
-  v3 = [objc_alloc(MEMORY[0x277CD9948]) initWithPhotoLibraryURL:v2];
+  systemPhotoLibraryURL = [MEMORY[0x277CD9948] systemPhotoLibraryURL];
+  v3 = [objc_alloc(MEMORY[0x277CD9948]) initWithPhotoLibraryURL:systemPhotoLibraryURL];
   v4 = objc_alloc_init(MEMORY[0x277CD9880]);
   [v4 setPhotoLibrary:v3];
   v5 = [MEMORY[0x277CD98A8] fetchActiveLibraryScopeWithOptions:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6 != 0;
+  return firstObject != 0;
 }
 
 + (void)enableDataclass:(uint64_t)a1 forAccount:(NSObject *)a2 completion:.cold.1(uint64_t a1, NSObject *a2)

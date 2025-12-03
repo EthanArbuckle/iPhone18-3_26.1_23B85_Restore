@@ -1,9 +1,9 @@
 @interface _EDThreadMigrationState
-- (BOOL)_verifyIsMigratingGeneration:(unint64_t)a3 stateVerifier:(id)a4 logIdentifier:(id)a5 logAction:(id)a6 logCount:(unint64_t)a7;
+- (BOOL)_verifyIsMigratingGeneration:(unint64_t)generation stateVerifier:(id)verifier logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count;
 - (BOOL)isFullyMigrated;
 - (BOOL)isInProgress;
-- (BOOL)verifyIsMigratingGeneration:(unint64_t)a3 andIsInState:(unint64_t)a4 logIdentifier:(id)a5 logAction:(id)a6 logCount:(unint64_t)a7;
-- (BOOL)verifyIsMigratingGeneration:(unint64_t)a3 andIsInState:(unint64_t)a4 orState:(unint64_t)a5 logIdentifier:(id)a6 logAction:(id)a7 logCount:(unint64_t)a8;
+- (BOOL)verifyIsMigratingGeneration:(unint64_t)generation andIsInState:(unint64_t)state logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count;
+- (BOOL)verifyIsMigratingGeneration:(unint64_t)generation andIsInState:(unint64_t)state orState:(unint64_t)orState logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count;
 - (_EDThreadMigrationState)init;
 - (id)nextBatch;
 - (void)_removeAllObjectIDs;
@@ -41,32 +41,32 @@
 
 - (BOOL)isFullyMigrated
 {
-  v3 = [(_EDThreadMigrationState *)self isEmpty];
-  if (v3)
+  isEmpty = [(_EDThreadMigrationState *)self isEmpty];
+  if (isEmpty)
   {
     if ([(NSCountedSet *)self->_recentlyMigratedObjectIDs count])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isEmpty) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = [(NSCountedSet *)self->_recentlyDeletedObjectIDs count]== 0;
+      LOBYTE(isEmpty) = [(NSCountedSet *)self->_recentlyDeletedObjectIDs count]== 0;
     }
   }
 
-  return v3;
+  return isEmpty;
 }
 
 - (BOOL)isInProgress
 {
-  v3 = [(_EDThreadMigrationState *)self state];
-  if (v3 != 1)
+  state = [(_EDThreadMigrationState *)self state];
+  if (state != 1)
   {
-    LOBYTE(v3) = [(_EDThreadMigrationState *)self state]== 2;
+    LOBYTE(state) = [(_EDThreadMigrationState *)self state]== 2;
   }
 
-  return v3;
+  return state;
 }
 
 - (void)reset
@@ -106,92 +106,92 @@
   {
     while ([v3 count] <= 0x1F3 && -[NSCountedSet count](self->_objectIDsToMigrate, "count"))
     {
-      v4 = [(NSCountedSet *)self->_objectIDsToMigrate anyObject];
-      [v3 addObject:v4];
-      [(NSCountedSet *)self->_objectIDsToMigrate removeObject:v4];
-      [(NSCountedSet *)self->_recentlyMigratedObjectIDs addObject:v4];
+      anyObject = [(NSCountedSet *)self->_objectIDsToMigrate anyObject];
+      [v3 addObject:anyObject];
+      [(NSCountedSet *)self->_objectIDsToMigrate removeObject:anyObject];
+      [(NSCountedSet *)self->_recentlyMigratedObjectIDs addObject:anyObject];
     }
   }
 
   return v3;
 }
 
-- (BOOL)verifyIsMigratingGeneration:(unint64_t)a3 andIsInState:(unint64_t)a4 logIdentifier:(id)a5 logAction:(id)a6 logCount:(unint64_t)a7
+- (BOOL)verifyIsMigratingGeneration:(unint64_t)generation andIsInState:(unint64_t)state logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __101___EDThreadMigrationState_verifyIsMigratingGeneration_andIsInState_logIdentifier_logAction_logCount___block_invoke;
   v8[3] = &unk_1E8257FE0;
   v8[4] = self;
-  v8[5] = a4;
-  return [(_EDThreadMigrationState *)self _verifyIsMigratingGeneration:a3 stateVerifier:v8 logIdentifier:a5 logAction:a6 logCount:a7];
+  v8[5] = state;
+  return [(_EDThreadMigrationState *)self _verifyIsMigratingGeneration:generation stateVerifier:v8 logIdentifier:identifier logAction:action logCount:count];
 }
 
-- (BOOL)verifyIsMigratingGeneration:(unint64_t)a3 andIsInState:(unint64_t)a4 orState:(unint64_t)a5 logIdentifier:(id)a6 logAction:(id)a7 logCount:(unint64_t)a8
+- (BOOL)verifyIsMigratingGeneration:(unint64_t)generation andIsInState:(unint64_t)state orState:(unint64_t)orState logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __109___EDThreadMigrationState_verifyIsMigratingGeneration_andIsInState_orState_logIdentifier_logAction_logCount___block_invoke;
   v9[3] = &unk_1E8258008;
   v9[4] = self;
-  v9[5] = a4;
-  v9[6] = a5;
-  return [(_EDThreadMigrationState *)self _verifyIsMigratingGeneration:a3 stateVerifier:v9 logIdentifier:a6 logAction:a7 logCount:a8];
+  v9[5] = state;
+  v9[6] = orState;
+  return [(_EDThreadMigrationState *)self _verifyIsMigratingGeneration:generation stateVerifier:v9 logIdentifier:identifier logAction:action logCount:count];
 }
 
-- (BOOL)_verifyIsMigratingGeneration:(unint64_t)a3 stateVerifier:(id)a4 logIdentifier:(id)a5 logAction:(id)a6 logCount:(unint64_t)a7
+- (BOOL)_verifyIsMigratingGeneration:(unint64_t)generation stateVerifier:(id)verifier logIdentifier:(id)identifier logAction:(id)action logCount:(unint64_t)count
 {
   v31 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([(_EDThreadMigrationState *)self generation]!= a3)
+  verifierCopy = verifier;
+  identifierCopy = identifier;
+  actionCopy = action;
+  if ([(_EDThreadMigrationState *)self generation]!= generation)
   {
     v16 = +[EDThreadMigrator log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134219010;
-      v22 = v13;
+      v22 = identifierCopy;
       v23 = 2048;
-      v24 = a3;
+      generationCopy2 = generation;
       v25 = 2114;
-      v26 = v14;
+      v26 = actionCopy;
       v27 = 2048;
-      v28 = a7;
+      countCopy2 = count;
       v29 = 2048;
-      v30 = [(_EDThreadMigrationState *)self generation];
+      generation = [(_EDThreadMigrationState *)self generation];
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "%p[%lu]: %{public}@ for %lu threads due to generation change (to %lu)", &v21, 0x34u);
     }
 
     goto LABEL_7;
   }
 
-  if ((v12[2](v12) & 1) == 0)
+  if ((verifierCopy[2](verifierCopy) & 1) == 0)
   {
     v16 = +[EDThreadMigrator log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(_EDThreadMigrationState *)self state];
-      if (v19 - 1 > 4)
+      state = [(_EDThreadMigrationState *)self state];
+      if (state - 1 > 4)
       {
         v20 = @"Not Started";
       }
 
       else
       {
-        v20 = off_1E8258028[v19 - 1];
+        v20 = off_1E8258028[state - 1];
       }
 
       v21 = 134219010;
-      v22 = v13;
+      v22 = identifierCopy;
       v23 = 2048;
-      v24 = a3;
+      generationCopy2 = generation;
       v25 = 2114;
-      v26 = v14;
+      v26 = actionCopy;
       v27 = 2048;
-      v28 = a7;
+      countCopy2 = count;
       v29 = 2114;
-      v30 = v20;
+      generation = v20;
       _os_log_error_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_ERROR, "%p[%lu]: %{public}@ for %lu threads due to wrong state: %{public}@", &v21, 0x34u);
     }
 

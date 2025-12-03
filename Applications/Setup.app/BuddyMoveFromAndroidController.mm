@@ -1,10 +1,10 @@
 @interface BuddyMoveFromAndroidController
 + (BOOL)showMoveFromAndroidRestoreChoice;
 - (BFFFlowItemDelegate)delegate;
-- (BOOL)responsibleForViewController:(id)a3;
+- (BOOL)responsibleForViewController:(id)controller;
 - (BuddyMoveFromAndroidController)init;
 - (void)_eraseDevice;
-- (void)migrationDidComplete:(BOOL)a3 zoomEnabled:(BOOL)a4;
+- (void)migrationDidComplete:(BOOL)complete zoomEnabled:(BOOL)enabled;
 @end
 
 @implementation BuddyMoveFromAndroidController
@@ -38,12 +38,12 @@
   return v5;
 }
 
-- (BOOL)responsibleForViewController:(id)a3
+- (BOOL)responsibleForViewController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [(NSBundle *)v3 isEqual:v4];
@@ -54,48 +54,48 @@
 
 - (void)_eraseDevice
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyMoveFromAndroidController *)self navigationController];
-  v3 = [(BFFNavigationController *)v2 view];
-  v4 = [v3 window];
-  v5 = [(BuddyMoveFromAndroidController *)v10 navigationController];
-  v6 = [(BuddyMoveFromAndroidController *)v10 proximitySetupController];
-  v7 = [(BuddyMoveFromAndroidController *)v10 analyticsManager];
-  location[0] = [BuddyEraseAlertController alertControllerWithWindow:v4 navigationController:v5 proximitySetupController:v6 analyticsManager:v7];
+  navigationController = [(BuddyMoveFromAndroidController *)self navigationController];
+  view = [(BFFNavigationController *)navigationController view];
+  window = [view window];
+  navigationController2 = [(BuddyMoveFromAndroidController *)selfCopy navigationController];
+  proximitySetupController = [(BuddyMoveFromAndroidController *)selfCopy proximitySetupController];
+  analyticsManager = [(BuddyMoveFromAndroidController *)selfCopy analyticsManager];
+  location[0] = [BuddyEraseAlertController alertControllerWithWindow:window navigationController:navigationController2 proximitySetupController:proximitySetupController analyticsManager:analyticsManager];
 
-  v8 = [(BuddyMoveFromAndroidController *)v10 navigationController];
-  [(BFFNavigationController *)v8 presentViewController:location[0] animated:1 completion:0];
+  navigationController3 = [(BuddyMoveFromAndroidController *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController3 presentViewController:location[0] animated:1 completion:0];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)migrationDidComplete:(BOOL)a3 zoomEnabled:(BOOL)a4
+- (void)migrationDidComplete:(BOOL)complete zoomEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (complete)
   {
-    v4 = [(BuddyMoveFromAndroidController *)self displayZoomExecutor];
-    if (a4)
+    displayZoomExecutor = [(BuddyMoveFromAndroidController *)self displayZoomExecutor];
+    if (enabled)
     {
-      [(BuddyDisplayZoomExecutor *)v4 setPendingOption:1 chosenByUser:0];
+      [(BuddyDisplayZoomExecutor *)displayZoomExecutor setPendingOption:1 chosenByUser:0];
     }
 
     else
     {
-      [(BuddyDisplayZoomExecutor *)v4 setPendingOption:0 chosenByUser:0];
+      [(BuddyDisplayZoomExecutor *)displayZoomExecutor setPendingOption:0 chosenByUser:0];
     }
 
-    v5 = [(BuddyMoveFromAndroidController *)self setupMethod];
-    [(BuddySetupMethod *)v5 setDataTransferMethod:3];
+    setupMethod = [(BuddyMoveFromAndroidController *)self setupMethod];
+    [(BuddySetupMethod *)setupMethod setDataTransferMethod:3];
 
-    v6 = [(BuddyMoveFromAndroidController *)self delegate];
-    [(BFFFlowItemDelegate *)v6 flowItemDone:self];
+    delegate = [(BuddyMoveFromAndroidController *)self delegate];
+    [(BFFFlowItemDelegate *)delegate flowItemDone:self];
   }
 
   else
   {
-    v7 = [(BuddyMoveFromAndroidController *)self delegate];
-    v8 = [(BFFFlowItemDelegate *)v7 popToBuddyControllerWithClass:objc_opt_class() withOffset:1 animated:1];
+    delegate2 = [(BuddyMoveFromAndroidController *)self delegate];
+    v8 = [(BFFFlowItemDelegate *)delegate2 popToBuddyControllerWithClass:objc_opt_class() withOffset:1 animated:1];
   }
 }
 

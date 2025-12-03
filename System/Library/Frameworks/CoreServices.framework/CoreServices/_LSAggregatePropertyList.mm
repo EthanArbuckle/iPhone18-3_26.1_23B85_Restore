@@ -1,23 +1,23 @@
 @interface _LSAggregatePropertyList
-- (BOOL)_getPropertyList:(id *)a3;
-- (BOOL)_getValue:(id *)a3 forPropertyListKey:(id)a4;
-- (_LSAggregatePropertyList)initWithCoder:(id)a3;
-- (_LSAggregatePropertyList)initWithLazyPropertyLists:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)_getPropertyList:(id *)list;
+- (BOOL)_getValue:(id *)value forPropertyListKey:(id)key;
+- (_LSAggregatePropertyList)initWithCoder:(id)coder;
+- (_LSAggregatePropertyList)initWithLazyPropertyLists:(id)lists;
+- (void)encodeWithCoder:(id)coder;
 - (void)prewarm;
 @end
 
 @implementation _LSAggregatePropertyList
 
-- (_LSAggregatePropertyList)initWithLazyPropertyLists:(id)a3
+- (_LSAggregatePropertyList)initWithLazyPropertyLists:(id)lists
 {
-  v4 = a3;
+  listsCopy = lists;
   v9.receiver = self;
   v9.super_class = _LSAggregatePropertyList;
   v5 = [(_LSLazyPropertyList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [listsCopy copy];
     plists = v5->_plists;
     v5->_plists = v6;
   }
@@ -25,7 +25,7 @@
   return v5;
 }
 
-- (BOOL)_getPropertyList:(id *)a3
+- (BOOL)_getPropertyList:(id *)list
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -48,10 +48,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v10 = [(_LSLazyPropertyList *)*(*(&v15 + 1) + 8 * v9) propertyList];
-        if (v10)
+        propertyList = [(_LSLazyPropertyList *)*(*(&v15 + 1) + 8 * v9) propertyList];
+        if (propertyList)
         {
-          [v5 addEntriesFromDictionary:{v10, v15}];
+          [v5 addEntriesFromDictionary:{propertyList, v15}];
         }
 
         ++v9;
@@ -66,16 +66,16 @@
 
   v11 = [v5 copy];
   v12 = v11;
-  *a3 = v11;
+  *list = v11;
 
   v13 = *MEMORY[0x1E69E9840];
   return v11 != 0;
 }
 
-- (BOOL)_getValue:(id *)a3 forPropertyListKey:(id)a4
+- (BOOL)_getValue:(id *)value forPropertyListKey:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -94,7 +94,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) objectForKey:v6 ofClass:{0, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * i) objectForKey:keyCopy ofClass:{0, v15}];
         if (v11)
         {
           LOBYTE(v8) = 1;
@@ -116,7 +116,7 @@
 LABEL_11:
 
   v12 = v11;
-  *a3 = v11;
+  *value = v11;
 
   v13 = *MEMORY[0x1E69E9840];
   return v8;
@@ -157,24 +157,24 @@ LABEL_11:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = _LSAggregatePropertyList;
-  [(_LSLazyPropertyList *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_plists forKey:@"plists"];
+  [(_LSLazyPropertyList *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_plists forKey:@"plists"];
 }
 
-- (_LSAggregatePropertyList)initWithCoder:(id)a3
+- (_LSAggregatePropertyList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _LSAggregatePropertyList;
-  v5 = [(_LSLazyPropertyList *)&v9 initWithCoder:v4];
+  v5 = [(_LSLazyPropertyList *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"plists"];
+    v6 = [coderCopy ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"plists"];
     plists = v5->_plists;
     v5->_plists = v6;
   }

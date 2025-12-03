@@ -1,55 +1,55 @@
 @interface AFHeadphonesAnnouncementRequestCapabilityProvider
-+ (id)announceableIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)a3;
++ (id)announceableIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)type;
 + (id)provider;
-+ (id)requiredIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)a3;
++ (id)requiredIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)type;
 - (AFSiriAudioRoute)currentAnnouncementRoute;
 - (id)_getCurrentAnnouncementRoute;
 - (id)_init;
 - (id)_settingsConnection;
 - (id)currentlyRoutedHeadphonesBTAddress;
 - (id)currentlyRoutedHeadphonesProductID;
-- (void)_fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)a3;
+- (void)_fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)ineligble;
 - (void)_fetchInitialState;
-- (void)_fetchPairedBluetoothDevicesFromSourceWithCompletion:(id)a3;
-- (void)_notifyObserversOfEligibleAnnouncementRequestTypes:(unint64_t)a3;
+- (void)_fetchPairedBluetoothDevicesFromSourceWithCompletion:(id)completion;
+- (void)_notifyObserversOfEligibleAnnouncementRequestTypes:(unint64_t)types;
 - (void)_settingsConnectionDidDisconnect;
-- (void)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)a3;
-- (void)addDelegate:(id)a3;
-- (void)currentAudioRouteDidChange:(id)a3;
-- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)a3;
-- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObservers:(id)a3;
-- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)a3;
-- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)a3;
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4;
+- (void)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)broadcast;
+- (void)addDelegate:(id)delegate;
+- (void)currentAudioRouteDidChange:(id)change;
+- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)completion;
+- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObservers:(id)observers;
+- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)ineligble;
+- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)completion;
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token;
 - (void)notifyObserversOfAvailableAnnouncementRequestTypes;
-- (void)privateAudioSessionStateDidChange:(unint64_t)a3;
+- (void)privateAudioSessionStateDidChange:(unint64_t)change;
 @end
 
 @implementation AFHeadphonesAnnouncementRequestCapabilityProvider
 
 - (id)_getCurrentAnnouncementRoute
 {
-  v2 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _headphonesMonitor];
-  v3 = [v2 currentAudioRoute];
+  _headphonesMonitor = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _headphonesMonitor];
+  currentAudioRoute = [_headphonesMonitor currentAudioRoute];
 
-  if ([v3 availableAnnouncementRequestTypes])
+  if ([currentAudioRoute availableAnnouncementRequestTypes])
   {
     v4 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
     {
       v7 = v4;
-      v8 = [v3 availableAnnouncementRequestTypes];
-      v9 = [v3 avscRouteDescription];
+      availableAnnouncementRequestTypes = [currentAudioRoute availableAnnouncementRequestTypes];
+      avscRouteDescription = [currentAudioRoute avscRouteDescription];
       v10 = 136315650;
       v11 = "[AFHeadphonesAnnouncementRequestCapabilityProvider _getCurrentAnnouncementRoute]";
       v12 = 2048;
-      v13 = v8;
+      v13 = availableAnnouncementRequestTypes;
       v14 = 2112;
-      v15 = v9;
+      v15 = avscRouteDescription;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s capabilities: %lu for routeDescription: %@", &v10, 0x20u);
     }
 
-    v5 = v3;
+    v5 = currentAudioRoute;
   }
 
   else
@@ -60,23 +60,23 @@
   return v5;
 }
 
-- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)a3
+- (void)fetchAvailableAnnouncementRequestTypesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DED14;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)a3
+- (void)fetchEligibleAnnouncementRequestTypesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (AFDeviceSupportsSpokenMessages())
   {
     v5 = dispatch_group_create();
@@ -112,7 +112,7 @@
     v12[3] = &unk_10051B688;
     v14 = &buf;
     v12[4] = self;
-    v13 = v4;
+    v13 = completionCopy;
     dispatch_group_notify(v9, v10, v12);
 
     _Block_object_dispose(&buf, 8);
@@ -128,21 +128,21 @@
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s Announcements not supported on device", &buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DFA3C;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -183,11 +183,11 @@
   return v6;
 }
 
-- (void)notifyObserver:(id)a3 didReceiveNotificationWithToken:(int)a4
+- (void)notifyObserver:(id)observer didReceiveNotificationWithToken:(int)token
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_forcedUpdateObserver == v5)
+  observerCopy = observer;
+  v6 = observerCopy;
+  if (self->_forcedUpdateObserver == observerCopy)
   {
     if (!self->_lastKnownEligibleAnnouncementRequests)
     {
@@ -205,7 +205,7 @@ LABEL_7:
     }
   }
 
-  else if (self->_pairedInfoChangeObserver == v5)
+  else if (self->_pairedInfoChangeObserver == observerCopy)
   {
     v7 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -222,13 +222,13 @@ LABEL_10:
   }
 }
 
-- (void)currentAudioRouteDidChange:(id)a3
+- (void)currentAudioRouteDidChange:(id)change
 {
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v7 = v5;
-    v8 = [a3 description];
+    v8 = [change description];
     *buf = 136315394;
     v11 = "[AFHeadphonesAnnouncementRequestCapabilityProvider currentAudioRouteDidChange:]";
     v12 = 2112;
@@ -245,13 +245,13 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)privateAudioSessionStateDidChange:(unint64_t)a3
+- (void)privateAudioSessionStateDidChange:(unint64_t)change
 {
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [NSNumber numberWithUnsignedInteger:a3];
+    v7 = [NSNumber numberWithUnsignedInteger:change];
     *buf = 136315394;
     v11 = "[AFHeadphonesAnnouncementRequestCapabilityProvider privateAudioSessionStateDidChange:]";
     v12 = 2112;
@@ -268,22 +268,22 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)_fetchPairedBluetoothDevicesFromSourceWithCompletion:(id)a3
+- (void)_fetchPairedBluetoothDevicesFromSourceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_1000E00E8;
   v14 = sub_1000E00F8;
-  v15 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _settingsConnection];
+  _settingsConnection = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _settingsConnection];
   v5 = v11[5];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000E0100;
   v7[3] = &unk_100511090;
   v7[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   v9 = &v10;
   [v5 getPairedBluetoothDeviceInfoArrayWithCompletion:v7];
@@ -291,7 +291,7 @@ LABEL_10:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)_notifyObserversOfEligibleAnnouncementRequestTypes:(unint64_t)a3
+- (void)_notifyObserversOfEligibleAnnouncementRequestTypes:(unint64_t)types
 {
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -299,7 +299,7 @@ LABEL_10:
     *buf = 136315394;
     v18 = "[AFHeadphonesAnnouncementRequestCapabilityProvider _notifyObserversOfEligibleAnnouncementRequestTypes:]";
     v19 = 2048;
-    v20 = a3;
+    typesCopy = types;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Notifying observers, eligible announcement requests changed: %lu", buf, 0x16u);
   }
 
@@ -324,7 +324,7 @@ LABEL_10:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) provider:self eligibleAnnouncementRequestTypesChanged:{a3, v12}];
+        [*(*(&v12 + 1) + 8 * v11) provider:self eligibleAnnouncementRequestTypesChanged:{types, v12}];
         v11 = v11 + 1;
       }
 
@@ -336,7 +336,7 @@ LABEL_10:
   }
 }
 
-- (void)_fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)a3
+- (void)_fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)ineligble
 {
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -353,20 +353,20 @@ LABEL_10:
   v7[3] = &unk_100511068;
   v7[4] = self;
   v7[5] = lastKnownEligibleAnnouncementRequests;
-  v8 = a3;
+  ineligbleCopy = ineligble;
   [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self fetchEligibleAnnouncementRequestTypesWithCompletion:v7];
 }
 
-- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)a3
+- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:(BOOL)ineligble
 {
-  v3 = a3;
+  ineligbleCopy = ineligble;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v10 = "[AFHeadphonesAnnouncementRequestCapabilityProvider fetchEligibleAnnouncementRequestTypesAndNotifyObserversAndShouldRelyOnCachedStateIfIneligble:]";
     v11 = 1024;
-    v12 = v3;
+    v12 = ineligbleCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s shouldRelyOnCachedStateIfIneligbile: %d", buf, 0x12u);
   }
 
@@ -376,32 +376,32 @@ LABEL_10:
   v7[2] = sub_1000E0850;
   v7[3] = &unk_10051CBD8;
   v7[4] = self;
-  v8 = v3;
+  v8 = ineligbleCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObservers:(id)a3
+- (void)fetchEligibleAnnouncementRequestTypesAndNotifyObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315394;
     v16 = "[AFHeadphonesAnnouncementRequestCapabilityProvider fetchEligibleAnnouncementRequestTypesAndNotifyObservers:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = observersCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s %@", &v15, 0x16u);
   }
 
-  v6 = [v4 name];
+  name = [observersCopy name];
   v7 = sub_1000E09EC();
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if ((v8 & 1) == 0)
   {
-    v10 = [v4 name];
+    name2 = [observersCopy name];
     v11 = sub_1000E0B50();
-    v12 = [v10 isEqualToString:v11];
+    v12 = [name2 isEqualToString:v11];
 
     if (v12)
     {
@@ -409,8 +409,8 @@ LABEL_10:
       goto LABEL_7;
     }
 
-    v13 = [v4 name];
-    v14 = [v13 isEqualToString:AFOutputVoiceDidChangeNotification];
+    name3 = [observersCopy name];
+    v14 = [name3 isEqualToString:AFOutputVoiceDidChangeNotification];
 
     if (!v14)
     {
@@ -434,23 +434,23 @@ LABEL_8:
   [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self fetchAvailableAnnouncementRequestTypesWithCompletion:v2];
 }
 
-- (void)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)a3
+- (void)_updateAudioRouteAvailabilityAndBroadcast:(BOOL)broadcast
 {
-  v3 = a3;
-  v5 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _getCurrentAnnouncementRoute];
-  [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self setCurrentAnnouncementRoute:v5];
+  broadcastCopy = broadcast;
+  _getCurrentAnnouncementRoute = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _getCurrentAnnouncementRoute];
+  [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self setCurrentAnnouncementRoute:_getCurrentAnnouncementRoute];
   v6 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
   {
     v8 = v6;
-    v9 = [v5 availableAnnouncementRequestTypes];
+    availableAnnouncementRequestTypes = [_getCurrentAnnouncementRoute availableAnnouncementRequestTypes];
     lastKnownAvailableAnnouncementRequests = self->_lastKnownAvailableAnnouncementRequests;
-    [v5 announcePlatformForRoute];
+    [_getCurrentAnnouncementRoute announcePlatformForRoute];
     v11 = AFSiriAnnouncementPlatformGetName();
     v16 = 136315906;
     v17 = "[AFHeadphonesAnnouncementRequestCapabilityProvider _updateAudioRouteAvailabilityAndBroadcast:]";
     v18 = 2048;
-    v19 = v9;
+    v19 = availableAnnouncementRequestTypes;
     v20 = 2048;
     v21 = lastKnownAvailableAnnouncementRequests;
     v22 = 2112;
@@ -458,29 +458,29 @@ LABEL_8:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Available route capabilities: %lu, last known availability: %lu announcePlatformForRoute: %@", &v16, 0x2Au);
   }
 
-  if ([v5 availableAnnouncementRequestTypes] != self->_lastKnownAvailableAnnouncementRequests)
+  if ([_getCurrentAnnouncementRoute availableAnnouncementRequestTypes] != self->_lastKnownAvailableAnnouncementRequests)
   {
     v7 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_DEBUG))
     {
       v12 = v7;
-      v13 = [v5 availableAnnouncementRequestTypes];
-      v14 = [v5 avscRouteDescription];
-      [v5 announcePlatformForRoute];
+      availableAnnouncementRequestTypes2 = [_getCurrentAnnouncementRoute availableAnnouncementRequestTypes];
+      avscRouteDescription = [_getCurrentAnnouncementRoute avscRouteDescription];
+      [_getCurrentAnnouncementRoute announcePlatformForRoute];
       v15 = AFSiriAnnouncementPlatformGetName();
       v16 = 136315906;
       v17 = "[AFHeadphonesAnnouncementRequestCapabilityProvider _updateAudioRouteAvailabilityAndBroadcast:]";
       v18 = 2048;
-      v19 = v13;
+      v19 = availableAnnouncementRequestTypes2;
       v20 = 2112;
-      v21 = v14;
+      v21 = avscRouteDescription;
       v22 = 2112;
       v23 = v15;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s updating available route capabilities: %lu for routeDescription: %@ announcePlatformForRoute: %@", &v16, 0x2Au);
     }
 
-    self->_lastKnownAvailableAnnouncementRequests = [v5 availableAnnouncementRequestTypes];
-    if (v3)
+    self->_lastKnownAvailableAnnouncementRequests = [_getCurrentAnnouncementRoute availableAnnouncementRequestTypes];
+    if (broadcastCopy)
     {
       [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self notifyObserversOfAvailableAnnouncementRequestTypes];
     }
@@ -489,18 +489,18 @@ LABEL_8:
 
 - (id)currentlyRoutedHeadphonesBTAddress
 {
-  v2 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self currentAnnouncementRoute];
-  v3 = [v2 btAddress];
-  v4 = [v3 copy];
+  currentAnnouncementRoute = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self currentAnnouncementRoute];
+  btAddress = [currentAnnouncementRoute btAddress];
+  v4 = [btAddress copy];
 
   return v4;
 }
 
 - (id)currentlyRoutedHeadphonesProductID
 {
-  v2 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self currentAnnouncementRoute];
-  v3 = [v2 productID];
-  v4 = [v3 copy];
+  currentAnnouncementRoute = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self currentAnnouncementRoute];
+  productID = [currentAnnouncementRoute productID];
+  v4 = [productID copy];
 
   return v4;
 }
@@ -524,9 +524,9 @@ LABEL_8:
   v4 = v13[5];
   if (!v4)
   {
-    v5 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _getCurrentAnnouncementRoute];
+    _getCurrentAnnouncementRoute = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)self _getCurrentAnnouncementRoute];
     v6 = v13[5];
-    v13[5] = v5;
+    v13[5] = _getCurrentAnnouncementRoute;
 
     v7 = self->_queue;
     v10[0] = _NSConcreteStackBlock;
@@ -577,8 +577,8 @@ LABEL_8:
     group = v2->_group;
     v2->_group = v6;
 
-    v8 = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)v2 _headphonesMonitor];
-    [v8 addDelegate:v2];
+    _headphonesMonitor = [(AFHeadphonesAnnouncementRequestCapabilityProvider *)v2 _headphonesMonitor];
+    [_headphonesMonitor addDelegate:v2];
 
     v9 = [AFNotifyObserver alloc];
     v10 = [NSString stringWithUTF8String:AFBluetoothPairedDeviceInfoUpdated];
@@ -608,18 +608,18 @@ LABEL_8:
   return v2;
 }
 
-+ (id)requiredIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)a3
++ (id)requiredIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)type
 {
   if (!AFSiriUserNotificationAnnouncementTypeGetIsValid())
   {
     goto LABEL_21;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
         v17 = sub_1000E21A0();
         v30 = v17;
@@ -634,13 +634,13 @@ LABEL_8:
       goto LABEL_22;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v4 = &__NSArray0__struct;
       goto LABEL_22;
     }
 
-    if (a3 == 7)
+    if (type == 7)
     {
       v24 = 0;
       v25 = &v24;
@@ -703,7 +703,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v13 = sub_1000E1E98();
     v31 = v13;
@@ -739,12 +739,12 @@ LABEL_34:
   }
 
   v5 = &__NSArray0__struct;
-  if (a3 != 3)
+  if (type != 3)
   {
     v5 = 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = &__NSArray0__struct;
   }
@@ -759,16 +759,16 @@ LABEL_22:
   return v4;
 }
 
-+ (id)announceableIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)a3
++ (id)announceableIntentIdentifiersForUserNotificationAnnouncementType:(int64_t)type
 {
   if (!AFSiriUserNotificationAnnouncementTypeGetIsValid())
   {
     goto LABEL_15;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v10 = sub_1000E21A0();
       v29 = v10;
@@ -777,7 +777,7 @@ LABEL_22:
       goto LABEL_16;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       v23 = 0;
       v24 = &v23;
@@ -810,7 +810,7 @@ LABEL_32:
       __break(1u);
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       v23 = 0;
       v24 = &v23;
@@ -847,7 +847,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 1:
       v9 = sub_1000E1E98();
@@ -903,7 +903,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_1000E2B80;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590028 != -1)
   {
     dispatch_once(&qword_100590028, block);

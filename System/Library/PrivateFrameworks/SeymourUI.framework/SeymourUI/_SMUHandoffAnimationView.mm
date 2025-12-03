@@ -1,48 +1,48 @@
 @interface _SMUHandoffAnimationView
 - (CGSize)intrinsicContentSize;
-- (_SMUHandoffAnimationView)initWithState:(unint64_t)a3;
-- (id)iconNameForState:(unint64_t)a3;
+- (_SMUHandoffAnimationView)initWithState:(unint64_t)state;
+- (id)iconNameForState:(unint64_t)state;
 @end
 
 @implementation _SMUHandoffAnimationView
 
-- (_SMUHandoffAnimationView)initWithState:(unint64_t)a3
+- (_SMUHandoffAnimationView)initWithState:(unint64_t)state
 {
   v30[4] = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = objc_alloc(MEMORY[0x277D74218]);
-  v7 = [(_SMUHandoffAnimationView *)self iconNameForState:a3];
+  v7 = [(_SMUHandoffAnimationView *)self iconNameForState:state];
   v8 = [v6 initWithName:v7 bundle:v5];
 
-  v9 = [v8 data];
+  data = [v8 data];
   v29.receiver = self;
   v29.super_class = _SMUHandoffAnimationView;
-  v10 = [(_UICAPackageView *)&v29 initWithData:v9 publishedObjectViewClassMap:0];
+  v10 = [(_UICAPackageView *)&v29 initWithData:data publishedObjectViewClassMap:0];
 
   if (v10)
   {
     [(_SMUHandoffAnimationView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(_SMUHandoffAnimationView *)v10 subviews];
-    [v11 firstObject];
+    subviews = [(_SMUHandoffAnimationView *)v10 subviews];
+    [subviews firstObject];
     v12 = v28 = v5;
 
     [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = MEMORY[0x277CCAAD0];
-    v27 = [v12 topAnchor];
-    v26 = [(_SMUHandoffAnimationView *)v10 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:-6.0];
+    topAnchor = [v12 topAnchor];
+    topAnchor2 = [(_SMUHandoffAnimationView *)v10 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-6.0];
     v30[0] = v25;
-    v24 = [v12 leftAnchor];
-    v23 = [(_SMUHandoffAnimationView *)v10 leftAnchor];
-    v21 = [v24 constraintEqualToAnchor:v23 constant:-6.0];
+    leftAnchor = [v12 leftAnchor];
+    leftAnchor2 = [(_SMUHandoffAnimationView *)v10 leftAnchor];
+    v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:-6.0];
     v30[1] = v21;
-    v13 = [v12 rightAnchor];
-    v14 = [(_SMUHandoffAnimationView *)v10 rightAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:6.0];
+    rightAnchor = [v12 rightAnchor];
+    rightAnchor2 = [(_SMUHandoffAnimationView *)v10 rightAnchor];
+    v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:6.0];
     v30[2] = v15;
-    v16 = [v12 bottomAnchor];
-    v17 = [(_SMUHandoffAnimationView *)v10 bottomAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17 constant:6.0];
+    bottomAnchor = [v12 bottomAnchor];
+    bottomAnchor2 = [(_SMUHandoffAnimationView *)v10 bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:6.0];
     v30[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
     [v22 activateConstraints:v19];
@@ -55,12 +55,12 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_SMUHandoffAnimationView *)self subviews];
-  v3 = [v2 firstObject];
+  subviews = [(_SMUHandoffAnimationView *)self subviews];
+  firstObject = [subviews firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 bounds];
+    [firstObject bounds];
     x = v13.origin.x;
     y = v13.origin.y;
     width = v13.size.width;
@@ -86,9 +86,9 @@
   return result;
 }
 
-- (id)iconNameForState:(unint64_t)a3
+- (id)iconNameForState:(unint64_t)state
 {
-  if (a3)
+  if (state)
   {
     return @"device-animation-phone-check";
   }

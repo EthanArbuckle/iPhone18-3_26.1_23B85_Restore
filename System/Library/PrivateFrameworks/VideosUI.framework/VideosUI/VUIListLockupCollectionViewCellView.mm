@@ -1,25 +1,25 @@
 @interface VUIListLockupCollectionViewCellView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIListLockupCollectionViewCellView)initWithFrame:(CGRect)a3;
-- (void)setDescriptionTextView:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageView:(id)a3;
-- (void)setPrimaryButton:(id)a3;
-- (void)setSecondaryButton:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setSubTitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIListLockupCollectionViewCellView)initWithFrame:(CGRect)frame;
+- (void)setDescriptionTextView:(id)view;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageView:(id)view;
+- (void)setPrimaryButton:(id)button;
+- (void)setSecondaryButton:(id)button;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setSubTitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
 - (void)vui_prepareForReuse;
-- (void)vui_setHighlighted:(BOOL)a3;
+- (void)vui_setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation VUIListLockupCollectionViewCellView
 
-- (VUIListLockupCollectionViewCellView)initWithFrame:(CGRect)a3
+- (VUIListLockupCollectionViewCellView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = VUIListLockupCollectionViewCellView;
-  v3 = [(VUIListLockupCollectionViewCellView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIListLockupCollectionViewCellView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [VUISeparatorView alloc];
@@ -33,118 +33,118 @@
   return v3;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
-  if (self->_titleLabel != v5)
+  labelCopy = label;
+  if (self->_titleLabel != labelCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_titleLabel, a3);
+    v6 = labelCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:labelCopy oldView:?];
+    objc_storeStrong(&self->_titleLabel, label);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    labelCopy = v6;
   }
 }
 
-- (void)setSubTitleLabel:(id)a3
+- (void)setSubTitleLabel:(id)label
 {
-  v5 = a3;
-  if (self->_subTitleLabel != v5)
+  labelCopy = label;
+  if (self->_subTitleLabel != labelCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_subTitleLabel, a3);
+    v6 = labelCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:labelCopy oldView:?];
+    objc_storeStrong(&self->_subTitleLabel, label);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    labelCopy = v6;
   }
 }
 
-- (void)setDescriptionTextView:(id)a3
+- (void)setDescriptionTextView:(id)view
 {
-  v5 = a3;
-  if (self->_descriptionTextView != v5)
+  viewCopy = view;
+  if (self->_descriptionTextView != viewCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_descriptionTextView, a3);
+    v6 = viewCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:viewCopy oldView:?];
+    objc_storeStrong(&self->_descriptionTextView, view);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setPrimaryButton:(id)a3
+- (void)setPrimaryButton:(id)button
 {
-  v5 = a3;
-  if (self->_primaryButton != v5)
+  buttonCopy = button;
+  if (self->_primaryButton != buttonCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_primaryButton, a3);
+    v6 = buttonCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:buttonCopy oldView:?];
+    objc_storeStrong(&self->_primaryButton, button);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    buttonCopy = v6;
   }
 }
 
-- (void)setSecondaryButton:(id)a3
+- (void)setSecondaryButton:(id)button
 {
-  v5 = a3;
-  if (self->_secondaryButton != v5)
+  buttonCopy = button;
+  if (self->_secondaryButton != buttonCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_secondaryButton, a3);
+    v6 = buttonCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:buttonCopy oldView:?];
+    objc_storeStrong(&self->_secondaryButton, button);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    buttonCopy = v6;
   }
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  if (self->_imageView != v5)
+  viewCopy = view;
+  if (self->_imageView != viewCopy)
   {
-    v6 = v5;
-    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_imageView, a3);
+    v6 = viewCopy;
+    [(VUIListLockupCollectionViewCellView *)self vui_addSubview:viewCopy oldView:?];
+    objc_storeStrong(&self->_imageView, view);
     [(VUIListLockupCollectionViewCellView *)self vui_setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = VUIListLockupCollectionViewCellView;
   [(VUIListLockupCollectionViewCellView *)&v5 setSemanticContentAttribute:?];
-  [(VUILabel *)self->_subTitleLabel setSemanticContentAttribute:a3];
-  [(VUILabel *)self->_titleLabel setSemanticContentAttribute:a3];
-  [(FocusableTextView *)self->_descriptionTextView setSemanticContentAttribute:a3];
+  [(VUILabel *)self->_subTitleLabel setSemanticContentAttribute:attribute];
+  [(VUILabel *)self->_titleLabel setSemanticContentAttribute:attribute];
+  [(FocusableTextView *)self->_descriptionTextView setSemanticContentAttribute:attribute];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = VUIListLockupCollectionViewCellView;
   [(VUIListLockupCollectionViewCellView *)&v5 setHighlighted:?];
-  [(VUIListLockupCollectionViewCellView *)self vui_setHighlighted:v3];
+  [(VUIListLockupCollectionViewCellView *)self vui_setHighlighted:highlightedCopy];
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   [(VUILabel *)self->_titleLabel setHighlighted:?];
-  [(VUILabel *)self->_subTitleLabel setHighlighted:v3];
+  [(VUILabel *)self->_subTitleLabel setHighlighted:highlightedCopy];
   descriptionTextView = self->_descriptionTextView;
 
-  [(FocusableTextView *)descriptionTextView setHighlighted:v3];
+  [(FocusableTextView *)descriptionTextView setHighlighted:highlightedCopy];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == *MEMORY[0x1E695F060] && a3.height == *(MEMORY[0x1E695F060] + 8))
+  height = subviews.height;
+  width = subviews.width;
+  if (subviews.width == *MEMORY[0x1E695F060] && subviews.height == *(MEMORY[0x1E695F060] + 8))
   {
     goto LABEL_92;
   }
@@ -162,8 +162,8 @@
 
   [(VUISeparatorView *)self->_separatorView lineHeight];
   v164 = v10;
-  v11 = [(VUIListLockupCollectionViewCellView *)self vuiTraitCollection];
-  v12 = [v11 isAXEnabled];
+  vuiTraitCollection = [(VUIListLockupCollectionViewCellView *)self vuiTraitCollection];
+  isAXEnabled = [vuiTraitCollection isAXEnabled];
 
   v14 = *MEMORY[0x1E695F058];
   v13 = *(MEMORY[0x1E695F058] + 8);
@@ -171,9 +171,9 @@
   v16 = *(MEMORY[0x1E695F058] + 24);
   imageView = self->_imageView;
   v186 = *MEMORY[0x1E695F058];
-  v163 = v12;
+  v163 = isAXEnabled;
   v192 = v16;
-  if (!v12)
+  if (!isAXEnabled)
   {
     v21 = *(MEMORY[0x1E695F058] + 24);
     v22 = *(MEMORY[0x1E695F058] + 16);
@@ -337,9 +337,9 @@ LABEL_43:
             v78 = v78 + v89;
           }
 
-          v91 = [(FocusableTextView *)self->_descriptionTextView computationLabel];
+          computationLabel = [(FocusableTextView *)self->_descriptionTextView computationLabel];
 
-          v45 = v91;
+          v45 = computationLabel;
           v90 = v41;
         }
 
@@ -629,9 +629,9 @@ LABEL_43:
     v201.size.height = v55;
     v166 = v57;
     height = v57 + CGRectGetHeight(v201);
-    v58 = [(FocusableTextView *)self->_descriptionTextView computationLabel];
+    computationLabel2 = [(FocusableTextView *)self->_descriptionTextView computationLabel];
 
-    v45 = v58;
+    v45 = computationLabel2;
     v191 = width;
   }
 
@@ -700,7 +700,7 @@ LABEL_43:
 
 LABEL_81:
 
-  if (!a4)
+  if (!only)
   {
     v169 = v63;
     if ([(VUIListLockupCollectionViewCellView *)self vuiIsRTL])

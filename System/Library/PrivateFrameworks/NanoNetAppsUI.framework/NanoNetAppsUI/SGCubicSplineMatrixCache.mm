@@ -1,6 +1,6 @@
 @interface SGCubicSplineMatrixCache
 + (id)sharedInstance;
-- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)a3 cache:(id)a4 matrixGenerator:(id)a5;
+- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)dimension cache:(id)cache matrixGenerator:(id)generator;
 - (SGCubicSplineMatrixCache)init;
 @end
 
@@ -48,10 +48,10 @@ uint64_t __42__SGCubicSplineMatrixCache_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)a3 cache:(id)a4 matrixGenerator:(id)a5
+- ($6F5639B62F6C861EB4A71773F5DCFA27)splineMatrixWithDimension:(int)dimension cache:(id)cache matrixGenerator:(id)generator
 {
-  v8 = a4;
-  v9 = a5;
+  cacheCopy = cache;
+  generatorCopy = generator;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -61,12 +61,12 @@ uint64_t __42__SGCubicSplineMatrixCache_sharedInstance__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __76__SGCubicSplineMatrixCache_splineMatrixWithDimension_cache_matrixGenerator___block_invoke;
   v15[3] = &unk_279942148;
-  v19 = a3;
-  v17 = v9;
+  dimensionCopy = dimension;
+  v17 = generatorCopy;
   v18 = &v20;
-  v16 = v8;
-  v11 = v9;
-  v12 = v8;
+  v16 = cacheCopy;
+  v11 = generatorCopy;
+  v12 = cacheCopy;
   dispatch_sync(internalQueue, v15);
   v13 = v21[3];
 

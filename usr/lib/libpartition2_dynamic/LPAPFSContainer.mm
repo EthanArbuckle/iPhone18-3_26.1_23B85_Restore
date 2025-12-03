@@ -1,5 +1,5 @@
 @interface LPAPFSContainer
-+ (id)_containerWithPhysticalStoreRole:(int)a3;
++ (id)_containerWithPhysticalStoreRole:(int)role;
 + (id)allAPFSContainers;
 + (id)supportedContentTypes;
 - (id)physicalStores;
@@ -61,7 +61,7 @@
   return v10;
 }
 
-+ (id)_containerWithPhysticalStoreRole:(int)a3
++ (id)_containerWithPhysticalStoreRole:(int)role
 {
   v21 = *MEMORY[0x29EDCA608];
   v4 = +[LPPartitionMedia primaryMedia];
@@ -72,8 +72,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v4 children];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    children = [v4 children];
+    v7 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -84,19 +84,19 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(children);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 role] == a3)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 role] == role)
           {
-            v12 = [v11 container];
+            container = [v11 container];
             goto LABEL_14;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -106,7 +106,7 @@
       }
     }
 
-    v12 = 0;
+    container = 0;
 LABEL_14:
   }
 
@@ -117,12 +117,12 @@ LABEL_14:
     *v13 = 136315138;
     *(v13 + 4) = "+[LPAPFSContainer _containerWithPhysticalStoreRole:]";
     _LPLogPack(1);
-    v12 = 0;
+    container = 0;
   }
 
   v14 = *MEMORY[0x29EDCA608];
 
-  return v12;
+  return container;
 }
 
 void __41__LPAPFSContainer_volumesWithRole_group___block_invoke(uint64_t a1, uint64_t a2)
@@ -137,8 +137,8 @@ void __41__LPAPFSContainer_volumesWithRole_group___block_invoke(uint64_t a1, uin
 - (id)physicalStores
 {
   v19[2] = *MEMORY[0x29EDCA608];
-  v3 = [(LPMedia *)self BSDName];
-  [LPMedia waitForIOMediaWithDevNode:v3];
+  bSDName = [(LPMedia *)self BSDName];
+  [LPMedia waitForIOMediaWithDevNode:bSDName];
 
   v4 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:2];
   v18[1] = @"IOPropertyMatch";

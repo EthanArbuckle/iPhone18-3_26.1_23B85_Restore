@@ -1,15 +1,15 @@
 @interface HVQueues
 + (id)defaultQueues;
-- (BOOL)cleanupWithError:(id *)a3 shouldContinueBlock:(id)a4;
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4;
-- (BOOL)dequeuedContentConsumedForDataSources:(unsigned int)a3 withError:(id *)a4;
-- (BOOL)dequeuedContentNotConsumed:(id)a3 dataSource:(unsigned int)a4 error:(id *)a5;
-- (BOOL)enqueueContent:(id)a3 contentProtection:(id)a4 error:(id *)a5;
-- (BOOL)registerQueueObserver:(id)a3 dispatchQueue:(id)a4;
+- (BOOL)cleanupWithError:(id *)error shouldContinueBlock:(id)block;
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error;
+- (BOOL)dequeuedContentConsumedForDataSources:(unsigned int)sources withError:(id *)error;
+- (BOOL)dequeuedContentNotConsumed:(id)consumed dataSource:(unsigned int)source error:(id *)error;
+- (BOOL)enqueueContent:(id)content contentProtection:(id)protection error:(id *)error;
+- (BOOL)registerQueueObserver:(id)observer dispatchQueue:(id)queue;
 - (HVQueues)init;
-- (id)statsWithError:(id *)a3;
-- (unsigned)waitForObserversWithTimeout:(double)a3;
-- (void)_queueForDataSource:(void *)a1;
+- (id)statsWithError:(id *)error;
+- (unsigned)waitForObserversWithTimeout:(double)timeout;
+- (void)_queueForDataSource:(void *)source;
 @end
 
 @implementation HVQueues
@@ -118,9 +118,9 @@ id __49__HVQueues_informObserversThatContentIsAvailable__block_invoke_2(uint64_t
   return objc_opt_self();
 }
 
-- (BOOL)cleanupWithError:(id *)a3 shouldContinueBlock:(id)a4
+- (BOOL)cleanupWithError:(id *)error shouldContinueBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -135,16 +135,16 @@ id __49__HVQueues_informObserversThatContentIsAvailable__block_invoke_2(uint64_t
   v10[1] = 3221225472;
   v10[2] = __49__HVQueues_cleanupWithError_shouldContinueBlock___block_invoke;
   v10[3] = &unk_2789696B8;
-  v7 = v6;
+  v7 = blockCopy;
   v10[4] = self;
   v11 = v7;
   v12 = &v14;
   v13 = &v18;
   HVDataSourceRunBlockPerSetBit(-1, v10);
   v8 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (error && (v15[3] & 1) == 0)
   {
-    *a3 = v19[5];
+    *error = v19[5];
     v8 = *(v15 + 24);
   }
 
@@ -172,10 +172,10 @@ void __49__HVQueues_cleanupWithError_shouldContinueBlock___block_invoke(uint64_t
   }
 }
 
-- (void)_queueForDataSource:(void *)a1
+- (void)_queueForDataSource:(void *)source
 {
-  v2 = a1;
-  if (a1)
+  sourceCopy = source;
+  if (source)
   {
     v3 = a2;
     HVDataSourceAssertSingleSource(a2);
@@ -185,7 +185,7 @@ void __49__HVQueues_cleanupWithError_shouldContinueBlock___block_invoke(uint64_t
     v11 = __Block_byref_object_copy__1095;
     v12 = __Block_byref_object_dispose__1096;
     v13 = 0;
-    v4 = v2[1];
+    v4 = sourceCopy[1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __32__HVQueues__queueForDataSource___block_invoke;
@@ -193,13 +193,13 @@ void __49__HVQueues_cleanupWithError_shouldContinueBlock___block_invoke(uint64_t
     v7 = v3;
     v6[5] = &v8;
     v6[6] = sel__queueForDataSource_;
-    v6[4] = v2;
+    v6[4] = sourceCopy;
     [v4 runWithLockAcquired:v6];
-    v2 = v9[5];
+    sourceCopy = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
-  return v2;
+  return sourceCopy;
 }
 
 void __32__HVQueues__queueForDataSource___block_invoke(uint64_t a1, void *a2)
@@ -451,7 +451,7 @@ void __32__HVQueues__queueForDataSource___block_invoke_2(uint64_t a1)
   }
 }
 
-- (id)statsWithError:(id *)a3
+- (id)statsWithError:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -583,21 +583,21 @@ void __27__HVQueues_statsWithError___block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setObject:v14 forKeyedSubscript:@"Content available notification in progress"];
 }
 
-- (BOOL)deleteContentWithRequest:(id)a3 error:(id *)a4
+- (BOOL)deleteContentWithRequest:(id)request error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v7 = hv_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [requestCopy bundleIdentifier];
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = bundleIdentifier;
     _os_log_impl(&dword_2321EC000, v7, OS_LOG_TYPE_DEFAULT, "HVQueues: deleteContentWithRequest: %{private}@", &buf, 0xCu);
   }
 
-  v9 = [v6 bundleIdentifier];
-  v10 = HVDataSourceForBundleIdentifier(v9);
+  bundleIdentifier2 = [requestCopy bundleIdentifier];
+  v10 = HVDataSourceForBundleIdentifier(bundleIdentifier2);
 
   v11 = objc_autoreleasePoolPush();
   v12 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -606,7 +606,7 @@ void __27__HVQueues_statsWithError___block_invoke(uint64_t a1, void *a2)
   v15 = [v12 initWithObjects:{v13, v14, 0}];
 
   objc_autoreleasePoolPop(v11);
-  v37 = a4;
+  errorCopy = error;
   if (v10)
   {
     v16 = objc_autoreleasePoolPush();
@@ -617,7 +617,7 @@ void __27__HVQueues_statsWithError___block_invoke(uint64_t a1, void *a2)
     v15 = v18;
   }
 
-  v38 = self;
+  selfCopy = self;
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
@@ -644,7 +644,7 @@ void __27__HVQueues_statsWithError___block_invoke(uint64_t a1, void *a2)
         v27 = *(*(&v40 + 1) + 8 * v25);
         v28 = objc_autoreleasePoolPush();
         v39 = v26;
-        v29 = [v27 deleteContentWithRequest:v6 error:&v39];
+        v29 = [v27 deleteContentWithRequest:requestCopy error:&v39];
         v22 = v39;
 
         v24 &= v29;
@@ -666,17 +666,17 @@ void __27__HVQueues_statsWithError___block_invoke(uint64_t a1, void *a2)
     v24 = 1;
   }
 
-  if (v37)
+  if (errorCopy)
   {
     v30 = v22;
-    *v37 = v22;
+    *errorCopy = v22;
   }
 
-  v31 = v6;
-  if (v38)
+  v31 = requestCopy;
+  if (selfCopy)
   {
     v32 = os_transaction_create();
-    lock = v38->_lock;
+    lock = selfCopy->_lock;
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
     v46 = __47__HVQueues_informObserversToDeleteWithRequest___block_invoke;
@@ -748,16 +748,16 @@ id __47__HVQueues_informObserversToDeleteWithRequest___block_invoke_2(uint64_t a
   return objc_opt_self();
 }
 
-- (BOOL)dequeuedContentNotConsumed:(id)a3 dataSource:(unsigned int)a4 error:(id *)a5
+- (BOOL)dequeuedContentNotConsumed:(id)consumed dataSource:(unsigned int)source error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  consumedCopy = consumed;
   v9 = hv_default_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 uniqueId];
+    uniqueId = [consumedCopy uniqueId];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = uniqueId;
     _os_log_impl(&dword_2321EC000, v9, OS_LOG_TYPE_DEFAULT, "HVQueues: dequeuedContentNotConsumedWithUniqueIdentifier: %@", &buf, 0xCu);
   }
 
@@ -773,15 +773,15 @@ id __47__HVQueues_informObserversToDeleteWithRequest___block_invoke_2(uint64_t a
   v19[2] = __56__HVQueues_dequeuedContentNotConsumed_dataSource_error___block_invoke;
   v19[3] = &unk_278969640;
   v19[4] = &buf;
-  v20 = a4;
+  sourceCopy = source;
   [(_PASLock *)lock runWithLockAcquired:v19];
   v12 = *(*(&buf + 1) + 40);
   if (v12)
   {
     v18 = 0;
-    v13 = [v12 dequeuedContentNotConsumed:v8 error:&v18];
+    v13 = [v12 dequeuedContentNotConsumed:consumedCopy error:&v18];
     v14 = v18;
-    if (a5)
+    if (error)
     {
       v15 = v13;
     }
@@ -794,14 +794,14 @@ id __47__HVQueues_informObserversToDeleteWithRequest___block_invoke_2(uint64_t a
     if ((v15 & 1) == 0)
     {
       v14 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"HVErrorDomain" code:12 userInfo:0];
-    *a5 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -825,20 +825,20 @@ void __56__HVQueues_dequeuedContentNotConsumed_dataSource_error___block_invoke(u
   *(v5 + 40) = v4;
 }
 
-- (BOOL)dequeuedContentConsumedForDataSources:(unsigned int)a3 withError:(id *)a4
+- (BOOL)dequeuedContentConsumedForDataSources:(unsigned int)sources withError:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = hv_default_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = HVDataSourceDescription(a3);
+    v8 = HVDataSourceDescription(sources);
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v8;
     _os_log_impl(&dword_2321EC000, v7, OS_LOG_TYPE_DEFAULT, "HVQueues: dequeuedContentConsumedForDataSources:%{public}@", &buf, 0xCu);
   }
 
   v9 = 1;
-  if (a3)
+  if (sources)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -857,11 +857,11 @@ void __56__HVQueues_dequeuedContentNotConsumed_dataSource_error___block_invoke(u
     v12[4] = self;
     v12[5] = &buf;
     v12[6] = &v13;
-    HVDataSourceRunBlockPerSetBit(a3, v12);
+    HVDataSourceRunBlockPerSetBit(sources, v12);
     v9 = *(v14 + 24);
-    if (a4 && (v14[3] & 1) == 0)
+    if (error && (v14[3] & 1) == 0)
     {
-      *a4 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
       v9 = *(v14 + 24);
     }
 
@@ -916,11 +916,11 @@ void __60__HVQueues_dequeuedContentConsumedForDataSources_withError___block_invo
   *(v5 + 40) = v4;
 }
 
-- (BOOL)enqueueContent:(id)a3 contentProtection:(id)a4 error:(id *)a5
+- (BOOL)enqueueContent:(id)content contentProtection:(id)protection error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  contentCopy = content;
+  protectionCopy = protection;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -936,19 +936,19 @@ void __60__HVQueues_dequeuedContentConsumedForDataSources_withError___block_invo
   v24[1] = 3221225472;
   v24[2] = __51__HVQueues_enqueueContent_contentProtection_error___block_invoke;
   v24[3] = &unk_278969558;
-  v11 = v8;
+  v11 = contentCopy;
   v27 = &v29;
   v28 = &v33;
   v25 = v11;
-  v26 = self;
+  selfCopy = self;
   [(_PASLock *)lock runWithLockAcquired:v24];
   HIDWORD(v13) = *(v30 + 6) - 1024;
   LODWORD(v13) = HIDWORD(v13);
   v12 = v13 >> 10;
   if (v12 > 7 || ((0x8Bu >> v12) & 1) == 0)
   {
-    v14 = [v34[5] contentProtection];
-    v15 = [v9 isEqualToString:v14];
+    contentProtection = [v34[5] contentProtection];
+    v15 = [protectionCopy isEqualToString:contentProtection];
 
     if ((v15 & 1) == 0)
     {
@@ -956,19 +956,19 @@ void __60__HVQueues_dequeuedContentConsumedForDataSources_withError___block_invo
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = *(v30 + 6);
-        v18 = [v34[5] contentProtection];
+        contentProtection2 = [v34[5] contentProtection];
         *buf = 67109634;
         v40 = v17;
         v41 = 2112;
-        v42 = v18;
+        v42 = contentProtection2;
         v43 = 2112;
-        v44 = v9;
+        v44 = protectionCopy;
         _os_log_impl(&dword_2321EC000, v16, OS_LOG_TYPE_DEFAULT, "HVQueues: enqueueContent: contentProtection for dataSource %u is %@ but caller passed in %@", buf, 0x1Cu);
       }
     }
   }
 
-  v19 = [v34[5] enqueueContent:v11 error:a5];
+  v19 = [v34[5] enqueueContent:v11 error:error];
   if (v19)
   {
     v20 = self->_lock;
@@ -1042,19 +1042,19 @@ void __51__HVQueues_enqueueContent_contentProtection_error___block_invoke_27(uin
   }
 }
 
-- (BOOL)registerQueueObserver:(id)a3 dispatchQueue:(id)a4
+- (BOOL)registerQueueObserver:(id)observer dispatchQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   lock = self->_lock;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__HVQueues_registerQueueObserver_dispatchQueue___block_invoke;
   v12[3] = &unk_2789694B8;
-  v13 = v7;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v13 = queueCopy;
+  v14 = observerCopy;
+  v9 = observerCopy;
+  v10 = queueCopy;
   [(_PASLock *)lock runWithLockAcquired:v12];
 
   return 1;
@@ -1103,7 +1103,7 @@ void __25__HVQueues_defaultQueues__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (unsigned)waitForObserversWithTimeout:(double)a3
+- (unsigned)waitForObserversWithTimeout:(double)timeout
 {
   v38 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEAA8] now];
@@ -1134,7 +1134,7 @@ void __25__HVQueues_defaultQueues__block_invoke()
 
     v8 = [MEMORY[0x277CBEAA8] now];
     [v8 timeIntervalSinceDate:v5];
-    v10 = v9 < a3;
+    v10 = v9 < timeout;
   }
 
   while (v10);

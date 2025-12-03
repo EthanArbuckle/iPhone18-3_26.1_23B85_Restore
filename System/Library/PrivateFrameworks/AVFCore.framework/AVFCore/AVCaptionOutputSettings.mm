@@ -1,26 +1,26 @@
 @interface AVCaptionOutputSettings
-+ (id)_outputSettingsWithOutputSettingsDictionary:(id)a3 mediaType:(id)a4 exceptionReason:(id *)a5;
++ (id)_outputSettingsWithOutputSettingsDictionary:(id)dictionary mediaType:(id)type exceptionReason:(id *)reason;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)captionTimeCodeFrameDuration;
-- (AVCaptionOutputSettings)initWithCaptionSettingsDictionary:(id)a3 exceptionReason:(id *)a4;
+- (AVCaptionOutputSettings)initWithCaptionSettingsDictionary:(id)dictionary exceptionReason:(id *)reason;
 - (BOOL)useDropFrameTimeCode;
 - (id)compatibleMediaTypes;
 @end
 
 @implementation AVCaptionOutputSettings
 
-+ (id)_outputSettingsWithOutputSettingsDictionary:(id)a3 mediaType:(id)a4 exceptionReason:(id *)a5
++ (id)_outputSettingsWithOutputSettingsDictionary:(id)dictionary mediaType:(id)type exceptionReason:(id *)reason
 {
-  v5 = [[AVCaptionOutputSettings alloc] initWithCaptionSettingsDictionary:a3 exceptionReason:a5];
+  v5 = [[AVCaptionOutputSettings alloc] initWithCaptionSettingsDictionary:dictionary exceptionReason:reason];
 
   return v5;
 }
 
-- (AVCaptionOutputSettings)initWithCaptionSettingsDictionary:(id)a3 exceptionReason:(id *)a4
+- (AVCaptionOutputSettings)initWithCaptionSettingsDictionary:(id)dictionary exceptionReason:(id *)reason
 {
   v16 = 0;
   v15.receiver = self;
   v15.super_class = AVCaptionOutputSettings;
-  v5 = [(AVOutputSettings *)&v15 initWithOutputSettingsDictionary:a3 exceptionReason:&v16];
+  v5 = [(AVOutputSettings *)&v15 initWithOutputSettingsDictionary:dictionary exceptionReason:&v16];
   if (!v5)
   {
     goto LABEL_19;
@@ -82,9 +82,9 @@ LABEL_12:
 
 LABEL_19:
   v6 = 0;
-  if (a4)
+  if (reason)
   {
-    *a4 = v16;
+    *reason = v16;
   }
 
   return v6;

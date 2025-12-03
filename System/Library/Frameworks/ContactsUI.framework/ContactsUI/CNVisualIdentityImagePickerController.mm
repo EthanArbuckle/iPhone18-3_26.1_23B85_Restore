@@ -1,23 +1,23 @@
 @interface CNVisualIdentityImagePickerController
 + (id)cameraImagePicker;
-+ (id)imagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4;
-+ (id)imagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 backgroundColor:(id)a5;
++ (id)imagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect;
++ (id)imagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect backgroundColor:(id)color;
 + (id)log;
-+ (id)photoLibraryImagePickerWithIsMeContact:(BOOL)a3;
-+ (id)photoPickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 backgroundColor:(id)a5 isMeContact:(BOOL)a6;
-+ (id)photoPickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 isMeContact:(BOOL)a5;
-- (CNVisualIdentityImagePickerController)initWithContactStyle:(id)a3;
++ (id)photoLibraryImagePickerWithIsMeContact:(BOOL)contact;
++ (id)photoPickerForEditingImageData:(id)data withCropRect:(CGRect)rect backgroundColor:(id)color isMeContact:(BOOL)contact;
++ (id)photoPickerForEditingImageData:(id)data withCropRect:(CGRect)rect isMeContact:(BOOL)contact;
+- (CNVisualIdentityImagePickerController)initWithContactStyle:(id)style;
 - (CNVisualIdentityImagePickerControllerDelegate)delegate;
 - (CNVisualIdentityPickerPresenterDelegate)presenterDelegate;
-- (id)providerItemFromImagePickerInfo:(id)a3;
-- (void)imageDataFromPickerResult:(id)a3 completionHandler:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)presentCameraImagePickerFromViewController:(id)a3;
-- (void)presentImagePicker:(id)a3 withStyle:(int64_t)a4 fromViewController:(id)a5 forVisualIdentityPicker:(id)a6;
-- (void)presentMoveAndScaleForImageData:(id)a3 withCropRect:(CGRect)a4 fromViewController:(id)a5 backgroundColor:(id)a6;
-- (void)presentPhotoLibraryPickerFromViewController:(id)a3 sourceView:(id)a4;
+- (id)providerItemFromImagePickerInfo:(id)info;
+- (void)imageDataFromPickerResult:(id)result completionHandler:(id)handler;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)presentCameraImagePickerFromViewController:(id)controller;
+- (void)presentImagePicker:(id)picker withStyle:(int64_t)style fromViewController:(id)controller forVisualIdentityPicker:(id)identityPicker;
+- (void)presentMoveAndScaleForImageData:(id)data withCropRect:(CGRect)rect fromViewController:(id)controller backgroundColor:(id)color;
+- (void)presentPhotoLibraryPickerFromViewController:(id)controller sourceView:(id)view;
 @end
 
 @implementation CNVisualIdentityImagePickerController
@@ -36,32 +36,32 @@
   return WeakRetained;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  pickerCopy = picker;
+  pickingCopy = picking;
+  if ([pickingCopy count])
   {
     PHObjectClass = getPHObjectClass();
-    v9 = [v7 firstObject];
-    v10 = [v9 assetIdentifier];
-    v11 = [(objc_class *)PHObjectClass uuidFromLocalIdentifier:v10];
+    firstObject = [pickingCopy firstObject];
+    assetIdentifier = [firstObject assetIdentifier];
+    v11 = [(objc_class *)PHObjectClass uuidFromLocalIdentifier:assetIdentifier];
     [(CNVisualIdentityImagePickerController *)self setPhotoLibraryAssetID:v11];
 
-    v12 = [v7 firstObject];
+    firstObject2 = [pickingCopy firstObject];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __65__CNVisualIdentityImagePickerController_picker_didFinishPicking___block_invoke;
     v14[3] = &unk_1E74E50D0;
     v14[4] = self;
-    v15 = v6;
-    [(CNVisualIdentityImagePickerController *)self imageDataFromPickerResult:v12 completionHandler:v14];
+    v15 = pickerCopy;
+    [(CNVisualIdentityImagePickerController *)self imageDataFromPickerResult:firstObject2 completionHandler:v14];
   }
 
   else
   {
-    v13 = [(CNVisualIdentityImagePickerController *)self delegate];
-    [v13 imagePickerControllerDidCancel:v6];
+    delegate = [(CNVisualIdentityImagePickerController *)self delegate];
+    [delegate imagePickerControllerDidCancel:pickerCopy];
   }
 }
 
@@ -74,53 +74,53 @@ void __65__CNVisualIdentityImagePickerController_picker_didFinishPicking___block
   [*(a1 + 32) presentImagePicker:v4 withStyle:3 fromViewController:*(a1 + 40)];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(CNVisualIdentityImagePickerController *)self delegate];
-  [v5 imagePickerControllerDidCancel:v4];
+  cancelCopy = cancel;
+  delegate = [(CNVisualIdentityImagePickerController *)self delegate];
+  [delegate imagePickerControllerDidCancel:cancelCopy];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   if ((*(*MEMORY[0x1E6996548] + 16))())
   {
-    v8 = [(CNVisualIdentityImagePickerController *)self delegate];
-    [v8 imagePickerController:v6 didFinishWithProviderItem:0];
+    delegate = [(CNVisualIdentityImagePickerController *)self delegate];
+    [delegate imagePickerController:controllerCopy didFinishWithProviderItem:0];
   }
 
   else
   {
-    v8 = [(CNVisualIdentityImagePickerController *)self providerItemFromImagePickerInfo:v7];
-    v9 = [v6 sourceType];
-    v10 = [v8 imageData];
+    delegate = [(CNVisualIdentityImagePickerController *)self providerItemFromImagePickerInfo:infoCopy];
+    sourceType = [controllerCopy sourceType];
+    imageData = [delegate imageData];
 
-    if (v10 && v9 == 1)
+    if (imageData && sourceType == 1)
     {
-      v11 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
+      v11 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
       if (!v11)
       {
         v12 = MEMORY[0x1E69DCAB8];
-        v13 = [v8 imageData];
-        v11 = [v12 imageWithData:v13];
+        imageData2 = [delegate imageData];
+        v11 = [v12 imageWithData:imageData2];
       }
 
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __93__CNVisualIdentityImagePickerController_imagePickerController_didFinishPickingMediaWithInfo___block_invoke;
       v15[3] = &unk_1E74E50A8;
-      v16 = v8;
-      v17 = self;
-      v18 = v6;
+      v16 = delegate;
+      selfCopy = self;
+      v18 = controllerCopy;
       [CNPhotoAssetCreationHelper createAssetFromImage:v11 completionHandler:v15];
     }
 
     else
     {
-      v14 = [(CNVisualIdentityImagePickerController *)self delegate];
-      [v14 imagePickerController:v6 didFinishWithProviderItem:v8];
+      delegate2 = [(CNVisualIdentityImagePickerController *)self delegate];
+      [delegate2 imagePickerController:controllerCopy didFinishWithProviderItem:delegate];
     }
   }
 }
@@ -146,18 +146,18 @@ void __93__CNVisualIdentityImagePickerController_imagePickerController_didFinish
   [v2 imagePickerController:*(a1 + 40) didFinishWithProviderItem:*(a1 + 48)];
 }
 
-- (void)imageDataFromPickerResult:(id)a3 completionHandler:(id)a4
+- (void)imageDataFromPickerResult:(id)result completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 itemProvider];
+  handlerCopy = handler;
+  itemProvider = [result itemProvider];
   v7 = *MEMORY[0x1E6982E30];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_completionHandler___block_invoke;
   v10[3] = &unk_1E74E5080;
-  v11 = v5;
-  v8 = v5;
-  v9 = [v6 loadDataRepresentationForContentType:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = [itemProvider loadDataRepresentationForContentType:v7 completionHandler:v10];
 }
 
 void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -174,20 +174,20 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)providerItemFromImagePickerInfo:(id)a3
+- (id)providerItemFromImagePickerInfo:(id)info
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE960]];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DE960]];
   v6 = MEMORY[0x1E69DDE10];
   if (!v5)
   {
     v7 = *MEMORY[0x1E69DDE10];
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
+    v8 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDE10]];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:v7];
+      v9 = [infoCopy objectForKeyedSubscript:v7];
       v5 = UIImageJPEGRepresentation(v9, 0.8);
     }
 
@@ -197,7 +197,7 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
     }
   }
 
-  v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
+  v10 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDDE0]];
   v69 = v10;
   if (v10)
   {
@@ -217,24 +217,24 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   }
 
   v19 = *MEMORY[0x1E69DDE18];
-  v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DDE18]];
+  v20 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DDE18]];
 
   if (v20)
   {
-    v21 = [v4 objectForKeyedSubscript:v19];
-    v22 = [v21 pixelWidth];
-    v23 = [v21 pixelHeight];
-    v24 = [v4 objectForKeyedSubscript:*v6];
+    v21 = [infoCopy objectForKeyedSubscript:v19];
+    pixelWidth = [v21 pixelWidth];
+    pixelHeight = [v21 pixelHeight];
+    v24 = [infoCopy objectForKeyedSubscript:*v6];
     v25 = v24;
     v26 = *MEMORY[0x1E695F060];
     v27 = *(MEMORY[0x1E695F060] + 8);
-    if (*MEMORY[0x1E695F060] != v22 || v27 != v23)
+    if (*MEMORY[0x1E695F060] != pixelWidth || v27 != pixelHeight)
     {
       [v24 size];
       if (v30 != v26 || v29 != v27)
       {
         [v25 size];
-        if (v33 != v22 || v32 != v23)
+        if (v33 != pixelWidth || v32 != pixelHeight)
         {
           v35 = [objc_opt_class() log];
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -259,7 +259,7 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
 
           v39 = MEMORY[0x1E6996738];
           [v25 size];
-          [v39 scaledCropRect:v12 fromSize:v14 toSize:{v16, v18, v22, v23, v40, v41}];
+          [v39 scaledCropRect:v12 fromSize:v14 toSize:{v16, v18, pixelWidth, pixelHeight, v40, v41}];
           v12 = v42;
           v14 = v43;
           v16 = v44;
@@ -277,20 +277,20 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   v53 = v52;
   v55 = v54;
   v57 = v56;
-  v58 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69DE938]];
+  v58 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69DE938]];
   v59 = UIImageJPEGRepresentation(v58, 0.8);
   v60 = [[CNPhotoPickerProviderItem alloc] initWithImageData:v5 thumbnailImageData:0 fullscreenImageData:v59 cropRect:v51, v53, v55, v57];
-  v61 = [v4 objectForKeyedSubscript:v19];
-  v62 = [(CNVisualIdentityImagePickerController *)self photoLibraryAssetID];
-  if (v62)
+  v61 = [infoCopy objectForKeyedSubscript:v19];
+  photoLibraryAssetID = [(CNVisualIdentityImagePickerController *)self photoLibraryAssetID];
+  if (photoLibraryAssetID)
   {
-    [(CNPhotoPickerProviderItem *)v60 setAssetIdentifier:v62];
+    [(CNPhotoPickerProviderItem *)v60 setAssetIdentifier:photoLibraryAssetID];
   }
 
   else
   {
-    v63 = [v61 localIdentifier];
-    [(CNPhotoPickerProviderItem *)v60 setAssetIdentifier:v63];
+    localIdentifier = [v61 localIdentifier];
+    [(CNPhotoPickerProviderItem *)v60 setAssetIdentifier:localIdentifier];
   }
 
   v64 = [objc_opt_class() log];
@@ -317,83 +317,83 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   return v60;
 }
 
-- (void)presentImagePicker:(id)a3 withStyle:(int64_t)a4 fromViewController:(id)a5 forVisualIdentityPicker:(id)a6
+- (void)presentImagePicker:(id)picker withStyle:(int64_t)style fromViewController:(id)controller forVisualIdentityPicker:(id)identityPicker
 {
-  v16 = a3;
-  v10 = a5;
-  v11 = a6;
-  [v16 setModalPresentationStyle:a4];
-  v12 = [(CNVisualIdentityImagePickerController *)self contactStyle];
-  [v16 setModalTransitionStyle:{objc_msgSend(v12, "modalTransitionStyle")}];
+  pickerCopy = picker;
+  controllerCopy = controller;
+  identityPickerCopy = identityPicker;
+  [pickerCopy setModalPresentationStyle:style];
+  contactStyle = [(CNVisualIdentityImagePickerController *)self contactStyle];
+  [pickerCopy setModalTransitionStyle:{objc_msgSend(contactStyle, "modalTransitionStyle")}];
 
-  v13 = [(CNVisualIdentityImagePickerController *)self presenterDelegate];
+  presenterDelegate = [(CNVisualIdentityImagePickerController *)self presenterDelegate];
   v14 = objc_opt_respondsToSelector();
 
-  if (v11 && (v14 & 1) != 0)
+  if (identityPickerCopy && (v14 & 1) != 0)
   {
-    v15 = [(CNVisualIdentityImagePickerController *)self presenterDelegate];
-    [v15 visualIdentityPicker:v11 presentViewController:v16];
+    presenterDelegate2 = [(CNVisualIdentityImagePickerController *)self presenterDelegate];
+    [presenterDelegate2 visualIdentityPicker:identityPickerCopy presentViewController:pickerCopy];
   }
 
   else
   {
-    [v10 presentViewController:v16 animated:1 completion:0];
+    [controllerCopy presentViewController:pickerCopy animated:1 completion:0];
   }
 }
 
-- (void)presentMoveAndScaleForImageData:(id)a3 withCropRect:(CGRect)a4 fromViewController:(id)a5 backgroundColor:(id)a6
+- (void)presentMoveAndScaleForImageData:(id)data withCropRect:(CGRect)rect fromViewController:(id)controller backgroundColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [objc_opt_class() imagePickerForEditingImageData:v15 withCropRect:v13 backgroundColor:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
+  controllerCopy = controller;
+  dataCopy = data;
+  v16 = [objc_opt_class() imagePickerForEditingImageData:dataCopy withCropRect:colorCopy backgroundColor:{x, y, width, height}];
 
   [v16 setDelegate:self];
-  [(CNVisualIdentityImagePickerController *)self presentImagePicker:v16 withStyle:3 fromViewController:v14];
+  [(CNVisualIdentityImagePickerController *)self presentImagePicker:v16 withStyle:3 fromViewController:controllerCopy];
 }
 
-- (void)presentPhotoLibraryPickerFromViewController:(id)a3 sourceView:(id)a4
+- (void)presentPhotoLibraryPickerFromViewController:(id)controller sourceView:(id)view
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [objc_opt_class() photoLibraryImagePickerWithIsMeContact:{-[CNVisualIdentityImagePickerController isMeContact](self, "isMeContact")}];
   [v6 setDelegate:self];
-  [(CNVisualIdentityImagePickerController *)self presentImagePicker:v6 withStyle:3 fromViewController:v5];
+  [(CNVisualIdentityImagePickerController *)self presentImagePicker:v6 withStyle:3 fromViewController:controllerCopy];
 }
 
-- (void)presentCameraImagePickerFromViewController:(id)a3
+- (void)presentCameraImagePickerFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [objc_opt_class() cameraImagePicker];
-  [v5 setDelegate:self];
-  [(CNVisualIdentityImagePickerController *)self presentImagePicker:v5 withStyle:0 fromViewController:v4];
+  controllerCopy = controller;
+  cameraImagePicker = [objc_opt_class() cameraImagePicker];
+  [cameraImagePicker setDelegate:self];
+  [(CNVisualIdentityImagePickerController *)self presentImagePicker:cameraImagePicker withStyle:0 fromViewController:controllerCopy];
 }
 
-- (CNVisualIdentityImagePickerController)initWithContactStyle:(id)a3
+- (CNVisualIdentityImagePickerController)initWithContactStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = CNVisualIdentityImagePickerController;
   v6 = [(CNVisualIdentityImagePickerController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStyle, a3);
+    objc_storeStrong(&v6->_contactStyle, style);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)photoPickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 backgroundColor:(id)a5 isMeContact:(BOOL)a6
++ (id)photoPickerForEditingImageData:(id)data withCropRect:(CGRect)rect backgroundColor:(id)color isMeContact:(BOOL)contact
 {
-  v6 = a6;
+  contactCopy = contact;
   v19 = *MEMORY[0x1E69E9840];
   v16 = 0;
-  v7 = [CNPhotoLibraryProvider photoLibraryWithError:&v16, a5, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v7 = [CNPhotoLibraryProvider photoLibraryWithError:&v16, color, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v8 = v16;
   if (!v7)
   {
@@ -407,12 +407,12 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   }
 
   v10 = [objc_alloc(getPHPickerConfigurationClass()) initWithPhotoLibrary:v7];
-  v11 = [(objc_class *)getPHPickerFilterClass() imagesFilter];
-  [v10 setFilter:v11];
+  imagesFilter = [(objc_class *)getPHPickerFilterClass() imagesFilter];
+  [v10 setFilter:imagesFilter];
 
   [v10 _setDisabledPrivateCapabilities:8];
   PHPickerSuggestionGroupClass = get_PHPickerSuggestionGroupClass();
-  if (v6)
+  if (contactCopy)
   {
     [(objc_class *)PHPickerSuggestionGroupClass deviceOwnerSuggestionGroup];
   }
@@ -429,41 +429,41 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   return v14;
 }
 
-+ (id)photoPickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 isMeContact:(BOOL)a5
++ (id)photoPickerForEditingImageData:(id)data withCropRect:(CGRect)rect isMeContact:(BOOL)contact
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v11 = [objc_opt_class() photoPickerForEditingImageData:v10 withCropRect:0 backgroundColor:v5 isMeContact:{x, y, width, height}];
+  contactCopy = contact;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  v11 = [objc_opt_class() photoPickerForEditingImageData:dataCopy withCropRect:0 backgroundColor:contactCopy isMeContact:{x, y, width, height}];
 
   return v11;
 }
 
-+ (id)photoLibraryImagePickerWithIsMeContact:(BOOL)a3
++ (id)photoLibraryImagePickerWithIsMeContact:(BOOL)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_opt_class();
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
   v8 = *(MEMORY[0x1E695F058] + 24);
 
-  return [v4 photoPickerForEditingImageData:0 withCropRect:v3 isMeContact:{v5, v6, v7, v8}];
+  return [v4 photoPickerForEditingImageData:0 withCropRect:contactCopy isMeContact:{v5, v6, v7, v8}];
 }
 
-+ (id)imagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4 backgroundColor:(id)a5
++ (id)imagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect backgroundColor:(id)color
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v33[6] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  if (v10)
+  dataCopy = data;
+  colorCopy = color;
+  if (dataCopy)
   {
     v35.origin.x = x;
     v35.origin.y = y;
@@ -471,7 +471,7 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
     v35.size.height = height;
     if (CGRectIsEmpty(v35))
     {
-      v12 = [MEMORY[0x1E69DCAB8] imageWithData:v10];
+      v12 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
       [v12 size];
       v14 = v13;
       [v12 size];
@@ -482,7 +482,7 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
       height = v19;
     }
 
-    v20 = [objc_alloc(MEMORY[0x1E69DCAD0]) _initWithSourceImageData:v10 cropRect:{x, y, width, height}];
+    v20 = [objc_alloc(MEMORY[0x1E69DCAD0]) _initWithSourceImageData:dataCopy cropRect:{x, y, width, height}];
   }
 
   else
@@ -493,8 +493,8 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   v21 = v20;
   [v20 _setImagePickerSavingOptions:7];
   v22 = MEMORY[0x1E695DF90];
-  v23 = [v21 _properties];
-  v24 = [v22 dictionaryWithDictionary:v23];
+  _properties = [v21 _properties];
+  v24 = [v22 dictionaryWithDictionary:_properties];
 
   v25 = *MEMORY[0x1E69DE998];
   v32[0] = *MEMORY[0x1E69DDDD8];
@@ -509,10 +509,10 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   v27 = *MEMORY[0x1E69DE8B0];
   v33[4] = MEMORY[0x1E695E118];
   v28 = *MEMORY[0x1E69DE918];
-  v29 = v11;
+  v29 = colorCopy;
   v32[4] = v27;
   v32[5] = v28;
-  if (!v11)
+  if (!colorCopy)
   {
     v29 = +[CNUIColorRepository photoPickerCaptureBackgroundColor];
   }
@@ -521,7 +521,7 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:6];
   [v24 addEntriesFromDictionary:v30];
 
-  if (!v11)
+  if (!colorCopy)
   {
   }
 
@@ -530,14 +530,14 @@ void __85__CNVisualIdentityImagePickerController_imageDataFromPickerResult_compl
   return v21;
 }
 
-+ (id)imagePickerForEditingImageData:(id)a3 withCropRect:(CGRect)a4
++ (id)imagePickerForEditingImageData:(id)data withCropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  v9 = [objc_opt_class() imagePickerForEditingImageData:v8 withCropRect:0 backgroundColor:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
+  v9 = [objc_opt_class() imagePickerForEditingImageData:dataCopy withCropRect:0 backgroundColor:{x, y, width, height}];
 
   return v9;
 }

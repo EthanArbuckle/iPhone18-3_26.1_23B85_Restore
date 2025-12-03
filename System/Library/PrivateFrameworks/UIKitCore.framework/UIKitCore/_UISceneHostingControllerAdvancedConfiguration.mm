@@ -1,24 +1,24 @@
 @interface _UISceneHostingControllerAdvancedConfiguration
-- (_UISceneHostingControllerAdvancedConfiguration)initWithClientIdentity:(id)a3;
-- (_UISceneHostingControllerAdvancedConfiguration)initWithProcessIdentity:(id)a3;
+- (_UISceneHostingControllerAdvancedConfiguration)initWithClientIdentity:(id)identity;
+- (_UISceneHostingControllerAdvancedConfiguration)initWithProcessIdentity:(id)identity;
 - (id)sceneHostingSpecification;
-- (void)setSceneIdentifier:(id)a3;
-- (void)setSceneSpecification:(id)a3;
-- (void)setSceneWorkspace:(id)a3;
+- (void)setSceneIdentifier:(id)identifier;
+- (void)setSceneSpecification:(id)specification;
+- (void)setSceneWorkspace:(id)workspace;
 @end
 
 @implementation _UISceneHostingControllerAdvancedConfiguration
 
-- (_UISceneHostingControllerAdvancedConfiguration)initWithClientIdentity:(id)a3
+- (_UISceneHostingControllerAdvancedConfiguration)initWithClientIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = _UISceneHostingControllerAdvancedConfiguration;
   v6 = [(_UISceneHostingControllerAdvancedConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientIdentity, a3);
+    objc_storeStrong(&v6->_clientIdentity, identity);
     [(_UISceneHostingControllerAdvancedConfiguration *)v7 setSceneSpecification:0];
     [(_UISceneHostingControllerAdvancedConfiguration *)v7 setSceneWorkspace:0];
     [(_UISceneHostingControllerAdvancedConfiguration *)v7 setSceneIdentifier:0];
@@ -27,21 +27,21 @@
   return v7;
 }
 
-- (_UISceneHostingControllerAdvancedConfiguration)initWithProcessIdentity:(id)a3
+- (_UISceneHostingControllerAdvancedConfiguration)initWithProcessIdentity:(id)identity
 {
-  v4 = [MEMORY[0x1E699FBD8] identityForProcessIdentity:a3];
+  v4 = [MEMORY[0x1E699FBD8] identityForProcessIdentity:identity];
   v5 = [(_UISceneHostingControllerAdvancedConfiguration *)self initWithClientIdentity:v4];
 
   return v5;
 }
 
-- (void)setSceneSpecification:(id)a3
+- (void)setSceneSpecification:(id)specification
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  specificationCopy = specification;
+  v7 = specificationCopy;
+  if (specificationCopy)
   {
-    v5 = v4;
+    v5 = specificationCopy;
   }
 
   else
@@ -53,13 +53,13 @@
   self->_sceneSpecification = v5;
 }
 
-- (void)setSceneWorkspace:(id)a3
+- (void)setSceneWorkspace:(id)workspace
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  workspaceCopy = workspace;
+  v9 = workspaceCopy;
+  if (workspaceCopy)
   {
-    v5 = v4;
+    v5 = workspaceCopy;
     sceneWorkspace = self->_sceneWorkspace;
     self->_sceneWorkspace = v5;
   }
@@ -82,13 +82,13 @@
   }
 }
 
-- (void)setSceneIdentifier:(id)a3
+- (void)setSceneIdentifier:(id)identifier
 {
-  v4 = a3;
-  v16 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v16 = identifierCopy;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
     sceneIdentifier = self->_sceneIdentifier;
     self->_sceneIdentifier = v5;
   }
@@ -96,14 +96,14 @@
   else
   {
     sceneIdentifier = [(FBSSceneClientIdentity *)self->_clientIdentity processIdentity];
-    v7 = [sceneIdentifier embeddedApplicationIdentifier];
-    if (v7 || ([sceneIdentifier xpcServiceIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    embeddedApplicationIdentifier = [sceneIdentifier embeddedApplicationIdentifier];
+    if (embeddedApplicationIdentifier || ([sceneIdentifier xpcServiceIdentifier], (embeddedApplicationIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = v7;
+      uUID2 = embeddedApplicationIdentifier;
       v9 = MEMORY[0x1E696AEC0];
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
-      v12 = [v9 stringWithFormat:@"UIHostedScene-%@-%@", v8, v11];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v12 = [v9 stringWithFormat:@"UIHostedScene-%@-%@", uUID2, uUIDString];
       v13 = self->_sceneIdentifier;
       self->_sceneIdentifier = v12;
     }
@@ -111,10 +111,10 @@
     else
     {
       v14 = MEMORY[0x1E696AEC0];
-      v8 = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [v8 UUIDString];
-      v15 = [v14 stringWithFormat:@"UIHostedScene-%@", v10];
-      v11 = self->_sceneIdentifier;
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [uUID2 UUIDString];
+      v15 = [v14 stringWithFormat:@"UIHostedScene-%@", uUID];
+      uUIDString = self->_sceneIdentifier;
       self->_sceneIdentifier = v15;
     }
   }

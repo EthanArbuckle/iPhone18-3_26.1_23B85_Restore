@@ -1,11 +1,11 @@
 @interface RMModelStatusSoftwareUpdateInstallReason
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithReason:(id)a3;
-+ (id)buildWithReason:(id)a3 declarationId:(id)a4;
++ (id)buildRequiredOnlyWithReason:(id)reason;
++ (id)buildWithReason:(id)reason declarationId:(id)id;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusSoftwareUpdateInstallReason
@@ -24,23 +24,23 @@
   return v4;
 }
 
-+ (id)buildWithReason:(id)a3 declarationId:(id)a4
++ (id)buildWithReason:(id)reason declarationId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
+  idCopy = id;
+  reasonCopy = reason;
   v7 = objc_opt_new();
-  [v7 setStatusReason:v6];
+  [v7 setStatusReason:reasonCopy];
 
-  [v7 setStatusDeclarationId:v5];
+  [v7 setStatusDeclarationId:idCopy];
 
   return v7;
 }
 
-+ (id)buildRequiredOnlyWithReason:(id)a3
++ (id)buildRequiredOnlyWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = objc_opt_new();
-  [v4 setStatusReason:v3];
+  [v4 setStatusReason:reasonCopy];
 
   return v4;
 }
@@ -90,12 +90,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelStatusSoftwareUpdateInstallReason allowedStatusKeys];
   [v10 minusSet:v11];
@@ -103,9 +103,9 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:v7 usingKey:@"reason" forKeyPath:@"statusReason" validator:&__block_literal_global_27 isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"reason" forKeyPath:@"statusReason" validator:&__block_literal_global_27 isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"declaration-id" forKeyPath:@"statusDeclarationId" isRequired:0 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"declaration-id" forKeyPath:@"statusDeclarationId" isRequired:0 defaultValue:0 error:error];
   }
 
   else
@@ -125,25 +125,25 @@ uint64_t __94__RMModelStatusSoftwareUpdateInstallReason_loadPayloadFromDictionar
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelStatusSoftwareUpdateInstallReason *)self statusReason];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"reason" value:v5 itemSerializer:&__block_literal_global_58 isRequired:1 defaultValue:0];
+  statusReason = [(RMModelStatusSoftwareUpdateInstallReason *)self statusReason];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v4 usingKey:@"reason" value:statusReason itemSerializer:&__block_literal_global_58 isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelStatusSoftwareUpdateInstallReason *)self statusDeclarationId];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-id" value:v6 isRequired:0 defaultValue:0];
+  statusDeclarationId = [(RMModelStatusSoftwareUpdateInstallReason *)self statusDeclarationId];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"declaration-id" value:statusDeclarationId isRequired:0 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelStatusSoftwareUpdateInstallReason;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSArray *)self->_statusReason copy];
   v6 = v4[2];
   v4[2] = v5;

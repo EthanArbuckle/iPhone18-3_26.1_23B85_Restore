@@ -3,22 +3,22 @@
 + (id)morePlugin;
 + (id)recentPlugin;
 + (id)sharedInstance;
-- (BOOL)_addPluginToRecentsFrontIfNeeded:(id)a3 frontOfRecents:(id)a4 pluginMap:(id)a5 fallbackMap:(id)a6;
+- (BOOL)_addPluginToRecentsFrontIfNeeded:(id)needed frontOfRecents:(id)recents pluginMap:(id)map fallbackMap:(id)fallbackMap;
 - (BOOL)_shouldForceRegenerateIndexPathMap;
 - (BOOL)_shouldForceRegenerateStickersIndexPathMap;
 - (BOOL)_shouldShowActivity;
-- (BOOL)_shouldUninstallContainingBundle:(id)a3;
+- (BOOL)_shouldUninstallContainingBundle:(id)bundle;
 - (BOOL)hasLoadedExtensions;
-- (BOOL)isBalloonPluginVisible:(id)a3;
-- (BOOL)isEnabledAndVisible:(id)a3;
-- (BOOL)isInternalPlugin:(id)a3;
-- (BOOL)isPluginEnabled:(id)a3;
-- (BOOL)isPluginHiddenFromSendMenuAndStickers:(id)a3;
-- (BOOL)isPluginSeen:(id)a3;
-- (BOOL)isPluginSeenWithInstalledVersion:(id)a3;
-- (BOOL)isPluginSystemApp:(id)a3;
-- (BOOL)isPluginVisible:(id)a3;
-- (BOOL)isViewController:(id)a3 fromPluginWithIdentifier:(id)a4;
+- (BOOL)isBalloonPluginVisible:(id)visible;
+- (BOOL)isEnabledAndVisible:(id)visible;
+- (BOOL)isInternalPlugin:(id)plugin;
+- (BOOL)isPluginEnabled:(id)enabled;
+- (BOOL)isPluginHiddenFromSendMenuAndStickers:(id)stickers;
+- (BOOL)isPluginSeen:(id)seen;
+- (BOOL)isPluginSeenWithInstalledVersion:(id)version;
+- (BOOL)isPluginSystemApp:(id)app;
+- (BOOL)isPluginVisible:(id)visible;
+- (BOOL)isViewController:(id)controller fromPluginWithIdentifier:(id)identifier;
 - (CKBalloonPluginManager)init;
 - (CKPreviewDispatchCache)snapshotCache;
 - (NSArray)allEnabledPlugins;
@@ -41,74 +41,74 @@
 - (NSMutableDictionary)activeBrowsers;
 - (NSMutableSet)prefetchIconKeys;
 - (__CFString)healthKitAchievementAvailabilityChangedNotification;
-- (id)_decodeIndexPathMap:(id)a3 allowMigration:(BOOL)a4;
-- (id)_encodeIndexPathMap:(id)a3;
-- (id)_pluginIndexPathForFavoritePluginWithIdentifier:(id)a3 pluginMap:(id)a4 fallbackMap:(id)a5;
-- (id)_pluginIndexPathForPluginWithIdentifier:(id)a3 pluginMap:(id)a4;
-- (id)allPluginsPassingTest:(id)a3;
+- (id)_decodeIndexPathMap:(id)map allowMigration:(BOOL)migration;
+- (id)_encodeIndexPathMap:(id)map;
+- (id)_pluginIndexPathForFavoritePluginWithIdentifier:(id)identifier pluginMap:(id)map fallbackMap:(id)fallbackMap;
+- (id)_pluginIndexPathForPluginWithIdentifier:(id)identifier pluginMap:(id)map;
+- (id)allPluginsPassingTest:(id)test;
 - (id)allPotentiallyVisiblePlugins;
-- (id)balloonPluginIdentifierForAppExtensionBundleIdentifier:(id)a3;
-- (id)browserSnapshotForKey:(id)a3;
+- (id)balloonPluginIdentifierForAppExtensionBundleIdentifier:(id)identifier;
+- (id)browserSnapshotForKey:(id)key;
 - (id)bundleIdentifiersForCurrentExtensionConsumers;
 - (id)candidateAppStripPlugins;
-- (id)createFakeAppsForPPTTesting:(unint64_t)a3;
+- (id)createFakeAppsForPPTTesting:(unint64_t)testing;
 - (id)descriptionOfVisibleDrawerPlugins;
-- (id)digitalTouchViewControllerWithDataSource:(id)a3;
-- (id)existingViewControllerForPluginIdentifier:(id)a3;
-- (id)filteredArrayOfInstallationsThatShouldBeVisible:(id)a3;
-- (id)handwritingViewControllerWithPluginPayloads:(id)a3;
-- (id)launchTimeForPlugin:(id)a3;
-- (id)newViewControllerForPluginIdentifier:(id)a3 dataSource:(id)a4;
-- (id)orderedPlugins:(BOOL)a3;
-- (id)photosBrowserViewControllerWithPluginPayloads:(id)a3;
-- (id)pluginForAdamID:(id)a3;
-- (id)pluginForExtensionIdentifier:(id)a3;
-- (id)pluginForIdentifier:(id)a3;
-- (id)viewControllerForPluginIdentifier:(id)a3;
-- (id)viewControllerForPluginIdentifier:(id)a3 dataSource:(id)a4;
-- (unint64_t)launchStatusForPlugin:(id)a3;
+- (id)digitalTouchViewControllerWithDataSource:(id)source;
+- (id)existingViewControllerForPluginIdentifier:(id)identifier;
+- (id)filteredArrayOfInstallationsThatShouldBeVisible:(id)visible;
+- (id)handwritingViewControllerWithPluginPayloads:(id)payloads;
+- (id)launchTimeForPlugin:(id)plugin;
+- (id)newViewControllerForPluginIdentifier:(id)identifier dataSource:(id)source;
+- (id)orderedPlugins:(BOOL)plugins;
+- (id)photosBrowserViewControllerWithPluginPayloads:(id)payloads;
+- (id)pluginForAdamID:(id)d;
+- (id)pluginForExtensionIdentifier:(id)identifier;
+- (id)pluginForIdentifier:(id)identifier;
+- (id)viewControllerForPluginIdentifier:(id)identifier;
+- (id)viewControllerForPluginIdentifier:(id)identifier dataSource:(id)source;
+- (unint64_t)launchStatusForPlugin:(id)plugin;
 - (unint64_t)unseenPluginCount;
-- (void)_addAppWithBalloonIdentifier:(id)a3;
-- (void)_disableAppWithBalloonIdentifier:(id)a3;
-- (void)_invalidatePluginForKey:(id)a3;
+- (void)_addAppWithBalloonIdentifier:(id)identifier;
+- (void)_disableAppWithBalloonIdentifier:(id)identifier;
+- (void)_invalidatePluginForKey:(id)key;
 - (void)_refreshVisibleDrawerPluginsDueToAppInstallationChange;
-- (void)_setSeen:(BOOL)a3 forPlugin:(id)a4;
+- (void)_setSeen:(BOOL)seen forPlugin:(id)plugin;
 - (void)_updateHistoricalPluginIndexPathMap;
-- (void)addExtensionConsumer:(id)a3;
-- (void)appInstallationWatcher:(id)a3 addedAppInstallation:(id)a4;
-- (void)appInstallationWatcher:(id)a3 changedAppInstallation:(id)a4;
+- (void)addExtensionConsumer:(id)consumer;
+- (void)appInstallationWatcher:(id)watcher addedAppInstallation:(id)installation;
+- (void)appInstallationWatcher:(id)watcher changedAppInstallation:(id)installation;
 - (void)cleanSeenMap;
 - (void)clearBalloonPluginCache;
 - (void)commitInteractionTimeOrderingChanges;
 - (void)dealloc;
-- (void)deleteAppWithIdentifier:(id)a3 completion:(id)a4;
+- (void)deleteAppWithIdentifier:(id)identifier completion:(id)completion;
 - (void)forceKillNonCameraRemoteExtensionsImmediately;
-- (void)forceKillRemoteExtensionsWithDelay:(BOOL)a3 skipCameraApp:(BOOL)a4;
-- (void)forceTearDownRemoteViewsSkippingCameraApp:(BOOL)a3;
-- (void)handleManagedConfigSettingsChangeNotification:(id)a3;
+- (void)forceKillRemoteExtensionsWithDelay:(BOOL)delay skipCameraApp:(BOOL)app;
+- (void)forceTearDownRemoteViewsSkippingCameraApp:(BOOL)app;
+- (void)handleManagedConfigSettingsChangeNotification:(id)notification;
 - (void)healthStickerStatusChanged;
-- (void)invalidateAllActivePluginsSkippingCameraApp:(BOOL)a3;
+- (void)invalidateAllActivePluginsSkippingCameraApp:(BOOL)app;
 - (void)invalidateIconCache;
 - (void)prepareForSuspend;
 - (void)refreshPlugins;
 - (void)regenerateCombinedStickersAppsIndexPaths;
 - (void)regeneratePluginIndexPaths;
-- (void)reloadInstalledApps:(id)a3;
-- (void)removeAppWithIdentifier:(id)a3;
-- (void)removeVisibleInstallationWithID:(id)a3;
-- (void)saveCombinedAppsWithNotification:(BOOL)a3;
-- (void)saveWithNotification:(BOOL)a3;
-- (void)setAppStoreAutoEnableToggled:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3 forPlugin:(id)a4;
-- (void)setPlugin:(id)a3 hiddenInSendMenuAndStickers:(BOOL)a4;
-- (void)setSeen:(BOOL)a3 forPlugin:(id)a4;
+- (void)reloadInstalledApps:(id)apps;
+- (void)removeAppWithIdentifier:(id)identifier;
+- (void)removeVisibleInstallationWithID:(id)d;
+- (void)saveCombinedAppsWithNotification:(BOOL)notification;
+- (void)saveWithNotification:(BOOL)notification;
+- (void)setAppStoreAutoEnableToggled:(BOOL)toggled;
+- (void)setEnabled:(BOOL)enabled forPlugin:(id)plugin;
+- (void)setPlugin:(id)plugin hiddenInSendMenuAndStickers:(BOOL)stickers;
+- (void)setSeen:(BOOL)seen forPlugin:(id)plugin;
 - (void)updateAppInstallations;
-- (void)updateIndexPath:(id)a3 forCombinedStickerApp:(id)a4;
-- (void)updateIndexPath:(id)a3 forPlugin:(id)a4 isDrawerPluginPath:(BOOL)a5;
-- (void)updateInteractionTimeForPlugin:(id)a3;
-- (void)updateLaunchStatus:(unint64_t)a3 forPlugin:(id)a4 withNotification:(BOOL)a5;
-- (void)updateLaunchTimeForPlugin:(id)a3;
-- (void)updateSnapshotForBrowserViewController:(id)a3 currentBounds:(CGRect)a4;
+- (void)updateIndexPath:(id)path forCombinedStickerApp:(id)app;
+- (void)updateIndexPath:(id)path forPlugin:(id)plugin isDrawerPluginPath:(BOOL)pluginPath;
+- (void)updateInteractionTimeForPlugin:(id)plugin;
+- (void)updateLaunchStatus:(unint64_t)status forPlugin:(id)plugin withNotification:(BOOL)notification;
+- (void)updateLaunchTimeForPlugin:(id)plugin;
+- (void)updateSnapshotForBrowserViewController:(id)controller currentBounds:(CGRect)bounds;
 @end
 
 @implementation CKBalloonPluginManager
@@ -119,7 +119,7 @@
   block[1] = 3221225472;
   block[2] = __40__CKBalloonPluginManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -252,10 +252,10 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
       v10 = v2->_pluginSeenMap;
     }
 
-    v14 = [(NSDictionary *)v10 allValues];
-    v15 = [v14 firstObject];
+    allValues = [(NSDictionary *)v10 allValues];
+    firstObject = [allValues firstObject];
 
-    if (v15)
+    if (firstObject)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -287,27 +287,27 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
       v2->_pluginLaunchTimeMap = v21;
     }
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     currentExtensionConsumers = v2->_currentExtensionConsumers;
-    v2->_currentExtensionConsumers = v23;
+    v2->_currentExtensionConsumers = weakObjectsHashTable;
 
     [(CKBalloonPluginManager *)v2 setNumberOfSectionsToKeep:0];
     v2->_appStoreAutoEnableToggled = IMGetDomainBoolForKey();
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v2 selector:sel_handleManagedConfigSettingsChangeNotification_ name:*MEMORY[0x1E69ADD68] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleManagedConfigSettingsChangeNotification_ name:*MEMORY[0x1E69ADD68] object:0];
 
     [(CKBalloonPluginManager *)v2 handleManagedConfigSettingsChangeNotification:0];
     v26 = MEMORY[0x1E695DFD8];
-    v27 = [(CKBalloonPluginManager *)v2 visibleSwitcherPlugins];
-    v28 = [v27 arrayByApplyingSelector:sel_identifier];
+    visibleSwitcherPlugins = [(CKBalloonPluginManager *)v2 visibleSwitcherPlugins];
+    v28 = [visibleSwitcherPlugins arrayByApplyingSelector:sel_identifier];
     v29 = [v26 setWithArray:v28];
     oldVisibleSwitcherPluginIdentifiers = v2->_oldVisibleSwitcherPluginIdentifiers;
     v2->_oldVisibleSwitcherPluginIdentifiers = v29;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _HealthStickerStatusChanged, [(CKBalloonPluginManager *)v2 healthKitAchievementAvailabilityChangedNotification], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v2 selector:sel_reloadInstalledApps_ name:*MEMORY[0x1E69A56D8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_reloadInstalledApps_ name:*MEMORY[0x1E69A56D8] object:0];
 
     CKShouldShowSURF();
   }
@@ -317,8 +317,8 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[CKAppInstallationWatcher sharedInstance];
   [v4 removeObserver:self];
@@ -373,11 +373,11 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
   return combinedStickersAppsIndexPathMap;
 }
 
-- (void)addExtensionConsumer:(id)a3
+- (void)addExtensionConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self currentExtensionConsumers];
-  [v5 addObject:v4];
+  consumerCopy = consumer;
+  currentExtensionConsumers = [(CKBalloonPluginManager *)self currentExtensionConsumers];
+  [currentExtensionConsumers addObject:consumerCopy];
 }
 
 - (void)refreshPlugins
@@ -423,10 +423,10 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
   self->_combinedStickersAppsIndexPathMap = 0;
 }
 
-- (void)reloadInstalledApps:(id)a3
+- (void)reloadInstalledApps:(id)apps
 {
   v53 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  appsCopy = apps;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -458,19 +458,19 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
     }
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"CKCombinedStickerAppsOrderChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"CKCombinedStickerAppsOrderChangedNotification" object:0];
 
-  v8 = [(CKBalloonPluginManager *)self visibleSwitcherPlugins];
-  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  visibleSwitcherPlugins = [(CKBalloonPluginManager *)self visibleSwitcherPlugins];
+  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(visibleSwitcherPlugins, "count")}];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v8;
+  v10 = visibleSwitcherPlugins;
   v11 = [v10 countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v11)
   {
@@ -488,8 +488,8 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 identifier];
-          [(NSSet *)v9 addObject:v15];
+          identifier = [v14 identifier];
+          [(NSSet *)v9 addObject:identifier];
         }
       }
 
@@ -567,13 +567,13 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
 
     if ([v16 count] || objc_msgSend(v22, "count"))
     {
-      v28 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
       v48[0] = @"CKBrowserSelectionControllerInstalledPluginsKey";
       v48[1] = @"CKBrowserSelectionControllerUninstalledPluginsKey";
       v49[0] = v22;
       v49[1] = v16;
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
-      [v28 postNotificationName:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0 userInfo:v29];
+      [defaultCenter3 postNotificationName:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0 userInfo:v29];
     }
   }
 
@@ -581,14 +581,14 @@ void __36__CKBalloonPluginManager_morePlugin__block_invoke()
   self->_oldVisibleSwitcherPluginIdentifiers = v9;
   v31 = v9;
 
-  v32 = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
+  combinedStickersAppsIndexPathMap = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
   [(CKBalloonPluginManager *)self cleanSeenMap];
   [(CKBalloonPluginManager *)self invalidateIconCache];
   [(CKBalloonPluginManager *)self saveWithNotification:0];
   [(CKBalloonPluginManager *)self saveCombinedAppsWithNotification:0];
-  v33 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v33 postNotificationName:@"CKBrowserSelectionControllerReloadedInstallationsNotification" object:0 userInfo:0];
+  [defaultCenter4 postNotificationName:@"CKBrowserSelectionControllerReloadedInstallationsNotification" object:0 userInfo:0];
 }
 
 - (__CFString)healthKitAchievementAvailabilityChangedNotification
@@ -621,17 +621,17 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
     }
   }
 
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
 }
 
-- (BOOL)_shouldUninstallContainingBundle:(id)a3
+- (BOOL)_shouldUninstallContainingBundle:(id)bundle
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 isLaunchProhibited];
-  v5 = [v3 applicationType];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69635B8]];
+  bundleCopy = bundle;
+  isLaunchProhibited = [bundleCopy isLaunchProhibited];
+  applicationType = [bundleCopy applicationType];
+  v6 = [applicationType isEqualToString:*MEMORY[0x1E69635B8]];
 
   if (IMOSLoggingEnabled())
   {
@@ -639,7 +639,7 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v4)
+      if (isLaunchProhibited)
       {
         v9 = @"YES";
       }
@@ -650,7 +650,7 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
       }
 
       v12 = 138413058;
-      v13 = v3;
+      v13 = bundleCopy;
       if (v6)
       {
         v10 = @"YES";
@@ -664,7 +664,7 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
       v15 = v9;
       v14 = 2112;
       v16 = 2112;
-      if ((v4 & v6) != 0)
+      if ((isLaunchProhibited & v6) != 0)
       {
         v8 = @"YES";
       }
@@ -676,15 +676,15 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
     }
   }
 
-  return v4 & v6;
+  return isLaunchProhibited & v6;
 }
 
-- (void)_addAppWithBalloonIdentifier:(id)a3
+- (void)_addAppWithBalloonIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (identifierCopy)
   {
     if (v4)
     {
@@ -692,22 +692,22 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = identifierCopy;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "_addAppWithBalloonIdentifier id %@", &v8, 0xCu);
       }
     }
 
-    if ([v3 isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
+    if ([identifierCopy isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
     {
-      v6 = [objc_opt_class() recentPlugin];
-      v7 = [v6 app];
+      recentPlugin = [objc_opt_class() recentPlugin];
+      v7 = [recentPlugin app];
       [v7 setIsEnabled:1];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      [v6 setPluginEnabled:1 identifier:v3];
+      recentPlugin = [MEMORY[0x1E69A5AD0] sharedInstance];
+      [recentPlugin setPluginEnabled:1 identifier:identifierCopy];
     }
   }
 
@@ -718,23 +718,23 @@ CFStringRef __77__CKBalloonPluginManager_healthKitAchievementAvailabilityChanged
       goto LABEL_14;
     }
 
-    v6 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    recentPlugin = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(recentPlugin, OS_LOG_TYPE_INFO))
     {
       LOWORD(v8) = 0;
-      _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "CKBalloonPluginManager nil idenitifier passed to _addAppWithBalloonIdentifier", &v8, 2u);
+      _os_log_impl(&dword_19020E000, recentPlugin, OS_LOG_TYPE_INFO, "CKBalloonPluginManager nil idenitifier passed to _addAppWithBalloonIdentifier", &v8, 2u);
     }
   }
 
 LABEL_14:
 }
 
-- (void)_disableAppWithBalloonIdentifier:(id)a3
+- (void)_disableAppWithBalloonIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (identifierCopy)
   {
     if (v4)
     {
@@ -742,22 +742,22 @@ LABEL_14:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v8 = 138412290;
-        v9 = v3;
+        v9 = identifierCopy;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "_disableAppWithBalloonIdentifier id %@", &v8, 0xCu);
       }
     }
 
-    if ([v3 isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
+    if ([identifierCopy isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
     {
-      v6 = [objc_opt_class() recentPlugin];
-      v7 = [v6 app];
+      recentPlugin = [objc_opt_class() recentPlugin];
+      v7 = [recentPlugin app];
       [v7 setIsEnabled:0];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      [v6 setPluginEnabled:0 identifier:v3];
+      recentPlugin = [MEMORY[0x1E69A5AD0] sharedInstance];
+      [recentPlugin setPluginEnabled:0 identifier:identifierCopy];
     }
   }
 
@@ -768,23 +768,23 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v6 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    recentPlugin = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(recentPlugin, OS_LOG_TYPE_INFO))
     {
       LOWORD(v8) = 0;
-      _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "CKBalloonPluginManager nil idenitifier passed to _disableAppWithBalloonIdentifier", &v8, 2u);
+      _os_log_impl(&dword_19020E000, recentPlugin, OS_LOG_TYPE_INFO, "CKBalloonPluginManager nil idenitifier passed to _disableAppWithBalloonIdentifier", &v8, 2u);
     }
   }
 
 LABEL_14:
 }
 
-- (void)removeAppWithIdentifier:(id)a3
+- (void)removeAppWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (identifierCopy)
   {
     if (v5)
     {
@@ -792,35 +792,35 @@ LABEL_14:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v27 = v4;
+        v27 = identifierCopy;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "removeAppWithBalloonIdentifier id %@", buf, 0xCu);
       }
     }
 
-    v7 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v8 = [v7 balloonPluginForBundleID:v4];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    v8 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:identifierCopy];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if ([v4 isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
+      if ([identifierCopy isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
       {
-        v9 = [objc_opt_class() recentPlugin];
-        v23 = [v9 app];
+        recentPlugin = [objc_opt_class() recentPlugin];
+        v23 = [recentPlugin app];
         [v23 setIsEnabled:0];
       }
 
       else
       {
-        v9 = [MEMORY[0x1E69A5AD0] sharedInstance];
-        [v9 setPluginEnabled:0 identifier:v4];
+        recentPlugin = [MEMORY[0x1E69A5AD0] sharedInstance];
+        [recentPlugin setPluginEnabled:0 identifier:identifierCopy];
       }
 
       goto LABEL_38;
     }
 
-    v9 = [v8 proxy];
-    if (!v8 || (([v8 identifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", v4), v9) ? (v12 = v11) : (v12 = 0), v10, (v12 & 1) == 0))
+    recentPlugin = [v8 proxy];
+    if (!v8 || (([v8 identifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", identifierCopy), recentPlugin) ? (v12 = v11) : (v12 = 0), v10, (v12 & 1) == 0))
     {
       if (IMOSLoggingEnabled())
       {
@@ -830,7 +830,7 @@ LABEL_14:
           *buf = 138412802;
           v27 = v8;
           v28 = 2112;
-          v29 = v4;
+          v29 = identifierCopy;
           v30 = 2112;
           v31 = @"YES";
           _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "Did not find plugin %@ for identifier %@ isAppExtension %@", buf, 0x20u);
@@ -840,17 +840,17 @@ LABEL_14:
       goto LABEL_38;
     }
 
-    v13 = [v9 containingBundle];
-    if ([(CKBalloonPluginManager *)self _shouldUninstallContainingBundle:v13])
+    containingBundle = [recentPlugin containingBundle];
+    if ([(CKBalloonPluginManager *)self _shouldUninstallContainingBundle:containingBundle])
     {
       if (IMOSLoggingEnabled())
       {
         v14 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [v13 bundleIdentifier];
+          bundleIdentifier = [containingBundle bundleIdentifier];
           *buf = 138412290;
-          v27 = v15;
+          v27 = bundleIdentifier;
           _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Uninstalling app %@", buf, 0xCu);
         }
       }
@@ -861,33 +861,33 @@ LABEL_14:
         goto LABEL_37;
       }
 
-      v17 = [v13 bundleIdentifier];
+      bundleIdentifier2 = [containingBundle bundleIdentifier];
       v25 = 0;
-      [v16 uninstallAppWithBundleID:v17 error:&v25];
-      v18 = v25;
+      [v16 uninstallAppWithBundleID:bundleIdentifier2 error:&v25];
+      mEMORY[0x1E69A5AD0]3 = v25;
 
-      if (v18 && IMOSLoggingEnabled())
+      if (mEMORY[0x1E69A5AD0]3 && IMOSLoggingEnabled())
       {
         v19 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [v13 bundleIdentifier];
+          bundleIdentifier3 = [containingBundle bundleIdentifier];
           *buf = 138412546;
-          v27 = v20;
+          v27 = bundleIdentifier3;
           v28 = 2112;
-          v29 = v18;
+          v29 = mEMORY[0x1E69A5AD0]3;
           _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "Error when uninstalling app with bundleID %@ (error: %@)", buf, 0x16u);
         }
       }
 
-      v21 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      [v21 removePluginWithBundleID:v4];
+      mEMORY[0x1E69A5AD0]2 = [MEMORY[0x1E69A5AD0] sharedInstance];
+      [mEMORY[0x1E69A5AD0]2 removePluginWithBundleID:identifierCopy];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      [v18 setPluginEnabled:0 identifier:v4];
+      mEMORY[0x1E69A5AD0]3 = [MEMORY[0x1E69A5AD0] sharedInstance];
+      [mEMORY[0x1E69A5AD0]3 setPluginEnabled:0 identifier:identifierCopy];
     }
 
 LABEL_37:
@@ -909,22 +909,22 @@ LABEL_38:
 LABEL_39:
 }
 
-- (void)deleteAppWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteAppWithIdentifier:(id)identifier completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__CKBalloonPluginManager_deleteAppWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_1E72ED1F0;
-  v7 = v6;
+  v7 = completionCopy;
   v32 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v10 = [v9 isStickersAppEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-  if ((v10 & 1) == 0)
+  if ((isStickersAppEnabled & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -940,7 +940,7 @@ LABEL_39:
   }
 
   v11 = IMOSLoggingEnabled();
-  if (!v5)
+  if (!identifierCopy)
   {
     if (v11)
     {
@@ -963,29 +963,29 @@ LABEL_24:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v5;
+      v34 = identifierCopy;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "deleteAppWithIdentifier id %@", buf, 0xCu);
     }
   }
 
-  v13 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v14 = [v13 balloonPluginForBundleID:v5];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v14 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 proxy];
-    if (v14 && (([v14 identifier], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", v5), v15) ? (v18 = v17) : (v18 = 0), v16, (v18 & 1) != 0))
+    proxy = [v14 proxy];
+    if (v14 && (([v14 identifier], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqualToString:", identifierCopy), proxy) ? (v18 = v17) : (v18 = 0), v16, (v18 & 1) != 0))
     {
-      v19 = [v15 containingBundle];
+      containingBundle = [proxy containingBundle];
       if (IMOSLoggingEnabled())
       {
         v20 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [v19 bundleIdentifier];
+          bundleIdentifier = [containingBundle bundleIdentifier];
           *buf = 138412290;
-          v34 = v21;
+          v34 = bundleIdentifier;
           _os_log_impl(&dword_19020E000, v20, OS_LOG_TYPE_INFO, "Uninstalling app %@", buf, 0xCu);
         }
       }
@@ -993,15 +993,15 @@ LABEL_24:
       v22 = MEMORY[0x193AF5EC0](@"IXAppInstallCoordinator", @"InstallCoordination");
       if (v22)
       {
-        v23 = [v19 bundleIdentifier];
+        bundleIdentifier2 = [containingBundle bundleIdentifier];
         v27[0] = MEMORY[0x1E69E9820];
         v27[1] = 3221225472;
         v27[2] = __61__CKBalloonPluginManager_deleteAppWithIdentifier_completion___block_invoke_134;
         v27[3] = &unk_1E72F09E8;
-        v28 = v19;
+        v28 = containingBundle;
         v30 = v8;
-        v29 = v5;
-        [v22 uninstallAppWithBundleID:v23 requestUserConfirmation:1 completion:v27];
+        v29 = identifierCopy;
+        [v22 uninstallAppWithBundleID:bundleIdentifier2 requestUserConfirmation:1 completion:v27];
       }
     }
 
@@ -1015,7 +1015,7 @@ LABEL_24:
           *buf = 138412802;
           v34 = v14;
           v35 = 2112;
-          v36 = v5;
+          v36 = identifierCopy;
           v37 = 2112;
           v38 = @"YES";
           _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "Did not find plugin %@ for identifier %@ isAppExtension %@", buf, 0x20u);
@@ -1072,49 +1072,49 @@ void __61__CKBalloonPluginManager_deleteAppWithIdentifier_completion___block_inv
   }
 }
 
-- (void)updateInteractionTimeForPlugin:(id)a3
+- (void)updateInteractionTimeForPlugin:(id)plugin
 {
-  if (a3)
+  if (plugin)
   {
-    v4 = a3;
-    v5 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+    pluginCopy = plugin;
+    mRUPluginInteractionList = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
 
-    if (!v5)
+    if (!mRUPluginInteractionList)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
-      [(CKBalloonPluginManager *)self setMRUPluginInteractionList:v6];
+      array = [MEMORY[0x1E695DF70] array];
+      [(CKBalloonPluginManager *)self setMRUPluginInteractionList:array];
     }
 
-    v7 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
-    [v7 removeObject:v4];
+    mRUPluginInteractionList2 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+    [mRUPluginInteractionList2 removeObject:pluginCopy];
 
-    v8 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
-    [v8 insertObject:v4 atIndex:0];
+    mRUPluginInteractionList3 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+    [mRUPluginInteractionList3 insertObject:pluginCopy atIndex:0];
   }
 }
 
 - (void)commitInteractionTimeOrderingChanges
 {
-  v3 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
-  if (v3)
+  mRUPluginInteractionList = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+  if (mRUPluginInteractionList)
   {
-    v4 = v3;
-    v5 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
-    v6 = [v5 count];
+    v4 = mRUPluginInteractionList;
+    mRUPluginInteractionList2 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+    v6 = [mRUPluginInteractionList2 count];
 
     if (v6)
     {
-      v7 = [(CKBalloonPluginManager *)self recentAppStripPlugins];
-      v8 = [v7 mutableCopy];
+      recentAppStripPlugins = [(CKBalloonPluginManager *)self recentAppStripPlugins];
+      v8 = [recentAppStripPlugins mutableCopy];
 
-      v9 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
+      mRUPluginInteractionList3 = [(CKBalloonPluginManager *)self MRUPluginInteractionList];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __62__CKBalloonPluginManager_commitInteractionTimeOrderingChanges__block_invoke;
       v14[3] = &unk_1E72F0A10;
       v15 = v8;
       v10 = v8;
-      [v9 enumerateObjectsWithOptions:2 usingBlock:v14];
+      [mRUPluginInteractionList3 enumerateObjectsWithOptions:2 usingBlock:v14];
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -1124,10 +1124,10 @@ void __61__CKBalloonPluginManager_deleteAppWithIdentifier_completion___block_inv
       [v10 enumerateObjectsUsingBlock:v13];
       [(CKBalloonPluginManager *)self _updateHistoricalPluginIndexPathMap];
       [(CKBalloonPluginManager *)self refreshPlugins];
-      v11 = [(CKBalloonPluginManager *)self visiblePlugins];
+      visiblePlugins = [(CKBalloonPluginManager *)self visiblePlugins];
       [(CKBalloonPluginManager *)self saveWithNotification:1];
-      v12 = [MEMORY[0x1E695DF70] array];
-      [(CKBalloonPluginManager *)self setMRUPluginInteractionList:v12];
+      array = [MEMORY[0x1E695DF70] array];
+      [(CKBalloonPluginManager *)self setMRUPluginInteractionList:array];
     }
   }
 }
@@ -1193,9 +1193,9 @@ void __62__CKBalloonPluginManager_commitInteractionTimeOrderingChanges__block_in
 
 - (void)_updateHistoricalPluginIndexPathMap
 {
-  v3 = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
+  historicalPluginIndexPathMap = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
 
-  if (!v3)
+  if (!historicalPluginIndexPathMap)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [(CKBalloonPluginManager *)self setHistoricalPluginIndexPathMap:v4];
@@ -1203,23 +1203,23 @@ void __62__CKBalloonPluginManager_commitInteractionTimeOrderingChanges__block_in
 
   if (self->_pluginIndexPathMap)
   {
-    v5 = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
-    [v5 addEntriesFromDictionary:self->_pluginIndexPathMap];
+    historicalPluginIndexPathMap2 = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
+    [historicalPluginIndexPathMap2 addEntriesFromDictionary:self->_pluginIndexPathMap];
   }
 }
 
-- (void)setEnabled:(BOOL)a3 forPlugin:(id)a4
+- (void)setEnabled:(BOOL)enabled forPlugin:(id)plugin
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  pluginCopy = plugin;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"Disabling";
-      if (v4)
+      if (enabledCopy)
       {
         v8 = @"Enabling";
       }
@@ -1227,52 +1227,52 @@ void __62__CKBalloonPluginManager_commitInteractionTimeOrderingChanges__block_in
       v9 = 138412546;
       v10 = v8;
       v11 = 2112;
-      v12 = v6;
+      v12 = pluginCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "%@ plugin %@.", &v9, 0x16u);
     }
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    [(CKBalloonPluginManager *)self _addAppWithBalloonIdentifier:v6];
+    [(CKBalloonPluginManager *)self _addAppWithBalloonIdentifier:pluginCopy];
   }
 
   else
   {
-    [(CKBalloonPluginManager *)self _disableAppWithBalloonIdentifier:v6];
+    [(CKBalloonPluginManager *)self _disableAppWithBalloonIdentifier:pluginCopy];
   }
 }
 
-- (BOOL)isPluginEnabled:(id)a3
+- (BOOL)isPluginEnabled:(id)enabled
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  enabledCopy = enabled;
+  v5 = enabledCopy;
+  if (enabledCopy)
   {
     v6 = *MEMORY[0x1E69A6A10];
-    if ([v4 isEqualToString:*MEMORY[0x1E69A6A10]])
+    if ([enabledCopy isEqualToString:*MEMORY[0x1E69A6A10]])
     {
-      v7 = [objc_opt_class() recentPlugin];
+      recentPlugin = [objc_opt_class() recentPlugin];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      v7 = [v10 balloonPluginForBundleID:v5];
+      mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+      recentPlugin = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v5];
     }
 
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v12 = [v11 isClingEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-    if (v12)
+    if (isClingEnabled)
     {
-      v13 = [v7 identifier];
-      v9 = [v13 isEqualToString:v6] ^ 1;
+      identifier = [recentPlugin identifier];
+      v9 = [identifier isEqualToString:v6] ^ 1;
     }
 
     else
     {
-      if (!v7)
+      if (!recentPlugin)
       {
         LOBYTE(v9) = 1;
 LABEL_18:
@@ -1296,8 +1296,8 @@ LABEL_18:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v16 = [v7 plugin];
-              LOBYTE(v9) = [v16 userElection] == 1;
+              plugin = [recentPlugin plugin];
+              LOBYTE(v9) = [plugin userElection] == 1;
             }
           }
         }
@@ -1305,15 +1305,15 @@ LABEL_18:
         goto LABEL_27;
       }
 
-      v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      if ([v13 isClingEnabled])
+      identifier = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      if ([identifier isClingEnabled])
       {
         LOBYTE(v9) = 1;
       }
 
       else
       {
-        LOBYTE(v9) = [v7 isEnabled];
+        LOBYTE(v9) = [recentPlugin isEnabled];
       }
     }
 
@@ -1336,19 +1336,19 @@ LABEL_27:
   return v9;
 }
 
-- (id)_encodeIndexPathMap:(id)a3
+- (id)_encodeIndexPathMap:(id)map
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  mapCopy = map;
+  if (mapCopy)
   {
-    v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mapCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = v3;
-    v4 = v3;
+    v19 = mapCopy;
+    v4 = mapCopy;
     v22 = [v4 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v22)
     {
@@ -1366,9 +1366,9 @@ LABEL_27:
           v8 = *(*(&v23 + 1) + 8 * i);
           v9 = [v4 objectForKeyedSubscript:v8];
           v10 = *(v6 + 3776);
-          v11 = [v9 section];
+          section = [v9 section];
           v12 = &stru_1F04268F8;
-          if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+          if (section != 0x7FFFFFFFFFFFFFFFLL)
           {
             v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "section")}];
             v20 = v12;
@@ -1392,7 +1392,7 @@ LABEL_27:
             v6 = v14;
           }
 
-          if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+          if (section != 0x7FFFFFFFFFFFFFFFLL)
           {
           }
 
@@ -1405,7 +1405,7 @@ LABEL_27:
       while (v22);
     }
 
-    v3 = v19;
+    mapCopy = v19;
   }
 
   else
@@ -1454,21 +1454,21 @@ LABEL_27:
   return v13;
 }
 
-- (id)_decodeIndexPathMap:(id)a3 allowMigration:(BOOL)a4
+- (id)_decodeIndexPathMap:(id)map allowMigration:(BOOL)migration
 {
-  v4 = a4;
+  migrationCopy = migration;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  mapCopy = map;
+  if (mapCopy)
   {
-    v25 = v4;
-    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+    v25 = migrationCopy;
+    v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(mapCopy, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v5;
-    v7 = v5;
+    v26 = mapCopy;
+    v7 = mapCopy;
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v8)
     {
@@ -1490,25 +1490,25 @@ LABEL_27:
           v16 = [v13 substringFromIndex:v14 + 1];
           if ([v16 length])
           {
-            v17 = [v16 integerValue];
+            integerValue = [v16 integerValue];
           }
 
           else
           {
-            v17 = 0x7FFFFFFFFFFFFFFFLL;
+            integerValue = 0x7FFFFFFFFFFFFFFFLL;
           }
 
           if ([v15 length])
           {
-            v18 = [v15 integerValue];
+            integerValue2 = [v15 integerValue];
           }
 
           else
           {
-            v18 = 0x7FFFFFFFFFFFFFFFLL;
+            integerValue2 = 0x7FFFFFFFFFFFFFFFLL;
           }
 
-          v19 = [MEMORY[0x1E696AC88] indexPathForItem:v17 inSection:v18];
+          v19 = [MEMORY[0x1E696AC88] indexPathForItem:integerValue inSection:integerValue2];
           [v6 setObject:v19 forKeyedSubscript:v12];
         }
 
@@ -1535,7 +1535,7 @@ LABEL_27:
       }
     }
 
-    v5 = v26;
+    mapCopy = v26;
   }
 
   else
@@ -1580,25 +1580,25 @@ LABEL_27:
   return v3;
 }
 
-- (void)saveWithNotification:(BOOL)a3
+- (void)saveWithNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   if (!CKIsRunningInCameraAppsClient())
   {
-    v5 = [(CKBalloonPluginManager *)self hasLoadedExtensions];
+    hasLoadedExtensions = [(CKBalloonPluginManager *)self hasLoadedExtensions];
     v6 = IMOSLoggingEnabled();
-    if (!v5)
+    if (!hasLoadedExtensions)
     {
       if (!v6)
       {
         return;
       }
 
-      v14 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      defaultCenter = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
       {
         *v17 = 0;
-        _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Not saving to defaults as extensions haven't finished loading, we'd possible be stomping over user info", v17, 2u);
+        _os_log_impl(&dword_19020E000, defaultCenter, OS_LOG_TYPE_INFO, "Not saving to defaults as extensions haven't finished loading, we'd possible be stomping over user info", v17, 2u);
       }
 
       goto LABEL_16;
@@ -1614,20 +1614,20 @@ LABEL_27:
       }
     }
 
-    v8 = [(CKBalloonPluginManager *)self pluginIndexPathMap];
-    v9 = [(CKBalloonPluginManager *)self _encodeIndexPathMap:v8];
+    pluginIndexPathMap = [(CKBalloonPluginManager *)self pluginIndexPathMap];
+    v9 = [(CKBalloonPluginManager *)self _encodeIndexPathMap:pluginIndexPathMap];
     IMSetDomainValueForKey();
 
-    v10 = [(CKBalloonPluginManager *)self pluginVersionMap];
+    pluginVersionMap = [(CKBalloonPluginManager *)self pluginVersionMap];
     IMSetDomainValueForKey();
 
-    v11 = [(CKBalloonPluginManager *)self pluginSeenMap];
+    pluginSeenMap = [(CKBalloonPluginManager *)self pluginSeenMap];
     IMSetDomainValueForKey();
 
-    v12 = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
+    pluginLaunchTimeMap = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
     IMSetDomainValueForKey();
 
-    if (v3)
+    if (notificationCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1639,32 +1639,32 @@ LABEL_27:
         }
       }
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v14 postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
 LABEL_16:
     }
   }
 }
 
-- (void)saveCombinedAppsWithNotification:(BOOL)a3
+- (void)saveCombinedAppsWithNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   if (!CKIsRunningInCameraAppsClient())
   {
-    v5 = [(CKBalloonPluginManager *)self hasLoadedExtensions];
+    hasLoadedExtensions = [(CKBalloonPluginManager *)self hasLoadedExtensions];
     v6 = IMOSLoggingEnabled();
-    if (!v5)
+    if (!hasLoadedExtensions)
     {
       if (!v6)
       {
         return;
       }
 
-      v11 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+      defaultCenter = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_INFO))
       {
         *v14 = 0;
-        _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Not saving to combined sticker default as extensions haven't finished loading, we'd possible be stomping over user info", v14, 2u);
+        _os_log_impl(&dword_19020E000, defaultCenter, OS_LOG_TYPE_INFO, "Not saving to combined sticker default as extensions haven't finished loading, we'd possible be stomping over user info", v14, 2u);
       }
 
       goto LABEL_16;
@@ -1680,11 +1680,11 @@ LABEL_16:
       }
     }
 
-    v8 = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
-    v9 = [(CKBalloonPluginManager *)self _encodeIndexPathMap:v8];
+    combinedStickersAppsIndexPathMap = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
+    v9 = [(CKBalloonPluginManager *)self _encodeIndexPathMap:combinedStickersAppsIndexPathMap];
     IMSetDomainValueForKey();
 
-    if (v3)
+    if (notificationCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1696,86 +1696,86 @@ LABEL_16:
         }
       }
 
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 postNotificationName:@"CKCombinedStickerAppsOrderChangedNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"CKCombinedStickerAppsOrderChangedNotification" object:0];
 LABEL_16:
     }
   }
 }
 
-- (id)balloonPluginIdentifierForAppExtensionBundleIdentifier:(id)a3
+- (id)balloonPluginIdentifierForAppExtensionBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69A6990]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69A6990]])
   {
-    v4 = [*MEMORY[0x1E69A69F0] stringByAppendingFormat:@":%@:%@", @"0000000000", v3];
+    identifierCopy = [*MEMORY[0x1E69A69F0] stringByAppendingFormat:@":%@:%@", @"0000000000", identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:v3];
-    v6 = [v5 teamID];
-    v7 = v6;
+    v5 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:identifierCopy];
+    teamID = [v5 teamID];
+    v7 = teamID;
     v8 = @"0000000000";
-    if (v6)
+    if (teamID)
     {
-      v8 = v6;
+      v8 = teamID;
     }
 
     v9 = v8;
 
-    v10 = [v5 bundleIdentifier];
-    v11 = v10;
-    if (v10)
+    bundleIdentifier = [v5 bundleIdentifier];
+    v11 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v12 = v10;
+      v12 = bundleIdentifier;
     }
 
     else
     {
-      v12 = v3;
+      v12 = identifierCopy;
     }
 
     v13 = v12;
 
-    v4 = [*MEMORY[0x1E69A69F0] stringByAppendingFormat:@":%@:%@", v9, v13];
+    identifierCopy = [*MEMORY[0x1E69A69F0] stringByAppendingFormat:@":%@:%@", v9, v13];
   }
 
-  return v4;
+  return identifierCopy;
 }
 
-- (id)pluginForIdentifier:(id)a3
+- (id)pluginForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__22;
   v17 = __Block_byref_object_dispose__22;
   v18 = 0;
-  if ([v4 isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.browser.RecentPlugin"])
   {
-    v5 = [objc_opt_class() recentPlugin];
+    recentPlugin = [objc_opt_class() recentPlugin];
 LABEL_5:
     v6 = v14[5];
-    v14[5] = v5;
+    v14[5] = recentPlugin;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"com.apple.messages.browser.MorePlugin"])
+  if ([identifierCopy isEqualToString:@"com.apple.messages.browser.MorePlugin"])
   {
-    v5 = [objc_opt_class() morePlugin];
+    recentPlugin = [objc_opt_class() morePlugin];
     goto LABEL_5;
   }
 
-  v7 = [(CKBalloonPluginManager *)self allPlugins];
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__CKBalloonPluginManager_pluginForIdentifier___block_invoke;
   v10[3] = &unk_1E72F0A60;
-  v11 = v4;
+  v11 = identifierCopy;
   v12 = &v13;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [allPlugins enumerateObjectsUsingBlock:v10];
 
   v6 = v11;
 LABEL_7:
@@ -1799,24 +1799,24 @@ void __46__CKBalloonPluginManager_pluginForIdentifier___block_invoke(uint64_t a1
   }
 }
 
-- (id)pluginForExtensionIdentifier:(id)a3
+- (id)pluginForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__22;
   v16 = __Block_byref_object_dispose__22;
   v17 = 0;
-  v5 = [(CKBalloonPluginManager *)self allPlugins];
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__CKBalloonPluginManager_pluginForExtensionIdentifier___block_invoke;
   v9[3] = &unk_1E72F0A60;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [allPlugins enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1835,24 +1835,24 @@ void __55__CKBalloonPluginManager_pluginForExtensionIdentifier___block_invoke(ui
   }
 }
 
-- (id)pluginForAdamID:(id)a3
+- (id)pluginForAdamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__22;
   v16 = __Block_byref_object_dispose__22;
   v17 = 0;
-  v5 = [(CKBalloonPluginManager *)self allPlugins];
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__CKBalloonPluginManager_pluginForAdamID___block_invoke;
   v9[3] = &unk_1E72F0A60;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [allPlugins enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1875,8 +1875,8 @@ void __42__CKBalloonPluginManager_pluginForAdamID___block_invoke(uint64_t a1, vo
 
 - (void)invalidateIconCache
 {
-  v2 = [(CKBalloonPluginManager *)self iconCache];
-  [v2 removeAllObjects];
+  iconCache = [(CKBalloonPluginManager *)self iconCache];
+  [iconCache removeAllObjects];
 }
 
 - (NSMutableSet)prefetchIconKeys
@@ -1913,11 +1913,11 @@ void __42__CKBalloonPluginManager_pluginForAdamID___block_invoke(uint64_t a1, vo
 - (void)clearBalloonPluginCache
 {
   v55 = *MEMORY[0x1E69E9840];
-  v39 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v40 = MEMORY[0x193AF5640](@"com.apple.MobileSMS", @"LastIconCachePurgeDate");
   if (v40)
   {
-    v38 = [v39 dateByAddingTimeInterval:-86400.0];
+    v38 = [date dateByAddingTimeInterval:-86400.0];
     v3 = v38;
     if ([v40 compare:v38] == -1)
     {
@@ -1931,13 +1931,13 @@ void __42__CKBalloonPluginManager_pluginForAdamID___block_invoke(uint64_t a1, vo
         }
       }
 
-      v5 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v6 = CKTranscriptPluginIconCachesFileURL();
-      v7 = [v6 path];
-      v8 = [v5 enumeratorAtPath:v7];
+      path = [v6 path];
+      v8 = [defaultManager enumeratorAtPath:path];
 
-      v9 = [v8 nextObject];
-      if (v9)
+      nextObject = [v8 nextObject];
+      if (nextObject)
       {
         *&v10 = 138412290;
         v37 = v10;
@@ -1947,8 +1947,8 @@ void __42__CKBalloonPluginManager_pluginForAdamID___block_invoke(uint64_t a1, vo
           v48 = 0u;
           v49 = 0u;
           v47 = 0u;
-          v11 = [(CKBalloonPluginManager *)self visibleRecentAppStripPlugins];
-          v12 = [v11 countByEnumeratingWithState:&v47 objects:v54 count:16];
+          visibleRecentAppStripPlugins = [(CKBalloonPluginManager *)self visibleRecentAppStripPlugins];
+          v12 = [visibleRecentAppStripPlugins countByEnumeratingWithState:&v47 objects:v54 count:16];
           if (v12)
           {
             v13 = *v48;
@@ -1958,27 +1958,27 @@ void __42__CKBalloonPluginManager_pluginForAdamID___block_invoke(uint64_t a1, vo
               {
                 if (*v48 != v13)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(visibleRecentAppStripPlugins);
                 }
 
-                v15 = [*(*(&v47 + 1) + 8 * i) identifier];
-                v16 = [v15 isEqualToString:v9];
+                identifier = [*(*(&v47 + 1) + 8 * i) identifier];
+                v16 = [identifier isEqualToString:nextObject];
 
                 if (v16)
                 {
-                  v18 = [MEMORY[0x1E696AC08] defaultManager];
+                  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
                   v19 = CKTranscriptPluginIconCachesFileURL();
-                  v20 = [v19 path];
-                  v21 = [v20 stringByAppendingPathComponent:v9];
+                  path2 = [v19 path];
+                  v21 = [path2 stringByAppendingPathComponent:nextObject];
                   v46 = 0;
-                  [v18 removeItemAtPath:v21 error:&v46];
+                  [defaultManager2 removeItemAtPath:v21 error:&v46];
                   v17 = v46;
 
                   goto LABEL_19;
                 }
               }
 
-              v12 = [v11 countByEnumeratingWithState:&v47 objects:v54 count:16];
+              v12 = [visibleRecentAppStripPlugins countByEnumeratingWithState:&v47 objects:v54 count:16];
               if (v12)
               {
                 continue;
@@ -1995,8 +1995,8 @@ LABEL_19:
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v22 = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
-          v23 = [v22 countByEnumeratingWithState:&v42 objects:v53 count:16];
+          visibleFavoriteAppStripPlugins = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
+          v23 = [visibleFavoriteAppStripPlugins countByEnumeratingWithState:&v42 objects:v53 count:16];
           if (v23)
           {
             v24 = *v43;
@@ -2006,20 +2006,20 @@ LABEL_19:
               {
                 if (*v43 != v24)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(visibleFavoriteAppStripPlugins);
                 }
 
-                v26 = [*(*(&v42 + 1) + 8 * j) identifier];
-                v27 = [v26 isEqualToString:v9];
+                identifier2 = [*(*(&v42 + 1) + 8 * j) identifier];
+                v27 = [identifier2 isEqualToString:nextObject];
 
                 if (v27)
                 {
-                  v28 = [MEMORY[0x1E696AC08] defaultManager];
+                  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
                   v29 = CKTranscriptPluginIconCachesFileURL();
-                  v30 = [v29 path];
-                  v31 = [v30 stringByAppendingPathComponent:v9];
+                  path3 = [v29 path];
+                  v31 = [path3 stringByAppendingPathComponent:nextObject];
                   v41 = v17;
-                  [v28 removeItemAtPath:v31 error:&v41];
+                  [defaultManager3 removeItemAtPath:v31 error:&v41];
                   v32 = v41;
 
                   v17 = v32;
@@ -2027,7 +2027,7 @@ LABEL_19:
                 }
               }
 
-              v23 = [v22 countByEnumeratingWithState:&v42 objects:v53 count:16];
+              v23 = [visibleFavoriteAppStripPlugins countByEnumeratingWithState:&v42 objects:v53 count:16];
               if (v23)
               {
                 continue;
@@ -2050,15 +2050,15 @@ LABEL_29:
             }
           }
 
-          v34 = [v8 nextObject];
+          nextObject2 = [v8 nextObject];
 
-          v9 = v34;
+          nextObject = nextObject2;
         }
 
-        while (v34);
+        while (nextObject2);
       }
 
-      v36 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
       IMSetDomainValueForKey();
 
       v3 = v38;
@@ -2067,7 +2067,7 @@ LABEL_29:
 
   else
   {
-    v35 = [MEMORY[0x1E695DF00] date];
+    date3 = [MEMORY[0x1E695DF00] date];
     IMSetDomainValueForKey();
   }
 }
@@ -2078,10 +2078,10 @@ LABEL_29:
   v24 = objc_opt_new();
   v25 = objc_opt_new();
   v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v3 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v4 = [v3 allPlugins];
-  [v2 addObjectsFromArray:v4];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  mEMORY[0x1E69A5AD0]2 = [MEMORY[0x1E69A5AD0] sharedInstance];
+  allPlugins = [mEMORY[0x1E69A5AD0]2 allPlugins];
+  [v2 addObjectsFromArray:allPlugins];
 
   v29 = 0u;
   v30 = 0u;
@@ -2104,12 +2104,12 @@ LABEL_29:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 presentationContexts];
-        v12 = [v10 identifier];
-        if ([v12 hasSuffix:@"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:com.apple.Stickers.UserGenerated.MessagesExtension"])
+        presentationContexts = [v10 presentationContexts];
+        identifier = [v10 identifier];
+        if ([identifier hasSuffix:@"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:com.apple.Stickers.UserGenerated.MessagesExtension"])
         {
-          v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-          v14 = [v13 isClingEnabled] ^ 1;
+          mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+          v14 = [mEMORY[0x1E69A8070] isClingEnabled] ^ 1;
         }
 
         else
@@ -2117,18 +2117,18 @@ LABEL_29:
           v14 = 0;
         }
 
-        if ((v14 & 1) == 0 && (v11 & 2) != 0)
+        if ((v14 & 1) == 0 && (presentationContexts & 2) != 0)
         {
-          v15 = [v10 identifier];
-          v16 = [v15 containsString:@"com.apple.FunCamera"];
+          identifier2 = [v10 identifier];
+          v16 = [identifier2 containsString:@"com.apple.FunCamera"];
 
-          v17 = [v10 identifier];
-          v18 = [v17 containsString:v8];
+          identifier3 = [v10 identifier];
+          v18 = [identifier3 containsString:v8];
 
           if ((v16 & 1) == 0 && (v18 & 1) == 0)
           {
-            v19 = [v10 identifier];
-            v20 = [v19 hasSuffix:@"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:com.apple.Stickers.UserGenerated.MessagesExtension"];
+            identifier4 = [v10 identifier];
+            v20 = [identifier4 hasSuffix:@"com.apple.messages.MSMessageExtensionBalloonPlugin:0000000000:com.apple.Stickers.UserGenerated.MessagesExtension"];
 
             if ((v20 & 1) == 0)
             {
@@ -2147,15 +2147,15 @@ LABEL_29:
   [v24 addObjectsFromArray:v25];
   v21 = [objc_alloc(MEMORY[0x1E69A5AB8]) initWithIdentifier:@"com.apple.messages.browser.MorePlugin" browserDisplayName:@"MorePlugin" browserImageName:@"ellipsis.circle"];
   [v24 addObject:v21];
-  [v23 insertPlugin:v21];
+  [mEMORY[0x1E69A5AD0] insertPlugin:v21];
 
   return v24;
 }
 
-- (BOOL)isInternalPlugin:(id)a3
+- (BOOL)isInternalPlugin:(id)plugin
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
+  identifier = [plugin identifier];
+  v4 = [identifier isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
 
   return v4;
 }
@@ -2187,13 +2187,13 @@ LABEL_29:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 extension];
-          if (v9)
+          extension = [v8 extension];
+          if (extension)
           {
-            v10 = v9;
-            v11 = [v8 extension];
-            v12 = [v11 extensionPointIdentifier];
-            v13 = [v12 isEqualToString:v6];
+            v10 = extension;
+            extension2 = [v8 extension];
+            extensionPointIdentifier = [extension2 extensionPointIdentifier];
+            v13 = [extensionPointIdentifier isEqualToString:v6];
 
             if (v13)
             {
@@ -2229,7 +2229,7 @@ LABEL_13:
     goto LABEL_59;
   }
 
-  v50 = self;
+  selfCopy = self;
   v43 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [v43 startTimingForKey:@"allPlugins"];
   if (IMOSLoggingEnabled())
@@ -2243,15 +2243,15 @@ LABEL_13:
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v44 = [objc_opt_class() recentPlugin];
-  if (v44)
+  recentPlugin = [objc_opt_class() recentPlugin];
+  if (recentPlugin)
   {
-    [v5 addObject:v44];
+    [v5 addObject:recentPlugin];
   }
 
-  v6 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v7 = [v6 allPlugins];
-  [v5 addObjectsFromArray:v7];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  allPlugins = [mEMORY[0x1E69A5AD0] allPlugins];
+  [v5 addObjectsFromArray:allPlugins];
 
   v48 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
   v46 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2282,25 +2282,25 @@ LABEL_13:
       }
 
       v13 = *(*(&v51 + 1) + 8 * i);
-      v14 = [v13 identifier];
-      v15 = [v14 isEqualToString:v11];
+      identifier = [v13 identifier];
+      v15 = [identifier isEqualToString:v11];
 
       if ((v15 & 1) == 0)
       {
         if ([v13 showInBrowser])
         {
-          v16 = [v13 browserDisplayName];
-          if (v16)
+          browserDisplayName = [v13 browserDisplayName];
+          if (browserDisplayName)
           {
           }
 
-          else if (![(CKBalloonPluginManager *)v50 isInternalPlugin:v13])
+          else if (![(CKBalloonPluginManager *)selfCopy isInternalPlugin:v13])
           {
             continue;
           }
         }
 
-        v17 = [v13 presentationContexts];
+        presentationContexts = [v13 presentationContexts];
         if (IMIsRunningIniMessageAppsViewService())
         {
           v18 = 1;
@@ -2311,19 +2311,19 @@ LABEL_13:
           v18 = CKIsRunningInCameraAppsClient() != 0;
         }
 
-        v19 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v20 = [v19 isStickersAppEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-        if (v20)
+        if (isStickersAppEnabled)
         {
-          if ((v17 & 2) != 0 || !v18)
+          if ((presentationContexts & 2) != 0 || !v18)
           {
             goto LABEL_34;
           }
 
-          v22 = [v13 identifier];
+          identifier2 = [v13 identifier];
           v23 = IMStickersExtensionIdentifier();
-          v24 = [v22 hasSuffix:v23];
+          v24 = [identifier2 hasSuffix:v23];
 
           if (v24)
           {
@@ -2331,9 +2331,9 @@ LABEL_13:
           }
         }
 
-        else if ((v18 | v17))
+        else if ((v18 | presentationContexts))
         {
-          v25 = (v17 & 2) == 0 && v18;
+          v25 = (presentationContexts & 2) == 0 && v18;
           if (!v25 || ([v13 identifier], v26 = objc_claimAutoreleasedReturnValue(), IMStickersExtensionIdentifier(), v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v26, "hasSuffix:", v27), v27, v26, v28))
           {
 LABEL_34:
@@ -2342,10 +2342,10 @@ LABEL_34:
               goto LABEL_37;
             }
 
-            v29 = [v13 identifier];
-            if (([v29 hasSuffix:v49] & 1) == 0)
+            identifier3 = [v13 identifier];
+            if (([identifier3 hasSuffix:v49] & 1) == 0)
             {
-              v30 = [v29 hasSuffix:v45];
+              v30 = [identifier3 hasSuffix:v45];
 
               if (v30)
               {
@@ -2354,21 +2354,21 @@ LABEL_34:
 
 LABEL_37:
               [v48 addObject:v13];
-              v29 = [v13 identifier];
-              [v46 addObject:v29];
-              if ([v29 isEqualToString:@"com.apple.appstore.MessagesProvider"])
+              identifier3 = [v13 identifier];
+              [v46 addObject:identifier3];
+              if ([identifier3 isEqualToString:@"com.apple.appstore.MessagesProvider"])
               {
                 v31 = v13;
 
                 v47 = v31;
               }
 
-              v32 = [v13 identifier];
-              v33 = [(CKBalloonPluginManager *)v50 isPluginEnabled:v32];
+              identifier4 = [v13 identifier];
+              v33 = [(CKBalloonPluginManager *)selfCopy isPluginEnabled:identifier4];
 
               if (v33)
               {
-                [(CKBalloonPluginManager *)v50 _setSeen:1 forPlugin:v13];
+                [(CKBalloonPluginManager *)selfCopy _setSeen:1 forPlugin:v13];
               }
             }
 
@@ -2393,31 +2393,31 @@ LABEL_37:
 LABEL_47:
   v47 = 0;
 LABEL_48:
-  v34 = [objc_opt_class() morePlugin];
-  if (v34)
+  morePlugin = [objc_opt_class() morePlugin];
+  if (morePlugin)
   {
-    [v48 addObject:v34];
+    [v48 addObject:morePlugin];
   }
 
-  [(CKBalloonPluginManager *)v50 saveWithNotification:0];
+  [(CKBalloonPluginManager *)selfCopy saveWithNotification:0];
   v35 = [MEMORY[0x1E695DEC8] arrayWithArray:v48];
-  v36 = v50->_allPlugins;
-  v50->_allPlugins = v35;
+  v36 = selfCopy->_allPlugins;
+  selfCopy->_allPlugins = v35;
 
-  v37 = [(CKBalloonPluginManager *)v50 pluginIndexPathMap];
-  v38 = [v37 count] == 0;
+  pluginIndexPathMap = [(CKBalloonPluginManager *)selfCopy pluginIndexPathMap];
+  v38 = [pluginIndexPathMap count] == 0;
 
   if (v38)
   {
-    [(CKBalloonPluginManager *)v50 regeneratePluginIndexPaths];
+    [(CKBalloonPluginManager *)selfCopy regeneratePluginIndexPaths];
   }
 
-  v39 = [(CKBalloonPluginManager *)v50 combinedStickersAppsIndexPathMap];
-  v40 = [v39 count] == 0;
+  combinedStickersAppsIndexPathMap = [(CKBalloonPluginManager *)selfCopy combinedStickersAppsIndexPathMap];
+  v40 = [combinedStickersAppsIndexPathMap count] == 0;
 
   if (v40)
   {
-    [(CKBalloonPluginManager *)v50 regenerateCombinedStickersAppsIndexPaths];
+    [(CKBalloonPluginManager *)selfCopy regenerateCombinedStickersAppsIndexPaths];
   }
 
   [v43 stopTimingForKey:@"allPlugins"];
@@ -2432,7 +2432,7 @@ LABEL_48:
     }
   }
 
-  allPlugins = v50->_allPlugins;
+  allPlugins = selfCopy->_allPlugins;
 LABEL_59:
 
   return allPlugins;
@@ -2487,25 +2487,25 @@ uint64_t __43__CKBalloonPluginManager_allEnabledPlugins__block_invoke(uint64_t a
   return v5;
 }
 
-- (id)createFakeAppsForPPTTesting:(unint64_t)a3
+- (id)createFakeAppsForPPTTesting:(unint64_t)testing
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  if (a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (testing)
   {
     v5 = 0;
     do
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%d", @"Test", v5];
       v7 = [objc_alloc(MEMORY[0x1E69A5AB8]) initWithIdentifier:v6 browserDisplayName:v6 browserImageName:@"Recents"];
-      [v4 addObject:v7];
+      [array addObject:v7];
 
       ++v5;
     }
 
-    while (a3 != v5);
+    while (testing != v5);
   }
 
-  return v4;
+  return array;
 }
 
 - (NSArray)visibleSwitcherPlugins
@@ -2513,13 +2513,13 @@ uint64_t __43__CKBalloonPluginManager_allEnabledPlugins__block_invoke(uint64_t a
   visibleSwitcherPlugins = self->_visibleSwitcherPlugins;
   if (!visibleSwitcherPlugins)
   {
-    v4 = [(CKBalloonPluginManager *)self visibleDrawerPlugins];
+    visibleDrawerPlugins = [(CKBalloonPluginManager *)self visibleDrawerPlugins];
     v5 = self->_visibleSwitcherPlugins;
-    self->_visibleSwitcherPlugins = v4;
+    self->_visibleSwitcherPlugins = visibleDrawerPlugins;
 
-    v6 = [(NSArray *)self->_visibleSwitcherPlugins lastObject];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:@"com.apple.messages.browser.MorePlugin"];
+    lastObject = [(NSArray *)self->_visibleSwitcherPlugins lastObject];
+    identifier = [lastObject identifier];
+    v8 = [identifier isEqualToString:@"com.apple.messages.browser.MorePlugin"];
 
     visibleSwitcherPlugins = self->_visibleSwitcherPlugins;
     if (v8)
@@ -2535,21 +2535,21 @@ uint64_t __43__CKBalloonPluginManager_allEnabledPlugins__block_invoke(uint64_t a
   return visibleSwitcherPlugins;
 }
 
-- (id)allPluginsPassingTest:(id)a3
+- (id)allPluginsPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self allPlugins];
-  v6 = [v5 __imArrayByFilteringWithBlock:v4];
+  testCopy = test;
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
+  v6 = [allPlugins __imArrayByFilteringWithBlock:testCopy];
 
   return v6;
 }
 
 - (NSArray)disabledPlugins
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isClingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070] isClingEnabled];
 
-  if (v4)
+  if (isClingEnabled)
   {
     v5 = MEMORY[0x1E695E0F0];
   }
@@ -2576,24 +2576,24 @@ uint64_t __41__CKBalloonPluginManager_disabledPlugins__block_invoke(uint64_t a1,
   return v2 ^ 1;
 }
 
-- (unint64_t)launchStatusForPlugin:(id)a3
+- (unint64_t)launchStatusForPlugin:(id)plugin
 {
-  v4 = a3;
+  pluginCopy = plugin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 proxy];
-    v6 = [v5 containingBundle];
-    v7 = [v6 applicationType];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69635B8]];
+    proxy = [pluginCopy proxy];
+    containingBundle = [proxy containingBundle];
+    applicationType = [containingBundle applicationType];
+    v8 = [applicationType isEqualToString:*MEMORY[0x1E69635B8]];
 
-    if (v8 && ([v4 version], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69A56E0]), v9, (v10 & 1) == 0))
+    if (v8 && ([pluginCopy version], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", *MEMORY[0x1E69A56E0]), v9, (v10 & 1) == 0))
     {
       pluginVersionMap = self->_pluginVersionMap;
-      v13 = [v4 identifier];
-      v14 = [(NSDictionary *)pluginVersionMap objectForKeyedSubscript:v13];
-      v15 = [v4 version];
-      v16 = [v14 isEqualToString:v15];
+      identifier = [pluginCopy identifier];
+      v14 = [(NSDictionary *)pluginVersionMap objectForKeyedSubscript:identifier];
+      version = [pluginCopy version];
+      v16 = [v14 isEqualToString:version];
 
       v11 = v16;
     }
@@ -2612,87 +2612,87 @@ uint64_t __41__CKBalloonPluginManager_disabledPlugins__block_invoke(uint64_t a1,
   return v11;
 }
 
-- (void)updateLaunchStatus:(unint64_t)a3 forPlugin:(id)a4 withNotification:(BOOL)a5
+- (void)updateLaunchStatus:(unint64_t)status forPlugin:(id)plugin withNotification:(BOOL)notification
 {
-  if (a3 == 1 && a4)
+  if (status == 1 && plugin)
   {
-    v6 = a5;
+    notificationCopy = notification;
     pluginVersionMap = self->_pluginVersionMap;
-    v9 = a4;
+    pluginCopy = plugin;
     v14 = [(NSDictionary *)pluginVersionMap mutableCopy];
-    v10 = [v9 version];
-    v11 = [v9 identifier];
+    version = [pluginCopy version];
+    identifier = [pluginCopy identifier];
 
-    [v14 setObject:v10 forKeyedSubscript:v11];
+    [v14 setObject:version forKeyedSubscript:identifier];
     v12 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v14];
     v13 = self->_pluginVersionMap;
     self->_pluginVersionMap = v12;
 
-    [(CKBalloonPluginManager *)self saveWithNotification:v6];
+    [(CKBalloonPluginManager *)self saveWithNotification:notificationCopy];
   }
 }
 
-- (void)updateLaunchTimeForPlugin:(id)a3
+- (void)updateLaunchTimeForPlugin:(id)plugin
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v10 = [v4 date];
-  v6 = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
-  v7 = [v6 mutableCopy];
+  pluginCopy = plugin;
+  date = [v4 date];
+  pluginLaunchTimeMap = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
+  v7 = [pluginLaunchTimeMap mutableCopy];
 
-  v8 = [v5 identifier];
+  identifier = [pluginCopy identifier];
 
-  [v7 setObject:v10 forKeyedSubscript:v8];
+  [v7 setObject:date forKeyedSubscript:identifier];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v7];
   [(CKBalloonPluginManager *)self setPluginLaunchTimeMap:v9];
 
   [(CKBalloonPluginManager *)self saveWithNotification:0];
 }
 
-- (id)launchTimeForPlugin:(id)a3
+- (id)launchTimeForPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
+  pluginCopy = plugin;
+  identifier = [pluginCopy identifier];
+  v6 = [identifier isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   }
 
   else
   {
-    v8 = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
-    v9 = [v4 identifier];
-    v7 = [v8 objectForKey:v9];
+    pluginLaunchTimeMap = [(CKBalloonPluginManager *)self pluginLaunchTimeMap];
+    identifier2 = [pluginCopy identifier];
+    distantFuture = [pluginLaunchTimeMap objectForKey:identifier2];
   }
 
-  return v7;
+  return distantFuture;
 }
 
-- (BOOL)isPluginSeen:(id)a3
+- (BOOL)isPluginSeen:(id)seen
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self pluginSeenMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  seenCopy = seen;
+  pluginSeenMap = [(CKBalloonPluginManager *)self pluginSeenMap];
+  v6 = [pluginSeenMap objectForKeyedSubscript:seenCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)isPluginSeenWithInstalledVersion:(id)a3
+- (BOOL)isPluginSeenWithInstalledVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self pluginSeenMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  versionCopy = version;
+  pluginSeenMap = [(CKBalloonPluginManager *)self pluginSeenMap];
+  v6 = [pluginSeenMap objectForKeyedSubscript:versionCopy];
 
   if (v6)
   {
-    v7 = [(CKBalloonPluginManager *)self pluginForIdentifier:v4];
+    v7 = [(CKBalloonPluginManager *)self pluginForIdentifier:versionCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 version];
-      v10 = [v9 compare:v6 options:64] != 1;
+      version = [v7 version];
+      v10 = [version compare:v6 options:64] != 1;
     }
 
     else
@@ -2709,37 +2709,37 @@ uint64_t __41__CKBalloonPluginManager_disabledPlugins__block_invoke(uint64_t a1,
   return v10;
 }
 
-- (void)setSeen:(BOOL)a3 forPlugin:(id)a4
+- (void)setSeen:(BOOL)seen forPlugin:(id)plugin
 {
-  v4 = a3;
-  v6 = [(CKBalloonPluginManager *)self pluginForIdentifier:a4];
+  seenCopy = seen;
+  v6 = [(CKBalloonPluginManager *)self pluginForIdentifier:plugin];
   if (v6)
   {
     v7 = v6;
-    [(CKBalloonPluginManager *)self _setSeen:v4 forPlugin:v6];
+    [(CKBalloonPluginManager *)self _setSeen:seenCopy forPlugin:v6];
     [(CKBalloonPluginManager *)self saveWithNotification:0];
     v6 = v7;
   }
 }
 
-- (void)_setSeen:(BOOL)a3 forPlugin:(id)a4
+- (void)_setSeen:(BOOL)seen forPlugin:(id)plugin
 {
-  v4 = a3;
-  v11 = a4;
-  v6 = [(CKBalloonPluginManager *)self pluginSeenMap];
-  v7 = [v6 mutableCopy];
+  seenCopy = seen;
+  pluginCopy = plugin;
+  pluginSeenMap = [(CKBalloonPluginManager *)self pluginSeenMap];
+  v7 = [pluginSeenMap mutableCopy];
 
-  if (v4)
+  if (seenCopy)
   {
-    v8 = [v11 version];
-    v9 = [v11 identifier];
-    [v7 setObject:v8 forKeyedSubscript:v9];
+    version = [pluginCopy version];
+    identifier = [pluginCopy identifier];
+    [v7 setObject:version forKeyedSubscript:identifier];
   }
 
   else
   {
-    v8 = [v11 identifier];
-    [v7 removeObjectForKey:v8];
+    version = [pluginCopy identifier];
+    [v7 removeObjectForKey:version];
   }
 
   v10 = [v7 copy];
@@ -2748,17 +2748,17 @@ uint64_t __41__CKBalloonPluginManager_disabledPlugins__block_invoke(uint64_t a1,
 
 - (void)cleanSeenMap
 {
-  v3 = [(CKBalloonPluginManager *)self allPlugins];
-  v10 = [v3 arrayByApplyingSelector:sel_identifier];
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
+  v10 = [allPlugins arrayByApplyingSelector:sel_identifier];
 
-  v4 = [(CKBalloonPluginManager *)self pluginSeenMap];
-  v5 = [v4 allKeys];
+  pluginSeenMap = [(CKBalloonPluginManager *)self pluginSeenMap];
+  allKeys = [pluginSeenMap allKeys];
 
-  v6 = [v5 arrayByExcludingObjectsInArray:v10];
+  v6 = [allKeys arrayByExcludingObjectsInArray:v10];
   if ([v6 count])
   {
-    v7 = [(CKBalloonPluginManager *)self pluginSeenMap];
-    v8 = [v7 mutableCopy];
+    pluginSeenMap2 = [(CKBalloonPluginManager *)self pluginSeenMap];
+    v8 = [pluginSeenMap2 mutableCopy];
 
     [v8 removeObjectsForKeys:v6];
     v9 = [v8 copy];
@@ -2768,13 +2768,13 @@ uint64_t __41__CKBalloonPluginManager_disabledPlugins__block_invoke(uint64_t a1,
 
 - (unint64_t)unseenPluginCount
 {
-  v3 = [(CKBalloonPluginManager *)self allPlugins];
+  allPlugins = [(CKBalloonPluginManager *)self allPlugins];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CKBalloonPluginManager_unseenPluginCount__block_invoke;
   v7[3] = &unk_1E72F0A88;
   v7[4] = self;
-  v4 = [v3 __imArrayByFilteringWithBlock:v7];
+  v4 = [allPlugins __imArrayByFilteringWithBlock:v7];
 
   v5 = [v4 count];
   return v5;
@@ -2809,44 +2809,44 @@ uint64_t __43__CKBalloonPluginManager_unseenPluginCount__block_invoke(uint64_t a
   return isKindOfClass & 1;
 }
 
-- (void)setAppStoreAutoEnableToggled:(BOOL)a3
+- (void)setAppStoreAutoEnableToggled:(BOOL)toggled
 {
-  if (self->_appStoreAutoEnableToggled != a3)
+  if (self->_appStoreAutoEnableToggled != toggled)
   {
-    self->_appStoreAutoEnableToggled = a3;
+    self->_appStoreAutoEnableToggled = toggled;
     [(CKBalloonPluginManager *)self isAppStoreAutoEnableToggled];
 
     IMSetDomainBoolForKey();
   }
 }
 
-- (void)handleManagedConfigSettingsChangeNotification:(id)a3
+- (void)handleManagedConfigSettingsChangeNotification:(id)notification
 {
   isAppInstallationEnabled = self->_isAppInstallationEnabled;
   isAppRemovalEnabled = self->_isAppRemovalEnabled;
   isCameraAllowed = self->_isCameraAllowed;
-  v7 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v8 = [v7 effectiveBoolValueForSetting:*MEMORY[0x1E69ADD98]] != 2;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v8 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADD98]] != 2;
 
   self->_isAppInstallationEnabled = v8;
-  v9 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v10 = [v9 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDA0]] != 2;
+  mEMORY[0x1E69ADFB8]2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v10 = [mEMORY[0x1E69ADFB8]2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADDA0]] != 2;
 
   self->_isAppRemovalEnabled = v10;
-  v11 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v12 = [v11 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE00]] != 2;
+  mEMORY[0x1E69ADFB8]3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v12 = [mEMORY[0x1E69ADFB8]3 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE00]] != 2;
 
   self->_isCameraAllowed = v12;
   if (__PAIR64__(isAppRemovalEnabled, isAppInstallationEnabled) != __PAIR64__(self->_isAppRemovalEnabled, self->_isAppInstallationEnabled) || isCameraAllowed != v12)
   {
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKBrowserSelectionControllerDataSourceChangedNotification" object:0];
   }
 }
 
-- (BOOL)isPluginVisible:(id)a3
+- (BOOL)isPluginVisible:(id)visible
 {
-  v4 = [(CKBalloonPluginManager *)self pluginForIdentifier:a3];
+  v4 = [(CKBalloonPluginManager *)self pluginForIdentifier:visible];
   if (v4)
   {
     v5 = [(CKBalloonPluginManager *)self isBalloonPluginVisible:v4];
@@ -2860,19 +2860,19 @@ uint64_t __43__CKBalloonPluginManager_unseenPluginCount__block_invoke(uint64_t a
   return v5;
 }
 
-- (BOOL)isBalloonPluginVisible:(id)a3
+- (BOOL)isBalloonPluginVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69A6A00]];
+  visibleCopy = visible;
+  identifier = [visibleCopy identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x1E69A6A00]];
 
   if (v6)
   {
     goto LABEL_2;
   }
 
-  v8 = [v4 identifier];
-  v9 = [v8 isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
+  identifier2 = [visibleCopy identifier];
+  v9 = [identifier2 isEqualToString:@"com.apple.messages.browser.RecentPlugin"];
 
   if (v9)
   {
@@ -2883,36 +2883,36 @@ LABEL_4:
 
   if (CKIsSendMenuEnabled())
   {
-    if ([v4 showInSendMenu])
+    if ([visibleCopy showInSendMenu])
     {
 LABEL_9:
-      v10 = [v4 identifier];
-      v11 = [v10 hasSuffix:*MEMORY[0x1E69A6970]];
+      identifier3 = [visibleCopy identifier];
+      v11 = [identifier3 hasSuffix:*MEMORY[0x1E69A6970]];
 
       if (v11)
       {
-        v12 = [(CKBalloonPluginManager *)self _shouldShowActivity];
+        _shouldShowActivity = [(CKBalloonPluginManager *)self _shouldShowActivity];
       }
 
       else
       {
-        v13 = [v4 identifier];
-        v14 = [v13 hasSuffix:*MEMORY[0x1E69A6A38]];
+        identifier4 = [visibleCopy identifier];
+        v14 = [identifier4 hasSuffix:*MEMORY[0x1E69A6A38]];
 
         if (!v14)
         {
           goto LABEL_4;
         }
 
-        v12 = [(CKBalloonPluginManager *)self _shouldShowSURF];
+        _shouldShowActivity = [(CKBalloonPluginManager *)self _shouldShowSURF];
       }
 
-      v7 = v12;
+      v7 = _shouldShowActivity;
       goto LABEL_14;
     }
   }
 
-  else if ([v4 showInBrowser])
+  else if ([visibleCopy showInBrowser])
   {
     goto LABEL_9;
   }
@@ -2961,9 +2961,9 @@ LABEL_14:
   }
 
   v7 = CFPreferencesCopyValue(v4, _shouldShowActivity__kHKHealthdBundleIdentifier, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 - (NSMutableDictionary)activeBrowsers
@@ -2983,8 +2983,8 @@ LABEL_14:
 
 - (void)prepareForSuspend
 {
-  v3 = [(CKBalloonPluginManager *)self currentExtensionConsumers];
-  [v3 removeAllObjects];
+  currentExtensionConsumers = [(CKBalloonPluginManager *)self currentExtensionConsumers];
+  [currentExtensionConsumers removeAllObjects];
 
   if (!CKIsRunningInMessagesViewService() && !CKIsRunningInMessagesNotificationExtension())
   {
@@ -2994,21 +2994,21 @@ LABEL_14:
   }
 }
 
-- (void)forceKillRemoteExtensionsWithDelay:(BOOL)a3 skipCameraApp:(BOOL)a4
+- (void)forceKillRemoteExtensionsWithDelay:(BOOL)delay skipCameraApp:(BOOL)app
 {
-  v4 = a3;
+  delayCopy = delay;
   v14 = *MEMORY[0x1E69E9840];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensionsWithDelay_skipCameraApp___block_invoke;
   v10[3] = &unk_1E72ED8D8;
   v10[4] = self;
-  v11 = a4;
+  appCopy = app;
   v5 = _Block_copy(v10);
   v6 = +[CKPluginExtensionStateObserver sharedInstance];
-  v7 = [v6 stickerDragActiveInCurrentProcess];
+  stickerDragActiveInCurrentProcess = [v6 stickerDragActiveInCurrentProcess];
 
-  if (v7)
+  if (stickerDragActiveInCurrentProcess)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3022,7 +3022,7 @@ LABEL_14:
     }
   }
 
-  else if (v4)
+  else if (delayCopy)
   {
     v9 = dispatch_time(0, 100000000);
     dispatch_after(v9, MEMORY[0x1E69E96A0], v5);
@@ -3186,10 +3186,10 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CKBalloonPluginManager *)self activeBrowsers];
-  v3 = [v2 allValues];
+  activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+  allValues = [activeBrowsers allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3200,15 +3200,15 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 balloonPlugin];
-        v10 = [v9 identifier];
+        balloonPlugin = [v8 balloonPlugin];
+        identifier = [balloonPlugin identifier];
 
         v11 = IMBalloonExtensionIDWithSuffix();
-        if ([v10 isEqualToString:v11])
+        if ([identifier isEqualToString:v11])
         {
         }
 
@@ -3223,7 +3223,7 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -3234,11 +3234,11 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(CKBalloonPluginManager *)self currentExtensionConsumers];
-  v5 = [v4 objectEnumerator];
+  currentExtensionConsumers = [(CKBalloonPluginManager *)self currentExtensionConsumers];
+  objectEnumerator = [currentExtensionConsumers objectEnumerator];
 
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
     *&v7 = 138412546;
     v12 = v7;
@@ -3246,8 +3246,8 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
     {
       if (objc_opt_respondsToSelector())
       {
-        v8 = [v6 consumingBundleIdentifiers];
-        [v3 addObjectsFromArray:v8];
+        consumingBundleIdentifiers = [nextObject consumingBundleIdentifiers];
+        [v3 addObjectsFromArray:consumingBundleIdentifiers];
 
         if (IMOSLoggingEnabled())
         {
@@ -3255,7 +3255,7 @@ void __98__CKBalloonPluginManager_ViewControllerFactory__forceKillRemoteExtensio
           if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
           {
             *buf = v12;
-            v14 = v6;
+            v14 = nextObject;
             v15 = 2112;
             v16 = v3;
             _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "following consumed extensions in use by %@ won't be killed: %@", buf, 0x16u);
@@ -3271,27 +3271,27 @@ LABEL_11:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v14 = v6;
+          v14 = nextObject;
           _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "currentExtensionConsumer doesn't conform to CKExtensionConsumer protocol %@", buf, 0xCu);
         }
 
         goto LABEL_11;
       }
 
-      v10 = [v5 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v6 = v10;
+      nextObject = nextObject2;
     }
 
-    while (v10);
+    while (nextObject2);
   }
 
   return v3;
 }
 
-- (void)forceTearDownRemoteViewsSkippingCameraApp:(BOOL)a3
+- (void)forceTearDownRemoteViewsSkippingCameraApp:(BOOL)app
 {
-  v3 = a3;
+  appCopy = app;
   v38 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -3303,13 +3303,13 @@ LABEL_11:
     }
   }
 
-  v6 = [(CKBalloonPluginManager *)self bundleIdentifiersForCurrentExtensionConsumers];
+  bundleIdentifiersForCurrentExtensionConsumers = [(CKBalloonPluginManager *)self bundleIdentifiersForCurrentExtensionConsumers];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(CKBalloonPluginManager *)self activeBrowsers];
-  obj = [v7 allValues];
+  activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+  obj = [activeBrowsers allValues];
 
   v8 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
@@ -3328,11 +3328,11 @@ LABEL_11:
         }
 
         v12 = *(*(&v31 + 1) + 8 * v11);
-        if (!v3 || ([*(*(&v31 + 1) + 8 * v11) balloonPlugin], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), IMBalloonExtensionIDWithSuffix(), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, v13, (v16 & 1) == 0))
+        if (!appCopy || ([*(*(&v31 + 1) + 8 * v11) balloonPlugin], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), IMBalloonExtensionIDWithSuffix(), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "isEqualToString:", v15), v15, v14, v13, (v16 & 1) == 0))
         {
-          v17 = [v12 balloonPlugin];
-          v18 = [v17 identifier];
-          v19 = [v6 containsObject:v18];
+          balloonPlugin = [v12 balloonPlugin];
+          identifier = [balloonPlugin identifier];
+          v19 = [bundleIdentifiersForCurrentExtensionConsumers containsObject:identifier];
 
           if (v19)
           {
@@ -3341,10 +3341,10 @@ LABEL_11:
               v20 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
               {
-                v21 = [v12 balloonPlugin];
-                v22 = [v21 identifier];
+                balloonPlugin2 = [v12 balloonPlugin];
+                identifier2 = [balloonPlugin2 identifier];
                 *buf = v29;
-                v36 = v22;
+                v36 = identifier2;
                 _os_log_impl(&dword_19020E000, v20, OS_LOG_TYPE_INFO, "forceTearDownRemoteViews skipped for %@ because it is currently in use", buf, 0xCu);
               }
             }
@@ -3357,10 +3357,10 @@ LABEL_11:
               v23 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
               {
-                v24 = [v12 balloonPlugin];
-                v25 = [v24 identifier];
+                balloonPlugin3 = [v12 balloonPlugin];
+                identifier3 = [balloonPlugin3 identifier];
                 *buf = v29;
-                v36 = v25;
+                v36 = identifier3;
                 _os_log_impl(&dword_19020E000, v23, OS_LOG_TYPE_INFO, "forceTearDownRemoteViews calling deferredForceTearDownRemoteView for %@", buf, 0xCu);
               }
             }
@@ -3375,10 +3375,10 @@ LABEL_11:
               v26 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
               {
-                v27 = [v12 balloonPlugin];
-                v28 = [v27 identifier];
+                balloonPlugin4 = [v12 balloonPlugin];
+                identifier4 = [balloonPlugin4 identifier];
                 *buf = v29;
-                v36 = v28;
+                v36 = identifier4;
                 _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "forceTearDownRemoteViews calling forceTearDownRemoteView for %@", buf, 0xCu);
               }
             }
@@ -3398,18 +3398,18 @@ LABEL_11:
   }
 }
 
-- (void)invalidateAllActivePluginsSkippingCameraApp:(BOOL)a3
+- (void)invalidateAllActivePluginsSkippingCameraApp:(BOOL)app
 {
-  v3 = a3;
+  appCopy = app;
   v36[16] = *MEMORY[0x1E69E9840];
   v5 = +[CKPluginExtensionStateObserver sharedInstance];
-  v6 = [v5 passKitUIPresented];
+  passKitUIPresented = [v5 passKitUIPresented];
 
   v7 = +[CKPluginExtensionStateObserver sharedInstance];
-  v8 = [v7 stickerDragActiveInCurrentProcess];
+  stickerDragActiveInCurrentProcess = [v7 stickerDragActiveInCurrentProcess];
 
   v9 = IMOSLoggingEnabled();
-  if (((v6 | v8) & 1) == 0)
+  if (((passKitUIPresented | stickerDragActiveInCurrentProcess) & 1) == 0)
   {
     if (v9)
     {
@@ -3421,9 +3421,9 @@ LABEL_11:
       }
     }
 
-    [(CKBalloonPluginManager *)self forceTearDownRemoteViewsSkippingCameraApp:v3];
-    v14 = [(CKBalloonPluginManager *)self activeBrowsers];
-    v15 = [v14 copy];
+    [(CKBalloonPluginManager *)self forceTearDownRemoteViewsSkippingCameraApp:appCopy];
+    activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+    v15 = [activeBrowsers copy];
 
     v30 = 0u;
     v31 = 0u;
@@ -3449,7 +3449,7 @@ LABEL_17:
       }
 
       v19 = *(*(&v28 + 1) + 8 * v18);
-      if (v3)
+      if (appCopy)
       {
         v20 = IMBalloonExtensionIDWithSuffix();
         v21 = [v19 isEqualToString:v20];
@@ -3467,14 +3467,14 @@ LABEL_17:
 
         if (v23)
         {
-          v24 = [(CKBalloonPluginManager *)self activeBrowsers];
-          v25 = [v24 objectForKey:v19];
+          activeBrowsers2 = [(CKBalloonPluginManager *)self activeBrowsers];
+          v25 = [activeBrowsers2 objectForKey:v19];
           [(CKBalloonPluginManager *)self setLastUsedPhotoViewController:v25];
         }
       }
 
-      v26 = [(CKBalloonPluginManager *)self activeBrowsers];
-      [v26 removeObjectForKey:v19];
+      activeBrowsers3 = [(CKBalloonPluginManager *)self activeBrowsers];
+      [activeBrowsers3 removeObjectForKey:v19];
 
 LABEL_26:
       if (v16 == ++v18)
@@ -3496,7 +3496,7 @@ LABEL_26:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = @"NO";
-      if (v6)
+      if (passKitUIPresented)
       {
         v12 = @"YES";
       }
@@ -3506,7 +3506,7 @@ LABEL_26:
         v12 = @"NO";
       }
 
-      if (v8)
+      if (stickerDragActiveInCurrentProcess)
       {
         v11 = @"YES";
       }
@@ -3520,23 +3520,23 @@ LABEL_26:
   }
 }
 
-- (void)_invalidatePluginForKey:(id)a3
+- (void)_invalidatePluginForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = keyCopy;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Invalidating plugin for key %@", &v9, 0xCu);
     }
   }
 
-  v6 = [(CKBalloonPluginManager *)self activeBrowsers];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+  v7 = [activeBrowsers objectForKeyedSubscript:keyCopy];
 
   if (v7)
   {
@@ -3545,22 +3545,22 @@ LABEL_26:
       [v7 forceTearDownRemoteView];
     }
 
-    v8 = [(CKBalloonPluginManager *)self activeBrowsers];
-    [v8 removeObjectForKey:v4];
+    activeBrowsers2 = [(CKBalloonPluginManager *)self activeBrowsers];
+    [activeBrowsers2 removeObjectForKey:keyCopy];
   }
 }
 
-- (id)browserSnapshotForKey:(id)a3
+- (id)browserSnapshotForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self snapshotCache];
-  v6 = [v4 stringValue];
-  v7 = [v5 cachedPreviewForKey:v6];
+  keyCopy = key;
+  snapshotCache = [(CKBalloonPluginManager *)self snapshotCache];
+  stringValue = [keyCopy stringValue];
+  v7 = [snapshotCache cachedPreviewForKey:stringValue];
 
   if (!v7)
   {
-    v8 = [v4 stringValue];
-    v9 = CKBrowserSnapshotPreviewURL(v8, @"png");
+    stringValue2 = [keyCopy stringValue];
+    v9 = CKBrowserSnapshotPreviewURL(stringValue2, @"png");
 
     if (v9)
     {
@@ -3568,19 +3568,19 @@ LABEL_26:
       if (v10)
       {
         v11 = MEMORY[0x1E69DCAB8];
-        v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v12 scale];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen scale];
         v13 = [v11 imageWithData:v10 scale:?];
 
         v7 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v13];
-        v14 = [(CKBalloonPluginManager *)self snapshotCache];
-        v15 = [v4 stringValue];
-        [v14 setCachedPreview:v7 key:v15];
+        snapshotCache2 = [(CKBalloonPluginManager *)self snapshotCache];
+        stringValue3 = [keyCopy stringValue];
+        [snapshotCache2 setCachedPreview:v7 key:stringValue3];
 
-        v16 = [(CKBalloonPluginManager *)self snapshotCache];
-        v17 = [v4 keyWithOppositeInterfaceStyle];
-        v18 = [v17 stringValue];
-        [v16 setCachedPreview:0 key:v18];
+        snapshotCache3 = [(CKBalloonPluginManager *)self snapshotCache];
+        keyWithOppositeInterfaceStyle = [keyCopy keyWithOppositeInterfaceStyle];
+        stringValue4 = [keyWithOppositeInterfaceStyle stringValue];
+        [snapshotCache3 setCachedPreview:0 key:stringValue4];
       }
 
       else
@@ -3598,37 +3598,37 @@ LABEL_26:
   return v7;
 }
 
-- (void)updateSnapshotForBrowserViewController:(id)a3 currentBounds:(CGRect)a4
+- (void)updateSnapshotForBrowserViewController:(id)controller currentBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (v9)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69A6170]);
     [v10 startTimingForKey:@"updateSnapshotForViewController:"];
-    v11 = [v9 view];
-    v12 = [v9 balloonPlugin];
-    v13 = [v12 identifier];
+    view = [controllerCopy view];
+    balloonPlugin = [controllerCopy balloonPlugin];
+    identifier = [balloonPlugin identifier];
 
-    v14 = [v11 traitCollection];
-    v15 = +[CKSnapshotCacheKey keyWithIdentifier:interfaceStyle:bounds:](CKSnapshotCacheKey, "keyWithIdentifier:interfaceStyle:bounds:", v13, [v14 userInterfaceStyle], x, y, width, height);
+    traitCollection = [view traitCollection];
+    v15 = +[CKSnapshotCacheKey keyWithIdentifier:interfaceStyle:bounds:](CKSnapshotCacheKey, "keyWithIdentifier:interfaceStyle:bounds:", identifier, [traitCollection userInterfaceStyle], x, y, width, height);
 
-    v16 = [v11 snapshotViewAfterScreenUpdates:0];
-    v17 = [(CKBalloonPluginManager *)self snapshotCache];
-    v18 = [v15 keyWithOppositeInterfaceStyle];
-    v19 = [v18 stringValue];
-    [v17 setCachedPreview:0 key:v19];
+    v16 = [view snapshotViewAfterScreenUpdates:0];
+    snapshotCache = [(CKBalloonPluginManager *)self snapshotCache];
+    keyWithOppositeInterfaceStyle = [v15 keyWithOppositeInterfaceStyle];
+    stringValue = [keyWithOppositeInterfaceStyle stringValue];
+    [snapshotCache setCachedPreview:0 key:stringValue];
 
-    v20 = [(CKBalloonPluginManager *)self snapshotCache];
-    v21 = [v15 stringValue];
-    [v20 setCachedPreview:v16 key:v21];
+    snapshotCache2 = [(CKBalloonPluginManager *)self snapshotCache];
+    stringValue2 = [v15 stringValue];
+    [snapshotCache2 setCachedPreview:v16 key:stringValue2];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 postNotificationName:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CKBalloonPluginManagerSnapshotsDidChange" object:0];
 
     [v10 stopTimingForKey:@"updateSnapshotForViewController:"];
     if (IMOSLoggingEnabled())
@@ -3644,17 +3644,17 @@ LABEL_26:
   }
 }
 
-- (id)newViewControllerForPluginIdentifier:(id)a3 dataSource:(id)a4
+- (id)newViewControllerForPluginIdentifier:(id)identifier dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKBalloonPluginManager *)self pluginForIdentifier:v6];
-  v9 = [v8 browserClass];
-  v10 = [v9 instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
-  v11 = [v9 alloc];
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v8 = [(CKBalloonPluginManager *)self pluginForIdentifier:identifierCopy];
+  browserClass = [v8 browserClass];
+  v10 = [browserClass instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
+  v11 = [browserClass alloc];
   if (v10)
   {
-    v12 = [v11 initWithBalloonPlugin:v8 dataSource:v7];
+    v12 = [v11 initWithBalloonPlugin:v8 dataSource:sourceCopy];
   }
 
   else
@@ -3665,58 +3665,58 @@ LABEL_26:
   v13 = v12;
   if (v12)
   {
-    v14 = [(CKBalloonPluginManager *)self activeBrowsers];
-    [v14 setObject:v13 forKey:v6];
+    activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+    [activeBrowsers setObject:v13 forKey:identifierCopy];
   }
 
   return v13;
 }
 
-- (id)viewControllerForPluginIdentifier:(id)a3
+- (id)viewControllerForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:identifierCopy];
   if (!v5)
   {
-    v5 = [(CKBalloonPluginManager *)self viewControllerForPluginIdentifier:v4 dataSource:0];
+    v5 = [(CKBalloonPluginManager *)self viewControllerForPluginIdentifier:identifierCopy dataSource:0];
   }
 
   return v5;
 }
 
-- (id)existingViewControllerForPluginIdentifier:(id)a3
+- (id)existingViewControllerForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self activeBrowsers];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+  lastUsedPhotoViewController = [activeBrowsers objectForKey:identifierCopy];
 
-  if (!v6)
+  if (!lastUsedPhotoViewController)
   {
     v7 = IMBalloonExtensionIDWithSuffix();
-    v8 = [v4 isEqualToString:v7];
+    v8 = [identifierCopy isEqualToString:v7];
 
     if (v8)
     {
-      v6 = [(CKBalloonPluginManager *)self lastUsedPhotoViewController];
+      lastUsedPhotoViewController = [(CKBalloonPluginManager *)self lastUsedPhotoViewController];
     }
 
     else
     {
-      v6 = 0;
+      lastUsedPhotoViewController = 0;
     }
   }
 
-  return v6;
+  return lastUsedPhotoViewController;
 }
 
-- (id)viewControllerForPluginIdentifier:(id)a3 dataSource:(id)a4
+- (id)viewControllerForPluginIdentifier:(id)identifier dataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:v6];
+  identifierCopy = identifier;
+  sourceCopy = source;
+  v8 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:identifierCopy];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 canReplaceDataSource];
+    canReplaceDataSource = [v8 canReplaceDataSource];
     if (!v8)
     {
       goto LABEL_10;
@@ -3725,32 +3725,32 @@ LABEL_26:
 
   else
   {
-    v9 = 0;
+    canReplaceDataSource = 0;
     if (!v8)
     {
 LABEL_10:
-      v8 = [(CKBalloonPluginManager *)self newViewControllerForPluginIdentifier:v6 dataSource:v7];
+      v8 = [(CKBalloonPluginManager *)self newViewControllerForPluginIdentifier:identifierCopy dataSource:sourceCopy];
       goto LABEL_11;
     }
   }
 
-  v10 = [v8 balloonPluginDataSource];
-  v11 = (v10 == v7) | v9;
+  balloonPluginDataSource = [v8 balloonPluginDataSource];
+  v11 = (balloonPluginDataSource == sourceCopy) | canReplaceDataSource;
 
   if ((v11 & 1) == 0)
   {
-    [(CKBalloonPluginManager *)self _invalidatePluginForKey:v6];
+    [(CKBalloonPluginManager *)self _invalidatePluginForKey:identifierCopy];
 
     goto LABEL_10;
   }
 
-  if (v9)
+  if (canReplaceDataSource)
   {
-    v12 = [v8 balloonPluginDataSource];
+    balloonPluginDataSource2 = [v8 balloonPluginDataSource];
 
-    if (v12 != v7)
+    if (balloonPluginDataSource2 != sourceCopy)
     {
-      [v8 setBalloonPluginDataSource:v7];
+      [v8 setBalloonPluginDataSource:sourceCopy];
     }
   }
 
@@ -3759,30 +3759,30 @@ LABEL_11:
   return v8;
 }
 
-- (id)photosBrowserViewControllerWithPluginPayloads:(id)a3
+- (id)photosBrowserViewControllerWithPluginPayloads:(id)payloads
 {
-  v4 = a3;
-  v5 = [(CKBalloonPluginManager *)self existingPhotoBrowserViewController];
+  payloadsCopy = payloads;
+  existingPhotoBrowserViewController = [(CKBalloonPluginManager *)self existingPhotoBrowserViewController];
   v6 = *MEMORY[0x1E69A6A00];
-  if (v5)
+  if (existingPhotoBrowserViewController)
   {
-    v7 = v5;
+    v7 = existingPhotoBrowserViewController;
     [(CKBalloonPluginManager *)self _invalidatePluginForKey:*MEMORY[0x1E69A6A00]];
   }
 
-  v8 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v9 = [v8 balloonPluginForBundleID:v6];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v9 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v6];
 
-  v10 = [v9 browserClass];
-  if ([(objc_class *)v10 instancesRespondToSelector:sel_initWithBalloonPlugin_pluginPayloads_])
+  browserClass = [v9 browserClass];
+  if ([(objc_class *)browserClass instancesRespondToSelector:sel_initWithBalloonPlugin_pluginPayloads_])
   {
-    v11 = [[v10 alloc] initWithBalloonPlugin:v9 pluginPayloads:v4];
+    v11 = [[browserClass alloc] initWithBalloonPlugin:v9 pluginPayloads:payloadsCopy];
   }
 
   else
   {
-    v12 = [(objc_class *)v10 instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
-    v13 = [v10 alloc];
+    v12 = [(objc_class *)browserClass instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
+    v13 = [browserClass alloc];
     if (v12)
     {
       v11 = [v13 initWithBalloonPlugin:v9 dataSource:0];
@@ -3797,24 +3797,24 @@ LABEL_11:
   v14 = v11;
   if (v11)
   {
-    v15 = [(CKBalloonPluginManager *)self activeBrowsers];
-    [v15 setObject:v14 forKey:v6];
+    activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+    [activeBrowsers setObject:v14 forKey:v6];
   }
 
   return v14;
 }
 
-- (id)digitalTouchViewControllerWithDataSource:(id)a3
+- (id)digitalTouchViewControllerWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = *MEMORY[0x1E69A69A8];
   v6 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:*MEMORY[0x1E69A69A8]];
   if (v6)
   {
     v7 = v6;
-    v8 = [v6 balloonPluginDataSource];
+    balloonPluginDataSource = [v6 balloonPluginDataSource];
 
-    if (v8 == v4)
+    if (balloonPluginDataSource == sourceCopy)
     {
       goto LABEL_7;
     }
@@ -3822,14 +3822,14 @@ LABEL_11:
     [(CKBalloonPluginManager *)self _invalidatePluginForKey:v5];
   }
 
-  v9 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v10 = [v9 balloonPluginForBundleID:v5];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v10 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v5];
 
   v7 = [objc_alloc(objc_msgSend(v10 "browserClass"))];
   if (v7)
   {
-    v11 = [(CKBalloonPluginManager *)self activeBrowsers];
-    [v11 setObject:v7 forKey:v5];
+    activeBrowsers = [(CKBalloonPluginManager *)self activeBrowsers];
+    [activeBrowsers setObject:v7 forKey:v5];
   }
 
 LABEL_7:
@@ -3837,30 +3837,30 @@ LABEL_7:
   return v7;
 }
 
-- (id)handwritingViewControllerWithPluginPayloads:(id)a3
+- (id)handwritingViewControllerWithPluginPayloads:(id)payloads
 {
-  v4 = a3;
+  payloadsCopy = payloads;
   v5 = *MEMORY[0x1E69A69E0];
   v6 = [(CKBalloonPluginManager *)self existingViewControllerForPluginIdentifier:*MEMORY[0x1E69A69E0]];
   v7 = v6;
-  if (v4 && v6)
+  if (payloadsCopy && v6)
   {
 
     [(CKBalloonPluginManager *)self _invalidatePluginForKey:v5];
 LABEL_5:
-    v8 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v9 = [v8 balloonPluginForBundleID:v5];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    v9 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v5];
 
-    v10 = [v9 browserClass];
-    if ([(objc_class *)v10 instancesRespondToSelector:sel_initWithBalloonPlugin_pluginPayloads_])
+    browserClass = [v9 browserClass];
+    if ([(objc_class *)browserClass instancesRespondToSelector:sel_initWithBalloonPlugin_pluginPayloads_])
     {
-      v11 = [[v10 alloc] initWithBalloonPlugin:v9 pluginPayloads:v4];
+      v11 = [[browserClass alloc] initWithBalloonPlugin:v9 pluginPayloads:payloadsCopy];
     }
 
     else
     {
-      v12 = [(objc_class *)v10 instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
-      v13 = [v10 alloc];
+      v12 = [(objc_class *)browserClass instancesRespondToSelector:sel_initWithBalloonPlugin_dataSource_];
+      v13 = [browserClass alloc];
       if (v12)
       {
         v11 = [v13 initWithBalloonPlugin:v9 dataSource:0];
@@ -3887,24 +3887,24 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)isViewController:(id)a3 fromPluginWithIdentifier:(id)a4
+- (BOOL)isViewController:(id)controller fromPluginWithIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69A5AD0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedInstance];
-  v9 = [v8 balloonPluginForBundleID:v6];
+  identifierCopy = identifier;
+  controllerCopy = controller;
+  sharedInstance = [v5 sharedInstance];
+  v9 = [sharedInstance balloonPluginForBundleID:identifierCopy];
 
   v10 = objc_opt_class();
-  LOBYTE(v7) = [v10 isEqual:{objc_msgSend(v9, "browserClass")}];
+  LOBYTE(controllerCopy) = [v10 isEqual:{objc_msgSend(v9, "browserClass")}];
 
-  return v7;
+  return controllerCopy;
 }
 
-- (void)appInstallationWatcher:(id)a3 changedAppInstallation:(id)a4
+- (void)appInstallationWatcher:(id)watcher changedAppInstallation:(id)installation
 {
-  v6 = a3;
-  v7 = a4;
+  watcherCopy = watcher;
+  installationCopy = installation;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3915,37 +3915,37 @@ LABEL_11:
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(CKBalloonPluginManager *)self visibleInstallations];
+  visibleInstallations = [(CKBalloonPluginManager *)self visibleInstallations];
 
-  if (!v8)
+  if (!visibleInstallations)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    [(CKBalloonPluginManager *)self setVisibleInstallations:v9];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CKBalloonPluginManager *)self setVisibleInstallations:array];
   }
 
-  v10 = [(CKBalloonPluginManager *)self visibleInstallations];
+  visibleInstallations2 = [(CKBalloonPluginManager *)self visibleInstallations];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__CKBalloonPluginManager_CKBrowserSelectionController__appInstallationWatcher_changedAppInstallation___block_invoke;
   v13[3] = &unk_1E72F3268;
-  v11 = v7;
+  v11 = installationCopy;
   v14 = v11;
   v15 = &v21;
   v16 = &v17;
-  [v10 enumerateObjectsUsingBlock:v13];
+  [visibleInstallations2 enumerateObjectsUsingBlock:v13];
 
   if (v22[5])
   {
     if ([v11 installed])
     {
-      v12 = [(CKBalloonPluginManager *)self visibleInstallations];
-      [v12 removeObjectAtIndex:v18[3]];
+      visibleInstallations3 = [(CKBalloonPluginManager *)self visibleInstallations];
+      [visibleInstallations3 removeObjectAtIndex:v18[3]];
     }
 
     else
     {
-      v12 = [(CKBalloonPluginManager *)self visibleInstallations];
-      [v12 replaceObjectAtIndex:v18[3] withObject:v11];
+      visibleInstallations3 = [(CKBalloonPluginManager *)self visibleInstallations];
+      [visibleInstallations3 replaceObjectAtIndex:v18[3] withObject:v11];
     }
 
     goto LABEL_9;
@@ -3953,8 +3953,8 @@ LABEL_11:
 
   if (([v11 installed] & 1) == 0)
   {
-    v12 = [(CKBalloonPluginManager *)self visibleInstallations];
-    [v12 addObject:v11];
+    visibleInstallations3 = [(CKBalloonPluginManager *)self visibleInstallations];
+    [visibleInstallations3 addObject:v11];
 LABEL_9:
 
     [(CKBalloonPluginManager *)self _refreshVisibleDrawerPluginsDueToAppInstallationChange];
@@ -3979,19 +3979,19 @@ void __102__CKBalloonPluginManager_CKBrowserSelectionController__appInstallation
   }
 }
 
-- (void)appInstallationWatcher:(id)a3 addedAppInstallation:(id)a4
+- (void)appInstallationWatcher:(id)watcher addedAppInstallation:(id)installation
 {
-  v5 = a4;
-  v6 = [(CKBalloonPluginManager *)self visibleInstallations];
+  installationCopy = installation;
+  visibleInstallations = [(CKBalloonPluginManager *)self visibleInstallations];
 
-  if (!v6)
+  if (!visibleInstallations)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(CKBalloonPluginManager *)self setVisibleInstallations:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    [(CKBalloonPluginManager *)self setVisibleInstallations:array];
   }
 
-  v8 = [(CKBalloonPluginManager *)self visibleInstallations];
-  [v8 addObject:v5];
+  visibleInstallations2 = [(CKBalloonPluginManager *)self visibleInstallations];
+  [visibleInstallations2 addObject:installationCopy];
 
   [(CKBalloonPluginManager *)self _refreshVisibleDrawerPluginsDueToAppInstallationChange];
 }
@@ -4034,16 +4034,16 @@ void __78__CKBalloonPluginManager_CKBrowserSelectionController__updateAppInstall
 - (void)_refreshVisibleDrawerPluginsDueToAppInstallationChange
 {
   [(CKBalloonPluginManager *)self refreshPlugins];
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"CKBrowserSelectionControllerInstallationsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKBrowserSelectionControllerInstallationsChangedNotification" object:0];
 }
 
-- (id)filteredArrayOfInstallationsThatShouldBeVisible:(id)a3
+- (id)filteredArrayOfInstallationsThatShouldBeVisible:(id)visible
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(CKBalloonPluginManager *)self visiblePlugins];
-  v7 = [v6 __imArrayByApplyingBlock:&__block_literal_global_107];
+  visibleCopy = visible;
+  visiblePlugins = [(CKBalloonPluginManager *)self visiblePlugins];
+  v7 = [visiblePlugins __imArrayByApplyingBlock:&__block_literal_global_107];
   v8 = [v4 setWithArray:v7];
 
   v12[0] = MEMORY[0x1E69E9820];
@@ -4052,7 +4052,7 @@ void __78__CKBalloonPluginManager_CKBrowserSelectionController__updateAppInstall
   v12[3] = &unk_1E72F32B0;
   v13 = v8;
   v9 = v8;
-  v10 = [v5 __imArrayByFilteringWithBlock:v12];
+  v10 = [visibleCopy __imArrayByFilteringWithBlock:v12];
 
   return v10;
 }
@@ -4126,9 +4126,9 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
   visibleAppStripPlugins = self->_visibleAppStripPlugins;
   if (!visibleAppStripPlugins)
   {
-    v4 = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
-    v5 = [(CKBalloonPluginManager *)self visibleRecentAppStripPlugins];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    visibleFavoriteAppStripPlugins = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
+    visibleRecentAppStripPlugins = [(CKBalloonPluginManager *)self visibleRecentAppStripPlugins];
+    v6 = [visibleFavoriteAppStripPlugins arrayByAddingObjectsFromArray:visibleRecentAppStripPlugins];
     v7 = self->_visibleAppStripPlugins;
     self->_visibleAppStripPlugins = v6;
 
@@ -4141,17 +4141,17 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
 - (NSArray)visibleFavoriteAppStripPlugins
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CKBalloonPluginManager *)self favoriteAppStripPlugins];
+  favoriteAppStripPlugins = [(CKBalloonPluginManager *)self favoriteAppStripPlugins];
 
-  if (!v3)
+  if (!favoriteAppStripPlugins)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(CKBalloonPluginManager *)self candidateAppStripPlugins];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    candidateAppStripPlugins = [(CKBalloonPluginManager *)self candidateAppStripPlugins];
+    v5 = [candidateAppStripPlugins countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -4162,36 +4162,36 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(candidateAppStripPlugins);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [(CKBalloonPluginManager *)self pluginIndexPathMap];
-            v11 = [v9 identifier];
-            v12 = [v10 objectForKey:v11];
+            pluginIndexPathMap = [(CKBalloonPluginManager *)self pluginIndexPathMap];
+            identifier = [v9 identifier];
+            v12 = [pluginIndexPathMap objectForKey:identifier];
 
             if (v12 && ![v12 section])
             {
-              [v15 addObject:v9];
+              [array addObject:v9];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [candidateAppStripPlugins countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
     }
 
-    [(CKBalloonPluginManager *)self setFavoriteAppStripPlugins:v15];
+    [(CKBalloonPluginManager *)self setFavoriteAppStripPlugins:array];
   }
 
-  v13 = [(CKBalloonPluginManager *)self favoriteAppStripPlugins];
+  favoriteAppStripPlugins2 = [(CKBalloonPluginManager *)self favoriteAppStripPlugins];
 
-  return v13;
+  return favoriteAppStripPlugins2;
 }
 
 - (NSArray)recentAppStripPlugins
@@ -4200,13 +4200,13 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
   recentAppStripPlugins = self->_recentAppStripPlugins;
   if (!recentAppStripPlugins)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(CKBalloonPluginManager *)self candidateAppStripPlugins];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    candidateAppStripPlugins = [(CKBalloonPluginManager *)self candidateAppStripPlugins];
+    v5 = [candidateAppStripPlugins countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -4217,32 +4217,32 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(candidateAppStripPlugins);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [(CKBalloonPluginManager *)self pluginIndexPathMap];
-            v11 = [v9 identifier];
-            v12 = [v10 objectForKey:v11];
+            pluginIndexPathMap = [(CKBalloonPluginManager *)self pluginIndexPathMap];
+            identifier = [v9 identifier];
+            v12 = [pluginIndexPathMap objectForKey:identifier];
 
             if (!v12 || [v12 section] == 1)
             {
-              [(NSArray *)v15 addObject:v9];
+              [(NSArray *)array addObject:v9];
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [candidateAppStripPlugins countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v6);
     }
 
     v13 = self->_recentAppStripPlugins;
-    self->_recentAppStripPlugins = v15;
+    self->_recentAppStripPlugins = array;
 
     recentAppStripPlugins = self->_recentAppStripPlugins;
   }
@@ -4255,21 +4255,21 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
   visibleRecentAppStripPlugins = self->_visibleRecentAppStripPlugins;
   if (!visibleRecentAppStripPlugins)
   {
-    v4 = [(CKBalloonPluginManager *)self recentAppStripPlugins];
+    recentAppStripPlugins = [(CKBalloonPluginManager *)self recentAppStripPlugins];
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 suggestedAppStripLimit];
+    suggestedAppStripLimit = [v5 suggestedAppStripLimit];
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 suggestedMinimumRecentsCount];
+    suggestedMinimumRecentsCount = [v7 suggestedMinimumRecentsCount];
 
-    v9 = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
-    v10 = [v9 count];
+    visibleFavoriteAppStripPlugins = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
+    v10 = [visibleFavoriteAppStripPlugins count];
 
-    v11 = [v4 count];
-    v12 = v6 - v10;
-    if (v6 - v10 <= v8)
+    v11 = [recentAppStripPlugins count];
+    v12 = suggestedAppStripLimit - v10;
+    if (suggestedAppStripLimit - v10 <= suggestedMinimumRecentsCount)
     {
-      v12 = v8;
+      v12 = suggestedMinimumRecentsCount;
     }
 
     if (v12 >= v11)
@@ -4282,13 +4282,13 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
       v13 = v12;
     }
 
-    v14 = [v4 subarrayWithRange:{0, v13}];
-    v15 = [(NSArray *)v14 lastObject];
+    v14 = [recentAppStripPlugins subarrayWithRange:{0, v13}];
+    lastObject = [(NSArray *)v14 lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v15 identifier];
-      v17 = [v16 isEqualToString:@"com.apple.messages.browser.MorePlugin"] ^ 1;
+      identifier = [lastObject identifier];
+      v17 = [identifier isEqualToString:@"com.apple.messages.browser.MorePlugin"] ^ 1;
     }
 
     else
@@ -4296,11 +4296,11 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
       v17 = 1;
     }
 
-    v18 = [objc_opt_class() morePlugin];
-    v19 = v18;
-    if (v17 && v18)
+    morePlugin = [objc_opt_class() morePlugin];
+    v19 = morePlugin;
+    if (v17 && morePlugin)
     {
-      v20 = [(NSArray *)v14 arrayByAddingObject:v18];
+      v20 = [(NSArray *)v14 arrayByAddingObject:morePlugin];
 
       v14 = v20;
     }
@@ -4316,9 +4316,9 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
 
 - (NSArray)potentiallyVisiblePlugins
 {
-  v3 = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
+  cachedPotentiallyVisiblePlugins = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
 
-  if (!v3)
+  if (!cachedPotentiallyVisiblePlugins)
   {
     [(CKBalloonPluginManager *)self setFavoriteAppStripPlugins:0];
     recentAppStripPlugins = self->_recentAppStripPlugins;
@@ -4336,15 +4336,15 @@ BOOL __104__CKBalloonPluginManager_CKBrowserSelectionController__filteredArrayOf
 
 - (NSArray)potentiallyVisibleNonFavoritePlugins
 {
-  v3 = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
-  v4 = [(CKBalloonPluginManager *)self potentiallyVisiblePlugins];
+  visibleFavoriteAppStripPlugins = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
+  potentiallyVisiblePlugins = [(CKBalloonPluginManager *)self potentiallyVisiblePlugins];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __92__CKBalloonPluginManager_CKBrowserSelectionController__potentiallyVisibleNonFavoritePlugins__block_invoke;
   v8[3] = &unk_1E72F0A88;
-  v9 = v3;
-  v5 = v3;
-  v6 = [v4 __imArrayByFilteringWithBlock:v8];
+  v9 = visibleFavoriteAppStripPlugins;
+  v5 = visibleFavoriteAppStripPlugins;
+  v6 = [potentiallyVisiblePlugins __imArrayByFilteringWithBlock:v8];
 
   return v6;
 }
@@ -4387,14 +4387,14 @@ uint64_t __84__CKBalloonPluginManager_CKBrowserSelectionController__allPotential
   return v4;
 }
 
-- (id)orderedPlugins:(BOOL)a3
+- (id)orderedPlugins:(BOOL)plugins
 {
   v114 = *MEMORY[0x1E69E9840];
-  v5 = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
+  cachedPotentiallyVisiblePlugins = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
 
   if (__CurrentTestName)
   {
-    v6 = v5 == 0;
+    v6 = cachedPotentiallyVisiblePlugins == 0;
   }
 
   else
@@ -4404,20 +4404,20 @@ uint64_t __84__CKBalloonPluginManager_CKBrowserSelectionController__allPotential
 
   if (v6)
   {
-    v18 = [(CKBalloonPluginManager *)self visiblePlugins];
-    [(CKBalloonPluginManager *)self setCachedPotentiallyVisiblePlugins:v18];
+    visiblePlugins = [(CKBalloonPluginManager *)self visiblePlugins];
+    [(CKBalloonPluginManager *)self setCachedPotentiallyVisiblePlugins:visiblePlugins];
   }
 
-  else if (!v5)
+  else if (!cachedPotentiallyVisiblePlugins)
   {
-    v7 = [(CKBalloonPluginManager *)self allPotentiallyVisiblePlugins];
+    allPotentiallyVisiblePlugins = [(CKBalloonPluginManager *)self allPotentiallyVisiblePlugins];
     v8 = +[CKBalloonPluginManager defaultFavoritePlugins];
     v9 = +[CKBalloonPluginManager morePlugin];
-    v10 = [v7 lastObject];
-    v11 = v10;
+    lastObject = [allPotentiallyVisiblePlugins lastObject];
+    v11 = lastObject;
     if (!v9)
     {
-      if ([v7 count])
+      if ([allPotentiallyVisiblePlugins count])
       {
         goto LABEL_21;
       }
@@ -4425,11 +4425,11 @@ uint64_t __84__CKBalloonPluginManager_CKBrowserSelectionController__allPotential
       goto LABEL_54;
     }
 
-    v12 = [v10 identifier];
-    v13 = [v9 identifier];
-    if (([v12 isEqualToString:v13] & 1) == 0 && !__CurrentTestName)
+    identifier = [lastObject identifier];
+    identifier2 = [v9 identifier];
+    if (([identifier isEqualToString:identifier2] & 1) == 0 && !__CurrentTestName)
     {
-      v14 = [v7 count];
+      v14 = [allPotentiallyVisiblePlugins count];
 
       if (!v14)
       {
@@ -4437,19 +4437,19 @@ uint64_t __84__CKBalloonPluginManager_CKBrowserSelectionController__allPotential
       }
 
       v15 = MEMORY[0x1E696AEC0];
-      v16 = [v9 identifier];
-      v12 = [v15 stringWithFormat:@"More plugin was not found last in visible plugins list! Found %@ instead.", v16];
+      identifier3 = [v9 identifier];
+      identifier = [v15 stringWithFormat:@"More plugin was not found last in visible plugins list! Found %@ instead.", identifier3];
 
-      v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v12 userInfo:0];
-      [v13 raise];
+      identifier2 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:identifier userInfo:0];
+      [identifier2 raise];
     }
 
 LABEL_12:
-    if ([v7 count])
+    if ([allPotentiallyVisiblePlugins count])
     {
-      v17 = [v7 subarrayWithRange:{0, objc_msgSend(v7, "count") - 1}];
+      v17 = [allPotentiallyVisiblePlugins subarrayWithRange:{0, objc_msgSend(allPotentiallyVisiblePlugins, "count") - 1}];
 
-      v7 = v17;
+      allPotentiallyVisiblePlugins = v17;
 LABEL_21:
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v110[0] = MEMORY[0x1E69E9820];
@@ -4458,19 +4458,19 @@ LABEL_21:
       v110[3] = &unk_1E72F0A88;
       v76 = v23;
       v111 = v76;
-      v24 = [v7 __imArrayByFilteringWithBlock:v110];
+      v24 = [allPotentiallyVisiblePlugins __imArrayByFilteringWithBlock:v110];
 
       v25 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
-      v26 = [(CKBalloonPluginManager *)self pluginIndexPathMap];
-      v27 = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
+      pluginIndexPathMap = [(CKBalloonPluginManager *)self pluginIndexPathMap];
+      historicalPluginIndexPathMap = [(CKBalloonPluginManager *)self historicalPluginIndexPathMap];
       v106[0] = MEMORY[0x1E69E9820];
       v106[1] = 3221225472;
       v106[2] = __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugins___block_invoke_2;
       v106[3] = &unk_1E72F32D8;
       v106[4] = self;
-      v28 = v26;
+      v28 = pluginIndexPathMap;
       v107 = v28;
-      v29 = v27;
+      v29 = historicalPluginIndexPathMap;
       v108 = v29;
       v68 = v25;
       v69 = v24;
@@ -4479,27 +4479,27 @@ LABEL_21:
       v31 = [v30 mutableCopy];
 
       v32 = [v31 __imArrayByFilteringWithBlock:&__block_literal_global_204_0];
-      v33 = [v32 firstObject];
+      firstObject = [v32 firstObject];
 
-      if (v33)
+      if (firstObject)
       {
-        [v31 removeObject:v33];
-        [v31 insertObject:v33 atIndex:0];
+        [v31 removeObject:firstObject];
+        [v31 insertObject:firstObject atIndex:0];
       }
 
-      v75 = v33;
+      v75 = firstObject;
       v71 = v11;
-      v72 = a3;
+      pluginsCopy = plugins;
       v34 = [v31 __imArrayByFilteringWithBlock:&__block_literal_global_206_0];
-      v35 = [v34 firstObject];
+      firstObject2 = [v34 firstObject];
 
-      if (v35)
+      if (firstObject2)
       {
-        [v31 removeObject:v35];
-        [v31 insertObject:v35 atIndex:0];
+        [v31 removeObject:firstObject2];
+        [v31 insertObject:firstObject2 atIndex:0];
       }
 
-      v73 = v35;
+      v73 = firstObject2;
       v70 = v9;
       v103[0] = MEMORY[0x1E69E9820];
       v103[1] = 3221225472;
@@ -4514,7 +4514,7 @@ LABEL_21:
       v38 = [v31 arrayByExcludingObjectsInArray:v37];
       v77 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v78 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v39 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v99 = 0u;
       v100 = 0u;
       v101 = 0u;
@@ -4535,7 +4535,7 @@ LABEL_21:
             }
 
             v44 = *(*(&v99 + 1) + 8 * i);
-            if (![(CKBalloonPluginManager *)self _addPluginToRecentsFrontIfNeeded:v44 frontOfRecents:v39 pluginMap:v36 fallbackMap:v29])
+            if (![(CKBalloonPluginManager *)self _addPluginToRecentsFrontIfNeeded:v44 frontOfRecents:array pluginMap:v36 fallbackMap:v29])
             {
               [v78 addObject:v44];
             }
@@ -4547,11 +4547,11 @@ LABEL_21:
         while (v41);
       }
 
-      v74 = v39;
+      v74 = array;
       v67 = v29;
 
-      v45 = [MEMORY[0x1E695DF70] array];
-      v46 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v95 = 0u;
       v96 = 0u;
       v97 = 0u;
@@ -4572,19 +4572,19 @@ LABEL_21:
             }
 
             v51 = *(*(&v95 + 1) + 8 * j);
-            v52 = [v51 identifier];
-            v53 = [v36 objectForKeyedSubscript:v52];
+            identifier4 = [v51 identifier];
+            v53 = [v36 objectForKeyedSubscript:identifier4];
             v54 = v53;
             if (!v53 || [v53 section] == 0x7FFFFFFFFFFFFFFFLL || (v55 = objc_msgSend(v54, "item"), v56 = v77, v55 == 0x7FFFFFFFFFFFFFFFLL))
             {
-              if ([v82 containsObject:v52])
+              if ([v82 containsObject:identifier4])
               {
-                v56 = v46;
+                v56 = array3;
               }
 
               else
               {
-                v56 = v45;
+                v56 = array2;
               }
             }
 
@@ -4597,14 +4597,14 @@ LABEL_21:
         while (v48);
       }
 
-      if ([v46 count])
+      if ([array3 count])
       {
         v93[0] = MEMORY[0x1E69E9820];
         v93[1] = 3221225472;
         v93[2] = __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugins___block_invoke_6;
         v93[3] = &unk_1E72F3348;
         v94 = v82;
-        v57 = [v46 sortedArrayUsingComparator:v93];
+        v57 = [array3 sortedArrayUsingComparator:v93];
         v89[0] = MEMORY[0x1E69E9820];
         v89[1] = 3221225472;
         v89[2] = __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugins___block_invoke_7;
@@ -4615,19 +4615,19 @@ LABEL_21:
         [v57 enumerateObjectsUsingBlock:v89];
       }
 
-      [v77 addObjectsFromArray:v45];
+      [v77 addObjectsFromArray:array2];
       v58 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v74, "count")}];
       [v78 insertObjects:v74 atIndexes:v58];
 
       v59 = objc_alloc_init(MEMORY[0x1E695DF70]);
       [v59 addObjectsFromArray:v77];
-      v60 = [(CKBalloonPluginManager *)self visibleInstallations];
-      v61 = [(CKBalloonPluginManager *)self filteredArrayOfInstallationsThatShouldBeVisible:v60];
+      visibleInstallations = [(CKBalloonPluginManager *)self visibleInstallations];
+      v61 = [(CKBalloonPluginManager *)self filteredArrayOfInstallationsThatShouldBeVisible:visibleInstallations];
       [v59 addObjectsFromArray:v61];
 
       [v59 addObjectsFromArray:v78];
       [v59 addObjectsFromArray:v76];
-      a3 = v72;
+      plugins = pluginsCopy;
       if (v70)
       {
         [v59 addObject:v70];
@@ -4665,16 +4665,16 @@ LABEL_54:
   }
 
 LABEL_15:
-  v19 = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
-  v20 = v19;
-  if (!a3)
+  cachedPotentiallyVisiblePlugins2 = [(CKBalloonPluginManager *)self cachedPotentiallyVisiblePlugins];
+  v20 = cachedPotentiallyVisiblePlugins2;
+  if (!plugins)
   {
     v83[0] = MEMORY[0x1E69E9820];
     v83[1] = 3221225472;
     v83[2] = __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugins___block_invoke_213;
     v83[3] = &unk_1E72F33C0;
     v83[4] = self;
-    v21 = [v19 __imArrayByFilteringWithBlock:v83];
+    v21 = [cachedPotentiallyVisiblePlugins2 __imArrayByFilteringWithBlock:v83];
 
     v20 = v21;
   }
@@ -4912,22 +4912,22 @@ uint64_t __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugi
   return v4;
 }
 
-- (BOOL)isPluginSystemApp:(id)a3
+- (BOOL)isPluginSystemApp:(id)app
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  appCopy = app;
+  v4 = appCopy;
+  if (!appCopy)
   {
-    v5 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    identifier = IMLogHandleForCategory();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_ERROR))
     {
-      [(CKBalloonPluginManager(CKBrowserSelectionController) *)v5 isPluginSystemApp:v13, v14, v15, v16, v17, v18, v19];
+      [(CKBalloonPluginManager(CKBrowserSelectionController) *)identifier isPluginSystemApp:v13, v14, v15, v16, v17, v18, v19];
     }
 
     goto LABEL_8;
   }
 
-  v5 = [v3 identifier];
+  identifier = [appCopy identifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -4936,15 +4936,15 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v6 = [v4 proxy];
-  v7 = [v4 identifier];
-  v8 = [v7 isEqualToString:v5];
+  proxy = [v4 proxy];
+  identifier2 = [v4 identifier];
+  v8 = [identifier2 isEqualToString:identifier];
 
-  if (v8 && v6)
+  if (v8 && proxy)
   {
-    v9 = [v6 containingBundle];
-    v10 = [v9 applicationType];
-    v11 = [v10 isEqualToString:*MEMORY[0x1E69635B8]];
+    containingBundle = [proxy containingBundle];
+    applicationType = [containingBundle applicationType];
+    v11 = [applicationType isEqualToString:*MEMORY[0x1E69635B8]];
 
     v12 = v11 ^ 1;
   }
@@ -4954,7 +4954,7 @@ LABEL_8:
     v20 = IMLogHandleForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [(CKBalloonPluginManager(CKBrowserSelectionController) *)v4 isPluginSystemApp:v5, v20];
+      [(CKBalloonPluginManager(CKBrowserSelectionController) *)v4 isPluginSystemApp:identifier, v20];
     }
 
     v12 = 0;
@@ -4964,19 +4964,19 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)isPluginHiddenFromSendMenuAndStickers:(id)a3
+- (BOOL)isPluginHiddenFromSendMenuAndStickers:(id)stickers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695E000] messagesAppDomain];
-  v5 = [v4 valueForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+  stickersCopy = stickers;
+  messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+  v5 = [messagesAppDomain valueForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v7 = [v6 stringArrayForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+    messagesAppDomain2 = [MEMORY[0x1E695E000] messagesAppDomain];
+    v7 = [messagesAppDomain2 stringArrayForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
 
-    v8 = [v3 extensionBundleIdentifier];
+    extensionBundleIdentifier = [stickersCopy extensionBundleIdentifier];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -4995,7 +4995,7 @@ LABEL_13:
             objc_enumerationMutation(v9);
           }
 
-          if ([*(*(&v14 + 1) + 8 * i) isEqualToString:{v8, v14}])
+          if ([*(*(&v14 + 1) + 8 * i) isEqualToString:{extensionBundleIdentifier, v14}])
           {
             LOBYTE(v10) = 1;
             goto LABEL_12;
@@ -5023,58 +5023,58 @@ LABEL_12:
   return v10;
 }
 
-- (void)setPlugin:(id)a3 hiddenInSendMenuAndStickers:(BOOL)a4
+- (void)setPlugin:(id)plugin hiddenInSendMenuAndStickers:(BOOL)stickers
 {
-  v4 = a4;
+  stickersCopy = stickers;
   v5 = MEMORY[0x1E695E000];
-  v6 = a3;
-  v7 = [v5 messagesAppDomain];
-  v8 = [v7 valueForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+  pluginCopy = plugin;
+  messagesAppDomain = [v5 messagesAppDomain];
+  v8 = [messagesAppDomain valueForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v10 = [v9 stringArrayForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
-    v13 = [v10 mutableCopy];
+    messagesAppDomain2 = [MEMORY[0x1E695E000] messagesAppDomain];
+    v10 = [messagesAppDomain2 stringArrayForKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+    array = [v10 mutableCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v11 = [v6 extensionBundleIdentifier];
+  extensionBundleIdentifier = [pluginCopy extensionBundleIdentifier];
 
-  if (v4)
+  if (stickersCopy)
   {
-    [v13 removeObject:v11];
+    [array removeObject:extensionBundleIdentifier];
   }
 
   else
   {
-    if ([v13 containsObject:v11])
+    if ([array containsObject:extensionBundleIdentifier])
     {
       goto LABEL_9;
     }
 
-    [v13 addObject:v11];
+    [array addObject:extensionBundleIdentifier];
   }
 
-  v12 = [MEMORY[0x1E695E000] messagesAppDomain];
-  [v12 setValue:v13 forKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
+  messagesAppDomain3 = [MEMORY[0x1E695E000] messagesAppDomain];
+  [messagesAppDomain3 setValue:array forKey:@"SendMenuHiddenExtensionBundleIdentifiers"];
 
 LABEL_9:
 }
 
 - (NSArray)orderedCombinedStickerApps
 {
-  v3 = [(CKBalloonPluginManager *)self allOrderedCombinedStickerApps];
+  allOrderedCombinedStickerApps = [(CKBalloonPluginManager *)self allOrderedCombinedStickerApps];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__CKBalloonPluginManager_CKBrowserSelectionController__orderedCombinedStickerApps__block_invoke;
   v6[3] = &unk_1E72F0A88;
   v6[4] = self;
-  v4 = [v3 __imArrayByFilteringWithBlock:v6];
+  v4 = [allOrderedCombinedStickerApps __imArrayByFilteringWithBlock:v6];
 
   return v4;
 }
@@ -5097,24 +5097,24 @@ uint64_t __82__CKBalloonPluginManager_CKBrowserSelectionController__orderedCombi
 
 - (NSArray)allOrderedCombinedStickerApps
 {
-  v3 = [(CKBalloonPluginManager *)self combinedStickerApps];
-  v4 = [v3 lastObject];
+  combinedStickerApps = [(CKBalloonPluginManager *)self combinedStickerApps];
+  lastObject = [combinedStickerApps lastObject];
   v5 = [MEMORY[0x1E696AC88] indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
-  v6 = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
+  combinedStickersAppsIndexPathMap = [(CKBalloonPluginManager *)self combinedStickersAppsIndexPathMap];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCombinedStickerApps__block_invoke;
   v12[3] = &unk_1E72F33E8;
   v12[4] = self;
-  v13 = v6;
+  v13 = combinedStickersAppsIndexPathMap;
   v14 = v5;
   v7 = v5;
-  v8 = v6;
-  v9 = [v3 sortedArrayUsingComparator:v12];
+  v8 = combinedStickersAppsIndexPathMap;
+  v9 = [combinedStickerApps sortedArrayUsingComparator:v12];
   v10 = [v9 mutableCopy];
 
-  [v10 removeObject:v4];
-  [v10 addObject:v4];
+  [v10 removeObject:lastObject];
+  [v10 addObject:lastObject];
 
   return v10;
 }
@@ -5149,15 +5149,15 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
   return v16;
 }
 
-- (id)_pluginIndexPathForFavoritePluginWithIdentifier:(id)a3 pluginMap:(id)a4 fallbackMap:(id)a5
+- (id)_pluginIndexPathForFavoritePluginWithIdentifier:(id)identifier pluginMap:(id)map fallbackMap:(id)fallbackMap
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:v7];
+  identifierCopy = identifier;
+  fallbackMapCopy = fallbackMap;
+  v9 = [map objectForKeyedSubscript:identifierCopy];
   v10 = v9;
   if (!v9 || [v9 section] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v10, "item") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v8 objectForKeyedSubscript:v7];
+    v11 = [fallbackMapCopy objectForKeyedSubscript:identifierCopy];
 
     if (!v11 || [v11 section] == 0x7FFFFFFFFFFFFFFFLL || objc_msgSend(v11, "item") == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -5180,9 +5180,9 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
   return v10;
 }
 
-- (id)_pluginIndexPathForPluginWithIdentifier:(id)a3 pluginMap:(id)a4
+- (id)_pluginIndexPathForPluginWithIdentifier:(id)identifier pluginMap:(id)map
 {
-  v4 = [a4 objectForKeyedSubscript:a3];
+  v4 = [map objectForKeyedSubscript:identifier];
   v5 = v4;
   if (v4 && [v4 section] != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -5207,18 +5207,18 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
   return v6;
 }
 
-- (BOOL)_addPluginToRecentsFrontIfNeeded:(id)a3 frontOfRecents:(id)a4 pluginMap:(id)a5 fallbackMap:(id)a6
+- (BOOL)_addPluginToRecentsFrontIfNeeded:(id)needed frontOfRecents:(id)recents pluginMap:(id)map fallbackMap:(id)fallbackMap
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [v10 identifier];
-  v15 = [(CKBalloonPluginManager *)self _pluginIndexPathForFavoritePluginWithIdentifier:v14 pluginMap:v13 fallbackMap:v12];
+  neededCopy = needed;
+  recentsCopy = recents;
+  fallbackMapCopy = fallbackMap;
+  mapCopy = map;
+  identifier = [neededCopy identifier];
+  v15 = [(CKBalloonPluginManager *)self _pluginIndexPathForFavoritePluginWithIdentifier:identifier pluginMap:mapCopy fallbackMap:fallbackMapCopy];
 
   if (!v15)
   {
-    [v11 addObject:v10];
+    [recentsCopy addObject:neededCopy];
   }
 
   return v15 == 0;
@@ -5237,13 +5237,13 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
     v32[4] = self;
     v22 = [(CKBalloonPluginManager *)self allPluginsPassingTest:v32];
     v4 = [v22 __imArrayByApplyingBlock:&__block_literal_global_226_1];
-    v23 = self;
-    v5 = [objc_opt_class() defaultFavoritePlugins];
+    selfCopy = self;
+    defaultFavoritePlugins = [objc_opt_class() defaultFavoritePlugins];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+    v6 = [defaultFavoritePlugins countByEnumeratingWithState:&v28 objects:v35 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5255,7 +5255,7 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
         {
           if (*v29 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(defaultFavoritePlugins);
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
@@ -5268,7 +5268,7 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v28 objects:v35 count:16];
+        v7 = [defaultFavoritePlugins countByEnumeratingWithState:&v28 objects:v35 count:16];
       }
 
       while (v7);
@@ -5295,7 +5295,7 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
           }
 
           v19 = *(*(&v24 + 1) + 8 * j);
-          if (([v5 containsObject:v19] & 1) == 0 && (objc_msgSend(v19, "isEqualToString:", @"com.apple.messages.browser.MorePlugin") & 1) == 0)
+          if (([defaultFavoritePlugins containsObject:v19] & 1) == 0 && (objc_msgSend(v19, "isEqualToString:", @"com.apple.messages.browser.MorePlugin") & 1) == 0)
           {
             v20 = [MEMORY[0x1E696AC88] indexPathForItem:v16 inSection:1];
             [v3 setObject:v20 forKeyedSubscript:v19];
@@ -5318,7 +5318,7 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
     v21 = [MEMORY[0x1E696AC88] indexPathForItem:v16 inSection:1];
     [v3 setObject:v21 forKeyedSubscript:@"com.apple.messages.browser.MorePlugin"];
 
-    [(CKBalloonPluginManager *)v23 setPluginIndexPathMap:v3];
+    [(CKBalloonPluginManager *)selfCopy setPluginIndexPathMap:v3];
   }
 
   else
@@ -5337,12 +5337,12 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
   if ([(CKBalloonPluginManager *)self hasLoadedExtensions])
   {
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4 = [(CKBalloonPluginManager *)self combinedStickerApps];
-    v5 = [v4 mutableCopy];
+    combinedStickerApps = [(CKBalloonPluginManager *)self combinedStickerApps];
+    v5 = [combinedStickerApps mutableCopy];
 
-    v6 = [v5 lastObject];
-    v7 = [v6 identifier];
-    v8 = [v7 isEqualToString:@"com.apple.messages.browser.MorePlugin"];
+    lastObject = [v5 lastObject];
+    identifier = [lastObject identifier];
+    v8 = [identifier isEqualToString:@"com.apple.messages.browser.MorePlugin"];
 
     if ((v8 & 1) == 0)
     {
@@ -5355,10 +5355,10 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
       do
       {
         v10 = [v5 objectAtIndexedSubscript:v9];
-        v11 = [v10 identifier];
+        identifier2 = [v10 identifier];
 
         v12 = [MEMORY[0x1E696AC88] indexPathForItem:v9 inSection:0];
-        [v14 setObject:v12 forKeyedSubscript:v11];
+        [v14 setObject:v12 forKeyedSubscript:identifier2];
 
         ++v9;
       }
@@ -5380,20 +5380,20 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
   }
 }
 
-- (void)updateIndexPath:(id)a3 forPlugin:(id)a4 isDrawerPluginPath:(BOOL)a5
+- (void)updateIndexPath:(id)path forPlugin:(id)plugin isDrawerPluginPath:(BOOL)pluginPath
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  pluginCopy = plugin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
-    v10 = [v9 mutableCopy];
+    visibleFavoriteAppStripPlugins = [(CKBalloonPluginManager *)self visibleFavoriteAppStripPlugins];
+    v10 = [visibleFavoriteAppStripPlugins mutableCopy];
 
-    v11 = [(CKBalloonPluginManager *)self recentAppStripPlugins];
-    v12 = [v11 mutableCopy];
+    recentAppStripPlugins = [(CKBalloonPluginManager *)self recentAppStripPlugins];
+    v12 = [recentAppStripPlugins mutableCopy];
 
-    if ([v7 section])
+    if ([pathCopy section])
     {
       v13 = v12;
     }
@@ -5404,9 +5404,9 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
     }
 
     v14 = v13;
-    [v10 removeObject:v8];
-    [v12 removeObject:v8];
-    -[NSObject insertObject:atIndex:](v14, "insertObject:atIndex:", v8, [v7 row]);
+    [v10 removeObject:pluginCopy];
+    [v12 removeObject:pluginCopy];
+    -[NSObject insertObject:atIndex:](v14, "insertObject:atIndex:", pluginCopy, [pathCopy row]);
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __101__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath_forPlugin_isDrawerPluginPath___block_invoke;
@@ -5422,7 +5422,7 @@ uint64_t __85__CKBalloonPluginManager_CKBrowserSelectionController__allOrderedCo
 
     [(CKBalloonPluginManager *)self _updateHistoricalPluginIndexPathMap];
     [(CKBalloonPluginManager *)self refreshPlugins];
-    v15 = [(CKBalloonPluginManager *)self visiblePlugins];
+    visiblePlugins = [(CKBalloonPluginManager *)self visiblePlugins];
     [(CKBalloonPluginManager *)self saveWithNotification:1];
   }
 
@@ -5464,18 +5464,18 @@ void __101__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath
   NSLog(&cfstr_PuttingToTuTu.isa, v9, [v10 section], objc_msgSend(v10, "row"));
 }
 
-- (void)updateIndexPath:(id)a3 forCombinedStickerApp:(id)a4
+- (void)updateIndexPath:(id)path forCombinedStickerApp:(id)app
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  appCopy = app;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(CKBalloonPluginManager *)self orderedCombinedStickerApps];
-    v9 = [v8 mutableCopy];
+    orderedCombinedStickerApps = [(CKBalloonPluginManager *)self orderedCombinedStickerApps];
+    v9 = [orderedCombinedStickerApps mutableCopy];
 
-    [v9 removeObject:v7];
-    -[NSObject insertObject:atIndex:](v9, "insertObject:atIndex:", v7, [v6 row]);
+    [v9 removeObject:appCopy];
+    -[NSObject insertObject:atIndex:](v9, "insertObject:atIndex:", appCopy, [pathCopy row]);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __94__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath_forCombinedStickerApp___block_invoke;
@@ -5509,14 +5509,14 @@ void __94__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath_
   NSLog(&cfstr_PuttingToTuTu.isa, v9, [v10 section], objc_msgSend(v10, "row"));
 }
 
-- (BOOL)isEnabledAndVisible:(id)a3
+- (BOOL)isEnabledAndVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([(CKBalloonPluginManager *)self isPluginEnabled:v5])
+  visibleCopy = visible;
+  identifier = [visibleCopy identifier];
+  if ([(CKBalloonPluginManager *)self isPluginEnabled:identifier])
   {
-    v6 = [v4 identifier];
-    v7 = [(CKBalloonPluginManager *)self isPluginVisible:v6];
+    identifier2 = [visibleCopy identifier];
+    v7 = [(CKBalloonPluginManager *)self isPluginVisible:identifier2];
   }
 
   else
@@ -5527,10 +5527,10 @@ void __94__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath_
   return v7;
 }
 
-- (void)removeVisibleInstallationWithID:(id)a3
+- (void)removeVisibleInstallationWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -5538,14 +5538,14 @@ void __94__CKBalloonPluginManager_CKBrowserSelectionController__updateIndexPath_
     v16 = __Block_byref_object_copy__34;
     v17 = __Block_byref_object_dispose__34;
     v18 = 0;
-    v5 = [(CKBalloonPluginManager *)self visibleInstallations];
+    visibleInstallations = [(CKBalloonPluginManager *)self visibleInstallations];
     v7 = MEMORY[0x1E69E9820];
     v8 = 3221225472;
     v9 = __88__CKBalloonPluginManager_CKBrowserSelectionController__removeVisibleInstallationWithID___block_invoke;
     v10 = &unk_1E72F3410;
-    v11 = v4;
+    v11 = dCopy;
     v12 = &v13;
-    [v5 enumerateObjectsUsingBlock:&v7];
+    [visibleInstallations enumerateObjectsUsingBlock:&v7];
 
     v6 = [(CKBalloonPluginManager *)self visibleInstallations:v7];
     [v6 removeObject:v14[5]];
@@ -5570,33 +5570,33 @@ void __88__CKBalloonPluginManager_CKBrowserSelectionController__removeVisibleIns
 
 - (id)descriptionOfVisibleDrawerPlugins
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CKBalloonPluginManager *)self visibleDrawerPlugins];
-  if ([v4 count])
+  string = [MEMORY[0x1E696AD60] string];
+  visibleDrawerPlugins = [(CKBalloonPluginManager *)self visibleDrawerPlugins];
+  if ([visibleDrawerPlugins count])
   {
     v5 = 0;
     do
     {
       if (v5)
       {
-        [v3 appendFormat:@"\n"];
+        [string appendFormat:@"\n"];
       }
 
-      v6 = [v4 objectAtIndexedSubscript:v5];
+      v6 = [visibleDrawerPlugins objectAtIndexedSubscript:v5];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __89__CKBalloonPluginManager_CKBrowserSelectionController__descriptionOfVisibleDrawerPlugins__block_invoke;
       v8[3] = &unk_1E72EBB28;
-      v9 = v3;
+      v9 = string;
       [v6 enumerateObjectsUsingBlock:v8];
 
       ++v5;
     }
 
-    while (v5 < [v4 count]);
+    while (v5 < [visibleDrawerPlugins count]);
   }
 
-  return v3;
+  return string;
 }
 
 void __71__CKBalloonPluginManager_CKBrowserSelectionController__orderedPlugins___block_invoke_7_cold_1(uint64_t a1, uint64_t a2, os_log_t log)

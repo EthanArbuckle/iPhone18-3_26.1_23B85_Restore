@@ -1,5 +1,5 @@
 @interface QLMemoryCacheQueryOperation
-- (QLMemoryCacheQueryOperation)initWithThumbnailRequest:(id)a3 cacheThread:(id)a4;
+- (QLMemoryCacheQueryOperation)initWithThumbnailRequest:(id)request cacheThread:(id)thread;
 - (void)cancel;
 - (void)main;
 @end
@@ -25,23 +25,23 @@
   dispatch_sync(queue, block);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v4 = [v27[5] activity];
-  os_activity_scope_enter(v4, &state);
+  activity = [v27[5] activity];
+  os_activity_scope_enter(activity, &state);
 
   v5 = v27[5];
   if (v5)
   {
-    v6 = [v5 cancelled];
+    cancelled = [v5 cancelled];
     cacheThread = self->_cacheThread;
-    if (v6)
+    if (cancelled)
     {
       [(_QLCacheThread *)cacheThread _thumbnailHasBeenCancelled:v27[5]];
     }
 
     else
     {
-      v8 = [(_QLCacheThread *)cacheThread memoryCache];
-      v9 = [v8 sendThumbnailDataForThumbnailRequest:v27[5] withCacheThread:self->_cacheThread];
+      memoryCache = [(_QLCacheThread *)cacheThread memoryCache];
+      v9 = [memoryCache sendThumbnailDataForThumbnailRequest:v27[5] withCacheThread:self->_cacheThread];
 
       if (v9)
       {
@@ -57,10 +57,10 @@
         v13 = v12;
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
-          v14 = [v27[5] request];
-          v15 = [v14 fileIdentifier];
+          request = [v27[5] request];
+          fileIdentifier = [request fileIdentifier];
           *buf = 138412290;
-          v33 = v15;
+          v33 = fileIdentifier;
           _os_log_impl(&dword_2615D3000, v13, OS_LOG_TYPE_INFO, "Did find thumbnail in memory cache %@", buf, 0xCu);
         }
       }
@@ -78,10 +78,10 @@
         v18 = v17;
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v19 = [v27[5] request];
-          v20 = [v19 fileIdentifier];
+          request2 = [v27[5] request];
+          fileIdentifier2 = [request2 fileIdentifier];
           *buf = 138412290;
-          v33 = v20;
+          v33 = fileIdentifier2;
           _os_log_impl(&dword_2615D3000, v18, OS_LOG_TYPE_INFO, "No thumbnail found in memory cache %@", buf, 0xCu);
         }
 
@@ -90,13 +90,13 @@
     }
   }
 
-  v21 = [(_QLCacheThread *)self->_cacheThread serverThread];
+  serverThread = [(_QLCacheThread *)self->_cacheThread serverThread];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __35__QLMemoryCacheQueryOperation_main__block_invoke_2;
   v23[3] = &unk_279ADD0F8;
   v23[4] = self;
-  [v21 perform:v23];
+  [serverThread perform:v23];
 
   os_activity_scope_leave(&state);
   _Block_object_dispose(&v26, 8);
@@ -116,10 +116,10 @@ uint64_t __35__QLMemoryCacheQueryOperation_main__block_invoke(uint64_t a1)
   return [v5 setGeneratorRequest:0];
 }
 
-- (QLMemoryCacheQueryOperation)initWithThumbnailRequest:(id)a3 cacheThread:(id)a4
+- (QLMemoryCacheQueryOperation)initWithThumbnailRequest:(id)request cacheThread:(id)thread
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  threadCopy = thread;
   v9 = [(QLMemoryCacheQueryOperation *)self init];
   if (v9)
   {
@@ -127,8 +127,8 @@ uint64_t __35__QLMemoryCacheQueryOperation_main__block_invoke(uint64_t a1)
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_generatorRequest, a3);
-    objc_storeStrong(&v9->_cacheThread, a4);
+    objc_storeStrong(&v9->_generatorRequest, request);
+    objc_storeStrong(&v9->_cacheThread, thread);
   }
 
   return v9;
@@ -164,10 +164,10 @@ uint64_t __35__QLMemoryCacheQueryOperation_main__block_invoke(uint64_t a1)
     v6 = v5;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v15[5] request];
-      v8 = [v7 fileIdentifier];
+      request = [v15[5] request];
+      fileIdentifier = [request fileIdentifier];
       *buf = 138412290;
-      v21 = v8;
+      v21 = fileIdentifier;
       _os_log_impl(&dword_2615D3000, v6, OS_LOG_TYPE_INFO, "Memory cache request cancel, sending the thumbnail request to the disk cache (%@)", buf, 0xCu);
     }
 
@@ -177,13 +177,13 @@ uint64_t __35__QLMemoryCacheQueryOperation_main__block_invoke(uint64_t a1)
   v12.receiver = self;
   v12.super_class = QLMemoryCacheQueryOperation;
   [(QLMemoryCacheQueryOperation *)&v12 cancel];
-  v9 = [(_QLCacheThread *)self->_cacheThread serverThread];
+  serverThread = [(_QLCacheThread *)self->_cacheThread serverThread];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__QLMemoryCacheQueryOperation_cancel__block_invoke_3;
   v11[3] = &unk_279ADD0F8;
   v11[4] = self;
-  [v9 perform:v11];
+  [serverThread perform:v11];
 
   _Block_object_dispose(&v14, 8);
   v10 = *MEMORY[0x277D85DE8];

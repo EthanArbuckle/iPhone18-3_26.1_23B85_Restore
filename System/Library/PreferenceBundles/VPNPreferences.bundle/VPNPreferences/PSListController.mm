@@ -1,7 +1,7 @@
 @interface PSListController
 - (id)printSettingsAppPrimaryNavigationMode;
-- (void)settingsNavigationProxyPopWithAnimated:(BOOL)a3;
-- (void)settingsNavigationProxyPushWithViewController:(id)a3 animated:(BOOL)a4;
+- (void)settingsNavigationProxyPopWithAnimated:(BOOL)animated;
+- (void)settingsNavigationProxyPushWithViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation PSListController
@@ -23,8 +23,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v11 = self;
-  v12 = [(PSListController *)v11 traitCollection];
+  selfCopy = self;
+  traitCollection = [(PSListController *)selfCopy traitCollection];
   sub_2A144();
 
   (*(v4 + 16))(v8, v10, v3);
@@ -36,7 +36,7 @@
   return v13;
 }
 
-- (void)settingsNavigationProxyPopWithAnimated:(BOOL)a3
+- (void)settingsNavigationProxyPopWithAnimated:(BOOL)animated
 {
   sub_2A124();
   sub_2A114();
@@ -46,11 +46,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_295A4(a3);
+  selfCopy = self;
+  sub_295A4(animated);
 }
 
-- (void)settingsNavigationProxyPushWithViewController:(id)a3 animated:(BOOL)a4
+- (void)settingsNavigationProxyPushWithViewController:(id)controller animated:(BOOL)animated
 {
   sub_2A124();
   sub_2A114();
@@ -60,9 +60,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_297FC(v7, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_297FC(controllerCopy, animated);
 }
 
 @end

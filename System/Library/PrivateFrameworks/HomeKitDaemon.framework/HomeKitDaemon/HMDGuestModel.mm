@@ -1,18 +1,18 @@
 @interface HMDGuestModel
 + (id)properties;
-- (BOOL)shouldIgnoreProperty:(id)a3;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (BOOL)shouldIgnoreProperty:(id)property;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 @end
 
 @implementation HMDGuestModel
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"allowedAccessories_"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"allowedAccessories_"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"allowedAccessoryUUIDs"])
     {
@@ -22,16 +22,16 @@
       v21 = __Block_byref_object_copy__184424;
       v22 = __Block_byref_object_dispose__184425;
       v11 = MEMORY[0x277CBEB58];
-      v12 = [(HMDGuestModel *)self allowedAccessoryUUIDs];
-      v23 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+      allowedAccessoryUUIDs = [(HMDGuestModel *)self allowedAccessoryUUIDs];
+      v23 = [v11 setWithCapacity:{objc_msgSend(allowedAccessoryUUIDs, "count")}];
 
-      v13 = [(HMDGuestModel *)self allowedAccessoryUUIDs];
+      allowedAccessoryUUIDs2 = [(HMDGuestModel *)self allowedAccessoryUUIDs];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __82__HMDGuestModel_CoreData__cd_generateValueForProperty_managedObjectField_context___block_invoke;
       v17[3] = &unk_27867D970;
       v17[4] = &v18;
-      [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
+      [allowedAccessoryUUIDs2 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
 
       v14 = v19[5];
       _Block_object_dispose(&v18, 8);
@@ -47,7 +47,7 @@
   {
     v16.receiver = self;
     v16.super_class = HMDGuestModel;
-    v14 = [(HMDUserModel *)&v16 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v14 = [(HMDUserModel *)&v16 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v14;
@@ -66,16 +66,16 @@ void __82__HMDGuestModel_CoreData__cd_generateValueForProperty_managedObjectFiel
   }
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(HMDGuestModel *)self shouldIgnoreProperty:v9])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([(HMDGuestModel *)self shouldIgnoreProperty:fieldCopy])
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -83,7 +83,7 @@ void __82__HMDGuestModel_CoreData__cd_generateValueForProperty_managedObjectFiel
       *buf = 138543618;
       v21 = v14;
       v22 = 2114;
-      v23 = v9;
+      v23 = fieldCopy;
       _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Ignoring property [%{public}@] as it is not applicable for _MKFGuest entity", buf, 0x16u);
     }
 
@@ -93,19 +93,19 @@ void __82__HMDGuestModel_CoreData__cd_generateValueForProperty_managedObjectFiel
 
   else
   {
-    if ([v9 isEqualToString:@"allowedAccessoryUUIDs"])
+    if ([fieldCopy isEqualToString:@"allowedAccessoryUUIDs"])
     {
-      v16 = [v8 allowedAccessoryUUIDs];
+      allowedAccessoryUUIDs = [objectCopy allowedAccessoryUUIDs];
     }
 
     else
     {
       v19.receiver = self;
       v19.super_class = HMDGuestModel;
-      v16 = [(HMDUserModel *)&v19 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+      allowedAccessoryUUIDs = [(HMDUserModel *)&v19 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
     }
 
-    v15 = v16;
+    v15 = allowedAccessoryUUIDs;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -113,16 +113,16 @@ void __82__HMDGuestModel_CoreData__cd_generateValueForProperty_managedObjectFiel
   return v15;
 }
 
-- (BOOL)shouldIgnoreProperty:(id)a3
+- (BOOL)shouldIgnoreProperty:(id)property
 {
   v3 = shouldIgnoreProperty__onceToken;
-  v4 = a3;
+  propertyCopy = property;
   if (v3 != -1)
   {
     dispatch_once(&shouldIgnoreProperty__onceToken, &__block_literal_global_184431);
   }
 
-  v5 = [shouldIgnoreProperty__ignoredPropertySet containsObject:v4];
+  v5 = [shouldIgnoreProperty__ignoredPropertySet containsObject:propertyCopy];
 
   return v5;
 }
@@ -178,7 +178,7 @@ void __48__HMDGuestModel_CoreData__shouldIgnoreProperty___block_invoke()
   block[1] = 3221225472;
   block[2] = __27__HMDGuestModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_201415 != -1)
   {
     dispatch_once(&properties_onceToken_201415, block);

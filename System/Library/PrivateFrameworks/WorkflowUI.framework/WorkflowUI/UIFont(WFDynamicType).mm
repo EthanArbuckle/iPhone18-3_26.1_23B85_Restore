@@ -7,16 +7,16 @@
 
 - (double)wf_bodyLeading
 {
-  [a1 leading];
+  [self leading];
   v3 = v2;
-  [a1 lineHeight];
+  [self lineHeight];
   return v3 + v4;
 }
 
 - (double)wf_scaledValueForValue:()WFDynamicType baseFont:
 {
   v6 = a4;
-  [a1 wf_bodyLeading];
+  [self wf_bodyLeading];
   v8 = v7 * a2;
   [v6 wf_bodyLeading];
   v10 = v9;

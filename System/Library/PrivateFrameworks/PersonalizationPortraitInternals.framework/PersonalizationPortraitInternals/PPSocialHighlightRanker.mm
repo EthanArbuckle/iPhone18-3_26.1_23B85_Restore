@@ -1,8 +1,8 @@
 @interface PPSocialHighlightRanker
 - (PPSocialHighlightRanker)init;
-- (PPSocialHighlightRanker)initWithFirstPassScorer:(id)a3 topKScorer:(id)a4 topKCount:(unsigned int)a5;
-- (id)rankSocialHighlights:(id)a3 client:(id)a4 performRerank:(BOOL)a5;
-- (id)rerankSocialHighlightsForTopOneResult:(id)a3 client:(id)a4;
+- (PPSocialHighlightRanker)initWithFirstPassScorer:(id)scorer topKScorer:(id)kScorer topKCount:(unsigned int)count;
+- (id)rankSocialHighlights:(id)highlights client:(id)client performRerank:(BOOL)rerank;
+- (id)rerankSocialHighlightsForTopOneResult:(id)result client:(id)client;
 @end
 
 @implementation PPSocialHighlightRanker
@@ -17,12 +17,12 @@
   return v6;
 }
 
-- (id)rerankSocialHighlightsForTopOneResult:(id)a3 client:(id)a4
+- (id)rerankSocialHighlightsForTopOneResult:(id)result client:(id)client
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   v39 = objc_autoreleasePoolPush();
-  v7 = [a4 _pas_stringBackedByUTF8CString];
+  _pas_stringBackedByUTF8CString = [client _pas_stringBackedByUTF8CString];
   v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:self->_topKCount];
   v55[0] = MEMORY[0x277D85DD0];
   v55[1] = 3221225472;
@@ -30,10 +30,10 @@
   v55[3] = &unk_278976D68;
   v9 = v8;
   v56 = v9;
-  v57 = self;
-  [v6 enumerateObjectsUsingBlock:v55];
-  v43 = v6;
-  v44 = [v6 mutableCopy];
+  selfCopy = self;
+  [resultCopy enumerateObjectsUsingBlock:v55];
+  v43 = resultCopy;
+  v44 = [resultCopy mutableCopy];
   v10 = objc_opt_new();
   v51 = 0u;
   v52 = 0u;
@@ -54,8 +54,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v51 + 1) + 8 * i) second];
-        [v10 addIndex:{objc_msgSend(v16, "unsignedIntegerValue")}];
+        second = [*(*(&v51 + 1) + 8 * i) second];
+        [v10 addIndex:{objc_msgSend(second, "unsignedIntegerValue")}];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v51 objects:v65 count:16];
@@ -88,25 +88,25 @@
 
         v19 = *(*(&v47 + 1) + 8 * j);
         context = objc_autoreleasePoolPush();
-        v20 = [v19 first];
+        first = [v19 first];
         v62[0] = @"oldRank";
-        v21 = [v19 second];
-        v63[0] = v21;
+        second2 = [v19 second];
+        v63[0] = second2;
         v62[1] = @"newRank";
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
         v63[1] = v22;
         v62[2] = @"clientIdentifier";
-        v23 = v7;
-        v24 = v7;
-        if (!v7)
+        v23 = _pas_stringBackedByUTF8CString;
+        v24 = _pas_stringBackedByUTF8CString;
+        if (!_pas_stringBackedByUTF8CString)
         {
-          v41 = [MEMORY[0x277CBEB68] null];
-          v23 = v41;
+          null = [MEMORY[0x277CBEB68] null];
+          v23 = null;
         }
 
         v63[2] = v23;
         v62[3] = @"isStarred";
-        v25 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v20, "highlightType") == 2}];
+        v25 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(first, "highlightType") == 2}];
         v63[3] = v25;
         v63[4] = MEMORY[0x277CBEC38];
         v62[4] = @"didUprank";
@@ -116,15 +116,15 @@
         v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v63 forKeys:v62 count:6];
         [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.SocialHighlights.ItemUpranked" payload:v27 inBackground:0];
 
-        v7 = v24;
+        _pas_stringBackedByUTF8CString = v24;
         if (!v24)
         {
         }
 
-        [v20 setIsTopKResult:1];
-        [v20 topKScore];
-        [v20 setScore:?];
-        [v44 insertObject:v20 atIndex:0];
+        [first setIsTopKResult:1];
+        [first topKScore];
+        [first setScore:?];
+        [v44 insertObject:first atIndex:0];
         --v17;
 
         objc_autoreleasePoolPop(context);
@@ -140,13 +140,13 @@
   {
     v28 = objc_autoreleasePoolPush();
     v60[0] = @"clientIdentifier";
-    v29 = v7;
-    if (!v7)
+    null2 = _pas_stringBackedByUTF8CString;
+    if (!_pas_stringBackedByUTF8CString)
     {
-      v29 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    v61[0] = v29;
+    v61[0] = null2;
     v61[1] = MEMORY[0x277CBEC28];
     v60[1] = @"didUprank";
     v60[2] = @"batchSize";
@@ -155,7 +155,7 @@
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:3];
     [PPMetricsDispatcher logPayloadForEvent:@"com.apple.proactive.PersonalizationPortrait.SocialHighlights.ItemUpranked" payload:v31 inBackground:0];
 
-    if (!v7)
+    if (!_pas_stringBackedByUTF8CString)
     {
     }
 
@@ -232,19 +232,19 @@ uint64_t __72__PPSocialHighlightRanker_rerankSocialHighlightsForTopOneResult_cli
   return v12;
 }
 
-- (id)rankSocialHighlights:(id)a3 client:(id)a4 performRerank:(BOOL)a5
+- (id)rankSocialHighlights:(id)highlights client:(id)client performRerank:(BOOL)rerank
 {
-  v35 = a5;
+  rerankCopy = rerank;
   v49 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  highlightsCopy = highlights;
+  clientCopy = client;
   v9 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v46 = [v7 count];
+    v46 = [highlightsCopy count];
     v47 = 2112;
-    v48 = v8;
+    v48 = clientCopy;
     _os_log_impl(&dword_23224A000, v9, OS_LOG_TYPE_INFO, "PPSocialHighlightRanker: ranking %tu social highlights for '%@'", buf, 0x16u);
   }
 
@@ -261,9 +261,9 @@ uint64_t __72__PPSocialHighlightRanker_rerankSocialHighlightsForTopOneResult_cli
   }
 
   spid = v11;
-  v36 = v8;
+  v36 = clientCopy;
 
-  v14 = v7;
+  v14 = highlightsCopy;
   v15 = v14;
   if (self)
   {
@@ -290,12 +290,12 @@ uint64_t __72__PPSocialHighlightRanker_rerankSocialHighlightsForTopOneResult_cli
           v21 = pp_social_highlights_log_handle();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v22 = [v20 highlightIdentifier];
-            v23 = [v20 calculatedFeatures];
+            highlightIdentifier = [v20 highlightIdentifier];
+            calculatedFeatures = [v20 calculatedFeatures];
             *v41 = 138740227;
-            v42 = v22;
+            v42 = highlightIdentifier;
             v43 = 2117;
-            v44 = v23;
+            v44 = calculatedFeatures;
             _os_log_debug_impl(&dword_23224A000, v21, OS_LOG_TYPE_DEBUG, "PPSocialHighlightRanker: %{sensitive}@ - ranking features %{sensitive}@", v41, 0x16u);
           }
 
@@ -331,7 +331,7 @@ uint64_t __72__PPSocialHighlightRanker_rerankSocialHighlightsForTopOneResult_cli
 
   v27 = [v24 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_19347];
   v28 = v27;
-  if (v35)
+  if (rerankCopy)
   {
     v29 = [(PPSocialHighlightRanker *)self rerankSocialHighlightsForTopOneResult:v27 client:v36];
   }
@@ -360,19 +360,19 @@ uint64_t __69__PPSocialHighlightRanker_rankSocialHighlights_client_performRerank
   return [v4 reverseCompareDouble:v7 withDouble:v9];
 }
 
-- (PPSocialHighlightRanker)initWithFirstPassScorer:(id)a3 topKScorer:(id)a4 topKCount:(unsigned int)a5
+- (PPSocialHighlightRanker)initWithFirstPassScorer:(id)scorer topKScorer:(id)kScorer topKCount:(unsigned int)count
 {
-  v9 = a3;
-  v10 = a4;
+  scorerCopy = scorer;
+  kScorerCopy = kScorer;
   v14.receiver = self;
   v14.super_class = PPSocialHighlightRanker;
   v11 = [(PPSocialHighlightRanker *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_firstPassScorer, a3);
-    objc_storeStrong(&v12->_topKScorer, a4);
-    v12->_topKCount = a5;
+    objc_storeStrong(&v11->_firstPassScorer, scorer);
+    objc_storeStrong(&v12->_topKScorer, kScorer);
+    v12->_topKCount = count;
   }
 
   return v12;

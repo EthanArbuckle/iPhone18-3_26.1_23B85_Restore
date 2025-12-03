@@ -1,7 +1,7 @@
 @interface HUSoftwareUpdateAllItem
 - (HUSoftwareUpdateAllItem)init;
-- (HUSoftwareUpdateAllItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUSoftwareUpdateAllItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)description;
 @end
 
@@ -9,34 +9,34 @@
 
 - (HUSoftwareUpdateAllItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateAllItem.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateAllItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateAllItem.m" lineNumber:19 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateAllItem init]", v5}];
 
   return 0;
 }
 
-- (HUSoftwareUpdateAllItem)initWithHome:(id)a3
+- (HUSoftwareUpdateAllItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUSoftwareUpdateAllItem;
   v6 = [(HUSoftwareUpdateAllItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc(MEMORY[0x277D14B28]);
-  v5 = [(HUSoftwareUpdateAllItem *)self home];
-  v6 = [v5 accessories];
-  v7 = [v4 initWithAccessories:v6];
+  home = [(HUSoftwareUpdateAllItem *)self home];
+  accessories = [home accessories];
+  v7 = [v4 initWithAccessories:accessories];
 
   v8 = objc_alloc_init(MEMORY[0x277D14858]);
   v9 = MEMORY[0x277CBEB98];
@@ -52,28 +52,28 @@
   {
     if ([v7 softwareUpdatesInstalling])
     {
-      v22 = [v7 softwareUpdatesInstalling];
+      softwareUpdatesInstalling = [v7 softwareUpdatesInstalling];
       v14 = HFLocalizedStringWithFormat();
-      [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D140F0], v22}];
+      [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D140F0], softwareUpdatesInstalling}];
     }
 
     else
     {
       if ([v7 softwareUpdatesDownloading])
       {
-        v23 = [v7 softwareUpdatesDownloading];
+        softwareUpdatesDownloading = [v7 softwareUpdatesDownloading];
         v14 = HFLocalizedStringWithFormat();
         v15 = MEMORY[0x277D14B28];
-        v16 = [v7 accessoriesDownloadingSoftwareUpdates];
-        v17 = [v15 progressForAccessoriesDownloadingSoftwareUpdate:v16];
+        accessoriesDownloadingSoftwareUpdates = [v7 accessoriesDownloadingSoftwareUpdates];
+        v17 = [v15 progressForAccessoriesDownloadingSoftwareUpdate:accessoriesDownloadingSoftwareUpdates];
         [v8 setObject:v17 forKeyedSubscript:*MEMORY[0x277D14108]];
       }
 
       else if ([v7 softwareUpdatesRequested])
       {
-        v24 = [v7 softwareUpdatesRequested];
+        softwareUpdatesRequested = [v7 softwareUpdatesRequested];
         v14 = HFLocalizedStringWithFormat();
-        [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D13DF8], v24}];
+        [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D13DF8], softwareUpdatesRequested}];
       }
 
       else
@@ -81,13 +81,13 @@
         v14 = 0;
       }
 
-      [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D140F0], v21}];
+      [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{*MEMORY[0x277D140F0], softwareUpdatesReadyToInstall}];
     }
   }
 
   else if ([v7 softwareUpdatesReadyToInstall])
   {
-    v21 = [v7 softwareUpdatesReadyToInstall];
+    softwareUpdatesReadyToInstall = [v7 softwareUpdatesReadyToInstall];
     v14 = HFLocalizedStringWithFormat();
   }
 
@@ -97,7 +97,7 @@
     v14 = 0;
   }
 
-  [v8 setObject:v14 forKeyedSubscript:{*MEMORY[0x277D13F60], v21}];
+  [v8 setObject:v14 forKeyedSubscript:{*MEMORY[0x277D13F60], softwareUpdatesReadyToInstall}];
   v18 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateControlTitle_UpdateAll", @"HUSoftwareUpdateControlTitle_UpdateAll", 1);
   [v8 setObject:v18 forKeyedSubscript:*MEMORY[0x277D13DE8]];
 
@@ -110,17 +110,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUSoftwareUpdateAllItem *)self latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  latestResults = [(HUSoftwareUpdateAllItem *)self latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
   v6 = [v3 appendBool:objc_msgSend(v5 withName:"BOOLValue") ifEqualTo:{@"hidden", 1}];
 
-  v7 = [(HUSoftwareUpdateAllItem *)self latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults2 = [(HUSoftwareUpdateAllItem *)self latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v3 appendString:v8 withName:@"title" skipIfEmpty:1];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

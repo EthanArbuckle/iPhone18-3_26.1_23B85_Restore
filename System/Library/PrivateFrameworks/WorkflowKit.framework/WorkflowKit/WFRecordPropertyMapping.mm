@@ -1,16 +1,16 @@
 @interface WFRecordPropertyMapping
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SEL)getterSelector;
 - (SEL)setterSelector;
-- (WFRecordPropertyMapping)initWithSourceObject:(id)a3 property:(id)a4 destinationObject:(id)a5 property:(id)a6;
+- (WFRecordPropertyMapping)initWithSourceObject:(id)object property:(id)property destinationObject:(id)destinationObject property:(id)a6;
 - (id)destinationObject;
 - (id)getterMethodSignature;
 - (id)setterMethodSignature;
 - (id)sourceObject;
 - (unint64_t)hash;
-- (void)invokeGetterWithBuffer:(void *)a3 length:(unint64_t *)a4;
-- (void)invokeSetterWithBuffer:(void *)a3 length:(unint64_t *)a4;
-- (void)propagate:(BOOL)a3;
+- (void)invokeGetterWithBuffer:(void *)buffer length:(unint64_t *)length;
+- (void)invokeSetterWithBuffer:(void *)buffer length:(unint64_t *)length;
+- (void)propagate:(BOOL)propagate;
 - (void)propagateUsingKVC;
 - (void)propagateUsingSetter;
 @end
@@ -19,9 +19,9 @@
 
 - (SEL)setterSelector
 {
-  v2 = [(WFRecordPropertyMapping *)self destinationProperty];
-  v3 = [v2 setter];
-  v4 = NSSelectorFromString(v3);
+  destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+  setter = [destinationProperty setter];
+  v4 = NSSelectorFromString(setter);
 
   return v4;
 }
@@ -29,40 +29,40 @@
 - (void)propagateUsingSetter
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = [(WFRecordPropertyMapping *)self getterMethodSignature];
-  if ([v4 methodReturnType])
+  getterMethodSignature = [(WFRecordPropertyMapping *)self getterMethodSignature];
+  if ([getterMethodSignature methodReturnType])
   {
-    v5 = [(WFRecordPropertyMapping *)self setterMethodSignature];
-    v6 = [v5 getArgumentTypeAtIndex:2];
+    setterMethodSignature = [(WFRecordPropertyMapping *)self setterMethodSignature];
+    v6 = [setterMethodSignature getArgumentTypeAtIndex:2];
 
     if (v6)
     {
-      v7 = [(WFRecordPropertyMapping *)self getterMethodSignature];
-      v8 = [v7 methodReturnType];
-      v9 = [(WFRecordPropertyMapping *)self setterMethodSignature];
-      LODWORD(v8) = strcmp(v8, [v9 getArgumentTypeAtIndex:2]);
+      getterMethodSignature2 = [(WFRecordPropertyMapping *)self getterMethodSignature];
+      methodReturnType = [getterMethodSignature2 methodReturnType];
+      setterMethodSignature2 = [(WFRecordPropertyMapping *)self setterMethodSignature];
+      LODWORD(methodReturnType) = strcmp(methodReturnType, [setterMethodSignature2 getArgumentTypeAtIndex:2]);
 
-      if (v8)
+      if (methodReturnType)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        v34 = [(WFRecordPropertyMapping *)self sourceObject];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
-        v27 = [(WFRecordPropertyMapping *)self sourceProperty];
-        v28 = [v27 getter];
-        v29 = [(WFRecordPropertyMapping *)self destinationObject];
+        sourceProperty = [(WFRecordPropertyMapping *)self sourceProperty];
+        getter = [sourceProperty getter];
+        destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v32 = [(WFRecordPropertyMapping *)self destinationProperty];
-        v33 = [v32 setter];
-        [v24 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:82 description:{@"Property type mismatch between %@ - %@ and %@ - %@.", v26, v28, v31, v33}];
+        destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+        setter = [destinationProperty setter];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:82 description:{@"Property type mismatch between %@ - %@ and %@ - %@.", v26, getter, v31, setter}];
       }
 
-      v10 = [(WFRecordPropertyMapping *)self getterMethodSignature];
-      v11 = [v10 methodReturnLength];
+      getterMethodSignature3 = [(WFRecordPropertyMapping *)self getterMethodSignature];
+      methodReturnLength = [getterMethodSignature3 methodReturnLength];
 
-      v35 = v11;
-      *buf = malloc_type_malloc(v11, 0xDFA3FD25uLL);
+      v35 = methodReturnLength;
+      *buf = malloc_type_malloc(methodReturnLength, 0xDFA3FD25uLL);
       [(WFRecordPropertyMapping *)self invokeGetterWithBuffer:buf length:&v35];
       [(WFRecordPropertyMapping *)self invokeSetterWithBuffer:buf length:&v35];
       free(*buf);
@@ -77,26 +77,26 @@
   v12 = getWFWFRecordPropertyLogObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
-    v13 = [(WFRecordPropertyMapping *)self sourceObject];
+    sourceObject2 = [(WFRecordPropertyMapping *)self sourceObject];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [(WFRecordPropertyMapping *)self sourceProperty];
-    v17 = [v16 getter];
-    v18 = [(WFRecordPropertyMapping *)self destinationObject];
+    sourceProperty2 = [(WFRecordPropertyMapping *)self sourceProperty];
+    getter2 = [sourceProperty2 getter];
+    destinationObject2 = [(WFRecordPropertyMapping *)self destinationObject];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    v21 = [(WFRecordPropertyMapping *)self destinationProperty];
-    v22 = [v21 setter];
+    destinationProperty2 = [(WFRecordPropertyMapping *)self destinationProperty];
+    setter2 = [destinationProperty2 setter];
     *buf = 136316162;
     *&buf[4] = "[WFRecordPropertyMapping propagateUsingSetter]";
     v37 = 2114;
     v38 = v15;
     v39 = 2114;
-    v40 = v17;
+    v40 = getter2;
     v41 = 2114;
     v42 = v20;
     v43 = 2114;
-    v44 = v22;
+    v44 = setter2;
     _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_FAULT, "%s PROPERTY NOT SET: %{public}@ - %{public}@ and %{public}@ - %{public}@. Invalid setter or getter", buf, 0x34u);
   }
 
@@ -106,8 +106,8 @@ LABEL_10:
 
 - (id)setterMethodSignature
 {
-  v3 = [(WFRecordPropertyMapping *)self destinationObject];
-  v4 = [v3 methodSignatureForSelector:{-[WFRecordPropertyMapping setterSelector](self, "setterSelector")}];
+  destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
+  v4 = [destinationObject methodSignatureForSelector:{-[WFRecordPropertyMapping setterSelector](self, "setterSelector")}];
 
   return v4;
 }
@@ -121,17 +121,17 @@ LABEL_10:
 
 - (id)getterMethodSignature
 {
-  v3 = [(WFRecordPropertyMapping *)self sourceObject];
-  v4 = [v3 methodSignatureForSelector:{-[WFRecordPropertyMapping getterSelector](self, "getterSelector")}];
+  sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
+  v4 = [sourceObject methodSignatureForSelector:{-[WFRecordPropertyMapping getterSelector](self, "getterSelector")}];
 
   return v4;
 }
 
 - (SEL)getterSelector
 {
-  v2 = [(WFRecordPropertyMapping *)self sourceProperty];
-  v3 = [v2 getter];
-  v4 = NSSelectorFromString(v3);
+  sourceProperty = [(WFRecordPropertyMapping *)self sourceProperty];
+  getter = [sourceProperty getter];
+  v4 = NSSelectorFromString(getter);
 
   return v4;
 }
@@ -146,34 +146,34 @@ LABEL_10:
 - (void)propagateUsingKVC
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(WFRecordPropertyMapping *)self sourceObject];
-  v4 = [(WFRecordPropertyMapping *)self sourceProperty];
-  v5 = [v4 name];
-  v6 = [v3 valueForKey:v5];
+  sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
+  sourceProperty = [(WFRecordPropertyMapping *)self sourceProperty];
+  name = [sourceProperty name];
+  v6 = [sourceObject valueForKey:name];
 
   if (v6)
   {
-    v7 = [(WFRecordPropertyMapping *)self destinationObject];
-    v8 = [(WFRecordPropertyMapping *)self destinationProperty];
-    v9 = [v8 name];
-    [v7 setValue:v6 forKey:v9];
+    destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
+    destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+    name2 = [destinationProperty name];
+    [destinationObject setValue:v6 forKey:name2];
   }
 
   else
   {
-    v7 = getWFWFRecordPropertyLogObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    destinationObject = getWFWFRecordPropertyLogObject();
+    if (os_log_type_enabled(destinationObject, OS_LOG_TYPE_FAULT))
     {
-      v10 = [(WFRecordPropertyMapping *)self sourceProperty];
-      v11 = [v10 name];
-      v12 = [(WFRecordPropertyMapping *)self sourceObject];
+      sourceProperty2 = [(WFRecordPropertyMapping *)self sourceProperty];
+      name3 = [sourceProperty2 name];
+      sourceObject2 = [(WFRecordPropertyMapping *)self sourceObject];
       v14 = 136315650;
       v15 = "[WFRecordPropertyMapping propagateUsingKVC]";
       v16 = 2114;
-      v17 = v11;
+      v17 = name3;
       v18 = 2114;
-      v19 = v12;
-      _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_FAULT, "%s PROPERTY NOT SET: value nil for key: %{public}@ on %{public}@", &v14, 0x20u);
+      v19 = sourceObject2;
+      _os_log_impl(&dword_1CA256000, destinationObject, OS_LOG_TYPE_FAULT, "%s PROPERTY NOT SET: value nil for key: %{public}@ on %{public}@", &v14, 0x20u);
     }
   }
 
@@ -182,40 +182,40 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(WFRecordPropertyMapping *)self sourceObject];
-  v4 = [v3 hash];
-  v5 = [(WFRecordPropertyMapping *)self sourceProperty];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(WFRecordPropertyMapping *)self destinationObject];
-  v8 = [v7 hash];
-  v9 = [(WFRecordPropertyMapping *)self destinationProperty];
-  v10 = v8 ^ [v9 hash];
+  sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
+  v4 = [sourceObject hash];
+  sourceProperty = [(WFRecordPropertyMapping *)self sourceProperty];
+  v6 = [sourceProperty hash] ^ v4;
+  destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
+  v8 = [destinationObject hash];
+  destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+  v10 = v8 ^ [destinationProperty hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [(WFRecordPropertyMapping *)self sourceObject];
-    v9 = [v7 sourceObject];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
+    sourceObject2 = [v7 sourceObject];
+    if ([sourceObject isEqual:sourceObject2])
     {
-      v10 = [(WFRecordPropertyMapping *)self sourceProperty];
-      v11 = [v7 sourceProperty];
-      if ([v10 isEqual:v11])
+      sourceProperty = [(WFRecordPropertyMapping *)self sourceProperty];
+      sourceProperty2 = [v7 sourceProperty];
+      if ([sourceProperty isEqual:sourceProperty2])
       {
-        v12 = [(WFRecordPropertyMapping *)self destinationObject];
-        v13 = [v7 destinationObject];
-        if ([v12 isEqual:v13])
+        destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
+        destinationObject2 = [v7 destinationObject];
+        if ([destinationObject isEqual:destinationObject2])
         {
-          v16 = [(WFRecordPropertyMapping *)self destinationProperty];
-          v14 = [v7 destinationProperty];
-          v6 = [v16 isEqual:v14];
+          destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+          destinationProperty2 = [v7 destinationProperty];
+          v6 = [destinationProperty isEqual:destinationProperty2];
         }
 
         else
@@ -244,59 +244,59 @@ LABEL_10:
   return v6;
 }
 
-- (void)invokeSetterWithBuffer:(void *)a3 length:(unint64_t *)a4
+- (void)invokeSetterWithBuffer:(void *)buffer length:(unint64_t *)length
 {
   v6 = MEMORY[0x1E695DF50];
-  v7 = [(WFRecordPropertyMapping *)self setterMethodSignature:a3];
+  v7 = [(WFRecordPropertyMapping *)self setterMethodSignature:buffer];
   v9 = [v6 invocationWithMethodSignature:v7];
 
   [v9 setSelector:{-[WFRecordPropertyMapping setterSelector](self, "setterSelector")}];
-  [v9 setArgument:*a3 atIndex:2];
-  v8 = [(WFRecordPropertyMapping *)self destinationObject];
-  [v9 invokeWithTarget:v8];
+  [v9 setArgument:*buffer atIndex:2];
+  destinationObject = [(WFRecordPropertyMapping *)self destinationObject];
+  [v9 invokeWithTarget:destinationObject];
 }
 
-- (void)invokeGetterWithBuffer:(void *)a3 length:(unint64_t *)a4
+- (void)invokeGetterWithBuffer:(void *)buffer length:(unint64_t *)length
 {
   v6 = MEMORY[0x1E695DF50];
-  v7 = [(WFRecordPropertyMapping *)self getterMethodSignature:a3];
+  v7 = [(WFRecordPropertyMapping *)self getterMethodSignature:buffer];
   v9 = [v6 invocationWithMethodSignature:v7];
 
   [v9 setSelector:{-[WFRecordPropertyMapping getterSelector](self, "getterSelector")}];
-  v8 = [(WFRecordPropertyMapping *)self sourceObject];
-  [v9 invokeWithTarget:v8];
+  sourceObject = [(WFRecordPropertyMapping *)self sourceObject];
+  [v9 invokeWithTarget:sourceObject];
 
-  [v9 getReturnValue:*a3];
+  [v9 getReturnValue:*buffer];
 }
 
-- (void)propagate:(BOOL)a3
+- (void)propagate:(BOOL)propagate
 {
-  v3 = a3;
-  v5 = [(WFRecordPropertyMapping *)self destinationProperty];
-  v6 = [v5 setter];
+  propagateCopy = propagate;
+  destinationProperty = [(WFRecordPropertyMapping *)self destinationProperty];
+  setter = [destinationProperty setter];
 
-  if (v6)
+  if (setter)
   {
 
     [(WFRecordPropertyMapping *)self propagateUsingSetter];
   }
 
-  else if (v3)
+  else if (propagateCopy)
   {
 
     [(WFRecordPropertyMapping *)self propagateUsingKVC];
   }
 }
 
-- (WFRecordPropertyMapping)initWithSourceObject:(id)a3 property:(id)a4 destinationObject:(id)a5 property:(id)a6
+- (WFRecordPropertyMapping)initWithSourceObject:(id)object property:(id)property destinationObject:(id)destinationObject property:(id)a6
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  objectCopy = object;
+  propertyCopy = property;
+  destinationObjectCopy = destinationObject;
   v14 = a6;
-  if (v11)
+  if (objectCopy)
   {
-    if (v12)
+    if (propertyCopy)
     {
       goto LABEL_3;
     }
@@ -304,20 +304,20 @@ LABEL_10:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"sourceObject"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"sourceObject"}];
 
-    if (v12)
+    if (propertyCopy)
     {
 LABEL_3:
-      if (v13)
+      if (destinationObjectCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"destinationObject"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"destinationObject"}];
 
       if (v14)
       {
@@ -328,10 +328,10 @@ LABEL_10:
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"sourceProperty"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"sourceProperty"}];
 
-  if (!v13)
+  if (!destinationObjectCopy)
   {
     goto LABEL_10;
   }
@@ -343,8 +343,8 @@ LABEL_4:
   }
 
 LABEL_11:
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"destinationProperty"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"WFRecordPropertyMapping.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"destinationProperty"}];
 
 LABEL_5:
   v23.receiver = self;
@@ -353,9 +353,9 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_sourceObject, v11);
-    objc_storeStrong(&v16->_sourceProperty, a4);
-    objc_storeWeak(&v16->_destinationObject, v13);
+    objc_storeWeak(&v15->_sourceObject, objectCopy);
+    objc_storeStrong(&v16->_sourceProperty, property);
+    objc_storeWeak(&v16->_destinationObject, destinationObjectCopy);
     objc_storeStrong(&v16->_destinationProperty, a6);
     v17 = v16;
   }

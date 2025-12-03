@@ -1,53 +1,53 @@
 @interface _INPBDateTime
-- (BOOL)isEqual:(id)a3;
-- (_INPBDateTime)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDateTime)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsCalendarSystem:(id)a3;
+- (int)StringAsCalendarSystem:(id)system;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCalendarSystem:(int)a3;
-- (void)setTimeZoneID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCalendarSystem:(int)system;
+- (void)setTimeZoneID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDateTime
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDateTime *)self hasCalendarSystem])
   {
-    v4 = [(_INPBDateTime *)self calendarSystem];
-    if ((v4 - 1) >= 0xC)
+    calendarSystem = [(_INPBDateTime *)self calendarSystem];
+    if ((calendarSystem - 1) >= 0xC)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", calendarSystem];
     }
 
     else
     {
-      v5 = off_1E72812F0[(v4 - 1)];
+      v5 = off_1E72812F0[(calendarSystem - 1)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"calendarSystem"];
+    [dictionary setObject:v5 forKeyedSubscript:@"calendarSystem"];
   }
 
-  v6 = [(_INPBDateTime *)self date];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"date"];
+  date = [(_INPBDateTime *)self date];
+  dictionaryRepresentation = [date dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"date"];
 
-  v8 = [(_INPBDateTime *)self time];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"time"];
+  time = [(_INPBDateTime *)self time];
+  dictionaryRepresentation2 = [time dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"time"];
 
   if (self->_timeZoneID)
   {
-    v10 = [(_INPBDateTime *)self timeZoneID];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"timeZoneID"];
+    timeZoneID = [(_INPBDateTime *)self timeZoneID];
+    v11 = [timeZoneID copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"timeZoneID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -67,46 +67,46 @@
   return v4 ^ v5 ^ [(NSString *)self->_timeZoneID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBDateTime *)self hasCalendarSystem];
-  if (v5 != [v4 hasCalendarSystem])
+  hasCalendarSystem = [(_INPBDateTime *)self hasCalendarSystem];
+  if (hasCalendarSystem != [equalCopy hasCalendarSystem])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBDateTime *)self hasCalendarSystem])
   {
-    if ([v4 hasCalendarSystem])
+    if ([equalCopy hasCalendarSystem])
     {
       calendarSystem = self->_calendarSystem;
-      if (calendarSystem != [v4 calendarSystem])
+      if (calendarSystem != [equalCopy calendarSystem])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v7 = [(_INPBDateTime *)self date];
-  v8 = [v4 date];
-  if ((v7 != 0) == (v8 == 0))
+  date = [(_INPBDateTime *)self date];
+  date2 = [equalCopy date];
+  if ((date != 0) == (date2 == 0))
   {
     goto LABEL_20;
   }
 
-  v9 = [(_INPBDateTime *)self date];
-  if (v9)
+  date3 = [(_INPBDateTime *)self date];
+  if (date3)
   {
-    v10 = v9;
-    v11 = [(_INPBDateTime *)self date];
-    v12 = [v4 date];
-    v13 = [v11 isEqual:v12];
+    v10 = date3;
+    date4 = [(_INPBDateTime *)self date];
+    date5 = [equalCopy date];
+    v13 = [date4 isEqual:date5];
 
     if (!v13)
     {
@@ -118,20 +118,20 @@
   {
   }
 
-  v7 = [(_INPBDateTime *)self time];
-  v8 = [v4 time];
-  if ((v7 != 0) == (v8 == 0))
+  date = [(_INPBDateTime *)self time];
+  date2 = [equalCopy time];
+  if ((date != 0) == (date2 == 0))
   {
     goto LABEL_20;
   }
 
-  v14 = [(_INPBDateTime *)self time];
-  if (v14)
+  time = [(_INPBDateTime *)self time];
+  if (time)
   {
-    v15 = v14;
-    v16 = [(_INPBDateTime *)self time];
-    v17 = [v4 time];
-    v18 = [v16 isEqual:v17];
+    v15 = time;
+    time2 = [(_INPBDateTime *)self time];
+    time3 = [equalCopy time];
+    v18 = [time2 isEqual:time3];
 
     if (!v18)
     {
@@ -143,12 +143,12 @@
   {
   }
 
-  v7 = [(_INPBDateTime *)self timeZoneID];
-  v8 = [v4 timeZoneID];
-  if ((v7 != 0) != (v8 == 0))
+  date = [(_INPBDateTime *)self timeZoneID];
+  date2 = [equalCopy timeZoneID];
+  if ((date != 0) != (date2 == 0))
   {
-    v19 = [(_INPBDateTime *)self timeZoneID];
-    if (!v19)
+    timeZoneID = [(_INPBDateTime *)self timeZoneID];
+    if (!timeZoneID)
     {
 
 LABEL_24:
@@ -156,10 +156,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v20 = v19;
-    v21 = [(_INPBDateTime *)self timeZoneID];
-    v22 = [v4 timeZoneID];
-    v23 = [v21 isEqual:v22];
+    v20 = timeZoneID;
+    timeZoneID2 = [(_INPBDateTime *)self timeZoneID];
+    timeZoneID3 = [equalCopy timeZoneID];
+    v23 = [timeZoneID2 isEqual:timeZoneID3];
 
     if (v23)
     {
@@ -179,7 +179,7 @@ LABEL_22:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDateTime allocWithZone:](_INPBDateTime init];
   if ([(_INPBDateTime *)self hasCalendarSystem])
@@ -187,146 +187,146 @@ LABEL_22:
     [(_INPBDateTime *)v5 setCalendarSystem:[(_INPBDateTime *)self calendarSystem]];
   }
 
-  v6 = [(_INPBLocalDate *)self->_date copyWithZone:a3];
+  v6 = [(_INPBLocalDate *)self->_date copyWithZone:zone];
   [(_INPBDateTime *)v5 setDate:v6];
 
-  v7 = [(_INPBLocalTime *)self->_time copyWithZone:a3];
+  v7 = [(_INPBLocalTime *)self->_time copyWithZone:zone];
   [(_INPBDateTime *)v5 setTime:v7];
 
-  v8 = [(NSString *)self->_timeZoneID copyWithZone:a3];
+  v8 = [(NSString *)self->_timeZoneID copyWithZone:zone];
   [(_INPBDateTime *)v5 setTimeZoneID:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDateTime *)self data];
+  coderCopy = coder;
+  data = [(_INPBDateTime *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDateTime)initWithCoder:(id)a3
+- (_INPBDateTime)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDateTime *)self initWithData:v6];
+    self = [(_INPBDateTime *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_INPBDateTime *)self hasCalendarSystem])
   {
     calendarSystem = self->_calendarSystem;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBDateTime *)self date];
+  date = [(_INPBDateTime *)self date];
 
-  if (v5)
+  if (date)
   {
-    v6 = [(_INPBDateTime *)self date];
+    date2 = [(_INPBDateTime *)self date];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBDateTime *)self time];
+  time = [(_INPBDateTime *)self time];
 
-  if (v7)
+  if (time)
   {
-    v8 = [(_INPBDateTime *)self time];
+    time2 = [(_INPBDateTime *)self time];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBDateTime *)self timeZoneID];
+  timeZoneID = [(_INPBDateTime *)self timeZoneID];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (timeZoneID)
   {
     timeZoneID = self->_timeZoneID;
     PBDataWriterWriteStringField();
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (void)setTimeZoneID:(id)a3
+- (void)setTimeZoneID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   timeZoneID = self->_timeZoneID;
   self->_timeZoneID = v4;
 
   MEMORY[0x1EEE66BB8](v4, timeZoneID);
 }
 
-- (int)StringAsCalendarSystem:(id)a3
+- (int)StringAsCalendarSystem:(id)system
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"BUDDHIST"])
+  systemCopy = system;
+  if ([systemCopy isEqualToString:@"BUDDHIST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CHINESE"])
+  else if ([systemCopy isEqualToString:@"CHINESE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HEBREW"])
+  else if ([systemCopy isEqualToString:@"HEBREW"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HIJRI"])
+  else if ([systemCopy isEqualToString:@"HIJRI"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HINDU"])
+  else if ([systemCopy isEqualToString:@"HINDU"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMIC_UMALQURA"])
+  else if ([systemCopy isEqualToString:@"ISLAMIC_UMALQURA"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ISLAMIC"])
+  else if ([systemCopy isEqualToString:@"ISLAMIC"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"GREGORIAN"])
+  else if ([systemCopy isEqualToString:@"GREGORIAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"JAPANESE"])
+  else if ([systemCopy isEqualToString:@"JAPANESE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"JULIAN"])
+  else if ([systemCopy isEqualToString:@"JULIAN"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PERSIAN"])
+  else if ([systemCopy isEqualToString:@"PERSIAN"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"REPUBLIC_OF_CHINA"])
+  else if ([systemCopy isEqualToString:@"REPUBLIC_OF_CHINA"])
   {
     v4 = 12;
   }
@@ -339,10 +339,10 @@ LABEL_22:
   return v4;
 }
 
-- (void)setCalendarSystem:(int)a3
+- (void)setCalendarSystem:(int)system
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (system == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -350,7 +350,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_calendarSystem = a3;
+    self->_calendarSystem = system;
   }
 }
 

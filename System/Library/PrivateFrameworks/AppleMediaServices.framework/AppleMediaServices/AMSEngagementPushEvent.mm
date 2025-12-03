@@ -1,7 +1,7 @@
 @interface AMSEngagementPushEvent
 + (id)archiveClasses;
-- (AMSEngagementPushEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSEngagementPushEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSEngagementPushEvent
@@ -19,38 +19,38 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSEngagementPushEvent *)self actions];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyActions"];
+  coderCopy = coder;
+  actions = [(AMSEngagementPushEvent *)self actions];
+  [coderCopy encodeObject:actions forKey:@"kCodingKeyActions"];
 
-  v6 = [(AMSEngagementPushEvent *)self data];
-  [v4 encodeObject:v6 forKey:@"kCodingKeyData"];
+  data = [(AMSEngagementPushEvent *)self data];
+  [coderCopy encodeObject:data forKey:@"kCodingKeyData"];
 
-  v7 = [(AMSEngagementPushEvent *)self request];
-  [v4 encodeObject:v7 forKey:@"kCodingKeyRequest"];
+  request = [(AMSEngagementPushEvent *)self request];
+  [coderCopy encodeObject:request forKey:@"kCodingKeyRequest"];
 }
 
-- (AMSEngagementPushEvent)initWithCoder:(id)a3
+- (AMSEngagementPushEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = AMSEngagementPushEvent;
   v5 = [(AMSEngagementPushEvent *)&v15 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"kCodingKeyActions"];
+    ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v7 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"kCodingKeyActions"];
     actions = v5->_actions;
     v5->_actions = v7;
 
-    v9 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"kCodingKeyData"];
+    ams_PLISTClasses2 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v10 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses2 forKey:@"kCodingKeyData"];
     data = v5->_data;
     v5->_data = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyRequest"];
     request = v5->_request;
     v5->_request = v12;
   }

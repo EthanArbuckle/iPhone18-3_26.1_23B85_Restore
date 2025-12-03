@@ -1,12 +1,12 @@
 @interface _LTSpeechDataQueue
-- (id)initForSeconds:(double)a3;
-- (void)addSpeechAudioData:(id)a3;
-- (void)consumeAll:(id)a3;
+- (id)initForSeconds:(double)seconds;
+- (void)addSpeechAudioData:(id)data;
+- (void)consumeAll:(id)all;
 @end
 
 @implementation _LTSpeechDataQueue
 
-- (id)initForSeconds:(double)a3
+- (id)initForSeconds:(double)seconds
 {
   v8.receiver = self;
   v8.super_class = _LTSpeechDataQueue;
@@ -14,33 +14,33 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxFrames = (a3 * 16000.0);
+    v4->_maxFrames = (seconds * 16000.0);
     v6 = v4;
   }
 
   return v5;
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (self->_currentFrames + (v5 >> 1) > self->_maxFrames)
   {
     v6 = self->_head;
-    v7 = [(_LTSpeechDataQueueNode *)v6 next];
+    next = [(_LTSpeechDataQueueNode *)v6 next];
     head = self->_head;
-    self->_head = v7;
+    self->_head = next;
 
-    v9 = [(_LTSpeechDataQueueNode *)v6 data];
-    v10 = [v9 length];
+    data = [(_LTSpeechDataQueueNode *)v6 data];
+    v10 = [data length];
 
     self->_currentFrames -= v10 >> 1;
   }
 
   v11 = v5 >> 1;
   v12 = objc_alloc_init(_LTSpeechDataQueueNode);
-  [(_LTSpeechDataQueueNode *)v12 setData:v4];
+  [(_LTSpeechDataQueueNode *)v12 setData:dataCopy];
 
   if (!self->_head)
   {
@@ -54,9 +54,9 @@
   self->_currentFrames += v11;
 }
 
-- (void)consumeAll:(id)a3
+- (void)consumeAll:(id)all
 {
-  v9 = a3;
+  allCopy = all;
   v4 = self->_head;
   head = self->_head;
   self->_head = 0;
@@ -68,15 +68,15 @@
   {
     do
     {
-      v7 = [(_LTSpeechDataQueueNode *)v4 data];
-      v9[2](v9, v7);
+      data = [(_LTSpeechDataQueueNode *)v4 data];
+      allCopy[2](allCopy, data);
 
-      v8 = [(_LTSpeechDataQueueNode *)v4 next];
+      next = [(_LTSpeechDataQueueNode *)v4 next];
 
-      v4 = v8;
+      v4 = next;
     }
 
-    while (v8);
+    while (next);
   }
 }
 

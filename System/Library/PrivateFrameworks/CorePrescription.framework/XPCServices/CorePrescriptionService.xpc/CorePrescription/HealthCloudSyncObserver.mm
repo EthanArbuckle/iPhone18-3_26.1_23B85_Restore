@@ -1,16 +1,16 @@
 @interface HealthCloudSyncObserver
 - (_TtC23CorePrescriptionServiceP33_E9143E4EFE596187BF822F88FA38A9CD23HealthCloudSyncObserver)init;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
 @end
 
 @implementation HealthCloudSyncObserver
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100064AE0(v7);
+  updatedCopy = updated;
+  statusCopy = status;
+  selfCopy = self;
+  sub_100064AE0(statusCopy);
 }
 
 - (_TtC23CorePrescriptionServiceP33_E9143E4EFE596187BF822F88FA38A9CD23HealthCloudSyncObserver)init

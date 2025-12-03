@@ -1,12 +1,12 @@
 @interface AFibBurdenLifeFactorView
-- (_TtC5Heart24AFibBurdenLifeFactorView)initWithCoder:(id)a3;
-- (_TtC5Heart24AFibBurdenLifeFactorView)initWithFrame:(CGRect)a3;
+- (_TtC5Heart24AFibBurdenLifeFactorView)initWithCoder:(id)coder;
+- (_TtC5Heart24AFibBurdenLifeFactorView)initWithFrame:(CGRect)frame;
 - (void)tapped;
 @end
 
 @implementation AFibBurdenLifeFactorView
 
-- (_TtC5Heart24AFibBurdenLifeFactorView)initWithCoder:(id)a3
+- (_TtC5Heart24AFibBurdenLifeFactorView)initWithCoder:(id)coder
 {
   *(&self->super.super._responderFlags + OBJC_IVAR____TtC5Heart24AFibBurdenLifeFactorView_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -20,11 +20,11 @@
 
 - (void)tapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D763080();
 }
 
-- (_TtC5Heart24AFibBurdenLifeFactorView)initWithFrame:(CGRect)a3
+- (_TtC5Heart24AFibBurdenLifeFactorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

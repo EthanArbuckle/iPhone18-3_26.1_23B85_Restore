@@ -1,7 +1,7 @@
 @interface MarketingEngagementSheetHandler
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5;
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler;
 - (_TtC9SeymourUI31MarketingEngagementSheetHandler)init;
-- (void)engagementViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5;
+- (void)engagementViewController:(id)controller didResolveWithResult:(id)result error:(id)error;
 @end
 
 @implementation MarketingEngagementSheetHandler
@@ -13,21 +13,21 @@
   return result;
 }
 
-- (void)engagementViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5
+- (void)engagementViewController:(id)controller didResolveWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_20B64F1E4(v11);
+  controllerCopy = controller;
+  resultCopy = result;
+  errorCopy = error;
+  selfCopy = self;
+  sub_20B64F1E4(errorCopy);
 }
 
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  v8 = _Block_copy(handler);
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
   LOBYTE(self) = sub_20B64F414();
   _Block_release(v8);
 

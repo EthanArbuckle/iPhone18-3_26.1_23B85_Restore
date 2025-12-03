@@ -1,17 +1,17 @@
 @interface UIDynamicCatalogSystemColor
-- (BOOL)isEqual:(id)a3;
-- (id)_resolvedColorWithTraitCollection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_resolvedColorWithTraitCollection:(id)collection;
 - (id)description;
 - (unint64_t)hash;
-- (void)initWithName:(uint64_t)a3 coreUIColorName:;
+- (void)initWithName:(uint64_t)name coreUIColorName:;
 @end
 
 @implementation UIDynamicCatalogSystemColor
 
 - (unint64_t)hash
 {
-  v2 = [(UIColor *)self _systemColorName];
-  v3 = [v2 hash];
+  _systemColorName = [(UIColor *)self _systemColorName];
+  v3 = [_systemColorName hash];
 
   return v3;
 }
@@ -21,16 +21,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIColor *)self _systemColorName];
-  v7 = [v3 stringWithFormat:@"<%@: %p name = %@>", v5, self, v6];;
+  _systemColorName = [(UIColor *)self _systemColorName];
+  v7 = [v3 stringWithFormat:@"<%@: %p name = %@>", v5, self, _systemColorName];;
 
   return v7;
 }
 
-- (void)initWithName:(uint64_t)a3 coreUIColorName:
+- (void)initWithName:(uint64_t)name coreUIColorName:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
     v7 = [v5 length];
@@ -57,25 +57,25 @@
       }
     }
 
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = UIDynamicCatalogSystemColor;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       *(v8 + 8) = 0;
-      *(v8 + 3) = a3;
+      *(v8 + 3) = name;
       [v8 _setSystemColorName:v5];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -85,9 +85,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(UIColor *)v4 _systemColorName];
-      v6 = [(UIColor *)self _systemColorName];
-      v7 = [v5 isEqualToString:v6];
+      _systemColorName = [(UIColor *)equalCopy _systemColorName];
+      _systemColorName2 = [(UIColor *)self _systemColorName];
+      v7 = [_systemColorName isEqualToString:_systemColorName2];
     }
 
     else
@@ -99,10 +99,10 @@
   return v7;
 }
 
-- (id)_resolvedColorWithTraitCollection:(id)a3
+- (id)_resolvedColorWithTraitCollection:(id)collection
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = _UITraitCollectionReplacingStyleForBackgroundColorIfNeccessary(a3, self);
+  v4 = _UITraitCollectionReplacingStyleForBackgroundColorIfNeccessary(collection, self);
   v5 = _UIThemeKeyValueFromTraitCollection(v4);
   os_unfair_lock_lock(&self->_colorCacheLock);
   cachedColor = self->_cachedColor;
@@ -121,7 +121,7 @@
     v11 = [v9 userInterfaceStyle] == 2;
     v12 = [v9 accessibilityContrast] == 1;
     v13 = [v9 _vibrancy] == 2;
-    v14 = [v9 displayGamut];
+    displayGamut = [v9 displayGamut];
 
     v22 = 0;
     *buf = cuiColorName;
@@ -130,7 +130,7 @@
     v24 = v11;
     v25 = v12;
     v26 = v13;
-    v27 = v14 == 1;
+    v27 = displayGamut == 1;
     v15 = [MEMORY[0x1E6999378] colorWithTraits:buf error:&v22];
     v16 = v22;
     if (v15)

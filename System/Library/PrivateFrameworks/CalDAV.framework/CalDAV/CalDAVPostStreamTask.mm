@@ -10,8 +10,8 @@
 
 - (id)lossyAsciiFilename
 {
-  v2 = [(CalDAVPostStreamTask *)self filename];
-  v3 = [v2 dataUsingEncoding:1 allowLossyConversion:1];
+  filename = [(CalDAVPostStreamTask *)self filename];
+  v3 = [filename dataUsingEncoding:1 allowLossyConversion:1];
 
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:1];
 
@@ -25,8 +25,8 @@
     [CalDAVPostStreamTask utf8PercentEscapedFilename];
   }
 
-  v3 = [(CalDAVPostStreamTask *)self filename];
-  v4 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:utf8PercentEscapedFilename_legalCharacters];
+  filename = [(CalDAVPostStreamTask *)self filename];
+  v4 = [filename stringByAddingPercentEncodingWithAllowedCharacters:utf8PercentEscapedFilename_legalCharacters];
 
   return v4;
 }
@@ -44,35 +44,35 @@ void __50__CalDAVPostStreamTask_utf8PercentEscapedFilename__block_invoke()
 {
   v15.receiver = self;
   v15.super_class = CalDAVPostStreamTask;
-  v3 = [(CoreDAVPostOrPutTask *)&v15 additionalHeaderValues];
+  additionalHeaderValues = [(CoreDAVPostOrPutTask *)&v15 additionalHeaderValues];
   if (![(CoreDAVPostOrPutTask *)self forceToServer])
   {
-    v4 = [(CalDAVPostStreamTask *)self previousScheduleTag];
-    v5 = [CalDAVUtils headersFromHeaders:v3 replacingPreconditionsWithScheduleTag:v4];
+    previousScheduleTag = [(CalDAVPostStreamTask *)self previousScheduleTag];
+    v5 = [CalDAVUtils headersFromHeaders:additionalHeaderValues replacingPreconditionsWithScheduleTag:previousScheduleTag];
 
-    v3 = v5;
+    additionalHeaderValues = v5;
   }
 
-  v6 = [(CalDAVPostStreamTask *)self filename];
+  filename = [(CalDAVPostStreamTask *)self filename];
 
-  if (v6)
+  if (filename)
   {
-    v7 = [v3 mutableCopy];
-    v8 = [(CalDAVPostStreamTask *)self filename];
-    v9 = [v8 canBeConvertedToEncoding:1];
+    v7 = [additionalHeaderValues mutableCopy];
+    filename2 = [(CalDAVPostStreamTask *)self filename];
+    v9 = [filename2 canBeConvertedToEncoding:1];
 
     v10 = MEMORY[0x277CCACA8];
     if (v9)
     {
-      v11 = [(CalDAVPostStreamTask *)self filename];
-      v12 = [v10 stringWithFormat:@"attachment filename=%@", v11];;
+      filename3 = [(CalDAVPostStreamTask *)self filename];
+      v12 = [v10 stringWithFormat:@"attachment filename=%@", filename3];;
     }
 
     else
     {
-      v11 = [(CalDAVPostStreamTask *)self lossyAsciiFilename];
-      v13 = [(CalDAVPostStreamTask *)self utf8PercentEscapedFilename];
-      v12 = [v10 stringWithFormat:@"attachment filename=%@;filename*=utf-8''%@", v11, v13];;
+      filename3 = [(CalDAVPostStreamTask *)self lossyAsciiFilename];
+      utf8PercentEscapedFilename = [(CalDAVPostStreamTask *)self utf8PercentEscapedFilename];
+      v12 = [v10 stringWithFormat:@"attachment filename=%@;filename*=utf-8''%@", filename3, utf8PercentEscapedFilename];;
     }
 
     [v7 setObject:v12 forKey:*MEMORY[0x277CFDB20]];
@@ -80,7 +80,7 @@ void __50__CalDAVPostStreamTask_utf8PercentEscapedFilename__block_invoke()
 
   else
   {
-    v7 = v3;
+    v7 = additionalHeaderValues;
   }
 
   return v7;
@@ -89,30 +89,30 @@ void __50__CalDAVPostStreamTask_utf8PercentEscapedFilename__block_invoke()
 - (id)requestBodyStream
 {
   v2 = MEMORY[0x277CBEAE0];
-  v3 = [(CoreDAVPostOrPutTask *)self requestDataPayload];
-  v4 = [v2 inputStreamWithData:v3];
+  requestDataPayload = [(CoreDAVPostOrPutTask *)self requestDataPayload];
+  v4 = [v2 inputStreamWithData:requestDataPayload];
 
   return v4;
 }
 
 - (id)responseData
 {
-  v3 = [(CalDAVPostStreamTask *)self responseBodyParser];
+  responseBodyParser = [(CalDAVPostStreamTask *)self responseBodyParser];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CalDAVPostStreamTask *)self responseBodyParser];
-    v6 = [v5 octetStreamData];
+    responseBodyParser2 = [(CalDAVPostStreamTask *)self responseBodyParser];
+    octetStreamData = [responseBodyParser2 octetStreamData];
   }
 
   else
   {
-    v6 = 0;
+    octetStreamData = 0;
   }
 
-  return v6;
+  return octetStreamData;
 }
 
 @end

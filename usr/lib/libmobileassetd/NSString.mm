@@ -1,5 +1,5 @@
 @interface NSString
-+ (id)base64StringFromData:(id)a3 length:(int)a4;
++ (id)base64StringFromData:(id)data length:(int)length;
 - (id)base64String;
 @end
 
@@ -13,18 +13,18 @@
   return v3;
 }
 
-+ (id)base64StringFromData:(id)a3 length:(int)a4
++ (id)base64StringFromData:(id)data length:(int)length
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   if (v5)
   {
     v6 = v5;
     v7 = [NSMutableString stringWithCapacity:v5];
-    v8 = [v4 bytes];
+    bytes = [dataCopy bytes];
     if (v6 >= 1)
     {
-      v27 = v4;
+      v27 = dataCopy;
       v9 = 0;
       v10 = &base64EncodingTable;
       p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt;
@@ -41,14 +41,14 @@
 
           else
           {
-            v15 = v8[i];
+            v15 = bytes[i];
           }
 
           *(&v31 + i) = v15;
         }
 
         v28 = v13;
-        v29 = v8;
+        v29 = bytes;
         v30[0] = v31 >> 2;
         v30[1] = (v32 >> 4) & 0xCF | (16 * (v31 & 3));
         v30[2] = (v33 >> 6) & 0xC3 | (4 * (v32 & 0xF));
@@ -105,11 +105,11 @@
 
         v9 += 3;
         v13 = v6 - v9;
-        v8 = v29 + 3;
+        bytes = v29 + 3;
       }
 
       while (v6 - v9 > 0);
-      v4 = v27;
+      dataCopy = v27;
     }
   }
 

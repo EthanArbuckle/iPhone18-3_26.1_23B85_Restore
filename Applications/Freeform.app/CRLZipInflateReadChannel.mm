@@ -1,29 +1,29 @@
 @interface CRLZipInflateReadChannel
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7;
-- (CRLZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6;
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler;
+- (CRLZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC;
 - (void)close;
 - (void)dealloc;
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4;
+- (void)handleFailureWithHandler:(id)handler error:(id)error;
 - (void)prepareBuffer;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation CRLZipInflateReadChannel
 
-- (CRLZipInflateReadChannel)initWithReadChannel:(id)a3 uncompressedSize:(unint64_t)a4 CRC:(unsigned int)a5 validateCRC:(BOOL)a6
+- (CRLZipInflateReadChannel)initWithReadChannel:(id)channel uncompressedSize:(unint64_t)size CRC:(unsigned int)c validateCRC:(BOOL)rC
 {
-  v11 = a3;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = CRLZipInflateReadChannel;
   v12 = [(CRLZipInflateReadChannel *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_readChannel, a3);
+    objc_storeStrong(&v12->_readChannel, channel);
     v13->_stream.next_in = 0;
-    v13->_remainingUncompressedSize = a4;
-    v13->_CRC = a5;
-    v13->_validateCRC = a6;
+    v13->_remainingUncompressedSize = size;
+    v13->_CRC = c;
+    v13->_validateCRC = rC;
     v13->_stream.avail_in = 0;
     v13->_stream.avail_out = 0;
     v13->_stream.next_out = 0;
@@ -118,9 +118,9 @@
   self->_stream.next_out = v9;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -144,7 +144,7 @@
   v7[3] = &unk_10183A668;
   v9 = v19;
   v7[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   v10 = v15;
   v11 = v17;
@@ -157,10 +157,10 @@
   _Block_object_dispose(v19, 8);
 }
 
-- (BOOL)processData:(id)a3 inflateResult:(int *)a4 CRC:(unsigned int *)a5 isDone:(BOOL)a6 handler:(id)a7
+- (BOOL)processData:(id)data inflateResult:(int *)result CRC:(unsigned int *)c isDone:(BOOL)done handler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
+  doneCopy = done;
+  dataCopy = data;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -170,26 +170,26 @@
   applier[2] = sub_1000CE608;
   applier[3] = &unk_10183A750;
   v19 = &v22;
-  v20 = a4;
+  resultCopy = result;
   applier[4] = self;
-  v21 = a5;
-  v13 = a7;
-  v18 = v13;
-  dispatch_data_apply(v12, applier);
+  cCopy = c;
+  handlerCopy = handler;
+  v18 = handlerCopy;
+  dispatch_data_apply(dataCopy, applier);
   v14 = *(v23 + 24);
   if (!self->_validateCRC || (v23[3] & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  if (v8)
+  if (doneCopy)
   {
-    if (!a5)
+    if (!c)
     {
 LABEL_9:
       v14 = 1;
 LABEL_10:
-      if ((v14 & 1) == 0 || !v8 || *a4 == 1)
+      if ((v14 & 1) == 0 || !doneCopy || *result == 1)
       {
         if (v14)
         {
@@ -198,7 +198,7 @@ LABEL_10:
         }
 
 LABEL_24:
-        [(CRLZipInflateReadChannel *)self handleFailureWithHandler:v13 error:0];
+        [(CRLZipInflateReadChannel *)self handleFailureWithHandler:handlerCopy error:0];
         v15 = *(v23 + 24);
         goto LABEL_25;
       }
@@ -219,7 +219,7 @@ LABEL_23:
     }
 
 LABEL_8:
-    if (self->_CRC != *a5)
+    if (self->_CRC != *c)
     {
       if (qword_101AD5A08 != -1)
       {
@@ -238,7 +238,7 @@ LABEL_8:
   }
 
   v15 = 1;
-  if (a5 && *a4 == 1)
+  if (c && *result == 1)
   {
     goto LABEL_8;
   }
@@ -249,20 +249,20 @@ LABEL_25:
   return v15 & 1;
 }
 
-- (void)handleFailureWithHandler:(id)a3 error:(id)a4
+- (void)handleFailureWithHandler:(id)handler error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    v5 = *(a3 + 2);
-    v7 = a3;
+    v5 = *(handler + 2);
+    handlerCopy = handler;
     v5();
   }
 
   else
   {
-    v6 = a3;
-    v7 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
-    (*(a3 + 2))(v6, 1, 0);
+    handlerCopy2 = handler;
+    handlerCopy = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
+    (*(handler + 2))(handlerCopy2, 1, 0);
   }
 }
 

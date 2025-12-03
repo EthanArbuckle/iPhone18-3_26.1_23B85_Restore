@@ -1,62 +1,62 @@
 @interface _UIDocumentPropertiesHeaderView
 - (CGRect)_rectForDragInteraction;
 - (CGRect)_rectForShareButton;
-- (_UIDocumentPropertiesHeaderView)initWithProperties:(id)a3 metadata:(id)a4 menuInteraction:(id)a5 sourceViewProvider:(id)a6;
+- (_UIDocumentPropertiesHeaderView)initWithProperties:(id)properties metadata:(id)metadata menuInteraction:(id)interaction sourceViewProvider:(id)provider;
 - (id)_defaultDragPreview;
 - (id)_defaultSharePreview;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_share:(id)a3;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)linkViewNeedsResize:(id)a3;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_share:(id)_share;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)linkViewNeedsResize:(id)resize;
 - (void)update;
 @end
 
 @implementation _UIDocumentPropertiesHeaderView
 
-- (_UIDocumentPropertiesHeaderView)initWithProperties:(id)a3 metadata:(id)a4 menuInteraction:(id)a5 sourceViewProvider:(id)a6
+- (_UIDocumentPropertiesHeaderView)initWithProperties:(id)properties metadata:(id)metadata menuInteraction:(id)interaction sourceViewProvider:(id)provider
 {
   v65[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v55 = v12;
-  if (!v12)
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  interactionCopy = interaction;
+  providerCopy = provider;
+  v55 = propertiesCopy;
+  if (!propertiesCopy)
   {
-    v42 = v15;
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"properties != NULL"}];
+    v42 = providerCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"properties != NULL"}];
 
-    v15 = v42;
+    providerCopy = v42;
   }
 
-  v56 = v13;
-  if (!v13)
+  v56 = metadataCopy;
+  if (!metadataCopy)
   {
-    v44 = v15;
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
+    v44 = providerCopy;
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
 
-    v15 = v44;
+    providerCopy = v44;
   }
 
-  obj = v14;
-  if (!v14)
+  obj = interactionCopy;
+  if (!interactionCopy)
   {
-    v46 = v15;
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"menuInteraction != nil"}];
+    v46 = providerCopy;
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:341 description:{@"Invalid parameter not satisfying: %@", @"menuInteraction != nil"}];
 
-    v15 = v46;
+    providerCopy = v46;
   }
 
-  aBlock = v15;
-  if (!v15)
+  aBlock = providerCopy;
+  if (!providerCopy)
   {
-    v48 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v48 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"sourceViewProvider != NULL"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:342 description:{@"Invalid parameter not satisfying: %@", @"sourceViewProvider != NULL"}];
   }
 
   v63.receiver = self;
@@ -65,7 +65,7 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_properties, a3);
+    objc_storeStrong(&v16->_properties, properties);
     objc_storeWeak(&v17->_menuInteraction, obj);
     v18 = _Block_copy(aBlock);
     sourceViewProvider = v17->_sourceViewProvider;
@@ -81,8 +81,8 @@
     [v61 setContentCompressionResistancePriority:0 forAxis:v20];
     objc_storeStrong(&v17->_linkView, v61);
     objc_initWeak(&location, v17);
-    v21 = [(UIView *)v17 traitCollection];
-    v22 = [v21 userInterfaceIdiom] == 6;
+    traitCollection = [(UIView *)v17 traitCollection];
+    v22 = [traitCollection userInterfaceIdiom] == 6;
 
     if (v22)
     {
@@ -104,8 +104,8 @@
     v60 = [UIButton buttonWithConfiguration:v59 primaryAction:0];
     [v60 addTarget:v17 action:sel__share_ forControlEvents:0x2000];
     [v60 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(UIView *)v17 traitCollection];
-    v26 = [v25 userInterfaceIdiom] == 6;
+    traitCollection2 = [(UIView *)v17 traitCollection];
+    v26 = [traitCollection2 userInterfaceIdiom] == 6;
 
     if (!v26)
     {
@@ -127,21 +127,21 @@
     [(UIStackView *)v30 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v17 addSubview:v30];
     v49 = MEMORY[0x1E69977A0];
-    v54 = [(UIView *)v30 leadingAnchor];
-    v53 = [(UIView *)v17 leadingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:16.0];
+    leadingAnchor = [(UIView *)v30 leadingAnchor];
+    leadingAnchor2 = [(UIView *)v17 leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v64[0] = v52;
-    v51 = [(UIView *)v30 bottomAnchor];
-    v50 = [(UIView *)v17 bottomAnchor];
-    v31 = [v51 constraintEqualToAnchor:v50];
+    bottomAnchor = [(UIView *)v30 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v17 bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v64[1] = v31;
-    v32 = [(UIView *)v30 trailingAnchor];
-    v33 = [(UIView *)v17 trailingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:-16.0];
+    trailingAnchor = [(UIView *)v30 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v17 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v64[2] = v34;
-    v35 = [(UIView *)v30 topAnchor];
-    v36 = [(UIView *)v17 topAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    topAnchor = [(UIView *)v30 topAnchor];
+    topAnchor2 = [(UIView *)v17 topAnchor];
+    v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v64[3] = v37;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
     [v49 activateConstraints:v38];
@@ -165,11 +165,11 @@
   v4 = v3;
   if (v3 && ([(UIDocumentProperties *)v3 dragItemsProvider], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(LPLinkView *)self->_linkView _primaryMediaView];
-    v7 = v6;
-    if (v6)
+    _primaryMediaView = [(LPLinkView *)self->_linkView _primaryMediaView];
+    v7 = _primaryMediaView;
+    if (_primaryMediaView)
     {
-      [v6 bounds];
+      [_primaryMediaView bounds];
       v21 = CGRectInset(v20, -10.0, -10.0);
       [(UIView *)self convertRect:v7 fromView:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
       v9 = v8;
@@ -206,23 +206,23 @@
   return result;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   [(_UIDocumentPropertiesHeaderView *)self _rectForDragInteraction];
   x = v17.origin.x;
   y = v17.origin.y;
   width = v17.size.width;
   height = v17.size.height;
-  if (CGRectIsNull(v17) || ([v5 locationInView:self], v16.x = v10, v16.y = v11, v18.origin.x = x, v18.origin.y = y, v18.size.width = width, v18.size.height = height, !CGRectContainsPoint(v18, v16)))
+  if (CGRectIsNull(v17) || ([sessionCopy locationInView:self], v16.x = v10, v16.y = v11, v18.origin.x = x, v18.origin.y = y, v18.size.width = width, v18.size.height = height, !CGRectContainsPoint(v18, v16)))
   {
     v13 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v12 = [(UIDocumentProperties *)self->_properties dragItemsProvider];
-    v13 = (v12)[2](v12, v5);
+    dragItemsProvider = [(UIDocumentProperties *)self->_properties dragItemsProvider];
+    v13 = (dragItemsProvider)[2](dragItemsProvider, sessionCopy);
   }
 
   return v13;
@@ -231,15 +231,15 @@
 - (id)_defaultDragPreview
 {
   v3 = self->_linkView;
-  v4 = [(LPLinkView *)v3 _primaryMediaView];
-  if (v4)
+  _primaryMediaView = [(LPLinkView *)v3 _primaryMediaView];
+  if (_primaryMediaView)
   {
     v5 = [UIPreviewTarget alloc];
-    [v4 bounds];
-    [v4 convertPoint:self toView:{v7 + v6 * 0.5, v9 + v8 * 0.5}];
+    [_primaryMediaView bounds];
+    [_primaryMediaView convertPoint:self toView:{v7 + v6 * 0.5, v9 + v8 * 0.5}];
     v10 = [(UIPreviewTarget *)v5 initWithContainer:self center:?];
     v11 = objc_opt_new();
-    v12 = _UIBezierPathAroundViewAlpha(v4);
+    v12 = _UIBezierPathAroundViewAlpha(_primaryMediaView);
     if (v12)
     {
       [v11 setShadowPath:v12];
@@ -247,7 +247,7 @@
       [v11 setBackgroundColor:v13];
     }
 
-    v14 = [[UITargetedDragPreview alloc] initWithView:v4 parameters:v11 target:v10];
+    v14 = [[UITargetedDragPreview alloc] initWithView:_primaryMediaView parameters:v11 target:v10];
   }
 
   else
@@ -278,83 +278,83 @@
   return v14;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   WeakRetained = objc_loadWeakRetained(&self->_menuInteraction);
   [WeakRetained dismissMenu];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
-  v5 = [(UIDocumentProperties *)self->_properties activityViewControllerProvider];
-  if (v5)
+  activityViewControllerProvider = [(UIDocumentProperties *)self->_properties activityViewControllerProvider];
+  if (activityViewControllerProvider)
   {
-    v12 = v5;
-    v6 = v5[2]();
+    v12 = activityViewControllerProvider;
+    v6 = activityViewControllerProvider[2]();
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:478 description:@"activityViewControllerProvider requires a UIActivityViewController."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:478 description:@"activityViewControllerProvider requires a UIActivityViewController."];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_menuInteraction);
     [WeakRetained dismissMenu];
 
     v8 = (*(self->_sourceViewProvider + 2))();
-    v9 = [v6 popoverPresentationController];
-    [v9 setSourceView:v8];
+    popoverPresentationController = [v6 popoverPresentationController];
+    [popoverPresentationController setSourceView:v8];
 
-    v10 = [v8 _viewControllerForAncestor];
-    [v10 presentViewController:v6 animated:1 completion:0];
+    _viewControllerForAncestor = [v8 _viewControllerForAncestor];
+    [_viewControllerForAncestor presentViewController:v6 animated:1 completion:0];
 
-    v5 = v12;
+    activityViewControllerProvider = v12;
   }
 }
 
-- (void)linkViewNeedsResize:(id)a3
+- (void)linkViewNeedsResize:(id)resize
 {
-  if (self->_linkView == a3)
+  if (self->_linkView == resize)
   {
-    [a3 frame];
+    [resize frame];
     if (!CGRectIsEmpty(v10))
     {
-      v4 = [(UIView *)self superview];
-      if (v4)
+      superview = [(UIView *)self superview];
+      if (superview)
       {
         while (1)
         {
-          v7 = v4;
+          v7 = superview;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             break;
           }
 
-          v5 = [v7 superview];
+          superview2 = [v7 superview];
 
-          v4 = v5;
-          if (!v5)
+          superview = superview2;
+          if (!superview2)
           {
             goto LABEL_9;
           }
         }
 
-        v4 = v7;
+        superview = v7;
       }
 
 LABEL_9:
-      v8 = v4;
-      v6 = [v4 collectionViewLayout];
-      [v6 invalidateLayout];
+      v8 = superview;
+      collectionViewLayout = [superview collectionViewLayout];
+      [collectionViewLayout invalidateLayout];
     }
   }
 }
 
 - (void)update
 {
-  v3 = [(UIDocumentProperties *)self->_properties activityViewControllerProvider];
-  [(UIView *)self->_shareButton setHidden:v3 == 0];
+  activityViewControllerProvider = [(UIDocumentProperties *)self->_properties activityViewControllerProvider];
+  [(UIView *)self->_shareButton setHidden:activityViewControllerProvider == 0];
 }
 
 - (CGRect)_rectForShareButton
@@ -424,9 +424,9 @@ LABEL_9:
   return v6;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   [(_UIDocumentPropertiesHeaderView *)self _rectForDragInteraction];
   x = v21.origin.x;
   y = v21.origin.y;
@@ -434,7 +434,7 @@ LABEL_9:
   height = v21.size.height;
   if (!CGRectIsNull(v21))
   {
-    [v6 location];
+    [requestCopy location];
     v19.x = v11;
     v19.y = v12;
     v22.origin.x = x;
@@ -445,7 +445,7 @@ LABEL_9:
     {
       v13 = @"com.apple.documentproperties.header.drag";
 LABEL_7:
-      v16 = [UIPointerRegion regionWithRect:v13 identifier:x, y, width, height];
+      height = [UIPointerRegion regionWithRect:v13 identifier:x, y, width, height];
       goto LABEL_9;
     }
   }
@@ -457,7 +457,7 @@ LABEL_7:
   height = v23.size.height;
   if (!CGRectIsNull(v23))
   {
-    [v6 location];
+    [requestCopy location];
     v20.x = v14;
     v20.y = v15;
     v24.origin.x = x;
@@ -471,22 +471,22 @@ LABEL_7:
     }
   }
 
-  v16 = 0;
+  height = 0;
 LABEL_9:
 
-  return v16;
+  return height;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = [v6 isEqual:@"com.apple.documentproperties.header.drag"];
+  regionCopy = region;
+  identifier = [regionCopy identifier];
+  v7 = [identifier isEqual:@"com.apple.documentproperties.header.drag"];
 
   if (v7)
   {
-    v8 = [(_UIDocumentPropertiesHeaderView *)self _defaultDragPreview];
-    v9 = [(UIPointerEffect *)UIPointerLiftEffect effectWithPreview:v8];
+    _defaultDragPreview = [(_UIDocumentPropertiesHeaderView *)self _defaultDragPreview];
+    v9 = [(UIPointerEffect *)UIPointerLiftEffect effectWithPreview:_defaultDragPreview];
 
     v10 = [UIPointerStyle styleWithEffect:v9 shape:0];
 LABEL_5:
@@ -494,8 +494,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v11 = [v5 identifier];
-  v12 = [v11 isEqual:@"com.apple.documentproperties.header.share"];
+  identifier2 = [regionCopy identifier];
+  v12 = [identifier2 isEqual:@"com.apple.documentproperties.header.share"];
 
   if (v12)
   {
@@ -504,8 +504,8 @@ LABEL_5:
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(_UIDocumentPropertiesHeaderView *)self _defaultSharePreview];
-    v9 = [(UIPointerEffect *)UIPointerLiftEffect effectWithPreview:v21];
+    _defaultSharePreview = [(_UIDocumentPropertiesHeaderView *)self _defaultSharePreview];
+    v9 = [(UIPointerEffect *)UIPointerLiftEffect effectWithPreview:_defaultSharePreview];
 
     v25.origin.x = v14;
     v25.origin.y = v16;

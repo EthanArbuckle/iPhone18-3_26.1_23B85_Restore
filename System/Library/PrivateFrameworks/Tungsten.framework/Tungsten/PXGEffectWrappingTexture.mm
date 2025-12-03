@@ -2,7 +2,7 @@
 + (id)_dequeueTexture;
 + (id)_reusableTextures;
 + (id)createTexture;
-+ (void)_reuseTexture:(id)a3;
++ (void)_reuseTexture:(id)texture;
 - (BOOL)isAtlas;
 - (BOOL)isCaptureTexture;
 - (BOOL)isOpaque;
@@ -20,19 +20,19 @@
 - (int64_t)estimatedByteSize;
 - (int64_t)renderPipelineIndex;
 - (unsigned)presentationType;
-- (void)cleanupAfterRender:(int64_t)a3;
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9;
-- (void)prepareForRender:(int64_t)a3;
-- (void)setParent:(id)a3;
-- (void)setRenderPipelineIndex:(int64_t)a3;
+- (void)cleanupAfterRender:(int64_t)render;
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count;
+- (void)prepareForRender:(int64_t)render;
+- (void)setParent:(id)parent;
+- (void)setRenderPipelineIndex:(int64_t)index;
 @end
 
 @implementation PXGEffectWrappingTexture
 
 - (__n128)orientationTransform
 {
-  v1 = [a1 imageTextureParent];
-  [v1 orientationTransform];
+  imageTextureParent = [self imageTextureParent];
+  [imageTextureParent orientationTransform];
   v4 = v2;
 
   return v4;
@@ -40,48 +40,48 @@
 
 - (__CVBuffer)sourceCVPixelBuffer
 {
-  v2 = [(PXGEffectWrappingTexture *)self imageTextureParent];
-  v3 = [v2 sourceCVPixelBuffer];
+  imageTextureParent = [(PXGEffectWrappingTexture *)self imageTextureParent];
+  sourceCVPixelBuffer = [imageTextureParent sourceCVPixelBuffer];
 
-  return v3;
+  return sourceCVPixelBuffer;
 }
 
 - (CGImage)sourceCGImage
 {
-  v2 = [(PXGEffectWrappingTexture *)self imageTextureParent];
-  v3 = [v2 sourceCGImage];
+  imageTextureParent = [(PXGEffectWrappingTexture *)self imageTextureParent];
+  sourceCGImage = [imageTextureParent sourceCGImage];
 
-  return v3;
+  return sourceCGImage;
 }
 
 - (CGImage)imageRepresentation
 {
-  v2 = [(PXGEffectWrappingTexture *)self imageTextureParent];
-  v3 = [v2 imageRepresentation];
+  imageTextureParent = [(PXGEffectWrappingTexture *)self imageTextureParent];
+  imageRepresentation = [imageTextureParent imageRepresentation];
 
-  return v3;
+  return imageRepresentation;
 }
 
 - (unsigned)presentationType
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 presentationType];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  presentationType = [parent presentationType];
 
-  return v3;
+  return presentationType;
 }
 
 - (int64_t)estimatedByteSize
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 estimatedByteSize];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  estimatedByteSize = [parent estimatedByteSize];
 
-  return v3;
+  return estimatedByteSize;
 }
 
 - (CGSize)pixelSize
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  [v2 pixelSize];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  [parent pixelSize];
   v4 = v3;
   v6 = v5;
 
@@ -94,24 +94,24 @@
 
 - (int)shaderFlags
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 shaderFlags];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  shaderFlags = [parent shaderFlags];
 
-  return v3;
+  return shaderFlags;
 }
 
 - (BOOL)isCaptureTexture
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 isCaptureTexture];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  isCaptureTexture = [parent isCaptureTexture];
 
-  return v3;
+  return isCaptureTexture;
 }
 
 - (float)alpha
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  [v2 alpha];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  [parent alpha];
   v4 = v3;
 
   return v4;
@@ -119,38 +119,38 @@
 
 - (BOOL)isOpaque
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 isOpaque];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  isOpaque = [parent isOpaque];
 
-  return v3;
+  return isOpaque;
 }
 
 - (BOOL)isAtlas
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 isAtlas];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  isAtlas = [parent isAtlas];
 
-  return v3;
+  return isAtlas;
 }
 
-- (void)setRenderPipelineIndex:(int64_t)a3
+- (void)setRenderPipelineIndex:(int64_t)index
 {
-  v4 = [(PXGEffectWrappingTexture *)self parent];
-  [v4 setRenderPipelineIndex:a3];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  [parent setRenderPipelineIndex:index];
 }
 
 - (int64_t)renderPipelineIndex
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 renderPipelineIndex];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  renderPipelineIndex = [parent renderPipelineIndex];
 
-  return v3;
+  return renderPipelineIndex;
 }
 
-- (void)cleanupAfterRender:(int64_t)a3
+- (void)cleanupAfterRender:(int64_t)render
 {
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableIndexSet *)self->_lock_activeRenders removeIndex:a3];
+  [(NSMutableIndexSet *)self->_lock_activeRenders removeIndex:render];
   v5 = [(NSMutableIndexSet *)self->_lock_activeRenders count];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
@@ -163,65 +163,65 @@
   }
 }
 
-- (void)prepareForRender:(int64_t)a3
+- (void)prepareForRender:(int64_t)render
 {
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableIndexSet *)self->_lock_activeRenders addIndex:a3];
+  [(NSMutableIndexSet *)self->_lock_activeRenders addIndex:render];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (PXGColorProgram)colorProgram
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 colorProgram];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  colorProgram = [parent colorProgram];
 
-  return v3;
+  return colorProgram;
 }
 
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count
 {
-  if (a9)
+  if (count)
   {
-    v16 = a9;
+    countCopy = count;
     do
     {
-      v17 = *a4++;
-      v19 = *(&a7[1].var0 + 5 * v17);
-      v18 = [(PXGEffectWrappingTexture *)self parent];
-      [v18 getTextureInfos:a3 forSpriteIndexes:&v19 geometries:a5 spriteStyles:a6 spriteInfos:a7 screenScale:1 count:a8];
+      v17 = *indexes++;
+      v19 = *(&spriteInfos[1].var0 + 5 * v17);
+      parent = [(PXGEffectWrappingTexture *)self parent];
+      [parent getTextureInfos:infos forSpriteIndexes:&v19 geometries:geometries spriteStyles:styles spriteInfos:spriteInfos screenScale:1 count:scale];
 
-      a3 += 8;
-      --v16;
+      infos += 8;
+      --countCopy;
     }
 
-    while (v16);
+    while (countCopy);
   }
 }
 
 - (MTLTexture)texture
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 texture];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  texture = [parent texture];
 
-  return v3;
+  return texture;
 }
 
 - (MTLTexture)chromaTexture
 {
-  v2 = [(PXGEffectWrappingTexture *)self parent];
-  v3 = [v2 chromaTexture];
+  parent = [(PXGEffectWrappingTexture *)self parent];
+  chromaTexture = [parent chromaTexture];
 
-  return v3;
+  return chromaTexture;
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  v5 = a3;
-  if (self->_parent != v5)
+  parentCopy = parent;
+  if (self->_parent != parentCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_parent, a3);
+    v7 = parentCopy;
+    objc_storeStrong(&self->_parent, parent);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -234,7 +234,7 @@
     }
 
     objc_storeStrong(&self->_imageTextureParent, v6);
-    v5 = v7;
+    parentCopy = v7;
   }
 }
 
@@ -257,21 +257,21 @@
 
 + (id)createTexture
 {
-  v2 = [a1 _dequeueTexture];
-  if (!v2)
+  _dequeueTexture = [self _dequeueTexture];
+  if (!_dequeueTexture)
   {
-    v2 = objc_alloc_init(PXGEffectWrappingTexture);
+    _dequeueTexture = objc_alloc_init(PXGEffectWrappingTexture);
   }
 
-  return v2;
+  return _dequeueTexture;
 }
 
-+ (void)_reuseTexture:(id)a3
++ (void)_reuseTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   os_unfair_lock_lock(&_reuseLock);
-  v5 = [a1 _reusableTextures];
-  [v5 addObject:v4];
+  _reusableTextures = [self _reusableTextures];
+  [_reusableTextures addObject:textureCopy];
 
   os_unfair_lock_unlock(&_reuseLock);
 }
@@ -279,12 +279,12 @@
 + (id)_dequeueTexture
 {
   os_unfair_lock_lock(&_reuseLock);
-  v3 = [a1 _reusableTextures];
-  v4 = [v3 px_popFirst];
+  _reusableTextures = [self _reusableTextures];
+  px_popFirst = [_reusableTextures px_popFirst];
 
   os_unfair_lock_unlock(&_reuseLock);
 
-  return v4;
+  return px_popFirst;
 }
 
 + (id)_reusableTextures

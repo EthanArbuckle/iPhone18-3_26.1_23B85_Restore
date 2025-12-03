@@ -1,12 +1,12 @@
 @interface WeatherMapAnnotationLocationLabel
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation WeatherMapAnnotationLocationLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_220E9C524();
 }
 

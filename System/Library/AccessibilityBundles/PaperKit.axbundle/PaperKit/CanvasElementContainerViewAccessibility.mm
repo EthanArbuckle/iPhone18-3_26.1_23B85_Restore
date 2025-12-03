@@ -1,5 +1,5 @@
 @interface CanvasElementContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)automationElements;
 - (id)markupController;
 - (unint64_t)accessibilityTraits;
@@ -7,32 +7,32 @@
 
 @implementation CanvasElementContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PPKMarkupContainerViewController"];
-  [v3 validateClass:@"PaperKit.MarkupContainerViewController" hasSwiftField:@"editingMode" withSwiftType:"CanvasEditingMode"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PPKMarkupContainerViewController"];
+  [validationsCopy validateClass:@"PaperKit.MarkupContainerViewController" hasSwiftField:@"editingMode" withSwiftType:"CanvasEditingMode"];
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(CanvasElementContainerViewAccessibility *)self markupController];
-  v4 = [v3 safeSwiftValueForKey:@"editingMode"];
+  markupController = [(CanvasElementContainerViewAccessibility *)self markupController];
+  v4 = [markupController safeSwiftValueForKey:@"editingMode"];
   v5 = [v4 description];
 
   if ([v5 isEqualToString:@"PaperKit.CanvasEditingMode.allowsAll"])
   {
-    v6 = *MEMORY[0x29EDC7F68];
+    accessibilityTraits = *MEMORY[0x29EDC7F68];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CanvasElementContainerViewAccessibility;
-    v6 = [(CanvasElementContainerViewAccessibility *)&v8 accessibilityTraits];
+    accessibilityTraits = [(CanvasElementContainerViewAccessibility *)&v8 accessibilityTraits];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
 - (id)markupController
@@ -73,21 +73,21 @@ uint64_t __59__CanvasElementContainerViewAccessibility_markupController__block_i
   v9 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  if (v4)
+  if (subviews)
   {
-    v5 = v4;
+    automationElements = subviews;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CanvasElementContainerViewAccessibility;
-    v5 = [(CanvasElementContainerViewAccessibility *)&v8 automationElements];
+    automationElements = [(CanvasElementContainerViewAccessibility *)&v8 automationElements];
   }
 
-  v6 = v5;
+  v6 = automationElements;
 
   return v6;
 }

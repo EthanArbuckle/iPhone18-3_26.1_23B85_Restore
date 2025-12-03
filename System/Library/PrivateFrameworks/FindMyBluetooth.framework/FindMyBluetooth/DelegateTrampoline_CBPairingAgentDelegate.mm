@@ -1,45 +1,45 @@
 @interface DelegateTrampoline_CBPairingAgentDelegate
 - (_TtC15FindMyBluetoothP33_FB9F492088B4C388E3479FD29311B1A941DelegateTrampoline_CBPairingAgentDelegate)init;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair;
 @end
 
 @implementation DelegateTrampoline_CBPairingAgentDelegate
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_24AC75228(a3, v8);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  sub_24AC75228(agent, pairingCopy);
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  v12 = a5;
-  sub_24AC755C0(a3, a4, a5);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  selfCopy = self;
+  errorCopy = error;
+  sub_24AC755C0(agent, pairing, error);
 }
 
-- (void)pairingAgent:(id)a3 peerDidUnpair:(id)a4
+- (void)pairingAgent:(id)agent peerDidUnpair:(id)unpair
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_24AC75A88(a3, a4);
+  agentCopy = agent;
+  unpairCopy = unpair;
+  selfCopy = self;
+  sub_24AC75A88(agent, unpair);
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = self;
-  sub_24AC75F28(a3, a4, a5, a6);
+  agentCopy = agent;
+  pairingCopy = pairing;
+  passkeyCopy = passkey;
+  selfCopy = self;
+  sub_24AC75F28(agent, pairing, type, passkey);
 }
 
 - (_TtC15FindMyBluetoothP33_FB9F492088B4C388E3479FD29311B1A941DelegateTrampoline_CBPairingAgentDelegate)init

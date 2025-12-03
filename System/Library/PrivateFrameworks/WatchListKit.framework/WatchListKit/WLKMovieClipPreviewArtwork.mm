@@ -2,68 +2,68 @@
 - (CGSize)artworkSize;
 - (WLKArtworkVariant)artworkVariant;
 - (WLKMovieClipPreviewArtwork)init;
-- (WLKMovieClipPreviewArtwork)initWithDictionary:(id)a3;
+- (WLKMovieClipPreviewArtwork)initWithDictionary:(id)dictionary;
 - (id)_init;
 @end
 
 @implementation WLKMovieClipPreviewArtwork
 
-- (WLKMovieClipPreviewArtwork)initWithDictionary:(id)a3
+- (WLKMovieClipPreviewArtwork)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = [(WLKMovieClipPreviewArtwork *)self _init];
-    if (v5)
+    _init = [(WLKMovieClipPreviewArtwork *)self _init];
+    if (_init)
     {
-      v6 = [v4 wlk_stringForKey:@"bgColor"];
-      v7 = v5[2];
-      v5[2] = v6;
+      v6 = [dictionaryCopy wlk_stringForKey:@"bgColor"];
+      v7 = _init[2];
+      _init[2] = v6;
 
-      *(v5 + 8) = [v4 wlk_BOOLForKey:@"supportsLayeredImage" defaultValue:0];
-      v8 = [v4 wlk_stringForKey:@"textColor1"];
-      v9 = v5[3];
-      v5[3] = v8;
+      *(_init + 8) = [dictionaryCopy wlk_BOOLForKey:@"supportsLayeredImage" defaultValue:0];
+      v8 = [dictionaryCopy wlk_stringForKey:@"textColor1"];
+      v9 = _init[3];
+      _init[3] = v8;
 
-      v10 = [v4 wlk_stringForKey:@"textColor2"];
-      v11 = v5[4];
-      v5[4] = v10;
+      v10 = [dictionaryCopy wlk_stringForKey:@"textColor2"];
+      v11 = _init[4];
+      _init[4] = v10;
 
-      v12 = [v4 wlk_stringForKey:@"textColor3"];
-      v13 = v5[5];
-      v5[5] = v12;
+      v12 = [dictionaryCopy wlk_stringForKey:@"textColor3"];
+      v13 = _init[5];
+      _init[5] = v12;
 
-      v14 = [v4 wlk_stringForKey:@"textColor4"];
-      v15 = v5[5];
-      v5[5] = v14;
+      v14 = [dictionaryCopy wlk_stringForKey:@"textColor4"];
+      v15 = _init[5];
+      _init[5] = v14;
 
-      v16 = [v4 wlk_stringForKey:@"url"];
-      v17 = v5[7];
-      v5[7] = v16;
+      v16 = [dictionaryCopy wlk_stringForKey:@"url"];
+      v17 = _init[7];
+      _init[7] = v16;
 
-      v18 = [v4 wlk_numberForKey:@"height"];
-      v19 = [v4 wlk_numberForKey:@"width"];
+      v18 = [dictionaryCopy wlk_numberForKey:@"height"];
+      v19 = [dictionaryCopy wlk_numberForKey:@"width"];
       v20 = v19;
       if (v18 && v19)
       {
         [v19 doubleValue];
         v22 = v21;
         [v18 doubleValue];
-        v5[8] = v22;
-        v5[9] = v23;
+        _init[8] = v22;
+        _init[9] = v23;
       }
     }
 
-    self = v5;
-    v24 = self;
+    self = _init;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (id)_init

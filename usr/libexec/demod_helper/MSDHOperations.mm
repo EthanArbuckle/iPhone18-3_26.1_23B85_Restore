@@ -1,40 +1,40 @@
 @interface MSDHOperations
 + (id)sharedInstance;
-- (BOOL)collectDemoLogsToFolder:(id)a3 ofType:(unint64_t)a4;
-- (BOOL)createDeviceManifestForComponent:(id)a3 ofType:(id)a4 withRootPath:(id)a5 userHomePath:(id)a6 andSavePath:(id)a7;
-- (BOOL)deleteNvram:(id)a3;
+- (BOOL)collectDemoLogsToFolder:(id)folder ofType:(unint64_t)type;
+- (BOOL)createDeviceManifestForComponent:(id)component ofType:(id)type withRootPath:(id)path userHomePath:(id)homePath andSavePath:(id)savePath;
+- (BOOL)deleteNvram:(id)nvram;
 - (BOOL)destroyWorkContainerInUserHome;
 - (BOOL)disableLaunchdServicesForWatch;
-- (BOOL)fileExistsAtPath:(id)a3;
-- (BOOL)generateLogsForPredicate:(id)a3 toFile:(id)a4;
-- (BOOL)generateSysdiagnose:(id)a3;
-- (BOOL)manageDataVolume:(id)a3;
-- (BOOL)manageDemoVolume:(id)a3;
-- (BOOL)manageUserVolume:(id)a3 forUser:(id)a4;
+- (BOOL)fileExistsAtPath:(id)path;
+- (BOOL)generateLogsForPredicate:(id)predicate toFile:(id)file;
+- (BOOL)generateSysdiagnose:(id)sysdiagnose;
+- (BOOL)manageDataVolume:(id)volume;
+- (BOOL)manageDemoVolume:(id)volume;
+- (BOOL)manageUserVolume:(id)volume forUser:(id)user;
 - (BOOL)migratePreferencesFile;
-- (BOOL)moveStagingToFinal:(id)a3 finalPath:(id)a4;
-- (BOOL)moveUserHomeStagingToFinal:(id)a3 finalPath:(id)a4;
-- (BOOL)prepareDirectory:(id)a3 writableByNonRoot:(BOOL)a4;
-- (BOOL)prepareWorkContainerInUserHome:(BOOL)a3;
-- (BOOL)preserveBluetoothFileToShelter:(id)a3;
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 withReturnErrorMsg:(id *)a4;
+- (BOOL)moveStagingToFinal:(id)final finalPath:(id)path;
+- (BOOL)moveUserHomeStagingToFinal:(id)final finalPath:(id)path;
+- (BOOL)prepareDirectory:(id)directory writableByNonRoot:(BOOL)root;
+- (BOOL)prepareWorkContainerInUserHome:(BOOL)home;
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter;
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter withReturnErrorMsg:(id *)msg;
 - (BOOL)reboot;
-- (BOOL)removeDirectory:(id)a3;
+- (BOOL)removeDirectory:(id)directory;
 - (BOOL)restartBluetooth;
-- (BOOL)restoreAppDataAttributesUnder:(id)a3 containerType:(id)a4 identifier:(id)a5 manifestUID:(id)a6 deviceUID:(id)a7;
-- (BOOL)restoreBackupAttributesUnder:(id)a3 range:(_NSRange)a4 manifestUID:(id)a5 deviceUID:(id)a6;
-- (BOOL)runPreflightChecksOnSecondPartyAppData:(id)a3 withReturnErrorMsg:(id *)a4;
-- (BOOL)setComputerNameAndHostname:(id)a3 encoding:(unsigned int)a4;
-- (BOOL)setPreferencesForKey:(id)a3 withValue:(id)a4 forApplication:(id)a5 andUser:(id)a6;
+- (BOOL)restoreAppDataAttributesUnder:(id)under containerType:(id)type identifier:(id)identifier manifestUID:(id)d deviceUID:(id)iD;
+- (BOOL)restoreBackupAttributesUnder:(id)under range:(_NSRange)range manifestUID:(id)d deviceUID:(id)iD;
+- (BOOL)runPreflightChecksOnSecondPartyAppData:(id)data withReturnErrorMsg:(id *)msg;
+- (BOOL)setComputerNameAndHostname:(id)hostname encoding:(unsigned int)encoding;
+- (BOOL)setPreferencesForKey:(id)key withValue:(id)value forApplication:(id)application andUser:(id)user;
 - (BOOL)switchToBackupFolder;
-- (BOOL)touchFile:(id)a3 fileAttributes:(id)a4;
+- (BOOL)touchFile:(id)file fileAttributes:(id)attributes;
 - (BOOL)updateSignedManifest;
-- (BOOL)writeDictionary:(id)a3 toFile:(id)a4;
-- (BOOL)writeNVRam:(id)a3 withValue:(id)a4;
+- (BOOL)writeDictionary:(id)dictionary toFile:(id)file;
+- (BOOL)writeNVRam:(id)ram withValue:(id)value;
 - (MSDHOperations)init;
 - (MSDSignedManifest)signedManifest;
-- (id)getPathInUserHomeDirectory:(id)a3;
-- (id)readPlistFile:(id)a3;
+- (id)getPathInUserHomeDirectory:(id)directory;
+- (id)readPlistFile:(id)file;
 - (void)dealloc;
 @end
 
@@ -123,15 +123,15 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)prepareDirectory:(id)a3 writableByNonRoot:(BOOL)a4
+- (BOOL)prepareDirectory:(id)directory writableByNonRoot:(BOOL)root
 {
-  v4 = a4;
-  v5 = a3;
+  rootCopy = root;
+  directoryCopy = directory;
   v6 = +[NSFileManager defaultManager];
-  if ([v6 fileExistsAtPath:v5])
+  if ([v6 fileExistsAtPath:directoryCopy])
   {
     v7 = 0;
-    if (v4)
+    if (rootCopy)
     {
       goto LABEL_3;
     }
@@ -142,7 +142,7 @@ LABEL_10:
   }
 
   v20 = 0;
-  v14 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v20];
+  v14 = [v6 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v20];
   v15 = v20;
   v9 = v15;
   if ((v14 & 1) == 0)
@@ -157,14 +157,14 @@ LABEL_10:
   }
 
   v7 = v15;
-  if (!v4)
+  if (!rootCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
   v19 = v7;
-  v8 = [v6 attributesOfItemAtPath:v5 error:&v19];
+  v8 = [v6 attributesOfItemAtPath:directoryCopy error:&v19];
   v9 = v19;
 
   if (!v8)
@@ -188,7 +188,7 @@ LABEL_18:
   v11 = [NSDictionary dictionaryWithObjectsAndKeys:v10, NSFilePosixPermissions, 0];
 
   v18 = v9;
-  v12 = [v6 setAttributes:v11 ofItemAtPath:v5 error:&v18];
+  v12 = [v6 setAttributes:v11 ofItemAtPath:directoryCopy error:&v18];
   v7 = v18;
 
   if ((v12 & 1) == 0)
@@ -210,13 +210,13 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)removeDirectory:(id)a3
+- (BOOL)removeDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[NSFileManager defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:directoryCopy])
   {
-    v5 = [v4 removeItemAtPath:v3 error:0];
+    v5 = [v4 removeItemAtPath:directoryCopy error:0];
   }
 
   else
@@ -227,16 +227,16 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)createDeviceManifestForComponent:(id)a3 ofType:(id)a4 withRootPath:(id)a5 userHomePath:(id)a6 andSavePath:(id)a7
+- (BOOL)createDeviceManifestForComponent:(id)component ofType:(id)type withRootPath:(id)path userHomePath:(id)homePath andSavePath:(id)savePath
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MSDHOperations *)self signedManifest];
+  componentCopy = component;
+  typeCopy = type;
+  pathCopy = path;
+  homePathCopy = homePath;
+  savePathCopy = savePath;
+  signedManifest = [(MSDHOperations *)self signedManifest];
 
-  if (!v17)
+  if (!signedManifest)
   {
     v26 = sub_100021268();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -247,8 +247,8 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v18 = [(MSDHOperations *)self signedManifest];
-  v19 = [v18 getManifestDataFromSection:v13 forIdentifier:v12];
+  signedManifest2 = [(MSDHOperations *)self signedManifest];
+  v19 = [signedManifest2 getManifestDataFromSection:typeCopy forIdentifier:componentCopy];
 
   if (!v19)
   {
@@ -267,10 +267,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v20 = [[MSDManifest alloc] initWithDictionary:v19 andUserHomePath:v15];
-  [(MSDManifest *)v20 setRootPath:v14];
+  v20 = [[MSDManifest alloc] initWithDictionary:v19 andUserHomePath:homePathCopy];
+  [(MSDManifest *)v20 setRootPath:pathCopy];
   v21 = objc_alloc_init(MSDManifest);
-  [(MSDManifest *)v21 setRootPath:v14];
+  [(MSDManifest *)v21 setRootPath:pathCopy];
   if (![(MSDManifest *)v21 addFilesUsingSourceManifest:v20])
   {
     v26 = sub_100021268();
@@ -282,8 +282,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v22 = [(MSDManifest *)v21 dict];
-  v23 = [(MSDHOperations *)self writeDictionary:v22 toFile:v16];
+  dict = [(MSDManifest *)v21 dict];
+  v23 = [(MSDHOperations *)self writeDictionary:dict toFile:savePathCopy];
 
   if ((v23 & 1) == 0)
   {
@@ -298,13 +298,13 @@ LABEL_6:
   return v24;
 }
 
-- (BOOL)writeDictionary:(id)a3 toFile:(id)a4
+- (BOOL)writeDictionary:(id)dictionary toFile:(id)file
 {
-  v5 = a3;
-  v6 = [NSOutputStream outputStreamToFileAtPath:a4 append:0];
+  dictionaryCopy = dictionary;
+  v6 = [NSOutputStream outputStreamToFileAtPath:file append:0];
   [v6 open];
   v10 = 0;
-  v7 = [NSPropertyListSerialization writePropertyList:v5 toStream:v6 format:200 options:0 error:&v10];
+  v7 = [NSPropertyListSerialization writePropertyList:dictionaryCopy toStream:v6 format:200 options:0 error:&v10];
 
   v8 = v10;
   [v6 close];
@@ -317,38 +317,38 @@ LABEL_6:
   return v7 > 0;
 }
 
-- (BOOL)fileExistsAtPath:(id)a3
+- (BOOL)fileExistsAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:pathCopy];
 
   return v5;
 }
 
-- (id)readPlistFile:(id)a3
+- (id)readPlistFile:(id)file
 {
-  v3 = a3;
-  v4 = [NSURL fileURLWithPath:v3];
+  fileCopy = file;
+  v4 = [NSURL fileURLWithPath:fileCopy];
   v8 = 0;
   v5 = [NSDictionary dictionaryWithContentsOfURL:v4 error:&v8];
   v6 = v8;
 
   if (!v5)
   {
-    sub_10002F64C(v3, v6);
+    sub_10002F64C(fileCopy, v6);
   }
 
   return v5;
 }
 
-- (BOOL)touchFile:(id)a3 fileAttributes:(id)a4
+- (BOOL)touchFile:(id)file fileAttributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
+  fileCopy = file;
+  attributesCopy = attributes;
   v7 = +[NSFileManager defaultManager];
   v8 = v7;
-  if (!v5)
+  if (!fileCopy)
   {
     v11 = sub_100021268();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (([v7 createFileAtPath:v5 contents:0 attributes:v6] & 1) == 0)
+  if (([v7 createFileAtPath:fileCopy contents:0 attributes:attributesCopy] & 1) == 0)
   {
     v11 = sub_100021268();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -379,9 +379,9 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)deleteNvram:(id)a3
+- (BOOL)deleteNvram:(id)nvram
 {
-  v3 = a3;
+  nvramCopy = nvram;
   mainPort = 0;
   if (IOMasterPort(bootstrap_port, &mainPort))
   {
@@ -399,7 +399,7 @@ LABEL_9:
   }
 
   v5 = v4;
-  v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", v3);
+  v6 = IORegistryEntrySetCFProperty(v4, @"IONVRAM-DELETE-PROPERTY", nvramCopy);
   v7 = v6 == 0;
   if (v6)
   {
@@ -412,13 +412,13 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)writeNVRam:(id)a3 withValue:(id)a4
+- (BOOL)writeNVRam:(id)ram withValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  ramCopy = ram;
+  valueCopy = value;
   mainPort = 0;
   v7 = 0;
-  if ([(__CFString *)v5 isEqualToString:@"ownership-warning"])
+  if ([(__CFString *)ramCopy isEqualToString:@"ownership-warning"])
   {
     if (IOMasterPort(bootstrap_port, &mainPort))
     {
@@ -431,7 +431,7 @@ LABEL_6:
       if (v8)
       {
         v9 = v8;
-        if (IORegistryEntrySetCFProperty(v8, v5, [v6 dataUsingEncoding:4]))
+        if (IORegistryEntrySetCFProperty(v8, ramCopy, [valueCopy dataUsingEncoding:4]))
         {
           v11 = sub_100021268();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -442,7 +442,7 @@ LABEL_6:
 
         else
         {
-          if (!IORegistryEntrySetCFProperty(v9, @"IONVRAM-SYNCNOW-PROPERTY", v5))
+          if (!IORegistryEntrySetCFProperty(v9, @"IONVRAM-SYNCNOW-PROPERTY", ramCopy))
           {
             v7 = 1;
 LABEL_7:
@@ -472,22 +472,22 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)manageDataVolume:(id)a3
+- (BOOL)manageDataVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = +[MSDHVolumeManager sharedInstance];
-  if ([v3 isEqualToString:@"CreateSnapshot"])
+  if ([volumeCopy isEqualToString:@"CreateSnapshot"])
   {
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:@"DeleteSnapshot"])
+  if ([volumeCopy isEqualToString:@"DeleteSnapshot"])
   {
     v5 = @"DeleteSnapshot";
     goto LABEL_5;
   }
 
-  if ([v3 isEqualToString:@"RevertSnapshot"])
+  if ([volumeCopy isEqualToString:@"RevertSnapshot"])
   {
     if ([v4 manageSnapshot:@"RevertSnapshot" forVolumeAt:@"/private/var"])
     {
@@ -501,9 +501,9 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  if (![v3 isEqualToString:@"CommitSnapshot"])
+  if (![volumeCopy isEqualToString:@"CommitSnapshot"])
   {
-    if ([v3 isEqualToString:@"MountSnapshot"])
+    if ([volumeCopy isEqualToString:@"MountSnapshot"])
     {
       v9 = +[NSFileManager defaultManager];
       v17 = 0;
@@ -524,13 +524,13 @@ LABEL_8:
 
     else
     {
-      if (![v3 isEqualToString:@"UnmountSnapshot"])
+      if (![volumeCopy isEqualToString:@"UnmountSnapshot"])
       {
         v15 = sub_100021268();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v19 = v3;
+          v19 = volumeCopy;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Unknown volume operation: %{public}@", buf, 0xCu);
         }
 
@@ -568,21 +568,21 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)manageDemoVolume:(id)a3
+- (BOOL)manageDemoVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = +[MSDHVolumeManager sharedInstance];
-  if ([v3 isEqualToString:@"Setup"])
+  if ([volumeCopy isEqualToString:@"Setup"])
   {
-    v5 = [v4 setupDemoVolume];
+    setupDemoVolume = [v4 setupDemoVolume];
 LABEL_5:
-    v6 = v5;
+    v6 = setupDemoVolume;
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Delete"])
+  if ([volumeCopy isEqualToString:@"Delete"])
   {
-    v5 = [v4 deleteDemoVolume];
+    setupDemoVolume = [v4 deleteDemoVolume];
     goto LABEL_5;
   }
 
@@ -590,7 +590,7 @@ LABEL_5:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v3;
+    v10 = volumeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Unknown volume operation: %{public}@", &v9, 0xCu);
   }
 
@@ -600,15 +600,15 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)manageUserVolume:(id)a3 forUser:(id)a4
+- (BOOL)manageUserVolume:(id)volume forUser:(id)user
 {
-  v5 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  userCopy = user;
   v7 = +[MSDHVolumeManager sharedInstance];
-  if (!v6)
+  if (!userCopy)
   {
-    v8 = sub_100021268();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    userHomePath = sub_100021268();
+    if (os_log_type_enabled(userHomePath, OS_LOG_TYPE_ERROR))
     {
       sub_10002FBB0();
     }
@@ -616,14 +616,14 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  if (([(__CFString *)v5 isEqualToString:@"CreateSnapshot"]& 1) == 0 && ([(__CFString *)v5 isEqualToString:@"DeleteSnapshot"]& 1) == 0 && ![(__CFString *)v5 isEqualToString:@"RevertSnapshot"])
+  if (([(__CFString *)volumeCopy isEqualToString:@"CreateSnapshot"]& 1) == 0 && ([(__CFString *)volumeCopy isEqualToString:@"DeleteSnapshot"]& 1) == 0 && ![(__CFString *)volumeCopy isEqualToString:@"RevertSnapshot"])
   {
-    if ([(__CFString *)v5 isEqualToString:@"CommitSnapshot"])
+    if ([(__CFString *)volumeCopy isEqualToString:@"CommitSnapshot"])
     {
-      v8 = [v7 userHomePath];
-      if (v8)
+      userHomePath = [v7 userHomePath];
+      if (userHomePath)
       {
-        if ([v7 manageSnapshot:@"DeleteSnapshot" forVolumeAt:v8])
+        if ([v7 manageSnapshot:@"DeleteSnapshot" forVolumeAt:userHomePath])
         {
           v10 = @"CreateSnapshot";
           v9 = v7;
@@ -640,13 +640,13 @@ LABEL_26:
       goto LABEL_23;
     }
 
-    if ([(__CFString *)v5 isEqualToString:@"MountSnapshot"])
+    if ([(__CFString *)volumeCopy isEqualToString:@"MountSnapshot"])
     {
-      v8 = [v7 userHomePath];
-      if (v8)
+      userHomePath = [v7 userHomePath];
+      if (userHomePath)
       {
-        v13 = [@"/private/var/mnt/com.apple.mobilestoredemo.snapshot/private/var" stringByAppendingPathComponent:v6];
-        v14 = [v7 mountSnapshotAt:v13 forVolumeAt:v8];
+        v13 = [@"/private/var/mnt/com.apple.mobilestoredemo.snapshot/private/var" stringByAppendingPathComponent:userCopy];
+        v14 = [v7 mountSnapshotAt:v13 forVolumeAt:userHomePath];
 LABEL_19:
         v11 = v14;
 LABEL_20:
@@ -664,23 +664,23 @@ LABEL_31:
 
     else
     {
-      if (![(__CFString *)v5 isEqualToString:@"UnmountSnapshot"])
+      if (![(__CFString *)volumeCopy isEqualToString:@"UnmountSnapshot"])
       {
-        v8 = sub_100021268();
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+        userHomePath = sub_100021268();
+        if (os_log_type_enabled(userHomePath, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138543362;
-          v16 = v5;
-          _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Unknown volume operation: %{public}@", &v15, 0xCu);
+          v16 = volumeCopy;
+          _os_log_impl(&_mh_execute_header, userHomePath, OS_LOG_TYPE_DEFAULT, "Unknown volume operation: %{public}@", &v15, 0xCu);
         }
 
         goto LABEL_23;
       }
 
-      v8 = [v7 userHomePath];
-      if (v8)
+      userHomePath = [v7 userHomePath];
+      if (userHomePath)
       {
-        v13 = [@"/private/var/mnt/com.apple.mobilestoredemo.snapshot/private/var" stringByAppendingPathComponent:v6];
+        v13 = [@"/private/var/mnt/com.apple.mobilestoredemo.snapshot/private/var" stringByAppendingPathComponent:userCopy];
         v14 = [v7 unmountSnapshotAt:v13];
         goto LABEL_19;
       }
@@ -696,36 +696,36 @@ LABEL_31:
     goto LABEL_20;
   }
 
-  v8 = [v7 userHomePath];
-  if (!v8)
+  userHomePath = [v7 userHomePath];
+  if (!userHomePath)
   {
     goto LABEL_26;
   }
 
   v9 = v7;
-  v10 = v5;
+  v10 = volumeCopy;
 LABEL_7:
-  v11 = [v9 manageSnapshot:v10 forVolumeAt:v8];
+  v11 = [v9 manageSnapshot:v10 forVolumeAt:userHomePath];
 LABEL_8:
 
   return v11;
 }
 
-- (BOOL)prepareWorkContainerInUserHome:(BOOL)a3
+- (BOOL)prepareWorkContainerInUserHome:(BOOL)home
 {
-  v3 = a3;
-  if (a3)
+  homeCopy = home;
+  if (home)
   {
-    v5 = @"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata";
+    userHomePath = @"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata";
   }
 
   else
   {
     v6 = +[MSDHVolumeManager sharedInstance];
-    v5 = [v6 userHomePath];
+    userHomePath = [v6 userHomePath];
   }
 
-  v7 = [(__CFString *)v5 stringByAppendingPathComponent:@"/.MSDWorkContainer"];
+  v7 = [(__CFString *)userHomePath stringByAppendingPathComponent:@"/.MSDWorkContainer"];
   v39 = [v7 stringByAppendingPathComponent:@"/MSD_staging"];
   v38 = [v7 stringByAppendingPathComponent:@"/MSD_secondary_staging"];
   v37 = [v7 stringByAppendingPathComponent:@"/MSD_stashed_staging"];
@@ -753,7 +753,7 @@ LABEL_8:
   }
 
   v35 = v7;
-  if (v3)
+  if (homeCopy)
   {
     v55[0] = v7;
     v13 = v38;
@@ -825,7 +825,7 @@ LABEL_8:
   if (v25)
   {
     v26 = v25;
-    v34 = v5;
+    v34 = userHomePath;
     v27 = 0;
     v28 = *v43;
     while (2)
@@ -866,7 +866,7 @@ LABEL_8:
 
 LABEL_27:
 
-    v5 = v34;
+    userHomePath = v34;
     v13 = v38;
   }
 
@@ -881,9 +881,9 @@ LABEL_27:
 - (BOOL)destroyWorkContainerInUserHome
 {
   v3 = +[MSDHVolumeManager sharedInstance];
-  v4 = [v3 userHomePath];
+  userHomePath = [v3 userHomePath];
 
-  v5 = [v4 stringByAppendingPathComponent:@"/.MSDWorkContainer"];
+  v5 = [userHomePath stringByAppendingPathComponent:@"/.MSDWorkContainer"];
   v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata" stringByAppendingPathComponent:@"/.MSDWorkContainer"];
   if (![(MSDHOperations *)self removeDirectory:v5])
   {
@@ -917,27 +917,27 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)moveUserHomeStagingToFinal:(id)a3 finalPath:(id)a4
+- (BOOL)moveUserHomeStagingToFinal:(id)final finalPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  finalCopy = final;
   v8 = +[NSFileManager defaultManager];
   v9 = +[MSDHVolumeManager sharedInstance];
-  v10 = [v9 userHomePath];
+  userHomePath = [v9 userHomePath];
 
-  v11 = [v7 stringByAppendingPathComponent:v10];
+  v11 = [finalCopy stringByAppendingPathComponent:userHomePath];
 
   v32 = 0;
   v12 = [v8 attributesOfItemAtPath:v11 error:&v32];
   v13 = v32;
   if (v12)
   {
-    v14 = [v12 fileType];
-    v15 = [v14 isEqualToString:NSFileTypeSymbolicLink];
+    fileType = [v12 fileType];
+    v15 = [fileType isEqualToString:NSFileTypeSymbolicLink];
 
     if (v15)
     {
-      v16 = [(MSDHOperations *)self getPathInUserHomeDirectory:v6];
+      v16 = [(MSDHOperations *)self getPathInUserHomeDirectory:pathCopy];
       v31 = v13;
       v17 = [v8 destinationOfSymbolicLinkAtPath:v11 error:&v31];
       v18 = v31;
@@ -992,13 +992,13 @@ LABEL_12:
           v20 = sub_100021268();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
-            v28 = [v18 localizedDescription];
+            localizedDescription = [v18 localizedDescription];
             *buf = 138543874;
             v34 = v11;
             v35 = 2114;
             v36 = v16;
             v37 = 2114;
-            v38 = v28;
+            v38 = localizedDescription;
             _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Cannot create symlink from %{public}@ to %{public}@ - %{public}@", buf, 0x20u);
           }
         }
@@ -1028,11 +1028,11 @@ LABEL_28:
     v16 = sub_100021268();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v12 fileType];
+      fileType2 = [v12 fileType];
       *buf = 138543618;
       v34 = v11;
       v35 = 2114;
-      v36 = v26;
+      v36 = fileType2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Wormhole in staging %{public}@ has unexpected file type - %{public}@", buf, 0x16u);
     }
 
@@ -1103,12 +1103,12 @@ LABEL_16:
   return 1;
 }
 
-- (BOOL)moveStagingToFinal:(id)a3 finalPath:(id)a4
+- (BOOL)moveStagingToFinal:(id)final finalPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v35 = v6;
+  finalCopy = final;
+  pathCopy = path;
+  v7 = finalCopy;
+  v35 = pathCopy;
   v44 = 0;
   v8 = +[NSFileManager defaultManager];
   v9 = sub_100021268();
@@ -1117,13 +1117,13 @@ LABEL_16:
     *buf = 136315650;
     v47 = "[MSDHOperations moveStagingToFinal:finalPath:]";
     v48 = 2114;
-    v49 = v5;
+    v49 = finalCopy;
     v50 = 2114;
     v51 = v35;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s - stagingPath:  %{public}@ - finalPath:  %{public}@", buf, 0x20u);
   }
 
-  if (![v8 fileExistsAtPath:v5 isDirectory:&v44] || (v44 & 1) == 0)
+  if (![v8 fileExistsAtPath:finalCopy isDirectory:&v44] || (v44 & 1) == 0)
   {
     obj = sub_100021268();
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -1135,10 +1135,10 @@ LABEL_16:
     goto LABEL_36;
   }
 
-  v33 = v5;
+  v33 = finalCopy;
   if ([v8 fileExistsAtPath:v35])
   {
-    [v8 enumeratorAtPath:v5];
+    [v8 enumeratorAtPath:finalCopy];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -1165,8 +1165,8 @@ LABEL_16:
           if ([v8 fileExistsAtPath:v16])
           {
             v17 = [v35 stringByAppendingPathComponent:v14];
-            v18 = [v17 stringByDeletingLastPathComponent];
-            if (([v8 fileExistsAtPath:v17] & 1) == 0 && objc_msgSend(v8, "fileExistsAtPath:", v18))
+            stringByDeletingLastPathComponent = [v17 stringByDeletingLastPathComponent];
+            if (([v8 fileExistsAtPath:v17] & 1) == 0 && objc_msgSend(v8, "fileExistsAtPath:", stringByDeletingLastPathComponent))
             {
               v19 = sub_100021268();
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1188,13 +1188,13 @@ LABEL_16:
                 v24 = v21;
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                 {
-                  v30 = [v21 localizedDescription];
+                  localizedDescription = [v21 localizedDescription];
                   *buf = 138543874;
                   v47 = v16;
                   v48 = 2114;
                   v49 = v17;
                   v50 = 2114;
-                  v51 = v30;
+                  v51 = localizedDescription;
                   _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Cannot move %{public}@ to %{public}@ - %{public}@", buf, 0x20u);
                 }
 
@@ -1259,14 +1259,14 @@ LABEL_35:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v47 = v5;
+    v47 = finalCopy;
     v48 = 2114;
     v49 = v35;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Moving %{public}@ to %{public}@", buf, 0x16u);
   }
 
   v37 = 0;
-  v23 = [v8 moveItemAtPath:v5 toPath:v35 error:&v37];
+  v23 = [v8 moveItemAtPath:finalCopy toPath:v35 error:&v37];
   v24 = v37;
   if ((v23 & 1) == 0)
   {
@@ -1277,23 +1277,23 @@ LABEL_35:
       goto LABEL_29;
     }
 
-    v31 = [v24 localizedDescription];
+    localizedDescription2 = [v24 localizedDescription];
     *buf = 138543874;
-    v47 = v5;
+    v47 = finalCopy;
     v48 = 2114;
     v49 = v35;
     v50 = 2114;
-    v51 = v31;
+    v51 = localizedDescription2;
     _os_log_error_impl(&_mh_execute_header, obj, OS_LOG_TYPE_ERROR, "Could not move %{public}@ to %{public}@ with error - %{public}@", buf, 0x20u);
 
-    v7 = v5;
+    v7 = finalCopy;
 LABEL_36:
     v25 = 0;
     goto LABEL_30;
   }
 
   v25 = 1;
-  v7 = v5;
+  v7 = finalCopy;
 LABEL_31:
 
   return v25;
@@ -1311,18 +1311,18 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "Renaming %{public}@ to %{public}@...", buf, 0x16u);
   }
 
-  v3 = [@"/private/var/.backup" fileSystemRepresentation];
-  v4 = [@"/private/var/backup" fileSystemRepresentation];
-  rename(v3, v4, v5);
+  fileSystemRepresentation = [@"/private/var/.backup" fileSystemRepresentation];
+  fileSystemRepresentation2 = [@"/private/var/backup" fileSystemRepresentation];
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v5);
   if (!v6)
   {
     v7 = +[NSFileManager defaultManager];
     v9 = +[MSDHVolumeManager sharedInstance];
-    v10 = [v9 userHomePath];
+    userHomePath = [v9 userHomePath];
 
-    v11 = [v10 stringByAppendingPathComponent:@"/backup"];
-    v12 = [v11 stringByAppendingPathComponent:v10];
-    v13 = [@"/private/var/backup" stringByAppendingPathComponent:v10];
+    v11 = [userHomePath stringByAppendingPathComponent:@"/backup"];
+    v12 = [v11 stringByAppendingPathComponent:userHomePath];
+    v13 = [@"/private/var/backup" stringByAppendingPathComponent:userHomePath];
     v29 = 0;
     v14 = [v7 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v29];
     v15 = v29;
@@ -1356,9 +1356,9 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Renaming %{public}@ to %{public}@...", buf, 0x16u);
       }
 
-      v21 = [(__CFString *)v17 fileSystemRepresentation];
-      v22 = [(__CFString *)v12 fileSystemRepresentation];
-      rename(v21, v22, v23);
+      fileSystemRepresentation3 = [(__CFString *)v17 fileSystemRepresentation];
+      fileSystemRepresentation4 = [(__CFString *)v12 fileSystemRepresentation];
+      rename(fileSystemRepresentation3, fileSystemRepresentation4, v23);
       if (!v24)
       {
         v27 = v18;
@@ -1432,14 +1432,14 @@ LABEL_23:
   return 0;
 }
 
-- (BOOL)restoreBackupAttributesUnder:(id)a3 range:(_NSRange)a4 manifestUID:(id)a5 deviceUID:(id)a6
+- (BOOL)restoreBackupAttributesUnder:(id)under range:(_NSRange)range manifestUID:(id)d deviceUID:(id)iD
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = [[MSDHFileMetadataRestore alloc] initWithManifestUID:v13 deviceUID:v12];
+  length = range.length;
+  location = range.location;
+  underCopy = under;
+  iDCopy = iD;
+  dCopy = d;
+  v14 = [[MSDHFileMetadataRestore alloc] initWithManifestUID:dCopy deviceUID:iDCopy];
 
   if (!v14)
   {
@@ -1452,9 +1452,9 @@ LABEL_23:
     goto LABEL_13;
   }
 
-  v15 = [(MSDHOperations *)self signedManifest];
+  signedManifest = [(MSDHOperations *)self signedManifest];
 
-  if (!v15)
+  if (!signedManifest)
   {
     v20 = sub_100021268();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1465,8 +1465,8 @@ LABEL_23:
     goto LABEL_13;
   }
 
-  v16 = [(MSDHOperations *)self signedManifest];
-  v17 = [v16 mergedBackupManifest:{location, length}];
+  signedManifest2 = [(MSDHOperations *)self signedManifest];
+  v17 = [signedManifest2 mergedBackupManifest:{location, length}];
 
   if (!v17)
   {
@@ -1482,7 +1482,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (![(MSDHFileMetadataRestore *)v14 restoreAttributesUnder:v11 fromManifestData:v17])
+  if (![(MSDHFileMetadataRestore *)v14 restoreAttributesUnder:underCopy fromManifestData:v17])
   {
 LABEL_14:
     v18 = 0;
@@ -1495,14 +1495,14 @@ LABEL_6:
   return v18;
 }
 
-- (BOOL)restoreAppDataAttributesUnder:(id)a3 containerType:(id)a4 identifier:(id)a5 manifestUID:(id)a6 deviceUID:(id)a7
+- (BOOL)restoreAppDataAttributesUnder:(id)under containerType:(id)type identifier:(id)identifier manifestUID:(id)d deviceUID:(id)iD
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a6;
-  v17 = [[MSDHFileMetadataRestore alloc] initWithManifestUID:v16 deviceUID:v15];
+  underCopy = under;
+  typeCopy = type;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  dCopy = d;
+  v17 = [[MSDHFileMetadataRestore alloc] initWithManifestUID:dCopy deviceUID:iDCopy];
 
   if (!v17)
   {
@@ -1515,9 +1515,9 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v18 = [(MSDHOperations *)self signedManifest];
+  signedManifest = [(MSDHOperations *)self signedManifest];
 
-  if (!v18)
+  if (!signedManifest)
   {
     v20 = sub_100021268();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1528,8 +1528,8 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v19 = [(MSDHOperations *)self signedManifest];
-  v20 = [v19 getManifestDataFromSection:v13 forIdentifier:v14];
+  signedManifest2 = [(MSDHOperations *)self signedManifest];
+  v20 = [signedManifest2 getManifestDataFromSection:typeCopy forIdentifier:identifierCopy];
 
   if (!v20)
   {
@@ -1544,17 +1544,17 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  v21 = [(MSDHFileMetadataRestore *)v17 restoreAttributesUnder:v12 fromManifestData:v20];
+  v21 = [(MSDHFileMetadataRestore *)v17 restoreAttributesUnder:underCopy fromManifestData:v20];
 LABEL_5:
 
   return v21;
 }
 
-- (BOOL)collectDemoLogsToFolder:(id)a3 ofType:(unint64_t)a4
+- (BOOL)collectDemoLogsToFolder:(id)folder ofType:(unint64_t)type
 {
-  v6 = a3;
+  folderCopy = folder;
   v7 = +[NSFileManager defaultManager];
-  v8 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata" stringByAppendingPathComponent:v6];
+  v8 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata" stringByAppendingPathComponent:folderCopy];
 
   if ([v7 fileExistsAtPath:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/DekotaLogs.tar.gz"])
   {
@@ -1639,7 +1639,7 @@ LABEL_5:
       v11 = v20;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       if (v17 && [v17 longLongValue] > 524288000)
       {
@@ -1729,10 +1729,10 @@ LABEL_24:
   return v31;
 }
 
-- (BOOL)generateLogsForPredicate:(id)a3 toFile:(id)a4
+- (BOOL)generateLogsForPredicate:(id)predicate toFile:(id)file
 {
-  v5 = a3;
-  v6 = a4;
+  predicateCopy = predicate;
+  fileCopy = file;
   v7 = +[NSFileManager defaultManager];
   v8 = +[OSLogEventStore localStore];
   v35 = 0;
@@ -1752,8 +1752,8 @@ LABEL_24:
   v28 = sub_10001B870;
   v29 = sub_10001B880;
   v30 = 0;
-  [v7 createFileAtPath:v6 contents:0 attributes:0];
-  v10 = [NSFileHandle fileHandleForWritingAtPath:v6];
+  [v7 createFileAtPath:fileCopy contents:0 attributes:0];
+  v10 = [NSFileHandle fileHandleForWritingAtPath:fileCopy];
   v11 = v26[5];
   v26[5] = v10;
 
@@ -1762,7 +1762,7 @@ LABEL_24:
   v19[2] = sub_10001B888;
   v19[3] = &unk_100051098;
   v22 = &v35;
-  v12 = v5;
+  v12 = predicateCopy;
   v20 = v12;
   v23 = &v31;
   v13 = v9;
@@ -1792,28 +1792,28 @@ LABEL_24:
   return v16;
 }
 
-- (BOOL)preserveBluetoothFileToShelter:(id)a3
+- (BOOL)preserveBluetoothFileToShelter:(id)shelter
 {
-  v3 = a3;
+  shelterCopy = shelter;
   v4 = +[NSFileManager defaultManager];
   v5 = sub_100021268();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v3;
+    v16 = shelterCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, ">>> Copying item from '%{public}@'", buf, 0xCu);
   }
 
-  if ([v4 fileExistsAtPath:v3])
+  if ([v4 fileExistsAtPath:shelterCopy])
   {
-    v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:v3];
-    v7 = [v6 stringByDeletingLastPathComponent];
+    v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/BluetoothShelter" stringByAppendingPathComponent:shelterCopy];
+    stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
     v14 = 0;
-    v8 = [v4 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:&v14];
+    v8 = [v4 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v14];
     v9 = v14;
     if (v8)
     {
-      if ([v4 cloneFile:v3 to:v6 expectingHash:0 correctOwnership:0])
+      if ([v4 cloneFile:shelterCopy to:v6 expectingHash:0 correctOwnership:0])
       {
         v10 = [MSDXattr setContentRoot:v6];
 
@@ -1823,20 +1823,20 @@ LABEL_24:
       v12 = sub_100021268();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 138543874;
-        v16 = v3;
+        v16 = shelterCopy;
         v17 = 2114;
         v18 = v6;
         v19 = 2114;
-        v20 = v13;
+        v20 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Failed to copy item from %{public}@ to %{public}@ with error - %{public}@", buf, 0x20u);
       }
     }
 
     else
     {
-      sub_100030994(v7, v9, v6);
+      sub_100030994(stringByDeletingLastPathComponent, v9, v6);
     }
 
     v10 = 0;
@@ -1855,19 +1855,19 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)runPreflightChecksOnSecondPartyAppData:(id)a3 withReturnErrorMsg:(id *)a4
+- (BOOL)runPreflightChecksOnSecondPartyAppData:(id)data withReturnErrorMsg:(id *)msg
 {
-  v5 = a3;
+  dataCopy = data;
   v23 = 0;
   v6 = +[NSFileManager defaultManager];
   v7 = objc_alloc_init(MSDHSnapshottedDataSaver);
-  if (![v6 fileExistsAtPath:v5 isDirectory:&v23] || (v23 & 1) == 0)
+  if (![v6 fileExistsAtPath:dataCopy isDirectory:&v23] || (v23 & 1) == 0)
   {
-    [NSString stringWithFormat:@"App data folder does not exist or is not a folder:  %@", v5, v21, v22];
+    [NSString stringWithFormat:@"App data folder does not exist or is not a folder:  %@", dataCopy, v21, v22];
     goto LABEL_9;
   }
 
-  v8 = [(MSDHSnapshottedDataSaver *)v7 getFileSizeForItemAtPath:v5];
+  v8 = [(MSDHSnapshottedDataSaver *)v7 getFileSizeForItemAtPath:dataCopy];
   v9 = sub_100021268();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1876,14 +1876,14 @@ LABEL_7:
 
   if (v8 == -1)
   {
-    [NSString stringWithFormat:@"Failed to calculate size of source data:  %@", v5, v21, v22];
+    [NSString stringWithFormat:@"Failed to calculate size of source data:  %@", dataCopy, v21, v22];
     goto LABEL_9;
   }
 
   if (v8 > 0x280000000)
   {
-    [NSString stringWithFormat:@"Size of source data:  %lld at:  %@ exceeds max size of:  %llu", v8, v5, 0x280000000];
-    v10 = LABEL_9:;
+    [NSString stringWithFormat:@"Size of source data:  %lld at:  %@ exceeds max size of:  %llu", v8, dataCopy, 0x280000000];
+    0x280000000 = LABEL_9:;
     v11 = 0;
     goto LABEL_10;
   }
@@ -1900,7 +1900,7 @@ LABEL_7:
     if (v16 == -1)
     {
       v11 = 0;
-      v10 = @"Failed to calculate current size of second party app data shelter.";
+      0x280000000 = @"Failed to calculate current size of second party app data shelter.";
       goto LABEL_10;
     }
 
@@ -1911,13 +1911,13 @@ LABEL_7:
       sub_100030AC4();
     }
 
-    v11 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/SecondPartyAppDataShelter" stringByAppendingPathComponent:v5];
+    v11 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/SecondPartyAppDataShelter" stringByAppendingPathComponent:dataCopy];
     if ([v6 fileExistsAtPath:v11])
     {
       v19 = [(MSDHSnapshottedDataSaver *)v7 getFileSizeForItemAtPath:v11];
       if (v19 == -1)
       {
-        v10 = @"Failed to calculate size of existing second party app data";
+        0x280000000 = @"Failed to calculate size of existing second party app data";
         goto LABEL_10;
       }
 
@@ -1943,12 +1943,12 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  v10 = [NSString stringWithFormat:@"The current size of the second-party data shelter is %llu.  Saving this data of size %lld bytes will cause it to exceed the data cap of %lld bytes.", v17, v8, 0x280000000];
+  0x280000000 = [NSString stringWithFormat:@"The current size of the second-party data shelter is %llu.  Saving this data of size %lld bytes will cause it to exceed the data cap of %lld bytes.", v17, v8, 0x280000000];
 LABEL_10:
-  if (a4 && v10)
+  if (msg && 0x280000000)
   {
-    v12 = v10;
-    *a4 = v10;
+    v12 = 0x280000000;
+    *msg = 0x280000000;
   }
 
   v13 = sub_100021268();
@@ -1963,22 +1963,22 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)preserveSecondPartyAppDataToShelter:(id)a3 withReturnErrorMsg:(id *)a4
+- (BOOL)preserveSecondPartyAppDataToShelter:(id)shelter withReturnErrorMsg:(id *)msg
 {
-  v6 = a3;
+  shelterCopy = shelter;
   v7 = +[NSFileManager defaultManager];
   v30 = 0;
-  v8 = [(MSDHOperations *)self runPreflightChecksOnSecondPartyAppData:v6 withReturnErrorMsg:&v30];
+  v8 = [(MSDHOperations *)self runPreflightChecksOnSecondPartyAppData:shelterCopy withReturnErrorMsg:&v30];
   v9 = v30;
   if (!v8)
   {
     v10 = 0;
-    v15 = 0;
+    stringByDeletingLastPathComponent = 0;
     v20 = 0;
     goto LABEL_16;
   }
 
-  v10 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/SecondPartyAppDataShelter" stringByAppendingPathComponent:v6];
+  v10 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/SecondPartyAppDataShelter" stringByAppendingPathComponent:shelterCopy];
   if ([v7 fileExistsAtPath:v10])
   {
     v29 = 0;
@@ -1987,10 +1987,10 @@ LABEL_16:
     v13 = v12;
     if ((v11 & 1) == 0)
     {
-      v18 = [v12 localizedDescription];
-      v19 = [NSString stringWithFormat:@"Failed to delete destination folder in persitent storage - Error:  %@", v18];
+      localizedDescription = [v12 localizedDescription];
+      v19 = [NSString stringWithFormat:@"Failed to delete destination folder in persitent storage - Error:  %@", localizedDescription];
 
-      v15 = 0;
+      stringByDeletingLastPathComponent = 0;
       goto LABEL_14;
     }
 
@@ -2002,12 +2002,12 @@ LABEL_16:
     v14 = 0;
   }
 
-  v15 = [v10 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
   if ([v7 fileExistsAtPath:v10])
   {
     v13 = v14;
 LABEL_9:
-    if ([v7 cloneFile:v6 to:v10 expectingHash:0 correctOwnership:0])
+    if ([v7 cloneFile:shelterCopy to:v10 expectingHash:0 correctOwnership:0])
     {
       if ([MSDXattr setContentRoot:v10])
       {
@@ -2020,7 +2020,7 @@ LABEL_9:
 
     else
     {
-      sub_100030C04(v6, buf);
+      sub_100030C04(shelterCopy, buf);
     }
 
     v19 = *buf;
@@ -2028,7 +2028,7 @@ LABEL_9:
   }
 
   v28 = v14;
-  v16 = [v7 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v28];
+  v16 = [v7 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v28];
   v13 = v28;
 
   if (v16)
@@ -2036,11 +2036,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v18 = [v13 localizedDescription];
-  v19 = [NSString stringWithFormat:@"Failed to create parent destination folder in persistent storage - Error:  %@", v18];
+  localizedDescription = [v13 localizedDescription];
+  v19 = [NSString stringWithFormat:@"Failed to create parent destination folder in persistent storage - Error:  %@", localizedDescription];
 
 LABEL_14:
-  v9 = v18;
+  v9 = localizedDescription;
 LABEL_15:
 
   v9 = v19;
@@ -2057,11 +2057,11 @@ LABEL_16:
       v22 = sub_100021268();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v13 localizedDescription];
+        localizedDescription2 = [v13 localizedDescription];
         *buf = 138412546;
         *&buf[4] = v10;
         v32 = 2112;
-        v33 = v23;
+        v33 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Failed to remove folder:  %@ - Error:  %@", buf, 0x16u);
       }
     }
@@ -2072,10 +2072,10 @@ LABEL_16:
     v13 = v20;
   }
 
-  if (a4 && v9)
+  if (msg && v9)
   {
     v24 = v9;
-    *a4 = v9;
+    *msg = v9;
   }
 
   v25 = sub_100021268();
@@ -2125,18 +2125,18 @@ LABEL_7:
   return v2 == 0;
 }
 
-- (BOOL)setComputerNameAndHostname:(id)a3 encoding:(unsigned int)a4
+- (BOOL)setComputerNameAndHostname:(id)hostname encoding:(unsigned int)encoding
 {
-  v5 = a3;
+  hostnameCopy = hostname;
   v6 = sub_100021268();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 136315650;
     *&v14[4] = "[MSDHOperations setComputerNameAndHostname:encoding:]";
     v15 = 2114;
-    v16 = v5;
+    v16 = hostnameCopy;
     v17 = 1026;
-    v18 = a4;
+    encodingCopy = encoding;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s - computerName:  %{public}@ - encoding:  0x%{public}x", v14, 0x1Cu);
   }
 
@@ -2150,7 +2150,7 @@ LABEL_18:
   }
 
   v8 = v7;
-  if (!SCPreferencesSetComputerName(v7, v5, a4))
+  if (!SCPreferencesSetComputerName(v7, hostnameCopy, encoding))
   {
     sub_100031008();
 LABEL_17:
@@ -2203,43 +2203,43 @@ LABEL_13:
   return v12;
 }
 
-- (id)getPathInUserHomeDirectory:(id)a3
+- (id)getPathInUserHomeDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[MSDHVolumeManager sharedInstance];
-  v5 = [v4 userHomePath];
+  userHomePath = [v4 userHomePath];
 
-  if ([v3 hasPrefix:@"/var/MSDWorkContainer"])
+  if ([directoryCopy hasPrefix:@"/var/MSDWorkContainer"])
   {
-    v6 = [v5 stringByAppendingPathComponent:@"/.MSDWorkContainer"];
+    v6 = [userHomePath stringByAppendingPathComponent:@"/.MSDWorkContainer"];
     v7 = @"/var/MSDWorkContainer";
 LABEL_5:
-    v8 = [v3 substringFromIndex:{-[__CFString length](v7, "length")}];
+    lastPathComponent = [directoryCopy substringFromIndex:{-[__CFString length](v7, "length")}];
     goto LABEL_7;
   }
 
-  if ([v3 hasPrefix:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer"])
+  if ([directoryCopy hasPrefix:@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer"])
   {
     v6 = [@"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata" stringByAppendingPathComponent:@"/.MSDWorkContainer"];
     v7 = @"/private/var/mnt/com.apple.mobilestoredemo.storage/com.apple.mobilestoredemo.blob/Metadata/MSDWorkContainer";
     goto LABEL_5;
   }
 
-  v6 = [v5 stringByAppendingPathComponent:@"/.MSDWorkContainer"];
-  v8 = [v3 lastPathComponent];
+  v6 = [userHomePath stringByAppendingPathComponent:@"/.MSDWorkContainer"];
+  lastPathComponent = [directoryCopy lastPathComponent];
 LABEL_7:
-  v9 = v8;
-  v10 = [v6 stringByAppendingPathComponent:v8];
+  v9 = lastPathComponent;
+  v10 = [v6 stringByAppendingPathComponent:lastPathComponent];
 
   return v10;
 }
 
-- (BOOL)setPreferencesForKey:(id)a3 withValue:(id)a4 forApplication:(id)a5 andUser:(id)a6
+- (BOOL)setPreferencesForKey:(id)key withValue:(id)value forApplication:(id)application andUser:(id)user
 {
-  v9 = a6;
-  v10 = a5;
-  CFPreferencesSetValue(a3, a4, v10, v9, kCFPreferencesAnyHost);
-  v11 = CFPreferencesSynchronize(v10, v9, kCFPreferencesAnyHost);
+  userCopy = user;
+  applicationCopy = application;
+  CFPreferencesSetValue(key, value, applicationCopy, userCopy, kCFPreferencesAnyHost);
+  v11 = CFPreferencesSynchronize(applicationCopy, userCopy, kCFPreferencesAnyHost);
 
   if (!v11)
   {
@@ -2249,12 +2249,12 @@ LABEL_7:
   return v11 != 0;
 }
 
-- (BOOL)generateSysdiagnose:(id)a3
+- (BOOL)generateSysdiagnose:(id)sysdiagnose
 {
-  v3 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   v12[0] = @"baseDirectory";
   v12[1] = @"archiveName";
-  v13[0] = v3;
+  v13[0] = sysdiagnoseCopy;
   v13[1] = @"DekotaLogs";
   v12[2] = @"shouldCreateTarBall";
   v13[2] = &__kCFBooleanTrue;

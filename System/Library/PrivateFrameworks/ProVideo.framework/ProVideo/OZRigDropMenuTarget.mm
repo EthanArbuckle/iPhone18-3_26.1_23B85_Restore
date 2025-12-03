@@ -1,10 +1,10 @@
 @interface OZRigDropMenuTarget
-+ (id)rigDropMenuTargetForRig:(void *)a3;
++ (id)rigDropMenuTargetForRig:(void *)rig;
 @end
 
 @implementation OZRigDropMenuTarget
 
-+ (id)rigDropMenuTargetForRig:(void *)a3
++ (id)rigDropMenuTargetForRig:(void *)rig
 {
   v4 = +[OZRigDropMenuTarget rigDropMenuTargetForRig:]::gpInstance;
   if (!+[OZRigDropMenuTarget rigDropMenuTargetForRig:]::gpInstance)
@@ -13,7 +13,7 @@
     +[OZRigDropMenuTarget rigDropMenuTargetForRig:]::gpInstance = v4;
   }
 
-  [(OZRigDropMenuTarget *)v4 setRig:a3];
+  [(OZRigDropMenuTarget *)v4 setRig:rig];
   return +[OZRigDropMenuTarget rigDropMenuTargetForRig:]::gpInstance;
 }
 

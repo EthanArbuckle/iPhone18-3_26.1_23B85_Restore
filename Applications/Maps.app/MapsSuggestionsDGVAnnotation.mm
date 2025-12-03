@@ -1,7 +1,7 @@
 @interface MapsSuggestionsDGVAnnotation
-- (BOOL)_populateWithDictFromJSONDeserialization:(id)a3;
+- (BOOL)_populateWithDictFromJSONDeserialization:(id)deserialization;
 - (CLLocationCoordinate2D)coordinate;
-- (MapsSuggestionsDGVAnnotation)initWithDictFromJSONDeserialization:(id)a3;
+- (MapsSuggestionsDGVAnnotation)initWithDictFromJSONDeserialization:(id)deserialization;
 @end
 
 @implementation MapsSuggestionsDGVAnnotation
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (BOOL)_populateWithDictFromJSONDeserialization:(id)a3
+- (BOOL)_populateWithDictFromJSONDeserialization:(id)deserialization
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"likelyLocation"];
-  v6 = [v4 objectForKey:@"label"];
-  v7 = [v4 objectForKey:@"entries"];
+  deserializationCopy = deserialization;
+  v5 = [deserializationCopy objectForKey:@"likelyLocation"];
+  v6 = [deserializationCopy objectForKey:@"label"];
+  v7 = [deserializationCopy objectForKey:@"entries"];
 
   if (!v5)
   {
@@ -128,14 +128,14 @@ LABEL_16:
   return v10;
 }
 
-- (MapsSuggestionsDGVAnnotation)initWithDictFromJSONDeserialization:(id)a3
+- (MapsSuggestionsDGVAnnotation)initWithDictFromJSONDeserialization:(id)deserialization
 {
-  v4 = a3;
+  deserializationCopy = deserialization;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsDGVAnnotation;
   v5 = [(MapsSuggestionsDGVAnnotation *)&v9 init];
   v6 = v5;
-  if (v5 && ![(MapsSuggestionsDGVAnnotation *)v5 _populateWithDictFromJSONDeserialization:v4])
+  if (v5 && ![(MapsSuggestionsDGVAnnotation *)v5 _populateWithDictFromJSONDeserialization:deserializationCopy])
   {
     v7 = 0;
   }

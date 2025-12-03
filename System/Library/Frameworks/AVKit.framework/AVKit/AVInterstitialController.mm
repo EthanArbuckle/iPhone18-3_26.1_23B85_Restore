@@ -1,67 +1,67 @@
 @interface AVInterstitialController
 + (id)interstitialQueue;
-+ (id)newTimeRangeCollectionForPlayerItem:(id)a3;
-+ (id)newTimeRangeCollectionForPlayerItem:(id)a3 reversePlaybackEndTime:(id *)a4 forwardPlaybackEndTime:(id *)a5;
++ (id)newTimeRangeCollectionForPlayerItem:(id)item;
++ (id)newTimeRangeCollectionForPlayerItem:(id)item reversePlaybackEndTime:(id *)time forwardPlaybackEndTime:(id *)endTime;
 - (AVInterstitialController)init;
 - (AVInterstitialControllerDelegateManager)delegateManager;
 - (AVTimeRange)currentInterstitialTimeRange;
 - (AVTimeRange)previousInterstitialTimeRange;
-- (BOOL)_shouldSkipInterstitialTimeRange:(id)a3;
-- (BOOL)isInterstitialEventCurrentEvent:(id)a3;
+- (BOOL)_shouldSkipInterstitialTimeRange:(id)range;
+- (BOOL)isInterstitialEventCurrentEvent:(id)event;
 - (BOOL)isLive;
-- (BOOL)loadDurationOfCurrentOrNextInterstitialEvent:(id)a3;
+- (BOOL)loadDurationOfCurrentOrNextInterstitialEvent:(id)event;
 - (BOOL)requiresLinearPlayback;
 - (BOOL)shouldEnforceInterstitialPolicy;
 - (BOOL)useTimelineTimes;
 - (double)_pendingTimeBoundary;
 - (double)currentDisplayTime;
 - (double)currentTime;
-- (double)displayTimeFromTime:(double)a3;
+- (double)displayTimeFromTime:(double)time;
 - (double)elapsedTimeForInterstitialPlayer;
 - (double)elapsedTimeWithinCurrentInterstitial;
-- (double)timeFromDisplayTime:(double)a3;
+- (double)timeFromDisplayTime:(double)time;
 - (double)timeRemainingInCurrentInterstitial;
-- (double)timeToSeekAfterUserNavigatedFromTime:(double)a3 toTime:(double)a4;
+- (double)timeToSeekAfterUserNavigatedFromTime:(double)time toTime:(double)toTime;
 - (id)_copySynthesizedInterstitialTimeRanges;
 - (id)currentItem;
 - (id)currentOrEstimatedDate;
-- (id)interstitialTimeRangeForPlayerInterstitialEvent:(id)a3;
+- (id)interstitialTimeRangeForPlayerInterstitialEvent:(id)event;
 - (id)nextInterstitialTimeRange;
-- (id)timeRangeForPlayerInterstitialEvent:(id)a3;
+- (id)timeRangeForPlayerInterstitialEvent:(id)event;
 - (void)_performInterstitialPlayerDependentUpdates;
-- (void)_sendInterstitialBoundaryNotificationForInterstitialTimeRange:(id)a3;
-- (void)_sendInterstitialBoundaryNotificationsForEvent:(id)a3;
-- (void)_sendInterstitialBoundaryNotificationsForTime:(double)a3;
-- (void)_setPendingTimeBoundary:(double)a3;
+- (void)_sendInterstitialBoundaryNotificationForInterstitialTimeRange:(id)range;
+- (void)_sendInterstitialBoundaryNotificationsForEvent:(id)event;
+- (void)_sendInterstitialBoundaryNotificationsForTime:(double)time;
+- (void)_setPendingTimeBoundary:(double)boundary;
 - (void)_startObservingInterstitialTimeRanges;
 - (void)_stopObservingInterstitialTimeRanges;
 - (void)_updateInterstitialTimeRangeCollection;
 - (void)cancelCurrentPlayerInterstitialEvent;
-- (void)copyInterstitialEventsToScrubPlayer:(id)a3;
+- (void)copyInterstitialEventsToScrubPlayer:(id)player;
 - (void)dealloc;
 - (void)didBeginOrResumePlayback;
-- (void)didPresentInterstitialTimeRange:(id)a3;
+- (void)didPresentInterstitialTimeRange:(id)range;
 - (void)invalidate;
 - (void)sendInterstitialBoundaryNotificationsForTimeJumpIfNeeded;
 - (void)sendPendingInterstitialBoundaryNotificationIfNeeded;
-- (void)setInterstitialPlayer:(id)a3;
-- (void)setPlayer:(id)a3;
+- (void)setInterstitialPlayer:(id)player;
+- (void)setPlayer:(id)player;
 - (void)setupInterstitialObservers;
-- (void)skipInterstitialTimeRange:(id)a3;
+- (void)skipInterstitialTimeRange:(id)range;
 - (void)updateSynthesizedInterstitialTimeRanges;
-- (void)willPresentInterstitialTimeRange:(id)a3;
+- (void)willPresentInterstitialTimeRange:(id)range;
 @end
 
 @implementation AVInterstitialController
 
-+ (id)newTimeRangeCollectionForPlayerItem:(id)a3
++ (id)newTimeRangeCollectionForPlayerItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  itemCopy = item;
+  v4 = itemCopy;
+  if (itemCopy)
   {
-    v5 = [v3 interstitialTimeRanges];
+    interstitialTimeRanges = [itemCopy interstitialTimeRanges];
     if ([v4 status] == 1)
     {
       [v4 duration];
@@ -74,7 +74,7 @@
           v16 = 0u;
           v13 = 0u;
           v14 = 0u;
-          v6 = v5;
+          v6 = interstitialTimeRanges;
           v7 = [v6 countByEnumeratingWithState:&v13 objects:v19 count:16];
           if (v7)
           {
@@ -101,9 +101,9 @@
       }
     }
 
-    if ([v5 count])
+    if ([interstitialTimeRanges count])
     {
-      v11 = [[AVTimeRangeCollection alloc] initWithInterstitialTimeRanges:v5];
+      v11 = [[AVTimeRangeCollection alloc] initWithInterstitialTimeRanges:interstitialTimeRanges];
     }
 
     else
@@ -130,8 +130,8 @@
 - (double)_pendingTimeBoundary
 {
   os_unfair_lock_lock(&_pendingTimeBoundaryUnfairLock);
-  v3 = [(AVInterstitialController *)self currentItem];
-  v4 = objc_getAssociatedObject(v3, _AVPlayerItemPendingTimeBoundaryKey);
+  currentItem = [(AVInterstitialController *)self currentItem];
+  v4 = objc_getAssociatedObject(currentItem, _AVPlayerItemPendingTimeBoundaryKey);
   os_unfair_lock_unlock(&_pendingTimeBoundaryUnfairLock);
   if (v4)
   {
@@ -147,40 +147,40 @@
   return v6;
 }
 
-- (void)_setPendingTimeBoundary:(double)a3
+- (void)_setPendingTimeBoundary:(double)boundary
 {
   os_unfair_lock_lock(&_pendingTimeBoundaryUnfairLock);
   object = [(AVInterstitialController *)self currentItem];
   if (object)
   {
     v5 = _AVPlayerItemPendingTimeBoundaryKey;
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:boundary];
     objc_setAssociatedObject(object, v5, v6, 0x301);
   }
 
   os_unfair_lock_unlock(&_pendingTimeBoundaryUnfairLock);
 }
 
-- (void)didPresentInterstitialTimeRange:(id)a3
+- (void)didPresentInterstitialTimeRange:(id)range
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  rangeCopy = range;
+  if (rangeCopy)
   {
-    v5 = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
+    interstitialTimeRangeInProgress = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
 
-    if (v5 == v4)
+    if (interstitialTimeRangeInProgress == rangeCopy)
     {
-      v6 = [v4 interstice];
+      interstice = [rangeCopy interstice];
       v7 = _AVLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 136315650;
         v17 = "[AVInterstitialController didPresentInterstitialTimeRange:]";
         v18 = 2114;
-        v19 = *&v4;
+        v19 = *&rangeCopy;
         v20 = 2114;
-        v21 = v6;
+        v21 = interstice;
         _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s Leaving interstitial %{public}@ :: %{public}@", &v16, 0x20u);
       }
 
@@ -199,95 +199,95 @@
 
         v10 = self->_continuationTimeAfterInterstitial;
         self->_continuationTimeAfterInterstitial = 0.0;
-        v11 = [(AVInterstitialController *)self didLeaveRequiredInterstitialTimeRangeBlock];
-        v12 = v11;
-        if (v11)
+        didLeaveRequiredInterstitialTimeRangeBlock = [(AVInterstitialController *)self didLeaveRequiredInterstitialTimeRangeBlock];
+        v12 = didLeaveRequiredInterstitialTimeRangeBlock;
+        if (didLeaveRequiredInterstitialTimeRangeBlock)
         {
-          (*(v11 + 16))(v11, v4, v10);
+          (*(didLeaveRequiredInterstitialTimeRangeBlock + 16))(didLeaveRequiredInterstitialTimeRangeBlock, rangeCopy, v10);
         }
       }
 
       [(AVInterstitialController *)self setInterstitialTimeRangeInProgress:0];
-      v13 = [(AVInterstitialController *)self didLeaveInterstitialTimeRangeBlock];
-      v14 = v13;
-      if (v13)
+      didLeaveInterstitialTimeRangeBlock = [(AVInterstitialController *)self didLeaveInterstitialTimeRangeBlock];
+      v14 = didLeaveInterstitialTimeRangeBlock;
+      if (didLeaveInterstitialTimeRangeBlock)
       {
-        (*(v13 + 16))(v13, v4);
+        (*(didLeaveInterstitialTimeRangeBlock + 16))(didLeaveInterstitialTimeRangeBlock, rangeCopy);
       }
 
-      v15 = [(AVInterstitialController *)self delegateManager];
-      [v15 didPresentInterstitialGroup:v6];
+      delegateManager = [(AVInterstitialController *)self delegateManager];
+      [delegateManager didPresentInterstitialGroup:interstice];
 
-      [v6 _setActive:0];
+      [interstice _setActive:0];
       [(AVTimeControlling *)self->_interstitialTimingController stopTimingObservation];
     }
   }
 }
 
-- (void)willPresentInterstitialTimeRange:(id)a3
+- (void)willPresentInterstitialTimeRange:(id)range
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
-  if (v4 && ([v4 isEqual:v5] & 1) == 0)
+  rangeCopy = range;
+  interstitialTimeRangeInProgress = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
+  if (rangeCopy && ([rangeCopy isEqual:interstitialTimeRangeInProgress] & 1) == 0)
   {
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 interstice];
+      interstice = [rangeCopy interstice];
       v12 = 136315650;
       v13 = "[AVInterstitialController willPresentInterstitialTimeRange:]";
       v14 = 2114;
-      v15 = v4;
+      v15 = rangeCopy;
       v16 = 2114;
-      v17 = v7;
+      v17 = interstice;
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s Entering interstitial %{public}@ :: %{public}@", &v12, 0x20u);
     }
 
-    if ([(AVInterstitialController *)self _shouldSkipInterstitialTimeRange:v4])
+    if ([(AVInterstitialController *)self _shouldSkipInterstitialTimeRange:rangeCopy])
     {
-      [(AVInterstitialController *)self skipInterstitialTimeRange:v4];
+      [(AVInterstitialController *)self skipInterstitialTimeRange:rangeCopy];
     }
 
     else
     {
-      v8 = [v4 interstice];
-      [v8 _setActive:1];
-      v9 = [(AVInterstitialController *)self didEnterInterstitialTimeRangeBlock];
-      v10 = v9;
-      if (v9)
+      interstice2 = [rangeCopy interstice];
+      [interstice2 _setActive:1];
+      didEnterInterstitialTimeRangeBlock = [(AVInterstitialController *)self didEnterInterstitialTimeRangeBlock];
+      v10 = didEnterInterstitialTimeRangeBlock;
+      if (didEnterInterstitialTimeRangeBlock)
       {
-        (*(v9 + 16))(v9, v4);
+        (*(didEnterInterstitialTimeRangeBlock + 16))(didEnterInterstitialTimeRangeBlock, rangeCopy);
       }
 
-      v11 = [(AVInterstitialController *)self delegateManager];
-      [v11 willPresentInterstitialGroup:v8];
+      delegateManager = [(AVInterstitialController *)self delegateManager];
+      [delegateManager willPresentInterstitialGroup:interstice2];
 
-      [(AVInterstitialController *)self setInterstitialTimeRangeInProgress:v4];
+      [(AVInterstitialController *)self setInterstitialTimeRangeInProgress:rangeCopy];
       [(AVTimeControlling *)self->_interstitialTimingController startTimingObservation];
     }
   }
 }
 
-- (void)skipInterstitialTimeRange:(id)a3
+- (void)skipInterstitialTimeRange:(id)range
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangeCopy = range;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.value) = 136315394;
     *(&buf.value + 4) = "[AVInterstitialController skipInterstitialTimeRange:]";
     LOWORD(buf.flags) = 2114;
-    *(&buf.flags + 2) = v4;
+    *(&buf.flags + 2) = rangeCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s timeRange = %{public}@", &buf, 0x16u);
   }
 
-  v6 = [(AVInterstitialController *)self skipInterstitialTimeRangeBlock];
-  v7 = v6;
-  if (v6)
+  skipInterstitialTimeRangeBlock = [(AVInterstitialController *)self skipInterstitialTimeRangeBlock];
+  v7 = skipInterstitialTimeRangeBlock;
+  if (skipInterstitialTimeRangeBlock)
   {
-    (*(v6 + 16))(v6, v4);
+    (*(skipInterstitialTimeRangeBlock + 16))(skipInterstitialTimeRangeBlock, rangeCopy);
   }
 
   else
@@ -299,29 +299,29 @@
       _os_log_impl(&dword_18B49C000, v8, OS_LOG_TYPE_DEFAULT, "skipInterstitialTimeRangeBlock not set; providing default skipping behavior", &buf, 2u);
     }
 
-    v9 = [(AVInterstitialController *)self player];
-    [v9 rate];
+    player = [(AVInterstitialController *)self player];
+    [player rate];
     v11 = v10;
 
     if (v11 >= 0.0)
     {
-      [v4 endTime];
+      [rangeCopy endTime];
     }
 
     else
     {
-      [v4 startTime];
+      [rangeCopy startTime];
     }
 
     memset(&buf, 0, sizeof(buf));
     CMTimeMakeWithSeconds(&buf, v12, 1000);
-    v13 = [(AVInterstitialController *)self player];
+    player2 = [(AVInterstitialController *)self player];
     v18 = buf;
     v16 = *MEMORY[0x1E6960CC0];
     v17 = *(MEMORY[0x1E6960CC0] + 16);
     v14 = v16;
     v15 = v17;
-    [v13 seekToTime:&v18 toleranceBefore:&v16 toleranceAfter:&v14 completionHandler:&__block_literal_global_52_19170];
+    [player2 seekToTime:&v18 toleranceBefore:&v16 toleranceAfter:&v14 completionHandler:&__block_literal_global_52_19170];
   }
 }
 
@@ -346,8 +346,8 @@ void __54__AVInterstitialController_skipInterstitialTimeRange___block_invoke(uin
 - (void)didBeginOrResumePlayback
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-  if (v3)
+  currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
+  if (currentInterstitialTimeRange)
   {
     v4 = _AVLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -364,54 +364,54 @@ void __54__AVInterstitialController_skipInterstitialTimeRange___block_invoke(uin
   }
 }
 
-- (BOOL)_shouldSkipInterstitialTimeRange:(id)a3
+- (BOOL)_shouldSkipInterstitialTimeRange:(id)range
 {
-  v4 = a3;
-  v5 = [(AVInterstitialController *)self shouldAlwaysSkipInterstitials];
-  v6 = [(AVInterstitialController *)self player];
-  [v6 rate];
+  rangeCopy = range;
+  shouldAlwaysSkipInterstitials = [(AVInterstitialController *)self shouldAlwaysSkipInterstitials];
+  player = [(AVInterstitialController *)self player];
+  [player rate];
   v8 = v7;
 
   v9 = v8 < 0.0 || v8 > 3.0;
-  v10 = [v4 isSkipped];
+  isSkipped = [rangeCopy isSkipped];
 
-  return (v10 | v5 | v9) & 1;
+  return (isSkipped | shouldAlwaysSkipInterstitials | v9) & 1;
 }
 
 - (id)nextInterstitialTimeRange
 {
-  v3 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
   [(AVInterstitialController *)self currentTime];
-  v4 = [v3 timeRangeAfterTime:?];
+  v4 = [interstitialTimeRangeCollection timeRangeAfterTime:?];
 
   return v4;
 }
 
 - (AVTimeRange)previousInterstitialTimeRange
 {
-  v3 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
   [(AVInterstitialController *)self currentTime];
-  v4 = [v3 timeRangeBeforeTime:?];
+  v4 = [interstitialTimeRangeCollection timeRangeBeforeTime:?];
 
   return v4;
 }
 
 - (AVTimeRange)currentInterstitialTimeRange
 {
-  v3 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
-  if ([v3 count])
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  if ([interstitialTimeRangeCollection count])
   {
-    v4 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
-    if (v4)
+    currentEvent = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
+    if (currentEvent)
     {
-      v5 = [(AVInterstitialController *)self timeRangeForPlayerInterstitialEvent:v4];
+      v5 = [(AVInterstitialController *)self timeRangeForPlayerInterstitialEvent:currentEvent];
       [(AVInterstitialController *)self loadDurationOfCurrentOrNextInterstitialEvent:&__block_literal_global_19181];
     }
 
     else
     {
       [(AVInterstitialController *)self currentTime];
-      v5 = [v3 timeRangeContainingTime:?];
+      v5 = [interstitialTimeRangeCollection timeRangeContainingTime:?];
     }
 
     if ([v5 isSkipped])
@@ -489,8 +489,8 @@ void __64__AVInterstitialController__stopObservingInterstitialTimeRanges__block_
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d", buf, 0x12u);
   }
 
-  v4 = [(AVInterstitialController *)self timeline];
-  v5 = v4 == 0;
+  timeline = [(AVInterstitialController *)self timeline];
+  v5 = timeline == 0;
 
   objc_initWeak(buf, self);
   v6[0] = MEMORY[0x1E69E9820];
@@ -602,7 +602,7 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
   [(AVInterstitialController *)self _sendInterstitialBoundaryNotificationsForTime:?];
 }
 
-- (void)_sendInterstitialBoundaryNotificationsForTime:(double)a3
+- (void)_sendInterstitialBoundaryNotificationsForTime:(double)time
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
@@ -615,8 +615,8 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d", &v8, 0x12u);
   }
 
-  v6 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
-  v7 = [v6 timeRangeContainingTime:a3];
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  v7 = [interstitialTimeRangeCollection timeRangeContainingTime:time];
 
   if (!self->_cachedCurrentEvent && ([v7 supplementsPrimaryContent] & 1) == 0)
   {
@@ -624,10 +624,10 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
   }
 }
 
-- (void)_sendInterstitialBoundaryNotificationsForEvent:(id)a3
+- (void)_sendInterstitialBoundaryNotificationsForEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -638,18 +638,18 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d", &v7, 0x12u);
   }
 
-  v6 = [(AVInterstitialController *)self timeRangeForPlayerInterstitialEvent:v4];
+  v6 = [(AVInterstitialController *)self timeRangeForPlayerInterstitialEvent:eventCopy];
 
   [(AVInterstitialController *)self _sendInterstitialBoundaryNotificationForInterstitialTimeRange:v6];
 }
 
-- (void)_sendInterstitialBoundaryNotificationForInterstitialTimeRange:(id)a3
+- (void)_sendInterstitialBoundaryNotificationForInterstitialTimeRange:(id)range
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
-  v6 = v5;
-  if (v5 != v4 && (!v4 || !v5 || ([v4 isEqual:v5] & 1) == 0))
+  rangeCopy = range;
+  interstitialTimeRangeInProgress = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
+  v6 = interstitialTimeRangeInProgress;
+  if (interstitialTimeRangeInProgress != rangeCopy && (!rangeCopy || !interstitialTimeRangeInProgress || ([rangeCopy isEqual:interstitialTimeRangeInProgress] & 1) == 0))
   {
     [(AVInterstitialController *)self _setPendingTimeBoundary:NAN];
     v7 = _AVLog();
@@ -660,13 +660,13 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
       v10 = 2112;
       v11 = v6;
       v12 = 2112;
-      v13 = v4;
+      v13 = rangeCopy;
       _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s interstitialTimeRangeInProgress = %@, timeRange = %@", &v8, 0x20u);
     }
 
     if (v6)
     {
-      if ([v4 isEqual:v6])
+      if ([rangeCopy isEqual:v6])
       {
         goto LABEL_12;
       }
@@ -674,30 +674,30 @@ void __65__AVInterstitialController__startObservingInterstitialTimeRanges__block
       [(AVInterstitialController *)self didPresentInterstitialTimeRange:v6];
     }
 
-    if (v4)
+    if (rangeCopy)
     {
-      [(AVInterstitialController *)self willPresentInterstitialTimeRange:v4];
+      [(AVInterstitialController *)self willPresentInterstitialTimeRange:rangeCopy];
     }
   }
 
 LABEL_12:
 }
 
-- (double)timeToSeekAfterUserNavigatedFromTime:(double)a3 toTime:(double)a4
+- (double)timeToSeekAfterUserNavigatedFromTime:(double)time toTime:(double)toTime
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = [(AVInterstitialController *)self shouldEnforceInterstitialPolicy];
-  if (a4 <= a3 || !v7)
+  shouldEnforceInterstitialPolicy = [(AVInterstitialController *)self shouldEnforceInterstitialPolicy];
+  if (toTime <= time || !shouldEnforceInterstitialPolicy)
   {
-    return a4;
+    return toTime;
   }
 
-  [(AVInterstitialController *)self displayTimeFromTime:a3];
+  [(AVInterstitialController *)self displayTimeFromTime:time];
   v10 = v9;
-  [(AVInterstitialController *)self displayTimeFromTime:a4];
+  [(AVInterstitialController *)self displayTimeFromTime:toTime];
   v12 = v11;
-  v13 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
-  v14 = [v13 timeRangesBetweenDisplayTime:v10 and:v12];
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  v14 = [interstitialTimeRangeCollection timeRangesBetweenDisplayTime:v10 and:v12];
 
   v29 = 0u;
   v30 = 0u;
@@ -724,19 +724,19 @@ LABEL_7:
     }
 
     v20 = *(*(&v27 + 1) + 8 * v19);
-    if ([v20 containsTime:{a3, v27}] & 1) != 0 || (objc_msgSend(v20, "isHidden") & 1) != 0 || (objc_msgSend(v20, "isSkipped"))
+    if ([v20 containsTime:{time, v27}] & 1) != 0 || (objc_msgSend(v20, "isHidden") & 1) != 0 || (objc_msgSend(v20, "isSkipped"))
     {
       goto LABEL_17;
     }
 
-    v21 = [v20 interstice];
-    v22 = [v21 requiredViewingPolicy];
-    if (v22 == 1)
+    interstice = [v20 interstice];
+    requiredViewingPolicy = [interstice requiredViewingPolicy];
+    if (requiredViewingPolicy == 1)
     {
-      v22 = [v21 _watchCount];
+      requiredViewingPolicy = [interstice _watchCount];
     }
 
-    if (!v22)
+    if (!requiredViewingPolicy)
     {
       break;
     }
@@ -761,7 +761,7 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  self->_continuationTimeAfterInterstitial = a4;
+  self->_continuationTimeAfterInterstitial = toTime;
   v24 = _AVLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -773,33 +773,33 @@ LABEL_17:
   }
 
   [v23 startTime];
-  a4 = v25;
+  toTime = v25;
 LABEL_24:
 
 LABEL_25:
-  return a4;
+  return toTime;
 }
 
 - (BOOL)requiresLinearPlayback
 {
-  v3 = [(AVInterstitialController *)self shouldEnforceInterstitialPolicy];
-  if (v3)
+  shouldEnforceInterstitialPolicy = [(AVInterstitialController *)self shouldEnforceInterstitialPolicy];
+  if (shouldEnforceInterstitialPolicy)
   {
-    v4 = [(AVInterstitialController *)self currentInterstitialTimeRange];
+    currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
     [(AVInterstitialController *)self currentTime];
-    v5 = [v4 requiresLinearPlaybackForTime:?];
+    v5 = [currentInterstitialTimeRange requiresLinearPlaybackForTime:?];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(shouldEnforceInterstitialPolicy) = v5;
   }
 
-  return v3;
+  return shouldEnforceInterstitialPolicy;
 }
 
 - (BOOL)shouldEnforceInterstitialPolicy
 {
-  v2 = [(AVInterstitialController *)self currentItem];
-  v3 = [v2 interstitialPolicyEnforcement];
-  if (v3 >= 4)
+  currentItem = [(AVInterstitialController *)self currentItem];
+  interstitialPolicyEnforcement = [currentItem interstitialPolicyEnforcement];
+  if (interstitialPolicyEnforcement >= 4)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"interstitialPolicyEnforcement value is not supported"];
     LOBYTE(v4) = 0;
@@ -807,16 +807,16 @@ LABEL_25:
 
   else
   {
-    v4 = 2u >> (v3 & 0xF);
+    v4 = 2u >> (interstitialPolicyEnforcement & 0xF);
   }
 
   return v4 & 1;
 }
 
-- (void)copyInterstitialEventsToScrubPlayer:(id)a3
+- (void)copyInterstitialEventsToScrubPlayer:(id)player
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  playerCopy = player;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -826,41 +826,41 @@ LABEL_25:
     v31 = 2114;
     v32 = eventMonitor;
     v33 = 2048;
-    v34 = v4;
+    v34 = playerCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s copying events from primary eventMonitor %{public}@ to scrubPlayer %p", buf, 0x20u);
   }
 
-  v7 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor events];
-  v8 = objc_getAssociatedObject(v4, copyInterstitialEventsToScrubPlayer__AVKitPlayerInterstitialEventControllerKey);
+  events = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor events];
+  v8 = objc_getAssociatedObject(playerCopy, copyInterstitialEventsToScrubPlayer__AVKitPlayerInterstitialEventControllerKey);
   if (!v8)
   {
-    v8 = [MEMORY[0x1E69880A0] interstitialEventControllerWithPrimaryPlayer:v4];
-    objc_setAssociatedObject(v4, copyInterstitialEventsToScrubPlayer__AVKitPlayerInterstitialEventControllerKey, v8, 1);
+    v8 = [MEMORY[0x1E69880A0] interstitialEventControllerWithPrimaryPlayer:playerCopy];
+    objc_setAssociatedObject(playerCopy, copyInterstitialEventsToScrubPlayer__AVKitPlayerInterstitialEventControllerKey, v8, 1);
     v9 = _AVLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
       v30 = "[AVInterstitialController copyInterstitialEventsToScrubPlayer:]";
       v31 = 2048;
-      v32 = v4;
+      v32 = playerCopy;
       v33 = 2114;
       v34 = v8;
       _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s Creating scrubPlayer (%p) event controller %{public}@", buf, 0x20u);
     }
   }
 
-  v10 = [(AVPlayerInterstitialEventMonitor *)v8 events];
-  v11 = [v7 isEqualToArray:v10];
+  events2 = [(AVPlayerInterstitialEventMonitor *)v8 events];
+  v11 = [events isEqualToArray:events2];
 
   if ((v11 & 1) == 0)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v13 = [(AVPlayerInterstitialEventMonitor *)v4 currentItem];
+    currentItem = [(AVPlayerInterstitialEventMonitor *)playerCopy currentItem];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = v7;
+    v14 = events;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
     {
@@ -877,7 +877,7 @@ LABEL_25:
           }
 
           v19 = [*(*(&v24 + 1) + 8 * v18) copy];
-          [v19 setPrimaryItem:v13];
+          [v19 setPrimaryItem:currentItem];
           [(AVPlayerInterstitialEventMonitor *)v12 addObject:v19];
 
           ++v18;
@@ -907,18 +907,18 @@ LABEL_25:
       *buf = 136315394;
       v30 = "[AVInterstitialController copyInterstitialEventsToScrubPlayer:]";
       v31 = 2114;
-      v32 = v4;
+      v32 = playerCopy;
       _os_log_impl(&dword_18B49C000, v21, OS_LOG_TYPE_DEFAULT, "%s scrubber player = %{public}@", buf, 0x16u);
     }
 
     v22 = _AVLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(AVPlayerInterstitialEventMonitor *)v4 currentItem];
+      currentItem2 = [(AVPlayerInterstitialEventMonitor *)playerCopy currentItem];
       *buf = 136315394;
       v30 = "[AVInterstitialController copyInterstitialEventsToScrubPlayer:]";
       v31 = 2114;
-      v32 = v23;
+      v32 = currentItem2;
       _os_log_impl(&dword_18B49C000, v22, OS_LOG_TYPE_DEFAULT, "%s scrubber player item = %{public}@", buf, 0x16u);
     }
   }
@@ -937,13 +937,13 @@ LABEL_25:
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d", &v14, 0x12u);
   }
 
-  v4 = [(AVInterstitialController *)self currentItem];
-  v5 = [AVInterstitialController newTimeRangeCollectionForPlayerItem:v4];
+  currentItem = [(AVInterstitialController *)self currentItem];
+  v5 = [AVInterstitialController newTimeRangeCollectionForPlayerItem:currentItem];
 
   [(AVInterstitialController *)self isLive];
-  v6 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
 
-  if (v6 != v5)
+  if (interstitialTimeRangeCollection != v5)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -953,28 +953,28 @@ LABEL_25:
       _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "Updating interstitial time ranges: %@", &v14, 0xCu);
     }
 
-    v8 = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
-    v9 = [v8 interstice];
+    interstitialTimeRangeInProgress = [(AVInterstitialController *)self interstitialTimeRangeInProgress];
+    interstice = [interstitialTimeRangeInProgress interstice];
     [(AVInterstitialController *)self _stopObservingInterstitialTimeRanges];
     [(AVInterstitialController *)self setInterstitialTimeRangeCollection:v5];
-    v10 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-    v11 = [v10 interstice];
-    v12 = v11;
-    if (v9 == v11)
+    currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
+    interstice2 = [currentInterstitialTimeRange interstice];
+    v12 = interstice2;
+    if (interstice == interstice2)
     {
       goto LABEL_14;
     }
 
-    if (v9 && v11)
+    if (interstice && interstice2)
     {
-      v13 = [v11 isEqual:v9];
-      if (!v8 || (v13 & 1) != 0)
+      v13 = [interstice2 isEqual:interstice];
+      if (!interstitialTimeRangeInProgress || (v13 & 1) != 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (!v8)
+    else if (!interstitialTimeRangeInProgress)
     {
 LABEL_14:
       [(AVInterstitialController *)self _startObservingInterstitialTimeRanges];
@@ -982,17 +982,17 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    [(AVInterstitialController *)self didPresentInterstitialTimeRange:v8];
+    [(AVInterstitialController *)self didPresentInterstitialTimeRange:interstitialTimeRangeInProgress];
     goto LABEL_14;
   }
 
 LABEL_15:
 }
 
-- (BOOL)isInterstitialEventCurrentEvent:(id)a3
+- (BOOL)isInterstitialEventCurrentEvent:(id)event
 {
   cachedCurrentEvent = self->_cachedCurrentEvent;
-  if (a3)
+  if (event)
   {
     return [(AVPlayerInterstitialEvent *)cachedCurrentEvent isEqual:?];
   }
@@ -1006,9 +1006,9 @@ LABEL_15:
 - (void)cancelCurrentPlayerInterstitialEvent
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
-  v4 = v3;
-  if (v3 && (![v3 supplementsPrimaryContent] || !objc_msgSend(v4, "timelineOccupancy")))
+  currentEvent = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
+  v4 = currentEvent;
+  if (currentEvent && (![currentEvent supplementsPrimaryContent] || !objc_msgSend(v4, "timelineOccupancy")))
   {
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1026,18 +1026,18 @@ LABEL_15:
   }
 }
 
-- (void)setInterstitialPlayer:(id)a3
+- (void)setInterstitialPlayer:(id)player
 {
-  v5 = a3;
-  if (self->_interstitialPlayer != v5)
+  playerCopy = player;
+  if (self->_interstitialPlayer != playerCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_interstitialPlayer, a3);
+    v11 = playerCopy;
+    objc_storeStrong(&self->_interstitialPlayer, player);
     v6 = +[AVKitGlobalSettings shared];
-    v7 = [v6 showsTVControls];
+    showsTVControls = [v6 showsTVControls];
 
     interstitialTimingController = self->_interstitialTimingController;
-    if (!interstitialTimingController && (v7 & 1) == 0)
+    if (!interstitialTimingController && (showsTVControls & 1) == 0)
     {
       v9 = [[AVPlayerTimeController alloc] initWithPlayer:self->_interstitialPlayer useIntegratedTimeline:0];
       v10 = self->_interstitialTimingController;
@@ -1047,18 +1047,18 @@ LABEL_15:
     }
 
     [(AVTimeControlling *)interstitialTimingController setPlayer:self->_interstitialPlayer];
-    v5 = v11;
+    playerCopy = v11;
   }
 }
 
 - (double)timeRemainingInCurrentInterstitial
 {
-  v3 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-  v4 = v3;
-  if (v3)
+  currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
+  v4 = currentInterstitialTimeRange;
+  if (currentInterstitialTimeRange)
   {
-    v5 = [v3 interstice];
-    [v5 playingDuration];
+    interstice = [currentInterstitialTimeRange interstice];
+    [interstice playingDuration];
     v7 = v6;
 
     [(AVInterstitialController *)self elapsedTimeWithinCurrentInterstitial];
@@ -1075,14 +1075,14 @@ LABEL_15:
 
 - (double)elapsedTimeWithinCurrentInterstitial
 {
-  v3 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-  v4 = v3;
-  if (v3)
+  currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
+  v4 = currentInterstitialTimeRange;
+  if (currentInterstitialTimeRange)
   {
-    v5 = [v3 interstice];
-    v6 = [v5 playerInterstitialEvent];
+    interstice = [currentInterstitialTimeRange interstice];
+    playerInterstitialEvent = [interstice playerInterstitialEvent];
 
-    if (v6)
+    if (playerInterstitialEvent)
     {
       [(AVInterstitialController *)self elapsedTimeForInterstitialPlayer];
       v8 = v7;
@@ -1107,18 +1107,18 @@ LABEL_15:
 
 - (double)elapsedTimeForInterstitialPlayer
 {
-  v2 = [(AVInterstitialController *)self eventMonitor];
-  v3 = [v2 interstitialPlayer];
-  v4 = [v3 currentItem];
+  eventMonitor = [(AVInterstitialController *)self eventMonitor];
+  interstitialPlayer = [eventMonitor interstitialPlayer];
+  currentItem = [interstitialPlayer currentItem];
 
-  if ([v4 status] != 1)
+  if ([currentItem status] != 1)
   {
     goto LABEL_6;
   }
 
-  if (v4)
+  if (currentItem)
   {
-    [v4 currentTime];
+    [currentItem currentTime];
   }
 
   else
@@ -1138,19 +1138,19 @@ LABEL_6:
 
 - (BOOL)isLive
 {
-  v2 = [(AVInterstitialController *)self currentItem];
-  if ([v2 status] == 1)
+  currentItem = [(AVInterstitialController *)self currentItem];
+  if ([currentItem status] == 1)
   {
-    if (!v2)
+    if (!currentItem)
     {
       LOBYTE(v3) = 0;
       goto LABEL_7;
     }
 
-    [v2 duration];
+    [currentItem duration];
     if (v6)
     {
-      [v2 duration];
+      [currentItem duration];
       v3 = (v5 >> 4) & 1;
       goto LABEL_7;
     }
@@ -1164,22 +1164,22 @@ LABEL_7:
 
 - (id)currentOrEstimatedDate
 {
-  v2 = [(AVInterstitialController *)self currentItem];
-  if ([v2 status] == 1)
+  currentItem = [(AVInterstitialController *)self currentItem];
+  if ([currentItem status] == 1)
   {
-    v3 = [v2 currentDate];
-    v4 = v3;
-    if (v3)
+    currentDate = [currentItem currentDate];
+    v4 = currentDate;
+    if (currentDate)
     {
-      v5 = v3;
+      currentEstimatedDate = currentDate;
     }
 
     else
     {
-      v5 = [v2 currentEstimatedDate];
+      currentEstimatedDate = [currentItem currentEstimatedDate];
     }
 
-    v6 = v5;
+    v6 = currentEstimatedDate;
   }
 
   else
@@ -1194,8 +1194,8 @@ LABEL_7:
 {
   if ([(AVInterstitialController *)self useTimelineTimes])
   {
-    v3 = [(AVInterstitialController *)self timeline];
-    [v3 currentTimeInterval];
+    timeline = [(AVInterstitialController *)self timeline];
+    [timeline currentTimeInterval];
     v5 = v4;
 
     return v5;
@@ -1205,18 +1205,18 @@ LABEL_7:
   {
     [(AVInterstitialController *)self currentTime];
     v8 = v7;
-    v9 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-    if (v9)
+    currentInterstitialTimeRange = [(AVInterstitialController *)self currentInterstitialTimeRange];
+    if (currentInterstitialTimeRange)
     {
-      v10 = v9;
-      v11 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-      v12 = [v11 interstice];
-      v13 = [v12 isCollapsedInTimeLine];
+      v10 = currentInterstitialTimeRange;
+      currentInterstitialTimeRange2 = [(AVInterstitialController *)self currentInterstitialTimeRange];
+      interstice = [currentInterstitialTimeRange2 interstice];
+      isCollapsedInTimeLine = [interstice isCollapsedInTimeLine];
 
-      if (v13)
+      if (isCollapsedInTimeLine)
       {
-        v14 = [(AVInterstitialController *)self currentInterstitialTimeRange];
-        [v14 startTime];
+        currentInterstitialTimeRange3 = [(AVInterstitialController *)self currentInterstitialTimeRange];
+        [currentInterstitialTimeRange3 startTime];
         v8 = v15;
       }
     }
@@ -1229,24 +1229,24 @@ LABEL_7:
 
 - (double)currentTime
 {
-  v3 = [(AVInterstitialController *)self currentItem];
-  if ([v3 status] != 1)
+  currentItem = [(AVInterstitialController *)self currentItem];
+  if ([currentItem status] != 1)
   {
     goto LABEL_9;
   }
 
   if ([(AVInterstitialController *)self useTimelineTimes])
   {
-    v4 = [(AVInterstitialController *)self timeline];
-    [v4 currentTimeInterval];
+    timeline = [(AVInterstitialController *)self timeline];
+    [timeline currentTimeInterval];
     Seconds = v5;
   }
 
   else
   {
-    if (v3)
+    if (currentItem)
     {
-      [v3 currentTime];
+      [currentItem currentTime];
     }
 
     else
@@ -1268,126 +1268,126 @@ LABEL_9:
 
 - (id)currentItem
 {
-  v2 = [(AVInterstitialController *)self player];
-  v3 = [v2 currentItem];
+  player = [(AVInterstitialController *)self player];
+  currentItem = [player currentItem];
 
-  return v3;
+  return currentItem;
 }
 
-- (double)displayTimeFromTime:(double)a3
+- (double)displayTimeFromTime:(double)time
 {
   if (![(AVInterstitialController *)self useTimelineTimes])
   {
-    v5 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
-    v6 = v5;
-    if (v5)
+    interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+    v6 = interstitialTimeRangeCollection;
+    if (interstitialTimeRangeCollection)
     {
-      [v5 displayTimeFromTime:a3];
-      a3 = v7;
+      [interstitialTimeRangeCollection displayTimeFromTime:time];
+      time = v7;
     }
   }
 
-  return a3;
+  return time;
 }
 
-- (double)timeFromDisplayTime:(double)a3
+- (double)timeFromDisplayTime:(double)time
 {
   if (![(AVInterstitialController *)self useTimelineTimes])
   {
-    v5 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
-    v6 = v5;
-    if (v5)
+    interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+    v6 = interstitialTimeRangeCollection;
+    if (interstitialTimeRangeCollection)
     {
-      [v5 timeFromDisplayTime:a3];
-      a3 = v7;
+      [interstitialTimeRangeCollection timeFromDisplayTime:time];
+      time = v7;
     }
   }
 
-  return a3;
+  return time;
 }
 
 - (BOOL)useTimelineTimes
 {
-  v3 = [(AVInterstitialController *)self timeline];
-  if (v3)
+  timeline = [(AVInterstitialController *)self timeline];
+  if (timeline)
   {
-    v4 = [(AVInterstitialController *)self _automaticallyHandlesInterstitialEvents];
+    _automaticallyHandlesInterstitialEvents = [(AVInterstitialController *)self _automaticallyHandlesInterstitialEvents];
   }
 
   else
   {
-    v4 = 0;
+    _automaticallyHandlesInterstitialEvents = 0;
   }
 
-  return v4;
+  return _automaticallyHandlesInterstitialEvents;
 }
 
-- (void)setPlayer:(id)a3
+- (void)setPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   p_player = &self->_player;
-  if (self->_player != v5)
+  if (self->_player != playerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_player, a3);
+    v7 = playerCopy;
+    objc_storeStrong(p_player, player);
     p_player = [(AVInterstitialController *)self _performInterstitialPlayerDependentUpdates];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_player, v5);
+  MEMORY[0x1EEE66BB8](p_player, playerCopy);
 }
 
 - (void)_performInterstitialPlayerDependentUpdates
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInterstitialController *)self player];
+  player = [(AVInterstitialController *)self player];
 
-  if (v3)
+  if (player)
   {
     v4 = MEMORY[0x1E69880A8];
-    v5 = [(AVInterstitialController *)self player];
-    v6 = [v4 interstitialEventMonitorWithPrimaryPlayer:v5];
+    player2 = [(AVInterstitialController *)self player];
+    v6 = [v4 interstitialEventMonitorWithPrimaryPlayer:player2];
 
-    v7 = [(AVInterstitialController *)self eventMonitor];
-    v8 = [v7 interstitialPlayer];
-    v9 = [v6 interstitialPlayer];
+    eventMonitor = [(AVInterstitialController *)self eventMonitor];
+    interstitialPlayer = [eventMonitor interstitialPlayer];
+    interstitialPlayer2 = [v6 interstitialPlayer];
 
-    if (v8 != v9)
+    if (interstitialPlayer != interstitialPlayer2)
     {
       v10 = _AVLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(AVInterstitialController *)self player];
+        player3 = [(AVInterstitialController *)self player];
         v18 = 136315650;
         v19 = "[AVInterstitialController _performInterstitialPlayerDependentUpdates]";
         v20 = 2114;
         v21 = v6;
         v22 = 2048;
-        v23 = v11;
+        v23 = player3;
         _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s created event monitor %{public}@ for primary player %p", &v18, 0x20u);
       }
 
       [(AVInterstitialController *)self setEventMonitor:v6];
       v12 = MEMORY[0x1E69880A0];
-      v13 = [(AVInterstitialController *)self player];
-      v14 = [v12 interstitialEventControllerWithPrimaryPlayer:v13];
+      player4 = [(AVInterstitialController *)self player];
+      v14 = [v12 interstitialEventControllerWithPrimaryPlayer:player4];
 
       v15 = _AVLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(AVInterstitialController *)self player];
+        player5 = [(AVInterstitialController *)self player];
         v18 = 136315650;
         v19 = "[AVInterstitialController _performInterstitialPlayerDependentUpdates]";
         v20 = 2114;
         v21 = v14;
         v22 = 2048;
-        v23 = v16;
+        v23 = player5;
         _os_log_impl(&dword_18B49C000, v15, OS_LOG_TYPE_DEFAULT, "%s created event controller %{public}@ for primary player %p", &v18, 0x20u);
       }
 
       [(AVInterstitialController *)self setEventController:v14];
-      v17 = [v6 interstitialPlayer];
-      [(AVInterstitialController *)self setInterstitialPlayer:v17];
+      interstitialPlayer3 = [v6 interstitialPlayer];
+      [(AVInterstitialController *)self setInterstitialPlayer:interstitialPlayer3];
 
       [(AVInterstitialController *)self setupInterstitialObservers];
     }
@@ -1404,8 +1404,8 @@ LABEL_9:
 
 - (void)invalidate
 {
-  v3 = [(AVInterstitialController *)self kvoPlayerItem];
-  [v3 stopAllObservation];
+  kvoPlayerItem = [(AVInterstitialController *)self kvoPlayerItem];
+  [kvoPlayerItem stopAllObservation];
 
   [(AVInterstitialController *)self setKvoPlayerItem:0];
   v4 = [(AVInterstitialController *)self kvo];
@@ -1414,8 +1414,8 @@ LABEL_9:
   [(AVInterstitialController *)self setKvo:0];
   if (self->_playerItemTimeJumpedObserver)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_playerItemTimeJumpedObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_playerItemTimeJumpedObserver];
 
     playerItemTimeJumpedObserver = self->_playerItemTimeJumpedObserver;
     self->_playerItemTimeJumpedObserver = 0;
@@ -1423,8 +1423,8 @@ LABEL_9:
 
   if (self->_playerInterstitialPlayerDidChangeObserver)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self->_playerInterstitialPlayerDidChangeObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_playerInterstitialPlayerDidChangeObserver];
 
     playerInterstitialPlayerDidChangeObserver = self->_playerInterstitialPlayerDidChangeObserver;
     self->_playerInterstitialPlayerDidChangeObserver = 0;
@@ -1432,8 +1432,8 @@ LABEL_9:
 
   if (self->_playerInterstitialEventsChangedObserver)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self->_playerInterstitialEventsChangedObserver];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self->_playerInterstitialEventsChangedObserver];
 
     playerInterstitialEventsChangedObserver = self->_playerInterstitialEventsChangedObserver;
     self->_playerInterstitialEventsChangedObserver = 0;
@@ -1441,8 +1441,8 @@ LABEL_9:
 
   if (self->_playerInterstitialCurrentEventChangedObserver)
   {
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 removeObserver:self->_playerInterstitialCurrentEventChangedObserver];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 removeObserver:self->_playerInterstitialCurrentEventChangedObserver];
 
     playerInterstitialCurrentEventChangedObserver = self->_playerInterstitialCurrentEventChangedObserver;
     self->_playerInterstitialCurrentEventChangedObserver = 0;
@@ -1468,8 +1468,8 @@ LABEL_9:
   objc_initWeak(&location, self);
   if (self->_playerInterstitialEventsChangedObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_playerInterstitialEventsChangedObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_playerInterstitialEventsChangedObserver];
 
     playerInterstitialEventsChangedObserver = self->_playerInterstitialEventsChangedObserver;
     self->_playerInterstitialEventsChangedObserver = 0;
@@ -1477,34 +1477,34 @@ LABEL_9:
 
   if (self->_playerInterstitialCurrentEventChangedObserver)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self->_playerInterstitialCurrentEventChangedObserver];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self->_playerInterstitialCurrentEventChangedObserver];
 
     playerInterstitialCurrentEventChangedObserver = self->_playerInterstitialCurrentEventChangedObserver;
     self->_playerInterstitialCurrentEventChangedObserver = 0;
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v9 = *MEMORY[0x1E6987A00];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __54__AVInterstitialController_setupInterstitialObservers__block_invoke;
   v19[3] = &unk_1E7208898;
   objc_copyWeak(&v20, &location);
-  v10 = [v7 addObserverForName:v9 object:0 queue:v8 usingBlock:v19];
+  v10 = [defaultCenter3 addObserverForName:v9 object:0 queue:mainQueue usingBlock:v19];
   v11 = self->_playerInterstitialEventsChangedObserver;
   self->_playerInterstitialEventsChangedObserver = v10;
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  v13 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
   v14 = *MEMORY[0x1E69879F8];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__AVInterstitialController_setupInterstitialObservers__block_invoke_29;
   v17[3] = &unk_1E7208898;
   objc_copyWeak(&v18, &location);
-  v15 = [v12 addObserverForName:v14 object:0 queue:v13 usingBlock:v17];
+  v15 = [defaultCenter4 addObserverForName:v14 object:0 queue:mainQueue2 usingBlock:v17];
   v16 = self->_playerInterstitialCurrentEventChangedObserver;
   self->_playerInterstitialCurrentEventChangedObserver = v15;
 
@@ -1634,15 +1634,15 @@ LABEL_10:
     v17[3] = &unk_1E7208870;
     objc_copyWeak(&v18, &location);
     v8 = [(AVObservationController *)v7 startObserving:v2 keyPath:@"timeline.timelineSegments" observationHandler:v17];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    v10 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v11 = *MEMORY[0x1E6987A08];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __32__AVInterstitialController_init__block_invoke_2_27;
     v15[3] = &unk_1E7208898;
     objc_copyWeak(&v16, &location);
-    v12 = [v9 addObserverForName:v11 object:0 queue:v10 usingBlock:v15];
+    v12 = [defaultCenter addObserverForName:v11 object:0 queue:mainQueue usingBlock:v15];
     playerInterstitialPlayerDidChangeObserver = v2->_playerInterstitialPlayerDidChangeObserver;
     v2->_playerInterstitialPlayerDidChangeObserver = v12;
 
@@ -1805,27 +1805,27 @@ LABEL_17:
   }
 }
 
-- (BOOL)loadDurationOfCurrentOrNextInterstitialEvent:(id)a3
+- (BOOL)loadDurationOfCurrentOrNextInterstitialEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
-  v6 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor interstitialPlayer];
-  v7 = v6;
-  if (v5 || ([v6 items], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
+  eventCopy = event;
+  currentEvent = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor currentEvent];
+  interstitialPlayer = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor interstitialPlayer];
+  v7 = interstitialPlayer;
+  if (currentEvent || ([interstitialPlayer items], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "count"), v8, v9))
   {
-    v10 = [v4 copy];
+    v10 = [eventCopy copy];
 
-    v11 = [objc_opt_class() interstitialQueue];
+    interstitialQueue = [objc_opt_class() interstitialQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __102__AVInterstitialController_AVPlayerInterstitialSupport__loadDurationOfCurrentOrNextInterstitialEvent___block_invoke;
     v14[3] = &unk_1E7209FD8;
     v15 = v7;
-    v16 = v5;
-    v17 = self;
-    v4 = v10;
-    v18 = v4;
-    dispatch_async(v11, v14);
+    v16 = currentEvent;
+    selfCopy = self;
+    eventCopy = v10;
+    v18 = eventCopy;
+    dispatch_async(interstitialQueue, v14);
 
     v12 = 1;
   }
@@ -1980,17 +1980,17 @@ void __102__AVInterstitialController_AVPlayerInterstitialSupport__loadDurationOf
   (*(*(a1 + 56) + 16))(Seconds);
 }
 
-- (id)timeRangeForPlayerInterstitialEvent:(id)a3
+- (id)timeRangeForPlayerInterstitialEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVInterstitialController *)self interstitialTimeRangeCollection];
+  eventCopy = event;
+  interstitialTimeRangeCollection = [(AVInterstitialController *)self interstitialTimeRangeCollection];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 timeRanges];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  timeRanges = [interstitialTimeRangeCollection timeRanges];
+  v7 = [timeRanges countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -2000,13 +2000,13 @@ void __102__AVInterstitialController_AVPlayerInterstitialSupport__loadDurationOf
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(timeRanges);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 interstice];
-        v12 = [v11 playerInterstitialEvent];
-        v13 = [v4 isEqual:v12];
+        interstice = [v10 interstice];
+        playerInterstitialEvent = [interstice playerInterstitialEvent];
+        v13 = [eventCopy isEqual:playerInterstitialEvent];
 
         if (v13)
         {
@@ -2016,7 +2016,7 @@ void __102__AVInterstitialController_AVPlayerInterstitialSupport__loadDurationOf
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [timeRanges countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -2031,18 +2031,18 @@ LABEL_11:
   return v7;
 }
 
-- (id)interstitialTimeRangeForPlayerInterstitialEvent:(id)a3
+- (id)interstitialTimeRangeForPlayerInterstitialEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVInterstitialController *)self currentItem];
-  v6 = [v5 interstitialTimeRanges];
+  eventCopy = event;
+  currentItem = [(AVInterstitialController *)self currentItem];
+  interstitialTimeRanges = [currentItem interstitialTimeRanges];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6;
+  v7 = interstitialTimeRanges;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -2057,8 +2057,8 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 playerInterstitialEvent];
-        v13 = [v4 isEqual:v12];
+        playerInterstitialEvent = [v11 playerInterstitialEvent];
+        v13 = [eventCopy isEqual:playerInterstitialEvent];
 
         if (v13)
         {
@@ -2085,26 +2085,26 @@ LABEL_11:
 - (void)updateSynthesizedInterstitialTimeRanges
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInterstitialController *)self currentItem];
-  v4 = [v3 translatesPlayerInterstitialEvents];
+  currentItem = [(AVInterstitialController *)self currentItem];
+  translatesPlayerInterstitialEvents = [currentItem translatesPlayerInterstitialEvents];
 
-  if (v4)
+  if (translatesPlayerInterstitialEvents)
   {
-    v5 = [(AVInterstitialController *)self _copySynthesizedInterstitialTimeRanges];
+    _copySynthesizedInterstitialTimeRanges = [(AVInterstitialController *)self _copySynthesizedInterstitialTimeRanges];
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 136315394;
       v9 = "[AVInterstitialController(AVPlayerInterstitialSupport) updateSynthesizedInterstitialTimeRanges]";
       v10 = 2048;
-      v11 = [v5 count];
+      v11 = [_copySynthesizedInterstitialTimeRanges count];
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s updating; %lu time range(s)", &v8, 0x16u);
     }
 
-    if ([v5 count])
+    if ([_copySynthesizedInterstitialTimeRanges count])
     {
-      v7 = [(AVInterstitialController *)self currentItem];
-      [v7 setInterstitialTimeRanges:v5];
+      currentItem2 = [(AVInterstitialController *)self currentItem];
+      [currentItem2 setInterstitialTimeRanges:_copySynthesizedInterstitialTimeRanges];
     }
   }
 }
@@ -2112,24 +2112,24 @@ LABEL_11:
 - (id)_copySynthesizedInterstitialTimeRanges
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor events];
-  if (![v3 count])
+  events = [(AVPlayerInterstitialEventMonitor *)self->_eventMonitor events];
+  if (![events count])
   {
     v24 = MEMORY[0x1E695E0F0];
     goto LABEL_37;
   }
 
   timeline = self->_timeline;
-  v4 = [(AVInterstitialController *)self currentItem];
-  v31 = [v4 interstitialTimeRanges];
+  currentItem = [(AVInterstitialController *)self currentItem];
+  interstitialTimeRanges = [currentItem interstitialTimeRanges];
 
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v26 = v3;
-  obj = v3;
+  v26 = events;
+  obj = events;
   v32 = [obj countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (!v32)
   {
@@ -2152,7 +2152,7 @@ LABEL_11:
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v7 = v31;
+      v7 = interstitialTimeRanges;
       v8 = [v7 countByEnumeratingWithState:&v33 objects:v49 count:16];
       if (v8)
       {
@@ -2168,8 +2168,8 @@ LABEL_9:
           }
 
           v12 = *(*(&v33 + 1) + 8 * v11);
-          v13 = [v12 playerInterstitialEvent];
-          v14 = [v6 isEqual:v13];
+          playerInterstitialEvent = [v12 playerInterstitialEvent];
+          v14 = [v6 isEqual:playerInterstitialEvent];
 
           if (v14)
           {
@@ -2189,8 +2189,8 @@ LABEL_9:
         }
 
         v15 = [(AVKitIntegratedTimeline *)self->_timeline timelineSegmentForPlayerInterstitialEvent:v6];
-        v16 = [v12 timelineSegment];
-        if (v15 == v16)
+        timelineSegment = [v12 timelineSegment];
+        if (v15 == timelineSegment)
         {
           v18 = v12;
         }
@@ -2205,7 +2205,7 @@ LABEL_9:
             v43 = 2114;
             v44 = v12;
             v45 = 2114;
-            v46 = v16;
+            v46 = timelineSegment;
             v47 = 2114;
             v48 = v15;
             _os_log_impl(&dword_18B49C000, v17, OS_LOG_TYPE_DEFAULT, "%s replacing %{public}@ because the segment changed %{public}@ --> %{public}@", buf, 0x2Au);
@@ -2225,11 +2225,11 @@ LABEL_9:
 LABEL_15:
       }
 
-      v19 = [(AVInterstitialController *)self isLive];
+      isLive = [(AVInterstitialController *)self isLive];
       v20 = [(AVKitIntegratedTimeline *)self->_timeline timelineSegmentForPlayerInterstitialEvent:v6];
       if (v20)
       {
-        v21 = [AVInterstitialTimeRange interstitalTimeRangeWithTimelineSegment:v20 isLive:v19];
+        v21 = [AVInterstitialTimeRange interstitalTimeRangeWithTimelineSegment:v20 isLive:isLive];
 LABEL_24:
         v18 = v21;
         goto LABEL_27;
@@ -2237,7 +2237,7 @@ LABEL_24:
 
       if (!timeline)
       {
-        v21 = [AVInterstitialTimeRange interstitialTimeRangeWithPlayerInterstitialEvent:v6 isLive:v19];
+        v21 = [AVInterstitialTimeRange interstitialTimeRangeWithPlayerInterstitialEvent:v6 isLive:isLive];
         goto LABEL_24;
       }
 
@@ -2271,20 +2271,20 @@ LABEL_30:
 LABEL_35:
 
   v24 = [v29 copy];
-  v3 = v26;
+  events = v26;
 LABEL_37:
 
   return v24;
 }
 
-+ (id)newTimeRangeCollectionForPlayerItem:(id)a3 reversePlaybackEndTime:(id *)a4 forwardPlaybackEndTime:(id *)a5
++ (id)newTimeRangeCollectionForPlayerItem:(id)item reversePlaybackEndTime:(id *)time forwardPlaybackEndTime:(id *)endTime
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  itemCopy = item;
+  v8 = itemCopy;
+  if (itemCopy)
   {
-    v9 = [v7 interstitialTimeRanges];
+    interstitialTimeRanges = [itemCopy interstitialTimeRanges];
     if ([v8 status] == 1)
     {
       [v8 duration];
@@ -2297,7 +2297,7 @@ LABEL_37:
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v10 = v9;
+          v10 = interstitialTimeRanges;
           v11 = [v10 countByEnumeratingWithState:&v31 objects:v38 count:16];
           if (v11)
           {
@@ -2327,54 +2327,54 @@ LABEL_37:
     memset(&v30, 0, sizeof(v30));
     [v8 duration];
     v15 = MEMORY[0x1E6960CC0];
-    if ((a4->var2 & 1) != 0 && (*&time1.start.value = *&a4->var0, time1.start.epoch = a4->var3, v26 = *MEMORY[0x1E6960CC0], *&time2.value = *MEMORY[0x1E6960CC0], v16 = *(MEMORY[0x1E6960CC0] + 16), time2.epoch = v16, CMTimeCompare(&time1.start, &time2) >= 1))
+    if ((time->var2 & 1) != 0 && (*&time1.start.value = *&time->var0, time1.start.epoch = time->var3, v26 = *MEMORY[0x1E6960CC0], *&time2.value = *MEMORY[0x1E6960CC0], v16 = *(MEMORY[0x1E6960CC0] + 16), time2.epoch = v16, CMTimeCompare(&time1.start, &time2) >= 1))
     {
       v17 = [AVInterstitialTimeRange alloc];
       *&time2.value = v26;
       time2.epoch = v16;
-      duration = *a4;
+      duration = *time;
       CMTimeRangeMake(&time1, &time2, &duration);
       v18 = [(AVInterstitialTimeRange *)v17 initWithHiddenTimeRange:&time1];
       v37 = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-      v20 = [v19 arrayByAddingObjectsFromArray:v9];
+      v20 = [v19 arrayByAddingObjectsFromArray:interstitialTimeRanges];
 
-      v9 = v20;
+      interstitialTimeRanges = v20;
     }
 
     else
     {
-      *&a4->var0 = *v15;
-      a4->var3 = *(v15 + 16);
+      *&time->var0 = *v15;
+      time->var3 = *(v15 + 16);
     }
 
-    if (a5->var2)
+    if (endTime->var2)
     {
-      *&time1.start.value = *&a5->var0;
-      time1.start.epoch = a5->var3;
-      time2 = *a4;
+      *&time1.start.value = *&endTime->var0;
+      time1.start.epoch = endTime->var3;
+      time2 = *time;
       if (CMTimeCompare(&time1.start, &time2) >= 1)
       {
-        *&time1.start.value = *&a5->var0;
-        time1.start.epoch = a5->var3;
+        *&time1.start.value = *&endTime->var0;
+        time1.start.epoch = endTime->var3;
         time2 = v30;
         if (CMTimeCompare(&time1.start, &time2) < 0)
         {
           v21 = [AVInterstitialTimeRange alloc];
-          time2 = *a5;
+          time2 = *endTime;
           duration = v30;
           CMTimeRangeFromTimeToTime(&time1, &time2, &duration);
           v22 = [(AVInterstitialTimeRange *)v21 initWithHiddenTimeRange:&time1];
-          v23 = [v9 arrayByAddingObject:v22];
+          v23 = [interstitialTimeRanges arrayByAddingObject:v22];
 
-          v9 = v23;
+          interstitialTimeRanges = v23;
         }
       }
     }
 
-    if ([v9 count])
+    if ([interstitialTimeRanges count])
     {
-      v24 = [[AVTimeRangeCollection alloc] initWithInterstitialTimeRanges:v9];
+      v24 = [[AVTimeRangeCollection alloc] initWithInterstitialTimeRanges:interstitialTimeRanges];
     }
 
     else

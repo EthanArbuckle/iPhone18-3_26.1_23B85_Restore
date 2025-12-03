@@ -1,11 +1,11 @@
 @interface FBSceneEventQueue
 + (BOOL)isIdleWorkSuspended;
-+ (id)suspendIdleWorkForReason:(id)a3;
-+ (void)executeWhenIdle:(id)a3;
++ (id)suspendIdleWorkForReason:(id)reason;
++ (void)executeWhenIdle:(id)idle;
 - (void)_noteQueueDidLock;
-- (void)_noteWillPendEvents:(id)a3 atPosition:(int)a4;
+- (void)_noteWillPendEvents:(id)events atPosition:(int)position;
 - (void)_relinquishIdleLockIfAppropriate;
-- (void)executeOrAppend:(id)a3;
+- (void)executeOrAppend:(id)append;
 @end
 
 @implementation FBSceneEventQueue
@@ -23,56 +23,56 @@
 
 - (void)_relinquishIdleLockIfAppropriate
 {
-  if (a1)
+  if (self)
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
       __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "[FBSceneEventQueue _relinquishIdleLockIfAppropriate]");
     }
 
-    if (a1[7] && [a1 isEmpty])
+    if (self[7] && [self isEmpty])
     {
-      v2 = [a1 executingEvent];
-      if (!v2)
+      executingEvent = [self executingEvent];
+      if (!executingEvent)
       {
-        if ([a1 isLocked])
+        if ([self isLocked])
         {
           return;
         }
 
-        v3 = a1[7];
-        a1[7] = 0;
+        v3 = self[7];
+        self[7] = 0;
         v4 = v3;
 
         [v4 relinquish];
-        v2 = v4;
+        executingEvent = v4;
       }
     }
   }
 }
 
-- (void)executeOrAppend:(id)a3
+- (void)executeOrAppend:(id)append
 {
-  v4 = [MEMORY[0x1E698E6B0] eventWithName:@"event" handler:a3];
+  v4 = [MEMORY[0x1E698E6B0] eventWithName:@"event" handler:append];
   v5.receiver = self;
   v5.super_class = FBSceneEventQueue;
   [(BSEventQueue *)&v5 executeOrInsertEvent:v4 atPosition:1];
 }
 
-+ (void)executeWhenIdle:(id)a3
++ (void)executeWhenIdle:(id)idle
 {
-  v7 = a3;
+  idleCopy = idle;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "+[FBSceneEventQueue executeWhenIdle:]");
   }
 
-  if (!v7)
+  if (!idleCopy)
   {
-    [(FBSceneEventQueue *)a2 executeWhenIdle:a1];
+    [(FBSceneEventQueue *)a2 executeWhenIdle:self];
   }
 
-  v5 = [MEMORY[0x1E698E6B0] eventWithName:@"idleEvent" handler:v7];
+  v5 = [MEMORY[0x1E698E6B0] eventWithName:@"idleEvent" handler:idleCopy];
   v6 = FBSceneIdleEventQueue();
   [v6 executeOrInsertEvent:v5 atPosition:1];
 }
@@ -80,22 +80,22 @@
 + (BOOL)isIdleWorkSuspended
 {
   v2 = FBSceneIdleEventQueue();
-  v3 = [v2 isLocked];
+  isLocked = [v2 isLocked];
 
-  return v3;
+  return isLocked;
 }
 
-+ (id)suspendIdleWorkForReason:(id)a3
++ (id)suspendIdleWorkForReason:(id)reason
 {
   v3 = MEMORY[0x1E696AF00];
-  v4 = a3;
+  reasonCopy = reason;
   if (([v3 isMainThread] & 1) == 0)
   {
     __FB_REPORT_MAIN_THREAD_VIOLATION__(0, "+[FBSceneEventQueue suspendIdleWorkForReason:]");
   }
 
   v5 = FBSceneIdleEventQueue();
-  v6 = [v5 acquireLockForReason:v4];
+  v6 = [v5 acquireLockForReason:reasonCopy];
 
   v7 = objc_alloc(MEMORY[0x1E698E778]);
   v11[0] = MEMORY[0x1E69E9820];
@@ -104,12 +104,12 @@
   v11[3] = &unk_1E783C088;
   v12 = v6;
   v8 = v6;
-  v9 = [v7 initWithIdentifier:@"SuspendIdleWork" forReason:v4 queue:MEMORY[0x1E69E96A0] invalidationBlock:v11];
+  v9 = [v7 initWithIdentifier:@"SuspendIdleWork" forReason:reasonCopy queue:MEMORY[0x1E69E96A0] invalidationBlock:v11];
 
   return v9;
 }
 
-- (void)_noteWillPendEvents:(id)a3 atPosition:(int)a4
+- (void)_noteWillPendEvents:(id)events atPosition:(int)position
 {
   if (!self->_idleEventLock)
   {

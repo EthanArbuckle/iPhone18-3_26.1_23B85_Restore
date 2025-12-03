@@ -1,7 +1,7 @@
 @interface PNPWizardScratchpadInkView
 + (void)initialize;
 - (CGSize)intrinsicContentSize;
-- (PNPWizardScratchpadInkView)initWithIndex:(int64_t)a3;
+- (PNPWizardScratchpadInkView)initWithIndex:(int64_t)index;
 - (void)layoutSubviews;
 @end
 
@@ -10,12 +10,12 @@
 - (void)layoutSubviews
 {
   [(PNPWizardScratchpadInkView *)self bounds];
-  v3 = [(UIImageView *)self->_imageView image];
-  [v3 size];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
 
   [(PNPWizardScratchpadInkView *)self bounds];
-  v4 = [(PNPWizardScratchpadInkView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(PNPWizardScratchpadInkView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v5;
   UIRectCenteredXInRectScale();
   v7 = v6;
@@ -44,8 +44,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(UIImageView *)self->_imageView image];
-  [v2 size];
+  image = [(UIImageView *)self->_imageView image];
+  [image size];
   v4 = v3;
   [objc_opt_class() preferredHeight];
   v6 = v5;
@@ -57,7 +57,7 @@
   return result;
 }
 
-- (PNPWizardScratchpadInkView)initWithIndex:(int64_t)a3
+- (PNPWizardScratchpadInkView)initWithIndex:(int64_t)index
 {
   v12.receiver = self;
   v12.super_class = PNPWizardScratchpadInkView;
@@ -67,11 +67,11 @@
   v4->_imageView = v5;
 
   v7 = v4->_imageView;
-  v8 = [__PNPWizardScratchpadInkViewInkImages objectAtIndex:a3];
+  v8 = [__PNPWizardScratchpadInkViewInkImages objectAtIndex:index];
   [(UIImageView *)v7 setImage:v8];
 
   [(PNPWizardScratchpadInkView *)v4 addSubview:v4->_imageView];
-  v9 = [__PNPWizardScratchpadInkViewInks objectAtIndex:a3];
+  v9 = [__PNPWizardScratchpadInkViewInks objectAtIndex:index];
   ink = v4->_ink;
   v4->_ink = v9;
 
@@ -81,30 +81,30 @@
 + (void)initialize
 {
   v39[8] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = __PNPWizardScratchpadInkViewInkImages;
-  __PNPWizardScratchpadInkViewInkImages = v2;
+  __PNPWizardScratchpadInkViewInkImages = array;
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v5 = __PNPWizardScratchpadInkViewInks;
-  __PNPWizardScratchpadInkViewInks = v4;
+  __PNPWizardScratchpadInkViewInks = array2;
 
-  v6 = [MEMORY[0x277D75348] systemRedColor];
-  v39[0] = v6;
-  v7 = [MEMORY[0x277D75348] systemRedColor];
-  v39[1] = v7;
-  v8 = [MEMORY[0x277D75348] systemOrangeColor];
-  v39[2] = v8;
-  v9 = [MEMORY[0x277D75348] systemYellowColor];
-  v39[3] = v9;
-  v10 = [MEMORY[0x277D75348] systemBlueColor];
-  v39[4] = v10;
-  v11 = [MEMORY[0x277D75348] systemPurpleColor];
-  v39[5] = v11;
-  v12 = [MEMORY[0x277D75348] systemOrangeColor];
-  v39[6] = v12;
-  v13 = [MEMORY[0x277D75348] systemPinkColor];
-  v39[7] = v13;
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  v39[0] = systemRedColor;
+  systemRedColor2 = [MEMORY[0x277D75348] systemRedColor];
+  v39[1] = systemRedColor2;
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+  v39[2] = systemOrangeColor;
+  systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+  v39[3] = systemYellowColor;
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v39[4] = systemBlueColor;
+  systemPurpleColor = [MEMORY[0x277D75348] systemPurpleColor];
+  v39[5] = systemPurpleColor;
+  systemOrangeColor2 = [MEMORY[0x277D75348] systemOrangeColor];
+  v39[6] = systemOrangeColor2;
+  systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+  v39[7] = systemPinkColor;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:8];
 
   v15 = *MEMORY[0x277CD96E8];

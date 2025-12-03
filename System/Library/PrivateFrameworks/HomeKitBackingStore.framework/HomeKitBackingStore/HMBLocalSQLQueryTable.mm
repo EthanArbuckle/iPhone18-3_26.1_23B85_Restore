@@ -1,13 +1,13 @@
 @interface HMBLocalSQLQueryTable
 + (id)logCategory;
-- (BOOL)prepareWithError:(id *)a3;
+- (BOOL)prepareWithError:(id *)error;
 - (HMBLocalSQLContext)context;
-- (HMBLocalSQLQueryTable)initWithContext:(id)a3 queryModel:(Class)a4;
-- (id)buildQueriableFieldsForModel:(id)a3;
-- (id)performQueryOn:(id)a3 properties:(id)a4 filter:(id)a5;
-- (unint64_t)_deleteAllQueriesForZoneRow:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)_deleteQueryForRecordRow:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)_updateQueryForZoneRow:(unint64_t)a3 recordRow:(unint64_t)a4 encodedColumns:(id)a5 error:(id *)a6;
+- (HMBLocalSQLQueryTable)initWithContext:(id)context queryModel:(Class)model;
+- (id)buildQueriableFieldsForModel:(id)model;
+- (id)performQueryOn:(id)on properties:(id)properties filter:(id)filter;
+- (unint64_t)_deleteAllQueriesForZoneRow:(unint64_t)row error:(id *)error;
+- (unint64_t)_deleteQueryForRecordRow:(unint64_t)row error:(id *)error;
+- (unint64_t)_updateQueryForZoneRow:(unint64_t)row recordRow:(unint64_t)recordRow encodedColumns:(id)columns error:(id *)error;
 - (void)dealloc;
 - (void)finalize;
 @end
@@ -30,7 +30,7 @@
   }
 
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -41,26 +41,26 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMBLocalSQLQueryTable *)v4 deleteAll];
-  [v7 finalize];
+  deleteAll = [(HMBLocalSQLQueryTable *)selfCopy deleteAll];
+  [deleteAll finalize];
 
-  v8 = [(HMBLocalSQLQueryTable *)v4 deleteRecord];
-  [v8 finalize];
+  deleteRecord = [(HMBLocalSQLQueryTable *)selfCopy deleteRecord];
+  [deleteRecord finalize];
 
-  v9 = [(HMBLocalSQLQueryTable *)v4 updateRecord];
-  [v9 finalize];
+  updateRecord = [(HMBLocalSQLQueryTable *)selfCopy updateRecord];
+  [updateRecord finalize];
 
-  v10 = [(HMBLocalSQLQueryTable *)v4 selectAll];
-  [v10 finalize];
+  selectAll = [(HMBLocalSQLQueryTable *)selfCopy selectAll];
+  [selectAll finalize];
 
-  v11 = [(HMBLocalSQLQueryTable *)v4 userQueries];
-  v12 = [v11 allObjects];
-  [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_1277];
+  userQueries = [(HMBLocalSQLQueryTable *)selfCopy userQueries];
+  allObjects = [userQueries allObjects];
+  [allObjects hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_1277];
 
-  v13 = [(HMBLocalSQLQueryTable *)v4 userQueries];
-  [v13 removeAllObjects];
+  userQueries2 = [(HMBLocalSQLQueryTable *)selfCopy userQueries];
+  [userQueries2 removeAllObjects];
 
-  [(HMBLocalSQLQueryTable *)v4 setFinalized:1];
+  [(HMBLocalSQLQueryTable *)selfCopy setFinalized:1];
   v14 = *MEMORY[0x277D85DE8];
 }
 
@@ -80,23 +80,23 @@
   }
 }
 
-- (unint64_t)_updateQueryForZoneRow:(unint64_t)a3 recordRow:(unint64_t)a4 encodedColumns:(id)a5 error:(id *)a6
+- (unint64_t)_updateQueryForZoneRow:(unint64_t)row recordRow:(unint64_t)recordRow encodedColumns:(id)columns error:(id *)error
 {
-  v10 = a5;
-  v11 = [(HMBLocalSQLQueryTable *)self updateRecord];
-  v12 = [v11 statement];
+  columnsCopy = columns;
+  updateRecord = [(HMBLocalSQLQueryTable *)self updateRecord];
+  statement = [updateRecord statement];
 
-  hmbBindIntSQLite3(v12, 1, a3, a6);
-  hmbBindIntSQLite3(v12, 2, a4, a6);
+  hmbBindIntSQLite3(statement, 1, row, error);
+  hmbBindIntSQLite3(statement, 2, recordRow, error);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__HMBLocalSQLQueryTable__updateQueryForZoneRow_recordRow_encodedColumns_error___block_invoke;
   v16[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24l;
-  v16[4] = v12;
-  [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v16];
+  v16[4] = statement;
+  [columnsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v16];
 
-  v13 = [(HMBLocalSQLQueryTable *)self context];
-  v14 = [v13 insertSQLite3:v12 error:a6];
+  context = [(HMBLocalSQLQueryTable *)self context];
+  v14 = [context insertSQLite3:statement error:error];
 
   return v14;
 }
@@ -128,24 +128,24 @@ void __79__HMBLocalSQLQueryTable__updateQueryForZoneRow_recordRow_encodedColumns
   hmbBindDataSQLite3(v7, v9, v6, v10);
 }
 
-- (id)buildQueriableFieldsForModel:(id)a3
+- (id)buildQueriableFieldsForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = MEMORY[0x277CBEB18];
-  v6 = [(HMBLocalSQLQueryTable *)self columnNames];
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  columnNames = [(HMBLocalSQLQueryTable *)self columnNames];
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(columnNames, "count")}];
 
-  v8 = [(HMBLocalSQLQueryTable *)self columnNames];
+  columnNames2 = [(HMBLocalSQLQueryTable *)self columnNames];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__HMBLocalSQLQueryTable_buildQueriableFieldsForModel___block_invoke;
   v13[3] = &unk_2786E0670;
   v13[4] = self;
-  v14 = v4;
+  v14 = modelCopy;
   v15 = v7;
   v9 = v7;
-  v10 = v4;
-  [v8 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  v10 = modelCopy;
+  [columnNames2 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
 
   v11 = [v9 copy];
 
@@ -176,53 +176,53 @@ void __54__HMBLocalSQLQueryTable_buildQueriableFieldsForModel___block_invoke(uin
   }
 }
 
-- (unint64_t)_deleteAllQueriesForZoneRow:(unint64_t)a3 error:(id *)a4
+- (unint64_t)_deleteAllQueriesForZoneRow:(unint64_t)row error:(id *)error
 {
-  v7 = [(HMBLocalSQLQueryTable *)self deleteAll];
-  v8 = [v7 statement];
+  deleteAll = [(HMBLocalSQLQueryTable *)self deleteAll];
+  statement = [deleteAll statement];
 
-  hmbBindIntSQLite3(v8, 1, a3, a4);
-  v9 = [(HMBLocalSQLQueryTable *)self context];
-  v10 = [v9 execSQLite3:v8 error:a4];
+  hmbBindIntSQLite3(statement, 1, row, error);
+  context = [(HMBLocalSQLQueryTable *)self context];
+  v10 = [context execSQLite3:statement error:error];
 
   return v10;
 }
 
-- (unint64_t)_deleteQueryForRecordRow:(unint64_t)a3 error:(id *)a4
+- (unint64_t)_deleteQueryForRecordRow:(unint64_t)row error:(id *)error
 {
-  v7 = [(HMBLocalSQLQueryTable *)self deleteRecord];
-  v8 = [v7 statement];
+  deleteRecord = [(HMBLocalSQLQueryTable *)self deleteRecord];
+  statement = [deleteRecord statement];
 
-  hmbBindIntSQLite3(v8, 1, a3, a4);
-  v9 = [(HMBLocalSQLQueryTable *)self context];
-  v10 = [(HMBLocalSQLQueryTable *)self deleteRecord];
-  v11 = [v9 execSQLite3:objc_msgSend(v10 error:{"statement"), a4}];
+  hmbBindIntSQLite3(statement, 1, row, error);
+  context = [(HMBLocalSQLQueryTable *)self context];
+  deleteRecord2 = [(HMBLocalSQLQueryTable *)self deleteRecord];
+  v11 = [context execSQLite3:objc_msgSend(deleteRecord2 error:{"statement"), error}];
 
   return v11;
 }
 
-- (id)performQueryOn:(id)a3 properties:(id)a4 filter:(id)a5
+- (id)performQueryOn:(id)on properties:(id)properties filter:(id)filter
 {
-  v8 = a4;
+  propertiesCopy = properties;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 array];
-  v13 = [(HMBLocalSQLQueryTable *)self columnNames];
+  filterCopy = filter;
+  onCopy = on;
+  array = [v9 array];
+  columnNames = [(HMBLocalSQLQueryTable *)self columnNames];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke;
   v20[3] = &unk_2786E0670;
-  v21 = v8;
-  v22 = v12;
-  v23 = self;
-  v14 = v12;
-  v15 = v8;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+  v21 = propertiesCopy;
+  v22 = array;
+  selfCopy = self;
+  v14 = array;
+  v15 = propertiesCopy;
+  [columnNames hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
 
   v16 = [HMBLocalZoneQueryResultFilter alloc];
-  v17 = [(HMBLocalSQLQueryTable *)self selectAll];
-  v18 = [(HMBLocalZoneQueryResultFilter *)v16 initWithLocalZone:v11 statement:v17 columns:v14 filter:v10];
+  selectAll = [(HMBLocalSQLQueryTable *)self selectAll];
+  v18 = [(HMBLocalZoneQueryResultFilter *)v16 initWithLocalZone:onCopy statement:selectAll columns:v14 filter:filterCopy];
 
   return v18;
 }
@@ -242,28 +242,28 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
   }
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v202 = *MEMORY[0x277D85DE8];
-  v172 = [(HMBLocalSQLQueryTable *)self context];
-  v4 = [v172 queryTables];
+  context = [(HMBLocalSQLQueryTable *)self context];
+  queryTables = [context queryTables];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", self->_modelType];
-  v177 = [v4 objectForKeyedSubscript:v5];
+  v177 = [queryTables objectForKeyedSubscript:v5];
 
   if (v177)
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = [(HMBLocalSQLQueryTable *)self columnNames];
-    v8 = [v6 setWithArray:v7];
+    columnNames = [(HMBLocalSQLQueryTable *)self columnNames];
+    v8 = [v6 setWithArray:columnNames];
 
     v9 = [v8 count];
-    v10 = [v177 columnNames];
-    v11 = [v10 count];
+    columnNames2 = [v177 columnNames];
+    v11 = [columnNames2 count];
 
     if (v9 == v11)
     {
-      v12 = [v177 columnNames];
-      [v8 minusSet:v12];
+      columnNames3 = [v177 columnNames];
+      [v8 minusSet:columnNames3];
 
       v13 = [v8 count] != 0;
     }
@@ -279,42 +279,42 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
     v13 = 1;
   }
 
-  v176 = [(objc_class *)[(HMBLocalSQLQueryTable *)self modelClass] hmbQueries];
+  hmbQueries = [(objc_class *)[(HMBLocalSQLQueryTable *)self modelClass] hmbQueries];
   v178[0] = MEMORY[0x277D85DD0];
   v178[1] = 3221225472;
   v178[2] = __42__HMBLocalSQLQueryTable_prepareWithError___block_invoke;
   v178[3] = &unk_2786E0698;
   v178[4] = self;
-  [v176 hmf_enumerateWithAutoreleasePoolUsingBlock:v178];
+  [hmbQueries hmf_enumerateWithAutoreleasePoolUsingBlock:v178];
   if (!v13)
   {
     goto LABEL_31;
   }
 
-  v14 = self;
-  v173 = [(HMBLocalSQLQueryTable *)v14 context];
+  selfCopy = self;
+  context2 = [(HMBLocalSQLQueryTable *)selfCopy context];
   v15 = [MEMORY[0x277CBEB18] arrayWithArray:&unk_283EB9F00];
-  v16 = [(HMBLocalSQLQueryTable *)v14 columnNames];
+  columnNames4 = [(HMBLocalSQLQueryTable *)selfCopy columnNames];
   v185 = MEMORY[0x277D85DD0];
   v186 = 3221225472;
   v187 = ____buildTableForClass_block_invoke;
   v188 = &unk_2786E0700;
   v167 = v15;
   v189 = v167;
-  [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:&v185];
+  [columnNames4 hmf_enumerateWithAutoreleasePoolUsingBlock:&v185];
 
   v17 = objc_autoreleasePoolPush();
-  v18 = v14;
+  v18 = selfCopy;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = HMFGetLogIdentifier();
-    v21 = [(HMBLocalSQLQueryTable *)v18 modelType];
+    modelType = [(HMBLocalSQLQueryTable *)v18 modelType];
     v22 = [v167 componentsJoinedByString:{@", "}];
     *buf = 138543874;
     *&buf[4] = v20;
     *&buf[12] = 2112;
-    *&buf[14] = v21;
+    *&buf[14] = modelType;
     *&buf[22] = 2112;
     v197 = v22;
     _os_log_impl(&dword_22AD27000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Creating index table for %@ model (fields: %@)", buf, 0x20u);
@@ -322,18 +322,18 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
 
   objc_autoreleasePoolPop(v17);
   v23 = MEMORY[0x277CCACA8];
-  v24 = [(HMBLocalSQLQueryTable *)v18 modelType];
-  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v24];
+  modelType2 = [(HMBLocalSQLQueryTable *)v18 modelType];
+  v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType2];
   v168 = [v23 stringWithFormat:@"DROP TABLE IF EXISTS %@", v25];;
 
   v26 = MEMORY[0x277CCACA8];
-  v27 = [(HMBLocalSQLQueryTable *)v18 modelType];
-  v170 = [v26 stringWithFormat:@"DELETE FROM index_sentinel WHERE type = '%@'", v27];;
+  modelType3 = [(HMBLocalSQLQueryTable *)v18 modelType];
+  v170 = [v26 stringWithFormat:@"DELETE FROM index_sentinel WHERE type = '%@'", modelType3];;
 
   v28 = v170;
-  v29 = [v170 UTF8String];
+  uTF8String = [v170 UTF8String];
   v181 = 0;
-  LOBYTE(v26) = [v173 runSQLite3:v29 error:&v181];
+  LOBYTE(v26) = [context2 runSQLite3:uTF8String error:&v181];
   v30 = v181;
   if ((v26 & 1) == 0)
   {
@@ -354,9 +354,9 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
   }
 
   v35 = v168;
-  v36 = [v168 UTF8String];
+  uTF8String2 = [v168 UTF8String];
   *v193 = v30;
-  v37 = [v173 runSQLite3:v36 error:v193];
+  v37 = [context2 runSQLite3:uTF8String2 error:v193];
   v38 = *v193;
 
   if ((v37 & 1) == 0)
@@ -378,32 +378,32 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
   }
 
   v43 = MEMORY[0x277CCACA8];
-  v44 = [(HMBLocalSQLQueryTable *)v18 modelType];
-  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v44];
+  modelType4 = [(HMBLocalSQLQueryTable *)v18 modelType];
+  v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType4];
   v46 = [v167 componentsJoinedByString:{@", "}];
-  v47 = [(HMBLocalSQLQueryTable *)v18 modelType];
-  v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v47];
+  modelType5 = [(HMBLocalSQLQueryTable *)v18 modelType];
+  v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType5];
   v49 = [v43 stringWithFormat:@"CREATE TABLE %@ (%@, CONSTRAINT fk_%@ FOREIGN KEY (_record_id) REFERENCES record_v2 (id) ON DELETE CASCADE)", v45, v46, v48];;
 
   v50 = v49;
-  v51 = [v49 UTF8String];
+  uTF8String3 = [v49 UTF8String];
   v180 = v38;
-  LOBYTE(v44) = [v173 runSQLite3:v51 error:&v180];
+  LOBYTE(modelType4) = [context2 runSQLite3:uTF8String3 error:&v180];
   v52 = v180;
 
-  if (v44)
+  if (modelType4)
   {
     v53 = MEMORY[0x277CCACA8];
-    v54 = [(HMBLocalSQLQueryTable *)v18 modelType];
-    v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"qu_%@", v54];
-    v56 = [(HMBLocalSQLQueryTable *)v18 modelType];
-    v57 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v56];
+    modelType6 = [(HMBLocalSQLQueryTable *)v18 modelType];
+    v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"qu_%@", modelType6];
+    modelType7 = [(HMBLocalSQLQueryTable *)v18 modelType];
+    v57 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType7];
     v58 = [v53 stringWithFormat:@"CREATE UNIQUE INDEX IF NOT EXISTS %@ ON %@ (_store_id, _record_id)", v55, v57];;
 
     v59 = v58;
-    v60 = [v58 UTF8String];
+    uTF8String4 = [v58 UTF8String];
     v179 = v52;
-    v61 = [v173 runSQLite3:v60 error:&v179];
+    v61 = [context2 runSQLite3:uTF8String4 error:&v179];
     v62 = v179;
 
     if ((v61 & 1) == 0)
@@ -414,21 +414,21 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
         v65 = HMFGetLogIdentifier();
-        v66 = [(HMBLocalSQLQueryTable *)v63 modelType];
+        modelType8 = [(HMBLocalSQLQueryTable *)v63 modelType];
         *buf = 138543874;
         *&buf[4] = v65;
         *&buf[12] = 2112;
-        *&buf[14] = v66;
+        *&buf[14] = modelType8;
         *&buf[22] = 2112;
         v197 = v62;
         _os_log_impl(&dword_22AD27000, v64, OS_LOG_TYPE_ERROR, "%{public}@Failed to create index for query table for %@: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(context);
-      if (a3)
+      if (error)
       {
         v67 = v62;
-        *a3 = v62;
+        *error = v62;
       }
     }
 
@@ -443,22 +443,22 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
     {
       v71 = HMFGetLogIdentifier();
-      v72 = [(HMBLocalSQLQueryTable *)v69 modelType];
+      modelType9 = [(HMBLocalSQLQueryTable *)v69 modelType];
       *buf = 138543874;
       *&buf[4] = v71;
       *&buf[12] = 2112;
-      *&buf[14] = v72;
+      *&buf[14] = modelType9;
       *&buf[22] = 2112;
       v197 = v52;
       _os_log_impl(&dword_22AD27000, v70, OS_LOG_TYPE_ERROR, "%{public}@Failed to create query table for %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v68);
-    if (a3)
+    if (error)
     {
       v73 = v52;
       v61 = 0;
-      *a3 = v52;
+      *error = v52;
     }
 
     else
@@ -475,19 +475,19 @@ void __58__HMBLocalSQLQueryTable_performQueryOn_properties_filter___block_invoke
   else
   {
 LABEL_31:
-    v74 = self;
-    v174 = v176;
-    v75 = [(HMBLocalSQLQueryTable *)v74 context];
-    v76 = [v75 queryTables];
-    v77 = [(HMBLocalSQLQueryTable *)v74 modelType];
-    v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v77];
-    v79 = [v76 objectForKey:v78];
-    v80 = [v79 indexes];
-    v81 = [v80 mutableCopy];
+    selfCopy2 = self;
+    v174 = hmbQueries;
+    context3 = [(HMBLocalSQLQueryTable *)selfCopy2 context];
+    queryTables2 = [context3 queryTables];
+    modelType10 = [(HMBLocalSQLQueryTable *)selfCopy2 modelType];
+    v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType10];
+    v79 = [queryTables2 objectForKey:v78];
+    indexes = [v79 indexes];
+    dictionary = [indexes mutableCopy];
 
-    if (!v81)
+    if (!dictionary)
     {
-      v81 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     v82 = MEMORY[0x277CBEB98];
@@ -495,12 +495,12 @@ LABEL_31:
     v171 = [v82 setWithArray:v83];
 
     v84 = MEMORY[0x277CCACA8];
-    v85 = [(HMBLocalSQLQueryTable *)v74 modelType];
-    v86 = [v84 stringWithFormat:@"qu_%@", v85];
+    modelType11 = [(HMBLocalSQLQueryTable *)selfCopy2 modelType];
+    v86 = [v84 stringWithFormat:@"qu_%@", modelType11];
 
     v87 = MEMORY[0x277CBEB98];
-    v88 = [v81 allKeys];
-    v89 = [v87 setWithArray:v88];
+    allKeys = [dictionary allKeys];
+    v89 = [v87 setWithArray:allKeys];
     v169 = [v89 na_setByRemovingObjectsFromSet:v171];
 
     v185 = MEMORY[0x277D85DD0];
@@ -509,11 +509,11 @@ LABEL_31:
     v188 = &unk_2786E0748;
     v90 = v86;
     v189 = v90;
-    v91 = v75;
+    v91 = context3;
     v190 = v91;
-    v92 = v74;
+    v92 = selfCopy2;
     v191 = v92;
-    v93 = v81;
+    v93 = dictionary;
     v192 = v93;
     [v169 hmf_enumerateWithAutoreleasePoolUsingBlock:&v185];
     v181 = 0;
@@ -527,8 +527,8 @@ LABEL_31:
     {
       *(v182 + 24) = 1;
       v96 = MEMORY[0x277CCACA8];
-      v97 = [(HMBLocalSQLQueryTable *)v92 modelType];
-      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v97];
+      modelType12 = [(HMBLocalSQLQueryTable *)v92 modelType];
+      v98 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType12];
       v99 = [v96 stringWithFormat:@"CREATE INDEX IF NOT EXISTS %@ ON %@ (_store_id, _record_id)", v90, v98];
 
       v100 = v99;
@@ -583,11 +583,11 @@ LABEL_31:
     if (*(v182 + 24) == 1)
     {
       v113 = MEMORY[0x277CCACA8];
-      v114 = [(HMBLocalSQLQueryTable *)v111 modelType];
-      v115 = [v113 stringWithFormat:@"DELETE FROM index_sentinel WHERE type = '%@'", v114];;
+      modelType13 = [(HMBLocalSQLQueryTable *)v111 modelType];
+      v114 = [v113 stringWithFormat:@"DELETE FROM index_sentinel WHERE type = '%@'", modelType13];;
 
-      v116 = v115;
-      v117 = [v112 runSQLite3:{objc_msgSend(v115, "UTF8String")}];
+      v116 = v114;
+      v117 = [v112 runSQLite3:{objc_msgSend(v114, "UTF8String")}];
       if (v117)
       {
         v118 = objc_autoreleasePoolPush();
@@ -611,64 +611,64 @@ LABEL_31:
     v122 = v111;
     v123 = MEMORY[0x277CBEB18];
     v124 = v174;
-    v125 = [(HMBLocalSQLQueryTable *)v122 columnNames];
-    v126 = [v123 arrayWithCapacity:{objc_msgSend(v125, "count")}];
+    columnNames5 = [(HMBLocalSQLQueryTable *)v122 columnNames];
+    v126 = [v123 arrayWithCapacity:{objc_msgSend(columnNames5, "count")}];
 
-    v127 = [(HMBLocalSQLQueryTable *)v122 columnNames];
+    columnNames6 = [(HMBLocalSQLQueryTable *)v122 columnNames];
     v185 = MEMORY[0x277D85DD0];
     v186 = 3221225472;
     v187 = ____prepareStatementsForClass_block_invoke;
     v188 = &unk_2786E0700;
     v189 = v126;
     v175 = v126;
-    [v127 hmf_enumerateWithAutoreleasePoolUsingBlock:&v185];
+    [columnNames6 hmf_enumerateWithAutoreleasePoolUsingBlock:&v185];
 
-    v128 = [(HMBLocalSQLQueryTable *)v122 columnNames];
-    v129 = [v128 componentsJoinedByString:{@", "}];
+    columnNames7 = [(HMBLocalSQLQueryTable *)v122 columnNames];
+    v129 = [columnNames7 componentsJoinedByString:{@", "}];
 
     v130 = [v175 componentsJoinedByString:{@", "}];
     v131 = MEMORY[0x277CCACA8];
-    v132 = [(HMBLocalSQLQueryTable *)v122 modelType];
-    v133 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v132];
-    v134 = [v131 stringWithFormat:@"DELETE FROM %@ WHERE _store_id=?1", v133];
+    modelType14 = [(HMBLocalSQLQueryTable *)v122 modelType];
+    v132 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType14];
+    v133 = [v131 stringWithFormat:@"DELETE FROM %@ WHERE _store_id=?1", v132];
 
     v135 = MEMORY[0x277CCACA8];
-    v136 = [(HMBLocalSQLQueryTable *)v122 modelType];
-    v137 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v136];
-    v138 = [v135 stringWithFormat:@"DELETE FROM %@ where _record_id=?1", v137];
+    modelType15 = [(HMBLocalSQLQueryTable *)v122 modelType];
+    v136 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType15];
+    v137 = [v135 stringWithFormat:@"DELETE FROM %@ where _record_id=?1", v136];
 
     v139 = MEMORY[0x277CCACA8];
-    v140 = [(HMBLocalSQLQueryTable *)v122 modelType];
-    v141 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v140];
-    v142 = [v139 stringWithFormat:@"DROP TABLE IF EXISTS %@", v141];;
+    modelType16 = [(HMBLocalSQLQueryTable *)v122 modelType];
+    v140 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType16];
+    v141 = [v139 stringWithFormat:@"DROP TABLE IF EXISTS %@", v140];;
     dropTableSQL = v122->_dropTableSQL;
-    v122->_dropTableSQL = v142;
+    v122->_dropTableSQL = v141;
 
     v144 = MEMORY[0x277CCACA8];
-    v145 = [(HMBLocalSQLQueryTable *)v122 modelType];
-    v146 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v145];
-    v147 = [v144 stringWithFormat:@"INSERT OR REPLACE INTO %@ (_store_id, _record_id, %@) values(?1, ?2, %@)", v146, v129, v130];
+    modelType17 = [(HMBLocalSQLQueryTable *)v122 modelType];
+    v145 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType17];
+    v130 = [v144 stringWithFormat:@"INSERT OR REPLACE INTO %@ (_store_id, _record_id, %@) values(?1, ?2, %@)", v145, v129, v130];
 
     v148 = MEMORY[0x277CCACA8];
-    v149 = [(HMBLocalSQLQueryTable *)v122 modelType];
-    v150 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", v149];
-    v151 = [v148 stringWithFormat:@"SELECT _record_id, %@ FROM %@ WHERE _store_id = :_store_id AND _record_id > :_sequence_offset ORDER BY _record_id LIMIT (%lu)", v129, v150, +[HMBSQLQueryIterator maximumRowsPerSelect](HMBSQLQueryIterator, "maximumRowsPerSelect")];
+    modelType18 = [(HMBLocalSQLQueryTable *)v122 modelType];
+    v149 = [MEMORY[0x277CCACA8] stringWithFormat:@"queryable_%@", modelType18];
+    v151 = [v148 stringWithFormat:@"SELECT _record_id, %@ FROM %@ WHERE _store_id = :_store_id AND _record_id > :_sequence_offset ORDER BY _record_id LIMIT (%lu)", v129, v149, +[HMBSQLQueryIterator maximumRowsPerSelect](HMBSQLQueryIterator, "maximumRowsPerSelect")];
 
-    v152 = [(HMBLocalSQLQueryTable *)v122 context];
+    context4 = [(HMBLocalSQLQueryTable *)v122 context];
     v122->_finalized = 0;
-    v153 = [[HMBSQLStatement alloc] initWithContext:v152 statement:v134];
+    v153 = [[HMBSQLStatement alloc] initWithContext:context4 statement:v133];
     deleteAll = v122->_deleteAll;
     v122->_deleteAll = v153;
 
-    v155 = [[HMBSQLStatement alloc] initWithContext:v152 statement:v138];
+    v155 = [[HMBSQLStatement alloc] initWithContext:context4 statement:v137];
     deleteRecord = v122->_deleteRecord;
     v122->_deleteRecord = v155;
 
-    v157 = [[HMBSQLStatement alloc] initWithContext:v152 statement:v147];
+    v157 = [[HMBSQLStatement alloc] initWithContext:context4 statement:v130];
     updateRecord = v122->_updateRecord;
     v122->_updateRecord = v157;
 
-    v159 = [[HMBSQLQueryStatement alloc] initWithContext:v152 statement:v151];
+    v159 = [[HMBSQLQueryStatement alloc] initWithContext:context4 statement:v151];
     selectAll = v122->_selectAll;
     v122->_selectAll = v159;
 
@@ -694,18 +694,18 @@ void __42__HMBLocalSQLQueryTable_prepareWithError___block_invoke(uint64_t a1, vo
   [v3 setModelClass:{objc_msgSend(v2, "modelClass")}];
 }
 
-- (HMBLocalSQLQueryTable)initWithContext:(id)a3 queryModel:(Class)a4
+- (HMBLocalSQLQueryTable)initWithContext:(id)context queryModel:(Class)model
 {
-  v6 = a3;
+  contextCopy = context;
   v36.receiver = self;
   v36.super_class = HMBLocalSQLQueryTable;
   v7 = [(HMBLocalSQLQueryTable *)&v36 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_context, v6);
-    objc_storeStrong(&v8->_modelClass, a4);
-    v9 = NSStringFromClass(a4);
+    objc_storeWeak(&v7->_context, contextCopy);
+    objc_storeStrong(&v8->_modelClass, model);
+    v9 = NSStringFromClass(model);
     modelType = v8->_modelType;
     v8->_modelType = v9;
 
@@ -714,7 +714,7 @@ void __42__HMBLocalSQLQueryTable_prepareWithError___block_invoke(uint64_t a1, vo
     v8->_userQueries = v11;
 
     v8->_finalized = 1;
-    v13 = [(objc_class *)a4 hmbProperties];
+    hmbProperties = [(objc_class *)model hmbProperties];
     v14 = [MEMORY[0x277CBEB58] set];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
@@ -722,21 +722,21 @@ void __42__HMBLocalSQLQueryTable_prepareWithError___block_invoke(uint64_t a1, vo
     v34[3] = &unk_2786E0E00;
     v35 = v14;
     v15 = v14;
-    [v13 enumerateKeysAndObjectsUsingBlock:v34];
+    [hmbProperties enumerateKeysAndObjectsUsingBlock:v34];
     v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v15, "count")}];
     v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v15, "count")}];
-    v18 = [v15 allObjects];
+    allObjects = [v15 allObjects];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __52__HMBLocalSQLQueryTable_initWithContext_queryModel___block_invoke_2;
     v30 = &unk_2786E0670;
-    v31 = v13;
+    v31 = hmbProperties;
     v32 = v16;
     v33 = v17;
     v19 = v17;
     v20 = v16;
-    v21 = v13;
-    [v18 hmf_enumerateWithAutoreleasePoolUsingBlock:&v27];
+    v21 = hmbProperties;
+    [allObjects hmf_enumerateWithAutoreleasePoolUsingBlock:&v27];
 
     v22 = [v19 copy];
     columnNames = v8->_columnNames;

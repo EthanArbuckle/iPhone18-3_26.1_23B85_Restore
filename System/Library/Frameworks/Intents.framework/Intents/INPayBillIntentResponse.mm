@@ -1,21 +1,21 @@
 @interface INPayBillIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INBillDetails)billDetails;
 - (INDateComponentsRange)transactionScheduledDate;
-- (INPayBillIntentResponse)initWithBackingStore:(id)a3;
+- (INPayBillIntentResponse)initWithBackingStore:(id)store;
 - (INPayBillIntentResponse)initWithCode:(INPayBillIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INPayBillIntentResponse)initWithCoder:(id)a3;
+- (INPayBillIntentResponse)initWithCoder:(id)coder;
 - (INPayBillIntentResponseCode)code;
 - (INPaymentAccount)fromAccount;
 - (INPaymentAmount)transactionAmount;
 - (NSString)transactionNote;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setBillDetails:(INBillDetails *)billDetails;
 - (void)setFromAccount:(INPaymentAccount *)fromAccount;
 - (void)setTransactionAmount:(INPaymentAmount *)transactionAmount;
@@ -29,82 +29,82 @@
 {
   v23[6] = *MEMORY[0x1E69E9840];
   v22[0] = @"code";
-  v3 = [(INPayBillIntentResponse *)self code];
-  v21 = v3;
-  if (v3 < 8)
+  code = [(INPayBillIntentResponse *)self code];
+  v21 = code;
+  if (code < 8)
   {
-    v4 = off_1E7281010[v3];
-    v20 = v4;
+    null = off_1E7281010[code];
+    v20 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v20 = 0;
   }
 
-  v19 = v4;
-  v23[0] = v4;
+  v19 = null;
+  v23[0] = null;
   v22[1] = @"fromAccount";
-  v5 = [(INPayBillIntentResponse *)self fromAccount];
-  v6 = v5;
-  if (!v5)
+  fromAccount = [(INPayBillIntentResponse *)self fromAccount];
+  v6 = fromAccount;
+  if (!fromAccount)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    fromAccount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v5;
-  v23[1] = v5;
+  v18 = fromAccount;
+  v23[1] = fromAccount;
   v22[2] = @"billDetails";
-  v7 = [(INPayBillIntentResponse *)self billDetails];
-  v8 = v7;
-  if (!v7)
+  billDetails = [(INPayBillIntentResponse *)self billDetails];
+  null2 = billDetails;
+  if (!billDetails)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v8;
+  v23[2] = null2;
   v22[3] = @"transactionAmount";
-  v9 = [(INPayBillIntentResponse *)self transactionAmount];
-  v10 = v9;
-  if (!v9)
+  transactionAmount = [(INPayBillIntentResponse *)self transactionAmount];
+  null3 = transactionAmount;
+  if (!transactionAmount)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v10;
+  v23[3] = null3;
   v22[4] = @"transactionScheduledDate";
-  v11 = [(INPayBillIntentResponse *)self transactionScheduledDate];
-  v12 = v11;
-  if (!v11)
+  transactionScheduledDate = [(INPayBillIntentResponse *)self transactionScheduledDate];
+  null4 = transactionScheduledDate;
+  if (!transactionScheduledDate)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null4;
   v22[5] = @"transactionNote";
-  v13 = [(INPayBillIntentResponse *)self transactionNote];
-  v14 = v13;
-  if (!v13)
+  transactionNote = [(INPayBillIntentResponse *)self transactionNote];
+  null5 = transactionNote;
+  if (!transactionNote)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:6];
-  if (!v13)
+  if (!transactionNote)
   {
   }
 
-  if (!v11)
+  if (!transactionScheduledDate)
   {
   }
 
-  if (!v9)
+  if (!transactionAmount)
   {
   }
 
-  if (!v7)
+  if (!billDetails)
   {
   }
 
@@ -124,134 +124,134 @@
 - (void)setTransactionNote:(NSString *)transactionNote
 {
   v4 = transactionNote;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToString(v4);
 
-  [v5 setTransactionNote:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransactionNote:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setTransactionScheduledDate:(INDateComponentsRange *)transactionScheduledDate
 {
   v4 = transactionScheduledDate;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDateTimeRange(v4);
 
-  [v5 setTransactionScheduledDate:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransactionScheduledDate:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setTransactionAmount:(INPaymentAmount *)transactionAmount
 {
   v4 = transactionAmount;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToPaymentAmountValue(v4);
 
-  [v5 setTransactionAmount:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setTransactionAmount:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setBillDetails:(INBillDetails *)billDetails
 {
   v4 = billDetails;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToBillDetailsValue(v4);
 
-  [v5 setBillDetails:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setBillDetails:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setFromAccount:(INPaymentAccount *)fromAccount
 {
   v4 = fromAccount;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToFinancialAccountValue(v4);
 
-  [v5 setFromAccount:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setFromAccount:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSString)transactionNote
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionNote];
-  v4 = INIntentSlotValueTransformFromString(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionNote = [_responseMessagePBRepresentation transactionNote];
+  v4 = INIntentSlotValueTransformFromString(transactionNote);
 
   return v4;
 }
 
 - (INDateComponentsRange)transactionScheduledDate
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionScheduledDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionScheduledDate = [_responseMessagePBRepresentation transactionScheduledDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(transactionScheduledDate);
 
   return v4;
 }
 
 - (INPaymentAmount)transactionAmount
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 transactionAmount];
-  v4 = INIntentSlotValueTransformFromPaymentAmountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  transactionAmount = [_responseMessagePBRepresentation transactionAmount];
+  v4 = INIntentSlotValueTransformFromPaymentAmountValue(transactionAmount);
 
   return v4;
 }
 
 - (INBillDetails)billDetails
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 billDetails];
-  v4 = INIntentSlotValueTransformFromBillDetailsValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  billDetails = [_responseMessagePBRepresentation billDetails];
+  v4 = INIntentSlotValueTransformFromBillDetailsValue(billDetails);
 
   return v4;
 }
 
 - (INPaymentAccount)fromAccount
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 fromAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  fromAccount = [_responseMessagePBRepresentation fromAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(fromAccount);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INPayBillIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INPayBillIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INPayBillIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INPayBillIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INPayBillIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INPayBillIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INPayBillIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INPayBillIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INPayBillIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INPayBillIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INPayBillIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INPayBillIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INPayBillIntentResponseCodeFailureCredentialsUnverified"])
+  if ([nameCopy isEqualToString:@"INPayBillIntentResponseCodeFailureCredentialsUnverified"])
   {
     v5 = 6;
   }
@@ -261,7 +261,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INPayBillIntentResponseCodeFailureInsufficientFunds"];
+  v6 = [nameCopy isEqualToString:@"INPayBillIntentResponseCodeFailureInsufficientFunds"];
 
   if (v6)
   {
@@ -276,30 +276,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INPayBillIntentResponse *)self code];
-  if ((v2 - 1) > 6)
+  code = [(INPayBillIntentResponse *)self code];
+  if ((code - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FA48[v2 - 1];
+    return qword_18EE5FA48[code - 1];
   }
 }
 
-- (INPayBillIntentResponse)initWithCoder:(id)a3
+- (INPayBillIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INPayBillIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INPayBillIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INPayBillIntentResponseCode)code
@@ -309,18 +309,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INPayBillIntentResponse)initWithBackingStore:(id)a3
+- (INPayBillIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INPayBillIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INPayBillIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INPayBillIntentResponse)initWithCode:(INPayBillIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -361,9 +361,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 7)
+  if (code == 7)
   {
     v3 = 2;
   }
@@ -373,7 +373,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -384,56 +384,56 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 6)
+  if ((code - 1) > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FA28[a3 - 1];
+    return dword_18EE5FA28[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 6;
   v8 = 4;
-  if (a5)
+  if (requested)
   {
     v8 = 5;
   }
 
-  if (a4 == 2)
+  if (code == 2)
   {
     v8 = 7;
   }
 
-  if (a4 != 1)
+  if (code != 1)
   {
     v7 = v8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

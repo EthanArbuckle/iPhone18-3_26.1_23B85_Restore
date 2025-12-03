@@ -1,22 +1,22 @@
 @interface NUChannelBinaryExpression
-+ (int64_t)expressionTypeWithLeftExpression:(id)a3 rightExpression:(id)a4;
-- (NUChannelBinaryExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4;
-- (NUChannelBinaryExpression)initWithLeftExpression:(id)a3 rightExpression:(id)a4;
++ (int64_t)expressionTypeWithLeftExpression:(id)expression rightExpression:(id)rightExpression;
+- (NUChannelBinaryExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments;
+- (NUChannelBinaryExpression)initWithLeftExpression:(id)expression rightExpression:(id)rightExpression;
 - (NUChannelExpression)leftExpression;
 - (NUChannelExpression)rightExpression;
 - (id)debugDescription;
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
-- (id)evaluateWithLeftData:(id)a3 rightData:(id)a4 error:(id *)a5;
+- (id)evaluateWithArgumentData:(id)data error:(id *)error;
+- (id)evaluateWithContext:(id)context error:(id *)error;
+- (id)evaluateWithLeftData:(id)data rightData:(id)rightData error:(id *)error;
 @end
 
 @implementation NUChannelBinaryExpression
 
-- (id)evaluateWithLeftData:(id)a3 rightData:(id)a4 error:(id *)a5
+- (id)evaluateWithLeftData:(id)data rightData:(id)rightData error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  rightDataCopy = rightData;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -59,8 +59,8 @@ LABEL_8:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v16 callStackSymbols];
+      v19 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v19;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -76,8 +76,8 @@ LABEL_8:
     v22 = MEMORY[0x1E696AF00];
     v23 = specific;
     v24 = v20;
-    v25 = [v22 callStackSymbols];
-    v26 = [v25 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v22 callStackSymbols];
+    v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v34 = specific;
     v35 = 2114;
@@ -91,11 +91,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelBinaryExpression evaluateWithLeftData:rightData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3185, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v29, v30, v31, v32, v28);
 }
 
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4
+- (id)evaluateWithArgumentData:(id)data error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count] != 2)
+  dataCopy = data;
+  if ([dataCopy count] != 2)
   {
     v11 = NUAssertLogger_4187();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -116,8 +116,8 @@ LABEL_14:
         v18 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v19 = MEMORY[0x1E696AF00];
         v20 = v18;
-        v21 = [v19 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v19 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v18;
         v29 = 2114;
@@ -128,8 +128,8 @@ LABEL_14:
 
     else if (v15)
     {
-      v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v17;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -138,27 +138,27 @@ LABEL_14:
     _NUAssertFailHandler("[NUChannelBinaryExpression evaluateWithArgumentData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3180, @"Invalid parameter not satisfying: %s", v23, v24, v25, v26, "args.count == 2");
   }
 
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v6 objectAtIndexedSubscript:1];
-  v9 = [(NUChannelBinaryExpression *)self evaluateWithLeftData:v7 rightData:v8 error:a4];
+  v7 = [dataCopy objectAtIndexedSubscript:0];
+  v8 = [dataCopy objectAtIndexedSubscript:1];
+  v9 = [(NUChannelBinaryExpression *)self evaluateWithLeftData:v7 rightData:v8 error:error];
 
   return v9;
 }
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NUChannelBinaryExpression *)self leftExpression];
-  v8 = [v7 evaluateWithContext:v6 error:a4];
+  contextCopy = context;
+  leftExpression = [(NUChannelBinaryExpression *)self leftExpression];
+  v8 = [leftExpression evaluateWithContext:contextCopy error:error];
 
   if (v8)
   {
-    v9 = [(NUChannelBinaryExpression *)self rightExpression];
-    v10 = [v9 evaluateWithContext:v6 error:a4];
+    rightExpression = [(NUChannelBinaryExpression *)self rightExpression];
+    v10 = [rightExpression evaluateWithContext:contextCopy error:error];
 
     if (v10)
     {
-      v11 = [(NUChannelBinaryExpression *)self evaluateWithLeftData:v8 rightData:v10 error:a4];
+      v11 = [(NUChannelBinaryExpression *)self evaluateWithLeftData:v8 rightData:v10 error:error];
     }
 
     else
@@ -179,46 +179,46 @@ LABEL_14:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelExpression *)self type];
-  if (v5 > 4)
+  type = [(NUChannelExpression *)self type];
+  if (type > 4)
   {
     v6 = @"???";
   }
 
   else
   {
-    v6 = off_1E8109B40[v5];
+    v6 = off_1E8109B40[type];
   }
 
-  v7 = [(NUChannelBinaryExpression *)self leftExpression];
-  v8 = [(NUChannelBinaryExpression *)self rightExpression];
-  v9 = [v3 stringWithFormat:@"<%@:%p type=%@, left=%@, right=%@>", v4, self, v6, v7, v8];
+  leftExpression = [(NUChannelBinaryExpression *)self leftExpression];
+  rightExpression = [(NUChannelBinaryExpression *)self rightExpression];
+  v9 = [v3 stringWithFormat:@"<%@:%p type=%@, left=%@, right=%@>", v4, self, v6, leftExpression, rightExpression];
 
   return v9;
 }
 
 - (NUChannelExpression)rightExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:1];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:1];
 
   return v3;
 }
 
 - (NUChannelExpression)leftExpression
 {
-  v2 = [(NUChannelExpression *)self arguments];
-  v3 = [v2 objectAtIndexedSubscript:0];
+  arguments = [(NUChannelExpression *)self arguments];
+  v3 = [arguments objectAtIndexedSubscript:0];
 
   return v3;
 }
 
-- (NUChannelBinaryExpression)initWithLeftExpression:(id)a3 rightExpression:(id)a4
+- (NUChannelBinaryExpression)initWithLeftExpression:(id)expression rightExpression:(id)rightExpression
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  expressionCopy = expression;
+  rightExpressionCopy = rightExpression;
+  if (!expressionCopy)
   {
     v13 = NUAssertLogger_4187();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -239,8 +239,8 @@ LABEL_14:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v27;
         v49 = 2114;
@@ -251,8 +251,8 @@ LABEL_14:
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -261,8 +261,8 @@ LABEL_14:
     _NUAssertFailHandler("[NUChannelBinaryExpression initWithLeftExpression:rightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3148, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "left != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = rightExpressionCopy;
+  if (!rightExpressionCopy)
   {
     v20 = NUAssertLogger_4187();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -283,8 +283,8 @@ LABEL_14:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v48 = v36;
         v49 = 2114;
@@ -295,8 +295,8 @@ LABEL_14:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -305,8 +305,8 @@ LABEL_14:
     _NUAssertFailHandler("[NUChannelBinaryExpression initWithLeftExpression:rightExpression:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3149, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "right != nil");
   }
 
-  v9 = [objc_opt_class() expressionTypeWithLeftExpression:v6 rightExpression:v7];
-  v46[0] = v6;
+  v9 = [objc_opt_class() expressionTypeWithLeftExpression:expressionCopy rightExpression:rightExpressionCopy];
+  v46[0] = expressionCopy;
   v46[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
   v45.receiver = self;
@@ -316,10 +316,10 @@ LABEL_14:
   return v11;
 }
 
-- (NUChannelBinaryExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4
+- (NUChannelBinaryExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  argumentsCopy = arguments;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -363,8 +363,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -380,8 +380,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -397,11 +397,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelBinaryExpression initWithExpressionType:arguments:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3140, @"Initializer not available: [%@ %@], use designated initializer instead.", v28, v29, v30, v31, v27);
 }
 
-+ (int64_t)expressionTypeWithLeftExpression:(id)a3 rightExpression:(id)a4
++ (int64_t)expressionTypeWithLeftExpression:(id)expression rightExpression:(id)rightExpression
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  expressionCopy = expression;
+  rightExpressionCopy = rightExpression;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -444,8 +444,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -461,8 +461,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;

@@ -1,12 +1,12 @@
 @interface MKDirectionsRequest
 + (BOOL)isDirectionsRequestURL:(NSURL *)url;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
+- (BOOL)writeToURL:(id)l error:(id *)error;
 - (MKDirectionsRequest)init;
 - (MKDirectionsRequest)initWithContentsOfURL:(NSURL *)url;
-- (id)_mapkit_initWithDictionaryRepresentation:(id)a3;
-- (id)_mapkit_initWithSource:(id)a3 destination:(id)a4 transportType:(unint64_t)a5 arrivalDate:(id)a6;
-- (id)_mapkit_initWithSource:(id)a3 destination:(id)a4 transportType:(unint64_t)a5 departureDate:(id)a6 includeTravelTimes:(BOOL)a7 includeTrafficIncidents:(BOOL)a8 includeRoutePoints:(BOOL)a9 resolveExtraAutomobileOptions:(BOOL)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_mapkit_initWithDictionaryRepresentation:(id)representation;
+- (id)_mapkit_initWithSource:(id)source destination:(id)destination transportType:(unint64_t)type arrivalDate:(id)date;
+- (id)_mapkit_initWithSource:(id)source destination:(id)destination transportType:(unint64_t)type departureDate:(id)date includeTravelTimes:(BOOL)times includeTrafficIncidents:(BOOL)incidents includeRoutePoints:(BOOL)points resolveExtraAutomobileOptions:(BOOL)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (void)setArrivalDate:(NSDate *)arrivalDate;
@@ -33,15 +33,15 @@
   return result;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MKDirectionsRequest *)self dictionaryRepresentation];
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:v7 format:200 options:0 error:a4];
+  lCopy = l;
+  dictionaryRepresentation = [(MKDirectionsRequest *)self dictionaryRepresentation];
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryRepresentation format:200 options:0 error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 writeToURL:v6 options:0 error:a4];
+    v10 = [v8 writeToURL:lCopy options:0 error:error];
   }
 
   else
@@ -55,22 +55,22 @@
 - (id)dictionaryRepresentation
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  v4 = [(MKDirectionsRequest *)self source];
+  source = [(MKDirectionsRequest *)self source];
 
-  if (v4)
+  if (source)
   {
-    v5 = [(MKDirectionsRequest *)self source];
-    v6 = [v5 dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"MKDirectionsRequestSource"];
+    source2 = [(MKDirectionsRequest *)self source];
+    dictionaryRepresentation = [source2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"MKDirectionsRequestSource"];
   }
 
-  v7 = [(MKDirectionsRequest *)self destination];
+  destination = [(MKDirectionsRequest *)self destination];
 
-  if (v7)
+  if (destination)
   {
-    v8 = [(MKDirectionsRequest *)self destination];
-    v9 = [v8 dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"MKDirectionsRequestDestination"];
+    destination2 = [(MKDirectionsRequest *)self destination];
+    dictionaryRepresentation2 = [destination2 dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"MKDirectionsRequestDestination"];
   }
 
   return v3;
@@ -87,14 +87,14 @@
   return v5;
 }
 
-- (id)_mapkit_initWithDictionaryRepresentation:(id)a3
+- (id)_mapkit_initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(MKDirectionsRequest *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"MKDirectionsRequestSource"];
-    v7 = [v4 objectForKey:@"MKDirectionsRequestDestination"];
+    v6 = [representationCopy objectForKey:@"MKDirectionsRequestSource"];
+    v7 = [representationCopy objectForKey:@"MKDirectionsRequestDestination"];
     if (v6)
     {
       v8 = [MKMapItem mapItemWithDictionary:v6];
@@ -137,62 +137,62 @@
   return v9;
 }
 
-- (id)_mapkit_initWithSource:(id)a3 destination:(id)a4 transportType:(unint64_t)a5 arrivalDate:(id)a6
+- (id)_mapkit_initWithSource:(id)source destination:(id)destination transportType:(unint64_t)type arrivalDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  sourceCopy = source;
+  destinationCopy = destination;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = MKDirectionsRequest;
   v14 = [(MKDirectionsRequest *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_source, a3);
-    objc_storeStrong(&v15->_destination, a4);
-    v15->_transportType = a5;
-    objc_storeStrong(&v15->_arrivalDate, a6);
+    objc_storeStrong(&v14->_source, source);
+    objc_storeStrong(&v15->_destination, destination);
+    v15->_transportType = type;
+    objc_storeStrong(&v15->_arrivalDate, date);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (id)_mapkit_initWithSource:(id)a3 destination:(id)a4 transportType:(unint64_t)a5 departureDate:(id)a6 includeTravelTimes:(BOOL)a7 includeTrafficIncidents:(BOOL)a8 includeRoutePoints:(BOOL)a9 resolveExtraAutomobileOptions:(BOOL)a10
+- (id)_mapkit_initWithSource:(id)source destination:(id)destination transportType:(unint64_t)type departureDate:(id)date includeTravelTimes:(BOOL)times includeTrafficIncidents:(BOOL)incidents includeRoutePoints:(BOOL)points resolveExtraAutomobileOptions:(BOOL)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
+  sourceCopy = source;
+  destinationCopy = destination;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = MKDirectionsRequest;
   v20 = [(MKDirectionsRequest *)&v24 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_source, a3);
-    objc_storeStrong(&v21->_destination, a4);
-    v21->_transportType = a5;
-    objc_storeStrong(&v21->_departureDate, a6);
-    v21->_includeTravelTimes = a7;
-    v21->_includeTrafficIncidents = a8;
-    v21->_includeRoutePoints = a9;
-    v21->_resolveExtraAutomobileOptions = a10;
+    objc_storeStrong(&v20->_source, source);
+    objc_storeStrong(&v21->_destination, destination);
+    v21->_transportType = type;
+    objc_storeStrong(&v21->_departureDate, date);
+    v21->_includeTravelTimes = times;
+    v21->_includeTrafficIncidents = incidents;
+    v21->_includeRoutePoints = points;
+    v21->_resolveExtraAutomobileOptions = options;
     v22 = v21;
   }
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MKDirectionsRequest allocWithZone:?]];
-  v5 = [(MKDirectionsRequest *)self source];
+  source = [(MKDirectionsRequest *)self source];
   source = v4->_source;
-  v4->_source = v5;
+  v4->_source = source;
 
-  v7 = [(MKDirectionsRequest *)self destination];
+  destination = [(MKDirectionsRequest *)self destination];
   destination = v4->_destination;
-  v4->_destination = v7;
+  v4->_destination = destination;
 
   [(MKDirectionsRequest *)v4 setTransportType:[(MKDirectionsRequest *)self transportType]];
   [(MKDirectionsRequest *)v4 setRequestsAlternateRoutes:[(MKDirectionsRequest *)self requestsAlternateRoutes]];
@@ -203,11 +203,11 @@
   v4->_resolveExtraAutomobileOptions = self->_resolveExtraAutomobileOptions;
   objc_storeStrong(&v4->_additionalTransportTypesRequested, self->_additionalTransportTypesRequested);
   v4->_useBackgroundURL = self->_useBackgroundURL;
-  v9 = [(MKDirectionsRequest *)self departureDate];
-  [(MKDirectionsRequest *)v4 setDepartureDate:v9];
+  departureDate = [(MKDirectionsRequest *)self departureDate];
+  [(MKDirectionsRequest *)v4 setDepartureDate:departureDate];
 
-  v10 = [(MKDirectionsRequest *)self arrivalDate];
-  [(MKDirectionsRequest *)v4 setArrivalDate:v10];
+  arrivalDate = [(MKDirectionsRequest *)self arrivalDate];
+  [(MKDirectionsRequest *)v4 setArrivalDate:arrivalDate];
 
   v11 = [(GEOAutomobileOptions *)self->_automobileOptions copy];
   automobileOptions = v4->_automobileOptions;
@@ -249,9 +249,9 @@
   v3 = url;
   if ([(NSURL *)v3 isFileURL])
   {
-    v4 = [(NSURL *)v3 lastPathComponent];
-    v5 = [v4 pathExtension];
-    v6 = [v5 isEqualToString:@"mkdirectionsrequest"];
+    lastPathComponent = [(NSURL *)v3 lastPathComponent];
+    pathExtension = [lastPathComponent pathExtension];
+    v6 = [pathExtension isEqualToString:@"mkdirectionsrequest"];
   }
 
   else

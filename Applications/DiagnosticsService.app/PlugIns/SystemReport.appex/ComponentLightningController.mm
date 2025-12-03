@@ -1,38 +1,38 @@
 @interface ComponentLightningController
-- (BOOL)base64EncodeData:(id)a3 result:(id *)a4;
+- (BOOL)base64EncodeData:(id)data result:(id *)result;
 - (BOOL)isPresent;
 - (id)accessoryManagerESN;
 - (id)deviceID;
 - (id)registryESN;
-- (id)reverseByteOrder:(id)a3;
-- (void)populateAttributes:(id)a3;
+- (id)reverseByteOrder:(id)order;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentLightningController
 
 - (BOOL)isPresent
 {
-  v2 = [@"tristar" UTF8String];
+  uTF8String = [@"tristar" UTF8String];
 
-  return findDeviceWithName(v2);
+  return findDeviceWithName(uTF8String);
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentLightningController *)self registryESN];
-  if (v5)
+  attributesCopy = attributes;
+  registryESN = [(ComponentLightningController *)self registryESN];
+  if (registryESN)
   {
-    v6 = v5;
+    v6 = registryESN;
     v7 = 0;
   }
 
   else
   {
-    v8 = [(ComponentLightningController *)self accessoryManagerESN];
-    if (v8)
+    accessoryManagerESN = [(ComponentLightningController *)self accessoryManagerESN];
+    if (accessoryManagerESN)
     {
-      v6 = v8;
+      v6 = accessoryManagerESN;
       v7 = 1;
     }
 
@@ -44,13 +44,13 @@
   }
 
   v12 = v6;
-  [v4 setObject:v6 forKeyedSubscript:@"esn"];
+  [attributesCopy setObject:v6 forKeyedSubscript:@"esn"];
   v9 = [NSNumber numberWithUnsignedInteger:v7];
-  [v4 setObject:v9 forKeyedSubscript:@"source"];
+  [attributesCopy setObject:v9 forKeyedSubscript:@"source"];
 
-  v10 = [(ComponentLightningController *)self deviceID];
-  v11 = stringOrNull(v10);
-  [v4 setObject:v11 forKeyedSubscript:@"deviceID"];
+  deviceID = [(ComponentLightningController *)self deviceID];
+  v11 = stringOrNull(deviceID);
+  [attributesCopy setObject:v11 forKeyedSubscript:@"deviceID"];
 }
 
 - (id)registryESN
@@ -102,25 +102,25 @@
   return v4;
 }
 
-- (BOOL)base64EncodeData:(id)a3 result:(id *)a4
+- (BOOL)base64EncodeData:(id)data result:(id *)result
 {
-  v5 = [a3 base64EncodedStringWithOptions:0];
-  *a4 = v5;
+  v5 = [data base64EncodedStringWithOptions:0];
+  *result = v5;
   return v5 != 0;
 }
 
-- (id)reverseByteOrder:(id)a3
+- (id)reverseByteOrder:(id)order
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes];
+  orderCopy = order;
+  v4 = [orderCopy length];
+  bytes = [orderCopy bytes];
   if (v4)
   {
     v6 = &v10 - ((v4 + 15) & 0xFFFFFFFFFFFFFFF0);
     v7 = v4;
     do
     {
-      *v6++ = (v7--)[(v5 - 1)];
+      *v6++ = (v7--)[(bytes - 1)];
     }
 
     while (v7);

@@ -1,19 +1,19 @@
 @interface WFHarnessActionConditionContext
-- (WFHarnessActionConditionContext)initWithVariableDataSource:(id)a3;
+- (WFHarnessActionConditionContext)initWithVariableDataSource:(id)source;
 @end
 
 @implementation WFHarnessActionConditionContext
 
-- (WFHarnessActionConditionContext)initWithVariableDataSource:(id)a3
+- (WFHarnessActionConditionContext)initWithVariableDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = WFHarnessActionConditionContext;
   v6 = [(WFHarnessActionConditionContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_variableDataSource, a3);
+    objc_storeStrong(&v6->_variableDataSource, source);
     v8 = v7;
   }
 

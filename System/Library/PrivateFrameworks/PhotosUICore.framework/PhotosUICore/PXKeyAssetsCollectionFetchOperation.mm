@@ -8,18 +8,18 @@
 {
   v42 = *MEMORY[0x1E69E9840];
   [(PXCollectionFetchOperation *)self handleBegin];
-  v3 = [(PXCollectionFetchOperation *)self fetchOptions];
-  v4 = v3;
-  if (v3)
+  fetchOptions = [(PXCollectionFetchOperation *)self fetchOptions];
+  v4 = fetchOptions;
+  if (fetchOptions)
   {
-    v5 = v3;
+    px_standardLibrarySpecificFetchOptions = fetchOptions;
   }
 
   else
   {
-    v6 = [(PXCollectionFetchOperation *)self collection];
-    v7 = [v6 photoLibrary];
-    v5 = [v7 px_standardLibrarySpecificFetchOptions];
+    collection = [(PXCollectionFetchOperation *)self collection];
+    photoLibrary = [collection photoLibrary];
+    px_standardLibrarySpecificFetchOptions = [photoLibrary px_standardLibrarySpecificFetchOptions];
   }
 
   if (([(PXKeyAssetsCollectionFetchOperation *)self isCancelled]& 1) != 0 || ([(PXCollectionFetchOperation *)self collection], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v9 = objc_opt_isKindOfClass(), v8, (v9 & 1) == 0))
@@ -32,18 +32,18 @@
 
     else
     {
-      v13 = [(PXCollectionFetchOperation *)self collection];
-      if (([v13 collectionListType] & 0xFFFFFFFFFFFFFFFELL) == 2)
+      collection2 = [(PXCollectionFetchOperation *)self collection];
+      if (([collection2 collectionListType] & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
-        v35 = v13;
-        v14 = [(PXCollectionFetchOperation *)self collection];
-        v15 = [v14 photoLibrary];
-        v16 = [v15 px_standardLibrarySpecificFetchOptions];
+        v35 = collection2;
+        collection3 = [(PXCollectionFetchOperation *)self collection];
+        photoLibrary2 = [collection3 photoLibrary];
+        px_standardLibrarySpecificFetchOptions2 = [photoLibrary2 px_standardLibrarySpecificFetchOptions];
 
-        [v16 setReverseSortOrder:{objc_msgSend(v14, "keyCollectionsAtEnd")}];
-        v33 = v16;
-        v34 = v14;
-        v17 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v14 options:v16];
+        [px_standardLibrarySpecificFetchOptions2 setReverseSortOrder:{objc_msgSend(collection3, "keyCollectionsAtEnd")}];
+        v33 = px_standardLibrarySpecificFetchOptions2;
+        v34 = collection3;
+        v17 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:collection3 options:px_standardLibrarySpecificFetchOptions2];
         v18 = [v17 count];
         maxKeyAssets = self->_maxKeyAssets;
         if (maxKeyAssets <= 0)
@@ -86,15 +86,15 @@ LABEL_18:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:v27 options:v5];
-              v29 = v28 = v5;
+              [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:v27 options:px_standardLibrarySpecificFetchOptions];
+              v29 = v28 = px_standardLibrarySpecificFetchOptions;
               v30 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v29, "count")}];
               [v29 prefetchObjectsAtIndexes:v30];
 
               [v21 setObject:v29 forKey:v27];
               v31 = [v21 count];
 
-              v5 = v28;
+              px_standardLibrarySpecificFetchOptions = v28;
               if (v31 >= v36)
               {
                 break;
@@ -114,7 +114,7 @@ LABEL_18:
           }
         }
 
-        v13 = v35;
+        collection2 = v35;
       }
 
       else
@@ -127,15 +127,15 @@ LABEL_18:
 
   else
   {
-    v10 = [(PXCollectionFetchOperation *)self collection];
-    if ([v10 assetCollectionType] == 4)
+    collection4 = [(PXCollectionFetchOperation *)self collection];
+    if ([collection4 assetCollectionType] == 4)
     {
-      [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:v10 referenceAsset:0];
+      [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:collection4 referenceAsset:0];
     }
 
     else
     {
-      [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:v10 options:v5];
+      [MEMORY[0x1E6978630] fetchKeyAssetsInAssetCollection:collection4 options:px_standardLibrarySpecificFetchOptions];
     }
     v22 = ;
     v32 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v22, "count")}];

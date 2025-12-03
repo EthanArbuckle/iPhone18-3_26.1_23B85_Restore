@@ -1,12 +1,12 @@
 @interface SKUIStorePagePinnedBackdropLayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SKUIStorePagePinnedBackdropLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -22,7 +22,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUIStorePagePinnedBackdropLayoutAttributes;
-  v13 = [(UICollectionViewLayoutAttributes *)&v15 copyWithZone:a3];
+  v13 = [(UICollectionViewLayoutAttributes *)&v15 copyWithZone:zone];
   [v13 setBackdropColor:self->_backdropColor];
   [v13 setBackdropGroupName:self->_backdropGroupName];
   [v13 setBackdropStyle:self->_backdropStyle];
@@ -59,9 +59,9 @@
   return v12 ^ v13 ^ self->_backdropStyle ^ v14 ^ llround(self->_transitionProgress * 1000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -74,7 +74,7 @@
     }
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -84,7 +84,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v4;
+      v13 = equalCopy;
       v18.receiver = self;
       v18.super_class = SKUIStorePagePinnedBackdropLayoutAttributes;
       v16 = [(UICollectionViewLayoutAttributes *)&v18 isEqual:v13]&& ((backdropColor = self->_backdropColor, backdropColor == v13->_backdropColor) || [(UIColor *)backdropColor isEqual:?]) && ((backdropGroupName = self->_backdropGroupName, backdropGroupName == v13->_backdropGroupName) || [(NSString *)backdropGroupName isEqualToString:?]) && self->_backdropStyle == v13->_backdropStyle && self->_hidesBackdropView == v13->_hidesBackdropView && self->_transitionProgress != v13->_transitionProgress;

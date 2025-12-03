@@ -1,14 +1,14 @@
 @interface CNUIIDSContactPropertyResolver
-+ (id)IDSRelevantPropertiesForContact:(id)a3;
-+ (id)descriptorForCopyingStrippedContact:(id)a3;
++ (id)IDSRelevantPropertiesForContact:(id)contact;
++ (id)descriptorForCopyingStrippedContact:(id)contact;
 + (id)descriptorForRequiredKeys;
-- (CNUIIDSContactPropertyResolver)initWithIDSAvailabilityProvider:(id)a3;
-- (id)resolveAllFaceTimeIDSPropertiesForContact:(id)a3 schedulerProvider:(id)a4;
-- (id)resolveBestExpanseIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4;
-- (id)resolveBestFaceTimeIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4;
-- (id)resolveBestIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4 usingAvailabilityProviderCall:(id)a5;
-- (id)resolveBestIMessageIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4;
-- (id)resolveIDSPropertiesForContact:(id)a3 schedulerProvider:(id)a4 usingAvailabilityProviderCall:(id)a5;
+- (CNUIIDSContactPropertyResolver)initWithIDSAvailabilityProvider:(id)provider;
+- (id)resolveAllFaceTimeIDSPropertiesForContact:(id)contact schedulerProvider:(id)provider;
+- (id)resolveBestExpanseIDSPropertyForContact:(id)contact schedulerProvider:(id)provider;
+- (id)resolveBestFaceTimeIDSPropertyForContact:(id)contact schedulerProvider:(id)provider;
+- (id)resolveBestIDSPropertyForContact:(id)contact schedulerProvider:(id)provider usingAvailabilityProviderCall:(id)call;
+- (id)resolveBestIMessageIDSPropertyForContact:(id)contact schedulerProvider:(id)provider;
+- (id)resolveIDSPropertiesForContact:(id)contact schedulerProvider:(id)provider usingAvailabilityProviderCall:(id)call;
 @end
 
 @implementation CNUIIDSContactPropertyResolver
@@ -27,11 +27,11 @@
   return v6;
 }
 
-+ (id)descriptorForCopyingStrippedContact:(id)a3
++ (id)descriptorForCopyingStrippedContact:(id)contact
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 keyVector];
-  v4 = [v3 mutableCopy];
+  keyVector = [contact keyVector];
+  v4 = [keyVector mutableCopy];
 
   v5 = *MEMORY[0x1E695C400];
   v16[0] = *MEMORY[0x1E695C278];
@@ -54,32 +54,32 @@
   return v12;
 }
 
-- (CNUIIDSContactPropertyResolver)initWithIDSAvailabilityProvider:(id)a3
+- (CNUIIDSContactPropertyResolver)initWithIDSAvailabilityProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = CNUIIDSContactPropertyResolver;
   v6 = [(CNUIIDSContactPropertyResolver *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsAvailabilityProvider, a3);
+    objc_storeStrong(&v6->_idsAvailabilityProvider, provider);
     v8 = v7;
   }
 
   return v7;
 }
 
-+ (id)IDSRelevantPropertiesForContact:(id)a3
++ (id)IDSRelevantPropertiesForContact:(id)contact
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 descriptorForCopyingStrippedContact:v4];
+  contactCopy = contact;
+  v5 = [self descriptorForCopyingStrippedContact:contactCopy];
   v21[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-  v7 = [v4 copyWithPropertyKeys:v6];
+  v7 = [contactCopy copyWithPropertyKeys:v6];
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__CNUIIDSContactPropertyResolver_IDSRelevantPropertiesForContact___block_invoke;
@@ -88,16 +88,16 @@
   v9 = v7;
   v10 = _Block_copy(aBlock);
   v11 = *MEMORY[0x1E695C208];
-  v12 = [v9 emailAddresses];
-  v13 = v10[2](v10, v11, v12);
-  [v8 addObjectsFromArray:v13];
+  emailAddresses = [v9 emailAddresses];
+  v13 = v10[2](v10, v11, emailAddresses);
+  [array addObjectsFromArray:v13];
 
   v14 = *MEMORY[0x1E695C330];
-  v15 = [v9 phoneNumbers];
-  v16 = v10[2](v10, v14, v15);
-  [v8 addObjectsFromArray:v16];
+  phoneNumbers = [v9 phoneNumbers];
+  v16 = v10[2](v10, v14, phoneNumbers);
+  [array addObjectsFromArray:v16];
 
-  v17 = [v8 copy];
+  v17 = [array copy];
 
   return v17;
 }
@@ -129,23 +129,23 @@ id __66__CNUIIDSContactPropertyResolver_IDSRelevantPropertiesForContact___block_
   return v6;
 }
 
-- (id)resolveBestIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4 usingAvailabilityProviderCall:(id)a5
+- (id)resolveBestIDSPropertyForContact:(id)contact schedulerProvider:(id)provider usingAvailabilityProviderCall:(id)call
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  providerCopy = provider;
+  callCopy = call;
   v11 = MEMORY[0x1E6996798];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __115__CNUIIDSContactPropertyResolver_resolveBestIDSPropertyForContact_schedulerProvider_usingAvailabilityProviderCall___block_invoke;
   v17[3] = &unk_1E76E9450;
-  v18 = v9;
-  v19 = self;
-  v20 = v8;
-  v21 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v18 = providerCopy;
+  selfCopy = self;
+  v20 = contactCopy;
+  v21 = callCopy;
+  v12 = callCopy;
+  v13 = contactCopy;
+  v14 = providerCopy;
   v15 = [v11 observableWithBlock:v17];
 
   return v15;
@@ -223,17 +223,17 @@ void *__115__CNUIIDSContactPropertyResolver_resolveBestIDSPropertyForContact_sch
   return v8;
 }
 
-- (id)resolveBestFaceTimeIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4
+- (id)resolveBestFaceTimeIDSPropertyForContact:(id)contact schedulerProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__CNUIIDSContactPropertyResolver_resolveBestFaceTimeIDSPropertyForContact_schedulerProvider___block_invoke;
   v10[3] = &unk_1E76E9478;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:a3 schedulerProvider:v7 usingAvailabilityProviderCall:v10];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:contact schedulerProvider:v7 usingAvailabilityProviderCall:v10];
 
   return v8;
 }
@@ -248,17 +248,17 @@ id __93__CNUIIDSContactPropertyResolver_resolveBestFaceTimeIDSPropertyForContact
   return v6;
 }
 
-- (id)resolveBestIMessageIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4
+- (id)resolveBestIMessageIDSPropertyForContact:(id)contact schedulerProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__CNUIIDSContactPropertyResolver_resolveBestIMessageIDSPropertyForContact_schedulerProvider___block_invoke;
   v10[3] = &unk_1E76E9478;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:a3 schedulerProvider:v7 usingAvailabilityProviderCall:v10];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:contact schedulerProvider:v7 usingAvailabilityProviderCall:v10];
 
   return v8;
 }
@@ -273,17 +273,17 @@ id __93__CNUIIDSContactPropertyResolver_resolveBestIMessageIDSPropertyForContact
   return v6;
 }
 
-- (id)resolveBestExpanseIDSPropertyForContact:(id)a3 schedulerProvider:(id)a4
+- (id)resolveBestExpanseIDSPropertyForContact:(id)contact schedulerProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__CNUIIDSContactPropertyResolver_resolveBestExpanseIDSPropertyForContact_schedulerProvider___block_invoke;
   v10[3] = &unk_1E76E9478;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:a3 schedulerProvider:v7 usingAvailabilityProviderCall:v10];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [(CNUIIDSContactPropertyResolver *)self resolveBestIDSPropertyForContact:contact schedulerProvider:v7 usingAvailabilityProviderCall:v10];
 
   return v8;
 }
@@ -298,23 +298,23 @@ id __92__CNUIIDSContactPropertyResolver_resolveBestExpanseIDSPropertyForContact_
   return v6;
 }
 
-- (id)resolveIDSPropertiesForContact:(id)a3 schedulerProvider:(id)a4 usingAvailabilityProviderCall:(id)a5
+- (id)resolveIDSPropertiesForContact:(id)contact schedulerProvider:(id)provider usingAvailabilityProviderCall:(id)call
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactCopy = contact;
+  providerCopy = provider;
+  callCopy = call;
   v11 = MEMORY[0x1E6996798];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __113__CNUIIDSContactPropertyResolver_resolveIDSPropertiesForContact_schedulerProvider_usingAvailabilityProviderCall___block_invoke;
   v17[3] = &unk_1E76E9450;
-  v18 = v9;
-  v19 = self;
-  v20 = v8;
-  v21 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v18 = providerCopy;
+  selfCopy = self;
+  v20 = contactCopy;
+  v21 = callCopy;
+  v12 = callCopy;
+  v13 = contactCopy;
+  v14 = providerCopy;
   v15 = [v11 observableWithBlock:v17];
 
   return v15;
@@ -369,17 +369,17 @@ id __113__CNUIIDSContactPropertyResolver_resolveIDSPropertiesForContact_schedule
   return v3;
 }
 
-- (id)resolveAllFaceTimeIDSPropertiesForContact:(id)a3 schedulerProvider:(id)a4
+- (id)resolveAllFaceTimeIDSPropertiesForContact:(id)contact schedulerProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __94__CNUIIDSContactPropertyResolver_resolveAllFaceTimeIDSPropertiesForContact_schedulerProvider___block_invoke;
   v10[3] = &unk_1E76E9478;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(CNUIIDSContactPropertyResolver *)self resolveIDSPropertiesForContact:a3 schedulerProvider:v7 usingAvailabilityProviderCall:v10];
+  v11 = providerCopy;
+  v7 = providerCopy;
+  v8 = [(CNUIIDSContactPropertyResolver *)self resolveIDSPropertiesForContact:contact schedulerProvider:v7 usingAvailabilityProviderCall:v10];
 
   return v8;
 }

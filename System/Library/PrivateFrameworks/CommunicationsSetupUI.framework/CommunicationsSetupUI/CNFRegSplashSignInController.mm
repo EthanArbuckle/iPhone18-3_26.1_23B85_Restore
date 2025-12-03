@@ -1,13 +1,13 @@
 @interface CNFRegSplashSignInController
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_controllerToPresentOn;
-- (id)_existingLearnMoreViewForSection:(int64_t)a3;
-- (id)_existingLearnMoreViewForSpecifier:(id)a3;
+- (id)_existingLearnMoreViewForSection:(int64_t)section;
+- (id)_existingLearnMoreViewForSpecifier:(id)specifier;
 - (id)specifierList;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)_handleTimeout;
 - (void)dealloc;
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
 - (void)viewDidLoad;
 @end
 
@@ -15,21 +15,21 @@
 
 - (id)_controllerToPresentOn
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 windows];
-  v4 = [v3 firstObject];
-  v5 = [v4 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  windows = [mEMORY[0x277D75128] windows];
+  firstObject = [windows firstObject];
+  rootViewController = [firstObject rootViewController];
 
-  v6 = v5;
-  v7 = [v6 presentedViewController];
+  v6 = rootViewController;
+  presentedViewController = [v6 presentedViewController];
 
-  v8 = v6;
-  if (v7)
+  presentedViewController2 = v6;
+  if (presentedViewController)
   {
-    v8 = [v6 presentedViewController];
+    presentedViewController2 = [v6 presentedViewController];
   }
 
-  return v8;
+  return presentedViewController2;
 }
 
 - (void)dealloc
@@ -53,22 +53,22 @@
   {
     v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
     [v6 setAutoresizingMask:5];
-    v7 = [(CNFRegSplashSignInController *)self table];
-    v8 = [v7 backgroundView];
+    table = [(CNFRegSplashSignInController *)self table];
+    backgroundView = [table backgroundView];
 
     [v6 bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    [v8 bounds];
+    [backgroundView bounds];
     MidX = CGRectGetMidX(v19);
     v20.origin.x = v10;
     v20.origin.y = v12;
     v20.size.width = v14;
     v20.size.height = v16;
     [v6 setFrame:{floor(MidX + CGRectGetWidth(v20) * -0.5), 0.0, v14, v16}];
-    [v8 addSubview:v6];
+    [backgroundView addSubview:v6];
   }
 }
 
@@ -78,13 +78,13 @@
   v4 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(CNFRegListController *)self regController];
-    [v5 refreshSystemAccount];
+    regController = [(CNFRegListController *)self regController];
+    [regController refreshSystemAccount];
 
-    v6 = [(CNFRegListController *)self regController];
-    v7 = [v6 hasSystemAccount];
+    regController2 = [(CNFRegListController *)self regController];
+    hasSystemAccount = [regController2 hasSystemAccount];
 
-    if (v7)
+    if (hasSystemAccount)
     {
       v8 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -101,18 +101,18 @@
       self->super._useSystemAccount = 1;
     }
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v12 setProperty:v11 forKey:*MEMORY[0x277D3FFA0]];
-    if (v12)
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:v11 forKey:*MEMORY[0x277D3FFA0]];
+    if (emptyGroupSpecifier)
     {
-      [v9 insertObject:v12 atIndex:0];
+      [array insertObject:emptyGroupSpecifier atIndex:0];
     }
 
     v13 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.super.super.isa + v3) = v9;
+    *(&self->super.super.super.super.super.super.super.super.isa + v3) = array;
 
     [(CNFRegFirstRunController *)self _stopValidationModeAnimated:0];
     v4 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
@@ -129,13 +129,13 @@
   [(CNFRegSigninLearnMoreView *)self->_signInView setSigningIn:0];
 }
 
-- (id)_existingLearnMoreViewForSpecifier:(id)a3
+- (id)_existingLearnMoreViewForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && !*&v3[*MEMORY[0x277D3FC90]])
+  specifierCopy = specifier;
+  v4 = specifierCopy;
+  if (specifierCopy && !*&specifierCopy[*MEMORY[0x277D3FC90]])
   {
-    v6 = [v3 propertyForKey:*MEMORY[0x277D3FFB0]];
+    v6 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFB0]];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5 = v6;
@@ -155,9 +155,9 @@
   return v5;
 }
 
-- (id)_existingLearnMoreViewForSection:(int64_t)a3
+- (id)_existingLearnMoreViewForSection:(int64_t)section
 {
-  v4 = [(CNFRegSplashSignInController *)self indexOfGroup:a3];
+  v4 = [(CNFRegSplashSignInController *)self indexOfGroup:section];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -172,18 +172,18 @@
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(CNFRegSplashSignInController *)self _existingLearnMoreViewForSection:a4];
+  viewCopy = view;
+  v7 = [(CNFRegSplashSignInController *)self _existingLearnMoreViewForSection:section];
   v23.receiver = self;
   v23.super_class = CNFRegSplashSignInController;
-  [(CNFRegListController *)&v23 tableView:v6 heightForHeaderInSection:a4];
+  [(CNFRegListController *)&v23 tableView:viewCopy heightForHeaderInSection:section];
   if (!v7)
   {
-    v7 = [(CNFRegSplashSignInController *)self _existingLearnMoreViewForSection:a4];
-    v9 = [(CNFRegListController *)self regController];
-    [v7 setServiceType:{objc_msgSend(v9, "serviceType")}];
+    v7 = [(CNFRegSplashSignInController *)self _existingLearnMoreViewForSection:section];
+    regController = [(CNFRegListController *)self regController];
+    [v7 setServiceType:{objc_msgSend(regController, "serviceType")}];
 
     objc_storeStrong(&self->_signInView, v7);
     if (!self->_akSignInVC)
@@ -195,29 +195,29 @@
       [(AKTapToSignInViewController *)self->_akSignInVC setUsesDarkMode:1];
       [(AKTapToSignInViewController *)self->_akSignInVC setDelegate:self];
       v12 = objc_alloc_init(MEMORY[0x277CF0380]);
-      v13 = [(CNFRegSplashSignInController *)self _controllerToPresentOn];
-      [v12 setPresentingViewController:v13];
+      _controllerToPresentOn = [(CNFRegSplashSignInController *)self _controllerToPresentOn];
+      [v12 setPresentingViewController:_controllerToPresentOn];
 
       v21 = objc_alloc_init(CUTWeakLinkClass());
-      v20 = [v21 aa_primaryAppleAccount];
-      v14 = [v20 username];
-      if ([v14 length])
+      aa_primaryAppleAccount = [v21 aa_primaryAppleAccount];
+      username = [aa_primaryAppleAccount username];
+      if ([username length])
       {
-        [v12 setUsername:v14];
-        [v12 setReason:v14];
+        [v12 setUsername:username];
+        [v12 setReason:username];
       }
 
       [(AKTapToSignInViewController *)self->_akSignInVC setContext:v12];
       v19 = v12;
       signInView = self->_signInView;
-      v16 = [(AKTapToSignInViewController *)self->_akSignInVC view];
-      [(CNFRegSigninLearnMoreView *)signInView setAuthKitSignInView:v16];
+      view = [(AKTapToSignInViewController *)self->_akSignInVC view];
+      [(CNFRegSigninLearnMoreView *)signInView setAuthKitSignInView:view];
     }
 
     [(CNFRegSigninLearnMoreView *)self->_signInView setController:self];
     v22.receiver = self;
     v22.super_class = CNFRegSplashSignInController;
-    [(CNFRegListController *)&v22 tableView:v6 heightForHeaderInSection:a4];
+    [(CNFRegListController *)&v22 tableView:viewCopy heightForHeaderInSection:section];
   }
 
   v17 = v8;
@@ -225,38 +225,38 @@
   return v17;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v9.receiver = self;
   v9.super_class = CNFRegSplashSignInController;
-  v5 = [(CNFRegListController *)&v9 tableView:a3 viewForHeaderInSection:a4];
+  v5 = [(CNFRegListController *)&v9 tableView:view viewForHeaderInSection:section];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [(CNFRegListController *)self regController];
-      [v6 setServiceType:{objc_msgSend(v7, "serviceType")}];
+      regController = [(CNFRegListController *)self regController];
+      [v6 setServiceType:{objc_msgSend(regController, "serviceType")}];
     }
   }
 
   return v5;
 }
 
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  resultsCopy = results;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__CNFRegSplashSignInController_tapToSignInViewController_didAuthenticateWithResults_error___block_invoke;
   block[3] = &unk_278DE80D8;
-  v12 = v8;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v8;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = resultsCopy;
+  v9 = resultsCopy;
+  v10 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

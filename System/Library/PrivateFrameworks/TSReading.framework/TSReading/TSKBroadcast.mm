@@ -1,63 +1,63 @@
 @interface TSKBroadcast
-+ (void)asyncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5;
-+ (void)asyncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7;
-+ (void)syncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5;
-+ (void)syncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7;
-+ (void)twoPhaseNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5;
-+ (void)twoPhaseNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7;
++ (void)asyncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group;
++ (void)asyncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source;
++ (void)syncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group;
++ (void)syncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source;
++ (void)twoPhaseNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group;
++ (void)twoPhaseNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source;
 @end
 
 @implementation TSKBroadcast
 
-+ (void)twoPhaseNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7
++ (void)twoPhaseNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source
 {
-  if (a3 && a4)
+  if (controller && notifier)
   {
-    v10 = *&a5;
+    v10 = *&kind;
     v12 = objc_alloc_init(TSKChangeGroup);
-    [(TSKChangeGroup *)v12 registerChange:v10 details:a6 forChangeSource:a7];
-    [TSKBroadcast twoPhaseNotificationWithAccessController:a3 changeNotifier:a4 changeGroup:v12];
+    [(TSKChangeGroup *)v12 registerChange:v10 details:details forChangeSource:source];
+    [TSKBroadcast twoPhaseNotificationWithAccessController:controller changeNotifier:notifier changeGroup:v12];
   }
 }
 
-+ (void)twoPhaseNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5
++ (void)twoPhaseNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group
 {
-  if (a3 && a4)
+  if (controller && notifier)
   {
     if (([objc_msgSend(MEMORY[0x277CCACC8] "currentThread")] & 1) == 0)
     {
-      v8 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSKBroadcast twoPhaseNotificationWithAccessController:changeNotifier:changeGroup:]"];
-      [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKBroadcast.m"), 58, @"Must request performing commands on the main thread."}];
+      [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKBroadcast.m"), 58, @"Must request performing commands on the main thread."}];
     }
 
-    if (a5)
+    if (group)
     {
 
-      [a3 performRead:0 thenWrite:sel_syncProcessChanges_ thenReadOnMainThread:sel_asyncProcessChanges_ withTarget:a4 argument:a5];
+      [controller performRead:0 thenWrite:sel_syncProcessChanges_ thenReadOnMainThread:sel_asyncProcessChanges_ withTarget:notifier argument:group];
     }
   }
 }
 
-+ (void)asyncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7
++ (void)asyncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source
 {
-  if (a3 && a4)
+  if (controller && notifier)
   {
-    v10 = *&a5;
+    v10 = *&kind;
     v12 = objc_alloc_init(TSKChangeGroup);
-    [(TSKChangeGroup *)v12 registerChange:v10 details:a6 forChangeSource:a7];
-    [TSKBroadcast asyncNotificationWithAccessController:a3 changeNotifier:a4 changeGroup:v12];
+    [(TSKChangeGroup *)v12 registerChange:v10 details:details forChangeSource:source];
+    [TSKBroadcast asyncNotificationWithAccessController:controller changeNotifier:notifier changeGroup:v12];
   }
 }
 
-+ (void)asyncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5
++ (void)asyncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group
 {
-  if (a3 && a4 && a5)
+  if (controller && notifier && group)
   {
     if ([objc_msgSend(MEMORY[0x277CCACC8] "currentThread")])
     {
 
-      [a4 asyncProcessChanges:a5];
+      [notifier asyncProcessChanges:group];
     }
 
     else
@@ -66,9 +66,9 @@
       block[1] = 3221225472;
       block[2] = __81__TSKBroadcast_asyncNotificationWithAccessController_changeNotifier_changeGroup___block_invoke;
       block[3] = &unk_279D47C18;
-      block[4] = a3;
-      block[5] = a4;
-      block[6] = a5;
+      block[4] = controller;
+      block[5] = notifier;
+      block[6] = group;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
@@ -85,24 +85,24 @@ uint64_t __81__TSKBroadcast_asyncNotificationWithAccessController_changeNotifier
   return [v1 performRead:v3];
 }
 
-+ (void)syncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeKind:(int)a5 details:(id)a6 changeSource:(id)a7
++ (void)syncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeKind:(int)kind details:(id)details changeSource:(id)source
 {
-  if (a3 && a4)
+  if (controller && notifier)
   {
-    v10 = *&a5;
+    v10 = *&kind;
     v12 = objc_alloc_init(TSKChangeGroup);
-    [(TSKChangeGroup *)v12 registerChange:v10 details:a6 forChangeSource:a7];
-    [TSKBroadcast syncNotificationWithAccessController:a3 changeNotifier:a4 changeGroup:v12];
+    [(TSKChangeGroup *)v12 registerChange:v10 details:details forChangeSource:source];
+    [TSKBroadcast syncNotificationWithAccessController:controller changeNotifier:notifier changeGroup:v12];
   }
 }
 
-+ (void)syncNotificationWithAccessController:(id)a3 changeNotifier:(id)a4 changeGroup:(id)a5
++ (void)syncNotificationWithAccessController:(id)controller changeNotifier:(id)notifier changeGroup:(id)group
 {
-  if (a3 && a4)
+  if (controller && notifier)
   {
-    if (a5)
+    if (group)
     {
-      [a3 performRead:0 thenWrite:sel_syncProcessChanges_ thenReadOnMainThread:0 withTarget:a4 argument:a5];
+      [controller performRead:0 thenWrite:sel_syncProcessChanges_ thenReadOnMainThread:0 withTarget:notifier argument:group];
     }
   }
 }

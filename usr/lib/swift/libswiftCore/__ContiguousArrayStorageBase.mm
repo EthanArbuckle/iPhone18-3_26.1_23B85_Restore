@@ -1,11 +1,11 @@
 @interface __ContiguousArrayStorageBase
-- (id)mutableCopyWithZone:(void *)a3;
-- (int64_t)indexOfObjectIdenticalTo:(id)a3;
+- (id)mutableCopyWithZone:(void *)zone;
+- (int64_t)indexOfObjectIdenticalTo:(id)to;
 @end
 
 @implementation __ContiguousArrayStorageBase
 
-- (id)mutableCopyWithZone:(void *)a3
+- (id)mutableCopyWithZone:(void *)zone
 {
   v4 = type metadata accessor for _SwiftNSMutableArray();
   v5 = swift_allocObject(v4, 0x18, 7uLL);
@@ -14,19 +14,19 @@
   return v5;
 }
 
-- (int64_t)indexOfObjectIdenticalTo:(id)a3
+- (int64_t)indexOfObjectIdenticalTo:(id)to
 {
   if ((self & 0x8000000000000000) != 0 || (self & 0x4000000000000000) != 0)
   {
 LABEL_15:
-    swift_unknownObjectRetain(a3);
+    swift_unknownObjectRetain(to);
     v5 = [(atomic_ullong *)self count];
   }
 
   else
   {
     v5 = *self->countAndCapacity;
-    swift_unknownObjectRetain(a3);
+    swift_unknownObjectRetain(to);
     self;
   }
 
@@ -39,16 +39,16 @@ LABEL_15:
     {
       v9 = specialized _ArrayBuffer._getElementSlowPath(_:)(v6, self);
       swift_unknownObjectRelease(v9);
-      if (v9 == a3)
+      if (v9 == to)
       {
 LABEL_12:
-        swift_unknownObjectRelease(a3);
+        swift_unknownObjectRelease(to);
         self;
         return v6;
       }
     }
 
-    else if (*(&self[1].super.super.super.super.isa + v6) == a3)
+    else if (*(&self[1].super.super.super.super.isa + v6) == to)
     {
       goto LABEL_12;
     }
@@ -60,7 +60,7 @@ LABEL_12:
     }
   }
 
-  swift_unknownObjectRelease(a3);
+  swift_unknownObjectRelease(to);
   self;
   return 0x7FFFFFFFFFFFFFFFLL;
 }

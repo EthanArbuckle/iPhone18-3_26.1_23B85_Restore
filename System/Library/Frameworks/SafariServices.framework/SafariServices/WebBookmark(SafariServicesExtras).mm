@@ -13,8 +13,8 @@
 
 - (id)_sf_iconKeyColor
 {
-  v1 = [a1 localAttributes];
-  v2 = [v1 objectForKeyedSubscript:@"IconKeyColor"];
+  localAttributes = [self localAttributes];
+  v2 = [localAttributes objectForKeyedSubscript:@"IconKeyColor"];
 
   if (v2)
   {
@@ -49,20 +49,20 @@
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 localAttributes];
-  v6 = [v5 mutableCopy];
+  localAttributes = [self localAttributes];
+  v6 = [localAttributes mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
   if (v4)
   {
@@ -92,15 +92,15 @@
     [v9 removeObjectForKey:@"IconKeyColor"];
   }
 
-  [a1 setLocalAttributes:v9];
+  [self setLocalAttributes:v9];
 }
 
 - (id)_sf_icon
 {
-  v1 = [a1 iconData];
-  if ([v1 length])
+  iconData = [self iconData];
+  if ([iconData length])
   {
-    v2 = [MEMORY[0x1E69DCAB8] imageWithData:v1];
+    v2 = [MEMORY[0x1E69DCAB8] imageWithData:iconData];
   }
 
   else
@@ -114,40 +114,40 @@
 + (id)_sf_lastSelectedFolderIn:()SafariServicesExtras
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v5 = [v4 stringForKey:*MEMORY[0x1E69B1F98]];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v5 = [safari_browserDefaults stringForKey:*MEMORY[0x1E69B1F98]];
 
   if ([v5 isEqualToString:*MEMORY[0x1E69B1FA0]])
   {
-    v6 = [v3 favoritesFolder];
+    favoritesFolder = [v3 favoritesFolder];
   }
 
   else
   {
     if (!v5)
     {
-      v7 = 0;
+      bookmarksBarBookmark = 0;
       goto LABEL_6;
     }
 
-    v6 = [v3 bookmarkWithUUID:v5];
+    favoritesFolder = [v3 bookmarkWithUUID:v5];
   }
 
-  v7 = v6;
+  bookmarksBarBookmark = favoritesFolder;
 LABEL_6:
-  if ([v7 isBookmarksMenuFolder] && (objc_msgSend(v3, "listWithID:", objc_msgSend(v7, "identifier")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "bookmarkCount"), v8, !v9))
+  if ([bookmarksBarBookmark isBookmarksMenuFolder] && (objc_msgSend(v3, "listWithID:", objc_msgSend(bookmarksBarBookmark, "identifier")), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "bookmarkCount"), v8, !v9))
   {
   }
 
-  else if (v7)
+  else if (bookmarksBarBookmark)
   {
     goto LABEL_13;
   }
 
-  v7 = [v3 bookmarksBarBookmark];
+  bookmarksBarBookmark = [v3 bookmarksBarBookmark];
 LABEL_13:
 
-  return v7;
+  return bookmarksBarBookmark;
 }
 
 + (uint64_t)_sf_operationForDropSession:()SafariServicesExtras destinationSubtype:
@@ -194,9 +194,9 @@ LABEL_25:
       }
 
       v12 = *(*(&v27 + 1) + 8 * i);
-      v13 = [v12 _sf_localTabGroup];
+      _sf_localTabGroup = [v12 _sf_localTabGroup];
 
-      if (v13)
+      if (_sf_localTabGroup)
       {
         v22 = 1;
 LABEL_29:
@@ -204,11 +204,11 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v14 = [v12 _sf_localBookmark];
-      v15 = v14;
-      if (v14)
+      _sf_localBookmark = [v12 _sf_localBookmark];
+      v15 = _sf_localBookmark;
+      if (_sf_localBookmark)
       {
-        if (a4 == 1 && ([v14 isFolder] & 1) != 0)
+        if (a4 == 1 && ([_sf_localBookmark isFolder] & 1) != 0)
         {
 
           v22 = 0;
@@ -221,8 +221,8 @@ LABEL_29:
 
       else
       {
-        v16 = [v12 itemProvider];
-        v17 = [v16 canLoadObjectOfClass:objc_opt_class()];
+        itemProvider = [v12 itemProvider];
+        v17 = [itemProvider canLoadObjectOfClass:objc_opt_class()];
 
         v26 += v17;
       }
@@ -249,9 +249,9 @@ LABEL_29:
     goto LABEL_25;
   }
 
-  v18 = [v5 firstObject];
-  v19 = [v18 _sf_localBookmark];
-  v20 = [v19 isReadingListItem];
+  firstObject = [v5 firstObject];
+  _sf_localBookmark2 = [firstObject _sf_localBookmark];
+  isReadingListItem = [_sf_localBookmark2 isReadingListItem];
 
   v21 = 2;
   if (!v8)
@@ -259,7 +259,7 @@ LABEL_29:
     v21 = 3;
   }
 
-  if (v20)
+  if (isReadingListItem)
   {
     v22 = 1;
   }
@@ -297,18 +297,18 @@ LABEL_30:
   v89 = a7;
   v85 = a8;
   objc_initWeak(&location, v85);
-  v92 = [MEMORY[0x1E695DF70] array];
-  v90 = [a1 address];
-  v14 = [v94 bookmarkContainsLeafBookmark:a1];
-  v91 = [a1 _sf_managedBookmark];
-  if (!((v91 == 0) | v14 & 1))
+  array = [MEMORY[0x1E695DF70] array];
+  address = [self address];
+  containsLeafBookmark = [v94 bookmarkContainsLeafBookmark:self];
+  _sf_managedBookmark = [self _sf_managedBookmark];
+  if (!((_sf_managedBookmark == 0) | containsLeafBookmark & 1))
   {
-    v14 = [v91 containsLeafBookmark];
+    containsLeafBookmark = [_sf_managedBookmark containsLeafBookmark];
   }
 
-  if (([a1 isFolder] & 1) != 0 || !objc_msgSend(v90, "length"))
+  if (([self isFolder] & 1) != 0 || !objc_msgSend(address, "length"))
   {
-    if (([a1 isFolder] & v14) == 1)
+    if (([self isFolder] & containsLeafBookmark) == 1)
     {
       v19 = MEMORY[0x1E69DC628];
       v20 = _WBSLocalizedString();
@@ -317,10 +317,10 @@ LABEL_30:
       v128[1] = 3221225472;
       v128[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_2;
       v128[3] = &unk_1E84900A8;
-      v128[4] = a1;
+      v128[4] = self;
       v129 = v94;
       v22 = [v19 actionWithTitle:v20 image:v21 identifier:0 handler:v128];
-      [v92 addObject:v22];
+      [array addObject:v22];
     }
   }
 
@@ -333,21 +333,21 @@ LABEL_30:
     v130[1] = 3221225472;
     v130[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke;
     v130[3] = &unk_1E848F480;
-    v131 = v90;
+    v131 = address;
     v18 = [v15 actionWithTitle:v16 image:v17 identifier:0 handler:v130];
-    [v92 addObject:v18];
+    [array addObject:v18];
   }
 
-  v93 = [MEMORY[0x1E695DF70] array];
-  if (v14)
+  array2 = [MEMORY[0x1E695DF70] array];
+  if (containsLeafBookmark)
   {
-    v23 = [a1 isFolder];
+    isFolder = [self isFolder];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_4;
     aBlock[3] = &__block_descriptor_33_e18___NSString_16__0q8l;
-    v84 = v23;
-    v127 = v23;
+    v84 = isFolder;
+    v127 = isFolder;
     v24 = _Block_copy(aBlock);
     v121[0] = MEMORY[0x1E69E9820];
     v121[1] = 3221225472;
@@ -355,7 +355,7 @@ LABEL_30:
     v121[3] = &unk_1E8490118;
     v25 = v87;
     v122 = v25;
-    v123 = a1;
+    selfCopy = self;
     objc_copyWeak(&v125, &location);
     v124 = v89;
     v26 = _Block_copy(v121);
@@ -369,49 +369,49 @@ LABEL_30:
     v30 = v26;
     v120 = v30;
     v31 = [v27 actionWithTitle:v28 image:v29 identifier:0 handler:v119];
-    [v93 addObject:v31];
+    [array2 addObject:v31];
 
     if (v25)
     {
-      v32 = [a1 managedBookmarkUUID];
+      managedBookmarkUUID = [self managedBookmarkUUID];
 
-      if (v32)
+      if (managedBookmarkUUID)
       {
-        v32 = [a1 _sf_managedBookmark];
-        v33 = [v32 allDescendantsAsWebBookmarks];
+        managedBookmarkUUID = [self _sf_managedBookmark];
+        allDescendantsAsWebBookmarks = [managedBookmarkUUID allDescendantsAsWebBookmarks];
       }
 
       else
       {
-        v33 = [v94 descendantsOfBookmarkFolder:a1];
+        allDescendantsAsWebBookmarks = [v94 descendantsOfBookmarkFolder:self];
       }
 
-      v34 = [v33 count];
+      v34 = [allDescendantsAsWebBookmarks count];
       v35 = MEMORY[0x1E695DFF8];
       if (v34)
       {
-        v32 = [v33 objectAtIndexedSubscript:0];
-        v36 = [v32 address];
+        managedBookmarkUUID = [allDescendantsAsWebBookmarks objectAtIndexedSubscript:0];
+        address2 = [managedBookmarkUUID address];
       }
 
       else
       {
-        v36 = v90;
+        address2 = address;
       }
 
-      v37 = [v35 URLWithString:v36];
+      v37 = [v35 URLWithString:address2];
       if (v34)
       {
       }
 
-      if (!v84 || ([a1 isBookmarksBarFolder] & 1) != 0 || (objc_msgSend(a1, "isBookmarksMenuFolder") & 1) != 0)
+      if (!v84 || ([self isBookmarksBarFolder] & 1) != 0 || (objc_msgSend(self, "isBookmarksMenuFolder") & 1) != 0)
       {
-        v38 = 0;
+        localizedTitle = 0;
       }
 
       else
       {
-        v38 = [a1 localizedTitle];
+        localizedTitle = [self localizedTitle];
       }
 
       v116[0] = MEMORY[0x1E69E9820];
@@ -420,31 +420,31 @@ LABEL_30:
       v116[3] = &unk_1E8490168;
       v117 = v30;
       v118 = v34;
-      v39 = [v25 openInTabGroupMenuWithNewTabGroupName:v38 URL:v37 descendantCount:v34 handler:v116];
-      [v93 addObject:v39];
+      v39 = [v25 openInTabGroupMenuWithNewTabGroupName:localizedTitle URL:v37 descendantCount:v34 handler:v116];
+      [array2 addObject:v39];
     }
 
     objc_destroyWeak(&v125);
   }
 
   v40 = [v88 mutableCopy];
-  v41 = [v94 bookmarkWithID:{objc_msgSend(a1, "parentID")}];
-  v42 = [a1 subtype];
-  v43 = [v94 rootBookmark];
-  v44 = [a1 isEqualToBookmark:v43];
+  v41 = [v94 bookmarkWithID:{objc_msgSend(self, "parentID")}];
+  subtype = [self subtype];
+  rootBookmark = [v94 rootBookmark];
+  v44 = [self isEqualToBookmark:rootBookmark];
 
-  v45 = [a1 isEditable];
-  if (v42 == 5)
+  isEditable = [self isEditable];
+  if (subtype == 5)
   {
     v46 = 0;
   }
 
   else
   {
-    v46 = v45;
+    v46 = isEditable;
   }
 
-  if (v46 == 1 && ([v41 isWebFilterAllowedSitesFolder] & 1) == 0 && ((objc_msgSend(a1, "isReadingListItem") | v44) & 1) == 0)
+  if (v46 == 1 && ([v41 isWebFilterAllowedSitesFolder] & 1) == 0 && ((objc_msgSend(self, "isReadingListItem") | v44) & 1) == 0)
   {
     v47 = MEMORY[0x1E69DC628];
     v48 = _WBSLocalizedString();
@@ -454,7 +454,7 @@ LABEL_30:
     v113[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_9;
     v113[3] = &unk_1E848F4F8;
     objc_copyWeak(&v115, &location);
-    v113[4] = a1;
+    v113[4] = self;
     v114 = v89;
     v50 = [v47 actionWithTitle:v48 image:v49 identifier:0 handler:v113];
 
@@ -469,9 +469,9 @@ LABEL_30:
 
   if (v52)
   {
-    if (([a1 isFolder] & 1) != 0 || !objc_msgSend(v90, "length"))
+    if (([self isFolder] & 1) != 0 || !objc_msgSend(address, "length"))
     {
-      if (([a1 isFolder] & v14) == 1)
+      if (([self isFolder] & containsLeafBookmark) == 1)
       {
         v57 = MEMORY[0x1E69DC628];
         v58 = _WBSLocalizedString();
@@ -480,7 +480,7 @@ LABEL_30:
         v105[1] = 3221225472;
         v105[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_11;
         v105[3] = &unk_1E84901B8;
-        v105[4] = a1;
+        v105[4] = self;
         v106 = v94;
         objc_copyWeak(&v108, &location);
         v107 = v89;
@@ -501,8 +501,8 @@ LABEL_30:
       v109[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_10;
       v109[3] = &unk_1E8490190;
       objc_copyWeak(&v112, &location);
-      v109[4] = a1;
-      v110 = v90;
+      v109[4] = self;
+      v110 = address;
       v111 = v89;
       v56 = [v53 actionWithTitle:v54 image:v55 identifier:0 handler:v109];
       [v40 addObject:v56];
@@ -511,10 +511,10 @@ LABEL_30:
     }
   }
 
-  if ([a1 isDeletable] && ((objc_msgSend(v41, "isWebFilterAllowedSitesFolder") | v44) & 1) == 0)
+  if ([self isDeletable] && ((objc_msgSend(v41, "isWebFilterAllowedSitesFolder") | v44) & 1) == 0)
   {
     v62 = MEMORY[0x1E69DC628];
-    if (v42 == 5)
+    if (subtype == 5)
     {
       v68 = _WBSLocalizedString();
       v69 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"minus.circle"];
@@ -524,7 +524,7 @@ LABEL_30:
       v101[3] = &unk_1E8490190;
       v65 = &v104;
       objc_copyWeak(&v104, &location);
-      v101[4] = a1;
+      v101[4] = self;
       v70 = v89;
       v102 = v70;
       v103 = v86;
@@ -541,7 +541,7 @@ LABEL_30:
         v98[2] = __147__WebBookmark_SafariServicesExtras___sf_contextMenuUsingCollection_tabGroupActionProvider_additionalActions_analyticsPayload_withUserInfo_handler___block_invoke_14;
         v98[3] = &unk_1E848F4F8;
         objc_copyWeak(&v100, &location);
-        v98[4] = a1;
+        v98[4] = self;
         v99 = v70;
         v75 = [v72 actionWithTitle:v73 image:v74 identifier:0 handler:v98];
 
@@ -570,7 +570,7 @@ LABEL_30:
       v95[3] = &unk_1E848F4F8;
       v65 = &v97;
       objc_copyWeak(&v97, &location);
-      v95[4] = a1;
+      v95[4] = self;
       v96 = v89;
       v66 = [v62 actionWithTitle:v63 image:v64 identifier:0 handler:v95];
 
@@ -589,9 +589,9 @@ LABEL_30:
   }
 
   v76 = MEMORY[0x1E69DCC60];
-  v77 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v92];
+  v77 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:array];
   v133[0] = v77;
-  v78 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v93];
+  v78 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:array2];
   v133[1] = v78;
   v79 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F4FE9E38 image:0 identifier:0 options:1 children:v40];
   v133[2] = v79;
@@ -607,14 +607,14 @@ LABEL_30:
 
 - (id)_sf_managedBookmark
 {
-  v2 = [a1 managedBookmarkUUID];
+  managedBookmarkUUID = [self managedBookmarkUUID];
 
-  if (v2)
+  if (managedBookmarkUUID)
   {
-    v3 = [MEMORY[0x1E69B1B38] sharedController];
-    v4 = [v3 topLevelManagedBookmarkFolder];
-    v5 = [a1 managedBookmarkUUID];
-    v6 = [v4 findChildBookmarkWithUUID:v5];
+    mEMORY[0x1E69B1B38] = [MEMORY[0x1E69B1B38] sharedController];
+    topLevelManagedBookmarkFolder = [mEMORY[0x1E69B1B38] topLevelManagedBookmarkFolder];
+    managedBookmarkUUID2 = [self managedBookmarkUUID];
+    v6 = [topLevelManagedBookmarkFolder findChildBookmarkWithUUID:managedBookmarkUUID2];
   }
 
   else

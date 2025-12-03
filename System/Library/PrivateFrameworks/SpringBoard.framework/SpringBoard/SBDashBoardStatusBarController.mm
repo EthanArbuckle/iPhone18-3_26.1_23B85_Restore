@@ -1,27 +1,27 @@
 @interface SBDashBoardStatusBarController
 - (NSNumber)statusBarAlpha;
-- (SBDashBoardStatusBarController)initWithWindowSceneStatusBarManager:(id)a3;
+- (SBDashBoardStatusBarController)initWithWindowSceneStatusBarManager:(id)manager;
 - (_UILegibilitySettings)statusBarLegibilitySettings;
-- (id)createFakeStatusBarWithReason:(id)a3 withFrame:(CGRect)a4;
-- (id)effectiveStatusBarStyleRequestForAlpha:(id)a3 style:(int64_t)a4 legibilitySettings:(id)a5;
+- (id)createFakeStatusBarWithReason:(id)reason withFrame:(CGRect)frame;
+- (id)effectiveStatusBarStyleRequestForAlpha:(id)alpha style:(int64_t)style legibilitySettings:(id)settings;
 - (int64_t)statusBarStyle;
-- (void)_enumerateStatusBarsAndPartAssertions:(id)a3;
+- (void)_enumerateStatusBarsAndPartAssertions:(id)assertions;
 - (void)clearStatusBarParameters;
 - (void)dealloc;
-- (void)destroyFakeStatusBar:(id)a3;
-- (void)setStatusBarAlpha:(id)a3 style:(int64_t)a4 legibilitySettings:(id)a5;
-- (void)setStatusBarHidden:(BOOL)a3 forReason:(id)a4;
-- (void)setStatusBarPart:(unint64_t)a3 hidden:(BOOL)a4 animationDuration:(double)a5;
+- (void)destroyFakeStatusBar:(id)bar;
+- (void)setStatusBarAlpha:(id)alpha style:(int64_t)style legibilitySettings:(id)settings;
+- (void)setStatusBarHidden:(BOOL)hidden forReason:(id)reason;
+- (void)setStatusBarPart:(unint64_t)part hidden:(BOOL)hidden animationDuration:(double)duration;
 @end
 
 @implementation SBDashBoardStatusBarController
 
 - (_UILegibilitySettings)statusBarLegibilitySettings
 {
-  v2 = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
-  v3 = [v2 legibilitySettings];
+  settings = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
+  legibilitySettings = [settings legibilitySettings];
 
-  return v3;
+  return legibilitySettings;
 }
 
 - (void)clearStatusBarParameters
@@ -64,9 +64,9 @@
   }
 }
 
-- (SBDashBoardStatusBarController)initWithWindowSceneStatusBarManager:(id)a3
+- (SBDashBoardStatusBarController)initWithWindowSceneStatusBarManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SBDashBoardStatusBarController;
   v5 = [(SBDashBoardStatusBarController *)&v15 init];
@@ -76,16 +76,16 @@
     statusBarHiddenReasons = v5->_statusBarHiddenReasons;
     v5->_statusBarHiddenReasons = v6;
 
-    objc_storeWeak(&v5->_windowSceneStatusBarManager, v4);
+    objc_storeWeak(&v5->_windowSceneStatusBarManager, managerCopy);
     v8 = MEMORY[0x277CBEB58];
-    v9 = [v4 statusBar];
-    v10 = [v8 setWithObject:v9];
+    statusBar = [managerCopy statusBar];
+    v10 = [v8 setWithObject:statusBar];
     statusBars = v5->_statusBars;
     v5->_statusBars = v10;
 
-    v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     statusBarsToVisbilityAssertions = v5->_statusBarsToVisbilityAssertions;
-    v5->_statusBarsToVisbilityAssertions = v12;
+    v5->_statusBarsToVisbilityAssertions = weakToStrongObjectsMapTable;
   }
 
   return v5;
@@ -109,73 +109,73 @@
   [(SBDashBoardStatusBarController *)&v5 dealloc];
 }
 
-- (id)effectiveStatusBarStyleRequestForAlpha:(id)a3 style:(int64_t)a4 legibilitySettings:(id)a5
+- (id)effectiveStatusBarStyleRequestForAlpha:(id)alpha style:(int64_t)style legibilitySettings:(id)settings
 {
-  v8 = a3;
-  v9 = a5;
+  alphaCopy = alpha;
+  settingsCopy = settings;
   v10 = objc_alloc_init(SBMutableStatusBarSettings);
   v11 = v10;
-  if (v8)
+  if (alphaCopy)
   {
-    [(SBMutableStatusBarSettings *)v10 setAlpha:v8];
+    [(SBMutableStatusBarSettings *)v10 setAlpha:alphaCopy];
   }
 
-  if (a4 != -1)
+  if (style != -1)
   {
-    [(SBMutableStatusBarSettings *)v11 setStyle:a4];
+    [(SBMutableStatusBarSettings *)v11 setStyle:style];
   }
 
-  if (v9)
+  if (settingsCopy)
   {
-    [(SBMutableStatusBarSettings *)v11 setLegibilitySettings:v9];
+    [(SBMutableStatusBarSettings *)v11 setLegibilitySettings:settingsCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowSceneStatusBarManager);
-  v13 = [WeakRetained assertionManager];
-  v14 = [v13 effectiveStatusBarStyleRequestWithSettings:v11];
+  assertionManager = [WeakRetained assertionManager];
+  v14 = [assertionManager effectiveStatusBarStyleRequestWithSettings:v11];
 
   return v14;
 }
 
-- (id)createFakeStatusBarWithReason:(id)a3 withFrame:(CGRect)a4
+- (id)createFakeStatusBarWithReason:(id)reason withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_windowSceneStatusBarManager);
-  v11 = [WeakRetained reusePool];
-  v12 = [v11 getReusableStatusBarWithReason:v9 withFrame:{x, y, width, height}];
+  reusePool = [WeakRetained reusePool];
+  v12 = [reusePool getReusableStatusBarWithReason:reasonCopy withFrame:{x, y, width, height}];
 
   [(NSMutableSet *)self->_statusBars addObject:v12];
 
   return v12;
 }
 
-- (void)destroyFakeStatusBar:(id)a3
+- (void)destroyFakeStatusBar:(id)bar
 {
   statusBarsToVisbilityAssertions = self->_statusBarsToVisbilityAssertions;
-  v5 = a3;
-  v6 = [(NSMapTable *)statusBarsToVisbilityAssertions objectForKey:v5];
+  barCopy = bar;
+  v6 = [(NSMapTable *)statusBarsToVisbilityAssertions objectForKey:barCopy];
   [v6 invalidate];
 
-  [(NSMapTable *)self->_statusBarsToVisbilityAssertions removeObjectForKey:v5];
-  [(NSMutableSet *)self->_statusBars removeObject:v5];
+  [(NSMapTable *)self->_statusBarsToVisbilityAssertions removeObjectForKey:barCopy];
+  [(NSMutableSet *)self->_statusBars removeObject:barCopy];
   WeakRetained = objc_loadWeakRetained(&self->_windowSceneStatusBarManager);
-  v7 = [WeakRetained reusePool];
-  [v7 recycleStatusBar:v5];
+  reusePool = [WeakRetained reusePool];
+  [reusePool recycleStatusBar:barCopy];
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 forReason:(id)a4
+- (void)setStatusBarHidden:(BOOL)hidden forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  hiddenCopy = hidden;
+  reasonCopy = reason;
   statusBarHiddenReasons = self->_statusBarHiddenReasons;
-  v16 = v6;
-  if (v4)
+  v16 = reasonCopy;
+  if (hiddenCopy)
   {
-    [(NSMutableSet *)statusBarHiddenReasons addObject:v6];
+    [(NSMutableSet *)statusBarHiddenReasons addObject:reasonCopy];
     v8 = v16;
     if (self->_hideStatusBarAssertion)
     {
@@ -183,10 +183,10 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_windowSceneStatusBarManager);
-    v10 = [WeakRetained assertionManager];
+    assertionManager = [WeakRetained assertionManager];
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"SBDashBoardStatusBarController-0x%p", self];
-    v12 = [v10 newSettingsAssertionWithStatusBarHidden:1 atLevel:9 reason:v11];
+    v12 = [assertionManager newSettingsAssertionWithStatusBarHidden:1 atLevel:9 reason:v11];
     hideStatusBarAssertion = self->_hideStatusBarAssertion;
     self->_hideStatusBarAssertion = v12;
 
@@ -194,7 +194,7 @@
     goto LABEL_7;
   }
 
-  [(NSMutableSet *)statusBarHiddenReasons removeObject:v6];
+  [(NSMutableSet *)statusBarHiddenReasons removeObject:reasonCopy];
   v14 = [(NSMutableSet *)self->_statusBarHiddenReasons count];
   v8 = v16;
   if (!v14)
@@ -203,7 +203,7 @@
     if (v15)
     {
       [(SBWindowSceneStatusBarSettingsAssertion *)v15 invalidate];
-      v10 = self->_hideStatusBarAssertion;
+      assertionManager = self->_hideStatusBarAssertion;
       self->_hideStatusBarAssertion = 0;
 LABEL_7:
 
@@ -214,18 +214,18 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setStatusBarAlpha:(id)a3 style:(int64_t)a4 legibilitySettings:(id)a5
+- (void)setStatusBarAlpha:(id)alpha style:(int64_t)style legibilitySettings:(id)settings
 {
-  v8 = a3;
-  v9 = a5;
+  alphaCopy = alpha;
+  settingsCopy = settings;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __77__SBDashBoardStatusBarController_setStatusBarAlpha_style_legibilitySettings___block_invoke;
   v19[3] = &unk_2783C4E40;
-  v10 = v8;
+  v10 = alphaCopy;
   v20 = v10;
-  v22 = a4;
-  v11 = v9;
+  styleCopy = style;
+  v11 = settingsCopy;
   v21 = v11;
   v12 = MEMORY[0x223D6F7F0](v19);
   statusBarParametersAssertion = self->_statusBarParametersAssertion;
@@ -239,9 +239,9 @@ LABEL_8:
     v14 = objc_alloc_init(SBMutableStatusBarSettings);
     (v12)[2](v12, v14);
     WeakRetained = objc_loadWeakRetained(&self->_windowSceneStatusBarManager);
-    v16 = [WeakRetained assertionManager];
+    assertionManager = [WeakRetained assertionManager];
 
-    v17 = [v16 newSettingsAssertionWithSettings:v14 atLevel:8 reason:@"SBDashBoardStatusBar"];
+    v17 = [assertionManager newSettingsAssertionWithSettings:v14 atLevel:8 reason:@"SBDashBoardStatusBar"];
     v18 = self->_statusBarParametersAssertion;
     self->_statusBarParametersAssertion = v17;
 
@@ -274,34 +274,34 @@ void __77__SBDashBoardStatusBarController_setStatusBarAlpha_style_legibilitySett
 
 - (NSNumber)statusBarAlpha
 {
-  v2 = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
-  v3 = [v2 alpha];
+  settings = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
+  alpha = [settings alpha];
 
-  return v3;
+  return alpha;
 }
 
 - (int64_t)statusBarStyle
 {
-  v2 = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
-  v3 = v2;
-  if (v2)
+  settings = [(SBWindowSceneStatusBarSettingsAssertion *)self->_statusBarParametersAssertion settings];
+  v3 = settings;
+  if (settings)
   {
-    v4 = [v2 style];
+    style = [settings style];
   }
 
   else
   {
-    v4 = -1;
+    style = -1;
   }
 
-  return v4;
+  return style;
 }
 
-- (void)_enumerateStatusBarsAndPartAssertions:(id)a3
+- (void)_enumerateStatusBarsAndPartAssertions:(id)assertions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  assertionsCopy = assertions;
+  if (!assertionsCopy)
   {
     [(SBDashBoardStatusBarController *)a2 _enumerateStatusBarsAndPartAssertions:?];
   }
@@ -334,7 +334,7 @@ void __77__SBDashBoardStatusBarController_setStatusBarAlpha_style_legibilitySett
           [(NSMapTable *)self->_statusBarsToVisbilityAssertions setObject:v12 forKey:v11];
         }
 
-        v5[2](v5, v11, v12);
+        assertionsCopy[2](assertionsCopy, v11, v12);
       }
 
       v8 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -344,16 +344,16 @@ void __77__SBDashBoardStatusBarController_setStatusBarAlpha_style_legibilitySett
   }
 }
 
-- (void)setStatusBarPart:(unint64_t)a3 hidden:(BOOL)a4 animationDuration:(double)a5
+- (void)setStatusBarPart:(unint64_t)part hidden:(BOOL)hidden animationDuration:(double)duration
 {
-  if (a3 == 1)
+  if (part == 1)
   {
     v8 = MEMORY[0x277D775D8];
   }
 
   else
   {
-    if (a3)
+    if (part)
     {
       v9 = 0;
       goto LABEL_7;
@@ -369,8 +369,8 @@ LABEL_7:
   v11[2] = __76__SBDashBoardStatusBarController_setStatusBarPart_hidden_animationDuration___block_invoke;
   v11[3] = &unk_2783C4E68;
   v12 = v9;
-  v14 = a4;
-  v13 = a5;
+  hiddenCopy = hidden;
+  durationCopy = duration;
   v10 = v9;
   [(SBDashBoardStatusBarController *)self _enumerateStatusBarsAndPartAssertions:v11];
 }

@@ -1,44 +1,44 @@
 @interface NPKContactlessPaymentSessionSoundsManager
-- (void)contactlessPaymentSessionManager:(id)a3 didChangeSessionState:(id)a4;
+- (void)contactlessPaymentSessionManager:(id)manager didChangeSessionState:(id)state;
 @end
 
 @implementation NPKContactlessPaymentSessionSoundsManager
 
-- (void)contactlessPaymentSessionManager:(id)a3 didChangeSessionState:(id)a4
+- (void)contactlessPaymentSessionManager:(id)manager didChangeSessionState:(id)state
 {
-  v28 = a4;
-  if (!NPKDoesSessionStateRepresentAuthorizationTimeoutForPassRequiringAuthorization(v28))
+  stateCopy = state;
+  if (!NPKDoesSessionStateRepresentAuthorizationTimeoutForPassRequiringAuthorization(stateCopy))
   {
-    v6 = [v28 completionReason];
-    if (v6 <= 0xB)
+    completionReason = [stateCopy completionReason];
+    if (completionReason <= 0xB)
     {
-      if (((1 << v6) & 0xF70) != 0)
+      if (((1 << completionReason) & 0xF70) != 0)
       {
         v4 = &__block_literal_global_57;
 LABEL_6:
-        v5 = v28;
+        v5 = stateCopy;
         goto LABEL_7;
       }
 
-      if (v6 == 3)
+      if (completionReason == 3)
       {
         kdebug_trace();
-        v7 = [v28 currentPass];
-        v8 = [v7 paymentPass];
-        v9 = [v8 isAccessPass];
+        currentPass = [stateCopy currentPass];
+        paymentPass = [currentPass paymentPass];
+        isAccessPass = [paymentPass isAccessPass];
 
-        if (v9)
+        if (isAccessPass)
         {
           v4 = &__block_literal_global_59;
         }
 
         else
         {
-          v13 = [v28 currentPass];
-          v14 = [v13 paymentPass];
-          v15 = [v14 isIdentityPass];
+          currentPass2 = [stateCopy currentPass];
+          paymentPass2 = [currentPass2 paymentPass];
+          isIdentityPass = [paymentPass2 isIdentityPass];
 
-          if (v15)
+          if (isIdentityPass)
           {
             v4 = &__block_literal_global_61;
           }
@@ -53,61 +53,61 @@ LABEL_6:
       }
     }
 
-    v10 = [v28 failureType];
-    if (v10 <= 0xB && ((1 << v10) & 0xFBE) != 0 && ![v28 userRejectedReleaseData])
+    failureType = [stateCopy failureType];
+    if (failureType <= 0xB && ((1 << failureType) & 0xFBE) != 0 && ![stateCopy userRejectedReleaseData])
     {
       v4 = &__block_literal_global_65;
       goto LABEL_6;
     }
 
-    v11 = [v28 transactionContext];
-    v12 = [v11 authenticationRequested];
+    transactionContext = [stateCopy transactionContext];
+    authenticationRequested = [transactionContext authenticationRequested];
 
-    if (v12)
+    if (authenticationRequested)
     {
       v4 = &__block_literal_global_67_0;
       goto LABEL_6;
     }
 
-    v16 = [v28 transactionContext];
-    if ([v16 transactionType] == 5)
+    transactionContext2 = [stateCopy transactionContext];
+    if ([transactionContext2 transactionType] == 5)
     {
-      v17 = [v28 transactionContext];
-      if ([v17 transactionStatus] == 1)
+      transactionContext3 = [stateCopy transactionContext];
+      if ([transactionContext3 transactionStatus] == 1)
       {
-        v18 = [v28 transactionContext];
-        v19 = [v18 releaseDataStatus];
+        transactionContext4 = [stateCopy transactionContext];
+        releaseDataStatus = [transactionContext4 releaseDataStatus];
 
-        if (v19 == 1)
+        if (releaseDataStatus == 1)
         {
           v4 = &__block_literal_global_69_0;
           goto LABEL_6;
         }
 
 LABEL_31:
-        v20 = [v28 transactionContext];
-        v21 = [v20 transactionStatus];
+        transactionContext5 = [stateCopy transactionContext];
+        transactionStatus = [transactionContext5 transactionStatus];
 
-        if (v21 == 2)
+        if (transactionStatus == 2)
         {
-          v22 = [v28 currentPass];
-          v23 = [v22 paymentPass];
-          v24 = [v23 isAccessPass];
+          currentPass3 = [stateCopy currentPass];
+          paymentPass3 = [currentPass3 paymentPass];
+          isAccessPass2 = [paymentPass3 isAccessPass];
 
-          if (v24)
+          if (isAccessPass2)
           {
             v4 = &__block_literal_global_71;
           }
 
           else
           {
-            v25 = [v28 currentPass];
-            v26 = [v25 paymentPass];
-            v27 = [v26 isIdentityPass];
+            currentPass4 = [stateCopy currentPass];
+            paymentPass4 = [currentPass4 paymentPass];
+            isIdentityPass2 = [paymentPass4 isIdentityPass];
 
-            if (v27)
+            if (isIdentityPass2)
             {
-              if ([v28 userRejectedReleaseData])
+              if ([stateCopy userRejectedReleaseData])
               {
                 v4 = 0;
               }
@@ -138,7 +138,7 @@ LABEL_31:
   }
 
   v4 = &__block_literal_global_26;
-  v5 = v28;
+  v5 = stateCopy;
 LABEL_7:
   if ([v5 expressTransactionStatus] != 5 && v4)
   {

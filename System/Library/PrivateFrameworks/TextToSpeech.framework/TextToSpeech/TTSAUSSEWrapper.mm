@@ -1,19 +1,19 @@
 @interface TTSAUSSEWrapper
-- (TTSAUSSEWrapper)initWithAudioUnit:(id)a3;
+- (TTSAUSSEWrapper)initWithAudioUnit:(id)unit;
 @end
 
 @implementation TTSAUSSEWrapper
 
-- (TTSAUSSEWrapper)initWithAudioUnit:(id)a3
+- (TTSAUSSEWrapper)initWithAudioUnit:(id)unit
 {
-  v5 = a3;
+  unitCopy = unit;
   v9.receiver = self;
   v9.super_class = TTSAUSSEWrapper;
   v6 = [(TTSAUSSEWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioUnit, a3);
+    objc_storeStrong(&v6->_audioUnit, unit);
   }
 
   return v7;

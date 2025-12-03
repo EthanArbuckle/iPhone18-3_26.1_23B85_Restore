@@ -1,8 +1,8 @@
 @interface ACCAssistiveTouchFeaturePlugin
 - (NSString)description;
 - (NSString)pluginName;
-- (void)_assistiveTouchToggled:(id)a3;
-- (void)assistiveTouch:(id)a3 setEnabled:(BOOL)a4;
+- (void)_assistiveTouchToggled:(id)toggled;
+- (void)assistiveTouch:(id)touch setEnabled:(BOOL)enabled;
 - (void)initPlugin;
 - (void)startPlugin;
 - (void)stopPlugin;
@@ -20,16 +20,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCAssistiveTouchFeaturePlugin *)self pluginName];
+  pluginName = [(ACCAssistiveTouchFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCAssistiveTouchFeaturePlugin *)self isRunning];
+  isRunning = [(ACCAssistiveTouchFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -108,8 +108,8 @@
     _os_log_impl(&dword_2335A9000, v6, OS_LOG_TYPE_INFO, "assistiveTouch Removing all observers...", v11, 2u);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   assistiveTouchProvider = self->_assistiveTouchProvider;
   self->_assistiveTouchProvider = 0;
@@ -118,11 +118,11 @@
   self->_assistiveTouchQueue = 0;
 }
 
-- (void)assistiveTouch:(id)a3 setEnabled:(BOOL)a4
+- (void)assistiveTouch:(id)touch setEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  touchCopy = touch;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -152,24 +152,24 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11[0] = 67109120;
-    v11[1] = v4;
+    v11[1] = enabledCopy;
     _os_log_impl(&dword_2335A9000, v9, OS_LOG_TYPE_INFO, "assistiveTouchSetEnabled: enable=%d", v11, 8u);
   }
 
-  if (v4)
+  if (enabledCopy)
   {
-    [(ACCAssistiveTouchFeaturePlugin *)self _startAssistiveTouch:v6];
+    [(ACCAssistiveTouchFeaturePlugin *)self _startAssistiveTouch:touchCopy];
   }
 
   else
   {
-    [(ACCAssistiveTouchFeaturePlugin *)self _stopAssistiveTouch:v6];
+    [(ACCAssistiveTouchFeaturePlugin *)self _stopAssistiveTouch:touchCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_assistiveTouchToggled:(id)a3
+- (void)_assistiveTouchToggled:(id)toggled
 {
   assistiveTouchQueue = self->_assistiveTouchQueue;
   block[0] = MEMORY[0x277D85DD0];

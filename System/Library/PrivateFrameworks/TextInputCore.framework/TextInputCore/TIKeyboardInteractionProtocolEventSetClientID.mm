@@ -1,29 +1,29 @@
 @interface TIKeyboardInteractionProtocolEventSetClientID
-- (TIKeyboardInteractionProtocolEventSetClientID)initWithClientID:(id)a3 keyboardState:(id)a4;
-- (TIKeyboardInteractionProtocolEventSetClientID)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)sendTo:(id)a3;
+- (TIKeyboardInteractionProtocolEventSetClientID)initWithClientID:(id)d keyboardState:(id)state;
+- (TIKeyboardInteractionProtocolEventSetClientID)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)sendTo:(id)to;
 @end
 
 @implementation TIKeyboardInteractionProtocolEventSetClientID
 
-- (void)sendTo:(id)a3
+- (void)sendTo:(id)to
 {
   clientID = self->_clientID;
-  v5 = a3;
-  v6 = [(TIKeyboardInteractionProtocolBase *)self keyboardState];
-  [v5 setClientID:clientID keyboardState:v6];
+  toCopy = to;
+  keyboardState = [(TIKeyboardInteractionProtocolBase *)self keyboardState];
+  [toCopy setClientID:clientID keyboardState:keyboardState];
 }
 
-- (TIKeyboardInteractionProtocolEventSetClientID)initWithCoder:(id)a3
+- (TIKeyboardInteractionProtocolEventSetClientID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TIKeyboardInteractionProtocolEventSetClientID;
-  v5 = [(TIKeyboardInteractionProtocolBase *)&v9 initWithCoder:v4];
+  v5 = [(TIKeyboardInteractionProtocolBase *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
     clientID = v5->_clientID;
     v5->_clientID = v6;
   }
@@ -31,25 +31,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TIKeyboardInteractionProtocolEventSetClientID;
-  v4 = a3;
-  [(TIKeyboardInteractionProtocolBase *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_clientID forKey:{@"clientID", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TIKeyboardInteractionProtocolBase *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_clientID forKey:{@"clientID", v5.receiver, v5.super_class}];
 }
 
-- (TIKeyboardInteractionProtocolEventSetClientID)initWithClientID:(id)a3 keyboardState:(id)a4
+- (TIKeyboardInteractionProtocolEventSetClientID)initWithClientID:(id)d keyboardState:(id)state
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = TIKeyboardInteractionProtocolEventSetClientID;
-  v8 = [(TIKeyboardInteractionProtocolBase *)&v11 initWithKeyboardState:a4];
+  v8 = [(TIKeyboardInteractionProtocolBase *)&v11 initWithKeyboardState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_clientID, a3);
+    objc_storeStrong(&v8->_clientID, d);
   }
 
   return v9;

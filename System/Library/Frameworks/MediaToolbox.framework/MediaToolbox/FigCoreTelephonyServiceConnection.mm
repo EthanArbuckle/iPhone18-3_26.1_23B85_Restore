@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (FigCoreTelephonyServiceConnection)init;
 - (OpaqueFigCoreTelephonyStatus)currentStatus;
-- (int)registerListener:(void *)a3 callback:(void *)a4 queue:(id)a5;
-- (void)_handleCTNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4;
+- (int)registerListener:(void *)listener callback:(void *)callback queue:(id)queue;
+- (void)_handleCTNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info;
 - (void)_setupConnection;
 - (void)_teardownConnection;
 - (void)dealloc;
-- (void)deregisterListener:(void *)a3;
-- (void)processDataStatusBasic:(id)a3;
+- (void)deregisterListener:(void *)listener;
+- (void)processDataStatusBasic:(id)basic;
 @end
 
 @implementation FigCoreTelephonyServiceConnection
@@ -33,9 +33,9 @@
   return v3;
 }
 
-- (int)registerListener:(void *)a3 callback:(void *)a4 queue:(id)a5
+- (int)registerListener:(void *)listener callback:(void *)callback queue:(id)queue
 {
-  if (a3)
+  if (listener)
   {
     v9 = malloc_type_calloc(1uLL, 0x28uLL, 0x10A004016944D70uLL);
     if (v9)
@@ -44,10 +44,10 @@
       v9[2] = v10;
       if (v10)
       {
-        v9[1] = a3;
-        v9[3] = a4;
-        dispatch_retain(a5);
-        v9[4] = a5;
+        v9[1] = listener;
+        v9[3] = callback;
+        dispatch_retain(queue);
+        v9[4] = queue;
         queue = self->_queue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -101,7 +101,7 @@ uint64_t __69__FigCoreTelephonyServiceConnection_registerListener_callback_queue
   return [(dispatch_source_t *)v3 _setupConnection];
 }
 
-- (void)deregisterListener:(void *)a3
+- (void)deregisterListener:(void *)listener
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -109,7 +109,7 @@ uint64_t __69__FigCoreTelephonyServiceConnection_registerListener_callback_queue
   v4[2] = __56__FigCoreTelephonyServiceConnection_deregisterListener___block_invoke;
   v4[3] = &unk_1E7483B48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = listener;
   dispatch_async(queue, v4);
 }
 
@@ -172,10 +172,10 @@ void __56__FigCoreTelephonyServiceConnection_deregisterListener___block_invoke_2
   }
 }
 
-- (void)_handleCTNotification:(__CFString *)a3 notificationInfo:(__CFDictionary *)a4
+- (void)_handleCTNotification:(__CFString *)notification notificationInfo:(__CFDictionary *)info
 {
   v6 = getkCTConnectionInvalidatedNotification[0]();
-  if (CFEqual(a3, v6))
+  if (CFEqual(notification, v6))
   {
     [(FigCoreTelephonyServiceConnection *)self _teardownConnection];
     for (i = self->_callbackEntries.stqh_first; i; i = *i)
@@ -308,14 +308,14 @@ FigCoreTelephonyServiceConnection *__51__FigCoreTelephonyServiceConnection_share
   return result;
 }
 
-- (void)processDataStatusBasic:(id)a3
+- (void)processDataStatusBasic:(id)basic
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__FigCoreTelephonyServiceConnection_processDataStatusBasic___block_invoke;
   v4[3] = &unk_1E7483A30;
-  v4[4] = a3;
+  v4[4] = basic;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
@@ -387,7 +387,7 @@ void __60__FigCoreTelephonyServiceConnection_processDataStatusBasic___block_invo
       if (!v10)
       {
 LABEL_6:
-        *(a1 + 64) = v9;
+        *(self + 64) = v9;
       }
     }
 

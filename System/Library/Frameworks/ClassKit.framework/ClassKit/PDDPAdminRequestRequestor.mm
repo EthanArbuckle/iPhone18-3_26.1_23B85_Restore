@@ -1,15 +1,15 @@
 @interface PDDPAdminRequestRequestor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsState:(id)a3;
+- (int)StringAsState:(id)state;
 - (int)state;
 - (unint64_t)hash;
-- (void)addServerRequestHeaders:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addServerRequestHeaders:(id)headers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPAdminRequestRequestor
@@ -27,30 +27,30 @@
   }
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_VERIFICATION_STATE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN_VERIFICATION_STATE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UNVERIFIED"])
+  else if ([stateCopy isEqualToString:@"UNVERIFIED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"EMAIL_VERIFICATION_SENT"])
+  else if ([stateCopy isEqualToString:@"EMAIL_VERIFICATION_SENT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"EMAIL_VERIFICATION_FAILED"])
+  else if ([stateCopy isEqualToString:@"EMAIL_VERIFICATION_FAILED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"EMAIL_VERIFIED"])
+  else if ([stateCopy isEqualToString:@"EMAIL_VERIFIED"])
   {
     v4 = 4;
   }
@@ -63,22 +63,22 @@
   return v4;
 }
 
-- (void)addServerRequestHeaders:(id)a3
+- (void)addServerRequestHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   serverRequestHeaders = self->_serverRequestHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!serverRequestHeaders)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_serverRequestHeaders;
     self->_serverRequestHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     serverRequestHeaders = self->_serverRequestHeaders;
   }
 
-  [(NSMutableArray *)serverRequestHeaders addObject:v4];
+  [(NSMutableArray *)serverRequestHeaders addObject:headersCopy];
 }
 
 - (id)description
@@ -86,8 +86,8 @@
   v7.receiver = self;
   v7.super_class = PDDPAdminRequestRequestor;
   v3 = [(PDDPAdminRequestRequestor *)&v7 description];
-  v4 = [(PDDPAdminRequestRequestor *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPAdminRequestRequestor *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -151,8 +151,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -167,9 +167,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     state = self->_state;
@@ -224,19 +224,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_state;
-    *(v4 + 48) |= 1u;
+    toCopy[8] = self->_state;
+    *(toCopy + 48) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_email)
   {
-    [v4 setEmail:?];
+    [toCopy setEmail:?];
   }
 
   if (self->_verificationCode)
@@ -252,10 +252,10 @@
   if ([(PDDPAdminRequestRequestor *)self serverRequestHeadersCount])
   {
     [v9 clearServerRequestHeaders];
-    v5 = [(PDDPAdminRequestRequestor *)self serverRequestHeadersCount];
-    if (v5)
+    serverRequestHeadersCount = [(PDDPAdminRequestRequestor *)self serverRequestHeadersCount];
+    if (serverRequestHeadersCount)
     {
-      v6 = v5;
+      v6 = serverRequestHeadersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPAdminRequestRequestor *)self serverRequestHeadersAtIndex:i];
@@ -265,9 +265,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -275,15 +275,15 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_email copyWithZone:a3];
+  v7 = [(NSString *)self->_email copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(NSString *)self->_verificationCode copyWithZone:a3];
+  v9 = [(NSString *)self->_verificationCode copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
-  v11 = [(NSString *)self->_note copyWithZone:a3];
+  v11 = [(NSString *)self->_note copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
@@ -306,7 +306,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addServerRequestHeaders:v18];
       }
 
@@ -319,24 +319,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_state != *(v4 + 8))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_state != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -344,13 +344,13 @@ LABEL_15:
   }
 
   email = self->_email;
-  if (email | *(v4 + 1) && ![(NSString *)email isEqual:?])
+  if (email | *(equalCopy + 1) && ![(NSString *)email isEqual:?])
   {
     goto LABEL_15;
   }
 
   verificationCode = self->_verificationCode;
-  if (verificationCode | *(v4 + 5))
+  if (verificationCode | *(equalCopy + 5))
   {
     if (![(NSString *)verificationCode isEqual:?])
     {
@@ -359,7 +359,7 @@ LABEL_15:
   }
 
   note = self->_note;
-  if (note | *(v4 + 2))
+  if (note | *(equalCopy + 2))
   {
     if (![(NSString *)note isEqual:?])
     {
@@ -368,7 +368,7 @@ LABEL_15:
   }
 
   serverRequestHeaders = self->_serverRequestHeaders;
-  if (serverRequestHeaders | *(v4 + 3))
+  if (serverRequestHeaders | *(equalCopy + 3))
   {
     v10 = [(NSMutableArray *)serverRequestHeaders isEqual:?];
   }
@@ -401,17 +401,17 @@ LABEL_16:
   return v6 ^ [(NSMutableArray *)self->_serverRequestHeaders hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[12])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[12])
   {
-    self->_state = v4[8];
+    self->_state = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PDDPAdminRequestRequestor *)self setEmail:?];
   }

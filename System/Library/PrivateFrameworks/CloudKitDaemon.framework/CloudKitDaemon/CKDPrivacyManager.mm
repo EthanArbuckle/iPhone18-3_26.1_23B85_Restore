@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (CKDPrivacyManager)init;
 - (id)initInternal;
-- (void)_resetPrivacySettingsForAppContainerAccountTuple:(id)a3 completionHandler:(id)a4;
-- (void)resetPrivacySettingsWithCompletionHandler:(id)a3;
+- (void)_resetPrivacySettingsForAppContainerAccountTuple:(id)tuple completionHandler:(id)handler;
+- (void)resetPrivacySettingsWithCompletionHandler:(id)handler;
 @end
 
 @implementation CKDPrivacyManager
@@ -48,35 +48,35 @@
   return v2;
 }
 
-- (void)resetPrivacySettingsWithCompletionHandler:(id)a3
+- (void)resetPrivacySettingsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v8 = objc_msgSend_privacyManagerQueue(self, v6, v7);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22540A92C;
   block[3] = &unk_278547E60;
-  v11 = v5;
+  v11 = handlerCopy;
   v12 = a2;
   block[4] = self;
-  v9 = v5;
+  v9 = handlerCopy;
   dispatch_async(v8, block);
 }
 
-- (void)_resetPrivacySettingsForAppContainerAccountTuple:(id)a3 completionHandler:(id)a4
+- (void)_resetPrivacySettingsForAppContainerAccountTuple:(id)tuple completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  tupleCopy = tuple;
+  handlerCopy = handler;
   v10 = objc_msgSend_privacyManagerQueue(self, v8, v9);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22540B010;
   block[3] = &unk_278546C30;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = tupleCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = tupleCopy;
   dispatch_async(v10, block);
 }
 

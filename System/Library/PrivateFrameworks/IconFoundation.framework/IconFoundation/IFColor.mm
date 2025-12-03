@@ -6,21 +6,21 @@
 + (CGColorSpace)deviceRGBColorSpace;
 + (CGColorSpace)deviceSRGBColorSpace;
 + (id)black;
-+ (id)borderColorForAppearance:(int64_t)a3;
++ (id)borderColorForAppearance:(int64_t)appearance;
 + (id)white;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)cgColor;
-- (IFColor)initWithCGColor:(CGColor *)a3;
-- (IFColor)initWithCIColor:(id)a3;
-- (IFColor)initWithCoder:(id)a3;
-- (IFColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (IFColor)initWithSystemColor:(int64_t)a3 appearance:(int64_t)a4 contrast:(int64_t)a5 vibrancy:(int64_t)a6;
-- (IFColor)initWithWhite:(double)a3 alpha:(double)a4;
-- (id)_initWithColorStr:(id)a3 appearance:(int64_t)a4 contrast:(int64_t)a5 vibrancy:(int64_t)a6;
-- (id)blendColorWithFraction:(double)a3 ofColor:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IFColor)initWithCGColor:(CGColor *)color;
+- (IFColor)initWithCIColor:(id)color;
+- (IFColor)initWithCoder:(id)coder;
+- (IFColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (IFColor)initWithSystemColor:(int64_t)color appearance:(int64_t)appearance contrast:(int64_t)contrast vibrancy:(int64_t)vibrancy;
+- (IFColor)initWithWhite:(double)white alpha:(double)alpha;
+- (id)_initWithColorStr:(id)str appearance:(int64_t)appearance contrast:(int64_t)contrast vibrancy:(int64_t)vibrancy;
+- (id)blendColorWithFraction:(double)fraction ofColor:(id)color;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IFColor
@@ -75,7 +75,7 @@ CGColorSpaceRef __38__IFColor_deviceExtendedRGBColorSpace__block_invoke()
   block[1] = 3221225472;
   block[2] = __16__IFColor_black__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (black_onceToken != -1)
   {
     dispatch_once(&black_onceToken, block);
@@ -99,7 +99,7 @@ uint64_t __16__IFColor_black__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __16__IFColor_white__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (white_onceToken != -1)
   {
     dispatch_once(&white_onceToken, block);
@@ -175,41 +175,41 @@ CGColorSpaceRef __31__IFColor_deviceGreyColorSpace__block_invoke()
   return result;
 }
 
-- (IFColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (IFColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v7 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:+[IFColor deviceRGBColorSpace](IFColor green:"deviceRGBColorSpace") blue:a3 alpha:a4 colorSpace:{a5, a6}];
+  v7 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:+[IFColor deviceRGBColorSpace](IFColor green:"deviceRGBColorSpace") blue:red alpha:green colorSpace:{blue, alpha}];
   v8 = [(IFColor *)self initWithCIColor:v7];
 
   return v8;
 }
 
-- (IFColor)initWithWhite:(double)a3 alpha:(double)a4
+- (IFColor)initWithWhite:(double)white alpha:(double)alpha
 {
-  v5 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:+[IFColor deviceRGBColorSpace](IFColor green:"deviceRGBColorSpace") blue:a3 alpha:a3 colorSpace:{a3, a4}];
+  v5 = [objc_alloc(MEMORY[0x1E695F610]) initWithRed:+[IFColor deviceRGBColorSpace](IFColor green:"deviceRGBColorSpace") blue:white alpha:white colorSpace:{white, alpha}];
   v6 = [(IFColor *)self initWithCIColor:v5];
 
   return v6;
 }
 
-- (IFColor)initWithCGColor:(CGColor *)a3
+- (IFColor)initWithCGColor:(CGColor *)color
 {
-  v4 = [objc_alloc(MEMORY[0x1E695F610]) initWithCGColor:a3];
+  v4 = [objc_alloc(MEMORY[0x1E695F610]) initWithCGColor:color];
   v5 = [(IFColor *)self initWithCIColor:v4];
 
   return v5;
 }
 
-- (IFColor)initWithCIColor:(id)a3
+- (IFColor)initWithCIColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = [(IFColor *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ciColor, a3);
+    objc_storeStrong(&v6->_ciColor, color);
     v8 = MEMORY[0x1E696AFB0];
-    v9 = [v5 stringRepresentation];
-    v10 = [v8 _IF_UUIDWithString:v9];
+    stringRepresentation = [colorCopy stringRepresentation];
+    v10 = [v8 _IF_UUIDWithString:stringRepresentation];
     digest = v7->_digest;
     v7->_digest = v10;
   }
@@ -217,10 +217,10 @@ CGColorSpaceRef __31__IFColor_deviceGreyColorSpace__block_invoke()
   return v7;
 }
 
-- (IFColor)initWithSystemColor:(int64_t)a3 appearance:(int64_t)a4 contrast:(int64_t)a5 vibrancy:(int64_t)a6
+- (IFColor)initWithSystemColor:(int64_t)color appearance:(int64_t)appearance contrast:(int64_t)contrast vibrancy:(int64_t)vibrancy
 {
   v17 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(color)
   {
     case 11:
       v13 = [(IFColor *)self initWithWhite:1.0 alpha:1.0];
@@ -239,9 +239,9 @@ LABEL_10:
         v9 = IFDefaultLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [v8 localizedDescription];
+          localizedDescription = [v8 localizedDescription];
           *buf = 138412290;
-          v16 = v10;
+          v16 = localizedDescription;
         }
       }
 
@@ -253,100 +253,100 @@ LABEL_10:
   return v11;
 }
 
-- (id)_initWithColorStr:(id)a3 appearance:(int64_t)a4 contrast:(int64_t)a5 vibrancy:(int64_t)a6
+- (id)_initWithColorStr:(id)str appearance:(int64_t)appearance contrast:(int64_t)contrast vibrancy:(int64_t)vibrancy
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (![v10 compare:@"systemBlackColor"])
+  strCopy = str;
+  if (![strCopy compare:@"systemBlackColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:12 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:12 appearance:appearance contrast:contrast vibrancy:vibrancy];
 LABEL_34:
     self = v13;
-    v12 = self;
+    selfCopy = self;
     goto LABEL_35;
   }
 
-  if (![v10 compare:@"systemWhiteColor"])
+  if (![strCopy compare:@"systemWhiteColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:11 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:11 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemRedColor"])
+  if (![strCopy compare:@"systemRedColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:0 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:0 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemOrangeColor"])
+  if (![strCopy compare:@"systemOrangeColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:1 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:1 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemYellowColor"])
+  if (![strCopy compare:@"systemYellowColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:2 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:2 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemGreenColor"])
+  if (![strCopy compare:@"systemGreenColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:3 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:3 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemMintColor"])
+  if (![strCopy compare:@"systemMintColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:5 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:5 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemTealColor"])
+  if (![strCopy compare:@"systemTealColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:4 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:4 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemCyanColor"])
+  if (![strCopy compare:@"systemCyanColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:6 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:6 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemBlueColor"])
+  if (![strCopy compare:@"systemBlueColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:7 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:7 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemIndigoColor"])
+  if (![strCopy compare:@"systemIndigoColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:8 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:8 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemPurpleColor"])
+  if (![strCopy compare:@"systemPurpleColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:9 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:9 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemPinkColor"])
+  if (![strCopy compare:@"systemPinkColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:10 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:10 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemBrownColor"])
+  if (![strCopy compare:@"systemBrownColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:14 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:14 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
-  if (![v10 compare:@"systemGrayColor"])
+  if (![strCopy compare:@"systemGrayColor"])
   {
-    v13 = [(IFColor *)self initWithSystemColor:13 appearance:a4 contrast:a5 vibrancy:a6];
+    v13 = [(IFColor *)self initWithSystemColor:13 appearance:appearance contrast:contrast vibrancy:vibrancy];
     goto LABEL_34;
   }
 
@@ -354,29 +354,29 @@ LABEL_34:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v10;
+    v16 = strCopy;
     _os_log_impl(&dword_1B9DEC000, v11, OS_LOG_TYPE_DEFAULT, "Unknown color: %@", &v15, 0xCu);
   }
 
-  v12 = 0;
+  selfCopy = 0;
 LABEL_35:
 
-  return v12;
+  return selfCopy;
 }
 
-- (IFColor)initWithCoder:(id)a3
+- (IFColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = IFColor;
   v5 = [(IFColor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"digest"];
     digest = v5->_digest;
     v5->_digest = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ciColor"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ciColor"];
     ciColor = v5->_ciColor;
     v5->_ciColor = v8;
   }
@@ -384,15 +384,15 @@ LABEL_35:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   digest = self->_digest;
-  v5 = a3;
-  [v5 encodeObject:digest forKey:@"digest"];
-  [v5 encodeObject:self->_ciColor forKey:@"ciColor"];
+  coderCopy = coder;
+  [coderCopy encodeObject:digest forKey:@"digest"];
+  [coderCopy encodeObject:self->_ciColor forKey:@"ciColor"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSUUID *)self->_digest copy];
@@ -413,10 +413,10 @@ LABEL_35:
   return CFAutorelease(v2);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -426,9 +426,9 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(IFColor *)self digest];
-      v6 = [(IFColor *)v4 digest];
-      v7 = [v5 isEqual:v6];
+      digest = [(IFColor *)self digest];
+      digest2 = [(IFColor *)equalCopy digest];
+      v7 = [digest isEqual:digest2];
     }
 
     else
@@ -440,50 +440,50 @@ LABEL_35:
   return v7;
 }
 
-- (id)blendColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)blendColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v6 = a4;
-  v7 = self;
-  v8 = v7;
-  if (a3 >= 1.0)
+  colorCopy = color;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (fraction >= 1.0)
   {
-    v33 = v6;
+    v33 = colorCopy;
   }
 
-  else if (a3 <= 0.0)
+  else if (fraction <= 0.0)
   {
-    v33 = v7;
+    v33 = selfCopy;
   }
 
   else
   {
-    v9 = [v6 ciColor];
-    [v9 red];
+    ciColor = [colorCopy ciColor];
+    [ciColor red];
     v11 = v10;
-    v12 = [(IFColor *)v8 ciColor];
-    [v12 red];
-    v14 = (1.0 - a3) * v13 + v11 * a3;
+    ciColor2 = [(IFColor *)v8 ciColor];
+    [ciColor2 red];
+    v14 = (1.0 - fraction) * v13 + v11 * fraction;
 
-    v15 = [v6 ciColor];
-    [v15 green];
+    ciColor3 = [colorCopy ciColor];
+    [ciColor3 green];
     v17 = v16;
-    v18 = [(IFColor *)v8 ciColor];
-    [v18 green];
-    v20 = (1.0 - a3) * v19 + v17 * a3;
+    ciColor4 = [(IFColor *)v8 ciColor];
+    [ciColor4 green];
+    v20 = (1.0 - fraction) * v19 + v17 * fraction;
 
-    v21 = [v6 ciColor];
-    [v21 blue];
+    ciColor5 = [colorCopy ciColor];
+    [ciColor5 blue];
     v23 = v22;
-    v24 = [(IFColor *)v8 ciColor];
-    [v24 blue];
-    v26 = (1.0 - a3) * v25 + v23 * a3;
+    ciColor6 = [(IFColor *)v8 ciColor];
+    [ciColor6 blue];
+    v26 = (1.0 - fraction) * v25 + v23 * fraction;
 
-    v27 = [v6 ciColor];
-    [v27 alpha];
+    ciColor7 = [colorCopy ciColor];
+    [ciColor7 alpha];
     v29 = v28;
-    v30 = [(IFColor *)v8 ciColor];
-    [v30 alpha];
-    v32 = (1.0 - a3) * v31 + v29 * a3;
+    ciColor8 = [(IFColor *)v8 ciColor];
+    [ciColor8 alpha];
+    v32 = (1.0 - fraction) * v31 + v29 * fraction;
 
     v33 = [[IFColor alloc] initWithRed:v14 green:v20 blue:v26 alpha:v32];
   }
@@ -499,25 +499,25 @@ LABEL_35:
   v18.receiver = self;
   v18.super_class = IFColor;
   v4 = [(IFColor *)&v18 description];
-  v5 = [(IFColor *)self ciColor];
-  [v5 red];
+  ciColor = [(IFColor *)self ciColor];
+  [ciColor red];
   v7 = v6;
-  v8 = [(IFColor *)self ciColor];
-  [v8 green];
+  ciColor2 = [(IFColor *)self ciColor];
+  [ciColor2 green];
   v10 = v9;
-  v11 = [(IFColor *)self ciColor];
-  [v11 blue];
+  ciColor3 = [(IFColor *)self ciColor];
+  [ciColor3 blue];
   v13 = v12;
-  v14 = [(IFColor *)self ciColor];
-  [v14 alpha];
+  ciColor4 = [(IFColor *)self ciColor];
+  [ciColor4 alpha];
   v16 = [v3 stringWithFormat:@"%@ - %f, %f, %f, %f", v4, v7, v10, v13, v15];
 
   return v16;
 }
 
-+ (id)borderColorForAppearance:(int64_t)a3
++ (id)borderColorForAppearance:(int64_t)appearance
 {
-  if ((a3 - 1) > 1)
+  if ((appearance - 1) > 1)
   {
     v4 = [[IFColor alloc] initWithWhite:0.0 alpha:0.13];
   }

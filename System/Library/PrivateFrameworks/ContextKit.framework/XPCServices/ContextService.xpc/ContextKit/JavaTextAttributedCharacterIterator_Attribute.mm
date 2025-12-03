@@ -42,8 +42,8 @@ LABEL_17:
       JreThrowNullPointerException();
     }
 
-    v15 = [v13 getType];
-    if (v15 == -[JavaTextAttributedCharacterIterator_Attribute getClass](self, "getClass") && JavaLangReflectModifier_isStaticWithInt_([v13 getModifiers]))
+    getType = [v13 getType];
+    if (getType == -[JavaTextAttributedCharacterIterator_Attribute getClass](self, "getClass") && JavaLangReflectModifier_isStaticWithInt_([v13 getModifiers]))
     {
       v16 = [v13 getWithId:0];
       objc_opt_class();
@@ -93,7 +93,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaTextAttributedCharacterIterator_Attribute alloc];
     JreStrongAssign(&v2->name_, @"input_method_segment");

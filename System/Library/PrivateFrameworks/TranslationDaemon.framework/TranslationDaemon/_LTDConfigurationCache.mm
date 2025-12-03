@@ -1,11 +1,11 @@
 @interface _LTDConfigurationCache
-+ (id)_errorForType:(int64_t)a3 reason:(unint64_t)a4;
++ (id)_errorForType:(int64_t)type reason:(unint64_t)reason;
 - (_LTDConfigurationCache)init;
-- (id)objectForType:(int64_t)a3 error:(id *)a4;
-- (void)objectForType:(int64_t)a3 completion:(id)a4;
+- (id)objectForType:(int64_t)type error:(id *)error;
+- (void)objectForType:(int64_t)type completion:(id)completion;
 - (void)removeAllObjects;
-- (void)removeObjectForType:(int64_t)a3;
-- (void)setObject:(id)a3 forType:(int64_t)a4;
+- (void)removeObjectForType:(int64_t)type;
+- (void)setObject:(id)object forType:(int64_t)type;
 @end
 
 @implementation _LTDConfigurationCache
@@ -32,13 +32,13 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forType:(int64_t)a4
+- (void)setObject:(id)object forType:(int64_t)type
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
+  objectCopy = object;
+  v8 = [v6 numberWithInteger:type];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_cache setObject:v7 forKey:v8];
+  [(NSMutableDictionary *)self->_cache setObject:objectCopy forKey:v8];
 
   v9 = [(NSMutableDictionary *)self->_conditions objectForKeyedSubscript:v8];
   [(NSMutableDictionary *)self->_conditions removeObjectForKey:v8];
@@ -53,24 +53,24 @@
   }
 }
 
-+ (id)_errorForType:(int64_t)a3 reason:(unint64_t)a4
++ (id)_errorForType:(int64_t)type reason:(unint64_t)reason
 {
-  if (a4 > 2)
+  if (reason > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = qword_233005B90[a4];
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:off_2789B5E30[a4], a3];
-    v6 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:v4 description:v5 userInfo:0];
+    v4 = qword_233005B90[reason];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:off_2789B5E30[reason], type];
+    v6 = [MEMORY[0x277CCA9B8] ltd_errorWithCode:v4 description:type userInfo:0];
   }
 
   return v6;
 }
 
-- (id)objectForType:(int64_t)a3 error:(id *)a4
+- (id)objectForType:(int64_t)type error:(id *)error
 {
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   os_unfair_lock_lock(&self->_lock);
@@ -135,18 +135,18 @@ LABEL_12:
         goto LABEL_21;
       }
 
-      v24 = [objc_opt_class() _errorForType:a3 reason:0];
+      v24 = [objc_opt_class() _errorForType:type reason:0];
       v25 = _LTOSLogAssets();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         [_LTDConfigurationCache objectForType:error:];
-        if (!a4)
+        if (!error)
         {
           goto LABEL_20;
         }
       }
 
-      else if (!a4)
+      else if (!error)
       {
 LABEL_20:
 
@@ -155,22 +155,22 @@ LABEL_21:
       }
 
       v26 = v24;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_20;
     }
 
-    v28 = [objc_opt_class() _errorForType:a3 reason:2];
+    v28 = [objc_opt_class() _errorForType:type reason:2];
     v29 = _LTOSLogAssets();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      [(_LTDConfigurationCache *)v28 objectForType:a3 error:v29];
-      if (!a4)
+      [(_LTDConfigurationCache *)v28 objectForType:type error:v29];
+      if (!error)
       {
         goto LABEL_30;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_30:
 
@@ -178,7 +178,7 @@ LABEL_30:
     }
 
     v30 = v28;
-    *a4 = v28;
+    *error = v28;
     goto LABEL_30;
   }
 
@@ -188,7 +188,7 @@ LABEL_30:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     [_LTDConfigurationCache objectForType:error:];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -196,10 +196,10 @@ LABEL_30:
     goto LABEL_24;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_24:
-    *a4 = [objc_opt_class() _errorForType:a3 reason:1];
+    *error = [objc_opt_class() _errorForType:type reason:1];
   }
 
 LABEL_25:
@@ -212,11 +212,11 @@ LABEL_32:
   return v12;
 }
 
-- (void)objectForType:(int64_t)a3 completion:(id)a4
+- (void)objectForType:(int64_t)type completion:(id)completion
 {
   v11 = 0;
-  v6 = a4;
-  v7 = [(_LTDConfigurationCache *)self objectForType:a3 error:&v11];
+  completionCopy = completion;
+  v7 = [(_LTDConfigurationCache *)self objectForType:type error:&v11];
   v8 = v11;
   if (v8)
   {
@@ -230,10 +230,10 @@ LABEL_32:
     v10 = 0;
   }
 
-  v6[2](v6, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)removeObjectForType:(int64_t)a3
+- (void)removeObjectForType:(int64_t)type
 {
   v5 = _LTOSLogAssets();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -241,7 +241,7 @@ LABEL_32:
     [_LTDConfigurationCache removeObjectForType:];
   }
 
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_cache removeObjectForKey:v6];
   v7 = [(NSMutableDictionary *)self->_conditions objectForKeyedSubscript:v6];
@@ -263,14 +263,14 @@ LABEL_32:
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_cache removeAllObjects];
-  v4 = [(NSMutableDictionary *)self->_conditions allValues];
+  allValues = [(NSMutableDictionary *)self->_conditions allValues];
   [(NSMutableDictionary *)self->_conditions removeAllObjects];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = allValues;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {

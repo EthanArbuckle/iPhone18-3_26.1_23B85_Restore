@@ -9,22 +9,22 @@
 - (NSString)localizedCreateButtonTitle;
 - (UIImage)sourceImage;
 - (_TtC15ImagePlayground29ImagePlaygroundViewController)init;
-- (_TtC15ImagePlayground29ImagePlaygroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ImagePlayground29ImagePlaygroundViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP15ImagePlayground44ImageGenerationViewControllerPrivateDelegate_)privateDelegate;
 - (int64_t)modalPresentationStyle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_viewControllerPresentationDidInitiate;
-- (void)editorDidCancelWithRequiresShowingGrid:(BOOL)a3;
-- (void)editorDidGenerateAssets:(id)a3;
+- (void)editorDidCancelWithRequiresShowingGrid:(BOOL)grid;
+- (void)editorDidGenerateAssets:(id)assets;
 - (void)endTheDelay;
-- (void)setIsLoadingRecipe:(BOOL)a3;
-- (void)setLocalizedCreateButtonTitle:(id)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setPrivateDelegate:(id)a3;
-- (void)setResultingAssets:(id)a3;
-- (void)setSourceImageIsSketch:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setIsLoadingRecipe:(BOOL)recipe;
+- (void)setLocalizedCreateButtonTitle:(id)title;
+- (void)setModalPresentationStyle:(int64_t)style;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setPrivateDelegate:(id)delegate;
+- (void)setResultingAssets:(id)assets;
+- (void)setSourceImageIsSketch:(BOOL)sketch;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -55,12 +55,12 @@
   return v5;
 }
 
-- (void)setPrivateDelegate:(id)a3
+- (void)setPrivateDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_privateDelegate;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -77,7 +77,7 @@
   return v5;
 }
 
-- (void)setResultingAssets:(id)a3
+- (void)setResultingAssets:(id)assets
 {
   type metadata accessor for GPExportablePhotoAsset(0);
   v4 = sub_1D2AC6D34();
@@ -94,11 +94,11 @@
   return *(self + v3);
 }
 
-- (void)setSourceImageIsSketch:(BOOL)a3
+- (void)setSourceImageIsSketch:(BOOL)sketch
 {
   v5 = OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_sourceImageIsSketch;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sketch;
 }
 
 - (NSString)localizedCreateButtonTitle
@@ -120,9 +120,9 @@
   return v4;
 }
 
-- (void)setLocalizedCreateButtonTitle:(id)a3
+- (void)setLocalizedCreateButtonTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_1D2AC6C24();
     v6 = v5;
@@ -148,15 +148,15 @@
   return *(self + v3);
 }
 
-- (void)setIsLoadingRecipe:(BOOL)a3
+- (void)setIsLoadingRecipe:(BOOL)recipe
 {
   v5 = OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_isLoadingRecipe;
   swift_beginAccess();
-  *(self + v5) = a3;
-  *(*(self + OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_connectionManager) + OBJC_IVAR____TtC15ImagePlayground27GPHostSideConnectionManager_isLoadingRecipe) = a3;
+  *(self + v5) = recipe;
+  *(*(self + OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_connectionManager) + OBJC_IVAR____TtC15ImagePlayground27GPHostSideConnectionManager_isLoadingRecipe) = recipe;
   v6 = swift_allocObject();
-  *(v6 + 16) = a3;
-  v7 = self;
+  *(v6 + 16) = recipe;
+  selfCopy = self;
   sub_1D2A5B93C(sub_1D2A57618, 0, sub_1D2A47D44, v6);
 }
 
@@ -180,27 +180,27 @@
 
 - (int64_t)modalPresentationStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D2A3A8A8();
 
   return v3;
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for ImagePlaygroundViewController(0);
-  [(ImagePlaygroundViewController *)&v4 setModalPresentationStyle:a3];
+  [(ImagePlaygroundViewController *)&v4 setModalPresentationStyle:style];
 }
 
 - (CGSize)preferredContentSize
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  selfCopy = self;
+  currentDevice = [v3 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v7 = sub_1D2A39E70();
 
@@ -214,7 +214,7 @@
 
   else
   {
-    v14.receiver = v4;
+    v14.receiver = selfCopy;
     v14.super_class = type metadata accessor for ImagePlaygroundViewController(0);
     [(ImagePlaygroundViewController *)&v14 preferredContentSize];
     v11 = v10;
@@ -229,10 +229,10 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ImagePlaygroundViewController(0);
   [(ImagePlaygroundViewController *)&v5 setPreferredContentSize:width, height];
@@ -243,27 +243,27 @@
   v3 = *(self + OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_viewModel);
   swift_getKeyPath();
   sub_1D2A44DA4(&qword_1EC703A90, type metadata accessor for GPImageEditionView.ViewModel);
-  v4 = self;
+  selfCopy = self;
 
   sub_1D2AC6094();
 
-  LOBYTE(v4) = *(v3 + 26);
+  LOBYTE(selfCopy) = *(v3 + 26);
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  selfCopy = self;
+  currentDevice = [v3 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
-    v9.receiver = v4;
+    v9.receiver = selfCopy;
     v9.super_class = type metadata accessor for ImagePlaygroundViewController(0);
-    v7 = [(ImagePlaygroundViewController *)&v9 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(ImagePlaygroundViewController *)&v9 supportedInterfaceOrientations];
   }
 
   else
@@ -272,42 +272,42 @@
     return 2;
   }
 
-  return v7;
+  return supportedInterfaceOrientations;
 }
 
 - (void)endTheDelay
 {
-  v2 = self;
-  [(ImagePlaygroundViewController *)v2 _endDelayingPresentation];
-  *(v2 + OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_delayingPresentation) = 0;
+  selfCopy = self;
+  [(ImagePlaygroundViewController *)selfCopy _endDelayingPresentation];
+  *(selfCopy + OBJC_IVAR____TtC15ImagePlayground29ImagePlaygroundViewController_delayingPresentation) = 0;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D2A3ADB4();
 }
 
 - (void)_viewControllerPresentationDidInitiate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D2A3B310();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1D2A3B4F4(a3);
+  selfCopy = self;
+  sub_1D2A3B4F4(disappear);
 }
 
-- (_TtC15ImagePlayground29ImagePlaygroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ImagePlayground29ImagePlaygroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)editorDidGenerateAssets:(id)a3
+- (void)editorDidGenerateAssets:(id)assets
 {
   type metadata accessor for GPExportablePhotoAsset(0);
   v4 = sub_1D2AC6D34();
@@ -315,15 +315,15 @@
   swift_beginAccess();
   v6 = *(self + v5);
   *(self + v5) = v4;
-  v7 = self;
+  selfCopy = self;
 
   sub_1D2A3D958();
 }
 
-- (void)editorDidCancelWithRequiresShowingGrid:(BOOL)a3
+- (void)editorDidCancelWithRequiresShowingGrid:(BOOL)grid
 {
-  v4 = self;
-  ImagePlaygroundViewController.editorDidCancel(requiresShowingGrid:)(a3);
+  selfCopy = self;
+  ImagePlaygroundViewController.editorDidCancel(requiresShowingGrid:)(grid);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface NLPLearnerNgramLanguageModelingData
 + (void)initialize;
-- (NLPLearnerNgramLanguageModelingData)initWithLocale:(id)a3;
-- (void)addPreprocessedExample:(void *)a3;
+- (NLPLearnerNgramLanguageModelingData)initWithLocale:(id)locale;
+- (void)addPreprocessedExample:(void *)example;
 @end
 
 @implementation NLPLearnerNgramLanguageModelingData
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLogNgramLM = os_log_create("com.apple.NLP", "NLPLearnerNgramLanguageModelingData");
 
@@ -16,12 +16,12 @@
   }
 }
 
-- (NLPLearnerNgramLanguageModelingData)initWithLocale:(id)a3
+- (NLPLearnerNgramLanguageModelingData)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v7.receiver = self;
   v7.super_class = NLPLearnerNgramLanguageModelingData;
-  v5 = [(NLPLearnerLanguageModelingData *)&v7 initWithLocale:v4];
+  v5 = [(NLPLearnerLanguageModelingData *)&v7 initWithLocale:localeCopy];
   if (v5)
   {
     -[NLPLearnerTextData setMaxSequenceLength:](v5, "setMaxSequenceLength:", [objc_opt_class() defaultMaxSequenceLength]);
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (void)addPreprocessedExample:(void *)a3
+- (void)addPreprocessedExample:(void *)example
 {
-  v5 = *(a3 + 1) - *a3;
+  v5 = *(example + 1) - *example;
   v6 = malloc_type_malloc(v5, 0x100004052888210uLL);
   if (v6)
   {
     v7 = v6;
-    memcpy(v6, *a3, v5);
+    memcpy(v6, *example, v5);
     v9 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v7 length:v5 freeWhenDone:1];
-    v8 = [(NLPLearnerTextData *)self sentences];
-    [v8 addObject:v9];
+    sentences = [(NLPLearnerTextData *)self sentences];
+    [sentences addObject:v9];
   }
 }
 

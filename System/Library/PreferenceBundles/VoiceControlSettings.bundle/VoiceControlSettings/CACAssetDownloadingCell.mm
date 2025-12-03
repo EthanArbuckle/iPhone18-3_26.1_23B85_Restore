@@ -1,16 +1,16 @@
 @interface CACAssetDownloadingCell
-- (CACAssetDownloadingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setDownloading:(BOOL)a3;
+- (CACAssetDownloadingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setDownloading:(BOOL)downloading;
 @end
 
 @implementation CACAssetDownloadingCell
 
-- (CACAssetDownloadingCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CACAssetDownloadingCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = CACAssetDownloadingCell;
-  v5 = [(CACAssetDownloadingCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(CACAssetDownloadingCell *)&v9 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [[CACAssetDownloadingView alloc] initWithActivityIndicatorStyle:100];
@@ -21,26 +21,26 @@
   return v5;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = CACAssetDownloadingCell;
-  v4 = a3;
-  [(CACAssetDownloadingCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"IS_ASSET_DOWNLOADING", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(CACAssetDownloadingCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"IS_ASSET_DOWNLOADING", v7.receiver, v7.super_class}];
 
-  v6 = [v5 BOOLValue];
-  [(CACAssetDownloadingCell *)self setDownloading:v6];
+  bOOLValue = [v5 BOOLValue];
+  [(CACAssetDownloadingCell *)self setDownloading:bOOLValue];
 }
 
-- (void)setDownloading:(BOOL)a3
+- (void)setDownloading:(BOOL)downloading
 {
-  if (self->_downloading != a3)
+  if (self->_downloading != downloading)
   {
-    if (a3)
+    if (downloading)
     {
-      v5 = [(CACAssetDownloadingCell *)self downloadingView];
-      [(CACAssetDownloadingCell *)self setAccessoryView:v5];
+      downloadingView = [(CACAssetDownloadingCell *)self downloadingView];
+      [(CACAssetDownloadingCell *)self setAccessoryView:downloadingView];
     }
 
     else
@@ -48,7 +48,7 @@
       [(CACAssetDownloadingCell *)self setAccessoryView:0];
     }
 
-    self->_downloading = a3;
+    self->_downloading = downloading;
   }
 }
 

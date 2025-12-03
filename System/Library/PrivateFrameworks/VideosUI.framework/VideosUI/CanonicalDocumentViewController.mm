@@ -1,34 +1,34 @@
 @interface CanonicalDocumentViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (void)didTapDownload;
 - (void)didTapMarkAllEpisodesAsWatched;
 - (void)didTapMarkAsWatched;
 - (void)didTapShare;
-- (void)validateCommand:(id)a3;
-- (void)vui_willMoveToParentViewController:(id)a3;
+- (void)validateCommand:(id)command;
+- (void)vui_willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CanonicalDocumentViewController
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1E38D3E6C(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1E38D3E6C(controller);
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E38D4438(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1E38D4438(commandCopy);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1E4207264();
     swift_unknownObjectRelease();
@@ -37,7 +37,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = sub_1E38D46E0();
@@ -48,28 +48,28 @@
 
 - (void)didTapDownload
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E38D4968();
 }
 
 - (void)didTapMarkAsWatched
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E38D4AA8();
 }
 
 - (void)didTapShare
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E38D4D38();
 }
 
 - (void)didTapMarkAllEpisodesAsWatched
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E38D4DE0();
 }

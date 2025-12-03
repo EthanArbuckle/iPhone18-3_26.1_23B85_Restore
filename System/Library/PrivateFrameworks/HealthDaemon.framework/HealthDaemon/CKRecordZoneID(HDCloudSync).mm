@@ -18,13 +18,13 @@
   v8 = a3;
   if ([v8 containsString:@":"])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 UUIDString];
-  v11 = [v9 stringWithFormat:@"%@%@%@", v8, @":", v10];
+  uUIDString = [v7 UUIDString];
+  v11 = [v9 stringWithFormat:@"%@%@%@", v8, @":", uUIDString];
 
   v12 = objc_alloc(MEMORY[0x277CBC5F8]);
   v13 = [v12 initWithZoneName:v11 ownerName:*MEMORY[0x277CBBF28]];
@@ -34,8 +34,8 @@
 
 - (uint64_t)hd_isIndividualSyncZoneIDForStoreIdentifier:()HDCloudSync syncCircleIdentifier:
 {
-  v6 = [a1 zoneName];
-  v7 = [v6 componentsSeparatedByString:@":"];
+  zoneName = [self zoneName];
+  v7 = [zoneName componentsSeparatedByString:@":"];
 
   if ([v7 count] == 2 && (v8 = objc_alloc(MEMORY[0x277CCAD78]), objc_msgSend(v7, "objectAtIndexedSubscript:", 1), v9 = objc_claimAutoreleasedReturnValue(), *a3 = objc_msgSend(v8, "initWithUUIDString:", v9), v9, *a3))
   {
@@ -57,13 +57,13 @@
   v8 = a3;
   if ([v8 containsString:@":"])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
   }
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v7 UUIDString];
-  v11 = [v9 stringWithFormat:@"%@%@%@%@%@", v8, @":", @"SummarySharing", @":", v10];
+  uUIDString = [v7 UUIDString];
+  v11 = [v9 stringWithFormat:@"%@%@%@%@%@", v8, @":", @"SummarySharing", @":", uUIDString];
 
   v12 = objc_alloc(MEMORY[0x277CBC5F8]);
   v13 = [v12 initWithZoneName:v11 ownerName:*MEMORY[0x277CBBF28]];
@@ -73,8 +73,8 @@
 
 - (BOOL)hd_isSharedSummaryZoneIDForUserIdentifier:()HDCloudSync syncCircleIdentifier:
 {
-  v6 = [a1 zoneName];
-  v7 = [v6 componentsSeparatedByString:@":"];
+  zoneName = [self zoneName];
+  v7 = [zoneName componentsSeparatedByString:@":"];
 
   if ([v7 count] == 3 && (objc_msgSend(v7, "objectAtIndexedSubscript:", 1), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"SummarySharing"), v8, v9))
   {
@@ -100,8 +100,8 @@
   v8 = a4;
   if ([v7 containsString:@":"])
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKRecordZoneID+HDCloudSync.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"![syncCircleIdentifier containsString:RecordZoneIDComponentsSeparator]"}];
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@%@%@", v7, @":", @"StateSync", @":", v8];
@@ -113,8 +113,8 @@
 
 - (uint64_t)hd_isStateSyncZoneIDForSyncCircleIdentifier:()HDCloudSync domain:
 {
-  v6 = [a1 zoneName];
-  v7 = [v6 componentsSeparatedByString:@":"];
+  zoneName = [self zoneName];
+  v7 = [zoneName componentsSeparatedByString:@":"];
 
   if ([v7 count] == 3 && (objc_msgSend(v7, "objectAtIndexedSubscript:", 1), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"StateSync"), v8, v9))
   {
@@ -134,7 +134,7 @@
 - (id)hd_syncCircleIdentifier
 {
   v34 = 0;
-  v2 = [a1 hd_isMasterZoneIDForSyncCircleIdentifier:&v34];
+  v2 = [self hd_isMasterZoneIDForSyncCircleIdentifier:&v34];
   v3 = v34;
   v4 = v3;
   if (v2)
@@ -143,7 +143,7 @@
   }
 
   v33 = v3;
-  v6 = [a1 hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v33];
+  v6 = [self hd_isUnifiedSyncZoneIDForSyncCircleIdentifier:&v33];
   v7 = v33;
 
   if (v6)
@@ -152,7 +152,7 @@
   }
 
   v32 = v7;
-  v11 = [a1 hd_isPrivateMetadataZoneIDForSyncCircleIdentifier:&v32];
+  v11 = [self hd_isPrivateMetadataZoneIDForSyncCircleIdentifier:&v32];
   v4 = v32;
 
   if (v11)
@@ -166,7 +166,7 @@ LABEL_5:
   }
 
   v31 = v4;
-  v12 = [a1 hd_isAttachmentZoneIDForSyncCircleIdentifier:&v31];
+  v12 = [self hd_isAttachmentZoneIDForSyncCircleIdentifier:&v31];
   v7 = v31;
 
   if (v12)
@@ -178,7 +178,7 @@ LABEL_4:
 
   v29 = 0;
   v30 = v7;
-  v13 = [a1 hd_isStateSyncZoneIDForSyncCircleIdentifier:&v30 domain:&v29];
+  v13 = [self hd_isStateSyncZoneIDForSyncCircleIdentifier:&v30 domain:&v29];
   v14 = v30;
 
   v15 = v29;
@@ -190,14 +190,14 @@ LABEL_4:
   else
   {
     v28 = v14;
-    v17 = [a1 hd_isContextSyncZoneIDForSyncCircleIdentifier:&v28];
+    v17 = [self hd_isContextSyncZoneIDForSyncCircleIdentifier:&v28];
     v18 = v28;
 
     if (!v17)
     {
       v26 = v18;
       v27 = 0;
-      v19 = [a1 hd_isSharedSummaryZoneIDForUserIdentifier:&v27 syncCircleIdentifier:&v26];
+      v19 = [self hd_isSharedSummaryZoneIDForUserIdentifier:&v27 syncCircleIdentifier:&v26];
       v20 = v27;
       v21 = v26;
 
@@ -211,7 +211,7 @@ LABEL_4:
       {
         v24 = v21;
         v25 = 0;
-        v22 = [a1 hd_isIndividualSyncZoneIDForStoreIdentifier:&v25 syncCircleIdentifier:&v24];
+        v22 = [self hd_isIndividualSyncZoneIDForStoreIdentifier:&v25 syncCircleIdentifier:&v24];
         v23 = v25;
         v9 = v24;
 
@@ -241,7 +241,7 @@ LABEL_6:
 {
   v6 = 0;
   v7 = 0;
-  v1 = [a1 hd_isIndividualSyncZoneIDForStoreIdentifier:&v7 syncCircleIdentifier:&v6];
+  v1 = [self hd_isIndividualSyncZoneIDForStoreIdentifier:&v7 syncCircleIdentifier:&v6];
   v2 = v7;
   v3 = v6;
   v4 = 0;
@@ -258,8 +258,8 @@ LABEL_6:
   v4 = MEMORY[0x277CBC5F8];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [a1 zoneName];
-  v8 = [v6 initWithZoneName:v7 ownerName:v5];
+  zoneName = [self zoneName];
+  v8 = [v6 initWithZoneName:zoneName ownerName:v5];
 
   return v8;
 }

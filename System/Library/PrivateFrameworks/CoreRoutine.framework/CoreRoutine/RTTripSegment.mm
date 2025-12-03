@@ -1,20 +1,20 @@
 @interface RTTripSegment
-+ (id)mergeTripSegment:(id)a3 other:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (RTTripSegment)initWithCoder:(id)a3;
-- (RTTripSegment)initWithTripSegmentIdentifier:(id)a3 dateInterval:(id)a4 tripDistance:(double)a5 tripDistanceUncertainty:(double)a6 modeOfTransportation:(int64_t)a7 isConsumedByClustering:(BOOL)a8 tripSegmentSequence:(int)a9 tripSegmentSequenceMax:(int)a10 originLatitude:(double)a11 originLongitude:(double)a12 destinationLatitude:(double)a13 destinationLongitude:(double)a14 tripCommuteID:(id)a15;
++ (id)mergeTripSegment:(id)segment other:(id)other;
+- (BOOL)isEqual:(id)equal;
+- (RTTripSegment)initWithCoder:(id)coder;
+- (RTTripSegment)initWithTripSegmentIdentifier:(id)identifier dateInterval:(id)interval tripDistance:(double)distance tripDistanceUncertainty:(double)uncertainty modeOfTransportation:(int64_t)transportation isConsumedByClustering:(BOOL)clustering tripSegmentSequence:(int)sequence tripSegmentSequenceMax:(int)self0 originLatitude:(double)self1 originLongitude:(double)self2 destinationLatitude:(double)self3 destinationLongitude:(double)self4 tripCommuteID:(id)self5;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripSegment
 
-- (RTTripSegment)initWithTripSegmentIdentifier:(id)a3 dateInterval:(id)a4 tripDistance:(double)a5 tripDistanceUncertainty:(double)a6 modeOfTransportation:(int64_t)a7 isConsumedByClustering:(BOOL)a8 tripSegmentSequence:(int)a9 tripSegmentSequenceMax:(int)a10 originLatitude:(double)a11 originLongitude:(double)a12 destinationLatitude:(double)a13 destinationLongitude:(double)a14 tripCommuteID:(id)a15
+- (RTTripSegment)initWithTripSegmentIdentifier:(id)identifier dateInterval:(id)interval tripDistance:(double)distance tripDistanceUncertainty:(double)uncertainty modeOfTransportation:(int64_t)transportation isConsumedByClustering:(BOOL)clustering tripSegmentSequence:(int)sequence tripSegmentSequenceMax:(int)self0 originLatitude:(double)self1 originLongitude:(double)self2 destinationLatitude:(double)self3 destinationLongitude:(double)self4 tripCommuteID:(id)self5
 {
-  v28 = a3;
-  v35 = a4;
-  v29 = a15;
-  if (v28)
+  identifierCopy = identifier;
+  intervalCopy = interval;
+  dCopy = d;
+  if (identifierCopy)
   {
     v36.receiver = self;
     v36.super_class = RTTripSegment;
@@ -22,23 +22,23 @@
     v31 = v30;
     if (v30)
     {
-      objc_storeStrong(&v30->_identifier, a3);
-      objc_storeStrong(&v31->_dateInterval, a4);
-      v31->_tripDistance = a5;
-      v31->_tripDistanceUncertainty = a6;
-      v31->_modeOfTransportation = a7;
-      v31->_isConsumedByClustering = a8;
-      v31->_tripSegmentSequence = a9;
-      v31->_tripSegmentSequenceMax = a10;
-      v31->_originLatitude = a11;
-      v31->_originLongitude = a12;
-      v31->_destinationLatitude = a13;
-      v31->_destinationLongitude = a14;
-      objc_storeStrong(&v31->_tripCommuteID, a15);
+      objc_storeStrong(&v30->_identifier, identifier);
+      objc_storeStrong(&v31->_dateInterval, interval);
+      v31->_tripDistance = distance;
+      v31->_tripDistanceUncertainty = uncertainty;
+      v31->_modeOfTransportation = transportation;
+      v31->_isConsumedByClustering = clustering;
+      v31->_tripSegmentSequence = sequence;
+      v31->_tripSegmentSequenceMax = max;
+      v31->_originLatitude = latitude;
+      v31->_originLongitude = longitude;
+      v31->_destinationLatitude = destinationLatitude;
+      v31->_destinationLongitude = destinationLongitude;
+      objc_storeStrong(&v31->_tripCommuteID, d);
     }
 
     self = v31;
-    v32 = self;
+    selfCopy = self;
   }
 
   else
@@ -50,201 +50,201 @@
       _os_log_error_impl(&dword_1BF1C4000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v32 = 0;
+    selfCopy = 0;
   }
 
-  return v32;
+  return selfCopy;
 }
 
-+ (id)mergeTripSegment:(id)a3 other:(id)a4
++ (id)mergeTripSegment:(id)segment other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 tripDistance];
+  segmentCopy = segment;
+  otherCopy = other;
+  [segmentCopy tripDistance];
   v8 = v7;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   if (v8 <= v9)
   {
-    v10 = v6;
+    v10 = otherCopy;
   }
 
   else
   {
-    v10 = v5;
+    v10 = segmentCopy;
   }
 
-  v68 = [v10 identifier];
-  [v5 tripDistance];
+  identifier = [v10 identifier];
+  [segmentCopy tripDistance];
   v12 = v11;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   if (v12 > v13)
   {
-    v14 = v5;
+    v14 = segmentCopy;
   }
 
   else
   {
-    v14 = v6;
+    v14 = otherCopy;
   }
 
-  v67 = [v14 tripCommuteID];
-  v15 = [v5 dateInterval];
-  v16 = [v15 startDate];
-  v17 = [v6 dateInterval];
-  v18 = [v17 startDate];
-  v19 = [v16 earlierDate:v18];
+  tripCommuteID = [v14 tripCommuteID];
+  dateInterval = [segmentCopy dateInterval];
+  startDate = [dateInterval startDate];
+  dateInterval2 = [otherCopy dateInterval];
+  startDate2 = [dateInterval2 startDate];
+  v19 = [startDate earlierDate:startDate2];
 
-  v20 = [v5 dateInterval];
-  v21 = [v20 endDate];
-  v22 = [v6 dateInterval];
-  v23 = [v22 endDate];
-  v24 = [v21 laterDate:v23];
+  dateInterval3 = [segmentCopy dateInterval];
+  endDate = [dateInterval3 endDate];
+  dateInterval4 = [otherCopy dateInterval];
+  endDate2 = [dateInterval4 endDate];
+  v24 = [endDate laterDate:endDate2];
 
   v66 = v19;
   v25 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v19 endDate:v24];
-  [v5 tripDistance];
+  [segmentCopy tripDistance];
   v27 = v26;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   if (v27 <= v28)
   {
-    v29 = v6;
+    v29 = otherCopy;
   }
 
   else
   {
-    v29 = v5;
+    v29 = segmentCopy;
   }
 
-  v30 = [v29 modeOfTransportation];
-  if (![v5 modeOfTransportation] || !objc_msgSend(v6, "modeOfTransportation"))
+  modeOfTransportation = [v29 modeOfTransportation];
+  if (![segmentCopy modeOfTransportation] || !objc_msgSend(otherCopy, "modeOfTransportation"))
   {
-    v30 = 0;
+    modeOfTransportation = 0;
   }
 
-  [v5 tripDistance];
+  [segmentCopy tripDistance];
   v65 = v31;
-  [v5 tripDistanceUncertainty];
+  [segmentCopy tripDistanceUncertainty];
   v64 = v32;
-  [v5 tripDistanceUncertainty];
+  [segmentCopy tripDistanceUncertainty];
   v34 = v33;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   v36 = v35;
-  [v6 tripDistanceUncertainty];
+  [otherCopy tripDistanceUncertainty];
   v38 = v37;
-  [v6 tripDistanceUncertainty];
+  [otherCopy tripDistanceUncertainty];
   v40 = v39;
-  [v5 tripDistance];
+  [segmentCopy tripDistance];
   v42 = v41;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   v44 = v43;
-  [v5 tripDistance];
+  [segmentCopy tripDistance];
   v46 = v45;
-  [v6 tripDistance];
+  [otherCopy tripDistance];
   v48 = v47;
   v49 = [RTTripSegment alloc];
-  if ([v5 isConsumedByClustering])
+  if ([segmentCopy isConsumedByClustering])
   {
-    v50 = [v6 isConsumedByClustering];
+    isConsumedByClustering = [otherCopy isConsumedByClustering];
   }
 
   else
   {
-    v50 = 0;
+    isConsumedByClustering = 0;
   }
 
   v51 = v46 + v48;
   v52 = sqrt((v36 * v38 * v40 + v65 * v64 * v34) / (v42 + v44));
-  v53 = [v5 tripSegmentSequence];
-  v54 = [v5 tripSegmentSequenceMax];
-  [v5 originLatitude];
+  tripSegmentSequence = [segmentCopy tripSegmentSequence];
+  tripSegmentSequenceMax = [segmentCopy tripSegmentSequenceMax];
+  [segmentCopy originLatitude];
   v56 = v55;
-  [v5 originLongitude];
+  [segmentCopy originLongitude];
   v58 = v57;
-  [v5 destinationLatitude];
+  [segmentCopy destinationLatitude];
   v60 = v59;
-  [v5 destinationLongitude];
-  v62 = [(RTTripSegment *)v49 initWithTripSegmentIdentifier:v68 dateInterval:v25 tripDistance:v30 tripDistanceUncertainty:v50 modeOfTransportation:v53 isConsumedByClustering:v54 tripSegmentSequence:v51 tripSegmentSequenceMax:v52 originLatitude:v56 originLongitude:v58 destinationLatitude:v60 destinationLongitude:v61 tripCommuteID:v67];
+  [segmentCopy destinationLongitude];
+  v62 = [(RTTripSegment *)v49 initWithTripSegmentIdentifier:identifier dateInterval:v25 tripDistance:modeOfTransportation tripDistanceUncertainty:isConsumedByClustering modeOfTransportation:tripSegmentSequence isConsumedByClustering:tripSegmentSequenceMax tripSegmentSequence:v51 tripSegmentSequenceMax:v52 originLatitude:v56 originLongitude:v58 destinationLatitude:v60 destinationLongitude:v61 tripCommuteID:tripCommuteID];
 
   return v62;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"tripSegmentIdentifier"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeDouble:@"tripDistance" forKey:self->_tripDistance];
-  [v5 encodeDouble:@"tripDistanceUncertainty" forKey:self->_tripDistanceUncertainty];
-  [v5 encodeInteger:self->_modeOfTransportation forKey:@"modeOfTransportation"];
-  [v5 encodeBool:self->_isConsumedByClustering forKey:@"isConsumedByClustering"];
-  [v5 encodeInt32:self->_tripSegmentSequence forKey:@"tripSequenceNumber"];
-  [v5 encodeInt32:self->_tripSegmentSequenceMax forKey:@"tripSequenceNumberMax"];
-  [v5 encodeDouble:@"originLatitude" forKey:self->_originLatitude];
-  [v5 encodeDouble:@"originLongitude" forKey:self->_originLongitude];
-  [v5 encodeDouble:@"destinationLatitude" forKey:self->_destinationLatitude];
-  [v5 encodeDouble:@"destinationLongitude" forKey:self->_destinationLongitude];
-  [v5 encodeObject:self->_tripCommuteID forKey:@"tripCommuteID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"tripSegmentIdentifier"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeDouble:@"tripDistance" forKey:self->_tripDistance];
+  [coderCopy encodeDouble:@"tripDistanceUncertainty" forKey:self->_tripDistanceUncertainty];
+  [coderCopy encodeInteger:self->_modeOfTransportation forKey:@"modeOfTransportation"];
+  [coderCopy encodeBool:self->_isConsumedByClustering forKey:@"isConsumedByClustering"];
+  [coderCopy encodeInt32:self->_tripSegmentSequence forKey:@"tripSequenceNumber"];
+  [coderCopy encodeInt32:self->_tripSegmentSequenceMax forKey:@"tripSequenceNumberMax"];
+  [coderCopy encodeDouble:@"originLatitude" forKey:self->_originLatitude];
+  [coderCopy encodeDouble:@"originLongitude" forKey:self->_originLongitude];
+  [coderCopy encodeDouble:@"destinationLatitude" forKey:self->_destinationLatitude];
+  [coderCopy encodeDouble:@"destinationLongitude" forKey:self->_destinationLongitude];
+  [coderCopy encodeObject:self->_tripCommuteID forKey:@"tripCommuteID"];
 }
 
-- (RTTripSegment)initWithCoder:(id)a3
+- (RTTripSegment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tripSegmentIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  [v4 decodeDoubleForKey:@"tripDistance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tripSegmentIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  [coderCopy decodeDoubleForKey:@"tripDistance"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"tripDistanceUncertainty"];
+  [coderCopy decodeDoubleForKey:@"tripDistanceUncertainty"];
   v10 = v9;
-  v11 = [v4 decodeIntegerForKey:@"modeOfTransportation"];
-  v12 = [v4 decodeBoolForKey:@"isConsumedByClustering"];
-  v13 = [v4 decodeInt32ForKey:@"tripSequenceNumber"];
-  v14 = [v4 decodeInt32ForKey:@"tripSequenceNumberMax"];
-  [v4 decodeDoubleForKey:@"originLatitude"];
+  v11 = [coderCopy decodeIntegerForKey:@"modeOfTransportation"];
+  v12 = [coderCopy decodeBoolForKey:@"isConsumedByClustering"];
+  v13 = [coderCopy decodeInt32ForKey:@"tripSequenceNumber"];
+  v14 = [coderCopy decodeInt32ForKey:@"tripSequenceNumberMax"];
+  [coderCopy decodeDoubleForKey:@"originLatitude"];
   v16 = v15;
-  [v4 decodeDoubleForKey:@"originLongitude"];
+  [coderCopy decodeDoubleForKey:@"originLongitude"];
   v18 = v17;
-  [v4 decodeDoubleForKey:@"destinationLatitude"];
+  [coderCopy decodeDoubleForKey:@"destinationLatitude"];
   v20 = v19;
-  [v4 decodeDoubleForKey:@"destinationLongitude"];
+  [coderCopy decodeDoubleForKey:@"destinationLongitude"];
   v22 = v21;
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tripCommuteID"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tripCommuteID"];
 
   v24 = [(RTTripSegment *)self initWithTripSegmentIdentifier:v5 dateInterval:v6 tripDistance:v11 tripDistanceUncertainty:v12 modeOfTransportation:v13 isConsumedByClustering:v14 tripSegmentSequence:v8 tripSegmentSequenceMax:v10 originLatitude:v16 originLongitude:v18 destinationLatitude:v20 destinationLongitude:v22 tripCommuteID:v23];
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v39 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v39 = [equalCopy isMemberOfClass:objc_opt_class()];
   identifier = self->_identifier;
-  v6 = [v4 identifier];
-  v38 = [(NSUUID *)identifier isEqual:v6];
+  identifier = [equalCopy identifier];
+  v38 = [(NSUUID *)identifier isEqual:identifier];
 
   dateInterval = self->_dateInterval;
-  v8 = [v4 dateInterval];
-  v37 = [(NSDateInterval *)dateInterval isEqual:v8];
+  dateInterval = [equalCopy dateInterval];
+  v37 = [(NSDateInterval *)dateInterval isEqual:dateInterval];
 
   tripDistance = self->_tripDistance;
-  [v4 tripDistance];
+  [equalCopy tripDistance];
   v44 = v9;
   tripDistanceUncertainty = self->_tripDistanceUncertainty;
-  [v4 tripDistanceUncertainty];
+  [equalCopy tripDistanceUncertainty];
   v33 = v10;
   modeOfTransportation = self->_modeOfTransportation;
-  v35 = [v4 modeOfTransportation];
+  modeOfTransportation = [equalCopy modeOfTransportation];
   isConsumedByClustering = self->_isConsumedByClustering;
-  v12 = [v4 isConsumedByClustering] & 1;
+  v12 = [equalCopy isConsumedByClustering] & 1;
   tripSegmentSequence = self->_tripSegmentSequence;
-  v14 = [v4 tripSegmentSequence];
+  tripSegmentSequence = [equalCopy tripSegmentSequence];
   tripSegmentSequenceMax = self->_tripSegmentSequenceMax;
-  v16 = [v4 tripSegmentSequenceMax];
+  tripSegmentSequenceMax = [equalCopy tripSegmentSequenceMax];
   originLatitude = self->_originLatitude;
-  [v4 originLatitude];
+  [equalCopy originLatitude];
   v40 = v17;
   originLongitude = self->_originLongitude;
-  [v4 originLongitude];
+  [equalCopy originLongitude];
   v18.f64[0] = originLatitude;
   v18.f64[1] = originLongitude;
   v43 = v18;
@@ -258,27 +258,27 @@
   v18.f64[1] = v19;
   v41 = v18;
   destinationLatitude = self->_destinationLatitude;
-  [v4 destinationLatitude];
-  LOBYTE(v8) = destinationLatitude == v21;
+  [equalCopy destinationLatitude];
+  LOBYTE(dateInterval) = destinationLatitude == v21;
   destinationLongitude = self->_destinationLongitude;
-  [v4 destinationLongitude];
+  [equalCopy destinationLongitude];
   v24 = v23;
   tripCommuteID = self->_tripCommuteID;
-  v26 = [v4 tripCommuteID];
+  tripCommuteID = [equalCopy tripCommuteID];
 
-  v27 = [(NSUUID *)tripCommuteID isEqual:v26];
-  v28 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v47, v45), vceqq_f64(v43, v41)))) & v8;
+  v27 = [(NSUUID *)tripCommuteID isEqual:tripCommuteID];
+  v28 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v47, v45), vceqq_f64(v43, v41)))) & dateInterval;
   if (destinationLongitude != v24)
   {
     v28 = 0;
   }
 
-  if (tripSegmentSequence != v14)
+  if (tripSegmentSequence != tripSegmentSequence)
   {
     v28 = 0;
   }
 
-  if (tripSegmentSequenceMax != v16 || v12 != isConsumedByClustering || modeOfTransportation != v35)
+  if (tripSegmentSequenceMax != tripSegmentSequenceMax || v12 != isConsumedByClustering || modeOfTransportation != modeOfTransportation)
   {
     v28 = 0;
   }
@@ -289,8 +289,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NSUUID *)self->_identifier UUIDString];
-  v5 = [v4 UTF8String];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  uTF8String = [uUIDString UTF8String];
   v6 = [(NSDateInterval *)self->_dateInterval description];
   tripDistance = self->_tripDistance;
   tripDistanceUncertainty = self->_tripDistanceUncertainty;
@@ -301,8 +301,8 @@
   destinationLongitude = self->_destinationLongitude;
   tripSegmentSequence = self->_tripSegmentSequence;
   tripSegmentSequenceMax = self->_tripSegmentSequenceMax;
-  v15 = [(NSUUID *)self->_tripCommuteID UUIDString];
-  v16 = [v3 stringWithFormat:@"UUID, %s, dateInterval, %@, tripDistance, %.1f, tripDistanceUncertainty, %.1f, modeOfTransportation, %llu, isConsumedByClustering, %d, tripSeqNumber, %d, tripSeqNumberMax, %d, originLat, %f, originLon, %f, dstLat, %f, dstLon, %f, tripCommuteID, %s", v5, v6, *&tripDistance, *&tripDistanceUncertainty, modeOfTransportation, isConsumedByClustering, tripSegmentSequence, tripSegmentSequenceMax, v18, *&destinationLatitude, *&destinationLongitude, objc_msgSend(v15, "UTF8String")];
+  uUIDString2 = [(NSUUID *)self->_tripCommuteID UUIDString];
+  v16 = [v3 stringWithFormat:@"UUID, %s, dateInterval, %@, tripDistance, %.1f, tripDistanceUncertainty, %.1f, modeOfTransportation, %llu, isConsumedByClustering, %d, tripSeqNumber, %d, tripSeqNumberMax, %d, originLat, %f, originLon, %f, dstLat, %f, dstLon, %f, tripCommuteID, %s", uTF8String, v6, *&tripDistance, *&tripDistanceUncertainty, modeOfTransportation, isConsumedByClustering, tripSegmentSequence, tripSegmentSequenceMax, v18, *&destinationLatitude, *&destinationLongitude, objc_msgSend(uUIDString2, "UTF8String")];
 
   return v16;
 }

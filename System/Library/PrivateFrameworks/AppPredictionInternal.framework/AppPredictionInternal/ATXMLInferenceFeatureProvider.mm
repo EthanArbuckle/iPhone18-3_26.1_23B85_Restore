@@ -1,14 +1,14 @@
 @interface ATXMLInferenceFeatureProvider
-- (ATXMLInferenceFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)a3;
+- (ATXMLInferenceFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)item;
 - (NSSet)featureNames;
 - (id).cxx_construct;
-- (id)featureValueForName:(id)a3;
-- (void)setPredictionItem:(ATXPredictionItem *)a3;
+- (id)featureValueForName:(id)name;
+- (void)setPredictionItem:(ATXPredictionItem *)item;
 @end
 
 @implementation ATXMLInferenceFeatureProvider
 
-- (ATXMLInferenceFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)a3
+- (ATXMLInferenceFeatureProvider)initWithPredictionItem:(ATXPredictionItem *)item
 {
   v7.receiver = self;
   v7.super_class = ATXMLInferenceFeatureProvider;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    [(ATXMLInferenceFeatureProvider *)v4 setPredictionItem:a3];
+    [(ATXMLInferenceFeatureProvider *)v4 setPredictionItem:item];
   }
 
   return v5;
@@ -47,16 +47,16 @@
   return featureNames;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  v5 = [_ATXScoreTypes scoreInputForAggdString:v4];
+  nameCopy = name;
+  v5 = [_ATXScoreTypes scoreInputForAggdString:nameCopy];
   if (v5 == 0xFFFFFFFF || v5 == 828)
   {
     v6 = __atxlog_handle_ml_inference();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ATXMLInferenceFeatureProvider *)v4 featureValueForName:v6];
+      [(ATXMLInferenceFeatureProvider *)nameCopy featureValueForName:v6];
     }
 
     v7 = 0;
@@ -71,7 +71,7 @@
       v10 = __atxlog_handle_ml_inference();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(ATXMLInferenceFeatureProvider *)v4 featureValueForName:v10];
+        [(ATXMLInferenceFeatureProvider *)nameCopy featureValueForName:v10];
       }
 
       v8 = 0.0;
@@ -83,10 +83,10 @@
   return v7;
 }
 
-- (void)setPredictionItem:(ATXPredictionItem *)a3
+- (void)setPredictionItem:(ATXPredictionItem *)item
 {
-  p_actionHash = &a3->actionHash;
-  objc_storeStrong(&self->_predictionItem.key, a3->key);
+  p_actionHash = &item->actionHash;
+  objc_storeStrong(&self->_predictionItem.key, item->key);
 
   memcpy(&self->_predictionItem.actionHash, p_actionHash, 0xCFEuLL);
 }

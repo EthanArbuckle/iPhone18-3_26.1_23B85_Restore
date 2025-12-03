@@ -1,6 +1,6 @@
 @interface NTNoContentTodayResultsFetchDescriptor
 - (NTNoContentTodayResultsFetchDescriptor)init;
-- (id)placeholderSectionDescriptorsWithContentRequest:(id)a3;
+- (id)placeholderSectionDescriptorsWithContentRequest:(id)request;
 @end
 
 @implementation NTNoContentTodayResultsFetchDescriptor
@@ -12,11 +12,11 @@
   return [(NTNoContentTodayResultsFetchDescriptor *)&v3 init];
 }
 
-- (id)placeholderSectionDescriptorsWithContentRequest:(id)a3
+- (id)placeholderSectionDescriptorsWithContentRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(NTNewsTodayResultsFetchDescriptor);
-  v5 = [(NTNewsTodayResultsFetchDescriptor *)v4 placeholderSectionDescriptorsWithContentRequest:v3];
+  v5 = [(NTNewsTodayResultsFetchDescriptor *)v4 placeholderSectionDescriptorsWithContentRequest:requestCopy];
 
   return v5;
 }

@@ -1,32 +1,32 @@
 @interface PXYearCardSectionBodyLayoutSpec
-- (PXYearCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXYearCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 @end
 
 @implementation PXYearCardSectionBodyLayoutSpec
 
-- (PXYearCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXYearCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
-  v6 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = PXYearCardSectionBodyLayoutSpec;
-  v7 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v16 initWithExtendedTraitCollection:v6 options:a4];
+  v7 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v16 initWithExtendedTraitCollection:collectionCopy options:options];
   v8 = v7;
   if (v7)
   {
     [(PXYearCardSectionBodyLayoutSpec *)v7 setMultiColumnAspectRatio:1.0];
     v9 = +[PXCuratedLibrarySettings sharedInstance];
-    if ([v6 layoutSizeClass] == 2)
+    if ([collectionCopy layoutSizeClass] == 2)
     {
       [v9 aspectRatioForRegularYears];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v8 setAspectRatio:?];
-      if ([v6 userInterfaceIdiom] == 4)
+      if ([collectionCopy userInterfaceIdiom] == 4)
       {
         [(PXYearCardSectionBodyLayoutSpec *)v8 contentGuideInsetsForScrollAxis:1];
         [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v8 setHorizontalMargin:v10];
       }
     }
 
-    else if ([v6 layoutOrientation] == 2)
+    else if ([collectionCopy layoutOrientation] == 2)
     {
       [v9 aspectRatioForCompactLandscapeYears];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v8 setAspectRatio:?];

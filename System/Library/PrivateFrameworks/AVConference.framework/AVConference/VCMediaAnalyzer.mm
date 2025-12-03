@@ -1,18 +1,18 @@
 @interface VCMediaAnalyzer
-+ (id)errorWithMediaAnalyzerErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5;
-+ (id)resultsHandlerWithWeakSelf:(id)a3;
-- (BOOL)configure:(const AudioStreamBasicDescription *)a3 forAnalysisType:(int64_t)a4 mediaProperties:(id)a5 error:(id *)a6;
-- (VCMediaAnalyzer)initWithDelegate:(id)a3 delegateQueue:(id)a4 reportingAgent:(opaqueRTCReporting *)a5;
++ (id)errorWithMediaAnalyzerErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code;
++ (id)resultsHandlerWithWeakSelf:(id)self;
+- (BOOL)configure:(const AudioStreamBasicDescription *)configure forAnalysisType:(int64_t)type mediaProperties:(id)properties error:(id *)error;
+- (VCMediaAnalyzer)initWithDelegate:(id)delegate delegateQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent;
 - (void)dealloc;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
-- (void)reportMediaAnalyzerEnabled:(BOOL)a3;
-- (void)startForStreamToken:(int64_t)a3;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
+- (void)reportMediaAnalyzerEnabled:(BOOL)enabled;
+- (void)startForStreamToken:(int64_t)token;
 - (void)stop;
 @end
 
 @implementation VCMediaAnalyzer
 
-- (VCMediaAnalyzer)initWithDelegate:(id)a3 delegateQueue:(id)a4 reportingAgent:(opaqueRTCReporting *)a5
+- (VCMediaAnalyzer)initWithDelegate:(id)delegate delegateQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent
 {
   v37 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -24,7 +24,7 @@
     return v9;
   }
 
-  if (!a3)
+  if (!delegate)
   {
     [VCMediaAnalyzer initWithDelegate:v8 delegateQueue:? reportingAgent:?];
 LABEL_23:
@@ -32,15 +32,15 @@ LABEL_23:
     return 0;
   }
 
-  objc_storeWeak(&v8->_delegate, a3);
-  if (!a4)
+  objc_storeWeak(&v8->_delegate, delegate);
+  if (!queue)
   {
     [VCMediaAnalyzer initWithDelegate:v9 delegateQueue:? reportingAgent:?];
     goto LABEL_23;
   }
 
-  dispatch_retain(a4);
-  v9->_delegateQueue = a4;
+  dispatch_retain(queue);
+  v9->_delegateQueue = queue;
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
   v11 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCMediaAnalyzer.analyzerQueue", 0, CustomRootQueue);
   v9->_analyzerQueue = v11;
@@ -50,9 +50,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a5)
+  if (agent)
   {
-    v12 = CFRetain(a5);
+    v12 = CFRetain(agent);
   }
 
   else
@@ -77,9 +77,9 @@ LABEL_23:
         v27 = 1024;
         v28 = 80;
         v29 = 2048;
-        v30 = a3;
+        delegateCopy = delegate;
         v31 = 2048;
-        v32 = a5;
+        agentCopy = agent;
         v16 = " [%s] %s:%d VCMediaAnalyzer-initWithDelegate: delegateObject=%p reportingAgent=%p";
         v17 = v15;
         v18 = 48;
@@ -114,13 +114,13 @@ LABEL_18:
         v27 = 1024;
         v28 = 80;
         v29 = 2112;
-        v30 = v13;
+        delegateCopy = v13;
         v31 = 2048;
-        v32 = v9;
+        agentCopy = v9;
         v33 = 2048;
-        v34 = a3;
+        delegateCopy2 = delegate;
         v35 = 2048;
-        v36 = a5;
+        agentCopy2 = agent;
         v16 = " [%s] %s:%d %@(%p) VCMediaAnalyzer-initWithDelegate: delegateObject=%p reportingAgent=%p";
         v17 = v20;
         v18 = 68;
@@ -198,7 +198,7 @@ LABEL_11:
         v21 = 2112;
         v22 = v3;
         v23 = 2048;
-        v24 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) VCMediaAnalyzer dealloc";
         v7 = v10;
         v8 = 48;
@@ -232,17 +232,17 @@ LABEL_11:
   [(VCMediaAnalyzer *)&v14 dealloc];
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stats)
   {
     processingEventsCount = self->_processingEventsCount;
     if (processingEventsCount)
     {
       v7[0] = self->_accumulatedProcessingTime / processingEventsCount;
       v6 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberDoubleType, v7);
-      CFDictionaryAddValue(a3, @"MAMPT", v6);
+      CFDictionaryAddValue(stats, @"MAMPT", v6);
       CFRelease(v6);
       self->_accumulatedProcessingTime = 0.0;
       self->_processingEventsCount = 0;
@@ -250,18 +250,18 @@ LABEL_11:
   }
 }
 
-- (void)reportMediaAnalyzerEnabled:(BOOL)a3
+- (void)reportMediaAnalyzerEnabled:(BOOL)enabled
 {
   dispatch_assert_queue_V2(self->_analyzerQueue);
 
   reportingGenericEvent();
 }
 
-+ (id)errorWithMediaAnalyzerErrorEvent:(unsigned int)a3 errorPath:(id)a4 returnCode:(int64_t)a5
++ (id)errorWithMediaAnalyzerErrorEvent:(unsigned int)event errorPath:(id)path returnCode:(int64_t)code
 {
-  if (a3 == 1)
+  if (event == 1)
   {
-    return [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailedCode:1 returnCode:a5 filePath:a4 description:@"Media Analyzer Error" reason:@"The media analyzer config failed"];
+    return [MEMORY[0x1E696ABC0] AVConferenceServiceError:32000 detailedCode:1 returnCode:code filePath:path description:@"Media Analyzer Error" reason:@"The media analyzer config failed"];
   }
 
   else
@@ -270,25 +270,25 @@ LABEL_11:
   }
 }
 
-+ (id)resultsHandlerWithWeakSelf:(id)a3
++ (id)resultsHandlerWithWeakSelf:(id)self
 {
   v4[5] = *MEMORY[0x1E69E9840];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__VCMediaAnalyzer_resultsHandlerWithWeakSelf___block_invoke;
   v4[3] = &unk_1E85F4AE0;
-  v4[4] = a3;
+  v4[4] = self;
   return [v4 copy];
 }
 
-- (BOOL)configure:(const AudioStreamBasicDescription *)a3 forAnalysisType:(int64_t)a4 mediaProperties:(id)a5 error:(id *)a6
+- (BOOL)configure:(const AudioStreamBasicDescription *)configure forAnalysisType:(int64_t)type mediaProperties:(id)properties error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!configure)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = +[VCMediaAnalyzer errorWithMediaAnalyzerErrorEvent:errorPath:returnCode:](VCMediaAnalyzer, "errorWithMediaAnalyzerErrorEvent:errorPath:returnCode:", 1, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", a4, a5, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaAnalyzer.m", 173], 0);
+      *error = +[VCMediaAnalyzer errorWithMediaAnalyzerErrorEvent:errorPath:returnCode:](VCMediaAnalyzer, "errorWithMediaAnalyzerErrorEvent:errorPath:returnCode:", 1, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", type, properties, "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCMediaAnalyzer.m", 173], 0);
     }
 
     if (objc_opt_class() != self)
@@ -325,7 +325,7 @@ LABEL_11:
       v32 = 2112;
       v33 = v13;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v18 = " [%s] %s:%d %@(%p) Audio format cannot be nil";
       v19 = v17;
       v20 = 48;
@@ -355,10 +355,10 @@ LABEL_29:
   v10 = [VCMediaAnalyzer resultsHandlerWithWeakSelf:v9];
 
   captureAnalysisSession = self->_captureAnalysisSession;
-  if (a4 == 1)
+  if (type == 1)
   {
 
-    captureAnalysisSession = [MEMORY[0x1E69DF640] analyzerForMediaAnalysis:0x8000 withProperties:a5 andResultsHandler:v10];
+    captureAnalysisSession = [MEMORY[0x1E69DF640] analyzerForMediaAnalysis:0x8000 withProperties:properties andResultsHandler:v10];
     self->_captureAnalysisSession = captureAnalysisSession;
   }
 
@@ -398,9 +398,9 @@ LABEL_29:
       v32 = 2112;
       v33 = v14;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2048;
-      v37 = a4;
+      typeCopy = type;
       v18 = " [%s] %s:%d %@(%p) An invalid VCMediaAnalyzerTaskType was provided, analysisType=%ld";
       v19 = v24;
       v20 = 58;
@@ -417,7 +417,7 @@ LABEL_29:
         return v12;
       }
 
-      [VCMediaAnalyzer configure:v21 forAnalysisType:a4 mediaProperties:v22 error:?];
+      [VCMediaAnalyzer configure:v21 forAnalysisType:type mediaProperties:v22 error:?];
     }
 
     goto LABEL_29;
@@ -427,7 +427,7 @@ LABEL_29:
   return v12;
 }
 
-- (void)startForStreamToken:(int64_t)a3
+- (void)startForStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   analyzerQueue = self->_analyzerQueue;
@@ -436,7 +436,7 @@ LABEL_29:
   block[2] = __39__VCMediaAnalyzer_startForStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(analyzerQueue, block);
 }
 

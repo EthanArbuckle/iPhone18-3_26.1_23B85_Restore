@@ -1,17 +1,17 @@
 @interface MPSNNConcatenationGradientState
-+ (id)temporaryStateWithCommandBuffer:(id)a3;
-- (MPSNNConcatenationGradientState)initWithResource:(id)a3;
++ (id)temporaryStateWithCommandBuffer:(id)buffer;
+- (MPSNNConcatenationGradientState)initWithResource:(id)resource;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MPSNNConcatenationGradientState
 
-- (MPSNNConcatenationGradientState)initWithResource:(id)a3
+- (MPSNNConcatenationGradientState)initWithResource:(id)resource
 {
   v4.receiver = self;
   v4.super_class = MPSNNConcatenationGradientState;
-  result = [(MPSState *)&v4 initWithResource:a3];
+  result = [(MPSState *)&v4 initWithResource:resource];
   if (result)
   {
     result->_info = 0;
@@ -21,11 +21,11 @@
   return result;
 }
 
-+ (id)temporaryStateWithCommandBuffer:(id)a3
++ (id)temporaryStateWithCommandBuffer:(id)buffer
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MPSNNConcatenationGradientState;
-  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, a3);
+  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, buffer);
   if (result)
   {
     *(result + 37) = 0;

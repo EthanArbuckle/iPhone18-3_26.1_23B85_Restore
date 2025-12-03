@@ -1,32 +1,32 @@
 @interface AXBaseSettings_Legacy
 - (AXBaseSettings_Legacy)init;
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4;
-- (BOOL)_switchFromRootUserIfNecessary:(id)a3;
-- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)a3;
-- (double)doubleValueForPreferenceKey:(id)a3 defaultValue:(double)a4;
-- (float)floatValueForPreferenceKey:(id)a3 defaultValue:(float)a4;
-- (id)_userDefaultsStoreForDomainName:(id)a3;
-- (id)allDomainNamesForPreferenceKey:(id)a3;
-- (id)domainNameForPreferenceKey:(id)a3;
-- (id)objectValueForPreferenceKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5;
-- (id)preferenceKeyForSelector:(SEL)a3;
-- (id)valueForPreferenceKey:(id)a3;
-- (int64_t)integerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4;
-- (void)_handlePreferenceChangedWithNotificationName:(id)a3;
-- (void)_registerForNotification:(id)a3;
-- (void)_registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5;
-- (void)_synchronizeIfNecessaryForPreferenceKey:(id)a3 domainName:(id)a4;
-- (void)_unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4;
-- (void)clearExistingValueForPreferenceWithSelector:(SEL)a3;
+- (BOOL)BOOLValueForPreferenceKey:(id)key defaultValue:(BOOL)value;
+- (BOOL)_switchFromRootUserIfNecessary:(id)necessary;
+- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)selector;
+- (double)doubleValueForPreferenceKey:(id)key defaultValue:(double)value;
+- (float)floatValueForPreferenceKey:(id)key defaultValue:(float)value;
+- (id)_userDefaultsStoreForDomainName:(id)name;
+- (id)allDomainNamesForPreferenceKey:(id)key;
+- (id)domainNameForPreferenceKey:(id)key;
+- (id)objectValueForPreferenceKey:(id)key ofClass:(Class)class defaultValue:(id)value;
+- (id)preferenceKeyForSelector:(SEL)selector;
+- (id)valueForPreferenceKey:(id)key;
+- (int64_t)integerValueForPreferenceKey:(id)key defaultValue:(int64_t)value;
+- (void)_handlePreferenceChangedWithNotificationName:(id)name;
+- (void)_registerForNotification:(id)notification;
+- (void)_registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener;
+- (void)_synchronizeIfNecessaryForPreferenceKey:(id)key domainName:(id)name;
+- (void)_unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d;
+- (void)clearExistingValueForPreferenceWithSelector:(SEL)selector;
 - (void)dealloc;
 - (void)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)postNotificationForPreferenceKey:(id)a3;
-- (void)registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5;
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4;
-- (void)unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4;
-- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)a3 withListenerID:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)postNotificationForPreferenceKey:(id)key;
+- (void)registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener;
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener;
+- (void)setValue:(id)value forPreferenceKey:(id)key;
+- (void)unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d;
+- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)selector withListenerID:(id)d;
 @end
 
 @implementation AXBaseSettings_Legacy
@@ -42,7 +42,7 @@
       [(AXBaseSettings_Legacy *)v3 init];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -68,10 +68,10 @@
     }
 
     self = v4;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -147,14 +147,14 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)a3 withListenerID:(id)a4
+- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)selector withListenerID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-  v7 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:a3];
+  v7 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:selector];
   if (v7)
   {
-    [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:v7 withListenerID:v6];
+    [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:v7 withListenerID:dCopy];
   }
 
   else
@@ -162,36 +162,36 @@
     v8 = AXLogSettings();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [AXBaseSettings_Legacy unregisterUpdateBlockForRetrieveSelector:a3 withListenerID:?];
+      [AXBaseSettings_Legacy unregisterUpdateBlockForRetrieveSelector:selector withListenerID:?];
     }
   }
 
   os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
 }
 
-- (void)unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4
+- (void)unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-  [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:v7 withListenerID:v6];
+  [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:keyCopy withListenerID:dCopy];
 
   os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
 }
 
-- (void)_unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4
+- (void)_unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXBaseSettings_Legacy *)self updateBlocks];
-  v9 = [v8 objectForKey:v7];
+  dCopy = d;
+  keyCopy = key;
+  updateBlocks = [(AXBaseSettings_Legacy *)self updateBlocks];
+  v9 = [updateBlocks objectForKey:keyCopy];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__AXBaseSettings_Legacy__unregisterUpdateBlockForPreferenceKey_withListenerID___block_invoke;
   v12[3] = &unk_1E735BEF0;
-  v13 = v6;
-  v10 = v6;
+  v13 = dCopy;
+  v10 = dCopy;
   v11 = [v9 indexesOfObjectsPassingTest:v12];
   if ([v11 count])
   {
@@ -199,88 +199,88 @@
   }
 }
 
-- (void)registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  listenerCopy = listener;
+  keyCopy = key;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-  [(AXBaseSettings_Legacy *)self _registerUpdateBlock:v10 forPreferenceKey:v9 withListener:v8];
+  [(AXBaseSettings_Legacy *)self _registerUpdateBlock:blockCopy forPreferenceKey:keyCopy withListener:listenerCopy];
 
   os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
 }
 
-- (void)_registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5
+- (void)_registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  blockCopy = block;
+  keyCopy = key;
+  listenerCopy = listener;
+  if (!listenerCopy)
   {
     if (_registerUpdateBlock_forPreferenceKey_withListener__onceToken != -1)
     {
       [AXBaseSettings_Legacy _registerUpdateBlock:forPreferenceKey:withListener:];
     }
 
-    v10 = _registerUpdateBlock_forPreferenceKey_withListener__FakeListener;
+    listenerCopy = _registerUpdateBlock_forPreferenceKey_withListener__FakeListener;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v10];
-  if (v8)
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:listenerCopy];
+  if (blockCopy)
   {
-    v12 = [(AXBaseSettings_Legacy *)self updateBlocks];
-    v13 = [v12 objectForKey:v9];
+    updateBlocks = [(AXBaseSettings_Legacy *)self updateBlocks];
+    array = [updateBlocks objectForKey:keyCopy];
     v22[0] = v11;
-    v20 = [v8 copy];
+    v20 = [blockCopy copy];
     v14 = _Block_copy(v20);
     v22[1] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
 
-    if (!v13)
+    if (!array)
     {
-      v13 = [MEMORY[0x1E695DF70] array];
-      [v12 setObject:v13 forKey:v9];
+      array = [MEMORY[0x1E695DF70] array];
+      [updateBlocks setObject:array forKey:keyCopy];
     }
 
-    v21 = v12;
-    [v13 addObject:v15];
-    v16 = objc_getAssociatedObject(v10, &AXSettingsDestructionHelpersKey);
-    if (!v16)
+    v21 = updateBlocks;
+    [array addObject:v15];
+    dictionary = objc_getAssociatedObject(listenerCopy, &AXSettingsDestructionHelpersKey);
+    if (!dictionary)
     {
-      v16 = [MEMORY[0x1E695DF90] dictionary];
-      objc_setAssociatedObject(v10, &AXSettingsDestructionHelpersKey, v16, 1);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      objc_setAssociatedObject(listenerCopy, &AXSettingsDestructionHelpersKey, dictionary, 1);
     }
 
     v17 = [MEMORY[0x1E696B098] valueWithPointer:self];
-    v18 = [v16 objectForKeyedSubscript:v17];
+    v18 = [dictionary objectForKeyedSubscript:v17];
     if (!v18)
     {
-      v18 = [[AXSettingsObjectDestructionHelper alloc] initWithListenerAddress:v10 forSettings:self];
-      [v16 setObject:v18 forKeyedSubscript:v17];
+      v18 = [[AXSettingsObjectDestructionHelper alloc] initWithListenerAddress:listenerCopy forSettings:self];
+      [dictionary setObject:v18 forKeyedSubscript:v17];
     }
 
-    [(AXSettingsObjectDestructionHelper *)v18 addPreferenceKey:v9];
-    [(AXBaseSettings_Legacy *)self _registerForNotification:v9];
+    [(AXSettingsObjectDestructionHelper *)v18 addPreferenceKey:keyCopy];
+    [(AXBaseSettings_Legacy *)self _registerForNotification:keyCopy];
   }
 
   else
   {
-    [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:v9 withListenerID:v11];
+    [(AXBaseSettings_Legacy *)self _unregisterUpdateBlockForPreferenceKey:keyCopy withListenerID:v11];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener
 {
-  v8 = a3;
-  v9 = a5;
+  blockCopy = block;
+  listenerCopy = listener;
   os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-  v10 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:a4];
+  v10 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:selector];
   if (v10)
   {
-    [(AXBaseSettings_Legacy *)self _registerUpdateBlock:v8 forPreferenceKey:v10 withListener:v9];
+    [(AXBaseSettings_Legacy *)self _registerUpdateBlock:blockCopy forPreferenceKey:v10 withListener:listenerCopy];
   }
 
   else
@@ -288,14 +288,14 @@
     v11 = AXLogSettings();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [AXBaseSettings_Legacy unregisterUpdateBlockForRetrieveSelector:a4 withListenerID:?];
+      [AXBaseSettings_Legacy unregisterUpdateBlockForRetrieveSelector:selector withListenerID:?];
     }
   }
 
   os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
 }
 
-- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)a3
+- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)selector
 {
   v5 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:?];
   if (!v5)
@@ -303,7 +303,7 @@
     v6 = AXLogSettings();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [AXBaseSettings_Legacy hasExistingValueForPreferenceWithSelector:a3];
+      [AXBaseSettings_Legacy hasExistingValueForPreferenceWithSelector:selector];
     }
   }
 
@@ -313,7 +313,7 @@
   return v8;
 }
 
-- (void)clearExistingValueForPreferenceWithSelector:(SEL)a3
+- (void)clearExistingValueForPreferenceWithSelector:(SEL)selector
 {
   v5 = [(AXBaseSettings_Legacy *)self preferenceKeyForSelector:?];
   if (!v5)
@@ -321,17 +321,17 @@
     v6 = AXLogSettings();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [AXBaseSettings_Legacy hasExistingValueForPreferenceWithSelector:a3];
+      [AXBaseSettings_Legacy hasExistingValueForPreferenceWithSelector:selector];
     }
   }
 
   [(AXBaseSettings_Legacy *)self setValue:0 forPreferenceKey:v5];
 }
 
-- (id)allDomainNamesForPreferenceKey:(id)a3
+- (id)allDomainNamesForPreferenceKey:(id)key
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(AXBaseSettings_Legacy *)self domainNameForPreferenceKey:a3];
+  v3 = [(AXBaseSettings_Legacy *)self domainNameForPreferenceKey:key];
   v4 = v3;
   if (v3)
   {
@@ -349,9 +349,9 @@
   return v5;
 }
 
-- (id)valueForPreferenceKey:(id)a3
+- (id)valueForPreferenceKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -364,7 +364,7 @@
   v10[3] = &unk_1E735B780;
   v12 = &v13;
   v10[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v11 = v5;
   if ([(AXBaseSettings_Legacy *)self _switchFromRootUserIfNecessary:v10])
   {
@@ -399,22 +399,22 @@
   return v6;
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)setValue:(id)value forPreferenceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__AXBaseSettings_Legacy_setValue_forPreferenceKey___block_invoke;
   v11[3] = &unk_1E735BA58;
   v11[4] = self;
-  v8 = v6;
+  v8 = valueCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = keyCopy;
   v13 = v9;
-  LOBYTE(v7) = [(AXBaseSettings_Legacy *)self _switchFromRootUserIfNecessary:v11];
+  LOBYTE(keyCopy) = [(AXBaseSettings_Legacy *)self _switchFromRootUserIfNecessary:v11];
 
-  if ((v7 & 1) == 0)
+  if ((keyCopy & 1) == 0)
   {
     v10 = [(AXBaseSettings_Legacy *)self domainNameForPreferenceKey:v9];
     CFPreferencesSetAppValue(v9, v8, v10);
@@ -424,9 +424,9 @@
   }
 }
 
-- (void)postNotificationForPreferenceKey:(id)a3
+- (void)postNotificationForPreferenceKey:(id)key
 {
-  v3 = [(AXBaseSettings_Legacy *)self notificationNameForPreferenceKey:a3];
+  v3 = [(AXBaseSettings_Legacy *)self notificationNameForPreferenceKey:key];
   if (v3)
   {
     name = v3;
@@ -436,63 +436,63 @@
   }
 }
 
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLValueForPreferenceKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:a3];
+  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)integerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerValueForPreferenceKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:a3];
+  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (double)doubleValueForPreferenceKey:(id)a3 defaultValue:(double)a4
+- (double)doubleValueForPreferenceKey:(id)key defaultValue:(double)value
 {
-  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:a3];
+  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v5 doubleValue];
-    a4 = v6;
+    value = v6;
   }
 
-  return a4;
+  return value;
 }
 
-- (float)floatValueForPreferenceKey:(id)a3 defaultValue:(float)a4
+- (float)floatValueForPreferenceKey:(id)key defaultValue:(float)value
 {
-  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:a3];
+  v5 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v5 floatValue];
-    a4 = v6;
+    value = v6;
   }
 
-  return a4;
+  return value;
 }
 
-- (id)objectValueForPreferenceKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5
+- (id)objectValueForPreferenceKey:(id)key ofClass:(Class)class defaultValue:(id)value
 {
-  v7 = a5;
-  v8 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:a3];
+  valueCopy = value;
+  v8 = [(AXBaseSettings_Legacy *)self valueForPreferenceKey:key];
   if (!v8 || (objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = v7;
+    v9 = valueCopy;
 
     v8 = v9;
   }
@@ -500,9 +500,9 @@
   return v8;
 }
 
-- (BOOL)_switchFromRootUserIfNecessary:(id)a3
+- (BOOL)_switchFromRootUserIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (!geteuid())
   {
     v6 = getpwnam("mobile");
@@ -512,7 +512,7 @@
       if (pw_uid)
       {
         seteuid(pw_uid);
-        v3[2](v3);
+        necessaryCopy[2](necessaryCopy);
         seteuid(0);
         v4 = 1;
         goto LABEL_3;
@@ -532,50 +532,50 @@ LABEL_3:
   return v4;
 }
 
-- (void)_synchronizeIfNecessaryForPreferenceKey:(id)a3 domainName:(id)a4
+- (void)_synchronizeIfNecessaryForPreferenceKey:(id)key domainName:(id)name
 {
-  v6 = a4;
-  if (v6)
+  nameCopy = name;
+  if (nameCopy)
   {
-    applicationID = v6;
-    v7 = a3;
+    applicationID = nameCopy;
+    keyCopy = key;
     os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-    v8 = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
-    v9 = [v8 objectForKeyedSubscript:applicationID];
+    preferenceKeysByDomainNameToSynchronize = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
+    v9 = [preferenceKeysByDomainNameToSynchronize objectForKeyedSubscript:applicationID];
 
-    LODWORD(v8) = [v9 containsObject:v7];
-    [v9 removeObject:v7];
+    LODWORD(preferenceKeysByDomainNameToSynchronize) = [v9 containsObject:keyCopy];
+    [v9 removeObject:keyCopy];
 
     os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
-    if (v8)
+    if (preferenceKeysByDomainNameToSynchronize)
     {
       CFPreferencesAppSynchronize(applicationID);
     }
 
-    v6 = applicationID;
+    nameCopy = applicationID;
   }
 }
 
-- (void)_handlePreferenceChangedWithNotificationName:(id)a3
+- (void)_handlePreferenceChangedWithNotificationName:(id)name
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F0579798];
+  v4 = [name stringByReplacingOccurrencesOfString:@"_AXNotification_" withString:&stru_1F0579798];
   v5 = [(AXBaseSettings_Legacy *)self domainNameForPreferenceKey:v4];
   if (v5)
   {
     os_unfair_lock_lock(&self->_domainNamesToSynchronizeLock);
-    v6 = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    preferenceKeysByDomainNameToSynchronize = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
+    v7 = [preferenceKeysByDomainNameToSynchronize objectForKeyedSubscript:v5];
 
     if (!v7)
     {
       v7 = [MEMORY[0x1E695DFA8] set];
-      v8 = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
-      [v8 setObject:v7 forKeyedSubscript:v5];
+      preferenceKeysByDomainNameToSynchronize2 = [(AXBaseSettings_Legacy *)self preferenceKeysByDomainNameToSynchronize];
+      [preferenceKeysByDomainNameToSynchronize2 setObject:v7 forKeyedSubscript:v5];
     }
 
     [v7 addObject:v4];
-    v9 = [(AXBaseSettings_Legacy *)self updateBlocks];
-    v10 = [v9 objectForKey:v4];
+    updateBlocks = [(AXBaseSettings_Legacy *)self updateBlocks];
+    v10 = [updateBlocks objectForKey:v4];
     v11 = [v10 copy];
 
     os_unfair_lock_unlock(&self->_domainNamesToSynchronizeLock);
@@ -590,34 +590,34 @@ LABEL_3:
   }
 }
 
-- (id)_userDefaultsStoreForDomainName:(id)a3
+- (id)_userDefaultsStoreForDomainName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (_userDefaultsStoreForDomainName__onceToken != -1)
   {
     [AXBaseSettings_Legacy _userDefaultsStoreForDomainName:];
   }
 
   os_unfair_lock_lock(&_defaultsStoreCacheLock);
-  v4 = [_domainNameToDefaultsStoreMap objectForKeyedSubscript:v3];
+  v4 = [_domainNameToDefaultsStoreMap objectForKeyedSubscript:nameCopy];
   if (!v4)
   {
-    v5 = [MEMORY[0x1E696AAE8] mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = [v6 isEqualToString:v3];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v7 = [bundleIdentifier isEqualToString:nameCopy];
 
     if (v7)
     {
-      v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:v3];
+      standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:nameCopy];
     }
 
-    v4 = v8;
-    [_domainNameToDefaultsStoreMap setObject:v8 forKeyedSubscript:v3];
+    v4 = standardUserDefaults;
+    [_domainNameToDefaultsStoreMap setObject:standardUserDefaults forKeyedSubscript:nameCopy];
   }
 
   os_unfair_lock_unlock(&_defaultsStoreCacheLock);
@@ -625,9 +625,9 @@ LABEL_3:
   return v4;
 }
 
-- (void)_registerForNotification:(id)a3
+- (void)_registerForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (_registerForNotification__onceToken != -1)
   {
     [AXBaseSettings_Legacy _registerForNotification:];
@@ -639,34 +639,34 @@ LABEL_3:
   v7[2] = __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2;
   v7[3] = &unk_1E735B7E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v17 = a3;
-  v9 = a5;
-  v10 = a4;
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
-    v13 = [v9 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
-    v14 = [MEMORY[0x1E695DFB0] null];
-    if (![v12 isEqual:v14])
+    v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A500]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    null = [MEMORY[0x1E695DFB0] null];
+    if (![v12 isEqual:null])
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      if (![v13 isEqual:v15])
+      null2 = [MEMORY[0x1E695DFB0] null];
+      if (![v13 isEqual:null2])
       {
         v16 = [v12 isEqual:v13];
 
         if ((v16 & 1) == 0)
         {
-          [(AXBaseSettings_Legacy *)self _handlePreferenceChangedWithNotificationName:v17];
+          [(AXBaseSettings_Legacy *)self _handlePreferenceChangedWithNotificationName:pathCopy];
         }
 
         goto LABEL_6;
@@ -677,14 +677,14 @@ LABEL_6:
   }
 }
 
-- (id)domainNameForPreferenceKey:(id)a3
+- (id)domainNameForPreferenceKey:(id)key
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)preferenceKeyForSelector:(SEL)a3
+- (id)preferenceKeyForSelector:(SEL)selector
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -694,7 +694,7 @@ LABEL_6:
 - (void)init
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = NSStringFromClass(a1);
+  v1 = NSStringFromClass(self);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_5(&dword_19159B000, v2, v3, "Attempted to create an instance of abstract class %@", v4, v5, v6, v7, v9);
 

@@ -1,17 +1,17 @@
 @interface RTTCannedMessagesController
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (id)cannedReplies;
 - (id)cannedRepliesFromSpecifiers;
 - (id)newCannedReplySpecifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)addNewReply:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)addNewReply:(id)reply;
 - (void)returnPressedAtEnd;
 - (void)saveReplies;
-- (void)setCustomReply:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setCustomReply:(id)reply specifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation RTTCannedMessagesController
@@ -31,7 +31,7 @@
     [v8 setObject:v9 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     [v5 addObject:v8];
-    v10 = [(RTTCannedMessagesController *)self cannedReplies];
+    cannedReplies = [(RTTCannedMessagesController *)self cannedReplies];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __41__RTTCannedMessagesController_specifiers__block_invoke;
@@ -39,7 +39,7 @@
     v19[4] = self;
     v11 = v5;
     v20 = v11;
-    [v10 enumerateObjectsUsingBlock:v19];
+    [cannedReplies enumerateObjectsUsingBlock:v19];
     v12 = MEMORY[0x277D3FAD8];
     v13 = settingsLocString(@"RTT_CANNED_TEXT_ADD", @"RTTSettings");
     v14 = [v12 preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -69,18 +69,18 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
   [*(a1 + 40) addObject:v5];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = RTTCannedMessagesController;
-  v5 = [(RTTCannedMessagesController *)&v9 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(RTTCannedMessagesController *)&v9 tableView:view cellForRowAtIndexPath:path];
   if ([v5 tag] == 8)
   {
-    v6 = [v5 editableTextField];
-    [v6 setClearButtonMode:1];
+    editableTextField = [v5 editableTextField];
+    [editableTextField setClearButtonMode:1];
 
-    v7 = [v5 editableTextField];
-    [v7 setReturnKeyType:9];
+    editableTextField2 = [v5 editableTextField];
+    [editableTextField2 setReturnKeyType:9];
 
     [v5 setShowsReorderControl:{-[RTTCannedMessagesController isEditing](self, "isEditing")}];
   }
@@ -88,19 +88,19 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(RTTCannedMessagesController *)self specifierAtIndexPath:a4];
+  v4 = [(RTTCannedMessagesController *)self specifierAtIndexPath:path];
   v5 = [v4 cellType] == 8;
 
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = [(RTTCannedMessagesController *)self specifierAtIndexPath:a5];
+    v7 = [(RTTCannedMessagesController *)self specifierAtIndexPath:path];
     [RTTCannedMessagesController removeSpecifier:"removeSpecifier:animated:" animated:?];
     if (([(RTTCannedMessagesController *)self isEditing]& 1) == 0)
     {
@@ -109,33 +109,33 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
   }
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = [(RTTCannedMessagesController *)self specifierAtIndexPath:a4];
-  v6 = [v5 cellType];
-  if (v6 == 8 || v6 == 6)
+  v5 = [(RTTCannedMessagesController *)self specifierAtIndexPath:path];
+  cellType = [v5 cellType];
+  if (cellType == 8 || cellType == 6)
   {
-    v8 = [(RTTCannedMessagesController *)self isEditing];
+    isEditing = [(RTTCannedMessagesController *)self isEditing];
   }
 
   else
   {
-    v8 = 0;
+    isEditing = 0;
   }
 
-  return v8;
+  return isEditing;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   v10 = *MEMORY[0x277D3FC48];
   if ([*(&self->super.super.super.super.super.isa + v10) count])
   {
-    v11 = [(RTTCannedMessagesController *)self indexForIndexPath:v8];
-    v12 = [(RTTCannedMessagesController *)self indexForIndexPath:v9];
+    v11 = [(RTTCannedMessagesController *)self indexForIndexPath:pathCopy];
+    v12 = [(RTTCannedMessagesController *)self indexForIndexPath:indexPathCopy];
     if (v11 < [*(&self->super.super.super.super.super.isa + v10) count])
     {
       v13 = [(RTTCannedMessagesController *)self specifierAtIndex:v11];
@@ -162,10 +162,10 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
 
 - (void)returnPressedAtEnd
 {
-  v4 = [(RTTCannedMessagesController *)self view];
-  v2 = [v4 window];
-  v3 = [v2 firstResponder];
-  [v3 resignFirstResponder];
+  view = [(RTTCannedMessagesController *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
 - (id)newCannedReplySpecifier
@@ -175,33 +175,33 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
   return result;
 }
 
-- (void)setCustomReply:(id)a3 specifier:(id)a4
+- (void)setCustomReply:(id)reply specifier:(id)specifier
 {
-  [a4 setProperty:a3 forKey:@"cannedResponse"];
+  [specifier setProperty:reply forKey:@"cannedResponse"];
 
   [(RTTCannedMessagesController *)self saveReplies];
 }
 
-- (void)addNewReply:(id)a3
+- (void)addNewReply:(id)reply
 {
   v4 = [(RTTCannedMessagesController *)self indexOfSpecifier:self->_addNewSpecifier];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v13 = [(RTTCannedMessagesController *)self newCannedReplySpecifier];
-    [v13 setProperty:&stru_284E770C0 forKey:@"cannedResponse"];
-    [(RTTCannedMessagesController *)self insertSpecifier:v13 atIndex:v5 animated:1];
-    v6 = [(RTTCannedMessagesController *)self table];
-    v7 = [(RTTCannedMessagesController *)self indexPathForSpecifier:v13];
-    v8 = [v6 cellForRowAtIndexPath:v7];
+    newCannedReplySpecifier = [(RTTCannedMessagesController *)self newCannedReplySpecifier];
+    [newCannedReplySpecifier setProperty:&stru_284E770C0 forKey:@"cannedResponse"];
+    [(RTTCannedMessagesController *)self insertSpecifier:newCannedReplySpecifier atIndex:v5 animated:1];
+    table = [(RTTCannedMessagesController *)self table];
+    v7 = [(RTTCannedMessagesController *)self indexPathForSpecifier:newCannedReplySpecifier];
+    v8 = [table cellForRowAtIndexPath:v7];
 
-    v9 = [v8 editableTextField];
-    [v9 becomeFirstResponder];
+    editableTextField = [v8 editableTextField];
+    [editableTextField becomeFirstResponder];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v11 = *MEMORY[0x277D770B0];
-    v12 = [v8 editableTextField];
-    [v10 postNotificationName:v11 object:v12];
+    editableTextField2 = [v8 editableTextField];
+    [defaultCenter postNotificationName:v11 object:editableTextField2];
   }
 }
 
@@ -250,17 +250,17 @@ void __41__RTTCannedMessagesController_specifiers__block_invoke(uint64_t a1, voi
 
 - (id)cannedReplies
 {
-  v2 = [MEMORY[0x277D440C0] sharedInstance];
-  v3 = [v2 cannedResponses];
+  mEMORY[0x277D440C0] = [MEMORY[0x277D440C0] sharedInstance];
+  cannedResponses = [mEMORY[0x277D440C0] cannedResponses];
 
-  return v3;
+  return cannedResponses;
 }
 
 - (void)saveReplies
 {
-  v4 = [MEMORY[0x277D440C0] sharedInstance];
-  v3 = [(RTTCannedMessagesController *)self cannedRepliesFromSpecifiers];
-  [v4 setCannedResponses:v3];
+  mEMORY[0x277D440C0] = [MEMORY[0x277D440C0] sharedInstance];
+  cannedRepliesFromSpecifiers = [(RTTCannedMessagesController *)self cannedRepliesFromSpecifiers];
+  [mEMORY[0x277D440C0] setCannedResponses:cannedRepliesFromSpecifiers];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TranscriptView.FadeView
 + (Class)layerClass;
-- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithCoder:(id)a3;
-- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithFrame:(CGRect)a3;
+- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithCoder:(id)coder;
+- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TranscriptView.FadeView
@@ -13,14 +13,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithCoder:(id)a3
+- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithFrame:(CGRect)a3
+- (_TtCC10VoiceMemos14TranscriptViewP33_6FF8C368E5F76B04FE059DBB2DCAB8DB8FadeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

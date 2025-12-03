@@ -1,17 +1,17 @@
 @interface HDRespiratoryDaemonPlugin
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 - (void)handleDatabaseObliteration;
 @end
 
 @implementation HDRespiratoryDaemonPlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if ([v3 profileType] == 1)
+  profileCopy = profile;
+  if ([profileCopy profileType] == 1)
   {
-    v4 = [objc_alloc(MEMORY[0x29EDC6508]) initWithProfile:v3];
+    v4 = [objc_alloc(MEMORY[0x29EDC6508]) initWithProfile:profileCopy];
   }
 
   else

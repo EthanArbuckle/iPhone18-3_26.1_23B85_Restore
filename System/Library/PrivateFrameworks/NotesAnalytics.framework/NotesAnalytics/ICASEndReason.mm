@@ -1,34 +1,34 @@
 @interface ICASEndReason
-- (ICASEndReason)initWithEndReason:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASEndReason)initWithEndReason:(int64_t)reason;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASEndReason
 
-- (ICASEndReason)initWithEndReason:(int64_t)a3
+- (ICASEndReason)initWithEndReason:(int64_t)reason
 {
   v5.receiver = self;
   v5.super_class = ICASEndReason;
   result = [(ICASEndReason *)&v5 init];
   if (result)
   {
-    result->_endReason = a3;
+    result->_endReason = reason;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASEndReason *)self endReason];
-  if ((v3 - 1) > 6)
+  endReason = [(ICASEndReason *)self endReason];
+  if ((endReason - 1) > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AFFE8[v3 - 1];
+    return off_2799AFFE8[endReason - 1];
   }
 }
 

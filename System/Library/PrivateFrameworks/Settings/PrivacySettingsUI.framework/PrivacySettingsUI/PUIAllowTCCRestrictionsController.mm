@@ -1,6 +1,6 @@
 @interface PUIAllowTCCRestrictionsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PUIAllowTCCRestrictionsController
@@ -13,7 +13,7 @@
   {
     v23.receiver = self;
     v23.super_class = PUIAllowTCCRestrictionsController;
-    v5 = [(PUITCCAccessController *)&v23 specifiers];
+    specifiers = [(PUITCCAccessController *)&v23 specifiers];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -31,17 +31,17 @@
     v12 = [v10 preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v12 setProperty:@"DISALLOW" forKey:v9];
-    v13 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v13 setProperty:@"ALLOW_GROUP" forKey:v9];
-    v14 = [(PUITCCAccessController *)self explanation];
-    v15 = PUI_LocalizedStringForRestrictions(v14);
-    [v13 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:@"ALLOW_GROUP" forKey:v9];
+    explanation = [(PUITCCAccessController *)self explanation];
+    v15 = PUI_LocalizedStringForRestrictions(explanation);
+    [emptyGroupSpecifier setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
 
     v16 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v13 setProperty:v16 forKey:*MEMORY[0x277D3FFE8]];
+    [emptyGroupSpecifier setProperty:v16 forKey:*MEMORY[0x277D3FFE8]];
 
-    v17 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) performGetter];
-    LODWORD(v15) = [v17 BOOLValue];
+    performGetter = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) performGetter];
+    LODWORD(v15) = [performGetter BOOLValue];
 
     if (v15)
     {
@@ -53,16 +53,16 @@
       v18 = v12;
     }
 
-    [v13 setProperty:v18 forKey:*MEMORY[0x277D40090]];
-    [v5 insertObject:v13 atIndex:0];
-    [v5 insertObject:v8 atIndex:1];
-    [v5 insertObject:v12 atIndex:2];
+    [emptyGroupSpecifier setProperty:v18 forKey:*MEMORY[0x277D40090]];
+    [specifiers insertObject:emptyGroupSpecifier atIndex:0];
+    [specifiers insertObject:v8 atIndex:1];
+    [specifiers insertObject:v12 atIndex:2];
     allowedGroup = self->_allowedGroup;
-    self->_allowedGroup = v13;
-    v20 = v13;
+    self->_allowedGroup = emptyGroupSpecifier;
+    v20 = emptyGroupSpecifier;
 
     v21 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = specifiers;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -70,21 +70,21 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = PUIAllowTCCRestrictionsController;
-  [(PUIAllowTCCRestrictionsController *)&v17 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  [(PUIAllowTCCRestrictionsController *)&v17 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
   v8 = [(PUIAllowTCCRestrictionsController *)self indexPathForIndex:[(PUIAllowTCCRestrictionsController *)self indexOfSpecifier:self->_allowedGroup]];
-  v9 = [v8 section];
+  section2 = [v8 section];
 
-  if (v7 == v9)
+  if (section == section2)
   {
-    v10 = [(PUIAllowTCCRestrictionsController *)self specifierAtIndex:[(PUIAllowTCCRestrictionsController *)self indexForIndexPath:v6]];
-    v11 = [v10 identifier];
-    v12 = [v11 isEqualToString:@"ALLOW"];
+    v10 = [(PUIAllowTCCRestrictionsController *)self specifierAtIndex:[(PUIAllowTCCRestrictionsController *)self indexForIndexPath:pathCopy]];
+    identifier = [v10 identifier];
+    v12 = [identifier isEqualToString:@"ALLOW"];
 
     v13 = *MEMORY[0x277D3FD20];
     v14 = *(&self->super.super.super.super.super.super.isa + v13);

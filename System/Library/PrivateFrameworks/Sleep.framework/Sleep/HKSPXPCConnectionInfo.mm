@@ -1,7 +1,7 @@
 @interface HKSPXPCConnectionInfo
-+ (id)infoForMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObject:(id)a5 exportedObjectInterface:(id)a6 lifecycleNotification:(id)a7 requiredEntitlement:(id)a8 options:(unint64_t)a9;
-- (HKSPXPCConnectionInfo)initWithMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObject:(id)a5 exportedObjectInterface:(id)a6 lifecycleNotification:(id)a7 requiredEntitlement:(id)a8 options:(unint64_t)a9;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)infoForMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObject:(id)object exportedObjectInterface:(id)objectInterface lifecycleNotification:(id)notification requiredEntitlement:(id)entitlement options:(unint64_t)options;
+- (HKSPXPCConnectionInfo)initWithMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObject:(id)object exportedObjectInterface:(id)objectInterface lifecycleNotification:(id)notification requiredEntitlement:(id)entitlement options:(unint64_t)options;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -10,87 +10,87 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPXPCConnectionInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPXPCConnectionInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(HKSPXPCConnectionInfo *)self machServiceName];
-  [v3 appendString:v4 withName:@"machServiceName"];
+  machServiceName = [(HKSPXPCConnectionInfo *)self machServiceName];
+  [v3 appendString:machServiceName withName:@"machServiceName"];
 
-  v5 = [(HKSPXPCConnectionInfo *)self remoteObjectInterface];
-  v6 = [v3 appendObject:v5 withName:@"remoteObjectInterface"];
+  remoteObjectInterface = [(HKSPXPCConnectionInfo *)self remoteObjectInterface];
+  v6 = [v3 appendObject:remoteObjectInterface withName:@"remoteObjectInterface"];
 
-  v7 = [(HKSPXPCConnectionInfo *)self exportedObject];
-  v8 = [v3 appendObject:v7 withName:@"exportedObject"];
+  exportedObject = [(HKSPXPCConnectionInfo *)self exportedObject];
+  v8 = [v3 appendObject:exportedObject withName:@"exportedObject"];
 
-  v9 = [(HKSPXPCConnectionInfo *)self exportedObjectInterface];
-  v10 = [v3 appendObject:v9 withName:@"exportedObjectInterface"];
+  exportedObjectInterface = [(HKSPXPCConnectionInfo *)self exportedObjectInterface];
+  v10 = [v3 appendObject:exportedObjectInterface withName:@"exportedObjectInterface"];
 
-  v11 = [(HKSPXPCConnectionInfo *)self requiredEntitlement];
-  v12 = [v3 appendObject:v11 withName:@"requiredEntitlement"];
+  requiredEntitlement = [(HKSPXPCConnectionInfo *)self requiredEntitlement];
+  v12 = [v3 appendObject:requiredEntitlement withName:@"requiredEntitlement"];
 
   return v3;
 }
 
-+ (id)infoForMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObject:(id)a5 exportedObjectInterface:(id)a6 lifecycleNotification:(id)a7 requiredEntitlement:(id)a8 options:(unint64_t)a9
++ (id)infoForMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObject:(id)object exportedObjectInterface:(id)objectInterface lifecycleNotification:(id)notification requiredEntitlement:(id)entitlement options:(unint64_t)options
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [objc_alloc(objc_opt_class()) initWithMachServiceName:v19 remoteObjectInterface:v18 exportedObject:v17 exportedObjectInterface:v16 lifecycleNotification:v15 requiredEntitlement:v14 options:0];
+  entitlementCopy = entitlement;
+  notificationCopy = notification;
+  objectInterfaceCopy = objectInterface;
+  objectCopy = object;
+  interfaceCopy = interface;
+  nameCopy = name;
+  v20 = [objc_alloc(objc_opt_class()) initWithMachServiceName:nameCopy remoteObjectInterface:interfaceCopy exportedObject:objectCopy exportedObjectInterface:objectInterfaceCopy lifecycleNotification:notificationCopy requiredEntitlement:entitlementCopy options:0];
 
   return v20;
 }
 
-- (HKSPXPCConnectionInfo)initWithMachServiceName:(id)a3 remoteObjectInterface:(id)a4 exportedObject:(id)a5 exportedObjectInterface:(id)a6 lifecycleNotification:(id)a7 requiredEntitlement:(id)a8 options:(unint64_t)a9
+- (HKSPXPCConnectionInfo)initWithMachServiceName:(id)name remoteObjectInterface:(id)interface exportedObject:(id)object exportedObjectInterface:(id)objectInterface lifecycleNotification:(id)notification requiredEntitlement:(id)entitlement options:(unint64_t)options
 {
-  v15 = a3;
-  v29 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  interfaceCopy = interface;
+  objectCopy = object;
+  objectInterfaceCopy = objectInterface;
+  notificationCopy = notification;
+  entitlementCopy = entitlement;
   v30.receiver = self;
   v30.super_class = HKSPXPCConnectionInfo;
   v20 = [(HKSPXPCConnectionInfo *)&v30 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [nameCopy copy];
     machServiceName = v20->_machServiceName;
     v20->_machServiceName = v21;
 
-    objc_storeStrong(&v20->_remoteObjectInterface, a4);
-    objc_storeStrong(&v20->_exportedObject, a5);
-    objc_storeStrong(&v20->_exportedObjectInterface, a6);
-    v23 = [v18 copy];
+    objc_storeStrong(&v20->_remoteObjectInterface, interface);
+    objc_storeStrong(&v20->_exportedObject, object);
+    objc_storeStrong(&v20->_exportedObjectInterface, objectInterface);
+    v23 = [notificationCopy copy];
     lifecycleNotification = v20->_lifecycleNotification;
     v20->_lifecycleNotification = v23;
 
-    v25 = [v19 copy];
+    v25 = [entitlementCopy copy];
     requiredEntitlement = v20->_requiredEntitlement;
     v20->_requiredEntitlement = v25;
 
-    v20->_options = a9;
+    v20->_options = options;
     v27 = v20;
   }
 
   return v20;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPXPCConnectionInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPXPCConnectionInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

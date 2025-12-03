@@ -1,21 +1,21 @@
 @interface HWBalloonDataSource
 - (BOOL)shouldAnimate;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (HWAbstractBalloonController)balloonController;
-- (HWBalloonDataSource)initWithMessageGUID:(id)a3 payload:(id)a4 dataDetectedResult:(id)a5 url:(id)a6;
+- (HWBalloonDataSource)initWithMessageGUID:(id)d payload:(id)payload dataDetectedResult:(id)result url:(id)url;
 - (HWHandwritingItem)handwritingFromPayload;
-- (void)playbackWithCompletionBlock:(id)a3;
+- (void)playbackWithCompletionBlock:(id)block;
 - (void)stopPlayback;
-- (void)thumbnailURLWithSize:(CGSize)a3 completion:(id)a4;
+- (void)thumbnailURLWithSize:(CGSize)size completion:(id)completion;
 @end
 
 @implementation HWBalloonDataSource
 
-- (HWBalloonDataSource)initWithMessageGUID:(id)a3 payload:(id)a4 dataDetectedResult:(id)a5 url:(id)a6
+- (HWBalloonDataSource)initWithMessageGUID:(id)d payload:(id)payload dataDetectedResult:(id)result url:(id)url
 {
   v8.receiver = self;
   v8.super_class = HWBalloonDataSource;
-  v6 = [(HWBalloonDataSource *)&v8 initWithMessageGUID:a3 payload:a4 dataDetectedResult:a5 url:a6];
+  v6 = [(HWBalloonDataSource *)&v8 initWithMessageGUID:d payload:payload dataDetectedResult:result url:url];
   if (v6 && qword_32248 != -1)
   {
     sub_138DC();
@@ -24,12 +24,12 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HWBalloonDataSource *)self handwritingFromPayload];
-  v6 = [v5 drawing];
+  height = fits.height;
+  width = fits.width;
+  handwritingFromPayload = [(HWBalloonDataSource *)self handwritingFromPayload];
+  drawing = [handwritingFromPayload drawing];
   IsValid = DKDrawingIsValid();
 
   if (IsValid)
@@ -50,8 +50,8 @@
     v24 = CGRectInset(*(&v8 - 2), 0.0, 0.0);
     v12 = v24.size.width;
     v13 = v24.size.height;
-    v14 = [v5 drawing];
-    [DKInkThumbnailRenderer sizeForDrawing:v14 inSize:v12, v13];
+    drawing2 = [handwritingFromPayload drawing];
+    [DKInkThumbnailRenderer sizeForDrawing:drawing2 inSize:v12, v13];
     v16 = v15;
     v18 = v17;
 
@@ -72,27 +72,27 @@
   return result;
 }
 
-- (void)thumbnailURLWithSize:(CGSize)a3 completion:(id)a4
+- (void)thumbnailURLWithSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(HWBalloonDataSource *)self handwritingFromPayload];
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  handwritingFromPayload = [(HWBalloonDataSource *)self handwritingFromPayload];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_14F8;
   v10[3] = &unk_28600;
-  v11 = v7;
-  v9 = v7;
-  [HWAbstractBalloonController _writeThumbnailOfHandwriting:v8 atSize:0 useHighFidelityInk:v10 toDiskWithCompletionHandler:width, height];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [HWAbstractBalloonController _writeThumbnailOfHandwriting:handwritingFromPayload atSize:0 useHighFidelityInk:v10 toDiskWithCompletionHandler:width, height];
 }
 
 - (HWHandwritingItem)handwritingFromPayload
 {
-  v3 = [(HWBalloonDataSource *)self payload];
-  if (v3 && !self->_cachedHandwritingItem)
+  payload = [(HWBalloonDataSource *)self payload];
+  if (payload && !self->_cachedHandwritingItem)
   {
-    v4 = [HWEncoding decodeHandwritingFromData:v3];
+    v4 = [HWEncoding decodeHandwritingFromData:payload];
     cachedHandwritingItem = self->_cachedHandwritingItem;
     self->_cachedHandwritingItem = v4;
   }
@@ -107,46 +107,46 @@
 {
   if (([(HWBalloonDataSource *)self isPlayed]& 1) != 0)
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(isLast) = 0;
   }
 
   else
   {
-    v3 = [(HWBalloonDataSource *)self isLast];
-    if (v3)
+    isLast = [(HWBalloonDataSource *)self isLast];
+    if (isLast)
     {
-      LOBYTE(v3) = [(HWBalloonDataSource *)self isFromMe]^ 1;
+      LOBYTE(isLast) = [(HWBalloonDataSource *)self isFromMe]^ 1;
     }
   }
 
-  return v3;
+  return isLast;
 }
 
-- (void)playbackWithCompletionBlock:(id)a3
+- (void)playbackWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HWBalloonDataSource *)self balloonController];
-  if (v5 && ([(HWBalloonDataSource *)self isFromMe]& 1) == 0)
+  blockCopy = block;
+  balloonController = [(HWBalloonDataSource *)self balloonController];
+  if (balloonController && ([(HWBalloonDataSource *)self isFromMe]& 1) == 0)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_16B8;
     v6[3] = &unk_28628;
-    v7 = v4;
-    [v5 playbackWithCompletionBlock:v6];
+    v7 = blockCopy;
+    [balloonController playbackWithCompletionBlock:v6];
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(blockCopy + 2))(blockCopy, 1);
   }
 }
 
 - (void)stopPlayback
 {
   [(HWBalloonDataSource *)self markAsPlayed];
-  v3 = [(HWBalloonDataSource *)self balloonController];
-  [v3 cancelPlayback];
+  balloonController = [(HWBalloonDataSource *)self balloonController];
+  [balloonController cancelPlayback];
 }
 
 - (HWAbstractBalloonController)balloonController

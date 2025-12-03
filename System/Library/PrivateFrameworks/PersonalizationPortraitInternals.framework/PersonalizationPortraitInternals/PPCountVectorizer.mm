@@ -1,17 +1,17 @@
 @interface PPCountVectorizer
-- (PPCountVectorizer)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (PPCountVectorizer)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation PPCountVectorizer
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   v48[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 featureValueForName:self->_inputName];
-  v11 = [v10 sequenceValue];
+  featuresCopy = features;
+  optionsCopy = options;
+  v10 = [featuresCopy featureValueForName:self->_inputName];
+  sequenceValue = [v10 sequenceValue];
 
   v12 = objc_alloc(MEMORY[0x277CBFF48]);
   v13 = objc_autoreleasePoolPush();
@@ -21,20 +21,20 @@
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
 
   objc_autoreleasePoolPop(v13);
-  v16 = [v12 initWithShape:v15 dataType:65568 error:a5];
+  v16 = [v12 initWithShape:v15 dataType:65568 error:error];
 
   if (v16)
   {
-    v36 = a5;
-    v37 = v11;
-    v38 = v9;
-    v39 = v8;
+    errorCopy = error;
+    v37 = sequenceValue;
+    v38 = optionsCopy;
+    v39 = featuresCopy;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v17 = [v11 stringValues];
-    v18 = [v17 countByEnumeratingWithState:&v40 objects:v47 count:16];
+    stringValues = [sequenceValue stringValues];
+    v18 = [stringValues countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
@@ -45,14 +45,14 @@
         {
           if (*v41 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(stringValues);
           }
 
           v22 = *(*(&v40 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
           vocabulary = self->_vocabulary;
-          v25 = [v22 lowercaseString];
-          v26 = [(NSMutableDictionary *)vocabulary objectForKeyedSubscript:v25];
+          lowercaseString = [v22 lowercaseString];
+          v26 = [(NSMutableDictionary *)vocabulary objectForKeyedSubscript:lowercaseString];
 
           if (v26)
           {
@@ -65,7 +65,7 @@
           objc_autoreleasePoolPop(v23);
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        v19 = [stringValues countByEnumeratingWithState:&v40 objects:v47 count:16];
       }
 
       while (v19);
@@ -77,10 +77,10 @@
     v46 = v16;
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&outputName count:1];
     objc_autoreleasePoolPop(v31);
-    v33 = [v30 initWithDictionary:v32 error:v36];
-    v9 = v38;
-    v8 = v39;
-    v11 = v37;
+    v33 = [v30 initWithDictionary:v32 error:errorCopy];
+    optionsCopy = v38;
+    featuresCopy = v39;
+    sequenceValue = v37;
   }
 
   else
@@ -100,24 +100,24 @@
   return v33;
 }
 
-- (PPCountVectorizer)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5
+- (PPCountVectorizer)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  descriptionCopy = description;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PPCountVectorizer;
   v9 = [(PPCountVectorizer *)&v24 init];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"inputName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"inputName"];
     inputName = v9->_inputName;
     v9->_inputName = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"outputName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"outputName"];
     outputName = v9->_outputName;
     v9->_outputName = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"vocabulary"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"vocabulary"];
     v15 = [v14 componentsSeparatedByString:@""];;
 
     v16 = objc_opt_new();

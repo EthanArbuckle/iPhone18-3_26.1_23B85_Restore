@@ -1,44 +1,44 @@
 @interface WKActionSheetAssistant
-- (BOOL)_appendAppLinkOpenActionsForURL:(id)a3 actions:(id)a4 elementInfo:(id)a5;
+- (BOOL)_appendAppLinkOpenActionsForURL:(id)l actions:(id)actions elementInfo:(id)info;
 - (BOOL)presentSheet;
 - (BOOL)synchronouslyRetrievePositionInformation;
-- (CGRect)_presentationRectForSheetGivenPoint:(CGPoint)a3 inHostView:(id)a4;
+- (CGRect)_presentationRectForSheetGivenPoint:(CGPoint)point inHostView:(id)view;
 - (CGRect)initialPresentationRectInHostViewForSheet;
 - (CGRect)presentationRectForElementUsingClosestIndicatedRect;
 - (CGRect)presentationRectForIndicatedElement;
 - (CGRect)presentationRectInHostViewForSheet;
-- (RetainPtr<NSArray<_WKElementAction)defaultActionsForImageSheet:(id)a3;
-- (RetainPtr<NSArray<_WKElementAction)defaultActionsForLinkSheet:(id)a3;
+- (RetainPtr<NSArray<_WKElementAction)defaultActionsForImageSheet:(id)sheet;
+- (RetainPtr<NSArray<_WKElementAction)defaultActionsForLinkSheet:(id)sheet;
 - (id).cxx_construct;
-- (id)_contentsOfContextMenuItem:(id)a3;
-- (id)_contextMenuInteraction:(id)a3 overrideSuggestedActionsForConfiguration:(id)a4;
-- (id)_elementActionForDDAction:(id)a3;
-- (id)_uiMenuElementsForMediaControlContextMenuItems:(void *)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)_contentsOfContextMenuItem:(id)item;
+- (id)_contextMenuInteraction:(id)interaction overrideSuggestedActionsForConfiguration:(id)configuration;
+- (id)_elementActionForDDAction:(id)action;
+- (id)_uiMenuElementsForMediaControlContextMenuItems:(void *)items;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)currentlyAvailableActionTitles;
 - (id)currentlyAvailableMediaControlsContextMenuItems;
-- (id)suggestedActionsForContextMenuWithPositionInformation:(const void *)a3;
+- (id)suggestedActionsForContextMenuWithPositionInformation:(const void *)information;
 - (id)superviewForSheet;
-- (int64_t)_presentationStyleForPositionInfo:(const void *)a3 elementInfo:(id)a4;
+- (int64_t)_presentationStyleForPositionInfo:(const void *)info elementInfo:(id)elementInfo;
 - (optional<WebKit::InteractionInformationAtPosition>)currentPositionInformation;
-- (void)_appendAnimationAction:(id)a3 elementInfo:(id)a4;
-- (void)_appendOpenActionsForURL:(id)a3 actions:(id)a4 elementInfo:(id)a5;
-- (void)_createSheetWithElementActions:(id)a3 defaultTitle:(id)a4 showLinkTitle:(BOOL)a5;
+- (void)_appendAnimationAction:(id)action elementInfo:(id)info;
+- (void)_appendOpenActionsForURL:(id)l actions:(id)actions elementInfo:(id)info;
+- (void)_createSheetWithElementActions:(id)actions defaultTitle:(id)title showLinkTitle:(BOOL)linkTitle;
 - (void)_dataDetectorContextMenuPresenter;
 - (void)_mediaControlsContextMenuPresenter;
 - (void)_resetDataDetectorContextMenuPresenter;
 - (void)_resetMediaControlsContextMenuPresenter;
 - (void)cleanupSheet;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
-- (void)handleElementActionWithType:(int64_t)a3 element:(id)a4 needsInteraction:(BOOL)a5;
-- (void)interactionDidStartWithPositionInformation:(const void *)a3;
-- (void)showDataDetectorsUIForPositionInformation:(const void *)a3;
+- (void)handleElementActionWithType:(int64_t)type element:(id)element needsInteraction:(BOOL)interaction;
+- (void)interactionDidStartWithPositionInformation:(const void *)information;
+- (void)showDataDetectorsUIForPositionInformation:(const void *)information;
 - (void)showImageSheet;
 - (void)showLinkSheet;
-- (void)showMediaControlsContextMenu:(FloatRect *)a3 items:(void *)a4 completionHandler:(void *)a5;
+- (void)showMediaControlsContextMenu:(FloatRect *)menu items:(void *)items completionHandler:(void *)handler;
 - (void)updatePositionInformation;
 @end
 
@@ -204,10 +204,10 @@
 - (id)superviewForSheet
 {
   Weak = objc_loadWeak(&self->_view.m_weakReference);
-  v4 = [Weak window];
+  window = [Weak window];
   if (!Weak)
   {
-    return v4;
+    return window;
   }
 
   v5 = 0;
@@ -225,15 +225,15 @@
   while (Weak);
   if (!v5)
   {
-    return v4;
+    return window;
   }
 
   return [v5 view];
 }
 
-- (CGRect)_presentationRectForSheetGivenPoint:(CGPoint)a3 inHostView:(id)a4
+- (CGRect)_presentationRectForSheetGivenPoint:(CGPoint)point inHostView:(id)view
 {
-  [a4 convertPoint:objc_loadWeak(&self->_view.m_weakReference) fromView:{a3.x, a3.y}];
+  [view convertPoint:objc_loadWeak(&self->_view.m_weakReference) fromView:{point.x, point.y}];
   v6 = 1.0;
   v7 = 1.0;
 
@@ -242,10 +242,10 @@
 
 - (CGRect)presentationRectForElementUsingClosestIndicatedRect
 {
-  v3 = [(WKActionSheetAssistant *)self superviewForSheet];
+  superviewForSheet = [(WKActionSheetAssistant *)self superviewForSheet];
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   v5 = WeakRetained;
-  if (v3 && WeakRetained && (self->_anon_1a8[136] & 1) != 0)
+  if (superviewForSheet && WeakRetained && (self->_anon_1a8[136] & 1) != 0)
   {
     m_ptr = self->_positionInformation.var0.__val_.textIndicator.m_ptr;
     if (m_ptr)
@@ -314,7 +314,7 @@
         }
 
         WebCore::FloatRect::operator CGRect();
-        [v3 convertRect:objc_loadWeak(&self->_view.m_weakReference) fromView:{v26, v27, v28, v29}];
+        [superviewForSheet convertRect:objc_loadWeak(&self->_view.m_weakReference) fromView:{v26, v27, v28, v29}];
         v39 = CGRectInset(v38, -15.0, -15.0);
         x = v39.origin.x;
         y = v39.origin.y;
@@ -389,10 +389,10 @@ LABEL_31:
 
 - (CGRect)presentationRectForIndicatedElement
 {
-  v3 = [(WKActionSheetAssistant *)self superviewForSheet];
+  superviewForSheet = [(WKActionSheetAssistant *)self superviewForSheet];
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   v5 = WeakRetained;
-  if (!v3)
+  if (!superviewForSheet)
   {
     x = *MEMORY[0x1E695F058];
     y = *(MEMORY[0x1E695F058] + 8);
@@ -412,7 +412,7 @@ LABEL_31:
     {
       v18 = *(&self->_positionInformation.var0.__engaged_ + 11);
       WebCore::IntRect::operator CGRect();
-      [v3 convertRect:objc_loadWeak(&self->_view.m_weakReference) fromView:{v6, v7, v8, v9, v18}];
+      [superviewForSheet convertRect:objc_loadWeak(&self->_view.m_weakReference) fromView:{v6, v7, v8, v9, v18}];
       v20 = CGRectInset(v19, -15.0, -15.0);
       x = v20.origin.x;
       y = v20.origin.y;
@@ -451,10 +451,10 @@ LABEL_10:
 
 - (CGRect)initialPresentationRectInHostViewForSheet
 {
-  v3 = [(WKActionSheetAssistant *)self superviewForSheet];
+  superviewForSheet = [(WKActionSheetAssistant *)self superviewForSheet];
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   v5 = WeakRetained;
-  if (!v3)
+  if (!superviewForSheet)
   {
     v7 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -473,7 +473,7 @@ LABEL_10:
     if (self->_anon_1a8[136])
     {
       WebCore::IntPoint::operator CGPoint();
-      [(WKActionSheetAssistant *)self _presentationRectForSheetGivenPoint:v3 inHostView:?];
+      [(WKActionSheetAssistant *)self _presentationRectForSheetGivenPoint:superviewForSheet inHostView:?];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -511,10 +511,10 @@ LABEL_10:
 
 - (CGRect)presentationRectInHostViewForSheet
 {
-  v3 = [(WKActionSheetAssistant *)self superviewForSheet];
+  superviewForSheet = [(WKActionSheetAssistant *)self superviewForSheet];
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   v5 = WeakRetained;
-  if (!v3)
+  if (!superviewForSheet)
   {
     v19 = *MEMORY[0x1E695F058];
     v21 = *(MEMORY[0x1E695F058] + 8);
@@ -566,7 +566,7 @@ LABEL_10:
         MidY = CGRectGetMidY(v29);
       }
 
-      [(WKActionSheetAssistant *)self _presentationRectForSheetGivenPoint:v3 inHostView:MidX, MidY];
+      [(WKActionSheetAssistant *)self _presentationRectForSheetGivenPoint:superviewForSheet inHostView:MidX, MidY];
       v19 = v18;
       v21 = v20;
       v23 = v22;
@@ -644,21 +644,21 @@ LABEL_15:
   return [(WKActionSheet *)m_ptr presentSheetFromRect:x, y, width, height];
 }
 
-- (void)interactionDidStartWithPositionInformation:(const void *)a3
+- (void)interactionDidStartWithPositionInformation:(const void *)information
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   if (WeakRetained)
   {
 
-    if (WebCore::DataDetection::canBePresentedByDataDetectors((a3 + 72), v5))
+    if (WebCore::DataDetection::canBePresentedByDataDetectors((information + 72), v5))
     {
-      CFURL = WTF::URL::createCFURL(&v9, (a3 + 72));
+      CFURL = WTF::URL::createCFURL(&v9, (information + 72));
       if (v9)
       {
-        v7 = [(*MEMORY[0x1E69E2358])(CFURL) sharedController];
+        sharedController = [(*MEMORY[0x1E69E2358])(CFURL) sharedController];
         if (objc_opt_respondsToSelector())
         {
-          [v7 interactionDidStartForURL:v9];
+          [sharedController interactionDidStartForURL:v9];
         }
 
         v8 = v9;
@@ -684,9 +684,9 @@ LABEL_15:
   return result;
 }
 
-- (void)_createSheetWithElementActions:(id)a3 defaultTitle:(id)a4 showLinkTitle:(BOOL)a5
+- (void)_createSheetWithElementActions:(id)actions defaultTitle:(id)title showLinkTitle:(BOOL)linkTitle
 {
-  v5 = a5;
+  linkTitleCopy = linkTitle;
   v53 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   if (WeakRetained)
@@ -707,10 +707,10 @@ LABEL_15:
       [(WKActionSheet *)v10 setSheetDelegate:self];
       [(WKActionSheet *)self->_interactionSheet.m_ptr setPreferredStyle:0];
       v40 = v9;
-      if (v5 && [-[WTF absoluteString](v51 "absoluteString")])
+      if (linkTitleCopy && [-[WTF absoluteString](v51 "absoluteString")])
       {
-        v12 = [(WTF *)v51 scheme];
-        if (v12 && ![v12 caseInsensitiveCompare:@"javascript"])
+        scheme = [(WTF *)v51 scheme];
+        if (scheme && ![scheme caseInsensitiveCompare:@"javascript"])
         {
           WebCore::localizedString(&v49, @"JavaScript Action Sheet Title", v13);
           v36 = v49;
@@ -731,7 +731,7 @@ LABEL_15:
           }
 
           v39 = v49;
-          a4 = v50;
+          title = v50;
           v49 = 0;
           v50 = 0;
           if (v39 && atomic_fetch_add_explicit(v39, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -743,7 +743,7 @@ LABEL_15:
         else
         {
           v14 = WTF::userVisibleString(v51, v13);
-          a4 = v14;
+          title = v14;
           if (v14)
           {
             v15 = v14;
@@ -751,9 +751,9 @@ LABEL_15:
         }
       }
 
-      else if (a4)
+      else if (title)
       {
-        v16 = a4;
+        titleCopy = title;
       }
 
       else
@@ -780,19 +780,19 @@ LABEL_15:
           v19 = &stru_1F1147748;
         }
 
-        a4 = v50;
+        title = v50;
       }
 
-      if ([a4 length])
+      if ([title length])
       {
-        [(WKActionSheet *)self->_interactionSheet.m_ptr setTitle:a4];
+        [(WKActionSheet *)self->_interactionSheet.m_ptr setTitle:title];
       }
 
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v21 = [a3 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      v21 = [actions countByEnumeratingWithState:&v45 objects:v52 count:16];
       if (v21)
       {
         v22 = *v46;
@@ -802,12 +802,12 @@ LABEL_15:
           {
             if (*v46 != v22)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(actions);
             }
 
             v24 = *(*(&v45 + 1) + 8 * i);
             v25 = self->_interactionSheet.m_ptr;
-            v26 = [v24 title];
+            title = [v24 title];
             v43[4] = v24;
             v44[0] = MEMORY[0x1E69E9820];
             v44[1] = 3221225472;
@@ -819,10 +819,10 @@ LABEL_15:
             v43[1] = 3221225472;
             v43[2] = __84__WKActionSheetAssistant__createSheetWithElementActions_defaultTitle_showLinkTitle___block_invoke_2;
             v43[3] = &unk_1E7633758;
-            [(WKActionSheet *)v25 _addActionWithTitle:v26 style:0 handler:v44 shouldDismissHandler:v43];
+            [(WKActionSheet *)v25 _addActionWithTitle:title style:0 handler:v44 shouldDismissHandler:v43];
           }
 
-          v21 = [a3 countByEnumeratingWithState:&v45 objects:v52 count:16];
+          v21 = [actions countByEnumeratingWithState:&v45 objects:v52 count:16];
         }
 
         while (v21);
@@ -873,7 +873,7 @@ LABEL_15:
         [v40 actionSheetAssistant:self willStartInteractionWithElement:self->_elementInfo.m_ptr];
       }
 
-      if (a4)
+      if (title)
       {
       }
 
@@ -958,17 +958,17 @@ LABEL_15:
       {
 LABEL_10:
         self->_hasPendingActionSheet = 1;
-        v9 = self;
+        selfCopy = self;
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3321888768;
         v13[2] = __40__WKActionSheetAssistant_showImageSheet__block_invoke_262;
         v13[3] = &unk_1F110D620;
-        v14 = self;
-        v10 = self;
+        selfCopy2 = self;
+        selfCopy3 = self;
         v13[4] = v16;
         [v4 actionSheetAssistant:self getAlternateURLForImage:v5 completion:v13];
-        v11 = v14;
-        v14 = 0;
+        v11 = selfCopy2;
+        selfCopy2 = 0;
         if (v11)
         {
         }
@@ -1166,7 +1166,7 @@ uint64_t __40__WKActionSheetAssistant_showImageSheet__block_invoke_262(uint64_t 
   return result;
 }
 
-- (int64_t)_presentationStyleForPositionInfo:(const void *)a3 elementInfo:(id)a4
+- (int64_t)_presentationStyleForPositionInfo:(const void *)info elementInfo:(id)elementInfo
 {
   Weak = objc_loadWeak(&self->_view.m_weakReference);
   WebCore::IntRect::operator CGRect();
@@ -1279,7 +1279,7 @@ uint64_t __40__WKActionSheetAssistant_showImageSheet__block_invoke_262(uint64_t 
   else
   {
 LABEL_22:
-    if ([a4 type] || !*(*(a3 + 35) + 68))
+    if ([elementInfo type] || !*(*(info + 35) + 68))
     {
       v16 = 1;
     }
@@ -1297,7 +1297,7 @@ LABEL_22:
   return v16;
 }
 
-- (BOOL)_appendAppLinkOpenActionsForURL:(id)a3 actions:(id)a4 elementInfo:(id)a5
+- (BOOL)_appendAppLinkOpenActionsForURL:(id)l actions:(id)actions elementInfo:(id)info
 {
   if (HIBYTE(word_1EB01D604) == 1)
   {
@@ -1328,7 +1328,7 @@ LABEL_10:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
-  v10 = [WeakRetained actionSheetAssistant:self shouldIncludeAppLinkActionsForElement:a5];
+  v10 = [WeakRetained actionSheetAssistant:self shouldIncludeAppLinkActionsForElement:info];
   if (WeakRetained)
   {
   }
@@ -1338,7 +1338,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [objc_msgSend(MEMORY[0x1E69635C0] appLinksWithURL:a3 limit:1 error:{0), "firstObject"}];
+  v11 = [objc_msgSend(MEMORY[0x1E69635C0] appLinksWithURL:l limit:1 error:{0), "firstObject"}];
   if (v11)
   {
     v13 = v11;
@@ -1372,7 +1372,7 @@ LABEL_10:
     v27[2] = __78__WKActionSheetAssistant__appendAppLinkOpenActionsForURL_actions_elementInfo___block_invoke;
     v27[3] = &unk_1E76337A8;
     v27[4] = v13;
-    [a4 addObject:{+[_WKElementAction _elementActionWithType:title:actionHandler:](_WKElementAction, "_elementActionWithType:title:actionHandler:", 5, v28, v27)}];
+    [actions addObject:{+[_WKElementAction _elementActionWithType:title:actionHandler:](_WKElementAction, "_elementActionWithType:title:actionHandler:", 5, v28, v27)}];
     v18 = [objc_msgSend(v13 "targetApplicationProxy")];
     if (v18)
     {
@@ -1397,7 +1397,7 @@ LABEL_10:
       v26[2] = __78__WKActionSheetAssistant__appendAppLinkOpenActionsForURL_actions_elementInfo___block_invoke_2;
       v26[3] = &unk_1E76337A8;
       v26[4] = v13;
-      [a4 addObject:{+[_WKElementAction _elementActionWithType:title:actionHandler:](_WKElementAction, "_elementActionWithType:title:actionHandler:", 6, v23, v26)}];
+      [actions addObject:{+[_WKElementAction _elementActionWithType:title:actionHandler:](_WKElementAction, "_elementActionWithType:title:actionHandler:", 6, v23, v26)}];
       if (v23)
       {
       }
@@ -1431,38 +1431,38 @@ uint64_t __78__WKActionSheetAssistant__appendAppLinkOpenActionsForURL_actions_el
   return [v2 openWithCompletionHandler:0];
 }
 
-- (void)_appendOpenActionsForURL:(id)a3 actions:(id)a4 elementInfo:(id)a5
+- (void)_appendOpenActionsForURL:(id)l actions:(id)actions elementInfo:(id)info
 {
-  if (![WKActionSheetAssistant _appendAppLinkOpenActionsForURL:"_appendAppLinkOpenActionsForURL:actions:elementInfo:" actions:a3 elementInfo:?])
+  if (![WKActionSheetAssistant _appendAppLinkOpenActionsForURL:"_appendAppLinkOpenActionsForURL:actions:elementInfo:" actions:l elementInfo:?])
   {
-    v8 = [_WKElementAction _elementActionWithType:1 info:a5 assistant:self];
+    v8 = [_WKElementAction _elementActionWithType:1 info:info assistant:self];
 
-    [a4 addObject:v8];
+    [actions addObject:v8];
   }
 }
 
-- (void)_appendAnimationAction:(id)a3 elementInfo:(id)a4
+- (void)_appendAnimationAction:(id)action elementInfo:(id)info
 {
-  if (([a4 isAnimatedImage] & 1) != 0 || *(objc_msgSend(a4, "_animationsUnderElement") + 12))
+  if (([info isAnimatedImage] & 1) != 0 || *(objc_msgSend(info, "_animationsUnderElement") + 12))
   {
-    if ([a4 canShowAnimationControls])
+    if ([info canShowAnimationControls])
     {
       objc_loadWeak(&self->_delegate.m_weakReference);
       if (objc_opt_respondsToSelector())
       {
         if ([objc_loadWeak(&self->_delegate.m_weakReference) _allowAnimationControls])
         {
-          v7 = [a4 isAnimating];
-          if (([a4 isAnimatedImage] & 1) != 0 || (v8 = objc_msgSend(a4, "_animationsUnderElement"), v9 = *(v8 + 12), !v9))
+          isAnimating = [info isAnimating];
+          if (([info isAnimatedImage] & 1) != 0 || (v8 = objc_msgSend(info, "_animationsUnderElement"), v9 = *(v8 + 12), !v9))
           {
 LABEL_11:
-            if (!v7)
+            if (!isAnimating)
             {
               v13 = 15;
 LABEL_15:
-              v14 = [_WKElementAction _elementActionWithType:v13 info:a4 assistant:self];
+              v14 = [_WKElementAction _elementActionWithType:v13 info:info assistant:self];
 
-              [a3 addObject:v14];
+              [action addObject:v14];
               return;
             }
           }
@@ -1496,59 +1496,59 @@ LABEL_15:
   }
 }
 
-- (RetainPtr<NSArray<_WKElementAction)defaultActionsForLinkSheet:(id)a3
+- (RetainPtr<NSArray<_WKElementAction)defaultActionsForLinkSheet:(id)sheet
 {
   v6 = v3;
-  v7.var0 = [a3 URL];
+  v7.var0 = [sheet URL];
   if (v7.var0)
   {
     var0 = v7.var0;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(WKActionSheetAssistant *)self _appendOpenActionsForURL:var0 actions:v9 elementInfo:a3];
+    [(WKActionSheetAssistant *)self _appendOpenActionsForURL:var0 actions:v9 elementInfo:sheet];
     if ([getSSReadingListClass() supportsURL:var0])
     {
-      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 4, a3, self)}];
+      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 4, sheet, self)}];
     }
 
-    v10 = [a3 imageURL];
-    if (v10)
+    imageURL = [sheet imageURL];
+    if (imageURL)
     {
-      TCC_kTCCServicePhotos = WebKit::get_TCC_kTCCServicePhotos(v10);
+      TCC_kTCCServicePhotos = WebKit::get_TCC_kTCCServicePhotos(imageURL);
       if (WebKit::softLinkTCCTCCAccessPreflight(TCC_kTCCServicePhotos, 0, v12) != 1)
       {
-        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 3, a3, self)}];
+        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 3, sheet, self)}];
       }
     }
 
-    v13 = [var0 scheme];
-    if (!v13 || [v13 caseInsensitiveCompare:@"javascript"])
+    scheme = [var0 scheme];
+    if (!scheme || [scheme caseInsensitiveCompare:@"javascript"])
     {
-      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 2, a3, self)}];
-      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 7, a3, self)}];
+      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 2, sheet, self)}];
+      [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 7, sheet, self)}];
     }
 
-    if ([a3 type] == 1 || objc_msgSend(a3, "_isImage"))
+    if ([sheet type] == 1 || objc_msgSend(sheet, "_isImage"))
     {
       objc_loadWeak(&self->_delegate.m_weakReference);
       if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistantShouldIncludeCopySubjectAction:self])
       {
-        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 14, a3, self)}];
+        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 14, sheet, self)}];
       }
 
       objc_loadWeak(&self->_delegate.m_weakReference);
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeShowTextActionForElement:a3])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeShowTextActionForElement:sheet])
       {
-        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 12, a3, self)}];
+        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 12, sheet, self)}];
       }
 
       objc_loadWeak(&self->_delegate.m_weakReference);
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeLookUpImageActionForElement:a3])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeLookUpImageActionForElement:sheet])
       {
-        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 13, a3, self)}];
+        [v9 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 13, sheet, self)}];
       }
     }
 
-    v7.var0 = [(WKActionSheetAssistant *)self _appendAnimationAction:v9 elementInfo:a3];
+    v7.var0 = [(WKActionSheetAssistant *)self _appendAnimationAction:v9 elementInfo:sheet];
   }
 
   else
@@ -1560,36 +1560,36 @@ LABEL_15:
   return v7;
 }
 
-- (RetainPtr<NSArray<_WKElementAction)defaultActionsForImageSheet:(id)a3
+- (RetainPtr<NSArray<_WKElementAction)defaultActionsForImageSheet:(id)sheet
 {
   v6 = v3;
-  v7 = [a3 URL];
+  v7 = [sheet URL];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v7)
   {
-    [(WKActionSheetAssistant *)self _appendOpenActionsForURL:v7 actions:v8 elementInfo:a3];
+    [(WKActionSheetAssistant *)self _appendOpenActionsForURL:v7 actions:v8 elementInfo:sheet];
   }
 
-  else if (![a3 imageURL])
+  else if (![sheet imageURL])
   {
     goto LABEL_5;
   }
 
-  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 7, a3, self)}];
+  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 7, sheet, self)}];
 LABEL_5:
   v9 = [getSSReadingListClass() supportsURL:v7];
   if (v9)
   {
-    v9 = [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 4, a3, self)}];
+    v9 = [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 4, sheet, self)}];
   }
 
   TCC_kTCCServicePhotos = WebKit::get_TCC_kTCCServicePhotos(v9);
   if (WebKit::softLinkTCCTCCAccessPreflight(TCC_kTCCServicePhotos, 0, v11) != 1)
   {
-    [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 3, a3, self)}];
+    [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 3, sheet, self)}];
   }
 
-  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 2, a3, self)}];
+  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 2, sheet, self)}];
   objc_loadWeak(&self->_delegate.m_weakReference);
   if (objc_opt_respondsToSelector())
   {
@@ -1601,17 +1601,17 @@ LABEL_5:
     v12 = 0;
   }
 
-  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:disabled:](_WKElementAction, "_elementActionWithType:info:assistant:disabled:", 14, a3, self, v12 ^ 1u)}];
+  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:disabled:](_WKElementAction, "_elementActionWithType:info:assistant:disabled:", 14, sheet, self, v12 ^ 1u)}];
   objc_loadWeak(&self->_delegate.m_weakReference);
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeShowTextActionForElement:a3])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeShowTextActionForElement:sheet])
   {
-    [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 12, a3, self)}];
+    [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:](_WKElementAction, "_elementActionWithType:info:assistant:", 12, sheet, self)}];
   }
 
   objc_loadWeak(&self->_delegate.m_weakReference);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeLookUpImageActionForElement:a3];
+    v13 = [objc_loadWeak(&self->_delegate.m_weakReference) actionSheetAssistant:self shouldIncludeLookUpImageActionForElement:sheet];
   }
 
   else
@@ -1619,8 +1619,8 @@ LABEL_5:
     v13 = 0;
   }
 
-  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:disabled:](_WKElementAction, "_elementActionWithType:info:assistant:disabled:", 13, a3, self, v13 ^ 1u)}];
-  v14.var0 = [(WKActionSheetAssistant *)self _appendAnimationAction:v8 elementInfo:a3];
+  [v8 addObject:{+[_WKElementAction _elementActionWithType:info:assistant:disabled:](_WKElementAction, "_elementActionWithType:info:assistant:disabled:", 13, sheet, self, v13 ^ 1u)}];
+  v14.var0 = [(WKActionSheetAssistant *)self _appendAnimationAction:v8 elementInfo:sheet];
   *v6 = v8;
   return v14;
 }
@@ -1796,34 +1796,34 @@ LABEL_28:
   return *p_mediaControlsContextMenuPresenter;
 }
 
-- (id)_elementActionForDDAction:(id)a3
+- (id)_elementActionForDDAction:(id)action
 {
   if (self)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = [a3 localizedName];
+  localizedName = [action localizedName];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3321888768;
   v12[2] = __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke;
   v12[3] = &unk_1F110D658;
-  v13 = self;
+  selfCopy2 = self;
   if (self)
   {
-    v7 = self;
+    selfCopy3 = self;
   }
 
-  v12[4] = a3;
-  v8 = [_WKElementAction elementActionWithTitle:v6 actionHandler:v12];
+  v12[4] = action;
+  v8 = [_WKElementAction elementActionWithTitle:localizedName actionHandler:v12];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke_287;
   v11[3] = &unk_1E7633758;
-  v11[4] = a3;
+  v11[4] = action;
   [(_WKElementAction *)v8 setDismissalHandler:v11];
-  v9 = v13;
-  v13 = 0;
+  v9 = selfCopy2;
+  selfCopy2 = 0;
   if (v9)
   {
   }
@@ -1845,7 +1845,7 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
   return [v2 performAction:v3 fromAlertController:v4 interactionDelegate:?];
 }
 
-- (void)showDataDetectorsUIForPositionInformation:(const void *)a3
+- (void)showDataDetectorsUIForPositionInformation:(const void *)information
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
   if (WeakRetained)
@@ -1853,7 +1853,7 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
 
     if (self->_anon_1a8[136])
     {
-      WebKit::InteractionInformationAtPosition::operator=(&self->_positionInformation, a3);
+      WebKit::InteractionInformationAtPosition::operator=(&self->_positionInformation, information);
       if ((self->_anon_1a8[136] & 1) == 0)
       {
         goto LABEL_35;
@@ -1862,7 +1862,7 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
 
     else
     {
-      WebKit::InteractionInformationAtPosition::InteractionInformationAtPosition(&self->_positionInformation, a3);
+      WebKit::InteractionInformationAtPosition::InteractionInformationAtPosition(&self->_positionInformation, information);
       self->_anon_1a8[136] = 1;
     }
 
@@ -1876,7 +1876,7 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
           return;
         }
 
-        v8 = [(*MEMORY[0x1E69E2358])(CFURL) sharedController];
+        sharedController = [(*MEMORY[0x1E69E2358])(CFURL) sharedController];
         objc_loadWeak(&self->_delegate.m_weakReference);
         if (objc_opt_respondsToSelector())
         {
@@ -1905,11 +1905,11 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
           v11 = 0;
         }
 
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 shouldImmediatelyLaunchDefaultActionForURL:v22])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [sharedController shouldImmediatelyLaunchDefaultActionForURL:v22])
         {
           if (self->_anon_1a8[136])
           {
-            [-[WKActionSheetAssistant _elementActionForDDAction:](self _elementActionForDDAction:{objc_msgSend(v8, "defaultActionForURL:results:context:", v22, self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr, v10)), "_runActionWithElementInfo:forActionSheetAssistant:", self->_elementInfo.m_ptr, self}];
+            [-[WKActionSheetAssistant _elementActionForDDAction:](self _elementActionForDDAction:{objc_msgSend(sharedController, "defaultActionForURL:results:context:", v22, self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr, v10)), "_runActionWithElementInfo:forActionSheetAssistant:", self->_elementInfo.m_ptr, self}];
             goto LABEL_32;
           }
         }
@@ -1944,7 +1944,7 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
             goto LABEL_35;
           }
 
-          v16 = [v8 actionsForURL:v12 identifier:v21 selectedText:v11 results:self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr context:v10];
+          v16 = [sharedController actionsForURL:v12 identifier:v21 selectedText:v11 results:self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr context:v10];
           v17 = v21;
           v21 = 0;
           if (v17)
@@ -1956,10 +1956,10 @@ uint64_t __52__WKActionSheetAssistant__elementActionForDDAction___block_invoke(u
             goto LABEL_32;
           }
 
-          v18 = [(WKActionSheetAssistant *)self _dataDetectorContextMenuPresenter];
+          _dataDetectorContextMenuPresenter = [(WKActionSheetAssistant *)self _dataDetectorContextMenuPresenter];
           if (self->_anon_1a8[136])
           {
-            v19 = v18;
+            v19 = _dataDetectorContextMenuPresenter;
             WebCore::IntPoint::operator CGPoint();
             v23.size.width = *MEMORY[0x1E695F060];
             v23.size.height = *(MEMORY[0x1E695F060] + 8);
@@ -1982,14 +1982,14 @@ LABEL_35:
   }
 }
 
-- (id)_uiMenuElementsForMediaControlContextMenuItems:(void *)a3
+- (id)_uiMenuElementsForMediaControlContextMenuItems:(void *)items
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(a3 + 3)];
-  v5 = *(a3 + 3);
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:*(items + 3)];
+  v5 = *(items + 3);
   if (v5)
   {
     v6 = 0;
-    v7 = *a3;
+    v7 = *items;
     v8 = 48 * v5;
     do
     {
@@ -2151,17 +2151,17 @@ LABEL_37:
   return v4;
 }
 
-- (void)showMediaControlsContextMenu:(FloatRect *)a3 items:(void *)a4 completionHandler:(void *)a5
+- (void)showMediaControlsContextMenu:(FloatRect *)menu items:(void *)items completionHandler:(void *)handler
 {
   v30 = 0;
   v31 = 0;
-  v8 = *(a4 + 3);
+  v8 = *(items + 3);
   if (v8 == 1)
   {
-    v9 = *(*a4 + 8);
-    *(*a4 + 8) = 0;
-    v10 = *a4;
-    a4 = (*a4 + 32);
+    v9 = *(*items + 8);
+    *(*items + 8) = 0;
+    v10 = *items;
+    items = (*items + 32);
     v8 = *(v10 + 44);
     v11 = (v10 + 40);
   }
@@ -2169,13 +2169,13 @@ LABEL_37:
   else
   {
     v9 = 0;
-    v11 = (a4 + 8);
+    v11 = (items + 8);
   }
 
   v12 = *v11;
-  v13 = *a4;
-  *a4 = 0;
-  *(a4 + 1) = 0;
+  v13 = *items;
+  *items = 0;
+  *(items + 1) = 0;
   v30 = v13;
   v31 = __PAIR64__(v8, v12);
   objc_loadWeak(&self->_delegate.m_weakReference);
@@ -2228,9 +2228,9 @@ LABEL_37:
     {
     }
 
-    self->_mediaControlsContextMenuTargetFrame = *a3;
-    v25 = *a5;
-    *a5 = 0;
+    self->_mediaControlsContextMenuTargetFrame = *menu;
+    v25 = *handler;
+    *handler = 0;
     ptr = self->_mediaControlsContextMenuCallback.m_function.m_callableWrapper.__ptr_;
     self->_mediaControlsContextMenuCallback.m_function.m_callableWrapper.__ptr_ = v25;
     if (ptr)
@@ -2238,14 +2238,14 @@ LABEL_37:
       (*(*ptr + 8))(ptr);
     }
 
-    v27 = [(WKActionSheetAssistant *)self _mediaControlsContextMenuPresenter];
+    _mediaControlsContextMenuPresenter = [(WKActionSheetAssistant *)self _mediaControlsContextMenuPresenter];
     WebCore::FloatRect::operator CGRect();
-    WebKit::CompactContextMenuPresenter::present(v27, v32);
+    WebKit::CompactContextMenuPresenter::present(_mediaControlsContextMenuPresenter, v32);
   }
 
   else
   {
-    WTF::CompletionHandler<void ()(unsigned long long)>::operator()(a5);
+    WTF::CompletionHandler<void ()(unsigned long long)>::operator()(handler);
   }
 
   WTF::Vector<WebCore::MediaControlsContextMenuItem,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v30, v18);
@@ -2258,11 +2258,11 @@ LABEL_37:
   }
 }
 
-- (id)suggestedActionsForContextMenuWithPositionInformation:(const void *)a3
+- (id)suggestedActionsForContextMenuWithPositionInformation:(const void *)information
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [[_WKActivatedElementInfo alloc] _initWithInteractionInformationAtPosition:a3 isUsingAlternateURLForImage:0 userInfo:0];
-  if (*(a3 + 24) == 1)
+  v5 = [[_WKActivatedElementInfo alloc] _initWithInteractionInformationAtPosition:information isUsingAlternateURLForImage:0 userInfo:0];
+  if (*(information + 24) == 1)
   {
     if (self)
     {
@@ -2363,13 +2363,13 @@ LABEL_21:
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   ptr = self->_dataDetectorContextMenuPresenter.__ptr_;
-  if (!ptr || [*(ptr + 1) contextMenuInteraction] != a3)
+  if (!ptr || [*(ptr + 1) contextMenuInteraction] != interaction)
   {
     v7 = self->_mediaControlsContextMenuPresenter.__ptr_;
-    if (!v7 || [*(v7 + 1) contextMenuInteraction] != a3)
+    if (!v7 || [*(v7 + 1) contextMenuInteraction] != interaction)
     {
       return 0;
     }
@@ -2389,7 +2389,7 @@ LABEL_21:
     return v8;
   }
 
-  v9 = [(*MEMORY[0x1E69E2358])() sharedController];
+  sharedController = [(*MEMORY[0x1E69E2358])() sharedController];
   objc_loadWeak(&self->_delegate.m_weakReference);
   if (objc_opt_respondsToSelector())
   {
@@ -2446,7 +2446,7 @@ LABEL_21:
 
       if (self->_anon_1a8[136])
       {
-        result = [v9 resultForURL:v14 identifier:v36 selectedText:v13 results:self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr context:v11 extendedContext:&v37];
+        result = [sharedController resultForURL:v14 identifier:v36 selectedText:v13 results:self->_positionInformation.var0.__val_.dataDetectorResults.m_ptr context:v11 extendedContext:&v37];
         v17 = result;
         v18 = v36;
         v36 = 0;
@@ -2520,13 +2520,13 @@ uint64_t __80__WKActionSheetAssistant_contextMenuInteraction_configurationForMen
   return v2;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   ptr = self->_dataDetectorContextMenuPresenter.__ptr_;
-  if (!ptr || [*(ptr + 1) contextMenuInteraction] != a3)
+  if (!ptr || [*(ptr + 1) contextMenuInteraction] != interaction)
   {
     v8 = self->_mediaControlsContextMenuPresenter.__ptr_;
-    if (!v8 || [*(v8 + 1) contextMenuInteraction] != a3)
+    if (!v8 || [*(v8 + 1) contextMenuInteraction] != interaction)
     {
       return 0;
     }
@@ -2594,7 +2594,7 @@ LABEL_12:
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = 0;
   v7[0] = MEMORY[0x1E69E9820];
@@ -2604,7 +2604,7 @@ LABEL_12:
   objc_initWeak(&v6, self);
   v8 = 0;
   objc_copyWeak(&v8, &v6);
-  [a5 addCompletion:v7];
+  [animator addCompletion:v7];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
 }
@@ -2623,16 +2623,16 @@ void __90__WKActionSheetAssistant_contextMenuInteraction_willDisplayMenuForConfi
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   ptr = self->_dataDetectorContextMenuPresenter.__ptr_;
-  if (ptr && [*(ptr + 1) contextMenuInteraction] == a3)
+  if (ptr && [*(ptr + 1) contextMenuInteraction] == interaction)
   {
     [(WKActionSheetAssistant *)self _resetDataDetectorContextMenuPresenter];
   }
 
   v9 = self->_mediaControlsContextMenuPresenter.__ptr_;
-  if (v9 && [*(v9 + 1) contextMenuInteraction] == a3)
+  if (v9 && [*(v9 + 1) contextMenuInteraction] == interaction)
   {
     [(WKActionSheetAssistant *)self _resetMediaControlsContextMenuPresenter];
   }
@@ -2645,7 +2645,7 @@ void __90__WKActionSheetAssistant_contextMenuInteraction_willDisplayMenuForConfi
   objc_initWeak(&v10, self);
   v12 = 0;
   objc_copyWeak(&v12, &v10);
-  [a5 addCompletion:v11];
+  [animator addCompletion:v11];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
 }
@@ -2664,10 +2664,10 @@ void __82__WKActionSheetAssistant_contextMenuInteraction_willEndForConfiguration
   }
 }
 
-- (id)_contextMenuInteraction:(id)a3 overrideSuggestedActionsForConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction overrideSuggestedActionsForConfiguration:(id)configuration
 {
   ptr = self->_dataDetectorContextMenuPresenter.__ptr_;
-  if (!ptr || [*(ptr + 1) contextMenuInteraction] != a3 || self->_anon_1a8[136] != 1)
+  if (!ptr || [*(ptr + 1) contextMenuInteraction] != interaction || self->_anon_1a8[136] != 1)
   {
     return 0;
   }
@@ -2675,20 +2675,20 @@ void __82__WKActionSheetAssistant_contextMenuInteraction_willEndForConfiguration
   return [(WKActionSheetAssistant *)self suggestedActionsForContextMenuWithPositionInformation:&self->_positionInformation];
 }
 
-- (void)handleElementActionWithType:(int64_t)a3 element:(id)a4 needsInteraction:(BOOL)a5
+- (void)handleElementActionWithType:(int64_t)type element:(id)element needsInteraction:(BOOL)interaction
 {
-  v5 = a5;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate.m_weakReference);
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (interactionCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained actionSheetAssistant:self willStartInteractionWithElement:a4];
+    [WeakRetained actionSheetAssistant:self willStartInteractionWithElement:element];
   }
 
-  if (a3 > 12)
+  if (type > 12)
   {
-    if ((a3 - 15) < 2)
+    if ((type - 15) < 2)
     {
-      if (a3 == 16)
+      if (type == 16)
       {
         v14 = 2;
       }
@@ -2699,12 +2699,12 @@ void __82__WKActionSheetAssistant_contextMenuInteraction_willEndForConfiguration
       }
 
       [WeakRetained actionSheetAssistant:self performAction:v14];
-      if (*([a4 _animationsUnderElement] + 12) && (objc_opt_respondsToSelector() & 1) != 0)
+      if (*([element _animationsUnderElement] + 12) && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v15 = [a4 _animationsUnderElement];
-        v37 = 0;
+        _animationsUnderElement = [element _animationsUnderElement];
+        _interactionLocation = 0;
         v38 = 0;
-        v16 = *(v15 + 12);
+        v16 = *(_animationsUnderElement + 12);
         if (v16)
         {
           if (v16 >= 0x3333334)
@@ -2716,76 +2716,76 @@ void __82__WKActionSheetAssistant_contextMenuInteraction_willEndForConfiguration
           v17 = 80 * v16;
           v18 = WTF::fastMalloc((80 * v16));
           LODWORD(v38) = v17 / 0x50;
-          v37 = v18;
-          if (*(v15 + 12))
+          _interactionLocation = v18;
+          if (*(_animationsUnderElement + 12))
           {
             v19 = 0;
             v20 = 0;
             do
             {
-              memmove(v18, (*v15 + v19), 0x50uLL);
+              memmove(v18, (*_animationsUnderElement + v19), 0x50uLL);
               ++v20;
               v18 = (v18 + 80);
               v19 += 96;
             }
 
-            while (v20 < *(v15 + 12));
+            while (v20 < *(_animationsUnderElement + 12));
             HIDWORD(v38) = v20;
           }
         }
 
-        [WeakRetained _actionSheetAssistant:self performAction:v14 onElements:&v37];
-        v22 = v37;
-        if (v37)
+        [WeakRetained _actionSheetAssistant:self performAction:v14 onElements:&_interactionLocation];
+        v22 = _interactionLocation;
+        if (_interactionLocation)
         {
-          v37 = 0;
+          _interactionLocation = 0;
           LODWORD(v38) = 0;
           WTF::fastFree(v22, v21);
         }
       }
     }
 
-    else if (a3 == 13)
+    else if (type == 13)
     {
-      v23 = [a4 image];
-      v24 = [a4 imageURL];
-      v25 = [a4 title];
-      [a4 boundingRect];
-      [WeakRetained actionSheetAssistant:self lookUpImage:v23 imageURL:v24 title:v25 imageBounds:?];
+      image = [element image];
+      imageURL = [element imageURL];
+      title = [element title];
+      [element boundingRect];
+      [WeakRetained actionSheetAssistant:self lookUpImage:image imageURL:imageURL title:title imageBounds:?];
     }
 
-    else if (a3 == 14)
+    else if (type == 14)
     {
-      [WeakRetained actionSheetAssistant:self copySubject:objc_msgSend(a4 sourceMIMEType:{"image"), objc_msgSend(a4, "imageMIMEType")}];
+      [WeakRetained actionSheetAssistant:self copySubject:objc_msgSend(element sourceMIMEType:{"image"), objc_msgSend(element, "imageMIMEType")}];
     }
   }
 
   else
   {
-    if (a3 > 2)
+    if (type > 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
-        if (a3 != 7)
+        if (type != 7)
         {
-          if (a3 == 12)
+          if (type == 12)
           {
-            v10 = [a4 image];
-            v11 = [a4 imageURL];
-            v12 = [a4 title];
-            [a4 boundingRect];
-            [WeakRetained actionSheetAssistant:self showTextForImage:v10 imageURL:v11 title:v12 imageBounds:?];
+            image2 = [element image];
+            imageURL2 = [element imageURL];
+            title2 = [element title];
+            [element boundingRect];
+            [WeakRetained actionSheetAssistant:self showTextForImage:image2 imageURL:imageURL2 title:title2 imageBounds:?];
           }
 
           goto LABEL_52;
         }
 
-        MEMORY[0x19EB01DE0](&v37, [a4 imageURL]);
-        if (WTF::URL::protocolIs() && [a4 image])
+        MEMORY[0x19EB01DE0](&_interactionLocation, [element imageURL]);
+        if (WTF::URL::protocolIs() && [element image])
         {
           v30 = objc_opt_respondsToSelector();
-          v31 = v37;
-          v37 = 0;
+          v31 = _interactionLocation;
+          _interactionLocation = 0;
           if (v31 && atomic_fetch_add_explicit(v31, 0xFFFFFFFE, memory_order_relaxed) == 2)
           {
             WTF::StringImpl::destroy(v31, v29);
@@ -2793,35 +2793,35 @@ void __82__WKActionSheetAssistant_contextMenuInteraction_willEndForConfiguration
 
           if (v30)
           {
-            v32 = [a4 image];
-            [a4 boundingRect];
-            [WeakRetained actionSheetAssistant:self shareElementWithImage:v32 rect:?];
+            image3 = [element image];
+            [element boundingRect];
+            [WeakRetained actionSheetAssistant:self shareElementWithImage:image3 rect:?];
             goto LABEL_52;
           }
         }
 
         else
         {
-          v33 = v37;
-          v37 = 0;
+          v33 = _interactionLocation;
+          _interactionLocation = 0;
           if (v33 && atomic_fetch_add_explicit(v33, 0xFFFFFFFE, memory_order_relaxed) == 2)
           {
             WTF::StringImpl::destroy(v33, v28);
           }
         }
 
-        if ([a4 URL] && ((v34 = objc_msgSend(objc_msgSend(a4, "URL"), "scheme")) == 0 || objc_msgSend(v34, "caseInsensitiveCompare:", @"javascript")))
+        if ([element URL] && ((v34 = objc_msgSend(objc_msgSend(element, "URL"), "scheme")) == 0 || objc_msgSend(v34, "caseInsensitiveCompare:", @"javascript")))
         {
-          v35 = [a4 URL];
+          imageURL3 = [element URL];
         }
 
         else
         {
-          v35 = [a4 imageURL];
+          imageURL3 = [element imageURL];
         }
 
-        v36 = v35;
-        [a4 boundingRect];
+        v36 = imageURL3;
+        [element boundingRect];
         [WeakRetained actionSheetAssistant:self shareElementWithURL:v36 rect:?];
         goto LABEL_52;
       }
@@ -2832,18 +2832,18 @@ LABEL_32:
       goto LABEL_52;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
-      if ([a4 _isUsingAlternateURLForImage])
+      if ([element _isUsingAlternateURLForImage])
       {
-        v26 = [MEMORY[0x1E69DC668] sharedApplication];
-        v27 = [a4 URL];
-        [v26 openURL:v27 options:MEMORY[0x1E695E0F8] completionHandler:0];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        v27 = [element URL];
+        [mEMORY[0x1E69DC668] openURL:v27 options:MEMORY[0x1E695E0F8] completionHandler:0];
       }
 
       else
       {
-        v37 = [a4 _interactionLocation];
+        _interactionLocation = [element _interactionLocation];
         WebCore::IntPoint::operator CGPoint();
         [WeakRetained actionSheetAssistant:self openElementAtLocation:?];
       }
@@ -2851,7 +2851,7 @@ LABEL_32:
       goto LABEL_52;
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       v13 = 0;
       goto LABEL_32;
@@ -2859,7 +2859,7 @@ LABEL_32:
   }
 
 LABEL_52:
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (interactionCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [WeakRetained actionSheetAssistantDidStopInteraction:self];
   }
@@ -2883,8 +2883,8 @@ LABEL_52:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(WKActionSheet *)self->_interactionSheet.m_ptr actions];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actions = [(WKActionSheet *)self->_interactionSheet.m_ptr actions];
+  v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2895,13 +2895,13 @@ LABEL_52:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         [v4 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "title")}];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -2910,25 +2910,25 @@ LABEL_52:
   return v4;
 }
 
-- (id)_contentsOfContextMenuItem:(id)a3
+- (id)_contentsOfContextMenuItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if ([objc_msgSend(a3 "title")])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([objc_msgSend(item "title")])
   {
-    [v5 setObject:objc_msgSend(a3 forKeyedSubscript:{"title"), @"title"}];
+    [dictionary setObject:objc_msgSend(item forKeyedSubscript:{"title"), @"title"}];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(a3, "children"), "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objc_msgSend(item, "children"), "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [a3 children];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    children = [item children];
+    v8 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2940,40 +2940,40 @@ LABEL_52:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(children);
           }
 
           [v6 addObject:{-[WKActionSheetAssistant _contentsOfContextMenuItem:](self, "_contentsOfContextMenuItem:", *(*(&v13 + 1) + 8 * v11++))}];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
     }
 
-    [v5 setObject:v6 forKeyedSubscript:@"children"];
+    [dictionary setObject:v6 forKeyedSubscript:@"children"];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 state] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [item state] == 1)
   {
-    [v5 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"checked"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"checked"];
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)currentlyAvailableMediaControlsContextMenuItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_mediaControlsContextMenu.m_ptr)
   {
-    [v3 addObject:{-[WKActionSheetAssistant _contentsOfContextMenuItem:](self, "_contentsOfContextMenuItem:")}];
+    [array addObject:{-[WKActionSheetAssistant _contentsOfContextMenuItem:](self, "_contentsOfContextMenuItem:")}];
   }
 
-  return v3;
+  return array;
 }
 
 @end

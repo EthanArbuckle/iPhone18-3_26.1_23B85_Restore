@@ -1,15 +1,15 @@
 @interface BKEngagementManagerAnalyticsHelper
 - (BKEngagementManagerAnalyticsHelper)init;
-- (void)collectLocalSignalsAnalyticsWithTracker:(id)a3;
+- (void)collectLocalSignalsAnalyticsWithTracker:(id)tracker;
 @end
 
 @implementation BKEngagementManagerAnalyticsHelper
 
-- (void)collectLocalSignalsAnalyticsWithTracker:(id)a3
+- (void)collectLocalSignalsAnalyticsWithTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = self;
-  EngagementManagerAnalyticsHelper.collectLocalSignalsAnalytics(with:)(v4);
+  trackerCopy = tracker;
+  selfCopy = self;
+  EngagementManagerAnalyticsHelper.collectLocalSignalsAnalytics(with:)(trackerCopy);
 }
 
 - (BKEngagementManagerAnalyticsHelper)init

@@ -1,7 +1,7 @@
 @interface DBSmartWidgetPrediction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPrediction:(id)a3;
-- (BOOL)updateWithPrediction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPrediction:(id)prediction;
+- (BOOL)updateWithPrediction:(id)prediction;
 - (DBSmartWidgetPrediction)init;
 - (DBSmartWidgetPredictionDelegate)delegate;
 - (NSArray)validRanges;
@@ -13,11 +13,11 @@
 - (id)debugValidRangesText;
 - (id)description;
 - (id)predictedObjectDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)predictionScore;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)predictionDidUpdate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DBSmartWidgetPrediction
@@ -47,21 +47,21 @@
     [(DBSmartWidgetPrediction *)self initialValidInterval];
     if (v5 < 1.79769313e308)
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSinceReferenceDate];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSinceReferenceDate];
       v8 = floor(v7);
 
       v9 = MEMORY[0x277CBEAA8];
       [(DBSmartWidgetPrediction *)self initialValidInterval];
       v11 = [v9 dateWithTimeIntervalSinceReferenceDate:v8 + v10];
       v12 = [DBDateRange alloc];
-      v13 = [MEMORY[0x277CBEAA8] distantPast];
-      v14 = [(DBDateRange *)v12 initWithStart:v13 end:v11];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
+      v14 = [(DBDateRange *)v12 initWithStart:distantPast end:v11];
       [v4 addObject:v14];
     }
 
-    v15 = [(DBSmartWidgetPrediction *)self defaultValidRanges];
-    [v4 addObjectsFromArray:v15];
+    defaultValidRanges = [(DBSmartWidgetPrediction *)self defaultValidRanges];
+    [v4 addObjectsFromArray:defaultValidRanges];
 
     v16 = objc_opt_new();
     keyExistsAndHasValidFormat = 0;
@@ -96,16 +96,16 @@
           }
 
           v24 = *(*(&v45 + 1) + 8 * i);
-          v25 = [v16 lastObject];
-          if (v25 && ([v24 startTimeIntervalSinceReferenceDate], v27 = v26 - v18, objc_msgSend(v25, "endTimeIntervalSinceReferenceDate"), v27 < v28))
+          lastObject = [v16 lastObject];
+          if (lastObject && ([v24 startTimeIntervalSinceReferenceDate], v27 = v26 - v18, objc_msgSend(lastObject, "endTimeIntervalSinceReferenceDate"), v27 < v28))
           {
-            [v25 endTimeIntervalSinceReferenceDate];
+            [lastObject endTimeIntervalSinceReferenceDate];
             v30 = v29;
             [v24 endTimeIntervalSinceReferenceDate];
             if (v30 < v31)
             {
               v32 = [v24 end];
-              [v25 setEnd:v32];
+              [lastObject setEnd:v32];
             }
           }
 
@@ -160,18 +160,18 @@
   return validRanges;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetPrediction *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSmartWidgetPrediction *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetPrediction *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBSmartWidgetPrediction *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (id)description
@@ -209,19 +209,19 @@
 
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
-  v12 = [(DBSmartWidgetPrediction *)self uniqueIdentifier];
-  v13 = [(DBSmartWidgetPrediction *)self _debugScoreText];
+  uniqueIdentifier = [(DBSmartWidgetPrediction *)self uniqueIdentifier];
+  _debugScoreText = [(DBSmartWidgetPrediction *)self _debugScoreText];
   v14 = [v3 componentsJoinedByString:{@", "}];
-  v15 = [(DBSmartWidgetPrediction *)self predictedObjectDescription];
-  v16 = [v10 stringWithFormat:@"<%@: %p uniqueIdentifier=%@ score=%@ validRanges=[%@] predictedObject=%@>", v11, self, v12, v13, v14, v15, v18];
+  predictedObjectDescription = [(DBSmartWidgetPrediction *)self predictedObjectDescription];
+  v16 = [v10 stringWithFormat:@"<%@: %p uniqueIdentifier=%@ score=%@ validRanges=[%@] predictedObject=%@>", v11, self, uniqueIdentifier, _debugScoreText, v14, predictedObjectDescription, v18];
 
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -229,20 +229,20 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DBSmartWidgetPrediction *)self isEqualToPrediction:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DBSmartWidgetPrediction *)self isEqualToPrediction:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPrediction:(id)a3
+- (BOOL)isEqualToPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[DBSmartWidgetPrediction uniqueIdentifier](self, "uniqueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), [v4 uniqueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (-[DBSmartWidgetPrediction uniqueIdentifier](self, "uniqueIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), [predictionCopy uniqueIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
   {
-    v8 = [objc_opt_class() isEqualClassSelector];
-    v9 = ([(DBSmartWidgetPrediction *)self methodForSelector:v8])(self, v8, v4);
+    isEqualClassSelector = [objc_opt_class() isEqualClassSelector];
+    v9 = ([(DBSmartWidgetPrediction *)self methodForSelector:isEqualClassSelector])(self, isEqualClassSelector, predictionCopy);
   }
 
   else
@@ -253,23 +253,23 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetPrediction *)self score];
-  if (v5 == [v4 score])
+  compareCopy = compare;
+  score = [(DBSmartWidgetPrediction *)self score];
+  if (score == [compareCopy score])
   {
     if ([(DBSmartWidgetPrediction *)self isMemberOfClass:objc_opt_class()])
     {
-      v6 = [(DBSmartWidgetPrediction *)self tieBreakScore];
-      if (v6 > [v4 tieBreakScore])
+      tieBreakScore = [(DBSmartWidgetPrediction *)self tieBreakScore];
+      if (tieBreakScore > [compareCopy tieBreakScore])
       {
         v7 = -1;
         goto LABEL_11;
       }
 
-      v9 = [(DBSmartWidgetPrediction *)self tieBreakScore];
-      if (v9 < [v4 tieBreakScore])
+      tieBreakScore2 = [(DBSmartWidgetPrediction *)self tieBreakScore];
+      if (tieBreakScore2 < [compareCopy tieBreakScore])
       {
         v7 = 1;
         goto LABEL_11;
@@ -280,8 +280,8 @@
     goto LABEL_11;
   }
 
-  v8 = [(DBSmartWidgetPrediction *)self score];
-  if (v8 > [v4 score])
+  score2 = [(DBSmartWidgetPrediction *)self score];
+  if (score2 > [compareCopy score])
   {
     v7 = -1;
   }
@@ -299,16 +299,16 @@ LABEL_11:
 - (id)_debugScoreText
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DBSmartWidgetPrediction *)self score];
-  v5 = [(DBSmartWidgetPrediction *)self tieBreakScore];
-  v6 = [(DBSmartWidgetPrediction *)self predictionScore];
-  v7 = [objc_opt_class() baseScore];
+  score = [(DBSmartWidgetPrediction *)self score];
+  tieBreakScore = [(DBSmartWidgetPrediction *)self tieBreakScore];
+  predictionScore = [(DBSmartWidgetPrediction *)self predictionScore];
+  baseScore = [objc_opt_class() baseScore];
   [(DBSmartWidgetPrediction *)self value];
   v9 = v8;
   [(DBSmartWidgetPrediction *)self minValue];
   v11 = v10;
   [(DBSmartWidgetPrediction *)self maxValue];
-  return [v3 stringWithFormat:@"[%ld(%ld) pScore=%ld bScore=%ld value=%.2f minValue=%.2f maxValue=%.2f]", v4, v5, v6, v7, v9, v11, v12];
+  return [v3 stringWithFormat:@"[%ld(%ld) pScore=%ld bScore=%ld value=%.2f minValue=%.2f maxValue=%.2f]", score, tieBreakScore, predictionScore, baseScore, v9, v11, v12];
 }
 
 - (id)debugValidRangesText
@@ -336,8 +336,8 @@ LABEL_11:
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = MEMORY[0x277CCACA8];
-        v10 = [v8 start];
-        v11 = [DBDateFormatter formattedTimeStamp:v10];
+        start = [v8 start];
+        v11 = [DBDateFormatter formattedTimeStamp:start];
         v12 = [v8 end];
         v13 = [DBDateFormatter formattedTimeStamp:v12];
         v14 = [v9 stringWithFormat:@"<%@ - %@>", v11, v13];
@@ -360,15 +360,15 @@ LABEL_11:
 - (id)predictedObjectDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DBSmartWidgetPrediction *)self predictedObject];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  predictedObject = [(DBSmartWidgetPrediction *)self predictedObject];
+  v4 = [v2 stringWithFormat:@"%@", predictedObject];
 
   return v4;
 }
 
-- (BOOL)updateWithPrediction:(id)a3
+- (BOOL)updateWithPrediction:(id)prediction
 {
-  v4 = a3;
+  predictionCopy = prediction;
   v5 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -378,7 +378,7 @@ LABEL_11:
   v6 = DBLogForCategory(9uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(DBSmartWidgetPrediction *)v4 updateWithPrediction:v6];
+    [(DBSmartWidgetPrediction *)predictionCopy updateWithPrediction:v6];
   }
 
   return 0;
@@ -386,8 +386,8 @@ LABEL_11:
 
 - (void)predictionDidUpdate
 {
-  v3 = [(DBSmartWidgetPrediction *)self observers];
-  [v3 predictionDidUpdate:self];
+  observers = [(DBSmartWidgetPrediction *)self observers];
+  [observers predictionDidUpdate:self];
 }
 
 - (double)minValue
@@ -431,8 +431,8 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DBSmartWidgetPrediction *)self uniqueIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p identifier=%@, score=%ld(%ld)>", v5, self, v6, -[DBSmartWidgetPrediction score](self, "score"), -[DBSmartWidgetPrediction tieBreakScore](self, "tieBreakScore")];;
+  uniqueIdentifier = [(DBSmartWidgetPrediction *)self uniqueIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p identifier=%@, score=%ld(%ld)>", v5, self, uniqueIdentifier, -[DBSmartWidgetPrediction score](self, "score"), -[DBSmartWidgetPrediction tieBreakScore](self, "tieBreakScore")];;
 
   return v7;
 }

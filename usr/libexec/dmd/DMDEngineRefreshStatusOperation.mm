@@ -1,14 +1,14 @@
 @interface DMDEngineRefreshStatusOperation
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineRefreshStatusOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DMDEngineRefreshStatusOperation *)self organizationIdentifier];
-  v6 = [DMDPayloadMetadata fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:v5 matchingPredicate:0];
+  contextCopy = context;
+  organizationIdentifier = [(DMDEngineRefreshStatusOperation *)self organizationIdentifier];
+  v6 = [DMDPayloadMetadata fetchRequestForPayloadMetadatasFromOrganizationWithIdentifier:organizationIdentifier matchingPredicate:0];
 
   v26 = 0;
   v7 = [v6 execute:&v26];
@@ -47,14 +47,14 @@
     }
 
     v21 = v8;
-    v14 = [v4 save:&v21];
+    v14 = [contextCopy save:&v21];
     v15 = v21;
 
     if (v14)
     {
       v16 = +[NSNotificationCenter defaultCenter];
-      v17 = [(DMDEngineRefreshStatusOperation *)self organizationIdentifier];
-      [v16 postNotificationName:@"DMDConfigurationSourceStatusDidChange" object:v17];
+      organizationIdentifier2 = [(DMDEngineRefreshStatusOperation *)self organizationIdentifier];
+      [v16 postNotificationName:@"DMDConfigurationSourceStatusDidChange" object:organizationIdentifier2];
 
       v18 = DMFConfigurationEngineLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))

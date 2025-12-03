@@ -1,42 +1,42 @@
 @interface MRExternalJSONClientConnection
-- (MRExternalJSONClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4;
-- (id)_createProtocolMessage:(Class)a3 underlyingCodableMessage:(id)a4;
-- (id)_encodeDeviceInfo:(id)a3;
-- (id)_encodeVolumeDidChange:(id)a3;
-- (id)_processDeviceInfo:(id)a3;
-- (id)_processSetState:(id)a3;
-- (id)_protocolMessageFromData:(id)a3;
-- (id)dataForMessage:(id)a3;
+- (MRExternalJSONClientConnection)initWithConnection:(id)connection replyQueue:(id)queue;
+- (id)_createProtocolMessage:(Class)message underlyingCodableMessage:(id)codableMessage;
+- (id)_encodeDeviceInfo:(id)info;
+- (id)_encodeVolumeDidChange:(id)change;
+- (id)_processDeviceInfo:(id)info;
+- (id)_processSetState:(id)state;
+- (id)_protocolMessageFromData:(id)data;
+- (id)dataForMessage:(id)message;
 @end
 
 @implementation MRExternalJSONClientConnection
 
-- (MRExternalJSONClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4
+- (MRExternalJSONClientConnection)initWithConnection:(id)connection replyQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = MRExternalJSONClientConnection;
-  return [(MRExternalClientConnection *)&v5 initWithConnection:a3 replyQueue:a4];
+  return [(MRExternalClientConnection *)&v5 initWithConnection:connection replyQueue:queue];
 }
 
-- (id)dataForMessage:(id)a3
+- (id)dataForMessage:(id)message
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   if ([(MRProtocolClientConnection *)self disconnected])
   {
     v5 = 0;
     goto LABEL_25;
   }
 
-  v37[0] = v4;
+  v37[0] = messageCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
   objc_opt_class();
-  v27 = v4;
+  v27 = messageCopy;
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 messages];
+    messages = [messageCopy messages];
 
-    v6 = v7;
+    v6 = messages;
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -61,14 +61,14 @@
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [MEMORY[0x1E695DF90] dictionary];
-        v14 = [v12 type];
-        switch(v14)
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        type = [v12 type];
+        switch(type)
         {
           case 15:
 LABEL_13:
             v15 = [(MRExternalJSONClientConnection *)self _encodeDeviceInfo:v12];
-            v16 = v13;
+            v16 = dictionary;
             v17 = v15;
             v18 = @"deviceInfo";
 LABEL_15:
@@ -76,7 +76,7 @@ LABEL_15:
             goto LABEL_18;
           case 52:
             v15 = [(MRExternalJSONClientConnection *)self _encodeVolumeDidChange:v12];
-            v16 = v13;
+            v16 = dictionary;
             v17 = v15;
             v18 = @"volume";
             goto LABEL_15;
@@ -85,7 +85,7 @@ LABEL_15:
         }
 
         v19 = [v12 description];
-        [v13 setObject:v19 forKeyedSubscript:@"unsupportedMessage"];
+        [dictionary setObject:v19 forKeyedSubscript:@"unsupportedMessage"];
 
         v15 = _MRLogForCategory(4uLL);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -97,11 +97,11 @@ LABEL_15:
 
 LABEL_18:
 
-        v20 = [v12 replyIdentifier];
-        [v13 setObject:v20 forKeyedSubscript:@"identifier"];
+        replyIdentifier = [v12 replyIdentifier];
+        [dictionary setObject:replyIdentifier forKeyedSubscript:@"identifier"];
 
         v29 = 0;
-        v21 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v13 options:0 error:&v29];
+        v21 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v29];
         v22 = v29;
         if (v21)
         {
@@ -133,7 +133,7 @@ LABEL_18:
     while (v9);
   }
 
-  v4 = v27;
+  messageCopy = v27;
 LABEL_25:
 
   v25 = *MEMORY[0x1E69E9840];
@@ -141,13 +141,13 @@ LABEL_25:
   return v5;
 }
 
-- (id)_protocolMessageFromData:(id)a3
+- (id)_protocolMessageFromData:(id)data
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  dataCopy = data;
+  array = [MEMORY[0x1E695DF70] array];
   v60 = 0;
-  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v60];
+  v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v60];
   v7 = v60;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -181,7 +181,7 @@ LABEL_25:
     v22 = [(MRExternalJSONClientConnection *)self _processDeviceInfo:v21];
     if (v22)
     {
-      [v5 addObject:v22];
+      [array addObject:v22];
     }
 
     if ([(MRProtocolClientConnection *)self disconnected])
@@ -194,7 +194,7 @@ LABEL_25:
     v55 = [(MRExternalJSONClientConnection *)self _processSetState:v21];
     if (v55)
     {
-      [v5 addObjectsFromArray:v55];
+      [array addObjectsFromArray:v55];
     }
 
     v54 = v7;
@@ -209,24 +209,24 @@ LABEL_25:
         if (v25)
         {
           v26 = [(NSDictionary *)self->_volume objectForKeyedSubscript:@"volumeCapabilities"];
-          v27 = [v26 unsignedLongValue];
+          unsignedLongValue = [v26 unsignedLongValue];
 
           v28 = objc_alloc_init(_MRVolumeControlAvailabilityProtobuf);
-          [(_MRVolumeControlAvailabilityProtobuf *)v28 setVolumeControlAvailable:v27 != 0];
+          [(_MRVolumeControlAvailabilityProtobuf *)v28 setVolumeControlAvailable:unsignedLongValue != 0];
           v51 = v28;
-          [(_MRVolumeControlAvailabilityProtobuf *)v28 setVolumeCapabilities:v27];
+          [(_MRVolumeControlAvailabilityProtobuf *)v28 setVolumeCapabilities:unsignedLongValue];
           v29 = objc_alloc_init(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf);
           [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)v29 setCapabilities:v28];
           [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)v29 setEndpointUID:v52];
           v50 = v29;
           [(_MRVolumeControlCapabilitiesDidChangeMessageProtobuf *)v29 setOutputDeviceUID:v52];
           v49 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v29];
-          [v5 addObject:v49];
+          [array addObject:v49];
           v30 = objc_alloc_init(_MRGetVolumeControlCapabilitiesResultMessageProtobuf);
           [(_MRGetVolumeControlCapabilitiesResultMessageProtobuf *)v30 setCapabilities:v51];
           v31 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v30];
 
-          [v5 addObject:v31];
+          [array addObject:v31];
         }
 
         v32 = [(NSDictionary *)self->_volume objectForKeyedSubscript:@"volumeLevel"];
@@ -244,14 +244,14 @@ LABEL_25:
           [(_MRVolumeDidChangeMessageProtobuf *)v36 setOutputDeviceUID:v52];
           v38 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v36];
 
-          [v5 addObject:v38];
+          [array addObject:v38];
           v39 = objc_alloc_init(_MRGetVolumeResultMessageProtobuf);
           LODWORD(v40) = v35;
           [(_MRGetVolumeResultMessageProtobuf *)v39 setVolume:v40];
           v22 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v39];
 
           v24 = v52;
-          [v5 addObject:v22];
+          [array addObject:v22];
         }
 
         else
@@ -265,12 +265,12 @@ LABEL_25:
 
     if ([v21 length])
     {
-      v53 = v4;
+      v53 = dataCopy;
       v58 = 0u;
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v41 = v5;
+      v41 = array;
       v42 = [v41 countByEnumeratingWithState:&v56 objects:v61 count:16];
       if (v42)
       {
@@ -296,12 +296,12 @@ LABEL_25:
         while (v43);
       }
 
-      v4 = v53;
+      dataCopy = v53;
       v7 = v54;
     }
   }
 
-  v23 = v5;
+  v23 = array;
 LABEL_28:
 
   v47 = *MEMORY[0x1E69E9840];
@@ -309,7 +309,7 @@ LABEL_28:
   return v23;
 }
 
-- (id)_processDeviceInfo:(id)a3
+- (id)_processDeviceInfo:(id)info
 {
   if (self->_deviceInfo)
   {
@@ -351,38 +351,38 @@ LABEL_28:
   return v12;
 }
 
-- (id)_encodeDeviceInfo:(id)a3
+- (id)_encodeDeviceInfo:(id)info
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 underlyingCodableMessage];
+  infoCopy = info;
+  dictionary = [v3 dictionary];
+  underlyingCodableMessage = [infoCopy underlyingCodableMessage];
 
-  v7 = [v6 name];
-  [v5 setObject:v7 forKeyedSubscript:@"deviceName"];
+  name = [underlyingCodableMessage name];
+  [dictionary setObject:name forKeyedSubscript:@"deviceName"];
 
-  v8 = [v6 systemBuildVersion];
-  [v5 setObject:v8 forKeyedSubscript:@"systemVersion"];
+  systemBuildVersion = [underlyingCodableMessage systemBuildVersion];
+  [dictionary setObject:systemBuildVersion forKeyedSubscript:@"systemVersion"];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "protocolVersion")}];
-  [v5 setObject:v9 forKeyedSubscript:@"protocolVersion"];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(underlyingCodableMessage, "protocolVersion")}];
+  [dictionary setObject:v9 forKeyedSubscript:@"protocolVersion"];
 
-  v10 = [v6 deviceClassAsString:{objc_msgSend(v6, "deviceClass")}];
-  [v5 setObject:v10 forKeyedSubscript:@"deviceClass"];
+  v10 = [underlyingCodableMessage deviceClassAsString:{objc_msgSend(underlyingCodableMessage, "deviceClass")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"deviceClass"];
 
-  v11 = [v6 deviceUID];
-  [v5 setObject:v11 forKeyedSubscript:@"deviceUID"];
+  deviceUID = [underlyingCodableMessage deviceUID];
+  [dictionary setObject:deviceUID forKeyedSubscript:@"deviceUID"];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v6, "lastSupportedMessageType")}];
-  [v5 setObject:v12 forKeyedSubscript:@"lastSupportedMessageType"];
+  v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(underlyingCodableMessage, "lastSupportedMessageType")}];
+  [dictionary setObject:v12 forKeyedSubscript:@"lastSupportedMessageType"];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_processSetState:(id)a3
+- (id)_processSetState:(id)state
 {
   v449 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if (self->_playerPath)
   {
     LocalOrigin = MRMediaRemoteGetLocalOrigin();
@@ -391,26 +391,26 @@ LABEL_28:
     [(_MRNowPlayingPlayerPathProtobuf *)v6 setOrigin:v7];
 
     UniqueIdentifier = MROriginGetUniqueIdentifier(LocalOrigin);
-    v9 = [(_MRNowPlayingPlayerPathProtobuf *)v6 origin];
-    [v9 setIdentifier:UniqueIdentifier];
+    origin = [(_MRNowPlayingPlayerPathProtobuf *)v6 origin];
+    [origin setIdentifier:UniqueIdentifier];
 
     DisplayName = MROriginGetDisplayName(LocalOrigin);
-    v11 = [(_MRNowPlayingPlayerPathProtobuf *)v6 origin];
-    [v11 setDisplayName:DisplayName];
+    origin2 = [(_MRNowPlayingPlayerPathProtobuf *)v6 origin];
+    [origin2 setDisplayName:DisplayName];
 
     v12 = objc_alloc_init(_MRNowPlayingClientProtobuf);
     [(_MRNowPlayingPlayerPathProtobuf *)v6 setClient:v12];
 
     v13 = [(NSDictionary *)self->_playerPath objectForKeyedSubscript:@"bundleIdentifier"];
-    v14 = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
-    [v14 setBundleIdentifier:v13];
+    client = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
+    [client setBundleIdentifier:v13];
 
     v15 = [(NSDictionary *)self->_playerPath objectForKeyedSubscript:@"displayName"];
-    v16 = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
-    [v16 setDisplayName:v15];
+    client2 = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
+    [client2 setDisplayName:v15];
 
-    v17 = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
-    [v17 setProcessIdentifier:1];
+    client3 = [(_MRNowPlayingPlayerPathProtobuf *)v6 client];
+    [client3 setProcessIdentifier:1];
 
     v18 = objc_alloc_init(_MRNowPlayingClientProtobuf);
     v19 = [(NSDictionary *)self->_playerPath objectForKeyedSubscript:@"bundleIdentifier"];
@@ -445,96 +445,96 @@ LABEL_28:
     [(_MRContentItemProtobuf *)v24 setMetadata:v27];
 
     v28 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"albumArtistName"];
-    v29 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v29 setAlbumArtistName:v28];
+    metadata = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata setAlbumArtistName:v28];
 
     v30 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"albumName"];
-    v31 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v31 setAlbumName:v30];
+    metadata2 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata2 setAlbumName:v30];
 
     v32 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkIdentifier"];
-    v33 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v33 setArtworkIdentifier:v32];
+    metadata3 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata3 setArtworkIdentifier:v32];
 
     v34 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkMIMEType"];
-    v35 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v35 setArtworkMIMEType:v34];
+    metadata4 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata4 setArtworkMIMEType:v34];
 
     v36 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkURL"];
-    v37 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v37 setArtworkURL:v36];
+    metadata5 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata5 setArtworkURL:v36];
 
     v38 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"assetURLString"];
-    v39 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v39 setAssetURLString:v38];
+    metadata6 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata6 setAssetURLString:v38];
 
     v40 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"collectionIdentifier"];
-    v41 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v41 setCollectionIdentifier:v40];
+    metadata7 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata7 setCollectionIdentifier:v40];
 
     v42 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"composer"];
-    v43 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v43 setComposer:v42];
+    metadata8 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata8 setComposer:v42];
 
     v44 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"contentIdentifier"];
-    v45 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v45 setContentIdentifier:v44];
+    metadata9 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata9 setContentIdentifier:v44];
 
     v46 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"internationalStandardRecordingCode"];
-    v47 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v47 setInternationalStandardRecordingCode:v46];
+    metadata10 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata10 setInternationalStandardRecordingCode:v46];
 
     v48 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"directorName"];
-    v49 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v49 setDirectorName:v48];
+    metadata11 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata11 setDirectorName:v48];
 
     v50 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"genre"];
-    v51 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v51 setGenre:v50];
+    metadata12 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata12 setGenre:v50];
 
     v52 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"localizedContentRating"];
-    v53 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v53 setLocalizedContentRating:v52];
+    metadata13 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata13 setLocalizedContentRating:v52];
 
     v54 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"lyricsURL"];
-    v55 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v55 setLyricsURL:v54];
+    metadata14 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata14 setLyricsURL:v54];
 
     v56 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"serviceIdentifier"];
-    v57 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v57 setServiceIdentifier:v56];
+    metadata15 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata15 setServiceIdentifier:v56];
 
     v58 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"profileIdentifier"];
-    v59 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v59 setProfileIdentifier:v58];
+    metadata16 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata16 setProfileIdentifier:v58];
 
     v60 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationName"];
-    v61 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v61 setRadioStationName:v60];
+    metadata17 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata17 setRadioStationName:v60];
 
     v62 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationString"];
-    v63 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v63 setRadioStationString:v62];
+    metadata18 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata18 setRadioStationString:v62];
 
     v64 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"seriesName"];
-    v65 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v65 setSeriesName:v64];
+    metadata19 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata19 setSeriesName:v64];
 
     v66 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"serviceIdentifier"];
-    v67 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v67 setServiceIdentifier:v66];
+    metadata20 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata20 setServiceIdentifier:v66];
 
     v68 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"subtitle"];
-    v69 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v69 setSubtitle:v68];
+    metadata21 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata21 setSubtitle:v68];
 
     v70 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"title"];
-    v71 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v71 setTitle:v70];
+    metadata22 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata22 setTitle:v70];
 
     v72 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"trackArtistName"];
-    v73 = [(_MRContentItemProtobuf *)v24 metadata];
-    [v73 setTrackArtistName:v72];
+    metadata23 = [(_MRContentItemProtobuf *)v24 metadata];
+    [metadata23 setTrackArtistName:v72];
 
     v74 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"appMetricsData"];
 
@@ -543,8 +543,8 @@ LABEL_28:
       v75 = objc_alloc(MEMORY[0x1E695DEF0]);
       v76 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"appMetricsData"];
       v77 = [v75 initWithBase64EncodedString:v76 options:0];
-      v78 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v78 setAppMetricsData:v77];
+      metadata24 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata24 setAppMetricsData:v77];
     }
 
     v79 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkURLTemplatesData"];
@@ -554,8 +554,8 @@ LABEL_28:
       v80 = objc_alloc(MEMORY[0x1E695DEF0]);
       v81 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkURLTemplatesData"];
       v82 = [v80 initWithBase64EncodedString:v81 options:0];
-      v83 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v83 setArtworkURLTemplatesData:v82];
+      metadata25 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata25 setArtworkURLTemplatesData:v82];
     }
 
     v84 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"collectionInfoData"];
@@ -565,8 +565,8 @@ LABEL_28:
       v85 = objc_alloc(MEMORY[0x1E695DEF0]);
       v86 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"collectionInfoData"];
       v87 = [v85 initWithBase64EncodedString:v86 options:0];
-      v88 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v88 setCollectionInfoData:v87];
+      metadata26 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata26 setCollectionInfoData:v87];
     }
 
     v89 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"currentPlaybackDateData"];
@@ -576,8 +576,8 @@ LABEL_28:
       v90 = objc_alloc(MEMORY[0x1E695DEF0]);
       v91 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"currentPlaybackDateData"];
       v92 = [v90 initWithBase64EncodedString:v91 options:0];
-      v93 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v93 setCurrentPlaybackDateData:v92];
+      metadata27 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata27 setCurrentPlaybackDateData:v92];
     }
 
     v94 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"deviceSpecificUserInfoData"];
@@ -587,8 +587,8 @@ LABEL_28:
       v95 = objc_alloc(MEMORY[0x1E695DEF0]);
       v96 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"deviceSpecificUserInfoData"];
       v97 = [v95 initWithBase64EncodedString:v96 options:0];
-      v98 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v98 setDeviceSpecificUserInfoData:v97];
+      metadata28 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata28 setDeviceSpecificUserInfoData:v97];
     }
 
     v99 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"nowPlayingInfoData"];
@@ -598,8 +598,8 @@ LABEL_28:
       v100 = objc_alloc(MEMORY[0x1E695DEF0]);
       v101 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"nowPlayingInfoData"];
       v102 = [v100 initWithBase64EncodedString:v101 options:0];
-      v103 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v103 setNowPlayingInfoData:v102];
+      metadata29 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata29 setNowPlayingInfoData:v102];
     }
 
     v104 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"purchaseInfoData"];
@@ -609,8 +609,8 @@ LABEL_28:
       v105 = objc_alloc(MEMORY[0x1E695DEF0]);
       v106 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"purchaseInfoData"];
       v107 = [v105 initWithBase64EncodedString:v106 options:0];
-      v108 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v108 setPurchaseInfoData:v107];
+      metadata30 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata30 setPurchaseInfoData:v107];
     }
 
     v109 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"userInfoData"];
@@ -620,8 +620,8 @@ LABEL_28:
       v110 = objc_alloc(MEMORY[0x1E695DEF0]);
       v111 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"userInfoData"];
       v112 = [v110 initWithBase64EncodedString:v111 options:0];
-      v113 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v113 setUserInfoData:v112];
+      metadata31 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata31 setUserInfoData:v112];
     }
 
     v114 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkAvailable"];
@@ -629,9 +629,9 @@ LABEL_28:
     if (v114)
     {
       v115 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkAvailable"];
-      v116 = [v115 BOOLValue];
-      v117 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v117 setArtworkAvailable:v116];
+      bOOLValue = [v115 BOOLValue];
+      metadata32 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata32 setArtworkAvailable:bOOLValue];
     }
 
     v118 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"infoAvailable"];
@@ -639,9 +639,9 @@ LABEL_28:
     if (v118)
     {
       v119 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"infoAvailable"];
-      v120 = [v119 BOOLValue];
-      v121 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v121 setInfoAvailable:v120];
+      bOOLValue2 = [v119 BOOLValue];
+      metadata33 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata33 setInfoAvailable:bOOLValue2];
     }
 
     v122 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isAlwaysLive"];
@@ -649,9 +649,9 @@ LABEL_28:
     if (v122)
     {
       v123 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isAlwaysLive"];
-      v124 = [v123 BOOLValue];
-      v125 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v125 setIsAlwaysLive:v124];
+      bOOLValue3 = [v123 BOOLValue];
+      metadata34 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata34 setIsAlwaysLive:bOOLValue3];
     }
 
     v126 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isContainer"];
@@ -659,9 +659,9 @@ LABEL_28:
     if (v126)
     {
       v127 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isContainer"];
-      v128 = [v127 BOOLValue];
-      v129 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v129 setIsContainer:v128];
+      bOOLValue4 = [v127 BOOLValue];
+      metadata35 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata35 setIsContainer:bOOLValue4];
     }
 
     v130 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isCurrentlyPlaying"];
@@ -669,9 +669,9 @@ LABEL_28:
     if (v130)
     {
       v131 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isCurrentlyPlaying"];
-      v132 = [v131 BOOLValue];
-      v133 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v133 setIsCurrentlyPlaying:v132];
+      bOOLValue5 = [v131 BOOLValue];
+      metadata36 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata36 setIsCurrentlyPlaying:bOOLValue5];
     }
 
     v134 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isExplicitItem"];
@@ -679,9 +679,9 @@ LABEL_28:
     if (v134)
     {
       v135 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isExplicitItem"];
-      v136 = [v135 BOOLValue];
-      v137 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v137 setIsExplicitItem:v136];
+      bOOLValue6 = [v135 BOOLValue];
+      metadata37 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata37 setIsExplicitItem:bOOLValue6];
     }
 
     v138 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isInWishList"];
@@ -689,9 +689,9 @@ LABEL_28:
     if (v138)
     {
       v139 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isInWishList"];
-      v140 = [v139 BOOLValue];
-      v141 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v141 setIsInWishList:v140];
+      bOOLValue7 = [v139 BOOLValue];
+      metadata38 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata38 setIsInWishList:bOOLValue7];
     }
 
     v142 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isLiked"];
@@ -699,9 +699,9 @@ LABEL_28:
     if (v142)
     {
       v143 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isLiked"];
-      v144 = [v143 BOOLValue];
-      v145 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v145 setIsLiked:v144];
+      bOOLValue8 = [v143 BOOLValue];
+      metadata39 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata39 setIsLiked:bOOLValue8];
     }
 
     v146 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isLoading"];
@@ -709,9 +709,9 @@ LABEL_28:
     if (v146)
     {
       v147 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isLoading"];
-      v148 = [v147 BOOLValue];
-      v149 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v149 setIsLoading:v148];
+      bOOLValue9 = [v147 BOOLValue];
+      metadata40 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata40 setIsLoading:bOOLValue9];
     }
 
     v150 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isInTransition"];
@@ -719,9 +719,9 @@ LABEL_28:
     if (v150)
     {
       v151 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isInTransition"];
-      v152 = [v151 BOOLValue];
-      v153 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v153 setIsInTransition:v152];
+      bOOLValue10 = [v151 BOOLValue];
+      metadata41 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata41 setIsInTransition:bOOLValue10];
     }
 
     v154 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isPlayable"];
@@ -729,9 +729,9 @@ LABEL_28:
     if (v154)
     {
       v155 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isPlayable"];
-      v156 = [v155 BOOLValue];
-      v157 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v157 setIsPlayable:v156];
+      bOOLValue11 = [v155 BOOLValue];
+      metadata42 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata42 setIsPlayable:bOOLValue11];
     }
 
     v158 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isSharable"];
@@ -739,9 +739,9 @@ LABEL_28:
     if (v158)
     {
       v159 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isSharable"];
-      v160 = [v159 BOOLValue];
-      v161 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v161 setIsSharable:v160];
+      bOOLValue12 = [v159 BOOLValue];
+      metadata43 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata43 setIsSharable:bOOLValue12];
     }
 
     v162 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isAdvertisement"];
@@ -749,9 +749,9 @@ LABEL_28:
     if (v162)
     {
       v163 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isAdvertisement"];
-      v164 = [v163 BOOLValue];
-      v165 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v165 setIsAdvertisement:v164];
+      bOOLValue13 = [v163 BOOLValue];
+      metadata44 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata44 setIsAdvertisement:bOOLValue13];
     }
 
     v166 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isSteerable"];
@@ -759,9 +759,9 @@ LABEL_28:
     if (v166)
     {
       v167 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isSteerable"];
-      v168 = [v167 BOOLValue];
-      v169 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v169 setIsSteerable:v168];
+      bOOLValue14 = [v167 BOOLValue];
+      metadata45 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata45 setIsSteerable:bOOLValue14];
     }
 
     v170 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isStreamingContent"];
@@ -769,9 +769,9 @@ LABEL_28:
     if (v170)
     {
       v171 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"isStreamingContent"];
-      v172 = [v171 BOOLValue];
-      v173 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v173 setIsStreamingContent:v172];
+      bOOLValue15 = [v171 BOOLValue];
+      metadata46 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata46 setIsStreamingContent:bOOLValue15];
     }
 
     v174 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"languageOptionsAvailable"];
@@ -779,9 +779,9 @@ LABEL_28:
     if (v174)
     {
       v175 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"languageOptionsAvailable"];
-      v176 = [v175 BOOLValue];
-      v177 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v177 setLanguageOptionsAvailable:v176];
+      bOOLValue16 = [v175 BOOLValue];
+      metadata47 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata47 setLanguageOptionsAvailable:bOOLValue16];
     }
 
     v178 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"lyricsAvailable"];
@@ -789,9 +789,9 @@ LABEL_28:
     if (v178)
     {
       v179 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"lyricsAvailable"];
-      v180 = [v179 BOOLValue];
-      v181 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v181 setLyricsAvailable:v180];
+      bOOLValue17 = [v179 BOOLValue];
+      metadata48 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata48 setLyricsAvailable:bOOLValue17];
     }
 
     v182 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"duration"];
@@ -801,8 +801,8 @@ LABEL_28:
       v183 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"duration"];
       [v183 doubleValue];
       v185 = v184;
-      v186 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v186 setDuration:v185];
+      metadata49 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata49 setDuration:v185];
     }
 
     v187 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"elapsedTime"];
@@ -812,8 +812,8 @@ LABEL_28:
       v188 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"elapsedTime"];
       [v188 doubleValue];
       v190 = v189;
-      v191 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v191 setElapsedTime:v190];
+      metadata50 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata50 setElapsedTime:v190];
     }
 
     v192 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"elapsedTimeTimestamp"];
@@ -823,8 +823,8 @@ LABEL_28:
       v193 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"elapsedTimeTimestamp"];
       [v193 doubleValue];
       v195 = v194;
-      v196 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v196 setElapsedTimeTimestamp:v195];
+      metadata51 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata51 setElapsedTimeTimestamp:v195];
     }
 
     v197 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"inferredTimestamp"];
@@ -834,8 +834,8 @@ LABEL_28:
       v198 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"inferredTimestamp"];
       [v198 doubleValue];
       v200 = v199;
-      v201 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v201 setInferredTimestamp:v200];
+      metadata52 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata52 setInferredTimestamp:v200];
     }
 
     v202 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"releaseDate"];
@@ -845,8 +845,8 @@ LABEL_28:
       v203 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"releaseDate"];
       [v203 doubleValue];
       v205 = v204;
-      v206 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v206 setReleaseDate:v205];
+      metadata53 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata53 setReleaseDate:v205];
     }
 
     v207 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"startTime"];
@@ -856,8 +856,8 @@ LABEL_28:
       v208 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"startTime"];
       [v208 doubleValue];
       v210 = v209;
-      v211 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v211 setStartTime:v210];
+      metadata54 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata54 setStartTime:v210];
     }
 
     v212 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"defaultPlaybackRate"];
@@ -867,9 +867,9 @@ LABEL_28:
       v213 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"defaultPlaybackRate"];
       [v213 floatValue];
       v215 = v214;
-      v216 = [(_MRContentItemProtobuf *)v24 metadata];
+      metadata55 = [(_MRContentItemProtobuf *)v24 metadata];
       LODWORD(v217) = v215;
-      [v216 setDefaultPlaybackRate:v217];
+      [metadata55 setDefaultPlaybackRate:v217];
     }
 
     v218 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreAlbumIdentifier"];
@@ -877,9 +877,9 @@ LABEL_28:
     if (v218)
     {
       v219 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreAlbumIdentifier"];
-      v220 = [v219 longLongValue];
-      v221 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v221 setITunesStoreAlbumIdentifier:v220];
+      longLongValue = [v219 longLongValue];
+      metadata56 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata56 setITunesStoreAlbumIdentifier:longLongValue];
     }
 
     v222 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreArtistIdentifier"];
@@ -887,9 +887,9 @@ LABEL_28:
     if (v222)
     {
       v223 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreArtistIdentifier"];
-      v224 = [v223 longLongValue];
-      v225 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v225 setITunesStoreArtistIdentifier:v224];
+      longLongValue2 = [v223 longLongValue];
+      metadata57 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata57 setITunesStoreArtistIdentifier:longLongValue2];
     }
 
     v226 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreIdentifier"];
@@ -897,9 +897,9 @@ LABEL_28:
     if (v226)
     {
       v227 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreIdentifier"];
-      v228 = [v227 longLongValue];
-      v229 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v229 setITunesStoreIdentifier:v228];
+      longLongValue3 = [v227 longLongValue];
+      metadata58 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata58 setITunesStoreIdentifier:longLongValue3];
     }
 
     v230 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreSubscriptionIdentifier"];
@@ -907,9 +907,9 @@ LABEL_28:
     if (v230)
     {
       v231 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"iTunesStoreSubscriptionIdentifier"];
-      v232 = [v231 longLongValue];
-      v233 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v233 setITunesStoreSubscriptionIdentifier:v232];
+      longLongValue4 = [v231 longLongValue];
+      metadata59 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata59 setITunesStoreSubscriptionIdentifier:longLongValue4];
     }
 
     v234 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"legacyUniqueIdentifier"];
@@ -917,9 +917,9 @@ LABEL_28:
     if (v234)
     {
       v235 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"legacyUniqueIdentifier"];
-      v236 = [v235 longLongValue];
-      v237 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v237 setLegacyUniqueIdentifier:v236];
+      longLongValue5 = [v235 longLongValue];
+      metadata60 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata60 setLegacyUniqueIdentifier:longLongValue5];
     }
 
     v238 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationIdentifier"];
@@ -927,9 +927,9 @@ LABEL_28:
     if (v238)
     {
       v239 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationIdentifier"];
-      v240 = [v239 longLongValue];
-      v241 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v241 setRadioStationIdentifier:v240];
+      longLongValue6 = [v239 longLongValue];
+      metadata61 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata61 setRadioStationIdentifier:longLongValue6];
     }
 
     v242 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkDataHeightDeprecated"];
@@ -937,9 +937,9 @@ LABEL_28:
     if (v242)
     {
       v243 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkDataHeightDeprecated"];
-      v244 = [v243 intValue];
-      v245 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v245 setArtworkDataHeightDeprecated:v244];
+      intValue = [v243 intValue];
+      metadata62 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata62 setArtworkDataHeightDeprecated:intValue];
     }
 
     v246 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkDataWidthDeprecated"];
@@ -947,9 +947,9 @@ LABEL_28:
     if (v246)
     {
       v247 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"artworkDataWidthDeprecated"];
-      v248 = [v247 intValue];
-      v249 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v249 setArtworkDataWidthDeprecated:v248];
+      intValue2 = [v247 intValue];
+      metadata63 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata63 setArtworkDataWidthDeprecated:intValue2];
     }
 
     v250 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"chapterCount"];
@@ -957,9 +957,9 @@ LABEL_28:
     if (v250)
     {
       v251 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"chapterCount"];
-      v252 = [v251 intValue];
-      v253 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v253 setChapterCount:v252];
+      intValue3 = [v251 intValue];
+      metadata64 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata64 setChapterCount:intValue3];
     }
 
     v254 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"discNumber"];
@@ -967,9 +967,9 @@ LABEL_28:
     if (v254)
     {
       v255 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"discNumber"];
-      v256 = [v255 intValue];
-      v257 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v257 setDiscNumber:v256];
+      intValue4 = [v255 intValue];
+      metadata65 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata65 setDiscNumber:intValue4];
     }
 
     v258 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"downloadProgress"];
@@ -979,9 +979,9 @@ LABEL_28:
       v259 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"downloadProgress"];
       [v259 floatValue];
       v261 = v260;
-      v262 = [(_MRContentItemProtobuf *)v24 metadata];
+      metadata66 = [(_MRContentItemProtobuf *)v24 metadata];
       LODWORD(v263) = v261;
-      [v262 setDownloadProgress:v263];
+      [metadata66 setDownloadProgress:v263];
     }
 
     v264 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"downloadState"];
@@ -989,9 +989,9 @@ LABEL_28:
     if (v264)
     {
       v265 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"downloadState"];
-      v266 = [v265 intValue];
-      v267 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v267 setDownloadState:v266];
+      intValue5 = [v265 intValue];
+      metadata67 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata67 setDownloadState:intValue5];
     }
 
     v268 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"editingStyleFlags"];
@@ -999,9 +999,9 @@ LABEL_28:
     if (v268)
     {
       v269 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"editingStyleFlags"];
-      v270 = [v269 intValue];
-      v271 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v271 setEditingStyleFlags:v270];
+      intValue6 = [v269 intValue];
+      metadata68 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata68 setEditingStyleFlags:intValue6];
     }
 
     v272 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"episodeNumber"];
@@ -1009,9 +1009,9 @@ LABEL_28:
     if (v272)
     {
       v273 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"episodeNumber"];
-      v274 = [v273 intValue];
-      v275 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v275 setEpisodeNumber:v274];
+      intValue7 = [v273 intValue];
+      metadata69 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata69 setEpisodeNumber:intValue7];
     }
 
     v276 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"episodeType"];
@@ -1019,9 +1019,9 @@ LABEL_28:
     if (v276)
     {
       v277 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"episodeType"];
-      v278 = [v277 intValue];
-      v279 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v279 setEpisodeType:v278];
+      intValue8 = [v277 intValue];
+      metadata70 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata70 setEpisodeType:intValue8];
     }
 
     v280 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"mediaSubType"];
@@ -1029,9 +1029,9 @@ LABEL_28:
     if (v280)
     {
       v281 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"mediaSubType"];
-      v282 = [v281 intValue];
-      v283 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v283 setMediaSubType:v282];
+      intValue9 = [v281 intValue];
+      metadata71 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata71 setMediaSubType:intValue9];
     }
 
     v284 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"mediaType"];
@@ -1039,9 +1039,9 @@ LABEL_28:
     if (v284)
     {
       v285 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"mediaType"];
-      v286 = [v285 intValue];
-      v287 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v287 setMediaType:v286];
+      intValue10 = [v285 intValue];
+      metadata72 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata72 setMediaType:intValue10];
     }
 
     v288 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"numberOfSections"];
@@ -1049,9 +1049,9 @@ LABEL_28:
     if (v288)
     {
       v289 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"numberOfSections"];
-      v290 = [v289 intValue];
-      v291 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v291 setNumberOfSections:v290];
+      intValue11 = [v289 intValue];
+      metadata73 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata73 setNumberOfSections:intValue11];
     }
 
     v292 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playCount"];
@@ -1059,9 +1059,9 @@ LABEL_28:
     if (v292)
     {
       v293 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playCount"];
-      v294 = [v293 intValue];
-      v295 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v295 setPlayCount:v294];
+      intValue12 = [v293 intValue];
+      metadata74 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata74 setPlayCount:intValue12];
     }
 
     v296 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playbackProgress"];
@@ -1071,9 +1071,9 @@ LABEL_28:
       v297 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playbackProgress"];
       [v297 floatValue];
       v299 = v298;
-      v300 = [(_MRContentItemProtobuf *)v24 metadata];
+      metadata75 = [(_MRContentItemProtobuf *)v24 metadata];
       LODWORD(v301) = v299;
-      [v300 setPlaybackProgress:v301];
+      [metadata75 setPlaybackProgress:v301];
     }
 
     v302 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playbackRate"];
@@ -1083,9 +1083,9 @@ LABEL_28:
       v303 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playbackRate"];
       [v303 floatValue];
       v305 = v304;
-      v306 = [(_MRContentItemProtobuf *)v24 metadata];
+      metadata76 = [(_MRContentItemProtobuf *)v24 metadata];
       LODWORD(v307) = v305;
-      [v306 setPlaybackRate:v307];
+      [metadata76 setPlaybackRate:v307];
     }
 
     v308 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playlistType"];
@@ -1093,9 +1093,9 @@ LABEL_28:
     if (v308)
     {
       v309 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"playlistType"];
-      v310 = [v309 intValue];
-      v311 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v311 setPlaylistType:v310];
+      intValue13 = [v309 intValue];
+      metadata77 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata77 setPlaylistType:intValue13];
     }
 
     v312 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationType"];
@@ -1103,9 +1103,9 @@ LABEL_28:
     if (v312)
     {
       v313 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"radioStationType"];
-      v314 = [v313 intValue];
-      v315 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v315 setRadioStationType:v314];
+      intValue14 = [v313 intValue];
+      metadata78 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata78 setRadioStationType:intValue14];
     }
 
     v316 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"seasonNumber"];
@@ -1113,9 +1113,9 @@ LABEL_28:
     if (v316)
     {
       v317 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"seasonNumber"];
-      v318 = [v317 intValue];
-      v319 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v319 setSeasonNumber:v318];
+      intValue15 = [v317 intValue];
+      metadata79 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata79 setSeasonNumber:intValue15];
     }
 
     v320 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"totalDiscCount"];
@@ -1123,9 +1123,9 @@ LABEL_28:
     if (v320)
     {
       v321 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"totalDiscCount"];
-      v322 = [v321 intValue];
-      v323 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v323 setTotalDiscCount:v322];
+      intValue16 = [v321 intValue];
+      metadata80 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata80 setTotalDiscCount:intValue16];
     }
 
     v324 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"totalTrackCount"];
@@ -1133,9 +1133,9 @@ LABEL_28:
     if (v324)
     {
       v325 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"totalTrackCount"];
-      v326 = [v325 intValue];
-      v327 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v327 setTotalTrackCount:v326];
+      intValue17 = [v325 intValue];
+      metadata81 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata81 setTotalTrackCount:intValue17];
     }
 
     v328 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"trackNumber"];
@@ -1143,9 +1143,9 @@ LABEL_28:
     if (v328)
     {
       v329 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"trackNumber"];
-      v330 = [v329 intValue];
-      v331 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v331 setTrackNumber:v330];
+      intValue18 = [v329 intValue];
+      metadata82 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata82 setTrackNumber:intValue18];
     }
 
     v332 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"classicalWork"];
@@ -1153,9 +1153,9 @@ LABEL_28:
     if (v332)
     {
       v333 = [(NSDictionary *)self->_playbackQueue objectForKeyedSubscript:@"classicalWork"];
-      v334 = [v333 stringValue];
-      v335 = [(_MRContentItemProtobuf *)v24 metadata];
-      [v335 setClassicalWork:v334];
+      stringValue = [v333 stringValue];
+      metadata83 = [(_MRContentItemProtobuf *)v24 metadata];
+      [metadata83 setClassicalWork:stringValue];
     }
 
     artwork = self->_artwork;
@@ -1173,12 +1173,12 @@ LABEL_28:
 
       v341 = objc_alloc_init(_MRUpdateContentItemArtworkMessageProtobuf);
       v23 = 0x1E695D000uLL;
-      v342 = [MEMORY[0x1E695DF70] array];
-      [(_MRUpdateContentItemArtworkMessageProtobuf *)v341 setContentItems:v342];
+      array = [MEMORY[0x1E695DF70] array];
+      [(_MRUpdateContentItemArtworkMessageProtobuf *)v341 setContentItems:array];
 
       v343 = v341;
-      v344 = [(_MRUpdateContentItemArtworkMessageProtobuf *)v341 contentItems];
-      [v344 addObject:v24];
+      contentItems = [(_MRUpdateContentItemArtworkMessageProtobuf *)v341 contentItems];
+      [contentItems addObject:v24];
     }
 
     else
@@ -1189,11 +1189,11 @@ LABEL_28:
 
     v347 = objc_alloc_init(_MRPlaybackQueueProtobuf);
     [(_MRPlaybackQueueProtobuf *)v347 setLocation:0];
-    v348 = [MEMORY[0x1E695DF70] array];
-    [(_MRPlaybackQueueProtobuf *)v347 setContentItems:v348];
+    array2 = [MEMORY[0x1E695DF70] array];
+    [(_MRPlaybackQueueProtobuf *)v347 setContentItems:array2];
 
-    v349 = [(_MRPlaybackQueueProtobuf *)v347 contentItems];
-    [v349 addObject:v24];
+    contentItems2 = [(_MRPlaybackQueueProtobuf *)v347 contentItems];
+    [contentItems2 addObject:v24];
 
     [(_MRPlaybackQueueProtobuf *)v347 setResolvedPlayerPath:v6];
     v346 = v347;
@@ -1214,7 +1214,7 @@ LABEL_28:
     v415 = v346;
     v416 = v345;
     v417 = v6;
-    v418 = v4;
+    v418 = stateCopy;
     v422 = objc_alloc_init(_MRSupportedCommandsProtobuf);
     v440 = 0u;
     v441 = 0u;
@@ -1473,7 +1473,7 @@ LABEL_28:
 
     v22 = 1;
     v6 = v417;
-    v4 = v418;
+    stateCopy = v418;
     v345 = v416;
     v23 = 0x1E695D000;
     v346 = v415;
@@ -1484,7 +1484,7 @@ LABEL_28:
     v422 = 0;
   }
 
-  v405 = [*(v23 + 3952) array];
+  array3 = [*(v23 + 3952) array];
   if (v22)
   {
     if (!v6)
@@ -1502,10 +1502,10 @@ LABEL_28:
     if (v345)
     {
       v408 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v345];
-      [v405 addObject:v408];
+      [array3 addObject:v408];
     }
 
-    [v405 addObject:v407];
+    [array3 addObject:v407];
   }
 
   v409 = v419;
@@ -1514,10 +1514,10 @@ LABEL_28:
     v410 = objc_alloc_init(_MRSetNowPlayingClientMessageProtobuf);
     [(_MRSetNowPlayingClientMessageProtobuf *)v410 setClient:v419];
     v411 = [(MRExternalJSONClientConnection *)self _createProtocolMessage:objc_opt_class() underlyingCodableMessage:v410];
-    [v405 addObject:v411];
+    [array3 addObject:v411];
   }
 
-  v412 = v405;
+  v412 = array3;
 LABEL_202:
 
   v413 = *MEMORY[0x1E69E9840];
@@ -1525,19 +1525,19 @@ LABEL_202:
   return v412;
 }
 
-- (id)_encodeVolumeDidChange:(id)a3
+- (id)_encodeVolumeDidChange:(id)change
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 underlyingCodableMessage];
+  changeCopy = change;
+  dictionary = [v3 dictionary];
+  underlyingCodableMessage = [changeCopy underlyingCodableMessage];
 
-  v7 = [v6 endpointUID];
-  [v5 setObject:v7 forKeyedSubscript:@"deviceUID"];
+  endpointUID = [underlyingCodableMessage endpointUID];
+  [dictionary setObject:endpointUID forKeyedSubscript:@"deviceUID"];
 
   v8 = MEMORY[0x1E696AB90];
   v9 = MEMORY[0x1E696AD98];
-  [v6 volume];
+  [underlyingCodableMessage volume];
   v10 = [v9 numberWithFloat:?];
   v11 = v10;
   if (v10)
@@ -1553,17 +1553,17 @@ LABEL_202:
   }
 
   v12 = [v8 decimalNumberWithDecimal:v14];
-  [v5 setObject:v12 forKeyedSubscript:@"volumeLevel"];
+  [dictionary setObject:v12 forKeyedSubscript:@"volumeLevel"];
 
-  [v5 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"muting"];
+  [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"muting"];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)_createProtocolMessage:(Class)a3 underlyingCodableMessage:(id)a4
+- (id)_createProtocolMessage:(Class)message underlyingCodableMessage:(id)codableMessage
 {
-  v5 = a4;
-  v6 = [[a3 alloc] initWithUnderlyingCodableMessage:v5 error:0];
+  codableMessageCopy = codableMessage;
+  v6 = [[message alloc] initWithUnderlyingCodableMessage:codableMessageCopy error:0];
 
   [v6 setTimestamp:mach_absolute_time()];
 

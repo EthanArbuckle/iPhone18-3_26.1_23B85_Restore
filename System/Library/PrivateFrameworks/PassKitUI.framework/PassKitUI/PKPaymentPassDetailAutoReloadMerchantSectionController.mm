@@ -1,28 +1,28 @@
 @interface PKPaymentPassDetailAutoReloadMerchantSectionController
-+ (BOOL)validForPaymentPass:(id)a3;
++ (BOOL)validForPaymentPass:(id)pass;
 - (PKPaymentPassDetailAutoReloadActionSectionControllerDelegate)setupDelegate;
-- (PKPaymentPassDetailAutoReloadMerchantSectionController)initWithPass:(id)a3 delegate:(id)a4;
+- (PKPaymentPassDetailAutoReloadMerchantSectionController)initWithPass:(id)pass delegate:(id)delegate;
 - (id)allSectionIdentifiers;
 - (id)sectionIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentPassDetailAutoReloadMerchantSectionController
 
-- (PKPaymentPassDetailAutoReloadMerchantSectionController)initWithPass:(id)a3 delegate:(id)a4
+- (PKPaymentPassDetailAutoReloadMerchantSectionController)initWithPass:(id)pass delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKPaymentPassDetailAutoReloadMerchantSectionController;
   v9 = [(PKPaymentPassDetailSectionController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_pass, a3);
-    objc_storeStrong(&v10->_delegate, a4);
+    objc_storeStrong(&v9->_pass, pass);
+    objc_storeStrong(&v10->_delegate, delegate);
     v10->_isAutoTopEnabled = [(PKPaymentPass *)v10->_pass isAutoTopEnabled];
   }
 
@@ -42,27 +42,27 @@
 {
   if ([(PKPaymentPassDetailSectionController *)self currentSegment])
   {
-    v3 = MEMORY[0x1E695E0F0];
+    allSectionIdentifiers = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v3 = [(PKPaymentPassDetailAutoReloadMerchantSectionController *)self allSectionIdentifiers];
+    allSectionIdentifiers = [(PKPaymentPassDetailAutoReloadMerchantSectionController *)self allSectionIdentifiers];
   }
 
-  return v3;
+  return allSectionIdentifiers;
 }
 
-+ (BOOL)validForPaymentPass:(id)a3
++ (BOOL)validForPaymentPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 isAutoTopEnabled] && !objc_msgSend(v3, "activationState"))
+  passCopy = pass;
+  if ([passCopy isAutoTopEnabled] && !objc_msgSend(passCopy, "activationState"))
   {
-    v6 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:v3];
+    v6 = [PKPaymentPassDetailAutoReloadSectionController autoTopUpActionForPass:passCopy];
     if (v6)
     {
-      v7 = [v3 autoTopUpMerchantTokenIdentifier];
-      v4 = v7 == 0;
+      autoTopUpMerchantTokenIdentifier = [passCopy autoTopUpMerchantTokenIdentifier];
+      v4 = autoTopUpMerchantTokenIdentifier == 0;
     }
 
     else
@@ -79,23 +79,23 @@
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSectionIdentifier:(id)a4
+- (int64_t)tableView:(id)view numberOfRowsInSectionIdentifier:(id)identifier
 {
-  v4 = [(PKPaymentPass *)self->_pass autoTopUpFields:a3];
+  v4 = [(PKPaymentPass *)self->_pass autoTopUpFields:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v7 = a3;
+  viewCopy = view;
   pass = self->_pass;
-  v9 = a4;
-  v10 = [(PKPaymentPass *)pass autoTopUpFields];
-  v11 = [v9 row];
+  pathCopy = path;
+  autoTopUpFields = [(PKPaymentPass *)pass autoTopUpFields];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndex:v11];
+  v12 = [autoTopUpFields objectAtIndex:v11];
 
   v13 = [v12 key];
   LODWORD(v11) = [v13 isEqualToString:*MEMORY[0x1E69BBB80]];
@@ -114,7 +114,7 @@
     }
 
     v16 = PKLocalizedPaymentString(&v15->isa);
-    v17 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v14 detailText:v16 cellStyle:1 forTableView:v7];
+    v17 = [(PKPaymentPassDetailSectionController *)self infoCellWithPrimaryText:v14 detailText:v16 cellStyle:1 forTableView:viewCopy];
 
     v18 = v17;
     v19 = 0;
@@ -126,9 +126,9 @@
 
   if (v21)
   {
-    v22 = [(PKPaymentPass *)self->_pass organizationName];
-    v23 = PKLocalizedPaymentString(&cfstr_PassDetailsMan.isa, &stru_1F3BD5BF0.isa, v22);
-    v17 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v23 forTableView:v7];
+    organizationName = [(PKPaymentPass *)self->_pass organizationName];
+    v23 = PKLocalizedPaymentString(&cfstr_PassDetailsMan.isa, &stru_1F3BD5BF0.isa, organizationName);
+    v17 = [(PKPaymentPassDetailSectionController *)self linkCellWithText:v23 forTableView:viewCopy];
 
     v18 = v17;
     v19 = 3;
@@ -143,29 +143,29 @@ LABEL_10:
   return v17;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4 sectionIdentifier:(id)a5
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path sectionIdentifier:(id)identifier
 {
-  v16 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (PKEqualObjects())
   {
-    [v16 deselectRowAtIndexPath:v7 animated:1];
-    v8 = [(PKPaymentPass *)self->_pass autoTopUpFields];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    autoTopUpFields = [(PKPaymentPass *)self->_pass autoTopUpFields];
+    v9 = [autoTopUpFields objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     v10 = [v9 key];
     v11 = [v10 isEqualToString:*MEMORY[0x1E69BBB88]];
 
     if (v11)
     {
-      v12 = [v9 link];
+      link = [v9 link];
       WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
       v14 = objc_opt_respondsToSelector();
 
       if (v14)
       {
         v15 = objc_loadWeakRetained(&self->_setupDelegate);
-        [v15 launchURL:v12];
+        [v15 launchURL:link];
       }
     }
   }

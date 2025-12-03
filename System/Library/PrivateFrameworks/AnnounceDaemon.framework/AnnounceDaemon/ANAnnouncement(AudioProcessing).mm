@@ -7,8 +7,8 @@
 - (uint64_t)processAudioWithEffects:()AudioProcessing error:
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CEAB80] sharedInstance];
-  v8 = [v7 BOOLForDefault:*MEMORY[0x277CEA910]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v8 = [mEMORY[0x277CEAB80] BOOLForDefault:*MEMORY[0x277CEA910]];
 
   if (v8)
   {
@@ -16,8 +16,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [a1 dataItems];
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    dataItems = [self dataItems];
+    v10 = [dataItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -28,7 +28,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(dataItems);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -44,7 +44,7 @@
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [dataItems countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           continue;
@@ -62,12 +62,12 @@
       [ANAnnouncement(AudioProcessing) processAudioWithEffects:error:];
     }
 
-    v9 = ANLogHandleAudioProcessing_logger;
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    dataItems = ANLogHandleAudioProcessing_logger;
+    if (os_log_type_enabled(dataItems, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v24 = &stru_2851BDB18;
-      _os_log_impl(&dword_23F525000, v9, OS_LOG_TYPE_DEFAULT, "%@Audio Normalization is Disabled", buf, 0xCu);
+      _os_log_impl(&dword_23F525000, dataItems, OS_LOG_TYPE_DEFAULT, "%@Audio Normalization is Disabled", buf, 0xCu);
     }
   }
 

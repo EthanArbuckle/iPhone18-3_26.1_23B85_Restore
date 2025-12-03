@@ -1,17 +1,17 @@
 @interface TSPDataCopyProviderConcrete
 - (NSInputStream)inputStream;
 - (NSURL)URL;
-- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)a3 error:(id *)a4;
+- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)l error:(id *)error;
 - (TSUReadChannel)readChannel;
-- (id)inputStreamForRange:(_NSRange)a3;
+- (id)inputStreamForRange:(_NSRange)range;
 - (void)cleanUp;
 @end
 
 @implementation TSPDataCopyProviderConcrete
 
-- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)a3 error:(id *)a4
+- (TSPDataCopyProviderConcrete)initWithDocumentURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v36.receiver = self;
   v36.super_class = TSPDataCopyProviderConcrete;
   v9 = [(TSPDataCopyProviderConcrete *)&v36 init];
@@ -23,10 +23,10 @@
 
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v7, v8);
   v12 = v10;
-  if (v6)
+  if (lCopy)
   {
     v35 = 0;
-    v13 = objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v10, v11, 99, 1, v6, 1, &v35);
+    v13 = objc_msgSend_URLForDirectory_inDomain_appropriateForURL_create_error_(v10, v11, 99, 1, lCopy, 1, &v35);
     v14 = v35;
 
     if (v13)
@@ -75,11 +75,11 @@ LABEL_10:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v31 = v14;
     v9 = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -137,10 +137,10 @@ LABEL_14:
   return v3;
 }
 
-- (id)inputStreamForRange:(_NSRange)a3
+- (id)inputStreamForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_alloc(MEMORY[0x277D812F8]);
   v9 = objc_msgSend_readChannelInternal(self, v7, v8);
   Channel_length_closeChannelOnClose = objc_msgSend_initWithReadChannel_length_closeChannelOnClose_(v6, v10, v9, location + length, 0);

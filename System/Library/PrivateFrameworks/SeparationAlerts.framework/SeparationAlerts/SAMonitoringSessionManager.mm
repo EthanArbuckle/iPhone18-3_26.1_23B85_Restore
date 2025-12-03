@@ -1,101 +1,101 @@
 @interface SAMonitoringSessionManager
-+ (id)convertSAMonitoringSessionStateToString:(unint64_t)a3;
++ (id)convertSAMonitoringSessionStateToString:(unint64_t)string;
 - (BOOL)_isOnlyMonitoringCompanionDevice;
 - (BOOL)_isOnlyMonitoringDisconnectedCompanionDevice;
-- (BOOL)addTravelFenceForDevice:(id)a3;
+- (BOOL)addTravelFenceForDevice:(id)device;
 - (BOOL)allDevicesInSafeLocation;
 - (BOOL)anyDeviceInUnsafeLocation;
-- (BOOL)checkIfAlertWasTriggeredAtHome:(id)a3 isEarlyVehicularTrigger:(BOOL)a4;
-- (BOOL)checkIfCloseToAnySafeLocations:(id)a3 leftBehindLocation:(id)a4;
-- (BOOL)enoughTimeHasPassedBeforeSurfacingAlert:(id)a3 forAlertForDevice:(id)a4 alertType:(unint64_t)a5;
+- (BOOL)checkIfAlertWasTriggeredAtHome:(id)home isEarlyVehicularTrigger:(BOOL)trigger;
+- (BOOL)checkIfCloseToAnySafeLocations:(id)locations leftBehindLocation:(id)location;
+- (BOOL)enoughTimeHasPassedBeforeSurfacingAlert:(id)alert forAlertForDevice:(id)device alertType:(unint64_t)type;
 - (BOOL)isAnyInTrackedInUnsafeLocation;
 - (BOOL)isAnyTrackedWhileTraveling;
-- (BOOL)isWithinCurrentVisitOrLOI:(id)a3;
-- (BOOL)monitoringSessionState:(unint64_t)a3 matchesWithScenarioClass:(unint64_t)a4;
+- (BOOL)isWithinCurrentVisitOrLOI:(id)i;
+- (BOOL)monitoringSessionState:(unint64_t)state matchesWithScenarioClass:(unint64_t)class;
 - (BOOL)needPeriodicScan;
-- (BOOL)shouldIssueBookendedNotificationBasedOnLocationForDevice:(id)a3;
-- (BOOL)shouldIssueBookendedNotificationBasedOnTimeForDevice:(id)a3;
-- (BOOL)shouldIssueBookendedNotificationForDevice:(id)a3;
-- (BOOL)shouldSuppressBudsAlertDueToCaseLeashedNotAdv:(id)a3;
-- (BOOL)shouldSuppressDueToHELEAdvertisingLimit:(id)a3;
-- (BOOL)shouldSuppressDueToRepeatedAlertsInOneTravelingSession:(id)a3 context:(id)a4;
-- (SAMonitoringSessionManager)initWithWithYouDetector:(id)a3 fenceRequestServicer:(id)a4 fenceManager:(id)a5 travelTypeClassifier:(id)a6 clock:(id)a7 deviceRecord:(id)a8 analytics:(id)a9 persistenceManager:(id)a10 audioAccessoryManager:(id)a11;
-- (double)minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:(id)a3 alertType:(unint64_t)a4;
-- (double)timeDelayForRetryScanForAlertForDeviceUUID:(id)a3 alertType:(unint64_t)a4;
-- (id)computeRemovedSafeLocations:(id)a3;
-- (id)createLocationFromCircularRegion:(id)a3 forDevice:(id)a4 withContext:(unint64_t)a5;
+- (BOOL)shouldIssueBookendedNotificationBasedOnLocationForDevice:(id)device;
+- (BOOL)shouldIssueBookendedNotificationBasedOnTimeForDevice:(id)device;
+- (BOOL)shouldIssueBookendedNotificationForDevice:(id)device;
+- (BOOL)shouldSuppressBudsAlertDueToCaseLeashedNotAdv:(id)adv;
+- (BOOL)shouldSuppressDueToHELEAdvertisingLimit:(id)limit;
+- (BOOL)shouldSuppressDueToRepeatedAlertsInOneTravelingSession:(id)session context:(id)context;
+- (SAMonitoringSessionManager)initWithWithYouDetector:(id)detector fenceRequestServicer:(id)servicer fenceManager:(id)manager travelTypeClassifier:(id)classifier clock:(id)clock deviceRecord:(id)record analytics:(id)analytics persistenceManager:(id)self0 audioAccessoryManager:(id)self1;
+- (double)minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:(id)d alertType:(unint64_t)type;
+- (double)timeDelayForRetryScanForAlertForDeviceUUID:(id)d alertType:(unint64_t)type;
+- (id)computeRemovedSafeLocations:(id)locations;
+- (id)createLocationFromCircularRegion:(id)region forDevice:(id)device withContext:(unint64_t)context;
 - (id)getLastScenarioChangeDateAmongAllDevices;
-- (int64_t)checkInEarStatus:(id)a3;
+- (int64_t)checkInEarStatus:(id)status;
 - (int64_t)determineTrackedTravelingCount;
-- (int64_t)earlyVehicularTriggerForDeviceUUID:(id)a3;
-- (int64_t)isBudPartID:(int64_t)a3 inCasePartID:(int64_t)a4 relationStatus:(int64_t)a5;
-- (unint64_t)getMoreSpecificSADeviceType:(id)a3;
-- (unint64_t)scenarioClassForDeviceUUID:(id)a3;
-- (unint64_t)stateForDeviceUUID:(id)a3;
-- (void)addClient:(id)a3;
-- (void)addDevicesIfNeededPerEvent:(id)a3;
-- (void)addDisableReason:(unint64_t)a3;
-- (void)alarmFiredForUUID:(id)a3;
-- (void)attemptToPopulateTrackedTravelingStartLocationForDevice:(id)a3;
-- (void)bootstrapMonitoringSessionRecord:(id)a3;
-- (void)cancelMonitoringDevice:(id)a3;
-- (void)changeMonitoringSessionState:(id)a3 toState:(unint64_t)a4;
+- (int64_t)earlyVehicularTriggerForDeviceUUID:(id)d;
+- (int64_t)isBudPartID:(int64_t)d inCasePartID:(int64_t)iD relationStatus:(int64_t)status;
+- (unint64_t)getMoreSpecificSADeviceType:(id)type;
+- (unint64_t)scenarioClassForDeviceUUID:(id)d;
+- (unint64_t)stateForDeviceUUID:(id)d;
+- (void)addClient:(id)client;
+- (void)addDevicesIfNeededPerEvent:(id)event;
+- (void)addDisableReason:(unint64_t)reason;
+- (void)alarmFiredForUUID:(id)d;
+- (void)attemptToPopulateTrackedTravelingStartLocationForDevice:(id)device;
+- (void)bootstrapMonitoringSessionRecord:(id)record;
+- (void)cancelMonitoringDevice:(id)device;
+- (void)changeMonitoringSessionState:(id)state toState:(unint64_t)toState;
 - (void)checkForDevicesNeedingTransition;
-- (void)checkReunion:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5;
+- (void)checkReunion:(unint64_t)reunion to:(unint64_t)to forDeviceWithUUID:(id)d;
 - (void)configureBackgroundScanning;
-- (void)createMonitoringDevice:(id)a3;
-- (void)didChangeScenarioClassFrom:(unint64_t)a3 to:(unint64_t)a4 forDevice:(id)a5;
-- (void)didChangeTravelTypeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5;
+- (void)createMonitoringDevice:(id)device;
+- (void)didChangeScenarioClassFrom:(unint64_t)from to:(unint64_t)to forDevice:(id)device;
+- (void)didChangeTravelTypeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints;
 - (void)didForceUpdateWithYouStatus;
-- (void)forceStandbyMode:(id)a3;
-- (void)handleGeofenceEvent:(id)a3;
-- (void)handleGeofenceExitedForDeviceUUID:(id)a3;
-- (void)handleMultiPartStatusEvent:(id)a3;
-- (void)handleSeparationForDeviceUUID:(id)a3 withSafeLocationRecommendation:(id)a4 context:(id)a5;
-- (void)handleSystemStateChanged:(id)a3;
-- (void)ingestTAEvent:(id)a3;
-- (void)notifyEarlyLeftBehind:(id)a3;
-- (void)notifyWhenLeftBehind:(id)a3;
-- (void)removeAndStopSafeLocationsForDeviceUUID:(id)a3;
-- (void)removeClient:(id)a3;
-- (void)removeDevicesIfNeededPerEvent:(id)a3;
-- (void)removeDisableReason:(unint64_t)a3;
-- (void)removeSafeLocation:(id)a3 forDeviceUUID:(id)a4;
-- (void)removeTravelFenceForDevice:(id)a3;
+- (void)forceStandbyMode:(id)mode;
+- (void)handleGeofenceEvent:(id)event;
+- (void)handleGeofenceExitedForDeviceUUID:(id)d;
+- (void)handleMultiPartStatusEvent:(id)event;
+- (void)handleSeparationForDeviceUUID:(id)d withSafeLocationRecommendation:(id)recommendation context:(id)context;
+- (void)handleSystemStateChanged:(id)changed;
+- (void)ingestTAEvent:(id)event;
+- (void)notifyEarlyLeftBehind:(id)behind;
+- (void)notifyWhenLeftBehind:(id)behind;
+- (void)removeAndStopSafeLocationsForDeviceUUID:(id)d;
+- (void)removeClient:(id)client;
+- (void)removeDevicesIfNeededPerEvent:(id)event;
+- (void)removeDisableReason:(unint64_t)reason;
+- (void)removeSafeLocation:(id)location forDeviceUUID:(id)d;
+- (void)removeTravelFenceForDevice:(id)device;
 - (void)requestToFetchLastVisit;
 - (void)requestToStartBackgroundScanning;
 - (void)requestToStopBackgroundScanning;
-- (void)scheduleNextForceUpdateWithYouStatusFromReferenceDate:(id)a3 forAlertForDevice:(id)a4 alertType:(unint64_t)a5;
+- (void)scheduleNextForceUpdateWithYouStatusFromReferenceDate:(id)date forAlertForDevice:(id)device alertType:(unint64_t)type;
 - (void)scheduleNextPersistenceWrite;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSafeLocations:(id)a3 forDeviceUUID:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSafeLocations:(id)locations forDeviceUUID:(id)d;
 - (void)setUpTravelingGeofencesOnAirplaneModeToggleOffIfNeeded;
 - (void)startPeriodicScans;
 - (void)startPeriodicScansIfNeeded;
-- (void)startSafeLocation:(id)a3 forDevice:(id)a4;
+- (void)startSafeLocation:(id)location forDevice:(id)device;
 - (void)stopPeriodicScans;
 - (void)stopPeriodicScansIfNotNeeded;
-- (void)stopSafeLocation:(id)a3 forDevice:(id)a4;
-- (void)storeSeparationLocation:(id)a3;
-- (void)updateDevicesWithSafeLocations:(id)a3;
-- (void)updateLocation:(id)a3;
-- (void)updateSafeLocations:(id)a3;
-- (void)updatedWithYouStatusFrom:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5;
+- (void)stopSafeLocation:(id)location forDevice:(id)device;
+- (void)storeSeparationLocation:(id)location;
+- (void)updateDevicesWithSafeLocations:(id)locations;
+- (void)updateLocation:(id)location;
+- (void)updateSafeLocations:(id)locations;
+- (void)updatedWithYouStatusFrom:(unint64_t)from to:(unint64_t)to forDeviceWithUUID:(id)d;
 @end
 
 @implementation SAMonitoringSessionManager
 
-- (SAMonitoringSessionManager)initWithWithYouDetector:(id)a3 fenceRequestServicer:(id)a4 fenceManager:(id)a5 travelTypeClassifier:(id)a6 clock:(id)a7 deviceRecord:(id)a8 analytics:(id)a9 persistenceManager:(id)a10 audioAccessoryManager:(id)a11
+- (SAMonitoringSessionManager)initWithWithYouDetector:(id)detector fenceRequestServicer:(id)servicer fenceManager:(id)manager travelTypeClassifier:(id)classifier clock:(id)clock deviceRecord:(id)record analytics:(id)analytics persistenceManager:(id)self0 audioAccessoryManager:(id)self1
 {
-  v53 = a3;
-  v52 = a4;
-  v51 = a5;
-  v48 = a6;
-  v50 = a7;
-  v49 = a8;
-  v47 = a9;
-  v46 = a10;
-  v45 = a11;
+  detectorCopy = detector;
+  servicerCopy = servicer;
+  managerCopy = manager;
+  classifierCopy = classifier;
+  clockCopy = clock;
+  recordCopy = record;
+  analyticsCopy = analytics;
+  persistenceManagerCopy = persistenceManager;
+  accessoryManagerCopy = accessoryManager;
   v54.receiver = self;
   v54.super_class = SAMonitoringSessionManager;
   v18 = [(SAMonitoringSessionManager *)&v54 init];
@@ -106,28 +106,28 @@
   }
 
   v20 = 0;
-  if (v53 && v52 && v51 && v50 && v49)
+  if (detectorCopy && servicerCopy && managerCopy && clockCopy && recordCopy)
   {
     *&v18->_enabled = 0;
-    objc_storeStrong(&v18->_clock, a7);
-    objc_storeStrong(&v19->_analytics, a9);
-    objc_storeStrong(&v19->_withYouDetector, a3);
-    v21 = [(SAMonitoringSessionManager *)v19 withYouDetector];
-    [v21 addClient:v19];
+    objc_storeStrong(&v18->_clock, clock);
+    objc_storeStrong(&v19->_analytics, analytics);
+    objc_storeStrong(&v19->_withYouDetector, detector);
+    withYouDetector = [(SAMonitoringSessionManager *)v19 withYouDetector];
+    [withYouDetector addClient:v19];
 
-    objc_storeStrong(&v19->_deviceRecord, a8);
-    objc_storeStrong(&v19->_fenceManager, a5);
-    objc_storeStrong(&v19->_fenceRequestServicer, a4);
-    objc_storeStrong(&v19->_travelTypeClassifier, a6);
-    v22 = [(SAMonitoringSessionManager *)v19 travelTypeClassifier];
-    [v22 addClient:v19];
+    objc_storeStrong(&v19->_deviceRecord, record);
+    objc_storeStrong(&v19->_fenceManager, manager);
+    objc_storeStrong(&v19->_fenceRequestServicer, servicer);
+    objc_storeStrong(&v19->_travelTypeClassifier, classifier);
+    travelTypeClassifier = [(SAMonitoringSessionManager *)v19 travelTypeClassifier];
+    [travelTypeClassifier addClient:v19];
 
     v23 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     clients = v19->_clients;
     v19->_clients = v23;
 
-    objc_storeStrong(&v19->_persistenceManager, a10);
-    objc_storeStrong(&v19->_audioAccessoryManager, a11);
+    objc_storeStrong(&v19->_persistenceManager, persistenceManager);
+    objc_storeStrong(&v19->_audioAccessoryManager, accessoryManager);
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
     devices = v19->_devices;
     v19->_devices = v25;
@@ -314,10 +314,10 @@ LABEL_8:
 - (void)configureBackgroundScanning
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(SAMonitoringSessionManager *)self enabled];
+  enabled = [(SAMonitoringSessionManager *)self enabled];
   v4 = TASALog;
   v5 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (enabled)
   {
     if (v5)
     {
@@ -348,15 +348,15 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bootstrapMonitoringSessionRecord:(id)a3
+- (void)bootstrapMonitoringSessionRecord:(id)record
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v46 count:16];
+  v5 = [recordCopy countByEnumeratingWithState:&v32 objects:v46 count:16];
   if (v5)
   {
     v7 = v5;
@@ -364,36 +364,36 @@ LABEL_8:
     v9 = &TASALog;
     *&v6 = 68289795;
     v30 = v6;
-    v31 = v4;
+    v31 = recordCopy;
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordCopy);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v4 objectForKeyedSubscript:{v11, v30}];
-        v13 = [(SAMonitoringSessionManager *)self fenceManager];
-        v14 = [v12 scenarioClassifier];
-        [v13 addClient:v14];
+        v12 = [recordCopy objectForKeyedSubscript:{v11, v30}];
+        fenceManager = [(SAMonitoringSessionManager *)self fenceManager];
+        scenarioClassifier = [v12 scenarioClassifier];
+        [fenceManager addClient:scenarioClassifier];
 
-        v15 = [(SAMonitoringSessionManager *)self travelTypeClassifier];
-        v16 = [v12 scenarioClassifier];
-        [v15 addClient:v16];
+        travelTypeClassifier = [(SAMonitoringSessionManager *)self travelTypeClassifier];
+        scenarioClassifier2 = [v12 scenarioClassifier];
+        [travelTypeClassifier addClient:scenarioClassifier2];
 
-        v17 = [v12 scenarioClassifier];
-        [v17 addClient:self];
+        scenarioClassifier3 = [v12 scenarioClassifier];
+        [scenarioClassifier3 addClient:self];
 
-        v18 = [(SAMonitoringSessionManager *)self fenceManager];
-        v19 = [v12 scenarioClassifier];
-        [v19 setDelegate:v18];
+        fenceManager2 = [(SAMonitoringSessionManager *)self fenceManager];
+        scenarioClassifier4 = [v12 scenarioClassifier];
+        [scenarioClassifier4 setDelegate:fenceManager2];
 
-        v20 = [(SAMonitoringSessionManager *)self clock];
-        v21 = [v12 scenarioClassifier];
-        [v21 setTimeDelegate:v20];
+        clock = [(SAMonitoringSessionManager *)self clock];
+        scenarioClassifier5 = [v12 scenarioClassifier];
+        [scenarioClassifier5 setTimeDelegate:clock];
 
         [(SAMonitoringSessionManager *)self attemptToPopulateTrackedTravelingStartLocationForDevice:v11];
         v22 = *v9;
@@ -420,11 +420,11 @@ LABEL_8:
           v9 = v27;
           v8 = v26;
           v7 = v25;
-          v4 = v31;
+          recordCopy = v31;
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v32 objects:v46 count:16];
+      v7 = [recordCopy countByEnumeratingWithState:&v32 objects:v46 count:16];
     }
 
     while (v7);
@@ -435,38 +435,38 @@ LABEL_8:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)monitoringSessionState:(unint64_t)a3 matchesWithScenarioClass:(unint64_t)a4
+- (BOOL)monitoringSessionState:(unint64_t)state matchesWithScenarioClass:(unint64_t)class
 {
-  if (a3 - 3 < 2)
+  if (state - 3 < 2)
   {
-    return a4 == 3;
+    return class == 3;
   }
 
-  if (a3 != 5)
+  if (state != 5)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return 1;
     }
 
-    return a4 == 3;
+    return class == 3;
   }
 
-  return a4 == 2;
+  return class == 2;
 }
 
 - (void)checkForDevicesNeedingTransition
 {
   v34 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v5 = [v4 allKeys];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v5;
+  obj = allKeys;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v6)
   {
@@ -483,15 +483,15 @@ LABEL_8:
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v12 scenario];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v12 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v10];
+        scenario = [v12 scenario];
 
-        v14 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v15 = [v14 objectForKeyedSubscript:v10];
-        v16 = [v15 state];
+        deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v15 = [deviceUUIDtoMonitoringSession3 objectForKeyedSubscript:v10];
+        state = [v15 state];
 
-        if (![(SAMonitoringSessionManager *)self monitoringSessionState:v16 matchesWithScenarioClass:v13])
+        if (![(SAMonitoringSessionManager *)self monitoringSessionState:state matchesWithScenarioClass:scenario])
         {
           [v3 addObject:v10];
         }
@@ -522,23 +522,23 @@ LABEL_8:
       _os_log_impl(&dword_2656EA000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting terminable long scan on enable with devices needing transition, count of devices needing transition:%{private}ld}", buf, 0x1Cu);
     }
 
-    v20 = [(SAMonitoringSessionManager *)self withYouDetector];
-    [v20 forceUpdateWithYouStatusToFindDevices:v3 withContext:10];
+    withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+    [withYouDetector forceUpdateWithYouStatusToFindDevices:v3 withContext:10];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v47 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v3 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     v5 = TASALog;
     v6 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (enabledCopy)
     {
       if (v6)
       {
@@ -548,8 +548,8 @@ LABEL_8:
         _os_log_impl(&dword_2656EA000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager enabling sa}", &buf, 0x12u);
       }
 
-      v7 = [(SAMonitoringSessionManager *)self withYouDetector];
-      [v7 resetAllWithYouStatusAndScanStates];
+      withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+      [withYouDetector resetAllWithYouStatusAndScanStates];
 
       [(SAMonitoringSessionManager *)self configureBackgroundScanning];
       [(SAMonitoringSessionManager *)self requestToFetchLastVisit];
@@ -557,8 +557,8 @@ LABEL_8:
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v8 = [(SAMonitoringSessionManager *)self devices];
-      v9 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      devices = [(SAMonitoringSessionManager *)self devices];
+      v9 = [devices countByEnumeratingWithState:&v37 objects:v43 count:16];
       if (v9)
       {
         v10 = v9;
@@ -569,7 +569,7 @@ LABEL_8:
           {
             if (*v38 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(devices);
             }
 
             v13 = *(*(&v37 + 1) + 8 * i);
@@ -578,8 +578,8 @@ LABEL_8:
             v36 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v14 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-            v15 = [v14 objectForKeyedSubscript:v13];
+            deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+            v15 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:v13];
 
             v16 = [v15 countByEnumeratingWithState:&v33 objects:v42 count:16];
             if (v16)
@@ -605,7 +605,7 @@ LABEL_8:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v37 objects:v43 count:16];
+          v10 = [devices countByEnumeratingWithState:&v37 objects:v43 count:16];
         }
 
         while (v10);
@@ -626,14 +626,14 @@ LABEL_8:
       }
 
       [(SAMonitoringSessionManager *)self stopPeriodicScans];
-      v20 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v21 = [v20 allKeys];
+      deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v22 = v21;
+      v22 = allKeys;
       v23 = [v22 countByEnumeratingWithState:&v29 objects:v41 count:16];
       if (v23)
       {
@@ -659,37 +659,37 @@ LABEL_8:
 
       [(SAMonitoringSessionManager *)self setCurrentVisitOrLOIEvent:0];
       [(SAMonitoringSessionManager *)self configureBackgroundScanning];
-      v27 = [(SAMonitoringSessionManager *)self withYouDetector];
-      [v27 resetAllWithYouStatusAndScanStates];
+      withYouDetector2 = [(SAMonitoringSessionManager *)self withYouDetector];
+      [withYouDetector2 resetAllWithYouStatusAndScanStates];
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceStandbyMode:(id)a3
+- (void)forceStandbyMode:(id)mode
 {
-  v11 = a3;
-  v4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v5 = [v4 objectForKeyedSubscript:v11];
+  modeCopy = mode;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v5 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:modeCopy];
 
   if (v5)
   {
     [v5 setEarlyVehicularTrigger:0];
     [v5 setEarlyAirplaneTrigger:0];
-    v6 = [v5 geofence];
+    geofence = [v5 geofence];
 
-    if (v6)
+    if (geofence)
     {
-      v7 = [(SAMonitoringSessionManager *)self fenceRequestServicer];
-      v8 = [v5 geofence];
-      [v7 removeGeofence:v8];
+      fenceRequestServicer = [(SAMonitoringSessionManager *)self fenceRequestServicer];
+      geofence2 = [v5 geofence];
+      [fenceRequestServicer removeGeofence:geofence2];
 
-      v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v10 = [v9 objectForKeyedSubscript:v11];
+      deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v10 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:modeCopy];
       [v10 setGeofence:0];
 
-      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v11 toState:2];
+      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:modeCopy toState:2];
     }
   }
 }
@@ -701,8 +701,8 @@ LABEL_8:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v4 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -713,22 +713,22 @@ LABEL_8:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deviceUUIDtoMonitoringSession);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v10 = [v9 objectForKeyedSubscript:v8];
-        v11 = [v10 scenario];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v10 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v8];
+        scenario = [v10 scenario];
 
-        if (v11 != 1)
+        if (scenario != 1)
         {
           v12 = 0;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -752,8 +752,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v4 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -764,22 +764,22 @@ LABEL_11:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deviceUUIDtoMonitoringSession);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v10 = [v9 objectForKeyedSubscript:v8];
-        v11 = [v10 scenario];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v10 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v8];
+        scenario = [v10 scenario];
 
-        if (v11 == 2)
+        if (scenario == 2)
         {
           v12 = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -796,11 +796,11 @@ LABEL_11:
   return v12;
 }
 
-- (void)createMonitoringDevice:(id)a3
+- (void)createMonitoringDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v8 = TASALog;
     if (!os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
@@ -834,8 +834,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   v7 = TASALog;
   if (v6)
@@ -847,7 +847,7 @@ LABEL_10:
       v33 = 2082;
       v34 = "";
       v35 = 2113;
-      v36 = v4;
+      v36 = deviceCopy;
       _os_log_impl(&dword_2656EA000, v7, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager createMonitoringDevice monitoring session already exists, uuid:%{private}@}", buf, 0x1Cu);
     }
   }
@@ -861,12 +861,12 @@ LABEL_10:
       v33 = 2082;
       v34 = "";
       v35 = 2113;
-      v36 = v4;
+      v36 = deviceCopy;
       _os_log_impl(&dword_2656EA000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager createMonitoringDevice, uuid:%{private}@}", buf, 0x1Cu);
     }
 
-    v10 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
-    if (v10)
+    currentVisitOrLOIEvent = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+    if (currentVisitOrLOIEvent)
     {
       v11 = 2;
     }
@@ -876,46 +876,46 @@ LABEL_10:
       v11 = 3;
     }
 
-    v12 = [[SAMonitoringSession alloc] initWithDeviceUUID:v4 state:0 geofence:0 scenario:v11 trackedTravelingStartDate:0];
-    v13 = [(SAMonitoringSessionManager *)self fenceManager];
-    v14 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    [v13 addClient:v14];
+    v12 = [[SAMonitoringSession alloc] initWithDeviceUUID:deviceCopy state:0 geofence:0 scenario:v11 trackedTravelingStartDate:0];
+    fenceManager = [(SAMonitoringSessionManager *)self fenceManager];
+    scenarioClassifier = [(SAMonitoringSession *)v12 scenarioClassifier];
+    [fenceManager addClient:scenarioClassifier];
 
-    v15 = [(SAMonitoringSessionManager *)self travelTypeClassifier];
-    v16 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    [v15 addClient:v16];
+    travelTypeClassifier = [(SAMonitoringSessionManager *)self travelTypeClassifier];
+    scenarioClassifier2 = [(SAMonitoringSession *)v12 scenarioClassifier];
+    [travelTypeClassifier addClient:scenarioClassifier2];
 
-    v17 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    [v17 addClient:self];
+    scenarioClassifier3 = [(SAMonitoringSession *)v12 scenarioClassifier];
+    [scenarioClassifier3 addClient:self];
 
-    v18 = [(SAMonitoringSessionManager *)self fenceManager];
-    v19 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    [v19 setDelegate:v18];
+    fenceManager2 = [(SAMonitoringSessionManager *)self fenceManager];
+    scenarioClassifier4 = [(SAMonitoringSession *)v12 scenarioClassifier];
+    [scenarioClassifier4 setDelegate:fenceManager2];
 
-    v20 = [(SAMonitoringSessionManager *)self clock];
-    v21 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    [v21 setTimeDelegate:v20];
+    clock = [(SAMonitoringSessionManager *)self clock];
+    scenarioClassifier5 = [(SAMonitoringSession *)v12 scenarioClassifier];
+    [scenarioClassifier5 setTimeDelegate:clock];
 
-    v22 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    [v22 setObject:v12 forKeyedSubscript:v4];
+    deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    [deviceUUIDtoMonitoringSession2 setObject:v12 forKeyedSubscript:deviceCopy];
 
-    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v4 toState:2];
-    [(SAMonitoringSessionManager *)self didChangeScenarioClassFrom:0 to:v11 forDevice:v4];
-    v23 = [(SAMonitoringSession *)v12 scenarioClassifier];
-    v24 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
-    [v23 ingestTAEvent:v24];
+    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:deviceCopy toState:2];
+    [(SAMonitoringSessionManager *)self didChangeScenarioClassFrom:0 to:v11 forDevice:deviceCopy];
+    scenarioClassifier6 = [(SAMonitoringSession *)v12 scenarioClassifier];
+    currentVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+    [scenarioClassifier6 ingestTAEvent:currentVisitOrLOIEvent2];
 
-    LOBYTE(v24) = [(SAMonitoringSessionManager *)self standby];
-    v25 = [(SAMonitoringSessionManager *)self withYouDetector];
-    v26 = v25;
-    if (v24)
+    LOBYTE(currentVisitOrLOIEvent2) = [(SAMonitoringSessionManager *)self standby];
+    withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+    v26 = withYouDetector;
+    if (currentVisitOrLOIEvent2)
     {
-      [v25 forceUpdateWithYouStatusWithShortScan:0];
+      [withYouDetector forceUpdateWithYouStatusWithShortScan:0];
     }
 
     else
     {
-      v30 = v4;
+      v30 = deviceCopy;
       v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
       [v26 forceUpdateWithYouStatusToFindDevices:v27 withContext:5];
     }
@@ -923,8 +923,8 @@ LABEL_10:
 
   if (![(SAMonitoringSessionManager *)self standby])
   {
-    v28 = [(SAMonitoringSessionManager *)self analytics];
-    [v28 setActiveState:1];
+    analytics = [(SAMonitoringSessionManager *)self analytics];
+    [analytics setActiveState:1];
   }
 
 LABEL_22:
@@ -932,11 +932,11 @@ LABEL_22:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelMonitoringDevice:(id)a3
+- (void)cancelMonitoringDevice:(id)device
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v27 = TASALog;
     if (!os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
@@ -955,9 +955,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v4 toState:6];
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  [(SAMonitoringSessionManager *)self changeMonitoringSessionState:deviceCopy toState:6];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   if (!v6)
   {
@@ -971,28 +971,28 @@ LABEL_20:
     v39 = 2082;
     v40 = "";
     v41 = 2113;
-    v42 = v4;
+    v42 = deviceCopy;
     v28 = "{msg%{public}.0s:#SAMonitoringSessionManager cancelMonitoringDevice monitoring session does not exist, uuid:%{private}@}";
     v29 = v31;
     v30 = 28;
     goto LABEL_20;
   }
 
-  v7 = [v6 geofence];
+  geofence = [v6 geofence];
 
-  if (v7)
+  if (geofence)
   {
-    v8 = [(SAMonitoringSessionManager *)self fenceRequestServicer];
-    v9 = [v6 geofence];
-    [v8 removeGeofence:v9];
+    fenceRequestServicer = [(SAMonitoringSessionManager *)self fenceRequestServicer];
+    geofence2 = [v6 geofence];
+    [fenceRequestServicer removeGeofence:geofence2];
   }
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  v11 = [v10 objectForKeyedSubscript:v4];
+  deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  v11 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:deviceCopy];
 
   v12 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
@@ -1008,7 +1008,7 @@ LABEL_20:
           objc_enumerationMutation(v11);
         }
 
-        [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v33 + 1) + 8 * i) forDevice:v4];
+        [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v33 + 1) + 8 * i) forDevice:deviceCopy];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1017,25 +1017,25 @@ LABEL_20:
     while (v13);
   }
 
-  v16 = [(SAMonitoringSessionManager *)self fenceManager];
-  v17 = [v6 scenarioClassifier];
-  [v16 removeClient:v17];
+  fenceManager = [(SAMonitoringSessionManager *)self fenceManager];
+  scenarioClassifier = [v6 scenarioClassifier];
+  [fenceManager removeClient:scenarioClassifier];
 
-  v18 = [(SAMonitoringSessionManager *)self travelTypeClassifier];
-  v19 = [v6 scenarioClassifier];
-  [v18 removeClient:v19];
+  travelTypeClassifier = [(SAMonitoringSessionManager *)self travelTypeClassifier];
+  scenarioClassifier2 = [v6 scenarioClassifier];
+  [travelTypeClassifier removeClient:scenarioClassifier2];
 
-  v20 = [v6 scenarioClassifier];
-  [v20 removeClient:self];
+  scenarioClassifier3 = [v6 scenarioClassifier];
+  [scenarioClassifier3 removeClient:self];
 
   [v6 setScenarioClassifier:0];
   [v6 setDeviceUUID:0];
 
-  v21 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  [v21 setObject:0 forKeyedSubscript:v4];
+  deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  [deviceUUIDtoMonitoringSession2 setObject:0 forKeyedSubscript:deviceCopy];
 
-  v22 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  [v22 removeObjectForKey:v4];
+  deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  [deviceUUIDtoMonitoringSession3 removeObjectForKey:deviceCopy];
 
   v23 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1044,17 +1044,17 @@ LABEL_20:
     v39 = 2082;
     v40 = "";
     v41 = 2113;
-    v42 = v4;
+    v42 = deviceCopy;
     _os_log_impl(&dword_2656EA000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager canceled monitoring session, uuid:%{private}@}", &buf, 0x1Cu);
   }
 
-  v24 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v25 = [v24 count];
+  deviceUUIDtoMonitoringSession4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v25 = [deviceUUIDtoMonitoringSession4 count];
 
   if (!v25)
   {
-    v26 = [(SAMonitoringSessionManager *)self analytics];
-    [v26 setActiveState:0];
+    analytics = [(SAMonitoringSessionManager *)self analytics];
+    [analytics setActiveState:0];
   }
 
 LABEL_21:
@@ -1062,15 +1062,15 @@ LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attemptToPopulateTrackedTravelingStartLocationForDevice:(id)a3
+- (void)attemptToPopulateTrackedTravelingStartLocationForDevice:(id)device
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
-  v7 = [v6 state];
-  if (v7 > 4 || ((1 << v7) & 0x1A) == 0)
+  state = [v6 state];
+  if (state > 4 || ((1 << state) & 0x1A) == 0)
   {
     v10 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -1080,7 +1080,7 @@ LABEL_21:
       v23 = 2082;
       v24 = "";
       v25 = 2113;
-      v26 = v4;
+      v26 = deviceCopy;
       v11 = "{msg%{public}.0s:#SAMonitoringSessionManager attemptToPopulateTrackedTravelingStartLocationForDevice not in one of the traveling states, uuid:%{private}@}";
       goto LABEL_16;
     }
@@ -1088,9 +1088,9 @@ LABEL_21:
 
   else
   {
-    v9 = [v6 trackedTravelingStartLocation];
+    trackedTravelingStartLocation = [v6 trackedTravelingStartLocation];
 
-    if (v9)
+    if (trackedTravelingStartLocation)
     {
       v10 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -1100,7 +1100,7 @@ LABEL_21:
         v23 = 2082;
         v24 = "";
         v25 = 2113;
-        v26 = v4;
+        v26 = deviceCopy;
         v11 = "{msg%{public}.0s:#SAMonitoringSessionManager attemptToPopulateTrackedTravelingStartLocationForDevice already set, uuid:%{private}@}";
 LABEL_16:
         _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_DEBUG, v11, &v21, 0x1Cu);
@@ -1109,10 +1109,10 @@ LABEL_16:
 
     else
     {
-      v12 = [(SAMonitoringSessionManager *)self lastLocation];
-      v13 = [v12 getDate];
-      v14 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      [v13 timeIntervalSinceDate:v14];
+      lastLocation = [(SAMonitoringSessionManager *)self lastLocation];
+      getDate = [lastLocation getDate];
+      getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      [getDate timeIntervalSinceDate:getCurrentTime];
       v16 = v15;
 
       v17 = -v16;
@@ -1123,8 +1123,8 @@ LABEL_16:
 
       if (v17 <= 10.0)
       {
-        v19 = [(SAMonitoringSessionManager *)self lastLocation];
-        [v6 setTrackedTravelingStartLocation:v19];
+        lastLocation2 = [(SAMonitoringSessionManager *)self lastLocation];
+        [v6 setTrackedTravelingStartLocation:lastLocation2];
       }
 
       else
@@ -1137,12 +1137,12 @@ LABEL_16:
           v23 = 2082;
           v24 = "";
           v25 = 2113;
-          v26 = v4;
+          v26 = deviceCopy;
           _os_log_impl(&dword_2656EA000, v18, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager attemptToPopulateTrackedTravelingStartLocationForDevice lastLocation is not recent enough, adding to set to be populated, uuid:%{private}@}", &v21, 0x1Cu);
         }
 
-        v19 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
-        [v19 addObject:v4];
+        lastLocation2 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
+        [lastLocation2 addObject:deviceCopy];
       }
     }
   }
@@ -1150,29 +1150,29 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changeMonitoringSessionState:(id)a3 toState:(unint64_t)a4
+- (void)changeMonitoringSessionState:(id)state toState:(unint64_t)toState
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  stateCopy = state;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v8 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:stateCopy];
 
   if (v8)
   {
-    v9 = [v8 state];
+    state = [v8 state];
     v10 = TASALog;
-    if (v9 == a4)
+    if (state == toState)
     {
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
       {
         v11 = v10;
         v12 = +[SAMonitoringSessionManager convertSAMonitoringSessionStateToString:](SAMonitoringSessionManager, "convertSAMonitoringSessionStateToString:", [v8 state]);
-        v13 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:a4];
+        v13 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:toState];
         buf = 68289795;
         v36 = 2082;
         v37 = "";
         v38 = 2113;
-        v39 = v6;
+        v39 = stateCopy;
         v40 = 2113;
         v41 = v12;
         v42 = 2113;
@@ -1187,12 +1187,12 @@ LABEL_16:
       {
         v15 = v10;
         v16 = +[SAMonitoringSessionManager convertSAMonitoringSessionStateToString:](SAMonitoringSessionManager, "convertSAMonitoringSessionStateToString:", [v8 state]);
-        v17 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:a4];
+        v17 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:toState];
         buf = 68289795;
         v36 = 2082;
         v37 = "";
         v38 = 2113;
-        v39 = v6;
+        v39 = stateCopy;
         v40 = 2113;
         v41 = v16;
         v42 = 2113;
@@ -1200,35 +1200,35 @@ LABEL_16:
         _os_log_impl(&dword_2656EA000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager changeMonitoringSessionState, uuid:%{private}@, fromState:%{private}@, toState:%{private}@}", &buf, 0x30u);
       }
 
-      v18 = [(SAMonitoringSessionManager *)self deviceRecord];
-      [v18 updateMonitoringSessionState:a4 forDeviceWithUUID:v6];
+      deviceRecord = [(SAMonitoringSessionManager *)self deviceRecord];
+      [deviceRecord updateMonitoringSessionState:toState forDeviceWithUUID:stateCopy];
 
-      v19 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
-      [v19 removeObject:v6];
+      devicesWithPendingTransition = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
+      [devicesWithPendingTransition removeObject:stateCopy];
 
-      if (a4 - 5 < 2 || a4 == 2)
+      if (toState - 5 < 2 || toState == 2)
       {
         [v8 setTrackedTravelingStartDate:0];
         [v8 setTrackedTravelingStartLocation:0];
       }
 
-      else if (a4 == 1 && [v8 state] != 3 && objc_msgSend(v8, "state") != 4)
+      else if (toState == 1 && [v8 state] != 3 && objc_msgSend(v8, "state") != 4)
       {
-        v20 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [v8 setTrackedTravelingStartDate:v20];
+        getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [v8 setTrackedTravelingStartDate:getCurrentTime];
       }
 
-      [v8 setState:a4];
-      [(SAMonitoringSessionManager *)self attemptToPopulateTrackedTravelingStartLocationForDevice:v6];
+      [v8 setState:toState];
+      [(SAMonitoringSessionManager *)self attemptToPopulateTrackedTravelingStartLocationForDevice:stateCopy];
       [v8 setEarlyVehicularTrigger:0];
       [v8 setEarlyAirplaneTrigger:0];
-      v21 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      [v8 setCaLastStateTransition:v21];
+      getCurrentTime2 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      [v8 setCaLastStateTransition:getCurrentTime2];
 
-      v29 = a4;
-      if (a4 == 3)
+      toStateCopy = toState;
+      if (toState == 3)
       {
-        [(SAMonitoringSessionManager *)self storeSeparationLocation:v6];
+        [(SAMonitoringSessionManager *)self storeSeparationLocation:stateCopy];
       }
 
       v32 = 0u;
@@ -1253,7 +1253,7 @@ LABEL_16:
             v27 = *(*(&v30 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v27 updatedMonitoringState:objc_msgSend(v8 forDeviceUUID:{"state"), v6}];
+              [v27 updatedMonitoringState:objc_msgSend(v8 forDeviceUUID:{"state"), stateCopy}];
             }
           }
 
@@ -1263,7 +1263,7 @@ LABEL_16:
         while (v24);
       }
 
-      if (v29 <= 4 && ((1 << v29) & 0x1A) != 0)
+      if (toStateCopy <= 4 && ((1 << toStateCopy) & 0x1A) != 0)
       {
         [(SAMonitoringSessionManager *)self startPeriodicScans];
       }
@@ -1286,7 +1286,7 @@ LABEL_16:
       v36 = 2082;
       v37 = "";
       v38 = 2113;
-      v39 = v6;
+      v39 = stateCopy;
       _os_log_impl(&dword_2656EA000, v14, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager changeMonitoringSessionState UUID doesn't map to monitoring session, uuid:%{private}@}", &buf, 0x1Cu);
     }
   }
@@ -1301,8 +1301,8 @@ LABEL_16:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v4 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1314,21 +1314,21 @@ LABEL_16:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deviceUUIDtoMonitoringSession);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 state];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v11 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v9];
+        state = [v11 state];
 
-        if (v12 == 1)
+        if (state == 1)
         {
           ++v6;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -1352,8 +1352,8 @@ LABEL_16:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v5 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1364,22 +1364,22 @@ LABEL_16:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(deviceUUIDtoMonitoringSession);
           }
 
           v9 = *(*(&v16 + 1) + 8 * i);
-          v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-          v11 = [v10 objectForKeyedSubscript:v9];
-          v12 = [v11 state];
+          deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+          v11 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v9];
+          state = [v11 state];
 
-          if (v12 <= 4 && ((1 << v12) & 0x1A) != 0)
+          if (state <= 4 && ((1 << state) & 0x1A) != 0)
           {
             v3 = 1;
             goto LABEL_18;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v6 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v16 objects:v20 count:16];
         v3 = 0;
       }
 
@@ -1443,71 +1443,71 @@ LABEL_18:
   }
 }
 
-- (unint64_t)getMoreSpecificSADeviceType:(id)a3
+- (unint64_t)getMoreSpecificSADeviceType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
-  if ([v3 deviceType] == 1)
+  typeCopy = type;
+  deviceType = [typeCopy deviceType];
+  if ([typeCopy deviceType] == 1)
   {
-    v5 = [v3 model];
-    v6 = [v5 hasPrefix:@"iPhone"];
+    model = [typeCopy model];
+    v6 = [model hasPrefix:@"iPhone"];
 
     if (v6)
     {
-      v4 = 64;
+      deviceType = 64;
     }
 
     else
     {
-      v7 = [v3 model];
-      v8 = [v7 hasPrefix:@"iPad"];
+      model2 = [typeCopy model];
+      v8 = [model2 hasPrefix:@"iPad"];
 
       if (v8)
       {
-        v4 = 32;
+        deviceType = 32;
       }
 
       else
       {
-        v9 = [v3 model];
-        v10 = [v9 hasPrefix:@"MacBook"];
+        model3 = [typeCopy model];
+        v10 = [model3 hasPrefix:@"MacBook"];
 
         if (v10)
         {
-          v4 = 128;
+          deviceType = 128;
         }
       }
     }
   }
 
-  else if ([v3 deviceType] == 4)
+  else if ([typeCopy deviceType] == 4)
   {
-    if ([v3 isAppleAudioAccessory])
+    if ([typeCopy isAppleAudioAccessory])
     {
-      v4 = 256;
+      deviceType = 256;
     }
 
     else
     {
-      v4 = 4;
+      deviceType = 4;
     }
   }
 
-  return v4;
+  return deviceType;
 }
 
-- (int64_t)checkInEarStatus:(id)a3
+- (int64_t)checkInEarStatus:(id)status
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
+  statusCopy = status;
+  audioAccessoryManager = [(SAMonitoringSessionManager *)self audioAccessoryManager];
 
-  if (v5)
+  if (audioAccessoryManager)
   {
-    if (v4)
+    if (statusCopy)
     {
       v6 = objc_alloc_init(MEMORY[0x277CCAB68]);
-      [v6 setString:v4];
+      [v6 setString:statusCopy];
       if ([v6 length])
       {
         v7 = 0;
@@ -1524,13 +1524,13 @@ LABEL_18:
         while ([v6 length] > v7);
       }
 
-      v8 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
-      [v8 setBTAddress:v6];
+      audioAccessoryManager2 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
+      [audioAccessoryManager2 setBTAddress:v6];
 
       v19 = 0;
       v20 = 0;
-      v9 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
-      [v9 getInEarStatus:&v20 secondary:&v19];
+      audioAccessoryManager3 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
+      [audioAccessoryManager3 getInEarStatus:&v20 secondary:&v19];
 
       v10 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1548,8 +1548,8 @@ LABEL_18:
         _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa received in ear status, macAddress:%{private}@, primary:%{private}ld, secondary:%{private}ld}", buf, 0x30u);
       }
 
-      v11 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
-      v12 = [v11 getPrimaryBudSide];
+      audioAccessoryManager4 = [(SAMonitoringSessionManager *)self audioAccessoryManager];
+      getPrimaryBudSide = [audioAccessoryManager4 getPrimaryBudSide];
 
       v13 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1559,7 +1559,7 @@ LABEL_18:
         v23 = 2082;
         v24 = "";
         v25 = 2049;
-        v26 = v12;
+        v26 = getPrimaryBudSide;
         _os_log_impl(&dword_2656EA000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa received primary bud side, bud side:%{private}ld}", buf, 0x1Cu);
       }
 
@@ -1571,7 +1571,7 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      if (v12 == 1)
+      if (getPrimaryBudSide == 1)
       {
         if (v20 == 3)
         {
@@ -1591,7 +1591,7 @@ LABEL_34:
 
       else
       {
-        if (v12)
+        if (getPrimaryBudSide)
         {
           goto LABEL_33;
         }
@@ -1656,13 +1656,13 @@ LABEL_35:
   return v14;
 }
 
-- (BOOL)checkIfCloseToAnySafeLocations:(id)a3 leftBehindLocation:(id)a4
+- (BOOL)checkIfCloseToAnySafeLocations:(id)locations leftBehindLocation:(id)location
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v37 = a4;
-  v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  locationsCopy = locations;
+  locationCopy = location;
+  deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  v8 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:locationsCopy];
 
   v9 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -1671,7 +1671,7 @@ LABEL_35:
     v44 = 2082;
     v45 = "";
     v46 = 2113;
-    v47 = v6;
+    v47 = locationsCopy;
     _os_log_impl(&dword_2656EA000, v9, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager checking if close to any safe locations before surfacing the alert, uuid:%{private}@}", &buf, 0x1Cu);
   }
 
@@ -1684,7 +1684,7 @@ LABEL_35:
   if (v10)
   {
     v11 = v10;
-    v35 = v6;
+    v35 = locationsCopy;
     v12 = *v39;
     while (2)
     {
@@ -1696,25 +1696,25 @@ LABEL_35:
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        v15 = [(SAMonitoringSessionManager *)self safeLocations];
-        v16 = [v15 objectForKeyedSubscript:v14];
+        safeLocations = [(SAMonitoringSessionManager *)self safeLocations];
+        v16 = [safeLocations objectForKeyedSubscript:v14];
 
         if (v16)
         {
           v17 = objc_alloc(MEMORY[0x277CE41F8]);
-          v18 = [(SAMonitoringSessionManager *)self safeLocations];
-          v19 = [v18 objectForKeyedSubscript:v14];
+          safeLocations2 = [(SAMonitoringSessionManager *)self safeLocations];
+          v19 = [safeLocations2 objectForKeyedSubscript:v14];
           [v19 latitude];
           v21 = v20;
-          v22 = [(SAMonitoringSessionManager *)self safeLocations];
-          v23 = [v22 objectForKeyedSubscript:v14];
+          safeLocations3 = [(SAMonitoringSessionManager *)self safeLocations];
+          v23 = [safeLocations3 objectForKeyedSubscript:v14];
           [v23 longitude];
           v25 = [v17 initWithLatitude:v21 longitude:v24];
 
-          [v25 distanceFromLocation:v37];
+          [v25 distanceFromLocation:locationCopy];
           v27 = v26;
-          v28 = [(SAMonitoringSessionManager *)self safeLocations];
-          v29 = [v28 objectForKeyedSubscript:v14];
+          safeLocations4 = [(SAMonitoringSessionManager *)self safeLocations];
+          v29 = [safeLocations4 objectForKeyedSubscript:v14];
           [v29 radius];
           v31 = v30;
 
@@ -1742,7 +1742,7 @@ LABEL_35:
 
     v32 = 0;
 LABEL_16:
-    v6 = v35;
+    locationsCopy = v35;
   }
 
   else
@@ -1754,11 +1754,11 @@ LABEL_16:
   return v32;
 }
 
-- (BOOL)checkIfAlertWasTriggeredAtHome:(id)a3 isEarlyVehicularTrigger:(BOOL)a4
+- (BOOL)checkIfAlertWasTriggeredAtHome:(id)home isEarlyVehicularTrigger:(BOOL)trigger
 {
-  v4 = a4;
+  triggerCopy = trigger;
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  homeCopy = home;
   v7 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
@@ -1767,21 +1767,21 @@ LABEL_16:
     v26 = 2082;
     v27 = "";
     v28 = 2117;
-    v29 = v6;
+    v29 = homeCopy;
     v30 = 1025;
-    v31 = v4;
+    v31 = triggerCopy;
     _os_log_impl(&dword_2656EA000, v7, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager checking if alert was triggered at home, location:%{sensitive}@, isEarlyVehicularTrigger:%{private}d}", v25, 0x22u);
   }
 
-  if (!v4)
+  if (!triggerCopy)
   {
-    v11 = [(SAMonitoringSessionManager *)self previousVisitOrLOIEvent];
+    previousVisitOrLOIEvent = [(SAMonitoringSessionManager *)self previousVisitOrLOIEvent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [(SAMonitoringSessionManager *)self previousVisitOrLOIEvent];
+      previousVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self previousVisitOrLOIEvent];
       goto LABEL_8;
     }
 
@@ -1792,7 +1792,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+  currentVisitOrLOIEvent = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
@@ -1801,10 +1801,10 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v10 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+  previousVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
 LABEL_8:
-  v13 = v10;
-  if (!v10 || [v10 type] != 1)
+  v13 = previousVisitOrLOIEvent2;
+  if (!previousVisitOrLOIEvent2 || [previousVisitOrLOIEvent2 type] != 1)
   {
     goto LABEL_14;
   }
@@ -1814,7 +1814,7 @@ LABEL_8:
   v16 = v15;
   [v13 longitude];
   v18 = [v14 initWithLatitude:v16 longitude:v17];
-  [v6 distanceFromLocation:v18];
+  [homeCopy distanceFromLocation:v18];
   v20 = v19;
   [v18 horizontalAccuracy];
   if (v21 < 100.0)
@@ -1829,18 +1829,18 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)shouldSuppressDueToRepeatedAlertsInOneTravelingSession:(id)a3 context:(id)a4
+- (BOOL)shouldSuppressDueToRepeatedAlertsInOneTravelingSession:(id)session context:(id)context
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  sessionCopy = session;
+  contextCopy = context;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v9 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:sessionCopy];
 
-  v10 = [v7 objectForKeyedSubscript:&unk_2877100A8];
+  v10 = [contextCopy objectForKeyedSubscript:&unk_2877100A8];
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:&unk_2877100A8];
+    v11 = [contextCopy objectForKeyedSubscript:&unk_2877100A8];
     v12 = [v11 BOOLValue] ^ 1;
   }
 
@@ -1849,19 +1849,19 @@ LABEL_15:
     v12 = 1;
   }
 
-  v13 = [v7 objectForKeyedSubscript:&unk_2877100C0];
-  v14 = [v13 integerValue];
+  v13 = [contextCopy objectForKeyedSubscript:&unk_2877100C0];
+  integerValue = [v13 integerValue];
 
-  if (v14 != 2)
+  if (integerValue != 2)
   {
 LABEL_20:
     v17 = 0;
     goto LABEL_21;
   }
 
-  v15 = [v9 lastAlertDateInCurrentTravelingSession];
+  lastAlertDateInCurrentTravelingSession = [v9 lastAlertDateInCurrentTravelingSession];
 
-  if (v15)
+  if (lastAlertDateInCurrentTravelingSession)
   {
     v16 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -1871,7 +1871,7 @@ LABEL_20:
       v35 = 2082;
       v36 = "";
       v37 = 2113;
-      v38 = v6;
+      v38 = sessionCopy;
       _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager suppressing alerts due to repeated alerts in one traveling session, uuid:%{private}@}", buf, 0x1Cu);
     }
 
@@ -1880,7 +1880,7 @@ LABEL_20:
   }
 
   v32 = v9;
-  v18 = [(SADeviceRecord *)self->_deviceRecord getRelatedDevices:v6];
+  v18 = [(SADeviceRecord *)self->_deviceRecord getRelatedDevices:sessionCopy];
   v19 = v18;
   if (!v18 || ![v18 count])
   {
@@ -1896,12 +1896,12 @@ LABEL_15:
         v35 = 2082;
         v36 = "";
         v37 = 2113;
-        v38 = v6;
+        v38 = sessionCopy;
         _os_log_impl(&dword_2656EA000, v27, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager gating number of alerts in one traveling session , uuid:%{private}@}", buf, 0x1Cu);
       }
 
-      v28 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      [v32 setLastAlertDateInCurrentTravelingSession:v28];
+      getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      [v32 setLastAlertDateInCurrentTravelingSession:getCurrentTime];
     }
 
     goto LABEL_20;
@@ -1914,9 +1914,9 @@ LABEL_15:
     v22 = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession objectForKeyedSubscript:v21];
     if (v22)
     {
-      v23 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      v24 = [v22 lastAlertDateInCurrentTravelingSession];
-      [v23 timeIntervalSinceDate:v24];
+      getCurrentTime2 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      lastAlertDateInCurrentTravelingSession2 = [v22 lastAlertDateInCurrentTravelingSession];
+      [getCurrentTime2 timeIntervalSinceDate:lastAlertDateInCurrentTravelingSession2];
       v26 = v25;
 
       if (v26 > 60.0)
@@ -1939,7 +1939,7 @@ LABEL_15:
     v35 = 2082;
     v36 = "";
     v37 = 2113;
-    v38 = v6;
+    v38 = sessionCopy;
     v39 = 2113;
     v40 = v21;
     _os_log_impl(&dword_2656EA000, v31, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager suppressing alerts due to related device alert in current traveling session, uuid:%{private}@, relatedDeviceUUID:%{private}@}", buf, 0x26u);
@@ -1953,20 +1953,20 @@ LABEL_21:
   return v17;
 }
 
-- (BOOL)shouldSuppressDueToHELEAdvertisingLimit:(id)a3
+- (BOOL)shouldSuppressDueToHELEAdvertisingLimit:(id)limit
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAppleAudioAccessory] && (objc_msgSend(v4, "productId") == 8206 || objc_msgSend(v4, "productId") == 8211))
+  limitCopy = limit;
+  if ([limitCopy isAppleAudioAccessory] && (objc_msgSend(limitCopy, "productId") == 8206 || objc_msgSend(limitCopy, "productId") == 8211))
   {
-    v5 = [(SAMonitoringSessionManager *)self deviceRecord];
-    v6 = [v4 identifier];
-    v7 = [v5 getAdvertisingStartDateForHELE:v6];
+    deviceRecord = [(SAMonitoringSessionManager *)self deviceRecord];
+    identifier = [limitCopy identifier];
+    v7 = [deviceRecord getAdvertisingStartDateForHELE:identifier];
 
     if (v7)
     {
-      v8 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      [v8 timeIntervalSinceDate:v7];
+      getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      [getCurrentTime timeIntervalSinceDate:v7];
       v10 = v9;
 
       v11 = TASALog;
@@ -1976,14 +1976,14 @@ LABEL_21:
         if (v12)
         {
           v13 = v11;
-          v14 = [v4 identifier];
-          v15 = [v14 UUIDString];
+          identifier2 = [limitCopy identifier];
+          uUIDString = [identifier2 UUIDString];
           v26 = 68289283;
           v27 = 0;
           v28 = 2082;
           v29 = "";
           v30 = 2113;
-          v31 = v15;
+          v31 = uUIDString;
           _os_log_impl(&dword_2656EA000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa separation for device exceeding 24hr advertising limit - suppressing alert, device:%{private}@}", &v26, 0x1Cu);
         }
 
@@ -1994,14 +1994,14 @@ LABEL_21:
       if (v12)
       {
         v18 = v11;
-        v19 = [v4 identifier];
-        v20 = [v19 UUIDString];
+        identifier3 = [limitCopy identifier];
+        uUIDString2 = [identifier3 UUIDString];
         v26 = 68289539;
         v27 = 0;
         v28 = 2082;
         v29 = "";
         v30 = 2113;
-        v31 = v20;
+        v31 = uUIDString2;
         v32 = 2049;
         v33 = v10;
         v21 = "{msg%{public}.0s:#sa separation for device within 24hr advertising limit, device:%{private}@, advertisingAge:%{private}f}";
@@ -2017,14 +2017,14 @@ LABEL_21:
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [v4 identifier];
-        v20 = [v19 UUIDString];
+        identifier3 = [limitCopy identifier];
+        uUIDString2 = [identifier3 UUIDString];
         v26 = 68289283;
         v27 = 0;
         v28 = 2082;
         v29 = "";
         v30 = 2113;
-        v31 = v20;
+        v31 = uUIDString2;
         v21 = "{msg%{public}.0s:#sa separation for device with no advertising start state being set, device:%{private}@}";
         v22 = v18;
         v23 = 28;
@@ -2046,15 +2046,15 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)shouldSuppressBudsAlertDueToCaseLeashedNotAdv:(id)a3
+- (BOOL)shouldSuppressBudsAlertDueToCaseLeashedNotAdv:(id)adv
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SADeviceRecord *)self->_deviceRecord getSADevice:v4];
+  advCopy = adv;
+  v5 = [(SADeviceRecord *)self->_deviceRecord getSADevice:advCopy];
   v6 = v5;
   if (v5 && [v5 isBudForAirPodsBLECase])
   {
-    v7 = [(SADeviceRecord *)self->_deviceRecord getRelatedDevices:v4];
+    v7 = [(SADeviceRecord *)self->_deviceRecord getRelatedDevices:advCopy];
     v8 = v7;
     if (!v7)
     {
@@ -2066,7 +2066,7 @@ LABEL_17:
         v48 = 2082;
         v49 = "";
         v50 = 2113;
-        v51 = v4;
+        v51 = advCopy;
         v17 = "{msg%{public}.0s:#sa #suppress no related devices for buds, uuid:%{private}@}";
 LABEL_18:
         _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_ERROR, v17, buf, 0x1Cu);
@@ -2127,7 +2127,7 @@ LABEL_13:
           v48 = 2082;
           v49 = "";
           v50 = 2113;
-          v51 = v4;
+          v51 = advCopy;
           v17 = "{msg%{public}.0s:#sa #suppress no case found for buds, uuid:%{private}@}";
           goto LABEL_18;
         }
@@ -2137,16 +2137,16 @@ LABEL_13:
     }
 
     deviceRecord = self->_deviceRecord;
-    v20 = [v15 identifier];
-    if ([(SADeviceRecord *)deviceRecord getConnectionState:v20]== 3)
+    identifier = [v15 identifier];
+    if ([(SADeviceRecord *)deviceRecord getConnectionState:identifier]== 3)
     {
     }
 
     else
     {
       v21 = self->_deviceRecord;
-      v22 = [v15 identifier];
-      v23 = [(SADeviceRecord *)v21 getConnectionState:v22];
+      identifier2 = [v15 identifier];
+      v23 = [(SADeviceRecord *)v21 getConnectionState:identifier2];
 
       if (v23 != 2)
       {
@@ -2154,15 +2154,15 @@ LABEL_13:
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_INFO))
         {
           v34 = v39;
-          v35 = [v15 identifier];
+          identifier3 = [v15 identifier];
           *buf = 68289539;
           v47 = 0;
           v48 = 2082;
           v49 = "";
           v50 = 2113;
-          v51 = v4;
+          v51 = advCopy;
           v52 = 2113;
-          v53 = v35;
+          v53 = identifier3;
           v36 = "{msg%{public}.0s:#sa #suppress case not leashed, bud:%{private}@, case:%{private}@}";
           v37 = v34;
           v38 = OS_LOG_TYPE_INFO;
@@ -2176,31 +2176,31 @@ LABEL_33:
     }
 
     v24 = self->_deviceRecord;
-    v25 = [v15 identifier];
-    v26 = [(SADeviceRecord *)v24 getRelationStatus:v25];
+    identifier4 = [v15 identifier];
+    v26 = [(SADeviceRecord *)v24 getRelationStatus:identifier4];
 
-    v27 = [v15 partIdentifier];
-    v28 = [v6 partIdentifier];
+    partIdentifier = [v15 partIdentifier];
+    partIdentifier2 = [v6 partIdentifier];
     if ([v15 isValidPartID] && objc_msgSend(v6, "isValidPartID") && (v26 & 0x8000000000000000) == 0)
     {
-      v29 = [(SAMonitoringSessionManager *)self isBudPartID:v28 inCasePartID:v27 relationStatus:v26];
+      v29 = [(SAMonitoringSessionManager *)self isBudPartID:partIdentifier2 inCasePartID:partIdentifier relationStatus:v26];
       v30 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
       {
         v31 = v30;
-        v32 = [v15 identifier];
+        identifier5 = [v15 identifier];
         *buf = 68290563;
         v47 = 0;
         v48 = 2082;
         v49 = "";
         v50 = 2113;
-        v51 = v4;
+        v51 = advCopy;
         v52 = 2049;
-        v53 = v28;
+        v53 = partIdentifier2;
         v54 = 2113;
-        v55 = v32;
+        v55 = identifier5;
         v56 = 2049;
-        v57 = v27;
+        v57 = partIdentifier;
         v58 = 2049;
         v59 = v26;
         v60 = 2049;
@@ -2218,15 +2218,15 @@ LABEL_35:
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
     {
       v34 = v33;
-      v35 = [v15 identifier];
+      identifier3 = [v15 identifier];
       *buf = 68289539;
       v47 = 0;
       v48 = 2082;
       v49 = "";
       v50 = 2113;
-      v51 = v4;
+      v51 = advCopy;
       v52 = 2113;
-      v53 = v35;
+      v53 = identifier3;
       v36 = "{msg%{public}.0s:#sa #suppress invalid case, partID or relationStatus partID, uuid:%{private}@, relatedCaseUUID:%{private}@}";
       v37 = v34;
       v38 = OS_LOG_TYPE_ERROR;
@@ -2246,16 +2246,16 @@ LABEL_36:
   return v18;
 }
 
-- (int64_t)isBudPartID:(int64_t)a3 inCasePartID:(int64_t)a4 relationStatus:(int64_t)a5
+- (int64_t)isBudPartID:(int64_t)d inCasePartID:(int64_t)iD relationStatus:(int64_t)status
 {
   v5 = 2;
-  if (a3 == 1)
+  if (d == 1)
   {
     v5 = 8;
   }
 
-  v6 = (v5 & a5) != 0;
-  if (a4 <= a3)
+  v6 = (v5 & status) != 0;
+  if (iD <= d)
   {
     return -1;
   }
@@ -2266,22 +2266,22 @@ LABEL_36:
   }
 }
 
-- (void)handleSeparationForDeviceUUID:(id)a3 withSafeLocationRecommendation:(id)a4 context:(id)a5
+- (void)handleSeparationForDeviceUUID:(id)d withSafeLocationRecommendation:(id)recommendation context:(id)context
 {
   v227[19] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SAMonitoringSessionManager *)self devices];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  dCopy = d;
+  recommendationCopy = recommendation;
+  contextCopy = context;
+  devices = [(SAMonitoringSessionManager *)self devices];
+  v12 = [devices objectForKeyedSubscript:dCopy];
 
-  v13 = [(SAMonitoringSessionManager *)self deviceRecord];
-  v14 = [v13 getLatestAdvertisement:v8];
+  deviceRecord = [(SAMonitoringSessionManager *)self deviceRecord];
+  v14 = [deviceRecord getLatestAdvertisement:dCopy];
 
-  v203 = [(SAMonitoringSessionManager *)self checkIfCloseToAnySafeLocations:v8 leftBehindLocation:v9];
-  v15 = [(SAMonitoringSessionManager *)self shouldSuppressDueToRepeatedAlertsInOneTravelingSession:v8 context:v10];
+  v203 = [(SAMonitoringSessionManager *)self checkIfCloseToAnySafeLocations:dCopy leftBehindLocation:recommendationCopy];
+  v15 = [(SAMonitoringSessionManager *)self shouldSuppressDueToRepeatedAlertsInOneTravelingSession:dCopy context:contextCopy];
   v202 = [(SAMonitoringSessionManager *)self shouldSuppressDueToHELEAdvertisingLimit:v12];
-  v16 = [(SAMonitoringSessionManager *)self shouldSuppressBudsAlertDueToCaseLeashedNotAdv:v8];
+  v16 = [(SAMonitoringSessionManager *)self shouldSuppressBudsAlertDueToCaseLeashedNotAdv:dCopy];
   if (v12)
   {
     v200 = v16;
@@ -2292,47 +2292,47 @@ LABEL_36:
       v199 = 0;
 LABEL_40:
       v193 = [(SAMonitoringSessionManager *)self getMoreSpecificSADeviceType:v12];
-      v51 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v52 = [v51 objectForKeyedSubscript:v8];
+      deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v52 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
-      v197 = [v10 objectForKeyedSubscript:&unk_2877100C0];
-      v53 = [v52 caLastStateTransition];
+      v197 = [contextCopy objectForKeyedSubscript:&unk_2877100C0];
+      caLastStateTransition = [v52 caLastStateTransition];
 
       v54 = -1.0;
       v55 = -1.0;
-      if (v53)
+      if (caLastStateTransition)
       {
-        v56 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        v57 = [v52 caLastStateTransition];
-        [v56 timeIntervalSinceDate:v57];
+        getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        caLastStateTransition2 = [v52 caLastStateTransition];
+        [getCurrentTime timeIntervalSinceDate:caLastStateTransition2];
         v55 = v58;
       }
 
-      v59 = [(SAMonitoringSessionManager *)self caLastAlertDate];
-      v60 = [v59 objectForKeyedSubscript:v8];
+      caLastAlertDate = [(SAMonitoringSessionManager *)self caLastAlertDate];
+      v60 = [caLastAlertDate objectForKeyedSubscript:dCopy];
 
       v188 = v52;
       if (v60)
       {
-        v61 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        v62 = [(SAMonitoringSessionManager *)self caLastAlertDate];
-        v63 = [v62 objectForKeyedSubscript:v8];
-        [v61 timeIntervalSinceDate:v63];
+        getCurrentTime2 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        caLastAlertDate2 = [(SAMonitoringSessionManager *)self caLastAlertDate];
+        v63 = [caLastAlertDate2 objectForKeyedSubscript:dCopy];
+        [getCurrentTime2 timeIntervalSinceDate:v63];
         v54 = v64;
 
         v52 = v188;
       }
 
-      if (v9)
+      if (recommendationCopy)
       {
-        [v9 horizontalAccuracy];
+        [recommendationCopy horizontalAccuracy];
         v66 = v65;
-        v67 = [v52 caSeparationLocation];
+        caSeparationLocation = [v52 caSeparationLocation];
 
-        if (v67)
+        if (caSeparationLocation)
         {
-          v68 = [v52 caSeparationLocation];
-          [v9 distanceFromLocation:v68];
+          caSeparationLocation2 = [v52 caSeparationLocation];
+          [recommendationCopy distanceFromLocation:caSeparationLocation2];
           v70 = v69;
 
           v177 = v70;
@@ -2345,19 +2345,19 @@ LABEL_40:
           v177 = -1;
         }
 
-        v71 = [(SAMonitoringSessionManager *)self lastLocation];
+        lastLocation = [(SAMonitoringSessionManager *)self lastLocation];
 
-        if (v71)
+        if (lastLocation)
         {
           v72 = objc_alloc(MEMORY[0x277CE41F8]);
-          v73 = [(SAMonitoringSessionManager *)self lastLocation];
-          [v73 latitude];
+          lastLocation2 = [(SAMonitoringSessionManager *)self lastLocation];
+          [lastLocation2 latitude];
           v75 = v74;
-          v76 = [(SAMonitoringSessionManager *)self lastLocation];
-          [v76 longitude];
+          lastLocation3 = [(SAMonitoringSessionManager *)self lastLocation];
+          [lastLocation3 longitude];
           v78 = [v72 initWithLatitude:v75 longitude:v77];
 
-          [v9 distanceFromLocation:v78];
+          [recommendationCopy distanceFromLocation:v78];
           v173 = v79;
           v175 = v79 - v66;
         }
@@ -2378,11 +2378,11 @@ LABEL_40:
         v66 = -1;
       }
 
-      v80 = [v14 scanDate];
-      if (v80)
+      scanDate = [v14 scanDate];
+      if (scanDate)
       {
-        v81 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [v81 timeIntervalSinceDate:v80];
+        getCurrentTime3 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [getCurrentTime3 timeIntervalSinceDate:scanDate];
         v83 = v82;
       }
 
@@ -2391,51 +2391,51 @@ LABEL_40:
         v83 = -1.0;
       }
 
-      v189 = [v14 rssi];
-      v186 = v80;
+      rssi = [v14 rssi];
+      v186 = scanDate;
       if (v14)
       {
-        v191 = [v14 getBatteryState];
+        getBatteryState = [v14 getBatteryState];
       }
 
       else
       {
-        v191 = -1;
+        getBatteryState = -1;
       }
 
       v181 = v66;
-      v84 = [(SAMonitoringSessionManager *)self deviceRecord];
-      v85 = [v84 getLatestNOAdvertisement:v8];
-      v86 = [v85 scanDate];
+      deviceRecord2 = [(SAMonitoringSessionManager *)self deviceRecord];
+      v85 = [deviceRecord2 getLatestNOAdvertisement:dCopy];
+      scanDate2 = [v85 scanDate];
 
       v87 = -1.0;
       v88 = -1.0;
-      if (v86)
+      if (scanDate2)
       {
-        v89 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [v89 timeIntervalSinceDate:v86];
+        getCurrentTime4 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [getCurrentTime4 timeIntervalSinceDate:scanDate2];
         v88 = v90;
       }
 
-      v91 = [(SAMonitoringSessionManager *)self deviceRecord];
-      v92 = [v91 getLatestWildAdvertisement:v8];
-      v93 = [v92 scanDate];
+      deviceRecord3 = [(SAMonitoringSessionManager *)self deviceRecord];
+      v92 = [deviceRecord3 getLatestWildAdvertisement:dCopy];
+      scanDate3 = [v92 scanDate];
 
-      v94 = v93;
-      if (v93)
+      v94 = scanDate3;
+      if (scanDate3)
       {
-        v95 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [v95 timeIntervalSinceDate:v93];
+        getCurrentTime5 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [getCurrentTime5 timeIntervalSinceDate:scanDate3];
         v87 = v96;
       }
 
-      v97 = [(SAMonitoringSessionManager *)self deviceRecord];
-      v98 = [v97 getLastWithYouDate:v8];
+      deviceRecord4 = [(SAMonitoringSessionManager *)self deviceRecord];
+      v98 = [deviceRecord4 getLastWithYouDate:dCopy];
 
       if (v98)
       {
-        v99 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [v99 timeIntervalSinceDate:v98];
+        getCurrentTime6 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [getCurrentTime6 timeIntervalSinceDate:v98];
         v101 = v100;
       }
 
@@ -2444,10 +2444,10 @@ LABEL_40:
         v101 = -1.0;
       }
 
-      v102 = [v10 objectForKeyedSubscript:&unk_2877100A8];
+      v102 = [contextCopy objectForKeyedSubscript:&unk_2877100A8];
       if (v102)
       {
-        v196 = [v10 objectForKeyedSubscript:&unk_2877100A8];
+        v196 = [contextCopy objectForKeyedSubscript:&unk_2877100A8];
       }
 
       else
@@ -2457,38 +2457,38 @@ LABEL_40:
 
       v184 = v94;
 
-      v103 = [v10 objectForKeyedSubscript:&unk_2877100F0];
-      v194 = v8;
+      v103 = [contextCopy objectForKeyedSubscript:&unk_2877100F0];
+      v194 = dCopy;
       v195 = v12;
       v187 = v14;
-      v185 = v86;
+      v185 = scanDate2;
       v183 = v98;
       if (v103)
       {
-        v104 = [v10 objectForKeyedSubscript:&unk_2877100F0];
-        v105 = [v104 BOOLValue];
+        v104 = [contextCopy objectForKeyedSubscript:&unk_2877100F0];
+        bOOLValue = [v104 BOOLValue];
       }
 
       else
       {
-        v105 = 0;
+        bOOLValue = 0;
       }
 
-      v106 = [(SAMonitoringSessionManager *)self checkIfAlertWasTriggeredAtHome:v9 isEarlyVehicularTrigger:v105];
+      v106 = [(SAMonitoringSessionManager *)self checkIfAlertWasTriggeredAtHome:recommendationCopy isEarlyVehicularTrigger:bOOLValue];
       v227[0] = v197;
       v226[0] = @"lastAlertType";
       v226[1] = @"lastAlert";
-      v170 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      v227[1] = v170;
+      getCurrentTime7 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      v227[1] = getCurrentTime7;
       v226[2] = @"tLastWithYou";
       v168 = [MEMORY[0x277CCABB0] numberWithDouble:v101];
       v227[2] = v168;
-      v227[3] = v9;
+      v227[3] = recommendationCopy;
       v226[3] = @"lLastWithYou";
       v226[4] = @"lastAlertIsBookendingTravel";
       v227[4] = v196;
       v226[5] = @"lastAlertIsEarlyVehicularTrigger";
-      v165 = [MEMORY[0x277CCABB0] numberWithBool:v105];
+      v165 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       v227[5] = v165;
       v226[6] = @"lastAlertVehicularState";
       v163 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAMonitoringSessionManager caCurrentVehicularState](self, "caCurrentVehicularState")}];
@@ -2503,7 +2503,7 @@ LABEL_40:
       v157 = [MEMORY[0x277CCABB0] numberWithBool:v199];
       v227[9] = v157;
       v226[10] = @"lastAlertBatteryState";
-      v155 = [MEMORY[0x277CCABB0] numberWithInteger:v191];
+      v155 = [MEMORY[0x277CCABB0] numberWithInteger:getBatteryState];
       v227[10] = v155;
       v226[11] = @"closeToAnySafeLocations";
       v153 = [MEMORY[0x277CCABB0] numberWithBool:v203];
@@ -2515,7 +2515,7 @@ LABEL_40:
       v107 = [MEMORY[0x277CCABB0] numberWithBool:v106];
       v227[13] = v107;
       v226[14] = @"lastAlertRssiValue";
-      v108 = [MEMORY[0x277CCABB0] numberWithInteger:v189];
+      v108 = [MEMORY[0x277CCABB0] numberWithInteger:rssi];
       v227[14] = v108;
       v226[15] = @"travelingSuppressed";
       [MEMORY[0x277CCABB0] numberWithBool:v201];
@@ -2532,8 +2532,8 @@ LABEL_40:
       v227[18] = v112;
       v172 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v227 forKeys:v226 count:19];
 
-      v113 = [(SAMonitoringSessionManager *)v204 deviceUUIDtoAlertContext];
-      [v113 setObject:v172 forKeyedSubscript:v194];
+      deviceUUIDtoAlertContext = [(SAMonitoringSessionManager *)v204 deviceUUIDtoAlertContext];
+      [deviceUUIDtoAlertContext setObject:v172 forKeyedSubscript:v194];
 
       v225[0] = v197;
       v224[0] = @"alertType";
@@ -2571,7 +2571,7 @@ LABEL_40:
       v160 = [MEMORY[0x277CCABB0] numberWithDouble:v83];
       v225[11] = v160;
       v224[12] = @"lastAdvRSSI";
-      v190 = [MEMORY[0x277CCABB0] numberWithInteger:v189];
+      v190 = [MEMORY[0x277CCABB0] numberWithInteger:rssi];
       v225[12] = v190;
       v224[13] = @"airplaneEnabled";
       v158 = [MEMORY[0x277CCABB0] numberWithBool:{-[SAMonitoringSessionManager isInAirplaneMode](v204, "isInAirplaneMode")}];
@@ -2579,7 +2579,7 @@ LABEL_40:
       v225[14] = v196;
       v224[14] = @"isBookendingTravel";
       v224[15] = @"isEarlyVehicularTrigger";
-      v167 = [MEMORY[0x277CCABB0] numberWithBool:v105];
+      v167 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
       v225[15] = v167;
       v224[16] = @"vehicularState";
       v156 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SAMonitoringSessionManager caCurrentVehicularState](v204, "caCurrentVehicularState")}];
@@ -2600,18 +2600,18 @@ LABEL_40:
       v148 = [MEMORY[0x277CCABB0] numberWithBool:v199];
       v225[21] = v148;
       v224[22] = @"lastBatteryStateBeforeAlert";
-      v147 = [MEMORY[0x277CCABB0] numberWithInteger:v191];
+      v147 = [MEMORY[0x277CCABB0] numberWithInteger:getBatteryState];
       v225[22] = v147;
       v224[23] = @"closeToAnySafeLocations";
       v114 = [MEMORY[0x277CCABB0] numberWithBool:v203];
       v225[23] = v114;
       v224[24] = @"systemVersion";
-      v115 = [v195 systemVersion];
-      v116 = v115;
+      systemVersion = [v195 systemVersion];
+      v116 = systemVersion;
       v117 = @"unknown";
-      if (v115)
+      if (systemVersion)
       {
-        v117 = v115;
+        v117 = systemVersion;
       }
 
       v225[24] = v117;
@@ -2633,15 +2633,15 @@ LABEL_40:
       v192 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v225 forKeys:v224 count:30];
 
       v12 = v195;
-      v8 = v194;
+      dCopy = v194;
 
       p_isa = &v204->super.isa;
-      v124 = [(SAMonitoringSessionManager *)v204 analytics];
-      [v124 submitEvent:@"com.apple.clx.alert.alertEvent" content:v192];
+      analytics = [(SAMonitoringSessionManager *)v204 analytics];
+      [analytics submitEvent:@"com.apple.clx.alert.alertEvent" content:v192];
 
-      v125 = [(SAMonitoringSessionManager *)v204 analytics];
+      analytics2 = [(SAMonitoringSessionManager *)v204 analytics];
       v126 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v193];
-      [v125 submitAlertRateEvent:v126 alertType:v197];
+      [analytics2 submitAlertRateEvent:v126 alertType:v197];
 
       v14 = v187;
       if (((v198 | v201 | v199 | HIDWORD(v199) | v203 | (v202 || v200)) & 1) == 0)
@@ -2650,35 +2650,35 @@ LABEL_40:
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
         {
           v128 = v127;
-          v129 = [v195 identifier];
-          v130 = [v195 name];
-          v131 = [v10 objectForKeyedSubscript:&unk_2877100C0];
-          v132 = [v131 integerValue];
+          identifier = [v195 identifier];
+          name = [v195 name];
+          v131 = [contextCopy objectForKeyedSubscript:&unk_2877100C0];
+          integerValue = [v131 integerValue];
           v133 = [(SAMonitoringSessionManager *)v204 getMoreSpecificSADeviceType:v195];
-          v134 = [v195 systemVersion];
+          systemVersion2 = [v195 systemVersion];
           *buf = 68290307;
           v211 = 0;
           v212 = 2082;
           v213 = "";
           v214 = 2113;
-          v215 = v129;
+          v215 = identifier;
           v216 = 2113;
-          v217 = v130;
+          v217 = name;
           v218 = 2049;
-          v219 = v132;
+          v219 = integerValue;
           v220 = 2049;
           v221 = v133;
           v222 = 2113;
-          v223 = v134;
+          v223 = systemVersion2;
           _os_log_impl(&dword_2656EA000, v128, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa notify separation, uuid:%{private}@, name:%{private}@, type:%{private}ld, deviceType:%{private}ld, systemVersion:%{private}@}", buf, 0x44u);
 
           v12 = v195;
           p_isa = &v204->super.isa;
         }
 
-        v135 = [p_isa[2] getCurrentTime];
-        v136 = [p_isa caLastAlertDate];
-        [v136 setObject:v135 forKeyedSubscript:v194];
+        getCurrentTime8 = [p_isa[2] getCurrentTime];
+        caLastAlertDate3 = [p_isa caLastAlertDate];
+        [caLastAlertDate3 setObject:getCurrentTime8 forKeyedSubscript:v194];
 
         v137 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v12, 0}];
         v205 = 0u;
@@ -2703,7 +2703,7 @@ LABEL_40:
               v143 = *(*(&v205 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                [v143 notifySeparationsForDevices:v137 withLocation:v9 withContext:v10];
+                [v143 notifySeparationsForDevices:v137 withLocation:recommendationCopy withContext:contextCopy];
               }
             }
 
@@ -2713,7 +2713,7 @@ LABEL_40:
           while (v140);
         }
 
-        v8 = v194;
+        dCopy = v194;
         v12 = v195;
         v14 = v187;
       }
@@ -2721,8 +2721,8 @@ LABEL_40:
       goto LABEL_86;
     }
 
-    v17 = [v12 macAddress];
-    v18 = [(SAMonitoringSessionManager *)self checkInEarStatus:v17];
+    macAddress = [v12 macAddress];
+    v18 = [(SAMonitoringSessionManager *)self checkInEarStatus:macAddress];
 
     v19 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -2739,8 +2739,8 @@ LABEL_40:
     switch(v18)
     {
       case 1:
-        v28 = [v12 name];
-        v29 = [v28 isEqualToString:@"left"];
+        name2 = [v12 name];
+        v29 = [name2 isEqualToString:@"left"];
 
         if (v29)
         {
@@ -2749,8 +2749,8 @@ LABEL_40:
 
         break;
       case 2:
-        v22 = [v12 name];
-        v23 = [v22 isEqualToString:@"right"];
+        name3 = [v12 name];
+        v23 = [name3 isEqualToString:@"right"];
 
         if (v23)
         {
@@ -2759,8 +2759,8 @@ LABEL_40:
 
         break;
       case 3:
-        v20 = [v12 name];
-        if ([v20 isEqualToString:@"left"])
+        name4 = [v12 name];
+        if ([name4 isEqualToString:@"left"])
         {
 
 LABEL_14:
@@ -2768,14 +2768,14 @@ LABEL_14:
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
           {
             v25 = v24;
-            v26 = [v12 identifier];
-            v27 = [v26 UUIDString];
+            identifier2 = [v12 identifier];
+            uUIDString = [identifier2 UUIDString];
             *buf = 68289283;
             v211 = 0;
             v212 = 2082;
             v213 = "";
             v214 = 2113;
-            v215 = v27;
+            v215 = uUIDString;
             _os_log_impl(&dword_2656EA000, v25, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa separation for classically connected device, device:%{private}@}", buf, 0x1Cu);
           }
 
@@ -2792,13 +2792,13 @@ LABEL_19:
             goto LABEL_39;
           }
 
-          v30 = [(SAMonitoringSessionManager *)self deviceRecord];
-          v31 = [v30 getLatestCaseAdvertisementDate:v8];
+          deviceRecord5 = [(SAMonitoringSessionManager *)self deviceRecord];
+          v31 = [deviceRecord5 getLatestCaseAdvertisementDate:dCopy];
 
           if (v31)
           {
-            v32 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-            [v32 timeIntervalSinceDate:v31];
+            getCurrentTime9 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+            [getCurrentTime9 timeIntervalSinceDate:v31];
             v34 = v33;
 
             v35 = TASALog;
@@ -2808,8 +2808,8 @@ LABEL_19:
               if (v36)
               {
                 v43 = v35;
-                v44 = [v12 identifier];
-                [v44 UUIDString];
+                identifier3 = [v12 identifier];
+                [identifier3 UUIDString];
                 v46 = v45 = self;
                 *buf = 68289283;
                 v211 = 0;
@@ -2834,14 +2834,14 @@ LABEL_35:
                   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
                   {
                     v48 = v47;
-                    v49 = [v12 identifier];
-                    v50 = [v49 UUIDString];
+                    identifier4 = [v12 identifier];
+                    uUIDString2 = [identifier4 UUIDString];
                     *buf = 68289283;
                     v211 = 0;
                     v212 = 2082;
                     v213 = "";
                     v214 = 2113;
-                    v215 = v50;
+                    v215 = uUIDString2;
                     _os_log_impl(&dword_2656EA000, v48, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa separation for device with critical low battery level - suppressing alert, device:%{private}@}", buf, 0x1Cu);
                   }
 
@@ -2858,8 +2858,8 @@ LABEL_39:
             if (v36)
             {
               v37 = v35;
-              v38 = [v12 identifier];
-              [v38 UUIDString];
+              identifier5 = [v12 identifier];
+              [identifier5 UUIDString];
               v40 = v39 = self;
               *buf = 68289283;
               v211 = 0;
@@ -2881,8 +2881,8 @@ LABEL_27:
             if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
             {
               v37 = v42;
-              v38 = [v12 identifier];
-              [v38 UUIDString];
+              identifier5 = [v12 identifier];
+              [identifier5 UUIDString];
               v40 = v39 = self;
               *buf = 68289283;
               v211 = 0;
@@ -2899,8 +2899,8 @@ LABEL_27:
           goto LABEL_34;
         }
 
-        v145 = [v12 name];
-        v146 = [v145 isEqualToString:@"right"];
+        name5 = [v12 name];
+        v146 = [name5 isEqualToString:@"right"];
 
         if (v146)
         {
@@ -2922,7 +2922,7 @@ LABEL_27:
     v212 = 2082;
     v213 = "";
     v214 = 2113;
-    v215 = v8;
+    v215 = dCopy;
     _os_log_impl(&dword_2656EA000, v21, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#sa Service tried to notify with no corresponding device, uuid:%{private}@}", buf, 0x1Cu);
   }
 
@@ -2931,10 +2931,10 @@ LABEL_86:
   v144 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleGeofenceExitedForDeviceUUID:(id)a3
+- (void)handleGeofenceExitedForDeviceUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if ([(SAMonitoringSessionManager *)self standby])
   {
     v5 = TASALog;
@@ -2947,18 +2947,18 @@ LABEL_86:
       _os_log_impl(&dword_2656EA000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager travel exit while in standby}", buf, 0x12u);
     }
 
-    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v4 toState:2];
+    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
   }
 
   else
   {
-    v6 = [(SAMonitoringSessionManager *)self clock];
-    v7 = [v6 getCurrentTime];
-    v8 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v9 = [v8 objectForKeyedSubscript:v4];
-    [v9 setTravelingGeofenceExitDate:v7];
+    clock = [(SAMonitoringSessionManager *)self clock];
+    getCurrentTime = [clock getCurrentTime];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v9 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
+    [v9 setTravelingGeofenceExitDate:getCurrentTime];
 
-    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v4 toState:4];
+    [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:4];
     if ([(SAMonitoringSessionManager *)self _isOnlyMonitoringDisconnectedCompanionDevice])
     {
       v10 = TASALog;
@@ -2976,10 +2976,10 @@ LABEL_86:
 
     else
     {
-      v11 = [(SAMonitoringSessionManager *)self withYouDetector];
-      v14 = v4;
+      withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+      v14 = dCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
-      [v11 forceUpdateWithYouStatusToFindDevices:v12 withContext:3];
+      [withYouDetector forceUpdateWithYouStatusToFindDevices:v12 withContext:3];
     }
   }
 
@@ -2989,14 +2989,14 @@ LABEL_86:
 - (BOOL)_isOnlyMonitoringDisconnectedCompanionDevice
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 allKeys];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -3016,16 +3016,16 @@ LABEL_86:
 
         if (v11)
         {
-          v12 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-          v13 = [v12 objectForKeyedSubscript:v10];
+          deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+          v13 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v10];
 
-          v14 = [v13 state];
-          if (v14 <= 5 && ((1 << v14) & 0x3A) != 0)
+          state = [v13 state];
+          if (state <= 5 && ((1 << state) & 0x3A) != 0)
           {
             v16 = [(SADeviceRecord *)self->_deviceRecord getSADevice:v10];
-            v17 = [v16 deviceType];
+            deviceType = [v16 deviceType];
 
-            if (v17 != 8)
+            if (deviceType != 8)
             {
 
               v18 = 0;
@@ -3052,12 +3052,12 @@ LABEL_17:
   return v18;
 }
 
-- (BOOL)addTravelFenceForDevice:(id)a3
+- (BOOL)addTravelFenceForDevice:(id)device
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   if (!v6)
   {
@@ -3069,7 +3069,7 @@ LABEL_17:
       v31 = 2082;
       v32 = "";
       v33 = 2113;
-      v34 = v4;
+      v34 = deviceCopy;
       v23 = "{msg%{public}.0s:#SAMonitoringSessionManager unable to set while traveling fence due to no session, uuid:%{private}@}";
       v24 = v22;
       v25 = OS_LOG_TYPE_FAULT;
@@ -3082,16 +3082,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v8 = [v7 objectForKeyedSubscript:v4];
-  v9 = [v8 firstNotWithYouLocation];
+  deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v8 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:deviceCopy];
+  firstNotWithYouLocation = [v8 firstNotWithYouLocation];
 
-  if (!v9)
+  if (!firstNotWithYouLocation)
   {
     lastLocation = self->_lastLocation;
     if (lastLocation)
     {
-      v9 = lastLocation;
+      firstNotWithYouLocation = lastLocation;
       goto LABEL_5;
     }
 
@@ -3103,7 +3103,7 @@ LABEL_9:
       v31 = 2082;
       v32 = "";
       v33 = 2113;
-      v34 = v4;
+      v34 = deviceCopy;
       v23 = "{msg%{public}.0s:#SAMonitoringSessionManager unable to set while traveling fence due to no last location, uuid:%{private}@}";
       v24 = v28;
       v25 = OS_LOG_TYPE_ERROR;
@@ -3114,20 +3114,20 @@ LABEL_9:
   }
 
 LABEL_5:
-  [(TALocationLite *)v9 latitude];
+  [(TALocationLite *)firstNotWithYouLocation latitude];
   v12 = v11;
-  [(TALocationLite *)v9 longitude];
+  [(TALocationLite *)firstNotWithYouLocation longitude];
   v14 = v13;
   v15 = objc_alloc(MEMORY[0x277CBFBC8]);
-  v16 = [v4 UUIDString];
-  v17 = [v15 initWithCenter:v16 radius:v12 identifier:{v14, 100.0}];
+  uUIDString = [deviceCopy UUIDString];
+  v17 = [v15 initWithCenter:uUIDString radius:v12 identifier:{v14, 100.0}];
 
-  v18 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v19 = [v18 objectForKeyedSubscript:v4];
+  deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v19 = [deviceUUIDtoMonitoringSession3 objectForKeyedSubscript:deviceCopy];
   [v19 setGeofence:v17];
 
-  v20 = [(SAMonitoringSessionManager *)self fenceRequestServicer];
-  [v20 addGeofence:v17];
+  fenceRequestServicer = [(SAMonitoringSessionManager *)self fenceRequestServicer];
+  [fenceRequestServicer addGeofence:v17];
 
   v21 = 1;
 LABEL_10:
@@ -3136,30 +3136,30 @@ LABEL_10:
   return v21;
 }
 
-- (void)removeTravelFenceForDevice:(id)a3
+- (void)removeTravelFenceForDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   if (v6)
   {
-    v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v8 = [v7 objectForKeyedSubscript:v4];
-    v9 = [v8 geofence];
+    deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v8 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:deviceCopy];
+    geofence = [v8 geofence];
 
-    if (v9)
+    if (geofence)
     {
-      v10 = [(SAMonitoringSessionManager *)self fenceRequestServicer];
-      v11 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v12 = [v11 objectForKeyedSubscript:v4];
-      v13 = [v12 geofence];
-      [v10 removeGeofence:v13];
+      fenceRequestServicer = [(SAMonitoringSessionManager *)self fenceRequestServicer];
+      deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v12 = [deviceUUIDtoMonitoringSession3 objectForKeyedSubscript:deviceCopy];
+      geofence2 = [v12 geofence];
+      [fenceRequestServicer removeGeofence:geofence2];
     }
 
-    v14 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v15 = [v14 objectForKeyedSubscript:v4];
+    deviceUUIDtoMonitoringSession4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v15 = [deviceUUIDtoMonitoringSession4 objectForKeyedSubscript:deviceCopy];
     [v15 setGeofence:0];
   }
 
@@ -3173,7 +3173,7 @@ LABEL_10:
       v19 = 2082;
       v20 = "";
       v21 = 2113;
-      v22 = v4;
+      v22 = deviceCopy;
       _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#SAMonitoringSessionManager unable to remove while traveling fence due to no session, uuid:%{private}@}", v18, 0x1Cu);
     }
   }
@@ -3181,30 +3181,30 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeSeparationLocation:(id)a3
+- (void)storeSeparationLocation:(id)location
 {
-  v14 = a3;
-  v4 = [(SAMonitoringSessionManager *)self lastLocation];
+  locationCopy = location;
+  lastLocation = [(SAMonitoringSessionManager *)self lastLocation];
 
-  if (v4)
+  if (lastLocation)
   {
     v5 = objc_alloc(MEMORY[0x277CE41F8]);
-    v6 = [(SAMonitoringSessionManager *)self lastLocation];
-    [v6 latitude];
+    lastLocation2 = [(SAMonitoringSessionManager *)self lastLocation];
+    [lastLocation2 latitude];
     v8 = v7;
-    v9 = [(SAMonitoringSessionManager *)self lastLocation];
-    [v9 longitude];
+    lastLocation3 = [(SAMonitoringSessionManager *)self lastLocation];
+    [lastLocation3 longitude];
     v11 = [v5 initWithLatitude:v8 longitude:v10];
-    v12 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v13 = [v12 objectForKeyedSubscript:v14];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v13 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:locationCopy];
     [v13 setCaSeparationLocation:v11];
   }
 }
 
-- (void)notifyWhenLeftBehind:(id)a3
+- (void)notifyWhenLeftBehind:(id)behind
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  behindCopy = behind;
   if ([(SAMonitoringSessionManager *)self standby])
   {
     v5 = TASALog;
@@ -3225,23 +3225,23 @@ LABEL_13:
 
   else
   {
-    v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v11 = [v10 objectForKeyedSubscript:v4];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v11 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:behindCopy];
 
     if (v11)
     {
-      v12 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouLocation:v4];
+      v12 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouLocation:behindCopy];
       if (!v12)
       {
-        v13 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v14 = [v13 objectForKeyedSubscript:v4];
-        v15 = [v14 scenarioClassifier];
-        v16 = [v15 lastUnsafeLocation];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v14 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:behindCopy];
+        scenarioClassifier = [v14 scenarioClassifier];
+        lastUnsafeLocation = [scenarioClassifier lastUnsafeLocation];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = v16;
+          v17 = lastUnsafeLocation;
         }
 
         else
@@ -3252,7 +3252,7 @@ LABEL_13:
         v12 = v17;
       }
 
-      [(SAMonitoringSessionManager *)self notifyLeftBehind:v4 withRegion:v12 isEarlyVehicularTrigger:0];
+      [(SAMonitoringSessionManager *)self notifyLeftBehind:behindCopy withRegion:v12 isEarlyVehicularTrigger:0];
     }
 
     else
@@ -3265,7 +3265,7 @@ LABEL_13:
         v22 = 2082;
         v23 = "";
         v24 = 2113;
-        v25 = v4;
+        v25 = behindCopy;
         v6 = "{msg%{public}.0s:#SAMonitoringSessionManager unable to notify when left behind due to no session, uuid:%{private}@}";
         v7 = v18;
         v8 = OS_LOG_TYPE_FAULT;
@@ -3278,10 +3278,10 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyEarlyLeftBehind:(id)a3
+- (void)notifyEarlyLeftBehind:(id)behind
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  behindCopy = behind;
   if ([(SAMonitoringSessionManager *)self standby])
   {
     v5 = TASALog;
@@ -3302,23 +3302,23 @@ LABEL_13:
 
   else
   {
-    v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v11 = [v10 objectForKeyedSubscript:v4];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v11 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:behindCopy];
 
     if (v11)
     {
-      v12 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouLocation:v4];
+      v12 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouLocation:behindCopy];
       if (!v12)
       {
-        v13 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v14 = [v13 objectForKeyedSubscript:v4];
-        v15 = [v14 scenarioClassifier];
-        v16 = [v15 currentUnsafeLocation];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v14 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:behindCopy];
+        scenarioClassifier = [v14 scenarioClassifier];
+        currentUnsafeLocation = [scenarioClassifier currentUnsafeLocation];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = v16;
+          v17 = currentUnsafeLocation;
         }
 
         else
@@ -3329,7 +3329,7 @@ LABEL_13:
         v12 = v17;
       }
 
-      [(SAMonitoringSessionManager *)self notifyLeftBehind:v4 withRegion:v12 isEarlyVehicularTrigger:1];
+      [(SAMonitoringSessionManager *)self notifyLeftBehind:behindCopy withRegion:v12 isEarlyVehicularTrigger:1];
     }
 
     else
@@ -3342,7 +3342,7 @@ LABEL_13:
         v22 = 2082;
         v23 = "";
         v24 = 2113;
-        v25 = v4;
+        v25 = behindCopy;
         v6 = "{msg%{public}.0s:#SAMonitoringSessionManager unable to notify early left behind due to no session, uuid:%{private}@}";
         v7 = v18;
         v8 = OS_LOG_TYPE_FAULT;
@@ -3355,17 +3355,17 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createLocationFromCircularRegion:(id)a3 forDevice:(id)a4 withContext:(unint64_t)a5
+- (id)createLocationFromCircularRegion:(id)region forDevice:(id)device withContext:(unint64_t)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  regionCopy = region;
+  deviceCopy = device;
+  if (!regionCopy)
   {
     goto LABEL_5;
   }
 
-  [v8 radius];
+  [regionCopy radius];
   v11 = 75.0;
   if (v10 >= 75.0)
   {
@@ -3377,11 +3377,11 @@ LABEL_13:
   }
 
   v12 = objc_alloc(MEMORY[0x277CE41F8]);
-  [v8 center];
+  [regionCopy center];
   v14 = v13;
   v16 = v15;
-  v17 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-  v18 = [v12 initWithCoordinate:v17 altitude:objc_msgSend(v8 horizontalAccuracy:"geoReferenceFrame") verticalAccuracy:v14 timestamp:v16 referenceFrame:{0.0, v11, -1.0}];
+  getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+  v18 = [v12 initWithCoordinate:getCurrentTime altitude:objc_msgSend(regionCopy horizontalAccuracy:"geoReferenceFrame") verticalAccuracy:v14 timestamp:v16 referenceFrame:{0.0, v11, -1.0}];
 
   if (!v18)
   {
@@ -3391,13 +3391,13 @@ LABEL_5:
     {
       v20 = MEMORY[0x277CCABB0];
       v21 = v19;
-      v22 = [v20 numberWithUnsignedInteger:a5];
+      v22 = [v20 numberWithUnsignedInteger:context];
       v25[0] = 68289539;
       v25[1] = 0;
       v26 = 2082;
       v27 = "";
       v28 = 2113;
-      v29 = v9;
+      v29 = deviceCopy;
       v30 = 2113;
       v31 = v22;
       _os_log_impl(&dword_2656EA000, v21, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager unable to create/recommend location, uuid:%{private}@, context:%{private}@}", v25, 0x26u);
@@ -3411,18 +3411,18 @@ LABEL_5:
   return v18;
 }
 
-- (void)setSafeLocations:(id)a3 forDeviceUUID:(id)a4
+- (void)setSafeLocations:(id)locations forDeviceUUID:(id)d
 {
   v90 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v6 = a4;
+  locationsCopy = locations;
+  dCopy = d;
   v52 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  v8 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:dCopy];
 
   obj = v8;
   v9 = [v8 countByEnumeratingWithState:&v73 objects:v89 count:16];
@@ -3446,7 +3446,7 @@ LABEL_5:
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v15 = v55;
+        v15 = locationsCopy;
         v16 = [v15 countByEnumeratingWithState:&v69 objects:v88 count:16];
         if (v16)
         {
@@ -3482,9 +3482,9 @@ LABEL_5:
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
         {
           v21 = v20;
-          v22 = [v14 UUIDString];
+          uUIDString = [v14 UUIDString];
           *buf = v51;
-          *v78 = v22;
+          *v78 = uUIDString;
           _os_log_impl(&dword_2656EA000, v21, OS_LOG_TYPE_DEFAULT, "#SAMonitoringSessionManager found removed location, for deviceId, %{private}@", buf, 0xCu);
         }
 
@@ -3518,7 +3518,7 @@ LABEL_18:
           objc_enumerationMutation(v23);
         }
 
-        [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v65 + 1) + 8 * k) forDevice:v6];
+        [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v65 + 1) + 8 * k) forDevice:dCopy];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v65 objects:v87 count:16];
@@ -3534,7 +3534,7 @@ LABEL_18:
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v56 = v55;
+  v56 = locationsCopy;
   v29 = [v56 countByEnumeratingWithState:&v61 objects:v86 count:16];
   if (v29)
   {
@@ -3551,14 +3551,14 @@ LABEL_18:
         }
 
         v33 = *(*(&v61 + 1) + 8 * v32);
-        v34 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-        v35 = [v34 objectForKeyedSubscript:v6];
+        deviceUUIDtoSafeLocationUUIDs2 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+        v35 = [deviceUUIDtoSafeLocationUUIDs2 objectForKeyedSubscript:dCopy];
         v36 = [v35 containsObject:v33];
 
         if ((v36 & 1) == 0)
         {
-          v37 = [(SAMonitoringSessionManager *)self safeLocations];
-          v38 = [v37 objectForKeyedSubscript:v33];
+          safeLocations = [(SAMonitoringSessionManager *)self safeLocations];
+          v38 = [safeLocations objectForKeyedSubscript:v33];
 
           if (v38)
           {
@@ -3570,7 +3570,7 @@ LABEL_18:
             v39 = TASALog;
             if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
             {
-              [(SAMonitoringSessionManager *)v84 setSafeLocations:v39 forDeviceUUID:v6, &v85];
+              [(SAMonitoringSessionManager *)v84 setSafeLocations:v39 forDeviceUUID:dCopy, &v85];
             }
           }
         }
@@ -3604,7 +3604,7 @@ LABEL_18:
           objc_enumerationMutation(v40);
         }
 
-        [(SAMonitoringSessionManager *)self startSafeLocation:*(*(&v57 + 1) + 8 * m) forDevice:v6];
+        [(SAMonitoringSessionManager *)self startSafeLocation:*(*(&v57 + 1) + 8 * m) forDevice:dCopy];
       }
 
       v42 = [v40 countByEnumeratingWithState:&v57 objects:v83 count:16];
@@ -3623,66 +3623,66 @@ LABEL_18:
     *&v78[4] = 2082;
     *&v78[6] = "";
     v79 = 2113;
-    v80 = v6;
+    v80 = dCopy;
     v81 = 2049;
     v82 = v47;
     _os_log_impl(&dword_2656EA000, v46, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager update safe locations, device:%{private}@, count:%{private}ld}", buf, 0x26u);
   }
 
   v48 = [v56 copy];
-  v49 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  [v49 setObject:v48 forKeyedSubscript:v6];
+  deviceUUIDtoSafeLocationUUIDs3 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  [deviceUUIDtoSafeLocationUUIDs3 setObject:v48 forKeyedSubscript:dCopy];
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSafeLocation:(id)a3 forDeviceUUID:(id)a4
+- (void)removeSafeLocation:(id)location forDeviceUUID:(id)d
 {
-  v18 = a3;
-  v6 = a4;
-  if (v18)
+  locationCopy = location;
+  dCopy = d;
+  if (locationCopy)
   {
-    if (v6)
+    if (dCopy)
     {
-      v7 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-      v8 = [v7 objectForKeyedSubscript:v6];
-      v9 = [v8 containsObject:v18];
+      deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+      v8 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:dCopy];
+      v9 = [v8 containsObject:locationCopy];
 
       if (v9)
       {
         v10 = MEMORY[0x277CBEB58];
-        v11 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-        v12 = [v11 objectForKeyedSubscript:v6];
+        deviceUUIDtoSafeLocationUUIDs2 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+        v12 = [deviceUUIDtoSafeLocationUUIDs2 objectForKeyedSubscript:dCopy];
         v13 = [v10 setWithSet:v12];
 
-        v14 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v15 = [v14 objectForKeyedSubscript:v6];
+        deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v15 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
-        v16 = v18;
+        v16 = locationCopy;
         if (v15)
         {
-          [(SAMonitoringSessionManager *)self stopSafeLocation:v18 forDevice:v6];
-          v16 = v18;
+          [(SAMonitoringSessionManager *)self stopSafeLocation:locationCopy forDevice:dCopy];
+          v16 = locationCopy;
         }
 
         [v13 removeObject:v16];
-        v17 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-        [v17 setObject:v13 forKeyedSubscript:v6];
+        deviceUUIDtoSafeLocationUUIDs3 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+        [deviceUUIDtoSafeLocationUUIDs3 setObject:v13 forKeyedSubscript:dCopy];
       }
     }
   }
 }
 
-- (void)removeAndStopSafeLocationsForDeviceUUID:(id)a3
+- (void)removeAndStopSafeLocationsForDeviceUUID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 allObjects];
+  dCopy = d;
+  deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  v6 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:dCopy];
+  allObjects = [v6 allObjects];
 
-  v8 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v9 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
@@ -3690,7 +3690,7 @@ LABEL_18:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v7;
+    v10 = allObjects;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -3706,7 +3706,7 @@ LABEL_18:
             objc_enumerationMutation(v10);
           }
 
-          [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v17 + 1) + 8 * v14++) forDevice:v4, v17];
+          [(SAMonitoringSessionManager *)self stopSafeLocation:*(*(&v17 + 1) + 8 * v14++) forDevice:dCopy, v17];
         }
 
         while (v12 != v14);
@@ -3717,19 +3717,19 @@ LABEL_18:
     }
   }
 
-  v15 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  [v15 setObject:0 forKeyedSubscript:v4];
+  deviceUUIDtoSafeLocationUUIDs2 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  [deviceUUIDtoSafeLocationUUIDs2 setObject:0 forKeyedSubscript:dCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startSafeLocation:(id)a3 forDevice:(id)a4
+- (void)startSafeLocation:(id)location forDevice:(id)device
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAMonitoringSessionManager *)self safeLocations];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  locationCopy = location;
+  deviceCopy = device;
+  safeLocations = [(SAMonitoringSessionManager *)self safeLocations];
+  v9 = [safeLocations objectForKeyedSubscript:locationCopy];
 
   if (!v9)
   {
@@ -3744,9 +3744,9 @@ LABEL_18:
     v28 = 2082;
     v29 = "";
     v30 = 2113;
-    v31 = v6;
+    v31 = locationCopy;
     v32 = 2113;
-    v33 = v7;
+    v33 = deviceCopy;
     v21 = "{msg%{public}.0s:#SAMonitoringSessionManager start location error, location:%{private}@, device:%{private}@}";
     v22 = v20;
     v23 = 38;
@@ -3755,8 +3755,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v11 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   if (!v11)
   {
@@ -3771,7 +3771,7 @@ LABEL_10:
     v28 = 2082;
     v29 = "";
     v30 = 2113;
-    v31 = v7;
+    v31 = deviceCopy;
     v21 = "{msg%{public}.0s:#SAMonitoringSessionManager start location device error, device:%{private}@}";
     v22 = v24;
     v23 = 28;
@@ -3779,8 +3779,8 @@ LABEL_10:
   }
 
   v12 = [SASafeLocationUpdateEvent alloc];
-  v13 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-  v14 = [(SASafeLocationUpdateEvent *)v12 initWithSafeLocation:v9 eventType:0 lastEvent:1 date:v13];
+  getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+  v14 = [(SASafeLocationUpdateEvent *)v12 initWithSafeLocation:v9 eventType:0 lastEvent:1 date:getCurrentTime];
 
   v15 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -3791,30 +3791,30 @@ LABEL_10:
     v28 = 2082;
     v29 = "";
     v30 = 2113;
-    v31 = v6;
+    v31 = locationCopy;
     v32 = 2113;
-    v33 = v7;
+    v33 = deviceCopy;
     v34 = 2049;
-    v35 = [v9 referenceFrame];
+    referenceFrame = [v9 referenceFrame];
     _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager start location, location:%{private}@, device:%{private}@, refFrame:%{private}lu}", &v26, 0x30u);
   }
 
-  v17 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v18 = [v17 objectForKeyedSubscript:v7];
-  v19 = [v18 scenarioClassifier];
-  [v19 ingestTAEvent:v14];
+  deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v18 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:deviceCopy];
+  scenarioClassifier = [v18 scenarioClassifier];
+  [scenarioClassifier ingestTAEvent:v14];
 
 LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopSafeLocation:(id)a3 forDevice:(id)a4
+- (void)stopSafeLocation:(id)location forDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SAMonitoringSessionManager *)self safeLocations];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  locationCopy = location;
+  deviceCopy = device;
+  safeLocations = [(SAMonitoringSessionManager *)self safeLocations];
+  v9 = [safeLocations objectForKeyedSubscript:locationCopy];
 
   if (!v9)
   {
@@ -3829,9 +3829,9 @@ LABEL_11:
     *&v26[4] = 2082;
     *&v26[6] = "";
     *&v26[14] = 2113;
-    *&v26[16] = v6;
+    *&v26[16] = locationCopy;
     v27 = 2113;
-    v28 = v7;
+    v28 = deviceCopy;
     v20 = "{msg%{public}.0s:#SAMonitoringSessionManager stop location error, location:%{private}@, device:%{private}@}";
     v21 = v19;
     v22 = 38;
@@ -3840,8 +3840,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v11 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
   if (!v11)
   {
@@ -3856,7 +3856,7 @@ LABEL_10:
     *&v26[4] = 2082;
     *&v26[6] = "";
     *&v26[14] = 2113;
-    *&v26[16] = v7;
+    *&v26[16] = deviceCopy;
     v20 = "{msg%{public}.0s:#SAMonitoringSessionManager stop location device error, device:%{private}@}";
     v21 = v23;
     v22 = 28;
@@ -3864,39 +3864,39 @@ LABEL_10:
   }
 
   v12 = [SASafeLocationUpdateEvent alloc];
-  v13 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-  v14 = [(SASafeLocationUpdateEvent *)v12 initWithSafeLocation:v9 eventType:1 lastEvent:1 date:v13];
+  getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+  v14 = [(SASafeLocationUpdateEvent *)v12 initWithSafeLocation:v9 eventType:1 lastEvent:1 date:getCurrentTime];
 
   v15 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138478083;
-    *v26 = v6;
+    *v26 = locationCopy;
     *&v26[8] = 2113;
-    *&v26[10] = v7;
+    *&v26[10] = deviceCopy;
     _os_log_impl(&dword_2656EA000, v15, OS_LOG_TYPE_DEFAULT, "#SAMonitoringSessionManager stop location %{private}@ for device %{private}@", &v25, 0x16u);
   }
 
-  v16 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v17 = [v16 objectForKeyedSubscript:v7];
-  v18 = [v17 scenarioClassifier];
-  [v18 ingestTAEvent:v14];
+  deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v17 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:deviceCopy];
+  scenarioClassifier = [v17 scenarioClassifier];
+  [scenarioClassifier ingestTAEvent:v14];
 
 LABEL_11:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDevicesIfNeededPerEvent:(id)a3
+- (void)removeDevicesIfNeededPerEvent:(id)event
 {
   v84 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  eventCopy = event;
   obj = objc_alloc_init(MEMORY[0x277CBEB18]);
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v4 = [(SAMonitoringSessionManager *)self devices];
-  v5 = [v4 countByEnumeratingWithState:&v72 objects:v83 count:16];
+  devices = [(SAMonitoringSessionManager *)self devices];
+  v5 = [devices countByEnumeratingWithState:&v72 objects:v83 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3907,7 +3907,7 @@ LABEL_11:
       {
         if (*v73 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v72 + 1) + 8 * i);
@@ -3915,8 +3915,8 @@ LABEL_11:
         v69 = 0u;
         v70 = 0u;
         v71 = 0u;
-        v10 = [v51 devices];
-        v11 = [v10 countByEnumeratingWithState:&v68 objects:v82 count:16];
+        devices2 = [eventCopy devices];
+        v11 = [devices2 countByEnumeratingWithState:&v68 objects:v82 count:16];
         if (v11)
         {
           v12 = v11;
@@ -3927,7 +3927,7 @@ LABEL_11:
             {
               if (*v69 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(devices2);
               }
 
               if ([*(*(&v68 + 1) + 8 * j) isEqual:v9])
@@ -3937,7 +3937,7 @@ LABEL_11:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v68 objects:v82 count:16];
+            v12 = [devices2 countByEnumeratingWithState:&v68 objects:v82 count:16];
             if (v12)
             {
               continue;
@@ -3951,9 +3951,9 @@ LABEL_11:
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
         {
           v16 = v15;
-          v17 = [v9 UUIDString];
+          uUIDString = [v9 UUIDString];
           *buf = 138477827;
-          v81 = v17;
+          v81 = uUIDString;
           _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEFAULT, "#SAMonitoringSessionManager found unpaired device, clearing deviceId, %{private}@", buf, 0xCu);
         }
 
@@ -3962,7 +3962,7 @@ LABEL_18:
         ;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v72 objects:v83 count:16];
+      v6 = [devices countByEnumeratingWithState:&v72 objects:v83 count:16];
     }
 
     while (v6);
@@ -3988,8 +3988,8 @@ LABEL_18:
         }
 
         v23 = *(*(&v64 + 1) + 8 * k);
-        v24 = [v18 lastObject];
-        [(SAMonitoringSessionManager *)self removeDeviceWithUUID:v23 isLastDeviceEvent:v23 == v24];
+        lastObject = [v18 lastObject];
+        [(SAMonitoringSessionManager *)self removeDeviceWithUUID:v23 isLastDeviceEvent:v23 == lastObject];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v64 objects:v79 count:16];
@@ -3998,11 +3998,11 @@ LABEL_18:
     while (v20);
   }
 
-  v25 = [(SAMonitoringSessionManager *)self devices];
-  [v25 removeObjectsForKeys:v18];
+  devices3 = [(SAMonitoringSessionManager *)self devices];
+  [devices3 removeObjectsForKeys:v18];
 
-  v26 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-  [v26 removeObjectsForKeys:v18];
+  deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+  [deviceUUIDtoSafeLocationUUIDs removeObjectsForKeys:v18];
 
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v60 = 0u;
@@ -4031,8 +4031,8 @@ LABEL_18:
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v33 = [v51 devices];
-        v34 = [v33 countByEnumeratingWithState:&v56 objects:v77 count:16];
+        devices4 = [eventCopy devices];
+        v34 = [devices4 countByEnumeratingWithState:&v56 objects:v77 count:16];
         if (v34)
         {
           v35 = v34;
@@ -4043,7 +4043,7 @@ LABEL_18:
             {
               if (*v57 != v36)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(devices4);
               }
 
               if ([*(*(&v56 + 1) + 8 * n) isEqual:v32])
@@ -4053,7 +4053,7 @@ LABEL_18:
               }
             }
 
-            v35 = [v33 countByEnumeratingWithState:&v56 objects:v77 count:16];
+            v35 = [devices4 countByEnumeratingWithState:&v56 objects:v77 count:16];
             if (v35)
             {
               continue;
@@ -4067,9 +4067,9 @@ LABEL_18:
         if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
         {
           v39 = v38;
-          v40 = [v32 UUIDString];
+          uUIDString2 = [v32 UUIDString];
           *buf = v47;
-          v81 = v40;
+          v81 = uUIDString2;
           _os_log_impl(&dword_2656EA000, v39, OS_LOG_TYPE_DEFAULT, "#SAMonitoringSessionManager found unpaired device in monitoring session record, clearing deviceId, %{private}@", buf, 0xCu);
         }
 
@@ -4115,21 +4115,21 @@ LABEL_44:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDevicesIfNeededPerEvent:(id)a3
+- (void)addDevicesIfNeededPerEvent:(id)event
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = [v4 devices];
+  obj = [eventCopy devices];
   v40 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v40)
   {
     v39 = *v46;
-    v36 = v4;
+    v36 = eventCopy;
     do
     {
       for (i = 0; i != v40; ++i)
@@ -4140,46 +4140,46 @@ LABEL_44:
         }
 
         v6 = *(*(&v45 + 1) + 8 * i);
-        v7 = [v4 devices];
-        v8 = [v7 objectForKeyedSubscript:v6];
+        devices = [eventCopy devices];
+        v8 = [devices objectForKeyedSubscript:v6];
 
-        v9 = [(SAMonitoringSessionManager *)self devices];
-        v10 = [v9 objectForKeyedSubscript:v6];
+        devices2 = [(SAMonitoringSessionManager *)self devices];
+        v10 = [devices2 objectForKeyedSubscript:v6];
 
         if (v10)
         {
           if ([v10 isReallyEqual:v8])
           {
-            v11 = [v4 safeLocations];
-            v12 = [v11 objectForKeyedSubscript:v6];
-            v13 = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
-            v14 = [v13 objectForKeyedSubscript:v6];
+            safeLocations = [eventCopy safeLocations];
+            v12 = [safeLocations objectForKeyedSubscript:v6];
+            deviceUUIDtoSafeLocationUUIDs = [(SAMonitoringSessionManager *)self deviceUUIDtoSafeLocationUUIDs];
+            v14 = [deviceUUIDtoSafeLocationUUIDs objectForKeyedSubscript:v6];
             v15 = [v12 isEqualToSet:v14];
 
-            v4 = v36;
+            eventCopy = v36;
             if (v15)
             {
               goto LABEL_13;
             }
 
-            v16 = [v36 safeLocations];
-            v17 = [v16 objectForKeyedSubscript:v6];
+            safeLocations2 = [v36 safeLocations];
+            v17 = [safeLocations2 objectForKeyedSubscript:v6];
             [(SAMonitoringSessionManager *)self removeSafeLocationsIfNeededPerNewSet:v17 forDevice:v6];
 
-            v18 = [v36 safeLocations];
-            v19 = [v18 objectForKeyedSubscript:v6];
+            safeLocations3 = [v36 safeLocations];
+            v19 = [safeLocations3 objectForKeyedSubscript:v6];
             [(SAMonitoringSessionManager *)self addSafeLocationsIfNeededPerNewSet:v19 forDevice:v6];
           }
 
           else
           {
             [(SAMonitoringSessionManager *)self removeAndStopSafeLocationsForDeviceUUID:v6];
-            v20 = [(SAMonitoringSessionManager *)self devices];
-            v21 = [v10 identifier];
-            [v20 setObject:0 forKeyedSubscript:v21];
+            devices3 = [(SAMonitoringSessionManager *)self devices];
+            identifier = [v10 identifier];
+            [devices3 setObject:0 forKeyedSubscript:identifier];
 
-            v18 = [v4 devices];
-            v19 = [v18 objectForKeyedSubscript:v6];
+            safeLocations3 = [eventCopy devices];
+            v19 = [safeLocations3 objectForKeyedSubscript:v6];
             [v38 addObject:v19];
           }
         }
@@ -4218,14 +4218,14 @@ LABEL_13:
         }
 
         v27 = *(*(&v41 + 1) + 8 * j);
-        v28 = [v22 lastObject];
-        [(SAMonitoringSessionManager *)self addDevice:v27 isLastDeviceEvent:v27 == v28];
+        lastObject = [v22 lastObject];
+        [(SAMonitoringSessionManager *)self addDevice:v27 isLastDeviceEvent:v27 == lastObject];
 
-        v29 = [v4 safeLocations];
-        v30 = [v27 identifier];
-        v31 = [v29 objectForKeyedSubscript:v30];
-        v32 = [v27 identifier];
-        [(SAMonitoringSessionManager *)self setSafeLocations:v31 forDeviceUUID:v32];
+        safeLocations4 = [eventCopy safeLocations];
+        identifier2 = [v27 identifier];
+        v31 = [safeLocations4 objectForKeyedSubscript:identifier2];
+        identifier3 = [v27 identifier];
+        [(SAMonitoringSessionManager *)self setSafeLocations:v31 forDeviceUUID:identifier3];
       }
 
       v24 = [v22 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -4234,8 +4234,8 @@ LABEL_13:
     while (v24);
   }
 
-  v33 = [(SAMonitoringSessionManager *)self devices];
-  v34 = [v33 count];
+  devices4 = [(SAMonitoringSessionManager *)self devices];
+  v34 = [devices4 count];
 
   if (v34)
   {
@@ -4250,28 +4250,28 @@ LABEL_13:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isWithinCurrentVisitOrLOI:(id)a3
+- (BOOL)isWithinCurrentVisitOrLOI:(id)i
 {
   v4 = MEMORY[0x277CE41F8];
-  v5 = a3;
+  iCopy = i;
   v6 = [v4 alloc];
-  [v5 latitude];
+  [iCopy latitude];
   v8 = v7;
-  [v5 longitude];
+  [iCopy longitude];
   v10 = v9;
 
   v11 = [v6 initWithLatitude:v8 longitude:v10];
-  v12 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+  currentVisitOrLOIEvent = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v14 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+  currentVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
   if (isKindOfClass)
   {
     v15 = objc_alloc(MEMORY[0x277CE41F8]);
-    [v14 coordinate];
+    [currentVisitOrLOIEvent2 coordinate];
     v17 = v16;
-    [v14 coordinate];
+    [currentVisitOrLOIEvent2 coordinate];
   }
 
   else
@@ -4285,18 +4285,18 @@ LABEL_13:
       goto LABEL_9;
     }
 
-    v14 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+    currentVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
     v15 = objc_alloc(MEMORY[0x277CE41F8]);
-    [v14 latitude];
+    [currentVisitOrLOIEvent2 latitude];
     v17 = v20;
-    [v14 longitude];
+    [currentVisitOrLOIEvent2 longitude];
     v18 = v21;
   }
 
   v22 = [v15 initWithLatitude:v17 longitude:v18];
   [v22 distanceFromLocation:v11];
   v24 = v23;
-  [v14 horizontalAccuracy];
+  [currentVisitOrLOIEvent2 horizontalAccuracy];
   if (v25 < 100.0)
   {
     v25 = 100.0;
@@ -4308,38 +4308,38 @@ LABEL_9:
   return v26;
 }
 
-- (BOOL)shouldIssueBookendedNotificationBasedOnLocationForDevice:(id)a3
+- (BOOL)shouldIssueBookendedNotificationBasedOnLocationForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v8 = [v5 objectForKeyedSubscript:v4];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v8 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
-  v6 = [v8 trackedTravelingStartLocation];
+  trackedTravelingStartLocation = [v8 trackedTravelingStartLocation];
 
-  v7 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+  currentVisitOrLOIEvent = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
   LOBYTE(v8) = 0;
-  if (v7 && v6)
+  if (currentVisitOrLOIEvent && trackedTravelingStartLocation)
   {
-    LODWORD(v8) = ![(SAMonitoringSessionManager *)self isWithinCurrentVisitOrLOI:v6];
+    LODWORD(v8) = ![(SAMonitoringSessionManager *)self isWithinCurrentVisitOrLOI:trackedTravelingStartLocation];
   }
 
   return v8;
 }
 
-- (BOOL)shouldIssueBookendedNotificationBasedOnTimeForDevice:(id)a3
+- (BOOL)shouldIssueBookendedNotificationBasedOnTimeForDevice:(id)device
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
 
-  v7 = [v6 trackedTravelingStartDate];
-  v8 = [v6 scenarioClassifier];
-  v9 = [v8 scenarioChangeDate];
+  trackedTravelingStartDate = [v6 trackedTravelingStartDate];
+  scenarioClassifier = [v6 scenarioClassifier];
+  scenarioChangeDate = [scenarioClassifier scenarioChangeDate];
 
-  if (v7)
+  if (trackedTravelingStartDate)
   {
-    [v9 timeIntervalSinceDate:v7];
+    [scenarioChangeDate timeIntervalSinceDate:trackedTravelingStartDate];
     v11 = v10 >= 360.0;
   }
 
@@ -4348,9 +4348,9 @@ LABEL_9:
     v11 = 1;
   }
 
-  v12 = [(SAMonitoringSessionManager *)self timeOfAttemptToLoadFromPersistence];
-  v13 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-  [v12 timeIntervalSinceDate:v13];
+  timeOfAttemptToLoadFromPersistence = [(SAMonitoringSessionManager *)self timeOfAttemptToLoadFromPersistence];
+  getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+  [timeOfAttemptToLoadFromPersistence timeIntervalSinceDate:getCurrentTime];
   v15 = v14;
 
   if (v15 < 0.0)
@@ -4358,7 +4358,7 @@ LABEL_9:
     v15 = -v15;
   }
 
-  if (!v7)
+  if (!trackedTravelingStartDate)
   {
     v16 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
@@ -4391,12 +4391,12 @@ LABEL_9:
   return v18;
 }
 
-- (BOOL)shouldIssueBookendedNotificationForDevice:(id)a3
+- (BOOL)shouldIssueBookendedNotificationForDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationBasedOnLocationForDevice:v4];
-  v6 = [(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationBasedOnTimeForDevice:v4];
+  deviceCopy = device;
+  v5 = [(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationBasedOnLocationForDevice:deviceCopy];
+  v6 = [(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationBasedOnTimeForDevice:deviceCopy];
 
   v7 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -4416,55 +4416,55 @@ LABEL_9:
   return v5 && v6;
 }
 
-- (void)ingestTAEvent:(id)a3
+- (void)ingestTAEvent:(id)event
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SAMonitoringSessionManager *)self updateDevicesWithSafeLocations:v4];
+    [(SAMonitoringSessionManager *)self updateDevicesWithSafeLocations:eventCopy];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SAMonitoringSessionManager *)self updateSafeLocations:v4];
+    [(SAMonitoringSessionManager *)self updateSafeLocations:eventCopy];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SAMonitoringSessionManager *)self updateLocation:v4];
+    [(SAMonitoringSessionManager *)self updateLocation:eventCopy];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SAMonitoringSessionManager *)self handleGeofenceEvent:v4];
+    [(SAMonitoringSessionManager *)self handleGeofenceEvent:eventCopy];
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SAMonitoringSessionManager *)self analytics];
+    v5 = eventCopy;
+    analytics = [(SAMonitoringSessionManager *)self analytics];
     [v5 horizontalAccuracy];
-    [v6 addVisit:1 withRadius:v7];
+    [analytics addVisit:1 withRadius:v7];
 
     [(SAMonitoringSessionManager *)self setCurrentVisitOrLOIEvent:v5];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v9 = [v8 allValues];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    allValues = [deviceUUIDtoMonitoringSession allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v10)
     {
       v11 = v10;
@@ -4475,14 +4475,14 @@ LABEL_9:
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
-          v14 = [*(*(&v28 + 1) + 8 * i) scenarioClassifier];
-          [v14 ingestTAEvent:v5];
+          scenarioClassifier = [*(*(&v28 + 1) + 8 * i) scenarioClassifier];
+          [scenarioClassifier ingestTAEvent:v5];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v11);
@@ -4494,7 +4494,7 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
     if (![v5 hasArrivalDate])
     {
       goto LABEL_18;
@@ -4507,19 +4507,19 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    v16 = [(SAMonitoringSessionManager *)self analytics];
+    analytics2 = [(SAMonitoringSessionManager *)self analytics];
     [v5 horizontalAccuracy];
-    [v16 addVisit:0 withRadius:v17];
+    [analytics2 addVisit:0 withRadius:v17];
 
     [(SAMonitoringSessionManager *)self setCurrentVisitOrLOIEvent:v5];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v18 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v9 = [v18 allValues];
+    deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    allValues = [deviceUUIDtoMonitoringSession2 allValues];
 
-    v19 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    v19 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v19)
     {
       v20 = v19;
@@ -4530,14 +4530,14 @@ LABEL_9:
         {
           if (*v25 != v21)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
-          v23 = [*(*(&v24 + 1) + 8 * j) scenarioClassifier];
-          [v23 ingestTAEvent:v5];
+          scenarioClassifier2 = [*(*(&v24 + 1) + 8 * j) scenarioClassifier];
+          [scenarioClassifier2 ingestTAEvent:v5];
         }
 
-        v20 = [v9 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v20 = [allValues countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v20);
@@ -4552,7 +4552,7 @@ LABEL_18:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(SAMonitoringSessionManager *)self handleSystemStateChanged:v4];
+    [(SAMonitoringSessionManager *)self handleSystemStateChanged:eventCopy];
   }
 
   else
@@ -4560,7 +4560,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SAMonitoringSessionManager *)self handleMultiPartStatusEvent:v4];
+      [(SAMonitoringSessionManager *)self handleMultiPartStatusEvent:eventCopy];
     }
   }
 
@@ -4569,24 +4569,24 @@ LABEL_19:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMultiPartStatusEvent:(id)a3
+- (void)handleMultiPartStatusEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 uuid];
+  eventCopy = event;
+  uuid = [eventCopy uuid];
 
-  if (v5)
+  if (uuid)
   {
     deviceRecord = self->_deviceRecord;
-    v7 = [v4 uuid];
-    v8 = [(SADeviceRecord *)deviceRecord getSADevice:v7];
+    uuid2 = [eventCopy uuid];
+    v8 = [(SADeviceRecord *)deviceRecord getSADevice:uuid2];
 
     v9 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v4 uuid];
-      v12 = [v8 name];
+      uuid3 = [eventCopy uuid];
+      name = [v8 name];
       if ([v8 isAirPodsCase])
       {
         v13 = "YES";
@@ -4602,29 +4602,29 @@ LABEL_19:
       v26 = 2082;
       v27 = "";
       v28 = 2113;
-      v29 = v11;
+      v29 = uuid3;
       v30 = 2113;
-      v31 = v12;
+      v31 = name;
       v32 = 2081;
       v33 = v13;
       v34 = 2049;
-      v35 = [v4 relationStatus];
+      relationStatus = [eventCopy relationStatus];
       v36 = 2049;
-      v37 = [v4 maintenanceStatus];
+      maintenanceStatus = [eventCopy maintenanceStatus];
       _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #handleMultiPartStatusEvent multi-part status, uuid:%{private}@, name:%{private}@, isAirPodsCase:%{private}s, relation:%{private}ld, maintenance:%{private}ld}", &v24, 0x44u);
     }
 
     if (v8 && [v8 isAirPodsCase])
     {
-      v14 = [(SAMonitoringSessionManager *)self deviceRecord];
-      v15 = [v4 relationStatus];
-      v16 = [v4 uuid];
-      [v14 updateRelationStatus:v15 forDeviceWithUUID:v16];
+      deviceRecord = [(SAMonitoringSessionManager *)self deviceRecord];
+      relationStatus2 = [eventCopy relationStatus];
+      uuid4 = [eventCopy uuid];
+      [deviceRecord updateRelationStatus:relationStatus2 forDeviceWithUUID:uuid4];
 
-      v17 = [(SAMonitoringSessionManager *)self deviceRecord];
-      v18 = [v4 maintenanceStatus];
-      v19 = [v4 uuid];
-      [v17 updateMaintenanceStatus:v18 forDeviceWithUUID:v19];
+      deviceRecord2 = [(SAMonitoringSessionManager *)self deviceRecord];
+      maintenanceStatus2 = [eventCopy maintenanceStatus];
+      uuid5 = [eventCopy uuid];
+      [deviceRecord2 updateMaintenanceStatus:maintenanceStatus2 forDeviceWithUUID:uuid5];
     }
   }
 
@@ -4634,13 +4634,13 @@ LABEL_19:
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
     {
       v21 = v20;
-      v22 = [v4 uuid];
+      uuid6 = [eventCopy uuid];
       v24 = 68289283;
       v25 = 0;
       v26 = 2082;
       v27 = "";
       v28 = 2113;
-      v29 = v22;
+      v29 = uuid6;
       _os_log_impl(&dword_2656EA000, v21, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #handleMultiPartStatusEvent event uuid nil, uuid:%{private}@}", &v24, 0x1Cu);
     }
   }
@@ -4648,44 +4648,44 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDevicesWithSafeLocations:(id)a3
+- (void)updateDevicesWithSafeLocations:(id)locations
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationsCopy = locations;
   v5 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 devices];
+    devices = [locationsCopy devices];
     v9[0] = 68289283;
     v9[1] = 0;
     v10 = 2082;
     v11 = "";
     v12 = 2049;
-    v13 = [v7 count];
+    v13 = [devices count];
     _os_log_impl(&dword_2656EA000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager update devices, count:%{private}ld}", v9, 0x1Cu);
   }
 
-  [(SAMonitoringSessionManager *)self removeDevicesIfNeededPerEvent:v4];
-  [(SAMonitoringSessionManager *)self addDevicesIfNeededPerEvent:v4];
+  [(SAMonitoringSessionManager *)self removeDevicesIfNeededPerEvent:locationsCopy];
+  [(SAMonitoringSessionManager *)self addDevicesIfNeededPerEvent:locationsCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)computeRemovedSafeLocations:(id)a3
+- (id)computeRemovedSafeLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self safeLocations];
-  if (v5 && (v6 = v5, -[SAMonitoringSessionManager safeLocations](self, "safeLocations"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, v8))
+  locationsCopy = locations;
+  safeLocations = [(SAMonitoringSessionManager *)self safeLocations];
+  if (safeLocations && (v6 = safeLocations, -[SAMonitoringSessionManager safeLocations](self, "safeLocations"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, v8))
   {
     v9 = MEMORY[0x277CBEB58];
-    v10 = [(SAMonitoringSessionManager *)self safeLocations];
-    v11 = [v10 allKeys];
-    v12 = [v9 setWithArray:v11];
+    safeLocations2 = [(SAMonitoringSessionManager *)self safeLocations];
+    allKeys = [safeLocations2 allKeys];
+    v12 = [v9 setWithArray:allKeys];
 
-    if (v4 && [v4 count])
+    if (locationsCopy && [locationsCopy count])
     {
-      [v12 minusSet:v4];
+      [v12 minusSet:locationsCopy];
     }
   }
 
@@ -4697,20 +4697,20 @@ LABEL_19:
   return v12;
 }
 
-- (void)updateSafeLocations:(id)a3
+- (void)updateSafeLocations:(id)locations
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationsCopy = locations;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [v4 safeLocations];
-  v7 = [v6 allKeys];
-  v8 = [v5 setWithArray:v7];
+  safeLocations = [locationsCopy safeLocations];
+  allKeys = [safeLocations allKeys];
+  v8 = [v5 setWithArray:allKeys];
   v9 = [(SAMonitoringSessionManager *)self computeRemovedSafeLocations:v8];
 
   if ([v9 count])
   {
     v29 = v9;
-    v30 = v4;
+    v30 = locationsCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
@@ -4737,9 +4737,9 @@ LABEL_19:
           v33 = 0u;
           v34 = 0u;
           v16 = [(SAMonitoringSessionManager *)self devices:v29];
-          v17 = [v16 allKeys];
+          allKeys2 = [v16 allKeys];
 
-          v18 = [v17 countByEnumeratingWithState:&v31 objects:v45 count:16];
+          v18 = [allKeys2 countByEnumeratingWithState:&v31 objects:v45 count:16];
           if (v18)
           {
             v19 = v18;
@@ -4751,14 +4751,14 @@ LABEL_19:
               {
                 if (*v32 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 [(SAMonitoringSessionManager *)self removeSafeLocation:v15 forDeviceUUID:*(*(&v31 + 1) + 8 * v21++)];
               }
 
               while (v19 != v21);
-              v19 = [v17 countByEnumeratingWithState:&v31 objects:v45 count:16];
+              v19 = [allKeys2 countByEnumeratingWithState:&v31 objects:v45 count:16];
             }
 
             while (v19);
@@ -4775,15 +4775,15 @@ LABEL_19:
     }
 
     v9 = v29;
-    v4 = v30;
+    locationsCopy = v30;
   }
 
   v22 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v23 = v22;
-    v24 = [v4 safeLocations];
-    v25 = [v24 count];
+    safeLocations2 = [locationsCopy safeLocations];
+    v25 = [safeLocations2 count];
     *buf = 68289283;
     v40 = 0;
     v41 = 2082;
@@ -4793,26 +4793,26 @@ LABEL_19:
     _os_log_impl(&dword_2656EA000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager update safe locations, count:%{private}ld}", buf, 0x1Cu);
   }
 
-  v26 = [v4 safeLocations];
-  v27 = [v26 copy];
+  safeLocations3 = [locationsCopy safeLocations];
+  v27 = [safeLocations3 copy];
   [(SAMonitoringSessionManager *)self setSafeLocations:v27];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locationCopy = location;
   p_lastLocation = &self->_lastLocation;
   lastLocation = self->_lastLocation;
   if (lastLocation)
   {
-    v8 = [(TALocationLite *)lastLocation getDate];
-    v9 = [v5 getDate];
-    v10 = [v8 compare:v9] == 0;
+    getDate = [(TALocationLite *)lastLocation getDate];
+    getDate2 = [locationCopy getDate];
+    v10 = [getDate compare:getDate2] == 0;
 
-    if (!v5)
+    if (!locationCopy)
     {
 LABEL_9:
       v13 = TASALog;
@@ -4821,7 +4821,7 @@ LABEL_9:
         v14 = *p_lastLocation;
         v15 = v13;
         v16 = [(TALocationLite *)v14 description];
-        v17 = [v5 description];
+        v17 = [locationCopy description];
         buf = 68289539;
         v46 = 2082;
         v47 = "";
@@ -4839,20 +4839,20 @@ LABEL_9:
   else
   {
     v10 = 0;
-    if (!v5)
+    if (!locationCopy)
     {
       goto LABEL_9;
     }
   }
 
-  [v5 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v12 = v11 >= 70.0 || v10;
   if (v12 == 1)
   {
     goto LABEL_9;
   }
 
-  objc_storeStrong(&self->_lastLocation, a3);
+  objc_storeStrong(&self->_lastLocation, location);
   v18 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
@@ -4867,8 +4867,8 @@ LABEL_9:
     _os_log_impl(&dword_2656EA000, v20, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager updateLocation updated, lastLocation:%{sensitive}@}", &buf, 0x1Cu);
   }
 
-  v22 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
-  v23 = [v22 count];
+  devicesWithToBePopulatedTrackedTravelingStartLocation = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
+  v23 = [devicesWithToBePopulatedTrackedTravelingStartLocation count];
 
   if (v23)
   {
@@ -4883,14 +4883,14 @@ LABEL_9:
       _os_log_impl(&dword_2656EA000, v24, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager updateLocation populating tracked traveling start location, device count:%{private}lu}", &buf, 0x1Cu);
     }
 
-    v25 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
-    v26 = [v25 allObjects];
+    devicesWithToBePopulatedTrackedTravelingStartLocation2 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
+    allObjects = [devicesWithToBePopulatedTrackedTravelingStartLocation2 allObjects];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v27 = v26;
+    v27 = allObjects;
     v28 = [v27 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v28)
     {
@@ -4922,10 +4922,10 @@ LABEL_9:
 
           v35 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession:v39];
           v36 = [v35 objectForKeyedSubscript:v33];
-          [v36 setTrackedTravelingStartLocation:v5];
+          [v36 setTrackedTravelingStartLocation:locationCopy];
 
-          v37 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
-          [v37 removeObject:v33];
+          devicesWithToBePopulatedTrackedTravelingStartLocation3 = [(SAMonitoringSessionManager *)self devicesWithToBePopulatedTrackedTravelingStartLocation];
+          [devicesWithToBePopulatedTrackedTravelingStartLocation3 removeObject:v33];
 
           ++v32;
         }
@@ -4943,27 +4943,27 @@ LABEL_26:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleGeofenceEvent:(id)a3
+- (void)handleGeofenceEvent:(id)event
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!eventCopy)
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 region];
-  if (!v6)
+  region = [eventCopy region];
+  if (!region)
   {
     goto LABEL_14;
   }
 
-  v7 = v6;
-  v8 = [v5 region];
-  v9 = [v8 identifier];
+  v7 = region;
+  region2 = [v5 region];
+  identifier = [region2 identifier];
 
-  if (v9)
+  if (identifier)
   {
     v10 = TASALog;
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -4980,25 +4980,25 @@ LABEL_26:
     }
 
     v13 = objc_alloc(MEMORY[0x277CCAD78]);
-    v14 = [v5 region];
-    v15 = [v14 identifier];
-    v16 = [v13 initWithUUIDString:v15];
+    region3 = [v5 region];
+    identifier2 = [region3 identifier];
+    v16 = [v13 initWithUUIDString:identifier2];
 
-    v17 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v18 = [v17 objectForKeyedSubscript:v16];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v18 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:v16];
 
     if (v18)
     {
-      v19 = [v5 eventType];
-      if (v19 == 2 || v19 == 4)
+      eventType = [v5 eventType];
+      if (eventType == 2 || eventType == 4)
       {
-        v27 = [v18 geofence];
+        geofence = [v18 geofence];
 
-        if (v27)
+        if (geofence)
         {
-          v28 = [(SAMonitoringSessionManager *)self fenceRequestServicer];
-          v29 = [v18 geofence];
-          [v28 removeGeofence:v29];
+          fenceRequestServicer = [(SAMonitoringSessionManager *)self fenceRequestServicer];
+          geofence2 = [v18 geofence];
+          [fenceRequestServicer removeGeofence:geofence2];
         }
 
         if ([v18 state] == 3)
@@ -5022,11 +5022,11 @@ LABEL_26:
         }
       }
 
-      else if (v19 == 6)
+      else if (eventType == 6)
       {
-        v20 = [v18 geofence];
+        geofence3 = [v18 geofence];
 
-        if (v20)
+        if (geofence3)
         {
           [v18 setGeofence:0];
         }
@@ -5084,8 +5084,8 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v4 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5097,18 +5097,18 @@ LABEL_14:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(deviceUUIDtoMonitoringSession);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
-        v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v10 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v8];
 
         if ([v10 state] == 1)
         {
-          v11 = [v10 firstNotWithYouLocation];
+          firstNotWithYouLocation = [v10 firstNotWithYouLocation];
 
-          if (v11)
+          if (firstNotWithYouLocation)
           {
             if ([(SAMonitoringSessionManager *)self addTravelFenceForDevice:v8])
             {
@@ -5121,7 +5121,7 @@ LABEL_14:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [deviceUUIDtoMonitoringSession countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -5130,7 +5130,7 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDisableReason:(unint64_t)a3
+- (void)removeDisableReason:(unint64_t)reason
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = TASALog;
@@ -5141,14 +5141,14 @@ LABEL_14:
     v10 = 2082;
     v11 = "";
     v12 = 2049;
-    v13 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_2656EA000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager removeDisableReason, reason:%{private}lu}", v9, 0x1Cu);
   }
 
   disabledReasons = self->_disabledReasons;
-  if ((disabledReasons & a3) != 0)
+  if ((disabledReasons & reason) != 0)
   {
-    v7 = disabledReasons & ~a3;
+    v7 = disabledReasons & ~reason;
     self->_disabledReasons = v7;
     if (!v7)
     {
@@ -5159,7 +5159,7 @@ LABEL_14:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDisableReason:(unint64_t)a3
+- (void)addDisableReason:(unint64_t)reason
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = TASALog;
@@ -5170,111 +5170,111 @@ LABEL_14:
     v9 = 2082;
     v10 = "";
     v11 = 2049;
-    v12 = a3;
+    reasonCopy = reason;
     _os_log_impl(&dword_2656EA000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager addDisableReason, reason:%{private}lu}", v8, 0x1Cu);
   }
 
   disabledReasons = self->_disabledReasons;
-  if ((disabledReasons & a3) == 0)
+  if ((disabledReasons & reason) == 0)
   {
-    if (a3 && !disabledReasons)
+    if (reason && !disabledReasons)
     {
       [(SAMonitoringSessionManager *)self setEnabled:0];
       disabledReasons = self->_disabledReasons;
     }
 
-    self->_disabledReasons = disabledReasons | a3;
+    self->_disabledReasons = disabledReasons | reason;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSystemStateChanged:(id)a3
+- (void)handleSystemStateChanged:(id)changed
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   isInAirplaneMode = self->_isInAirplaneMode;
-  v6 = [v4 systemStateType];
-  if (v6 > 7)
+  systemStateType = [changedCopy systemStateType];
+  if (systemStateType > 7)
   {
-    switch(v6)
+    switch(systemStateType)
     {
       case 16:
-        -[SAMonitoringSessionManager setIsCompanionConnected:](self, "setIsCompanionConnected:", [v4 isOn]);
+        -[SAMonitoringSessionManager setIsCompanionConnected:](self, "setIsCompanionConnected:", [changedCopy isOn]);
         break;
       case 11:
-        if ([v4 isOn])
+        if ([changedCopy isOn])
         {
-          v24 = [(SAMonitoringSessionManager *)self timeOfAttemptToLoadFromPersistence];
+          timeOfAttemptToLoadFromPersistence = [(SAMonitoringSessionManager *)self timeOfAttemptToLoadFromPersistence];
 
-          if (!v24)
+          if (!timeOfAttemptToLoadFromPersistence)
           {
-            v25 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-            [(SAMonitoringSessionManager *)self setTimeOfAttemptToLoadFromPersistence:v25];
+            getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+            [(SAMonitoringSessionManager *)self setTimeOfAttemptToLoadFromPersistence:getCurrentTime];
 
-            v26 = [(SAMonitoringSessionManager *)self persistenceManager];
-            v27 = [v26 load];
+            persistenceManager = [(SAMonitoringSessionManager *)self persistenceManager];
+            load = [persistenceManager load];
 
-            if (v27)
+            if (load)
             {
-              v28 = [(SAMonitoringSessionManager *)self persistenceManager];
-              v29 = [v28 store];
-              v30 = [v29 monitoringSessionRecord];
-              [(SAMonitoringSessionManager *)self setDeviceUUIDtoMonitoringSession:v30];
+              persistenceManager2 = [(SAMonitoringSessionManager *)self persistenceManager];
+              store = [persistenceManager2 store];
+              monitoringSessionRecord = [store monitoringSessionRecord];
+              [(SAMonitoringSessionManager *)self setDeviceUUIDtoMonitoringSession:monitoringSessionRecord];
 
-              v31 = [(SAMonitoringSessionManager *)self persistenceManager];
-              v32 = [v31 store];
-              v33 = [v32 monitoringSessionRecord];
-              [(SAMonitoringSessionManager *)self bootstrapMonitoringSessionRecord:v33];
+              persistenceManager3 = [(SAMonitoringSessionManager *)self persistenceManager];
+              store2 = [persistenceManager3 store];
+              monitoringSessionRecord2 = [store2 monitoringSessionRecord];
+              [(SAMonitoringSessionManager *)self bootstrapMonitoringSessionRecord:monitoringSessionRecord2];
             }
           }
 
-          v7 = self;
+          selfCopy7 = self;
           v8 = 128;
           goto LABEL_38;
         }
 
-        v34 = self;
+        selfCopy8 = self;
         v35 = 128;
         goto LABEL_43;
       case 8:
-        if ([v4 isOn])
+        if ([changedCopy isOn])
         {
-          v7 = self;
+          selfCopy7 = self;
           v8 = 1;
           goto LABEL_38;
         }
 
-        v34 = self;
+        selfCopy8 = self;
         v35 = 1;
 LABEL_43:
-        [(SAMonitoringSessionManager *)v34 addDisableReason:v35];
+        [(SAMonitoringSessionManager *)selfCopy8 addDisableReason:v35];
         break;
     }
   }
 
   else
   {
-    switch(v6)
+    switch(systemStateType)
     {
       case 3:
-        -[SAMonitoringSessionManager setIsInAirplaneMode:](self, "setIsInAirplaneMode:", [v4 isOn]);
+        -[SAMonitoringSessionManager setIsInAirplaneMode:](self, "setIsInAirplaneMode:", [changedCopy isOn]);
         if (![(SAMonitoringSessionManager *)self standby])
         {
-          if (isInAirplaneMode && ([v4 isOn] & 1) == 0)
+          if (isInAirplaneMode && ([changedCopy isOn] & 1) == 0)
           {
             [(SAMonitoringSessionManager *)self setUpTravelingGeofencesOnAirplaneModeToggleOffIfNeeded];
           }
 
           v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-          v11 = [v10 allKeys];
+          deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+          allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v12 = v11;
+          v12 = allKeys;
           v13 = [v12 countByEnumeratingWithState:&v37 objects:v47 count:16];
           if (v13)
           {
@@ -5291,8 +5291,8 @@ LABEL_43:
                 }
 
                 v17 = *(*(&v37 + 1) + 8 * v16);
-                v18 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-                v19 = [v18 objectForKeyedSubscript:v17];
+                deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+                v19 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v17];
 
                 if ([v19 state] == 1)
                 {
@@ -5326,34 +5326,34 @@ LABEL_43:
               _os_log_impl(&dword_2656EA000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting terminable long aggressive scan on Airplane Mode toggle, count of devices to find:%{private}ld}", buf, 0x1Cu);
             }
 
-            v23 = [(SAMonitoringSessionManager *)self withYouDetector];
-            [v23 forceUpdateWithYouStatusToFindDevices:v9 withContext:6];
+            withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+            [withYouDetector forceUpdateWithYouStatusToFindDevices:v9 withContext:6];
           }
         }
 
         break;
       case 5:
-        if ([v4 isOn])
+        if ([changedCopy isOn])
         {
-          v7 = self;
+          selfCopy7 = self;
           v8 = 2;
           goto LABEL_38;
         }
 
-        v34 = self;
+        selfCopy8 = self;
         v35 = 2;
         goto LABEL_43;
       case 6:
-        if ([v4 isOn])
+        if ([changedCopy isOn])
         {
-          v7 = self;
+          selfCopy7 = self;
           v8 = 4;
 LABEL_38:
-          [(SAMonitoringSessionManager *)v7 removeDisableReason:v8];
+          [(SAMonitoringSessionManager *)selfCopy7 removeDisableReason:v8];
           break;
         }
 
-        v34 = self;
+        selfCopy8 = self;
         v35 = 4;
         goto LABEL_43;
     }
@@ -5362,26 +5362,26 @@ LABEL_38:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeScenarioClassFrom:(unint64_t)a3 to:(unint64_t)a4 forDevice:(id)a5
+- (void)didChangeScenarioClassFrom:(unint64_t)from to:(unint64_t)to forDevice:(id)device
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v10 = [v9 objectForKeyedSubscript:v8];
-  v11 = [v10 state];
+  deviceCopy = device;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v10 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:deviceCopy];
+  state = [v10 state];
 
-  if (v11 != 6)
+  if (state != 6)
   {
-    v13 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v14 = [v13 objectForKeyedSubscript:v8];
-    v15 = [v14 scenario];
+    deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v14 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:deviceCopy];
+    scenario = [v14 scenario];
 
-    if (v15 == a4)
+    if (scenario == to)
     {
       goto LABEL_63;
     }
 
-    if (a3 == 3)
+    if (from == 3)
     {
       v16 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
@@ -5391,12 +5391,12 @@ LABEL_38:
         v65 = 2082;
         v66 = "";
         v67 = 2113;
-        v68 = v8;
+        v68 = deviceCopy;
         _os_log_impl(&dword_2656EA000, v16, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager end current traveling session, uuid:%{private}@}", buf, 0x1Cu);
       }
 
-      v17 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v18 = [v17 objectForKeyedSubscript:v8];
+      deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v18 = [deviceUUIDtoMonitoringSession3 objectForKeyedSubscript:deviceCopy];
       [v18 setLastAlertDateInCurrentTravelingSession:0];
     }
 
@@ -5404,9 +5404,9 @@ LABEL_38:
     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:[(SAMonitoringSessionManager *)self stateForDeviceUUID:v8]];
-      v22 = [SAScenarioClassifier convertSAScenarioClassToString:a3];
-      v23 = [SAScenarioClassifier convertSAScenarioClassToString:a4];
+      v21 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:[(SAMonitoringSessionManager *)self stateForDeviceUUID:deviceCopy]];
+      v22 = [SAScenarioClassifier convertSAScenarioClassToString:from];
+      v23 = [SAScenarioClassifier convertSAScenarioClassToString:to];
       *buf = 68290051;
       v65 = 2082;
       v66 = "";
@@ -5417,27 +5417,27 @@ LABEL_38:
       v71 = 2113;
       v72 = v23;
       v73 = 2113;
-      v74 = v8;
+      v74 = deviceCopy;
       _os_log_impl(&dword_2656EA000, v20, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager didChangeScenarioClass, sessionState:%{private}@, fromScenario:%{private}@, toScenario:%{private}@, uuid:%{private}@}", buf, 0x3Au);
     }
 
-    v24 = [(SAMonitoringSessionManager *)self deviceRecord];
-    [v24 updateScenario:a4 forDeviceWithUUID:v8];
+    deviceRecord = [(SAMonitoringSessionManager *)self deviceRecord];
+    [deviceRecord updateScenario:to forDeviceWithUUID:deviceCopy];
 
-    v25 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v26 = [v25 objectForKeyedSubscript:v8];
-    [v26 setScenario:a4];
+    deviceUUIDtoMonitoringSession4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v26 = [deviceUUIDtoMonitoringSession4 objectForKeyedSubscript:deviceCopy];
+    [v26 setScenario:to];
 
-    v27 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v28 = [v27 objectForKeyedSubscript:v8];
-    v29 = [v28 state];
+    deviceUUIDtoMonitoringSession5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v28 = [deviceUUIDtoMonitoringSession5 objectForKeyedSubscript:deviceCopy];
+    state2 = [v28 state];
 
-    v30 = [(SAMonitoringSessionManager *)self withYouDetector];
-    v31 = [v30 statusForDeviceWithUUID:v8];
+    withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+    v31 = [withYouDetector statusForDeviceWithUUID:deviceCopy];
 
-    if (a4 - 2 >= 3 && a4)
+    if (to - 2 >= 3 && to)
     {
-      if (a4 != 1)
+      if (to != 1)
       {
         goto LABEL_62;
       }
@@ -5450,7 +5450,7 @@ LABEL_38:
         v65 = 2082;
         v66 = "";
         v67 = 2113;
-        v68 = v8;
+        v68 = deviceCopy;
         _os_log_impl(&dword_2656EA000, v32, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#SAMonitoringSessionManager not requesting aggressive scan, entering safe location for device, uuid:%{private}@}", buf, 0x1Cu);
       }
 
@@ -5464,17 +5464,17 @@ LABEL_38:
         v33 = 2;
       }
 
-      [(SAMonitoringSessionManager *)self updatedWithYouStatusFrom:v33 to:v33 forDeviceWithUUID:v8];
+      [(SAMonitoringSessionManager *)self updatedWithYouStatusFrom:v33 to:v33 forDeviceWithUUID:deviceCopy];
       goto LABEL_57;
     }
 
-    switch(a3)
+    switch(from)
     {
       case 3uLL:
-        v45 = [(SAMonitoringSessionManager *)self standby];
+        standby = [(SAMonitoringSessionManager *)self standby];
         v46 = TASALog;
         v47 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-        if (!v45 && (v29 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+        if (!standby && (state2 & 0xFFFFFFFFFFFFFFFDLL) == 1)
         {
           if (v47)
           {
@@ -5483,14 +5483,14 @@ LABEL_38:
             v65 = 2082;
             v66 = "";
             v67 = 2113;
-            v68 = v8;
+            v68 = deviceCopy;
             _os_log_impl(&dword_2656EA000, v46, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting a terminable long aggressive scan to find tracked device when ending traveling scenario, uuid:%{private}@}", buf, 0x1Cu);
           }
 
-          v36 = [(SAMonitoringSessionManager *)self withYouDetector];
-          v62 = v8;
+          withYouDetector2 = [(SAMonitoringSessionManager *)self withYouDetector];
+          v62 = deviceCopy;
           v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
-          v42 = v36;
+          v42 = withYouDetector2;
           v43 = v41;
           v44 = 2;
           goto LABEL_36;
@@ -5503,18 +5503,18 @@ LABEL_38:
           v65 = 2082;
           v66 = "";
           v67 = 2113;
-          v68 = v8;
+          v68 = deviceCopy;
           _os_log_impl(&dword_2656EA000, v46, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting short aggressive scan, ending traveling scenario and device is not tracked, uuid:%{private}@}", buf, 0x1Cu);
         }
 
-        v36 = [(SAMonitoringSessionManager *)self withYouDetector];
-        v48 = [(SAMonitoringSessionManager *)self isAnyTrackedWhileTraveling];
+        withYouDetector2 = [(SAMonitoringSessionManager *)self withYouDetector];
+        isAnyTrackedWhileTraveling = [(SAMonitoringSessionManager *)self isAnyTrackedWhileTraveling];
         break;
       case 2uLL:
-        v38 = [(SAMonitoringSessionManager *)self standby];
+        standby2 = [(SAMonitoringSessionManager *)self standby];
         v39 = TASALog;
         v40 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-        if (!v38 && v29 == 5)
+        if (!standby2 && state2 == 5)
         {
           if (v40)
           {
@@ -5523,14 +5523,14 @@ LABEL_38:
             v65 = 2082;
             v66 = "";
             v67 = 2113;
-            v68 = v8;
+            v68 = deviceCopy;
             _os_log_impl(&dword_2656EA000, v39, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting a terminable long aggressive scan to find tracked device when exiting unsafe location, uuid:%{private}@}", buf, 0x1Cu);
           }
 
-          v36 = [(SAMonitoringSessionManager *)self withYouDetector];
-          v63 = v8;
+          withYouDetector2 = [(SAMonitoringSessionManager *)self withYouDetector];
+          v63 = deviceCopy;
           v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-          v42 = v36;
+          v42 = withYouDetector2;
           v43 = v41;
           v44 = 1;
 LABEL_36:
@@ -5538,9 +5538,9 @@ LABEL_36:
 
 LABEL_45:
 LABEL_46:
-          if (a4 <= 1)
+          if (to <= 1)
           {
-            if (a4)
+            if (to)
             {
 LABEL_57:
               if ([(SAMonitoringSessionManager *)self allDevicesInSafeLocation])
@@ -5548,11 +5548,11 @@ LABEL_57:
                 v56 = 0;
                 v57 = 1;
 LABEL_60:
-                v58 = [(SAMonitoringSessionManager *)self analytics];
-                [v58 setInTravelState:0];
+                analytics = [(SAMonitoringSessionManager *)self analytics];
+                [analytics setInTravelState:0];
 
-                v59 = [(SAMonitoringSessionManager *)self analytics];
-                [v59 setInSafeLocationState:v57];
+                analytics2 = [(SAMonitoringSessionManager *)self analytics];
+                [analytics2 setInSafeLocationState:v57];
 
                 goto LABEL_61;
               }
@@ -5565,53 +5565,53 @@ LABEL_62:
 
           else
           {
-            if (a4 == 2)
+            if (to == 2)
             {
               v57 = 0;
               v56 = 1;
               goto LABEL_60;
             }
 
-            if (a4 != 4)
+            if (to != 4)
             {
-              v49 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+              currentVisitOrLOIEvent = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
 
-              if (v49)
+              if (currentVisitOrLOIEvent)
               {
                 v50 = TASALog;
                 if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
                 {
                   v51 = v50;
-                  v52 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+                  currentVisitOrLOIEvent2 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
                   *buf = 68289283;
                   *&buf[4] = 0;
                   v65 = 2082;
                   v66 = "";
                   v67 = 2117;
-                  v68 = v52;
+                  v68 = currentVisitOrLOIEvent2;
                   _os_log_impl(&dword_2656EA000, v51, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager removing currentVisitOrLOIEvent due to scenario change, currentVisitOrLOIEvent:%{sensitive}@}", buf, 0x1Cu);
                 }
 
-                v53 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
-                [(SAMonitoringSessionManager *)self setPreviousVisitOrLOIEvent:v53];
+                currentVisitOrLOIEvent3 = [(SAMonitoringSessionManager *)self currentVisitOrLOIEvent];
+                [(SAMonitoringSessionManager *)self setPreviousVisitOrLOIEvent:currentVisitOrLOIEvent3];
 
                 [(SAMonitoringSessionManager *)self setCurrentVisitOrLOIEvent:0];
               }
 
-              v54 = [(SAMonitoringSessionManager *)self analytics];
-              [v54 setInTravelState:1];
+              analytics3 = [(SAMonitoringSessionManager *)self analytics];
+              [analytics3 setInTravelState:1];
             }
           }
 
-          v55 = [(SAMonitoringSessionManager *)self analytics];
-          [v55 setInSafeLocationState:0];
+          analytics4 = [(SAMonitoringSessionManager *)self analytics];
+          [analytics4 setInSafeLocationState:0];
 
           if (![(SAMonitoringSessionManager *)self anyDeviceInUnsafeLocation])
           {
             v56 = 0;
 LABEL_61:
-            v60 = [(SAMonitoringSessionManager *)self analytics];
-            [v60 setInUnsafeLocationState:v56];
+            analytics5 = [(SAMonitoringSessionManager *)self analytics];
+            [analytics5 setInUnsafeLocationState:v56];
 
             goto LABEL_62;
           }
@@ -5626,12 +5626,12 @@ LABEL_61:
           v65 = 2082;
           v66 = "";
           v67 = 2113;
-          v68 = v8;
+          v68 = deviceCopy;
           _os_log_impl(&dword_2656EA000, v39, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting short aggressive scan, exiting unsafe location and device is not tracked, uuid:%{private}@}", buf, 0x1Cu);
         }
 
-        v36 = [(SAMonitoringSessionManager *)self withYouDetector];
-        v48 = [(SAMonitoringSessionManager *)self isAnyInTrackedInUnsafeLocation];
+        withYouDetector2 = [(SAMonitoringSessionManager *)self withYouDetector];
+        isAnyTrackedWhileTraveling = [(SAMonitoringSessionManager *)self isAnyInTrackedInUnsafeLocation];
         break;
       case 1uLL:
         v34 = TASALog;
@@ -5642,22 +5642,22 @@ LABEL_61:
           v65 = 2082;
           v66 = "";
           v67 = 2113;
-          v68 = v8;
+          v68 = deviceCopy;
           _os_log_impl(&dword_2656EA000, v34, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting short aggressive scan, exiting safe location for device, uuid:%{private}@}", buf, 0x1Cu);
         }
 
-        v35 = [(SAMonitoringSessionManager *)self withYouDetector];
-        v36 = v35;
+        withYouDetector3 = [(SAMonitoringSessionManager *)self withYouDetector];
+        withYouDetector2 = withYouDetector3;
         v37 = 0;
         goto LABEL_44;
       default:
         goto LABEL_46;
     }
 
-    v37 = v48;
-    v35 = v36;
+    v37 = isAnyTrackedWhileTraveling;
+    withYouDetector3 = withYouDetector2;
 LABEL_44:
-    [v35 forceUpdateWithYouStatusWithShortScan:v37];
+    [withYouDetector3 forceUpdateWithYouStatusWithShortScan:v37];
     goto LABEL_45;
   }
 
@@ -5683,8 +5683,8 @@ LABEL_63:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -5694,7 +5694,7 @@ LABEL_63:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) state] == 5)
@@ -5704,7 +5704,7 @@ LABEL_63:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -5727,8 +5727,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allValues];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allValues];
+  v3 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -5739,7 +5739,7 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -5750,7 +5750,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 0;
       if (v4)
       {
@@ -5772,101 +5772,101 @@ LABEL_13:
   return v8;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self clients];
-  [v5 addObject:v4];
+  clientCopy = client;
+  clients = [(SAMonitoringSessionManager *)self clients];
+  [clients addObject:clientCopy];
 
   [(SAMonitoringSessionManager *)self configureBackgroundScanning];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self clients];
-  [v5 removeObject:v4];
+  clientCopy = client;
+  clients = [(SAMonitoringSessionManager *)self clients];
+  [clients removeObject:clientCopy];
 }
 
-- (unint64_t)stateForDeviceUUID:(id)a3
+- (unint64_t)stateForDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [v6 state];
+    state = [v6 state];
   }
 
   else
   {
-    v7 = 0;
+    state = 0;
   }
 
-  return v7;
+  return state;
 }
 
-- (unint64_t)scenarioClassForDeviceUUID:(id)a3
+- (unint64_t)scenarioClassForDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [v6 scenario];
+    scenario = [v6 scenario];
   }
 
   else
   {
-    v7 = 0;
+    scenario = 0;
   }
 
-  return v7;
+  return scenario;
 }
 
-- (int64_t)earlyVehicularTriggerForDeviceUUID:(id)a3
+- (int64_t)earlyVehicularTriggerForDeviceUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v6 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [v6 earlyVehicularTrigger];
+    earlyVehicularTrigger = [v6 earlyVehicularTrigger];
   }
 
   else
   {
-    v7 = -1;
+    earlyVehicularTrigger = -1;
   }
 
-  return v7;
+  return earlyVehicularTrigger;
 }
 
-+ (id)convertSAMonitoringSessionStateToString:(unint64_t)a3
++ (id)convertSAMonitoringSessionStateToString:(unint64_t)string
 {
-  if (a3 - 1 > 5)
+  if (string - 1 > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B9C6E0[a3 - 1];
+    return off_279B9C6E0[string - 1];
   }
 }
 
 - (void)didForceUpdateWithYouStatus
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allKeys];
+  allKeys = [(NSMutableDictionary *)self->_deviceUUIDtoMonitoringSession allKeys];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v31 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v19 objects:v31 count:16];
   if (v4)
   {
     v6 = v4;
@@ -5879,7 +5879,7 @@ LABEL_13:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -5930,11 +5930,11 @@ LABEL_13:
           }
         }
 
-        v16 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-        [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:v16 forAlertForDevice:v9 alertType:0];
+        getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+        [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:getCurrentTime forAlertForDevice:v9 alertType:0];
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v19 objects:v31 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v19 objects:v31 count:16];
     }
 
     while (v6);
@@ -5943,26 +5943,26 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkReunion:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5
+- (void)checkReunion:(unint64_t)reunion to:(unint64_t)to forDeviceWithUUID:(id)d
 {
   v89 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  dCopy = d;
+  deviceUUIDtoAlertContext = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
+  v10 = [deviceUUIDtoAlertContext objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
-    v11 = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
-    v12 = [v11 objectForKeyedSubscript:v8];
+    deviceUUIDtoAlertContext2 = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
+    v12 = [deviceUUIDtoAlertContext2 objectForKeyedSubscript:dCopy];
 
-    v13 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
     v14 = [v12 objectForKeyedSubscript:@"lastAlert"];
-    [v13 timeIntervalSinceDate:v14];
+    [getCurrentTime timeIntervalSinceDate:v14];
     v16 = v15;
 
     if (v16 <= 86400.0)
     {
-      if (a3 != 2 || a4 != 1)
+      if (reunion != 2 || to != 1)
       {
 LABEL_24:
 
@@ -5976,12 +5976,12 @@ LABEL_24:
         v85 = 2082;
         v86 = "";
         v87 = 2113;
-        v88 = v8;
+        v88 = dCopy;
         _os_log_impl(&dword_2656EA000, v37, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager reunion update, uuid:%{private}@}", &buf, 0x1Cu);
       }
     }
 
-    v17 = [(SADeviceRecord *)self->_deviceRecord getSADevice:v8];
+    v17 = [(SADeviceRecord *)self->_deviceRecord getSADevice:dCopy];
     v18 = [(SAMonitoringSessionManager *)self getMoreSpecificSADeviceType:v17];
     v19 = [v12 objectForKeyedSubscript:@"tLastWithYou"];
     [v19 doubleValue];
@@ -6002,9 +6002,9 @@ LABEL_24:
     v25 = [v12 objectForKeyedSubscript:@"lLastWithYou"];
     if (self->_lastLocation)
     {
-      v26 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-      v27 = [(TALocationLite *)self->_lastLocation timestamp];
-      [v26 timeIntervalSinceDate:v27];
+      getCurrentTime2 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+      timestamp = [(TALocationLite *)self->_lastLocation timestamp];
+      [getCurrentTime2 timeIntervalSinceDate:timestamp];
       v29 = v28;
 
       v30 = objc_alloc(MEMORY[0x277CE41F8]);
@@ -6032,19 +6032,19 @@ LABEL_24:
       v23 = v40;
     }
 
-    v41 = [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:v8];
+    v41 = [(SADeviceRecord *)self->_deviceRecord getLatestAdvertisement:dCopy];
     v80 = v25;
-    v81 = v8;
+    v81 = dCopy;
     v78 = v41;
     v79 = v34;
     if (v41)
     {
-      v42 = [v41 getBatteryState];
+      getBatteryState = [v41 getBatteryState];
     }
 
     else
     {
-      v42 = -1;
+      getBatteryState = -1;
     }
 
     v82[0] = @"deviceType";
@@ -6102,18 +6102,18 @@ LABEL_24:
     v59 = [v12 objectForKeyedSubscript:@"lastAlertBatteryState"];
     v83[17] = v59;
     v82[18] = @"reunionBatteryState";
-    v58 = [MEMORY[0x277CCABB0] numberWithInteger:v42];
+    v58 = [MEMORY[0x277CCABB0] numberWithInteger:getBatteryState];
     v83[18] = v58;
     v82[19] = @"closeToAnySafeLocations";
     v57 = [v12 objectForKeyedSubscript:?];
     v83[19] = v57;
     v82[20] = @"systemVersion";
-    v43 = [v17 systemVersion];
-    v44 = v43;
+    systemVersion = [v17 systemVersion];
+    v44 = systemVersion;
     v45 = @"unknown";
-    if (v43)
+    if (systemVersion)
     {
-      v45 = v43;
+      v45 = systemVersion;
     }
 
     v83[20] = v45;
@@ -6141,12 +6141,12 @@ LABEL_24:
     v83[27] = v52;
     v56 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:28];
 
-    v53 = [(SAMonitoringSessionManager *)self analytics];
-    [v53 submitEvent:@"com.apple.clx.alert.reunionEvent" content:v56];
+    analytics = [(SAMonitoringSessionManager *)self analytics];
+    [analytics submitEvent:@"com.apple.clx.alert.reunionEvent" content:v56];
 
-    v54 = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
-    v8 = v81;
-    [v54 setObject:0 forKeyedSubscript:v81];
+    deviceUUIDtoAlertContext3 = [(SAMonitoringSessionManager *)self deviceUUIDtoAlertContext];
+    dCopy = v81;
+    [deviceUUIDtoAlertContext3 setObject:0 forKeyedSubscript:v81];
 
     goto LABEL_24;
   }
@@ -6156,48 +6156,48 @@ LABEL_25:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatedWithYouStatusFrom:(unint64_t)a3 to:(unint64_t)a4 forDeviceWithUUID:(id)a5
+- (void)updatedWithYouStatusFrom:(unint64_t)from to:(unint64_t)to forDeviceWithUUID:(id)d
 {
   v114 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  [(SAMonitoringSessionManager *)self checkReunion:a3 to:a4 forDeviceWithUUID:v8];
-  v97 = a3;
-  if (a3 != a4)
+  dCopy = d;
+  [(SAMonitoringSessionManager *)self checkReunion:from to:to forDeviceWithUUID:dCopy];
+  fromCopy = from;
+  if (from != to)
   {
-    v9 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
-    [v9 removeObject:v8];
+    devicesWithPendingTransition = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
+    [devicesWithPendingTransition removeObject:dCopy];
   }
 
-  v99 = [(SAMonitoringSessionManager *)self stateForDeviceUUID:v8];
-  v98 = [(SAMonitoringSessionManager *)self scenarioClassForDeviceUUID:v8];
-  v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v11 = [v10 objectForKeyedSubscript:v8];
-  v12 = [v11 scenarioClassifier];
-  v13 = [v12 scenarioChangeDate];
+  v99 = [(SAMonitoringSessionManager *)self stateForDeviceUUID:dCopy];
+  v98 = [(SAMonitoringSessionManager *)self scenarioClassForDeviceUUID:dCopy];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v11 = [deviceUUIDtoMonitoringSession objectForKeyedSubscript:dCopy];
+  scenarioClassifier = [v11 scenarioClassifier];
+  scenarioChangeDate = [scenarioClassifier scenarioChangeDate];
 
-  v14 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v15 = [v14 objectForKeyedSubscript:v8];
-  v16 = [v15 travelingGeofenceExitDate];
+  deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v15 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:dCopy];
+  travelingGeofenceExitDate = [v15 travelingGeofenceExitDate];
 
-  v17 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v18 = [v17 objectForKeyedSubscript:v8];
-  v19 = [v18 earlyVehicularStateChangeDate];
+  deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  v18 = [deviceUUIDtoMonitoringSession3 objectForKeyedSubscript:dCopy];
+  earlyVehicularStateChangeDate = [v18 earlyVehicularStateChangeDate];
 
-  v20 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouDate:v8];
+  v20 = [(SADeviceRecord *)self->_deviceRecord getLastWithYouDate:dCopy];
   v21 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
     v23 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:v99];
-    v96 = self;
-    v24 = [SAWithYouDetector convertSAWithYouStatusToString:v97];
-    v25 = [SAWithYouDetector convertSAWithYouStatusToString:a4];
+    selfCopy = self;
+    v24 = [SAWithYouDetector convertSAWithYouStatusToString:fromCopy];
+    v25 = [SAWithYouDetector convertSAWithYouStatusToString:to];
     [SAScenarioClassifier convertSAScenarioClassToString:v98];
-    v95 = a4;
+    toCopy = to;
     v26 = v20;
-    v27 = v19;
-    v28 = v16;
-    v30 = v29 = v13;
+    v27 = earlyVehicularStateChangeDate;
+    v28 = travelingGeofenceExitDate;
+    v30 = v29 = scenarioChangeDate;
     *buf = 68290307;
     *&buf[4] = 0;
     v102 = 2082;
@@ -6211,19 +6211,19 @@ LABEL_25:
     v110 = 2113;
     v111 = v30;
     v112 = 2113;
-    v113 = v8;
+    v113 = dCopy;
     _os_log_impl(&dword_2656EA000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager updatedWithYouStatus, sessionState:%{private}@, fromStatus:%{private}@, toStatus:%{private}@, scenario:%{private}@, uuid:%{private}@}", buf, 0x44u);
 
-    v13 = v29;
-    v16 = v28;
-    v19 = v27;
+    scenarioChangeDate = v29;
+    travelingGeofenceExitDate = v28;
+    earlyVehicularStateChangeDate = v27;
     v20 = v26;
-    a4 = v95;
+    to = toCopy;
 
-    self = v96;
+    self = selfCopy;
   }
 
-  switch(a4)
+  switch(to)
   {
     case 0uLL:
       v37 = TASALog;
@@ -6232,9 +6232,9 @@ LABEL_25:
         goto LABEL_121;
       }
 
-      v38 = v37;
+      deviceUUIDtoMonitoringSession7 = v37;
       v39 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:v99];
-      v40 = [SAWithYouDetector convertSAWithYouStatusToString:v97];
+      v40 = [SAWithYouDetector convertSAWithYouStatusToString:fromCopy];
       v41 = [SAWithYouDetector convertSAWithYouStatusToString:0];
       *buf = 68290051;
       v102 = 2082;
@@ -6246,30 +6246,30 @@ LABEL_25:
       v108 = 2113;
       v109 = v41;
       v110 = 2113;
-      v111 = v8;
-      _os_log_impl(&dword_2656EA000, v38, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager Unknown signal state, sessionState:%{private}@, fromStatus:%{private}@, toStatus:%{private}@, uuid:%{private}@}", buf, 0x3Au);
+      v111 = dCopy;
+      _os_log_impl(&dword_2656EA000, deviceUUIDtoMonitoringSession7, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager Unknown signal state, sessionState:%{private}@, fromStatus:%{private}@, toStatus:%{private}@, uuid:%{private}@}", buf, 0x3Au);
 
       goto LABEL_80;
     case 2uLL:
-      v31 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v32 = [v31 objectForKeyedSubscript:v8];
-      v33 = [v32 firstNotWithYouLocation];
+      deviceUUIDtoMonitoringSession4 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v32 = [deviceUUIDtoMonitoringSession4 objectForKeyedSubscript:dCopy];
+      firstNotWithYouLocation = [v32 firstNotWithYouLocation];
 
-      if (v33)
+      if (firstNotWithYouLocation)
       {
         goto LABEL_14;
       }
 
-      v34 = [(SAMonitoringSessionManager *)self lastLocation];
-      v35 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v36 = [v35 objectForKeyedSubscript:v8];
-      [v36 setFirstNotWithYouLocation:v34];
+      lastLocation = [(SAMonitoringSessionManager *)self lastLocation];
+      deviceUUIDtoMonitoringSession5 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      v36 = [deviceUUIDtoMonitoringSession5 objectForKeyedSubscript:dCopy];
+      [v36 setFirstNotWithYouLocation:lastLocation];
 
       break;
     case 1uLL:
-      v34 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      v35 = [v34 objectForKeyedSubscript:v8];
-      [v35 setFirstNotWithYouLocation:0];
+      lastLocation = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      deviceUUIDtoMonitoringSession5 = [lastLocation objectForKeyedSubscript:dCopy];
+      [deviceUUIDtoMonitoringSession5 setFirstNotWithYouLocation:0];
       break;
     default:
       goto LABEL_14;
@@ -6288,9 +6288,9 @@ LABEL_14:
           goto LABEL_121;
         }
 
-        if (a4 != 1)
+        if (to != 1)
         {
-          if (a4 != 2)
+          if (to != 2)
           {
             goto LABEL_121;
           }
@@ -6307,25 +6307,25 @@ LABEL_14:
                 v102 = 2082;
                 v103 = "";
                 v104 = 2113;
-                v105 = v8;
+                v105 = dCopy;
                 _os_log_impl(&dword_2656EA000, v43, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager travel bookending into a safe location, uuid:%{private}@}", buf, 0x1Cu);
               }
 
-              [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
-              [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:v8];
+              [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
+              [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:dCopy];
             }
 
             goto LABEL_121;
           }
 
-          if (v97 != 2)
+          if (fromCopy != 2)
           {
             goto LABEL_121;
           }
 
-          if ([(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationForDevice:v8])
+          if ([(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationForDevice:dCopy])
           {
-            if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v13 forAlertForDevice:v8 alertType:2])
+            if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:scenarioChangeDate forAlertForDevice:dCopy alertType:2])
             {
               v81 = TASALog;
               if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -6335,21 +6335,21 @@ LABEL_14:
                 v102 = 2082;
                 v103 = "";
                 v104 = 2113;
-                v105 = v8;
+                v105 = dCopy;
                 _os_log_impl(&dword_2656EA000, v81, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager issuing travel bookending notification into an unsafe location, uuid:%{private}@}", buf, 0x1Cu);
               }
 
-              [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
-              v77 = self;
-              v78 = v8;
+              [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
+              selfCopy10 = self;
+              v78 = dCopy;
               v79 = 1;
               goto LABEL_111;
             }
 
-            v88 = self;
-            v89 = v13;
+            selfCopy13 = self;
+            v89 = scenarioChangeDate;
 LABEL_134:
-            v90 = v8;
+            v90 = dCopy;
             v91 = 2;
             goto LABEL_120;
           }
@@ -6362,15 +6362,15 @@ LABEL_134:
             v102 = 2082;
             v103 = "";
             v104 = 2113;
-            v105 = v8;
+            v105 = dCopy;
             _os_log_impl(&dword_2656EA000, v94, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager not issuing travel bookending notification into an unsafe location, uuid:%{private}@}", buf, 0x1Cu);
           }
 
-          v85 = self;
-          v86 = v8;
+          selfCopy14 = self;
+          v86 = dCopy;
           v87 = 5;
 LABEL_118:
-          [(SAMonitoringSessionManager *)v85 changeMonitoringSessionState:v86 toState:v87];
+          [(SAMonitoringSessionManager *)selfCopy14 changeMonitoringSessionState:v86 toState:v87];
           goto LABEL_121;
         }
 
@@ -6379,12 +6379,12 @@ LABEL_118:
 
       if (v98 == 2)
       {
-        if (a4 != 1)
+        if (to != 1)
         {
           goto LABEL_121;
         }
 
-        if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:v13 lastWithYouDate:v20])
+        if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:scenarioChangeDate lastWithYouDate:v20])
         {
           goto LABEL_69;
         }
@@ -6397,19 +6397,19 @@ LABEL_118:
           goto LABEL_121;
         }
 
-        if (a4 != 1)
+        if (to != 1)
         {
           goto LABEL_47;
         }
 
-        if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:v13 lastWithYouDate:v20])
+        if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:scenarioChangeDate lastWithYouDate:v20])
         {
-          [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:1];
+          [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:1];
 LABEL_47:
-          v49 = [(SAMonitoringSessionManager *)self determineTrackedTravelingCount];
-          v50 = self;
+          determineTrackedTravelingCount = [(SAMonitoringSessionManager *)self determineTrackedTravelingCount];
+          selfCopy8 = self;
 LABEL_99:
-          [(SAMonitoringSessionManager *)v50 setCaBroughtOutOnTravel:v49];
+          [(SAMonitoringSessionManager *)selfCopy8 setCaBroughtOutOnTravel:determineTrackedTravelingCount];
           goto LABEL_121;
         }
       }
@@ -6426,7 +6426,7 @@ LABEL_99:
           goto LABEL_121;
         }
 
-        if (a4 == 2)
+        if (to == 2)
         {
           v48 = TASALog;
           if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -6436,32 +6436,32 @@ LABEL_99:
             v102 = 2082;
             v103 = "";
             v104 = 2113;
-            v105 = v8;
+            v105 = dCopy;
             _os_log_impl(&dword_2656EA000, v48, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager travel bookending into a safe location, uuid:%{private}@}", buf, 0x1Cu);
           }
 
-          [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
-          [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:v8];
+          [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
+          [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:dCopy];
           goto LABEL_96;
         }
 
-        [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:v8];
-        v73 = self;
-        v74 = v8;
+        [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:dCopy];
+        selfCopy7 = self;
+        v74 = dCopy;
         v75 = 2;
         goto LABEL_95;
       }
 
-      if (a4 != 1)
+      if (to != 1)
       {
-        if (v97 != 2 || a4 != 2)
+        if (fromCopy != 2 || to != 2)
         {
           goto LABEL_121;
         }
 
-        if ([(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationForDevice:v8])
+        if ([(SAMonitoringSessionManager *)self shouldIssueBookendedNotificationForDevice:dCopy])
         {
-          if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v13 forAlertForDevice:v8 alertType:2])
+          if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:scenarioChangeDate forAlertForDevice:dCopy alertType:2])
           {
             v72 = TASALog;
             if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT))
@@ -6471,18 +6471,18 @@ LABEL_99:
               v102 = 2082;
               v103 = "";
               v104 = 2113;
-              v105 = v8;
+              v105 = dCopy;
               _os_log_impl(&dword_2656EA000, v72, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager issuing travel bookending notification into an unsafe location, uuid:%{private}@}", buf, 0x1Cu);
             }
 
-            [(SAMonitoringSessionManager *)self storeSeparationLocation:v8];
-            [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
-            [(SAMonitoringSessionManager *)self notifyWhileTraveling:v8 isBookendingTravel:1];
+            [(SAMonitoringSessionManager *)self storeSeparationLocation:dCopy];
+            [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
+            [(SAMonitoringSessionManager *)self notifyWhileTraveling:dCopy isBookendingTravel:1];
           }
 
           else
           {
-            [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:v13 forAlertForDevice:v8 alertType:2];
+            [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:scenarioChangeDate forAlertForDevice:dCopy alertType:2];
           }
 
           goto LABEL_96;
@@ -6496,60 +6496,60 @@ LABEL_99:
           v102 = 2082;
           v103 = "";
           v104 = 2113;
-          v105 = v8;
+          v105 = dCopy;
           _os_log_impl(&dword_2656EA000, v93, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager not issuing travel bookending notification into an unsafe location, uuid:%{private}@}", buf, 0x1Cu);
         }
 
-        v73 = self;
-        v74 = v8;
+        selfCopy7 = self;
+        v74 = dCopy;
         v75 = 5;
 LABEL_95:
-        [(SAMonitoringSessionManager *)v73 changeMonitoringSessionState:v74 toState:v75];
+        [(SAMonitoringSessionManager *)selfCopy7 changeMonitoringSessionState:v74 toState:v75];
         goto LABEL_96;
       }
 
-      if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:v13 lastWithYouDate:v20])
+      if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:scenarioChangeDate lastWithYouDate:v20])
       {
-        [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:5];
-        v63 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v64 = [v63 objectForKeyedSubscript:v8];
-        v65 = [v64 scenarioClassifier];
-        [v65 currentUnsafeLocation];
+        [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:5];
+        deviceUUIDtoMonitoringSession6 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v64 = [deviceUUIDtoMonitoringSession6 objectForKeyedSubscript:dCopy];
+        scenarioClassifier2 = [v64 scenarioClassifier];
+        [scenarioClassifier2 currentUnsafeLocation];
         v67 = v66 = self;
 
-        v68 = [(SAMonitoringSessionManager *)v66 deviceRecord];
-        [v68 updateLastWithYouLocation:v67 forDeviceWithUUID:v8];
+        deviceRecord = [(SAMonitoringSessionManager *)v66 deviceRecord];
+        [deviceRecord updateLastWithYouLocation:v67 forDeviceWithUUID:dCopy];
 
         self = v66;
 LABEL_96:
         if (([(SAMonitoringSessionManager *)self caBroughtOutOnTravel]& 0x8000000000000000) == 0)
         {
-          v76 = [(SAMonitoringSessionManager *)self analytics];
-          [v76 addNumDevicesWithYou:{-[SAMonitoringSessionManager caBroughtOutOnTravel](self, "caBroughtOutOnTravel")}];
+          analytics = [(SAMonitoringSessionManager *)self analytics];
+          [analytics addNumDevicesWithYou:{-[SAMonitoringSessionManager caBroughtOutOnTravel](self, "caBroughtOutOnTravel")}];
         }
 
-        v50 = self;
-        v49 = -1;
+        selfCopy8 = self;
+        determineTrackedTravelingCount = -1;
         goto LABEL_99;
       }
 
 LABEL_119:
-      v88 = self;
+      selfCopy13 = self;
       v89 = 0;
-      v90 = v8;
+      v90 = dCopy;
       v91 = 0;
 LABEL_120:
-      [(SAMonitoringSessionManager *)v88 scheduleNextForceUpdateWithYouStatusFromReferenceDate:v89 forAlertForDevice:v90 alertType:v91];
+      [(SAMonitoringSessionManager *)selfCopy13 scheduleNextForceUpdateWithYouStatusFromReferenceDate:v89 forAlertForDevice:v90 alertType:v91];
       goto LABEL_121;
     }
 
-    if ((a4 == 4 || a4 == 2) && ![(SAMonitoringSessionManager *)self standby]&& ![(SAMonitoringSessionManager *)self isInAirplaneMode]&& [(SAMonitoringSessionManager *)self addTravelFenceForDevice:v8])
+    if ((to == 4 || to == 2) && ![(SAMonitoringSessionManager *)self standby]&& ![(SAMonitoringSessionManager *)self isInAirplaneMode]&& [(SAMonitoringSessionManager *)self addTravelFenceForDevice:dCopy])
     {
-      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:3];
+      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:3];
     }
 
-    v38 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v39 = [v38 objectForKeyedSubscript:v8];
+    deviceUUIDtoMonitoringSession7 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v39 = [deviceUUIDtoMonitoringSession7 objectForKeyedSubscript:dCopy];
     [v39 setEarlyAirplaneTrigger:0];
 LABEL_80:
 
@@ -6559,44 +6559,44 @@ LABEL_80:
   v42 = v98;
   if (v99 == 4)
   {
-    if (a4 - 3 >= 2)
+    if (to - 3 >= 2)
     {
-      if (a4 != 1)
+      if (to != 1)
       {
-        if (a4 != 2)
+        if (to != 2)
         {
           goto LABEL_121;
         }
 
         if (v98 != 1)
         {
-          if (v97 != 2)
+          if (fromCopy != 2)
           {
             goto LABEL_121;
           }
 
-          if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v16 forAlertForDevice:v8 alertType:2])
+          if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:travelingGeofenceExitDate forAlertForDevice:dCopy alertType:2])
           {
-            [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
-            v77 = self;
-            v78 = v8;
+            [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
+            selfCopy10 = self;
+            v78 = dCopy;
             v79 = 0;
 LABEL_111:
-            [(SAMonitoringSessionManager *)v77 notifyWhileTraveling:v78 isBookendingTravel:v79];
+            [(SAMonitoringSessionManager *)selfCopy10 notifyWhileTraveling:v78 isBookendingTravel:v79];
             goto LABEL_121;
           }
 
-          v88 = self;
-          v89 = v16;
+          selfCopy13 = self;
+          v89 = travelingGeofenceExitDate;
           goto LABEL_134;
         }
 
-        [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:v8];
+        [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:dCopy];
         goto LABEL_115;
       }
 
 LABEL_59:
-      [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:v8];
+      [(SAMonitoringSessionManager *)self removeTravelFenceForDevice:dCopy];
       if (v42 != 3)
       {
         if (v42 != 2)
@@ -6610,22 +6610,22 @@ LABEL_59:
         }
 
 LABEL_69:
-        [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:5];
-        v57 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v58 = [v57 objectForKeyedSubscript:v8];
-        v59 = [v58 scenarioClassifier];
-        [v59 currentUnsafeLocation];
+        [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:5];
+        deviceUUIDtoMonitoringSession8 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v58 = [deviceUUIDtoMonitoringSession8 objectForKeyedSubscript:dCopy];
+        scenarioClassifier3 = [v58 scenarioClassifier];
+        [scenarioClassifier3 currentUnsafeLocation];
         v61 = v60 = self;
 
-        v62 = [(SAMonitoringSessionManager *)v60 deviceRecord];
-        [v62 updateLastWithYouLocation:v61 forDeviceWithUUID:v8];
+        deviceRecord2 = [(SAMonitoringSessionManager *)v60 deviceRecord];
+        [deviceRecord2 updateLastWithYouLocation:v61 forDeviceWithUUID:dCopy];
 
         goto LABEL_121;
       }
 
 LABEL_117:
-      v85 = self;
-      v86 = v8;
+      selfCopy14 = self;
+      v86 = dCopy;
       v87 = 1;
       goto LABEL_118;
     }
@@ -6636,14 +6636,14 @@ LABEL_117:
       goto LABEL_121;
     }
 
-    v38 = v56;
-    v39 = [SAWithYouDetector convertSAWithYouStatusToString:a4];
+    deviceUUIDtoMonitoringSession7 = v56;
+    v39 = [SAWithYouDetector convertSAWithYouStatusToString:to];
     *buf = 68289539;
     *&buf[4] = 0;
     v102 = 2082;
     v103 = "";
     v104 = 2113;
-    v105 = v8;
+    v105 = dCopy;
     v106 = 2113;
     v107 = v39;
     v45 = "{msg%{public}.0s:#SAMonitoringSessionManager received unexpected status in verification stage, uuid:%{private}@, status:%{private}@}";
@@ -6663,7 +6663,7 @@ LABEL_117:
       goto LABEL_121;
     }
 
-    v38 = v44;
+    deviceUUIDtoMonitoringSession7 = v44;
     v39 = [SAMonitoringSessionManager convertSAMonitoringSessionStateToString:6];
     *buf = 68289539;
     *&buf[4] = 0;
@@ -6672,16 +6672,16 @@ LABEL_117:
     v104 = 2113;
     v105 = v39;
     v106 = 2113;
-    v107 = v8;
+    v107 = dCopy;
     v45 = "{msg%{public}.0s:#SAMonitoringSessionManager session already finished, sessionState:%{private}@, uuid:%{private}@}";
-    v46 = v38;
+    v46 = deviceUUIDtoMonitoringSession7;
     v47 = OS_LOG_TYPE_FAULT;
     goto LABEL_66;
   }
 
   if (v98 == 1)
   {
-    if (a4 == 2)
+    if (to == 2)
     {
       v71 = TASALog;
       if (os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
@@ -6691,7 +6691,7 @@ LABEL_117:
         v102 = 2082;
         v103 = "";
         v104 = 2113;
-        v105 = v8;
+        v105 = dCopy;
         _os_log_impl(&dword_2656EA000, v71, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#SAMonitoringSessionManager lost from unsafe to safe, uuid:%{private}@}", buf, 0x1Cu);
       }
     }
@@ -6701,45 +6701,45 @@ LABEL_117:
 
   if (v98 == 2)
   {
-    if (a4 != 2)
+    if (to != 2)
     {
       goto LABEL_121;
     }
 
-    v69 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v70 = [v69 objectForKeyedSubscript:v8];
+    deviceUUIDtoMonitoringSession9 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v70 = [deviceUUIDtoMonitoringSession9 objectForKeyedSubscript:dCopy];
     if ([v70 earlyVehicularTrigger])
     {
     }
 
     else
     {
-      v82 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-      [v82 objectForKeyedSubscript:v8];
+      deviceUUIDtoMonitoringSession10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+      [deviceUUIDtoMonitoringSession10 objectForKeyedSubscript:dCopy];
       v84 = v83 = self;
-      v100 = [v84 earlyAirplaneTrigger];
+      earlyAirplaneTrigger = [v84 earlyAirplaneTrigger];
 
       self = v83;
-      if (!v100)
+      if (!earlyAirplaneTrigger)
       {
         goto LABEL_121;
       }
     }
 
-    if (![(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v19 forAlertForDevice:v8 alertType:1])
+    if (![(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:earlyVehicularStateChangeDate forAlertForDevice:dCopy alertType:1])
     {
-      v88 = self;
-      v89 = v19;
-      v90 = v8;
+      selfCopy13 = self;
+      v89 = earlyVehicularStateChangeDate;
+      v90 = dCopy;
       v91 = 1;
       goto LABEL_120;
     }
 
-    [(SAMonitoringSessionManager *)self storeSeparationLocation:v8];
-    [(SAMonitoringSessionManager *)self notifyEarlyLeftBehind:v8];
+    [(SAMonitoringSessionManager *)self storeSeparationLocation:dCopy];
+    [(SAMonitoringSessionManager *)self notifyEarlyLeftBehind:dCopy];
 LABEL_115:
-    v85 = self;
-    v86 = v8;
+    selfCopy14 = self;
+    v86 = dCopy;
     v87 = 2;
     goto LABEL_118;
   }
@@ -6749,7 +6749,7 @@ LABEL_115:
     goto LABEL_121;
   }
 
-  if (a4 - 3 < 2)
+  if (to - 3 < 2)
   {
     v80 = TASALog;
     if (!os_log_type_enabled(TASALog, OS_LOG_TYPE_ERROR))
@@ -6757,28 +6757,28 @@ LABEL_115:
       goto LABEL_121;
     }
 
-    v38 = v80;
-    v39 = [SAWithYouDetector convertSAWithYouStatusToString:a4];
+    deviceUUIDtoMonitoringSession7 = v80;
+    v39 = [SAWithYouDetector convertSAWithYouStatusToString:to];
     *buf = 68289539;
     *&buf[4] = 0;
     v102 = 2082;
     v103 = "";
     v104 = 2113;
-    v105 = v8;
+    v105 = dCopy;
     v106 = 2113;
     v107 = v39;
     v45 = "{msg%{public}.0s:#SAMonitoringSessionManager received unexpected status in left location stage, uuid:%{private}@, status:%{private}@}";
 LABEL_65:
-    v46 = v38;
+    v46 = deviceUUIDtoMonitoringSession7;
     v47 = OS_LOG_TYPE_ERROR;
 LABEL_66:
     _os_log_impl(&dword_2656EA000, v46, v47, v45, buf, 0x26u);
     goto LABEL_80;
   }
 
-  if (a4 == 1)
+  if (to == 1)
   {
-    if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:v13 lastWithYouDate:v20])
+    if ([(SAMonitoringSessionManager *)self deviceShouldTransitionWithLastScenarioChangeDate:scenarioChangeDate lastWithYouDate:v20])
     {
       goto LABEL_117;
     }
@@ -6786,30 +6786,30 @@ LABEL_66:
     goto LABEL_119;
   }
 
-  if (a4 == 2 && v97 == 2)
+  if (to == 2 && fromCopy == 2)
   {
-    v51 = v13;
-    v52 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v53 = [v52 objectForKeyedSubscript:v8];
-    v54 = [v53 earlyVehicularTrigger];
+    v51 = scenarioChangeDate;
+    deviceUUIDtoMonitoringSession11 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    v53 = [deviceUUIDtoMonitoringSession11 objectForKeyedSubscript:dCopy];
+    earlyVehicularTrigger = [v53 earlyVehicularTrigger];
 
-    if (v54)
+    if (earlyVehicularTrigger)
     {
-      v55 = [v19 earlierDate:v51];
+      v55 = [earlyVehicularStateChangeDate earlierDate:v51];
 
       v51 = v55;
     }
 
-    if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v51 forAlertForDevice:v8 alertType:1])
+    if ([(SAMonitoringSessionManager *)self enoughTimeHasPassedBeforeSurfacingAlert:v51 forAlertForDevice:dCopy alertType:1])
     {
-      [(SAMonitoringSessionManager *)self storeSeparationLocation:v8];
-      [(SAMonitoringSessionManager *)self notifyWhenLeftBehind:v8];
-      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:v8 toState:2];
+      [(SAMonitoringSessionManager *)self storeSeparationLocation:dCopy];
+      [(SAMonitoringSessionManager *)self notifyWhenLeftBehind:dCopy];
+      [(SAMonitoringSessionManager *)self changeMonitoringSessionState:dCopy toState:2];
     }
 
     else
     {
-      [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:v51 forAlertForDevice:v8 alertType:1];
+      [(SAMonitoringSessionManager *)self scheduleNextForceUpdateWithYouStatusFromReferenceDate:v51 forAlertForDevice:dCopy alertType:1];
     }
   }
 
@@ -6821,15 +6821,15 @@ LABEL_121:
 - (id)getLastScenarioChangeDateAmongAllDevices
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 allKeys];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = allKeys;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -6845,17 +6845,17 @@ LABEL_121:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+        v13 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v11];
 
-        v14 = [v13 scenarioClassifier];
-        v15 = [v14 scenarioChangeDate];
+        scenarioClassifier = [v13 scenarioClassifier];
+        scenarioChangeDate = [scenarioClassifier scenarioChangeDate];
 
-        if ([v5 compare:v15] == -1)
+        if ([distantPast compare:scenarioChangeDate] == -1)
         {
-          v16 = v15;
+          v16 = scenarioChangeDate;
 
-          v5 = v16;
+          distantPast = v16;
         }
       }
 
@@ -6867,25 +6867,25 @@ LABEL_121:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return distantPast;
 }
 
-- (void)scheduleNextForceUpdateWithYouStatusFromReferenceDate:(id)a3 forAlertForDevice:(id)a4 alertType:(unint64_t)a5
+- (void)scheduleNextForceUpdateWithYouStatusFromReferenceDate:(id)date forAlertForDevice:(id)device alertType:(unint64_t)type
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
-  [v9 addObject:v8];
+  dateCopy = date;
+  deviceCopy = device;
+  devicesWithPendingTransition = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
+  [devicesWithPendingTransition addObject:deviceCopy];
 
   if (!self->_scheduledAlarmForForceUpdateWithYouStatus)
   {
-    v10 = v22;
-    if (!v22)
+    getLastScenarioChangeDateAmongAllDevices = dateCopy;
+    if (!dateCopy)
     {
-      v10 = [(SAMonitoringSessionManager *)self getLastScenarioChangeDateAmongAllDevices];
+      getLastScenarioChangeDateAmongAllDevices = [(SAMonitoringSessionManager *)self getLastScenarioChangeDateAmongAllDevices];
     }
 
-    v22 = v10;
+    dateCopy = getLastScenarioChangeDateAmongAllDevices;
     if ([(SAMonitoringSessionManager *)self _isOnlyMonitoringCompanionDevice])
     {
       v11 = MEMORY[0x277CBEAA8];
@@ -6905,28 +6905,28 @@ LABEL_121:
       }
 
       v14 = MEMORY[0x277CBEAA8];
-      [(SAMonitoringSessionManager *)self timeDelayForRetryScanForAlertForDeviceUUID:v8 alertType:a5];
+      [(SAMonitoringSessionManager *)self timeDelayForRetryScanForAlertForDeviceUUID:deviceCopy alertType:type];
       v12 = v15 - v13;
       v11 = v14;
     }
 
-    v16 = [v11 dateWithTimeInterval:v22 sinceDate:v12];
-    v17 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-    v18 = [v16 compare:v17];
+    v16 = [v11 dateWithTimeInterval:dateCopy sinceDate:v12];
+    getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    v18 = [v16 compare:getCurrentTime];
 
     if (v18 == -1)
     {
-      v20 = [(SAMonitoringSessionManager *)self standby];
-      v21 = [(SAMonitoringSessionManager *)self withYouDetector];
-      v19 = v21;
-      if (v20)
+      standby = [(SAMonitoringSessionManager *)self standby];
+      withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+      v19 = withYouDetector;
+      if (standby)
       {
-        [v21 forceUpdateWithYouStatusWithShortScan:0];
+        [withYouDetector forceUpdateWithYouStatusWithShortScan:0];
       }
 
       else
       {
-        [v21 forceUpdateWithYouStatus];
+        [withYouDetector forceUpdateWithYouStatus];
       }
     }
 
@@ -6941,14 +6941,14 @@ LABEL_121:
 - (BOOL)_isOnlyMonitoringCompanionDevice
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-  v4 = [v3 allKeys];
+  deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+  allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -6969,9 +6969,9 @@ LABEL_121:
         if (v11)
         {
           v12 = [(SADeviceRecord *)self->_deviceRecord getSADevice:v10];
-          v13 = [v12 deviceType];
+          deviceType = [v12 deviceType];
 
-          if (v13 != 8)
+          if (deviceType != 8)
           {
             v14 = 0;
             goto LABEL_12;
@@ -6998,27 +6998,27 @@ LABEL_12:
 
 - (void)scheduleNextPersistenceWrite
 {
-  v3 = [(SAMonitoringSessionManager *)self nextScheduledAlarmForPersistenceWrite];
+  nextScheduledAlarmForPersistenceWrite = [(SAMonitoringSessionManager *)self nextScheduledAlarmForPersistenceWrite];
 
-  if (!v3)
+  if (!nextScheduledAlarmForPersistenceWrite)
   {
-    v8 = [(SAMonitoringSessionManager *)self clock];
+    clock = [(SAMonitoringSessionManager *)self clock];
     v4 = MEMORY[0x277CBEAA8];
-    v5 = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
-    v6 = [v4 dateWithTimeInterval:v5 sinceDate:1.0];
-    v7 = [v8 setupAlarmFireAt:v6 forClient:self];
+    getCurrentTime = [(SATimeServiceProtocol *)self->_clock getCurrentTime];
+    v6 = [v4 dateWithTimeInterval:getCurrentTime sinceDate:1.0];
+    v7 = [clock setupAlarmFireAt:v6 forClient:self];
     [(SAMonitoringSessionManager *)self setNextScheduledAlarmForPersistenceWrite:v7];
   }
 }
 
-- (double)timeDelayForRetryScanForAlertForDeviceUUID:(id)a3 alertType:(unint64_t)a4
+- (double)timeDelayForRetryScanForAlertForDeviceUUID:(id)d alertType:(unint64_t)type
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SAMonitoringSessionManager *)self devices];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  dCopy = d;
+  devices = [(SAMonitoringSessionManager *)self devices];
+  v8 = [devices objectForKeyedSubscript:dCopy];
 
-  v9 = [(SAWithYouDetectorServiceProtocol *)self->_withYouDetector statusForDeviceWithUUID:v6];
+  v9 = [(SAWithYouDetectorServiceProtocol *)self->_withYouDetector statusForDeviceWithUUID:dCopy];
   v10 = TASALog;
   if (os_log_type_enabled(TASALog, OS_LOG_TYPE_DEBUG))
   {
@@ -7027,15 +7027,15 @@ LABEL_12:
     v15 = 2082;
     v16 = "";
     v17 = 2113;
-    v18 = v6;
+    v18 = dCopy;
     v19 = 2049;
-    v20 = a4;
+    typeCopy = type;
     v21 = 2049;
     v22 = v9;
     _os_log_impl(&dword_2656EA000, v10, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:SAMonitoringSessionManager schedule retry scan, uuid:%{private}@, alertType:%{private}ld, withYouStatus:%{private}ld}", v14, 0x30u);
   }
 
-  if (![v8 isAppleAudioAccessory] || (v11 = 360.0, a4 != 2) && (a4 || (v9 & 0xFFFFFFFFFFFFFFFBLL) != 0))
+  if (![v8 isAppleAudioAccessory] || (v11 = 360.0, type != 2) && (type || (v9 & 0xFFFFFFFFFFFFFFFBLL) != 0))
   {
     v11 = 120.0;
   }
@@ -7044,39 +7044,39 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)enoughTimeHasPassedBeforeSurfacingAlert:(id)a3 forAlertForDevice:(id)a4 alertType:(unint64_t)a5
+- (BOOL)enoughTimeHasPassedBeforeSurfacingAlert:(id)alert forAlertForDevice:(id)device alertType:(unint64_t)type
 {
-  if (!a3)
+  if (!alert)
   {
     return 1;
   }
 
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SAMonitoringSessionManager *)self clock];
-  v11 = [v10 getCurrentTime];
-  [v11 timeIntervalSinceDate:v9];
+  deviceCopy = device;
+  alertCopy = alert;
+  clock = [(SAMonitoringSessionManager *)self clock];
+  getCurrentTime = [clock getCurrentTime];
+  [getCurrentTime timeIntervalSinceDate:alertCopy];
   v13 = v12;
 
-  [(SAMonitoringSessionManager *)self minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:v8 alertType:a5];
+  [(SAMonitoringSessionManager *)self minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:deviceCopy alertType:type];
   v15 = v14;
 
   v16 = v13 >= v15;
   return v16;
 }
 
-- (double)minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:(id)a3 alertType:(unint64_t)a4
+- (double)minimumTimeSinceScenarioTransitionForAlertForDeviceUUID:(id)d alertType:(unint64_t)type
 {
-  v5 = [(SADeviceRecord *)self->_deviceRecord getSADevice:a3];
-  v6 = [v5 deviceType];
-  v7 = [v5 isAppleAudioAccessory];
+  v5 = [(SADeviceRecord *)self->_deviceRecord getSADevice:d];
+  deviceType = [v5 deviceType];
+  isAppleAudioAccessory = [v5 isAppleAudioAccessory];
   v8 = 108.0;
-  if (v6 != 16)
+  if (deviceType != 16)
   {
     v8 = 30.0;
   }
 
-  if (((a4 == 2) & v7) != 0)
+  if (((type == 2) & isAppleAudioAccessory) != 0)
   {
     v9 = 324.0;
   }
@@ -7089,31 +7089,31 @@ LABEL_12:
   return v9;
 }
 
-- (void)alarmFiredForUUID:(id)a3
+- (void)alarmFiredForUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqual:self->_nextScheduledAlarmForPersistenceWrite])
+  dCopy = d;
+  if ([dCopy isEqual:self->_nextScheduledAlarmForPersistenceWrite])
   {
     persistenceManager = self->_persistenceManager;
-    v6 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    [(SAPersistenceManager *)persistenceManager onUpdatedMonitoringSessionRecord:v6];
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    [(SAPersistenceManager *)persistenceManager onUpdatedMonitoringSessionRecord:deviceUUIDtoMonitoringSession];
 
     nextScheduledAlarmForPersistenceWrite = self->_nextScheduledAlarmForPersistenceWrite;
     self->_nextScheduledAlarmForPersistenceWrite = 0;
   }
 
-  if ([v4 isEqual:self->_scheduledAlarmForForceUpdateWithYouStatus])
+  if ([dCopy isEqual:self->_scheduledAlarmForForceUpdateWithYouStatus])
   {
-    v8 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
-    v9 = [v8 count];
+    devicesWithPendingTransition = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
+    v9 = [devicesWithPendingTransition count];
 
     if (v9)
     {
-      v10 = [(SAMonitoringSessionManager *)self standby];
+      standby = [(SAMonitoringSessionManager *)self standby];
       v11 = TASALog;
       v12 = os_log_type_enabled(TASALog, OS_LOG_TYPE_DEFAULT);
-      if (v10)
+      if (standby)
       {
         if (v12)
         {
@@ -7141,9 +7141,9 @@ LABEL_12:
         }
 
         withYouDetector = self->_withYouDetector;
-        v14 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
-        v15 = [v14 allObjects];
-        [(SAWithYouDetectorServiceProtocol *)withYouDetector forceUpdateWithYouStatusToFindDevices:v15 withContext:8];
+        devicesWithPendingTransition2 = [(SAMonitoringSessionManager *)self devicesWithPendingTransition];
+        allObjects = [devicesWithPendingTransition2 allObjects];
+        [(SAWithYouDetectorServiceProtocol *)withYouDetector forceUpdateWithYouStatusToFindDevices:allObjects withContext:8];
       }
     }
 
@@ -7154,23 +7154,23 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didChangeTravelTypeFrom:(unint64_t)a3 to:(unint64_t)a4 hints:(unint64_t)a5
+- (void)didChangeTravelTypeFrom:(unint64_t)from to:(unint64_t)to hints:(unint64_t)hints
 {
   v53 = *MEMORY[0x277D85DE8];
-  [(SAMonitoringSessionManager *)self setCaCurrentVehicularState:a4];
-  [(SAMonitoringSessionManager *)self setCaIsVehicularBTHintOn:(a5 >> 4) & 1];
-  v8 = [(SAMonitoringSessionManager *)self standby];
-  if (a4 == 1 && !v8 && [(SAMonitoringSessionManager *)self enabled])
+  [(SAMonitoringSessionManager *)self setCaCurrentVehicularState:to];
+  [(SAMonitoringSessionManager *)self setCaIsVehicularBTHintOn:(hints >> 4) & 1];
+  standby = [(SAMonitoringSessionManager *)self standby];
+  if (to == 1 && !standby && [(SAMonitoringSessionManager *)self enabled])
   {
-    v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v11 = [v10 allKeys];
+    allValues = objc_alloc_init(MEMORY[0x277CBEB18]);
+    deviceUUIDtoMonitoringSession = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    allKeys = [deviceUUIDtoMonitoringSession allKeys];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v11;
+    obj = allKeys;
     v12 = [obj countByEnumeratingWithState:&v37 objects:v51 count:16];
     if (v12)
     {
@@ -7189,22 +7189,22 @@ LABEL_12:
           }
 
           v17 = *(*(&v37 + 1) + 8 * v16);
-          v18 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-          v19 = [v18 objectForKeyedSubscript:v17];
+          deviceUUIDtoMonitoringSession2 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+          v19 = [deviceUUIDtoMonitoringSession2 objectForKeyedSubscript:v17];
 
-          v20 = [(SAMonitoringSessionManager *)self devices];
-          v21 = [v20 objectForKeyedSubscript:v17];
+          devices = [(SAMonitoringSessionManager *)self devices];
+          v21 = [devices objectForKeyedSubscript:v17];
 
           if (v21)
           {
             if ([v19 state] == 5)
             {
               [v19 setEarlyVehicularTrigger:1];
-              v22 = [(SAMonitoringSessionManager *)self clock];
-              v23 = [v22 getCurrentTime];
-              [v19 setEarlyVehicularStateChangeDate:v23];
+              clock = [(SAMonitoringSessionManager *)self clock];
+              getCurrentTime = [clock getCurrentTime];
+              [v19 setEarlyVehicularStateChangeDate:getCurrentTime];
 
-              [v9 addObject:v17];
+              [allValues addObject:v17];
             }
           }
 
@@ -7231,7 +7231,7 @@ LABEL_12:
       while (v14);
     }
 
-    v25 = [v9 count];
+    v25 = [allValues count];
     if (v25)
     {
       v26 = v25;
@@ -7247,8 +7247,8 @@ LABEL_12:
         _os_log_impl(&dword_2656EA000, v27, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#SAMonitoringSessionManager requesting terminable long aggressive scan on travel type change, count of devices to find:%{private}ld}", buf, 0x1Cu);
       }
 
-      v28 = [(SAMonitoringSessionManager *)self withYouDetector];
-      [v28 forceUpdateWithYouStatusToFindDevices:v9 withContext:7];
+      withYouDetector = [(SAMonitoringSessionManager *)self withYouDetector];
+      [withYouDetector forceUpdateWithYouStatusToFindDevices:allValues withContext:7];
     }
   }
 
@@ -7258,10 +7258,10 @@ LABEL_12:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v29 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
-    v9 = [v29 allValues];
+    deviceUUIDtoMonitoringSession3 = [(SAMonitoringSessionManager *)self deviceUUIDtoMonitoringSession];
+    allValues = [deviceUUIDtoMonitoringSession3 allValues];
 
-    v30 = [v9 countByEnumeratingWithState:&v41 objects:v52 count:16];
+    v30 = [allValues countByEnumeratingWithState:&v41 objects:v52 count:16];
     if (v30)
     {
       v31 = v30;
@@ -7273,14 +7273,14 @@ LABEL_12:
         {
           if (*v42 != v32)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v41 + 1) + 8 * v33++) setEarlyVehicularTrigger:0];
         }
 
         while (v31 != v33);
-        v31 = [v9 countByEnumeratingWithState:&v41 objects:v52 count:16];
+        v31 = [allValues countByEnumeratingWithState:&v41 objects:v52 count:16];
       }
 
       while (v31);

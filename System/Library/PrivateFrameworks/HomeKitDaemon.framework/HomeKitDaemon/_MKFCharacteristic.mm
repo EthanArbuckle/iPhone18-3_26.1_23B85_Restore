@@ -6,8 +6,8 @@
 - (NSArray)bulletinRegistrations;
 - (NSArray)notificationRegistrations;
 - (NSDictionary)pr_dictionaryRepresentation;
-- (void)pr_updateWithDictionary:(id)a3;
-- (void)pr_updateWithHAPMetadata:(id)a3;
+- (void)pr_updateWithDictionary:(id)dictionary;
+- (void)pr_updateWithHAPMetadata:(id)metadata;
 @end
 
 @implementation _MKFCharacteristic
@@ -27,25 +27,25 @@
 - (NSArray)notificationRegistrations
 {
   v2 = [(_MKFCharacteristic *)self valueForKey:@"notificationRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)bulletinRegistrations
 {
   v2 = [(_MKFCharacteristic *)self valueForKey:@"bulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFCharacteristic *)self service];
-  v3 = [v2 home];
+  service = [(_MKFCharacteristic *)self service];
+  home = [service home];
 
-  return v3;
+  return home;
 }
 
 - (MKFCharacteristicDatabaseID)databaseID
@@ -55,24 +55,24 @@
   return v2;
 }
 
-- (void)pr_updateWithHAPMetadata:(id)a3
+- (void)pr_updateWithHAPMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 format];
-  [(_MKFCharacteristic *)self setFormat:v5];
+  metadataCopy = metadata;
+  format = [metadataCopy format];
+  [(_MKFCharacteristic *)self setFormat:format];
 
-  v6 = [v4 units];
-  [(_MKFCharacteristic *)self setUnits:v6];
+  units = [metadataCopy units];
+  [(_MKFCharacteristic *)self setUnits:units];
 
-  v7 = [v4 manufacturerDescription];
+  manufacturerDescription = [metadataCopy manufacturerDescription];
 
-  [(_MKFCharacteristic *)self setManufacturerDescription:v7];
+  [(_MKFCharacteristic *)self setManufacturerDescription:manufacturerDescription];
 }
 
-- (void)pr_updateWithDictionary:(id)a3
+- (void)pr_updateWithDictionary:(id)dictionary
 {
-  v16 = a3;
-  v4 = [v16 objectForKeyedSubscript:*MEMORY[0x277CD2138]];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD2138]];
 
   if (!v4)
   {
@@ -81,7 +81,7 @@
   }
 
   v5 = *MEMORY[0x277CD21A8];
-  v6 = [v16 objectForKeyedSubscript:*MEMORY[0x277CD21A8]];
+  v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD21A8]];
 
   if (!v6)
   {
@@ -91,7 +91,7 @@ LABEL_11:
   }
 
   v7 = *MEMORY[0x277CD2190];
-  v8 = [v16 objectForKeyedSubscript:*MEMORY[0x277CD2190]];
+  v8 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CD2190]];
 
   if (!v8)
   {
@@ -101,16 +101,16 @@ LABEL_12:
     return;
   }
 
-  v9 = [v16 hmf_UUIDForKey:v5];
+  v9 = [dictionaryCopy hmf_UUIDForKey:v5];
   [(_MKFCharacteristic *)self setType:v9];
 
-  v10 = [v16 hmf_numberForKey:v7];
+  v10 = [dictionaryCopy hmf_numberForKey:v7];
   [(_MKFCharacteristic *)self setProperties:v10];
 
-  v11 = [v16 hmf_dataForKey:*MEMORY[0x277CD2100]];
+  v11 = [dictionaryCopy hmf_dataForKey:*MEMORY[0x277CD2100]];
   [(_MKFCharacteristic *)self setAuthorizationData:v11];
 
-  v12 = [v16 hmf_dictionaryForKey:*MEMORY[0x277CD2148]];
+  v12 = [dictionaryCopy hmf_dictionaryForKey:*MEMORY[0x277CD2148]];
   v13 = [HMDCharacteristicMetadata characteristicMetadataWithDictionary:v12];
 
   if (v13)
@@ -126,24 +126,24 @@ LABEL_12:
 
 - (NSDictionary)pr_dictionaryRepresentation
 {
-  v3 = [(_MKFCharacteristic *)self pr_hapMetadata];
+  pr_hapMetadata = [(_MKFCharacteristic *)self pr_hapMetadata];
   v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
-  v5 = [(_MKFCharacteristic *)self instanceID];
+  instanceID = [(_MKFCharacteristic *)self instanceID];
   v6 = HAPInstanceIDFromValue();
   [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2138]];
 
-  v7 = [(_MKFCharacteristic *)self type];
-  v8 = [v7 UUIDString];
-  [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD21A8]];
+  type = [(_MKFCharacteristic *)self type];
+  uUIDString = [type UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:*MEMORY[0x277CD21A8]];
 
-  v9 = [(_MKFCharacteristic *)self properties];
-  [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD2190]];
+  properties = [(_MKFCharacteristic *)self properties];
+  [v4 setObject:properties forKeyedSubscript:*MEMORY[0x277CD2190]];
 
-  v10 = [(_MKFCharacteristic *)self authorizationData];
-  [v4 setObject:v10 forKeyedSubscript:*MEMORY[0x277CD2100]];
+  authorizationData = [(_MKFCharacteristic *)self authorizationData];
+  [v4 setObject:authorizationData forKeyedSubscript:*MEMORY[0x277CD2100]];
 
-  v11 = [v3 dictionaryRepresentation];
-  [v4 setObject:v11 forKeyedSubscript:*MEMORY[0x277CD2148]];
+  dictionaryRepresentation = [pr_hapMetadata dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:*MEMORY[0x277CD2148]];
 
   v12 = [v4 copy];
 
@@ -153,10 +153,10 @@ LABEL_12:
 - (HMDCharacteristicMetadata)pr_hapMetadata
 {
   v3 = [HMDCharacteristicMetadata alloc];
-  v4 = [(_MKFCharacteristic *)self format];
-  v5 = [(_MKFCharacteristic *)self units];
-  v6 = [(_MKFCharacteristic *)self manufacturerDescription];
-  v7 = [(HMDCharacteristicMetadata *)v3 initWithMinimumValue:0 maximumValue:0 stepValue:0 maxLength:0 validValues:0 format:v4 units:v5 manufacturerDescription:v6];
+  format = [(_MKFCharacteristic *)self format];
+  units = [(_MKFCharacteristic *)self units];
+  manufacturerDescription = [(_MKFCharacteristic *)self manufacturerDescription];
+  v7 = [(HMDCharacteristicMetadata *)v3 initWithMinimumValue:0 maximumValue:0 stepValue:0 maxLength:0 validValues:0 format:format units:units manufacturerDescription:manufacturerDescription];
 
   return v7;
 }

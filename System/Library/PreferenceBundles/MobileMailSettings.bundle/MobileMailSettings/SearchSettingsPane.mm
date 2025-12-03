@@ -1,10 +1,10 @@
 @interface SearchSettingsPane
 - (id)_defaultSettings;
-- (id)enableSearchInJunk:(id)a3;
-- (id)enableSearchInTrash:(id)a3;
+- (id)enableSearchInJunk:(id)junk;
+- (id)enableSearchInTrash:(id)trash;
 - (id)specifiers;
-- (void)setEnableSearchInJunk:(id)a3 withSpecifier:(id)a4;
-- (void)setEnableSearchInTrash:(id)a3 withSpecifier:(id)a4;
+- (void)setEnableSearchInJunk:(id)junk withSpecifier:(id)specifier;
+- (void)setEnableSearchInTrash:(id)trash withSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -20,28 +20,28 @@
   [(SearchSettingsPane *)self setTitle:v4];
 }
 
-- (void)setEnableSearchInJunk:(id)a3 withSpecifier:(id)a4
+- (void)setEnableSearchInJunk:(id)junk withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_1A978(EMUserDefaultIncludeSearchResultsFromJunkKey, v4);
+  junkCopy = junk;
+  bOOLValue = [junkCopy BOOLValue];
+  sub_1A978(EMUserDefaultIncludeSearchResultsFromJunkKey, bOOLValue);
 }
 
-- (id)enableSearchInJunk:(id)a3
+- (id)enableSearchInJunk:(id)junk
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValueWithDefault(EMUserDefaultIncludeSearchResultsFromJunkKey, 0)];
 
   return v3;
 }
 
-- (void)setEnableSearchInTrash:(id)a3 withSpecifier:(id)a4
+- (void)setEnableSearchInTrash:(id)trash withSpecifier:(id)specifier
 {
-  v5 = a3;
-  v4 = [v5 BOOLValue];
-  sub_1A978(EMUserDefaultIncludeSearchResultsFromTrashKey, v4);
+  trashCopy = trash;
+  bOOLValue = [trashCopy BOOLValue];
+  sub_1A978(EMUserDefaultIncludeSearchResultsFromTrashKey, bOOLValue);
 }
 
-- (id)enableSearchInTrash:(id)a3
+- (id)enableSearchInTrash:(id)trash
 {
   v3 = [NSNumber numberWithBool:getMailBoolPreferenceValueWithDefault(EMUserDefaultIncludeSearchResultsFromTrashKey, 1)];
 
@@ -54,9 +54,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(SearchSettingsPane *)self _defaultSettings];
+    _defaultSettings = [(SearchSettingsPane *)self _defaultSettings];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = _defaultSettings;
 
     v4 = *&self->PSListController_opaque[v3];
   }

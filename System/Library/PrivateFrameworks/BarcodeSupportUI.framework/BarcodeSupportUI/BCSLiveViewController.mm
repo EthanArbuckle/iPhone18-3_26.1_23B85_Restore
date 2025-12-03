@@ -1,42 +1,42 @@
 @interface BCSLiveViewController
-- (BCSLiveViewController)initWithPreviewLayer:(id)a3;
+- (BCSLiveViewController)initWithPreviewLayer:(id)layer;
 - (BCSLiveViewControllerDelegate)delegate;
-- (CGPoint)_convertLogicalPoint:(CGPoint)a3 inBounds:(CGRect)a4;
-- (CGPoint)_convertPointFromCaptureDeviceLocation:(CGPoint)a3;
-- (CGPoint)_convertPointToCaptureDeviceLocation:(CGPoint)a3;
-- (CGPoint)_normalize:(CGPoint)a3 inBounds:(CGRect)a4;
-- (CGPoint)_pointFromNormalizedPoint:(CGPoint)a3;
-- (id)_perspectiveCorrectedImage:(id)a3 imageQuad:(id)a4;
+- (CGPoint)_convertLogicalPoint:(CGPoint)point inBounds:(CGRect)bounds;
+- (CGPoint)_convertPointFromCaptureDeviceLocation:(CGPoint)location;
+- (CGPoint)_convertPointToCaptureDeviceLocation:(CGPoint)location;
+- (CGPoint)_normalize:(CGPoint)_normalize inBounds:(CGRect)bounds;
+- (CGPoint)_pointFromNormalizedPoint:(CGPoint)point;
+- (id)_perspectiveCorrectedImage:(id)image imageQuad:(id)quad;
 - (void)_applyTorchButtonRotationForDeviceOrientation;
-- (void)_continueToPopAnimationForDetectedCode:(id)a3;
-- (void)_layOutWithPreviewSize:(CGSize)a3 angle:(double)a4 isPortrait:(BOOL)a5;
+- (void)_continueToPopAnimationForDetectedCode:(id)code;
+- (void)_layOutWithPreviewSize:(CGSize)size angle:(double)angle isPortrait:(BOOL)portrait;
 - (void)_liveViewTapped;
 - (void)_setTorchButtonPosition;
-- (void)_updateCoacheMessageWithString:(id)a3;
-- (void)actionCoordinator:(id)a3 didParseCode:(id)a4 withAction:(id)a5;
+- (void)_updateCoacheMessageWithString:(id)string;
+- (void)actionCoordinator:(id)coordinator didParseCode:(id)code withAction:(id)action;
 - (void)cameraDeviceDidChange;
-- (void)compensateForInterfaceOrientationInLiveView:(int64_t)a3 referenceSize:(CGSize)a4;
-- (void)compensateForVideoRotationAngleInLiveView:(double)a3;
-- (void)didCaptureVisualCode:(id)a3 image:(id)a4 shouldAnimate:(BOOL)a5;
-- (void)sessionControlsDidBecomeActive:(id)a3;
-- (void)sessionControlsDidBecomeInactive:(id)a3;
-- (void)updateQRCodeAvailability:(int64_t)a3;
+- (void)compensateForInterfaceOrientationInLiveView:(int64_t)view referenceSize:(CGSize)size;
+- (void)compensateForVideoRotationAngleInLiveView:(double)view;
+- (void)didCaptureVisualCode:(id)code image:(id)image shouldAnimate:(BOOL)animate;
+- (void)sessionControlsDidBecomeActive:(id)active;
+- (void)sessionControlsDidBecomeInactive:(id)inactive;
+- (void)updateQRCodeAvailability:(int64_t)availability;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation BCSLiveViewController
 
-- (BCSLiveViewController)initWithPreviewLayer:(id)a3
+- (BCSLiveViewController)initWithPreviewLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v12.receiver = self;
   v12.super_class = BCSLiveViewController;
   v6 = [(BCSLiveViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_previewLayer, a3);
+    objc_storeStrong(&v6->_previewLayer, layer);
     v8 = objc_alloc_init(BCSActionCoordinator);
     actionCoordinator = v7->_actionCoordinator;
     v7->_actionCoordinator = v8;
@@ -65,8 +65,8 @@
   self->_tapGestureRecognizer = v5;
 
   [(BCSPreviewContainerView *)self->_previewContainerView addGestureRecognizer:self->_tapGestureRecognizer];
-  v7 = [(BCSLiveViewController *)self view];
-  [v7 addSubview:self->_previewContainerView];
+  view = [(BCSLiveViewController *)self view];
+  [view addSubview:self->_previewContainerView];
 
   [(BCSPreviewContainerView *)self->_previewContainerView setPreviewLayer:self->_previewLayer];
   v8 = [BCSSubjectIndicatorView alloc];
@@ -78,12 +78,12 @@
   [(BCSSubjectIndicatorView *)self->_focusIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BCSSubjectIndicatorView *)self->_focusIndicator sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   [(BCSSubjectIndicatorView *)self->_focusIndicator setBounds:0.0, 0.0, v11, v12];
-  v13 = [(BCSLiveViewController *)self view];
-  [v13 center];
+  view2 = [(BCSLiveViewController *)self view];
+  [view2 center];
   [(BCSSubjectIndicatorView *)self->_focusIndicator setCenter:?];
 
-  v14 = [(BCSLiveViewController *)self view];
-  [v14 addSubview:self->_focusIndicator];
+  view3 = [(BCSLiveViewController *)self view];
+  [view3 addSubview:self->_focusIndicator];
 
   v15 = objc_alloc_init(BCSTorchButtonView);
   torchButtonView = self->_torchButtonView;
@@ -91,11 +91,11 @@
 
   [(BCSTorchButtonView *)self->_torchButtonView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(BCSTorchButtonView *)self->_torchButtonView setDelegate:self];
-  v17 = [(BCSLiveViewController *)self delegate];
-  -[BCSTorchButtonView setHidden:](self->_torchButtonView, "setHidden:", [v17 liveViewControllerTorchModeSupported:self] ^ 1);
+  delegate = [(BCSLiveViewController *)self delegate];
+  -[BCSTorchButtonView setHidden:](self->_torchButtonView, "setHidden:", [delegate liveViewControllerTorchModeSupported:self] ^ 1);
 
-  v18 = [(BCSLiveViewController *)self view];
-  [v18 addSubview:self->_torchButtonView];
+  view4 = [(BCSLiveViewController *)self view];
+  [view4 addSubview:self->_torchButtonView];
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
@@ -104,15 +104,15 @@
     self->_coachingMessageView = v19;
 
     [(BCSCoachingMessageView *)self->_coachingMessageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [(BCSCoachingMessageView *)self->_coachingMessageView topAnchor];
-    v22 = [(BCSLiveViewController *)self view];
-    v23 = [v22 topAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23 constant:80.0];
+    topAnchor = [(BCSCoachingMessageView *)self->_coachingMessageView topAnchor];
+    view5 = [(BCSLiveViewController *)self view];
+    topAnchor2 = [view5 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:80.0];
     coachingMessageTopAnchorConstraint = self->_coachingMessageTopAnchorConstraint;
     self->_coachingMessageTopAnchorConstraint = v24;
 
-    v26 = [(BCSLiveViewController *)self view];
-    [v26 addSubview:self->_coachingMessageView];
+    view6 = [(BCSLiveViewController *)self view];
+    [view6 addSubview:self->_coachingMessageView];
   }
 
   v27 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -120,67 +120,67 @@
   self->_focusIndicatorInsetView = v27;
 
   [(UIView *)self->_focusIndicatorInsetView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v29 = [(BCSLiveViewController *)self view];
-  [v29 addSubview:self->_focusIndicatorInsetView];
+  view7 = [(BCSLiveViewController *)self view];
+  [view7 addSubview:self->_focusIndicatorInsetView];
 
   if ((_UISolariumEnabled() & 1) == 0)
   {
     v58 = MEMORY[0x277CCAAD0];
     v70[0] = self->_coachingMessageTopAnchorConstraint;
-    v64 = [(BCSCoachingMessageView *)self->_coachingMessageView centerXAnchor];
-    v66 = [(BCSLiveViewController *)self view];
-    v62 = [v66 centerXAnchor];
-    v60 = [v64 constraintEqualToAnchor:v62];
+    centerXAnchor = [(BCSCoachingMessageView *)self->_coachingMessageView centerXAnchor];
+    view8 = [(BCSLiveViewController *)self view];
+    centerXAnchor2 = [view8 centerXAnchor];
+    v60 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v70[1] = v60;
-    v56 = [(BCSCoachingMessageView *)self->_coachingMessageView bottomAnchor];
-    v30 = [(BCSSubjectIndicatorView *)self->_focusIndicator topAnchor];
-    v31 = [v56 constraintLessThanOrEqualToAnchor:v30 constant:-10.0];
+    bottomAnchor = [(BCSCoachingMessageView *)self->_coachingMessageView bottomAnchor];
+    topAnchor3 = [(BCSSubjectIndicatorView *)self->_focusIndicator topAnchor];
+    v31 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor3 constant:-10.0];
     v70[2] = v31;
-    v32 = [(BCSCoachingMessageView *)self->_coachingMessageView widthAnchor];
-    v33 = [(BCSLiveViewController *)self view];
-    v34 = [v33 widthAnchor];
-    v35 = [v32 constraintLessThanOrEqualToAnchor:v34];
+    widthAnchor = [(BCSCoachingMessageView *)self->_coachingMessageView widthAnchor];
+    view9 = [(BCSLiveViewController *)self view];
+    widthAnchor2 = [view9 widthAnchor];
+    v35 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
     v70[3] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:4];
     [v58 activateConstraints:v36];
   }
 
   v53 = MEMORY[0x277CCAAD0];
-  v65 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerXAnchor];
-  v67 = [(BCSLiveViewController *)self view];
-  v63 = [v67 centerXAnchor];
-  v61 = [v65 constraintEqualToAnchor:v63];
+  centerXAnchor3 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerXAnchor];
+  view10 = [(BCSLiveViewController *)self view];
+  centerXAnchor4 = [view10 centerXAnchor];
+  v61 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v69[0] = v61;
-  v57 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerYAnchor];
-  v59 = [(BCSLiveViewController *)self view];
-  v55 = [v59 centerYAnchor];
-  v54 = [v57 constraintEqualToAnchor:v55];
+  centerYAnchor = [(BCSSubjectIndicatorView *)self->_focusIndicator centerYAnchor];
+  view11 = [(BCSLiveViewController *)self view];
+  centerYAnchor2 = [view11 centerYAnchor];
+  v54 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v69[1] = v54;
-  v52 = [(UIView *)self->_focusIndicatorInsetView centerXAnchor];
-  v51 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerXAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  centerXAnchor5 = [(UIView *)self->_focusIndicatorInsetView centerXAnchor];
+  centerXAnchor6 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerXAnchor];
+  v50 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   v69[2] = v50;
-  v49 = [(UIView *)self->_focusIndicatorInsetView centerYAnchor];
-  v37 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerYAnchor];
-  v38 = [v49 constraintEqualToAnchor:v37];
+  centerYAnchor3 = [(UIView *)self->_focusIndicatorInsetView centerYAnchor];
+  centerYAnchor4 = [(BCSSubjectIndicatorView *)self->_focusIndicator centerYAnchor];
+  v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v69[3] = v38;
-  v39 = [(UIView *)self->_focusIndicatorInsetView widthAnchor];
-  v40 = [(BCSSubjectIndicatorView *)self->_focusIndicator widthAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40 multiplier:0.8];
+  widthAnchor3 = [(UIView *)self->_focusIndicatorInsetView widthAnchor];
+  widthAnchor4 = [(BCSSubjectIndicatorView *)self->_focusIndicator widthAnchor];
+  v41 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.8];
   v69[4] = v41;
-  v42 = [(UIView *)self->_focusIndicatorInsetView heightAnchor];
-  v43 = [(BCSSubjectIndicatorView *)self->_focusIndicator heightAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43 multiplier:0.8];
+  heightAnchor = [(UIView *)self->_focusIndicatorInsetView heightAnchor];
+  heightAnchor2 = [(BCSSubjectIndicatorView *)self->_focusIndicator heightAnchor];
+  v44 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.8];
   v69[5] = v44;
   v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:6];
   [v53 activateConstraints:v45];
 
-  v46 = [MEMORY[0x277D759A0] mainScreen];
-  [v46 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   [(BCSPreviewContainerView *)self->_previewContainerView setBounds:?];
 
-  v47 = [(BCSLiveViewController *)self view];
-  [v47 bounds];
+  view12 = [(BCSLiveViewController *)self view];
+  [view12 bounds];
   UIRectGetCenter();
   [(BCSPreviewContainerView *)self->_previewContainerView setCenter:?];
 
@@ -191,71 +191,71 @@
 
 - (void)_liveViewTapped
 {
-  v3 = [(UIImageView *)self->_targetQRImage superview];
+  superview = [(UIImageView *)self->_targetQRImage superview];
 
-  if (!v3)
+  if (!superview)
   {
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer locationInView:self->_previewContainerView];
     [(BCSLiveViewController *)self _convertPointToCaptureDeviceLocation:?];
     v5 = v4;
     v7 = v6;
-    v8 = [(BCSLiveViewController *)self delegate];
-    [v8 liveViewController:self didTapAtDevicePoint:{v5, v7}];
+    delegate = [(BCSLiveViewController *)self delegate];
+    [delegate liveViewController:self didTapAtDevicePoint:{v5, v7}];
   }
 
   [(BCSLiveViewController *)self resetUIAndStartCapturing:1];
 }
 
-- (void)_updateCoacheMessageWithString:(id)a3
+- (void)_updateCoacheMessageWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if ((_UISolariumEnabled() & 1) == 0)
   {
     [(BCSCoachingMessageView *)self->_coachingMessageView setContentHidden:0];
-    [(BCSCoachingMessageView *)self->_coachingMessageView setMessage:v4];
+    [(BCSCoachingMessageView *)self->_coachingMessageView setMessage:stringCopy];
   }
 }
 
-- (void)updateQRCodeAvailability:(int64_t)a3
+- (void)updateQRCodeAvailability:(int64_t)availability
 {
-  if ((_UISolariumEnabled() & 1) == 0 && (a3 == 2 || !a3))
+  if ((_UISolariumEnabled() & 1) == 0 && (availability == 2 || !availability))
   {
     v5 = _BCSLocalizedString();
     [(BCSLiveViewController *)self _updateCoacheMessageWithString:v5];
   }
 }
 
-- (void)didCaptureVisualCode:(id)a3 image:(id)a4 shouldAnimate:(BOOL)a5
+- (void)didCaptureVisualCode:(id)code image:(id)image shouldAnimate:(BOOL)animate
 {
-  v126 = a5;
-  v7 = a3;
-  v8 = a4;
-  [(BCSActionCoordinator *)self->_actionCoordinator startParsingVisualCode:v7];
+  animateCopy = animate;
+  codeCopy = code;
+  imageCopy = image;
+  [(BCSActionCoordinator *)self->_actionCoordinator startParsingVisualCode:codeCopy];
   v9 = [BCSImageQuad alloc];
-  [v7 topLeft];
+  [codeCopy topLeft];
   v11 = v10;
   v13 = v12;
-  [v7 topRight];
+  [codeCopy topRight];
   v15 = v14;
   v17 = v16;
-  [v7 bottomRight];
+  [codeCopy bottomRight];
   v19 = v18;
   v21 = v20;
-  [v7 bottomLeft];
+  [codeCopy bottomLeft];
   v24 = [(BCSImageQuad *)v9 initWithTopLeft:v11 topRight:v13 bottomRight:v15 bottomLeft:v17, v19, v21, v22, v23];
   [(BCSImageQuad *)v24 boundingBox];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  [v8 extent];
+  [imageCopy extent];
   CGAffineTransformMakeScale(&v144, v33, v34);
   v145.origin.x = v26;
   v145.origin.y = v28;
   v145.size.width = v30;
   v145.size.height = v32;
   v146 = CGRectApplyAffineTransform(v145, &v144);
-  v35 = [v8 imageByCroppingToRect:{v146.origin.x, v146.origin.y, v146.size.width, v146.size.height}];
+  v35 = [imageCopy imageByCroppingToRect:{v146.origin.x, v146.origin.y, v146.size.width, v146.size.height}];
   [(BCSImageQuad *)v24 normalize];
   [v35 extent];
   [(BCSImageQuad *)v24 topLeft];
@@ -287,22 +287,22 @@
   v55 = v54;
   v57 = v56;
   v59 = v58;
-  v60 = [(BCSLiveViewController *)self view];
-  [v60 convertRect:self->_previewContainerView fromView:{v53, v55, v57, v59}];
+  view = [(BCSLiveViewController *)self view];
+  [view convertRect:self->_previewContainerView fromView:{v53, v55, v57, v59}];
 
-  [v7 topLeft];
+  [codeCopy topLeft];
   [BCSLiveViewController _convertLogicalPoint:"_convertLogicalPoint:inBounds:" inBounds:?];
   v128 = v61;
   v130 = v62;
-  [v7 topRight];
+  [codeCopy topRight];
   [BCSLiveViewController _convertLogicalPoint:"_convertLogicalPoint:inBounds:" inBounds:?];
   v64 = v63;
   v66 = v65;
-  [v7 bottomRight];
+  [codeCopy bottomRight];
   [BCSLiveViewController _convertLogicalPoint:"_convertLogicalPoint:inBounds:" inBounds:?];
   v68 = v67;
   v70 = v69;
-  [v7 bottomLeft];
+  [codeCopy bottomLeft];
   [BCSLiveViewController _convertLogicalPoint:"_convertLogicalPoint:inBounds:" inBounds:?];
   v122 = v66;
   v123 = v64;
@@ -316,8 +316,8 @@
   v77 = v76;
   v79 = v78;
   v81 = v80;
-  v82 = [(BCSLiveViewController *)self view];
-  [v82 bounds];
+  view2 = [(BCSLiveViewController *)self view];
+  [view2 bounds];
   Height = CGRectGetHeight(v147);
 
   v144.b = 0.0;
@@ -336,7 +336,7 @@
   v87 = v149.size.height;
   _bcs_roundRectToPixels();
   [(UIImageView *)self->_targetQRImage setFrame:?];
-  if ([v7 codeType] == 1)
+  if ([codeCopy codeType] == 1)
   {
     [(UIImageView *)self->_targetQRImage bounds];
     v88 = CGRectGetWidth(v150);
@@ -372,11 +372,11 @@
     v98 = v97;
     [(UIImageView *)self->_targetQRImage setFrame:0.0, 0.0, v88, v88];
     [(UIImageView *)self->_targetQRImage setPosition:v93, v98];
-    v99 = [(UIImageView *)self->_targetQRImage layer];
+    layer = [(UIImageView *)self->_targetQRImage layer];
     width = v96;
     x = v95;
     y = v94;
-    [v99 setCornerRadius:v88 * 0.5];
+    [layer setCornerRadius:v88 * 0.5];
 
     v100 = *(MEMORY[0x277CBF2C0] + 16);
     *&v144.a = *MEMORY[0x277CBF2C0];
@@ -386,8 +386,8 @@
     v101 = self->_targetQRImage;
     v144 = v143;
     [(UIImageView *)v101 setTransform:&v144];
-    v102 = [(UIImageView *)self->_targetQRImage layer];
-    [v102 setMasksToBounds:1];
+    layer2 = [(UIImageView *)self->_targetQRImage layer];
+    [layer2 setMasksToBounds:1];
 
     [(UIImageView *)self->_targetQRImage setClipsToBounds:1];
   }
@@ -403,13 +403,13 @@
   }
 
   [(BCSScanningAnimator *)animator setFocusIndicator:self->_focusIndicator];
-  v106 = [[BCSImageQuad alloc] initWithTopLeft:v128 topRight:v130 bottomRight:v123 bottomLeft:v122, v121, v120, v119, v118];
-  [(BCSImageQuad *)v106 setBounds:x, y, width, v87];
-  [(BCSImageQuad *)v106 normalize];
-  [(BCSImageQuad *)v106 flip];
-  [(BCSScanningAnimator *)self->_animator setImageQuad:v106];
+  v118 = [[BCSImageQuad alloc] initWithTopLeft:v128 topRight:v130 bottomRight:v123 bottomLeft:v122, v121, v120, v119, v118];
+  [(BCSImageQuad *)v118 setBounds:x, y, width, v87];
+  [(BCSImageQuad *)v118 normalize];
+  [(BCSImageQuad *)v118 flip];
+  [(BCSScanningAnimator *)self->_animator setImageQuad:v118];
   [(BCSScanningAnimator *)self->_animator setTargetQRImage:self->_targetQRImage];
-  [(BCSScanningAnimator *)self->_animator setTargetCode:v7];
+  [(BCSScanningAnimator *)self->_animator setTargetCode:codeCopy];
   [(BCSSubjectIndicatorView *)self->_focusIndicator setBouncing:0];
   if ((_UISolariumEnabled() & 1) == 0)
   {
@@ -437,15 +437,15 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __66__BCSLiveViewController_didCaptureVisualCode_image_shouldAnimate___block_invoke_30;
   aBlock[3] = &unk_278D01B78;
-  v108 = v7;
+  v108 = codeCopy;
   v138 = v108;
-  v109 = v8;
+  v109 = imageCopy;
   v139 = v109;
-  v140 = self;
+  selfCopy = self;
   v110 = _Block_copy(aBlock);
-  v111 = [v108 codeType];
+  codeType = [v108 codeType];
   v112 = self->_animator;
-  if (v111 == 1)
+  if (codeType == 1)
   {
     v134[0] = MEMORY[0x277D85DD0];
     v134[1] = 3221225472;
@@ -457,7 +457,7 @@
     v135 = v108;
     v136 = v110;
     v115 = v110;
-    [(BCSScanningAnimator *)v112 animateAppClipCodeBounceWithCompletion:v134 shouldAnimate:v126];
+    [(BCSScanningAnimator *)v112 animateAppClipCodeBounceWithCompletion:v134 shouldAnimate:animateCopy];
   }
 
   else
@@ -472,7 +472,7 @@
     v132 = v108;
     v133 = v110;
     v116 = v110;
-    [(BCSScanningAnimator *)v112 animatePushWithCompletion:v131 shouldAnimate:v126];
+    [(BCSScanningAnimator *)v112 animatePushWithCompletion:v131 shouldAnimate:animateCopy];
   }
 }
 
@@ -627,10 +627,10 @@ uint64_t __66__BCSLiveViewController_didCaptureVisualCode_image_shouldAnimate___
   return result;
 }
 
-- (void)_continueToPopAnimationForDetectedCode:(id)a3
+- (void)_continueToPopAnimationForDetectedCode:(id)code
 {
-  v4 = a3;
-  v5 = [(BCSActionCoordinator *)self->_actionCoordinator actionForVisualCode:v4];
+  codeCopy = code;
+  v5 = [(BCSActionCoordinator *)self->_actionCoordinator actionForVisualCode:codeCopy];
   v6 = v5;
   if (v5)
   {
@@ -641,7 +641,7 @@ uint64_t __66__BCSLiveViewController_didCaptureVisualCode_image_shouldAnimate___
     v8[3] = &unk_278D01D08;
     v8[4] = self;
     v9 = v5;
-    v10 = v4;
+    v10 = codeCopy;
     [(BCSActionCoordinator *)actionCoordinator requestDeviceUnlockIfNeededWithCompletion:v8];
   }
 
@@ -873,54 +873,54 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   return result;
 }
 
-- (CGPoint)_normalize:(CGPoint)a3 inBounds:(CGRect)a4
+- (CGPoint)_normalize:(CGPoint)_normalize inBounds:(CGRect)bounds
 {
-  v4 = (a3.x - a4.origin.x) / a4.size.width;
-  v5 = (a3.y - a4.origin.y) / a4.size.height;
+  v4 = (_normalize.x - bounds.origin.x) / bounds.size.width;
+  v5 = (_normalize.y - bounds.origin.y) / bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)_convertLogicalPoint:(CGPoint)a3 inBounds:(CGRect)a4
+- (CGPoint)_convertLogicalPoint:(CGPoint)point inBounds:(CGRect)bounds
 {
-  v4 = a4.origin.x + a3.x * a4.size.width;
-  v5 = a4.origin.y + a3.y * a4.size.height;
+  v4 = bounds.origin.x + point.x * bounds.size.width;
+  v5 = bounds.origin.y + point.y * bounds.size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (id)_perspectiveCorrectedImage:(id)a3 imageQuad:(id)a4
+- (id)_perspectiveCorrectedImage:(id)image imageQuad:(id)quad
 {
-  v5 = a3;
+  imageCopy = image;
   v6 = MEMORY[0x277CBF750];
-  v7 = a4;
+  quadCopy = quad;
   v8 = [v6 filterWithName:@"CIPerspectiveCorrection"];
   v9 = MEMORY[0x277CBF788];
-  [v7 topLeft];
+  [quadCopy topLeft];
   v10 = [v9 vectorWithCGPoint:?];
   [v8 setValue:v10 forKey:@"inputTopLeft"];
 
   v11 = MEMORY[0x277CBF788];
-  [v7 topRight];
+  [quadCopy topRight];
   v12 = [v11 vectorWithCGPoint:?];
   [v8 setValue:v12 forKey:@"inputTopRight"];
 
   v13 = MEMORY[0x277CBF788];
-  [v7 bottomLeft];
+  [quadCopy bottomLeft];
   v14 = [v13 vectorWithCGPoint:?];
   [v8 setValue:v14 forKey:@"inputBottomLeft"];
 
   v15 = MEMORY[0x277CBF788];
-  [v7 bottomRight];
+  [quadCopy bottomRight];
   v17 = v16;
   v19 = v18;
 
   v20 = [v15 vectorWithCGPoint:{v17, v19}];
   [v8 setValue:v20 forKey:@"inputBottomRight"];
 
-  [v8 setValue:v5 forKey:*MEMORY[0x277CBFAF0]];
+  [v8 setValue:imageCopy forKey:*MEMORY[0x277CBFAF0]];
   v21 = [v8 valueForKey:*MEMORY[0x277CBFB50]];
   v22 = MEMORY[0x277D755B8];
   _bcs_mainScreenScale();
@@ -929,14 +929,14 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   return v23;
 }
 
-- (CGPoint)_pointFromNormalizedPoint:(CGPoint)a3
+- (CGPoint)_pointFromNormalizedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   previewLayer = self->_previewLayer;
-  v6 = [(BCSLiveViewController *)self view];
-  v7 = [v6 layer];
-  [(AVCaptureVideoPreviewLayer *)previewLayer convertPoint:v7 toLayer:x, y];
+  view = [(BCSLiveViewController *)self view];
+  layer = [view layer];
+  [(AVCaptureVideoPreviewLayer *)previewLayer convertPoint:layer toLayer:x, y];
   v9 = v8;
   v11 = v10;
 
@@ -947,13 +947,13 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   return result;
 }
 
-- (CGPoint)_convertPointToCaptureDeviceLocation:(CGPoint)a3
+- (CGPoint)_convertPointToCaptureDeviceLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(BCSLiveViewController *)self view];
-  v7 = [v6 layer];
-  [v7 convertPoint:self->_previewLayer toLayer:{x, y}];
+  y = location.y;
+  x = location.x;
+  view = [(BCSLiveViewController *)self view];
+  layer = [view layer];
+  [layer convertPoint:self->_previewLayer toLayer:{x, y}];
   v9 = v8;
   v11 = v10;
 
@@ -965,14 +965,14 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   return result;
 }
 
-- (CGPoint)_convertPointFromCaptureDeviceLocation:(CGPoint)a3
+- (CGPoint)_convertPointFromCaptureDeviceLocation:(CGPoint)location
 {
-  [(AVCaptureVideoPreviewLayer *)self->_previewLayer pointForCaptureDevicePointOfInterest:a3.x, a3.y];
+  [(AVCaptureVideoPreviewLayer *)self->_previewLayer pointForCaptureDevicePointOfInterest:location.x, location.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(BCSLiveViewController *)self view];
-  v9 = [v8 layer];
-  [v9 convertPoint:self->_previewLayer fromLayer:{v5, v7}];
+  view = [(BCSLiveViewController *)self view];
+  layer = [view layer];
+  [layer convertPoint:self->_previewLayer fromLayer:{v5, v7}];
   v11 = v10;
   v13 = v12;
 
@@ -985,19 +985,19 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
 
 - (void)cameraDeviceDidChange
 {
-  v3 = [(BCSLiveViewController *)self delegate];
-  -[BCSTorchButtonView setHidden:](self->_torchButtonView, "setHidden:", [v3 liveViewControllerTorchModeSupported:self] ^ 1);
+  delegate = [(BCSLiveViewController *)self delegate];
+  -[BCSTorchButtonView setHidden:](self->_torchButtonView, "setHidden:", [delegate liveViewControllerTorchModeSupported:self] ^ 1);
 }
 
 - (void)_applyTorchButtonRotationForDeviceOrientation
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 orientation];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  orientation = [currentDevice orientation];
 
   v5 = 0.0;
-  if ((v4 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    v5 = dbl_241A064F8[v4 - 2];
+    v5 = dbl_241A064F8[orientation - 2];
   }
 
   memset(&v7, 0, sizeof(v7));
@@ -1008,13 +1008,13 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
 
 - (void)_setTorchButtonPosition
 {
-  v3 = [(BCSLiveViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation];
+  view = [(BCSLiveViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  v7 = [(BCSLiveViewController *)self view];
-  [v7 bounds];
+  view2 = [(BCSLiveViewController *)self view];
+  [view2 bounds];
   v9 = v8;
   v11 = v10;
 
@@ -1025,21 +1025,21 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
 
   else
   {
-    v12 = v6;
+    v12 = interfaceOrientation;
   }
 
   if (v12 == 3)
   {
     v16 = v9 + -116.0;
-    v17 = [(BCSLiveViewController *)self view];
-    [v17 center];
+    view3 = [(BCSLiveViewController *)self view];
+    [view3 center];
     v15 = v18;
   }
 
   else if (v12 == 4)
   {
-    v13 = [(BCSLiveViewController *)self view];
-    [v13 center];
+    view4 = [(BCSLiveViewController *)self view];
+    [view4 center];
     v15 = v14;
 
     v16 = 116.0;
@@ -1047,8 +1047,8 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
 
   else
   {
-    v19 = [(BCSLiveViewController *)self view];
-    [v19 center];
+    view5 = [(BCSLiveViewController *)self view];
+    [view5 center];
     v16 = v20;
 
     v15 = v11 + -116.0;
@@ -1059,12 +1059,12 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   [(BCSTorchButtonView *)torchButtonView setCenter:v16, v15];
 }
 
-- (void)compensateForVideoRotationAngleInLiveView:(double)a3
+- (void)compensateForVideoRotationAngleInLiveView:(double)view
 {
-  self->_videoRotationAngle = a3;
-  v5 = fabs(remainder(a3, 3.14159265));
-  v6 = [(BCSLiveViewController *)self view];
-  [v6 bounds];
+  self->_videoRotationAngle = view;
+  v5 = fabs(remainder(view, 3.14159265));
+  view = [(BCSLiveViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
@@ -1088,15 +1088,15 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
     v12 = v10;
   }
 
-  [(BCSLiveViewController *)self _layOutWithPreviewSize:v8 < v10 angle:v12 isPortrait:v11, a3];
+  [(BCSLiveViewController *)self _layOutWithPreviewSize:v8 < v10 angle:v12 isPortrait:v11, view];
 }
 
-- (void)compensateForInterfaceOrientationInLiveView:(int64_t)a3 referenceSize:(CGSize)a4
+- (void)compensateForInterfaceOrientationInLiveView:(int64_t)view referenceSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = [(BCSLiveViewController *)self view];
-  [v8 bounds];
+  height = size.height;
+  width = size.width;
+  view = [(BCSLiveViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
@@ -1107,7 +1107,7 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
     height = v10;
   }
 
-  switch(a3)
+  switch(view)
   {
     case 2:
       v14 = 1;
@@ -1130,21 +1130,21 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
   [(BCSLiveViewController *)self _layOutWithPreviewSize:v14 angle:width isPortrait:height, v15];
 }
 
-- (void)_layOutWithPreviewSize:(CGSize)a3 angle:(double)a4 isPortrait:(BOOL)a5
+- (void)_layOutWithPreviewSize:(CGSize)size angle:(double)angle isPortrait:(BOOL)portrait
 {
-  [(BCSPreviewContainerView *)self->_previewContainerView setBounds:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), a3.width, a3.height];
-  v8 = [(BCSLiveViewController *)self view];
-  [v8 bounds];
+  [(BCSPreviewContainerView *)self->_previewContainerView setBounds:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), size.width, size.height];
+  view = [(BCSLiveViewController *)self view];
+  [view bounds];
   UIRectGetCenter();
   [(BCSPreviewContainerView *)self->_previewContainerView setCenter:?];
 
   memset(&v13, 0, sizeof(v13));
-  CGAffineTransformMakeRotation(&v13, a4);
+  CGAffineTransformMakeRotation(&v13, angle);
   v12 = v13;
   [(BCSPreviewContainerView *)self->_previewContainerView setTransform:&v12];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    if (a5)
+    if (portrait)
     {
       v9 = 80.0;
     }
@@ -1182,31 +1182,31 @@ uint64_t __64__BCSLiveViewController__continueToPopAnimationForDetectedCode___bl
 
   else
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v8 statusBarOrientation];
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 _referenceBounds];
-    [(BCSLiveViewController *)self compensateForInterfaceOrientationInLiveView:v4 referenceSize:v6, v7];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    statusBarOrientation = [mEMORY[0x277D75128] statusBarOrientation];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
+    [(BCSLiveViewController *)self compensateForInterfaceOrientationInLiveView:statusBarOrientation referenceSize:v6, v7];
   }
 }
 
-- (void)actionCoordinator:(id)a3 didParseCode:(id)a4 withAction:(id)a5
+- (void)actionCoordinator:(id)coordinator didParseCode:(id)code withAction:(id)action
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 codeType];
-  if (v8 && v9 == 1)
+  codeCopy = code;
+  actionCopy = action;
+  codeType = [codeCopy codeType];
+  if (actionCopy && codeType == 1)
   {
-    v10 = [(BCSActionCoordinator *)self->_actionCoordinator centerGlyphImageForAction:v8];
+    v10 = [(BCSActionCoordinator *)self->_actionCoordinator centerGlyphImageForAction:actionCopy];
     v11 = v10;
-    if (v7 && v10)
+    if (codeCopy && v10)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __67__BCSLiveViewController_actionCoordinator_didParseCode_withAction___block_invoke;
       block[3] = &unk_278D01D30;
-      v13 = v7;
-      v14 = self;
+      v13 = codeCopy;
+      selfCopy = self;
       v15 = v11;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
@@ -1227,7 +1227,7 @@ void __67__BCSLiveViewController_actionCoordinator_didParseCode_withAction___blo
   }
 }
 
-- (void)sessionControlsDidBecomeActive:(id)a3
+- (void)sessionControlsDidBecomeActive:(id)active
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {
@@ -1240,7 +1240,7 @@ void __67__BCSLiveViewController_actionCoordinator_didParseCode_withAction___blo
   }
 }
 
-- (void)sessionControlsDidBecomeInactive:(id)a3
+- (void)sessionControlsDidBecomeInactive:(id)inactive
 {
   if ((_UISolariumEnabled() & 1) == 0)
   {

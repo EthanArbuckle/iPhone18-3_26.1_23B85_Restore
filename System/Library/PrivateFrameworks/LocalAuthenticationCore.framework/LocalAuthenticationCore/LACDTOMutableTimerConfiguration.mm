@@ -1,9 +1,9 @@
 @interface LACDTOMutableTimerConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LACDTOMutableTimerConfiguration)init;
-- (LACDTOMutableTimerConfiguration)initWithConfiguration:(id)a3;
+- (LACDTOMutableTimerConfiguration)initWithConfiguration:(id)configuration;
 - (NSString)description;
-- (void)setValue:(id)a3 forTimer:(int64_t)a4;
+- (void)setValue:(id)value forTimer:(int64_t)timer;
 @end
 
 @implementation LACDTOMutableTimerConfiguration
@@ -28,130 +28,130 @@
   return v3;
 }
 
-- (LACDTOMutableTimerConfiguration)initWithConfiguration:(id)a3
+- (LACDTOMutableTimerConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = LACDTOMutableTimerConfiguration;
   v5 = [(LACDTOMutableTimerConfiguration *)&v14 init];
   if (v5)
   {
-    v6 = [v4 coolOff];
-    [(LACDTOMutableTimerConfiguration *)v5 setCoolOff:v6];
+    coolOff = [configurationCopy coolOff];
+    [(LACDTOMutableTimerConfiguration *)v5 setCoolOff:coolOff];
 
-    v7 = [v4 waitingForSecondAuth];
-    [(LACDTOMutableTimerConfiguration *)v5 setWaitingForSecondAuth:v7];
+    waitingForSecondAuth = [configurationCopy waitingForSecondAuth];
+    [(LACDTOMutableTimerConfiguration *)v5 setWaitingForSecondAuth:waitingForSecondAuth];
 
-    v8 = [v4 ready];
-    [(LACDTOMutableTimerConfiguration *)v5 setReady:v8];
+    ready = [configurationCopy ready];
+    [(LACDTOMutableTimerConfiguration *)v5 setReady:ready];
 
-    v9 = [v4 dtoFallback];
-    [(LACDTOMutableTimerConfiguration *)v5 setDtoFallback:v9];
+    dtoFallback = [configurationCopy dtoFallback];
+    [(LACDTOMutableTimerConfiguration *)v5 setDtoFallback:dtoFallback];
 
-    v10 = [v4 dtoShortFallback];
-    [(LACDTOMutableTimerConfiguration *)v5 setDtoShortFallback:v10];
+    dtoShortFallback = [configurationCopy dtoShortFallback];
+    [(LACDTOMutableTimerConfiguration *)v5 setDtoShortFallback:dtoShortFallback];
 
-    v11 = [v4 lostMode];
-    [(LACDTOMutableTimerConfiguration *)v5 setLostMode:v11];
+    lostMode = [configurationCopy lostMode];
+    [(LACDTOMutableTimerConfiguration *)v5 setLostMode:lostMode];
 
-    v12 = [v4 gracePeriod];
-    [(LACDTOMutableTimerConfiguration *)v5 setGracePeriod:v12];
+    gracePeriod = [configurationCopy gracePeriod];
+    [(LACDTOMutableTimerConfiguration *)v5 setGracePeriod:gracePeriod];
   }
 
   return v5;
 }
 
-- (void)setValue:(id)a3 forTimer:(int64_t)a4
+- (void)setValue:(id)value forTimer:(int64_t)timer
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 2)
+  valueCopy = value;
+  v7 = valueCopy;
+  if (timer <= 2)
   {
-    if (a4)
+    if (timer)
     {
-      if (a4 == 1)
+      if (timer == 1)
       {
-        v8 = v6;
-        v6 = [(LACDTOMutableTimerConfiguration *)self setWaitingForSecondAuth:v6];
+        v8 = valueCopy;
+        valueCopy = [(LACDTOMutableTimerConfiguration *)self setWaitingForSecondAuth:valueCopy];
       }
 
       else
       {
-        if (a4 != 2)
+        if (timer != 2)
         {
           goto LABEL_17;
         }
 
-        v8 = v6;
-        v6 = [(LACDTOMutableTimerConfiguration *)self setReady:v6];
+        v8 = valueCopy;
+        valueCopy = [(LACDTOMutableTimerConfiguration *)self setReady:valueCopy];
       }
     }
 
     else
     {
-      v8 = v6;
-      v6 = [(LACDTOMutableTimerConfiguration *)self setCoolOff:v6];
+      v8 = valueCopy;
+      valueCopy = [(LACDTOMutableTimerConfiguration *)self setCoolOff:valueCopy];
     }
   }
 
-  else if (a4 > 4)
+  else if (timer > 4)
   {
-    if (a4 == 5)
+    if (timer == 5)
     {
-      v8 = v6;
-      v6 = [(LACDTOMutableTimerConfiguration *)self setLostMode:v6];
+      v8 = valueCopy;
+      valueCopy = [(LACDTOMutableTimerConfiguration *)self setLostMode:valueCopy];
     }
 
     else
     {
-      if (a4 != 6)
+      if (timer != 6)
       {
         goto LABEL_17;
       }
 
-      v8 = v6;
-      v6 = [(LACDTOMutableTimerConfiguration *)self setGracePeriod:v6];
+      v8 = valueCopy;
+      valueCopy = [(LACDTOMutableTimerConfiguration *)self setGracePeriod:valueCopy];
     }
   }
 
   else
   {
-    v8 = v6;
-    if (a4 == 3)
+    v8 = valueCopy;
+    if (timer == 3)
     {
-      v6 = [(LACDTOMutableTimerConfiguration *)self setDtoFallback:v6];
+      valueCopy = [(LACDTOMutableTimerConfiguration *)self setDtoFallback:valueCopy];
     }
 
     else
     {
-      v6 = [(LACDTOMutableTimerConfiguration *)self setDtoShortFallback:v6];
+      valueCopy = [(LACDTOMutableTimerConfiguration *)self setDtoShortFallback:valueCopy];
     }
   }
 
   v7 = v8;
 LABEL_17:
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](valueCopy, v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F26A1AD8])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F26A1AD8])
   {
-    v5 = v4;
-    v6 = [(LACDTOMutableTimerConfiguration *)self coolOff];
-    v7 = [v5 coolOff];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    coolOff = [(LACDTOMutableTimerConfiguration *)self coolOff];
+    coolOff2 = [v5 coolOff];
+    v8 = coolOff2;
+    if (coolOff == coolOff2)
     {
     }
 
     else
     {
-      v9 = [(LACDTOMutableTimerConfiguration *)self coolOff];
-      v10 = [v5 coolOff];
-      v11 = [v9 isEqual:v10];
+      coolOff3 = [(LACDTOMutableTimerConfiguration *)self coolOff];
+      coolOff4 = [v5 coolOff];
+      v11 = [coolOff3 isEqual:coolOff4];
 
       if (!v11)
       {
@@ -159,18 +159,18 @@ LABEL_17:
       }
     }
 
-    v13 = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
-    v14 = [v5 waitingForSecondAuth];
-    v15 = v14;
-    if (v13 == v14)
+    waitingForSecondAuth = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
+    waitingForSecondAuth2 = [v5 waitingForSecondAuth];
+    v15 = waitingForSecondAuth2;
+    if (waitingForSecondAuth == waitingForSecondAuth2)
     {
     }
 
     else
     {
-      v16 = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
-      v17 = [v5 waitingForSecondAuth];
-      v18 = [v16 isEqual:v17];
+      waitingForSecondAuth3 = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
+      waitingForSecondAuth4 = [v5 waitingForSecondAuth];
+      v18 = [waitingForSecondAuth3 isEqual:waitingForSecondAuth4];
 
       if (!v18)
       {
@@ -178,18 +178,18 @@ LABEL_17:
       }
     }
 
-    v19 = [(LACDTOMutableTimerConfiguration *)self ready];
-    v20 = [v5 ready];
-    v21 = v20;
-    if (v19 == v20)
+    ready = [(LACDTOMutableTimerConfiguration *)self ready];
+    ready2 = [v5 ready];
+    v21 = ready2;
+    if (ready == ready2)
     {
     }
 
     else
     {
-      v22 = [(LACDTOMutableTimerConfiguration *)self ready];
-      v23 = [v5 ready];
-      v24 = [v22 isEqual:v23];
+      ready3 = [(LACDTOMutableTimerConfiguration *)self ready];
+      ready4 = [v5 ready];
+      v24 = [ready3 isEqual:ready4];
 
       if (!v24)
       {
@@ -197,18 +197,18 @@ LABEL_17:
       }
     }
 
-    v25 = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
-    v26 = [v5 dtoFallback];
-    v27 = v26;
-    if (v25 == v26)
+    dtoFallback = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
+    dtoFallback2 = [v5 dtoFallback];
+    v27 = dtoFallback2;
+    if (dtoFallback == dtoFallback2)
     {
     }
 
     else
     {
-      v28 = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
-      v29 = [v5 dtoFallback];
-      v30 = [v28 isEqual:v29];
+      dtoFallback3 = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
+      dtoFallback4 = [v5 dtoFallback];
+      v30 = [dtoFallback3 isEqual:dtoFallback4];
 
       if (!v30)
       {
@@ -216,18 +216,18 @@ LABEL_17:
       }
     }
 
-    v31 = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
-    v32 = [v5 dtoShortFallback];
-    v33 = v32;
-    if (v31 == v32)
+    dtoShortFallback = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
+    dtoShortFallback2 = [v5 dtoShortFallback];
+    v33 = dtoShortFallback2;
+    if (dtoShortFallback == dtoShortFallback2)
     {
     }
 
     else
     {
-      v34 = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
-      v35 = [v5 dtoShortFallback];
-      v36 = [v34 isEqual:v35];
+      dtoShortFallback3 = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
+      dtoShortFallback4 = [v5 dtoShortFallback];
+      v36 = [dtoShortFallback3 isEqual:dtoShortFallback4];
 
       if (!v36)
       {
@@ -235,18 +235,18 @@ LABEL_17:
       }
     }
 
-    v37 = [(LACDTOMutableTimerConfiguration *)self lostMode];
-    v38 = [v5 lostMode];
-    v39 = v38;
-    if (v37 == v38)
+    lostMode = [(LACDTOMutableTimerConfiguration *)self lostMode];
+    lostMode2 = [v5 lostMode];
+    v39 = lostMode2;
+    if (lostMode == lostMode2)
     {
     }
 
     else
     {
-      v40 = [(LACDTOMutableTimerConfiguration *)self lostMode];
-      v41 = [v5 lostMode];
-      v42 = [v40 isEqual:v41];
+      lostMode3 = [(LACDTOMutableTimerConfiguration *)self lostMode];
+      lostMode4 = [v5 lostMode];
+      v42 = [lostMode3 isEqual:lostMode4];
 
       if (!v42)
       {
@@ -258,18 +258,18 @@ LABEL_26:
       }
     }
 
-    v44 = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
-    v45 = [v5 gracePeriod];
-    if (v44 == v45)
+    gracePeriod = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
+    gracePeriod2 = [v5 gracePeriod];
+    if (gracePeriod == gracePeriod2)
     {
       v12 = 1;
     }
 
     else
     {
-      v46 = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
-      v47 = [v5 gracePeriod];
-      v12 = [v46 isEqual:v47];
+      gracePeriod3 = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
+      gracePeriod4 = [v5 gracePeriod];
+      v12 = [gracePeriod3 isEqual:gracePeriod4];
     }
 
     goto LABEL_26;
@@ -287,32 +287,32 @@ LABEL_27:
   v25 = MEMORY[0x1E696AEC0];
   v23 = objc_opt_class();
   v3 = MEMORY[0x1E696AEC0];
-  v30 = [(LACDTOMutableTimerConfiguration *)self coolOff];
-  v29 = [v3 stringWithFormat:@"coolOff: %@", v30];
+  coolOff = [(LACDTOMutableTimerConfiguration *)self coolOff];
+  v29 = [v3 stringWithFormat:@"coolOff: %@", coolOff];
   v31[0] = v29;
   v4 = MEMORY[0x1E696AEC0];
-  v28 = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
-  v27 = [v4 stringWithFormat:@"waitingForSecondAuth: %@", v28];
+  waitingForSecondAuth = [(LACDTOMutableTimerConfiguration *)self waitingForSecondAuth];
+  v27 = [v4 stringWithFormat:@"waitingForSecondAuth: %@", waitingForSecondAuth];
   v31[1] = v27;
   v5 = MEMORY[0x1E696AEC0];
-  v26 = [(LACDTOMutableTimerConfiguration *)self ready];
-  v24 = [v5 stringWithFormat:@"ready: %@", v26];
+  ready = [(LACDTOMutableTimerConfiguration *)self ready];
+  v24 = [v5 stringWithFormat:@"ready: %@", ready];
   v31[2] = v24;
   v6 = MEMORY[0x1E696AEC0];
-  v22 = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
-  v7 = [v6 stringWithFormat:@"dtoFallback: %@", v22];
+  dtoFallback = [(LACDTOMutableTimerConfiguration *)self dtoFallback];
+  v7 = [v6 stringWithFormat:@"dtoFallback: %@", dtoFallback];
   v31[3] = v7;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
-  v10 = [v8 stringWithFormat:@"dtoShortFallback: %@", v9];
+  dtoShortFallback = [(LACDTOMutableTimerConfiguration *)self dtoShortFallback];
+  v10 = [v8 stringWithFormat:@"dtoShortFallback: %@", dtoShortFallback];
   v31[4] = v10;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(LACDTOMutableTimerConfiguration *)self lostMode];
-  v13 = [v11 stringWithFormat:@"lostMode: %@", v12];
+  lostMode = [(LACDTOMutableTimerConfiguration *)self lostMode];
+  v13 = [v11 stringWithFormat:@"lostMode: %@", lostMode];
   v31[5] = v13;
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
-  v16 = [v14 stringWithFormat:@"gracePeriod: %@", v15];
+  gracePeriod = [(LACDTOMutableTimerConfiguration *)self gracePeriod];
+  v16 = [v14 stringWithFormat:@"gracePeriod: %@", gracePeriod];
   v31[6] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:7];
   v18 = [v17 componentsJoinedByString:@" "];;

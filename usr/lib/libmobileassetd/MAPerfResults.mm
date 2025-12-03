@@ -1,6 +1,6 @@
 @interface MAPerfResults
 - ($50828A08DC8D0425568E958C1030530A)qosLevelTimeCount;
-- (BOOL)getPerfResults:(BOOL)a3;
+- (BOOL)getPerfResults:(BOOL)results;
 - (MAPerfResults)init;
 @end
 
@@ -24,12 +24,12 @@
   return self;
 }
 
-- (BOOL)getPerfResults:(BOOL)a3
+- (BOOL)getPerfResults:(BOOL)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v5 = getpid();
   v6 = 304;
-  if (v3)
+  if (resultsCopy)
   {
     v6 = 8;
   }

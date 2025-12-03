@@ -1,10 +1,10 @@
 @interface PXStoryComposabilityScoresMutableArray
-- (void)addComposabilityScores:(id)a3;
+- (void)addComposabilityScores:(id)scores;
 @end
 
 @implementation PXStoryComposabilityScoresMutableArray
 
-- (void)addComposabilityScores:(id)a3
+- (void)addComposabilityScores:(id)scores
 {
   end = self->super._scores.__end_;
   cap = self->super._scores.__cap_;
@@ -40,7 +40,7 @@
     }
 
     v12 = (8 * v8);
-    *v12 = a3;
+    *v12 = scores;
     v6 = (8 * v8 + 8);
     v13 = self->super._scores.__begin_;
     v14 = (self->super._scores.__end_ - v13);
@@ -58,7 +58,7 @@
 
   else
   {
-    *end = a3;
+    *end = scores;
     v6 = (end + 8);
   }
 

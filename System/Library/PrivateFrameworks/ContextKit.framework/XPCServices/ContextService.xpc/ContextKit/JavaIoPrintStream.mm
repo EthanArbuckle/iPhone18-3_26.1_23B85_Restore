@@ -1,48 +1,48 @@
 @interface JavaIoPrintStream
 - (BOOL)checkError;
-- (JavaIoPrintStream)initWithJavaIoFile:(id)a3;
-- (JavaIoPrintStream)initWithNSString:(id)a3 withNSString:(id)a4;
-- (id)appendWithJavaLangCharSequence:(id)a3;
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5;
-- (id)formatWithNSString:(id)a3 withNSObjectArray:(id)a4;
+- (JavaIoPrintStream)initWithJavaIoFile:(id)file;
+- (JavaIoPrintStream)initWithNSString:(id)string withNSString:(id)sString;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array;
+- (id)formatWithNSString:(id)string withNSObjectArray:(id)array;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
 - (void)newline;
-- (void)printWithBoolean:(BOOL)a3;
-- (void)printWithChar:(unsigned __int16)a3;
-- (void)printWithCharArray:(id)a3;
-- (void)printWithDouble:(double)a3;
-- (void)printWithFloat:(float)a3;
-- (void)printWithId:(id)a3;
-- (void)printWithInt:(int)a3;
-- (void)printWithLong:(int64_t)a3;
-- (void)printWithNSString:(id)a3;
+- (void)printWithBoolean:(BOOL)boolean;
+- (void)printWithChar:(unsigned __int16)char;
+- (void)printWithCharArray:(id)array;
+- (void)printWithDouble:(double)double;
+- (void)printWithFloat:(float)float;
+- (void)printWithId:(id)id;
+- (void)printWithInt:(int)int;
+- (void)printWithLong:(int64_t)long;
+- (void)printWithNSString:(id)string;
 - (void)println;
-- (void)printlnWithBoolean:(BOOL)a3;
-- (void)printlnWithChar:(unsigned __int16)a3;
-- (void)printlnWithCharArray:(id)a3;
-- (void)printlnWithDouble:(double)a3;
-- (void)printlnWithFloat:(float)a3;
-- (void)printlnWithId:(id)a3;
-- (void)printlnWithInt:(int)a3;
-- (void)printlnWithLong:(int64_t)a3;
-- (void)printlnWithNSString:(id)a3;
+- (void)printlnWithBoolean:(BOOL)boolean;
+- (void)printlnWithChar:(unsigned __int16)char;
+- (void)printlnWithCharArray:(id)array;
+- (void)printlnWithDouble:(double)double;
+- (void)printlnWithFloat:(float)float;
+- (void)printlnWithId:(id)id;
+- (void)printlnWithInt:(int)int;
+- (void)printlnWithLong:(int64_t)long;
+- (void)printlnWithNSString:(id)string;
 @end
 
 @implementation JavaIoPrintStream
 
-- (JavaIoPrintStream)initWithJavaIoFile:(id)a3
+- (JavaIoPrintStream)initWithJavaIoFile:(id)file
 {
-  v4 = new_JavaIoFileOutputStream_initWithJavaIoFile_(a3);
+  v4 = new_JavaIoFileOutputStream_initWithJavaIoFile_(file);
   JavaIoFilterOutputStream_initWithJavaIoOutputStream_(self, v4);
   return self;
 }
 
-- (JavaIoPrintStream)initWithNSString:(id)a3 withNSString:(id)a4
+- (JavaIoPrintStream)initWithNSString:(id)string withNSString:(id)sString
 {
-  v6 = new_JavaIoFile_initWithNSString_(a3);
-  JavaIoPrintStream_initWithJavaIoFile_withNSString_(self, v6, a4);
+  v6 = new_JavaIoFile_initWithNSString_(string);
+  JavaIoPrintStream_initWithJavaIoFile_withNSString_(self, v6, sString);
   return self;
 }
 
@@ -94,22 +94,22 @@
   objc_sync_exit(self);
 }
 
-- (id)formatWithNSString:(id)a3 withNSObjectArray:(id)a4
+- (id)formatWithNSString:(id)string withNSObjectArray:(id)array
 {
   Default = JavaUtilLocale_getDefault();
 
-  return [(JavaIoPrintStream *)self formatWithJavaUtilLocale:Default withNSString:a3 withNSObjectArray:a4];
+  return [(JavaIoPrintStream *)self formatWithJavaUtilLocale:Default withNSString:string withNSObjectArray:array];
 }
 
-- (id)formatWithJavaUtilLocale:(id)a3 withNSString:(id)a4 withNSObjectArray:(id)a5
+- (id)formatWithJavaUtilLocale:(id)locale withNSString:(id)string withNSObjectArray:(id)array
 {
-  if (!a4)
+  if (!string)
   {
     v7 = new_JavaLangNullPointerException_initWithNSString_(@"format == null");
     objc_exception_throw(v7);
   }
 
-  [new_JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self formatWithNSString:"formatWithNSString:withNSObjectArray:" withNSObjectArray:a4, a5];
+  [new_JavaUtilFormatter_initWithJavaLangAppendable_withJavaUtilLocale_(self formatWithNSString:"formatWithNSString:withNSObjectArray:" withNSObjectArray:string, array];
   return self;
 }
 
@@ -120,78 +120,78 @@
   [(JavaIoPrintStream *)self printWithNSString:v3];
 }
 
-- (void)printWithCharArray:(id)a3
+- (void)printWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [NSString stringWithCharacters:a3 offset:0 length:*(a3 + 2)];
+  v4 = [NSString stringWithCharacters:array offset:0 length:*(array + 2)];
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithChar:(unsigned __int16)a3
+- (void)printWithChar:(unsigned __int16)char
 {
-  v4 = NSString_valueOfChar_(a3);
+  v4 = NSString_valueOfChar_(char);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithDouble:(double)a3
+- (void)printWithDouble:(double)double
 {
-  v4 = NSString_valueOfDouble_(a3);
+  v4 = NSString_valueOfDouble_(double);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithFloat:(float)a3
+- (void)printWithFloat:(float)float
 {
-  v4 = NSString_valueOfFloat_(a3);
+  v4 = NSString_valueOfFloat_(float);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithInt:(int)a3
+- (void)printWithInt:(int)int
 {
-  v4 = NSString_valueOfInt_(a3);
+  v4 = NSString_valueOfInt_(int);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithLong:(int64_t)a3
+- (void)printWithLong:(int64_t)long
 {
-  v4 = NSString_valueOfLong_(a3);
+  v4 = NSString_valueOfLong_(long);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithId:(id)a3
+- (void)printWithId:(id)id
 {
-  v4 = NSString_valueOf_(a3);
+  v4 = NSString_valueOf_(id);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
 
-- (void)printWithNSString:(id)a3
+- (void)printWithNSString:(id)string
 {
   objc_sync_enter(self);
   if (self->super.out_)
   {
-    if (a3)
+    if (string)
     {
       if (self->encoding_)
       {
-        v5 = [a3 getBytesWithCharsetName:?];
+        getBytes = [string getBytesWithCharsetName:?];
       }
 
       else
       {
-        v5 = [a3 getBytes];
+        getBytes = [string getBytes];
       }
 
-      [(JavaIoOutputStream *)self writeWithByteArray:v5];
+      [(JavaIoOutputStream *)self writeWithByteArray:getBytes];
     }
 
     else
@@ -208,9 +208,9 @@
   objc_sync_exit(self);
 }
 
-- (void)printWithBoolean:(BOOL)a3
+- (void)printWithBoolean:(BOOL)boolean
 {
-  v4 = NSString_valueOfBool_(a3);
+  v4 = NSString_valueOfBool_(boolean);
 
   [(JavaIoPrintStream *)self printWithNSString:v4];
 }
@@ -222,81 +222,81 @@
   [(JavaIoPrintStream *)self printWithNSString:v3];
 }
 
-- (void)printlnWithCharArray:(id)a3
+- (void)printlnWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [NSString stringWithCharacters:a3 offset:0 length:*(a3 + 2)];
+  v4 = [NSString stringWithCharacters:array offset:0 length:*(array + 2)];
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithChar:(unsigned __int16)a3
+- (void)printlnWithChar:(unsigned __int16)char
 {
-  v4 = NSString_valueOfChar_(a3);
+  v4 = NSString_valueOfChar_(char);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithDouble:(double)a3
+- (void)printlnWithDouble:(double)double
 {
-  v4 = NSString_valueOfDouble_(a3);
+  v4 = NSString_valueOfDouble_(double);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithFloat:(float)a3
+- (void)printlnWithFloat:(float)float
 {
-  v4 = NSString_valueOfFloat_(a3);
+  v4 = NSString_valueOfFloat_(float);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithInt:(int)a3
+- (void)printlnWithInt:(int)int
 {
-  v4 = NSString_valueOfInt_(a3);
+  v4 = NSString_valueOfInt_(int);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithLong:(int64_t)a3
+- (void)printlnWithLong:(int64_t)long
 {
-  v4 = NSString_valueOfLong_(a3);
+  v4 = NSString_valueOfLong_(long);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithId:(id)a3
+- (void)printlnWithId:(id)id
 {
-  v4 = NSString_valueOf_(a3);
+  v4 = NSString_valueOf_(id);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (void)printlnWithNSString:(id)a3
+- (void)printlnWithNSString:(id)string
 {
   objc_sync_enter(self);
-  [(JavaIoPrintStream *)self printWithNSString:a3];
+  [(JavaIoPrintStream *)self printWithNSString:string];
   [(JavaIoPrintStream *)self printWithNSString:JavaLangSystem_lineSeparator()];
 
   objc_sync_exit(self);
 }
 
-- (void)printlnWithBoolean:(BOOL)a3
+- (void)printlnWithBoolean:(BOOL)boolean
 {
-  v4 = NSString_valueOfBool_(a3);
+  v4 = NSString_valueOfBool_(boolean);
 
   [(JavaIoPrintStream *)self printlnWithNSString:v4];
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    v4 = [a3 description];
+    v4 = [sequence description];
   }
 
   else

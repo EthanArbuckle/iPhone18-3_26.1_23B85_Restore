@@ -1,42 +1,42 @@
 @interface HMDBulletinCategory
-+ (BOOL)isSecureServiceType:(id)a3;
-+ (BOOL)isSensorDetectedCharacteristic:(id)a3;
++ (BOOL)isSecureServiceType:(id)type;
++ (BOOL)isSensorDetectedCharacteristic:(id)characteristic;
 + (NSDictionary)targetCurrentCharacteristicTypeMap;
 + (id)_enumerationValueLocalizationKeys;
-+ (id)_localizedStateForValue:(id)a3 characteristicType:(id)a4;
-+ (id)_presentationTypeForType:(id)a3;
++ (id)_localizedStateForValue:(id)value characteristicType:(id)type;
++ (id)_presentationTypeForType:(id)type;
 + (id)_secureStateMap;
 + (id)_sensorMap;
-+ (id)bulletinReasonForChangedCharacteristic:(id)a3;
-+ (id)composedNameForCharacteristic:(id)a3;
-+ (id)localizedActionForCharacteristic:(id)a3;
-+ (id)localizedStateForCharacteristic:(id)a3 doorbellBulletinUtilities:(id)a4;
-+ (id)presentationValueForValue:(id)a3 type:(id)a4;
-+ (id)trimLeadingAndTailingDotInName:(id)a3;
-+ (id)trimLeadingAndTailingSpacesInName:(id)a3;
++ (id)bulletinReasonForChangedCharacteristic:(id)characteristic;
++ (id)composedNameForCharacteristic:(id)characteristic;
++ (id)localizedActionForCharacteristic:(id)characteristic;
++ (id)localizedStateForCharacteristic:(id)characteristic doorbellBulletinUtilities:(id)utilities;
++ (id)presentationValueForValue:(id)value type:(id)type;
++ (id)trimLeadingAndTailingDotInName:(id)name;
++ (id)trimLeadingAndTailingSpacesInName:(id)name;
 @end
 
 @implementation HMDBulletinCategory
 
-+ (id)presentationValueForValue:(id)a3 type:(id)a4
++ (id)presentationValueForValue:(id)value type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _presentationTypeForType:v7];
-  if (([v7 isEqualToString:*MEMORY[0x277CFE6B8]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CFE688]))
+  valueCopy = value;
+  typeCopy = type;
+  v8 = [self _presentationTypeForType:typeCopy];
+  if (([typeCopy isEqualToString:*MEMORY[0x277CFE6B8]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE688]))
   {
-    v9 = [a1 _secureStateMap];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    _secureStateMap = [self _secureStateMap];
+    v10 = [_secureStateMap objectForKeyedSubscript:v8];
     v11 = v10;
     v12 = 1;
     goto LABEL_4;
   }
 
-  if (([v7 isEqualToString:*MEMORY[0x277CFE610]] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CFE738]))
+  if (([typeCopy isEqualToString:*MEMORY[0x277CFE610]] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE738]))
   {
-    v14 = [v6 integerValue];
+    integerValue = [valueCopy integerValue];
     v15 = &unk_283E72FC8;
-    if (!v14)
+    if (!integerValue)
     {
       v15 = &unk_283E72FB0;
     }
@@ -46,10 +46,10 @@
 
   else
   {
-    if (([v7 isEqualToString:*MEMORY[0x277CFE620]] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CFE660]) & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CFE678]) & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CFE608]))
+    if (([typeCopy isEqualToString:*MEMORY[0x277CFE620]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE660]) & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE678]) & 1) == 0 && !objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE608]))
     {
       v18 = +[HMDBulletinCategory _secureStateMap];
-      v9 = [v18 objectForKeyedSubscript:v8];
+      _secureStateMap = [v18 objectForKeyedSubscript:v8];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -58,9 +58,9 @@
         goto LABEL_5;
       }
 
-      v11 = [v9 objectAtIndexedSubscript:0];
-      v12 = [v11 isEqualToNumber:v6] ^ 1;
-      v10 = v9;
+      v11 = [_secureStateMap objectAtIndexedSubscript:0];
+      v12 = [v11 isEqualToNumber:valueCopy] ^ 1;
+      v10 = _secureStateMap;
 LABEL_4:
       v13 = [v10 objectAtIndexedSubscript:v12];
 
@@ -68,7 +68,7 @@ LABEL_5:
       goto LABEL_17;
     }
 
-    v16 = v6;
+    v16 = valueCopy;
   }
 
   v13 = v16;
@@ -77,10 +77,10 @@ LABEL_17:
   return v13;
 }
 
-+ (id)_presentationTypeForType:(id)a3
++ (id)_presentationTypeForType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:*MEMORY[0x277CFE6B8]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CFE688]) & 1) != 0 || (v4 = v3, objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CFE610])))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:*MEMORY[0x277CFE6B8]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE688]) & 1) != 0 || (v4 = typeCopy, objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CFE610])))
   {
     v4 = *MEMORY[0x277CFE5E8];
   }
@@ -90,12 +90,12 @@ LABEL_17:
   return v4;
 }
 
-+ (id)_localizedStateForValue:(id)a3 characteristicType:(id)a4
++ (id)_localizedStateForValue:(id)value characteristicType:(id)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x277CFE610]])
+  valueCopy = value;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277CFE610]])
   {
     v7 = HMDLocalizedStringForKey(@"BULLETIN_CATEGORY_STATE_UNKNOWN");
   }
@@ -110,17 +110,17 @@ LABEL_17:
       v20 = 138543874;
       v21 = v10;
       v22 = 2112;
-      v23 = v6;
+      v23 = typeCopy;
       v24 = 2112;
-      v25 = v5;
+      v25 = valueCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@type : %@ value = %@", &v20, 0x20u);
     }
 
     objc_autoreleasePoolPop(v8);
     v11 = +[HMDBulletinCategory _enumerationValueLocalizationKeys];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    v12 = [v11 objectForKeyedSubscript:typeCopy];
 
-    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v13 = [v5 integerValue], v13 < objc_msgSend(v12, "count")))
+    if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v13 = [valueCopy integerValue], v13 < objc_msgSend(v12, "count")))
     {
       v14 = [v12 objectAtIndexedSubscript:v13];
     }
@@ -185,20 +185,20 @@ void __57__HMDBulletinCategory_targetCurrentCharacteristicTypeMap__block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)bulletinReasonForChangedCharacteristic:(id)a3
++ (id)bulletinReasonForChangedCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [v4 bulletinBoardNotification];
-  v6 = [v5 notificationServiceGroup];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  bulletinBoardNotification = [service bulletinBoardNotification];
+  notificationServiceGroup = [bulletinBoardNotification notificationServiceGroup];
 
-  v7 = [v6 cameraProfiles];
-  v8 = [v7 firstObject];
+  cameraProfiles = [notificationServiceGroup cameraProfiles];
+  firstObject = [cameraProfiles firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = [v3 type];
-    v10 = [v9 isEqualToString:*MEMORY[0x277CFE678]];
+    type = [characteristicCopy type];
+    v10 = [type isEqualToString:*MEMORY[0x277CFE678]];
 
     if (v10)
     {
@@ -208,11 +208,11 @@ LABEL_4:
       goto LABEL_10;
     }
 
-    v13 = [v3 type];
-    if ([v13 isEqualToString:*MEMORY[0x277CFE660]])
+    type2 = [characteristicCopy type];
+    if ([type2 isEqualToString:*MEMORY[0x277CFE660]])
     {
-      v14 = [v4 type];
-      v15 = [v14 isEqualToString:*MEMORY[0x277CFE840]];
+      type3 = [service type];
+      v15 = [type3 isEqualToString:*MEMORY[0x277CFE840]];
 
       if (v15)
       {
@@ -232,16 +232,16 @@ LABEL_10:
   return v12;
 }
 
-+ (BOOL)isSecureServiceType:(id)a3
++ (BOOL)isSecureServiceType:(id)type
 {
   v3 = isSecureServiceType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&isSecureServiceType__onceToken, &__block_literal_global_127_139989);
   }
 
-  v5 = [isSecureServiceType__secureServices containsObject:v4];
+  v5 = [isSecureServiceType__secureServices containsObject:typeCopy];
 
   return v5;
 }
@@ -253,94 +253,94 @@ void __43__HMDBulletinCategory_isSecureServiceType___block_invoke()
   isSecureServiceType__secureServices = v0;
 }
 
-+ (BOOL)isSensorDetectedCharacteristic:(id)a3
++ (BOOL)isSensorDetectedCharacteristic:(id)characteristic
 {
-  v3 = a3;
+  characteristicCopy = characteristic;
   v4 = +[HMDBulletinCategory _sensorMap];
-  v5 = [v4 allKeys];
-  v6 = [v3 type];
+  allKeys = [v4 allKeys];
+  type = [characteristicCopy type];
 
-  LOBYTE(v3) = [v5 containsObject:v6];
-  return v3;
+  LOBYTE(characteristicCopy) = [allKeys containsObject:type];
+  return characteristicCopy;
 }
 
-+ (id)composedNameForCharacteristic:(id)a3
++ (id)composedNameForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  v4 = [v3 service];
-  v5 = [v4 name];
-  v6 = [v3 accessory];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  name = [service name];
+  accessory = [characteristicCopy accessory];
 
-  v7 = [v6 room];
-  v8 = [v7 name];
+  room = [accessory room];
+  name2 = [room name];
   v9 = HMDLocalizedStringForKey(@"BULLETIN_ACTION_ROOM_SERVICE");
-  v10 = [HMDServiceNameComponents componentsWithRawServiceName:v5 rawRoomName:v8 localizedFormat:v9];
+  v10 = [HMDServiceNameComponents componentsWithRawServiceName:name rawRoomName:name2 localizedFormat:v9];
 
-  v11 = [v10 composedName];
+  composedName = [v10 composedName];
 
-  return v11;
+  return composedName;
 }
 
-+ (id)trimLeadingAndTailingDotInName:(id)a3
++ (id)trimLeadingAndTailingDotInName:(id)name
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 characterSetWithCharactersInString:@"."];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [nameCopy stringByTrimmingCharactersInSet:v5];
 
   return v6;
 }
 
-+ (id)trimLeadingAndTailingSpacesInName:(id)a3
++ (id)trimLeadingAndTailingSpacesInName:(id)name
 {
   v3 = MEMORY[0x277CCA900];
-  v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  nameCopy = name;
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [nameCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v6;
 }
 
-+ (id)localizedStateForCharacteristic:(id)a3 doorbellBulletinUtilities:(id)a4
++ (id)localizedStateForCharacteristic:(id)characteristic doorbellBulletinUtilities:(id)utilities
 {
   v92 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accessory];
-  v9 = [v6 service];
-  v10 = [v6 type];
-  v11 = [v10 isEqualToString:*MEMORY[0x277CFE660]];
+  characteristicCopy = characteristic;
+  utilitiesCopy = utilities;
+  accessory = [characteristicCopy accessory];
+  service = [characteristicCopy service];
+  type = [characteristicCopy type];
+  v11 = [type isEqualToString:*MEMORY[0x277CFE660]];
 
   if (!v11)
   {
-    if ([HMDBulletinCategory isSensorDetectedCharacteristic:v6])
+    if ([HMDBulletinCategory isSensorDetectedCharacteristic:characteristicCopy])
     {
-      v80 = v7;
-      v16 = [v8 room];
-      v17 = [v16 name];
+      v80 = utilitiesCopy;
+      room = [accessory room];
+      name = [room name];
 
-      v18 = [v6 type];
-      v19 = [v18 isEqualToString:*MEMORY[0x277CFE678]];
+      type2 = [characteristicCopy type];
+      v19 = [type2 isEqualToString:*MEMORY[0x277CFE678]];
 
       if (v19)
       {
-        v20 = [v9 name];
+        name2 = [service name];
         v21 = HMDLocalizedStringForKey(@"BULLETIN_ACTION_ROOM_SERVICE");
-        v22 = [HMDServiceNameComponents componentsWithRawServiceName:v20 rawRoomName:v17 localizedFormat:v21];
+        v22 = [HMDServiceNameComponents componentsWithRawServiceName:name2 rawRoomName:name localizedFormat:v21];
 
-        v23 = [v22 composedName];
+        composedName = [v22 composedName];
 
-        v17 = v23;
+        name = composedName;
       }
 
       v24 = MEMORY[0x277CCACA8];
       v25 = +[HMDBulletinCategory _sensorMap];
-      v26 = [v6 type];
-      v27 = [v25 valueForKey:v26];
+      type3 = [characteristicCopy type];
+      v27 = [v25 valueForKey:type3];
       v28 = HMDLocalizedStringForKey(v27);
       v83 = 0;
-      v76 = v17;
-      v29 = [HMDBulletinCategory trimLeadingAndTailingSpacesInName:v17];
+      v76 = name;
+      v29 = [HMDBulletinCategory trimLeadingAndTailingSpacesInName:name];
       v30 = [v24 localizedStringWithValidatedFormat:v28 validFormatSpecifiers:@"%@" error:&v83, v29];
       v78 = v83;
 
@@ -357,8 +357,8 @@ void __43__HMDBulletinCategory_isSecureServiceType___block_invoke()
         {
           v50 = HMFGetLogIdentifier();
           v51 = +[HMDBulletinCategory _sensorMap];
-          v52 = [v6 type];
-          v53 = [v51 valueForKey:v52];
+          type4 = [characteristicCopy type];
+          v53 = [v51 valueForKey:type4];
           *buf = 138544130;
           v85 = v50;
           v86 = 2112;
@@ -372,20 +372,20 @@ void __43__HMDBulletinCategory_isSecureServiceType___block_invoke()
 
         objc_autoreleasePoolPop(v48);
         v54 = +[HMDBulletinCategory _sensorMap];
-        v55 = [v6 type];
-        v15 = [v54 valueForKey:v55];
+        type5 = [characteristicCopy type];
+        v15 = [v54 valueForKey:type5];
       }
 
-      v7 = v80;
+      utilitiesCopy = v80;
 
       goto LABEL_32;
     }
 
-    v32 = [v6 type];
-    if ([v32 isEqualToString:*MEMORY[0x277CFE5B0]])
+    type6 = [characteristicCopy type];
+    if ([type6 isEqualToString:*MEMORY[0x277CFE5B0]])
     {
-      v33 = [v9 type];
-      v34 = [v33 isEqualToString:@"00000260-0000-1000-8000-0026BB765291"];
+      type7 = [service type];
+      v34 = [type7 isEqualToString:@"00000260-0000-1000-8000-0026BB765291"];
 
       if (v34)
       {
@@ -398,27 +398,27 @@ void __43__HMDBulletinCategory_isSecureServiceType___block_invoke()
     {
     }
 
-    v35 = [v6 type];
-    v36 = [a1 _presentationTypeForType:v35];
+    type8 = [characteristicCopy type];
+    v36 = [self _presentationTypeForType:type8];
 
-    v37 = [v6 value];
-    v38 = [v6 type];
-    v39 = [a1 presentationValueForValue:v37 type:v38];
+    value = [characteristicCopy value];
+    type9 = [characteristicCopy type];
+    v39 = [self presentationValueForValue:value type:type9];
 
     v74 = v39;
     v77 = v36;
-    v40 = [a1 _localizedStateForValue:v39 characteristicType:v36];
-    v41 = [v9 name];
-    v42 = [v8 room];
-    v43 = [v42 name];
+    v40 = [self _localizedStateForValue:v39 characteristicType:v36];
+    name3 = [service name];
+    room2 = [accessory room];
+    name4 = [room2 name];
     v44 = HMDLocalizedStringForKey(@"BULLETIN_ACTION_ROOM_SERVICE");
-    v79 = [HMDServiceNameComponents componentsWithRawServiceName:v41 rawRoomName:v43 localizedFormat:v44];
+    v79 = [HMDServiceNameComponents componentsWithRawServiceName:name3 rawRoomName:name4 localizedFormat:v44];
 
-    v45 = [v9 type];
+    type10 = [service type];
     v46 = *MEMORY[0x277CFE928];
-    v81 = v7;
-    v75 = v8;
-    if ([v45 isEqualToString:*MEMORY[0x277CFE928]])
+    v81 = utilitiesCopy;
+    v75 = accessory;
+    if ([type10 isEqualToString:*MEMORY[0x277CFE928]])
     {
 
 LABEL_17:
@@ -428,13 +428,13 @@ LABEL_27:
       v60 = MEMORY[0x277CCACA8];
       v61 = HMDLocalizedStringForKey(v47);
       v82 = 0;
-      v62 = [v79 composedName];
-      [v60 localizedStringWithValidatedFormat:v61 validFormatSpecifiers:@"%@ %@" error:&v82, v62, v40];
+      composedName2 = [v79 composedName];
+      [v60 localizedStringWithValidatedFormat:v61 validFormatSpecifiers:@"%@ %@" error:&v82, composedName2, v40];
       v64 = v63 = v40;
       v65 = v82;
 
       v66 = v64;
-      v7 = v81;
+      utilitiesCopy = v81;
       if (!v64)
       {
         v67 = v47;
@@ -463,15 +463,15 @@ LABEL_27:
 
       v15 = v66;
 
-      v8 = v75;
+      accessory = v75;
       goto LABEL_32;
     }
 
-    v56 = [v9 type];
-    if ([v56 isEqualToString:*MEMORY[0x277CFE8B8]])
+    type11 = [service type];
+    if ([type11 isEqualToString:*MEMORY[0x277CFE8B8]])
     {
-      v57 = [v9 associatedServiceType];
-      v58 = [v57 isEqualToString:v46];
+      associatedServiceType = [service associatedServiceType];
+      v58 = [associatedServiceType isEqualToString:v46];
 
       if (v58)
       {
@@ -487,19 +487,19 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v12 = [v9 type];
-  v13 = [v12 isEqualToString:*MEMORY[0x277CFE840]];
+  type12 = [service type];
+  v13 = [type12 isEqualToString:*MEMORY[0x277CFE840]];
 
   if (v13)
   {
-    v14 = [v7 localizedMessageForCharacteristic:v6];
+    v14 = [utilitiesCopy localizedMessageForCharacteristic:characteristicCopy];
 LABEL_4:
     v15 = v14;
     goto LABEL_32;
   }
 
-  v31 = [v9 name];
-  v15 = [HMDBulletinCategory trimLeadingAndTailingSpacesInName:v31];
+  name5 = [service name];
+  v15 = [HMDBulletinCategory trimLeadingAndTailingSpacesInName:name5];
 
 LABEL_32:
   v71 = *MEMORY[0x277D85DE8];
@@ -507,21 +507,21 @@ LABEL_32:
   return v15;
 }
 
-+ (id)localizedActionForCharacteristic:(id)a3
++ (id)localizedActionForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [a1 _presentationTypeForType:v5];
+  characteristicCopy = characteristic;
+  type = [characteristicCopy type];
+  v6 = [self _presentationTypeForType:type];
 
-  v7 = [v4 value];
-  v8 = [v4 type];
+  value = [characteristicCopy value];
+  type2 = [characteristicCopy type];
 
-  v9 = [a1 presentationValueForValue:v7 type:v8];
+  v9 = [self presentationValueForValue:value type:type2];
 
-  v10 = [a1 _localizedStateForValue:v9 characteristicType:v6];
-  v11 = [v10 stringByCapitalizingFirstWord];
+  v10 = [self _localizedStateForValue:v9 characteristicType:v6];
+  stringByCapitalizingFirstWord = [v10 stringByCapitalizingFirstWord];
 
-  return v11;
+  return stringByCapitalizingFirstWord;
 }
 
 + (id)_sensorMap

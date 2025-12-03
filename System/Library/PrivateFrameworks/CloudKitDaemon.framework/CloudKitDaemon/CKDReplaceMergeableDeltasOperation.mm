@@ -1,25 +1,25 @@
 @interface CKDReplaceMergeableDeltasOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDReplaceMergeableDeltasOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDReplaceMergeableDeltasOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)_encryptMergeableDeltas;
 - (void)_replaceMergeableDeltas;
-- (void)handleReplaceDeltasRequest:(id)a3 result:(id)a4;
+- (void)handleReplaceDeltasRequest:(id)request result:(id)result;
 - (void)main;
 @end
 
 @implementation CKDReplaceMergeableDeltasOperation
 
-- (CKDReplaceMergeableDeltasOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDReplaceMergeableDeltasOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CKDReplaceMergeableDeltasOperation;
-  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v13 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_replaceDeltasRequests(v6, v7, v8);
+    v10 = objc_msgSend_replaceDeltasRequests(infoCopy, v7, v8);
     replaceDeltasRequests = v9->_replaceDeltasRequests;
     v9->_replaceDeltasRequests = v10;
   }
@@ -58,14 +58,14 @@
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     v5 = @"Replace Deltas";
   }
 
-  else if (a3 == 2)
+  else if (state == 2)
   {
     v5 = @"Encrypt Deltas";
   }
@@ -74,7 +74,7 @@
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDReplaceMergeableDeltasOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -162,16 +162,16 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleReplaceDeltasRequest:(id)a3 result:(id)a4
+- (void)handleReplaceDeltasRequest:(id)request result:(id)result
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resultCopy = result;
   v10 = objc_msgSend_perReplacementCompletionBlock(self, v8, v9);
 
   if (v10)
   {
-    if (objc_msgSend_code(v7, v11, v12) == 1)
+    if (objc_msgSend_code(resultCopy, v11, v12) == 1)
     {
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -182,23 +182,23 @@
       if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v42 = v6;
+        v42 = requestCopy;
         _os_log_debug_impl(&dword_22506F000, v13, OS_LOG_TYPE_DEBUG, "Successfully replaced deltas with request %@", buf, 0xCu);
       }
 
       v16 = objc_msgSend_perReplacementCompletionBlock(self, v14, v15);
-      (v16)[2](v16, v6, 0);
+      (v16)[2](v16, requestCopy, 0);
 
       goto LABEL_18;
     }
 
-    v22 = sub_2253962A4(v7);
+    v22 = sub_2253962A4(resultCopy);
     v25 = objc_msgSend_request(self, v23, v24);
-    v18 = sub_225395734(v25, v7);
+    v18 = sub_225395734(v25, resultCopy);
 
     v26 = MEMORY[0x277CBC560];
     v27 = *MEMORY[0x277CBC120];
-    v30 = objc_msgSend_error(v7, v28, v29);
+    v30 = objc_msgSend_error(resultCopy, v28, v29);
     v33 = objc_msgSend_errorDescription(v30, v31, v32);
     v35 = objc_msgSend_errorWithDomain_code_userInfo_format_(v26, v34, v27, v22, v18, @"Error performing replace deltas request: %@", v33);
 
@@ -211,14 +211,14 @@
     if (os_log_type_enabled(*MEMORY[0x277CBC840], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v6;
+      v42 = requestCopy;
       v43 = 2112;
       v44 = v35;
       _os_log_error_impl(&dword_22506F000, v36, OS_LOG_TYPE_ERROR, "Failed to replace deltas for request %@: %@", buf, 0x16u);
     }
 
     v39 = objc_msgSend_perReplacementCompletionBlock(self, v37, v38);
-    (v39)[2](v39, v6, v35);
+    (v39)[2](v39, requestCopy, v35);
 
 LABEL_17:
     goto LABEL_18;

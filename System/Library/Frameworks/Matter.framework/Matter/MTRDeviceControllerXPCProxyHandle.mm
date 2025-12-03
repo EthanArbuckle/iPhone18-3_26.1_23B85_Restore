@@ -1,22 +1,22 @@
 @interface MTRDeviceControllerXPCProxyHandle
 - (MTRDeviceControllerServerProtocol)proxy;
-- (MTRDeviceControllerXPCProxyHandle)initWithXPCConnection:(id)a3;
+- (MTRDeviceControllerXPCProxyHandle)initWithXPCConnection:(id)connection;
 - (NSXPCConnection)xpcConnection;
 - (void)dealloc;
 @end
 
 @implementation MTRDeviceControllerXPCProxyHandle
 
-- (MTRDeviceControllerXPCProxyHandle)initWithXPCConnection:(id)a3
+- (MTRDeviceControllerXPCProxyHandle)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = MTRDeviceControllerXPCProxyHandle;
   v5 = [(MTRDeviceControllerXPCProxyHandle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_xpcConnection, v4);
+    objc_storeWeak(&v5->_xpcConnection, connectionCopy);
   }
 
   return v6;
@@ -25,9 +25,9 @@
 - (MTRDeviceControllerServerProtocol)proxy
 {
   WeakRetained = objc_loadWeakRetained(&self->_xpcConnection);
-  v3 = [WeakRetained remoteObjectProxy];
+  remoteObjectProxy = [WeakRetained remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)dealloc

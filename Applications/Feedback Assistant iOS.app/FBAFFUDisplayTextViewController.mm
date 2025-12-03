@@ -1,7 +1,7 @@
 @interface FBAFFUDisplayTextViewController
 - (UITextView)textView;
-- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithCoder:(id)a3;
-- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithCoder:(id)coder;
+- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,20 +16,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006CF04();
 }
 
-- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectWeakInit();
     v6 = (self + OBJC_IVAR____TtC18Feedback_Assistant31FBAFFUDisplayTextViewController_displayText);
     *v6 = 0;
     v6[1] = 0xE000000000000000;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = String._bridgeToObjectiveC()();
   }
 
@@ -39,18 +39,18 @@
     v9 = (self + OBJC_IVAR____TtC18Feedback_Assistant31FBAFFUDisplayTextViewController_displayText);
     *v9 = 0;
     v9[1] = 0xE000000000000000;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for FBAFFUDisplayTextViewController();
-  v11 = [(FBAFFUDisplayTextViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(FBAFFUDisplayTextViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithCoder:(id)a3
+- (_TtC18Feedback_Assistant31FBAFFUDisplayTextViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant31FBAFFUDisplayTextViewController_displayText);
@@ -58,8 +58,8 @@
   v5[1] = 0xE000000000000000;
   v9.receiver = self;
   v9.super_class = type metadata accessor for FBAFFUDisplayTextViewController();
-  v6 = a3;
-  v7 = [(FBAFFUDisplayTextViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(FBAFFUDisplayTextViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

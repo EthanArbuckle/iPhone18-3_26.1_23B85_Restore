@@ -1,7 +1,7 @@
 @interface SUPastisOperation
-- (id)_getAppCertWithError:(id *)a3;
-- (id)_getCKCForSPC:(id)a3 URI:(id)a4 error:(id *)a5;
-- (id)_getURIWithError:(id *)a3;
+- (id)_getAppCertWithError:(id *)error;
+- (id)_getCKCForSPC:(id)c URI:(id)i error:(id *)error;
+- (id)_getURIWithError:(id *)error;
 - (void)dealloc;
 - (void)run;
 @end
@@ -34,7 +34,7 @@
   }
 }
 
-- (id)_getAppCertWithError:(id *)a3
+- (id)_getAppCertWithError:(id *)error
 {
   if (self->_certificateUrl)
   {
@@ -62,14 +62,14 @@
   return v7;
 }
 
-- (id)_getURIWithError:(id *)a3
+- (id)_getURIWithError:(id *)error
 {
   v3 = [(NSURLRequest *)[(AVAssetResourceLoadingRequest *)self->_loadingRequest request] URL];
 
   return [(NSURL *)v3 absoluteString];
 }
 
-- (id)_getCKCForSPC:(id)a3 URI:(id)a4 error:(id *)a5
+- (id)_getCKCForSPC:(id)c URI:(id)i error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26 = @"fairplay-streaming-request";
@@ -79,9 +79,9 @@
   v21[0] = @"id";
   v21[1] = @"spc";
   v22[0] = &unk_1F41EA900;
-  v22[1] = a3;
+  v22[1] = c;
   v21[2] = @"uri";
-  v22[2] = a4;
+  v22[2] = i;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
   v25[1] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
   v27[0] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];

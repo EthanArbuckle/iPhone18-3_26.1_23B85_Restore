@@ -1,21 +1,21 @@
 @interface CKDistributedSiteIdentifierMutableProxy
-- (void)copyFromReadProxy:(id)a3;
-- (void)copyFromSiteIdentifier:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIdentifierBytes:(void *)a3 length:(unint64_t)a4;
-- (void)setModifier:(id)a3;
-- (void)setModifierBytes:(void *)a3 length:(unint64_t)a4;
+- (void)copyFromReadProxy:(id)proxy;
+- (void)copyFromSiteIdentifier:(id)identifier;
+- (void)setIdentifier:(id)identifier;
+- (void)setIdentifierBytes:(void *)bytes length:(unint64_t)length;
+- (void)setModifier:(id)modifier;
+- (void)setModifierBytes:(void *)bytes length:(unint64_t)length;
 @end
 
 @implementation CKDistributedSiteIdentifierMutableProxy
 
-- (void)copyFromReadProxy:(id)a3
+- (void)copyFromReadProxy:(id)proxy
 {
-  v67 = a3;
+  proxyCopy = proxy;
   v11 = objc_msgSend_backingStore(self, v5, v6, v7, v8, v9, v10);
   if (v11)
   {
-    v18 = v67;
+    v18 = proxyCopy;
     if (v18)
     {
       v19 = objc_msgSend_binding(v11, v12, v13, v14, v15, v16, v17);
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v28 = 0;
-  v6 = v5;
+  v6 = identifierCopy;
   v13 = objc_msgSend_bytes(v6, v7, v8, v9, v10, v11, v12);
   v20 = v13;
-  if (v5 && !v13)
+  if (identifierCopy && !v13)
   {
-    if (objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19))
+    if (objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19))
     {
       v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKAtomSerialization.mm", 724, @"Non-zero-length NSData has empty bytes");
@@ -58,13 +58,13 @@
     v20 = &v28;
   }
 
-  v21 = objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19);
+  v21 = objc_msgSend_length(identifierCopy, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setIdentifierBytes_length_(self, v22, v20, v21, v23, v24, v25);
 }
 
-- (void)setIdentifierBytes:(void *)a3 length:(unint64_t)a4
+- (void)setIdentifierBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -76,20 +76,20 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)setModifier:(id)a3
+- (void)setModifier:(id)modifier
 {
-  v5 = a3;
+  modifierCopy = modifier;
   v28 = 0;
-  v6 = v5;
+  v6 = modifierCopy;
   v13 = objc_msgSend_bytes(v6, v7, v8, v9, v10, v11, v12);
   v20 = v13;
-  if (v5 && !v13)
+  if (modifierCopy && !v13)
   {
-    if (objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19))
+    if (objc_msgSend_length(modifierCopy, v14, v15, v16, v17, v18, v19))
     {
       v26 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15, v16, v17, v18, v19);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKAtomSerialization.mm", 744, @"Non-zero-length NSData has empty bytes");
@@ -98,13 +98,13 @@
     v20 = &v28;
   }
 
-  v21 = objc_msgSend_length(v5, v14, v15, v16, v17, v18, v19);
+  v21 = objc_msgSend_length(modifierCopy, v14, v15, v16, v17, v18, v19);
   objc_msgSend_setModifierBytes_length_(self, v22, v20, v21, v23, v24, v25);
 }
 
-- (void)setModifierBytes:(void *)a3 length:(unint64_t)a4
+- (void)setModifierBytes:(void *)bytes length:(unint64_t)length
 {
-  v10 = objc_msgSend_backingStore(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_backingStore(self, a2, bytes, length, v4, v5, v6);
   v17 = v10;
   if (v10)
   {
@@ -116,17 +116,17 @@
     v29 = objc_msgSend_writerForProxy_(v17, v24, self, v25, v26, v27, v28);
     v33[0] = v34;
     v33[1] = v35;
-    objc_msgSend_setData_withLength_forList_(v29, v30, a3, a4, v33, v31, v32);
+    objc_msgSend_setData_withLength_forList_(v29, v30, bytes, length, v33, v31, v32);
   }
 }
 
-- (void)copyFromSiteIdentifier:(id)a3
+- (void)copyFromSiteIdentifier:(id)identifier
 {
-  v28 = a3;
-  v10 = objc_msgSend_identifier(v28, v4, v5, v6, v7, v8, v9);
+  identifierCopy = identifier;
+  v10 = objc_msgSend_identifier(identifierCopy, v4, v5, v6, v7, v8, v9);
   objc_msgSend_setIdentifier_(self, v11, v10, v12, v13, v14, v15);
 
-  v22 = objc_msgSend_modifier(v28, v16, v17, v18, v19, v20, v21);
+  v22 = objc_msgSend_modifier(identifierCopy, v16, v17, v18, v19, v20, v21);
   objc_msgSend_setModifier_(self, v23, v22, v24, v25, v26, v27);
 }
 

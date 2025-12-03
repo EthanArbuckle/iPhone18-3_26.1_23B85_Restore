@@ -1,33 +1,33 @@
 @interface UniMorphology
 - (CGRect)extentForImage;
-- (UniMorphology)initWithDevice:(id)a3;
+- (UniMorphology)initWithDevice:(id)device;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputNameArray;
-- (id)run:(id)a3;
+- (id)run:(id)run;
 @end
 
 @implementation UniMorphology
 
-- (UniMorphology)initWithDevice:(id)a3
+- (UniMorphology)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = UniMorphology;
   v5 = [(UniKernel *)&v10 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
-    objc_msgSend__loadShaders_(v7, v8, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
+    objc_msgSend__loadShaders_(v7, v8, deviceCopy);
   }
 
   return v7;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v7 = objc_msgSend_inputs(self, v5, v6);
   v9 = objc_msgSend_objectForKey_(v7, v8, *MEMORY[0x29EDB9238]);
 
@@ -57,9 +57,9 @@
 
   v32 = objc_msgSend_device(v16, v30, v31);
   v35 = v32;
-  if (v4)
+  if (runCopy)
   {
-    v36 = v4;
+    v36 = runCopy;
   }
 
   else
@@ -94,7 +94,7 @@
   }
 
   v55 = objc_alloc(*v53);
-  v58 = objc_msgSend_device(v4, v56, v57);
+  v58 = objc_msgSend_device(runCopy, v56, v57);
   v60 = objc_msgSend_initWithDevice_kernelWidth_kernelHeight_(v55, v59, v58, v52, v52);
 
   if (!v60)
@@ -142,9 +142,9 @@
   return result;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v3 = objc_msgSend_copy(self, a2, a3);
+  v3 = objc_msgSend_copy(self, a2, image);
   v6 = objc_msgSend_inputs(v3, v4, v5);
   v8 = objc_msgSend_objectForKey_(v6, v7, *MEMORY[0x29EDB9238]);
 

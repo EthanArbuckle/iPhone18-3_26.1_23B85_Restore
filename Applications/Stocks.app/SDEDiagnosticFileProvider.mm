@@ -7,7 +7,7 @@
 
 - (id)files
 {
-  v2 = self;
+  selfCopy = self;
   sub_100019AC8();
   sub_100019D64();
   inited = swift_initStackObject();

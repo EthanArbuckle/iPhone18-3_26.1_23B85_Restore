@@ -1,21 +1,21 @@
 @interface ENUIExposureChecksExportManager
-- (ENUIExposureChecksExportManager)initWithJSONSerializedExposureChecks:(id)a3;
-- (void)createExportFileWithCompletion:(id)a3;
+- (ENUIExposureChecksExportManager)initWithJSONSerializedExposureChecks:(id)checks;
+- (void)createExportFileWithCompletion:(id)completion;
 - (void)removeExportFile;
 @end
 
 @implementation ENUIExposureChecksExportManager
 
-- (ENUIExposureChecksExportManager)initWithJSONSerializedExposureChecks:(id)a3
+- (ENUIExposureChecksExportManager)initWithJSONSerializedExposureChecks:(id)checks
 {
-  v5 = a3;
+  checksCopy = checks;
   v17.receiver = self;
   v17.super_class = ENUIExposureChecksExportManager;
   v6 = [(ENUIExposureChecksExportManager *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_jsonSerializedExposureChecks, a3);
+    objc_storeStrong(&v6->_jsonSerializedExposureChecks, checks);
     v8 = objc_alloc_init(NSDateFormatter);
     v9 = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [v8 setLocale:v9];
@@ -34,9 +34,9 @@
   return v7;
 }
 
-- (void)createExportFileWithCompletion:(id)a3
+- (void)createExportFileWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ENUILogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,7 +145,7 @@
             _os_log_impl(&dword_0, v36, OS_LOG_TYPE_DEFAULT, "[%{public}@] Completing with URL: %{public}@", buf, 0x16u);
           }
 
-          v4[2](v4, v35, 0);
+          completionCopy[2](completionCopy, v35, 0);
         }
 
         else
@@ -164,7 +164,7 @@
             _os_log_error_impl(&dword_0, v32, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to write to file: %{public}@, error: %{public}@", buf, 0x20u);
           }
 
-          (v4)[2](v4, 0, v30);
+          (completionCopy)[2](completionCopy, 0, v30);
         }
 
         v23 = v30;
@@ -187,7 +187,7 @@
           _os_log_error_impl(&dword_0, v40, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to create JSON data: %{public}@, error: %{public}@", buf, 0x20u);
         }
 
-        (v4)[2](v4, 0, v23);
+        (completionCopy)[2](completionCopy, 0, v23);
       }
 
       v14 = v23;
@@ -202,7 +202,7 @@
       }
 
       v21 = ENErrorF();
-      (v4)[2](v4, 0, v21);
+      (completionCopy)[2](completionCopy, 0, v21);
     }
   }
 
@@ -215,7 +215,7 @@
     }
 
     v14 = ENErrorF();
-    (v4)[2](v4, 0, v14);
+    (completionCopy)[2](completionCopy, 0, v14);
   }
 }
 

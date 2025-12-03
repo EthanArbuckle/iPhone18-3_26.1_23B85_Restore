@@ -1,9 +1,9 @@
 @interface ProtocolT0DataView
-+ (id)createWithData:(id)a3;
++ (id)createWithData:(id)data;
 - (ProtocolT0DataView)init;
 - (id)description;
 - (unsigned)bWaitingInteger;
-- (void)setBWaitingInteger:(unsigned __int8)a3;
+- (void)setBWaitingInteger:(unsigned __int8)integer;
 @end
 
 @implementation ProtocolT0DataView
@@ -30,23 +30,23 @@
 - (unsigned)bWaitingInteger
 {
   v4 = 0;
-  v2 = [(TKDataView *)self buffer];
-  [v2 getBytes:&v4 range:{3, 1}];
+  buffer = [(TKDataView *)self buffer];
+  [buffer getBytes:&v4 range:{3, 1}];
 
   return v4;
 }
 
-- (void)setBWaitingInteger:(unsigned __int8)a3
+- (void)setBWaitingInteger:(unsigned __int8)integer
 {
-  v4 = a3;
-  v3 = [(TKDataView *)self mutableBuffer];
-  [v3 replaceBytesInRange:3 withBytes:{1, &v4}];
+  integerCopy = integer;
+  mutableBuffer = [(TKDataView *)self mutableBuffer];
+  [mutableBuffer replaceBytesInRange:3 withBytes:{1, &integerCopy}];
 }
 
-+ (id)createWithData:(id)a3
++ (id)createWithData:(id)data
 {
-  v3 = a3;
-  v4 = [(ProtocolDataView *)[ProtocolT0DataView alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [(ProtocolDataView *)[ProtocolT0DataView alloc] initWithData:dataCopy];
 
   return v4;
 }

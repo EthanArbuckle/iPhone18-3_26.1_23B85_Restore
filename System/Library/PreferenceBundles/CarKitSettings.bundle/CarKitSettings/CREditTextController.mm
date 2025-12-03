@@ -1,13 +1,13 @@
 @interface CREditTextController
-- (double)_insetHeightForTextView:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_text:(id)a3;
+- (double)_insetHeightForTextView:(id)view;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_text:(id)_text;
 - (id)_textCell;
 - (id)specifiers;
-- (void)_setText:(id)a3 withSpecifier:(id)a4;
+- (void)_setText:(id)text withSpecifier:(id)specifier;
 - (void)suspend;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation CREditTextController
@@ -35,11 +35,11 @@
 
 - (void)suspend
 {
-  v3 = [(CREditTextController *)self _textCell];
-  v4 = [v3 textView];
-  v5 = [v4 text];
+  _textCell = [(CREditTextController *)self _textCell];
+  textView = [_textCell textView];
+  text = [textView text];
 
-  [(CREditTextController *)self _setText:v5 withSpecifier:0];
+  [(CREditTextController *)self _setText:text withSpecifier:0];
   v6.receiver = self;
   v6.super_class = CREditTextController;
   [(CREditTextController *)&v6 suspend];
@@ -48,44 +48,44 @@
 - (id)_textCell
 {
   v3 = [(CREditTextController *)self specifierForID:@"CREditTextSpecifierIdentifier"];
-  v4 = [(CREditTextController *)self table];
+  table = [(CREditTextController *)self table];
   v5 = [(CREditTextController *)self indexPathForSpecifier:v3];
-  v6 = [v4 cellForRowAtIndexPath:v5];
+  v6 = [table cellForRowAtIndexPath:v5];
 
   return v6;
 }
 
-- (double)_insetHeightForTextView:(id)a3
+- (double)_insetHeightForTextView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   PSTextViewInsets();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CREditTextController *)self table];
-  [v13 bounds];
+  table = [(CREditTextController *)self table];
+  [table bounds];
   v15 = v14 - v8 - v12;
 
-  [v4 sizeThatFits:{v15, 1.79769313e308}];
+  [viewCopy sizeThatFits:{v15, 1.79769313e308}];
   v17 = v16;
 
   return v10 + v6 + v17;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CREditTextController *)self specifierAtIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"CREditTextSpecifierIdentifier"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CREditTextController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"CREditTextSpecifierIdentifier"];
 
   if (v10 && ([v8 propertyForKey:PSTableCellKey], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
-    v13 = [v11 textView];
-    [(CREditTextController *)self _insetHeightForTextView:v13];
+    textView = [v11 textView];
+    [(CREditTextController *)self _insetHeightForTextView:textView];
     v15 = v14;
   }
 
@@ -93,66 +93,66 @@
   {
     v18.receiver = self;
     v18.super_class = CREditTextController;
-    [(CREditTextController *)&v18 tableView:v6 heightForRowAtIndexPath:v7];
+    [(CREditTextController *)&v18 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v15 = v16;
   }
 
   return v15;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v13 = [(CREditTextController *)self _textCell];
-  [v13 frame];
+  changeCopy = change;
+  _textCell = [(CREditTextController *)self _textCell];
+  [_textCell frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [(CREditTextController *)self _insetHeightForTextView:v4];
+  [(CREditTextController *)self _insetHeightForTextView:changeCopy];
   v12 = v11;
 
-  [v13 setFrame:{v6, v8, v10, v12}];
-  [v13 setNeedsLayout];
+  [_textCell setFrame:{v6, v8, v10, v12}];
+  [_textCell setNeedsLayout];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
-  [(CREditTextController *)self _setText:v4 withSpecifier:0];
+  text = [editing text];
+  [(CREditTextController *)self _setText:text withSpecifier:0];
 }
 
-- (void)_setText:(id)a3 withSpecifier:(id)a4
+- (void)_setText:(id)text withSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (v5)
+  textCopy = text;
+  if (textCopy)
   {
-    v8 = v5;
-    v6 = [(CREditTextController *)self specifier];
-    v7 = v6;
-    if (v6)
+    v8 = textCopy;
+    specifier = [(CREditTextController *)self specifier];
+    v7 = specifier;
+    if (specifier)
     {
-      [v6 performSetterWithValue:v8];
+      [specifier performSetterWithValue:v8];
     }
 
-    v5 = v8;
+    textCopy = v8;
   }
 }
 
-- (id)_text:(id)a3
+- (id)_text:(id)_text
 {
-  v3 = [(CREditTextController *)self specifier];
-  v4 = v3;
-  if (v3)
+  specifier = [(CREditTextController *)self specifier];
+  v4 = specifier;
+  if (specifier)
   {
-    v5 = [v3 performGetter];
+    performGetter = [specifier performGetter];
   }
 
   else
   {
-    v5 = 0;
+    performGetter = 0;
   }
 
-  return v5;
+  return performGetter;
 }
 
 @end

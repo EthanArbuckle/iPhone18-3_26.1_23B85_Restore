@@ -17,9 +17,9 @@
     v3->_channelAssignments = 0;
     *&v3->_data = 0u;
     *&v3->_actualSettings = 0u;
-    v4 = [MEMORY[0x1E698D708] sharedInstance];
-    v3->_audioSession = v4;
-    v5 = v4;
+    mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
+    v3->_audioSession = mEMORY[0x1E698D708];
+    v5 = mEMORY[0x1E698D708];
     v3->_localPlayer = 0;
     v3->_playRetain = 0;
   }

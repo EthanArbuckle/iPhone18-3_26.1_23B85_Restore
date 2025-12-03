@@ -1,22 +1,22 @@
 @interface ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor
-- (ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 networkFlowType:(int)a5;
+- (ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine networkFlowType:(int)type;
 @end
 
 @implementation ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor
 
-- (ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor)initWithNetworkProvider:(id)a3 espressoEngine:(unint64_t)a4 networkFlowType:(int)a5
+- (ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor)initWithNetworkProvider:(id)provider espressoEngine:(unint64_t)engine networkFlowType:(int)type
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = [v8 url];
-  v10 = [v8 layoutNamesDict];
+  v5 = *&type;
+  providerCopy = provider;
+  v9 = [providerCopy url];
+  layoutNamesDict = [providerCopy layoutNamesDict];
   v29.receiver = self;
   v29.super_class = ADEspressoPearlColorInFieldCalibrationBackendInferenceDescriptor;
-  v11 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v9 layoutNames:v10];
+  v11 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v9 layoutNames:layoutNamesDict];
 
   if (v11)
   {
-    if (a4 - 3 > 1)
+    if (engine - 3 > 1)
     {
       v20 = @"backend_output:0";
       v16 = @"Backend/inputs/jasper_image:0";
@@ -41,7 +41,7 @@
           v14 = @"mask";
         }
 
-        v15 = [v8 descriptorForBuffer:v14 isInput:1 pixelFormat:1278226536];
+        v15 = [providerCopy descriptorForBuffer:v14 isInput:1 pixelFormat:1278226536];
         if (v13 == 2)
         {
           v16 = @"depth_input_b";
@@ -78,15 +78,15 @@
 
     v19 = @"Backend/inputs/image:0";
 LABEL_17:
-    v22 = [v8 descriptorForBuffer:v19 isInput:1 pixelFormat:1111970369];
+    v22 = [providerCopy descriptorForBuffer:v19 isInput:1 pixelFormat:1111970369];
     colorInput = v11->_colorInput;
     v11->_colorInput = v22;
 
-    v24 = [v8 descriptorForBuffer:v16 isInput:1 pixelFormat:v21];
+    v24 = [providerCopy descriptorForBuffer:v16 isInput:1 pixelFormat:v21];
     pearlInput = v11->_pearlInput;
     v11->_pearlInput = v24;
 
-    v26 = [v8 descriptorForBuffer:v20 isInput:0 pixelFormat:v21];
+    v26 = [providerCopy descriptorForBuffer:v20 isInput:0 pixelFormat:v21];
     featuresOutput = v11->_featuresOutput;
     v11->_featuresOutput = v26;
   }

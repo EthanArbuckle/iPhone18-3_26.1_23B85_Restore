@@ -1,25 +1,25 @@
 @interface TPSPhonebookBundleController
 - (PSSpecifier)telephoneNumberSpecifier;
-- (TPSPhonebookBundleController)initWithParentListController:(id)a3;
-- (id)myNumber:(id)a3;
+- (TPSPhonebookBundleController)initWithParentListController:(id)controller;
+- (id)myNumber:(id)number;
 - (id)specifiers;
-- (void)handleTPSPhonebookControllerSubscriptionDidChangeNotification:(id)a3;
+- (void)handleTPSPhonebookControllerSubscriptionDidChangeNotification:(id)notification;
 @end
 
 @implementation TPSPhonebookBundleController
 
-- (TPSPhonebookBundleController)initWithParentListController:(id)a3
+- (TPSPhonebookBundleController)initWithParentListController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = TPSPhonebookBundleController;
-  v3 = [(TPSPhonebookBundleController *)&v10 initWithParentListController:a3];
+  v3 = [(TPSPhonebookBundleController *)&v10 initWithParentListController:controller];
   v4 = v3;
   if (v3)
   {
-    v5 = [(TPSPhonebookBundleController *)v3 subscriptionContext];
-    if (v5)
+    subscriptionContext = [(TPSPhonebookBundleController *)v3 subscriptionContext];
+    if (subscriptionContext)
     {
-      v6 = [[TPSPhonebookController alloc] initWithSubscriptionContext:v5];
+      v6 = [[TPSPhonebookController alloc] initWithSubscriptionContext:subscriptionContext];
       phonebookController = v4->_phonebookController;
       v4->_phonebookController = v6;
 
@@ -37,16 +37,16 @@
   if (!specifiers)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(TPSPhonebookBundleController *)self telephoneNumberSpecifier];
-    v6 = [(TPSPhonebookBundleController *)self phonebookController];
-    v7 = [v6 isSubscriptionEditable];
+    telephoneNumberSpecifier = [(TPSPhonebookBundleController *)self telephoneNumberSpecifier];
+    phonebookController = [(TPSPhonebookBundleController *)self phonebookController];
+    isSubscriptionEditable = [phonebookController isSubscriptionEditable];
 
-    if ((v7 & 1) == 0)
+    if ((isSubscriptionEditable & 1) == 0)
     {
-      [v5 setCellType:4];
+      [telephoneNumberSpecifier setCellType:4];
     }
 
-    [v4 addObject:v5];
+    [v4 addObject:telephoneNumberSpecifier];
     v8 = [v4 copy];
     v9 = self->_specifiers;
     self->_specifiers = v8;
@@ -69,10 +69,10 @@
 
     [(PSSpecifier *)self->_telephoneNumberSpecifier setIdentifier:@"PHONEBOOK_TELEPHONY_SETTINGS"];
     v7 = self->_telephoneNumberSpecifier;
-    v8 = [(TPSPhonebookBundleController *)self phonebookController];
+    phonebookController = [(TPSPhonebookBundleController *)self phonebookController];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [(PSSpecifier *)v7 setProperty:v8 forKey:v10];
+    [(PSSpecifier *)v7 setProperty:phonebookController forKey:v10];
 
     telephoneNumberSpecifier = self->_telephoneNumberSpecifier;
   }
@@ -80,31 +80,31 @@
   return telephoneNumberSpecifier;
 }
 
-- (id)myNumber:(id)a3
+- (id)myNumber:(id)number
 {
-  v3 = [(TPSPhonebookBundleController *)self phonebookController];
-  v4 = [v3 localizedSubscriptionTelephoneNumber];
+  phonebookController = [(TPSPhonebookBundleController *)self phonebookController];
+  localizedSubscriptionTelephoneNumber = [phonebookController localizedSubscriptionTelephoneNumber];
 
-  return v4;
+  return localizedSubscriptionTelephoneNumber;
 }
 
-- (void)handleTPSPhonebookControllerSubscriptionDidChangeNotification:(id)a3
+- (void)handleTPSPhonebookControllerSubscriptionDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = TPSPhonebookLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
     v10 = objc_opt_class();
     v11 = 2112;
-    v12 = v4;
+    v12 = notificationCopy;
     v6 = v10;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
-  v7 = [(TPSPhonebookBundleController *)self parentListController];
-  v8 = [(TPSPhonebookBundleController *)self telephoneNumberSpecifier];
-  [v7 reloadSpecifier:v8];
+  parentListController = [(TPSPhonebookBundleController *)self parentListController];
+  telephoneNumberSpecifier = [(TPSPhonebookBundleController *)self telephoneNumberSpecifier];
+  [parentListController reloadSpecifier:telephoneNumberSpecifier];
 }
 
 @end

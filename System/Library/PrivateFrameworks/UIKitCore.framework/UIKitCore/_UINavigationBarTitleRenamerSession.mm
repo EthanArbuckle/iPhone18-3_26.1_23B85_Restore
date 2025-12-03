@@ -1,56 +1,56 @@
 @interface _UINavigationBarTitleRenamerSession
-- (BOOL)_textFieldShouldEndEditingWithText:(id)a3;
+- (BOOL)_textFieldShouldEndEditingWithText:(id)text;
 - (_UINavigationBarTitleRenamer)attachedRenamer;
 - (_UINavigationBarTitleRenamerContentView)renamerContentView;
-- (_UINavigationBarTitleRenamerSession)initWithBSXPCCoder:(id)a3;
-- (_UINavigationBarTitleRenamerSession)initWithSuggestedTitle:(id)a3 iconMetadata:(id)a4;
-- (id)_sanitizedTitleForText:(id)a3;
-- (id)_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4;
+- (_UINavigationBarTitleRenamerSession)initWithBSXPCCoder:(id)coder;
+- (_UINavigationBarTitleRenamerSession)initWithSuggestedTitle:(id)title iconMetadata:(id)metadata;
+- (id)_sanitizedTitleForText:(id)text;
+- (id)_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range;
 - (id)context;
 - (id)createRenamerContentView;
-- (void)_textFieldDidEndEditingWithText:(id)a3;
+- (void)_textFieldDidEndEditingWithText:(id)text;
 - (void)cancelSession;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UINavigationBarTitleRenamerSession
 
-- (_UINavigationBarTitleRenamerSession)initWithSuggestedTitle:(id)a3 iconMetadata:(id)a4
+- (_UINavigationBarTitleRenamerSession)initWithSuggestedTitle:(id)title iconMetadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  metadataCopy = metadata;
   v15.receiver = self;
   v15.super_class = _UINavigationBarTitleRenamerSession;
   v9 = [(_UINavigationBarTitleRenamerSession *)&v15 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     sessionIdentifier = v9->_sessionIdentifier;
-    v9->_sessionIdentifier = v10;
+    v9->_sessionIdentifier = uUID;
 
-    objc_storeStrong(&v9->_title, a3);
-    v12 = [v8 metadata];
+    objc_storeStrong(&v9->_title, title);
+    metadata = [metadataCopy metadata];
     iconMetadata = v9->_iconMetadata;
-    v9->_iconMetadata = v12;
+    v9->_iconMetadata = metadata;
   }
 
   return v9;
 }
 
-- (id)_sanitizedTitleForText:(id)a3
+- (id)_sanitizedTitleForText:(id)text
 {
-  v4 = a3;
-  if ([v4 length])
+  textCopy = text;
+  if ([textCopy length])
   {
-    v5 = v4;
+    title = textCopy;
   }
 
   else
   {
-    v5 = [(_UINavigationBarTitleRenamerSession *)self title];
+    title = [(_UINavigationBarTitleRenamerSession *)self title];
   }
 
-  v6 = v5;
+  v6 = title;
 
   return v6;
 }
@@ -67,9 +67,9 @@
   renamerContentView = self->_renamerContentView;
   if (!renamerContentView)
   {
-    v4 = [(_UINavigationBarTitleRenamerSession *)self createRenamerContentView];
+    createRenamerContentView = [(_UINavigationBarTitleRenamerSession *)self createRenamerContentView];
     v5 = self->_renamerContentView;
-    self->_renamerContentView = v4;
+    self->_renamerContentView = createRenamerContentView;
 
     renamerContentView = self->_renamerContentView;
   }
@@ -84,31 +84,31 @@
   [WeakRetained _sessionDidCancel:self];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"_UINavigationBarTitleRenamerSessionIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"_UINavigationBarTitleRenamerSessionTitle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"_UINavigationBarTitleRenamerSessionIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"_UINavigationBarTitleRenamerSessionTitle"];
   iconMetadata = self->_iconMetadata;
   if (iconMetadata)
   {
-    [v5 encodeObject:iconMetadata forKey:@"_UINavigationBarTitleRenamerIconMetadata"];
+    [coderCopy encodeObject:iconMetadata forKey:@"_UINavigationBarTitleRenamerIconMetadata"];
   }
 }
 
-- (_UINavigationBarTitleRenamerSession)initWithBSXPCCoder:(id)a3
+- (_UINavigationBarTitleRenamerSession)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UINavigationBarTitleRenamerSession;
   v5 = [(_UINavigationBarTitleRenamerSession *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerSessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerSessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerSessionTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UINavigationBarTitleRenamerSessionTitle"];
     title = v5->_title;
     v5->_title = v8;
 
@@ -130,7 +130,7 @@
 
     v11 = v10;
     _Block_object_dispose(&v17, 8);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:@"_UINavigationBarTitleRenamerIconMetadata"];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:@"_UINavigationBarTitleRenamerIconMetadata"];
     iconMetadata = v5->_iconMetadata;
     v5->_iconMetadata = v12;
   }
@@ -152,33 +152,33 @@
   return WeakRetained;
 }
 
-- (id)_willBeginRenamingWithText:(id)a3 selectedRange:(_NSRange *)a4
+- (id)_willBeginRenamingWithText:(id)text selectedRange:(_NSRange *)range
 {
-  v6 = a3;
-  v7 = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
-  v8 = v7;
-  if (v7)
+  textCopy = text;
+  attachedRenamer = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
+  v8 = attachedRenamer;
+  if (attachedRenamer)
   {
-    v9 = [v7 _session:self textFieldWillBeginRenamingWithTitle:v6 selectedRange:a4];
+    v9 = [attachedRenamer _session:self textFieldWillBeginRenamingWithTitle:textCopy selectedRange:range];
     [(_UINavigationBarTitleRenamerSession *)self setTitle:v9];
   }
 
   else
   {
-    v9 = v6;
+    v9 = textCopy;
   }
 
   return v9;
 }
 
-- (BOOL)_textFieldShouldEndEditingWithText:(id)a3
+- (BOOL)_textFieldShouldEndEditingWithText:(id)text
 {
-  v4 = a3;
-  v5 = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
-  if (v5)
+  textCopy = text;
+  attachedRenamer = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
+  if (attachedRenamer)
   {
-    v6 = [(_UINavigationBarTitleRenamerSession *)self _sanitizedTitleForText:v4];
-    v7 = [v5 _session:self textFieldShouldEndRenamingWithTitle:v6];
+    v6 = [(_UINavigationBarTitleRenamerSession *)self _sanitizedTitleForText:textCopy];
+    v7 = [attachedRenamer _session:self textFieldShouldEndRenamingWithTitle:v6];
   }
 
   else
@@ -189,15 +189,15 @@
   return v7;
 }
 
-- (void)_textFieldDidEndEditingWithText:(id)a3
+- (void)_textFieldDidEndEditingWithText:(id)text
 {
-  v6 = a3;
-  v4 = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
-  if (v4)
+  textCopy = text;
+  attachedRenamer = [(_UINavigationBarTitleRenamerSession *)self attachedRenamer];
+  if (attachedRenamer)
   {
-    v5 = [(_UINavigationBarTitleRenamerSession *)self _sanitizedTitleForText:v6];
+    v5 = [(_UINavigationBarTitleRenamerSession *)self _sanitizedTitleForText:textCopy];
     [(_UINavigationBarTitleRenamerSession *)self setTitle:v5];
-    [v4 _sessionTextFieldDidEndEditing:self];
+    [attachedRenamer _sessionTextFieldDidEndEditing:self];
   }
 }
 

@@ -15,8 +15,8 @@
 - (id)accessibilityLabel
 {
   v3 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseTitleLabel"];
-  v4 = [v3 _accessibilityViewIsVisible];
-  if (v4)
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseTitleLabel"];
   }
@@ -27,8 +27,8 @@
   }
 
   v6 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseDateLabel"];
-  v7 = [v6 _accessibilityViewIsVisible];
-  if (v7)
+  _accessibilityViewIsVisible2 = [v6 _accessibilityViewIsVisible];
+  if (_accessibilityViewIsVisible2)
   {
     v8 = [(ProductReviewCollectionViewCellAccessibility *)self safeUIViewForKey:@"accessibilityResponseDateLabel"];
   }
@@ -53,11 +53,11 @@
     v10 = __UIAXStringForVariables();
   }
 
-  if (v7)
+  if (_accessibilityViewIsVisible2)
   {
   }
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
   }
 

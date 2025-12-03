@@ -1,40 +1,40 @@
 @interface WFInputTypeParameter
-- (BOOL)parameterStateIsValid:(id)a3;
-- (WFInputTypeParameter)initWithDefinition:(id)a3;
-- (id)accessoryIconForPossibleState:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)possibleStatesForEnumeration:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
+- (WFInputTypeParameter)initWithDefinition:(id)definition;
+- (id)accessoryIconForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)possibleStatesForEnumeration:(id)enumeration;
 - (id)selectionType;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFInputTypeParameter
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
   v3 = WFCategorizedInputTypes();
-  v4 = [v3 allItems];
+  allItems = [v3 allItems];
 
-  return v4;
+  return allItems;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = WFCategorizedInputTypes();
-  (*(a5 + 2))(v6, v7, 0);
+  (*(handler + 2))(handlerCopy, v7, 0);
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = stateCopy;
     }
 
     else
@@ -49,28 +49,28 @@
   }
 
   v8 = v7;
-  v9 = [v8 value];
+  value = [v8 value];
 
-  if (v9 && (v10 = NSClassFromString(v9), [(objc_class *)v10 conformsToProtocol:&unk_1F4AA61F0]))
+  if (value && (v10 = NSClassFromString(value), [(objc_class *)v10 conformsToProtocol:&unk_1F4AA61F0]))
   {
-    v11 = [(objc_class *)v10 localizedPluralTypeDescription];
+    localizedPluralTypeDescription = [(objc_class *)v10 localizedPluralTypeDescription];
   }
 
   else
   {
-    v11 = 0;
+    localizedPluralTypeDescription = 0;
   }
 
-  return v11;
+  return localizedPluralTypeDescription;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  validCopy = valid;
+  if (validCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 value];
-    v5 = [v4 count] != 0;
+    value = [validCopy value];
+    v5 = [value count] != 0;
   }
 
   else
@@ -85,20 +85,20 @@
 {
   v4.receiver = self;
   v4.super_class = WFInputTypeParameter;
-  v2 = [(WFEnumerationParameter *)&v4 selectionType];
+  selectionType = [(WFEnumerationParameter *)&v4 selectionType];
 
-  return v2;
+  return selectionType;
 }
 
-- (id)accessoryIconForPossibleState:(id)a3
+- (id)accessoryIconForPossibleState:(id)state
 {
-  v3 = a3;
-  if (v3)
+  stateCopy = state;
+  if (stateCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = stateCopy;
     }
 
     else
@@ -113,103 +113,103 @@
   }
 
   v5 = v4;
-  v6 = [v5 value];
+  value = [v5 value];
 
-  if (!v6)
+  if (!value)
   {
     v9 = 0;
     goto LABEL_46;
   }
 
-  v7 = [MEMORY[0x1E69E0B48] clearBackground];
-  if ([v6 isEqualToString:@"WFImageContentItem"])
+  clearBackground = [MEMORY[0x1E69E0B48] clearBackground];
+  if ([value isEqualToString:@"WFImageContentItem"])
   {
     v8 = @"photo";
   }
 
-  else if ([v6 isEqualToString:@"WFAVAssetContentItem"])
+  else if ([value isEqualToString:@"WFAVAssetContentItem"])
   {
     v8 = @"music.on.film";
   }
 
-  else if ([v6 isEqualToString:@"WFiTunesProductContentItem"])
+  else if ([value isEqualToString:@"WFiTunesProductContentItem"])
   {
     v8 = @"star.square";
   }
 
-  else if ([v6 isEqualToString:@"WFGenericFileContentItem"])
+  else if ([value isEqualToString:@"WFGenericFileContentItem"])
   {
     v8 = @"doc";
   }
 
-  else if ([v6 isEqualToString:@"WFFolderContentItem"])
+  else if ([value isEqualToString:@"WFFolderContentItem"])
   {
     v8 = @"folder";
   }
 
-  else if ([v6 isEqualToString:@"WFPDFContentItem"])
+  else if ([value isEqualToString:@"WFPDFContentItem"])
   {
     v8 = @"doc.text";
   }
 
-  else if ([v6 isEqualToString:@"WFStringContentItem"])
+  else if ([value isEqualToString:@"WFStringContentItem"])
   {
     v8 = @"text.alignleft";
   }
 
-  else if ([v6 isEqualToString:@"WFRichTextContentItem"])
+  else if ([value isEqualToString:@"WFRichTextContentItem"])
   {
     v8 = @"doc.richtext";
   }
 
-  else if ([v6 isEqualToString:@"WFSafariWebPageContentItem"])
+  else if ([value isEqualToString:@"WFSafariWebPageContentItem"])
   {
     v8 = @"safari";
   }
 
-  else if ([v6 isEqualToString:@"WFURLContentItem"])
+  else if ([value isEqualToString:@"WFURLContentItem"])
   {
     v8 = @"link";
   }
 
-  else if ([v6 isEqualToString:@"WFArticleContentItem"])
+  else if ([value isEqualToString:@"WFArticleContentItem"])
   {
     v8 = @"doc.plaintext";
   }
 
-  else if ([v6 isEqualToString:@"WFDCMapsLinkContentItem"])
+  else if ([value isEqualToString:@"WFDCMapsLinkContentItem"])
   {
     v8 = @"map";
   }
 
-  else if ([v6 isEqualToString:@"WFLocationContentItem"])
+  else if ([value isEqualToString:@"WFLocationContentItem"])
   {
     v8 = @"mappin.and.ellipse";
   }
 
-  else if ([v6 isEqualToString:@"WFContactContentItem"])
+  else if ([value isEqualToString:@"WFContactContentItem"])
   {
     v8 = @"person.crop.circle";
   }
 
-  else if ([v6 isEqualToString:@"WFEmailAddressContentItem"])
+  else if ([value isEqualToString:@"WFEmailAddressContentItem"])
   {
     v8 = @"envelope";
   }
 
-  else if ([v6 isEqualToString:@"WFPhoneNumberContentItem"])
+  else if ([value isEqualToString:@"WFPhoneNumberContentItem"])
   {
     v8 = @"phone.fill";
   }
 
-  else if ([v6 isEqualToString:@"WFDateContentItem"])
+  else if ([value isEqualToString:@"WFDateContentItem"])
   {
     v8 = @"calendar";
   }
 
   else
   {
-    if (![v6 isEqualToString:@"WFAppStoreAppContentItem"])
+    if (![value isEqualToString:@"WFAppStoreAppContentItem"])
     {
       v9 = 0;
       goto LABEL_45;
@@ -218,7 +218,7 @@
     v8 = @"appstore";
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69E0D70]) initWithSymbolName:v8 background:v7];
+  v9 = [objc_alloc(MEMORY[0x1E69E0D70]) initWithSymbolName:v8 background:clearBackground];
 LABEL_45:
 
 LABEL_46:
@@ -226,11 +226,11 @@ LABEL_46:
   return v9;
 }
 
-- (WFInputTypeParameter)initWithDefinition:(id)a3
+- (WFInputTypeParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFInputTypeParameter;
-  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFDynamicEnumerationParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {

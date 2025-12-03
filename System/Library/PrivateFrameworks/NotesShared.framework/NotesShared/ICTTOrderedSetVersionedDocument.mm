@@ -1,30 +1,30 @@
 @interface ICTTOrderedSetVersionedDocument
 - (ICCROrderedSet)orderedSet;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithOrderedSetVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithOrderedSetVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation ICTTOrderedSetVersionedDocument
 
-- (unint64_t)mergeWithOrderedSetVersionedDocument:(id)a3
+- (unint64_t)mergeWithOrderedSetVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(ICTTOrderedSetVersionedDocument *)self orderedSet];
-  v6 = [v5 allObjects];
+  documentCopy = document;
+  orderedSet = [(ICTTOrderedSetVersionedDocument *)self orderedSet];
+  allObjects = [orderedSet allObjects];
 
-  v7 = [(ICTTOrderedSetVersionedDocument *)self document];
-  v8 = [v4 document];
-  [v7 mergeWithDocument:v8];
+  document = [(ICTTOrderedSetVersionedDocument *)self document];
+  document2 = [documentCopy document];
+  [document mergeWithDocument:document2];
 
-  v9 = [(ICTTOrderedSetVersionedDocument *)self orderedSet];
-  v10 = [v9 allObjects];
+  orderedSet2 = [(ICTTOrderedSetVersionedDocument *)self orderedSet];
+  allObjects2 = [orderedSet2 allObjects];
 
   v13.receiver = self;
   v13.super_class = ICTTOrderedSetVersionedDocument;
-  [(ICTTVersionedDocument *)&v13 mergeWithVersionedDocument:v4];
+  [(ICTTVersionedDocument *)&v13 mergeWithVersionedDocument:documentCopy];
 
-  if ([v10 isEqualToArray:v6])
+  if ([allObjects2 isEqualToArray:allObjects])
   {
     v11 = 1;
   }
@@ -43,8 +43,8 @@
   if (!orderedSet)
   {
     v4 = [ICCRDocument alloc];
-    v5 = [(ICTTVersionedDocument *)self replicaID];
-    v6 = [(ICCRDocument *)v4 initWithReplica:v5];
+    replicaID = [(ICTTVersionedDocument *)self replicaID];
+    v6 = [(ICCRDocument *)v4 initWithReplica:replicaID];
     document = self->_document;
     self->_document = v6;
 
@@ -59,11 +59,11 @@
   return orderedSet;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v5 = a4;
-  v6 = [(ICTTVersionedDocument *)self replicaID];
-  obj = [ICCRCoderUnarchiver decodedDocumentFromData:v5 replica:v6];
+  dataCopy = data;
+  replicaID = [(ICTTVersionedDocument *)self replicaID];
+  obj = [ICCRCoderUnarchiver decodedDocumentFromData:dataCopy replica:replicaID];
 
   v7 = obj;
   if (obj)
@@ -77,20 +77,20 @@
     else
     {
       objc_storeStrong(&self->_document, obj);
-      v9 = [obj rootObject];
+      rootObject = [obj rootObject];
       orderedSet = self->_orderedSet;
-      self->_orderedSet = v9;
+      self->_orderedSet = rootObject;
     }
 
     v7 = obj;
   }
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  if (a3)
+  if (version)
   {
-    *a3 = [objc_opt_class() serializationVersion];
+    *version = [objc_opt_class() serializationVersion];
   }
 
   document = self->_document;

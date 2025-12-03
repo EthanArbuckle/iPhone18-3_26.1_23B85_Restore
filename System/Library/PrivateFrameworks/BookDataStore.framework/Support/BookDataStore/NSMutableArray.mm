@@ -1,12 +1,12 @@
 @interface NSMutableArray
-- (void)bds_addObjectIfNotNil:(id)a3;
+- (void)bds_addObjectIfNotNil:(id)nil;
 @end
 
 @implementation NSMutableArray
 
-- (void)bds_addObjectIfNotNil:(id)a3
+- (void)bds_addObjectIfNotNil:(id)nil
 {
-  if (a3)
+  if (nil)
   {
     [(NSMutableArray *)self addObject:?];
   }

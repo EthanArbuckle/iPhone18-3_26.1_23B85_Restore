@@ -1,43 +1,43 @@
 @interface SLDCollaborationAttributionViewDrawing
 - (CGSize)drawingSize;
-- (SLDCollaborationAttributionViewDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (SLDCollaborationAttributionViewDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation SLDCollaborationAttributionViewDrawing
 
-- (SLDCollaborationAttributionViewDrawing)initWithStyle:(id)a3 tag:(id)a4 forRemote:(BOOL)a5
+- (SLDCollaborationAttributionViewDrawing)initWithStyle:(id)style tag:(id)tag forRemote:(BOOL)remote
 {
-  v9 = a3;
-  v10 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = SLDCollaborationAttributionViewDrawing;
   v11 = [(SLDCollaborationAttributionViewDrawing *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_slotStyle, a3);
-    objc_storeStrong(&v12->_tag, a4);
-    v12->_forRemote = a5;
-    v12->_isRTL = [v9 layoutDirection] == 1;
+    objc_storeStrong(&v11->_slotStyle, style);
+    objc_storeStrong(&v12->_tag, tag);
+    v12->_forRemote = remote;
+    v12->_isRTL = [styleCopy layoutDirection] == 1;
   }
 
   return v12;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  if (-[SLDCollaborationAttributionViewDrawing forRemote](self, "forRemote", a4.x, a4.y) || (-[SLDCollaborationAttributionViewDrawing tag](self, "tag"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPlaceholder], v6, v7))
+  if (-[SLDCollaborationAttributionViewDrawing forRemote](self, "forRemote", point.x, point.y) || (-[SLDCollaborationAttributionViewDrawing tag](self, "tag"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isPlaceholder], v6, v7))
   {
     v8 = [SLDCollaborationAttributionViewRenderer alloc];
-    v9 = [(SLDCollaborationAttributionViewDrawing *)self slotStyle];
+    slotStyle = [(SLDCollaborationAttributionViewDrawing *)self slotStyle];
     v10 = [(SLDCollaborationAttributionViewDrawing *)self tag];
-    v12 = [(SLDCollaborationAttributionViewRenderer *)v8 initWithStyle:v9 tag:v10];
+    v12 = [(SLDCollaborationAttributionViewRenderer *)v8 initWithStyle:slotStyle tag:v10];
 
     v11 = v12;
     if (v12)
     {
-      [(SLDCollaborationAttributionViewRenderer *)v12 renderInContext:a3];
+      [(SLDCollaborationAttributionViewRenderer *)v12 renderInContext:context];
       v11 = v12;
     }
   }
@@ -46,9 +46,9 @@
 - (CGSize)drawingSize
 {
   v3 = [SLCollaborationAttributionViewMetricsProvider alloc];
-  v4 = [(SLDCollaborationAttributionViewDrawing *)self slotStyle];
+  slotStyle = [(SLDCollaborationAttributionViewDrawing *)self slotStyle];
   v5 = [(SLDCollaborationAttributionViewDrawing *)self tag];
-  v6 = [(SLCollaborationAttributionViewMetricsProvider *)v3 initWithSlotStyle:v4 tag:v5];
+  v6 = [(SLCollaborationAttributionViewMetricsProvider *)v3 initWithSlotStyle:slotStyle tag:v5];
 
   [(SLCollaborationAttributionViewMetricsProvider *)v6 drawingSize];
   v8 = v7;

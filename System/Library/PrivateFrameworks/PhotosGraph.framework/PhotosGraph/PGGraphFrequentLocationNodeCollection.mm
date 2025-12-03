@@ -2,7 +2,7 @@
 - (PGGraphAddressNodeCollection)addressNodes;
 - (PGGraphAddressNodeCollection)preciseAddressNodes;
 - (PGGraphMomentNodeCollection)momentNodes;
-- (void)enumerateUniversalEndDatesUsingBlock:(id)a3;
+- (void)enumerateUniversalEndDatesUsingBlock:(id)block;
 @end
 
 @implementation PGGraphFrequentLocationNodeCollection
@@ -22,8 +22,8 @@
   v4 = +[PGGraphFrequentLocationNode addressOfFrequentLocation];
   v12[0] = v4;
   v5 = +[PGGraphAddressNode preciseFilter];
-  v6 = [v5 relation];
-  v12[1] = v6;
+  relation = [v5 relation];
+  v12[1] = relation;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   v8 = [v3 chain:v7];
 
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)enumerateUniversalEndDatesUsingBlock:(id)a3
+- (void)enumerateUniversalEndDatesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__PGGraphFrequentLocationNodeCollection_enumerateUniversalEndDatesUsingBlock___block_invoke;
   v6[3] = &unk_278888AA8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(MANodeCollection *)self enumerateDoublePropertyValuesForKey:@"universalEndDate" withBlock:v6];
 }
 

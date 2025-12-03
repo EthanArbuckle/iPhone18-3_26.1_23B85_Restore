@@ -4,23 +4,23 @@
 + (NSCollectionLayoutDimension)fractionalHeightDimension:(CGFloat)fractionalHeight;
 + (NSCollectionLayoutDimension)fractionalWidthDimension:(CGFloat)fractionalWidth;
 + (NSCollectionLayoutDimension)uniformAcrossSiblingsWithEstimate:(CGFloat)estimatedDimension;
-+ (id)_dimensionWithDimension:(double)a3 semantic:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (NSCollectionLayoutDimension)initWithDimension:(double)a3 semantic:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_dimensionWithDimension:(double)dimension semantic:(int64_t)semantic;
+- (BOOL)isEqual:(id)equal;
+- (NSCollectionLayoutDimension)initWithDimension:(double)dimension semantic:(int64_t)semantic;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSCollectionLayoutDimension
 
-- (NSCollectionLayoutDimension)initWithDimension:(double)a3 semantic:(int64_t)a4
+- (NSCollectionLayoutDimension)initWithDimension:(double)dimension semantic:(int64_t)semantic
 {
   v7.receiver = self;
   v7.super_class = NSCollectionLayoutDimension;
   result = [(NSCollectionLayoutDimension *)&v7 init];
   if (result)
   {
-    result->_dimension = a3;
-    result->_semantic = a4;
+    result->_dimension = dimension;
+    result->_semantic = semantic;
   }
 
   return result;
@@ -40,11 +40,11 @@
 
   if ((*&fractionalWidth & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1811 description:{@"Invalid fractional width: %g. The fraction must be a finite value.", *&fractionalWidth}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1811 description:{@"Invalid fractional width: %g. The fraction must be a finite value.", *&fractionalWidth}];
   }
 
-  v7 = [[a1 alloc] initWithDimension:1 semantic:fractionalWidth];
+  v7 = [[self alloc] initWithDimension:1 semantic:fractionalWidth];
 
   return v7;
 }
@@ -63,11 +63,11 @@
 
   if ((*&fractionalHeight & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1819 description:{@"Invalid fractional height: %g. The fraction must be a finite value.", *&fractionalHeight}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1819 description:{@"Invalid fractional height: %g. The fraction must be a finite value.", *&fractionalHeight}];
   }
 
-  v7 = [[a1 alloc] initWithDimension:2 semantic:fractionalHeight];
+  v7 = [[self alloc] initWithDimension:2 semantic:fractionalHeight];
 
   return v7;
 }
@@ -86,11 +86,11 @@
 
   if ((*&absoluteDimension & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1827 description:{@"Invalid absolute dimension: %g. The dimension must be a finite value.", *&absoluteDimension}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1827 description:{@"Invalid absolute dimension: %g. The dimension must be a finite value.", *&absoluteDimension}];
   }
 
-  v7 = [[a1 alloc] initWithDimension:0 semantic:absoluteDimension];
+  v7 = [[self alloc] initWithDimension:0 semantic:absoluteDimension];
 
   return v7;
 }
@@ -109,11 +109,11 @@
 
   if ((*&estimatedDimension & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1835 description:{@"Invalid estimated dimension: %g. The dimension must be a finite value.", *&estimatedDimension}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1835 description:{@"Invalid estimated dimension: %g. The dimension must be a finite value.", *&estimatedDimension}];
   }
 
-  v7 = [[a1 alloc] initWithDimension:3 semantic:estimatedDimension];
+  v7 = [[self alloc] initWithDimension:3 semantic:estimatedDimension];
 
   return v7;
 }
@@ -122,32 +122,32 @@
 {
   if (estimatedDimension <= 0.0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1840 description:{@"Invalid estimated dimension (%g), must be > 0", *&estimatedDimension}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1840 description:{@"Invalid estimated dimension (%g), must be > 0", *&estimatedDimension}];
   }
 
   if ((*&estimatedDimension & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"NSCollectionLayoutItem.m" lineNumber:1841 description:{@"Invalid estimated dimension: %g. The dimension must be a finite value.", *&estimatedDimension}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSCollectionLayoutItem.m" lineNumber:1841 description:{@"Invalid estimated dimension: %g. The dimension must be a finite value.", *&estimatedDimension}];
   }
 
-  v6 = [[a1 alloc] initWithDimension:4 semantic:estimatedDimension];
+  v6 = [[self alloc] initWithDimension:4 semantic:estimatedDimension];
 
   return v6;
 }
 
-+ (id)_dimensionWithDimension:(double)a3 semantic:(int64_t)a4
++ (id)_dimensionWithDimension:(double)dimension semantic:(int64_t)semantic
 {
-  v4 = [[a1 alloc] initWithDimension:a4 semantic:a3];
+  v4 = [[self alloc] initWithDimension:semantic semantic:dimension];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -155,11 +155,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(NSCollectionLayoutDimension *)self semantic], v5 == [(NSCollectionLayoutDimension *)v4 semantic]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(NSCollectionLayoutDimension *)self semantic], v5 == [(NSCollectionLayoutDimension *)equalCopy semantic]))
     {
       [(NSCollectionLayoutDimension *)self dimension];
       v7 = v6;
-      [(NSCollectionLayoutDimension *)v4 dimension];
+      [(NSCollectionLayoutDimension *)equalCopy dimension];
       v9 = vabdd_f64(v7, v8) <= 0.00001;
     }
 
@@ -172,14 +172,14 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(NSCollectionLayoutDimension *)self dimension];
   v6 = v5;
-  v7 = [(NSCollectionLayoutDimension *)self semantic];
+  semantic = [(NSCollectionLayoutDimension *)self semantic];
 
-  return [v4 initWithDimension:v7 semantic:v6];
+  return [v4 initWithDimension:semantic semantic:v6];
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface CKConversationListNewMessageCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKConversationListNewMessageCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKConversationListNewMessageCollectionViewCell" isKindOfClass:@"CKConversationListEmbeddedCollectionViewCell"];
-  [v3 validateClass:@"CKConversationListNewMessageCollectionViewCell" hasInstanceMethod:@"embeddedNewMessageTableViewCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListEmbeddedNewMessageTableViewCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKConversationListNewMessageCollectionViewCell" isKindOfClass:@"CKConversationListEmbeddedCollectionViewCell"];
+  [validationsCopy validateClass:@"CKConversationListNewMessageCollectionViewCell" hasInstanceMethod:@"embeddedNewMessageTableViewCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListEmbeddedNewMessageTableViewCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(CKConversationListNewMessageCollectionViewCellAccessibility *)self _axEmbeddedTableViewCell];
-  v3 = [v2 safeStringForKey:@"text"];
+  _axEmbeddedTableViewCell = [(CKConversationListNewMessageCollectionViewCellAccessibility *)self _axEmbeddedTableViewCell];
+  v3 = [_axEmbeddedTableViewCell safeStringForKey:@"text"];
 
   return v3;
 }

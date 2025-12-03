@@ -1,16 +1,16 @@
 @interface PHASERoomCongruenceInterfaceImpl
-- (void)setRoomCongruenceParameters:(id)a3;
+- (void)setRoomCongruenceParameters:(id)parameters;
 @end
 
 @implementation PHASERoomCongruenceInterfaceImpl
 
-- (void)setRoomCongruenceParameters:(id)a3
+- (void)setRoomCongruenceParameters:(id)parameters
 {
-  v3 = a3;
-  cf = v3;
-  if (v3)
+  parametersCopy = parameters;
+  cf = parametersCopy;
+  if (parametersCopy)
   {
-    CFRetain(v3);
+    CFRetain(parametersCopy);
     v7 = cf;
     v4 = CFGetTypeID(cf);
     if (v4 != CFDictionaryGetTypeID())

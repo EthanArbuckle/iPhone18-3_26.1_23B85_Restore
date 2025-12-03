@@ -1,31 +1,31 @@
 @interface QLImageItemDataContents
-+ (id)imageItemContentsWithImage:(id)a3 imageData:(id)a4;
-- (QLImageItemDataContents)initWithCoder:(id)a3;
++ (id)imageItemContentsWithImage:(id)image imageData:(id)data;
+- (QLImageItemDataContents)initWithCoder:(id)coder;
 @end
 
 @implementation QLImageItemDataContents
 
-+ (id)imageItemContentsWithImage:(id)a3 imageData:(id)a4
++ (id)imageItemContentsWithImage:(id)image imageData:(id)data
 {
-  v5 = a4;
-  v6 = a3;
+  dataCopy = data;
+  imageCopy = image;
   v7 = objc_opt_new();
-  [v7 setImage:v6];
+  [v7 setImage:imageCopy];
 
-  [v7 setImageData:v5];
+  [v7 setImageData:dataCopy];
 
   return v7;
 }
 
-- (QLImageItemDataContents)initWithCoder:(id)a3
+- (QLImageItemDataContents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = QLImageItemDataContents;
-  v5 = [(QLImageItemContents *)&v9 initWithCoder:v4];
+  v5 = [(QLImageItemContents *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v6;
   }

@@ -1,10 +1,10 @@
 @interface TKSmartCardUserInteractionForSecurePINChange
 - (TKSmartCardSlot)slot;
 - (TKSmartCardUserInteractionForSecurePINChange)init;
-- (TKSmartCardUserInteractionForSecurePINChange)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)runWithReply:(id)a3;
-- (void)setSlot:(id)a3 PINFormat:(id)a4 APDU:(id)a5 currentPINByteOffset:(int64_t)a6 newPINByteOffset:(int64_t)a7;
+- (TKSmartCardUserInteractionForSecurePINChange)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)runWithReply:(id)reply;
+- (void)setSlot:(id)slot PINFormat:(id)format APDU:(id)u currentPINByteOffset:(int64_t)offset newPINByteOffset:(int64_t)byteOffset;
 @end
 
 @implementation TKSmartCardUserInteractionForSecurePINChange
@@ -22,79 +22,79 @@
   return result;
 }
 
-- (TKSmartCardUserInteractionForSecurePINChange)initWithCoder:(id)a3
+- (TKSmartCardUserInteractionForSecurePINChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = TKSmartCardUserInteractionForSecurePINChange;
-  v5 = [(TKSmartCardUserInteractionForPINOperation *)&v16 initWithCoder:v4];
+  v5 = [(TKSmartCardUserInteractionForPINOperation *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PINConfirmation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PINConfirmation"];
     v5->_PINConfirmation = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PINFormat"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PINFormat"];
     v8 = [v7 copy];
     PINFormat = v5->_PINFormat;
     v5->_PINFormat = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"APDU"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"APDU"];
     v11 = [v10 copy];
     APDU = v5->_APDU;
     v5->_APDU = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentPINByteOffset"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentPINByteOffset"];
     v5->_currentPINByteOffset = [v13 integerValue];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"newPINByteOffset"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"newPINByteOffset"];
     v5->_newPINByteOffset = [v14 integerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = TKSmartCardUserInteractionForSecurePINChange;
-  v4 = a3;
-  [(TKSmartCardUserInteractionForPINOperation *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TKSmartCardUserInteractionForPINOperation *)&v8 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{self->_PINConfirmation, v8.receiver, v8.super_class}];
-  [v4 encodeObject:v5 forKey:@"PINConfirmation"];
+  [coderCopy encodeObject:v5 forKey:@"PINConfirmation"];
 
-  [v4 encodeObject:self->_PINFormat forKey:@"PINFormat"];
-  [v4 encodeObject:self->_APDU forKey:@"APDU"];
+  [coderCopy encodeObject:self->_PINFormat forKey:@"PINFormat"];
+  [coderCopy encodeObject:self->_APDU forKey:@"APDU"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_currentPINByteOffset];
-  [v4 encodeObject:v6 forKey:@"currentPINByteOffset"];
+  [coderCopy encodeObject:v6 forKey:@"currentPINByteOffset"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_newPINByteOffset];
-  [v4 encodeObject:v7 forKey:@"newPINByteOffset"];
+  [coderCopy encodeObject:v7 forKey:@"newPINByteOffset"];
 }
 
-- (void)setSlot:(id)a3 PINFormat:(id)a4 APDU:(id)a5 currentPINByteOffset:(int64_t)a6 newPINByteOffset:(int64_t)a7
+- (void)setSlot:(id)slot PINFormat:(id)format APDU:(id)u currentPINByteOffset:(int64_t)offset newPINByteOffset:(int64_t)byteOffset
 {
-  v12 = a5;
-  v13 = a4;
-  [(TKSmartCardUserInteractionForSecurePINChange *)self setSlot:a3];
-  [(TKSmartCardUserInteractionForSecurePINChange *)self setPINFormat:v13];
+  uCopy = u;
+  formatCopy = format;
+  [(TKSmartCardUserInteractionForSecurePINChange *)self setSlot:slot];
+  [(TKSmartCardUserInteractionForSecurePINChange *)self setPINFormat:formatCopy];
 
-  [(TKSmartCardUserInteractionForSecurePINChange *)self setAPDU:v12];
-  [(TKSmartCardUserInteractionForSecurePINChange *)self setCurrentPINByteOffset:a6];
+  [(TKSmartCardUserInteractionForSecurePINChange *)self setAPDU:uCopy];
+  [(TKSmartCardUserInteractionForSecurePINChange *)self setCurrentPINByteOffset:offset];
 
-  [(TKSmartCardUserInteractionForSecurePINChange *)self setNewPINByteOffset:a7];
+  [(TKSmartCardUserInteractionForSecurePINChange *)self setNewPINByteOffset:byteOffset];
 }
 
-- (void)runWithReply:(id)a3
+- (void)runWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(TKSmartCardUserInteractionForSecurePINChange *)self slot];
+  replyCopy = reply;
+  slot = [(TKSmartCardUserInteractionForSecurePINChange *)self slot];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__TKSmartCardUserInteractionForSecurePINChange_runWithReply___block_invoke;
   v11[3] = &unk_1E86B7218;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
-  v7 = [v5 synchronous:0 remoteSlotWithErrorHandler:v11];
+  v7 = [slot synchronous:0 remoteSlotWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__TKSmartCardUserInteractionForSecurePINChange_runWithReply___block_invoke_2;

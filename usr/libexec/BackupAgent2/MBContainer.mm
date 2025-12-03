@@ -1,12 +1,12 @@
 @interface MBContainer
-+ (id)containerWithPropertyList:(id)a3 volumeMountPoint:(id)a4;
-+ (id)uninstalledContainerWithDomainName:(id)a3 volumeMountPoint:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)containerWithPropertyList:(id)list volumeMountPoint:(id)point;
++ (id)uninstalledContainerWithDomainName:(id)name volumeMountPoint:(id)point;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSafeHarbor;
-- (MBContainer)initWithPropertyList:(id)a3 volumeMountPoint:(id)a4;
+- (MBContainer)initWithPropertyList:(id)list volumeMountPoint:(id)point;
 - (NSString)safeHarborDir;
-- (id)copyWithVolumeMountPoint:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithVolumeMountPoint:(id)point;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)propertyListForBackupProperties;
 - (int)containerType;
 - (unint64_t)hash;
@@ -14,15 +14,15 @@
 
 @implementation MBContainer
 
-+ (id)uninstalledContainerWithDomainName:(id)a3 volumeMountPoint:(id)a4
++ (id)uninstalledContainerWithDomainName:(id)name volumeMountPoint:(id)point
 {
   v13[0] = kCFBundleIdentifierKey;
-  v5 = a4;
-  v6 = a3;
-  v7 = [MBDomain containerIDWithName:v6];
+  pointCopy = point;
+  nameCopy = name;
+  v7 = [MBDomain containerIDWithName:nameCopy];
   v13[1] = @"ContainerContentClass";
   v14[0] = v7;
-  v8 = [MBDomain containerTypeWithName:v6];
+  v8 = [MBDomain containerTypeWithName:nameCopy];
 
   if (v8 - 1 > 4)
   {
@@ -37,64 +37,64 @@
   v14[1] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v11 = [MBContainer containerWithPropertyList:v10 volumeMountPoint:v5];
+  v11 = [MBContainer containerWithPropertyList:v10 volumeMountPoint:pointCopy];
 
   return v11;
 }
 
-+ (id)containerWithPropertyList:(id)a3 volumeMountPoint:(id)a4
++ (id)containerWithPropertyList:(id)list volumeMountPoint:(id)point
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"ContainerContentClass"];
+  listCopy = list;
+  pointCopy = point;
+  v7 = [listCopy objectForKeyedSubscript:@"ContainerContentClass"];
   v8 = sub_100038870(v7);
 
-  v9 = [objc_alloc(*off_1000FDAA0[v8]) initWithPropertyList:v5 volumeMountPoint:v6];
+  v9 = [objc_alloc(*off_1000FDAA0[v8]) initWithPropertyList:listCopy volumeMountPoint:pointCopy];
 
   return v9;
 }
 
-- (MBContainer)initWithPropertyList:(id)a3 volumeMountPoint:(id)a4
+- (MBContainer)initWithPropertyList:(id)list volumeMountPoint:(id)point
 {
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  pointCopy = point;
   v12.receiver = self;
   v12.super_class = MBContainer;
   v8 = [(MBContainer *)&v12 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [listCopy mutableCopy];
     plist = v8->_plist;
     v8->_plist = v9;
 
-    objc_storeStrong(&v8->_volumeMountPoint, a4);
+    objc_storeStrong(&v8->_volumeMountPoint, point);
   }
 
   return v8;
 }
 
-- (id)copyWithVolumeMountPoint:(id)a3
+- (id)copyWithVolumeMountPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = [(MBContainer *)self copy];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = pointCopy;
 
   return v5;
 }
 
 - (BOOL)isSafeHarbor
 {
-  v2 = [(MBContainer *)self datePlacedInSafeHarbor];
-  v3 = v2 != 0;
+  datePlacedInSafeHarbor = [(MBContainer *)self datePlacedInSafeHarbor];
+  v3 = datePlacedInSafeHarbor != 0;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableDictionary *)self->_plist mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableDictionary *)self->_plist mutableCopyWithZone:zone];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
@@ -102,14 +102,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(MBContainer *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqualToString:v6];
+    identifier = [(MBContainer *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -122,16 +122,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MBContainer *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MBContainer *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (int)containerType
 {
-  v2 = [(MBContainer *)self containerTypeString];
-  v3 = sub_100038870(v2);
+  containerTypeString = [(MBContainer *)self containerTypeString];
+  v3 = sub_100038870(containerTypeString);
 
   return v3;
 }
@@ -143,10 +143,10 @@
     sub_10009DB10(a2, self);
   }
 
-  v4 = [(MBContainer *)self containerDir];
-  v5 = [v4 stringByDeletingLastPathComponent];
+  containerDir = [(MBContainer *)self containerDir];
+  stringByDeletingLastPathComponent = [containerDir stringByDeletingLastPathComponent];
 
-  return v5;
+  return stringByDeletingLastPathComponent;
 }
 
 - (id)propertyListForBackupProperties

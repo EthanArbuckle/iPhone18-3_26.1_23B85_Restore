@@ -1,5 +1,5 @@
 @interface RTException
-+ (void)coreDataExceptionLogging:(id)a3;
++ (void)coreDataExceptionLogging:(id)logging;
 + (void)dontOpenDeadInside;
 + (void)unknownExceptionHandlingPolicyDeadInside;
 @end
@@ -12,7 +12,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v4 = 138412290;
-    v5 = a1;
+    selfCopy = self;
     _os_log_error_impl(&dword_2304B3000, v3, OS_LOG_TYPE_ERROR, "A tombstoned object was modified when it shouldn't have been.\n%@", &v4, 0xCu);
   }
 
@@ -25,33 +25,33 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
   {
     v4 = 138412290;
-    v5 = a1;
+    selfCopy = self;
     _os_log_error_impl(&dword_2304B3000, v3, OS_LOG_TYPE_ERROR, "RTStore RTStoreExceptionHandlingPolicy did not have a policy handling.\n%@", &v4, 0xCu);
   }
 
   __break(1u);
 }
 
-+ (void)coreDataExceptionLogging:(id)a3
++ (void)coreDataExceptionLogging:(id)logging
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  loggingCopy = logging;
   v4 = _rt_log_facility_get_os_log(RTLogFacilityDatabase);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = loggingCopy;
     _os_log_fault_impl(&dword_2304B3000, v4, OS_LOG_TYPE_FAULT, "Received exception in persistence stack, %@", buf, 0xCu);
   }
 
-  v12 = v3;
+  v12 = loggingCopy;
 
-  v5 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [callStackSymbols countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -63,7 +63,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(callStackSymbols);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -79,7 +79,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [callStackSymbols countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);

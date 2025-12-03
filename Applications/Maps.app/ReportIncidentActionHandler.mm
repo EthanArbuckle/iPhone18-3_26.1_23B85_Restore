@@ -1,13 +1,13 @@
 @interface ReportIncidentActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ReportIncidentActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -18,38 +18,38 @@
       if ([v9 isAuthorizedForPreciseLocation])
       {
         v10 = +[MKLocationManager sharedLocationManager];
-        v11 = [v10 isLocationServicesPossiblyAvailable];
+        isLocationServicesPossiblyAvailable = [v10 isLocationServicesPossiblyAvailable];
 
-        if (v11)
+        if (isLocationServicesPossiblyAvailable)
         {
-          v12 = v6;
-          v13 = [v12 incidentIntent];
+          v12 = actionCopy;
+          incidentIntent = [v12 incidentIntent];
 
-          if (v13)
+          if (incidentIntent)
           {
-            v14 = [v12 incidentIntent];
-            v15 = [v14 incidentType];
-            v16 = +[TrafficIncidentIntentSupport incidentTypeForINTrafficIncidentType:](TrafficIncidentIntentSupport, "incidentTypeForINTrafficIncidentType:", [v15 type]);
+            incidentIntent2 = [v12 incidentIntent];
+            incidentType = [incidentIntent2 incidentType];
+            incidentType2 = +[TrafficIncidentIntentSupport incidentTypeForINTrafficIncidentType:](TrafficIncidentIntentSupport, "incidentTypeForINTrafficIncidentType:", [incidentType type]);
 
-            v17 = [v14 isClear];
-            if ([v17 BOOLValue])
+            isClear = [incidentIntent2 isClear];
+            if ([isClear BOOLValue])
             {
 
 LABEL_18:
               v31 = @"SiriTrafficIncidentIsClearKey";
-              v21 = [v14 isClear];
-              v32 = v21;
+              isClear2 = [incidentIntent2 isClear];
+              v32 = isClear2;
               v22 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
 
               v23 = +[NSNotificationCenter defaultCenter];
-              [v23 postNotificationName:@"SiriTrafficIncidentUpdateNotification" object:a1 userInfo:v22];
+              [v23 postNotificationName:@"SiriTrafficIncidentUpdateNotification" object:self userInfo:v22];
 
 LABEL_24:
               goto LABEL_13;
             }
 
-            v19 = [v14 additionalDetails];
-            v20 = [v19 isEqual:@"update"];
+            additionalDetails = [incidentIntent2 additionalDetails];
+            v20 = [additionalDetails isEqual:@"update"];
 
             if (v20)
             {
@@ -66,18 +66,18 @@ LABEL_13:
               goto LABEL_14;
             }
 
-            v16 = [v12 incidentType];
+            incidentType2 = [v12 incidentType];
           }
 
           v24 = +[MKMapService sharedService];
-          if (v16 >= 0x14)
+          if (incidentType2 >= 0x14)
           {
-            v25 = [NSString stringWithFormat:@"(unknown: %i)", v16];
+            v25 = [NSString stringWithFormat:@"(unknown: %i)", incidentType2];
           }
 
           else
           {
-            v25 = off_101651908[v16];
+            v25 = off_101651908[incidentType2];
           }
 
           [v24 captureUserAction:2152 onTarget:0 eventValue:v25];
@@ -87,11 +87,11 @@ LABEL_13:
           v27[1] = 3221225472;
           v27[2] = sub_100D27B24;
           v27[3] = &unk_1016518E8;
-          v29 = v16;
-          v28 = v7;
+          v29 = incidentType2;
+          v28 = contextCopy;
           [v26 fetchTrafficIncidentsLayout:v27];
 
-          v14 = v28;
+          incidentIntent2 = v28;
           goto LABEL_24;
         }
 

@@ -1,15 +1,15 @@
 @interface NSError
-+ (id)_mf_errorWithCode:(unint64_t)a3 request:(id)a4 underlyingError:(id)a5 allowFallbackRouting:(BOOL)a6 debugDescription:(id)a7;
-+ (id)_restorationStateErrorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)mailHandoffErrorWithActivityContextInfo:(id)a3 errorFormat:(id)a4;
++ (id)_mf_errorWithCode:(unint64_t)code request:(id)request underlyingError:(id)error allowFallbackRouting:(BOOL)routing debugDescription:(id)description;
++ (id)_restorationStateErrorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)mailHandoffErrorWithActivityContextInfo:(id)info errorFormat:(id)format;
 + (id)mailHandoffSimulatedError;
-+ (id)mf_generalRoutingErrorWithDescription:(id)a3 request:(id)a4;
-+ (id)mf_invalidRestorationDataErrorWithUnderlyingError:(id)a3;
-+ (id)mf_noSuitableRouteErrorWithRequest:(id)a3;
-+ (id)mf_restorationAccountNotAvailableErrorWithUnderlyingError:(id)a3;
-+ (id)mf_restorationMailboxNotAvailableErrorWithUnderlyingError:(id)a3;
-+ (id)mf_restorationMessageNotAvailableErrorWithUnderlyingError:(id)a3;
-+ (id)mf_routingErrorWithUnderlyingError:(id)a3 request:(id)a4 allowFallbackRouting:(BOOL)a5;
++ (id)mf_generalRoutingErrorWithDescription:(id)description request:(id)request;
++ (id)mf_invalidRestorationDataErrorWithUnderlyingError:(id)error;
++ (id)mf_noSuitableRouteErrorWithRequest:(id)request;
++ (id)mf_restorationAccountNotAvailableErrorWithUnderlyingError:(id)error;
++ (id)mf_restorationMailboxNotAvailableErrorWithUnderlyingError:(id)error;
++ (id)mf_restorationMessageNotAvailableErrorWithUnderlyingError:(id)error;
++ (id)mf_routingErrorWithUnderlyingError:(id)error request:(id)request allowFallbackRouting:(BOOL)routing;
 - (BOOL)mf_allowFallbackRouting;
 - (BOOL)mf_isAnyRestorationError;
 - (BOOL)mf_isBlackPearlStateRestorationNotSupportedError;
@@ -31,17 +31,17 @@
 
 - (NSDictionary)mf_mailHandoffActivityContextInfo
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ceActivityType"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"ceActivityType"];
 
   if (v3)
   {
-    v4 = v2;
+    v4 = userInfo;
   }
 
   else
   {
-    v4 = [v2 objectForKeyedSubscript:@"ceActivityInfo"];
+    v4 = [userInfo objectForKeyedSubscript:@"ceActivityInfo"];
   }
 
   v5 = v4;
@@ -51,65 +51,65 @@
 
 - (unint64_t)mf_activitySource
 {
-  v2 = [(NSError *)self mf_mailHandoffActivityContextInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ceActivityIsHandoff"];
+  mf_mailHandoffActivityContextInfo = [(NSError *)self mf_mailHandoffActivityContextInfo];
+  v3 = [mf_mailHandoffActivityContextInfo objectForKeyedSubscript:@"ceActivityIsHandoff"];
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)mf_activityErrorReason
 {
-  v2 = [(NSError *)self mf_mailHandoffActivityContextInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ceActivityErrorReason"];
+  mf_mailHandoffActivityContextInfo = [(NSError *)self mf_mailHandoffActivityContextInfo];
+  v3 = [mf_mailHandoffActivityContextInfo objectForKeyedSubscript:@"ceActivityErrorReason"];
 
   if (v3)
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSString)mf_mailHandoffActivityType
 {
-  v2 = [(NSError *)self mf_mailHandoffActivityContextInfo];
-  v3 = [v2 objectForKeyedSubscript:@"ceActivityType"];
+  mf_mailHandoffActivityContextInfo = [(NSError *)self mf_mailHandoffActivityContextInfo];
+  v3 = [mf_mailHandoffActivityContextInfo objectForKeyedSubscript:@"ceActivityType"];
 
   return v3;
 }
 
 - (BOOL)mf_isSpotlightHandoffError
 {
-  v2 = [(NSError *)self mf_mailHandoffActivityType];
-  v3 = [CSSearchableItemActionType isEqualToString:v2];
+  mf_mailHandoffActivityType = [(NSError *)self mf_mailHandoffActivityType];
+  v3 = [CSSearchableItemActionType isEqualToString:mf_mailHandoffActivityType];
 
   return v3;
 }
 
-+ (id)mailHandoffErrorWithActivityContextInfo:(id)a3 errorFormat:(id)a4
++ (id)mailHandoffErrorWithActivityContextInfo:(id)info errorFormat:(id)format
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSString alloc] initWithFormat:v6 arguments:&v14];
+  infoCopy = info;
+  formatCopy = format;
+  v7 = [[NSString alloc] initWithFormat:formatCopy arguments:&v14];
   v11[0] = NSLocalizedDescriptionKey;
   v11[1] = @"ceActivityInfo";
   v12[0] = v7;
-  v12[1] = v5;
+  v12[1] = infoCopy;
   v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   v9 = [NSError errorWithDomain:MFHandoffErrorDomain code:-1 userInfo:v8];
 
@@ -126,142 +126,142 @@
   return v3;
 }
 
-+ (id)mf_noSuitableRouteErrorWithRequest:(id)a3
++ (id)mf_noSuitableRouteErrorWithRequest:(id)request
 {
-  v3 = [a1 _mf_errorWithCode:6000002 request:a3 underlyingError:0 allowFallbackRouting:1 debugDescription:0];
+  v3 = [self _mf_errorWithCode:6000002 request:request underlyingError:0 allowFallbackRouting:1 debugDescription:0];
 
   return v3;
 }
 
-+ (id)mf_routingErrorWithUnderlyingError:(id)a3 request:(id)a4 allowFallbackRouting:(BOOL)a5
++ (id)mf_routingErrorWithUnderlyingError:(id)error request:(id)request allowFallbackRouting:(BOOL)routing
 {
-  v5 = [a1 _mf_errorWithCode:6000003 request:a4 underlyingError:a3 allowFallbackRouting:a5 debugDescription:0];
+  v5 = [self _mf_errorWithCode:6000003 request:request underlyingError:error allowFallbackRouting:routing debugDescription:0];
 
   return v5;
 }
 
-+ (id)mf_generalRoutingErrorWithDescription:(id)a3 request:(id)a4
++ (id)mf_generalRoutingErrorWithDescription:(id)description request:(id)request
 {
-  v4 = [a1 _mf_errorWithCode:6000000 request:a4 underlyingError:0 allowFallbackRouting:1 debugDescription:a3];
+  v4 = [self _mf_errorWithCode:6000000 request:request underlyingError:0 allowFallbackRouting:1 debugDescription:description];
 
   return v4;
 }
 
-+ (id)_mf_errorWithCode:(unint64_t)a3 request:(id)a4 underlyingError:(id)a5 allowFallbackRouting:(BOOL)a6 debugDescription:(id)a7
++ (id)_mf_errorWithCode:(unint64_t)code request:(id)request underlyingError:(id)error allowFallbackRouting:(BOOL)routing debugDescription:(id)description
 {
-  v8 = a6;
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  routingCopy = routing;
+  requestCopy = request;
+  errorCopy = error;
+  descriptionCopy = description;
   if (qword_1006DD7A0 != -1)
   {
     sub_10048C928();
   }
 
   v14 = objc_alloc_init(NSMutableDictionary);
-  [v14 setObject:v11 forKeyedSubscript:@"MFURLRouterErrorRequestKey"];
-  v15 = [NSNumber numberWithBool:v8];
+  [v14 setObject:requestCopy forKeyedSubscript:@"MFURLRouterErrorRequestKey"];
+  v15 = [NSNumber numberWithBool:routingCopy];
   [v14 setObject:v15 forKeyedSubscript:@"MFURLRoutingErrorAllowFallbackRoutingKey"];
 
-  if (v12)
+  if (errorCopy)
   {
-    [v14 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    [v14 setObject:errorCopy forKeyedSubscript:NSUnderlyingErrorKey];
   }
 
-  if (v13)
+  if (descriptionCopy)
   {
-    [v14 setObject:v13 forKeyedSubscript:NSDebugDescriptionErrorKey];
+    [v14 setObject:descriptionCopy forKeyedSubscript:NSDebugDescriptionErrorKey];
   }
 
   v16 = [v14 copy];
-  v17 = [NSError errorWithDomain:@"MFURLRoutingErrorDomain" code:a3 userInfo:v16];
+  v17 = [NSError errorWithDomain:@"MFURLRoutingErrorDomain" code:code userInfo:v16];
 
   return v17;
 }
 
 - (BOOL)mf_isBlockedURLError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"MFURLRoutingErrorDomain", 6000001);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"MFURLRoutingErrorDomain", 6000001);
 
   return v3;
 }
 
 - (BOOL)mf_isNoSuitableRouteError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"MFURLRoutingErrorDomain", 6000002);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"MFURLRoutingErrorDomain", 6000002);
 
   return v3;
 }
 
 - (BOOL)mf_allowFallbackRouting
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"MFURLRoutingErrorAllowFallbackRoutingKey"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"MFURLRoutingErrorAllowFallbackRoutingKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (MFURLRoutingRequest)mf_request
 {
-  v2 = [(NSError *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"MFURLRouterErrorRequestKey"];
+  userInfo = [(NSError *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"MFURLRouterErrorRequestKey"];
 
   return v3;
 }
 
-+ (id)mf_invalidRestorationDataErrorWithUnderlyingError:(id)a3
++ (id)mf_invalidRestorationDataErrorWithUnderlyingError:(id)error
 {
-  v3 = [a1 _restorationStateErrorWithCode:5000000 underlyingError:a3];
+  v3 = [self _restorationStateErrorWithCode:5000000 underlyingError:error];
 
   return v3;
 }
 
-+ (id)mf_restorationAccountNotAvailableErrorWithUnderlyingError:(id)a3
++ (id)mf_restorationAccountNotAvailableErrorWithUnderlyingError:(id)error
 {
-  v3 = [a1 _restorationStateErrorWithCode:5000001 underlyingError:a3];
+  v3 = [self _restorationStateErrorWithCode:5000001 underlyingError:error];
 
   return v3;
 }
 
-+ (id)mf_restorationMailboxNotAvailableErrorWithUnderlyingError:(id)a3
++ (id)mf_restorationMailboxNotAvailableErrorWithUnderlyingError:(id)error
 {
-  v3 = [a1 _restorationStateErrorWithCode:5000002 underlyingError:a3];
+  v3 = [self _restorationStateErrorWithCode:5000002 underlyingError:error];
 
   return v3;
 }
 
-+ (id)mf_restorationMessageNotAvailableErrorWithUnderlyingError:(id)a3
++ (id)mf_restorationMessageNotAvailableErrorWithUnderlyingError:(id)error
 {
-  v3 = [a1 _restorationStateErrorWithCode:5000003 underlyingError:a3];
+  v3 = [self _restorationStateErrorWithCode:5000003 underlyingError:error];
 
   return v3;
 }
 
-+ (id)_restorationStateErrorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)_restorationStateErrorWithCode:(int64_t)code underlyingError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (qword_1006DD7A8 != -1)
   {
     sub_10048C93C();
   }
 
-  if (v5)
+  if (errorCopy)
   {
     v9 = NSUnderlyingErrorKey;
-    v10 = v5;
+    v10 = errorCopy;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   }
 
@@ -270,55 +270,55 @@
     v6 = 0;
   }
 
-  v7 = [NSError errorWithDomain:@"com.apple.mobilemail.restoration" code:a3 userInfo:v6];
+  v7 = [NSError errorWithDomain:@"com.apple.mobilemail.restoration" code:code userInfo:v6];
 
   return v7;
 }
 
 - (BOOL)mf_isAnyRestorationError
 {
-  v2 = [(NSError *)self domain];
-  v3 = [v2 isEqualToString:@"com.apple.mobilemail.restoration"];
+  domain = [(NSError *)self domain];
+  v3 = [domain isEqualToString:@"com.apple.mobilemail.restoration"];
 
   return v3;
 }
 
 - (BOOL)mf_isInvalidRestorationDataError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"com.apple.mobilemail.restoration", 5000000);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"com.apple.mobilemail.restoration", 5000000);
 
   return v3;
 }
 
 - (BOOL)mf_isRestorationAccountNotAvailableError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"com.apple.mobilemail.restoration", 5000001);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"com.apple.mobilemail.restoration", 5000001);
 
   return v3;
 }
 
 - (BOOL)mf_isRestorationMailboxNotAvailableError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"com.apple.mobilemail.restoration", 5000002);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"com.apple.mobilemail.restoration", 5000002);
 
   return v3;
 }
 
 - (BOOL)mf_isRestorationMessageNotAvailableError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"com.apple.mobilemail.restoration", 5000003);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"com.apple.mobilemail.restoration", 5000003);
 
   return v3;
 }
 
 - (BOOL)mf_isBlackPearlStateRestorationNotSupportedError
 {
-  v2 = [(NSError *)self ef_match];
-  v3 = (v2)[2](v2, @"com.apple.mobilemail.restoration", 5000004);
+  ef_match = [(NSError *)self ef_match];
+  v3 = (ef_match)[2](ef_match, @"com.apple.mobilemail.restoration", 5000004);
 
   return v3;
 }

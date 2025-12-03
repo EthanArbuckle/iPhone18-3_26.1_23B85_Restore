@@ -1,11 +1,11 @@
 @interface PHAssetResourceManager
 + (id)vcp_fileCacheDirectoryPath;
-+ (int)vcp_requestFileURLForAssetResource:(id)a3 taskID:(unint64_t)a4 completionHandler:(id)a5;
-+ (int)vcp_requestInMemoryDownload:(id)a3 taskID:(unint64_t)a4 data:(id *)a5 cancel:(id)a6;
++ (int)vcp_requestFileURLForAssetResource:(id)resource taskID:(unint64_t)d completionHandler:(id)handler;
++ (int)vcp_requestInMemoryDownload:(id)download taskID:(unint64_t)d data:(id *)data cancel:(id)cancel;
 + (void)vcp_createFileCacheDirectoryIfNeeded;
 + (void)vcp_flushFileCache;
-+ (void)vcp_flushResourceURL:(id)a3;
-+ (void)vcp_reportDownloadBytes:(unint64_t)a3 taskID:(unint64_t)a4;
++ (void)vcp_flushResourceURL:(id)l;
++ (void)vcp_reportDownloadBytes:(unint64_t)bytes taskID:(unint64_t)d;
 @end
 
 @implementation PHAssetResourceManager
@@ -99,30 +99,30 @@
 LABEL_15:
 }
 
-+ (int)vcp_requestFileURLForAssetResource:(id)a3 taskID:(unint64_t)a4 completionHandler:(id)a5
++ (int)vcp_requestFileURLForAssetResource:(id)resource taskID:(unint64_t)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  resourceCopy = resource;
+  handlerCopy = handler;
   [objc_opt_class() vcp_createFileCacheDirectoryIfNeeded];
-  v9 = [v7 vcp_uniformTypeIdentifier];
-  v30 = [v9 preferredFilenameExtension];
+  vcp_uniformTypeIdentifier = [resourceCopy vcp_uniformTypeIdentifier];
+  preferredFilenameExtension = [vcp_uniformTypeIdentifier preferredFilenameExtension];
 
-  v10 = [v7 assetLocalIdentifier];
-  v11 = [PHObject uuidFromLocalIdentifier:v10];
-  v12 = [NSNumber numberWithUnsignedInteger:a4];
-  v13 = [v12 stringValue];
-  v14 = [v11 stringByAppendingPathExtension:v13];
-  v15 = [v14 stringByAppendingPathExtension:v30];
+  assetLocalIdentifier = [resourceCopy assetLocalIdentifier];
+  v11 = [PHObject uuidFromLocalIdentifier:assetLocalIdentifier];
+  v12 = [NSNumber numberWithUnsignedInteger:d];
+  stringValue = [v12 stringValue];
+  v14 = [v11 stringByAppendingPathExtension:stringValue];
+  v15 = [v14 stringByAppendingPathExtension:preferredFilenameExtension];
 
-  v16 = [objc_opt_class() vcp_fileCacheDirectoryPath];
-  v17 = [v16 stringByAppendingPathComponent:v15];
+  vcp_fileCacheDirectoryPath = [objc_opt_class() vcp_fileCacheDirectoryPath];
+  v17 = [vcp_fileCacheDirectoryPath stringByAppendingPathComponent:v15];
 
   v18 = [NSURL fileURLWithPath:v17];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100021504;
   v37[3] = &unk_1002832F0;
-  v19 = v7;
+  v19 = resourceCopy;
   v38 = v19;
   v20 = v18;
   v39 = v20;
@@ -133,10 +133,10 @@ LABEL_15:
   v33[3] = &unk_100283318;
   v22 = v19;
   v35 = v20;
-  v36 = v8;
+  v36 = handlerCopy;
   v34 = v22;
   v23 = v20;
-  v24 = v8;
+  v24 = handlerCopy;
   v25 = objc_retainBlock(v33);
   v26 = objc_alloc_init(PHAssetResourceRequestOptions);
   [v26 setNetworkAccessAllowed:1];
@@ -156,24 +156,24 @@ LABEL_15:
   return v14;
 }
 
-+ (void)vcp_flushResourceURL:(id)a3
++ (void)vcp_flushResourceURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (MediaAnalysisLogLevel() >= 7)
   {
     v4 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v4))
     {
-      v5 = [v3 path];
+      path = [lCopy path];
       *buf = 138412290;
-      v14 = v5;
+      v14 = path;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v4, "[Resource] Flushing cached resource: %@", buf, 0xCu);
     }
   }
 
   v6 = +[NSFileManager defaultManager];
   v12 = 0;
-  v7 = [v6 removeItemAtURL:v3 error:&v12];
+  v7 = [v6 removeItemAtURL:lCopy error:&v12];
   v8 = v12;
 
   if ((v7 & 1) == 0 && MediaAnalysisLogLevel() >= 3)
@@ -181,10 +181,10 @@ LABEL_15:
     v9 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
-      v10 = [v3 path];
+      path2 = [lCopy path];
       v11 = [v8 description];
       *buf = 138412546;
-      v14 = v10;
+      v14 = path2;
       v15 = 2112;
       v16 = v11;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[Resource] Failed to delete %@ (%@)", buf, 0x16u);
@@ -205,8 +205,8 @@ LABEL_15:
   }
 
   v4 = +[NSFileManager defaultManager];
-  v5 = [objc_opt_class() vcp_fileCacheDirectoryPath];
-  v6 = [v4 enumeratorAtPath:v5];
+  vcp_fileCacheDirectoryPath = [objc_opt_class() vcp_fileCacheDirectoryPath];
+  v6 = [v4 enumeratorAtPath:vcp_fileCacheDirectoryPath];
 
   v18 = 0u;
   v19 = 0u;
@@ -228,11 +228,11 @@ LABEL_15:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [objc_opt_class() vcp_fileCacheDirectoryPath];
-        v14 = [v13 stringByAppendingPathComponent:v12];
+        vcp_fileCacheDirectoryPath2 = [objc_opt_class() vcp_fileCacheDirectoryPath];
+        v14 = [vcp_fileCacheDirectoryPath2 stringByAppendingPathComponent:v12];
 
         v15 = [NSURL fileURLWithPath:v14];
-        [a1 vcp_flushResourceURL:v15];
+        [self vcp_flushResourceURL:v15];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -242,7 +242,7 @@ LABEL_15:
   }
 }
 
-+ (void)vcp_reportDownloadBytes:(unint64_t)a3 taskID:(unint64_t)a4
++ (void)vcp_reportDownloadBytes:(unint64_t)bytes taskID:(unint64_t)d
 {
   if (MediaAnalysisLogLevel() >= 7)
   {
@@ -260,7 +260,7 @@ LABEL_15:
       v22 = 2112;
       v23 = v8;
       v24 = 2048;
-      v25 = a3;
+      bytesCopy = bytes;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[DAS QoS] %@: %@ (%@) download %lu bytes", buf, 0x2Au);
     }
   }
@@ -272,28 +272,28 @@ LABEL_15:
   v16 = VCPAnalyticsFieldKeyQoS;
   qos_class_self();
   v12 = VCPMAQoSDescription();
-  v13 = [NSNumber numberWithUnsignedInteger:a3, v15, v16, VCPAnalyticsFieldKeyDownloadAssetCount, VCPAnalyticsFieldKeyDownloadBytes, v11, v12, &off_100294CE0];
+  v13 = [NSNumber numberWithUnsignedInteger:bytes, v15, v16, VCPAnalyticsFieldKeyDownloadAssetCount, VCPAnalyticsFieldKeyDownloadBytes, v11, v12, &off_100294CE0];
   v17[3] = v13;
   v14 = [NSDictionary dictionaryWithObjects:v17 forKeys:&v15 count:4];
   [v9 sendEvent:v10 withAnalytics:v14];
 }
 
-+ (int)vcp_requestInMemoryDownload:(id)a3 taskID:(unint64_t)a4 data:(id *)a5 cancel:(id)a6
++ (int)vcp_requestInMemoryDownload:(id)download taskID:(unint64_t)d data:(id *)data cancel:(id)cancel
 {
-  v10 = a3;
-  v11 = a6;
-  obj = a1;
+  downloadCopy = download;
+  cancelCopy = cancel;
+  obj = self;
   objc_sync_enter(obj);
-  v12 = [v10 assetLocalIdentifier];
+  assetLocalIdentifier = [downloadCopy assetLocalIdentifier];
   if (MediaAnalysisLogLevel() >= 6)
   {
     v13 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v13))
     {
       *buf = 138412546;
-      *&buf[4] = v12;
+      *&buf[4] = assetLocalIdentifier;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = downloadCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[%@] Attempt to download resource: %@", buf, 0x16u);
     }
   }
@@ -306,7 +306,7 @@ LABEL_15:
   v54[1] = 3221225472;
   v54[2] = sub_1001706C0;
   v54[3] = &unk_1002828A8;
-  v15 = v12;
+  v15 = assetLocalIdentifier;
   v55 = v15;
   v42 = objc_retainBlock(v54);
   [v14 setProgressHandler:v42];
@@ -326,7 +326,7 @@ LABEL_15:
   v52 = obj;
   v18 = v16;
   v49 = v18;
-  v53 = a4;
+  dCopy = d;
   v19 = v17;
   v50 = v19;
   v20 = objc_retainBlock(v47);
@@ -338,7 +338,7 @@ LABEL_15:
   v46 = v21;
   v41 = objc_retainBlock(v45);
   v22 = +[PHAssetResourceManager defaultManager];
-  v23 = [v22 requestDataForAssetResource:v10 options:v44 dataReceivedHandler:v41 completionHandler:v20];
+  v23 = [v22 requestDataForAssetResource:downloadCopy options:v44 dataReceivedHandler:v41 completionHandler:v20];
 
   if (!v23)
   {
@@ -358,9 +358,9 @@ LABEL_29:
   }
 
   v39 = v23;
-  v24 = a5;
+  dataCopy = data;
   v25 = v21;
-  if (v11)
+  if (cancelCopy)
   {
     v26 = -100000000;
     while (1)
@@ -392,7 +392,7 @@ LABEL_29:
         goto LABEL_28;
       }
 
-      if (v11[2](v11))
+      if (cancelCopy[2](cancelCopy))
       {
         v21 = v25;
         if (MediaAnalysisLogLevel() >= 6)
@@ -445,10 +445,10 @@ LABEL_28:
 
 LABEL_22:
   v21 = v25;
-  if (v24)
+  if (dataCopy)
   {
     v35 = v25;
-    *v24 = v25;
+    *dataCopy = v25;
   }
 
   v30 = *(*&buf[8] + 24);

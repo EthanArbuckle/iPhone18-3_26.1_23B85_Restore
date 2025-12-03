@@ -5,13 +5,13 @@
 - (double)controlKeyRadius;
 - (double)defaultKeyFontSize;
 - (double)letterLineFontSize;
-- (id)_traitsForColorAdaptiveKey:(id)a3 onKeyplane:(id)a4;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
+- (id)_traitsForColorAdaptiveKey:(id)key onKeyplane:(id)keyplane;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
 - (id)activeKeyColor;
 - (id)enabledKeyColor;
 - (id)highlightedKeyColor;
 - (id)lightTextFontName;
-- (id)variantGeometriesForGeometry:(id)a3 key:(id)a4 maxWidthForVariant:(double)a5 letterWidth:(double)a6 highlightedWidth:(double)a7;
+- (id)variantGeometriesForGeometry:(id)geometry key:(id)key maxWidthForVariant:(double)variant letterWidth:(double)width highlightedWidth:(double)highlightedWidth;
 - (void)setupLayoutSegments;
 @end
 
@@ -19,9 +19,9 @@
 
 - (double)carKeyRadius
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 6.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 8.0 / v5;
@@ -32,9 +32,9 @@
 
 - (double)controlKeyRadius
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 16.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 8.0 / v5;
@@ -45,9 +45,9 @@
 
 - (double)defaultKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 11.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 32.0 / v5;
@@ -58,9 +58,9 @@
 
 - (double)letterLineFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 11.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 18.0 / v5;
@@ -71,9 +71,9 @@
 
 - (double)activeLetterFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 16.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 40.0 / v5;
@@ -84,9 +84,9 @@
 
 - (double)controlKeyFontSize
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
   v4 = 13.0;
-  if (([v3 colorAdaptiveBackground] & 1) == 0)
+  if (([renderConfig colorAdaptiveBackground] & 1) == 0)
   {
     [(UIKBRenderFactory_Car *)self carScale];
     v4 = 32.0 / v5;
@@ -97,11 +97,11 @@
 
 - (id)lightTextFontName
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 usesCompactKeycapsFont];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  usesCompactKeycapsFont = [renderConfig usesCompactKeycapsFont];
 
   v4 = UIKBRenderFactorySystemCompactFontName;
-  if (!v3)
+  if (!usesCompactKeycapsFont)
   {
     v4 = UIKBRenderFactorySystemFontName;
   }
@@ -113,44 +113,44 @@
 
 - (id)enabledKeyColor
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v3 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
-    v4 = @"UIKBColorClear";
+    enabledKeyColor = @"UIKBColorClear";
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIKBRenderFactory_CarLinear;
-    v4 = [(UIKBRenderFactory_Car *)&v7 enabledKeyColor];
+    enabledKeyColor = [(UIKBRenderFactory_Car *)&v7 enabledKeyColor];
   }
 
-  v5 = v4;
+  v5 = enabledKeyColor;
 
   return v5;
 }
 
 - (id)activeKeyColor
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 colorAdaptiveBackground];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-  v5 = [(UIKBRenderFactory *)self renderConfig];
-  v6 = [v5 lightKeyboard];
+  renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig2 lightKeyboard];
   v7 = UIKBColorBlack;
-  if (!v4)
+  if (!colorAdaptiveBackground)
   {
     v7 = UIKBColorKeyBlueKeyBackground;
   }
 
   v8 = UIKBColorWhite;
-  if (!v4)
+  if (!colorAdaptiveBackground)
   {
     v8 = UIKBColorCarTeal;
   }
 
-  if (!v6)
+  if (!lightKeyboard)
   {
     v7 = v8;
   }
@@ -163,10 +163,10 @@
 
 - (id)highlightedKeyColor
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorWhite;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorBlack;
   }
@@ -177,16 +177,16 @@
   return v5;
 }
 
-- (id)variantGeometriesForGeometry:(id)a3 key:(id)a4 maxWidthForVariant:(double)a5 letterWidth:(double)a6 highlightedWidth:(double)a7
+- (id)variantGeometriesForGeometry:(id)geometry key:(id)key maxWidthForVariant:(double)variant letterWidth:(double)width highlightedWidth:(double)highlightedWidth
 {
-  v11 = a4;
-  [a3 paddedFrame];
+  keyCopy = key;
+  [geometry paddedFrame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v11 selectedVariantIndex];
-  v19 = [v11 subtrees];
-  v20 = [v19 count];
+  selectedVariantIndex = [keyCopy selectedVariantIndex];
+  subtrees = [keyCopy subtrees];
+  v20 = [subtrees count];
 
   v21 = [MEMORY[0x1E695DF70] arrayWithCapacity:v20];
   if (v20)
@@ -196,59 +196,59 @@
     v23 = v17 + 10.0;
     do
     {
-      if (v18 == v22)
+      if (selectedVariantIndex == v22)
       {
-        v24 = a7;
+        widthCopy = highlightedWidth;
       }
 
       else
       {
-        v24 = a6;
+        widthCopy = width;
       }
 
-      v25 = [v11 subtrees];
-      [v25 objectAtIndexedSubscript:v22];
-      v27 = v26 = v11;
+      subtrees2 = [keyCopy subtrees];
+      [subtrees2 objectAtIndexedSubscript:v22];
+      v27 = v26 = keyCopy;
 
       v28 = MEMORY[0x1E695DF20];
       [(UIKBRenderFactory_CarLinear *)self letterLineFontSize];
       v29 = [off_1E70ECC18 systemFontOfSize:?];
       v30 = [v28 dictionaryWithObjectsAndKeys:{v29, v38, 0}];
 
-      v31 = [v27 displayString];
-      [v31 sizeWithAttributes:v30];
-      if (v32 > a6)
+      displayString = [v27 displayString];
+      [displayString sizeWithAttributes:v30];
+      if (v32 > width)
       {
-        v33 = v24 + 2.0;
+        widthCopy2 = widthCopy + 2.0;
       }
 
       else
       {
-        v33 = a6;
+        widthCopy2 = width;
       }
 
-      if (v18 == v22)
+      if (selectedVariantIndex == v22)
       {
-        v34 = a7;
+        highlightedWidthCopy2 = highlightedWidth;
       }
 
       else
       {
-        v34 = v33;
+        highlightedWidthCopy2 = widthCopy2;
       }
 
-      v35 = [UIKBRenderGeometry geometryWithFrame:v13 paddedFrame:v15, v34, v17, v13, v15, v34, v17];
+      v35 = [UIKBRenderGeometry geometryWithFrame:v13 paddedFrame:v15, highlightedWidthCopy2, v17, v13, v15, highlightedWidthCopy2, v17];
       [(UIKBRenderFactory_CarLinear *)self carKeyRadius];
       [v35 setRoundRectRadius:?];
       [v35 setRoundRectCorners:-1];
-      [v35 setSymbolFrame:{v13 + -10.0, v15 + -10.0, v34 + 10.0 + 10.0, v17 + 10.0 + 10.0}];
-      v36 = [v35 similarShape];
-      [v27 setShape:v36];
+      [v35 setSymbolFrame:{v13 + -10.0, v15 + -10.0, highlightedWidthCopy2 + 10.0 + 10.0, v17 + 10.0 + 10.0}];
+      similarShape = [v35 similarShape];
+      [v27 setShape:similarShape];
 
       [v21 addObject:v35];
-      v13 = v13 + v34;
+      v13 = v13 + highlightedWidthCopy2;
 
-      v11 = v26;
+      keyCopy = v26;
       ++v22;
     }
 
@@ -258,17 +258,17 @@
   return v21;
 }
 
-- (id)_traitsForColorAdaptiveKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForColorAdaptiveKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
+  keyCopy = key;
   v119.receiver = self;
   v119.super_class = UIKBRenderFactory_CarLinear;
-  v7 = a4;
-  v8 = [(UIKBRenderFactory_Car *)&v119 _traitsForKey:v6 onKeyplane:v7];
-  v9 = [v8 geometry];
-  [v9 setRoundRectCorners:-1];
+  keyplaneCopy = keyplane;
+  v8 = [(UIKBRenderFactory_Car *)&v119 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
+  geometry = [v8 geometry];
+  [geometry setRoundRectCorners:-1];
 
-  v10 = [v6 state] & 0xC;
+  v10 = [keyCopy state] & 0xC;
   if (v10)
   {
     [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
@@ -279,113 +279,113 @@
     [(UIKBRenderFactory_CarLinear *)self activeKeyColor];
   }
   v11 = ;
-  v12 = [v8 symbolStyle];
-  [v12 setTextColor:v11];
+  symbolStyle = [v8 symbolStyle];
+  [symbolStyle setTextColor:v11];
 
-  [v7 frame];
+  [keyplaneCopy frame];
   v14 = v13;
 
-  if ([v6 interactionType] == 9)
+  if ([keyCopy interactionType] == 9)
   {
     [(UIKBRenderFactory_CarLinear *)self internationalKeyRadius];
     v16 = v15;
-    v17 = [v8 geometry];
-    [v17 setRoundRectRadius:v16];
+    geometry2 = [v8 geometry];
+    [geometry2 setRoundRectRadius:v16];
 
-    v18 = [v8 geometry];
-    [v18 paddedFrame];
+    geometry3 = [v8 geometry];
+    [geometry3 paddedFrame];
     v20 = v19 + 6.0;
     v22 = v21 + -12.0;
     v24 = v23 + 6.0;
     v26 = v25 + -12.0;
-    v27 = [v8 geometry];
-    v28 = v27;
+    geometry4 = [v8 geometry];
+    v28 = geometry4;
     v29 = v20;
     v30 = v24;
     v31 = v22;
 LABEL_12:
-    [v27 setSymbolFrame:{v29, v30, v31, v26}];
+    [geometry4 setSymbolFrame:{v29, v30, v31, v26}];
 
-    v48 = [v8 geometry];
-    [v48 paddedFrame];
+    geometry5 = [v8 geometry];
+    [geometry5 paddedFrame];
     v50 = v49;
     v52 = v51;
     v54 = v53;
     v56 = v55;
-    v57 = [v8 geometry];
-    [v57 setDisplayFrame:{v50, v52, v54, v56}];
+    geometry6 = [v8 geometry];
+    [geometry6 setDisplayFrame:{v50, v52, v54, v56}];
     goto LABEL_13;
   }
 
-  if ([v6 interactionType] == 11)
+  if ([keyCopy interactionType] == 11)
   {
     [(UIKBRenderFactory_CarLinear *)self carKeyRadius];
     v33 = v32;
-    v34 = [v8 geometry];
-    [v34 setRoundRectRadius:v33];
+    geometry7 = [v8 geometry];
+    [geometry7 setRoundRectRadius:v33];
 
     [(UIKBRenderFactory_CarLinear *)self defaultKeyFontSize];
 LABEL_11:
     v39 = v35;
-    v40 = [v8 symbolStyle];
-    [v40 setFontSize:v39];
+    symbolStyle2 = [v8 symbolStyle];
+    [symbolStyle2 setFontSize:v39];
 
-    v18 = [v8 geometry];
-    [v18 paddedFrame];
+    geometry3 = [v8 geometry];
+    [geometry3 paddedFrame];
     v42 = v41;
     v44 = v43;
     v46 = v45;
     v26 = v47;
-    v27 = [v8 geometry];
-    v28 = v27;
+    geometry4 = [v8 geometry];
+    v28 = geometry4;
     v29 = v42;
     v30 = v44;
     v31 = v46;
     goto LABEL_12;
   }
 
-  if ([v6 interactionType] == 15 || objc_msgSend(v6, "interactionType") == 13)
+  if ([keyCopy interactionType] == 15 || objc_msgSend(keyCopy, "interactionType") == 13)
   {
     [(UIKBRenderFactory_CarLinear *)self controlKeyRadius];
     v37 = v36;
-    v38 = [v8 geometry];
-    [v38 setRoundRectRadius:v37];
+    geometry8 = [v8 geometry];
+    [geometry8 setRoundRectRadius:v37];
 
     [(UIKBRenderFactory_CarLinear *)self controlKeyFontSize];
     goto LABEL_11;
   }
 
-  if ([v6 displayType] != 38)
+  if ([keyCopy displayType] != 38)
   {
     goto LABEL_14;
   }
 
   v73 = v14 + -60.0;
-  v74 = [v8 geometry];
-  [v74 paddedFrame];
+  geometry9 = [v8 geometry];
+  [geometry9 paddedFrame];
   v76 = v75 + -12.0;
   v78 = v77 + 12.0 + 12.0;
   v80 = v79 + -12.0;
   v82 = v81 + 12.0 + 12.0;
-  v83 = [v8 geometry];
-  [v83 setSymbolFrame:{v76, v80, v78, v82}];
+  geometry10 = [v8 geometry];
+  [geometry10 setSymbolFrame:{v76, v80, v78, v82}];
 
-  v84 = [v8 geometry];
-  [v84 paddedFrame];
+  geometry11 = [v8 geometry];
+  [geometry11 paddedFrame];
   v86 = v85 + -12.0;
   v88 = v87 + 12.0 + 12.0;
   v90 = v89 + -12.0;
   v92 = v91 + 12.0 + 12.0;
-  v93 = [v8 geometry];
-  [v93 setDisplayFrame:{v86, v90, v88, v92}];
+  geometry12 = [v8 geometry];
+  [geometry12 setDisplayFrame:{v86, v90, v88, v92}];
 
-  v94 = [v6 subtrees];
-  v95 = [v94 count];
+  subtrees = [keyCopy subtrees];
+  v95 = [subtrees count];
 
   v96 = (v73 + -24.0) / v95;
   v97 = fmin(v96, 24.0);
-  v98 = [v8 geometry];
-  v99 = [(UIKBRenderFactory_CarLinear *)self variantGeometriesForGeometry:v98 key:v6 maxWidthForVariant:v96 letterWidth:v97 highlightedWidth:24.0];
+  geometry13 = [v8 geometry];
+  v99 = [(UIKBRenderFactory_CarLinear *)self variantGeometriesForGeometry:geometry13 key:keyCopy maxWidthForVariant:v96 letterWidth:v97 highlightedWidth:24.0];
   [v8 setVariantGeometries:v99];
 
   [(UIKBRenderFactory_CarLinear *)self letterLineFontSize];
@@ -399,42 +399,42 @@ LABEL_11:
     }
   }
 
-  v102 = [(UIKBRenderFactory_CarLinear *)self lightTextFontName];
-  v48 = [UIKBTextStyle styleWithFontName:v102 withFontSize:v101];
+  lightTextFontName = [(UIKBRenderFactory_CarLinear *)self lightTextFontName];
+  geometry5 = [UIKBTextStyle styleWithFontName:lightTextFontName withFontSize:v101];
 
-  v103 = [(UIKBRenderFactory_CarLinear *)self activeKeyColor];
-  [v48 setTextColor:v103];
+  activeKeyColor = [(UIKBRenderFactory_CarLinear *)self activeKeyColor];
+  [geometry5 setTextColor:activeKeyColor];
 
-  [v48 fontSize];
+  [geometry5 fontSize];
   if (v104 <= v96)
   {
-    [v48 fontSize];
+    [geometry5 fontSize];
     v96 = v105;
   }
 
-  [v48 setFontSize:v96];
-  v106 = [UIKBRenderTraits traitsWithSymbolStyle:v48];
+  [geometry5 setFontSize:v96];
+  v106 = [UIKBRenderTraits traitsWithSymbolStyle:geometry5];
   [v8 setVariantTraits:v106];
 
   [(UIKBRenderFactory_CarLinear *)self carKeyRadius];
   v108 = v107;
-  v109 = [v8 geometry];
-  [v109 setRoundRectRadius:v108];
+  geometry14 = [v8 geometry];
+  [geometry14 setRoundRectRadius:v108];
 
-  v110 = [(UIKBRenderFactory_CarLinear *)self enabledKeyColor];
-  v111 = [UIKBGradient gradientWithFlatColor:v110];
+  enabledKeyColor = [(UIKBRenderFactory_CarLinear *)self enabledKeyColor];
+  v111 = [UIKBGradient gradientWithFlatColor:enabledKeyColor];
   [v8 setBackgroundGradient:v111];
 
   [(UIKBRenderFactory_CarLinear *)self activeLetterFontSize];
-  v57 = [UIKBTextStyle styleWithFontName:0 withFontSize:?];
-  v112 = [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
-  [v57 setTextColor:v112];
+  geometry6 = [UIKBTextStyle styleWithFontName:0 withFontSize:?];
+  highlightedKeyColor = [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
+  [geometry6 setTextColor:highlightedKeyColor];
 
-  v113 = [UIKBRenderTraits traitsWithSymbolStyle:v57];
-  v114 = [(UIKBRenderFactory *)self renderConfig];
-  v115 = [v114 lightKeyboard];
+  v113 = [UIKBRenderTraits traitsWithSymbolStyle:geometry6];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v116 = UIKBColorBlack_Alpha50;
-  if (!v115)
+  if (!lightKeyboard)
   {
     v116 = UIKBColorWhite_Alpha70;
   }
@@ -448,12 +448,12 @@ LABEL_11:
 
 LABEL_13:
 LABEL_14:
-  if ([v6 interactionType] == 9 || objc_msgSend(v6, "interactionType") == 11 || objc_msgSend(v6, "interactionType") == 15 || objc_msgSend(v6, "interactionType") == 13)
+  if ([keyCopy interactionType] == 9 || objc_msgSend(keyCopy, "interactionType") == 11 || objc_msgSend(keyCopy, "interactionType") == 15 || objc_msgSend(keyCopy, "interactionType") == 13)
   {
-    v58 = [(UIKBRenderFactory *)self renderConfig];
-    v59 = [v58 lightKeyboard];
+    renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+    lightKeyboard2 = [renderConfig2 lightKeyboard];
     v60 = UIKBColorCarLightDivider;
-    if (!v59)
+    if (!lightKeyboard2)
     {
       v60 = UIKBColorCarDarkDivider;
     }
@@ -462,8 +462,8 @@ LABEL_14:
 
     if (v10)
     {
-      v62 = [(UIKBRenderFactory *)self renderConfig];
-      if ([v62 lightKeyboard])
+      renderConfig3 = [(UIKBRenderFactory *)self renderConfig];
+      if ([renderConfig3 lightKeyboard])
       {
         v63 = @"UIKBColorBlack_Alpha50";
       }
@@ -483,12 +483,12 @@ LABEL_14:
 
     [(UIKBRenderFactory_CarLinear *)self activeLetterFontSize];
     v66 = [UIKBTextStyle styleWithFontName:0 withFontSize:?];
-    v67 = [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
-    [v66 setTextColor:v67];
+    highlightedKeyColor2 = [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
+    [v66 setTextColor:highlightedKeyColor2];
 
     v68 = [UIKBRenderTraits traitsWithSymbolStyle:v66];
-    v69 = [(UIKBRenderFactory *)self renderConfig];
-    if ([v69 lightKeyboard])
+    renderConfig4 = [(UIKBRenderFactory *)self renderConfig];
+    if ([renderConfig4 lightKeyboard])
     {
       v70 = @"UIKBColorBlack_Alpha50";
     }
@@ -507,31 +507,31 @@ LABEL_14:
   return v8;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIKBRenderFactory *)self renderConfig];
-  v9 = [v8 colorAdaptiveBackground];
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-  if (v9)
+  if (colorAdaptiveBackground)
   {
-    v10 = [(UIKBRenderFactory_CarLinear *)self _traitsForColorAdaptiveKey:v6 onKeyplane:v7];
+    v10 = [(UIKBRenderFactory_CarLinear *)self _traitsForColorAdaptiveKey:keyCopy onKeyplane:keyplaneCopy];
     goto LABEL_39;
   }
 
   v80.receiver = self;
   v80.super_class = UIKBRenderFactory_CarLinear;
-  v10 = [(UIKBRenderFactory_Car *)&v80 _traitsForKey:v6 onKeyplane:v7];
-  v11 = [v10 geometry];
-  [v11 setRoundRectCorners:-1];
+  v10 = [(UIKBRenderFactory_Car *)&v80 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
+  geometry = [v10 geometry];
+  [geometry setRoundRectCorners:-1];
 
   [(UIKBRenderFactory_CarLinear *)self carKeyRadius];
   v13 = v12;
-  v14 = [v10 geometry];
-  [v14 setRoundRectRadius:v13];
+  geometry2 = [v10 geometry];
+  [geometry2 setRoundRectRadius:v13];
 
-  if (([v6 state] & 0xC) != 0)
+  if (([keyCopy state] & 0xC) != 0)
   {
     [(UIKBRenderFactory_CarLinear *)self highlightedKeyColor];
   }
@@ -541,25 +541,25 @@ LABEL_14:
     [(UIKBRenderFactory_CarLinear *)self activeKeyColor];
   }
   v15 = ;
-  v16 = [v10 symbolStyle];
-  [v16 setTextColor:v15];
+  symbolStyle = [v10 symbolStyle];
+  [symbolStyle setTextColor:v15];
 
-  if ([v6 interactionType] == 9)
+  if ([keyCopy interactionType] == 9)
   {
     v17 = 5;
 LABEL_8:
-    v18 = [v10 geometry];
-    [v18 setRoundRectCorners:v17];
+    geometry3 = [v10 geometry];
+    [geometry3 setRoundRectCorners:v17];
 
     goto LABEL_12;
   }
 
-  if ([v6 interactionType] == 15)
+  if ([keyCopy interactionType] == 15)
   {
-    v19 = [v7 firstCachedKeyWithName:@"International-Key"];
-    v20 = [v19 visible];
+    v19 = [keyplaneCopy firstCachedKeyWithName:@"International-Key"];
+    visible = [v19 visible];
 
-    if (v20)
+    if (visible)
     {
       v17 = 10;
       goto LABEL_8;
@@ -567,17 +567,17 @@ LABEL_8:
   }
 
 LABEL_12:
-  if ([v6 displayType] != 38)
+  if ([keyCopy displayType] != 38)
   {
     goto LABEL_39;
   }
 
-  v21 = [(UIKBRenderFactory_CarLinear *)self enabledKeyColor];
-  v22 = [UIKBGradient gradientWithFlatColor:v21];
+  enabledKeyColor = [(UIKBRenderFactory_CarLinear *)self enabledKeyColor];
+  v22 = [UIKBGradient gradientWithFlatColor:enabledKeyColor];
   [v10 setBackgroundGradient:v22];
 
-  v23 = [v10 geometry];
-  [v23 paddedFrame];
+  geometry4 = [v10 geometry];
+  [geometry4 paddedFrame];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -586,10 +586,10 @@ LABEL_12:
   [(UIKBRenderFactory_CarLinear *)self carKeyRadius];
   v33 = v29 - v32;
   v34 = floor(v33 * 0.095);
-  v35 = [v10 geometry];
-  [v35 paddedFrame];
+  geometry5 = [v10 geometry];
+  [geometry5 paddedFrame];
   MidX = CGRectGetMidX(v82);
-  [v7 frame];
+  [keyplaneCopy frame];
   v37 = CGRectGetMidX(v83);
 
   v38 = 0.0;
@@ -600,12 +600,12 @@ LABEL_12:
 
   v39 = v34 * 0.2;
   v40 = v25 + v38;
-  v41 = [v6 subtrees];
-  v42 = [v41 count];
+  subtrees = [keyCopy subtrees];
+  v42 = [subtrees count];
 
-  v43 = ([v6 selectedVariantIndex] & 0x8000000000000000) == 0 && objc_msgSend(v6, "selectedVariantIndex") < v42;
-  v79 = v7;
-  v44 = [v6 selectedVariantIndex];
+  v43 = ([keyCopy selectedVariantIndex] & 0x8000000000000000) == 0 && objc_msgSend(keyCopy, "selectedVariantIndex") < v42;
+  v79 = keyplaneCopy;
+  selectedVariantIndex = [keyCopy selectedVariantIndex];
   v84.origin.x = v25;
   v84.origin.y = v27;
   v84.size.width = v33;
@@ -626,14 +626,14 @@ LABEL_12:
   {
     v48 = 0;
     v49 = v46 / v42;
-    if (v44)
+    if (selectedVariantIndex)
     {
       v40 = v39 + v40;
     }
 
     do
     {
-      if (v48 == [v6 selectedVariantIndex])
+      if (v48 == [keyCopy selectedVariantIndex])
       {
         v50 = v34;
       }
@@ -648,7 +648,7 @@ LABEL_12:
       [v51 setSymbolFrame:{v52 + -2.0, v54 + 0.0, v53 + 4.0}];
       [v47 addObject:v51];
       v55 = v39 + v40;
-      if (v48 | v44)
+      if (v48 | selectedVariantIndex)
       {
         v55 = v40;
       }
@@ -669,53 +669,53 @@ LABEL_12:
 LABEL_32:
     for (i = 0; i != v42; ++i)
     {
-      v57 = [v6 subtrees];
-      v58 = [v57 objectAtIndex:i];
-      v59 = [v10 variantGeometries];
-      v60 = [v59 objectAtIndex:i];
-      v61 = [v60 similarShape];
-      [v58 setShape:v61];
+      subtrees2 = [keyCopy subtrees];
+      v58 = [subtrees2 objectAtIndex:i];
+      variantGeometries = [v10 variantGeometries];
+      v60 = [variantGeometries objectAtIndex:i];
+      similarShape = [v60 similarShape];
+      [v58 setShape:similarShape];
     }
   }
 
-  v62 = [v78 lightTextFontName];
+  lightTextFontName = [v78 lightTextFontName];
   [v78 letterLineFontSize];
-  v63 = [UIKBTextStyle styleWithFontName:v62 withFontSize:?];
+  v63 = [UIKBTextStyle styleWithFontName:lightTextFontName withFontSize:?];
 
-  v64 = [v78 activeKeyColor];
-  [v63 setTextColor:v64];
+  activeKeyColor = [v78 activeKeyColor];
+  [v63 setTextColor:activeKeyColor];
 
   v65 = [UIKBRenderTraits traitsWithSymbolStyle:v63];
   [v10 setVariantTraits:v65];
 
   [v78 activeLetterFontSize];
   v66 = [UIKBTextStyle styleWithFontName:0 withFontSize:?];
-  v67 = [v78 highlightedKeyColor];
-  [v66 setTextColor:v67];
+  highlightedKeyColor = [v78 highlightedKeyColor];
+  [v66 setTextColor:highlightedKeyColor];
 
   [v66 setTextOffset:{0.0, 2.0}];
   v68 = [UIKBRenderTraits traitsWithSymbolStyle:v66];
-  v69 = [v78 activeKeyColor];
-  v70 = [v78 renderConfig];
-  v71 = [v70 colorAdaptiveBackground];
+  activeKeyColor2 = [v78 activeKeyColor];
+  renderConfig2 = [v78 renderConfig];
+  colorAdaptiveBackground2 = [renderConfig2 colorAdaptiveBackground];
 
-  if (v71)
+  if (colorAdaptiveBackground2)
   {
-    v72 = [v78 renderConfig];
-    v73 = [v72 lightKeyboard];
+    renderConfig3 = [v78 renderConfig];
+    lightKeyboard = [renderConfig3 lightKeyboard];
     v74 = UIKBColorCarDarkTeal;
-    if (!v73)
+    if (!lightKeyboard)
     {
       v74 = UIKBColorCarLightTeal;
     }
 
     v75 = *v74;
 
-    v69 = v75;
+    activeKeyColor2 = v75;
   }
 
-  v7 = v79;
-  v76 = [UIKBGradient gradientWithFlatColor:v69];
+  keyplaneCopy = v79;
+  v76 = [UIKBGradient gradientWithFlatColor:activeKeyColor2];
   [v68 setLayeredForegroundGradient:v76];
 
   [v10 setHighlightedVariantTraits:v68];

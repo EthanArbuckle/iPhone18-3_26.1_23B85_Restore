@@ -1,51 +1,51 @@
 @interface HKCodableChartInsulinDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addBasalInsulinValues:(id)a3;
-- (void)addTotalInsulinValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBasalInsulinValues:(id)values;
+- (void)addTotalInsulinValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableChartInsulinDataSourceQueryData
 
-- (void)addBasalInsulinValues:(id)a3
+- (void)addBasalInsulinValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   basalInsulinValues = self->_basalInsulinValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!basalInsulinValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_basalInsulinValues;
     self->_basalInsulinValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     basalInsulinValues = self->_basalInsulinValues;
   }
 
-  [(NSMutableArray *)basalInsulinValues addObject:v4];
+  [(NSMutableArray *)basalInsulinValues addObject:valuesCopy];
 }
 
-- (void)addTotalInsulinValues:(id)a3
+- (void)addTotalInsulinValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   totalInsulinValues = self->_totalInsulinValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!totalInsulinValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_totalInsulinValues;
     self->_totalInsulinValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     totalInsulinValues = self->_totalInsulinValues;
   }
 
-  [(NSMutableArray *)totalInsulinValues addObject:v4];
+  [(NSMutableArray *)totalInsulinValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableChartInsulinDataSourceQueryData;
   v4 = [(HKCodableChartInsulinDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableChartInsulinDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableChartInsulinDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -63,7 +63,7 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_basalInsulinValues count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_basalInsulinValues, "count")}];
@@ -86,8 +86,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
@@ -96,7 +96,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"basalInsulinValues"];
+    [dictionary setObject:v4 forKey:@"basalInsulinValues"];
   }
 
   if ([(NSMutableArray *)self->_totalInsulinValues count])
@@ -121,8 +121,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -131,16 +131,16 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"totalInsulinValues"];
+    [dictionary setObject:v11 forKey:@"totalInsulinValues"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -204,44 +204,44 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(HKCodableChartInsulinDataSourceQueryData *)self basalInsulinValuesCount])
   {
-    [v12 clearBasalInsulinValues];
-    v4 = [(HKCodableChartInsulinDataSourceQueryData *)self basalInsulinValuesCount];
-    if (v4)
+    [toCopy clearBasalInsulinValues];
+    basalInsulinValuesCount = [(HKCodableChartInsulinDataSourceQueryData *)self basalInsulinValuesCount];
+    if (basalInsulinValuesCount)
     {
-      v5 = v4;
+      v5 = basalInsulinValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableChartInsulinDataSourceQueryData *)self basalInsulinValuesAtIndex:i];
-        [v12 addBasalInsulinValues:v7];
+        [toCopy addBasalInsulinValues:v7];
       }
     }
   }
 
   if ([(HKCodableChartInsulinDataSourceQueryData *)self totalInsulinValuesCount])
   {
-    [v12 clearTotalInsulinValues];
-    v8 = [(HKCodableChartInsulinDataSourceQueryData *)self totalInsulinValuesCount];
-    if (v8)
+    [toCopy clearTotalInsulinValues];
+    totalInsulinValuesCount = [(HKCodableChartInsulinDataSourceQueryData *)self totalInsulinValuesCount];
+    if (totalInsulinValuesCount)
     {
-      v9 = v8;
+      v9 = totalInsulinValuesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HKCodableChartInsulinDataSourceQueryData *)self totalInsulinValuesAtIndex:j];
-        [v12 addTotalInsulinValues:v11];
+        [toCopy addTotalInsulinValues:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -262,7 +262,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addBasalInsulinValues:v11];
 
         ++v10;
@@ -295,7 +295,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addTotalInsulinValues:v17];
 
         ++v16;
@@ -311,13 +311,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((basalInsulinValues = self->_basalInsulinValues, !(basalInsulinValues | v4[1])) || -[NSMutableArray isEqual:](basalInsulinValues, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((basalInsulinValues = self->_basalInsulinValues, !(basalInsulinValues | equalCopy[1])) || -[NSMutableArray isEqual:](basalInsulinValues, "isEqual:")))
   {
     totalInsulinValues = self->_totalInsulinValues;
-    if (totalInsulinValues | v4[2])
+    if (totalInsulinValues | equalCopy[2])
     {
       v7 = [(NSMutableArray *)totalInsulinValues isEqual:?];
     }
@@ -336,15 +336,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -374,7 +374,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

@@ -1,32 +1,32 @@
 @interface NTKCLeghornFaceDetailPOIPickerViewController
 - (NTKCLeghornFaceDetailPOIPickerDelegate)delegate;
-- (NTKCLeghornFaceDetailPOIPickerViewController)initWithPOISection:(id)a3 filter:(id)a4 delegate:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (NTKCLeghornFaceDetailPOIPickerViewController)initWithPOISection:(id)section filter:(id)filter delegate:(id)delegate;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_filterChanged;
 - (void)_setupCells;
-- (void)setFilter:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setFilter:(id)filter;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation NTKCLeghornFaceDetailPOIPickerViewController
 
-- (NTKCLeghornFaceDetailPOIPickerViewController)initWithPOISection:(id)a3 filter:(id)a4 delegate:(id)a5
+- (NTKCLeghornFaceDetailPOIPickerViewController)initWithPOISection:(id)section filter:(id)filter delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sectionCopy = section;
+  filterCopy = filter;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = NTKCLeghornFaceDetailPOIPickerViewController;
   v12 = [(NTKCLeghornFaceDetailPOIPickerViewController *)&v30 initWithStyle:2];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_section, a3);
-    objc_storeStrong(&v13->_filter, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_section, section);
+    objc_storeStrong(&v13->_filter, filter);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v14 = MEMORY[0x277CBEB18];
-    v17 = objc_msgSend_detailsCount(v9, v15, v16);
+    v17 = objc_msgSend_detailsCount(sectionCopy, v15, v16);
     v20 = objc_msgSend_arrayWithCapacity_(v14, v18, v19, v17);
     categoryCells = v13->_categoryCells;
     v13->_categoryCells = v20;
@@ -65,10 +65,10 @@
   }
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  objc_storeStrong(&self->_filter, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_filter, filter);
+  filterCopy = filter;
   objc_msgSend_setFilter_(self->_showAllCell, v6, v7, self->_filter);
   categoryCells = self->_categoryCells;
   v10[0] = MEMORY[0x277D85DD0];
@@ -79,28 +79,28 @@
   objc_msgSend_enumerateObjectsUsingBlock_(categoryCells, v9, COERCE_DOUBLE(3221225472), v10);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  if (a4 == 1)
+  if (section == 1)
   {
-    return objc_msgSend_detailsCount(self->_section, a2, v4, a3);
+    return objc_msgSend_detailsCount(self->_section, a2, v4, view);
   }
 
   return 0;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v8 = objc_msgSend_section(v5, v6, v7);
+  pathCopy = path;
+  v8 = objc_msgSend_section(pathCopy, v6, v7);
   if (v8 == 1)
   {
-    v12 = objc_msgSend_row(v5, v9, v10);
+    v12 = objc_msgSend_row(pathCopy, v9, v10);
     if ((v12 & 0x8000000000000000) == 0)
     {
       v15 = v12;
@@ -112,7 +112,7 @@
     }
   }
 
-  else if (!v8 && !objc_msgSend_row(v5, v9, v10))
+  else if (!v8 && !objc_msgSend_row(pathCopy, v9, v10))
   {
     v11 = self->_showAllCell;
 LABEL_8:
@@ -126,11 +126,11 @@ LABEL_10:
   return v18;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v28 = a4;
-  objc_msgSend_deselectRowAtIndexPath_animated_(a3, v6, v7, v28, 1);
-  v10 = objc_msgSend_section(v28, v8, v9);
+  pathCopy = path;
+  objc_msgSend_deselectRowAtIndexPath_animated_(view, v6, v7, pathCopy, 1);
+  v10 = objc_msgSend_section(pathCopy, v8, v9);
   if (v10 != 1)
   {
     if (v10)
@@ -148,7 +148,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v17 = objc_msgSend_row(v28, v11, v12);
+  v17 = objc_msgSend_row(pathCopy, v11, v12);
   if ((v17 & 0x8000000000000000) == 0)
   {
     v20 = v17;

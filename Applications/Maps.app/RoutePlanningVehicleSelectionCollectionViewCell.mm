@@ -1,21 +1,21 @@
 @interface RoutePlanningVehicleSelectionCollectionViewCell
-- (RoutePlanningVehicleSelectionCollectionViewCell)initWithFrame:(CGRect)a3;
+- (RoutePlanningVehicleSelectionCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)_setupConstraints;
-- (void)setupWithVehicle:(id)a3;
+- (void)setupWithVehicle:(id)vehicle;
 @end
 
 @implementation RoutePlanningVehicleSelectionCollectionViewCell
 
-- (void)setupWithVehicle:(id)a3
+- (void)setupWithVehicle:(id)vehicle
 {
-  v8 = a3;
-  v4 = [v8 combinedDisplayName];
-  [(UILabel *)self->_titleLabel setText:v4];
+  vehicleCopy = vehicle;
+  combinedDisplayName = [vehicleCopy combinedDisplayName];
+  [(UILabel *)self->_titleLabel setText:combinedDisplayName];
 
-  v5 = [v8 isPureElectricVehicle];
-  if (v5)
+  isPureElectricVehicle = [vehicleCopy isPureElectricVehicle];
+  if (isPureElectricVehicle)
   {
-    v6 = v8;
+    v6 = vehicleCopy;
   }
 
   else
@@ -23,7 +23,7 @@
     v6 = 0;
   }
 
-  if (v5)
+  if (isPureElectricVehicle)
   {
     v7 = 1.0;
   }
@@ -34,7 +34,7 @@
   }
 
   [(VehicleBatteryView *)self->_vehicleBatteryView setVehicle:v6];
-  [(VehicleBatteryView *)self->_vehicleBatteryView setHidden:v5 ^ 1];
+  [(VehicleBatteryView *)self->_vehicleBatteryView setHidden:isPureElectricVehicle ^ 1];
   [(VehicleBatteryView *)self->_vehicleBatteryView setAlpha:v7];
 }
 
@@ -51,18 +51,18 @@
   }
 
   stackView = self->_stackView;
-  v8 = [(RoutePlanningVehicleSelectionCollectionViewCell *)self contentView];
+  contentView = [(RoutePlanningVehicleSelectionCollectionViewCell *)self contentView];
   LODWORD(v5) = 1148846080;
-  v6 = [(UIStackView *)stackView _maps_constraintsEqualToEdgesOfView:v8 insets:v3 priority:16.0, v3, 16.0, v5];
-  v7 = [v6 allConstraints];
-  [NSLayoutConstraint activateConstraints:v7];
+  v6 = [(UIStackView *)stackView _maps_constraintsEqualToEdgesOfView:contentView insets:v3 priority:16.0, v3, 16.0, v5];
+  allConstraints = [v6 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (RoutePlanningVehicleSelectionCollectionViewCell)initWithFrame:(CGRect)a3
+- (RoutePlanningVehicleSelectionCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = RoutePlanningVehicleSelectionCollectionViewCell;
-  v3 = [(MapsDebugCollectionViewCell *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsDebugCollectionViewCell *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor redColor];
@@ -102,8 +102,8 @@
     [(UIStackView *)v12 setDistribution:0];
     [(UIStackView *)v12 setAxis:1];
     [(UIStackView *)v12 setSpacing:4.0];
-    v13 = [(RoutePlanningVehicleSelectionCollectionViewCell *)v3 contentView];
-    [v13 addSubview:v12];
+    contentView = [(RoutePlanningVehicleSelectionCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v12];
 
     stackView = v3->_stackView;
     v3->_stackView = v12;

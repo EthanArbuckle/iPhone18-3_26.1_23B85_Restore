@@ -6,15 +6,15 @@
 - (SAEmergencyResponseClientProtocol)emergencyResponseClientDelegate;
 - (id)serverProxy;
 - (void)callAuthenticationRequestHandlerWithError;
-- (void)callAuthenticationRequestHandlerWithStatus:(int64_t)a3 error:(id)a4;
+- (void)callAuthenticationRequestHandlerWithStatus:(int64_t)status error:(id)error;
 - (void)connection;
-- (void)dialVoiceCallToPhoneNumber:(id)a3 completionHandler:(id)a4;
+- (void)dialVoiceCallToPhoneNumber:(id)number completionHandler:(id)handler;
 - (void)init;
-- (void)requestCrashDetectionAuthorization:(id)a3;
+- (void)requestCrashDetectionAuthorization:(id)authorization;
 - (void)requestMostRecentCrashDetectionEvent;
-- (void)setConnection:(id)a3;
-- (void)updateMostRecentCrashDetectionEvent:(id)a3;
-- (void)updateVoiceCallStatus:(int64_t)a3;
+- (void)setConnection:(id)connection;
+- (void)updateMostRecentCrashDetectionEvent:(id)event;
+- (void)updateVoiceCallStatus:(int64_t)status;
 @end
 
 @implementation SAClient
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __26__SAClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -79,18 +79,18 @@ void __48__SAClient_requestMostRecentCrashDetectionEvent__block_invoke(uint64_t 
   [v1 requestMostRecentCrashDetectionEvent];
 }
 
-- (void)requestCrashDetectionAuthorization:(id)a3
+- (void)requestCrashDetectionAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SAClient requestCrashDetectionAuthorization:];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_authenticationRequestHandler)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_authenticationRequestHandler)
   {
     v7 = sa_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -99,29 +99,29 @@ void __48__SAClient_requestMostRecentCrashDetectionEvent__block_invoke(uint64_t 
     }
 
     v8 = [SAError errorWithCode:4];
-    v4[2](v4, 0, v8);
+    authorizationCopy[2](authorizationCopy, 0, v8);
   }
 
   else
   {
-    v9 = MEMORY[0x23EE91E30](v4);
-    authenticationRequestHandler = v6->_authenticationRequestHandler;
-    v6->_authenticationRequestHandler = v9;
+    v9 = MEMORY[0x23EE91E30](authorizationCopy);
+    authenticationRequestHandler = selfCopy->_authenticationRequestHandler;
+    selfCopy->_authenticationRequestHandler = v9;
 
-    objc_initWeak(&location, v6);
-    messageQueue = v6->_messageQueue;
+    objc_initWeak(&location, selfCopy);
+    messageQueue = selfCopy->_messageQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SAClient_requestCrashDetectionAuthorization___block_invoke;
     block[3] = &unk_278B67CD8;
-    block[4] = v6;
+    block[4] = selfCopy;
     objc_copyWeak(&v13, &location);
     dispatch_async(messageQueue, block);
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 void __47__SAClient_requestCrashDetectionAuthorization___block_invoke(uint64_t a1)
@@ -150,51 +150,51 @@ void __47__SAClient_requestCrashDetectionAuthorization___block_invoke_2(uint64_t
   [(SAClient *)self callAuthenticationRequestHandlerWithStatus:0 error:v3];
 }
 
-- (void)callAuthenticationRequestHandlerWithStatus:(int64_t)a3 error:(id)a4
+- (void)callAuthenticationRequestHandlerWithStatus:(int64_t)status error:(id)error
 {
-  v9 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  authenticationRequestHandler = v6->_authenticationRequestHandler;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  authenticationRequestHandler = selfCopy->_authenticationRequestHandler;
   if (authenticationRequestHandler)
   {
-    authenticationRequestHandler[2](authenticationRequestHandler, a3, v9);
-    v8 = v6->_authenticationRequestHandler;
-    v6->_authenticationRequestHandler = 0;
+    authenticationRequestHandler[2](authenticationRequestHandler, status, errorCopy);
+    v8 = selfCopy->_authenticationRequestHandler;
+    selfCopy->_authenticationRequestHandler = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateMostRecentCrashDetectionEvent:(id)a3
+- (void)updateMostRecentCrashDetectionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SAClient updateMostRecentCrashDetectionEvent:];
   }
 
-  if (v4)
+  if (eventCopy)
   {
-    v6 = [(SAClient *)self crashDetectionClientDelegate];
-    [v6 updateMostRecentCrashDetectionEvent:v4];
+    crashDetectionClientDelegate = [(SAClient *)self crashDetectionClientDelegate];
+    [crashDetectionClientDelegate updateMostRecentCrashDetectionEvent:eventCopy];
   }
 
   else
   {
-    v6 = sa_default_log();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    crashDetectionClientDelegate = sa_default_log();
+    if (os_log_type_enabled(crashDetectionClientDelegate, OS_LOG_TYPE_ERROR))
     {
-      [SAClient updateMostRecentCrashDetectionEvent:v6];
+      [SAClient updateMostRecentCrashDetectionEvent:crashDetectionClientDelegate];
     }
   }
 }
 
-- (void)dialVoiceCallToPhoneNumber:(id)a3 completionHandler:(id)a4
+- (void)dialVoiceCallToPhoneNumber:(id)number completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  handlerCopy = handler;
   v8 = sa_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -207,10 +207,10 @@ void __47__SAClient_requestCrashDetectionAuthorization___block_invoke_2(uint64_t
   block[2] = __57__SAClient_dialVoiceCallToPhoneNumber_completionHandler___block_invoke;
   block[3] = &unk_278B67D00;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = numberCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = numberCopy;
   dispatch_async(messageQueue, block);
 }
 
@@ -220,7 +220,7 @@ void __57__SAClient_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
   [v2 dialVoiceCallToPhoneNumber:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)updateVoiceCallStatus:(int64_t)a3
+- (void)updateVoiceCallStatus:(int64_t)status
 {
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -228,15 +228,15 @@ void __57__SAClient_dialVoiceCallToPhoneNumber_completionHandler___block_invoke(
     [SAClient updateVoiceCallStatus:];
   }
 
-  v6 = [(SAClient *)self emergencyResponseClientDelegate];
-  [v6 updateVoiceCallStatus:a3];
+  emergencyResponseClientDelegate = [(SAClient *)self emergencyResponseClientDelegate];
+  [emergencyResponseClientDelegate updateVoiceCallStatus:status];
 }
 
 - (id)serverProxy
 {
   dispatch_assert_queue_V2(self->_messageQueue);
-  v3 = [(SAClient *)self connection];
-  v4 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  connection = [(SAClient *)self connection];
+  v4 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_0];
 
   return v4;
 }
@@ -251,23 +251,23 @@ void __23__SAClient_serverProxy__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v8 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_messageQueue);
   connection = self->_connection;
   p_connection = &self->_connection;
-  v5 = connection;
-  if (connection != v8)
+  connectionCopy2 = connection;
+  if (connection != connectionCopy)
   {
-    if (v5)
+    if (connectionCopy2)
     {
-      [(NSXPCConnection *)v5 invalidate];
+      [(NSXPCConnection *)connectionCopy2 invalidate];
       [(NSXPCConnection *)*p_connection setInvalidationHandler:0];
       [(NSXPCConnection *)*p_connection setInterruptionHandler:0];
     }
 
-    objc_storeStrong(p_connection, a3);
+    objc_storeStrong(p_connection, connection);
   }
 }
 

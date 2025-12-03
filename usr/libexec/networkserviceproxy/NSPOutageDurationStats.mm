@@ -7,15 +7,15 @@
 
 - (id)outageTypeToString
 {
-  v2 = [(NSPOutageDurationStats *)self outageType];
-  if (v2 - 1 > 4)
+  outageType = [(NSPOutageDurationStats *)self outageType];
+  if (outageType - 1 > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_100109DD0 + v2 - 1);
+    return *(&off_100109DD0 + outageType - 1);
   }
 }
 
@@ -24,8 +24,8 @@
   if ([(NSPOutageDurationStats *)self outageType])
   {
     v3 = objc_alloc_init(NSMutableDictionary);
-    v4 = [(NSPOutageDurationStats *)self outageTypeToString];
-    [v3 setObject:v4 forKeyedSubscript:@"OutageType"];
+    outageTypeToString = [(NSPOutageDurationStats *)self outageTypeToString];
+    [v3 setObject:outageTypeToString forKeyedSubscript:@"OutageType"];
 
     v5 = [NSNumber numberWithUnsignedInteger:[(NSPOutageDurationStats *)self outageDurationSec]];
     [v3 setObject:v5 forKeyedSubscript:@"OutageDuration"];

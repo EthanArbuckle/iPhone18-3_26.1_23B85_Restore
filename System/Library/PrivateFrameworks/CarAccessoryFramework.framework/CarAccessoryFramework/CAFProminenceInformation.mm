@@ -1,22 +1,22 @@
 @interface CAFProminenceInformation
-- (CAFProminenceInformation)initWithColor:(unsigned __int8)a3 prominenceLevel:(unint64_t)a4 sortOrder:(unsigned __int8)a5 userVisibleLabel:(id)a6 userVisibleValue:(id)a7;
-- (CAFProminenceInformation)initWithDictionary:(id)a3;
+- (CAFProminenceInformation)initWithColor:(unsigned __int8)color prominenceLevel:(unint64_t)level sortOrder:(unsigned __int8)order userVisibleLabel:(id)label userVisibleValue:(id)value;
+- (CAFProminenceInformation)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
 @end
 
 @implementation CAFProminenceInformation
 
-- (CAFProminenceInformation)initWithDictionary:(id)a3
+- (CAFProminenceInformation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = CAFProminenceInformation;
   v5 = [(CAFProminenceInformation *)&v19 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 objectForKey:@"color"];
+    v6 = [dictionaryCopy objectForKey:@"color"];
     if (v6 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v7 = v6;
@@ -29,7 +29,7 @@
 
     v5->_color = [v7 unsignedCharValue];
     objc_opt_class();
-    v8 = [v4 objectForKey:@"prominenceLevel"];
+    v8 = [dictionaryCopy objectForKey:@"prominenceLevel"];
     if (v8 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v9 = v8;
@@ -42,7 +42,7 @@
 
     v5->_prominenceLevel = [v9 unsignedLongLongValue];
     objc_opt_class();
-    v10 = [v4 objectForKey:@"sortOrder"];
+    v10 = [dictionaryCopy objectForKey:@"sortOrder"];
     if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v11 = v10;
@@ -55,7 +55,7 @@
 
     v5->_sortOrder = [v11 unsignedCharValue];
     objc_opt_class();
-    v12 = [v4 objectForKey:@"userVisibleLabel"];
+    v12 = [dictionaryCopy objectForKey:@"userVisibleLabel"];
     if (v12 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v13 = v12;
@@ -70,7 +70,7 @@
     v5->_userVisibleLabel = v13;
 
     objc_opt_class();
-    v15 = [v4 objectForKey:@"userVisibleValue"];
+    v15 = [dictionaryCopy objectForKey:@"userVisibleValue"];
     if (v15 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v16 = v15;
@@ -88,21 +88,21 @@
   return v5;
 }
 
-- (CAFProminenceInformation)initWithColor:(unsigned __int8)a3 prominenceLevel:(unint64_t)a4 sortOrder:(unsigned __int8)a5 userVisibleLabel:(id)a6 userVisibleValue:(id)a7
+- (CAFProminenceInformation)initWithColor:(unsigned __int8)color prominenceLevel:(unint64_t)level sortOrder:(unsigned __int8)order userVisibleLabel:(id)label userVisibleValue:(id)value
 {
-  v13 = a6;
-  v14 = a7;
+  labelCopy = label;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = CAFProminenceInformation;
   v15 = [(CAFProminenceInformation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_color = a3;
-    v15->_prominenceLevel = a4;
-    v15->_sortOrder = a5;
-    objc_storeStrong(&v15->_userVisibleLabel, a6);
-    objc_storeStrong(&v16->_userVisibleValue, a7);
+    v15->_color = color;
+    v15->_prominenceLevel = level;
+    v15->_sortOrder = order;
+    objc_storeStrong(&v15->_userVisibleLabel, label);
+    objc_storeStrong(&v16->_userVisibleValue, value);
   }
 
   return v16;
@@ -121,29 +121,29 @@
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[CAFProminenceInformation sortOrder](self, "sortOrder")}];
   v14[2] = v5;
   v13[3] = @"userVisibleLabel";
-  v6 = [(CAFProminenceInformation *)self userVisibleLabel];
-  v7 = v6;
-  if (!v6)
+  userVisibleLabel = [(CAFProminenceInformation *)self userVisibleLabel];
+  null = userVisibleLabel;
+  if (!userVisibleLabel)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[3] = v7;
+  v14[3] = null;
   v13[4] = @"userVisibleValue";
-  v8 = [(CAFProminenceInformation *)self userVisibleValue];
-  v9 = v8;
-  if (!v8)
+  userVisibleValue = [(CAFProminenceInformation *)self userVisibleValue];
+  null2 = userVisibleValue;
+  if (!userVisibleValue)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[4] = v9;
+  v14[4] = null2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:5];
-  if (!v8)
+  if (!userVisibleValue)
   {
   }
 
-  if (!v6)
+  if (!userVisibleLabel)
   {
   }
 
@@ -156,12 +156,12 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CAFProminenceInformation *)self color];
-  v6 = [(CAFProminenceInformation *)self prominenceLevel];
-  v7 = [(CAFProminenceInformation *)self sortOrder];
-  v8 = [(CAFProminenceInformation *)self userVisibleLabel];
-  v9 = [(CAFProminenceInformation *)self userVisibleValue];
-  v10 = [v3 stringWithFormat:@"<%@: %p { %@: %hhu, %@: %llu, %@: %hhu, %@: %@, %@: %@ }>", v4, self, @"color", v5, @"prominenceLevel", v6, @"sortOrder", v7, @"userVisibleLabel", v8, @"userVisibleValue", v9];
+  color = [(CAFProminenceInformation *)self color];
+  prominenceLevel = [(CAFProminenceInformation *)self prominenceLevel];
+  sortOrder = [(CAFProminenceInformation *)self sortOrder];
+  userVisibleLabel = [(CAFProminenceInformation *)self userVisibleLabel];
+  userVisibleValue = [(CAFProminenceInformation *)self userVisibleValue];
+  v10 = [v3 stringWithFormat:@"<%@: %p { %@: %hhu, %@: %llu, %@: %hhu, %@: %@, %@: %@ }>", v4, self, @"color", color, @"prominenceLevel", prominenceLevel, @"sortOrder", sortOrder, @"userVisibleLabel", userVisibleLabel, @"userVisibleValue", userVisibleValue];
 
   return v10;
 }

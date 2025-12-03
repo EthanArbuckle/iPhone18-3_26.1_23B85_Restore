@@ -1,42 +1,42 @@
 @interface RMXPCProxyHandler
-+ (BOOL)_doesConnection:(id)a3 haveEntitlement:(id)a4;
-+ (BOOL)_isConnection:(id)a3 fromApplicationIdentifier:(id)a4;
-+ (id)_activeConfigurationsByTypeForTypes:(id)a3 persistentContainer:(id)a4 error:(id *)a5;
-+ (id)_managementChannelWithIdentifier:(id)a3 error:(id *)a4;
-- (RMXPCProxyHandler)initWithXPCConnection:(id)a3 persistentContainer:(id)a4;
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3;
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4;
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)fetchConfigurationsWithTypes:(id)a3 completionHandler:(id)a4;
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4;
-- (void)periodicSyncWithCompletionHandler:(id)a3;
-- (void)queryForStatusAndErrorsWithKeyPaths:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)queryForStatusSubscriptionsWithIdentifiers:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)reportPluginDetailsWithCompletionHandler:(id)a3;
-- (void)sendStatusData:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendStatusForKeyPaths:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)unenrollWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5;
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5;
++ (BOOL)_doesConnection:(id)connection haveEntitlement:(id)entitlement;
++ (BOOL)_isConnection:(id)connection fromApplicationIdentifier:(id)identifier;
++ (id)_activeConfigurationsByTypeForTypes:(id)types persistentContainer:(id)container error:(id *)error;
++ (id)_managementChannelWithIdentifier:(id)identifier error:(id *)error;
+- (RMXPCProxyHandler)initWithXPCConnection:(id)connection persistentContainer:(id)container;
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler;
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler;
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler;
+- (void)fetchConfigurationsWithTypes:(id)types completionHandler:(id)handler;
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler;
+- (void)periodicSyncWithCompletionHandler:(id)handler;
+- (void)queryForStatusAndErrorsWithKeyPaths:(id)paths fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)reportPluginDetailsWithCompletionHandler:(id)handler;
+- (void)sendStatusData:(id)data toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendStatusForKeyPaths:(id)paths toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)unenrollWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler;
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler;
 @end
 
 @implementation RMXPCProxyHandler
 
-- (RMXPCProxyHandler)initWithXPCConnection:(id)a3 persistentContainer:(id)a4
+- (RMXPCProxyHandler)initWithXPCConnection:(id)connection persistentContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  containerCopy = container;
   v12.receiver = self;
   v12.super_class = RMXPCProxyHandler;
   v8 = [(RMXPCProxyHandler *)&v12 init];
   if (v8)
   {
-    v9 = [objc_opt_class() _doesConnection:v6 haveEntitlement:@"com.apple.private.remotemanagement"];
-    objc_storeStrong(v8 + 2, a4);
+    v9 = [objc_opt_class() _doesConnection:connectionCopy haveEntitlement:@"com.apple.private.remotemanagement"];
+    objc_storeStrong(v8 + 2, container);
     v8[8] = v9;
     if (v9)
     {
@@ -46,9 +46,9 @@
 
     else
     {
-      v8[10] = [objc_opt_class() _doesConnection:v6 haveEntitlement:@"com.apple.private.remotemanagement.configuration-subscriber"];
-      v8[9] = [objc_opt_class() _doesConnection:v6 haveEntitlement:@"com.apple.private.remotemanagement.account-changes"];
-      v10 = [objc_opt_class() _doesConnection:v6 haveEntitlement:@"com.apple.private.remotemanagement.enrollment"];
+      v8[10] = [objc_opt_class() _doesConnection:connectionCopy haveEntitlement:@"com.apple.private.remotemanagement.configuration-subscriber"];
+      v8[9] = [objc_opt_class() _doesConnection:connectionCopy haveEntitlement:@"com.apple.private.remotemanagement.account-changes"];
+      v10 = [objc_opt_class() _doesConnection:connectionCopy haveEntitlement:@"com.apple.private.remotemanagement.enrollment"];
     }
 
     v8[11] = v10;
@@ -57,17 +57,17 @@
   return v8;
 }
 
-+ (BOOL)_doesConnection:(id)a3 haveEntitlement:(id)a4
++ (BOOL)_doesConnection:(id)connection haveEntitlement:(id)entitlement
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 valueForEntitlement:v7];
+  connectionCopy = connection;
+  entitlementCopy = entitlement;
+  v8 = [connectionCopy valueForEntitlement:entitlementCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
 LABEL_10:
       v11 = 1;
@@ -79,20 +79,20 @@ LABEL_10:
   {
   }
 
-  if ([v7 isEqualToString:@"com.apple.private.remotemanagement.account-changes"])
+  if ([entitlementCopy isEqualToString:@"com.apple.private.remotemanagement.account-changes"])
   {
     v10 = @"AAACCOUNTS.com.apple.accountsd";
   }
 
   else
   {
-    if (![v7 isEqualToString:@"com.apple.private.remotemanagement.enrollment"])
+    if (![entitlementCopy isEqualToString:@"com.apple.private.remotemanagement.enrollment"])
     {
       v11 = 0;
       goto LABEL_12;
     }
 
-    if ([a1 _isConnection:v6 fromApplicationIdentifier:@"com.apple.purplebuddy"])
+    if ([self _isConnection:connectionCopy fromApplicationIdentifier:@"com.apple.purplebuddy"])
     {
       goto LABEL_10;
     }
@@ -100,30 +100,30 @@ LABEL_10:
     v10 = @"com.apple.Preferences";
   }
 
-  v11 = [a1 _isConnection:v6 fromApplicationIdentifier:v10];
+  v11 = [self _isConnection:connectionCopy fromApplicationIdentifier:v10];
 LABEL_12:
 
   return v11;
 }
 
-+ (BOOL)_isConnection:(id)a3 fromApplicationIdentifier:(id)a4
++ (BOOL)_isConnection:(id)connection fromApplicationIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 valueForEntitlement:@"application-identifier"];
+  identifierCopy = identifier;
+  v6 = [connection valueForEntitlement:@"application-identifier"];
   v7 = +[RMLog XPCListenerDelegate];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1000932B0();
   }
 
-  v8 = [v5 isEqualToString:v6];
+  v8 = [identifierCopy isEqualToString:v6];
   return v8;
 }
 
-- (void)enrollDeviceChannelWithURI:(id)a3 completionHandler:(id)a4
+- (void)enrollDeviceChannelWithURI:(id)i completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Enrolling from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -134,7 +134,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = iCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Enrolling with %{public}@...", buf, 0xCu);
     }
 
@@ -143,8 +143,8 @@ LABEL_12:
     v12[1] = 3221225472;
     v12[2] = sub_10008F334;
     v12[3] = &unk_1000D33C8;
-    v13 = v6;
-    v14 = v7;
+    v13 = iCopy;
+    v14 = handlerCopy;
     [v10 enrollDeviceChannelWithURI:v13 completionHandler:v12];
 
     os_activity_scope_leave(&state);
@@ -153,14 +153,14 @@ LABEL_12:
   else
   {
     v11 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)enrollUserChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)enrollUserChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Enrolling user channel from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -171,7 +171,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Enrolling with account %{public}@...", buf, 0xCu);
     }
 
@@ -180,8 +180,8 @@ LABEL_12:
     v12[1] = 3221225472;
     v12[2] = sub_10008F65C;
     v12[3] = &unk_1000D33C8;
-    v13 = v6;
-    v14 = v7;
+    v13 = identifierCopy;
+    v14 = handlerCopy;
     [v10 enrollUserChannelWithAccountIdentifier:v13 completionHandler:v12];
 
     os_activity_scope_leave(&state);
@@ -190,16 +190,16 @@ LABEL_12:
   else
   {
     v11 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)enrollViaMDMWithEnrollmentType:(int64_t)a3 uri:(id)a4 accountIdentifier:(id)a5 personaIdentifier:(id)a6 completionHandler:(id)a7
+- (void)enrollViaMDMWithEnrollmentType:(int64_t)type uri:(id)uri accountIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  uriCopy = uri;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v16 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Enrolling DDM from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -210,7 +210,7 @@ LABEL_12:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v12;
+      v25 = uriCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Enrolling DDM with %{public}@...", buf, 0xCu);
     }
 
@@ -219,9 +219,9 @@ LABEL_12:
     v20[1] = 3221225472;
     v20[2] = sub_10008F9B8;
     v20[3] = &unk_1000D33C8;
-    v21 = v12;
-    v22 = v15;
-    [v18 enrollViaMDMWithEnrollmentType:a3 uri:v21 accountIdentifier:v13 personaIdentifier:v14 completionHandler:v20];
+    v21 = uriCopy;
+    v22 = handlerCopy;
+    [v18 enrollViaMDMWithEnrollmentType:type uri:v21 accountIdentifier:identifierCopy personaIdentifier:personaIdentifierCopy completionHandler:v20];
 
     os_activity_scope_leave(&state);
   }
@@ -229,14 +229,14 @@ LABEL_12:
   else
   {
     v19 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v15 + 2))(v15, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, v19);
   }
 }
 
-- (void)unenrollWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)unenrollWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Unenrolling from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -247,7 +247,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Unenrolling %{public}@...", buf, 0xCu);
     }
 
@@ -256,8 +256,8 @@ LABEL_12:
     v12[1] = 3221225472;
     v12[2] = sub_10008FCE0;
     v12[3] = &unk_1000D1128;
-    v13 = v6;
-    v14 = v7;
+    v13 = identifierCopy;
+    v14 = handlerCopy;
     [v10 unenrollWithIdentifier:v13 completionHandler:v12];
 
     os_activity_scope_leave(&state);
@@ -266,14 +266,14 @@ LABEL_12:
   else
   {
     v11 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)syncWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)syncWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Syncing from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -284,7 +284,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v6;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Syncing %{public}@...", buf, 0xCu);
     }
 
@@ -293,8 +293,8 @@ LABEL_12:
     v12[1] = 3221225472;
     v12[2] = sub_10009001C;
     v12[3] = &unk_1000D10B0;
-    v13 = v6;
-    v14 = v7;
+    v13 = identifierCopy;
+    v14 = handlerCopy;
     [v10 syncWithIdentifier:v13 completionHandler:v12];
 
     os_activity_scope_leave(&state);
@@ -303,13 +303,13 @@ LABEL_12:
   else
   {
     v11 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (void)periodicSyncWithCompletionHandler:(id)a3
+- (void)periodicSyncWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v5 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Periodic sync from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -328,7 +328,7 @@ LABEL_12:
     v8[1] = 3221225472;
     v8[2] = sub_1000902AC;
     v8[3] = &unk_1000D2CE0;
-    v9 = v4;
+    v9 = handlerCopy;
     [v7 syncAllManagementSourcesWithCompletionHandler:v8];
 
     os_activity_scope_leave(&state);
@@ -337,15 +337,15 @@ LABEL_12:
   else
   {
     v5 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v4 + 2))(v4, v5);
+    (*(handlerCopy + 2))(handlerCopy, v5);
   }
 }
 
-- (void)updateWithIdentifier:(id)a3 pushMessage:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier pushMessage:(id)message completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  messageCopy = message;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Updating from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -356,7 +356,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v8;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating %{public}@ with push message...", buf, 0xCu);
     }
 
@@ -365,9 +365,9 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_100090584;
     v15[3] = &unk_1000D10B0;
-    v16 = v8;
-    v17 = v10;
-    [v13 updateWithIdentifier:v16 pushMessage:v9 completionHandler:v15];
+    v16 = identifierCopy;
+    v17 = handlerCopy;
+    [v13 updateWithIdentifier:v16 pushMessage:messageCopy completionHandler:v15];
 
     os_activity_scope_leave(&state);
   }
@@ -375,15 +375,15 @@ LABEL_12:
   else
   {
     v14 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v10 + 2))(v10, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-- (void)updateWithIdentifier:(id)a3 tokensResponse:(id)a4 completionHandler:(id)a5
+- (void)updateWithIdentifier:(id)identifier tokensResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  responseCopy = response;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Updating from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -394,7 +394,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v8;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Updating %{public}@ with sync tokens response..", buf, 0xCu);
     }
 
@@ -403,9 +403,9 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_10009089C;
     v15[3] = &unk_1000D10B0;
-    v16 = v8;
-    v17 = v10;
-    [v13 updateWithIdentifier:v16 tokensResponse:v9 completionHandler:v15];
+    v16 = identifierCopy;
+    v17 = handlerCopy;
+    [v13 updateWithIdentifier:v16 tokensResponse:responseCopy completionHandler:v15];
 
     os_activity_scope_leave(&state);
   }
@@ -413,13 +413,13 @@ LABEL_12:
   else
   {
     v14 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v10 + 2))(v10, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)a3
+- (void)deviceChannelEnrollmentExistsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v5 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Checking device enrollment from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -438,7 +438,7 @@ LABEL_12:
     v8[1] = 3221225472;
     v8[2] = sub_100090B30;
     v8[3] = &unk_1000D33F0;
-    v9 = v4;
+    v9 = handlerCopy;
     [v7 deviceChannelEnrollmentExistsWithCompletionHandler:v8];
 
     os_activity_scope_leave(&state);
@@ -447,14 +447,14 @@ LABEL_12:
   else
   {
     v5 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v4 + 2))(v4, 0, v5);
+    (*(handlerCopy + 2))(handlerCopy, 0, v5);
   }
 }
 
-- (void)managementChannelWithAccountIdentifier:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithAccountIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Finding management channel from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -473,8 +473,8 @@ LABEL_12:
     v11[1] = 3221225472;
     v11[2] = sub_100090DC4;
     v11[3] = &unk_1000D3418;
-    v12 = v7;
-    [v10 managementChannelWithAccountIdentifier:v6 completionHandler:v11];
+    v12 = handlerCopy;
+    [v10 managementChannelWithAccountIdentifier:identifierCopy completionHandler:v11];
 
     os_activity_scope_leave(&state);
   }
@@ -482,14 +482,14 @@ LABEL_12:
   else
   {
     v8 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
-- (void)managementChannelWithEnrollmentURL:(id)a3 completionHandler:(id)a4
+- (void)managementChannelWithEnrollmentURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasEnrollmentEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Finding management channel from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -508,8 +508,8 @@ LABEL_12:
     v11[1] = 3221225472;
     v11[2] = sub_100091074;
     v11[3] = &unk_1000D3418;
-    v12 = v7;
-    [v10 managementChannelWithEnrollmentURL:v6 completionHandler:v11];
+    v12 = handlerCopy;
+    [v10 managementChannelWithEnrollmentURL:lCopy completionHandler:v11];
 
     os_activity_scope_leave(&state);
   }
@@ -517,15 +517,15 @@ LABEL_12:
   else
   {
     v8 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v7 + 2))(v7, 0, v8);
+    (*(handlerCopy + 2))(handlerCopy, 0, v8);
   }
 }
 
-- (void)sendStatusData:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendStatusData:(id)data toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Sending status data from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -536,7 +536,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v9;
+      v20 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Sending status data to %{public}@...", buf, 0xCu);
     }
 
@@ -545,9 +545,9 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_100091394;
     v15[3] = &unk_1000D10B0;
-    v16 = v9;
-    v17 = v10;
-    [v13 sendStatusData:v8 toManagementSourceWithIdentifier:v16 completionHandler:v15];
+    v16 = identifierCopy;
+    v17 = handlerCopy;
+    [v13 sendStatusData:dataCopy toManagementSourceWithIdentifier:v16 completionHandler:v15];
 
     os_activity_scope_leave(&state);
   }
@@ -555,13 +555,13 @@ LABEL_12:
   else
   {
     v14 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v10 + 2))(v10, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 }
 
-+ (id)_managementChannelWithIdentifier:(id)a3 error:(id *)a4
++ (id)_managementChannelWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -575,30 +575,30 @@ LABEL_12:
   v22 = sub_100091684;
   v23 = 0;
   v6 = +[RMPersistentController sharedController];
-  v7 = [v6 persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [v6 persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10009168C;
   v14[3] = &unk_1000D18B8;
-  v9 = v5;
+  v9 = identifierCopy;
   v15 = v9;
   v16 = &v18;
   v17 = &v24;
-  [v8 performBlockAndWait:v14];
+  [newBackgroundContext performBlockAndWait:v14];
   v10 = v25[5];
   if (v10)
   {
     v11 = v10;
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = v19[5];
     if (v13)
     {
-      *a4 = v13;
+      *error = v13;
     }
   }
 
@@ -608,11 +608,11 @@ LABEL_12:
   return v10;
 }
 
-- (void)queryForStatusAndErrorsWithKeyPaths:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusAndErrorsWithKeyPaths:(id)paths fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathsCopy = paths;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Querying for status and errors from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -622,38 +622,38 @@ LABEL_12:
     v12 = +[RMLog XPCListenerDelegate];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = v8;
+      v13 = pathsCopy;
       v14 = [v13 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v15 = [v14 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v29 = v15;
       v30 = 2114;
-      v31 = v9;
+      v31 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Querying for status and errors with key paths %{public}@ from %{public}@...", buf, 0x16u);
     }
 
     v26 = 0;
-    v16 = [objc_opt_class() _managementChannelWithIdentifier:v9 error:&v26];
+    v16 = [objc_opt_class() _managementChannelWithIdentifier:identifierCopy error:&v26];
     v17 = v26;
     if (v16)
     {
       v18 = +[RMExternalStatusPublisher sharedPublisher];
-      v19 = [NSSet setWithArray:v8];
-      [v18 publishStatusKeys:v19 storeIdentifier:v9];
+      v19 = [NSSet setWithArray:pathsCopy];
+      [v18 publishStatusKeys:v19 storeIdentifier:identifierCopy];
 
       v20 = objc_opt_new();
-      v21 = [NSSet setWithArray:v8];
+      v21 = [NSSet setWithArray:pathsCopy];
       v22 = [v20 queryForStatusWithKeyPaths:v21 onBehalfOfManagementChannel:v16];
 
-      v23 = [v22 statusByKeyPath];
-      v24 = [v22 errorByKeyPath];
-      v10[2](v10, v23, v24, 0);
+      statusByKeyPath = [v22 statusByKeyPath];
+      errorByKeyPath = [v22 errorByKeyPath];
+      handlerCopy[2](handlerCopy, statusByKeyPath, errorByKeyPath, 0);
     }
 
     else
     {
-      (v10)[2](v10, 0, 0, v17);
+      (handlerCopy)[2](handlerCopy, 0, 0, v17);
     }
 
     os_activity_scope_leave(&state);
@@ -662,15 +662,15 @@ LABEL_12:
   else
   {
     v25 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (v10)[2](v10, 0, 0, v25);
+    (handlerCopy)[2](handlerCopy, 0, 0, v25);
   }
 }
 
-- (void)sendStatusForKeyPaths:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendStatusForKeyPaths:(id)paths toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathsCopy = paths;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     state.opaque[0] = 0;
@@ -680,25 +680,25 @@ LABEL_12:
     v11 = +[RMLog XPCListenerDelegate];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v8;
+      v12 = pathsCopy;
       v13 = [v12 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v14 = [v13 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v47 = v14;
       v48 = 2114;
-      v49 = v9;
+      v49 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Querying and sending status with key paths %{public}@ to %{public}@...", buf, 0x16u);
     }
 
     v44 = 0;
-    v15 = [objc_opt_class() _managementChannelWithIdentifier:v9 error:&v44];
+    v15 = [objc_opt_class() _managementChannelWithIdentifier:identifierCopy error:&v44];
     v16 = v44;
     v17 = v16;
     if (v15)
     {
       v18 = objc_opt_new();
-      v19 = [NSSet setWithArray:v8];
+      v19 = [NSSet setWithArray:pathsCopy];
       v20 = [v18 queryForStatusWithKeyPaths:v19 onBehalfOfManagementChannel:v15];
 
       v21 = [v20 protocolStatusReportWithFullReport:0];
@@ -714,22 +714,22 @@ LABEL_12:
         v39[1] = 3221225472;
         v39[2] = sub_100091EAC;
         v39[3] = &unk_1000D1100;
-        v40 = v8;
-        v25 = v9;
-        v26 = v9;
+        v40 = pathsCopy;
+        v25 = identifierCopy;
+        v26 = identifierCopy;
         v27 = v21;
-        v28 = v8;
+        v28 = pathsCopy;
         v29 = v20;
         v30 = v18;
         v31 = v25;
         v41 = v25;
-        v42 = v10;
+        v42 = handlerCopy;
         v32 = v31;
         v33 = v30;
         v34 = v29;
-        v8 = v28;
+        pathsCopy = v28;
         v35 = v27;
-        v9 = v26;
+        identifierCopy = v26;
         [v24 sendStatusData:v22 toManagementSourceWithIdentifier:v32 completionHandler:v39];
 
         v23 = v37;
@@ -745,21 +745,21 @@ LABEL_11:
       v23 = v16;
     }
 
-    (*(v10 + 2))(v10, v23);
+    (*(handlerCopy + 2))(handlerCopy, v23);
     goto LABEL_11;
   }
 
   v36 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-  (*(v10 + 2))(v10, v36);
+  (*(handlerCopy + 2))(handlerCopy, v36);
 
 LABEL_12:
 }
 
-- (void)queryForStatusSubscriptionsWithIdentifiers:(id)a3 fromManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers fromManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Querying for status subscriptions from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -769,25 +769,25 @@ LABEL_12:
     v12 = +[RMLog XPCListenerDelegate];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = v8;
+      v13 = identifiersCopy;
       v14 = [v13 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v15 = [v14 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v24 = v15;
       v25 = 2114;
-      v26 = v9;
+      v26 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Querying for status subscriptions with identifiers %{public}@ from %{public}@...", buf, 0x16u);
     }
 
     v16 = +[RMClientController sharedController];
-    v17 = [NSSet setWithArray:v8];
+    v17 = [NSSet setWithArray:identifiersCopy];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100092290;
     v19[3] = &unk_1000D3440;
-    v20 = v9;
-    v21 = v10;
+    v20 = identifierCopy;
+    v21 = handlerCopy;
     [v16 queryForStatusSubscriptionsWithIdentifiers:v17 fromManagementSourceWithIdentifier:v20 completionHandler:v19];
 
     os_activity_scope_leave(&state);
@@ -796,15 +796,15 @@ LABEL_12:
   else
   {
     v18 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v10 + 2))(v10, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 }
 
-- (void)sendStatusForSubscriptionsWithIdentifiers:(id)a3 toManagementSourceWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)sendStatusForSubscriptionsWithIdentifiers:(id)identifiers toManagementSourceWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     v11 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Querying and sending status subscriptions from proxy handler", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -814,26 +814,26 @@ LABEL_12:
     v12 = +[RMLog XPCListenerDelegate];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = v8;
+      v13 = identifiersCopy;
       v14 = [v13 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       v15 = [v14 componentsJoinedByString:{@", "}];
 
       *buf = 138543618;
       v25 = v15;
       v26 = 2114;
-      v27 = v9;
+      v27 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Querying and sending status subscriptions with identifiers %{public}@ to %{public}@...", buf, 0x16u);
     }
 
     v16 = +[RMClientController sharedController];
-    v17 = [NSSet setWithArray:v8];
+    v17 = [NSSet setWithArray:identifiersCopy];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100092640;
     v19[3] = &unk_1000D1100;
-    v20 = v8;
-    v21 = v9;
-    v22 = v10;
+    v20 = identifiersCopy;
+    v21 = identifierCopy;
+    v22 = handlerCopy;
     [v16 sendStatusForSubscriptionsWithIdentifiers:v17 toManagementSourceWithIdentifier:v21 completionHandler:v19];
 
     os_activity_scope_leave(&state);
@@ -842,14 +842,14 @@ LABEL_12:
   else
   {
     v18 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    (*(v10 + 2))(v10, v18);
+    (*(handlerCopy + 2))(handlerCopy, v18);
   }
 }
 
-- (void)fetchConfigurationsWithTypes:(id)a3 completionHandler:(id)a4
+- (void)fetchConfigurationsWithTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasConfigurationSubscriberEntitlement])
   {
     v8 = _os_activity_create(&_mh_execute_header, "XPCProxyHandler: Fetching configurations", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
@@ -860,14 +860,14 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v6;
+      v26 = typesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetching configurations for: %{public}@", buf, 0xCu);
     }
 
     v10 = objc_opt_class();
-    v11 = [(RMXPCProxyHandler *)self persistentContainer];
+    persistentContainer = [(RMXPCProxyHandler *)self persistentContainer];
     v23 = 0;
-    v12 = [v10 _activeConfigurationsByTypeForTypes:v6 persistentContainer:v11 error:&v23];
+    v12 = [v10 _activeConfigurationsByTypeForTypes:typesCopy persistentContainer:persistentContainer error:&v23];
     v13 = v23;
 
     if (v12)
@@ -875,7 +875,7 @@ LABEL_12:
       v14 = +[RMLog XPCListenerDelegate];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = v6;
+        v15 = typesCopy;
         v16 = [v15 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
         v17 = [v16 componentsJoinedByString:{@", "}];
 
@@ -886,7 +886,7 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Fetched configurations of types %{public}@: %{public}@", buf, 0x16u);
       }
 
-      v7[2](v7, v12, 0);
+      handlerCopy[2](handlerCopy, v12, 0);
     }
 
     else
@@ -894,7 +894,7 @@ LABEL_12:
       v19 = +[RMLog XPCListenerDelegate];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = v6;
+        v20 = typesCopy;
         v21 = [v20 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
         v22 = [v21 componentsJoinedByString:{@", "}];
 
@@ -905,7 +905,7 @@ LABEL_12:
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Could not fetch configurations of types %{public}@: %{public}@", buf, 0x16u);
       }
 
-      (v7)[2](v7, 0, v13);
+      (handlerCopy)[2](handlerCopy, 0, v13);
     }
 
     os_activity_scope_leave(&state);
@@ -914,24 +914,24 @@ LABEL_12:
   else
   {
     v18 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement.configuration-subscriber"];
-    (v7)[2](v7, 0, v18);
+    (handlerCopy)[2](handlerCopy, 0, v18);
   }
 }
 
-+ (id)_activeConfigurationsByTypeForTypes:(id)a3 persistentContainer:(id)a4 error:(id *)a5
++ (id)_activeConfigurationsByTypeForTypes:(id)types persistentContainer:(id)container error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[RMConfigurationQuerier alloc] initWithPersistentContainer:v7];
+  containerCopy = container;
+  typesCopy = types;
+  v9 = [[RMConfigurationQuerier alloc] initWithPersistentContainer:containerCopy];
 
-  v10 = [(RMConfigurationQuerier *)v9 activeConfigurationsByTypeForTypes:v8 error:a5];
+  v10 = [(RMConfigurationQuerier *)v9 activeConfigurationsByTypeForTypes:typesCopy error:error];
 
   return v10;
 }
 
-- (void)reportPluginDetailsWithCompletionHandler:(id)a3
+- (void)reportPluginDetailsWithCompletionHandler:(id)handler
 {
-  v35 = a3;
+  handlerCopy = handler;
   if ([(RMXPCProxyHandler *)self hasCommandLineEntitlement])
   {
     state.opaque[0] = 0;
@@ -948,7 +948,7 @@ LABEL_12:
     v36 = objc_opt_new();
     v5 = +[RMConfigurationPublisher reportDetails];
     v6 = +[RMExternalStatusPublisher sharedPublisher];
-    v7 = [v6 reportDetails];
+    reportDetails = [v6 reportDetails];
 
     v8 = objc_opt_new();
     v44 = 0u;
@@ -985,7 +985,7 @@ LABEL_12:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = v7;
+    v15 = reportDetails;
     v16 = [v15 countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v16)
     {
@@ -1021,39 +1021,39 @@ LABEL_12:
       while (v16);
     }
 
-    v23 = [v8 allValues];
-    v24 = [v23 sortedArrayUsingComparator:&stru_1000D3480];
+    allValues = [v8 allValues];
+    v24 = [allValues sortedArrayUsingComparator:&stru_1000D3480];
     [v36 setObject:v24 forKeyedSubscript:@"Plugins"];
 
     v25 = +[RMModelConfigurationSchema schemas];
-    v26 = [v25 allKeys];
+    allKeys = [v25 allKeys];
 
-    if ([v26 count])
+    if ([allKeys count])
     {
-      v27 = [v26 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+      v27 = [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       [v36 setObject:v27 forKeyedSubscript:@"Dynamic Configurations"];
     }
 
     v28 = +[RMModelStatusSchema schemas];
-    v29 = [v28 allKeys];
+    allKeys2 = [v28 allKeys];
 
-    if ([v29 count])
+    if ([allKeys2 count])
     {
-      v30 = [v29 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+      v30 = [allKeys2 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
       [v36 setObject:v30 forKeyedSubscript:@"Dynamic Status"];
     }
 
-    v35[2](v35, v36, 0);
+    handlerCopy[2](handlerCopy, v36, 0);
 
     os_activity_scope_leave(&state);
-    v31 = v35;
+    v31 = handlerCopy;
   }
 
   else
   {
     v32 = [RMErrorUtilities createConnectionNotEntitledWithName:@"com.apple.private.remotemanagement"];
-    v31 = v35;
-    (v35)[2](v35, 0, v32);
+    v31 = handlerCopy;
+    (handlerCopy)[2](handlerCopy, 0, v32);
   }
 }
 

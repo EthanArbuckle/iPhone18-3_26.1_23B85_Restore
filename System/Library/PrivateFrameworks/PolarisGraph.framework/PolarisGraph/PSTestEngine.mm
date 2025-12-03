@@ -1,48 +1,48 @@
 @interface PSTestEngine
-- (BOOL)cleanupSourceTasksForGraph:(id)a3 output:(id)a4 cleanupContext:(id)a5;
-- (BOOL)runGraph:(id)a3 withInput:(id)a4 output:(id)a5 context:(id)a6 timestamp:(unint64_t)a7;
-- (BOOL)setupSourceTasksForGraph:(id)a3 withOutput:(id)a4 context:(id)a5 cleanupContext:(id)a6;
-- (PSTestEngine)initWithDelegate:(id)a3;
+- (BOOL)cleanupSourceTasksForGraph:(id)graph output:(id)output cleanupContext:(id)context;
+- (BOOL)runGraph:(id)graph withInput:(id)input output:(id)output context:(id)context timestamp:(unint64_t)timestamp;
+- (BOOL)setupSourceTasksForGraph:(id)graph withOutput:(id)output context:(id)context cleanupContext:(id)cleanupContext;
+- (PSTestEngine)initWithDelegate:(id)delegate;
 - (__n128)runGraph:withInput:output:context:timestamp:;
-- (id)contextWithInput:(id)a3;
+- (id)contextWithInput:(id)input;
 - (void)runGraph:withInput:output:context:timestamp:;
 @end
 
 @implementation PSTestEngine
 
-- (PSTestEngine)initWithDelegate:(id)a3
+- (PSTestEngine)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = PSTestEngine;
   v6 = [(PSTestEngine *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = MTLCreateSystemDefaultDevice();
     mtlDevice = v7->_mtlDevice;
     v7->_mtlDevice = v8;
 
-    v10 = [(MTLDevice *)v7->_mtlDevice newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v7->_mtlDevice newCommandQueue];
     mtlCommandQueue = v7->_mtlCommandQueue;
-    v7->_mtlCommandQueue = v10;
+    v7->_mtlCommandQueue = newCommandQueue;
   }
 
   return v7;
 }
 
-- (id)contextWithInput:(id)a3
+- (id)contextWithInput:(id)input
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  inputCopy = input;
   v41 = objc_alloc_init(PSContext);
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v4 = v3;
-  obj = [v3 resources];
+  v4 = inputCopy;
+  obj = [inputCopy resources];
   v5 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v5)
   {
@@ -58,11 +58,11 @@
         }
 
         v8 = *(*(&v45 + 1) + 8 * i);
-        v9 = [v4 resources];
-        v10 = [v9 objectForKeyedSubscript:v8];
-        v11 = [v10 resource];
+        resources = [v4 resources];
+        v10 = [resources objectForKeyedSubscript:v8];
+        resource = [v10 resource];
 
-        v12 = v11->_class;
+        v12 = resource->_class;
         v44 = v40;
         if (v12 <= 4)
         {
@@ -76,7 +76,7 @@
 
             else
             {
-              object = ps_resource::get_object(v11);
+              object = ps_resource::get_object(resource);
               v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
               v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:IOSurfaceGetWidth(object)];
               [v20 setObject:v21 forKeyedSubscript:*MEMORY[0x277CD2928]];
@@ -94,7 +94,7 @@
           else if (v12 == 1)
           {
             v43 = 0;
-            ps_resource::get_data(v11, 0, &v43);
+            ps_resource::get_data(resource, 0, &v43);
             v18 = [PSDataStream dataStreamWithResourceKey:v8 options:&v44 length:v43];
             v42 = 0;
             v26 = [(PSOpaqueStream *)v18 validate:&v42];
@@ -122,13 +122,13 @@ LABEL_34:
         {
           if (v12 == 5)
           {
-            v24 = ps_resource::get_object(v11);
+            v24 = ps_resource::get_object(resource);
             v18 = +[PSMTLBufferStream mtlBufferStreamWithResourceKey:options:length:mtlOptions:](PSMTLBufferStream, "mtlBufferStreamWithResourceKey:options:length:mtlOptions:", v8, &v44, [v24 length], objc_msgSend(v24, "resourceOptions"));
           }
 
           else
           {
-            v24 = ps_resource::get_object(v11);
+            v24 = ps_resource::get_object(resource);
             v25 = [MEMORY[0x277CD7058] textureBufferDescriptorWithPixelFormat:objc_msgSend(v24 width:"pixelFormat") resourceOptions:objc_msgSend(v24 usage:"width"), objc_msgSend(v24, "resourceOptions"), objc_msgSend(v24, "usage")];
             v18 = [PSMTLTextureStream mtlTextureStreamWithResourceKey:v8 options:&v44 descriptor:v25];
           }
@@ -136,7 +136,7 @@ LABEL_34:
 
         else if (v12 == 7)
         {
-          pixelbuffer = ps_resource::get_pixelbuffer(v11, 0);
+          pixelbuffer = ps_resource::get_pixelbuffer(resource, 0);
           IOSurface = CVPixelBufferGetIOSurface(pixelbuffer);
           v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:IOSurfaceGetWidth(IOSurface)];
@@ -155,7 +155,7 @@ LABEL_34:
         {
           if (v12 == 8)
           {
-            ps_resource::get_databuffer(v11);
+            ps_resource::get_databuffer(resource);
             v34 = CVDataBufferGetIOSurface();
             Width = IOSurfaceGetWidth(v34);
             Height = IOSurfaceGetHeight(v34);
@@ -169,7 +169,7 @@ LABEL_34:
               goto LABEL_34;
             }
 
-            v13 = *(ps_resource::get_jasperbuffer_ptr(v11) + 8);
+            v13 = *(ps_resource::get_jasperbuffer_ptr(resource) + 8);
             v14 = CVDataBufferGetIOSurface();
             v15 = IOSurfaceGetWidth(v14);
             v16 = IOSurfaceGetHeight(v14);
@@ -194,16 +194,16 @@ LABEL_34:
   return v41;
 }
 
-- (BOOL)runGraph:(id)a3 withInput:(id)a4 output:(id)a5 context:(id)a6 timestamp:(unint64_t)a7
+- (BOOL)runGraph:(id)graph withInput:(id)input output:(id)output context:(id)context timestamp:(unint64_t)timestamp
 {
   v35 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  a4;
-  v10 = a5;
-  a6;
-  if (v10)
+  graphCopy = graph;
+  input;
+  outputCopy = output;
+  context;
+  if (outputCopy)
   {
-    v10;
+    outputCopy;
   }
 
   else
@@ -211,7 +211,7 @@ LABEL_34:
     objc_alloc_init(PSResourceHeap);
   }
 
-  v11 = [v20 tasks];
+  tasks = [graphCopy tasks];
   v12 = 0;
   v28 = 0;
   v29 = 0;
@@ -223,19 +223,19 @@ LABEL_34:
   v25 = 1065353216;
   memset(v21, 0, sizeof(v21));
   v22 = 1065353216;
-  while (v12 < [v11 count])
+  while (v12 < [tasks count])
   {
-    v13 = [v11 objectAtIndex:v12];
+    v13 = [tasks objectAtIndex:v12];
     v31.__r_.__value_.__r.__words[0] = v13;
     v33.__r_.__value_.__r.__words[0] = &v31;
     *(std::__hash_table<std::__hash_value_type<void *,BOOL>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,BOOL>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,BOOL>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,BOOL>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void *&&>,std::tuple<>>(v26, &v31) + 24) = 0;
-    v14 = [v13 outputs];
-    for (i = 0; i < [v14 count]; ++i)
+    outputs = [v13 outputs];
+    for (i = 0; i < [outputs count]; ++i)
     {
-      v16 = [v14 objectAtIndex:i];
-      v17 = [v16 resourceKey];
-      v18 = v17;
-      std::string::basic_string[abi:nn200100]<0>(&v31, [v17 UTF8String]);
+      v16 = [outputs objectAtIndex:i];
+      resourceKey = [v16 resourceKey];
+      v18 = resourceKey;
+      std::string::basic_string[abi:nn200100]<0>(&v31, [resourceKey UTF8String]);
       v33 = v31;
       memset(&v31, 0, sizeof(v31));
       v34 = v13;
@@ -259,22 +259,22 @@ LABEL_34:
   operator new();
 }
 
-- (BOOL)setupSourceTasksForGraph:(id)a3 withOutput:(id)a4 context:(id)a5 cleanupContext:(id)a6
+- (BOOL)setupSourceTasksForGraph:(id)graph withOutput:(id)output context:(id)context cleanupContext:(id)cleanupContext
 {
   v67 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v52 = a4;
-  v57 = a4;
-  v53 = a5;
-  v10 = a5;
-  v56 = v9;
-  v58 = a6;
-  v11 = [v58 resourceHeap];
+  graphCopy = graph;
+  outputCopy = output;
+  outputCopy2 = output;
+  contextCopy = context;
+  contextCopy2 = context;
+  v56 = graphCopy;
+  cleanupContextCopy = cleanupContext;
+  resourceHeap = [cleanupContextCopy resourceHeap];
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v9 sourceTasks];
+  obj = [graphCopy sourceTasks];
   v54 = [obj countByEnumeratingWithState:&v62 objects:v66 count:16];
   if (v54)
   {
@@ -290,34 +290,34 @@ LABEL_34:
         }
 
         v12 = *(*(&v62 + 1) + 8 * i);
-        v13 = [v12 outputs];
+        outputs = [v12 outputs];
         v61 = v12;
         if (![v12 resources])
         {
-          [v13 count];
+          [outputs count];
           ps_resource_array_create();
         }
 
-        v14 = [v12 resources];
-        for (j = 0; j < [v13 count]; ++j)
+        resources = [v12 resources];
+        for (j = 0; j < [outputs count]; ++j)
         {
-          v16 = [v13 objectAtIndexedSubscript:j];
-          v17 = [v16 resourceKey];
-          v18 = [v10 resourceStreamForKey:v17];
+          v16 = [outputs objectAtIndexedSubscript:j];
+          resourceKey = [v16 resourceKey];
+          v18 = [contextCopy2 resourceStreamForKey:resourceKey];
 
           if (!v18)
           {
-            v45 = [v13 objectAtIndexedSubscript:j];
-            v46 = [v45 resourceKey];
-            v47 = v46;
-            printf("Failed to find resource stream for %s. Verify that this resource stream has been added to the context.", [v46 UTF8String]);
+            v45 = [outputs objectAtIndexedSubscript:j];
+            resourceKey2 = [v45 resourceKey];
+            v47 = resourceKey2;
+            printf("Failed to find resource stream for %s. Verify that this resource stream has been added to the context.", [resourceKey2 UTF8String]);
 
             v44 = 0;
             goto LABEL_36;
           }
 
-          v19 = [v11 createAndAddResource:v18 timestamp:0];
-          resource = ps_resource_array_get_resource(v14, j);
+          v19 = [resourceHeap createAndAddResource:v18 timestamp:0];
+          resource = ps_resource_array_get_resource(resources, j);
           key = ps_resource_get_key(v19);
           ps_resource_set_key(resource, key);
           ps_resource_set_class(resource, [v18 resourceClass]);
@@ -424,10 +424,10 @@ LABEL_40:
         if (![v61 sourceTaskData])
         {
           v43 = malloc_type_calloc(1uLL, 0x18uLL, 0x80040D6874129uLL);
-          objc_storeStrong(v43 + 2, v53);
-          objc_storeStrong(v43, v52);
-          objc_storeStrong(v43 + 1, v11);
-          [v61 setResources:v14];
+          objc_storeStrong(v43 + 2, contextCopy);
+          objc_storeStrong(v43, outputCopy);
+          objc_storeStrong(v43 + 1, resourceHeap);
+          [v61 setResources:resources];
           [v61 setSourceTaskData:v43];
           [v61 setSourceTaskFunction:testengine_source_writer_func];
         }
@@ -455,19 +455,19 @@ LABEL_36:
   return v44;
 }
 
-- (BOOL)cleanupSourceTasksForGraph:(id)a3 output:(id)a4 cleanupContext:(id)a5
+- (BOOL)cleanupSourceTasksForGraph:(id)graph output:(id)output cleanupContext:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v25 = v7;
-  v26 = a5;
-  v9 = [v26 resourceHeap];
+  graphCopy = graph;
+  outputCopy = output;
+  v25 = graphCopy;
+  contextCopy = context;
+  resourceHeap = [contextCopy resourceHeap];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = [v7 sourceTasks];
+  obj = [graphCopy sourceTasks];
   v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -482,34 +482,34 @@ LABEL_36:
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [v12 getResources];
-        if (v13)
+        getResources = [v12 getResources];
+        if (getResources)
         {
-          for (j = 0; j < ps_resource_array_get_count(v13); ++j)
+          for (j = 0; j < ps_resource_array_get_count(getResources); ++j)
           {
-            resource = ps_resource_array_get_resource(v13, j);
+            resource = ps_resource_array_get_resource(getResources, j);
             key = ps_resource_get_key(resource);
             v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:key];
-            [v8 removeResourceKey:v17];
+            [outputCopy removeResourceKey:v17];
 
             v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:key];
-            [v9 removeResourceKey:v18];
+            [resourceHeap removeResourceKey:v18];
           }
 
-          ps_resource_array_free(v13);
+          ps_resource_array_free(getResources);
         }
 
-        v19 = [v12 getSourceTaskData];
-        v20 = v19[2];
-        v19[2] = 0;
+        getSourceTaskData = [v12 getSourceTaskData];
+        v20 = getSourceTaskData[2];
+        getSourceTaskData[2] = 0;
 
-        v21 = *v19;
-        *v19 = 0;
+        v21 = *getSourceTaskData;
+        *getSourceTaskData = 0;
 
-        v22 = v19[1];
-        v19[1] = 0;
+        v22 = getSourceTaskData[1];
+        getSourceTaskData[1] = 0;
 
-        free(v19);
+        free(getSourceTaskData);
         [v12 setSourceTaskData:0];
         [v12 setResources:0];
         [v12 setSourceTaskFunction:0];
@@ -528,8 +528,8 @@ LABEL_36:
 - (__n128)runGraph:withInput:output:context:timestamp:
 {
   *a2 = &unk_2870D29C8;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -539,18 +539,18 @@ LABEL_36:
   v3 = *a2;
   v15 = v3;
   v16 = v3;
-  v4 = *(a1 + 8);
+  v4 = *(self + 8);
   __p[0] = &v15;
   *(std::__hash_table<std::__hash_value_type<void *,BOOL>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,BOOL>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,BOOL>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,BOOL>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void *&&>,std::tuple<>>(v4, &v15) + 24) = 1;
-  v5 = [v3 inputs];
-  for (i = 0; i < [v5 count]; ++i)
+  inputs = [v3 inputs];
+  for (i = 0; i < [inputs count]; ++i)
   {
-    v7 = [v5 objectAtIndex:i];
+    v7 = [inputs objectAtIndex:i];
     if ([v7 type] != 2)
     {
-      v8 = *(a1 + 16);
-      v9 = [v7 resolvedResourceKey];
-      std::string::basic_string[abi:nn200100]<0>(__p, [v9 UTF8String]);
+      v8 = *(self + 16);
+      resolvedResourceKey = [v7 resolvedResourceKey];
+      std::string::basic_string[abi:nn200100]<0>(__p, [resolvedResourceKey UTF8String]);
       v10 = std::__hash_table<std::__hash_value_type<std::string,PSTask * {__strong}>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,PSTask * {__strong}>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,PSTask * {__strong}>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,PSTask * {__strong}>>>::find<std::string>(v8, __p);
       if (v14 < 0)
       {
@@ -560,18 +560,18 @@ LABEL_36:
       if (v10)
       {
         v11 = v10[5];
-        v12 = *(a1 + 8);
+        v12 = *(self + 8);
         v15 = v11;
         __p[0] = &v15;
         if ((std::__hash_table<std::__hash_value_type<void *,BOOL>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,BOOL>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,BOOL>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,BOOL>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void *&&>,std::tuple<>>(v12, &v15)[3] & 1) == 0)
         {
-          std::function<void ()(PSTask *)>::operator()(*(a1 + 24), v11);
+          std::function<void ()(PSTask *)>::operator()(*(self + 24), v11);
         }
       }
     }
   }
 
-  std::vector<PSTask * {__strong}>::push_back[abi:nn200100](*(a1 + 32), &v16);
+  std::vector<PSTask * {__strong}>::push_back[abi:nn200100](*(self + 32), &v16);
 }
 
 @end

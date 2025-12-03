@@ -1,26 +1,26 @@
 @interface SCATOnboardingAddedSwitchDetailController
-- (SCATOnboardingAddedSwitchDetailController)initWithSwitch:(id)a3 title:(id)a4 detailText:(id)a5 completion:(id)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (SCATOnboardingAddedSwitchDetailController)initWithSwitch:(id)switch title:(id)title detailText:(id)text completion:(id)completion;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)reloadSwitchesForDetailsView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation SCATOnboardingAddedSwitchDetailController
 
-- (SCATOnboardingAddedSwitchDetailController)initWithSwitch:(id)a3 title:(id)a4 detailText:(id)a5 completion:(id)a6
+- (SCATOnboardingAddedSwitchDetailController)initWithSwitch:(id)switch title:(id)title detailText:(id)text completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  switchCopy = switch;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = SCATOnboardingAddedSwitchDetailController;
-  v12 = [(SCATOnboardingAddedSwitchDetailController *)&v15 initWithTitle:a4 detailText:a5 symbolName:0 adoptTableViewScrollView:1];
+  v12 = [(SCATOnboardingAddedSwitchDetailController *)&v15 initWithTitle:title detailText:text symbolName:0 adoptTableViewScrollView:1];
   v13 = v12;
   if (v12)
   {
-    [(SCATOnboardingAddedSwitchDetailController *)v12 setCompletionHandler:v11];
-    [(SCATOnboardingAddedSwitchDetailController *)v13 setASwitch:v10];
+    [(SCATOnboardingAddedSwitchDetailController *)v12 setCompletionHandler:completionCopy];
+    [(SCATOnboardingAddedSwitchDetailController *)v13 setASwitch:switchCopy];
   }
 
   return v13;
@@ -36,8 +36,8 @@
   [v3 setTitle:v4 forState:0];
 
   [v3 addTarget:self action:"_didTapNextButton" forControlEvents:0x2000];
-  v5 = [(SCATOnboardingAddedSwitchDetailController *)self buttonTray];
-  [v5 addButton:v3];
+  buttonTray = [(SCATOnboardingAddedSwitchDetailController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   v6 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v6 setDelegate:self];
@@ -50,22 +50,22 @@
 
 - (void)reloadSwitchesForDetailsView
 {
-  v2 = [(SCATOnboardingAddedSwitchDetailController *)self tableView];
-  [v2 reloadData];
+  tableView = [(SCATOnboardingAddedSwitchDetailController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"SCATOnboardingSelectItemSwitchCell", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"SCATOnboardingSelectItemSwitchCell", path}];
   if (!v5)
   {
     v5 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"SCATOnboardingSelectItemSwitchCell"];
   }
 
-  v6 = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch];
-  v7 = [v6 name];
-  v8 = [v5 textLabel];
-  [v8 setText:v7];
+  aSwitch = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch];
+  name = [aSwitch name];
+  textLabel = [v5 textLabel];
+  [textLabel setText:name];
 
   [v5 setAccessoryType:1];
   v9 = +[UIColor secondarySystemBackgroundColor];
@@ -74,24 +74,24 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch];
-  v9 = [SCATSwitchDetailsViewController switchDetailsViewControllerWithSwitch:v8 SCATOnboarding:1];
+  pathCopy = path;
+  viewCopy = view;
+  aSwitch = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch];
+  v9 = [SCATSwitchDetailsViewController switchDetailsViewControllerWithSwitch:aSwitch SCATOnboarding:1];
 
   [v9 setDelegate:self];
   [(SCATOnboardingAddedSwitchDetailController *)self presentViewController:v9 animated:1 completion:0];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch:a3];
-  v5 = [v4 action];
+  v4 = [(SCATOnboardingAddedSwitchDetailController *)self aSwitch:view];
+  action = [v4 action];
 
-  if (v5 == (&stru_20.flags + 3) || v5 == &stru_68)
+  if (action == (&stru_20.flags + 3) || action == &stru_68)
   {
     v6 = AXParameterizedLocalizedString();
   }

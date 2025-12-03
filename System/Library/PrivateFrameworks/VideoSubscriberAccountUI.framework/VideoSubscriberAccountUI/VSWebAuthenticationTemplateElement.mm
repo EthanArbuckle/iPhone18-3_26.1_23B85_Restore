@@ -1,6 +1,6 @@
 @interface VSWebAuthenticationTemplateElement
 + (id)supportedFeatures;
-- (VSWebAuthenticationTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (VSWebAuthenticationTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation VSWebAuthenticationTemplateElement
@@ -15,16 +15,16 @@
   return v2;
 }
 
-- (VSWebAuthenticationTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (VSWebAuthenticationTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v11.receiver = self;
   v11.super_class = VSWebAuthenticationTemplateElement;
-  v5 = [(VSWebAuthenticationTemplateElement *)&v11 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(VSWebAuthenticationTemplateElement *)&v11 initWithDOMElement:element parent:parent elementFactory:factory];
   v6 = v5;
   if (v5)
   {
-    v7 = [(VSWebAuthenticationTemplateElement *)v5 features];
-    v8 = [v7 objectAtIndex:0];
+    features = [(VSWebAuthenticationTemplateElement *)v5 features];
+    v8 = [features objectAtIndex:0];
     messagePort = v6->_messagePort;
     v6->_messagePort = v8;
   }

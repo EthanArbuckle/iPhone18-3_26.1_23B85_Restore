@@ -1,5 +1,5 @@
 @interface ICStyleSelectorViewController
-- (BOOL)currentNamedStylesContainsStyle:(unsigned int)a3;
+- (BOOL)currentNamedStylesContainsStyle:(unsigned int)style;
 - (BOOL)isPopover;
 - (ICStyleSelectorDelegate)delegate;
 - (NSArray)biusButtons;
@@ -32,61 +32,61 @@
 - (UIView)headerView;
 - (UIView)indentationContainer;
 - (UIView)listsContainer;
-- (double)preferredHeightForTraitCollection:(id)a3;
+- (double)preferredHeightForTraitCollection:(id)collection;
 - (double)styleButtonPadding;
-- (id)biusStyleActionWithStyleBIUS:(unint64_t)a3;
+- (id)biusStyleActionWithStyleBIUS:(unint64_t)s;
 - (id)blockQuoteMenu;
 - (id)elementForAXFocusOnDismissal;
-- (id)emphasisColorActionWithType:(int64_t)a3 bordered:(BOOL)a4 selectionTogglesEmphasis:(BOOL)a5;
-- (id)emphasisColorImageWithType:(int64_t)a3 bordered:(BOOL)a4;
+- (id)emphasisColorActionWithType:(int64_t)type bordered:(BOOL)bordered selectionTogglesEmphasis:(BOOL)emphasis;
+- (id)emphasisColorImageWithType:(int64_t)type bordered:(BOOL)bordered;
 - (id)emphasisMenu;
-- (id)fontForICTTNamedStyle:(unsigned int)a3;
-- (id)imageForButton:(id)a3;
-- (id)imageNameForButton:(id)a3;
+- (id)fontForICTTNamedStyle:(unsigned int)style;
+- (id)imageForButton:(id)button;
+- (id)imageNameForButton:(id)button;
 - (id)makeInlineMenu;
 - (id)makeShortcutMenu;
-- (id)namedStyleActionWithNamedStyle:(unsigned int)a3;
+- (id)namedStyleActionWithNamedStyle:(unsigned int)style;
 - (id)nibBundle;
-- (id)styleButtonForStyle:(unsigned int)a3;
+- (id)styleButtonForStyle:(unsigned int)style;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)applyAccessibilityInfo;
-- (void)applyFixedEmphasisColor:(id)a3;
+- (void)applyFixedEmphasisColor:(id)color;
 - (void)configureForOrientation;
 - (void)configureForPopover;
 - (void)configureViewWithEmphasis;
 - (void)dealloc;
-- (void)didSelectBulletedList:(id)a3;
-- (void)didSelectDashedList:(id)a3;
-- (void)didSelectDone:(id)a3;
-- (void)didSelectNumberedList:(id)a3;
-- (void)indentLeft:(id)a3;
-- (void)indentRight:(id)a3;
-- (void)namedStyleButtonAction:(id)a3;
+- (void)didSelectBulletedList:(id)list;
+- (void)didSelectDashedList:(id)list;
+- (void)didSelectDone:(id)done;
+- (void)didSelectNumberedList:(id)list;
+- (void)indentLeft:(id)left;
+- (void)indentRight:(id)right;
+- (void)namedStyleButtonAction:(id)action;
 - (void)populateStyleScrollView;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)registerForTraitChanges;
-- (void)scrollCurrentStyleToVisible:(BOOL)a3;
-- (void)selectNamedStyle:(unsigned int)a3;
-- (void)setCurrentBIUS:(unint64_t)a3;
-- (void)setCurrentStyles:(id)a3 bius:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setStyles:(id)a3;
+- (void)scrollCurrentStyleToVisible:(BOOL)visible;
+- (void)selectNamedStyle:(unsigned int)style;
+- (void)setCurrentBIUS:(unint64_t)s;
+- (void)setCurrentStyles:(id)styles bius:(unint64_t)bius animated:(BOOL)animated;
+- (void)setStyles:(id)styles;
 - (void)setUpNonStyleButtons;
-- (void)toggleBIUS:(id)a3;
-- (void)toggleBlockQuote:(id)a3;
-- (void)toggleEmphasis:(id)a3;
+- (void)toggleBIUS:(id)s;
+- (void)toggleBlockQuote:(id)quote;
+- (void)toggleEmphasis:(id)emphasis;
 - (void)updateButtonEnabledState;
 - (void)updateHeaderVisibility;
 - (void)updateListStyleSelectedState;
 - (void)updateNamedStyleSelectedState;
-- (void)updateStyleSelectionHighlightAnimated:(BOOL)a3;
+- (void)updateStyleSelectionHighlightAnimated:(BOOL)animated;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -145,84 +145,84 @@
   v3 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 20.0, 20.0}];
   [(ICStyleSelectorViewController *)self setStyleSelectionHighlight:v3];
 
-  v4 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  [v4 setAlpha:0.0];
+  styleSelectionHighlight = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  [styleSelectionHighlight setAlpha:0.0];
 
-  v5 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  [v5 ic_applyRoundedCorners];
+  styleSelectionHighlight2 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  [styleSelectionHighlight2 ic_applyRoundedCorners];
 
-  v6 = [(ICStyleSelectorViewController *)self styleScrollView];
-  v7 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  [v6 addSubview:v7];
+  styleScrollView = [(ICStyleSelectorViewController *)self styleScrollView];
+  styleSelectionHighlight3 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  [styleScrollView addSubview:styleSelectionHighlight3];
 
-  v8 = [(ICStyleSelectorViewController *)self view];
-  [v8 layoutMargins];
+  view = [(ICStyleSelectorViewController *)self view];
+  [view layoutMargins];
   v10 = v9;
-  v11 = [(ICStyleSelectorViewController *)self view];
-  [v11 layoutMargins];
+  view2 = [(ICStyleSelectorViewController *)self view];
+  [view2 layoutMargins];
   v13 = v12;
-  v14 = [(ICStyleSelectorViewController *)self styleScrollView];
-  [v14 setContentInset:{0.0, v10, 0.0, v13}];
+  styleScrollView2 = [(ICStyleSelectorViewController *)self styleScrollView];
+  [styleScrollView2 setContentInset:{0.0, v10, 0.0, v13}];
 
-  v15 = [(ICStyleSelectorViewController *)self view];
-  [v15 setAutoresizingMask:0];
+  view3 = [(ICStyleSelectorViewController *)self view];
+  [view3 setAutoresizingMask:0];
 
-  v16 = [(ICStyleSelectorViewController *)self view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(ICStyleSelectorViewController *)self view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v17 = [MEMORY[0x277D75220] buttonWithType:7];
   [v17 addTarget:self action:sel_didSelectDone_ forControlEvents:64];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(ICStyleSelectorViewController *)self headerView];
-  [v18 addSubview:v17];
+  headerView = [(ICStyleSelectorViewController *)self headerView];
+  [headerView addSubview:v17];
 
   [(ICStyleSelectorViewController *)self setCloseButton:v17];
   v40 = MEMORY[0x277CCAAD0];
-  v41 = [(ICStyleSelectorViewController *)self headerView];
-  v19 = [v41 layoutMarginsGuide];
-  v20 = [v19 trailingAnchor];
-  v21 = [(UIButton *)self->_closeButton trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21 constant:8.0];
+  headerView2 = [(ICStyleSelectorViewController *)self headerView];
+  layoutMarginsGuide = [headerView2 layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide trailingAnchor];
+  trailingAnchor2 = [(UIButton *)self->_closeButton trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:8.0];
   v45[0] = v22;
   v42 = v17;
-  v23 = [v17 centerYAnchor];
-  v24 = [(ICStyleSelectorViewController *)self headerView];
-  v25 = [v24 centerYAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  centerYAnchor = [v17 centerYAnchor];
+  headerView3 = [(ICStyleSelectorViewController *)self headerView];
+  centerYAnchor2 = [headerView3 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v45[1] = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:2];
   [v40 activateConstraints:v27];
 
-  v28 = [MEMORY[0x277D36978] titleStyle];
-  v44[0] = v28;
-  v29 = [MEMORY[0x277D36978] headingStyle];
-  v44[1] = v29;
-  v30 = [MEMORY[0x277D36978] subheadingStyle];
-  v44[2] = v30;
-  v31 = [MEMORY[0x277D36978] bodyStyle];
-  v44[3] = v31;
-  v32 = [MEMORY[0x277D36978] fixedWidthStyle];
-  v44[4] = v32;
+  titleStyle = [MEMORY[0x277D36978] titleStyle];
+  v44[0] = titleStyle;
+  headingStyle = [MEMORY[0x277D36978] headingStyle];
+  v44[1] = headingStyle;
+  subheadingStyle = [MEMORY[0x277D36978] subheadingStyle];
+  v44[2] = subheadingStyle;
+  bodyStyle = [MEMORY[0x277D36978] bodyStyle];
+  v44[3] = bodyStyle;
+  fixedWidthStyle = [MEMORY[0x277D36978] fixedWidthStyle];
+  v44[4] = fixedWidthStyle;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:5];
   [(ICStyleSelectorViewController *)self setStyles:v33];
 
   if ([(ICStyleSelectorViewController *)self ic_isRTL])
   {
-    v34 = [(ICStyleSelectorViewController *)self styles];
-    v35 = [v34 reverseObjectEnumerator];
-    v36 = [v35 allObjects];
-    [(ICStyleSelectorViewController *)self setStyles:v36];
+    styles = [(ICStyleSelectorViewController *)self styles];
+    reverseObjectEnumerator = [styles reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(ICStyleSelectorViewController *)self setStyles:allObjects];
 
-    v37 = [(ICStyleSelectorViewController *)self headerLabel];
-    [v37 setTextAlignment:4];
+    headerLabel = [(ICStyleSelectorViewController *)self headerLabel];
+    [headerLabel setTextAlignment:4];
   }
 
-  v38 = [(ICStyleSelectorViewController *)self view];
-  [v38 intrinsicContentSize];
+  view5 = [(ICStyleSelectorViewController *)self view];
+  [view5 intrinsicContentSize];
   [(ICStyleSelectorViewController *)self setPreferredContentSize:?];
 
-  v39 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v39 addObserver:self selector:sel_applyAccessibilityInfo name:*MEMORY[0x277D765F0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_applyAccessibilityInfo name:*MEMORY[0x277D765F0] object:0];
 
   [(ICStyleSelectorViewController *)self setConfiguredForPopover:0];
   [(ICStyleSelectorViewController *)self applyAccessibilityInfo];
@@ -233,13 +233,13 @@
 - (void)registerForTraitChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277D75C80] ic_traitsAffectingSizeAndColor];
+  ic_traitsAffectingSizeAndColor = [MEMORY[0x277D75C80] ic_traitsAffectingSizeAndColor];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__ICStyleSelectorViewController_registerForTraitChanges__block_invoke;
   v5[3] = &unk_2781ACDB8;
   objc_copyWeak(&v6, &location);
-  v4 = [(ICStyleSelectorViewController *)self registerForTraitChanges:v3 withHandler:v5];
+  v4 = [(ICStyleSelectorViewController *)self registerForTraitChanges:ic_traitsAffectingSizeAndColor withHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -271,8 +271,8 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
   v4.receiver = self;
   v4.super_class = ICStyleSelectorViewController;
   [(ICStyleSelectorViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(ICStyleSelectorViewController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  view = [(ICStyleSelectorViewController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
 - (void)updateViewConstraints
@@ -282,11 +282,11 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
   [(ICStyleSelectorViewController *)&v9 updateViewConstraints];
   [(ICStyleSelectorViewController *)self updateHeaderVisibility];
   [(ICStyleSelectorViewController *)self configureForOrientation];
-  v3 = [(ICStyleSelectorViewController *)self view];
-  [v3 layoutMargins];
+  view = [(ICStyleSelectorViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
-  v6 = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
-  [v6 setConstant:v5];
+  listsContainerBottomConstraint = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
+  [listsContainerBottomConstraint setConstant:v5];
 
   if (ICInternalSettingsIsEmphasisEnabled())
   {
@@ -295,12 +295,12 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
 
   else
   {
-    v7 = [(ICStyleSelectorViewController *)self emphasisContainer];
+    emphasisContainer = [(ICStyleSelectorViewController *)self emphasisContainer];
 
-    if (v7)
+    if (emphasisContainer)
     {
-      v8 = [(ICStyleSelectorViewController *)self emphasisContainer];
-      [v8 removeFromSuperview];
+      emphasisContainer2 = [(ICStyleSelectorViewController *)self emphasisContainer];
+      [emphasisContainer2 removeFromSuperview];
     }
   }
 }
@@ -312,8 +312,8 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
   [(ICStyleSelectorViewController *)&v22 viewWillLayoutSubviews];
   if ([(ICStyleSelectorViewController *)self isPopover])
   {
-    v3 = [(ICStyleSelectorViewController *)self view];
-    v4 = v3;
+    view = [(ICStyleSelectorViewController *)self view];
+    v4 = view;
     v5 = 20.0;
     v6 = 20.0;
     v7 = 20.0;
@@ -321,8 +321,8 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
 
   else
   {
-    v8 = [(ICStyleSelectorViewController *)self traitCollection];
-    if ([v8 verticalSizeClass] == 2)
+    traitCollection = [(ICStyleSelectorViewController *)self traitCollection];
+    if ([traitCollection verticalSizeClass] == 2)
     {
       v9 = 36.0;
     }
@@ -332,59 +332,59 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
       v9 = 8.0;
     }
 
-    v3 = [(ICStyleSelectorViewController *)self view];
-    v4 = v3;
+    view = [(ICStyleSelectorViewController *)self view];
+    v4 = view;
     v5 = 15.0;
     v7 = 15.0;
     v6 = v9;
   }
 
-  [v3 setLayoutMargins:{0.0, v5, v6, v7}];
+  [view setLayoutMargins:{0.0, v5, v6, v7}];
 
-  v10 = [(ICStyleSelectorViewController *)self view];
-  [v10 layoutMargins];
+  view2 = [(ICStyleSelectorViewController *)self view];
+  [view2 layoutMargins];
   v12 = v11;
-  v13 = [(ICStyleSelectorViewController *)self view];
-  [v13 layoutMargins];
+  view3 = [(ICStyleSelectorViewController *)self view];
+  [view3 layoutMargins];
   v15 = v14;
-  v16 = [(ICStyleSelectorViewController *)self styleScrollView];
-  [v16 setContentInset:{0.0, v12, 0.0, v15}];
+  styleScrollView = [(ICStyleSelectorViewController *)self styleScrollView];
+  [styleScrollView setContentInset:{0.0, v12, 0.0, v15}];
 
-  v17 = [(ICStyleSelectorViewController *)self view];
-  [v17 layoutMargins];
+  view4 = [(ICStyleSelectorViewController *)self view];
+  [view4 layoutMargins];
   v19 = v18;
-  v20 = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
-  [v20 setConstant:v19];
+  listsContainerBottomConstraint = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
+  [listsContainerBottomConstraint setConstant:v19];
 
   [(ICStyleSelectorViewController *)self updateHeaderVisibility];
-  v21 = [(ICStyleSelectorViewController *)self view];
-  [v21 invalidateIntrinsicContentSize];
+  view5 = [(ICStyleSelectorViewController *)self view];
+  [view5 invalidateIntrinsicContentSize];
 
   [(ICStyleSelectorViewController *)self setUpNonStyleButtons];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(ICStyleSelectorViewController *)self styleScrollView];
-  [v3 bounds];
+  styleScrollView = [(ICStyleSelectorViewController *)self styleScrollView];
+  [styleScrollView bounds];
   v5 = v4;
-  v6 = [(ICStyleSelectorViewController *)self styleScrollView];
-  [v6 contentSize];
+  styleScrollView2 = [(ICStyleSelectorViewController *)self styleScrollView];
+  [styleScrollView2 contentSize];
   v8 = v7;
 
   if (v5 > v8)
   {
-    v9 = [(ICStyleSelectorViewController *)self view];
-    [v9 bounds];
+    view = [(ICStyleSelectorViewController *)self view];
+    [view bounds];
     v11 = v10;
-    v12 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v12 contentSize];
+    styleScrollView3 = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView3 contentSize];
     v14 = (v11 - v13) * 0.5;
-    v15 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v15 frame];
+    styleScrollView4 = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView4 frame];
     v17 = -floor(v14 - v16);
-    v18 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v18 setContentOffset:{v17, 0.0}];
+    styleScrollView5 = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView5 setContentOffset:{v17, 0.0}];
   }
 
   else
@@ -392,30 +392,30 @@ uint64_t __56__ICStyleSelectorViewController_registerForTraitChanges__block_invo
     [(ICStyleSelectorViewController *)self scrollCurrentStyleToVisible:0];
   }
 
-  v19 = [(ICStyleSelectorViewController *)self styleScrollView];
-  [v19 setScrollEnabled:v5 <= v8];
+  styleScrollView6 = [(ICStyleSelectorViewController *)self styleScrollView];
+  [styleScrollView6 setScrollEnabled:v5 <= v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = ICStyleSelectorViewController;
-  [(ICStyleSelectorViewController *)&v7 viewWillAppear:a3];
+  [(ICStyleSelectorViewController *)&v7 viewWillAppear:appear];
   if ([(ICStyleSelectorViewController *)self isPopover])
   {
     [(ICStyleSelectorViewController *)self configureForPopover];
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange name:*MEMORY[0x277D76810] object:0];
 
-  v5 = [(ICStyleSelectorViewController *)self traitCollection];
+  traitCollection = [(ICStyleSelectorViewController *)self traitCollection];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__ICStyleSelectorViewController_viewWillAppear___block_invoke;
   v6[3] = &unk_2781ABCF8;
   v6[4] = self;
-  [v5 ic_performAsCurrent:v6];
+  [traitCollection ic_performAsCurrent:v6];
 }
 
 uint64_t __48__ICStyleSelectorViewController_viewWillAppear___block_invoke(uint64_t a1)
@@ -427,59 +427,59 @@ uint64_t __48__ICStyleSelectorViewController_viewWillAppear___block_invoke(uint6
   return [v2 applyAccessibilityInfo];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ICStyleSelectorViewController;
-  [(ICNAViewController *)&v6 viewDidAppear:a3];
+  [(ICNAViewController *)&v6 viewDidAppear:appear];
   v4 = *MEMORY[0x277D76488];
-  v5 = [(ICStyleSelectorViewController *)self view];
-  UIAccessibilityPostNotification(v4, v5);
+  view = [(ICStyleSelectorViewController *)self view];
+  UIAccessibilityPostNotification(v4, view);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ICStyleSelectorViewController;
-  [(ICStyleSelectorViewController *)&v5 viewWillDisappear:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  [(ICStyleSelectorViewController *)&v5 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = ICStyleSelectorViewController;
-  [(ICStyleSelectorViewController *)&v6 viewDidDisappear:a3];
+  [(ICStyleSelectorViewController *)&v6 viewDidDisappear:disappear];
   v4 = *MEMORY[0x277D76488];
-  v5 = [(ICStyleSelectorViewController *)self elementForAXFocusOnDismissal];
-  UIAccessibilityPostNotification(v4, v5);
+  elementForAXFocusOnDismissal = [(ICStyleSelectorViewController *)self elementForAXFocusOnDismissal];
+  UIAccessibilityPostNotification(v4, elementForAXFocusOnDismissal);
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   if (ICInternalSettingsIsEmphasisEnabled())
   {
     [(ICStyleSelectorViewController *)self setUpNonStyleButtons];
     v11.receiver = self;
     v11.super_class = ICStyleSelectorViewController;
-    [(ICStyleSelectorViewController *)&v11 presentViewController:v9 animated:v5 completion:v8];
+    [(ICStyleSelectorViewController *)&v11 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = [(ICStyleSelectorViewController *)self delegate];
-    [v10 styleSelector:self presentViewController:v9 animated:v5 completion:v8];
+    delegate = [(ICStyleSelectorViewController *)self delegate];
+    [delegate styleSelector:self presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (void)configureForPopover
 {
-  v3 = [(ICStyleSelectorViewController *)self delegate];
-  v4 = [v3 styleSelectorShouldUseCompactTopInset:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  v4 = [delegate styleSelectorShouldUseCompactTopInset:self];
 
   if (v4)
   {
@@ -491,19 +491,19 @@ uint64_t __48__ICStyleSelectorViewController_viewWillAppear___block_invoke(uint6
     v5 = 79.0;
   }
 
-  v6 = [(ICStyleSelectorViewController *)self scrollViewTopConstraint];
-  [v6 setConstant:v5];
+  scrollViewTopConstraint = [(ICStyleSelectorViewController *)self scrollViewTopConstraint];
+  [scrollViewTopConstraint setConstant:v5];
 
   if (![(ICStyleSelectorViewController *)self configuredForPopover])
   {
-    v7 = [(ICStyleSelectorViewController *)self biusContainerTopConstraint];
-    [v7 setConstant:12.0];
+    biusContainerTopConstraint = [(ICStyleSelectorViewController *)self biusContainerTopConstraint];
+    [biusContainerTopConstraint setConstant:12.0];
 
-    v8 = [(ICStyleSelectorViewController *)self listsContainerTopConstraint];
-    [v8 setConstant:12.0];
+    listsContainerTopConstraint = [(ICStyleSelectorViewController *)self listsContainerTopConstraint];
+    [listsContainerTopConstraint setConstant:12.0];
 
-    v9 = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
-    [v9 setConstant:16.0];
+    listsContainerBottomConstraint = [(ICStyleSelectorViewController *)self listsContainerBottomConstraint];
+    [listsContainerBottomConstraint setConstant:16.0];
 
     [(ICStyleSelectorViewController *)self setConfiguredForPopover:1];
   }
@@ -522,8 +522,8 @@ uint64_t __48__ICStyleSelectorViewController_viewWillAppear___block_invoke(uint6
   v3 = 12.0;
   if (![(ICStyleSelectorViewController *)self isPopover])
   {
-    v4 = [(ICStyleSelectorViewController *)self traitCollection];
-    if ([v4 verticalSizeClass] == 1)
+    traitCollection = [(ICStyleSelectorViewController *)self traitCollection];
+    if ([traitCollection verticalSizeClass] == 1)
     {
       v3 = 21.0;
     }
@@ -537,180 +537,180 @@ uint64_t __48__ICStyleSelectorViewController_viewWillAppear___block_invoke(uint6
   return v3;
 }
 
-- (void)didSelectDone:(id)a3
+- (void)didSelectDone:(id)done
 {
-  v4 = [(ICStyleSelectorViewController *)self delegate];
-  [v4 styleSelectorDidCancel:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelectorDidCancel:self];
 }
 
-- (void)toggleBlockQuote:(id)a3
+- (void)toggleBlockQuote:(id)quote
 {
-  v4 = [(ICStyleSelectorViewController *)self delegate];
-  [v4 styleSelectorToggleBlockQuote:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelectorToggleBlockQuote:self];
 
-  v7 = [(ICStyleSelectorViewController *)self delegate];
-  v5 = [v7 styleSelectorSelectionHasBlockQuote:self];
-  v6 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  [v6 setSelected:v5];
+  delegate2 = [(ICStyleSelectorViewController *)self delegate];
+  v5 = [delegate2 styleSelectorSelectionHasBlockQuote:self];
+  blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  [blockQuoteButton setSelected:v5];
 }
 
-- (void)toggleBIUS:(id)a3
+- (void)toggleBIUS:(id)s
 {
-  v4 = a3;
-  [v4 setSelected:{objc_msgSend(v4, "isSelected") ^ 1}];
-  v6 = [(ICStyleSelectorViewController *)self delegate];
-  v5 = [v4 tag];
+  sCopy = s;
+  [sCopy setSelected:{objc_msgSend(sCopy, "isSelected") ^ 1}];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  v5 = [sCopy tag];
 
-  [v6 styleSelector:self toggleBIUS:v5];
+  [delegate styleSelector:self toggleBIUS:v5];
 }
 
-- (void)indentLeft:(id)a3
+- (void)indentLeft:(id)left
 {
-  v4 = [(ICStyleSelectorViewController *)self delegate];
-  [v4 styleSelectorDidIndentLeft:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelectorDidIndentLeft:self];
 
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 }
 
-- (void)indentRight:(id)a3
+- (void)indentRight:(id)right
 {
-  v4 = [(ICStyleSelectorViewController *)self delegate];
-  [v4 styleSelectorDidIndentRight:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelectorDidIndentRight:self];
 
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 }
 
-- (void)didSelectDashedList:(id)a3
+- (void)didSelectDashedList:(id)list
 {
   v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:101];
   [(ICStyleSelectorViewController *)self setCurrentStyles:v4 bius:[(ICStyleSelectorViewController *)self currentBIUS] animated:0];
 
-  v5 = [(ICStyleSelectorViewController *)self delegate];
-  [v5 styleSelector:self didSelectStyle:101];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelector:self didSelectStyle:101];
 
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 }
 
-- (void)didSelectNumberedList:(id)a3
+- (void)didSelectNumberedList:(id)list
 {
   v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:102];
   [(ICStyleSelectorViewController *)self setCurrentStyles:v4 bius:[(ICStyleSelectorViewController *)self currentBIUS] animated:0];
 
-  v5 = [(ICStyleSelectorViewController *)self delegate];
-  [v5 styleSelector:self didSelectStyle:102];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelector:self didSelectStyle:102];
 
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 }
 
-- (void)didSelectBulletedList:(id)a3
+- (void)didSelectBulletedList:(id)list
 {
   v4 = [MEMORY[0x277CCAA78] indexSetWithIndex:100];
   [(ICStyleSelectorViewController *)self setCurrentStyles:v4 bius:[(ICStyleSelectorViewController *)self currentBIUS] animated:0];
 
-  v5 = [(ICStyleSelectorViewController *)self delegate];
-  [v5 styleSelector:self didSelectStyle:100];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelector:self didSelectStyle:100];
 
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 }
 
-- (void)setStyles:(id)a3
+- (void)setStyles:(id)styles
 {
-  v5 = a3;
-  if (self->_styles != v5)
+  stylesCopy = styles;
+  if (self->_styles != stylesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styles, a3);
+    v6 = stylesCopy;
+    objc_storeStrong(&self->_styles, styles);
     [(ICStyleSelectorViewController *)self populateStyleScrollView];
-    v5 = v6;
+    stylesCopy = v6;
   }
 }
 
-- (void)setCurrentStyles:(id)a3 bius:(unint64_t)a4 animated:(BOOL)a5
+- (void)setCurrentStyles:(id)styles bius:(unint64_t)bius animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  stylesCopy = styles;
   [(ICStyleSelectorViewController *)self loadViewIfNeeded];
-  [(ICStyleSelectorViewController *)self setCurrentBIUS:a4];
-  [(ICStyleSelectorViewController *)self setCurrentStyles:v8];
+  [(ICStyleSelectorViewController *)self setCurrentBIUS:bius];
+  [(ICStyleSelectorViewController *)self setCurrentStyles:stylesCopy];
 
-  [(ICStyleSelectorViewController *)self updateStyleSelectionHighlightAnimated:v5];
+  [(ICStyleSelectorViewController *)self updateStyleSelectionHighlightAnimated:animatedCopy];
   [(ICStyleSelectorViewController *)self updateNamedStyleSelectedState];
   [(ICStyleSelectorViewController *)self updateListStyleSelectedState];
   [(ICStyleSelectorViewController *)self updateButtonEnabledState];
 
-  [(ICStyleSelectorViewController *)self scrollCurrentStyleToVisible:v5];
+  [(ICStyleSelectorViewController *)self scrollCurrentStyleToVisible:animatedCopy];
 }
 
-- (void)setCurrentBIUS:(unint64_t)a3
+- (void)setCurrentBIUS:(unint64_t)s
 {
-  self->_currentBIUS = a3;
-  v5 = [(ICStyleSelectorViewController *)self boldButton];
-  [v5 setSelected:a3 & 1];
+  self->_currentBIUS = s;
+  boldButton = [(ICStyleSelectorViewController *)self boldButton];
+  [boldButton setSelected:s & 1];
 
-  v6 = [(ICStyleSelectorViewController *)self italicButton];
-  [v6 setSelected:(a3 >> 1) & 1];
+  italicButton = [(ICStyleSelectorViewController *)self italicButton];
+  [italicButton setSelected:(s >> 1) & 1];
 
-  v7 = [(ICStyleSelectorViewController *)self underlineButton];
-  [v7 setSelected:(a3 >> 2) & 1];
+  underlineButton = [(ICStyleSelectorViewController *)self underlineButton];
+  [underlineButton setSelected:(s >> 2) & 1];
 
-  v8 = [(ICStyleSelectorViewController *)self strikethroughButton];
-  [v8 setSelected:(a3 >> 3) & 1];
+  strikethroughButton = [(ICStyleSelectorViewController *)self strikethroughButton];
+  [strikethroughButton setSelected:(s >> 3) & 1];
 
   if (ICInternalSettingsIsEmphasisEnabled())
   {
-    v9 = [(ICStyleSelectorViewController *)self emphasisButton];
-    [v9 setSelected:(a3 >> 4) & 1];
+    emphasisButton = [(ICStyleSelectorViewController *)self emphasisButton];
+    [emphasisButton setSelected:(s >> 4) & 1];
   }
 
-  v10 = [(ICStyleSelectorViewController *)self delegate];
-  v11 = [v10 styleSelectorSelectionHasBlockQuote:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  v11 = [delegate styleSelectorSelectionHasBlockQuote:self];
 
-  v12 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  [v12 setSelected:v11];
+  blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  [blockQuoteButton setSelected:v11];
 }
 
 - (UIButton)boldButton
 {
-  v2 = [(ICStyleSelectorViewController *)self biusContainer];
-  v3 = [v2 viewWithTag:1];
+  biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+  v3 = [biusContainer viewWithTag:1];
 
   return v3;
 }
 
 - (UIButton)italicButton
 {
-  v2 = [(ICStyleSelectorViewController *)self biusContainer];
-  v3 = [v2 viewWithTag:2];
+  biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+  v3 = [biusContainer viewWithTag:2];
 
   return v3;
 }
 
 - (UIButton)underlineButton
 {
-  v2 = [(ICStyleSelectorViewController *)self biusContainer];
-  v3 = [v2 viewWithTag:4];
+  biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+  v3 = [biusContainer viewWithTag:4];
 
   return v3;
 }
 
 - (UIButton)strikethroughButton
 {
-  v2 = [(ICStyleSelectorViewController *)self biusContainer];
-  v3 = [v2 viewWithTag:8];
+  biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+  v3 = [biusContainer viewWithTag:8];
 
   return v3;
 }
 
-- (double)preferredHeightForTraitCollection:(id)a3
+- (double)preferredHeightForTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(ICStyleSelectorViewController *)self headerView];
-  [v5 frame];
+  collectionCopy = collection;
+  headerView = [(ICStyleSelectorViewController *)self headerView];
+  [headerView frame];
   v6 = CGRectGetMaxY(v10) + 4.0 + 8.0;
 
-  v7 = [v4 verticalSizeClass];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
   v8 = 104.0;
-  if (v7 == 2)
+  if (verticalSizeClass == 2)
   {
     v8 = 188.0;
   }
@@ -910,24 +910,24 @@ void __49__ICStyleSelectorViewController_makeShortcutMenu__block_invoke_11(uint6
   [v1 styleSelectorToggleBlockQuote:WeakRetained];
 }
 
-- (BOOL)currentNamedStylesContainsStyle:(unsigned int)a3
+- (BOOL)currentNamedStylesContainsStyle:(unsigned int)style
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(ICStyleSelectorViewController *)self currentStyles];
+  currentStyles = [(ICStyleSelectorViewController *)self currentStyles];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__ICStyleSelectorViewController_currentNamedStylesContainsStyle___block_invoke;
   v6[3] = &unk_2781ADD58;
-  v7 = a3;
+  styleCopy = style;
   v6[4] = &v8;
-  [v4 enumerateIndexesUsingBlock:v6];
+  [currentStyles enumerateIndexesUsingBlock:v6];
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(style) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return style;
 }
 
 uint64_t __65__ICStyleSelectorViewController_currentNamedStylesContainsStyle___block_invoke(uint64_t result, int a2, _BYTE *a3)
@@ -941,19 +941,19 @@ uint64_t __65__ICStyleSelectorViewController_currentNamedStylesContainsStyle___b
   return result;
 }
 
-- (id)biusStyleActionWithStyleBIUS:(unint64_t)a3
+- (id)biusStyleActionWithStyleBIUS:(unint64_t)s
 {
   objc_initWeak(&location, self);
   v5 = NSStringForSymbolImageNameFromICStyleBIUS();
-  v6 = [(ICStyleSelectorViewController *)self currentBIUSContainsStyle:a3];
+  v6 = [(ICStyleSelectorViewController *)self currentBIUSContainsStyle:s];
   v7 = [MEMORY[0x277D755B8] ic_systemImageNamed:v5 textStyle:*MEMORY[0x277D76918] scale:-1];
   if (v6)
   {
-    v8 = [MEMORY[0x277D75348] darkTextColor];
-    v9 = [v7 imageWithTintColor:v8];
+    darkTextColor = [MEMORY[0x277D75348] darkTextColor];
+    v9 = [v7 imageWithTintColor:darkTextColor];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    v7 = [v9 ic_imageCenteredWithBackgroundColor:v10 size:34.0 cornerRadius:{34.0, 8.0}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v7 = [v9 ic_imageCenteredWithBackgroundColor:whiteColor size:34.0 cornerRadius:{34.0, 8.0}];
   }
 
   v11 = MEMORY[0x277D750C8];
@@ -962,9 +962,9 @@ uint64_t __65__ICStyleSelectorViewController_currentNamedStylesContainsStyle___b
   v15[2] = __62__ICStyleSelectorViewController_biusStyleActionWithStyleBIUS___block_invoke;
   v15[3] = &unk_2781ADA48;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
+  v16[1] = s;
   v12 = [v11 ic_actionWithImage:v7 handler:v15];
-  v13 = [MEMORY[0x277D36978] icaxStyleDescriptionForBIUSStyle:a3];
+  v13 = [MEMORY[0x277D36978] icaxStyleDescriptionForBIUSStyle:s];
   [v12 setAccessibilityLabel:v13];
 
   objc_destroyWeak(v16);
@@ -980,20 +980,20 @@ void __62__ICStyleSelectorViewController_biusStyleActionWithStyleBIUS___block_in
   [v2 styleSelector:WeakRetained toggleBIUS:*(a1 + 40)];
 }
 
-- (id)namedStyleActionWithNamedStyle:(unsigned int)a3
+- (id)namedStyleActionWithNamedStyle:(unsigned int)style
 {
-  v3 = *&a3;
+  v3 = *&style;
   objc_initWeak(&location, self);
   v5 = [MEMORY[0x277D36978] styleForNamedStyle:v3];
   v6 = MEMORY[0x277D750C8];
-  v7 = [v5 attributedName];
+  attributedName = [v5 attributedName];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__ICStyleSelectorViewController_namedStyleActionWithNamedStyle___block_invoke;
   v11[3] = &unk_2781ADD80;
   objc_copyWeak(&v12, &location);
   v13 = v3;
-  v8 = [v6 ic_actionWithAttributedTitle:v7 handler:v11];
+  v8 = [v6 ic_actionWithAttributedTitle:attributedName handler:v11];
 
   [v8 setState:{-[ICStyleSelectorViewController menuElementStateWithSelected:](self, "menuElementStateWithSelected:", -[ICStyleSelectorViewController currentNamedStylesContainsStyle:](self, "currentNamedStylesContainsStyle:", v3))}];
   v9 = [MEMORY[0x277D36978] icaxStyleDescriptionForNamedStyle:v3];
@@ -1031,12 +1031,12 @@ void __64__ICStyleSelectorViewController_namedStyleActionWithNamedStyle___block_
     while (v3);
   }
 
-  v7 = [(ICStyleSelectorViewController *)self delegate];
-  v8 = [v7 currentEmphasisType];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  currentEmphasisType = [delegate currentEmphasisType];
 
-  if (v8)
+  if (currentEmphasisType)
   {
-    v9 = [(ICStyleSelectorViewController *)self emphasisColorImageWithType:v8 bordered:1];
+    v9 = [(ICStyleSelectorViewController *)self emphasisColorImageWithType:currentEmphasisType bordered:1];
   }
 
   else
@@ -1045,8 +1045,8 @@ void __64__ICStyleSelectorViewController_namedStyleActionWithNamedStyle___block_
   }
 
   v10 = MEMORY[0x277D75710];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
   v13 = [v10 menuWithTitle:v12 image:v9 identifier:0 options:0 children:v4];
 
   v14 = MEMORY[0x277D75710];
@@ -1062,20 +1062,20 @@ void __64__ICStyleSelectorViewController_namedStyleActionWithNamedStyle___block_
   v19[1] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
   v3 = MEMORY[0x277D750C8];
-  v4 = [MEMORY[0x277CCA898] ic_blockQuoteMenuItemAttributedString];
+  ic_blockQuoteMenuItemAttributedString = [MEMORY[0x277CCA898] ic_blockQuoteMenuItemAttributedString];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __47__ICStyleSelectorViewController_blockQuoteMenu__block_invoke;
   v16 = &unk_2781ADD08;
   objc_copyWeak(&v17, &location);
-  v5 = [v3 ic_actionWithAttributedTitle:v4 handler:&v13];
+  v5 = [v3 ic_actionWithAttributedTitle:ic_blockQuoteMenuItemAttributedString handler:&v13];
 
   v6 = [(ICStyleSelectorViewController *)self delegate:v13];
   [v5 setState:{objc_msgSend(v6, "styleSelectorSelectionHasBlockQuote:", self)}];
 
-  v7 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  v8 = [v7 accessibilityLabel];
-  [v5 setAccessibilityLabel:v8];
+  blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  accessibilityLabel = [blockQuoteButton accessibilityLabel];
+  [v5 setAccessibilityLabel:accessibilityLabel];
 
   v9 = MEMORY[0x277D75710];
   v19[0] = v5;
@@ -1094,16 +1094,16 @@ void __47__ICStyleSelectorViewController_blockQuoteMenu__block_invoke(uint64_t a
   [WeakRetained toggleBlockQuote:WeakRetained];
 }
 
-- (void)toggleEmphasis:(id)a3
+- (void)toggleEmphasis:(id)emphasis
 {
-  v4 = [(ICStyleSelectorViewController *)self delegate];
-  [v4 toggleEmphasis];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate toggleEmphasis];
 
-  v5 = [(ICStyleSelectorViewController *)self delegate];
-  v6 = [v5 currentBIUSForStyleSelector];
+  delegate2 = [(ICStyleSelectorViewController *)self delegate];
+  currentBIUSForStyleSelector = [delegate2 currentBIUSForStyleSelector];
 
-  v7 = [(ICStyleSelectorViewController *)self emphasisButton];
-  [v7 setSelected:(v6 >> 4) & 1];
+  emphasisButton = [(ICStyleSelectorViewController *)self emphasisButton];
+  [emphasisButton setSelected:(currentBIUSForStyleSelector >> 4) & 1];
 }
 
 - (id)makeInlineMenu
@@ -1192,14 +1192,14 @@ void __47__ICStyleSelectorViewController_makeInlineMenu__block_invoke_2(uint64_t
 - (NSArray)biusButtons
 {
   v9[4] = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self boldButton];
-  v9[0] = v3;
-  v4 = [(ICStyleSelectorViewController *)self italicButton];
-  v9[1] = v4;
-  v5 = [(ICStyleSelectorViewController *)self underlineButton];
-  v9[2] = v5;
-  v6 = [(ICStyleSelectorViewController *)self strikethroughButton];
-  v9[3] = v6;
+  boldButton = [(ICStyleSelectorViewController *)self boldButton];
+  v9[0] = boldButton;
+  italicButton = [(ICStyleSelectorViewController *)self italicButton];
+  v9[1] = italicButton;
+  underlineButton = [(ICStyleSelectorViewController *)self underlineButton];
+  v9[2] = underlineButton;
+  strikethroughButton = [(ICStyleSelectorViewController *)self strikethroughButton];
+  v9[3] = strikethroughButton;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:4];
 
   return v7;
@@ -1208,11 +1208,11 @@ void __47__ICStyleSelectorViewController_makeInlineMenu__block_invoke_2(uint64_t
 - (NSArray)listButtons
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self bulletedListButton];
-  v4 = [(ICStyleSelectorViewController *)self dashedListButton];
-  v8[1] = v4;
-  v5 = [(ICStyleSelectorViewController *)self numberedListButton];
-  v8[2] = v5;
+  bulletedListButton = [(ICStyleSelectorViewController *)self bulletedListButton];
+  dashedListButton = [(ICStyleSelectorViewController *)self dashedListButton];
+  v8[1] = dashedListButton;
+  numberedListButton = [(ICStyleSelectorViewController *)self numberedListButton];
+  v8[2] = numberedListButton;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
 
   return v6;
@@ -1221,10 +1221,10 @@ void __47__ICStyleSelectorViewController_makeInlineMenu__block_invoke_2(uint64_t
 - (NSArray)indentationButtons
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self indentLeftButton];
-  v7[0] = v3;
-  v4 = [(ICStyleSelectorViewController *)self indentRightButton];
-  v7[1] = v4;
+  indentLeftButton = [(ICStyleSelectorViewController *)self indentLeftButton];
+  v7[0] = indentLeftButton;
+  indentRightButton = [(ICStyleSelectorViewController *)self indentRightButton];
+  v7[1] = indentRightButton;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;
@@ -1232,13 +1232,13 @@ void __47__ICStyleSelectorViewController_makeInlineMenu__block_invoke_2(uint64_t
 
 - (NSArray)nonStyleButtons
 {
-  v3 = [(ICStyleSelectorViewController *)self biusButtons];
-  v4 = [v3 mutableCopy];
+  biusButtons = [(ICStyleSelectorViewController *)self biusButtons];
+  v4 = [biusButtons mutableCopy];
 
   if (ICInternalSettingsIsEmphasisEnabled())
   {
-    v5 = [(ICStyleSelectorViewController *)self emphasisButton];
-    [v4 addObject:v5];
+    emphasisButton = [(ICStyleSelectorViewController *)self emphasisButton];
+    [v4 addObject:emphasisButton];
 
     v6 = *MEMORY[0x277D35D80];
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:*MEMORY[0x277D35D80]];
@@ -1258,52 +1258,52 @@ void __47__ICStyleSelectorViewController_makeInlineMenu__block_invoke_2(uint64_t
     }
 
     v10 = [MEMORY[0x277D75710] menuWithChildren:v7];
-    v11 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-    [v11 setMenu:v10];
+    emphasisColorPickerButton = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+    [emphasisColorPickerButton setMenu:v10];
 
-    v12 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-    [v12 setShowsMenuAsPrimaryAction:1];
+    emphasisColorPickerButton2 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+    [emphasisColorPickerButton2 setShowsMenuAsPrimaryAction:1];
 
-    v13 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-    [v4 addObject:v13];
+    emphasisColorPickerButton3 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+    [v4 addObject:emphasisColorPickerButton3];
   }
 
-  v14 = [(ICStyleSelectorViewController *)self listButtons];
-  [v4 addObjectsFromArray:v14];
+  listButtons = [(ICStyleSelectorViewController *)self listButtons];
+  [v4 addObjectsFromArray:listButtons];
 
-  v15 = [(ICStyleSelectorViewController *)self indentationButtons];
-  [v4 addObjectsFromArray:v15];
+  indentationButtons = [(ICStyleSelectorViewController *)self indentationButtons];
+  [v4 addObjectsFromArray:indentationButtons];
 
-  v16 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  [v4 addObject:v16];
+  blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  [v4 addObject:blockQuoteButton];
 
   return v4;
 }
 
-- (void)applyFixedEmphasisColor:(id)a3
+- (void)applyFixedEmphasisColor:(id)color
 {
   v4 = ICEmphasisColorTypeForTag();
-  v5 = [(ICStyleSelectorViewController *)self delegate];
-  [v5 toggleEmphasisWithType:v4];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate toggleEmphasisWithType:v4];
 }
 
-- (id)emphasisColorActionWithType:(int64_t)a3 bordered:(BOOL)a4 selectionTogglesEmphasis:(BOOL)a5
+- (id)emphasisColorActionWithType:(int64_t)type bordered:(BOOL)bordered selectionTogglesEmphasis:(BOOL)emphasis
 {
-  v6 = a4;
+  borderedCopy = bordered;
   objc_initWeak(&location, self);
   v9 = NSStringForEmphasisColorType();
-  v10 = [(ICStyleSelectorViewController *)self emphasisColorImageWithType:a3 bordered:v6];
+  v10 = [(ICStyleSelectorViewController *)self emphasisColorImageWithType:type bordered:borderedCopy];
   v11 = MEMORY[0x277D750C8];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_selectionTogglesEmphasis___block_invoke;
   v18 = &unk_2781ADDA8;
-  v20 = a5;
+  emphasisCopy = emphasis;
   objc_copyWeak(v19, &location);
-  v19[1] = a3;
+  v19[1] = type;
   v12 = [v11 actionWithTitle:v9 image:v10 identifier:0 handler:&v15];
   v13 = [(ICStyleSelectorViewController *)self delegate:v15];
-  [v12 setState:{objc_msgSend(v13, "currentEmphasisType") == a3}];
+  [v12 setState:{objc_msgSend(v13, "currentEmphasisType") == type}];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -1332,25 +1332,25 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
   [v9 setUpNonStyleButtons];
 }
 
-- (id)emphasisColorImageWithType:(int64_t)a3 bordered:(BOOL)a4
+- (id)emphasisColorImageWithType:(int64_t)type bordered:(BOOL)bordered
 {
-  v4 = a4;
+  borderedCopy = bordered;
   v5 = ICColorForEmphasisColorType();
-  if (v4)
+  if (borderedCopy)
   {
-    v6 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v7 = 2.0;
     v8 = 15.0;
   }
 
   else
   {
-    v6 = 0;
+    labelColor = 0;
     v7 = 0.0;
     v8 = 13.0;
   }
 
-  v9 = [MEMORY[0x277D755B8] ic_makeCircularImageWithColor:v5 diameter:v6 borderColor:v8 borderWidth:v7];
+  v9 = [MEMORY[0x277D755B8] ic_makeCircularImageWithColor:v5 diameter:labelColor borderColor:v8 borderWidth:v7];
 
   return v9;
 }
@@ -1358,10 +1358,10 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
 - (void)configureViewWithEmphasis
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  if (([v5 interfaceOrientation] - 3) > 1)
+  view = [(ICStyleSelectorViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) > 1)
   {
     v6 = 0;
   }
@@ -1372,125 +1372,125 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
   }
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(ICStyleSelectorViewController *)self emphasisContainer];
-  v9 = [(ICStyleSelectorViewController *)self biusContainer];
-  v10 = [v7 constraintWithItem:v8 attribute:5 relatedBy:0 toItem:v9 attribute:6 multiplier:1.0 constant:8.0];
+  emphasisContainer = [(ICStyleSelectorViewController *)self emphasisContainer];
+  biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+  v10 = [v7 constraintWithItem:emphasisContainer attribute:5 relatedBy:0 toItem:biusContainer attribute:6 multiplier:1.0 constant:8.0];
   [(ICStyleSelectorViewController *)self setEmphasisContainerLeadingConstraint:v10];
 
   v11 = MEMORY[0x277CCAAD0];
-  v12 = [(ICStyleSelectorViewController *)self emphasisContainerLeadingConstraint];
-  v49[0] = v12;
+  emphasisContainerLeadingConstraint = [(ICStyleSelectorViewController *)self emphasisContainerLeadingConstraint];
+  v49[0] = emphasisContainerLeadingConstraint;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:1];
   [v11 activateConstraints:v13];
 
   if (v6 && ([(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
-    v48 = v16;
+    emphasisContainerTrailingConstraint = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
+    v48 = emphasisContainerTrailingConstraint;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
     [v15 deactivateConstraints:v17];
 
     v18 = MEMORY[0x277CCAAD0];
-    v19 = [(ICStyleSelectorViewController *)self emphasisButton];
-    v20 = [(ICStyleSelectorViewController *)self boldButton];
-    v21 = [v18 constraintWithItem:v19 attribute:7 relatedBy:0 toItem:v20 attribute:7 multiplier:0.9 constant:0.0];
+    emphasisButton = [(ICStyleSelectorViewController *)self emphasisButton];
+    boldButton = [(ICStyleSelectorViewController *)self boldButton];
+    v21 = [v18 constraintWithItem:emphasisButton attribute:7 relatedBy:0 toItem:boldButton attribute:7 multiplier:0.9 constant:0.0];
     [(ICStyleSelectorViewController *)self setEmphasisButtonWidthConstraint:v21];
 
     v22 = MEMORY[0x277CCAAD0];
-    v23 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-    v24 = [(ICStyleSelectorViewController *)self emphasisButton];
-    v25 = [v22 constraintWithItem:v23 attribute:7 relatedBy:0 toItem:v24 attribute:7 multiplier:0.75 constant:0.0];
+    emphasisColorPickerButton = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+    emphasisButton2 = [(ICStyleSelectorViewController *)self emphasisButton];
+    v25 = [v22 constraintWithItem:emphasisColorPickerButton attribute:7 relatedBy:0 toItem:emphasisButton2 attribute:7 multiplier:0.75 constant:0.0];
     [(ICStyleSelectorViewController *)self setEmphasisColorPickerButtonWidthConstraint:v25];
 
     v26 = MEMORY[0x277CCAAD0];
-    v27 = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
-    v47[0] = v27;
-    v28 = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
-    v47[1] = v28;
+    emphasisButtonWidthConstraint = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
+    v47[0] = emphasisButtonWidthConstraint;
+    emphasisColorPickerButtonWidthConstraint = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
+    v47[1] = emphasisColorPickerButtonWidthConstraint;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     [v26 activateConstraints:v29];
   }
 
   else
   {
-    v30 = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
+    emphasisButtonWidthConstraint2 = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
 
-    if (v30)
+    if (emphasisButtonWidthConstraint2)
     {
       v31 = MEMORY[0x277CCAAD0];
-      v32 = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
-      v46 = v32;
+      emphasisButtonWidthConstraint3 = [(ICStyleSelectorViewController *)self emphasisButtonWidthConstraint];
+      v46 = emphasisButtonWidthConstraint3;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
       [v31 deactivateConstraints:v33];
     }
 
-    v34 = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
+    emphasisColorPickerButtonWidthConstraint2 = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
 
-    if (v34)
+    if (emphasisColorPickerButtonWidthConstraint2)
     {
       v35 = MEMORY[0x277CCAAD0];
-      v36 = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
-      v45 = v36;
+      emphasisColorPickerButtonWidthConstraint3 = [(ICStyleSelectorViewController *)self emphasisColorPickerButtonWidthConstraint];
+      v45 = emphasisColorPickerButtonWidthConstraint3;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
       [v35 deactivateConstraints:v37];
     }
 
-    v38 = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
+    emphasisContainerTrailingConstraint2 = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
 
-    if (!v38)
+    if (!emphasisContainerTrailingConstraint2)
     {
       v39 = MEMORY[0x277CCAAD0];
-      v40 = [(ICStyleSelectorViewController *)self emphasisContainer];
-      v41 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-      v42 = [v39 constraintWithItem:v40 attribute:6 relatedBy:0 toItem:v41 attribute:6 multiplier:1.0 constant:0.0];
+      emphasisContainer2 = [(ICStyleSelectorViewController *)self emphasisContainer];
+      blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+      v42 = [v39 constraintWithItem:emphasisContainer2 attribute:6 relatedBy:0 toItem:blockQuoteButton attribute:6 multiplier:1.0 constant:0.0];
       [(ICStyleSelectorViewController *)self setEmphasisContainerTrailingConstraint:v42];
     }
 
     v43 = MEMORY[0x277CCAAD0];
-    v27 = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
-    v44 = v27;
-    v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
-    [v43 activateConstraints:v28];
+    emphasisButtonWidthConstraint = [(ICStyleSelectorViewController *)self emphasisContainerTrailingConstraint];
+    v44 = emphasisButtonWidthConstraint;
+    emphasisColorPickerButtonWidthConstraint = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
+    [v43 activateConstraints:emphasisColorPickerButtonWidthConstraint];
   }
 }
 
 - (BOOL)isPopover
 {
-  v2 = [(ICStyleSelectorViewController *)self popoverPresentationController];
-  if (v2)
+  popoverPresentationController = [(ICStyleSelectorViewController *)self popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v3 = 1;
+    ic_isVision = 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75418] ic_isVision];
+    ic_isVision = [MEMORY[0x277D75418] ic_isVision];
   }
 
-  return v3;
+  return ic_isVision;
 }
 
-- (void)scrollCurrentStyleToVisible:(BOOL)a3
+- (void)scrollCurrentStyleToVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(ICStyleSelectorViewController *)self currentStyles];
-  v6 = [v5 count];
+  visibleCopy = visible;
+  currentStyles = [(ICStyleSelectorViewController *)self currentStyles];
+  v6 = [currentStyles count];
 
   if (v6 == 1)
   {
-    v7 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-    [v7 frame];
+    styleSelectionHighlight = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+    [styleSelectionHighlight frame];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v16 contentSize];
+    styleScrollView = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView contentSize];
     v18 = v17;
-    v19 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v19 contentSize];
+    styleScrollView2 = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView2 contentSize];
     v29.size.height = v20;
     v29.origin.x = 0.0;
     v29.origin.y = 0.0;
@@ -1505,15 +1505,15 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
     width = v28.size.width;
     height = v28.size.height;
 
-    v25 = [(ICStyleSelectorViewController *)self styleScrollView];
-    [v25 scrollRectToVisible:v3 animated:{x, y, width, height}];
+    styleScrollView3 = [(ICStyleSelectorViewController *)self styleScrollView];
+    [styleScrollView3 scrollRectToVisible:visibleCopy animated:{x, y, width, height}];
   }
 }
 
-- (id)fontForICTTNamedStyle:(unsigned int)a3
+- (id)fontForICTTNamedStyle:(unsigned int)style
 {
-  v4 = [(ICStyleSelectorViewController *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  traitCollection = [(ICStyleSelectorViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   v6 = fontForICTTNamedStyle__validCategories;
   if (!fontForICTTNamedStyle__validCategories)
@@ -1525,26 +1525,26 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
     v6 = fontForICTTNamedStyle__validCategories;
   }
 
-  if (([v6 containsObject:v5] & 1) == 0)
+  if (([v6 containsObject:preferredContentSizeCategory] & 1) == 0)
   {
     v9 = *MEMORY[0x277D76818];
 
-    v5 = v9;
+    preferredContentSizeCategory = v9;
   }
 
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    if (!a3)
+    if (!style)
     {
-      v13 = [MEMORY[0x277D74300] ic_preferredFontForTitleTextWithContentSizeCategory:v5];
+      v13 = [MEMORY[0x277D74300] ic_preferredFontForTitleTextWithContentSizeCategory:preferredContentSizeCategory];
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
-      [MEMORY[0x277D74300] ic_pointSizeForBodyTextWithContentSizeCategory:v5];
+      [MEMORY[0x277D74300] ic_pointSizeForBodyTextWithContentSizeCategory:preferredContentSizeCategory];
       v11 = [MEMORY[0x277D74300] systemFontOfSize:round(v10 * *MEMORY[0x277D369D8]) weight:*MEMORY[0x277D74410]];
-      v12 = [v11 ic_fontWithSingleLineA];
+      ic_fontWithSingleLineA = [v11 ic_fontWithSingleLineA];
 
       goto LABEL_16;
     }
@@ -1552,45 +1552,45 @@ void __95__ICStyleSelectorViewController_emphasisColorActionWithType_bordered_se
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
-    v13 = [MEMORY[0x277D74300] ic_preferredFontForSubheadingTextWithContentSizeCategory:v5];
+    v13 = [MEMORY[0x277D74300] ic_preferredFontForSubheadingTextWithContentSizeCategory:preferredContentSizeCategory];
     goto LABEL_15;
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
 LABEL_12:
-    v13 = [MEMORY[0x277D74300] ic_preferredFontForBodyTextWithContentSizeCategory:v5];
+    v13 = [MEMORY[0x277D74300] ic_preferredFontForBodyTextWithContentSizeCategory:preferredContentSizeCategory];
     goto LABEL_15;
   }
 
-  v13 = [MEMORY[0x277D74300] ic_preferredFontForFixedWidthTextWithContentSizeCategory:v5];
+  v13 = [MEMORY[0x277D74300] ic_preferredFontForFixedWidthTextWithContentSizeCategory:preferredContentSizeCategory];
 LABEL_15:
-  v12 = v13;
+  ic_fontWithSingleLineA = v13;
 LABEL_16:
 
-  return v12;
+  return ic_fontWithSingleLineA;
 }
 
 - (void)updateHeaderVisibility
 {
-  v3 = [(ICStyleSelectorViewController *)self isPopover];
-  v4 = [(ICStyleSelectorViewController *)self headerView];
-  v5 = v4;
-  if (v3)
+  isPopover = [(ICStyleSelectorViewController *)self isPopover];
+  headerView = [(ICStyleSelectorViewController *)self headerView];
+  v5 = headerView;
+  if (isPopover)
   {
-    [v4 setHidden:1];
+    [headerView setHidden:1];
 
-    v6 = [(ICStyleSelectorViewController *)self navigationBar];
-    [v6 setHidden:0];
+    navigationBar = [(ICStyleSelectorViewController *)self navigationBar];
+    [navigationBar setHidden:0];
 
-    v7 = [(ICStyleSelectorViewController *)self view];
-    [v7 safeAreaInsets];
+    view = [(ICStyleSelectorViewController *)self view];
+    [view safeAreaInsets];
     v9 = v8;
 
-    v10 = [(ICStyleSelectorViewController *)self navigationBar];
-    [v10 frame];
+    navigationBar2 = [(ICStyleSelectorViewController *)self navigationBar];
+    [navigationBar2 frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -1611,39 +1611,39 @@ LABEL_16:
     v31.size.width = v16;
     v31.size.height = v18;
     Width = CGRectGetWidth(v31);
-    v22 = [(ICStyleSelectorViewController *)self navigationBar];
-    [v22 setFrame:{MinX, MinY, Width, v9 + 50.0}];
+    navigationBar3 = [(ICStyleSelectorViewController *)self navigationBar];
+    [navigationBar3 setFrame:{MinX, MinY, Width, v9 + 50.0}];
 
-    v27 = objc_alloc_init(MEMORY[0x277D75788]);
-    [v27 setTitlePositionAdjustment:{0.0, v9}];
-    v23 = [(ICStyleSelectorViewController *)self navigationBar];
-    [v23 setStandardAppearance:v27];
+    headerView2 = objc_alloc_init(MEMORY[0x277D75788]);
+    [headerView2 setTitlePositionAdjustment:{0.0, v9}];
+    navigationBar4 = [(ICStyleSelectorViewController *)self navigationBar];
+    [navigationBar4 setStandardAppearance:headerView2];
 
     [(ICStyleSelectorViewController *)self configureForPopover];
   }
 
   else
   {
-    [v4 setHidden:0];
+    [headerView setHidden:0];
 
-    v24 = [(ICStyleSelectorViewController *)self navigationBar];
-    [v24 setHidden:1];
+    navigationBar5 = [(ICStyleSelectorViewController *)self navigationBar];
+    [navigationBar5 setHidden:1];
 
-    v27 = [(ICStyleSelectorViewController *)self headerView];
-    [v27 frame];
+    headerView2 = [(ICStyleSelectorViewController *)self headerView];
+    [headerView2 frame];
     v25 = CGRectGetMaxY(v32) + 4.0;
-    v26 = [(ICStyleSelectorViewController *)self scrollViewTopConstraint];
-    [v26 setConstant:v25];
+    scrollViewTopConstraint = [(ICStyleSelectorViewController *)self scrollViewTopConstraint];
+    [scrollViewTopConstraint setConstant:v25];
   }
 }
 
 - (void)configureForOrientation
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  if (([v5 interfaceOrientation] - 3) > 1)
+  view = [(ICStyleSelectorViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) > 1)
   {
     v6 = 0;
   }
@@ -1655,20 +1655,20 @@ LABEL_16:
 
   if (v6 != [(ICStyleSelectorViewController *)self configuredForLandscape])
   {
-    v7 = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
+    listsContainerLeadingConstraintLandscape = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
 
-    if (!v7)
+    if (!listsContainerLeadingConstraintLandscape)
     {
-      v8 = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
+      biusContainerTopConstraintLandscape = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
 
-      if (v8)
+      if (biusContainerTopConstraintLandscape)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.biusContainerTopConstraintLandscape) == nil)" functionName:"-[ICStyleSelectorViewController configureForOrientation]" simulateCrash:1 showAlert:0 format:{@"Expected nil value for '%s'", "self.biusContainerTopConstraintLandscape"}];
       }
 
-      v9 = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
+      boldButtonWidthConstraintLandscape = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
 
-      if (v9)
+      if (boldButtonWidthConstraintLandscape)
       {
         [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.boldButtonWidthConstraintLandscape) == nil)" functionName:"-[ICStyleSelectorViewController configureForOrientation]" simulateCrash:1 showAlert:0 format:{@"Expected nil value for '%s'", "self.boldButtonWidthConstraintLandscape"}];
       }
@@ -1684,25 +1684,25 @@ LABEL_16:
       }
       v10 = ;
       v11 = MEMORY[0x277CCAAD0];
-      v12 = [(ICStyleSelectorViewController *)self listsContainer];
-      v13 = [v11 constraintWithItem:v12 attribute:5 relatedBy:0 toItem:v10 attribute:6 multiplier:1.0 constant:8.0];
+      listsContainer = [(ICStyleSelectorViewController *)self listsContainer];
+      v13 = [v11 constraintWithItem:listsContainer attribute:5 relatedBy:0 toItem:v10 attribute:6 multiplier:1.0 constant:8.0];
       [(ICStyleSelectorViewController *)self setListsContainerLeadingConstraintLandscape:v13];
 
       v14 = MEMORY[0x277CCAAD0];
-      v15 = [(ICStyleSelectorViewController *)self biusContainer];
-      v16 = [(ICStyleSelectorViewController *)self listsContainer];
-      v17 = [v14 constraintWithItem:v15 attribute:3 relatedBy:0 toItem:v16 attribute:3 multiplier:1.0 constant:0.0];
+      biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+      listsContainer2 = [(ICStyleSelectorViewController *)self listsContainer];
+      v17 = [v14 constraintWithItem:biusContainer attribute:3 relatedBy:0 toItem:listsContainer2 attribute:3 multiplier:1.0 constant:0.0];
       [(ICStyleSelectorViewController *)self setBiusContainerTopConstraintLandscape:v17];
 
       v18 = MEMORY[0x277CCAAD0];
-      v19 = [(ICStyleSelectorViewController *)self boldButton];
-      v20 = [(ICStyleSelectorViewController *)self dashedListButton];
-      v21 = [v18 constraintWithItem:v19 attribute:7 relatedBy:0 toItem:v20 attribute:7 multiplier:1.0 constant:0.0];
+      boldButton = [(ICStyleSelectorViewController *)self boldButton];
+      dashedListButton = [(ICStyleSelectorViewController *)self dashedListButton];
+      v21 = [v18 constraintWithItem:boldButton attribute:7 relatedBy:0 toItem:dashedListButton attribute:7 multiplier:1.0 constant:0.0];
       [(ICStyleSelectorViewController *)self setBoldButtonWidthConstraintLandscape:v21];
     }
 
-    v22 = [(ICStyleSelectorViewController *)self scrollViewHeightConstraint];
-    [v22 setConstant:48.0];
+    scrollViewHeightConstraint = [(ICStyleSelectorViewController *)self scrollViewHeightConstraint];
+    [scrollViewHeightConstraint setConstant:48.0];
 
     if (v6)
     {
@@ -1714,27 +1714,27 @@ LABEL_16:
       v23 = 749.0;
     }
 
-    v24 = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
+    listsContainerLeadingConstraintLandscape2 = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
     *&v25 = v23;
-    [v24 setPriority:v25];
+    [listsContainerLeadingConstraintLandscape2 setPriority:v25];
 
-    v26 = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
+    biusContainerTopConstraintLandscape2 = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
     *&v27 = v23;
-    [v26 setPriority:v27];
+    [biusContainerTopConstraintLandscape2 setPriority:v27];
 
-    v28 = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
+    boldButtonWidthConstraintLandscape2 = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
     *&v29 = v23;
-    [v28 setPriority:v29];
+    [boldButtonWidthConstraintLandscape2 setPriority:v29];
 
-    if (!v7)
+    if (!listsContainerLeadingConstraintLandscape)
     {
       v30 = MEMORY[0x277CCAAD0];
-      v31 = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
-      v35[0] = v31;
-      v32 = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
-      v35[1] = v32;
-      v33 = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
-      v35[2] = v33;
+      listsContainerLeadingConstraintLandscape3 = [(ICStyleSelectorViewController *)self listsContainerLeadingConstraintLandscape];
+      v35[0] = listsContainerLeadingConstraintLandscape3;
+      biusContainerTopConstraintLandscape3 = [(ICStyleSelectorViewController *)self biusContainerTopConstraintLandscape];
+      v35[1] = biusContainerTopConstraintLandscape3;
+      boldButtonWidthConstraintLandscape3 = [(ICStyleSelectorViewController *)self boldButtonWidthConstraintLandscape];
+      v35[2] = boldButtonWidthConstraintLandscape3;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:3];
       [v30 activateConstraints:v34];
     }
@@ -1746,26 +1746,26 @@ LABEL_16:
   }
 }
 
-- (void)updateStyleSelectionHighlightAnimated:(BOOL)a3
+- (void)updateStyleSelectionHighlightAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  [v5 frame];
+  styleSelectionHighlight = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  [styleSelectionHighlight frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ICStyleSelectorViewController *)self currentStyles];
-  v15 = [v14 firstIndex];
+  currentStyles = [(ICStyleSelectorViewController *)self currentStyles];
+  firstIndex = [currentStyles firstIndex];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = [(ICStyleSelectorViewController *)self styleButtons];
-  v17 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  styleButtons = [(ICStyleSelectorViewController *)self styleButtons];
+  v17 = [styleButtons countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1777,10 +1777,10 @@ LABEL_16:
       {
         if (*v38 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(styleButtons);
         }
 
-        if ([*(*(&v37 + 1) + 8 * v20) tag] == v15)
+        if ([*(*(&v37 + 1) + 8 * v20) tag] == firstIndex)
         {
           v21 = 1;
           goto LABEL_11;
@@ -1790,7 +1790,7 @@ LABEL_16:
       }
 
       while (v18 != v20);
-      v18 = [v16 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v18 = [styleButtons countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v18)
       {
         continue;
@@ -1803,13 +1803,13 @@ LABEL_16:
   v21 = 0;
 LABEL_11:
 
-  v22 = [(ICStyleSelectorViewController *)self currentStyles];
-  v23 = [v22 count];
+  currentStyles2 = [(ICStyleSelectorViewController *)self currentStyles];
+  v23 = [currentStyles2 count];
 
   v24 = 0.0;
   if (v21 && v23 == 1)
   {
-    v25 = [(ICStyleSelectorViewController *)self styleButtonForStyle:v15];
+    v25 = [(ICStyleSelectorViewController *)self styleButtonForStyle:firstIndex];
     [v25 frame];
     v7 = v26;
     v9 = v27;
@@ -1819,17 +1819,17 @@ LABEL_11:
     v24 = 1.0;
   }
 
-  v30 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  v31 = v30;
-  if (v3)
+  styleSelectionHighlight2 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  v31 = styleSelectionHighlight2;
+  if (animatedCopy)
   {
-    [v30 alpha];
+    [styleSelectionHighlight2 alpha];
     v33 = v32;
 
     if (v24 != 0.0 && v33 == 0.0)
     {
-      v34 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-      [v34 setFrame:{v7, v9, v11, v13}];
+      styleSelectionHighlight3 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+      [styleSelectionHighlight3 setFrame:{v7, v9, v11, v13}];
     }
 
     v36[0] = MEMORY[0x277D85DD0];
@@ -1847,10 +1847,10 @@ LABEL_11:
 
   else
   {
-    [v30 setFrame:{v7, v9, v11, v13}];
+    [styleSelectionHighlight2 setFrame:{v7, v9, v11, v13}];
 
-    v35 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-    [v35 setAlpha:v24];
+    styleSelectionHighlight4 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+    [styleSelectionHighlight4 setAlpha:v24];
   }
 }
 
@@ -1871,20 +1871,20 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
 - (void)updateNamedStyleSelectedState
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self currentStyles];
-  v4 = [v3 count];
+  currentStyles = [(ICStyleSelectorViewController *)self currentStyles];
+  v4 = [currentStyles count];
 
   if (v4 == 1)
   {
-    v5 = [(ICStyleSelectorViewController *)self currentStyles];
-    v6 = [v5 firstIndex];
+    currentStyles2 = [(ICStyleSelectorViewController *)self currentStyles];
+    firstIndex = [currentStyles2 firstIndex];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(ICStyleSelectorViewController *)self styleButtons];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    styleButtons = [(ICStyleSelectorViewController *)self styleButtons];
+    v8 = [styleButtons countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1895,13 +1895,13 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(styleButtons);
           }
 
-          [*(*(&v20 + 1) + 8 * i) setSelected:{objc_msgSend(*(*(&v20 + 1) + 8 * i), "tag") == v6}];
+          [*(*(&v20 + 1) + 8 * i) setSelected:{objc_msgSend(*(*(&v20 + 1) + 8 * i), "tag") == firstIndex}];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v9 = [styleButtons countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v9);
@@ -1914,8 +1914,8 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(ICStyleSelectorViewController *)self styleButtons];
-    v12 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    styleButtons = [(ICStyleSelectorViewController *)self styleButtons];
+    v12 = [styleButtons countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1926,13 +1926,13 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(styleButtons);
           }
 
           [*(*(&v16 + 1) + 8 * j) setSelected:0];
         }
 
-        v13 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v13 = [styleButtons countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v13);
@@ -1947,9 +1947,9 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
   v15 = 0u;
   v16 = 0u;
   v3 = [(ICStyleSelectorViewController *)self listsContainer:0];
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1961,19 +1961,19 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         objc_opt_class();
         v9 = ICDynamicCast();
         if (v9)
         {
-          v10 = [(ICStyleSelectorViewController *)self currentStyles];
-          if ([v10 count] == 1)
+          currentStyles = [(ICStyleSelectorViewController *)self currentStyles];
+          if ([currentStyles count] == 1)
           {
             v11 = [v9 tag];
-            v12 = [(ICStyleSelectorViewController *)self currentStyles];
-            [v9 setSelected:{v11 == objc_msgSend(v12, "firstIndex")}];
+            currentStyles2 = [(ICStyleSelectorViewController *)self currentStyles];
+            [v9 setSelected:{v11 == objc_msgSend(currentStyles2, "firstIndex")}];
           }
 
           else
@@ -1986,7 +1986,7 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1995,13 +1995,13 @@ void __71__ICStyleSelectorViewController_updateStyleSelectionHighlightAnimated__
 
 - (void)populateStyleScrollView
 {
-  v3 = [(ICStyleSelectorViewController *)self traitCollection];
+  traitCollection = [(ICStyleSelectorViewController *)self traitCollection];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__ICStyleSelectorViewController_populateStyleScrollView__block_invoke;
   v4[3] = &unk_2781ABCF8;
   v4[4] = self;
-  [v3 ic_performAsCurrent:v4];
+  [traitCollection ic_performAsCurrent:v4];
 }
 
 void __56__ICStyleSelectorViewController_populateStyleScrollView__block_invoke(uint64_t a1)
@@ -2149,54 +2149,54 @@ void __56__ICStyleSelectorViewController_populateStyleScrollView__block_invoke(u
   [*(a1 + 32) setStyleButtons:v41];
 }
 
-- (void)namedStyleButtonAction:(id)a3
+- (void)namedStyleButtonAction:(id)action
 {
-  v4 = [a3 tag];
+  v4 = [action tag];
 
   [(ICStyleSelectorViewController *)self selectNamedStyle:v4];
 }
 
-- (void)selectNamedStyle:(unsigned int)a3
+- (void)selectNamedStyle:(unsigned int)style
 {
-  v3 = *&a3;
-  v5 = [MEMORY[0x277CCAA78] indexSetWithIndex:a3];
+  v3 = *&style;
+  v5 = [MEMORY[0x277CCAA78] indexSetWithIndex:style];
   [(ICStyleSelectorViewController *)self setCurrentStyles:v5 bius:[(ICStyleSelectorViewController *)self currentBIUS] animated:1];
 
-  v6 = [(ICStyleSelectorViewController *)self delegate];
-  [v6 styleSelector:self didSelectStyle:v3];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  [delegate styleSelector:self didSelectStyle:v3];
 }
 
-- (id)styleButtonForStyle:(unsigned int)a3
+- (id)styleButtonForStyle:(unsigned int)style
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(ICStyleSelectorViewController *)self styleButtons];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  styleButtons = [(ICStyleSelectorViewController *)self styleButtons];
+  v5 = [styleButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
-    v7 = a3;
+    styleCopy = style;
     while (2)
     {
       for (i = 0; i != v5; i = i + 1)
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(styleButtons);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 tag] == v7)
+        if ([v9 tag] == styleCopy)
         {
           v5 = v9;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [styleButtons countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -2213,17 +2213,17 @@ LABEL_11:
 
 - (void)updateButtonEnabledState
 {
-  v3 = [(ICStyleSelectorViewController *)self delegate];
-  v4 = [v3 styleSelectorCanIndentLeft:self];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  v4 = [delegate styleSelectorCanIndentLeft:self];
 
-  v5 = [(ICStyleSelectorViewController *)self indentLeftButton];
-  [v5 setEnabled:v4];
+  indentLeftButton = [(ICStyleSelectorViewController *)self indentLeftButton];
+  [indentLeftButton setEnabled:v4];
 
-  v6 = [(ICStyleSelectorViewController *)self delegate];
-  v7 = [v6 styleSelectorCanIndentRight:self];
+  delegate2 = [(ICStyleSelectorViewController *)self delegate];
+  v7 = [delegate2 styleSelectorCanIndentRight:self];
 
-  v8 = [(ICStyleSelectorViewController *)self indentRightButton];
-  [v8 setEnabled:v7];
+  indentRightButton = [(ICStyleSelectorViewController *)self indentRightButton];
+  [indentRightButton setEnabled:v7];
 
   v9 = *MEMORY[0x277D76488];
 
@@ -2233,10 +2233,10 @@ LABEL_11:
 - (void)setUpNonStyleButtons
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(ICStyleSelectorViewController *)self delegate];
-  v4 = [v3 presentingViewControllerForStyleSelector:self];
-  v5 = [v4 view];
-  v6 = [v5 tintColor];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  v4 = [delegate presentingViewControllerForStyleSelector:self];
+  view = [v4 view];
+  tintColor = [view tintColor];
 
   if (ICInternalSettingsIsEmphasisEnabled())
   {
@@ -2244,16 +2244,16 @@ LABEL_11:
     v48 = 0uLL;
     v45 = 0uLL;
     v46 = 0uLL;
-    v7 = [(ICStyleSelectorViewController *)self biusContainer];
-    v52[0] = v7;
-    v8 = [(ICStyleSelectorViewController *)self emphasisContainer];
-    v52[1] = v8;
-    v9 = [(ICStyleSelectorViewController *)self listsContainer];
-    v52[2] = v9;
-    v10 = [(ICStyleSelectorViewController *)self indentationContainer];
-    v52[3] = v10;
-    v11 = [(ICStyleSelectorViewController *)self blockQuoteContainer];
-    v52[4] = v11;
+    biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+    v52[0] = biusContainer;
+    emphasisContainer = [(ICStyleSelectorViewController *)self emphasisContainer];
+    v52[1] = emphasisContainer;
+    listsContainer = [(ICStyleSelectorViewController *)self listsContainer];
+    v52[2] = listsContainer;
+    indentationContainer = [(ICStyleSelectorViewController *)self indentationContainer];
+    v52[3] = indentationContainer;
+    blockQuoteContainer = [(ICStyleSelectorViewController *)self blockQuoteContainer];
+    v52[4] = blockQuoteContainer;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:5];
 
     v13 = [v12 countByEnumeratingWithState:&v45 objects:v53 count:16];
@@ -2285,14 +2285,14 @@ LABEL_11:
     v44 = 0uLL;
     v41 = 0uLL;
     v42 = 0uLL;
-    v16 = [(ICStyleSelectorViewController *)self biusContainer];
-    v50[0] = v16;
-    v17 = [(ICStyleSelectorViewController *)self listsContainer];
-    v50[1] = v17;
-    v18 = [(ICStyleSelectorViewController *)self indentationContainer];
-    v50[2] = v18;
-    v19 = [(ICStyleSelectorViewController *)self blockQuoteContainer];
-    v50[3] = v19;
+    biusContainer2 = [(ICStyleSelectorViewController *)self biusContainer];
+    v50[0] = biusContainer2;
+    listsContainer2 = [(ICStyleSelectorViewController *)self listsContainer];
+    v50[1] = listsContainer2;
+    indentationContainer2 = [(ICStyleSelectorViewController *)self indentationContainer];
+    v50[2] = indentationContainer2;
+    blockQuoteContainer2 = [(ICStyleSelectorViewController *)self blockQuoteContainer];
+    v50[3] = blockQuoteContainer2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:4];
 
     v20 = [v12 countByEnumeratingWithState:&v41 objects:v51 count:16];
@@ -2323,8 +2323,8 @@ LABEL_11:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v23 = [(ICStyleSelectorViewController *)self nonStyleButtons];
-  v24 = [v23 countByEnumeratingWithState:&v36 objects:v49 count:16];
+  nonStyleButtons = [(ICStyleSelectorViewController *)self nonStyleButtons];
+  v24 = [nonStyleButtons countByEnumeratingWithState:&v36 objects:v49 count:16];
   if (v24)
   {
     v25 = *v37;
@@ -2334,7 +2334,7 @@ LABEL_11:
       {
         if (*v37 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(nonStyleButtons);
         }
 
         v27 = *(*(&v36 + 1) + 8 * k);
@@ -2342,30 +2342,30 @@ LABEL_11:
         v32[1] = 3221225472;
         v32[2] = __53__ICStyleSelectorViewController_setUpNonStyleButtons__block_invoke;
         v32[3] = &unk_2781ADDF8;
-        v33 = v6;
+        v33 = tintColor;
         objc_copyWeak(&v35, &location);
-        v34 = self;
+        selfCopy = self;
         [v27 setConfigurationUpdateHandler:v32];
         objc_destroyWeak(&v35);
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      v24 = [nonStyleButtons countByEnumeratingWithState:&v36 objects:v49 count:16];
     }
 
     while (v24);
   }
 
-  v28 = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
-  [v28 setBackgroundColor:v6];
+  styleSelectionHighlight = [(ICStyleSelectorViewController *)self styleSelectionHighlight];
+  [styleSelectionHighlight setBackgroundColor:tintColor];
 
-  v29 = [(ICStyleSelectorViewController *)self indentationContainer];
-  [v29 setSemanticContentAttribute:3];
+  indentationContainer3 = [(ICStyleSelectorViewController *)self indentationContainer];
+  [indentationContainer3 setSemanticContentAttribute:3];
 
-  v30 = [(ICStyleSelectorViewController *)self indentLeftButton];
-  [v30 setSemanticContentAttribute:3];
+  indentLeftButton = [(ICStyleSelectorViewController *)self indentLeftButton];
+  [indentLeftButton setSemanticContentAttribute:3];
 
-  v31 = [(ICStyleSelectorViewController *)self indentRightButton];
-  [v31 setSemanticContentAttribute:3];
+  indentRightButton = [(ICStyleSelectorViewController *)self indentRightButton];
+  [indentRightButton setSemanticContentAttribute:3];
 
   objc_destroyWeak(&location);
 }
@@ -2447,98 +2447,98 @@ void __53__ICStyleSelectorViewController_setUpNonStyleButtons__block_invoke(uint
   }
 }
 
-- (id)imageNameForButton:(id)a3
+- (id)imageNameForButton:(id)button
 {
-  v4 = a3;
-  v5 = [(ICStyleSelectorViewController *)self boldButton];
+  buttonCopy = button;
+  boldButton = [(ICStyleSelectorViewController *)self boldButton];
 
-  if (v5 == v4)
+  if (boldButton == buttonCopy)
   {
     v16 = @"bold";
   }
 
   else
   {
-    v6 = [(ICStyleSelectorViewController *)self italicButton];
+    italicButton = [(ICStyleSelectorViewController *)self italicButton];
 
-    if (v6 == v4)
+    if (italicButton == buttonCopy)
     {
       v16 = @"italic";
     }
 
     else
     {
-      v7 = [(ICStyleSelectorViewController *)self underlineButton];
+      underlineButton = [(ICStyleSelectorViewController *)self underlineButton];
 
-      if (v7 == v4)
+      if (underlineButton == buttonCopy)
       {
         v16 = @"underline";
       }
 
       else
       {
-        v8 = [(ICStyleSelectorViewController *)self strikethroughButton];
+        strikethroughButton = [(ICStyleSelectorViewController *)self strikethroughButton];
 
-        if (v8 == v4)
+        if (strikethroughButton == buttonCopy)
         {
           v16 = @"strikethrough";
         }
 
         else
         {
-          v9 = [(ICStyleSelectorViewController *)self dashedListButton];
+          dashedListButton = [(ICStyleSelectorViewController *)self dashedListButton];
 
-          if (v9 == v4)
+          if (dashedListButton == buttonCopy)
           {
             v16 = @"list.dash";
           }
 
           else
           {
-            v10 = [(ICStyleSelectorViewController *)self numberedListButton];
+            numberedListButton = [(ICStyleSelectorViewController *)self numberedListButton];
 
-            if (v10 == v4)
+            if (numberedListButton == buttonCopy)
             {
               v16 = @"list.number";
             }
 
             else
             {
-              v11 = [(ICStyleSelectorViewController *)self bulletedListButton];
+              bulletedListButton = [(ICStyleSelectorViewController *)self bulletedListButton];
 
-              if (v11 == v4)
+              if (bulletedListButton == buttonCopy)
               {
                 v16 = @"list.bullet";
               }
 
               else
               {
-                v12 = [(ICStyleSelectorViewController *)self indentLeftButton];
+                indentLeftButton = [(ICStyleSelectorViewController *)self indentLeftButton];
 
-                if (v12 == v4)
+                if (indentLeftButton == buttonCopy)
                 {
                   v16 = @"decrease.indent";
                 }
 
                 else
                 {
-                  v13 = [(ICStyleSelectorViewController *)self indentRightButton];
+                  indentRightButton = [(ICStyleSelectorViewController *)self indentRightButton];
 
-                  if (v13 == v4)
+                  if (indentRightButton == buttonCopy)
                   {
                     v16 = @"increase.indent";
                   }
 
                   else
                   {
-                    v14 = [(ICStyleSelectorViewController *)self blockQuoteButton];
+                    blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
 
-                    if (v14 == v4)
+                    if (blockQuoteButton == buttonCopy)
                     {
                       v16 = @"quotelevel.square.fill";
                     }
 
-                    else if (ICInternalSettingsIsEmphasisEnabled() && ([(ICStyleSelectorViewController *)self emphasisButton], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == v4))
+                    else if (ICInternalSettingsIsEmphasisEnabled() && ([(ICStyleSelectorViewController *)self emphasisButton], v15 = objc_claimAutoreleasedReturnValue(), v15, v15 == buttonCopy))
                     {
                       v16 = @"highlighter";
                     }
@@ -2565,15 +2565,15 @@ void __53__ICStyleSelectorViewController_setUpNonStyleButtons__block_invoke(uint
   return v16;
 }
 
-- (id)imageForButton:(id)a3
+- (id)imageForButton:(id)button
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+  buttonCopy = button;
+  emphasisColorPickerButton = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
 
-  if (v5 != v4)
+  if (emphasisColorPickerButton != buttonCopy)
   {
-    v6 = [(ICStyleSelectorViewController *)self imageNameForButton:v4];
+    v6 = [(ICStyleSelectorViewController *)self imageNameForButton:buttonCopy];
     if (!v6)
     {
       v12 = 0;
@@ -2582,9 +2582,9 @@ void __53__ICStyleSelectorViewController_setUpNonStyleButtons__block_invoke(uint
 
     v7 = *MEMORY[0x277D76A28];
     v8 = *MEMORY[0x277D76818];
-    v9 = [(ICStyleSelectorViewController *)self biusContainer];
-    v10 = [v9 subviews];
-    v11 = [v10 containsObject:v4];
+    biusContainer = [(ICStyleSelectorViewController *)self biusContainer];
+    subviews = [biusContainer subviews];
+    v11 = [subviews containsObject:buttonCopy];
 
     if (v11)
     {
@@ -2594,27 +2594,27 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v16 = [(ICStyleSelectorViewController *)self blockQuoteButton];
+    blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
 
-    v17 = [v4 isSelected];
-    if (v16 != v4)
+    isSelected = [buttonCopy isSelected];
+    if (blockQuoteButton != buttonCopy)
     {
-      if (v17)
+      if (isSelected)
       {
-        v18 = [MEMORY[0x277D75348] systemWhiteColor];
-        v31 = v18;
+        systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+        v31 = systemWhiteColor;
         v19 = MEMORY[0x277CBEA60];
         v20 = &v31;
       }
 
       else
       {
-        if ([v4 isEnabled])
+        if ([buttonCopy isEnabled])
         {
-          v18 = [MEMORY[0x277D75348] labelColor];
-          v30[0] = v18;
-          v24 = [MEMORY[0x277D75348] secondaryLabelColor];
-          v30[1] = v24;
+          systemWhiteColor = [MEMORY[0x277D75348] labelColor];
+          v30[0] = systemWhiteColor;
+          secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+          v30[1] = secondaryLabelColor;
           v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
 
 LABEL_20:
@@ -2625,8 +2625,8 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v18 = [MEMORY[0x277D75348] secondaryLabelColor];
-        v29 = v18;
+        systemWhiteColor = [MEMORY[0x277D75348] secondaryLabelColor];
+        v29 = systemWhiteColor;
         v19 = MEMORY[0x277CBEA60];
         v20 = &v29;
       }
@@ -2635,22 +2635,22 @@ LABEL_24:
       goto LABEL_20;
     }
 
-    if (v17)
+    if (isSelected)
     {
-      v21 = [MEMORY[0x277D75348] systemWhiteColor];
-      v34[0] = v21;
+      systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+      v34[0] = systemWhiteColor2;
       v22 = MEMORY[0x277CBEA60];
       v23 = v34;
     }
 
     else
     {
-      if ([v4 isEnabled])
+      if ([buttonCopy isEnabled])
       {
-        v21 = [MEMORY[0x277D75348] labelColor];
-        v33[0] = v21;
-        v26 = [MEMORY[0x277D75348] tertiaryLabelColor];
-        v33[1] = v26;
+        systemWhiteColor2 = [MEMORY[0x277D75348] labelColor];
+        v33[0] = systemWhiteColor2;
+        tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+        v33[1] = tertiaryLabelColor;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
 
 LABEL_23:
@@ -2658,8 +2658,8 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v21 = [MEMORY[0x277D75348] tertiaryLabelColor];
-      v32 = v21;
+      systemWhiteColor2 = [MEMORY[0x277D75348] tertiaryLabelColor];
+      v32 = systemWhiteColor2;
       v22 = MEMORY[0x277CBEA60];
       v23 = &v32;
     }
@@ -2668,10 +2668,10 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v13 = [(ICStyleSelectorViewController *)self delegate];
-  v14 = [v13 currentEmphasisType];
+  delegate = [(ICStyleSelectorViewController *)self delegate];
+  currentEmphasisType = [delegate currentEmphasisType];
 
-  if (!v14)
+  if (!currentEmphasisType)
   {
     ic_currentEmphasisColorTypeDefault();
   }
@@ -2689,81 +2689,81 @@ LABEL_26:
   v80 = *MEMORY[0x277D85DE8];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(ICStyleSelectorViewController *)self popoverPresentationController];
-    [v3 setPassthroughViews:0];
+    popoverPresentationController = [(ICStyleSelectorViewController *)self popoverPresentationController];
+    [popoverPresentationController setPassthroughViews:0];
   }
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Hide format menu" value:&stru_282757698 table:0];
-  v6 = [(ICStyleSelectorViewController *)self closeButton];
-  [v6 setAccessibilityLabel:v5];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Hide format menu" value:&stru_282757698 table:0];
+  closeButton = [(ICStyleSelectorViewController *)self closeButton];
+  [closeButton setAccessibilityLabel:v5];
 
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"bold" value:&stru_282757698 table:0];
-  v9 = [(ICStyleSelectorViewController *)self boldButton];
-  [v9 setAccessibilityLabel:v8];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle2 localizedStringForKey:@"bold" value:&stru_282757698 table:0];
+  boldButton = [(ICStyleSelectorViewController *)self boldButton];
+  [boldButton setAccessibilityLabel:v8];
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"italic" value:&stru_282757698 table:0];
-  v12 = [(ICStyleSelectorViewController *)self italicButton];
-  [v12 setAccessibilityLabel:v11];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle3 localizedStringForKey:@"italic" value:&stru_282757698 table:0];
+  italicButton = [(ICStyleSelectorViewController *)self italicButton];
+  [italicButton setAccessibilityLabel:v11];
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 localizedStringForKey:@"underline" value:&stru_282757698 table:0];
-  v15 = [(ICStyleSelectorViewController *)self underlineButton];
-  [v15 setAccessibilityLabel:v14];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle4 localizedStringForKey:@"underline" value:&stru_282757698 table:0];
+  underlineButton = [(ICStyleSelectorViewController *)self underlineButton];
+  [underlineButton setAccessibilityLabel:v14];
 
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 localizedStringForKey:@"strikethrough" value:&stru_282757698 table:0];
-  v18 = [(ICStyleSelectorViewController *)self strikethroughButton];
-  [v18 setAccessibilityLabel:v17];
+  mainBundle5 = [MEMORY[0x277CCA8D8] mainBundle];
+  v17 = [mainBundle5 localizedStringForKey:@"strikethrough" value:&stru_282757698 table:0];
+  strikethroughButton = [(ICStyleSelectorViewController *)self strikethroughButton];
+  [strikethroughButton setAccessibilityLabel:v17];
 
-  v19 = [MEMORY[0x277CCA8D8] mainBundle];
-  v20 = [v19 localizedStringForKey:@"dashed list" value:&stru_282757698 table:0];
-  v21 = [(ICStyleSelectorViewController *)self dashedListButton];
-  [v21 setAccessibilityLabel:v20];
+  mainBundle6 = [MEMORY[0x277CCA8D8] mainBundle];
+  v20 = [mainBundle6 localizedStringForKey:@"dashed list" value:&stru_282757698 table:0];
+  dashedListButton = [(ICStyleSelectorViewController *)self dashedListButton];
+  [dashedListButton setAccessibilityLabel:v20];
 
-  v22 = [MEMORY[0x277CCA8D8] mainBundle];
-  v23 = [v22 localizedStringForKey:@"numbered list" value:&stru_282757698 table:0];
-  v24 = [(ICStyleSelectorViewController *)self numberedListButton];
-  [v24 setAccessibilityLabel:v23];
+  mainBundle7 = [MEMORY[0x277CCA8D8] mainBundle];
+  v23 = [mainBundle7 localizedStringForKey:@"numbered list" value:&stru_282757698 table:0];
+  numberedListButton = [(ICStyleSelectorViewController *)self numberedListButton];
+  [numberedListButton setAccessibilityLabel:v23];
 
-  v25 = [MEMORY[0x277CCA8D8] mainBundle];
-  v26 = [v25 localizedStringForKey:@"bulleted list" value:&stru_282757698 table:0];
-  v27 = [(ICStyleSelectorViewController *)self bulletedListButton];
-  [v27 setAccessibilityLabel:v26];
+  mainBundle8 = [MEMORY[0x277CCA8D8] mainBundle];
+  v26 = [mainBundle8 localizedStringForKey:@"bulleted list" value:&stru_282757698 table:0];
+  bulletedListButton = [(ICStyleSelectorViewController *)self bulletedListButton];
+  [bulletedListButton setAccessibilityLabel:v26];
 
-  v28 = [MEMORY[0x277CCA8D8] mainBundle];
-  v29 = [v28 localizedStringForKey:@"outdent" value:&stru_282757698 table:0];
-  v30 = [(ICStyleSelectorViewController *)self indentLeftButton];
-  [v30 setAccessibilityLabel:v29];
+  mainBundle9 = [MEMORY[0x277CCA8D8] mainBundle];
+  v29 = [mainBundle9 localizedStringForKey:@"outdent" value:&stru_282757698 table:0];
+  indentLeftButton = [(ICStyleSelectorViewController *)self indentLeftButton];
+  [indentLeftButton setAccessibilityLabel:v29];
 
-  v31 = [MEMORY[0x277CCA8D8] mainBundle];
-  v32 = [v31 localizedStringForKey:@"indent" value:&stru_282757698 table:0];
-  v33 = [(ICStyleSelectorViewController *)self indentRightButton];
-  [v33 setAccessibilityLabel:v32];
+  mainBundle10 = [MEMORY[0x277CCA8D8] mainBundle];
+  v32 = [mainBundle10 localizedStringForKey:@"indent" value:&stru_282757698 table:0];
+  indentRightButton = [(ICStyleSelectorViewController *)self indentRightButton];
+  [indentRightButton setAccessibilityLabel:v32];
 
-  v34 = [MEMORY[0x277CCA8D8] mainBundle];
-  v35 = [v34 localizedStringForKey:@"block quote" value:&stru_282757698 table:0];
-  v36 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  [v36 setAccessibilityLabel:v35];
+  mainBundle11 = [MEMORY[0x277CCA8D8] mainBundle];
+  v35 = [mainBundle11 localizedStringForKey:@"block quote" value:&stru_282757698 table:0];
+  blockQuoteButton = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  [blockQuoteButton setAccessibilityLabel:v35];
 
-  v37 = [MEMORY[0x277CCA8D8] mainBundle];
-  v38 = [v37 localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
-  v39 = [(ICStyleSelectorViewController *)self emphasisButton];
-  [v39 setAccessibilityLabel:v38];
+  mainBundle12 = [MEMORY[0x277CCA8D8] mainBundle];
+  v38 = [mainBundle12 localizedStringForKey:@"Highlight" value:&stru_282757698 table:0];
+  emphasisButton = [(ICStyleSelectorViewController *)self emphasisButton];
+  [emphasisButton setAccessibilityLabel:v38];
 
-  v40 = [MEMORY[0x277CCA8D8] mainBundle];
-  v41 = [v40 localizedStringForKey:@"Highlight color" value:&stru_282757698 table:0];
-  v42 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-  [v42 setAccessibilityLabel:v41];
+  mainBundle13 = [MEMORY[0x277CCA8D8] mainBundle];
+  v41 = [mainBundle13 localizedStringForKey:@"Highlight color" value:&stru_282757698 table:0];
+  emphasisColorPickerButton = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+  [emphasisColorPickerButton setAccessibilityLabel:v41];
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v43 = [(ICStyleSelectorViewController *)self styleButtons];
-  v44 = [v43 countByEnumeratingWithState:&v75 objects:v79 count:16];
+  styleButtons = [(ICStyleSelectorViewController *)self styleButtons];
+  v44 = [styleButtons countByEnumeratingWithState:&v75 objects:v79 count:16];
   if (v44)
   {
     v45 = v44;
@@ -2775,83 +2775,83 @@ LABEL_26:
       {
         if (*v76 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(styleButtons);
         }
 
         [*(*(&v75 + 1) + 8 * v47++) _accessibilitySetIsSpeakThisElement:1];
       }
 
       while (v45 != v47);
-      v45 = [v43 countByEnumeratingWithState:&v75 objects:v79 count:16];
+      v45 = [styleButtons countByEnumeratingWithState:&v75 objects:v79 count:16];
     }
 
     while (v45);
   }
 
-  v48 = [(ICStyleSelectorViewController *)self boldButton];
-  [v48 _accessibilitySetIsSpeakThisElement:1];
+  boldButton2 = [(ICStyleSelectorViewController *)self boldButton];
+  [boldButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v49 = [(ICStyleSelectorViewController *)self italicButton];
-  [v49 _accessibilitySetIsSpeakThisElement:1];
+  italicButton2 = [(ICStyleSelectorViewController *)self italicButton];
+  [italicButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v50 = [(ICStyleSelectorViewController *)self underlineButton];
-  [v50 _accessibilitySetIsSpeakThisElement:1];
+  underlineButton2 = [(ICStyleSelectorViewController *)self underlineButton];
+  [underlineButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v51 = [(ICStyleSelectorViewController *)self strikethroughButton];
-  [v51 _accessibilitySetIsSpeakThisElement:1];
+  strikethroughButton2 = [(ICStyleSelectorViewController *)self strikethroughButton];
+  [strikethroughButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v52 = [(ICStyleSelectorViewController *)self dashedListButton];
-  [v52 _accessibilitySetIsSpeakThisElement:1];
+  dashedListButton2 = [(ICStyleSelectorViewController *)self dashedListButton];
+  [dashedListButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v53 = [(ICStyleSelectorViewController *)self numberedListButton];
-  [v53 _accessibilitySetIsSpeakThisElement:1];
+  numberedListButton2 = [(ICStyleSelectorViewController *)self numberedListButton];
+  [numberedListButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v54 = [(ICStyleSelectorViewController *)self bulletedListButton];
-  [v54 _accessibilitySetIsSpeakThisElement:1];
+  bulletedListButton2 = [(ICStyleSelectorViewController *)self bulletedListButton];
+  [bulletedListButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v55 = [(ICStyleSelectorViewController *)self indentLeftButton];
-  [v55 _accessibilitySetIsSpeakThisElement:1];
+  indentLeftButton2 = [(ICStyleSelectorViewController *)self indentLeftButton];
+  [indentLeftButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v56 = [(ICStyleSelectorViewController *)self indentRightButton];
-  [v56 _accessibilitySetIsSpeakThisElement:1];
+  indentRightButton2 = [(ICStyleSelectorViewController *)self indentRightButton];
+  [indentRightButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v57 = [(ICStyleSelectorViewController *)self blockQuoteButton];
-  [v57 _accessibilitySetIsSpeakThisElement:1];
+  blockQuoteButton2 = [(ICStyleSelectorViewController *)self blockQuoteButton];
+  [blockQuoteButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v58 = [(ICStyleSelectorViewController *)self emphasisButton];
-  [v58 _accessibilitySetIsSpeakThisElement:1];
+  emphasisButton2 = [(ICStyleSelectorViewController *)self emphasisButton];
+  [emphasisButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v59 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
-  [v59 _accessibilitySetIsSpeakThisElement:1];
+  emphasisColorPickerButton2 = [(ICStyleSelectorViewController *)self emphasisColorPickerButton];
+  [emphasisColorPickerButton2 _accessibilitySetIsSpeakThisElement:1];
 
-  v60 = [(ICStyleSelectorViewController *)self headerView];
-  [v60 setShowsLargeContentViewer:1];
+  headerView = [(ICStyleSelectorViewController *)self headerView];
+  [headerView setShowsLargeContentViewer:1];
 
-  v61 = [(ICStyleSelectorViewController *)self headerView];
+  headerView2 = [(ICStyleSelectorViewController *)self headerView];
   v62 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v61 addInteraction:v62];
+  [headerView2 addInteraction:v62];
 
-  v63 = [(ICStyleSelectorViewController *)self headerLabel];
-  v64 = [v63 text];
-  v65 = [(ICStyleSelectorViewController *)self headerView];
-  [v65 setLargeContentTitle:v64];
+  headerLabel = [(ICStyleSelectorViewController *)self headerLabel];
+  text = [headerLabel text];
+  headerView3 = [(ICStyleSelectorViewController *)self headerView];
+  [headerView3 setLargeContentTitle:text];
 
-  v66 = [(ICStyleSelectorViewController *)self closeButton];
-  [v66 setShowsLargeContentViewer:1];
+  closeButton2 = [(ICStyleSelectorViewController *)self closeButton];
+  [closeButton2 setShowsLargeContentViewer:1];
 
-  v67 = [(ICStyleSelectorViewController *)self closeButton];
+  closeButton3 = [(ICStyleSelectorViewController *)self closeButton];
   v68 = objc_alloc_init(MEMORY[0x277D756C8]);
-  [v67 addInteraction:v68];
+  [closeButton3 addInteraction:v68];
 
-  v69 = [MEMORY[0x277CCA8D8] mainBundle];
-  v70 = [v69 localizedStringForKey:@"Close" value:&stru_282757698 table:0];
-  v71 = [(ICStyleSelectorViewController *)self closeButton];
-  [v71 setLargeContentTitle:v70];
+  mainBundle14 = [MEMORY[0x277CCA8D8] mainBundle];
+  v70 = [mainBundle14 localizedStringForKey:@"Close" value:&stru_282757698 table:0];
+  closeButton4 = [(ICStyleSelectorViewController *)self closeButton];
+  [closeButton4 setLargeContentTitle:v70];
 
-  v72 = [(ICStyleSelectorViewController *)self closeButton];
-  v73 = [v72 currentImage];
-  v74 = [(ICStyleSelectorViewController *)self closeButton];
-  [v74 setLargeContentImage:v73];
+  closeButton5 = [(ICStyleSelectorViewController *)self closeButton];
+  currentImage = [closeButton5 currentImage];
+  closeButton6 = [(ICStyleSelectorViewController *)self closeButton];
+  [closeButton6 setLargeContentImage:currentImage];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

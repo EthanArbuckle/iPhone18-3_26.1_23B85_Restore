@@ -2,110 +2,110 @@
 + (id)_addLocalizedString;
 + (id)_doneLocalizedString;
 - (BOOL)_canEnableDoneButton;
-- (BOOL)_performSave:(int64_t)a3 animated:(BOOL)a4;
+- (BOOL)_performSave:(int64_t)save animated:(BOOL)animated;
 - (BOOL)attachmentsModifiedOnRecurrence;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)hasAttachmentChanges;
 - (BOOL)hasUnsavedChanges;
-- (BOOL)saveCalendarItemWithSpan:(int64_t)a3 error:(id *)a4;
-- (BOOL)saveWithSpan:(int64_t)a3 animated:(BOOL)a4;
+- (BOOL)saveCalendarItemWithSpan:(int64_t)span error:(id *)error;
+- (BOOL)saveWithSpan:(int64_t)span animated:(BOOL)animated;
 - (CGSize)preferredContentSize;
 - (EKCalendarItemEditor)init;
 - (EKCalendarItemEditorDelegate)editorDelegate;
 - (_UIAccessDeniedView)accessDeniedView;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_editItemAtIndexPath:(id)a3 firstRowIndex:(int64_t *)a4;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_editItemAtIndexPath:(id)path firstRowIndex:(int64_t *)index;
 - (id)_editItems;
 - (id)_nameForDeleteButton;
 - (id)_orderedEditItems;
 - (id)_viewForSheet;
 - (id)_viewHierarchy;
 - (id)attachmentsModifiedEvent;
-- (id)cellWithReuseIdentifier:(id)a3 forEditItem:(id)a4;
+- (id)cellWithReuseIdentifier:(id)identifier forEditItem:(id)item;
 - (id)defaultAlertTitle;
 - (id)navigationItem;
 - (id)notificationNamesForLocaleChange;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
 - (id)title;
-- (int64_t)firstTableRowForEditItem:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)rowNumberForEditItem:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)firstTableRowForEditItem:(id)item;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)rowNumberForEditItem:(id)item;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)entityType;
 - (unint64_t)supportedInterfaceOrientations;
-- (unint64_t)tableSectionForEditItem:(id)a3;
-- (void)_completeWithAction:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5;
+- (unint64_t)tableSectionForEditItem:(id)item;
+- (void)_completeWithAction:(int64_t)action animated:(BOOL)animated notify:(BOOL)notify;
 - (void)_configureVisibleItems;
 - (void)_copyEventForPossibleRevert;
-- (void)_keyboardWillChangeFrame:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
 - (void)_keyboardWillHide;
 - (void)_localeChanged;
-- (void)_performDelete:(int64_t)a3;
-- (void)_pinKeyboard:(BOOL)a3;
-- (void)_presentAttachmentRecurrenceSheetForEvent:(id)a3 withContinueBlock:(id)a4;
-- (void)_presentDetachSheetForEvent:(id)a3 saveAttachments:(BOOL)a4 withContinueBlock:(id)a5;
+- (void)_performDelete:(int64_t)delete;
+- (void)_pinKeyboard:(BOOL)keyboard;
+- (void)_presentAttachmentRecurrenceSheetForEvent:(id)event withContinueBlock:(id)block;
+- (void)_presentDetachSheetForEvent:(id)event saveAttachments:(BOOL)attachments withContinueBlock:(id)block;
 - (void)_reallyHandleCellHeightChange;
 - (void)_refreshDataAndDismissViewControllerIfDeleted;
 - (void)_revertEvent;
 - (void)_setCalendarItemOnEditItems;
-- (void)_setWantsToEnableDoneButton:(BOOL)a3;
+- (void)_setWantsToEnableDoneButton:(BOOL)button;
 - (void)_setupFirstResponder;
 - (void)_tableViewDidUpdateHeights;
-- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)a3;
+- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)status;
 - (void)_updateDoneButtonState;
 - (void)applicationDidResume;
 - (void)attemptDisplayReviewPrompt;
-- (void)cancelEditingWithDelegateNotification:(BOOL)a3 forceCancel:(BOOL)a4;
+- (void)cancelEditingWithDelegateNotification:(BOOL)notification forceCancel:(BOOL)cancel;
 - (void)dealloc;
-- (void)deleteClicked:(id)a3;
-- (void)done:(id)a3 withContinueBlock:(id)a4;
-- (void)editItem:(id)a3 didSaveFromDetailViewController:(BOOL)a4;
-- (void)editItem:(id)a3 performActionsOnCellAtSubitem:(unint64_t)a4 actions:(id)a5;
-- (void)editItem:(id)a3 wantsDoneButtonDisabled:(BOOL)a4;
-- (void)editItem:(id)a3 wantsRowInsertions:(id)a4 rowDeletions:(id)a5 rowReloads:(id)a6;
-- (void)editItem:(id)a3 wantsRowReload:(id)a4;
-- (void)editItem:(id)a3 wantsRowsScrolledToVisible:(id)a4;
-- (void)editItem:(id)a3 wantsViewControllerPresented:(id)a4;
-- (void)editItem:(id)a3 wantsViewControllerPushed:(id)a4;
-- (void)editItemDidEndEditing:(id)a3;
-- (void)editItemDidStartEditing:(id)a3;
-- (void)editItemRequiresHeightChange:(id)a3;
-- (void)editItemRequiresPopoverSizeUpdate:(id)a3;
-- (void)editItemTextChanged:(id)a3;
-- (void)editItemWantsFirstResponderResigned:(id)a3;
-- (void)editItemWantsFooterTitlesToReload:(id)a3;
+- (void)deleteClicked:(id)clicked;
+- (void)done:(id)done withContinueBlock:(id)block;
+- (void)editItem:(id)item didSaveFromDetailViewController:(BOOL)controller;
+- (void)editItem:(id)item performActionsOnCellAtSubitem:(unint64_t)subitem actions:(id)actions;
+- (void)editItem:(id)item wantsDoneButtonDisabled:(BOOL)disabled;
+- (void)editItem:(id)item wantsRowInsertions:(id)insertions rowDeletions:(id)deletions rowReloads:(id)reloads;
+- (void)editItem:(id)item wantsRowReload:(id)reload;
+- (void)editItem:(id)item wantsRowsScrolledToVisible:(id)visible;
+- (void)editItem:(id)item wantsViewControllerPresented:(id)presented;
+- (void)editItem:(id)item wantsViewControllerPushed:(id)pushed;
+- (void)editItemDidEndEditing:(id)editing;
+- (void)editItemDidStartEditing:(id)editing;
+- (void)editItemRequiresHeightChange:(id)change;
+- (void)editItemRequiresPopoverSizeUpdate:(id)update;
+- (void)editItemTextChanged:(id)changed;
+- (void)editItemWantsFirstResponderResigned:(id)resigned;
+- (void)editItemWantsFooterTitlesToReload:(id)reload;
 - (void)handleSaveKeyCommand;
 - (void)loadView;
 - (void)prepareEditItems;
 - (void)reloadUI;
 - (void)resetBackgroundColor;
 - (void)resignCurrentEditItemFirstResponder;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setCalendarItem:(id)a3;
-- (void)setDefaultCalendar:(id)a3;
-- (void)setShouldOverrideAuthorizationStatus:(BOOL)a3 withRemoteUIStatus:(int64_t)a4;
-- (void)setStore:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setCalendarItem:(id)item;
+- (void)setDefaultCalendar:(id)calendar;
+- (void)setShouldOverrideAuthorizationStatus:(BOOL)status withRemoteUIStatus:(int64_t)iStatus;
+- (void)setStore:(id)store;
+- (void)setTitle:(id)title;
 - (void)setupForEvent;
-- (void)storeChanged:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)storeChanged:(id)changed;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)updateNavButtonsWithSpacing;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation EKCalendarItemEditor
@@ -119,8 +119,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(EKCalendarItemEditor *)v2 preferredTitle];
-    [(EKCalendarItemEditor *)v3 setTitle:v4];
+    preferredTitle = [(EKCalendarItemEditor *)v2 preferredTitle];
+    [(EKCalendarItemEditor *)v3 setTitle:preferredTitle];
 
     v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
     editItemsDisablingDoneButton = v3->_editItemsDisablingDoneButton;
@@ -154,51 +154,51 @@ void __28__EKCalendarItemEditor_init__block_invoke(uint64_t a1)
 {
   if (self->_editItems)
   {
-    v3 = [(EKCalendarItemEditor *)self _editItems];
-    [v3 makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
+    _editItems = [(EKCalendarItemEditor *)self _editItems];
+    [_editItems makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
   }
 
   [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController cancelAnimated:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = EKCalendarItemEditor;
   [(EKCalendarItemEditor *)&v5 dealloc];
 }
 
-- (void)setStore:(id)a3
+- (void)setStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   store = self->_store;
-  v9 = v5;
-  if (store != v5)
+  v9 = storeCopy;
+  if (store != storeCopy)
   {
     if (store && [(EKCalendarItemEditor *)self isViewLoaded])
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 removeObserver:self name:*MEMORY[0x1E6966928] object:self->_store];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E6966928] object:self->_store];
     }
 
-    objc_storeStrong(&self->_store, a3);
+    objc_storeStrong(&self->_store, store);
     if (self->_store && [(EKCalendarItemEditor *)self isViewLoaded])
     {
-      v8 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v8 addObserver:self selector:sel_storeChanged_ name:*MEMORY[0x1E6966928] object:self->_store];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_storeChanged_ name:*MEMORY[0x1E6966928] object:self->_store];
     }
   }
 }
 
-- (void)setCalendarItem:(id)a3
+- (void)setCalendarItem:(id)item
 {
-  v8 = a3;
-  if (self->_calendarItem != v8)
+  itemCopy = item;
+  if (self->_calendarItem != itemCopy)
   {
-    objc_storeStrong(&self->_calendarItem, a3);
+    objc_storeStrong(&self->_calendarItem, item);
     if ([(EKCalendarItem *)self->_calendarItem isNew])
     {
-      v5 = [(EKCalendarItem *)v8 changeSet];
-      v6 = [v5 copy];
+      changeSet = [(EKCalendarItem *)itemCopy changeSet];
+      v6 = [changeSet copy];
       originalChangeSet = self->_originalChangeSet;
       self->_originalChangeSet = v6;
     }
@@ -210,24 +210,24 @@ void __28__EKCalendarItemEditor_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShouldOverrideAuthorizationStatus:(BOOL)a3 withRemoteUIStatus:(int64_t)a4
+- (void)setShouldOverrideAuthorizationStatus:(BOOL)status withRemoteUIStatus:(int64_t)iStatus
 {
-  self->_shouldOverrideAuthorizationStatus = a3;
-  [(EKCalendarItemEditor *)self _updateAccessDeniedViewWithNewStatus:a4];
-  self->_lastAuthorizationStatus = a4;
+  self->_shouldOverrideAuthorizationStatus = status;
+  [(EKCalendarItemEditor *)self _updateAccessDeniedViewWithNewStatus:iStatus];
+  self->_lastAuthorizationStatus = iStatus;
 }
 
-- (void)setDefaultCalendar:(id)a3
+- (void)setDefaultCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(EKCalendarItemEditor *)self calendarItem];
-  [v5 setCalendar:v4];
+  calendarCopy = calendar;
+  calendarItem = [(EKCalendarItemEditor *)self calendarItem];
+  [calendarItem setCalendar:calendarCopy];
 }
 
-- (unint64_t)tableSectionForEditItem:(id)a3
+- (unint64_t)tableSectionForEditItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -251,7 +251,7 @@ void __28__EKCalendarItemEditor_init__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v13 + 1) + 8 * v10) containsObject:{v4, v13}])
+        if ([*(*(&v13 + 1) + 8 * v10) containsObject:{itemCopy, v13}])
         {
           v8 = v11;
           goto LABEL_12;
@@ -282,10 +282,10 @@ LABEL_12:
   return v8;
 }
 
-- (int64_t)firstTableRowForEditItem:(id)a3
+- (int64_t)firstTableRowForEditItem:(id)item
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -307,7 +307,7 @@ LABEL_12:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        if ([v11 containsObject:v4])
+        if ([v11 containsObject:itemCopy])
         {
           v21 = 0u;
           v22 = 0u;
@@ -329,7 +329,7 @@ LABEL_9:
               }
 
               v17 = *(*(&v19 + 1) + 8 * v16);
-              if (v17 == v4)
+              if (v17 == itemCopy)
               {
                 break;
               }
@@ -370,9 +370,9 @@ LABEL_9:
   v4 = *MEMORY[0x1E695F058];
   v5 = *(MEMORY[0x1E695F058] + 8);
   v6 = *(MEMORY[0x1E695F058] + 24);
-  v7 = [(EKCalendarItemEditor *)self _popoverController];
+  _popoverController = [(EKCalendarItemEditor *)self _popoverController];
 
-  if (v7)
+  if (_popoverController)
   {
     v8 = EKUIContainedControllerIdealWidth();
   }
@@ -409,58 +409,58 @@ LABEL_9:
 {
   if ([(UIViewController *)self isPresentedInsidePopover]&& ([(EKCalendarItemEditor *)self popoverPresentationController], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v6 = [(EKCalendarItemEditor *)self tableView];
-    v4 = [MEMORY[0x1E69DC888] clearColor];
+    tableView = [(EKCalendarItemEditor *)self tableView];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v6 = [(EKCalendarItemEditor *)self tableView];
-    v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    tableView = [(EKCalendarItemEditor *)self tableView];
+    clearColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  v5 = v4;
-  [v6 setBackgroundColor:v4];
+  v5 = clearColor;
+  [tableView setBackgroundColor:clearColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = EKCalendarItemEditor;
-  [(EKCalendarItemEditor *)&v19 viewWillAppear:a3];
-  v4 = [(EKCalendarItemEditor *)self visibleSectionToRestoreOnAppearence];
-  if (v4)
+  [(EKCalendarItemEditor *)&v19 viewWillAppear:appear];
+  visibleSectionToRestoreOnAppearence = [(EKCalendarItemEditor *)self visibleSectionToRestoreOnAppearence];
+  if (visibleSectionToRestoreOnAppearence)
   {
-    v5 = [(EKCalendarItemEditor *)self visibleSectionToRestoreOnAppearence];
-    v6 = [(EKCalendarItemEditor *)self tableView];
-    v7 = [v6 numberOfSections] - 1;
+    visibleSectionToRestoreOnAppearence2 = [(EKCalendarItemEditor *)self visibleSectionToRestoreOnAppearence];
+    tableView = [(EKCalendarItemEditor *)self tableView];
+    v7 = [tableView numberOfSections] - 1;
 
-    if (v5 >= v7)
+    if (visibleSectionToRestoreOnAppearence2 >= v7)
     {
       v8 = v7;
     }
 
     else
     {
-      v8 = v5;
+      v8 = visibleSectionToRestoreOnAppearence2;
     }
 
     v20[0] = v8;
     v20[1] = 0;
-    v9 = [(EKCalendarItemEditor *)self tableView];
+    tableView2 = [(EKCalendarItemEditor *)self tableView];
     v10 = [MEMORY[0x1E696AC88] indexPathWithIndexes:v20 length:2];
-    [v9 scrollToRowAtIndexPath:v10 atScrollPosition:2 animated:0];
+    [tableView2 scrollToRowAtIndexPath:v10 atScrollPosition:2 animated:0];
 
-    v4 = [(EKCalendarItemEditor *)self setVisibleSectionToRestoreOnAppearence:0];
+    visibleSectionToRestoreOnAppearence = [(EKCalendarItemEditor *)self setVisibleSectionToRestoreOnAppearence:0];
   }
 
-  if ((MEMORY[0x1D38B98D0](v4) & 1) == 0)
+  if ((MEMORY[0x1D38B98D0](visibleSectionToRestoreOnAppearence) & 1) == 0)
   {
-    v11 = [(EKCalendarItemEditor *)self calendarItem];
-    v12 = [v11 isNew];
+    calendarItem = [(EKCalendarItemEditor *)self calendarItem];
+    isNew = [calendarItem isNew];
     v13 = objc_opt_class();
-    if (v12)
+    if (isNew)
     {
       [v13 _addLocalizedString];
     }
@@ -476,29 +476,29 @@ LABEL_9:
   [(EKCalendarItemEditor *)self _updateDoneButtonState];
   if (!self->_accessDeniedView)
   {
-    v15 = [(EKCalendarItemEditor *)self transitionCoordinator];
-    v16 = v15;
-    if (v15)
+    transitionCoordinator = [(EKCalendarItemEditor *)self transitionCoordinator];
+    v16 = transitionCoordinator;
+    if (transitionCoordinator)
     {
-      if ([v15 isAnimated])
+      if ([transitionCoordinator isAnimated])
       {
-        v17 = [(EKCalendarItemEditor *)self transitionCoordinator];
+        transitionCoordinator2 = [(EKCalendarItemEditor *)self transitionCoordinator];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __39__EKCalendarItemEditor_viewWillAppear___block_invoke;
         v18[3] = &unk_1E84425B8;
         v18[4] = self;
-        [v17 animateAlongsideTransition:v18 completion:0];
+        [transitionCoordinator2 animateAlongsideTransition:v18 completion:0];
       }
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = EKCalendarItemEditor;
-  [(EKCalendarItemEditor *)&v4 viewDidAppear:a3];
+  [(EKCalendarItemEditor *)&v4 viewDidAppear:appear];
   if (!self->_accessDeniedView)
   {
     [(EKCalendarItemEditor *)self _setupFirstResponder];
@@ -507,21 +507,21 @@ LABEL_9:
   self->_hasAppeared = 1;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_hasAppeared = 0;
-  if (!a3)
+  if (!disappear)
   {
     if ([(EKCalendarItemEditor *)self _isPinningInputViews])
     {
       if (UIKeyboardAutomaticIsOnScreen())
       {
-        v5 = [(EKCalendarItemEditor *)self view];
-        v6 = [v5 window];
-        v7 = [v6 isRotating];
+        view = [(EKCalendarItemEditor *)self view];
+        window = [view window];
+        isRotating = [window isRotating];
 
-        if ((v7 & 1) == 0)
+        if ((isRotating & 1) == 0)
         {
           [(EKCalendarItemEditor *)self _pinKeyboard:0];
         }
@@ -531,19 +531,19 @@ LABEL_9:
 
   v8.receiver = self;
   v8.super_class = EKCalendarItemEditor;
-  [(EKCalendarItemEditor *)&v8 viewWillDisappear:v3];
+  [(EKCalendarItemEditor *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(EKCalendarItemEditor *)self _editItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  v6 = [_editItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -554,7 +554,7 @@ LABEL_9:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_editItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -564,7 +564,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [_editItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -572,7 +572,7 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = EKCalendarItemEditor;
-  [(EKCalendarItemEditor *)&v11 viewDidDisappear:v3];
+  [(EKCalendarItemEditor *)&v11 viewDidDisappear:disappearCopy];
 }
 
 - (void)_setupFirstResponder
@@ -587,12 +587,12 @@ LABEL_9:
 
     else
     {
-      v3 = [(EKCalendarItemEditor *)self responderToRestoreOnAppearence];
+      responderToRestoreOnAppearence = [(EKCalendarItemEditor *)self responderToRestoreOnAppearence];
 
-      if (v3)
+      if (responderToRestoreOnAppearence)
       {
-        v4 = [(EKCalendarItemEditor *)self responderToRestoreOnAppearence];
-        [v4 becomeFirstResponder];
+        responderToRestoreOnAppearence2 = [(EKCalendarItemEditor *)self responderToRestoreOnAppearence];
+        [responderToRestoreOnAppearence2 becomeFirstResponder];
       }
     }
 
@@ -602,31 +602,31 @@ LABEL_9:
 
 - (void)updateNavButtonsWithSpacing
 {
-  v2 = self;
+  selfCopy = self;
   v18[1] = *MEMORY[0x1E69E9840];
   if (!self->_cancelButton)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-    cancelButton = v2->_cancelButton;
-    v2->_cancelButton = v3;
+    cancelButton = selfCopy->_cancelButton;
+    selfCopy->_cancelButton = v3;
 
-    self = [(UIBarButtonItem *)v2->_cancelButton setAccessibilityIdentifier:@"cancel-button"];
+    self = [(UIBarButtonItem *)selfCopy->_cancelButton setAccessibilityIdentifier:@"cancel-button"];
   }
 
-  if (!v2->_doneButton)
+  if (!selfCopy->_doneButton)
   {
     if (MEMORY[0x1D38B98D0](self, a2))
     {
-      v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:v2 action:sel_done_];
-      doneButton = v2->_doneButton;
-      v2->_doneButton = v5;
+      v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:selfCopy action:sel_done_];
+      doneButton = selfCopy->_doneButton;
+      selfCopy->_doneButton = v5;
     }
 
     else
     {
-      v7 = [(EKCalendarItem *)v2->_calendarItem isNew];
+      isNew = [(EKCalendarItem *)selfCopy->_calendarItem isNew];
       v8 = objc_opt_class();
-      if (v7)
+      if (isNew)
       {
         [v8 _addLocalizedString];
       }
@@ -636,12 +636,12 @@ LABEL_9:
         [v8 _doneLocalizedString];
       }
       v9 = ;
-      v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:2 target:v2 action:sel_done_];
-      v11 = v2->_doneButton;
-      v2->_doneButton = v10;
+      v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:2 target:selfCopy action:sel_done_];
+      v11 = selfCopy->_doneButton;
+      selfCopy->_doneButton = v10;
     }
 
-    if ([(EKCalendarItem *)v2->_calendarItem isNew])
+    if ([(EKCalendarItem *)selfCopy->_calendarItem isNew])
     {
       v12 = @"add-button";
     }
@@ -651,19 +651,19 @@ LABEL_9:
       v12 = @"done-button";
     }
 
-    [(UIBarButtonItem *)v2->_doneButton setAccessibilityIdentifier:v12];
-    [(UIBarButtonItem *)v2->_doneButton setEnabled:0];
+    [(UIBarButtonItem *)selfCopy->_doneButton setAccessibilityIdentifier:v12];
+    [(UIBarButtonItem *)selfCopy->_doneButton setEnabled:0];
   }
 
-  v18[0] = v2->_cancelButton;
+  v18[0] = selfCopy->_cancelButton;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v14 = [(EKCalendarItemEditor *)v2 navigationItem];
-  [v14 setLeftBarButtonItems:v13];
+  navigationItem = [(EKCalendarItemEditor *)selfCopy navigationItem];
+  [navigationItem setLeftBarButtonItems:v13];
 
-  v17 = v2->_doneButton;
+  v17 = selfCopy->_doneButton;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:1];
-  v16 = [(EKCalendarItemEditor *)v2 navigationItem];
-  [v16 setRightBarButtonItems:v15];
+  navigationItem2 = [(EKCalendarItemEditor *)selfCopy navigationItem];
+  [navigationItem2 setRightBarButtonItems:v15];
 }
 
 - (void)viewDidLoad
@@ -694,13 +694,13 @@ LABEL_9:
     [(EKCalendarItemEditor *)self _updateAccessDeniedViewWithNewStatus:?];
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(EKCalendarItemEditor *)self notificationNamesForLocaleChange];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  notificationNamesForLocaleChange = [(EKCalendarItemEditor *)self notificationNamesForLocaleChange];
+  v6 = [notificationNamesForLocaleChange countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -711,65 +711,65 @@ LABEL_9:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(notificationNamesForLocaleChange);
         }
 
-        [v4 addObserver:self selector:sel__localeChanged name:*(*(&v10 + 1) + 8 * i) object:0];
+        [defaultCenter addObserver:self selector:sel__localeChanged name:*(*(&v10 + 1) + 8 * i) object:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [notificationNamesForLocaleChange countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [v4 addObserver:self selector:sel__keyboardWillHide name:*MEMORY[0x1E69DE078] object:0];
-  [v4 addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillHide name:*MEMORY[0x1E69DE078] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
   if (self->_store)
   {
-    [v4 addObserver:self selector:sel_storeChanged_ name:*MEMORY[0x1E6966928] object:?];
+    [defaultCenter addObserver:self selector:sel_storeChanged_ name:*MEMORY[0x1E6966928] object:?];
   }
 }
 
 - (void)_localeChanged
 {
-  v2 = [(EKCalendarItemEditor *)self tableView];
-  [v2 reloadData];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_keyboardWillHide
 {
-  v3 = [(EKCalendarItemEditor *)self view];
-  v4 = [v3 window];
-  v5 = [v4 isRotating];
+  view = [(EKCalendarItemEditor *)self view];
+  window = [view window];
+  isRotating = [window isRotating];
 
-  if ((v5 & 1) == 0)
+  if ((isRotating & 1) == 0)
   {
 
     [(EKCalendarItemEditor *)self setResponderToRestoreOnAppearence:0];
   }
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [frame userInfo];
+  v5 = [userInfo valueForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v17 = [(EKCalendarItemEditor *)self view];
-  v14 = [v17 window];
-  if ([v14 isRotating])
+  view = [(EKCalendarItemEditor *)self view];
+  window = [view window];
+  if ([window isRotating])
   {
   }
 
   else
   {
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v20.origin.x = v7;
     v20.origin.y = v9;
     v20.size.width = v11;
@@ -784,7 +784,7 @@ LABEL_9:
   }
 }
 
-- (void)storeChanged:(id)a3
+- (void)storeChanged:(id)changed
 {
   if (!self->_shouldOverrideAuthorizationStatus)
   {
@@ -817,18 +817,18 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = EKCalendarItemEditor;
   [(EKCalendarItemEditor *)&v4 applicationDidResume];
-  v3 = [(EKCalendarItemEditor *)self _editItems];
-  [v3 makeObjectsPerformSelector:sel_applicationDidResume];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  [_editItems makeObjectsPerformSelector:sel_applicationDidResume];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(UIViewController *)self EKUI_viewHierarchy];
-  EKUIPushFallbackSizingContextWithViewHierarchy(v3);
-  v4 = [(EKCalendarItemEditor *)self view];
-  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v4);
+  eKUI_viewHierarchy = [(UIViewController *)self EKUI_viewHierarchy];
+  EKUIPushFallbackSizingContextWithViewHierarchy(eKUI_viewHierarchy);
+  view = [(EKCalendarItemEditor *)self view];
+  IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
-  EKUIPopFallbackSizingContextWithViewHierarchy(v3);
+  EKUIPopFallbackSizingContextWithViewHierarchy(eKUI_viewHierarchy);
   if (IsRegularInViewHierarchy)
   {
     v6 = 30;
@@ -842,10 +842,10 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)cancelEditingWithDelegateNotification:(BOOL)a3 forceCancel:(BOOL)a4
+- (void)cancelEditingWithDelegateNotification:(BOOL)notification forceCancel:(BOOL)cancel
 {
-  v4 = a3;
-  if (!a4)
+  notificationCopy = notification;
+  if (!cancel)
   {
     WeakRetained = objc_loadWeakRetained(&self->_editorDelegate);
     if (objc_opt_respondsToSelector())
@@ -864,23 +864,23 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
     }
   }
 
-  v9 = [(EKCalendarItemEditor *)self _isPinningInputViews];
-  v10 = [(EKCalendarItemEditor *)self firstResponder];
-  [v10 resignFirstResponder];
+  _isPinningInputViews = [(EKCalendarItemEditor *)self _isPinningInputViews];
+  firstResponder = [(EKCalendarItemEditor *)self firstResponder];
+  [firstResponder resignFirstResponder];
 
   [(EKCalendarItemEditor *)self _revertEvent];
-  [(EKCalendarItemEditor *)self _completeWithAction:0 animated:1 notify:v4];
-  if (v9 && UIKeyboardAutomaticIsOnScreen())
+  [(EKCalendarItemEditor *)self _completeWithAction:0 animated:1 notify:notificationCopy];
+  if (_isPinningInputViews && UIKeyboardAutomaticIsOnScreen())
   {
 
     UIKeyboardOrderOutAutomatic();
   }
 }
 
-- (void)done:(id)a3 withContinueBlock:(id)a4
+- (void)done:(id)done withContinueBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_editorDelegate);
   if (objc_opt_respondsToSelector())
   {
@@ -912,9 +912,9 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
   v10 = self->_recurrenceAlertController;
   self->_recurrenceAlertController = 0;
 
-  v11 = [(EKCalendarItemEditor *)self _isPinningInputViews];
-  v12 = [(EKCalendarItemEditor *)self firstResponder];
-  [v12 resignFirstResponder];
+  _isPinningInputViews = [(EKCalendarItemEditor *)self _isPinningInputViews];
+  firstResponder = [(EKCalendarItemEditor *)self firstResponder];
+  [firstResponder resignFirstResponder];
 
   currentEditItem = self->_currentEditItem;
   if (!currentEditItem || [(EKCalendarItemEditItem *)currentEditItem saveAndDismissWithForce:0])
@@ -958,7 +958,7 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
     if (![(EKCalendarItemEditor *)self hasUnsavedChanges]&& ![(EKCalendarItem *)self->_calendarItem isNew])
     {
       [(EKCalendarItemEditor *)self completeWithAction:0 animated:1];
-      if (!v11)
+      if (!_isPinningInputViews)
       {
         goto LABEL_35;
       }
@@ -971,10 +971,10 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
     aBlock[2] = __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke;
     aBlock[3] = &unk_1E843EDA0;
     aBlock[4] = self;
-    v29 = v5;
+    v29 = blockCopy;
     v21 = _Block_copy(aBlock);
-    v22 = [(EKCalendarItem *)self->_calendarItem isDetached];
-    v23 = [(EKCalendarItemEditor *)self hasAttachmentChanges];
+    isDetached = [(EKCalendarItem *)self->_calendarItem isDetached];
+    hasAttachmentChanges = [(EKCalendarItemEditor *)self hasAttachmentChanges];
     if ([(EKCalendarItemEditor *)self hasModifiedAttendeesFromSuggestion])
     {
       v26[0] = MEMORY[0x1E69E9820];
@@ -993,7 +993,7 @@ void *__37__EKCalendarItemEditor_storeChanged___block_invoke(uint64_t a1)
       goto LABEL_29;
     }
 
-    if ((v22 & v23) != 1)
+    if ((isDetached & hasAttachmentChanges) != 1)
     {
       if ((([(EKCalendarItem *)self->_calendarItem requiresDetach]& 1) != 0 || [(EKCalendarItem *)self->_calendarItem isOrWasPartOfRecurringSeries]) && [(EKCalendarItem *)self->_calendarItem allowsSpansOtherThanThisEvent])
       {
@@ -1010,11 +1010,11 @@ LABEL_29:
       }
     }
 
-    v25 = [(EKCalendarItemEditor *)self attachmentsModifiedEvent];
-    [(EKCalendarItemEditor *)self _presentAttachmentRecurrenceSheetForEvent:v25 withContinueBlock:v21];
+    attachmentsModifiedEvent = [(EKCalendarItemEditor *)self attachmentsModifiedEvent];
+    [(EKCalendarItemEditor *)self _presentAttachmentRecurrenceSheetForEvent:attachmentsModifiedEvent withContinueBlock:v21];
 
 LABEL_30:
-    if (!v11)
+    if (!_isPinningInputViews)
     {
       goto LABEL_35;
     }
@@ -1061,20 +1061,20 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   if ([(EKCalendarItem *)self->_calendarItem isNew])
   {
     v3 = objc_alloc(MEMORY[0x1E69669C8]);
-    v4 = [(EKCalendarItem *)self->_calendarItem changeSet];
+    changeSet = [(EKCalendarItem *)self->_calendarItem changeSet];
     v5 = [MEMORY[0x1E695DFD8] setWithObjects:{@"uniqueID", 0}];
-    v6 = [v3 initWithChangeSet:v4 changesToSkip:v5];
+    v6 = [v3 initWithChangeSet:changeSet changesToSkip:v5];
 
-    v7 = [(EKCalendarItem *)self->_calendarItem title];
-    if ([v7 length])
+    title = [(EKCalendarItem *)self->_calendarItem title];
+    if ([title length])
     {
       LOBYTE(v8) = 1;
     }
 
     else
     {
-      v11 = [(EKCalendarItem *)self->_calendarItem location];
-      if ([v11 length])
+      location = [(EKCalendarItem *)self->_calendarItem location];
+      if ([location length])
       {
         LOBYTE(v8) = 1;
       }
@@ -1098,28 +1098,28 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
 
 - (void)resignCurrentEditItemFirstResponder
 {
-  v2 = [(EKCalendarItemEditItem *)self->_currentEditItem selectedResponder];
-  [v2 resignFirstResponder];
+  selectedResponder = [(EKCalendarItemEditItem *)self->_currentEditItem selectedResponder];
+  [selectedResponder resignFirstResponder];
 }
 
-- (BOOL)saveWithSpan:(int64_t)a3 animated:(BOOL)a4
+- (BOOL)saveWithSpan:(int64_t)span animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   currentEditItem = self->_currentEditItem;
   if (currentEditItem)
   {
     [(EKCalendarItemEditItem *)currentEditItem saveAndDismissWithForce:1];
   }
 
-  return [(EKCalendarItemEditor *)self _performSave:a3 animated:v4];
+  return [(EKCalendarItemEditor *)self _performSave:span animated:animatedCopy];
 }
 
-- (void)_completeWithAction:(int64_t)a3 animated:(BOOL)a4 notify:(BOOL)a5
+- (void)_completeWithAction:(int64_t)action animated:(BOOL)animated notify:(BOOL)notify
 {
-  v5 = a5;
-  v6 = a4;
+  notifyCopy = notify;
+  animatedCopy = animated;
   [(EKCalendarItemEditor *)self _pinKeyboard:0];
-  if (v5)
+  if (notifyCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_editorDelegate);
     v10 = objc_opt_respondsToSelector();
@@ -1127,14 +1127,14 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_editorDelegate);
-      [v11 editor:self didCompleteWithAction:a3];
+      [v11 editor:self didCompleteWithAction:action];
     }
   }
 
-  v12 = [(EKCalendarItemEditor *)self _editItems];
-  [v12 makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  [_editItems makeObjectsPerformSelector:sel_setDelegate_ withObject:0];
 
-  [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController cancelAnimated:v6];
+  [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController cancelAnimated:animatedCopy];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = 0;
 }
@@ -1142,13 +1142,13 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
 - (void)_configureVisibleItems
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(EKCalendarItemEditor *)self _editItems];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = _editItems;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1166,8 +1166,8 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([(EKCalendarItemEditor *)self shouldDisplayEditItem:v10, v14])
         {
-          v11 = [(EKCalendarItem *)self->_calendarItem calendar];
-          v12 = [v10 configureForCalendarConstraints:v11];
+          calendar = [(EKCalendarItem *)self->_calendarItem calendar];
+          v12 = [v10 configureForCalendarConstraints:calendar];
 
           if (v12)
           {
@@ -1193,8 +1193,8 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(EKCalendarItemEditor *)self _editItems];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  v4 = [_editItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1206,14 +1206,14 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_editItems);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setCalendarItem:self->_calendarItem store:self->_store];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_editItems countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1222,13 +1222,13 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
 
 - (void)prepareEditItems
 {
-  v3 = [(EKCalendarItemEditor *)self _editItems];
-  [v3 makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  [_editItems makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
 
   [(EKCalendarItemEditor *)self _setCalendarItemOnEditItems];
   [(EKCalendarItemEditor *)self _configureVisibleItems];
-  v4 = [(EKCalendarItemEditor *)self tableView];
-  [v4 reloadData];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)attemptDisplayReviewPrompt
@@ -1272,17 +1272,17 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   [(EKCalendarItemEditor *)self prepareEditItems];
   [(EKCalendarItem *)self->_calendarItem isNew];
   v8 = objc_alloc(MEMORY[0x1E69DD250]);
-  v9 = [(EKCalendarItemEditor *)self tableView];
-  [v9 bounds];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  [tableView bounds];
   v10 = [v8 initWithFrame:{0.0, 0.0}];
-  v11 = [(EKCalendarItemEditor *)self tableView];
-  [v11 setTableFooterView:v10];
+  tableView2 = [(EKCalendarItemEditor *)self tableView];
+  [tableView2 setTableFooterView:v10];
 
   [(EKCalendarItemEditor *)self _copyEventForPossibleRevert];
   if ([(EKCalendarItem *)self->_calendarItem isNew])
   {
-    v12 = [(EKCalendarItem *)self->_calendarItem title];
-    v13 = [v12 length];
+    title = [(EKCalendarItem *)self->_calendarItem title];
+    v13 = [title length];
 
     if (!v13 && !self->_hasAppeared)
     {
@@ -1295,10 +1295,10 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
 {
   if (self->_calendarItem)
   {
-    v3 = [(EKCalendarItemEditor *)self isViewLoaded];
+    isViewLoaded = [(EKCalendarItemEditor *)self isViewLoaded];
     if (([(EKCalendarItem *)self->_calendarItem isNew]& 1) != 0 || ([(EKCalendarItem *)self->_calendarItem refreshIfRefreshableAndNotify:1]& 1) != 0)
     {
-      if (v3 && [(EKCalendarItemEditor *)self isViewLoaded])
+      if (isViewLoaded && [(EKCalendarItemEditor *)self isViewLoaded])
       {
 
         [(EKCalendarItemEditor *)self setupForEvent];
@@ -1313,11 +1313,11 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   }
 }
 
-- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)a3
+- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)status
 {
   if ([(EKCalendarItemEditor *)self isViewLoaded])
   {
-    lastAuthorizationStatus = a3;
+    lastAuthorizationStatus = status;
     if (self->_shouldOverrideAuthorizationStatus)
     {
       lastAuthorizationStatus = self->_lastAuthorizationStatus;
@@ -1332,26 +1332,26 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
         return;
       }
 
-      v9 = [(EKCalendarItemEditor *)self firstResponder];
-      [v9 resignFirstResponder];
+      firstResponder = [(EKCalendarItemEditor *)self firstResponder];
+      [firstResponder resignFirstResponder];
 
-      v10 = [(EKCalendarItemEditor *)self view];
-      v11 = [(EKCalendarItemEditor *)self accessDeniedView];
-      [v10 addSubview:v11];
+      view = [(EKCalendarItemEditor *)self view];
+      accessDeniedView = [(EKCalendarItemEditor *)self accessDeniedView];
+      [view addSubview:accessDeniedView];
 
-      v12 = [(EKCalendarItemEditor *)self view];
-      v13 = [(EKCalendarItemEditor *)self accessDeniedView];
-      [v12 bringSubviewToFront:v13];
+      view2 = [(EKCalendarItemEditor *)self view];
+      accessDeniedView2 = [(EKCalendarItemEditor *)self accessDeniedView];
+      [view2 bringSubviewToFront:accessDeniedView2];
 
-      if (a3 == 1)
+      if (status == 1)
       {
-        v14 = [(EKCalendarItemEditor *)self accessDeniedView];
-        [v14 setMessage:@" "];
+        accessDeniedView3 = [(EKCalendarItemEditor *)self accessDeniedView];
+        [accessDeniedView3 setMessage:@" "];
       }
 
       [(UIBarButtonItem *)self->_doneButton setEnabled:0];
-      v15 = [(EKCalendarItemEditor *)self navigationController];
-      v16 = [v15 popToRootViewControllerAnimated:1];
+      navigationController = [(EKCalendarItemEditor *)self navigationController];
+      v16 = [navigationController popToRootViewControllerAnimated:1];
     }
 
     else
@@ -1368,27 +1368,27 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
       [(UIBarButtonItem *)self->_doneButton setEnabled:[(EKCalendarItemEditor *)self _canEnableDoneButton]];
     }
 
-    v17 = [(EKCalendarItemEditor *)self contentScrollView];
-    [v17 setScrollEnabled:v6 < 2];
+    contentScrollView = [(EKCalendarItemEditor *)self contentScrollView];
+    [contentScrollView setScrollEnabled:v6 < 2];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(EKCalendarItemEditor *)self tableView];
-  [v3 sizeThatFits:{2147483650.0, 2147483650.0}];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  [tableView sizeThatFits:{2147483650.0, 2147483650.0}];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(EKCalendarItemEditor *)self navigationController];
-  v9 = [v8 navigationBar];
-  [v9 frame];
+  navigationController = [(EKCalendarItemEditor *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v11 = v10;
 
-  v12 = [(EKCalendarItemEditor *)self view];
-  LODWORD(v8) = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v12);
+  view = [(EKCalendarItemEditor *)self view];
+  LODWORD(navigationController) = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
-  if (v8)
+  if (navigationController)
   {
     v5 = EKUIContainedControllerIdealWidth();
   }
@@ -1400,14 +1400,14 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   return result;
 }
 
-- (void)_pinKeyboard:(BOOL)a3
+- (void)_pinKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(EKCalendarItemEditor *)self _popoverController];
+  keyboardCopy = keyboard;
+  _popoverController = [(EKCalendarItemEditor *)self _popoverController];
 
-  if (v5)
+  if (_popoverController)
   {
-    if (v3)
+    if (keyboardCopy)
     {
 
       [(EKCalendarItemEditor *)self _beginPinningInputViews];
@@ -1426,17 +1426,17 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   if (!self->_accessDeniedView)
   {
     v3 = objc_alloc(MEMORY[0x1E69DD328]);
-    v4 = [(EKCalendarItemEditor *)self view];
-    [v4 bounds];
+    view = [(EKCalendarItemEditor *)self view];
+    [view bounds];
     v5 = [v3 initWithFrame:?];
     accessDeniedView = self->_accessDeniedView;
     self->_accessDeniedView = v5;
 
     [(_UIAccessDeniedView *)self->_accessDeniedView setAutoresizingMask:18];
-    v7 = [(EKCalendarItemEditor *)self entityType];
+    entityType = [(EKCalendarItemEditor *)self entityType];
     v8 = EventKitUIBundle();
     v9 = v8;
-    if (v7 == 1)
+    if (entityType == 1)
     {
       v10 = @"This app does not have access to your reminders.";
     }
@@ -1455,33 +1455,33 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   return v12;
 }
 
-- (void)_setWantsToEnableDoneButton:(BOOL)a3
+- (void)_setWantsToEnableDoneButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
-    *&a3 = [(EKCalendarItemEditor *)self _canEnableDoneButton];
+    *&button = [(EKCalendarItemEditor *)self _canEnableDoneButton];
   }
 
   doneButton = self->_doneButton;
 
-  [(UIBarButtonItem *)doneButton setEnabled:a3];
+  [(UIBarButtonItem *)doneButton setEnabled:button];
 }
 
 - (id)_viewHierarchy
 {
   if (-[EKCalendarItemEditor isViewLoaded](self, "isViewLoaded") && (-[EKCalendarItemEditor view](self, "view"), v3 = objc_claimAutoreleasedReturnValue(), [v3 window], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4) || (-[EKCalendarItemEditor presentingViewController](self, "presentingViewController"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "view"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "window"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, !v7))
   {
-    v10 = [(EKCalendarItemEditor *)self view];
+    view = [(EKCalendarItemEditor *)self view];
   }
 
   else
   {
-    v8 = [(EKCalendarItemEditor *)self presentingViewController];
-    v9 = [v8 view];
-    v10 = [v9 window];
+    presentingViewController = [(EKCalendarItemEditor *)self presentingViewController];
+    view2 = [presentingViewController view];
+    view = [view2 window];
   }
 
-  return v10;
+  return view;
 }
 
 + (id)_addLocalizedString
@@ -1500,17 +1500,17 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   return v3;
 }
 
-- (void)editItemDidStartEditing:(id)a3
+- (void)editItemDidStartEditing:(id)editing
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_currentEditItem, a3);
+  editingCopy = editing;
+  objc_storeStrong(&self->_currentEditItem, editing);
   if ([(EKCalendarItemEditItem *)self->_currentEditItem isInline])
   {
-    v6 = [v5 selectedResponder];
-    [(EKCalendarItemEditor *)self setResponderToRestoreOnAppearence:v6];
+    selectedResponder = [editingCopy selectedResponder];
+    [(EKCalendarItemEditor *)self setResponderToRestoreOnAppearence:selectedResponder];
 
-    [(EKCalendarItemEditor *)self setVisibleSectionToRestoreOnAppearence:[(EKCalendarItemEditor *)self tableSectionForEditItem:v5]];
+    [(EKCalendarItemEditor *)self setVisibleSectionToRestoreOnAppearence:[(EKCalendarItemEditor *)self tableSectionForEditItem:editingCopy]];
     [(EKCalendarItemEditor *)self _pinKeyboard:[(EKCalendarItemEditItem *)self->_currentEditItem shouldPinKeyboard]];
   }
 
@@ -1518,8 +1518,8 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(EKCalendarItemEditor *)self _editItems];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _editItems = [(EKCalendarItemEditor *)self _editItems];
+  v8 = [_editItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1531,33 +1531,33 @@ uint64_t __47__EKCalendarItemEditor_done_withContinueBlock___block_invoke_2(uint
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_editItems);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) editor:self didStartEditingItem:v5];
+        [*(*(&v12 + 1) + 8 * v11++) editor:self didStartEditingItem:editingCopy];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [_editItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)editItem:(id)a3 didSaveFromDetailViewController:(BOOL)a4
+- (void)editItem:(id)item didSaveFromDetailViewController:(BOOL)controller
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [v10 onSaveEditorReloadBehavior];
-  if (v6 == 2)
+  controllerCopy = controller;
+  itemCopy = item;
+  onSaveEditorReloadBehavior = [itemCopy onSaveEditorReloadBehavior];
+  if (onSaveEditorReloadBehavior == 2)
   {
     [(EKCalendarItemEditor *)self _configureVisibleItems];
   }
 
-  v7 = [v10 onSaveEditItemsToRefresh];
-  v8 = v7;
-  if (v7)
+  onSaveEditItemsToRefresh = [itemCopy onSaveEditItemsToRefresh];
+  v8 = onSaveEditItemsToRefresh;
+  if (onSaveEditItemsToRefresh)
   {
     [(EKCalendarItemEditor *)self refreshStartAndEndDates];
     if ((v8 & 2) == 0)
@@ -1572,7 +1572,7 @@ LABEL_5:
     }
   }
 
-  else if ((v7 & 2) == 0)
+  else if ((onSaveEditItemsToRefresh & 2) == 0)
   {
     goto LABEL_5;
   }
@@ -1624,21 +1624,21 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (v6 == 2)
+  if (onSaveEditorReloadBehavior == 2)
   {
 LABEL_16:
-    v9 = [(EKCalendarItemEditor *)self tableView];
-    [v9 reloadData];
+    tableView = [(EKCalendarItemEditor *)self tableView];
+    [tableView reloadData];
 
     goto LABEL_24;
   }
 
-  if (v6 == 1)
+  if (onSaveEditorReloadBehavior == 1)
   {
     [(EKCalendarItemEditor *)self reloadTableViewSectionsForTime:0 invitees:(v8 >> 1) & 1 location:(v8 >> 2) & 1 recurrence:(v8 >> 4) & 1];
   }
 
-  else if (!v6 && (v8 || v4))
+  else if (!onSaveEditorReloadBehavior && (v8 || controllerCopy))
   {
     [(EKCalendarItemEditor *)self _configureVisibleItems];
     goto LABEL_16;
@@ -1650,21 +1650,21 @@ LABEL_24:
 
 - (void)_updateDoneButtonState
 {
-  v3 = [(EKCalendarItemEditor *)self hasUnsavedChanges];
+  hasUnsavedChanges = [(EKCalendarItemEditor *)self hasUnsavedChanges];
 
-  [(EKCalendarItemEditor *)self _setWantsToEnableDoneButton:v3];
+  [(EKCalendarItemEditor *)self _setWantsToEnableDoneButton:hasUnsavedChanges];
 }
 
-- (void)editItemDidEndEditing:(id)a3
+- (void)editItemDidEndEditing:(id)editing
 {
-  v5 = a3;
-  if ([(EKCalendarItemEditItem *)v5 isInline])
+  editingCopy = editing;
+  if ([(EKCalendarItemEditItem *)editingCopy isInline])
   {
-    [(EKCalendarItemEditItem *)v5 saveAndDismissWithForce:0];
+    [(EKCalendarItemEditItem *)editingCopy saveAndDismissWithForce:0];
   }
 
   currentEditItem = self->_currentEditItem;
-  if (currentEditItem == v5)
+  if (currentEditItem == editingCopy)
   {
     self->_currentEditItem = 0;
   }
@@ -1672,10 +1672,10 @@ LABEL_24:
   [(EKCalendarItemEditor *)self setIsTextEditing:0];
 }
 
-- (void)editItemTextChanged:(id)a3
+- (void)editItemTextChanged:(id)changed
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F4F3DBE0] && objc_msgSend(v4, "isSaveable"))
+  changedCopy = changed;
+  if ([changedCopy conformsToProtocol:&unk_1F4F3DBE0] && objc_msgSend(changedCopy, "isSaveable"))
   {
     [(EKCalendarItemEditor *)self _setWantsToEnableDoneButton:1];
   }
@@ -1694,29 +1694,29 @@ LABEL_24:
   return result;
 }
 
-- (void)editItem:(id)a3 wantsDoneButtonDisabled:(BOOL)a4
+- (void)editItem:(id)item wantsDoneButtonDisabled:(BOOL)disabled
 {
-  v6 = a3;
+  itemCopy = item;
   editItemsDisablingDoneButton = self->_editItemsDisablingDoneButton;
-  v10 = v6;
-  if (a4)
+  v10 = itemCopy;
+  if (disabled)
   {
-    [(NSMutableSet *)editItemsDisablingDoneButton addObject:v6];
-    v8 = self;
+    [(NSMutableSet *)editItemsDisablingDoneButton addObject:itemCopy];
+    selfCopy2 = self;
     v9 = 0;
 LABEL_7:
-    [(EKCalendarItemEditor *)v8 _setWantsToEnableDoneButton:v9];
+    [(EKCalendarItemEditor *)selfCopy2 _setWantsToEnableDoneButton:v9];
     goto LABEL_8;
   }
 
-  if ([(NSMutableSet *)editItemsDisablingDoneButton containsObject:v6])
+  if ([(NSMutableSet *)editItemsDisablingDoneButton containsObject:itemCopy])
   {
     [(NSMutableSet *)self->_editItemsDisablingDoneButton removeObject:v10];
   }
 
   if (![(NSMutableSet *)self->_editItemsDisablingDoneButton count])
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
     goto LABEL_7;
   }
@@ -1770,32 +1770,32 @@ void __53__EKCalendarItemEditor__reallyHandleCellHeightChange__block_invoke(uint
   [v3 endUpdates];
 }
 
-- (void)editItem:(id)a3 performActionsOnCellAtSubitem:(unint64_t)a4 actions:(id)a5
+- (void)editItem:(id)item performActionsOnCellAtSubitem:(unint64_t)subitem actions:(id)actions
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(EKCalendarItemEditor *)self tableSectionForEditItem:v9];
-  v11 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:v9];
+  actionsCopy = actions;
+  itemCopy = item;
+  v10 = [(EKCalendarItemEditor *)self tableSectionForEditItem:itemCopy];
+  v11 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:itemCopy];
 
-  v14 = [MEMORY[0x1E696AC88] indexPathForRow:v11 + a4 inSection:v10];
-  v12 = [(EKCalendarItemEditor *)self tableView];
-  v13 = [v12 cellForRowAtIndexPath:v14];
+  v14 = [MEMORY[0x1E696AC88] indexPathForRow:v11 + subitem inSection:v10];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  v13 = [tableView cellForRowAtIndexPath:v14];
 
-  v8[2](v8, v13);
+  actionsCopy[2](actionsCopy, v13);
 }
 
-- (void)editItemWantsFooterTitlesToReload:(id)a3
+- (void)editItemWantsFooterTitlesToReload:(id)reload
 {
-  v4 = [(EKCalendarItemEditor *)self tableView];
-  v5 = [v4 numberOfSections];
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v5 >= 1)
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       if ([(NSArray *)self->_orderedEditItems count]<= i)
       {
-        v9 = 0;
+        footerTitle = 0;
       }
 
       else
@@ -1804,43 +1804,43 @@ void __53__EKCalendarItemEditor__reallyHandleCellHeightChange__block_invoke(uint
         if ([v7 count])
         {
           v8 = [v7 objectAtIndexedSubscript:0];
-          v9 = [v8 footerTitle];
+          footerTitle = [v8 footerTitle];
         }
 
         else
         {
-          v9 = 0;
+          footerTitle = 0;
         }
       }
 
-      v10 = [(EKCalendarItemEditor *)self tableView];
-      v11 = [v10 footerViewForSection:i];
-      v12 = [v11 textLabel];
-      [v12 setText:v9];
+      tableView2 = [(EKCalendarItemEditor *)self tableView];
+      v11 = [tableView2 footerViewForSection:i];
+      textLabel = [v11 textLabel];
+      [textLabel setText:footerTitle];
     }
   }
 }
 
-- (void)editItem:(id)a3 wantsRowReload:(id)a4
+- (void)editItem:(id)item wantsRowReload:(id)reload
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(EKCalendarItemEditor *)self tableSectionForEditItem:a3];
+  reloadCopy = reload;
+  v7 = [(EKCalendarItemEditor *)self tableSectionForEditItem:item];
   v8 = MEMORY[0x1E696AC88];
-  v9 = [v6 row];
-  v10 = [v6 section];
+  v9 = [reloadCopy row];
+  section = [reloadCopy section];
 
-  v11 = [v8 indexPathForRow:v9 inSection:v10 + v7];
-  v12 = [(EKCalendarItemEditor *)self tableView];
+  v11 = [v8 indexPathForRow:v9 inSection:section + v7];
+  tableView = [(EKCalendarItemEditor *)self tableView];
   v14[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v12 reloadRowsAtIndexPaths:v13 withRowAnimation:0];
+  [tableView reloadRowsAtIndexPaths:v13 withRowAnimation:0];
 }
 
-- (int64_t)rowNumberForEditItem:(id)a3
+- (int64_t)rowNumberForEditItem:(id)item
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1874,7 +1874,7 @@ void __53__EKCalendarItemEditor__reallyHandleCellHeightChange__block_invoke(uint
         v12[2] = __45__EKCalendarItemEditor_rowNumberForEditItem___block_invoke;
         v12[3] = &unk_1E84425E0;
         v12[4] = self;
-        v13 = v4;
+        v13 = itemCopy;
         v14 = &v21;
         v15 = v16;
         [v8 enumerateObjectsUsingBlock:v12];
@@ -1922,23 +1922,23 @@ void __45__EKCalendarItemEditor_rowNumberForEditItem___block_invoke(uint64_t a1,
   }
 }
 
-- (void)editItem:(id)a3 wantsRowInsertions:(id)a4 rowDeletions:(id)a5 rowReloads:(id)a6
+- (void)editItem:(id)item wantsRowInsertions:(id)insertions rowDeletions:(id)deletions rowReloads:(id)reloads
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(EKCalendarItemEditor *)self tableView];
-  if (([v14 isReloading] & 1) == 0)
+  itemCopy = item;
+  insertionsCopy = insertions;
+  deletionsCopy = deletions;
+  reloadsCopy = reloads;
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  if (([tableView isReloading] & 1) == 0)
   {
-    v15 = [(EKCalendarItemEditor *)self tableSectionForEditItem:v10];
-    v16 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:v10];
+    v15 = [(EKCalendarItemEditor *)self tableSectionForEditItem:itemCopy];
+    v16 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:itemCopy];
     [(EKCalendarItemEditor *)self _tableViewWillUpdateHeights];
-    [v14 beginUpdates];
+    [tableView beginUpdates];
     v17 = 0x1E695D000;
-    if ([v11 count])
+    if ([insertionsCopy count])
     {
-      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+      v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(insertionsCopy, "count")}];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowReloads___block_invoke;
@@ -1947,16 +1947,16 @@ void __45__EKCalendarItemEditor_rowNumberForEditItem___block_invoke(uint64_t a1,
       v42 = v15;
       v40 = v18;
       v19 = v18;
-      [v11 enumerateIndexesUsingBlock:v39];
-      [v14 insertRowsAtIndexPaths:v19 withRowAnimation:0];
+      [insertionsCopy enumerateIndexesUsingBlock:v39];
+      [tableView insertRowsAtIndexPaths:v19 withRowAnimation:0];
 
       v17 = 0x1E695D000uLL;
     }
 
-    if ([v12 count])
+    if ([deletionsCopy count])
     {
       v20 = v17;
-      v21 = [*(v17 + 3952) arrayWithCapacity:{objc_msgSend(v12, "count")}];
+      v21 = [*(v17 + 3952) arrayWithCapacity:{objc_msgSend(deletionsCopy, "count")}];
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowReloads___block_invoke_2;
@@ -1965,15 +1965,15 @@ void __45__EKCalendarItemEditor_rowNumberForEditItem___block_invoke(uint64_t a1,
       v38 = v15;
       v36 = v21;
       v22 = v21;
-      [v12 enumerateIndexesUsingBlock:v35];
-      [v14 deleteRowsAtIndexPaths:v22 withRowAnimation:0];
+      [deletionsCopy enumerateIndexesUsingBlock:v35];
+      [tableView deleteRowsAtIndexPaths:v22 withRowAnimation:0];
 
       v17 = v20;
     }
 
-    if ([v13 count])
+    if ([reloadsCopy count])
     {
-      v23 = [*(v17 + 3952) arrayWithCapacity:{objc_msgSend(v13, "count")}];
+      v23 = [*(v17 + 3952) arrayWithCapacity:{objc_msgSend(reloadsCopy, "count")}];
       v28 = MEMORY[0x1E69E9820];
       v29 = 3221225472;
       v30 = __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowReloads___block_invoke_3;
@@ -1982,11 +1982,11 @@ void __45__EKCalendarItemEditor_rowNumberForEditItem___block_invoke(uint64_t a1,
       v34 = v15;
       v32 = v23;
       v24 = v23;
-      [v13 enumerateIndexesUsingBlock:&v28];
-      [v14 reloadRowsAtIndexPaths:v24 withRowAnimation:{0, v28, v29, v30, v31}];
+      [reloadsCopy enumerateIndexesUsingBlock:&v28];
+      [tableView reloadRowsAtIndexPaths:v24 withRowAnimation:{0, v28, v29, v30, v31}];
     }
 
-    [v14 endUpdates];
+    [tableView endUpdates];
     [(EKCalendarItemEditor *)self _tableViewDidUpdateHeights];
     WeakRetained = objc_loadWeakRetained(&self->_editorDelegate);
     v26 = objc_opt_respondsToSelector();
@@ -2017,18 +2017,18 @@ void __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowRelo
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)editItem:(id)a3 wantsRowsScrolledToVisible:(id)a4
+- (void)editItem:(id)item wantsRowsScrolledToVisible:(id)visible
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKCalendarItemEditor *)self tableView];
-  [v8 contentInset];
+  itemCopy = item;
+  visibleCopy = visible;
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  [tableView contentInset];
   v10 = v9;
 
   if (v10 == 0.0)
   {
-    v11 = [(EKCalendarItemEditor *)self tableSectionForEditItem:v6];
-    v12 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:v6];
+    v11 = [(EKCalendarItemEditor *)self tableSectionForEditItem:itemCopy];
+    v12 = [(EKCalendarItemEditor *)self firstTableRowForEditItem:itemCopy];
     v26 = 0;
     v27 = &v26;
     v28 = 0x4010000000;
@@ -2044,15 +2044,15 @@ void __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowRelo
     v25[7] = v11;
     v25[4] = self;
     v25[5] = &v26;
-    [v7 enumerateIndexesUsingBlock:v25];
+    [visibleCopy enumerateIndexesUsingBlock:v25];
     if (!CGRectIsEmpty(v27[1]))
     {
       height = v27[1].size.height;
-      v15 = [(EKCalendarItemEditor *)self tableView];
-      [v15 bounds];
+      tableView2 = [(EKCalendarItemEditor *)self tableView];
+      [tableView2 bounds];
       v17 = v16;
-      v18 = [(EKCalendarItemEditor *)self tableView];
-      [v18 contentInset];
+      tableView3 = [(EKCalendarItemEditor *)self tableView];
+      [tableView3 contentInset];
       v19 = height + 20.0;
       v21 = v17 - v20;
 
@@ -2061,15 +2061,15 @@ void __76__EKCalendarItemEditor_editItem_wantsRowInsertions_rowDeletions_rowRelo
         v24 = v27;
         v27[1].size.height = v19;
         v24[1].origin.y = v24[1].origin.y + -10.0;
-        v22 = [(EKCalendarItemEditor *)self tableView];
-        [v22 scrollRectToVisible:1 animated:{v27[1].origin.x, v27[1].origin.y, v27[1].size.width, v27[1].size.height}];
+        tableView4 = [(EKCalendarItemEditor *)self tableView];
+        [tableView4 scrollRectToVisible:1 animated:{v27[1].origin.x, v27[1].origin.y, v27[1].size.width, v27[1].size.height}];
       }
 
       else
       {
-        v22 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(v7 inSection:{"firstIndex") + v12, v11}];
-        v23 = [(EKCalendarItemEditor *)self tableView];
-        [v23 scrollToRowAtIndexPath:v22 atScrollPosition:1 animated:1];
+        tableView4 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(visibleCopy inSection:{"firstIndex") + v12, v11}];
+        tableView5 = [(EKCalendarItemEditor *)self tableView];
+        [tableView5 scrollToRowAtIndexPath:tableView4 atScrollPosition:1 animated:1];
       }
     }
 
@@ -2107,7 +2107,7 @@ void __60__EKCalendarItemEditor_editItem_wantsRowsScrolledToVisible___block_invo
   v12[7] = height;
 }
 
-- (void)editItemRequiresHeightChange:(id)a3
+- (void)editItemRequiresHeightChange:(id)change
 {
   if (self->_isIgnoringCellHeightChange)
   {
@@ -2120,7 +2120,7 @@ void __60__EKCalendarItemEditor_editItem_wantsRowsScrolledToVisible___block_invo
   }
 }
 
-- (void)editItemRequiresPopoverSizeUpdate:(id)a3
+- (void)editItemRequiresPopoverSizeUpdate:(id)update
 {
   WeakRetained = objc_loadWeakRetained(&self->_editorDelegate);
   v5 = objc_opt_respondsToSelector();
@@ -2132,40 +2132,40 @@ void __60__EKCalendarItemEditor_editItem_wantsRowsScrolledToVisible___block_invo
   }
 }
 
-- (id)cellWithReuseIdentifier:(id)a3 forEditItem:(id)a4
+- (id)cellWithReuseIdentifier:(id)identifier forEditItem:(id)item
 {
-  v5 = a3;
-  v6 = [(EKCalendarItemEditor *)self tableView];
-  v7 = [v6 dequeueReusableCellWithIdentifier:v5];
+  identifierCopy = identifier;
+  tableView = [(EKCalendarItemEditor *)self tableView];
+  v7 = [tableView dequeueReusableCellWithIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)editItem:(id)a3 wantsViewControllerPresented:(id)a4
+- (void)editItem:(id)item wantsViewControllerPresented:(id)presented
 {
-  v5 = a4;
+  presentedCopy = presented;
   v6 = [EKEditItemViewController preferredViewControllerForPresentationsFromViewController:self];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  [v6 presentViewController:presentedCopy animated:1 completion:0];
 }
 
-- (void)editItem:(id)a3 wantsViewControllerPushed:(id)a4
+- (void)editItem:(id)item wantsViewControllerPushed:(id)pushed
 {
-  v5 = a4;
-  v6 = [(EKCalendarItemEditor *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  pushedCopy = pushed;
+  navigationController = [(EKCalendarItemEditor *)self navigationController];
+  [navigationController pushViewController:pushedCopy animated:1];
 }
 
-- (void)editItemWantsFirstResponderResigned:(id)a3
+- (void)editItemWantsFirstResponderResigned:(id)resigned
 {
-  v3 = [(EKCalendarItemEditor *)self firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [(EKCalendarItemEditor *)self firstResponder];
+  [firstResponder resignFirstResponder];
 }
 
-- (id)_editItemAtIndexPath:(id)a3 firstRowIndex:(int64_t *)a4
+- (id)_editItemAtIndexPath:(id)path firstRowIndex:(int64_t *)index
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  -[NSArray objectAtIndex:](self->_orderedEditItems, "objectAtIndex:", [v5 section]);
+  pathCopy = path;
+  -[NSArray objectAtIndex:](self->_orderedEditItems, "objectAtIndex:", [pathCopy section]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -2190,13 +2190,13 @@ LABEL_3:
       if ([(NSArray *)self->_currentItems containsObject:v13])
       {
         v9 = [v13 numberOfSubitems] + v12;
-        if ([v5 row] < v9)
+        if ([pathCopy row] < v9)
         {
-          v14 = v13;
-          v15 = a4;
-          *a4 = v12;
+          lastObject = v13;
+          indexCopy2 = index;
+          *index = v12;
 
-          if (v14)
+          if (lastObject)
           {
             goto LABEL_18;
           }
@@ -2229,16 +2229,16 @@ LABEL_3:
 LABEL_16:
 
   v12 = v9;
-  v15 = a4;
+  indexCopy2 = index;
 LABEL_17:
-  v14 = [v6 lastObject];
-  *v15 = v12;
+  lastObject = [v6 lastObject];
+  *indexCopy2 = v12;
 LABEL_18:
 
-  return v14;
+  return lastObject;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v8 = *MEMORY[0x1E69E9840];
   v3 = [(NSArray *)self->_orderedEditItems count];
@@ -2253,10 +2253,10 @@ LABEL_18:
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [(NSArray *)self->_orderedEditItems objectAtIndex:a4];
+  v6 = [(NSArray *)self->_orderedEditItems objectAtIndex:section];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -2298,7 +2298,7 @@ LABEL_18:
   if (os_log_type_enabled(kEKUILogEventEditorHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v20 = a4;
+    sectionCopy = section;
     v21 = 2048;
     v22 = v9;
     _os_log_impl(&dword_1D3400000, v13, OS_LOG_TYPE_DEBUG, "Number of rows in section [%ld]: [%ld]", buf, 0x16u);
@@ -2307,38 +2307,38 @@ LABEL_18:
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v13 = 0;
-  v7 = a4;
-  v8 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v7 firstRowIndex:&v13];
-  v9 = [v7 row];
+  pathCopy = path;
+  v8 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v13];
+  v9 = [pathCopy row];
 
   v10 = [v8 cellForSubitemAtIndex:v9 - v13 inEditor:self];
   if (EKUICatalyst())
   {
-    v11 = [v6 backgroundColor];
-    [v10 setBackgroundColor:v11];
+    backgroundColor = [viewCopy backgroundColor];
+    [v10 setBackgroundColor:backgroundColor];
   }
 
   return v10;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 rowHeight];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy rowHeight];
   v9 = v8;
-  [v7 bounds];
+  [viewCopy bounds];
   v11 = v10;
-  [v7 _backgroundInset];
+  [viewCopy _backgroundInset];
   v13 = v12;
 
   v18 = 0;
-  v14 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v6 firstRowIndex:&v18];
-  v15 = [v6 row];
+  v14 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v18];
+  v15 = [pathCopy row];
 
   [v14 defaultCellHeightForSubitemAtIndex:v15 - v18 forWidth:v11 + v13 * -2.0];
   if (v16 > 0.0)
@@ -2349,33 +2349,33 @@ LABEL_18:
   return v9;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v11 = 0;
-  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v5 firstRowIndex:&v11];
-  v7 = [v5 row];
+  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v11];
+  v7 = [pathCopy row];
   v8 = [v6 editor:self canSelectSubitem:v7 - v11];
   v9 = 0;
   if (v8)
   {
-    v9 = v5;
+    v9 = pathCopy;
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if ([v8 selectionStyle])
   {
     v16 = 0;
-    v9 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v7 firstRowIndex:&v16];
-    v10 = [v7 row];
+    v9 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v16];
+    v10 = [pathCopy row];
     v11 = v10 - v16;
     currentEditItem = self->_currentEditItem;
     if (currentEditItem)
@@ -2392,23 +2392,23 @@ LABEL_18:
     {
       if ([(EKCalendarItemEditItem *)v9 editor:self shouldClearSelectionFromSubitem:v11])
       {
-        [v6 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+        [viewCopy selectRowAtIndexPath:0 animated:1 scrollPosition:0];
       }
     }
 
     else if (![(EKCalendarItemEditItem *)currentEditItem saveAndDismissWithForce:0])
     {
-      [v6 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+      [viewCopy selectRowAtIndexPath:0 animated:1 scrollPosition:0];
 
       goto LABEL_14;
     }
 
-    v14 = [(EKCalendarItemEditor *)self _popoverController];
+    _popoverController = [(EKCalendarItemEditor *)self _popoverController];
 
-    if (!v14)
+    if (!_popoverController)
     {
-      v15 = [(EKCalendarItemEditItem *)self->_currentEditItem selectedResponder];
-      [v15 resignFirstResponder];
+      selectedResponder = [(EKCalendarItemEditItem *)self->_currentEditItem selectedResponder];
+      [selectedResponder resignFirstResponder];
     }
 
     [(EKCalendarItemEditItem *)v9 editor:self didSelectSubitem:v11];
@@ -2418,19 +2418,19 @@ LABEL_18:
 LABEL_14:
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
   v8 = 0;
-  v5 = a4;
-  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v5 firstRowIndex:&v8];
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v8];
+  v7 = [pathCopy row];
 
   [v6 editor:self didDeselectSubitem:v7 - v8];
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(EKCalendarItemEditor *)self tableView:a3 numberOfRowsInSection:a4]<= 0)
+  if ([(EKCalendarItemEditor *)self tableView:view numberOfRowsInSection:section]<= 0)
   {
     v4 = 0.0;
   }
@@ -2450,9 +2450,9 @@ LABEL_14:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  if ([(EKCalendarItemEditor *)self tableView:a3 numberOfRowsInSection:a4])
+  if ([(EKCalendarItemEditor *)self tableView:view numberOfRowsInSection:section])
   {
     v4 = 0;
   }
@@ -2465,11 +2465,11 @@ LABEL_14:
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:a4];
+  viewCopy = view;
+  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:section];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2504,7 +2504,7 @@ LABEL_14:
     while (v9);
     if (v10)
     {
-      v15 = [v10 headerTitle];
+      headerTitle = [v10 headerTitle];
       goto LABEL_14;
     }
   }
@@ -2514,35 +2514,35 @@ LABEL_14:
     v10 = 0;
   }
 
-  v15 = 0;
+  headerTitle = 0;
 LABEL_14:
 
-  return v15;
+  return headerTitle;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   if (EKUICatalyst())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v10 backgroundColor];
-      v9 = [v7 contentView];
+      v7 = headerViewCopy;
+      backgroundColor = [viewCopy backgroundColor];
+      contentView = [v7 contentView];
 
-      [v9 setBackgroundColor:v8];
+      [contentView setBackgroundColor:backgroundColor];
     }
   }
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:a4];
+  viewCopy = view;
+  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:section];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2578,7 +2578,7 @@ LABEL_14:
     while (v10);
     if (v11)
     {
-      [v6 bounds];
+      [viewCopy bounds];
       [v11 footerHeightForWidth:v16];
       if (v17 == 0.0)
       {
@@ -2600,11 +2600,11 @@ LABEL_14:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:a4];
+  viewCopy = view;
+  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:section];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -2639,7 +2639,7 @@ LABEL_14:
     while (v9);
     if (v10)
     {
-      v15 = [v10 footerTitle];
+      footerTitle = [v10 footerTitle];
       goto LABEL_14;
     }
   }
@@ -2649,29 +2649,29 @@ LABEL_14:
     v10 = 0;
   }
 
-  v15 = 0;
+  footerTitle = 0;
 LABEL_14:
 
-  return v15;
+  return footerTitle;
 }
 
-- (void)tableView:(id)a3 willDisplayFooterView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayFooterView:(id)footerView forSection:(int64_t)section
 {
-  v9 = a3;
-  v6 = a4;
+  viewCopy = view;
+  footerViewCopy = footerView;
   if (EKUICatalyst())
   {
-    v7 = [v9 backgroundColor];
-    v8 = [v6 contentView];
-    [v8 setBackgroundColor:v7];
+    backgroundColor = [viewCopy backgroundColor];
+    contentView = [footerViewCopy contentView];
+    [contentView setBackgroundColor:backgroundColor];
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:a4];
+  viewCopy = view;
+  v7 = [(NSArray *)self->_orderedEditItems objectAtIndex:section];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2714,23 +2714,23 @@ LABEL_14:
   v15 = objc_alloc_init(MEMORY[0x1E69DD250]);
   if (v10)
   {
-    v16 = [v10 footerView];
+    footerView = [v10 footerView];
 
-    v15 = v16;
+    v15 = footerView;
   }
 
   if (v15 && EKUICatalyst())
   {
-    v17 = [v6 backgroundColor];
-    [v15 setBackgroundColor:v17];
+    backgroundColor = [viewCopy backgroundColor];
+    [v15 setBackgroundColor:backgroundColor];
   }
 
   return v15;
 }
 
-- (void)deleteClicked:(id)a3
+- (void)deleteClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2742,21 +2742,21 @@ LABEL_14:
     v5 = 0;
   }
 
-  v6 = [v4 sourceViewForPopover];
-  v7 = [v4 sourceViewForPopover];
+  sourceViewForPopover = [clickedCopy sourceViewForPopover];
+  sourceViewForPopover2 = [clickedCopy sourceViewForPopover];
 
-  [v7 bounds];
+  [sourceViewForPopover2 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(EKCalendarItemEditor *)self _nameForDeleteButton];
+  _nameForDeleteButton = [(EKCalendarItemEditor *)self _nameForDeleteButton];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __38__EKCalendarItemEditor_deleteClicked___block_invoke;
   v19[3] = &unk_1E843FE10;
   v19[4] = self;
-  v17 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:0 viewController:self sourceView:v6 sourceRect:v5 forEvent:v16 stringForDeleteButton:v19 withCompletionHandler:v9, v11, v13, v15];
+  v17 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:0 viewController:self sourceView:sourceViewForPopover sourceRect:v5 forEvent:_nameForDeleteButton stringForDeleteButton:v19 withCompletionHandler:v9, v11, v13, v15];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v17;
 }
@@ -2773,43 +2773,43 @@ void __38__EKCalendarItemEditor_deleteClicked___block_invoke(uint64_t a1, unint6
   *(v3 + 1096) = 0;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v12 = 0;
-  v5 = a4;
-  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:v5 firstRowIndex:&v12];
-  v7 = [v5 row];
+  pathCopy = path;
+  v6 = [(EKCalendarItemEditor *)self _editItemAtIndexPath:pathCopy firstRowIndex:&v12];
+  v7 = [pathCopy row];
 
   v8 = [v6 trailingSwipeActionsConfigurationForRowAtIndex:v7 - v12];
   if (!v8)
   {
     v9 = MEMORY[0x1E69DCFC0];
-    v10 = [MEMORY[0x1E695DEC8] array];
-    v8 = [v9 configurationWithActions:v10];
+    array = [MEMORY[0x1E695DEC8] array];
+    v8 = [v9 configurationWithActions:array];
   }
 
   return v8;
 }
 
-- (void)_performDelete:(int64_t)a3
+- (void)_performDelete:(int64_t)delete
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [(EKCalendarItemEditor *)self calendarItem];
+  calendarItem = [(EKCalendarItemEditor *)self calendarItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [MEMORY[0x1E6966A10] sharedInstance];
-    v8 = [(EKCalendarItemEditor *)self calendarItem];
-    [v7 handleEventDeletion:v8];
+    mEMORY[0x1E6966A10] = [MEMORY[0x1E6966A10] sharedInstance];
+    calendarItem2 = [(EKCalendarItemEditor *)self calendarItem];
+    [mEMORY[0x1E6966A10] handleEventDeletion:calendarItem2];
 
-    v9 = [(EKCalendarItemEditor *)self editorDelegate];
-    v10 = [v9 editorForCalendarItemEditor:self];
+    editorDelegate = [(EKCalendarItemEditor *)self editorDelegate];
+    v10 = [editorDelegate editorForCalendarItemEditor:self];
 
-    v11 = [(EKCalendarItemEditor *)self calendarItem];
+    calendarItem3 = [(EKCalendarItemEditor *)self calendarItem];
     v23 = 0;
-    v12 = [v10 deleteEvent:v11 span:a3 error:&v23];
+    v12 = [v10 deleteEvent:calendarItem3 span:delete error:&v23];
     v13 = v23;
 
     if (v12)
@@ -2825,15 +2825,15 @@ LABEL_7:
 
   else
   {
-    if (a3)
+    if (delete)
     {
       [EKCalendarItemEditor _performDelete:];
     }
 
     store = self->_store;
-    v16 = [(EKCalendarItemEditor *)self calendarItem];
+    calendarItem4 = [(EKCalendarItemEditor *)self calendarItem];
     v22 = 0;
-    v17 = [(EKEventStore *)store removeReminder:v16 commit:1 error:&v22];
+    v17 = [(EKEventStore *)store removeReminder:calendarItem4 commit:1 error:&v22];
     v13 = v22;
 
     v14 = 0;
@@ -2851,13 +2851,13 @@ LABEL_7:
     _os_log_impl(&dword_1D3400000, v18, OS_LOG_TYPE_ERROR, "Remove failed: %@", buf, 0xCu);
   }
 
-  v19 = [v13 domain];
-  v20 = v19;
-  if (v19 == *MEMORY[0x1E6966808])
+  domain = [v13 domain];
+  v20 = domain;
+  if (domain == *MEMORY[0x1E6966808])
   {
-    v21 = [v13 code];
+    code = [v13 code];
 
-    if (v21 == 1010)
+    if (code == 1010)
     {
       [(EKEventStore *)self->_store rollback];
     }
@@ -2894,30 +2894,30 @@ void __39__EKCalendarItemEditor__performDelete___block_invoke(uint64_t a1, void 
   [v4 setObject:v8 forKeyedSubscript:@"currentView"];
 }
 
-- (BOOL)_performSave:(int64_t)a3 animated:(BOOL)a4
+- (BOOL)_performSave:(int64_t)save animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
   if (![(EKCalendarItemEditor *)self hasUnsavedChanges]&& ![(EKCalendarItem *)self->_calendarItem isNew])
   {
     goto LABEL_7;
   }
 
-  v7 = [(EKCalendarItemEditor *)self calendarItem];
-  v8 = [v7 title];
-  v9 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  calendarItem = [(EKCalendarItemEditor *)self calendarItem];
+  title = [calendarItem title];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v10 = [title stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v11 = [v10 length];
 
   if (!v11)
   {
-    v12 = [objc_opt_class() defaultTitleForCalendarItem];
-    v13 = [(EKCalendarItemEditor *)self calendarItem];
-    [v13 setTitle:v12];
+    defaultTitleForCalendarItem = [objc_opt_class() defaultTitleForCalendarItem];
+    calendarItem2 = [(EKCalendarItemEditor *)self calendarItem];
+    [calendarItem2 setTitle:defaultTitleForCalendarItem];
   }
 
   v24 = 0;
-  v14 = [(EKCalendarItemEditor *)self saveCalendarItemWithSpan:a3 error:&v24];
+  v14 = [(EKCalendarItemEditor *)self saveCalendarItemWithSpan:save error:&v24];
   v15 = v24;
   v16 = v15;
   if (v14)
@@ -2925,7 +2925,7 @@ void __39__EKCalendarItemEditor__performDelete___block_invoke(uint64_t a1, void 
 
 LABEL_7:
     v17 = 1;
-    [(EKCalendarItemEditor *)self completeWithAction:1 animated:v4];
+    [(EKCalendarItemEditor *)self completeWithAction:1 animated:animatedCopy];
     return v17;
   }
 
@@ -2939,16 +2939,16 @@ LABEL_7:
 
   if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v19 = [(EKCalendarItemEditor *)self defaultAlertTitle];
-    PresentValidationAlertWithDefaultTitle(self, v16, v19);
+    defaultAlertTitle = [(EKCalendarItemEditor *)self defaultAlertTitle];
+    PresentValidationAlertWithDefaultTitle(self, v16, defaultAlertTitle);
 
-    v20 = [v16 domain];
-    v21 = v20;
-    if (v20 == *MEMORY[0x1E6966808])
+    domain = [v16 domain];
+    v21 = domain;
+    if (domain == *MEMORY[0x1E6966808])
     {
-      v22 = [v16 code];
+      code = [v16 code];
 
-      if (v22 == 1010)
+      if (code == 1010)
       {
         [(EKEventStore *)self->_store rollback];
       }
@@ -2962,7 +2962,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -2996,20 +2996,20 @@ LABEL_7:
   }
 }
 
-- (void)_presentAttachmentRecurrenceSheetForEvent:(id)a3 withContinueBlock:(id)a4
+- (void)_presentAttachmentRecurrenceSheetForEvent:(id)event withContinueBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   doneButton = self->_doneButton;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__EKCalendarItemEditor__presentAttachmentRecurrenceSheetForEvent_withContinueBlock___block_invoke;
   v13[3] = &unk_1E843FE38;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = eventCopy;
+  v15 = blockCopy;
+  v9 = blockCopy;
+  v10 = eventCopy;
   v11 = [EKUIRecurrenceAlertController presentAttachmentAlertWithOptions:0 viewController:self barButtonItem:doneButton forEvent:v10 withCompletionHandler:v13];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v11;
@@ -3036,18 +3036,18 @@ void __84__EKCalendarItemEditor__presentAttachmentRecurrenceSheetForEvent_withCo
   *(v7 + 1096) = 0;
 }
 
-- (void)_presentDetachSheetForEvent:(id)a3 saveAttachments:(BOOL)a4 withContinueBlock:(id)a5
+- (void)_presentDetachSheetForEvent:(id)event saveAttachments:(BOOL)attachments withContinueBlock:(id)block
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  attachmentsCopy = attachments;
+  eventCopy = event;
+  blockCopy = block;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [EKCalendarItemEditor _presentDetachSheetForEvent:a2 saveAttachments:self withContinueBlock:v9];
+    [EKCalendarItemEditor _presentDetachSheetForEvent:a2 saveAttachments:self withContinueBlock:eventCopy];
   }
 
-  if (v6)
+  if (attachmentsCopy)
   {
     v11 = 8;
   }
@@ -3062,11 +3062,11 @@ void __84__EKCalendarItemEditor__presentAttachmentRecurrenceSheetForEvent_withCo
   v16[1] = 3221225472;
   v16[2] = __86__EKCalendarItemEditor__presentDetachSheetForEvent_saveAttachments_withContinueBlock___block_invoke;
   v16[3] = &unk_1E843FE88;
-  v17 = v10;
+  v17 = blockCopy;
   v18 = v11;
   v16[4] = self;
-  v13 = v10;
-  v14 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:v11 viewController:self barButtonItem:doneButton forEvent:v9 withCompletionHandler:v16];
+  v13 = blockCopy;
+  v14 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:v11 viewController:self barButtonItem:doneButton forEvent:eventCopy withCompletionHandler:v16];
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v14;
 }
@@ -3120,9 +3120,9 @@ uint64_t __86__EKCalendarItemEditor__presentDetachSheetForEvent_saveAttachments_
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_handleSaveKeyCommand == a3)
+  if (sel_handleSaveKeyCommand == action)
   {
 
     return [(EKCalendarItemEditor *)self canPerformSaveKeyCommand];
@@ -3140,25 +3140,25 @@ uint64_t __86__EKCalendarItemEditor__presentDetachSheetForEvent_saveAttachments_
 
 - (id)navigationItem
 {
-  v2 = [(EKCalendarItemEditor *)self parentViewController];
-  v3 = [v2 navigationItem];
+  parentViewController = [(EKCalendarItemEditor *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (id)title
 {
-  v2 = [(EKCalendarItemEditor *)self parentViewController];
-  v3 = [v2 title];
+  parentViewController = [(EKCalendarItemEditor *)self parentViewController];
+  title = [parentViewController title];
 
-  return v3;
+  return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(EKCalendarItemEditor *)self parentViewController];
-  [v5 setTitle:v4];
+  titleCopy = title;
+  parentViewController = [(EKCalendarItemEditor *)self parentViewController];
+  [parentViewController setTitle:titleCopy];
 }
 
 - (EKCalendarItemEditorDelegate)editorDelegate
@@ -3186,7 +3186,7 @@ uint64_t __86__EKCalendarItemEditor__presentDetachSheetForEvent_saveAttachments_
   return 0;
 }
 
-- (BOOL)saveCalendarItemWithSpan:(int64_t)a3 error:(id *)a4
+- (BOOL)saveCalendarItemWithSpan:(int64_t)span error:(id *)error
 {
   OUTLINED_FUNCTION_0_1();
   objc_opt_class();

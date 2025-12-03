@@ -7,38 +7,38 @@
 
 - (id)displayColor
 {
-  v2 = [a1 source];
-  v3 = [v2 sourceType];
+  source = [self source];
+  sourceType = [source sourceType];
 
-  if (v3 == 6)
+  if (sourceType == 6)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
   else
   {
-    v5 = [a1 symbolicColorName];
-    v4 = [a1 platformColor];
-    if (v5 && ([v5 isEqualToString:*MEMORY[0x1E69E4048]] & 1) == 0)
+    symbolicColorName = [self symbolicColorName];
+    systemBlueColor = [self platformColor];
+    if (symbolicColorName && ([symbolicColorName isEqualToString:*MEMORY[0x1E69E4048]] & 1) == 0)
     {
-      v6 = [objc_opt_class() displayColorForSymbolicName:v5];
+      v6 = [objc_opt_class() displayColorForSymbolicName:symbolicColorName];
 
-      v4 = v6;
+      systemBlueColor = v6;
     }
   }
 
-  return v4;
+  return systemBlueColor;
 }
 
 - (id)platformColor
 {
-  v1 = [a1 CGColor];
-  if (v1)
+  cGColor = [self CGColor];
+  if (cGColor)
   {
-    v1 = [MEMORY[0x1E69DC888] colorWithCGColor:v1];
+    cGColor = [MEMORY[0x1E69DC888] colorWithCGColor:cGColor];
   }
 
-  return v1;
+  return cGColor;
 }
 
 @end

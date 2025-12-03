@@ -1,27 +1,27 @@
 @interface MailAppControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFirstElementForFocus;
 - (id)_accessibilityFirstElementForReadFromTop;
 - (id)_accessibilitySplitViewControllerScannerGroupElements;
-- (id)_axAccessibilityGroupForKey:(id)a3 fromSplitController:(id)a4;
+- (id)_axAccessibilityGroupForKey:(id)key fromSplitController:(id)controller;
 - (id)_axVisibleViewController;
 @end
 
 @implementation MailAppControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailAppController" hasInstanceMethod:@"masterNavigationController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailNavigationController" isKindOfClass:@"UINavigationController"];
-  [v3 validateClass:@"UINavigationController" hasInstanceMethod:@"visibleViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationViewController"];
-  [v3 validateClass:@"MessageListViewController" hasInstanceMethod:@"conversationViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailAppController" hasInstanceMethod:@"mostRecentMainScene" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailSplitViewController" hasInstanceMethod:@"mailboxPickerNavController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailSplitViewController" hasInstanceMethod:@"messageListNavController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MailSplitViewController" hasInstanceMethod:@"messageDetailNavController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailAppController" hasInstanceMethod:@"masterNavigationController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailNavigationController" isKindOfClass:@"UINavigationController"];
+  [validationsCopy validateClass:@"UINavigationController" hasInstanceMethod:@"visibleViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationViewController"];
+  [validationsCopy validateClass:@"MessageListViewController" hasInstanceMethod:@"conversationViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailAppController" hasInstanceMethod:@"mostRecentMainScene" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailMainScene" hasInstanceMethod:@"splitViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailSplitViewController" hasInstanceMethod:@"mailboxPickerNavController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailSplitViewController" hasInstanceMethod:@"messageListNavController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MailSplitViewController" hasInstanceMethod:@"messageDetailNavController" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySplitViewControllerScannerGroupElements
@@ -71,13 +71,13 @@
   return v11;
 }
 
-- (id)_axAccessibilityGroupForKey:(id)a3 fromSplitController:(id)a4
+- (id)_axAccessibilityGroupForKey:(id)key fromSplitController:(id)controller
 {
   v15[4] = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  controllerCopy = controller;
   objc_opt_class();
-  v7 = [v6 safeValueForKey:v5];
+  v7 = [controllerCopy safeValueForKey:keyCopy];
   v8 = __UIAccessibilityCastAsClass();
 
   v9 = [v8 safeUIViewForKey:@"view"];
@@ -92,7 +92,7 @@
     v14[2] = @"GroupScanBehaviorTraits";
     v14[3] = @"GroupIdentifier";
     v15[2] = &unk_2A221BD48;
-    v15[3] = v5;
+    v15[3] = keyCopy;
     v11 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v15 forKeys:v14 count:4];
   }
 
@@ -114,32 +114,32 @@
 
   if (AXDeviceIsPad() && ([v4 visibleViewController], v5 = objc_claimAutoreleasedReturnValue(), NSClassFromString(&cfstr_Messagelistvie_0.isa), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = [v4 visibleViewController];
-    v8 = [v7 safeValueForKey:@"conversationViewController"];
+    visibleViewController = [v4 visibleViewController];
+    v7VisibleViewController = [visibleViewController safeValueForKey:@"conversationViewController"];
   }
 
   else
   {
-    v7 = [v4 navigationController];
-    v8 = [v7 visibleViewController];
+    visibleViewController = [v4 navigationController];
+    v7VisibleViewController = [visibleViewController visibleViewController];
   }
 
-  v9 = v8;
+  v9 = v7VisibleViewController;
 
   return v9;
 }
 
 - (id)_accessibilityFirstElementForReadFromTop
 {
-  v3 = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-  v4 = [(MailAppControllerAccessibility *)self _accessibilityFirstElementForFocusWithOptions:v3];
+  defaultVoiceOverOptions = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
+  v4 = [(MailAppControllerAccessibility *)self _accessibilityFirstElementForFocusWithOptions:defaultVoiceOverOptions];
 
   return v4;
 }
 
 - (id)_accessibilityFirstElementForFocus
 {
-  v3 = [(MailAppControllerAccessibility *)self _axVisibleViewController];
+  _axVisibleViewController = [(MailAppControllerAccessibility *)self _axVisibleViewController];
   NSClassFromString(&cfstr_Conversationvi_0.isa);
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -149,12 +149,12 @@
   v11 = 0;
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = [v4 view];
-  v6 = [v5 _accessibilityViewIsVisibleIgnoringAXOverrides:0 stoppingBeforeContainer:0];
+  view = [v4 view];
+  v6 = [view _accessibilityViewIsVisibleIgnoringAXOverrides:0 stoppingBeforeContainer:0];
 
   if (v6)
   {
-    v7 = [v3 _accessibilityFirstElementForFocus];
+    _accessibilityFirstElementForFocus = [_axVisibleViewController _accessibilityFirstElementForFocus];
   }
 
   else
@@ -162,10 +162,10 @@
 LABEL_4:
     v10.receiver = self;
     v10.super_class = MailAppControllerAccessibility;
-    v7 = [(MailAppControllerAccessibility *)&v10 _accessibilityFirstElementForFocus];
+    _accessibilityFirstElementForFocus = [(MailAppControllerAccessibility *)&v10 _accessibilityFirstElementForFocus];
   }
 
-  v8 = v7;
+  v8 = _accessibilityFirstElementForFocus;
 
   return v8;
 }

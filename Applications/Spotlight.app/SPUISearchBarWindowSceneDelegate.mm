@@ -1,46 +1,46 @@
 @interface SPUISearchBarWindowSceneDelegate
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 - (void)didFocusHeader;
-- (void)didSizeWithHeight:(double)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)didSizeWithHeight:(double)height;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 - (void)sizeBar;
 @end
 
 @implementation SPUISearchBarWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v6 = a3;
-  [v6 _setKeepContextAssociationInBackground:1];
-  v20 = self;
-  v7 = [NSArray arrayWithObjects:&v20 count:1];
-  v8 = [v6 _FBSScene];
-  v9 = [v8 identifier];
-  [v6 _registerSettingsDiffActionArray:v7 forKey:v9];
+  sceneCopy = scene;
+  [sceneCopy _setKeepContextAssociationInBackground:1];
+  selfCopy = self;
+  v7 = [NSArray arrayWithObjects:&selfCopy count:1];
+  _FBSScene = [sceneCopy _FBSScene];
+  identifier = [_FBSScene identifier];
+  [sceneCopy _registerSettingsDiffActionArray:v7 forKey:identifier];
 
   v10 = objc_opt_new();
   v11 = +[SPUISearchViewControllerHolder sharedInstance];
-  v12 = [v11 searchViewController];
-  v13 = [v12 createAdditionalHeaderView];
+  searchViewController = [v11 searchViewController];
+  createAdditionalHeaderView = [searchViewController createAdditionalHeaderView];
 
-  [v13 setInteractionDelegate:self];
-  [v10 setView:v13];
-  [(SPUISearchBarWindowSceneDelegate *)self setView:v13];
-  [v13 setActiveInterfaceOrientation:1];
+  [createAdditionalHeaderView setInteractionDelegate:self];
+  [v10 setView:createAdditionalHeaderView];
+  [(SPUISearchBarWindowSceneDelegate *)self setView:createAdditionalHeaderView];
+  [createAdditionalHeaderView setActiveInterfaceOrientation:1];
   v14 = objc_alloc_init(SPUISearchBarWindow);
   [(SPUISearchBarWindowSceneDelegate *)self setSearchBarWindow:v14];
 
-  v15 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  [v15 setBackgroundColor:0];
+  searchBarWindow = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  [searchBarWindow setBackgroundColor:0];
 
-  v16 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  [v16 setWindowScene:v6];
+  searchBarWindow2 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  [searchBarWindow2 setWindowScene:sceneCopy];
 
-  v17 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  [v17 setRootViewController:v10];
+  searchBarWindow3 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  [searchBarWindow3 setRootViewController:v10];
 
-  v18 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  [v18 setHidden:0];
+  searchBarWindow4 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  [searchBarWindow4 setHidden:0];
 
   [(SPUISearchBarWindowSceneDelegate *)self sizeBar];
   v19 = +[NSNotificationCenter defaultCenter];
@@ -49,76 +49,76 @@
 
 - (void)sizeBar
 {
-  v3 = [(SPUISearchBarWindowSceneDelegate *)self view];
-  [v3 setNeedsLayout];
+  view = [(SPUISearchBarWindowSceneDelegate *)self view];
+  [view setNeedsLayout];
 
-  v4 = [(SPUISearchBarWindowSceneDelegate *)self view];
-  [v4 layoutIfNeeded];
+  view2 = [(SPUISearchBarWindowSceneDelegate *)self view];
+  [view2 layoutIfNeeded];
 
-  v6 = [(SPUISearchBarWindowSceneDelegate *)self view];
-  [v6 systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
+  view3 = [(SPUISearchBarWindowSceneDelegate *)self view];
+  [view3 systemLayoutSizeFittingSize:{UILayoutFittingExpandedSize.width, UILayoutFittingExpandedSize.height}];
   [(SPUISearchBarWindowSceneDelegate *)self didSizeWithHeight:v5];
 }
 
-- (void)didSizeWithHeight:(double)a3
+- (void)didSizeWithHeight:(double)height
 {
   [(SPUISearchBarWindowSceneDelegate *)self headerHeight];
-  if (v5 != a3)
+  if (v5 != height)
   {
-    [(SPUISearchBarWindowSceneDelegate *)self setHeaderHeight:a3];
-    v6 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-    v7 = [v6 _scene];
+    [(SPUISearchBarWindowSceneDelegate *)self setHeaderHeight:height];
+    searchBarWindow = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+    _scene = [searchBarWindow _scene];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10000350C;
     v8[3] = &unk_10000C478;
-    *&v8[4] = a3;
-    [v7 updateClientSettingsWithBlock:v8];
+    *&v8[4] = height;
+    [_scene updateClientSettingsWithBlock:v8];
   }
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v17 = a4;
-  v9 = [v17 settings];
+  sSceneCopy = sScene;
+  settings = [sSceneCopy settings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v11 = v17;
+  v11 = sSceneCopy;
   if (isKindOfClass)
   {
-    v12 = [v17 settings];
-    v13 = [v12 interfaceOrientation];
-    v14 = [(SPUISearchBarWindowSceneDelegate *)self view];
-    v15 = [v14 activeInterfaceOrientation];
+    settings2 = [sSceneCopy settings];
+    interfaceOrientation = [settings2 interfaceOrientation];
+    view = [(SPUISearchBarWindowSceneDelegate *)self view];
+    activeInterfaceOrientation = [view activeInterfaceOrientation];
 
-    if (v15 != v13)
+    if (activeInterfaceOrientation != interfaceOrientation)
     {
-      v16 = [(SPUISearchBarWindowSceneDelegate *)self view];
-      [v16 setActiveInterfaceOrientation:v13];
+      view2 = [(SPUISearchBarWindowSceneDelegate *)self view];
+      [view2 setActiveInterfaceOrientation:interfaceOrientation];
 
       [(SPUISearchBarWindowSceneDelegate *)self sizeBar];
     }
 
-    v11 = v17;
+    v11 = sSceneCopy;
   }
 }
 
 - (void)didFocusHeader
 {
   v3 = +[SPUISearchViewControllerHolder sharedInstance];
-  v4 = [v3 searchViewController];
-  v5 = [v4 headerView];
-  [v5 showCancelButton:0 animated:0];
+  searchViewController = [v3 searchViewController];
+  headerView = [searchViewController headerView];
+  [headerView showCancelButton:0 animated:0];
 
-  v6 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  v7 = [v6 _scene];
-  [v7 updateClientSettingsWithTransitionBlock:&stru_10000C4B8];
+  searchBarWindow = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  _scene = [searchBarWindow _scene];
+  [_scene updateClientSettingsWithTransitionBlock:&stru_10000C4B8];
 
-  v10 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
-  v8 = [v10 rootViewController];
-  v9 = [v8 view];
-  [v9 endEditing:1];
+  searchBarWindow2 = [(SPUISearchBarWindowSceneDelegate *)self searchBarWindow];
+  rootViewController = [searchBarWindow2 rootViewController];
+  view = [rootViewController view];
+  [view endEditing:1];
 }
 
 @end

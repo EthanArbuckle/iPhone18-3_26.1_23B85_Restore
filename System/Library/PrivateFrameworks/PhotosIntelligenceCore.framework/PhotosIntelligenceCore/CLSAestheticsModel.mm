@@ -1,6 +1,6 @@
 @interface CLSAestheticsModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSAestheticsModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSAestheticsModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (void)setupVersion31;
 - (void)setupVersion32;
 - (void)setupVersion86;
@@ -124,7 +124,7 @@
   *&self->_aestheticScoreThresholdToBeAwesome = xmmword_25E63DAD0;
 }
 
-- (CLSAestheticsModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSAestheticsModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -133,11 +133,11 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x56)
+    if (version < 0x56)
     {
-      if (a3 < 0x20)
+      if (version < 0x20)
       {
-        if (a3 == 31)
+        if (version == 31)
         {
           [(CLSAestheticsModel *)v4 setupVersion31];
         }
@@ -148,7 +148,7 @@
           {
             v6 = objc_opt_class();
             *buf = 67109378;
-            v11 = a3;
+            versionCopy = version;
             v12 = 2112;
             v13 = v6;
             _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -174,10 +174,10 @@
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 32;
-  if (a3 == 31)
+  if (version == 31)
   {
     v4 = 31;
   }
@@ -187,12 +187,12 @@
     v4 = 0;
   }
 
-  if (a3 <= 0x1F)
+  if (version <= 0x1F)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x55)
+  if (version <= 0x55)
   {
     return v3;
   }

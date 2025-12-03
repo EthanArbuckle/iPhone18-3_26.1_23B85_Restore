@@ -1,15 +1,15 @@
 @interface BAViewData
 - (BAViewData)init;
-- (BAViewData)initWithType:(int64_t)a3 action:(int64_t)a4 location:(int64_t)a5;
+- (BAViewData)initWithType:(int64_t)type action:(int64_t)action location:(int64_t)location;
 @end
 
 @implementation BAViewData
 
-- (BAViewData)initWithType:(int64_t)a3 action:(int64_t)a4 location:(int64_t)a5
+- (BAViewData)initWithType:(int64_t)type action:(int64_t)action location:(int64_t)location
 {
-  *(&self->super.isa + OBJC_IVAR___BAViewData_type) = a3;
-  *(&self->super.isa + OBJC_IVAR___BAViewData_action) = a4;
-  *(&self->super.isa + OBJC_IVAR___BAViewData_location) = a5;
+  *(&self->super.isa + OBJC_IVAR___BAViewData_type) = type;
+  *(&self->super.isa + OBJC_IVAR___BAViewData_action) = action;
+  *(&self->super.isa + OBJC_IVAR___BAViewData_location) = location;
   v6.receiver = self;
   v6.super_class = type metadata accessor for BridgedViewData();
   return [(BAViewData *)&v6 init];

@@ -1,20 +1,20 @@
 @interface VoiceDialRecognitionAction
-- (VoiceDialRecognitionAction)initWithPhoneNumber:(id)a3 uid:(int)a4;
+- (VoiceDialRecognitionAction)initWithPhoneNumber:(id)number uid:(int)uid;
 - (id)perform;
 @end
 
 @implementation VoiceDialRecognitionAction
 
-- (VoiceDialRecognitionAction)initWithPhoneNumber:(id)a3 uid:(int)a4
+- (VoiceDialRecognitionAction)initWithPhoneNumber:(id)number uid:(int)uid
 {
-  v7 = a3;
+  numberCopy = number;
   v8 = [(VoiceDialRecognitionAction *)self init];
   if (v8)
   {
-    if ([v7 length])
+    if ([numberCopy length])
     {
-      objc_storeStrong(&v8->_phoneNumber, a3);
-      v8->_uid = a4;
+      objc_storeStrong(&v8->_phoneNumber, number);
+      v8->_uid = uid;
     }
 
     else
@@ -45,16 +45,16 @@
   v6 = objc_alloc_init(MEMORY[0x29EDB8BB0]);
   v7 = [v6 contactFromPersonID:self->_uid keysToFetch:MEMORY[0x29EDB8E90]];
 
-  v8 = [v7 identifier];
+  identifier = [v7 identifier];
   v9 = objc_alloc_init(MEMORY[0x29EDC6F80]);
   v10 = objc_alloc(MEMORY[0x29EDC6F98]);
-  v11 = [v9 telephonyProvider];
-  v12 = [v10 initWithProvider:v11];
+  telephonyProvider = [v9 telephonyProvider];
+  v12 = [v10 initWithProvider:telephonyProvider];
 
   v13 = [objc_alloc(MEMORY[0x29EDC6FA0]) initWithType:2 value:v3];
   [v12 setHandle:v13];
 
-  [v12 setContactIdentifier:v8];
+  [v12 setContactIdentifier:identifier];
   [v12 setOriginatingUIType:42];
   v14 = PHDefaultLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -72,11 +72,11 @@
 
   v20.receiver = self;
   v20.super_class = VoiceDialRecognitionAction;
-  v17 = [(VSRecognitionURLAction *)&v20 perform];
+  perform = [(VSRecognitionURLAction *)&v20 perform];
 
   v18 = *MEMORY[0x29EDCA608];
 
-  return v17;
+  return perform;
 }
 
 @end

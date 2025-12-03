@@ -1,25 +1,25 @@
 @interface RMPushController
 + (RMPushController)sharedController;
-+ (id)_connectionWithEnvironmentName:(id)a3 queue:(id)a4;
++ (id)_connectionWithEnvironmentName:(id)name queue:(id)queue;
 + (void)start;
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5;
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop;
 - (NSSet)supportedKeyPaths;
-- (RMPushController)initWithPushTokenByEnvironmentName:(id)a3 subscribedStatusKeyPathUpdater:(id)a4 context:(id)a5;
+- (RMPushController)initWithPushTokenByEnvironmentName:(id)name subscribedStatusKeyPathUpdater:(id)updater context:(id)context;
 - (RMPushControllerDelegate)delegate;
 - (id)_cachedPushTokenByEnvironment;
 - (id)_currentPushTokenByEnvironmentName;
-- (id)_environmentNameForConnection:(id)a3;
-- (id)_pushEnvironmentNameForManagementChannel:(id)a3 error:(id *)a4;
-- (id)queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementChannel:(id)a4 error:(id *)a5;
+- (id)_environmentNameForConnection:(id)connection;
+- (id)_pushEnvironmentNameForManagementChannel:(id)channel error:(id *)error;
+- (id)queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementChannel:(id)channel error:(id *)error;
 - (void)_notifyPushTokenDidChangeIfNeeded;
 - (void)_start;
 - (void)_stop;
 - (void)_updateConnections;
-- (void)_updatePushReceivedWithTopic:(id)a3 enrollmentToken:(id)a4 syncTokens:(id)a5 forEnvironmentName:(id)a6;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)_updatePushReceivedWithTopic:(id)topic enrollmentToken:(id)token syncTokens:(id)tokens forEnvironmentName:(id)name;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4;
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes;
 @end
 
 @implementation RMPushController
@@ -42,24 +42,24 @@
   block[1] = 3221225472;
   block[2] = sub_10005E518;
   block[3] = &unk_1000D12D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000E6A88 != -1)
   {
     dispatch_once(&qword_1000E6A88, block);
   }
 }
 
-- (RMPushController)initWithPushTokenByEnvironmentName:(id)a3 subscribedStatusKeyPathUpdater:(id)a4 context:(id)a5
+- (RMPushController)initWithPushTokenByEnvironmentName:(id)name subscribedStatusKeyPathUpdater:(id)updater context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  updaterCopy = updater;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = RMPushController;
   v11 = [(RMPushController *)&v27 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     v13 = v12;
     if (v12)
     {
@@ -73,8 +73,8 @@
 
     objc_storeStrong(&v11->_pushTokenByEnvironmentName, v14);
 
-    objc_storeStrong(&v11->_subscribedStatusKeyPathUpdater, a4);
-    objc_storeStrong(&v11->_context, a5);
+    objc_storeStrong(&v11->_subscribedStatusKeyPathUpdater, updater);
+    objc_storeStrong(&v11->_context, context);
     v15 = objc_opt_new();
     connectionByEnvironmentName = v11->_connectionByEnvironmentName;
     v11->_connectionByEnvironmentName = v15;
@@ -88,14 +88,14 @@
     serialQueue = v11->_serialQueue;
     v11->_serialQueue = v20;
 
-    v22 = [[RMPersistentHistoryNotifier alloc] initWithContext:v10];
+    v22 = [[RMPersistentHistoryNotifier alloc] initWithContext:contextCopy];
     persistentHistoryNotifier = v11->_persistentHistoryNotifier;
     v11->_persistentHistoryNotifier = v22;
 
-    v24 = [v10 transactionAuthor];
-    if (v24)
+    transactionAuthor = [contextCopy transactionAuthor];
+    if (transactionAuthor)
     {
-      v25 = [NSSet setWithObject:v24];
+      v25 = [NSSet setWithObject:transactionAuthor];
       [(RMPersistentHistoryNotifier *)v11->_persistentHistoryNotifier setIgnoredTransactionAuthors:v25];
     }
 
@@ -138,7 +138,7 @@
 
 - (void)_updateConnections
 {
-  v3 = [(RMPushController *)self context];
+  context = [(RMPushController *)self context];
   v19[0] = APSEnvironmentProduction;
   v4 = objc_opt_new();
   v20[0] = v4;
@@ -153,10 +153,10 @@
   v17[3] = &unk_1000D0F50;
   v7 = v6;
   v18 = v7;
-  [v3 performBlockAndWait:v17];
+  [context performBlockAndWait:v17];
 
   v8 = self->_connectionByEnvironmentName;
-  v9 = [(RMPushController *)self serialQueue];
+  serialQueue = [(RMPushController *)self serialQueue];
   v10 = self->_connectionByEnvironmentName;
   objc_sync_enter(v10);
   v13[0] = _NSConcreteStackBlock;
@@ -165,26 +165,26 @@
   v13[3] = &unk_1000D28B8;
   v11 = v8;
   v14 = v11;
-  v12 = v9;
+  v12 = serialQueue;
   v15 = v12;
-  v16 = self;
+  selfCopy = self;
   [v7 enumerateKeysAndObjectsUsingBlock:v13];
 
   objc_sync_exit(v10);
 }
 
-+ (id)_connectionWithEnvironmentName:(id)a3 queue:(id)a4
++ (id)_connectionWithEnvironmentName:(id)name queue:(id)queue
 {
   v5 = qword_1000E6A98;
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  nameCopy = name;
   if (v5 != -1)
   {
     sub_100060A40();
   }
 
-  v8 = [qword_1000E6A90 objectForKeyedSubscript:v7];
-  v9 = [[APSConnection alloc] initWithEnvironmentName:v7 namedDelegatePort:v8 queue:v6];
+  v8 = [qword_1000E6A90 objectForKeyedSubscript:nameCopy];
+  v9 = [[APSConnection alloc] initWithEnvironmentName:nameCopy namedDelegatePort:v8 queue:queueCopy];
 
   return v9;
 }
@@ -195,13 +195,13 @@
   v24 = self->_pushTokenByEnvironmentNameLock;
   objc_sync_enter(v24);
   v4 = self->_pushTokenByEnvironmentName;
-  v25 = self;
-  v5 = [(RMPushController *)self _currentPushTokenByEnvironmentName];
-  v6 = [(NSDictionary *)v4 allKeys];
-  v7 = [NSMutableSet setWithArray:v6];
+  selfCopy = self;
+  _currentPushTokenByEnvironmentName = [(RMPushController *)self _currentPushTokenByEnvironmentName];
+  allKeys = [(NSDictionary *)v4 allKeys];
+  v7 = [NSMutableSet setWithArray:allKeys];
 
-  v8 = [v5 allKeys];
-  [v7 addObjectsFromArray:v8];
+  allKeys2 = [_currentPushTokenByEnvironmentName allKeys];
+  [v7 addObjectsFromArray:allKeys2];
 
   v29 = 0u;
   v30 = 0u;
@@ -223,7 +223,7 @@
 
         v12 = *(*(&v27 + 1) + 8 * i);
         v13 = [(NSDictionary *)v4 objectForKeyedSubscript:v12, v24];
-        v14 = [v5 objectForKeyedSubscript:v12];
+        v14 = [_currentPushTokenByEnvironmentName objectForKeyedSubscript:v12];
         if (v14)
         {
           v15 = 1;
@@ -273,18 +273,18 @@
   else
   {
     v21 = [v3 copy];
-    p_super = &v25->_pushTokenByEnvironmentName->super;
-    v25->_pushTokenByEnvironmentName = v21;
+    p_super = &selfCopy->_pushTokenByEnvironmentName->super;
+    selfCopy->_pushTokenByEnvironmentName = v21;
   }
 
   objc_sync_exit(v24);
   if ((v19 & 1) == 0)
   {
-    v22 = [(RMPushController *)v25 subscribedStatusKeyPathUpdater];
-    [v22 notifyStatusDidChangeForKeyPath:RMModelStatusItemManagementPushToken];
+    subscribedStatusKeyPathUpdater = [(RMPushController *)selfCopy subscribedStatusKeyPathUpdater];
+    [subscribedStatusKeyPathUpdater notifyStatusDidChangeForKeyPath:RMModelStatusItemManagementPushToken];
 
-    v23 = [(RMPushController *)v25 delegate];
-    [v23 pushController:v25 didChangePushTokenByEnvironmentName:v3];
+    delegate = [(RMPushController *)selfCopy delegate];
+    [delegate pushController:selfCopy didChangePushTokenByEnvironmentName:v3];
   }
 }
 
@@ -326,20 +326,20 @@
   return v3;
 }
 
-- (id)queryForStatusWithKeyPaths:(id)a3 onBehalfOfManagementChannel:(id)a4 error:(id *)a5
+- (id)queryForStatusWithKeyPaths:(id)paths onBehalfOfManagementChannel:(id)channel error:(id *)error
 {
-  v8 = a3;
-  v9 = [(RMPushController *)self _pushEnvironmentNameForManagementChannel:a4 error:a5];
+  pathsCopy = paths;
+  v9 = [(RMPushController *)self _pushEnvironmentNameForManagementChannel:channel error:error];
   if (v9)
   {
     v10 = objc_opt_new();
     v11 = RMModelStatusItemManagementPushToken;
-    if ([v8 containsObject:RMModelStatusItemManagementPushToken])
+    if ([pathsCopy containsObject:RMModelStatusItemManagementPushToken])
     {
-      v12 = [(RMPushController *)self _currentPushTokenByEnvironmentName];
-      v13 = [(RMPushController *)self _cachedPushTokenByEnvironment];
-      v14 = [v12 objectForKeyedSubscript:v9];
-      v15 = [v13 objectForKeyedSubscript:v9];
+      _currentPushTokenByEnvironmentName = [(RMPushController *)self _currentPushTokenByEnvironmentName];
+      _cachedPushTokenByEnvironment = [(RMPushController *)self _cachedPushTokenByEnvironment];
+      v14 = [_currentPushTokenByEnvironmentName objectForKeyedSubscript:v9];
+      v15 = [_cachedPushTokenByEnvironment objectForKeyedSubscript:v9];
       v16 = v15;
       v17 = v14;
       if (v14 || (v17 = v15) != 0)
@@ -363,9 +363,9 @@
   return v10;
 }
 
-- (id)_pushEnvironmentNameForManagementChannel:(id)a3 error:(id *)a4
+- (id)_pushEnvironmentNameForManagementChannel:(id)channel error:(id *)error
 {
-  v6 = a3;
+  channelCopy = channel;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -378,23 +378,23 @@
   v19 = sub_10005F5DC;
   v20 = sub_10005F5EC;
   v21 = 0;
-  v7 = [(RMPushController *)self context];
+  context = [(RMPushController *)self context];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005F5F4;
   v12[3] = &unk_1000D18B8;
-  v8 = v6;
+  v8 = channelCopy;
   v13 = v8;
   v14 = &v16;
   v15 = &v22;
-  [v7 performBlockAndWait:v12];
+  [context performBlockAndWait:v12];
   v9 = v17[5];
   if (v9)
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -409,15 +409,15 @@
   return v10;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a4;
-  v7 = [(RMPushController *)self _environmentNameForConnection:a3];
+  tokenCopy = token;
+  v7 = [(RMPushController *)self _environmentNameForConnection:connection];
   v8 = +[RMLog push];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v6;
+    v10 = tokenCopy;
     v11 = 2114;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Push token received: %{public}@ in environment: %{public}@", &v9, 0x16u);
@@ -426,15 +426,15 @@
   [(RMPushController *)self _notifyPushTokenDidChangeIfNeeded];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a4;
-  v7 = [(RMPushController *)self _environmentNameForConnection:a3];
+  messageCopy = message;
+  v7 = [(RMPushController *)self _environmentNameForConnection:connection];
   v8 = +[RMLog push];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = v6;
+    v18 = messageCopy;
     v19 = 2114;
     v20 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Push notification received: %{public}@ in environment: %{public}@", buf, 0x16u);
@@ -442,33 +442,33 @@
 
   if (v7)
   {
-    v9 = [v6 topic];
-    v10 = [v6 userInfo];
-    if (v10)
+    topic = [messageCopy topic];
+    userInfo = [messageCopy userInfo];
+    if (userInfo)
     {
-      v11 = v10;
+      v11 = userInfo;
       v16 = 0;
-      v12 = [RMProtocolPushMessage load:v10 serializationType:1 error:&v16];
+      v12 = [RMProtocolPushMessage load:userInfo serializationType:1 error:&v16];
       v13 = v16;
       if (v12)
       {
-        v14 = [v12 messageEnrollmentToken];
-        v15 = [v12 messageSyncTokens];
-        [(RMPushController *)self _updatePushReceivedWithTopic:v9 enrollmentToken:v14 syncTokens:v15 forEnvironmentName:v7];
+        messageEnrollmentToken = [v12 messageEnrollmentToken];
+        messageSyncTokens = [v12 messageSyncTokens];
+        [(RMPushController *)self _updatePushReceivedWithTopic:topic enrollmentToken:messageEnrollmentToken syncTokens:messageSyncTokens forEnvironmentName:v7];
       }
 
       else
       {
-        v14 = +[RMLog push];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        messageEnrollmentToken = +[RMLog push];
+        if (os_log_type_enabled(messageEnrollmentToken, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v18 = v9;
+          v18 = topic;
           v19 = 2114;
           v20 = v7;
           v21 = 2114;
           v22 = v13;
-          _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Unable to parse push message for topic: %{public}@ in environment: %{public}@: %{public}@", buf, 0x20u);
+          _os_log_error_impl(&_mh_execute_header, messageEnrollmentToken, OS_LOG_TYPE_ERROR, "Unable to parse push message for topic: %{public}@ in environment: %{public}@: %{public}@", buf, 0x20u);
         }
       }
     }
@@ -484,21 +484,21 @@
   }
 }
 
-- (void)_updatePushReceivedWithTopic:(id)a3 enrollmentToken:(id)a4 syncTokens:(id)a5 forEnvironmentName:(id)a6
+- (void)_updatePushReceivedWithTopic:(id)topic enrollmentToken:(id)token syncTokens:(id)tokens forEnvironmentName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  topicCopy = topic;
+  tokenCopy = token;
+  tokensCopy = tokens;
+  nameCopy = name;
   v14 = +[RMLog push];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v27 = v13;
+    v27 = nameCopy;
     v28 = 2114;
-    v29 = v11;
+    v29 = tokenCopy;
     v30 = 2114;
-    v31 = v10;
+    v31 = topicCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Received push for environment: %{public}@ enrollment token: %{public}@ topic: %{public}@", buf, 0x20u);
   }
 
@@ -507,21 +507,21 @@
   v20[1] = 3221225472;
   v20[2] = sub_10005FD08;
   v20[3] = &unk_1000D2928;
-  v21 = v13;
-  v22 = v11;
-  v23 = v10;
-  v25 = v24 = v12;
+  v21 = nameCopy;
+  v22 = tokenCopy;
+  v23 = topicCopy;
+  v25 = v24 = tokensCopy;
   v15 = v25;
-  v16 = v12;
-  v17 = v10;
-  v18 = v11;
-  v19 = v13;
+  v16 = tokensCopy;
+  v17 = topicCopy;
+  v18 = tokenCopy;
+  v19 = nameCopy;
   [v15 performBlockAndWait:v20];
 }
 
-- (id)_environmentNameForConnection:(id)a3
+- (id)_environmentNameForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -535,7 +535,7 @@
   v10[1] = 3221225472;
   v10[2] = sub_1000602B0;
   v10[3] = &unk_1000D2950;
-  v7 = v4;
+  v7 = connectionCopy;
   v11 = v7;
   v12 = &v13;
   [(NSMutableDictionary *)connectionByEnvironmentName enumerateKeysAndObjectsUsingBlock:v10];
@@ -547,16 +547,16 @@
   return v8;
 }
 
-- (BOOL)persistentHistoryNotifier:(id)a3 isChangeInteresting:(id)a4 stop:(BOOL *)a5
+- (BOOL)persistentHistoryNotifier:(id)notifier isChangeInteresting:(id)interesting stop:(BOOL *)stop
 {
-  v6 = a4;
-  v7 = [v6 changeType];
-  v8 = [v6 changedObjectID];
-  v9 = [v8 entity];
+  interestingCopy = interesting;
+  changeType = [interestingCopy changeType];
+  changedObjectID = [interestingCopy changedObjectID];
+  entity = [changedObjectID entity];
 
-  v10 = v9;
+  v10 = entity;
   v11 = v10;
-  if ((v7 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  if ((changeType & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
   }
 
@@ -578,16 +578,16 @@
     }
   }
 
-  v12 = [v6 updatedProperties];
+  updatedProperties = [interestingCopy updatedProperties];
   v13 = v11;
-  v14 = v12;
-  if (v7 == 1 && (+[RMHTTPConduitState entity](RMHTTPConduitState, "entity"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v13 isKindOfEntity:v15], v15, v16))
+  v14 = updatedProperties;
+  if (changeType == 1 && (+[RMHTTPConduitState entity](RMHTTPConduitState, "entity"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v13 isKindOfEntity:v15], v15, v16))
   {
-    v17 = [v13 propertiesByName];
-    v18 = [v17 objectForKeyedSubscript:@"pushEnvironment"];
+    propertiesByName = [v13 propertiesByName];
+    v18 = [propertiesByName objectForKeyedSubscript:@"pushEnvironment"];
 
-    v19 = [v13 propertiesByName];
-    v20 = [v19 objectForKeyedSubscript:@"pushTopic"];
+    propertiesByName2 = [v13 propertiesByName];
+    v20 = [propertiesByName2 objectForKeyedSubscript:@"pushTopic"];
 
     if ([v14 containsObject:v18])
     {
@@ -597,7 +597,7 @@ LABEL_13:
 
 LABEL_14:
       v21 = 1;
-      *a5 = 1;
+      *stop = 1;
       goto LABEL_15;
     }
 
@@ -619,18 +619,18 @@ LABEL_15:
   return v21;
 }
 
-- (void)persistentHistoryNotifier:(id)a3 hasChanges:(id)a4
+- (void)persistentHistoryNotifier:(id)notifier hasChanges:(id)changes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 insertedObjectIDs];
-  if (![v8 count])
+  notifierCopy = notifier;
+  changesCopy = changes;
+  insertedObjectIDs = [changesCopy insertedObjectIDs];
+  if (![insertedObjectIDs count])
   {
-    v9 = [v7 updatedObjectIDs];
-    if (![v9 count])
+    updatedObjectIDs = [changesCopy updatedObjectIDs];
+    if (![updatedObjectIDs count])
     {
-      v11 = [v7 deletedObjectIDs];
-      v12 = [v11 count];
+      deletedObjectIDs = [changesCopy deletedObjectIDs];
+      v12 = [deletedObjectIDs count];
 
       if (!v12)
       {

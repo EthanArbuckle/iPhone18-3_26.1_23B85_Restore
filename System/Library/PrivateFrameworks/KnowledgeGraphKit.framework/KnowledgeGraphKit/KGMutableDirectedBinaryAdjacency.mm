@@ -1,56 +1,56 @@
 @interface KGMutableDirectedBinaryAdjacency
 - (KGMutableDirectedBinaryAdjacency)init;
-- (void)formUnionWith:(id)a3;
-- (void)insertSource:(unint64_t)a3 target:(unint64_t)a4;
-- (void)removeSource:(unint64_t)a3 target:(unint64_t)a4;
-- (void)removeTargetsForSource:(unint64_t)a3;
-- (void)setTargets:(id)a3 forSource:(unint64_t)a4;
-- (void)subtract:(id)a3;
+- (void)formUnionWith:(id)with;
+- (void)insertSource:(unint64_t)source target:(unint64_t)target;
+- (void)removeSource:(unint64_t)source target:(unint64_t)target;
+- (void)removeTargetsForSource:(unint64_t)source;
+- (void)setTargets:(id)targets forSource:(unint64_t)source;
+- (void)subtract:(id)subtract;
 @end
 
 @implementation KGMutableDirectedBinaryAdjacency
 
-- (void)removeTargetsForSource:(unint64_t)a3
+- (void)removeTargetsForSource:(unint64_t)source
 {
-  v4 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  [v4 removeTargetsForSource:a3];
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  [mutableUnderlyingObject removeTargetsForSource:source];
 }
 
-- (void)setTargets:(id)a3 forSource:(unint64_t)a4
+- (void)setTargets:(id)targets forSource:(unint64_t)source
 {
-  v6 = a3;
-  v7 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  [v7 setTargets:v6 forSource:a4];
+  targetsCopy = targets;
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  [mutableUnderlyingObject setTargets:targetsCopy forSource:source];
 }
 
-- (void)subtract:(id)a3
+- (void)subtract:(id)subtract
 {
-  v4 = a3;
-  v6 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  v5 = v4[1];
+  subtractCopy = subtract;
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  v5 = subtractCopy[1];
 
-  [v6 subtract:v5];
+  [mutableUnderlyingObject subtract:v5];
 }
 
-- (void)formUnionWith:(id)a3
+- (void)formUnionWith:(id)with
 {
-  v4 = a3;
-  v6 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  v5 = v4[1];
+  withCopy = with;
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  v5 = withCopy[1];
 
-  [v6 formUnionWith:v5];
+  [mutableUnderlyingObject formUnionWith:v5];
 }
 
-- (void)removeSource:(unint64_t)a3 target:(unint64_t)a4
+- (void)removeSource:(unint64_t)source target:(unint64_t)target
 {
-  v6 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  [v6 removeSource:a3 target:a4];
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  [mutableUnderlyingObject removeSource:source target:target];
 }
 
-- (void)insertSource:(unint64_t)a3 target:(unint64_t)a4
+- (void)insertSource:(unint64_t)source target:(unint64_t)target
 {
-  v6 = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
-  [v6 insertSource:a3 target:a4];
+  mutableUnderlyingObject = [(KGMutableDirectedBinaryAdjacency *)self mutableUnderlyingObject];
+  [mutableUnderlyingObject insertSource:source target:target];
 }
 
 - (KGMutableDirectedBinaryAdjacency)init

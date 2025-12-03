@@ -1,25 +1,25 @@
 @interface TLKStars
-- (void)setStarRating:(double)a3;
+- (void)setStarRating:(double)rating;
 @end
 
 @implementation TLKStars
 
-- (void)setStarRating:(double)a3
+- (void)setStarRating:(double)rating
 {
-  if (self->_starRating != a3)
+  if (self->_starRating != rating)
   {
-    self->_starRating = a3;
-    v4 = [(TLKObject *)self observer];
-    if (v4)
+    self->_starRating = rating;
+    observer = [(TLKObject *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKObject *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKObject *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKObject *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKObject *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }

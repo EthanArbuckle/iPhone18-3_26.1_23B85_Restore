@@ -1,12 +1,12 @@
 @interface W5CloudStore
 + (id)sharedStore;
-- (BOOL)registerDiagnosticModePeer:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (BOOL)unregisterDiagnosticModePeer:(id)a3 error:(id *)a4;
+- (BOOL)registerDiagnosticModePeer:(id)peer configuration:(id)configuration error:(id *)error;
+- (BOOL)unregisterDiagnosticModePeer:(id)peer error:(id *)error;
 - (W5CloudStore)init;
 - (id)_homeDiagnosticsDomain;
-- (id)getMinNotificationInterval:(id)a3 notificationType:(int64_t)a4;
+- (id)getMinNotificationInterval:(id)interval notificationType:(int64_t)type;
 - (id)registeredPeers;
-- (void)_setHomeDiagnosticsDomain:(id)a3;
+- (void)_setHomeDiagnosticsDomain:(id)domain;
 @end
 
 @implementation W5CloudStore
@@ -63,8 +63,8 @@ LABEL_8:
 
 - (id)_homeDiagnosticsDomain
 {
-  v2 = [(W5CloudStore *)self appStore];
-  v3 = [v2 objectForKey:@"home-diagnostics"];
+  appStore = [(W5CloudStore *)self appStore];
+  v3 = [appStore objectForKey:@"home-diagnostics"];
 
   if (v3)
   {
@@ -81,22 +81,22 @@ LABEL_8:
   return v5;
 }
 
-- (void)_setHomeDiagnosticsDomain:(id)a3
+- (void)_setHomeDiagnosticsDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(W5CloudStore *)self appStore];
-  [v5 setObject:v4 forKey:@"home-diagnostics"];
+  domainCopy = domain;
+  appStore = [(W5CloudStore *)self appStore];
+  [appStore setObject:domainCopy forKey:@"home-diagnostics"];
 
-  v6 = [(W5CloudStore *)self appStore];
-  [v6 synchronize];
+  appStore2 = [(W5CloudStore *)self appStore];
+  [appStore2 synchronize];
 }
 
-- (BOOL)registerDiagnosticModePeer:(id)a3 configuration:(id)a4 error:(id *)a5
+- (BOOL)registerDiagnosticModePeer:(id)peer configuration:(id)configuration error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(W5CloudStore *)self _homeDiagnosticsDomain];
-  v11 = [v10 mutableCopy];
+  peerCopy = peer;
+  configurationCopy = configuration;
+  _homeDiagnosticsDomain = [(W5CloudStore *)self _homeDiagnosticsDomain];
+  v11 = [_homeDiagnosticsDomain mutableCopy];
 
   v39 = v11;
   v12 = [v11 objectForKeyedSubscript:@"registered-app-peers"];
@@ -106,10 +106,10 @@ LABEL_8:
   }
 
   v13 = [v12 mutableCopy];
-  v14 = [v8 peer];
-  v15 = [v14 peerID];
+  peer = [peerCopy peer];
+  peerID = [peer peerID];
 
-  if (!v15)
+  if (!peerID)
   {
     v31 = sub_100098A04();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -121,13 +121,13 @@ LABEL_8:
       v47 = 1024;
       v48 = 96;
       v49 = 2114;
-      v50 = v8;
+      v50 = peerCopy;
       LODWORD(v37) = 38;
       v36 = &v43;
       _os_log_send_and_compose_impl();
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -136,7 +136,7 @@ LABEL_8:
   }
 
   v40 = 0;
-  v16 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v40];
+  v16 = [NSKeyedArchiver archivedDataWithRootObject:peerCopy requiringSecureCoding:1 error:&v40];
   v17 = v40;
   v18 = v17;
   if (!v16)
@@ -151,13 +151,13 @@ LABEL_8:
       v47 = 1024;
       v48 = 101;
       v49 = 2114;
-      v50 = v8;
+      v50 = peerCopy;
       LODWORD(v37) = 38;
       v36 = &v43;
       _os_log_send_and_compose_impl();
     }
 
-    if (!a5)
+    if (!error)
     {
       v29 = 0;
       goto LABEL_16;
@@ -167,7 +167,7 @@ LABEL_8:
     {
       v33 = v18;
       v29 = 0;
-      *a5 = v18;
+      *error = v18;
       goto LABEL_16;
     }
 
@@ -176,7 +176,7 @@ LABEL_26:
     v42 = @"W5ParamErr";
     v34 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1, v36, v37];
     v35 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v34];
-    *a5 = v35;
+    *error = v35;
 
 LABEL_27:
     v29 = 0;
@@ -189,31 +189,31 @@ LABEL_27:
   v20 = +[NSDate date];
   [v19 setObject:v20 forKeyedSubscript:@"timestamp"];
 
-  v21 = [v8 peer];
-  v22 = [v21 name];
+  peer2 = [peerCopy peer];
+  name = [peer2 name];
 
-  if (v22)
+  if (name)
   {
-    v23 = [v8 peer];
-    v24 = [v23 name];
-    [v19 setObject:v24 forKeyedSubscript:@"name"];
+    peer3 = [peerCopy peer];
+    name2 = [peer3 name];
+    [v19 setObject:name2 forKeyedSubscript:@"name"];
   }
 
   [v19 setObject:v16 forKeyedSubscript:@"peer"];
-  v25 = [v9 objectForKey:@"MinStartNotificationInterval"];
+  v25 = [configurationCopy objectForKey:@"MinStartNotificationInterval"];
   if (v25)
   {
     [v19 setObject:v25 forKey:@"min-start-notification-interval"];
   }
 
-  v26 = [v9 objectForKey:@"MinStopNotificationInterval"];
+  v26 = [configurationCopy objectForKey:@"MinStopNotificationInterval"];
 
   if (v26)
   {
     [v19 setObject:v26 forKey:@"min-stop-notification-interval"];
   }
 
-  [v13 setObject:v19 forKeyedSubscript:v15];
+  [v13 setObject:v19 forKeyedSubscript:peerID];
   [v39 setObject:v13 forKeyedSubscript:@"registered-app-peers"];
   [(W5CloudStore *)self _setHomeDiagnosticsDomain:v39];
   v27 = sub_100098A04();
@@ -226,7 +226,7 @@ LABEL_27:
     v47 = 1024;
     v48 = 131;
     v49 = 2114;
-    v50 = v8;
+    v50 = peerCopy;
     _os_log_send_and_compose_impl();
   }
 
@@ -251,17 +251,17 @@ LABEL_16:
   return v29;
 }
 
-- (BOOL)unregisterDiagnosticModePeer:(id)a3 error:(id *)a4
+- (BOOL)unregisterDiagnosticModePeer:(id)peer error:(id *)error
 {
-  v6 = a3;
-  v7 = [(W5CloudStore *)self _homeDiagnosticsDomain];
-  v8 = [v7 mutableCopy];
+  peerCopy = peer;
+  _homeDiagnosticsDomain = [(W5CloudStore *)self _homeDiagnosticsDomain];
+  v8 = [_homeDiagnosticsDomain mutableCopy];
 
   v9 = [v8 objectForKeyedSubscript:@"registered-app-peers"];
-  v10 = [v6 peer];
-  v11 = [v10 peerID];
+  peer = [peerCopy peer];
+  peerID = [peer peerID];
 
-  if (!v11)
+  if (!peerID)
   {
     v17 = sub_100098A04();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -273,7 +273,7 @@ LABEL_16:
       v24 = 1024;
       v25 = 152;
       v26 = 2114;
-      v27 = v6;
+      v27 = peerCopy;
 LABEL_13:
       _os_log_send_and_compose_impl();
     }
@@ -301,11 +301,11 @@ LABEL_14:
   }
 
   v12 = [v9 mutableCopy];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  v13 = [v12 objectForKeyedSubscript:peerID];
 
   if (v13)
   {
-    [v12 removeObjectForKey:v11];
+    [v12 removeObjectForKey:peerID];
     [v8 setObject:v12 forKeyedSubscript:@"registered-app-peers"];
     [(W5CloudStore *)self _setHomeDiagnosticsDomain:v8];
     v14 = sub_100098A04();
@@ -318,7 +318,7 @@ LABEL_14:
       v24 = 1024;
       v25 = 166;
       v26 = 2114;
-      v27 = v6;
+      v27 = peerCopy;
       v15 = 1;
       _os_log_send_and_compose_impl();
     }
@@ -341,13 +341,13 @@ LABEL_14:
     v24 = 1024;
     v25 = 156;
     v26 = 2114;
-    v27 = v11;
+    v27 = peerID;
     _os_log_send_and_compose_impl();
   }
 
 LABEL_15:
 
-  if (!a4)
+  if (!error)
   {
     v15 = 0;
     goto LABEL_8;
@@ -357,7 +357,7 @@ LABEL_15:
   v19 = @"W5ParamErr";
   v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:1 userInfo:v14];
-  *a4 = v15 = 0;
+  *error = v15 = 0;
 LABEL_7:
 
 LABEL_8:
@@ -366,8 +366,8 @@ LABEL_8:
 
 - (id)registeredPeers
 {
-  v2 = [(W5CloudStore *)self _homeDiagnosticsDomain];
-  v3 = [v2 mutableCopy];
+  _homeDiagnosticsDomain = [(W5CloudStore *)self _homeDiagnosticsDomain];
+  v3 = [_homeDiagnosticsDomain mutableCopy];
 
   v4 = [v3 objectForKeyedSubscript:@"registered-app-peers"];
   v18 = +[NSMutableArray array];
@@ -378,8 +378,8 @@ LABEL_8:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [v4 allValues];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v32 count:16];
+    allValues = [v4 allValues];
+    v6 = [allValues countByEnumeratingWithState:&v20 objects:v32 count:16];
     if (v6)
     {
       v7 = v6;
@@ -390,7 +390,7 @@ LABEL_8:
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v20 + 1) + 8 * i);
@@ -423,7 +423,7 @@ LABEL_8:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v32 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v20 objects:v32 count:16];
       }
 
       while (v7);
@@ -435,25 +435,25 @@ LABEL_8:
   return v18;
 }
 
-- (id)getMinNotificationInterval:(id)a3 notificationType:(int64_t)a4
+- (id)getMinNotificationInterval:(id)interval notificationType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(W5CloudStore *)self _homeDiagnosticsDomain];
-  v8 = [v7 objectForKeyedSubscript:@"registered-app-peers"];
-  v9 = [v8 objectForKey:v6];
+  intervalCopy = interval;
+  _homeDiagnosticsDomain = [(W5CloudStore *)self _homeDiagnosticsDomain];
+  v8 = [_homeDiagnosticsDomain objectForKeyedSubscript:@"registered-app-peers"];
+  v9 = [v8 objectForKey:intervalCopy];
 
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v10 = @"min-start-notification-interval";
     goto LABEL_7;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
 LABEL_5:
     v11 = 0;

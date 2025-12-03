@@ -1,15 +1,15 @@
 @interface BMMailCategorizationAnalyticsRecategorize
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMailCategorizationAnalyticsRecategorize)initWithAccountId:(id)a3 messageId:(id)a4 currCategoryView:(id)a5 recategorizationBy:(id)a6 recategorizeTimestamp:(id)a7;
-- (BMMailCategorizationAnalyticsRecategorize)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMailCategorizationAnalyticsRecategorize)initWithAccountId:(id)id messageId:(id)messageId currCategoryView:(id)view recategorizationBy:(id)by recategorizeTimestamp:(id)timestamp;
+- (BMMailCategorizationAnalyticsRecategorize)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMailCategorizationAnalyticsRecategorize
@@ -53,25 +53,25 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
-    v7 = [v5 accountId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    accountId = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
+    accountId2 = [v5 accountId];
+    v8 = accountId2;
+    if (accountId == accountId2)
     {
     }
 
     else
     {
-      v9 = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
-      v10 = [v5 accountId];
-      v11 = [v9 isEqual:v10];
+      accountId3 = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
+      accountId4 = [v5 accountId];
+      v11 = [accountId3 isEqual:accountId4];
 
       if (!v11)
       {
@@ -93,8 +93,8 @@
 
           if (-[BMMailCategorizationAnalyticsRecategorize hasRecategorizeTimestamp](self, "hasRecategorizeTimestamp") && [v5 hasRecategorizeTimestamp])
           {
-            v16 = [(BMMailCategorizationAnalyticsRecategorize *)self recategorizeTimestamp];
-            v12 = v16 == [v5 recategorizeTimestamp];
+            recategorizeTimestamp = [(BMMailCategorizationAnalyticsRecategorize *)self recategorizeTimestamp];
+            v12 = recategorizeTimestamp == [v5 recategorizeTimestamp];
 LABEL_28:
 
             goto LABEL_29;
@@ -117,7 +117,7 @@ LABEL_29:
 - (id)jsonDictionary
 {
   v19[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
+  accountId = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
   if ([(BMMailCategorizationAnalyticsRecategorize *)self hasMessageId])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorizationAnalyticsRecategorize messageId](self, "messageId")}];
@@ -158,47 +158,47 @@ LABEL_29:
     v7 = 0;
   }
 
-  v16 = v3;
+  v16 = accountId;
   v18[0] = @"accountId";
-  v8 = v3;
-  if (!v3)
+  null = accountId;
+  if (!accountId)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v8;
+  v19[0] = null;
   v18[1] = @"messageId";
-  v9 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v9;
+  v19[1] = null2;
   v18[2] = @"currCategoryView";
-  v10 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v10;
+  v19[2] = null3;
   v18[3] = @"recategorizationBy";
-  v11 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[3] = v11;
+  v19[3] = null4;
   v18[4] = @"recategorizeTimestamp";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[4] = v12;
+  v19[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:{5, v16}];
   if (v7)
   {
@@ -253,29 +253,29 @@ LABEL_27:
   return v13;
 }
 
-- (BMMailCategorizationAnalyticsRecategorize)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMailCategorizationAnalyticsRecategorize)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"accountId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"accountId"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"messageId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"messageId"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v33 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v46 = *MEMORY[0x1E696A578];
@@ -284,7 +284,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         v39 = 0;
         v16 = 0;
-        *v33 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -296,22 +296,22 @@ LABEL_4:
       v39 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"currCategoryView"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"currCategoryView"];
     v36 = v8;
-    v38 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v44 = *MEMORY[0x1E696A578];
@@ -320,10 +320,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v37 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v38;
+        self = selfCopy;
         v8 = v36;
 LABEL_19:
 
@@ -338,13 +338,13 @@ LABEL_19:
       v37 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"recategorizationBy"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"recategorizationBy"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -354,34 +354,34 @@ LABEL_19:
         v34 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v42 = *MEMORY[0x1E696A578];
-        v28 = a4;
+        errorCopy3 = error;
         v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"recategorizationBy"];
         v43 = v15;
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
         v29 = [v34 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v28 = v29;
+        *errorCopy3 = v29;
         goto LABEL_17;
       }
 
-      v12 = a4;
+      errorCopy5 = error;
       v13 = v11;
     }
 
     else
     {
-      v12 = a4;
+      errorCopy5 = error;
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"recategorizeTimestamp"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"recategorizeTimestamp"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (v12)
+        if (errorCopy5)
         {
           v35 = objc_alloc(MEMORY[0x1E696ABC0]);
           v32 = *MEMORY[0x1E698F240];
@@ -389,7 +389,7 @@ LABEL_19:
           v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"recategorizeTimestamp"];
           v41 = v30;
           v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-          *v12 = [v35 initWithDomain:v32 code:2 userInfo:v31];
+          *errorCopy5 = [v35 initWithDomain:v32 code:2 userInfo:v31];
         }
 
         v15 = 0;
@@ -405,8 +405,8 @@ LABEL_19:
       v15 = 0;
     }
 
-    v16 = [(BMMailCategorizationAnalyticsRecategorize *)v38 initWithAccountId:v36 messageId:v39 currCategoryView:v37 recategorizationBy:v13 recategorizeTimestamp:v15];
-    v38 = v16;
+    v16 = [(BMMailCategorizationAnalyticsRecategorize *)selfCopy initWithAccountId:v36 messageId:v39 currCategoryView:v37 recategorizationBy:v13 recategorizeTimestamp:v15];
+    selfCopy = v16;
 LABEL_17:
 
     goto LABEL_18;
@@ -419,14 +419,14 @@ LABEL_17:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy6 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v48 = *MEMORY[0x1E696A578];
@@ -435,7 +435,7 @@ LABEL_17:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy6 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -447,53 +447,53 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMMailCategorizationAnalyticsRecategorize *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_accountId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasMessageId)
   {
     messageId = self->_messageId;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasCurrCategoryView)
   {
     currCategoryView = self->_currCategoryView;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasRecategorizationBy)
   {
     recategorizationBy = self->_recategorizationBy;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_hasRecategorizeTimestamp)
   {
     recategorizeTimestamp = self->_recategorizeTimestamp;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMMailCategorizationAnalyticsRecategorize;
   v5 = [(BMEventBase *)&v47 init];
@@ -502,12 +502,12 @@ LABEL_21:
     goto LABEL_83;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_81;
       }
@@ -518,18 +518,18 @@ LABEL_21:
       while (1)
       {
         v48 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48 & 0x7F) << v7;
@@ -547,9 +547,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_81;
       }
@@ -580,18 +580,18 @@ LABEL_61:
         while (1)
         {
           v48 = 0;
-          v26 = [v4 position] + 1;
-          if (v26 >= [v4 position] && (v27 = objc_msgSend(v4, "position") + 1, v27 <= objc_msgSend(v4, "length")))
+          v26 = [fromCopy position] + 1;
+          if (v26 >= [fromCopy position] && (v27 = objc_msgSend(fromCopy, "position") + 1, v27 <= objc_msgSend(fromCopy, "length")))
           {
-            v28 = [v4 data];
-            [v28 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v25 |= (v48 & 0x7F) << v23;
@@ -609,7 +609,7 @@ LABEL_61:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -629,8 +629,8 @@ LABEL_78:
       v5->_accountId = v41;
 
 LABEL_80:
-      v44 = [v4 position];
-      if (v44 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_81;
       }
@@ -646,18 +646,18 @@ LABEL_80:
         while (1)
         {
           v48 = 0;
-          v32 = [v4 position] + 1;
-          if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+          v32 = [fromCopy position] + 1;
+          if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
           {
-            v34 = [v4 data];
-            [v34 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v31 |= (v48 & 0x7F) << v29;
@@ -675,7 +675,7 @@ LABEL_80:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -696,18 +696,18 @@ LABEL_66:
         while (1)
         {
           v48 = 0;
-          v38 = [v4 position] + 1;
-          if (v38 >= [v4 position] && (v39 = objc_msgSend(v4, "position") + 1, v39 <= objc_msgSend(v4, "length")))
+          v38 = [fromCopy position] + 1;
+          if (v38 >= [fromCopy position] && (v39 = objc_msgSend(fromCopy, "position") + 1, v39 <= objc_msgSend(fromCopy, "length")))
           {
-            v40 = [v4 data];
-            [v40 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v37 |= (v48 & 0x7F) << v35;
@@ -725,7 +725,7 @@ LABEL_66:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -746,18 +746,18 @@ LABEL_70:
         while (1)
         {
           v48 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v48 range:{objc_msgSend(v4, "position"), 1}];
+            data5 = [fromCopy data];
+            [data5 getBytes:&v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v48 & 0x7F) << v16;
@@ -775,7 +775,7 @@ LABEL_70:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v22 = 0;
         }
@@ -798,7 +798,7 @@ LABEL_79:
   }
 
 LABEL_81:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_82:
     v45 = 0;
@@ -816,90 +816,90 @@ LABEL_83:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
+  accountId = [(BMMailCategorizationAnalyticsRecategorize *)self accountId];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorizationAnalyticsRecategorize messageId](self, "messageId")}];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorizationAnalyticsRecategorize currCategoryView](self, "currCategoryView")}];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorizationAnalyticsRecategorize recategorizationBy](self, "recategorizationBy")}];
   v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMailCategorizationAnalyticsRecategorize recategorizeTimestamp](self, "recategorizeTimestamp")}];
-  v9 = [v3 initWithFormat:@"BMMailCategorizationAnalyticsRecategorize with accountId: %@, messageId: %@, currCategoryView: %@, recategorizationBy: %@, recategorizeTimestamp: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMMailCategorizationAnalyticsRecategorize with accountId: %@, messageId: %@, currCategoryView: %@, recategorizationBy: %@, recategorizeTimestamp: %@", accountId, v5, v6, v7, v8];
 
   return v9;
 }
 
-- (BMMailCategorizationAnalyticsRecategorize)initWithAccountId:(id)a3 messageId:(id)a4 currCategoryView:(id)a5 recategorizationBy:(id)a6 recategorizeTimestamp:(id)a7
+- (BMMailCategorizationAnalyticsRecategorize)initWithAccountId:(id)id messageId:(id)messageId currCategoryView:(id)view recategorizationBy:(id)by recategorizeTimestamp:(id)timestamp
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  idCopy = id;
+  messageIdCopy = messageId;
+  viewCopy = view;
+  byCopy = by;
+  timestampCopy = timestamp;
   v24.receiver = self;
   v24.super_class = BMMailCategorizationAnalyticsRecategorize;
   v18 = [(BMEventBase *)&v24 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_accountId, a3);
-    if (v14)
+    objc_storeStrong(&v18->_accountId, id);
+    if (messageIdCopy)
     {
       v18->_hasMessageId = 1;
-      v19 = [v14 intValue];
+      intValue = [messageIdCopy intValue];
     }
 
     else
     {
       v18->_hasMessageId = 0;
-      v19 = -1;
+      intValue = -1;
     }
 
-    v18->_messageId = v19;
-    if (v15)
+    v18->_messageId = intValue;
+    if (viewCopy)
     {
       v18->_hasCurrCategoryView = 1;
-      v20 = [v15 intValue];
+      intValue2 = [viewCopy intValue];
     }
 
     else
     {
       v18->_hasCurrCategoryView = 0;
-      v20 = -1;
+      intValue2 = -1;
     }
 
-    v18->_currCategoryView = v20;
-    if (v16)
+    v18->_currCategoryView = intValue2;
+    if (byCopy)
     {
       v18->_hasRecategorizationBy = 1;
-      v21 = [v16 intValue];
+      intValue3 = [byCopy intValue];
     }
 
     else
     {
       v18->_hasRecategorizationBy = 0;
-      v21 = -1;
+      intValue3 = -1;
     }
 
-    v18->_recategorizationBy = v21;
-    if (v17)
+    v18->_recategorizationBy = intValue3;
+    if (timestampCopy)
     {
       v18->_hasRecategorizeTimestamp = 1;
-      v22 = [v17 intValue];
+      intValue4 = [timestampCopy intValue];
     }
 
     else
     {
       v18->_hasRecategorizeTimestamp = 0;
-      v22 = -1;
+      intValue4 = -1;
     }
 
-    v18->_recategorizeTimestamp = v22;
+    v18->_recategorizeTimestamp = intValue4;
   }
 
   return v18;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -907,8 +907,8 @@ LABEL_83:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMailCategorizationAnalyticsRecategorize alloc] initByReadFrom:v7];
     v4 = v8;

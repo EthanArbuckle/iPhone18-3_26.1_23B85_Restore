@@ -1,11 +1,11 @@
 @interface AEBookProtocolCacheItemProvider
 + (AEBookProtocolCacheItemProvider)sharedInstance;
 - (AEBookProtocolCacheItemProvider)init;
-- (id)cacheItemForDatabaseKey:(id)a3;
-- (void)_performWithLock:(id)a3;
+- (id)cacheItemForDatabaseKey:(id)key;
+- (void)_performWithLock:(id)lock;
 - (void)clearCache;
-- (void)clearCacheForDatabaseKey:(id)a3;
-- (void)clearCacheForDatabaseKeys:(id)a3;
+- (void)clearCacheForDatabaseKey:(id)key;
+- (void)clearCacheForDatabaseKeys:(id)keys;
 @end
 
 @implementation AEBookProtocolCacheItemProvider
@@ -58,40 +58,40 @@
   [(AEBookProtocolCacheItemProvider *)self _performWithLock:v2];
 }
 
-- (void)clearCacheForDatabaseKey:(id)a3
+- (void)clearCacheForDatabaseKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_9056C;
     v5[3] = &unk_1E3F50;
     v5[4] = self;
-    v6 = v4;
+    v6 = keyCopy;
     [(AEBookProtocolCacheItemProvider *)self _performWithLock:v5];
   }
 }
 
-- (void)clearCacheForDatabaseKeys:(id)a3
+- (void)clearCacheForDatabaseKeys:(id)keys
 {
-  v4 = a3;
-  if ([v4 count])
+  keysCopy = keys;
+  if ([keysCopy count])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_90618;
     v5[3] = &unk_1E3F50;
     v5[4] = self;
-    v6 = v4;
+    v6 = keysCopy;
     [(AEBookProtocolCacheItemProvider *)self _performWithLock:v5];
   }
 }
 
-- (id)cacheItemForDatabaseKey:(id)a3
+- (id)cacheItemForDatabaseKey:(id)key
 {
-  v4 = a3;
-  if ([v4 length])
+  keyCopy = key;
+  if ([keyCopy length])
   {
     v10 = 0;
     v11 = &v10;
@@ -105,7 +105,7 @@
     v7[3] = &unk_1E4E80;
     v9 = &v10;
     v7[4] = self;
-    v8 = v4;
+    v8 = keyCopy;
     [(AEBookProtocolCacheItemProvider *)self _performWithLock:v7];
     v5 = v11[5];
 
@@ -121,13 +121,13 @@
   return v5;
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  if (a3)
+  if (lock)
   {
-    v4 = a3;
+    lockCopy = lock;
     os_unfair_lock_lock(&self->_unfairLock);
-    v4[2](v4);
+    lockCopy[2](lockCopy);
 
     os_unfair_lock_unlock(&self->_unfairLock);
   }

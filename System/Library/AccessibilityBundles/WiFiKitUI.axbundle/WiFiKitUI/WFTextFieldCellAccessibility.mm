@@ -1,16 +1,16 @@
 @interface WFTextFieldCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)awakeFromNib;
 @end
 
 @implementation WFTextFieldCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFTextFieldCell" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFTextFieldCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFTextFieldCell" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFTextFieldCell" hasInstanceMethod:@"textField" withFullSignature:{"@", 0}];
 }
 
 - (void)awakeFromNib

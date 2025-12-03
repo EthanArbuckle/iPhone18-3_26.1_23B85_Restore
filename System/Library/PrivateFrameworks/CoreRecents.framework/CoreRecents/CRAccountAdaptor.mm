@@ -1,13 +1,13 @@
 @interface CRAccountAdaptor
-- (BOOL)isSyncingDisabledForAccountWithAddress:(id)a3;
-- (CRAccountAdaptor)initWithDelegate:(id)a3;
-- (CRAccountAdaptor)initWithUserDefaults:(id)a3 accountStore:(id)a4 delegate:(id)a5;
+- (BOOL)isSyncingDisabledForAccountWithAddress:(id)address;
+- (CRAccountAdaptor)initWithDelegate:(id)delegate;
+- (CRAccountAdaptor)initWithUserDefaults:(id)defaults accountStore:(id)store delegate:(id)delegate;
 - (id)_analyzeMailAccounts;
 - (id)_primaryiCloudAccountPersonID;
 - (id)senderEmailAddresses;
 - (void)_delegateAccountChanges;
 - (void)_resetCachedAccountInfo;
-- (void)_runWithAnalyzerLock:(id)a3;
+- (void)_runWithAnalyzerLock:(id)lock;
 - (void)dealloc;
 @end
 
@@ -26,15 +26,15 @@
   return v3;
 }
 
-- (CRAccountAdaptor)initWithDelegate:(id)a3
+- (CRAccountAdaptor)initWithDelegate:(id)delegate
 {
   v5 = +[NSUserDefaults standardUserDefaults];
   v6 = +[ACAccountStore defaultStore];
 
-  return [(CRAccountAdaptor *)self initWithUserDefaults:v5 accountStore:v6 delegate:a3];
+  return [(CRAccountAdaptor *)self initWithUserDefaults:v5 accountStore:v6 delegate:delegate];
 }
 
-- (CRAccountAdaptor)initWithUserDefaults:(id)a3 accountStore:(id)a4 delegate:(id)a5
+- (CRAccountAdaptor)initWithUserDefaults:(id)defaults accountStore:(id)store delegate:(id)delegate
 {
   v19.receiver = self;
   v19.super_class = CRAccountAdaptor;
@@ -43,9 +43,9 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_userDefaults = a3;
-    v9->_accountStore = a4;
-    v9->_delegate = a5;
+    v8->_userDefaults = defaults;
+    v9->_accountStore = store;
+    v9->_delegate = delegate;
     v9->_iCloudAccountPersonID = [(NSString *)[(NSUserDefaults *)v9->_userDefaults stringForKey:@"LastiCloudAccountPersonID"] copy];
     v9->_iCloudAccountWasLoggedIn = [(NSUserDefaults *)v9->_userDefaults BOOLForKey:@"LastiCloudAccountWasLoggedIn"];
     objc_initWeak(&location, v9);
@@ -87,7 +87,7 @@
   [(CRAccountAdaptor *)&v3 dealloc];
 }
 
-- (BOOL)isSyncingDisabledForAccountWithAddress:(id)a3
+- (BOOL)isSyncingDisabledForAccountWithAddress:(id)address
 {
   v6 = 0;
   v7 = &v6;
@@ -97,7 +97,7 @@
   v5[1] = 3221225472;
   v5[2] = sub_100016568;
   v5[3] = &unk_10002D4F8;
-  v5[5] = a3;
+  v5[5] = address;
   v5[6] = &v6;
   v5[4] = self;
   [(CRAccountAdaptor *)self _runWithAnalyzerLock:v5];
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (void)_runWithAnalyzerLock:(id)a3
+- (void)_runWithAnalyzerLock:(id)lock
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_analyzer)
@@ -114,7 +114,7 @@
     self->_analyzer = [(CRAccountAdaptor *)self _analyzeMailAccounts];
   }
 
-  (*(a3 + 2))(a3);
+  (*(lock + 2))(lock);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -156,7 +156,7 @@
 
 - (void)_delegateAccountChanges
 {
-  v3 = [(CRAccountAdaptor *)self _primaryiCloudAccountPersonID];
+  _primaryiCloudAccountPersonID = [(CRAccountAdaptor *)self _primaryiCloudAccountPersonID];
   v4 = +[CRLogging log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,15 +166,15 @@
     v15 = 2114;
     v16 = iCloudAccountPersonID;
     v17 = 2114;
-    v18 = v3;
+    v18 = _primaryiCloudAccountPersonID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s old:%{public}@ current:%{public}@", &v13, 0x20u);
   }
 
-  v6 = [v3 isEqualToString:self->_iCloudAccountPersonID];
+  v6 = [_primaryiCloudAccountPersonID isEqualToString:self->_iCloudAccountPersonID];
   v7 = v6;
   iCloudAccountWasLoggedIn = self->_iCloudAccountWasLoggedIn;
   v9 = !iCloudAccountWasLoggedIn;
-  if (v3)
+  if (_primaryiCloudAccountPersonID)
   {
     v10 = 1;
   }
@@ -186,7 +186,7 @@
 
   if (v10 == 1)
   {
-    if (!v3)
+    if (!_primaryiCloudAccountPersonID)
     {
       iCloudAccountWasLoggedIn = 1;
     }
@@ -195,7 +195,7 @@
     {
       if ((iCloudAccountWasLoggedIn | v6))
       {
-        if ((v9 || v3 == 0) | v6 & 1)
+        if ((v9 || _primaryiCloudAccountPersonID == 0) | v6 & 1)
         {
           return;
         }
@@ -221,12 +221,12 @@
   }
 
   [(CRAccountAdaptorDelegate *)[(CRAccountAdaptor *)self delegate] accountAdaptor:self observediCloudAccountTransition:v11];
-  self->_iCloudAccountWasLoggedIn = v3 != 0;
-  [(NSUserDefaults *)self->_userDefaults setBool:v3 != 0 forKey:@"LastiCloudAccountWasLoggedIn"];
+  self->_iCloudAccountWasLoggedIn = _primaryiCloudAccountPersonID != 0;
+  [(NSUserDefaults *)self->_userDefaults setBool:_primaryiCloudAccountPersonID != 0 forKey:@"LastiCloudAccountWasLoggedIn"];
   if (!(v7 & 1 | ((v10 & 1) == 0)))
   {
 
-    v12 = [v3 copy];
+    v12 = [_primaryiCloudAccountPersonID copy];
     self->_iCloudAccountPersonID = v12;
     [(NSUserDefaults *)self->_userDefaults setObject:v12 forKey:@"LastiCloudAccountPersonID"];
   }

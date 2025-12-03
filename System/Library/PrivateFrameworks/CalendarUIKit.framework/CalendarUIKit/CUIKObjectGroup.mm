@@ -1,49 +1,49 @@
 @interface CUIKObjectGroup
-+ (id)_identifierForObject:(id)a3;
-+ (id)_objectMapForObjects:(id)a3;
-- (BOOL)_newSeriesSpawnedWithObject:(id)a3;
-- (BOOL)objectsBelongInGroup:(id)a3;
-- (CUIKObjectGroup)initWithObjects:(id)a3;
++ (id)_identifierForObject:(id)object;
++ (id)_objectMapForObjects:(id)objects;
+- (BOOL)_newSeriesSpawnedWithObject:(id)object;
+- (BOOL)objectsBelongInGroup:(id)group;
+- (CUIKObjectGroup)initWithObjects:(id)objects;
 - (id)description;
 - (id)objectIdentifiers;
 - (id)objects;
 - (id)originalObjects;
-- (id)shiftedOccurrencePreviouslySpawnedByIdentifier:(id)a3;
-- (void)newObject:(id)a3 spawnedFromObject:(id)a4;
+- (id)shiftedOccurrencePreviouslySpawnedByIdentifier:(id)identifier;
+- (void)newObject:(id)object spawnedFromObject:(id)fromObject;
 @end
 
 @implementation CUIKObjectGroup
 
-- (CUIKObjectGroup)initWithObjects:(id)a3
+- (CUIKObjectGroup)initWithObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v11.receiver = self;
   v11.super_class = CUIKObjectGroup;
   v5 = [(CUIKObjectGroup *)&v11 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _objectMapForObjects:v4];
+    v6 = [objc_opt_class() _objectMapForObjects:objectsCopy];
     [(CUIKObjectGroup *)v5 setOriginalObjectMap:v6];
 
     v7 = MEMORY[0x1E695DF90];
-    v8 = [(CUIKObjectGroup *)v5 originalObjectMap];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    originalObjectMap = [(CUIKObjectGroup *)v5 originalObjectMap];
+    v9 = [v7 dictionaryWithDictionary:originalObjectMap];
     [(CUIKObjectGroup *)v5 setObjectMap:v9];
   }
 
   return v5;
 }
 
-+ (id)_objectMapForObjects:(id)a3
++ (id)_objectMapForObjects:(id)objects
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  objectsCopy = objects;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -60,8 +60,8 @@
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [v11 copy];
-        v13 = [a1 _identifierForObject:v11];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        v13 = [self _identifierForObject:v11];
+        [dictionary setObject:v12 forKeyedSubscript:v13];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -70,45 +70,45 @@
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
-+ (id)_identifierForObject:(id)a3
++ (id)_identifierForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 eventOccurrenceID];
+    [objectCopy eventOccurrenceID];
   }
 
   else
   {
-    [v3 uniqueIdentifier];
+    [objectCopy uniqueIdentifier];
   }
   v4 = ;
 
   return v4;
 }
 
-- (BOOL)_newSeriesSpawnedWithObject:(id)a3
+- (BOOL)_newSeriesSpawnedWithObject:(id)object
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = [a3 uniqueIdentifier];
+  uniqueIdentifier = [object uniqueIdentifier];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
-  v6 = [v5 keys];
+  spawnedObjectIdentifiers = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+  keys = [spawnedObjectIdentifiers keys];
 
-  v23 = [v6 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v23 = [keys countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v23)
   {
     v7 = *v30;
     v21 = *v30;
-    v22 = self;
-    v24 = v6;
+    selfCopy = self;
+    v24 = keys;
     do
     {
       v8 = 0;
@@ -116,7 +116,7 @@
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keys);
         }
 
         v9 = *(*(&v29 + 1) + 8 * v8);
@@ -142,14 +142,14 @@
               }
 
               v16 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:*(*(&v25 + 1) + 8 * i)];
-              v17 = [v16 localUID];
-              v18 = [v17 isEqualToString:v4];
+              localUID = [v16 localUID];
+              v18 = [localUID isEqualToString:uniqueIdentifier];
 
               if (v18)
               {
 
                 v19 = 1;
-                v6 = v24;
+                keys = v24;
                 goto LABEL_19;
               }
             }
@@ -165,8 +165,8 @@
         }
 
         ++v8;
-        self = v22;
-        v6 = v24;
+        self = selfCopy;
+        keys = v24;
         v7 = v21;
       }
 
@@ -188,15 +188,15 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)objectsBelongInGroup:(id)a3
+- (BOOL)objectsBelongInGroup:(id)group
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  groupCopy = group;
+  v5 = [groupCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -209,13 +209,13 @@ LABEL_19:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groupCopy);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = [objc_opt_class() _identifierForObject:v10];
-        v12 = [(CUIKObjectGroup *)self originalObjectMap];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        originalObjectMap = [(CUIKObjectGroup *)self originalObjectMap];
+        v13 = [originalObjectMap objectForKeyedSubscript:v11];
 
         if (v13)
         {
@@ -237,7 +237,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v6 = [groupCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v6)
       {
         continue;
@@ -253,8 +253,8 @@ LABEL_19:
     v7 = 0;
   }
 
-  v16 = [(CUIKObjectGroup *)self originalObjectMap];
-  v17 = [v16 count];
+  originalObjectMap2 = [(CUIKObjectGroup *)self originalObjectMap];
+  v17 = [originalObjectMap2 count];
 
   v15 = v17 == v7 || v17 == v7 + v20;
 LABEL_21:
@@ -262,70 +262,70 @@ LABEL_21:
   return v15;
 }
 
-- (void)newObject:(id)a3 spawnedFromObject:(id)a4
+- (void)newObject:(id)object spawnedFromObject:(id)fromObject
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _identifierForObject:v6];
-  v8 = [(CUIKObjectGroup *)self originalObjectMap];
-  v9 = [v8 objectForKey:v7];
+  objectCopy = object;
+  fromObjectCopy = fromObject;
+  v7 = [objc_opt_class() _identifierForObject:fromObjectCopy];
+  originalObjectMap = [(CUIKObjectGroup *)self originalObjectMap];
+  v9 = [originalObjectMap objectForKey:v7];
 
   if (!v9)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v6 isMainOccurrence])
+      if ([fromObjectCopy isMainOccurrence])
       {
-        v10 = [v6 localUID];
+        localUID = [fromObjectCopy localUID];
 
-        v7 = v10;
+        v7 = localUID;
       }
     }
   }
 
-  v11 = [(CUIKObjectGroup *)self originalObjectMap];
-  v12 = [v11 objectForKey:v7];
+  originalObjectMap2 = [(CUIKObjectGroup *)self originalObjectMap];
+  v12 = [originalObjectMap2 objectForKey:v7];
 
   if (v12)
   {
-    v13 = [objc_opt_class() _identifierForObject:v19];
+    v13 = [objc_opt_class() _identifierForObject:objectCopy];
     if (([v13 isEqualToString:v7] & 1) == 0)
     {
-      v14 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+      spawnedObjectIdentifiers = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
 
-      if (!v14)
+      if (!spawnedObjectIdentifiers)
       {
         v15 = [objc_alloc(MEMORY[0x1E6992F78]) initWithDefaultClass:objc_opt_class()];
         [(CUIKObjectGroup *)self setSpawnedObjectIdentifiers:v15];
       }
 
-      v16 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
-      v17 = [v16 objectForKey:v7];
+      spawnedObjectIdentifiers2 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+      v17 = [spawnedObjectIdentifiers2 objectForKey:v7];
       [v17 addObject:v13];
 
-      v18 = [(CUIKObjectGroup *)self objectMap];
-      [v18 setObject:v19 forKeyedSubscript:v13];
+      objectMap = [(CUIKObjectGroup *)self objectMap];
+      [objectMap setObject:objectCopy forKeyedSubscript:v13];
     }
   }
 }
 
-- (id)shiftedOccurrencePreviouslySpawnedByIdentifier:(id)a3
+- (id)shiftedOccurrencePreviouslySpawnedByIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:v4];
+  identifierCopy = identifier;
+  v5 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:identifierCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
-  v7 = [v6 existingObjectForKey:v4];
+  spawnedObjectIdentifiers = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+  v7 = [spawnedObjectIdentifiers existingObjectForKey:identifierCopy];
 
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
-    v17 = v4;
+    v17 = identifierCopy;
     v9 = *v19;
     while (2)
     {
@@ -338,9 +338,9 @@ LABEL_21:
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = [MEMORY[0x1E6966AC8] recurrenceIdentifierWithString:v11];
-        v13 = [v12 localUID];
-        v14 = [v5 localUID];
-        v15 = [v13 isEqualToString:v14];
+        localUID = [v12 localUID];
+        localUID2 = [v5 localUID];
+        v15 = [localUID isEqualToString:localUID2];
 
         if (v15)
         {
@@ -360,7 +360,7 @@ LABEL_21:
     }
 
 LABEL_11:
-    v4 = v17;
+    identifierCopy = v17;
   }
 
   return v8;
@@ -369,49 +369,49 @@ LABEL_11:
 - (id)objectIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(CUIKObjectGroup *)self objectMap];
-  v4 = [v3 allKeys];
-  v5 = [v2 setWithArray:v4];
+  objectMap = [(CUIKObjectGroup *)self objectMap];
+  allKeys = [objectMap allKeys];
+  v5 = [v2 setWithArray:allKeys];
 
   return v5;
 }
 
 - (id)objects
 {
-  v2 = [(CUIKObjectGroup *)self objectMap];
-  v3 = [v2 allValues];
+  objectMap = [(CUIKObjectGroup *)self objectMap];
+  allValues = [objectMap allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)originalObjects
 {
-  v2 = [(CUIKObjectGroup *)self originalObjectMap];
-  v3 = [v2 allValues];
+  originalObjectMap = [(CUIKObjectGroup *)self originalObjectMap];
+  allValues = [originalObjectMap allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CUIKObjectGroup *)self originalObjectMap];
-  v5 = [v4 allKeys];
-  [v3 appendFormat:@"originalIdentifiers: %@ \n", v5];
+  string = [MEMORY[0x1E696AD60] string];
+  originalObjectMap = [(CUIKObjectGroup *)self originalObjectMap];
+  allKeys = [originalObjectMap allKeys];
+  [string appendFormat:@"originalIdentifiers: %@ \n", allKeys];
 
-  v6 = [(CUIKObjectGroup *)self objectIdentifiers];
-  [v3 appendFormat:@"currentIdentifiers: %@ \n", v6];
+  objectIdentifiers = [(CUIKObjectGroup *)self objectIdentifiers];
+  [string appendFormat:@"currentIdentifiers: %@ \n", objectIdentifiers];
 
-  v7 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+  spawnedObjectIdentifiers = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
 
-  if (v7)
+  if (spawnedObjectIdentifiers)
   {
-    v8 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
-    v9 = [v8 finalDictionary];
-    [v3 appendFormat:@"spawnedIdentifiers: %@", v9];
+    spawnedObjectIdentifiers2 = [(CUIKObjectGroup *)self spawnedObjectIdentifiers];
+    finalDictionary = [spawnedObjectIdentifiers2 finalDictionary];
+    [string appendFormat:@"spawnedIdentifiers: %@", finalDictionary];
   }
 
-  return v3;
+  return string;
 }
 
 @end

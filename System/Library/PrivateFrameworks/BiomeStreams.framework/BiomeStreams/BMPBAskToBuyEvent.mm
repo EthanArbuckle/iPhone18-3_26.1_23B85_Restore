@@ -1,17 +1,17 @@
 @interface BMPBAskToBuyEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsActionUserDevice:(BOOL)a3;
-- (void)setHasStarRating:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsActionUserDevice:(BOOL)device;
+- (void)setHasStarRating:(BOOL)rating;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBAskToBuyEvent
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"pending"])
+  else if ([statusCopy isEqualToString:@"pending"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"declined"])
+  else if ([statusCopy isEqualToString:@"declined"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"approved"])
+  else if ([statusCopy isEqualToString:@"approved"])
   {
     v4 = 3;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setHasStarRating:(BOOL)a3
+- (void)setHasStarRating:(BOOL)rating
 {
-  if (a3)
+  if (rating)
   {
     v3 = 2;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsActionUserDevice:(BOOL)a3
+- (void)setHasIsActionUserDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 8;
   }
@@ -111,20 +111,20 @@
   v8.receiver = self;
   v8.super_class = BMPBAskToBuyEvent;
   v4 = [(BMPBAskToBuyEvent *)&v8 description];
-  v5 = [(BMPBAskToBuyEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBAskToBuyEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   requestID = self->_requestID;
   if (requestID)
   {
-    [v3 setObject:requestID forKey:@"requestID"];
+    [dictionary setObject:requestID forKey:@"requestID"];
   }
 
   if (*&self->_has)
@@ -219,192 +219,192 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_requestID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
     eventTime = self->_eventTime;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_userID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_actionUserID)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_itemTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_itemDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_itemLocalizedPrice)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_thumbnailPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_ageRating)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     starRating = self->_starRating;
     PBDataWriterWriteFloatField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     isActionUserDevice = self->_isActionUserDevice;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_storeLink)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_requestID)
   {
-    [v4 setRequestID:?];
-    v4 = v5;
+    [toCopy setRequestID:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_eventTime;
-    *(v4 + 108) |= 1u;
+    *(toCopy + 1) = *&self->_eventTime;
+    *(toCopy + 108) |= 1u;
   }
 
   if (self->_userID)
   {
     [v5 setUserID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_actionUserID)
   {
     [v5 setActionUserID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 19) = self->_status;
-    *(v4 + 108) |= 4u;
+    *(toCopy + 19) = self->_status;
+    *(toCopy + 108) |= 4u;
   }
 
   if (self->_itemTitle)
   {
     [v5 setItemTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_itemDescription)
   {
     [v5 setItemDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_itemLocalizedPrice)
   {
     [v5 setItemLocalizedPrice:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_thumbnailPath)
   {
     [v5 setThumbnailPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ageRating)
   {
     [v5 setAgeRating:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 18) = LODWORD(self->_starRating);
-    *(v4 + 108) |= 2u;
+    *(toCopy + 18) = LODWORD(self->_starRating);
+    *(toCopy + 108) |= 2u;
   }
 
   if (self->_productType)
   {
     [v5 setProductType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 104) = self->_isActionUserDevice;
-    *(v4 + 108) |= 8u;
+    *(toCopy + 104) = self->_isActionUserDevice;
+    *(toCopy + 108) |= 8u;
   }
 
   if (self->_storeLink)
   {
     [v5 setStoreLink:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_requestID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_requestID copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -414,11 +414,11 @@
     *(v5 + 108) |= 1u;
   }
 
-  v8 = [(NSString *)self->_userID copyWithZone:a3];
+  v8 = [(NSString *)self->_userID copyWithZone:zone];
   v9 = *(v5 + 96);
   *(v5 + 96) = v8;
 
-  v10 = [(NSString *)self->_actionUserID copyWithZone:a3];
+  v10 = [(NSString *)self->_actionUserID copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -428,23 +428,23 @@
     *(v5 + 108) |= 4u;
   }
 
-  v12 = [(NSString *)self->_itemTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_itemTitle copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_itemDescription copyWithZone:a3];
+  v14 = [(NSString *)self->_itemDescription copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(NSString *)self->_itemLocalizedPrice copyWithZone:a3];
+  v16 = [(NSString *)self->_itemLocalizedPrice copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
-  v18 = [(NSString *)self->_thumbnailPath copyWithZone:a3];
+  v18 = [(NSString *)self->_thumbnailPath copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
-  v20 = [(NSString *)self->_ageRating copyWithZone:a3];
+  v20 = [(NSString *)self->_ageRating copyWithZone:zone];
   v21 = *(v5 + 24);
   *(v5 + 24) = v20;
 
@@ -454,7 +454,7 @@
     *(v5 + 108) |= 2u;
   }
 
-  v22 = [(NSString *)self->_productType copyWithZone:a3];
+  v22 = [(NSString *)self->_productType copyWithZone:zone];
   v23 = *(v5 + 56);
   *(v5 + 56) = v22;
 
@@ -464,23 +464,23 @@
     *(v5 + 108) |= 8u;
   }
 
-  v24 = [(NSString *)self->_storeLink copyWithZone:a3];
+  v24 = [(NSString *)self->_storeLink copyWithZone:zone];
   v25 = *(v5 + 80);
   *(v5 + 80) = v24;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   requestID = self->_requestID;
-  if (requestID | *(v4 + 8))
+  if (requestID | *(equalCopy + 8))
   {
     if (![(NSString *)requestID isEqual:?])
     {
@@ -488,28 +488,28 @@
     }
   }
 
-  v6 = *(v4 + 108);
+  v6 = *(equalCopy + 108);
   if (*&self->_has)
   {
-    if ((*(v4 + 108) & 1) == 0 || self->_eventTime != *(v4 + 1))
+    if ((*(equalCopy + 108) & 1) == 0 || self->_eventTime != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 108))
+  else if (*(equalCopy + 108))
   {
     goto LABEL_41;
   }
 
   userID = self->_userID;
-  if (userID | *(v4 + 12) && ![(NSString *)userID isEqual:?])
+  if (userID | *(equalCopy + 12) && ![(NSString *)userID isEqual:?])
   {
     goto LABEL_41;
   }
 
   actionUserID = self->_actionUserID;
-  if (actionUserID | *(v4 + 2))
+  if (actionUserID | *(equalCopy + 2))
   {
     if (![(NSString *)actionUserID isEqual:?])
     {
@@ -517,28 +517,28 @@
     }
   }
 
-  v9 = *(v4 + 108);
+  v9 = *(equalCopy + 108);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 108) & 4) == 0 || self->_status != *(v4 + 19))
+    if ((*(equalCopy + 108) & 4) == 0 || self->_status != *(equalCopy + 19))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 108) & 4) != 0)
+  else if ((*(equalCopy + 108) & 4) != 0)
   {
     goto LABEL_41;
   }
 
   itemTitle = self->_itemTitle;
-  if (itemTitle | *(v4 + 6) && ![(NSString *)itemTitle isEqual:?])
+  if (itemTitle | *(equalCopy + 6) && ![(NSString *)itemTitle isEqual:?])
   {
     goto LABEL_41;
   }
 
   itemDescription = self->_itemDescription;
-  if (itemDescription | *(v4 + 4))
+  if (itemDescription | *(equalCopy + 4))
   {
     if (![(NSString *)itemDescription isEqual:?])
     {
@@ -547,7 +547,7 @@
   }
 
   itemLocalizedPrice = self->_itemLocalizedPrice;
-  if (itemLocalizedPrice | *(v4 + 5))
+  if (itemLocalizedPrice | *(equalCopy + 5))
   {
     if (![(NSString *)itemLocalizedPrice isEqual:?])
     {
@@ -556,7 +556,7 @@
   }
 
   thumbnailPath = self->_thumbnailPath;
-  if (thumbnailPath | *(v4 + 11))
+  if (thumbnailPath | *(equalCopy + 11))
   {
     if (![(NSString *)thumbnailPath isEqual:?])
     {
@@ -565,7 +565,7 @@
   }
 
   ageRating = self->_ageRating;
-  if (ageRating | *(v4 + 3))
+  if (ageRating | *(equalCopy + 3))
   {
     if (![(NSString *)ageRating isEqual:?])
     {
@@ -574,22 +574,22 @@
   }
 
   has = self->_has;
-  v16 = *(v4 + 108);
+  v16 = *(equalCopy + 108);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 108) & 2) == 0 || self->_starRating != *(v4 + 18))
+    if ((*(equalCopy + 108) & 2) == 0 || self->_starRating != *(equalCopy + 18))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 108) & 2) != 0)
+  else if ((*(equalCopy + 108) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 7))
+  if (productType | *(equalCopy + 7))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -599,10 +599,10 @@
     has = self->_has;
   }
 
-  v18 = *(v4 + 108);
+  v18 = *(equalCopy + 108);
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 108) & 8) == 0)
+    if ((*(equalCopy + 108) & 8) == 0)
     {
       goto LABEL_38;
     }
@@ -612,28 +612,28 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if ((*(v4 + 108) & 8) == 0)
+  if ((*(equalCopy + 108) & 8) == 0)
   {
     goto LABEL_41;
   }
 
-  v22 = *(v4 + 104);
+  v22 = *(equalCopy + 104);
   if (self->_isActionUserDevice)
   {
-    if ((*(v4 + 104) & 1) == 0)
+    if ((*(equalCopy + 104) & 1) == 0)
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_41;
   }
 
 LABEL_38:
   storeLink = self->_storeLink;
-  if (storeLink | *(v4 + 10))
+  if (storeLink | *(equalCopy + 10))
   {
     v20 = [(NSString *)storeLink isEqual:?];
   }
@@ -748,92 +748,92 @@ LABEL_42:
   return v5 ^ v27 ^ v26 ^ v25 ^ v24 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v17 ^ v21 ^ v22 ^ [(NSString *)self->_storeLink hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(BMPBAskToBuyEvent *)self setRequestID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 108))
+  if (*(fromCopy + 108))
   {
-    self->_eventTime = *(v4 + 1);
+    self->_eventTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(BMPBAskToBuyEvent *)self setUserID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBAskToBuyEvent *)self setActionUserID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 108) & 4) != 0)
+  if ((*(fromCopy + 108) & 4) != 0)
   {
-    self->_status = *(v4 + 19);
+    self->_status = *(fromCopy + 19);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBAskToBuyEvent *)self setItemTitle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBAskToBuyEvent *)self setItemDescription:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBAskToBuyEvent *)self setItemLocalizedPrice:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BMPBAskToBuyEvent *)self setThumbnailPath:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBAskToBuyEvent *)self setAgeRating:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 108) & 2) != 0)
+  if ((*(fromCopy + 108) & 2) != 0)
   {
-    self->_starRating = *(v4 + 18);
+    self->_starRating = *(fromCopy + 18);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBAskToBuyEvent *)self setProductType:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 108) & 8) != 0)
+  if ((*(fromCopy + 108) & 8) != 0)
   {
-    self->_isActionUserDevice = *(v4 + 104);
+    self->_isActionUserDevice = *(fromCopy + 104);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BMPBAskToBuyEvent *)self setStoreLink:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

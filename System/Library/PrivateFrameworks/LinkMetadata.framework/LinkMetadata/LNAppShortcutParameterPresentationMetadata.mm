@@ -1,33 +1,33 @@
 @interface LNAppShortcutParameterPresentationMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNAppShortcutParameterPresentationMetadata)initWithCoder:(id)a3;
-- (LNAppShortcutParameterPresentationMetadata)initWithParameterIdentifier:(id)a3 specificTitle:(id)a4 localizationTable:(id)a5 optionsCollection:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (LNAppShortcutParameterPresentationMetadata)initWithCoder:(id)coder;
+- (LNAppShortcutParameterPresentationMetadata)initWithParameterIdentifier:(id)identifier specificTitle:(id)title localizationTable:(id)table optionsCollection:(id)collection;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAppShortcutParameterPresentationMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(optionsCollection3) = 0;
 LABEL_35:
 
       goto LABEL_36;
     }
 
-    v7 = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
-    v8 = [(LNAppShortcutParameterPresentationMetadata *)v6 parameterIdentifier];
-    v9 = v7;
-    v10 = v8;
+    parameterIdentifier = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
+    parameterIdentifier2 = [(LNAppShortcutParameterPresentationMetadata *)v6 parameterIdentifier];
+    v9 = parameterIdentifier;
+    v10 = parameterIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -35,7 +35,7 @@ LABEL_35:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(optionsCollection3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -47,17 +47,17 @@ LABEL_35:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(optionsCollection3) = 0;
 LABEL_34:
 
         goto LABEL_35;
       }
     }
 
-    v16 = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
-    v17 = [(LNAppShortcutParameterPresentationMetadata *)v6 specificTitle];
-    v14 = v16;
-    v18 = v17;
+    specificTitle = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
+    specificTitle2 = [(LNAppShortcutParameterPresentationMetadata *)v6 specificTitle];
+    v14 = specificTitle;
+    v18 = specificTitle2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -65,7 +65,7 @@ LABEL_34:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(optionsCollection3) = 0;
       v19 = v18;
       v20 = v14;
       if (!v14 || !v18)
@@ -77,17 +77,17 @@ LABEL_34:
 
       if (!v21)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(optionsCollection3) = 0;
 LABEL_33:
 
         goto LABEL_34;
       }
     }
 
-    v22 = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
-    v23 = [(LNAppShortcutParameterPresentationMetadata *)v6 localizationTable];
-    v20 = v22;
-    v24 = v23;
+    localizationTable = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
+    localizationTable2 = [(LNAppShortcutParameterPresentationMetadata *)v6 localizationTable];
+    v20 = localizationTable;
+    v24 = localizationTable2;
     v19 = v24;
     if (v20 == v24)
     {
@@ -95,7 +95,7 @@ LABEL_33:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(optionsCollection3) = 0;
       v25 = v24;
       v26 = v20;
       if (!v20 || !v24)
@@ -103,42 +103,42 @@ LABEL_33:
         goto LABEL_28;
       }
 
-      LODWORD(v12) = [v20 isEqualToString:v24];
+      LODWORD(optionsCollection3) = [v20 isEqualToString:v24];
 
-      if (!v12)
+      if (!optionsCollection3)
       {
         goto LABEL_32;
       }
     }
 
     v38 = v20;
-    v27 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-    v28 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
+    optionsCollection = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+    optionsCollection2 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
 
-    if (v27 == v28)
+    if (optionsCollection == optionsCollection2)
     {
-      LOBYTE(v12) = 1;
+      LOBYTE(optionsCollection3) = 1;
     }
 
     else
     {
-      v12 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-      if (v12)
+      optionsCollection3 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+      if (optionsCollection3)
       {
-        v29 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
+        optionsCollection4 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
 
-        if (v29)
+        if (optionsCollection4)
         {
           v30 = MEMORY[0x1E695DFD8];
-          v37 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-          v36 = [v30 setWithArray:v37];
+          optionsCollection5 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+          v36 = [v30 setWithArray:optionsCollection5];
           v31 = MEMORY[0x1E695DFD8];
-          v32 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
-          v33 = [v31 setWithArray:v32];
-          LOBYTE(v12) = [v36 isEqualToSet:v33];
+          optionsCollection6 = [(LNAppShortcutParameterPresentationMetadata *)v6 optionsCollection];
+          v33 = [v31 setWithArray:optionsCollection6];
+          LOBYTE(optionsCollection3) = [v36 isEqualToSet:v33];
 
           v25 = v36;
-          v26 = v37;
+          v26 = optionsCollection5;
           v20 = v38;
 LABEL_28:
           v34 = v26;
@@ -147,7 +147,7 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        LOBYTE(v12) = 0;
+        LOBYTE(optionsCollection3) = 0;
       }
     }
 
@@ -155,22 +155,22 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(optionsCollection3) = 1;
 LABEL_36:
 
-  return v12;
+  return optionsCollection3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
-  v8 = [v7 hash];
-  v9 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-  v10 = v8 ^ [v9 hash];
+  parameterIdentifier = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
+  v4 = [parameterIdentifier hash];
+  specificTitle = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
+  v6 = [specificTitle hash] ^ v4;
+  localizationTable = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
+  v8 = [localizationTable hash];
+  optionsCollection = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+  v10 = v8 ^ [optionsCollection hash];
 
   return v6 ^ v10;
 }
@@ -180,20 +180,20 @@ LABEL_36:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
-  v7 = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
-  v8 = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
-  v9 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-  v10 = [v3 stringWithFormat:@"<%@: %p, parameterIdentifier: %@, specificTitle: %@, localizationTable: %@, optionsCollection: %@>", v5, self, v6, v7, v8, v9];
+  parameterIdentifier = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
+  specificTitle = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
+  localizationTable = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
+  optionsCollection = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+  v10 = [v3 stringWithFormat:@"<%@: %p, parameterIdentifier: %@, specificTitle: %@, localizationTable: %@, optionsCollection: %@>", v5, self, parameterIdentifier, specificTitle, localizationTable, optionsCollection];
 
   return v10;
 }
 
-- (LNAppShortcutParameterPresentationMetadata)initWithCoder:(id)a3
+- (LNAppShortcutParameterPresentationMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"specificTitle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"specificTitle"];
   v7 = v6;
   if (v5)
   {
@@ -207,50 +207,50 @@ LABEL_36:
 
   if (v8)
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizationTable"];
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"optionsCollection"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"optionsCollection"];
 
     self = [(LNAppShortcutParameterPresentationMetadata *)self initWithParameterIdentifier:v5 specificTitle:v7 localizationTable:v9 optionsCollection:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
-  [v4 encodeObject:v5 forKey:@"parameterIdentifier"];
+  coderCopy = coder;
+  parameterIdentifier = [(LNAppShortcutParameterPresentationMetadata *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 
-  v6 = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
-  [v4 encodeObject:v6 forKey:@"specificTitle"];
+  specificTitle = [(LNAppShortcutParameterPresentationMetadata *)self specificTitle];
+  [coderCopy encodeObject:specificTitle forKey:@"specificTitle"];
 
-  v7 = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
-  [v4 encodeObject:v7 forKey:@"localizationTable"];
+  localizationTable = [(LNAppShortcutParameterPresentationMetadata *)self localizationTable];
+  [coderCopy encodeObject:localizationTable forKey:@"localizationTable"];
 
-  v8 = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
-  [v4 encodeObject:v8 forKey:@"optionsCollection"];
+  optionsCollection = [(LNAppShortcutParameterPresentationMetadata *)self optionsCollection];
+  [coderCopy encodeObject:optionsCollection forKey:@"optionsCollection"];
 }
 
-- (LNAppShortcutParameterPresentationMetadata)initWithParameterIdentifier:(id)a3 specificTitle:(id)a4 localizationTable:(id)a5 optionsCollection:(id)a6
+- (LNAppShortcutParameterPresentationMetadata)initWithParameterIdentifier:(id)identifier specificTitle:(id)title localizationTable:(id)table optionsCollection:(id)collection
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  titleCopy = title;
+  tableCopy = table;
+  collectionCopy = collection;
+  if (!identifierCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"LNAppShortcutParameterPresentationMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppShortcutParameterPresentationMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"parameterIdentifier"}];
   }
 
   v27.receiver = self;
@@ -258,19 +258,19 @@ LABEL_36:
   v15 = [(LNAppShortcutParameterPresentationMetadata *)&v27 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     parameterIdentifier = v15->_parameterIdentifier;
     v15->_parameterIdentifier = v16;
 
-    v18 = [v12 copy];
+    v18 = [titleCopy copy];
     specificTitle = v15->_specificTitle;
     v15->_specificTitle = v18;
 
-    v20 = [v13 copy];
+    v20 = [tableCopy copy];
     localizationTable = v15->_localizationTable;
     v15->_localizationTable = v20;
 
-    v22 = [v14 copy];
+    v22 = [collectionCopy copy];
     optionsCollection = v15->_optionsCollection;
     v15->_optionsCollection = v22;
 

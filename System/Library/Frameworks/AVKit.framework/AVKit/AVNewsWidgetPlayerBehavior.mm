@@ -24,7 +24,7 @@
     v7 = 1024;
     v8 = 40;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 

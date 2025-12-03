@@ -1,6 +1,6 @@
 @interface MTRTimeSynchronizationClusterDSTOffsetStruct
 - (MTRTimeSynchronizationClusterDSTOffsetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTimeSynchronizationClusterDSTOffsetStruct);
-  v5 = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self offset];
-  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setOffset:v5];
+  offset = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self offset];
+  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setOffset:offset];
 
-  v6 = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self validStarting];
-  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setValidStarting:v6];
+  validStarting = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self validStarting];
+  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setValidStarting:validStarting];
 
-  v7 = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self validUntil];
-  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setValidUntil:v7];
+  validUntil = [(MTRTimeSynchronizationClusterDSTOffsetStruct *)self validUntil];
+  [(MTRTimeSynchronizationClusterDSTOffsetStruct *)v4 setValidUntil:validUntil];
 
   return v4;
 }

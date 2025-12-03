@@ -1,28 +1,28 @@
 @interface BluetoothAddressMonitor
-- (BluetoothAddressMonitor)initWithSystemInfo:(OpaqueAPReceiverSystemInfo *)a3 queue:(id)a4;
+- (BluetoothAddressMonitor)initWithSystemInfo:(OpaqueAPReceiverSystemInfo *)info queue:(id)queue;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BluetoothAddressMonitor
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = FigCFWeakReferenceHolderCopyReferencedObject();
   if (v7)
   {
     v8 = v7;
-    v9 = [(CBPeripheralManager *)self->_cbManager nonConnectableAdvertisingAddress];
-    if (v9)
+    nonConnectableAdvertisingAddress = [(CBPeripheralManager *)self->_cbManager nonConnectableAdvertisingAddress];
+    if (nonConnectableAdvertisingAddress)
     {
       CFRetain(v8);
-      v10 = v9;
+      v10 = nonConnectableAdvertisingAddress;
       queue = self->_queue;
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __74__BluetoothAddressMonitor_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v12[3] = &unk_278C60A58;
-      v12[4] = v9;
+      v12[4] = nonConnectableAdvertisingAddress;
       v12[5] = v8;
       dispatch_async(queue, v12);
     }
@@ -98,7 +98,7 @@ void __74__BluetoothAddressMonitor_observeValueForKeyPath_ofObject_change_contex
   v10 = *(a1 + 32);
 }
 
-- (BluetoothAddressMonitor)initWithSystemInfo:(OpaqueAPReceiverSystemInfo *)a3 queue:(id)a4
+- (BluetoothAddressMonitor)initWithSystemInfo:(OpaqueAPReceiverSystemInfo *)info queue:(id)queue
 {
   v9.receiver = self;
   v9.super_class = BluetoothAddressMonitor;
@@ -107,9 +107,9 @@ void __74__BluetoothAddressMonitor_observeValueForKeyPath_ofObject_change_contex
   {
     v6 = FigCFWeakReferenceHolderCreateWithReferencedObject();
     v5->_systemInfoWeak = v6;
-    if (v6 && (v5->_queue = a4) != 0)
+    if (v6 && (v5->_queue = queue) != 0)
     {
-      dispatch_retain(a4);
+      dispatch_retain(queue);
       v7 = objc_opt_new();
       v5->_cbManager = v7;
       [(CBPeripheralManager *)v7 addObserver:v5 forKeyPath:@"advertisingAddress" options:5 context:0];

@@ -1,34 +1,34 @@
 @interface _MLCANESoftmaxParameters
-+ (id)softmaxUnitParametersWith:(id)a3 neuronParams:(id)a4 gocParams:(id)a5;
-- (_MLCANESoftmaxParameters)initWithSoftmaxParams:(id)a3 neuronParams:(id)a4 gocParams:(id)a5;
++ (id)softmaxUnitParametersWith:(id)with neuronParams:(id)params gocParams:(id)gocParams;
+- (_MLCANESoftmaxParameters)initWithSoftmaxParams:(id)params neuronParams:(id)neuronParams gocParams:(id)gocParams;
 @end
 
 @implementation _MLCANESoftmaxParameters
 
-+ (id)softmaxUnitParametersWith:(id)a3 neuronParams:(id)a4 gocParams:(id)a5
++ (id)softmaxUnitParametersWith:(id)with neuronParams:(id)params gocParams:(id)gocParams
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSoftmaxParams:v10 neuronParams:v9 gocParams:v8];
+  gocParamsCopy = gocParams;
+  paramsCopy = params;
+  withCopy = with;
+  v11 = [[self alloc] initWithSoftmaxParams:withCopy neuronParams:paramsCopy gocParams:gocParamsCopy];
 
   return v11;
 }
 
-- (_MLCANESoftmaxParameters)initWithSoftmaxParams:(id)a3 neuronParams:(id)a4 gocParams:(id)a5
+- (_MLCANESoftmaxParameters)initWithSoftmaxParams:(id)params neuronParams:(id)neuronParams gocParams:(id)gocParams
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  paramsCopy = params;
+  neuronParamsCopy = neuronParams;
+  gocParamsCopy = gocParams;
   v15.receiver = self;
   v15.super_class = _MLCANESoftmaxParameters;
   v12 = [(_MLCANESoftmaxParameters *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_softmaxParams, a3);
-    objc_storeStrong(&v13->_neuronParams, a4);
-    objc_storeStrong(&v13->_gocParams, a5);
+    objc_storeStrong(&v12->_softmaxParams, params);
+    objc_storeStrong(&v13->_neuronParams, neuronParams);
+    objc_storeStrong(&v13->_gocParams, gocParams);
   }
 
   return v13;

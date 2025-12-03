@@ -1,35 +1,35 @@
 @interface _GCDevicePhysicalInputTransaction
-+ (uint64_t)transactionWithImplementation:(uint64_t)a3 configuration:(uint64_t)a4 state:;
++ (uint64_t)transactionWithImplementation:(uint64_t)implementation configuration:(uint64_t)configuration state:;
 - (_GCDevicePhysicalInputChangedElementsEnumerator)changedElements;
 - (id)description;
 - (id)physicalInput;
 - (uint64_t)invalidateAllUpdateContexts;
-- (uint64_t)mutableUpdateContextForElementAtIndex:(uint64_t)a3 withHandler:;
+- (uint64_t)mutableUpdateContextForElementAtIndex:(uint64_t)index withHandler:;
 - (uint64_t)setLastEventHostTimestamp:(uint64_t)result;
-- (uint64_t)updateContextForElementAtIndex:(void *)a3 size:(int)a4 onlyIfChanged:;
-- (uint64_t)updateContextIsValidForElementAtIndex:(uint64_t)a1;
+- (uint64_t)updateContextForElementAtIndex:(void *)index size:(int)size onlyIfChanged:;
+- (uint64_t)updateContextIsValidForElementAtIndex:(uint64_t)index;
 - (void)dealloc;
 - (void)detach;
 @end
 
 @implementation _GCDevicePhysicalInputTransaction
 
-+ (uint64_t)transactionWithImplementation:(uint64_t)a3 configuration:(uint64_t)a4 state:
++ (uint64_t)transactionWithImplementation:(uint64_t)implementation configuration:(uint64_t)configuration state:
 {
   v7 = objc_opt_self();
   v8 = [_GCDevicePhysicalInputInitializationContext alloc];
-  v9 = [(_GCDevicePhysicalInputBase *)a2 viewProperties];
-  v10 = [(_GCDevicePhysicalInputInitializationContext *)v8 initWithViewConfiguration:a3 viewProperties:v9 viewState:a4];
-  v11 = [(_GCDevicePhysicalInputBase *)a2 elements];
-  v12 = malloc_type_calloc([v11 count], 8uLL, 0x100004000313F17uLL);
-  if ([v11 count])
+  viewProperties = [(_GCDevicePhysicalInputBase *)a2 viewProperties];
+  v10 = [(_GCDevicePhysicalInputInitializationContext *)v8 initWithViewConfiguration:implementation viewProperties:viewProperties viewState:configuration];
+  elements = [(_GCDevicePhysicalInputBase *)a2 elements];
+  v12 = malloc_type_calloc([elements count], 8uLL, 0x100004000313F17uLL);
+  if ([elements count])
   {
     v13 = 0;
     v14 = 0;
     v15 = v12 + 7;
     while (1)
     {
-      [v11 objectAtIndexedSubscript:v13];
+      [elements objectAtIndexedSubscript:v13];
       result = [objc_opt_class() updateContextSize];
       if (result >= 8)
       {
@@ -44,7 +44,7 @@
 
       ++v13;
       v15 += 8;
-      if (v13 >= [v11 count])
+      if (v13 >= [elements count])
       {
         goto LABEL_8;
       }
@@ -57,9 +57,9 @@
   {
     v14 = 0;
 LABEL_8:
-    Instance = class_createInstance(v7, v14 + 8 * [v11 count]);
-    v18 = [(_GCDevicePhysicalInputBase *)a2 facade];
-    v19 = [Instance _initWithFacadeTemplate:v18 elementsTemplates:v11 attributes:-[_GCDevicePhysicalInputBase attributes](a2) context:v10];
+    Instance = class_createInstance(v7, v14 + 8 * [elements count]);
+    facade = [(_GCDevicePhysicalInputBase *)a2 facade];
+    v19 = [Instance _initWithFacadeTemplate:facade elementsTemplates:elements attributes:-[_GCDevicePhysicalInputBase attributes](a2) context:v10];
     [(_GCDevicePhysicalInputBase *)v19 setDevice:[(_GCDevicePhysicalInputBase *)a2 device]];
     v19->_physicalInput = a2;
     v19->_lastEventHostTimestamp = [(_GCDevicePhysicalInputBase *)a2 lastEventHostTimestamp];
@@ -67,7 +67,7 @@ LABEL_8:
     v19->_changedElements = v20;
     v20->_implementation = v19;
     IndexedIvars = object_getIndexedIvars(v19);
-    memcpy(IndexedIvars, v12, 8 * [v11 count]);
+    memcpy(IndexedIvars, v12, 8 * [elements count]);
     free(v12);
 
     return v19;
@@ -128,22 +128,22 @@ LABEL_8:
   return [v5 stringWithFormat:@"<%@ %p;%@%@>", NSStringFromClass(v6), self, v3, v4];
 }
 
-- (uint64_t)updateContextForElementAtIndex:(void *)a3 size:(int)a4 onlyIfChanged:
+- (uint64_t)updateContextForElementAtIndex:(void *)index size:(int)size onlyIfChanged:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ([-[_GCDevicePhysicalInputBase elements](a1) count] <= a2)
+  if ([-[_GCDevicePhysicalInputBase elements](self) count] <= a2)
   {
-    [_GCDevicePhysicalInputTransaction updateContextForElementAtIndex:a1 size:a2 onlyIfChanged:?];
+    [_GCDevicePhysicalInputTransaction updateContextForElementAtIndex:self size:a2 onlyIfChanged:?];
   }
 
-  IndexedIvars = object_getIndexedIvars(a1);
+  IndexedIvars = object_getIndexedIvars(self);
   v9 = &IndexedIvars[8 * a2];
   v10 = v9[7];
-  if (a4)
+  if (size)
   {
     if ((v9[7] & 0x40) == 0)
     {
@@ -153,24 +153,24 @@ LABEL_8:
 
   if (v9[7] < 0)
   {
-    v11 = [-[_GCDevicePhysicalInputBase elements](a1) count];
-    if (a3)
+    v11 = [-[_GCDevicePhysicalInputBase elements](self) count];
+    if (index)
     {
-      *a3 = *(v9 + 2);
+      *index = *(v9 + 2);
     }
 
     return &IndexedIvars[8 * v11 + *v9];
   }
 
-  else if (a3)
+  else if (index)
   {
-    *a3 = 7;
+    *index = 7;
   }
 
   return v9;
 }
 
-- (uint64_t)mutableUpdateContextForElementAtIndex:(uint64_t)a3 withHandler:
+- (uint64_t)mutableUpdateContextForElementAtIndex:(uint64_t)index withHandler:
 {
   if (result)
   {
@@ -180,7 +180,7 @@ LABEL_8:
       [_GCDevicePhysicalInputTransaction mutableUpdateContextForElementAtIndex:v5 withHandler:a2];
     }
 
-    return [(_GCDevicePhysicalInputTransaction *)v5 mutableUpdateContextForElementAtIndex:a2 withHandler:a3];
+    return [(_GCDevicePhysicalInputTransaction *)v5 mutableUpdateContextForElementAtIndex:a2 withHandler:index];
   }
 
   return result;
@@ -232,11 +232,11 @@ LABEL_8:
   return result;
 }
 
-- (uint64_t)updateContextIsValidForElementAtIndex:(uint64_t)a1
+- (uint64_t)updateContextIsValidForElementAtIndex:(uint64_t)index
 {
-  if (a1)
+  if (index)
   {
-    v1 = *(a1 + 136);
+    v1 = *(index + 136);
   }
 
   else

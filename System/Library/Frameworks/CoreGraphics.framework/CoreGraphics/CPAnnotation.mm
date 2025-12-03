@@ -1,5 +1,5 @@
 @interface CPAnnotation
-- (CPAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)a3;
+- (CPAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)annotation;
 - (void)dealloc;
 @end
 
@@ -18,16 +18,16 @@
   [(CPGraphicObject *)&v4 dealloc];
 }
 
-- (CPAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)a3
+- (CPAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)annotation
 {
-  if (!a3)
+  if (!annotation)
   {
     return 0;
   }
 
   v10 = 0u;
   v11 = 0u;
-  if (!CGPDFDictionaryGetRect(*(a3 + 2), "Rect", &v10))
+  if (!CGPDFDictionaryGetRect(*(annotation + 2), "Rect", &v10))
   {
     return 0;
   }
@@ -37,8 +37,8 @@
   v5 = [(CPGraphicObject *)&v9 init];
   if (v5)
   {
-    CFRetain(a3);
-    *(v5 + 21) = a3;
+    CFRetain(annotation);
+    *(v5 + 21) = annotation;
     v6 = v11;
     *(v5 + 104) = v10;
     *(v5 + 120) = v6;

@@ -1,46 +1,46 @@
 @interface WFWidgetConfigurationServiceCardContainerViewController
-- (WFWidgetConfigurationServiceCardContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (WFWidgetConfigurationServiceCardContainerViewController)initWithRequest:(id)request contentViewController:(id)controller;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation WFWidgetConfigurationServiceCardContainerViewController
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v23 = a3;
-  v4 = [(WFWidgetConfigurationServiceCardContainerViewController *)self parametersConfigurationViewController];
-  if (v4 == v23)
+  containerCopy = container;
+  parametersConfigurationViewController = [(WFWidgetConfigurationServiceCardContainerViewController *)self parametersConfigurationViewController];
+  if (parametersConfigurationViewController == containerCopy)
   {
   }
 
   else
   {
-    v5 = [(WFWidgetConfigurationServiceCardContainerViewController *)self contentViewController];
+    contentViewController = [(WFWidgetConfigurationServiceCardContainerViewController *)self contentViewController];
 
-    if (v5 != v23)
+    if (contentViewController != containerCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v6 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
-  v7 = [v6 headerView];
-  v8 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
-  [v8 bounds];
+  cardView = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
+  headerView = [cardView headerView];
+  cardView2 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
+  [cardView2 bounds];
   v10 = v9;
   v12 = v11;
   LODWORD(v9) = 1148846080;
   LODWORD(v11) = 1112014848;
-  [v7 systemLayoutSizeFittingSize:v10 withHorizontalFittingPriority:v12 verticalFittingPriority:{v9, v11}];
+  [headerView systemLayoutSizeFittingSize:v10 withHorizontalFittingPriority:v12 verticalFittingPriority:{v9, v11}];
   v14 = v13;
 
-  v15 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
-  [v15 bounds];
+  cardView3 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
+  [cardView3 bounds];
   v17 = v16;
-  v18 = [(WFWidgetConfigurationServiceCardContainerViewController *)self contentViewController];
-  [v18 preferredContentSize];
+  contentViewController2 = [(WFWidgetConfigurationServiceCardContainerViewController *)self contentViewController];
+  [contentViewController2 preferredContentSize];
   v20 = ceil(v14 + v19);
 
   [(WFWidgetConfigurationServiceCardContainerViewController *)self preferredContentSize];
@@ -52,18 +52,18 @@
 LABEL_8:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v13.receiver = self;
   v13.super_class = WFWidgetConfigurationServiceCardContainerViewController;
-  v4 = a3;
-  [(WFWidgetConfigurationServiceCardContainerViewController *)&v13 traitCollectionDidChange:v4];
-  v5 = [(WFWidgetConfigurationServiceCardContainerViewController *)self traitCollection:v13.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  changeCopy = change;
+  [(WFWidgetConfigurationServiceCardContainerViewController *)&v13 traitCollectionDidChange:changeCopy];
+  cardView = [(WFWidgetConfigurationServiceCardContainerViewController *)self traitCollection:v13.receiver];
+  preferredContentSizeCategory = [cardView preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = v6;
-  v9 = v7;
+  v8 = preferredContentSizeCategory;
+  v9 = preferredContentSizeCategory2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -83,8 +83,8 @@ LABEL_8:
   {
 LABEL_7:
     v12 = sub_100013D0C();
-    v5 = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
-    [v5 setWidgetDescriptionTallScriptCompensatedSpacing:v12];
+    cardView = [(WFWidgetConfigurationServiceCardContainerViewController *)self cardView];
+    [cardView setWidgetDescriptionTallScriptCompensatedSpacing:v12];
 LABEL_9:
   }
 }
@@ -94,12 +94,12 @@ LABEL_9:
   v11.receiver = self;
   v11.super_class = WFWidgetConfigurationServiceCardContainerViewController;
   [(WFWidgetConfigurationServiceCardContainerViewController *)&v11 viewDidLoad];
-  v3 = [(WFWidgetConfigurationServiceCardContainerViewController *)self request];
-  v4 = [v3 widgetPrimaryColor];
-  v5 = v4;
-  if (v4)
+  request = [(WFWidgetConfigurationServiceCardContainerViewController *)self request];
+  widgetPrimaryColor = [request widgetPrimaryColor];
+  v5 = widgetPrimaryColor;
+  if (widgetPrimaryColor)
   {
-    v6 = v4;
+    v6 = widgetPrimaryColor;
   }
 
   else
@@ -109,24 +109,24 @@ LABEL_9:
 
   v7 = v6;
 
-  v8 = [(WFWidgetConfigurationServiceCardContainerViewController *)self parametersConfigurationViewController];
-  v9 = [(WFWidgetConfigurationServiceCardContainerViewController *)self strokeProvider];
-  v10 = [(WFWidgetConfigurationServiceCardContainerViewController *)self fillProvider];
-  [v8 applyStylingWithStrokeProvider:v9 fillProvider:v10 cardBackgroundColor:v7];
+  parametersConfigurationViewController = [(WFWidgetConfigurationServiceCardContainerViewController *)self parametersConfigurationViewController];
+  strokeProvider = [(WFWidgetConfigurationServiceCardContainerViewController *)self strokeProvider];
+  fillProvider = [(WFWidgetConfigurationServiceCardContainerViewController *)self fillProvider];
+  [parametersConfigurationViewController applyStylingWithStrokeProvider:strokeProvider fillProvider:fillProvider cardBackgroundColor:v7];
 }
 
-- (WFWidgetConfigurationServiceCardContainerViewController)initWithRequest:(id)a3 contentViewController:(id)a4
+- (WFWidgetConfigurationServiceCardContainerViewController)initWithRequest:(id)request contentViewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = WFWidgetConfigurationServiceCardContainerViewController;
-  v7 = [(WFWidgetConfigurationServiceCardContainerViewController *)&v13 initWithRequest:a3 contentViewController:v6];
+  v7 = [(WFWidgetConfigurationServiceCardContainerViewController *)&v13 initWithRequest:request contentViewController:controllerCopy];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
+      v8 = controllerCopy;
       parametersConfigurationViewController = v7->_parametersConfigurationViewController;
       v7->_parametersConfigurationViewController = v8;
     }
@@ -141,9 +141,9 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v10 = [v6 parametersConfigurationViewController];
+      parametersConfigurationViewController = [controllerCopy parametersConfigurationViewController];
       parametersConfigurationViewController = v7->_parametersConfigurationViewController;
-      v7->_parametersConfigurationViewController = v10;
+      v7->_parametersConfigurationViewController = parametersConfigurationViewController;
     }
 
     goto LABEL_7;

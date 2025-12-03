@@ -1,41 +1,41 @@
 @interface WFLSMMap
-+ (id)mapFromFilePath:(id)a3;
-+ (id)mapFromURL:(id)a3;
-+ (id)mapWithMap:(__LSMMap *)a3;
-- (WFLSMMap)initWithMap:(__LSMMap *)a3;
-- (WFLSMMap)initWithMapFromFilePath:(id)a3;
-- (WFLSMMap)initWithMapFromURL:(id)a3;
-- (__LSMText)_createLSMTextFromString:(id)a3;
-- (id)evaluate:(id)a3;
-- (id)wordDump:(id)a3;
-- (void)_setMap:(__LSMMap *)a3;
++ (id)mapFromFilePath:(id)path;
++ (id)mapFromURL:(id)l;
++ (id)mapWithMap:(__LSMMap *)map;
+- (WFLSMMap)initWithMap:(__LSMMap *)map;
+- (WFLSMMap)initWithMapFromFilePath:(id)path;
+- (WFLSMMap)initWithMapFromURL:(id)l;
+- (__LSMText)_createLSMTextFromString:(id)string;
+- (id)evaluate:(id)evaluate;
+- (id)wordDump:(id)dump;
+- (void)_setMap:(__LSMMap *)map;
 - (void)dealloc;
 @end
 
 @implementation WFLSMMap
 
-+ (id)mapWithMap:(__LSMMap *)a3
++ (id)mapWithMap:(__LSMMap *)map
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithMap:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithMap:map];
 
   return v3;
 }
 
-+ (id)mapFromURL:(id)a3
++ (id)mapFromURL:(id)l
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithMapFromURL:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithMapFromURL:l];
 
   return v3;
 }
 
-+ (id)mapFromFilePath:(id)a3
++ (id)mapFromFilePath:(id)path
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithMapFromFilePath:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithMapFromFilePath:path];
 
   return v3;
 }
 
-- (WFLSMMap)initWithMap:(__LSMMap *)a3
+- (WFLSMMap)initWithMap:(__LSMMap *)map
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
@@ -44,8 +44,8 @@
   v5 = v4;
   if (v4)
   {
-    [(WFLSMMap *)v4 _setMap:a3];
-    Properties = LSMMapGetProperties(a3);
+    [(WFLSMMap *)v4 _setMap:map];
+    Properties = LSMMapGetProperties(map);
     if (Properties && (v8 = [(__CFDictionary *)Properties objectForKey:@"Explicit Threshold"]) != 0)
     {
       v9 = v8;
@@ -76,12 +76,12 @@
   return v5;
 }
 
-- (WFLSMMap)initWithMapFromURL:(id)a3
+- (WFLSMMap)initWithMapFromURL:(id)l
 {
   v11 = 0;
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")] && v11 != 1)
   {
-    v8 = LSMMapCreateFromURL(*MEMORY[0x277CBECE8], a3, 0);
+    v8 = LSMMapCreateFromURL(*MEMORY[0x277CBECE8], l, 0);
     if (v8)
     {
       v9 = v8;
@@ -109,26 +109,26 @@
   return 0;
 }
 
-- (WFLSMMap)initWithMapFromFilePath:(id)a3
+- (WFLSMMap)initWithMapFromFilePath:(id)path
 {
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
 
   return [(WFLSMMap *)self initWithMapFromURL:v4];
 }
 
-- (void)_setMap:(__LSMMap *)a3
+- (void)_setMap:(__LSMMap *)map
 {
-  CFRetain(a3);
+  CFRetain(map);
   map = self->map;
   if (map)
   {
     CFRelease(map);
   }
 
-  self->map = a3;
+  self->map = map;
 }
 
-- (__LSMText)_createLSMTextFromString:(id)a3
+- (__LSMText)_createLSMTextFromString:(id)string
 {
   v4 = LSMTextCreate(*MEMORY[0x277CBECE8], self->map);
   if (!v4)
@@ -143,9 +143,9 @@
   }
 
   v5 = v4;
-  if (a3)
+  if (string)
   {
-    if (LSMTextAddWords(v4, a3, 0, 0))
+    if (LSMTextAddWords(v4, string, 0, 0))
     {
       v6 = __WFDefaultLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -169,9 +169,9 @@
   return v5;
 }
 
-- (id)evaluate:(id)a3
+- (id)evaluate:(id)evaluate
 {
-  v4 = [(WFLSMMap *)self _createLSMTextFromString:a3];
+  v4 = [(WFLSMMap *)self _createLSMTextFromString:evaluate];
   v5 = LSMResultCreate(*MEMORY[0x277CBECE8], self->map, v4, [(WFLSMMap *)self numberOfCategories], 0);
   CFRelease(v4);
   if (!v5)
@@ -192,9 +192,9 @@
   return v7;
 }
 
-- (id)wordDump:(id)a3
+- (id)wordDump:(id)dump
 {
-  v4 = [(WFLSMMap *)self _createLSMTextFromString:a3];
+  v4 = [(WFLSMMap *)self _createLSMTextFromString:dump];
   v5 = CFWriteStreamCreateWithAllocatedBuffers(*MEMORY[0x277CBECE8], *MEMORY[0x277CBECE8]);
   CFWriteStreamOpen(v5);
   LSMMapWriteToStream(self->map, v4, v5, 0);

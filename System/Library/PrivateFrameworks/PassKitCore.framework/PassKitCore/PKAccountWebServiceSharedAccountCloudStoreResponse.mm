@@ -1,29 +1,29 @@
 @interface PKAccountWebServiceSharedAccountCloudStoreResponse
-- (PKAccountWebServiceSharedAccountCloudStoreResponse)initWithData:(id)a3;
+- (PKAccountWebServiceSharedAccountCloudStoreResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceSharedAccountCloudStoreResponse
 
-- (PKAccountWebServiceSharedAccountCloudStoreResponse)initWithData:(id)a3
+- (PKAccountWebServiceSharedAccountCloudStoreResponse)initWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PKAccountWebServiceSharedAccountCloudStoreResponse;
-  v3 = [(PKWebServiceResponse *)&v18 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v18 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKArrayForKey:@"sharedAccountCloudStore"];
+    v6 = [jSONObject PKArrayForKey:@"sharedAccountCloudStore"];
     v7 = [PKSharedAccountCloudStore alloc];
-    v8 = [MEMORY[0x1E695DF00] date];
-    v9 = [(PKSharedAccountCloudStore *)v7 initWithArray:v6 lastUpdated:v8];
+    date = [MEMORY[0x1E695DF00] date];
+    v9 = [(PKSharedAccountCloudStore *)v7 initWithArray:v6 lastUpdated:date];
     sharedAccountCloudStore = v4->_sharedAccountCloudStore;
     v4->_sharedAccountCloudStore = v9;
 

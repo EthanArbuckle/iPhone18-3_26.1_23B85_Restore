@@ -3,18 +3,18 @@
 - (NSOperationQueue)presentedItemOperationQueue;
 - (NSURL)presentedItemURL;
 - (_TtC24FreeformSharingExtension28CRLSEExtensionContextManager)init;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation CRLSEExtensionContextManager
 
 + (NSString)defaultImageFileName
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v3 = sub_10007E404();
   v4 = sub_10007E404();
-  v5 = [v2 localizedStringForKey:v3 value:v4 table:0];
+  v5 = [mainBundle localizedStringForKey:v3 value:v4 table:0];
 
   sub_10007E444();
   v6 = sub_10007E404();
@@ -45,12 +45,12 @@
   return v10;
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = sub_10001FF68(&qword_1000B2980);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (l)
   {
     sub_10007DD24();
     v8 = sub_10007DD94();
@@ -65,24 +65,24 @@
 
   v10 = OBJC_IVAR____TtC24FreeformSharingExtension28CRLSEExtensionContextManager_presentedItemURL;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_100023A10(v7, self + v10, &qword_1000B2980);
   swift_endAccess();
 }
 
 - (NSOperationQueue)presentedItemOperationQueue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000595C4();
 
   return v3;
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC24FreeformSharingExtension28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue);
-  *(self + OBJC_IVAR____TtC24FreeformSharingExtension28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC24FreeformSharingExtension28CRLSEExtensionContextManager____lazy_storage___presentedItemOperationQueue) = queue;
+  queueCopy = queue;
 }
 
 - (_TtC24FreeformSharingExtension28CRLSEExtensionContextManager)init

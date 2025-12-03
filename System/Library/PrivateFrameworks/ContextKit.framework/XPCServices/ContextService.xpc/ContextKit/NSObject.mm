@@ -3,7 +3,7 @@
 - (id)getClass;
 - (void)notify;
 - (void)notifyAll;
-- (void)waitWithLong:(int64_t)a3 withInt:(int)a4;
+- (void)waitWithLong:(int64_t)long withInt:(int)int;
 @end
 
 @implementation NSObject
@@ -94,24 +94,24 @@
   }
 }
 
-- (void)waitWithLong:(int64_t)a3 withInt:(int)a4
+- (void)waitWithLong:(int64_t)long withInt:(int)int
 {
-  if (a4 < 0)
+  if (int < 0)
   {
     objc_exception_throw(objc_alloc_init(JavaLangIllegalArgumentException));
   }
 
-  if (a4)
+  if (int)
   {
-    v5 = a3 + 1;
+    longCopy = long + 1;
   }
 
   else
   {
-    v5 = a3;
+    longCopy = long;
   }
 
-  sub_10026C668(self, v5);
+  sub_10026C668(self, longCopy);
 }
 
 @end

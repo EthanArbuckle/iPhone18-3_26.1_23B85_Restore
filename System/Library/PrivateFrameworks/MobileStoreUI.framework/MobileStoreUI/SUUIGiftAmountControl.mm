@@ -1,41 +1,41 @@
 @interface SUUIGiftAmountControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
 - (NSString)selectedAmountString;
-- (SUUIGiftAmountControl)initWithGiftConfiguration:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (SUUIGiftAmountControl)initWithGiftConfiguration:(id)configuration;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)selectedAmount;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_layoutForPad;
 - (void)_layoutForPhone;
 - (void)_reloadSelectedButton;
-- (void)_textFieldDidBeginEditing:(id)a3;
-- (void)_textFieldDidEndEditing:(id)a3;
-- (void)_updateButtonsWithTouch:(id)a3;
+- (void)_textFieldDidBeginEditing:(id)editing;
+- (void)_textFieldDidEndEditing:(id)editing;
+- (void)_updateButtonsWithTouch:(id)touch;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUIGiftAmountControl
 
-- (SUUIGiftAmountControl)initWithGiftConfiguration:(id)a3
+- (SUUIGiftAmountControl)initWithGiftConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v50.receiver = self;
   v50.super_class = SUUIGiftAmountControl;
   v6 = [(SUUIGiftAmountControl *)&v50 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_giftConfiguration, a3);
-    v8 = [(SUUIGiftConfiguration *)v7->_giftConfiguration fixedGiftAmountLabels];
-    v9 = [(SUUIGiftConfiguration *)v7->_giftConfiguration fixedGiftAmountValues];
-    v10 = [v8 count];
-    v11 = [MEMORY[0x277D75418] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    objc_storeStrong(&v6->_giftConfiguration, configuration);
+    fixedGiftAmountLabels = [(SUUIGiftConfiguration *)v7->_giftConfiguration fixedGiftAmountLabels];
+    fixedGiftAmountValues = [(SUUIGiftConfiguration *)v7->_giftConfiguration fixedGiftAmountValues];
+    v10 = [fixedGiftAmountLabels count];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     amountButtons = v7->_amountButtons;
@@ -45,7 +45,7 @@
     {
       v15 = 0;
       v16 = 3;
-      if (v12)
+      if (userInterfaceIdiom)
       {
         v16 = 4;
       }
@@ -63,10 +63,10 @@
       do
       {
         v18 = objc_alloc_init(SUUIGiftAmountButton);
-        v19 = [v9 objectAtIndex:v15];
+        v19 = [fixedGiftAmountValues objectAtIndex:v15];
         -[SUUIGiftAmountButton setTag:](v18, "setTag:", [v19 integerValue]);
 
-        v20 = [v8 objectAtIndex:v15];
+        v20 = [fixedGiftAmountLabels objectAtIndex:v15];
         [(SUUIGiftAmountButton *)v18 setTitle:v20 forState:0];
 
         [(SUUIGiftAmountButton *)v18 sizeToFit];
@@ -80,10 +80,10 @@
     }
 
     v21 = objc_alloc(MEMORY[0x277D75D18]);
-    v22 = [MEMORY[0x277D75418] currentDevice];
-    v23 = [v22 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v23 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v24 = 110.0;
     }
@@ -98,18 +98,18 @@
     v7->_customAmountBackgroundView = v25;
 
     v27 = v7->_customAmountBackgroundView;
-    v28 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(UIView *)v27 setBackgroundColor:v28];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(UIView *)v27 setBackgroundColor:systemBackgroundColor];
 
-    v29 = [(UIView *)v7->_customAmountBackgroundView layer];
-    v30 = [MEMORY[0x277D75348] separatorColor];
-    [v29 setBorderColor:{objc_msgSend(v30, "CGColor")}];
+    layer = [(UIView *)v7->_customAmountBackgroundView layer];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [layer setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
 
-    v31 = [MEMORY[0x277D759A0] mainScreen];
-    [v31 scale];
-    [v29 setBorderWidth:1.0 / v32];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [layer setBorderWidth:1.0 / v32];
 
-    [v29 setCornerRadius:7.0];
+    [layer setCornerRadius:7.0];
     [(SUUIGiftAmountControl *)v7 addSubview:v7->_customAmountBackgroundView];
     v33 = objc_alloc_init(MEMORY[0x277D75BB8]);
     customAmountField = v7->_customAmountField;
@@ -124,14 +124,14 @@
     [(UITextField *)v7->_customAmountField setDelegate:v7];
     [(UITextField *)v7->_customAmountField setKeyboardType:4];
     v37 = v7->_customAmountField;
-    v38 = [MEMORY[0x277D75348] labelColor];
-    [(UITextField *)v37 setTextColor:v38];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UITextField *)v37 setTextColor:labelColor];
 
-    v39 = [(SUUIGiftConfiguration *)v7->_giftConfiguration clientContext];
+    clientContext = [(SUUIGiftConfiguration *)v7->_giftConfiguration clientContext];
     v40 = objc_alloc(MEMORY[0x277CCAB48]);
-    if (v39)
+    if (clientContext)
     {
-      [v39 localizedStringForKey:@"GIFTING_AMOUNT_OTHER" inTable:@"Gifting"];
+      [clientContext localizedStringForKey:@"GIFTING_AMOUNT_OTHER" inTable:@"Gifting"];
     }
 
     else
@@ -143,20 +143,20 @@
 
     v43 = [v42 length];
     v44 = *MEMORY[0x277D740A8];
-    v45 = [(UITextField *)v7->_customAmountField font];
-    [v42 addAttribute:v44 value:v45 range:{0, v43}];
+    font = [(UITextField *)v7->_customAmountField font];
+    [v42 addAttribute:v44 value:font range:{0, v43}];
 
     v46 = *MEMORY[0x277D740C0];
-    v47 = [MEMORY[0x277D75348] placeholderTextColor];
-    [v42 addAttribute:v46 value:v47 range:{0, v43}];
+    placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
+    [v42 addAttribute:v46 value:placeholderTextColor range:{0, v43}];
 
     [(UITextField *)v7->_customAmountField setAttributedPlaceholder:v42];
     [(UITextField *)v7->_customAmountField sizeToFit];
     [(SUUIGiftAmountControl *)v7 addSubview:v7->_customAmountField];
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v48 addObserver:v7 selector:sel__textFieldDidBeginEditing_ name:*MEMORY[0x277D770A8] object:v7->_customAmountField];
-    [v48 addObserver:v7 selector:sel__textFieldDidChange_ name:*MEMORY[0x277D770B0] object:v7->_customAmountField];
-    [v48 addObserver:v7 selector:sel__textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v7->_customAmountField];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__textFieldDidBeginEditing_ name:*MEMORY[0x277D770A8] object:v7->_customAmountField];
+    [defaultCenter addObserver:v7 selector:sel__textFieldDidChange_ name:*MEMORY[0x277D770B0] object:v7->_customAmountField];
+    [defaultCenter addObserver:v7 selector:sel__textFieldDidEndEditing_ name:*MEMORY[0x277D770B8] object:v7->_customAmountField];
   }
 
   return v7;
@@ -165,10 +165,10 @@
 - (void)dealloc
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D770A8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D770B0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D770B8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770A8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770B0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D770B8] object:0];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -212,10 +212,10 @@
     return self->_selectedAmount;
   }
 
-  v3 = [(UITextField *)self->_customAmountField text];
-  v4 = [v3 integerValue];
+  text = [(UITextField *)self->_customAmountField text];
+  integerValue = [text integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)selectedAmountString
@@ -223,30 +223,30 @@
   if (self->_selectedAmount)
   {
     v2 = [(SUUIGiftAmountControl *)self viewWithTag:?];
-    v3 = [v2 currentTitle];
+    currentTitle = [v2 currentTitle];
   }
 
   else
   {
-    v3 = [(UITextField *)self->_customAmountField text];
+    currentTitle = [(UITextField *)self->_customAmountField text];
   }
 
-  return v3;
+  return currentTitle;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(SUUIGiftAmountControl *)self firstResponder];
-  [v6 resignFirstResponder];
+  touchCopy = touch;
+  firstResponder = [(SUUIGiftAmountControl *)self firstResponder];
+  [firstResponder resignFirstResponder];
 
-  [(SUUIGiftAmountControl *)self _updateButtonsWithTouch:v5];
+  [(SUUIGiftAmountControl *)self _updateButtonsWithTouch:touchCopy];
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(SUUIGiftAmountControl *)self _updateButtonsWithTouch:a3, a4];
+  [(SUUIGiftAmountControl *)self _updateButtonsWithTouch:touch, event];
   self->_selectedAmount = self->_trackingAmount;
   [(SUUIGiftAmountControl *)self _reloadSelectedButton];
   if (self->_selectedAmount)
@@ -254,41 +254,41 @@
     [(UITextField *)self->_customAmountField _setPrefix:0];
     [(UITextField *)self->_customAmountField _setSuffix:0 withColor:0];
     [(UITextField *)self->_customAmountField setText:0];
-    v5 = [(UIView *)self->_customAmountBackgroundView layer];
-    v6 = [MEMORY[0x277D75348] separatorColor];
-    [v5 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [(UIView *)self->_customAmountBackgroundView layer];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [layer setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
   }
 
   [(SUUIGiftAmountControl *)self sendActionsForControlEvents:4096];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = test.y;
+  x = test.x;
+  selfCopy = self;
   v10.receiver = self;
   v10.super_class = SUUIGiftAmountControl;
-  v7 = [(SUUIGiftAmountControl *)&v10 hitTest:a4 withEvent:?];
+  v7 = [(SUUIGiftAmountControl *)&v10 hitTest:event withEvent:?];
   if (v7)
   {
-    if ([(NSMutableArray *)v6->_amountButtons indexOfObjectIdenticalTo:v7]!= 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)selfCopy->_amountButtons indexOfObjectIdenticalTo:v7]!= 0x7FFFFFFFFFFFFFFFLL)
     {
 LABEL_6:
-      v8 = v6;
+      v8 = selfCopy;
 
       v7 = v8;
       goto LABEL_7;
     }
 
-    if (v7 == v6)
+    if (v7 == selfCopy)
     {
-      [(UIView *)v6->_customAmountBackgroundView frame];
+      [(UIView *)selfCopy->_customAmountBackgroundView frame];
       v12.x = x;
       v12.y = y;
       if (CGRectContainsPoint(v13, v12))
       {
-        v6 = v6->_customAmountField;
+        selfCopy = selfCopy->_customAmountField;
         goto LABEL_6;
       }
     }
@@ -301,10 +301,10 @@ LABEL_7:
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
 
     [(SUUIGiftAmountControl *)self _layoutForPad];
@@ -324,7 +324,7 @@ LABEL_7:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIGiftAmountControl *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(SUUIGiftAmountControl *)self effectiveUserInterfaceLayoutDirection];
   [(UIView *)self->_customAmountBackgroundView frame];
   v13 = v12;
   v15 = v14;
@@ -337,7 +337,7 @@ LABEL_7:
   v18 = floorf(v17);
   customAmountBackgroundView = self->_customAmountBackgroundView;
   v33 = v4;
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v20 = v4;
     v21 = v8;
@@ -358,7 +358,7 @@ LABEL_7:
   v27 = (v15 - v26) * 0.5;
   v28 = v18 + floorf(v27);
   customAmountField = self->_customAmountField;
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v16 + 5.0 withFlippedOriginXRelativeTo:v28, v13 + -10.0];
   }
@@ -385,7 +385,7 @@ LABEL_7:
     v34[9] = v30;
     *&v34[10] = v16 + -8.0;
     *&v34[11] = floorf(v32);
-    v35 = v11 == 0;
+    v35 = effectiveUserInterfaceLayoutDirection == 0;
     [(NSMutableArray *)amountButtons enumerateObjectsUsingBlock:v34];
     _Block_object_dispose(v36, 8);
   }
@@ -438,7 +438,7 @@ void __38__SUUIGiftAmountControl__layoutForPad__block_invoke(uint64_t a1, void *
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SUUIGiftAmountControl *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(SUUIGiftAmountControl *)self effectiveUserInterfaceLayoutDirection];
   v12 = [(NSMutableArray *)self->_amountButtons count];
   if (v12 >= 1)
   {
@@ -456,7 +456,7 @@ void __38__SUUIGiftAmountControl__layoutForPad__block_invoke(uint64_t a1, void *
     v34[5] = v12;
     *&v34[6] = v8 + -15.0;
     *&v34[7] = floorf(v14);
-    v35 = v11 == 0;
+    v35 = effectiveUserInterfaceLayoutDirection == 0;
     *&v34[8] = v4;
     *&v34[9] = v6;
     *&v34[10] = v8;
@@ -474,7 +474,7 @@ void __38__SUUIGiftAmountControl__layoutForPad__block_invoke(uint64_t a1, void *
   v16 = (v10 + -44.0) * 0.5;
   v17 = floorf(v16);
   customAmountBackgroundView = self->_customAmountBackgroundView;
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v15 withFlippedOriginXRelativeTo:v17, v8 + -30.0, 44.0, v4, v6, v8, v10];
   }
@@ -492,7 +492,7 @@ void __38__SUUIGiftAmountControl__layoutForPad__block_invoke(uint64_t a1, void *
   [(UIView *)self->_customAmountBackgroundView size];
   v29 = v28 + -10.0;
   customAmountField = self->_customAmountField;
-  if (v11)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v22 withFlippedOriginXRelativeTo:v27, v29, v20, v4, v6, v8, v10];
     v22 = v31;
@@ -540,10 +540,10 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
   *(*(*(a1 + 32) + 8) + 24) = CGRectGetMaxX(v14) + 8.0;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -564,7 +564,7 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:v4];
+        [*(*(&v11 + 1) + 8 * v9++) setBackgroundColor:colorCopy];
       }
 
       while (v7 != v9);
@@ -576,17 +576,17 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
 
   v10.receiver = self;
   v10.super_class = SUUIGiftAmountControl;
-  [(SUUIGiftAmountControl *)&v10 setBackgroundColor:v4];
+  [(SUUIGiftAmountControl *)&v10 setBackgroundColor:colorCopy];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 text];
-  v12 = [v11 stringByReplacingCharactersInRange:location withString:{length, v10}];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  v12 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   if ([v12 length])
   {
@@ -597,61 +597,61 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
     v15 = v14 != 0;
     if (v14)
     {
-      v16 = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbolPosition];
-      if (v16 == 1)
+      currencySymbolPosition = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbolPosition];
+      if (currencySymbolPosition == 1)
       {
-        [v9 _setPrefix:0];
-        v18 = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
-        v19 = [v9 textColor];
-        [v9 _setSuffix:v18 withColor:v19];
+        [fieldCopy _setPrefix:0];
+        currencySymbol = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
+        textColor = [fieldCopy textColor];
+        [fieldCopy _setSuffix:currencySymbol withColor:textColor];
       }
 
-      else if (!v16)
+      else if (!currencySymbolPosition)
       {
-        v17 = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
-        [v9 _setPrefix:v17];
+        currencySymbol2 = [(SUUIGiftConfiguration *)self->_giftConfiguration currencySymbol];
+        [fieldCopy _setPrefix:currencySymbol2];
 
-        [v9 _setSuffix:0 withColor:0];
+        [fieldCopy _setSuffix:0 withColor:0];
       }
     }
   }
 
   else
   {
-    [v9 _setPrefix:0];
+    [fieldCopy _setPrefix:0];
     v15 = 1;
   }
 
   return v15;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   self->_selectedAmount = 0;
   [(SUUIGiftAmountControl *)self _reloadSelectedButton];
   return 1;
 }
 
-- (void)_textFieldDidBeginEditing:(id)a3
+- (void)_textFieldDidBeginEditing:(id)editing
 {
-  v4 = [(SUUIGiftAmountControl *)self tintColor];
-  v7 = [v4 colorWithAlphaComponent:0.3];
+  tintColor = [(SUUIGiftAmountControl *)self tintColor];
+  v7 = [tintColor colorWithAlphaComponent:0.3];
 
-  v5 = [(UIView *)self->_customAmountBackgroundView layer];
+  layer = [(UIView *)self->_customAmountBackgroundView layer];
   v6 = v7;
-  [v5 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v7, "CGColor")}];
 }
 
-- (void)_textFieldDidEndEditing:(id)a3
+- (void)_textFieldDidEndEditing:(id)editing
 {
-  v4 = [(UITextField *)self->_customAmountField text];
-  v5 = [v4 length];
+  text = [(UITextField *)self->_customAmountField text];
+  v5 = [text length];
 
   if (!v5)
   {
-    v7 = [(UIView *)self->_customAmountBackgroundView layer];
-    v6 = [MEMORY[0x277D75348] separatorColor];
-    [v7 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [(UIView *)self->_customAmountBackgroundView layer];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [layer setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
   }
 }
 
@@ -660,17 +660,17 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
   v7.receiver = self;
   v7.super_class = SUUIGiftAmountControl;
   [(SUUIGiftAmountControl *)&v7 _dynamicUserInterfaceTraitDidChange];
-  v3 = [MEMORY[0x277D75348] separatorColor];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
   if ([(UITextField *)self->_customAmountField isFirstResponder])
   {
-    v4 = [(SUUIGiftAmountControl *)self tintColor];
-    v5 = [v4 colorWithAlphaComponent:0.3];
+    tintColor = [(SUUIGiftAmountControl *)self tintColor];
+    v5 = [tintColor colorWithAlphaComponent:0.3];
 
-    v3 = v5;
+    separatorColor = v5;
   }
 
-  v6 = [(UIView *)self->_customAmountBackgroundView layer];
-  [v6 setBorderColor:{objc_msgSend(v3, "CGColor")}];
+  layer = [(UIView *)self->_customAmountBackgroundView layer];
+  [layer setBorderColor:{objc_msgSend(separatorColor, "CGColor")}];
 }
 
 - (void)_reloadSelectedButton
@@ -708,10 +708,10 @@ void __40__SUUIGiftAmountControl__layoutForPhone__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_updateButtonsWithTouch:(id)a3
+- (void)_updateButtonsWithTouch:(id)touch
 {
   v20 = *MEMORY[0x277D85DE8];
-  [a3 locationInView:self];
+  [touch locationInView:self];
   v5 = v4;
   v7 = v6;
   self->_trackingAmount = 0;

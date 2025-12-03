@@ -1,22 +1,22 @@
 @interface SGRealtimeEventResponse
-- (SGRealtimeEventResponse)initWithEntity:(id)a3 state:(int)a4 duplicateEventKey:(id)a5;
+- (SGRealtimeEventResponse)initWithEntity:(id)entity state:(int)state duplicateEventKey:(id)key;
 @end
 
 @implementation SGRealtimeEventResponse
 
-- (SGRealtimeEventResponse)initWithEntity:(id)a3 state:(int)a4 duplicateEventKey:(id)a5
+- (SGRealtimeEventResponse)initWithEntity:(id)entity state:(int)state duplicateEventKey:(id)key
 {
-  v9 = a3;
-  v10 = a5;
+  entityCopy = entity;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = SGRealtimeEventResponse;
   v11 = [(SGRealtimeEventResponse *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_entity, a3);
-    v12->_state = a4;
-    objc_storeStrong(&v12->_duplicateEventKey, a5);
+    objc_storeStrong(&v11->_entity, entity);
+    v12->_state = state;
+    objc_storeStrong(&v12->_duplicateEventKey, key);
   }
 
   return v12;

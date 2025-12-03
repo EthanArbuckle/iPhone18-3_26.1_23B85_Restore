@@ -28,13 +28,13 @@ uint64_t __40__CSVoiceProfileSELFLogger_sharedLogger__block_invoke()
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v3 = _voiceProfileiCloudSyncIsolatedStreamID;
-    _voiceProfileiCloudSyncIsolatedStreamID = v2;
+    _voiceProfileiCloudSyncIsolatedStreamID = uUID;
 
-    MEMORY[0x1EEE66BB8](v2, v3);
+    MEMORY[0x1EEE66BB8](uUID, v3);
   }
 }
 

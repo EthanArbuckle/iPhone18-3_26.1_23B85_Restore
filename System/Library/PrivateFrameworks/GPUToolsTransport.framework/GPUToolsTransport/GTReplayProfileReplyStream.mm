@@ -1,27 +1,27 @@
 @interface GTReplayProfileReplyStream
-- (GTReplayProfileReplyStream)initWithCallback:(id)a3 bulkDataProxy:(id)a4 andToken:(id)a5;
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4;
+- (GTReplayProfileReplyStream)initWithCallback:(id)callback bulkDataProxy:(id)proxy andToken:(id)token;
+- (void)dispatchMessage:(id)message replyConnection:(id)connection;
 @end
 
 @implementation GTReplayProfileReplyStream
 
-- (GTReplayProfileReplyStream)initWithCallback:(id)a3 bulkDataProxy:(id)a4 andToken:(id)a5
+- (GTReplayProfileReplyStream)initWithCallback:(id)callback bulkDataProxy:(id)proxy andToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  callbackCopy = callback;
+  proxyCopy = proxy;
+  tokenCopy = token;
   v18.receiver = self;
   v18.super_class = GTReplayProfileReplyStream;
   v11 = [(GTReplayProfileReplyStream *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_token, a5);
-    v13 = MEMORY[0x253034A70](v8);
+    objc_storeStrong(&v11->_token, token);
+    v13 = MEMORY[0x253034A70](callbackCopy);
     callback = v12->_callback;
     v12->_callback = v13;
 
-    objc_storeStrong(&v12->_bulkDataProxy, a4);
+    objc_storeStrong(&v12->_bulkDataProxy, proxy);
     v15 = dispatch_queue_create("com.apple.gputools.profile", 0);
     serialQueue = v12->_serialQueue;
     v12->_serialQueue = v15;
@@ -30,20 +30,20 @@
   return v12;
 }
 
-- (void)dispatchMessage:(id)a3 replyConnection:(id)a4
+- (void)dispatchMessage:(id)message replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__GTReplayProfileReplyStream_dispatchMessage_replyConnection___block_invoke;
   block[3] = &unk_2796611E8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  selfCopy = self;
+  v14 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = messageCopy;
   dispatch_async(serialQueue, block);
 }
 

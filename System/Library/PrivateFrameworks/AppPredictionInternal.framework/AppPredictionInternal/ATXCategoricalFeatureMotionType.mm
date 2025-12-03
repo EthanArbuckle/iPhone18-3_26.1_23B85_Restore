@@ -1,15 +1,15 @@
 @interface ATXCategoricalFeatureMotionType
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4;
-- (id)featureNameForATXMotionType:(int64_t)a3;
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate;
+- (id)featureNameForATXMotionType:(int64_t)type;
 @end
 
 @implementation ATXCategoricalFeatureMotionType
 
-- (id)featureNameForATXMotionType:(int64_t)a3
+- (id)featureNameForATXMotionType:(int64_t)type
 {
-  if (a3 < 5)
+  if (type < 5)
   {
-    return off_2785A2098[a3];
+    return off_2785A2098[type];
   }
 
   v4 = __atxlog_handle_relevance_model();
@@ -21,15 +21,15 @@
   return @"<Unexpected Category Value>";
 }
 
-- (id)categoricalFeatureValueForContext:(id)a3 candidate:(id)a4
+- (id)categoricalFeatureValueForContext:(id)context candidate:(id)candidate
 {
-  v5 = a3;
-  v6 = [v5 locationMotionContext];
+  contextCopy = context;
+  locationMotionContext = [contextCopy locationMotionContext];
 
-  if (v6)
+  if (locationMotionContext)
   {
-    v7 = [v5 locationMotionContext];
-    v8 = -[ATXCategoricalFeatureMotionType featureNameForATXMotionType:](self, "featureNameForATXMotionType:", [v7 motionType]);
+    locationMotionContext2 = [contextCopy locationMotionContext];
+    v8 = -[ATXCategoricalFeatureMotionType featureNameForATXMotionType:](self, "featureNameForATXMotionType:", [locationMotionContext2 motionType]);
   }
 
   else

@@ -1,10 +1,10 @@
 @interface _UISearchControllerAnimator
-- (double)transitionDuration:(id)a3;
+- (double)transitionDuration:(id)duration;
 @end
 
 @implementation _UISearchControllerAnimator
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v3 = _UISolariumEnabled();
   result = 0.3;

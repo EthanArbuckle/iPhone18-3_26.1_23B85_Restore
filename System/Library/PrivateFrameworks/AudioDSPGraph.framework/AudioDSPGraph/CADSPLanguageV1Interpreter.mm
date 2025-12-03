@@ -1,7 +1,7 @@
 @interface CADSPLanguageV1Interpreter
-- (BOOL)interpretContentsOfFile:(id)a3 updating:(id)a4 error:(id *)a5;
-- (BOOL)interpretString:(id)a3 updating:(id)a4 error:(id *)a5;
-- (BOOL)interpretUTF8String:(const char *)a3 length:(unint64_t)a4 updating:(id)a5 error:(id *)a6;
+- (BOOL)interpretContentsOfFile:(id)file updating:(id)updating error:(id *)error;
+- (BOOL)interpretString:(id)string updating:(id)updating error:(id *)error;
+- (BOOL)interpretUTF8String:(const char *)string length:(unint64_t)length updating:(id)updating error:(id *)error;
 - (id).cxx_construct;
 @end
 
@@ -16,13 +16,13 @@
   return self;
 }
 
-- (BOOL)interpretContentsOfFile:(id)a3 updating:(id)a4 error:(id *)a5
+- (BOOL)interpretContentsOfFile:(id)file updating:(id)updating error:(id *)error
 {
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:a3 encoding:4 error:a5];
+  updatingCopy = updating;
+  v9 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:file encoding:4 error:error];
   if (v9)
   {
-    v10 = [(CADSPLanguageV1Interpreter *)self interpretString:v9 updating:v8 error:a5];
+    v10 = [(CADSPLanguageV1Interpreter *)self interpretString:v9 updating:updatingCopy error:error];
   }
 
   else
@@ -33,24 +33,24 @@
   return v10;
 }
 
-- (BOOL)interpretString:(id)a3 updating:(id)a4 error:(id *)a5
+- (BOOL)interpretString:(id)string updating:(id)updating error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  LOBYTE(a5) = -[CADSPLanguageV1Interpreter interpretUTF8String:length:updating:error:](self, "interpretUTF8String:length:updating:error:", [v8 UTF8String], objc_msgSend(v8, "length"), v9, a5);
+  stringCopy = string;
+  updatingCopy = updating;
+  LOBYTE(error) = -[CADSPLanguageV1Interpreter interpretUTF8String:length:updating:error:](self, "interpretUTF8String:length:updating:error:", [stringCopy UTF8String], objc_msgSend(stringCopy, "length"), updatingCopy, error);
 
-  return a5;
+  return error;
 }
 
-- (BOOL)interpretUTF8String:(const char *)a3 length:(unint64_t)a4 updating:(id)a5 error:(id *)a6
+- (BOOL)interpretUTF8String:(const char *)string length:(unint64_t)length updating:(id)updating error:(id *)error
 {
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = v6;
+  updatingCopy = updating;
+  v7 = updatingCopy;
   v66 = &unk_1F48CBB80;
-  if (v6)
+  if (updatingCopy)
   {
-    CFRetain(v6);
+    CFRetain(updatingCopy);
   }
 
   *&v75 = 0;
@@ -97,9 +97,9 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor macro definition key of unexpected type '%@'", NSClassFromString(v12)];
+          *error = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor macro definition key of unexpected type '%@'", NSClassFromString(v12)];
         }
 
         goto LABEL_53;
@@ -109,9 +109,9 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor macro definition value of unexpected type '%@'", NSClassFromString(v13)];
+          *error = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor macro definition value of unexpected type '%@'", NSClassFromString(v13)];
         }
 
 LABEL_53:
@@ -152,9 +152,9 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a6)
+        if (error)
         {
-          *a6 = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor include path of unexpected type '%@'", NSClassFromString(v18)];
+          *error = [CADSPError errorWithCode:1668049253 descriptionFormat:@"found preprocessor include path of unexpected type '%@'", NSClassFromString(v18)];
         }
 
         goto LABEL_57;
@@ -195,7 +195,7 @@ LABEL_21:
     v23 = *(*(&v75 + 1) + 8 * v21);
     v24 = [(NSDictionary *)self->_preprocessorMacroDefinitions objectForKeyedSubscript:v23];
     v25 = v24;
-    v26 = [v24 UTF8String];
+    uTF8String = [v24 UTF8String];
     v27 = v23;
     std::string::basic_string[abi:ne200100]<0>(v68, [v23 UTF8String]);
     v28 = std::__string_hash<char>::operator()[abi:ne200100](v68);
@@ -272,7 +272,7 @@ LABEL_40:
     }
 
     v19 = v53;
-    std::string::__assign_external((v35 + 5), v26);
+    std::string::__assign_external((v35 + 5), uTF8String);
     if (SBYTE7(v69) < 0)
     {
       operator delete(v68[0]);
@@ -318,7 +318,7 @@ LABEL_59:
           objc_enumerationMutation(v40);
         }
 
-        v44 = [*(v68[1] + k) UTF8String];
+        uTF8String2 = [*(v68[1] + k) UTF8String];
         v45 = v73;
         if (v73 >= value)
         {
@@ -353,7 +353,7 @@ LABEL_59:
           v82.__begin_ = (8 * ((v73 - v72) >> 3));
           v82.__end_ = v82.__begin_;
           v82.__end_cap_.__value_ = 0;
-          std::string::basic_string[abi:ne200100]<0>(v82.__begin_, v44);
+          std::string::basic_string[abi:ne200100]<0>(v82.__begin_, uTF8String2);
           v46 = v82.__end_ + 1;
           v49 = (v82.__begin_ - (v73 - v72));
           memcpy(v49, v72, v73 - v72);
@@ -371,7 +371,7 @@ LABEL_59:
 
         else
         {
-          std::string::basic_string[abi:ne200100]<0>(v73, v44);
+          std::string::basic_string[abi:ne200100]<0>(v73, uTF8String2);
           v46 = v45 + 1;
         }
 
@@ -384,7 +384,7 @@ LABEL_59:
     while (v41);
   }
 
-  (*(self->_interpreter._vptr$VirtuallyDestructible + 2))(&self->_interpreter, &v66, a3, __p, &v72);
+  (*(self->_interpreter._vptr$VirtuallyDestructible + 2))(&self->_interpreter, &v66, string, __p, &v72);
   v82.__first_ = &v72;
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v82);
   std::__hash_table<std::__hash_value_type<std::string,std::string>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::string>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::string>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::string>>>::~__hash_table(__p);

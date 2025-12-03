@@ -8,7 +8,7 @@
 - (NSString)textStyle;
 - (NSString)textTransform;
 - (TVAppStyle)styleMetrics;
-- (TVViewElementStyle)initWithStyle:(id)a3;
+- (TVViewElementStyle)initWithStyle:(id)style;
 - (UIEdgeInsets)focusMargin;
 - (UIEdgeInsets)margin;
 - (UIEdgeInsets)padding;
@@ -21,28 +21,28 @@
 - (double)minWidth;
 - (double)textMinimumScaleFactor;
 - (double)width;
-- (id)cssValueForStyleProperty:(id)a3;
-- (id)valueForStyleProperty:(id)a3;
+- (id)cssValueForStyleProperty:(id)property;
+- (id)valueForStyleProperty:(id)property;
 - (int64_t)alignment;
 - (int64_t)contentAlignment;
 - (int64_t)position;
 - (int64_t)textAlignment;
 - (unint64_t)maxTextLines;
-- (void)setStyleMetrics:(id)a3;
+- (void)setStyleMetrics:(id)metrics;
 @end
 
 @implementation TVViewElementStyle
 
-- (TVViewElementStyle)initWithStyle:(id)a3
+- (TVViewElementStyle)initWithStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v8.receiver = self;
   v8.super_class = TVViewElementStyle;
   v5 = [(TVViewElementStyle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_style, v4);
+    objc_storeWeak(&v5->_style, styleCopy);
   }
 
   return v6;
@@ -50,33 +50,33 @@
 
 - (TVAppStyle)styleMetrics
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_styleMetrics];
+  style = [(TVViewElementStyle *)self style];
+  tv_styleMetrics = [style tv_styleMetrics];
 
-  return v3;
+  return tv_styleMetrics;
 }
 
-- (void)setStyleMetrics:(id)a3
+- (void)setStyleMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = [(TVViewElementStyle *)self style];
-  [v5 tv_setStyleMetrics:v4];
+  metricsCopy = metrics;
+  style = [(TVViewElementStyle *)self style];
+  [style tv_setStyleMetrics:metricsCopy];
 }
 
-- (id)cssValueForStyleProperty:(id)a3
+- (id)cssValueForStyleProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(TVViewElementStyle *)self style];
-  v6 = [v5 tv_cssValueForStyle:v4];
+  propertyCopy = property;
+  style = [(TVViewElementStyle *)self style];
+  v6 = [style tv_cssValueForStyle:propertyCopy];
 
   return v6;
 }
 
-- (id)valueForStyleProperty:(id)a3
+- (id)valueForStyleProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(TVViewElementStyle *)self style];
-  v6 = [v5 tv_valueForStyle:v4];
+  propertyCopy = property;
+  style = [(TVViewElementStyle *)self style];
+  v6 = [style tv_valueForStyle:propertyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -91,13 +91,13 @@
       cachedColorObjects = self->_cachedColorObjects;
     }
 
-    v10 = [(NSMutableDictionary *)cachedColorObjects objectForKeyedSubscript:v4];
+    v10 = [(NSMutableDictionary *)cachedColorObjects objectForKeyedSubscript:propertyCopy];
     v11 = v10;
     if (!v10 || ([(TVColor *)v10 ikColor], v12 = objc_claimAutoreleasedReturnValue(), v12, v12 != v6))
     {
       v13 = [[TVColor alloc] initWithColor:v6];
 
-      [(NSMutableDictionary *)self->_cachedColorObjects setObject:v13 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_cachedColorObjects setObject:v13 forKeyedSubscript:propertyCopy];
       v11 = v13;
     }
 
@@ -109,16 +109,16 @@
 
 - (NSString)textTransform
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_textTransform];
+  style = [(TVViewElementStyle *)self style];
+  tv_textTransform = [style tv_textTransform];
 
-  return v3;
+  return tv_textTransform;
 }
 
 - (double)fontSize
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_fontSize];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_fontSize];
   v4 = v3;
 
   return v4;
@@ -126,16 +126,16 @@
 
 - (NSString)fontWeight
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_fontWeight];
+  style = [(TVViewElementStyle *)self style];
+  tv_fontWeight = [style tv_fontWeight];
 
-  return v3;
+  return tv_fontWeight;
 }
 
 - (double)height
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_height];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_height];
   v4 = v3;
 
   return v4;
@@ -143,8 +143,8 @@
 
 - (UIEdgeInsets)margin
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_margin];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_margin];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -163,8 +163,8 @@
 
 - (UIEdgeInsets)focusMargin
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_focusMargin];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_focusMargin];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -183,8 +183,8 @@
 
 - (double)maxHeight
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_maxHeight];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_maxHeight];
   v4 = v3;
 
   return v4;
@@ -192,8 +192,8 @@
 
 - (double)maxWidth
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_maxWidth];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_maxWidth];
   v4 = v3;
 
   return v4;
@@ -201,8 +201,8 @@
 
 - (double)minHeight
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_minHeight];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_minHeight];
   v4 = v3;
 
   return v4;
@@ -210,8 +210,8 @@
 
 - (double)minWidth
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_minWidth];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_minWidth];
   v4 = v3;
 
   return v4;
@@ -219,8 +219,8 @@
 
 - (UIEdgeInsets)padding
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_padding];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_padding];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -239,16 +239,16 @@
 
 - (int64_t)textAlignment
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_textAlignment];
+  style = [(TVViewElementStyle *)self style];
+  tv_textAlignment = [style tv_textAlignment];
 
-  return v3;
+  return tv_textAlignment;
 }
 
 - (double)width
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_width];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_width];
   v4 = v3;
 
   return v4;
@@ -256,40 +256,40 @@
 
 - (NSShadow)shadow
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_shadow];
+  style = [(TVViewElementStyle *)self style];
+  tv_shadow = [style tv_shadow];
 
-  return v3;
+  return tv_shadow;
 }
 
 - (int64_t)alignment
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_alignment];
+  style = [(TVViewElementStyle *)self style];
+  tv_alignment = [style tv_alignment];
 
-  return v3;
+  return tv_alignment;
 }
 
 - (int64_t)contentAlignment
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_contentAlignment];
+  style = [(TVViewElementStyle *)self style];
+  tv_contentAlignment = [style tv_contentAlignment];
 
-  return v3;
+  return tv_contentAlignment;
 }
 
 - (NSString)imageTreatmentName
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_imageTreatment];
+  style = [(TVViewElementStyle *)self style];
+  tv_imageTreatment = [style tv_imageTreatment];
 
-  return v3;
+  return tv_imageTreatment;
 }
 
 - (double)interitemSpacing
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_interitemSpacing];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_interitemSpacing];
   v4 = v3;
 
   return v4;
@@ -297,16 +297,16 @@
 
 - (NSString)textHighlightStyle
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_textHighlightStyle];
+  style = [(TVViewElementStyle *)self style];
+  tv_textHighlightStyle = [style tv_textHighlightStyle];
 
-  return v3;
+  return tv_textHighlightStyle;
 }
 
 - (double)textMinimumScaleFactor
 {
-  v2 = [(TVViewElementStyle *)self style];
-  [v2 tv_minimumScaleFactor];
+  style = [(TVViewElementStyle *)self style];
+  [style tv_minimumScaleFactor];
   v4 = v3;
 
   return v4;
@@ -314,34 +314,34 @@
 
 - (int64_t)position
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_position];
+  style = [(TVViewElementStyle *)self style];
+  tv_position = [style tv_position];
 
-  return v3;
+  return tv_position;
 }
 
 - (NSString)ratingStyle
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_ratingStyle];
+  style = [(TVViewElementStyle *)self style];
+  tv_ratingStyle = [style tv_ratingStyle];
 
-  return v3;
+  return tv_ratingStyle;
 }
 
 - (unint64_t)maxTextLines
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_maxTextLines];
+  style = [(TVViewElementStyle *)self style];
+  tv_maxTextLines = [style tv_maxTextLines];
 
-  return v3;
+  return tv_maxTextLines;
 }
 
 - (NSString)textStyle
 {
-  v2 = [(TVViewElementStyle *)self style];
-  v3 = [v2 tv_textStyle];
+  style = [(TVViewElementStyle *)self style];
+  tv_textStyle = [style tv_textStyle];
 
-  return v3;
+  return tv_textStyle;
 }
 
 - (IKViewElementStyle)style

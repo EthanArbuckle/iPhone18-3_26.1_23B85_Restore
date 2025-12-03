@@ -1,24 +1,24 @@
 @interface FTVTScaler
-- (BOOL)scaleSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 sourceROI:(CGRect)a5 destinationROI:(CGRect)a6 mean:;
-- (FTVTScaler)initWithCommandQueue:(id)a3;
+- (BOOL)scaleSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer sourceROI:(CGRect)i destinationROI:(CGRect)oI mean:;
+- (FTVTScaler)initWithCommandQueue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation FTVTScaler
 
-- (FTVTScaler)initWithCommandQueue:(id)a3
+- (FTVTScaler)initWithCommandQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = FTVTScaler;
   v6 = [(FTVTScaler *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_commandQueue, a3);
-    v8 = [v5 device];
+    objc_storeStrong(&v6->_commandQueue, queue);
+    device = [queueCopy device];
     device = v7->_device;
-    v7->_device = v8;
+    v7->_device = device;
 
     v10 = [objc_alloc(MEMORY[0x277CD7578]) initWithDevice:v7->_device];
     meanFilter = v7->_meanFilter;
@@ -79,27 +79,27 @@ LABEL_11:
   [(FTVTScaler *)&v3 dealloc];
 }
 
-- (BOOL)scaleSourceBuffer:(__CVBuffer *)a3 toDestinationBuffer:(__CVBuffer *)a4 sourceROI:(CGRect)a5 destinationROI:(CGRect)a6 mean:
+- (BOOL)scaleSourceBuffer:(__CVBuffer *)buffer toDestinationBuffer:(__CVBuffer *)destinationBuffer sourceROI:(CGRect)i destinationROI:(CGRect)oI mean:
 {
   v7 = v6;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a5.size.height;
-  v12 = a5.size.width;
-  v13 = a5.origin.y;
-  v14 = a5.origin.x;
-  if (CGRectIsEmpty(a5))
+  height = oI.size.height;
+  width = oI.size.width;
+  y = oI.origin.y;
+  x = oI.origin.x;
+  v11 = i.size.height;
+  v12 = i.size.width;
+  v13 = i.origin.y;
+  v14 = i.origin.x;
+  if (CGRectIsEmpty(i))
   {
-    v12 = CVPixelBufferGetWidth(a3);
-    v11 = CVPixelBufferGetHeight(a3);
+    v12 = CVPixelBufferGetWidth(buffer);
+    v11 = CVPixelBufferGetHeight(buffer);
     v14 = 0.0;
     v13 = 0.0;
   }
 
-  v18 = CVPixelBufferGetWidth(a3);
-  v48.size.height = CVPixelBufferGetHeight(a3);
+  v18 = CVPixelBufferGetWidth(buffer);
+  v48.size.height = CVPixelBufferGetHeight(buffer);
   v48.origin.x = 0.0;
   v48.origin.y = 0.0;
   v43.origin.x = v14;
@@ -148,14 +148,14 @@ LABEL_11:
     v45.size.height = height;
     if (CGRectIsEmpty(v45))
     {
-      width = CVPixelBufferGetWidth(a4);
-      height = CVPixelBufferGetHeight(a4);
+      width = CVPixelBufferGetWidth(destinationBuffer);
+      height = CVPixelBufferGetHeight(destinationBuffer);
       x = 0.0;
       v24 = 0.0;
     }
 
-    v26 = CVPixelBufferGetWidth(a4);
-    v49.size.height = CVPixelBufferGetHeight(a4);
+    v26 = CVPixelBufferGetWidth(destinationBuffer);
+    v49.size.height = CVPixelBufferGetHeight(destinationBuffer);
     v49.origin.x = 0.0;
     v49.origin.y = 0.0;
     v46.origin.x = x;
@@ -195,7 +195,7 @@ LABEL_11:
 
     else
     {
-      v30 = VTPixelTransferSessionTransferImage(self->_transferSession, a3, a4);
+      v30 = VTPixelTransferSessionTransferImage(self->_transferSession, buffer, destinationBuffer);
       if (v30)
       {
         v25 = ft::GetOsLog(v30);
@@ -212,19 +212,19 @@ LABEL_11:
           return 1;
         }
 
-        PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+        PixelFormatType = CVPixelBufferGetPixelFormatType(destinationBuffer);
         if (PixelFormatType == 1111970369)
         {
           v34 = MEMORY[0x277CD7058];
-          v35 = CVPixelBufferGetWidth(a4);
-          v25 = [v34 texture2DDescriptorWithPixelFormat:80 width:v35 height:CVPixelBufferGetHeight(a4) mipmapped:0];
+          v35 = CVPixelBufferGetWidth(destinationBuffer);
+          v25 = [v34 texture2DDescriptorWithPixelFormat:80 width:v35 height:CVPixelBufferGetHeight(destinationBuffer) mipmapped:0];
           [v25 setUsage:1];
-          v36 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v25 iosurface:CVPixelBufferGetIOSurface(a4) plane:0];
-          v37 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-          [v37 setLabel:@"FTVTScaler"];
-          [(MPSImageStatisticsMean *)self->_meanFilter encodeToCommandBuffer:v37 sourceTexture:v36 destinationTexture:self->_meanTexture];
-          [v37 commit];
-          [v37 waitUntilCompleted];
+          v36 = [(MTLDeviceSPI *)self->_device newTextureWithDescriptor:v25 iosurface:CVPixelBufferGetIOSurface(destinationBuffer) plane:0];
+          commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+          [commandBuffer setLabel:@"FTVTScaler"];
+          [(MPSImageStatisticsMean *)self->_meanFilter encodeToCommandBuffer:commandBuffer sourceTexture:v36 destinationTexture:self->_meanTexture];
+          [commandBuffer commit];
+          [commandBuffer waitUntilCompleted];
           meanTexture = self->_meanTexture;
           memset(v40, 0, sizeof(v40));
           v41 = vdupq_n_s64(1uLL);

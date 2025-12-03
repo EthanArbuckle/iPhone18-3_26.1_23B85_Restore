@@ -1,13 +1,13 @@
 @interface VOSOutputEventDispatcher
 + (VOSOutputEventDispatcher)sharedInstance;
-- (BOOL)shouldPlayHapticForEvent:(id)a3;
-- (BOOL)shouldPlaySoundForEvent:(id)a3;
+- (BOOL)shouldPlayHapticForEvent:(id)event;
+- (BOOL)shouldPlaySoundForEvent:(id)event;
 - (id)_activeHapticPack;
 - (id)_activeSoundPack;
 - (id)_init;
-- (void)addEventHandler:(id)a3;
-- (void)removeEventHandler:(id)a3;
-- (void)sendEvent:(id)a3;
+- (void)addEventHandler:(id)handler;
+- (void)removeEventHandler:(id)handler;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation VOSOutputEventDispatcher
@@ -43,9 +43,9 @@ uint64_t __42__VOSOutputEventDispatcher_sharedInstance__block_invoke()
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     eventHandlers = v2->_eventHandlers;
-    v2->_eventHandlers = v6;
+    v2->_eventHandlers = weakObjectsHashTable;
   }
 
   return v2;
@@ -81,100 +81,100 @@ uint64_t __42__VOSOutputEventDispatcher_sharedInstance__block_invoke()
   return cachedActiveHapticPack;
 }
 
-- (void)addEventHandler:(id)a3
+- (void)addEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__VOSOutputEventDispatcher_addEventHandler___block_invoke;
   v7[3] = &unk_2784F3478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeEventHandler:(id)a3
+- (void)removeEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__VOSOutputEventDispatcher_removeEventHandler___block_invoke;
   v7[3] = &unk_2784F3478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)shouldPlaySoundForEvent:(id)a3
+- (BOOL)shouldPlaySoundForEvent:(id)event
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CE7E20] sharedInstance];
-  if ([v4 voiceOverSoundEffectsEnabled])
+  eventCopy = event;
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  if ([mEMORY[0x277CE7E20] voiceOverSoundEffectsEnabled])
   {
-    v5 = [v3 rawValue];
-    v6 = [v4 voiceOverSoundEnabledForEvent:v5];
+    rawValue = [eventCopy rawValue];
+    v6 = [mEMORY[0x277CE7E20] voiceOverSoundEnabledForEvent:rawValue];
 
     if (v6)
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)shouldPlayHapticForEvent:(id)a3
+- (BOOL)shouldPlayHapticForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (_AXSVibrationDisabled())
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CE7E20] sharedInstance];
-    if ([v5 voiceOverHapticsEnabled])
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+    if ([mEMORY[0x277CE7E20] voiceOverHapticsEnabled])
     {
-      v6 = [v3 rawValue];
-      v7 = [v5 voiceOverHapticEnabledForEvent:v6];
-      v4 = [v7 BOOLValue];
+      rawValue = [eventCopy rawValue];
+      v7 = [mEMORY[0x277CE7E20] voiceOverHapticEnabledForEvent:rawValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__VOSOutputEventDispatcher_sendEvent___block_invoke;
   v7[3] = &unk_2784F3478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(queue, v7);
 }
 

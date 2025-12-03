@@ -1,17 +1,17 @@
 @interface HFScheduleValidator
-+ (BOOL)containsInvalidRules:(id)a3;
-+ (BOOL)containsUnsupportedRules:(id)a3;
-+ (BOOL)isValid:(id)a3;
++ (BOOL)containsInvalidRules:(id)rules;
++ (BOOL)containsUnsupportedRules:(id)rules;
++ (BOOL)isValid:(id)valid;
 @end
 
 @implementation HFScheduleValidator
 
-+ (BOOL)isValid:(id)a3
++ (BOOL)isValid:(id)valid
 {
-  v4 = a3;
-  if (v4 && ([a1 containsUnsupportedRules:v4] & 1) == 0)
+  validCopy = valid;
+  if (validCopy && ([self containsUnsupportedRules:validCopy] & 1) == 0)
   {
-    v5 = [a1 containsInvalidRules:v4] ^ 1;
+    v5 = [self containsInvalidRules:validCopy] ^ 1;
   }
 
   else
@@ -22,10 +22,10 @@
   return v5;
 }
 
-+ (BOOL)containsInvalidRules:(id)a3
++ (BOOL)containsInvalidRules:(id)rules
 {
-  v3 = [a3 rules];
-  v4 = [v3 na_any:&__block_literal_global_128];
+  rules = [rules rules];
+  v4 = [rules na_any:&__block_literal_global_128];
 
   return v4;
 }
@@ -47,15 +47,15 @@ BOOL __44__HFScheduleValidator_containsInvalidRules___block_invoke(uint64_t a1, 
   return v4;
 }
 
-+ (BOOL)containsUnsupportedRules:(id)a3
++ (BOOL)containsUnsupportedRules:(id)rules
 {
-  v3 = a3;
-  v4 = [v3 rules];
-  v5 = [v4 count];
-  if (v5 >= [v3 minNumberOfRules] && (v6 = objc_msgSend(v4, "count"), v6 <= objc_msgSend(v3, "maxNumberOfRules")) && ((v7 = objc_msgSend(v4, "na_any:", &__block_literal_global_2), (objc_msgSend(v3, "supportsWeekDayRules") & 1) != 0) || !v7))
+  rulesCopy = rules;
+  rules = [rulesCopy rules];
+  v5 = [rules count];
+  if (v5 >= [rulesCopy minNumberOfRules] && (v6 = objc_msgSend(rules, "count"), v6 <= objc_msgSend(rulesCopy, "maxNumberOfRules")) && ((v7 = objc_msgSend(rules, "na_any:", &__block_literal_global_2), (objc_msgSend(rulesCopy, "supportsWeekDayRules") & 1) != 0) || !v7))
   {
-    v10 = [v4 na_any:&__block_literal_global_4_9];
-    v8 = ([v3 supportsYearDayRules] ^ 1) & v10;
+    v10 = [rules na_any:&__block_literal_global_4_9];
+    v8 = ([rulesCopy supportsYearDayRules] ^ 1) & v10;
   }
 
   else

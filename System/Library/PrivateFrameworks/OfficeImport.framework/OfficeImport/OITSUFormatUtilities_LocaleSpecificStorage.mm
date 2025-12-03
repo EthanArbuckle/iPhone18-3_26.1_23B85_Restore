@@ -1,20 +1,20 @@
 @interface OITSUFormatUtilities_LocaleSpecificStorage
-+ (id)localeSpecificStorageForLocale:(id)a3;
-- (OITSUFormatUtilities_LocaleSpecificStorage)initWithLocale:(id)a3;
++ (id)localeSpecificStorageForLocale:(id)locale;
+- (OITSUFormatUtilities_LocaleSpecificStorage)initWithLocale:(id)locale;
 @end
 
 @implementation OITSUFormatUtilities_LocaleSpecificStorage
 
-- (OITSUFormatUtilities_LocaleSpecificStorage)initWithLocale:(id)a3
+- (OITSUFormatUtilities_LocaleSpecificStorage)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v59.receiver = self;
   v59.super_class = OITSUFormatUtilities_LocaleSpecificStorage;
   v5 = [(OITSUFormatUtilities_LocaleSpecificStorage *)&v59 init];
   if (v5)
   {
-    v6 = [v4 locale];
-    v7 = TSUHarmonizedCFNumberFormatterCreate(v6, 2);
+    locale = [localeCopy locale];
+    v7 = TSUHarmonizedCFNumberFormatterCreate(locale, 2);
 
     v8 = [(__CFString *)CFNumberFormatterGetFormat(v7) copy];
     formatCurrencyString = v5->_formatCurrencyString;
@@ -36,8 +36,8 @@
     formatCurrencyStringWithParens = v5->_formatCurrencyStringWithParens;
     v5->_formatCurrencyStringWithParens = v17;
 
-    v19 = [v4 locale];
-    v20 = TSUHarmonizedCFNumberFormatterCreate(v19, 3);
+    locale2 = [localeCopy locale];
+    v20 = TSUHarmonizedCFNumberFormatterCreate(locale2, 3);
 
     v21 = [(__CFString *)CFNumberFormatterGetFormat(v20) copy];
     formatPercentageString = v5->_formatPercentageString;
@@ -59,8 +59,8 @@
     formatPercentageStringWithParens = v5->_formatPercentageStringWithParens;
     v5->_formatPercentageStringWithParens = v30;
 
-    v32 = [v4 locale];
-    v33 = TSUHarmonizedCFNumberFormatterCreate(v32, 0);
+    locale3 = [localeCopy locale];
+    v33 = TSUHarmonizedCFNumberFormatterCreate(locale3, 0);
 
     CFNumberFormatterSetFormat(v33, @"#.##E+00");
     v34 = [(__CFString *)CFNumberFormatterGetFormat(v33) copy];
@@ -83,8 +83,8 @@
     formatScientificStringWithParens = v5->_formatScientificStringWithParens;
     v5->_formatScientificStringWithParens = v43;
 
-    v45 = [v4 locale];
-    v46 = TSUHarmonizedCFNumberFormatterCreate(v45, 1);
+    locale4 = [localeCopy locale];
+    v46 = TSUHarmonizedCFNumberFormatterCreate(locale4, 1);
 
     v47 = [(__CFString *)CFNumberFormatterGetFormat(v46) copy];
     formatDecimalString = v5->_formatDecimalString;
@@ -110,10 +110,10 @@
   return v5;
 }
 
-+ (id)localeSpecificStorageForLocale:(id)a3
++ (id)localeSpecificStorageForLocale:(id)locale
 {
-  v4 = a3;
-  if (!v4)
+  localeCopy = locale;
+  if (!localeCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OITSUFormatUtilities_LocaleSpecificStorage localeSpecificStorageForLocale:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUFormatUtilities.m"];
@@ -122,19 +122,19 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v7 = [v4 localeSpecificStorageForKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
+  v7 = [localeCopy localeSpecificStorageForKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
   if (!v7)
   {
-    v8 = a1;
-    objc_sync_enter(v8);
-    v7 = [v4 localeSpecificStorageForKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = [localeCopy localeSpecificStorageForKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
     if (!v7)
     {
-      v7 = [[OITSUFormatUtilities_LocaleSpecificStorage alloc] initWithLocale:v4];
-      [v4 setLocaleSpecificStorage:v7 forKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
+      v7 = [[OITSUFormatUtilities_LocaleSpecificStorage alloc] initWithLocale:localeCopy];
+      [localeCopy setLocaleSpecificStorage:v7 forKey:@"TSUFormatUtilities_LocaleSpecificStorage"];
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   return v7;

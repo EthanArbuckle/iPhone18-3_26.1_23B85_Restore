@@ -1,13 +1,13 @@
 @interface CRLShapeConnectionLineKnobTracker
 - (BOOL)snapEnabled;
-- (_TtC8Freeform33CRLShapeConnectionLineKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (_TtC8Freeform33CRLShapeConnectionLineKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (void)beginMovingKnob;
-- (void)crlaxAccessibilityRequestsConnectionTo:(CGPoint)a3;
-- (void)crlaxAccessibilityRequestsDuplicateItemInsertFromKnobAt:(CGPoint)a3;
+- (void)crlaxAccessibilityRequestsConnectionTo:(CGPoint)to;
+- (void)crlaxAccessibilityRequestsDuplicateItemInsertFromKnobAt:(CGPoint)at;
 - (void)endMovingKnob;
-- (void)insertDuplicationPreviewInfosWithSender:(id)a3;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
-- (void)setSnapEnabled:(BOOL)a3;
+- (void)insertDuplicationPreviewInfosWithSender:(id)sender;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
+- (void)setSnapEnabled:(BOOL)enabled;
 @end
 
 @implementation CRLShapeConnectionLineKnobTracker
@@ -25,26 +25,26 @@
   }
 }
 
-- (void)setSnapEnabled:(BOOL)a3
+- (void)setSnapEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLShapeConnectionLineKnobTracker_connectionLineKnobTracker);
-  v5 = self;
-  [v4 setSnapEnabled:v3];
-  *(&v5->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLShapeConnectionLineKnobTracker__snapEnabled) = v3;
+  selfCopy = self;
+  [v4 setSnapEnabled:enabledCopy];
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8Freeform33CRLShapeConnectionLineKnobTracker__snapEnabled) = enabledCopy;
 }
 
 - (void)beginMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A5E5CC();
 }
 
-- (void)insertDuplicationPreviewInfosWithSender:(id)a3
+- (void)insertDuplicationPreviewInfosWithSender:(id)sender
 {
-  if (a3)
+  if (sender)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -53,7 +53,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100A61504();
@@ -63,41 +63,41 @@
 
 - (void)endMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A657D8();
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = position.y;
+  x = position.x;
+  selfCopy = self;
   sub_100A66384(x, y);
 }
 
-- (void)crlaxAccessibilityRequestsDuplicateItemInsertFromKnobAt:(CGPoint)a3
+- (void)crlaxAccessibilityRequestsDuplicateItemInsertFromKnobAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
   sub_100A679E8(x, y);
 }
 
-- (void)crlaxAccessibilityRequestsConnectionTo:(CGPoint)a3
+- (void)crlaxAccessibilityRequestsConnectionTo:(CGPoint)to
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  [(CRLShapeConnectionLineKnobTracker *)v5 beginMovingKnob];
-  [(CRLShapeConnectionLineKnobTracker *)v5 moveKnobToCanvasPosition:x, y];
-  [(CRLShapeConnectionLineKnobTracker *)v5 endMovingKnob];
+  y = to.y;
+  x = to.x;
+  selfCopy = self;
+  [(CRLShapeConnectionLineKnobTracker *)selfCopy beginMovingKnob];
+  [(CRLShapeConnectionLineKnobTracker *)selfCopy moveKnobToCanvasPosition:x, y];
+  [(CRLShapeConnectionLineKnobTracker *)selfCopy endMovingKnob];
 }
 
-- (_TtC8Freeform33CRLShapeConnectionLineKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (_TtC8Freeform33CRLShapeConnectionLineKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = sub_100A68258(v5, v6);
+  repCopy = rep;
+  knobCopy = knob;
+  v7 = sub_100A68258(repCopy, knobCopy);
 
   return v7;
 }

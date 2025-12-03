@@ -1,27 +1,27 @@
 @interface D2DSetupBaseScannerViewController
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation D2DSetupBaseScannerViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100012A88(0, type metadata accessor for D2DSetupBaseScannerViewController, &OBJC_IVAR____TtC18SharingViewService33D2DSetupBaseScannerViewController_viewModel);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000127D8(a3, 0, type metadata accessor for D2DSetupBaseScannerViewController, &selRef_viewWillAppear_, "D2D Setup %@ viewWillAppear");
+  selfCopy = self;
+  sub_1000127D8(appear, 0, type metadata accessor for D2DSetupBaseScannerViewController, &selRef_viewWillAppear_, "D2D Setup %@ viewWillAppear");
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000127D8(a3, 0, type metadata accessor for D2DSetupBaseScannerViewController, &selRef_viewDidDisappear_, "D2D Setup %@ viewDidDisappear");
+  selfCopy = self;
+  sub_1000127D8(disappear, 0, type metadata accessor for D2DSetupBaseScannerViewController, &selRef_viewDidDisappear_, "D2D Setup %@ viewDidDisappear");
 }
 
 @end

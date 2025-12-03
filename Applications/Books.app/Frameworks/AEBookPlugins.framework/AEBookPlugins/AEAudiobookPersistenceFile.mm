@@ -1,15 +1,15 @@
 @interface AEAudiobookPersistenceFile
-- (void)bookmarkTimeForAudiobook:(id)a3 completion:(id)a4;
-- (void)saveBookmarkTime:(double)a3 audiobook:(id)a4 completion:(id)a5;
+- (void)bookmarkTimeForAudiobook:(id)audiobook completion:(id)completion;
+- (void)saveBookmarkTime:(double)time audiobook:(id)audiobook completion:(id)completion;
 @end
 
 @implementation AEAudiobookPersistenceFile
 
-- (void)bookmarkTimeForAudiobook:(id)a3 completion:(id)a4
+- (void)bookmarkTimeForAudiobook:(id)audiobook completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 assetID];
-  v7 = [UIApplication contextDirectoryForAssetWithID:v6];
+  completionCopy = completion;
+  assetID = [audiobook assetID];
+  v7 = [UIApplication contextDirectoryForAssetWithID:assetID];
   if (v7)
   {
     v8 = [NSURL fileURLWithPath:v7];
@@ -39,13 +39,13 @@
           {
             [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTime];
             v17 = v16;
-            v18 = [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTimeTimestamp];
+            bookmarkTimeTimestamp = [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTimeTimestamp];
             *buf = 134218498;
             v26 = v17;
             v27 = 2112;
-            v28 = v6;
+            v28 = assetID;
             v29 = 2114;
-            v30 = v18;
+            v30 = bookmarkTimeTimestamp;
             _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Unarchived bookmarkTimeSnapshot:%lf assetID:%@ timestamp:%{public}@", buf, 0x20u);
           }
         }
@@ -72,30 +72,30 @@
     v14 = 0;
   }
 
-  v19 = objc_retainBlock(v5);
+  v19 = objc_retainBlock(completionCopy);
 
   if (v19)
   {
     [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTime];
     v21 = v20;
-    v22 = [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTimeTimestamp];
-    v19[2](v19, v22, v11, v21);
+    bookmarkTimeTimestamp2 = [(AEAudiobookBookmarkTimeSnapshot *)v14 bookmarkTimeTimestamp];
+    v19[2](v19, bookmarkTimeTimestamp2, v11, v21);
   }
 }
 
-- (void)saveBookmarkTime:(double)a3 audiobook:(id)a4 completion:(id)a5
+- (void)saveBookmarkTime:(double)time audiobook:(id)audiobook completion:(id)completion
 {
-  v7 = a5;
-  v8 = [a4 assetID];
+  completionCopy = completion;
+  assetID = [audiobook assetID];
   v9 = +[NSDate date];
   v10 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   if (v10)
   {
-    v11 = [[AEAudiobookBookmarkTimeSnapshot alloc] initWithBookmarkTime:v9 bookmarkTimeTimestamp:a3];
+    v11 = [[AEAudiobookBookmarkTimeSnapshot alloc] initWithBookmarkTime:v9 bookmarkTimeTimestamp:time];
     [(AEAudiobookBookmarkTimeSnapshot *)v11 encodeWithCoder:v10];
     [v10 finishEncoding];
-    v12 = [v10 encodedData];
-    v13 = [UIApplication contextDirectoryForAssetWithID:v8];
+    encodedData = [v10 encodedData];
+    v13 = [UIApplication contextDirectoryForAssetWithID:assetID];
     if (v13)
     {
       v14 = +[NSFileManager defaultManager];
@@ -115,18 +115,18 @@
           {
             [(AEAudiobookBookmarkTimeSnapshot *)v11 bookmarkTime];
             v20 = v19;
-            v21 = [(AEAudiobookBookmarkTimeSnapshot *)v11 bookmarkTimeTimestamp];
+            bookmarkTimeTimestamp = [(AEAudiobookBookmarkTimeSnapshot *)v11 bookmarkTimeTimestamp];
             *buf = 134218498;
             v28 = v20;
             v29 = 2112;
-            v30 = v8;
+            v30 = assetID;
             v31 = 2114;
-            v32 = v21;
+            v32 = bookmarkTimeTimestamp;
             _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Archiving bookmarkTimeSnapshot:%lf assetID:%@ timestamp:%{public}@", buf, 0x20u);
           }
 
           v25 = 0;
-          [v12 writeToURL:v17 options:1 error:&v25];
+          [encodedData writeToURL:v17 options:1 error:&v25];
           v22 = v25;
         }
 
@@ -152,7 +152,7 @@
     v23 = [NSError errorWithDomain:AssetEngineErrorDomain code:2006 userInfo:0];
   }
 
-  v24 = objc_retainBlock(v7);
+  v24 = objc_retainBlock(completionCopy);
 
   if (v24)
   {

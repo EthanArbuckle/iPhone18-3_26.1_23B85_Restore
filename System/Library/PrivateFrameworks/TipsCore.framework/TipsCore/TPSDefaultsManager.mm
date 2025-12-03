@@ -8,7 +8,7 @@
 + (NSNumber)standardNotificationInterval;
 + (NSNumber)userType;
 + (int64_t)crunchingIntervalInDays;
-+ (void)setIsInternalDevice:(BOOL)a3;
++ (void)setIsInternalDevice:(BOOL)device;
 - (TPSDefaultsManager)init;
 @end
 
@@ -41,7 +41,7 @@
   return byte_1EDD44C08;
 }
 
-+ (void)setIsInternalDevice:(BOOL)a3
++ (void)setIsInternalDevice:(BOOL)device
 {
   if (qword_1EDD44C00 != -1)
   {
@@ -49,7 +49,7 @@
   }
 
   swift_beginAccess();
-  byte_1EDD44C08 = a3;
+  byte_1EDD44C08 = device;
 }
 
 + (NSNumber)contentUpdatedDarwinNotificationInSeconds

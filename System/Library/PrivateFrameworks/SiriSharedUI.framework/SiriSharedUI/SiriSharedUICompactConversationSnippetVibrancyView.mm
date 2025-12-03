@@ -1,22 +1,22 @@
 @interface SiriSharedUICompactConversationSnippetVibrancyView
-- (SiriSharedUICompactConversationSnippetVibrancyView)initWithStyle:(int64_t)a3;
-- (int64_t)_blurEffectStyleForVibrancyViewStyle:(int64_t)a3;
+- (SiriSharedUICompactConversationSnippetVibrancyView)initWithStyle:(int64_t)style;
+- (int64_t)_blurEffectStyleForVibrancyViewStyle:(int64_t)style;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriSharedUICompactConversationSnippetVibrancyView
 
-- (SiriSharedUICompactConversationSnippetVibrancyView)initWithStyle:(int64_t)a3
+- (SiriSharedUICompactConversationSnippetVibrancyView)initWithStyle:(int64_t)style
 {
   v15.receiver = self;
   v15.super_class = SiriSharedUICompactConversationSnippetVibrancyView;
   v4 = [(SiriSharedUICompactConversationSnippetVibrancyView *)&v15 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 setBackgroundColor:clearColor];
 
-    v6 = [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 _blurEffectStyleForVibrancyViewStyle:a3];
+    v6 = [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 _blurEffectStyleForVibrancyViewStyle:style];
     v7 = MEMORY[0x277D75D00];
     v8 = [MEMORY[0x277D75210] effectWithStyle:v6];
     v9 = [v7 effectForBlurEffect:v8 style:6];
@@ -27,9 +27,9 @@
     v4->_visualEffectView = v10;
 
     [(UIVisualEffectView *)v4->_visualEffectView setUserInteractionEnabled:0];
-    v12 = [(UIVisualEffectView *)v4->_visualEffectView contentView];
+    contentView = [(UIVisualEffectView *)v4->_visualEffectView contentView];
     v13 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
-    [v12 setBackgroundColor:v13];
+    [contentView setBackgroundColor:v13];
 
     [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 addSubview:v4->_visualEffectView];
     [(SiriSharedUICompactConversationSnippetVibrancyView *)v4 setClipsToBounds:1];
@@ -48,9 +48,9 @@
   [(UIVisualEffectView *)visualEffectView setFrame:?];
 }
 
-- (int64_t)_blurEffectStyleForVibrancyViewStyle:(int64_t)a3
+- (int64_t)_blurEffectStyleForVibrancyViewStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return 14;
   }

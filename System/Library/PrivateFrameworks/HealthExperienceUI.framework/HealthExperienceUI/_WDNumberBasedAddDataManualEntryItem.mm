@@ -1,8 +1,8 @@
 @interface _WDNumberBasedAddDataManualEntryItem
 - (id)generateValue;
 - (id)tableViewCells;
-- (void)setTitle:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setTitle:(id)title;
+- (void)setValue:(id)value;
 @end
 
 @implementation _WDNumberBasedAddDataManualEntryItem
@@ -13,9 +13,9 @@
   tableViewCell = self->_tableViewCell;
   if (!tableViewCell)
   {
-    v4 = [(WDAddDataManualEntryItem *)self title];
-    v5 = [(WDAddDataManualEntryItem *)self secondaryLabel];
-    v6 = [(WDAddDataManualEntryItem *)self _createWDManualDataEntryTableViewCellWithDisplayName:v4 unitName:v5 entryType:self->_manualEntryType highlightWhenEditing:0];
+    title = [(WDAddDataManualEntryItem *)self title];
+    secondaryLabel = [(WDAddDataManualEntryItem *)self secondaryLabel];
+    v6 = [(WDAddDataManualEntryItem *)self _createWDManualDataEntryTableViewCellWithDisplayName:title unitName:secondaryLabel entryType:self->_manualEntryType highlightWhenEditing:0];
     v7 = self->_tableViewCell;
     self->_tableViewCell = v6;
 
@@ -36,32 +36,32 @@
 - (id)generateValue
 {
   numberFormatter = self->_numberFormatter;
-  v3 = [(WDManualDataEntryTableViewCell *)self->_tableViewCell value];
-  v4 = [(NSNumberFormatter *)numberFormatter numberFromString:v3];
+  value = [(WDManualDataEntryTableViewCell *)self->_tableViewCell value];
+  v4 = [(NSNumberFormatter *)numberFormatter numberFromString:value];
 
   return v4;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(NSNumberFormatter *)self->_numberFormatter stringFromNumber:v5];
+    v4 = [(NSNumberFormatter *)self->_numberFormatter stringFromNumber:valueCopy];
     [(WDManualDataEntryTableViewCell *)self->_tableViewCell setValue:v4];
   }
 
   [(WDAddDataManualEntryItem *)self _didUpdateValue];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = _WDNumberBasedAddDataManualEntryItem;
-  v4 = a3;
-  [(WDAddDataManualEntryItem *)&v5 setTitle:v4];
-  [(WDManualDataEntryTableViewCell *)self->_tableViewCell setDisplayName:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(WDAddDataManualEntryItem *)&v5 setTitle:titleCopy];
+  [(WDManualDataEntryTableViewCell *)self->_tableViewCell setDisplayName:titleCopy, v5.receiver, v5.super_class];
 }
 
 @end

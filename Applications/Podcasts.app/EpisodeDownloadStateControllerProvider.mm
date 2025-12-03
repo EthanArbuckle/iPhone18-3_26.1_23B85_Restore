@@ -1,7 +1,7 @@
 @interface EpisodeDownloadStateControllerProvider
 - (MTLegacyDownloadManagerProtocol)downloadManager;
 - (_TtC8Podcasts38EpisodeDownloadStateControllerProvider)init;
-- (void)setDownloadManager:(id)a3;
+- (void)setDownloadManager:(id)manager;
 @end
 
 @implementation EpisodeDownloadStateControllerProvider
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (void)setDownloadManager:(id)a3
+- (void)setDownloadManager:(id)manager
 {
-  *(&self->super.isa + OBJC_IVAR____TtC8Podcasts38EpisodeDownloadStateControllerProvider_downloadManager) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC8Podcasts38EpisodeDownloadStateControllerProvider_downloadManager) = manager;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

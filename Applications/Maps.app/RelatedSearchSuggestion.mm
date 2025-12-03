@@ -1,6 +1,6 @@
 @interface RelatedSearchSuggestion
 - (NSString)displayString;
-- (RelatedSearchSuggestion)initWithResultDisplayHeader:(id)a3 substitutes:(id)a4 visibleTime:(double)a5 showCloseButton:(BOOL)a6;
+- (RelatedSearchSuggestion)initWithResultDisplayHeader:(id)header substitutes:(id)substitutes visibleTime:(double)time showCloseButton:(BOOL)button;
 - (void)_parseComponents;
 - (void)_parseSubtitutes;
 @end
@@ -132,8 +132,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) displayText];
-        [v3 appendString:v9];
+        displayText = [*(*(&v12 + 1) + 8 * i) displayText];
+        [v3 appendString:displayText];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -153,7 +153,7 @@
   v3 = [(NSString *)self->_resultDisplayHeader rangeOfString:@"%s"];
   if (v3 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = v3;
+    range = v3;
     v6 = v4;
     v7 = 0;
     v8 = 0;
@@ -164,31 +164,31 @@
         break;
       }
 
-      v9 = [(NSString *)self->_resultDisplayHeader maps_isSubstringStartingAtRangeEscaped:v5, v6];
-      if (v5 > v8 && (v9 & 1) == 0)
+      v9 = [(NSString *)self->_resultDisplayHeader maps_isSubstringStartingAtRangeEscaped:range, v6];
+      if (range > v8 && (v9 & 1) == 0)
       {
         v10 = [RelatedSearchSuggestionSubstitute alloc];
         v11 = [(NSArray *)self->_pdSubstitutes objectAtIndexedSubscript:v7];
-        v12 = [(RelatedSearchSuggestionSubstitute *)v10 initWithLocation:v5 substitute:v11];
+        v12 = [(RelatedSearchSuggestionSubstitute *)v10 initWithLocation:range substitute:v11];
 
         [v21 addObject:v12];
         resultDisplayHeader = self->_resultDisplayHeader;
-        v14 = [(RelatedSearchSuggestionSubstitute *)v12 substituteText];
-        v15 = [(NSString *)resultDisplayHeader stringByReplacingCharactersInRange:v5 withString:v6, v14];
+        substituteText = [(RelatedSearchSuggestionSubstitute *)v12 substituteText];
+        v15 = [(NSString *)resultDisplayHeader stringByReplacingCharactersInRange:range withString:v6, substituteText];
         v16 = self->_resultDisplayHeader;
         self->_resultDisplayHeader = v15;
 
-        v5 = [(RelatedSearchSuggestionSubstitute *)v12 range];
+        range = [(RelatedSearchSuggestionSubstitute *)v12 range];
         v6 = v17;
       }
 
-      v8 = &v5[v6];
-      v5 = [(NSString *)self->_resultDisplayHeader rangeOfString:@"%s"];
+      v8 = &range[v6];
+      range = [(NSString *)self->_resultDisplayHeader rangeOfString:@"%s"];
       v6 = v18;
       ++v7;
     }
 
-    while (v5 != 0x7FFFFFFFFFFFFFFFLL);
+    while (range != 0x7FFFFFFFFFFFFFFFLL);
   }
 
   v19 = [v21 copy];
@@ -196,22 +196,22 @@
   self->_substitutes = v19;
 }
 
-- (RelatedSearchSuggestion)initWithResultDisplayHeader:(id)a3 substitutes:(id)a4 visibleTime:(double)a5 showCloseButton:(BOOL)a6
+- (RelatedSearchSuggestion)initWithResultDisplayHeader:(id)header substitutes:(id)substitutes visibleTime:(double)time showCloseButton:(BOOL)button
 {
-  v10 = a3;
-  v11 = a4;
+  headerCopy = header;
+  substitutesCopy = substitutes;
   v16.receiver = self;
   v16.super_class = RelatedSearchSuggestion;
   v12 = [(RelatedSearchSuggestion *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [headerCopy copy];
     resultDisplayHeader = v12->_resultDisplayHeader;
     v12->_resultDisplayHeader = v13;
 
-    objc_storeStrong(&v12->_pdSubstitutes, a4);
-    v12->_visibleTime = a5;
-    v12->_showCloseButton = a6;
+    objc_storeStrong(&v12->_pdSubstitutes, substitutes);
+    v12->_visibleTime = time;
+    v12->_showCloseButton = button;
     [(RelatedSearchSuggestion *)v12 _parseSubtitutes];
     [(RelatedSearchSuggestion *)v12 _parseComponents];
   }

@@ -1,34 +1,34 @@
 @interface DUCalendarEventObjC
 - (DUCalendarEventObjC)init;
-- (void)setEndDateComponents:(id)a3;
-- (void)setEndTimezone:(id)a3;
-- (void)setStartDateComponents:(id)a3;
-- (void)setStartTimezone:(id)a3;
+- (void)setEndDateComponents:(id)components;
+- (void)setEndTimezone:(id)timezone;
+- (void)setStartDateComponents:(id)components;
+- (void)setStartTimezone:(id)timezone;
 @end
 
 @implementation DUCalendarEventObjC
 
-- (void)setEndTimezone:(id)a3
+- (void)setEndTimezone:(id)timezone
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(timezone, a2, timezone, v3, v4);
   objc_msgSend_setEndTimezone_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setEndDateComponents:(id)a3
+- (void)setEndDateComponents:(id)components
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(components, a2, components, v3, v4);
   objc_msgSend_setEndDateComponents_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setStartTimezone:(id)a3
+- (void)setStartTimezone:(id)timezone
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(timezone, a2, timezone, v3, v4);
   objc_msgSend_setStartTimezone_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setStartDateComponents:(id)a3
+- (void)setStartDateComponents:(id)components
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(components, a2, components, v3, v4);
   objc_msgSend_setStartDateComponents_(self->_underlying, v6, v9, v7, v8);
 }
 

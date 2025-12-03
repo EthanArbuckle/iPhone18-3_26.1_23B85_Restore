@@ -1,29 +1,29 @@
 @interface SCRCMathMultiscriptsExpression
-- (SCRCMathMultiscriptsExpression)initWithDictionary:(id)a3;
-- (id)_appendString:(id)a3 toDescription:(id)a4 arePausesAllowed:(BOOL)a5;
-- (id)_subSuperscriptPairFromDictionary:(id)a3;
+- (SCRCMathMultiscriptsExpression)initWithDictionary:(id)dictionary;
+- (id)_appendString:(id)string toDescription:(id)description arePausesAllowed:(BOOL)allowed;
+- (id)_subSuperscriptPairFromDictionary:(id)dictionary;
 - (id)description;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (void)_subSuperScriptsDescriptionFromArray:(id)a3 withSpeakingStyle:(int64_t)a4 arePausesAllowed:(BOOL)a5 outSubscripts:(id *)a6 outSuperscripts:(id *)a7;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (void)_subSuperScriptsDescriptionFromArray:(id)array withSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed outSubscripts:(id *)subscripts outSuperscripts:(id *)superscripts;
 @end
 
 @implementation SCRCMathMultiscriptsExpression
 
-- (SCRCMathMultiscriptsExpression)initWithDictionary:(id)a3
+- (SCRCMathMultiscriptsExpression)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v36.receiver = self;
   v36.super_class = SCRCMathMultiscriptsExpression;
-  v5 = [(SCRCMathExpression *)&v36 initWithDictionary:v4];
+  v5 = [(SCRCMathExpression *)&v36 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMBaseObject"];
+    v6 = [dictionaryCopy objectForKey:@"AXMBaseObject"];
     v7 = [SCRCMathExpression mathExpressionWithDictionary:v6];
     [(SCRCMathMultiscriptsExpression *)v5 setBase:v7];
 
-    v8 = [v4 objectForKey:@"AXMMultiscriptPostscripts"];
-    v9 = [v4 objectForKey:@"AXMMultiscriptPrescripts"];
+    v8 = [dictionaryCopy objectForKey:@"AXMMultiscriptPostscripts"];
+    v9 = [dictionaryCopy objectForKey:@"AXMMultiscriptPrescripts"];
     v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v8, "count")}];
     v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v32 = 0u;
@@ -103,13 +103,13 @@
   return v5;
 }
 
-- (id)_subSuperscriptPairFromDictionary:(id)a3
+- (id)_subSuperscriptPairFromDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  v6 = [v4 objectForKey:@"AXMSubscriptObject"];
-  v7 = [v4 objectForKey:@"AXMSuperscriptObject"];
+  dictionaryCopy = dictionary;
+  dictionary = [v3 dictionary];
+  v6 = [dictionaryCopy objectForKey:@"AXMSubscriptObject"];
+  v7 = [dictionaryCopy objectForKey:@"AXMSuperscriptObject"];
 
   if (v6)
   {
@@ -118,7 +118,7 @@
     if (v8)
     {
       v9 = [SCRCMathExpression mathExpressionWithDictionary:v6];
-      [v5 setObject:v9 forKey:@"AXMSubscriptObject"];
+      [dictionary setObject:v9 forKey:@"AXMSubscriptObject"];
     }
   }
 
@@ -129,11 +129,11 @@
     if (v10)
     {
       v11 = [SCRCMathExpression mathExpressionWithDictionary:v7];
-      [v5 setObject:v11 forKey:@"AXMSuperscriptObject"];
+      [dictionary setObject:v11 forKey:@"AXMSuperscriptObject"];
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)description
@@ -141,19 +141,19 @@
   v9.receiver = self;
   v9.super_class = SCRCMathMultiscriptsExpression;
   v3 = [(SCRCMathMultiscriptsExpression *)&v9 description];
-  v4 = [(SCRCMathMultiscriptsExpression *)self base];
-  v5 = [(SCRCMathMultiscriptsExpression *)self preScripts];
-  v6 = [(SCRCMathMultiscriptsExpression *)self postScripts];
-  v7 = [v3 stringByAppendingFormat:@" - base %@, prescripts %@, postscripts %@", v4, v5, v6];
+  base = [(SCRCMathMultiscriptsExpression *)self base];
+  preScripts = [(SCRCMathMultiscriptsExpression *)self preScripts];
+  postScripts = [(SCRCMathMultiscriptsExpression *)self postScripts];
+  v7 = [v3 stringByAppendingFormat:@" - base %@, prescripts %@, postscripts %@", base, preScripts, postScripts];
 
   return v7;
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v7 = [(SCRCMathMultiscriptsExpression *)self base];
-  v8 = [v7 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
+  allowedCopy = allowed;
+  base = [(SCRCMathMultiscriptsExpression *)self base];
+  v8 = [base speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
 
   if (![v8 length])
   {
@@ -169,7 +169,7 @@
     preScripts = self->_preScripts;
     v42 = 0;
     v43 = 0;
-    [(SCRCMathMultiscriptsExpression *)self _subSuperScriptsDescriptionFromArray:preScripts withSpeakingStyle:a3 arePausesAllowed:v4 outSubscripts:&v43 outSuperscripts:&v42];
+    [(SCRCMathMultiscriptsExpression *)self _subSuperScriptsDescriptionFromArray:preScripts withSpeakingStyle:style arePausesAllowed:allowedCopy outSubscripts:&v43 outSuperscripts:&v42];
     v13 = v43;
     v14 = v42;
   }
@@ -183,7 +183,7 @@
   postScripts = self->_postScripts;
   v40 = 0;
   v41 = 0;
-  [(SCRCMathMultiscriptsExpression *)self _subSuperScriptsDescriptionFromArray:postScripts withSpeakingStyle:a3 arePausesAllowed:v4 outSubscripts:&v41 outSuperscripts:&v40];
+  [(SCRCMathMultiscriptsExpression *)self _subSuperScriptsDescriptionFromArray:postScripts withSpeakingStyle:style arePausesAllowed:allowedCopy outSubscripts:&v41 outSuperscripts:&v40];
   v16 = v41;
   v17 = v40;
   v39 = v10;
@@ -198,7 +198,7 @@
       v22 = v13;
       v13 = v21;
 
-      v10 = [(SCRCMathMultiscriptsExpression *)self _appendString:v13 toDescription:v18 arePausesAllowed:v4];
+      v10 = [(SCRCMathMultiscriptsExpression *)self _appendString:v13 toDescription:v18 arePausesAllowed:allowedCopy];
     }
 
     if ([v14 length])
@@ -207,7 +207,7 @@
       v24 = [(SCRCMathExpression *)self localizedStringForKey:@"left.superscript.formatter"];
       v25 = [v23 scrcStringWithFormat:v24, v14];
 
-      v26 = [(SCRCMathMultiscriptsExpression *)self _appendString:v25 toDescription:v10 arePausesAllowed:v4];
+      v26 = [(SCRCMathMultiscriptsExpression *)self _appendString:v25 toDescription:v10 arePausesAllowed:allowedCopy];
 
       v10 = v26;
       v14 = v25;
@@ -230,7 +230,7 @@
     v29 = [(SCRCMathExpression *)self localizedStringForKey:v28];
     v30 = [v27 scrcStringWithFormat:v29, v16];
 
-    v31 = [(SCRCMathMultiscriptsExpression *)self _appendString:v30 toDescription:v10 arePausesAllowed:v4];
+    v31 = [(SCRCMathMultiscriptsExpression *)self _appendString:v30 toDescription:v10 arePausesAllowed:allowedCopy];
 
     v10 = v31;
     v16 = v30;
@@ -252,7 +252,7 @@
     v34 = [(SCRCMathExpression *)self localizedStringForKey:v33];
     v35 = [v32 scrcStringWithFormat:v34, v17];
 
-    v36 = [(SCRCMathMultiscriptsExpression *)self _appendString:v35 toDescription:v10 arePausesAllowed:v4];
+    v36 = [(SCRCMathMultiscriptsExpression *)self _appendString:v35 toDescription:v10 arePausesAllowed:allowedCopy];
 
     v10 = v36;
     v17 = v35;
@@ -263,13 +263,13 @@
   return v10;
 }
 
-- (id)_appendString:(id)a3 toDescription:(id)a4 arePausesAllowed:(BOOL)a5
+- (id)_appendString:(id)string toDescription:(id)description arePausesAllowed:(BOOL)allowed
 {
-  v5 = a5;
-  v7 = a4;
+  allowedCopy = allowed;
+  descriptionCopy = description;
   v8 = MEMORY[0x277CCA898];
-  v9 = a3;
-  if (v5)
+  stringCopy = string;
+  if (allowedCopy)
   {
     [v8 scrcPauseString];
   }
@@ -279,24 +279,24 @@
     [v8 scrcSpaceString];
   }
   v10 = ;
-  v11 = [v7 scrcStringByAppendingAttributedString:v10];
+  v11 = [descriptionCopy scrcStringByAppendingAttributedString:v10];
 
-  v12 = [v11 scrcStringByAppendingAttributedString:v9];
+  v12 = [v11 scrcStringByAppendingAttributedString:stringCopy];
 
   return v12;
 }
 
-- (void)_subSuperScriptsDescriptionFromArray:(id)a3 withSpeakingStyle:(int64_t)a4 arePausesAllowed:(BOOL)a5 outSubscripts:(id *)a6 outSuperscripts:(id *)a7
+- (void)_subSuperScriptsDescriptionFromArray:(id)array withSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed outSubscripts:(id *)subscripts outSuperscripts:(id *)superscripts
 {
-  v34 = a5;
+  allowedCopy = allowed;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = v9;
-  if (v9 && [v9 count])
+  arrayCopy = array;
+  v10 = arrayCopy;
+  if (arrayCopy && [arrayCopy count])
   {
-    v29 = a6;
-    v11 = [MEMORY[0x277CCA898] scrcString];
-    v12 = [MEMORY[0x277CCA898] scrcString];
+    subscriptsCopy = subscripts;
+    scrcString = [MEMORY[0x277CCA898] scrcString];
+    scrcString2 = [MEMORY[0x277CCA898] scrcString];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -322,34 +322,34 @@
           v18 = [v16 objectForKey:@"AXMSuperscriptObject"];
           if (v17)
           {
-            if ([v11 length])
+            if ([scrcString length])
             {
-              v19 = [MEMORY[0x277CCA898] scrcSpaceString];
-              v20 = [v11 scrcStringByAppendingAttributedString:v19];
+              scrcSpaceString = [MEMORY[0x277CCA898] scrcSpaceString];
+              v20 = [scrcString scrcStringByAppendingAttributedString:scrcSpaceString];
 
-              v11 = v20;
+              scrcString = v20;
             }
 
-            v21 = [v17 speakableDescriptionWithSpeakingStyle:a4 arePausesAllowed:v34];
-            v22 = [v11 scrcStringByAppendingAttributedString:v21];
+            v21 = [v17 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
+            v22 = [scrcString scrcStringByAppendingAttributedString:v21];
 
-            v11 = v22;
+            scrcString = v22;
           }
 
           if (v18)
           {
-            if ([v12 length])
+            if ([scrcString2 length])
             {
-              v23 = [MEMORY[0x277CCA898] scrcSpaceString];
-              v24 = [v12 scrcStringByAppendingAttributedString:v23];
+              scrcSpaceString2 = [MEMORY[0x277CCA898] scrcSpaceString];
+              v24 = [scrcString2 scrcStringByAppendingAttributedString:scrcSpaceString2];
 
-              v12 = v24;
+              scrcString2 = v24;
             }
 
-            v25 = [v18 speakableDescriptionWithSpeakingStyle:a4 arePausesAllowed:v34];
-            v26 = [v12 scrcStringByAppendingAttributedString:v25];
+            v25 = [v18 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
+            v26 = [scrcString2 scrcStringByAppendingAttributedString:v25];
 
-            v12 = v26;
+            scrcString2 = v26;
           }
         }
 
@@ -359,12 +359,12 @@
       while (v14);
     }
 
-    if (v29)
+    if (subscriptsCopy)
     {
-      v27 = v11;
-      *v29 = v11;
-      v28 = v12;
-      *a7 = v12;
+      v27 = scrcString;
+      *subscriptsCopy = scrcString;
+      v28 = scrcString2;
+      *superscripts = scrcString2;
     }
 
     v10 = v30;

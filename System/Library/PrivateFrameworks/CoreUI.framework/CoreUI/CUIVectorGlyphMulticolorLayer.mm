@@ -1,21 +1,21 @@
 @interface CUIVectorGlyphMulticolorLayer
 - (BOOL)needsWideGamut;
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 colorResolver:(id)a7;
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue colorResolver:(id)resolver;
 - (id)debugDescription;
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4;
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 colorResolver:(id)a8;
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue colorResolver:(id)resolver;
 @end
 
 @implementation CUIVectorGlyphMulticolorLayer
 
-- (void)_readCSSAttributes:(CGSVGAttributeMap *)a3 styleAttributes:(CGSVGAttributeMap *)a4
+- (void)_readCSSAttributes:(CGSVGAttributeMap *)attributes styleAttributes:(CGSVGAttributeMap *)styleAttributes
 {
   v15.receiver = self;
   v15.super_class = CUIVectorGlyphMulticolorLayer;
-  [(CUIVectorGlyphLayer *)&v15 _readCSSAttributes:a3 styleAttributes:?];
-  v6 = [objc_opt_class() _fillColorFromStyle:a4];
-  v7 = [objc_opt_class() _strokeColorFromStyle:a4];
+  [(CUIVectorGlyphLayer *)&v15 _readCSSAttributes:attributes styleAttributes:?];
+  v6 = [objc_opt_class() _fillColorFromStyle:styleAttributes];
+  v7 = [objc_opt_class() _strokeColorFromStyle:styleAttributes];
   v8 = [objc_opt_class() _colorNameForRenderingStyle:{-[CUIVectorGlyphLayer name](self, "name")}];
   v9 = v8;
   if (!v6)
@@ -33,8 +33,8 @@
     v6 = SRGBWhite;
   }
 
-  v11 = [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _symbolDefaults];
-  if ([objc_msgSend(v11 objectForKeyedSubscript:{CUIVectorGlyphDefaultsKeyFillImageNames), "containsObject:", v9}] && (v12 = -[CUIVectorGlyhLayerDelegate fillImageWithName:](-[CUIVectorGlyphLayer delegate](self, "delegate"), "fillImageWithName:", v9)) != 0)
+  _symbolDefaults = [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _symbolDefaults];
+  if ([objc_msgSend(_symbolDefaults objectForKeyedSubscript:{CUIVectorGlyphDefaultsKeyFillImageNames), "containsObject:", v9}] && (v12 = -[CUIVectorGlyhLayerDelegate fillImageWithName:](-[CUIVectorGlyphLayer delegate](self, "delegate"), "fillImageWithName:", v9)) != 0)
   {
     v13 = CGImageRetain(v12);
     v14 = &OBJC_IVAR___CUIVectorGlyphMulticolorLayer__fillImage;
@@ -82,11 +82,11 @@
   v10.receiver = self;
   v10.super_class = CUIVectorGlyphMulticolorLayer;
   v3 = [(CUIVectorGlyphLayer *)&v10 debugDescription];
-  v4 = [(CUIVectorGlyphMulticolorLayer *)self fillColorName];
+  fillColorName = [(CUIVectorGlyphMulticolorLayer *)self fillColorName];
   v5 = @"<unspecified>";
-  if (v4)
+  if (fillColorName)
   {
-    v6 = v4;
+    v6 = fillColorName;
   }
 
   else
@@ -94,64 +94,64 @@
     v6 = @"<unspecified>";
   }
 
-  v7 = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
-  v8 = [(CUIVectorGlyphMulticolorLayer *)self strokeColorName];
-  if (v8)
+  fillColor = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
+  strokeColorName = [(CUIVectorGlyphMulticolorLayer *)self strokeColorName];
+  if (strokeColorName)
   {
-    v5 = v8;
+    v5 = strokeColorName;
   }
 
-  return [v3 stringByAppendingFormat:@" fill color name=%@ fill color=%@ stroke color name=%@ stroke color=%@", v6, v7, v5, -[CUIVectorGlyphMulticolorLayer strokeColor](self, "strokeColor")];
+  return [v3 stringByAppendingFormat:@" fill color name=%@ fill color=%@ stroke color name=%@ stroke color=%@", v6, fillColor, v5, -[CUIVectorGlyphMulticolorLayer strokeColor](self, "strokeColor")];
 }
 
 - (BOOL)needsWideGamut
 {
-  v2 = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
-  if (v2)
+  fillColor = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
+  if (fillColor)
   {
-    ColorSpace = CGColorGetColorSpace(v2);
+    ColorSpace = CGColorGetColorSpace(fillColor);
 
-    LOBYTE(v2) = CGColorSpaceIsWideGamutRGB(ColorSpace);
+    LOBYTE(fillColor) = CGColorSpaceIsWideGamutRGB(ColorSpace);
   }
 
-  return v2;
+  return fillColor;
 }
 
-- (void)drawInContext:(CGContext *)a3 scaleFactor:(double)a4 targetSize:(CGSize)a5 variableMinValue:(double)a6 variableMaxValue:(double)a7 colorResolver:(id)a8
+- (void)drawInContext:(CGContext *)context scaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue colorResolver:(id)resolver
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   if ([(NSArray *)[(CUIVectorGlyphLayer *)self sublayers] count]|| [(CUIVectorGlyphLayer *)self referenceShape])
   {
-    v16 = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
-    if (a8)
+    fillColor = [(CUIVectorGlyphMulticolorLayer *)self fillColor];
+    if (resolver)
     {
-      v17 = (*(a8 + 2))(a8, [(CUIVectorGlyphMulticolorLayer *)self fillColorName], v16);
+      v17 = (*(resolver + 2))(resolver, [(CUIVectorGlyphMulticolorLayer *)self fillColorName], fillColor);
       if (v17)
       {
-        v16 = v17;
+        fillColor = v17;
       }
     }
 
     if (self->_fillImage)
     {
-      CGContextBeginTransparencyLayer(a3, 0);
+      CGContextBeginTransparencyLayer(context, 0);
     }
 
     v19.receiver = self;
     v19.super_class = CUIVectorGlyphMulticolorLayer;
-    [(CUIVectorGlyphLayer *)&v19 drawInContext:a3 scaleFactor:v16 targetSize:0 variableMinValue:a4 variableMaxValue:width onFillColor:height offFillColor:a6, a7];
+    [(CUIVectorGlyphLayer *)&v19 drawInContext:context scaleFactor:fillColor targetSize:0 variableMinValue:factor variableMaxValue:width onFillColor:height offFillColor:value, maxValue];
     if (self->_fillImage)
     {
-      CGContextSaveGState(a3);
-      CGContextSetBlendMode(a3, kCGBlendModeSourceIn);
+      CGContextSaveGState(context);
+      CGContextSetBlendMode(context, kCGBlendModeSourceIn);
       v20.origin.x = 0.0;
       v20.origin.y = 0.0;
-      v20.size.width = width * a4;
-      v20.size.height = height * a4;
-      CGContextDrawImage(a3, v20, self->_fillImage);
-      CGContextRestoreGState(a3);
-      CGContextEndTransparencyLayer(a3);
+      v20.size.width = width * factor;
+      v20.size.height = height * factor;
+      CGContextDrawImage(context, v20, self->_fillImage);
+      CGContextRestoreGState(context);
+      CGContextEndTransparencyLayer(context);
     }
   }
 
@@ -161,8 +161,8 @@
     v18[1] = 3221225472;
     v18[2] = __118__CUIVectorGlyphMulticolorLayer_drawInContext_scaleFactor_targetSize_variableMinValue_variableMaxValue_colorResolver___block_invoke;
     v18[3] = &unk_1E7249B60;
-    v18[4] = a8;
-    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawMulticolorLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:a3 scaleFactor:v18 targetSize:a4 colorResolver:width, height];
+    v18[4] = resolver;
+    [(CUIVectorGlyhLayerDelegate *)[(CUIVectorGlyphLayer *)self delegate] _legacy_drawMulticolorLayerNamed:[(CUIVectorGlyphLayer *)self name] inContext:context scaleFactor:v18 targetSize:factor colorResolver:width, height];
   }
 }
 
@@ -177,20 +177,20 @@ uint64_t __118__CUIVectorGlyphMulticolorLayer_drawInContext_scaleFactor_targetSi
   return result;
 }
 
-- (CGImage)createImageUsingScaleFactor:(double)a3 targetSize:(CGSize)a4 variableMinValue:(double)a5 variableMaxValue:(double)a6 colorResolver:(id)a7
+- (CGImage)createImageUsingScaleFactor:(double)factor targetSize:(CGSize)size variableMinValue:(double)value variableMaxValue:(double)maxValue colorResolver:(id)resolver
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a4.width * a3;
-  v15 = a4.height * a3;
+  height = size.height;
+  width = size.width;
+  v14 = size.width * factor;
+  v15 = size.height * factor;
   SRGB = _CUIColorSpaceGetSRGB();
   v19 = CUICGBitmapContextCreate(vcvtpd_u64_f64(v14), vcvtpd_u64_f64(v15), 8uLL, 0, SRGB, 8193, v17, v18);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v20 = [(CUIVectorGlyphLayer *)self sublayers];
-  v21 = [(NSArray *)v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  sublayers = [(CUIVectorGlyphLayer *)self sublayers];
+  v21 = [(NSArray *)sublayers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v21)
   {
     v22 = v21;
@@ -202,15 +202,15 @@ uint64_t __118__CUIVectorGlyphMulticolorLayer_drawInContext_scaleFactor_targetSi
       {
         if (*v28 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v27 + 1) + 8 * v24) drawInContext:v19 scaleFactor:a7 targetSize:a3 variableMinValue:width variableMaxValue:height colorResolver:{a5, a6}];
+        [*(*(&v27 + 1) + 8 * v24) drawInContext:v19 scaleFactor:resolver targetSize:factor variableMinValue:width variableMaxValue:height colorResolver:{value, maxValue}];
         v24 = v24 + 1;
       }
 
       while (v22 != v24);
-      v22 = [(NSArray *)v20 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v22 = [(NSArray *)sublayers countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v22);

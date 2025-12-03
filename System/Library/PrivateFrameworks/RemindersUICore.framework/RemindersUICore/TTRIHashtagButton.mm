@@ -5,8 +5,8 @@
 - (NSString)accessibilityHint;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setAccessibilityUserInputLabels:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setAccessibilityUserInputLabels:(id)labels;
 @end
 
 @implementation TTRIHashtagButton
@@ -20,7 +20,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 8);
-    v6 = self;
+    selfCopy = self;
     v7 = v5();
     swift_unknownObjectRelease();
   }
@@ -33,17 +33,17 @@
   return v7 & 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  TTRIHashtagButton.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  TTRIHashtagButton.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   TTRIHashtagButton.accessibilityLabel.getter();
   v4 = v3;
 
@@ -68,12 +68,12 @@
   if (*(&self->super.super.super.super.super.isa + v3) == 1)
   {
     v5 = qword_27CE57560;
-    v6 = self;
+    selfCopy = self;
     if (v5 != -1)
     {
-      v8 = v6;
+      v8 = selfCopy;
       swift_once();
-      v6 = v8;
+      selfCopy = v8;
     }
 
     v4 = sub_21DBFA12C();
@@ -91,7 +91,7 @@
     v5 = *(v3 + 1);
     swift_getObjectType();
     v6 = *(v5 + 8);
-    v7 = self;
+    selfCopy = self;
     v6();
     v9 = v8;
 
@@ -114,7 +114,7 @@
 
 - (NSArray)accessibilityUserInputLabels
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIHashtagButton.accessibilityUserInputLabels.getter();
 
   if (v3)
@@ -130,24 +130,24 @@
   return v4;
 }
 
-- (void)setAccessibilityUserInputLabels:(id)a3
+- (void)setAccessibilityUserInputLabels:(id)labels
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (labels)
   {
     sub_21DBFA5EC();
-    v6 = self;
-    a3 = sub_21DBFA5DC();
+    selfCopy = self;
+    labels = sub_21DBFA5DC();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TTRIHashtagButton *)&v8 setAccessibilityUserInputLabels:a3];
+  [(TTRIHashtagButton *)&v8 setAccessibilityUserInputLabels:labels];
 }
 
 - (NSArray)accessibilityCustomActions
@@ -159,7 +159,7 @@
     v5 = *(v3 + 1);
     swift_getObjectType();
     v6 = *(v5 + 16);
-    v7 = self;
+    selfCopy = self;
     v8 = v6();
 
     swift_unknownObjectRelease();

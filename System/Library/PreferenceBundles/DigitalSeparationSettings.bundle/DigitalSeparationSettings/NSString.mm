@@ -1,14 +1,14 @@
 @interface NSString
-+ (id)localizedStringForKey:(id)a3;
++ (id)localizedStringForKey:(id)key;
 @end
 
 @implementation NSString
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = DSSettingsBundle();
-  v5 = [v4 localizedStringForKey:v3 value:v3 table:@"Localizable"];
+  v5 = [v4 localizedStringForKey:keyCopy value:keyCopy table:@"Localizable"];
 
   return v5;
 }

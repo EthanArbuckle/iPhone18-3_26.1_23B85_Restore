@@ -1,5 +1,5 @@
 @interface PHSOSViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_axMoveToCancelButton;
 - (void)_axSpeakInfo;
@@ -14,21 +14,21 @@
 
 @implementation PHSOSViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHSOSViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"sosMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"infoLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNumbersList" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSDialCountdown" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSDialCanceled" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotified" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotificationCountdown" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotificationCanceled" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"presentMedicalID" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHSOSViewController" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHSOSViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"sosMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"infoLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"cancelButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNumbersList" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSDialCountdown" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSDialCanceled" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotified" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotificationCountdown" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"showSOSNotificationCanceled" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"presentMedicalID" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHSOSViewController" hasInstanceMethod:@"buttonPressed:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -108,12 +108,12 @@
   v3 = [(PHSOSViewControllerAccessibility *)self safeValueForKey:@"infoLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  if (([v5 isEqualToString:_axSpeakInfo_PreviousText] & 1) == 0)
+  if (([text isEqualToString:_axSpeakInfo_PreviousText] & 1) == 0)
   {
     UIAccessibilitySpeakAndDoNotBeInterrupted();
-    objc_storeStrong(&_axSpeakInfo_PreviousText, v5);
+    objc_storeStrong(&_axSpeakInfo_PreviousText, text);
   }
 }
 

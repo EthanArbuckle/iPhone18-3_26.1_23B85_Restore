@@ -7,22 +7,22 @@
 
 - (uint64_t)doc_hasAppearedOrIsAppearing
 {
-  if ([a1 doc_hasAppeared])
+  if ([self doc_hasAppeared])
   {
     return 1;
   }
 
-  return [a1 doc_isAppearing];
+  return [self doc_isAppearing];
 }
 
 - (uint64_t)doc_hasDisappearedOrIsDisappearing
 {
-  if ([a1 doc_hasDisappeared])
+  if ([self doc_hasDisappeared])
   {
     return 1;
   }
 
-  return [a1 doc_isDisappearing];
+  return [self doc_isDisappearing];
 }
 
 @end

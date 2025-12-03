@@ -1,13 +1,13 @@
 @interface HKMedicationLoggingUnit
-+ (id)loggingUnitByResolvingSingularLoggingUnitString:(id)a3 fallbackPluralLoggingUnitString:(id)a4;
-+ (uint64_t)_loggingUnitCodeForSingularString:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (id)loggingUnitByResolvingSingularLoggingUnitString:(id)string fallbackPluralLoggingUnitString:(id)unitString;
++ (uint64_t)_loggingUnitCodeForSingularString:(uint64_t)string;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicationLoggingUnit)init;
-- (HKMedicationLoggingUnit)initWithCoder:(id)a3;
-- (id)copyByOverridingFallbackLoggingUnitSingularString:(id)a3 fallbackLoggingUnitPluralString:(id)a4;
+- (HKMedicationLoggingUnit)initWithCoder:(id)coder;
+- (id)copyByOverridingFallbackLoggingUnitSingularString:(id)string fallbackLoggingUnitPluralString:(id)pluralString;
 - (unint64_t)hash;
-- (void)_initWithMedicationLoggingUnitCode:(void *)a3 fallbackLoggingUnitSingularString:(void *)a4 fallbackLoggingUnitPluralString:;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithMedicationLoggingUnitCode:(void *)code fallbackLoggingUnitSingularString:(void *)string fallbackLoggingUnitPluralString:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicationLoggingUnit
@@ -22,11 +22,11 @@
   return 0;
 }
 
-+ (id)loggingUnitByResolvingSingularLoggingUnitString:(id)a3 fallbackPluralLoggingUnitString:(id)a4
++ (id)loggingUnitByResolvingSingularLoggingUnitString:(id)string fallbackPluralLoggingUnitString:(id)unitString
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKMedicationLoggingUnit *)a1 _loggingUnitCodeForSingularString:v6];
+  stringCopy = string;
+  unitStringCopy = unitString;
+  v8 = [(HKMedicationLoggingUnit *)self _loggingUnitCodeForSingularString:stringCopy];
   v9 = [HKMedicationLoggingUnit alloc];
   if (v8)
   {
@@ -35,7 +35,7 @@
 
   else
   {
-    v10 = [(HKMedicationLoggingUnit *)v9 _initWithMedicationLoggingUnitCode:v6 fallbackLoggingUnitSingularString:v7 fallbackLoggingUnitPluralString:?];
+    v10 = [(HKMedicationLoggingUnit *)v9 _initWithMedicationLoggingUnitCode:stringCopy fallbackLoggingUnitSingularString:unitStringCopy fallbackLoggingUnitPluralString:?];
   }
 
   v11 = v10;
@@ -43,7 +43,7 @@
   return v11;
 }
 
-+ (uint64_t)_loggingUnitCodeForSingularString:(uint64_t)a1
++ (uint64_t)_loggingUnitCodeForSingularString:(uint64_t)string
 {
   v2 = a2;
   objc_opt_self();
@@ -51,21 +51,21 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -75,32 +75,32 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicationLoggingUnit *)v5 loggingUnitCode];
-      if (v6 != [(HKMedicationLoggingUnit *)self loggingUnitCode])
+      v5 = equalCopy;
+      loggingUnitCode = [(HKMedicationLoggingUnit *)v5 loggingUnitCode];
+      if (loggingUnitCode != [(HKMedicationLoggingUnit *)self loggingUnitCode])
       {
         goto LABEL_16;
       }
 
-      v7 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitSingularString];
-      v8 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
-      v9 = v8;
-      if (v7 == v8)
+      fallbackLoggingUnitSingularString = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitSingularString];
+      fallbackLoggingUnitSingularString2 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
+      v9 = fallbackLoggingUnitSingularString2;
+      if (fallbackLoggingUnitSingularString == fallbackLoggingUnitSingularString2)
       {
       }
 
       else
       {
-        v10 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
-        if (!v10)
+        fallbackLoggingUnitSingularString3 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
+        if (!fallbackLoggingUnitSingularString3)
         {
           goto LABEL_15;
         }
 
-        v11 = v10;
-        v12 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitSingularString];
-        v13 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
-        v14 = [v12 isEqualToString:v13];
+        v11 = fallbackLoggingUnitSingularString3;
+        fallbackLoggingUnitSingularString4 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitSingularString];
+        fallbackLoggingUnitSingularString5 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitSingularString];
+        v14 = [fallbackLoggingUnitSingularString4 isEqualToString:fallbackLoggingUnitSingularString5];
 
         if (!v14)
         {
@@ -108,10 +108,10 @@
         }
       }
 
-      v7 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitPluralString];
-      v16 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
-      v9 = v16;
-      if (v7 == v16)
+      fallbackLoggingUnitSingularString = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitPluralString];
+      fallbackLoggingUnitPluralString = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
+      v9 = fallbackLoggingUnitPluralString;
+      if (fallbackLoggingUnitSingularString == fallbackLoggingUnitPluralString)
       {
 
 LABEL_20:
@@ -119,13 +119,13 @@ LABEL_20:
         goto LABEL_17;
       }
 
-      v17 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
-      if (v17)
+      fallbackLoggingUnitPluralString2 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
+      if (fallbackLoggingUnitPluralString2)
       {
-        v18 = v17;
-        v19 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitPluralString];
-        v20 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
-        v21 = [v19 isEqualToString:v20];
+        v18 = fallbackLoggingUnitPluralString2;
+        fallbackLoggingUnitPluralString3 = [(HKMedicationLoggingUnit *)v5 fallbackLoggingUnitPluralString];
+        fallbackLoggingUnitPluralString4 = [(HKMedicationLoggingUnit *)self fallbackLoggingUnitPluralString];
+        v21 = [fallbackLoggingUnitPluralString3 isEqualToString:fallbackLoggingUnitPluralString4];
 
         if (v21)
         {
@@ -159,10 +159,10 @@ LABEL_18:
   return v4 ^ [(NSString *)self->_fallbackLoggingUnitPluralString hash];
 }
 
-- (HKMedicationLoggingUnit)initWithCoder:(id)a3
+- (HKMedicationLoggingUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"LoggingUnitCodeKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"LoggingUnitCodeKey"];
   if (v5)
   {
     v6 = v5;
@@ -175,70 +175,70 @@ LABEL_18:
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FallbackLoggingUnitSingularStringKey"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FallbackLoggingUnitPluralStringKey"];
-    v8 = [HKMedicationLoggingUnit loggingUnitByResolvingSingularLoggingUnitString:v9 fallbackPluralLoggingUnitString:v10];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FallbackLoggingUnitSingularStringKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FallbackLoggingUnitPluralStringKey"];
+    selfCopy = [HKMedicationLoggingUnit loggingUnitByResolvingSingularLoggingUnitString:v9 fallbackPluralLoggingUnitString:v10];
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   loggingUnitCode = self->_loggingUnitCode;
-  v5 = a3;
-  [v5 encodeInteger:loggingUnitCode forKey:@"LoggingUnitCodeKey"];
-  [v5 encodeObject:self->_fallbackLoggingUnitSingularString forKey:@"FallbackLoggingUnitSingularStringKey"];
-  [v5 encodeObject:self->_fallbackLoggingUnitPluralString forKey:@"FallbackLoggingUnitPluralStringKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:loggingUnitCode forKey:@"LoggingUnitCodeKey"];
+  [coderCopy encodeObject:self->_fallbackLoggingUnitSingularString forKey:@"FallbackLoggingUnitSingularStringKey"];
+  [coderCopy encodeObject:self->_fallbackLoggingUnitPluralString forKey:@"FallbackLoggingUnitPluralStringKey"];
 }
 
-- (void)_initWithMedicationLoggingUnitCode:(void *)a3 fallbackLoggingUnitSingularString:(void *)a4 fallbackLoggingUnitPluralString:
+- (void)_initWithMedicationLoggingUnitCode:(void *)code fallbackLoggingUnitSingularString:(void *)string fallbackLoggingUnitPluralString:
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  codeCopy = code;
+  stringCopy = string;
+  v9 = stringCopy;
+  if (self)
   {
-    if (!a2 && (!v7 || !v8))
+    if (!a2 && (!codeCopy || !stringCopy))
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:sel__initWithMedicationLoggingUnitCode_fallbackLoggingUnitSingularString_fallbackLoggingUnitPluralString_ object:a1 file:@"HKMedicationLoggingUnit.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"fallbackLoggingUnitSingularString != nil && fallbackLoggingUnitPluralString != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__initWithMedicationLoggingUnitCode_fallbackLoggingUnitSingularString_fallbackLoggingUnitPluralString_ object:self file:@"HKMedicationLoggingUnit.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"fallbackLoggingUnitSingularString != nil && fallbackLoggingUnitPluralString != nil"}];
     }
 
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = HKMedicationLoggingUnit;
     v10 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       v10[1] = a2;
       if (!a2)
       {
-        v11 = [v7 copy];
-        v12 = a1[2];
-        a1[2] = v11;
+        v11 = [codeCopy copy];
+        v12 = self[2];
+        self[2] = v11;
 
         v13 = [v9 copy];
-        v14 = a1[3];
-        a1[3] = v13;
+        v14 = self[3];
+        self[3] = v13;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)copyByOverridingFallbackLoggingUnitSingularString:(id)a3 fallbackLoggingUnitPluralString:(id)a4
+- (id)copyByOverridingFallbackLoggingUnitSingularString:(id)string fallbackLoggingUnitPluralString:(id)pluralString
 {
-  v6 = self;
-  loggingUnitCode = v6->_loggingUnitCode;
+  selfCopy = self;
+  loggingUnitCode = selfCopy->_loggingUnitCode;
 
-  return [(HKMedicationLoggingUnit *)v6 _initWithMedicationLoggingUnitCode:a3 fallbackLoggingUnitSingularString:a4 fallbackLoggingUnitPluralString:?];
+  return [(HKMedicationLoggingUnit *)selfCopy _initWithMedicationLoggingUnitCode:string fallbackLoggingUnitSingularString:pluralString fallbackLoggingUnitPluralString:?];
 }
 
 @end

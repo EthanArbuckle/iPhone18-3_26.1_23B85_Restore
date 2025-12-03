@@ -1,57 +1,57 @@
 @interface MessageAddressScanner
-+ (id)coreRecentsMetadataForMessage:(id)a3;
++ (id)coreRecentsMetadataForMessage:(id)message;
 + (id)sharedInstance;
-+ (id)weightForMessage:(id)a3 addressBook:(void *)a4 vipManager:(id)a5;
++ (id)weightForMessage:(id)message addressBook:(void *)book vipManager:(id)manager;
 - (MessageAddressScanner)init;
 - (__DDScanner)scanner;
 - (id)recentsLibrary;
-- (void)_addAddressDetectorResult:(__DDResult *)a3 forMessage:(id)a4;
-- (void)_messagesFlagsChanged:(id)a3;
-- (void)_messagesWillBeCompacted:(id)a3;
-- (void)_scheduleRemovalOfDetectedAddressesInMessages:(id)a3;
+- (void)_addAddressDetectorResult:(__DDResult *)result forMessage:(id)message;
+- (void)_messagesFlagsChanged:(id)changed;
+- (void)_messagesWillBeCompacted:(id)compacted;
+- (void)_scheduleRemovalOfDetectedAddressesInMessages:(id)messages;
 - (void)addressBook;
 - (void)dealloc;
 - (void)handleAddressBookChange;
-- (void)scanSummary:(id)a3 forMessage:(id)a4;
-- (void)setLibrary:(id)a3;
+- (void)scanSummary:(id)summary forMessage:(id)message;
+- (void)setLibrary:(id)library;
 @end
 
 @implementation MessageAddressScanner
 
-+ (id)coreRecentsMetadataForMessage:(id)a3
++ (id)coreRecentsMetadataForMessage:(id)message
 {
-  v43 = a3;
-  v3 = [v43 firstSender];
-  v4 = [v3 emailAddressValue];
-  v5 = [v4 simpleAddress];
-  v6 = v5;
-  if (v5)
+  messageCopy = message;
+  firstSender = [messageCopy firstSender];
+  emailAddressValue = [firstSender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v6 = simpleAddress;
+  if (simpleAddress)
   {
-    v7 = v5;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v7 = [v3 stringValue];
+    stringValue = [firstSender stringValue];
   }
 
-  v8 = v7;
+  v8 = stringValue;
 
-  v9 = v3;
-  v10 = [v9 emailAddressValue];
-  v11 = [v10 displayName];
-  v12 = v11;
-  if (v11)
+  v9 = firstSender;
+  emailAddressValue2 = [v9 emailAddressValue];
+  displayName = [emailAddressValue2 displayName];
+  v12 = displayName;
+  if (displayName)
   {
-    v13 = v11;
+    stringValue2 = displayName;
   }
 
   else
   {
-    v13 = [v9 stringValue];
+    stringValue2 = [v9 stringValue];
   }
 
-  v14 = v13;
+  v14 = stringValue2;
 
   if ([v14 isEqualToString:v8])
   {
@@ -156,19 +156,19 @@
           if (v26)
           {
             [v25 setObject:v15 forKeyedSubscript:*v26];
-            v28 = [v43 subject];
-            v29 = [v28 subjectWithoutPrefix];
+            subject = [messageCopy subject];
+            subjectWithoutPrefix = [subject subjectWithoutPrefix];
 
-            if (![v29 length])
+            if (![subjectWithoutPrefix length])
             {
 LABEL_32:
-              v32 = [v43 globalMessageURL];
-              v33 = v32;
-              if (v32)
+              globalMessageURL = [messageCopy globalMessageURL];
+              v33 = globalMessageURL;
+              if (globalMessageURL)
               {
-                v34 = [v32 absoluteString];
+                absoluteString = [globalMessageURL absoluteString];
                 v35 = sub_10003B3C0();
-                [v25 setObject:v34 forKeyedSubscript:v35];
+                [v25 setObject:absoluteString forKeyedSubscript:v35];
               }
 
               goto LABEL_36;
@@ -190,7 +190,7 @@ LABEL_32:
             _Block_object_dispose(&v44, 8);
             if (v30)
             {
-              [v25 setObject:v29 forKeyedSubscript:*v30];
+              [v25 setObject:subjectWithoutPrefix forKeyedSubscript:*v30];
               goto LABEL_32;
             }
 
@@ -247,36 +247,36 @@ LABEL_36:
   return v25;
 }
 
-+ (id)weightForMessage:(id)a3 addressBook:(void *)a4 vipManager:(id)a5
++ (id)weightForMessage:(id)message addressBook:(void *)book vipManager:(id)manager
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 firstSender];
-  v10 = [v9 emailAddressValue];
-  v11 = [v10 simpleAddress];
-  v12 = v11;
-  if (v11)
+  messageCopy = message;
+  managerCopy = manager;
+  firstSender = [messageCopy firstSender];
+  emailAddressValue = [firstSender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v12 = simpleAddress;
+  if (simpleAddress)
   {
-    v13 = v11;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v13 = [v9 stringValue];
+    stringValue = [firstSender stringValue];
   }
 
-  v14 = v13;
+  v14 = stringValue;
 
   if (v14)
   {
-    v15 = [v8 allVIPEmailAddresses];
-    if ([v15 containsObject:v14])
+    allVIPEmailAddresses = [managerCopy allVIPEmailAddresses];
+    if ([allVIPEmailAddresses containsObject:v14])
     {
 
       goto LABEL_10;
     }
 
-    if (a4)
+    if (book)
     {
       PersonMatchingEmailAddress = ABAddressBookFindPersonMatchingEmailAddress();
 
@@ -355,7 +355,7 @@ LABEL_19:
   block[1] = 3221225472;
   block[2] = sub_10003C424;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185670 != -1)
   {
     dispatch_once(&qword_100185670, block);
@@ -416,9 +416,9 @@ LABEL_19:
   [(MessageAddressScanner *)&v6 dealloc];
 }
 
-- (void)_scheduleRemovalOfDetectedAddressesInMessages:(id)a3
+- (void)_scheduleRemovalOfDetectedAddressesInMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_pendingRemovalQueue)
   {
@@ -427,8 +427,8 @@ LABEL_19:
     self->_pendingRemovalQueue = v5;
 
     v7 = self->_pendingRemovalQueue;
-    v8 = [(MessageAddressScanner *)self recentsLibrary];
-    [(_MessageAddressScannerQueue *)v7 setRecentsLibrary:v8];
+    recentsLibrary = [(MessageAddressScanner *)self recentsLibrary];
+    [(_MessageAddressScannerQueue *)v7 setRecentsLibrary:recentsLibrary];
 
     [(_MessageAddressScannerQueue *)self->_pendingRemovalQueue setTargetQueue:self->_queue];
   }
@@ -450,7 +450,7 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = v4;
+  v11 = messagesCopy;
   v12 = [v11 countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v12)
   {
@@ -464,10 +464,10 @@ LABEL_19:
           objc_enumerationMutation(v11);
         }
 
-        v15 = [*(*(&v16 + 1) + 8 * i) messageIDHash];
-        if (v15)
+        messageIDHash = [*(*(&v16 + 1) + 8 * i) messageIDHash];
+        if (messageIDHash)
         {
-          [(_MessageAddressScannerQueue *)self->_pendingRemovalQueue addHash:v15];
+          [(_MessageAddressScannerQueue *)self->_pendingRemovalQueue addHash:messageIDHash];
         }
       }
 
@@ -543,13 +543,13 @@ LABEL_19:
   return self->_ab;
 }
 
-- (void)setLibrary:(id)a3
+- (void)setLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   p_library = &self->_library;
-  if (self->_library != v5)
+  if (self->_library != libraryCopy)
   {
-    v9 = v5;
+    v9 = libraryCopy;
     v7 = +[NSNotificationCenter defaultCenter];
     v8 = v7;
     if (*p_library)
@@ -559,7 +559,7 @@ LABEL_19:
       [v8 removeObserver:self name:MailMessageStoreMessagesCompacted object:self->_library];
     }
 
-    objc_storeStrong(&self->_library, a3);
+    objc_storeStrong(&self->_library, library);
     if (*p_library)
     {
       [v8 addObserver:self selector:"_messagesFlagsChanged:" name:MailMessageStoreMessageFlagsChanged object:?];
@@ -567,35 +567,35 @@ LABEL_19:
       [v8 addObserver:self selector:"_messagesWereCompacted:" name:MailMessageStoreMessagesCompacted object:self->_library];
     }
 
-    v5 = v9;
+    libraryCopy = v9;
   }
 }
 
-- (void)_messagesFlagsChanged:(id)a3
+- (void)_messagesFlagsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003CDC8;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_messagesWillBeCompacted:(id)a3
+- (void)_messagesWillBeCompacted:(id)compacted
 {
-  v4 = a3;
+  compactedCopy = compacted;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003CF68;
   v7[3] = &unk_1001563D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = compactedCopy;
+  selfCopy = self;
+  v6 = compactedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -610,12 +610,12 @@ LABEL_19:
   dispatch_async(queue, block);
 }
 
-- (void)scanSummary:(id)a3 forMessage:(id)a4
+- (void)scanSummary:(id)summary forMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageAddressScanner *)self scanner];
-  if (v8)
+  summaryCopy = summary;
+  messageCopy = message;
+  scanner = [(MessageAddressScanner *)self scanner];
+  if (scanner)
   {
     Current = CFAbsoluteTimeGetCurrent();
     queue = self->_queue;
@@ -623,26 +623,26 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = sub_10003D1A8;
     block[3] = &unk_100157808;
-    v12 = v7;
+    v12 = messageCopy;
     v15 = Current;
-    v16 = v8;
-    v13 = v6;
-    v14 = self;
+    v16 = scanner;
+    v13 = summaryCopy;
+    selfCopy = self;
     dispatch_async(queue, block);
   }
 }
 
-- (void)_addAddressDetectorResult:(__DDResult *)a3 forMessage:(id)a4
+- (void)_addAddressDetectorResult:(__DDResult *)result forMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
   v6 = DDResultGetMatchedString();
-  v7 = [objc_opt_class() coreRecentsMetadataForMessage:v5];
-  v8 = [(MessageAddressScanner *)self library];
-  v9 = [v8 persistence];
-  v10 = [v9 vipManager];
+  v7 = [objc_opt_class() coreRecentsMetadataForMessage:messageCopy];
+  library = [(MessageAddressScanner *)self library];
+  persistence = [library persistence];
+  vipManager = [persistence vipManager];
 
-  v11 = [objc_opt_class() weightForMessage:v5 addressBook:-[MessageAddressScanner addressBook](self vipManager:{"addressBook"), v10}];
+  v11 = [objc_opt_class() weightForMessage:messageCopy addressBook:-[MessageAddressScanner addressBook](self vipManager:{"addressBook"), vipManager}];
   if (v11 && v7)
   {
     v12 = sub_10003C8F8();
@@ -670,16 +670,16 @@ LABEL_19:
     }
 
     v15 = *v13;
-    v16 = [v5 dateReceived];
-    v17 = [v12 recentEventForAddress:v6 displayName:0 kind:v15 date:v16 weight:v11 metadata:v7 options:0];
+    dateReceived = [messageCopy dateReceived];
+    v17 = [v12 recentEventForAddress:v6 displayName:0 kind:v15 date:dateReceived weight:v11 metadata:v7 options:0];
 
     if (v17)
     {
-      v18 = [(MessageAddressScanner *)self recentsLibrary];
+      recentsLibrary = [(MessageAddressScanner *)self recentsLibrary];
       v27 = v17;
       v19 = [NSArray arrayWithObjects:&v27 count:1];
       v20 = sub_10003AE94();
-      [v18 recordContactEvents:v19 recentsDomain:v20 sendingAddress:0 completion:0];
+      [recentsLibrary recordContactEvents:v19 recentsDomain:v20 sendingAddress:0 completion:0];
     }
   }
 }

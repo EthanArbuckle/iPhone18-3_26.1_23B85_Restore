@@ -1,25 +1,25 @@
 @interface DaemonDialogOperation
 - (BOOL)displaysOnLockscreen;
-- (DaemonDialogOperation)initWithDialog:(id)a3;
+- (DaemonDialogOperation)initWithDialog:(id)dialog;
 - (ISDialog)dialog;
 - (SSVDialogResponse)dialogResponse;
 - (id)outputBlock;
 - (void)dealloc;
 - (void)run;
-- (void)setDisplaysOnLockscreen:(BOOL)a3;
-- (void)setOutputBlock:(id)a3;
+- (void)setDisplaysOnLockscreen:(BOOL)lockscreen;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation DaemonDialogOperation
 
-- (DaemonDialogOperation)initWithDialog:(id)a3
+- (DaemonDialogOperation)initWithDialog:(id)dialog
 {
   v6.receiver = self;
   v6.super_class = DaemonDialogOperation;
   v4 = [(DaemonDialogOperation *)&v6 init];
   if (v4)
   {
-    v4->_dialog = a3;
+    v4->_dialog = dialog;
   }
 
   return v4;
@@ -67,22 +67,22 @@
   return v3;
 }
 
-- (void)setDisplaysOnLockscreen:(BOOL)a3
+- (void)setDisplaysOnLockscreen:(BOOL)lockscreen
 {
   [(DaemonDialogOperation *)self lock];
-  self->_displaysOnLockscreen = a3;
+  self->_displaysOnLockscreen = lockscreen;
 
   [(DaemonDialogOperation *)self unlock];
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
   [(DaemonDialogOperation *)self lock];
   outputBlock = self->_outputBlock;
-  if (outputBlock != a3)
+  if (outputBlock != block)
   {
 
-    self->_outputBlock = [a3 copy];
+    self->_outputBlock = [block copy];
   }
 
   [(DaemonDialogOperation *)self unlock];
@@ -97,28 +97,28 @@
   [v3 setDialog:self->_dialog];
   [v3 setPerformDefaultActions:0];
   [(DaemonDialogOperation *)self runSubOperation:v3 returningError:&v8];
-  v4 = [v3 selectedButton];
-  if (!v4)
+  selectedButton = [v3 selectedButton];
+  if (!selectedButton)
   {
-    v7 = [(DaemonDialogOperation *)self outputBlock];
+    outputBlock = [(DaemonDialogOperation *)self outputBlock];
     v6 = 0;
-    if (!v7)
+    if (!outputBlock)
     {
       goto LABEL_6;
     }
 
 LABEL_5:
-    v7[2](v7, v6, v8);
+    outputBlock[2](outputBlock, v6, v8);
     [(DaemonDialogOperation *)self setOutputBlock:0];
     goto LABEL_6;
   }
 
-  v5 = v4;
+  v5 = selectedButton;
   v6 = objc_alloc_init(SSVDialogResponse);
   [v6 setSelectedButtonIndex:{objc_msgSend(-[ISDialog buttons](self->_dialog, "buttons"), "indexOfObject:", v5)}];
   [v6 setTextFieldValues:{objc_msgSend(v3, "textFieldValues")}];
-  v7 = [(DaemonDialogOperation *)self outputBlock];
-  if (v7)
+  outputBlock = [(DaemonDialogOperation *)self outputBlock];
+  if (outputBlock)
   {
     goto LABEL_5;
   }

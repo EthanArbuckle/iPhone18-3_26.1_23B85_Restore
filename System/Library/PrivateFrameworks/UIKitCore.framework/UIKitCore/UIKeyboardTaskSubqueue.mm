@@ -1,24 +1,24 @@
 @interface UIKeyboardTaskSubqueue
-+ (UIKeyboardTaskSubqueue)subqueueWithExecutionContext:(id)a3;
-- (UIKeyboardTaskSubqueue)initWithExecutionContext:(id)a3;
-- (void)dispatchAsync:(id)a3;
-- (void)dispatchAsync:(id)a3 breadcrumb:(id)a4;
++ (UIKeyboardTaskSubqueue)subqueueWithExecutionContext:(id)context;
+- (UIKeyboardTaskSubqueue)initWithExecutionContext:(id)context;
+- (void)dispatchAsync:(id)async;
+- (void)dispatchAsync:(id)async breadcrumb:(id)breadcrumb;
 - (void)returnExecutionToParentQueue;
 @end
 
 @implementation UIKeyboardTaskSubqueue
 
-+ (UIKeyboardTaskSubqueue)subqueueWithExecutionContext:(id)a3
++ (UIKeyboardTaskSubqueue)subqueueWithExecutionContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithExecutionContext:v3];
+  contextCopy = context;
+  v4 = [objc_alloc(objc_opt_class()) initWithExecutionContext:contextCopy];
 
   return v4;
 }
 
-- (UIKeyboardTaskSubqueue)initWithExecutionContext:(id)a3
+- (UIKeyboardTaskSubqueue)initWithExecutionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = UIKeyboardTaskSubqueue;
   v6 = [(UIKeyboardTaskSubqueue *)&v11 init];
@@ -29,24 +29,24 @@
     internalQueue = v6->_internalQueue;
     v6->_internalQueue = v8;
 
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v6;
 }
 
-- (void)dispatchAsync:(id)a3
+- (void)dispatchAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskSubqueue *)self dispatchAsync:v4 breadcrumb:v5];
+  [(UIKeyboardTaskSubqueue *)self dispatchAsync:asyncCopy breadcrumb:v5];
 }
 
-- (void)dispatchAsync:(id)a3 breadcrumb:(id)a4
+- (void)dispatchAsync:(id)async breadcrumb:(id)breadcrumb
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  asyncCopy = async;
+  breadcrumbCopy = breadcrumb;
+  if (asyncCopy)
   {
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -54,8 +54,8 @@
     block[2] = __51__UIKeyboardTaskSubqueue_dispatchAsync_breadcrumb___block_invoke;
     block[3] = &unk_1E70FE2C0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = asyncCopy;
+    v11 = breadcrumbCopy;
     dispatch_async(internalQueue, block);
   }
 }

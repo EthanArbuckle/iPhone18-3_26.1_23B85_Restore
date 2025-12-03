@@ -4,32 +4,32 @@
 - (BOOL)controllerNeedsToRun;
 - (BuddyPasscodeController)init;
 - (void)controllerWasPopped;
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4;
-- (void)passcodeViewController:(id)a3 didSetPasscode:(id)a4;
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation;
+- (void)passcodeViewController:(id)controller didSetPasscode:(id)passcode;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyPasscodeController
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyPasscodeController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 effectiveBoolValueForSetting:MCFeaturePasscodeModificationAllowed];
+  managedConfiguration = [(BuddyPasscodeController *)self managedConfiguration];
+  v3 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeaturePasscodeModificationAllowed];
 
   if (v3 == 2)
   {
     return 0;
   }
 
-  v4 = [(BuddyPasscodeController *)self managedConfiguration];
-  v5 = [(MCProfileConnection *)v4 isPasscodeSet];
+  managedConfiguration2 = [(BuddyPasscodeController *)self managedConfiguration];
+  isPasscodeSet = [(MCProfileConnection *)managedConfiguration2 isPasscodeSet];
 
-  v14 = v5 & 1;
+  v14 = isPasscodeSet & 1;
   v13 = 0;
-  v6 = [(BuddyPasscodeController *)self buddyPreferences];
+  buddyPreferences = [(BuddyPasscodeController *)self buddyPreferences];
   v7 = 0;
-  if (([(BYPreferencesController *)v6 BOOLForKey:@"Payment2Presented"]& 1) == 0)
+  if (([(BYPreferencesController *)buddyPreferences BOOLForKey:@"Payment2Presented"]& 1) == 0)
   {
     v7 = MGGetBoolAnswer() & 1;
   }
@@ -73,28 +73,28 @@
 
 - (void)viewDidLoad
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  v2 = [(BuddyPasscodeController *)self proximitySetupController];
-  v3 = [(ProximitySetupController *)v2 information];
-  v4 = [(SASProximityInformation *)v3 appleID];
+  proximitySetupController = [(BuddyPasscodeController *)self proximitySetupController];
+  information = [(ProximitySetupController *)proximitySetupController information];
+  appleID = [(SASProximityInformation *)information appleID];
 
-  if (v4)
+  if (appleID)
   {
     objc_storeStrong(location, BYPrivacyAppleIDIdentifier);
   }
 
-  [(BuddyPasscodeBaseViewController *)v9 setIncludeHeaderAnimation:location[0] == 0];
-  v7.receiver = v9;
+  [(BuddyPasscodeBaseViewController *)selfCopy setIncludeHeaderAnimation:location[0] == 0];
+  v7.receiver = selfCopy;
   v7.super_class = BuddyPasscodeController;
   [(BuddyPasscodeBaseViewController *)&v7 viewDidLoad];
   if (location[0])
   {
     v6 = [OBPrivacyLinkController linkWithBundleIdentifier:location[0]];
     [v6 setDisplayCaptionText:0];
-    v5 = [(BuddyPasscodeController *)v9 buttonTray];
-    [v5 setPrivacyLinkController:v6];
+    buttonTray = [(BuddyPasscodeController *)selfCopy buttonTray];
+    [buttonTray setPrivacyLinkController:v6];
 
     objc_storeStrong(&v6, 0);
   }
@@ -102,25 +102,25 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = BuddyPasscodeController;
-  [(BuddyPasscodeBaseViewController *)&v7 viewWillAppear:a3];
-  v3 = [(BuddyPasscodeBaseViewController *)v10 flowItemDispositionProvider];
-  v4 = [(BuddyFlowItemDispositionProvider *)v3 dispositions]& 8;
+  [(BuddyPasscodeBaseViewController *)&v7 viewWillAppear:appear];
+  flowItemDispositionProvider = [(BuddyPasscodeBaseViewController *)selfCopy flowItemDispositionProvider];
+  v4 = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions]& 8;
 
   if (v4 == 8)
   {
-    v5 = [(BuddyPasscodeController *)v10 miscState];
-    [(BuddyMiscState *)v5 setHasPresentedPasscodeFlow:0];
+    miscState = [(BuddyPasscodeController *)selfCopy miscState];
+    [(BuddyMiscState *)miscState setHasPresentedPasscodeFlow:0];
   }
 
-  v6 = [(BuddyPasscodeController *)v10 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v6 clearActionForFeature:11];
+  paneFeatureAnalyticsManager = [(BuddyPasscodeController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:11];
 }
 
 - (BOOL)controllerAllowsNavigatingBack
@@ -137,68 +137,68 @@
   [(BYPreferencesController *)v2 removeObjectForKey:@"Passcode4Presented"];
 }
 
-- (void)passcodeViewController:(id)a3 didFinishWithPasscodeCreation:(id)a4
+- (void)passcodeViewController:(id)controller didFinishWithPasscodeCreation:(id)creation
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, creation);
   if (v13)
   {
-    v10 = [(BuddyPasscodeController *)v15 paneFeatureAnalyticsManager];
-    [(BYPaneFeatureAnalyticsManager *)v10 recordActionWithValue:&__kCFBooleanTrue forFeature:11];
+    paneFeatureAnalyticsManager = [(BuddyPasscodeController *)selfCopy paneFeatureAnalyticsManager];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanTrue forFeature:11];
   }
 
   else
   {
-    v5 = [(BuddyPasscodeBaseViewController *)v15 flowItemDispositionProvider];
-    v6 = [(BuddyFlowItemDispositionProvider *)v5 dispositions]& 8;
+    flowItemDispositionProvider = [(BuddyPasscodeBaseViewController *)selfCopy flowItemDispositionProvider];
+    v6 = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions]& 8;
 
     if (v6 == 8)
     {
-      v7 = [(BuddyPasscodeController *)v15 miscState];
-      [(BuddyMiscState *)v7 setHasPresentedPasscodeFlow:1];
+      miscState = [(BuddyPasscodeController *)selfCopy miscState];
+      [(BuddyMiscState *)miscState setHasPresentedPasscodeFlow:1];
     }
 
-    v8 = [(BuddyPasscodeController *)v15 flowSkipController];
-    [(BYFlowSkipController *)v8 didSkipFlow:BYFlowSkipIdentifierPasscode];
+    flowSkipController = [(BuddyPasscodeController *)selfCopy flowSkipController];
+    [(BYFlowSkipController *)flowSkipController didSkipFlow:BYFlowSkipIdentifierPasscode];
 
-    v9 = [(BuddyPasscodeController *)v15 paneFeatureAnalyticsManager];
-    [(BYPaneFeatureAnalyticsManager *)v9 recordActionWithValue:&__kCFBooleanFalse forFeature:11];
+    paneFeatureAnalyticsManager2 = [(BuddyPasscodeController *)selfCopy paneFeatureAnalyticsManager];
+    [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager2 recordActionWithValue:&__kCFBooleanFalse forFeature:11];
   }
 
-  v11 = [(BuddyPasscodeController *)v15 buddyPreferences];
-  [(BYPreferencesController *)v11 setObject:&__kCFBooleanTrue forKey:@"Passcode4Presented"];
+  buddyPreferences = [(BuddyPasscodeController *)selfCopy buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"Passcode4Presented"];
 
-  v12 = [(BuddyPasscodeController *)v15 delegate];
-  [(BFFFlowItemDelegate *)v12 flowItemDone:v15 nextItemClass:0];
+  delegate = [(BuddyPasscodeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy nextItemClass:0];
 
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)passcodeViewController:(id)a3 didSetPasscode:(id)a4
+- (void)passcodeViewController:(id)controller didSetPasscode:(id)passcode
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v5 = [(BuddyPasscodeBaseViewController *)v10 flowItemDispositionProvider];
-  v6 = [(BuddyFlowItemDispositionProvider *)v5 dispositions]& 8;
+  objc_storeStrong(&v8, passcode);
+  flowItemDispositionProvider = [(BuddyPasscodeBaseViewController *)selfCopy flowItemDispositionProvider];
+  v6 = [(BuddyFlowItemDispositionProvider *)flowItemDispositionProvider dispositions]& 8;
 
-  v7 = [(BuddyPasscodeController *)v10 passcodeCacheManager];
+  passcodeCacheManager = [(BuddyPasscodeController *)selfCopy passcodeCacheManager];
   if (v6 == 8)
   {
-    [(BYPasscodeCacheManager *)v7 cachePasscode:v8 retrievable:1];
+    [(BYPasscodeCacheManager *)passcodeCacheManager cachePasscode:v8 retrievable:1];
   }
 
   else
   {
-    [(BYPasscodeCacheManager *)v7 cachePasscode:v8];
+    [(BYPasscodeCacheManager *)passcodeCacheManager cachePasscode:v8];
   }
 
   BYSetupAssistantCreateAuthContext();

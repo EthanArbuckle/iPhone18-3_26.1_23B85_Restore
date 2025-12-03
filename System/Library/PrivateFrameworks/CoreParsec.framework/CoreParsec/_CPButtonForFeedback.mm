@@ -1,38 +1,38 @@
 @interface _CPButtonForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPButtonForFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPButtonForFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPButtonForFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     commandType = self->_commandType;
-    if (commandType == [v4 commandType])
+    if (commandType == [equalCopy commandType])
     {
-      v6 = [(_CPButtonForFeedback *)self commandDetail];
-      v7 = [v4 commandDetail];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      commandDetail = [(_CPButtonForFeedback *)self commandDetail];
+      commandDetail2 = [equalCopy commandDetail];
+      v8 = commandDetail2;
+      if ((commandDetail != 0) != (commandDetail2 == 0))
       {
-        v9 = [(_CPButtonForFeedback *)self commandDetail];
-        if (!v9)
+        commandDetail3 = [(_CPButtonForFeedback *)self commandDetail];
+        if (!commandDetail3)
         {
 
 LABEL_11:
           uniqueId = self->_uniqueId;
-          v14 = uniqueId == [v4 uniqueId];
+          v14 = uniqueId == [equalCopy uniqueId];
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPButtonForFeedback *)self commandDetail];
-        v12 = [v4 commandDetail];
-        v13 = [v11 isEqual:v12];
+        v10 = commandDetail3;
+        commandDetail4 = [(_CPButtonForFeedback *)self commandDetail];
+        commandDetail5 = [equalCopy commandDetail];
+        v13 = [commandDetail4 isEqual:commandDetail5];
 
         if (v13)
         {
@@ -52,18 +52,18 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPButtonForFeedback *)self commandType])
   {
     commandType = self->_commandType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_CPButtonForFeedback *)self commandDetail];
+  commandDetail = [(_CPButtonForFeedback *)self commandDetail];
 
-  if (v5)
+  if (commandDetail)
   {
     commandDetail = self->_commandDetail;
     PBDataWriterWriteStringField();
@@ -78,25 +78,25 @@ LABEL_9:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPButtonForFeedback)initWithFacade:(id)a3
+- (_CPButtonForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_CPButtonForFeedback *)self init];
   if (v5)
   {
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([facadeCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v4;
-      v7 = [v6 command];
-      -[_CPButtonForFeedback setCommandType:](v5, "setCommandType:", [v7 _cpCommandType]);
+      v6 = facadeCopy;
+      command = [v6 command];
+      -[_CPButtonForFeedback setCommandType:](v5, "setCommandType:", [command _cpCommandType]);
 
-      v8 = [v6 command];
+      command2 = [v6 command];
 
-      v9 = [v8 commandDetail];
-      [(_CPButtonForFeedback *)v5 setCommandDetail:v9];
+      commandDetail = [command2 commandDetail];
+      [(_CPButtonForFeedback *)v5 setCommandDetail:commandDetail];
     }
 
-    -[_CPButtonForFeedback setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+    -[_CPButtonForFeedback setUniqueId:](v5, "setUniqueId:", [facadeCopy uniqueId]);
     v10 = v5;
   }
 

@@ -1,14 +1,14 @@
 @interface TPTypedSignedData
-- (BOOL)checkSignatureWithKey:(id)a3;
-- (TPTypedSignedData)initWithData:(id)a3 key:(id)a4 signatureTypeName:(id)a5 error:(id *)a6;
-- (TPTypedSignedData)initWithData:(id)a3 sig:(id)a4 pubkey:(id)a5 sigTypeName:(id)a6;
+- (BOOL)checkSignatureWithKey:(id)key;
+- (TPTypedSignedData)initWithData:(id)data key:(id)key signatureTypeName:(id)name error:(id *)error;
+- (TPTypedSignedData)initWithData:(id)data sig:(id)sig pubkey:(id)pubkey sigTypeName:(id)name;
 @end
 
 @implementation TPTypedSignedData
 
-- (BOOL)checkSignatureWithKey:(id)a3
+- (BOOL)checkSignatureWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -17,17 +17,17 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [(TPTypedSignedData *)self sigValidationQueue];
+  sigValidationQueue = [(TPTypedSignedData *)self sigValidationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__TPTypedSignedData_checkSignatureWithKey___block_invoke;
   block[3] = &unk_279DEDC30;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v17 = v6;
   v18 = &v24;
   v19 = &v20;
-  dispatch_sync(v5, block);
+  dispatch_sync(sigValidationQueue, block);
 
   if (*(v25 + 24) == 1)
   {
@@ -37,11 +37,11 @@
   else
   {
     v8 = [(TPTypedSignedData *)self sig];
-    v9 = [(TPTypedSignedData *)self data];
-    v10 = [(TPTypedSignedData *)self sigTypeName];
-    v7 = checkTypesafeSignature(v6, v8, v9, v10);
+    data = [(TPTypedSignedData *)self data];
+    sigTypeName = [(TPTypedSignedData *)self sigTypeName];
+    v7 = checkTypesafeSignature(v6, v8, data, sigTypeName);
 
-    v11 = [(TPTypedSignedData *)self sigValidationQueue];
+    sigValidationQueue2 = [(TPTypedSignedData *)self sigValidationQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __43__TPTypedSignedData_checkSignatureWithKey___block_invoke_2;
@@ -49,7 +49,7 @@
     v13[4] = self;
     v14 = v6;
     v15 = v7;
-    dispatch_sync(v11, v13);
+    dispatch_sync(sigValidationQueue2, v13);
   }
 
   _Block_object_dispose(&v20, 8);
@@ -79,50 +79,50 @@ uint64_t __43__TPTypedSignedData_checkSignatureWithKey___block_invoke_2(uint64_t
   return [v3 setLastSigValidationResult:v2];
 }
 
-- (TPTypedSignedData)initWithData:(id)a3 key:(id)a4 signatureTypeName:(id)a5 error:(id *)a6
+- (TPTypedSignedData)initWithData:(id)data key:(id)key signatureTypeName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = typesafeSignature(v11, v10, v12, a6);
+  dataCopy = data;
+  keyCopy = key;
+  nameCopy = name;
+  v13 = typesafeSignature(keyCopy, dataCopy, nameCopy, error);
   if (v13)
   {
-    v14 = [v11 publicKey];
-    self = [(TPTypedSignedData *)self initWithData:v10 sig:v13 pubkey:v14 sigTypeName:v12];
+    publicKey = [keyCopy publicKey];
+    self = [(TPTypedSignedData *)self initWithData:dataCopy sig:v13 pubkey:publicKey sigTypeName:nameCopy];
 
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (TPTypedSignedData)initWithData:(id)a3 sig:(id)a4 pubkey:(id)a5 sigTypeName:(id)a6
+- (TPTypedSignedData)initWithData:(id)data sig:(id)sig pubkey:(id)pubkey sigTypeName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  sigCopy = sig;
+  pubkeyCopy = pubkey;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = TPTypedSignedData;
   v15 = [(TPTypedSignedData *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_data, a3);
-    objc_storeStrong(&v16->_sig, a4);
-    objc_storeStrong(&v16->_sigTypeName, a6);
-    objc_storeStrong(&v16->_lastSigValidationPubkey, a5);
-    v16->_lastSigValidationResult = v13 != 0;
+    objc_storeStrong(&v15->_data, data);
+    objc_storeStrong(&v16->_sig, sig);
+    objc_storeStrong(&v16->_sigTypeName, name);
+    objc_storeStrong(&v16->_lastSigValidationPubkey, pubkey);
+    v16->_lastSigValidationResult = pubkeyCopy != 0;
     v17 = objc_autoreleasePoolPush();
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.security.TPTypedSignedData_%@", v14];
-    v19 = [v18 UTF8String];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.security.TPTypedSignedData_%@", nameCopy];
+    uTF8String = [nameCopy UTF8String];
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v21 = dispatch_queue_create(v19, v20);
+    v21 = dispatch_queue_create(uTF8String, v20);
     sigValidationQueue = v16->_sigValidationQueue;
     v16->_sigValidationQueue = v21;
 

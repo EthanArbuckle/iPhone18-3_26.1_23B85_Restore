@@ -1,6 +1,6 @@
 @interface SBAlwaysOnPolicyCoordinator
 - (NSSet)activePolicies;
-- (void)_activatePolicy:(id)a3;
+- (void)_activatePolicy:(id)policy;
 - (void)activate;
 @end
 
@@ -28,22 +28,22 @@
   [(SBAlwaysOnPolicyCoordinator *)self _activatePolicy:v6];
 }
 
-- (void)_activatePolicy:(id)a3
+- (void)_activatePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   policies = self->_policies;
-  v8 = v4;
+  v8 = policyCopy;
   if (!policies)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_policies;
     self->_policies = v6;
 
-    v4 = v8;
+    policyCopy = v8;
     policies = self->_policies;
   }
 
-  [(NSMutableSet *)policies addObject:v4];
+  [(NSMutableSet *)policies addObject:policyCopy];
   [v8 activateAlwaysOnPolicy];
 }
 

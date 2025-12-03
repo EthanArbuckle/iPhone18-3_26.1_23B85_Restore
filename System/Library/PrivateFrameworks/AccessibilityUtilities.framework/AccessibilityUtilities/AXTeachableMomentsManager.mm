@@ -1,16 +1,16 @@
 @interface AXTeachableMomentsManager
-+ (BOOL)teachableMomentSeenForNotification:(id)a3;
++ (BOOL)teachableMomentSeenForNotification:(id)notification;
 + (id)_majorBuildVersion;
 + (id)_systemBuildVersion;
-+ (id)nameForFeature:(id)a3;
-+ (id)notificationTitleForFeature:(id)a3;
++ (id)nameForFeature:(id)feature;
++ (id)notificationTitleForFeature:(id)feature;
 + (id)sharedManager;
-+ (id)summaryForFeature:(id)a3;
-+ (id)teachableItemsForFeature:(id)a3;
-+ (void)markTeachableMomentSeenForNotification:(id)a3;
-- (id)_teachableItemsForFeature:(id)a3;
-- (id)_teachableItemsFromItems:(id)a3 feature:(id)a4;
-- (id)voiceControlNewLocalesDescriptionForDataItem:(id)a3 version:(id)a4;
++ (id)summaryForFeature:(id)feature;
++ (id)teachableItemsForFeature:(id)feature;
++ (void)markTeachableMomentSeenForNotification:(id)notification;
+- (id)_teachableItemsForFeature:(id)feature;
+- (id)_teachableItemsFromItems:(id)items feature:(id)feature;
+- (id)voiceControlNewLocalesDescriptionForDataItem:(id)item version:(id)version;
 @end
 
 @implementation AXTeachableMomentsManager
@@ -38,11 +38,11 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = MEMORY[0x1E696AD98];
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = v4;
-  if (v4)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v5 = processInfo;
+  if (processInfo)
   {
-    [v4 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
     v6 = v10;
   }
 
@@ -61,11 +61,11 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
 {
   v2 = MEMORY[0x1E696AEC0];
   v3 = MEMORY[0x1E696AD98];
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = v4;
-  if (v4)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v5 = processInfo;
+  if (processInfo)
   {
-    [v4 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
     v6 = v16;
   }
 
@@ -76,11 +76,11 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
 
   v7 = [v3 numberWithInteger:v6];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [MEMORY[0x1E696AE30] processInfo];
-  v10 = v9;
-  if (v9)
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  v10 = processInfo2;
+  if (processInfo2)
   {
-    [v9 operatingSystemVersion];
+    [processInfo2 operatingSystemVersion];
     v11 = v15;
   }
 
@@ -95,17 +95,17 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
   return v13;
 }
 
-- (id)_teachableItemsForFeature:(id)a3
+- (id)_teachableItemsForFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   data = self->_data;
   if (!data)
   {
     v6 = MEMORY[0x1E695DF20];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [objc_opt_class() _majorBuildVersion];
-    v10 = [v8 stringWithFormat:@"TeachableMoments-%@-%@", v9, @"iOS"];
+    _majorBuildVersion = [objc_opt_class() _majorBuildVersion];
+    v10 = [v8 stringWithFormat:@"TeachableMoments-%@-%@", _majorBuildVersion, @"iOS"];
     v11 = [v7 URLForResource:v10 withExtension:@"plist"];
     v12 = [v6 dictionaryWithContentsOfURL:v11];
     v13 = self->_data;
@@ -114,42 +114,42 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
     data = self->_data;
   }
 
-  v14 = [(NSDictionary *)data objectForKey:v4];
+  v14 = [(NSDictionary *)data objectForKey:featureCopy];
   v15 = __UIAccessibilitySafeClass();
 
   v16 = [v15 objectForKey:@"items"];
   v17 = __UIAccessibilitySafeClass();
 
-  v18 = [(AXTeachableMomentsManager *)self _teachableItemsFromItems:v17 feature:v4];
+  v18 = [(AXTeachableMomentsManager *)self _teachableItemsFromItems:v17 feature:featureCopy];
 
   return v18;
 }
 
-+ (id)summaryForFeature:(id)a3
++ (id)summaryForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [a1 _majorBuildVersion];
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_SUMMARY_%@", v4, v5];
+  featureCopy = feature;
+  _majorBuildVersion = [self _majorBuildVersion];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_SUMMARY_%@", featureCopy, _majorBuildVersion];
 
   v7 = LocalizedString(v6);
 
   return v7;
 }
 
-+ (id)nameForFeature:(id)a3
++ (id)nameForFeature:(id)feature
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_FEATURE_TITLE", a3];
-  v4 = LocalizedString(v3);
+  feature = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_FEATURE_TITLE", feature];
+  v4 = LocalizedString(feature);
 
   return v4;
 }
 
-+ (id)notificationTitleForFeature:(id)a3
++ (id)notificationTitleForFeature:(id)feature
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 _majorBuildVersion];
-  v7 = [v4 stringWithFormat:@"WhatsNew_%@_%@", v5, v6];
+  featureCopy = feature;
+  _majorBuildVersion = [self _majorBuildVersion];
+  v7 = [v4 stringWithFormat:@"WhatsNew_%@_%@", featureCopy, _majorBuildVersion];
 
   v8 = AXLocStringKeyForModel(v7);
   v9 = LocalizedString(v8);
@@ -157,24 +157,24 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
   return v9;
 }
 
-- (id)_teachableItemsFromItems:(id)a3 feature:(id)a4
+- (id)_teachableItemsFromItems:(id)items feature:(id)feature
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v31 = a4;
-  v27 = self;
-  v7 = [objc_opt_class() _majorBuildVersion];
+  itemsCopy = items;
+  featureCopy = feature;
+  selfCopy = self;
+  _majorBuildVersion = [objc_opt_class() _majorBuildVersion];
   v30 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v6;
+  obj = itemsCopy;
   v34 = [obj countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v34)
   {
     v32 = *v41;
-    v28 = v7;
+    v28 = _majorBuildVersion;
     do
     {
       for (i = 0; i != v34; ++i)
@@ -241,7 +241,7 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
 
         while (v14);
 
-        v7 = v28;
+        _majorBuildVersion = v28;
         v11 = v35;
         v9 = v33;
         if (v15)
@@ -249,8 +249,8 @@ uint64_t __42__AXTeachableMomentsManager_sharedManager__block_invoke()
 LABEL_21:
           v12 = objc_opt_new();
           v19 = [v9 objectForKeyedSubscript:@"title"];
-          LocalizedItemString(v19, v7);
-          v20 = v7;
+          LocalizedItemString(v19, _majorBuildVersion);
+          v20 = _majorBuildVersion;
           v22 = v21 = v9;
           [v12 setItemTitle:v22];
 
@@ -259,7 +259,7 @@ LABEL_21:
 
           if (v22)
           {
-            v24 = [(AXTeachableMomentsManager *)v27 voiceControlNewLocalesDescriptionForDataItem:v21 version:v20];
+            v24 = [(AXTeachableMomentsManager *)selfCopy voiceControlNewLocalesDescriptionForDataItem:v21 version:v20];
             [v12 setItemDescription:v24];
           }
 
@@ -270,10 +270,10 @@ LABEL_21:
             [v12 setItemDescription:v25];
           }
 
-          v7 = v20;
+          _majorBuildVersion = v20;
 
           [v12 setVersion:v20];
-          [v12 setFeature:v31];
+          [v12 setFeature:featureCopy];
           [v30 addObject:v12];
           v11 = v35;
 LABEL_25:
@@ -289,19 +289,19 @@ LABEL_25:
   return v30;
 }
 
-- (id)voiceControlNewLocalesDescriptionForDataItem:(id)a3 version:(id)a4
+- (id)voiceControlNewLocalesDescriptionForDataItem:(id)item version:(id)version
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"description"];
-  v7 = LocalizedItemString(v6, v5);
+  versionCopy = version;
+  v6 = [item objectForKeyedSubscript:@"description"];
+  v7 = LocalizedItemString(v6, versionCopy);
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __82__AXTeachableMomentsManager_voiceControlNewLocalesDescriptionForDataItem_version___block_invoke;
   v17 = &unk_1E71EB6E0;
-  v18 = v8;
-  v9 = v8;
+  v18 = array;
+  v9 = array;
   [&unk_1EFE97180 enumerateObjectsUsingBlock:&v14];
   v10 = objc_alloc_init(MEMORY[0x1E696AD08]);
   v11 = [v10 stringFromItems:v9];
@@ -321,18 +321,18 @@ void __82__AXTeachableMomentsManager_voiceControlNewLocalesDescriptionForDataIte
   [v2 addObject:v5];
 }
 
-+ (BOOL)teachableMomentSeenForNotification:(id)a3
++ (BOOL)teachableMomentSeenForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 teachableMomentsNotificationsSeen];
+  teachableMomentsNotificationsSeen = [v5 teachableMomentsNotificationsSeen];
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [teachableMomentsNotificationsSeen objectForKeyedSubscript:notificationCopy];
 
   if (v7)
   {
-    v8 = [a1 _majorBuildVersion];
-    v9 = [v8 compare:v7 options:64] != -1;
+    _majorBuildVersion = [self _majorBuildVersion];
+    v9 = [_majorBuildVersion compare:v7 options:64] != -1;
   }
 
   else
@@ -343,30 +343,30 @@ void __82__AXTeachableMomentsManager_voiceControlNewLocalesDescriptionForDataIte
   return v9;
 }
 
-+ (void)markTeachableMomentSeenForNotification:(id)a3
++ (void)markTeachableMomentSeenForNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 teachableMomentsNotificationsSeen];
-  v9 = [v6 mutableCopy];
+  teachableMomentsNotificationsSeen = [v5 teachableMomentsNotificationsSeen];
+  v9 = [teachableMomentsNotificationsSeen mutableCopy];
 
   if (!v9)
   {
     v9 = objc_opt_new();
   }
 
-  v7 = [a1 _majorBuildVersion];
-  [v9 setObject:v7 forKeyedSubscript:v4];
+  _majorBuildVersion = [self _majorBuildVersion];
+  [v9 setObject:_majorBuildVersion forKeyedSubscript:notificationCopy];
 
   v8 = +[AXSettings sharedInstance];
   [v8 setTeachableMomentsNotificationsSeen:v9];
 }
 
-+ (id)teachableItemsForFeature:(id)a3
++ (id)teachableItemsForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [a1 sharedManager];
-  v6 = [v5 _teachableItemsForFeature:v4];
+  featureCopy = feature;
+  sharedManager = [self sharedManager];
+  v6 = [sharedManager _teachableItemsForFeature:featureCopy];
 
   return v6;
 }

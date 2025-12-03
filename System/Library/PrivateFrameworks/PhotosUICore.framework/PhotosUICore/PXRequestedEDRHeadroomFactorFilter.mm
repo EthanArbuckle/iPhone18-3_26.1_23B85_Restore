@@ -1,8 +1,8 @@
 @interface PXRequestedEDRHeadroomFactorFilter
 - (BOOL)isPaused;
-- (PXRequestedEDRHeadroomFactorFilter)initWithInput:(double)a3;
+- (PXRequestedEDRHeadroomFactorFilter)initWithInput:(double)input;
 - (double)updatedOutput;
-- (void)setInput:(double)a3;
+- (void)setInput:(double)input;
 @end
 
 @implementation PXRequestedEDRHeadroomFactorFilter
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (void)setInput:(double)a3
+- (void)setInput:(double)input
 {
   v11.receiver = self;
   v11.super_class = PXRequestedEDRHeadroomFactorFilter;
   [(PXNumberFilter *)&v11 setInput:?];
   [(PXRequestedEDRHeadroomFactorFilter *)self highValue];
-  if (v5 <= a3)
+  if (v5 <= input)
   {
-    [(PXRequestedEDRHeadroomFactorFilter *)self setHighValue:a3];
+    [(PXRequestedEDRHeadroomFactorFilter *)self setHighValue:input];
     [(PXRequestedEDRHeadroomFactorFilter *)self setLastDecreaseTime:-1.79769313e308];
   }
 
@@ -76,7 +76,7 @@ void __47__PXRequestedEDRHeadroomFactorFilter_setInput___block_invoke(uint64_t a
   [WeakRetained invalidateOutput];
 }
 
-- (PXRequestedEDRHeadroomFactorFilter)initWithInput:(double)a3
+- (PXRequestedEDRHeadroomFactorFilter)initWithInput:(double)input
 {
   v9.receiver = self;
   v9.super_class = PXRequestedEDRHeadroomFactorFilter;
@@ -84,7 +84,7 @@ void __47__PXRequestedEDRHeadroomFactorFilter_setInput___block_invoke(uint64_t a
   v5 = v4;
   if (v4)
   {
-    v4->_highValue = a3;
+    v4->_highValue = input;
     v4->_lastDecreaseTime = -1.79769313e308;
     v6 = +[PXImageModulationSettings sharedInstance];
     [v6 EDRHeadroomRequestSustainDuration];

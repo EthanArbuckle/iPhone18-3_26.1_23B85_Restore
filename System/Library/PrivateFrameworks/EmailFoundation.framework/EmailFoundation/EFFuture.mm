@@ -1,20 +1,20 @@
 @interface EFFuture
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4;
-+ (id)_recover:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-+ (id)_then:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-+ (id)chain:(id)a3;
-+ (id)combine:(id)a3;
-+ (id)futureWithBlock:(id)a3;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithResult:(id)a3;
-+ (id)join:(id)a3;
-+ (id)lazyFutureWithBlock:(id)a3;
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures;
++ (id)_recover:(id)_recover withBlock:(id)block scheduler:(id)scheduler;
++ (id)_then:(id)_then withBlock:(id)block scheduler:(id)scheduler;
++ (id)chain:(id)chain;
++ (id)combine:(id)combine;
++ (id)futureWithBlock:(id)block;
++ (id)futureWithError:(id)error;
++ (id)futureWithResult:(id)result;
++ (id)join:(id)join;
++ (id)lazyFutureWithBlock:(id)block;
 + (id)nullFuture;
-+ (id)onScheduler:(id)a3 futureWithBlock:(id)a4;
-+ (id)onScheduler:(id)a3 lazyFutureWithBlock:(id)a4;
-+ (id)sequence:(id)a3;
-+ (void)_always:(id)a3 withBlock:(id)a4 scheduler:(id)a5;
-- (BOOL)finishWithResult:(id)a3 error:(id)a4;
++ (id)onScheduler:(id)scheduler futureWithBlock:(id)block;
++ (id)onScheduler:(id)scheduler lazyFutureWithBlock:(id)block;
++ (id)sequence:(id)sequence;
++ (void)_always:(id)_always withBlock:(id)block scheduler:(id)scheduler;
+- (BOOL)finishWithResult:(id)result error:(id)error;
 - (BOOL)isCancelled;
 - (BOOL)isFinished;
 - (BOOL)tryCancel;
@@ -25,24 +25,24 @@
 - (id)BOOLErrorCompletionHandlerAdapter;
 - (id)completionHandlerAdapter;
 - (id)errorOnlyCompletionHandlerAdapter;
-- (id)map:(id)a3;
-- (id)onScheduler:(id)a3 map:(id)a4;
-- (id)onScheduler:(id)a3 recover:(id)a4;
-- (id)onScheduler:(id)a3 then:(id)a4;
-- (id)recover:(id)a3;
-- (id)result:(id *)a3;
-- (id)resultBeforeDate:(id)a3 error:(id *)a4;
-- (id)resultIfAvailable:(id *)a3;
-- (id)resultWithTimeout:(double)a3 error:(id *)a4;
-- (id)then:(id)a3;
-- (void)_addCompletionBlock:(id)a3;
-- (void)_finishWithFuture:(id)a3;
+- (id)map:(id)map;
+- (id)onScheduler:(id)scheduler map:(id)map;
+- (id)onScheduler:(id)scheduler recover:(id)recover;
+- (id)onScheduler:(id)scheduler then:(id)then;
+- (id)recover:(id)recover;
+- (id)result:(id *)result;
+- (id)resultBeforeDate:(id)date error:(id *)error;
+- (id)resultIfAvailable:(id *)available;
+- (id)resultWithTimeout:(double)timeout error:(id *)error;
+- (id)then:(id)then;
+- (void)_addCompletionBlock:(id)block;
+- (void)_finishWithFuture:(id)future;
 - (void)_flushCompletionBlocks;
-- (void)addFailureBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
-- (void)always:(id)a3;
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4;
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4;
+- (void)addFailureBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
+- (void)always:(id)always;
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block;
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block;
 @end
 
 @implementation EFFuture
@@ -70,9 +70,9 @@
 - (BOOL)isFinished
 {
   [(NSConditionLock *)self->_stateLock lock];
-  v3 = [(EFFuture *)self _nts_isFinished];
+  _nts_isFinished = [(EFFuture *)self _nts_isFinished];
   [(NSConditionLock *)self->_stateLock unlock];
-  return v3;
+  return _nts_isFinished;
 }
 
 - (void)_flushCompletionBlocks
@@ -139,8 +139,8 @@
 
 - (BOOL)tryCancel
 {
-  v3 = [MEMORY[0x1E696ABC0] ef_cancelledError];
-  v4 = [(EFFuture *)self finishWithResult:0 error:v3];
+  ef_cancelledError = [MEMORY[0x1E696ABC0] ef_cancelledError];
+  v4 = [(EFFuture *)self finishWithResult:0 error:ef_cancelledError];
 
   if (v4)
   {
@@ -152,58 +152,58 @@
 
 + (id)nullFuture
 {
-  v3 = [MEMORY[0x1E695DFB0] null];
-  v4 = [a1 futureWithResult:v3];
+  null = [MEMORY[0x1E695DFB0] null];
+  v4 = [self futureWithResult:null];
 
   return v4;
 }
 
-+ (id)futureWithResult:(id)a3
++ (id)futureWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = +[EFPromise promise];
-  [v4 finishWithResult:v3];
-  v5 = [v4 future];
+  [v4 finishWithResult:resultCopy];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[EFPromise promise];
-  [v4 finishWithError:v3];
-  v5 = [v4 future];
+  [v4 finishWithError:errorCopy];
+  future = [v4 future];
 
-  return v5;
+  return future;
 }
 
-+ (id)futureWithBlock:(id)a3
++ (id)futureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[EFScheduler globalAsyncScheduler];
-  v6 = [a1 onScheduler:v5 futureWithBlock:v4];
+  v6 = [self onScheduler:v5 futureWithBlock:blockCopy];
 
   return v6;
 }
 
-+ (id)onScheduler:(id)a3 futureWithBlock:(id)a4
++ (id)onScheduler:(id)scheduler futureWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v7 = +[EFPromise promise];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __40__EFFuture_onScheduler_futureWithBlock___block_invoke;
   v15 = &unk_1E8248960;
-  v8 = v6;
+  v8 = blockCopy;
   v17 = v8;
   v9 = v7;
   v16 = v9;
-  [v5 performBlock:&v12];
-  v10 = [v9 future];
+  [schedulerCopy performBlock:&v12];
+  future = [v9 future];
 
-  return v10;
+  return future;
 }
 
 void __40__EFFuture_onScheduler_futureWithBlock___block_invoke(uint64_t a1)
@@ -215,70 +215,70 @@ void __40__EFFuture_onScheduler_futureWithBlock___block_invoke(uint64_t a1)
   [*(a1 + 32) finishWithResult:v3 error:v4];
 }
 
-+ (id)lazyFutureWithBlock:(id)a3
++ (id)lazyFutureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[EFScheduler immediateScheduler];
-  v6 = [a1 onScheduler:v5 lazyFutureWithBlock:v4];
+  v6 = [self onScheduler:v5 lazyFutureWithBlock:blockCopy];
 
   return v6;
 }
 
-+ (id)onScheduler:(id)a3 lazyFutureWithBlock:(id)a4
++ (id)onScheduler:(id)scheduler lazyFutureWithBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[EFLazyFuture alloc] initWithScheduler:v5 block:v6];
+  schedulerCopy = scheduler;
+  blockCopy = block;
+  v7 = [[EFLazyFuture alloc] initWithScheduler:schedulerCopy block:blockCopy];
 
   return v7;
 }
 
-+ (void)_always:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (void)_always:(id)_always withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  _alwaysCopy = _always;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __40__EFFuture__always_withBlock_scheduler___block_invoke;
   v14[3] = &unk_1E8248620;
-  v10 = v8;
+  v10 = blockCopy;
   v15 = v10;
-  [v7 onScheduler:v9 addSuccessBlock:v14];
+  [_alwaysCopy onScheduler:schedulerCopy addSuccessBlock:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40__EFFuture__always_withBlock_scheduler___block_invoke_2;
   v12[3] = &unk_1E8248988;
   v11 = v10;
   v13 = v11;
-  [v7 onScheduler:v9 addFailureBlock:v12];
+  [_alwaysCopy onScheduler:schedulerCopy addFailureBlock:v12];
 }
 
-+ (id)_then:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (id)_then:(id)_then withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  _thenCopy = _then;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10 = +[EFPromise promise];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __38__EFFuture__then_withBlock_scheduler___block_invoke;
   v18[3] = &unk_1E82489B0;
-  v11 = v8;
+  v11 = blockCopy;
   v20 = v11;
   v12 = v10;
   v19 = v12;
-  [v7 onScheduler:v9 addSuccessBlock:v18];
+  [_thenCopy onScheduler:schedulerCopy addSuccessBlock:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __38__EFFuture__then_withBlock_scheduler___block_invoke_2;
   v16[3] = &unk_1E82485A8;
   v13 = v12;
   v17 = v13;
-  [v7 onScheduler:v9 addFailureBlock:v16];
-  v14 = [v13 future];
+  [_thenCopy onScheduler:schedulerCopy addFailureBlock:v16];
+  future = [v13 future];
 
-  return v14;
+  return future;
 }
 
 void __38__EFFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
@@ -287,11 +287,11 @@ void __38__EFFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
   [*(a1 + 32) _finishWithFuture:?];
 }
 
-+ (id)_recover:(id)a3 withBlock:(id)a4 scheduler:(id)a5
++ (id)_recover:(id)_recover withBlock:(id)block scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  _recoverCopy = _recover;
+  blockCopy = block;
+  schedulerCopy = scheduler;
   v10 = +[EFPromise promise];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -299,19 +299,19 @@ void __38__EFFuture__then_withBlock_scheduler___block_invoke(uint64_t a1)
   v19[3] = &unk_1E8248648;
   v11 = v10;
   v20 = v11;
-  [v7 onScheduler:v9 addSuccessBlock:v19];
+  [_recoverCopy onScheduler:schedulerCopy addSuccessBlock:v19];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __41__EFFuture__recover_withBlock_scheduler___block_invoke_2;
   v16[3] = &unk_1E82489D8;
-  v12 = v8;
+  v12 = blockCopy;
   v18 = v12;
   v13 = v11;
   v17 = v13;
-  [v7 onScheduler:v9 addFailureBlock:v16];
-  v14 = [v13 future];
+  [_recoverCopy onScheduler:schedulerCopy addFailureBlock:v16];
+  future = [v13 future];
 
-  return v14;
+  return future;
 }
 
 void __41__EFFuture__recover_withBlock_scheduler___block_invoke_2(uint64_t a1)
@@ -320,32 +320,32 @@ void __41__EFFuture__recover_withBlock_scheduler___block_invoke_2(uint64_t a1)
   [*(a1 + 32) _finishWithFuture:?];
 }
 
-+ (id)chain:(id)a3
++ (id)chain:(id)chain
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if ([v4 count] == 1)
+  chainCopy = chain;
+  firstObject = [chainCopy firstObject];
+  if ([chainCopy count] == 1)
   {
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
   {
-    v7 = [v4 ef_tail];
+    ef_tail = [chainCopy ef_tail];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __18__EFFuture_chain___block_invoke;
     v16[3] = &unk_1E8248A00;
-    v18 = a1;
-    v8 = v7;
+    selfCopy = self;
+    v8 = ef_tail;
     v17 = v8;
-    v9 = [v5 then:v16];
+    v9 = [firstObject then:v16];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __18__EFFuture_chain___block_invoke_2;
     v13[3] = &unk_1E8248A28;
-    v15 = a1;
+    selfCopy2 = self;
     v10 = v8;
     v14 = v10;
     v11 = [v9 recover:v13];
@@ -383,34 +383,34 @@ id __18__EFFuture_chain___block_invoke_2(uint64_t a1)
   return v1;
 }
 
-+ (id)join:(id)a3
++ (id)join:(id)join
 {
-  v3 = [a1 _join:a3 ignoreFailures:0];
+  v3 = [self _join:join ignoreFailures:0];
 
   return v3;
 }
 
-+ (id)combine:(id)a3
++ (id)combine:(id)combine
 {
-  v3 = [a1 _join:a3 ignoreFailures:1];
+  v3 = [self _join:combine ignoreFailures:1];
 
   return v3;
 }
 
-+ (id)_join:(id)a3 ignoreFailures:(BOOL)a4
++ (id)_join:(id)_join ignoreFailures:(BOOL)failures
 {
-  v5 = a3;
-  if ([v5 count])
+  _joinCopy = _join;
+  if ([_joinCopy count])
   {
     v6 = +[EFPromise promise];
-    v7 = [v5 count];
+    v7 = [_joinCopy count];
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
     if (v7)
     {
       for (i = 0; i != v7; ++i)
       {
-        v10 = [MEMORY[0x1E695DFB0] null];
-        [v8 setObject:v10 atIndexedSubscript:i];
+        null = [MEMORY[0x1E695DFB0] null];
+        [v8 setObject:null atIndexedSubscript:i];
       }
     }
 
@@ -426,10 +426,10 @@ id __18__EFFuture_chain___block_invoke_2(uint64_t a1)
     v32 = v14;
     v15 = v8;
     v33 = v15;
-    v35 = a4;
+    failuresCopy = failures;
     v16 = v6;
     v34 = v16;
-    [v5 enumerateObjectsUsingBlock:v30];
+    [_joinCopy enumerateObjectsUsingBlock:v30];
     v17 = dispatch_get_global_queue(21, 0);
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
@@ -443,15 +443,15 @@ id __18__EFFuture_chain___block_invoke_2(uint64_t a1)
     v29 = v20;
     dispatch_group_notify(v13, v17, &v23);
 
-    v21 = [v19 future];
+    future = [v19 future];
   }
 
   else
   {
-    v21 = [EFFuture futureWithResult:MEMORY[0x1E695E0F0]];
+    future = [EFFuture futureWithResult:MEMORY[0x1E695E0F0]];
   }
 
-  return v21;
+  return future;
 }
 
 void __33__EFFuture__join_ignoreFailures___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -506,32 +506,32 @@ uint64_t __33__EFFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
   return [v2 unlock];
 }
 
-+ (id)sequence:(id)a3
++ (id)sequence:(id)sequence
 {
   v26 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  if ([v15 count])
+  sequenceCopy = sequence;
+  if ([sequenceCopy count])
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [v15 firstObject];
+    array = [MEMORY[0x1E695DF70] array];
+    firstObject = [sequenceCopy firstObject];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [v15 ef_tail];
-    v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    ef_tail = [sequenceCopy ef_tail];
+    v6 = [ef_tail countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v6)
     {
       v7 = *v22;
       do
       {
         v8 = 0;
-        v9 = v4;
+        v9 = firstObject;
         do
         {
           if (*v22 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(ef_tail);
           }
 
           v10 = *(*(&v21 + 1) + 8 * v8);
@@ -539,16 +539,16 @@ uint64_t __33__EFFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
           v18[1] = 3221225472;
           v18[2] = __21__EFFuture_sequence___block_invoke;
           v18[3] = &unk_1E8248AF0;
-          v19 = v3;
+          v19 = array;
           v20 = v10;
-          v4 = [v9 then:v18];
+          firstObject = [v9 then:v18];
 
           ++v8;
-          v9 = v4;
+          v9 = firstObject;
         }
 
         while (v6 != v8);
-        v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v6 = [ef_tail countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v6);
@@ -558,9 +558,9 @@ uint64_t __33__EFFuture__join_ignoreFailures___block_invoke_4(uint64_t a1)
     v16[1] = 3221225472;
     v16[2] = __21__EFFuture_sequence___block_invoke_2;
     v16[3] = &unk_1E8248B18;
-    v11 = v3;
+    v11 = array;
     v17 = v11;
-    v12 = [v4 then:v16];
+    v12 = [firstObject then:v16];
   }
 
   else
@@ -590,70 +590,70 @@ id __21__EFFuture_sequence___block_invoke_2(uint64_t a1, void *a2)
   return v4;
 }
 
-- (id)result:(id *)a3
+- (id)result:(id *)result
 {
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [(EFFuture *)self resultBeforeDate:v5 error:a3];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v6 = [(EFFuture *)self resultBeforeDate:distantFuture error:result];
 
   return v6;
 }
 
-- (id)resultWithTimeout:(double)a3 error:(id *)a4
+- (id)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-  v7 = [(EFFuture *)self resultBeforeDate:v6 error:a4];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
+  v7 = [(EFFuture *)self resultBeforeDate:v6 error:error];
 
   return v7;
 }
 
-- (id)resultIfAvailable:(id *)a3
+- (id)resultIfAvailable:(id *)available
 {
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  v6 = [(EFFuture *)self resultBeforeDate:v5 error:a3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v6 = [(EFFuture *)self resultBeforeDate:distantPast error:available];
 
   return v6;
 }
 
-- (id)resultBeforeDate:(id)a3 error:(id *)a4
+- (id)resultBeforeDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AF00] isMainThread];
-  if (v7)
+  dateCopy = date;
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+  if (isMainThread)
   {
-    v8 = [(EFFuture *)self delegate];
-    [v8 didStartBlockingMainThreadForFuture:self];
+    delegate = [(EFFuture *)self delegate];
+    [delegate didStartBlockingMainThreadForFuture:self];
   }
 
-  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:v6])
+  if ([(NSConditionLock *)self->_stateLock lockWhenCondition:1 beforeDate:dateCopy])
   {
     v9 = self->_result;
     v10 = self->_error;
     [(NSConditionLock *)self->_stateLock unlock];
-    if (v7)
+    if (isMainThread)
     {
-      v11 = [(EFFuture *)self delegate];
-      [v11 didFinishBlockingMainThreadForFuture:self];
+      delegate2 = [(EFFuture *)self delegate];
+      [delegate2 didFinishBlockingMainThreadForFuture:self];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    if (v7)
+    if (isMainThread)
     {
-      v13 = [(EFFuture *)self delegate];
-      [v13 didFinishBlockingMainThreadForFuture:self];
+      delegate3 = [(EFFuture *)self delegate];
+      [delegate3 didFinishBlockingMainThreadForFuture:self];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] ef_timeoutError];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -670,33 +670,33 @@ id __21__EFFuture_sequence___block_invoke_2(uint64_t a1, void *a2)
   [(NSConditionLock *)self->_stateLock lock];
   if ([(EFFuture *)self _nts_isFinished])
   {
-    v3 = [(NSError *)self->_error ef_isCancelledError];
+    ef_isCancelledError = [(NSError *)self->_error ef_isCancelledError];
   }
 
   else
   {
-    v3 = 0;
+    ef_isCancelledError = 0;
   }
 
   [(NSConditionLock *)self->_stateLock unlock];
-  return v3;
+  return ef_isCancelledError;
 }
 
-- (BOOL)finishWithResult:(id)a3 error:(id)a4
+- (BOOL)finishWithResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   [(NSConditionLock *)self->_stateLock lock];
-  v9 = [(EFFuture *)self _nts_isFinished];
-  if (v9)
+  _nts_isFinished = [(EFFuture *)self _nts_isFinished];
+  if (_nts_isFinished)
   {
     [(NSConditionLock *)self->_stateLock unlock];
   }
 
   else
   {
-    objc_storeStrong(&self->_result, a3);
-    v10 = [v8 copy];
+    objc_storeStrong(&self->_result, result);
+    v10 = [errorCopy copy];
     error = self->_error;
     self->_error = v10;
 
@@ -704,24 +704,24 @@ id __21__EFFuture_sequence___block_invoke_2(uint64_t a1, void *a2)
     [(EFFuture *)self _flushCompletionBlocks];
   }
 
-  return !v9;
+  return !_nts_isFinished;
 }
 
-- (void)_finishWithFuture:(id)a3
+- (void)_finishWithFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__EFFuture__finishWithFuture___block_invoke;
   v6[3] = &unk_1E8248648;
   v6[4] = self;
-  [v4 addSuccessBlock:v6];
+  [futureCopy addSuccessBlock:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __30__EFFuture__finishWithFuture___block_invoke_2;
   v5[3] = &unk_1E82485A8;
   v5[4] = self;
-  [v4 addFailureBlock:v5];
+  [futureCopy addFailureBlock:v5];
 }
 
 - (id)BOOLErrorCompletionHandlerAdapter
@@ -815,12 +815,12 @@ void __38__EFFuture_firstResultObserverAdapter__block_invoke_2(uint64_t a1)
 
 - (EFObserver)resultsObserverAdapter
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __34__EFFuture_resultsObserverAdapter__block_invoke;
   v10[3] = &unk_1E8248648;
-  v11 = v3;
+  v11 = array;
   v7[4] = self;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -838,15 +838,15 @@ void __38__EFFuture_firstResultObserverAdapter__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __28__EFFuture_addSuccessBlock___block_invoke;
   aBlock[3] = &unk_1E8248B90;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = _Block_copy(aBlock);
   [(EFFuture *)self _addCompletionBlock:v6];
 }
@@ -860,18 +860,18 @@ void __28__EFFuture_addSuccessBlock___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)onScheduler:(id)a3 addSuccessBlock:(id)a4
+- (void)onScheduler:(id)scheduler addSuccessBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__EFFuture_onScheduler_addSuccessBlock___block_invoke;
   v10[3] = &unk_1E8248BB8;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(EFFuture *)self addSuccessBlock:v10];
 }
 
@@ -890,15 +890,15 @@ void __40__EFFuture_onScheduler_addSuccessBlock___block_invoke(uint64_t a1, void
   [v4 performBlock:v7];
 }
 
-- (void)addFailureBlock:(id)a3
+- (void)addFailureBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __28__EFFuture_addFailureBlock___block_invoke;
   aBlock[3] = &unk_1E8248B90;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = _Block_copy(aBlock);
   [(EFFuture *)self _addCompletionBlock:v6];
 }
@@ -913,18 +913,18 @@ void __28__EFFuture_addFailureBlock___block_invoke(uint64_t a1, void *a2, void *
   }
 }
 
-- (void)onScheduler:(id)a3 addFailureBlock:(id)a4
+- (void)onScheduler:(id)scheduler addFailureBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__EFFuture_onScheduler_addFailureBlock___block_invoke;
   v10[3] = &unk_1E8248BE0;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = schedulerCopy;
+  v12 = blockCopy;
+  v8 = blockCopy;
+  v9 = schedulerCopy;
   [(EFFuture *)self addFailureBlock:v10];
 }
 
@@ -943,12 +943,12 @@ void __40__EFFuture_onScheduler_addFailureBlock___block_invoke(uint64_t a1, void
   [v4 performBlock:v7];
 }
 
-- (void)_addCompletionBlock:(id)a3
+- (void)_addCompletionBlock:(id)block
 {
-  aBlock = a3;
+  aBlock = block;
   [(NSConditionLock *)self->_stateLock lock];
-  v4 = [(EFFuture *)self _nts_isFinished];
-  if (!v4)
+  _nts_isFinished = [(EFFuture *)self _nts_isFinished];
+  if (!_nts_isFinished)
   {
     completionBlocks = self->_completionBlocks;
     v6 = _Block_copy(aBlock);
@@ -956,70 +956,70 @@ void __40__EFFuture_onScheduler_addFailureBlock___block_invoke(uint64_t a1, void
   }
 
   [(NSConditionLock *)self->_stateLock unlock];
-  if (v4)
+  if (_nts_isFinished)
   {
     (*(aBlock + 2))(aBlock, self->_result, self->_error);
   }
 }
 
-- (void)always:(id)a3
+- (void)always:(id)always
 {
-  v5 = a3;
+  alwaysCopy = always;
   v4 = +[EFScheduler immediateScheduler];
-  [(EFFuture *)self onScheduler:v4 always:v5];
+  [(EFFuture *)self onScheduler:v4 always:alwaysCopy];
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
-  v4 = a3;
+  thenCopy = then;
   v5 = +[EFScheduler immediateScheduler];
-  v6 = [(EFFuture *)self onScheduler:v5 then:v4];
+  v6 = [(EFFuture *)self onScheduler:v5 then:thenCopy];
 
   return v6;
 }
 
-- (id)onScheduler:(id)a3 then:(id)a4
+- (id)onScheduler:(id)scheduler then:(id)then
 {
-  v4 = [EFFuture _then:self withBlock:a4 scheduler:a3];
+  v4 = [EFFuture _then:self withBlock:then scheduler:scheduler];
 
   return v4;
 }
 
-- (id)recover:(id)a3
+- (id)recover:(id)recover
 {
-  v4 = a3;
+  recoverCopy = recover;
   v5 = +[EFScheduler immediateScheduler];
-  v6 = [(EFFuture *)self onScheduler:v5 recover:v4];
+  v6 = [(EFFuture *)self onScheduler:v5 recover:recoverCopy];
 
   return v6;
 }
 
-- (id)onScheduler:(id)a3 recover:(id)a4
+- (id)onScheduler:(id)scheduler recover:(id)recover
 {
-  v4 = [EFFuture _recover:self withBlock:a4 scheduler:a3];
+  v4 = [EFFuture _recover:self withBlock:recover scheduler:scheduler];
 
   return v4;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = +[EFScheduler immediateScheduler];
-  v6 = [(EFFuture *)self onScheduler:v5 map:v4];
+  v6 = [(EFFuture *)self onScheduler:v5 map:mapCopy];
 
   return v6;
 }
 
-- (id)onScheduler:(id)a3 map:(id)a4
+- (id)onScheduler:(id)scheduler map:(id)map
 {
-  v6 = a4;
+  mapCopy = map;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __28__EFFuture_onScheduler_map___block_invoke;
   v10[3] = &unk_1E8248C08;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(EFFuture *)self onScheduler:a3 then:v10];
+  v11 = mapCopy;
+  v7 = mapCopy;
+  v8 = [(EFFuture *)self onScheduler:scheduler then:v10];
 
   return v8;
 }

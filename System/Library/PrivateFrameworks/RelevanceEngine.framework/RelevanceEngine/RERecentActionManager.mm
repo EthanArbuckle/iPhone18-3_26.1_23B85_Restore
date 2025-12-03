@@ -1,13 +1,13 @@
 @interface RERecentActionManager
-- (BOOL)actionWasPerformedLocally:(id)a3;
-- (id)_dataForAction:(id)a3;
+- (BOOL)actionWasPerformedLocally:(id)locally;
+- (id)_dataForAction:(id)action;
 - (id)_init;
-- (id)lastPerformedDateForAction:(id)a3;
-- (unint64_t)actionNumberOfTimesPeformedToday:(id)a3;
-- (void)_handleRecentActionNotification:(id)a3;
-- (void)_storePerformAction:(id)a3 date:(id)a4 remote:(BOOL)a5;
+- (id)lastPerformedDateForAction:(id)action;
+- (unint64_t)actionNumberOfTimesPeformedToday:(id)today;
+- (void)_handleRecentActionNotification:(id)notification;
+- (void)_storePerformAction:(id)action date:(id)date remote:(BOOL)remote;
 - (void)dealloc;
-- (void)didPerformAction:(id)a3;
+- (void)didPerformAction:(id)action;
 @end
 
 @implementation RERecentActionManager
@@ -16,65 +16,65 @@
 {
   v11.receiver = self;
   v11.super_class = RERecentActionManager;
-  v2 = [(RESingleton *)&v11 _init];
-  if (v2)
+  _init = [(RESingleton *)&v11 _init];
+  if (_init)
   {
     v3 = objc_opt_new();
-    v4 = v2[1];
-    v2[1] = v3;
+    v4 = _init[1];
+    _init[1] = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = v2[2];
-    v2[2] = v5;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v6 = _init[2];
+    _init[2] = dictionary;
 
     v7 = +[REPredictedActionServer sharedInstance];
-    v8 = v2[3];
-    v2[3] = v7;
+    v8 = _init[3];
+    _init[3] = v7;
 
-    v9 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v9 addObserver:v2 selector:sel__handleRecentActionNotification_ name:@"RERecentDonatedActionWasPerformedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:_init selector:sel__handleRecentActionNotification_ name:@"RERecentDonatedActionWasPerformedNotification" object:0];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RERecentActionManager;
   [(RERecentActionManager *)&v4 dealloc];
 }
 
-- (void)didPerformAction:(id)a3
+- (void)didPerformAction:(id)action
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [(RERecentActionManager *)self _storePerformAction:v5 date:v6 remote:0];
+  actionCopy = action;
+  date = [v4 date];
+  [(RERecentActionManager *)self _storePerformAction:actionCopy date:date remote:0];
 }
 
-- (void)_storePerformAction:(id)a3 date:(id)a4 remote:(BOOL)a5
+- (void)_storePerformAction:(id)action date:(id)date remote:(BOOL)remote
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  actionCopy = action;
+  dateCopy = date;
+  if (actionCopy)
   {
     objc_initWeak(&location, self);
     server = self->_server;
-    v11 = [v8 bundleIdentifier];
-    v12 = [v8 actionIdentifier];
+    bundleIdentifier = [actionCopy bundleIdentifier];
+    actionIdentifier = [actionCopy actionIdentifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__RERecentActionManager__storePerformAction_date_remote___block_invoke;
     v13[3] = &unk_2785FDC10;
     objc_copyWeak(&v16, &location);
-    v14 = v9;
-    v17 = a5;
-    v15 = v8;
-    [(REPredictedActionServer *)server fetchPerformedTodayCountForActionWithBundleIdentifer:v11 actionIdentifier:v12 completion:v13];
+    v14 = dateCopy;
+    remoteCopy = remote;
+    v15 = actionCopy;
+    [(REPredictedActionServer *)server fetchPerformedTodayCountForActionWithBundleIdentifer:bundleIdentifier actionIdentifier:actionIdentifier completion:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -144,54 +144,54 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dataForAction:(id)a3
+- (id)_dataForAction:(id)action
 {
   lock = self->_lock;
-  v5 = a3;
+  actionCopy = action;
   [(NSLock *)lock lock];
-  v6 = [(NSMutableDictionary *)self->_dateValues objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_dateValues objectForKeyedSubscript:actionCopy];
 
   [(NSLock *)self->_lock unlock];
 
   return v6;
 }
 
-- (id)lastPerformedDateForAction:(id)a3
+- (id)lastPerformedDateForAction:(id)action
 {
-  v3 = [(RERecentActionManager *)self _dataForAction:a3];
-  v4 = [v3 date];
+  v3 = [(RERecentActionManager *)self _dataForAction:action];
+  date = [v3 date];
 
-  return v4;
+  return date;
 }
 
-- (BOOL)actionWasPerformedLocally:(id)a3
+- (BOOL)actionWasPerformedLocally:(id)locally
 {
-  v3 = [(RERecentActionManager *)self _dataForAction:a3];
-  v4 = [v3 remote];
+  v3 = [(RERecentActionManager *)self _dataForAction:locally];
+  remote = [v3 remote];
 
-  return v4 ^ 1;
+  return remote ^ 1;
 }
 
-- (unint64_t)actionNumberOfTimesPeformedToday:(id)a3
+- (unint64_t)actionNumberOfTimesPeformedToday:(id)today
 {
-  v3 = [(RERecentActionManager *)self _dataForAction:a3];
+  v3 = [(RERecentActionManager *)self _dataForAction:today];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (void)_handleRecentActionNotification:(id)a3
+- (void)_handleRecentActionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v11 = [v5 objectForKeyedSubscript:@"RERecentDonatedActionBundleIdentifierKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"RERecentDonatedActionBundleIdentifierKey"];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"RERecentDonatedActionIdentifierKey"];
+  userInfo2 = [notificationCopy userInfo];
+  v7 = [userInfo2 objectForKeyedSubscript:@"RERecentDonatedActionIdentifierKey"];
 
-  v8 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"RERecentDonatedActionDateKey"];
+  v9 = [userInfo3 objectForKeyedSubscript:@"RERecentDonatedActionDateKey"];
 
   v10 = +[RERecentAction actionWithBundleIdentifier:actionIdentifier:](RERecentAction, "actionWithBundleIdentifier:actionIdentifier:", v11, [v7 unsignedLongLongValue]);
   [(RERecentActionManager *)self _storePerformAction:v10 date:v9 remote:1];

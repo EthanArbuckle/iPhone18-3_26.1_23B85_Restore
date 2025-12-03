@@ -3,8 +3,8 @@
 + (id)mediumLengthFeature;
 + (id)shortLengthFeature;
 - (FCArticleLengthFeature)init;
-- (FCArticleLengthFeature)initWithLengthIdentifier:(id)a3;
-- (FCArticleLengthFeature)initWithPersonalizationIdentifier:(id)a3;
+- (FCArticleLengthFeature)initWithLengthIdentifier:(id)identifier;
+- (FCArticleLengthFeature)initWithPersonalizationIdentifier:(id)identifier;
 @end
 
 @implementation FCArticleLengthFeature
@@ -99,42 +99,42 @@ uint64_t __43__FCArticleLengthFeature_longLengthFeature__block_invoke()
   objc_exception_throw(v6);
 }
 
-- (FCArticleLengthFeature)initWithLengthIdentifier:(id)a3
+- (FCArticleLengthFeature)initWithLengthIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = FCArticleLengthFeature;
   v5 = [(FCPersonalizationFeature *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(FCArticleLengthFeature *)v5 setLengthID:v4];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"fa0", @"+", v4];
+    [(FCArticleLengthFeature *)v5 setLengthID:identifierCopy];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", @"fa0", @"+", identifierCopy];
     personalizationIdentifier = v6->super._personalizationIdentifier;
-    v6->super._personalizationIdentifier = v7;
+    v6->super._personalizationIdentifier = identifierCopy;
   }
 
   return v6;
 }
 
-- (FCArticleLengthFeature)initWithPersonalizationIdentifier:(id)a3
+- (FCArticleLengthFeature)initWithPersonalizationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 rangeOfString:@"+"];
+  identifierCopy = identifier;
+  v5 = [identifierCopy rangeOfString:@"+"];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v8 = [v4 substringWithRange:{v5 + v6, objc_msgSend(v4, "length") - (v5 + v6)}];
+    v8 = [identifierCopy substringWithRange:{v5 + v6, objc_msgSend(identifierCopy, "length") - (v5 + v6)}];
     self = [(FCArticleLengthFeature *)self initWithLengthIdentifier:v8];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

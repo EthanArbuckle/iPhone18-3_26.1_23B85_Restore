@@ -1,46 +1,46 @@
 @interface NSError
 + (NSError)errorWithDomain:(NSErrorDomain)domain code:(NSInteger)code userInfo:(NSDictionary *)dict;
-+ (id)_cocoaErrorWithCode:(int64_t)a3 path:(id)a4 url:(id)a5 underlying:(id)a6 variant:(id)a7 source:(id)a8 destination:(id)a9;
-+ (id)_readCorruptErrorWithFormat:(id)a3;
-+ (id)_web_errorWithDomain:(id)a3 code:(int64_t)a4 URL:(id)a5;
-+ (id)_web_errorWithDomain:(id)a3 code:(int64_t)a4 failingURL:(id)a5;
++ (id)_cocoaErrorWithCode:(int64_t)code path:(id)path url:(id)url underlying:(id)underlying variant:(id)variant source:(id)source destination:(id)destination;
++ (id)_readCorruptErrorWithFormat:(id)format;
++ (id)_web_errorWithDomain:(id)domain code:(int64_t)code URL:(id)l;
++ (id)_web_errorWithDomain:(id)domain code:(int64_t)code failingURL:(id)l;
 + (void)_registerBuiltInFormatters;
-+ (void)_registerFormatter:(void *)a3 forErrorKey:(id)a4 parameters:(const char *)a5;
-+ (void)_web_addErrorsWithCodesAndDescriptions:(id)a3 inDomain:(id)a4;
++ (void)_registerFormatter:(void *)formatter forErrorKey:(id)key parameters:(const char *)parameters;
++ (void)_web_addErrorsWithCodesAndDescriptions:(id)descriptions inDomain:(id)domain;
 + (void)setUserInfoValueProviderForDomain:(NSErrorDomain)errorDomain provider:(void *)provider;
 + (void)userInfoValueProviderForDomain:(NSErrorDomain)errorDomain;
-- (BOOL)_web_errorIsInDomain:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_web_errorIsInDomain:(id)domain;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)localizedRecoveryOptions;
 - (NSArray)underlyingErrors;
 - (NSDictionary)userInfo;
 - (NSError)init;
-- (NSError)initWithCoder:(id)a3;
+- (NSError)initWithCoder:(id)coder;
 - (NSError)initWithDomain:(NSErrorDomain)domain code:(NSInteger)code userInfo:(NSDictionary *)dict;
 - (NSErrorDomain)domain;
 - (NSString)helpAnchor;
 - (NSString)localizedDescription;
 - (NSString)localizedFailureReason;
 - (NSString)localizedRecoverySuggestion;
-- (__CFString)_retainedUserInfoCallBackForKey:(id)a3;
+- (__CFString)_retainedUserInfoCallBackForKey:(id)key;
 - (id)_callStackReturnAddresses;
-- (id)_cocoaErrorString:(id)a3;
-- (id)_cocoaErrorString:(id)a3 fromBundle:(id)a4 tableName:(id)a5;
-- (id)_cocoaErrorStringWithKind:(id)a3;
-- (id)_cocoaErrorStringWithKind:(id)a3 variant:(id)a4;
-- (id)_formatCocoaErrorString:(id)a3 parameters:(const char *)a4 applicableFormatters:(id *)a5 count:(int64_t)a6;
+- (id)_cocoaErrorString:(id)string;
+- (id)_cocoaErrorString:(id)string fromBundle:(id)bundle tableName:(id)name;
+- (id)_cocoaErrorStringWithKind:(id)kind;
+- (id)_cocoaErrorStringWithKind:(id)kind variant:(id)variant;
+- (id)_formatCocoaErrorString:(id)string parameters:(const char *)parameters applicableFormatters:(id *)formatters count:(int64_t)count;
 - (id)_web_failingURL;
-- (id)_web_initWithDomain:(id)a3 code:(int64_t)a4 failingURL:(id)a5;
-- (id)_web_initWithDomain_nowarn:(id)a3 code:(int64_t)a4 URL:(id)a5;
+- (id)_web_initWithDomain:(id)domain code:(int64_t)code failingURL:(id)l;
+- (id)_web_initWithDomain_nowarn:(id)domain_nowarn code:(int64_t)code URL:(id)l;
 - (id)_web_localizedDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)recoveryAttempter;
 - (id)redactedDescription;
-- (id)replacementObjectForPortCoder:(id)a3;
-- (int64_t)_collectApplicableUserInfoFormatters:(id *)a3 max:(int64_t)a4;
+- (id)replacementObjectForPortCoder:(id)coder;
+- (int64_t)_collectApplicableUserInfoFormatters:(id *)formatters max:(int64_t)max;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSError
@@ -165,11 +165,11 @@ uint64_t __53__NSError_NSErrorPrivate___registerBuiltInFormatters__block_invoke(
   v3 = [(NSDictionary *)[(NSError *)self userInfo] objectForKey:@"NSUnderlyingError"];
   v4 = [(NSDictionary *)[(NSError *)self userInfo] objectForKey:@"NSMultipleUnderlyingErrorsKey"];
   v5 = [(NSDictionary *)[(NSError *)self userInfo] objectForKey:@"NSDetailedErrors"];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSArray *)v6 addObject:v3];
+    [(NSArray *)array addObject:v3];
   }
 
   v26 = 0u;
@@ -195,7 +195,7 @@ uint64_t __53__NSError_NSErrorPrivate___registerBuiltInFormatters__block_invoke(
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(NSArray *)v6 addObject:v11];
+          [(NSArray *)array addObject:v11];
         }
 
         ++v10;
@@ -231,7 +231,7 @@ uint64_t __53__NSError_NSErrorPrivate___registerBuiltInFormatters__block_invoke(
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(NSArray *)v6 addObject:v16];
+          [(NSArray *)array addObject:v16];
         }
 
         ++v15;
@@ -244,7 +244,7 @@ uint64_t __53__NSError_NSErrorPrivate___registerBuiltInFormatters__block_invoke(
     while (v13);
   }
 
-  return v6;
+  return array;
 }
 
 - (NSError)init
@@ -294,33 +294,33 @@ uint64_t __53__NSError_NSErrorPrivate___registerBuiltInFormatters__block_invoke(
 
 + (NSError)errorWithDomain:(NSErrorDomain)domain code:(NSInteger)code userInfo:(NSDictionary *)dict
 {
-  v5 = [[a1 alloc] initWithDomain:domain code:code userInfo:dict];
+  v5 = [[self alloc] initWithDomain:domain code:code userInfo:dict];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_11;
   }
 
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[NSError code](self, "code"), v5 != [a3 code]))
+  if (!equal || (objc_opt_isKindOfClass() & 1) == 0 || (v5 = -[NSError code](self, "code"), v5 != [equal code]))
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  v6 = -[NSString isEqual:](-[NSError domain](self, "domain"), "isEqual:", [a3 domain]);
+  v6 = -[NSString isEqual:](-[NSError domain](self, "domain"), "isEqual:", [equal domain]);
   if (v6)
   {
-    v7 = [(NSError *)self userInfo];
-    v8 = [a3 userInfo];
-    if (v7 != v8)
+    userInfo = [(NSError *)self userInfo];
+    userInfo2 = [equal userInfo];
+    if (userInfo != userInfo2)
     {
 
-      LOBYTE(v6) = [(NSDictionary *)v7 isEqual:v8];
+      LOBYTE(v6) = [(NSDictionary *)userInfo isEqual:userInfo2];
       return v6;
     }
 
@@ -331,18 +331,18 @@ LABEL_11:
   return v6;
 }
 
-- (id)_cocoaErrorStringWithKind:(id)a3 variant:(id)a4
+- (id)_cocoaErrorStringWithKind:(id)kind variant:(id)variant
 {
   v7 = [(NSString *)[NSMutableString alloc] initWithFormat:@"Err%ld", [(NSError *)self code]];
   v8 = v7;
-  if (a3)
+  if (kind)
   {
-    [(NSMutableString *)v7 appendFormat:@"-%@", a3];
+    [(NSMutableString *)v7 appendFormat:@"-%@", kind];
   }
 
-  if (a4)
+  if (variant)
   {
-    [(NSMutableString *)v8 appendFormat:@"(%@)", a4];
+    [(NSMutableString *)v8 appendFormat:@"(%@)", variant];
   }
 
   v9 = [(NSError *)self _cocoaErrorString:v8];
@@ -350,13 +350,13 @@ LABEL_11:
   return v9;
 }
 
-- (id)_cocoaErrorStringWithKind:(id)a3
+- (id)_cocoaErrorStringWithKind:(id)kind
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = [(NSDictionary *)[(NSError *)self userInfo] objectForKey:@"NSUserStringVariant"];
   if (!v5)
   {
-    return [(NSError *)self _cocoaErrorStringWithKind:a3 variant:0];
+    return [(NSError *)self _cocoaErrorStringWithKind:kind variant:0];
   }
 
   v6 = v5;
@@ -367,13 +367,13 @@ LABEL_11:
 
   if (!_NSIsNSArray())
   {
-    result = [(NSError *)self _cocoaErrorStringWithKind:a3 variant:v6];
+    result = [(NSError *)self _cocoaErrorStringWithKind:kind variant:v6];
     if (result)
     {
       return result;
     }
 
-    return [(NSError *)self _cocoaErrorStringWithKind:a3 variant:0];
+    return [(NSError *)self _cocoaErrorStringWithKind:kind variant:0];
   }
 
   v15 = 0u;
@@ -383,7 +383,7 @@ LABEL_11:
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (!v7)
   {
-    return [(NSError *)self _cocoaErrorStringWithKind:a3 variant:0];
+    return [(NSError *)self _cocoaErrorStringWithKind:kind variant:0];
   }
 
   v8 = v7;
@@ -397,7 +397,7 @@ LABEL_8:
       objc_enumerationMutation(v6);
     }
 
-    result = [(NSError *)self _cocoaErrorStringWithKind:a3 variant:*(*(&v13 + 1) + 8 * v10)];
+    result = [(NSError *)self _cocoaErrorStringWithKind:kind variant:*(*(&v13 + 1) + 8 * v10)];
     if (result)
     {
       return result;
@@ -411,15 +411,15 @@ LABEL_8:
         goto LABEL_8;
       }
 
-      return [(NSError *)self _cocoaErrorStringWithKind:a3 variant:0];
+      return [(NSError *)self _cocoaErrorStringWithKind:kind variant:0];
     }
   }
 }
 
-- (__CFString)_retainedUserInfoCallBackForKey:(id)a3
+- (__CFString)_retainedUserInfoCallBackForKey:(id)key
 {
   _CFAutoreleasePoolPush();
-  if ([a3 isEqual:@"NSLocalizedDescription"])
+  if ([key isEqual:@"NSLocalizedDescription"])
   {
     v5 = [(NSError *)self _cocoaErrorStringWithKind:0];
     if (v5)
@@ -433,14 +433,14 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if ([a3 isEqual:@"NSLocalizedFailureReason"])
+  if ([key isEqual:@"NSLocalizedFailureReason"])
   {
 LABEL_5:
     v7 = @"C";
     goto LABEL_8;
   }
 
-  if (![a3 isEqual:@"NSLocalizedRecoverySuggestion"])
+  if (![key isEqual:@"NSLocalizedRecoverySuggestion"])
   {
     v6 = 0;
     goto LABEL_10;
@@ -562,75 +562,75 @@ LABEL_10:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(NSError *)self userInfo];
-  if (![(NSDictionary *)v5 count])
+  userInfo = [(NSError *)self userInfo];
+  if (![(NSDictionary *)userInfo count])
   {
-    v5 = 0;
+    userInfo = 0;
   }
 
   v6 = objc_opt_class();
   if (v6 == NSCFError)
   {
-    v9 = [NSError allocWithZone:a3];
-    v10 = [(NSError *)self domain];
-    v11 = [(NSError *)self code];
+    v9 = [NSError allocWithZone:zone];
+    domain = [(NSError *)self domain];
+    code = [(NSError *)self code];
 
-    return [(NSError *)v9 initWithDomain:v10 code:v11 userInfo:v5];
+    return [(NSError *)v9 initWithDomain:domain code:code userInfo:userInfo];
   }
 
   else
   {
-    v7 = [(__objc2_class *)v6 allocWithZone:a3];
+    v7 = [(__objc2_class *)v6 allocWithZone:zone];
     v7->vtable = [(NSString *)[(NSError *)self domain] copy];
     v7->cache = [(NSError *)self code];
-    v7->info = [(NSDictionary *)v5 copy];
+    v7->info = [(NSDictionary *)userInfo copy];
     [(NSError *)self _callStackReturnAddresses];
     _CFErrorSetCallStackReturnAddresses();
     return v7;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = [(NSError *)self userInfo];
-  v8[0] = v5;
-  if (![(NSDictionary *)v5 count])
+  userInfo = [(NSError *)self userInfo];
+  v8[0] = userInfo;
+  if (![(NSDictionary *)userInfo count])
   {
-    v5 = 0;
+    userInfo = 0;
     v8[0] = 0;
   }
 
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    [a3 encodeInteger:-[NSError code](self forKey:{"code"), @"NSCode"}];
-    [a3 encodeObject:-[NSError domain](self forKey:{"domain"), @"NSDomain"}];
+    [coder encodeInteger:-[NSError code](self forKey:{"code"), @"NSCode"}];
+    [coder encodeObject:-[NSError domain](self forKey:{"domain"), @"NSDomain"}];
 
-    [a3 encodeObject:v5 forKey:@"NSUserInfo"];
+    [coder encodeObject:userInfo forKey:@"NSUserInfo"];
   }
 
   else
   {
-    v7 = [(NSError *)self code];
-    v6 = [(NSError *)self domain];
-    [a3 encodeValuesOfObjCTypes:{"i@@", &v7, &v6, v8}];
+    code = [(NSError *)self code];
+    domain = [(NSError *)self domain];
+    [coder encodeValuesOfObjCTypes:{"i@@", &code, &domain, v8}];
   }
 }
 
-- (NSError)initWithCoder:(id)a3
+- (NSError)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = NSError;
   v5 = [(NSError *)&v17 init];
-  v6 = [objc_msgSend(a3 "allowedClasses")];
-  if (![a3 allowsKeyedCoding])
+  v6 = [objc_msgSend(coder "allowedClasses")];
+  if (![coder allowsKeyedCoding])
   {
     v16 = 0;
     p_userInfo = &v5->_userInfo;
-    [a3 decodeValuesOfObjCTypes:{"i@@", &v16, &v5->_domain, &v5->_userInfo}];
+    [coder decodeValuesOfObjCTypes:{"i@@", &v16, &v5->_domain, &v5->_userInfo}];
     v5->_code = v16;
     if (!v5->_userInfo)
     {
@@ -651,7 +651,7 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  if (([a3 containsValueForKey:@"NSCode"] & 1) == 0)
+  if (([coder containsValueForKey:@"NSCode"] & 1) == 0)
   {
     v14 = _NSMethodExceptionProem(v5, a2);
     v11 = @"%@: missing error code";
@@ -660,14 +660,14 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v5->_code = [a3 decodeIntegerForKey:@"NSCode"];
-  if ([a3 error])
+  v5->_code = [coder decodeIntegerForKey:@"NSCode"];
+  if ([coder error])
   {
     goto LABEL_5;
   }
 
-  v5->_domain = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSDomain"];
-  if ([a3 error])
+  v5->_domain = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSDomain"];
+  if ([coder error])
   {
     goto LABEL_5;
   }
@@ -679,8 +679,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v5->_userInfo = [a3 decodeObjectOfClasses:v6 forKey:@"NSUserInfo"];
-  if ([a3 error])
+  v5->_userInfo = [coder decodeObjectOfClasses:v6 forKey:@"NSUserInfo"];
+  if ([coder error])
   {
 LABEL_5:
 
@@ -714,7 +714,7 @@ LABEL_9:
 LABEL_20:
     v12 = v10;
 
-    [a3 failWithError:v12];
+    [coder failWithError:v12];
     return 0;
   }
 
@@ -725,13 +725,13 @@ LABEL_20:
 {
   if (!errorDomain)
   {
-    v8 = [NSString stringWithFormat:@"%@: nil domain argument", _NSMethodExceptionProem(a1, a2)];
+    v8 = [NSString stringWithFormat:@"%@: nil domain argument", _NSMethodExceptionProem(self, a2)];
     goto LABEL_8;
   }
 
   if ([(NSString *)errorDomain isEqual:@"NSCocoaErrorDomain"])
   {
-    v8 = [NSString stringWithFormat:@"%@: Cannot replace provider for NSCocoaErrorDomain", _NSMethodExceptionProem(a1, a2)];
+    v8 = [NSString stringWithFormat:@"%@: Cannot replace provider for NSCocoaErrorDomain", _NSMethodExceptionProem(self, a2)];
 LABEL_8:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
   }
@@ -746,91 +746,91 @@ LABEL_8:
   return v3;
 }
 
-+ (id)_cocoaErrorWithCode:(int64_t)a3 path:(id)a4 url:(id)a5 underlying:(id)a6 variant:(id)a7 source:(id)a8 destination:(id)a9
++ (id)_cocoaErrorWithCode:(int64_t)code path:(id)path url:(id)url underlying:(id)underlying variant:(id)variant source:(id)source destination:(id)destination
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = v15;
-  if (a4)
+  if (path)
   {
-    [v15 setObject:a4 forKeyedSubscript:@"NSFilePath"];
+    [v15 setObject:path forKeyedSubscript:@"NSFilePath"];
   }
 
-  if (a5)
+  if (url)
   {
-    [v16 setObject:a5 forKeyedSubscript:@"NSURL"];
+    [v16 setObject:url forKeyedSubscript:@"NSURL"];
   }
 
-  if (a6)
+  if (underlying)
   {
-    [v16 setObject:a6 forKeyedSubscript:@"NSUnderlyingError"];
+    [v16 setObject:underlying forKeyedSubscript:@"NSUnderlyingError"];
   }
 
-  if (a7)
+  if (variant)
   {
-    v19[0] = a7;
+    v19[0] = variant;
     [v16 setObject:objc_msgSend(MEMORY[0x1E695DEC8] forKeyedSubscript:{"arrayWithObjects:count:", v19, 1), @"NSUserStringVariant"}];
   }
 
-  if (a8)
+  if (source)
   {
-    [v16 setObject:a8 forKeyedSubscript:@"NSSourceFilePathErrorKey"];
+    [v16 setObject:source forKeyedSubscript:@"NSSourceFilePathErrorKey"];
   }
 
-  if (a9)
+  if (destination)
   {
-    [v16 setObject:a9 forKeyedSubscript:@"NSDestinationFilePath"];
+    [v16 setObject:destination forKeyedSubscript:@"NSDestinationFilePath"];
   }
 
-  v17 = [[NSError alloc] initWithDomain:@"NSCocoaErrorDomain" code:a3 userInfo:v16];
+  v17 = [[NSError alloc] initWithDomain:@"NSCocoaErrorDomain" code:code userInfo:v16];
 
   return v17;
 }
 
-+ (void)_web_addErrorsWithCodesAndDescriptions:(id)a3 inDomain:(id)a4
++ (void)_web_addErrorsWithCodesAndDescriptions:(id)descriptions inDomain:(id)domain
 {
   pthread_once(&initControl, WebNSErrorExtrasInit);
-  v6 = descriptions;
+  descriptionsCopy = descriptions;
 
-  [v6 setObject:a3 forKey:a4];
+  [descriptionsCopy setObject:descriptions forKey:domain];
 }
 
-+ (id)_web_errorWithDomain:(id)a3 code:(int64_t)a4 failingURL:(id)a5
++ (id)_web_errorWithDomain:(id)domain code:(int64_t)code failingURL:(id)l
 {
-  v5 = [[a1 alloc] _web_initWithDomain:a3 code:a4 failingURL:a5];
+  v5 = [[self alloc] _web_initWithDomain:domain code:code failingURL:l];
 
   return v5;
 }
 
-+ (id)_web_errorWithDomain:(id)a3 code:(int64_t)a4 URL:(id)a5
++ (id)_web_errorWithDomain:(id)domain code:(int64_t)code URL:(id)l
 {
-  v5 = [[a1 alloc] _web_initWithDomain_nowarn:a3 code:a4 URL:a5];
+  v5 = [[self alloc] _web_initWithDomain_nowarn:domain code:code URL:l];
 
   return v5;
 }
 
-- (id)_web_initWithDomain:(id)a3 code:(int64_t)a4 failingURL:(id)a5
+- (id)_web_initWithDomain:(id)domain code:(int64_t)code failingURL:(id)l
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = v9;
-  if (a5)
+  if (l)
   {
-    [v9 setObject:a5 forKey:@"NSErrorFailingURLStringKey"];
-    a5 = [MEMORY[0x1E695DFF8] URLWithString:a5];
-    if (a5)
+    [v9 setObject:l forKey:@"NSErrorFailingURLStringKey"];
+    l = [MEMORY[0x1E695DFF8] URLWithString:l];
+    if (l)
     {
-      [v10 setObject:a5 forKey:@"NSErrorFailingURLKey"];
+      [v10 setObject:l forKey:@"NSErrorFailingURLKey"];
     }
   }
 
-  [a5 host];
-  v11 = localizedDescriptionForError(a3, a4);
+  [l host];
+  v11 = localizedDescriptionForError(domain, code);
   if (v11)
   {
     [v10 setObject:v11 forKey:@"NSLocalizedDescription"];
   }
 
-  if ([a3 isEqualToString:@"NSURLErrorDomain"])
+  if ([domain isEqualToString:@"NSURLErrorDomain"])
   {
     LocalizedFailureReason = _CFNetworkErrorGetLocalizedFailureReason();
     if (LocalizedFailureReason)
@@ -839,7 +839,7 @@ LABEL_8:
     }
   }
 
-  if ([a3 isEqualToString:@"NSURLErrorDomain"])
+  if ([domain isEqualToString:@"NSURLErrorDomain"])
   {
     LocalizedRecoverySuggestion = _CFNetworkErrorGetLocalizedRecoverySuggestion();
     if (LocalizedRecoverySuggestion)
@@ -858,22 +858,22 @@ LABEL_8:
     v14 = 0;
   }
 
-  return [(NSError *)self initWithDomain:a3 code:a4 userInfo:v14];
+  return [(NSError *)self initWithDomain:domain code:code userInfo:v14];
 }
 
-- (BOOL)_web_errorIsInDomain:(id)a3
+- (BOOL)_web_errorIsInDomain:(id)domain
 {
-  v4 = [(NSError *)self domain];
+  domain = [(NSError *)self domain];
 
-  return [(NSString *)v4 isEqualToString:a3];
+  return [(NSString *)domain isEqualToString:domain];
 }
 
 - (id)_web_localizedDescription
 {
-  v3 = [(NSError *)self _web_failingURL];
-  if (v3)
+  _web_failingURL = [(NSError *)self _web_failingURL];
+  if (_web_failingURL)
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v4 = [MEMORY[0x1E695DFF8] URLWithString:_web_failingURL];
   }
 
   else
@@ -881,10 +881,10 @@ LABEL_8:
     v4 = 0;
   }
 
-  v5 = [(NSError *)self domain];
-  v6 = [(NSError *)self code];
+  domain = [(NSError *)self domain];
+  code = [(NSError *)self code];
   [v4 host];
-  result = localizedDescriptionForError(v5, v6);
+  result = localizedDescriptionForError(domain, code);
   if (!result)
   {
 
@@ -901,24 +901,24 @@ LABEL_8:
   return v2;
 }
 
-- (id)_web_initWithDomain_nowarn:(id)a3 code:(int64_t)a4 URL:(id)a5
+- (id)_web_initWithDomain_nowarn:(id)domain_nowarn code:(int64_t)code URL:(id)l
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = v9;
-  if (a5)
+  if (l)
   {
-    [v9 setObject:a5 forKey:@"NSErrorFailingURLKey"];
-    [v10 setObject:objc_msgSend(a5 forKey:{"absoluteString"), @"NSErrorFailingURLStringKey"}];
+    [v9 setObject:l forKey:@"NSErrorFailingURLKey"];
+    [v10 setObject:objc_msgSend(l forKey:{"absoluteString"), @"NSErrorFailingURLStringKey"}];
   }
 
-  [a5 host];
-  v11 = localizedDescriptionForError(a3, a4);
+  [l host];
+  v11 = localizedDescriptionForError(domain_nowarn, code);
   if (v11)
   {
     [v10 setObject:v11 forKey:@"NSLocalizedDescription"];
   }
 
-  if ([a3 isEqualToString:@"NSURLErrorDomain"])
+  if ([domain_nowarn isEqualToString:@"NSURLErrorDomain"])
   {
     LocalizedFailureReason = _CFNetworkErrorGetLocalizedFailureReason();
     if (LocalizedFailureReason)
@@ -927,7 +927,7 @@ LABEL_8:
     }
   }
 
-  if ([a3 isEqualToString:@"NSURLErrorDomain"])
+  if ([domain_nowarn isEqualToString:@"NSURLErrorDomain"])
   {
     LocalizedRecoverySuggestion = _CFNetworkErrorGetLocalizedRecoverySuggestion();
     if (LocalizedRecoverySuggestion)
@@ -946,14 +946,14 @@ LABEL_8:
     v14 = 0;
   }
 
-  return [(NSError *)self initWithDomain:a3 code:a4 userInfo:v14];
+  return [(NSError *)self initWithDomain:domain_nowarn code:code userInfo:v14];
 }
 
-+ (void)_registerFormatter:(void *)a3 forErrorKey:(id)a4 parameters:(const char *)a5
++ (void)_registerFormatter:(void *)formatter forErrorKey:(id)key parameters:(const char *)parameters
 {
   if (!qword_1ED43E6C0)
   {
-    v8 = NSCreateMapTableWithZone(&NSObjectMapKeyCallBacks, &NSOwnedPointerMapValueCallBacks, a3, a4);
+    v8 = NSCreateMapTableWithZone(&NSObjectMapKeyCallBacks, &NSOwnedPointerMapValueCallBacks, formatter, key);
     v9 = 0;
     atomic_compare_exchange_strong(&qword_1ED43E6C0, &v9, v8);
     if (v9)
@@ -963,14 +963,14 @@ LABEL_8:
   }
 
   v10 = malloc_type_malloc(0x18uLL, 0x1080040622C3295uLL);
-  *v10 = a3;
-  v10[1] = [a4 copy];
+  *v10 = formatter;
+  v10[1] = [key copy];
   *(v10 + 4) = 0;
-  v11 = *a5;
-  if (*a5)
+  v11 = *parameters;
+  if (*parameters)
   {
     v12 = 0;
-    v13 = a5 + 1;
+    v13 = parameters + 1;
     do
     {
       v12 |= 1 << (v11 - 97);
@@ -983,47 +983,47 @@ LABEL_8:
   }
 
   os_unfair_lock_lock(&_MergedGlobals_3);
-  if (NSMapGet(qword_1ED43E6C0, a4))
+  if (NSMapGet(qword_1ED43E6C0, key))
   {
     free(v10);
   }
 
   else
   {
-    NSMapInsert(qword_1ED43E6C0, a4, v10);
+    NSMapInsert(qword_1ED43E6C0, key, v10);
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_3);
 }
 
-- (int64_t)_collectApplicableUserInfoFormatters:(id *)a3 max:(int64_t)a4
+- (int64_t)_collectApplicableUserInfoFormatters:(id *)formatters max:(int64_t)max
 {
   +[NSError _registerBuiltInFormatters];
   if (qword_1ED43E6C0)
   {
-    v7 = [(NSDictionary *)[(NSError *)self userInfo] keyEnumerator];
-    v8 = [(NSEnumerator *)v7 nextObject];
-    if (v8)
+    keyEnumerator = [(NSDictionary *)[(NSError *)self userInfo] keyEnumerator];
+    nextObject = [(NSEnumerator *)keyEnumerator nextObject];
+    if (nextObject)
     {
-      v9 = v8;
+      nextObject2 = nextObject;
       v10 = 0;
       while (1)
       {
         os_unfair_lock_lock(&_MergedGlobals_3);
-        v11 = NSMapGet(qword_1ED43E6C0, v9);
+        v11 = NSMapGet(qword_1ED43E6C0, nextObject2);
         os_unfair_lock_unlock(&_MergedGlobals_3);
         if (v11)
         {
-          if (v10 == a4)
+          if (v10 == max)
           {
             return -1;
           }
 
-          a3[v10++] = v11;
+          formatters[v10++] = v11;
         }
 
-        v9 = [(NSEnumerator *)v7 nextObject];
-        if (!v9)
+        nextObject2 = [(NSEnumerator *)keyEnumerator nextObject];
+        if (!nextObject2)
         {
           return v10;
         }
@@ -1034,41 +1034,41 @@ LABEL_8:
   return 0;
 }
 
-- (id)_formatCocoaErrorString:(id)a3 parameters:(const char *)a4 applicableFormatters:(id *)a5 count:(int64_t)a6
+- (id)_formatCocoaErrorString:(id)string parameters:(const char *)parameters applicableFormatters:(id *)formatters count:(int64_t)count
 {
-  v6 = a3;
+  stringCopy = string;
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
-    if (a4)
+    if (parameters)
     {
-      v10 = strlen(a4);
+      v10 = strlen(parameters);
       if (v10 >= 1)
       {
         v11 = v10;
-        v21 = v6;
-        v22 = a4;
+        v21 = stringCopy;
+        parametersCopy = parameters;
         v25 = 0u;
         v26 = 0u;
         v24 = 0u;
-        v12 = [(NSError *)self userInfo];
+        userInfo = [(NSError *)self userInfo];
         v13 = 0;
         while (1)
         {
-          if (a6 >= 1)
+          if (count >= 1)
           {
-            v14 = a5;
-            v15 = v22[v13];
-            v16 = 1 << (v22[v13] - 97);
-            v17 = a6;
+            formattersCopy = formatters;
+            v15 = parametersCopy[v13];
+            v16 = 1 << (parametersCopy[v13] - 97);
+            countCopy = count;
             do
             {
-              if ((*(*v14 + 4) & v16) != 0)
+              if ((*(*formattersCopy + 4) & v16) != 0)
               {
-                v18 = [(NSDictionary *)v12 objectForKey:*(*v14 + 1)];
+                v18 = [(NSDictionary *)userInfo objectForKey:*(*formattersCopy + 1)];
                 if (v18)
                 {
-                  v19 = (**v14)(v18, self, v15);
+                  v19 = (**formattersCopy)(v18, self, v15);
                   if (v19)
                   {
                     *(&v24 + v13) = v19;
@@ -1076,11 +1076,11 @@ LABEL_8:
                 }
               }
 
-              ++v14;
-              --v17;
+              ++formattersCopy;
+              --countCopy;
             }
 
-            while (v17);
+            while (countCopy);
           }
 
           if (!*(&v24 + v13))
@@ -1099,20 +1099,20 @@ LABEL_8:
     }
   }
 
-  return v6;
+  return stringCopy;
 }
 
-- (id)_cocoaErrorString:(id)a3 fromBundle:(id)a4 tableName:(id)a5
+- (id)_cocoaErrorString:(id)string fromBundle:(id)bundle tableName:(id)name
 {
-  v38 = a5;
+  nameCopy = name;
   v41 = *MEMORY[0x1E69E9840];
-  v37 = a4;
-  if (!a4)
+  bundleCopy = bundle;
+  if (!bundle)
   {
     return 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   memset(v40, 0, sizeof(v40));
   v7 = [(NSError *)self _collectApplicableUserInfoFormatters:v40 max:12];
   if (v7)
@@ -1151,7 +1151,7 @@ LABEL_8:
     }
 
     while (v13 < 6);
-    v35 = v6;
+    v35 = selfCopy;
     v33[1] = v33;
     v14 = 1 << v13;
     v15 = v33 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1225,9 +1225,9 @@ LABEL_8:
               }
 
               *v23 = 0;
-              v27 = a3;
-              v28 = [NSString stringWithFormat:@"%@.%s", a3, v22];
-              v29 = [v37 localizedStringForKey:v28 value:0 table:v38];
+              stringCopy = string;
+              v28 = [NSString stringWithFormat:@"%@.%s", string, v22];
+              v29 = [bundleCopy localizedStringForKey:v28 value:0 table:nameCopy];
               if (v29)
               {
                 v30 = v29;
@@ -1241,7 +1241,7 @@ LABEL_8:
                 }
               }
 
-              a3 = v27;
+              string = stringCopy;
             }
           }
         }
@@ -1252,35 +1252,35 @@ LABEL_8:
       while (!v26);
     }
 
-    v6 = v35;
+    selfCopy = v35;
   }
 
-  result = [v37 localizedStringForKey:a3 value:0 table:v38];
+  result = [bundleCopy localizedStringForKey:string value:0 table:nameCopy];
   if (result)
   {
     v32 = result;
-    if ([result isEqual:a3])
+    if ([result isEqual:string])
     {
       return 0;
     }
 
-    return [(NSError *)v6 _formatCocoaErrorString:v32 parameters:0 applicableFormatters:0 count:0];
+    return [(NSError *)selfCopy _formatCocoaErrorString:v32 parameters:0 applicableFormatters:0 count:0];
   }
 
   return result;
 }
 
-- (id)_cocoaErrorString:(id)a3
+- (id)_cocoaErrorString:(id)string
 {
-  v5 = [(NSError *)self code];
-  if (v5 >= 0x10000 || (result = [(NSError *)self _cocoaErrorString:a3 fromBundle:_NSFoundationBundle() tableName:@"FoundationErrors"]) == 0)
+  code = [(NSError *)self code];
+  if (code >= 0x10000 || (result = [(NSError *)self _cocoaErrorString:string fromBundle:_NSFoundationBundle() tableName:@"FoundationErrors"]) == 0)
   {
-    if ((v5 & 0xFFFFFFFFFFFF0000) != 0x20000 && (v5 - 1024) > 0x3FE)
+    if ((code & 0xFFFFFFFFFFFF0000) != 0x20000 && (code - 1024) > 0x3FE)
     {
       return 0;
     }
 
-    result = [(NSError *)self _cocoaErrorString:a3 fromBundle:[NSBundle tableName:"bundleWithIdentifier:" bundleWithIdentifier:?], @"CoreDataErrors"];
+    result = [(NSError *)self _cocoaErrorString:string fromBundle:[NSBundle tableName:"bundleWithIdentifier:" bundleWithIdentifier:?], @"CoreDataErrors"];
     if (!result)
     {
       return 0;
@@ -1290,10 +1290,10 @@ LABEL_8:
   return result;
 }
 
-+ (id)_readCorruptErrorWithFormat:(id)a3
++ (id)_readCorruptErrorWithFormat:(id)format
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [[NSString alloc] initWithFormat:a3 arguments:&v9];
+  v3 = [[NSString alloc] initWithFormat:format arguments:&v9];
   if (v3)
   {
     v4 = v3;
@@ -1310,14 +1310,14 @@ LABEL_8:
   return [NSError errorWithDomain:@"NSCocoaErrorDomain" code:4864 userInfo:v5, &v9];
 }
 
-- (id)replacementObjectForPortCoder:(id)a3
+- (id)replacementObjectForPortCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isByref])
+  if ([coder isByref])
   {
     v6.receiver = self;
     v6.super_class = NSError;
-    return [(NSError *)&v6 replacementObjectForPortCoder:a3];
+    return [(NSError *)&v6 replacementObjectForPortCoder:coder];
   }
 
   return self;

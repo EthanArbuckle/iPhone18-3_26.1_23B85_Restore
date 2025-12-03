@@ -1,44 +1,44 @@
 @interface PBUIWallpaperUserDefaultsDataStore
-- (BOOL)setProceduralWallpaperInfo:(id)a3 forVariants:(int64_t)a4;
-- (BOOL)setWallpaperColor:(id)a3 forVariants:(int64_t)a4;
-- (BOOL)setWallpaperColorName:(id)a3 forVariants:(int64_t)a4;
-- (BOOL)setWallpaperGradient:(id)a3 forVariants:(int64_t)a4;
-- (BOOL)setWallpaperImageHashData:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setWallpaperOptions:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5;
+- (BOOL)setProceduralWallpaperInfo:(id)info forVariants:(int64_t)variants;
+- (BOOL)setWallpaperColor:(id)color forVariants:(int64_t)variants;
+- (BOOL)setWallpaperColorName:(id)name forVariants:(int64_t)variants;
+- (BOOL)setWallpaperGradient:(id)gradient forVariants:(int64_t)variants;
+- (BOOL)setWallpaperImageHashData:(id)data forVariants:(int64_t)variants wallpaperMode:(int64_t)mode;
+- (BOOL)setWallpaperOptions:(id)options forVariants:(int64_t)variants wallpaperMode:(int64_t)mode;
 - (PBUIWallpaperUserDefaultsDataStore)init;
-- (PBUIWallpaperUserDefaultsDataStore)initWithUserdefaultsDomain:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)proceduralWallpaperInfoForVariant:(int64_t)a3;
+- (PBUIWallpaperUserDefaultsDataStore)initWithUserdefaultsDomain:(id)domain;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)proceduralWallpaperInfoForVariant:(int64_t)variant;
 - (id)succinctDescription;
-- (id)wallpaperColorForVariant:(int64_t)a3;
-- (id)wallpaperColorNameForVariant:(int64_t)a3;
-- (id)wallpaperGradientForVariant:(int64_t)a3;
-- (id)wallpaperImageHashDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (void)moveWallpaperImageDataTypes:(unint64_t)a3 fromVariant:(int64_t)a4 toVariant:(int64_t)a5;
-- (void)removeProceduralWallpaperForVariants:(int64_t)a3;
-- (void)removeWallpaperColorForVariants:(int64_t)a3;
-- (void)removeWallpaperGradientForVariants:(int64_t)a3;
-- (void)removeWallpaperImageDataTypes:(unint64_t)a3 forVariants:(int64_t)a4;
-- (void)removeWallpaperImageHashDataForVariants:(int64_t)a3;
-- (void)removeWallpaperOptionsForVariants:(int64_t)a3;
-- (void)updateProceduralWallpaperDefaultsWithIdentifier:(id)a3 options:(id)a4 forVariant:(int64_t)a5;
+- (id)wallpaperColorForVariant:(int64_t)variant;
+- (id)wallpaperColorNameForVariant:(int64_t)variant;
+- (id)wallpaperGradientForVariant:(int64_t)variant;
+- (id)wallpaperImageHashDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (void)moveWallpaperImageDataTypes:(unint64_t)types fromVariant:(int64_t)variant toVariant:(int64_t)toVariant;
+- (void)removeProceduralWallpaperForVariants:(int64_t)variants;
+- (void)removeWallpaperColorForVariants:(int64_t)variants;
+- (void)removeWallpaperGradientForVariants:(int64_t)variants;
+- (void)removeWallpaperImageDataTypes:(unint64_t)types forVariants:(int64_t)variants;
+- (void)removeWallpaperImageHashDataForVariants:(int64_t)variants;
+- (void)removeWallpaperOptionsForVariants:(int64_t)variants;
+- (void)updateProceduralWallpaperDefaultsWithIdentifier:(id)identifier options:(id)options forVariant:(int64_t)variant;
 @end
 
 @implementation PBUIWallpaperUserDefaultsDataStore
 
-- (PBUIWallpaperUserDefaultsDataStore)initWithUserdefaultsDomain:(id)a3
+- (PBUIWallpaperUserDefaultsDataStore)initWithUserdefaultsDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v11.receiver = self;
   v11.super_class = PBUIWallpaperUserDefaultsDataStore;
   v6 = [(PBUIWallpaperUserDefaultsDataStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_defaultsDomain, a3);
-    v8 = [[PBUIWallpaperDefaults alloc] initWithdefaultsDomain:v5];
+    objc_storeStrong(&v6->_defaultsDomain, domain);
+    v8 = [[PBUIWallpaperDefaults alloc] initWithdefaultsDomain:domainCopy];
     wallpaperDefaults = v7->_wallpaperDefaults;
     v7->_wallpaperDefaults = v8;
   }
@@ -54,30 +54,30 @@
   return v4;
 }
 
-- (void)moveWallpaperImageDataTypes:(unint64_t)a3 fromVariant:(int64_t)a4 toVariant:(int64_t)a5
+- (void)moveWallpaperImageDataTypes:(unint64_t)types fromVariant:(int64_t)variant toVariant:(int64_t)toVariant
 {
-  if (a3)
+  if (types)
   {
-    v9 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-    v8 = [v9 imageHashForVariant:a4 wallpaperMode:0];
+    wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+    v8 = [wallpaperDefaults imageHashForVariant:variant wallpaperMode:0];
     if (v8)
     {
-      [v9 setImageHash:0 forLocations:PBUIWallpaperLocationForVariant(a4) wallpaperMode:0];
-      [v9 setImageHash:v8 forLocations:PBUIWallpaperLocationForVariant(a5) wallpaperMode:0];
+      [wallpaperDefaults setImageHash:0 forLocations:PBUIWallpaperLocationForVariant(variant) wallpaperMode:0];
+      [wallpaperDefaults setImageHash:v8 forLocations:PBUIWallpaperLocationForVariant(toVariant) wallpaperMode:0];
     }
   }
 }
 
-- (void)removeWallpaperImageDataTypes:(unint64_t)a3 forVariants:(int64_t)a4
+- (void)removeWallpaperImageDataTypes:(unint64_t)types forVariants:(int64_t)variants
 {
-  if (a3)
+  if (types)
   {
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __80__PBUIWallpaperUserDefaultsDataStore_removeWallpaperImageDataTypes_forVariants___block_invoke;
     v4[3] = &unk_2783623D0;
     v4[4] = self;
-    PBUIWallpaperEnumerateVariantsForLocations(a4, v4);
+    PBUIWallpaperEnumerateVariantsForLocations(variants, v4);
   }
 }
 
@@ -107,64 +107,64 @@ void __80__PBUIWallpaperUserDefaultsDataStore_removeWallpaperImageDataTypes_forV
   [v2 updateDefaultsForLocations:v4 updater:v3];
 }
 
-- (BOOL)setWallpaperImageHashData:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperImageHashData:(id)data forVariants:(int64_t)variants wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  [v9 setImageHash:v8 forLocations:a4 wallpaperMode:a5];
+  dataCopy = data;
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  [wallpaperDefaults setImageHash:dataCopy forLocations:variants wallpaperMode:mode];
 
   return 1;
 }
 
-- (id)wallpaperImageHashDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperImageHashDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  if (a3 > 1)
+  if (variant > 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-    v7 = [v6 imageHashForVariant:a3 wallpaperMode:a4];
+    wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+    v7 = [wallpaperDefaults imageHashForVariant:variant wallpaperMode:mode];
   }
 
   return v7;
 }
 
-- (void)removeWallpaperImageHashDataForVariants:(int64_t)a3
+- (void)removeWallpaperImageHashDataForVariants:(int64_t)variants
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  [v4 updateDefaultsForLocations:a3 updater:&__block_literal_global_6];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  [wallpaperDefaults updateDefaultsForLocations:variants updater:&__block_literal_global_6];
 }
 
-- (id)proceduralWallpaperInfoForVariant:(int64_t)a3
+- (id)proceduralWallpaperInfoForVariant:(int64_t)variant
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v5 = v4;
-  if (a3 == -1)
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v5 = wallpaperDefaults;
+  if (variant == -1)
   {
     v7 = 0;
     v9 = 0;
-    v10 = 0;
+    dictionary = 0;
   }
 
   else
   {
-    v6 = a3 == 1;
-    v7 = [v4 proceduralIdentifierForVariant:v6];
+    v6 = variant == 1;
+    v7 = [wallpaperDefaults proceduralIdentifierForVariant:v6];
     v8 = [v5 proceduralOptionsForVariant:v6];
     v9 = v8;
-    v10 = 0;
+    dictionary = 0;
     if (v7 && v8)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
-      [v10 setObject:v9 forKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
-      [v10 setObject:v7 forKey:@"kSBUIMagicWallpaperIdentifierKey"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:v9 forKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
+      [dictionary setObject:v7 forKey:@"kSBUIMagicWallpaperIdentifierKey"];
       v11 = BundlePathForWallpaperIdentifier(v7);
       if (v11)
       {
-        [v10 setObject:v11 forKey:@"kSBUIMagicWallpaperBundlePathKey"];
+        [dictionary setObject:v11 forKey:@"kSBUIMagicWallpaperBundlePathKey"];
       }
 
       else
@@ -178,18 +178,18 @@ void __80__PBUIWallpaperUserDefaultsDataStore_removeWallpaperImageDataTypes_forV
     }
   }
 
-  return v10;
+  return dictionary;
 }
 
-- (void)updateProceduralWallpaperDefaultsWithIdentifier:(id)a3 options:(id)a4 forVariant:(int64_t)a5
+- (void)updateProceduralWallpaperDefaultsWithIdentifier:(id)identifier options:(id)options forVariant:(int64_t)variant
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v10 = v9;
-  if (a5)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v10 = wallpaperDefaults;
+  if (variant)
   {
-    if (a5 != 1)
+    if (variant != 1)
     {
       goto LABEL_6;
     }
@@ -202,25 +202,25 @@ void __80__PBUIWallpaperUserDefaultsDataStore_removeWallpaperImageDataTypes_forV
     v11 = 1;
   }
 
-  [v9 setProceduralIdentifier:v12 forLocations:v11];
-  [v10 setProceduralOptions:v8 forLocations:v11];
-  [v10 setProceduralUserSet:v12 != 0 forLocations:v11];
+  [wallpaperDefaults setProceduralIdentifier:identifierCopy forLocations:v11];
+  [v10 setProceduralOptions:optionsCopy forLocations:v11];
+  [v10 setProceduralUserSet:identifierCopy != 0 forLocations:v11];
 LABEL_6:
 }
 
-- (BOOL)setProceduralWallpaperInfo:(id)a3 forVariants:(int64_t)a4
+- (BOOL)setProceduralWallpaperInfo:(id)info forVariants:(int64_t)variants
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"kSBUIMagicWallpaperIdentifierKey"];
-  v8 = [v6 objectForKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
+  variantsCopy = variants;
+  infoCopy = info;
+  v7 = [infoCopy objectForKey:@"kSBUIMagicWallpaperIdentifierKey"];
+  v8 = [infoCopy objectForKey:@"kSBUIMagicWallpaperPresetOptionsKey"];
 
-  if (v4)
+  if (variantsCopy)
   {
     [(PBUIWallpaperUserDefaultsDataStore *)self updateProceduralWallpaperDefaultsWithIdentifier:v7 options:v8 forVariant:0];
   }
 
-  if ((v4 & 2) != 0)
+  if ((variantsCopy & 2) != 0)
   {
     [(PBUIWallpaperUserDefaultsDataStore *)self updateProceduralWallpaperDefaultsWithIdentifier:v7 options:v8 forVariant:1];
   }
@@ -228,50 +228,50 @@ LABEL_6:
   return 1;
 }
 
-- (void)removeProceduralWallpaperForVariants:(int64_t)a3
+- (void)removeProceduralWallpaperForVariants:(int64_t)variants
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __75__PBUIWallpaperUserDefaultsDataStore_removeProceduralWallpaperForVariants___block_invoke;
   v3[3] = &unk_2783623D0;
   v3[4] = self;
-  PBUIWallpaperEnumerateVariantsForLocations(a3, v3);
+  PBUIWallpaperEnumerateVariantsForLocations(variants, v3);
 }
 
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v7 = [v6 wallpaperOptionsForVariant:a3 wallpaperMode:a4];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v7 = [wallpaperDefaults wallpaperOptionsForVariant:variant wallpaperMode:mode];
 
   return v7;
 }
 
-- (BOOL)setWallpaperOptions:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperOptions:(id)options forVariants:(int64_t)variants wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  [v9 setWallpaperOptions:v8 forLocations:a4 wallpaperMode:a5];
+  optionsCopy = options;
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  [wallpaperDefaults setWallpaperOptions:optionsCopy forLocations:variants wallpaperMode:mode];
 
   return 1;
 }
 
-- (void)removeWallpaperOptionsForVariants:(int64_t)a3
+- (void)removeWallpaperOptionsForVariants:(int64_t)variants
 {
-  v3 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  [v3 resetDefaults];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  [wallpaperDefaults resetDefaults];
 }
 
-- (id)wallpaperColorForVariant:(int64_t)a3
+- (id)wallpaperColorForVariant:(int64_t)variant
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v5 = v4;
-  if (a3 > 1)
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v5 = wallpaperDefaults;
+  if (variant > 1)
   {
     v6 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v4 wallpaperColorDataForVariant:a3];
+  v6 = [wallpaperDefaults wallpaperColorDataForVariant:variant];
   if (!v6)
   {
 LABEL_9:
@@ -299,29 +299,29 @@ LABEL_10:
   return v9;
 }
 
-- (id)wallpaperColorNameForVariant:(int64_t)a3
+- (id)wallpaperColorNameForVariant:(int64_t)variant
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v5 = v4;
-  if (a3 > 1)
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v5 = wallpaperDefaults;
+  if (variant > 1)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v4 wallpaperColorNameForVariant:a3];
+    v6 = [wallpaperDefaults wallpaperColorNameForVariant:variant];
   }
 
   return v6;
 }
 
-- (BOOL)setWallpaperColor:(id)a3 forVariants:(int64_t)a4
+- (BOOL)setWallpaperColor:(id)color forVariants:(int64_t)variants
 {
-  v4 = a4;
-  v6 = a3;
+  variantsCopy = variants;
+  colorCopy = color;
   v17 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v17];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:colorCopy requiringSecureCoding:1 error:&v17];
   v8 = v17;
   if (!v7)
   {
@@ -332,16 +332,16 @@ LABEL_10:
     }
   }
 
-  v10 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__PBUIWallpaperUserDefaultsDataStore_setWallpaperColor_forVariants___block_invoke;
   v14[3] = &unk_278362330;
-  v15 = v10;
+  v15 = wallpaperDefaults;
   v16 = v7;
   v11 = v7;
-  v12 = v10;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v14);
+  v12 = wallpaperDefaults;
+  PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v14);
 
   return 1;
 }
@@ -366,20 +366,20 @@ uint64_t __68__PBUIWallpaperUserDefaultsDataStore_setWallpaperColor_forVariants_
   return [*(result + 32) setColorData:*(result + 40) forLocations:v2];
 }
 
-- (BOOL)setWallpaperColorName:(id)a3 forVariants:(int64_t)a4
+- (BOOL)setWallpaperColorName:(id)name forVariants:(int64_t)variants
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  variantsCopy = variants;
+  nameCopy = name;
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__PBUIWallpaperUserDefaultsDataStore_setWallpaperColorName_forVariants___block_invoke;
   v11[3] = &unk_278362330;
-  v12 = v7;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v11);
+  v12 = wallpaperDefaults;
+  v13 = nameCopy;
+  v8 = nameCopy;
+  v9 = wallpaperDefaults;
+  PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v11);
 
   return 1;
 }
@@ -404,24 +404,24 @@ uint64_t __72__PBUIWallpaperUserDefaultsDataStore_setWallpaperColorName_forVaria
   return [*(result + 32) setColorName:*(result + 40) forLocations:v2];
 }
 
-- (void)removeWallpaperColorForVariants:(int64_t)a3
+- (void)removeWallpaperColorForVariants:(int64_t)variants
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  [v4 setColorName:0 forLocations:a3];
-  [v4 setColorData:0 forLocations:a3];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  [wallpaperDefaults setColorName:0 forLocations:variants];
+  [wallpaperDefaults setColorData:0 forLocations:variants];
 }
 
-- (id)wallpaperGradientForVariant:(int64_t)a3
+- (id)wallpaperGradientForVariant:(int64_t)variant
 {
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
-  v5 = v4;
-  if (a3 > 1)
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  v5 = wallpaperDefaults;
+  if (variant > 1)
   {
     v6 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v4 wallpaperGradientDataForVariant:a3];
+  v6 = [wallpaperDefaults wallpaperGradientDataForVariant:variant];
   if (!v6)
   {
 LABEL_9:
@@ -449,12 +449,12 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)setWallpaperGradient:(id)a3 forVariants:(int64_t)a4
+- (BOOL)setWallpaperGradient:(id)gradient forVariants:(int64_t)variants
 {
-  v4 = a4;
-  v6 = a3;
+  variantsCopy = variants;
+  gradientCopy = gradient;
   v17 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v17];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:gradientCopy requiringSecureCoding:1 error:&v17];
   v8 = v17;
   if (!v7)
   {
@@ -465,16 +465,16 @@ LABEL_10:
     }
   }
 
-  v10 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__PBUIWallpaperUserDefaultsDataStore_setWallpaperGradient_forVariants___block_invoke;
   v14[3] = &unk_278362330;
-  v15 = v10;
+  v15 = wallpaperDefaults;
   v16 = v7;
   v11 = v7;
-  v12 = v10;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v14);
+  v12 = wallpaperDefaults;
+  PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v14);
 
   return 1;
 }
@@ -499,17 +499,17 @@ uint64_t __71__PBUIWallpaperUserDefaultsDataStore_setWallpaperGradient_forVarian
   return [*(result + 32) setGradientData:*(result + 40) forLocations:v2];
 }
 
-- (void)removeWallpaperGradientForVariants:(int64_t)a3
+- (void)removeWallpaperGradientForVariants:(int64_t)variants
 {
-  v3 = a3;
-  v4 = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
+  variantsCopy = variants;
+  wallpaperDefaults = [(PBUIWallpaperUserDefaultsDataStore *)self wallpaperDefaults];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__PBUIWallpaperUserDefaultsDataStore_removeWallpaperGradientForVariants___block_invoke;
   v6[3] = &unk_2783623D0;
-  v7 = v4;
-  v5 = v4;
-  PBUIWallpaperEnumerateVariantsForLocations(v3, v6);
+  v7 = wallpaperDefaults;
+  v5 = wallpaperDefaults;
+  PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v6);
 }
 
 uint64_t __73__PBUIWallpaperUserDefaultsDataStore_removeWallpaperGradientForVariants___block_invoke(uint64_t result, uint64_t a2)
@@ -532,29 +532,29 @@ uint64_t __73__PBUIWallpaperUserDefaultsDataStore_removeWallpaperGradientForVari
   return [*(result + 32) setGradientData:0 forLocations:v2];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperUserDefaultsDataStore *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperUserDefaultsDataStore *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(PBUIWallpaperUserDefaultsDataStore *)self defaultsDomain];
-  v6 = [v4 appendObject:v5 withName:@"userDefaults"];
+  defaultsDomain = [(PBUIWallpaperUserDefaultsDataStore *)self defaultsDomain];
+  v6 = [v4 appendObject:defaultsDomain withName:@"userDefaults"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperUserDefaultsDataStore *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperUserDefaultsDataStore *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

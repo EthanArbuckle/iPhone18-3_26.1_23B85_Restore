@@ -1,23 +1,23 @@
 @interface SearchUISwitchAccessoryViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (id)setupView;
 - (void)buttonPressed;
 - (void)dealloc;
-- (void)debounceSetOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIsHiddenByEvent:(BOOL)a3;
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateForEvent:(id)a3 animated:(BOOL)a4;
-- (void)updateWithNotification:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)debounceSetOn:(BOOL)on animated:(BOOL)animated;
+- (void)setIsHiddenByEvent:(BOOL)event;
+- (void)setOn:(BOOL)on animated:(BOOL)animated;
+- (void)updateForEvent:(id)event animated:(BOOL)animated;
+- (void)updateWithNotification:(id)notification;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUISwitchAccessoryViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:a3];
-  v4 = [v3 biomeStreamIdentifier];
-  v5 = [v4 length] != 0;
+  v3 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:model];
+  biomeStreamIdentifier = [v3 biomeStreamIdentifier];
+  v5 = [biomeStreamIdentifier length] != 0;
 
   return v5;
 }
@@ -31,55 +31,55 @@
 
 - (void)dealloc
 {
-  v3 = [(SearchUISwitchAccessoryViewController *)self subscriber];
-  [v3 removeObserver:self];
+  subscriber = [(SearchUISwitchAccessoryViewController *)self subscriber];
+  [subscriber removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SearchUISwitchAccessoryViewController;
   [(SearchUISwitchAccessoryViewController *)&v4 dealloc];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v15.receiver = self;
   v15.super_class = SearchUISwitchAccessoryViewController;
-  v4 = a3;
-  [(SearchUIAccessoryViewController *)&v15 updateWithRowModel:v4];
-  v5 = [(SearchUISwitchAccessoryViewController *)self subscriber];
+  modelCopy = model;
+  [(SearchUIAccessoryViewController *)&v15 updateWithRowModel:modelCopy];
+  subscriber = [(SearchUISwitchAccessoryViewController *)self subscriber];
 
-  if (v5)
+  if (subscriber)
   {
-    v6 = [(SearchUISwitchAccessoryViewController *)self subscriber];
-    [v6 removeObserver:self];
+    subscriber2 = [(SearchUISwitchAccessoryViewController *)self subscriber];
+    [subscriber2 removeObserver:self];
 
     [(SearchUISwitchAccessoryViewController *)self setSubscriber:0];
   }
 
-  v7 = [v4 contextualAction];
-  v8 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:v4];
+  contextualAction = [modelCopy contextualAction];
+  v8 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:modelCopy];
 
-  v9 = [v8 biomeStreamIdentifier];
-  [(SearchUISwitchAccessoryViewController *)self setAction:v7];
+  biomeStreamIdentifier = [v8 biomeStreamIdentifier];
+  [(SearchUISwitchAccessoryViewController *)self setAction:contextualAction];
   v10 = +[SearchUIBiomeSubscriberRegistry sharedManager];
-  v11 = [v10 requestSubscriberForIdentifier:v9];
+  v11 = [v10 requestSubscriberForIdentifier:biomeStreamIdentifier];
   [(SearchUISwitchAccessoryViewController *)self setSubscriber:v11];
 
-  v12 = [(SearchUISwitchAccessoryViewController *)self subscriber];
+  subscriber3 = [(SearchUISwitchAccessoryViewController *)self subscriber];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__SearchUISwitchAccessoryViewController_updateWithRowModel___block_invoke;
   v14[3] = &unk_1E85B2CE8;
   v14[4] = self;
-  [v12 getLatestEventWithCompletion:v14];
+  [subscriber3 getLatestEventWithCompletion:v14];
 
-  v13 = [(SearchUISwitchAccessoryViewController *)self subscriber];
-  [v13 addObserver:self selector:sel_updateWithNotification_];
+  subscriber4 = [(SearchUISwitchAccessoryViewController *)self subscriber];
+  [subscriber4 addObserver:self selector:sel_updateWithNotification_];
 }
 
-- (void)updateWithNotification:(id)a3
+- (void)updateWithNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKeyedSubscript:@"event"];
+  userInfo = [notification userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"event"];
 
   v5 = v6;
   if (v6)
@@ -89,34 +89,34 @@
   }
 }
 
-- (void)updateForEvent:(id)a3 animated:(BOOL)a4
+- (void)updateForEvent:(id)event animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [(SearchUISwitchAccessoryViewController *)self action];
+  eventCopy = event;
+  action = [(SearchUISwitchAccessoryViewController *)self action];
 
-  if (v7)
+  if (action)
   {
-    v8 = [(SearchUISwitchAccessoryViewController *)self action];
-    v9 = [SearchUIBiomeEvent eventForEvent:v6 contextualAction:v8];
+    action2 = [(SearchUISwitchAccessoryViewController *)self action];
+    v9 = [SearchUIBiomeEvent eventForEvent:eventCopy contextualAction:action2];
 
-    v6 = v9;
+    eventCopy = v9;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = v6;
+    v10 = eventCopy;
     objc_initWeak(&location, self);
-    v11 = [(SearchUISwitchAccessoryViewController *)self subscriber];
-    v12 = [v11 streamIdentifier];
+    subscriber = [(SearchUISwitchAccessoryViewController *)self subscriber];
+    streamIdentifier = [subscriber streamIdentifier];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __65__SearchUISwitchAccessoryViewController_updateForEvent_animated___block_invoke;
     v15[3] = &unk_1E85B2D38;
     objc_copyWeak(&v17, &location);
-    v13 = v12;
+    v13 = streamIdentifier;
     v16 = v13;
-    v18 = a4;
+    animatedCopy = animated;
     [v10 getEnabledStatusWithCompletion:v15];
 
     objc_destroyWeak(&v17);
@@ -199,14 +199,14 @@ uint64_t __65__SearchUISwitchAccessoryViewController_updateForEvent_animated___b
   return [*(a1 + 32) setIsHiddenByEvent:1];
 }
 
-- (void)setIsHiddenByEvent:(BOOL)a3
+- (void)setIsHiddenByEvent:(BOOL)event
 {
-  v3 = a3;
-  self->_isHiddenByEvent = a3;
-  v5 = [(SearchUIAccessoryViewController *)self view];
-  [v5 setEnabled:!v3];
+  eventCopy = event;
+  self->_isHiddenByEvent = event;
+  view = [(SearchUIAccessoryViewController *)self view];
+  [view setEnabled:!eventCopy];
 
-  if (v3)
+  if (eventCopy)
   {
     v6 = 0.0;
   }
@@ -216,22 +216,22 @@ uint64_t __65__SearchUISwitchAccessoryViewController_updateForEvent_animated___b
     v6 = 1.0;
   }
 
-  v7 = [(SearchUIAccessoryViewController *)self view];
-  [v7 setAlpha:v6];
+  view2 = [(SearchUIAccessoryViewController *)self view];
+  [view2 setAlpha:v6];
 }
 
-- (void)debounceSetOn:(BOOL)a3 animated:(BOOL)a4
+- (void)debounceSetOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  onCopy = on;
   if ([(SearchUISwitchAccessoryViewController *)self isAwaitingUpdate])
   {
-    v7 = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
+    debounceBlock = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
 
-    if (v7)
+    if (debounceBlock)
     {
-      v8 = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
-      dispatch_block_cancel(v8);
+      debounceBlock2 = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
+      dispatch_block_cancel(debounceBlock2);
     }
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -239,20 +239,20 @@ uint64_t __65__SearchUISwitchAccessoryViewController_updateForEvent_animated___b
     v12[2] = __64__SearchUISwitchAccessoryViewController_debounceSetOn_animated___block_invoke;
     v12[3] = &unk_1E85B2D60;
     v12[4] = self;
-    v13 = v5;
-    v14 = v4;
+    v13 = onCopy;
+    v14 = animatedCopy;
     v9 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, v12);
     [(SearchUISwitchAccessoryViewController *)self setDebounceBlock:v9];
 
     v10 = dispatch_time(0, 50000000);
-    v11 = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
-    dispatch_after(v10, MEMORY[0x1E69E96A0], v11);
+    debounceBlock3 = [(SearchUISwitchAccessoryViewController *)self debounceBlock];
+    dispatch_after(v10, MEMORY[0x1E69E96A0], debounceBlock3);
   }
 
   else
   {
 
-    [(SearchUISwitchAccessoryViewController *)self setOn:v5 animated:v4];
+    [(SearchUISwitchAccessoryViewController *)self setOn:onCopy animated:animatedCopy];
   }
 }
 
@@ -264,35 +264,35 @@ uint64_t __64__SearchUISwitchAccessoryViewController_debounceSetOn_animated___bl
   return [v2 setIsAwaitingUpdate:0];
 }
 
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4
+- (void)setOn:(BOOL)on animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SearchUIAccessoryViewController *)self view];
-  v8 = [v7 isOn];
+  animatedCopy = animated;
+  onCopy = on;
+  view = [(SearchUIAccessoryViewController *)self view];
+  isOn = [view isOn];
 
-  if (v8 != v5)
+  if (isOn != onCopy)
   {
-    v9 = [(SearchUIAccessoryViewController *)self view];
-    [v9 setOn:v5 animated:v4];
+    view2 = [(SearchUIAccessoryViewController *)self view];
+    [view2 setOn:onCopy animated:animatedCopy];
   }
 }
 
 - (void)buttonPressed
 {
   [(SearchUISwitchAccessoryViewController *)self setIsAwaitingUpdate:1];
-  v3 = [(SearchUIAccessoryViewController *)self view];
-  -[SearchUISwitchAccessoryViewController setExpectedUpdateState:](self, "setExpectedUpdateState:", [v3 isOn]);
+  view = [(SearchUIAccessoryViewController *)self view];
+  -[SearchUISwitchAccessoryViewController setExpectedUpdateState:](self, "setExpectedUpdateState:", [view isOn]);
 
-  v4 = [(SearchUIAccessoryViewController *)self delegate];
-  v5 = [v4 feedbackDelegate];
-  v10 = [SearchUIUtilities environmentForDelegate:v5];
+  delegate = [(SearchUIAccessoryViewController *)self delegate];
+  feedbackDelegate = [delegate feedbackDelegate];
+  v10 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-  v6 = [(SearchUIAccessoryViewController *)self rowModel];
-  v7 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:v6];
+  rowModel = [(SearchUIAccessoryViewController *)self rowModel];
+  v7 = [SearchUIShortcutsUtilities commandForSettingTogglesFromRowModel:rowModel];
 
-  v8 = [(SearchUIAccessoryViewController *)self rowModel];
-  v9 = [SearchUICommandHandler handlerForCommand:v7 rowModel:v8 button:0 sectionModel:0 environment:v10];
+  rowModel2 = [(SearchUIAccessoryViewController *)self rowModel];
+  v9 = [SearchUICommandHandler handlerForCommand:v7 rowModel:rowModel2 button:0 sectionModel:0 environment:v10];
 
   [v9 executeWithTriggerEvent:3];
 }

@@ -1,22 +1,22 @@
 @interface DBTComposedCharactersPreprocessor
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 @end
 
 @implementation DBTComposedCharactersPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  stringCopy = string;
+  v8 = stringCopy;
+  if (!stringCopy)
   {
     v10 = 0;
     goto LABEL_20;
   }
 
-  v9 = [(__CFString *)v7 length];
+  v9 = [(__CFString *)stringCopy length];
   v10 = +[NSMutableString string];
-  if (a4)
+  if (map)
   {
     v11 = [NSMutableData dataWithLength:0];
     if (!v9)
@@ -83,10 +83,10 @@ LABEL_7:
   }
 
 LABEL_17:
-  if (a4)
+  if (map)
   {
     v18 = v11;
-    *a4 = v11;
+    *map = v11;
   }
 
 LABEL_20:

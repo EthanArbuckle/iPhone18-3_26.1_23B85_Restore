@@ -23,7 +23,7 @@
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  v9 = [a1 downloadTaskWithRequest:v6 completionHandler:v13];
+  v9 = [self downloadTaskWithRequest:v6 completionHandler:v13];
   v10 = v17[5];
   v17[5] = v9;
 
@@ -51,7 +51,7 @@
   v18 = &v19;
   v11 = v10;
   v17 = v11;
-  v12 = [a1 uploadTaskWithRequest:v8 fromData:v9 completionHandler:v16];
+  v12 = [self uploadTaskWithRequest:v8 fromData:v9 completionHandler:v16];
   v13 = v20[5];
   v20[5] = v12;
 
@@ -78,7 +78,7 @@
   v15 = &v16;
   v8 = v7;
   v14 = v8;
-  v9 = [a1 dataTaskWithRequest:v6 completionHandler:v13];
+  v9 = [self dataTaskWithRequest:v6 completionHandler:v13];
   v10 = v17[5];
   v17[5] = v9;
 

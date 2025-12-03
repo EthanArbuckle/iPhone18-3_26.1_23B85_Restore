@@ -1,34 +1,34 @@
 @interface CHWorkoutDetailFourColumnIntervalTableViewCell
-- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureHeaderWithWorkout:(id)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5 formattingManager:(id)a6;
-- (void)configureWithInterval:(id)a3 index:(int64_t)a4 workout:(id)a5 activityType:(id)a6 activityMoveMode:(int64_t)a7 isLastCell:(BOOL)a8 formattingManager:(id)a9;
+- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureHeaderWithWorkout:(id)workout activityType:(id)type activityMoveMode:(int64_t)mode formattingManager:(id)manager;
+- (void)configureWithInterval:(id)interval index:(int64_t)index workout:(id)workout activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)manager;
 @end
 
 @implementation CHWorkoutDetailFourColumnIntervalTableViewCell
 
-- (void)configureHeaderWithWorkout:(id)a3 activityType:(id)a4 activityMoveMode:(int64_t)a5 formattingManager:(id)a6
+- (void)configureHeaderWithWorkout:(id)workout activityType:(id)type activityMoveMode:(int64_t)mode formattingManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = self;
-  sub_100458828(v10, v11, a5, v12);
+  workoutCopy = workout;
+  typeCopy = type;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100458828(workoutCopy, typeCopy, mode, managerCopy);
 }
 
-- (void)configureWithInterval:(id)a3 index:(int64_t)a4 workout:(id)a5 activityType:(id)a6 activityMoveMode:(int64_t)a7 isLastCell:(BOOL)a8 formattingManager:(id)a9
+- (void)configureWithInterval:(id)interval index:(int64_t)index workout:(id)workout activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)manager
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = self;
-  sub_100458FC8(a3, a4, v17, v18, a7, a8, v19);
+  intervalCopy = interval;
+  workoutCopy = workout;
+  typeCopy = type;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100458FC8(interval, index, workoutCopy, typeCopy, mode, cell, managerCopy);
 }
 
-- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = String._bridgeToObjectiveC()();
@@ -41,17 +41,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for WorkoutDetailFourColumnIntervalTableViewCell();
-  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutDetailFourColumnIntervalTableViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutDetailFourColumnIntervalTableViewCell();
-  v4 = a3;
-  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,14 +1,14 @@
 @interface PHCarPlayHardwareMenuTableViewCell
-- (PHCarPlayHardwareMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHCarPlayHardwareMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation PHCarPlayHardwareMenuTableViewCell
 
-- (PHCarPlayHardwareMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHCarPlayHardwareMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = PHCarPlayHardwareMenuTableViewCell;
-  v4 = [(PHCarPlayGenericTableViewCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PHCarPlayGenericTableViewCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -28,44 +28,44 @@
     v10 = +[UIColor whiteColor];
     [(UILabel *)v4->_mainLabel setHighlightedTextColor:v10];
 
-    v11 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    [v11 addSubview:v4->_mainLabel];
+    contentView = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_mainLabel];
 
     v12 = objc_alloc_init(UIImageView);
     iconImageView = v4->_iconImageView;
     v4->_iconImageView = v12;
 
     [(UIImageView *)v4->_iconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    [v14 addSubview:v4->_iconImageView];
+    contentView2 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_iconImageView];
 
     v32[0] = @"mainLabel";
-    v15 = [(PHCarPlayHardwareMenuTableViewCell *)v4 mainLabel];
+    mainLabel = [(PHCarPlayHardwareMenuTableViewCell *)v4 mainLabel];
     v32[1] = @"iconImage";
-    v33[0] = v15;
-    v16 = [(PHCarPlayHardwareMenuTableViewCell *)v4 iconImageView];
-    v33[1] = v16;
+    v33[0] = mainLabel;
+    iconImageView = [(PHCarPlayHardwareMenuTableViewCell *)v4 iconImageView];
+    v33[1] = iconImageView;
     v17 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:2];
 
-    v18 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    contentView3 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
     v19 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-53-[mainLabel]", 0, 0, v17);
-    [v18 addConstraints:v19];
+    [contentView3 addConstraints:v19];
 
-    v20 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    v21 = [(PHCarPlayHardwareMenuTableViewCell *)v4 mainLabel];
-    v22 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    v23 = [NSLayoutConstraint constraintWithItem:v21 attribute:11 relatedBy:0 toItem:v22 attribute:3 multiplier:1.0 constant:28.5];
-    [v20 addConstraint:v23];
+    contentView4 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    mainLabel2 = [(PHCarPlayHardwareMenuTableViewCell *)v4 mainLabel];
+    contentView5 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    v23 = [NSLayoutConstraint constraintWithItem:mainLabel2 attribute:11 relatedBy:0 toItem:contentView5 attribute:3 multiplier:1.0 constant:28.5];
+    [contentView4 addConstraint:v23];
 
-    v24 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    contentView6 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
     v25 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"|-22-[iconImage]", 0, 0, v17);
-    [v24 addConstraints:v25];
+    [contentView6 addConstraints:v25];
 
-    v26 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    v27 = [(PHCarPlayHardwareMenuTableViewCell *)v4 iconImageView];
-    v28 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
-    v29 = [NSLayoutConstraint constraintWithItem:v27 attribute:10 relatedBy:0 toItem:v28 attribute:10 multiplier:1.0 constant:0.0];
-    [v26 addConstraint:v29];
+    contentView7 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    iconImageView2 = [(PHCarPlayHardwareMenuTableViewCell *)v4 iconImageView];
+    contentView8 = [(PHCarPlayHardwareMenuTableViewCell *)v4 contentView];
+    v29 = [NSLayoutConstraint constraintWithItem:iconImageView2 attribute:10 relatedBy:0 toItem:contentView8 attribute:10 multiplier:1.0 constant:0.0];
+    [contentView7 addConstraint:v29];
 
     [(PHCarPlayGenericTableViewCell *)v4 setShowsChevron:1];
   }

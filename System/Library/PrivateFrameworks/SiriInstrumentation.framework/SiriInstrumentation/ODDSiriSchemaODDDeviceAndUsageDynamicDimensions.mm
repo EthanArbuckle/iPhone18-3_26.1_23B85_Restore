@@ -1,29 +1,29 @@
 @interface ODDSiriSchemaODDDeviceAndUsageDynamicDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppTaskType:(BOOL)a3;
-- (void)setHasAudioInterface:(BOOL)a3;
-- (void)setHasTaskAppBundleId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppTaskType:(BOOL)type;
+- (void)setHasAudioInterface:(BOOL)interface;
+- (void)setHasTaskAppBundleId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDDeviceAndUsageDynamicDimensions
 
-- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ODDSiriSchemaODDDeviceAndUsageDynamicDimensions;
   v5 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,28 +31,28 @@
       [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)v5 setSiriInputLocale:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"viewInterface"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"viewInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDeviceAndUsageDynamicDimensions setViewInterface:](v5, "setViewInterface:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"audioInterface"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"audioInterface"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDeviceAndUsageDynamicDimensions setAudioInterface:](v5, "setAudioInterface:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appTaskType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appTaskType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDDeviceAndUsageDynamicDimensions setAppTaskType:](v5, "setAppTaskType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"taskAppBundleId"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"taskAppBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithJSON:(id)a3
+- (ODDSiriSchemaODDDeviceAndUsageDynamicDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,7 +101,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -116,7 +116,7 @@
       v6 = off_1E78DD1F8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"appTaskType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"appTaskType"];
     has = self->_has;
   }
 
@@ -133,22 +133,22 @@
       v8 = off_1E78DD218[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"audioInterface"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioInterface"];
   }
 
   if (self->_siriInputLocale)
   {
-    v9 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    siriInputLocale = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+    dictionaryRepresentation = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"siriInputLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
@@ -166,7 +166,7 @@
       v14 = off_1E78DD290[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"taskAppBundleId"];
+    [dictionary setObject:v14 forKeyedSubscript:@"taskAppBundleId"];
     v12 = self->_has;
   }
 
@@ -183,12 +183,12 @@
       v16 = off_1E78DD2A8[v15];
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"viewInterface"];
+    [dictionary setObject:v16 forKeyedSubscript:@"viewInterface"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -246,30 +246,30 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
-  v6 = [v4 siriInputLocale];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  siriInputLocale = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+  siriInputLocale2 = [equalCopy siriInputLocale];
+  v7 = siriInputLocale2;
+  if ((siriInputLocale != 0) == (siriInputLocale2 == 0))
   {
 
     goto LABEL_24;
   }
 
-  v8 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
-  if (v8)
+  siriInputLocale3 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+  if (siriInputLocale3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
-    v11 = [v4 siriInputLocale];
-    v12 = [v10 isEqual:v11];
+    v9 = siriInputLocale3;
+    siriInputLocale4 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+    siriInputLocale5 = [equalCopy siriInputLocale];
+    v12 = [siriInputLocale4 isEqual:siriInputLocale5];
 
     if (!v12)
     {
@@ -282,7 +282,7 @@ LABEL_5:
   }
 
   has = self->_has;
-  v14 = v4[32];
+  v14 = equalCopy[32];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_24:
@@ -293,13 +293,13 @@ LABEL_24:
   if (*&has)
   {
     viewInterface = self->_viewInterface;
-    if (viewInterface != [v4 viewInterface])
+    if (viewInterface != [equalCopy viewInterface])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -311,13 +311,13 @@ LABEL_24:
   if (v16)
   {
     audioInterface = self->_audioInterface;
-    if (audioInterface != [v4 audioInterface])
+    if (audioInterface != [equalCopy audioInterface])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
   }
 
   v18 = (*&has >> 2) & 1;
@@ -329,10 +329,10 @@ LABEL_24:
   if (v18)
   {
     appTaskType = self->_appTaskType;
-    if (appTaskType == [v4 appTaskType])
+    if (appTaskType == [equalCopy appTaskType])
     {
       has = self->_has;
-      v14 = v4[32];
+      v14 = equalCopy[32];
       goto LABEL_20;
     }
 
@@ -349,7 +349,7 @@ LABEL_20:
   if (v20)
   {
     taskAppBundleId = self->_taskAppBundleId;
-    if (taskAppBundleId != [v4 taskAppBundleId])
+    if (taskAppBundleId != [equalCopy taskAppBundleId])
     {
       goto LABEL_24;
     }
@@ -361,14 +361,14 @@ LABEL_25:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+  toCopy = to;
+  siriInputLocale = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
 
-  if (v4)
+  if (siriInputLocale)
   {
-    v5 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
+    siriInputLocale2 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -379,11 +379,11 @@ LABEL_25:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -403,20 +403,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasTaskAppBundleId:(BOOL)a3
+- (void)setHasTaskAppBundleId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -429,9 +429,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAppTaskType:(BOOL)a3
+- (void)setHasAppTaskType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -444,9 +444,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAudioInterface:(BOOL)a3
+- (void)setHasAudioInterface:(BOOL)interface
 {
-  if (a3)
+  if (interface)
   {
     v3 = 2;
   }
@@ -459,17 +459,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDDeviceAndUsageDynamicDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self siriInputLocale:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDDeviceAndUsageDynamicDimensions *)self deleteSiriInputLocale];
   }

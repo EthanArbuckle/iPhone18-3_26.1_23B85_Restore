@@ -9,27 +9,27 @@
 - (BOOL)isAccessibilityElement
 {
   v3 = [(UICompletionTableViewCellAccessibility *)self safeValueForKey:@"_tableCell"];
-  v4 = [v3 isAccessibilityElement];
+  isAccessibilityElement = [v3 isAccessibilityElement];
   MEMORY[0x29EDC9740](v3);
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(UICompletionTableViewCellAccessibility *)self safeValueForKey:@"_tableCell"];
-  v4 = [v3 _accessibilityAXAttributedLabel];
+  _accessibilityAXAttributedLabel = [v3 _accessibilityAXAttributedLabel];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return _accessibilityAXAttributedLabel;
 }
 
 - (id)accessibilityValue
 {
   v3 = [(UICompletionTableViewCellAccessibility *)self safeValueForKey:@"_tableCell"];
-  v4 = [v3 _accessibilityAXAttributedValue];
+  _accessibilityAXAttributedValue = [v3 _accessibilityAXAttributedValue];
   MEMORY[0x29EDC9740](v3);
 
-  return v4;
+  return _accessibilityAXAttributedValue;
 }
 
 @end

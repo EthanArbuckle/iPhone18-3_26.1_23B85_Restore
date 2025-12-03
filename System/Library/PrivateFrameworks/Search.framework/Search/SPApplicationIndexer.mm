@@ -2,14 +2,14 @@
 + (id)attributeSetForApp;
 + (id)sharedIndexer;
 - (SPApplicationIndexer)init;
-- (id)_updateItem:(id)a3 forIdentifier:(id)a4 withLaunchCounts:(id)a5 requiresLocalizationInfo:(BOOL)a6;
-- (void)_updateAppMetadata:(id)a3 appsRequiringLocalization:(id)a4 activity:(id)a5 completion:(id)a6;
-- (void)addDefaultBundleInformationForURL:(id)a3 attrSet:(id)a4 altNames:(id)a5 namesOnly:(BOOL)a6 withApp:(id)a7 enName:(id)a8;
+- (id)_updateItem:(id)item forIdentifier:(id)identifier withLaunchCounts:(id)counts requiresLocalizationInfo:(BOOL)info;
+- (void)_updateAppMetadata:(id)metadata appsRequiringLocalization:(id)localization activity:(id)activity completion:(id)completion;
+- (void)addDefaultBundleInformationForURL:(id)l attrSet:(id)set altNames:(id)names namesOnly:(BOOL)only withApp:(id)app enName:(id)name;
 - (void)dealloc;
-- (void)updateApplicationInformationForExistingItems:(id)a3 reimportItems:(id)a4 newItems:(id)a5 countItems:(id)a6 updateCountItems:(id)a7 clean:(BOOL)a8 activity:(id)a9 completion:(id)a10;
-- (void)updateApplicationMetadata:(id)a3 appsRequiringLocalization:(id)a4 activity:(id)a5 completion:(id)a6;
-- (void)updateApplications:(id)a3 appBundleArray:(id)a4 clean:(BOOL)a5 activity:(id)a6;
-- (void)updateShortcuts:(id)a3;
+- (void)updateApplicationInformationForExistingItems:(id)items reimportItems:(id)reimportItems newItems:(id)newItems countItems:(id)countItems updateCountItems:(id)updateCountItems clean:(BOOL)clean activity:(id)activity completion:(id)self0;
+- (void)updateApplicationMetadata:(id)metadata appsRequiringLocalization:(id)localization activity:(id)activity completion:(id)completion;
+- (void)updateApplications:(id)applications appBundleArray:(id)array clean:(BOOL)clean activity:(id)activity;
+- (void)updateShortcuts:(id)shortcuts;
 @end
 
 @implementation SPApplicationIndexer
@@ -75,28 +75,28 @@
   [(SPApplicationIndexer *)&v3 dealloc];
 }
 
-- (void)addDefaultBundleInformationForURL:(id)a3 attrSet:(id)a4 altNames:(id)a5 namesOnly:(BOOL)a6 withApp:(id)a7 enName:(id)a8
+- (void)addDefaultBundleInformationForURL:(id)l attrSet:(id)set altNames:(id)names namesOnly:(BOOL)only withApp:(id)app enName:(id)name
 {
-  v13 = a3;
-  v106 = a4;
-  v14 = a5;
-  v103 = a7;
-  v15 = a8;
-  v102 = v13;
+  lCopy = l;
+  setCopy = set;
+  namesCopy = names;
+  appCopy = app;
+  nameCopy = name;
+  v102 = lCopy;
   bundle = _CFBundleCreateUnique();
   if (!bundle)
   {
     goto LABEL_160;
   }
 
-  if (v15 && ![v15 length])
+  if (nameCopy && ![nameCopy length])
   {
 
-    v15 = 0;
+    nameCopy = 0;
   }
 
-  v104 = v15;
-  if (a6)
+  v104 = nameCopy;
+  if (only)
   {
     v16 = 0;
     goto LABEL_47;
@@ -143,7 +143,7 @@
 
     if ([v19 count])
     {
-      [v106 setLanguages:v19];
+      [setCopy setLanguages:v19];
     }
 
     if (v104)
@@ -163,7 +163,7 @@
     v140 = sub_10001F2F0;
     v141 = sub_10001F300;
     v142 = 0;
-    v26 = [v102 path];
+    path = [v102 path];
     v132[0] = _NSConcreteStackBlock;
     v132[1] = 3221225472;
     v133 = sub_10001F308;
@@ -171,13 +171,13 @@
     v135 = &v137;
     v136 = &v143;
     v27 = v132;
-    v28 = v26;
-    v29 = [v26 fileSystemRepresentation];
-    v30 = v29;
-    if (v29)
+    v28 = path;
+    fileSystemRepresentation = [path fileSystemRepresentation];
+    v30 = fileSystemRepresentation;
+    if (fileSystemRepresentation)
     {
       memset(&v153, 0, sizeof(v153));
-      if (stat(v29, &v153) != -1 && (v153.st_mode & 0xF000) == 0x4000)
+      if (stat(fileSystemRepresentation, &v153) != -1 && (v153.st_mode & 0xF000) == 0x4000)
       {
         bzero(buf, 0x400uLL);
         v31 = strlen(v30);
@@ -219,7 +219,7 @@
         {
           logb = v37;
           v92 = [objc_opt_class() description];
-          v93 = [v102 path];
+          path2 = [v102 path];
           *buf = 138413314;
           v162 = v34;
           v163 = 2112;
@@ -227,10 +227,10 @@
           v165 = 2112;
           v166 = v36;
           v167 = 2112;
-          v168 = v93;
+          v168 = path2;
           v169 = 2112;
           v170 = @"en";
-          v94 = v93;
+          v94 = path2;
           _os_log_error_impl(&_mh_execute_header, logb, OS_LOG_TYPE_ERROR, "%@ invalid type %@ %@ %@ %@", buf, 0x34u);
 
           v37 = logb;
@@ -273,7 +273,7 @@ LABEL_37:
         if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
         {
           v95 = [objc_opt_class() description];
-          v96 = [v102 path];
+          path3 = [v102 path];
           *buf = 138413314;
           v162 = kCFBundleNameKey;
           v163 = 2112;
@@ -281,10 +281,10 @@ LABEL_37:
           v165 = 2112;
           v166 = v36;
           v167 = 2112;
-          v168 = v96;
+          v168 = path3;
           v169 = 2112;
           v170 = @"en";
-          v97 = v96;
+          v97 = path3;
           _os_log_error_impl(&_mh_execute_header, v91, OS_LOG_TYPE_ERROR, "%@ invalid type %@ %@ %@ %@", buf, 0x34u);
         }
       }
@@ -308,7 +308,7 @@ LABEL_41:
   if (objc_opt_isKindOfClass())
   {
     v16 = v40;
-    [v106 setAttribute:v16 forKey:v39];
+    [setCopy setAttribute:v16 forKey:v39];
   }
 
   else
@@ -317,11 +317,11 @@ LABEL_41:
   }
 
 LABEL_47:
-  v42 = [v106 displayName];
-  if ([v42 length] || !v104)
+  displayName = [setCopy displayName];
+  if ([displayName length] || !v104)
   {
-    v44 = v42;
-    if (!v42)
+    v44 = displayName;
+    if (!displayName)
     {
       v99 = 0;
       goto LABEL_54;
@@ -339,11 +339,11 @@ LABEL_47:
   v45 = _MDStringCopyAbbreviations();
   if ([v45 count])
   {
-    [v14 addObjectsFromArray:v45];
+    [namesCopy addObjectsFromArray:v45];
   }
 
 LABEL_54:
-  v46 = [v103 longDisplayName];
+  longDisplayName = [appCopy longDisplayName];
   v131 = 0;
   v47 = [v102 getResourceValue:&v131 forKey:NSURLParentDirectoryURLKey error:0];
   v48 = v131;
@@ -367,9 +367,9 @@ LABEL_54:
     v105 = 0;
   }
 
-  if ([v46 length] || !v105)
+  if ([longDisplayName length] || !v105)
   {
-    v51 = v46;
+    v51 = longDisplayName;
   }
 
   else
@@ -382,14 +382,14 @@ LABEL_54:
   v100 = v51;
   if ([v51 length])
   {
-    [v14 addObject:v100];
-    v52 = [v103 longDisplayName];
-    [v106 setTitle:v52];
+    [namesCopy addObject:v100];
+    longDisplayName2 = [appCopy longDisplayName];
+    [setCopy setTitle:longDisplayName2];
   }
 
   if (v104)
   {
-    [v14 addObject:v104];
+    [namesCopy addObject:v104];
   }
 
   if (v105)
@@ -437,7 +437,7 @@ LABEL_54:
                       objc_enumerationMutation(v58);
                     }
 
-                    [v14 addObject:*(*(&v123 + 1) + 8 * k)];
+                    [namesCopy addObject:*(*(&v123 + 1) + 8 * k)];
                   }
 
                   v59 = [v58 countByEnumeratingWithState:&v123 objects:v158 count:16];
@@ -481,7 +481,7 @@ LABEL_54:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v14 addObject:v66];
+                  [namesCopy addObject:v66];
                 }
               }
 
@@ -497,7 +497,7 @@ LABEL_54:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v14 addObject:log];
+            [namesCopy addObject:log];
           }
         }
       }
@@ -541,12 +541,12 @@ LABEL_54:
             v73 = v72;
             if (v72 && [v72 length])
             {
-              [v14 addObject:v73];
+              [namesCopy addObject:v73];
             }
 
             else if ([(__CFString *)v71 length])
             {
-              [v14 addObject:v71];
+              [namesCopy addObject:v71];
             }
           }
         }
@@ -569,7 +569,7 @@ LABEL_54:
 
       if ([v74 length])
       {
-        [v14 addObject:v74];
+        [namesCopy addObject:v74];
       }
 
       v67 = 0;
@@ -617,12 +617,12 @@ LABEL_54:
               v81 = CFBundleGetValueForInfoDictionaryKey(bundle, v80);
               if (v81)
               {
-                [v14 addObject:v81];
+                [namesCopy addObject:v81];
               }
 
               else
               {
-                [v14 addObject:v80];
+                [namesCopy addObject:v80];
               }
             }
           }
@@ -641,7 +641,7 @@ LABEL_54:
   {
     v83 = v82;
 
-    [v14 addObjectsFromArray:v83];
+    [namesCopy addObjectsFromArray:v83];
   }
 
   else
@@ -651,7 +651,7 @@ LABEL_54:
     {
       v84 = v82;
 
-      [v14 addObject:v84];
+      [namesCopy addObject:v84];
       v83 = v67;
       v16 = v84;
     }
@@ -696,42 +696,42 @@ LABEL_154:
     v89 = _MDBundleUtilsCopyLocalizedApplicationCategories();
     if (v89)
     {
-      [v106 setAttribute:v89 forKey:@"kMDItemAppStoreCategory"];
+      [setCopy setAttribute:v89 forKey:@"kMDItemAppStoreCategory"];
     }
 
     else
     {
       v90 = [v88 componentsJoinedByString:{@", "}];
-      [v106 setAttribute:v90 forKey:@"kMDItemAppStoreCategory"];
+      [setCopy setAttribute:v90 forKey:@"kMDItemAppStoreCategory"];
     }
   }
 
   CFRelease(bundle);
 
-  v15 = v104;
+  nameCopy = v104;
 LABEL_160:
 }
 
-- (id)_updateItem:(id)a3 forIdentifier:(id)a4 withLaunchCounts:(id)a5 requiresLocalizationInfo:(BOOL)a6
+- (id)_updateItem:(id)item forIdentifier:(id)identifier withLaunchCounts:(id)counts requiresLocalizationInfo:(BOOL)info
 {
-  v6 = a6;
-  v9 = a3;
-  v139 = a4;
-  v10 = a5;
+  infoCopy = info;
+  itemCopy = item;
+  identifierCopy = identifier;
+  countsCopy = counts;
   group = dispatch_group_create();
   v11 = qos_class_self();
   v12 = dispatch_queue_attr_make_with_qos_class(0, v11, 0);
   v135 = dispatch_queue_create("clip queue", v12);
 
-  v138 = v9;
-  v140 = v10;
-  if (!v6)
+  v138 = itemCopy;
+  v140 = countsCopy;
+  if (!infoCopy)
   {
     cf = 0;
     v143 = 0;
     v16 = 0;
     v18 = 0;
-    if (![v10 count])
+    if (![countsCopy count])
     {
       goto LABEL_173;
     }
@@ -741,7 +741,7 @@ LABEL_166:
     goto LABEL_167;
   }
 
-  if ([v9 isAppClip])
+  if ([itemCopy isAppClip])
   {
     v13 = +[SPApplicationIndexer attributeSetForApp];
     dispatch_group_enter(group);
@@ -750,12 +750,12 @@ LABEL_166:
     v177[1] = 3221225472;
     v177[2] = sub_100020D90;
     v177[3] = &unk_100092BB0;
-    v178 = v9;
+    v178 = itemCopy;
     cf = v13;
     v179 = cf;
     v15 = group;
     v180 = v15;
-    v181 = v139;
+    v181 = identifierCopy;
     [v14 getAppClipWithIdentifier:v181 receiveOnQueue:v135 completionHandler:v177];
 
     dispatch_group_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
@@ -765,10 +765,10 @@ LABEL_166:
     goto LABEL_164;
   }
 
-  v19 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v139 allowPlaceholder:1 error:0];
+  v19 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
   if (!v19)
   {
-    v19 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:v139 error:0];
+    v19 = [[LSApplicationRecord alloc] initWithBundleIdentifierOfSystemPlaceholder:identifierCopy error:0];
   }
 
   v128 = v19;
@@ -791,11 +791,11 @@ LABEL_166:
   if (os_log_type_enabled(v20, ((gSPLogInfoAsDefault & 1) == 0)))
   {
     *buf = 138412290;
-    v188 = v139;
+    v188 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v20, ((v21 & 1) == 0), "processing update %@", buf, 0xCu);
   }
 
-  v22 = [v132 path];
+  path = [v132 path];
   v160[0] = _NSConcreteStackBlock;
   v160[1] = 3221225472;
   v161 = sub_100020F5C;
@@ -803,12 +803,12 @@ LABEL_166:
   v163 = &v165;
   v164 = &v171;
   v23 = v160;
-  v24 = v22;
-  v25 = [v22 fileSystemRepresentation];
-  v26 = v25;
-  if (v25)
+  v24 = path;
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  v26 = fileSystemRepresentation;
+  if (fileSystemRepresentation)
   {
-    v27 = opendir(v25);
+    v27 = opendir(fileSystemRepresentation);
     if (v27)
     {
       bzero(buf, 0x400uLL);
@@ -964,8 +964,8 @@ LABEL_39:
               [v53 enumerateObjectsUsingBlock:v158];
             }
 
-            v55 = [v47 allObjects];
-            v56 = [v55 componentsJoinedByString:{@", "}];
+            allObjects = [v47 allObjects];
+            v56 = [allObjects componentsJoinedByString:{@", "}];
 
             if (!v143)
             {
@@ -990,7 +990,7 @@ LABEL_63:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             v58 = [objc_opt_class() description];
-            v59 = [v132 path];
+            path2 = [v132 path];
             *buf = v125;
             v188 = v127;
             v189 = 2112;
@@ -998,7 +998,7 @@ LABEL_63:
             v191 = 2112;
             v192 = v41;
             v193 = 2112;
-            v194 = v59;
+            v194 = path2;
             v195 = 2112;
             v196 = v39;
             _os_log_error_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "%@ invalid type %@ %@ %@ %@", buf, 0x34u);
@@ -1023,7 +1023,7 @@ LABEL_37:
             if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
             {
               v60 = [objc_opt_class() description];
-              v61 = [v132 path];
+              path3 = [v132 path];
               *buf = v125;
               v188 = kCFBundleNameKey;
               v189 = 2112;
@@ -1031,7 +1031,7 @@ LABEL_37:
               v191 = 2112;
               v192 = v41;
               v193 = 2112;
-              v194 = v61;
+              v194 = path3;
               v195 = 2112;
               v196 = v39;
               _os_log_error_impl(&_mh_execute_header, v57, OS_LOG_TYPE_ERROR, "%@ invalid type %@ %@ %@ %@", buf, 0x34u);
@@ -1147,8 +1147,8 @@ LABEL_78:
 
           if (v69 && [v69 count])
           {
-            v73 = [v69 allObjects];
-            v74 = [v73 componentsJoinedByString:{@", "}];
+            allObjects2 = [v69 allObjects];
+            v74 = [allObjects2 componentsJoinedByString:{@", "}];
             [v143 setObject:v74 forKeyedSubscript:v66];
           }
         }
@@ -1269,15 +1269,15 @@ LABEL_111:
 LABEL_123:
   v16 = 0;
 LABEL_129:
-  v90 = [cf alternateNames];
-  v91 = [NSMutableSet setWithArray:v90];
+  alternateNames = [cf alternateNames];
+  v91 = [NSMutableSet setWithArray:alternateNames];
 
-  v92 = [cf displayName];
+  displayName = [cf displayName];
 
-  if (v92)
+  if (displayName)
   {
-    v93 = [cf displayName];
-    [v91 addObject:v93];
+    displayName2 = [cf displayName];
+    [v91 addObject:displayName2];
   }
 
   else if (v166[5] || v172[5])
@@ -1358,8 +1358,8 @@ LABEL_129:
         [v105 addObjectsFromArray:v108];
       }
 
-      v109 = [v105 allObjects];
-      v110 = [v109 componentsJoinedByString:{@", "}];
+      allObjects3 = [v105 allObjects];
+      v110 = [allObjects3 componentsJoinedByString:{@", "}];
       [v143 setObject:v110 forKeyedSubscript:@"ko"];
     }
 
@@ -1421,11 +1421,11 @@ LABEL_168:
     if (os_log_type_enabled(v121, ((gSPLogInfoAsDefault & 1) == 0)))
     {
       *buf = 138412290;
-      v188 = v139;
+      v188 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v121, ((v122 & 1) == 0), "processed update %@", buf, 0xCu);
     }
 
-    v18 = [[CSSearchableItem alloc] initWithUniqueIdentifier:v139 domainIdentifier:0 attributeSet:cf];
+    v18 = [[CSSearchableItem alloc] initWithUniqueIdentifier:identifierCopy domainIdentifier:0 attributeSet:cf];
     [v18 setIsUpdate:1];
   }
 
@@ -1441,23 +1441,23 @@ LABEL_173:
   return v18;
 }
 
-- (void)_updateAppMetadata:(id)a3 appsRequiringLocalization:(id)a4 activity:(id)a5 completion:(id)a6
+- (void)_updateAppMetadata:(id)metadata appsRequiringLocalization:(id)localization activity:(id)activity completion:(id)completion
 {
-  v10 = a3;
-  v66 = a4;
-  v11 = a5;
-  v12 = a6;
+  metadataCopy = metadata;
+  localizationCopy = localization;
+  activityCopy = activity;
+  completionCopy = completion;
   v65 = SPFastApplicationsGet();
   if (qword_1000A8398 != -1)
   {
     sub_100062640();
   }
 
-  if ([v10 count] || objc_msgSend(v66, "count"))
+  if ([metadataCopy count] || objc_msgSend(localizationCopy, "count"))
   {
-    v13 = v10;
-    v14 = [v10 allKeys];
-    v15 = [v14 arrayByAddingObjectsFromArray:v66];
+    v13 = metadataCopy;
+    allKeys = [metadataCopy allKeys];
+    v15 = [allKeys arrayByAddingObjectsFromArray:localizationCopy];
 
     v16 = [v15 count];
     v17 = v16 >> 6;
@@ -1473,7 +1473,7 @@ LABEL_173:
       v58 = SPApplicationBundleIdGeneralApplication;
       v19 = &ADClientAddValueForScalarKey_ptr;
       v61 = v15;
-      v62 = v12;
+      v62 = completionCopy;
       v57 = v16;
       do
       {
@@ -1518,7 +1518,7 @@ LABEL_173:
               }
 
               v29 = *(*(&v75 + 1) + 8 * i);
-              if (v11 && xpc_activity_should_defer(v11))
+              if (activityCopy && xpc_activity_should_defer(activityCopy))
               {
                 v53 = SPLogForSPLogCategoryDefault();
                 if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -1528,8 +1528,8 @@ LABEL_173:
                   _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "*warn* Deferring activity to update application metadata for %@ and more", buf, 0xCu);
                 }
 
-                xpc_activity_set_state(v11, 3);
-                v12 = v62;
+                xpc_activity_set_state(activityCopy, 3);
+                completionCopy = v62;
                 v62[2](v62);
 
                 v15 = v61;
@@ -1541,7 +1541,7 @@ LABEL_173:
                 [(NSMutableSet *)self->_pendingUpdates addObject:v29];
                 v30 = [v65 objectForKey:v29];
                 v31 = [v13 objectForKey:v29];
-                v32 = -[SPApplicationIndexer _updateItem:forIdentifier:withLaunchCounts:requiresLocalizationInfo:](self, "_updateItem:forIdentifier:withLaunchCounts:requiresLocalizationInfo:", v30, v29, v31, [v66 containsObject:v29]);
+                v32 = -[SPApplicationIndexer _updateItem:forIdentifier:withLaunchCounts:requiresLocalizationInfo:](self, "_updateItem:forIdentifier:withLaunchCounts:requiresLocalizationInfo:", v30, v29, v31, [localizationCopy containsObject:v29]);
 
                 if (v32)
                 {
@@ -1572,7 +1572,7 @@ LABEL_173:
 
         [v13 removeObjectsForKeys:v24];
         v34 = dispatch_group_create();
-        v12 = v62;
+        completionCopy = v62;
         if ([v64 count])
         {
           v35 = SPLogForSPLogCategoryDefault();
@@ -1602,7 +1602,7 @@ LABEL_173:
           v71[3] = &unk_100092C60;
           v41 = v64;
           v72 = v41;
-          v73 = self;
+          selfCopy = self;
           v74 = v34;
           [v40 indexSearchableItems:v41 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:NSFileProtectionCompleteUntilFirstUserAuthentication forBundleID:v58 options:0 completionHandler:v71];
         }
@@ -1639,7 +1639,7 @@ LABEL_173:
           v42 = v63;
           v49 = v63;
           v68 = v49;
-          v69 = self;
+          selfCopy2 = self;
           v70 = v34;
           [v48 indexSearchableItems:v49 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:NSFileProtectionCompleteUntilFirstUserAuthentication forBundleID:v58 options:0 completionHandler:v67];
         }
@@ -1658,15 +1658,15 @@ LABEL_173:
     v51 = gSPLogInfoAsDefault;
     if (os_log_type_enabled(v50, ((gSPLogInfoAsDefault & 1) == 0)))
     {
-      v52 = objc_retainBlock(v12);
+      v52 = objc_retainBlock(completionCopy);
       *buf = 134217984;
       v81 = v52;
       _os_log_impl(&_mh_execute_header, v50, ((v51 & 1) == 0), "2.7 call completion %p", buf, 0xCu);
     }
 
-    v12[2](v12);
+    completionCopy[2](completionCopy);
 LABEL_49:
-    v10 = v13;
+    metadataCopy = v13;
   }
 
   else
@@ -1675,39 +1675,39 @@ LABEL_49:
     v55 = gSPLogInfoAsDefault;
     if (os_log_type_enabled(v54, ((gSPLogInfoAsDefault & 1) == 0)))
     {
-      v56 = objc_retainBlock(v12);
+      v56 = objc_retainBlock(completionCopy);
       *buf = 134217984;
       v81 = v56;
       _os_log_impl(&_mh_execute_header, v54, ((v55 & 1) == 0), "2.8 call completion %p", buf, 0xCu);
     }
 
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)updateApplicationMetadata:(id)a3 appsRequiringLocalization:(id)a4 activity:(id)a5 completion:(id)a6
+- (void)updateApplicationMetadata:(id)metadata appsRequiringLocalization:(id)localization activity:(id)activity completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v16 = a5;
-  v17 = a6;
-  v15 = v10;
-  v11 = v16;
-  v12 = v10;
-  v13 = v9;
-  v14 = v17;
+  metadataCopy = metadata;
+  localizationCopy = localization;
+  activityCopy = activity;
+  completionCopy = completion;
+  v15 = localizationCopy;
+  v11 = activityCopy;
+  v12 = localizationCopy;
+  v13 = metadataCopy;
+  v14 = completionCopy;
   tracing_dispatch_async();
 }
 
-- (void)updateApplicationInformationForExistingItems:(id)a3 reimportItems:(id)a4 newItems:(id)a5 countItems:(id)a6 updateCountItems:(id)a7 clean:(BOOL)a8 activity:(id)a9 completion:(id)a10
+- (void)updateApplicationInformationForExistingItems:(id)items reimportItems:(id)reimportItems newItems:(id)newItems countItems:(id)countItems updateCountItems:(id)updateCountItems clean:(BOOL)clean activity:(id)activity completion:(id)self0
 {
-  v14 = a3;
-  v144 = a4;
-  v141 = a5;
-  v156 = a6;
-  v140 = a7;
-  v15 = a9;
-  v16 = a10;
+  itemsCopy = items;
+  reimportItemsCopy = reimportItems;
+  newItemsCopy = newItems;
+  countItemsCopy = countItems;
+  updateCountItemsCopy = updateCountItems;
+  activityCopy = activity;
+  completionCopy = completion;
   if (qword_1000A83A8 != -1)
   {
     sub_100062654();
@@ -1720,25 +1720,25 @@ LABEL_49:
     v122 = gSPLogInfoAsDefault;
     if (os_log_type_enabled(v121, ((gSPLogInfoAsDefault & 1) == 0)))
     {
-      v123 = v16;
-      v124 = objc_retainBlock(v16);
+      v123 = completionCopy;
+      v124 = objc_retainBlock(completionCopy);
       *buf = 134217984;
       *v187 = v124;
       _os_log_impl(&_mh_execute_header, v121, ((v122 & 1) == 0), "2.1 call completion %p", buf, 0xCu);
 
-      v16 = v123;
+      completionCopy = v123;
     }
 
-    v16[2](v16);
+    completionCopy[2](completionCopy);
     goto LABEL_140;
   }
 
-  v133 = v16;
+  v133 = completionCopy;
   v146 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
   v18 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
-  v147 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
+  v147 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v150 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v17 count]);
-  v139 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v14 count]);
+  v139 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
   v19 = +[NSLocale currentLocale];
   v155 = [v19 objectForKey:NSLocaleLanguageCode];
 
@@ -1748,11 +1748,11 @@ LABEL_49:
   v178 = 0u;
   obj = [v17 allValues];
   v20 = [obj countByEnumeratingWithState:&v177 objects:v188 count:16];
-  v151 = v14;
+  v151 = itemsCopy;
   v148 = v18;
-  v149 = v15;
+  v149 = activityCopy;
   v158 = v17;
-  v21 = a8;
+  cleanCopy2 = clean;
   if (!v20)
   {
     goto LABEL_100;
@@ -1781,7 +1781,7 @@ LABEL_49:
 
       v25 = *(*(&v177 + 1) + 8 * v24);
       v26 = objc_autoreleasePoolPush();
-      if (v15 && xpc_activity_should_defer(v15))
+      if (activityCopy && xpc_activity_should_defer(activityCopy))
       {
         v125 = SPLogForSPLogCategoryDefault();
         if (os_log_type_enabled(v125, OS_LOG_TYPE_DEFAULT))
@@ -1791,8 +1791,8 @@ LABEL_49:
           _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_DEFAULT, "*warn* Deferring activity to update application information for %@ and more", buf, 0xCu);
         }
 
-        xpc_activity_set_state(v15, 3);
-        v16 = v133;
+        xpc_activity_set_state(activityCopy, 3);
+        completionCopy = v133;
         v133[2](v133);
         objc_autoreleasePoolPop(v26);
 LABEL_137:
@@ -1800,40 +1800,40 @@ LABEL_137:
         goto LABEL_138;
       }
 
-      v27 = [v25 displayIdentifier];
-      v161 = [v14 objectForKeyedSubscript:v27];
-      v162 = [v25 displayName];
-      if (v21 || !v161 || [v161 compare:v162] || (objc_msgSend(v144, "containsObject:", v27) & 1) != 0 || objc_msgSend(v141, "containsObject:", v27))
+      displayIdentifier = [v25 displayIdentifier];
+      v161 = [itemsCopy objectForKeyedSubscript:displayIdentifier];
+      displayName = [v25 displayName];
+      if (cleanCopy2 || !v161 || [v161 compare:displayName] || (objc_msgSend(reimportItemsCopy, "containsObject:", displayIdentifier) & 1) != 0 || objc_msgSend(newItemsCopy, "containsObject:", displayIdentifier))
       {
         v159 = v26;
-        v28 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v27 allowPlaceholder:1 error:0];
+        v28 = [[LSApplicationRecord alloc] initWithBundleIdentifier:displayIdentifier allowPlaceholder:1 error:0];
         if (([v28 isLaunchProhibited] & 1) == 0)
         {
           v157 = [v28 URL];
           v29 = +[SPApplicationIndexer attributeSetForApp];
-          [v29 setDisplayName:v162];
-          if (v162)
+          [v29 setDisplayName:displayName];
+          if (displayName)
           {
             if ([v25 isWebClip] & 1) != 0 || (objc_msgSend(v25, "isAppClip"))
             {
               goto LABEL_24;
             }
 
-            v30 = [v28 applicationState];
-            if ([v30 isPlaceholder])
+            applicationState = [v28 applicationState];
+            if ([applicationState isPlaceholder])
             {
               goto LABEL_23;
             }
 
-            v31 = [v28 applicationState];
-            if ([v31 isInstalled])
+            applicationState2 = [v28 applicationState];
+            if ([applicationState2 isInstalled])
             {
 
 LABEL_23:
 LABEL_24:
               v32 = +[SPCorrectionHandler sharedHandler];
               v176 = 0;
-              v33 = [v32 getCorrections:v162 forLanguage:v155 version:&v176];
+              v33 = [v32 getCorrections:displayName forLanguage:v155 version:&v176];
               v34 = v176;
 
               if (v33)
@@ -1851,10 +1851,10 @@ LABEL_24:
                 [v29 setAttribute:v34 forKey:off_1000A7DD0[0]];
               }
 
-              v14 = v151;
+              itemsCopy = v151;
               v18 = v148;
 LABEL_34:
-              v43 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v27 allowPlaceholder:0 error:0];
+              v43 = [[LSApplicationRecord alloc] initWithBundleIdentifier:displayIdentifier allowPlaceholder:0 error:0];
 
               v44 = SPLogForSPLogCategoryDefault();
               v45 = gSPLogInfoAsDefault;
@@ -1864,7 +1864,7 @@ LABEL_34:
                 if (v46)
                 {
                   *buf = 138412290;
-                  *v187 = v27;
+                  *v187 = displayIdentifier;
                   _os_log_impl(&_mh_execute_header, v44, ((v45 & 1) == 0), "setting isPlaceholder to NO for %@", buf, 0xCu);
                 }
 
@@ -1875,41 +1875,41 @@ LABEL_34:
               {
                 if (v46)
                 {
-                  v47 = [v28 applicationState];
-                  v48 = [v47 isPlaceholder];
+                  applicationState3 = [v28 applicationState];
+                  isPlaceholder = [applicationState3 isPlaceholder];
                   *buf = 67109378;
-                  *v187 = v48;
+                  *v187 = isPlaceholder;
                   *&v187[4] = 2112;
-                  *&v187[6] = v27;
+                  *&v187[6] = displayIdentifier;
                   _os_log_impl(&_mh_execute_header, v44, ((v45 & 1) == 0), "setting isPlaceholder to %d for %@", buf, 0x12u);
                 }
 
-                v49 = [v28 applicationState];
-                v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v49 isPlaceholder]);
+                applicationState4 = [v28 applicationState];
+                v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [applicationState4 isPlaceholder]);
                 [v29 setIsPlaceholder:v50];
               }
 
-              v51 = [v28 registrationDate];
-              [v29 setContentCreationDate:v51];
+              registrationDate = [v28 registrationDate];
+              [v29 setContentCreationDate:registrationDate];
 
               [v29 setAttribute:&off_100098A80 forKey:off_1000A7DC0[0]];
               v52 = +[NSMutableSet set];
-              v53 = [v28 iTunesMetadata];
-              v54 = [v53 artistName];
+              iTunesMetadata = [v28 iTunesMetadata];
+              artistName = [iTunesMetadata artistName];
 
-              if (v54 || (v54 = @"Apple Inc.", [v27 hasPrefix:@"com.apple."]))
+              if (artistName || (artistName = @"Apple Inc.", [displayIdentifier hasPrefix:@"com.apple."]))
               {
-                [v29 setVendorName:v54];
+                [v29 setVendorName:artistName];
               }
 
               if (v157)
               {
                 [(SPApplicationIndexer *)self addDefaultBundleInformationForURL:v157 attrSet:v29 altNames:v52 namesOnly:0 withApp:v25 enName:0];
-                v55 = [v29 displayName];
-                v56 = [v55 cStringUsingEncoding:4];
+                displayName2 = [v29 displayName];
+                v56 = [displayName2 cStringUsingEncoding:4];
 
-                v57 = [v29 languages];
-                if ([v57 count] > 1)
+                languages = [v29 languages];
+                if ([languages count] > 1)
                 {
                   goto LABEL_46;
                 }
@@ -1956,8 +1956,8 @@ LABEL_49:
 
                     if ([v58 count])
                     {
-                      v59 = [v58 allObjects];
-                      [v29 setAlternateNames:v59];
+                      allObjects = [v58 allObjects];
+                      [v29 setAlternateNames:allObjects];
                     }
 
                     if (qword_1000A8358)
@@ -1965,13 +1965,13 @@ LABEL_49:
                       [v29 setValue:qword_1000A8358 forCustomKey:qword_1000A8350];
                     }
 
-                    if ([v156 count])
+                    if ([countItemsCopy count])
                     {
-                      v60 = [v156 objectForKey:v27];
+                      v60 = [countItemsCopy objectForKey:displayIdentifier];
 
                       if (v60)
                       {
-                        v61 = [v156 objectForKey:v27];
+                        v61 = [countItemsCopy objectForKey:displayIdentifier];
                         v62 = objc_opt_new();
                         v63 = [v61 objectAtIndexedSubscript:0];
 
@@ -2020,7 +2020,7 @@ LABEL_49:
 
                         [v29 addAttributesFromDictionary:v62];
 
-                        v14 = v151;
+                        itemsCopy = v151;
                       }
                     }
 
@@ -2035,8 +2035,8 @@ LABEL_49:
                     if ([v25 isAppClip])
                     {
                       v182 = v142;
-                      v76 = [v25 appBundleIdentifier];
-                      v183 = v76;
+                      appBundleIdentifier = [v25 appBundleIdentifier];
+                      v183 = appBundleIdentifier;
                       v77 = [NSDictionary dictionaryWithObjects:&v183 forKeys:&v182 count:1];
                       [v29 addAttributesFromDictionary:v77];
                     }
@@ -2046,11 +2046,11 @@ LABEL_49:
                     if (os_log_type_enabled(v78, ((gSPLogInfoAsDefault & 1) == 0)))
                     {
                       *buf = 138412290;
-                      *v187 = v27;
+                      *v187 = displayIdentifier;
                       _os_log_impl(&_mh_execute_header, v78, ((v79 & 1) == 0), "adding app %@", buf, 0xCu);
                     }
 
-                    v80 = [[CSSearchableItem alloc] initWithUniqueIdentifier:v27 domainIdentifier:0 attributeSet:v29];
+                    v80 = [[CSSearchableItem alloc] initWithUniqueIdentifier:displayIdentifier domainIdentifier:0 attributeSet:v29];
                     if ([v25 isAppClip])
                     {
                       v81 = v150;
@@ -2063,7 +2063,7 @@ LABEL_49:
 
                     [v81 addObject:v80];
 
-                    v15 = v149;
+                    activityCopy = v149;
                     goto LABEL_76;
                   }
                 }
@@ -2074,26 +2074,26 @@ LABEL_49:
                 goto LABEL_49;
               }
 
-              [v146 addObject:v27];
+              [v146 addObject:displayIdentifier];
               goto LABEL_49;
             }
 
-            v38 = [v28 applicationState];
-            v132 = [v38 isValid];
+            applicationState5 = [v28 applicationState];
+            isValid = [applicationState5 isValid];
 
-            v15 = v149;
-            if (v132)
+            activityCopy = v149;
+            if (isValid)
             {
               goto LABEL_24;
             }
           }
 
-          v39 = [v28 applicationState];
-          v40 = [v39 isValid];
+          applicationState6 = [v28 applicationState];
+          isValid2 = [applicationState6 isValid];
 
           v41 = SPLogForSPLogCategoryDefault();
           v42 = os_log_type_enabled(v41, OS_LOG_TYPE_ERROR);
-          if (v40)
+          if (isValid2)
           {
             if (v42)
             {
@@ -2124,9 +2124,9 @@ LABEL_49:
             v90 = v147;
           }
 
-          [v90 addObject:v27];
+          [v90 addObject:displayIdentifier];
 LABEL_76:
-          v21 = a8;
+          cleanCopy2 = clean;
 
           v23 = v152;
           v22 = v153;
@@ -2149,13 +2149,13 @@ LABEL_76:
 LABEL_100:
 
   obj = +[SDAppUninstallMonitor applicationsExcludedFromUninstall];
-  if (!v21)
+  if (!cleanCopy2)
   {
     v175 = 0u;
     v173 = 0u;
     v174 = 0u;
     v172 = 0u;
-    v92 = v14;
+    v92 = itemsCopy;
     v93 = [v92 countByEnumeratingWithState:&v172 objects:v181 count:16];
     if (!v93)
     {
@@ -2243,9 +2243,9 @@ LABEL_115:
       {
 LABEL_121:
 
-        v14 = v151;
+        itemsCopy = v151;
         v18 = v148;
-        v15 = v149;
+        activityCopy = v149;
         break;
       }
     }
@@ -2285,12 +2285,12 @@ LABEL_121:
     v165 = v150;
     v166 = v139;
     v167 = v146;
-    v168 = v140;
+    v168 = updateCountItemsCopy;
     v171 = v133;
-    v169 = self;
-    v170 = v15;
+    selfCopy = self;
+    v170 = activityCopy;
     v117 = v147;
-    v16 = v133;
+    completionCopy = v133;
     [v116 indexSearchableItems:v148 deleteSearchableItemsWithIdentifiers:v147 clientState:0 protectionClass:NSFileProtectionCompleteUntilFirstUserAuthentication forBundleID:v163 options:0 completionHandler:v164];
 
     v118 = v146;
@@ -2301,8 +2301,8 @@ LABEL_121:
 
   else
   {
-    v16 = v133;
-    if (![v140 count] && !objc_msgSend(v146, "count"))
+    completionCopy = v133;
+    if (![updateCountItemsCopy count] && !objc_msgSend(v146, "count"))
     {
       v129 = SPLogForSPLogCategoryDefault();
       v130 = gSPLogInfoAsDefault;
@@ -2313,10 +2313,10 @@ LABEL_121:
         *v187 = v131;
         _os_log_impl(&_mh_execute_header, v129, ((v130 & 1) == 0), "2.3 call completion %p", buf, 0xCu);
 
-        v16 = v133;
+        completionCopy = v133;
       }
 
-      v16[2](v16);
+      completionCopy[2](completionCopy);
       goto LABEL_137;
     }
 
@@ -2329,11 +2329,11 @@ LABEL_121:
       *v187 = v128;
       _os_log_impl(&_mh_execute_header, v126, ((v127 & 1) == 0), "2.4 call updateApplicationMetadata completion %p", buf, 0xCu);
 
-      v16 = v133;
+      completionCopy = v133;
     }
 
     v118 = v146;
-    [(SPApplicationIndexer *)self updateApplicationMetadata:v140 appsRequiringLocalization:v146 activity:v15 completion:v16];
+    [(SPApplicationIndexer *)self updateApplicationMetadata:updateCountItemsCopy appsRequiringLocalization:v146 activity:activityCopy completion:completionCopy];
 LABEL_138:
     v117 = v147;
     v120 = v150;
@@ -2343,9 +2343,9 @@ LABEL_138:
 LABEL_140:
 }
 
-- (void)updateShortcuts:(id)a3
+- (void)updateShortcuts:(id)shortcuts
 {
-  v3 = a3;
+  shortcutsCopy = shortcuts;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -2434,9 +2434,9 @@ LABEL_140:
     }
   }
 
-  if (v3)
+  if (shortcutsCopy)
   {
-    dispatch_group_enter(v3);
+    dispatch_group_enter(shortcutsCopy);
   }
 
   v15 = qword_1000A8368;
@@ -2446,28 +2446,28 @@ LABEL_140:
   block[3] = &unk_100092D70;
   v19 = v28;
   v20 = v30;
-  v18 = v3;
-  v16 = v3;
+  v18 = shortcutsCopy;
+  v16 = shortcutsCopy;
   dispatch_group_notify(v4, v15, block);
 
   _Block_object_dispose(v28, 8);
   _Block_object_dispose(v30, 8);
 }
 
-- (void)updateApplications:(id)a3 appBundleArray:(id)a4 clean:(BOOL)a5 activity:(id)a6
+- (void)updateApplications:(id)applications appBundleArray:(id)array clean:(BOOL)clean activity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v43 = a6;
+  applicationsCopy = applications;
+  arrayCopy = array;
+  activityCopy = activity;
   v72[0] = 0;
   v72[1] = v72;
   v72[2] = 0x3032000000;
   v72[3] = sub_10001F2F0;
   v72[4] = sub_10001F300;
-  v41 = v9;
-  if (v9)
+  v41 = arrayCopy;
+  if (arrayCopy)
   {
-    v10 = [NSMutableSet setWithArray:v9];
+    v10 = [NSMutableSet setWithArray:arrayCopy];
   }
 
   else
@@ -2500,9 +2500,9 @@ LABEL_140:
   v13 = SPLogForSPLogCategoryDefault();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v63[5] UTF8String];
+    uTF8String = [v63[5] UTF8String];
     *buf = 136315394;
-    *&buf[4] = v14;
+    *&buf[4] = uTF8String;
     *&buf[12] = 2048;
     *&buf[14] = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Updating apps with language %s and extras version %ld", buf, 0x16u);
@@ -2556,12 +2556,12 @@ LABEL_140:
   [v18 setProtectionClasses:v20];
 
   v21 = +[SPApplicationMetadataUpdater sharedInstance];
-  v22 = [v21 appMetadata];
+  appMetadata = [v21 appMetadata];
 
   v40 = objc_opt_new();
   v23 = objc_opt_new();
-  v24 = [v18 fetchAttributes];
-  v25 = [v24 count];
+  fetchAttributes = [v18 fetchAttributes];
+  v25 = [fetchAttributes count];
 
   v46 = +[SPCoreSpotlightIndexer sharedInstance];
   v26 = SPLogForSPLogCategoryDefault();
@@ -2569,19 +2569,19 @@ LABEL_140:
   if (os_log_type_enabled(v26, ((gSPLogInfoAsDefault & 1) == 0)))
   {
     *buf = 134217984;
-    *&buf[4] = v8;
+    *&buf[4] = applicationsCopy;
     _os_log_impl(&_mh_execute_header, v26, ((v27 & 1) == 0), "2 Enter group %p", buf, 0xCu);
   }
 
   v28 = v12;
-  v29 = v8;
-  v30 = v22;
+  v29 = applicationsCopy;
+  v30 = appMetadata;
   if (v29)
   {
     dispatch_group_enter(v29);
   }
 
-  v31 = [NSString stringWithFormat:@"%@=%@", MDItemContentType, SPUTIAppType];
+  sPUTIAppType = [NSString stringWithFormat:@"%@=%@", MDItemContentType, SPUTIAppType];
   v32 = v29;
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
@@ -2603,11 +2603,11 @@ LABEL_140:
   v58 = v68;
   v37 = v29;
   v52 = v37;
-  v53 = self;
-  v61 = a5;
-  v38 = v43;
+  selfCopy = self;
+  cleanCopy = clean;
+  v38 = activityCopy;
   v54 = v38;
-  v39 = [v46 startQuery:v31 withContext:v18 handler:v47];
+  v39 = [v46 startQuery:sPUTIAppType withContext:v18 handler:v47];
 
   if (v32)
   {

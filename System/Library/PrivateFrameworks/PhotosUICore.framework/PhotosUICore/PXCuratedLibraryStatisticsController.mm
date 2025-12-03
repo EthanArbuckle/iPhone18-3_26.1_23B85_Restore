@@ -1,17 +1,17 @@
 @interface PXCuratedLibraryStatisticsController
 + (PXCuratedLibraryStatisticsController)defaultController;
-- (_PXLayoutGeometry)_layoutGeometryBufferWithCount:(int64_t)a3;
-- (void)_enumerateDaysSectionsForViewModel:(id)a3 extendedTraitCollection:(id)a4 usingBlock:(id)a5;
-- (void)collectStatisticsForViewModel:(id)a3 extendedTraitCollection:(id)a4 resultHandler:(id)a5;
+- (_PXLayoutGeometry)_layoutGeometryBufferWithCount:(int64_t)count;
+- (void)_enumerateDaysSectionsForViewModel:(id)model extendedTraitCollection:(id)collection usingBlock:(id)block;
+- (void)collectStatisticsForViewModel:(id)model extendedTraitCollection:(id)collection resultHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation PXCuratedLibraryStatisticsController
 
-- (_PXLayoutGeometry)_layoutGeometryBufferWithCount:(int64_t)a3
+- (_PXLayoutGeometry)_layoutGeometryBufferWithCount:(int64_t)count
 {
   reusableLayoutGeometriesCapacity = self->_reusableLayoutGeometriesCapacity;
-  if (reusableLayoutGeometriesCapacity < a3)
+  if (reusableLayoutGeometriesCapacity < count)
   {
     if (reusableLayoutGeometriesCapacity)
     {
@@ -20,12 +20,12 @@
         reusableLayoutGeometriesCapacity *= 2;
       }
 
-      while (reusableLayoutGeometriesCapacity < a3);
+      while (reusableLayoutGeometriesCapacity < count);
     }
 
     else
     {
-      reusableLayoutGeometriesCapacity = a3;
+      reusableLayoutGeometriesCapacity = count;
     }
 
     self->_reusableLayoutGeometriesCapacity = reusableLayoutGeometriesCapacity;
@@ -35,28 +35,28 @@
   return self->_resuableLayoutGeometries;
 }
 
-- (void)_enumerateDaysSectionsForViewModel:(id)a3 extendedTraitCollection:(id)a4 usingBlock:(id)a5
+- (void)_enumerateDaysSectionsForViewModel:(id)model extendedTraitCollection:(id)collection usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v33 = v8;
-  v11 = [v8 assetsDataSourceManager];
-  [v11 performChanges:&__block_literal_global_20];
-  v31 = v11;
-  v12 = [v11 dataSourceForZoomLevel:3];
-  v13 = [v12 numberOfSections];
+  modelCopy = model;
+  collectionCopy = collection;
+  blockCopy = block;
+  v33 = modelCopy;
+  assetsDataSourceManager = [modelCopy assetsDataSourceManager];
+  [assetsDataSourceManager performChanges:&__block_literal_global_20];
+  v31 = assetsDataSourceManager;
+  v12 = [assetsDataSourceManager dataSourceForZoomLevel:3];
+  numberOfSections = [v12 numberOfSections];
   v34 = 0;
-  v14 = [[off_1E77214C8 alloc] initWithExtendedTraitCollection:v9];
-  v28 = self;
+  v14 = [[off_1E77214C8 alloc] initWithExtendedTraitCollection:collectionCopy];
+  selfCopy = self;
   [v14 setConfiguratorSource:self];
   v30 = v14;
   v15 = [[off_1E77214C0 alloc] initWithSection:0 dataSource:v12 loadingStatusManager:0 assetImportStatusManager:0 inlinePlaybackController:0 zoomLevel:3 spec:v14];
-  v32 = v9;
-  [v9 layoutReferenceSize];
+  v32 = collectionCopy;
+  [collectionCopy layoutReferenceSize];
   [v15 setReferenceSize:?];
-  v16 = v13 - 1;
-  if (v13 >= 1)
+  v16 = numberOfSections - 1;
+  if (numberOfSections >= 1)
   {
     v17 = 0;
     while (1)
@@ -64,8 +64,8 @@
       v18 = objc_autoreleasePoolPush();
       [v15 setDataSource:v12 section:v17];
       [v15 updateAsRootIfNeeded];
-      v19 = [v15 bodyContentLayout];
-      if (v19)
+      bodyContentLayout = [v15 bodyContentLayout];
+      if (bodyContentLayout)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -73,24 +73,24 @@
           goto LABEL_5;
         }
 
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v26 = objc_opt_class();
         v25 = NSStringFromClass(v26);
-        v27 = [v19 px_descriptionForAssertionMessage];
-        [v23 handleFailureInMethod:a2 object:v28 file:@"PXCuratedLibraryStatisticsController.m" lineNumber:83 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sectionLayout.bodyContentLayout", v25, v27}];
+        px_descriptionForAssertionMessage = [bodyContentLayout px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXCuratedLibraryStatisticsController.m" lineNumber:83 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sectionLayout.bodyContentLayout", v25, px_descriptionForAssertionMessage}];
       }
 
       else
       {
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        [v23 handleFailureInMethod:a2 object:v28 file:@"PXCuratedLibraryStatisticsController.m" lineNumber:83 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sectionLayout.bodyContentLayout", v25}];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXCuratedLibraryStatisticsController.m" lineNumber:83 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sectionLayout.bodyContentLayout", v25}];
       }
 
 LABEL_5:
-      v20 = [v19 newGenerator];
-      v10[2](v10, v20, v12, v17, &v34);
+      newGenerator = [bodyContentLayout newGenerator];
+      blockCopy[2](blockCopy, newGenerator, v12, v17, &v34);
       v21 = v34;
 
       objc_autoreleasePoolPop(v18);
@@ -104,14 +104,14 @@ LABEL_5:
   }
 }
 
-- (void)collectStatisticsForViewModel:(id)a3 extendedTraitCollection:(id)a4 resultHandler:(id)a5
+- (void)collectStatisticsForViewModel:(id)model extendedTraitCollection:(id)collection resultHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  collectionCopy = collection;
+  modelCopy = model;
   v12 = objc_alloc_init(PXMutableCuratedLibraryStatistics);
   v13 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v14 = [[PXCuratedLibraryVideoPlaybackController alloc] initViewViewModel:v11];
+  v14 = [[PXCuratedLibraryVideoPlaybackController alloc] initViewViewModel:modelCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __108__PXCuratedLibraryStatisticsController_collectStatisticsForViewModel_extendedTraitCollection_resultHandler___block_invoke;
@@ -124,9 +124,9 @@ LABEL_5:
   v15 = v14;
   v16 = v12;
   v17 = v13;
-  [(PXCuratedLibraryStatisticsController *)self _enumerateDaysSectionsForViewModel:v11 extendedTraitCollection:v10 usingBlock:v18];
+  [(PXCuratedLibraryStatisticsController *)self _enumerateDaysSectionsForViewModel:modelCopy extendedTraitCollection:collectionCopy usingBlock:v18];
 
-  v9[2](v9, v16, 0);
+  handlerCopy[2](handlerCopy, v16, 0);
 }
 
 void __108__PXCuratedLibraryStatisticsController_collectStatisticsForViewModel_extendedTraitCollection_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)

@@ -1,5 +1,5 @@
 @interface LocationUpdate1HzMode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC24NanoCompassComplications21LocationUpdate1HzMode)init;
 - (int64_t)hash;
 @end
@@ -25,17 +25,17 @@
 {
   v2 = *(self + OBJC_IVAR____TtC24NanoCompassComplications21LocationUpdate1HzMode_identifier);
   v3 = *(self + OBJC_IVAR____TtC24NanoCompassComplications21LocationUpdate1HzMode_identifier + 8);
-  v4 = self;
+  selfCopy = self;
   v5 = MEMORY[0x23EEBB6F0](v2, v3);
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BD67D24();
     swift_unknownObjectRelease();
@@ -44,7 +44,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = LocationUpdate1HzMode.isEqual(_:)(v8);

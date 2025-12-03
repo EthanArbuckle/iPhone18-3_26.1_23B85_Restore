@@ -3,14 +3,14 @@
 - (BOOL)_faceTimeInvitationExists;
 - (BOOL)activeFaceTimeCallExists;
 - (BOOL)alwaysShowLocalVideo;
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (BOOL)applicationSuspendWithSettings:(id)a3;
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type;
+- (BOOL)applicationSuspendWithSettings:(id)settings;
 - (BOOL)badgesMissedFaceTimeAudio;
 - (BOOL)badgesMissedFaceTimeVideo;
 - (BOOL)badgesMissedTelephonyCalls;
 - (BOOL)contentViewCanRotate;
 - (BOOL)currentAppIsPhoneApp;
-- (BOOL)dialVoicemailWithAccountID:(id)a3;
+- (BOOL)dialVoicemailWithAccountID:(id)d;
 - (BOOL)faceTimeAudioIsAvailable;
 - (BOOL)faceTimeInvitationExists;
 - (BOOL)faceTimeVideoIsAvailable;
@@ -19,7 +19,7 @@
 - (BOOL)inFaceTime;
 - (BOOL)isLowGraphicsPerformanceDevice;
 - (BOOL)showSplashScreenOnSignin;
-- (BOOL)showsCallsFromService:(int)a3;
+- (BOOL)showsCallsFromService:(int)service;
 - (BOOL)showsFaceTimeAudio;
 - (BOOL)showsFaceTimeAudioFavorites;
 - (BOOL)showsFaceTimeAudioRecents;
@@ -38,31 +38,31 @@
 - (CGRect)phoneViewTabBarContentFrame;
 - (PhoneApplication)init;
 - (TUCallCenter)callCenter;
-- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3;
-- (id)makeAudioOutputItemWithRoute:(id)a3;
+- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy;
+- (id)makeAudioOutputItemWithRoute:(id)route;
 - (id)makeAudioOutputItems;
 - (id)nameOfDefaultImageToUpdateAtSuspension;
 - (int)userInterfaceScreenType;
 - (unint64_t)callHistoryControllerOptions;
-- (void)_localeChangedNotification:(id)a3;
+- (void)_localeChangedNotification:(id)notification;
 - (void)_resetCurrentViewController;
-- (void)applicationDidFinishLaunching:(id)a3;
-- (void)applicationOpenURL:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
+- (void)applicationOpenURL:(id)l;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)handleApplicationFinishedSnapshottingNotification:(id)a3;
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3;
-- (void)modifyTopLevelMenuApplication:(id)a3;
-- (void)modifyTopLevelMenuEdit:(id)a3;
-- (void)modifyTopLevelMenuWindow:(id)a3 :(id)a4;
-- (void)newFaceTimeMenuAction:(id)a3;
-- (void)openURL:(id)a3 withCompletionHandler:(id)a4;
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3;
-- (void)removeAllRecents:(id)a3;
-- (void)removeUnnecessarySubMenusEdit:(id)a3;
-- (void)removeUnnecessarySubMenusWindow:(id)a3;
-- (void)removeUnnecessaryTopLevelMenus:(id)a3;
-- (void)tabBarControllerViewDidAppear:(id)a3;
+- (void)handleApplicationFinishedSnapshottingNotification:(id)notification;
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification;
+- (void)modifyTopLevelMenuApplication:(id)application;
+- (void)modifyTopLevelMenuEdit:(id)edit;
+- (void)modifyTopLevelMenuWindow:(id)window :(id)a4;
+- (void)newFaceTimeMenuAction:(id)action;
+- (void)openURL:(id)l withCompletionHandler:(id)handler;
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen;
+- (void)removeAllRecents:(id)recents;
+- (void)removeUnnecessarySubMenusEdit:(id)edit;
+- (void)removeUnnecessarySubMenusWindow:(id)window;
+- (void)removeUnnecessaryTopLevelMenus:(id)menus;
+- (void)tabBarControllerViewDidAppear:(id)appear;
 - (void)warmInCallServiceIfNecessary;
 @end
 
@@ -90,9 +90,9 @@
   v10 = 0u;
   v11 = 0u;
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 displayedCalls];
+  displayedCalls = [v2 displayedCalls];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [displayedCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -102,7 +102,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(displayedCalls);
         }
 
         if ([UIApp showsCallsFromService:{objc_msgSend(*(*(&v8 + 1) + 8 * i), "service")}])
@@ -112,7 +112,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [displayedCalls countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -129,33 +129,33 @@ LABEL_11:
 
 - (unint64_t)callHistoryControllerOptions
 {
-  v3 = [(PhoneApplication *)self showsFaceTimeAudioRecents];
+  showsFaceTimeAudioRecents = [(PhoneApplication *)self showsFaceTimeAudioRecents];
   if ([(PhoneApplication *)self showsFaceTimeVideoRecents])
   {
-    v3 |= 2uLL;
+    showsFaceTimeAudioRecents |= 2uLL;
   }
 
   if ([(PhoneApplication *)self showsTelephonyRecents])
   {
-    v3 |= 4uLL;
+    showsFaceTimeAudioRecents |= 4uLL;
   }
 
   if ([(PhoneApplication *)self showsThirdPartyRecents])
   {
-    return v3 | 8;
+    return showsFaceTimeAudioRecents | 8;
   }
 
   else
   {
-    return v3;
+    return showsFaceTimeAudioRecents;
   }
 }
 
 - (void)warmInCallServiceIfNecessary
 {
   v2 = +[NSBundle mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:TUBundleIdentifierMobilePhoneApplication];
+  bundleIdentifier = [v2 bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:TUBundleIdentifierMobilePhoneApplication];
 
   v5 = sub_100003B9C();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -178,9 +178,9 @@ LABEL_11:
   }
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
-  v12 = a3;
+  launchingCopy = launching;
   if ((byte_1001268D0 & 1) == 0)
   {
     v4 = +[IDSServiceAvailabilityController sharedInstance];
@@ -206,9 +206,9 @@ LABEL_11:
   [v8 registerDefaults:&off_100110F08];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     ABAddressBookSetAutorotationEnabled();
   }
@@ -224,117 +224,117 @@ LABEL_11:
 {
   if ([(PhoneApplication *)self shouldSnapshot])
   {
-    v3 = [(PhoneApplication *)self rootViewController];
-    v4 = [v3 baseViewController];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    baseViewController = [rootViewController baseViewController];
 
-    if ([v4 shouldSnapshot])
+    if ([baseViewController shouldSnapshot])
     {
-      v5 = [objc_opt_class() defaultPNGName];
+      defaultPNGName = [objc_opt_class() defaultPNGName];
     }
 
     else
     {
-      v5 = 0;
+      defaultPNGName = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    defaultPNGName = 0;
   }
 
-  return v5;
+  return defaultPNGName;
 }
 
-- (void)prepareForDefaultImageSnapshotForScreen:(id)a3
+- (void)prepareForDefaultImageSnapshotForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v5 = sub_100003B9C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = screenCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen:%@", &v14, 0xCu);
   }
 
   v6 = +[UIScreen mainScreen];
 
-  if (v6 == v4)
+  if (v6 == screenCopy)
   {
-    v7 = [(PhoneApplication *)self shouldSnapshot];
+    shouldSnapshot = [(PhoneApplication *)self shouldSnapshot];
     v8 = sub_100003B9C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 67109120;
-      LODWORD(v15) = v7;
+      LODWORD(v15) = shouldSnapshot;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen: is considering snapshotting for main screen, shouldSnapshot=%d", &v14, 8u);
     }
 
-    if (v7)
+    if (shouldSnapshot)
     {
-      v9 = [(PhoneApplication *)self rootViewController];
-      v10 = [v9 baseViewController];
+      rootViewController = [(PhoneApplication *)self rootViewController];
+      baseViewController = [rootViewController baseViewController];
 
-      v11 = [v10 shouldSnapshot];
+      shouldSnapshot2 = [baseViewController shouldSnapshot];
       v12 = sub_100003B9C();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412546;
-        v15 = v10;
+        v15 = baseViewController;
         v16 = 1024;
-        v17 = v11;
+        v17 = shouldSnapshot2;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "-prepareForDefaultImageShapshotForScreen: view controller %@ should snapshot=%d", &v14, 0x12u);
       }
 
-      if (v11)
+      if (shouldSnapshot2)
       {
-        [v10 prepareForSnapshot];
+        [baseViewController prepareForSnapshot];
       }
 
       if ([(PhoneApplication *)self alwaysShowLocalVideo])
       {
-        v13 = [(PhoneRootViewController *)self->_rootController localVideoViewController];
-        [v13 fadeOutAnimated:0];
+        localVideoViewController = [(PhoneRootViewController *)self->_rootController localVideoViewController];
+        [localVideoViewController fadeOutAnimated:0];
       }
     }
   }
 }
 
-- (void)handleApplicationFinishedSnapshottingNotification:(id)a3
+- (void)handleApplicationFinishedSnapshottingNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100003B9C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "-handleApplicationFinishedSnapshottingNotification:%@", &v6, 0xCu);
   }
 
   [(PhoneApplication *)self _resetCurrentViewController];
 }
 
-- (BOOL)applicationSuspendWithSettings:(id)a3
+- (BOOL)applicationSuspendWithSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if ([UIApp usesUnifiedInterface])
   {
-    v5 = @"Default";
+    defaultPNGName = @"Default";
   }
 
   else
   {
-    v6 = [(PhoneRootViewController *)self->_rootController baseViewController];
-    v5 = [objc_opt_class() defaultPNGName];
+    baseViewController = [(PhoneRootViewController *)self->_rootController baseViewController];
+    defaultPNGName = [objc_opt_class() defaultPNGName];
 
-    if (!v5)
+    if (!defaultPNGName)
     {
-      [v4 removeObjectForKey:kUISuspendedDefaultPNGKey];
+      [settingsCopy removeObjectForKey:kUISuspendedDefaultPNGKey];
       goto LABEL_5;
     }
   }
 
-  [v4 setObject:v5 forKey:kUISuspendedDefaultPNGKey];
+  [settingsCopy setObject:defaultPNGName forKey:kUISuspendedDefaultPNGKey];
 
 LABEL_5:
   return 0;
@@ -344,15 +344,15 @@ LABEL_5:
 {
   if ([UIApp alwaysShowLocalVideo])
   {
-    v3 = [(PhoneRootViewController *)self->_rootController localVideoViewController];
-    [v3 fadeOutAnimated:0];
+    localVideoViewController = [(PhoneRootViewController *)self->_rootController localVideoViewController];
+    [localVideoViewController fadeOutAnimated:0];
   }
 }
 
 - (CGRect)phoneViewTabBarContentFrame
 {
-  v2 = [(PhoneRootViewController *)self->_rootController contentView];
-  [v2 bounds];
+  contentView = [(PhoneRootViewController *)self->_rootController contentView];
+  [contentView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -390,18 +390,18 @@ LABEL_5:
   [(PhoneApplication *)&v7 dealloc];
 }
 
-- (void)_localeChangedNotification:(id)a3
+- (void)_localeChangedNotification:(id)notification
 {
   ResetSharedNumberFormatter();
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PhoneApplicationLocaleChangedNotification" object:0];
 }
 
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = [(PhoneApplication *)self callHistoryControllerOptions];
-  v5 = [(PhoneApplication *)self callHistoryController];
-  [v5 setOptions:v4];
+  callHistoryControllerOptions = [(PhoneApplication *)self callHistoryControllerOptions];
+  callHistoryController = [(PhoneApplication *)self callHistoryController];
+  [callHistoryController setOptions:callHistoryControllerOptions];
 
   if ((![(PhoneApplication *)self showsTelephonyCalls]|| ![(PhoneApplication *)self telephonyCallingIsAvailable]) && (![(PhoneApplication *)self showsFaceTimeAudio]|| ![(PhoneApplication *)self faceTimeAudioIsAvailable]) && (![(PhoneApplication *)self showsFaceTimeVideo]|| ![(PhoneApplication *)self faceTimeVideoIsAvailable]))
   {
@@ -429,40 +429,40 @@ LABEL_5:
   }
 }
 
-- (void)tabBarControllerViewDidAppear:(id)a3
+- (void)tabBarControllerViewDidAppear:(id)appear
 {
-  v4 = [a3 object];
-  v5 = [v4 currentTabViewType];
+  object = [appear object];
+  currentTabViewType = [object currentTabViewType];
 
   v6 = sub_100003B9C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v5;
+    v7[1] = currentTabViewType;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "tabBarControllerViewDidAppear with tab: %d", v7, 8u);
   }
 
-  if (v5 == 2)
+  if (currentTabViewType == 2)
   {
     [(PhoneApplication *)self warmInCallServiceIfNecessary];
   }
 }
 
-- (void)openURL:(id)a3 withCompletionHandler:(id)a4
+- (void)openURL:(id)l withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = sub_100003B9C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"non-nil";
-    if (!v7)
+    if (!handlerCopy)
     {
       v9 = @"nil";
     }
 
     *buf = 138412546;
-    v12 = v6;
+    v12 = lCopy;
     v13 = 2112;
     v14 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ %@", buf, 0x16u);
@@ -470,30 +470,30 @@ LABEL_5:
 
   v10.receiver = self;
   v10.super_class = PhoneApplication;
-  [(PhoneApplication *)&v10 openURL:v6 withCompletionHandler:v7];
+  [(PhoneApplication *)&v10 openURL:lCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)applicationOpenURL:(id)a3
+- (void)applicationOpenURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_100003B9C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = lCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "applicationOpenURL %@", buf, 0xCu);
   }
 
-  v6 = [v4 scheme];
-  v7 = [v6 lowercaseString];
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  v8 = [(PhoneApplication *)self rootViewController];
-  v9 = [v8 baseViewController];
+  rootViewController = [(PhoneApplication *)self rootViewController];
+  baseViewController = [rootViewController baseViewController];
 
-  if ([v7 isEqualToString:@"vmshow"])
+  if ([lowercaseString isEqualToString:@"vmshow"])
   {
-    v10 = [v4 voicemailMessageUUID];
-    if (![(PhoneApplication *)self hasEnhancedVoicemail]&& !v10)
+    voicemailMessageUUID = [lCopy voicemailMessageUUID];
+    if (![(PhoneApplication *)self hasEnhancedVoicemail]&& !voicemailMessageUUID)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -502,40 +502,40 @@ LABEL_5:
       block[4] = self;
       dispatch_async(&_dispatch_main_q, block);
 
-      v9 = 0;
+      baseViewController = 0;
     }
   }
 
-  if (v9)
+  if (baseViewController)
   {
-    v11 = [(PhoneApplication *)self rootViewController];
-    v12 = [v11 view];
-    [v12 setAlpha:1.0];
+    rootViewController2 = [(PhoneApplication *)self rootViewController];
+    view = [rootViewController2 view];
+    [view setAlpha:1.0];
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 handleURL:v4];
+      [baseViewController handleURL:lCopy];
     }
   }
 }
 
-- (BOOL)dialVoicemailWithAccountID:(id)a3
+- (BOOL)dialVoicemailWithAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(TUCallProviderManager);
   v6 = [TUDialRequest alloc];
-  v7 = [v5 telephonyProvider];
-  v8 = [v6 initWithProvider:v7];
+  telephonyProvider = [v5 telephonyProvider];
+  v8 = [v6 initWithProvider:telephonyProvider];
 
   [v8 setDialType:2];
-  if (v4)
+  if (dCopy)
   {
-    [v8 setLocalSenderIdentityAccountUUID:v4];
+    [v8 setLocalSenderIdentityAccountUUID:dCopy];
   }
 
   [v8 setOriginatingUIType:41];
   [v8 dialType];
-  v9 = [v8 localSenderIdentityUUID];
+  localSenderIdentityUUID = [v8 localSenderIdentityUUID];
   v10 = PHShouldAttemptTelephonyCallWithDialTypeAndSenderIdentityUUID();
 
   if ((v10 & 1) == 0)
@@ -547,16 +547,16 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Aborting voicemail call, the device is in airplane mode", v18, 2u);
     }
 
-    v15 = [v8 provider];
-    v11 = +[UIAlertController networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:](UIAlertController, "networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:", v15, [v8 dialType], 0);
+    provider = [v8 provider];
+    v11 = +[UIAlertController networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:](UIAlertController, "networkUnavailableAlertControllerWithCallProvider:dialType:senderIdentityUUID:", provider, [v8 dialType], 0);
 
     if (!v11)
     {
       goto LABEL_16;
     }
 
-    v16 = [(PhoneApplication *)self rootViewController];
-    [v16 presentViewController:v11 animated:1 completion:0];
+    rootViewController = [(PhoneApplication *)self rootViewController];
+    [rootViewController presentViewController:v11 animated:1 completion:0];
     goto LABEL_15;
   }
 
@@ -574,10 +574,10 @@ LABEL_5:
   v11 = [v8 URL];
   if (!v11)
   {
-    v16 = sub_100003B9C();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    rootViewController = sub_100003B9C();
+    if (os_log_type_enabled(rootViewController, OS_LOG_TYPE_ERROR))
     {
-      sub_1000C421C(v8, v16);
+      sub_1000C421C(v8, rootViewController);
     }
 
 LABEL_15:
@@ -642,14 +642,14 @@ LABEL_17:
   return qword_1001268E0 == 10;
 }
 
-- (BOOL)showsCallsFromService:(int)a3
+- (BOOL)showsCallsFromService:(int)service
 {
-  if (a3 == 2)
+  if (service == 2)
   {
     return [UIApp showsFaceTimeAudio];
   }
 
-  if (a3 == 1)
+  if (service == 1)
   {
     return [UIApp showsTelephonyCalls];
   }
@@ -855,21 +855,21 @@ LABEL_17:
   return 0;
 }
 
-- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)a3
+- (id)callHistoryControllerWithCoalescingStrategy:(unint64_t)strategy
 {
-  v4 = [(PhoneApplication *)self callHistoryControllerOptions];
+  callHistoryControllerOptions = [(PhoneApplication *)self callHistoryControllerOptions];
 
-  return [TUCallHistoryController sharedControllerWithCoalescingStrategy:a3 options:v4];
+  return [TUCallHistoryController sharedControllerWithCoalescingStrategy:strategy options:callHistoryControllerOptions];
 }
 
-- (BOOL)application:(id)a3 willContinueUserActivityWithType:(id)a4
+- (BOOL)application:(id)application willContinueUserActivityWithType:(id)type
 {
-  v4 = a4;
+  typeCopy = type;
   v5 = sub_100003B9C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = typeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Activity continuity - Will continue with type = %@", &v7, 0xCu);
   }
 
@@ -879,8 +879,8 @@ LABEL_17:
 - (BOOL)_faceTimeInvitationExists
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 incomingVideoCall];
-  v4 = v3 != 0;
+  incomingVideoCall = [v2 incomingVideoCall];
+  v4 = incomingVideoCall != 0;
 
   return v4;
 }
@@ -888,57 +888,57 @@ LABEL_17:
 - (BOOL)_activeFaceTimeCallExists
 {
   v2 = +[TUCallCenter sharedInstance];
-  v3 = [v2 activeVideoCall];
-  v4 = v3 != 0;
+  activeVideoCall = [v2 activeVideoCall];
+  v4 = activeVideoCall != 0;
 
   return v4;
 }
 
 - (BOOL)inFaceTime
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     if ([UIApp _faceTimeInvitationExists])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(showsFaceTimeVideo) = 1;
     }
 
     else
     {
       v3 = UIApp;
 
-      LOBYTE(v2) = [v3 _activeFaceTimeCallExists];
+      LOBYTE(showsFaceTimeVideo) = [v3 _activeFaceTimeCallExists];
     }
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
 - (BOOL)faceTimeInvitationExists
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     v3 = UIApp;
 
-    LOBYTE(v2) = [v3 _faceTimeInvitationExists];
+    LOBYTE(showsFaceTimeVideo) = [v3 _faceTimeInvitationExists];
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
 - (BOOL)activeFaceTimeCallExists
 {
-  v2 = [UIApp showsFaceTimeVideo];
-  if (v2)
+  showsFaceTimeVideo = [UIApp showsFaceTimeVideo];
+  if (showsFaceTimeVideo)
   {
     v3 = UIApp;
 
-    LOBYTE(v2) = [v3 _activeFaceTimeCallExists];
+    LOBYTE(showsFaceTimeVideo) = [v3 _activeFaceTimeCallExists];
   }
 
-  return v2;
+  return showsFaceTimeVideo;
 }
 
 - (TUCallCenter)callCenter
@@ -951,9 +951,9 @@ LABEL_17:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v2 = [objc_opt_self() sharedInstance];
+  sharedInstance = [objc_opt_self() sharedInstance];
 
-  return v2;
+  return sharedInstance;
 }
 
 - (BOOL)currentAppIsPhoneApp
@@ -971,7 +971,7 @@ LABEL_17:
   return v2 & 1;
 }
 
-- (void)removeUnnecessaryTopLevelMenus:(id)a3
+- (void)removeUnnecessaryTopLevelMenus:(id)menus
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -982,13 +982,13 @@ LABEL_17:
   }
 
   [swift_unknownObjectRetain() removeMenuForIdentifier:UIMenuFile];
-  [a3 removeMenuForIdentifier:UIMenuView];
-  [a3 removeMenuForIdentifier:UIMenuFormat];
+  [menus removeMenuForIdentifier:UIMenuView];
+  [menus removeMenuForIdentifier:UIMenuFormat];
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeUnnecessarySubMenusEdit:(id)a3
+- (void)removeUnnecessarySubMenusEdit:(id)edit
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -999,17 +999,17 @@ LABEL_17:
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  [a3 removeMenuForIdentifier:UIMenuSpelling];
-  [a3 removeMenuForIdentifier:UIMenuSpellingPanel];
-  [a3 removeMenuForIdentifier:UIMenuSubstitutions];
-  [a3 removeMenuForIdentifier:UIMenuTransformations];
-  [a3 removeMenuForIdentifier:UIMenuSpeech];
+  selfCopy = self;
+  [edit removeMenuForIdentifier:UIMenuSpelling];
+  [edit removeMenuForIdentifier:UIMenuSpellingPanel];
+  [edit removeMenuForIdentifier:UIMenuSubstitutions];
+  [edit removeMenuForIdentifier:UIMenuTransformations];
+  [edit removeMenuForIdentifier:UIMenuSpeech];
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeUnnecessarySubMenusWindow:(id)a3
+- (void)removeUnnecessarySubMenusWindow:(id)window
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1019,10 +1019,10 @@ LABEL_17:
     swift_task_reportUnexpectedExecutor();
   }
 
-  [a3 removeMenuForIdentifier:UIMenuBringAllToFront];
+  [window removeMenuForIdentifier:UIMenuBringAllToFront];
 }
 
-- (void)modifyTopLevelMenuApplication:(id)a3
+- (void)modifyTopLevelMenuApplication:(id)application
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1033,7 +1033,7 @@ LABEL_17:
   }
 }
 
-- (void)modifyTopLevelMenuEdit:(id)a3
+- (void)modifyTopLevelMenuEdit:(id)edit
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1044,13 +1044,13 @@ LABEL_17:
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000BDD30(a3);
+  selfCopy = self;
+  sub_1000BDD30(edit);
 
   swift_unknownObjectRelease();
 }
 
-- (void)modifyTopLevelMenuWindow:(id)a3 :(id)a4
+- (void)modifyTopLevelMenuWindow:(id)window :(id)a4
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1062,8 +1062,8 @@ LABEL_17:
 
   swift_unknownObjectRetain();
   v7 = a4;
-  v8 = self;
-  sub_1000BDEDC(a3, a4);
+  selfCopy = self;
+  sub_1000BDEDC(window, a4);
 
   swift_unknownObjectRelease();
 }
@@ -1078,7 +1078,7 @@ LABEL_17:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1000BCDE8();
 
   sub_100008BA0(0, &qword_1001256A0);
@@ -1087,7 +1087,7 @@ LABEL_17:
   return v4.super.isa;
 }
 
-- (id)makeAudioOutputItemWithRoute:(id)a3
+- (id)makeAudioOutputItemWithRoute:(id)route
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1097,14 +1097,14 @@ LABEL_17:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1000BD238(v5);
+  routeCopy = route;
+  selfCopy = self;
+  v7 = sub_1000BD238(routeCopy);
 
   return v7;
 }
 
-- (void)newFaceTimeMenuAction:(id)a3
+- (void)newFaceTimeMenuAction:(id)action
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1117,7 +1117,7 @@ LABEL_17:
   sub_1000BE0A0();
 }
 
-- (void)removeAllRecents:(id)a3
+- (void)removeAllRecents:(id)recents
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -1127,8 +1127,8 @@ LABEL_17:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  recentsCopy = recents;
+  selfCopy = self;
   sub_1000BE204();
 }
 

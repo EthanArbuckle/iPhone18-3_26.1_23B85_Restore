@@ -1,15 +1,15 @@
 @interface DDRemoteActionHostContext
 + (id)_allowedItemPayloadClasses;
 - (id)protocolService;
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4;
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation DDRemoteActionHostContext
 
 - (id)protocolService
 {
-  v2 = [(DDRemoteActionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global];
+  _auxiliaryConnection = [(DDRemoteActionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global];
 
   return v3;
 }
@@ -29,24 +29,24 @@ void __44__DDRemoteActionHostContext_protocolService__block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (void)prepareViewControllerWithContext:(id)a3 completionHandler:(id)a4
+- (void)prepareViewControllerWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDRemoteActionHostContext *)self protocolService];
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  protocolService = [(DDRemoteActionHostContext *)self protocolService];
+  if (protocolService)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __80__DDRemoteActionHostContext_prepareViewControllerWithContext_completionHandler___block_invoke;
     v9[3] = &unk_278290C60;
-    v10 = v7;
-    [v8 prepareViewControllerWithContext:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [protocolService prepareViewControllerWithContext:contextCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0.0, 0.0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0.0, 0.0);
   }
 }
 

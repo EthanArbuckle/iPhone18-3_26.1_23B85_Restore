@@ -1,16 +1,16 @@
 @interface AKUsernameFormatter
-+ (BOOL)_isPhoneNumber:(id)a3;
-+ (id)formattedUsernameFromUsername:(id)a3;
++ (BOOL)_isPhoneNumber:(id)number;
++ (id)formattedUsernameFromUsername:(id)username;
 @end
 
 @implementation AKUsernameFormatter
 
-+ (id)formattedUsernameFromUsername:(id)a3
++ (id)formattedUsernameFromUsername:(id)username
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, username);
   if ([location[0] length])
   {
     v12 = MEMORY[0x1E69E5928](location[0]);
@@ -21,7 +21,7 @@
 
     v11 = objc_opt_new();
     v10 = [v11 normalizedFormatFor:location[0]];
-    if ([v15 _isPhoneNumber:v10])
+    if ([selfCopy _isPhoneNumber:v10])
     {
       v9 = [@"+" stringByAppendingString:v10];
       v3 = [v11 displayFormatFor:v9];
@@ -58,12 +58,12 @@
   return v7;
 }
 
-+ (BOOL)_isPhoneNumber:(id)a3
++ (BOOL)_isPhoneNumber:(id)number
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   [location[0] rangeOfString:@"^[0-9]*$" options:1024];
   v5 = v3 == [location[0] length];
   objc_storeStrong(location, 0);

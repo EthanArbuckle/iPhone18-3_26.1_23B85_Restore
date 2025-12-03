@@ -10,33 +10,33 @@
   v25 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 contentItem];
+  contentItem = [v6 contentItem];
 
-  if (v8)
+  if (contentItem)
   {
-    v9 = [v6 contentItem];
-    [v7 addItem:v9];
+    contentItem2 = [v6 contentItem];
+    [v7 addItem:contentItem2];
   }
 
-  v10 = [v6 file];
+  file = [v6 file];
 
-  if (v10)
+  if (file)
   {
-    v11 = [v6 file];
-    v12 = [v11 wf_fileRepresentation];
-    [v7 addFile:v12];
+    file2 = [v6 file];
+    wf_fileRepresentation = [file2 wf_fileRepresentation];
+    [v7 addFile:wf_fileRepresentation];
   }
 
-  v13 = [v6 children];
+  children = [v6 children];
 
-  if (v13)
+  if (children)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v14 = [v6 children];
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    children2 = [v6 children];
+    v15 = [children2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v15)
     {
       v16 = v15;
@@ -48,14 +48,14 @@
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(children2);
           }
 
-          [a1 populateOutputFromNodeRecursively:*(*(&v20 + 1) + 8 * v18++) outputCollection:v7];
+          [self populateOutputFromNodeRecursively:*(*(&v20 + 1) + 8 * v18++) outputCollection:v7];
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v16 = [children2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v16);
@@ -72,11 +72,11 @@
   {
     v7 = [a3 if_compactMap:&__block_literal_global_68041];
     v8 = objc_alloc(MEMORY[0x1E69E0C10]);
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    v10 = v9;
-    if (v9)
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    v10 = processInfo;
+    if (processInfo)
     {
-      [v9 if_auditToken];
+      [processInfo if_auditToken];
     }
 
     else
@@ -100,7 +100,7 @@
   v16[3] = &unk_1E837E798;
   v17 = v13;
   v18 = v6;
-  v16[4] = a1;
+  v16[4] = self;
   v14 = v13;
   v15 = v6;
   [v12 getOnScreenContentWithOptions:v11 completionHandler:v16];

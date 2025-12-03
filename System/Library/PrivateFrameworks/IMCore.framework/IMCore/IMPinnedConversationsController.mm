@@ -5,44 +5,44 @@
 + (id)requiredKeys;
 + (id)sharedInstance;
 - (BOOL)_canPostPinnedConversationsDidChangeNotification;
-- (BOOL)_updateLocalStoreWithPinConfiguration:(id)a3;
-- (BOOL)pinConfigurationHasCompatibleVersion:(id)a3;
-- (BOOL)pinConfigurationHasCurrentVersion:(id)a3;
-- (BOOL)pinConfigurationIsValid:(id)a3;
-- (BOOL)pinnedConversationsContainsChat:(id)a3;
+- (BOOL)_updateLocalStoreWithPinConfiguration:(id)configuration;
+- (BOOL)pinConfigurationHasCompatibleVersion:(id)version;
+- (BOOL)pinConfigurationHasCurrentVersion:(id)version;
+- (BOOL)pinConfigurationIsValid:(id)valid;
+- (BOOL)pinnedConversationsContainsChat:(id)chat;
 - (BOOL)shouldSync;
-- (BOOL)shouldUpdateExistingPinConfig:(id)a3 withProposedPinConfig:(id)a4;
-- (BOOL)shouldWriteProposedPinConfiguration:(id)a3 toUbiquitousStoreWithExistingPinConfiguration:(id)a4;
+- (BOOL)shouldUpdateExistingPinConfig:(id)config withProposedPinConfig:(id)pinConfig;
+- (BOOL)shouldWriteProposedPinConfiguration:(id)configuration toUbiquitousStoreWithExistingPinConfiguration:(id)pinConfiguration;
 - (IMPinnedConversationsController)init;
 - (NSUbiquitousKeyValueStore)dataStore;
-- (id)_dictionaryWithPinnedConversationIdentifiers:(id)a3 chatMetadata:(id)a4 updateReason:(id)a5 timestamp:(id)a6;
+- (id)_dictionaryWithPinnedConversationIdentifiers:(id)identifiers chatMetadata:(id)metadata updateReason:(id)reason timestamp:(id)timestamp;
 - (id)_locallyStoredPinConfiguration;
-- (id)_metadataDictionaryForChat:(id)a3;
-- (id)_ubiquitousPinConfigurationInStore:(id)a3;
-- (id)dictionaryWithPinnedConversationIdentifiers:(id)a3 chatMetadata:(id)a4 updateReason:(id)a5;
-- (id)matchingIdentifierForChat:(id)a3;
-- (id)matchingIdentifierForChat:(id)a3 inIdentifierSet:(id)a4 withMetadata:(id)a5;
-- (id)mostUpToDatePinConfigurationByComparingPinConfiguration:(id)a3 toOtherPinConfiguration:(id)a4;
-- (id)pinnedConversationIdentifiersFromPinConfiguration:(id)a3;
-- (id)validatedPinConfigurationWithCurrentVersionForPinConfiguration:(id)a3;
-- (unint64_t)pinIndexForChat:(id)a3 inIdentifierSet:(id)a4 withMetadata:(id)a5;
-- (void)_fetchUbiquitousPinConfiguration:(id)a3;
-- (void)_handleChatGroupIDDidChangeNotification:(id)a3;
+- (id)_metadataDictionaryForChat:(id)chat;
+- (id)_ubiquitousPinConfigurationInStore:(id)store;
+- (id)dictionaryWithPinnedConversationIdentifiers:(id)identifiers chatMetadata:(id)metadata updateReason:(id)reason;
+- (id)matchingIdentifierForChat:(id)chat;
+- (id)matchingIdentifierForChat:(id)chat inIdentifierSet:(id)set withMetadata:(id)metadata;
+- (id)mostUpToDatePinConfigurationByComparingPinConfiguration:(id)configuration toOtherPinConfiguration:(id)pinConfiguration;
+- (id)pinnedConversationIdentifiersFromPinConfiguration:(id)configuration;
+- (id)validatedPinConfigurationWithCurrentVersionForPinConfiguration:(id)configuration;
+- (unint64_t)pinIndexForChat:(id)chat inIdentifierSet:(id)set withMetadata:(id)metadata;
+- (void)_fetchUbiquitousPinConfiguration:(id)configuration;
+- (void)_handleChatGroupIDDidChangeNotification:(id)notification;
 - (void)_postDeferredPinnedConversationsDidChangeNotificationIfNecessary;
 - (void)_postPinnedConversationsDidChangeNotification;
-- (void)_setPinnedConversationIdentifiers:(id)a3 withChatMetadata:(id)a4 updateReason:(id)a5 shouldUpdateStores:(BOOL)a6;
-- (void)_updateUbiquitousStoreWithPinConfiguration:(id)a3 completion:(id)a4;
-- (void)conversationWasDeletedWithIdentifier:(id)a3;
-- (void)conversationsWereDeletedWithIdentifiers:(id)a3;
-- (void)fetchMostUpToDatePinConfiguration:(id)a3;
+- (void)_setPinnedConversationIdentifiers:(id)identifiers withChatMetadata:(id)metadata updateReason:(id)reason shouldUpdateStores:(BOOL)stores;
+- (void)_updateUbiquitousStoreWithPinConfiguration:(id)configuration completion:(id)completion;
+- (void)conversationWasDeletedWithIdentifier:(id)identifier;
+- (void)conversationsWereDeletedWithIdentifiers:(id)identifiers;
+- (void)fetchMostUpToDatePinConfiguration:(id)configuration;
 - (void)fetchPinnedConversationIdentifiersFromLocalStore;
 - (void)forceSynchronizeUbiquitousStore;
-- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)a3;
-- (void)imCloudKitHooksSetEnabledDidReturn:(id)a3;
+- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)notification;
+- (void)imCloudKitHooksSetEnabledDidReturn:(id)return;
 - (void)performPinConfigValidationAndMigrationIfNecessary;
-- (void)setPinnedChats:(id)a3 withUpdateReason:(id)a4;
+- (void)setPinnedChats:(id)chats withUpdateReason:(id)reason;
 - (void)synchronizeLocalDataStore;
-- (void)updateStoresWithPinConfiguration:(id)a3;
+- (void)updateStoresWithPinConfiguration:(id)configuration;
 @end
 
 @implementation IMPinnedConversationsController
@@ -273,8 +273,8 @@ LABEL_11:
 + (id)pinConfigurationMigrationKey
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = objc_msgSend_currentPinConfigurationVersion(a1, a2, v2);
-  v8 = objc_msgSend_currentPinConfigurationRevision(a1, v6, v7);
+  v5 = objc_msgSend_currentPinConfigurationVersion(self, a2, v2);
+  v8 = objc_msgSend_currentPinConfigurationRevision(self, v6, v7);
   return objc_msgSend_stringWithFormat_(v4, v9, @"IMPinningPinConfigMigrationKey-v%li-r%li", v5, v8);
 }
 
@@ -347,35 +347,35 @@ LABEL_11:
 
 - (NSUbiquitousKeyValueStore)dataStore
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dataStore = v2->_dataStore;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataStore = selfCopy->_dataStore;
   if (!dataStore)
   {
     v4 = objc_alloc(MEMORY[0x1E696AFB8]);
     v6 = objc_msgSend__initWithStoreIdentifier_usingEndToEndEncryption_(v4, v5, @"com.apple.messages.pinning", 1);
-    v7 = v2->_dataStore;
-    v2->_dataStore = v6;
+    v7 = selfCopy->_dataStore;
+    selfCopy->_dataStore = v6;
 
     v10 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v8, v9);
-    objc_msgSend_addObserver_selector_name_object_(v10, v11, v2, sel_handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification_, *MEMORY[0x1E696A9E8], v2->_dataStore);
+    objc_msgSend_addObserver_selector_name_object_(v10, v11, selfCopy, sel_handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification_, *MEMORY[0x1E696A9E8], selfCopy->_dataStore);
 
-    dataStore = v2->_dataStore;
+    dataStore = selfCopy->_dataStore;
   }
 
   v12 = dataStore;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)_dictionaryWithPinnedConversationIdentifiers:(id)a3 chatMetadata:(id)a4 updateReason:(id)a5 timestamp:(id)a6
+- (id)_dictionaryWithPinnedConversationIdentifiers:(id)identifiers chatMetadata:(id)metadata updateReason:(id)reason timestamp:(id)timestamp
 {
-  v9 = a6;
+  timestampCopy = timestamp;
   v10 = MEMORY[0x1E695DF90];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  reasonCopy = reason;
+  metadataCopy = metadata;
+  identifiersCopy = identifiers;
   v14 = objc_alloc_init(v10);
   v15 = MEMORY[0x1E696AD98];
   v18 = objc_msgSend_currentPinConfigurationRevision(IMPinnedConversationsController, v16, v17);
@@ -387,9 +387,9 @@ LABEL_11:
   v27 = objc_msgSend_numberWithInteger_(v22, v26, v25);
   objc_msgSend_setObject_forKeyedSubscript_(v14, v28, v27, @"pV");
 
-  if (v9)
+  if (timestampCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v14, v29, v9, @"pT");
+    objc_msgSend_setObject_forKeyedSubscript_(v14, v29, timestampCopy, @"pT");
   }
 
   else
@@ -398,9 +398,9 @@ LABEL_11:
     objc_msgSend_setObject_forKeyedSubscript_(v14, v33, v32, @"pT");
   }
 
-  if (v13)
+  if (identifiersCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v14, v31, v13, @"pP");
+    objc_msgSend_setObject_forKeyedSubscript_(v14, v31, identifiersCopy, @"pP");
   }
 
   else
@@ -408,9 +408,9 @@ LABEL_11:
     objc_msgSend_setObject_forKeyedSubscript_(v14, v31, MEMORY[0x1E695E0F0], @"pP");
   }
 
-  if (v12)
+  if (metadataCopy)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v14, v34, v12, @"pZ");
+    objc_msgSend_setObject_forKeyedSubscript_(v14, v34, metadataCopy, @"pZ");
   }
 
   else
@@ -418,31 +418,31 @@ LABEL_11:
     objc_msgSend_setObject_forKeyedSubscript_(v14, v34, MEMORY[0x1E695E0F8], @"pZ");
   }
 
-  objc_msgSend_setObject_forKeyedSubscript_(v14, v35, v11, @"pU");
+  objc_msgSend_setObject_forKeyedSubscript_(v14, v35, reasonCopy, @"pU");
   v38 = objc_msgSend_copy(v14, v36, v37);
 
   return v38;
 }
 
-- (id)dictionaryWithPinnedConversationIdentifiers:(id)a3 chatMetadata:(id)a4 updateReason:(id)a5
+- (id)dictionaryWithPinnedConversationIdentifiers:(id)identifiers chatMetadata:(id)metadata updateReason:(id)reason
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  reasonCopy = reason;
+  metadataCopy = metadata;
+  identifiersCopy = identifiers;
   v14 = objc_msgSend_date(v8, v12, v13);
-  v16 = objc_msgSend__dictionaryWithPinnedConversationIdentifiers_chatMetadata_updateReason_timestamp_(self, v15, v11, v10, v9, v14);
+  v16 = objc_msgSend__dictionaryWithPinnedConversationIdentifiers_chatMetadata_updateReason_timestamp_(self, v15, identifiersCopy, metadataCopy, reasonCopy, v14);
 
   return v16;
 }
 
-- (id)_metadataDictionaryForChat:(id)a3
+- (id)_metadataDictionaryForChat:(id)chat
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  chatCopy = chat;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = objc_msgSend_originalGroupID(v3, v5, v6);
-  if (v9 && objc_msgSend_isGroupChat(v3, v7, v8))
+  v9 = objc_msgSend_originalGroupID(chatCopy, v5, v6);
+  if (v9 && objc_msgSend_isGroupChat(chatCopy, v7, v8))
   {
     objc_msgSend_setObject_forKeyedSubscript_(v4, v10, v9, @"o");
   }
@@ -453,13 +453,13 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v26 = 138412290;
-      v27 = v3;
+      v27 = chatCopy;
       _os_log_impl(&dword_1A823F000, v13, OS_LOG_TYPE_INFO, "originalGroupID was nil for chat. Not including in chat metadata dictionary. chat: %@", &v26, 0xCu);
     }
   }
 
-  v16 = objc_msgSend_identityHash(v3, v11, v12);
-  if (v16 && objc_msgSend_isGroupChat(v3, v14, v15))
+  v16 = objc_msgSend_identityHash(chatCopy, v11, v12);
+  if (v16 && objc_msgSend_isGroupChat(chatCopy, v14, v15))
   {
     objc_msgSend_setObject_forKeyedSubscript_(v4, v17, v16, @"h");
   }
@@ -470,7 +470,7 @@ LABEL_11:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v26 = 138412290;
-      v27 = v3;
+      v27 = chatCopy;
       _os_log_impl(&dword_1A823F000, v20, OS_LOG_TYPE_INFO, "identityHash was nil for chat. Not including in chat metadata dictionary. chat: %@", &v26, 0xCu);
     }
   }
@@ -490,12 +490,12 @@ LABEL_11:
   return v23;
 }
 
-- (id)mostUpToDatePinConfigurationByComparingPinConfiguration:(id)a3 toOtherPinConfiguration:(id)a4
+- (id)mostUpToDatePinConfigurationByComparingPinConfiguration:(id)configuration toOtherPinConfiguration:(id)pinConfiguration
 {
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(v5, v7, @"pT");
-  v10 = objc_msgSend_objectForKey_(v6, v9, @"pT");
+  configurationCopy = configuration;
+  pinConfigurationCopy = pinConfiguration;
+  v8 = objc_msgSend_objectForKey_(configurationCopy, v7, @"pT");
+  v10 = objc_msgSend_objectForKey_(pinConfigurationCopy, v9, @"pT");
   v13 = v10;
   if (v10)
   {
@@ -507,7 +507,7 @@ LABEL_11:
     v14 = v8 == 0;
   }
 
-  v15 = v5;
+  v15 = configurationCopy;
   if (!v14)
   {
     goto LABEL_13;
@@ -516,15 +516,15 @@ LABEL_11:
   objc_msgSend_timeIntervalSinceReferenceDate(v10, v11, v12);
   v17 = v16;
   objc_msgSend_timeIntervalSinceReferenceDate(v8, v18, v19);
-  v15 = v5;
+  v15 = configurationCopy;
   if (v17 < v22)
   {
     goto LABEL_13;
   }
 
   v23 = v8 || v13 == 0;
-  v15 = v6;
-  if (v23 && (objc_msgSend_timeIntervalSinceReferenceDate(v8, v20, v21), v25 = v24, objc_msgSend_timeIntervalSinceReferenceDate(v13, v26, v27), v15 = v6, v25 >= v28))
+  v15 = pinConfigurationCopy;
+  if (v23 && (objc_msgSend_timeIntervalSinceReferenceDate(v8, v20, v21), v25 = v24, objc_msgSend_timeIntervalSinceReferenceDate(v13, v26, v27), v15 = pinConfigurationCopy, v25 >= v28))
   {
     v29 = 0;
   }
@@ -538,15 +538,15 @@ LABEL_13:
   return v29;
 }
 
-- (void)_handleChatGroupIDDidChangeNotification:(id)a3
+- (void)_handleChatGroupIDDidChangeNotification:(id)notification
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = objc_msgSend_object(v4, v5, v6);
-  v10 = objc_msgSend_userInfo(v4, v8, v9);
+  notificationCopy = notification;
+  v7 = objc_msgSend_object(notificationCopy, v5, v6);
+  v10 = objc_msgSend_userInfo(notificationCopy, v8, v9);
   v12 = objc_msgSend_objectForKey_(v10, v11, @"__kIMChatRegistryPreviousGroupIDKey");
 
-  v15 = objc_msgSend_userInfo(v4, v13, v14);
+  v15 = objc_msgSend_userInfo(notificationCopy, v13, v14);
   v17 = objc_msgSend_objectForKey_(v15, v16, @"__kIMChatRegistryUpdatedGroupIDKey");
 
   if (IMOSLoggingEnabled())
@@ -649,18 +649,18 @@ LABEL_24:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPinnedChats:(id)a3 withUpdateReason:(id)a4
+- (void)setPinnedChats:(id)chats withUpdateReason:(id)reason
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v26 = a4;
+  chatsCopy = chats;
+  reasonCopy = reason;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = v6;
+  v9 = chatsCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v27, v33, 16);
   if (v13)
   {
@@ -715,18 +715,18 @@ LABEL_24:
     while (v13);
   }
 
-  objc_msgSend__setPinnedConversationIdentifiers_withChatMetadata_updateReason_shouldUpdateStores_(self, v24, v7, v8, v26, 1);
+  objc_msgSend__setPinnedConversationIdentifiers_withChatMetadata_updateReason_shouldUpdateStores_(self, v24, v7, v8, reasonCopy, 1);
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setPinnedConversationIdentifiers:(id)a3 withChatMetadata:(id)a4 updateReason:(id)a5 shouldUpdateStores:(BOOL)a6
+- (void)_setPinnedConversationIdentifiers:(id)identifiers withChatMetadata:(id)metadata updateReason:(id)reason shouldUpdateStores:(BOOL)stores
 {
-  v6 = a6;
+  storesCopy = stores;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v14 = a5;
-  if (!v10)
+  identifiersCopy = identifiers;
+  metadataCopy = metadata;
+  reasonCopy = reason;
+  if (!identifiersCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -744,7 +744,7 @@ LABEL_24:
     goto LABEL_6;
   }
 
-  v15 = objc_msgSend_count(v10, v12, v13);
+  v15 = objc_msgSend_count(identifiersCopy, v12, v13);
   v16 = objc_opt_class();
   v19 = objc_msgSend_maximumNumberOfPinnedConversations(v16, v17, v18);
   v20 = IMOSLoggingEnabled();
@@ -758,26 +758,26 @@ LABEL_24:
         *&v41[4] = "[IMPinnedConversationsController _setPinnedConversationIdentifiers:withChatMetadata:updateReason:shouldUpdateStores:]";
         v26 = @"NO";
         *v41 = 136316162;
-        if (v6)
+        if (storesCopy)
         {
           v26 = @"YES";
         }
 
         *&v41[12] = 2112;
-        *&v41[14] = v14;
+        *&v41[14] = reasonCopy;
         v42 = 2112;
         v43 = v26;
         v44 = 2112;
-        v45 = v10;
+        v45 = identifiersCopy;
         v46 = 2112;
-        v47 = v11;
+        v47 = metadataCopy;
         _os_log_impl(&dword_1A823F000, v25, OS_LOG_TYPE_INFO, "%s called with reason: %@, shouldUpdateStores: %@, pinnedConversationIdentifiers: %@, chatMetadata: %@", v41, 0x34u);
       }
     }
 
-    if (v6)
+    if (storesCopy)
     {
-      v27 = objc_msgSend_dictionaryWithPinnedConversationIdentifiers_chatMetadata_updateReason_(self, v21, v10, v11, v14);
+      v27 = objc_msgSend_dictionaryWithPinnedConversationIdentifiers_chatMetadata_updateReason_(self, v21, identifiersCopy, metadataCopy, reasonCopy);
       objc_msgSend_updateStoresWithPinConfiguration_(self, v28, v27);
     }
 
@@ -789,12 +789,12 @@ LABEL_24:
         *v41 = 136315394;
         *&v41[4] = "[IMPinnedConversationsController _setPinnedConversationIdentifiers:withChatMetadata:updateReason:shouldUpdateStores:]";
         *&v41[12] = 2112;
-        *&v41[14] = v10;
+        *&v41[14] = identifiersCopy;
         _os_log_impl(&dword_1A823F000, v30, OS_LOG_TYPE_INFO, "%s Setting new cached pinned conversation identifiers %@", v41, 0x16u);
       }
     }
 
-    v31 = objc_msgSend_orderedSetWithArray_(MEMORY[0x1E695DFB8], v29, v10, *v41);
+    v31 = objc_msgSend_orderedSetWithArray_(MEMORY[0x1E695DFB8], v29, identifiersCopy, *v41);
     pinnedConversationIdentifierSet = self->_pinnedConversationIdentifierSet;
     self->_pinnedConversationIdentifierSet = v31;
 
@@ -806,12 +806,12 @@ LABEL_24:
         *v41 = 136315394;
         *&v41[4] = "[IMPinnedConversationsController _setPinnedConversationIdentifiers:withChatMetadata:updateReason:shouldUpdateStores:]";
         *&v41[12] = 2112;
-        *&v41[14] = v11;
+        *&v41[14] = metadataCopy;
         _os_log_impl(&dword_1A823F000, v35, OS_LOG_TYPE_INFO, "%s Setting new cached chat metadata %@", v41, 0x16u);
       }
     }
 
-    v36 = objc_msgSend_copy(v11, v33, v34);
+    v36 = objc_msgSend_copy(metadataCopy, v33, v34);
     chatMetadata = self->_chatMetadata;
     self->_chatMetadata = v36;
 
@@ -826,7 +826,7 @@ LABEL_24:
       *v41 = 136315394;
       *&v41[4] = "[IMPinnedConversationsController _setPinnedConversationIdentifiers:withChatMetadata:updateReason:shouldUpdateStores:]";
       *&v41[12] = 2048;
-      *&v41[14] = objc_msgSend_count(v10, v23, v24);
+      *&v41[14] = objc_msgSend_count(identifiersCopy, v23, v24);
       _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_INFO, "%s called with %ld items. Ignoring.", v41, 0x16u);
     }
 
@@ -838,27 +838,27 @@ LABEL_28:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversationWasDeletedWithIdentifier:(id)a3
+- (void)conversationWasDeletedWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v10 = a3;
+    identifierCopy = identifier;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &v10, 1);
+    identifierCopy2 = identifier;
+    v7 = objc_msgSend_arrayWithObjects_count_(v4, v6, &identifierCopy, 1);
 
-    objc_msgSend_conversationsWereDeletedWithIdentifiers_(self, v8, v7, v10, v11);
+    objc_msgSend_conversationsWereDeletedWithIdentifiers_(self, v8, v7, identifierCopy, v11);
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversationsWereDeletedWithIdentifiers:(id)a3
+- (void)conversationsWereDeletedWithIdentifiers:(id)identifiers
 {
   v79 = *MEMORY[0x1E69E9840];
-  v64 = a3;
-  v65 = self;
+  identifiersCopy = identifiers;
+  selfCopy = self;
   v7 = objc_msgSend_pinnedConversationIdentifierSet(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
@@ -874,7 +874,7 @@ LABEL_28:
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v23 = v64;
+    v23 = identifiersCopy;
     v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v24, &v66, v78, 16);
     if (v26)
     {
@@ -914,10 +914,10 @@ LABEL_28:
       while (v26);
     }
 
-    v36 = objc_msgSend_pinnedConversationIdentifierSet(v65, v32, v33);
+    v36 = objc_msgSend_pinnedConversationIdentifierSet(selfCopy, v32, v33);
     if (v16 != v36)
     {
-      v3 = objc_msgSend_pinnedConversationIdentifierSet(v65, v34, v35);
+      v3 = objc_msgSend_pinnedConversationIdentifierSet(selfCopy, v34, v35);
       if ((objc_msgSend_isEqualToOrderedSet_(v16, v37, v3) & 1) == 0)
       {
 
@@ -927,7 +927,7 @@ LABEL_29:
           v51 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
           {
-            v54 = objc_msgSend_pinnedConversationIdentifierSet(v65, v52, v53);
+            v54 = objc_msgSend_pinnedConversationIdentifierSet(selfCopy, v52, v53);
             v57 = objc_msgSend_array(v54, v55, v56);
             *buf = 136315906;
             v71 = "[IMPinnedConversationsController conversationsWereDeletedWithIdentifiers:]";
@@ -943,14 +943,14 @@ LABEL_29:
 
         v58 = objc_msgSend_array(v16, v49, v50);
         v61 = objc_msgSend_copy(v22, v59, v60);
-        objc_msgSend__setPinnedConversationIdentifiers_withChatMetadata_updateReason_shouldUpdateStores_(v65, v62, v58, v61, @"conversationDelete", 1);
+        objc_msgSend__setPinnedConversationIdentifiers_withChatMetadata_updateReason_shouldUpdateStores_(selfCopy, v62, v58, v61, @"conversationDelete", 1);
 
 LABEL_34:
         goto LABEL_35;
       }
     }
 
-    v38 = objc_msgSend_chatMetadata(v65, v34, v35);
+    v38 = objc_msgSend_chatMetadata(selfCopy, v34, v35);
     v41 = v38;
     if (v22 == v38)
     {
@@ -962,7 +962,7 @@ LABEL_34:
 
     else
     {
-      v42 = objc_msgSend_chatMetadata(v65, v39, v40);
+      v42 = objc_msgSend_chatMetadata(selfCopy, v39, v40);
       isEqualToDictionary = objc_msgSend_isEqualToDictionary_(v22, v43, v42);
 
       if (v16 != v36)
@@ -980,7 +980,7 @@ LABEL_34:
       v45 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        v48 = objc_msgSend_pinnedConversationIdentifierSet(v65, v46, v47);
+        v48 = objc_msgSend_pinnedConversationIdentifierSet(selfCopy, v46, v47);
         *buf = 136315906;
         v71 = "[IMPinnedConversationsController conversationsWereDeletedWithIdentifiers:]";
         v72 = 2112;
@@ -1001,57 +1001,57 @@ LABEL_35:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)pinnedConversationsContainsChat:(id)a3
+- (BOOL)pinnedConversationsContainsChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v7 = objc_msgSend_pinnedConversationIdentifierSet(self, v5, v6);
   v10 = objc_msgSend_chatMetadata(self, v8, v9);
-  v12 = objc_msgSend_pinIndexForChat_inIdentifierSet_withMetadata_(self, v11, v4, v7, v10);
+  v12 = objc_msgSend_pinIndexForChat_inIdentifierSet_withMetadata_(self, v11, chatCopy, v7, v10);
 
   return v12 != 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (id)matchingIdentifierForChat:(id)a3
+- (id)matchingIdentifierForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v7 = objc_msgSend_pinnedConversationIdentifierSet(self, v5, v6);
   v10 = objc_msgSend_chatMetadata(self, v8, v9);
-  v12 = objc_msgSend_matchingIdentifierForChat_inIdentifierSet_withMetadata_(self, v11, v4, v7, v10);
+  v12 = objc_msgSend_matchingIdentifierForChat_inIdentifierSet_withMetadata_(self, v11, chatCopy, v7, v10);
 
   return v12;
 }
 
-- (id)matchingIdentifierForChat:(id)a3 inIdentifierSet:(id)a4 withMetadata:(id)a5
+- (id)matchingIdentifierForChat:(id)chat inIdentifierSet:(id)set withMetadata:(id)metadata
 {
-  v8 = a4;
-  v10 = objc_msgSend_pinIndexForChat_inIdentifierSet_withMetadata_(self, v9, a3, v8, a5);
-  if (v10 >= objc_msgSend_count(v8, v11, v12))
+  setCopy = set;
+  v10 = objc_msgSend_pinIndexForChat_inIdentifierSet_withMetadata_(self, v9, chat, setCopy, metadata);
+  if (v10 >= objc_msgSend_count(setCopy, v11, v12))
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = objc_msgSend_objectAtIndex_(v8, v13, v10);
+    v14 = objc_msgSend_objectAtIndex_(setCopy, v13, v10);
   }
 
   return v14;
 }
 
-- (unint64_t)pinIndexForChat:(id)a3 inIdentifierSet:(id)a4 withMetadata:(id)a5
+- (unint64_t)pinIndexForChat:(id)chat inIdentifierSet:(id)set withMetadata:(id)metadata
 {
   v96 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_count(v8, v10, v11);
+  chatCopy = chat;
+  setCopy = set;
+  metadataCopy = metadata;
+  v12 = objc_msgSend_count(setCopy, v10, v11);
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  v77 = v7;
-  if (v7 && v12)
+  v77 = chatCopy;
+  if (chatCopy && v12)
   {
-    v76 = v9;
-    v75 = objc_msgSend_pinningIdentifier(v7, v13, v14);
-    v17 = objc_msgSend_indexOfObject_(v8, v16, v75);
+    v76 = metadataCopy;
+    v75 = objc_msgSend_pinningIdentifier(chatCopy, v13, v14);
+    v17 = objc_msgSend_indexOfObject_(setCopy, v16, v75);
     if (v17 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = v17;
@@ -1063,7 +1063,7 @@ LABEL_35:
           *buf = 134218242;
           v87 = v15;
           v88 = 2112;
-          v89 = v7;
+          v89 = chatCopy;
           _os_log_impl(&dword_1A823F000, v64, OS_LOG_TYPE_INFO, "Match found for chat at index %lu using pinning identifier. chat: %@", buf, 0x16u);
         }
       }
@@ -1071,7 +1071,7 @@ LABEL_35:
       goto LABEL_44;
     }
 
-    objc_msgSend_mergedPinningIdentifiers(v7, v18, v19);
+    objc_msgSend_mergedPinningIdentifiers(chatCopy, v18, v19);
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
@@ -1089,7 +1089,7 @@ LABEL_35:
             objc_enumerationMutation(v20);
           }
 
-          v15 = objc_msgSend_indexOfObject_(v8, v22, *(*(&v82 + 1) + 8 * i));
+          v15 = objc_msgSend_indexOfObject_(setCopy, v22, *(*(&v82 + 1) + 8 * i));
           if (v15 != 0x7FFFFFFFFFFFFFFFLL)
           {
 
@@ -1129,7 +1129,7 @@ LABEL_35:
         v37 = objc_msgSend_participants(v77, v35, v36);
         v39 = objc_msgSend__sortedParticipantIDHashForParticipants_usesPersonCentricID_(v34, v38, v37, 0);
 
-        v15 = objc_msgSend_indexOfObject_(v8, v40, v39);
+        v15 = objc_msgSend_indexOfObject_(setCopy, v40, v39);
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
           if (IMOSLoggingEnabled())
@@ -1148,7 +1148,7 @@ LABEL_35:
 LABEL_51:
 
 LABEL_44:
-          v9 = v76;
+          metadataCopy = v76;
           goto LABEL_45;
         }
       }
@@ -1160,7 +1160,7 @@ LABEL_44:
     }
 
     v39 = objc_msgSend_originalGroupID(v77, v41, v42);
-    v15 = objc_msgSend_indexOfObject_(v8, v43, v39);
+    v15 = objc_msgSend_indexOfObject_(setCopy, v43, v39);
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
     {
 
@@ -1195,7 +1195,7 @@ LABEL_20:
               {
                 if (objc_msgSend_isEqualToString_(v57, v58, v73))
                 {
-                  v15 = objc_msgSend_indexOfObject_(v8, v58, v54);
+                  v15 = objc_msgSend_indexOfObject_(setCopy, v58, v54);
                   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
                   {
                     if (IMOSLoggingEnabled())
@@ -1228,7 +1228,7 @@ LABEL_65:
               {
                 if (objc_msgSend_isEqualToString_(v60, v61, v72))
                 {
-                  v15 = objc_msgSend_indexOfObject_(v8, v63, v54);
+                  v15 = objc_msgSend_indexOfObject_(setCopy, v63, v54);
                   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
                   {
                     if (IMOSLoggingEnabled())
@@ -1298,10 +1298,10 @@ LABEL_45:
   return v15;
 }
 
-- (id)validatedPinConfigurationWithCurrentVersionForPinConfiguration:(id)a3
+- (id)validatedPinConfigurationWithCurrentVersionForPinConfiguration:(id)configuration
 {
   v92 = *MEMORY[0x1E69E9840];
-  v80 = a3;
+  configurationCopy = configuration;
   v6 = objc_msgSend_currentPinConfigurationVersion(IMPinnedConversationsController, v4, v5);
   v9 = objc_msgSend_currentPinConfigurationRevision(IMPinnedConversationsController, v7, v8);
   if (IMOSLoggingEnabled())
@@ -1312,15 +1312,15 @@ LABEL_45:
       *buf = 134218242;
       v87 = v6;
       v88 = 2112;
-      v89 = v80;
+      v89 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v11, OS_LOG_TYPE_INFO, "Determining if pin config needs migration to version %li. %@", buf, 0x16u);
     }
   }
 
-  v79 = objc_msgSend_objectForKey_(v80, v10, @"pV");
+  v79 = objc_msgSend_objectForKey_(configurationCopy, v10, @"pV");
   if (v79)
   {
-    v78 = objc_msgSend_objectForKey_(v80, v12, @"pR");
+    v78 = objc_msgSend_objectForKey_(configurationCopy, v12, @"pR");
     v15 = objc_msgSend_integerValue(v78, v13, v14);
     v18 = objc_msgSend_integerValue(v79, v16, v17);
     v19 = v18;
@@ -1336,7 +1336,7 @@ LABEL_45:
           v88 = 2048;
           v89 = v6;
           v90 = 2112;
-          v91 = v80;
+          v91 = configurationCopy;
           _os_log_impl(&dword_1A823F000, v20, OS_LOG_TYPE_INFO, "Pin config has a version (%li) greater than the current version (%li). This pin config is not usable. %@", buf, 0x20u);
         }
       }
@@ -1362,7 +1362,7 @@ LABEL_45:
         }
       }
 
-      v21 = v80;
+      v21 = configurationCopy;
       goto LABEL_83;
     }
 
@@ -1381,7 +1381,7 @@ LABEL_45:
       }
     }
 
-    v77 = objc_msgSend_mutableCopy(v80, v26, v27);
+    v77 = objc_msgSend_mutableCopy(configurationCopy, v26, v27);
     if (v19 < 2)
     {
       v31 = IMLogHandleForCategory();
@@ -1485,7 +1485,7 @@ LABEL_83:
         if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v87 = v80;
+          v87 = configurationCopy;
           _os_log_impl(&dword_1A823F000, v73, OS_LOG_TYPE_INFO, "Migrated pin config wrong version. pinConfigToMigrate: %@", buf, 0xCu);
         }
       }
@@ -1520,7 +1520,7 @@ LABEL_81:
         if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v87 = v80;
+          v87 = configurationCopy;
           _os_log_impl(&dword_1A823F000, v70, OS_LOG_TYPE_INFO, "Invalid migrated pin config. pinConfigToMigrate: %@", buf, 0xCu);
         }
       }
@@ -1548,7 +1548,7 @@ LABEL_81:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v87 = v80;
+      v87 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v22, OS_LOG_TYPE_INFO, "Pin config has nil version. This pin config is not valid. %@", buf, 0xCu);
     }
   }
@@ -1573,22 +1573,22 @@ LABEL_84:
   return v3;
 }
 
-- (void)imCloudKitHooksSetEnabledDidReturn:(id)a3
+- (void)imCloudKitHooksSetEnabledDidReturn:(id)return
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  returnCopy = return;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v23 = 138412290;
-      v24 = v4;
+      v24 = returnCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Received IMCloudKitHooksSetEnabledReturned notification {notification %@}", &v23, 0xCu);
     }
   }
 
-  v8 = objc_msgSend_userInfo(v4, v5, v6);
+  v8 = objc_msgSend_userInfo(returnCopy, v5, v6);
   v10 = objc_msgSend_objectForKey_(v8, v9, @"ResultKeyNewState");
   v13 = objc_msgSend_BOOLValue(v10, v11, v12);
 
@@ -1676,24 +1676,24 @@ LABEL_84:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)a3
+- (void)handleNSUbiquitousKeyValueStoreDidChangeExternallyNotification:(id)notification
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = notificationCopy;
       _os_log_impl(&dword_1A823F000, v7, OS_LOG_TYPE_INFO, "Received NSUbiquitousKeyValueStoreDidChangeExternallyNotification {notification: %@}", buf, 0xCu);
     }
   }
 
   if (objc_msgSend_shouldSync(self, v5, v6))
   {
-    v10 = objc_msgSend_userInfo(v4, v8, v9);
+    v10 = objc_msgSend_userInfo(notificationCopy, v8, v9);
     v12 = objc_msgSend_objectForKey_(v10, v11, *MEMORY[0x1E696A9E0]);
 
     if ((objc_msgSend_containsObject_(v12, v13, @"pD") & 1) == 0)
@@ -1711,7 +1711,7 @@ LABEL_84:
       goto LABEL_25;
     }
 
-    v16 = objc_msgSend_userInfo(v4, v14, v15);
+    v16 = objc_msgSend_userInfo(notificationCopy, v14, v15);
     v18 = objc_msgSend_objectForKey_(v16, v17, *MEMORY[0x1E696A9D8]);
 
     if (v18)
@@ -1849,10 +1849,10 @@ LABEL_26:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateStoresWithPinConfiguration:(id)a3
+- (void)updateStoresWithPinConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -1861,37 +1861,37 @@ LABEL_26:
       *buf = 136315394;
       v14 = "[IMPinnedConversationsController updateStoresWithPinConfiguration:]";
       v15 = 2112;
-      v16 = v4;
+      v16 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "%s Updating stores %@", buf, 0x16u);
     }
   }
 
-  objc_msgSend__updateLocalStoreWithPinConfiguration_(self, v5, v4);
+  objc_msgSend__updateLocalStoreWithPinConfiguration_(self, v5, configurationCopy);
   if (objc_msgSend_shouldSync(self, v7, v8))
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1A826D318;
     v11[3] = &unk_1E780FE18;
-    v12 = v4;
+    v12 = configurationCopy;
     objc_msgSend__updateUbiquitousStoreWithPinConfiguration_completion_(self, v9, v12, v11);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateUbiquitousStoreWithPinConfiguration:(id)a3 completion:(id)a4
+- (void)_updateUbiquitousStoreWithPinConfiguration:(id)configuration completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v8, OS_LOG_TYPE_INFO, "Attempting to save new pin configuration to ubiquitous store: %@", buf, 0xCu);
     }
   }
@@ -1902,9 +1902,9 @@ LABEL_26:
   v13[2] = sub_1A826D5D8;
   v13[3] = &unk_1E780FE40;
   objc_copyWeak(&v16, buf);
-  v9 = v6;
+  v9 = configurationCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v15 = v10;
   objc_msgSend__fetchUbiquitousPinConfiguration_(self, v11, v13);
 
@@ -1914,22 +1914,22 @@ LABEL_26:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_updateLocalStoreWithPinConfiguration:(id)a3
+- (BOOL)_updateLocalStoreWithPinConfiguration:(id)configuration
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v4;
+      v38 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Received request to save new pin configuration to local store: %@", buf, 0xCu);
     }
   }
 
-  v7 = objc_msgSend_validatedPinConfigurationWithCurrentVersionForPinConfiguration_(self, v5, v4);
+  v7 = objc_msgSend_validatedPinConfigurationWithCurrentVersionForPinConfiguration_(self, v5, configurationCopy);
   v8 = IMOSLoggingEnabled();
   if (v7)
   {
@@ -1939,7 +1939,7 @@ LABEL_26:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v38 = v4;
+        v38 = configurationCopy;
         _os_log_impl(&dword_1A823F000, v9, OS_LOG_TYPE_INFO, "Successfully migrated pin config to current version. before: %@", buf, 0xCu);
       }
     }
@@ -2059,7 +2059,7 @@ LABEL_46:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v4;
+      v38 = configurationCopy;
       _os_log_impl(&dword_1A823F000, v23, OS_LOG_TYPE_INFO, "Could not migrate the proposedConfig to the current version. Not saving new pin configuration to local store: %@", buf, 0xCu);
     }
   }
@@ -2071,13 +2071,13 @@ LABEL_47:
   return shouldUpdateExistingPinConfig_withProposedPinConfig;
 }
 
-- (BOOL)shouldWriteProposedPinConfiguration:(id)a3 toUbiquitousStoreWithExistingPinConfiguration:(id)a4
+- (BOOL)shouldWriteProposedPinConfiguration:(id)configuration toUbiquitousStoreWithExistingPinConfiguration:(id)pinConfiguration
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_objectForKey_(v6, v7, @"pV");
-  v10 = objc_msgSend_objectForKey_(v5, v9, @"pV");
+  configurationCopy = configuration;
+  pinConfigurationCopy = pinConfiguration;
+  v8 = objc_msgSend_objectForKey_(pinConfigurationCopy, v7, @"pV");
+  v10 = objc_msgSend_objectForKey_(configurationCopy, v9, @"pV");
   v13 = v10;
   if (!v10)
   {
@@ -2175,11 +2175,11 @@ LABEL_22:
   return v25;
 }
 
-- (BOOL)pinConfigurationHasCompatibleVersion:(id)a3
+- (BOOL)pinConfigurationHasCompatibleVersion:(id)version
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v5 = objc_msgSend_objectForKey_(v3, v4, @"pV");
+  versionCopy = version;
+  v5 = objc_msgSend_objectForKey_(versionCopy, v4, @"pV");
   v8 = v5;
   if (!v5)
   {
@@ -2262,10 +2262,10 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)pinConfigurationIsValid:(id)a3
+- (BOOL)pinConfigurationIsValid:(id)valid
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validCopy = valid;
   objc_msgSend_requiredKeys(IMPinnedConversationsController, v5, v6);
   v19 = 0u;
   v20 = 0u;
@@ -2285,7 +2285,7 @@ LABEL_17:
           objc_enumerationMutation(v7);
         }
 
-        v14 = objc_msgSend_objectForKey_(v4, v10, *(*(&v19 + 1) + 8 * i), v19);
+        v14 = objc_msgSend_objectForKey_(validCopy, v10, *(*(&v19 + 1) + 8 * i), v19);
 
         if (!v14)
         {
@@ -2305,16 +2305,16 @@ LABEL_17:
     }
   }
 
-  HasCompatibleVersion = objc_msgSend_pinConfigurationHasCompatibleVersion_(self, v15, v4);
+  HasCompatibleVersion = objc_msgSend_pinConfigurationHasCompatibleVersion_(self, v15, validCopy);
 LABEL_11:
 
   v17 = *MEMORY[0x1E69E9840];
   return HasCompatibleVersion;
 }
 
-- (BOOL)pinConfigurationHasCurrentVersion:(id)a3
+- (BOOL)pinConfigurationHasCurrentVersion:(id)version
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"pV");
+  v3 = objc_msgSend_objectForKey_(version, a2, @"pV");
   v6 = objc_msgSend_currentPinConfigurationVersion(IMPinnedConversationsController, v4, v5);
   if (v3)
   {
@@ -2329,19 +2329,19 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)shouldUpdateExistingPinConfig:(id)a3 withProposedPinConfig:(id)a4
+- (BOOL)shouldUpdateExistingPinConfig:(id)config withProposedPinConfig:(id)pinConfig
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!objc_msgSend_pinConfigurationIsValid_(self, v8, v7))
+  configCopy = config;
+  pinConfigCopy = pinConfig;
+  if (!objc_msgSend_pinConfigurationIsValid_(self, v8, pinConfigCopy))
   {
     v23 = 0;
     goto LABEL_25;
   }
 
-  v10 = objc_msgSend_objectForKey_(v6, v9, @"pT");
-  v14 = objc_msgSend_objectForKey_(v7, v11, @"pT");
+  v10 = objc_msgSend_objectForKey_(configCopy, v9, @"pT");
+  v14 = objc_msgSend_objectForKey_(pinConfigCopy, v11, @"pT");
   if (!v14)
   {
     if (IMOSLoggingEnabled())
@@ -2448,9 +2448,9 @@ LABEL_25:
   return v23;
 }
 
-- (void)_fetchUbiquitousPinConfiguration:(id)a3
+- (void)_fetchUbiquitousPinConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   objc_initWeak(&location, self);
   v7 = objc_msgSend__ubiquitousDispatchQueue(IMPinnedConversationsController, v5, v6);
   block[0] = MEMORY[0x1E69E9820];
@@ -2458,34 +2458,34 @@ LABEL_25:
   block[2] = sub_1A826EB98;
   block[3] = &unk_1E780FEB8;
   objc_copyWeak(&v11, &location);
-  v10 = v4;
-  v8 = v4;
+  v10 = configurationCopy;
+  v8 = configurationCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchMostUpToDatePinConfiguration:(id)a3
+- (void)fetchMostUpToDatePinConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A826EEF8;
   v7[3] = &unk_1E780FF08;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = configurationCopy;
+  v5 = configurationCopy;
   objc_msgSend__fetchUbiquitousPinConfiguration_(self, v6, v7);
 }
 
-- (id)_ubiquitousPinConfigurationInStore:(id)a3
+- (id)_ubiquitousPinConfigurationInStore:(id)store
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  storeCopy = store;
   v6 = objc_msgSend_sharedInstance(MEMORY[0x1E69A8018], v4, v5);
   BoolFromDomain_forKey = objc_msgSend_getBoolFromDomain_forKey_(v6, v7, @"com.apple.messages.pinning", @"IMPinningShouldTryFetchAgainIfNullKey");
-  v10 = objc_msgSend_dictionaryForKey_(v3, v9, @"pD");
+  v10 = objc_msgSend_dictionaryForKey_(storeCopy, v9, @"pD");
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -2507,7 +2507,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (!v3)
+  if (!storeCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2541,7 +2541,7 @@ LABEL_23:
     }
   }
 
-  v10 = objc_msgSend_dictionaryForKey_(v3, v13, @"pD");
+  v10 = objc_msgSend_dictionaryForKey_(storeCopy, v13, @"pD");
   if (!v10)
   {
     if (IMOSLoggingEnabled())
@@ -2568,9 +2568,9 @@ LABEL_24:
   return v10;
 }
 
-- (id)pinnedConversationIdentifiersFromPinConfiguration:(id)a3
+- (id)pinnedConversationIdentifiersFromPinConfiguration:(id)configuration
 {
-  v3 = objc_msgSend_objectForKey_(a3, a2, @"pP");
+  v3 = objc_msgSend_objectForKey_(configuration, a2, @"pP");
   v4 = v3;
   if (v3)
   {

@@ -8,8 +8,8 @@
 - (id)copyWithZone:()_:animated:
 {
   v4 = objc_allocWithZone(_s14ViewPropertiesCMa());
-  v5 = self;
-  v6 = sub_1D16C2650(v5, v4);
+  selfCopy = self;
+  v6 = sub_1D16C2650(selfCopy, v4);
 
   return v6;
 }

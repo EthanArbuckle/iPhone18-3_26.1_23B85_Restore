@@ -1,11 +1,11 @@
 @interface MTBadgeView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTBadgeView)init;
 - (UILabel)badgeLabel;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBadgeValue:(id)a3;
-- (void)setDark:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBadgeValue:(id)value;
+- (void)setDark:(BOOL)dark;
 @end
 
 @implementation MTBadgeView
@@ -19,19 +19,19 @@
   if (v2)
   {
     [(MTBadgeView *)v2 setDark:0];
-    v4 = [(MTBadgeView *)v3 badgeLabel];
-    [(MTBadgeView *)v3 addSubview:v4];
+    badgeLabel = [(MTBadgeView *)v3 badgeLabel];
+    [(MTBadgeView *)v3 addSubview:badgeLabel];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MTBadgeView *)self badgeLabel];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  badgeLabel = [(MTBadgeView *)self badgeLabel];
+  [badgeLabel sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -69,25 +69,25 @@
   }
 
   v9 = v8 * 0.5;
-  v10 = [(MTBadgeView *)self layer];
-  [v10 setCornerRadius:v9];
+  layer = [(MTBadgeView *)self layer];
+  [layer setCornerRadius:v9];
 
   [(MTBadgeView *)self bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(MTBadgeView *)self badgeLabel];
-  v20 = [v19 text];
-  v21 = [v20 length];
+  badgeLabel = [(MTBadgeView *)self badgeLabel];
+  text = [badgeLabel text];
+  v21 = [text length];
 
   if (v21 == 1)
   {
     v12 = v12 + 0.3;
   }
 
-  v22 = [(MTBadgeView *)self badgeLabel];
-  [v22 setFrame:{v12, v14, v16, v18}];
+  badgeLabel2 = [(MTBadgeView *)self badgeLabel];
+  [badgeLabel2 setFrame:{v12, v14, v16, v18}];
 }
 
 - (UILabel)badgeLabel
@@ -116,26 +116,26 @@
   return badgeLabel;
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(MTBadgeView *)self badgeLabel];
-  [v5 setText:v4];
+  valueCopy = value;
+  badgeLabel = [(MTBadgeView *)self badgeLabel];
+  [badgeLabel setText:valueCopy];
 
   [(MTBadgeView *)self setNeedsLayout];
 }
 
-- (void)setDark:(BOOL)a3
+- (void)setDark:(BOOL)dark
 {
-  if (self->_dark != a3)
+  if (self->_dark != dark)
   {
-    self->_dark = a3;
+    self->_dark = dark;
   }
 
   [(MTBadgeView *)self setBackgroundColor:0];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   if (self->_dark)
   {

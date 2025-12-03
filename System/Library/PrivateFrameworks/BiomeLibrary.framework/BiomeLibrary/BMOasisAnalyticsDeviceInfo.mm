@@ -1,26 +1,26 @@
 @interface BMOasisAnalyticsDeviceInfo
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMOasisAnalyticsDeviceInfo)initWithIsInternal:(id)a3 systemBuild:(id)a4 deviceType:(id)a5 deviceId:(id)a6 oasisTeam:(int)a7;
-- (BMOasisAnalyticsDeviceInfo)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMOasisAnalyticsDeviceInfo)initWithIsInternal:(id)internal systemBuild:(id)build deviceType:(id)type deviceId:(id)id oasisTeam:(int)team;
+- (BMOasisAnalyticsDeviceInfo)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMOasisAnalyticsDeviceInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMOasisAnalyticsDeviceInfo hasIsInternal](self, "hasIsInternal") || [v5 hasIsInternal])
     {
       if (![(BMOasisAnalyticsDeviceInfo *)self hasIsInternal])
@@ -33,25 +33,25 @@
         goto LABEL_18;
       }
 
-      v6 = [(BMOasisAnalyticsDeviceInfo *)self isInternal];
-      if (v6 != [v5 isInternal])
+      isInternal = [(BMOasisAnalyticsDeviceInfo *)self isInternal];
+      if (isInternal != [v5 isInternal])
       {
         goto LABEL_18;
       }
     }
 
-    v7 = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
-    v8 = [v5 systemBuild];
-    v9 = v8;
-    if (v7 == v8)
+    systemBuild = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
+    systemBuild2 = [v5 systemBuild];
+    v9 = systemBuild2;
+    if (systemBuild == systemBuild2)
     {
     }
 
     else
     {
-      v10 = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
-      v11 = [v5 systemBuild];
-      v12 = [v10 isEqual:v11];
+      systemBuild3 = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
+      systemBuild4 = [v5 systemBuild];
+      v12 = [systemBuild3 isEqual:systemBuild4];
 
       if (!v12)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v14 = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
-    v15 = [v5 deviceType];
-    v16 = v15;
-    if (v14 == v15)
+    deviceType = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
+    deviceType2 = [v5 deviceType];
+    v16 = deviceType2;
+    if (deviceType == deviceType2)
     {
     }
 
     else
     {
-      v17 = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
-      v18 = [v5 deviceType];
-      v19 = [v17 isEqual:v18];
+      deviceType3 = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
+      deviceType4 = [v5 deviceType];
+      v19 = [deviceType3 isEqual:deviceType4];
 
       if (!v19)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v20 = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
-    v21 = [v5 deviceId];
-    v22 = v21;
-    if (v20 == v21)
+    deviceId = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
+    deviceId2 = [v5 deviceId];
+    v22 = deviceId2;
+    if (deviceId == deviceId2)
     {
     }
 
     else
     {
-      v23 = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
-      v24 = [v5 deviceId];
-      v25 = [v23 isEqual:v24];
+      deviceId3 = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
+      deviceId4 = [v5 deviceId];
+      v25 = [deviceId3 isEqual:deviceId4];
 
       if (!v25)
       {
@@ -101,8 +101,8 @@ LABEL_19:
       }
     }
 
-    v27 = [(BMOasisAnalyticsDeviceInfo *)self oasisTeam];
-    v13 = v27 == [v5 oasisTeam];
+    oasisTeam = [(BMOasisAnalyticsDeviceInfo *)self oasisTeam];
+    v13 = oasisTeam == [v5 oasisTeam];
     goto LABEL_19;
   }
 
@@ -125,55 +125,55 @@ LABEL_20:
     v3 = 0;
   }
 
-  v4 = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
-  v5 = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
-  v6 = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
+  systemBuild = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
+  deviceType = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
+  deviceId = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMOasisAnalyticsDeviceInfo oasisTeam](self, "oasisTeam")}];
   v18 = @"isInternal";
-  v8 = v3;
+  null = v3;
   if (!v3)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v8;
-  v23[0] = v8;
+  v16 = null;
+  v23[0] = null;
   v19 = @"systemBuild";
-  v9 = v4;
-  if (!v4)
+  null2 = systemBuild;
+  if (!systemBuild)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v9;
+  v23[1] = null2;
   v20 = @"deviceType";
-  v10 = v5;
-  if (!v5)
+  null3 = deviceType;
+  if (!deviceType)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v10;
+  v23[2] = null3;
   v21 = @"deviceId";
-  v11 = v6;
-  if (!v6)
+  null4 = deviceId;
+  if (!deviceId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v11;
+  v23[3] = null4;
   v22 = @"oasisTeam";
-  v12 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (v7)
   {
-    if (v6)
+    if (deviceId)
     {
       goto LABEL_16;
     }
@@ -182,10 +182,10 @@ LABEL_20:
   else
   {
 
-    if (v6)
+    if (deviceId)
     {
 LABEL_16:
-      if (v5)
+      if (deviceType)
       {
         goto LABEL_17;
       }
@@ -194,10 +194,10 @@ LABEL_16:
     }
   }
 
-  if (v5)
+  if (deviceType)
   {
 LABEL_17:
-    if (v4)
+    if (systemBuild)
     {
       goto LABEL_18;
     }
@@ -214,7 +214,7 @@ LABEL_25:
 
 LABEL_24:
 
-  if (!v4)
+  if (!systemBuild)
   {
     goto LABEL_25;
   }
@@ -233,29 +233,29 @@ LABEL_19:
   return v13;
 }
 
-- (BMOasisAnalyticsDeviceInfo)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMOasisAnalyticsDeviceInfo)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"isInternal"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"isInternal"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"systemBuild"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v20 = 0;
           goto LABEL_41;
         }
 
-        v33 = a4;
+        errorCopy = error;
         v21 = objc_alloc(MEMORY[0x1E696ABC0]);
         v22 = *MEMORY[0x1E698F240];
         v46 = *MEMORY[0x1E696A578];
@@ -264,7 +264,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
         v39 = 0;
         v20 = 0;
-        *v33 = [v21 initWithDomain:v22 code:2 userInfo:v10];
+        *errorCopy = [v21 initWithDomain:v22 code:2 userInfo:v10];
         goto LABEL_40;
       }
 
@@ -276,22 +276,22 @@ LABEL_4:
       v39 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"deviceType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     v36 = v8;
-    v38 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v37 = 0;
           v20 = 0;
           goto LABEL_40;
         }
 
-        v23 = a4;
+        errorCopy2 = error;
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
         v25 = *MEMORY[0x1E698F240];
         v44 = *MEMORY[0x1E696A578];
@@ -300,10 +300,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
         v37 = 0;
         v20 = 0;
-        *v23 = [v24 initWithDomain:v25 code:2 userInfo:v11];
+        *errorCopy2 = [v24 initWithDomain:v25 code:2 userInfo:v11];
 LABEL_39:
 
-        self = v38;
+        self = selfCopy;
         v8 = v36;
 LABEL_40:
 
@@ -318,14 +318,14 @@ LABEL_40:
       v37 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"deviceId"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"deviceId"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v20 = 0;
@@ -341,7 +341,7 @@ LABEL_40:
         v27 = [v34 initWithDomain:v26 code:2 userInfo:v14];
         v13 = 0;
         v20 = 0;
-        *v12 = v27;
+        *errorCopy3 = v27;
         goto LABEL_38;
       }
 
@@ -353,7 +353,7 @@ LABEL_40:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"oasisTeam"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"oasisTeam"];
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -367,7 +367,7 @@ LABEL_40:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v12)
+          if (errorCopy3)
           {
             v35 = objc_alloc(MEMORY[0x1E696ABC0]);
             v32 = *MEMORY[0x1E698F240];
@@ -375,7 +375,7 @@ LABEL_40:
             v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"oasisTeam"];
             v41 = v30;
             v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-            *v12 = [v35 initWithDomain:v32 code:2 userInfo:v31];
+            *errorCopy3 = [v35 initWithDomain:v32 code:2 userInfo:v31];
           }
 
           v15 = 0;
@@ -394,8 +394,8 @@ LABEL_40:
       v15 = 0;
     }
 
-    v20 = -[BMOasisAnalyticsDeviceInfo initWithIsInternal:systemBuild:deviceType:deviceId:oasisTeam:](v38, "initWithIsInternal:systemBuild:deviceType:deviceId:oasisTeam:", v36, v39, v37, v13, [v15 intValue]);
-    v38 = v20;
+    v20 = -[BMOasisAnalyticsDeviceInfo initWithIsInternal:systemBuild:deviceType:deviceId:oasisTeam:](selfCopy, "initWithIsInternal:systemBuild:deviceType:deviceId:oasisTeam:", v36, v39, v37, v13, [v15 intValue]);
+    selfCopy = v20;
 LABEL_38:
 
     goto LABEL_39;
@@ -408,14 +408,14 @@ LABEL_38:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v20 = 0;
     goto LABEL_42;
   }
 
-  v17 = a4;
+  errorCopy4 = error;
   v18 = objc_alloc(MEMORY[0x1E696ABC0]);
   v19 = *MEMORY[0x1E698F240];
   v48 = *MEMORY[0x1E696A578];
@@ -424,7 +424,7 @@ LABEL_38:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
   v8 = 0;
   v20 = 0;
-  *v17 = [v18 initWithDomain:v19 code:2 userInfo:v9];
+  *errorCopy4 = [v18 initWithDomain:v19 code:2 userInfo:v9];
 LABEL_41:
 
 LABEL_42:
@@ -436,14 +436,14 @@ LABEL_42:
 {
   v3 = objc_opt_new();
   [(BMOasisAnalyticsDeviceInfo *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_hasIsInternal)
   {
     isInternal = self->_isInternal;
@@ -469,9 +469,9 @@ LABEL_42:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMOasisAnalyticsDeviceInfo;
   v5 = [(BMEventBase *)&v36 init];
@@ -480,12 +480,12 @@ LABEL_42:
     goto LABEL_57;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_55;
       }
@@ -496,18 +496,18 @@ LABEL_42:
       while (1)
       {
         v37 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v37 & 0x7F) << v7;
@@ -525,9 +525,9 @@ LABEL_42:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_55;
       }
@@ -544,18 +544,18 @@ LABEL_16:
           while (1)
           {
             v37 = 0;
-            v29 = [v4 position] + 1;
-            if (v29 >= [v4 position] && (v30 = objc_msgSend(v4, "position") + 1, v30 <= objc_msgSend(v4, "length")))
+            v29 = [fromCopy position] + 1;
+            if (v29 >= [fromCopy position] && (v30 = objc_msgSend(fromCopy, "position") + 1, v30 <= objc_msgSend(fromCopy, "length")))
             {
-              v31 = [v4 data];
-              [v31 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v28 |= (v37 & 0x7F) << v26;
@@ -573,7 +573,7 @@ LABEL_16:
             }
           }
 
-          v32 = (v28 != 0) & ~[v4 hasError];
+          v32 = (v28 != 0) & ~[fromCopy hasError];
 LABEL_49:
           v5->_isInternal = v32;
           goto LABEL_54;
@@ -618,18 +618,18 @@ LABEL_46:
       while (1)
       {
         v37 = 0;
-        v19 = [v4 position] + 1;
-        if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+        v19 = [fromCopy position] + 1;
+        if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
         {
-          v21 = [v4 data];
-          [v21 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v18 |= (v37 & 0x7F) << v16;
@@ -645,7 +645,7 @@ LABEL_46:
         }
       }
 
-      if (([v4 hasError] & 1) != 0 || v18 > 2)
+      if (([fromCopy hasError] & 1) != 0 || v18 > 2)
       {
 LABEL_52:
         LODWORD(v18) = 0;
@@ -653,8 +653,8 @@ LABEL_52:
 
       v5->_oasisTeam = v18;
 LABEL_54:
-      v33 = [v4 position];
-      if (v33 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_55;
       }
@@ -670,7 +670,7 @@ LABEL_36:
   }
 
 LABEL_55:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_56:
     v34 = 0;
@@ -689,31 +689,31 @@ LABEL_57:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMOasisAnalyticsDeviceInfo isInternal](self, "isInternal")}];
-  v5 = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
-  v6 = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
-  v7 = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
+  systemBuild = [(BMOasisAnalyticsDeviceInfo *)self systemBuild];
+  deviceType = [(BMOasisAnalyticsDeviceInfo *)self deviceType];
+  deviceId = [(BMOasisAnalyticsDeviceInfo *)self deviceId];
   v8 = BMOasisAnalyticsDeviceInfoOasisAnalyticsTeamAsString([(BMOasisAnalyticsDeviceInfo *)self oasisTeam]);
-  v9 = [v3 initWithFormat:@"BMOasisAnalyticsDeviceInfo with isInternal: %@, systemBuild: %@, deviceType: %@, deviceId: %@, oasisTeam: %@", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"BMOasisAnalyticsDeviceInfo with isInternal: %@, systemBuild: %@, deviceType: %@, deviceId: %@, oasisTeam: %@", v4, systemBuild, deviceType, deviceId, v8];
 
   return v9;
 }
 
-- (BMOasisAnalyticsDeviceInfo)initWithIsInternal:(id)a3 systemBuild:(id)a4 deviceType:(id)a5 deviceId:(id)a6 oasisTeam:(int)a7
+- (BMOasisAnalyticsDeviceInfo)initWithIsInternal:(id)internal systemBuild:(id)build deviceType:(id)type deviceId:(id)id oasisTeam:(int)team
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  internalCopy = internal;
+  buildCopy = build;
+  typeCopy = type;
+  idCopy = id;
   v18.receiver = self;
   v18.super_class = BMOasisAnalyticsDeviceInfo;
   v16 = [(BMEventBase *)&v18 init];
   if (v16)
   {
     v16->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v12)
+    if (internalCopy)
     {
       v16->_hasIsInternal = 1;
-      v16->_isInternal = [v12 BOOLValue];
+      v16->_isInternal = [internalCopy BOOLValue];
     }
 
     else
@@ -722,10 +722,10 @@ LABEL_57:
       v16->_isInternal = 0;
     }
 
-    objc_storeStrong(&v16->_systemBuild, a4);
-    objc_storeStrong(&v16->_deviceType, a5);
-    objc_storeStrong(&v16->_deviceId, a6);
-    v16->_oasisTeam = a7;
+    objc_storeStrong(&v16->_systemBuild, build);
+    objc_storeStrong(&v16->_deviceType, type);
+    objc_storeStrong(&v16->_deviceId, id);
+    v16->_oasisTeam = team;
   }
 
   return v16;
@@ -770,9 +770,9 @@ LABEL_57:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -780,8 +780,8 @@ LABEL_57:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMOasisAnalyticsDeviceInfo alloc] initByReadFrom:v7];
     v4 = v8;

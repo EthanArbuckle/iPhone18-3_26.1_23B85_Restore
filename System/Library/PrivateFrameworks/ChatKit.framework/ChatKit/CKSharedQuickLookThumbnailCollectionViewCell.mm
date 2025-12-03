@@ -1,6 +1,6 @@
 @interface CKSharedQuickLookThumbnailCollectionViewCell
 + (id)placeHolderImage;
-- (void)configureWithAttachmentItem:(id)a3;
+- (void)configureWithAttachmentItem:(id)item;
 @end
 
 @implementation CKSharedQuickLookThumbnailCollectionViewCell
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __64__CKSharedQuickLookThumbnailCollectionViewCell_placeHolderImage__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (placeHolderImage_onceToken != -1)
   {
     dispatch_once(&placeHolderImage_onceToken, block);
@@ -60,37 +60,37 @@ void __64__CKSharedQuickLookThumbnailCollectionViewCell_placeHolderImage__block_
   [v9 drawInRect:{*(a1 + 32) / 3.0, *(a1 + 40) / 3.0, *(a1 + 32) / 3.0, *(a1 + 32) / 3.0}];
 }
 
-- (void)configureWithAttachmentItem:(id)a3
+- (void)configureWithAttachmentItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
-  v6 = [v4 fileURL];
-  v7 = [v6 lastPathComponent];
+  itemCopy = item;
+  previewTitleLabel = [(CKSharedAssetCollectionViewCell *)self previewTitleLabel];
+  fileURL = [itemCopy fileURL];
+  lastPathComponent = [fileURL lastPathComponent];
 
-  v8 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:v7];
-  [v5 setAttributedText:v8];
+  v8 = [(CKSharedAssetCollectionViewCell *)self formattedTitleFromPreviewTitle:lastPathComponent];
+  [previewTitleLabel setAttributedText:v8];
 
-  v9 = [(CKSharedAssetCollectionViewCell *)self previewView];
-  v10 = [v9 layer];
+  previewView = [(CKSharedAssetCollectionViewCell *)self previewView];
+  layer = [previewView layer];
 
-  [v10 setContentsGravity:*MEMORY[0x1E6979DF0]];
-  [v10 setMasksToBounds:1];
-  v11 = [objc_opt_class() placeHolderImage];
-  [v10 setContents:{objc_msgSend(v11, "CGImage")}];
+  [layer setContentsGravity:*MEMORY[0x1E6979DF0]];
+  [layer setMasksToBounds:1];
+  placeHolderImage = [objc_opt_class() placeHolderImage];
+  [layer setContents:{objc_msgSend(placeHolderImage, "CGImage")}];
 
   v12 = +[CKPreviewDispatchCache detailsPreviewCache];
   [v12 resume];
 
-  v13 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__CKSharedQuickLookThumbnailCollectionViewCell_configureWithAttachmentItem___block_invoke;
   v16[3] = &unk_1E72F43E8;
-  v17 = v13;
-  v18 = v10;
-  v14 = v10;
-  v15 = v13;
-  [v4 generatePreviewWithCompletion:v16];
+  v17 = date;
+  v18 = layer;
+  v14 = layer;
+  v15 = date;
+  [itemCopy generatePreviewWithCompletion:v16];
 }
 
 void __76__CKSharedQuickLookThumbnailCollectionViewCell_configureWithAttachmentItem___block_invoke(uint64_t a1, id a2)

@@ -1,15 +1,15 @@
 @interface MediaControlsContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation MediaControlsContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsContainerView" hasInstanceVariable:@"_timeControl" withType:"MediaControlsTimeControl"];
-  [v3 validateClass:@"MediaControlsContainerView" hasInstanceVariable:@"_transportStackView" withType:"MediaControlsTransportStackView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsContainerView" hasInstanceVariable:@"_timeControl" withType:"MediaControlsTimeControl"];
+  [validationsCopy validateClass:@"MediaControlsContainerView" hasInstanceVariable:@"_transportStackView" withType:"MediaControlsTransportStackView"];
 }
 
 - (id)accessibilityElements

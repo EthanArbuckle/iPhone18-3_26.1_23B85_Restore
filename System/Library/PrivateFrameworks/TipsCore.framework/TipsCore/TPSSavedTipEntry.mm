@@ -1,9 +1,9 @@
 @interface TPSSavedTipEntry
 - (NSDate)savedDate;
 - (TPSSavedTipEntry)init;
-- (TPSSavedTipEntry)initWithTipIdentifier:(id)a3 savedDate:(id)a4 lastUsedVersion:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSavedDate:(id)a3;
+- (TPSSavedTipEntry)initWithTipIdentifier:(id)identifier savedDate:(id)date lastUsedVersion:(id)version;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSavedDate:(id)date;
 @end
 
 @implementation TPSSavedTipEntry
@@ -24,7 +24,7 @@
   return v9;
 }
 
-- (void)setSavedDate:(id)a3
+- (void)setSavedDate:(id)date
 {
   v4 = sub_1C014BD40();
   v5 = *(v4 - 8);
@@ -35,12 +35,12 @@
   v9 = OBJC_IVAR___TPSSavedTipEntry_savedDate;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
 
-- (TPSSavedTipEntry)initWithTipIdentifier:(id)a3 savedDate:(id)a4 lastUsedVersion:(id)a5
+- (TPSSavedTipEntry)initWithTipIdentifier:(id)identifier savedDate:(id)date lastUsedVersion:(id)version
 {
   ObjectType = swift_getObjectType();
   v7 = sub_1C014BD40();
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TPSSavedTipEntry.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TPSSavedTipEntry.encode(with:)(coderCopy);
 }
 
 @end

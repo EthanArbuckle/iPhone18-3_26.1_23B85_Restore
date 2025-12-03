@@ -1,51 +1,51 @@
 @interface PTTimedStabilizationMetadataVersion1
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTTimedStabilizationMetadataVersion1)initWithData:(id)a3 minorVersion:(unsigned int)a4;
-- (PTTimedStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
-- (__n128)setStabilizationHomography:(__n128)a3;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTTimedStabilizationMetadataVersion1)initWithData:(id)data minorVersion:(unsigned int)version;
+- (PTTimedStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)version;
+- (__n128)setStabilizationHomography:(__n128)homography;
 - (__n128)stabilizationHomography;
 - (double)estimatedMotionBlur;
-- (unsigned)sizeOfSerializedObjectWithOptions:(id)a3;
+- (unsigned)sizeOfSerializedObjectWithOptions:(id)options;
 @end
 
 @implementation PTTimedStabilizationMetadataVersion1
 
 - (__n128)stabilizationHomography
 {
-  if (a1[4].n128_u8[0] != 1)
+  if (self[4].n128_u8[0] != 1)
   {
     v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"stabilizationHomography is optional metadata and hasn't been found." userInfo:{0, v1, v2}];
     objc_exception_throw(v4);
   }
 
-  return a1[1];
+  return self[1];
 }
 
-- (__n128)setStabilizationHomography:(__n128)a3
+- (__n128)setStabilizationHomography:(__n128)homography
 {
   result[4].n128_u8[0] = 1;
   result[1] = a2;
-  result[2] = a3;
+  result[2] = homography;
   result[3] = a4;
   return result;
 }
 
 - (double)estimatedMotionBlur
 {
-  if (*(a1 + 80) != 1)
+  if (*(self + 80) != 1)
   {
     v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"estimatedMotionBlur is optional metadata and hasn't been found." userInfo:{0, v1, v2}];
     objc_exception_throw(v4);
   }
 
-  return *(a1 + 72);
+  return *(self + 72);
 }
 
-- (PTTimedStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTTimedStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v7.receiver = self;
   v7.super_class = PTTimedStabilizationMetadataVersion1;
-  v3 = [(PTTimedStabilizationMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTTimedStabilizationMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&version];
   v4 = v3;
   if (v3)
   {
@@ -55,7 +55,7 @@
   return v4;
 }
 
-- (unsigned)sizeOfSerializedObjectWithOptions:(id)a3
+- (unsigned)sizeOfSerializedObjectWithOptions:(id)options
 {
   if (self->_hasStabilizationHomography)
   {
@@ -78,12 +78,12 @@
   }
 }
 
-- (PTTimedStabilizationMetadataVersion1)initWithData:(id)a3 minorVersion:(unsigned int)a4
+- (PTTimedStabilizationMetadataVersion1)initWithData:(id)data minorVersion:(unsigned int)version
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&version;
+  dataCopy = data;
   v7 = [(PTTimedStabilizationMetadataVersion1 *)self initWithMinorVersion:v4];
-  if (v7 && ((v8 = [v6 bytes], v9 = bswap32(*v8), objc_msgSend(v6, "length") == v9) ? (v10 = (v9 & 7) == 0) : (v10 = 0), v10))
+  if (v7 && ((v8 = [dataCopy bytes], v9 = bswap32(*v8), objc_msgSend(dataCopy, "length") == v9) ? (v10 = (v9 & 7) == 0) : (v10 = 0), v10))
   {
     v11 = (v9 + 0x7FFFFFFF8) >> 3;
     v26 = 0u;
@@ -142,17 +142,17 @@
   return v19;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] >= v8 && -[PTTimedStabilizationMetadata majorVersion](self, "majorVersion") == 1)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] >= v8 && -[PTTimedStabilizationMetadata majorVersion](self, "majorVersion") == 1)
   {
-    v9 = [v6 mutableBytes];
-    *v9 = bswap32([(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7]);
-    v9[1] = 1650553971;
-    v17 = v9 + 2;
+    mutableBytes = [dataCopy mutableBytes];
+    *mutableBytes = bswap32([(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+    mutableBytes[1] = 1650553971;
+    v17 = mutableBytes + 2;
     if (self->_hasStabilizationHomography)
     {
       for (i = 1; i != 10; ++i)
@@ -170,8 +170,8 @@
     }
 
     v13 = v17;
-    v14 = v13 - [v6 bytes];
-    v15 = v14 == [(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
+    v14 = v13 - [dataCopy bytes];
+    v15 = v14 == [(PTTimedStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
   }
 
   else

@@ -2,13 +2,13 @@
 - (char)_copyAllPowerAssertionInfo;
 - (char)_copyStateInfo;
 - (id).cxx_construct;
-- (id)_initWithDisplayId:(unsigned int)a3;
-- (id)createPowerAssertionWithReason:(int64_t)a3 identifier:(id)a4;
+- (id)_initWithDisplayId:(unsigned int)id;
+- (id)createPowerAssertionWithReason:(int64_t)reason identifier:(id)identifier;
 - (void)acquireWirelessDisplayStateControl;
 - (void)dealloc;
 - (void)initializeClientPort;
-- (void)transitionToCloningState:(int64_t)a3 withCompletion:(id)a4;
-- (void)transitionToDisplayState:(int64_t)a3 withCompletion:(id)a4;
+- (void)transitionToCloningState:(int64_t)state withCompletion:(id)completion;
+- (void)transitionToDisplayState:(int64_t)state withCompletion:(id)completion;
 @end
 
 @implementation CADisplayStateControl
@@ -38,12 +38,12 @@
   }
 }
 
-- (id)createPowerAssertionWithReason:(int64_t)a3 identifier:(id)a4
+- (id)createPowerAssertionWithReason:(int64_t)reason identifier:(id)identifier
 {
   v7 = [CADisplayPowerAssertion alloc];
   display_id = self->_display_id;
 
-  return [(CADisplayPowerAssertion *)v7 _initWithDisplayId:display_id reason:a3 identifier:a4];
+  return [(CADisplayPowerAssertion *)v7 _initWithDisplayId:display_id reason:reason identifier:identifier];
 }
 
 - (void)acquireWirelessDisplayStateControl
@@ -101,20 +101,20 @@
   }
 }
 
-- (void)transitionToCloningState:(int64_t)a3 withCompletion:(id)a4
+- (void)transitionToCloningState:(int64_t)state withCompletion:(id)completion
 {
   cloning_state_transition = self->_cloning_state_transition;
-  v7 = [(CADisplayStateControl *)self cloningState];
+  cloningState = [(CADisplayStateControl *)self cloningState];
 
-  Transition::begin(cloning_state_transition, v7, a3, a4);
+  Transition::begin(cloning_state_transition, cloningState, state, completion);
 }
 
-- (void)transitionToDisplayState:(int64_t)a3 withCompletion:(id)a4
+- (void)transitionToDisplayState:(int64_t)state withCompletion:(id)completion
 {
   display_state_transition = self->_display_state_transition;
-  v7 = [(CADisplayStateControl *)self displayState];
+  displayState = [(CADisplayStateControl *)self displayState];
 
-  Transition::begin(display_state_transition, v7, a3, a4);
+  Transition::begin(display_state_transition, displayState, state, completion);
 }
 
 - (void)dealloc
@@ -173,7 +173,7 @@
   [(CADisplayStateControl *)&v8 dealloc];
 }
 
-- (id)_initWithDisplayId:(unsigned int)a3
+- (id)_initWithDisplayId:(unsigned int)id
 {
   msg[8] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -185,7 +185,7 @@
     v4->_server_port = ServerPort;
     if (ServerPort)
     {
-      v4->_display_id = a3;
+      v4->_display_id = id;
       [(CADisplayStateControl *)v4 initializeClientPort];
       server_port = v4->_server_port;
       display_id = v4->_display_id;
@@ -253,22 +253,22 @@
 {
   v20[3] = *MEMORY[0x1E69E9840];
   memset(v20, 0, 24);
-  v3 = [(CADisplayStateControl *)self displayState];
-  v4 = [(CADisplayStateControl *)self cloningState];
-  v5 = [(CADisplayStateControl *)self powerState];
-  v6 = [(CADisplayStateControl *)self targetDisplayState];
-  v7 = [(CADisplayStateControl *)self targetCloningState];
-  v8 = [(CADisplayStateControl *)self targetPowerState];
-  if (v6 == v3)
+  displayState = [(CADisplayStateControl *)self displayState];
+  cloningState = [(CADisplayStateControl *)self cloningState];
+  powerState = [(CADisplayStateControl *)self powerState];
+  targetDisplayState = [(CADisplayStateControl *)self targetDisplayState];
+  targetCloningState = [(CADisplayStateControl *)self targetCloningState];
+  targetPowerState = [(CADisplayStateControl *)self targetPowerState];
+  if (targetDisplayState == displayState)
   {
-    if (v3 > 3)
+    if (displayState > 3)
     {
       v9 = @"unknown";
     }
 
     else
     {
-      v9 = off_1E6DF6248[v3];
+      v9 = off_1E6DF6248[displayState];
     }
 
     [(__CFString *)v9 cStringUsingEncoding:4];
@@ -277,41 +277,41 @@
 
   else
   {
-    if (v3 > 3)
+    if (displayState > 3)
     {
       v10 = @"unknown";
     }
 
     else
     {
-      v10 = off_1E6DF6248[v3];
+      v10 = off_1E6DF6248[displayState];
     }
 
     [(__CFString *)v10 cStringUsingEncoding:4];
-    if (v6 > 3)
+    if (targetDisplayState > 3)
     {
       v11 = @"unknown";
     }
 
     else
     {
-      v11 = off_1E6DF6248[v6];
+      v11 = off_1E6DF6248[targetDisplayState];
     }
 
     [(__CFString *)v11 cStringUsingEncoding:4];
     X::Stream::printf(v20, "\tdisplayState: %s -> %s\n");
   }
 
-  if (v7 == v4)
+  if (targetCloningState == cloningState)
   {
-    if (v4 > 2)
+    if (cloningState > 2)
     {
       v12 = @"unknown";
     }
 
     else
     {
-      v12 = off_1E6DF6268[v4];
+      v12 = off_1E6DF6268[cloningState];
     }
 
     [(__CFString *)v12 cStringUsingEncoding:4];
@@ -320,32 +320,32 @@
 
   else
   {
-    if (v4 > 2)
+    if (cloningState > 2)
     {
       v13 = @"unknown";
     }
 
     else
     {
-      v13 = off_1E6DF6268[v4];
+      v13 = off_1E6DF6268[cloningState];
     }
 
     [(__CFString *)v13 cStringUsingEncoding:4];
-    if (v7 > 2)
+    if (targetCloningState > 2)
     {
       v14 = @"unknown";
     }
 
     else
     {
-      v14 = off_1E6DF6268[v7];
+      v14 = off_1E6DF6268[targetCloningState];
     }
 
     [(__CFString *)v14 cStringUsingEncoding:4];
     X::Stream::printf(v20, "\tcloningState: %s -> %s\n");
   }
 
-  if (v5 == 1)
+  if (powerState == 1)
   {
     v15 = @"on";
   }
@@ -355,7 +355,7 @@
     v15 = @"unknown";
   }
 
-  if (v5)
+  if (powerState)
   {
     v16 = v15;
   }
@@ -366,14 +366,14 @@
   }
 
   [(__CFString *)v16 cStringUsingEncoding:4];
-  if (v8 == v5)
+  if (targetPowerState == powerState)
   {
     X::Stream::printf(v20, "\tpowerState: %s\n");
   }
 
   else
   {
-    if (v8 == 1)
+    if (targetPowerState == 1)
     {
       v17 = @"on";
     }
@@ -383,7 +383,7 @@
       v17 = @"unknown";
     }
 
-    if (v8)
+    if (targetPowerState)
     {
       v18 = v17;
     }

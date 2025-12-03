@@ -1,17 +1,17 @@
 @interface BMDistributedSyncMultiStreamManager
-+ (BMDistributedSyncMultiStreamManager)multiStreamManagerWithPrimaryDatabase:(id)a3 account:(id)a4 queue:(id)a5;
-- (BMDistributedSyncMultiStreamManager)initWithDistributedSyncManagers:(id)a3 peerStatusTracker:(id)a4 accountDatabase:(id)a5;
-- (BOOL)supportsSyncingWithPlatform:(int64_t)a3 overTransport:(unint64_t)a4 inDirection:(unint64_t)a5;
-- (id)atomBatchesForChangesSinceClockVector:(id)a3 targetPlatform:(int64_t)a4 transportType:(unint64_t)a5 direction:(unint64_t)a6 ckFormatVersion:(unsigned __int8)a7 chunker:(id)a8;
-- (id)clockVectorForStreamsSupportingTransportType:(unint64_t)a3 direction:(unint64_t)a4 device:(id)a5;
-- (id)deletedLocationsForTransportType:(unint64_t)a3;
-- (id)rangeClockVectorForStreamsSupportingTransportType:(unint64_t)a3 direction:(unint64_t)a4 device:(id)a5;
-- (unint64_t)mergeDeferredAtomBatchesForLocation:(id)a3 sessionContext:(id)a4;
-- (unint64_t)mergeDeferredAtomBatchesForStreamIdentifier:(id)a3 block:(id)a4;
-- (unint64_t)mergeDeferredAtomBatchesWithShouldDefer:(id)a3;
-- (unint64_t)mergeDeferredMergeForDistributedSyncManager:(id)a3 shouldCancel:(id)a4;
++ (BMDistributedSyncMultiStreamManager)multiStreamManagerWithPrimaryDatabase:(id)database account:(id)account queue:(id)queue;
+- (BMDistributedSyncMultiStreamManager)initWithDistributedSyncManagers:(id)managers peerStatusTracker:(id)tracker accountDatabase:(id)database;
+- (BOOL)supportsSyncingWithPlatform:(int64_t)platform overTransport:(unint64_t)transport inDirection:(unint64_t)direction;
+- (id)atomBatchesForChangesSinceClockVector:(id)vector targetPlatform:(int64_t)platform transportType:(unint64_t)type direction:(unint64_t)direction ckFormatVersion:(unsigned __int8)version chunker:(id)chunker;
+- (id)clockVectorForStreamsSupportingTransportType:(unint64_t)type direction:(unint64_t)direction device:(id)device;
+- (id)deletedLocationsForTransportType:(unint64_t)type;
+- (id)rangeClockVectorForStreamsSupportingTransportType:(unint64_t)type direction:(unint64_t)direction device:(id)device;
+- (unint64_t)mergeDeferredAtomBatchesForLocation:(id)location sessionContext:(id)context;
+- (unint64_t)mergeDeferredAtomBatchesForStreamIdentifier:(id)identifier block:(id)block;
+- (unint64_t)mergeDeferredAtomBatchesWithShouldDefer:(id)defer;
+- (unint64_t)mergeDeferredMergeForDistributedSyncManager:(id)manager shouldCancel:(id)cancel;
 - (void)dealloc;
-- (void)mergeAtomBatches:(id)a3 deletedLocations:(id)a4 sessionContext:(id)a5;
+- (void)mergeAtomBatches:(id)batches deletedLocations:(id)locations sessionContext:(id)context;
 - (void)scheduleBackgroundTaskIfThereAreDeferredPendingBatches;
 @end
 
@@ -30,8 +30,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+  distributedSyncManagers = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
+  v5 = [distributedSyncManagers countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,17 +43,17 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(distributedSyncManagers);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        distributedSyncManagers2 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
+        v11 = [distributedSyncManagers2 objectForKeyedSubscript:v9];
 
         v12 = [v11 db];
-        v13 = [v12 areAtomBatchFileNameRowsPresent];
+        areAtomBatchFileNameRowsPresent = [v12 areAtomBatchFileNameRowsPresent];
 
-        if (v13)
+        if (areAtomBatchFileNameRowsPresent)
         {
 
           v14 = __biome_log_for_category();
@@ -71,7 +71,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      v6 = [distributedSyncManagers countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -82,14 +82,14 @@
   }
 }
 
-+ (BMDistributedSyncMultiStreamManager)multiStreamManagerWithPrimaryDatabase:(id)a3 account:(id)a4 queue:(id)a5
++ (BMDistributedSyncMultiStreamManager)multiStreamManagerWithPrimaryDatabase:(id)database account:(id)account queue:(id)queue
 {
-  v6 = a3;
-  v31 = a4;
-  v7 = v6;
+  databaseCopy = database;
+  accountCopy = account;
+  v7 = databaseCopy;
   v29 = objc_opt_new();
   v25 = [[BMSyncDevicePeerStatusTracker alloc] initWithDatabase:v7];
-  v28 = [(BMSyncDevicePeerStatusTracker *)v25 localDeviceIdentifierCreatingIfNecessary];
+  localDeviceIdentifierCreatingIfNecessary = [(BMSyncDevicePeerStatusTracker *)v25 localDeviceIdentifierCreatingIfNecessary];
   v27 = [[BMSyncSessionMetricsCollector alloc] initWithDatabase:v7];
   v8 = objc_opt_new();
   v32 = 0u;
@@ -112,10 +112,10 @@
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = v31;
+        v13 = accountCopy;
         v14 = v7;
-        v15 = [v12 streamIdentifier];
-        v16 = [&off_10007F060 containsObject:v15];
+        streamIdentifier = [v12 streamIdentifier];
+        v16 = [&off_10007F060 containsObject:streamIdentifier];
 
         if (v16)
         {
@@ -127,12 +127,12 @@
         {
           v17 = [BMStreamCKCRDT alloc];
           v18 = objc_opt_new();
-          v19 = [(BMStreamCKCRDT *)v17 initWithStreamConfiguration:v12 locationAssignerPolicy:v18 localSiteIdentifier:v28 database:v14 changeReporter:v8 account:v13];
+          v19 = [(BMStreamCKCRDT *)v17 initWithStreamConfiguration:v12 locationAssignerPolicy:v18 localSiteIdentifier:localDeviceIdentifierCreatingIfNecessary database:v14 changeReporter:v8 account:v13];
 
           [v19 setMetricsCollector:v27];
-          v20 = [[BMDistributedSyncManager alloc] initWithStreamConfiguration:v12 streamCRDT:v19 database:v14 localSiteIdentifier:v28 changeReporter:v8];
-          v21 = [v12 syncIdentifier];
-          [v29 setObject:v20 forKeyedSubscript:v21];
+          v20 = [[BMDistributedSyncManager alloc] initWithStreamConfiguration:v12 streamCRDT:v19 database:v14 localSiteIdentifier:localDeviceIdentifierCreatingIfNecessary changeReporter:v8];
+          syncIdentifier = [v12 syncIdentifier];
+          [v29 setObject:v20 forKeyedSubscript:syncIdentifier];
         }
 
         else
@@ -140,9 +140,9 @@
           v19 = __biome_log_for_category();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
-            v22 = [v12 streamIdentifier];
+            streamIdentifier2 = [v12 streamIdentifier];
             *buf = 138543362;
-            v37 = v22;
+            v37 = streamIdentifier2;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Effective database for stream %{public}@ not available for current request", buf, 0xCu);
           }
         }
@@ -160,22 +160,22 @@
   return v23;
 }
 
-- (BMDistributedSyncMultiStreamManager)initWithDistributedSyncManagers:(id)a3 peerStatusTracker:(id)a4 accountDatabase:(id)a5
+- (BMDistributedSyncMultiStreamManager)initWithDistributedSyncManagers:(id)managers peerStatusTracker:(id)tracker accountDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managersCopy = managers;
+  trackerCopy = tracker;
+  databaseCopy = database;
   v15.receiver = self;
   v15.super_class = BMDistributedSyncMultiStreamManager;
   v11 = [(BMDistributedSyncMultiStreamManager *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [managersCopy copy];
     distributedSyncManagers = v11->_distributedSyncManagers;
     v11->_distributedSyncManagers = v12;
 
-    objc_storeStrong(&v11->_peerStatusTracker, a4);
-    objc_storeStrong(&v11->_accountDatabase, a5);
+    objc_storeStrong(&v11->_peerStatusTracker, tracker);
+    objc_storeStrong(&v11->_accountDatabase, database);
   }
 
   return v11;
@@ -189,10 +189,10 @@
   [(BMDistributedSyncMultiStreamManager *)&v3 dealloc];
 }
 
-- (id)clockVectorForStreamsSupportingTransportType:(unint64_t)a3 direction:(unint64_t)a4 device:(id)a5
+- (id)clockVectorForStreamsSupportingTransportType:(unint64_t)type direction:(unint64_t)direction device:(id)device
 {
-  v25 = a5;
-  v27 = self;
+  deviceCopy = device;
+  selfCopy = self;
   v28 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
@@ -204,7 +204,7 @@
   {
     v9 = v8;
     v10 = *v31;
-    v26 = a3;
+    typeCopy = type;
     do
     {
       for (i = 0; i != v9; i = i + 1)
@@ -215,30 +215,30 @@
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 streamConfiguration];
-        v14 = [v13 syncPolicy];
-        v15 = [v14 supportsTransport:a3 direction:a4];
+        streamConfiguration = [v12 streamConfiguration];
+        syncPolicy = [streamConfiguration syncPolicy];
+        v15 = [syncPolicy supportsTransport:type direction:direction];
 
         if (v15)
         {
-          v16 = [v12 clockVector];
-          if (![v16 timestampCount])
+          clockVector = [v12 clockVector];
+          if (![clockVector timestampCount])
           {
-            v17 = [(BMSyncDevicePeerStatusTracker *)v27->_peerStatusTracker localDeviceIdentifierCreatingIfNecessary];
-            v18 = [v17 dataUsingEncoding:4];
-            v19 = a4;
+            localDeviceIdentifierCreatingIfNecessary = [(BMSyncDevicePeerStatusTracker *)selfCopy->_peerStatusTracker localDeviceIdentifierCreatingIfNecessary];
+            v18 = [localDeviceIdentifierCreatingIfNecessary dataUsingEncoding:4];
+            directionCopy = direction;
             v20 = [[CKDistributedSiteIdentifier alloc] initWithIdentifier:v18];
             v21 = [NSIndexSet indexSetWithIndex:0];
-            [v16 addClockValuesInIndexSet:v21 forSiteIdentifier:v20];
+            [clockVector addClockValuesInIndexSet:v21 forSiteIdentifier:v20];
 
-            a4 = v19;
-            a3 = v26;
+            direction = directionCopy;
+            type = typeCopy;
           }
 
-          v22 = [v12 streamConfiguration];
-          v23 = [v22 syncIdentifierForTransport:a3];
+          streamConfiguration2 = [v12 streamConfiguration];
+          v23 = [streamConfiguration2 syncIdentifierForTransport:type];
 
-          [v28 setVectorClockTo:v16 forStreamIdentifier:v23];
+          [v28 setVectorClockTo:clockVector forStreamIdentifier:v23];
         }
 
         else
@@ -256,10 +256,10 @@
   return v28;
 }
 
-- (id)rangeClockVectorForStreamsSupportingTransportType:(unint64_t)a3 direction:(unint64_t)a4 device:(id)a5
+- (id)rangeClockVectorForStreamsSupportingTransportType:(unint64_t)type direction:(unint64_t)direction device:(id)device
 {
-  v25 = a5;
-  v27 = self;
+  deviceCopy = device;
+  selfCopy = self;
   v28 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
@@ -271,7 +271,7 @@
   {
     v9 = v8;
     v10 = *v31;
-    v26 = a3;
+    typeCopy = type;
     do
     {
       for (i = 0; i != v9; i = i + 1)
@@ -282,30 +282,30 @@
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v12 streamConfiguration];
-        v14 = [v13 syncPolicy];
-        v15 = [v14 supportsTransport:a3 direction:a4];
+        streamConfiguration = [v12 streamConfiguration];
+        syncPolicy = [streamConfiguration syncPolicy];
+        v15 = [syncPolicy supportsTransport:type direction:direction];
 
         if (v15)
         {
-          v16 = [v12 rangeClockVector];
-          if (![v16 timestampCount])
+          rangeClockVector = [v12 rangeClockVector];
+          if (![rangeClockVector timestampCount])
           {
-            v17 = [(BMSyncDevicePeerStatusTracker *)v27->_peerStatusTracker localDeviceIdentifierCreatingIfNecessary];
-            v18 = [v17 dataUsingEncoding:4];
-            v19 = a4;
+            localDeviceIdentifierCreatingIfNecessary = [(BMSyncDevicePeerStatusTracker *)selfCopy->_peerStatusTracker localDeviceIdentifierCreatingIfNecessary];
+            v18 = [localDeviceIdentifierCreatingIfNecessary dataUsingEncoding:4];
+            directionCopy = direction;
             v20 = [[CKDistributedSiteIdentifier alloc] initWithIdentifier:v18];
             v21 = [NSIndexSet indexSetWithIndex:0];
-            [v16 addClockValuesInIndexSet:v21 forSiteIdentifier:v20];
+            [rangeClockVector addClockValuesInIndexSet:v21 forSiteIdentifier:v20];
 
-            a4 = v19;
-            a3 = v26;
+            direction = directionCopy;
+            type = typeCopy;
           }
 
-          v22 = [v12 streamConfiguration];
-          v23 = [v22 syncIdentifierForTransport:a3];
+          streamConfiguration2 = [v12 streamConfiguration];
+          v23 = [streamConfiguration2 syncIdentifierForTransport:type];
 
-          [v28 setVectorClockTo:v16 forStreamIdentifier:v23];
+          [v28 setVectorClockTo:rangeClockVector forStreamIdentifier:v23];
         }
 
         else
@@ -323,13 +323,13 @@
   return v28;
 }
 
-- (id)atomBatchesForChangesSinceClockVector:(id)a3 targetPlatform:(int64_t)a4 transportType:(unint64_t)a5 direction:(unint64_t)a6 ckFormatVersion:(unsigned __int8)a7 chunker:(id)a8
+- (id)atomBatchesForChangesSinceClockVector:(id)vector targetPlatform:(int64_t)platform transportType:(unint64_t)type direction:(unint64_t)direction ckFormatVersion:(unsigned __int8)version chunker:(id)chunker
 {
-  v37 = a7;
-  v40 = a3;
-  v39 = a8;
-  v42 = a6;
-  if (a6 != 2)
+  versionCopy = version;
+  vectorCopy = vector;
+  chunkerCopy = chunker;
+  directionCopy = direction;
+  if (direction != 2)
   {
     sub_10004C024(a2, self);
   }
@@ -338,8 +338,8 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = BMDevicePlatformGetDescription();
-    v15 = [NSNumber numberWithUnsignedChar:v37];
-    v16 = [v40 description];
+    v15 = [NSNumber numberWithUnsignedChar:versionCopy];
+    v16 = [vectorCopy description];
     *buf = 138412802;
     v50 = v14;
     v51 = 2112;
@@ -371,27 +371,27 @@
 
         v21 = *(*(&v44 + 1) + 8 * i);
         v22 = objc_autoreleasePoolPush();
-        v23 = [v21 streamConfiguration];
-        v24 = [v23 syncPolicy];
-        v25 = [v24 supportsSyncingWithPlatform:a4 overTransport:a5 inDirection:v42];
+        streamConfiguration = [v21 streamConfiguration];
+        syncPolicy = [streamConfiguration syncPolicy];
+        v25 = [syncPolicy supportsSyncingWithPlatform:platform overTransport:type inDirection:directionCopy];
 
         if (v25)
         {
-          v26 = [v21 streamConfiguration];
-          v27 = [v26 storeConfig];
-          v28 = [v27 protectionClass];
+          streamConfiguration2 = [v21 streamConfiguration];
+          storeConfig = [streamConfiguration2 storeConfig];
+          protectionClass = [storeConfig protectionClass];
 
-          v29 = [v21 streamConfiguration];
-          v30 = [v29 storeConfig];
-          v31 = [v30 currentDevice];
+          streamConfiguration3 = [v21 streamConfiguration];
+          storeConfig2 = [streamConfiguration3 storeConfig];
+          currentDevice = [storeConfig2 currentDevice];
 
-          if ([v31 canOpenFilesForProtectionClass:v28])
+          if ([currentDevice canOpenFilesForProtectionClass:protectionClass])
           {
-            v32 = [v21 streamConfiguration];
-            v33 = [v32 syncIdentifierForTransport:a5];
+            streamConfiguration4 = [v21 streamConfiguration];
+            v33 = [streamConfiguration4 syncIdentifierForTransport:type];
 
-            v34 = [v40 timestampClockVectorForStreamIdentifier:v33];
-            v35 = [v21 atomBatchesForChangesSinceClockVector:v34 ckFormatVersion:v37 chunker:v39 transportType:a5];
+            v34 = [vectorCopy timestampClockVectorForStreamIdentifier:v33];
+            v35 = [v21 atomBatchesForChangesSinceClockVector:v34 ckFormatVersion:versionCopy chunker:chunkerCopy transportType:type];
             [v38 setObject:v35 forKeyedSubscript:v33];
           }
         }
@@ -408,18 +408,18 @@
   return v38;
 }
 
-- (void)mergeAtomBatches:(id)a3 deletedLocations:(id)a4 sessionContext:(id)a5
+- (void)mergeAtomBatches:(id)batches deletedLocations:(id)locations sessionContext:(id)context
 {
-  v7 = a3;
-  v27 = a4;
-  v26 = a5;
-  v28 = v7;
-  v8 = [v7 allKeys];
+  batchesCopy = batches;
+  locationsCopy = locations;
+  contextCopy = context;
+  v28 = batchesCopy;
+  allKeys = [batchesCopy allKeys];
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v42 = [v8 count];
+    v42 = [allKeys count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Merging %llu atom batches", buf, 0xCu);
   }
 
@@ -427,7 +427,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
+  obj = allKeys;
   v29 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v29)
   {
@@ -445,12 +445,12 @@
         v11 = *(*(&v35 + 1) + 8 * v10);
         context = objc_autoreleasePoolPush();
         distributedSyncManagers = self->_distributedSyncManagers;
-        v13 = [v11 lastPathComponent];
-        v14 = [(NSDictionary *)distributedSyncManagers objectForKeyedSubscript:v13];
+        lastPathComponent = [v11 lastPathComponent];
+        v14 = [(NSDictionary *)distributedSyncManagers objectForKeyedSubscript:lastPathComponent];
 
         v15 = [v28 objectForKeyedSubscript:v11];
         v16 = objc_opt_new();
-        v17 = [v27 objectForKeyedSubscript:v11];
+        v17 = [locationsCopy objectForKeyedSubscript:v11];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -483,7 +483,7 @@
           while (v19);
         }
 
-        [v14 mergeAtomBatch:v15 deletedLocations:v16 sessionContext:v26];
+        [v14 mergeAtomBatch:v15 deletedLocations:v16 sessionContext:contextCopy];
 
         objc_autoreleasePoolPop(context);
         v10 = v10 + 1;
@@ -497,25 +497,25 @@
   }
 }
 
-- (unint64_t)mergeDeferredMergeForDistributedSyncManager:(id)a3 shouldCancel:(id)a4
+- (unint64_t)mergeDeferredMergeForDistributedSyncManager:(id)manager shouldCancel:(id)cancel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  managerCopy = manager;
+  cancelCopy = cancel;
+  distributedSyncManagers = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
+  v9 = [distributedSyncManagers objectForKeyedSubscript:managerCopy];
 
-  v10 = [v9 handleDeferredDeletedLocationsForStream:v6];
+  v10 = [v9 handleDeferredDeletedLocationsForStream:managerCopy];
   if (v10 == 1)
   {
-    v10 = [(BMDistributedSyncMultiStreamManager *)self mergeDeferredAtomBatchesForStreamIdentifier:v6 block:v7];
+    v10 = [(BMDistributedSyncMultiStreamManager *)self mergeDeferredAtomBatchesForStreamIdentifier:managerCopy block:cancelCopy];
   }
 
   return v10;
 }
 
-- (unint64_t)mergeDeferredAtomBatchesWithShouldDefer:(id)a3
+- (unint64_t)mergeDeferredAtomBatchesWithShouldDefer:(id)defer
 {
-  v4 = a3;
+  deferCopy = defer;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -527,8 +527,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  distributedSyncManagers = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
+  v7 = [distributedSyncManagers countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -540,11 +540,11 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(distributedSyncManagers);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        if (v4 && (v4[2](v4) & 1) != 0)
+        if (deferCopy && (deferCopy[2](deferCopy) & 1) != 0)
         {
           goto LABEL_20;
         }
@@ -557,7 +557,7 @@
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "merging deferred atom batches for stream: %@", buf, 0xCu);
         }
 
-        if ([(BMDistributedSyncMultiStreamManager *)self mergeDeferredMergeForDistributedSyncManager:v12 shouldCancel:v4]== 2)
+        if ([(BMDistributedSyncMultiStreamManager *)self mergeDeferredMergeForDistributedSyncManager:v12 shouldCancel:deferCopy]== 2)
         {
           v14 = __biome_log_for_category();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -571,7 +571,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [distributedSyncManagers countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -594,34 +594,34 @@ LABEL_21:
   return v15;
 }
 
-- (unint64_t)mergeDeferredAtomBatchesForLocation:(id)a3 sessionContext:(id)a4
+- (unint64_t)mergeDeferredAtomBatchesForLocation:(id)location sessionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  contextCopy = context;
+  if (locationCopy)
   {
-    v8 = [v6 streamName];
+    streamName = [locationCopy streamName];
     v9 = __biome_log_for_category();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v6;
+      v21 = locationCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Merging location:%@", &v20, 0xCu);
     }
 
-    v10 = [(NSDictionary *)self->_distributedSyncManagers objectForKeyedSubscript:v8];
-    v11 = [v10 streamConfiguration];
-    v12 = [v11 storeConfig];
-    v13 = [v12 protectionClass];
+    v10 = [(NSDictionary *)self->_distributedSyncManagers objectForKeyedSubscript:streamName];
+    streamConfiguration = [v10 streamConfiguration];
+    storeConfig = [streamConfiguration storeConfig];
+    protectionClass = [storeConfig protectionClass];
 
-    v14 = [v10 streamConfiguration];
-    v15 = [v14 storeConfig];
-    v16 = [v15 currentDevice];
+    streamConfiguration2 = [v10 streamConfiguration];
+    storeConfig2 = [streamConfiguration2 storeConfig];
+    currentDevice = [storeConfig2 currentDevice];
 
-    if ([v16 canOpenFilesForProtectionClass:v13])
+    if ([currentDevice canOpenFilesForProtectionClass:protectionClass])
     {
-      v17 = [v10 streamCRDT];
-      [v17 mergeFileBasedPhaseswithSessionContext:v7 forLocation:v6];
+      streamCRDT = [v10 streamCRDT];
+      [streamCRDT mergeFileBasedPhaseswithSessionContext:contextCopy forLocation:locationCopy];
 
       v18 = 1;
     }
@@ -634,10 +634,10 @@ LABEL_21:
 
   else
   {
-    v8 = __biome_log_for_category();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    streamName = __biome_log_for_category();
+    if (os_log_type_enabled(streamName, OS_LOG_TYPE_FAULT))
     {
-      sub_10004C0A0(v8);
+      sub_10004C0A0(streamName);
     }
 
     v18 = 1;
@@ -646,27 +646,27 @@ LABEL_21:
   return v18;
 }
 
-- (unint64_t)mergeDeferredAtomBatchesForStreamIdentifier:(id)a3 block:(id)a4
+- (unint64_t)mergeDeferredAtomBatchesForStreamIdentifier:(id)identifier block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
-  v8 = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  distributedSyncManagers = [(BMDistributedSyncMultiStreamManager *)self distributedSyncManagers];
+  v9 = [distributedSyncManagers objectForKeyedSubscript:identifierCopy];
 
   v10 = [v9 db];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100034BF8;
   v14[3] = &unk_1000798C8;
-  v11 = v7;
+  v11 = blockCopy;
   v15 = v11;
   v16 = &v17;
   v14[4] = self;
-  [v10 enumerateAtomBatchFilesReferencedInCKAtomForStream:v6 withBlock:v14];
+  [v10 enumerateAtomBatchFilesReferencedInCKAtomForStream:identifierCopy withBlock:v14];
 
   v12 = v18[3];
   _Block_object_dispose(&v17, 8);
@@ -674,7 +674,7 @@ LABEL_21:
   return v12;
 }
 
-- (id)deletedLocationsForTransportType:(unint64_t)a3
+- (id)deletedLocationsForTransportType:(unint64_t)type
 {
   v23 = objc_opt_new();
   v28 = 0u;
@@ -698,16 +698,16 @@ LABEL_21:
 
         v7 = *(*(&v28 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [v7 streamConfiguration];
-        v10 = [v9 syncIdentifierForTransport:a3];
+        streamConfiguration = [v7 streamConfiguration];
+        v10 = [streamConfiguration syncIdentifierForTransport:type];
 
         v11 = objc_opt_new();
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v12 = [v7 deletedLocations];
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        deletedLocations = [v7 deletedLocations];
+        v13 = [deletedLocations countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -718,14 +718,14 @@ LABEL_21:
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(deletedLocations);
               }
 
-              v17 = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
-              [v11 addObject:v17];
+              dictionaryRepresentation = [*(*(&v24 + 1) + 8 * j) dictionaryRepresentation];
+              [v11 addObject:dictionaryRepresentation];
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v14 = [deletedLocations countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v14);
@@ -746,7 +746,7 @@ LABEL_21:
   return v23;
 }
 
-- (BOOL)supportsSyncingWithPlatform:(int64_t)a3 overTransport:(unint64_t)a4 inDirection:(unint64_t)a5
+- (BOOL)supportsSyncingWithPlatform:(int64_t)platform overTransport:(unint64_t)transport inDirection:(unint64_t)direction
 {
   v20 = 0u;
   v21 = 0u;
@@ -768,9 +768,9 @@ LABEL_21:
         }
 
         v12 = [(NSDictionary *)self->_distributedSyncManagers objectForKeyedSubscript:*(*(&v20 + 1) + 8 * i)];
-        v13 = [v12 streamConfiguration];
-        v14 = [v13 syncPolicy];
-        v15 = [v14 supportsSyncingWithPlatform:a3 overTransport:a4 inDirection:a5];
+        streamConfiguration = [v12 streamConfiguration];
+        syncPolicy = [streamConfiguration syncPolicy];
+        v15 = [syncPolicy supportsSyncingWithPlatform:platform overTransport:transport inDirection:direction];
 
         if (v15)
         {

@@ -1,11 +1,11 @@
 @interface _PFSQLiteKeyedArchiverEntry
 + (id)pf_sqliteCodingDescriptor;
 - (_PFSQLiteKeyedArchiverEntry)init;
-- (_PFSQLiteKeyedArchiverEntry)initWithCoder:(id)a3;
-- (_PFSQLiteKeyedArchiverEntry)initWithKey:(id)a3 data:(id)a4;
+- (_PFSQLiteKeyedArchiverEntry)initWithCoder:(id)coder;
+- (_PFSQLiteKeyedArchiverEntry)initWithKey:(id)key data:(id)data;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithData:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithData:(id)data;
 @end
 
 @implementation _PFSQLiteKeyedArchiverEntry
@@ -22,18 +22,18 @@
   return v3;
 }
 
-- (_PFSQLiteKeyedArchiverEntry)initWithKey:(id)a3 data:(id)a4
+- (_PFSQLiteKeyedArchiverEntry)initWithKey:(id)key data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v8 = [(_PFSQLiteKeyedArchiverEntry *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     key = v8->_key;
     v8->_key = v9;
 
-    objc_storeStrong(&v8->_data, a4);
+    objc_storeStrong(&v8->_data, data);
   }
 
   return v8;
@@ -46,58 +46,58 @@
   v2 = [(_PFSQLiteKeyedArchiverEntry *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastModified = v2->_lastModified;
-    v2->_lastModified = v3;
+    v2->_lastModified = date;
 
-    v5 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
     dateCreated = v2->_dateCreated;
-    v2->_dateCreated = v5;
+    v2->_dateCreated = date2;
   }
 
   return v2;
 }
 
-- (void)updateWithData:(id)a3
+- (void)updateWithData:(id)data
 {
-  objc_storeStrong(&self->_data, a3);
-  v7 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  objc_storeStrong(&self->_data, data);
+  dataCopy = data;
+  date = [MEMORY[0x1E695DF00] date];
   lastModified = self->_lastModified;
-  self->_lastModified = v5;
+  self->_lastModified = date;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"_key"];
-  [v5 encodeObject:self->_data forKey:@"_data"];
-  [v5 encodeObject:self->_lastModified forKey:@"_lastModified"];
-  [v5 encodeObject:self->_dateCreated forKey:@"_dateCreated"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"_key"];
+  [coderCopy encodeObject:self->_data forKey:@"_data"];
+  [coderCopy encodeObject:self->_lastModified forKey:@"_lastModified"];
+  [coderCopy encodeObject:self->_dateCreated forKey:@"_dateCreated"];
 }
 
-- (_PFSQLiteKeyedArchiverEntry)initWithCoder:(id)a3
+- (_PFSQLiteKeyedArchiverEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _PFSQLiteKeyedArchiverEntry;
   v5 = [(_PFSQLiteKeyedArchiverEntry *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_key"];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_data"];
     data = v5->_data;
     v5->_data = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastModified"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastModified"];
     lastModified = v5->_lastModified;
     v5->_lastModified = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_dateCreated"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_dateCreated"];
     dateCreated = v5->_dateCreated;
     v5->_dateCreated = v12;
   }

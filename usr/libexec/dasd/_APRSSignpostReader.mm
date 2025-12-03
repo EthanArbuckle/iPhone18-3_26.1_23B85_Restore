@@ -1,10 +1,10 @@
 @interface _APRSSignpostReader
 - (_APRSSignpostReader)init;
-- (void)logAppResumeAndLaunchesFrom:(id)a3 endDate:(id)a4;
-- (void)processSignpostInterval:(id)a3;
+- (void)logAppResumeAndLaunchesFrom:(id)from endDate:(id)date;
+- (void)processSignpostInterval:(id)interval;
 - (void)recordResumesAndLaunches;
-- (void)updateLaunchesForProcess:(id)a3 withInterval:(id)a4;
-- (void)updateResumesForProcess:(id)a3 withInterval:(id)a4;
+- (void)updateLaunchesForProcess:(id)process withInterval:(id)interval;
+- (void)updateResumesForProcess:(id)process withInterval:(id)interval;
 @end
 
 @implementation _APRSSignpostReader
@@ -41,39 +41,39 @@
   return v2;
 }
 
-- (void)logAppResumeAndLaunchesFrom:(id)a3 endDate:(id)a4
+- (void)logAppResumeAndLaunchesFrom:(id)from endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005359C;
   block[3] = &unk_1001B56B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = fromCopy;
+  v13 = dateCopy;
+  v9 = dateCopy;
+  v10 = fromCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)processSignpostInterval:(id)a3
+- (void)processSignpostInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ProcessName"];
+  intervalCopy = interval;
+  v5 = [intervalCopy objectForKeyedSubscript:@"ProcessName"];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectForKeyedSubscript:@"DurationSeconds"];
+    v7 = [intervalCopy objectForKeyedSubscript:@"DurationSeconds"];
     if (v7)
     {
       v8 = v7;
-      v9 = [v4 objectForKeyedSubscript:@"BeginEvent"];
+      v9 = [intervalCopy objectForKeyedSubscript:@"BeginEvent"];
 
       if (v9)
       {
-        v10 = [v4 objectForKeyedSubscript:@"ProcessName"];
+        v10 = [intervalCopy objectForKeyedSubscript:@"ProcessName"];
         v11 = [_DASAppResumePLLogger applicationBundleIDForExecutableName:v10];
         if (v11)
         {
@@ -82,22 +82,22 @@
             sub_10011F7AC();
           }
 
-          v12 = [v4 objectForKeyedSubscript:@"BeginEvent"];
+          v12 = [intervalCopy objectForKeyedSubscript:@"BeginEvent"];
           v13 = [v12 isEqualToString:@"AppLaunch"];
 
           if (v13)
           {
-            [(_APRSSignpostReader *)self updateLaunchesForProcess:v11 withInterval:v4];
+            [(_APRSSignpostReader *)self updateLaunchesForProcess:v11 withInterval:intervalCopy];
           }
 
           else
           {
-            v15 = [v4 objectForKeyedSubscript:@"BeginEvent"];
+            v15 = [intervalCopy objectForKeyedSubscript:@"BeginEvent"];
             v16 = [v15 isEqualToString:@"AppResume"];
 
             if (v16)
             {
-              [(_APRSSignpostReader *)self updateResumesForProcess:v11 withInterval:v4];
+              [(_APRSSignpostReader *)self updateResumesForProcess:v11 withInterval:intervalCopy];
             }
           }
         }
@@ -120,27 +120,27 @@
 LABEL_15:
 }
 
-- (void)updateResumesForProcess:(id)a3 withInterval:(id)a4
+- (void)updateResumesForProcess:(id)process withInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  intervalCopy = interval;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_10011F864(log, v7);
+    sub_10011F864(log, intervalCopy);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"DurationSeconds"];
+  v9 = [intervalCopy objectForKeyedSubscript:@"DurationSeconds"];
   [v9 floatValue];
   v11 = (v10 * 1000.0);
 
   if (v11 < 0x1389)
   {
-    v12 = [(NSMutableDictionary *)self->_resumes objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_resumes objectForKeyedSubscript:processCopy];
 
     if (v12)
     {
-      v13 = [(NSMutableDictionary *)self->_resumes objectForKeyedSubscript:v6];
+      v13 = [(NSMutableDictionary *)self->_resumes objectForKeyedSubscript:processCopy];
       v14 = [NSNumber numberWithUnsignedLongLong:v11];
       [v13 addObject:v14];
     }
@@ -151,7 +151,7 @@ LABEL_15:
       v16 = [NSNumber numberWithUnsignedLongLong:v11];
       [v15 addObject:v16];
 
-      [(NSMutableDictionary *)self->_resumes setObject:v15 forKey:v6];
+      [(NSMutableDictionary *)self->_resumes setObject:v15 forKey:processCopy];
     }
   }
 
@@ -161,27 +161,27 @@ LABEL_15:
   }
 }
 
-- (void)updateLaunchesForProcess:(id)a3 withInterval:(id)a4
+- (void)updateLaunchesForProcess:(id)process withInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  intervalCopy = interval;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_10011F974(log, v7);
+    sub_10011F974(log, intervalCopy);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"DurationSeconds"];
+  v9 = [intervalCopy objectForKeyedSubscript:@"DurationSeconds"];
   [v9 floatValue];
   v11 = (v10 * 1000.0);
 
   if (v11 < 0x1389)
   {
-    v12 = [(NSMutableDictionary *)self->_launches objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_launches objectForKeyedSubscript:processCopy];
 
     if (v12)
     {
-      v13 = [(NSMutableDictionary *)self->_launches objectForKeyedSubscript:v6];
+      v13 = [(NSMutableDictionary *)self->_launches objectForKeyedSubscript:processCopy];
       v14 = [NSNumber numberWithUnsignedLongLong:v11];
       [v13 addObject:v14];
     }
@@ -192,7 +192,7 @@ LABEL_15:
       v16 = [NSNumber numberWithUnsignedLongLong:v11];
       [v15 addObject:v16];
 
-      [(NSMutableDictionary *)self->_launches setObject:v15 forKey:v6];
+      [(NSMutableDictionary *)self->_launches setObject:v15 forKey:processCopy];
     }
   }
 

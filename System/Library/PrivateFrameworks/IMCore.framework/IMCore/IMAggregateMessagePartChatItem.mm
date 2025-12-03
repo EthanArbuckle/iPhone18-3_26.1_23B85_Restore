@@ -1,23 +1,23 @@
 @interface IMAggregateMessagePartChatItem
-- (id)_initWithItem:(id)a3 messagePartRange:(_NSRange)a4 subparts:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item messagePartRange:(_NSRange)range subparts:(id)subparts;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4;
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context;
 @end
 
 @implementation IMAggregateMessagePartChatItem
 
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context
 {
-  v5 = a3;
+  replyCopy = reply;
   v6 = [IMReplyContextAggregateMessagePartChatItem alloc];
   v9 = objc_msgSend__item(self, v7, v8);
-  v12 = objc_msgSend_guid(v5, v10, v11);
-  v15 = objc_msgSend_isFromMe(v5, v13, v14);
+  v12 = objc_msgSend_guid(replyCopy, v10, v11);
+  v15 = objc_msgSend_isFromMe(replyCopy, v13, v14);
   v18 = objc_msgSend_messagePartRange(self, v16, v17);
   v20 = v19;
   v22 = objc_msgSend_subparts(self, v19, v21);
-  v24 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_messagePartRange_subparts_(v6, v23, v9, v5, v12, v15, v18, v20, v22);
+  v24 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_messagePartRange_subparts_(v6, v23, v9, replyCopy, v12, v15, v18, v20, v22);
 
   return v24;
 }
@@ -33,7 +33,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -46,17 +46,17 @@
   return v12;
 }
 
-- (id)_initWithItem:(id)a3 messagePartRange:(_NSRange)a4 subparts:(id)a5
+- (id)_initWithItem:(id)item messagePartRange:(_NSRange)range subparts:(id)subparts
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v13 = objc_msgSend_subject(v9, v11, v12);
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  subpartsCopy = subparts;
+  v13 = objc_msgSend_subject(itemCopy, v11, v12);
   if (v13)
   {
     v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v17 = objc_msgSend_subject(v9, v15, v16);
+    v17 = objc_msgSend_subject(itemCopy, v15, v16);
     v19 = objc_msgSend_initWithString_(v14, v18, v17);
   }
 
@@ -65,18 +65,18 @@
     v19 = 0;
   }
 
-  v22 = objc_msgSend_body(v9, v20, v21);
+  v22 = objc_msgSend_body(itemCopy, v20, v21);
   v34.receiver = self;
   v34.super_class = IMAggregateMessagePartChatItem;
-  v23 = [(IMTextMessagePartChatItem *)&v34 _initWithItem:v9 text:v22 translationSecondaryText:0 index:0 messagePartRange:location subject:length isShowingEditHistory:v19 showTranslationAlternateText:0];
+  v23 = [(IMTextMessagePartChatItem *)&v34 _initWithItem:itemCopy text:v22 translationSecondaryText:0 index:0 messagePartRange:location subject:length isShowingEditHistory:v19 showTranslationAlternateText:0];
 
   if (v23)
   {
-    v26 = objc_msgSend_guid(v9, v24, v25);
+    v26 = objc_msgSend_guid(itemCopy, v24, v25);
     v27 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v23, v28, v27);
-    v31 = objc_msgSend_copy(v10, v29, v30);
+    v31 = objc_msgSend_copy(subpartsCopy, v29, v30);
     v32 = v23[25];
     v23[25] = v31;
   }

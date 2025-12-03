@@ -1,23 +1,23 @@
 @interface TUIFlickVariantCell
 - (UIEdgeInsets)backgroundInsets;
 - (double)backgroundCornerRadius;
-- (void)setCurvedCorners:(unint64_t)a3;
+- (void)setCurvedCorners:(unint64_t)corners;
 @end
 
 @implementation TUIFlickVariantCell
 
-- (void)setCurvedCorners:(unint64_t)a3
+- (void)setCurvedCorners:(unint64_t)corners
 {
-  if (self->_curvedCorners != a3)
+  if (self->_curvedCorners != corners)
   {
     [(TUIFlickVariantCell *)self setCornerMaskForBackground:0];
-    if (a3)
+    if (corners)
     {
       [(TUIFlickVariantCell *)self setCornerMaskForBackground:[(TUIFlickVariantCell *)self cornerMaskForBackground]| 1];
-      if ((a3 & 2) == 0)
+      if ((corners & 2) == 0)
       {
 LABEL_4:
-        if ((a3 & 4) == 0)
+        if ((corners & 4) == 0)
         {
           goto LABEL_5;
         }
@@ -26,19 +26,19 @@ LABEL_4:
       }
     }
 
-    else if ((a3 & 2) == 0)
+    else if ((corners & 2) == 0)
     {
       goto LABEL_4;
     }
 
     [(TUIFlickVariantCell *)self setCornerMaskForBackground:[(TUIFlickVariantCell *)self cornerMaskForBackground]| 2];
-    if ((a3 & 4) == 0)
+    if ((corners & 4) == 0)
     {
 LABEL_5:
-      if ((a3 & 8) == 0)
+      if ((corners & 8) == 0)
       {
 LABEL_7:
-        self->_curvedCorners = a3;
+        self->_curvedCorners = corners;
         return;
       }
 
@@ -49,7 +49,7 @@ LABEL_6:
 
 LABEL_11:
     [(TUIFlickVariantCell *)self setCornerMaskForBackground:[(TUIFlickVariantCell *)self cornerMaskForBackground]| 4];
-    if ((a3 & 8) == 0)
+    if ((corners & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -60,9 +60,9 @@ LABEL_11:
 
 - (double)backgroundCornerRadius
 {
-  v2 = [(TUIVariantCell *)self variantGeometriesForCell];
-  v3 = [v2 lastObject];
-  [v3 roundRectRadius];
+  variantGeometriesForCell = [(TUIVariantCell *)self variantGeometriesForCell];
+  lastObject = [variantGeometriesForCell lastObject];
+  [lastObject roundRectRadius];
   v5 = v4;
 
   return v5;

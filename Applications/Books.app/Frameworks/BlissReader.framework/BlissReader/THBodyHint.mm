@@ -2,7 +2,7 @@
 - ($D6031A91289B01F4EEA92D3AF6491109)firstHint;
 - ($D6031A91289B01F4EEA92D3AF6491109)lastHint;
 - (CGSize)size;
-- (THBodyHint)initWithCoder:(id)a3;
+- (THBodyHint)initWithCoder:(id)coder;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
 - (id).cxx_construct;
@@ -10,10 +10,10 @@
 - (unint64_t)startAnchoredCharIndex;
 - (vector<TSWPTargetHint,)hints;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)offsetStartCharIndexBy:(int64_t)a3;
-- (void)setHints:(const void *)a3;
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeAutoNumberFootnoteCount:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)offsetStartCharIndexBy:(int64_t)by;
+- (void)setHints:(const void *)hints;
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count;
 @end
 
 @implementation THBodyHint
@@ -28,12 +28,12 @@
   [(THBodyHint *)&v3 dealloc];
 }
 
-- (void)setHints:(const void *)a3
+- (void)setHints:(const void *)hints
 {
   p_mHints = &self->mHints;
-  if (p_mHints != a3)
+  if (p_mHints != hints)
   {
-    sub_540F8(p_mHints, *a3, *(a3 + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 1) - *a3) >> 4));
+    sub_540F8(p_mHints, *hints, *(hints + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(hints + 1) - *hints) >> 4));
   }
 }
 
@@ -72,7 +72,7 @@
   }
 }
 
-- (void)offsetStartCharIndexBy:(int64_t)a3
+- (void)offsetStartCharIndexBy:(int64_t)by
 {
   begin = self->mHints.__begin_;
   v4 = self->mHints.__end_ - begin;
@@ -84,11 +84,11 @@
       v5 = 1;
     }
 
-    v6 = vdupq_n_s64(a3);
+    v6 = vdupq_n_s64(by);
     v7 = (begin + 48);
     do
     {
-      v7[-1].i64[0] += a3;
+      v7[-1].i64[0] += by;
       *v7 = vaddq_s64(*v7, v6);
       v7 += 5;
       --v5;
@@ -158,43 +158,43 @@
 
 - (unint64_t)nextWidowPullsDownFromCharIndex
 {
-  v3 = [(THBodyHint *)self lastHint];
-  if (self->mHints.__end_ == self->mHints.__begin_ || v3 == 0)
+  lastHint = [(THBodyHint *)self lastHint];
+  if (self->mHints.__end_ == self->mHints.__begin_ || lastHint == 0)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return v3->var2;
+    return lastHint->var2;
   }
 }
 
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeAutoNumberFootnoteCount:(unint64_t)a5
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeAutoNumberFootnoteCount:(unint64_t)count
 {
-  if (*(self->mHints.__begin_ + 4) >= a3)
+  if (*(self->mHints.__begin_ + 4) >= index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   end = self->mHints.__end_;
-  if (*(end - 4) < a3)
+  if (*(end - 4) < index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   v8 = *(end - 6);
-  if (v8 > a3)
+  if (v8 > index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     v8 = *(end - 6);
   }
 
-  *(end - 5) = a3 - v8;
-  *(end - 4) = a3;
+  *(end - 5) = index - v8;
+  *(end - 4) = index;
 }
 
-- (THBodyHint)initWithCoder:(id)a3
+- (THBodyHint)initWithCoder:(id)coder
 {
   v58.receiver = self;
   v58.super_class = THBodyHint;
@@ -204,9 +204,9 @@
     v5 = objc_opt_class();
     v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
     objc_opt_class();
-    [a3 decodeObjectOfClasses:v6 forKey:@"anchoredPositionAttachments"];
+    [coder decodeObjectOfClasses:v6 forKey:@"anchoredPositionAttachments"];
     v4->mAnchoredAttachmentPositions = TSUDynamicCast();
-    v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"codingSize"];
+    v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"codingSize"];
     if (v7)
     {
       [v7 CGSizeValue];
@@ -225,8 +225,8 @@
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v10, v11, v12, objc_opt_class(), 0];
     objc_opt_class();
-    v54 = a3;
-    [a3 decodeObjectOfClasses:v13 forKey:@"hints"];
+    coderCopy = coder;
+    [coder decodeObjectOfClasses:v13 forKey:@"hints"];
     v56 = TSUDynamicCast();
     v55 = [v56 count];
     if (v55 >= 1)
@@ -263,13 +263,13 @@
         v26 = TSUDynamicCast();
         if (v26)
         {
-          v27 = [v26 rangeValue];
+          rangeValue = [v26 rangeValue];
           v57 = v28;
         }
 
         else
         {
-          v27 = 0;
+          rangeValue = 0;
           v57 = 0;
         }
 
@@ -278,12 +278,12 @@
         v29 = TSUDynamicCast();
         if (v29)
         {
-          v30 = [v29 unsignedIntegerValue];
+          unsignedIntegerValue = [v29 unsignedIntegerValue];
         }
 
         else
         {
-          v30 = 0;
+          unsignedIntegerValue = 0;
         }
 
         objc_opt_class();
@@ -291,13 +291,13 @@
         v31 = TSUDynamicCast();
         if (v31)
         {
-          v32 = [v31 rangeValue];
+          rangeValue2 = [v31 rangeValue];
           v34 = v33;
         }
 
         else
         {
-          v32 = 0;
+          rangeValue2 = 0;
           v34 = 0;
         }
 
@@ -307,12 +307,12 @@
         v36 = TSUDynamicCast();
         if (v36)
         {
-          v37 = [v36 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v36 unsignedIntegerValue];
         }
 
         else
         {
-          v37 = 0;
+          unsignedIntegerValue2 = 0;
         }
 
         end = v4->mHints.__end_;
@@ -349,12 +349,12 @@
           *(v46 + 8) = y;
           *(v46 + 16) = v23;
           *(v46 + 24) = v25;
-          *(v46 + 32) = v27;
+          *(v46 + 32) = rangeValue;
           *(v46 + 40) = v57;
-          *(v46 + 48) = v30;
-          *(v46 + 56) = v32;
+          *(v46 + 48) = unsignedIntegerValue;
+          *(v46 + 56) = rangeValue2;
           *(v46 + 64) = v34;
-          *(v46 + 72) = v37;
+          *(v46 + 72) = unsignedIntegerValue2;
           v40 = 80 * v43 + 80;
           v47 = v46 - v42;
           memcpy((v46 - v42), begin, v42);
@@ -374,13 +374,13 @@
           *(end + 1) = y;
           *(end + 2) = v23;
           *(end + 3) = v25;
-          *(end + 4) = v27;
+          *(end + 4) = rangeValue;
           *(end + 5) = v57;
-          *(end + 6) = v30;
-          *(end + 7) = v32;
+          *(end + 6) = unsignedIntegerValue;
+          *(end + 7) = rangeValue2;
           v40 = (end + 80);
           *(end + 8) = v34;
-          *(end + 9) = v37;
+          *(end + 9) = unsignedIntegerValue2;
         }
 
         v4->mHints.__end_ = v40;
@@ -395,18 +395,18 @@
     v50 = objc_opt_class();
     v51 = objc_opt_class();
     v52 = [NSSet setWithObjects:v49, v50, v51, objc_opt_class(), 0];
-    v4->mFirstChildHint = [v54 decodeObjectOfClasses:v52 forKey:@"firstChildHint"];
-    v4->mLastChildHint = [v54 decodeObjectOfClasses:v52 forKey:@"lastChildHint"];
+    v4->mFirstChildHint = [coderCopy decodeObjectOfClasses:v52 forKey:@"firstChildHint"];
+    v4->mLastChildHint = [coderCopy decodeObjectOfClasses:v52 forKey:@"lastChildHint"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[THBodyHint anchoredAttachmentPositions](self forKey:{"anchoredAttachmentPositions"), @"anchoredPositionAttachments"}];
+  [coder encodeObject:-[THBodyHint anchoredAttachmentPositions](self forKey:{"anchoredAttachmentPositions"), @"anchoredPositionAttachments"}];
   [(THBodyHint *)self size];
-  [a3 encodeObject:+[NSValue valueWithCGSize:](NSValue forKey:{"valueWithCGSize:"), @"codingSize"}];
+  [coder encodeObject:+[NSValue valueWithCGSize:](NSValue forKey:{"valueWithCGSize:"), @"codingSize"}];
   v5 = [[NSMutableArray alloc] initWithCapacity:0xCCCCCCCCCCCCCCCDLL * ((self->mHints.__end_ - self->mHints.__begin_) >> 4)];
   begin = self->mHints.__begin_;
   if (self->mHints.__end_ != begin)
@@ -435,10 +435,10 @@
     while (v8 < 0xCCCCCCCCCCCCCCCDLL * ((self->mHints.__end_ - begin) >> 4));
   }
 
-  [a3 encodeObject:v5 forKey:@"hints"];
+  [coder encodeObject:v5 forKey:@"hints"];
 
-  [a3 encodeObject:self->mFirstChildHint forKey:@"firstChildHint"];
-  [a3 encodeObject:self->mLastChildHint forKey:@"lastChildHint"];
+  [coder encodeObject:self->mFirstChildHint forKey:@"firstChildHint"];
+  [coder encodeObject:self->mLastChildHint forKey:@"lastChildHint"];
 }
 
 - (CGSize)size

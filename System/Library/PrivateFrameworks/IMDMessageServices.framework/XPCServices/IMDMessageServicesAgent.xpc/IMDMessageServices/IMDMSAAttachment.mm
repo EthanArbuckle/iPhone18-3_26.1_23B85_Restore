@@ -1,11 +1,11 @@
 @interface IMDMSAAttachment
-- (IMDMSAAttachment)initWithAttachment:(_IMDAttachmentRecordStruct *)a3;
+- (IMDMSAAttachment)initWithAttachment:(_IMDAttachmentRecordStruct *)attachment;
 - (void)dealloc;
 @end
 
 @implementation IMDMSAAttachment
 
-- (IMDMSAAttachment)initWithAttachment:(_IMDAttachmentRecordStruct *)a3
+- (IMDMSAAttachment)initWithAttachment:(_IMDAttachmentRecordStruct *)attachment
 {
   v7.receiver = self;
   v7.super_class = IMDMSAAttachment;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (attachment)
     {
       _IMDAttachmentRecordBulkCopy();
     }

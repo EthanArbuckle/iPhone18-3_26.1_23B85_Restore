@@ -1,9 +1,9 @@
 @interface HKClinicalIngestionContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalIngestionContext)init;
-- (HKClinicalIngestionContext)initWithAccountConnectionInformation:(id)a3 queryMode:(int64_t)a4 options:(unint64_t)a5 lastFetchDate:(id)a6;
-- (HKClinicalIngestionContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKClinicalIngestionContext)initWithAccountConnectionInformation:(id)information queryMode:(int64_t)mode options:(unint64_t)options lastFetchDate:(id)date;
+- (HKClinicalIngestionContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalIngestionContext
@@ -18,22 +18,22 @@
   return 0;
 }
 
-- (HKClinicalIngestionContext)initWithAccountConnectionInformation:(id)a3 queryMode:(int64_t)a4 options:(unint64_t)a5 lastFetchDate:(id)a6
+- (HKClinicalIngestionContext)initWithAccountConnectionInformation:(id)information queryMode:(int64_t)mode options:(unint64_t)options lastFetchDate:(id)date
 {
-  v10 = a3;
-  v11 = a6;
+  informationCopy = information;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = HKClinicalIngestionContext;
   v12 = [(HKClinicalIngestionContext *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [informationCopy copy];
     accountInformation = v12->_accountInformation;
     v12->_accountInformation = v13;
 
-    v12->_queryMode = a4;
-    v12->_options = a5;
-    v15 = [v11 copy];
+    v12->_queryMode = mode;
+    v12->_options = options;
+    v15 = [dateCopy copy];
     lastFetchDate = v12->_lastFetchDate;
     v12->_lastFetchDate = v15;
   }
@@ -41,45 +41,45 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountInformation = self->_accountInformation;
-  v5 = a3;
-  [v5 encodeObject:accountInformation forKey:@"AccountInformation"];
-  [v5 encodeInteger:self->_queryMode forKey:@"QueryMode"];
-  [v5 encodeInteger:self->_options forKey:@"Options"];
-  [v5 encodeObject:self->_lastFetchDate forKey:@"LastFetchDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountInformation forKey:@"AccountInformation"];
+  [coderCopy encodeInteger:self->_queryMode forKey:@"QueryMode"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
+  [coderCopy encodeObject:self->_lastFetchDate forKey:@"LastFetchDate"];
 }
 
-- (HKClinicalIngestionContext)initWithCoder:(id)a3
+- (HKClinicalIngestionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountInformation"];
-  if (v5 && [v4 containsValueForKey:@"QueryMode"] && (objc_msgSend(v4, "containsValueForKey:", @"Options") & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountInformation"];
+  if (v5 && [coderCopy containsValueForKey:@"QueryMode"] && (objc_msgSend(coderCopy, "containsValueForKey:", @"Options") & 1) != 0)
   {
-    v6 = [v4 decodeIntegerForKey:@"QueryMode"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastFetchDate"];
-    self = -[HKClinicalIngestionContext initWithAccountConnectionInformation:queryMode:options:lastFetchDate:](self, "initWithAccountConnectionInformation:queryMode:options:lastFetchDate:", v5, v6, [v4 decodeIntegerForKey:@"Options"], v7);
+    v6 = [coderCopy decodeIntegerForKey:@"QueryMode"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastFetchDate"];
+    self = -[HKClinicalIngestionContext initWithAccountConnectionInformation:queryMode:options:lastFetchDate:](self, "initWithAccountConnectionInformation:queryMode:options:lastFetchDate:", v5, v6, [coderCopy decodeIntegerForKey:@"Options"], v7);
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -90,8 +90,8 @@ LABEL_24:
     }
 
     accountInformation = self->_accountInformation;
-    v9 = [(HKClinicalIngestionContext *)v7 accountInformation];
-    if (accountInformation == v9)
+    accountInformation = [(HKClinicalIngestionContext *)v7 accountInformation];
+    if (accountInformation == accountInformation)
     {
       queryMode = self->_queryMode;
       if (queryMode == [(HKClinicalIngestionContext *)v7 queryMode])
@@ -102,13 +102,13 @@ LABEL_24:
 
     else
     {
-      v10 = [(HKClinicalIngestionContext *)v7 accountInformation];
-      if (v10)
+      accountInformation2 = [(HKClinicalIngestionContext *)v7 accountInformation];
+      if (accountInformation2)
       {
-        v3 = v10;
+        v3 = accountInformation2;
         v11 = self->_accountInformation;
-        v12 = [(HKClinicalIngestionContext *)v7 accountInformation];
-        if (![(HKClinicalAccountConnectionInformation *)v11 isEqual:v12]|| (v13 = self->_queryMode, v13 != [(HKClinicalIngestionContext *)v7 queryMode]))
+        accountInformation3 = [(HKClinicalIngestionContext *)v7 accountInformation];
+        if (![(HKClinicalAccountConnectionInformation *)v11 isEqual:accountInformation3]|| (v13 = self->_queryMode, v13 != [(HKClinicalIngestionContext *)v7 queryMode]))
         {
           v14 = 0;
 LABEL_22:
@@ -116,19 +116,19 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v25 = v12;
+        v25 = accountInformation3;
 LABEL_11:
         lastFetchDate = self->_lastFetchDate;
-        v17 = [(HKClinicalIngestionContext *)v7 lastFetchDate];
-        if (lastFetchDate != v17)
+        lastFetchDate = [(HKClinicalIngestionContext *)v7 lastFetchDate];
+        if (lastFetchDate != lastFetchDate)
         {
-          v18 = [(HKClinicalIngestionContext *)v7 lastFetchDate];
-          if (v18)
+          lastFetchDate2 = [(HKClinicalIngestionContext *)v7 lastFetchDate];
+          if (lastFetchDate2)
           {
-            v19 = v18;
+            v19 = lastFetchDate2;
             v20 = self->_lastFetchDate;
-            v21 = [(HKClinicalIngestionContext *)v7 lastFetchDate];
-            if ([(NSDate *)v20 isEqual:v21])
+            lastFetchDate3 = [(HKClinicalIngestionContext *)v7 lastFetchDate];
+            if ([(NSDate *)v20 isEqual:lastFetchDate3])
             {
               options = self->_options;
               v14 = options == [(HKClinicalIngestionContext *)v7 options];
@@ -140,8 +140,8 @@ LABEL_18:
 
           v14 = 0;
 LABEL_21:
-          v12 = v25;
-          if (accountInformation != v9)
+          accountInformation3 = v25;
+          if (accountInformation != accountInformation)
           {
             goto LABEL_22;
           }

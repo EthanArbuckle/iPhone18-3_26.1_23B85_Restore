@@ -1,32 +1,32 @@
 @interface HDSPSGHelper
-- (HDSPSGHelper)initWithHome:(id)a3;
-- (id)allPSGsInRoom:(id)a3;
-- (id)fetchPSG:(id)a3;
-- (id)roomForStereoPair:(id)a3;
-- (id)roomsForPSG:(id)a3;
+- (HDSPSGHelper)initWithHome:(id)home;
+- (id)allPSGsInRoom:(id)room;
+- (id)fetchPSG:(id)g;
+- (id)roomForStereoPair:(id)pair;
+- (id)roomsForPSG:(id)g;
 @end
 
 @implementation HDSPSGHelper
 
-- (HDSPSGHelper)initWithHome:(id)a3
+- (HDSPSGHelper)initWithHome:(id)home
 {
   v80 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v76.receiver = self;
   v76.super_class = HDSPSGHelper;
   v6 = [(HDSPSGHelper *)&v76 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentHome, a3);
-    v8 = [(HMHome *)v7->_currentHome accessories];
-    v9 = [v8 copy];
+    objc_storeStrong(&v6->_currentHome, home);
+    accessories = [(HMHome *)v7->_currentHome accessories];
+    v9 = [accessories copy];
     allHomePods = v7->_allHomePods;
     p_allHomePods = &v7->_allHomePods;
     v7->_allHomePods = v9;
 
-    v11 = [(HMHome *)v7->_currentHome mediaSystems];
-    v12 = [v11 copy];
+    mediaSystems = [(HMHome *)v7->_currentHome mediaSystems];
+    v12 = [mediaSystems copy];
     allStereoPairs = v7->_allStereoPairs;
     p_allStereoPairs = &v7->_allStereoPairs;
     v7->_allStereoPairs = v12;
@@ -60,7 +60,7 @@
       }
     }
 
-    v53 = v5;
+    v53 = homeCopy;
     v14 = objc_opt_new();
     psgStereoPairMap = v7->_psgStereoPairMap;
     p_psgStereoPairMap = &v7->_psgStereoPairMap;
@@ -95,8 +95,8 @@
 
           v61 = v20;
           v21 = *(*(&v72 + 1) + 8 * v20);
-          v63 = [v21 identifier];
-          v22 = [v21 destinationIdentifiers];
+          identifier = [v21 identifier];
+          destinationIdentifiers = [v21 destinationIdentifiers];
           v23 = *(v19 + 2840);
           v62 = objc_opt_new();
           v70 = 0u;
@@ -119,19 +119,19 @@
                 }
 
                 v29 = *(*(&v68 + 1) + 8 * i);
-                v30 = [v29 audioDestinationIdentifier];
-                if (v30)
+                audioDestinationIdentifier = [v29 audioDestinationIdentifier];
+                if (audioDestinationIdentifier)
                 {
-                  v31 = v30;
-                  v32 = [v29 audioDestinationIdentifier];
-                  v33 = [v22 containsObject:v32];
+                  v31 = audioDestinationIdentifier;
+                  audioDestinationIdentifier2 = [v29 audioDestinationIdentifier];
+                  v33 = [destinationIdentifiers containsObject:audioDestinationIdentifier2];
 
                   if (v33)
                   {
                     if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                     {
                       LogPrintF();
-                      [v62 addObject:{v29, v63, v29}];
+                      [v62 addObject:{v29, identifier, v29}];
                     }
 
                     else
@@ -143,7 +143,7 @@
 
                 if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                 {
-                  v50 = v63;
+                  v50 = identifier;
                   v51 = v62;
                   LogPrintF();
                 }
@@ -156,7 +156,7 @@
           }
 
           v34 = [v62 copy];
-          [*v59 setObject:v34 forKeyedSubscript:v63];
+          [*v59 setObject:v34 forKeyedSubscript:identifier];
 
           v35 = *(v19 + 2840);
           v36 = objc_opt_new();
@@ -180,19 +180,19 @@
                 }
 
                 v42 = *(*(&v64 + 1) + 8 * j);
-                v43 = [v42 audioDestinationIdentifier];
-                if (v43)
+                audioDestinationIdentifier3 = [v42 audioDestinationIdentifier];
+                if (audioDestinationIdentifier3)
                 {
-                  v44 = v43;
-                  v45 = [v42 audioDestinationIdentifier];
-                  v46 = [v22 containsObject:v45];
+                  v44 = audioDestinationIdentifier3;
+                  audioDestinationIdentifier4 = [v42 audioDestinationIdentifier];
+                  v46 = [destinationIdentifiers containsObject:audioDestinationIdentifier4];
 
                   if (v46)
                   {
                     if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                     {
                       LogPrintF();
-                      [v36 addObject:{v42, v63, v42}];
+                      [v36 addObject:{v42, identifier, v42}];
                     }
 
                     else
@@ -204,7 +204,7 @@
 
                 if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                 {
-                  v50 = v63;
+                  v50 = identifier;
                   v51 = v36;
                   LogPrintF();
                 }
@@ -217,7 +217,7 @@
           }
 
           v47 = [v36 copy];
-          [*p_psgStereoPairMap setObject:v47 forKeyedSubscript:v63];
+          [*p_psgStereoPairMap setObject:v47 forKeyedSubscript:identifier];
 
           v20 = v61 + 1;
           v19 = 0x277CBE000;
@@ -231,7 +231,7 @@
     }
 
     v7 = v52;
-    v5 = v53;
+    homeCopy = v53;
     if (gLogCategory_HDSPSGHelper <= 30)
     {
       if (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize())
@@ -250,16 +250,16 @@
   return v7;
 }
 
-- (id)allPSGsInRoom:(id)a3
+- (id)allPSGsInRoom:(id)room
 {
   v57 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  roomCopy = room;
   v5 = objc_opt_new();
   v6 = v5;
-  if (v4)
+  if (roomCopy)
   {
-    v34 = v4;
-    v7 = [v4 uniqueIdentifier];
+    v34 = roomCopy;
+    uniqueIdentifier = [roomCopy uniqueIdentifier];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -303,16 +303,16 @@
                   objc_enumerationMutation(v11);
                 }
 
-                v16 = [*(*(&v46 + 1) + 8 * j) room];
-                v17 = [v16 uniqueIdentifier];
-                v18 = [v7 hmf_isEqualToUUID:v17];
+                room = [*(*(&v46 + 1) + 8 * j) room];
+                uniqueIdentifier2 = [room uniqueIdentifier];
+                v18 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
 
                 if (v18)
                 {
                   v24 = [(HDSPSGHelper *)self fetchPSG:v39];
                   if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                   {
-                    v32 = v7;
+                    v32 = uniqueIdentifier;
                     v33 = v24;
                     LogPrintF();
                   }
@@ -356,15 +356,15 @@ LABEL_35:
                 }
 
                 v24 = [(HDSPSGHelper *)self roomForStereoPair:*(*(&v42 + 1) + 8 * k)];
-                v25 = [v24 uniqueIdentifier];
-                v26 = [v7 hmf_isEqualToUUID:v25];
+                uniqueIdentifier3 = [v24 uniqueIdentifier];
+                v26 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier3];
 
                 if (v26)
                 {
                   v28 = [(HDSPSGHelper *)self fetchPSG:v39];
                   if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
                   {
-                    v32 = v7;
+                    v32 = uniqueIdentifier;
                     v33 = v28;
                     LogPrintF();
                   }
@@ -407,7 +407,7 @@ LABEL_36:
 
     v29 = [v6 copy];
 
-    v4 = v34;
+    roomCopy = v34;
   }
 
   else
@@ -420,19 +420,19 @@ LABEL_36:
   return v29;
 }
 
-- (id)roomsForPSG:(id)a3
+- (id)roomsForPSG:(id)g
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gCopy = g;
   v5 = objc_opt_new();
   v6 = v5;
-  if (v4)
+  if (gCopy)
   {
-    v30 = v4;
-    v7 = [v4 identifier];
-    v8 = [(NSMutableDictionary *)self->_psgHomePodMap objectForKeyedSubscript:v7];
-    v29 = v7;
-    v9 = [(NSMutableDictionary *)self->_psgStereoPairMap objectForKeyedSubscript:v7];
+    v30 = gCopy;
+    identifier = [gCopy identifier];
+    v8 = [(NSMutableDictionary *)self->_psgHomePodMap objectForKeyedSubscript:identifier];
+    v29 = identifier;
+    v9 = [(NSMutableDictionary *)self->_psgStereoPairMap objectForKeyedSubscript:identifier];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -459,8 +459,8 @@ LABEL_36:
             [HDSPSGHelper roomsForPSG:v15];
           }
 
-          v16 = [v15 room];
-          [v6 addObject:v16];
+          room = [v15 room];
+          [v6 addObject:room];
 
           ++v14;
         }
@@ -509,7 +509,7 @@ LABEL_36:
       while (v20);
     }
 
-    v4 = v30;
+    gCopy = v30;
     if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
     {
       v27 = v30;
@@ -530,24 +530,24 @@ LABEL_36:
   return v24;
 }
 
-- (id)roomForStereoPair:(id)a3
+- (id)roomForStereoPair:(id)pair
 {
-  v3 = [a3 components];
-  v4 = [v3 firstObject];
-  v5 = [v4 mediaProfile];
-  v6 = [v5 accessory];
-  v7 = [v6 room];
+  components = [pair components];
+  firstObject = [components firstObject];
+  mediaProfile = [firstObject mediaProfile];
+  accessory = [mediaProfile accessory];
+  room = [accessory room];
 
-  return v7;
+  return room;
 }
 
-- (id)fetchPSG:(id)a3
+- (id)fetchPSG:(id)g
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gCopy = g;
   if (gLogCategory_HDSPSGHelper <= 30 && (gLogCategory_HDSPSGHelper != -1 || _LogCategory_Initialize()))
   {
-    v14 = v4;
+    v14 = gCopy;
     allPSGs = self->_allPSGs;
     LogPrintF();
   }
@@ -571,8 +571,8 @@ LABEL_36:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v4 hmf_isEqualToUUID:v10];
+        identifier = [v9 identifier];
+        v11 = [gCopy hmf_isEqualToUUID:identifier];
 
         if (v11)
         {

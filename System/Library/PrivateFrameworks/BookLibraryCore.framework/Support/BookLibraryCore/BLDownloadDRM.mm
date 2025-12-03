@@ -1,16 +1,16 @@
 @interface BLDownloadDRM
-- (BLDownloadDRM)initWithSinfArray:(id)a3;
+- (BLDownloadDRM)initWithSinfArray:(id)array;
 - (BOOL)isDRMFree;
-- (id)_sinfsArrayWithDataKey:(id)a3;
-- (id)firstDataForSinfDataKey:(id)a3;
-- (id)sinfForIdentifier:(int64_t)a3;
+- (id)_sinfsArrayWithDataKey:(id)key;
+- (id)firstDataForSinfDataKey:(id)key;
+- (id)sinfForIdentifier:(int64_t)identifier;
 @end
 
 @implementation BLDownloadDRM
 
-- (BLDownloadDRM)initWithSinfArray:(id)a3
+- (BLDownloadDRM)initWithSinfArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v21.receiver = self;
   v21.super_class = BLDownloadDRM;
   v5 = [(BLDownloadDRM *)&v21 init];
@@ -21,7 +21,7 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v8)
     {
@@ -62,9 +62,9 @@
   return v5;
 }
 
-- (id)firstDataForSinfDataKey:(id)a3
+- (id)firstDataForSinfDataKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -84,7 +84,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) dataForSinfDataKey:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) dataForSinfDataKey:{keyCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -116,7 +116,7 @@ LABEL_11:
   return v3;
 }
 
-- (id)sinfForIdentifier:(int64_t)a3
+- (id)sinfForIdentifier:(int64_t)identifier
 {
   v12 = 0u;
   v13 = 0u;
@@ -138,7 +138,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 identifier] == a3)
+        if ([v9 identifier] == identifier)
         {
           v10 = v9;
           goto LABEL_11;
@@ -161,16 +161,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)_sinfsArrayWithDataKey:(id)a3
+- (id)_sinfsArrayWithDataKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(BLDownloadDRM *)self sinfs];
+  sinfs = [(BLDownloadDRM *)self sinfs];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -181,17 +181,17 @@ LABEL_11:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sinfs);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) dataForSinfDataKey:v4];
+        v11 = [*(*(&v14 + 1) + 8 * i) dataForSinfDataKey:keyCopy];
         if (v11)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

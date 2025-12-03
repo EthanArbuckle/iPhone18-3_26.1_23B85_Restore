@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneIndexMultiDocValues_$1
-- (int64_t)getWithInt:(int)a3;
+- (int64_t)getWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiDocValues_$1
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
-  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(a3, self->val$starts_);
+  v5 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withIntArray_(int, self->val$starts_);
   v6 = self->val$values_;
   if (!v6)
   {
@@ -34,7 +34,7 @@ LABEL_11:
     IOSArray_throwOutOfBoundsWithMsg(v11, v7);
   }
 
-  v12 = (a3 - *(&v10->super.size_ + v7 + 1));
+  v12 = (int - *(&v10->super.size_ + v7 + 1));
 
   return [(IOSClass *)v9 getWithInt:v12];
 }

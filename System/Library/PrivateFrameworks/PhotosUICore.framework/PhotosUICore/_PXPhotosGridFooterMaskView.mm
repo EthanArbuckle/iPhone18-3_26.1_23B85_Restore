@@ -17,8 +17,8 @@
   v4.receiver = self;
   v4.super_class = _PXPhotosGridFooterMaskView;
   [(_PXPhotosGridFooterMaskView *)&v4 didMoveToWindow];
-  v3 = [(_PXPhotosGridFooterMaskView *)self delegate];
-  [v3 footerMaskViewDidMoveToWindow:self];
+  delegate = [(_PXPhotosGridFooterMaskView *)self delegate];
+  [delegate footerMaskViewDidMoveToWindow:self];
 }
 
 @end

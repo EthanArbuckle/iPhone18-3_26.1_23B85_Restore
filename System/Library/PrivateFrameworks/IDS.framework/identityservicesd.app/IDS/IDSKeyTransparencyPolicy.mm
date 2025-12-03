@@ -9,14 +9,14 @@
 - (BOOL)isKeyTransparencyAnalyticsEnabled;
 - (BOOL)isKeyTransparencyCloudKitCircleEnabled;
 - (BOOL)isKeyTransparencyEnabled;
-- (BOOL)isKeyTransparencyEnabledForServiceIdentifier:(id)a3;
-- (BOOL)isKeyTransparencyEnabledForServiceType:(id)a3;
+- (BOOL)isKeyTransparencyEnabledForServiceIdentifier:(id)identifier;
+- (BOOL)isKeyTransparencyEnabledForServiceType:(id)type;
 - (BOOL)isKeyTransparencyRTCAnalyticsEnabled;
 - (BOOL)isKeyTransparencySFAnalyticsEnabled;
 - (BOOL)isKeyTransparencyTrustCircleEnabled;
 - (BOOL)isKeyTransparencyUIEnabled;
 - (BOOL)isKeyTransparencyXPCActivityEnabled;
-- (BOOL)shouldSyncTrustCircleAfterSelfQueryForServiceIdentifier:(id)a3;
+- (BOOL)shouldSyncTrustCircleAfterSelfQueryForServiceIdentifier:(id)identifier;
 - (unint64_t)keyTransparencyMaximumVerificationsPerXPCActivity;
 - (unint64_t)keyTransparencyXPCActivityIntervalInSeconds;
 @end
@@ -25,14 +25,14 @@
 
 - (BOOL)isKeyTransparencyEnabled
 {
-  v3 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyEnabledViaDefaults];
-  if (v3)
+  _isKeyTransparencyEnabledViaDefaults = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyEnabledViaDefaults];
+  if (_isKeyTransparencyEnabledViaDefaults)
   {
 
-    LOBYTE(v3) = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyEnabledViaServerBag];
+    LOBYTE(_isKeyTransparencyEnabledViaDefaults) = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyEnabledViaServerBag];
   }
 
-  return v3;
+  return _isKeyTransparencyEnabledViaDefaults;
 }
 
 - (BOOL)_isKeyTransparencyEnabledViaDefaults
@@ -130,47 +130,47 @@
   return v5;
 }
 
-- (BOOL)isKeyTransparencyEnabledForServiceIdentifier:(id)a3
+- (BOOL)isKeyTransparencyEnabledForServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:IDSiMessageKeyTransparencyService])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:IDSiMessageKeyTransparencyService])
   {
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid];
   }
 
-  else if ([v4 isEqualToString:IDSFaceTimeMultiKeyTransparencyService])
+  else if ([identifierCopy isEqualToString:IDSFaceTimeMultiKeyTransparencyService])
   {
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_FaceTime];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_FaceTime];
   }
 
   else
   {
-    if (![v4 isEqualToString:IDSMultiplex1KeyTransparencyService])
+    if (![identifierCopy isEqualToString:IDSMultiplex1KeyTransparencyService])
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Multiplex];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Multiplex];
   }
 
-  v6 = v5 ^ 1;
+  v6 = _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid ^ 1;
 LABEL_8:
 
   return v6;
 }
 
-- (BOOL)isKeyTransparencyEnabledForServiceType:(id)a3
+- (BOOL)isKeyTransparencyEnabledForServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (IDSIsiMessageRegistrationServiceType())
   {
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid];
   }
 
   else if (IDSIsMultiwayRegistrationServiceType())
   {
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_FaceTime];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_FaceTime];
   }
 
   else
@@ -181,10 +181,10 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v5 = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Multiplex];
+    _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid = [(IDSKeyTransparencyPolicy *)self _isKeyTransparencyDisabledViaServerBagProtocolVersion_Multiplex];
   }
 
-  v6 = v5 ^ 1;
+  v6 = _isKeyTransparencyDisabledViaServerBagProtocolVersion_Madrid ^ 1;
 LABEL_8:
 
   return v6;
@@ -212,20 +212,20 @@ LABEL_8:
 
   if (+[IMUserDefaults isKeyTransparencyCloudKitCircleDisabled]&& (CUTIsInternalInstall() & 1) != 0)
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isKeyTransparencyAccountKeyCircleEnabled
@@ -240,20 +240,20 @@ LABEL_8:
 
   if (+[IMUserDefaults isKeyTransparencyAccountKeyCircleDisabled]&& (CUTIsInternalInstall() & 1) != 0)
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   else if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isKeyTransparencyXPCActivityEnabled
@@ -268,15 +268,15 @@ LABEL_8:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)keyTransparencyXPCActivityIntervalInSeconds
@@ -286,23 +286,23 @@ LABEL_8:
 
   if (+[IMUserDefaults isKeyTransparencyAggressiveVerificationScheduleEnabled]&& (CUTIsInternalInstall() & 1) != 0)
   {
-    v4 = 300;
+    unsignedIntegerValue = 300;
   }
 
   else
   {
-    v4 = 86400;
+    unsignedIntegerValue = 86400;
     if (v3)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [v3 unsignedIntegerValue];
+        unsignedIntegerValue = [v3 unsignedIntegerValue];
       }
     }
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)keyTransparencyMaximumVerificationsPerXPCActivity
@@ -317,15 +317,15 @@ LABEL_8:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 25;
+    unsignedIntegerValue = 25;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isKeyTransparencyAnalyticsEnabled
@@ -340,15 +340,15 @@ LABEL_8:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isKeyTransparencyRTCAnalyticsEnabled
@@ -363,15 +363,15 @@ LABEL_8:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isKeyTransparencySFAnalyticsEnabled
@@ -386,20 +386,20 @@ LABEL_8:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)shouldSyncTrustCircleAfterSelfQueryForServiceIdentifier:(id)a3
+- (BOOL)shouldSyncTrustCircleAfterSelfQueryForServiceIdentifier:(id)identifier
 {
-  if (![(IDSKeyTransparencyPolicy *)self isKeyTransparencyEnabledForServiceIdentifier:a3])
+  if (![(IDSKeyTransparencyPolicy *)self isKeyTransparencyEnabledForServiceIdentifier:identifier])
   {
     return 0;
   }
@@ -410,15 +410,15 @@ LABEL_8:
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = v4;
-    v6 = [v5 unsignedIntegerValue];
-    if (v6 >= 0x65)
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
+    if (unsignedIntegerValue >= 0x65)
     {
       v7 = 10;
     }
 
     else
     {
-      v7 = v6;
+      v7 = unsignedIntegerValue;
     }
   }
 

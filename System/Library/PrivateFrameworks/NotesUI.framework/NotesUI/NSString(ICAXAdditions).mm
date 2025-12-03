@@ -8,7 +8,7 @@
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v11[0] = a3;
-  v11[1] = a1;
+  v11[1] = self;
   v3 = MEMORY[0x1E695DEC8];
   v4 = a3;
   v5 = [v3 arrayWithObjects:v11 count:2];

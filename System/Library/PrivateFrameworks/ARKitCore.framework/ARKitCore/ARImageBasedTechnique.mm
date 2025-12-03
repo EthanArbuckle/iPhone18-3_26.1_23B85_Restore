@@ -1,13 +1,13 @@
 @interface ARImageBasedTechnique
 - (ARImageBasedTechnique)init;
-- (BOOL)context:(id)a3 matchesFrameReference:(id)a4;
+- (BOOL)context:(id)context matchesFrameReference:(id)reference;
 - (id)_fullDescription;
-- (id)processData:(id)a3;
-- (int64_t)getDeviceOrientationFromImageData:(id)a3;
-- (void)pushResultData:(id)a3 forFrame:(__CVBuffer *)a4;
-- (void)pushResultData:(id)a3 forFrameReference:(id)a4;
-- (void)pushResultData:(id)a3 forTimestamp:(double)a4;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (id)processData:(id)data;
+- (int64_t)getDeviceOrientationFromImageData:(id)data;
+- (void)pushResultData:(id)data forFrame:(__CVBuffer *)frame;
+- (void)pushResultData:(id)data forFrameReference:(id)reference;
+- (void)pushResultData:(id)data forTimestamp:(double)timestamp;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARImageBasedTechnique
@@ -39,44 +39,44 @@
   return v2;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = dataCopy;
     [v5 timestamp];
-    v6 = [(ARTechnique *)self traceKey];
+    traceKey = [(ARTechnique *)self traceKey];
     if (ARTechnique_Image_to_Result_Timestamp_onceToken != -1)
     {
       [ARImageBasedTechnique processData:];
     }
 
-    v7 = [ARTechnique_Image_to_Result_Timestamp_keyToCode objectForKeyedSubscript:v6];
+    v7 = [ARTechnique_Image_to_Result_Timestamp_keyToCode objectForKeyedSubscript:traceKey];
     [v7 intValue];
 
     kdebug_trace();
-    v8 = [(ARTechnique *)self traceKey];
+    traceKey2 = [(ARTechnique *)self traceKey];
     if (ARTechnique_Image_to_Result_Frame_onceToken != -1)
     {
       [ARImageBasedTechnique processData:];
     }
 
-    v9 = [ARTechnique_Image_to_Result_Frame_keyToCode objectForKeyedSubscript:v8];
+    v9 = [ARTechnique_Image_to_Result_Frame_keyToCode objectForKeyedSubscript:traceKey2];
     [v9 intValue];
 
     [v5 pixelBuffer];
     kdebug_trace();
   }
 
-  return v4;
+  return dataCopy;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   dispatch_semaphore_wait(self->_pendingRequestsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v7 = [(NSMutableArray *)self->_pendingResultData count];
   if (!v7)
@@ -84,10 +84,10 @@
 LABEL_9:
     if ([(NSMutableArray *)self->_pendingRequestContexts count]>= 2)
     {
-      v18 = [(NSMutableArray *)self->_pendingRequestContexts firstObject];
-      v19 = [v18 imageData];
-      [v19 timestamp];
-      v21 = a3 - v20;
+      firstObject = [(NSMutableArray *)self->_pendingRequestContexts firstObject];
+      imageData = [firstObject imageData];
+      [imageData timestamp];
+      v21 = timestamp - v20;
       [(ARTechnique *)self requiredTimeInterval];
       v23 = v22 + v22;
 
@@ -98,13 +98,13 @@ LABEL_9:
         {
           v25 = objc_opt_class();
           v26 = NSStringFromClass(v25);
-          v27 = [(NSMutableArray *)self->_pendingRequestContexts firstObject];
-          v28 = [v27 imageData];
-          [v28 timestamp];
+          firstObject2 = [(NSMutableArray *)self->_pendingRequestContexts firstObject];
+          imageData2 = [firstObject2 imageData];
+          [imageData2 timestamp];
           v40 = 138543874;
           v41 = v26;
           v42 = 2048;
-          v43 = self;
+          selfCopy4 = self;
           v44 = 2048;
           v45 = v29;
           _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropping timed-out context: %f", &v40, 0x20u);
@@ -114,7 +114,7 @@ LABEL_9:
       }
     }
 
-    [(NSMutableArray *)self->_pendingRequestContexts addObject:v6];
+    [(NSMutableArray *)self->_pendingRequestContexts addObject:contextCopy];
     dispatch_semaphore_signal(self->_pendingRequestsSemaphore);
     goto LABEL_15;
   }
@@ -128,13 +128,13 @@ LABEL_6:
     {
       v13 = objc_opt_class();
       v14 = NSStringFromClass(v13);
-      v15 = [v6 imageData];
-      [v15 timestamp];
+      imageData3 = [contextCopy imageData];
+      [imageData3 timestamp];
       pendingResultData = self->_pendingResultData;
       v40 = 138544386;
       v41 = v14;
       v42 = 2048;
-      v43 = self;
+      selfCopy4 = self;
       v44 = 2048;
       v45 = v17;
       v46 = 2048;
@@ -151,7 +151,7 @@ LABEL_6:
   while (1)
   {
     v10 = [(NSMutableArray *)self->_pendingFrameReferences objectAtIndexedSubscript:v9];
-    v11 = [(ARImageBasedTechnique *)self context:v6 matchesFrameReference:v10];
+    v11 = [(ARImageBasedTechnique *)self context:contextCopy matchesFrameReference:v10];
 
     if (v11)
     {
@@ -175,7 +175,7 @@ LABEL_6:
       v40 = 138543874;
       v41 = v33;
       v42 = 2048;
-      v43 = self;
+      selfCopy4 = self;
       v44 = 2048;
       v45 = v9;
       _os_log_impl(&dword_1C241C000, v31, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropping %ld received result datas - newer data available", &v40, 0x20u);
@@ -201,7 +201,7 @@ LABEL_6:
       v40 = 138544130;
       v41 = v36;
       v42 = 2048;
-      v43 = self;
+      selfCopy4 = self;
       v44 = 2048;
       v45 = v37;
       v46 = 2112;
@@ -213,25 +213,25 @@ LABEL_6:
   }
 
   dispatch_semaphore_signal(self->_pendingRequestsSemaphore);
-  [(ARImageBasedTechnique *)self prepareResultData:v30 forContext:v6];
-  v39 = [(ARTechnique *)self delegate];
-  [v39 technique:self didOutputResultData:v30 timestamp:v6 context:a3];
+  [(ARImageBasedTechnique *)self prepareResultData:v30 forContext:contextCopy];
+  delegate = [(ARTechnique *)self delegate];
+  [delegate technique:self didOutputResultData:v30 timestamp:contextCopy context:timestamp];
 
 LABEL_15:
 }
 
-- (void)pushResultData:(id)a3 forFrameReference:(id)a4
+- (void)pushResultData:(id)data forFrameReference:(id)reference
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  referenceCopy = reference;
   dispatch_semaphore_wait(self->_pendingRequestsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v8 = [(NSMutableArray *)self->_pendingRequestContexts count];
   if (!v8)
   {
 LABEL_9:
-    [(NSMutableArray *)self->_pendingResultData addObject:v6];
-    [(NSMutableArray *)self->_pendingFrameReferences addObject:v7];
+    [(NSMutableArray *)self->_pendingResultData addObject:dataCopy];
+    [(NSMutableArray *)self->_pendingFrameReferences addObject:referenceCopy];
     dispatch_semaphore_signal(self->_pendingRequestsSemaphore);
     goto LABEL_10;
   }
@@ -249,9 +249,9 @@ LABEL_6:
       v27 = 138544386;
       v28 = v14;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2112;
-      v32 = v6;
+      v32 = dataCopy;
       v33 = 2048;
       v34 = v9;
       v35 = 2112;
@@ -266,7 +266,7 @@ LABEL_6:
   while (1)
   {
     v11 = [(NSMutableArray *)self->_pendingRequestContexts objectAtIndexedSubscript:v10];
-    if ([(ARImageBasedTechnique *)self context:v11 matchesFrameReference:v7])
+    if ([(ARImageBasedTechnique *)self context:v11 matchesFrameReference:referenceCopy])
     {
       break;
     }
@@ -288,7 +288,7 @@ LABEL_6:
       v27 = 138544130;
       v28 = v18;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2048;
       v32 = v10;
       v33 = 2112;
@@ -315,7 +315,7 @@ LABEL_6:
       v27 = 138544130;
       v28 = v22;
       v29 = 2048;
-      v30 = self;
+      selfCopy3 = self;
       v31 = 2048;
       v32 = v23;
       v33 = 2112;
@@ -328,73 +328,73 @@ LABEL_6:
   }
 
   dispatch_semaphore_signal(self->_pendingRequestsSemaphore);
-  [(ARImageBasedTechnique *)self prepareResultData:v6 forContext:v11];
-  v25 = [(ARTechnique *)self delegate];
-  v26 = [v11 imageData];
-  [v26 timestamp];
-  [v25 technique:self didOutputResultData:v6 timestamp:v11 context:?];
+  [(ARImageBasedTechnique *)self prepareResultData:dataCopy forContext:v11];
+  delegate = [(ARTechnique *)self delegate];
+  imageData = [v11 imageData];
+  [imageData timestamp];
+  [delegate technique:self didOutputResultData:dataCopy timestamp:v11 context:?];
 
 LABEL_10:
 }
 
-- (void)pushResultData:(id)a3 forFrame:(__CVBuffer *)a4
+- (void)pushResultData:(id)data forFrame:(__CVBuffer *)frame
 {
-  v6 = a3;
-  v7 = [(ARTechnique *)self traceKey];
+  dataCopy = data;
+  traceKey = [(ARTechnique *)self traceKey];
   if (ARTechnique_Image_to_Result_FrameEnd_onceToken != -1)
   {
     [ARImageBasedTechnique pushResultData:forFrame:];
   }
 
-  v8 = [ARTechnique_Image_to_Result_FrameEnd_keyToCode objectForKeyedSubscript:v7];
+  v8 = [ARTechnique_Image_to_Result_FrameEnd_keyToCode objectForKeyedSubscript:traceKey];
   [v8 intValue];
 
   kdebug_trace();
-  v9 = [MEMORY[0x1E696B098] valueWithPointer:a4];
-  [(ARImageBasedTechnique *)self pushResultData:v6 forFrameReference:v9];
+  v9 = [MEMORY[0x1E696B098] valueWithPointer:frame];
+  [(ARImageBasedTechnique *)self pushResultData:dataCopy forFrameReference:v9];
 }
 
-- (void)pushResultData:(id)a3 forTimestamp:(double)a4
+- (void)pushResultData:(id)data forTimestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = [(ARTechnique *)self traceKey];
+  dataCopy = data;
+  traceKey = [(ARTechnique *)self traceKey];
   if (ARTechnique_Image_to_Result_TimestampEnd_onceToken != -1)
   {
     [ARImageBasedTechnique pushResultData:forTimestamp:];
   }
 
-  v8 = [ARTechnique_Image_to_Result_TimestampEnd_keyToCode objectForKeyedSubscript:v7];
+  v8 = [ARTechnique_Image_to_Result_TimestampEnd_keyToCode objectForKeyedSubscript:traceKey];
   [v8 intValue];
 
   kdebug_trace();
-  v9 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [(ARImageBasedTechnique *)self pushResultData:v6 forFrameReference:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
+  [(ARImageBasedTechnique *)self pushResultData:dataCopy forFrameReference:v9];
 }
 
-- (BOOL)context:(id)a3 matchesFrameReference:(id)a4
+- (BOOL)context:(id)context matchesFrameReference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 doubleValue];
+    [referenceCopy doubleValue];
     v8 = v7;
-    v9 = [v5 imageData];
-    [v9 timestamp];
+    imageData = [contextCopy imageData];
+    [imageData timestamp];
     v11 = v8 == v10;
   }
 
   else
   {
-    if (![v6 pointerValue])
+    if (![referenceCopy pointerValue])
     {
       v11 = 1;
       goto LABEL_6;
     }
 
-    v9 = [v5 imageData];
-    v11 = [v9 matchesPixelBufferPointerRecursively:{objc_msgSend(v6, "pointerValue")}];
+    imageData = [contextCopy imageData];
+    v11 = [imageData matchesPixelBufferPointerRecursively:{objc_msgSend(referenceCopy, "pointerValue")}];
   }
 
 LABEL_6:
@@ -407,8 +407,8 @@ LABEL_6:
   v3 = MEMORY[0x1E696AD60];
   v27.receiver = self;
   v27.super_class = ARImageBasedTechnique;
-  v4 = [(ARTechnique *)&v27 _fullDescription];
-  v5 = [v3 stringWithFormat:@"%@\n", v4];
+  _fullDescription = [(ARTechnique *)&v27 _fullDescription];
+  v5 = [v3 stringWithFormat:@"%@\n", _fullDescription];
 
   if ([(NSMutableArray *)self->_pendingResultData count])
   {
@@ -487,16 +487,16 @@ LABEL_6:
   return v5;
 }
 
-- (int64_t)getDeviceOrientationFromImageData:(id)a3
+- (int64_t)getDeviceOrientationFromImageData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 deviceOrientation];
-  if ((v4 - 1) >= 4)
+  dataCopy = data;
+  deviceOrientation = [dataCopy deviceOrientation];
+  if ((deviceOrientation - 1) >= 4)
   {
     [ARImageBasedTechnique getDeviceOrientationFromImageData:];
   }
 
-  v5 = v4;
+  v5 = deviceOrientation;
 
   return v5;
 }

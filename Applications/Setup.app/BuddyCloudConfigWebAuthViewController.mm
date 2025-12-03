@@ -1,84 +1,84 @@
 @interface BuddyCloudConfigWebAuthViewController
 - (BuddyCloudConfigWebAuthDelegate)delegate;
 - (id)_getEncodedMachineInfo;
-- (void)_evaluateAuthenticationChallenge:(id)a3 withCompletionHandler:(id)a4;
-- (void)_showFailureAlertWithTitle:(id)a3 andMessage:(id)a4;
+- (void)_evaluateAuthenticationChallenge:(id)challenge withCompletionHandler:(id)handler;
+- (void)_showFailureAlertWithTitle:(id)title andMessage:(id)message;
 - (void)cancelButtonTapped;
-- (void)download:(id)a3 decideDestinationUsingResponse:(id)a4 suggestedFilename:(id)a5 completionHandler:(id)a6;
-- (void)download:(id)a3 didFailWithError:(id)a4 resumeData:(id)a5;
-- (void)download:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)downloadDidFinish:(id)a3;
+- (void)download:(id)download decideDestinationUsingResponse:(id)response suggestedFilename:(id)filename completionHandler:(id)handler;
+- (void)download:(id)download didFailWithError:(id)error resumeData:(id)data;
+- (void)download:(id)download didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)downloadDidFinish:(id)finish;
 - (void)viewDidLoad;
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5;
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5;
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5;
-- (void)webView:(id)a3 navigationResponse:(id)a4 didBecomeDownload:(id)a5;
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler;
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error;
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler;
+- (void)webView:(id)view navigationResponse:(id)response didBecomeDownload:(id)download;
 @end
 
 @implementation BuddyCloudConfigWebAuthViewController
 
 - (void)viewDidLoad
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
   v21.receiver = self;
   v21.super_class = BuddyCloudConfigWebAuthViewController;
   [(BuddyCloudConfigWebAuthViewController *)&v21 viewDidLoad];
   v2 = [UIBarButtonItem alloc];
-  v3 = [v2 initWithBarButtonSystemItem:1 target:v23 action:"cancelButtonTapped"];
-  v4 = [(BuddyCloudConfigWebAuthViewController *)v23 navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  v3 = [v2 initWithBarButtonSystemItem:1 target:selfCopy action:"cancelButtonTapped"];
+  navigationItem = [(BuddyCloudConfigWebAuthViewController *)selfCopy navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v5 = +[NSBundle mainBundle];
   v6 = [(NSBundle *)v5 localizedStringForKey:@"REMOTE_MANAGEMENT_TITLE" value:&stru_10032F900 table:@"Localizable"];
-  [(BuddyCloudConfigWebAuthViewController *)v23 setTitle:v6];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy setTitle:v6];
 
   v20 = objc_opt_new();
   v7 = +[WKWebsiteDataStore nonPersistentDataStore];
   [v20 setWebsiteDataStore:v7];
 
-  v8 = [v20 preferences];
-  [v8 _setDiagnosticLoggingEnabled:1];
+  preferences = [v20 preferences];
+  [preferences _setDiagnosticLoggingEnabled:1];
 
   v19 = [[WKWebView alloc] initWithFrame:v20 configuration:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [(BuddyCloudConfigWebAuthViewController *)v23 setView:v19];
-  [(BuddyCloudConfigWebAuthViewController *)v23 setWebView:v19];
-  v9 = v23;
-  v10 = [(BuddyCloudConfigWebAuthViewController *)v23 webView];
-  [(WKWebView *)v10 setUIDelegate:v9];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy setView:v19];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy setWebView:v19];
+  v9 = selfCopy;
+  webView = [(BuddyCloudConfigWebAuthViewController *)selfCopy webView];
+  [(WKWebView *)webView setUIDelegate:v9];
 
-  v11 = v23;
-  v12 = [(BuddyCloudConfigWebAuthViewController *)v23 webView];
-  [(WKWebView *)v12 setNavigationDelegate:v11];
+  v11 = selfCopy;
+  webView2 = [(BuddyCloudConfigWebAuthViewController *)selfCopy webView];
+  [(WKWebView *)webView2 setNavigationDelegate:v11];
 
   v13 = [NSMutableURLRequest alloc];
-  v14 = [(BuddyCloudConfigWebAuthViewController *)v23 webURL];
-  location = [v13 initWithURL:v14];
+  webURL = [(BuddyCloudConfigWebAuthViewController *)selfCopy webURL];
+  location = [v13 initWithURL:webURL];
 
-  v15 = [(BuddyCloudConfigWebAuthViewController *)v23 _getEncodedMachineInfo];
-  [location setValue:v15 forHTTPHeaderField:@"x-apple-aspen-deviceinfo"];
+  _getEncodedMachineInfo = [(BuddyCloudConfigWebAuthViewController *)selfCopy _getEncodedMachineInfo];
+  [location setValue:_getEncodedMachineInfo forHTTPHeaderField:@"x-apple-aspen-deviceinfo"];
 
-  v16 = [(BuddyCloudConfigWebAuthViewController *)v23 webView];
-  v17 = [(WKWebView *)v16 loadRequest:location];
+  webView3 = [(BuddyCloudConfigWebAuthViewController *)selfCopy webView];
+  v17 = [(WKWebView *)webView3 loadRequest:location];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(&v20, 0);
 }
 
-- (void)webView:(id)a3 didFailProvisionalNavigation:(id)a4 withError:(id)a5
+- (void)webView:(id)view didFailProvisionalNavigation:(id)navigation withError:(id)error
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, navigation);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
-  v7 = [v26 domain];
+  objc_storeStrong(&v26, error);
+  domain = [v26 domain];
   v8 = 0;
-  if ([v7 isEqualToString:WebKitErrorDomain])
+  if ([domain isEqualToString:WebKitErrorDomain])
   {
     v8 = [v26 code] == 102;
   }
@@ -104,33 +104,33 @@
     v11 = +[NSBundle mainBundle];
     v21 = [(NSBundle *)v11 localizedStringForKey:@"REMOTE_MANAGEMENT_FAILED_TO_LOAD_PAGE" value:&stru_10032F900 table:@"Localizable"];
 
-    v12 = [v26 domain];
+    domain2 = [v26 domain];
     v13 = 0;
-    if ([v12 isEqualToString:NSURLErrorDomain])
+    if ([domain2 isEqualToString:NSURLErrorDomain])
     {
       v13 = [v26 code] == -1003;
     }
 
     if (v13)
     {
-      v14 = [v26 userInfo];
-      v20 = [v14 objectForKeyedSubscript:NSURLErrorFailingURLErrorKey];
+      userInfo = [v26 userInfo];
+      v20 = [userInfo objectForKeyedSubscript:NSURLErrorFailingURLErrorKey];
 
-      v19 = [v20 host];
+      host = [v20 host];
       v15 = +[NSBundle mainBundle];
       v16 = [(NSBundle *)v15 localizedStringForKey:@"REMOTE_MANAGEMENT_UNABLE_TO_RESOLVE_HOST" value:&stru_10032F900 table:@"Localizable"];
-      v18 = [NSString localizedStringWithFormat:v16, v19];
+      v18 = [NSString localizedStringWithFormat:v16, host];
 
-      [(BuddyCloudConfigWebAuthViewController *)v29 _showFailureAlertWithTitle:v21 andMessage:v18];
+      [(BuddyCloudConfigWebAuthViewController *)selfCopy _showFailureAlertWithTitle:v21 andMessage:v18];
       objc_storeStrong(&v18, 0);
-      objc_storeStrong(&v19, 0);
+      objc_storeStrong(&host, 0);
       objc_storeStrong(&v20, 0);
     }
 
     else
     {
       v17 = [v26 description];
-      [(BuddyCloudConfigWebAuthViewController *)v29 _showFailureAlertWithTitle:v21 andMessage:v17];
+      [(BuddyCloudConfigWebAuthViewController *)selfCopy _showFailureAlertWithTitle:v21 andMessage:v17];
       objc_storeStrong(&v17, 0);
     }
 
@@ -143,29 +143,29 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)webView:(id)a3 decidePolicyForNavigationResponse:(id)a4 decisionHandler:(id)a5
+- (void)webView:(id)view decidePolicyForNavigationResponse:(id)response decisionHandler:(id)handler
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, response);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
-  v31 = [v33 response];
-  v7 = [v31 MIMEType];
-  LOBYTE(a4) = [v7 isEqualToString:@"application/x-apple-aspen-config"];
+  objc_storeStrong(&v32, handler);
+  response = [v33 response];
+  mIMEType = [response MIMEType];
+  LOBYTE(response) = [mIMEType isEqualToString:@"application/x-apple-aspen-config"];
 
-  if (a4)
+  if (response)
   {
-    v8 = [(BuddyCloudConfigWebAuthViewController *)v35 webURL];
-    v30 = [(NSURL *)v8 host];
+    webURL = [(BuddyCloudConfigWebAuthViewController *)selfCopy webURL];
+    host = [(NSURL *)webURL host];
 
-    v9 = [v31 URL];
-    v29 = [v9 host];
+    v9 = [response URL];
+    host2 = [v9 host];
 
-    if ([v30 caseInsensitiveCompare:v29])
+    if ([host caseInsensitiveCompare:host2])
     {
       oslog = _BYLoggingFacility();
       v27 = 16;
@@ -188,19 +188,19 @@
       v25 = 1;
     }
 
-    objc_storeStrong(&v29, 0);
-    objc_storeStrong(&v30, 0);
+    objc_storeStrong(&host2, 0);
+    objc_storeStrong(&host, 0);
   }
 
   else
   {
     v23 = 0;
     v12 = 0;
-    if ([v31 statusCode] == 403)
+    if ([response statusCode] == 403)
     {
-      v24 = [v31 MIMEType];
+      mIMEType2 = [response MIMEType];
       v23 = 1;
-      v12 = [v24 isEqualToString:DMCHTTPContentTypeApplicationJSON];
+      v12 = [mIMEType2 isEqualToString:DMCHTTPContentTypeApplicationJSON];
     }
 
     if (v23)
@@ -209,12 +209,12 @@
 
     if (v12)
     {
-      [(BuddyCloudConfigWebAuthViewController *)v35 setWillDownloadError:1];
+      [(BuddyCloudConfigWebAuthViewController *)selfCopy setWillDownloadError:1];
       (*(v32 + 2))(v32, 2);
       v25 = 1;
     }
 
-    else if ([v31 statusCode] == 404)
+    else if ([response statusCode] == 404)
     {
       v22 = _BYLoggingFacility();
       v21 = 16;
@@ -249,22 +249,22 @@
     }
   }
 
-  objc_storeStrong(&v31, 0);
+  objc_storeStrong(&response, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v33, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)webView:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)webView:(id)view didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, challenge);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, handler);
   oslog = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -276,22 +276,22 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyCloudConfigWebAuthViewController *)v15 _evaluateAuthenticationChallenge:v13 withCompletionHandler:v12];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy _evaluateAuthenticationChallenge:v13 withCompletionHandler:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)webView:(id)a3 navigationResponse:(id)a4 didBecomeDownload:(id)a5
+- (void)webView:(id)view navigationResponse:(id)response didBecomeDownload:(id)download
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, response);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, download);
   oslog = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -303,24 +303,24 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [v12 setDelegate:v15];
+  [v12 setDelegate:selfCopy];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)download:(id)a3 decideDestinationUsingResponse:(id)a4 suggestedFilename:(id)a5 completionHandler:(id)a6
+- (void)download:(id)download decideDestinationUsingResponse:(id)response suggestedFilename:(id)filename completionHandler:(id)handler
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, download);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, response);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, filename);
   v16 = 0;
-  objc_storeStrong(&v16, a6);
+  objc_storeStrong(&v16, handler);
   oslog = _BYLoggingFacility();
   v14 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -333,7 +333,7 @@
 
   objc_storeStrong(&oslog, 0);
   v12 = [NSString stringWithFormat:@"/tmp/%@", v17];
-  [(BuddyCloudConfigWebAuthViewController *)v20 setDownloadDestination:v12];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy setDownloadDestination:v12];
   v11 = [NSURL fileURLWithPath:v12];
   (*(v16 + 2))(v16, v11);
   objc_storeStrong(&v11, 0);
@@ -344,16 +344,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)download:(id)a3 didReceiveAuthenticationChallenge:(id)a4 completionHandler:(id)a5
+- (void)download:(id)download didReceiveAuthenticationChallenge:(id)challenge completionHandler:(id)handler
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, download);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, challenge);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, handler);
   oslog = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -365,18 +365,18 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BuddyCloudConfigWebAuthViewController *)v15 _evaluateAuthenticationChallenge:v13 withCompletionHandler:v12];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy _evaluateAuthenticationChallenge:v13 withCompletionHandler:v12];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)downloadDidFinish:(id)a3
+- (void)downloadDidFinish:(id)finish
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, finish);
   v35 = _BYLoggingFacility();
   v34 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -388,21 +388,21 @@
   }
 
   objc_storeStrong(&v35, 0);
-  v5 = [(BuddyCloudConfigWebAuthViewController *)v37 webView];
-  [(WKWebView *)v5 stopLoading];
+  webView = [(BuddyCloudConfigWebAuthViewController *)selfCopy webView];
+  [(WKWebView *)webView stopLoading];
 
-  v6 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadDestination];
-  v7 = [NSData dataWithContentsOfFile:v6];
-  [(BuddyCloudConfigWebAuthViewController *)v37 setDownloadedResponseData:v7];
+  downloadDestination = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadDestination];
+  v7 = [NSData dataWithContentsOfFile:downloadDestination];
+  [(BuddyCloudConfigWebAuthViewController *)selfCopy setDownloadedResponseData:v7];
 
-  if ([(BuddyCloudConfigWebAuthViewController *)v37 willDownloadError])
+  if ([(BuddyCloudConfigWebAuthViewController *)selfCopy willDownloadError])
   {
     oslog = _BYLoggingFacility();
     v31 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadedResponseData];
-      v30 = [NSString stringWithFormat:@"%lu", [(NSData *)v8 length]];
+      downloadedResponseData = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadedResponseData];
+      v30 = [NSString stringWithFormat:@"%lu", [(NSData *)downloadedResponseData length]];
       sub_100071CBC(v40, v30);
       _os_log_impl(&_mh_execute_header, oslog, v31, "we downloaded an error with data length of %{public}@!", v40, 0xCu);
 
@@ -410,8 +410,8 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v9 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadedResponseData];
-    v29 = [DMCHTTPRequestor jsonDictFromResponse:v9];
+    downloadedResponseData2 = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadedResponseData];
+    v29 = [DMCHTTPRequestor jsonDictFromResponse:downloadedResponseData2];
 
     v28 = 0;
     obj = 0;
@@ -432,9 +432,9 @@
 
         else if (v28)
         {
-          v24 = [v28 domain];
+          domain = [v28 domain];
           v23 = 1;
-          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v24, [v28 code]);
+          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v28 code]);
           v22 = v11;
           v21 = 1;
         }
@@ -458,8 +458,8 @@
       objc_storeStrong(&v26, 0);
     }
 
-    v12 = [(BuddyCloudConfigWebAuthViewController *)v37 delegate];
-    [(BuddyCloudConfigWebAuthDelegate *)v12 webAuthCanceled:v28];
+    delegate = [(BuddyCloudConfigWebAuthViewController *)selfCopy delegate];
+    [(BuddyCloudConfigWebAuthDelegate *)delegate webAuthCanceled:v28];
 
     objc_storeStrong(&v28, 0);
     objc_storeStrong(&v29, 0);
@@ -471,8 +471,8 @@
     v19 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadedResponseData];
-      v18 = [NSString stringWithFormat:@"%lu", [(NSData *)v13 length]];
+      downloadedResponseData3 = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadedResponseData];
+      v18 = [NSString stringWithFormat:@"%lu", [(NSData *)downloadedResponseData3 length]];
       sub_100071CBC(v38, v18);
       _os_log_impl(&_mh_execute_header, v20, v19, "we downloaded a profile with data length of %{public}@!", v38, 0xCu);
 
@@ -481,27 +481,27 @@
 
     objc_storeStrong(&v20, 0);
     v14 = +[NSFileManager defaultManager];
-    v15 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadDestination];
-    [(NSFileManager *)v14 removeItemAtPath:v15 error:0];
+    downloadDestination2 = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadDestination];
+    [(NSFileManager *)v14 removeItemAtPath:downloadDestination2 error:0];
 
-    v16 = [(BuddyCloudConfigWebAuthViewController *)v37 delegate];
-    v17 = [(BuddyCloudConfigWebAuthViewController *)v37 downloadedResponseData];
-    [(BuddyCloudConfigWebAuthDelegate *)v16 recievedProfile:v17];
+    delegate2 = [(BuddyCloudConfigWebAuthViewController *)selfCopy delegate];
+    downloadedResponseData4 = [(BuddyCloudConfigWebAuthViewController *)selfCopy downloadedResponseData];
+    [(BuddyCloudConfigWebAuthDelegate *)delegate2 recievedProfile:downloadedResponseData4];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)download:(id)a3 didFailWithError:(id)a4 resumeData:(id)a5
+- (void)download:(id)download didFailWithError:(id)error resumeData:(id)data
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, download);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
+  objc_storeStrong(&v11, data);
   oslog = _BYLoggingFacility();
   v9 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -512,8 +512,8 @@
 
   objc_storeStrong(&oslog, 0);
   v8 = [NSError errorWithDomain:@"BYCloudConfigRetreiveProfileFromWebErrorDomain" code:-2 userInfo:0];
-  v7 = [(BuddyCloudConfigWebAuthViewController *)v14 delegate];
-  [(BuddyCloudConfigWebAuthDelegate *)v7 webAuthCanceled:v8];
+  delegate = [(BuddyCloudConfigWebAuthViewController *)selfCopy delegate];
+  [(BuddyCloudConfigWebAuthDelegate *)delegate webAuthCanceled:v8];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v11, 0);
@@ -525,8 +525,8 @@
 {
   location[2] = self;
   location[1] = a2;
-  v2 = [(BuddyCloudConfigWebAuthViewController *)self machineInfo];
-  location[0] = [(NSData *)v2 base64EncodedStringWithOptions:0];
+  machineInfo = [(BuddyCloudConfigWebAuthViewController *)self machineInfo];
+  location[0] = [(NSData *)machineInfo base64EncodedStringWithOptions:0];
 
   v3 = location[0];
   objc_storeStrong(location, 0);
@@ -535,15 +535,15 @@
 
 - (void)cancelButtonTapped
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyCloudConfigWebAuthViewController *)self delegate];
+  delegate = [(BuddyCloudConfigWebAuthViewController *)self delegate];
 
-  if (v2)
+  if (delegate)
   {
     location[0] = [NSError errorWithDomain:@"BYCloudConfigRetreiveProfileFromWebErrorDomain" code:-1 userInfo:0];
-    v3 = [(BuddyCloudConfigWebAuthViewController *)v10 delegate];
-    [(BuddyCloudConfigWebAuthDelegate *)v3 webAuthCanceled:location[0]];
+    delegate2 = [(BuddyCloudConfigWebAuthViewController *)selfCopy delegate];
+    [(BuddyCloudConfigWebAuthDelegate *)delegate2 webAuthCanceled:location[0]];
 
     objc_storeStrong(location, 0);
   }
@@ -564,14 +564,14 @@
   }
 }
 
-- (void)_showFailureAlertWithTitle:(id)a3 andMessage:(id)a4
+- (void)_showFailureAlertWithTitle:(id)title andMessage:(id)message
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, title);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, message);
   oslog = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -589,49 +589,49 @@
   v10 = 3221225472;
   v11 = sub_10014D378;
   v12 = &unk_10032B598;
-  v13 = v19;
+  v13 = selfCopy;
   v8 = [UIAlertAction actionWithTitle:v7 style:1 handler:&v9];
   [v5 addAction:{v8, v9, v10, v11, v12}];
 
-  [v19 presentViewController:v14 animated:1 completion:0];
+  [selfCopy presentViewController:v14 animated:1 completion:0];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_evaluateAuthenticationChallenge:(id)a3 withCompletionHandler:(id)a4
+- (void)_evaluateAuthenticationChallenge:(id)challenge withCompletionHandler:(id)handler
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, challenge);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, handler);
   v44 = 1;
   v43 = 0;
-  v5 = [location[0] protectionSpace];
-  v6 = [v5 authenticationMethod];
-  v7 = [v6 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  protectionSpace = [location[0] protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v7 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   if (v7)
   {
-    v42 = [location[0] protectionSpace];
-    v41 = [v42 host];
+    protectionSpace2 = [location[0] protectionSpace];
+    host = [protectionSpace2 host];
     oslog = _BYLoggingFacility();
     v39 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_10007B2CC(buf, v41, [(NSArray *)v47->_anchorCerts count]);
+      sub_10007B2CC(buf, host, [(NSArray *)selfCopy->_anchorCerts count]);
       _os_log_impl(&_mh_execute_header, oslog, v39, "Evaluating trust for %@ using %lu anchor certs", buf, 0x16u);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v47->_anchorCerts)
+    if (selfCopy->_anchorCerts)
     {
-      v8 = [location[0] protectionSpace];
-      v9 = [v8 serverTrust];
-      v10 = SecTrustSetAnchorCertificates(v9, v47->_anchorCerts);
+      protectionSpace3 = [location[0] protectionSpace];
+      serverTrust = [protectionSpace3 serverTrust];
+      v10 = SecTrustSetAnchorCertificates(serverTrust, selfCopy->_anchorCerts);
 
       v38 = v10;
       if (v10)
@@ -649,21 +649,21 @@
     }
 
     error = 0;
-    v11 = [location[0] protectionSpace];
-    v12 = SecTrustEvaluateWithError([v11 serverTrust], &error);
+    protectionSpace4 = [location[0] protectionSpace];
+    v12 = SecTrustEvaluateWithError([protectionSpace4 serverTrust], &error);
 
     v34 = v12;
     if (v12)
     {
       result = kSecTrustResultInvalid;
-      v13 = [location[0] protectionSpace];
-      TrustResult = SecTrustGetTrustResult([v13 serverTrust], &result);
+      protectionSpace5 = [location[0] protectionSpace];
+      TrustResult = SecTrustGetTrustResult([protectionSpace5 serverTrust], &result);
 
       v30 = TrustResult;
       if (!TrustResult && (result == kSecTrustResultProceed || result == kSecTrustResultUnspecified))
       {
-        v15 = [location[0] protectionSpace];
-        v16 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v15 serverTrust]);
+        protectionSpace6 = [location[0] protectionSpace];
+        v16 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace6 serverTrust]);
         v17 = v43;
         v43 = v16;
 
@@ -714,8 +714,8 @@
       }
     }
 
-    objc_storeStrong(&v41, 0);
-    objc_storeStrong(&v42, 0);
+    objc_storeStrong(&host, 0);
+    objc_storeStrong(&protectionSpace2, 0);
   }
 
   else

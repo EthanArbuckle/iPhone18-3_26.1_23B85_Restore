@@ -1,7 +1,7 @@
 @interface IFTSchemaIFTCandidatePromptStatus
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTCandidatePromptStatus)initWithDictionary:(id)a3;
-- (IFTSchemaIFTCandidatePromptStatus)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTCandidatePromptStatus)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTCandidatePromptStatus)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
@@ -10,37 +10,37 @@
 - (void)deleteConfirmed;
 - (void)deleteNotPrompted;
 - (void)deletePicked;
-- (void)setConfirmed:(BOOL)a3;
-- (void)setNotPrompted:(BOOL)a3;
-- (void)setPicked:(int64_t)a3;
-- (void)writeTo:(id)a3;
+- (void)setConfirmed:(BOOL)confirmed;
+- (void)setNotPrompted:(BOOL)prompted;
+- (void)setPicked:(int64_t)picked;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTCandidatePromptStatus
 
-- (IFTSchemaIFTCandidatePromptStatus)initWithDictionary:(id)a3
+- (IFTSchemaIFTCandidatePromptStatus)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTCandidatePromptStatus;
   v5 = [(IFTSchemaIFTCandidatePromptStatus *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"notPrompted"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"notPrompted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTCandidatePromptStatus setNotPrompted:](v5, "setNotPrompted:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"confirmed"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"confirmed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTCandidatePromptStatus setConfirmed:](v5, "setConfirmed:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"picked"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"picked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTCandidatePromptStatus)initWithJSON:(id)a3
+- (IFTSchemaIFTCandidatePromptStatus)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTCandidatePromptStatus *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTCandidatePromptStatus *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTCandidatePromptStatus *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,12 +89,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
   if (whichOneof_Candidatepromptstatus == 2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTCandidatePromptStatus confirmed](self, "confirmed")}];
-    [v3 setObject:v5 forKeyedSubscript:@"confirmed"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confirmed"];
 
     whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
   }
@@ -102,7 +102,7 @@
   if (whichOneof_Candidatepromptstatus == 1)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTCandidatePromptStatus notPrompted](self, "notPrompted")}];
-    [v3 setObject:v6 forKeyedSubscript:@"notPrompted"];
+    [dictionary setObject:v6 forKeyedSubscript:@"notPrompted"];
 
     whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
   }
@@ -110,12 +110,12 @@
   if (whichOneof_Candidatepromptstatus == 3)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[IFTSchemaIFTCandidatePromptStatus picked](self, "picked")}];
-    [v3 setObject:v7 forKeyedSubscript:@"picked"];
+    [dictionary setObject:v7 forKeyedSubscript:@"picked"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,13 +136,13 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus, whichOneof_Candidatepromptstatus == objc_msgSend(v4, "whichOneof_Candidatepromptstatus")) && (notPrompted = self->_notPrompted, notPrompted == objc_msgSend(v4, "notPrompted")) && (confirmed = self->_confirmed, confirmed == objc_msgSend(v4, "confirmed")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus, whichOneof_Candidatepromptstatus == objc_msgSend(equalCopy, "whichOneof_Candidatepromptstatus")) && (notPrompted = self->_notPrompted, notPrompted == objc_msgSend(equalCopy, "notPrompted")) && (confirmed = self->_confirmed, confirmed == objc_msgSend(equalCopy, "confirmed")))
   {
     picked = self->_picked;
-    v9 = picked == [v4 picked];
+    v9 = picked == [equalCopy picked];
   }
 
   else
@@ -153,29 +153,29 @@
   return v9;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
-  v6 = v4;
+  v6 = toCopy;
   if (whichOneof_Candidatepromptstatus == 1)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
   }
 
   if (whichOneof_Candidatepromptstatus == 2)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     whichOneof_Candidatepromptstatus = self->_whichOneof_Candidatepromptstatus;
   }
 
   if (whichOneof_Candidatepromptstatus == 3)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -201,12 +201,12 @@
   }
 }
 
-- (void)setPicked:(int64_t)a3
+- (void)setPicked:(int64_t)picked
 {
   self->_notPrompted = 0;
   self->_confirmed = 0;
   self->_whichOneof_Candidatepromptstatus = 3;
-  self->_picked = a3;
+  self->_picked = picked;
 }
 
 - (void)deleteConfirmed
@@ -218,12 +218,12 @@
   }
 }
 
-- (void)setConfirmed:(BOOL)a3
+- (void)setConfirmed:(BOOL)confirmed
 {
   self->_notPrompted = 0;
   self->_picked = 0;
   self->_whichOneof_Candidatepromptstatus = 2;
-  self->_confirmed = a3;
+  self->_confirmed = confirmed;
 }
 
 - (void)deleteNotPrompted
@@ -235,12 +235,12 @@
   }
 }
 
-- (void)setNotPrompted:(BOOL)a3
+- (void)setNotPrompted:(BOOL)prompted
 {
   self->_confirmed = 0;
   self->_picked = 0;
   self->_whichOneof_Candidatepromptstatus = 1;
-  self->_notPrompted = a3;
+  self->_notPrompted = prompted;
 }
 
 - (id)suppressMessageUnderConditions

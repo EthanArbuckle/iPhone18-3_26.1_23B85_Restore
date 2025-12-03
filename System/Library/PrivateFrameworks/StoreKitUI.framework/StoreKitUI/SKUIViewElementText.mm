@@ -1,16 +1,16 @@
 @interface SKUIViewElementText
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4;
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 style:(id)a5;
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5;
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5 style:(id)a6;
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color;
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color style:(id)style;
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment;
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment style:(id)style;
 @end
 
 @implementation SKUIViewElementText
 
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  fontCopy = font;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,15 +23,15 @@
     }
   }
 
-  v16 = [(SKUIViewElementText *)self attributedStringWithDefaultFont:v6 foregroundColor:v7 textAlignment:0];
+  v16 = [(SKUIViewElementText *)self attributedStringWithDefaultFont:fontCopy foregroundColor:colorCopy textAlignment:0];
 
   return v16;
 }
 
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment
 {
-  v8 = a3;
-  v9 = a4;
+  fontCopy = font;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -44,16 +44,16 @@
     }
   }
 
-  v18 = [(SKUIViewElementText *)self attributedStringWithDefaultFont:v8 foregroundColor:v9 textAlignment:a5 style:0];
+  v18 = [(SKUIViewElementText *)self attributedStringWithDefaultFont:fontCopy foregroundColor:colorCopy textAlignment:alignment style:0];
 
   return v18;
 }
 
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 style:(id)a5
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color style:(id)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fontCopy = font;
+  colorCopy = color;
+  styleCopy = style;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -66,16 +66,16 @@
     }
   }
 
-  v19 = [(IKTextParser *)self attributedStringWithFont:v8 foregroundColor:v9 textAlignment:0 style:v10];
+  v19 = [(IKTextParser *)self attributedStringWithFont:fontCopy foregroundColor:colorCopy textAlignment:0 style:styleCopy];
 
   return v19;
 }
 
-- (id)attributedStringWithDefaultFont:(id)a3 foregroundColor:(id)a4 textAlignment:(int64_t)a5 style:(id)a6
+- (id)attributedStringWithDefaultFont:(id)font foregroundColor:(id)color textAlignment:(int64_t)alignment style:(id)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  fontCopy = font;
+  colorCopy = color;
+  styleCopy = style;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -88,7 +88,7 @@
     }
   }
 
-  v21 = [(IKTextParser *)self attributedStringWithFont:v10 foregroundColor:v11 textAlignment:a5 style:v12];
+  v21 = [(IKTextParser *)self attributedStringWithFont:fontCopy foregroundColor:colorCopy textAlignment:alignment style:styleCopy];
 
   return v21;
 }

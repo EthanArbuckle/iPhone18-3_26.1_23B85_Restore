@@ -1,65 +1,65 @@
 @interface _CNCombineLatestObservable
-- (_CNCombineLatestObservable)initWithObservables:(id)a3;
-- (_CNCombineLatestObservable)initWithObservables:(id)a3 resultScheduler:(id)a4 schedulerProvider:(id)a5;
-- (id)subscribe:(id)a3;
-- (void)observableAtIndex:(unint64_t)a3 didFailWithError:(id)a4 forObserver:(id)a5;
-- (void)observableAtIndex:(unint64_t)a3 didReceiveResult:(id)a4 forObserver:(id)a5;
-- (void)observableAtIndexDidComplete:(unint64_t)a3 forObserver:(id)a4;
-- (void)performWithResourceLock:(id)a3;
+- (_CNCombineLatestObservable)initWithObservables:(id)observables;
+- (_CNCombineLatestObservable)initWithObservables:(id)observables resultScheduler:(id)scheduler schedulerProvider:(id)provider;
+- (id)subscribe:(id)subscribe;
+- (void)observableAtIndex:(unint64_t)index didFailWithError:(id)error forObserver:(id)observer;
+- (void)observableAtIndex:(unint64_t)index didReceiveResult:(id)result forObserver:(id)observer;
+- (void)observableAtIndexDidComplete:(unint64_t)complete forObserver:(id)observer;
+- (void)performWithResourceLock:(id)lock;
 @end
 
 @implementation _CNCombineLatestObservable
 
-- (_CNCombineLatestObservable)initWithObservables:(id)a3
+- (_CNCombineLatestObservable)initWithObservables:(id)observables
 {
-  v4 = a3;
+  observablesCopy = observables;
   v5 = +[CNSchedulerProvider defaultProvider];
-  v6 = [(_CNCombineLatestObservable *)self initWithObservables:v4 resultScheduler:0 schedulerProvider:v5];
+  v6 = [(_CNCombineLatestObservable *)self initWithObservables:observablesCopy resultScheduler:0 schedulerProvider:v5];
 
   return v6;
 }
 
-- (_CNCombineLatestObservable)initWithObservables:(id)a3 resultScheduler:(id)a4 schedulerProvider:(id)a5
+- (_CNCombineLatestObservable)initWithObservables:(id)observables resultScheduler:(id)scheduler schedulerProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observablesCopy = observables;
+  schedulerCopy = scheduler;
+  providerCopy = provider;
   v28.receiver = self;
   v28.super_class = _CNCombineLatestObservable;
   v11 = [(_CNCombineLatestObservable *)&v28 init];
   if (v11)
   {
-    v12 = [v8 _cn_map:&__block_literal_global_47];
+    v12 = [observablesCopy _cn_map:&__block_literal_global_47];
     v13 = [v12 copy];
     observables = v11->_observables;
     v11->_observables = v13;
 
-    v15 = [v8 _cn_map:&__block_literal_global_5_0];
+    v15 = [observablesCopy _cn_map:&__block_literal_global_5_0];
     v16 = [v15 mutableCopy];
     results = v11->_results;
     v11->_results = v16;
 
-    v18 = [v8 _cn_map:&__block_literal_global_8_1];
+    v18 = [observablesCopy _cn_map:&__block_literal_global_8_1];
     v19 = [v18 mutableCopy];
     tokens = v11->_tokens;
     v11->_tokens = v19;
 
-    v21 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(observablesCopy, "count")}];
     silentObservableIndexes = v11->_silentObservableIndexes;
     v11->_silentObservableIndexes = v21;
 
-    v23 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(v8, "count")}];
+    v23 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, objc_msgSend(observablesCopy, "count")}];
     activeObservableIndexes = v11->_activeObservableIndexes;
     v11->_activeObservableIndexes = v23;
 
-    v25 = v9;
-    if (!v9)
+    v25 = schedulerCopy;
+    if (!schedulerCopy)
     {
-      v25 = [v10 newSerialSchedulerWithName:@"com.apple.contacts.reactive.combine-latest.results"];
+      v25 = [providerCopy newSerialSchedulerWithName:@"com.apple.contacts.reactive.combine-latest.results"];
     }
 
     objc_storeStrong(&v11->_resultScheduler, v25);
-    if (!v9)
+    if (!schedulerCopy)
     {
     }
 
@@ -69,32 +69,32 @@
   return v11;
 }
 
-- (void)performWithResourceLock:(id)a3
+- (void)performWithResourceLock:(id)lock
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5[2]();
-  objc_sync_exit(v4);
+  lockCopy = lock;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lockCopy[2]();
+  objc_sync_exit(selfCopy);
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = objc_alloc_init(_CNCombineLatestObservableCancelationToken);
   objc_initWeak(&location, self);
-  v6 = [(_CNCombineLatestObservable *)self observables];
+  observables = [(_CNCombineLatestObservable *)self observables];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __40___CNCombineLatestObservable_subscribe___block_invoke;
   v12[3] = &unk_1E6ED7368;
   objc_copyWeak(&v16, &location);
-  v7 = v4;
+  v7 = subscribeCopy;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   v8 = v5;
   v15 = v8;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [observables enumerateObjectsUsingBlock:v12];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -110,51 +110,51 @@
   return v9;
 }
 
-- (void)observableAtIndex:(unint64_t)a3 didReceiveResult:(id)a4 forObserver:(id)a5
+- (void)observableAtIndex:(unint64_t)index didReceiveResult:(id)result forObserver:(id)observer
 {
-  v8 = a4;
-  v9 = a5;
+  resultCopy = result;
+  observerCopy = observer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77___CNCombineLatestObservable_observableAtIndex_didReceiveResult_forObserver___block_invoke;
   v12[3] = &unk_1E6ED6910;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = resultCopy;
+  v14 = observerCopy;
+  indexCopy = index;
+  v10 = observerCopy;
+  v11 = resultCopy;
   [(_CNCombineLatestObservable *)self performWithResourceLock:v12];
 }
 
-- (void)observableAtIndexDidComplete:(unint64_t)a3 forObserver:(id)a4
+- (void)observableAtIndexDidComplete:(unint64_t)complete forObserver:(id)observer
 {
-  v6 = a4;
+  observerCopy = observer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71___CNCombineLatestObservable_observableAtIndexDidComplete_forObserver___block_invoke;
   v8[3] = &unk_1E6ED7340;
-  v9 = v6;
-  v10 = a3;
+  v9 = observerCopy;
+  completeCopy = complete;
   v8[4] = self;
-  v7 = v6;
+  v7 = observerCopy;
   [(_CNCombineLatestObservable *)self performWithResourceLock:v8];
 }
 
-- (void)observableAtIndex:(unint64_t)a3 didFailWithError:(id)a4 forObserver:(id)a5
+- (void)observableAtIndex:(unint64_t)index didFailWithError:(id)error forObserver:(id)observer
 {
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  observerCopy = observer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77___CNCombineLatestObservable_observableAtIndex_didFailWithError_forObserver___block_invoke;
   v12[3] = &unk_1E6ED6910;
   v12[4] = self;
-  v13 = v9;
-  v14 = v8;
-  v15 = a3;
-  v10 = v8;
-  v11 = v9;
+  v13 = observerCopy;
+  v14 = errorCopy;
+  indexCopy = index;
+  v10 = errorCopy;
+  v11 = observerCopy;
   [(_CNCombineLatestObservable *)self performWithResourceLock:v12];
 }
 

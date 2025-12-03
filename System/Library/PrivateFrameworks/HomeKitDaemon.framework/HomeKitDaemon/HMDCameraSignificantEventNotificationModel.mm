@@ -1,22 +1,22 @@
 @interface HMDCameraSignificantEventNotificationModel
 + (id)hmbProperties;
 + (id)hmbQueries;
-+ (id)significantEventsBetweenDatesQueryWithIsAscending:(BOOL)a3;
-- (id)createClipSignificantEventWithCameraProfileUUID:(id)a3 faceClassification:(id)a4;
++ (id)significantEventsBetweenDatesQueryWithIsAscending:(BOOL)ascending;
+- (id)createClipSignificantEventWithCameraProfileUUID:(id)d faceClassification:(id)classification;
 @end
 
 @implementation HMDCameraSignificantEventNotificationModel
 
-+ (id)significantEventsBetweenDatesQueryWithIsAscending:(BOOL)a3
++ (id)significantEventsBetweenDatesQueryWithIsAscending:(BOOL)ascending
 {
-  v3 = a3;
+  ascendingCopy = ascending;
   if (significantEventsBetweenDatesQueryWithIsAscending__onceToken != -1)
   {
     dispatch_once(&significantEventsBetweenDatesQueryWithIsAscending__onceToken, &__block_literal_global_40_42492);
   }
 
   v4 = &significantEventsBetweenDatesQueryWithIsAscending__ascendingQuery;
-  if (!v3)
+  if (!ascendingCopy)
   {
     v4 = &significantEventsBetweenDatesQueryWithIsAscending__descendingQuery;
   }
@@ -59,9 +59,9 @@ void __96__HMDCameraSignificantEventNotificationModel_significantEventsBetweenDa
 + (id)hmbQueries
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [a1 significantEventsBetweenDatesQueryWithIsAscending:1];
+  v3 = [self significantEventsBetweenDatesQueryWithIsAscending:1];
   v8[0] = v3;
-  v4 = [a1 significantEventsBetweenDatesQueryWithIsAscending:0];
+  v4 = [self significantEventsBetweenDatesQueryWithIsAscending:0];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
@@ -133,61 +133,61 @@ void __59__HMDCameraSignificantEventNotificationModel_hmbProperties__block_invok
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createClipSignificantEventWithCameraProfileUUID:(id)a3 faceClassification:(id)a4
+- (id)createClipSignificantEventWithCameraProfileUUID:(id)d faceClassification:(id)classification
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v40 = a4;
-  if (!v6)
+  dCopy = d;
+  classificationCopy = classification;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = [(HMDCameraSignificantEventNotificationModel *)self significantEvent];
-  v8 = [(HMDCameraSignificantEventNotificationModel *)self dateOfOccurrence];
-  v9 = [(HMDCameraSignificantEventNotificationModel *)self confidenceLevel];
-  v10 = [(HMDCameraSignificantEventNotificationModel *)self timeOffsetWithinClip];
-  v11 = [(HMDCameraSignificantEventNotificationModel *)self associatedClip];
-  v12 = v11;
-  if (v7 && v8 && v9 && v10 && v11)
+  significantEvent = [(HMDCameraSignificantEventNotificationModel *)self significantEvent];
+  dateOfOccurrence = [(HMDCameraSignificantEventNotificationModel *)self dateOfOccurrence];
+  confidenceLevel = [(HMDCameraSignificantEventNotificationModel *)self confidenceLevel];
+  timeOffsetWithinClip = [(HMDCameraSignificantEventNotificationModel *)self timeOffsetWithinClip];
+  associatedClip = [(HMDCameraSignificantEventNotificationModel *)self associatedClip];
+  v12 = associatedClip;
+  if (significantEvent && dateOfOccurrence && confidenceLevel && timeOffsetWithinClip && associatedClip)
   {
-    v38 = v8;
+    v38 = dateOfOccurrence;
     v13 = objc_alloc(MEMORY[0x277CD18F8]);
-    v14 = [(HMBModel *)self hmbModelID];
-    v15 = [v7 unsignedIntegerValue];
-    v16 = [v9 unsignedIntegerValue];
-    [v10 doubleValue];
+    hmbModelID = [(HMBModel *)self hmbModelID];
+    unsignedIntegerValue = [significantEvent unsignedIntegerValue];
+    unsignedIntegerValue2 = [confidenceLevel unsignedIntegerValue];
+    [timeOffsetWithinClip doubleValue];
     v18 = v17;
     [v12 hmbModelID];
     v19 = v12;
-    v20 = v10;
-    v21 = v9;
-    v22 = v7;
-    v24 = v23 = v6;
+    v20 = timeOffsetWithinClip;
+    v21 = confidenceLevel;
+    v22 = significantEvent;
+    v24 = v23 = dCopy;
     v25 = v13;
-    v8 = v38;
-    v26 = [v25 initWithUniqueIdentifier:v14 reason:v15 dateOfOccurrence:v38 confidenceLevel:v16 cameraProfileUUID:v23 faceClassification:v40 timeOffsetWithinClip:v18 clipUUID:v24];
+    dateOfOccurrence = v38;
+    v26 = [v25 initWithUniqueIdentifier:hmbModelID reason:unsignedIntegerValue dateOfOccurrence:v38 confidenceLevel:unsignedIntegerValue2 cameraProfileUUID:v23 faceClassification:classificationCopy timeOffsetWithinClip:v18 clipUUID:v24];
 
-    v6 = v23;
-    v7 = v22;
-    v9 = v21;
-    v10 = v20;
+    dCopy = v23;
+    significantEvent = v22;
+    confidenceLevel = v21;
+    timeOffsetWithinClip = v20;
     v12 = v19;
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       v30 = HMFGetLogIdentifier();
-      [(HMBModel *)v28 debugDescription];
+      [(HMBModel *)selfCopy debugDescription];
       v39 = v12;
-      v31 = v9;
-      v32 = v8;
-      v33 = v7;
+      v31 = confidenceLevel;
+      v32 = dateOfOccurrence;
+      v33 = significantEvent;
       v35 = v34 = v27;
       *buf = 138543618;
       v42 = v30;
@@ -196,9 +196,9 @@ void __59__HMDCameraSignificantEventNotificationModel_hmbProperties__block_invok
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Cannot create significant event from model: %@", buf, 0x16u);
 
       v27 = v34;
-      v7 = v33;
-      v8 = v32;
-      v9 = v31;
+      significantEvent = v33;
+      dateOfOccurrence = v32;
+      confidenceLevel = v31;
       v12 = v39;
     }
 

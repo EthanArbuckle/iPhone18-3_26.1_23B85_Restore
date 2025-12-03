@@ -1,27 +1,27 @@
 @interface HMMTRAttributeDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HMMTRAttributeDescriptor)initWithCoder:(id)a3;
-- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)a3 attributePaths:(id)a4;
-- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)a3 controllerID:(id)a4 attributePaths:(id)a5;
-- (HMMTRAttributeDescriptor)initWithMTRDeviceNodeID:(id)a3 controllerID:(id)a4 attributePaths:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMMTRAttributeDescriptor)initWithCoder:(id)coder;
+- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)device attributePaths:(id)paths;
+- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)device controllerID:(id)d attributePaths:(id)paths;
+- (HMMTRAttributeDescriptor)initWithMTRDeviceNodeID:(id)d controllerID:(id)iD attributePaths:(id)paths;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMMTRAttributeDescriptor
 
-- (HMMTRAttributeDescriptor)initWithCoder:(id)a3
+- (HMMTRAttributeDescriptor)initWithCoder:(id)coder
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMTRAD.nodeID"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"HMMTRAD.attributePaths"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMMTRAD.controllerID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMTRAD.nodeID"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"HMMTRAD.attributePaths"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMMTRAD.controllerID"];
   v8 = v7;
   if (!v5)
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -41,7 +41,7 @@ LABEL_11:
   if (!v6)
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -58,7 +58,7 @@ LABEL_11:
   if (!v7)
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy3 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -76,42 +76,42 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:v5 controllerID:v7 attributePaths:v6];
-  v10 = v9;
+  selfCopy3 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:v5 controllerID:v7 attributePaths:v6];
+  v10 = selfCopy3;
 LABEL_13:
 
   v15 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMMTRAttributeDescriptor *)self nodeID];
-  [v4 encodeObject:v5 forKey:@"HMMTRAD.nodeID"];
+  coderCopy = coder;
+  nodeID = [(HMMTRAttributeDescriptor *)self nodeID];
+  [coderCopy encodeObject:nodeID forKey:@"HMMTRAD.nodeID"];
 
-  v6 = [(HMMTRAttributeDescriptor *)self attributePaths];
-  v7 = [v6 allObjects];
-  [v4 encodeObject:v7 forKey:@"HMMTRAD.attributePaths"];
+  attributePaths = [(HMMTRAttributeDescriptor *)self attributePaths];
+  allObjects = [attributePaths allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"HMMTRAD.attributePaths"];
 
-  v8 = [(HMMTRAttributeDescriptor *)self controllerID];
-  [v4 encodeObject:v8 forKey:@"HMMTRAD.controllerID"];
+  controllerID = [(HMMTRAttributeDescriptor *)self controllerID];
+  [coderCopy encodeObject:controllerID forKey:@"HMMTRAD.controllerID"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMMTRAttributeDescriptor *)self nodeID];
-  v4 = [v3 hash];
-  v5 = [(HMMTRAttributeDescriptor *)self attributePaths];
-  v6 = [v5 count];
+  nodeID = [(HMMTRAttributeDescriptor *)self nodeID];
+  v4 = [nodeID hash];
+  attributePaths = [(HMMTRAttributeDescriptor *)self attributePaths];
+  v6 = [attributePaths count];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -121,7 +121,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -133,17 +133,17 @@ LABEL_13:
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMMTRAttributeDescriptor *)v6 nodeID];
-      v9 = [(HMMTRAttributeDescriptor *)self nodeID];
-      if ([v8 isEqualToNumber:v9])
+      nodeID = [(HMMTRAttributeDescriptor *)v6 nodeID];
+      nodeID2 = [(HMMTRAttributeDescriptor *)self nodeID];
+      if ([nodeID isEqualToNumber:nodeID2])
       {
-        v10 = [(HMMTRAttributeDescriptor *)v7 attributePaths];
-        v11 = [(HMMTRAttributeDescriptor *)self attributePaths];
-        if ([v10 isEqualToSet:v11])
+        attributePaths = [(HMMTRAttributeDescriptor *)v7 attributePaths];
+        attributePaths2 = [(HMMTRAttributeDescriptor *)self attributePaths];
+        if ([attributePaths isEqualToSet:attributePaths2])
         {
-          v12 = [(HMMTRAttributeDescriptor *)v7 controllerID];
-          v13 = [(HMMTRAttributeDescriptor *)self controllerID];
-          v14 = [v12 isEqualToString:v13];
+          controllerID = [(HMMTRAttributeDescriptor *)v7 controllerID];
+          controllerID2 = [(HMMTRAttributeDescriptor *)self controllerID];
+          v14 = [controllerID isEqualToString:controllerID2];
         }
 
         else
@@ -167,25 +167,25 @@ LABEL_13:
   return v14;
 }
 
-- (HMMTRAttributeDescriptor)initWithMTRDeviceNodeID:(id)a3 controllerID:(id)a4 attributePaths:(id)a5
+- (HMMTRAttributeDescriptor)initWithMTRDeviceNodeID:(id)d controllerID:(id)iD attributePaths:(id)paths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  pathsCopy = paths;
   v19.receiver = self;
   v19.super_class = HMMTRAttributeDescriptor;
   v11 = [(HMMTRAttributeDescriptor *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     nodeID = v11->_nodeID;
     v11->_nodeID = v12;
 
-    v14 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+    v14 = [MEMORY[0x1E695DFD8] setWithArray:pathsCopy];
     attributePaths = v11->_attributePaths;
     v11->_attributePaths = v14;
 
-    v16 = [v9 copy];
+    v16 = [iDCopy copy];
     controllerID = v11->_controllerID;
     v11->_controllerID = v16;
   }
@@ -193,23 +193,23 @@ LABEL_13:
   return v11;
 }
 
-- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)a3 controllerID:(id)a4 attributePaths:(id)a5
+- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)device controllerID:(id)d attributePaths:(id)paths
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 nodeID];
-  v11 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:v10 controllerID:v9 attributePaths:v8];
+  pathsCopy = paths;
+  dCopy = d;
+  nodeID = [device nodeID];
+  v11 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:nodeID controllerID:dCopy attributePaths:pathsCopy];
 
   return v11;
 }
 
-- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)a3 attributePaths:(id)a4
+- (HMMTRAttributeDescriptor)initWithMTRDevice:(id)device attributePaths:(id)paths
 {
-  v6 = a4;
-  v7 = [a3 nodeID];
-  v8 = [MEMORY[0x1E696AFB0] hmf_zeroUUID];
-  v9 = [v8 UUIDString];
-  v10 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:v7 controllerID:v9 attributePaths:v6];
+  pathsCopy = paths;
+  nodeID = [device nodeID];
+  hmf_zeroUUID = [MEMORY[0x1E696AFB0] hmf_zeroUUID];
+  uUIDString = [hmf_zeroUUID UUIDString];
+  v10 = [(HMMTRAttributeDescriptor *)self initWithMTRDeviceNodeID:nodeID controllerID:uUIDString attributePaths:pathsCopy];
 
   return v10;
 }

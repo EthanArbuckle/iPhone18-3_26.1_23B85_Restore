@@ -1,41 +1,41 @@
 @interface RTPlaceDataMetrics
-+ (id)DataSourceToString:(unint64_t)a3;
++ (id)DataSourceToString:(unint64_t)string;
 + (id)bucketedKeys;
-+ (id)calculateMLFeaturesUsingBiomeManager:(id)a3 intervalDictionary:(id)a4 startDate:(id)a5 endDate:(id)a6 createBucketedFeatures:(BOOL)a7;
-+ (id)generateDictionaryOfOldMetricsWithLearnedLocationStore:(id)a3 locationsOfInterest:(id)a4 homeMapItem:(id)a5 workMapItem:(id)a6 locationsOfOthers:(id *)a7;
-+ (id)labelAnEventInterval:(id)a3 basedOnIntervalDict:(id)a4;
-+ (id)meanOf:(id)a3;
-+ (id)medianOf:(id)a3;
-+ (id)standardDeviationOf:(id)a3;
++ (id)calculateMLFeaturesUsingBiomeManager:(id)manager intervalDictionary:(id)dictionary startDate:(id)date endDate:(id)endDate createBucketedFeatures:(BOOL)features;
++ (id)generateDictionaryOfOldMetricsWithLearnedLocationStore:(id)store locationsOfInterest:(id)interest homeMapItem:(id)item workMapItem:(id)mapItem locationsOfOthers:(id *)others;
++ (id)labelAnEventInterval:(id)interval basedOnIntervalDict:(id)dict;
++ (id)meanOf:(id)of;
++ (id)medianOf:(id)of;
++ (id)standardDeviationOf:(id)of;
 + (id)supportedMetricKeys;
-- (BOOL)submitMetricsWithError:(id *)a3;
-- (RTPlaceDataMetrics)initWithLoggingEnabled:(BOOL)a3;
-- (RTPlaceDataMetrics)initWithVisitArray:(id)a3 distanceThreshold:(double)a4 locationHome:(id)a5 locationWork:(id)a6 locationsOfOthers:(id)a7 startDateTime:(id)a8 endDateTime:(id)a9;
+- (BOOL)submitMetricsWithError:(id *)error;
+- (RTPlaceDataMetrics)initWithLoggingEnabled:(BOOL)enabled;
+- (RTPlaceDataMetrics)initWithVisitArray:(id)array distanceThreshold:(double)threshold locationHome:(id)home locationWork:(id)work locationsOfOthers:(id)others startDateTime:(id)time endDateTime:(id)dateTime;
 - (id)findHomeWorkOthersIntervals;
-- (id)removeTimeFromDateTime:(id)a3 withCalendar:(id)a4;
-- (int64_t)convertDateTime2SecondsBasedOnCalendar:(id)a3 dateTime:(id)a4;
-- (int64_t)daysBetweenDate:(id)a3 andDate:(id)a4;
-- (int64_t)numberOfWeeksBetweenDatesBasedOnCalendar:(id)a3 startDateTime:(id)a4 endDateTime:(id)a5;
+- (id)removeTimeFromDateTime:(id)time withCalendar:(id)calendar;
+- (int64_t)convertDateTime2SecondsBasedOnCalendar:(id)calendar dateTime:(id)time;
+- (int64_t)daysBetweenDate:(id)date andDate:(id)andDate;
+- (int64_t)numberOfWeeksBetweenDatesBasedOnCalendar:(id)calendar startDateTime:(id)time endDateTime:(id)dateTime;
 - (void)calculateAndSetVisitMetrics;
-- (void)setCurrentInferenceReplayableMetricsFromDict:(id)a3;
+- (void)setCurrentInferenceReplayableMetricsFromDict:(id)dict;
 - (void)setDerivedMetrics;
-- (void)setMLMetricsFromFeaturesDict:(id)a3 sourceName:(unint64_t)a4;
+- (void)setMLMetricsFromFeaturesDict:(id)dict sourceName:(unint64_t)name;
 @end
 
 @implementation RTPlaceDataMetrics
 
-- (RTPlaceDataMetrics)initWithVisitArray:(id)a3 distanceThreshold:(double)a4 locationHome:(id)a5 locationWork:(id)a6 locationsOfOthers:(id)a7 startDateTime:(id)a8 endDateTime:(id)a9
+- (RTPlaceDataMetrics)initWithVisitArray:(id)array distanceThreshold:(double)threshold locationHome:(id)home locationWork:(id)work locationsOfOthers:(id)others startDateTime:(id)time endDateTime:(id)dateTime
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v35 = a7;
-  v34 = a8;
-  v20 = a9;
-  v33 = v19;
-  if (!v17)
+  arrayCopy = array;
+  homeCopy = home;
+  workCopy = work;
+  othersCopy = others;
+  timeCopy = time;
+  dateTimeCopy = dateTime;
+  v33 = workCopy;
+  if (!arrayCopy)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -50,9 +50,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (a4 <= 0.0)
+  if (threshold <= 0.0)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -65,9 +65,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v18)
+  if (!homeCopy)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -80,9 +80,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v19)
+  if (!workCopy)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -95,9 +95,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v35)
+  if (!othersCopy)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -110,9 +110,9 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (!v34)
+  if (!timeCopy)
   {
-    v21 = v20;
+    v21 = dateTimeCopy;
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -125,8 +125,8 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v21 = v20;
-  if (!v20)
+  v21 = dateTimeCopy;
+  if (!dateTimeCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -139,7 +139,7 @@ LABEL_25:
 
 LABEL_26:
 
-    v28 = 0;
+    selfCopy = 0;
     goto LABEL_27;
   }
 
@@ -147,43 +147,43 @@ LABEL_26:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_visitArray, a3);
-    v23->_distanceThreshold = a4;
-    objc_storeStrong(&v23->_locationHome, a5);
-    objc_storeStrong(&v23->_locationWork, a6);
-    objc_storeStrong(&v23->_locationsOfOthers, a7);
-    objc_storeStrong(&v23->_startDateTime, a8);
-    objc_storeStrong(&v23->_endDateTime, a9);
-    v24 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-    v25 = [(RTMetric *)v23 metrics];
-    [v25 setObject:v24 forKeyedSubscript:@"home_work_distance_threshold"];
+    objc_storeStrong(&v22->_visitArray, array);
+    v23->_distanceThreshold = threshold;
+    objc_storeStrong(&v23->_locationHome, home);
+    objc_storeStrong(&v23->_locationWork, work);
+    objc_storeStrong(&v23->_locationsOfOthers, others);
+    objc_storeStrong(&v23->_startDateTime, time);
+    objc_storeStrong(&v23->_endDateTime, dateTime);
+    v24 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
+    metrics = [(RTMetric *)v23 metrics];
+    [metrics setObject:v24 forKeyedSubscript:@"home_work_distance_threshold"];
 
     v26 = [MEMORY[0x277CCABB0] numberWithLong:{-[RTPlaceDataMetrics daysBetweenDate:andDate:](v23, "daysBetweenDate:andDate:", v23->_startDateTime, v23->_endDateTime)}];
-    v27 = [(RTMetric *)v23 metrics];
-    [v27 setObject:v26 forKeyedSubscript:@"days_of_history"];
+    metrics2 = [(RTMetric *)v23 metrics];
+    [metrics2 setObject:v26 forKeyedSubscript:@"days_of_history"];
   }
 
   self = v23;
-  v28 = self;
+  selfCopy = self;
 LABEL_27:
 
-  return v28;
+  return selfCopy;
 }
 
-- (RTPlaceDataMetrics)initWithLoggingEnabled:(BOOL)a3
+- (RTPlaceDataMetrics)initWithLoggingEnabled:(BOOL)enabled
 {
   v55 = *MEMORY[0x277D85DE8];
   v50.receiver = self;
   v50.super_class = RTPlaceDataMetrics;
-  v3 = [(RTMetric *)&v50 initWithLoggingEnabled:a3];
+  v3 = [(RTMetric *)&v50 initWithLoggingEnabled:enabled];
   if (v3)
   {
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v4 = [objc_opt_class() BOOLeanKeys];
-    v5 = [v4 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+    v5 = [bOOLeanKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v5)
     {
       v6 = v5;
@@ -196,18 +196,18 @@ LABEL_27:
         {
           if (*v47 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(bOOLeanKeys);
           }
 
           v10 = *(*(&v46 + 1) + 8 * v9);
-          v11 = [(RTMetric *)v3 metrics];
-          [v11 setObject:v8 forKeyedSubscript:v10];
+          metrics = [(RTMetric *)v3 metrics];
+          [metrics setObject:v8 forKeyedSubscript:v10];
 
           ++v9;
         }
 
         while (v6 != v9);
-        v6 = [v4 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        v6 = [bOOLeanKeys countByEnumeratingWithState:&v46 objects:v54 count:16];
       }
 
       while (v6);
@@ -217,8 +217,8 @@ LABEL_27:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v12 = [objc_opt_class() integerKeys];
-    v13 = [v12 countByEnumeratingWithState:&v42 objects:v53 count:16];
+    integerKeys = [objc_opt_class() integerKeys];
+    v13 = [integerKeys countByEnumeratingWithState:&v42 objects:v53 count:16];
     if (v13)
     {
       v14 = v13;
@@ -230,18 +230,18 @@ LABEL_27:
         {
           if (*v43 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(integerKeys);
           }
 
           v17 = *(*(&v42 + 1) + 8 * v16);
-          v18 = [(RTMetric *)v3 metrics];
-          [v18 setObject:&unk_28459D1B8 forKeyedSubscript:v17];
+          metrics2 = [(RTMetric *)v3 metrics];
+          [metrics2 setObject:&unk_28459D1B8 forKeyedSubscript:v17];
 
           ++v16;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v42 objects:v53 count:16];
+        v14 = [integerKeys countByEnumeratingWithState:&v42 objects:v53 count:16];
       }
 
       while (v14);
@@ -251,8 +251,8 @@ LABEL_27:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v19 = [objc_opt_class() doubleKeys];
-    v20 = [v19 countByEnumeratingWithState:&v38 objects:v52 count:16];
+    doubleKeys = [objc_opt_class() doubleKeys];
+    v20 = [doubleKeys countByEnumeratingWithState:&v38 objects:v52 count:16];
     if (v20)
     {
       v21 = v20;
@@ -264,18 +264,18 @@ LABEL_27:
         {
           if (*v39 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(doubleKeys);
           }
 
           v24 = *(*(&v38 + 1) + 8 * v23);
-          v25 = [(RTMetric *)v3 metrics];
-          [v25 setObject:&unk_2845A19E8 forKeyedSubscript:v24];
+          metrics3 = [(RTMetric *)v3 metrics];
+          [metrics3 setObject:&unk_2845A19E8 forKeyedSubscript:v24];
 
           ++v23;
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v38 objects:v52 count:16];
+        v21 = [doubleKeys countByEnumeratingWithState:&v38 objects:v52 count:16];
       }
 
       while (v21);
@@ -285,8 +285,8 @@ LABEL_27:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v26 = [objc_opt_class() bucketedKeys];
-    v27 = [v26 countByEnumeratingWithState:&v34 objects:v51 count:16];
+    bucketedKeys = [objc_opt_class() bucketedKeys];
+    v27 = [bucketedKeys countByEnumeratingWithState:&v34 objects:v51 count:16];
     if (v27)
     {
       v28 = v27;
@@ -298,18 +298,18 @@ LABEL_27:
         {
           if (*v35 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(bucketedKeys);
           }
 
           v31 = *(*(&v34 + 1) + 8 * v30);
-          v32 = [(RTMetric *)v3 metrics];
-          [v32 setObject:&unk_28459D1B8 forKeyedSubscript:v31];
+          metrics4 = [(RTMetric *)v3 metrics];
+          [metrics4 setObject:&unk_28459D1B8 forKeyedSubscript:v31];
 
           ++v30;
         }
 
         while (v28 != v30);
-        v28 = [v26 countByEnumeratingWithState:&v34 objects:v51 count:16];
+        v28 = [bucketedKeys countByEnumeratingWithState:&v34 objects:v51 count:16];
       }
 
       while (v28);
@@ -341,20 +341,20 @@ LABEL_27:
 + (id)supportedMetricKeys
 {
   v2 = MEMORY[0x277CBEB58];
-  v3 = [objc_opt_class() integerKeys];
-  v4 = [v2 setWithSet:v3];
+  integerKeys = [objc_opt_class() integerKeys];
+  v4 = [v2 setWithSet:integerKeys];
 
-  v5 = [objc_opt_class() BOOLeanKeys];
-  v6 = [v5 allObjects];
-  [v4 addObjectsFromArray:v6];
+  bOOLeanKeys = [objc_opt_class() BOOLeanKeys];
+  allObjects = [bOOLeanKeys allObjects];
+  [v4 addObjectsFromArray:allObjects];
 
-  v7 = [objc_opt_class() doubleKeys];
-  v8 = [v7 allObjects];
-  [v4 addObjectsFromArray:v8];
+  doubleKeys = [objc_opt_class() doubleKeys];
+  allObjects2 = [doubleKeys allObjects];
+  [v4 addObjectsFromArray:allObjects2];
 
-  v9 = [objc_opt_class() bucketedKeys];
-  v10 = [v9 allObjects];
-  [v4 addObjectsFromArray:v10];
+  bucketedKeys = [objc_opt_class() bucketedKeys];
+  allObjects3 = [bucketedKeys allObjects];
+  [v4 addObjectsFromArray:allObjects3];
 
   [v4 addObject:@"data_source"];
 
@@ -370,1417 +370,1417 @@ LABEL_27:
   v960 = [RTMetric binsFromStart:&unk_28459D1A0 toEnd:&unk_2845A1A18 gap:&unk_2845A1A78];
   v961 = [RTMetric binsFromStart:&unk_28459D1A0 toEnd:&unk_2845A1A88 gap:&unk_2845A1A98];
   v959 = [RTMetric binsFromStart:&unk_28459D1A0 toEnd:&unk_2845A1AA8 gap:&unk_2845A1A68];
-  v5 = [(RTMetric *)self metrics];
-  v6 = [v5 objectForKeyedSubscript:@"home_work_distance_threshold"];
+  metrics = [(RTMetric *)self metrics];
+  v6 = [metrics objectForKeyedSubscript:@"home_work_distance_threshold"];
   v7 = [RTMetric binForNumber:v6 bins:&unk_2845A0C20];
-  v8 = [(RTMetric *)self metrics];
-  [v8 setObject:v7 forKeyedSubscript:@"home_work_distance_threshold_bucketed"];
+  metrics2 = [(RTMetric *)self metrics];
+  [metrics2 setObject:v7 forKeyedSubscript:@"home_work_distance_threshold_bucketed"];
 
-  v9 = [(RTMetric *)self metrics];
-  v10 = [v9 objectForKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress"];
+  metrics3 = [(RTMetric *)self metrics];
+  v10 = [metrics3 objectForKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress"];
   v11 = [RTMetric binForNumber:v10 bins:v962];
-  v12 = [(RTMetric *)self metrics];
-  [v12 setObject:v11 forKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress_bucketed"];
+  metrics4 = [(RTMetric *)self metrics];
+  [metrics4 setObject:v11 forKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress_bucketed"];
 
-  v13 = [(RTMetric *)self metrics];
-  v14 = [v13 objectForKeyedSubscript:@"mean_distance_workVisit_from_workAddress"];
+  metrics5 = [(RTMetric *)self metrics];
+  v14 = [metrics5 objectForKeyedSubscript:@"mean_distance_workVisit_from_workAddress"];
   v15 = [RTMetric binForNumber:v14 bins:v962];
-  v16 = [(RTMetric *)self metrics];
-  [v16 setObject:v15 forKeyedSubscript:@"mean_distance_workVisit_from_workAddress_bucketed"];
+  metrics6 = [(RTMetric *)self metrics];
+  [metrics6 setObject:v15 forKeyedSubscript:@"mean_distance_workVisit_from_workAddress_bucketed"];
 
-  v17 = [(RTMetric *)self metrics];
-  v18 = [v17 objectForKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress"];
+  metrics7 = [(RTMetric *)self metrics];
+  v18 = [metrics7 objectForKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress"];
   v19 = [RTMetric binForNumber:v18 bins:v962];
-  v20 = [(RTMetric *)self metrics];
-  [v20 setObject:v19 forKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress_bucketed"];
+  metrics8 = [(RTMetric *)self metrics];
+  [metrics8 setObject:v19 forKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress_bucketed"];
 
-  v21 = [(RTMetric *)self metrics];
-  v22 = [v21 objectForKeyedSubscript:@"weekly_occurrence_rate_home"];
+  metrics9 = [(RTMetric *)self metrics];
+  v22 = [metrics9 objectForKeyedSubscript:@"weekly_occurrence_rate_home"];
   v23 = +[RTPlaceDataMetrics binArrayPercentage];
   v24 = [RTMetric binForNumber:v22 bins:v23];
-  v25 = [(RTMetric *)self metrics];
-  [v25 setObject:v24 forKeyedSubscript:@"weekly_occurrence_rate_home_bucketed"];
+  metrics10 = [(RTMetric *)self metrics];
+  [metrics10 setObject:v24 forKeyedSubscript:@"weekly_occurrence_rate_home_bucketed"];
 
-  v26 = [(RTMetric *)self metrics];
-  v27 = [v26 objectForKeyedSubscript:@"weekly_occurrence_rate_work"];
+  metrics11 = [(RTMetric *)self metrics];
+  v27 = [metrics11 objectForKeyedSubscript:@"weekly_occurrence_rate_work"];
   v28 = +[RTPlaceDataMetrics binArrayPercentage];
   v29 = [RTMetric binForNumber:v27 bins:v28];
-  v30 = [(RTMetric *)self metrics];
-  [v30 setObject:v29 forKeyedSubscript:@"weekly_occurrence_rate_work_bucketed"];
+  metrics12 = [(RTMetric *)self metrics];
+  [metrics12 setObject:v29 forKeyedSubscript:@"weekly_occurrence_rate_work_bucketed"];
 
-  v31 = [(RTMetric *)self metrics];
-  v32 = [v31 objectForKeyedSubscript:@"mean_visit_time_home"];
+  metrics13 = [(RTMetric *)self metrics];
+  v32 = [metrics13 objectForKeyedSubscript:@"mean_visit_time_home"];
   v33 = [RTMetric binForNumber:v32 bins:v3];
-  v34 = [(RTMetric *)self metrics];
-  [v34 setObject:v33 forKeyedSubscript:@"mean_visit_time_home_bucketed"];
+  metrics14 = [(RTMetric *)self metrics];
+  [metrics14 setObject:v33 forKeyedSubscript:@"mean_visit_time_home_bucketed"];
 
-  v35 = [(RTMetric *)self metrics];
-  v36 = [v35 objectForKeyedSubscript:@"median_visit_time_home"];
+  metrics15 = [(RTMetric *)self metrics];
+  v36 = [metrics15 objectForKeyedSubscript:@"median_visit_time_home"];
   v37 = [RTMetric binForNumber:v36 bins:v3];
-  v38 = [(RTMetric *)self metrics];
-  [v38 setObject:v37 forKeyedSubscript:@"median_visit_time_home_bucketed"];
+  metrics16 = [(RTMetric *)self metrics];
+  [metrics16 setObject:v37 forKeyedSubscript:@"median_visit_time_home_bucketed"];
 
-  v39 = [(RTMetric *)self metrics];
-  v40 = [v39 objectForKeyedSubscript:@"mean_visit_time_work"];
+  metrics17 = [(RTMetric *)self metrics];
+  v40 = [metrics17 objectForKeyedSubscript:@"mean_visit_time_work"];
   v41 = [RTMetric binForNumber:v40 bins:v3];
-  v42 = [(RTMetric *)self metrics];
-  [v42 setObject:v41 forKeyedSubscript:@"mean_visit_time_work_bucketed"];
+  metrics18 = [(RTMetric *)self metrics];
+  [metrics18 setObject:v41 forKeyedSubscript:@"mean_visit_time_work_bucketed"];
 
-  v43 = [(RTMetric *)self metrics];
-  v44 = [v43 objectForKeyedSubscript:@"median_visit_time_work"];
+  metrics19 = [(RTMetric *)self metrics];
+  v44 = [metrics19 objectForKeyedSubscript:@"median_visit_time_work"];
   v45 = [RTMetric binForNumber:v44 bins:v3];
-  v46 = [(RTMetric *)self metrics];
-  [v46 setObject:v45 forKeyedSubscript:@"median_visit_time_work_bucketed"];
+  metrics20 = [(RTMetric *)self metrics];
+  [metrics20 setObject:v45 forKeyedSubscript:@"median_visit_time_work_bucketed"];
 
-  v47 = [(RTMetric *)self metrics];
-  v48 = [v47 objectForKeyedSubscript:@"mean_visit_time_others"];
+  metrics21 = [(RTMetric *)self metrics];
+  v48 = [metrics21 objectForKeyedSubscript:@"mean_visit_time_others"];
   v49 = [RTMetric binForNumber:v48 bins:v3];
-  v50 = [(RTMetric *)self metrics];
-  [v50 setObject:v49 forKeyedSubscript:@"mean_visit_time_others_bucketed"];
+  metrics22 = [(RTMetric *)self metrics];
+  [metrics22 setObject:v49 forKeyedSubscript:@"mean_visit_time_others_bucketed"];
 
-  v51 = [(RTMetric *)self metrics];
-  v52 = [v51 objectForKeyedSubscript:@"median_visit_time_others"];
+  metrics23 = [(RTMetric *)self metrics];
+  v52 = [metrics23 objectForKeyedSubscript:@"median_visit_time_others"];
   v53 = [RTMetric binForNumber:v52 bins:v3];
-  v54 = [(RTMetric *)self metrics];
-  [v54 setObject:v53 forKeyedSubscript:@"median_visit_time_others_bucketed"];
+  metrics24 = [(RTMetric *)self metrics];
+  [metrics24 setObject:v53 forKeyedSubscript:@"median_visit_time_others_bucketed"];
 
-  v55 = [(RTMetric *)self metrics];
-  v56 = [v55 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others"];
+  metrics25 = [(RTMetric *)self metrics];
+  v56 = [metrics25 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others"];
   v57 = [RTMetric binForNumber:v56 bins:v960];
-  v58 = [(RTMetric *)self metrics];
-  [v58 setObject:v57 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others_bucketed"];
+  metrics26 = [(RTMetric *)self metrics];
+  [metrics26 setObject:v57 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others_bucketed"];
 
-  v59 = [(RTMetric *)self metrics];
-  v60 = [v59 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others"];
+  metrics27 = [(RTMetric *)self metrics];
+  v60 = [metrics27 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others"];
   v61 = [RTMetric binForNumber:v60 bins:v960];
-  v62 = [(RTMetric *)self metrics];
-  [v62 setObject:v61 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others_bucketed"];
+  metrics28 = [(RTMetric *)self metrics];
+  [metrics28 setObject:v61 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others_bucketed"];
 
-  v63 = [(RTMetric *)self metrics];
-  v64 = [v63 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others"];
+  metrics29 = [(RTMetric *)self metrics];
+  v64 = [metrics29 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others"];
   v65 = [RTMetric binForNumber:v64 bins:v960];
-  v66 = [(RTMetric *)self metrics];
-  [v66 setObject:v65 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others_bucketed"];
+  metrics30 = [(RTMetric *)self metrics];
+  [metrics30 setObject:v65 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others_bucketed"];
 
-  v67 = [(RTMetric *)self metrics];
-  v68 = [v67 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others"];
+  metrics31 = [(RTMetric *)self metrics];
+  v68 = [metrics31 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others"];
   v69 = [RTMetric binForNumber:v68 bins:v960];
-  v70 = [(RTMetric *)self metrics];
-  [v70 setObject:v69 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others_bucketed"];
+  metrics32 = [(RTMetric *)self metrics];
+  [metrics32 setObject:v69 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others_bucketed"];
 
-  v71 = [(RTMetric *)self metrics];
-  v72 = [v71 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers"];
+  metrics33 = [(RTMetric *)self metrics];
+  v72 = [metrics33 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers"];
   v73 = [RTMetric binForNumber:v72 bins:v960];
-  v74 = [(RTMetric *)self metrics];
-  [v74 setObject:v73 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers_bucketed"];
+  metrics34 = [(RTMetric *)self metrics];
+  [metrics34 setObject:v73 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers_bucketed"];
 
-  v75 = [(RTMetric *)self metrics];
-  v76 = [v75 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers"];
+  metrics35 = [(RTMetric *)self metrics];
+  v76 = [metrics35 objectForKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers"];
   v77 = [RTMetric binForNumber:v76 bins:v960];
-  v78 = [(RTMetric *)self metrics];
-  [v78 setObject:v77 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers_bucketed"];
+  metrics36 = [(RTMetric *)self metrics];
+  [metrics36 setObject:v77 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers_bucketed"];
 
-  v79 = [(RTMetric *)self metrics];
-  v80 = [v79 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers"];
+  metrics37 = [(RTMetric *)self metrics];
+  v80 = [metrics37 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers"];
   v81 = [RTMetric binForNumber:v80 bins:v960];
-  v82 = [(RTMetric *)self metrics];
-  [v82 setObject:v81 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers_bucketed"];
+  metrics38 = [(RTMetric *)self metrics];
+  [metrics38 setObject:v81 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers_bucketed"];
 
-  v83 = [(RTMetric *)self metrics];
-  v84 = [v83 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers"];
+  metrics39 = [(RTMetric *)self metrics];
+  v84 = [metrics39 objectForKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers"];
   v85 = [RTMetric binForNumber:v84 bins:v960];
-  v86 = [(RTMetric *)self metrics];
-  [v86 setObject:v85 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers_bucketed"];
+  metrics40 = [(RTMetric *)self metrics];
+  [metrics40 setObject:v85 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers_bucketed"];
 
-  v87 = [(RTMetric *)self metrics];
-  v88 = [v87 objectForKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others"];
+  metrics41 = [(RTMetric *)self metrics];
+  v88 = [metrics41 objectForKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others"];
   v89 = [RTMetric binForNumber:v88 bins:v960];
-  v90 = [(RTMetric *)self metrics];
-  [v90 setObject:v89 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others_bucketed"];
+  metrics42 = [(RTMetric *)self metrics];
+  [metrics42 setObject:v89 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others_bucketed"];
 
-  v91 = [(RTMetric *)self metrics];
-  v92 = [v91 objectForKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others"];
+  metrics43 = [(RTMetric *)self metrics];
+  v92 = [metrics43 objectForKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others"];
   v93 = [RTMetric binForNumber:v92 bins:v960];
-  v94 = [(RTMetric *)self metrics];
-  [v94 setObject:v93 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others_bucketed"];
+  metrics44 = [(RTMetric *)self metrics];
+  [metrics44 setObject:v93 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others_bucketed"];
 
-  v95 = [(RTMetric *)self metrics];
-  v96 = [v95 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others"];
+  metrics45 = [(RTMetric *)self metrics];
+  v96 = [metrics45 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others"];
   v97 = [RTMetric binForNumber:v96 bins:v960];
-  v98 = [(RTMetric *)self metrics];
-  [v98 setObject:v97 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others_bucketed"];
+  metrics46 = [(RTMetric *)self metrics];
+  [metrics46 setObject:v97 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others_bucketed"];
 
-  v99 = [(RTMetric *)self metrics];
-  v100 = [v99 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others"];
+  metrics47 = [(RTMetric *)self metrics];
+  v100 = [metrics47 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others"];
   v101 = [RTMetric binForNumber:v100 bins:v960];
-  v102 = [(RTMetric *)self metrics];
-  [v102 setObject:v101 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others_bucketed"];
+  metrics48 = [(RTMetric *)self metrics];
+  [metrics48 setObject:v101 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others_bucketed"];
 
-  v103 = [(RTMetric *)self metrics];
-  v104 = [v103 objectForKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers"];
+  metrics49 = [(RTMetric *)self metrics];
+  v104 = [metrics49 objectForKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers"];
   v105 = [RTMetric binForNumber:v104 bins:v960];
-  v106 = [(RTMetric *)self metrics];
-  [v106 setObject:v105 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers_bucketed"];
+  metrics50 = [(RTMetric *)self metrics];
+  [metrics50 setObject:v105 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers_bucketed"];
 
-  v107 = [(RTMetric *)self metrics];
-  v108 = [v107 objectForKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers"];
+  metrics51 = [(RTMetric *)self metrics];
+  v108 = [metrics51 objectForKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers"];
   v109 = [RTMetric binForNumber:v108 bins:v960];
-  v110 = [(RTMetric *)self metrics];
-  [v110 setObject:v109 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers_bucketed"];
+  metrics52 = [(RTMetric *)self metrics];
+  [metrics52 setObject:v109 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers_bucketed"];
 
-  v111 = [(RTMetric *)self metrics];
-  v112 = [v111 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers"];
+  metrics53 = [(RTMetric *)self metrics];
+  v112 = [metrics53 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers"];
   v113 = [RTMetric binForNumber:v112 bins:v960];
-  v114 = [(RTMetric *)self metrics];
-  [v114 setObject:v113 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers_bucketed"];
+  metrics54 = [(RTMetric *)self metrics];
+  [metrics54 setObject:v113 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers_bucketed"];
 
-  v115 = [(RTMetric *)self metrics];
-  v116 = [v115 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers"];
+  metrics55 = [(RTMetric *)self metrics];
+  v116 = [metrics55 objectForKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers"];
   v117 = [RTMetric binForNumber:v116 bins:v960];
-  v118 = [(RTMetric *)self metrics];
-  [v118 setObject:v117 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers_bucketed"];
+  metrics56 = [(RTMetric *)self metrics];
+  [metrics56 setObject:v117 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers_bucketed"];
 
-  v119 = [(RTMetric *)self metrics];
-  v120 = [v119 objectForKeyedSubscript:@"median_daily_visits_weekdays_home"];
+  metrics57 = [(RTMetric *)self metrics];
+  v120 = [metrics57 objectForKeyedSubscript:@"median_daily_visits_weekdays_home"];
   v121 = [RTMetric binForNumber:v120 bins:v958];
-  v122 = [(RTMetric *)self metrics];
-  [v122 setObject:v121 forKeyedSubscript:@"median_daily_visits_weekdays_home_bucketed"];
+  metrics58 = [(RTMetric *)self metrics];
+  [metrics58 setObject:v121 forKeyedSubscript:@"median_daily_visits_weekdays_home_bucketed"];
 
-  v123 = [(RTMetric *)self metrics];
-  v124 = [v123 objectForKeyedSubscript:@"mean_daily_visits_weekdays_home"];
+  metrics59 = [(RTMetric *)self metrics];
+  v124 = [metrics59 objectForKeyedSubscript:@"mean_daily_visits_weekdays_home"];
   v125 = [RTMetric binForNumber:v124 bins:v958];
-  v126 = [(RTMetric *)self metrics];
-  [v126 setObject:v125 forKeyedSubscript:@"mean_daily_visits_weekdays_home_bucketed"];
+  metrics60 = [(RTMetric *)self metrics];
+  [metrics60 setObject:v125 forKeyedSubscript:@"mean_daily_visits_weekdays_home_bucketed"];
 
-  v127 = [(RTMetric *)self metrics];
-  v128 = [v127 objectForKeyedSubscript:@"median_daily_visits_weekdays_work"];
+  metrics61 = [(RTMetric *)self metrics];
+  v128 = [metrics61 objectForKeyedSubscript:@"median_daily_visits_weekdays_work"];
   v129 = [RTMetric binForNumber:v128 bins:v958];
-  v130 = [(RTMetric *)self metrics];
-  [v130 setObject:v129 forKeyedSubscript:@"median_daily_visits_weekdays_work_bucketed"];
+  metrics62 = [(RTMetric *)self metrics];
+  [metrics62 setObject:v129 forKeyedSubscript:@"median_daily_visits_weekdays_work_bucketed"];
 
-  v131 = [(RTMetric *)self metrics];
-  v132 = [v131 objectForKeyedSubscript:@"mean_daily_visits_weekdays_work"];
+  metrics63 = [(RTMetric *)self metrics];
+  v132 = [metrics63 objectForKeyedSubscript:@"mean_daily_visits_weekdays_work"];
   v133 = [RTMetric binForNumber:v132 bins:v958];
-  v134 = [(RTMetric *)self metrics];
-  [v134 setObject:v133 forKeyedSubscript:@"mean_daily_visits_weekdays_work_bucketed"];
+  metrics64 = [(RTMetric *)self metrics];
+  [metrics64 setObject:v133 forKeyedSubscript:@"mean_daily_visits_weekdays_work_bucketed"];
 
-  v135 = [(RTMetric *)self metrics];
-  v136 = [v135 objectForKeyedSubscript:@"median_daily_visits_weekdays_others"];
+  metrics65 = [(RTMetric *)self metrics];
+  v136 = [metrics65 objectForKeyedSubscript:@"median_daily_visits_weekdays_others"];
   v137 = [RTMetric binForNumber:v136 bins:v958];
-  v138 = [(RTMetric *)self metrics];
-  [v138 setObject:v137 forKeyedSubscript:@"median_daily_visits_weekdays_others_bucketed"];
+  metrics66 = [(RTMetric *)self metrics];
+  [metrics66 setObject:v137 forKeyedSubscript:@"median_daily_visits_weekdays_others_bucketed"];
 
-  v139 = [(RTMetric *)self metrics];
-  v140 = [v139 objectForKeyedSubscript:@"mean_daily_visits_weekdays_others"];
+  metrics67 = [(RTMetric *)self metrics];
+  v140 = [metrics67 objectForKeyedSubscript:@"mean_daily_visits_weekdays_others"];
   v141 = [RTMetric binForNumber:v140 bins:v958];
-  v142 = [(RTMetric *)self metrics];
-  [v142 setObject:v141 forKeyedSubscript:@"mean_daily_visits_weekdays_others_bucketed"];
+  metrics68 = [(RTMetric *)self metrics];
+  [metrics68 setObject:v141 forKeyedSubscript:@"mean_daily_visits_weekdays_others_bucketed"];
 
-  v143 = [(RTMetric *)self metrics];
-  v144 = [v143 objectForKeyedSubscript:@"median_daily_visits_weekend_home"];
+  metrics69 = [(RTMetric *)self metrics];
+  v144 = [metrics69 objectForKeyedSubscript:@"median_daily_visits_weekend_home"];
   v145 = [RTMetric binForNumber:v144 bins:v958];
-  v146 = [(RTMetric *)self metrics];
-  [v146 setObject:v145 forKeyedSubscript:@"median_daily_visits_weekend_home_bucketed"];
+  metrics70 = [(RTMetric *)self metrics];
+  [metrics70 setObject:v145 forKeyedSubscript:@"median_daily_visits_weekend_home_bucketed"];
 
-  v147 = [(RTMetric *)self metrics];
-  v148 = [v147 objectForKeyedSubscript:@"mean_daily_visits_weekend_home"];
+  metrics71 = [(RTMetric *)self metrics];
+  v148 = [metrics71 objectForKeyedSubscript:@"mean_daily_visits_weekend_home"];
   v149 = [RTMetric binForNumber:v148 bins:v958];
-  v150 = [(RTMetric *)self metrics];
-  [v150 setObject:v149 forKeyedSubscript:@"mean_daily_visits_weekend_home_bucketed"];
+  metrics72 = [(RTMetric *)self metrics];
+  [metrics72 setObject:v149 forKeyedSubscript:@"mean_daily_visits_weekend_home_bucketed"];
 
-  v151 = [(RTMetric *)self metrics];
-  v152 = [v151 objectForKeyedSubscript:@"median_daily_visits_weekend_work"];
+  metrics73 = [(RTMetric *)self metrics];
+  v152 = [metrics73 objectForKeyedSubscript:@"median_daily_visits_weekend_work"];
   v153 = [RTMetric binForNumber:v152 bins:v958];
-  v154 = [(RTMetric *)self metrics];
-  [v154 setObject:v153 forKeyedSubscript:@"median_daily_visits_weekend_work_bucketed"];
+  metrics74 = [(RTMetric *)self metrics];
+  [metrics74 setObject:v153 forKeyedSubscript:@"median_daily_visits_weekend_work_bucketed"];
 
-  v155 = [(RTMetric *)self metrics];
-  v156 = [v155 objectForKeyedSubscript:@"mean_daily_visits_weekend_work"];
+  metrics75 = [(RTMetric *)self metrics];
+  v156 = [metrics75 objectForKeyedSubscript:@"mean_daily_visits_weekend_work"];
   v157 = [RTMetric binForNumber:v156 bins:v958];
-  v158 = [(RTMetric *)self metrics];
-  [v158 setObject:v157 forKeyedSubscript:@"mean_daily_visits_weekend_work_bucketed"];
+  metrics76 = [(RTMetric *)self metrics];
+  [metrics76 setObject:v157 forKeyedSubscript:@"mean_daily_visits_weekend_work_bucketed"];
 
-  v159 = [(RTMetric *)self metrics];
-  v160 = [v159 objectForKeyedSubscript:@"median_daily_visits_weekend_others"];
+  metrics77 = [(RTMetric *)self metrics];
+  v160 = [metrics77 objectForKeyedSubscript:@"median_daily_visits_weekend_others"];
   v161 = [RTMetric binForNumber:v160 bins:v958];
-  v162 = [(RTMetric *)self metrics];
-  [v162 setObject:v161 forKeyedSubscript:@"median_daily_visits_weekend_others_bucketed"];
+  metrics78 = [(RTMetric *)self metrics];
+  [metrics78 setObject:v161 forKeyedSubscript:@"median_daily_visits_weekend_others_bucketed"];
 
-  v163 = [(RTMetric *)self metrics];
-  v164 = [v163 objectForKeyedSubscript:@"mean_daily_visits_weekend_others"];
+  metrics79 = [(RTMetric *)self metrics];
+  v164 = [metrics79 objectForKeyedSubscript:@"mean_daily_visits_weekend_others"];
   v165 = [RTMetric binForNumber:v164 bins:v958];
-  v166 = [(RTMetric *)self metrics];
-  [v166 setObject:v165 forKeyedSubscript:@"mean_daily_visits_weekend_others_bucketed"];
+  metrics80 = [(RTMetric *)self metrics];
+  [metrics80 setObject:v165 forKeyedSubscript:@"mean_daily_visits_weekend_others_bucketed"];
 
-  v167 = [(RTMetric *)self metrics];
-  v168 = [v167 objectForKeyedSubscript:@"median_visit_duration_weekdays_home"];
+  metrics81 = [(RTMetric *)self metrics];
+  v168 = [metrics81 objectForKeyedSubscript:@"median_visit_duration_weekdays_home"];
   v169 = [RTMetric binForNumber:v168 bins:v4];
-  v170 = [(RTMetric *)self metrics];
-  [v170 setObject:v169 forKeyedSubscript:@"median_visit_duration_weekdays_home_bucketed"];
+  metrics82 = [(RTMetric *)self metrics];
+  [metrics82 setObject:v169 forKeyedSubscript:@"median_visit_duration_weekdays_home_bucketed"];
 
-  v171 = [(RTMetric *)self metrics];
-  v172 = [v171 objectForKeyedSubscript:@"mean_visit_duration_weekdays_home"];
+  metrics83 = [(RTMetric *)self metrics];
+  v172 = [metrics83 objectForKeyedSubscript:@"mean_visit_duration_weekdays_home"];
   v173 = [RTMetric binForNumber:v172 bins:v4];
-  v174 = [(RTMetric *)self metrics];
-  [v174 setObject:v173 forKeyedSubscript:@"mean_visit_duration_weekdays_home_bucketed"];
+  metrics84 = [(RTMetric *)self metrics];
+  [metrics84 setObject:v173 forKeyedSubscript:@"mean_visit_duration_weekdays_home_bucketed"];
 
-  v175 = [(RTMetric *)self metrics];
-  v176 = [v175 objectForKeyedSubscript:@"median_visit_duration_weekdays_work"];
+  metrics85 = [(RTMetric *)self metrics];
+  v176 = [metrics85 objectForKeyedSubscript:@"median_visit_duration_weekdays_work"];
   v177 = [RTMetric binForNumber:v176 bins:v4];
-  v178 = [(RTMetric *)self metrics];
-  [v178 setObject:v177 forKeyedSubscript:@"median_visit_duration_weekdays_work_bucketed"];
+  metrics86 = [(RTMetric *)self metrics];
+  [metrics86 setObject:v177 forKeyedSubscript:@"median_visit_duration_weekdays_work_bucketed"];
 
-  v179 = [(RTMetric *)self metrics];
-  v180 = [v179 objectForKeyedSubscript:@"mean_visit_duration_weekdays_work"];
+  metrics87 = [(RTMetric *)self metrics];
+  v180 = [metrics87 objectForKeyedSubscript:@"mean_visit_duration_weekdays_work"];
   v181 = [RTMetric binForNumber:v180 bins:v4];
-  v182 = [(RTMetric *)self metrics];
-  [v182 setObject:v181 forKeyedSubscript:@"mean_visit_duration_weekdays_work_bucketed"];
+  metrics88 = [(RTMetric *)self metrics];
+  [metrics88 setObject:v181 forKeyedSubscript:@"mean_visit_duration_weekdays_work_bucketed"];
 
-  v183 = [(RTMetric *)self metrics];
-  v184 = [v183 objectForKeyedSubscript:@"median_visit_duration_weekdays_others"];
+  metrics89 = [(RTMetric *)self metrics];
+  v184 = [metrics89 objectForKeyedSubscript:@"median_visit_duration_weekdays_others"];
   v185 = [RTMetric binForNumber:v184 bins:v4];
-  v186 = [(RTMetric *)self metrics];
-  [v186 setObject:v185 forKeyedSubscript:@"median_visit_duration_weekdays_others_bucketed"];
+  metrics90 = [(RTMetric *)self metrics];
+  [metrics90 setObject:v185 forKeyedSubscript:@"median_visit_duration_weekdays_others_bucketed"];
 
-  v187 = [(RTMetric *)self metrics];
-  v188 = [v187 objectForKeyedSubscript:@"mean_visit_duration_weekdays_others"];
+  metrics91 = [(RTMetric *)self metrics];
+  v188 = [metrics91 objectForKeyedSubscript:@"mean_visit_duration_weekdays_others"];
   v189 = [RTMetric binForNumber:v188 bins:v4];
-  v190 = [(RTMetric *)self metrics];
-  [v190 setObject:v189 forKeyedSubscript:@"mean_visit_duration_weekdays_others_bucketed"];
+  metrics92 = [(RTMetric *)self metrics];
+  [metrics92 setObject:v189 forKeyedSubscript:@"mean_visit_duration_weekdays_others_bucketed"];
 
-  v191 = [(RTMetric *)self metrics];
-  v192 = [v191 objectForKeyedSubscript:@"median_visit_duration_weekend_home"];
+  metrics93 = [(RTMetric *)self metrics];
+  v192 = [metrics93 objectForKeyedSubscript:@"median_visit_duration_weekend_home"];
   v193 = [RTMetric binForNumber:v192 bins:v4];
-  v194 = [(RTMetric *)self metrics];
-  [v194 setObject:v193 forKeyedSubscript:@"median_visit_duration_weekend_home_bucketed"];
+  metrics94 = [(RTMetric *)self metrics];
+  [metrics94 setObject:v193 forKeyedSubscript:@"median_visit_duration_weekend_home_bucketed"];
 
-  v195 = [(RTMetric *)self metrics];
-  v196 = [v195 objectForKeyedSubscript:@"mean_visit_duration_weekend_home"];
+  metrics95 = [(RTMetric *)self metrics];
+  v196 = [metrics95 objectForKeyedSubscript:@"mean_visit_duration_weekend_home"];
   v197 = [RTMetric binForNumber:v196 bins:v4];
-  v198 = [(RTMetric *)self metrics];
-  [v198 setObject:v197 forKeyedSubscript:@"mean_visit_duration_weekend_home_bucketed"];
+  metrics96 = [(RTMetric *)self metrics];
+  [metrics96 setObject:v197 forKeyedSubscript:@"mean_visit_duration_weekend_home_bucketed"];
 
-  v199 = [(RTMetric *)self metrics];
-  v200 = [v199 objectForKeyedSubscript:@"median_visit_duration_weekend_work"];
+  metrics97 = [(RTMetric *)self metrics];
+  v200 = [metrics97 objectForKeyedSubscript:@"median_visit_duration_weekend_work"];
   v201 = [RTMetric binForNumber:v200 bins:v4];
-  v202 = [(RTMetric *)self metrics];
-  [v202 setObject:v201 forKeyedSubscript:@"median_visit_duration_weekend_work_bucketed"];
+  metrics98 = [(RTMetric *)self metrics];
+  [metrics98 setObject:v201 forKeyedSubscript:@"median_visit_duration_weekend_work_bucketed"];
 
-  v203 = [(RTMetric *)self metrics];
-  v204 = [v203 objectForKeyedSubscript:@"mean_visit_duration_weekend_work"];
+  metrics99 = [(RTMetric *)self metrics];
+  v204 = [metrics99 objectForKeyedSubscript:@"mean_visit_duration_weekend_work"];
   v205 = [RTMetric binForNumber:v204 bins:v4];
-  v206 = [(RTMetric *)self metrics];
-  [v206 setObject:v205 forKeyedSubscript:@"mean_visit_duration_weekend_work_bucketed"];
+  metrics100 = [(RTMetric *)self metrics];
+  [metrics100 setObject:v205 forKeyedSubscript:@"mean_visit_duration_weekend_work_bucketed"];
 
-  v207 = [(RTMetric *)self metrics];
-  v208 = [v207 objectForKeyedSubscript:@"median_visit_duration_weekend_others"];
+  metrics101 = [(RTMetric *)self metrics];
+  v208 = [metrics101 objectForKeyedSubscript:@"median_visit_duration_weekend_others"];
   v209 = [RTMetric binForNumber:v208 bins:v4];
-  v210 = [(RTMetric *)self metrics];
-  [v210 setObject:v209 forKeyedSubscript:@"median_visit_duration_weekend_others_bucketed"];
+  metrics102 = [(RTMetric *)self metrics];
+  [metrics102 setObject:v209 forKeyedSubscript:@"median_visit_duration_weekend_others_bucketed"];
 
-  v211 = [(RTMetric *)self metrics];
-  v212 = [v211 objectForKeyedSubscript:@"mean_visit_duration_weekend_others"];
+  metrics103 = [(RTMetric *)self metrics];
+  v212 = [metrics103 objectForKeyedSubscript:@"mean_visit_duration_weekend_others"];
   v213 = [RTMetric binForNumber:v212 bins:v4];
-  v214 = [(RTMetric *)self metrics];
-  [v214 setObject:v213 forKeyedSubscript:@"mean_visit_duration_weekend_others_bucketed"];
+  metrics104 = [(RTMetric *)self metrics];
+  [metrics104 setObject:v213 forKeyedSubscript:@"mean_visit_duration_weekend_others_bucketed"];
 
-  v215 = [(RTMetric *)self metrics];
-  v216 = [v215 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home"];
+  metrics105 = [(RTMetric *)self metrics];
+  v216 = [metrics105 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home"];
   v217 = [RTMetric binForNumber:v216 bins:v4];
-  v218 = [(RTMetric *)self metrics];
-  [v218 setObject:v217 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home_bucketed"];
+  metrics106 = [(RTMetric *)self metrics];
+  [metrics106 setObject:v217 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home_bucketed"];
 
-  v219 = [(RTMetric *)self metrics];
-  v220 = [v219 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home"];
+  metrics107 = [(RTMetric *)self metrics];
+  v220 = [metrics107 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home"];
   v221 = [RTMetric binForNumber:v220 bins:v4];
-  v222 = [(RTMetric *)self metrics];
-  [v222 setObject:v221 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home_bucketed"];
+  metrics108 = [(RTMetric *)self metrics];
+  [metrics108 setObject:v221 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home_bucketed"];
 
-  v223 = [(RTMetric *)self metrics];
-  v224 = [v223 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work"];
+  metrics109 = [(RTMetric *)self metrics];
+  v224 = [metrics109 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work"];
   v225 = [RTMetric binForNumber:v224 bins:v4];
-  v226 = [(RTMetric *)self metrics];
-  [v226 setObject:v225 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work_bucketed"];
+  metrics110 = [(RTMetric *)self metrics];
+  [metrics110 setObject:v225 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work_bucketed"];
 
-  v227 = [(RTMetric *)self metrics];
-  v228 = [v227 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_work"];
+  metrics111 = [(RTMetric *)self metrics];
+  v228 = [metrics111 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_work"];
   v229 = [RTMetric binForNumber:v228 bins:v4];
-  v230 = [(RTMetric *)self metrics];
-  [v230 setObject:v229 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_Work_Bucketed"];
+  metrics112 = [(RTMetric *)self metrics];
+  [metrics112 setObject:v229 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_Work_Bucketed"];
 
-  v231 = [(RTMetric *)self metrics];
-  v232 = [v231 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others"];
+  metrics113 = [(RTMetric *)self metrics];
+  v232 = [metrics113 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others"];
   v233 = [RTMetric binForNumber:v232 bins:v4];
-  v234 = [(RTMetric *)self metrics];
-  [v234 setObject:v233 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others_bucketed"];
+  metrics114 = [(RTMetric *)self metrics];
+  [metrics114 setObject:v233 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others_bucketed"];
 
-  v235 = [(RTMetric *)self metrics];
-  v236 = [v235 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others"];
+  metrics115 = [(RTMetric *)self metrics];
+  v236 = [metrics115 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others"];
   v237 = [RTMetric binForNumber:v236 bins:v4];
-  v238 = [(RTMetric *)self metrics];
-  [v238 setObject:v237 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others_bucketed"];
+  metrics116 = [(RTMetric *)self metrics];
+  [metrics116 setObject:v237 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others_bucketed"];
 
-  v239 = [(RTMetric *)self metrics];
-  v240 = [v239 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_home"];
+  metrics117 = [(RTMetric *)self metrics];
+  v240 = [metrics117 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_home"];
   v241 = [RTMetric binForNumber:v240 bins:v4];
-  v242 = [(RTMetric *)self metrics];
-  [v242 setObject:v241 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_home_bucketed"];
+  metrics118 = [(RTMetric *)self metrics];
+  [metrics118 setObject:v241 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_home_bucketed"];
 
-  v243 = [(RTMetric *)self metrics];
-  v244 = [v243 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home"];
+  metrics119 = [(RTMetric *)self metrics];
+  v244 = [metrics119 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home"];
   v245 = [RTMetric binForNumber:v244 bins:v4];
-  v246 = [(RTMetric *)self metrics];
-  [v246 setObject:v245 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home_bucketed"];
+  metrics120 = [(RTMetric *)self metrics];
+  [metrics120 setObject:v245 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home_bucketed"];
 
-  v247 = [(RTMetric *)self metrics];
-  v248 = [v247 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_work"];
+  metrics121 = [(RTMetric *)self metrics];
+  v248 = [metrics121 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_work"];
   v249 = [RTMetric binForNumber:v248 bins:v4];
-  v250 = [(RTMetric *)self metrics];
-  [v250 setObject:v249 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_work_bucketed"];
+  metrics122 = [(RTMetric *)self metrics];
+  [metrics122 setObject:v249 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_work_bucketed"];
 
-  v251 = [(RTMetric *)self metrics];
-  v252 = [v251 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work"];
+  metrics123 = [(RTMetric *)self metrics];
+  v252 = [metrics123 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work"];
   v253 = [RTMetric binForNumber:v252 bins:v4];
-  v254 = [(RTMetric *)self metrics];
-  [v254 setObject:v253 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work_bucketed"];
+  metrics124 = [(RTMetric *)self metrics];
+  [metrics124 setObject:v253 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work_bucketed"];
 
-  v255 = [(RTMetric *)self metrics];
-  v256 = [v255 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_others"];
+  metrics125 = [(RTMetric *)self metrics];
+  v256 = [metrics125 objectForKeyedSubscript:@"median_daily_total_visit_duration_weekend_others"];
   v257 = [RTMetric binForNumber:v256 bins:v4];
-  v258 = [(RTMetric *)self metrics];
-  [v258 setObject:v257 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_others_bucketed"];
+  metrics126 = [(RTMetric *)self metrics];
+  [metrics126 setObject:v257 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_others_bucketed"];
 
-  v259 = [(RTMetric *)self metrics];
-  v260 = [v259 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others"];
+  metrics127 = [(RTMetric *)self metrics];
+  v260 = [metrics127 objectForKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others"];
   v261 = [RTMetric binForNumber:v260 bins:v4];
-  v262 = [(RTMetric *)self metrics];
-  [v262 setObject:v261 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others_bucketed"];
+  metrics128 = [(RTMetric *)self metrics];
+  [metrics128 setObject:v261 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others_bucketed"];
 
-  v263 = [(RTMetric *)self metrics];
-  v264 = [v263 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home"];
+  metrics129 = [(RTMetric *)self metrics];
+  v264 = [metrics129 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home"];
   v265 = [RTMetric binForNumber:v264 bins:v4];
-  v266 = [(RTMetric *)self metrics];
-  [v266 setObject:v265 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home_bucketed"];
+  metrics130 = [(RTMetric *)self metrics];
+  [metrics130 setObject:v265 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home_bucketed"];
 
-  v267 = [(RTMetric *)self metrics];
-  v268 = [v267 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home"];
+  metrics131 = [(RTMetric *)self metrics];
+  v268 = [metrics131 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home"];
   v269 = [RTMetric binForNumber:v268 bins:v4];
-  v270 = [(RTMetric *)self metrics];
-  [v270 setObject:v269 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home_bucketed"];
+  metrics132 = [(RTMetric *)self metrics];
+  [metrics132 setObject:v269 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home_bucketed"];
 
-  v271 = [(RTMetric *)self metrics];
-  v272 = [v271 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work"];
+  metrics133 = [(RTMetric *)self metrics];
+  v272 = [metrics133 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work"];
   v273 = [RTMetric binForNumber:v272 bins:v4];
-  v274 = [(RTMetric *)self metrics];
-  [v274 setObject:v273 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work_bucketed"];
+  metrics134 = [(RTMetric *)self metrics];
+  [metrics134 setObject:v273 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work_bucketed"];
 
-  v275 = [(RTMetric *)self metrics];
-  v276 = [v275 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work"];
+  metrics135 = [(RTMetric *)self metrics];
+  v276 = [metrics135 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work"];
   v277 = [RTMetric binForNumber:v276 bins:v4];
-  v278 = [(RTMetric *)self metrics];
-  [v278 setObject:v277 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work_bucketed"];
+  metrics136 = [(RTMetric *)self metrics];
+  [metrics136 setObject:v277 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work_bucketed"];
 
-  v279 = [(RTMetric *)self metrics];
-  v280 = [v279 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others"];
+  metrics137 = [(RTMetric *)self metrics];
+  v280 = [metrics137 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others"];
   v281 = [RTMetric binForNumber:v280 bins:v4];
-  v282 = [(RTMetric *)self metrics];
-  [v282 setObject:v281 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others_bucketed"];
+  metrics138 = [(RTMetric *)self metrics];
+  [metrics138 setObject:v281 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others_bucketed"];
 
-  v283 = [(RTMetric *)self metrics];
-  v284 = [v283 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others"];
+  metrics139 = [(RTMetric *)self metrics];
+  v284 = [metrics139 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others"];
   v285 = [RTMetric binForNumber:v284 bins:v4];
-  v286 = [(RTMetric *)self metrics];
-  [v286 setObject:v285 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others_bucketed"];
+  metrics140 = [(RTMetric *)self metrics];
+  [metrics140 setObject:v285 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others_bucketed"];
 
-  v287 = [(RTMetric *)self metrics];
-  v288 = [v287 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home"];
+  metrics141 = [(RTMetric *)self metrics];
+  v288 = [metrics141 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home"];
   v289 = [RTMetric binForNumber:v288 bins:v4];
-  v290 = [(RTMetric *)self metrics];
-  [v290 setObject:v289 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home_bucketed"];
+  metrics142 = [(RTMetric *)self metrics];
+  [metrics142 setObject:v289 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home_bucketed"];
 
-  v291 = [(RTMetric *)self metrics];
-  v292 = [v291 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home"];
+  metrics143 = [(RTMetric *)self metrics];
+  v292 = [metrics143 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home"];
   v293 = [RTMetric binForNumber:v292 bins:v4];
-  v294 = [(RTMetric *)self metrics];
-  [v294 setObject:v293 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home_bucketed"];
+  metrics144 = [(RTMetric *)self metrics];
+  [metrics144 setObject:v293 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home_bucketed"];
 
-  v295 = [(RTMetric *)self metrics];
-  v296 = [v295 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work"];
+  metrics145 = [(RTMetric *)self metrics];
+  v296 = [metrics145 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work"];
   v297 = [RTMetric binForNumber:v296 bins:v4];
-  v298 = [(RTMetric *)self metrics];
-  [v298 setObject:v297 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work_bucketed"];
+  metrics146 = [(RTMetric *)self metrics];
+  [metrics146 setObject:v297 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work_bucketed"];
 
-  v299 = [(RTMetric *)self metrics];
-  v300 = [v299 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work"];
+  metrics147 = [(RTMetric *)self metrics];
+  v300 = [metrics147 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work"];
   v301 = [RTMetric binForNumber:v300 bins:v4];
-  v302 = [(RTMetric *)self metrics];
-  [v302 setObject:v301 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work_bucketed"];
+  metrics148 = [(RTMetric *)self metrics];
+  [metrics148 setObject:v301 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work_bucketed"];
 
-  v303 = [(RTMetric *)self metrics];
-  v304 = [v303 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others"];
+  metrics149 = [(RTMetric *)self metrics];
+  v304 = [metrics149 objectForKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others"];
   v305 = [RTMetric binForNumber:v304 bins:v4];
-  v306 = [(RTMetric *)self metrics];
-  [v306 setObject:v305 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others_bucketed"];
+  metrics150 = [(RTMetric *)self metrics];
+  [metrics150 setObject:v305 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others_bucketed"];
 
-  v307 = [(RTMetric *)self metrics];
-  v308 = [v307 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others"];
+  metrics151 = [(RTMetric *)self metrics];
+  v308 = [metrics151 objectForKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others"];
   v309 = [RTMetric binForNumber:v308 bins:v4];
-  v310 = [(RTMetric *)self metrics];
-  [v310 setObject:v309 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others_bucketed"];
+  metrics152 = [(RTMetric *)self metrics];
+  [metrics152 setObject:v309 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others_bucketed"];
 
-  v311 = [(RTMetric *)self metrics];
-  v312 = [v311 objectForKeyedSubscript:@"percentage_of_days_with_charging_home"];
+  metrics153 = [(RTMetric *)self metrics];
+  v312 = [metrics153 objectForKeyedSubscript:@"percentage_of_days_with_charging_home"];
   v313 = +[RTPlaceDataMetrics binArrayPercentage];
   v314 = [RTMetric binForNumber:v312 bins:v313];
-  v315 = [(RTMetric *)self metrics];
-  [v315 setObject:v314 forKeyedSubscript:@"percentage_of_days_with_charging_home_bucketed"];
+  metrics154 = [(RTMetric *)self metrics];
+  [metrics154 setObject:v314 forKeyedSubscript:@"percentage_of_days_with_charging_home_bucketed"];
 
-  v316 = [(RTMetric *)self metrics];
-  v317 = [v316 objectForKeyedSubscript:@"percentage_of_days_with_charging_work"];
+  metrics155 = [(RTMetric *)self metrics];
+  v317 = [metrics155 objectForKeyedSubscript:@"percentage_of_days_with_charging_work"];
   v318 = +[RTPlaceDataMetrics binArrayPercentage];
   v319 = [RTMetric binForNumber:v317 bins:v318];
-  v320 = [(RTMetric *)self metrics];
-  [v320 setObject:v319 forKeyedSubscript:@"percentage_of_days_with_charging_work_bucketed"];
+  metrics156 = [(RTMetric *)self metrics];
+  [metrics156 setObject:v319 forKeyedSubscript:@"percentage_of_days_with_charging_work_bucketed"];
 
-  v321 = [(RTMetric *)self metrics];
-  v322 = [v321 objectForKeyedSubscript:@"percentage_of_days_with_charging_others"];
+  metrics157 = [(RTMetric *)self metrics];
+  v322 = [metrics157 objectForKeyedSubscript:@"percentage_of_days_with_charging_others"];
   v323 = +[RTPlaceDataMetrics binArrayPercentage];
   v324 = [RTMetric binForNumber:v322 bins:v323];
-  v325 = [(RTMetric *)self metrics];
-  [v325 setObject:v324 forKeyedSubscript:@"percentage_of_days_with_charging_others_bucketed"];
+  metrics158 = [(RTMetric *)self metrics];
+  [metrics158 setObject:v324 forKeyedSubscript:@"percentage_of_days_with_charging_others_bucketed"];
 
-  v326 = [(RTMetric *)self metrics];
-  v327 = [v326 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_home"];
+  metrics159 = [(RTMetric *)self metrics];
+  v327 = [metrics159 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_home"];
   v328 = +[RTPlaceDataMetrics binArrayPercentage];
   v329 = [RTMetric binForNumber:v327 bins:v328];
-  v330 = [(RTMetric *)self metrics];
-  [v330 setObject:v329 forKeyedSubscript:@"percentage_of_days_with_static_motion_home_bucketed"];
+  metrics160 = [(RTMetric *)self metrics];
+  [metrics160 setObject:v329 forKeyedSubscript:@"percentage_of_days_with_static_motion_home_bucketed"];
 
-  v331 = [(RTMetric *)self metrics];
-  v332 = [v331 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_work"];
+  metrics161 = [(RTMetric *)self metrics];
+  v332 = [metrics161 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_work"];
   v333 = +[RTPlaceDataMetrics binArrayPercentage];
   v334 = [RTMetric binForNumber:v332 bins:v333];
-  v335 = [(RTMetric *)self metrics];
-  [v335 setObject:v334 forKeyedSubscript:@"percentage_of_days_with_static_motion_work_bucketed"];
+  metrics162 = [(RTMetric *)self metrics];
+  [metrics162 setObject:v334 forKeyedSubscript:@"percentage_of_days_with_static_motion_work_bucketed"];
 
-  v336 = [(RTMetric *)self metrics];
-  v337 = [v336 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_others"];
+  metrics163 = [(RTMetric *)self metrics];
+  v337 = [metrics163 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion_others"];
   v338 = +[RTPlaceDataMetrics binArrayPercentage];
   v339 = [RTMetric binForNumber:v337 bins:v338];
-  v340 = [(RTMetric *)self metrics];
-  [v340 setObject:v339 forKeyedSubscript:@"percentage_of_days_with_static_motion_others_bucketed"];
+  metrics164 = [(RTMetric *)self metrics];
+  [metrics164 setObject:v339 forKeyedSubscript:@"percentage_of_days_with_static_motion_others_bucketed"];
 
-  v341 = [(RTMetric *)self metrics];
-  v342 = [v341 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_home"];
+  metrics165 = [(RTMetric *)self metrics];
+  v342 = [metrics165 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_home"];
   v343 = +[RTPlaceDataMetrics binArrayPercentage];
   v344 = [RTMetric binForNumber:v342 bins:v343];
-  v345 = [(RTMetric *)self metrics];
-  [v345 setObject:v344 forKeyedSubscript:@"percentage_of_days_with_screen_lock_home_bucketed"];
+  metrics166 = [(RTMetric *)self metrics];
+  [metrics166 setObject:v344 forKeyedSubscript:@"percentage_of_days_with_screen_lock_home_bucketed"];
 
-  v346 = [(RTMetric *)self metrics];
-  v347 = [v346 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_work"];
+  metrics167 = [(RTMetric *)self metrics];
+  v347 = [metrics167 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_work"];
   v348 = +[RTPlaceDataMetrics binArrayPercentage];
   v349 = [RTMetric binForNumber:v347 bins:v348];
-  v350 = [(RTMetric *)self metrics];
-  [v350 setObject:v349 forKeyedSubscript:@"percentage_of_days_with_screen_lock_work_bucketed"];
+  metrics168 = [(RTMetric *)self metrics];
+  [metrics168 setObject:v349 forKeyedSubscript:@"percentage_of_days_with_screen_lock_work_bucketed"];
 
-  v351 = [(RTMetric *)self metrics];
-  v352 = [v351 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_others"];
+  metrics169 = [(RTMetric *)self metrics];
+  v352 = [metrics169 objectForKeyedSubscript:@"percentage_of_days_with_screenLock_others"];
   v353 = +[RTPlaceDataMetrics binArrayPercentage];
   v354 = [RTMetric binForNumber:v352 bins:v353];
-  v355 = [(RTMetric *)self metrics];
-  [v355 setObject:v354 forKeyedSubscript:@"percentage_of_days_with_screen_lock_others_bucketed"];
+  metrics170 = [(RTMetric *)self metrics];
+  [metrics170 setObject:v354 forKeyedSubscript:@"percentage_of_days_with_screen_lock_others_bucketed"];
 
-  v356 = [(RTMetric *)self metrics];
-  v357 = [v356 objectForKeyedSubscript:@"median_daily_total_charging_duration_home"];
+  metrics171 = [(RTMetric *)self metrics];
+  v357 = [metrics171 objectForKeyedSubscript:@"median_daily_total_charging_duration_home"];
   v358 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v359 = [RTMetric binForNumber:v357 bins:v358];
-  v360 = [(RTMetric *)self metrics];
-  [v360 setObject:v359 forKeyedSubscript:@"median_daily_total_charging_duration_home_bucketed"];
+  metrics172 = [(RTMetric *)self metrics];
+  [metrics172 setObject:v359 forKeyedSubscript:@"median_daily_total_charging_duration_home_bucketed"];
 
-  v361 = [(RTMetric *)self metrics];
-  v362 = [v361 objectForKeyedSubscript:@"mean_daily_total_charging_duration_home"];
+  metrics173 = [(RTMetric *)self metrics];
+  v362 = [metrics173 objectForKeyedSubscript:@"mean_daily_total_charging_duration_home"];
   v363 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v364 = [RTMetric binForNumber:v362 bins:v363];
-  v365 = [(RTMetric *)self metrics];
-  [v365 setObject:v364 forKeyedSubscript:@"mean_daily_total_charging_duration_home_bucketed"];
+  metrics174 = [(RTMetric *)self metrics];
+  [metrics174 setObject:v364 forKeyedSubscript:@"mean_daily_total_charging_duration_home_bucketed"];
 
-  v366 = [(RTMetric *)self metrics];
-  v367 = [v366 objectForKeyedSubscript:@"median_daily_total_charging_duration_work"];
+  metrics175 = [(RTMetric *)self metrics];
+  v367 = [metrics175 objectForKeyedSubscript:@"median_daily_total_charging_duration_work"];
   v368 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v369 = [RTMetric binForNumber:v367 bins:v368];
-  v370 = [(RTMetric *)self metrics];
-  [v370 setObject:v369 forKeyedSubscript:@"median_daily_total_charging_duration_work_bucketed"];
+  metrics176 = [(RTMetric *)self metrics];
+  [metrics176 setObject:v369 forKeyedSubscript:@"median_daily_total_charging_duration_work_bucketed"];
 
-  v371 = [(RTMetric *)self metrics];
-  v372 = [v371 objectForKeyedSubscript:@"mean_daily_total_charging_duration_work"];
+  metrics177 = [(RTMetric *)self metrics];
+  v372 = [metrics177 objectForKeyedSubscript:@"mean_daily_total_charging_duration_work"];
   v373 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v374 = [RTMetric binForNumber:v372 bins:v373];
-  v375 = [(RTMetric *)self metrics];
-  [v375 setObject:v374 forKeyedSubscript:@"mean_daily_total_charging_duration_work_bucketed"];
+  metrics178 = [(RTMetric *)self metrics];
+  [metrics178 setObject:v374 forKeyedSubscript:@"mean_daily_total_charging_duration_work_bucketed"];
 
-  v376 = [(RTMetric *)self metrics];
-  v377 = [v376 objectForKeyedSubscript:@"median_daily_total_charging_duration_others"];
+  metrics179 = [(RTMetric *)self metrics];
+  v377 = [metrics179 objectForKeyedSubscript:@"median_daily_total_charging_duration_others"];
   v378 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v379 = [RTMetric binForNumber:v377 bins:v378];
-  v380 = [(RTMetric *)self metrics];
-  [v380 setObject:v379 forKeyedSubscript:@"median_daily_total_charging_duration_others_bucketed"];
+  metrics180 = [(RTMetric *)self metrics];
+  [metrics180 setObject:v379 forKeyedSubscript:@"median_daily_total_charging_duration_others_bucketed"];
 
-  v381 = [(RTMetric *)self metrics];
-  v382 = [v381 objectForKeyedSubscript:@"mean_daily_total_charging_duration_others"];
+  metrics181 = [(RTMetric *)self metrics];
+  v382 = [metrics181 objectForKeyedSubscript:@"mean_daily_total_charging_duration_others"];
   v383 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v384 = [RTMetric binForNumber:v382 bins:v383];
-  v385 = [(RTMetric *)self metrics];
-  [v385 setObject:v384 forKeyedSubscript:@"mean_daily_total_charging_duration_others_bucketed"];
+  metrics182 = [(RTMetric *)self metrics];
+  [metrics182 setObject:v384 forKeyedSubscript:@"mean_daily_total_charging_duration_others_bucketed"];
 
-  v386 = [(RTMetric *)self metrics];
-  v387 = [v386 objectForKeyedSubscript:@"median_daily_longest_charging_duration_home"];
+  metrics183 = [(RTMetric *)self metrics];
+  v387 = [metrics183 objectForKeyedSubscript:@"median_daily_longest_charging_duration_home"];
   v388 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v389 = [RTMetric binForNumber:v387 bins:v388];
-  v390 = [(RTMetric *)self metrics];
-  [v390 setObject:v389 forKeyedSubscript:@"median_daily_longest_charging_duration_home_bucketed"];
+  metrics184 = [(RTMetric *)self metrics];
+  [metrics184 setObject:v389 forKeyedSubscript:@"median_daily_longest_charging_duration_home_bucketed"];
 
-  v391 = [(RTMetric *)self metrics];
-  v392 = [v391 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_home"];
+  metrics185 = [(RTMetric *)self metrics];
+  v392 = [metrics185 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_home"];
   v393 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v394 = [RTMetric binForNumber:v392 bins:v393];
-  v395 = [(RTMetric *)self metrics];
-  [v395 setObject:v394 forKeyedSubscript:@"mean_daily_longest_charging_duration_home_bucketed"];
+  metrics186 = [(RTMetric *)self metrics];
+  [metrics186 setObject:v394 forKeyedSubscript:@"mean_daily_longest_charging_duration_home_bucketed"];
 
-  v396 = [(RTMetric *)self metrics];
-  v397 = [v396 objectForKeyedSubscript:@"median_daily_longest_charging_duration_work"];
+  metrics187 = [(RTMetric *)self metrics];
+  v397 = [metrics187 objectForKeyedSubscript:@"median_daily_longest_charging_duration_work"];
   v398 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v399 = [RTMetric binForNumber:v397 bins:v398];
-  v400 = [(RTMetric *)self metrics];
-  [v400 setObject:v399 forKeyedSubscript:@"median_daily_longest_charging_duration_work_bucketed"];
+  metrics188 = [(RTMetric *)self metrics];
+  [metrics188 setObject:v399 forKeyedSubscript:@"median_daily_longest_charging_duration_work_bucketed"];
 
-  v401 = [(RTMetric *)self metrics];
-  v402 = [v401 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_work"];
+  metrics189 = [(RTMetric *)self metrics];
+  v402 = [metrics189 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_work"];
   v403 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v404 = [RTMetric binForNumber:v402 bins:v403];
-  v405 = [(RTMetric *)self metrics];
-  [v405 setObject:v404 forKeyedSubscript:@"mean_daily_longest_charging_duration_work_bucketed"];
+  metrics190 = [(RTMetric *)self metrics];
+  [metrics190 setObject:v404 forKeyedSubscript:@"mean_daily_longest_charging_duration_work_bucketed"];
 
-  v406 = [(RTMetric *)self metrics];
-  v407 = [v406 objectForKeyedSubscript:@"median_daily_longest_charging_duration_others"];
+  metrics191 = [(RTMetric *)self metrics];
+  v407 = [metrics191 objectForKeyedSubscript:@"median_daily_longest_charging_duration_others"];
   v408 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v409 = [RTMetric binForNumber:v407 bins:v408];
-  v410 = [(RTMetric *)self metrics];
-  [v410 setObject:v409 forKeyedSubscript:@"median_dailylongestchargingdurationothers_bucketed"];
+  metrics192 = [(RTMetric *)self metrics];
+  [metrics192 setObject:v409 forKeyedSubscript:@"median_dailylongestchargingdurationothers_bucketed"];
 
-  v411 = [(RTMetric *)self metrics];
-  v412 = [v411 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_others"];
+  metrics193 = [(RTMetric *)self metrics];
+  v412 = [metrics193 objectForKeyedSubscript:@"mean_daily_longest_charging_duration_others"];
   v413 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v414 = [RTMetric binForNumber:v412 bins:v413];
-  v415 = [(RTMetric *)self metrics];
-  [v415 setObject:v414 forKeyedSubscript:@"mean_daily_longest_charging_duration_others_bucketed"];
+  metrics194 = [(RTMetric *)self metrics];
+  [metrics194 setObject:v414 forKeyedSubscript:@"mean_daily_longest_charging_duration_others_bucketed"];
 
-  v416 = [(RTMetric *)self metrics];
-  v417 = [v416 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_home"];
+  metrics195 = [(RTMetric *)self metrics];
+  v417 = [metrics195 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_home"];
   v418 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v419 = [RTMetric binForNumber:v417 bins:v418];
-  v420 = [(RTMetric *)self metrics];
-  [v420 setObject:v419 forKeyedSubscript:@"median_daily_total_static_motion_duration_home_bucketed"];
+  metrics196 = [(RTMetric *)self metrics];
+  [metrics196 setObject:v419 forKeyedSubscript:@"median_daily_total_static_motion_duration_home_bucketed"];
 
-  v421 = [(RTMetric *)self metrics];
-  v422 = [v421 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_home"];
+  metrics197 = [(RTMetric *)self metrics];
+  v422 = [metrics197 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_home"];
   v423 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v424 = [RTMetric binForNumber:v422 bins:v423];
-  v425 = [(RTMetric *)self metrics];
-  [v425 setObject:v424 forKeyedSubscript:@"mean_daily_total_static_motion_duration_home_bucketed"];
+  metrics198 = [(RTMetric *)self metrics];
+  [metrics198 setObject:v424 forKeyedSubscript:@"mean_daily_total_static_motion_duration_home_bucketed"];
 
-  v426 = [(RTMetric *)self metrics];
-  v427 = [v426 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_work"];
+  metrics199 = [(RTMetric *)self metrics];
+  v427 = [metrics199 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_work"];
   v428 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v429 = [RTMetric binForNumber:v427 bins:v428];
-  v430 = [(RTMetric *)self metrics];
-  [v430 setObject:v429 forKeyedSubscript:@"median_daily_total_static_motion_duration_work_bucketed"];
+  metrics200 = [(RTMetric *)self metrics];
+  [metrics200 setObject:v429 forKeyedSubscript:@"median_daily_total_static_motion_duration_work_bucketed"];
 
-  v431 = [(RTMetric *)self metrics];
-  v432 = [v431 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_work"];
+  metrics201 = [(RTMetric *)self metrics];
+  v432 = [metrics201 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_work"];
   v433 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v434 = [RTMetric binForNumber:v432 bins:v433];
-  v435 = [(RTMetric *)self metrics];
-  [v435 setObject:v434 forKeyedSubscript:@"mean_daily_total_static_motion_duration_work_bucketed"];
+  metrics202 = [(RTMetric *)self metrics];
+  [metrics202 setObject:v434 forKeyedSubscript:@"mean_daily_total_static_motion_duration_work_bucketed"];
 
-  v436 = [(RTMetric *)self metrics];
-  v437 = [v436 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_others"];
+  metrics203 = [(RTMetric *)self metrics];
+  v437 = [metrics203 objectForKeyedSubscript:@"median_daily_total_static_motion_duration_others"];
   v438 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v439 = [RTMetric binForNumber:v437 bins:v438];
-  v440 = [(RTMetric *)self metrics];
-  [v440 setObject:v439 forKeyedSubscript:@"median_daily_total_static_motion_duration_others_bucketed"];
+  metrics204 = [(RTMetric *)self metrics];
+  [metrics204 setObject:v439 forKeyedSubscript:@"median_daily_total_static_motion_duration_others_bucketed"];
 
-  v441 = [(RTMetric *)self metrics];
-  v442 = [v441 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_others"];
+  metrics205 = [(RTMetric *)self metrics];
+  v442 = [metrics205 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration_others"];
   v443 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v444 = [RTMetric binForNumber:v442 bins:v443];
-  v445 = [(RTMetric *)self metrics];
-  [v445 setObject:v444 forKeyedSubscript:@"mean_daily_total_static_motion_duration_others_bucketed"];
+  metrics206 = [(RTMetric *)self metrics];
+  [metrics206 setObject:v444 forKeyedSubscript:@"mean_daily_total_static_motion_duration_others_bucketed"];
 
-  v446 = [(RTMetric *)self metrics];
-  v447 = [v446 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_home"];
+  metrics207 = [(RTMetric *)self metrics];
+  v447 = [metrics207 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_home"];
   v448 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v449 = [RTMetric binForNumber:v447 bins:v448];
-  v450 = [(RTMetric *)self metrics];
-  [v450 setObject:v449 forKeyedSubscript:@"median_daily_longest_static_motion_duration_home_bucketed"];
+  metrics208 = [(RTMetric *)self metrics];
+  [metrics208 setObject:v449 forKeyedSubscript:@"median_daily_longest_static_motion_duration_home_bucketed"];
 
-  v451 = [(RTMetric *)self metrics];
-  v452 = [v451 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_home"];
+  metrics209 = [(RTMetric *)self metrics];
+  v452 = [metrics209 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_home"];
   v453 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v454 = [RTMetric binForNumber:v452 bins:v453];
-  v455 = [(RTMetric *)self metrics];
-  [v455 setObject:v454 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_home_bucketed"];
+  metrics210 = [(RTMetric *)self metrics];
+  [metrics210 setObject:v454 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_home_bucketed"];
 
-  v456 = [(RTMetric *)self metrics];
-  v457 = [v456 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_work"];
+  metrics211 = [(RTMetric *)self metrics];
+  v457 = [metrics211 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_work"];
   v458 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v459 = [RTMetric binForNumber:v457 bins:v458];
-  v460 = [(RTMetric *)self metrics];
-  [v460 setObject:v459 forKeyedSubscript:@"median_daily_longest_static_motion_duration_work_bucketed"];
+  metrics212 = [(RTMetric *)self metrics];
+  [metrics212 setObject:v459 forKeyedSubscript:@"median_daily_longest_static_motion_duration_work_bucketed"];
 
-  v461 = [(RTMetric *)self metrics];
-  v462 = [v461 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_work"];
+  metrics213 = [(RTMetric *)self metrics];
+  v462 = [metrics213 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_work"];
   v463 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v464 = [RTMetric binForNumber:v462 bins:v463];
-  v465 = [(RTMetric *)self metrics];
-  [v465 setObject:v464 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_work_bucketed"];
+  metrics214 = [(RTMetric *)self metrics];
+  [metrics214 setObject:v464 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_work_bucketed"];
 
-  v466 = [(RTMetric *)self metrics];
-  v467 = [v466 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_others"];
+  metrics215 = [(RTMetric *)self metrics];
+  v467 = [metrics215 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration_others"];
   v468 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v469 = [RTMetric binForNumber:v467 bins:v468];
-  v470 = [(RTMetric *)self metrics];
-  [v470 setObject:v469 forKeyedSubscript:@"median_daily_longest_static_motion_duration_others_bucketed"];
+  metrics216 = [(RTMetric *)self metrics];
+  [metrics216 setObject:v469 forKeyedSubscript:@"median_daily_longest_static_motion_duration_others_bucketed"];
 
-  v471 = [(RTMetric *)self metrics];
-  v472 = [v471 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_others"];
+  metrics217 = [(RTMetric *)self metrics];
+  v472 = [metrics217 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration_others"];
   v473 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v474 = [RTMetric binForNumber:v472 bins:v473];
-  v475 = [(RTMetric *)self metrics];
-  [v475 setObject:v474 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_others_bucketed"];
+  metrics218 = [(RTMetric *)self metrics];
+  [metrics218 setObject:v474 forKeyedSubscript:@"mean_daily_longest_static_motion_duration_others_bucketed"];
 
-  v476 = [(RTMetric *)self metrics];
-  v477 = [v476 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_home"];
+  metrics219 = [(RTMetric *)self metrics];
+  v477 = [metrics219 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_home"];
   v478 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v479 = [RTMetric binForNumber:v477 bins:v478];
-  v480 = [(RTMetric *)self metrics];
-  [v480 setObject:v479 forKeyedSubscript:@"median_daily_total_screen_lock_duration_home_bucketed"];
+  metrics220 = [(RTMetric *)self metrics];
+  [metrics220 setObject:v479 forKeyedSubscript:@"median_daily_total_screen_lock_duration_home_bucketed"];
 
-  v481 = [(RTMetric *)self metrics];
-  v482 = [v481 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_home"];
+  metrics221 = [(RTMetric *)self metrics];
+  v482 = [metrics221 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_home"];
   v483 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v484 = [RTMetric binForNumber:v482 bins:v483];
-  v485 = [(RTMetric *)self metrics];
-  [v485 setObject:v484 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_home_bucketed"];
+  metrics222 = [(RTMetric *)self metrics];
+  [metrics222 setObject:v484 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_home_bucketed"];
 
-  v486 = [(RTMetric *)self metrics];
-  v487 = [v486 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_work"];
+  metrics223 = [(RTMetric *)self metrics];
+  v487 = [metrics223 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_work"];
   v488 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v489 = [RTMetric binForNumber:v487 bins:v488];
-  v490 = [(RTMetric *)self metrics];
-  [v490 setObject:v489 forKeyedSubscript:@"median_daily_total_screen_lock_duration_work_bucketed"];
+  metrics224 = [(RTMetric *)self metrics];
+  [metrics224 setObject:v489 forKeyedSubscript:@"median_daily_total_screen_lock_duration_work_bucketed"];
 
-  v491 = [(RTMetric *)self metrics];
-  v492 = [v491 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_work"];
+  metrics225 = [(RTMetric *)self metrics];
+  v492 = [metrics225 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_work"];
   v493 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v494 = [RTMetric binForNumber:v492 bins:v493];
-  v495 = [(RTMetric *)self metrics];
-  [v495 setObject:v494 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_work_bucketed"];
+  metrics226 = [(RTMetric *)self metrics];
+  [metrics226 setObject:v494 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_work_bucketed"];
 
-  v496 = [(RTMetric *)self metrics];
-  v497 = [v496 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_others"];
+  metrics227 = [(RTMetric *)self metrics];
+  v497 = [metrics227 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration_others"];
   v498 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v499 = [RTMetric binForNumber:v497 bins:v498];
-  v500 = [(RTMetric *)self metrics];
-  [v500 setObject:v499 forKeyedSubscript:@"median_daily_total_screen_lock_duration_others_bucketed"];
+  metrics228 = [(RTMetric *)self metrics];
+  [metrics228 setObject:v499 forKeyedSubscript:@"median_daily_total_screen_lock_duration_others_bucketed"];
 
-  v501 = [(RTMetric *)self metrics];
-  v502 = [v501 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_others"];
+  metrics229 = [(RTMetric *)self metrics];
+  v502 = [metrics229 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration_others"];
   v503 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v504 = [RTMetric binForNumber:v502 bins:v503];
-  v505 = [(RTMetric *)self metrics];
-  [v505 setObject:v504 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_others_bucketed"];
+  metrics230 = [(RTMetric *)self metrics];
+  [metrics230 setObject:v504 forKeyedSubscript:@"mean_daily_total_screen_lock_duration_others_bucketed"];
 
-  v506 = [(RTMetric *)self metrics];
-  v507 = [v506 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_home"];
+  metrics231 = [(RTMetric *)self metrics];
+  v507 = [metrics231 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_home"];
   v508 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v509 = [RTMetric binForNumber:v507 bins:v508];
-  v510 = [(RTMetric *)self metrics];
-  [v510 setObject:v509 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_home_bucketed"];
+  metrics232 = [(RTMetric *)self metrics];
+  [metrics232 setObject:v509 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_home_bucketed"];
 
-  v511 = [(RTMetric *)self metrics];
-  v512 = [v511 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_home"];
+  metrics233 = [(RTMetric *)self metrics];
+  v512 = [metrics233 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_home"];
   v513 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v514 = [RTMetric binForNumber:v512 bins:v513];
-  v515 = [(RTMetric *)self metrics];
-  [v515 setObject:v514 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_home_bucketed"];
+  metrics234 = [(RTMetric *)self metrics];
+  [metrics234 setObject:v514 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_home_bucketed"];
 
-  v516 = [(RTMetric *)self metrics];
-  v517 = [v516 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_work"];
+  metrics235 = [(RTMetric *)self metrics];
+  v517 = [metrics235 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_work"];
   v518 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v519 = [RTMetric binForNumber:v517 bins:v518];
-  v520 = [(RTMetric *)self metrics];
-  [v520 setObject:v519 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_work_bucketed"];
+  metrics236 = [(RTMetric *)self metrics];
+  [metrics236 setObject:v519 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_work_bucketed"];
 
-  v521 = [(RTMetric *)self metrics];
-  v522 = [v521 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_work"];
+  metrics237 = [(RTMetric *)self metrics];
+  v522 = [metrics237 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_work"];
   v523 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v524 = [RTMetric binForNumber:v522 bins:v523];
-  v525 = [(RTMetric *)self metrics];
-  [v525 setObject:v524 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_work_bucketed"];
+  metrics238 = [(RTMetric *)self metrics];
+  [metrics238 setObject:v524 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_work_bucketed"];
 
-  v526 = [(RTMetric *)self metrics];
-  v527 = [v526 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_others"];
+  metrics239 = [(RTMetric *)self metrics];
+  v527 = [metrics239 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration_others"];
   v528 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v529 = [RTMetric binForNumber:v527 bins:v528];
-  v530 = [(RTMetric *)self metrics];
-  [v530 setObject:v529 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_others_bucketed"];
+  metrics240 = [(RTMetric *)self metrics];
+  [metrics240 setObject:v529 forKeyedSubscript:@"median_daily_longest_screen_lock_duration_others_bucketed"];
 
-  v531 = [(RTMetric *)self metrics];
-  v532 = [v531 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_others"];
+  metrics241 = [(RTMetric *)self metrics];
+  v532 = [metrics241 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration_others"];
   v533 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v534 = [RTMetric binForNumber:v532 bins:v533];
-  v535 = [(RTMetric *)self metrics];
-  [v535 setObject:v534 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_others_bucketed"];
+  metrics242 = [(RTMetric *)self metrics];
+  [metrics242 setObject:v534 forKeyedSubscript:@"mean_daily_longest_screen_lock_duration_others_bucketed"];
 
-  v536 = [(RTMetric *)self metrics];
-  v537 = [v536 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_home"];
+  metrics243 = [(RTMetric *)self metrics];
+  v537 = [metrics243 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_home"];
   v538 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v539 = [RTMetric binForNumber:v537 bins:v538];
-  v540 = [(RTMetric *)self metrics];
-  [v540 setObject:v539 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics244 = [(RTMetric *)self metrics];
+  [metrics244 setObject:v539 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v541 = [(RTMetric *)self metrics];
-  v542 = [v541 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_home"];
+  metrics245 = [(RTMetric *)self metrics];
+  v542 = [metrics245 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_home"];
   v543 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v544 = [RTMetric binForNumber:v542 bins:v543];
-  v545 = [(RTMetric *)self metrics];
-  [v545 setObject:v544 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics246 = [(RTMetric *)self metrics];
+  [metrics246 setObject:v544 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v546 = [(RTMetric *)self metrics];
-  v547 = [v546 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_home"];
+  metrics247 = [(RTMetric *)self metrics];
+  v547 = [metrics247 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_home"];
   v548 = +[RTPlaceDataMetrics binArrayPercentage];
   v549 = [RTMetric binForNumber:v547 bins:v548];
-  v550 = [(RTMetric *)self metrics];
-  [v550 setObject:v549 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_home_bucketed"];
+  metrics248 = [(RTMetric *)self metrics];
+  [metrics248 setObject:v549 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_home_bucketed"];
 
-  v551 = [(RTMetric *)self metrics];
-  v552 = [v551 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_work"];
+  metrics249 = [(RTMetric *)self metrics];
+  v552 = [metrics249 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_work"];
   v553 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v554 = [RTMetric binForNumber:v552 bins:v553];
-  v555 = [(RTMetric *)self metrics];
-  [v555 setObject:v554 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics250 = [(RTMetric *)self metrics];
+  [metrics250 setObject:v554 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v556 = [(RTMetric *)self metrics];
-  v557 = [v556 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_work"];
+  metrics251 = [(RTMetric *)self metrics];
+  v557 = [metrics251 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_work"];
   v558 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v559 = [RTMetric binForNumber:v557 bins:v558];
-  v560 = [(RTMetric *)self metrics];
-  [v560 setObject:v559 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics252 = [(RTMetric *)self metrics];
+  [metrics252 setObject:v559 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v561 = [(RTMetric *)self metrics];
-  v562 = [v561 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_work"];
+  metrics253 = [(RTMetric *)self metrics];
+  v562 = [metrics253 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_work"];
   v563 = +[RTPlaceDataMetrics binArrayPercentage];
   v564 = [RTMetric binForNumber:v562 bins:v563];
-  v565 = [(RTMetric *)self metrics];
-  [v565 setObject:v564 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_work_bucketed"];
+  metrics254 = [(RTMetric *)self metrics];
+  [metrics254 setObject:v564 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_work_bucketed"];
 
-  v566 = [(RTMetric *)self metrics];
-  v567 = [v566 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_others"];
+  metrics255 = [(RTMetric *)self metrics];
+  v567 = [metrics255 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_others"];
   v568 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v569 = [RTMetric binForNumber:v567 bins:v568];
-  v570 = [(RTMetric *)self metrics];
-  [v570 setObject:v569 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics256 = [(RTMetric *)self metrics];
+  [metrics256 setObject:v569 forKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
 
-  v571 = [(RTMetric *)self metrics];
-  v572 = [v571 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_others"];
+  metrics257 = [(RTMetric *)self metrics];
+  v572 = [metrics257 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_others"];
   v573 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v574 = [RTMetric binForNumber:v572 bins:v573];
-  v575 = [(RTMetric *)self metrics];
-  [v575 setObject:v574 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics258 = [(RTMetric *)self metrics];
+  [metrics258 setObject:v574 forKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
 
-  v576 = [(RTMetric *)self metrics];
-  v577 = [v576 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_others"];
+  metrics259 = [(RTMetric *)self metrics];
+  v577 = [metrics259 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_others"];
   v578 = +[RTPlaceDataMetrics binArrayPercentage];
   v579 = [RTMetric binForNumber:v577 bins:v578];
-  v580 = [(RTMetric *)self metrics];
-  [v580 setObject:v579 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_others_bucketed"];
+  metrics260 = [(RTMetric *)self metrics];
+  [metrics260 setObject:v579 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_others_bucketed"];
 
-  v581 = [(RTMetric *)self metrics];
-  v582 = [v581 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_home"];
+  metrics261 = [(RTMetric *)self metrics];
+  v582 = [metrics261 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_home"];
   v583 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v584 = [RTMetric binForNumber:v582 bins:v583];
-  v585 = [(RTMetric *)self metrics];
-  [v585 setObject:v584 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics262 = [(RTMetric *)self metrics];
+  [metrics262 setObject:v584 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v586 = [(RTMetric *)self metrics];
-  v587 = [v586 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_home"];
+  metrics263 = [(RTMetric *)self metrics];
+  v587 = [metrics263 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_home"];
   v588 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v589 = [RTMetric binForNumber:v587 bins:v588];
-  v590 = [(RTMetric *)self metrics];
-  [v590 setObject:v589 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics264 = [(RTMetric *)self metrics];
+  [metrics264 setObject:v589 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v591 = [(RTMetric *)self metrics];
-  v592 = [v591 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_home"];
+  metrics265 = [(RTMetric *)self metrics];
+  v592 = [metrics265 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_home"];
   v593 = +[RTPlaceDataMetrics binArrayPercentage];
   v594 = [RTMetric binForNumber:v592 bins:v593];
-  v595 = [(RTMetric *)self metrics];
-  [v595 setObject:v594 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_home_bucketed"];
+  metrics266 = [(RTMetric *)self metrics];
+  [metrics266 setObject:v594 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_home_bucketed"];
 
-  v596 = [(RTMetric *)self metrics];
-  v597 = [v596 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_work"];
+  metrics267 = [(RTMetric *)self metrics];
+  v597 = [metrics267 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_work"];
   v598 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v599 = [RTMetric binForNumber:v597 bins:v598];
-  v600 = [(RTMetric *)self metrics];
-  [v600 setObject:v599 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics268 = [(RTMetric *)self metrics];
+  [metrics268 setObject:v599 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v601 = [(RTMetric *)self metrics];
-  v602 = [v601 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_work"];
+  metrics269 = [(RTMetric *)self metrics];
+  v602 = [metrics269 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_work"];
   v603 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v604 = [RTMetric binForNumber:v602 bins:v603];
-  v605 = [(RTMetric *)self metrics];
-  [v605 setObject:v604 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics270 = [(RTMetric *)self metrics];
+  [metrics270 setObject:v604 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v606 = [(RTMetric *)self metrics];
-  v607 = [v606 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_work"];
+  metrics271 = [(RTMetric *)self metrics];
+  v607 = [metrics271 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_work"];
   v608 = +[RTPlaceDataMetrics binArrayPercentage];
   v609 = [RTMetric binForNumber:v607 bins:v608];
-  v610 = [(RTMetric *)self metrics];
-  [v610 setObject:v609 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_work_bucketed"];
+  metrics272 = [(RTMetric *)self metrics];
+  [metrics272 setObject:v609 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_work_bucketed"];
 
-  v611 = [(RTMetric *)self metrics];
-  v612 = [v611 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_others"];
+  metrics273 = [(RTMetric *)self metrics];
+  v612 = [metrics273 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_others"];
   v613 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v614 = [RTMetric binForNumber:v612 bins:v613];
-  v615 = [(RTMetric *)self metrics];
-  [v615 setObject:v614 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics274 = [(RTMetric *)self metrics];
+  [metrics274 setObject:v614 forKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
 
-  v616 = [(RTMetric *)self metrics];
-  v617 = [v616 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_others"];
+  metrics275 = [(RTMetric *)self metrics];
+  v617 = [metrics275 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_others"];
   v618 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v619 = [RTMetric binForNumber:v617 bins:v618];
-  v620 = [(RTMetric *)self metrics];
-  [v620 setObject:v619 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics276 = [(RTMetric *)self metrics];
+  [metrics276 setObject:v619 forKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
 
-  v621 = [(RTMetric *)self metrics];
-  v622 = [v621 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_others"];
+  metrics277 = [(RTMetric *)self metrics];
+  v622 = [metrics277 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_others"];
   v623 = +[RTPlaceDataMetrics binArrayPercentage];
   v624 = [RTMetric binForNumber:v622 bins:v623];
-  v625 = [(RTMetric *)self metrics];
-  [v625 setObject:v624 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_others_bucketed"];
+  metrics278 = [(RTMetric *)self metrics];
+  [metrics278 setObject:v624 forKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection_others_bucketed"];
 
-  v626 = [(RTMetric *)self metrics];
-  v627 = [v626 objectForKeyedSubscript:@"intervalToCalculateStats"];
+  metrics279 = [(RTMetric *)self metrics];
+  v627 = [metrics279 objectForKeyedSubscript:@"intervalToCalculateStats"];
   v628 = [RTMetric binForNumber:v627 bins:v961];
-  v629 = [(RTMetric *)self metrics];
-  [v629 setObject:v628 forKeyedSubscript:@"intervalToCalculateStats_bucketed"];
+  metrics280 = [(RTMetric *)self metrics];
+  [metrics280 setObject:v628 forKeyedSubscript:@"intervalToCalculateStats_bucketed"];
 
-  v630 = [(RTMetric *)self metrics];
-  v631 = [v630 objectForKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
+  metrics281 = [(RTMetric *)self metrics];
+  v631 = [metrics281 objectForKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
   v632 = [RTMetric binForNumber:v631 bins:v958];
-  v633 = [(RTMetric *)self metrics];
-  [v633 setObject:v632 forKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning_bucketed"];
+  metrics282 = [(RTMetric *)self metrics];
+  [metrics282 setObject:v632 forKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning_bucketed"];
 
-  v634 = [(RTMetric *)self metrics];
-  v635 = [v634 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
+  metrics283 = [(RTMetric *)self metrics];
+  v635 = [metrics283 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
   v636 = [RTMetric binForNumber:v635 bins:v959];
-  v637 = [(RTMetric *)self metrics];
-  [v637 setObject:v636 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home_bucketed"];
+  metrics284 = [(RTMetric *)self metrics];
+  [metrics284 setObject:v636 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home_bucketed"];
 
-  v638 = [(RTMetric *)self metrics];
-  v639 = [v638 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
+  metrics285 = [(RTMetric *)self metrics];
+  v639 = [metrics285 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
   v640 = [RTMetric binForNumber:v639 bins:v959];
-  v641 = [(RTMetric *)self metrics];
-  [v641 setObject:v640 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work_bucketed"];
+  metrics286 = [(RTMetric *)self metrics];
+  [metrics286 setObject:v640 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work_bucketed"];
 
-  v642 = [(RTMetric *)self metrics];
-  v643 = [v642 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
+  metrics287 = [(RTMetric *)self metrics];
+  v643 = [metrics287 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
   v644 = [RTMetric binForNumber:v643 bins:v958];
-  v645 = [(RTMetric *)self metrics];
-  [v645 setObject:v644 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home_bucketed"];
+  metrics288 = [(RTMetric *)self metrics];
+  [metrics288 setObject:v644 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home_bucketed"];
 
-  v646 = [(RTMetric *)self metrics];
-  v647 = [v646 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
+  metrics289 = [(RTMetric *)self metrics];
+  v647 = [metrics289 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
   v648 = [RTMetric binForNumber:v647 bins:v958];
-  v649 = [(RTMetric *)self metrics];
-  [v649 setObject:v648 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work_bucketed"];
+  metrics290 = [(RTMetric *)self metrics];
+  [metrics290 setObject:v648 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work_bucketed"];
 
-  v650 = [(RTMetric *)self metrics];
-  v651 = [v650 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
+  metrics291 = [(RTMetric *)self metrics];
+  v651 = [metrics291 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
   v652 = [RTMetric binForNumber:v651 bins:v958];
-  v653 = [(RTMetric *)self metrics];
-  [v653 setObject:v652 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home_bucketed"];
+  metrics292 = [(RTMetric *)self metrics];
+  [metrics292 setObject:v652 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home_bucketed"];
 
-  v654 = [(RTMetric *)self metrics];
-  v655 = [v654 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
+  metrics293 = [(RTMetric *)self metrics];
+  v655 = [metrics293 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
   v656 = [RTMetric binForNumber:v655 bins:v958];
-  v657 = [(RTMetric *)self metrics];
-  [v657 setObject:v656 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work_bucketed"];
+  metrics294 = [(RTMetric *)self metrics];
+  [metrics294 setObject:v656 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work_bucketed"];
 
-  v658 = [(RTMetric *)self metrics];
-  v659 = [v658 objectForKeyedSubscript:@"topMedianDwellTime_home"];
+  metrics295 = [(RTMetric *)self metrics];
+  v659 = [metrics295 objectForKeyedSubscript:@"topMedianDwellTime_home"];
   v660 = [RTMetric binForNumber:v659 bins:v959];
-  v661 = [(RTMetric *)self metrics];
-  [v661 setObject:v660 forKeyedSubscript:@"topMedianDwellTime_home_bucketed"];
+  metrics296 = [(RTMetric *)self metrics];
+  [metrics296 setObject:v660 forKeyedSubscript:@"topMedianDwellTime_home_bucketed"];
 
-  v662 = [(RTMetric *)self metrics];
-  v663 = [v662 objectForKeyedSubscript:@"topMedianDwellTime_work"];
+  metrics297 = [(RTMetric *)self metrics];
+  v663 = [metrics297 objectForKeyedSubscript:@"topMedianDwellTime_work"];
   v664 = [RTMetric binForNumber:v663 bins:v959];
-  v665 = [(RTMetric *)self metrics];
-  [v665 setObject:v664 forKeyedSubscript:@"topMedianDwellTime_work_bucketed"];
+  metrics298 = [(RTMetric *)self metrics];
+  [metrics298 setObject:v664 forKeyedSubscript:@"topMedianDwellTime_work_bucketed"];
 
-  v666 = [(RTMetric *)self metrics];
-  v667 = [v666 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
+  metrics299 = [(RTMetric *)self metrics];
+  v667 = [metrics299 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
   v668 = [RTMetric binForNumber:v667 bins:v958];
-  v669 = [(RTMetric *)self metrics];
-  [v669 setObject:v668 forKeyedSubscript:@"weeksWithNonZeroDwellTime_home_bucketed"];
+  metrics300 = [(RTMetric *)self metrics];
+  [metrics300 setObject:v668 forKeyedSubscript:@"weeksWithNonZeroDwellTime_home_bucketed"];
 
-  v670 = [(RTMetric *)self metrics];
-  v671 = [v670 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
+  metrics301 = [(RTMetric *)self metrics];
+  v671 = [metrics301 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
   v672 = [RTMetric binForNumber:v671 bins:v958];
-  v673 = [(RTMetric *)self metrics];
-  [v673 setObject:v672 forKeyedSubscript:@"weeksWithNonZeroDwellTime_work_bucketed"];
+  metrics302 = [(RTMetric *)self metrics];
+  [metrics302 setObject:v672 forKeyedSubscript:@"weeksWithNonZeroDwellTime_work_bucketed"];
 
-  v674 = [(RTMetric *)self metrics];
-  v675 = [v674 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
+  metrics303 = [(RTMetric *)self metrics];
+  v675 = [metrics303 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
   v676 = [RTMetric binForNumber:v675 bins:v959];
-  v677 = [(RTMetric *)self metrics];
-  [v677 setObject:v676 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns_bucketed"];
+  metrics304 = [(RTMetric *)self metrics];
+  [metrics304 setObject:v676 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns_bucketed"];
 
-  v678 = [(RTMetric *)self metrics];
-  v679 = [v678 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
+  metrics305 = [(RTMetric *)self metrics];
+  v679 = [metrics305 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
   v680 = [RTMetric binForNumber:v679 bins:v959];
-  v681 = [(RTMetric *)self metrics];
-  [v681 setObject:v680 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns_bucketed"];
+  metrics306 = [(RTMetric *)self metrics];
+  [metrics306 setObject:v680 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns_bucketed"];
 
-  v682 = [(RTMetric *)self metrics];
-  v683 = [v682 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
+  metrics307 = [(RTMetric *)self metrics];
+  v683 = [metrics307 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
   v684 = [RTMetric binForNumber:v683 bins:v958];
-  v685 = [(RTMetric *)self metrics];
-  [v685 setObject:v684 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns_bucketed"];
+  metrics308 = [(RTMetric *)self metrics];
+  [metrics308 setObject:v684 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns_bucketed"];
 
-  v686 = [(RTMetric *)self metrics];
-  v687 = [v686 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
+  metrics309 = [(RTMetric *)self metrics];
+  v687 = [metrics309 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
   v688 = [RTMetric binForNumber:v687 bins:v958];
-  v689 = [(RTMetric *)self metrics];
-  [v689 setObject:v688 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns_bucketed"];
+  metrics310 = [(RTMetric *)self metrics];
+  [metrics310 setObject:v688 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns_bucketed"];
 
-  v690 = [(RTMetric *)self metrics];
-  v691 = [v690 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
+  metrics311 = [(RTMetric *)self metrics];
+  v691 = [metrics311 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
   v692 = [RTMetric binForNumber:v691 bins:v958];
-  v693 = [(RTMetric *)self metrics];
-  [v693 setObject:v692 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns_bucketed"];
+  metrics312 = [(RTMetric *)self metrics];
+  [metrics312 setObject:v692 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns_bucketed"];
 
-  v694 = [(RTMetric *)self metrics];
-  v695 = [v694 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
+  metrics313 = [(RTMetric *)self metrics];
+  v695 = [metrics313 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
   v696 = [RTMetric binForNumber:v695 bins:v958];
-  v697 = [(RTMetric *)self metrics];
-  [v697 setObject:v696 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns_bucketed"];
+  metrics314 = [(RTMetric *)self metrics];
+  [metrics314 setObject:v696 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns_bucketed"];
 
-  v698 = [(RTMetric *)self metrics];
-  v699 = [v698 objectForKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
+  metrics315 = [(RTMetric *)self metrics];
+  v699 = [metrics315 objectForKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
   v700 = [RTMetric binForNumber:v699 bins:v958];
-  v701 = [(RTMetric *)self metrics];
-  [v701 setObject:v700 forKeyedSubscript:@"numPlacesAfterDailyPatternsPruning_bucketed"];
+  metrics316 = [(RTMetric *)self metrics];
+  [metrics316 setObject:v700 forKeyedSubscript:@"numPlacesAfterDailyPatternsPruning_bucketed"];
 
-  v702 = [(RTMetric *)self metrics];
-  v703 = [v702 objectForKeyedSubscript:@"homeRankDailyPatterns"];
+  metrics317 = [(RTMetric *)self metrics];
+  v703 = [metrics317 objectForKeyedSubscript:@"homeRankDailyPatterns"];
   v704 = [RTMetric binForNumber:v703 bins:v958];
-  v705 = [(RTMetric *)self metrics];
-  [v705 setObject:v704 forKeyedSubscript:@"homeRankDailyPatterns_bucketed"];
+  metrics318 = [(RTMetric *)self metrics];
+  [metrics318 setObject:v704 forKeyedSubscript:@"homeRankDailyPatterns_bucketed"];
 
-  v706 = [(RTMetric *)self metrics];
-  v707 = [v706 objectForKeyedSubscript:@"workRankDailyPatterns"];
+  metrics319 = [(RTMetric *)self metrics];
+  v707 = [metrics319 objectForKeyedSubscript:@"workRankDailyPatterns"];
   v708 = [RTMetric binForNumber:v707 bins:v958];
-  v709 = [(RTMetric *)self metrics];
-  [v709 setObject:v708 forKeyedSubscript:@"workRankDailyPatterns_bucketed"];
+  metrics320 = [(RTMetric *)self metrics];
+  [metrics320 setObject:v708 forKeyedSubscript:@"workRankDailyPatterns_bucketed"];
 
-  v710 = [(RTMetric *)self metrics];
-  v711 = [v710 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
+  metrics321 = [(RTMetric *)self metrics];
+  v711 = [metrics321 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
   v712 = [RTMetric binForNumber:v711 bins:v958];
-  v713 = [(RTMetric *)self metrics];
-  [v713 setObject:v712 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime_bucketed"];
+  metrics322 = [(RTMetric *)self metrics];
+  [metrics322 setObject:v712 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime_bucketed"];
 
-  v714 = [(RTMetric *)self metrics];
-  v715 = [v714 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
+  metrics323 = [(RTMetric *)self metrics];
+  v715 = [metrics323 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
   v716 = [RTMetric binForNumber:v715 bins:v958];
-  v717 = [(RTMetric *)self metrics];
-  [v717 setObject:v716 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime_bucketed"];
+  metrics324 = [(RTMetric *)self metrics];
+  [metrics324 setObject:v716 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime_bucketed"];
 
-  v718 = [(RTMetric *)self metrics];
-  v719 = [v718 objectForKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
+  metrics325 = [(RTMetric *)self metrics];
+  v719 = [metrics325 objectForKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
   v720 = [RTMetric binForNumber:v719 bins:v959];
-  v721 = [(RTMetric *)self metrics];
-  [v721 setObject:v720 forKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime_bucketed"];
+  metrics326 = [(RTMetric *)self metrics];
+  [metrics326 setObject:v720 forKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime_bucketed"];
 
-  v722 = [(RTMetric *)self metrics];
-  v723 = [v722 objectForKeyedSubscript:@"homeRankDwellTime"];
+  metrics327 = [(RTMetric *)self metrics];
+  v723 = [metrics327 objectForKeyedSubscript:@"homeRankDwellTime"];
   v724 = [RTMetric binForNumber:v723 bins:v958];
-  v725 = [(RTMetric *)self metrics];
-  [v725 setObject:v724 forKeyedSubscript:@"homeRankDwellTime_bucketed"];
+  metrics328 = [(RTMetric *)self metrics];
+  [metrics328 setObject:v724 forKeyedSubscript:@"homeRankDwellTime_bucketed"];
 
-  v726 = [(RTMetric *)self metrics];
-  v727 = [v726 objectForKeyedSubscript:@"workRankDwellTime"];
+  metrics329 = [(RTMetric *)self metrics];
+  v727 = [metrics329 objectForKeyedSubscript:@"workRankDwellTime"];
   v728 = [RTMetric binForNumber:v727 bins:v958];
-  v729 = [(RTMetric *)self metrics];
-  [v729 setObject:v728 forKeyedSubscript:@"workRankDwellTime_bucketed"];
+  metrics330 = [(RTMetric *)self metrics];
+  [metrics330 setObject:v728 forKeyedSubscript:@"workRankDwellTime_bucketed"];
 
-  v730 = [(RTMetric *)self metrics];
-  v731 = [v730 objectForKeyedSubscript:@"SD_visit_time_home"];
+  metrics331 = [(RTMetric *)self metrics];
+  v731 = [metrics331 objectForKeyedSubscript:@"SD_visit_time_home"];
   v732 = [RTMetric binForNumber:v731 bins:v3];
-  v733 = [(RTMetric *)self metrics];
-  [v733 setObject:v732 forKeyedSubscript:@"SD_visit_time_home_bucketed"];
+  metrics332 = [(RTMetric *)self metrics];
+  [metrics332 setObject:v732 forKeyedSubscript:@"SD_visit_time_home_bucketed"];
 
-  v734 = [(RTMetric *)self metrics];
-  v735 = [v734 objectForKeyedSubscript:@"SD_visit_time_work"];
+  metrics333 = [(RTMetric *)self metrics];
+  v735 = [metrics333 objectForKeyedSubscript:@"SD_visit_time_work"];
   v736 = [RTMetric binForNumber:v735 bins:v3];
-  v737 = [(RTMetric *)self metrics];
-  [v737 setObject:v736 forKeyedSubscript:@"SD_visit_time_work_bucketed"];
+  metrics334 = [(RTMetric *)self metrics];
+  [metrics334 setObject:v736 forKeyedSubscript:@"SD_visit_time_work_bucketed"];
 
-  v738 = [(RTMetric *)self metrics];
-  v739 = [v738 objectForKeyedSubscript:@"SD_visit_time_others"];
+  metrics335 = [(RTMetric *)self metrics];
+  v739 = [metrics335 objectForKeyedSubscript:@"SD_visit_time_others"];
   v740 = [RTMetric binForNumber:v739 bins:v3];
-  v741 = [(RTMetric *)self metrics];
-  [v741 setObject:v740 forKeyedSubscript:@"SD_visit_time_others_bucketed"];
+  metrics336 = [(RTMetric *)self metrics];
+  [metrics336 setObject:v740 forKeyedSubscript:@"SD_visit_time_others_bucketed"];
 
-  v742 = [(RTMetric *)self metrics];
-  v743 = [v742 objectForKeyedSubscript:@"SD_daily_visits_weekdays_home"];
+  metrics337 = [(RTMetric *)self metrics];
+  v743 = [metrics337 objectForKeyedSubscript:@"SD_daily_visits_weekdays_home"];
   v744 = [RTMetric binForNumber:v743 bins:v958];
-  v745 = [(RTMetric *)self metrics];
-  [v745 setObject:v744 forKeyedSubscript:@"SD_daily_visits_weekdays_home_bucketed"];
+  metrics338 = [(RTMetric *)self metrics];
+  [metrics338 setObject:v744 forKeyedSubscript:@"SD_daily_visits_weekdays_home_bucketed"];
 
-  v746 = [(RTMetric *)self metrics];
-  v747 = [v746 objectForKeyedSubscript:@"SD_daily_visits_weekdays_work"];
+  metrics339 = [(RTMetric *)self metrics];
+  v747 = [metrics339 objectForKeyedSubscript:@"SD_daily_visits_weekdays_work"];
   v748 = [RTMetric binForNumber:v747 bins:v958];
-  v749 = [(RTMetric *)self metrics];
-  [v749 setObject:v748 forKeyedSubscript:@"SD_daily_visits_weekdays_work_bucketed"];
+  metrics340 = [(RTMetric *)self metrics];
+  [metrics340 setObject:v748 forKeyedSubscript:@"SD_daily_visits_weekdays_work_bucketed"];
 
-  v750 = [(RTMetric *)self metrics];
-  v751 = [v750 objectForKeyedSubscript:@"SD_daily_visits_weekdays_others"];
+  metrics341 = [(RTMetric *)self metrics];
+  v751 = [metrics341 objectForKeyedSubscript:@"SD_daily_visits_weekdays_others"];
   v752 = [RTMetric binForNumber:v751 bins:v958];
-  v753 = [(RTMetric *)self metrics];
-  [v753 setObject:v752 forKeyedSubscript:@"SD_daily_visits_weekdays_others_bucketed"];
+  metrics342 = [(RTMetric *)self metrics];
+  [metrics342 setObject:v752 forKeyedSubscript:@"SD_daily_visits_weekdays_others_bucketed"];
 
-  v754 = [(RTMetric *)self metrics];
-  v755 = [v754 objectForKeyedSubscript:@"SD_daily_visits_weekend_home"];
+  metrics343 = [(RTMetric *)self metrics];
+  v755 = [metrics343 objectForKeyedSubscript:@"SD_daily_visits_weekend_home"];
   v756 = [RTMetric binForNumber:v755 bins:v958];
-  v757 = [(RTMetric *)self metrics];
-  [v757 setObject:v756 forKeyedSubscript:@"SD_daily_visits_weekend_home_bucketed"];
+  metrics344 = [(RTMetric *)self metrics];
+  [metrics344 setObject:v756 forKeyedSubscript:@"SD_daily_visits_weekend_home_bucketed"];
 
-  v758 = [(RTMetric *)self metrics];
-  v759 = [v758 objectForKeyedSubscript:@"SD_daily_visits_weekend_work"];
+  metrics345 = [(RTMetric *)self metrics];
+  v759 = [metrics345 objectForKeyedSubscript:@"SD_daily_visits_weekend_work"];
   v760 = [RTMetric binForNumber:v759 bins:v958];
-  v761 = [(RTMetric *)self metrics];
-  [v761 setObject:v760 forKeyedSubscript:@"SD_daily_visits_weekend_work_bucketed"];
+  metrics346 = [(RTMetric *)self metrics];
+  [metrics346 setObject:v760 forKeyedSubscript:@"SD_daily_visits_weekend_work_bucketed"];
 
-  v762 = [(RTMetric *)self metrics];
-  v763 = [v762 objectForKeyedSubscript:@"SD_daily_visits_weekend_others"];
+  metrics347 = [(RTMetric *)self metrics];
+  v763 = [metrics347 objectForKeyedSubscript:@"SD_daily_visits_weekend_others"];
   v764 = [RTMetric binForNumber:v763 bins:v958];
-  v765 = [(RTMetric *)self metrics];
-  [v765 setObject:v764 forKeyedSubscript:@"SD_daily_visits_weekend_others_bucketed"];
+  metrics348 = [(RTMetric *)self metrics];
+  [metrics348 setObject:v764 forKeyedSubscript:@"SD_daily_visits_weekend_others_bucketed"];
 
-  v766 = [(RTMetric *)self metrics];
-  v767 = [v766 objectForKeyedSubscript:@"SD_visit_duration_weekdays_home"];
+  metrics349 = [(RTMetric *)self metrics];
+  v767 = [metrics349 objectForKeyedSubscript:@"SD_visit_duration_weekdays_home"];
   v768 = [RTMetric binForNumber:v767 bins:v4];
-  v769 = [(RTMetric *)self metrics];
-  [v769 setObject:v768 forKeyedSubscript:@"SD_visit_duration_weekdays_home_bucketed"];
+  metrics350 = [(RTMetric *)self metrics];
+  [metrics350 setObject:v768 forKeyedSubscript:@"SD_visit_duration_weekdays_home_bucketed"];
 
-  v770 = [(RTMetric *)self metrics];
-  v771 = [v770 objectForKeyedSubscript:@"SD_visit_duration_weekdays_work"];
+  metrics351 = [(RTMetric *)self metrics];
+  v771 = [metrics351 objectForKeyedSubscript:@"SD_visit_duration_weekdays_work"];
   v772 = [RTMetric binForNumber:v771 bins:v4];
-  v773 = [(RTMetric *)self metrics];
-  [v773 setObject:v772 forKeyedSubscript:@"SD_visit_duration_weekdays_work_bucketed"];
+  metrics352 = [(RTMetric *)self metrics];
+  [metrics352 setObject:v772 forKeyedSubscript:@"SD_visit_duration_weekdays_work_bucketed"];
 
-  v774 = [(RTMetric *)self metrics];
-  v775 = [v774 objectForKeyedSubscript:@"SD_visit_duration_weekdays_others"];
+  metrics353 = [(RTMetric *)self metrics];
+  v775 = [metrics353 objectForKeyedSubscript:@"SD_visit_duration_weekdays_others"];
   v776 = [RTMetric binForNumber:v775 bins:v4];
-  v777 = [(RTMetric *)self metrics];
-  [v777 setObject:v776 forKeyedSubscript:@"SD_visit_duration_weekdays_others_bucketed"];
+  metrics354 = [(RTMetric *)self metrics];
+  [metrics354 setObject:v776 forKeyedSubscript:@"SD_visit_duration_weekdays_others_bucketed"];
 
-  v778 = [(RTMetric *)self metrics];
-  v779 = [v778 objectForKeyedSubscript:@"SD_visit_duration_weekend_home"];
+  metrics355 = [(RTMetric *)self metrics];
+  v779 = [metrics355 objectForKeyedSubscript:@"SD_visit_duration_weekend_home"];
   v780 = [RTMetric binForNumber:v779 bins:v4];
-  v781 = [(RTMetric *)self metrics];
-  [v781 setObject:v780 forKeyedSubscript:@"SD_visit_duration_weekend_home_bucketed"];
+  metrics356 = [(RTMetric *)self metrics];
+  [metrics356 setObject:v780 forKeyedSubscript:@"SD_visit_duration_weekend_home_bucketed"];
 
-  v782 = [(RTMetric *)self metrics];
-  v783 = [v782 objectForKeyedSubscript:@"SD_visit_duration_weekend_work"];
+  metrics357 = [(RTMetric *)self metrics];
+  v783 = [metrics357 objectForKeyedSubscript:@"SD_visit_duration_weekend_work"];
   v784 = [RTMetric binForNumber:v783 bins:v4];
-  v785 = [(RTMetric *)self metrics];
-  [v785 setObject:v784 forKeyedSubscript:@"SD_visit_duration_weekend_work_bucketed"];
+  metrics358 = [(RTMetric *)self metrics];
+  [metrics358 setObject:v784 forKeyedSubscript:@"SD_visit_duration_weekend_work_bucketed"];
 
-  v786 = [(RTMetric *)self metrics];
-  v787 = [v786 objectForKeyedSubscript:@"SD_visit_duration_weekend_others"];
+  metrics359 = [(RTMetric *)self metrics];
+  v787 = [metrics359 objectForKeyedSubscript:@"SD_visit_duration_weekend_others"];
   v788 = [RTMetric binForNumber:v787 bins:v4];
-  v789 = [(RTMetric *)self metrics];
-  [v789 setObject:v788 forKeyedSubscript:@"SD_visit_duration_weekend_others_bucketed"];
+  metrics360 = [(RTMetric *)self metrics];
+  [metrics360 setObject:v788 forKeyedSubscript:@"SD_visit_duration_weekend_others_bucketed"];
 
-  v790 = [(RTMetric *)self metrics];
-  v791 = [v790 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home"];
+  metrics361 = [(RTMetric *)self metrics];
+  v791 = [metrics361 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home"];
   v792 = [RTMetric binForNumber:v791 bins:v4];
-  v793 = [(RTMetric *)self metrics];
-  [v793 setObject:v792 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home_bucketed"];
+  metrics362 = [(RTMetric *)self metrics];
+  [metrics362 setObject:v792 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home_bucketed"];
 
-  v794 = [(RTMetric *)self metrics];
-  v795 = [v794 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work"];
+  metrics363 = [(RTMetric *)self metrics];
+  v795 = [metrics363 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work"];
   v796 = [RTMetric binForNumber:v795 bins:v4];
-  v797 = [(RTMetric *)self metrics];
-  [v797 setObject:v796 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work_bucketed"];
+  metrics364 = [(RTMetric *)self metrics];
+  [metrics364 setObject:v796 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work_bucketed"];
 
-  v798 = [(RTMetric *)self metrics];
-  v799 = [v798 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others"];
+  metrics365 = [(RTMetric *)self metrics];
+  v799 = [metrics365 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others"];
   v800 = [RTMetric binForNumber:v799 bins:v4];
-  v801 = [(RTMetric *)self metrics];
-  [v801 setObject:v800 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others_bucketed"];
+  metrics366 = [(RTMetric *)self metrics];
+  [metrics366 setObject:v800 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others_bucketed"];
 
-  v802 = [(RTMetric *)self metrics];
-  v803 = [v802 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home"];
+  metrics367 = [(RTMetric *)self metrics];
+  v803 = [metrics367 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home"];
   v804 = [RTMetric binForNumber:v803 bins:v4];
-  v805 = [(RTMetric *)self metrics];
-  [v805 setObject:v804 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home_bucketed"];
+  metrics368 = [(RTMetric *)self metrics];
+  [metrics368 setObject:v804 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home_bucketed"];
 
-  v806 = [(RTMetric *)self metrics];
-  v807 = [v806 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work"];
+  metrics369 = [(RTMetric *)self metrics];
+  v807 = [metrics369 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work"];
   v808 = [RTMetric binForNumber:v807 bins:v4];
-  v809 = [(RTMetric *)self metrics];
-  [v809 setObject:v808 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work_bucketed"];
+  metrics370 = [(RTMetric *)self metrics];
+  [metrics370 setObject:v808 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work_bucketed"];
 
-  v810 = [(RTMetric *)self metrics];
-  v811 = [v810 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others"];
+  metrics371 = [(RTMetric *)self metrics];
+  v811 = [metrics371 objectForKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others"];
   v812 = [RTMetric binForNumber:v811 bins:v4];
-  v813 = [(RTMetric *)self metrics];
-  [v813 setObject:v812 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others_bucketed"];
+  metrics372 = [(RTMetric *)self metrics];
+  [metrics372 setObject:v812 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others_bucketed"];
 
-  v814 = [(RTMetric *)self metrics];
-  v815 = [v814 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home"];
+  metrics373 = [(RTMetric *)self metrics];
+  v815 = [metrics373 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home"];
   v816 = [RTMetric binForNumber:v815 bins:v4];
-  v817 = [(RTMetric *)self metrics];
-  [v817 setObject:v816 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home_bucketed"];
+  metrics374 = [(RTMetric *)self metrics];
+  [metrics374 setObject:v816 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home_bucketed"];
 
-  v818 = [(RTMetric *)self metrics];
-  v819 = [v818 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work"];
+  metrics375 = [(RTMetric *)self metrics];
+  v819 = [metrics375 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work"];
   v820 = [RTMetric binForNumber:v819 bins:v4];
-  v821 = [(RTMetric *)self metrics];
-  [v821 setObject:v820 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work_bucketed"];
+  metrics376 = [(RTMetric *)self metrics];
+  [metrics376 setObject:v820 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work_bucketed"];
 
-  v822 = [(RTMetric *)self metrics];
-  v823 = [v822 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others"];
+  metrics377 = [(RTMetric *)self metrics];
+  v823 = [metrics377 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others"];
   v824 = [RTMetric binForNumber:v823 bins:v4];
-  v825 = [(RTMetric *)self metrics];
-  [v825 setObject:v824 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others_bucketed"];
+  metrics378 = [(RTMetric *)self metrics];
+  [metrics378 setObject:v824 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others_bucketed"];
 
-  v826 = [(RTMetric *)self metrics];
-  v827 = [v826 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home"];
+  metrics379 = [(RTMetric *)self metrics];
+  v827 = [metrics379 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home"];
   v828 = [RTMetric binForNumber:v827 bins:v4];
-  v829 = [(RTMetric *)self metrics];
-  [v829 setObject:v828 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home_bucketed"];
+  metrics380 = [(RTMetric *)self metrics];
+  [metrics380 setObject:v828 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home_bucketed"];
 
-  v830 = [(RTMetric *)self metrics];
-  v831 = [v830 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work"];
+  metrics381 = [(RTMetric *)self metrics];
+  v831 = [metrics381 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work"];
   v832 = [RTMetric binForNumber:v831 bins:v4];
-  v833 = [(RTMetric *)self metrics];
-  [v833 setObject:v832 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work_bucketed"];
+  metrics382 = [(RTMetric *)self metrics];
+  [metrics382 setObject:v832 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work_bucketed"];
 
-  v834 = [(RTMetric *)self metrics];
-  v835 = [v834 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others"];
+  metrics383 = [(RTMetric *)self metrics];
+  v835 = [metrics383 objectForKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others"];
   v836 = [RTMetric binForNumber:v835 bins:v4];
-  v837 = [(RTMetric *)self metrics];
-  [v837 setObject:v836 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others_bucketed"];
+  metrics384 = [(RTMetric *)self metrics];
+  [metrics384 setObject:v836 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others_bucketed"];
 
-  v838 = [(RTMetric *)self metrics];
-  v839 = [v838 objectForKeyedSubscript:@"SD_daily_total_charging_duration_home"];
+  metrics385 = [(RTMetric *)self metrics];
+  v839 = [metrics385 objectForKeyedSubscript:@"SD_daily_total_charging_duration_home"];
   v840 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v841 = [RTMetric binForNumber:v839 bins:v840];
-  v842 = [(RTMetric *)self metrics];
-  [v842 setObject:v841 forKeyedSubscript:@"SD_daily_total_charging_duration_home_bucketed"];
+  metrics386 = [(RTMetric *)self metrics];
+  [metrics386 setObject:v841 forKeyedSubscript:@"SD_daily_total_charging_duration_home_bucketed"];
 
-  v843 = [(RTMetric *)self metrics];
-  v844 = [v843 objectForKeyedSubscript:@"SD_daily_total_charging_duration_work"];
+  metrics387 = [(RTMetric *)self metrics];
+  v844 = [metrics387 objectForKeyedSubscript:@"SD_daily_total_charging_duration_work"];
   v845 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v846 = [RTMetric binForNumber:v844 bins:v845];
-  v847 = [(RTMetric *)self metrics];
-  [v847 setObject:v846 forKeyedSubscript:@"SD_daily_total_charging_duration_work_bucketed"];
+  metrics388 = [(RTMetric *)self metrics];
+  [metrics388 setObject:v846 forKeyedSubscript:@"SD_daily_total_charging_duration_work_bucketed"];
 
-  v848 = [(RTMetric *)self metrics];
-  v849 = [v848 objectForKeyedSubscript:@"SD_daily_total_charging_duration_others"];
+  metrics389 = [(RTMetric *)self metrics];
+  v849 = [metrics389 objectForKeyedSubscript:@"SD_daily_total_charging_duration_others"];
   v850 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v851 = [RTMetric binForNumber:v849 bins:v850];
-  v852 = [(RTMetric *)self metrics];
-  [v852 setObject:v851 forKeyedSubscript:@"SD_daily_total_charging_duration_others_bucketed"];
+  metrics390 = [(RTMetric *)self metrics];
+  [metrics390 setObject:v851 forKeyedSubscript:@"SD_daily_total_charging_duration_others_bucketed"];
 
-  v853 = [(RTMetric *)self metrics];
-  v854 = [v853 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_home"];
+  metrics391 = [(RTMetric *)self metrics];
+  v854 = [metrics391 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_home"];
   v855 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v856 = [RTMetric binForNumber:v854 bins:v855];
-  v857 = [(RTMetric *)self metrics];
-  [v857 setObject:v856 forKeyedSubscript:@"SD_daily_longest_charging_duration_home_bucketed"];
+  metrics392 = [(RTMetric *)self metrics];
+  [metrics392 setObject:v856 forKeyedSubscript:@"SD_daily_longest_charging_duration_home_bucketed"];
 
-  v858 = [(RTMetric *)self metrics];
-  v859 = [v858 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_work"];
+  metrics393 = [(RTMetric *)self metrics];
+  v859 = [metrics393 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_work"];
   v860 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v861 = [RTMetric binForNumber:v859 bins:v860];
-  v862 = [(RTMetric *)self metrics];
-  [v862 setObject:v861 forKeyedSubscript:@"SD_daily_longest_charging_duration_work_bucketed"];
+  metrics394 = [(RTMetric *)self metrics];
+  [metrics394 setObject:v861 forKeyedSubscript:@"SD_daily_longest_charging_duration_work_bucketed"];
 
-  v863 = [(RTMetric *)self metrics];
-  v864 = [v863 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_others"];
+  metrics395 = [(RTMetric *)self metrics];
+  v864 = [metrics395 objectForKeyedSubscript:@"SD_daily_longest_charging_duration_others"];
   v865 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v866 = [RTMetric binForNumber:v864 bins:v865];
-  v867 = [(RTMetric *)self metrics];
-  [v867 setObject:v866 forKeyedSubscript:@"SD_daily_longest_charging_duration_others_bucketed"];
+  metrics396 = [(RTMetric *)self metrics];
+  [metrics396 setObject:v866 forKeyedSubscript:@"SD_daily_longest_charging_duration_others_bucketed"];
 
-  v868 = [(RTMetric *)self metrics];
-  v869 = [v868 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_home"];
+  metrics397 = [(RTMetric *)self metrics];
+  v869 = [metrics397 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_home"];
   v870 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v871 = [RTMetric binForNumber:v869 bins:v870];
-  v872 = [(RTMetric *)self metrics];
-  [v872 setObject:v871 forKeyedSubscript:@"SD_daily_total_static_motion_duration_home_bucketed"];
+  metrics398 = [(RTMetric *)self metrics];
+  [metrics398 setObject:v871 forKeyedSubscript:@"SD_daily_total_static_motion_duration_home_bucketed"];
 
-  v873 = [(RTMetric *)self metrics];
-  v874 = [v873 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_work"];
+  metrics399 = [(RTMetric *)self metrics];
+  v874 = [metrics399 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_work"];
   v875 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v876 = [RTMetric binForNumber:v874 bins:v875];
-  v877 = [(RTMetric *)self metrics];
-  [v877 setObject:v876 forKeyedSubscript:@"SD_daily_total_static_motion_duration_work_bucketed"];
+  metrics400 = [(RTMetric *)self metrics];
+  [metrics400 setObject:v876 forKeyedSubscript:@"SD_daily_total_static_motion_duration_work_bucketed"];
 
-  v878 = [(RTMetric *)self metrics];
-  v879 = [v878 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_others"];
+  metrics401 = [(RTMetric *)self metrics];
+  v879 = [metrics401 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration_others"];
   v880 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v881 = [RTMetric binForNumber:v879 bins:v880];
-  v882 = [(RTMetric *)self metrics];
-  [v882 setObject:v881 forKeyedSubscript:@"SD_daily_total_static_motion_duration_others_bucketed"];
+  metrics402 = [(RTMetric *)self metrics];
+  [metrics402 setObject:v881 forKeyedSubscript:@"SD_daily_total_static_motion_duration_others_bucketed"];
 
-  v883 = [(RTMetric *)self metrics];
-  v884 = [v883 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_home"];
+  metrics403 = [(RTMetric *)self metrics];
+  v884 = [metrics403 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_home"];
   v885 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v886 = [RTMetric binForNumber:v884 bins:v885];
-  v887 = [(RTMetric *)self metrics];
-  [v887 setObject:v886 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_home_bucketed"];
+  metrics404 = [(RTMetric *)self metrics];
+  [metrics404 setObject:v886 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_home_bucketed"];
 
-  v888 = [(RTMetric *)self metrics];
-  v889 = [v888 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_work"];
+  metrics405 = [(RTMetric *)self metrics];
+  v889 = [metrics405 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_work"];
   v890 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v891 = [RTMetric binForNumber:v889 bins:v890];
-  v892 = [(RTMetric *)self metrics];
-  [v892 setObject:v891 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_work_bucketed"];
+  metrics406 = [(RTMetric *)self metrics];
+  [metrics406 setObject:v891 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_work_bucketed"];
 
-  v893 = [(RTMetric *)self metrics];
-  v894 = [v893 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_others"];
+  metrics407 = [(RTMetric *)self metrics];
+  v894 = [metrics407 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration_others"];
   v895 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v896 = [RTMetric binForNumber:v894 bins:v895];
-  v897 = [(RTMetric *)self metrics];
-  [v897 setObject:v896 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_others_bucketed"];
+  metrics408 = [(RTMetric *)self metrics];
+  [metrics408 setObject:v896 forKeyedSubscript:@"SD_daily_longest_static_motion_duration_others_bucketed"];
 
-  v898 = [(RTMetric *)self metrics];
-  v899 = [v898 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_home"];
+  metrics409 = [(RTMetric *)self metrics];
+  v899 = [metrics409 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_home"];
   v900 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v901 = [RTMetric binForNumber:v899 bins:v900];
-  v902 = [(RTMetric *)self metrics];
-  [v902 setObject:v901 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_home_bucketed"];
+  metrics410 = [(RTMetric *)self metrics];
+  [metrics410 setObject:v901 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_home_bucketed"];
 
-  v903 = [(RTMetric *)self metrics];
-  v904 = [v903 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_work"];
+  metrics411 = [(RTMetric *)self metrics];
+  v904 = [metrics411 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_work"];
   v905 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v906 = [RTMetric binForNumber:v904 bins:v905];
-  v907 = [(RTMetric *)self metrics];
-  [v907 setObject:v906 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_work_bucketed"];
+  metrics412 = [(RTMetric *)self metrics];
+  [metrics412 setObject:v906 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_work_bucketed"];
 
-  v908 = [(RTMetric *)self metrics];
-  v909 = [v908 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_others"];
+  metrics413 = [(RTMetric *)self metrics];
+  v909 = [metrics413 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration_others"];
   v910 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v911 = [RTMetric binForNumber:v909 bins:v910];
-  v912 = [(RTMetric *)self metrics];
-  [v912 setObject:v911 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_others_bucketed"];
+  metrics414 = [(RTMetric *)self metrics];
+  [metrics414 setObject:v911 forKeyedSubscript:@"SD_daily_total_screen_lock_duration_others_bucketed"];
 
-  v913 = [(RTMetric *)self metrics];
-  v914 = [v913 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_home"];
+  metrics415 = [(RTMetric *)self metrics];
+  v914 = [metrics415 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_home"];
   v915 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v916 = [RTMetric binForNumber:v914 bins:v915];
-  v917 = [(RTMetric *)self metrics];
-  [v917 setObject:v916 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_home_bucketed"];
+  metrics416 = [(RTMetric *)self metrics];
+  [metrics416 setObject:v916 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_home_bucketed"];
 
-  v918 = [(RTMetric *)self metrics];
-  v919 = [v918 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_work"];
+  metrics417 = [(RTMetric *)self metrics];
+  v919 = [metrics417 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_work"];
   v920 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v921 = [RTMetric binForNumber:v919 bins:v920];
-  v922 = [(RTMetric *)self metrics];
-  [v922 setObject:v921 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_work_bucketed"];
+  metrics418 = [(RTMetric *)self metrics];
+  [metrics418 setObject:v921 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_work_bucketed"];
 
-  v923 = [(RTMetric *)self metrics];
-  v924 = [v923 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_others"];
+  metrics419 = [(RTMetric *)self metrics];
+  v924 = [metrics419 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration_others"];
   v925 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v926 = [RTMetric binForNumber:v924 bins:v925];
-  v927 = [(RTMetric *)self metrics];
-  [v927 setObject:v926 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_others_bucketed"];
+  metrics420 = [(RTMetric *)self metrics];
+  [metrics420 setObject:v926 forKeyedSubscript:@"SD_daily_longest_screen_lock_duration_others_bucketed"];
 
-  v928 = [(RTMetric *)self metrics];
-  v929 = [v928 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_home"];
+  metrics421 = [(RTMetric *)self metrics];
+  v929 = [metrics421 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_home"];
   v930 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v931 = [RTMetric binForNumber:v929 bins:v930];
-  v932 = [(RTMetric *)self metrics];
-  [v932 setObject:v931 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics422 = [(RTMetric *)self metrics];
+  [metrics422 setObject:v931 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v933 = [(RTMetric *)self metrics];
-  v934 = [v933 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_work"];
+  metrics423 = [(RTMetric *)self metrics];
+  v934 = [metrics423 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_work"];
   v935 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v936 = [RTMetric binForNumber:v934 bins:v935];
-  v937 = [(RTMetric *)self metrics];
-  [v937 setObject:v936 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics424 = [(RTMetric *)self metrics];
+  [metrics424 setObject:v936 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v938 = [(RTMetric *)self metrics];
-  v939 = [v938 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_others"];
+  metrics425 = [(RTMetric *)self metrics];
+  v939 = [metrics425 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_others"];
   v940 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v941 = [RTMetric binForNumber:v939 bins:v940];
-  v942 = [(RTMetric *)self metrics];
-  [v942 setObject:v941 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics426 = [(RTMetric *)self metrics];
+  [metrics426 setObject:v941 forKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration_others_bucketed"];
 
-  v943 = [(RTMetric *)self metrics];
-  v944 = [v943 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_home"];
+  metrics427 = [(RTMetric *)self metrics];
+  v944 = [metrics427 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_home"];
   v945 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v946 = [RTMetric binForNumber:v944 bins:v945];
-  v947 = [(RTMetric *)self metrics];
-  [v947 setObject:v946 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
+  metrics428 = [(RTMetric *)self metrics];
+  [metrics428 setObject:v946 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_home_bucketed"];
 
-  v948 = [(RTMetric *)self metrics];
-  v949 = [v948 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_work"];
+  metrics429 = [(RTMetric *)self metrics];
+  v949 = [metrics429 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_work"];
   v950 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v951 = [RTMetric binForNumber:v949 bins:v950];
-  v952 = [(RTMetric *)self metrics];
-  [v952 setObject:v951 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
+  metrics430 = [(RTMetric *)self metrics];
+  [metrics430 setObject:v951 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_work_bucketed"];
 
-  v953 = [(RTMetric *)self metrics];
-  v954 = [v953 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_others"];
+  metrics431 = [(RTMetric *)self metrics];
+  v954 = [metrics431 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_others"];
   v955 = +[RTPlaceDataMetrics binArrayDuetEventDuration];
   v956 = [RTMetric binForNumber:v954 bins:v955];
-  v957 = [(RTMetric *)self metrics];
-  [v957 setObject:v956 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
+  metrics432 = [(RTMetric *)self metrics];
+  [metrics432 setObject:v956 forKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration_others_bucketed"];
 }
 
-- (BOOL)submitMetricsWithError:(id *)a3
+- (BOOL)submitMetricsWithError:(id *)error
 {
   [(RTPlaceDataMetrics *)self setDerivedMetrics];
   v6.receiver = self;
   v6.super_class = RTPlaceDataMetrics;
-  return [(RTMetric *)&v6 submitMetricsWithError:a3];
+  return [(RTMetric *)&v6 submitMetricsWithError:error];
 }
 
-+ (id)medianOf:(id)a3
++ (id)medianOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
       v4 = MEMORY[0x277CCABB0];
-      v5 = [v3 objectAtIndexedSubscript:0];
+      v5 = [ofCopy objectAtIndexedSubscript:0];
       [v5 doubleValue];
       v6 = [v4 numberWithDouble:?];
     }
 
     else
     {
-      v5 = [v3 sortedArrayUsingSelector:sel_compare_];
-      v7 = [v3 count];
+      v5 = [ofCopy sortedArrayUsingSelector:sel_compare_];
+      v7 = [ofCopy count];
       v8 = [v5 count] >> 1;
       v9 = MEMORY[0x277CCABB0];
       if (v7)
@@ -1810,15 +1810,15 @@ LABEL_27:
   return v6;
 }
 
-+ (id)meanOf:(id)a3
++ (id)meanOf:(id)of
 {
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
       v4 = MEMORY[0x277CCABB0];
-      v5 = [v3 objectAtIndexedSubscript:0];
+      v5 = [ofCopy objectAtIndexedSubscript:0];
       [v5 doubleValue];
       v6 = [v4 numberWithDouble:?];
     }
@@ -1826,14 +1826,14 @@ LABEL_27:
     else
     {
       v7 = 0.0;
-      if ([v3 count])
+      if ([ofCopy count])
       {
         v8 = 1;
         do
         {
-          if ([v3 count] >= v8)
+          if ([ofCopy count] >= v8)
           {
-            v9 = [v3 objectAtIndexedSubscript:v8 - 1];
+            v9 = [ofCopy objectAtIndexedSubscript:v8 - 1];
             [v9 doubleValue];
             v7 = v7 + (v10 - v7) / v8;
           }
@@ -1844,7 +1844,7 @@ LABEL_27:
           }
         }
 
-        while ([v3 count] > v8++);
+        while ([ofCopy count] > v8++);
       }
 
       v6 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
@@ -1859,20 +1859,20 @@ LABEL_27:
   return v6;
 }
 
-+ (id)standardDeviationOf:(id)a3
++ (id)standardDeviationOf:(id)of
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  ofCopy = of;
+  if ([ofCopy count])
   {
-    if ([v3 count] == 1)
+    if ([ofCopy count] == 1)
     {
       v4 = &unk_2845A1AB8;
     }
 
     else
     {
-      v5 = [RTPlaceDataMetrics meanOf:v3];
+      v5 = [RTPlaceDataMetrics meanOf:ofCopy];
       [v5 doubleValue];
       v7 = v6;
 
@@ -1880,7 +1880,7 @@ LABEL_27:
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v8 = v3;
+      v8 = ofCopy;
       v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
@@ -1923,75 +1923,75 @@ LABEL_27:
   return v4;
 }
 
-- (int64_t)daysBetweenDate:(id)a3 andDate:(id)a4
+- (int64_t)daysBetweenDate:(id)date andDate:(id)andDate
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
+  andDateCopy = andDate;
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
   v15 = 0;
-  [v8 rangeOfUnit:16 startDate:&v15 interval:0 forDate:v7];
+  [currentCalendar rangeOfUnit:16 startDate:&v15 interval:0 forDate:dateCopy];
 
   v9 = v15;
   v14 = 0;
-  [v8 rangeOfUnit:16 startDate:&v14 interval:0 forDate:v6];
+  [currentCalendar rangeOfUnit:16 startDate:&v14 interval:0 forDate:andDateCopy];
 
   v10 = v14;
-  v11 = [v8 components:16 fromDate:v9 toDate:v10 options:0];
+  v11 = [currentCalendar components:16 fromDate:v9 toDate:v10 options:0];
   v12 = [v11 day];
 
   return v12 + 1;
 }
 
-- (id)removeTimeFromDateTime:(id)a3 withCalendar:(id)a4
+- (id)removeTimeFromDateTime:(id)time withCalendar:(id)calendar
 {
-  v5 = a4;
-  v6 = [v5 components:1564 fromDate:a3];
+  calendarCopy = calendar;
+  v6 = [calendarCopy components:1564 fromDate:time];
   v7 = [objc_alloc(MEMORY[0x277CBEAB8]) init];
   [v7 setWeekday:{objc_msgSend(v6, "weekday")}];
   [v7 setWeekdayOrdinal:{objc_msgSend(v6, "weekdayOrdinal")}];
   [v7 setDay:{objc_msgSend(v6, "day")}];
   [v7 setMonth:{objc_msgSend(v6, "month")}];
   [v7 setYear:{objc_msgSend(v6, "year")}];
-  v8 = [v5 dateFromComponents:v7];
+  v8 = [calendarCopy dateFromComponents:v7];
 
   return v8;
 }
 
-- (int64_t)numberOfWeeksBetweenDatesBasedOnCalendar:(id)a3 startDateTime:(id)a4 endDateTime:(id)a5
+- (int64_t)numberOfWeeksBetweenDatesBasedOnCalendar:(id)calendar startDateTime:(id)time endDateTime:(id)dateTime
 {
   v23 = 0;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [v9 rangeOfUnit:16 startDate:&v23 interval:0 forDate:v8];
+  dateTimeCopy = dateTime;
+  timeCopy = time;
+  calendarCopy = calendar;
+  [calendarCopy rangeOfUnit:16 startDate:&v23 interval:0 forDate:timeCopy];
   v10 = v23;
   v22 = 0;
-  [v9 rangeOfUnit:16 startDate:&v22 interval:0 forDate:v7];
+  [calendarCopy rangeOfUnit:16 startDate:&v22 interval:0 forDate:dateTimeCopy];
   v11 = v22;
-  v12 = [v9 components:16 fromDate:v10 toDate:v11 options:0];
-  v13 = [v9 components:12800 fromDate:v8];
+  v12 = [calendarCopy components:16 fromDate:v10 toDate:v11 options:0];
+  v13 = [calendarCopy components:12800 fromDate:timeCopy];
 
-  v14 = [v9 components:12800 fromDate:v7];
+  v14 = [calendarCopy components:12800 fromDate:dateTimeCopy];
 
   v15 = [v12 day];
-  v16 = [v9 maximumRangeOfUnit:512];
+  v16 = [calendarCopy maximumRangeOfUnit:512];
   v18 = v17;
 
-  v19 = [v13 weekday];
-  v20 = (v15 - v16 + v18 + v19 - [v14 weekday] + 1) / v18;
+  weekday = [v13 weekday];
+  v20 = (v15 - v16 + v18 + weekday - [v14 weekday] + 1) / v18;
 
   return v20;
 }
 
-- (int64_t)convertDateTime2SecondsBasedOnCalendar:(id)a3 dateTime:(id)a4
+- (int64_t)convertDateTime2SecondsBasedOnCalendar:(id)calendar dateTime:(id)time
 {
-  v4 = [a3 components:224 fromDate:a4];
-  v5 = [v4 hour];
-  v6 = [v4 minute];
-  v7 = [v4 second];
+  v4 = [calendar components:224 fromDate:time];
+  hour = [v4 hour];
+  minute = [v4 minute];
+  second = [v4 second];
 
-  return 3600 * v5 + 60 * v6 + v7;
+  return 3600 * hour + 60 * minute + second;
 }
 
 - (id)findHomeWorkOthersIntervals
@@ -2023,13 +2023,13 @@ LABEL_27:
         }
 
         v7 = *(*(&v34 + 1) + 8 * i);
-        v8 = [v7 location];
-        v9 = [v8 location];
+        location = [v7 location];
+        v8Location = [location location];
         v10 = *(&self->super.super.isa + *(v5 + 1000));
         if (v10)
         {
           v33 = 0;
-          [v3 distanceFromLocation:v9 toLocation:v10 error:&v33];
+          [v3 distanceFromLocation:v8Location toLocation:v10 error:&v33];
           v12 = v11;
           v13 = v33;
         }
@@ -2044,7 +2044,7 @@ LABEL_27:
         if (locationWork)
         {
           v32 = v13;
-          [v3 distanceFromLocation:v9 toLocation:locationWork error:&v32];
+          [v3 distanceFromLocation:v8Location toLocation:locationWork error:&v32];
           v16 = v15;
           v17 = v32;
 
@@ -2065,9 +2065,9 @@ LABEL_27:
         }
 
         v18 = objc_alloc(MEMORY[0x277CCA970]);
-        v19 = [v7 entryDate];
-        v20 = [v7 exitDate];
-        v21 = [v18 initWithStartDate:v19 endDate:v20];
+        entryDate = [v7 entryDate];
+        exitDate = [v7 exitDate];
+        v21 = [v18 initWithStartDate:entryDate endDate:exitDate];
 
         distanceThreshold = self->_distanceThreshold;
         if (v12 <= distanceThreshold)
@@ -2109,12 +2109,12 @@ LABEL_23:
 - (void)calculateAndSetVisitMetrics
 {
   v975[16] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v776 = [(RTPlaceDataMetrics *)self removeTimeFromDateTime:self->_startDateTime withCalendar:v3];
-  v775 = [(RTPlaceDataMetrics *)self removeTimeFromDateTime:self->_endDateTime withCalendar:v3];
-  v835 = self;
-  v849 = v3;
-  v4 = [(RTPlaceDataMetrics *)self numberOfWeeksBetweenDatesBasedOnCalendar:v3 startDateTime:self->_startDateTime endDateTime:self->_endDateTime];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v776 = [(RTPlaceDataMetrics *)self removeTimeFromDateTime:self->_startDateTime withCalendar:currentCalendar];
+  v775 = [(RTPlaceDataMetrics *)self removeTimeFromDateTime:self->_endDateTime withCalendar:currentCalendar];
+  selfCopy = self;
+  v849 = currentCalendar;
+  v4 = [(RTPlaceDataMetrics *)self numberOfWeeksBetweenDatesBasedOnCalendar:currentCalendar startDateTime:self->_startDateTime endDateTime:self->_endDateTime];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v745 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2146,12 +2146,12 @@ LABEL_23:
   v746 = v6;
   v747 = v5;
   v8 = objc_opt_new();
-  v777 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v942 = 0u;
   v943 = 0u;
   v944 = 0u;
   v945 = 0u;
-  obj = v835->_locationsOfOthers;
+  obj = selfCopy->_locationsOfOthers;
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v942 objects:v975 count:16];
   v779 = v8;
   if (v9)
@@ -2169,28 +2169,28 @@ LABEL_23:
         }
 
         v14 = *(*(&v942 + 1) + 8 * i);
-        locationHome = v835->_locationHome;
+        locationHome = selfCopy->_locationHome;
         v941 = v11;
         [v8 distanceFromLocation:v14 toLocation:locationHome error:&v941];
         v17 = v16;
         v18 = v941;
 
-        if (v17 <= v835->_distanceThreshold)
+        if (v17 <= selfCopy->_distanceThreshold)
         {
           v11 = v18;
         }
 
         else
         {
-          locationWork = v835->_locationWork;
+          locationWork = selfCopy->_locationWork;
           v940 = v18;
           [v8 distanceFromLocation:v14 toLocation:locationWork error:&v940];
           v21 = v20;
           v11 = v940;
 
-          if (v21 > v835->_distanceThreshold)
+          if (v21 > selfCopy->_distanceThreshold)
           {
-            [v777 addObject:v14];
+            [array addObject:v14];
           }
 
           v8 = v779;
@@ -2211,8 +2211,8 @@ LABEL_23:
   v767 = v11;
 
   v22 = 0x277CBE000uLL;
-  v23 = [MEMORY[0x277CBEB18] array];
-  if ([v777 count])
+  array2 = [MEMORY[0x277CBEB18] array];
+  if ([array count])
   {
     v24 = 0;
     do
@@ -2224,19 +2224,19 @@ LABEL_23:
       v29 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v31 = [v25 initWithObjectsAndKeys:{&unk_28459D1A0, @"numberOthers", v26, @"othersVisitTimeArray", v27, @"othersVisitDateSet", v28, @"dictNumDailyVisitsOthers", v29, @"dictVisitDurationWeekendOthers", v30, @"dictVisitDurationWeekdaysOthers", &unk_2845A1AB8, @"sumDistanceOtherFromOther", 0}];
-      [v23 addObject:v31];
+      [array2 addObject:v31];
 
       v22 = 0x277CBE000;
       ++v24;
     }
 
-    while ([v777 count] > v24);
+    while ([array count] > v24);
   }
 
-  obja = v23;
+  obja = array2;
   v778 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  p_isa = &v835->super.super.isa;
-  if (![(NSArray *)v835->_visitArray count])
+  p_isa = &selfCopy->super.super.isa;
+  if (![(NSArray *)selfCopy->_visitArray count])
   {
     v36 = v849;
     v37 = v771;
@@ -2257,18 +2257,18 @@ LABEL_23:
   {
     v39 = objc_autoreleasePoolPush();
     v40 = [p_isa[4] objectAtIndex:v33];
-    v41 = [v40 entryDate];
+    entryDate = [v40 entryDate];
     v826 = v40;
-    v42 = [v40 exitDate];
-    v43 = [p_isa removeTimeFromDateTime:v41 withCalendar:v36];
-    v832 = [p_isa removeTimeFromDateTime:v42 withCalendar:v36];
-    v44 = [v36 isDateInWeekend:v41];
-    v820 = v42;
-    [v42 timeIntervalSinceDate:v41];
+    exitDate = [v40 exitDate];
+    v43 = [p_isa removeTimeFromDateTime:entryDate withCalendar:v36];
+    v832 = [p_isa removeTimeFromDateTime:exitDate withCalendar:v36];
+    v44 = [v36 isDateInWeekend:entryDate];
+    v820 = exitDate;
+    [exitDate timeIntervalSinceDate:entryDate];
     v46 = v45;
     v840 = v43;
     v47 = [v850 stringFromDate:v43];
-    v48 = [p_isa[8] earlierDate:v41];
+    v48 = [p_isa[8] earlierDate:entryDate];
     if (v48 != p_isa[8])
     {
       v49 = v772;
@@ -2282,14 +2282,14 @@ LABEL_24:
     v803 = v47;
     v788 = v39;
     v798 = v33;
-    v50 = [p_isa[9] laterDate:v41];
+    v50 = [p_isa[9] laterDate:entryDate];
     v51 = p_isa;
     v52 = p_isa[9];
 
     if (v50 == v52)
     {
-      v780 = [v51 convertDateTime2SecondsBasedOnCalendar:v849 dateTime:v41];
-      v53 = [v51 numberOfWeeksBetweenDatesBasedOnCalendar:v849 startDateTime:v51[8] endDateTime:v41];
+      v780 = [v51 convertDateTime2SecondsBasedOnCalendar:v849 dateTime:entryDate];
+      v53 = [v51 numberOfWeeksBetweenDatesBasedOnCalendar:v849 startDateTime:v51[8] endDateTime:entryDate];
       v54 = v53 - 1;
       p_isa = v51;
       v49 = v772;
@@ -2304,7 +2304,7 @@ LABEL_24:
           v47 = v803;
           if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
           {
-            v64 = [v849 calendarIdentifier];
+            calendarIdentifier = [v849 calendarIdentifier];
             v967 = 134218754;
             v968 = v54;
             v969 = 2048;
@@ -2312,7 +2312,7 @@ LABEL_24:
             v971 = 2048;
             v972 = v63;
             v973 = 2112;
-            v974 = v64;
+            v974 = calendarIdentifier;
             _os_log_impl(&dword_2304B3000, v48, OS_LOG_TYPE_INFO, "weekIndx is out of range. weekIndx: %lu, minimum weekday: %lu , maximum weekday: %ld, calendar: %@", &v967, 0x2Au);
 
             v49 = v772;
@@ -2334,11 +2334,11 @@ LABEL_24:
       {
         if (v51[5])
         {
-          v55 = [v826 location];
-          v56 = [v55 location];
+          location = [v826 location];
+          v55Location = [location location];
           v57 = v51[5];
           v939 = v767;
-          [v779 distanceFromLocation:v56 toLocation:v57 error:&v939];
+          [v779 distanceFromLocation:v55Location toLocation:v57 error:&v939];
           v59 = v58;
           v60 = v939;
 
@@ -2353,11 +2353,11 @@ LABEL_24:
         v36 = v849;
         if (v51[6])
         {
-          v65 = [v826 location];
-          v66 = [v65 location];
+          location2 = [v826 location];
+          v65Location = [location2 location];
           v67 = v51[6];
           v938 = v767;
-          [v779 distanceFromLocation:v66 toLocation:v67 error:&v938];
+          [v779 distanceFromLocation:v65Location toLocation:v67 error:&v938];
           v69 = v68;
           v70 = v938;
 
@@ -2390,8 +2390,8 @@ LABEL_24:
             {
               [v774 addObject:v74];
               v77 = [v850 stringFromDate:v74];
-              v78 = [v772 allKeys];
-              v79 = [v78 containsObject:v77];
+              allKeys = [v772 allKeys];
+              v79 = [allKeys containsObject:v77];
 
               if (v79)
               {
@@ -2432,8 +2432,8 @@ LABEL_24:
             v84 = v838;
           }
 
-          v85 = [v84 allKeys];
-          v86 = [v85 containsObject:v803];
+          allKeys2 = [v84 allKeys];
+          v86 = [allKeys2 containsObject:v803];
 
           v49 = v772;
           if ((v86 & 1) == 0)
@@ -2448,9 +2448,9 @@ LABEL_24:
           v89 = [MEMORY[0x277CCABB0] numberWithDouble:v46];
           [v88 addObject:v89];
 
-          p_isa = &v835->super.super.isa;
+          p_isa = &selfCopy->super.super.isa;
           v33 = v798;
-          distanceThreshold = v835->_distanceThreshold;
+          distanceThreshold = selfCopy->_distanceThreshold;
           v72 = v746;
           v37 = v771;
         }
@@ -2476,8 +2476,8 @@ LABEL_24:
             {
               [v773 addObject:v91];
               v94 = [v850 stringFromDate:v91];
-              v95 = [v771 allKeys];
-              v96 = [v95 containsObject:v94];
+              allKeys3 = [v771 allKeys];
+              v96 = [allKeys3 containsObject:v94];
 
               if (v96)
               {
@@ -2518,12 +2518,12 @@ LABEL_24:
             v101 = v836;
           }
 
-          v102 = [v101 allKeys];
-          v103 = [v102 containsObject:v803];
+          allKeys4 = [v101 allKeys];
+          v103 = [allKeys4 containsObject:v803];
 
           v104 = v101;
           v37 = v771;
-          p_isa = &v835->super.super.isa;
+          p_isa = &selfCopy->super.super.isa;
           if ((v103 & 1) == 0)
           {
             v105 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2537,36 +2537,36 @@ LABEL_24:
           [v106 addObject:v107];
 
           v33 = v798;
-          distanceThreshold = v835->_distanceThreshold;
+          distanceThreshold = selfCopy->_distanceThreshold;
         }
 
         v38 = obja;
-        if (v59 > distanceThreshold && v69 > distanceThreshold && [v777 count])
+        if (v59 > distanceThreshold && v69 > distanceThreshold && [array count])
         {
           v108 = 0;
-          v109 = v777;
+          v109 = array;
           do
           {
             v110 = v767;
             context = objc_autoreleasePoolPush();
             v111 = [v109 objectAtIndexedSubscript:v108];
-            v112 = [v826 location];
-            v113 = [v112 location];
+            location3 = [v826 location];
+            v112Location = [location3 location];
             v937 = v767;
-            [v779 distanceFromLocation:v113 toLocation:v111 error:&v937];
+            [v779 distanceFromLocation:v112Location toLocation:v111 error:&v937];
             v115 = v114;
             v767 = v937;
 
-            if (v115 < v835->_distanceThreshold)
+            if (v115 < selfCopy->_distanceThreshold)
             {
               v783 = v111;
               v116 = MEMORY[0x277CCABB0];
               v117 = [v38 objectAtIndexedSubscript:v108];
               v118 = [v117 objectForKeyedSubscript:@"sumDistanceOthersFromOther"];
               [v118 doubleValue];
-              v120 = [v116 numberWithDouble:v115 + v119];
+              v119 = [v116 numberWithDouble:v115 + v119];
               v121 = [v38 objectAtIndexedSubscript:v108];
-              [v121 setObject:v120 forKeyedSubscript:@"sumDistanceOtherFromOther"];
+              [v121 setObject:v119 forKeyedSubscript:@"sumDistanceOtherFromOther"];
 
               v122 = MEMORY[0x277CCABB0];
               v123 = [v38 objectAtIndexedSubscript:v108];
@@ -2596,8 +2596,8 @@ LABEL_24:
                   v135 = [v850 stringFromDate:v130];
                   v136 = [v38 objectAtIndexedSubscript:v108];
                   v137 = [v136 objectForKeyedSubscript:@"dictNumDailyVisitsOthers"];
-                  v138 = [v137 allKeys];
-                  v139 = [v138 containsObject:v135];
+                  allKeys5 = [v137 allKeys];
+                  v139 = [allKeys5 containsObject:v135];
 
                   if (v139)
                   {
@@ -2652,8 +2652,8 @@ LABEL_24:
               }
 
               v152 = [v149 objectForKeyedSubscript:v151];
-              v153 = [v152 allKeys];
-              v154 = [v153 containsObject:v803];
+              allKeys6 = [v152 allKeys];
+              v154 = [allKeys6 containsObject:v803];
 
               v37 = v771;
               v49 = v772;
@@ -2678,11 +2678,11 @@ LABEL_24:
 
             objc_autoreleasePoolPop(context);
             ++v108;
-            v109 = v777;
+            v109 = array;
           }
 
-          while ([v777 count] > v108);
-          p_isa = &v835->super.super.isa;
+          while ([array count] > v108);
+          p_isa = &selfCopy->super.super.isa;
           v33 = v798;
           v39 = v788;
           v47 = v803;
@@ -2709,16 +2709,16 @@ LABEL_27:
   while ([p_isa[4] count] > v33);
   if (v756 > 0)
   {
-    v162 = [MEMORY[0x277CCABB0] numberWithDouble:v34 / v756];
-    v163 = [(RTMetric *)v835 metrics];
-    [v163 setObject:v162 forKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress"];
+    v756 = [MEMORY[0x277CCABB0] numberWithDouble:v34 / v756];
+    metrics = [(RTMetric *)selfCopy metrics];
+    [metrics setObject:v756 forKeyedSubscript:@"mean_distance_homeVisit_from_homeAddress"];
   }
 
   if (v759 >= 1)
   {
-    v164 = [MEMORY[0x277CCABB0] numberWithDouble:v35 / v759];
-    v165 = [(RTMetric *)v835 metrics];
-    [v165 setObject:v164 forKeyedSubscript:@"mean_distance_workVisit_from_workAddress"];
+    v759 = [MEMORY[0x277CCABB0] numberWithDouble:v35 / v759];
+    metrics2 = [(RTMetric *)selfCopy metrics];
+    [metrics2 setObject:v759 forKeyedSubscript:@"mean_distance_workVisit_from_workAddress"];
   }
 
 LABEL_94:
@@ -2757,43 +2757,43 @@ LABEL_94:
     while ([v170 count] > v166);
     if (v167 > 0)
     {
-      v179 = [MEMORY[0x277CCABB0] numberWithDouble:v168 / v167];
-      v180 = [(RTMetric *)v835 metrics];
-      [v180 setObject:v179 forKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress"];
+      v167 = [MEMORY[0x277CCABB0] numberWithDouble:v168 / v167];
+      metrics3 = [(RTMetric *)selfCopy metrics];
+      [metrics3 setObject:v167 forKeyedSubscript:@"mean_distance_otherVisit_from_otherAddress"];
     }
   }
 
   v181 = [v747 valueForKeyPath:@"@avg.self"];
-  v182 = [(RTMetric *)v835 metrics];
-  [v182 setObject:v181 forKeyedSubscript:@"weekly_occurrence_rate_home"];
+  metrics4 = [(RTMetric *)selfCopy metrics];
+  [metrics4 setObject:v181 forKeyedSubscript:@"weekly_occurrence_rate_home"];
 
   v183 = [v746 valueForKeyPath:@"@avg.self"];
-  v184 = [(RTMetric *)v835 metrics];
-  [v184 setObject:v183 forKeyedSubscript:@"weekly_occurrence_rate_work"];
+  metrics5 = [(RTMetric *)selfCopy metrics];
+  [metrics5 setObject:v183 forKeyedSubscript:@"weekly_occurrence_rate_work"];
 
   v185 = [RTPlaceDataMetrics meanOf:v745];
-  v186 = [(RTMetric *)v835 metrics];
-  [v186 setObject:v185 forKeyedSubscript:@"mean_visit_time_home"];
+  metrics6 = [(RTMetric *)selfCopy metrics];
+  [metrics6 setObject:v185 forKeyedSubscript:@"mean_visit_time_home"];
 
   v187 = [RTPlaceDataMetrics medianOf:v745];
-  v188 = [(RTMetric *)v835 metrics];
-  [v188 setObject:v187 forKeyedSubscript:@"median_visit_time_home"];
+  metrics7 = [(RTMetric *)selfCopy metrics];
+  [metrics7 setObject:v187 forKeyedSubscript:@"median_visit_time_home"];
 
   v189 = [RTPlaceDataMetrics standardDeviationOf:v745];
-  v190 = [(RTMetric *)v835 metrics];
-  [v190 setObject:v189 forKeyedSubscript:@"SD_visit_time_home"];
+  metrics8 = [(RTMetric *)selfCopy metrics];
+  [metrics8 setObject:v189 forKeyedSubscript:@"SD_visit_time_home"];
 
   v191 = [RTPlaceDataMetrics meanOf:v744];
-  v192 = [(RTMetric *)v835 metrics];
-  [v192 setObject:v191 forKeyedSubscript:@"mean_visit_time_work"];
+  metrics9 = [(RTMetric *)selfCopy metrics];
+  [metrics9 setObject:v191 forKeyedSubscript:@"mean_visit_time_work"];
 
   v193 = [RTPlaceDataMetrics medianOf:v744];
-  v194 = [(RTMetric *)v835 metrics];
-  [v194 setObject:v193 forKeyedSubscript:@"median_visit_time_work"];
+  metrics10 = [(RTMetric *)selfCopy metrics];
+  [metrics10 setObject:v193 forKeyedSubscript:@"median_visit_time_work"];
 
   v195 = [RTPlaceDataMetrics standardDeviationOf:v744];
-  v196 = [(RTMetric *)v835 metrics];
-  [v196 setObject:v195 forKeyedSubscript:@"SD_visit_time_work"];
+  metrics11 = [(RTMetric *)selfCopy metrics];
+  [metrics11 setObject:v195 forKeyedSubscript:@"SD_visit_time_work"];
 
   if ([v38 count])
   {
@@ -2829,17 +2829,17 @@ LABEL_94:
     while ([v38 count] > v197);
     if (v198 > 0)
     {
-      v210 = [MEMORY[0x277CCABB0] numberWithDouble:v199 / v198];
-      v211 = [(RTMetric *)v835 metrics];
-      [v211 setObject:v210 forKeyedSubscript:@"mean_visit_time_others"];
+      v198 = [MEMORY[0x277CCABB0] numberWithDouble:v199 / v198];
+      metrics12 = [(RTMetric *)selfCopy metrics];
+      [metrics12 setObject:v198 forKeyedSubscript:@"mean_visit_time_others"];
 
-      v212 = [MEMORY[0x277CCABB0] numberWithDouble:v200 / v198];
-      v213 = [(RTMetric *)v835 metrics];
-      [v213 setObject:v212 forKeyedSubscript:@"median_visit_time_others"];
+      v1982 = [MEMORY[0x277CCABB0] numberWithDouble:v200 / v198];
+      metrics13 = [(RTMetric *)selfCopy metrics];
+      [metrics13 setObject:v1982 forKeyedSubscript:@"median_visit_time_others"];
 
-      v214 = [MEMORY[0x277CCABB0] numberWithDouble:v201 / v198];
-      v215 = [(RTMetric *)v835 metrics];
-      [v215 setObject:v214 forKeyedSubscript:@"SD_visit_time_others"];
+      v1983 = [MEMORY[0x277CCABB0] numberWithDouble:v201 / v198];
+      metrics14 = [(RTMetric *)selfCopy metrics];
+      [metrics14 setObject:v1983 forKeyedSubscript:@"SD_visit_time_others"];
     }
   }
 
@@ -3129,72 +3129,72 @@ LABEL_159:
       {
         if (v757 > 0)
         {
-          v246 = [MEMORY[0x277CCABB0] numberWithDouble:v217 / v757];
-          v247 = [(RTMetric *)v835 metrics];
-          [v247 setObject:v246 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others"];
+          v757 = [MEMORY[0x277CCABB0] numberWithDouble:v217 / v757];
+          metrics15 = [(RTMetric *)selfCopy metrics];
+          [metrics15 setObject:v757 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_Others"];
 
-          v248 = [MEMORY[0x277CCABB0] numberWithDouble:v218 / v757];
-          v249 = [(RTMetric *)v835 metrics];
-          [v249 setObject:v248 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others"];
+          v7572 = [MEMORY[0x277CCABB0] numberWithDouble:v218 / v757];
+          metrics16 = [(RTMetric *)selfCopy metrics];
+          [metrics16 setObject:v7572 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_Others"];
 
-          v250 = [MEMORY[0x277CCABB0] numberWithDouble:v219 / v757];
-          v251 = [(RTMetric *)v835 metrics];
-          [v251 setObject:v250 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others"];
+          v7573 = [MEMORY[0x277CCABB0] numberWithDouble:v219 / v757];
+          metrics17 = [(RTMetric *)selfCopy metrics];
+          [metrics17 setObject:v7573 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_Others"];
 
-          v252 = [MEMORY[0x277CCABB0] numberWithDouble:v220 / v757];
-          v253 = [(RTMetric *)v835 metrics];
-          [v253 setObject:v252 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others"];
+          v7574 = [MEMORY[0x277CCABB0] numberWithDouble:v220 / v757];
+          metrics18 = [(RTMetric *)selfCopy metrics];
+          [metrics18 setObject:v7574 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_Others"];
 
-          v254 = [MEMORY[0x277CCABB0] numberWithDouble:v221 / v757];
-          v255 = [(RTMetric *)v835 metrics];
-          [v255 setObject:v254 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers"];
+          v7575 = [MEMORY[0x277CCABB0] numberWithDouble:v221 / v757];
+          metrics19 = [(RTMetric *)selfCopy metrics];
+          [metrics19 setObject:v7575 forKeyedSubscript:@"average_occurrence_weekdays_Home_Work_NoOthers"];
 
-          v256 = [MEMORY[0x277CCABB0] numberWithDouble:v222 / v757];
-          v257 = [(RTMetric *)v835 metrics];
-          [v257 setObject:v256 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers"];
+          v7576 = [MEMORY[0x277CCABB0] numberWithDouble:v222 / v757];
+          metrics20 = [(RTMetric *)selfCopy metrics];
+          [metrics20 setObject:v7576 forKeyedSubscript:@"average_occurrence_weekdays_Home_NoWork_NoOthers"];
 
-          v258 = [MEMORY[0x277CCABB0] numberWithDouble:v223 / v757];
-          v259 = [(RTMetric *)v835 metrics];
-          [v259 setObject:v258 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers"];
+          v7577 = [MEMORY[0x277CCABB0] numberWithDouble:v223 / v757];
+          metrics21 = [(RTMetric *)selfCopy metrics];
+          [metrics21 setObject:v7577 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_Work_NoOthers"];
 
-          v260 = [MEMORY[0x277CCABB0] numberWithDouble:v748 / v757];
-          v261 = [(RTMetric *)v835 metrics];
-          [v261 setObject:v260 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers"];
+          v7578 = [MEMORY[0x277CCABB0] numberWithDouble:v748 / v757];
+          metrics22 = [(RTMetric *)selfCopy metrics];
+          [metrics22 setObject:v7578 forKeyedSubscript:@"average_occurrence_weekdays_NoHome_NoWork_NoOthers"];
         }
 
         if (v760 >= 1)
         {
-          v262 = [MEMORY[0x277CCABB0] numberWithDouble:v749 / v760];
-          v263 = [(RTMetric *)v835 metrics];
-          [v263 setObject:v262 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others"];
+          v760 = [MEMORY[0x277CCABB0] numberWithDouble:v749 / v760];
+          metrics23 = [(RTMetric *)selfCopy metrics];
+          [metrics23 setObject:v760 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_Others"];
 
-          v264 = [MEMORY[0x277CCABB0] numberWithDouble:v750 / v760];
-          v265 = [(RTMetric *)v835 metrics];
-          [v265 setObject:v264 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others"];
+          v7602 = [MEMORY[0x277CCABB0] numberWithDouble:v750 / v760];
+          metrics24 = [(RTMetric *)selfCopy metrics];
+          [metrics24 setObject:v7602 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_Others"];
 
-          v266 = [MEMORY[0x277CCABB0] numberWithDouble:v751 / v760];
-          v267 = [(RTMetric *)v835 metrics];
-          [v267 setObject:v266 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others"];
+          v7603 = [MEMORY[0x277CCABB0] numberWithDouble:v751 / v760];
+          metrics25 = [(RTMetric *)selfCopy metrics];
+          [metrics25 setObject:v7603 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_Others"];
 
-          v268 = [MEMORY[0x277CCABB0] numberWithDouble:v752 / v760];
-          v269 = [(RTMetric *)v835 metrics];
-          [v269 setObject:v268 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others"];
+          v7604 = [MEMORY[0x277CCABB0] numberWithDouble:v752 / v760];
+          metrics26 = [(RTMetric *)selfCopy metrics];
+          [metrics26 setObject:v7604 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_Others"];
 
-          v270 = [MEMORY[0x277CCABB0] numberWithDouble:v753 / v760];
-          v271 = [(RTMetric *)v835 metrics];
-          [v271 setObject:v270 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers"];
+          v7605 = [MEMORY[0x277CCABB0] numberWithDouble:v753 / v760];
+          metrics27 = [(RTMetric *)selfCopy metrics];
+          [metrics27 setObject:v7605 forKeyedSubscript:@"average_occurrence_weekend_Home_Work_NoOthers"];
 
-          v272 = [MEMORY[0x277CCABB0] numberWithDouble:v754 / v760];
-          v273 = [(RTMetric *)v835 metrics];
-          [v273 setObject:v272 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers"];
+          v7606 = [MEMORY[0x277CCABB0] numberWithDouble:v754 / v760];
+          metrics28 = [(RTMetric *)selfCopy metrics];
+          [metrics28 setObject:v7606 forKeyedSubscript:@"average_occurrence_weekend_Home_NoWork_NoOthers"];
 
-          v274 = [MEMORY[0x277CCABB0] numberWithDouble:v755 / v760];
-          v275 = [(RTMetric *)v835 metrics];
-          [v275 setObject:v274 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers"];
+          v7607 = [MEMORY[0x277CCABB0] numberWithDouble:v755 / v760];
+          metrics29 = [(RTMetric *)selfCopy metrics];
+          [metrics29 setObject:v7607 forKeyedSubscript:@"average_occurrence_weekend_NoHome_Work_NoOthers"];
 
-          v276 = [MEMORY[0x277CCABB0] numberWithDouble:v224 / v760];
-          v277 = [(RTMetric *)v835 metrics];
-          [v277 setObject:v276 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers"];
+          v7608 = [MEMORY[0x277CCABB0] numberWithDouble:v224 / v760];
+          metrics30 = [(RTMetric *)selfCopy metrics];
+          [metrics30 setObject:v7608 forKeyedSubscript:@"average_occurrence_weekend_NoHome_NoWork_NoOthers"];
         }
 
         break;
@@ -3208,8 +3208,8 @@ LABEL_159:
   v934 = 0u;
   v935 = 0u;
   v936 = 0u;
-  v278 = [v49 allKeys];
-  v279 = [v278 countByEnumeratingWithState:&v933 objects:v966 count:16];
+  allKeys7 = [v49 allKeys];
+  v279 = [allKeys7 countByEnumeratingWithState:&v933 objects:v966 count:16];
   if (v279)
   {
     v280 = v279;
@@ -3220,7 +3220,7 @@ LABEL_159:
       {
         if (*v934 != v281)
         {
-          objc_enumerationMutation(v278);
+          objc_enumerationMutation(allKeys7);
         }
 
         v283 = *(*(&v933 + 1) + 8 * j);
@@ -3241,35 +3241,35 @@ LABEL_159:
         [v287 addObject:v286];
       }
 
-      v280 = [v278 countByEnumeratingWithState:&v933 objects:v966 count:16];
+      v280 = [allKeys7 countByEnumeratingWithState:&v933 objects:v966 count:16];
     }
 
     while (v280);
   }
 
   v288 = [RTPlaceDataMetrics meanOf:v831];
-  v289 = [(RTMetric *)v835 metrics];
-  [v289 setObject:v288 forKeyedSubscript:@"mean_daily_visits_weekdays_home"];
+  metrics31 = [(RTMetric *)selfCopy metrics];
+  [metrics31 setObject:v288 forKeyedSubscript:@"mean_daily_visits_weekdays_home"];
 
   v290 = [RTPlaceDataMetrics medianOf:v831];
-  v291 = [(RTMetric *)v835 metrics];
-  [v291 setObject:v290 forKeyedSubscript:@"median_daily_visits_weekdays_home"];
+  metrics32 = [(RTMetric *)selfCopy metrics];
+  [metrics32 setObject:v290 forKeyedSubscript:@"median_daily_visits_weekdays_home"];
 
   v292 = [RTPlaceDataMetrics standardDeviationOf:v831];
-  v293 = [(RTMetric *)v835 metrics];
-  [v293 setObject:v292 forKeyedSubscript:@"SD_daily_visits_weekdays_home"];
+  metrics33 = [(RTMetric *)selfCopy metrics];
+  [metrics33 setObject:v292 forKeyedSubscript:@"SD_daily_visits_weekdays_home"];
 
   v294 = [RTPlaceDataMetrics meanOf:v834];
-  v295 = [(RTMetric *)v835 metrics];
-  [v295 setObject:v294 forKeyedSubscript:@"mean_daily_visits_weekend_home"];
+  metrics34 = [(RTMetric *)selfCopy metrics];
+  [metrics34 setObject:v294 forKeyedSubscript:@"mean_daily_visits_weekend_home"];
 
   v296 = [RTPlaceDataMetrics medianOf:v834];
-  v297 = [(RTMetric *)v835 metrics];
-  [v297 setObject:v296 forKeyedSubscript:@"median_daily_visits_weekend_home"];
+  metrics35 = [(RTMetric *)selfCopy metrics];
+  [metrics35 setObject:v296 forKeyedSubscript:@"median_daily_visits_weekend_home"];
 
   v298 = [RTPlaceDataMetrics standardDeviationOf:v834];
-  v299 = [(RTMetric *)v835 metrics];
-  [v299 setObject:v298 forKeyedSubscript:@"SD_daily_visits_weekend_home"];
+  metrics36 = [(RTMetric *)selfCopy metrics];
+  [metrics36 setObject:v298 forKeyedSubscript:@"SD_daily_visits_weekend_home"];
 
   v828 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v825 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -3277,8 +3277,8 @@ LABEL_159:
   v930 = 0u;
   v931 = 0u;
   v932 = 0u;
-  v300 = [v37 allKeys];
-  v301 = [v300 countByEnumeratingWithState:&v929 objects:v965 count:16];
+  allKeys8 = [v37 allKeys];
+  v301 = [allKeys8 countByEnumeratingWithState:&v929 objects:v965 count:16];
   if (v301)
   {
     v302 = v301;
@@ -3289,7 +3289,7 @@ LABEL_159:
       {
         if (*v930 != v303)
         {
-          objc_enumerationMutation(v300);
+          objc_enumerationMutation(allKeys8);
         }
 
         v305 = *(*(&v929 + 1) + 8 * k);
@@ -3310,35 +3310,35 @@ LABEL_159:
         [v309 addObject:v308];
       }
 
-      v302 = [v300 countByEnumeratingWithState:&v929 objects:v965 count:16];
+      v302 = [allKeys8 countByEnumeratingWithState:&v929 objects:v965 count:16];
     }
 
     while (v302);
   }
 
   v310 = [RTPlaceDataMetrics meanOf:v825];
-  v311 = [(RTMetric *)v835 metrics];
-  [v311 setObject:v310 forKeyedSubscript:@"mean_daily_visits_weekdays_work"];
+  metrics37 = [(RTMetric *)selfCopy metrics];
+  [metrics37 setObject:v310 forKeyedSubscript:@"mean_daily_visits_weekdays_work"];
 
   v312 = [RTPlaceDataMetrics medianOf:v825];
-  v313 = [(RTMetric *)v835 metrics];
-  [v313 setObject:v312 forKeyedSubscript:@"median_daily_visits_weekdays_work"];
+  metrics38 = [(RTMetric *)selfCopy metrics];
+  [metrics38 setObject:v312 forKeyedSubscript:@"median_daily_visits_weekdays_work"];
 
   v314 = [RTPlaceDataMetrics standardDeviationOf:v825];
-  v315 = [(RTMetric *)v835 metrics];
-  [v315 setObject:v314 forKeyedSubscript:@"SD_daily_visits_weekdays_work"];
+  metrics39 = [(RTMetric *)selfCopy metrics];
+  [metrics39 setObject:v314 forKeyedSubscript:@"SD_daily_visits_weekdays_work"];
 
   v316 = [RTPlaceDataMetrics meanOf:v828];
-  v317 = [(RTMetric *)v835 metrics];
-  [v317 setObject:v316 forKeyedSubscript:@"mean_daily_visits_weekend_work"];
+  metrics40 = [(RTMetric *)selfCopy metrics];
+  [metrics40 setObject:v316 forKeyedSubscript:@"mean_daily_visits_weekend_work"];
 
   v318 = [RTPlaceDataMetrics medianOf:v828];
-  v319 = [(RTMetric *)v835 metrics];
-  [v319 setObject:v318 forKeyedSubscript:@"median_daily_visits_weekend_work"];
+  metrics41 = [(RTMetric *)selfCopy metrics];
+  [metrics41 setObject:v318 forKeyedSubscript:@"median_daily_visits_weekend_work"];
 
   v320 = [RTPlaceDataMetrics standardDeviationOf:v828];
-  v321 = [(RTMetric *)v835 metrics];
-  [v321 setObject:v320 forKeyedSubscript:@"SD_daily_visits_weekend_work"];
+  metrics42 = [(RTMetric *)selfCopy metrics];
+  [metrics42 setObject:v320 forKeyedSubscript:@"SD_daily_visits_weekend_work"];
 
   v322 = obja;
   if ([obja count])
@@ -3370,10 +3370,10 @@ LABEL_159:
         v928 = 0u;
         v335 = [v322 objectAtIndexedSubscript:v323];
         v336 = [v335 objectForKeyedSubscript:@"dictNumDailyVisitsOthers"];
-        v337 = [v336 allKeys];
+        allKeys9 = [v336 allKeys];
 
-        v842 = v337;
-        v338 = [v337 countByEnumeratingWithState:&v925 objects:v964 count:16];
+        v842 = allKeys9;
+        v338 = [allKeys9 countByEnumeratingWithState:&v925 objects:v964 count:16];
         if (v338)
         {
           v339 = v338;
@@ -3466,32 +3466,32 @@ LABEL_159:
     while ([v322 count] > v323);
     if (v809 > 0)
     {
-      v362 = [MEMORY[0x277CCABB0] numberWithDouble:v329 / v809];
-      v363 = [(RTMetric *)v835 metrics];
-      [v363 setObject:v362 forKeyedSubscript:@"mean_daily_visits_weekdays_others"];
+      v809 = [MEMORY[0x277CCABB0] numberWithDouble:v329 / v809];
+      metrics43 = [(RTMetric *)selfCopy metrics];
+      [metrics43 setObject:v809 forKeyedSubscript:@"mean_daily_visits_weekdays_others"];
 
-      v364 = [MEMORY[0x277CCABB0] numberWithDouble:v328 / v809];
-      v365 = [(RTMetric *)v835 metrics];
-      [v365 setObject:v364 forKeyedSubscript:@"median_daily_visits_weekdays_others"];
+      v8092 = [MEMORY[0x277CCABB0] numberWithDouble:v328 / v809];
+      metrics44 = [(RTMetric *)selfCopy metrics];
+      [metrics44 setObject:v8092 forKeyedSubscript:@"median_daily_visits_weekdays_others"];
 
-      v366 = [MEMORY[0x277CCABB0] numberWithDouble:v327 / v809];
-      v367 = [(RTMetric *)v835 metrics];
-      [v367 setObject:v366 forKeyedSubscript:@"SD_daily_visits_weekdays_others"];
+      v8093 = [MEMORY[0x277CCABB0] numberWithDouble:v327 / v809];
+      metrics45 = [(RTMetric *)selfCopy metrics];
+      [metrics45 setObject:v8093 forKeyedSubscript:@"SD_daily_visits_weekdays_others"];
     }
 
     if (v814 >= 1)
     {
-      v368 = [MEMORY[0x277CCABB0] numberWithDouble:v326 / v814];
-      v369 = [(RTMetric *)v835 metrics];
-      [v369 setObject:v368 forKeyedSubscript:@"mean_daily_visits_weekend_others"];
+      v814 = [MEMORY[0x277CCABB0] numberWithDouble:v326 / v814];
+      metrics46 = [(RTMetric *)selfCopy metrics];
+      [metrics46 setObject:v814 forKeyedSubscript:@"mean_daily_visits_weekend_others"];
 
-      v370 = [MEMORY[0x277CCABB0] numberWithDouble:v325 / v814];
-      v371 = [(RTMetric *)v835 metrics];
-      [v371 setObject:v370 forKeyedSubscript:@"median_daily_visits_weekend_others"];
+      v8142 = [MEMORY[0x277CCABB0] numberWithDouble:v325 / v814];
+      metrics47 = [(RTMetric *)selfCopy metrics];
+      [metrics47 setObject:v8142 forKeyedSubscript:@"median_daily_visits_weekend_others"];
 
-      v372 = [MEMORY[0x277CCABB0] numberWithDouble:v324 / v814];
-      v373 = [(RTMetric *)v835 metrics];
-      [v373 setObject:v372 forKeyedSubscript:@"SD_daily_visits_weekend_others"];
+      v8143 = [MEMORY[0x277CCABB0] numberWithDouble:v324 / v814];
+      metrics48 = [(RTMetric *)selfCopy metrics];
+      [metrics48 setObject:v8143 forKeyedSubscript:@"SD_daily_visits_weekend_others"];
     }
   }
 
@@ -3500,8 +3500,8 @@ LABEL_159:
   v922 = 0u;
   v923 = 0u;
   v924 = 0u;
-  v375 = [v839 allKeys];
-  v376 = [v375 countByEnumeratingWithState:&v921 objects:v963 count:16];
+  allKeys10 = [v839 allKeys];
+  v376 = [allKeys10 countByEnumeratingWithState:&v921 objects:v963 count:16];
   if (v376)
   {
     v377 = v376;
@@ -3512,38 +3512,38 @@ LABEL_159:
       {
         if (*v922 != v378)
         {
-          objc_enumerationMutation(v375);
+          objc_enumerationMutation(allKeys10);
         }
 
         v380 = [v839 objectForKeyedSubscript:*(*(&v921 + 1) + 8 * n)];
         [v374 addObjectsFromArray:v380];
       }
 
-      v377 = [v375 countByEnumeratingWithState:&v921 objects:v963 count:16];
+      v377 = [allKeys10 countByEnumeratingWithState:&v921 objects:v963 count:16];
     }
 
     while (v377);
   }
 
   v381 = [RTPlaceDataMetrics medianOf:v374];
-  v382 = [(RTMetric *)v835 metrics];
-  [v382 setObject:v381 forKeyedSubscript:@"median_visit_duration_weekend_home"];
+  metrics49 = [(RTMetric *)selfCopy metrics];
+  [metrics49 setObject:v381 forKeyedSubscript:@"median_visit_duration_weekend_home"];
 
   v383 = [RTPlaceDataMetrics meanOf:v374];
-  v384 = [(RTMetric *)v835 metrics];
-  [v384 setObject:v383 forKeyedSubscript:@"mean_visit_duration_weekend_home"];
+  metrics50 = [(RTMetric *)selfCopy metrics];
+  [metrics50 setObject:v383 forKeyedSubscript:@"mean_visit_duration_weekend_home"];
 
   v385 = [RTPlaceDataMetrics standardDeviationOf:v374];
-  v386 = [(RTMetric *)v835 metrics];
-  [v386 setObject:v385 forKeyedSubscript:@"SD_visit_duration_weekend_home"];
+  metrics51 = [(RTMetric *)selfCopy metrics];
+  [metrics51 setObject:v385 forKeyedSubscript:@"SD_visit_duration_weekend_home"];
 
   v823 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v917 = 0u;
   v918 = 0u;
   v919 = 0u;
   v920 = 0u;
-  v387 = [v838 allKeys];
-  v388 = [v387 countByEnumeratingWithState:&v917 objects:v962 count:16];
+  allKeys11 = [v838 allKeys];
+  v388 = [allKeys11 countByEnumeratingWithState:&v917 objects:v962 count:16];
   if (v388)
   {
     v389 = v388;
@@ -3554,38 +3554,38 @@ LABEL_159:
       {
         if (*v918 != v390)
         {
-          objc_enumerationMutation(v387);
+          objc_enumerationMutation(allKeys11);
         }
 
         v392 = [v838 objectForKeyedSubscript:*(*(&v917 + 1) + 8 * ii)];
         [v823 addObjectsFromArray:v392];
       }
 
-      v389 = [v387 countByEnumeratingWithState:&v917 objects:v962 count:16];
+      v389 = [allKeys11 countByEnumeratingWithState:&v917 objects:v962 count:16];
     }
 
     while (v389);
   }
 
   v393 = [RTPlaceDataMetrics medianOf:v823];
-  v394 = [(RTMetric *)v835 metrics];
-  [v394 setObject:v393 forKeyedSubscript:@"median_visit_duration_weekdays_home"];
+  metrics52 = [(RTMetric *)selfCopy metrics];
+  [metrics52 setObject:v393 forKeyedSubscript:@"median_visit_duration_weekdays_home"];
 
   v395 = [RTPlaceDataMetrics meanOf:v823];
-  v396 = [(RTMetric *)v835 metrics];
-  [v396 setObject:v395 forKeyedSubscript:@"mean_visit_duration_weekdays_home"];
+  metrics53 = [(RTMetric *)selfCopy metrics];
+  [metrics53 setObject:v395 forKeyedSubscript:@"mean_visit_duration_weekdays_home"];
 
   v397 = [RTPlaceDataMetrics standardDeviationOf:v823];
-  v398 = [(RTMetric *)v835 metrics];
-  [v398 setObject:v397 forKeyedSubscript:@"SD_visit_duration_weekdays_home"];
+  metrics54 = [(RTMetric *)selfCopy metrics];
+  [metrics54 setObject:v397 forKeyedSubscript:@"SD_visit_duration_weekdays_home"];
 
   contextc = objc_alloc_init(MEMORY[0x277CBEB18]);
   v913 = 0u;
   v914 = 0u;
   v915 = 0u;
   v916 = 0u;
-  v399 = [v837 allKeys];
-  v400 = [v399 countByEnumeratingWithState:&v913 objects:v961 count:16];
+  allKeys12 = [v837 allKeys];
+  v400 = [allKeys12 countByEnumeratingWithState:&v913 objects:v961 count:16];
   if (v400)
   {
     v401 = v400;
@@ -3596,38 +3596,38 @@ LABEL_159:
       {
         if (*v914 != v402)
         {
-          objc_enumerationMutation(v399);
+          objc_enumerationMutation(allKeys12);
         }
 
         v404 = [v837 objectForKeyedSubscript:*(*(&v913 + 1) + 8 * jj)];
         [contextc addObjectsFromArray:v404];
       }
 
-      v401 = [v399 countByEnumeratingWithState:&v913 objects:v961 count:16];
+      v401 = [allKeys12 countByEnumeratingWithState:&v913 objects:v961 count:16];
     }
 
     while (v401);
   }
 
   v405 = [RTPlaceDataMetrics medianOf:contextc];
-  v406 = [(RTMetric *)v835 metrics];
-  [v406 setObject:v405 forKeyedSubscript:@"median_visit_duration_weekend_work"];
+  metrics55 = [(RTMetric *)selfCopy metrics];
+  [metrics55 setObject:v405 forKeyedSubscript:@"median_visit_duration_weekend_work"];
 
   v407 = [RTPlaceDataMetrics meanOf:contextc];
-  v408 = [(RTMetric *)v835 metrics];
-  [v408 setObject:v407 forKeyedSubscript:@"mean_visit_duration_weekend_work"];
+  metrics56 = [(RTMetric *)selfCopy metrics];
+  [metrics56 setObject:v407 forKeyedSubscript:@"mean_visit_duration_weekend_work"];
 
   v409 = [RTPlaceDataMetrics standardDeviationOf:contextc];
-  v410 = [(RTMetric *)v835 metrics];
-  [v410 setObject:v409 forKeyedSubscript:@"SD_visit_duration_weekend_work"];
+  metrics57 = [(RTMetric *)selfCopy metrics];
+  [metrics57 setObject:v409 forKeyedSubscript:@"SD_visit_duration_weekend_work"];
 
   v815 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v909 = 0u;
   v910 = 0u;
   v911 = 0u;
   v912 = 0u;
-  v411 = [v836 allKeys];
-  v412 = [v411 countByEnumeratingWithState:&v909 objects:v960 count:16];
+  allKeys13 = [v836 allKeys];
+  v412 = [allKeys13 countByEnumeratingWithState:&v909 objects:v960 count:16];
   if (v412)
   {
     v413 = v412;
@@ -3638,30 +3638,30 @@ LABEL_159:
       {
         if (*v910 != v414)
         {
-          objc_enumerationMutation(v411);
+          objc_enumerationMutation(allKeys13);
         }
 
         v416 = [v836 objectForKeyedSubscript:*(*(&v909 + 1) + 8 * kk)];
         [v815 addObjectsFromArray:v416];
       }
 
-      v413 = [v411 countByEnumeratingWithState:&v909 objects:v960 count:16];
+      v413 = [allKeys13 countByEnumeratingWithState:&v909 objects:v960 count:16];
     }
 
     while (v413);
   }
 
   v417 = [RTPlaceDataMetrics medianOf:v815];
-  v418 = [(RTMetric *)v835 metrics];
-  [v418 setObject:v417 forKeyedSubscript:@"median_visit_duration_weekdays_work"];
+  metrics58 = [(RTMetric *)selfCopy metrics];
+  [metrics58 setObject:v417 forKeyedSubscript:@"median_visit_duration_weekdays_work"];
 
   v419 = [RTPlaceDataMetrics meanOf:v815];
-  v420 = [(RTMetric *)v835 metrics];
-  [v420 setObject:v419 forKeyedSubscript:@"mean_visit_duration_weekdays_work"];
+  metrics59 = [(RTMetric *)selfCopy metrics];
+  [metrics59 setObject:v419 forKeyedSubscript:@"mean_visit_duration_weekdays_work"];
 
   v421 = [RTPlaceDataMetrics standardDeviationOf:v815];
-  v422 = [(RTMetric *)v835 metrics];
-  [v422 setObject:v421 forKeyedSubscript:@"SD_visit_duration_weekdays_work"];
+  metrics60 = [(RTMetric *)selfCopy metrics];
+  [metrics60 setObject:v421 forKeyedSubscript:@"SD_visit_duration_weekdays_work"];
 
   v758 = v374;
   if ([v322 count])
@@ -3691,9 +3691,9 @@ LABEL_159:
         v908 = 0u;
         v434 = [v432 objectAtIndexedSubscript:v423];
         v435 = [v434 objectForKeyedSubscript:@"dictVisitDurationWeekendOthers"];
-        v436 = [v435 allKeys];
+        allKeys14 = [v435 allKeys];
 
-        v437 = [v436 countByEnumeratingWithState:&v905 objects:v959 count:16];
+        v437 = [allKeys14 countByEnumeratingWithState:&v905 objects:v959 count:16];
         if (v437)
         {
           v438 = v437;
@@ -3704,7 +3704,7 @@ LABEL_159:
             {
               if (*v906 != v439)
               {
-                objc_enumerationMutation(v436);
+                objc_enumerationMutation(allKeys14);
               }
 
               v441 = *(*(&v905 + 1) + 8 * mm);
@@ -3714,7 +3714,7 @@ LABEL_159:
               [v433 addObjectsFromArray:v444];
             }
 
-            v438 = [v436 countByEnumeratingWithState:&v905 objects:v959 count:16];
+            v438 = [allKeys14 countByEnumeratingWithState:&v905 objects:v959 count:16];
           }
 
           while (v438);
@@ -3748,17 +3748,17 @@ LABEL_159:
     while ([v322 count] > v423);
     if (v424 > 0)
     {
-      v451 = [MEMORY[0x277CCABB0] numberWithDouble:v427 / v424];
-      v452 = [(RTMetric *)v835 metrics];
-      [v452 setObject:v451 forKeyedSubscript:@"median_visit_duration_weekend_others"];
+      v424 = [MEMORY[0x277CCABB0] numberWithDouble:v427 / v424];
+      metrics61 = [(RTMetric *)selfCopy metrics];
+      [metrics61 setObject:v424 forKeyedSubscript:@"median_visit_duration_weekend_others"];
 
-      v453 = [MEMORY[0x277CCABB0] numberWithDouble:v426 / v424];
-      v454 = [(RTMetric *)v835 metrics];
-      [v454 setObject:v453 forKeyedSubscript:@"mean_visit_duration_weekend_others"];
+      v4242 = [MEMORY[0x277CCABB0] numberWithDouble:v426 / v424];
+      metrics62 = [(RTMetric *)selfCopy metrics];
+      [metrics62 setObject:v4242 forKeyedSubscript:@"mean_visit_duration_weekend_others"];
 
-      v455 = [MEMORY[0x277CCABB0] numberWithDouble:v425 / v424];
-      v456 = [(RTMetric *)v835 metrics];
-      [v456 setObject:v455 forKeyedSubscript:@"SD_visit_duration_weekend_others"];
+      v4243 = [MEMORY[0x277CCABB0] numberWithDouble:v425 / v424];
+      metrics63 = [(RTMetric *)selfCopy metrics];
+      [metrics63 setObject:v4243 forKeyedSubscript:@"SD_visit_duration_weekend_others"];
     }
   }
 
@@ -3789,9 +3789,9 @@ LABEL_159:
         v904 = 0u;
         v468 = [v466 objectAtIndexedSubscript:v457];
         v469 = [v468 objectForKeyedSubscript:@"dictVisitDurationWeekdaysOthers"];
-        v470 = [v469 allKeys];
+        allKeys15 = [v469 allKeys];
 
-        v471 = [v470 countByEnumeratingWithState:&v901 objects:v958 count:16];
+        v471 = [allKeys15 countByEnumeratingWithState:&v901 objects:v958 count:16];
         if (v471)
         {
           v472 = v471;
@@ -3802,7 +3802,7 @@ LABEL_159:
             {
               if (*v902 != v473)
               {
-                objc_enumerationMutation(v470);
+                objc_enumerationMutation(allKeys15);
               }
 
               v475 = *(*(&v901 + 1) + 8 * nn);
@@ -3812,7 +3812,7 @@ LABEL_159:
               [v467 addObjectsFromArray:v478];
             }
 
-            v472 = [v470 countByEnumeratingWithState:&v901 objects:v958 count:16];
+            v472 = [allKeys15 countByEnumeratingWithState:&v901 objects:v958 count:16];
           }
 
           while (v472);
@@ -3846,17 +3846,17 @@ LABEL_159:
     while ([v322 count] > v457);
     if (v458 > 0)
     {
-      v485 = [MEMORY[0x277CCABB0] numberWithDouble:v461 / v458];
-      v486 = [(RTMetric *)v835 metrics];
-      [v486 setObject:v485 forKeyedSubscript:@"median_visit_duration_weekdays_others"];
+      v458 = [MEMORY[0x277CCABB0] numberWithDouble:v461 / v458];
+      metrics64 = [(RTMetric *)selfCopy metrics];
+      [metrics64 setObject:v458 forKeyedSubscript:@"median_visit_duration_weekdays_others"];
 
-      v487 = [MEMORY[0x277CCABB0] numberWithDouble:v460 / v458];
-      v488 = [(RTMetric *)v835 metrics];
-      [v488 setObject:v487 forKeyedSubscript:@"mean_visit_duration_weekdays_others"];
+      v4582 = [MEMORY[0x277CCABB0] numberWithDouble:v460 / v458];
+      metrics65 = [(RTMetric *)selfCopy metrics];
+      [metrics65 setObject:v4582 forKeyedSubscript:@"mean_visit_duration_weekdays_others"];
 
-      v489 = [MEMORY[0x277CCABB0] numberWithDouble:v459 / v458];
-      v490 = [(RTMetric *)v835 metrics];
-      [v490 setObject:v489 forKeyedSubscript:@"SD_visit_duration_weekdays_others"];
+      v4583 = [MEMORY[0x277CCABB0] numberWithDouble:v459 / v458];
+      metrics66 = [(RTMetric *)selfCopy metrics];
+      [metrics66 setObject:v4583 forKeyedSubscript:@"SD_visit_duration_weekdays_others"];
     }
   }
 
@@ -3865,8 +3865,8 @@ LABEL_159:
   v898 = 0u;
   v899 = 0u;
   v900 = 0u;
-  v491 = [v839 allKeys];
-  v492 = [v491 countByEnumeratingWithState:&v897 objects:v957 count:16];
+  allKeys16 = [v839 allKeys];
+  v492 = [allKeys16 countByEnumeratingWithState:&v897 objects:v957 count:16];
   if (v492)
   {
     v493 = v492;
@@ -3877,7 +3877,7 @@ LABEL_159:
       {
         if (*v898 != v494)
         {
-          objc_enumerationMutation(v491);
+          objc_enumerationMutation(allKeys16);
         }
 
         v496 = [v839 objectForKeyedSubscript:*(*(&v897 + 1) + 8 * i1)];
@@ -3886,31 +3886,31 @@ LABEL_159:
         [v812 addObject:v497];
       }
 
-      v493 = [v491 countByEnumeratingWithState:&v897 objects:v957 count:16];
+      v493 = [allKeys16 countByEnumeratingWithState:&v897 objects:v957 count:16];
     }
 
     while (v493);
   }
 
   v498 = [RTPlaceDataMetrics medianOf:v812];
-  v499 = [(RTMetric *)v835 metrics];
-  [v499 setObject:v498 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_home"];
+  metrics67 = [(RTMetric *)selfCopy metrics];
+  [metrics67 setObject:v498 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_home"];
 
   v500 = [RTPlaceDataMetrics meanOf:v812];
-  v501 = [(RTMetric *)v835 metrics];
-  [v501 setObject:v500 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home"];
+  metrics68 = [(RTMetric *)selfCopy metrics];
+  [metrics68 setObject:v500 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_home"];
 
   v502 = [RTPlaceDataMetrics standardDeviationOf:v812];
-  v503 = [(RTMetric *)v835 metrics];
-  [v503 setObject:v502 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home"];
+  metrics69 = [(RTMetric *)selfCopy metrics];
+  [metrics69 setObject:v502 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_home"];
 
   v807 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v893 = 0u;
   v894 = 0u;
   v895 = 0u;
   v896 = 0u;
-  v504 = [v838 allKeys];
-  v505 = [v504 countByEnumeratingWithState:&v893 objects:v956 count:16];
+  allKeys17 = [v838 allKeys];
+  v505 = [allKeys17 countByEnumeratingWithState:&v893 objects:v956 count:16];
   if (v505)
   {
     v506 = v505;
@@ -3921,7 +3921,7 @@ LABEL_159:
       {
         if (*v894 != v507)
         {
-          objc_enumerationMutation(v504);
+          objc_enumerationMutation(allKeys17);
         }
 
         v509 = [v838 objectForKeyedSubscript:*(*(&v893 + 1) + 8 * i2)];
@@ -3930,31 +3930,31 @@ LABEL_159:
         [v807 addObject:v510];
       }
 
-      v506 = [v504 countByEnumeratingWithState:&v893 objects:v956 count:16];
+      v506 = [allKeys17 countByEnumeratingWithState:&v893 objects:v956 count:16];
     }
 
     while (v506);
   }
 
   v511 = [RTPlaceDataMetrics medianOf:v807];
-  v512 = [(RTMetric *)v835 metrics];
-  [v512 setObject:v511 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home"];
+  metrics70 = [(RTMetric *)selfCopy metrics];
+  [metrics70 setObject:v511 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_home"];
 
   v513 = [RTPlaceDataMetrics meanOf:v807];
-  v514 = [(RTMetric *)v835 metrics];
-  [v514 setObject:v513 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home"];
+  metrics71 = [(RTMetric *)selfCopy metrics];
+  [metrics71 setObject:v513 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_home"];
 
   v515 = [RTPlaceDataMetrics standardDeviationOf:v807];
-  v516 = [(RTMetric *)v835 metrics];
-  [v516 setObject:v515 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home"];
+  metrics72 = [(RTMetric *)selfCopy metrics];
+  [metrics72 setObject:v515 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_home"];
 
   v802 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v889 = 0u;
   v890 = 0u;
   v891 = 0u;
   v892 = 0u;
-  v517 = [v837 allKeys];
-  v518 = [v517 countByEnumeratingWithState:&v889 objects:v955 count:16];
+  allKeys18 = [v837 allKeys];
+  v518 = [allKeys18 countByEnumeratingWithState:&v889 objects:v955 count:16];
   if (v518)
   {
     v519 = v518;
@@ -3965,7 +3965,7 @@ LABEL_159:
       {
         if (*v890 != v520)
         {
-          objc_enumerationMutation(v517);
+          objc_enumerationMutation(allKeys18);
         }
 
         v522 = [v837 objectForKeyedSubscript:*(*(&v889 + 1) + 8 * i3)];
@@ -3974,31 +3974,31 @@ LABEL_159:
         [v802 addObject:v523];
       }
 
-      v519 = [v517 countByEnumeratingWithState:&v889 objects:v955 count:16];
+      v519 = [allKeys18 countByEnumeratingWithState:&v889 objects:v955 count:16];
     }
 
     while (v519);
   }
 
   v524 = [RTPlaceDataMetrics medianOf:v802];
-  v525 = [(RTMetric *)v835 metrics];
-  [v525 setObject:v524 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_work"];
+  metrics73 = [(RTMetric *)selfCopy metrics];
+  [metrics73 setObject:v524 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_work"];
 
   v526 = [RTPlaceDataMetrics meanOf:v802];
-  v527 = [(RTMetric *)v835 metrics];
-  [v527 setObject:v526 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work"];
+  metrics74 = [(RTMetric *)selfCopy metrics];
+  [metrics74 setObject:v526 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_work"];
 
   v528 = [RTPlaceDataMetrics standardDeviationOf:v802];
-  v529 = [(RTMetric *)v835 metrics];
-  [v529 setObject:v528 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work"];
+  metrics75 = [(RTMetric *)selfCopy metrics];
+  [metrics75 setObject:v528 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_work"];
 
   v800 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v885 = 0u;
   v886 = 0u;
   v887 = 0u;
   v888 = 0u;
-  v530 = [v836 allKeys];
-  v531 = [v530 countByEnumeratingWithState:&v885 objects:v954 count:16];
+  allKeys19 = [v836 allKeys];
+  v531 = [allKeys19 countByEnumeratingWithState:&v885 objects:v954 count:16];
   if (v531)
   {
     v532 = v531;
@@ -4009,7 +4009,7 @@ LABEL_159:
       {
         if (*v886 != v533)
         {
-          objc_enumerationMutation(v530);
+          objc_enumerationMutation(allKeys19);
         }
 
         v535 = [v836 objectForKeyedSubscript:*(*(&v885 + 1) + 8 * i4)];
@@ -4018,23 +4018,23 @@ LABEL_159:
         [v800 addObject:v536];
       }
 
-      v532 = [v530 countByEnumeratingWithState:&v885 objects:v954 count:16];
+      v532 = [allKeys19 countByEnumeratingWithState:&v885 objects:v954 count:16];
     }
 
     while (v532);
   }
 
   v537 = [RTPlaceDataMetrics medianOf:v800];
-  v538 = [(RTMetric *)v835 metrics];
-  [v538 setObject:v537 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work"];
+  metrics76 = [(RTMetric *)selfCopy metrics];
+  [metrics76 setObject:v537 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_work"];
 
   v539 = [RTPlaceDataMetrics meanOf:v800];
-  v540 = [(RTMetric *)v835 metrics];
-  [v540 setObject:v539 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_work"];
+  metrics77 = [(RTMetric *)selfCopy metrics];
+  [metrics77 setObject:v539 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_work"];
 
   v541 = [RTPlaceDataMetrics standardDeviationOf:v800];
-  v542 = [(RTMetric *)v835 metrics];
-  [v542 setObject:v541 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work"];
+  metrics78 = [(RTMetric *)selfCopy metrics];
+  [metrics78 setObject:v541 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_work"];
 
   v543 = obja;
   if (![obja count])
@@ -4067,10 +4067,10 @@ LABEL_159:
       v554 = [v543 objectAtIndexedSubscript:v544];
       v555 = v546;
       v556 = [v554 objectForKeyedSubscript:v546];
-      v557 = [v556 allKeys];
+      allKeys20 = [v556 allKeys];
 
-      v845 = v557;
-      v558 = [v557 countByEnumeratingWithState:&v881 objects:v953 count:16];
+      v845 = allKeys20;
+      v558 = [allKeys20 countByEnumeratingWithState:&v881 objects:v953 count:16];
       if (v558)
       {
         v559 = v558;
@@ -4131,17 +4131,17 @@ LABEL_159:
   while ([v543 count] > v544);
   if (v545 > 0)
   {
-    v574 = [MEMORY[0x277CCABB0] numberWithDouble:v549 / v545];
-    v575 = [(RTMetric *)v835 metrics];
-    [v575 setObject:v574 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_others"];
+    v545 = [MEMORY[0x277CCABB0] numberWithDouble:v549 / v545];
+    metrics79 = [(RTMetric *)selfCopy metrics];
+    [metrics79 setObject:v545 forKeyedSubscript:@"median_daily_total_visit_duration_weekend_others"];
 
-    v576 = [MEMORY[0x277CCABB0] numberWithDouble:v548 / v545];
-    v577 = [(RTMetric *)v835 metrics];
-    [v577 setObject:v576 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others"];
+    v5452 = [MEMORY[0x277CCABB0] numberWithDouble:v548 / v545];
+    metrics80 = [(RTMetric *)selfCopy metrics];
+    [metrics80 setObject:v5452 forKeyedSubscript:@"mean_daily_total_visit_duration_weekend_others"];
 
-    v578 = [MEMORY[0x277CCABB0] numberWithDouble:v547 / v545];
-    v579 = [(RTMetric *)v835 metrics];
-    [v579 setObject:v578 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others"];
+    v5453 = [MEMORY[0x277CCABB0] numberWithDouble:v547 / v545];
+    metrics81 = [(RTMetric *)selfCopy metrics];
+    [metrics81 setObject:v5453 forKeyedSubscript:@"SD_daily_total_visit_duration_weekend_others"];
 
     v761 = 1;
   }
@@ -4179,10 +4179,10 @@ LABEL_305:
         v590 = [v543 objectAtIndexedSubscript:v580];
         v591 = v582;
         v592 = [v590 objectForKeyedSubscript:v582];
-        v593 = [v592 allKeys];
+        allKeys21 = [v592 allKeys];
 
-        v846 = v593;
-        v594 = [v593 countByEnumeratingWithState:&v877 objects:v952 count:16];
+        v846 = allKeys21;
+        v594 = [allKeys21 countByEnumeratingWithState:&v877 objects:v952 count:16];
         if (v594)
         {
           v595 = v594;
@@ -4243,17 +4243,17 @@ LABEL_305:
     while ([v543 count] > v580);
     if (v581 > 0)
     {
-      v610 = [MEMORY[0x277CCABB0] numberWithDouble:v585 / v581];
-      v611 = [(RTMetric *)v835 metrics];
-      [v611 setObject:v610 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others"];
+      v581 = [MEMORY[0x277CCABB0] numberWithDouble:v585 / v581];
+      metrics82 = [(RTMetric *)selfCopy metrics];
+      [metrics82 setObject:v581 forKeyedSubscript:@"median_daily_total_visit_duration_weekdays_others"];
 
-      v612 = [MEMORY[0x277CCABB0] numberWithDouble:v584 / v581];
-      v613 = [(RTMetric *)v835 metrics];
-      [v613 setObject:v612 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others"];
+      v5812 = [MEMORY[0x277CCABB0] numberWithDouble:v584 / v581];
+      metrics83 = [(RTMetric *)selfCopy metrics];
+      [metrics83 setObject:v5812 forKeyedSubscript:@"mean_daily_total_visit_duration_weekdays_others"];
 
-      v614 = [MEMORY[0x277CCABB0] numberWithDouble:v583 / v581];
-      v615 = [(RTMetric *)v835 metrics];
-      [v615 setObject:v614 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others"];
+      v5813 = [MEMORY[0x277CCABB0] numberWithDouble:v583 / v581];
+      metrics84 = [(RTMetric *)selfCopy metrics];
+      [metrics84 setObject:v5813 forKeyedSubscript:@"SD_daily_total_visit_duration_weekdays_others"];
     }
   }
 
@@ -4262,8 +4262,8 @@ LABEL_305:
   v874 = 0u;
   v875 = 0u;
   v876 = 0u;
-  v616 = [v839 allKeys];
-  v617 = [v616 countByEnumeratingWithState:&v873 objects:v951 count:16];
+  allKeys22 = [v839 allKeys];
+  v617 = [allKeys22 countByEnumeratingWithState:&v873 objects:v951 count:16];
   if (v617)
   {
     v618 = v617;
@@ -4274,7 +4274,7 @@ LABEL_305:
       {
         if (*v874 != v619)
         {
-          objc_enumerationMutation(v616);
+          objc_enumerationMutation(allKeys22);
         }
 
         v621 = [v839 objectForKeyedSubscript:*(*(&v873 + 1) + 8 * i7)];
@@ -4283,31 +4283,31 @@ LABEL_305:
         [v797 addObject:v622];
       }
 
-      v618 = [v616 countByEnumeratingWithState:&v873 objects:v951 count:16];
+      v618 = [allKeys22 countByEnumeratingWithState:&v873 objects:v951 count:16];
     }
 
     while (v618);
   }
 
   v623 = [RTPlaceDataMetrics medianOf:v797];
-  v624 = [(RTMetric *)v835 metrics];
-  [v624 setObject:v623 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home"];
+  metrics85 = [(RTMetric *)selfCopy metrics];
+  [metrics85 setObject:v623 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_home"];
 
   v625 = [RTPlaceDataMetrics meanOf:v797];
-  v626 = [(RTMetric *)v835 metrics];
-  [v626 setObject:v625 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home"];
+  metrics86 = [(RTMetric *)selfCopy metrics];
+  [metrics86 setObject:v625 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_home"];
 
   v627 = [RTPlaceDataMetrics standardDeviationOf:v797];
-  v628 = [(RTMetric *)v835 metrics];
-  [v628 setObject:v627 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home"];
+  metrics87 = [(RTMetric *)selfCopy metrics];
+  [metrics87 setObject:v627 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_home"];
 
   v792 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v869 = 0u;
   v870 = 0u;
   v871 = 0u;
   v872 = 0u;
-  v629 = [v838 allKeys];
-  v630 = [v629 countByEnumeratingWithState:&v869 objects:v950 count:16];
+  allKeys23 = [v838 allKeys];
+  v630 = [allKeys23 countByEnumeratingWithState:&v869 objects:v950 count:16];
   if (v630)
   {
     v631 = v630;
@@ -4318,7 +4318,7 @@ LABEL_305:
       {
         if (*v870 != v632)
         {
-          objc_enumerationMutation(v629);
+          objc_enumerationMutation(allKeys23);
         }
 
         v634 = [v838 objectForKeyedSubscript:*(*(&v869 + 1) + 8 * i8)];
@@ -4327,31 +4327,31 @@ LABEL_305:
         [v792 addObject:v635];
       }
 
-      v631 = [v629 countByEnumeratingWithState:&v869 objects:v950 count:16];
+      v631 = [allKeys23 countByEnumeratingWithState:&v869 objects:v950 count:16];
     }
 
     while (v631);
   }
 
   v636 = [RTPlaceDataMetrics medianOf:v792];
-  v637 = [(RTMetric *)v835 metrics];
-  [v637 setObject:v636 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home"];
+  metrics88 = [(RTMetric *)selfCopy metrics];
+  [metrics88 setObject:v636 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_home"];
 
   v638 = [RTPlaceDataMetrics meanOf:v792];
-  v639 = [(RTMetric *)v835 metrics];
-  [v639 setObject:v638 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home"];
+  metrics89 = [(RTMetric *)selfCopy metrics];
+  [metrics89 setObject:v638 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_home"];
 
   v640 = [RTPlaceDataMetrics standardDeviationOf:v792];
-  v641 = [(RTMetric *)v835 metrics];
-  [v641 setObject:v640 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home"];
+  metrics90 = [(RTMetric *)selfCopy metrics];
+  [metrics90 setObject:v640 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_home"];
 
   v787 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v865 = 0u;
   v866 = 0u;
   v867 = 0u;
   v868 = 0u;
-  v642 = [v837 allKeys];
-  v643 = [v642 countByEnumeratingWithState:&v865 objects:v949 count:16];
+  allKeys24 = [v837 allKeys];
+  v643 = [allKeys24 countByEnumeratingWithState:&v865 objects:v949 count:16];
   if (v643)
   {
     v644 = v643;
@@ -4362,7 +4362,7 @@ LABEL_305:
       {
         if (*v866 != v645)
         {
-          objc_enumerationMutation(v642);
+          objc_enumerationMutation(allKeys24);
         }
 
         v647 = [v837 objectForKeyedSubscript:*(*(&v865 + 1) + 8 * i9)];
@@ -4371,31 +4371,31 @@ LABEL_305:
         [v787 addObject:v648];
       }
 
-      v644 = [v642 countByEnumeratingWithState:&v865 objects:v949 count:16];
+      v644 = [allKeys24 countByEnumeratingWithState:&v865 objects:v949 count:16];
     }
 
     while (v644);
   }
 
   v649 = [RTPlaceDataMetrics medianOf:v787];
-  v650 = [(RTMetric *)v835 metrics];
-  [v650 setObject:v649 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work"];
+  metrics91 = [(RTMetric *)selfCopy metrics];
+  [metrics91 setObject:v649 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_work"];
 
   v651 = [RTPlaceDataMetrics meanOf:v787];
-  v652 = [(RTMetric *)v835 metrics];
-  [v652 setObject:v651 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work"];
+  metrics92 = [(RTMetric *)selfCopy metrics];
+  [metrics92 setObject:v651 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_work"];
 
   v653 = [RTPlaceDataMetrics standardDeviationOf:v787];
-  v654 = [(RTMetric *)v835 metrics];
-  [v654 setObject:v653 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work"];
+  metrics93 = [(RTMetric *)selfCopy metrics];
+  [metrics93 setObject:v653 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_work"];
 
   v782 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v861 = 0u;
   v862 = 0u;
   v863 = 0u;
   v864 = 0u;
-  v655 = [v836 allKeys];
-  v656 = [v655 countByEnumeratingWithState:&v861 objects:v948 count:16];
+  allKeys25 = [v836 allKeys];
+  v656 = [allKeys25 countByEnumeratingWithState:&v861 objects:v948 count:16];
   if (v656)
   {
     v657 = v656;
@@ -4406,7 +4406,7 @@ LABEL_305:
       {
         if (*v862 != v658)
         {
-          objc_enumerationMutation(v655);
+          objc_enumerationMutation(allKeys25);
         }
 
         v660 = [v836 objectForKeyedSubscript:*(*(&v861 + 1) + 8 * i10)];
@@ -4415,23 +4415,23 @@ LABEL_305:
         [v782 addObject:v661];
       }
 
-      v657 = [v655 countByEnumeratingWithState:&v861 objects:v948 count:16];
+      v657 = [allKeys25 countByEnumeratingWithState:&v861 objects:v948 count:16];
     }
 
     while (v657);
   }
 
   v662 = [RTPlaceDataMetrics medianOf:v782];
-  v663 = [(RTMetric *)v835 metrics];
-  [v663 setObject:v662 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work"];
+  metrics94 = [(RTMetric *)selfCopy metrics];
+  [metrics94 setObject:v662 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_work"];
 
   v664 = [RTPlaceDataMetrics meanOf:v782];
-  v665 = [(RTMetric *)v835 metrics];
-  [v665 setObject:v664 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work"];
+  metrics95 = [(RTMetric *)selfCopy metrics];
+  [metrics95 setObject:v664 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_work"];
 
   v666 = [RTPlaceDataMetrics standardDeviationOf:v782];
-  v667 = [(RTMetric *)v835 metrics];
-  [v667 setObject:v666 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work"];
+  metrics96 = [(RTMetric *)selfCopy metrics];
+  [metrics96 setObject:v666 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_work"];
 
   if ([obja count])
   {
@@ -4440,7 +4440,7 @@ LABEL_305:
     v670 = 0.0;
     v671 = 0.0;
     v672 = 0.0;
-    v673 = v835;
+    v673 = selfCopy;
     v674 = obja;
     do
     {
@@ -4459,9 +4459,9 @@ LABEL_305:
         v860 = 0u;
         v678 = [v674 objectAtIndexedSubscript:v668];
         v679 = [v678 objectForKeyedSubscript:@"dictVisitDurationWeekendOthers"];
-        v680 = [v679 allKeys];
+        allKeys26 = [v679 allKeys];
 
-        v681 = [v680 countByEnumeratingWithState:&v857 objects:v947 count:16];
+        v681 = [allKeys26 countByEnumeratingWithState:&v857 objects:v947 count:16];
         if (v681)
         {
           v682 = v681;
@@ -4472,7 +4472,7 @@ LABEL_305:
             {
               if (*v858 != v683)
               {
-                objc_enumerationMutation(v680);
+                objc_enumerationMutation(allKeys26);
               }
 
               v685 = *(*(&v857 + 1) + 8 * i11);
@@ -4484,7 +4484,7 @@ LABEL_305:
               [v677 addObject:v689];
             }
 
-            v682 = [v680 countByEnumeratingWithState:&v857 objects:v947 count:16];
+            v682 = [allKeys26 countByEnumeratingWithState:&v857 objects:v947 count:16];
           }
 
           while (v682);
@@ -4506,7 +4506,7 @@ LABEL_305:
         v36 = v849;
         v37 = v771;
         v49 = v772;
-        v673 = v835;
+        v673 = selfCopy;
       }
 
       objc_autoreleasePoolPop(v847);
@@ -4524,25 +4524,25 @@ LABEL_305:
     v671 = 0.0;
     v670 = 0.0;
     v696 = 0.0;
-    v673 = v835;
+    v673 = selfCopy;
   }
 
   v697 = v779;
   if (v761)
   {
-    v698 = [MEMORY[0x277CCABB0] numberWithDouble:v672 / v696];
-    v699 = [(RTMetric *)v673 metrics];
-    [v699 setObject:v698 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others"];
+    v696 = [MEMORY[0x277CCABB0] numberWithDouble:v672 / v696];
+    metrics97 = [(RTMetric *)v673 metrics];
+    [metrics97 setObject:v696 forKeyedSubscript:@"median_daily_longest_visit_duration_weekend_others"];
 
-    v700 = [MEMORY[0x277CCABB0] numberWithDouble:v671 / v696];
-    v701 = [(RTMetric *)v835 metrics];
-    [v701 setObject:v700 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others"];
+    v6962 = [MEMORY[0x277CCABB0] numberWithDouble:v671 / v696];
+    metrics98 = [(RTMetric *)selfCopy metrics];
+    [metrics98 setObject:v6962 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekend_others"];
 
-    v702 = [MEMORY[0x277CCABB0] numberWithDouble:v670 / v696];
-    v703 = [(RTMetric *)v835 metrics];
-    [v703 setObject:v702 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others"];
+    v6963 = [MEMORY[0x277CCABB0] numberWithDouble:v670 / v696];
+    metrics99 = [(RTMetric *)selfCopy metrics];
+    [metrics99 setObject:v6963 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekend_others"];
 
-    v673 = v835;
+    v673 = selfCopy;
   }
 
   if ([obja count])
@@ -4571,10 +4571,10 @@ LABEL_305:
         v856 = 0u;
         v714 = [v710 objectAtIndexedSubscript:v704];
         v715 = [v714 objectForKeyedSubscript:v706];
-        v716 = [v715 allKeys];
+        allKeys27 = [v715 allKeys];
 
-        v848 = v716;
-        v717 = [v716 countByEnumeratingWithState:&v853 objects:v946 count:16];
+        v848 = allKeys27;
+        v717 = [allKeys27 countByEnumeratingWithState:&v853 objects:v946 count:16];
         if (v717)
         {
           v718 = v717;
@@ -4624,7 +4624,7 @@ LABEL_305:
         v36 = v849;
         v37 = v771;
         v49 = v772;
-        v673 = v835;
+        v673 = selfCopy;
         v712 = v762;
       }
 
@@ -4640,156 +4640,156 @@ LABEL_305:
     if (!v734)
     {
       v736 = v735;
-      v737 = [MEMORY[0x277CCABB0] numberWithDouble:v709 / v735];
+      v735 = [MEMORY[0x277CCABB0] numberWithDouble:v709 / v735];
       [(RTMetric *)v673 metrics];
       v739 = v738 = v673;
-      [v739 setObject:v737 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others"];
+      [v739 setObject:v735 forKeyedSubscript:@"median_daily_longest_visit_duration_weekdays_others"];
 
-      v740 = [MEMORY[0x277CCABB0] numberWithDouble:v708 / v736];
-      v741 = [(RTMetric *)v738 metrics];
-      [v741 setObject:v740 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others"];
+      v736 = [MEMORY[0x277CCABB0] numberWithDouble:v708 / v736];
+      metrics100 = [(RTMetric *)v738 metrics];
+      [metrics100 setObject:v736 forKeyedSubscript:@"mean_daily_longest_visit_duration_weekdays_others"];
 
-      v742 = [MEMORY[0x277CCABB0] numberWithDouble:v707 / v736];
-      v743 = [(RTMetric *)v738 metrics];
-      [v743 setObject:v742 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others"];
+      v7362 = [MEMORY[0x277CCABB0] numberWithDouble:v707 / v736];
+      metrics101 = [(RTMetric *)v738 metrics];
+      [metrics101 setObject:v7362 forKeyedSubscript:@"SD_daily_longest_visit_duration_weekdays_others"];
     }
   }
 }
 
-- (void)setCurrentInferenceReplayableMetricsFromDict:(id)a3
+- (void)setCurrentInferenceReplayableMetricsFromDict:(id)dict
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"intervalToCalculateStats"];
-  v6 = [(RTMetric *)self metrics];
-  [v6 setObject:v5 forKeyedSubscript:@"intervalToCalculateStats"];
+  dictCopy = dict;
+  v5 = [dictCopy objectForKeyedSubscript:@"intervalToCalculateStats"];
+  metrics = [(RTMetric *)self metrics];
+  [metrics setObject:v5 forKeyedSubscript:@"intervalToCalculateStats"];
 
-  v7 = [v4 objectForKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
-  v8 = [(RTMetric *)self metrics];
-  [v8 setObject:v7 forKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
+  v7 = [dictCopy objectForKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
+  metrics2 = [(RTMetric *)self metrics];
+  [metrics2 setObject:v7 forKeyedSubscript:@"numPlacesAfterWeeksWithNonZeroDwellTimePruning"];
 
-  v9 = [v4 objectForKeyedSubscript:@"agreeDailyPatternsAndDwellTimeOnHome"];
-  v10 = [(RTMetric *)self metrics];
-  [v10 setObject:v9 forKeyedSubscript:@"agreeDailyPatternsAndDwellTimeOnHome"];
+  v9 = [dictCopy objectForKeyedSubscript:@"agreeDailyPatternsAndDwellTimeOnHome"];
+  metrics3 = [(RTMetric *)self metrics];
+  [metrics3 setObject:v9 forKeyedSubscript:@"agreeDailyPatternsAndDwellTimeOnHome"];
 
-  v11 = [v4 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
-  v12 = [(RTMetric *)self metrics];
-  [v12 setObject:v11 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
+  v11 = [dictCopy objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
+  metrics4 = [(RTMetric *)self metrics];
+  [metrics4 setObject:v11 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_home"];
 
-  v13 = [v4 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
-  v14 = [(RTMetric *)self metrics];
-  [v14 setObject:v13 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
+  v13 = [dictCopy objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
+  metrics5 = [(RTMetric *)self metrics];
+  [metrics5 setObject:v13 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_work"];
 
-  v15 = [v4 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
-  v16 = [(RTMetric *)self metrics];
-  [v16 setObject:v15 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
+  v15 = [dictCopy objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
+  metrics6 = [(RTMetric *)self metrics];
+  [metrics6 setObject:v15 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_home"];
 
-  v17 = [v4 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
-  v18 = [(RTMetric *)self metrics];
-  [v18 setObject:v17 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
+  v17 = [dictCopy objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
+  metrics7 = [(RTMetric *)self metrics];
+  [metrics7 setObject:v17 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_work"];
 
-  v19 = [v4 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
-  v20 = [(RTMetric *)self metrics];
-  [v20 setObject:v19 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
+  v19 = [dictCopy objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
+  metrics8 = [(RTMetric *)self metrics];
+  [metrics8 setObject:v19 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_home"];
 
-  v21 = [v4 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
-  v22 = [(RTMetric *)self metrics];
-  [v22 setObject:v21 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
+  v21 = [dictCopy objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
+  metrics9 = [(RTMetric *)self metrics];
+  [metrics9 setObject:v21 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_work"];
 
-  v23 = [v4 objectForKeyedSubscript:@"topMedianDwellTime_home"];
-  v24 = [(RTMetric *)self metrics];
-  [v24 setObject:v23 forKeyedSubscript:@"topMedianDwellTime_home"];
+  v23 = [dictCopy objectForKeyedSubscript:@"topMedianDwellTime_home"];
+  metrics10 = [(RTMetric *)self metrics];
+  [metrics10 setObject:v23 forKeyedSubscript:@"topMedianDwellTime_home"];
 
-  v25 = [v4 objectForKeyedSubscript:@"topMedianDwellTime_work"];
-  v26 = [(RTMetric *)self metrics];
-  [v26 setObject:v25 forKeyedSubscript:@"topMedianDwellTime_work"];
+  v25 = [dictCopy objectForKeyedSubscript:@"topMedianDwellTime_work"];
+  metrics11 = [(RTMetric *)self metrics];
+  [metrics11 setObject:v25 forKeyedSubscript:@"topMedianDwellTime_work"];
 
-  v27 = [v4 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
-  v28 = [(RTMetric *)self metrics];
-  [v28 setObject:v27 forKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
+  v27 = [dictCopy objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
+  metrics12 = [(RTMetric *)self metrics];
+  [metrics12 setObject:v27 forKeyedSubscript:@"weeksWithNonZeroDwellTime_home"];
 
-  v29 = [v4 objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
-  v30 = [(RTMetric *)self metrics];
-  [v30 setObject:v29 forKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
+  v29 = [dictCopy objectForKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
+  metrics13 = [(RTMetric *)self metrics];
+  [metrics13 setObject:v29 forKeyedSubscript:@"weeksWithNonZeroDwellTime_work"];
 
-  v31 = [v4 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
-  v32 = [(RTMetric *)self metrics];
-  [v32 setObject:v31 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
+  v31 = [dictCopy objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
+  metrics14 = [(RTMetric *)self metrics];
+  [metrics14 setObject:v31 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns"];
 
-  v33 = [v4 objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
-  v34 = [(RTMetric *)self metrics];
-  [v34 setObject:v33 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
+  v33 = [dictCopy objectForKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
+  metrics15 = [(RTMetric *)self metrics];
+  [metrics15 setObject:v33 forKeyedSubscript:@"weeklyAggregateDwellTimeBetweenDateRangeAverage_2ndPlaceDailyPatterns"];
 
-  v35 = [v4 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
-  v36 = [(RTMetric *)self metrics];
-  [v36 setObject:v35 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
+  v35 = [dictCopy objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
+  metrics16 = [(RTMetric *)self metrics];
+  [metrics16 setObject:v35 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDailyPatterns"];
 
-  v37 = [v4 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
-  v38 = [(RTMetric *)self metrics];
-  [v38 setObject:v37 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
+  v37 = [dictCopy objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
+  metrics17 = [(RTMetric *)self metrics];
+  [metrics17 setObject:v37 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_2ndPlaceDailyPatterns"];
 
-  v39 = [v4 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
-  v40 = [(RTMetric *)self metrics];
-  [v40 setObject:v39 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
+  v39 = [dictCopy objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
+  metrics18 = [(RTMetric *)self metrics];
+  [metrics18 setObject:v39 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDailyPatterns"];
 
-  v41 = [v4 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
-  v42 = [(RTMetric *)self metrics];
-  [v42 setObject:v41 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
+  v41 = [dictCopy objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
+  metrics19 = [(RTMetric *)self metrics];
+  [metrics19 setObject:v41 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_2ndPlaceDailyPatterns"];
 
-  v43 = [v4 objectForKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
-  v44 = [(RTMetric *)self metrics];
-  [v44 setObject:v43 forKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
+  v43 = [dictCopy objectForKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
+  metrics20 = [(RTMetric *)self metrics];
+  [metrics20 setObject:v43 forKeyedSubscript:@"numPlacesAfterDailyPatternsPruning"];
 
-  v45 = [v4 objectForKeyedSubscript:@"homeRankDailyPatterns"];
-  v46 = [(RTMetric *)self metrics];
-  [v46 setObject:v45 forKeyedSubscript:@"homeRankDailyPatterns"];
+  v45 = [dictCopy objectForKeyedSubscript:@"homeRankDailyPatterns"];
+  metrics21 = [(RTMetric *)self metrics];
+  [metrics21 setObject:v45 forKeyedSubscript:@"homeRankDailyPatterns"];
 
-  v47 = [v4 objectForKeyedSubscript:@"workRankDailyPatterns"];
-  v48 = [(RTMetric *)self metrics];
-  [v48 setObject:v47 forKeyedSubscript:@"workRankDailyPatterns"];
+  v47 = [dictCopy objectForKeyedSubscript:@"workRankDailyPatterns"];
+  metrics22 = [(RTMetric *)self metrics];
+  [metrics22 setObject:v47 forKeyedSubscript:@"workRankDailyPatterns"];
 
-  v49 = [v4 objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
-  v50 = [(RTMetric *)self metrics];
-  [v50 setObject:v49 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
+  v49 = [dictCopy objectForKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
+  metrics23 = [(RTMetric *)self metrics];
+  [metrics23 setObject:v49 forKeyedSubscript:@"weeklyTotalDailyVisitCountAverage_1stPlaceDwellTime"];
 
-  v51 = [v4 objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
-  v52 = [(RTMetric *)self metrics];
-  [v52 setObject:v51 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
+  v51 = [dictCopy objectForKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
+  metrics24 = [(RTMetric *)self metrics];
+  [metrics24 setObject:v51 forKeyedSubscript:@"weeklyDaysWithNonZeroDwellTimeAverage_1stPlaceDwellTime"];
 
-  v53 = [v4 objectForKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
-  v54 = [(RTMetric *)self metrics];
-  [v54 setObject:v53 forKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
+  v53 = [dictCopy objectForKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
+  metrics25 = [(RTMetric *)self metrics];
+  [metrics25 setObject:v53 forKeyedSubscript:@"topMedianDwellTime_1stPlaceDwellTime"];
 
-  v55 = [v4 objectForKeyedSubscript:@"homeRankDwellTime"];
-  v56 = [(RTMetric *)self metrics];
-  [v56 setObject:v55 forKeyedSubscript:@"homeRankDwellTime"];
+  v55 = [dictCopy objectForKeyedSubscript:@"homeRankDwellTime"];
+  metrics26 = [(RTMetric *)self metrics];
+  [metrics26 setObject:v55 forKeyedSubscript:@"homeRankDwellTime"];
 
-  v58 = [v4 objectForKeyedSubscript:@"workRankDwellTime"];
+  v58 = [dictCopy objectForKeyedSubscript:@"workRankDwellTime"];
 
-  v57 = [(RTMetric *)self metrics];
-  [v57 setObject:v58 forKeyedSubscript:@"workRankDwellTime"];
+  metrics27 = [(RTMetric *)self metrics];
+  [metrics27 setObject:v58 forKeyedSubscript:@"workRankDwellTime"];
 }
 
-+ (id)generateDictionaryOfOldMetricsWithLearnedLocationStore:(id)a3 locationsOfInterest:(id)a4 homeMapItem:(id)a5 workMapItem:(id)a6 locationsOfOthers:(id *)a7
++ (id)generateDictionaryOfOldMetricsWithLearnedLocationStore:(id)store locationsOfInterest:(id)interest homeMapItem:(id)item workMapItem:(id)mapItem locationsOfOthers:(id *)others
 {
   v255 = *MEMORY[0x277D85DE8];
-  v208 = a3;
-  v10 = a4;
-  v207 = a5;
-  v202 = a6;
-  v201 = [MEMORY[0x277CBEB18] array];
-  v203 = [MEMORY[0x277CBEB18] array];
+  storeCopy = store;
+  interestCopy = interest;
+  itemCopy = item;
+  mapItemCopy = mapItem;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v241 = 0u;
   v242 = 0u;
   v243 = 0u;
   v244 = 0u;
-  v11 = v10;
+  v11 = interestCopy;
   v212 = [v11 countByEnumeratingWithState:&v241 objects:v254 count:16];
   if (!v212)
   {
     v232 = 0;
     v12 = 0;
     v199 = 0.0;
-    v48 = v11;
+    exitDate4 = v11;
 LABEL_40:
 
     goto LABEL_42;
@@ -4810,14 +4810,14 @@ LABEL_40:
       }
 
       v15 = *(*(&v241 + 1) + 8 * i);
-      v16 = [v15 place];
-      v17 = [v16 mapItem];
-      v18 = [v17 location];
+      place = [v15 place];
+      mapItem = [place mapItem];
+      location = [mapItem location];
 
-      if (v18)
+      if (location)
       {
-        v19 = [v16 mapItem];
-        v20 = [v19 isEqualToMapItem:v207];
+        mapItem2 = [place mapItem];
+        v20 = [mapItem2 isEqualToMapItem:itemCopy];
 
         if (v20)
         {
@@ -4826,8 +4826,8 @@ LABEL_40:
 
         else
         {
-          v23 = [v16 mapItem];
-          v24 = [v23 isEqualToMapItem:v202];
+          mapItem3 = [place mapItem];
+          v24 = [mapItem3 isEqualToMapItem:mapItemCopy];
 
           if (v24)
           {
@@ -4836,34 +4836,34 @@ LABEL_40:
 
           else
           {
-            v25 = [v16 mapItem];
-            v26 = [v25 location];
-            [v201 addObject:v26];
+            mapItem4 = [place mapItem];
+            location2 = [mapItem4 location];
+            [array addObject:location2];
 
             v21 = 0;
           }
         }
 
-        v27 = [v15 visits];
-        v28 = [[RTLearnedPlaceTypeInferencePlaceStats alloc] initWithLearnedLocationStore:v208 place:v16 visits:v27];
+        visits = [v15 visits];
+        v28 = [[RTLearnedPlaceTypeInferencePlaceStats alloc] initWithLearnedLocationStore:storeCopy place:place visits:visits];
         v29 = [RTPlaceStatsAndType alloc];
-        v30 = [v16 identifier];
+        identifier = [place identifier];
         v218 = v28;
-        v31 = [(RTPlaceStatsAndType *)v29 initWithPlaceStats:v28 type:v21 placeIdentifier:v30];
+        v31 = [(RTPlaceStatsAndType *)v29 initWithPlaceStats:v28 type:v21 placeIdentifier:identifier];
 
         if (v31)
         {
-          [v203 addObject:v31];
+          [array2 addObject:v31];
         }
 
         v215 = v31;
-        v221 = v16;
+        v221 = place;
         v224 = i;
         v239 = 0u;
         v240 = 0u;
         v237 = 0u;
         v238 = 0u;
-        v22 = v27;
+        v22 = visits;
         v32 = [v22 countByEnumeratingWithState:&v237 objects:v251 count:16];
         v12 = v14;
         if (v32)
@@ -4888,11 +4888,11 @@ LABEL_40:
                 v232 = v12;
               }
 
-              v36 = [v35 entryDate];
-              v37 = [v12 entryDate];
-              v38 = [v36 earlierDate:v37];
-              v39 = [v35 entryDate];
-              v40 = [v38 isEqualToDate:v39];
+              entryDate = [v35 entryDate];
+              entryDate2 = [v12 entryDate];
+              v38 = [entryDate earlierDate:entryDate2];
+              entryDate3 = [v35 entryDate];
+              v40 = [v38 isEqualToDate:entryDate3];
 
               if (v40)
               {
@@ -4904,11 +4904,11 @@ LABEL_40:
                 v41 = v12;
               }
 
-              v42 = [v35 exitDate];
-              v43 = [v232 exitDate];
-              v44 = [v42 laterDate:v43];
-              v45 = [v35 exitDate];
-              v46 = [v44 isEqualToDate:v45];
+              exitDate = [v35 exitDate];
+              exitDate2 = [v232 exitDate];
+              v44 = [exitDate laterDate:exitDate2];
+              exitDate3 = [v35 exitDate];
+              v46 = [v44 isEqualToDate:exitDate3];
 
               if (v46)
               {
@@ -4928,7 +4928,7 @@ LABEL_40:
         }
 
         v11 = v206;
-        v16 = v221;
+        place = v221;
         i = v224;
       }
 
@@ -4945,7 +4945,7 @@ LABEL_40:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v253 = v16;
+          v253 = place;
           _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, "Place with incomplete mapItem. Place: %@", buf, 0xCu);
         }
       }
@@ -4960,9 +4960,9 @@ LABEL_34:
 
   if (v12 && v232)
   {
-    v48 = [v232 exitDate];
-    v49 = [v12 entryDate];
-    [v48 timeIntervalSinceDate:v49];
+    exitDate4 = [v232 exitDate];
+    entryDate4 = [v12 entryDate];
+    [exitDate4 timeIntervalSinceDate:entryDate4];
     v199 = v50;
 
     goto LABEL_40;
@@ -4975,15 +4975,15 @@ LABEL_42:
   v236 = 0u;
   v233 = 0u;
   v234 = 0u;
-  v51 = v203;
+  v51 = array2;
   v52 = [v51 countByEnumeratingWithState:&v233 objects:v250 count:16];
   v225 = -1.0;
   if (!v52)
   {
     v54 = -1.0;
-    v57 = -1;
+    weeksWithNonZeroDwellTime = -1;
     v55 = -1.0;
-    v58 = -1;
+    weeksWithNonZeroDwellTime2 = -1;
     v59 = -1.0;
     v60 = -1.0;
     v61 = -1.0;
@@ -4997,8 +4997,8 @@ LABEL_42:
   v54 = -1.0;
   v55 = -1.0;
   v56 = *v234;
-  v57 = -1;
-  v58 = -1;
+  weeksWithNonZeroDwellTime = -1;
+  weeksWithNonZeroDwellTime2 = -1;
   v59 = -1.0;
   v60 = -1.0;
   v61 = -1.0;
@@ -5016,51 +5016,51 @@ LABEL_42:
       }
 
       v66 = *(*(&v233 + 1) + 8 * v65);
-      v67 = [v66 placeStats];
-      v68 = [v66 type];
-      if (v68 == 2)
+      placeStats = [v66 placeStats];
+      type = [v66 type];
+      if (type == 2)
       {
-        v78 = [v67 stats];
-        [v78 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+        stats = [placeStats stats];
+        [stats weeklyAggregateDwellTimeBetweenDateRangeAverage];
         v63 = v79;
 
-        v80 = [v67 stats];
-        [v80 weeklyTotalDailyVisitCountAverage];
+        stats2 = [placeStats stats];
+        [stats2 weeklyTotalDailyVisitCountAverage];
         v61 = v81;
 
-        v82 = [v67 stats];
-        [v82 weeklyDaysWithNonZeroDwellTimeAverage];
+        stats3 = [placeStats stats];
+        [stats3 weeklyDaysWithNonZeroDwellTimeAverage];
         v59 = v83;
 
-        v84 = [v67 stats];
-        [v84 topMedianDwellTime];
+        stats4 = [placeStats stats];
+        [stats4 topMedianDwellTime];
         v54 = v85;
 
-        v77 = [v67 stats];
-        v57 = [v77 weeksWithNonZeroDwellTime];
+        stats5 = [placeStats stats];
+        weeksWithNonZeroDwellTime = [stats5 weeksWithNonZeroDwellTime];
 LABEL_51:
       }
 
-      else if (v68 == 1)
+      else if (type == 1)
       {
-        v69 = [v67 stats];
-        [v69 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+        stats6 = [placeStats stats];
+        [stats6 weeklyAggregateDwellTimeBetweenDateRangeAverage];
         v64 = v70;
 
-        v71 = [v67 stats];
-        [v71 weeklyTotalDailyVisitCountAverage];
+        stats7 = [placeStats stats];
+        [stats7 weeklyTotalDailyVisitCountAverage];
         v62 = v72;
 
-        v73 = [v67 stats];
-        [v73 weeklyDaysWithNonZeroDwellTimeAverage];
+        stats8 = [placeStats stats];
+        [stats8 weeklyDaysWithNonZeroDwellTimeAverage];
         v60 = v74;
 
-        v75 = [v67 stats];
-        [v75 topMedianDwellTime];
+        stats9 = [placeStats stats];
+        [stats9 topMedianDwellTime];
         v55 = v76;
 
-        v77 = [v67 stats];
-        v58 = [v77 weeksWithNonZeroDwellTime];
+        stats5 = [placeStats stats];
+        weeksWithNonZeroDwellTime2 = [stats5 weeksWithNonZeroDwellTime];
         goto LABEL_51;
       }
 
@@ -5142,9 +5142,9 @@ LABEL_56:
       do
       {
         v102 = [v100 objectAtIndexedSubscript:v101];
-        v103 = [v102 type];
+        type2 = [v102 type];
 
-        if (v103 == 1)
+        if (type2 == 1)
         {
           obja = ++v101;
         }
@@ -5152,10 +5152,10 @@ LABEL_56:
         else
         {
           v104 = [v100 objectAtIndexedSubscript:v101];
-          v105 = [v104 type];
+          type3 = [v104 type];
 
           v106 = v230;
-          if (v105 == 2)
+          if (type3 == 2)
           {
             v106 = v101 + 1;
           }
@@ -5181,21 +5181,21 @@ LABEL_56:
     if ([v100 count])
     {
       v111 = [v100 objectAtIndexedSubscript:0];
-      v112 = [v111 placeStats];
-      v113 = [v112 stats];
-      [v113 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+      placeStats2 = [v111 placeStats];
+      stats10 = [placeStats2 stats];
+      [stats10 weeklyAggregateDwellTimeBetweenDateRangeAverage];
       v222 = v114;
 
       v115 = [v100 objectAtIndexedSubscript:0];
-      v116 = [v115 placeStats];
-      v117 = [v116 stats];
-      [v117 weeklyTotalDailyVisitCountAverage];
+      placeStats3 = [v115 placeStats];
+      stats11 = [placeStats3 stats];
+      [stats11 weeklyTotalDailyVisitCountAverage];
       v219 = v118;
 
       v119 = [v100 objectAtIndexedSubscript:0];
-      v120 = [v119 placeStats];
-      v121 = [v120 stats];
-      [v121 weeklyDaysWithNonZeroDwellTimeAverage];
+      placeStats4 = [v119 placeStats];
+      stats12 = [placeStats4 stats];
+      [stats12 weeklyDaysWithNonZeroDwellTimeAverage];
       v216 = v122;
     }
 
@@ -5204,21 +5204,21 @@ LABEL_56:
     if ([v100 count] >= 2)
     {
       v123 = [v100 objectAtIndexedSubscript:1];
-      v124 = [v123 placeStats];
-      v125 = [v124 stats];
-      [v125 weeklyAggregateDwellTimeBetweenDateRangeAverage];
+      placeStats5 = [v123 placeStats];
+      stats13 = [placeStats5 stats];
+      [stats13 weeklyAggregateDwellTimeBetweenDateRangeAverage];
       v210 = v126;
 
       v127 = [v100 objectAtIndexedSubscript:1];
-      v128 = [v127 placeStats];
-      v129 = [v128 stats];
-      [v129 weeklyTotalDailyVisitCountAverage];
+      placeStats6 = [v127 placeStats];
+      stats14 = [placeStats6 stats];
+      [stats14 weeklyTotalDailyVisitCountAverage];
       v204 = v130;
 
       v131 = [v100 objectAtIndexedSubscript:1];
-      v132 = [v131 placeStats];
-      v133 = [v132 stats];
-      [v133 weeklyDaysWithNonZeroDwellTimeAverage];
+      placeStats7 = [v131 placeStats];
+      stats15 = [placeStats7 stats];
+      [stats15 weeklyDaysWithNonZeroDwellTimeAverage];
       v213 = v134;
     }
 
@@ -5237,9 +5237,9 @@ LABEL_56:
       do
       {
         v141 = [v137 objectAtIndexedSubscript:v138];
-        v142 = [v141 type];
+        type4 = [v141 type];
 
-        if (v142 == 1)
+        if (type4 == 1)
         {
           v140 = ++v138;
         }
@@ -5247,9 +5247,9 @@ LABEL_56:
         else
         {
           v143 = [v137 objectAtIndexedSubscript:v138];
-          v144 = [v143 type];
+          type5 = [v143 type];
 
-          if (v144 == 2)
+          if (type5 == 2)
           {
             v139 = v138 + 1;
           }
@@ -5270,28 +5270,28 @@ LABEL_56:
     v196 = v140;
     if ([v137 count])
     {
-      v145 = [v190 firstObject];
-      v146 = [v145 placeIdentifier];
-      v147 = [v137 firstObject];
-      v148 = [v147 placeIdentifier];
-      v174 = [v146 isEqual:v148];
+      firstObject = [v190 firstObject];
+      placeIdentifier = [firstObject placeIdentifier];
+      firstObject2 = [v137 firstObject];
+      placeIdentifier2 = [firstObject2 placeIdentifier];
+      v174 = [placeIdentifier isEqual:placeIdentifier2];
 
-      v149 = [v137 firstObject];
-      v150 = [v149 placeStats];
-      v151 = [v150 stats];
-      [v151 weeklyTotalDailyVisitCountAverage];
+      firstObject3 = [v137 firstObject];
+      placeStats8 = [firstObject3 placeStats];
+      stats16 = [placeStats8 stats];
+      [stats16 weeklyTotalDailyVisitCountAverage];
       v225 = v152;
 
-      v153 = [v137 firstObject];
-      v154 = [v153 placeStats];
-      v155 = [v154 stats];
-      [v155 weeklyDaysWithNonZeroDwellTimeAverage];
+      firstObject4 = [v137 firstObject];
+      placeStats9 = [firstObject4 placeStats];
+      stats17 = [placeStats9 stats];
+      [stats17 weeklyDaysWithNonZeroDwellTimeAverage];
       v195 = v156;
 
-      v157 = [v137 firstObject];
-      v158 = [v157 placeStats];
-      v159 = [v158 stats];
-      [v159 topMedianDwellTime];
+      firstObject5 = [v137 firstObject];
+      placeStats10 = [firstObject5 placeStats];
+      stats18 = [placeStats10 stats];
+      [stats18 topMedianDwellTime];
       v194 = v160;
 
       v161 = v190;
@@ -5351,10 +5351,10 @@ LABEL_56:
   v177 = [MEMORY[0x277CCABB0] numberWithDouble:v54];
   v246[10] = v177;
   v245[11] = @"weeksWithNonZeroDwellTime_home";
-  v175 = [MEMORY[0x277CCABB0] numberWithInteger:v58];
+  v175 = [MEMORY[0x277CCABB0] numberWithInteger:weeksWithNonZeroDwellTime2];
   v246[11] = v175;
   v245[12] = @"weeksWithNonZeroDwellTime_work";
-  v173 = [MEMORY[0x277CCABB0] numberWithInteger:v57];
+  v173 = [MEMORY[0x277CCABB0] numberWithInteger:weeksWithNonZeroDwellTime];
   v246[12] = v173;
   v245[13] = @"weeklyAggregateDwellTimeBetweenDateRangeAverage_1stPlaceDailyPatterns";
   v223 = [MEMORY[0x277CCABB0] numberWithDouble:v222];
@@ -5400,8 +5400,8 @@ LABEL_56:
   v246[26] = v168;
   v169 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v246 forKeys:v245 count:27];
 
-  v170 = v201;
-  *a7 = v201;
+  v170 = array;
+  *others = array;
 
   return v169;
 }
@@ -5415,16 +5415,16 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   return v4;
 }
 
-+ (id)labelAnEventInterval:(id)a3 basedOnIntervalDict:(id)a4
++ (id)labelAnEventInterval:(id)interval basedOnIntervalDict:(id)dict
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalCopy = interval;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v33 = a4;
-  obj = [v33 allKeys];
+  dictCopy = dict;
+  obj = [dictCopy allKeys];
   v34 = [obj countByEnumeratingWithState:&v40 objects:v57 count:16];
   if (v34)
   {
@@ -5447,7 +5447,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v10 = [v33 objectForKeyedSubscript:v9];
+        v10 = [dictCopy objectForKeyedSubscript:v9];
         v11 = [v10 countByEnumeratingWithState:&v36 objects:v56 count:16];
         if (v11)
         {
@@ -5462,10 +5462,10 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [v5 intersectionWithDateInterval:*(*(&v36 + 1) + 8 * i)];
-              v16 = [v15 endDate];
-              v17 = [v15 startDate];
-              [v16 timeIntervalSinceDate:v17];
+              v15 = [intervalCopy intersectionWithDateInterval:*(*(&v36 + 1) + 8 * i)];
+              endDate = [v15 endDate];
+              startDate = [v15 startDate];
+              [endDate timeIntervalSinceDate:startDate];
               v19 = v18;
 
               if (v19 > v7)
@@ -5507,18 +5507,18 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
       v23 = objc_opt_class();
       v24 = NSStringFromClass(v23);
       v25 = NSStringFromSelector(a2);
-      v26 = [v5 startDate];
-      v27 = [v26 stringFromDate];
-      v28 = [v5 endDate];
-      v29 = [v28 stringFromDate];
+      startDate2 = [intervalCopy startDate];
+      stringFromDate = [startDate2 stringFromDate];
+      endDate2 = [intervalCopy endDate];
+      stringFromDate2 = [endDate2 stringFromDate];
       *buf = 138413570;
       v45 = v24;
       v46 = 2112;
       v47 = v25;
       v48 = 2112;
-      v49 = v27;
+      v49 = stringFromDate;
       v50 = 2112;
-      v51 = v29;
+      v51 = stringFromDate2;
       v52 = 2112;
       v53 = v6;
       v54 = 2048;
@@ -5530,15 +5530,15 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   return v6;
 }
 
-- (void)setMLMetricsFromFeaturesDict:(id)a3 sourceName:(unint64_t)a4
+- (void)setMLMetricsFromFeaturesDict:(id)dict sourceName:(unint64_t)name
 {
   v194 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictCopy = dict;
   v189 = 0u;
   v190 = 0u;
   v191 = 0u;
   v192 = 0u;
-  v160 = [v5 countByEnumeratingWithState:&v189 objects:v193 count:16];
+  v160 = [dictCopy countByEnumeratingWithState:&v189 objects:v193 count:16];
   if (v160)
   {
     v159 = *v190;
@@ -5548,7 +5548,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
       {
         if (*v190 != v159)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dictCopy);
         }
 
         v7 = *(*(&v189 + 1) + 8 * i);
@@ -5661,260 +5661,260 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
 
         v187 = v10;
         v11 = MEMORY[0x277CCABB0];
-        v12 = [v5 objectForKeyedSubscript:v7];
+        v12 = [dictCopy objectForKeyedSubscript:v7];
         v13 = [v12 objectForKeyedSubscript:@"percentage_of_days_with_charging"];
         [v13 doubleValue];
         v14 = [v11 numberWithDouble:?];
-        v15 = [(RTMetric *)self metrics];
-        [v15 setObject:v14 forKeyedSubscript:v8];
+        metrics = [(RTMetric *)self metrics];
+        [metrics setObject:v14 forKeyedSubscript:v8];
 
         v16 = MEMORY[0x277CCABB0];
-        v17 = [v5 objectForKeyedSubscript:v7];
+        v17 = [dictCopy objectForKeyedSubscript:v7];
         v18 = [v17 objectForKeyedSubscript:@"median_daily_total_charging_duration"];
         [v18 doubleValue];
         v19 = [v16 numberWithDouble:?];
-        v20 = [(RTMetric *)self metrics];
-        [v20 setObject:v19 forKeyedSubscript:v9];
+        metrics2 = [(RTMetric *)self metrics];
+        [metrics2 setObject:v19 forKeyedSubscript:v9];
 
         v21 = MEMORY[0x277CCABB0];
-        v22 = [v5 objectForKeyedSubscript:v7];
+        v22 = [dictCopy objectForKeyedSubscript:v7];
         v23 = [v22 objectForKeyedSubscript:@"mean_daily_total_charging_duration"];
         [v23 doubleValue];
         v24 = [v21 numberWithDouble:?];
-        v25 = [(RTMetric *)self metrics];
-        [v25 setObject:v24 forKeyedSubscript:v161];
+        metrics3 = [(RTMetric *)self metrics];
+        [metrics3 setObject:v24 forKeyedSubscript:v161];
 
         v26 = MEMORY[0x277CCABB0];
-        v27 = [v5 objectForKeyedSubscript:v7];
+        v27 = [dictCopy objectForKeyedSubscript:v7];
         v28 = [v27 objectForKeyedSubscript:@"SD_daily_total_charging_duration"];
         [v28 doubleValue];
         v29 = [v26 numberWithDouble:?];
-        v30 = [(RTMetric *)self metrics];
-        [v30 setObject:v29 forKeyedSubscript:v162];
+        metrics4 = [(RTMetric *)self metrics];
+        [metrics4 setObject:v29 forKeyedSubscript:v162];
 
         v31 = MEMORY[0x277CCABB0];
-        v32 = [v5 objectForKeyedSubscript:v7];
+        v32 = [dictCopy objectForKeyedSubscript:v7];
         v33 = [v32 objectForKeyedSubscript:@"median_daily_longest_charging_duration"];
         [v33 doubleValue];
         v34 = [v31 numberWithDouble:?];
-        v35 = [(RTMetric *)self metrics];
-        [v35 setObject:v34 forKeyedSubscript:v163];
+        metrics5 = [(RTMetric *)self metrics];
+        [metrics5 setObject:v34 forKeyedSubscript:v163];
 
         v36 = MEMORY[0x277CCABB0];
-        v37 = [v5 objectForKeyedSubscript:v7];
+        v37 = [dictCopy objectForKeyedSubscript:v7];
         v38 = [v37 objectForKeyedSubscript:@"mean_daily_longest_charging_duration"];
         [v38 doubleValue];
         v39 = [v36 numberWithDouble:?];
-        v40 = [(RTMetric *)self metrics];
-        [v40 setObject:v39 forKeyedSubscript:v164];
+        metrics6 = [(RTMetric *)self metrics];
+        [metrics6 setObject:v39 forKeyedSubscript:v164];
 
         v41 = MEMORY[0x277CCABB0];
-        v42 = [v5 objectForKeyedSubscript:v7];
+        v42 = [dictCopy objectForKeyedSubscript:v7];
         v43 = [v42 objectForKeyedSubscript:@"SD_daily_longest_charging_duration"];
         [v43 doubleValue];
         v44 = [v41 numberWithDouble:?];
-        v45 = [(RTMetric *)self metrics];
-        [v45 setObject:v44 forKeyedSubscript:v165];
+        metrics7 = [(RTMetric *)self metrics];
+        [metrics7 setObject:v44 forKeyedSubscript:v165];
 
         v46 = MEMORY[0x277CCABB0];
-        v47 = [v5 objectForKeyedSubscript:v7];
+        v47 = [dictCopy objectForKeyedSubscript:v7];
         v48 = [v47 objectForKeyedSubscript:@"percentage_of_days_with_staticMotion"];
         [v48 doubleValue];
         v49 = [v46 numberWithDouble:?];
-        v50 = [(RTMetric *)self metrics];
-        [v50 setObject:v49 forKeyedSubscript:v166];
+        metrics8 = [(RTMetric *)self metrics];
+        [metrics8 setObject:v49 forKeyedSubscript:v166];
 
         v51 = MEMORY[0x277CCABB0];
-        v52 = [v5 objectForKeyedSubscript:v7];
+        v52 = [dictCopy objectForKeyedSubscript:v7];
         v53 = [v52 objectForKeyedSubscript:@"median_daily_total_static_motion_duration"];
         [v53 doubleValue];
         v54 = [v51 numberWithDouble:?];
-        v55 = [(RTMetric *)self metrics];
-        [v55 setObject:v54 forKeyedSubscript:v167];
+        metrics9 = [(RTMetric *)self metrics];
+        [metrics9 setObject:v54 forKeyedSubscript:v167];
 
         v56 = MEMORY[0x277CCABB0];
-        v57 = [v5 objectForKeyedSubscript:v7];
+        v57 = [dictCopy objectForKeyedSubscript:v7];
         v58 = [v57 objectForKeyedSubscript:@"mean_daily_total_static_motion_duration"];
         [v58 doubleValue];
         v59 = [v56 numberWithDouble:?];
-        v60 = [(RTMetric *)self metrics];
-        [v60 setObject:v59 forKeyedSubscript:v168];
+        metrics10 = [(RTMetric *)self metrics];
+        [metrics10 setObject:v59 forKeyedSubscript:v168];
 
         v61 = MEMORY[0x277CCABB0];
-        v62 = [v5 objectForKeyedSubscript:v7];
+        v62 = [dictCopy objectForKeyedSubscript:v7];
         v63 = [v62 objectForKeyedSubscript:@"SD_daily_total_static_motion_duration"];
         [v63 doubleValue];
         v64 = [v61 numberWithDouble:?];
-        v65 = [(RTMetric *)self metrics];
-        [v65 setObject:v64 forKeyedSubscript:v169];
+        metrics11 = [(RTMetric *)self metrics];
+        [metrics11 setObject:v64 forKeyedSubscript:v169];
 
         v66 = MEMORY[0x277CCABB0];
-        v67 = [v5 objectForKeyedSubscript:v7];
+        v67 = [dictCopy objectForKeyedSubscript:v7];
         v68 = [v67 objectForKeyedSubscript:@"median_daily_longest_static_motion_duration"];
         [v68 doubleValue];
         v69 = [v66 numberWithDouble:?];
-        v70 = [(RTMetric *)self metrics];
-        [v70 setObject:v69 forKeyedSubscript:v170];
+        metrics12 = [(RTMetric *)self metrics];
+        [metrics12 setObject:v69 forKeyedSubscript:v170];
 
         v71 = MEMORY[0x277CCABB0];
-        v72 = [v5 objectForKeyedSubscript:v7];
+        v72 = [dictCopy objectForKeyedSubscript:v7];
         v73 = [v72 objectForKeyedSubscript:@"mean_daily_longest_static_motion_duration"];
         [v73 doubleValue];
         v74 = [v71 numberWithDouble:?];
-        v75 = [(RTMetric *)self metrics];
-        [v75 setObject:v74 forKeyedSubscript:v171];
+        metrics13 = [(RTMetric *)self metrics];
+        [metrics13 setObject:v74 forKeyedSubscript:v171];
 
         v76 = MEMORY[0x277CCABB0];
-        v77 = [v5 objectForKeyedSubscript:v7];
+        v77 = [dictCopy objectForKeyedSubscript:v7];
         v78 = [v77 objectForKeyedSubscript:@"SD_daily_longest_static_motion_duration"];
         [v78 doubleValue];
         v79 = [v76 numberWithDouble:?];
-        v80 = [(RTMetric *)self metrics];
-        [v80 setObject:v79 forKeyedSubscript:v172];
+        metrics14 = [(RTMetric *)self metrics];
+        [metrics14 setObject:v79 forKeyedSubscript:v172];
 
         v81 = MEMORY[0x277CCABB0];
-        v82 = [v5 objectForKeyedSubscript:v7];
+        v82 = [dictCopy objectForKeyedSubscript:v7];
         v83 = [v82 objectForKeyedSubscript:@"percentage_of_days_with_screenLock"];
         [v83 doubleValue];
         v84 = [v81 numberWithDouble:?];
-        v85 = [(RTMetric *)self metrics];
-        [v85 setObject:v84 forKeyedSubscript:v173];
+        metrics15 = [(RTMetric *)self metrics];
+        [metrics15 setObject:v84 forKeyedSubscript:v173];
 
         v86 = MEMORY[0x277CCABB0];
-        v87 = [v5 objectForKeyedSubscript:v7];
+        v87 = [dictCopy objectForKeyedSubscript:v7];
         v88 = [v87 objectForKeyedSubscript:@"median_daily_total_screen_lock_duration"];
         [v88 doubleValue];
         v89 = [v86 numberWithDouble:?];
-        v90 = [(RTMetric *)self metrics];
-        [v90 setObject:v89 forKeyedSubscript:v174];
+        metrics16 = [(RTMetric *)self metrics];
+        [metrics16 setObject:v89 forKeyedSubscript:v174];
 
         v91 = MEMORY[0x277CCABB0];
-        v92 = [v5 objectForKeyedSubscript:v7];
+        v92 = [dictCopy objectForKeyedSubscript:v7];
         v93 = [v92 objectForKeyedSubscript:@"mean_daily_total_screen_lock_duration"];
         [v93 doubleValue];
         v94 = [v91 numberWithDouble:?];
-        v95 = [(RTMetric *)self metrics];
-        [v95 setObject:v94 forKeyedSubscript:v175];
+        metrics17 = [(RTMetric *)self metrics];
+        [metrics17 setObject:v94 forKeyedSubscript:v175];
 
         v96 = MEMORY[0x277CCABB0];
-        v97 = [v5 objectForKeyedSubscript:v7];
+        v97 = [dictCopy objectForKeyedSubscript:v7];
         v98 = [v97 objectForKeyedSubscript:@"SD_daily_total_screen_lock_duration"];
         [v98 doubleValue];
         v99 = [v96 numberWithDouble:?];
-        v100 = [(RTMetric *)self metrics];
-        [v100 setObject:v99 forKeyedSubscript:v176];
+        metrics18 = [(RTMetric *)self metrics];
+        [metrics18 setObject:v99 forKeyedSubscript:v176];
 
         v101 = MEMORY[0x277CCABB0];
-        v102 = [v5 objectForKeyedSubscript:v7];
+        v102 = [dictCopy objectForKeyedSubscript:v7];
         v103 = [v102 objectForKeyedSubscript:@"median_daily_longest_screen_lock_duration"];
         [v103 doubleValue];
         v104 = [v101 numberWithDouble:?];
-        v105 = [(RTMetric *)self metrics];
-        [v105 setObject:v104 forKeyedSubscript:v177];
+        metrics19 = [(RTMetric *)self metrics];
+        [metrics19 setObject:v104 forKeyedSubscript:v177];
 
         v106 = MEMORY[0x277CCABB0];
-        v107 = [v5 objectForKeyedSubscript:v7];
+        v107 = [dictCopy objectForKeyedSubscript:v7];
         v108 = [v107 objectForKeyedSubscript:@"mean_daily_longest_screen_lock_duration"];
         [v108 doubleValue];
         v109 = [v106 numberWithDouble:?];
-        v110 = [(RTMetric *)self metrics];
-        [v110 setObject:v109 forKeyedSubscript:v178];
+        metrics20 = [(RTMetric *)self metrics];
+        [metrics20 setObject:v109 forKeyedSubscript:v178];
 
         v111 = MEMORY[0x277CCABB0];
-        v112 = [v5 objectForKeyedSubscript:v7];
+        v112 = [dictCopy objectForKeyedSubscript:v7];
         v113 = [v112 objectForKeyedSubscript:@"SD_daily_longest_screen_lock_duration"];
         [v113 doubleValue];
         v114 = [v111 numberWithDouble:?];
-        v115 = [(RTMetric *)self metrics];
-        [v115 setObject:v114 forKeyedSubscript:v179];
+        metrics21 = [(RTMetric *)self metrics];
+        [metrics21 setObject:v114 forKeyedSubscript:v179];
 
         v116 = MEMORY[0x277CCABB0];
-        v117 = [v5 objectForKeyedSubscript:v7];
+        v117 = [dictCopy objectForKeyedSubscript:v7];
         v118 = [v117 objectForKeyedSubscript:@"percentage_of_days_with_uninterrupted_WiFi_connection"];
         [v118 doubleValue];
         v119 = [v116 numberWithDouble:?];
-        v120 = [(RTMetric *)self metrics];
-        [v120 setObject:v119 forKeyedSubscript:v180];
+        metrics22 = [(RTMetric *)self metrics];
+        [metrics22 setObject:v119 forKeyedSubscript:v180];
 
         v121 = MEMORY[0x277CCABB0];
-        v122 = [v5 objectForKeyedSubscript:v7];
+        v122 = [dictCopy objectForKeyedSubscript:v7];
         v123 = [v122 objectForKeyedSubscript:@"median_daily_total_uninterrupted_WiFi_connection_duration"];
         [v123 doubleValue];
         v124 = [v121 numberWithDouble:?];
-        v125 = [(RTMetric *)self metrics];
-        [v125 setObject:v124 forKeyedSubscript:v181];
+        metrics23 = [(RTMetric *)self metrics];
+        [metrics23 setObject:v124 forKeyedSubscript:v181];
 
         v126 = MEMORY[0x277CCABB0];
-        v127 = [v5 objectForKeyedSubscript:v7];
+        v127 = [dictCopy objectForKeyedSubscript:v7];
         v128 = [v127 objectForKeyedSubscript:@"mean_daily_total_uninterrupted_WiFi_connection_duration"];
         [v128 doubleValue];
         v129 = [v126 numberWithDouble:?];
-        v130 = [(RTMetric *)self metrics];
-        [v130 setObject:v129 forKeyedSubscript:v182];
+        metrics24 = [(RTMetric *)self metrics];
+        [metrics24 setObject:v129 forKeyedSubscript:v182];
 
         v131 = MEMORY[0x277CCABB0];
-        v132 = [v5 objectForKeyedSubscript:v7];
+        v132 = [dictCopy objectForKeyedSubscript:v7];
         v133 = [v132 objectForKeyedSubscript:@"SD_daily_total_uninterrupted_WiFi_connection_duration"];
         [v133 doubleValue];
         v134 = [v131 numberWithDouble:?];
-        v135 = [(RTMetric *)self metrics];
-        [v135 setObject:v134 forKeyedSubscript:v183];
+        metrics25 = [(RTMetric *)self metrics];
+        [metrics25 setObject:v134 forKeyedSubscript:v183];
 
         v136 = MEMORY[0x277CCABB0];
-        v137 = [v5 objectForKeyedSubscript:v7];
+        v137 = [dictCopy objectForKeyedSubscript:v7];
         v138 = [v137 objectForKeyedSubscript:@"median_daily_longest_uninterrupted_WiFi_connection_duration"];
         [v138 doubleValue];
         v139 = [v136 numberWithDouble:?];
-        v140 = [(RTMetric *)self metrics];
-        [v140 setObject:v139 forKeyedSubscript:v184];
+        metrics26 = [(RTMetric *)self metrics];
+        [metrics26 setObject:v139 forKeyedSubscript:v184];
 
         v141 = MEMORY[0x277CCABB0];
-        v142 = [v5 objectForKeyedSubscript:v7];
+        v142 = [dictCopy objectForKeyedSubscript:v7];
         v143 = [v142 objectForKeyedSubscript:@"mean_daily_longest_uninterrupted_WiFi_connection_duration"];
         [v143 doubleValue];
         v144 = [v141 numberWithDouble:?];
-        v145 = [(RTMetric *)self metrics];
-        [v145 setObject:v144 forKeyedSubscript:v185];
+        metrics27 = [(RTMetric *)self metrics];
+        [metrics27 setObject:v144 forKeyedSubscript:v185];
 
         v146 = MEMORY[0x277CCABB0];
-        v147 = [v5 objectForKeyedSubscript:v7];
+        v147 = [dictCopy objectForKeyedSubscript:v7];
         v148 = [v147 objectForKeyedSubscript:@"SD_daily_longest_uninterrupted_WiFi_connection_duration"];
         [v148 doubleValue];
         v149 = [v146 numberWithDouble:?];
-        v150 = [(RTMetric *)self metrics];
-        [v150 setObject:v149 forKeyedSubscript:v186];
+        metrics28 = [(RTMetric *)self metrics];
+        [metrics28 setObject:v149 forKeyedSubscript:v186];
 
         v151 = MEMORY[0x277CCABB0];
-        v152 = [v5 objectForKeyedSubscript:v7];
+        v152 = [dictCopy objectForKeyedSubscript:v7];
         v153 = [v152 objectForKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio"];
         [v153 doubleValue];
         v154 = [v151 numberWithDouble:?];
-        v155 = [(RTMetric *)self metrics];
-        [v155 setObject:v154 forKeyedSubscript:v187];
+        metrics29 = [(RTMetric *)self metrics];
+        [metrics29 setObject:v154 forKeyedSubscript:v187];
 
         i = v188;
       }
 
-      v160 = [v5 countByEnumeratingWithState:&v189 objects:v193 count:16];
+      v160 = [dictCopy countByEnumeratingWithState:&v189 objects:v193 count:16];
     }
 
     while (v160);
   }
 
-  v156 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v157 = [(RTMetric *)self metrics];
-  [v157 setObject:v156 forKeyedSubscript:@"data_source"];
+  v156 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:name];
+  metrics30 = [(RTMetric *)self metrics];
+  [metrics30 setObject:v156 forKeyedSubscript:@"data_source"];
 }
 
-+ (id)DataSourceToString:(unint64_t)a3
++ (id)DataSourceToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (string == 2)
   {
     v3 = @"BiomeStream";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"CoreDuet";
   }
@@ -5925,14 +5925,14 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   }
 }
 
-+ (id)calculateMLFeaturesUsingBiomeManager:(id)a3 intervalDictionary:(id)a4 startDate:(id)a5 endDate:(id)a6 createBucketedFeatures:(BOOL)a7
++ (id)calculateMLFeaturesUsingBiomeManager:(id)manager intervalDictionary:(id)dictionary startDate:(id)date endDate:(id)endDate createBucketedFeatures:(BOOL)features
 {
-  v522 = a7;
+  featuresCopy = features;
   v663 = *MEMORY[0x277D85DE8];
-  v524 = a3;
-  v10 = a4;
-  v11 = a5;
-  v529 = a6;
+  managerCopy = manager;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocation);
@@ -5941,9 +5941,9 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
       v507 = objc_opt_class();
       v508 = NSStringFromClass(v507);
       v509 = NSStringFromSelector(a2);
-      v510 = [v10 count];
-      v511 = [v11 stringFromDate];
-      v512 = [v529 stringFromDate];
+      v510 = [dictionaryCopy count];
+      stringFromDate = [dateCopy stringFromDate];
+      stringFromDate2 = [endDateCopy stringFromDate];
       *buf = 138413314;
       v629 = v508;
       v630 = 2112;
@@ -5951,9 +5951,9 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
       v632 = 2048;
       v633 = v510;
       v634 = 2112;
-      v635 = v511;
+      v635 = stringFromDate;
       v636 = 2112;
-      *v637 = v512;
+      *v637 = stringFromDate2;
       _os_log_debug_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEBUG, "%@, %@, invoked with %lu places, for features within start date, %@, end date, %@", buf, 0x34u);
     }
   }
@@ -5964,7 +5964,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   v624[1] = 3221225472;
   v624[2] = __119__RTPlaceDataMetrics_calculateMLFeaturesUsingBiomeManager_intervalDictionary_startDate_endDate_createBucketedFeatures___block_invoke;
   v624[3] = &unk_2788C90C0;
-  v530 = v11;
+  v530 = dateCopy;
   v625 = v530;
   v558 = [v13 predicateWithBlock:v624];
   v14 = objc_opt_new();
@@ -5972,7 +5972,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   v622 = 0u;
   v621 = 0u;
   v620 = 0u;
-  v15 = v10;
+  v15 = dictionaryCopy;
   v16 = [v15 countByEnumeratingWithState:&v620 objects:v662 count:16];
   if (v16)
   {
@@ -5999,7 +5999,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   }
 
   v541 = v14;
-  if (![v541 count] || objc_msgSend(v530, "compare:", v529) == 1)
+  if (![v541 count] || objc_msgSend(v530, "compare:", endDateCopy) == 1)
   {
     v22 = v568;
     goto LABEL_15;
@@ -6009,8 +6009,8 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   v618 = 0u;
   v617 = 0u;
   v616 = 0u;
-  v24 = [v541 allKeys];
-  v25 = [v24 countByEnumeratingWithState:&v616 objects:v661 count:16];
+  allKeys = [v541 allKeys];
+  v25 = [allKeys countByEnumeratingWithState:&v616 objects:v661 count:16];
   if (v25)
   {
     v26 = *v617;
@@ -6020,7 +6020,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
       {
         if (*v617 != v26)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(allKeys);
         }
 
         v28 = *(*(&v616 + 1) + 8 * j);
@@ -6218,7 +6218,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
         [v124 setObject:v123 forKeyedSubscript:@"wifiStabilityArray"];
       }
 
-      v25 = [v24 countByEnumeratingWithState:&v616 objects:v661 count:16];
+      v25 = [allKeys countByEnumeratingWithState:&v616 objects:v661 count:16];
     }
 
     while (v25);
@@ -6234,10 +6234,10 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
   v660[3] = v128;
   v129 = [MEMORY[0x277CBEA60] arrayWithObjects:v660 count:4];
 
-  v527 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v528 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   v523 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  v520 = [v529 dateByAddingTimeInterval:-2419200.0];
+  v520 = [endDateCopy dateByAddingTimeInterval:-2419200.0];
   v615 = 0u;
   v614 = 0u;
   v613 = 0u;
@@ -6264,9 +6264,9 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
         v517 = v131;
         v133 = *(*(&v612 + 1) + 8 * v131);
         v518 = objc_autoreleasePoolPush();
-        v557 = [v133 firstObject];
-        v134 = [v133 secondObject];
-        v534 = [v134 integerValue];
+        firstObject = [v133 firstObject];
+        secondObject = [v133 secondObject];
+        integerValue = [secondObject integerValue];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
         {
@@ -6281,16 +6281,16 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
             v630 = 2112;
             v631 = v343;
             v632 = 2112;
-            v633 = v557;
+            v633 = firstObject;
             _os_log_debug_impl(&dword_2304B3000, v135, OS_LOG_TYPE_DEBUG, "%@, %@, retrieving Biome events of type %@", buf, 0x20u);
           }
         }
 
         [v528 setDay:{0, v513}];
-        v136 = [v527 dateByAddingComponents:v528 toDate:v530 options:0];
+        v136 = [currentCalendar dateByAddingComponents:v528 toDate:v530 options:0];
         [v523 setDay:0];
-        v525 = [v527 dateByAddingComponents:v523 toDate:v530 options:0];
-        v137 = [v525 earlierDate:v529];
+        v525 = [currentCalendar dateByAddingComponents:v523 toDate:v530 options:0];
+        v137 = [v525 earlierDate:endDateCopy];
         v138 = v137 == v525;
 
         if (v138)
@@ -6303,7 +6303,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
           {
             v514 = objc_autoreleasePoolPush();
             [v523 setDay:{objc_msgSend(v523, "day") + 3}];
-            v526 = [v527 dateByAddingComponents:v523 toDate:v530 options:0];
+            v526 = [currentCalendar dateByAddingComponents:v523 toDate:v530 options:0];
             v533 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v515 endDate:v526];
             v606 = 0;
             v607 = &v606;
@@ -6311,8 +6311,8 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
             v609 = __Block_byref_object_copy__47;
             v610 = __Block_byref_object_dispose__47;
             v611 = objc_opt_new();
-            v213 = [v533 endDate];
-            v214 = [v520 earlierDate:v213];
+            endDate = [v533 endDate];
+            v214 = [v520 earlierDate:endDate];
             v215 = v214 == v520;
 
             if (v215)
@@ -6322,7 +6322,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
               v605[2] = __119__RTPlaceDataMetrics_calculateMLFeaturesUsingBiomeManager_intervalDictionary_startDate_endDate_createBucketedFeatures___block_invoke_1702;
               v605[3] = &unk_2788C90E8;
               v605[4] = &v606;
-              [v524 enumerateEventsWithinDateInterval:v533 streamType:v534 handler:v605];
+              [managerCopy enumerateEventsWithinDateInterval:v533 streamType:integerValue handler:v605];
             }
 
             contexta = 1;
@@ -6330,7 +6330,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
             while (1)
             {
               v563 = v216;
-              v217 = [v216 earlierDate:v529];
+              v217 = [v216 earlierDate:endDateCopy];
               v218 = v217 == v563;
 
               if (!v218)
@@ -6339,7 +6339,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
               }
 
               [v528 setDay:{objc_msgSend(v528, "day") + 1}];
-              v553 = [v527 dateByAddingComponents:v528 toDate:v530 options:0];
+              v553 = [currentCalendar dateByAddingComponents:v528 toDate:v530 options:0];
               v566 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v563 endDate:v553];
               v545 = objc_opt_new();
               v603 = 0u;
@@ -6361,15 +6361,15 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                     }
 
                     v223 = *(*(&v601 + 1) + 8 * k);
-                    v224 = [v223 startDate];
-                    v225 = [v563 earlierDate:v224];
+                    startDate = [v223 startDate];
+                    v225 = [v563 earlierDate:startDate];
                     v226 = v225;
                     if (v225 == v563)
                     {
-                      v227 = [v223 startDate];
-                      v228 = [v227 earlierDate:v553];
-                      v229 = [v223 startDate];
-                      v230 = v228 == v229;
+                      startDate2 = [v223 startDate];
+                      v228 = [startDate2 earlierDate:v553];
+                      startDate3 = [v223 startDate];
+                      v230 = v228 == startDate3;
 
                       if (v230)
                       {
@@ -6398,8 +6398,8 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                   v334 = NSStringFromClass(v333);
                   v335 = NSStringFromSelector(a2);
                   v336 = [v545 count];
-                  v337 = [v563 stringFromDate];
-                  v338 = [v553 stringFromDate];
+                  stringFromDate3 = [v563 stringFromDate];
+                  stringFromDate4 = [v553 stringFromDate];
                   *buf = 138413570;
                   v629 = v334;
                   v630 = 2112;
@@ -6407,11 +6407,11 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                   v632 = 2048;
                   v633 = v336;
                   v634 = 2112;
-                  v635 = v557;
+                  v635 = firstObject;
                   v636 = 2112;
-                  *v637 = v337;
+                  *v637 = stringFromDate3;
                   *&v637[8] = 2112;
-                  *&v637[10] = v338;
+                  *&v637[10] = stringFromDate4;
                   _os_log_debug_impl(&dword_2304B3000, v231, OS_LOG_TYPE_DEBUG, "%@, %@, retrieved %lu Biome events of type %@ between dates %@ -> %@", buf, 0x3Eu);
                 }
               }
@@ -6422,8 +6422,8 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                 v596 = 0uLL;
                 v593 = 0uLL;
                 v594 = 0uLL;
-                v232 = [v568 allKeys];
-                v233 = [v232 countByEnumeratingWithState:&v593 objects:v656 count:16];
+                allKeys2 = [v568 allKeys];
+                v233 = [allKeys2 countByEnumeratingWithState:&v593 objects:v656 count:16];
                 if (v233)
                 {
                   v234 = *v594;
@@ -6433,7 +6433,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                     {
                       if (*v594 != v234)
                       {
-                        objc_enumerationMutation(v232);
+                        objc_enumerationMutation(allKeys2);
                       }
 
                       v236 = *(*(&v593 + 1) + 8 * m);
@@ -6450,7 +6450,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                       [v240 setObject:&unk_2845A1AB8 forKeyedSubscript:@"visitTotalDaily"];
                     }
 
-                    v233 = [v232 countByEnumeratingWithState:&v593 objects:v656 count:16];
+                    v233 = [allKeys2 countByEnumeratingWithState:&v593 objects:v656 count:16];
                   }
 
                   while (v233);
@@ -6479,7 +6479,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                       v560 = objc_autoreleasePoolPush();
                       [v245 duration];
                       v247 = v246;
-                      v248 = [a1 labelAnEventInterval:v245 basedOnIntervalDict:v541];
+                      v248 = [self labelAnEventInterval:v245 basedOnIntervalDict:v541];
                       v249 = [v541 objectForKeyedSubscript:v248];
 
                       if (v249)
@@ -6490,9 +6490,9 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                         [v252 doubleValue];
                         v254 = v253;
                         [v245 duration];
-                        v256 = [v250 numberWithDouble:v254 + v255];
+                        v255 = [v250 numberWithDouble:v254 + v255];
                         v257 = [v568 objectForKeyedSubscript:v248];
-                        [v257 setObject:v256 forKeyedSubscript:@"eventTotalDaily"];
+                        [v257 setObject:v255 forKeyedSubscript:@"eventTotalDaily"];
 
                         [v245 duration];
                         v259 = v258;
@@ -6510,24 +6510,24 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                           [v266 setObject:v265 forKeyedSubscript:@"eventLongestDaily"];
                         }
 
-                        if ([v557 isEqual:@"WiFiConnection"])
+                        if ([firstObject isEqual:@"WiFiConnection"])
                         {
                           v267 = [v566 intersectionWithDateInterval:v245];
                           v268 = v267;
                           if (v267)
                           {
-                            v269 = [v267 endDate];
-                            v270 = [v268 startDate];
-                            [v269 timeIntervalSinceDate:v270];
+                            endDate2 = [v267 endDate];
+                            startDate4 = [v268 startDate];
+                            [endDate2 timeIntervalSinceDate:startDate4];
                             v272 = v271;
 
                             v273 = MEMORY[0x277CCABB0];
                             v274 = [v568 objectForKeyedSubscript:v248];
                             v275 = [v274 objectForKeyedSubscript:@"wifiTotalDaily"];
                             [v275 doubleValue];
-                            v277 = [v273 numberWithDouble:v272 + v276];
+                            v276 = [v273 numberWithDouble:v272 + v276];
                             v278 = [v568 objectForKeyedSubscript:v248];
-                            [v278 setObject:v277 forKeyedSubscript:@"wifiTotalDaily"];
+                            [v278 setObject:v276 forKeyedSubscript:@"wifiTotalDaily"];
                           }
                         }
                       }
@@ -6546,9 +6546,9 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                 v588 = 0u;
                 v585 = 0u;
                 v586 = 0u;
-                v279 = [v568 allKeys];
-                v549 = [v279 countByEnumeratingWithState:&v585 objects:v654 count:16];
-                v551 = v279;
+                allKeys3 = [v568 allKeys];
+                v549 = [allKeys3 countByEnumeratingWithState:&v585 objects:v654 count:16];
+                v551 = allKeys3;
                 if (v549)
                 {
                   v547 = *v586;
@@ -6593,7 +6593,7 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                         v298 = [v295 numberWithDouble:?];
                         [v294 addObject:v298];
 
-                        if (![v557 isEqual:@"WiFiConnection"])
+                        if (![firstObject isEqual:@"WiFiConnection"])
                         {
                           goto LABEL_132;
                         }
@@ -6620,18 +6620,18 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                               v304 = v303;
                               if (v303)
                               {
-                                v305 = [v303 endDate];
-                                v306 = [v304 startDate];
-                                [v305 timeIntervalSinceDate:v306];
+                                endDate3 = [v303 endDate];
+                                startDate5 = [v304 startDate];
+                                [endDate3 timeIntervalSinceDate:startDate5];
                                 v308 = v307;
 
                                 v309 = MEMORY[0x277CCABB0];
                                 v310 = [v568 objectForKeyedSubscript:v280];
                                 v311 = [v310 objectForKeyedSubscript:@"visitTotalDaily"];
                                 [v311 doubleValue];
-                                v313 = [v309 numberWithDouble:v308 + v312];
+                                v312 = [v309 numberWithDouble:v308 + v312];
                                 v314 = [v568 objectForKeyedSubscript:v280];
-                                [v314 setObject:v313 forKeyedSubscript:@"visitTotalDaily"];
+                                [v314 setObject:v312 forKeyedSubscript:@"visitTotalDaily"];
                               }
                             }
 
@@ -6662,8 +6662,8 @@ BOOL __139__RTPlaceDataMetrics_generateDictionaryOfOldMetricsWithLearnedLocation
                         {
                           v323 = [v568 objectForKeyedSubscript:v280];
                           v324 = [v323 objectForKeyedSubscript:@"wifiStabilityArray"];
-                          v325 = [MEMORY[0x277CCABB0] numberWithDouble:v318 / v322];
-                          [v324 addObject:v325];
+                          v322 = [MEMORY[0x277CCABB0] numberWithDouble:v318 / v322];
+                          [v324 addObject:v322];
                         }
                       }
 
@@ -6694,9 +6694,9 @@ LABEL_132:
                 v600 = 0uLL;
                 v597 = 0uLL;
                 v598 = 0uLL;
-                v327 = [v568 allKeys];
-                v328 = [v327 countByEnumeratingWithState:&v597 objects:v657 count:16];
-                v551 = v327;
+                allKeys4 = [v568 allKeys];
+                v328 = [allKeys4 countByEnumeratingWithState:&v597 objects:v657 count:16];
+                v551 = allKeys4;
                 if (v328)
                 {
                   v329 = *v598;
@@ -6736,7 +6736,7 @@ LABEL_147:
 
             _Block_object_dispose(&v606, 8);
             objc_autoreleasePoolPop(v514);
-            v339 = [v525 earlierDate:v529];
+            v339 = [v525 earlierDate:endDateCopy];
             v340 = v339 == v525;
 
             v212 = v136;
@@ -6759,20 +6759,20 @@ LABEL_36:
             v141 = objc_opt_class();
             v142 = NSStringFromClass(v141);
             v143 = NSStringFromSelector(a2);
-            v144 = [v530 stringFromDate];
-            v145 = [v529 stringFromDate];
+            stringFromDate5 = [v530 stringFromDate];
+            stringFromDate6 = [endDateCopy stringFromDate];
             *buf = 138413826;
             v629 = v142;
             v630 = 2112;
             v631 = v143;
             v632 = 2112;
-            v633 = v144;
+            v633 = stringFromDate5;
             v634 = 2112;
-            v635 = v145;
+            v635 = stringFromDate6;
             v636 = 1024;
             *v637 = v542;
             *&v637[4] = 2112;
-            *&v637[6] = v557;
+            *&v637[6] = firstObject;
             *&v637[14] = 2048;
             *&v637[16] = v139;
             _os_log_impl(&dword_2304B3000, v140, OS_LOG_TYPE_INFO, "%@, %@, in time period between %@ -> %@, fetched %d Biome events of type %@ with a cumulative duration of %.2f", buf, 0x44u);
@@ -6783,8 +6783,8 @@ LABEL_36:
         v580 = 0u;
         v577 = 0u;
         v578 = 0u;
-        v532 = [v568 allKeys];
-        v536 = [v532 countByEnumeratingWithState:&v577 objects:v652 count:16];
+        allKeys5 = [v568 allKeys];
+        v536 = [allKeys5 countByEnumeratingWithState:&v577 objects:v652 count:16];
         if (v536)
         {
           v535 = *v578;
@@ -6794,7 +6794,7 @@ LABEL_36:
             {
               if (*v578 != v535)
               {
-                objc_enumerationMutation(v532);
+                objc_enumerationMutation(allKeys5);
               }
 
               v147 = *(*(&v577 + 1) + 8 * kk);
@@ -6865,7 +6865,7 @@ LABEL_36:
                 v544 = &unk_2845A19E8;
               }
 
-              if ([v557 isEqual:@"Charging"])
+              if ([firstObject isEqual:@"Charging"])
               {
                 v166 = [v568 objectForKeyedSubscript:v147];
                 [v166 setObject:v554 forKeyedSubscript:@"percentage_of_days_with_charging"];
@@ -6889,7 +6889,7 @@ LABEL_36:
                 [v172 setObject:v543 forKeyedSubscript:@"SD_daily_longest_charging_duration"];
               }
 
-              else if ([v557 isEqual:@"StaticMotion"])
+              else if ([firstObject isEqual:@"StaticMotion"])
               {
                 v173 = [v568 objectForKeyedSubscript:v147];
                 [v173 setObject:v554 forKeyedSubscript:@"percentage_of_days_with_staticMotion"];
@@ -6913,7 +6913,7 @@ LABEL_36:
                 [v172 setObject:v543 forKeyedSubscript:@"SD_daily_longest_static_motion_duration"];
               }
 
-              else if ([v557 isEqual:@"ScreenLock"])
+              else if ([firstObject isEqual:@"ScreenLock"])
               {
                 v179 = [v568 objectForKeyedSubscript:v147];
                 [v179 setObject:v554 forKeyedSubscript:@"percentage_of_days_with_screenLock"];
@@ -6939,7 +6939,7 @@ LABEL_36:
 
               else
               {
-                if (![v557 isEqual:@"WiFiConnection"])
+                if (![firstObject isEqual:@"WiFiConnection"])
                 {
                   goto LABEL_61;
                 }
@@ -6996,7 +6996,7 @@ LABEL_61:
                   v630 = 2112;
                   v631 = v202;
                   v632 = 2112;
-                  v633 = v557;
+                  v633 = firstObject;
                   v634 = 2112;
                   v635 = v147;
                   v636 = 2048;
@@ -7038,7 +7038,7 @@ LABEL_61:
               objc_autoreleasePoolPop(context);
             }
 
-            v536 = [v532 countByEnumeratingWithState:&v577 objects:v652 count:16];
+            v536 = [allKeys5 countByEnumeratingWithState:&v577 objects:v652 count:16];
           }
 
           while (v536);
@@ -7060,8 +7060,8 @@ LABEL_61:
   v576 = 0u;
   v573 = 0u;
   v574 = 0u;
-  v345 = [v568 allKeys];
-  v346 = [v345 countByEnumeratingWithState:&v573 objects:v627 count:16];
+  allKeys6 = [v568 allKeys];
+  v346 = [allKeys6 countByEnumeratingWithState:&v573 objects:v627 count:16];
   if (v346)
   {
     v347 = *v574;
@@ -7071,7 +7071,7 @@ LABEL_61:
       {
         if (*v574 != v347)
         {
-          objc_enumerationMutation(v345);
+          objc_enumerationMutation(allKeys6);
         }
 
         v349 = *(*(&v573 + 1) + 8 * mm);
@@ -7100,20 +7100,20 @@ LABEL_61:
         [v357 removeObjectForKey:@"visitTotalDaily"];
       }
 
-      v346 = [v345 countByEnumeratingWithState:&v573 objects:v627 count:16];
+      v346 = [allKeys6 countByEnumeratingWithState:&v573 objects:v627 count:16];
     }
 
     while (v346);
   }
 
-  if (v522)
+  if (featuresCopy)
   {
     v571 = 0u;
     v572 = 0u;
     v569 = 0u;
     v570 = 0u;
-    v358 = [v568 allKeys];
-    v567 = [v358 countByEnumeratingWithState:&v569 objects:v626 count:16];
+    allKeys7 = [v568 allKeys];
+    v567 = [allKeys7 countByEnumeratingWithState:&v569 objects:v626 count:16];
     if (v567)
     {
       v564 = *v570;
@@ -7123,7 +7123,7 @@ LABEL_61:
         {
           if (*v570 != v564)
           {
-            objc_enumerationMutation(v358);
+            objc_enumerationMutation(allKeys7);
           }
 
           v360 = *(*(&v569 + 1) + 8 * nn);
@@ -7331,7 +7331,7 @@ LABEL_61:
           [v505 setObject:v504 forKeyedSubscript:@"mean_daily_uninterrupted_WiFi_connection_stability_ratio_bucketed"];
         }
 
-        v567 = [v358 countByEnumeratingWithState:&v569 objects:v626 count:16];
+        v567 = [allKeys7 countByEnumeratingWithState:&v569 objects:v626 count:16];
       }
 
       while (v567);

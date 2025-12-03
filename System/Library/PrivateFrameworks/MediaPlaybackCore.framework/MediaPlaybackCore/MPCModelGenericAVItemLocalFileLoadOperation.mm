@@ -1,5 +1,5 @@
 @interface MPCModelGenericAVItemLocalFileLoadOperation
-- (MPCModelGenericAVItemLocalFileLoadOperation)initWithEvaluation:(id)a3 properties:(id)a4;
+- (MPCModelGenericAVItemLocalFileLoadOperation)initWithEvaluation:(id)evaluation properties:(id)properties;
 - (void)execute;
 @end
 
@@ -13,21 +13,21 @@
   aBlock[3] = &unk_1E8233408;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(MPCModelGenericAVItemLocalFileLoadOperation *)self assetLoadProperties];
-  v5 = [(MPCModelGenericAVItemLocalFileLoadOperation *)self fileAssetEvaluation];
-  if ([v5 fileIsValid])
+  assetLoadProperties = [(MPCModelGenericAVItemLocalFileLoadOperation *)self assetLoadProperties];
+  fileAssetEvaluation = [(MPCModelGenericAVItemLocalFileLoadOperation *)self fileAssetEvaluation];
+  if ([fileAssetEvaluation fileIsValid])
   {
     goto LABEL_2;
   }
 
-  v14 = [v5 status];
-  if (v14 > 3)
+  status = [fileAssetEvaluation status];
+  if (status > 3)
   {
-    if ((v14 - 5) >= 2)
+    if ((status - 5) >= 2)
     {
-      if (v14 != 4)
+      if (status != 4)
       {
-        if (v14 == 7 && self->_requirePreferredAssetQuality)
+        if (status == 7 && self->_requirePreferredAssetQuality)
         {
           v17 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:24 debugDescription:@"File asset not usable for vocal attenuation [HLS file]"];
           v3[2](v3, 0, v17);
@@ -39,8 +39,8 @@
       v15 = MEMORY[0x1E696ABC0];
       v16 = 22;
 LABEL_19:
-      v6 = [v15 errorWithDomain:@"MPCError" code:v16 userInfo:0];
-      v3[2](v3, 0, v6);
+      fileAsset = [v15 errorWithDomain:@"MPCError" code:v16 userInfo:0];
+      v3[2](v3, 0, fileAsset);
       goto LABEL_20;
     }
 
@@ -50,12 +50,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v14 || v14 == 2)
+  if (!status || status == 2)
   {
     goto LABEL_18;
   }
 
-  if (v14 == 3)
+  if (status == 3)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = 20;
@@ -63,8 +63,8 @@ LABEL_18:
   }
 
 LABEL_2:
-  v6 = [v5 fileAsset];
-  if (([v5 fileMatchesRequiredQuality] & 1) == 0 && ((objc_msgSend(v5, "fileMatchesRequiredQuality") & 1) != 0 || self->_requirePreferredAssetQuality))
+  fileAsset = [fileAssetEvaluation fileAsset];
+  if (([fileAssetEvaluation fileMatchesRequiredQuality] & 1) == 0 && ((objc_msgSend(fileAssetEvaluation, "fileMatchesRequiredQuality") & 1) != 0 || self->_requirePreferredAssetQuality))
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"MPCError" code:21 userInfo:0];
     v3[2](v3, 0, v10);
@@ -72,25 +72,25 @@ LABEL_2:
 
   else
   {
-    v7 = [v6 filePath];
+    filePath = [fileAsset filePath];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __54__MPCModelGenericAVItemLocalFileLoadOperation_execute__block_invoke_2;
     v18[3] = &unk_1E8233430;
-    v19 = v7;
-    v20 = v5;
-    v8 = v6;
+    v19 = filePath;
+    v20 = fileAssetEvaluation;
+    v8 = fileAsset;
     v21 = v8;
-    v22 = self;
-    v9 = v4;
+    selfCopy = self;
+    v9 = assetLoadProperties;
     v23 = v9;
     v24 = v3;
-    v10 = v7;
+    v10 = filePath;
     v11 = _Block_copy(v18);
-    v12 = [v9 itemIdentifiers];
-    v13 = [objc_alloc(MEMORY[0x1E69707D8]) initWithFileAsset:v8 sourceItemIdentifiers:v12];
+    itemIdentifiers = [v9 itemIdentifiers];
+    v13 = [objc_alloc(MEMORY[0x1E69707D8]) initWithFileAsset:v8 sourceItemIdentifiers:itemIdentifiers];
     [v13 setFileAsset:v8];
-    [v13 setSourceItemIdentifiers:v12];
+    [v13 setSourceItemIdentifiers:itemIdentifiers];
     [v13 performWithResponseHandler:v11];
   }
 
@@ -305,18 +305,18 @@ void __54__MPCModelGenericAVItemLocalFileLoadOperation_execute__block_invoke_8(u
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (MPCModelGenericAVItemLocalFileLoadOperation)initWithEvaluation:(id)a3 properties:(id)a4
+- (MPCModelGenericAVItemLocalFileLoadOperation)initWithEvaluation:(id)evaluation properties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  evaluationCopy = evaluation;
+  propertiesCopy = properties;
   v12.receiver = self;
   v12.super_class = MPCModelGenericAVItemLocalFileLoadOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileAssetEvaluation, a3);
-    objc_storeStrong(&v10->_assetLoadProperties, a4);
+    objc_storeStrong(&v9->_fileAssetEvaluation, evaluation);
+    objc_storeStrong(&v10->_assetLoadProperties, properties);
   }
 
   return v10;

@@ -1,18 +1,18 @@
 @interface SBFolderContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
 - (BOOL)isTransparentFocusItem;
 @end
 
 @implementation SBFolderContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatyFolderView"];
-  [v3 validateClass:@"SBFolderContainerView" hasInstanceMethod:@"folderView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolderContainerView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"isTransparentFocusItem" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatyFolderView"];
+  [validationsCopy validateClass:@"SBFolderContainerView" hasInstanceMethod:@"folderView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolderContainerView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"isTransparentFocusItem" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityViewIsModal
@@ -28,8 +28,8 @@
 {
   v5.receiver = self;
   v5.super_class = SBFolderContainerViewAccessibility;
-  v3 = [(SBFolderContainerViewAccessibility *)&v5 isTransparentFocusItem];
-  return ([(SBFolderContainerViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| v3) & 1;
+  isTransparentFocusItem = [(SBFolderContainerViewAccessibility *)&v5 isTransparentFocusItem];
+  return ([(SBFolderContainerViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]| isTransparentFocusItem) & 1;
 }
 
 @end

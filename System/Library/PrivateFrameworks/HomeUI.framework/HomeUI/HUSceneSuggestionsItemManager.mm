@@ -1,21 +1,21 @@
 @interface HUSceneSuggestionsItemManager
-+ (id)computeNumberOfSuggestionsInHome:(id)a3;
-+ (id)suggestionsItemProviderInHome:(id)a3;
-- (id)_buildItemProvidersForHome:(id)a3;
++ (id)computeNumberOfSuggestionsInHome:(id)home;
++ (id)suggestionsItemProviderInHome:(id)home;
+- (id)_buildItemProvidersForHome:(id)home;
 - (id)_currentSectionIdentifiers;
-- (id)_identifierForSection:(unint64_t)a3;
-- (id)_sectionIdentifierForItem:(id)a3;
-- (id)_titleForSectionWithIdentifier:(id)a3;
+- (id)_identifierForSection:(unint64_t)section;
+- (id)_sectionIdentifierForItem:(id)item;
+- (id)_titleForSectionWithIdentifier:(id)identifier;
 - (unint64_t)_numberOfSections;
 @end
 
 @implementation HUSceneSuggestionsItemManager
 
-+ (id)suggestionsItemProviderInHome:(id)a3
++ (id)suggestionsItemProviderInHome:(id)home
 {
   v3 = MEMORY[0x277D17E38];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithHome:v4 andServiceLikeItems:0];
+  homeCopy = home;
+  v5 = [[v3 alloc] initWithHome:homeCopy andServiceLikeItems:0];
 
   [v5 setEngineOptions:{objc_msgSend(v5, "engineOptions") | 0x10}];
   [v5 setFilter:&__block_literal_global_85];
@@ -50,19 +50,19 @@ BOOL __63__HUSceneSuggestionsItemManager_suggestionsItemProviderInHome___block_i
   return v6;
 }
 
-+ (id)computeNumberOfSuggestionsInHome:(id)a3
++ (id)computeNumberOfSuggestionsInHome:(id)home
 {
-  v3 = a3;
-  v4 = [objc_opt_class() suggestionsItemProviderInHome:v3];
+  homeCopy = home;
+  v4 = [objc_opt_class() suggestionsItemProviderInHome:homeCopy];
 
-  v5 = [v4 reloadItems];
+  reloadItems = [v4 reloadItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_invoke;
   v9[3] = &unk_277DB7F80;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 flatMap:v9];
+  v7 = [reloadItems flatMap:v9];
 
   return v7;
 }
@@ -150,11 +150,11 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
   return v13;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  homeCopy = home;
   v6 = [v4 set];
   v7 = objc_alloc(MEMORY[0x277D14B38]);
   v18 = *MEMORY[0x277D13F60];
@@ -164,16 +164,16 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
   v10 = [v7 initWithResults:v9];
   [(HUSceneSuggestionsItemManager *)self setAddCustomSceneItem:v10];
 
-  v11 = [(HUSceneSuggestionsItemManager *)self addCustomSceneItem];
-  [v6 addObject:v11];
+  addCustomSceneItem = [(HUSceneSuggestionsItemManager *)self addCustomSceneItem];
+  [v6 addObject:addCustomSceneItem];
 
   v12 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v6];
-  v13 = [objc_opt_class() suggestionsItemProviderInHome:v5];
+  v13 = [objc_opt_class() suggestionsItemProviderInHome:homeCopy];
 
   [(HUSceneSuggestionsItemManager *)self setSuggestionItemProvider:v13];
   v17[0] = v12;
-  v14 = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
-  v17[1] = v14;
+  suggestionItemProvider = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
+  v17[1] = suggestionItemProvider;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
 
   return v15;
@@ -181,36 +181,36 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
 
 - (unint64_t)_numberOfSections
 {
-  v2 = [(HUSceneSuggestionsItemManager *)self _currentSectionIdentifiers];
-  v3 = [v2 count];
+  _currentSectionIdentifiers = [(HUSceneSuggestionsItemManager *)self _currentSectionIdentifiers];
+  v3 = [_currentSectionIdentifiers count];
 
   return v3;
 }
 
-- (id)_identifierForSection:(unint64_t)a3
+- (id)_identifierForSection:(unint64_t)section
 {
-  v4 = [(HUSceneSuggestionsItemManager *)self _currentSectionIdentifiers];
-  if ([v4 count] <= a3)
+  _currentSectionIdentifiers = [(HUSceneSuggestionsItemManager *)self _currentSectionIdentifiers];
+  if ([_currentSectionIdentifiers count] <= section)
   {
-    NSLog(&cfstr_ReceivedIdenti.isa, a3, [v4 count]);
+    NSLog(&cfstr_ReceivedIdenti.isa, section, [_currentSectionIdentifiers count]);
   }
 
-  if ([v4 count] <= a3)
+  if ([_currentSectionIdentifiers count] <= section)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [_currentSectionIdentifiers objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)_titleForSectionWithIdentifier:(id)a3
+- (id)_titleForSectionWithIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:@"HUSceneSuggestionsSectionIdentifierSuggestions"])
+  if ([identifier isEqualToString:@"HUSceneSuggestionsSectionIdentifierSuggestions"])
   {
     v3 = _HULocalizedStringWithDefaultValue(@"HUSceneSuggestionsSectionHeaderTitle", @"HUSceneSuggestionsSectionHeaderTitle", 1);
   }
@@ -223,11 +223,11 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
   return v3;
 }
 
-- (id)_sectionIdentifierForItem:(id)a3
+- (id)_sectionIdentifierForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUSceneSuggestionsItemManager *)self addCustomSceneItem];
-  v6 = [v4 isEqual:v5];
+  itemCopy = item;
+  addCustomSceneItem = [(HUSceneSuggestionsItemManager *)self addCustomSceneItem];
+  v6 = [itemCopy isEqual:addCustomSceneItem];
 
   if (v6)
   {
@@ -242,18 +242,18 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
 
 - (id)_currentSectionIdentifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
-  v5 = [v4 items];
-  if ([v5 count])
+  array = [MEMORY[0x277CBEB18] array];
+  suggestionItemProvider = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
+  items = [suggestionItemProvider items];
+  if ([items count])
   {
-    v6 = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
-    v7 = [v6 items];
-    v8 = [v7 na_any:&__block_literal_global_33_0];
+    suggestionItemProvider2 = [(HUSceneSuggestionsItemManager *)self suggestionItemProvider];
+    items2 = [suggestionItemProvider2 items];
+    v8 = [items2 na_any:&__block_literal_global_33_0];
 
     if (v8)
     {
-      [v3 addObject:@"HUSceneSuggestionsSectionIdentifierSuggestions"];
+      [array addObject:@"HUSceneSuggestionsSectionIdentifierSuggestions"];
     }
   }
 
@@ -261,9 +261,9 @@ id __66__HUSceneSuggestionsItemManager_computeNumberOfSuggestionsInHome___block_
   {
   }
 
-  [v3 addObject:@"HUSceneSuggestionsSectionIdentifierCustom"];
+  [array addObject:@"HUSceneSuggestionsSectionIdentifierCustom"];
 
-  return v3;
+  return array;
 }
 
 uint64_t __59__HUSceneSuggestionsItemManager__currentSectionIdentifiers__block_invoke(uint64_t a1, void *a2)

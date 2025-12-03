@@ -1,64 +1,64 @@
 @interface MAGAngelAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (uint64_t)applicationWillTerminate:;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4;
-- (void)checkForDeactivationReasonWithNotification:(id)a3;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end;
+- (void)checkForDeactivationReasonWithNotification:(id)notification;
 @end
 
 @implementation MAGAngelAppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10002904C(&qword_10004F930, type metadata accessor for LaunchOptionsKey);
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v8 = sub_100028064();
 
   return v8 & 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_100028758(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_100028758(sessionCopy);
 
   return v12;
 }
 
-- (void)checkForDeactivationReasonWithNotification:(id)a3
+- (void)checkForDeactivationReasonWithNotification:(id)notification
 {
-  v3 = self;
+  selfCopy = self;
   if ((static MAGAXUtilities.isVoiceOverRunning.getter() & 1) == 0)
   {
     sub_1000227C0();
   }
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100028AC0(a4, &unk_10004A680, &unk_100039770);
+  viewfinderCopy = viewfinder;
+  beginCopy = begin;
+  selfCopy = self;
+  sub_100028AC0(begin, &unk_10004A680, &unk_100039770);
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100028AC0(a4, &unk_10004A540, &unk_100039548);
+  viewfinderCopy = viewfinder;
+  endCopy = end;
+  selfCopy = self;
+  sub_100028AC0(end, &unk_10004A540, &unk_100039548);
 }
 
 - (uint64_t)applicationWillTerminate:

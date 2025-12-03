@@ -1,80 +1,80 @@
 @interface ASCPublicKeyCredentialCreationOptions
-- (ASCPublicKeyCredentialCreationOptions)initWithChallenge:(id)a3 clientDataJSON:(id)a4 clientDataHash:(id)a5 relyingPartyIdentifier:(id)a6 userName:(id)a7 userIdentifier:(id)a8 userDisplayName:(id)a9 supportedAlgorithmIdentifiers:(id)a10 attestationPreference:(id)a11 userVerificationPreference:(id)a12 excludedCredentials:(id)a13 extensions:(id)a14 origin:(id)a15;
-- (ASCPublicKeyCredentialCreationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASCPublicKeyCredentialCreationOptions)initWithChallenge:(id)challenge clientDataJSON:(id)n clientDataHash:(id)hash relyingPartyIdentifier:(id)identifier userName:(id)name userIdentifier:(id)userIdentifier userDisplayName:(id)displayName supportedAlgorithmIdentifiers:(id)self0 attestationPreference:(id)self1 userVerificationPreference:(id)self2 excludedCredentials:(id)self3 extensions:(id)self4 origin:(id)self5;
+- (ASCPublicKeyCredentialCreationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)logRequest;
-- (void)setShouldRequireResidentKey:(BOOL)a3;
+- (void)setShouldRequireResidentKey:(BOOL)key;
 @end
 
 @implementation ASCPublicKeyCredentialCreationOptions
 
-- (ASCPublicKeyCredentialCreationOptions)initWithChallenge:(id)a3 clientDataJSON:(id)a4 clientDataHash:(id)a5 relyingPartyIdentifier:(id)a6 userName:(id)a7 userIdentifier:(id)a8 userDisplayName:(id)a9 supportedAlgorithmIdentifiers:(id)a10 attestationPreference:(id)a11 userVerificationPreference:(id)a12 excludedCredentials:(id)a13 extensions:(id)a14 origin:(id)a15
+- (ASCPublicKeyCredentialCreationOptions)initWithChallenge:(id)challenge clientDataJSON:(id)n clientDataHash:(id)hash relyingPartyIdentifier:(id)identifier userName:(id)name userIdentifier:(id)userIdentifier userDisplayName:(id)displayName supportedAlgorithmIdentifiers:(id)self0 attestationPreference:(id)self1 userVerificationPreference:(id)self2 excludedCredentials:(id)self3 extensions:(id)self4 origin:(id)self5
 {
-  v65 = a3;
-  v20 = a4;
-  v64 = a5;
-  v63 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v62 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
+  challengeCopy = challenge;
+  nCopy = n;
+  hashCopy = hash;
+  identifierCopy = identifier;
+  nameCopy = name;
+  userIdentifierCopy = userIdentifier;
+  displayNameCopy = displayName;
+  identifiersCopy = identifiers;
+  preferenceCopy = preference;
+  verificationPreferenceCopy = verificationPreference;
+  credentialsCopy = credentials;
+  extensionsCopy = extensions;
+  originCopy = origin;
   v66.receiver = self;
   v66.super_class = ASCPublicKeyCredentialCreationOptions;
   v29 = [(ASCPublicKeyCredentialCreationOptions *)&v66 init];
   if (v29)
   {
-    v30 = [v65 copy];
+    v30 = [challengeCopy copy];
     challenge = v29->_challenge;
     v29->_challenge = v30;
 
-    v61 = v20;
-    v32 = [v20 copy];
+    v61 = nCopy;
+    v32 = [nCopy copy];
     clientDataJSON = v29->_clientDataJSON;
     v29->_clientDataJSON = v32;
 
-    v34 = [v64 copy];
+    v34 = [hashCopy copy];
     clientDataHash = v29->_clientDataHash;
     v29->_clientDataHash = v34;
 
-    v36 = [v63 copy];
+    v36 = [identifierCopy copy];
     relyingPartyIdentifier = v29->_relyingPartyIdentifier;
     v29->_relyingPartyIdentifier = v36;
 
-    v38 = [v21 copy];
+    v38 = [nameCopy copy];
     userName = v29->_userName;
     v29->_userName = v38;
 
-    v40 = [v22 copy];
+    v40 = [userIdentifierCopy copy];
     userIdentifier = v29->_userIdentifier;
     v29->_userIdentifier = v40;
 
-    v42 = [v23 copy];
+    v42 = [displayNameCopy copy];
     userDisplayName = v29->_userDisplayName;
     v29->_userDisplayName = v42;
 
-    v44 = [v24 copy];
+    v44 = [identifiersCopy copy];
     supportedAlgorithmIdentifiers = v29->_supportedAlgorithmIdentifiers;
     v29->_supportedAlgorithmIdentifiers = v44;
 
-    v46 = [v62 copy];
+    v46 = [preferenceCopy copy];
     attestationPreference = v29->_attestationPreference;
     v29->_attestationPreference = v46;
 
-    v48 = [v25 copy];
+    v48 = [verificationPreferenceCopy copy];
     userVerificationPreference = v29->_userVerificationPreference;
     v29->_userVerificationPreference = v48;
 
-    v50 = [v26 copy];
+    v50 = [credentialsCopy copy];
     excludedCredentials = v29->_excludedCredentials;
     v29->_excludedCredentials = v50;
 
-    v52 = [v27 copy];
+    v52 = [extensionsCopy copy];
     v53 = v52;
     if (v52)
     {
@@ -89,45 +89,45 @@
     extensions = v29->_extensions;
     v29->_extensions = v54;
 
-    v56 = [v28 copy];
+    v56 = [originCopy copy];
     origin = v29->_origin;
     v29->_origin = v56;
 
     v58 = v29;
-    v20 = v61;
+    nCopy = v61;
   }
 
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   challenge = self->_challenge;
-  v5 = a3;
-  [v5 encodeObject:challenge forKey:@"challenge"];
-  [v5 encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
-  [v5 encodeObject:self->_clientDataJSON forKey:@"clientDataJSON"];
-  [v5 encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeObject:self->_userName forKey:@"userName"];
-  [v5 encodeObject:self->_userIdentifier forKey:@"userIdentifier"];
-  [v5 encodeObject:self->_userDisplayName forKey:@"userDisplayName"];
-  [v5 encodeObject:self->_supportedAlgorithmIdentifiers forKey:@"supportedAlgorithmIdentifiers"];
-  [v5 encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
-  [v5 encodeObject:self->_attestationPreference forKey:@"attestationPreference"];
-  [v5 encodeObject:self->_timeout forKey:@"timeout"];
-  [v5 encodeInteger:self->_residentKeyPreference forKey:@"residentKeyPreference"];
-  [v5 encodeObject:self->_excludedCredentials forKey:@"excludedCredentials"];
-  [v5 encodeObject:self->_extensions forKey:@"extensions"];
-  [v5 encodeBool:self->_shouldHideHybrid forKey:@"shouldHideHybrid"];
-  [v5 encodeObject:self->_origin forKey:@"origin"];
+  coderCopy = coder;
+  [coderCopy encodeObject:challenge forKey:@"challenge"];
+  [coderCopy encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
+  [coderCopy encodeObject:self->_clientDataJSON forKey:@"clientDataJSON"];
+  [coderCopy encodeObject:self->_relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_userName forKey:@"userName"];
+  [coderCopy encodeObject:self->_userIdentifier forKey:@"userIdentifier"];
+  [coderCopy encodeObject:self->_userDisplayName forKey:@"userDisplayName"];
+  [coderCopy encodeObject:self->_supportedAlgorithmIdentifiers forKey:@"supportedAlgorithmIdentifiers"];
+  [coderCopy encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
+  [coderCopy encodeObject:self->_attestationPreference forKey:@"attestationPreference"];
+  [coderCopy encodeObject:self->_timeout forKey:@"timeout"];
+  [coderCopy encodeInteger:self->_residentKeyPreference forKey:@"residentKeyPreference"];
+  [coderCopy encodeObject:self->_excludedCredentials forKey:@"excludedCredentials"];
+  [coderCopy encodeObject:self->_extensions forKey:@"extensions"];
+  [coderCopy encodeBool:self->_shouldHideHybrid forKey:@"shouldHideHybrid"];
+  [coderCopy encodeObject:self->_origin forKey:@"origin"];
 }
 
-- (ASCPublicKeyCredentialCreationOptions)initWithCoder:(id)a3
+- (ASCPublicKeyCredentialCreationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDataJSON"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"challenge"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDataJSON"];
   v8 = v7;
   if (v5)
   {
@@ -160,42 +160,42 @@
     objc_storeStrong(&v11->_challenge, v5);
     objc_storeStrong(&v12->_clientDataHash, v6);
     objc_storeStrong(&v12->_clientDataJSON, v8);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
     relyingPartyIdentifier = v12->_relyingPartyIdentifier;
     v12->_relyingPartyIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userName"];
     userName = v12->_userName;
     v12->_userName = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentifier"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentifier"];
     userIdentifier = v12->_userIdentifier;
     v12->_userIdentifier = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userDisplayName"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userDisplayName"];
     userDisplayName = v12->_userDisplayName;
     v12->_userDisplayName = v19;
 
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"supportedAlgorithmIdentifiers"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"supportedAlgorithmIdentifiers"];
     supportedAlgorithmIdentifiers = v12->_supportedAlgorithmIdentifiers;
     v12->_supportedAlgorithmIdentifiers = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
     userVerificationPreference = v12->_userVerificationPreference;
     v12->_userVerificationPreference = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attestationPreference"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestationPreference"];
     attestationPreference = v12->_attestationPreference;
     v12->_attestationPreference = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeout"];
     timeout = v12->_timeout;
     v12->_timeout = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensions"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensions"];
     v33 = v32;
     if (v32)
     {
@@ -210,16 +210,16 @@
     extensions = v12->_extensions;
     v12->_extensions = v34;
 
-    v12->_residentKeyPreference = [v4 decodeIntegerForKey:@"residentKeyPreference"];
+    v12->_residentKeyPreference = [coderCopy decodeIntegerForKey:@"residentKeyPreference"];
     v37 = MEMORY[0x1E695DFD8];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"excludedCredentials"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"excludedCredentials"];
     excludedCredentials = v12->_excludedCredentials;
     v12->_excludedCredentials = v40;
 
-    v12->_shouldHideHybrid = [v4 decodeBoolForKey:@"shouldHideHybrid"];
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
+    v12->_shouldHideHybrid = [coderCopy decodeBoolForKey:@"shouldHideHybrid"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"origin"];
     self = v12->_origin;
     v12->_origin = v42;
 LABEL_16:
@@ -228,7 +228,7 @@ LABEL_16:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ASCPublicKeyCredentialCreationOptions allocWithZone:?]];
   if (v4)
@@ -294,10 +294,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)setShouldRequireResidentKey:(BOOL)a3
+- (void)setShouldRequireResidentKey:(BOOL)key
 {
   v3 = 3;
-  if (!a3)
+  if (!key)
   {
     v3 = 1;
   }

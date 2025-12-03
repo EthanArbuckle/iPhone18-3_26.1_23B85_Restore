@@ -1,19 +1,19 @@
 @interface APXPCActivity
 + (OS_dispatch_queue)activityQueue;
-+ (id)_translateCriteria:(id)a3;
-- (APXPCActivity)initWithDelegate:(id)a3;
++ (id)_translateCriteria:(id)criteria;
+- (APXPCActivity)initWithDelegate:(id)delegate;
 - (BOOL)_continueActivity;
 - (BOOL)deferActivity;
 - (BOOL)finished;
-- (BOOL)setActivityState:(int64_t)a3;
+- (BOOL)setActivityState:(int64_t)state;
 - (BOOL)shouldDefer;
 - (void)_backgroundDeferralCheck;
 - (void)_endDeferralCheck;
-- (void)_registerActivityWithCriteria:(id)a3;
+- (void)_registerActivityWithCriteria:(id)criteria;
 - (void)_startDeferralCheck;
 - (void)cancel;
 - (void)schedule;
-- (void)scheduleWithDelay:(int64_t)a3;
+- (void)scheduleWithDelay:(int64_t)delay;
 @end
 
 @implementation APXPCActivity
@@ -30,11 +30,11 @@
   return v3;
 }
 
-+ (id)_translateCriteria:(id)a3
++ (id)_translateCriteria:(id)criteria
 {
-  if (a3)
+  if (criteria)
   {
-    v4 = objc_msgSend_translateCriteria(a3, a2, a3, v3);
+    v4 = objc_msgSend_translateCriteria(criteria, a2, criteria, v3);
   }
 
   else
@@ -45,17 +45,17 @@
   return v4;
 }
 
-- (APXPCActivity)initWithDelegate:(id)a3
+- (APXPCActivity)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = APXPCActivity;
   v6 = [(APXPCActivity *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
-    v11 = objc_msgSend_taskID(v5, v8, v9, v10);
+    objc_storeStrong(&v6->_delegate, delegate);
+    v11 = objc_msgSend_taskID(delegateCopy, v8, v9, v10);
     taskID = v7->_taskID;
     v7->_taskID = v11;
   }
@@ -66,13 +66,13 @@
 - (BOOL)_continueActivity
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_activity(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_activity(selfCopy, v3, v4, v5);
 
   if (v6)
   {
-    if (objc_msgSend_setActivityState_(v2, v7, 4, v8))
+    if (objc_msgSend_setActivityState_(selfCopy, v7, 4, v8))
     {
       LOBYTE(v6) = 1;
     }
@@ -83,7 +83,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = objc_opt_class();
-        v14 = objc_msgSend_taskID(v2, v11, v12, v13);
+        v14 = objc_msgSend_taskID(selfCopy, v11, v12, v13);
         v25 = 138478083;
         v26 = v10;
         v27 = 2114;
@@ -91,15 +91,15 @@
         _os_log_impl(&dword_1BADC1000, v9, OS_LOG_TYPE_ERROR, "[%{private}@]: Unable to continue task %{public}@ - terminating.", &v25, 0x16u);
       }
 
-      objc_msgSend_finished(v2, v15, v16, v17);
-      v6 = objc_msgSend_delegate(v2, v18, v19, v20);
-      objc_msgSend_terminateActivity_(v6, v21, v2, v22);
+      objc_msgSend_finished(selfCopy, v15, v16, v17);
+      v6 = objc_msgSend_delegate(selfCopy, v18, v19, v20);
+      objc_msgSend_terminateActivity_(v6, v21, selfCopy, v22);
 
       LOBYTE(v6) = 0;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v23 = *MEMORY[0x1E69E9840];
   return v6;
@@ -114,49 +114,49 @@
   objc_msgSend__registerActivityWithCriteria_(self, v12, v14, v13);
 }
 
-- (void)scheduleWithDelay:(int64_t)a3
+- (void)scheduleWithDelay:(int64_t)delay
 {
-  v6 = objc_msgSend_delegate(self, a2, a3, v3);
+  v6 = objc_msgSend_delegate(self, a2, delay, v3);
   v10 = objc_msgSend_criteria(v6, v7, v8, v9);
   xdict = objc_msgSend__translateCriteria_(APXPCActivity, v11, v10, v12);
 
-  xpc_dictionary_set_int64(xdict, *MEMORY[0x1E69E9C68], a3);
+  xpc_dictionary_set_int64(xdict, *MEMORY[0x1E69E9C68], delay);
   objc_msgSend__registerActivityWithCriteria_(self, v13, xdict, v14);
 }
 
-- (void)_registerActivityWithCriteria:(id)a3
+- (void)_registerActivityWithCriteria:(id)criteria
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  criteriaCopy = criteria;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = APLogForCategory(0x39uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
-    v11 = objc_msgSend_taskID(v5, v8, v9, v10);
+    v11 = objc_msgSend_taskID(selfCopy, v8, v9, v10);
     *buf = 138478339;
     v26 = v7;
     v27 = 2114;
     v28 = v11;
     v29 = 2114;
-    v30 = v4;
+    v30 = criteriaCopy;
     _os_log_impl(&dword_1BADC1000, v6, OS_LOG_TYPE_DEFAULT, "[%{private}@]: Scheduling XPC activity %{public}@ with criteria %{public}@", buf, 0x20u);
   }
 
-  v15 = objc_msgSend_taskID(v5, v12, v13, v14);
+  v15 = objc_msgSend_taskID(selfCopy, v12, v13, v14);
   v16 = v15;
   v20 = objc_msgSend_UTF8String(v15, v17, v18, v19);
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_1BAF1C5D0;
   v23[3] = &unk_1E7F1D1C8;
-  v23[4] = v5;
-  v21 = v4;
+  v23[4] = selfCopy;
+  v21 = criteriaCopy;
   v24 = v21;
   xpc_activity_register(v20, v21, v23);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v22 = *MEMORY[0x1E69E9840];
 }
 
@@ -179,17 +179,17 @@
   return v10;
 }
 
-- (BOOL)setActivityState:(int64_t)a3
+- (BOOL)setActivityState:(int64_t)state
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  v8 = objc_msgSend_activity(v4, v5, v6, v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = objc_msgSend_activity(selfCopy, v5, v6, v7);
 
   if (v8)
   {
-    v12 = objc_msgSend_activity(v4, v9, v10, v11);
-    LOBYTE(v8) = xpc_activity_set_state(v12, a3);
+    v12 = objc_msgSend_activity(selfCopy, v9, v10, v11);
+    LOBYTE(v8) = xpc_activity_set_state(v12, state);
 
     if (v8)
     {
@@ -197,8 +197,8 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v14 = objc_opt_class();
-        v18 = objc_msgSend_taskID(v4, v15, v16, v17);
-        v21 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v19, a3, v20);
+        v18 = objc_msgSend_taskID(selfCopy, v15, v16, v17);
+        v21 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v19, state, v20);
         v32 = 138478339;
         v33 = v14;
         v34 = 2114;
@@ -215,8 +215,8 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v22 = objc_opt_class();
-        v26 = objc_msgSend_taskID(v4, v23, v24, v25);
-        v29 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v27, a3, v28);
+        v26 = objc_msgSend_taskID(selfCopy, v23, v24, v25);
+        v29 = objc_msgSend_numberWithLong_(MEMORY[0x1E696AD98], v27, state, v28);
         v32 = 138478339;
         v33 = v22;
         v34 = 2114;
@@ -228,7 +228,7 @@
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v30 = *MEMORY[0x1E69E9840];
   return v8;
@@ -237,20 +237,20 @@
 - (BOOL)shouldDefer
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_activity(v2, v3, v4, v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_activity(selfCopy, v3, v4, v5);
 
   if (v6)
   {
-    v10 = objc_msgSend_activity(v2, v7, v8, v9);
+    v10 = objc_msgSend_activity(selfCopy, v7, v8, v9);
     LODWORD(v6) = xpc_activity_should_defer(v10);
 
     v11 = APLogForCategory(0x39uLL);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
-      v16 = objc_msgSend_taskID(v2, v13, v14, v15);
+      v16 = objc_msgSend_taskID(selfCopy, v13, v14, v15);
       v17 = v16;
       v18 = @"is not";
       v21 = 138478339;
@@ -268,7 +268,7 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v19 = *MEMORY[0x1E69E9840];
   return v6;
@@ -346,10 +346,10 @@ LABEL_10:
 
 - (void)_backgroundDeferralCheck
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v6 = objc_msgSend_deferralCheckActive(v2, v3, v4, v5);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objc_msgSend_deferralCheckActive(selfCopy, v3, v4, v5);
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
@@ -359,19 +359,19 @@ LABEL_10:
     block[1] = 3221225472;
     block[2] = sub_1BAF1D24C;
     block[3] = &unk_1E7F1CE98;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_after(v7, v11, block);
   }
 }
 
 - (void)_startDeferralCheck
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  objc_msgSend_setDeferralCheckActive_(v2, v3, 1, v4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_setDeferralCheckActive_(selfCopy, v3, 1, v4);
+  objc_sync_exit(selfCopy);
 
-  MEMORY[0x1EEE66B58](v2, sel__backgroundDeferralCheck, v5, v6);
+  MEMORY[0x1EEE66B58](selfCopy, sel__backgroundDeferralCheck, v5, v6);
 }
 
 - (void)_endDeferralCheck

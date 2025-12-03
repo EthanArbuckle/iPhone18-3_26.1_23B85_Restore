@@ -14,9 +14,9 @@
   if (v9)
   {
     v10 = [MEMORY[0x277CBEB28] dataWithLength:v9];
-    v11 = [v10 mutableBytes];
+    mutableBytes = [v10 mutableBytes];
     [v10 length];
-    if (encode_seq_string_data(v7, v8, a5, v11) == v11)
+    if (encode_seq_string_data(v7, v8, a5, mutableBytes) == mutableBytes)
     {
       v17 = v10;
     }
@@ -44,9 +44,9 @@
   if (v9)
   {
     v10 = [MEMORY[0x277CBEB28] dataWithLength:v9];
-    v11 = [v10 mutableBytes];
+    mutableBytes = [v10 mutableBytes];
     [v10 length];
-    if (encode_seq_data_data(v7, v8) == v11)
+    if (encode_seq_data_data(v7, v8) == mutableBytes)
     {
       v17 = v10;
     }
@@ -74,8 +74,8 @@
   if (v6)
   {
     v7 = [MEMORY[0x277CBEB28] dataWithLength:v6];
-    v8 = [v7 mutableBytes];
-    if (kcder_encode_string(v5, a4, v8, v8 + [v7 length]) == v8)
+    mutableBytes = [v7 mutableBytes];
+    if (kcder_encode_string(v5, a4, mutableBytes, mutableBytes + [v7 length]) == mutableBytes)
     {
       v14 = v7;
     }

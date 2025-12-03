@@ -1,19 +1,19 @@
 @interface ATXSettingsActionsClientResponse
-- (ATXSettingsActionsClientResponse)initWithActions:(id)a3;
-- (ATXSettingsActionsClientResponse)initWithCoder:(id)a3;
+- (ATXSettingsActionsClientResponse)initWithActions:(id)actions;
+- (ATXSettingsActionsClientResponse)initWithCoder:(id)coder;
 @end
 
 @implementation ATXSettingsActionsClientResponse
 
-- (ATXSettingsActionsClientResponse)initWithActions:(id)a3
+- (ATXSettingsActionsClientResponse)initWithActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9.receiver = self;
   v9.super_class = ATXSettingsActionsClientResponse;
   v5 = [(ATXSettingsActionsClientResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [actionsCopy copy];
     actions = v5->_actions;
     v5->_actions = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-- (ATXSettingsActionsClientResponse)initWithCoder:(id)a3
+- (ATXSettingsActionsClientResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"actions"];
 
   if (v5)
   {

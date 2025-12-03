@@ -1,77 +1,77 @@
 @interface PLCoreStorage
 + (id)additionalTables;
-+ (id)allOperatorTablesToTrimConditionsForTrimDate:(id)a3;
-+ (id)storageQueueNameForClass:(Class)a3;
-+ (id)storageQueueNameForEntryKey:(id)a3;
-+ (void)logMessage:(id)a3 fromFile:(id)a4 fromFunction:(id)a5 fromLineNumber:(int64_t)a6;
-- (BOOL)flushCachesIfRequiredForEntryKey:(id)a3;
++ (id)allOperatorTablesToTrimConditionsForTrimDate:(id)date;
++ (id)storageQueueNameForClass:(Class)class;
++ (id)storageQueueNameForEntryKey:(id)key;
++ (void)logMessage:(id)message fromFile:(id)file fromFunction:(id)function fromLineNumber:(int64_t)number;
+- (BOOL)flushCachesIfRequiredForEntryKey:(id)key;
 - (BOOL)registerDailyTasks;
 - (BOOL)registerDailyTasks_XPCActivity;
-- (BOOL)setFileProtectionForPath:(id)a3 withLevel:(id)a4;
+- (BOOL)setFileProtectionForPath:(id)path withLevel:(id)level;
 - (BOOL)storageLocked;
 - (PLCoreStorage)init;
-- (id)aggregateEntriesForKey:(id)a3 withBucketLength:(double)a4 inTimeIntervalRange:(_PLTimeIntervalRange)a5;
-- (id)entriesForKey:(id)a3 before:(BOOL)a4 timeInterval:(double)a5 count:(int64_t)a6 withFilters:(id)a7;
-- (id)entriesForKey:(id)a3 inTimeRange:(_PLTimeIntervalRange)a4 withCountOfEntriesBefore:(int64_t)a5 withCountOfEntriesAfter:(int64_t)a6 withFilters:(id)a7;
-- (id)entriesForKey:(id)a3 inTimeRange:(_PLTimeIntervalRange)a4 withFilters:(id)a5;
-- (id)entriesForKey:(id)a3 startingFromRowID:(int64_t)a4 count:(int64_t)a5 withFilters:(id)a6;
-- (id)entriesForKey:(id)a3 withComparisons:(id)a4;
-- (id)entriesForKey:(id)a3 withProperties:(id)a4;
-- (id)entriesForKey:(id)a3 withQuery:(id)a4;
-- (id)entryForKey:(id)a3 withID:(int64_t)a4;
-- (id)firstEntryForKey:(id)a3;
-- (id)lastEntriesForKey:(id)a3 count:(int64_t)a4 withFilters:(id)a5;
-- (id)lastEntryForKey:(id)a3;
-- (id)lastEntryForKey:(id)a3 withFilters:(id)a4;
-- (id)lastEntryForKey:(id)a3 withIDLessThan:(int64_t)a4;
-- (id)lastEntryForKey:(id)a3 withSubEntryKey:(id)a4;
-- (int64_t)blockingWriteEntry:(id)a3 withCompletionBlock:(id)a4;
-- (int64_t)countOfEntriesForKey:(id)a3;
+- (id)aggregateEntriesForKey:(id)key withBucketLength:(double)length inTimeIntervalRange:(_PLTimeIntervalRange)range;
+- (id)entriesForKey:(id)key before:(BOOL)before timeInterval:(double)interval count:(int64_t)count withFilters:(id)filters;
+- (id)entriesForKey:(id)key inTimeRange:(_PLTimeIntervalRange)range withCountOfEntriesBefore:(int64_t)before withCountOfEntriesAfter:(int64_t)after withFilters:(id)filters;
+- (id)entriesForKey:(id)key inTimeRange:(_PLTimeIntervalRange)range withFilters:(id)filters;
+- (id)entriesForKey:(id)key startingFromRowID:(int64_t)d count:(int64_t)count withFilters:(id)filters;
+- (id)entriesForKey:(id)key withComparisons:(id)comparisons;
+- (id)entriesForKey:(id)key withProperties:(id)properties;
+- (id)entriesForKey:(id)key withQuery:(id)query;
+- (id)entryForKey:(id)key withID:(int64_t)d;
+- (id)firstEntryForKey:(id)key;
+- (id)lastEntriesForKey:(id)key count:(int64_t)count withFilters:(id)filters;
+- (id)lastEntryForKey:(id)key;
+- (id)lastEntryForKey:(id)key withFilters:(id)filters;
+- (id)lastEntryForKey:(id)key withIDLessThan:(int64_t)than;
+- (id)lastEntryForKey:(id)key withSubEntryKey:(id)entryKey;
+- (int64_t)blockingWriteEntry:(id)entry withCompletionBlock:(id)block;
+- (int64_t)countOfEntriesForKey:(id)key;
 - (int64_t)generalEntryCacheSizeLimit;
-- (int64_t)writeEntry:(id)a3;
-- (signed)verifySchemaVersionOfTable:(id)a3 matchesExpectedVersion:(double)a4;
-- (void)_updateEntry:(id)a3 withBlock:(id)a4;
+- (int64_t)writeEntry:(id)entry;
+- (signed)verifySchemaVersionOfTable:(id)table matchesExpectedVersion:(double)version;
+- (void)_updateEntry:(id)entry withBlock:(id)block;
 - (void)addAggdModeKeys;
 - (void)applyContainerPOSIXPermissions;
 - (void)attemptToSendTaskingStartNotification;
-- (void)blockingFlushQueues:(id)a3 withTimeout:(int)a4;
+- (void)blockingFlushQueues:(id)queues withTimeout:(int)timeout;
 - (void)checkCacheSizeForFlush;
 - (void)cleanupQuarantine;
 - (void)cleanupTmp;
 - (void)configureCacheFlush;
-- (void)copyUpgradePowerlogsAtPath:(id)a3 toPath:(id)a4;
+- (void)copyUpgradePowerlogsAtPath:(id)path toPath:(id)toPath;
 - (void)dailyTasks;
 - (void)dealloc;
-- (void)deleteAllEntriesForKey:(id)a3 beforeTimestamp:(id)a4 withFilters:(id)a5;
-- (void)deleteEntry:(id)a3;
-- (void)deleteEntryForKey:(id)a3 WithRowID:(int64_t)a4;
-- (void)dispatchAsyncForEntryKey:(id)a3 withBlock:(id)a4;
-- (void)dispatchSyncForEntryKey:(id)a3 withBlock:(id)a4;
-- (void)flushCachesWithReason:(id)a3;
-- (void)handleSchemaMismatchForTable:(id)a3 expectedVersion:(double)a4 schemaMatch:(signed __int16)a5;
+- (void)deleteAllEntriesForKey:(id)key beforeTimestamp:(id)timestamp withFilters:(id)filters;
+- (void)deleteEntry:(id)entry;
+- (void)deleteEntryForKey:(id)key WithRowID:(int64_t)d;
+- (void)dispatchAsyncForEntryKey:(id)key withBlock:(id)block;
+- (void)dispatchSyncForEntryKey:(id)key withBlock:(id)block;
+- (void)flushCachesWithReason:(id)reason;
+- (void)handleSchemaMismatchForTable:(id)table expectedVersion:(double)version schemaMatch:(signed __int16)match;
 - (void)init;
 - (void)initOperatorDependancies;
-- (void)loadDynamicValuesIntoEntry:(id)a3;
-- (void)logMessage:(id)a3 fromFile:(id)a4 fromFunction:(id)a5 fromLineNumber:(int64_t)a6;
-- (void)processEntriesForKey:(id)a3 withProperties:(id)a4 withBlock:(id)a5;
+- (void)loadDynamicValuesIntoEntry:(id)entry;
+- (void)logMessage:(id)message fromFile:(id)file fromFunction:(id)function fromLineNumber:(int64_t)number;
+- (void)processEntriesForKey:(id)key withProperties:(id)properties withBlock:(id)block;
 - (void)removeErroneousQualificationEntries;
 - (void)removeOldPowerlogFiles;
 - (void)reportPerfStats;
-- (void)setAllNullValuesForEntryKey:(id)a3 forKey:(id)a4 toValue:(id)a5 withFilters:(id)a6;
-- (void)setupCompositeIndexOnTable:(id)a3 withColumns:(id)a4;
-- (void)setupStorageForEntryKey:(id)a3;
-- (void)setupStorageForOperator:(id)a3;
-- (void)setupStorageForOperatorClass:(Class)a3;
-- (void)setupStorageForOperatorName:(id)a3;
+- (void)setAllNullValuesForEntryKey:(id)key forKey:(id)forKey toValue:(id)value withFilters:(id)filters;
+- (void)setupCompositeIndexOnTable:(id)table withColumns:(id)columns;
+- (void)setupStorageForEntryKey:(id)key;
+- (void)setupStorageForOperator:(id)operator;
+- (void)setupStorageForOperatorClass:(Class)class;
+- (void)setupStorageForOperatorName:(id)name;
 - (void)setupStorageVersions;
-- (void)setupTableName:(id)a3 withEntryKeyConfig:(id)a4 withKeyOrder:(id)a5 isDynamic:(BOOL)a6 withShouldIndexFKID:(BOOL)a7;
+- (void)setupTableName:(id)name withEntryKeyConfig:(id)config withKeyOrder:(id)order isDynamic:(BOOL)dynamic withShouldIndexFKID:(BOOL)d;
 - (void)startStorage;
 - (void)stopStorage;
-- (void)updateEntry:(id)a3 withBlock:(id)a4;
-- (void)writeAggregateEntry:(id)a3;
-- (void)writeEntries:(id)a3 withCompletionBlock:(id)a4;
-- (void)writeEntry:(id)a3 withCompletionBlock:(id)a4;
-- (void)writeProportionateAggregateEntry:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5;
+- (void)updateEntry:(id)entry withBlock:(id)block;
+- (void)writeAggregateEntry:(id)entry;
+- (void)writeEntries:(id)entries withCompletionBlock:(id)block;
+- (void)writeEntry:(id)entry withCompletionBlock:(id)block;
+- (void)writeProportionateAggregateEntry:(id)entry withStartDate:(id)date withEndDate:(id)endDate;
 @end
 
 @implementation PLCoreStorage
@@ -96,10 +96,10 @@
 - (void)checkCacheSizeForFlush
 {
   v3 = +[PLStorageCache sharedStorageCache];
-  v4 = [v3 stagingEntryCacheSize];
-  v5 = [(PLCoreStorage *)self generalEntryCacheSizeLimit];
+  stagingEntryCacheSize = [v3 stagingEntryCacheSize];
+  generalEntryCacheSizeLimit = [(PLCoreStorage *)self generalEntryCacheSizeLimit];
 
-  if (v4 > v5)
+  if (stagingEntryCacheSize > generalEntryCacheSizeLimit)
   {
     v6 = [PLUtilities workQueueForKey:@"CacheSizeFlush"];
     block[0] = MEMORY[0x1E69E9820];
@@ -129,44 +129,44 @@
   return v2;
 }
 
-+ (id)storageQueueNameForClass:(Class)a3
++ (id)storageQueueNameForClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0 || ([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     v4 = @"storageQueue.shared";
   }
 
   else
   {
-    v5 = NSStringFromClass(a3);
+    v5 = NSStringFromClass(class);
     v4 = [v5 stringByAppendingString:@".storageQueue"];
   }
 
   return v4;
 }
 
-+ (id)storageQueueNameForEntryKey:(id)a3
++ (id)storageQueueNameForEntryKey:(id)key
 {
-  v3 = [PLEntryKey operatorClassForEntryKey:a3];
+  v3 = [PLEntryKey operatorClassForEntryKey:key];
 
   return [(objc_class *)v3 storageQueueName];
 }
 
-- (BOOL)setFileProtectionForPath:(id)a3 withLevel:(id)a4
+- (BOOL)setFileProtectionForPath:(id)path withLevel:(id)level
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AC08];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultManager];
+  levelCopy = level;
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
   v13 = *MEMORY[0x1E696A3A0];
-  v14[0] = v6;
+  v14[0] = levelCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v12 = 0;
-  LOBYTE(a3) = [v8 setAttributes:v9 ofItemAtPath:v7 error:&v12];
+  LOBYTE(path) = [defaultManager setAttributes:v9 ofItemAtPath:pathCopy error:&v12];
 
   v10 = *MEMORY[0x1E69E9840];
-  return a3;
+  return path;
 }
 
 void __30__PLCoreStorage_storageLocked__block_invoke()
@@ -222,9 +222,9 @@ void __30__PLCoreStorage_storageLocked__block_invoke()
     {
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"seeded random number generator, seed =%i", v3];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage init]"];
-      [PLCoreStorage logMessage:v5 fromFile:v7 fromFunction:v8 fromLineNumber:171];
+      [PLCoreStorage logMessage:v5 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:171];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -321,10 +321,10 @@ void __30__PLCoreStorage_storageLocked__block_invoke()
     while (v35);
   }
 
-  v39 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v40 = +[PLUtilities containerPath];
   v41 = [v40 stringByAppendingString:@"/Library/BatteryLife/CrashReporter/"];
-  [v39 removeItemAtPath:v41 error:0];
+  [defaultManager removeItemAtPath:v41 error:0];
 
   *&v2->_storageLocked = 1;
   if (![(PLCoreStorage *)v2 storageLocked])
@@ -368,9 +368,9 @@ void __30__PLCoreStorage_storageLocked__block_invoke()
         }
 
         v90 = [PLDefaults objectForKey:@"PLNoConnectionRestartCount" ifNotSet:&unk_1F5405B98];
-        v91 = [v90 intValue];
+        intValue = [v90 intValue];
 
-        if (v91 >= 4)
+        if (intValue >= 4)
         {
           v92 = PLLogCommon();
           if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -378,13 +378,13 @@ void __30__PLCoreStorage_storageLocked__block_invoke()
             [PLCoreStorage init];
           }
 
-          v93 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
           v94 = MEMORY[0x1E695DFF8];
           v95 = +[PLUtilities containerPath];
           v96 = [v95 stringByAppendingString:@"/Library"];
           v97 = [v94 fileURLWithPath:v96];
           v101 = 0;
-          v98 = [v93 removeItemAtURL:v97 error:&v101];
+          v98 = [defaultManager2 removeItemAtURL:v97 error:&v101];
           v99 = v101;
 
           if ((v98 & 1) == 0)
@@ -423,9 +423,9 @@ LABEL_55:
         {
           v78 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no connection to DB"];
           v79 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-          v80 = [v79 lastPathComponent];
+          lastPathComponent2 = [v79 lastPathComponent];
           v81 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage init]"];
-          [PLCoreStorage logMessage:v78 fromFile:v80 fromFunction:v81 fromLineNumber:314];
+          [PLCoreStorage logMessage:v78 fromFile:lastPathComponent2 fromFunction:v81 fromLineNumber:314];
 
           v82 = PLLogCommon();
           if (os_log_type_enabled(v82, OS_LOG_TYPE_DEBUG))
@@ -449,12 +449,12 @@ LABEL_55:
         if (v61)
         {
           v63 = MEMORY[0x1E696AEC0];
-          v64 = [v61 pathExtension];
-          v65 = [v63 stringWithFormat:@".%@", v64];
+          pathExtension = [v61 pathExtension];
+          v65 = [v63 stringWithFormat:@".%@", pathExtension];
           v66 = [v65 isEqualToString:@".PLSQL"];
 
-          v67 = [MEMORY[0x1E696AC08] defaultManager];
-          v68 = [v67 fileExistsAtPath:v62];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+          v68 = [defaultManager3 fileExistsAtPath:v62];
 
           v69 = PLLogCommon();
           v70 = v69;
@@ -644,8 +644,8 @@ void __21__PLCoreStorage_init__block_invoke_112()
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = PLCoreStorage;
@@ -656,16 +656,16 @@ void __21__PLCoreStorage_init__block_invoke_112()
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 storage];
-  v5 = [v4 storageLocked];
+  storage = [v3 storage];
+  storageLocked = [storage storageLocked];
 
-  if ((v5 & 1) != 0 || +[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
+  if ((storageLocked & 1) != 0 || +[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
     goto LABEL_10;
   }
 
-  v6 = [(PLCoreStorage *)self connection];
-  v7 = [v6 tableExistsForTableName:@"PLCoreStorage_schemaVersions"];
+  connection = [(PLCoreStorage *)self connection];
+  v7 = [connection tableExistsForTableName:@"PLCoreStorage_schemaVersions"];
 
   if ((v7 & 1) == 0)
   {
@@ -684,14 +684,14 @@ void __21__PLCoreStorage_init__block_invoke_112()
     v20[2] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
 
-    v12 = [(PLCoreStorage *)self connection];
-    [v12 createTableName:@"PLCoreStorage_schemaVersions" withColumns:v11];
+    connection2 = [(PLCoreStorage *)self connection];
+    [connection2 createTableName:@"PLCoreStorage_schemaVersions" withColumns:v11];
 
-    v13 = [(PLCoreStorage *)self connection];
-    [v13 setSchemaVersion:@"PLCoreStorage_schemaVersions" forTableName:1.08];
+    connection3 = [(PLCoreStorage *)self connection];
+    [connection3 setSchemaVersion:@"PLCoreStorage_schemaVersions" forTableName:1.08];
 
-    v14 = [(PLCoreStorage *)self connection];
-    [v14 createIndexOnTable:@"PLCoreStorage_schemaVersions" forColumn:@"tableName"];
+    connection4 = [(PLCoreStorage *)self connection];
+    [connection4 createIndexOnTable:@"PLCoreStorage_schemaVersions" forColumn:@"tableName"];
 
     goto LABEL_10;
   }
@@ -723,8 +723,8 @@ LABEL_10:
     dispatch_async_and_wait(v7, block);
 
     v8 = +[PLTimeManager sharedInstance];
-    v9 = [(PLCoreStorage *)self storageOperator];
-    [v8 setStorageOperator:v9];
+    storageOperator = [(PLCoreStorage *)self storageOperator];
+    [v8 setStorageOperator:storageOperator];
 
     v10 = +[PLTimeManager sharedInstance];
     [v10 initializeTimeOffsets];
@@ -735,16 +735,16 @@ LABEL_10:
       [(PLCoreStorage *)self removeOldPowerlogFiles];
       if ([PLDefaults BOOLForKey:@"removedIDIndex" ifNotSet:0])
       {
-        v11 = [(PLCoreStorage *)self connection];
-        [v11 removeIDIndexes];
+        connection = [(PLCoreStorage *)self connection];
+        [connection removeIDIndexes];
 
         [PLDefaults setObject:MEMORY[0x1E695E118] forKey:@"removedIDIndex" saveToDisk:1];
       }
 
       [(PLCoreStorage *)self registerDailyTasks];
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v13 = [PLD_ManagedPreferencePath stringByAppendingString:@"/com.apple.powerlogd.plist"];
-      v14 = [v12 fileExistsAtPath:v13];
+      v14 = [defaultManager fileExistsAtPath:v13];
 
       v15 = [PLKQueue alloc];
       v16 = PLD_ManagedPreferencePath;
@@ -758,8 +758,8 @@ LABEL_10:
       v18 = [(PLKQueue *)v15 initWithPath:v16 withDispatchQueue:v17 withBlock:v21];
 
       [(PLCoreStorage *)self setProfileDefaultsKQueue:v18];
-      v19 = [(PLCoreStorage *)self profileDefaultsKQueue];
-      [v19 setEnabled:1];
+      profileDefaultsKQueue = [(PLCoreStorage *)self profileDefaultsKQueue];
+      [profileDefaultsKQueue setEnabled:1];
 
       [(PLCoreStorage *)self addAggdModeKeys];
       v20 = [PLUtilities workQueueForClass:objc_opt_class()];
@@ -983,16 +983,16 @@ void __36__PLCoreStorage_configureCacheFlush__block_invoke_4(uint64_t a1)
     v11 = [(PLXPCResponderOperatorComposition *)v9 initWithWorkQueue:backgroundQueue withRegistration:&unk_1F540C9C8 withBlock:v61];
     [(PLCoreStorage *)self setUpgradeLogsResponder:v11];
     v12 = +[PLSubmissions sharedInstance];
-    v13 = [(PLCoreStorage *)self storageOperator];
-    [v12 setStorageOperator:v13];
+    storageOperator = [(PLCoreStorage *)self storageOperator];
+    [v12 setStorageOperator:storageOperator];
 
     v14 = +[PLArchiveManager sharedInstance];
     [v14 setEnabled:1];
   }
 
-  v15 = [(PLCoreStorage *)self storageLocked];
+  storageLocked = [(PLCoreStorage *)self storageLocked];
   v16 = +[PLDefaults fullMode];
-  if (v15)
+  if (storageLocked)
   {
     if (v16)
     {
@@ -1028,23 +1028,23 @@ LABEL_17:
   {
     if ([PLDefaults objectExistsForKey:@"PLUUID"])
     {
-      v22 = [PLDefaults objectForKey:@"PLUUID" synchronize:1];
-      [(PLCoreStorage *)self setUuid:v22];
+      uuid = [PLDefaults objectForKey:@"PLUUID" synchronize:1];
+      [(PLCoreStorage *)self setUuid:uuid];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E696AFB0] UUID];
-      v24 = [v23 UUIDString];
-      [(PLCoreStorage *)self setUuid:v24];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      [(PLCoreStorage *)self setUuid:uUIDString];
 
-      v22 = [(PLCoreStorage *)self uuid];
-      [PLDefaults setObject:v22 forKey:@"PLUUID" saveToDisk:1];
+      uuid = [(PLCoreStorage *)self uuid];
+      [PLDefaults setObject:uuid forKey:@"PLUUID" saveToDisk:1];
     }
 
     v25 = [PLDefaults longForKey:@"PLExitReasonKey" ifNotSet:-1];
     [PLDefaults setObject:0 forKey:@"PLExitReasonKey" saveToDisk:1];
-    v59 = [(PLCoreStorage *)self storageOperator];
+    storageOperator2 = [(PLCoreStorage *)self storageOperator];
     v62[0] = @"Mode";
     v62[1] = @"Version";
     v57 = v20;
@@ -1052,14 +1052,14 @@ LABEL_17:
     v63[1] = &unk_1F540A3A0;
     v62[2] = @"PID";
     v26 = MEMORY[0x1E696AD98];
-    v56 = [MEMORY[0x1E696AE30] processInfo];
-    [v26 numberWithInt:{objc_msgSend(v56, "processIdentifier")}];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [v26 numberWithInt:{objc_msgSend(processInfo, "processIdentifier")}];
     v28 = v27 = 0x1E696A000;
     v63[2] = v28;
     v62[3] = @"ProcessName";
-    v29 = [MEMORY[0x1E696AE30] processInfo];
-    v30 = [v29 processName];
-    v63[3] = v30;
+    processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo2 processName];
+    v63[3] = processName;
     v62[4] = @"ExitReason";
     v31 = [MEMORY[0x1E696AD98] numberWithLong:v25];
     v63[4] = v31;
@@ -1078,7 +1078,7 @@ LABEL_17:
     v33 = ;
     v63[5] = v33;
     v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:v62 count:6];
-    [v59 logEventForwardConfiguration:v34];
+    [storageOperator2 logEventForwardConfiguration:v34];
 
     if (v32)
     {
@@ -1112,8 +1112,8 @@ LABEL_17:
   [(PLCoreStorage *)self configureCacheFlush];
   if (!+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
   {
-    v39 = [MEMORY[0x1E69DF068] sharedManager];
-    [v39 registerUserSwitchStakeHolder:self];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    [mEMORY[0x1E69DF068] registerUserSwitchStakeHolder:self];
   }
 
   v40 = objc_autoreleasePoolPush();
@@ -1130,13 +1130,13 @@ LABEL_17:
   if ((v46 & 1) == 0)
   {
     v48 = MEMORY[0x1E696AEC0];
-    v49 = [v43 lastPathComponent];
-    v50 = [v48 stringWithFormat:@"Error excluding %@ from backup %@", v49, v47];
+    lastPathComponent = [v43 lastPathComponent];
+    v50 = [v48 stringWithFormat:@"Error excluding %@ from backup %@", lastPathComponent, v47];
 
     v51 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-    v52 = [v51 lastPathComponent];
+    lastPathComponent2 = [v51 lastPathComponent];
     v53 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage initOperatorDependancies]"];
-    [PLCoreStorage logMessage:v50 fromFile:v52 fromFunction:v53 fromLineNumber:837];
+    [PLCoreStorage logMessage:v50 fromFile:lastPathComponent2 fromFunction:v53 fromLineNumber:837];
 
     v54 = PLLogCommon();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
@@ -1735,22 +1735,22 @@ id __41__PLCoreStorage_initOperatorDependancies__block_invoke_7(uint64_t a1, uin
   return v18;
 }
 
-- (void)copyUpgradePowerlogsAtPath:(id)a3 toPath:(id)a4
+- (void)copyUpgradePowerlogsAtPath:(id)path toPath:(id)toPath
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 contentsOfDirectoryAtPath:v5 error:0];
+  pathCopy = path;
+  toPathCopy = toPath;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__PLCoreStorage_copyUpgradePowerlogsAtPath_toPath___block_invoke;
   v12[3] = &unk_1E8519A60;
-  v13 = v5;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = v5;
+  v13 = pathCopy;
+  v14 = defaultManager;
+  v15 = toPathCopy;
+  v9 = toPathCopy;
+  v10 = defaultManager;
+  v11 = pathCopy;
   [v8 enumerateObjectsUsingBlock:v12];
 }
 
@@ -1817,8 +1817,8 @@ void __51__PLCoreStorage_copyUpgradePowerlogsAtPath_toPath___block_invoke_2(uint
 
 - (void)removeOldPowerlogFiles
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  [v2 removeItemAtPath:@"/var/mobile/Library/BatteryLife" error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager removeItemAtPath:@"/var/mobile/Library/BatteryLife" error:0];
 }
 
 - (BOOL)registerDailyTasks
@@ -1850,9 +1850,9 @@ void __51__PLCoreStorage_copyUpgradePowerlogsAtPath_toPath___block_invoke_2(uint
         {
           v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Setting up dailyTaskNotification dbDailyTasksInterval=%f", *&v5];
           v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-          v22 = [v21 lastPathComponent];
+          lastPathComponent = [v21 lastPathComponent];
           v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage registerDailyTasks]"];
-          [PLCoreStorage logMessage:v20 fromFile:v22 fromFunction:v23 fromLineNumber:893];
+          [PLCoreStorage logMessage:v20 fromFile:lastPathComponent fromFunction:v23 fromLineNumber:893];
 
           v24 = PLLogCommon();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -1896,9 +1896,9 @@ void __51__PLCoreStorage_copyUpgradePowerlogsAtPath_toPath___block_invoke_2(uint
         {
           v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Setting up dailyTaskTimer with dbDailyTasksInterval=%f", *&v5];
           v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-          v11 = [v10 lastPathComponent];
+          lastPathComponent2 = [v10 lastPathComponent];
           v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage registerDailyTasks]"];
-          [PLCoreStorage logMessage:v9 fromFile:v11 fromFunction:v12 fromLineNumber:884];
+          [PLCoreStorage logMessage:v9 fromFile:lastPathComponent2 fromFunction:v12 fromLineNumber:884];
 
           v13 = PLLogCommon();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -2040,8 +2040,8 @@ BOOL __35__PLCoreStorage_registerDailyTasks__block_invoke_2_436(uint64_t a1)
     _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_DEFAULT, "DailyTasks fire!", buf, 2u);
   }
 
-  v4 = [(PLCoreStorage *)self connection];
-  [v4 removeEmptyOldTables];
+  connection = [(PLCoreStorage *)self connection];
+  [connection removeEmptyOldTables];
 
   [(PLCoreStorage *)self cleanupTmp];
   [(PLCoreStorage *)self cleanupQuarantine];
@@ -2208,10 +2208,10 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
 - (void)cleanupTmp
 {
   v64 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = NSTemporaryDirectory();
   v59 = 0;
-  v4 = [v2 contentsOfDirectoryAtPath:v3 error:&v59];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v3 error:&v59];
   v5 = v59;
 
   v44 = objc_opt_new();
@@ -2246,8 +2246,8 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
             v12 = [v11 stringByReplacingOccurrencesOfString:@"PLSafeFileInprogress_" withString:&stru_1F539D228];
             v13 = [v12 stringByReplacingOccurrencesOfString:v9 withString:&stru_1F539D228];
 
-            v14 = [(PLCoreStorage *)self safeCopyInProgress];
-            v15 = [v14 containsObject:v13];
+            safeCopyInProgress = [(PLCoreStorage *)self safeCopyInProgress];
+            v15 = [safeCopyInProgress containsObject:v13];
 
             if ((v15 & 1) == 0)
             {
@@ -2259,12 +2259,12 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
           {
             v16 = v8;
             v17 = v9;
-            v18 = [MEMORY[0x1E696AC08] defaultManager];
+            defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
             v19 = MEMORY[0x1E696AEC0];
             v20 = NSTemporaryDirectory();
             v21 = [v19 stringWithFormat:@"%@/%@", v20, v11];
             v54 = v5;
-            v13 = [v18 attributesOfItemAtPath:v21 error:&v54];
+            v13 = [defaultManager2 attributesOfItemAtPath:v21 error:&v54];
             v22 = v54;
 
             v23 = [v13 objectForKeyedSubscript:v41];
@@ -2314,21 +2314,21 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
         }
 
         v29 = *(*(&v50 + 1) + 8 * v27);
-        v30 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
         v31 = MEMORY[0x1E696AEC0];
         v32 = NSTemporaryDirectory();
         v33 = [v31 stringWithFormat:@"%@/%@", v32, v29];
         v49 = v28;
-        v34 = [v30 removeItemAtPath:v33 error:&v49];
+        v34 = [defaultManager3 removeItemAtPath:v33 error:&v49];
         v5 = v49;
 
         if ((v34 & 1) == 0)
         {
           v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to remove file %@ %@", v29, v5];
           v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-          v37 = [v36 lastPathComponent];
+          lastPathComponent = [v36 lastPathComponent];
           v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage cleanupTmp]"];
-          [PLCoreStorage logMessage:v35 fromFile:v37 fromFunction:v38 fromLineNumber:1050];
+          [PLCoreStorage logMessage:v35 fromFile:lastPathComponent fromFunction:v38 fromLineNumber:1050];
 
           v39 = PLLogCommon();
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -2362,10 +2362,10 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = +[PLUtilities containerPath];
   v4 = [v3 stringByAppendingString:@"/Library/BatteryLife/Quarantine/"];
-  v5 = [v2 contentsOfDirectoryAtPath:v4 error:0];
+  v5 = [defaultManager contentsOfDirectoryAtPath:v4 error:0];
 
   v6 = [v5 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v6)
@@ -2387,18 +2387,18 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
         v12 = [v11 stringByAppendingString:@"/Library/BatteryLife/Quarantine/"];
         v13 = [v12 stringByAppendingString:v10];
 
-        v14 = [MEMORY[0x1E696AC08] defaultManager];
-        v15 = [v14 attributesOfItemAtPath:v13 error:0];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v15 = [defaultManager2 attributesOfItemAtPath:v13 error:0];
 
-        v16 = [v15 fileModificationDate];
-        v17 = [MEMORY[0x1E695DF00] date];
-        [v17 timeIntervalSinceDate:v16];
+        fileModificationDate = [v15 fileModificationDate];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:fileModificationDate];
         v19 = v18;
 
         if (v19 > 604800.0)
         {
-          v20 = [MEMORY[0x1E696AC08] defaultManager];
-          [v20 removeItemAtPath:v13 error:0];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager3 removeItemAtPath:v13 error:0];
         }
 
         ++v9;
@@ -2415,10 +2415,10 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v21 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
   v22 = +[PLUtilities containerPath];
   v23 = [v22 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
-  v24 = [v21 contentsOfDirectoryAtPath:v23 error:0];
+  v24 = [defaultManager4 contentsOfDirectoryAtPath:v23 error:0];
 
   v25 = [v24 countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v25)
@@ -2440,18 +2440,18 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
         v31 = [v30 stringByAppendingString:@"/Library/PerfPowerTelemetry/Quarantine/"];
         v32 = [v31 stringByAppendingString:v29];
 
-        v33 = [MEMORY[0x1E696AC08] defaultManager];
-        v34 = [v33 attributesOfItemAtPath:v32 error:0];
+        defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
+        v34 = [defaultManager5 attributesOfItemAtPath:v32 error:0];
 
-        v35 = [v34 fileModificationDate];
-        v36 = [MEMORY[0x1E695DF00] date];
-        [v36 timeIntervalSinceDate:v35];
+        fileModificationDate2 = [v34 fileModificationDate];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSinceDate:fileModificationDate2];
         v38 = v37;
 
         if (v38 > 604800.0)
         {
-          v39 = [MEMORY[0x1E696AC08] defaultManager];
-          [v39 removeItemAtPath:v32 error:0];
+          defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager6 removeItemAtPath:v32 error:0];
         }
 
         ++v28;
@@ -2467,42 +2467,42 @@ id __47__PLCoreStorage_applyContainerPOSIXPermissions__block_invoke(uint64_t a1)
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleSchemaMismatchForTable:(id)a3 expectedVersion:(double)a4 schemaMatch:(signed __int16)a5
+- (void)handleSchemaMismatchForTable:(id)table expectedVersion:(double)version schemaMatch:(signed __int16)match
 {
   v211[3] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [(PLCoreStorage *)self connection];
-  [v9 schemaVersionForTable:v8];
+  matchCopy = match;
+  tableCopy = table;
+  connection = [(PLCoreStorage *)self connection];
+  [connection schemaVersionForTable:tableCopy];
   v11 = v10;
 
-  if (v11 != a4)
+  if (v11 != version)
   {
-    v12 = [(PLCoreStorage *)self storageOperator];
-    v211[0] = v8;
+    storageOperator = [(PLCoreStorage *)self storageOperator];
+    v211[0] = tableCopy;
     v210[0] = @"TableName";
     v210[1] = @"PreviousVersion";
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
     v211[1] = v13;
     v210[2] = @"CurrentVersion";
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:version];
     v211[2] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v211 forKeys:v210 count:3];
-    [v12 logEventForwardSchemaChange:v15];
+    [storageOperator logEventForwardSchemaChange:v15];
   }
 
-  v16 = 0;
-  if (v7 <= 65533)
+  tableCopy = 0;
+  if (matchCopy <= 65533)
   {
-    if (!v7)
+    if (!matchCopy)
     {
       if (+[PLDefaults debugEnabled])
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! Do not call handleSchemaMismatchForTable with PLSchemaVersionSame"];
+        connection12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! Do not call handleSchemaMismatchForTable with PLSchemaVersionSame"];
         v85 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-        v86 = [v85 lastPathComponent];
+        lastPathComponent = [v85 lastPathComponent];
         v87 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage handleSchemaMismatchForTable:expectedVersion:schemaMatch:]"];
-        [PLCoreStorage logMessage:v17 fromFile:v86 fromFunction:v87 fromLineNumber:1094];
+        [PLCoreStorage logMessage:connection12 fromFile:lastPathComponent fromFunction:v87 fromLineNumber:1094];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -2513,24 +2513,24 @@ LABEL_72:
 
 LABEL_73:
 
-        v16 = 0;
+        tableCopy = 0;
         goto LABEL_113;
       }
 
 LABEL_74:
-      v16 = 0;
+      tableCopy = 0;
       goto LABEL_114;
     }
 
-    if (v7 == 65533)
+    if (matchCopy == 65533)
     {
       if (+[PLDefaults debugEnabled])
       {
-        v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! Do not call handleSchemaMismatchForTable with PLSchemaVersionNone"];
+        connection12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! Do not call handleSchemaMismatchForTable with PLSchemaVersionNone"];
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent2 = [v18 lastPathComponent];
         v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage handleSchemaMismatchForTable:expectedVersion:schemaMatch:]"];
-        [PLCoreStorage logMessage:v17 fromFile:v19 fromFunction:v20 fromLineNumber:1098];
+        [PLCoreStorage logMessage:connection12 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:1098];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -2547,53 +2547,53 @@ LABEL_74:
     goto LABEL_99;
   }
 
-  v156 = self;
-  if (v7 == 65534)
+  selfCopy = self;
+  if (matchCopy == 65534)
   {
-    v88 = [(PLCoreStorage *)self connection];
-    v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE '%@' RENAME TO 'PLOLD_%@_%f'", v8, v8, *&v11];;
-    v90 = [v88 performQuery:v89];
+    connection2 = [(PLCoreStorage *)self connection];
+    v89 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE '%@' RENAME TO 'PLOLD_%@_%f'", tableCopy, tableCopy, *&v11];;
+    v90 = [connection2 performQuery:v89];
 
-    v91 = [(PLCoreStorage *)self connection];
-    LODWORD(v89) = [v91 tableExistsForTableName:v8];
+    connection3 = [(PLCoreStorage *)self connection];
+    LODWORD(v89) = [connection3 tableExistsForTableName:tableCopy];
 
     if (v89)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to move %@", v8];
+      tableCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to move %@", tableCopy];
       goto LABEL_103;
     }
 
-    v92 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Dynamic", v8];
-    v93 = [(PLCoreStorage *)self connection];
-    v94 = [v93 tableExistsForTableName:v92];
+    tableCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Dynamic", tableCopy];
+    connection4 = [(PLCoreStorage *)self connection];
+    v94 = [connection4 tableExistsForTableName:tableCopy2];
 
     if (!v94)
     {
       goto LABEL_80;
     }
 
-    v95 = [(PLCoreStorage *)self connection];
-    v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE '%@' RENAME TO 'PLOLD_%@_%f'", v92, v92, *&v11];;
-    v97 = [v95 performQuery:v96];
+    connection5 = [(PLCoreStorage *)self connection];
+    v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ALTER TABLE '%@' RENAME TO 'PLOLD_%@_%f'", tableCopy2, tableCopy2, *&v11];;
+    v97 = [connection5 performQuery:v96];
 
-    v98 = [(PLCoreStorage *)self connection];
-    LODWORD(v96) = [v98 tableExistsForTableName:v92];
+    connection6 = [(PLCoreStorage *)self connection];
+    LODWORD(v96) = [connection6 tableExistsForTableName:tableCopy2];
 
     if (v96)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to move %@", v92];
-      v7 = 3;
+      tableCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"unable to move %@", tableCopy2];
+      matchCopy = 3;
     }
 
     else
     {
 LABEL_80:
-      v155 = v92;
-      v147 = v8;
-      v99 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE %@_Array_%% AND name NOT LIKE PLOLD_%@_Array_%%", v8, v8];;
-      v100 = [(PLCoreStorage *)self connection];
-      v153 = v99;
-      v101 = [v100 performQuery:v99];
+      v155 = tableCopy2;
+      v147 = tableCopy;
+      tableCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT name FROM sqlite_master WHERE type='table' AND name LIKE %@_Array_%% AND name NOT LIKE PLOLD_%@_Array_%%", tableCopy, tableCopy];;
+      connection7 = [(PLCoreStorage *)self connection];
+      v153 = tableCopy3;
+      v101 = [connection7 performQuery:tableCopy3];
 
       v191 = 0u;
       v192 = 0u;
@@ -2619,28 +2619,28 @@ LABEL_80:
           }
 
           v107 = *(*(&v189 + 1) + 8 * i);
-          v108 = [(PLCoreStorage *)self connection];
+          connection8 = [(PLCoreStorage *)self connection];
           v109 = MEMORY[0x1E696AEC0];
           v110 = [v107 objectForKeyedSubscript:@"name"];
           v111 = [v107 objectForKeyedSubscript:@"name"];
           v112 = [v109 stringWithFormat:@"ALTER TABLE '%@' RENAME TO 'PLOLD_%@_%f'", v110, v111, *&v11];;
-          v113 = [v108 performQuery:v112];
+          v113 = [connection8 performQuery:v112];
 
-          self = v156;
-          v114 = [(PLCoreStorage *)v156 connection];
+          self = selfCopy;
+          connection9 = [(PLCoreStorage *)selfCopy connection];
           v115 = [v107 objectForKeyedSubscript:@"name"];
-          LOBYTE(v108) = [v114 tableExistsForTableName:v115];
+          LOBYTE(connection8) = [connection9 tableExistsForTableName:v115];
 
-          if (v108)
+          if (connection8)
           {
             v132 = MEMORY[0x1E696AEC0];
             v119 = [v107 objectForKeyedSubscript:@"name"];
-            v16 = [v132 stringWithFormat:@"unable to move %@", v119];
-            v7 = 3;
+            tableCopy = [v132 stringWithFormat:@"unable to move %@", v119];
+            matchCopy = 3;
             v130 = v158;
             v131 = v158;
-            v8 = v147;
-            v92 = v155;
+            tableCopy = v147;
+            tableCopy2 = v155;
             goto LABEL_97;
           }
         }
@@ -2652,9 +2652,9 @@ LABEL_80:
       while (v104);
 LABEL_88:
       v116 = ;
-      v117 = [(PLCoreStorage *)self connection];
+      connection10 = [(PLCoreStorage *)self connection];
       v150 = v116;
-      v118 = [v117 performQuery:v116];
+      v118 = [connection10 performQuery:v116];
 
       v187 = 0u;
       v188 = 0u;
@@ -2676,13 +2676,13 @@ LABEL_88:
             }
 
             v124 = *(*(&v185 + 1) + 8 * j);
-            v125 = [(PLCoreStorage *)self connection];
+            connection11 = [(PLCoreStorage *)self connection];
             v126 = MEMORY[0x1E696AEC0];
             v127 = [v124 objectForKeyedSubscript:@"name"];
-            v128 = [v126 stringWithFormat:@"DROP INDEX %@", v127];;
-            v129 = [v125 performQuery:v128];
+            v127 = [v126 stringWithFormat:@"DROP INDEX %@", v127];;
+            v129 = [connection11 performQuery:v127];
 
-            self = v156;
+            self = selfCopy;
           }
 
           v121 = [v119 countByEnumeratingWithState:&v185 objects:v208 count:16];
@@ -2691,53 +2691,53 @@ LABEL_88:
         while (v121);
       }
 
-      v8 = v147;
+      tableCopy = v147;
       [(PLCoreStorage *)self setupStorageForEntryKey:v147];
-      v16 = 0;
-      v7 = 65534;
-      v92 = v155;
+      tableCopy = 0;
+      matchCopy = 65534;
+      tableCopy2 = v155;
       v130 = v158;
       v131 = v150;
 LABEL_97:
     }
 
 LABEL_99:
-    if ((v7 - 1) > 2)
+    if ((matchCopy - 1) > 2)
     {
       goto LABEL_114;
     }
 
-    if (v7 == 1)
+    if (matchCopy == 1)
     {
 
       v133 = 0;
-      v16 = @"Previous Version Newer";
+      tableCopy = @"Previous Version Newer";
       v134 = 1;
       goto LABEL_105;
     }
 
-    if (v7 == 2)
+    if (matchCopy == 2)
     {
 
-      v16 = @"New File Required";
+      tableCopy = @"New File Required";
       v133 = 1;
       v134 = 2;
 LABEL_105:
-      v135 = [(PLCoreStorage *)self storageOperator];
+      storageOperator2 = [(PLCoreStorage *)self storageOperator];
       v201[0] = @"TableName";
       v201[1] = @"CurrentVersion";
-      v202[0] = v16;
+      v202[0] = tableCopy;
       v202[1] = &unk_1F5405CB8;
       v201[2] = @"PreviousVersion";
       v202[2] = &unk_1F5405CB8;
       v136 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v202 forKeys:v201 count:3];
-      [v135 logEventForwardSchemaChange:v136];
+      [storageOperator2 logEventForwardSchemaChange:v136];
 
-      v137 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! PLSQLversion mismatch on %@! expectedVersion=%f schemaMatch=%d error=%@", v8, *&a4, v134, v16];
+      v137 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ERROR! PLSQLversion mismatch on %@! expectedVersion=%f schemaMatch=%d error=%@", tableCopy, *&version, v134, tableCopy];
       v138 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v139 = [v138 lastPathComponent];
+      lastPathComponent3 = [v138 lastPathComponent];
       v140 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage handleSchemaMismatchForTable:expectedVersion:schemaMatch:]"];
-      [PLCoreStorage logMessage:v137 fromFile:v139 fromFunction:v140 fromLineNumber:1211];
+      [PLCoreStorage logMessage:v137 fromFile:lastPathComponent3 fromFunction:v140 fromLineNumber:1211];
 
       v141 = PLLogCommon();
       if (os_log_type_enabled(v141, OS_LOG_TYPE_DEBUG))
@@ -2749,17 +2749,17 @@ LABEL_105:
       if (os_log_type_enabled(v142, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v194 = v8;
+        v194 = tableCopy;
         v195 = 2048;
-        v196 = a4;
+        versionCopy = version;
         v197 = 1024;
         v198 = v134;
         v199 = 2112;
-        v200 = v16;
+        v200 = tableCopy;
         _os_log_error_impl(&dword_1D8611000, v142, OS_LOG_TYPE_ERROR, "SQL mismatch on %@ (expected=%f schemaMatch=%d error=%@)", buf, 0x26u);
       }
 
-      v17 = [(PLCoreStorage *)self connection];
+      connection12 = [(PLCoreStorage *)self connection];
       if (v133)
       {
         v143 = 1008;
@@ -2770,7 +2770,7 @@ LABEL_105:
         v143 = 1007;
       }
 
-      [PLUtilities exitWithReason:v143 connection:v17];
+      [PLUtilities exitWithReason:v143 connection:connection12];
       goto LABEL_113;
     }
 
@@ -2780,10 +2780,10 @@ LABEL_103:
     goto LABEL_105;
   }
 
-  v22 = [(PLCoreStorage *)self connection];
-  v157 = [v22 tableInfo:v8];
+  connection13 = [(PLCoreStorage *)self connection];
+  v157 = [connection13 tableInfo:tableCopy];
 
-  [PLEntryDefinition definitionForEntryKey:v8];
+  [PLEntryDefinition definitionForEntryKey:tableCopy];
   v181 = 0u;
   v182 = 0u;
   v183 = 0u;
@@ -2810,9 +2810,9 @@ LABEL_103:
       v25 = [PLEntryDefinition keyConfigsForEntryDefinition:v154];
       v26 = [v25 objectForKey:v24];
       v27 = [v26 objectForKeyedSubscript:@"Type"];
-      v28 = [v27 shortValue];
+      shortValue = [v27 shortValue];
 
-      if (v28)
+      if (shortValue)
       {
         v176 = 0u;
         v177 = 0u;
@@ -2874,12 +2874,12 @@ LABEL_26:
           {
             v37 = MEMORY[0x1E696AEC0];
             v38 = NSStringFromBOOL();
-            v39 = [v37 stringWithFormat:@"%@ key=%@ existsInTable=%@", v8, v24, v38];
+            v39 = [v37 stringWithFormat:@"%@ key=%@ existsInTable=%@", tableCopy, v24, v38];
 
             v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-            v41 = [v40 lastPathComponent];
+            lastPathComponent4 = [v40 lastPathComponent];
             v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage handleSchemaMismatchForTable:expectedVersion:schemaMatch:]"];
-            [PLCoreStorage logMessage:v39 fromFile:v41 fromFunction:v42 fromLineNumber:1163];
+            [PLCoreStorage logMessage:v39 fromFile:lastPathComponent4 fromFunction:v42 fromLineNumber:1163];
 
             v43 = PLLogCommon();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -2899,10 +2899,10 @@ LABEL_26:
           v47 = [v46 objectForKey:v24];
           v48 = [v47 objectForKeyedSubscript:@"Type"];
           v49 = [v45 objectForKeyedSubscript:v48];
-          v50 = [v44 stringWithFormat:@"ALTER TABLE '%@' ADD COLUMN '%@' %@", v8, v24, v49];;
+          v50 = [v44 stringWithFormat:@"ALTER TABLE '%@' ADD COLUMN '%@' %@", tableCopy, v24, v49];;
 
-          v51 = [(PLCoreStorage *)v156 connection];
-          v52 = [v51 performQuery:v50];
+          connection14 = [(PLCoreStorage *)selfCopy connection];
+          v52 = [connection14 performQuery:v50];
 LABEL_41:
         }
       }
@@ -2925,18 +2925,18 @@ LABEL_41:
 
         if (v54 == 1)
         {
-          v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ key=%@ skip arrays", v8, v24];
+          v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ key=%@ skip arrays", tableCopy, v24];
           v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-          v56 = [v55 lastPathComponent];
+          lastPathComponent5 = [v55 lastPathComponent];
           v57 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage handleSchemaMismatchForTable:expectedVersion:schemaMatch:]"];
-          [PLCoreStorage logMessage:v50 fromFile:v56 fromFunction:v57 fromLineNumber:1151];
+          [PLCoreStorage logMessage:v50 fromFile:lastPathComponent5 fromFunction:v57 fromLineNumber:1151];
 
-          v51 = PLLogCommon();
-          if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
+          connection14 = PLLogCommon();
+          if (os_log_type_enabled(connection14, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
             v194 = v50;
-            _os_log_debug_impl(&dword_1D8611000, v51, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+            _os_log_debug_impl(&dword_1D8611000, connection14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
           goto LABEL_41;
@@ -2953,7 +2953,7 @@ LABEL_41:
   while (v151);
 LABEL_44:
 
-  v58 = [PLEntryDefinition overridesEntryDateForEntryKey:v8];
+  v58 = [PLEntryDefinition overridesEntryDateForEntryKey:tableCopy];
   v59 = MEMORY[0x1E695E0F8];
   if (v58)
   {
@@ -2965,8 +2965,8 @@ LABEL_44:
   v169 = 0u;
   v170 = 0u;
   obja = v59;
-  v149 = [obja allKeys];
-  v60 = [v149 countByEnumeratingWithState:&v167 objects:v205 count:16];
+  allKeys = [obja allKeys];
+  v60 = [allKeys countByEnumeratingWithState:&v167 objects:v205 count:16];
   if (v60)
   {
     v61 = v60;
@@ -2977,7 +2977,7 @@ LABEL_44:
       {
         if (*v168 != v152)
         {
-          objc_enumerationMutation(v149);
+          objc_enumerationMutation(allKeys);
         }
 
         v63 = *(*(&v167 + 1) + 8 * m);
@@ -3029,14 +3029,14 @@ LABEL_59:
           v72 = PLVTypeToPLSQLiteType;
           v73 = [obja objectForKeyedSubscript:v63];
           v74 = [v72 objectForKeyedSubscript:v73];
-          v64 = [v71 stringWithFormat:@"ALTER TABLE '%@' ADD COLUMN '%@' %@", v8, v63, v74];;
+          v64 = [v71 stringWithFormat:@"ALTER TABLE '%@' ADD COLUMN '%@' %@", tableCopy, v63, v74];;
 
-          v75 = [(PLCoreStorage *)v156 connection];
-          v76 = [v75 performQuery:v64];
+          connection15 = [(PLCoreStorage *)selfCopy connection];
+          v76 = [connection15 performQuery:v64];
         }
       }
 
-      v61 = [v149 countByEnumeratingWithState:&v167 objects:v205 count:16];
+      v61 = [allKeys countByEnumeratingWithState:&v167 objects:v205 count:16];
     }
 
     while (v61);
@@ -3046,7 +3046,7 @@ LABEL_59:
   v162 = 0u;
   v159 = 0u;
   v160 = 0u;
-  v77 = [PLEntryDefinition allIndexKeysForEntryKey:v8];
+  v77 = [PLEntryDefinition allIndexKeysForEntryKey:tableCopy];
   v78 = [v77 countByEnumeratingWithState:&v159 objects:v203 count:16];
   if (v78)
   {
@@ -3062,8 +3062,8 @@ LABEL_59:
         }
 
         v82 = *(*(&v159 + 1) + 8 * n);
-        v83 = [(PLCoreStorage *)v156 connection];
-        [v83 createIndexOnTable:v8 forColumn:v82];
+        connection16 = [(PLCoreStorage *)selfCopy connection];
+        [connection16 createIndexOnTable:tableCopy forColumn:v82];
       }
 
       v79 = [v77 countByEnumeratingWithState:&v159 objects:v203 count:16];
@@ -3072,11 +3072,11 @@ LABEL_59:
     while (v79);
   }
 
-  v84 = [(PLCoreStorage *)v156 connection];
-  [v84 setSchemaVersion:v8 forTableName:a4];
+  connection17 = [(PLCoreStorage *)selfCopy connection];
+  [connection17 setSchemaVersion:tableCopy forTableName:version];
 
-  v16 = 0;
-  v17 = v157;
+  tableCopy = 0;
+  connection12 = v157;
 LABEL_113:
 
 LABEL_114:
@@ -3097,16 +3097,16 @@ BOOL __74__PLCoreStorage_handleSchemaMismatchForTable_expectedVersion_schemaMatc
   return result;
 }
 
-- (signed)verifySchemaVersionOfTable:(id)a3 matchesExpectedVersion:(double)a4
+- (signed)verifySchemaVersionOfTable:(id)table matchesExpectedVersion:(double)version
 {
-  v6 = a3;
-  v7 = [(PLCoreStorage *)self connection];
-  v8 = [v7 tableExistsForTableName:v6];
+  tableCopy = table;
+  connection = [(PLCoreStorage *)self connection];
+  v8 = [connection tableExistsForTableName:tableCopy];
 
   if (v8)
   {
-    v9 = [(PLCoreStorage *)self connection];
-    [v9 schemaVersionForTable:v6];
+    connection2 = [(PLCoreStorage *)self connection];
+    [connection2 schemaVersionForTable:tableCopy];
     v11 = v10;
 
     if (v11 == 0.0)
@@ -3114,14 +3114,14 @@ BOOL __74__PLCoreStorage_handleSchemaMismatchForTable_expectedVersion_schemaMatc
       v12 = -2;
     }
 
-    else if (v11 == a4)
+    else if (v11 == version)
     {
       v12 = 0;
     }
 
-    else if (v11 >= a4)
+    else if (v11 >= version)
     {
-      if (v11 <= a4)
+      if (v11 <= version)
       {
         v12 = 3;
       }
@@ -3132,7 +3132,7 @@ BOOL __74__PLCoreStorage_handleSchemaMismatchForTable_expectedVersion_schemaMatc
       }
     }
 
-    else if (a4 == v11)
+    else if (version == v11)
     {
       v12 = -1;
     }
@@ -3167,11 +3167,11 @@ BOOL __74__PLCoreStorage_handleSchemaMismatchForTable_expectedVersion_schemaMatc
 
     if (v14 == 1)
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ expectedVersion=%f schemaVersion=%f schemaMatch=%d", v6, *&a4, *&v11, v12, block, v22, v23, v24];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ expectedVersion=%f schemaVersion=%f schemaMatch=%d", tableCopy, *&version, *&v11, v12, block, v22, v23, v24];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v17 = [v16 lastPathComponent];
+      lastPathComponent = [v16 lastPathComponent];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage verifySchemaVersionOfTable:matchesExpectedVersion:]"];
-      [PLCoreStorage logMessage:v15 fromFile:v17 fromFunction:v18 fromLineNumber:1253];
+      [PLCoreStorage logMessage:v15 fromFile:lastPathComponent fromFunction:v18 fromLineNumber:1253];
 
       v19 = PLLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -3191,26 +3191,26 @@ BOOL __67__PLCoreStorage_verifySchemaVersionOfTable_matchesExpectedVersion___blo
   return result;
 }
 
-- (void)setupTableName:(id)a3 withEntryKeyConfig:(id)a4 withKeyOrder:(id)a5 isDynamic:(BOOL)a6 withShouldIndexFKID:(BOOL)a7
+- (void)setupTableName:(id)name withEntryKeyConfig:(id)config withKeyOrder:(id)order isDynamic:(BOOL)dynamic withShouldIndexFKID:(BOOL)d
 {
-  v7 = a7;
-  v8 = a6;
+  dCopy = d;
+  dynamicCopy = dynamic;
   v94 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  nameCopy = name;
+  configCopy = config;
+  orderCopy = order;
   v15 = objc_opt_new();
-  v16 = [MEMORY[0x1E695DF70] array];
-  v17 = v16;
-  v71 = v13;
-  v66 = self;
-  v67 = v12;
-  v65 = v16;
-  if (v8)
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = array;
+  v71 = configCopy;
+  selfCopy = self;
+  v67 = nameCopy;
+  v65 = array;
+  if (dynamicCopy)
   {
-    if (v7)
+    if (dCopy)
     {
-      [v16 addObject:@"FK_ID"];
+      [array addObject:@"FK_ID"];
     }
 
     [v15 addObject:&unk_1F540CA40];
@@ -3219,12 +3219,12 @@ BOOL __67__PLCoreStorage_verifySchemaVersionOfTable_matchesExpectedVersion___blo
 
   else
   {
-    v20 = [PLEntryDefinition allIndexKeysForEntryKey:v12];
+    v20 = [PLEntryDefinition allIndexKeysForEntryKey:nameCopy];
     [v17 addObjectsFromArray:v20];
 
     [v17 removeObject:@"FK_ID"];
     [v15 addObject:&unk_1F540CA40];
-    if ([PLEntryDefinition isAggregateForEntryKey:v12])
+    if ([PLEntryDefinition isAggregateForEntryKey:nameCopy])
     {
       [v15 addObject:&unk_1F540CA90];
       [v15 addObject:&unk_1F540CAB8];
@@ -3234,7 +3234,7 @@ BOOL __67__PLCoreStorage_verifySchemaVersionOfTable_matchesExpectedVersion___blo
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v21 = [PLEntryDefinition allAggregatePrimaryKeysForEntryKey:v12];
+      v21 = [PLEntryDefinition allAggregatePrimaryKeysForEntryKey:nameCopy];
       v22 = [v21 countByEnumeratingWithState:&v83 objects:v93 count:16];
       if (v22)
       {
@@ -3260,11 +3260,11 @@ BOOL __67__PLCoreStorage_verifySchemaVersionOfTable_matchesExpectedVersion___blo
 
       v19 = v15;
 
-      v13 = v71;
+      configCopy = v71;
       goto LABEL_15;
     }
 
-    if ([PLEntryDefinition overridesEntryDateForEntryKey:v12])
+    if ([PLEntryDefinition overridesEntryDateForEntryKey:nameCopy])
     {
       [v15 addObject:&unk_1F540CAE0];
       v18 = &unk_1F540CB08;
@@ -3283,7 +3283,7 @@ LABEL_15:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v14;
+  obj = orderCopy;
   v70 = [obj countByEnumeratingWithState:&v79 objects:v92 count:16];
   if (!v70)
   {
@@ -3301,7 +3301,7 @@ LABEL_15:
       }
 
       v27 = *(*(&v79 + 1) + 8 * j);
-      v28 = [v13 objectForKey:v27];
+      v28 = [configCopy objectForKey:v27];
       v29 = [v28 objectForKeyedSubscript:@"Type"];
       if ([v29 shortValue])
       {
@@ -3311,7 +3311,7 @@ LABEL_22:
         v88[1] = @"type";
         v89[0] = v27;
         v30 = PLVTypeToPLSQLiteType;
-        v31 = [v13 objectForKey:v27];
+        v31 = [configCopy objectForKey:v27];
         v32 = [v31 objectForKeyedSubscript:@"Type"];
         v33 = [v30 objectForKeyedSubscript:v32];
         v89[1] = v33;
@@ -3321,7 +3321,7 @@ LABEL_22:
         goto LABEL_31;
       }
 
-      v35 = [v13 objectForKey:v27];
+      v35 = [configCopy objectForKey:v27];
       v36 = [v35 objectForKeyedSubscript:@"TypeArraySize"];
 
       if (!v36)
@@ -3329,13 +3329,13 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      v37 = [v13 objectForKey:v27];
+      v37 = [configCopy objectForKey:v27];
       v38 = [v37 objectForKeyedSubscript:@"TypeArrayValue"];
 
       v39 = PLVTypeToPLSQLiteType;
       if (v38)
       {
-        v40 = [v13 objectForKey:v27];
+        v40 = [configCopy objectForKey:v27];
         v41 = [v40 objectForKeyedSubscript:@"TypeArrayValue"];
         v31 = [v39 objectForKeyedSubscript:v41];
       }
@@ -3349,9 +3349,9 @@ LABEL_22:
       {
         v43 = [v71 objectForKey:v27];
         v44 = [v43 objectForKeyedSubscript:@"TypeArraySize"];
-        v45 = [v44 intValue];
+        intValue = [v44 intValue];
 
-        if (k >= v45)
+        if (k >= intValue)
         {
           break;
         }
@@ -3365,7 +3365,7 @@ LABEL_22:
         [v19 addObject:v47];
       }
 
-      v13 = v71;
+      configCopy = v71;
 LABEL_31:
     }
 
@@ -3396,9 +3396,9 @@ LABEL_33:
     {
       v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"tableName=%@ tableSchemaColumns=%@", v67, v19];
       v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v53 = [v52 lastPathComponent];
+      lastPathComponent = [v52 lastPathComponent];
       v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage setupTableName:withEntryKeyConfig:withKeyOrder:isDynamic:withShouldIndexFKID:]"];
-      [PLCoreStorage logMessage:v51 fromFile:v53 fromFunction:v54 fromLineNumber:1305];
+      [PLCoreStorage logMessage:v51 fromFile:lastPathComponent fromFunction:v54 fromLineNumber:1305];
 
       v55 = PLLogCommon();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
@@ -3406,12 +3406,12 @@ LABEL_33:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v13 = v71;
+      configCopy = v71;
     }
   }
 
-  v56 = [(PLCoreStorage *)v66 connection];
-  [v56 createTableName:v67 withColumns:v19];
+  connection = [(PLCoreStorage *)selfCopy connection];
+  [connection createTableName:v67 withColumns:v19];
 
   v74 = 0u;
   v75 = 0u;
@@ -3433,8 +3433,8 @@ LABEL_33:
         }
 
         v62 = *(*(&v72 + 1) + 8 * m);
-        v63 = [(PLCoreStorage *)v66 connection];
-        [v63 createIndexOnTable:v67 forColumn:v62];
+        connection2 = [(PLCoreStorage *)selfCopy connection];
+        [connection2 createIndexOnTable:v67 forColumn:v62];
       }
 
       v59 = [v57 countByEnumeratingWithState:&v72 objects:v87 count:16];
@@ -3453,27 +3453,27 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
   return result;
 }
 
-- (void)setupCompositeIndexOnTable:(id)a3 withColumns:(id)a4
+- (void)setupCompositeIndexOnTable:(id)table withColumns:(id)columns
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLCoreStorage *)self connection];
-  [v8 createCompositeIndexOnTable:v7 forColumns:v6];
+  columnsCopy = columns;
+  tableCopy = table;
+  connection = [(PLCoreStorage *)self connection];
+  [connection createCompositeIndexOnTable:tableCopy forColumns:columnsCopy];
 }
 
-- (void)setupStorageForEntryKey:(id)a3
+- (void)setupStorageForEntryKey:(id)key
 {
   v52 = *MEMORY[0x1E69E9840];
-  v45 = a3;
+  keyCopy = key;
   if (!+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
   {
-    v3 = [PLEntryDefinition definitionForEntryKey:v45];
-    v43 = [PLEntryDefinition keyConfigsForEntryKey:v45];
+    v3 = [PLEntryDefinition definitionForEntryKey:keyCopy];
+    v43 = [PLEntryDefinition keyConfigsForEntryKey:keyCopy];
     if (v43)
     {
-      [PLEntryDefinition schemaVersionForEntryKey:v45];
+      [PLEntryDefinition schemaVersionForEntryKey:keyCopy];
       v5 = v4;
-      v6 = [(PLCoreStorage *)self verifySchemaVersionOfTable:v45 matchesExpectedVersion:?];
+      v6 = [(PLCoreStorage *)self verifySchemaVersionOfTable:keyCopy matchesExpectedVersion:?];
       if (v5 > 0.0 && v6 == -3)
       {
         if (+[PLDefaults debugEnabled])
@@ -3491,11 +3491,11 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
 
           if (setupStorageForEntryKey__classDebugEnabled == 1)
           {
-            v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No table for %@", v45];
+            keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"No table for %@", keyCopy];
             v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-            v11 = [v10 lastPathComponent];
+            lastPathComponent = [v10 lastPathComponent];
             v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage setupStorageForEntryKey:]"];
-            [PLCoreStorage logMessage:v9 fromFile:v11 fromFunction:v12 fromLineNumber:1347];
+            [PLCoreStorage logMessage:keyCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:1347];
 
             v13 = PLLogCommon();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -3505,12 +3505,12 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
           }
         }
 
-        v14 = [(PLCoreStorage *)self connection];
-        [v14 setSchemaVersion:v45 forTableName:v5];
+        connection = [(PLCoreStorage *)self connection];
+        [connection setSchemaVersion:keyCopy forTableName:v5];
 
         v15 = [PLEntryDefinition sortedKeysFromEntryDefinition:v3];
-        [(PLCoreStorage *)self setupTableName:v45 withEntryKeyConfig:v43 withKeyOrder:v15 isDynamic:0 withShouldIndexFKID:0];
-        if ([PLEntryDefinition hasArrayKeysForEntryKey:v45])
+        [(PLCoreStorage *)self setupTableName:keyCopy withEntryKeyConfig:v43 withKeyOrder:v15 isDynamic:0 withShouldIndexFKID:0];
+        if ([PLEntryDefinition hasArrayKeysForEntryKey:keyCopy])
         {
           v41 = v15;
           v48 = 0u;
@@ -3536,12 +3536,12 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
                 v21 = *(*(&v46 + 1) + 8 * i);
                 v22 = [v43 objectForKeyedSubscript:v21];
                 v23 = [v22 objectForKeyedSubscript:@"TypeArrayValue"];
-                v24 = [v23 shortValue];
+                shortValue = [v23 shortValue];
 
                 v25 = [PLEntryDefinition allIndexKeysForEntryDefinition:v16];
                 v26 = [v25 containsObject:@"FK_ID"];
 
-                [(PLCoreStorage *)self setupArrayForTableName:v45 forColumnNamed:v21 withValueType:v24 withShouldIndexFKID:v26];
+                [(PLCoreStorage *)self setupArrayForTableName:keyCopy forColumnNamed:v21 withValueType:shortValue withShouldIndexFKID:v26];
               }
 
               v18 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -3556,7 +3556,7 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
 
         if ([PLEntryDefinition hasDynamicKeysForEntryDefinition:v3])
         {
-          v27 = [PLEntryKey dynamicEntryKeyForEntryKey:v45];
+          v27 = [PLEntryKey dynamicEntryKeyForEntryKey:keyCopy];
           v28 = [PLEntryDefinition dynamicKeyConfigsForEntryDefinition:v3];
           v29 = [v28 mutableCopy];
 
@@ -3580,12 +3580,12 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
           else
           {
             v34 = +[PLEntryDefinition sharedInstance];
-            v35 = [v34 commonTypeDict_StringFormat];
-            [v29 setObject:v35 forKeyedSubscript:@"key"];
+            commonTypeDict_StringFormat = [v34 commonTypeDict_StringFormat];
+            [v29 setObject:commonTypeDict_StringFormat forKeyedSubscript:@"key"];
           }
 
-          v36 = [v29 allKeys];
-          v37 = [v36 sortedArrayUsingSelector:sel_compare_];
+          allKeys = [v29 allKeys];
+          v37 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
           v38 = [PLEntryDefinition allIndexKeysForEntryDefinition:v3];
           v39 = [v38 containsObject:@"FK_ID"];
@@ -3596,7 +3596,7 @@ BOOL __94__PLCoreStorage_setupTableName_withEntryKeyConfig_withKeyOrder_isDynami
 
       else if (v6)
       {
-        [(PLCoreStorage *)self handleSchemaMismatchForTable:v45 expectedVersion:v6 schemaMatch:v5];
+        [(PLCoreStorage *)self handleSchemaMismatchForTable:keyCopy expectedVersion:v6 schemaMatch:v5];
       }
     }
   }
@@ -3611,13 +3611,13 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setupStorageForOperator:(id)a3
+- (void)setupStorageForOperator:(id)operator
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  operatorCopy = operator;
   if (!+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd") && !+[PLUtilities isPowerlogHelperd])
   {
-    v5 = [PLEntryKey entryKeysForOperator:v4];
+    v5 = [PLEntryKey entryKeysForOperator:operatorCopy];
     if ([v5 count])
     {
       v14 = 0u;
@@ -3655,13 +3655,13 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupStorageForOperatorName:(id)a3
+- (void)setupStorageForOperatorName:(id)name
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   if (!+[PLUtilities isPowerlogHelperd])
   {
-    v5 = [PLEntryKey entryKeysForOperatorName:v4];
+    v5 = [PLEntryKey entryKeysForOperatorName:nameCopy];
     if ([v5 count])
     {
       v14 = 0u;
@@ -3699,12 +3699,12 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setupStorageForOperatorClass:(Class)a3
+- (void)setupStorageForOperatorClass:(Class)class
 {
   v17 = *MEMORY[0x1E69E9840];
   if (!+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
   {
-    v5 = [PLEntryKey entryKeysForOperatorClass:a3];
+    v5 = [PLEntryKey entryKeysForOperatorClass:class];
     if ([v5 count])
     {
       v14 = 0u;
@@ -3742,11 +3742,11 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)flushCachesWithReason:(id)a3
+- (void)flushCachesWithReason:(id)reason
 {
   v59[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEqualToString:@"Cache Size"] && (+[PLStorageCache sharedStorageCache](PLStorageCache, "sharedStorageCache"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "stagingEntryCacheSize"), v7 = -[PLCoreStorage generalEntryCacheSizeLimit](self, "generalEntryCacheSizeLimit"), v5, v6 <= v7))
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Cache Size"] && (+[PLStorageCache sharedStorageCache](PLStorageCache, "sharedStorageCache"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "stagingEntryCacheSize"), v7 = -[PLCoreStorage generalEntryCacheSizeLimit](self, "generalEntryCacheSizeLimit"), v5, v6 <= v7))
   {
     if (+[PLDefaults debugEnabled])
     {
@@ -3765,9 +3765,9 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
       {
         v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache size is fine!"];
         v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-        v40 = [v39 lastPathComponent];
+        lastPathComponent = [v39 lastPathComponent];
         v41 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage flushCachesWithReason:]"];
-        [PLCoreStorage logMessage:v33 fromFile:v40 fromFunction:v41 fromLineNumber:1435];
+        [PLCoreStorage logMessage:v33 fromFile:lastPathComponent fromFunction:v41 fromLineNumber:1435];
 
         v37 = PLLogCommon();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -3784,7 +3784,7 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
   {
     if (+[PLPlatform isiOS](PLPlatform, "isiOS") && +[PLPlatform internalBuild])
     {
-      v59[0] = v4;
+      v59[0] = reasonCopy;
       v58[0] = @"Reason";
       v58[1] = @"Size";
       v8 = MEMORY[0x1E696AD98];
@@ -3798,13 +3798,13 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
       [v13 addToStagingEntryCache:v12];
     }
 
-    if ([v4 length])
+    if ([reasonCopy length])
     {
       v48 = MEMORY[0x1E69E9820];
       v49 = 3221225472;
       v50 = __39__PLCoreStorage_flushCachesWithReason___block_invoke_667;
       v51 = &unk_1E8519A88;
-      v52 = v4;
+      v52 = reasonCopy;
       AnalyticsSendEventLazy();
     }
 
@@ -3812,13 +3812,13 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v55 = v4;
+      v55 = reasonCopy;
       v56 = 2080;
       label = dispatch_queue_get_label(0);
       _os_log_impl(&dword_1D8611000, v14, OS_LOG_TYPE_DEFAULT, "Flush cache start with Reason: %@ on Queue:%s", buf, 0x16u);
     }
 
-    if (([v4 isEqualToString:@"Timer"] & 1) == 0)
+    if (([reasonCopy isEqualToString:@"Timer"] & 1) == 0)
     {
       v15 = MEMORY[0x1E695DF00];
       v45[0] = MEMORY[0x1E69E9820];
@@ -3835,33 +3835,33 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
       v16 = flushCachesWithReason__objectForKey;
 
       v17 = [v15 dateWithTimeIntervalSinceNow:v16];
-      v18 = [(PLCoreStorage *)self flushCachesTimer];
-      [v18 setFireDate:v17];
+      flushCachesTimer = [(PLCoreStorage *)self flushCachesTimer];
+      [flushCachesTimer setFireDate:v17];
     }
 
     if (!+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
     {
       v19 = os_transaction_create();
       v20 = objc_autoreleasePoolPush();
-      v21 = [(PLCoreStorage *)self connection];
-      [v21 beginTransaction];
+      connection = [(PLCoreStorage *)self connection];
+      [connection beginTransaction];
 
       v22 = +[PLStorageCache sharedStorageCache];
       [v22 flushStagingEntryCacheToDatabase];
 
-      v23 = [(PLCoreStorage *)self connection];
-      [v23 endTransaction];
+      connection2 = [(PLCoreStorage *)self connection];
+      [connection2 endTransaction];
 
       objc_autoreleasePoolPop(v20);
       v24 = objc_autoreleasePoolPush();
-      v25 = [(PLCoreStorage *)self connection];
-      [v25 beginTransaction];
+      connection3 = [(PLCoreStorage *)self connection];
+      [connection3 beginTransaction];
 
       v26 = +[PLStorageCache sharedStorageCache];
       [v26 flushStagingAggregateEntryCacheToDatabase];
 
-      v27 = [(PLCoreStorage *)self connection];
-      [v27 endTransaction];
+      connection4 = [(PLCoreStorage *)self connection];
+      [connection4 endTransaction];
 
       objc_autoreleasePoolPop(v24);
       v28 = dispatch_time(0, 60000000000);
@@ -3881,11 +3881,11 @@ BOOL __41__PLCoreStorage_setupStorageForEntryKey___block_invoke(uint64_t a1)
 
     if (+[PLDefaults debugEnabled])
     {
-      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Flush cache done with Reason: %@ on Queue:%s", v4, dispatch_queue_get_label(0)];
+      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Flush cache done with Reason: %@ on Queue:%s", reasonCopy, dispatch_queue_get_label(0)];
       v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v35 = [v34 lastPathComponent];
+      lastPathComponent2 = [v34 lastPathComponent];
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage flushCachesWithReason:]"];
-      [PLCoreStorage logMessage:v33 fromFile:v35 fromFunction:v36 fromLineNumber:1482];
+      [PLCoreStorage logMessage:v33 fromFile:lastPathComponent2 fromFunction:v36 fromLineNumber:1482];
 
       v37 = PLLogCommon();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -3940,10 +3940,10 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
   return result;
 }
 
-- (void)blockingFlushQueues:(id)a3 withTimeout:(int)a4
+- (void)blockingFlushQueues:(id)queues withTimeout:(int)timeout
 {
   v66 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queuesCopy = queues;
   v6 = &unk_1E8519630;
   v7 = @"blockingFlush";
   if (+[PLDefaults debugEnabled])
@@ -3964,11 +3964,11 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
 
     if (v9 == 1)
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"begin for queueNames=%@", v5];
+      queuesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"begin for queueNames=%@", queuesCopy];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage blockingFlushQueues:withTimeout:]"];
-      [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:1557];
+      [PLCoreStorage logMessage:queuesCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:1557];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -3983,7 +3983,7 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v16 = v5;
+  v16 = queuesCopy;
   v43 = v16;
   v45 = [v16 countByEnumeratingWithState:&v56 objects:v65 count:16];
   if (v45)
@@ -4021,12 +4021,12 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
           {
             v21 = v6;
             v22 = v7;
-            v23 = self;
+            selfCopy = self;
             v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"waiting: %@", v18];
             v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-            v26 = [v25 lastPathComponent];
+            lastPathComponent2 = [v25 lastPathComponent];
             v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage blockingFlushQueues:withTimeout:]"];
-            [PLCoreStorage logMessage:v24 fromFile:v26 fromFunction:v27 fromLineNumber:1561];
+            [PLCoreStorage logMessage:v24 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:1561];
 
             v28 = PLLogCommon();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -4036,7 +4036,7 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
               _os_log_debug_impl(&dword_1D8611000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v23;
+            self = selfCopy;
             v7 = v22;
             v6 = v21;
             v15 = v42;
@@ -4050,7 +4050,7 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
         block[2] = __49__PLCoreStorage_blockingFlushQueues_withTimeout___block_invoke_707;
         block[3] = &unk_1E8519AF8;
         v50 = v15;
-        v51 = self;
+        selfCopy2 = self;
         v52 = v18;
         dispatch_async(v29, block);
 
@@ -4069,7 +4069,7 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
     v30 = 0;
     do
     {
-      v31 = dispatch_time(0, 1000000000 * a4);
+      v31 = dispatch_time(0, 1000000000 * timeout);
       dispatch_semaphore_wait(v15, v31);
       ++v30;
     }
@@ -4098,9 +4098,9 @@ BOOL __55__PLCoreStorage_blockingFlushCachesWithReason_timeout___block_invoke_69
       v34 = v15;
       v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end for queueNames=%@", v16];
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v37 = [v36 lastPathComponent];
+      lastPathComponent3 = [v36 lastPathComponent];
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage blockingFlushQueues:withTimeout:]"];
-      [PLCoreStorage logMessage:v35 fromFile:v37 fromFunction:v38 fromLineNumber:1575];
+      [PLCoreStorage logMessage:v35 fromFile:lastPathComponent3 fromFunction:v38 fromLineNumber:1575];
 
       v39 = PLLogCommon();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -4181,21 +4181,21 @@ BOOL __49__PLCoreStorage_blockingFlushQueues_withTimeout___block_invoke_713(uint
   return result;
 }
 
-- (BOOL)flushCachesIfRequiredForEntryKey:(id)a3
+- (BOOL)flushCachesIfRequiredForEntryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[PLStorageCache sharedStorageCache];
-  v6 = [v5 stagingEntryCacheSizeForEntryKey:v4];
+  v6 = [v5 stagingEntryCacheSizeForEntryKey:keyCopy];
 
   if (v6 >= 1)
   {
     if (+[PLDefaults debugEnabled])
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cache dump for query entryKey=%@ cacheSize=%ld", v4, v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cache dump for query entryKey=%@ cacheSize=%ld", keyCopy, v6];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage flushCachesIfRequiredForEntryKey:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:1582];
+      [PLCoreStorage logMessage:v7 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:1582];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -4204,26 +4204,26 @@ BOOL __49__PLCoreStorage_blockingFlushQueues_withTimeout___block_invoke_713(uint
       }
     }
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Query EntryKey %@", v4];
-    [(PLCoreStorage *)self flushCachesWithReason:v12];
+    keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Query EntryKey %@", keyCopy];
+    [(PLCoreStorage *)self flushCachesWithReason:keyCopy];
   }
 
   return v6 > 0;
 }
 
-- (void)dispatchAsyncForEntryKey:(id)a3 withBlock:(id)a4
+- (void)dispatchAsyncForEntryKey:(id)key withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() storageQueueNameForEntryKey:v6];
+  blockCopy = block;
+  keyCopy = key;
+  v7 = [objc_opt_class() storageQueueNameForEntryKey:keyCopy];
 
   v8 = [PLUtilities workQueueForKey:v7];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PLCoreStorage_dispatchAsyncForEntryKey_withBlock___block_invoke;
   block[3] = &unk_1E8519B20;
-  v11 = v5;
-  v9 = v5;
+  v11 = blockCopy;
+  v9 = blockCopy;
   dispatch_async(v8, block);
 }
 
@@ -4235,19 +4235,19 @@ void __52__PLCoreStorage_dispatchAsyncForEntryKey_withBlock___block_invoke(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)dispatchSyncForEntryKey:(id)a3 withBlock:(id)a4
+- (void)dispatchSyncForEntryKey:(id)key withBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() storageQueueNameForEntryKey:v6];
+  blockCopy = block;
+  keyCopy = key;
+  v7 = [objc_opt_class() storageQueueNameForEntryKey:keyCopy];
 
   v8 = [PLUtilities workQueueForKey:v7];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__PLCoreStorage_dispatchSyncForEntryKey_withBlock___block_invoke;
   v10[3] = &unk_1E8519B20;
-  v11 = v5;
-  v9 = v5;
+  v11 = blockCopy;
+  v9 = blockCopy;
   [PLUtilities dispatchSyncIfNotCallerQueue:v8 withBlock:v10];
 }
 
@@ -4266,26 +4266,26 @@ int64_t __43__PLCoreStorage_generalEntryCacheSizeLimit__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)writeEntries:(id)a3 withCompletionBlock:(id)a4
+- (void)writeEntries:(id)entries withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  entriesCopy = entries;
+  blockCopy = block;
+  if ([entriesCopy count])
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__4;
     v22 = __Block_byref_object_dispose__4;
-    v23 = v6;
+    v23 = entriesCopy;
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy__732;
     v16[4] = __Block_byref_object_dispose__733;
-    v17 = MEMORY[0x1DA71B0D0](v7);
+    v17 = MEMORY[0x1DA71B0D0](blockCopy);
     v8 = [v19[5] objectAtIndexedSubscript:0];
-    v9 = [v8 entryKey];
+    entryKey = [v8 entryKey];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__PLCoreStorage_writeEntries_withCompletionBlock___block_invoke;
@@ -4293,7 +4293,7 @@ int64_t __43__PLCoreStorage_generalEntryCacheSizeLimit__block_invoke(uint64_t a1
     v15[4] = self;
     v15[5] = &v18;
     v15[6] = v16;
-    [(PLCoreStorage *)self dispatchAsyncForEntryKey:v9 withBlock:v15];
+    [(PLCoreStorage *)self dispatchAsyncForEntryKey:entryKey withBlock:v15];
 
     _Block_object_dispose(v16, 8);
     _Block_object_dispose(&v18, 8);
@@ -4303,9 +4303,9 @@ int64_t __43__PLCoreStorage_generalEntryCacheSizeLimit__block_invoke(uint64_t a1
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"writeEntries: ERROR, no entries to write"];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-    v12 = [v11 lastPathComponent];
+    lastPathComponent = [v11 lastPathComponent];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeEntries:withCompletionBlock:]"];
-    [PLCoreStorage logMessage:v10 fromFile:v12 fromFunction:v13 fromLineNumber:1621];
+    [PLCoreStorage logMessage:v10 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:1621];
 
     v14 = PLLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -4363,9 +4363,9 @@ uint64_t __50__PLCoreStorage_writeEntries_withCompletionBlock___block_invoke(uin
   return result;
 }
 
-- (int64_t)writeEntry:(id)a3
+- (int64_t)writeEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -4381,11 +4381,11 @@ uint64_t __50__PLCoreStorage_writeEntries_withCompletionBlock___block_invoke(uin
 
     if (writeEntry__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", v4, block, v15, v16, v17, v18];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", entryCopy, block, v15, v16, v17, v18];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeEntry:]"];
-      [PLCoreStorage logMessage:v6 fromFile:v8 fromFunction:v9 fromLineNumber:1641];
+      [PLCoreStorage logMessage:v6 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1641];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -4396,7 +4396,7 @@ uint64_t __50__PLCoreStorage_writeEntries_withCompletionBlock___block_invoke(uin
   }
 
   v11 = +[PLStorageCache sharedStorageCache];
-  v12 = [v11 addToStagingEntryCache:v4];
+  v12 = [v11 addToStagingEntryCache:entryCopy];
 
   [(PLCoreStorage *)self checkCacheSizeForFlush];
   return v12;
@@ -4409,10 +4409,10 @@ BOOL __28__PLCoreStorage_writeEntry___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)writeEntry:(id)a3 withCompletionBlock:(id)a4
+- (void)writeEntry:(id)entry withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  blockCopy = block;
   if (+[PLDefaults debugEnabled])
   {
     v8 = objc_opt_class();
@@ -4428,11 +4428,11 @@ BOOL __28__PLCoreStorage_writeEntry___block_invoke(uint64_t a1)
 
     if (writeEntry_withCompletionBlock__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", v6];
+      entryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", entryCopy];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeEntry:withCompletionBlock:]"];
-      [PLCoreStorage logMessage:v9 fromFile:v11 fromFunction:v12 fromLineNumber:1651];
+      [PLCoreStorage logMessage:entryCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:1651];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -4442,21 +4442,21 @@ BOOL __28__PLCoreStorage_writeEntry___block_invoke(uint64_t a1)
     }
   }
 
-  if (v6)
+  if (entryCopy)
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__4;
     v22 = __Block_byref_object_dispose__4;
-    v23 = v6;
+    v23 = entryCopy;
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x3032000000;
     v16[3] = __Block_byref_object_copy__732;
     v16[4] = __Block_byref_object_dispose__733;
-    v17 = MEMORY[0x1DA71B0D0](v7);
-    v14 = [v19[5] entryKey];
+    v17 = MEMORY[0x1DA71B0D0](blockCopy);
+    entryKey = [v19[5] entryKey];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __48__PLCoreStorage_writeEntry_withCompletionBlock___block_invoke_737;
@@ -4464,7 +4464,7 @@ BOOL __28__PLCoreStorage_writeEntry___block_invoke(uint64_t a1)
     v15[4] = self;
     v15[5] = &v18;
     v15[6] = v16;
-    [(PLCoreStorage *)self dispatchAsyncForEntryKey:v14 withBlock:v15];
+    [(PLCoreStorage *)self dispatchAsyncForEntryKey:entryKey withBlock:v15];
 
     _Block_object_dispose(v16, 8);
     _Block_object_dispose(&v18, 8);
@@ -4491,16 +4491,16 @@ void __48__PLCoreStorage_writeEntry_withCompletionBlock___block_invoke_737(uint6
   objc_autoreleasePoolPop(v2);
 }
 
-- (int64_t)blockingWriteEntry:(id)a3 withCompletionBlock:(id)a4
+- (int64_t)blockingWriteEntry:(id)entry withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  entryCopy = entry;
+  blockCopy = block;
+  if (entryCopy)
   {
-    v8 = [(PLCoreStorage *)self writeEntry:v6];
-    if (v7)
+    v8 = [(PLCoreStorage *)self writeEntry:entryCopy];
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -4512,37 +4512,37 @@ void __48__PLCoreStorage_writeEntry_withCompletionBlock___block_invoke_737(uint6
   return v8;
 }
 
-- (void)_updateEntry:(id)a3 withBlock:(id)a4
+- (void)_updateEntry:(id)entry withBlock:(id)block
 {
-  if (a3)
+  if (entry)
   {
-    v6 = a4;
-    v7 = a3;
+    blockCopy = block;
+    entryCopy = entry;
     v8 = +[PLStorageCache sharedStorageCache];
-    [v8 updateStagingEntryCacheWithEntry:v7 withBlock:v6];
+    [v8 updateStagingEntryCacheWithEntry:entryCopy withBlock:blockCopy];
 
     [(PLCoreStorage *)self checkCacheSizeForFlush];
   }
 }
 
-- (void)updateEntry:(id)a3 withBlock:(id)a4
+- (void)updateEntry:(id)entry withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  blockCopy = block;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy__4;
   v13[4] = __Block_byref_object_dispose__4;
-  v8 = v6;
+  v8 = entryCopy;
   v14 = v8;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__732;
   v11[4] = __Block_byref_object_dispose__733;
-  v12 = MEMORY[0x1DA71B0D0](v7);
-  v9 = [v8 entryKey];
+  v12 = MEMORY[0x1DA71B0D0](blockCopy);
+  entryKey = [v8 entryKey];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__PLCoreStorage_updateEntry_withBlock___block_invoke;
@@ -4550,42 +4550,42 @@ void __48__PLCoreStorage_writeEntry_withCompletionBlock___block_invoke_737(uint6
   v10[4] = self;
   v10[5] = v13;
   v10[6] = v11;
-  [(PLCoreStorage *)self dispatchAsyncForEntryKey:v9 withBlock:v10];
+  [(PLCoreStorage *)self dispatchAsyncForEntryKey:entryKey withBlock:v10];
 
   _Block_object_dispose(v11, 8);
   _Block_object_dispose(v13, 8);
 }
 
-- (void)writeProportionateAggregateEntry:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5
+- (void)writeProportionateAggregateEntry:(id)entry withStartDate:(id)date withEndDate:(id)endDate
 {
   v102 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 timeIntervalSinceDate:v9];
+  entryCopy = entry;
+  dateCopy = date;
+  endDateCopy = endDate;
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   if (v11 <= 0.0)
   {
-    v52 = self;
+    selfCopy = self;
 LABEL_28:
-    [(PLCoreStorage *)v52 writeAggregateEntry:v8];
+    [(PLCoreStorage *)selfCopy writeAggregateEntry:entryCopy];
     goto LABEL_43;
   }
 
   v12 = v11;
-  v13 = [v8 entryKey];
-  v14 = [PLEntryDefinition isAggregateWallClockBucket:v13];
+  entryKey = [entryCopy entryKey];
+  v14 = [PLEntryDefinition isAggregateWallClockBucket:entryKey];
 
   v15 = +[PLTimeManager sharedInstance];
-  v83 = self;
+  selfCopy2 = self;
   v16 = v14;
-  v17 = [v15 bucketTimeStampForDate:v10 withTimeReference:v14 withBucketInterval:3600];
+  v17 = [v15 bucketTimeStampForDate:endDateCopy withTimeReference:v14 withBucketInterval:3600];
 
   v18 = +[PLTimeManager sharedInstance];
-  v19 = v83;
-  v20 = [v18 bucketTimeStampForDate:v9 withTimeReference:v16 withBucketInterval:3600];
+  v19 = selfCopy2;
+  v20 = [v18 bucketTimeStampForDate:dateCopy withTimeReference:v16 withBucketInterval:3600];
 
-  v87 = v8;
-  v82 = v9;
+  v87 = entryCopy;
+  v82 = dateCopy;
   if (+[PLDefaults debugEnabled])
   {
     v21 = objc_opt_class();
@@ -4604,11 +4604,11 @@ LABEL_28:
 
     if (v22 == 1)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Split Entry: startDate: %@, endDate: %@", v9, v10];
+      endDateCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Split Entry: startDate: %@, endDate: %@", dateCopy, endDateCopy];
       v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v25 = [v24 lastPathComponent];
+      lastPathComponent = [v24 lastPathComponent];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeProportionateAggregateEntry:withStartDate:withEndDate:]"];
-      [PLCoreStorage logMessage:v23 fromFile:v25 fromFunction:v26 fromLineNumber:1717];
+      [PLCoreStorage logMessage:endDateCopy fromFile:lastPathComponent fromFunction:v26 fromLineNumber:1717];
 
       v27 = PLLogCommon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -4616,9 +4616,9 @@ LABEL_28:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v8 = v87;
-      v9 = v82;
-      v19 = v83;
+      entryCopy = v87;
+      dateCopy = v82;
+      v19 = selfCopy2;
     }
   }
 
@@ -4648,9 +4648,9 @@ LABEL_28:
       v35 = [v32 stringWithFormat:@"Split Entry: startHourBoundary: %@, endHourBoundary: %@", v33, v34];
 
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v37 = [v36 lastPathComponent];
+      lastPathComponent2 = [v36 lastPathComponent];
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeProportionateAggregateEntry:withStartDate:withEndDate:]"];
-      [PLCoreStorage logMessage:v35 fromFile:v37 fromFunction:v38 fromLineNumber:1718];
+      [PLCoreStorage logMessage:v35 fromFile:lastPathComponent2 fromFunction:v38 fromLineNumber:1718];
 
       v39 = PLLogCommon();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -4658,8 +4658,8 @@ LABEL_28:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v9 = v82;
-      v19 = v83;
+      dateCopy = v82;
+      v19 = selfCopy2;
     }
   }
 
@@ -4684,9 +4684,9 @@ LABEL_28:
     {
       v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Split Entry: numberOfIntermediateHourTicks = %d", v40];
       v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v44 = [v43 lastPathComponent];
+      lastPathComponent3 = [v43 lastPathComponent];
       v45 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeProportionateAggregateEntry:withStartDate:withEndDate:]"];
-      [PLCoreStorage logMessage:v40 fromFile:v44 fromFunction:v45 fromLineNumber:1720];
+      [PLCoreStorage logMessage:v40 fromFile:lastPathComponent3 fromFunction:v45 fromLineNumber:1720];
 
       v46 = PLLogCommon();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -4694,24 +4694,24 @@ LABEL_28:
         [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
       }
 
-      v9 = v82;
-      v19 = v83;
+      dateCopy = v82;
+      v19 = selfCopy2;
       LODWORD(v40) = ((v28 - v29) / 3600.0);
     }
   }
 
   if (!v40)
   {
-    v52 = v19;
+    selfCopy = v19;
     goto LABEL_28;
   }
 
-  [v9 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v48 = v47;
-  [v10 timeIntervalSince1970];
+  [endDateCopy timeIntervalSince1970];
   v50 = v49;
-  v86 = [v8 copy];
-  v51 = [v8 copy];
+  v86 = [entryCopy copy];
+  v51 = [entryCopy copy];
   if (v40 == 1)
   {
     v85 = 0;
@@ -4719,12 +4719,12 @@ LABEL_28:
 
   else
   {
-    v85 = [v8 copy];
+    v85 = [entryCopy copy];
   }
 
   v53 = MEMORY[0x1E695DFA8];
-  v54 = [v8 entryDefinition];
-  v55 = [PLEntryDefinition allAggregateKeysForEntryDefinition:v54];
+  entryDefinition = [entryCopy entryDefinition];
+  v55 = [PLEntryDefinition allAggregateKeysForEntryDefinition:entryDefinition];
   v56 = [v53 setWithArray:v55];
 
   v90 = 0u;
@@ -4779,11 +4779,11 @@ LABEL_28:
     while (v58);
   }
 
-  v9 = v82;
+  dateCopy = v82;
   [v86 setEntryDate:v82];
-  [v51 setEntryDate:v10];
-  [(PLCoreStorage *)v83 writeAggregateEntry:v86];
-  [(PLCoreStorage *)v83 writeAggregateEntry:v51];
+  [v51 setEntryDate:endDateCopy];
+  [(PLCoreStorage *)selfCopy2 writeAggregateEntry:v86];
+  [(PLCoreStorage *)selfCopy2 writeAggregateEntry:v51];
   if (v40 != 1)
   {
     v78 = 1;
@@ -4793,14 +4793,14 @@ LABEL_28:
       v80 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v29 + v78 * 3600.0];
       [v79 setEntryDate:v80];
 
-      [(PLCoreStorage *)v83 writeAggregateEntry:v79];
+      [(PLCoreStorage *)selfCopy2 writeAggregateEntry:v79];
       ++v78;
     }
 
     while (v40 != v78);
   }
 
-  v8 = v87;
+  entryCopy = v87;
 LABEL_43:
 
   v81 = *MEMORY[0x1E69E9840];
@@ -4827,9 +4827,9 @@ BOOL __76__PLCoreStorage_writeProportionateAggregateEntry_withStartDate_withEndD
   return result;
 }
 
-- (void)writeAggregateEntry:(id)a3
+- (void)writeAggregateEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   if (+[PLDefaults debugEnabled])
   {
     v5 = objc_opt_class();
@@ -4848,11 +4848,11 @@ BOOL __76__PLCoreStorage_writeProportionateAggregateEntry_withStartDate_withEndD
 
     if (v6 == 1)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", v4];
+      entryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"entry=%@", entryCopy];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage writeAggregateEntry:]"];
-      [PLCoreStorage logMessage:v7 fromFile:v9 fromFunction:v10 fromLineNumber:1771];
+      [PLCoreStorage logMessage:entryCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:1771];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -4862,15 +4862,15 @@ BOOL __76__PLCoreStorage_writeProportionateAggregateEntry_withStartDate_withEndD
     }
   }
 
-  v12 = [v4 entryKey];
+  entryKey = [entryCopy entryKey];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __37__PLCoreStorage_writeAggregateEntry___block_invoke_756;
   v14[3] = &unk_1E8519100;
-  v15 = v4;
-  v16 = self;
-  v13 = v4;
-  [(PLCoreStorage *)self dispatchAsyncForEntryKey:v12 withBlock:v14];
+  v15 = entryCopy;
+  selfCopy = self;
+  v13 = entryCopy;
+  [(PLCoreStorage *)self dispatchAsyncForEntryKey:entryKey withBlock:v14];
 }
 
 BOOL __37__PLCoreStorage_writeAggregateEntry___block_invoke(uint64_t a1)
@@ -5211,39 +5211,39 @@ BOOL __37__PLCoreStorage_writeAggregateEntry___block_invoke_775(uint64_t a1)
   return result;
 }
 
-- (void)setAllNullValuesForEntryKey:(id)a3 forKey:(id)a4 toValue:(id)a5 withFilters:(id)a6
+- (void)setAllNullValuesForEntryKey:(id)key forKey:(id)forKey toValue:(id)value withFilters:(id)filters
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  forKeyCopy = forKey;
+  valueCopy = value;
+  filtersCopy = filters;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__4;
   v34 = __Block_byref_object_dispose__4;
-  v14 = v10;
+  v14 = keyCopy;
   v35 = v14;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__4;
   v28 = __Block_byref_object_dispose__4;
-  v15 = v11;
+  v15 = forKeyCopy;
   v29 = v15;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__4;
   v22[4] = __Block_byref_object_dispose__4;
-  v16 = v12;
+  v16 = valueCopy;
   v23 = v16;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = __Block_byref_object_copy__4;
   v20[4] = __Block_byref_object_dispose__4;
-  v17 = v13;
+  v17 = filtersCopy;
   v21 = v17;
   [(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v25[5]];
   v18 = v31[5];
@@ -5271,18 +5271,18 @@ void __72__PLCoreStorage_setAllNullValuesForEntryKey_forKey_toValue_withFilters_
   [v2 setAllNullValuesForEntryKey:*(*(*(a1 + 40) + 8) + 40) forKey:*(*(*(a1 + 48) + 8) + 40) toValue:*(*(*(a1 + 56) + 8) + 40) withFilters:*(*(*(a1 + 64) + 8) + 40)];
 }
 
-- (void)loadDynamicValuesIntoEntry:(id)a3
+- (void)loadDynamicValuesIntoEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 entryKey];
+  entryCopy = entry;
+  entryKey = [entryCopy entryKey];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PLCoreStorage_loadDynamicValuesIntoEntry___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(PLCoreStorage *)self dispatchSyncForEntryKey:v5 withBlock:v7];
+  v8 = entryCopy;
+  v6 = entryCopy;
+  [(PLCoreStorage *)self dispatchSyncForEntryKey:entryKey withBlock:v7];
 }
 
 void __44__PLCoreStorage_loadDynamicValuesIntoEntry___block_invoke(uint64_t a1)
@@ -5294,31 +5294,31 @@ void __44__PLCoreStorage_loadDynamicValuesIntoEntry___block_invoke(uint64_t a1)
   [v3 loadArrayValuesIntoEntry:*(a1 + 40)];
 }
 
-- (void)deleteEntry:(id)a3
+- (void)deleteEntry:(id)entry
 {
-  v4 = a3;
-  v6 = [v4 entryKey];
-  v5 = [v4 entryID];
+  entryCopy = entry;
+  entryKey = [entryCopy entryKey];
+  entryID = [entryCopy entryID];
 
-  [(PLCoreStorage *)self deleteEntryForKey:v6 WithRowID:v5];
+  [(PLCoreStorage *)self deleteEntryForKey:entryKey WithRowID:entryID];
 }
 
-- (void)deleteEntryForKey:(id)a3 WithRowID:(int64_t)a4
+- (void)deleteEntryForKey:(id)key WithRowID:(int64_t)d
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__4;
   v15 = __Block_byref_object_dispose__4;
-  v6 = a3;
-  v16 = v6;
+  keyCopy = key;
+  v16 = keyCopy;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
-  v10[3] = a4;
-  [(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v6];
+  v10[3] = d;
+  [(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:keyCopy];
   v7 = +[PLStorageCache sharedStorageCache];
-  [v7 clearLastEntryCacheForEntryKey:v6];
+  [v7 clearLastEntryCacheForEntryKey:keyCopy];
 
   v8 = v12[5];
   v9[0] = MEMORY[0x1E69E9820];
@@ -5339,32 +5339,32 @@ void __45__PLCoreStorage_deleteEntryForKey_WithRowID___block_invoke(uint64_t a1)
   [v2 deleteEntryForKey:*(*(*(a1 + 40) + 8) + 40) withRowID:*(*(*(a1 + 48) + 8) + 24)];
 }
 
-- (void)deleteAllEntriesForKey:(id)a3 beforeTimestamp:(id)a4 withFilters:(id)a5
+- (void)deleteAllEntriesForKey:(id)key beforeTimestamp:(id)timestamp withFilters:(id)filters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  keyCopy = key;
+  timestampCopy = timestamp;
+  filtersCopy = filters;
+  if (keyCopy)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x3032000000;
     v22 = __Block_byref_object_copy__4;
     v23 = __Block_byref_object_dispose__4;
-    v11 = v8;
+    v11 = keyCopy;
     v24 = v11;
     v17[0] = 0;
     v17[1] = v17;
     v17[2] = 0x3032000000;
     v17[3] = __Block_byref_object_copy__4;
     v17[4] = __Block_byref_object_dispose__4;
-    v18 = v9;
+    v18 = timestampCopy;
     v15[0] = 0;
     v15[1] = v15;
     v15[2] = 0x3032000000;
     v15[3] = __Block_byref_object_copy__4;
     v15[4] = __Block_byref_object_dispose__4;
-    v16 = v10;
+    v16 = filtersCopy;
     [(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v11];
     v12 = +[PLStorageCache sharedStorageCache];
     [v12 clearLastEntryCacheForEntryKey:v11];
@@ -5413,16 +5413,16 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
   [v6 deleteAllEntriesForKey:*(*(*(a1 + 56) + 8) + 40) withFilters:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (int64_t)countOfEntriesForKey:(id)a3
+- (int64_t)countOfEntriesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[PLStorageCache sharedStorageCache];
-  v6 = [v5 stagingEntryCacheSizeForEntryKey:v4];
+  v6 = [v5 stagingEntryCacheSizeForEntryKey:keyCopy];
 
-  v7 = [(PLCoreStorage *)self connection];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT COUNT(ID) AS count FROM %@", v4];;
+  connection = [(PLCoreStorage *)self connection];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT COUNT(ID) AS count FROM %@", keyCopy];;
 
-  v9 = [v7 performQuery:v8];
+  v9 = [connection performQuery:keyCopy];
 
   if ([v9 count])
   {
@@ -5434,13 +5434,13 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
   return v6;
 }
 
-- (void)processEntriesForKey:(id)a3 withProperties:(id)a4 withBlock:(id)a5
+- (void)processEntriesForKey:(id)key withProperties:(id)properties withBlock:(id)block
 {
   v73 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v39 = a4;
-  v7 = a5;
-  if (v7)
+  keyCopy = key;
+  propertiesCopy = properties;
+  blockCopy = block;
+  if (blockCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -5455,16 +5455,16 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
 
     v8 = processEntriesForKey_withProperties_withBlock__objectForKey;
 
-    v9 = [v39 objectForKeyedSubscript:@"__NOCACHEDUMP__"];
-    if (!v9 || ([v39 objectForKeyedSubscript:@"__NOCACHEDUMP__"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, v9, (v11 & 1) == 0))
+    v9 = [propertiesCopy objectForKeyedSubscript:@"__NOCACHEDUMP__"];
+    if (!v9 || ([propertiesCopy objectForKeyedSubscript:@"__NOCACHEDUMP__"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, v9, (v11 & 1) == 0))
     {
-      if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v38]&& +[PLDefaults debugEnabled])
+      if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:keyCopy]&& +[PLDefaults debugEnabled])
       {
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for properties: %@", v39];
+        propertiesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for properties: %@", propertiesCopy];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent = [v13 lastPathComponent];
         v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage processEntriesForKey:withProperties:withBlock:]"];
-        [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:1915];
+        [PLCoreStorage logMessage:propertiesCopy fromFile:lastPathComponent fromFunction:v15 fromLineNumber:1915];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5479,20 +5479,20 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
     v63[2] = 0x3032000000;
     v63[3] = __Block_byref_object_copy__4;
     v63[4] = __Block_byref_object_dispose__4;
-    v17 = v38;
+    v17 = keyCopy;
     v64 = v17;
     v61[0] = 0;
     v61[1] = v61;
     v61[2] = 0x3032000000;
     v61[3] = __Block_byref_object_copy__4;
     v61[4] = __Block_byref_object_dispose__4;
-    v62 = v39;
+    v62 = propertiesCopy;
     v55 = 0;
     v56 = &v55;
     v57 = 0x3032000000;
     v58 = __Block_byref_object_copy__4;
     v59 = __Block_byref_object_dispose__4;
-    v60 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_invoke_798;
@@ -5502,7 +5502,7 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
     v54[6] = v61;
     v54[7] = &v55;
     [(PLCoreStorage *)self dispatchSyncForEntryKey:v17 withBlock:v54];
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v19 = 0;
     while (1)
     {
@@ -5524,14 +5524,14 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
       }
 
       v22 = [v56[5] subarrayWithRange:{v20, v19 - v20}];
-      [v18 addObject:v22];
+      [array2 addObject:v22];
     }
 
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = v18;
+    obj = array2;
     v23 = [obj countByEnumeratingWithState:&v50 objects:v72 count:16];
     if (v23)
     {
@@ -5582,7 +5582,7 @@ void __68__PLCoreStorage_deleteAllEntriesForKey_beforeTimestamp_withFilters___bl
 
                 v35 = *(*(&v46 + 1) + 8 * i);
                 v36 = objc_autoreleasePoolPush();
-                v7[2](v7, v35);
+                blockCopy[2](blockCopy, v35);
                 objc_autoreleasePoolPop(v36);
               }
 
@@ -5672,20 +5672,20 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entriesForKey:(id)a3 withProperties:(id)a4
+- (id)entriesForKey:(id)key withProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"__NOCACHEDUMP__"];
-  if (!v8 || (v9 = v8, [v7 objectForKeyedSubscript:@"__NOCACHEDUMP__"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, v9, (v11 & 1) == 0))
+  keyCopy = key;
+  propertiesCopy = properties;
+  v8 = [propertiesCopy objectForKeyedSubscript:@"__NOCACHEDUMP__"];
+  if (!v8 || (v9 = v8, [propertiesCopy objectForKeyedSubscript:@"__NOCACHEDUMP__"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "BOOLValue"), v10, v9, (v11 & 1) == 0))
   {
-    if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v6]&& +[PLDefaults debugEnabled])
+    if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:keyCopy]&& +[PLDefaults debugEnabled])
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for properties: %@", v7];
+      propertiesCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for properties: %@", propertiesCopy];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage entriesForKey:withProperties:]"];
-      [PLCoreStorage logMessage:v12 fromFile:v14 fromFunction:v15 fromLineNumber:1979];
+      [PLCoreStorage logMessage:propertiesCopy fromFile:lastPathComponent fromFunction:v15 fromLineNumber:1979];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -5698,8 +5698,8 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
   v17 = os_transaction_create();
   v18 = objc_autoreleasePoolPush();
   v19 = +[PLStorageCache sharedStorageCache];
-  v20 = [v19 connectionForKey:v6];
-  v21 = [v20 entriesForKey:v6 withProperties:v7];
+  v20 = [v19 connectionForKey:keyCopy];
+  v21 = [v20 entriesForKey:keyCopy withProperties:propertiesCopy];
 
   objc_autoreleasePoolPop(v18);
   v22 = PLLogCommon();
@@ -5721,14 +5721,14 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
   return v21;
 }
 
-- (id)entriesForKey:(id)a3 withComparisons:(id)a4
+- (id)entriesForKey:(id)key withComparisons:(id)comparisons
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  comparisonsCopy = comparisons;
+  if (keyCopy)
   {
-    v32 = self;
+    selfCopy = self;
     v8 = PLLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
@@ -5736,10 +5736,10 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
     }
 
     v9 = +[PLStorageCache sharedStorageCache];
-    v10 = [v9 stagingEntryCacheIDsForEntryKey:v6];
+    v10 = [v9 stagingEntryCacheIDsForEntryKey:keyCopy];
 
     v11 = +[PLStorageCache sharedStorageCache];
-    v12 = [v11 stagingEntryCacheForEntryKey:v6 withComparisons:v7 isSingleton:0];
+    v12 = [v11 stagingEntryCacheForEntryKey:keyCopy withComparisons:comparisonsCopy isSingleton:0];
 
     v13 = PLLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -5753,12 +5753,12 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
       [PLCoreStorage entriesForKey:withComparisons:];
     }
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v16 = v7;
+    v16 = comparisonsCopy;
     v17 = [v16 countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v17)
     {
@@ -5773,8 +5773,8 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v33 + 1) + 8 * i) sqlWhereClause];
-          [v15 addObject:v21];
+          sqlWhereClause = [*(*(&v33 + 1) + 8 * i) sqlWhereClause];
+          [array addObject:sqlWhereClause];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v33 objects:v39 count:16];
@@ -5786,18 +5786,18 @@ void __63__PLCoreStorage_processEntriesForKey_withProperties_withBlock___block_i
     if ([v10 count])
     {
       v22 = MEMORY[0x1E696AEC0];
-      v23 = [v10 allObjects];
-      v24 = [v23 componentsJoinedByString:{@", "}];
+      allObjects = [v10 allObjects];
+      v24 = [allObjects componentsJoinedByString:{@", "}];
       v25 = [v22 stringWithFormat:@"ID NOT IN (%@)", v24];
-      [v15 addObject:v25];
+      [array addObject:v25];
     }
 
     v37[0] = @"where";
     v37[1] = @"__NOCACHEDUMP__";
-    v38[0] = v15;
+    v38[0] = array;
     v38[1] = MEMORY[0x1E695E118];
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
-    v27 = [(PLCoreStorage *)v32 entriesForKey:v6 withProperties:v26];
+    v27 = [(PLCoreStorage *)selfCopy entriesForKey:keyCopy withProperties:v26];
 
     v28 = [MEMORY[0x1E695DF70] arrayWithArray:v12];
     [v28 addObjectsFromArray:v27];
@@ -5828,17 +5828,17 @@ uint64_t __47__PLCoreStorage_entriesForKey_withComparisons___block_invoke(uint64
   return v10;
 }
 
-- (id)entriesForKey:(id)a3 withQuery:(id)a4
+- (id)entriesForKey:(id)key withQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:v6]&& +[PLDefaults debugEnabled])
+  keyCopy = key;
+  queryCopy = query;
+  if ([(PLCoreStorage *)self flushCachesIfRequiredForEntryKey:keyCopy]&& +[PLDefaults debugEnabled])
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for query: %@", v7];
+    queryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cache dumped for query: %@", queryCopy];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-    v10 = [v9 lastPathComponent];
+    lastPathComponent = [v9 lastPathComponent];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage entriesForKey:withQuery:]"];
-    [PLCoreStorage logMessage:v8 fromFile:v10 fromFunction:v11 fromLineNumber:2036];
+    [PLCoreStorage logMessage:queryCopy fromFile:lastPathComponent fromFunction:v11 fromLineNumber:2036];
 
     v12 = PLLogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -5859,9 +5859,9 @@ uint64_t __47__PLCoreStorage_entriesForKey_withComparisons___block_invoke(uint64
   v17[3] = &unk_1E85194A0;
   v20 = &v21;
   v17[4] = self;
-  v13 = v6;
+  v13 = keyCopy;
   v18 = v13;
-  v14 = v7;
+  v14 = queryCopy;
   v19 = v14;
   [(PLCoreStorage *)self dispatchSyncForEntryKey:v13 withBlock:v17];
   v15 = v22[5];
@@ -5880,48 +5880,48 @@ void __41__PLCoreStorage_entriesForKey_withQuery___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)entriesForKey:(id)a3 inTimeRange:(_PLTimeIntervalRange)a4 withFilters:(id)a5
+- (id)entriesForKey:(id)key inTimeRange:(_PLTimeIntervalRange)range withFilters:(id)filters
 {
-  location = a4.location;
+  location = range.location;
   v20[2] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DF70];
   v9 = MEMORY[0x1E696AEC0];
-  v10 = a4.location + a4.length;
-  v11 = a5;
-  v12 = a3;
+  v10 = range.location + range.length;
+  filtersCopy = filters;
+  keyCopy = key;
   v13 = [v9 stringWithFormat:@"timestamp BETWEEN %f AND %f", *&location, *&v10];
   v14 = [v8 arrayWithObject:v13];
 
-  [v14 addObjectsFromArray:v11];
+  [v14 addObjectsFromArray:filtersCopy];
   v19[0] = @"where";
   v19[1] = @"order by";
   v20[0] = v14;
   v20[1] = &unk_1F540CBA8;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-  v16 = [(PLCoreStorage *)self entriesForKey:v12 withProperties:v15];
+  v16 = [(PLCoreStorage *)self entriesForKey:keyCopy withProperties:v15];
 
   v17 = *MEMORY[0x1E69E9840];
 
   return v16;
 }
 
-- (id)entriesForKey:(id)a3 inTimeRange:(_PLTimeIntervalRange)a4 withCountOfEntriesBefore:(int64_t)a5 withCountOfEntriesAfter:(int64_t)a6 withFilters:(id)a7
+- (id)entriesForKey:(id)key inTimeRange:(_PLTimeIntervalRange)range withCountOfEntriesBefore:(int64_t)before withCountOfEntriesAfter:(int64_t)after withFilters:(id)filters
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v13 = MEMORY[0x1E695DF70];
-  v14 = a7;
-  v15 = a3;
-  v16 = [(PLCoreStorage *)self entriesForKey:v15 inTimeRange:v14 withFilters:location, length];
+  filtersCopy = filters;
+  keyCopy = key;
+  v16 = [(PLCoreStorage *)self entriesForKey:keyCopy inTimeRange:filtersCopy withFilters:location, length];
   v17 = [v13 arrayWithArray:v16];
 
   if ([v17 count])
   {
-    v18 = [v17 firstObject];
-    v19 = [v18 entryID];
+    firstObject = [v17 firstObject];
+    entryID = [firstObject entryID];
 
-    v20 = [v17 lastObject];
-    v21 = [v20 entryID];
+    lastObject = [v17 lastObject];
+    entryID2 = [lastObject entryID];
 
     if (+[PLDefaults debugEnabled])
     {
@@ -5941,13 +5941,13 @@ void __41__PLCoreStorage_entriesForKey_withQuery___block_invoke(uint64_t a1)
 
       if (v23 == 1)
       {
-        v34 = v21;
-        v35 = a6;
-        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"first=%lld last=%lld", v19, v21];
+        v34 = entryID2;
+        afterCopy = after;
+        v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"first=%lld last=%lld", entryID, entryID2];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-        v26 = [v25 lastPathComponent];
+        lastPathComponent = [v25 lastPathComponent];
         v27 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage entriesForKey:inTimeRange:withCountOfEntriesBefore:withCountOfEntriesAfter:withFilters:]"];
-        [PLCoreStorage logMessage:v24 fromFile:v26 fromFunction:v27 fromLineNumber:2061];
+        [PLCoreStorage logMessage:v24 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:2061];
 
         v28 = PLLogCommon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -5955,23 +5955,23 @@ void __41__PLCoreStorage_entriesForKey_withQuery___block_invoke(uint64_t a1)
           [PLSubmissionFile logSubmissionResultToCAWithErrorType:withFileType:withOverrideKeys:];
         }
 
-        v21 = v34;
-        a6 = v35;
+        entryID2 = v34;
+        after = afterCopy;
       }
     }
 
-    v29 = [(PLCoreStorage *)self entriesForKey:v15 startingFromRowID:v19 + 1 count:a5 withFilters:v14];
+    v29 = [(PLCoreStorage *)self entriesForKey:keyCopy startingFromRowID:entryID + 1 count:before withFilters:filtersCopy];
     [v17 addObjectsFromArray:v29];
 
-    v30 = [(PLCoreStorage *)self entriesForKey:v15 startingFromRowID:v21 - 1 count:-a6 withFilters:v14];
+    v30 = [(PLCoreStorage *)self entriesForKey:keyCopy startingFromRowID:entryID2 - 1 count:-after withFilters:filtersCopy];
   }
 
   else
   {
-    v31 = [(PLCoreStorage *)self entriesForKey:v15 before:1 timeInterval:a5 count:v14 withFilters:location];
+    v31 = [(PLCoreStorage *)self entriesForKey:keyCopy before:1 timeInterval:before count:filtersCopy withFilters:location];
     [v17 addObjectsFromArray:v31];
 
-    v30 = [(PLCoreStorage *)self entriesForKey:v15 before:0 timeInterval:a6 count:v14 withFilters:location + length];
+    v30 = [(PLCoreStorage *)self entriesForKey:keyCopy before:0 timeInterval:after count:filtersCopy withFilters:location + length];
   }
 
   v32 = v30;
@@ -6008,15 +6008,15 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
   return v7;
 }
 
-- (id)entriesForKey:(id)a3 before:(BOOL)a4 timeInterval:(double)a5 count:(int64_t)a6 withFilters:(id)a7
+- (id)entriesForKey:(id)key before:(BOOL)before timeInterval:(double)interval count:(int64_t)count withFilters:(id)filters
 {
-  v9 = a4;
+  beforeCopy = before;
   v28[3] = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = a3;
+  filtersCopy = filters;
+  keyCopy = key;
   v14 = objc_opt_new();
   v15 = @">=";
-  if (v9)
+  if (beforeCopy)
   {
     v15 = @"<=";
     v16 = MEMORY[0x1E695E118];
@@ -6027,10 +6027,10 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
     v16 = MEMORY[0x1E695E110];
   }
 
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"timestamp %@ %f", v15, *&a5];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"timestamp %@ %f", v15, *&interval];
   [v14 addObject:v17];
 
-  [v14 addObjectsFromArray:v12];
+  [v14 addObjectsFromArray:filtersCopy];
   v28[0] = v14;
   v27[0] = @"where";
   v27[1] = @"order by";
@@ -6039,60 +6039,60 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
   v28[1] = v18;
   v27[2] = @"limit";
-  if (a6 >= 0)
+  if (count >= 0)
   {
-    v19 = a6;
+    countCopy = count;
   }
 
   else
   {
-    v19 = -a6;
+    countCopy = -count;
   }
 
-  v20 = [MEMORY[0x1E696AD98] numberWithLongLong:v19];
+  v20 = [MEMORY[0x1E696AD98] numberWithLongLong:countCopy];
   v28[2] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:3];
-  v22 = [(PLCoreStorage *)self entriesForKey:v13 withProperties:v21];
+  v22 = [(PLCoreStorage *)self entriesForKey:keyCopy withProperties:v21];
 
   v23 = *MEMORY[0x1E69E9840];
 
   return v22;
 }
 
-- (id)entryForKey:(id)a3 withID:(int64_t)a4
+- (id)entryForKey:(id)key withID:(int64_t)d
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = +[PLStorageCache sharedStorageCache];
-  v8 = [v7 cachedEntryForEntryKey:v6 withEntryID:a4];
+  v8 = [v7 cachedEntryForEntryKey:keyCopy withEntryID:d];
 
   if (v8)
   {
-    v9 = v8;
+    firstObject = v8;
   }
 
   else
   {
-    v10 = [(PLCoreStorage *)self entriesForKey:v6 startingFromRowID:a4 count:1 withFilters:0];
-    v9 = 0;
+    v10 = [(PLCoreStorage *)self entriesForKey:keyCopy startingFromRowID:d count:1 withFilters:0];
+    firstObject = 0;
     if ([v10 count] == 1)
     {
-      v9 = [v10 firstObject];
+      firstObject = [v10 firstObject];
     }
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)entriesForKey:(id)a3 startingFromRowID:(int64_t)a4 count:(int64_t)a5 withFilters:(id)a6
+- (id)entriesForKey:(id)key startingFromRowID:(int64_t)d count:(int64_t)count withFilters:(id)filters
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  keyCopy = key;
+  filtersCopy = filters;
   v12 = MEMORY[0x1E695E118];
   v13 = MEMORY[0x1E695E110];
-  if (v11)
+  if (filtersCopy)
   {
-    v14 = v11;
+    v14 = filtersCopy;
   }
 
   else
@@ -6101,28 +6101,28 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
   }
 
   v15 = [v14 mutableCopy];
-  if (a5 > 0)
+  if (count > 0)
   {
     v12 = v13;
   }
 
   v16 = @"<=";
-  if (a5 > 0)
+  if (count > 0)
   {
     v16 = @">=";
   }
 
-  if (!a5)
+  if (!count)
   {
     v16 = @"==";
   }
 
-  if (a5 < 0)
+  if (count < 0)
   {
-    a5 = -a5;
+    count = -count;
   }
 
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ID %@ %lld", v16, a4];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ID %@ %lld", v16, d];
   [v15 addObject:v17];
 
   v32[0] = v15;
@@ -6133,14 +6133,14 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
   v32[1] = v18;
   v31[2] = @"limit";
-  v19 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+  v19 = [MEMORY[0x1E696AD98] numberWithLongLong:count];
   v32[2] = v19;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:3];
 
   if ([v15 count] >= 2)
   {
-    v21 = [v15 firstObject];
-    v22 = [v21 isEqualToString:@"__NOCACHEDUMP__"];
+    firstObject = [v15 firstObject];
+    v22 = [firstObject isEqualToString:@"__NOCACHEDUMP__"];
 
     if (v22)
     {
@@ -6153,7 +6153,7 @@ uint64_t __104__PLCoreStorage_entriesForKey_inTimeRange_withCountOfEntriesBefore
     }
   }
 
-  v24 = [(PLCoreStorage *)self entriesForKey:v10 withProperties:v20];
+  v24 = [(PLCoreStorage *)self entriesForKey:keyCopy withProperties:v20];
   if ([v12 isEqual:MEMORY[0x1E695E110]])
   {
     v25 = [v24 sortedArrayUsingComparator:&__block_literal_global_876];
@@ -6190,41 +6190,41 @@ uint64_t __67__PLCoreStorage_entriesForKey_startingFromRowID_count_withFilters__
   return v7;
 }
 
-- (id)firstEntryForKey:(id)a3
+- (id)firstEntryForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = [(PLCoreStorage *)self entriesForKey:a3 withProperties:&unk_1F540CBF8];
+    v3 = [(PLCoreStorage *)self entriesForKey:key withProperties:&unk_1F540CBF8];
     if ([v3 count])
     {
-      v4 = [v3 firstObject];
+      firstObject = [v3 firstObject];
     }
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (id)lastEntryForKey:(id)a3
+- (id)lastEntryForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = +[PLStorageCache sharedStorageCache];
-    v6 = [v5 lastEntryCacheForEntryKey:v4];
+    v6 = [v5 lastEntryCacheForEntryKey:keyCopy];
 
     if (!v6)
     {
-      v6 = [(PLCoreStorage *)self lastEntryForKey:v4 withFilters:&unk_1F540B7A0];
+      v6 = [(PLCoreStorage *)self lastEntryForKey:keyCopy withFilters:&unk_1F540B7A0];
       if (v6)
       {
         v7 = +[PLStorageCache sharedStorageCache];
@@ -6246,15 +6246,15 @@ uint64_t __67__PLCoreStorage_entriesForKey_startingFromRowID_count_withFilters__
   return v9;
 }
 
-- (id)lastEntryForKey:(id)a3 withSubEntryKey:(id)a4
+- (id)lastEntryForKey:(id)key withSubEntryKey:(id)entryKey
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  entryKeyCopy = entryKey;
+  if (keyCopy)
   {
     v8 = +[PLStorageCache sharedStorageCache];
-    v9 = [v8 lastEntryCacheForEntryKey:v6 withSubEntryKey:v7];
+    v9 = [v8 lastEntryCacheForEntryKey:keyCopy withSubEntryKey:entryKeyCopy];
 
     if (v9)
     {
@@ -6263,13 +6263,13 @@ uint64_t __67__PLCoreStorage_entriesForKey_startingFromRowID_count_withFilters__
 
     else
     {
-      v11 = [PLEntryDefinition subEntryKeyKeyForEntryKey:v6];
+      v11 = [PLEntryDefinition subEntryKeyKeyForEntryKey:keyCopy];
       v18[0] = @"__NOCACHEDUMP__";
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ = %@", v11, v7];
-      v18[1] = v12;
+      entryKeyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ = %@", v11, entryKeyCopy];
+      v18[1] = entryKeyCopy;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
-      v14 = [(PLCoreStorage *)self lastEntryForKey:v6 withFilters:v13];
+      v14 = [(PLCoreStorage *)self lastEntryForKey:keyCopy withFilters:v13];
       if (v14)
       {
         v15 = +[PLStorageCache sharedStorageCache];
@@ -6304,31 +6304,31 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
   return result;
 }
 
-- (id)lastEntryForKey:(id)a3 withIDLessThan:(int64_t)a4
+- (id)lastEntryForKey:(id)key withIDLessThan:(int64_t)than
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     v7 = +[PLStorageCache sharedStorageCache];
-    v8 = [v7 lastEntryCacheForEntryKey:v6];
+    v8 = [v7 lastEntryCacheForEntryKey:keyCopy];
 
-    if ([v8 entryID] > a4)
+    if ([v8 entryID] > than)
     {
       v9 = +[PLStorageCache sharedStorageCache];
-      v10 = [v9 stagingEntryCacheForEntryKey:v6 withIDLessThan:a4];
+      v10 = [v9 stagingEntryCacheForEntryKey:keyCopy withIDLessThan:than];
 
-      if ([v10 entryID] <= a4)
+      if ([v10 entryID] <= than)
       {
         v8 = v10;
       }
 
       else
       {
-        v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ID < %lld", a4];
-        v15[0] = v11;
+        than = [MEMORY[0x1E696AEC0] stringWithFormat:@"ID < %lld", than];
+        v15[0] = than;
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-        v8 = [(PLCoreStorage *)self lastEntryForKey:v6 withFilters:v12];
+        v8 = [(PLCoreStorage *)self lastEntryForKey:keyCopy withFilters:v12];
       }
     }
   }
@@ -6343,35 +6343,35 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
   return v8;
 }
 
-- (id)lastEntryForKey:(id)a3 withFilters:(id)a4
+- (id)lastEntryForKey:(id)key withFilters:(id)filters
 {
-  v4 = [(PLCoreStorage *)self lastEntriesForKey:a3 count:1 withFilters:a4];
+  v4 = [(PLCoreStorage *)self lastEntriesForKey:key count:1 withFilters:filters];
   if ([v4 count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
-- (id)lastEntriesForKey:(id)a3 count:(int64_t)a4 withFilters:(id)a5
+- (id)lastEntriesForKey:(id)key count:(int64_t)count withFilters:(id)filters
 {
   v23[4] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  filtersCopy = filters;
+  v9 = filtersCopy;
+  if (key)
   {
-    if (!v8)
+    if (!filtersCopy)
     {
       v9 = MEMORY[0x1E695E0F0];
     }
 
-    v10 = a3;
+    keyCopy = key;
     if ([v9 count] && (objc_msgSend(v9, "firstObject"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isEqualToString:", @"__NOCACHEDUMP__"), v11, v12))
     {
       v13 = [v9 mutableCopy];
@@ -6391,24 +6391,24 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
     v23[0] = v9;
     v23[1] = &unk_1F540CC20;
     v22[2] = @"limit";
-    if (a4 >= 0)
+    if (count >= 0)
     {
-      v15 = a4;
+      countCopy = count;
     }
 
     else
     {
-      v15 = -a4;
+      countCopy = -count;
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v15];
+    v16 = [MEMORY[0x1E696AD98] numberWithLongLong:countCopy];
     v23[2] = v16;
     v22[3] = @"__NOCACHEDUMP__";
     v17 = [MEMORY[0x1E696AD98] numberWithBool:v14];
     v23[3] = v17;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:4];
 
-    v19 = [(PLCoreStorage *)self entriesForKey:v10 withProperties:v18];
+    v19 = [(PLCoreStorage *)self entriesForKey:keyCopy withProperties:v18];
   }
 
   else
@@ -6423,8 +6423,8 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
 
 - (void)removeErroneousQualificationEntries
 {
-  v2 = [(PLCoreStorage *)self connection];
-  v3 = [v2 performQuery:@"DELETE FROM PLAccountingOperator_EventInterval_QualificationEvents WHERE QualificationID = 13;"];
+  connection = [(PLCoreStorage *)self connection];
+  v3 = [connection performQuery:@"DELETE FROM PLAccountingOperator_EventInterval_QualificationEvents WHERE QualificationID = 13;"];
 
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -6434,11 +6434,11 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
   }
 }
 
-- (id)aggregateEntriesForKey:(id)a3 withBucketLength:(double)a4 inTimeIntervalRange:(_PLTimeIntervalRange)a5
+- (id)aggregateEntriesForKey:(id)key withBucketLength:(double)length inTimeIntervalRange:(_PLTimeIntervalRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
+  length = range.length;
+  location = range.location;
+  keyCopy = key;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -6450,11 +6450,11 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
   v23[2] = __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalRange___block_invoke;
   v23[3] = &unk_1E8519BE0;
   v26 = location;
-  v27 = length;
-  v28 = a4;
+  lengthCopy = length;
+  lengthCopy2 = length;
   v25 = &v29;
   v23[4] = self;
-  v10 = v9;
+  v10 = keyCopy;
   v24 = v10;
   [(PLCoreStorage *)self dispatchSyncForEntryKey:v10 withBlock:v23];
   if (+[PLDefaults debugEnabled])
@@ -6477,9 +6477,9 @@ BOOL __61__PLCoreStorage_lastEntryForKey_withComparisons_isSingleton___block_inv
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"entryResults=%@", v30[5]];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Storage/PLCoreStorage.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLCoreStorage aggregateEntriesForKey:withBucketLength:inTimeIntervalRange:]"];
-      [PLCoreStorage logMessage:v13 fromFile:v15 fromFunction:v16 fromLineNumber:2321];
+      [PLCoreStorage logMessage:v13 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:2321];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -6529,44 +6529,44 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
   return result;
 }
 
-+ (id)allOperatorTablesToTrimConditionsForTrimDate:(id)a3
++ (id)allOperatorTablesToTrimConditionsForTrimDate:(id)date
 {
   v78[2] = *MEMORY[0x1E69E9840];
-  v56 = a3;
+  dateCopy = date;
   v3 = +[PowerlogCore sharedCore];
-  v4 = [v3 agents];
-  v78[0] = v4;
+  agents = [v3 agents];
+  v78[0] = agents;
   v5 = +[PowerlogCore sharedCore];
-  v6 = [v5 services];
-  v78[1] = v6;
+  services = [v5 services];
+  v78[1] = services;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
 
   v8 = +[PowerlogCore sharedCore];
-  v9 = [v8 storage];
-  v10 = [v9 storageOperator];
-  v77 = v10;
+  storage = [v8 storage];
+  storageOperator = [storage storageOperator];
+  v77 = storageOperator;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
   v12 = [v11 mutableCopy];
 
   if (!+[PLPlatform isHomePod])
   {
     v13 = +[PowerlogCore sharedCore];
-    v14 = [v13 accounting];
-    [v12 addObject:v14];
+    accounting = [v13 accounting];
+    [v12 addObject:accounting];
   }
 
   v15 = +[PowerlogCore sharedCore];
-  v16 = [v15 agents];
-  v17 = [v16 allOperators];
-  [v12 addObjectsFromArray:v17];
+  agents2 = [v15 agents];
+  allOperators = [agents2 allOperators];
+  [v12 addObjectsFromArray:allOperators];
 
   v18 = +[PowerlogCore sharedCore];
-  v19 = [v18 services];
-  v20 = [v19 allOperators];
+  services2 = [v18 services];
+  allOperators2 = [services2 allOperators];
   v52 = v12;
-  [v12 addObjectsFromArray:v20];
+  [v12 addObjectsFromArray:allOperators2];
 
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -6586,7 +6586,7 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
           objc_enumerationMutation(obj);
         }
 
-        v25 = [*(*(&v69 + 1) + 8 * i) tablesToTrimConditionsForTrimDate:v56];
+        v25 = [*(*(&v69 + 1) + 8 * i) tablesToTrimConditionsForTrimDate:dateCopy];
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
@@ -6606,15 +6606,15 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
               }
 
               v30 = *(*(&v65 + 1) + 8 * j);
-              v31 = [v21 objectForKeyedSubscript:v30];
+              v31 = [dictionary objectForKeyedSubscript:v30];
 
               if (!v31)
               {
-                v32 = [MEMORY[0x1E695DF70] array];
-                [v21 setObject:v32 forKeyedSubscript:v30];
+                array = [MEMORY[0x1E695DF70] array];
+                [dictionary setObject:array forKeyedSubscript:v30];
               }
 
-              v33 = [v21 objectForKeyedSubscript:v30];
+              v33 = [dictionary objectForKeyedSubscript:v30];
               v34 = [v25 objectForKeyedSubscript:v30];
               [v33 addObject:v34];
             }
@@ -6650,13 +6650,13 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
           objc_enumerationMutation(v50);
         }
 
-        v36 = [*(*(&v61 + 1) + 8 * k) tablesToTrimConditionsForTrimDate:v56];
+        v36 = [*(*(&v61 + 1) + 8 * k) tablesToTrimConditionsForTrimDate:dateCopy];
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v37 = [v36 allKeys];
-        v38 = [v37 countByEnumeratingWithState:&v57 objects:v73 count:16];
+        allKeys = [v36 allKeys];
+        v38 = [allKeys countByEnumeratingWithState:&v57 objects:v73 count:16];
         if (v38)
         {
           v39 = v38;
@@ -6667,24 +6667,24 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
             {
               if (*v58 != v40)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(allKeys);
               }
 
               v42 = *(*(&v57 + 1) + 8 * m);
-              v43 = [v21 objectForKeyedSubscript:v42];
+              v43 = [dictionary objectForKeyedSubscript:v42];
 
               if (!v43)
               {
-                v44 = [MEMORY[0x1E695DF70] array];
-                [v21 setObject:v44 forKeyedSubscript:v42];
+                array2 = [MEMORY[0x1E695DF70] array];
+                [dictionary setObject:array2 forKeyedSubscript:v42];
               }
 
-              v45 = [v21 objectForKeyedSubscript:v42];
+              v45 = [dictionary objectForKeyedSubscript:v42];
               v46 = [v36 objectForKeyedSubscript:v42];
               [v45 addObject:v46];
             }
 
-            v39 = [v37 countByEnumeratingWithState:&v57 objects:v73 count:16];
+            v39 = [allKeys countByEnumeratingWithState:&v57 objects:v73 count:16];
           }
 
           while (v39);
@@ -6697,41 +6697,41 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
     while (v55);
   }
 
-  v47 = [PPSSQLStorage trimConditionsForPLSQLWithTrimDate:v56];
-  [v21 addEntriesFromDictionary:v47];
+  v47 = [PPSSQLStorage trimConditionsForPLSQLWithTrimDate:dateCopy];
+  [dictionary addEntriesFromDictionary:v47];
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return dictionary;
 }
 
-- (void)logMessage:(id)a3 fromFile:(id)a4 fromFunction:(id)a5 fromLineNumber:(int64_t)a6
+- (void)logMessage:(id)message fromFile:(id)file fromFunction:(id)function fromLineNumber:(int64_t)number
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PLCoreStorage *)self storageOperator];
+  functionCopy = function;
+  fileCopy = file;
+  messageCopy = message;
+  storageOperator = [(PLCoreStorage *)self storageOperator];
   v17[0] = @"message";
   v17[1] = @"file";
-  v18[0] = v12;
-  v18[1] = v11;
-  v18[2] = v10;
+  v18[0] = messageCopy;
+  v18[1] = fileCopy;
+  v18[2] = functionCopy;
   v17[2] = @"function";
   v17[3] = @"line";
-  v14 = [MEMORY[0x1E696AD98] numberWithLong:a6];
+  v14 = [MEMORY[0x1E696AD98] numberWithLong:number];
   v18[3] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
 
-  [v13 logEventPointPLLog:v15];
+  [storageOperator logEventPointPLLog:v15];
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logMessage:(id)a3 fromFile:(id)a4 fromFunction:(id)a5 fromLineNumber:(int64_t)a6
++ (void)logMessage:(id)message fromFile:(id)file fromFunction:(id)function fromLineNumber:(int64_t)number
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  messageCopy = message;
+  fileCopy = file;
+  functionCopy = function;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PLCoreStorage_logMessage_fromFile_fromFunction_fromLineNumber___block_invoke;
@@ -6762,14 +6762,14 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
 
     if (v13 == 1)
     {
-      NSLog(&stru_1F53A2A28.isa, v11, v9, v16, v17, v18, v19);
+      NSLog(&stru_1F53A2A28.isa, functionCopy, messageCopy, v16, v17, v18, v19);
     }
 
     if (+[PowerlogCore sharedCoreStarted])
     {
       v14 = +[PowerlogCore sharedCore];
-      v15 = [v14 storage];
-      [v15 logMessage:v9 fromFile:v10 fromFunction:v11 fromLineNumber:a6];
+      storage = [v14 storage];
+      [storage logMessage:messageCopy fromFile:fileCopy fromFunction:functionCopy fromLineNumber:number];
 
       goto LABEL_12;
     }
@@ -6780,7 +6780,7 @@ BOOL __77__PLCoreStorage_aggregateEntriesForKey_withBucketLength_inTimeIntervalR
     }
   }
 
-  NSLog(&stru_1F53A2A28.isa, v11, v9);
+  NSLog(&stru_1F53A2A28.isa, functionCopy, messageCopy);
 LABEL_12:
 }
 
@@ -6841,9 +6841,9 @@ BOOL __65__PLCoreStorage_logMessage_fromFile_fromFunction_fromLineNumber___block
 - (void)attemptToSendTaskingStartNotification
 {
   v3 = +[PLSubmissions sharedInstance];
-  v4 = [v3 taskingStarted];
+  taskingStarted = [v3 taskingStarted];
 
-  if (v4)
+  if (taskingStarted)
   {
     v5 = PLLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -6852,8 +6852,8 @@ BOOL __65__PLCoreStorage_logMessage_fromFile_fromFunction_fromLineNumber___block
       _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Tasking started, send out notification to inform clients.", v7, 2u);
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"kPLTaskingStartNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"kPLTaskingStartNotification" object:self];
 
     notify_post("kPLTaskingStartNotificationGlobal");
   }
@@ -7011,7 +7011,7 @@ void __62__PLCoreStorage_XPCScheduling__registerDailyTasks_XPCActivity__block_in
 - (void)init
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = [*a1 filePath];
+  filePath = [*self filePath];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_5(&dword_1D8611000, v2, v3, "PLCoreStorage: Active DB Path = %@", v4, v5, v6, v7, v9);
 

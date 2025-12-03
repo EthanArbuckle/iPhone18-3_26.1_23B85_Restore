@@ -1,12 +1,12 @@
 @interface _CPUINowPlayingLayout
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)progressViewFullWidth;
 - (CGRect)safeAreaFrame;
 - (CGRect)viewAreaFrame;
 - (CGSize)maximumNowPlayingSize;
 - (CGSize)maximumTitleViewSize;
 - (UIEdgeInsets)layoutMargins;
-- (_CPUINowPlayingLayout)initWithSafeArea:(CGRect)a3 frame:(CGRect)a4 displayScale:(double)a5 showsArtwork:(BOOL)a6;
+- (_CPUINowPlayingLayout)initWithSafeArea:(CGRect)area frame:(CGRect)frame displayScale:(double)scale showsArtwork:(BOOL)artwork;
 - (double)_effectiveAlbumArtSize;
 - (double)_scaledHeight;
 - (double)_scaledWidth;
@@ -19,16 +19,16 @@
 
 @implementation _CPUINowPlayingLayout
 
-- (_CPUINowPlayingLayout)initWithSafeArea:(CGRect)a3 frame:(CGRect)a4 displayScale:(double)a5 showsArtwork:(BOOL)a6
+- (_CPUINowPlayingLayout)initWithSafeArea:(CGRect)area frame:(CGRect)frame displayScale:(double)scale showsArtwork:(BOOL)artwork
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v11 = area.size.height;
+  v12 = area.size.width;
+  v13 = area.origin.y;
+  v14 = area.origin.x;
   v16.receiver = self;
   v16.super_class = _CPUINowPlayingLayout;
   result = [(_CPUINowPlayingLayout *)&v16 init];
@@ -42,8 +42,8 @@
     result->_viewAreaFrame.origin.y = y;
     result->_viewAreaFrame.size.width = width;
     result->_viewAreaFrame.size.height = height;
-    result->_displayScale = a5;
-    result->_showsArtwork = a6;
+    result->_displayScale = scale;
+    result->_showsArtwork = artwork;
     result->_verticalCentering = 0;
   }
 
@@ -74,10 +74,10 @@
   return v13 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v37) = 1;
   }
@@ -87,7 +87,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(_CPUINowPlayingLayout *)self safeAreaFrame];
       v7 = v6;
       v9 = v8;
@@ -104,8 +104,8 @@
       v39.size.height = v13;
       if (CGRectEqualToRect(v39, v41) && ([(_CPUINowPlayingLayout *)self viewAreaFrame], v19 = v18, v21 = v20, v23 = v22, v25 = v24, [(_CPUINowPlayingLayout *)v5 viewAreaFrame], v42.origin.x = v26, v42.origin.y = v27, v42.size.width = v28, v42.size.height = v29, v40.origin.x = v19, v40.origin.y = v21, v40.size.width = v23, v40.size.height = v25, CGRectEqualToRect(v40, v42)) && ([(_CPUINowPlayingLayout *)self displayScale], v31 = v30, [(_CPUINowPlayingLayout *)v5 displayScale], vabdd_f64(v31, v32) < 0.00000011920929) && (v33 = [(_CPUINowPlayingLayout *)self artworkPosition], v33 == [(_CPUINowPlayingLayout *)v5 artworkPosition]) && (v34 = [(_CPUINowPlayingLayout *)self showsArtwork], v34 == [(_CPUINowPlayingLayout *)v5 showsArtwork]) && (v35 = [(_CPUINowPlayingLayout *)self verticalCentering], v35 == [(_CPUINowPlayingLayout *)v5 verticalCentering]))
       {
-        v36 = [(_CPUINowPlayingLayout *)self isSportsLayout];
-        v37 = v36 ^ [(_CPUINowPlayingLayout *)v5 isSportsLayout]^ 1;
+        isSportsLayout = [(_CPUINowPlayingLayout *)self isSportsLayout];
+        v37 = isSportsLayout ^ [(_CPUINowPlayingLayout *)v5 isSportsLayout]^ 1;
       }
 
       else

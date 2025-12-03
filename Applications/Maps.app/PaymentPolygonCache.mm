@@ -1,7 +1,7 @@
 @interface PaymentPolygonCache
-- (BOOL)cachedPolygonForLocation:(id)a3 withCompletion:(id)a4;
+- (BOOL)cachedPolygonForLocation:(id)location withCompletion:(id)completion;
 - (PaymentPolygonCache)init;
-- (void)cachePolygon:(id)a3 forLocation:(id)a4;
+- (void)cachePolygon:(id)polygon forLocation:(id)location;
 @end
 
 @implementation PaymentPolygonCache
@@ -22,10 +22,10 @@
   return v2;
 }
 
-- (void)cachePolygon:(id)a3 forLocation:(id)a4
+- (void)cachePolygon:(id)polygon forLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  polygonCopy = polygon;
+  locationCopy = location;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
@@ -33,21 +33,21 @@
   v11[2] = sub_100BC7B1C;
   v11[3] = &unk_101661480;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = polygonCopy;
+  v13 = locationCopy;
+  v9 = locationCopy;
+  v10 = polygonCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)cachedPolygonForLocation:(id)a3 withCompletion:(id)a4
+- (BOOL)cachedPolygonForLocation:(id)location withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (locationCopy)
   {
     objc_initWeak(location, self);
     queue = self->_queue;
@@ -56,8 +56,8 @@
     block[2] = sub_100BC8108;
     block[3] = &unk_10165DEA0;
     objc_copyWeak(&v15, location);
-    v14 = v7;
-    v13 = v6;
+    v14 = completionCopy;
+    v13 = locationCopy;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v15);
@@ -95,7 +95,7 @@
     }
   }
 
-  return v6 != 0;
+  return locationCopy != 0;
 }
 
 @end

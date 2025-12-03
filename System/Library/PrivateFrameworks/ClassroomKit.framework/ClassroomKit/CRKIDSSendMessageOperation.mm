@@ -1,39 +1,39 @@
 @interface CRKIDSSendMessageOperation
-- (CRKIDSSendMessageOperation)initWithIDSLocalPrimitives:(id)a3 message:(id)a4 destinationAddress:(id)a5 sourceAppleID:(id)a6 options:(id)a7;
+- (CRKIDSSendMessageOperation)initWithIDSLocalPrimitives:(id)primitives message:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options;
 - (void)cancel;
-- (void)didSendMessageWithIdentifier:(id)a3 sendSuccess:(BOOL)a4 error:(id)a5;
+- (void)didSendMessageWithIdentifier:(id)identifier sendSuccess:(BOOL)success error:(id)error;
 - (void)main;
 @end
 
 @implementation CRKIDSSendMessageOperation
 
-- (CRKIDSSendMessageOperation)initWithIDSLocalPrimitives:(id)a3 message:(id)a4 destinationAddress:(id)a5 sourceAppleID:(id)a6 options:(id)a7
+- (CRKIDSSendMessageOperation)initWithIDSLocalPrimitives:(id)primitives message:(id)message destinationAddress:(id)address sourceAppleID:(id)d options:(id)options
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  primitivesCopy = primitives;
+  messageCopy = message;
+  addressCopy = address;
+  dCopy = d;
+  optionsCopy = options;
   v29.receiver = self;
   v29.super_class = CRKIDSSendMessageOperation;
   v18 = [(CRKIDSSendMessageOperation *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_IDSLocalPrimitives, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_IDSLocalPrimitives, primitives);
+    v20 = [messageCopy copy];
     message = v19->_message;
     v19->_message = v20;
 
-    v22 = [v15 copy];
+    v22 = [addressCopy copy];
     destinationAddress = v19->_destinationAddress;
     v19->_destinationAddress = v22;
 
-    v24 = [v16 copy];
+    v24 = [dCopy copy];
     sourceAppleID = v19->_sourceAppleID;
     v19->_sourceAppleID = v24;
 
-    v26 = [v17 copy];
+    v26 = [optionsCopy copy];
     options = v19->_options;
     v19->_options = v26;
   }
@@ -52,7 +52,7 @@
     *buf = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_243550000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Canceled", buf, 0x16u);
   }
 
@@ -93,31 +93,31 @@ void __36__CRKIDSSendMessageOperation_cancel__block_invoke(uint64_t a1)
       *buf = 138543618;
       v30 = v6;
       v31 = 2048;
-      v32 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_243550000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Creating listener validate message send success", buf, 0x16u);
     }
 
     objc_initWeak(&location, self);
-    v7 = [(CRKIDSSendMessageOperation *)self IDSLocalPrimitives];
+    iDSLocalPrimitives = [(CRKIDSSendMessageOperation *)self IDSLocalPrimitives];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __34__CRKIDSSendMessageOperation_main__block_invoke;
     v26[3] = &unk_278DC1230;
     objc_copyWeak(&v27, &location);
-    v8 = [v7 subscribeToMessageSendsWithHandler:v26];
+    v8 = [iDSLocalPrimitives subscribeToMessageSendsWithHandler:v26];
     [(CRKIDSSendMessageOperation *)self setMessageSendSubscription:v8];
 
-    v9 = [(CRKIDSSendMessageOperation *)self messageSendSubscription];
-    [v9 resume];
+    messageSendSubscription = [(CRKIDSSendMessageOperation *)self messageSendSubscription];
+    [messageSendSubscription resume];
 
-    v10 = [(CRKIDSSendMessageOperation *)self IDSLocalPrimitives];
-    v11 = [(CRKIDSSendMessageOperation *)self message];
-    v12 = [(CRKIDSSendMessageOperation *)self destinationAddress];
-    v13 = [(CRKIDSSendMessageOperation *)self sourceAppleID];
-    v14 = [(CRKIDSSendMessageOperation *)self options];
+    iDSLocalPrimitives2 = [(CRKIDSSendMessageOperation *)self IDSLocalPrimitives];
+    message = [(CRKIDSSendMessageOperation *)self message];
+    destinationAddress = [(CRKIDSSendMessageOperation *)self destinationAddress];
+    sourceAppleID = [(CRKIDSSendMessageOperation *)self sourceAppleID];
+    options = [(CRKIDSSendMessageOperation *)self options];
     v24 = 0;
     v25 = 0;
-    v15 = [v10 sendMessage:v11 toAddress:v12 fromID:v13 options:v14 identifier:&v25 error:&v24];
+    v15 = [iDSLocalPrimitives2 sendMessage:message toAddress:destinationAddress fromID:sourceAppleID options:options identifier:&v25 error:&v24];
     v16 = v25;
     v17 = v24;
 
@@ -128,13 +128,13 @@ void __36__CRKIDSSendMessageOperation_cancel__block_invoke(uint64_t a1)
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = [(CRKIDSSendMessageOperation *)self destinationAddress];
+        destinationAddress2 = [(CRKIDSSendMessageOperation *)self destinationAddress];
         *buf = 138544130;
         v30 = v20;
         v31 = 2048;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2114;
-        v34 = v21;
+        v34 = destinationAddress2;
         v35 = 2114;
         v36 = v16;
         _os_log_impl(&dword_243550000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Sent message to %{public}@ and received identifier %{public}@", buf, 0x2Au);
@@ -147,8 +147,8 @@ void __36__CRKIDSSendMessageOperation_cancel__block_invoke(uint64_t a1)
 
     else
     {
-      v23 = [(CRKIDSSendMessageOperation *)self messageSendSubscription];
-      [v23 cancel];
+      messageSendSubscription2 = [(CRKIDSSendMessageOperation *)self messageSendSubscription];
+      [messageSendSubscription2 cancel];
 
       [(CRKIDSSendMessageOperation *)self endOperationWithError:v17];
     }
@@ -172,20 +172,20 @@ void __34__CRKIDSSendMessageOperation_main__block_invoke(uint64_t a1, void *a2, 
   [WeakRetained didSendMessageWithIdentifier:v8 sendSuccess:a3 error:v7];
 }
 
-- (void)didSendMessageWithIdentifier:(id)a3 sendSuccess:(BOOL)a4 error:(id)a5
+- (void)didSendMessageWithIdentifier:(id)identifier sendSuccess:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__CRKIDSSendMessageOperation_didSendMessageWithIdentifier_sendSuccess_error___block_invoke;
   v12[3] = &unk_278DC1258;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = identifierCopy;
+  successCopy = success;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 }
 

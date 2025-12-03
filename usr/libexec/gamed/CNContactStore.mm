@@ -1,13 +1,13 @@
 @interface CNContactStore
-- (id)_gkChangeHistoryRequestWithToken:(id)a3;
+- (id)_gkChangeHistoryRequestWithToken:(id)token;
 - (id)_gkContactKeysToFetch;
-- (id)_gkContactsWithContactIDs:(id)a3;
+- (id)_gkContactsWithContactIDs:(id)ds;
 - (id)_gkMeContact;
-- (id)_gkSyncAndCollectHandlesForContacts:(id)a3 updateExistingEntries:(BOOL)a4 meContactID:(id)a5 context:(id)a6;
-- (void)_gkSyncAllContactsWithMeContactID:(id)a3 playerProvider:(id)a4 batchSize:(unint64_t)a5;
-- (void)_gkSyncContactsWithChangeHistoryToken:(id)a3 playerProvider:(id)a4 batchSize:(unint64_t)a5 changeHistoryLimit:(unint64_t)a6 cachedListVersion:(signed __int16)a7;
-- (void)_gkSyncWithBatchOfContactIDs:(id)a3 playerProvider:(id)a4 meContactID:(id)a5 commandBatcher:(id)a6;
-- (void)_gkSyncWithChangeHistoryResult:(id)a3 playerProvider:(id)a4 meContactID:(id)a5 batchSize:(unint64_t)a6;
+- (id)_gkSyncAndCollectHandlesForContacts:(id)contacts updateExistingEntries:(BOOL)entries meContactID:(id)d context:(id)context;
+- (void)_gkSyncAllContactsWithMeContactID:(id)d playerProvider:(id)provider batchSize:(unint64_t)size;
+- (void)_gkSyncContactsWithChangeHistoryToken:(id)token playerProvider:(id)provider batchSize:(unint64_t)size changeHistoryLimit:(unint64_t)limit cachedListVersion:(signed __int16)version;
+- (void)_gkSyncWithBatchOfContactIDs:(id)ds playerProvider:(id)provider meContactID:(id)d commandBatcher:(id)batcher;
+- (void)_gkSyncWithChangeHistoryResult:(id)result playerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size;
 @end
 
 @implementation CNContactStore
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (void)_gkSyncContactsWithChangeHistoryToken:(id)a3 playerProvider:(id)a4 batchSize:(unint64_t)a5 changeHistoryLimit:(unint64_t)a6 cachedListVersion:(signed __int16)a7
+- (void)_gkSyncContactsWithChangeHistoryToken:(id)token playerProvider:(id)provider batchSize:(unint64_t)size changeHistoryLimit:(unint64_t)limit cachedListVersion:(signed __int16)version
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [(CNContactStore *)self _gkMeContact];
-  v14 = [v13 identifier];
+  tokenCopy = token;
+  providerCopy = provider;
+  _gkMeContact = [(CNContactStore *)self _gkMeContact];
+  identifier = [_gkMeContact identifier];
 
   v15 = +[GKDataRequestManager sharedManager];
   v16 = [NSString stringWithFormat:@"%s:%d %s", "CNContactStore+GKAdditions.m", 62, "[CNContactStore(GKAdditions) _gkSyncContactsWithChangeHistoryToken:playerProvider:batchSize:changeHistoryLimit:cachedListVersion:]"];
@@ -49,30 +49,30 @@
   v41 = @"contactsSync";
   [v17 perform:v39];
   [v17 wait];
-  if (v11)
+  if (tokenCopy)
   {
-    v36 = v12;
-    v19 = a5;
-    v20 = [(CNContactStore *)self _gkChangeHistoryRequestWithToken:v11];
+    v36 = providerCopy;
+    sizeCopy = size;
+    v20 = [(CNContactStore *)self _gkChangeHistoryRequestWithToken:tokenCopy];
     v38 = 0;
     v21 = [(CNContactStore *)self countForFetchRequest:v20 error:&v38];
     v22 = v38;
 
     if (v21 && !v22)
     {
-      v23 = [v21 value];
-      v24 = [v23 integerValue];
+      value = [v21 value];
+      integerValue = [value integerValue];
 
-      if (v24 < a6)
+      if (integerValue < limit)
       {
-        v25 = [(CNContactStore *)self _gkChangeHistoryRequestWithToken:v11];
+        v25 = [(CNContactStore *)self _gkChangeHistoryRequestWithToken:tokenCopy];
         v37 = 0;
         v26 = [(CNContactStore *)self enumeratorForChangeHistoryFetchRequest:v25 error:&v37];
         v27 = v37;
         v35 = v26;
-        v28 = [v26 value];
+        value2 = [v26 value];
 
-        if (!v28 || v27)
+        if (!value2 || v27)
         {
           v29 = v27;
           v34 = v25;
@@ -81,15 +81,15 @@
             v32 = GKOSLoggers();
           }
 
-          v33 = v19;
+          v33 = sizeCopy;
           v30 = v35;
           if (os_log_type_enabled(os_log_GKContacts, OS_LOG_TYPE_DEBUG))
           {
             sub_10029421C();
           }
 
-          v12 = v36;
-          [(CNContactStore *)self _gkSyncAllContactsWithMeContactID:v14 playerProvider:v36 batchSize:v33];
+          providerCopy = v36;
+          [(CNContactStore *)self _gkSyncAllContactsWithMeContactID:identifier playerProvider:v36 batchSize:v33];
           v25 = v34;
         }
 
@@ -97,7 +97,7 @@
         {
           v29 = 0;
           v30 = v35;
-          v12 = v36;
+          providerCopy = v36;
           [CNContactStore _gkSyncWithChangeHistoryResult:"_gkSyncWithChangeHistoryResult:playerProvider:meContactID:batchSize:" playerProvider:v35 meContactID:? batchSize:?];
         }
 
@@ -110,8 +110,8 @@
       v22 = 0;
     }
 
-    a5 = v19;
-    v12 = v36;
+    size = sizeCopy;
+    providerCopy = v36;
   }
 
   else
@@ -130,40 +130,40 @@
     sub_100294284();
   }
 
-  [(CNContactStore *)self _gkSyncAllContactsWithMeContactID:v14 playerProvider:v12 batchSize:a5];
+  [(CNContactStore *)self _gkSyncAllContactsWithMeContactID:identifier playerProvider:providerCopy batchSize:size];
   [v18 endTransaction:@"contactsSync"];
 LABEL_16:
 }
 
-- (id)_gkChangeHistoryRequestWithToken:(id)a3
+- (id)_gkChangeHistoryRequestWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = objc_alloc_init(CNChangeHistoryFetchRequest);
   [v5 setShouldUnifyResults:1];
-  v6 = [(CNContactStore *)self _gkContactKeysToFetch];
-  [v5 setAdditionalContactKeyDescriptors:v6];
+  _gkContactKeysToFetch = [(CNContactStore *)self _gkContactKeysToFetch];
+  [v5 setAdditionalContactKeyDescriptors:_gkContactKeysToFetch];
 
-  [v5 setStartingToken:v4];
+  [v5 setStartingToken:tokenCopy];
 
   return v5;
 }
 
-- (void)_gkSyncWithChangeHistoryResult:(id)a3 playerProvider:(id)a4 meContactID:(id)a5 batchSize:(unint64_t)a6
+- (void)_gkSyncWithChangeHistoryResult:(id)result playerProvider:(id)provider meContactID:(id)d batchSize:(unint64_t)size
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 value];
+  resultCopy = result;
+  providerCopy = provider;
+  dCopy = d;
+  value = [resultCopy value];
   v13 = [GKContactsCacheUpdateFinishedCommand alloc];
-  v14 = [v9 currentHistoryToken];
-  v15 = [(GKContactsCacheUpdateFinishedCommand *)v13 initWithChangeHistoryToken:v14];
+  currentHistoryToken = [resultCopy currentHistoryToken];
+  v15 = [(GKContactsCacheUpdateFinishedCommand *)v13 initWithChangeHistoryToken:currentHistoryToken];
 
-  v16 = [[GKContactsChangedCommandBatcher alloc] initWithPlayerProvider:v10 meContactID:v11 batchSize:a6 finishedCommand:v15];
+  v16 = [[GKContactsChangedCommandBatcher alloc] initWithPlayerProvider:providerCopy meContactID:dCopy batchSize:size finishedCommand:v15];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v17 = v12;
+  v17 = value;
   v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v18)
   {
@@ -180,9 +180,9 @@ LABEL_16:
         }
 
         [*(*(&v23 + 1) + 8 * v21) acceptEventVisitor:{v16, v23}];
-        v22 = [(GKContactsChangedCommandBatcher *)v16 error];
+        error = [(GKContactsChangedCommandBatcher *)v16 error];
 
-        if (v22)
+        if (error)
         {
 
           goto LABEL_11;
@@ -249,20 +249,20 @@ LABEL_11:
   return v17;
 }
 
-- (void)_gkSyncAllContactsWithMeContactID:(id)a3 playerProvider:(id)a4 batchSize:(unint64_t)a5
+- (void)_gkSyncAllContactsWithMeContactID:(id)d playerProvider:(id)provider batchSize:(unint64_t)size
 {
-  v46 = a3;
-  v8 = a4;
+  dCopy = d;
+  providerCopy = provider;
   v9 = objc_autoreleasePoolPush();
-  v10 = [v8 localPlayerCacheGroup];
-  v11 = [v10 context];
+  localPlayerCacheGroup = [providerCopy localPlayerCacheGroup];
+  context = [localPlayerCacheGroup context];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_100178684;
   v52[3] = &unk_100361770;
-  v53 = v10;
-  v12 = v10;
-  [v11 performBlockAndWait:v52];
+  v53 = localPlayerCacheGroup;
+  v12 = localPlayerCacheGroup;
+  [context performBlockAndWait:v52];
 
   objc_autoreleasePoolPop(v9);
   v13 = [CNContactFetchRequest alloc];
@@ -302,19 +302,19 @@ LABEL_11:
   {
     v45 = v15;
     v18 = [GKContactsCacheUpdateFinishedCommand alloc];
-    v19 = [v16 currentHistoryToken];
-    v20 = [(GKContactsCacheUpdateFinishedCommand *)v18 initWithChangeHistoryToken:v19];
+    currentHistoryToken = [v16 currentHistoryToken];
+    v20 = [(GKContactsCacheUpdateFinishedCommand *)v18 initWithChangeHistoryToken:currentHistoryToken];
 
     v43 = v20;
-    v21 = [[GKContactsChangedCommandBatcher alloc] initWithPlayerProvider:v8 meContactID:v46 batchSize:a5 finishedCommand:v20];
-    v22 = [[NSMutableArray alloc] initWithCapacity:a5];
+    v21 = [[GKContactsChangedCommandBatcher alloc] initWithPlayerProvider:providerCopy meContactID:dCopy batchSize:size finishedCommand:v20];
+    v22 = [[NSMutableArray alloc] initWithCapacity:size];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v44 = v16;
-    v23 = [v16 value];
-    v24 = [v23 countByEnumeratingWithState:&v47 objects:v54 count:16];
+    value = [v16 value];
+    v24 = [value countByEnumeratingWithState:&v47 objects:v54 count:16];
     if (v24)
     {
       v25 = v24;
@@ -325,21 +325,21 @@ LABEL_11:
         {
           if (*v48 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(value);
           }
 
-          v28 = [*(*(&v47 + 1) + 8 * i) identifier];
-          [v22 addObject:v28];
+          identifier = [*(*(&v47 + 1) + 8 * i) identifier];
+          [v22 addObject:identifier];
 
-          if ([v22 count] >= a5)
+          if ([v22 count] >= size)
           {
             v29 = [v22 copy];
-            [(CNContactStore *)self _gkSyncWithBatchOfContactIDs:v29 playerProvider:v8 meContactID:v46 commandBatcher:v21];
+            [(CNContactStore *)self _gkSyncWithBatchOfContactIDs:v29 playerProvider:providerCopy meContactID:dCopy commandBatcher:v21];
 
             [v22 removeAllObjects];
-            v30 = [(GKContactsChangedCommandBatcher *)v21 error];
+            error = [(GKContactsChangedCommandBatcher *)v21 error];
 
-            if (v30)
+            if (error)
             {
 
               goto LABEL_22;
@@ -347,7 +347,7 @@ LABEL_11:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v47 objects:v54 count:16];
+        v25 = [value countByEnumeratingWithState:&v47 objects:v54 count:16];
         if (v25)
         {
           continue;
@@ -358,7 +358,7 @@ LABEL_11:
     }
 
     v31 = [v22 copy];
-    [(CNContactStore *)self _gkSyncWithBatchOfContactIDs:v31 playerProvider:v8 meContactID:v46 commandBatcher:v21];
+    [(CNContactStore *)self _gkSyncWithBatchOfContactIDs:v31 playerProvider:providerCopy meContactID:dCopy commandBatcher:v21];
 
     [(GKContactsChangedCommandBatcher *)v21 finish];
 LABEL_22:
@@ -369,24 +369,24 @@ LABEL_22:
   }
 }
 
-- (id)_gkContactsWithContactIDs:(id)a3
+- (id)_gkContactsWithContactIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v5 = [CNContactFetchRequest alloc];
-    v6 = [(CNContactStore *)self _gkContactKeysToFetch];
-    v7 = [v5 initWithKeysToFetch:v6];
+    _gkContactKeysToFetch = [(CNContactStore *)self _gkContactKeysToFetch];
+    v7 = [v5 initWithKeysToFetch:_gkContactKeysToFetch];
 
-    v8 = [CNContact predicateForContactsWithIdentifiers:v4];
+    v8 = [CNContact predicateForContactsWithIdentifiers:dsCopy];
     [v7 setPredicate:v8];
 
     v26 = 0;
     v9 = [(CNContactStore *)self enumeratorForContactFetchRequest:v7 error:&v26];
     v10 = v26;
-    v11 = [v9 value];
+    value = [v9 value];
 
-    if (!v11 || v10)
+    if (!value || v10)
     {
       if (!os_log_GKGeneral)
       {
@@ -409,12 +409,12 @@ LABEL_22:
         sub_100294484();
       }
 
-      v12 = 0;
+      value2 = 0;
     }
 
     else
     {
-      v12 = [v9 value];
+      value2 = [v9 value];
     }
   }
 
@@ -432,53 +432,53 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "No contactIDs to sync during this batch, skipping.", buf, 2u);
     }
 
-    v12 = 0;
+    value2 = 0;
   }
 
-  return v12;
+  return value2;
 }
 
-- (void)_gkSyncWithBatchOfContactIDs:(id)a3 playerProvider:(id)a4 meContactID:(id)a5 commandBatcher:(id)a6
+- (void)_gkSyncWithBatchOfContactIDs:(id)ds playerProvider:(id)provider meContactID:(id)d commandBatcher:(id)batcher
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(CNContactStore *)self _gkContactsWithContactIDs:a3];
-  v14 = [v12 localPlayerCacheGroup];
+  dCopy = d;
+  batcherCopy = batcher;
+  providerCopy = provider;
+  v13 = [(CNContactStore *)self _gkContactsWithContactIDs:ds];
+  localPlayerCacheGroup = [providerCopy localPlayerCacheGroup];
 
-  v15 = [v14 context];
+  context = [localPlayerCacheGroup context];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100178A4C;
   v20[3] = &unk_100362008;
   v21 = v13;
-  v22 = v10;
-  v23 = v11;
-  v24 = v14;
-  v16 = v14;
-  v17 = v11;
-  v18 = v10;
+  v22 = dCopy;
+  v23 = batcherCopy;
+  v24 = localPlayerCacheGroup;
+  v16 = localPlayerCacheGroup;
+  v17 = batcherCopy;
+  v18 = dCopy;
   v19 = v13;
-  [v15 performBlockAndWait:v20];
+  [context performBlockAndWait:v20];
 }
 
-- (id)_gkSyncAndCollectHandlesForContacts:(id)a3 updateExistingEntries:(BOOL)a4 meContactID:(id)a5 context:(id)a6
+- (id)_gkSyncAndCollectHandlesForContacts:(id)contacts updateExistingEntries:(BOOL)entries meContactID:(id)d context:(id)context
 {
-  v9 = a3;
-  v34 = a5;
-  v10 = a6;
-  v33 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v9 count]);
-  v32 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v9 count]);
-  if (a4)
+  contactsCopy = contacts;
+  dCopy = d;
+  contextCopy = context;
+  v33 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [contactsCopy count]);
+  v32 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [contactsCopy count]);
+  if (entries)
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [v9 _gkDistinctValuesForKeyPath:@"identifier"];
+    v12 = [contactsCopy _gkDistinctValuesForKeyPath:@"identifier"];
     v13 = [NSPredicate predicateWithFormat:@"contactID in %@", v12];
-    v14 = [GKCDContactInfo _gkObjectsMatchingPredicate:v13 withContext:v10];
+    v14 = [GKCDContactInfo _gkObjectsMatchingPredicate:v13 withContext:contextCopy];
     v11 = [v14 _gkDistinctValuesForKeyPath:@"contactID"];
   }
 
@@ -486,7 +486,7 @@ LABEL_22:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = v9;
+  v15 = contactsCopy;
   v16 = [v15 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v16)
   {
@@ -502,20 +502,20 @@ LABEL_22:
         }
 
         v20 = *(*(&v35 + 1) + 8 * i);
-        v21 = [v20 identifier];
-        v22 = [v11 containsObject:v21];
+        identifier = [v20 identifier];
+        v22 = [v11 containsObject:identifier];
 
         if (v22)
         {
-          v23 = [v20 _gkAllHandles];
-          [v33 unionSet:v23];
+          _gkAllHandles = [v20 _gkAllHandles];
+          [v33 unionSet:_gkAllHandles];
         }
 
         else
         {
-          v23 = [[GKContactsChangedAddOrUpdateCommand alloc] initWithContact:v20 meContactID:v34];
-          v24 = v10;
-          v25 = [(GKContactsChangedAddOrUpdateCommand *)v23 executeWithContext:v10];
+          _gkAllHandles = [[GKContactsChangedAddOrUpdateCommand alloc] initWithContact:v20 meContactID:dCopy];
+          v24 = contextCopy;
+          v25 = [(GKContactsChangedAddOrUpdateCommand *)_gkAllHandles executeWithContext:contextCopy];
           if ([v25 count])
           {
             [v32 unionSet:v25];
@@ -534,11 +534,11 @@ LABEL_22:
               sub_1002944EC(v39, v27, v20, &v40);
             }
 
-            v28 = [v20 _gkAllHandles];
-            [v32 unionSet:v28];
+            _gkAllHandles2 = [v20 _gkAllHandles];
+            [v32 unionSet:_gkAllHandles2];
           }
 
-          v10 = v24;
+          contextCopy = v24;
         }
       }
 
@@ -551,7 +551,7 @@ LABEL_22:
   if ([v32 count])
   {
     v29 = objc_alloc_init(GKContactsCacheUpdateBatchEndCommand);
-    [(GKContactsCacheUpdateBatchEndCommand *)v29 executeWithHandles:v32 context:v10];
+    [(GKContactsCacheUpdateBatchEndCommand *)v29 executeWithHandles:v32 context:contextCopy];
   }
 
   [v33 unionSet:v32];

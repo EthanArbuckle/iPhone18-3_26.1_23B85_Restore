@@ -1,8 +1,8 @@
 @interface ADClient
-- (void)determineAppInstallationAttributionWithCompletionHandler:(id)a3;
-- (void)lookupAdConversionDetails:(id)a3;
+- (void)determineAppInstallationAttributionWithCompletionHandler:(id)handler;
+- (void)lookupAdConversionDetails:(id)details;
 - (void)requestAttributionDetailsWithBlock:(void *)completionHandler;
-- (void)segmentDataForSignedInUserWithBlock:(id)a3;
+- (void)segmentDataForSignedInUserWithBlock:(id)block;
 @end
 
 @implementation ADClient
@@ -15,27 +15,27 @@
   }
 }
 
-- (void)determineAppInstallationAttributionWithCompletionHandler:(id)a3
+- (void)determineAppInstallationAttributionWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)lookupAdConversionDetails:(id)a3
+- (void)lookupAdConversionDetails:(id)details
 {
-  if (a3)
+  if (details)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(details + 2))(details, 0, 0);
   }
 }
 
-- (void)segmentDataForSignedInUserWithBlock:(id)a3
+- (void)segmentDataForSignedInUserWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, @"1", 0, 0, 0.0);
+    (*(block + 2))(block, @"1", 0, 0, 0.0);
   }
 }
 

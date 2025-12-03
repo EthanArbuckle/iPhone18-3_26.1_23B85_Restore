@@ -1,51 +1,51 @@
 @interface DOCRemoteViewController
 + (BOOL)disableWorkaroundFor132033602;
-+ (id)instantiateRemoteDocumentBrowserViewControllerWithHostProxy:(id)a3 configuration:(id)a4 initialUIPBrowserState:(id)a5 completionBlock:(id)a6;
-+ (id)instantiateRemoteViewControllerWithConfiguration:(id)a3 transparent:(BOOL)a4 errorHandler:(id)a5 hostProxy:(id)a6 completionHandler:(id)a7;
++ (id)instantiateRemoteDocumentBrowserViewControllerWithHostProxy:(id)proxy configuration:(id)configuration initialUIPBrowserState:(id)state completionBlock:(id)block;
++ (id)instantiateRemoteViewControllerWithConfiguration:(id)configuration transparent:(BOOL)transparent errorHandler:(id)handler hostProxy:(id)proxy completionHandler:(id)completionHandler;
 + (id)serviceExtension;
 - (DOCRemoteViewControllerDelegate)delegate;
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 requiresAck:(BOOL)a5 completionBlock:(id)a6;
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a requiresAck:(BOOL)ack completionBlock:(id)block;
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation DOCRemoteViewController
 
-+ (id)instantiateRemoteViewControllerWithConfiguration:(id)a3 transparent:(BOOL)a4 errorHandler:(id)a5 hostProxy:(id)a6 completionHandler:(id)a7
++ (id)instantiateRemoteViewControllerWithConfiguration:(id)configuration transparent:(BOOL)transparent errorHandler:(id)handler hostProxy:(id)proxy completionHandler:(id)completionHandler
 {
-  v10 = a4;
+  transparentCopy = transparent;
   v42 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[DOCWeakProxy alloc] initWithTarget:v14];
-  v17 = [a1 serviceExtension];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  proxyCopy = proxy;
+  completionHandlerCopy = completionHandler;
+  v16 = [[DOCWeakProxy alloc] initWithTarget:proxyCopy];
+  serviceExtension = [self serviceExtension];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __129__DOCRemoteViewController_instantiateRemoteViewControllerWithConfiguration_transparent_errorHandler_hostProxy_completionHandler___block_invoke;
   v35[3] = &unk_1E8782EA0;
-  v18 = v13;
+  v18 = handlerCopy;
   v38 = v18;
-  v40 = a1;
-  v19 = v12;
+  selfCopy = self;
+  v19 = configurationCopy;
   v36 = v19;
-  v20 = v15;
+  v20 = completionHandlerCopy;
   v39 = v20;
   v21 = v16;
   v37 = v21;
-  v22 = [(_UIResilientRemoteViewContainerViewController *)DOCRemoteContainerViewController instantiateWithExtension:v17 completion:v35];
+  v22 = [(_UIResilientRemoteViewContainerViewController *)DOCRemoteContainerViewController instantiateWithExtension:serviceExtension completion:v35];
 
-  if (v10)
+  if (transparentCopy)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v23 = [v22 view];
-    v24 = [v23 subviews];
+    view = [v22 view];
+    subviews = [view subviews];
 
-    v25 = [v24 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    v25 = [subviews countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v25)
     {
       v26 = v25;
@@ -56,13 +56,13 @@
         {
           if (*v32 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v31 + 1) + 8 * i) setBackgroundColor:0];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v26 = [subviews countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v26);
@@ -121,24 +121,24 @@ void __129__DOCRemoteViewController_instantiateRemoteViewControllerWithConfigura
   DOCRunInMainThread();
 }
 
-+ (id)instantiateRemoteDocumentBrowserViewControllerWithHostProxy:(id)a3 configuration:(id)a4 initialUIPBrowserState:(id)a5 completionBlock:(id)a6
++ (id)instantiateRemoteDocumentBrowserViewControllerWithHostProxy:(id)proxy configuration:(id)configuration initialUIPBrowserState:(id)state completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  proxyCopy = proxy;
+  configurationCopy = configuration;
+  stateCopy = state;
+  blockCopy = block;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy_;
   v33[4] = __Block_byref_object_dispose_;
-  v14 = v10;
+  v14 = proxyCopy;
   v34 = v14;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __140__DOCRemoteViewController_instantiateRemoteDocumentBrowserViewControllerWithHostProxy_configuration_initialUIPBrowserState_completionBlock___block_invoke;
   v30[3] = &unk_1E8782EF0;
-  v15 = v13;
+  v15 = blockCopy;
   v31 = v15;
   v32 = v33;
   v16 = MEMORY[0x1E692E2E0](v30);
@@ -146,9 +146,9 @@ void __129__DOCRemoteViewController_instantiateRemoteViewControllerWithConfigura
   v26[1] = 3221225472;
   v26[2] = __140__DOCRemoteViewController_instantiateRemoteDocumentBrowserViewControllerWithHostProxy_configuration_initialUIPBrowserState_completionBlock___block_invoke_3;
   v26[3] = &unk_1E8782F40;
-  v17 = v11;
+  v17 = configurationCopy;
   v27 = v17;
-  v18 = v12;
+  v18 = stateCopy;
   v28 = v18;
   v19 = v16;
   v29 = v19;
@@ -159,7 +159,7 @@ void __129__DOCRemoteViewController_instantiateRemoteViewControllerWithConfigura
   v24[3] = &unk_1E8782658;
   v21 = v19;
   v25 = v21;
-  v22 = [a1 instantiateRemoteViewControllerWithConfiguration:v17 transparent:1 errorHandler:v24 hostProxy:v14 completionHandler:v20];
+  v22 = [self instantiateRemoteViewControllerWithConfiguration:v17 transparent:1 errorHandler:v24 hostProxy:v14 completionHandler:v20];
 
   _Block_object_dispose(v33, 8);
 
@@ -202,20 +202,20 @@ void __140__DOCRemoteViewController_instantiateRemoteDocumentBrowserViewControll
   [a4 configureAsDocumentBrowserWithHostProxy:a3 configuration:v8 initialUIPBrowserState:v9 completionBlock:v12];
 }
 
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(DOCRemoteViewController *)self hostContext];
-  [v6 updateEditingTo:v5 animated:v4];
+  animatedCopy = animated;
+  toCopy = to;
+  hostContext = [(DOCRemoteViewController *)self hostContext];
+  [hostContext updateEditingTo:toCopy animated:animatedCopy];
 }
 
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 requiresAck:(BOOL)a5 completionBlock:(id)a6
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a requiresAck:(BOOL)ack completionBlock:(id)block
 {
-  v7 = a3;
-  v10 = a6;
-  v8 = v10;
-  v9 = v7;
+  appearanceCopy = appearance;
+  blockCopy = block;
+  v8 = blockCopy;
+  v9 = appearanceCopy;
   DOCRunInMainThread();
 }
 
@@ -292,9 +292,9 @@ void __43__DOCRemoteViewController_serviceExtension__block_invoke()
   }
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x1E699A450];
   v6 = *MEMORY[0x1E699A450];
   if (!*MEMORY[0x1E699A450])
@@ -308,18 +308,18 @@ void __43__DOCRemoteViewController_serviceExtension__block_invoke()
     [DOCRemoteViewController viewServiceDidTerminateWithError:];
   }
 
-  v7 = [(DOCRemoteViewController *)self delegate];
+  delegate = [(DOCRemoteViewController *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(DOCRemoteViewController *)self delegate];
+    delegate2 = [(DOCRemoteViewController *)self delegate];
     if ([objc_opt_class() disableWorkaroundFor132033602])
     {
       v9 = &v14;
-      v14 = v8;
+      v14 = delegate2;
       v10 = &v15;
-      v15 = v4;
-      v11 = v8;
+      v15 = errorCopy;
+      v11 = delegate2;
       DOCRunInMainThread();
     }
 
@@ -331,10 +331,10 @@ void __43__DOCRemoteViewController_serviceExtension__block_invoke()
       block[2] = __60__DOCRemoteViewController_viewServiceDidTerminateWithError___block_invoke;
       block[3] = &unk_1E8782320;
       v9 = &v17;
-      v17 = v8;
+      v17 = delegate2;
       v10 = &v18;
-      v18 = v4;
-      v13 = v8;
+      v18 = errorCopy;
+      v13 = delegate2;
       dispatch_after(v12, MEMORY[0x1E69E96A0], block);
     }
   }
@@ -342,8 +342,8 @@ void __43__DOCRemoteViewController_serviceExtension__block_invoke()
 
 + (BOOL)disableWorkaroundFor132033602
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"DisableWorkaroundFor132033602"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"DisableWorkaroundFor132033602"];
 
   return v3;
 }

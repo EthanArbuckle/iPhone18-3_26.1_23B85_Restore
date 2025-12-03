@@ -1,27 +1,27 @@
 @interface RfBandDuration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEutraRfBand:(id)a3;
-- (int)StringAsGeraRfBand:(id)a3;
-- (int)StringAsRat:(id)a3;
-- (int)StringAsUtraFddRfBand:(id)a3;
-- (int)StringAsUtraTddRfBand:(id)a3;
+- (int)StringAsEutraRfBand:(id)band;
+- (int)StringAsGeraRfBand:(id)band;
+- (int)StringAsRat:(id)rat;
+- (int)StringAsUtraFddRfBand:(id)band;
+- (int)StringAsUtraTddRfBand:(id)band;
 - (int)eutraRfBand;
 - (int)geraRfBand;
 - (int)rat;
 - (int)utraFddRfBand;
 - (int)utraTddRfBand;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEutraRfBand:(BOOL)a3;
-- (void)setHasGeraRfBand:(BOOL)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasUtraFddRfBand:(BOOL)a3;
-- (void)setHasUtraTddRfBand:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEutraRfBand:(BOOL)band;
+- (void)setHasGeraRfBand:(BOOL)band;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasUtraFddRfBand:(BOOL)band;
+- (void)setHasUtraTddRfBand:(BOOL)band;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RfBandDuration
@@ -39,9 +39,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 8;
   }
@@ -54,30 +54,30 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KCELLULAR_RAT_NONE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"KCELLULAR_RAT_NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KCELLULAR_RAT_GERA"])
+  else if ([ratCopy isEqualToString:@"KCELLULAR_RAT_GERA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KCELLULAR_RAT_UTRA_FDD"])
+  else if ([ratCopy isEqualToString:@"KCELLULAR_RAT_UTRA_FDD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KCELLULAR_RAT_EUTRA"])
+  else if ([ratCopy isEqualToString:@"KCELLULAR_RAT_EUTRA"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KCELLULAR_RAT_UTRA_TDD"])
+  else if ([ratCopy isEqualToString:@"KCELLULAR_RAT_UTRA_TDD"])
   {
     v4 = 4;
   }
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)setHasGeraRfBand:(BOOL)a3
+- (void)setHasGeraRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 4;
   }
@@ -118,80 +118,80 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsGeraRfBand:(id)a3
+- (int)StringAsGeraRfBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KGSM_RF_BAND_900"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"KGSM_RF_BAND_900"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_P_900"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_P_900"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_E_900"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_E_900"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_R_900"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_R_900"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_DCS_1800"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_DCS_1800"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_PCS_1900"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_PCS_1900"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_850"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_850"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_450"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_450"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_480"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_480"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_750"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_750"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_T_380"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_T_380"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_T_410"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_T_410"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_T_900"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_T_900"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_710"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_710"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"KGSM_RF_BAND_T_810"])
+  else if ([bandCopy isEqualToString:@"KGSM_RF_BAND_T_810"])
   {
     v4 = 14;
   }
@@ -217,9 +217,9 @@
   }
 }
 
-- (void)setHasUtraFddRfBand:(BOOL)a3
+- (void)setHasUtraFddRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 16;
   }
@@ -232,120 +232,120 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsUtraFddRfBand:(id)a3
+- (int)StringAsUtraFddRfBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KWCDMA_RF_BAND_1"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_1"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_2"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_3"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_3"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_4"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_4"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_5"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_5"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_6"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_6"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_7"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_7"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_8"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_8"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_9"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_9"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_10"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_10"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_11"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_11"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_12"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_12"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_13"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_13"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_14"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_14"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_15"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_15"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_16"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_16"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_17"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_17"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_18"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_18"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_19"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_19"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_20"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_20"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_21"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_21"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_22"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_22"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"KWCDMA_RF_BAND_25"])
+  else if ([bandCopy isEqualToString:@"KWCDMA_RF_BAND_25"])
   {
     v4 = 22;
   }
@@ -371,9 +371,9 @@
   }
 }
 
-- (void)setHasUtraTddRfBand:(BOOL)a3
+- (void)setHasUtraTddRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 32;
   }
@@ -386,20 +386,20 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsUtraTddRfBand:(id)a3
+- (int)StringAsUtraTddRfBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KTDS_RF_BAND_A"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"KTDS_RF_BAND_A"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KTDS_RF_BAND_E"])
+  else if ([bandCopy isEqualToString:@"KTDS_RF_BAND_E"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KTDS_RF_BAND_F"])
+  else if ([bandCopy isEqualToString:@"KTDS_RF_BAND_F"])
   {
     v4 = 2;
   }
@@ -425,9 +425,9 @@
   }
 }
 
-- (void)setHasEutraRfBand:(BOOL)a3
+- (void)setHasEutraRfBand:(BOOL)band
 {
-  if (a3)
+  if (band)
   {
     v3 = 2;
   }
@@ -440,225 +440,225 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsEutraRfBand:(id)a3
+- (int)StringAsEutraRfBand:(id)band
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"KLTE_RF_BAND_1"])
+  bandCopy = band;
+  if ([bandCopy isEqualToString:@"KLTE_RF_BAND_1"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_2"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_2"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_3"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_3"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_4"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_4"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_5"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_5"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_6"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_6"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_7"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_7"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_8"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_8"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_9"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_9"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_10"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_10"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_11"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_11"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_12"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_12"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_13"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_13"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_14"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_14"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_15"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_15"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_16"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_16"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_17"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_17"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_18"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_18"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_19"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_19"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_20"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_20"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_21"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_21"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_22"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_22"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_23"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_23"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_24"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_24"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_25"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_25"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_26"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_26"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_27"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_27"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_28"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_28"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_29"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_29"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_30"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_30"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_31"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_31"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_32"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_32"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_33"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_33"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_34"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_34"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_35"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_35"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_36"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_36"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_37"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_37"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_38"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_38"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_39"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_39"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_40"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_40"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_41"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_41"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_42"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_42"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_43"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_43"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"KLTE_RF_BAND_44"])
+  else if ([bandCopy isEqualToString:@"KLTE_RF_BAND_44"])
   {
     v4 = 44;
   }
@@ -677,15 +677,15 @@
   v8.receiver = self;
   v8.super_class = RfBandDuration;
   v4 = [(RfBandDuration *)&v8 description];
-  v5 = [(RfBandDuration *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(RfBandDuration *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -700,7 +700,7 @@
       v8 = off_278261DF8[rat];
     }
 
-    [v3 setObject:v8 forKey:@"rat"];
+    [dictionary setObject:v8 forKey:@"rat"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -731,7 +731,7 @@ LABEL_3:
     v10 = off_278261E20[geraRfBand];
   }
 
-  [v3 setObject:v10 forKey:@"gera_rf_band"];
+  [dictionary setObject:v10 forKey:@"gera_rf_band"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -757,7 +757,7 @@ LABEL_19:
     v12 = off_278261E98[utraFddRfBand];
   }
 
-  [v3 setObject:v12 forKey:@"utra_fdd_rf_band"];
+  [dictionary setObject:v12 forKey:@"utra_fdd_rf_band"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -783,7 +783,7 @@ LABEL_23:
     v14 = off_278261F50[utraTddRfBand];
   }
 
-  [v3 setObject:v14 forKey:@"utra_tdd_rf_band"];
+  [dictionary setObject:v14 forKey:@"utra_tdd_rf_band"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -809,7 +809,7 @@ LABEL_27:
     v16 = off_278261F68[v15];
   }
 
-  [v3 setObject:v16 forKey:@"eutra_rf_band"];
+  [dictionary setObject:v16 forKey:@"eutra_rf_band"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -818,16 +818,16 @@ LABEL_27:
 
 LABEL_7:
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-  [v3 setObject:v5 forKey:@"duration_ms"];
+  [dictionary setObject:v5 forKey:@"duration_ms"];
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -908,14 +908,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_rat;
-    *(v4 + 32) |= 8u;
+    toCopy[5] = self->_rat;
+    *(toCopy + 32) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -934,8 +934,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_geraRfBand;
-  *(v4 + 32) |= 4u;
+  toCopy[4] = self->_geraRfBand;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -949,8 +949,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[6] = self->_utraFddRfBand;
-  *(v4 + 32) |= 0x10u;
+  toCopy[6] = self->_utraFddRfBand;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -964,8 +964,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[7] = self->_utraTddRfBand;
-  *(v4 + 32) |= 0x20u;
+  toCopy[7] = self->_utraTddRfBand;
+  *(toCopy + 32) |= 0x20u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -979,21 +979,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[3] = self->_eutraRfBand;
-  *(v4 + 32) |= 2u;
+  toCopy[3] = self->_eutraRfBand;
+  *(toCopy + 32) |= 2u;
   if (*&self->_has)
   {
 LABEL_7:
-    v4[2] = self->_durationMs;
-    *(v4 + 32) |= 1u;
+    toCopy[2] = self->_durationMs;
+    *(toCopy + 32) |= 1u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1075,23 +1075,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_rat != *(v4 + 5))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_rat != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
 LABEL_31:
     v5 = 0;
@@ -1100,60 +1100,60 @@ LABEL_31:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_geraRfBand != *(v4 + 4))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_geraRfBand != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0 || self->_utraFddRfBand != *(v4 + 6))
+    if ((*(equalCopy + 32) & 0x10) == 0 || self->_utraFddRfBand != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 32) & 0x20) == 0 || self->_utraTddRfBand != *(v4 + 7))
+    if ((*(equalCopy + 32) & 0x20) == 0 || self->_utraTddRfBand != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 0x20) != 0)
+  else if ((*(equalCopy + 32) & 0x20) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_eutraRfBand != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_eutraRfBand != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 32) & 1) == 0;
+  v5 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_durationMs != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_durationMs != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
@@ -1248,15 +1248,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) != 0)
   {
-    self->_rat = *(v4 + 5);
+    self->_rat = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -1269,14 +1269,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 4) == 0)
+  else if ((*(fromCopy + 32) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_geraRfBand = *(v4 + 4);
+  self->_geraRfBand = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1289,9 +1289,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_utraFddRfBand = *(v4 + 6);
+  self->_utraFddRfBand = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_5:
@@ -1304,9 +1304,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_utraTddRfBand = *(v4 + 7);
+  self->_utraTddRfBand = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1319,12 +1319,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_eutraRfBand = *(v4 + 3);
+  self->_eutraRfBand = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_7:
-    self->_durationMs = *(v4 + 2);
+    self->_durationMs = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

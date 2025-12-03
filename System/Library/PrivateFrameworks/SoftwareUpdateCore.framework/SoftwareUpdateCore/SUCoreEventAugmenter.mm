@@ -1,12 +1,12 @@
 @interface SUCoreEventAugmenter
-+ (void)augmentEvent:(id)a3 withDescriptor:(id)a4 specifyAlternateUpdate:(BOOL)a5;
-+ (void)augmentEvent:(id)a3 withPolicy:(id)a4;
-+ (void)augmentEvent:(id)a3 withPolicy:(id)a4 primaryDescriptor:(id)a5 alternateDescriptor:(id)a6;
++ (void)augmentEvent:(id)event withDescriptor:(id)descriptor specifyAlternateUpdate:(BOOL)update;
++ (void)augmentEvent:(id)event withPolicy:(id)policy;
++ (void)augmentEvent:(id)event withPolicy:(id)policy primaryDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor;
 - (SUCoreEventAugmenter)init;
-- (void)augmentEvent:(id)a3;
-- (void)setAlternateDescriptor:(id)a3;
-- (void)setPolicy:(id)a3;
-- (void)setPrimaryDescriptor:(id)a3;
+- (void)augmentEvent:(id)event;
+- (void)setAlternateDescriptor:(id)descriptor;
+- (void)setPolicy:(id)policy;
+- (void)setPrimaryDescriptor:(id)descriptor;
 @end
 
 @implementation SUCoreEventAugmenter
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (void)setPolicy:(id)a3
+- (void)setPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -37,14 +37,14 @@
   v7[2] = __34__SUCoreEventAugmenter_setPolicy___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = policyCopy;
+  v6 = policyCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)setPrimaryDescriptor:(id)a3
+- (void)setPrimaryDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -52,14 +52,14 @@
   v7[2] = __45__SUCoreEventAugmenter_setPrimaryDescriptor___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)setAlternateDescriptor:(id)a3
+- (void)setAlternateDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -67,78 +67,78 @@
   v7[2] = __47__SUCoreEventAugmenter_setAlternateDescriptor___block_invoke;
   v7[3] = &unk_27892D478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorCopy;
+  v6 = descriptorCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)augmentEvent:(id)a3
+- (void)augmentEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SUCoreEventAugmenter_augmentEvent___block_invoke;
   v7[3] = &unk_27892D478;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-+ (void)augmentEvent:(id)a3 withPolicy:(id)a4
++ (void)augmentEvent:(id)event withPolicy:(id)policy
 {
-  v12 = a3;
-  v5 = a4;
-  if (!v12)
+  eventCopy = event;
+  policyCopy = policy;
+  if (!eventCopy)
   {
-    v10 = [MEMORY[0x277D64428] sharedDiag];
-    v8 = v10;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    requestedProductMarketingVersion = mEMORY[0x277D64428];
     v11 = @"missing required event param";
 LABEL_10:
-    [v10 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:v11 withResult:8101 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"[EVENT_AUGMENTER]" forReason:v11 withResult:8101 withError:0];
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!policyCopy)
   {
-    v10 = [MEMORY[0x277D64428] sharedDiag];
-    v8 = v10;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    requestedProductMarketingVersion = mEMORY[0x277D64428];
     v11 = @"missing required policy param";
     goto LABEL_10;
   }
 
-  if ([v5 isSupervisedPolicy])
+  if ([policyCopy isSupervisedPolicy])
   {
-    [v12 setSafeObject:*MEMORY[0x277D647A8] forKey:*MEMORY[0x277D646C0]];
+    [eventCopy setSafeObject:*MEMORY[0x277D647A8] forKey:*MEMORY[0x277D646C0]];
   }
 
-  v6 = [v5 delayPeriodDays];
-  if (v6 >= 1)
+  delayPeriodDays = [policyCopy delayPeriodDays];
+  if (delayPeriodDays >= 1)
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
-    [v12 setSafeObject:v7 forKey:*MEMORY[0x277D645B8]];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:delayPeriodDays];
+    [eventCopy setSafeObject:v7 forKey:*MEMORY[0x277D645B8]];
   }
 
-  v8 = [v5 requestedProductMarketingVersion];
-  [v12 setSafeObject:v8 forKey:*MEMORY[0x277D64698]];
-  v9 = [v5 mdmPathName];
-  [v12 setSafeObject:v9 forKey:*MEMORY[0x277D64628]];
+  requestedProductMarketingVersion = [policyCopy requestedProductMarketingVersion];
+  [eventCopy setSafeObject:requestedProductMarketingVersion forKey:*MEMORY[0x277D64698]];
+  mdmPathName = [policyCopy mdmPathName];
+  [eventCopy setSafeObject:mdmPathName forKey:*MEMORY[0x277D64628]];
 
 LABEL_11:
 }
 
-+ (void)augmentEvent:(id)a3 withDescriptor:(id)a4 specifyAlternateUpdate:(BOOL)a5
++ (void)augmentEvent:(id)event withDescriptor:(id)descriptor specifyAlternateUpdate:(BOOL)update
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  updateCopy = update;
+  eventCopy = event;
+  descriptorCopy = descriptor;
+  v9 = descriptorCopy;
+  if (descriptorCopy)
   {
-    v10 = v5 && [v8 descriptorAudienceType] == 2;
-    v12 = [v9 productBuildVersion];
+    v10 = updateCopy && [descriptorCopy descriptorAudienceType] == 2;
+    productBuildVersion = [v9 productBuildVersion];
     v13 = MEMORY[0x277D64578];
     if (!v10)
     {
@@ -186,12 +186,12 @@ LABEL_11:
       v18 = MEMORY[0x277D64678];
     }
 
-    v63 = v12;
-    [v7 setSafeObject:? forKey:?];
-    v19 = [v9 updateTypeName];
+    v63 = productBuildVersion;
+    [eventCopy setSafeObject:? forKey:?];
+    updateTypeName = [v9 updateTypeName];
     v20 = *v15;
-    v62 = v19;
-    [v7 setSafeObject:? forKey:?];
+    v62 = updateTypeName;
+    [eventCopy setSafeObject:? forKey:?];
     v21 = *MEMORY[0x277D647A8];
     v22 = *MEMORY[0x277D64730];
     if ([v9 rampEnabled])
@@ -207,15 +207,15 @@ LABEL_11:
     v24 = v23;
     v25 = *v16;
     v61 = v24;
-    [v7 setSafeObject:? forKey:?];
+    [eventCopy setSafeObject:? forKey:?];
     v26 = +[SUCoreDescriptor nameForDescriptorAudienceType:](SUCoreDescriptor, "nameForDescriptorAudienceType:", [v9 descriptorAudienceType]);
     v27 = *v17;
     v60 = v26;
-    [v7 setSafeObject:? forKey:?];
+    [eventCopy setSafeObject:? forKey:?];
     v28 = +[SUCoreDescriptor nameForDescriptorPreferredUpdateType:](SUCoreDescriptor, "nameForDescriptorPreferredUpdateType:", [v9 preferredUpdateType]);
     v29 = *v18;
     v59 = v28;
-    [v7 setSafeObject:? forKey:?];
+    [eventCopy setSafeObject:? forKey:?];
     if ([v9 mandatoryUpdateEligible])
     {
       v30 = v21;
@@ -229,7 +229,7 @@ LABEL_11:
     v31 = v30;
     v32 = *MEMORY[0x277D64630];
     v58 = v31;
-    [v7 setSafeObject:? forKey:?];
+    [eventCopy setSafeObject:? forKey:?];
     if ([v9 mandatoryUpdateOptional])
     {
       v33 = v21;
@@ -243,9 +243,9 @@ LABEL_11:
     v34 = v33;
     v35 = *MEMORY[0x277D64638];
     v57 = v34;
-    [v7 setSafeObject:? forKey:?];
-    v36 = [v9 associatedSplatDescriptor];
-    if (v36)
+    [eventCopy setSafeObject:? forKey:?];
+    associatedSplatDescriptor = [v9 associatedSplatDescriptor];
+    if (associatedSplatDescriptor)
     {
       v37 = v21;
     }
@@ -256,15 +256,15 @@ LABEL_11:
     }
 
     v38 = v37;
-    [v7 setSafeObject:v38 forKey:*MEMORY[0x277D64690]];
+    [eventCopy setSafeObject:v38 forKey:*MEMORY[0x277D64690]];
     v55 = v38;
     if (v38)
     {
-      v39 = [v36 productBuildVersion];
-      [v7 setSafeObject:v39 forKey:*MEMORY[0x277D64688]];
+      productBuildVersion2 = [associatedSplatDescriptor productBuildVersion];
+      [eventCopy setSafeObject:productBuildVersion2 forKey:*MEMORY[0x277D64688]];
     }
 
-    v56 = v36;
+    v56 = associatedSplatDescriptor;
     v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "totalRequiredFreeSpace")}];
     v41 = MEMORY[0x277D64580];
     if (!v10)
@@ -272,7 +272,7 @@ LABEL_11:
       v41 = MEMORY[0x277D646D0];
     }
 
-    [v7 setSafeObject:v40 forKey:*v41];
+    [eventCopy setSafeObject:v40 forKey:*v41];
     v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "preSUStagingRequiredSize")}];
     v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v9, "preSUStagingOptionalSize")}];
     if ([v9 enablePreSUStaging])
@@ -288,11 +288,11 @@ LABEL_11:
     v45 = MEMORY[0x277CCABB0];
     v46 = v44;
     v47 = [v45 numberWithUnsignedLongLong:{objc_msgSend(v9, "preSUStagingMaxSize")}];
-    [v7 setSafeObject:v42 forKey:*MEMORY[0x277D64670]];
-    [v7 setSafeObject:v43 forKey:*MEMORY[0x277D64668]];
-    [v7 setSafeObject:v46 forKey:*MEMORY[0x277D64658]];
+    [eventCopy setSafeObject:v42 forKey:*MEMORY[0x277D64670]];
+    [eventCopy setSafeObject:v43 forKey:*MEMORY[0x277D64668]];
+    [eventCopy setSafeObject:v46 forKey:*MEMORY[0x277D64658]];
 
-    [v7 setSafeObject:v47 forKey:*MEMORY[0x277D64660]];
+    [eventCopy setSafeObject:v47 forKey:*MEMORY[0x277D64660]];
     v64 = 0;
     v65 = 0;
     v48 = [SUCoreSpace cacheDeleteGetReserveSpace:&v65 withError:&v64];
@@ -304,8 +304,8 @@ LABEL_11:
       v52 = [v49 safeObjectForKey:@"CACHE_DELETE_RESERVE_SPACE_FILESYSTEM_AMOUNT" ofClass:objc_opt_class()];
       [v49 safeObjectForKey:@"CACHE_DELETE_RESERVE_SPACE_AMOUNT" ofClass:objc_opt_class()];
       v54 = v53 = v40;
-      [v7 setSafeObject:v52 forKey:*MEMORY[0x277D64860]];
-      [v7 setSafeObject:v54 forKey:*MEMORY[0x277D64858]];
+      [eventCopy setSafeObject:v52 forKey:*MEMORY[0x277D64860]];
+      [eventCopy setSafeObject:v54 forKey:*MEMORY[0x277D64858]];
 
       v40 = v53;
     }
@@ -313,61 +313,61 @@ LABEL_11:
 
   else
   {
-    v11 = [MEMORY[0x277D64428] sharedDiag];
-    [v11 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required descriptor param" withResult:8101 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required descriptor param" withResult:8101 withError:0];
   }
 }
 
-+ (void)augmentEvent:(id)a3 withPolicy:(id)a4 primaryDescriptor:(id)a5 alternateDescriptor:(id)a6
++ (void)augmentEvent:(id)event withPolicy:(id)policy primaryDescriptor:(id)descriptor alternateDescriptor:(id)alternateDescriptor
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (!v15)
+  eventCopy = event;
+  policyCopy = policy;
+  descriptorCopy = descriptor;
+  alternateDescriptorCopy = alternateDescriptor;
+  if (!eventCopy)
   {
-    v12 = [MEMORY[0x277D64428] sharedDiag];
-    [v12 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required event param" withResult:8101 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required event param" withResult:8101 withError:0];
 
     goto LABEL_11;
   }
 
-  if (!v9)
+  if (!policyCopy)
   {
-    v13 = [MEMORY[0x277D64428] sharedDiag];
-    [v13 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required policy param" withResult:8101 withError:0];
+    mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428]2 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required policy param" withResult:8101 withError:0];
 
-    if (v10)
+    if (descriptorCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_15:
-    v14 = [MEMORY[0x277D64428] sharedDiag];
-    [v14 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required descriptor param" withResult:8101 withError:0];
+    mEMORY[0x277D64428]3 = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428]3 trackAnomaly:@"[EVENT_AUGMENTER]" forReason:@"missing required descriptor param" withResult:8101 withError:0];
 
     goto LABEL_4;
   }
 
-  if (!v10)
+  if (!descriptorCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_4:
-  if (v9)
+  if (policyCopy)
   {
-    [SUCoreEventAugmenter augmentEvent:v15 withPolicy:v9];
+    [SUCoreEventAugmenter augmentEvent:eventCopy withPolicy:policyCopy];
   }
 
-  if (v10)
+  if (descriptorCopy)
   {
-    [SUCoreEventAugmenter augmentEvent:v15 withDescriptor:v10 specifyAlternateUpdate:v11 != 0];
+    [SUCoreEventAugmenter augmentEvent:eventCopy withDescriptor:descriptorCopy specifyAlternateUpdate:alternateDescriptorCopy != 0];
   }
 
-  if (v11)
+  if (alternateDescriptorCopy)
   {
-    [SUCoreEventAugmenter augmentEvent:v15 withDescriptor:v11 specifyAlternateUpdate:v10 != 0];
+    [SUCoreEventAugmenter augmentEvent:eventCopy withDescriptor:alternateDescriptorCopy specifyAlternateUpdate:descriptorCopy != 0];
   }
 
 LABEL_11:

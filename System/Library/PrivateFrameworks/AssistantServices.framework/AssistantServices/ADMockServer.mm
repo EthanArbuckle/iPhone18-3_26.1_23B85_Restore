@@ -1,17 +1,17 @@
 @interface ADMockServer
 + (id)sharedServer;
 - (BOOL)_establishConnectionIfNeeded;
-- (void)replayWithFileURL:(id)a3 completion:(id)a4;
+- (void)replayWithFileURL:(id)l completion:(id)completion;
 @end
 
 @implementation ADMockServer
 
-- (void)replayWithFileURL:(id)a3 completion:(id)a4
+- (void)replayWithFileURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v18 = 0;
-  v8 = [v6 checkResourceIsReachableAndReturnError:&v18];
+  v8 = [lCopy checkResourceIsReachableAndReturnError:&v18];
   v9 = v18;
   if (v8)
   {
@@ -24,8 +24,8 @@
         v16[1] = 3221225472;
         v16[2] = sub_1000A0E34;
         v16[3] = &unk_10051D2F0;
-        v17 = v7;
-        [(AMSMockServerProtocol *)remoteProxy startMockServerWithReplayFile:v6 withReply:v16];
+        v17 = completionCopy;
+        [(AMSMockServerProtocol *)remoteProxy startMockServerWithReplayFile:lCopy withReply:v16];
 
         goto LABEL_10;
       }
@@ -63,9 +63,9 @@
   }
 
 LABEL_10:
-  if (v7 && v9)
+  if (completionCopy && v9)
   {
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 

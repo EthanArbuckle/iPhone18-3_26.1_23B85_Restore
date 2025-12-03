@@ -1,46 +1,46 @@
 @interface EDAttachmentPersistenceManager
 + (OS_os_log)log;
-+ (__CFString)createFilenameForAttachmentName:(uint64_t)a1;
-+ (id)attachmentDirectoryURLWithBasePath:(id)a3;
-+ (void)removeSynapseAttachmentAttributesForMessages:(id)a3;
-- (BOOL)persistAttachmentMetadata:(id)a3;
-- (EDAttachmentFileWriter)_createAttachmentFileWriterForAttachmentMetadata:(void *)a3 basePath:(void *)a4 downloadDate:(void *)a5 queue:(void *)a6 compressionQueue:(void *)a7 completion:;
-- (EDAttachmentMetadata)_updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:(void *)a3 metadata:(void *)a4 basePath:(void *)a5 digest:(void *)a6 downloadDate:;
-- (EDAttachmentPersistenceManager)initWithDatabase:(id)a3 messagePersistence:(id)a4;
-- (id)_accountIdentifiersByAttachmentIDs:(uint64_t)a1;
-- (id)_attachmentURLForAttachment:(void *)a3 basePath:;
-- (id)_attachmentURLForAttachmentID:(void *)a3 nameOnDisk:(void *)a4 basePath:;
-- (id)_attachmentURLForAttachmentMetadata:(void *)a3 basePath:;
-- (id)_attachmentURLWithBasePath:(void *)a3 attachmentID:(void *)a4 nameOnDisk:;
-- (id)_attachmentURLsAndNamesForMetadata:(void *)a3 basePath:;
-- (id)_createTemporaryURLForAttachmentMetadata:(void *)a3 basePath:;
-- (id)_temporaryFileURLWithBasePath:(void *)a3 name:;
-- (id)_updateAttachmentIDAndCreateFinalFileURLForFile:(void *)a3 metadata:(void *)a4 basePath:(void *)a5 digest:(void *)a6 downloadDate:;
-- (id)_updateAttachmentURL:(void *)a3 attachmentName:;
-- (id)addSynapseAttributesToAttachmentWithURL:(id)a3 contentType:(id)a4 usingGenerator:(id)a5;
-- (id)allAttachmentsInfoForGlobalMessageIDs:(id)a3 basePath:(id)a4;
-- (id)attachmentDirectoryURLForMessageID:(int64_t)a3 basePath:(id)a4;
-- (id)attachmentURLForGlobalMessageID:(int64_t)a3 mimePartNumber:(id)a4 basePath:(id)a5;
-- (id)attachmentURLForGlobalMessageID:(int64_t)a3 remoteURL:(id)a4 basePath:(id)a5;
-- (id)attachmentURLForMessageAttachmentID:(id)a3 basePath:(id)a4;
-- (id)attachmentURLsForGlobalMessageIDs:(id)a3;
-- (id)createAttachmentFileWriterForAttachmentMetadata:(id)a3 basePath:(id)a4 downloadDate:(id)a5 queue:(id)a6 compressionQueue:(id)a7 completion:(id)a8;
-- (uint64_t)_moveAttachmentAtURL:(void *)a3 toURL:(uint64_t)a4 outError:;
-- (uint64_t)_persistAndUpdateAttachmentPersistenceTableFromFileWrapper:(void *)a3 orURL:(void *)a4 attachmentMetadata:(void *)a5 basePath:(int)a6 shouldUpdateAttachmentID:;
-- (uint64_t)_persistAttachmentWithWrapper:(id *)a1 orURL:(void *)a2 attachmentMetadata:(void *)a3 basePath:(void *)a4 error:(void *)a5;
-- (uint64_t)_writeAttachment:(void *)a3 toDirectory:(void *)a4 outError:;
-- (uint64_t)_writeFileWrapper:(void *)a3 toURL:(void *)a4 outError:;
-- (uint64_t)removeDatabaseAttachments:(uint64_t)a1;
-- (uint64_t)removeFilesystemAttachmentsByAccountIdentifier:(uint64_t)a1;
-- (void)_createParentDirectoryForFile:(uint64_t)a1;
-- (void)_didCompleteWritingAttachmentToFile:(void *)a3 basePath:(void *)a4 digest:(void *)a5 metadata:(void *)a6 downloadDate:;
-- (void)_tempDirectoryForArchiveAttachmentsWithParentDirectory:(void *)a1;
-- (void)insertMimePartAttachments:(id)a3 forGlobalMessageID:(int64_t)a4;
-- (void)isDeletingMessages:(id)a3;
-- (void)persistenceDidDeleteMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceIsDeletingMessages:(id)a3 generationWindow:(id)a4;
-- (void)persistenceWillDeleteMessages:(id)a3;
-- (void)willDeleteAttachmentsForMessages:(id)a3;
++ (__CFString)createFilenameForAttachmentName:(uint64_t)name;
++ (id)attachmentDirectoryURLWithBasePath:(id)path;
++ (void)removeSynapseAttachmentAttributesForMessages:(id)messages;
+- (BOOL)persistAttachmentMetadata:(id)metadata;
+- (EDAttachmentFileWriter)_createAttachmentFileWriterForAttachmentMetadata:(void *)metadata basePath:(void *)path downloadDate:(void *)date queue:(void *)queue compressionQueue:(void *)compressionQueue completion:;
+- (EDAttachmentMetadata)_updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:(void *)file metadata:(void *)metadata basePath:(void *)path digest:(void *)digest downloadDate:;
+- (EDAttachmentPersistenceManager)initWithDatabase:(id)database messagePersistence:(id)persistence;
+- (id)_accountIdentifiersByAttachmentIDs:(uint64_t)ds;
+- (id)_attachmentURLForAttachment:(void *)attachment basePath:;
+- (id)_attachmentURLForAttachmentID:(void *)d nameOnDisk:(void *)disk basePath:;
+- (id)_attachmentURLForAttachmentMetadata:(void *)metadata basePath:;
+- (id)_attachmentURLWithBasePath:(void *)path attachmentID:(void *)d nameOnDisk:;
+- (id)_attachmentURLsAndNamesForMetadata:(void *)metadata basePath:;
+- (id)_createTemporaryURLForAttachmentMetadata:(void *)metadata basePath:;
+- (id)_temporaryFileURLWithBasePath:(void *)path name:;
+- (id)_updateAttachmentIDAndCreateFinalFileURLForFile:(void *)file metadata:(void *)metadata basePath:(void *)path digest:(void *)digest downloadDate:;
+- (id)_updateAttachmentURL:(void *)l attachmentName:;
+- (id)addSynapseAttributesToAttachmentWithURL:(id)l contentType:(id)type usingGenerator:(id)generator;
+- (id)allAttachmentsInfoForGlobalMessageIDs:(id)ds basePath:(id)path;
+- (id)attachmentDirectoryURLForMessageID:(int64_t)d basePath:(id)path;
+- (id)attachmentURLForGlobalMessageID:(int64_t)d mimePartNumber:(id)number basePath:(id)path;
+- (id)attachmentURLForGlobalMessageID:(int64_t)d remoteURL:(id)l basePath:(id)path;
+- (id)attachmentURLForMessageAttachmentID:(id)d basePath:(id)path;
+- (id)attachmentURLsForGlobalMessageIDs:(id)ds;
+- (id)createAttachmentFileWriterForAttachmentMetadata:(id)metadata basePath:(id)path downloadDate:(id)date queue:(id)queue compressionQueue:(id)compressionQueue completion:(id)completion;
+- (uint64_t)_moveAttachmentAtURL:(void *)l toURL:(uint64_t)rL outError:;
+- (uint64_t)_persistAndUpdateAttachmentPersistenceTableFromFileWrapper:(void *)wrapper orURL:(void *)l attachmentMetadata:(void *)metadata basePath:(int)path shouldUpdateAttachmentID:;
+- (uint64_t)_persistAttachmentWithWrapper:(id *)wrapper orURL:(void *)l attachmentMetadata:(void *)metadata basePath:(void *)path error:(void *)error;
+- (uint64_t)_writeAttachment:(void *)attachment toDirectory:(void *)directory outError:;
+- (uint64_t)_writeFileWrapper:(void *)wrapper toURL:(void *)l outError:;
+- (uint64_t)removeDatabaseAttachments:(uint64_t)attachments;
+- (uint64_t)removeFilesystemAttachmentsByAccountIdentifier:(uint64_t)identifier;
+- (void)_createParentDirectoryForFile:(uint64_t)file;
+- (void)_didCompleteWritingAttachmentToFile:(void *)file basePath:(void *)path digest:(void *)digest metadata:(void *)metadata downloadDate:;
+- (void)_tempDirectoryForArchiveAttachmentsWithParentDirectory:(void *)directory;
+- (void)insertMimePartAttachments:(id)attachments forGlobalMessageID:(int64_t)d;
+- (void)isDeletingMessages:(id)messages;
+- (void)persistenceDidDeleteMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceIsDeletingMessages:(id)messages generationWindow:(id)window;
+- (void)persistenceWillDeleteMessages:(id)messages;
+- (void)willDeleteAttachmentsForMessages:(id)messages;
 @end
 
 @implementation EDAttachmentPersistenceManager
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __37__EDAttachmentPersistenceManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_12 != -1)
   {
     dispatch_once(&log_onceToken_12, block);
@@ -70,41 +70,41 @@ void __37__EDAttachmentPersistenceManager_log__block_invoke(uint64_t a1)
   log_log_12 = v1;
 }
 
-+ (id)attachmentDirectoryURLWithBasePath:(id)a3
++ (id)attachmentDirectoryURLWithBasePath:(id)path
 {
-  v3 = [a3 URLByAppendingPathComponent:@"AttachmentData" isDirectory:1];
+  v3 = [path URLByAppendingPathComponent:@"AttachmentData" isDirectory:1];
 
   return v3;
 }
 
-+ (__CFString)createFilenameForAttachmentName:(uint64_t)a1
++ (__CFString)createFilenameForAttachmentName:(uint64_t)name
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 ef_sanitizedFileName];
-  if (![(__CFString *)v3 length]|| [(__CFString *)v3 length]> 0xFF || ([(__CFString *)v3 isEqualToString:@"."]& 1) != 0 || [(__CFString *)v3 isEqualToString:@".."])
+  ef_sanitizedFileName = [v2 ef_sanitizedFileName];
+  if (![(__CFString *)ef_sanitizedFileName length]|| [(__CFString *)ef_sanitizedFileName length]> 0xFF || ([(__CFString *)ef_sanitizedFileName isEqualToString:@"."]& 1) != 0 || [(__CFString *)ef_sanitizedFileName isEqualToString:@".."])
   {
 
-    v3 = @"attachment";
+    ef_sanitizedFileName = @"attachment";
   }
 
-  return v3;
+  return ef_sanitizedFileName;
 }
 
-- (EDAttachmentPersistenceManager)initWithDatabase:(id)a3 messagePersistence:(id)a4
+- (EDAttachmentPersistenceManager)initWithDatabase:(id)database messagePersistence:(id)persistence
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  persistenceCopy = persistence;
   v14.receiver = self;
   v14.super_class = EDAttachmentPersistenceManager;
   v8 = [(EDAttachmentPersistenceManager *)&v14 init];
   if (v8)
   {
-    v9 = [[EDAttachmentPersistence alloc] initWithDatabase:v6];
+    v9 = [[EDAttachmentPersistence alloc] initWithDatabase:databaseCopy];
     attachmentPersistence = v8->_attachmentPersistence;
     v8->_attachmentPersistence = v9;
 
-    objc_storeStrong(&v8->_messagePersistence, a4);
+    objc_storeStrong(&v8->_messagePersistence, persistence);
     v11 = [MEMORY[0x1E699B978] serialDispatchQueueSchedulerWithName:@"com.apple.email.EDAttachmentPersistenceManager" qualityOfService:17];
     synapseAttributesScheduler = v8->_synapseAttributesScheduler;
     v8->_synapseAttributesScheduler = v11;
@@ -113,32 +113,32 @@ void __37__EDAttachmentPersistenceManager_log__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (uint64_t)_persistAndUpdateAttachmentPersistenceTableFromFileWrapper:(void *)a3 orURL:(void *)a4 attachmentMetadata:(void *)a5 basePath:(int)a6 shouldUpdateAttachmentID:
+- (uint64_t)_persistAndUpdateAttachmentPersistenceTableFromFileWrapper:(void *)wrapper orURL:(void *)l attachmentMetadata:(void *)metadata basePath:(int)path shouldUpdateAttachmentID:
 {
   v96 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v79 = a4;
-  v78 = a5;
-  v81 = v12;
-  if (!a1)
+  wrapperCopy = wrapper;
+  lCopy = l;
+  metadataCopy = metadata;
+  v81 = wrapperCopy;
+  if (!self)
   {
     v72 = 0;
     goto LABEL_89;
   }
 
-  v80 = *(a1 + 8);
+  v80 = *(self + 8);
   if (v11)
   {
-    v13 = [v11 preferredFilename];
-    v14 = v13;
-    if (!v13)
+    preferredFilename = [v11 preferredFilename];
+    filename = preferredFilename;
+    if (!preferredFilename)
     {
-      v14 = [v11 filename];
+      filename = [v11 filename];
     }
 
-    v15 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:v14];
-    if (!v13)
+    v15 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:filename];
+    if (!preferredFilename)
     {
     }
 
@@ -155,21 +155,21 @@ void __37__EDAttachmentPersistenceManager_log__block_invoke(uint64_t a1)
       goto LABEL_12;
     }
 
-    v18 = [v11 regularFileContents];
-    v82 = [EDAttachmentPersistence hashForAttachmentData:v18];
+    regularFileContents = [v11 regularFileContents];
+    v82 = [EDAttachmentPersistence hashForAttachmentData:regularFileContents];
   }
 
   else
   {
-    if (v12)
+    if (wrapperCopy)
     {
-      v16 = [v12 ef_lastPathComponent];
-      v17 = [v16 sanitizedString];
-      v15 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:v17];
+      ef_lastPathComponent = [wrapperCopy ef_lastPathComponent];
+      sanitizedString = [ef_lastPathComponent sanitizedString];
+      v15 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:sanitizedString];
 
 LABEL_12:
-      v18 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v81];
-      if (!v18)
+      regularFileContents = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v81];
+      if (!regularFileContents)
       {
         v19 = EDAttachmentsLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -182,12 +182,12 @@ LABEL_12:
         goto LABEL_88;
       }
 
-      v82 = [EDAttachmentPersistence hashForAttachmentData:v18];
+      v82 = [EDAttachmentPersistence hashForAttachmentData:regularFileContents];
       goto LABEL_19;
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:sel__persistAndUpdateAttachmentPersistenceTableFromFileWrapper_orURL_attachmentMetadata_basePath_shouldUpdateAttachmentID_ object:a1 file:@"EDAttachmentPersistenceManager.m" lineNumber:88 description:@"Need to have either a fileWrapper or a URL"];
+    regularFileContents = [MEMORY[0x1E696AAA8] currentHandler];
+    [regularFileContents handleFailureInMethod:sel__persistAndUpdateAttachmentPersistenceTableFromFileWrapper_orURL_attachmentMetadata_basePath_shouldUpdateAttachmentID_ object:self file:@"EDAttachmentPersistenceManager.m" lineNumber:88 description:@"Need to have either a fileWrapper or a URL"];
     v15 = 0;
     v82 = 0;
   }
@@ -196,36 +196,36 @@ LABEL_19:
 
 LABEL_20:
   v20 = EDAttachmentsLog();
-  v75 = a6;
+  pathCopy = path;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [v79 globalMessageID];
-    v22 = [v79 mimePartNumber];
+    globalMessageID = [lCopy globalMessageID];
+    mimePartNumber = [lCopy mimePartNumber];
     *buf = 138543874;
     v91 = v82;
     v92 = 2048;
-    v93 = v21;
+    v93 = globalMessageID;
     v94 = 2114;
-    v95 = v22;
+    v95 = mimePartNumber;
     _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "Created hash %{public}@ for attachment for globalMessageID %lld MIME part %{public}@", buf, 0x20u);
   }
 
   if (v11)
   {
-    v23 = [v11 fileAttributes];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
-    v77 = [v23 objectForKeyedSubscript:*MEMORY[0x1E696A308]];
+    fileAttributes = [v11 fileAttributes];
+    v24 = [fileAttributes objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
+    v77 = [fileAttributes objectForKeyedSubscript:*MEMORY[0x1E696A308]];
     v76 = v24;
   }
 
   else
   {
-    v25 = [MEMORY[0x1E696AC08] defaultManager];
-    v26 = [v81 path];
-    v23 = [v25 attributesOfItemAtPath:v26 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v81 path];
+    fileAttributes = [defaultManager attributesOfItemAtPath:path error:0];
 
-    v27 = [v23 objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
-    v77 = [v23 objectForKeyedSubscript:*MEMORY[0x1E696A308]];
+    v27 = [fileAttributes objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
+    v77 = [fileAttributes objectForKeyedSubscript:*MEMORY[0x1E696A308]];
     v76 = v27;
     if (!v27 || !v77)
     {
@@ -248,7 +248,7 @@ LABEL_20:
   }
 
   v29 = [v80 uniqueAttachmentDataForHash:v82];
-  v23 = v29;
+  fileAttributes = v29;
   v30 = *MEMORY[0x1E699A728];
   if (!v29)
   {
@@ -278,16 +278,16 @@ LABEL_62:
     }
 
     v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", v44];
-    v51 = [v78 URLByAppendingPathComponent:v50 isDirectory:1];
+    v51 = [metadataCopy URLByAppendingPathComponent:v50 isDirectory:1];
 
     v52 = EDAttachmentsLog();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [v11 preferredFilename];
+      preferredFilename2 = [v11 preferredFilename];
       *buf = 134218498;
       v91 = v44;
       v92 = 2112;
-      v93 = v53;
+      v93 = preferredFilename2;
       v94 = 2112;
       v95 = v51;
       _os_log_impl(&dword_1C61EF000, v52, OS_LOG_TYPE_DEFAULT, "Persisting attachment %lld %@ to disk at directory %@", buf, 0x20u);
@@ -296,7 +296,7 @@ LABEL_62:
     if (v11)
     {
       v86 = 0;
-      v54 = [(EDAttachmentPersistenceManager *)a1 _writeAttachment:v11 toDirectory:v51 outError:&v86];
+      v54 = [(EDAttachmentPersistenceManager *)self _writeAttachment:v11 toDirectory:v51 outError:&v86];
       v41 = v86;
 
       if ((v54 & 1) == 0)
@@ -309,7 +309,7 @@ LABEL_62:
     {
       v58 = [v51 URLByAppendingPathComponent:v15];
       v85 = 0;
-      v59 = [(EDAttachmentPersistenceManager *)a1 _moveAttachmentAtURL:v81 toURL:v58 outError:&v85];
+      v59 = [(EDAttachmentPersistenceManager *)self _moveAttachmentAtURL:v81 toURL:v58 outError:&v85];
       v41 = v85;
 
       if (!v59)
@@ -321,11 +321,11 @@ LABEL_62:
     v34 = EDAttachmentsLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = [v11 preferredFilename];
+      preferredFilename3 = [v11 preferredFilename];
       *buf = 134218242;
       v91 = v44;
       v92 = 2112;
-      v93 = v55;
+      v93 = preferredFilename3;
       _os_log_impl(&dword_1C61EF000, v34, OS_LOG_TYPE_DEFAULT, "Persisted attachment %lld %@ to disk", buf, 0x16u);
     }
 
@@ -334,39 +334,39 @@ LABEL_62:
   }
 
   v31 = MEMORY[0x1E696AEC0];
-  v32 = [v29 attachmentID];
-  v33 = [v31 stringWithFormat:@"%@", v32];
+  attachmentID = [v29 attachmentID];
+  v33 = [v31 stringWithFormat:@"%@", attachmentID];
 
-  v34 = [v78 URLByAppendingPathComponent:v33 isDirectory:1];
+  v34 = [metadataCopy URLByAppendingPathComponent:v33 isDirectory:1];
   v35 = [v34 URLByAppendingPathComponent:v15];
-  v36 = [v35 relativePath];
+  relativePath = [v35 relativePath];
 
   v37 = EDAttachmentsLog();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v91 = v36;
+    v91 = relativePath;
     _os_log_impl(&dword_1C61EF000, v37, OS_LOG_TYPE_DEFAULT, "Found the attachment in the attachments table. Checking if it exists on disk at %@", buf, 0xCu);
   }
 
-  v38 = [MEMORY[0x1E696AC08] defaultManager];
-  v39 = [v38 fileExistsAtPath:v36];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v39 = [defaultManager2 fileExistsAtPath:relativePath];
 
   if ((v39 & 1) == 0)
   {
     v45 = EDAttachmentsLog();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v11 preferredFilename];
+      preferredFilename4 = [v11 preferredFilename];
       *buf = 138412290;
-      v91 = v46;
+      v91 = preferredFilename4;
       _os_log_impl(&dword_1C61EF000, v45, OS_LOG_TYPE_DEFAULT, "No existing attachment found on disk. Writing attachment %@ to disk", buf, 0xCu);
     }
 
     if (v11)
     {
       v84 = 0;
-      v47 = [(EDAttachmentPersistenceManager *)a1 _writeAttachment:v11 toDirectory:v34 outError:&v84];
+      v47 = [(EDAttachmentPersistenceManager *)self _writeAttachment:v11 toDirectory:v34 outError:&v84];
       v41 = v84;
       if (v47)
       {
@@ -374,9 +374,9 @@ LABEL_44:
         v40 = EDAttachmentsLog();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v11 preferredFilename];
+          preferredFilename5 = [v11 preferredFilename];
           *buf = 138412290;
-          v91 = v48;
+          v91 = preferredFilename5;
           _os_log_impl(&dword_1C61EF000, v40, OS_LOG_TYPE_DEFAULT, "Persisted attachment %@ to disk with existing metadata", buf, 0xCu);
         }
 
@@ -389,7 +389,7 @@ LABEL_44:
     {
       v56 = [v34 URLByAppendingPathComponent:v15];
       v83 = 0;
-      v57 = [(EDAttachmentPersistenceManager *)a1 _moveAttachmentAtURL:v81 toURL:v56 outError:&v83];
+      v57 = [(EDAttachmentPersistenceManager *)self _moveAttachmentAtURL:v81 toURL:v56 outError:&v83];
       v41 = v83;
 
       if (v57)
@@ -424,8 +424,8 @@ LABEL_47:
   v44 = v30;
 LABEL_65:
 
-  v60 = [v23 attachmentID];
-  if (v60)
+  attachmentID2 = [fileAttributes attachmentID];
+  if (attachmentID2)
   {
     v61 = 0;
   }
@@ -439,39 +439,39 @@ LABEL_65:
 
   if (v62)
   {
-    v63 = [v23 attachmentID];
-    v64 = v63;
-    if (!v63)
+    attachmentID3 = [fileAttributes attachmentID];
+    v64 = attachmentID3;
+    if (!attachmentID3)
     {
       v64 = [MEMORY[0x1E696AD98] numberWithLongLong:v44];
     }
 
-    [v79 setAttachmentID:v64];
-    if (!v63)
+    [lCopy setAttachmentID:v64];
+    if (!attachmentID3)
     {
     }
 
     v65 = EDAttachmentsLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [v23 attachmentID];
+      attachmentID4 = [fileAttributes attachmentID];
       *v88 = 138412290;
-      v89 = v66;
+      v89 = attachmentID4;
       _os_log_impl(&dword_1C61EF000, v65, OS_LOG_TYPE_DEFAULT, "Checking if we need to update or insert the attachment metadata in the message_attachments table for attachment: %@", v88, 0xCu);
     }
 
-    if (v75)
+    if (pathCopy)
     {
       v67 = EDAttachmentsLog();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
-        v68 = [v23 attachmentID];
+        attachmentID5 = [fileAttributes attachmentID];
         *v88 = 138412290;
-        v89 = v68;
+        v89 = attachmentID5;
         _os_log_impl(&dword_1C61EF000, v67, OS_LOG_TYPE_DEFAULT, "Update the message_attachments table with the updated attachment ID: %@", v88, 0xCu);
       }
 
-      v69 = [v80 updateAttachmentIDForMessageAttachment:v79];
+      v69 = [v80 updateAttachmentIDForMessageAttachment:lCopy];
     }
 
     else
@@ -479,13 +479,13 @@ LABEL_65:
       v70 = EDAttachmentsLog();
       if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
       {
-        v71 = [v79 attachmentID];
+        attachmentID6 = [lCopy attachmentID];
         *v88 = 138412290;
-        v89 = v71;
+        v89 = attachmentID6;
         _os_log_impl(&dword_1C61EF000, v70, OS_LOG_TYPE_DEFAULT, "Create a new entry into the message_attachments table with attachment ID: %@", v88, 0xCu);
       }
 
-      v69 = [v80 insertMessageAttachmentMetadata:v79];
+      v69 = [v80 insertMessageAttachmentMetadata:lCopy];
     }
 
     v42 = v69;
@@ -503,37 +503,37 @@ LABEL_89:
   return v72;
 }
 
-- (uint64_t)_writeAttachment:(void *)a3 toDirectory:(void *)a4 outError:
+- (uint64_t)_writeAttachment:(void *)attachment toDirectory:(void *)directory outError:
 {
   v32 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  attachmentCopy = attachment;
+  if (!self)
   {
     v24 = 0;
     goto LABEL_25;
   }
 
-  v9 = [v7 isDirectory];
+  isDirectory = [v7 isDirectory];
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = 0;
-  v12 = [v11 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v30];
+  v12 = [defaultManager createDirectoryAtURL:attachmentCopy withIntermediateDirectories:1 attributes:0 error:&v30];
   v13 = v30;
 
   if (v12)
   {
-    v14 = [v7 preferredFilename];
-    if (v14 || ([v7 filename], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    preferredFilename = [v7 preferredFilename];
+    if (preferredFilename || ([v7 filename], (preferredFilename = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      if (v9)
+      if (isDirectory)
       {
-        [v8 URLByAppendingPathComponent:v14 isDirectory:1];
+        [attachmentCopy URLByAppendingPathComponent:preferredFilename isDirectory:1];
       }
 
       else
       {
-        [v8 URLByAppendingPathComponent:v14 isDirectory:0];
+        [attachmentCopy URLByAppendingPathComponent:preferredFilename isDirectory:0];
       }
       v16 = ;
       v29 = v13;
@@ -551,21 +551,21 @@ LABEL_89:
         }
 
         v27 = v18;
-        v15 = [(EDAttachmentPersistenceManager *)a1 _writeFileWrapper:v7 toURL:v16 outError:&v27];
+        v15 = [(EDAttachmentPersistenceManager *)self _writeFileWrapper:v7 toURL:v16 outError:&v27];
         v13 = v27;
 
         goto LABEL_22;
       }
 
-      v20 = [v18 domain];
-      if ([v20 isEqualToString:*MEMORY[0x1E696A250]])
+      domain = [v18 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A250]])
       {
         v21 = [v18 code] == 260;
 
         if (v21)
         {
           v28 = v18;
-          v15 = [(EDAttachmentPersistenceManager *)a1 _writeFileWrapper:v7 toURL:v16 outError:&v28];
+          v15 = [(EDAttachmentPersistenceManager *)self _writeFileWrapper:v7 toURL:v16 outError:&v28];
           v13 = v28;
 
           goto LABEL_22;
@@ -591,10 +591,10 @@ LABEL_89:
       goto LABEL_22;
     }
 
-    v14 = EDAttachmentsLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    preferredFilename = EDAttachmentsLog();
+    if (os_log_type_enabled(preferredFilename, OS_LOG_TYPE_ERROR))
     {
-      [v8 path];
+      [attachmentCopy path];
       objc_claimAutoreleasedReturnValue();
       [EDAttachmentPersistenceManager _writeAttachment:toDirectory:outError:];
     }
@@ -602,10 +602,10 @@ LABEL_89:
 
   else
   {
-    v14 = EDAttachmentsLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    preferredFilename = EDAttachmentsLog();
+    if (os_log_type_enabled(preferredFilename, OS_LOG_TYPE_ERROR))
     {
-      [v8 path];
+      [attachmentCopy path];
       objc_claimAutoreleasedReturnValue();
       [v13 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -618,10 +618,10 @@ LABEL_89:
 LABEL_22:
 
   objc_autoreleasePoolPop(v10);
-  if (a4)
+  if (directory)
   {
     v23 = v13;
-    *a4 = v13;
+    *directory = v13;
   }
 
   v31 = v15;
@@ -633,36 +633,36 @@ LABEL_25:
   return v24;
 }
 
-- (uint64_t)_moveAttachmentAtURL:(void *)a3 toURL:(uint64_t)a4 outError:
+- (uint64_t)_moveAttachmentAtURL:(void *)l toURL:(uint64_t)rL outError:
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (!a1)
+  lCopy = l;
+  v9 = lCopy;
+  if (!self)
   {
     v14 = 0;
     goto LABEL_14;
   }
 
-  v10 = [v8 URLByDeletingLastPathComponent];
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:a4];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:rL];
 
   if (v12)
   {
     if ([v9 checkResourceIsReachableAndReturnError:0])
     {
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      [v13 removeItemAtURL:v7 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtURL:v7 error:0];
 
 LABEL_12:
       v14 = 1;
       goto LABEL_13;
     }
 
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v15 moveItemAtURL:v7 toURL:v9 error:a4];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager3 moveItemAtURL:v7 toURL:v9 error:rL];
 
     if (v14)
     {
@@ -697,24 +697,24 @@ LABEL_14:
   return v14;
 }
 
-- (uint64_t)_persistAttachmentWithWrapper:(id *)a1 orURL:(void *)a2 attachmentMetadata:(void *)a3 basePath:(void *)a4 error:(void *)a5
+- (uint64_t)_persistAttachmentWithWrapper:(id *)wrapper orURL:(void *)l attachmentMetadata:(void *)metadata basePath:(void *)path error:(void *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v43 = a2;
-  v38 = a3;
-  v9 = a4;
-  v40 = a5;
-  v46 = v9;
-  if (!a1)
+  lCopy = l;
+  metadataCopy = metadata;
+  pathCopy = path;
+  errorCopy = error;
+  v46 = pathCopy;
+  if (!wrapper)
   {
     v17 = 0;
     goto LABEL_49;
   }
 
-  v10 = [v9 globalMessageID];
-  v42 = [v9 mimePartNumber];
-  v37 = [v9 remoteURL];
-  v41 = a1[1];
+  globalMessageID = [pathCopy globalMessageID];
+  mimePartNumber = [pathCopy mimePartNumber];
+  remoteURL = [pathCopy remoteURL];
+  v41 = wrapper[1];
   v11 = EDAttachmentsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -723,9 +723,9 @@ LABEL_14:
   }
 
   v52 = 0;
-  if (v42)
+  if (mimePartNumber)
   {
-    v45 = [v41 messageAttachmentExistsForGlobalMessageID:v10 mimePartNumber:v42 hasAttachmentEntry:&v52];
+    v45 = [v41 messageAttachmentExistsForGlobalMessageID:globalMessageID mimePartNumber:mimePartNumber hasAttachmentEntry:&v52];
 LABEL_8:
     if (v52 == 1 && v45)
     {
@@ -736,15 +736,15 @@ LABEL_8:
         _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Found both the attachment metadata and the attachment in the message_attachments and attachments table. No insertion needed.", buf, 2u);
       }
 
-      v13 = [(EDAttachmentPersistenceManager *)a1 _attachmentURLForAttachmentMetadata:v46 basePath:v40];
-      if (v43)
+      v13 = [(EDAttachmentPersistenceManager *)wrapper _attachmentURLForAttachmentMetadata:v46 basePath:errorCopy];
+      if (lCopy)
       {
-        v14 = [(EDAttachmentPersistenceManager *)a1 _writeFileWrapper:v43 toURL:v13 outError:0];
+        v14 = [(EDAttachmentPersistenceManager *)wrapper _writeFileWrapper:lCopy toURL:v13 outError:0];
       }
 
       else
       {
-        v14 = [(EDAttachmentPersistenceManager *)a1 _moveAttachmentAtURL:v38 toURL:v13 outError:0];
+        v14 = [(EDAttachmentPersistenceManager *)wrapper _moveAttachmentAtURL:metadataCopy toURL:v13 outError:0];
       }
 
       v17 = v14;
@@ -754,14 +754,14 @@ LABEL_8:
     {
       if (v52)
       {
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v34 handleFailureInMethod:sel__persistAttachmentWithWrapper_orURL_attachmentMetadata_basePath_error_ object:a1 file:@"EDAttachmentPersistenceManager.m" lineNumber:364 description:@"We can't possibly have found an attachment entry without a message_attachment"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__persistAttachmentWithWrapper_orURL_attachmentMetadata_basePath_error_ object:wrapper file:@"EDAttachmentPersistenceManager.m" lineNumber:364 description:@"We can't possibly have found an attachment entry without a message_attachment"];
       }
 
-      v44 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:v40];
-      v36 = [MEMORY[0x1E696AC08] defaultManager];
-      v15 = [v43 isRegularFile] ^ 1;
-      if (v38)
+      v44 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:errorCopy];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v15 = [lCopy isRegularFile] ^ 1;
+      if (metadataCopy)
       {
         LOBYTE(v15) = 0;
       }
@@ -775,9 +775,9 @@ LABEL_8:
           _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "Persisting archive attachment", buf, 2u);
         }
 
-        v19 = [(EDAttachmentPersistenceManager *)a1 _tempDirectoryForArchiveAttachmentsWithParentDirectory:v44];
-        [(EDAttachmentPersistenceManager *)a1 _writeAttachment:v43 toDirectory:v19 outError:0];
-        [v36 contentsOfDirectoryAtURL:v19 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:16 error:0];
+        v19 = [(EDAttachmentPersistenceManager *)wrapper _tempDirectoryForArchiveAttachmentsWithParentDirectory:v44];
+        [(EDAttachmentPersistenceManager *)wrapper _writeAttachment:lCopy toDirectory:v19 outError:0];
+        [defaultManager contentsOfDirectoryAtURL:v19 includingPropertiesForKeys:MEMORY[0x1E695E0F0] options:16 error:0];
         v50 = 0u;
         v51 = 0u;
         v48 = 0u;
@@ -798,9 +798,9 @@ LABEL_8:
                 objc_enumerationMutation(obj);
               }
 
-              v24 = [*(*(&v48 + 1) + 8 * i) relativeString];
-              v25 = [v24 stringByRemovingPercentEncoding];
-              v26 = [v19 URLByAppendingPathComponent:v25];
+              relativeString = [*(*(&v48 + 1) + 8 * i) relativeString];
+              stringByRemovingPercentEncoding = [relativeString stringByRemovingPercentEncoding];
+              v26 = [v19 URLByAppendingPathComponent:stringByRemovingPercentEncoding];
 
               v27 = objc_alloc(MEMORY[0x1E699B7C0]);
               v47 = 0;
@@ -816,7 +816,7 @@ LABEL_8:
                   _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Persisting archive attachment from temp directory %@", buf, 0xCu);
                 }
 
-                LOBYTE(v17) = [(EDAttachmentPersistenceManager *)a1 _persistAndUpdateAttachmentPersistenceTableFromFileWrapper:v28 orURL:0 attachmentMetadata:v46 basePath:v44 shouldUpdateAttachmentID:v45];
+                LOBYTE(v17) = [(EDAttachmentPersistenceManager *)wrapper _persistAndUpdateAttachmentPersistenceTableFromFileWrapper:v28 orURL:0 attachmentMetadata:v46 basePath:v44 shouldUpdateAttachmentID:v45];
               }
 
               if ((v17 & 1) == 0)
@@ -824,7 +824,7 @@ LABEL_8:
                 v31 = EDAttachmentsLog();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
                 {
-                  [v43 preferredFilename];
+                  [lCopy preferredFilename];
                   objc_claimAutoreleasedReturnValue();
                   [EDAttachmentPersistenceManager _persistAttachmentWithWrapper:orURL:attachmentMetadata:basePath:error:];
                 }
@@ -851,7 +851,7 @@ LABEL_45:
           v17 = 0;
         }
 
-        [v36 removeItemAtURL:v19 error:0];
+        [defaultManager removeItemAtURL:v19 error:0];
       }
 
       else
@@ -863,7 +863,7 @@ LABEL_45:
           _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Persisting regular file attachment", buf, 2u);
         }
 
-        v17 = [(EDAttachmentPersistenceManager *)a1 _persistAndUpdateAttachmentPersistenceTableFromFileWrapper:v43 orURL:v38 attachmentMetadata:v46 basePath:v44 shouldUpdateAttachmentID:v45];
+        v17 = [(EDAttachmentPersistenceManager *)wrapper _persistAndUpdateAttachmentPersistenceTableFromFileWrapper:lCopy orURL:metadataCopy attachmentMetadata:v46 basePath:v44 shouldUpdateAttachmentID:v45];
       }
 
       v13 = v44;
@@ -872,17 +872,17 @@ LABEL_45:
     goto LABEL_48;
   }
 
-  if (v37)
+  if (remoteURL)
   {
-    v45 = [v41 messageAttachmentExistsForGlobalMessageID:v10 remoteURL:v37 hasAttachmentEntry:&v52];
+    v45 = [v41 messageAttachmentExistsForGlobalMessageID:globalMessageID remoteURL:remoteURL hasAttachmentEntry:&v52];
     goto LABEL_8;
   }
 
   v13 = EDAttachmentsLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
-    v30 = [v46 ef_publicDescription];
-    [EDAttachmentPersistenceManager _persistAttachmentWithWrapper:v30 orURL:buf attachmentMetadata:? basePath:? error:?];
+    ef_publicDescription = [v46 ef_publicDescription];
+    [EDAttachmentPersistenceManager _persistAttachmentWithWrapper:ef_publicDescription orURL:buf attachmentMetadata:? basePath:? error:?];
   }
 
   v17 = 0;
@@ -893,48 +893,48 @@ LABEL_49:
   return v17;
 }
 
-- (id)createAttachmentFileWriterForAttachmentMetadata:(id)a3 basePath:(id)a4 downloadDate:(id)a5 queue:(id)a6 compressionQueue:(id)a7 completion:(id)a8
+- (id)createAttachmentFileWriterForAttachmentMetadata:(id)metadata basePath:(id)path downloadDate:(id)date queue:(id)queue compressionQueue:(id)compressionQueue completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v13 name];
+  metadataCopy = metadata;
+  pathCopy = path;
+  dateCopy = date;
+  queueCopy = queue;
+  compressionQueueCopy = compressionQueue;
+  completionCopy = completion;
+  name = [metadataCopy name];
 
-  if (v19)
+  if (name)
   {
-    v20 = v13;
+    v20 = metadataCopy;
   }
 
   else
   {
     v26 = [EDMessageAttachmentMetadata alloc];
-    v21 = [v13 globalMessageID];
-    v27 = [v13 mimePartNumber];
-    v22 = [v13 attachmentID];
-    v23 = [v13 remoteURL];
-    v20 = [(EDMessageAttachmentMetadata *)v26 initWithGlobalMessageID:v21 name:@"attachment" mimePart:v27 attachmentID:v22 remoteURL:v23];
+    globalMessageID = [metadataCopy globalMessageID];
+    mimePartNumber = [metadataCopy mimePartNumber];
+    attachmentID = [metadataCopy attachmentID];
+    remoteURL = [metadataCopy remoteURL];
+    v20 = [(EDMessageAttachmentMetadata *)v26 initWithGlobalMessageID:globalMessageID name:@"attachment" mimePart:mimePartNumber attachmentID:attachmentID remoteURL:remoteURL];
   }
 
-  v24 = [(EDAttachmentPersistenceManager *)self _createAttachmentFileWriterForAttachmentMetadata:v20 basePath:v14 downloadDate:v15 queue:v16 compressionQueue:v17 completion:v18];
+  v24 = [(EDAttachmentPersistenceManager *)self _createAttachmentFileWriterForAttachmentMetadata:v20 basePath:pathCopy downloadDate:dateCopy queue:queueCopy compressionQueue:compressionQueueCopy completion:completionCopy];
 
   return v24;
 }
 
-- (EDAttachmentFileWriter)_createAttachmentFileWriterForAttachmentMetadata:(void *)a3 basePath:(void *)a4 downloadDate:(void *)a5 queue:(void *)a6 compressionQueue:(void *)a7 completion:
+- (EDAttachmentFileWriter)_createAttachmentFileWriterForAttachmentMetadata:(void *)metadata basePath:(void *)path downloadDate:(void *)date queue:(void *)queue compressionQueue:(void *)compressionQueue completion:
 {
   v32 = *MEMORY[0x1E69E9840];
   v13 = a2;
-  v14 = a3;
-  v15 = a4;
-  v24 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (a1)
+  metadataCopy = metadata;
+  pathCopy = path;
+  dateCopy = date;
+  queueCopy = queue;
+  compressionQueueCopy = compressionQueue;
+  if (self)
   {
-    v18 = [(EDAttachmentPersistenceManager *)a1 _attachmentURLForAttachmentMetadata:v13 basePath:v14];
+    v18 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachmentMetadata:v13 basePath:metadataCopy];
     if ([v18 checkResourceIsReachableAndReturnError:0])
     {
       v19 = EDAttachmentsLog();
@@ -946,12 +946,12 @@ LABEL_49:
         [EDAttachmentPersistenceManager _createAttachmentFileWriterForAttachmentMetadata:basePath:downloadDate:queue:compressionQueue:completion:];
       }
 
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      v19 = [(EDAttachmentPersistenceManager *)a1 _createTemporaryURLForAttachmentMetadata:v13 basePath:v14];
+      v19 = [(EDAttachmentPersistenceManager *)self _createTemporaryURLForAttachmentMetadata:v13 basePath:metadataCopy];
       if (v19)
       {
         v20 = [EDAttachmentFileWriter alloc];
@@ -961,11 +961,11 @@ LABEL_49:
         v25[3] = &unk_1E8250550;
         v26 = v13;
         v27 = v19;
-        v28 = a1;
-        v29 = v14;
-        v30 = v15;
-        v31 = v17;
-        a1 = [(EDAttachmentFileWriter *)v20 initWithFinalURL:v27 queue:v24 compressionQueue:v16 completion:v25];
+        selfCopy = self;
+        v29 = metadataCopy;
+        v30 = pathCopy;
+        v31 = compressionQueueCopy;
+        self = [(EDAttachmentFileWriter *)v20 initWithFinalURL:v27 queue:dateCopy compressionQueue:queueCopy completion:v25];
 
         v21 = v26;
       }
@@ -981,64 +981,64 @@ LABEL_49:
           [EDAttachmentPersistenceManager _createAttachmentFileWriterForAttachmentMetadata:basePath:downloadDate:queue:compressionQueue:completion:];
         }
 
-        a1 = 0;
+        self = 0;
       }
     }
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)_attachmentURLForAttachmentMetadata:(void *)a3 basePath:
+- (id)_attachmentURLForAttachmentMetadata:(void *)metadata basePath:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v7 = [v5 mimePartNumber];
+    mimePartNumber = [v5 mimePartNumber];
 
-    if (v7)
+    if (mimePartNumber)
     {
-      v8 = [v5 globalMessageID];
-      v9 = [v5 mimePartNumber];
-      v10 = [a1 attachmentURLForGlobalMessageID:v8 mimePartNumber:v9 basePath:v6];
+      globalMessageID = [v5 globalMessageID];
+      mimePartNumber2 = [v5 mimePartNumber];
+      v10 = [self attachmentURLForGlobalMessageID:globalMessageID mimePartNumber:mimePartNumber2 basePath:metadataCopy];
 LABEL_6:
-      a1 = v10;
+      self = v10;
 
       goto LABEL_7;
     }
 
-    v11 = [v5 remoteURL];
+    remoteURL = [v5 remoteURL];
 
-    if (v11)
+    if (remoteURL)
     {
-      v12 = [v5 globalMessageID];
-      v9 = [v5 remoteURL];
-      v10 = [a1 attachmentURLForGlobalMessageID:v12 remoteURL:v9 basePath:v6];
+      globalMessageID2 = [v5 globalMessageID];
+      mimePartNumber2 = [v5 remoteURL];
+      v10 = [self attachmentURLForGlobalMessageID:globalMessageID2 remoteURL:mimePartNumber2 basePath:metadataCopy];
       goto LABEL_6;
     }
 
-    a1 = 0;
+    self = 0;
   }
 
 LABEL_7:
 
-  return a1;
+  return self;
 }
 
-- (id)_createTemporaryURLForAttachmentMetadata:(void *)a3 basePath:
+- (id)_createTemporaryURLForAttachmentMetadata:(void *)metadata basePath:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  metadataCopy = metadata;
+  if (self)
   {
-    v7 = [v5 name];
-    a1 = [(EDAttachmentPersistenceManager *)a1 _temporaryFileURLWithBasePath:v6 name:v7];
+    name = [v5 name];
+    self = [(EDAttachmentPersistenceManager *)self _temporaryFileURLWithBasePath:metadataCopy name:name];
   }
 
-  return a1;
+  return self;
 }
 
 void __139__EDAttachmentPersistenceManager__createAttachmentFileWriterForAttachmentMetadata_basePath_downloadDate_queue_compressionQueue_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -1095,30 +1095,30 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_didCompleteWritingAttachmentToFile:(void *)a3 basePath:(void *)a4 digest:(void *)a5 metadata:(void *)a6 downloadDate:
+- (void)_didCompleteWritingAttachmentToFile:(void *)file basePath:(void *)path digest:(void *)digest metadata:(void *)metadata downloadDate:
 {
   v26 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  fileCopy = file;
+  pathCopy = path;
+  digestCopy = digest;
+  metadataCopy = metadata;
+  if (self)
   {
-    v16 = [(EDAttachmentPersistenceManager *)a1 _updateAttachmentIDAndCreateFinalFileURLForFile:v11 metadata:v14 basePath:v12 digest:v13 downloadDate:v15];
+    v16 = [(EDAttachmentPersistenceManager *)self _updateAttachmentIDAndCreateFinalFileURLForFile:v11 metadata:digestCopy basePath:fileCopy digest:pathCopy downloadDate:metadataCopy];
     if (v16)
     {
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v24 = 0;
-      v18 = [v17 moveItemAtURL:v11 toURL:v16 error:&v24];
+      v18 = [defaultManager moveItemAtURL:v11 toURL:v16 error:&v24];
       v19 = v24;
 
       if (v18)
       {
-        v20 = EDAttachmentsLog();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        defaultManager2 = EDAttachmentsLog();
+        if (os_log_type_enabled(defaultManager2, OS_LOG_TYPE_DEFAULT))
         {
-          -[EDAttachmentPersistenceManager _didCompleteWritingAttachmentToFile:basePath:digest:metadata:downloadDate:].cold.2(v25, [v14 globalMessageID]);
+          -[EDAttachmentPersistenceManager _didCompleteWritingAttachmentToFile:basePath:digest:metadata:downloadDate:].cold.2(v25, [digestCopy globalMessageID]);
         }
       }
 
@@ -1127,43 +1127,43 @@ LABEL_11:
         v22 = EDAttachmentsLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [v14 globalMessageID];
+          [digestCopy globalMessageID];
           [v19 ef_publicDescription];
           objc_claimAutoreleasedReturnValue();
           [EDAttachmentPersistenceManager _didCompleteWritingAttachmentToFile:basePath:digest:metadata:downloadDate:];
         }
 
-        v20 = [MEMORY[0x1E696AC08] defaultManager];
-        [v20 removeItemAtURL:v11 error:0];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager2 removeItemAtURL:v11 error:0];
       }
     }
 
     else
     {
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
-      [v21 removeItemAtURL:v11 error:0];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager3 removeItemAtURL:v11 error:0];
     }
   }
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_temporaryFileURLWithBasePath:(void *)a3 name:
+- (id)_temporaryFileURLWithBasePath:(void *)path name:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  pathCopy = path;
+  if (self)
   {
     v7 = [v5 URLByAppendingPathComponent:@"__temp"];
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    [v8 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:0];
 
     v9 = [MEMORY[0x1E695DF88] dataWithLength:18];
     arc4random_buf([v9 mutableBytes], objc_msgSend(v9, "length"));
     v10 = [v9 base64EncodedStringWithOptions:0];
     v11 = [v10 stringByReplacingOccurrencesOfString:@"/" withString:@"-"];
 
-    v12 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:v6];
+    v12 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:pathCopy];
     v13 = [v12 stringByAppendingPathExtension:v11];
 
     v14 = [v7 URLByAppendingPathComponent:v13 isDirectory:0];
@@ -1177,58 +1177,58 @@ LABEL_11:
   return v14;
 }
 
-- (id)_updateAttachmentIDAndCreateFinalFileURLForFile:(void *)a3 metadata:(void *)a4 basePath:(void *)a5 digest:(void *)a6 downloadDate:
+- (id)_updateAttachmentIDAndCreateFinalFileURLForFile:(void *)file metadata:(void *)metadata basePath:(void *)path digest:(void *)digest downloadDate:
 {
   v33 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  fileCopy = file;
+  metadataCopy = metadata;
+  pathCopy = path;
+  digestCopy = digest;
+  if (self)
   {
-    v16 = [(EDAttachmentPersistenceManager *)a1 _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:v11 metadata:v12 basePath:v13 digest:v14 downloadDate:v15];
-    v17 = [v16 attachmentID];
+    v16 = [(EDAttachmentPersistenceManager *)self _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:v11 metadata:fileCopy basePath:metadataCopy digest:pathCopy downloadDate:digestCopy];
+    attachmentID = [v16 attachmentID];
 
-    if (v17)
+    if (attachmentID)
     {
-      v18 = [v12 attachmentID];
+      attachmentID2 = [fileCopy attachmentID];
 
-      if (v18)
+      if (attachmentID2)
       {
         v19 = EDAttachmentsLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v16 attachmentID];
+          attachmentID3 = [v16 attachmentID];
           v29 = 138412546;
-          v30 = v20;
+          v30 = attachmentID3;
           v31 = 2048;
-          v32 = [v12 globalMessageID];
+          globalMessageID = [fileCopy globalMessageID];
           _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "Updated nil attachment ID to %@ for global message ID %llu", &v29, 0x16u);
         }
       }
 
-      v21 = [v16 attachmentID];
-      [v12 setAttachmentID:v21];
+      attachmentID4 = [v16 attachmentID];
+      [fileCopy setAttachmentID:attachmentID4];
 
-      if ([*(a1 + 8) updateAttachmentIDForMessageAttachment:v12] & 1) != 0 || (objc_msgSend(*(a1 + 8), "insertMessageAttachmentMetadata:", v12))
+      if ([*(self + 8) updateAttachmentIDForMessageAttachment:fileCopy] & 1) != 0 || (objc_msgSend(*(self + 8), "insertMessageAttachmentMetadata:", fileCopy))
       {
-        v22 = [v16 attachmentID];
-        v23 = [v16 nameOnDisk];
-        v24 = [(EDAttachmentPersistenceManager *)a1 _attachmentURLWithBasePath:v13 attachmentID:v22 nameOnDisk:v23];
+        attachmentID5 = [v16 attachmentID];
+        nameOnDisk = [v16 nameOnDisk];
+        v24 = [(EDAttachmentPersistenceManager *)self _attachmentURLWithBasePath:metadataCopy attachmentID:attachmentID5 nameOnDisk:nameOnDisk];
 
-        [(EDAttachmentPersistenceManager *)a1 _createParentDirectoryForFile:v24];
+        [(EDAttachmentPersistenceManager *)self _createParentDirectoryForFile:v24];
 LABEL_14:
 
         goto LABEL_15;
       }
 
-      v26 = EDAttachmentsLog();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      defaultManager = EDAttachmentsLog();
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
-        [v12 attachmentID];
+        [fileCopy attachmentID];
         objc_claimAutoreleasedReturnValue();
-        [v12 globalMessageID];
+        [fileCopy globalMessageID];
         [EDAttachmentPersistenceManager _updateAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:];
       }
     }
@@ -1238,11 +1238,11 @@ LABEL_14:
       v25 = EDAttachmentsLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        -[EDAttachmentPersistenceManager _updateAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.2(&v29, [v12 globalMessageID]);
+        -[EDAttachmentPersistenceManager _updateAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.2(&v29, [fileCopy globalMessageID]);
       }
 
-      v26 = [MEMORY[0x1E696AC08] defaultManager];
-      [v26 removeItemAtURL:v11 error:0];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager removeItemAtURL:v11 error:0];
     }
 
     v24 = 0;
@@ -1257,42 +1257,42 @@ LABEL_15:
   return v24;
 }
 
-- (EDAttachmentMetadata)_updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:(void *)a3 metadata:(void *)a4 basePath:(void *)a5 digest:(void *)a6 downloadDate:
+- (EDAttachmentMetadata)_updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:(void *)file metadata:(void *)metadata basePath:(void *)path digest:(void *)digest downloadDate:
 {
   v52 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  fileCopy = file;
+  metadataCopy = metadata;
+  pathCopy = path;
+  digestCopy = digest;
+  if (self)
   {
-    if (v14)
+    if (pathCopy)
     {
-      if ([v14 length] == 32)
+      if ([pathCopy length] == 32)
       {
-        v16 = *(a1 + 8);
-        v17 = [v14 ef_hexString];
-        v18 = [v16 uniqueAttachmentDataForHash:v17];
+        v16 = *(self + 8);
+        ef_hexString = [pathCopy ef_hexString];
+        v18 = [v16 uniqueAttachmentDataForHash:ef_hexString];
 
-        v19 = [(EDAttachmentMetadata *)v18 attachmentID];
+        attachmentID = [(EDAttachmentMetadata *)v18 attachmentID];
 
-        if (v19)
+        if (attachmentID)
         {
           v20 = EDAttachmentsLog();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v14 bytes];
-            v22 = [v12 globalMessageID];
-            v23 = [(EDAttachmentMetadata *)v18 attachmentID];
+            bytes = [pathCopy bytes];
+            globalMessageID = [fileCopy globalMessageID];
+            attachmentID2 = [(EDAttachmentMetadata *)v18 attachmentID];
             *buf = 68158466;
             v45 = 32;
             v46 = 2096;
-            v47 = v21;
+            v47 = bytes;
             v48 = 2048;
-            v49 = v22;
+            v49 = globalMessageID;
             v50 = 2048;
-            v51 = [v23 unsignedLongLongValue];
+            unsignedLongLongValue = [attachmentID2 unsignedLongLongValue];
             _os_log_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEFAULT, "Found existing attachment with digest %.32P (global ID %llu): attachment ID: %llu", buf, 0x26u);
           }
         }
@@ -1311,27 +1311,27 @@ LABEL_15:
             v28 = EDAttachmentsLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
             {
-              [v12 globalMessageID];
+              [fileCopy globalMessageID];
               [v40 ef_publicDescription];
               objc_claimAutoreleasedReturnValue();
               [EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:];
             }
           }
 
-          v29 = [v12 name];
-          v41 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:v29];
+          name = [fileCopy name];
+          v41 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:name];
 
           v30 = [EDAttachmentMetadata alloc];
-          v31 = [v14 ef_hexString];
-          v32 = [(EDAttachmentMetadata *)v30 initWithAttachmentHash:v31 nameOnDisk:v41 size:v20 downloadDate:v15];
+          ef_hexString2 = [pathCopy ef_hexString];
+          v32 = [(EDAttachmentMetadata *)v30 initWithAttachmentHash:ef_hexString2 nameOnDisk:v41 size:v20 downloadDate:digestCopy];
 
-          v33 = [*(a1 + 8) insertAttachmentMetadata:v32];
+          v33 = [*(self + 8) insertAttachmentMetadata:v32];
           if (v33 == *MEMORY[0x1E699A728])
           {
             v34 = EDAttachmentsLog();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
             {
-              -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.3(buf, [v12 globalMessageID]);
+              -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.3(buf, [fileCopy globalMessageID]);
             }
 
             v18 = 0;
@@ -1342,17 +1342,17 @@ LABEL_15:
             v35 = EDAttachmentsLog();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
-              v36 = v14;
-              v37 = [v14 bytes];
-              v38 = [v12 globalMessageID];
+              v36 = pathCopy;
+              bytes2 = [pathCopy bytes];
+              globalMessageID2 = [fileCopy globalMessageID];
               *buf = 68158466;
               v45 = 32;
               v46 = 2096;
-              v47 = v37;
+              v47 = bytes2;
               v48 = 2048;
-              v49 = v38;
+              v49 = globalMessageID2;
               v50 = 2048;
-              v51 = v33;
+              unsignedLongLongValue = v33;
               _os_log_impl(&dword_1C61EF000, v35, OS_LOG_TYPE_DEFAULT, "Did insert new attachment ID for digest %.32P (global ID %llu): attachment ID: %llu", buf, 0x26u);
             }
 
@@ -1369,7 +1369,7 @@ LABEL_15:
       v20 = EDAttachmentsLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.1(buf, [v12 globalMessageID]);
+        -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.1(buf, [fileCopy globalMessageID]);
       }
     }
 
@@ -1378,7 +1378,7 @@ LABEL_15:
       v20 = EDAttachmentsLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.4(buf, [v12 globalMessageID]);
+        -[EDAttachmentPersistenceManager _updateOrInsertAttachmentIDAndCreateFinalFileURLForFile:metadata:basePath:digest:downloadDate:].cold.4(buf, [fileCopy globalMessageID]);
       }
     }
 
@@ -1396,65 +1396,65 @@ LABEL_13:
   return v18;
 }
 
-- (id)_attachmentURLWithBasePath:(void *)a3 attachmentID:(void *)a4 nameOnDisk:
+- (id)_attachmentURLWithBasePath:(void *)path attachmentID:(void *)d nameOnDisk:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  pathCopy = path;
+  dCopy = d;
+  v10 = dCopy;
   v11 = 0;
-  if (a1 && v7 && v8 && v9)
+  if (self && v7 && pathCopy && dCopy)
   {
     v12 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:v7];
-    v13 = [v8 stringValue];
-    v14 = [v12 URLByAppendingPathComponent:v13 isDirectory:1];
+    stringValue = [pathCopy stringValue];
+    v14 = [v12 URLByAppendingPathComponent:stringValue isDirectory:1];
     v11 = [v14 URLByAppendingPathComponent:v10 isDirectory:0];
   }
 
   return v11;
 }
 
-- (void)_createParentDirectoryForFile:(uint64_t)a1
+- (void)_createParentDirectoryForFile:(uint64_t)file
 {
   v3 = a2;
-  if (a1)
+  if (file)
   {
     v6 = v3;
-    v4 = [v3 URLByDeletingLastPathComponent];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
+    uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
     v3 = v6;
   }
 }
 
-- (uint64_t)_writeFileWrapper:(void *)a3 toURL:(void *)a4 outError:
+- (uint64_t)_writeFileWrapper:(void *)wrapper toURL:(void *)l outError:
 {
   v38 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (!a1)
+  wrapperCopy = wrapper;
+  if (!self)
   {
     v9 = 0;
     goto LABEL_27;
   }
 
   v31 = 0;
-  v9 = [v7 writeToURL:v8 options:3 originalContentsURL:0 error:&v31];
+  v9 = [v7 writeToURL:wrapperCopy options:3 originalContentsURL:0 error:&v31];
   v10 = v31;
   if (!v9)
   {
     v14 = EDAttachmentsLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v8 path];
-      v23 = [v10 ef_publicDescription];
+      path = [wrapperCopy path];
+      ef_publicDescription = [v10 ef_publicDescription];
       *buf = 138412802;
       v33 = v7;
       v34 = 2114;
-      v35 = v22;
+      v35 = path;
       v36 = 2114;
-      v37 = v23;
+      v37 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_ERROR, "Failed to write attachment file wrapper %@ to %{public}@, %{public}@", buf, 0x20u);
     }
 
@@ -1464,13 +1464,13 @@ LABEL_13:
   v11 = EDAttachmentsLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 path];
+    path2 = [wrapperCopy path];
     *buf = 138543362;
-    v33 = v12;
+    v33 = path2;
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Persisting attachment to filesystem: %{public}@", buf, 0xCu);
   }
 
-  [*(a1 + 16) setContentProtectionForAttachmentFile:v8];
+  [*(self + 16) setContentProtectionForAttachmentFile:wrapperCopy];
   v30[1] = 0;
   v13 = EFMarkFileAsPurgeable();
   v14 = 0;
@@ -1479,7 +1479,7 @@ LABEL_13:
     v15 = EDAttachmentsLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [v8 path];
+      [wrapperCopy path];
       objc_claimAutoreleasedReturnValue();
       [v14 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -1487,13 +1487,13 @@ LABEL_13:
     }
   }
 
-  v16 = [v7 isDirectory];
-  v17 = *(a1 + 16);
+  isDirectory = [v7 isDirectory];
+  v17 = *(self + 16);
   v18 = v17;
-  if (v16)
+  if (isDirectory)
   {
     v30[0] = 0;
-    v19 = [v17 compressDirectory:v8 shouldCancel:0 error:v30];
+    v19 = [v17 compressDirectory:wrapperCopy shouldCancel:0 error:v30];
     v20 = v30[0];
 
     if ((v19 & 1) == 0)
@@ -1501,7 +1501,7 @@ LABEL_13:
       v21 = EDAttachmentsLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [v8 path];
+        [wrapperCopy path];
         objc_claimAutoreleasedReturnValue();
         [v20 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -1515,7 +1515,7 @@ LABEL_18:
   else
   {
     v29 = 0;
-    v24 = [v17 compressFile:v8 error:&v29];
+    v24 = [v17 compressFile:wrapperCopy error:&v29];
     v20 = v29;
 
     if ((v24 & 1) == 0)
@@ -1523,7 +1523,7 @@ LABEL_18:
       v21 = EDAttachmentsLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [v8 path];
+        [wrapperCopy path];
         objc_claimAutoreleasedReturnValue();
         [v20 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -1539,7 +1539,7 @@ LABEL_18:
     v25 = EDAttachmentsLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      [v8 path];
+      [wrapperCopy path];
       objc_claimAutoreleasedReturnValue();
       [v20 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -1548,10 +1548,10 @@ LABEL_18:
   }
 
 LABEL_24:
-  if (a4)
+  if (l)
   {
     v26 = v10;
-    *a4 = v10;
+    *l = v10;
   }
 
 LABEL_27:
@@ -1559,36 +1559,36 @@ LABEL_27:
   return v9;
 }
 
-- (void)_tempDirectoryForArchiveAttachmentsWithParentDirectory:(void *)a1
+- (void)_tempDirectoryForArchiveAttachmentsWithParentDirectory:(void *)directory
 {
   v3 = a2;
-  if (a1)
+  if (directory)
   {
-    v4 = a1[3];
+    v4 = directory[3];
     if (!v4)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [MEMORY[0x1E696AFB0] UUID];
-      v7 = [v5 stringWithFormat:@"__temp_%@", v6];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      v7 = [v5 stringWithFormat:@"__temp_%@", uUID];
 
       v8 = [v3 URLByAppendingPathComponent:v7];
-      v9 = a1[3];
-      a1[3] = v8;
+      v9 = directory[3];
+      directory[3] = v8;
 
-      v4 = a1[3];
+      v4 = directory[3];
     }
 
-    a1 = v4;
+    directory = v4;
   }
 
-  return a1;
+  return directory;
 }
 
-- (uint64_t)removeDatabaseAttachments:(uint64_t)a1
+- (uint64_t)removeDatabaseAttachments:(uint64_t)attachments
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (attachments)
   {
     v4 = EDAttachmentsLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1598,25 +1598,25 @@ LABEL_27:
       _os_log_impl(&dword_1C61EF000, v4, OS_LOG_TYPE_DEFAULT, "Removing attachments to delete %@ from the attachments table", &v7, 0xCu);
     }
 
-    a1 = [*(a1 + 8) removeAttachments:v3];
+    attachments = [*(attachments + 8) removeAttachments:v3];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return a1;
+  return attachments;
 }
 
-- (uint64_t)removeFilesystemAttachmentsByAccountIdentifier:(uint64_t)a1
+- (uint64_t)removeFilesystemAttachmentsByAccountIdentifier:(uint64_t)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    a1 = EDAttachmentsLog();
-    if (os_log_type_enabled(a1, OS_LOG_TYPE_DEFAULT))
+    identifier = EDAttachmentsLog();
+    if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v3;
-      _os_log_impl(&dword_1C61EF000, a1, OS_LOG_TYPE_DEFAULT, "Removing attachments to delete %@ from the filesystem", &buf, 0xCu);
+      _os_log_impl(&dword_1C61EF000, identifier, OS_LOG_TYPE_DEFAULT, "Removing attachments to delete %@ from the filesystem", &buf, 0xCu);
     }
 
     *&buf = 0;
@@ -1629,12 +1629,12 @@ LABEL_27:
     v6[3] = &unk_1E8250578;
     v6[4] = &buf;
     [v3 enumerateKeysAndObjectsUsingBlock:v6];
-    LOBYTE(a1) = *(*(&buf + 1) + 24);
+    LOBYTE(identifier) = *(*(&buf + 1) + 24);
     _Block_object_dispose(&buf, 8);
   }
 
   v4 = *MEMORY[0x1E69E9840];
-  return a1 & 1;
+  return identifier & 1;
 }
 
 void __81__EDAttachmentPersistenceManager_removeFilesystemAttachmentsByAccountIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1724,29 +1724,29 @@ void __81__EDAttachmentPersistenceManager_removeFilesystemAttachmentsByAccountId
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_updateAttachmentURL:(void *)a3 attachmentName:
+- (id)_updateAttachmentURL:(void *)l attachmentName:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  lCopy = l;
+  v7 = lCopy;
+  if (self)
   {
-    v8 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:v6];
+    v8 = [EDAttachmentPersistenceManager createFilenameForAttachmentName:lCopy];
 
     if (v5)
     {
-      v9 = [v5 ef_lastPathComponent];
-      v10 = [v9 sanitizedString];
-      v11 = [v10 localizedCompare:v8];
+      ef_lastPathComponent = [v5 ef_lastPathComponent];
+      sanitizedString = [ef_lastPathComponent sanitizedString];
+      v11 = [sanitizedString localizedCompare:v8];
 
       if (v11)
       {
-        v12 = [v5 URLByDeletingLastPathComponent];
-        a1 = [v12 URLByAppendingPathComponent:v8];
+        uRLByDeletingLastPathComponent = [v5 URLByDeletingLastPathComponent];
+        self = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v8];
 
-        v13 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v19 = 0;
-        v14 = [v13 copyItemAtURL:v5 toURL:a1 error:&v19];
+        v14 = [defaultManager copyItemAtURL:v5 toURL:self error:&v19];
         v15 = v19;
 
         if (v14)
@@ -1759,8 +1759,8 @@ LABEL_6:
 
         if ([v15 code] == 516)
         {
-          v16 = [v15 domain];
-          v17 = [v16 isEqualToString:*MEMORY[0x1E696A250]];
+          domain = [v15 domain];
+          v17 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
           if (v17)
           {
@@ -1770,34 +1770,34 @@ LABEL_6:
       }
     }
 
-    a1 = v5;
+    self = v5;
   }
 
   else
   {
-    v8 = v6;
+    v8 = lCopy;
   }
 
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-- (id)attachmentURLForGlobalMessageID:(int64_t)a3 mimePartNumber:(id)a4 basePath:(id)a5
+- (id)attachmentURLForGlobalMessageID:(int64_t)d mimePartNumber:(id)number basePath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  numberCopy = number;
+  pathCopy = path;
   v10 = EDAttachmentsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 path];
+    path = [pathCopy path];
     v23 = 134218498;
-    v24 = a3;
+    dCopy3 = d;
     v25 = 2114;
-    v26 = v8;
+    dCopy2 = numberCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = path;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Fetching attachment URL for globalMessageID %lld MIME part number %{public}@ at base path %@", &v23, 0x20u);
   }
 
@@ -1812,23 +1812,23 @@ LABEL_11:
   }
 
   v13 = attachmentPersistence;
-  v14 = [(EDAttachmentPersistence *)v13 attachmentMetadataForMessage:a3 mimePartNumber:v8];
+  v14 = [(EDAttachmentPersistence *)v13 attachmentMetadataForMessage:d mimePartNumber:numberCopy];
 
-  v15 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachment:v14 basePath:v9];
+  v15 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachment:v14 basePath:pathCopy];
   if (v15)
   {
     v16 = EDAttachmentsLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 path];
+      path2 = [pathCopy path];
       v23 = 138544130;
-      v24 = v15;
+      dCopy3 = v15;
       v25 = 2048;
-      v26 = a3;
+      dCopy2 = d;
       v27 = 2114;
-      v28 = v8;
+      v28 = numberCopy;
       v29 = 2112;
-      v30 = v17;
+      v30 = path2;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Found attachment URL %{public}@ for globalMessageID %lld MIME part number %{public}@ at base path %@", &v23, 0x2Au);
     }
 
@@ -1840,13 +1840,13 @@ LABEL_11:
     v19 = EDAttachmentsLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v9 path];
+      path3 = [pathCopy path];
       v23 = 134218498;
-      v24 = a3;
+      dCopy3 = d;
       v25 = 2114;
-      v26 = v8;
+      dCopy2 = numberCopy;
       v27 = 2112;
-      v28 = v20;
+      v28 = path3;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "Could not find attachment URL for globalMessageID %lld MIME part number %{public}@ at base path %@", &v23, 0x20u);
     }
   }
@@ -1856,29 +1856,29 @@ LABEL_11:
   return v15;
 }
 
-- (id)_attachmentURLForAttachment:(void *)a3 basePath:
+- (id)_attachmentURLForAttachment:(void *)attachment basePath:
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  attachmentCopy = attachment;
+  if (self)
   {
-    v7 = [v5 attachmentMetadata];
-    v8 = [v7 attachmentID];
-    v9 = [v8 stringValue];
-    if (v9)
+    attachmentMetadata = [v5 attachmentMetadata];
+    attachmentID = [attachmentMetadata attachmentID];
+    stringValue = [attachmentID stringValue];
+    if (stringValue)
     {
-      v10 = [v7 nameOnDisk];
+      nameOnDisk = [attachmentMetadata nameOnDisk];
 
-      if (v10)
+      if (nameOnDisk)
       {
-        v11 = [v7 attachmentID];
-        v12 = [v7 nameOnDisk];
-        v13 = [(EDAttachmentPersistenceManager *)a1 _attachmentURLWithBasePath:v6 attachmentID:v11 nameOnDisk:v12];
+        attachmentID2 = [attachmentMetadata attachmentID];
+        nameOnDisk2 = [attachmentMetadata nameOnDisk];
+        v13 = [(EDAttachmentPersistenceManager *)self _attachmentURLWithBasePath:attachmentCopy attachmentID:attachmentID2 nameOnDisk:nameOnDisk2];
 
-        v14 = [v5 messageMetadata];
-        v15 = [v14 name];
-        a1 = [(EDAttachmentPersistenceManager *)a1 _updateAttachmentURL:v13 attachmentName:v15];
+        messageMetadata = [v5 messageMetadata];
+        name = [messageMetadata name];
+        self = [(EDAttachmentPersistenceManager *)self _updateAttachmentURL:v13 attachmentName:name];
 
 LABEL_9:
         goto LABEL_10;
@@ -1892,11 +1892,11 @@ LABEL_9:
     v16 = EDAttachmentsLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v7 attachmentID];
-      [EDAttachmentPersistenceManager _attachmentURLForAttachment:v17 basePath:v20];
+      attachmentID3 = [attachmentMetadata attachmentID];
+      [EDAttachmentPersistenceManager _attachmentURLForAttachment:attachmentID3 basePath:v20];
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_9;
   }
 
@@ -1904,15 +1904,15 @@ LABEL_10:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return self;
 }
 
-- (id)attachmentURLsForGlobalMessageIDs:(id)a3
+- (id)attachmentURLsForGlobalMessageIDs:(id)ds
 {
   v62 = *MEMORY[0x1E69E9840];
-  v37 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v37 allKeys];
+  allKeys = [dsCopy allKeys];
   if (self)
   {
     attachmentPersistence = self->_attachmentPersistence;
@@ -1923,7 +1923,7 @@ LABEL_10:
     attachmentPersistence = 0;
   }
 
-  v34 = v5;
+  v34 = allKeys;
   [(EDAttachmentPersistence *)attachmentPersistence attachmentMetadataForMessageIDs:?];
   v53 = 0u;
   v54 = 0u;
@@ -1933,7 +1933,7 @@ LABEL_10:
   if (v7)
   {
     v35 = *v52;
-    v41 = self;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -1946,14 +1946,14 @@ LABEL_10:
         }
 
         v40 = *(*(&v51 + 1) + 8 * v8);
-        v9 = [v37 objectForKey:v33];
+        v9 = [dsCopy objectForKey:v33];
         v36 = v8;
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
         v38 = v9;
-        v10 = v41;
+        v10 = selfCopy;
         v11 = [v38 countByEnumeratingWithState:&v47 objects:v60 count:16];
         if (v11)
         {
@@ -2004,7 +2004,7 @@ LABEL_10:
                 while (v17);
               }
 
-              v10 = v41;
+              v10 = selfCopy;
             }
 
             v11 = [v38 countByEnumeratingWithState:&v47 objects:v60 count:16];
@@ -2083,40 +2083,40 @@ LABEL_10:
   return v4;
 }
 
-- (id)_attachmentURLsAndNamesForMetadata:(void *)a3 basePath:
+- (id)_attachmentURLsAndNamesForMetadata:(void *)metadata basePath:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  metadataCopy = metadata;
+  v7 = metadataCopy;
+  if (self)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __78__EDAttachmentPersistenceManager__attachmentURLsAndNamesForMetadata_basePath___block_invoke;
     v9[3] = &unk_1E82505A0;
-    v9[4] = a1;
-    v10 = v6;
-    a1 = [v5 ef_map:v9];
+    v9[4] = self;
+    v10 = metadataCopy;
+    self = [v5 ef_map:v9];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)attachmentURLForGlobalMessageID:(int64_t)a3 remoteURL:(id)a4 basePath:(id)a5
+- (id)attachmentURLForGlobalMessageID:(int64_t)d remoteURL:(id)l basePath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  pathCopy = path;
   v10 = EDAttachmentsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 path];
+    path = [pathCopy path];
     v23 = 134218498;
-    v24 = a3;
+    dCopy3 = d;
     v25 = 2112;
-    v26 = v8;
+    dCopy2 = lCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = path;
     _os_log_impl(&dword_1C61EF000, v10, OS_LOG_TYPE_DEFAULT, "Fetching attachment URL for globalMessageID %lld remoteURL %@ at base path %@", &v23, 0x20u);
   }
 
@@ -2131,23 +2131,23 @@ LABEL_10:
   }
 
   v13 = attachmentPersistence;
-  v14 = [(EDAttachmentPersistence *)v13 attachmentMetadataForMessage:a3 remoteURL:v8];
+  v14 = [(EDAttachmentPersistence *)v13 attachmentMetadataForMessage:d remoteURL:lCopy];
 
-  v15 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachment:v14 basePath:v9];
+  v15 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachment:v14 basePath:pathCopy];
   if (v15)
   {
     v16 = EDAttachmentsLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v9 path];
+      path2 = [pathCopy path];
       v23 = 138544130;
-      v24 = v15;
+      dCopy3 = v15;
       v25 = 2048;
-      v26 = a3;
+      dCopy2 = d;
       v27 = 2112;
-      v28 = v8;
+      v28 = lCopy;
       v29 = 2112;
-      v30 = v17;
+      v30 = path2;
       _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Found attachment URL %{public}@ for globalMessageID %lld remoteURL %@ at base path %@", &v23, 0x2Au);
     }
 
@@ -2159,13 +2159,13 @@ LABEL_10:
     v19 = EDAttachmentsLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v9 path];
+      path3 = [pathCopy path];
       v23 = 134218498;
-      v24 = a3;
+      dCopy3 = d;
       v25 = 2112;
-      v26 = v8;
+      dCopy2 = lCopy;
       v27 = 2112;
-      v28 = v20;
+      v28 = path3;
       _os_log_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_DEFAULT, "Could not find attachment URL for globalMessageID %lld remoteURL %@ at base path %@", &v23, 0x20u);
     }
   }
@@ -2192,22 +2192,22 @@ id __78__EDAttachmentPersistenceManager__attachmentURLsAndNamesForMetadata_baseP
   return v13;
 }
 
-- (id)attachmentDirectoryURLForMessageID:(int64_t)a3 basePath:(id)a4
+- (id)attachmentDirectoryURLForMessageID:(int64_t)d basePath:(id)path
 {
-  v4 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:a4];
+  v4 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:path];
 
   return v4;
 }
 
-- (id)attachmentURLForMessageAttachmentID:(id)a3 basePath:(id)a4
+- (id)attachmentURLForMessageAttachmentID:(id)d basePath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  pathCopy = path;
   v8 = EDAttachmentsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    [v7 path];
+    [pathCopy path];
     objc_claimAutoreleasedReturnValue();
     [EDAttachmentPersistenceManager attachmentURLForMessageAttachmentID:basePath:];
   }
@@ -2223,31 +2223,31 @@ id __78__EDAttachmentPersistenceManager__attachmentURLsAndNamesForMetadata_baseP
   }
 
   v10 = attachmentPersistence;
-  v11 = [(EDAttachmentPersistence *)v10 attachmentMetadataForMessageAttachmentID:v6];
+  v11 = [(EDAttachmentPersistence *)v10 attachmentMetadataForMessageAttachmentID:dCopy];
 
-  v12 = [v11 attachmentMetadata];
-  v13 = v12;
-  if (v12)
+  attachmentMetadata = [v11 attachmentMetadata];
+  v13 = attachmentMetadata;
+  if (attachmentMetadata)
   {
-    v14 = [v12 attachmentID];
-    v15 = [v14 longLongValue];
-    v16 = [v13 nameOnDisk];
-    v17 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachmentID:v15 nameOnDisk:v16 basePath:v7];
+    attachmentID = [attachmentMetadata attachmentID];
+    longLongValue = [attachmentID longLongValue];
+    nameOnDisk = [v13 nameOnDisk];
+    v17 = [(EDAttachmentPersistenceManager *)self _attachmentURLForAttachmentID:longLongValue nameOnDisk:nameOnDisk basePath:pathCopy];
 
-    v18 = [v11 messageMetadata];
-    v19 = [v18 name];
-    v20 = [(EDAttachmentPersistenceManager *)self _updateAttachmentURL:v17 attachmentName:v19];
+    messageMetadata = [v11 messageMetadata];
+    name = [messageMetadata name];
+    v20 = [(EDAttachmentPersistenceManager *)self _updateAttachmentURL:v17 attachmentName:name];
 
     v21 = EDAttachmentsLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v7 path];
+      path = [pathCopy path];
       v25 = 138412802;
       v26 = v20;
       v27 = 2112;
-      v28 = v6;
+      v28 = dCopy;
       v29 = 2112;
-      v30 = v22;
+      v30 = path;
       _os_log_impl(&dword_1C61EF000, v21, OS_LOG_TYPE_DEFAULT, "Found attachment URL %@ for messageAttachmentID %@ at base path %@", &v25, 0x20u);
     }
   }
@@ -2262,27 +2262,27 @@ id __78__EDAttachmentPersistenceManager__attachmentURLsAndNamesForMetadata_baseP
   return v20;
 }
 
-- (id)_attachmentURLForAttachmentID:(void *)a3 nameOnDisk:(void *)a4 basePath:
+- (id)_attachmentURLForAttachmentID:(void *)d nameOnDisk:(void *)disk basePath:
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  diskCopy = disk;
   v9 = 0;
-  if (a1 && v7 && *MEMORY[0x1E699A728] != a2)
+  if (self && dCopy && *MEMORY[0x1E699A728] != a2)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", a2];
-    v11 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:v8];
+    v11 = [EDAttachmentPersistenceManager attachmentDirectoryURLWithBasePath:diskCopy];
     v12 = [v11 URLByAppendingPathComponent:v10 isDirectory:1];
-    v9 = [v12 URLByAppendingPathComponent:v7];
+    v9 = [v12 URLByAppendingPathComponent:dCopy];
   }
 
   return v9;
 }
 
-- (id)allAttachmentsInfoForGlobalMessageIDs:(id)a3 basePath:(id)a4
+- (id)allAttachmentsInfoForGlobalMessageIDs:(id)ds basePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dsCopy = ds;
+  pathCopy = path;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self)
   {
     attachmentPersistence = self->_attachmentPersistence;
@@ -2299,11 +2299,11 @@ id __78__EDAttachmentPersistenceManager__attachmentURLsAndNamesForMetadata_baseP
   v16[2] = __81__EDAttachmentPersistenceManager_allAttachmentsInfoForGlobalMessageIDs_basePath___block_invoke;
   v16[3] = &unk_1E82505C8;
   v16[4] = self;
-  v11 = v7;
+  v11 = pathCopy;
   v17 = v11;
-  v12 = v8;
+  v12 = dictionary;
   v18 = v12;
-  [(EDAttachmentPersistence *)v10 enumerateAttachmentsInfoForGlobalMessageIDs:v6 withBlock:v16];
+  [(EDAttachmentPersistence *)v10 enumerateAttachmentsInfoForGlobalMessageIDs:dsCopy withBlock:v16];
 
   v13 = v18;
   v14 = v12;
@@ -2341,16 +2341,16 @@ void __81__EDAttachmentPersistenceManager_allAttachmentsInfoForGlobalMessageIDs_
   }
 }
 
-- (void)willDeleteAttachmentsForMessages:(id)a3
+- (void)willDeleteAttachmentsForMessages:(id)messages
 {
   v31 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  messagesCopy = messages;
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v21;
+  obj = messagesCopy;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v4)
   {
@@ -2365,13 +2365,13 @@ void __81__EDAttachmentPersistenceManager_allAttachmentsInfoForGlobalMessageIDs_
         }
 
         v7 = *(*(&v26 + 1) + 8 * i);
-        v8 = [v7 account];
-        v9 = [v8 baseAccount];
-        v10 = [v9 personaIdentifier];
-        v11 = v10;
-        if (v10)
+        account = [v7 account];
+        baseAccount = [account baseAccount];
+        personaIdentifier = [baseAccount personaIdentifier];
+        v11 = personaIdentifier;
+        if (personaIdentifier)
         {
-          v12 = v10;
+          v12 = personaIdentifier;
         }
 
         else
@@ -2409,9 +2409,9 @@ void __81__EDAttachmentPersistenceManager_allAttachmentsInfoForGlobalMessageIDs_
   if ([v16 count])
   {
     v17 = [v16 copy];
-    v18 = [MEMORY[0x1E696AF00] currentThread];
-    v19 = [v18 threadDictionary];
-    [v19 setObject:v17 forKeyedSubscript:@"attachmentsForAccountIdentifiers"];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
+    [threadDictionary setObject:v17 forKeyedSubscript:@"attachmentsForAccountIdentifiers"];
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -2443,10 +2443,10 @@ id __67__EDAttachmentPersistenceManager_willDeleteAttachmentsForMessages___block
   return v3;
 }
 
-- (id)_accountIdentifiersByAttachmentIDs:(uint64_t)a1
+- (id)_accountIdentifiersByAttachmentIDs:(uint64_t)ds
 {
   v3 = a2;
-  if (a1)
+  if (ds)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v8[0] = MEMORY[0x1E69E9820];
@@ -2510,11 +2510,11 @@ void __69__EDAttachmentPersistenceManager__accountIdentifiersByAttachmentIDs___b
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)isDeletingMessages:(id)a3
+- (void)isDeletingMessages:(id)messages
 {
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"attachmentsForAccountIdentifiers"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v6 = [threadDictionary objectForKeyedSubscript:@"attachmentsForAccountIdentifiers"];
 
   if ([v6 count])
   {
@@ -2551,9 +2551,9 @@ void __69__EDAttachmentPersistenceManager__accountIdentifiersByAttachmentIDs___b
       [(EDAttachmentPersistenceManager *)self removeFilesystemAttachmentsByAccountIdentifier:v14];
     }
 
-    v15 = [MEMORY[0x1E696AF00] currentThread];
-    v16 = [v15 threadDictionary];
-    [v16 setObject:0 forKeyedSubscript:@"attachmentsForAccountIdentifiers"];
+    currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary2 = [currentThread2 threadDictionary];
+    [threadDictionary2 setObject:0 forKeyedSubscript:@"attachmentsForAccountIdentifiers"];
   }
 }
 
@@ -2641,13 +2641,13 @@ void __53__EDAttachmentPersistenceManager_isDeletingMessages___block_invoke_2(id
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removeSynapseAttachmentAttributesForMessages:(id)a3
++ (void)removeSynapseAttachmentAttributesForMessages:(id)messages
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messagesCopy = messages;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v3 ef_compactMap:&__block_literal_global_97];
+    v4 = [messagesCopy ef_compactMap:&__block_literal_global_97];
     v5 = EDAttachmentsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -2699,13 +2699,13 @@ void __79__EDAttachmentPersistenceManager_removeSynapseAttachmentAttributesForMe
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)addSynapseAttributesToAttachmentWithURL:(id)a3 contentType:(id)a4 usingGenerator:(id)a5
+- (id)addSynapseAttributesToAttachmentWithURL:(id)l contentType:(id)type usingGenerator:(id)generator
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  lCopy = l;
+  typeCopy = type;
+  generatorCopy = generator;
+  if (!lCopy)
   {
     v17 = EDAttachmentsLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2720,7 +2720,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!typeCopy)
   {
     v17 = EDAttachmentsLog();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2734,12 +2734,12 @@ LABEL_9:
   }
 
   v11 = MEMORY[0x1E69D5420];
-  v12 = [v9 identifier];
-  LOBYTE(v11) = [v11 isSupportedContentType:v12];
+  identifier = [typeCopy identifier];
+  LOBYTE(v11) = [v11 isSupportedContentType:identifier];
 
   if (v11)
   {
-    v13 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     objc_initWeak(location, self);
     v14 = MEMORY[0x1E69D5408];
     v22 = MEMORY[0x1E69E9820];
@@ -2747,12 +2747,12 @@ LABEL_9:
     v24 = __101__EDAttachmentPersistenceManager_addSynapseAttributesToAttachmentWithURL_contentType_usingGenerator___block_invoke;
     v25 = &unk_1E8250798;
     objc_copyWeak(&v29, location);
-    v26 = v8;
-    v15 = v13;
+    v26 = lCopy;
+    v15 = promise;
     v27 = v15;
-    v28 = v10;
+    v28 = generatorCopy;
     [v14 fetchDocumentAttributesForFileAtURL:v26 completion:&v22];
-    v16 = [v15 future];
+    future = [v15 future];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(location);
@@ -2763,22 +2763,22 @@ LABEL_9:
   v17 = EDAttachmentsLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v8 lastPathComponent];
+    lastPathComponent = [lCopy lastPathComponent];
     *location = 138412546;
-    *&location[4] = v19;
+    *&location[4] = lastPathComponent;
     v31 = 2114;
-    v32 = v9;
+    v32 = typeCopy;
     _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Not adding Synapse attributes to '%@': unsupported type %{public}@", location, 0x16u);
   }
 
 LABEL_12:
 
-  v16 = [MEMORY[0x1E699B7C8] futureWithResult:MEMORY[0x1E695E110]];
+  future = [MEMORY[0x1E699B7C8] futureWithResult:MEMORY[0x1E695E110]];
 LABEL_13:
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return future;
 }
 
 void __101__EDAttachmentPersistenceManager_addSynapseAttributesToAttachmentWithURL_contentType_usingGenerator___block_invoke(id *a1, void *a2)
@@ -2898,70 +2898,70 @@ void __101__EDAttachmentPersistenceManager_addSynapseAttributesToAttachmentWithU
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceWillDeleteMessages:(id)a3
+- (void)persistenceWillDeleteMessages:(id)messages
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
     v5 = EDAttachmentsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = messagesCopy;
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Hook called persistenceWillDeleteMessages to prepare attachment deletion for messages %{public}@", &v7, 0xCu);
     }
 
-    [(EDAttachmentPersistenceManager *)self willDeleteAttachmentsForMessages:v4];
+    [(EDAttachmentPersistenceManager *)self willDeleteAttachmentsForMessages:messagesCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceIsDeletingMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceIsDeletingMessages:(id)messages generationWindow:(id)window
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
     v6 = EDAttachmentsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v5;
+      v9 = messagesCopy;
       _os_log_impl(&dword_1C61EF000, v6, OS_LOG_TYPE_DEFAULT, "Hook called persistenceIsDeletingMessages to delete attachments for messages %{public}@", &v8, 0xCu);
     }
 
-    [(EDAttachmentPersistenceManager *)self isDeletingMessages:v5];
+    [(EDAttachmentPersistenceManager *)self isDeletingMessages:messagesCopy];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)persistenceDidDeleteMessages:(id)a3 generationWindow:(id)a4
+- (void)persistenceDidDeleteMessages:(id)messages generationWindow:(id)window
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  messagesCopy = messages;
+  if ([messagesCopy count])
   {
     v5 = EDAttachmentsLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = messagesCopy;
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Hook called persistenceDidDeleteMessages %{public}@", &v7, 0xCu);
     }
 
-    [EDAttachmentPersistenceManager removeSynapseAttachmentAttributesForMessages:v4];
+    [EDAttachmentPersistenceManager removeSynapseAttachmentAttributesForMessages:messagesCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)persistAttachmentMetadata:(id)a3
+- (BOOL)persistAttachmentMetadata:(id)metadata
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   if (self)
   {
     attachmentPersistence = self->_attachmentPersistence;
@@ -2973,7 +2973,7 @@ void __101__EDAttachmentPersistenceManager_addSynapseAttributesToAttachmentWithU
   }
 
   v6 = attachmentPersistence;
-  if (![v4 globalMessageID])
+  if (![metadataCopy globalMessageID])
   {
     v9 = EDAttachmentsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2989,9 +2989,9 @@ LABEL_10:
     goto LABEL_31;
   }
 
-  v7 = [v4 name];
+  name = [metadataCopy name];
 
-  if (!v7)
+  if (!name)
   {
     v9 = EDAttachmentsLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3004,12 +3004,12 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [v4 mimePartNumber];
-  if (!v8)
+  mimePartNumber = [metadataCopy mimePartNumber];
+  if (!mimePartNumber)
   {
-    v12 = [v4 remoteURL];
+    remoteURL = [metadataCopy remoteURL];
 
-    if (v12)
+    if (remoteURL)
     {
       goto LABEL_12;
     }
@@ -3029,16 +3029,16 @@ LABEL_12:
   v13 = EDAttachmentsLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v4 globalMessageID];
-    v15 = [v4 mimePartNumber];
+    globalMessageID = [metadataCopy globalMessageID];
+    mimePartNumber2 = [metadataCopy mimePartNumber];
     *buf = 134218242;
-    v39 = v14;
+    v39 = globalMessageID;
     v40 = 2114;
-    v41 = v15;
+    v41 = mimePartNumber2;
     OUTLINED_FUNCTION_11(&dword_1C61EF000, v13, v16, "Check the message_attachments table if attachment with message ID %lld MIME part %{public}@ exists", buf);
   }
 
-  -[EDAttachmentPersistence messageAttachmentMetadataForMessageID:](v6, "messageAttachmentMetadataForMessageID:", [v4 globalMessageID]);
+  -[EDAttachmentPersistence messageAttachmentMetadataForMessageID:](v6, "messageAttachmentMetadataForMessageID:", [metadataCopy globalMessageID]);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -3057,28 +3057,28 @@ LABEL_12:
         }
 
         v20 = *(*(&v34 + 1) + 8 * i);
-        v21 = [v20 mimePartNumber];
-        v22 = [v4 mimePartNumber];
-        if ([v21 isEqualToString:v22])
+        mimePartNumber3 = [v20 mimePartNumber];
+        mimePartNumber4 = [metadataCopy mimePartNumber];
+        if ([mimePartNumber3 isEqualToString:mimePartNumber4])
         {
-          v23 = [v20 globalMessageID];
-          LODWORD(v23) = v23 == [v4 globalMessageID];
+          globalMessageID2 = [v20 globalMessageID];
+          LODWORD(globalMessageID2) = globalMessageID2 == [metadataCopy globalMessageID];
 
-          if (v23)
+          if (globalMessageID2)
           {
-            v27 = [v4 mimePartNumber];
+            mimePartNumber5 = [metadataCopy mimePartNumber];
 
             v28 = EDAttachmentsLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v30 = [v4 attachmentID];
-              v31 = [v4 globalMessageID];
+              attachmentID = [metadataCopy attachmentID];
+              globalMessageID3 = [metadataCopy globalMessageID];
               *buf = 138412802;
-              v39 = v30;
+              v39 = attachmentID;
               v40 = 2048;
-              v41 = v31;
+              v41 = globalMessageID3;
               v42 = 2114;
-              v43 = v27;
+              v43 = mimePartNumber5;
               _os_log_impl(&dword_1C61EF000, v28, OS_LOG_TYPE_DEFAULT, "Attachment metadata with attachment ID %@ already exists in message_attachments table for globalMessageID: %lld mime part number: %{public}@", buf, 0x20u);
             }
 
@@ -3105,24 +3105,24 @@ LABEL_12:
   v24 = EDAttachmentsLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    v25 = [v4 globalMessageID];
+    globalMessageID4 = [metadataCopy globalMessageID];
     *buf = 134218242;
-    v39 = v25;
+    v39 = globalMessageID4;
     v40 = 2114;
     v41 = 0;
     OUTLINED_FUNCTION_11(&dword_1C61EF000, v24, v26, "Attachment metadata doesn't exist in message_attachments table for messageID: %lld mime part number: %{public}@. Persisting into the message_attachments table", buf);
   }
 
-  v11 = [(EDAttachmentPersistence *)v6 insertMessageAttachmentMetadata:v4];
+  v11 = [(EDAttachmentPersistence *)v6 insertMessageAttachmentMetadata:metadataCopy];
 LABEL_31:
 
   v32 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (void)insertMimePartAttachments:(id)a3 forGlobalMessageID:(int64_t)a4
+- (void)insertMimePartAttachments:(id)attachments forGlobalMessageID:(int64_t)d
 {
-  v6 = a3;
+  attachmentsCopy = attachments;
   if (self)
   {
     attachmentPersistence = self->_attachmentPersistence;
@@ -3133,8 +3133,8 @@ LABEL_31:
     attachmentPersistence = 0;
   }
 
-  v8 = v6;
-  [(EDAttachmentPersistence *)attachmentPersistence insertMimePartAttachments:v6 forGlobalMessageID:a4];
+  v8 = attachmentsCopy;
+  [(EDAttachmentPersistence *)attachmentPersistence insertMimePartAttachments:attachmentsCopy forGlobalMessageID:d];
 }
 
 void __53__EDAttachmentPersistenceManager_isDeletingMessages___block_invoke(uint64_t a1, void *a2)

@@ -7,27 +7,27 @@
 - (GKNoise)initWithNoiseSource:(GKNoiseSource *)noiseSource;
 - (GKNoise)initWithNoiseSource:(GKNoiseSource *)noiseSource gradientColors:(NSDictionary *)gradientColors;
 - (float)valueAtPosition:(vector_float2)position;
-- (id)cloneRecursive:(id)a3;
-- (void)__blendWithNoise:(id)a3 selectionNoise:(id)a4 selectionRangeLowerBound:(double)a5 selectionRangeUpperBound:(double)a6 selectionBoundaryBlendDistance:(double)a7;
+- (id)cloneRecursive:(id)recursive;
+- (void)__blendWithNoise:(id)noise selectionNoise:(id)selectionNoise selectionRangeLowerBound:(double)bound selectionRangeUpperBound:(double)upperBound selectionBoundaryBlendDistance:(double)distance;
 - (void)addWithNoise:(GKNoise *)noise;
 - (void)applyAbsoluteValue;
-- (void)cacheBinaryModule:(id)a3 rhsNoise:(id)a4;
-- (void)cacheQuaternaryModule:(id)a3 xDisplacementNoise:(id)a4 yDisplacementNoise:(id)a5 zDisplacementNoise:(id)a6;
-- (void)cacheTernaryModule:(id)a3 rhsNoise:(id)a4 selectionNoise:(id)a5;
-- (void)cacheUnaryModule:(id)a3;
+- (void)cacheBinaryModule:(id)module rhsNoise:(id)noise;
+- (void)cacheQuaternaryModule:(id)module xDisplacementNoise:(id)noise yDisplacementNoise:(id)displacementNoise zDisplacementNoise:(id)zDisplacementNoise;
+- (void)cacheTernaryModule:(id)module rhsNoise:(id)noise selectionNoise:(id)selectionNoise;
+- (void)cacheUnaryModule:(id)module;
 - (void)clampWithLowerBound:(double)lowerBound upperBound:(double)upperBound;
 - (void)dealloc;
 - (void)displaceXWithNoise:(GKNoise *)xDisplacementNoise yWithNoise:(GKNoise *)yDisplacementNoise zWithNoise:(GKNoise *)zDisplacementNoise;
 - (void)invert;
 - (void)maximumWithNoise:(GKNoise *)noise;
 - (void)minimumWithNoise:(GKNoise *)noise;
-- (void)moveBy:(_OWORD *)a3;
+- (void)moveBy:(_OWORD *)by;
 - (void)multiplyWithNoise:(GKNoise *)noise;
 - (void)raiseToPower:(double)power;
 - (void)raiseToPowerWithNoise:(GKNoise *)noise;
 - (void)remapValuesToCurveWithControlPoints:(NSDictionary *)controlPoints;
-- (void)rotateBy:(_OWORD *)a3;
-- (void)scaleBy:(_OWORD *)a3;
+- (void)rotateBy:(_OWORD *)by;
+- (void)scaleBy:(_OWORD *)by;
 @end
 
 @implementation GKNoise
@@ -89,12 +89,12 @@
   v8 = [(GKNoise *)&v13 init];
   if (v8)
   {
-    v9 = [(GKNoiseSource *)v6 cloneModule];
+    cloneModule = [(GKNoiseSource *)v6 cloneModule];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     modules = v8->_modules;
     v8->_modules = v10;
 
-    [(NSMutableArray *)v8->_modules addObject:v9];
+    [(NSMutableArray *)v8->_modules addObject:cloneModule];
     [(GKNoise *)v8 setGradientColors:v7];
   }
 
@@ -196,8 +196,8 @@
     do
     {
       v34 = [(NSArray *)v9 objectAtIndexedSubscript:v33];
-      v35 = [v34 gradientColors];
-      [v32 addObject:v35];
+      gradientColors = [v34 gradientColors];
+      [v32 addObject:gradientColors];
 
       ++v33;
     }
@@ -219,8 +219,8 @@
         v38 = v43;
       }
 
-      v44 = [v40 allKeys];
-      v45 = [v44 sortedArrayUsingComparator:&__block_literal_global_2];
+      allKeys = [v40 allKeys];
+      v45 = [allKeys sortedArrayUsingComparator:&__block_literal_global_2];
 
       v46 = v38 - v39;
       v47 = v41 - 1;
@@ -327,11 +327,11 @@ uint64_t __94__GKNoise_noiseWithComponentNoises_selectionNoise_componentBoundari
 
 - (float)valueAtPosition:(vector_float2)position
 {
-  v3 = [(NSMutableArray *)self->_modules lastObject];
+  lastObject = [(NSMutableArray *)self->_modules lastObject];
   *&v4 = position.f32[1];
   v10[0] = COERCE_UNSIGNED_INT64(position.f32[0]);
   v10[1] = v4;
-  [v3 valueAt:v10];
+  [lastObject valueAt:v10];
   v6 = v5;
   v7 = -1.0;
   if (v6 >= -1.0)
@@ -357,125 +357,125 @@ uint64_t __94__GKNoise_noiseWithComponentNoises_selectionNoise_componentBoundari
   [(GKNoise *)&v4 dealloc];
 }
 
-- (void)cacheUnaryModule:(id)a3
+- (void)cacheUnaryModule:(id)module
 {
-  v5 = a3;
-  v4 = [(NSMutableArray *)self->_modules lastObject];
-  [v5 setInputModule:v4 atIndex:0];
+  moduleCopy = module;
+  lastObject = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject atIndex:0];
 
-  [(NSMutableArray *)self->_modules addObject:v5];
+  [(NSMutableArray *)self->_modules addObject:moduleCopy];
 }
 
-- (void)cacheBinaryModule:(id)a3 rhsNoise:(id)a4
+- (void)cacheBinaryModule:(id)module rhsNoise:(id)noise
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_modules lastObject];
-  [v12 setInputModule:v7 atIndex:0];
+  moduleCopy = module;
+  noiseCopy = noise;
+  lastObject = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject atIndex:0];
 
-  v8 = [v6 __modules];
-  v9 = [v8 lastObject];
-  v10 = [(GKNoise *)self cloneRecursive:v9];
-  v11 = [(NSMutableArray *)self->_modules lastObject];
-  [v12 setInputModule:v11 atIndex:1];
+  __modules = [noiseCopy __modules];
+  lastObject2 = [__modules lastObject];
+  v10 = [(GKNoise *)self cloneRecursive:lastObject2];
+  lastObject3 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject3 atIndex:1];
 
-  [(NSMutableArray *)self->_modules addObject:v12];
+  [(NSMutableArray *)self->_modules addObject:moduleCopy];
 }
 
-- (void)cacheTernaryModule:(id)a3 rhsNoise:(id)a4 selectionNoise:(id)a5
+- (void)cacheTernaryModule:(id)module rhsNoise:(id)noise selectionNoise:(id)selectionNoise
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableArray *)self->_modules lastObject];
-  [v19 setInputModule:v10 atIndex:0];
+  moduleCopy = module;
+  noiseCopy = noise;
+  selectionNoiseCopy = selectionNoise;
+  lastObject = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject atIndex:0];
 
-  v11 = [v8 __modules];
-  v12 = [v11 lastObject];
-  v13 = [(GKNoise *)self cloneRecursive:v12];
-  v14 = [(NSMutableArray *)self->_modules lastObject];
-  [v19 setInputModule:v14 atIndex:1];
+  __modules = [noiseCopy __modules];
+  lastObject2 = [__modules lastObject];
+  v13 = [(GKNoise *)self cloneRecursive:lastObject2];
+  lastObject3 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject3 atIndex:1];
 
-  v15 = [v9 __modules];
-  v16 = [v15 lastObject];
-  v17 = [(GKNoise *)self cloneRecursive:v16];
-  v18 = [(NSMutableArray *)self->_modules lastObject];
-  [v19 setInputModule:v18 atIndex:2];
+  __modules2 = [selectionNoiseCopy __modules];
+  lastObject4 = [__modules2 lastObject];
+  v17 = [(GKNoise *)self cloneRecursive:lastObject4];
+  lastObject5 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject5 atIndex:2];
 
-  [(NSMutableArray *)self->_modules addObject:v19];
+  [(NSMutableArray *)self->_modules addObject:moduleCopy];
 }
 
-- (void)cacheQuaternaryModule:(id)a3 xDisplacementNoise:(id)a4 yDisplacementNoise:(id)a5 zDisplacementNoise:(id)a6
+- (void)cacheQuaternaryModule:(id)module xDisplacementNoise:(id)noise yDisplacementNoise:(id)displacementNoise zDisplacementNoise:(id)zDisplacementNoise
 {
-  v29 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(NSMutableArray *)self->_modules lastObject];
-  [v29 setInputModule:v13 atIndex:0];
+  moduleCopy = module;
+  noiseCopy = noise;
+  displacementNoiseCopy = displacementNoise;
+  zDisplacementNoiseCopy = zDisplacementNoise;
+  lastObject = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject atIndex:0];
 
-  if (!v10)
+  if (!noiseCopy)
   {
     v14 = [GKConstantNoiseSource constantNoiseWithValue:0.0];
-    v10 = [GKNoise noiseWithNoiseSource:v14];
+    noiseCopy = [GKNoise noiseWithNoiseSource:v14];
   }
 
-  v28 = [v10 __modules];
-  v15 = [v28 lastObject];
-  v16 = [(GKNoise *)self cloneRecursive:v15];
-  v17 = [(NSMutableArray *)self->_modules lastObject];
-  [v29 setInputModule:v17 atIndex:1];
+  __modules = [noiseCopy __modules];
+  lastObject2 = [__modules lastObject];
+  v16 = [(GKNoise *)self cloneRecursive:lastObject2];
+  lastObject3 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject3 atIndex:1];
 
-  if (!v11)
+  if (!displacementNoiseCopy)
   {
     v18 = [GKConstantNoiseSource constantNoiseWithValue:0.0];
-    v11 = [GKNoise noiseWithNoiseSource:v18];
+    displacementNoiseCopy = [GKNoise noiseWithNoiseSource:v18];
   }
 
-  v19 = [v11 __modules];
-  v20 = [v19 lastObject];
-  v21 = [(GKNoise *)self cloneRecursive:v20];
-  v22 = [(NSMutableArray *)self->_modules lastObject];
-  [v29 setInputModule:v22 atIndex:2];
+  __modules2 = [displacementNoiseCopy __modules];
+  lastObject4 = [__modules2 lastObject];
+  v21 = [(GKNoise *)self cloneRecursive:lastObject4];
+  lastObject5 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject5 atIndex:2];
 
-  if (!v12)
+  if (!zDisplacementNoiseCopy)
   {
     v23 = [GKConstantNoiseSource constantNoiseWithValue:0.0];
-    v12 = [GKNoise noiseWithNoiseSource:v23];
+    zDisplacementNoiseCopy = [GKNoise noiseWithNoiseSource:v23];
   }
 
-  v24 = [v12 __modules];
-  v25 = [v24 lastObject];
-  v26 = [(GKNoise *)self cloneRecursive:v25];
-  v27 = [(NSMutableArray *)self->_modules lastObject];
-  [v29 setInputModule:v27 atIndex:3];
+  __modules3 = [zDisplacementNoiseCopy __modules];
+  lastObject6 = [__modules3 lastObject];
+  v26 = [(GKNoise *)self cloneRecursive:lastObject6];
+  lastObject7 = [(NSMutableArray *)self->_modules lastObject];
+  [moduleCopy setInputModule:lastObject7 atIndex:3];
 
-  [(NSMutableArray *)self->_modules addObject:v29];
+  [(NSMutableArray *)self->_modules addObject:moduleCopy];
 }
 
-- (id)cloneRecursive:(id)a3
+- (id)cloneRecursive:(id)recursive
 {
-  v4 = a3;
-  v5 = [v4 cloneModule];
-  v6 = [v4 requiredInputModuleCount];
-  if (v6 >= 1)
+  recursiveCopy = recursive;
+  cloneModule = [recursiveCopy cloneModule];
+  requiredInputModuleCount = [recursiveCopy requiredInputModuleCount];
+  if (requiredInputModuleCount >= 1)
   {
     v7 = 0;
     do
     {
-      v8 = [v4 inputModuleAtIndex:v7];
+      v8 = [recursiveCopy inputModuleAtIndex:v7];
       v9 = [(GKNoise *)self cloneRecursive:v8];
-      [v5 setInputModule:v9 atIndex:v7];
+      [cloneModule setInputModule:v9 atIndex:v7];
 
       v7 = (v7 + 1);
     }
 
-    while (v6 != v7);
+    while (requiredInputModuleCount != v7);
   }
 
-  [(NSMutableArray *)self->_modules addObject:v5];
+  [(NSMutableArray *)self->_modules addObject:cloneModule];
 
-  return v5;
+  return cloneModule;
 }
 
 - (void)applyAbsoluteValue
@@ -509,31 +509,31 @@ uint64_t __94__GKNoise_noiseWithComponentNoises_selectionNoise_componentBoundari
   [(GKNoise *)self cacheUnaryModule:v4];
 }
 
-- (void)moveBy:(_OWORD *)a3
+- (void)moveBy:(_OWORD *)by
 {
-  v5 = a3[1];
-  v6[0] = *a3;
+  v5 = by[1];
+  v6[0] = *by;
   v6[1] = v5;
   v4 = [[GKMoveNoiseModifier alloc] initWithDelta:v6];
-  [a1 cacheUnaryModule:v4];
+  [self cacheUnaryModule:v4];
 }
 
-- (void)scaleBy:(_OWORD *)a3
+- (void)scaleBy:(_OWORD *)by
 {
-  v5 = a3[1];
-  v6[0] = *a3;
+  v5 = by[1];
+  v6[0] = *by;
   v6[1] = v5;
   v4 = [[GKScaleNoiseModifier alloc] initWithFactor:v6];
-  [a1 cacheUnaryModule:v4];
+  [self cacheUnaryModule:v4];
 }
 
-- (void)rotateBy:(_OWORD *)a3
+- (void)rotateBy:(_OWORD *)by
 {
-  v5 = a3[1];
-  v6[0] = *a3;
+  v5 = by[1];
+  v6[0] = *by;
   v6[1] = v5;
   v4 = [[GKRotateNoiseModifier alloc] initWithRadians:v6];
-  [a1 cacheUnaryModule:v4];
+  [self cacheUnaryModule:v4];
 }
 
 - (void)addWithNoise:(GKNoise *)noise
@@ -580,12 +580,12 @@ uint64_t __94__GKNoise_noiseWithComponentNoises_selectionNoise_componentBoundari
   [(GKNoise *)self cacheQuaternaryModule:v10 xDisplacementNoise:v11 yDisplacementNoise:v8 zDisplacementNoise:v9];
 }
 
-- (void)__blendWithNoise:(id)a3 selectionNoise:(id)a4 selectionRangeLowerBound:(double)a5 selectionRangeUpperBound:(double)a6 selectionBoundaryBlendDistance:(double)a7
+- (void)__blendWithNoise:(id)noise selectionNoise:(id)selectionNoise selectionRangeLowerBound:(double)bound selectionRangeUpperBound:(double)upperBound selectionBoundaryBlendDistance:(double)distance
 {
-  v14 = a3;
-  v12 = a4;
-  v13 = [[GKBlendNoiseModifier alloc] initWithSelectionRangeLowerBound:a5 selectionRangeUpperBound:a6 selectionBoundaryBlendDistance:a7];
-  [(GKNoise *)self cacheTernaryModule:v13 rhsNoise:v14 selectionNoise:v12];
+  noiseCopy = noise;
+  selectionNoiseCopy = selectionNoise;
+  v13 = [[GKBlendNoiseModifier alloc] initWithSelectionRangeLowerBound:bound selectionRangeUpperBound:upperBound selectionBoundaryBlendDistance:distance];
+  [(GKNoise *)self cacheTernaryModule:v13 rhsNoise:noiseCopy selectionNoise:selectionNoiseCopy];
 }
 
 @end

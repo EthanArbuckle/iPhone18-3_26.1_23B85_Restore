@@ -1,23 +1,23 @@
 @interface CMAccelerometerData
 - (CMAcceleration)acceleration;
-- (CMAccelerometerData)initWithAcceleration:(id)a3 andTimestamp:(double)a4;
-- (CMAccelerometerData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMAccelerometerData)initWithAcceleration:(id)acceleration andTimestamp:(double)timestamp;
+- (CMAccelerometerData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMAccelerometerData
 
-- (CMAccelerometerData)initWithAcceleration:(id)a3 andTimestamp:(double)a4
+- (CMAccelerometerData)initWithAcceleration:(id)acceleration andTimestamp:(double)timestamp
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = acceleration.var2;
+  var1 = acceleration.var1;
+  var0 = acceleration.var0;
   v15.receiver = self;
   v15.super_class = CMAccelerometerData;
-  v7 = [(CMLogItem *)&v15 initWithTimestamp:a4];
+  v7 = [(CMLogItem *)&v15 initWithTimestamp:timestamp];
   if (v7)
   {
     v8 = [CMAccelerometerDataInternal alloc];
@@ -30,7 +30,7 @@
   return v7;
 }
 
-- (CMAccelerometerData)initWithCoder:(id)a3
+- (CMAccelerometerData)initWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = CMAccelerometerData;
@@ -39,11 +39,11 @@
   {
     v5 = [CMAccelerometerDataInternal alloc];
     v4->_internal = v5;
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kCMAccelerationCodingKeyX");
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kCMAccelerationCodingKeyX");
     v8 = v7;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMAccelerationCodingKeyY");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMAccelerationCodingKeyY");
     v11 = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v12, @"kCMAccelerationCodingKeyZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v12, @"kCMAccelerationCodingKeyZ");
     *&v14 = v13;
     *&v13 = v8;
     *&v15 = v11;
@@ -53,7 +53,7 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMAccelerometerData;
@@ -61,9 +61,9 @@
   internal = self->_internal;
   v6 = internal[3];
   v7 = internal[4];
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMAccelerationCodingKeyX", internal[2]);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMAccelerationCodingKeyY", v6);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMAccelerationCodingKeyZ", v7);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMAccelerationCodingKeyX", internal[2]);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMAccelerationCodingKeyY", v6);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMAccelerationCodingKeyZ", v7);
 }
 
 - (void)dealloc
@@ -73,14 +73,14 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CMAccelerometerData;
   v6 = [(CMLogItem *)&v8 copyWithZone:?];
   if (v6)
   {
-    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, a3);
+    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, zone);
   }
 
   return v6;

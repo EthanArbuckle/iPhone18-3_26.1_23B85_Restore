@@ -79,7 +79,7 @@
       if (v11 >= 0.01)
       {
         v13 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_blurredrect];
-        v14 = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
+        height = [CIVector vectorWithX:x Y:y Z:x + width W:y + height];
         v25.origin.x = x;
         v25.origin.y = y;
         v25.size.width = width;
@@ -90,7 +90,7 @@
         v17 = v26.size.width;
         v18 = v26.size.height;
         *&v26.origin.x = v11;
-        v19 = [MEMORY[0x1E696AD98] numberWithFloat:{v26.origin.x, v14}];
+        v19 = [MEMORY[0x1E696AD98] numberWithFloat:{v26.origin.x, height}];
         v20 = self->inputColor;
         v21[1] = v19;
         v21[2] = v20;

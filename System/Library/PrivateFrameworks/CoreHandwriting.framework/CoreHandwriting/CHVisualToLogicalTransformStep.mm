@@ -1,13 +1,13 @@
 @interface CHVisualToLogicalTransformStep
-- (CHVisualToLogicalTransformStep)initWithBaseDirection:(int)a3 mode:(int)a4;
-- (id)process:(id)a3 options:(id)a4;
+- (CHVisualToLogicalTransformStep)initWithBaseDirection:(int)direction mode:(int)mode;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHVisualToLogicalTransformStep
 
-- (CHVisualToLogicalTransformStep)initWithBaseDirection:(int)a3 mode:(int)a4
+- (CHVisualToLogicalTransformStep)initWithBaseDirection:(int)direction mode:(int)mode
 {
-  v5 = *&a3;
+  v5 = *&direction;
   v11.receiver = self;
   v11.super_class = CHVisualToLogicalTransformStep;
   v6 = [(CHVisualToLogicalTransformStep *)&v11 init];
@@ -15,7 +15,7 @@
   if (v6)
   {
     v6->_bidiTransform = v5;
-    v6->_mode = a4;
+    v6->_mode = mode;
     v8 = objc_alloc_init(MEMORY[0x1E69D9D38]);
     isa = v7[1].super.super.super.isa;
     v7[1].super.super.super.isa = v8;
@@ -24,17 +24,17 @@
   return v7;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v887 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v813 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
   }
 
-  v842 = v5;
+  v842 = processCopy;
   v6 = qword_1EA84DC58;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -48,7 +48,7 @@
     goto LABEL_13;
   }
 
-  v12 = v5;
+  v12 = processCopy;
   *&v877 = 0;
   *(&v877 + 1) = &v877;
   v878 = 0x2020000000uLL;
@@ -71,7 +71,7 @@
   *&buf[16] = sub_1839A4810;
   v882 = &unk_1E6DE0998;
   v884 = &v877;
-  v883 = self;
+  selfCopy = self;
   v885 = &v866;
   v886 = &v870;
   objc_msgSend_enumerateTokensInTranscriptionPath_columnRange_tokenProcessingBlock_(v18, v48, v35, 0, v47, buf);
@@ -593,7 +593,7 @@ LABEL_83:
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v882 = sub_183996F80;
-    v883 = sub_183996F90;
+    selfCopy = sub_183996F90;
     v884 = 0;
     v713 = MEMORY[0x1E696AD60];
     v714 = objc_msgSend_length(v844, v452, v453, v454, v455, v456);

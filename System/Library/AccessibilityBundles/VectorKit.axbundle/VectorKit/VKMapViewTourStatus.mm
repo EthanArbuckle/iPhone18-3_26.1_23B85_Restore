@@ -1,40 +1,40 @@
 @interface VKMapViewTourStatus
 - (CGPoint)currentPoint;
 - (CGPoint)futurePoint;
-- (id)_stringForSide:(unint64_t)a3;
-- (id)_tourStatusAnnouncementWithLength:(unint64_t)a3;
-- (void)updateTourStatusWithCurrentLocation:(id)a3 currentPoint:(CGPoint)a4 futureLocation:(id)a5 futurePoint:(CGPoint)a6 tourPOI:(id)a7 tourPOISide:(unint64_t)a8 isStationary:(BOOL)a9;
+- (id)_stringForSide:(unint64_t)side;
+- (id)_tourStatusAnnouncementWithLength:(unint64_t)length;
+- (void)updateTourStatusWithCurrentLocation:(id)location currentPoint:(CGPoint)point futureLocation:(id)futureLocation futurePoint:(CGPoint)futurePoint tourPOI:(id)i tourPOISide:(unint64_t)side isStationary:(BOOL)stationary;
 @end
 
 @implementation VKMapViewTourStatus
 
-- (id)_tourStatusAnnouncementWithLength:(unint64_t)a3
+- (id)_tourStatusAnnouncementWithLength:(unint64_t)length
 {
-  v74 = [(VKMapViewTourStatus *)self currentLocation];
-  v72 = [(VKMapViewTourStatus *)self lastCurrentLocation];
-  v75 = [(VKMapViewTourStatus *)self futureLocation];
-  v73 = [(VKMapViewTourStatus *)self lastFutureLocation];
-  v4 = [(VKMapViewTourStatus *)self futurePOI];
-  v71 = [(VKMapViewTourStatus *)self lastFuturePOI];
-  v5 = [(VKMapViewTourStatus *)self isStationary];
-  if (!v75)
+  currentLocation = [(VKMapViewTourStatus *)self currentLocation];
+  lastCurrentLocation = [(VKMapViewTourStatus *)self lastCurrentLocation];
+  futureLocation = [(VKMapViewTourStatus *)self futureLocation];
+  lastFutureLocation = [(VKMapViewTourStatus *)self lastFutureLocation];
+  futurePOI = [(VKMapViewTourStatus *)self futurePOI];
+  lastFuturePOI = [(VKMapViewTourStatus *)self lastFuturePOI];
+  isStationary = [(VKMapViewTourStatus *)self isStationary];
+  if (!futureLocation)
   {
     goto LABEL_20;
   }
 
-  v6 = [MEMORY[0x29EDB8DE0] currentLocale];
-  v7 = [v6 _navigation_distanceUsesMetricSystem];
+  currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+  _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
 
-  v8 = [v75 accessibilityContainer];
+  accessibilityContainer = [futureLocation accessibilityContainer];
   [(VKMapViewTourStatus *)self currentPoint];
   v10 = v9;
   v12 = v11;
   [(VKMapViewTourStatus *)self futurePoint];
-  [v8 accessibilityRealDistanceBetweenPoint:v10 screenPoint2:{v12, v13, v14}];
+  [accessibilityContainer accessibilityRealDistanceBetweenPoint:v10 screenPoint2:{v12, v13, v14}];
   v16 = v15;
   v17 = v15;
 
-  if (v7)
+  if (_navigation_distanceUsesMetricSystem)
   {
     if (v16 > 15.0 || ([(VKMapViewTourStatus *)self lastFutureDistance], v18 <= 15.0))
     {
@@ -74,31 +74,31 @@ LABEL_9:
 LABEL_13:
   v22 = !v20;
 LABEL_16:
-  if (v22 & 1 | (([v75 isEqual:v73] & 1) == 0))
+  if (v22 & 1 | (([futureLocation isEqual:lastFutureLocation] & 1) == 0))
   {
-    if (a3 == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (length == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v24 = [v75 trueLabel];
+      trueLabel = [futureLocation trueLabel];
     }
 
     else
     {
-      v24 = [v75 accessibilityLabel];
+      trueLabel = [futureLocation accessibilityLabel];
     }
 
-    v26 = v24;
+    v26 = trueLabel;
     [(VKMapViewTourStatus *)self setLastFutureDistance:v17];
     v27 = @"APPROACHING_LOCATION_METERS";
-    if (v5)
+    if (isStationary)
     {
       v27 = @"FACING_LOCATION_METERS";
     }
 
     v28 = v27;
-    if ((v7 & 1) == 0)
+    if ((_navigation_distanceUsesMetricSystem & 1) == 0)
     {
       v29 = @"APPROACHING_LOCATION_FEET";
-      if (v5)
+      if (isStationary)
       {
         v29 = @"FACING_LOCATION_FEET";
       }
@@ -113,7 +113,7 @@ LABEL_16:
     v33 = AXFormatInteger();
     v25 = [v31 localizedStringWithFormat:v32, v26, v33];
 
-    if (!v4)
+    if (!futurePOI)
     {
       goto LABEL_57;
     }
@@ -123,30 +123,30 @@ LABEL_16:
 
 LABEL_20:
   v25 = 0;
-  if (!v4)
+  if (!futurePOI)
   {
     goto LABEL_57;
   }
 
 LABEL_30:
-  v34 = [MEMORY[0x29EDB8DE0] currentLocale];
-  v35 = [v34 _navigation_distanceUsesMetricSystem];
+  currentLocale2 = [MEMORY[0x29EDB8DE0] currentLocale];
+  _navigation_distanceUsesMetricSystem2 = [currentLocale2 _navigation_distanceUsesMetricSystem];
 
-  [v4 location];
+  [futurePOI location];
   VKLocationCoordinate2DForVKPoint();
   v37 = v36;
   v39 = v38;
-  v40 = [v4 accessibilityContainer];
-  [v40 accessibilityConvertCoordinateToWindow:{v37, v39}];
+  accessibilityContainer2 = [futurePOI accessibilityContainer];
+  [accessibilityContainer2 accessibilityConvertCoordinateToWindow:{v37, v39}];
 
-  v41 = [v4 accessibilityContainer];
+  accessibilityContainer3 = [futurePOI accessibilityContainer];
   [(VKMapViewTourStatus *)self currentPoint];
-  [v41 accessibilityRealDistanceBetweenPoint:? screenPoint2:?];
+  [accessibilityContainer3 accessibilityRealDistanceBetweenPoint:? screenPoint2:?];
   v43 = v42;
 
   if (v43 <= 15.0)
   {
-    v44 = v35;
+    v44 = _navigation_distanceUsesMetricSystem2;
   }
 
   else
@@ -165,12 +165,12 @@ LABEL_30:
     v46 = 0;
   }
 
-  if ([v4 isEqual:v71])
+  if ([futurePOI isEqual:lastFuturePOI])
   {
     if ([(VKMapViewTourStatus *)self futurePOISide])
     {
-      v47 = [(VKMapViewTourStatus *)self lastFuturePOISide];
-      if (v47 == [(VKMapViewTourStatus *)self futurePOISide]&& !v46)
+      lastFuturePOISide = [(VKMapViewTourStatus *)self lastFuturePOISide];
+      if (lastFuturePOISide == [(VKMapViewTourStatus *)self futurePOISide]&& !v46)
       {
         goto LABEL_57;
       }
@@ -182,29 +182,29 @@ LABEL_30:
     }
   }
 
-  if (a3 == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (length == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v48 = [v4 trueLabel];
+    trueLabel2 = [futurePOI trueLabel];
   }
 
   else
   {
-    v48 = [v4 accessibilityLabel];
+    trueLabel2 = [futurePOI accessibilityLabel];
   }
 
-  v49 = v48;
+  v49 = trueLabel2;
   [(VKMapViewTourStatus *)self setLastPOIDistance:v43];
   v50 = @"APPROACHING_LOCATION_METERS";
-  if (v5)
+  if (isStationary)
   {
     v50 = @"FACING_LOCATION_METERS";
   }
 
   v51 = v50;
-  if ((v35 & 1) == 0)
+  if ((_navigation_distanceUsesMetricSystem2 & 1) == 0)
   {
     v52 = @"APPROACHING_LOCATION_FEET";
-    if (v5)
+    if (isStationary)
     {
       v52 = @"FACING_LOCATION_FEET";
     }
@@ -240,21 +240,21 @@ LABEL_30:
 
   v25 = v57;
 LABEL_57:
-  if (v74 && ([v74 isEqual:v72] & 1) == 0)
+  if (currentLocation && ([currentLocation isEqual:lastCurrentLocation] & 1) == 0)
   {
-    if (a3 == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (length == 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v59 = [v74 trueLabel];
+      trueLabel3 = [currentLocation trueLabel];
     }
 
     else
     {
-      v59 = [v74 accessibilityLabel];
+      trueLabel3 = [currentLocation accessibilityLabel];
     }
 
-    v60 = v59;
+    v60 = trueLabel3;
     v61 = MEMORY[0x29EDBA0F8];
-    if ([v74 isRoad])
+    if ([currentLocation isRoad])
     {
       v62 = @"ON_ROAD";
     }
@@ -274,15 +274,15 @@ LABEL_57:
   return v25;
 }
 
-- (id)_stringForSide:(unint64_t)a3
+- (id)_stringForSide:(unint64_t)side
 {
   v3 = @"Left";
-  if (a3 == 2)
+  if (side == 2)
   {
     v3 = @"Right";
   }
 
-  if (a3)
+  if (side)
   {
     return v3;
   }
@@ -293,47 +293,47 @@ LABEL_57:
   }
 }
 
-- (void)updateTourStatusWithCurrentLocation:(id)a3 currentPoint:(CGPoint)a4 futureLocation:(id)a5 futurePoint:(CGPoint)a6 tourPOI:(id)a7 tourPOISide:(unint64_t)a8 isStationary:(BOOL)a9
+- (void)updateTourStatusWithCurrentLocation:(id)location currentPoint:(CGPoint)point futureLocation:(id)futureLocation futurePoint:(CGPoint)futurePoint tourPOI:(id)i tourPOISide:(unint64_t)side isStationary:(BOOL)stationary
 {
-  v9 = a9;
-  y = a6.y;
-  x = a6.x;
-  v15 = a4.y;
-  v16 = a4.x;
-  v31 = a3;
-  v18 = a5;
-  v19 = a7;
-  [(VKMapViewTourStatus *)self setIsStationary:v9];
-  v20 = [(VKMapViewTourStatus *)self currentLocation];
-  [(VKMapViewTourStatus *)self setLastCurrentLocation:v20];
+  stationaryCopy = stationary;
+  y = futurePoint.y;
+  x = futurePoint.x;
+  v15 = point.y;
+  v16 = point.x;
+  locationCopy = location;
+  futureLocationCopy = futureLocation;
+  iCopy = i;
+  [(VKMapViewTourStatus *)self setIsStationary:stationaryCopy];
+  currentLocation = [(VKMapViewTourStatus *)self currentLocation];
+  [(VKMapViewTourStatus *)self setLastCurrentLocation:currentLocation];
 
-  [(VKMapViewTourStatus *)self setCurrentLocation:v31];
+  [(VKMapViewTourStatus *)self setCurrentLocation:locationCopy];
   [(VKMapViewTourStatus *)self setCurrentPoint:v16, v15];
   [(VKMapViewTourStatus *)self futurePoint];
   *&v21 = x - v21;
   *&v22 = y - v22;
-  if (sqrtf((*&v21 * *&v21) + (*&v22 * *&v22)) >= 4.0 || v9)
+  if (sqrtf((*&v21 * *&v21) + (*&v22 * *&v22)) >= 4.0 || stationaryCopy)
   {
-    v24 = [(VKMapViewTourStatus *)self futureLocation];
+    futureLocation = [(VKMapViewTourStatus *)self futureLocation];
 
-    if (v24 || v9)
+    if (futureLocation || stationaryCopy)
     {
-      v25 = [(VKMapViewTourStatus *)self futureLocation];
-      [(VKMapViewTourStatus *)self setLastFutureLocation:v25];
+      futureLocation2 = [(VKMapViewTourStatus *)self futureLocation];
+      [(VKMapViewTourStatus *)self setLastFutureLocation:futureLocation2];
     }
 
-    [(VKMapViewTourStatus *)self setFutureLocation:v18];
+    [(VKMapViewTourStatus *)self setFutureLocation:futureLocationCopy];
     [(VKMapViewTourStatus *)self setFuturePoint:x, y];
   }
 
-  if (v9 || ([(VKMapViewTourStatus *)self futurePOI], v26 = objc_claimAutoreleasedReturnValue(), v26, v26))
+  if (stationaryCopy || ([(VKMapViewTourStatus *)self futurePOI], v26 = objc_claimAutoreleasedReturnValue(), v26, v26))
   {
-    v27 = [(VKMapViewTourStatus *)self lastFuturePOI];
-    v28 = [(VKMapViewTourStatus *)self futurePOI];
-    v29 = [v27 isEqual:v28];
+    lastFuturePOI = [(VKMapViewTourStatus *)self lastFuturePOI];
+    futurePOI = [(VKMapViewTourStatus *)self futurePOI];
+    v29 = [lastFuturePOI isEqual:futurePOI];
 
-    v30 = [(VKMapViewTourStatus *)self futurePOI];
-    [(VKMapViewTourStatus *)self setLastFuturePOI:v30];
+    futurePOI2 = [(VKMapViewTourStatus *)self futurePOI];
+    [(VKMapViewTourStatus *)self setLastFuturePOI:futurePOI2];
 
     if ((([(VKMapViewTourStatus *)self futurePOISide]== 0) & v29) == 0)
     {
@@ -341,8 +341,8 @@ LABEL_57:
     }
   }
 
-  [(VKMapViewTourStatus *)self setFuturePOI:v19];
-  [(VKMapViewTourStatus *)self setFuturePOISide:a8];
+  [(VKMapViewTourStatus *)self setFuturePOI:iCopy];
+  [(VKMapViewTourStatus *)self setFuturePOISide:side];
 }
 
 - (CGPoint)currentPoint

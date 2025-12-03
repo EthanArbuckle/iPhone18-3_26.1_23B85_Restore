@@ -1,17 +1,17 @@
 @interface AUHelperService
-- (AUHelperService)initWithQueue:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
-- (void)userPreferenceObjectForSuite:(unint64_t)a3 withKey:(id)a4 withReply:(id)a5;
-- (void)userPreferenceSetObject:(id)a3 forSuite:(unint64_t)a4 withKey:(id)a5;
-- (void)userPreferenceUpdateAccessorySettings:(id)a3 withKey:(id)a4;
+- (AUHelperService)initWithQueue:(id)queue;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
+- (void)userPreferenceObjectForSuite:(unint64_t)suite withKey:(id)key withReply:(id)reply;
+- (void)userPreferenceSetObject:(id)object forSuite:(unint64_t)suite withKey:(id)key;
+- (void)userPreferenceUpdateAccessorySettings:(id)settings withKey:(id)key;
 @end
 
 @implementation AUHelperService
 
-- (AUHelperService)initWithQueue:(id)a3
+- (AUHelperService)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = AUHelperService;
   v6 = [(AUHelperService *)&v14 init];
@@ -24,7 +24,7 @@
   v8 = *(v6 + 1);
   *(v6 + 1) = v7;
 
-  objc_storeStrong(v6 + 3, a3);
+  objc_storeStrong(v6 + 3, queue);
   v9 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.accessoryupdater.launchauhelper"];
   v10 = *(v6 + 2);
   *(v6 + 2) = v9;
@@ -50,9 +50,9 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -62,10 +62,10 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_100010C14;
   block[3] = &unk_1000815F0;
-  v10 = v5;
+  v10 = connectionCopy;
   v11 = &v12;
   block[4] = self;
-  v7 = v5;
+  v7 = connectionCopy;
   dispatch_sync(listenerQueue, block);
   LOBYTE(listenerQueue) = *(v13 + 24);
 
@@ -73,10 +73,10 @@ LABEL_8:
   return listenerQueue;
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.accessoryupdater.launchauhelper.entitled"];
+  entitlementCopy = entitlement;
+  v5 = [entitlementCopy valueForEntitlement:@"com.apple.accessoryupdater.launchauhelper.entitled"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 BOOLValue])
   {
@@ -88,7 +88,7 @@ LABEL_8:
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A810(log, v4);
+      sub_10004A810(log, entitlementCopy);
     }
 
     v6 = 0;
@@ -97,22 +97,22 @@ LABEL_8:
   return v6;
 }
 
-- (void)userPreferenceObjectForSuite:(unint64_t)a3 withKey:(id)a4 withReply:(id)a5
+- (void)userPreferenceObjectForSuite:(unint64_t)suite withKey:(id)key withReply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_100006788(a3);
+  keyCopy = key;
+  replyCopy = reply;
+  v10 = sub_100006788(suite);
   if (v10)
   {
     v11 = [[NSUserDefaults alloc] initWithSuiteName:v10];
-    v12 = [v11 objectForKey:v8];
+    v12 = [v11 objectForKey:keyCopy];
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
     {
       v14 = 136315906;
       v15 = "[AUHelperService userPreferenceObjectForSuite:withKey:withReply:]";
       v16 = 2112;
-      v17 = v8;
+      v17 = keyCopy;
       v18 = 2112;
       v19 = v12;
       v20 = 2112;
@@ -120,9 +120,9 @@ LABEL_8:
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, " %s: Read out %@: %@ for %@", &v14, 0x2Au);
     }
 
-    v9[2](v9, v12);
+    replyCopy[2](replyCopy, v12);
 
-    v9 = v11;
+    replyCopy = v11;
   }
 
   else
@@ -132,15 +132,15 @@ LABEL_8:
       sub_10004A8AC();
     }
 
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)userPreferenceSetObject:(id)a3 forSuite:(unint64_t)a4 withKey:(id)a5
+- (void)userPreferenceSetObject:(id)object forSuite:(unint64_t)suite withKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = sub_100006788(a4);
+  objectCopy = object;
+  keyCopy = key;
+  v10 = sub_100006788(suite);
   log = self->_log;
   if (v10)
   {
@@ -149,16 +149,16 @@ LABEL_8:
       v13 = 136315906;
       v14 = "[AUHelperService userPreferenceSetObject:forSuite:withKey:]";
       v15 = 2112;
-      v16 = v9;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = objectCopy;
       v19 = 2112;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, " %s: Write %@: %@ to %@", &v13, 0x2Au);
     }
 
     v12 = [[NSUserDefaults alloc] initWithSuiteName:v10];
-    [v12 setObject:v8 forKey:v9];
+    [v12 setObject:objectCopy forKey:keyCopy];
   }
 
   else if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -167,10 +167,10 @@ LABEL_8:
   }
 }
 
-- (void)userPreferenceUpdateAccessorySettings:(id)a3 withKey:(id)a4
+- (void)userPreferenceUpdateAccessorySettings:(id)settings withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  keyCopy = key;
   v8 = sub_100006788(1);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -178,9 +178,9 @@ LABEL_8:
     *buf = 136315650;
     v19 = "[AUHelperService userPreferenceUpdateAccessorySettings:withKey:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = keyCopy;
     v22 = 2112;
-    v23 = v6;
+    v23 = settingsCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, " %s: Write Accessory Settings changes %@ / %@", buf, 0x20u);
   }
 
@@ -193,7 +193,7 @@ LABEL_8:
     v12 = objc_opt_new();
   }
 
-  v13 = [v12 objectForKeyedSubscript:v7];
+  v13 = [v12 objectForKeyedSubscript:keyCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -211,8 +211,8 @@ LABEL_8:
   v16[3] = &unk_100081618;
   v17 = v14;
   v15 = v14;
-  [v6 enumerateKeysAndObjectsUsingBlock:v16];
-  [v12 setObject:v15 forKeyedSubscript:v7];
+  [settingsCopy enumerateKeysAndObjectsUsingBlock:v16];
+  [v12 setObject:v15 forKeyedSubscript:keyCopy];
   [v10 setObject:v12 forKey:@"accessories"];
 }
 

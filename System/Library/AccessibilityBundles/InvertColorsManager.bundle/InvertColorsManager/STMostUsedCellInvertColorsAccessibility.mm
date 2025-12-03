@@ -1,15 +1,15 @@
 @interface STMostUsedCellInvertColorsAccessibility
-- (STMostUsedCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STMostUsedCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_accessibilityLoadInvertColorsMostUsed;
 @end
 
 @implementation STMostUsedCellInvertColorsAccessibility
 
-- (STMostUsedCellInvertColorsAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STMostUsedCellInvertColorsAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = STMostUsedCellInvertColorsAccessibility;
-  v5 = [(STMostUsedCellInvertColorsAccessibility *)&v7 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STMostUsedCellInvertColorsAccessibility *)&v7 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   [(STMostUsedCellInvertColorsAccessibility *)v5 _accessibilityLoadInvertColorsMostUsed];
 
   return v5;

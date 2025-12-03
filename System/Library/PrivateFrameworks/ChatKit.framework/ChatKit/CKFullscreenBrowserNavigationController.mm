@@ -7,22 +7,22 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(CKFullscreenBrowserNavigationController *)self childViewControllers];
-  v4 = [v3 firstObject];
+  childViewControllers = [(CKFullscreenBrowserNavigationController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v4 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [firstObject supportedInterfaceOrientations];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKFullscreenBrowserNavigationController;
-    v5 = [(CKFullscreenBrowserNavigationController *)&v8 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [(CKFullscreenBrowserNavigationController *)&v8 supportedInterfaceOrientations];
   }
 
-  v6 = v5;
+  v6 = supportedInterfaceOrientations;
 
   return v6;
 }
@@ -32,8 +32,8 @@
   v4.receiver = self;
   v4.super_class = CKFullscreenBrowserNavigationController;
   [(CKFullscreenBrowserNavigationController *)&v4 loadView];
-  v3 = [(CKFullscreenBrowserNavigationController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(CKFullscreenBrowserNavigationController *)self view];
+  [view setBackgroundColor:0];
 }
 
 @end

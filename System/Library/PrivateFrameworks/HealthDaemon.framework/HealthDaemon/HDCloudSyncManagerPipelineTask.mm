@@ -1,16 +1,16 @@
 @interface HDCloudSyncManagerPipelineTask
 - (BOOL)requiresExistingShareOwnerParticipant;
-- (HDCloudSyncManagerPipelineTask)initWithManager:(id)a3 context:(id)a4;
-- (HDCloudSyncManagerPipelineTask)initWithManager:(id)a3 context:(id)a4 accessibilityAssertion:(id)a5 completion:(id)a6;
-- (id)pipelineForRepository:(id)a3;
+- (HDCloudSyncManagerPipelineTask)initWithManager:(id)manager context:(id)context;
+- (HDCloudSyncManagerPipelineTask)initWithManager:(id)manager context:(id)context accessibilityAssertion:(id)assertion completion:(id)completion;
+- (id)pipelineForRepository:(id)repository;
 - (void)cancel;
 - (void)dealloc;
-- (void)mainWithRepositories:(id)a3 error:(id)a4;
+- (void)mainWithRepositories:(id)repositories error:(id)error;
 @end
 
 @implementation HDCloudSyncManagerPipelineTask
 
-- (HDCloudSyncManagerPipelineTask)initWithManager:(id)a3 context:(id)a4
+- (HDCloudSyncManagerPipelineTask)initWithManager:(id)manager context:(id)context
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -20,32 +20,32 @@
   return 0;
 }
 
-- (HDCloudSyncManagerPipelineTask)initWithManager:(id)a3 context:(id)a4 accessibilityAssertion:(id)a5 completion:(id)a6
+- (HDCloudSyncManagerPipelineTask)initWithManager:(id)manager context:(id)context accessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  managerCopy = manager;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = HDCloudSyncManagerPipelineTask;
-  v13 = [(HDCloudSyncManagerRepositoryTask *)&v26 initWithManager:v10 context:a4];
+  v13 = [(HDCloudSyncManagerRepositoryTask *)&v26 initWithManager:managerCopy context:context];
   v14 = v13;
   if (v13)
   {
     v13->_lock._os_unfair_lock_opaque = 0;
-    if (v11)
+    if (assertionCopy)
     {
-      v15 = [v10 profile];
-      v16 = [v15 database];
+      profile = [managerCopy profile];
+      database = [profile database];
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v25 = 0;
-      v19 = [v16 cloneAccessibilityAssertion:v11 ownerIdentifier:v18 error:&v25];
+      v19 = [database cloneAccessibilityAssertion:assertionCopy ownerIdentifier:v18 error:&v25];
       v20 = v25;
       accessibilityAssertion = v14->_accessibilityAssertion;
       v14->_accessibilityAssertion = v19;
     }
 
-    v22 = [v12 copy];
+    v22 = [completionCopy copy];
     completion = v14->_completion;
     v14->_completion = v22;
   }
@@ -61,17 +61,17 @@
   [(HDCloudSyncManagerPipelineTask *)&v3 dealloc];
 }
 
-- (void)mainWithRepositories:(id)a3 error:(id)a4
+- (void)mainWithRepositories:(id)repositories error:(id)error
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  repositoriesCopy = repositories;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (!repositoriesCopy)
   {
-    if (v8)
+    if (errorCopy)
     {
-      v55[0] = v8;
+      v55[0] = errorCopy;
       v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
       [(HDCloudSyncManagerPipelineTask *)self didFailWithErrors:v35];
     }
@@ -81,7 +81,7 @@
       [(HDCloudSyncManagerPipelineTask *)self didFailWithErrors:MEMORY[0x277CBEBF8]];
     }
 
-    v36 = self;
+    selfCopy2 = self;
     v37 = 0;
     v38 = v9;
     goto LABEL_23;
@@ -92,29 +92,29 @@
   v48[2] = __61__HDCloudSyncManagerPipelineTask_mainWithRepositories_error___block_invoke;
   v48[3] = &unk_27862FD08;
   v48[4] = self;
-  v10 = [v7 hk_map:v48];
+  v10 = [repositoriesCopy hk_map:v48];
   [(HDCloudSyncManagerPipelineTask *)self setPipelines:v10];
 
-  v11 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
-  v12 = [v11 count];
+  pipelines = [(HDCloudSyncManagerPipelineTask *)self pipelines];
+  v12 = [pipelines count];
 
   if (!v12)
   {
     [(HDCloudSyncManagerPipelineTask *)self didFinishWithSuccess];
-    v36 = self;
+    selfCopy2 = self;
     v37 = 1;
     v38 = 0;
 LABEL_23:
-    [(HDCloudSyncManagerPipelineTask *)v36 callCompletionWithSuccess:v37 error:v38];
+    [(HDCloudSyncManagerPipelineTask *)selfCopy2 callCompletionWithSuccess:v37 error:v38];
     [(HDCloudSyncManagerTask *)self finish];
     goto LABEL_24;
   }
 
   if ([(HDCloudSyncManagerPipelineTask *)self requiresExistingShareOwnerParticipant])
   {
-    v13 = [(HDCloudSyncManagerRepositoryTask *)self manager];
+    manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
     v47 = 0;
-    v14 = [v13 shareOwnerParticipantWithError:&v47];
+    v14 = [manager shareOwnerParticipantWithError:&v47];
     v15 = v47;
 
     if (v14)
@@ -128,7 +128,7 @@ LABEL_23:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v50 = self;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_228986000, v40, OS_LOG_TYPE_ERROR, "%{public}@: Sync unavailable before setting a source share participant for this profile.", buf, 0xCu);
       if (v15)
       {
@@ -154,10 +154,10 @@ LABEL_28:
   }
 
 LABEL_6:
-  v16 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
-  v17 = 100 * [v16 count];
-  v18 = [(HDCloudSyncManagerTask *)self progress];
-  [v18 setTotalUnitCount:v17];
+  pipelines2 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
+  v17 = 100 * [pipelines2 count];
+  progress = [(HDCloudSyncManagerTask *)self progress];
+  [progress setTotalUnitCount:v17];
 
   v19 = objc_alloc(MEMORY[0x277D10AC8]);
   v20 = objc_opt_class();
@@ -173,8 +173,8 @@ LABEL_6:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v23 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
-  v24 = [v23 countByEnumeratingWithState:&v42 objects:v53 count:16];
+  pipelines3 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
+  v24 = [pipelines3 countByEnumeratingWithState:&v42 objects:v53 count:16];
   if (v24)
   {
     v25 = v24;
@@ -185,7 +185,7 @@ LABEL_6:
       {
         if (*v43 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(pipelines3);
         }
 
         v28 = *(*(&v42 + 1) + 8 * i);
@@ -195,11 +195,11 @@ LABEL_6:
         }
 
         v29 = [v28 beginWithTaskTree:v22];
-        v30 = [(HDCloudSyncManagerTask *)self progress];
-        [v30 addChild:v29 withPendingUnitCount:100];
+        progress2 = [(HDCloudSyncManagerTask *)self progress];
+        [progress2 addChild:v29 withPendingUnitCount:100];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v42 objects:v53 count:16];
+      v25 = [pipelines3 countByEnumeratingWithState:&v42 objects:v53 count:16];
     }
 
     while (v25);
@@ -210,10 +210,10 @@ LABEL_6:
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v32 = v31;
-    v33 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
-    v34 = [v33 count];
+    pipelines4 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
+    v34 = [pipelines4 count];
     *buf = 138543618;
-    v50 = self;
+    selfCopy4 = self;
     v51 = 2048;
     v52 = v34;
     _os_log_impl(&dword_228986000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning %ld pipelines.", buf, 0x16u);
@@ -295,7 +295,7 @@ void __61__HDCloudSyncManagerPipelineTask_mainWithRepositories_error___block_inv
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pipelineForRepository:(id)a3
+- (id)pipelineForRepository:(id)repository
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -309,8 +309,8 @@ void __61__HDCloudSyncManagerPipelineTask_mainWithRepositories_error___block_inv
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(HDCloudSyncManagerPipelineTask *)self pipelines];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  pipelines = [(HDCloudSyncManagerPipelineTask *)self pipelines];
+  v3 = [pipelines countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -322,14 +322,14 @@ void __61__HDCloudSyncManagerPipelineTask_mainWithRepositories_error___block_inv
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(pipelines);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) cancel];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [pipelines countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -340,18 +340,18 @@ void __61__HDCloudSyncManagerPipelineTask_mainWithRepositories_error___block_inv
 
 - (BOOL)requiresExistingShareOwnerParticipant
 {
-  v3 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  v4 = [v3 profile];
-  if ([v4 profileType] == 3)
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  profile = [manager profile];
+  if ([profile profileType] == 3)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-    v7 = [v6 profile];
-    v5 = [v7 profileType] == 2;
+    manager2 = [(HDCloudSyncManagerRepositoryTask *)self manager];
+    profile2 = [manager2 profile];
+    v5 = [profile2 profileType] == 2;
   }
 
   return v5;

@@ -1,14 +1,14 @@
 @interface C2ReportMetrics
 + (BOOL)useCloudTelemetryService;
-+ (id)gzipDecode:(id)a3;
-+ (id)gzipEncode:(id)a3;
-+ (id)metricsForMetricRequestOptions:(id)a3 networkEvent:(id)a4 genericEvent:(id)a5 triggers:(int)a6;
-+ (id)requestForMetricRequestOptions:(id)a3 metrics:(id)a4;
-+ (void)reportMetricWithOptions:(id)a3 genericMetricType:(int64_t)a4 eventName:(id)a5 startTime:(id)a6 endTime:(id)a7 attributes:(id)a8;
-- (C2ReportMetrics)initWithMetricRequest:(id)a3 metricRequestOptions:(id)a4 ignoreRequestThrottle:(BOOL)a5 requestThrottleIdentifier:(id)a6 requestThrottleLimit:(unint64_t)a7;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
++ (id)gzipDecode:(id)decode;
++ (id)gzipEncode:(id)encode;
++ (id)metricsForMetricRequestOptions:(id)options networkEvent:(id)event genericEvent:(id)genericEvent triggers:(int)triggers;
++ (id)requestForMetricRequestOptions:(id)options metrics:(id)metrics;
++ (void)reportMetricWithOptions:(id)options genericMetricType:(int64_t)type eventName:(id)name startTime:(id)time endTime:(id)endTime attributes:(id)attributes;
+- (C2ReportMetrics)initWithMetricRequest:(id)request metricRequestOptions:(id)options ignoreRequestThrottle:(BOOL)throttle requestThrottleIdentifier:(id)identifier requestThrottleLimit:(unint64_t)limit;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
 - (void)send;
 @end
 
@@ -25,13 +25,13 @@
   return v2;
 }
 
-+ (id)metricsForMetricRequestOptions:(id)a3 networkEvent:(id)a4 genericEvent:(id)a5 triggers:(int)a6
++ (id)metricsForMetricRequestOptions:(id)options networkEvent:(id)event genericEvent:(id)genericEvent triggers:(int)triggers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 metricOptions];
-  if (!v12)
+  optionsCopy = options;
+  eventCopy = event;
+  genericEventCopy = genericEvent;
+  metricOptions = [optionsCopy metricOptions];
+  if (!metricOptions)
   {
     v19 = 0;
     goto LABEL_19;
@@ -40,8 +40,8 @@
   v13 = +[C2Metric generateDeviceInfo];
   if (v13)
   {
-    v14 = [v12 generateCloudKitInfo];
-    if (!v14)
+    generateCloudKitInfo = [metricOptions generateCloudKitInfo];
+    if (!generateCloudKitInfo)
     {
       v19 = 0;
 LABEL_17:
@@ -54,47 +54,47 @@ LABEL_17:
     if (v15)
     {
       [(C2MPMetric *)v15 setDeviceInfo:v13];
-      [(C2MPMetric *)v16 setCloudkitInfo:v14];
-      [(C2MPMetric *)v16 setTriggers:a6];
-      -[C2MPMetric setReportFrequency:](v16, "setReportFrequency:", [v12 reportFrequency]);
-      -[C2MPMetric setReportFrequencyBase:](v16, "setReportFrequencyBase:", [v12 reportFrequencyBase]);
-      -[C2MPMetric setReportTransportAllowExpensiveAccess:](v16, "setReportTransportAllowExpensiveAccess:", [v9 _allowsExpensiveAccess] != 0);
-      -[C2MPMetric setReportTransportAllowPowerNapScheduling:](v16, "setReportTransportAllowPowerNapScheduling:", [v9 _allowsPowerNapScheduling] != 0);
-      v17 = [v9 _sourceApplicationBundleIdentifier];
-      [(C2MPMetric *)v16 setReportTransportSourceApplicationBundleIdentifier:v17];
+      [(C2MPMetric *)v16 setCloudkitInfo:generateCloudKitInfo];
+      [(C2MPMetric *)v16 setTriggers:triggers];
+      -[C2MPMetric setReportFrequency:](v16, "setReportFrequency:", [metricOptions reportFrequency]);
+      -[C2MPMetric setReportFrequencyBase:](v16, "setReportFrequencyBase:", [metricOptions reportFrequencyBase]);
+      -[C2MPMetric setReportTransportAllowExpensiveAccess:](v16, "setReportTransportAllowExpensiveAccess:", [optionsCopy _allowsExpensiveAccess] != 0);
+      -[C2MPMetric setReportTransportAllowPowerNapScheduling:](v16, "setReportTransportAllowPowerNapScheduling:", [optionsCopy _allowsPowerNapScheduling] != 0);
+      _sourceApplicationBundleIdentifier = [optionsCopy _sourceApplicationBundleIdentifier];
+      [(C2MPMetric *)v16 setReportTransportSourceApplicationBundleIdentifier:_sourceApplicationBundleIdentifier];
 
-      v18 = [v9 _sourceApplicationSecondaryIdentifier];
-      [(C2MPMetric *)v16 setReportTransportSourceApplicationSecondaryIdentifier:v18];
+      _sourceApplicationSecondaryIdentifier = [optionsCopy _sourceApplicationSecondaryIdentifier];
+      [(C2MPMetric *)v16 setReportTransportSourceApplicationSecondaryIdentifier:_sourceApplicationSecondaryIdentifier];
 
-      if (v10 || !v11)
+      if (eventCopy || !genericEventCopy)
       {
         v19 = 0;
-        if (!v10 || v11)
+        if (!eventCopy || genericEventCopy)
         {
           goto LABEL_16;
         }
 
         [(C2MPMetric *)v16 setMetricType:200];
-        [(C2MPMetric *)v16 setNetworkEvent:v10];
+        [(C2MPMetric *)v16 setNetworkEvent:eventCopy];
       }
 
       else
       {
         [(C2MPMetric *)v16 setMetricType:201];
-        [(C2MPMetric *)v16 setGenericEvent:v11];
+        [(C2MPMetric *)v16 setGenericEvent:genericEventCopy];
       }
 
-      v20 = [(C2MPMetric *)v16 deviceInfo];
-      [v20 setProcessUuid:0];
+      deviceInfo = [(C2MPMetric *)v16 deviceInfo];
+      [deviceInfo setProcessUuid:0];
 
-      v21 = [(C2MPMetric *)v16 cloudkitInfo];
-      [v21 setContainerScopedDeviceIdentifier:0];
+      cloudkitInfo = [(C2MPMetric *)v16 cloudkitInfo];
+      [cloudkitInfo setContainerScopedDeviceIdentifier:0];
 
-      v22 = [(C2MPMetric *)v16 cloudkitInfo];
-      [v22 setContainerScopedUserIdentifier:0];
+      cloudkitInfo2 = [(C2MPMetric *)v16 cloudkitInfo];
+      [cloudkitInfo2 setContainerScopedUserIdentifier:0];
 
-      v23 = [(C2MPMetric *)v16 networkEvent];
-      [v23 setNetworkConnectionUuid:0];
+      networkEvent = [(C2MPMetric *)v16 networkEvent];
+      [networkEvent setNetworkConnectionUuid:0];
 
       v19 = v16;
     }
@@ -117,22 +117,22 @@ LABEL_19:
   return v19;
 }
 
-+ (id)requestForMetricRequestOptions:(id)a3 metrics:(id)a4
++ (id)requestForMetricRequestOptions:(id)options metrics:(id)metrics
 {
-  v5 = a4;
-  v6 = v5;
+  metricsCopy = metrics;
+  v6 = metricsCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (options && metricsCopy)
   {
-    v8 = [a3 metricOptions];
-    v9 = v8;
-    if (v8)
+    metricOptions = [options metricOptions];
+    v9 = metricOptions;
+    if (metricOptions)
     {
-      v10 = [v8 c2MetricsEndpoint];
-      v11 = v10;
-      if (v10)
+      c2MetricsEndpoint = [metricOptions c2MetricsEndpoint];
+      v11 = c2MetricsEndpoint;
+      if (c2MetricsEndpoint)
       {
-        v12 = [v10 URLByAppendingPathComponent:@"c2"];
+        v12 = [c2MetricsEndpoint URLByAppendingPathComponent:@"c2"];
         if (v12)
         {
           v13 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v12];
@@ -142,10 +142,10 @@ LABEL_19:
             if (v14)
             {
               [v6 writeTo:v14];
-              v15 = [v14 immutableData];
-              if (v15)
+              immutableData = [v14 immutableData];
+              if (immutableData)
               {
-                v16 = [objc_opt_class() gzipEncode:v15];
+                v16 = [objc_opt_class() gzipEncode:immutableData];
                 if (v16)
                 {
                   [v13 setHTTPMethod:@"POST"];
@@ -200,12 +200,12 @@ LABEL_19:
   return v7;
 }
 
-+ (id)gzipEncode:(id)a3
++ (id)gzipEncode:(id)encode
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  encodeCopy = encode;
   bzero(v10, 0x2000uLL);
-  v4 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   memset(&v9, 0, sizeof(v9));
   if (deflateInit2_(&v9, -1, 8, 31, 8, 0, "1.2.12", 112))
   {
@@ -214,7 +214,7 @@ LABEL_19:
 
   else
   {
-    v6 = v3;
+    v6 = encodeCopy;
     v9.avail_in = [v6 length];
     do
     {
@@ -225,7 +225,7 @@ LABEL_19:
         +[C2ReportMetrics gzipEncode:];
       }
 
-      [v4 appendBytes:v10 length:0x2000 - v9.avail_out];
+      [data appendBytes:v10 length:0x2000 - v9.avail_out];
     }
 
     while (!v9.avail_out);
@@ -235,7 +235,7 @@ LABEL_19:
     }
 
     deflateEnd(&v9);
-    v5 = v4;
+    v5 = data;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -243,12 +243,12 @@ LABEL_19:
   return v5;
 }
 
-+ (id)gzipDecode:(id)a3
++ (id)gzipDecode:(id)decode
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  decodeCopy = decode;
   bzero(v10, 0x2000uLL);
-  v4 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   memset(&v9, 0, sizeof(v9));
   if (inflateInit2_(&v9, 31, "1.2.12", 112))
   {
@@ -257,7 +257,7 @@ LABEL_19:
 
   else
   {
-    v6 = v3;
+    v6 = decodeCopy;
     v9.avail_in = [v6 length];
     do
     {
@@ -268,7 +268,7 @@ LABEL_19:
         +[C2ReportMetrics gzipDecode:];
       }
 
-      [v4 appendBytes:v10 length:0x2000 - v9.avail_out];
+      [data appendBytes:v10 length:0x2000 - v9.avail_out];
     }
 
     while (!v9.avail_out);
@@ -278,7 +278,7 @@ LABEL_19:
     }
 
     inflateEnd(&v9);
-    v5 = v4;
+    v5 = data;
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -286,19 +286,19 @@ LABEL_19:
   return v5;
 }
 
-+ (void)reportMetricWithOptions:(id)a3 genericMetricType:(int64_t)a4 eventName:(id)a5 startTime:(id)a6 endTime:(id)a7 attributes:(id)a8
++ (void)reportMetricWithOptions:(id)options genericMetricType:(int64_t)type eventName:(id)name startTime:(id)time endTime:(id)endTime attributes:(id)attributes
 {
-  v21 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  optionsCopy = options;
+  nameCopy = name;
+  timeCopy = time;
+  endTimeCopy = endTime;
+  attributesCopy = attributes;
   v17 = objc_autoreleasePoolPush();
-  v18 = [v21 metricOptions];
-  v19 = [v18 generateTriggerWithResponseHeader:0];
+  metricOptions = [optionsCopy metricOptions];
+  v19 = [metricOptions generateTriggerWithResponseHeader:0];
 
-  v20 = [C2Metric generateGenericEventWithName:v13 genericMetricType:a4 startTime:v14 endTime:v15 attributes:v16];
-  [objc_opt_class() _reportWithOptions:v21 networkEvent:0 genericEvent:v20 triggers:v19 eventName:v13 startTime:v14 endTime:v15 attributes:v16];
+  v20 = [C2Metric generateGenericEventWithName:nameCopy genericMetricType:type startTime:timeCopy endTime:endTimeCopy attributes:attributesCopy];
+  [objc_opt_class() _reportWithOptions:optionsCopy networkEvent:0 genericEvent:v20 triggers:v19 eventName:nameCopy startTime:timeCopy endTime:endTimeCopy attributes:attributesCopy];
 
   objc_autoreleasePoolPop(v17);
 }
@@ -331,23 +331,23 @@ uint64_t __112__C2ReportMetrics__reportWithOptions_networkEvent_genericEvent_tri
   return MEMORY[0x2821F96F8]();
 }
 
-- (C2ReportMetrics)initWithMetricRequest:(id)a3 metricRequestOptions:(id)a4 ignoreRequestThrottle:(BOOL)a5 requestThrottleIdentifier:(id)a6 requestThrottleLimit:(unint64_t)a7
+- (C2ReportMetrics)initWithMetricRequest:(id)request metricRequestOptions:(id)options ignoreRequestThrottle:(BOOL)throttle requestThrottleIdentifier:(id)identifier requestThrottleLimit:(unint64_t)limit
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = v15;
-  v17 = 0;
-  if (v13 && v14 && v15)
+  requestCopy = request;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v16 = identifierCopy;
+  selfCopy = 0;
+  if (requestCopy && optionsCopy && identifierCopy)
   {
-    v18 = [v14 metricRequestTransportOptions];
-    if (v18)
+    metricRequestTransportOptions = [optionsCopy metricRequestTransportOptions];
+    if (metricRequestTransportOptions)
     {
-      v27 = a7;
-      v19 = [v14 metricUUID];
-      v20 = [v19 UUIDString];
+      limitCopy = limit;
+      metricUUID = [optionsCopy metricUUID];
+      uUIDString = [metricUUID UUIDString];
 
-      if (v20)
+      if (uUIDString)
       {
         v28.receiver = self;
         v28.super_class = C2ReportMetrics;
@@ -355,44 +355,44 @@ uint64_t __112__C2ReportMetrics__reportWithOptions_networkEvent_genericEvent_tri
         v22 = v21;
         if (v21)
         {
-          v21->_ignoreRequestThrottle = a5;
-          objc_storeStrong(&v21->_requestThrottleIdentifier, a6);
-          v22->_requestThrottleLimit = v27;
-          objc_storeStrong(&v22->_metricRequest, a3);
-          v23 = [v14 metricOptions];
+          v21->_ignoreRequestThrottle = throttle;
+          objc_storeStrong(&v21->_requestThrottleIdentifier, identifier);
+          v22->_requestThrottleLimit = limitCopy;
+          objc_storeStrong(&v22->_metricRequest, request);
+          metricOptions = [optionsCopy metricOptions];
           metricOptions = v22->_metricOptions;
-          v22->_metricOptions = v23;
+          v22->_metricOptions = metricOptions;
 
-          [(NSMutableURLRequest *)v22->_metricRequest setValue:v20 forHTTPHeaderField:@"x-apple-request-uuid"];
-          v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"MetricRequest-%@", v20];
-          [v18 setIdentifier:v25];
+          [(NSMutableURLRequest *)v22->_metricRequest setValue:uUIDString forHTTPHeaderField:@"x-apple-request-uuid"];
+          v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"MetricRequest-%@", uUIDString];
+          [metricRequestTransportOptions setIdentifier:v25];
 
-          objc_storeStrong(&v22->_metricsTransportRequestOptions, v18);
+          objc_storeStrong(&v22->_metricsTransportRequestOptions, metricRequestTransportOptions);
         }
 
         self = v22;
-        v17 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)send
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"C2ReportMetrics.m" lineNumber:512 description:@"metricOptions must not be nil."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"C2ReportMetrics.m" lineNumber:512 description:@"metricOptions must not be nil."];
 }
 
 uint64_t __23__C2ReportMetrics_send__block_invoke()
@@ -402,21 +402,21 @@ uint64_t __23__C2ReportMetrics_send__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"C2ReportMetrics.m" lineNumber:541 description:@"Unexpected callback."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"C2ReportMetrics.m" lineNumber:541 description:@"Unexpected callback."];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   testBehavior_didCompleteWithError = self->_testBehavior_didCompleteWithError;
   if (testBehavior_didCompleteWithError)
   {
-    testBehavior_didCompleteWithError[2](testBehavior_didCompleteWithError, v9);
+    testBehavior_didCompleteWithError[2](testBehavior_didCompleteWithError, errorCopy);
   }
 
   pthread_mutex_lock(&sOutstandingTaskCountMutex);
@@ -433,21 +433,21 @@ uint64_t __23__C2ReportMetrics_send__block_invoke()
 
   NSMapInsert(sOutstandingTaskCountMap, self->_requestThrottleIdentifier, v11 - 1);
   pthread_mutex_unlock(&sOutstandingTaskCountMutex);
-  v12 = [(C2MetricOptions *)self->_metricOptions didCompleteWithError];
+  didCompleteWithError = [(C2MetricOptions *)self->_metricOptions didCompleteWithError];
 
-  if (v12)
+  if (didCompleteWithError)
   {
-    v13 = [(C2MetricOptions *)self->_metricOptions didCompleteWithError];
-    (v13)[2](v13, v9);
+    didCompleteWithError2 = [(C2MetricOptions *)self->_metricOptions didCompleteWithError];
+    (didCompleteWithError2)[2](didCompleteWithError2, errorCopy);
   }
 
   [(C2MetricOptions *)self->_metricOptions setDidCompleteWithError:0];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"C2ReportMetrics.m" lineNumber:578 description:@"Unexpected callback."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"C2ReportMetrics.m" lineNumber:578 description:@"Unexpected callback."];
 }
 
 @end

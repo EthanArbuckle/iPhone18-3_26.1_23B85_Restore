@@ -1,21 +1,21 @@
 @interface VNClassifyMemeImageRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)supportedIdentifiersAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)supportedIdentifiersAndReturnError:(id *)error;
 @end
 
 @implementation VNClassifyMemeImageRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 imageBufferAndReturnError:a5];
+  contextCopy = context;
+  v9 = [contextCopy imageBufferAndReturnError:error];
   if (v9)
   {
-    v10 = [v8 session];
+    session = [contextCopy session];
     v18 = 0;
-    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v18 forRevision:a3 loadedInSession:v10 error:a5];
+    v11 = [(VNRequest *)self applicableDetectorAndOptions:&v18 forRevision:revision loadedInSession:session error:error];
     v12 = v18;
     if (v11)
     {
@@ -23,9 +23,9 @@
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
       [v12 setObject:v13 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      v14 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v15 = [v11 processUsingQualityOfServiceClass:v14 options:v12 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v15 = [v11 processUsingQualityOfServiceClass:qosClass options:v12 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v16 = v15 != 0;
       if (v15)
       {
@@ -47,18 +47,18 @@
   return v16;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 3)
+  if (revision == 3)
   {
     v4 = @"VNMemeClassifierType";
     v5 = @"VNMemeClassifierType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -69,11 +69,11 @@
   return v4;
 }
 
-- (id)supportedIdentifiersAndReturnError:(id *)a3
+- (id)supportedIdentifiersAndReturnError:(id *)error
 {
   v5 = objc_alloc_init(VNSession);
   v10 = 0;
-  v6 = [(VNRequest *)self applicableDetectorAndOptions:&v10 forRevision:[(VNRequest *)self resolvedRevision] loadedInSession:v5 error:a3];
+  v6 = [(VNRequest *)self applicableDetectorAndOptions:&v10 forRevision:[(VNRequest *)self resolvedRevision] loadedInSession:v5 error:error];
   v7 = v10;
   if (!v6)
   {
@@ -83,14 +83,14 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 supportedIdentifiersWithOptions:v7 error:a3];
+    v8 = [v6 supportedIdentifiersWithOptions:v7 error:error];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (error)
   {
     [VNError errorForUnsupportedRevision:[(VNRequest *)self resolvedRevision] ofRequest:self];
-    *a3 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else

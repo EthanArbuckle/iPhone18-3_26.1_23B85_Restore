@@ -1,18 +1,18 @@
 @interface VCRateControlMachineLearningInference
-- (VCRateControlMachineLearningInference)initWithModelPath:(id)a3;
+- (VCRateControlMachineLearningInference)initWithModelPath:(id)path;
 - (void)compileModel;
 - (void)createStreamOperation;
 - (void)dealloc;
 - (void)logSetupError;
-- (void)setUpBufferPointer:(const char *)a3 portType:(unsigned __int8)a4 io_array:(void *)a5;
-- (void)setUpCacheWithInputPortName:(char *)a3 outputPortName:(char *)a4;
+- (void)setUpBufferPointer:(const char *)pointer portType:(unsigned __int8)type io_array:(void *)io_array;
+- (void)setUpCacheWithInputPortName:(char *)name outputPortName:(char *)portName;
 - (void)setUpModel;
 - (void)setupIOBuffersAndCreateStream;
 @end
 
 @implementation VCRateControlMachineLearningInference
 
-- (VCRateControlMachineLearningInference)initWithModelPath:(id)a3
+- (VCRateControlMachineLearningInference)initWithModelPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -25,7 +25,7 @@
     v4->_compilationQueue = v6;
     if (v6)
     {
-      v4->_modelPath = a3;
+      v4->_modelPath = path;
       compilationQueue = v4->_compilationQueue;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -126,7 +126,7 @@ LABEL_14:
           v17 = 2112;
           v18 = v3;
           v19 = 2048;
-          v20 = self;
+          selfCopy = self;
           v6 = " [%s] %s:%d %@(%p) Initialized Machine Learning Rate Controller";
           v7 = v10;
           v8 = 48;
@@ -141,7 +141,7 @@ LABEL_14:
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = 136316162;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2080;
   v6 = "[VCRateControlMachineLearningInference logSetupError]";
   v7 = 1024;
@@ -162,9 +162,9 @@ LABEL_14:
   e5rt_e5_compiler_release();
 }
 
-- (void)setUpBufferPointer:(const char *)a3 portType:(unsigned __int8)a4 io_array:(void *)a5
+- (void)setUpBufferPointer:(const char *)pointer portType:(unsigned __int8)type io_array:(void *)io_array
 {
-  if (a4)
+  if (type)
   {
     if (e5rt_execution_stream_operation_retain_output_port())
     {
@@ -202,11 +202,11 @@ LABEL_9:
   e5rt_precompiled_compute_op_create_options_release();
 }
 
-- (void)setUpCacheWithInputPortName:(char *)a3 outputPortName:(char *)a4
+- (void)setUpCacheWithInputPortName:(char *)name outputPortName:(char *)portName
 {
   v5[5] = *MEMORY[0x1E69E9840];
   memset(v5, 0, 40);
-  [(VCRateControlMachineLearningInference *)self setUpBufferPointer:a3 portType:0 io_array:v5];
+  [(VCRateControlMachineLearningInference *)self setUpBufferPointer:name portType:0 io_array:v5];
   if (e5rt_execution_stream_operation_retain_output_port() || e5rt_io_port_retain_tensor_desc() || e5rt_tensor_desc_get_size() || e5rt_buffer_object_create_from_data_pointer() || e5rt_io_port_bind_buffer_object())
   {
     self->_setupStatus = 2;

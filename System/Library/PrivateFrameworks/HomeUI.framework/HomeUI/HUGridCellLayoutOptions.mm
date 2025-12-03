@@ -1,13 +1,13 @@
 @interface HUGridCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
-- (HUGridCellLayoutOptions)initWithCellSizeSubclass:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setContentColorStyle:(unint64_t)a3;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
+- (HUGridCellLayoutOptions)initWithCellSizeSubclass:(int64_t)subclass;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setContentColorStyle:(unint64_t)style;
 @end
 
 @implementation HUGridCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
   v23[5] = *MEMORY[0x277D85DE8];
   if (_MergedGlobals_10 != -1)
@@ -17,10 +17,10 @@
 
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
-    a3 = 4;
+    subclass = 4;
   }
 
-  v5 = [[a1 alloc] initWithCellSizeSubclass:a3];
+  v5 = [[self alloc] initWithCellSizeSubclass:subclass];
   v6 = +[HUGridCellBackgroundDisplayOptions defaultOptions];
   [v5 setBackgroundDisplayOptions:v6];
 
@@ -42,34 +42,34 @@
   v22[4] = &unk_2824922B8;
   v23[4] = &unk_282493650;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:5];
-  [v5 setCellInnerMargin:{HUConstantForCellSizeSubclass(a3, v8)}];
+  [v5 setCellInnerMargin:{HUConstantForCellSizeSubclass(subclass, v8)}];
 
-  v9 = [MEMORY[0x277D75C80] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
   _UITableViewDefaultSectionCornerRadiusForTraitCollection();
   [v5 setCellCornerRadius:?];
 
   [v5 setCellScaleFactor:1.0];
   if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
   {
-    v10 = [v5 backgroundDisplayOptions];
-    [v10 setDisplayStyle:2];
+    backgroundDisplayOptions = [v5 backgroundDisplayOptions];
+    [backgroundDisplayOptions setDisplayStyle:2];
 
-    v11 = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
-    [v5 setVibrancyEffect:v11];
+    controlCenterPrimaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterPrimaryVibrancyEffect];
+    [v5 setVibrancyEffect:controlCenterPrimaryVibrancyEffect];
 
-    v12 = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
-    [v5 setSecondaryVibrancyEffect:v12];
+    controlCenterSecondaryVibrancyEffect = [MEMORY[0x277D75D00] controlCenterSecondaryVibrancyEffect];
+    [v5 setSecondaryVibrancyEffect:controlCenterSecondaryVibrancyEffect];
 
     if ([MEMORY[0x277D14670] isHomeControlService])
     {
       v13 = MEMORY[0x277D75358];
-      v14 = [MEMORY[0x277D75348] systemWhiteColor];
-      v15 = [v13 colorEffectMonochromeTint:v14 blendingAmount:1.0 brightnessAdjustment:0.45];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      v15 = [v13 colorEffectMonochromeTint:systemWhiteColor blendingAmount:1.0 brightnessAdjustment:0.45];
 
       v16 = MEMORY[0x277D75D58];
       v21[0] = v15;
-      v17 = [v5 vibrancyEffect];
-      v21[1] = v17;
+      vibrancyEffect = [v5 vibrancyEffect];
+      v21[1] = vibrancyEffect;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
       v19 = [v16 effectCombiningEffects:v18];
       [v5 setIconVibrancyEffect:v19];
@@ -106,42 +106,42 @@ void __61__HUGridCellLayoutOptions_defaultOptionsForCellSizeSubclass___block_inv
   qword_281121E58 = v0;
 }
 
-- (HUGridCellLayoutOptions)initWithCellSizeSubclass:(int64_t)a3
+- (HUGridCellLayoutOptions)initWithCellSizeSubclass:(int64_t)subclass
 {
   v5.receiver = self;
   v5.super_class = HUGridCellLayoutOptions;
   result = [(HUGridCellLayoutOptions *)&v5 init];
   if (result)
   {
-    result->_cellSizeSubclass = a3;
+    result->_cellSizeSubclass = subclass;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithCellSizeSubclass:{-[HUGridCellLayoutOptions cellSizeSubclass](self, "cellSizeSubclass")}];
-  v5 = [(HUGridCellLayoutOptions *)self backgroundDisplayOptions];
-  [v4 setBackgroundDisplayOptions:v5];
+  backgroundDisplayOptions = [(HUGridCellLayoutOptions *)self backgroundDisplayOptions];
+  [v4 setBackgroundDisplayOptions:backgroundDisplayOptions];
 
-  v6 = [(HUGridCellLayoutOptions *)self vibrancyEffect];
-  [v4 setVibrancyEffect:v6];
+  vibrancyEffect = [(HUGridCellLayoutOptions *)self vibrancyEffect];
+  [v4 setVibrancyEffect:vibrancyEffect];
 
-  v7 = [(HUGridCellLayoutOptions *)self secondaryVibrancyEffect];
-  [v4 setSecondaryVibrancyEffect:v7];
+  secondaryVibrancyEffect = [(HUGridCellLayoutOptions *)self secondaryVibrancyEffect];
+  [v4 setSecondaryVibrancyEffect:secondaryVibrancyEffect];
 
-  v8 = [(HUGridCellLayoutOptions *)self iconVibrancyEffect];
-  [v4 setIconVibrancyEffect:v8];
+  iconVibrancyEffect = [(HUGridCellLayoutOptions *)self iconVibrancyEffect];
+  [v4 setIconVibrancyEffect:iconVibrancyEffect];
 
   [(HUGridCellLayoutOptions *)self secondaryContentDimmingFactor];
   [v4 setSecondaryContentDimmingFactor:?];
   [v4 setContentColorStyle:{-[HUGridCellLayoutOptions contentColorStyle](self, "contentColorStyle")}];
-  v9 = [(HUGridCellLayoutOptions *)self contentSizeCategory];
-  [v4 setContentSizeCategory:v9];
+  contentSizeCategory = [(HUGridCellLayoutOptions *)self contentSizeCategory];
+  [v4 setContentSizeCategory:contentSizeCategory];
 
-  v10 = [(HUGridCellLayoutOptions *)self font];
-  [v4 setFont:v10];
+  font = [(HUGridCellLayoutOptions *)self font];
+  [v4 setFont:font];
 
   [(HUGridCellLayoutOptions *)self iconSize];
   [v4 setIconSize:?];
@@ -153,11 +153,11 @@ void __61__HUGridCellLayoutOptions_defaultOptionsForCellSizeSubclass___block_inv
   return v4;
 }
 
-- (void)setContentColorStyle:(unint64_t)a3
+- (void)setContentColorStyle:(unint64_t)style
 {
-  self->_contentColorStyle = a3;
-  v4 = [(HUGridCellLayoutOptions *)self backgroundDisplayOptions];
-  [v4 setContentColorStyle:a3];
+  self->_contentColorStyle = style;
+  backgroundDisplayOptions = [(HUGridCellLayoutOptions *)self backgroundDisplayOptions];
+  [backgroundDisplayOptions setContentColorStyle:style];
 }
 
 @end

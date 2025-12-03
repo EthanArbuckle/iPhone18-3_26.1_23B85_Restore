@@ -10,17 +10,17 @@
 - (void)accessibilityDecrement
 {
   v3 = [(SKUIStarRatingControlAccessibility *)self safeValueForKey:@"userRating"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  [(SKUIStarRatingControlAccessibility *)self _axSetRating:v4 - 1];
+  [(SKUIStarRatingControlAccessibility *)self _axSetRating:integerValue - 1];
 }
 
 - (void)accessibilityIncrement
 {
   v3 = [(SKUIStarRatingControlAccessibility *)self safeValueForKey:@"userRating"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  [(SKUIStarRatingControlAccessibility *)self _axSetRating:v4 + 1];
+  [(SKUIStarRatingControlAccessibility *)self _axSetRating:integerValue + 1];
 }
 
 void __51__SKUIStarRatingControlAccessibility__axSetRating___block_invoke(uint64_t a1)

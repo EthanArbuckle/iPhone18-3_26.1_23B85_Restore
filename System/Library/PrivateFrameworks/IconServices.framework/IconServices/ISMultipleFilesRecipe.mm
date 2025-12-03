@@ -1,12 +1,12 @@
 @interface ISMultipleFilesRecipe
-- (id)documentLayerWithRect:(CGRect)a3 withPageFold:(BOOL)a4 iconSize:(CGSize)a5 scale:(double)a6;
+- (id)documentLayerWithRect:(CGRect)rect withPageFold:(BOOL)fold iconSize:(CGSize)size scale:(double)scale;
 - (id)hintedCornerSize;
 - (id)hintedPageCurlSize;
 - (id)hintedPaperRect;
 - (id)hintedShadowBlur;
 - (id)hintedShadowOffset;
 - (id)hintedUnderPaperRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISMultipleFilesRecipe
@@ -169,15 +169,15 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   return [v2 addHintedSize:0.0 forSize:{-10.0, 512.0, 512.0}];
 }
 
-- (id)documentLayerWithRect:(CGRect)a3 withPageFold:(BOOL)a4 iconSize:(CGSize)a5 scale:(double)a6
+- (id)documentLayerWithRect:(CGRect)rect withPageFold:(BOOL)fold iconSize:(CGSize)size scale:(double)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v61 = a4;
-  v9 = a3.size.height;
-  v10 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  foldCopy = fold;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v14 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v14 setName:@"masked layer"];
   [(ISLayer *)v14 setSize:width, height];
@@ -194,13 +194,13 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v18 setCoordinateSystem:0];
   [(ISLayer *)v18 setBlendMode:19];
   [(ISLayer *)v18 setName:@"bottomLeft"];
-  v19 = [(ISMultipleFilesRecipe *)self hintedCornerSize];
-  [v19 hintedSizeForSize:{width, height}];
+  hintedCornerSize = [(ISMultipleFilesRecipe *)self hintedCornerSize];
+  [hintedCornerSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v18 setSize:?];
 
-  v20 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v21 = [v20 assetCatalogURL];
-  v22 = [ISAssetCatalogResource assetCatalogResourceWithURL:v21 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
+  v22 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v18 setContent:v22];
 
   [(ISLayer *)v16 addSublayer:v18];
@@ -208,13 +208,13 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v23 setCoordinateSystem:3];
   [(ISLayer *)v23 setBlendMode:19];
   [(ISLayer *)v23 setName:@"topRight"];
-  v24 = [(ISMultipleFilesRecipe *)self hintedPageCurlSize];
-  [v24 hintedSizeForSize:{width, height}];
+  hintedPageCurlSize = [(ISMultipleFilesRecipe *)self hintedPageCurlSize];
+  [hintedPageCurlSize hintedSizeForSize:{width, height}];
   [(ISLayer *)v23 setSize:?];
 
-  v25 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v26 = [v25 assetCatalogURL];
-  v27 = [ISAssetCatalogResource assetCatalogResourceWithURL:v26 imageName:@"document/top-right-mask" error:0];
+  iconFoundationFrameworkBundle2 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL2 = [iconFoundationFrameworkBundle2 assetCatalogURL];
+  v27 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL2 imageName:@"document/top-right-mask" error:0];
   [(ISContentLayer *)v23 setContent:v27];
 
   [(ISLayer *)v16 addSublayer:v23];
@@ -223,13 +223,13 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v28 setFlipped:2];
   [(ISLayer *)v28 setBlendMode:19];
   [(ISLayer *)v28 setName:@"bottomRight"];
-  v29 = [(ISMultipleFilesRecipe *)self hintedCornerSize];
-  [v29 hintedSizeForSize:{width, height}];
+  hintedCornerSize2 = [(ISMultipleFilesRecipe *)self hintedCornerSize];
+  [hintedCornerSize2 hintedSizeForSize:{width, height}];
   [(ISLayer *)v28 setSize:?];
 
-  v30 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v31 = [v30 assetCatalogURL];
-  v32 = [ISAssetCatalogResource assetCatalogResourceWithURL:v31 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL3 = [iconFoundationFrameworkBundle3 assetCatalogURL];
+  v32 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL3 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v28 setContent:v32];
 
   [(ISLayer *)v16 addSublayer:v28];
@@ -238,13 +238,13 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v33 setFlipped:1];
   [(ISLayer *)v33 setBlendMode:19];
   [(ISLayer *)v33 setName:@"topLeft"];
-  v34 = [(ISMultipleFilesRecipe *)self hintedCornerSize];
-  [v34 hintedSizeForSize:{width, height}];
+  hintedCornerSize3 = [(ISMultipleFilesRecipe *)self hintedCornerSize];
+  [hintedCornerSize3 hintedSizeForSize:{width, height}];
   [(ISLayer *)v33 setSize:?];
 
-  v35 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v36 = [v35 assetCatalogURL];
-  v37 = [ISAssetCatalogResource assetCatalogResourceWithURL:v36 imageName:@"document/bottom-right-mask" error:0];
+  iconFoundationFrameworkBundle4 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL4 = [iconFoundationFrameworkBundle4 assetCatalogURL];
+  v37 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL4 imageName:@"document/bottom-right-mask" error:0];
   [(ISContentLayer *)v33 setContent:v37];
 
   [(ISLayer *)v16 addSublayer:v33];
@@ -269,31 +269,31 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   v42 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v42 setName:@"gradient layer"];
   [(ISLayer *)v42 setSize:width, height];
-  v43 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v44 = [v43 assetCatalogURL];
-  v45 = [ISAssetCatalogResource assetCatalogResourceWithURL:v44 imageName:@"document/gradient" error:0];
+  iconFoundationFrameworkBundle5 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL5 = [iconFoundationFrameworkBundle5 assetCatalogURL];
+  v45 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL5 imageName:@"document/gradient" error:0];
   [(ISContentLayer *)v42 setContent:v45];
 
   [(ISLayer *)v14 addSublayer:v42];
-  if (v61)
+  if (foldCopy)
   {
     v46 = objc_alloc_init(ISContentLayer);
-    v47 = [(ISMultipleFilesRecipe *)self hintedPaperRect];
-    [v47 hintedRectForSize:{width, height}];
+    hintedPaperRect = [(ISMultipleFilesRecipe *)self hintedPaperRect];
+    [hintedPaperRect hintedRectForSize:{width, height}];
     [(ISLayer *)v46 setFrame:?];
 
     [(ISLayer *)v14 addSublayer:v46];
     v48 = objc_alloc_init(ISContentLayer);
     [(ISLayer *)v48 setName:@"Forground layer"];
     [(ISLayer *)v48 setCoordinateSystem:3];
-    v49 = [(ISMultipleFilesRecipe *)self hintedPageCurlSize];
-    [v49 hintedSizeForSize:{width, height}];
+    hintedPageCurlSize2 = [(ISMultipleFilesRecipe *)self hintedPageCurlSize];
+    [hintedPageCurlSize2 hintedSizeForSize:{width, height}];
     [(ISLayer *)v48 setSize:?];
 
     [(ISLayer *)v48 setPosition:0.0, 0.0];
-    v50 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-    v51 = [v50 assetCatalogURL];
-    v52 = [ISAssetCatalogResource assetCatalogResourceWithURL:v51 imageName:@"document/page-fold" error:0];
+    iconFoundationFrameworkBundle6 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+    assetCatalogURL6 = [iconFoundationFrameworkBundle6 assetCatalogURL];
+    v52 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL6 imageName:@"document/page-fold" error:0];
     [(ISContentLayer *)v48 setContent:v52];
 
     [(ISLayer *)v46 addSublayer:v48];
@@ -303,22 +303,22 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   [(ISLayer *)v53 setName:@"shadow background layer"];
   [(ISLayer *)v53 setSize:width, height];
   v54 = objc_opt_new();
-  v55 = [(ISMultipleFilesRecipe *)self hintedShadowBlur];
-  [v55 hintedFloatForSize:{width, height}];
+  hintedShadowBlur = [(ISMultipleFilesRecipe *)self hintedShadowBlur];
+  [hintedShadowBlur hintedFloatForSize:{width, height}];
   [v54 setBlur:?];
 
-  v56 = [(ISMultipleFilesRecipe *)self hintedShadowOffset];
-  [v56 hintedSizeForSize:{width, height}];
+  hintedShadowOffset = [(ISMultipleFilesRecipe *)self hintedShadowOffset];
+  [hintedShadowOffset hintedSizeForSize:{width, height}];
   [v54 setOffset:?];
 
-  v57 = [(ISMultipleFilesRecipe *)self hintedShadowBlur];
-  [v57 hintedFloatForSize:{width, height}];
+  hintedShadowBlur2 = [(ISMultipleFilesRecipe *)self hintedShadowBlur];
+  [hintedShadowBlur2 hintedFloatForSize:{width, height}];
   [v54 setSpread:?];
 
   v58 = [objc_alloc(MEMORY[0x1E69A8968]) initWithWhite:0.0 alpha:0.28];
   [v54 setColor:v58];
 
-  [v54 setScale:a6];
+  [v54 setScale:scale];
   [(ISLayer *)v53 setEffect:v54];
   [(ISLayer *)v53 addSublayer:v14];
   v59 = objc_opt_new();
@@ -328,32 +328,32 @@ uint64_t __43__ISMultipleFilesRecipe_hintedShadowOffset__block_invoke()
   return v59;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_alloc_init(ISLayer);
   [(ISLayer *)v8 setSize:width, height];
   [(ISLayer *)v8 setName:@"root layer"];
-  v9 = [(ISMultipleFilesRecipe *)self hintedUnderPaperRect];
-  [v9 hintedRectForSize:{width, height}];
+  hintedUnderPaperRect = [(ISMultipleFilesRecipe *)self hintedUnderPaperRect];
+  [hintedUnderPaperRect hintedRectForSize:{width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(ISMultipleFilesRecipe *)self documentLayerWithRect:0 withPageFold:v11 iconSize:v13 scale:v15, v17, width, height, a4];
-  [(ISLayer *)v8 addSublayer:v18];
+  scale = [(ISMultipleFilesRecipe *)self documentLayerWithRect:0 withPageFold:v11 iconSize:v13 scale:v15, v17, width, height, scale];
+  [(ISLayer *)v8 addSublayer:scale];
 
-  v19 = [(ISMultipleFilesRecipe *)self hintedPaperRect];
-  [v19 hintedRectForSize:{width, height}];
+  hintedPaperRect = [(ISMultipleFilesRecipe *)self hintedPaperRect];
+  [hintedPaperRect hintedRectForSize:{width, height}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(ISMultipleFilesRecipe *)self documentLayerWithRect:1 withPageFold:v21 iconSize:v23 scale:v25, v27, width, height, a4];
-  [(ISLayer *)v8 addSublayer:v28];
+  scale2 = [(ISMultipleFilesRecipe *)self documentLayerWithRect:1 withPageFold:v21 iconSize:v23 scale:v25, v27, width, height, scale];
+  [(ISLayer *)v8 addSublayer:scale2];
 
   return v8;
 }

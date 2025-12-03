@@ -1,19 +1,19 @@
 @interface MFIMAPDownloadCache
-- (id)downloadForMessage:(id)a3;
-- (void)addCommandsForDownload:(id)a3 toPipeline:(id)a4;
-- (void)cleanUpDownloadsForUid:(unsigned int)a3;
-- (void)handleFetchResponse:(id)a3 forUid:(unsigned int)a4;
-- (void)handleFetchResponses:(id)a3;
-- (void)processResultsForUid:(unsigned int)a3;
+- (id)downloadForMessage:(id)message;
+- (void)addCommandsForDownload:(id)download toPipeline:(id)pipeline;
+- (void)cleanUpDownloadsForUid:(unsigned int)uid;
+- (void)handleFetchResponse:(id)response forUid:(unsigned int)uid;
+- (void)handleFetchResponses:(id)responses;
+- (void)processResultsForUid:(unsigned int)uid;
 @end
 
 @implementation MFIMAPDownloadCache
 
-- (id)downloadForMessage:(id)a3
+- (id)downloadForMessage:(id)message
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uid];
+  messageCopy = message;
+  v5 = [messageCopy uid];
   [(MFIMAPDownloadCache *)self mf_lock];
   RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, v5);
   if (!v7)
@@ -45,15 +45,15 @@ LABEL_7:
     v9 = MFLogGeneral();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 ef_publicDescription];
+      ef_publicDescription = [messageCopy ef_publicDescription];
       v15 = 138543362;
-      v16 = v10;
+      v16 = ef_publicDescription;
       _os_log_impl(&dword_1B0389000, v9, OS_LOG_TYPE_INFO, "uid of message %{public}@ is 0", &v15, 0xCu);
     }
   }
 
 LABEL_10:
-  v11 = [[MFIMAPMessageDownload alloc] initWithMessage:v4];
+  v11 = [[MFIMAPMessageDownload alloc] initWithMessage:messageCopy];
   v12 = v11;
   if (v11)
   {
@@ -75,30 +75,30 @@ LABEL_13:
   return v8;
 }
 
-- (void)handleFetchResponse:(id)a3 forUid:(unsigned int)a4
+- (void)handleFetchResponse:(id)response forUid:(unsigned int)uid
 {
-  v10 = a3;
+  responseCopy = response;
   [(MFIMAPDownloadCache *)self mf_lock];
-  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, a4);
+  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, uid);
   v8 = v7;
-  v9 = [v10 fetchResults];
-  _lockedUpdateDownloadsInRange(self, RangeOfDownloadsWithUid, v8, v9);
+  fetchResults = [responseCopy fetchResults];
+  _lockedUpdateDownloadsInRange(self, RangeOfDownloadsWithUid, v8, fetchResults);
 
   [(MFIMAPDownloadCache *)self mf_unlock];
 }
 
-- (void)handleFetchResponses:(id)a3
+- (void)handleFetchResponses:(id)responses
 {
   v23 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  if ([v16 count])
+  responsesCopy = responses;
+  if ([responsesCopy count])
   {
     [(MFIMAPDownloadCache *)self mf_lock];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    obj = v16;
+    obj = responsesCopy;
     v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v4)
     {
@@ -128,8 +128,8 @@ LABEL_13:
               v7 = v12;
             }
 
-            v14 = [v10 fetchResults];
-            _lockedUpdateDownloadsInRange(self, RangeOfDownloadsWithUid, v5, v14);
+            fetchResults = [v10 fetchResults];
+            _lockedUpdateDownloadsInRange(self, RangeOfDownloadsWithUid, v5, fetchResults);
           }
         }
 
@@ -145,10 +145,10 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processResultsForUid:(unsigned int)a3
+- (void)processResultsForUid:(unsigned int)uid
 {
   [(MFIMAPDownloadCache *)self mf_lock];
-  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, a3);
+  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, uid);
   if (RangeOfDownloadsWithUid < RangeOfDownloadsWithUid + v6)
   {
     v7 = RangeOfDownloadsWithUid;
@@ -168,10 +168,10 @@ LABEL_13:
   [(MFIMAPDownloadCache *)self mf_unlock];
 }
 
-- (void)cleanUpDownloadsForUid:(unsigned int)a3
+- (void)cleanUpDownloadsForUid:(unsigned int)uid
 {
   [(MFIMAPDownloadCache *)self mf_lock];
-  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, a3);
+  RangeOfDownloadsWithUid = _lockedFindRangeOfDownloadsWithUid(self, uid);
   v7 = RangeOfDownloadsWithUid + v6;
   if (RangeOfDownloadsWithUid + v6 > RangeOfDownloadsWithUid)
   {
@@ -191,12 +191,12 @@ LABEL_13:
   [(MFIMAPDownloadCache *)self mf_unlock];
 }
 
-- (void)addCommandsForDownload:(id)a3 toPipeline:(id)a4
+- (void)addCommandsForDownload:(id)download toPipeline:(id)pipeline
 {
-  v7 = a3;
-  v6 = a4;
+  downloadCopy = download;
+  pipelineCopy = pipeline;
   [(MFIMAPDownloadCache *)self mf_lock];
-  [v7 addCommandsToPipeline:v6 withCache:self];
+  [downloadCopy addCommandsToPipeline:pipelineCopy withCache:self];
   [(MFIMAPDownloadCache *)self mf_unlock];
 }
 

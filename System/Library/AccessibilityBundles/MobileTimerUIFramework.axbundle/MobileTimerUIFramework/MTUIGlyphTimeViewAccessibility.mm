@@ -7,9 +7,9 @@
 - (id)accessibilityValue
 {
   v2 = [(MTUIGlyphTimeViewAccessibility *)self safeUIViewForKey:@"timeLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

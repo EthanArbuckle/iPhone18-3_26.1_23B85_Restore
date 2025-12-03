@@ -1,25 +1,25 @@
 @interface MADServiceVideoProcessingTask
-+ (id)taskWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 resultHandler:(id)a7 andCompletionHandler:(id)a8;
++ (id)taskWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler andCompletionHandler:(id)completionHandler;
 - (BOOL)cachesResources;
-- (BOOL)run:(id *)a3;
-- (MADServiceVideoProcessingTask)initWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 resultHandler:(id)a7 andCompletionHandler:(id)a8;
+- (BOOL)run:(id *)run;
+- (MADServiceVideoProcessingTask)initWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler andCompletionHandler:(id)completionHandler;
 @end
 
 @implementation MADServiceVideoProcessingTask
 
-- (MADServiceVideoProcessingTask)initWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 resultHandler:(id)a7 andCompletionHandler:(id)a8
+- (MADServiceVideoProcessingTask)initWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler andCompletionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  requestsCopy = requests;
+  assetCopy = asset;
+  blockCopy = block;
+  handlerCopy = handler;
+  resultHandlerCopy = resultHandler;
+  completionHandlerCopy = completionHandler;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __122__MADServiceVideoProcessingTask_initWithRequests_forAsset_cancelBlock_progressHandler_resultHandler_andCompletionHandler___block_invoke;
   v32[3] = &unk_1E834CF90;
-  v21 = v20;
+  v21 = completionHandlerCopy;
   v33 = v21;
   v31.receiver = self;
   v31.super_class = MADServiceVideoProcessingTask;
@@ -27,13 +27,13 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_requests, a3);
-    objc_storeStrong(&v23->_asset, a4);
-    v24 = _Block_copy(v18);
+    objc_storeStrong(&v22->_requests, requests);
+    objc_storeStrong(&v23->_asset, asset);
+    v24 = _Block_copy(handlerCopy);
     progressHandler = v23->_progressHandler;
     v23->_progressHandler = v24;
 
-    v26 = _Block_copy(v19);
+    v26 = _Block_copy(resultHandlerCopy);
     resultHandler = v23->_resultHandler;
     v23->_resultHandler = v26;
 
@@ -41,21 +41,21 @@
     completionHandler = v23->_completionHandler;
     v23->_completionHandler = v28;
 
-    [(VCPMABaseTask *)v23 setCancelBlock:v17];
+    [(VCPMABaseTask *)v23 setCancelBlock:blockCopy];
   }
 
   return v23;
 }
 
-+ (id)taskWithRequests:(id)a3 forAsset:(id)a4 cancelBlock:(id)a5 progressHandler:(id)a6 resultHandler:(id)a7 andCompletionHandler:(id)a8
++ (id)taskWithRequests:(id)requests forAsset:(id)asset cancelBlock:(id)block progressHandler:(id)handler resultHandler:(id)resultHandler andCompletionHandler:(id)completionHandler
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [objc_alloc(objc_opt_class()) initWithRequests:v18 forAsset:v17 cancelBlock:v16 progressHandler:v15 resultHandler:v14 andCompletionHandler:v13];
+  completionHandlerCopy = completionHandler;
+  resultHandlerCopy = resultHandler;
+  handlerCopy = handler;
+  blockCopy = block;
+  assetCopy = asset;
+  requestsCopy = requests;
+  v19 = [objc_alloc(objc_opt_class()) initWithRequests:requestsCopy forAsset:assetCopy cancelBlock:blockCopy progressHandler:handlerCopy resultHandler:resultHandlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v19;
 }
@@ -106,11 +106,11 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v168 = *MEMORY[0x1E69E9840];
-  v113 = [MEMORY[0x1E695DF70] array];
-  v118 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v157 = 0u;
   v158 = 0u;
   v155 = 0u;
@@ -137,12 +137,12 @@ LABEL_12:
           {
             if ([MADServiceVideoProcessingSubtask taskClassForRequest:v7])
             {
-              [v118 addObject:v7];
+              [array2 addObject:v7];
             }
 
             else
             {
-              [v113 addObject:v7];
+              [array addObject:v7];
             }
           }
 
@@ -174,7 +174,7 @@ LABEL_12:
   v151 = 0x3032000000;
   v152 = __Block_byref_object_copy__77;
   v153 = __Block_byref_object_dispose__77;
-  v154 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __37__MADServiceVideoProcessingTask_run___block_invoke;
@@ -182,8 +182,8 @@ LABEL_12:
   aBlock[4] = self;
   aBlock[5] = &v149;
   v114 = _Block_copy(aBlock);
-  v8 = self;
-  if ([v113 count])
+  selfCopy4 = self;
+  if ([array count])
   {
     v9 = [VCPVideoProcessor alloc];
     v10 = [(MADServiceVideoAsset *)self->_asset url];
@@ -196,16 +196,16 @@ LABEL_12:
       v146[2] = __37__MADServiceVideoProcessingTask_run___block_invoke_196;
       v146[3] = &unk_1E8352188;
       v146[4] = self;
-      v147 = v113;
+      v147 = array;
       [(VCPVideoProcessor *)context setProgressHandler:v146];
     }
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v144 = 0u;
     v145 = 0u;
     v142 = 0u;
     v143 = 0u;
-    v12 = v113;
+    v12 = array;
     v13 = [v12 countByEnumeratingWithState:&v142 objects:v166 count:16];
     if (v13)
     {
@@ -227,7 +227,7 @@ LABEL_12:
           if (v18)
           {
             [v18 configureVideoProcessor:context];
-            [v11 addObject:v19];
+            [array3 addObject:v19];
           }
 
           else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -279,11 +279,11 @@ LABEL_12:
         }
       }
 
-      if (a3)
+      if (run)
       {
         v45 = [v26 copy];
-        v46 = *a3;
-        *a3 = v45;
+        v46 = *run;
+        *run = v45;
       }
 
       v47 = 0;
@@ -304,7 +304,7 @@ LABEL_12:
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    v30 = v11;
+    v30 = array3;
     v31 = [v30 countByEnumeratingWithState:&v135 objects:v163 count:16];
     if (v31)
     {
@@ -320,8 +320,8 @@ LABEL_12:
 
           v34 = *(*(&v135 + 1) + 8 * k);
           v35 = [v34 finalize];
-          v36 = [v34 request];
-          v114[2](v114, v36, v35);
+          request = [v34 request];
+          v114[2](v114, request, v35);
         }
 
         v31 = [v30 countByEnumeratingWithState:&v135 objects:v163 count:16];
@@ -330,7 +330,7 @@ LABEL_12:
       while (v31);
     }
 
-    v8 = self;
+    selfCopy4 = self;
   }
 
   if (v119 != 0)
@@ -366,7 +366,7 @@ LABEL_12:
       v133[3] = &unk_1E83521B0;
       v133[4] = self;
       v111 = v134;
-      v134[0] = v113;
+      v134[0] = array;
       v134[1] = v40;
     }
 
@@ -437,13 +437,13 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v37);
-    v8 = self;
+    selfCopy4 = self;
   }
 
   v66 = 0;
   v108 = *MEMORY[0x1E696A768];
   v109 = *MEMORY[0x1E696A578];
-  while (v66 < [v118 count])
+  while (v66 < [array2 count])
   {
     contextb = objc_autoreleasePoolPush();
     v67 = self->_progressHandler;
@@ -455,7 +455,7 @@ LABEL_12:
       v125[2] = __37__MADServiceVideoProcessingTask_run___block_invoke_205;
       v125[3] = &unk_1E83521B0;
       v125[4] = self;
-      v126 = v113;
+      v126 = array;
       v127 = v66;
     }
 
@@ -470,7 +470,7 @@ LABEL_12:
     v121[2] = __37__MADServiceVideoProcessingTask_run___block_invoke_2_206;
     v121[3] = &unk_1E8352228;
     v123 = v114;
-    v70 = v118;
+    v70 = array2;
     v122 = v70;
     v124 = v66;
     v71 = _Block_copy(v121);
@@ -541,7 +541,7 @@ LABEL_12:
         }
       }
 
-      if (!a3)
+      if (!run)
       {
         goto LABEL_104;
       }
@@ -554,8 +554,8 @@ LABEL_12:
       v162 = v94;
       v95 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v162 forKeys:&v161 count:1];
       v96 = [v92 errorWithDomain:v108 code:-50 userInfo:v95];
-      v97 = *a3;
-      *a3 = v96;
+      v97 = *run;
+      *run = v96;
     }
 
 LABEL_104:
@@ -564,7 +564,7 @@ LABEL_104:
     }
 
     objc_autoreleasePoolPop(contextb);
-    v8 = self;
+    selfCopy4 = self;
     ++v66;
     if (!v74)
     {
@@ -573,7 +573,7 @@ LABEL_104:
     }
   }
 
-  if (!v8->_resultHandler)
+  if (!selfCopy4->_resultHandler)
   {
     context = [MEMORY[0x1E695DF70] array];
     for (m = 0; m < [(NSArray *)self->_requests count]; ++m)
@@ -609,7 +609,7 @@ LABEL_117:
     goto LABEL_118;
   }
 
-  (*(v8->_completionHandler + 2))();
+  (*(selfCopy4->_completionHandler + 2))();
   v47 = 1;
 LABEL_118:
 

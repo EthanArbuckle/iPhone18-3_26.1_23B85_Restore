@@ -1,27 +1,27 @@
 @interface SBVoiceDisabledBundles
 + (BOOL)voiceControlDisabledByCurrentlyRunningApp;
-+ (void)setAppDisabledVoiceControl:(BOOL)a3 bundleIdentifier:(id)a4;
++ (void)setAppDisabledVoiceControl:(BOOL)control bundleIdentifier:(id)identifier;
 @end
 
 @implementation SBVoiceDisabledBundles
 
-+ (void)setAppDisabledVoiceControl:(BOOL)a3 bundleIdentifier:(id)a4
++ (void)setAppDisabledVoiceControl:(BOOL)control bundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v10 = a4;
-  if ([v10 length])
+  controlCopy = control;
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     v5 = __disabledVoiceControlBundleIds;
-    if (v4)
+    if (controlCopy)
     {
-      v6 = v10;
+      v6 = identifierCopy;
       if (!__disabledVoiceControlBundleIds)
       {
         v7 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:1];
         v8 = __disabledVoiceControlBundleIds;
         __disabledVoiceControlBundleIds = v7;
 
-        v6 = v10;
+        v6 = identifierCopy;
         v5 = __disabledVoiceControlBundleIds;
       }
 
@@ -30,7 +30,7 @@
 
     else
     {
-      [__disabledVoiceControlBundleIds removeObject:v10];
+      [__disabledVoiceControlBundleIds removeObject:identifierCopy];
       if (![__disabledVoiceControlBundleIds count])
       {
         v9 = __disabledVoiceControlBundleIds;
@@ -67,17 +67,17 @@
         v9 = +[SBApplicationController sharedInstanceIfExists];
         v10 = [v9 applicationWithBundleIdentifier:v8];
 
-        v11 = [v10 processState];
-        v12 = [v11 isRunning];
+        processState = [v10 processState];
+        isRunning = [processState isRunning];
 
-        if (v12)
+        if (isRunning)
         {
           v5 = 1;
         }
 
         else
         {
-          [a1 setAppDisabledVoiceControl:0 bundleIdentifier:v8];
+          [self setAppDisabledVoiceControl:0 bundleIdentifier:v8];
         }
       }
 

@@ -1,14 +1,14 @@
 @interface AMSCircularBuffer
-+ (id)_rearrangeObjects:(id)a3 forCurrentIndex:(unint64_t)a4;
-- (AMSCircularBuffer)initWithMaxSize:(unint64_t)a3;
++ (id)_rearrangeObjects:(id)objects forCurrentIndex:(unint64_t)index;
+- (AMSCircularBuffer)initWithMaxSize:(unint64_t)size;
 - (NSArray)allObjects;
 - (id)_flush;
 - (id)description;
 - (id)flush;
 - (unint64_t)count;
 - (unint64_t)maxSize;
-- (void)addObject:(id)a3;
-- (void)setMaxSize:(unint64_t)a3;
+- (void)addObject:(id)object;
+- (void)setMaxSize:(unint64_t)size;
 @end
 
 @implementation AMSCircularBuffer
@@ -19,14 +19,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__AMSCircularBuffer_count__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -45,21 +45,21 @@ void __26__AMSCircularBuffer_count__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__AMSCircularBuffer_maxSize__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
   return v4;
 }
 
-- (AMSCircularBuffer)initWithMaxSize:(unint64_t)a3
+- (AMSCircularBuffer)initWithMaxSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = AMSCircularBuffer;
@@ -70,12 +70,12 @@ void __26__AMSCircularBuffer_count__block_invoke(uint64_t a1)
     accessQueue = v4->_accessQueue;
     v4->_accessQueue = v5;
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:size];
     buffer = v4->_buffer;
     v4->_buffer = v7;
 
     v4->_currentIndex = 0;
-    v4->_maxSize = a3;
+    v4->_maxSize = size;
   }
 
   return v4;
@@ -93,7 +93,7 @@ void __26__AMSCircularBuffer_count__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  v3 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__AMSCircularBuffer_allObjects__block_invoke;
@@ -101,7 +101,7 @@ void __26__AMSCircularBuffer_count__block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = &v11;
   block[6] = &v7;
-  dispatch_sync(v3, block);
+  dispatch_sync(accessQueue, block);
 
   v4 = [AMSCircularBuffer _rearrangeObjects:v12[5] forCurrentIndex:v8[3]];
   _Block_object_dispose(&v7, 8);
@@ -123,18 +123,18 @@ uint64_t __31__AMSCircularBuffer_allObjects__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMaxSize:(unint64_t)a3
+- (void)setMaxSize:(unint64_t)size
 {
   objc_initWeak(&location, self);
-  v5 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__AMSCircularBuffer_setMaxSize___block_invoke;
   v6[3] = &unk_1E73B5E00;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = size;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(accessQueue, v6);
 
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -172,20 +172,20 @@ void __32__AMSCircularBuffer_setMaxSize___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_initWeak(&location, self);
-  v5 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__AMSCircularBuffer_addObject___block_invoke;
   v7[3] = &unk_1E73B5E28;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = objectCopy;
+  v6 = objectCopy;
+  dispatch_async(accessQueue, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -231,14 +231,14 @@ void __31__AMSCircularBuffer_addObject___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__AMSCircularBuffer_flush__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -261,14 +261,14 @@ uint64_t __26__AMSCircularBuffer_flush__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(AMSCircularBuffer *)self accessQueue];
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__AMSCircularBuffer_description__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -287,42 +287,42 @@ void __32__AMSCircularBuffer_description__block_invoke(uint64_t a1)
 
 - (id)_flush
 {
-  v3 = [(AMSCircularBuffer *)self accessQueue];
-  dispatch_assert_queue_V2(v3);
+  accessQueue = [(AMSCircularBuffer *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  v4 = [(AMSCircularBuffer *)self buffer];
-  v5 = [(AMSCircularBuffer *)self currentIndex];
+  buffer = [(AMSCircularBuffer *)self buffer];
+  currentIndex = [(AMSCircularBuffer *)self currentIndex];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:self->_maxSize];
   [(AMSCircularBuffer *)self setBuffer:v6];
 
   [(AMSCircularBuffer *)self setCurrentIndex:0];
-  v7 = [AMSCircularBuffer _rearrangeObjects:v4 forCurrentIndex:v5];
+  v7 = [AMSCircularBuffer _rearrangeObjects:buffer forCurrentIndex:currentIndex];
 
   return v7;
 }
 
-+ (id)_rearrangeObjects:(id)a3 forCurrentIndex:(unint64_t)a4
++ (id)_rearrangeObjects:(id)objects forCurrentIndex:(unint64_t)index
 {
-  v5 = a3;
+  objectsCopy = objects;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v5 count])
+  if ([objectsCopy count])
   {
     v7 = 0;
     do
     {
-      if (a4 == [v5 count])
+      if (index == [objectsCopy count])
       {
-        a4 = 0;
+        index = 0;
       }
 
-      v8 = [v5 objectAtIndexedSubscript:a4];
+      v8 = [objectsCopy objectAtIndexedSubscript:index];
       [v6 addObject:v8];
 
-      ++a4;
+      ++index;
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [objectsCopy count]);
   }
 
   return v6;

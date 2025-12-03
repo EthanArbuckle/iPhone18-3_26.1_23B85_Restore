@@ -1,22 +1,22 @@
 @interface MapsSuggestionsPredictionsServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsPredictionsServer)initWithMemory:(id)a3;
+- (MapsSuggestionsPredictionsServer)initWithMemory:(id)memory;
 - (id).cxx_construct;
 @end
 
 @implementation MapsSuggestionsPredictionsServer
 
-- (MapsSuggestionsPredictionsServer)initWithMemory:(id)a3
+- (MapsSuggestionsPredictionsServer)initWithMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v21.receiver = self;
   v21.super_class = MapsSuggestionsPredictionsServer;
   v5 = [(MapsSuggestionsPredictionsServer *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_memory, v4);
+    objc_storeWeak(&v5->_memory, memoryCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     sub_100003654(&v19, @"MapsSuggestionsPredictionsServerQueue", v7);
     v8 = v19;
@@ -57,22 +57,22 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v41 = v5;
+      v41 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
     v7 = [MapsSuggestionsPredictionsXPCPeer alloc];
-    v8 = [(MapsSuggestionsPredictionsServer *)self memory];
-    v9 = [(MapsSuggestionsPredictionsXPCPeer *)v7 initWithXPCConnection:v5 memory:v8];
+    memory = [(MapsSuggestionsPredictionsServer *)self memory];
+    v9 = [(MapsSuggestionsPredictionsXPCPeer *)v7 initWithXPCConnection:connectionCopy memory:memory];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -119,8 +119,8 @@
     v23 = [[NSSet alloc] initWithObjects:{objc_opt_class(), 0}];
     [v11 setClasses:v23 forSelector:"predictedTransportModeForDestinationMapItemData:originCoordinateData:handler:" argumentIndex:1 ofReply:0];
 
-    [v5 setExportedInterface:v11];
-    [v5 setExportedObject:v10];
+    [connectionCopy setExportedInterface:v11];
+    [connectionCopy setExportedObject:v10];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v10);
     v33[0] = _NSConcreteStackBlock;
@@ -129,7 +129,7 @@
     v33[3] = &unk_100075720;
     objc_copyWeak(&v35, buf);
     objc_copyWeak(&v36, &location);
-    v24 = v5;
+    v24 = connectionCopy;
     v34 = v24;
     [v24 setInvalidationHandler:v33];
     v29[0] = _NSConcreteStackBlock;
@@ -176,7 +176,7 @@
     }
   }
 
-  return v5 != 0;
+  return connectionCopy != 0;
 }
 
 - (MapsSuggestionsDaemonMemory)memory

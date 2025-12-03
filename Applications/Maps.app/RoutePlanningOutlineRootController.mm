@@ -1,48 +1,48 @@
 @interface RoutePlanningOutlineRootController
-- (BOOL)_hasExpandedStepsForRoute:(id)a3;
+- (BOOL)_hasExpandedStepsForRoute:(id)route;
 - (BOOL)_isFamiliarRoutesAvailable;
 - (BOOL)_showDetailButton;
 - (BOOL)_showPersistentHighlight;
 - (BOOL)hasExpandedSteps;
 - (BOOL)shouldShowAdvisoryFooter;
-- (CGRect)mostImportantRectToFrameWithSelectedRoute:(id)a3;
+- (CGRect)mostImportantRectToFrameWithSelectedRoute:(id)route;
 - (MapsCustomRouteCellDelegate)customRouteDelegate;
 - (RouteOverviewCellDelegate)routeCellDelegate;
 - (RoutePlanningDataCoordination)dataCoordinator;
-- (RoutePlanningOutlineRootController)initWithCollectionView:(id)a3;
+- (RoutePlanningOutlineRootController)initWithCollectionView:(id)view;
 - (RoutePlanningOverviewRouteCreationCellDelegate)routeCreationDelegate;
 - (RouteRowSelectionDelegate)routeSelectionDelegate;
 - (TransitDirectionsStepsListDelegate)stepsListDelegate;
 - (TransitPayActionDelegate)transitPayActionDelegate;
 - (double)estimatedFeatureDiscoveryHeight;
 - (double)estimatedRoutePlanningAdvisoryFooterViewHeight;
-- (id)_routeForExpandingOrCollapsingFromIndexPath:(id)a3;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (id)indexPathForRoute:(id)a3;
-- (id)mostImportantIndexPathWithSelectedRoute:(id)a3;
-- (id)routeForRowAtIndexPath:(id)a3;
-- (int64_t)indexOfRouteForRowAtIndexPath:(id)a3;
+- (id)_routeForExpandingOrCollapsingFromIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (id)indexPathForRoute:(id)route;
+- (id)mostImportantIndexPathWithSelectedRoute:(id)route;
+- (id)routeForRowAtIndexPath:(id)path;
+- (int64_t)indexOfRouteForRowAtIndexPath:(id)path;
 - (void)_createRouteSectionsForCurrentRoutes;
-- (void)_toggleStepsExpansionForRoute:(id)a3;
+- (void)_toggleStepsExpansionForRoute:(id)route;
 - (void)collapseCurrentlyFocusedRoute;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didUpdateVisibleOutlineSections;
 - (void)expandCurrentlyFocusedRoute;
 - (void)prepareOutlineSections;
-- (void)reloadExistingCellForRoute:(id)a3;
+- (void)reloadExistingCellForRoute:(id)route;
 - (void)reloadVisibleRouteCells;
-- (void)setAllowPersistentHighlight:(BOOL)a3;
-- (void)setAutomaticSharingContacts:(id)a3;
-- (void)setCustomRouteDelegate:(id)a3;
-- (void)setRouteCellDelegate:(id)a3;
-- (void)setRouteCreationDelegate:(id)a3;
-- (void)setRouteSelectionDelegate:(id)a3;
-- (void)setStepsListDelegate:(id)a3;
-- (void)setTransitPayActionDelegate:(id)a3;
-- (void)setupAdvisoryInfoLayout:(id)a3 tapHandler:(id)a4;
-- (void)toggleStepsExpansionForRouteAtIndexPath:(id)a3;
-- (void)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4 isInACustomRouteRegion:(BOOL)a5;
+- (void)setAllowPersistentHighlight:(BOOL)highlight;
+- (void)setAutomaticSharingContacts:(id)contacts;
+- (void)setCustomRouteDelegate:(id)delegate;
+- (void)setRouteCellDelegate:(id)delegate;
+- (void)setRouteCreationDelegate:(id)delegate;
+- (void)setRouteSelectionDelegate:(id)delegate;
+- (void)setStepsListDelegate:(id)delegate;
+- (void)setTransitPayActionDelegate:(id)delegate;
+- (void)setupAdvisoryInfoLayout:(id)layout tapHandler:(id)handler;
+- (void)toggleStepsExpansionForRouteAtIndexPath:(id)path;
+- (void)updateWithTransportType:(int64_t)type routeCollection:(id)collection isInACustomRouteRegion:(BOOL)region;
 @end
 
 @implementation RoutePlanningOutlineRootController
@@ -96,18 +96,18 @@
   return WeakRetained;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:UICollectionElementKindSectionFooter])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:UICollectionElementKindSectionFooter])
   {
     v11 = +[_TtC4Maps29RoutingAdvisoryInfoFooterView reuseIdentifier];
-    v12 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v11 forIndexPath:v10];
+    v12 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v11 forIndexPath:pathCopy];
 
     [v12 removeFooterLabels];
-    if (self->_shouldReloadFooterView && (v13 = [v10 section], v13 == objc_msgSend(v8, "numberOfSections") - 1) && -[RoutePlanningOutlineRootController shouldShowAdvisoryFooter](self, "shouldShowAdvisoryFooter"))
+    if (self->_shouldReloadFooterView && (v13 = [pathCopy section], v13 == objc_msgSend(viewCopy, "numberOfSections") - 1) && -[RoutePlanningOutlineRootController shouldShowAdvisoryFooter](self, "shouldShowAdvisoryFooter"))
     {
       objc_initWeak(&location, self);
       v19[0] = 0;
@@ -116,14 +116,14 @@
       v19[3] = sub_1009C7500;
       v19[4] = sub_1009C750C;
       objc_initWeak(&v20, v12);
-      v14 = [(GEOAdvisoriesInfo *)self->_advisoryInfo genericAdvisorys];
+      genericAdvisorys = [(GEOAdvisoriesInfo *)self->_advisoryInfo genericAdvisorys];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1009C7514;
       v17[3] = &unk_101631230;
       objc_copyWeak(&v18, &location);
       v17[4] = v19;
-      [v12 updateDescriptionInfo:v14 tapHandler:v17];
+      [v12 updateDescriptionInfo:genericAdvisorys tapHandler:v17];
 
       objc_destroyWeak(&v18);
       _Block_object_dispose(v19, 8);
@@ -143,22 +143,22 @@
   {
     v16.receiver = self;
     v16.super_class = RoutePlanningOutlineRootController;
-    v12 = [(RoutePlanningOutlineController *)&v16 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    v12 = [(RoutePlanningOutlineController *)&v16 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  v4 = [(RoutePlanningOutlineRootController *)self routeCollection];
-  v5 = [v4 currentRoute];
+  routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+  currentRoute = [routeCollection currentRoute];
 
-  if (v5)
+  if (currentRoute)
   {
-    v6 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    v7 = [v6 currentRoute];
-    v8 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:v7];
+    routeCollection2 = [(RoutePlanningOutlineRootController *)self routeCollection];
+    currentRoute2 = [routeCollection2 currentRoute];
+    v8 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:currentRoute2];
   }
 
   else
@@ -169,23 +169,23 @@
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = RoutePlanningOutlineRootController;
-  [(RoutePlanningOutlineController *)&v27 collectionView:v6 didSelectItemAtIndexPath:v7];
-  v8 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [v7 section]);
+  [(RoutePlanningOutlineController *)&v27 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
+  v8 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [pathCopy section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
-    v10 = [(RoutePlanningOutlineRootController *)self routeSelectionDelegate];
-    v11 = [v9 route];
+    routeSelectionDelegate = [(RoutePlanningOutlineRootController *)self routeSelectionDelegate];
+    route = [v9 route];
 
-    [v10 dataSource:self didSelectRowForRoute:v11];
-    [v6 deselectItemAtIndexPath:v7 animated:0];
+    [routeSelectionDelegate dataSource:self didSelectRowForRoute:route];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:0];
   }
 
   else
@@ -193,15 +193,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = v7;
+      v22 = pathCopy;
       v21 = v8;
       v12 = v8;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v13 = [(NSMapTable *)self->_routeOverviewSectionsByRoute keyEnumerator];
-      v14 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      keyEnumerator = [(NSMapTable *)self->_routeOverviewSectionsByRoute keyEnumerator];
+      v14 = [keyEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -212,50 +212,50 @@
           {
             if (*v24 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v18 = *(*(&v23 + 1) + 8 * i);
             v19 = [(NSMapTable *)self->_routeOverviewSectionsByRoute objectForKey:v18];
-            v20 = [v12 route];
-            [v19 setHasSelectedStep:v18 == v20];
+            route2 = [v12 route];
+            [v19 setHasSelectedStep:v18 == route2];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v15 = [keyEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v15);
       }
 
-      v7 = v22;
+      pathCopy = v22;
       v8 = v21;
     }
   }
 }
 
-- (void)setupAdvisoryInfoLayout:(id)a3 tapHandler:(id)a4
+- (void)setupAdvisoryInfoLayout:(id)layout tapHandler:(id)handler
 {
-  objc_storeStrong(&self->_advisoryInfo, a3);
-  v10 = a3;
-  v7 = a4;
-  self->_shouldReloadFooterView = v10 != 0;
-  v8 = objc_retainBlock(v7);
+  objc_storeStrong(&self->_advisoryInfo, layout);
+  layoutCopy = layout;
+  handlerCopy = handler;
+  self->_shouldReloadFooterView = layoutCopy != 0;
+  v8 = objc_retainBlock(handlerCopy);
 
   advisoryTapHandler = self->_advisoryTapHandler;
   self->_advisoryTapHandler = v8;
 }
 
-- (void)setTransitPayActionDelegate:(id)a3
+- (void)setTransitPayActionDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_transitPayActionDelegate);
 
-    if (WeakRetained != v4)
+    if (WeakRetained != delegateCopy)
     {
-      objc_storeWeak(&self->_transitPayActionDelegate, v4);
-      [(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection setTransitPayActionDelegate:v4];
+      objc_storeWeak(&self->_transitPayActionDelegate, delegateCopy);
+      [(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection setTransitPayActionDelegate:delegateCopy];
     }
   }
 
@@ -291,22 +291,22 @@
   }
 }
 
-- (void)setStepsListDelegate:(id)a3
+- (void)setStepsListDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_stepsListDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_stepsListDelegate, v4);
+    objc_storeWeak(&self->_stepsListDelegate, delegateCopy);
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NSMapTable *)self->_stepsSectionsByRoute objectEnumerator];
-    v7 = [v6 allObjects];
+    objectEnumerator = [(NSMapTable *)self->_stepsSectionsByRoute objectEnumerator];
+    allObjects = [objectEnumerator allObjects];
 
-    v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
       v9 = v8;
@@ -318,15 +318,15 @@
         {
           if (*v13 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v12 + 1) + 8 * v11) setStepsListDelegate:v4];
+          [*(*(&v12 + 1) + 8 * v11) setStepsListDelegate:delegateCopy];
           v11 = v11 + 1;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v9);
@@ -334,9 +334,9 @@
   }
 }
 
-- (void)setRouteSelectionDelegate:(id)a3
+- (void)setRouteSelectionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_routeSelectionDelegate);
 
   v5 = obj;
@@ -347,9 +347,9 @@
   }
 }
 
-- (void)setCustomRouteDelegate:(id)a3
+- (void)setCustomRouteDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_customRouteDelegate);
 
   if (WeakRetained != obj)
@@ -359,9 +359,9 @@
   }
 }
 
-- (void)setRouteCreationDelegate:(id)a3
+- (void)setRouteCreationDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_routeCreationDelegate);
 
   if (WeakRetained != obj)
@@ -371,14 +371,14 @@
   }
 }
 
-- (void)setRouteCellDelegate:(id)a3
+- (void)setRouteCellDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_routeCellDelegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != delegateCopy)
   {
-    objc_storeWeak(&self->_routeCellDelegate, v4);
+    objc_storeWeak(&self->_routeCellDelegate, delegateCopy);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -399,7 +399,7 @@
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10) setRouteCellDelegate:{v4, v11}];
+          [*(*(&v11 + 1) + 8 * v10) setRouteCellDelegate:{delegateCopy, v11}];
           v10 = v10 + 1;
         }
 
@@ -412,34 +412,34 @@
   }
 }
 
-- (void)updateWithTransportType:(int64_t)a3 routeCollection:(id)a4 isInACustomRouteRegion:(BOOL)a5
+- (void)updateWithTransportType:(int64_t)type routeCollection:(id)collection isInACustomRouteRegion:(BOOL)region
 {
-  v5 = a5;
-  v8 = a4;
+  regionCopy = region;
+  collectionCopy = collection;
   v9 = sub_1007995B8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    if ((a3 - 1) > 4)
+    if ((type - 1) > 4)
     {
       v10 = @"Undefined";
     }
 
     else
     {
-      v10 = off_1016312A0[a3 - 1];
+      v10 = off_1016312A0[type - 1];
     }
 
-    v11 = [v8 uniqueRouteIDs];
+    uniqueRouteIDs = [collectionCopy uniqueRouteIDs];
     *buf = 138412546;
     v51 = v10;
     v52 = 2112;
-    v53 = v11;
+    v53 = uniqueRouteIDs;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "updateWithTransportType: %@, routeCollection: %@", buf, 0x16u);
   }
 
   transportType = self->_transportType;
   routeCollection = self->_routeCollection;
-  v14 = v8;
+  v14 = collectionCopy;
   v15 = v14;
   if (v14 | routeCollection)
   {
@@ -451,32 +451,32 @@
     v16 = 1;
   }
 
-  v17 = [(RoutePlanningOutlineRootController *)self isInACustomRouteRegion]^ v5;
-  v18 = transportType != a3 || v16 == 0;
+  v17 = [(RoutePlanningOutlineRootController *)self isInACustomRouteRegion]^ regionCopy;
+  v18 = transportType != type || v16 == 0;
   if (v18 || (v17 & 1) != 0)
   {
-    if ((transportType != a3) | v17 & 1)
+    if ((transportType != type) | v17 & 1)
     {
       v20 = 1;
     }
 
     else
     {
-      v21 = [v15 routes];
+      routes = [v15 routes];
       [(RouteCollection *)self->_routeCollection routes];
       v23 = v22 = v15;
-      v38 = v5;
-      v24 = [v21 isEqualToArray:v23];
+      v38 = regionCopy;
+      v24 = [routes isEqualToArray:v23];
 
       v15 = v22;
       v20 = v24 ^ 1;
-      LOBYTE(v5) = v38;
+      LOBYTE(regionCopy) = v38;
     }
 
-    objc_storeStrong(&self->_routeCollection, a4);
-    self->_transportType = a3;
-    self->_isInACustomRouteRegion = v5;
-    v25 = [(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection updateWithTransportType:a3 routeCollection:v15];
+    objc_storeStrong(&self->_routeCollection, collection);
+    self->_transportType = type;
+    self->_isInACustomRouteRegion = regionCopy;
+    v25 = [(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection updateWithTransportType:type routeCollection:v15];
     if (v20 & 1) != 0 || (v25)
     {
       v41[0] = _NSConcreteStackBlock;
@@ -500,7 +500,7 @@
       }
 
       obja = v15;
-      v27 = [v15 currentRoute];
+      currentRoute = [v15 currentRoute];
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
@@ -521,12 +521,12 @@
             }
 
             v33 = *(*(&v45 + 1) + 8 * i);
-            v34 = [v33 route];
-            [v33 setCurrentRoute:v34 == v27];
+            route = [v33 route];
+            [v33 setCurrentRoute:route == currentRoute];
 
             stepsSectionsByRoute = self->_stepsSectionsByRoute;
-            v36 = [v33 route];
-            v37 = [(NSMapTable *)stepsSectionsByRoute objectForKey:v36];
+            route2 = [v33 route];
+            v37 = [(NSMapTable *)stepsSectionsByRoute objectForKey:route2];
 
             [v37 setCurrentRoute:{objc_msgSend(v33, "isCurrentRoute")}];
           }
@@ -554,25 +554,25 @@
 
 - (BOOL)shouldShowAdvisoryFooter
 {
-  v3 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
-  v4 = [v3 transportType];
+  dataCoordinator = [(RoutePlanningOutlineRootController *)self dataCoordinator];
+  transportType = [dataCoordinator transportType];
 
-  if (v4 != 1)
+  if (transportType != 1)
   {
-    v6 = sub_100798A3C();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    advisoriesInfo = sub_100798A3C();
+    if (os_log_type_enabled(advisoriesInfo, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "No Footer for other transport type than Drive", buf, 2u);
+      _os_log_impl(&_mh_execute_header, advisoriesInfo, OS_LOG_TYPE_INFO, "No Footer for other transport type than Drive", buf, 2u);
     }
 
     goto LABEL_14;
   }
 
-  v5 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
-  v6 = [v5 advisoriesInfo];
+  dataCoordinator2 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
+  advisoriesInfo = [dataCoordinator2 advisoriesInfo];
 
-  if (!v6 || (-[NSObject genericAdvisorys](v6, "genericAdvisorys"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, -[NSObject genericAdvisorys](v6, "genericAdvisorys"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8, !v10))
+  if (!advisoriesInfo || (-[NSObject genericAdvisorys](advisoriesInfo, "genericAdvisorys"), (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, -[NSObject genericAdvisorys](advisoriesInfo, "genericAdvisorys"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8, !v10))
   {
     v13 = sub_100798A3C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -604,21 +604,21 @@ LABEL_14:
     v26 = buf;
     v27 = 0x2020000000;
     v28 = 1;
-    v15 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    v16 = [v15 currentRoute];
-    v17 = [v16 waypoints];
+    routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+    currentRoute = [routeCollection currentRoute];
+    waypoints = [currentRoute waypoints];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1009CA798;
     v24[3] = &unk_1016311E0;
     v24[4] = buf;
-    [v17 enumerateObjectsUsingBlock:v24];
+    [waypoints enumerateObjectsUsingBlock:v24];
 
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    if (v26[24] == 1 && (-[NSObject genericAdvisorys](v6, "genericAdvisorys"), v18 = objc_claimAutoreleasedReturnValue(), v19[0] = _NSConcreteStackBlock, v19[1] = 3221225472, v19[2] = sub_1009CA818, v19[3] = &unk_101631208, v19[4] = &v20, [v18 enumerateObjectsUsingBlock:v19], v18, (v26[24] & 1) != 0))
+    if (v26[24] == 1 && (-[NSObject genericAdvisorys](advisoriesInfo, "genericAdvisorys"), v18 = objc_claimAutoreleasedReturnValue(), v19[0] = _NSConcreteStackBlock, v19[1] = 3221225472, v19[2] = sub_1009CA818, v19[3] = &unk_101631208, v19[4] = &v20, [v18 enumerateObjectsUsingBlock:v19], v18, (v26[24] & 1) != 0))
     {
       v12 = *(v21 + 24);
     }
@@ -643,36 +643,36 @@ LABEL_15:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(RoutePlanningOutlineRootController *)self routeCollection];
-  v3 = [v2 routes];
+  routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+  routes = [routeCollection routes];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1009CA93C;
   v5[3] = &unk_1016311B8;
   v5[4] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [routes enumerateObjectsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(routeCollection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return routeCollection;
 }
 
 - (void)_createRouteSectionsForCurrentRoutes
 {
   [(NSMapTable *)self->_routeOverviewSectionsByRoute removeAllObjects];
   [(NSMapTable *)self->_stepsSectionsByRoute removeAllObjects];
-  v3 = [(RoutePlanningOutlineRootController *)self routeCollection];
-  v4 = [v3 currentRoute];
+  routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+  currentRoute = [routeCollection currentRoute];
 
-  v5 = [(RoutePlanningOutlineRootController *)self routeCollection];
-  v6 = [v5 routes];
+  routeCollection2 = [(RoutePlanningOutlineRootController *)self routeCollection];
+  routes = [routeCollection2 routes];
 
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(routes, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v8 = v6;
+  v8 = routes;
   v9 = [v8 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v9)
   {
@@ -703,19 +703,19 @@ LABEL_15:
     while (v10);
   }
 
-  v17 = [(RoutePlanningOutlineRootController *)self _showPersistentHighlight];
-  v18 = [(RoutePlanningOutlineRootController *)self _showDetailButton];
-  v19 = [v8 lastObject];
+  _showPersistentHighlight = [(RoutePlanningOutlineRootController *)self _showPersistentHighlight];
+  _showDetailButton = [(RoutePlanningOutlineRootController *)self _showDetailButton];
+  lastObject = [v8 lastObject];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1009CAC6C;
   v27[3] = &unk_101631190;
   v27[4] = self;
-  v31 = v18;
-  v32 = v17;
-  v20 = v4;
+  v31 = _showDetailButton;
+  v32 = _showPersistentHighlight;
+  v20 = currentRoute;
   v28 = v20;
-  v21 = v19;
+  v21 = lastObject;
   v29 = v21;
   v22 = v7;
   v30 = v22;
@@ -738,8 +738,8 @@ LABEL_15:
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(RoutePlanningOutlineController *)self collectionView];
-    v4 = sub_10000FA08(v3);
+    collectionView = [(RoutePlanningOutlineController *)self collectionView];
+    v4 = sub_10000FA08(collectionView);
 
     if (v4 == 5)
     {
@@ -752,8 +752,8 @@ LABEL_15:
     return 1;
   }
 
-  v6 = [(RoutePlanningOutlineController *)self collectionView];
-  v5 = sub_10000FA08(v6) == 5;
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+  v5 = sub_10000FA08(collectionView2) == 5;
 
   return v5;
 }
@@ -765,11 +765,11 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(RoutePlanningOutlineRootController *)self routeCollection];
-  if ([v3 count] <= 1)
+  routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+  if ([routeCollection count] <= 1)
   {
-    v5 = [(RoutePlanningOutlineController *)self collectionView];
-    v4 = sub_10000FA08(v5) == 5;
+    collectionView = [(RoutePlanningOutlineController *)self collectionView];
+    v4 = sub_10000FA08(collectionView) == 5;
   }
 
   else
@@ -780,11 +780,11 @@ LABEL_15:
   return v4;
 }
 
-- (void)setAutomaticSharingContacts:(id)a3
+- (void)setAutomaticSharingContacts:(id)contacts
 {
-  v5 = a3;
+  contactsCopy = contacts;
   automaticSharingContacts = self->_automaticSharingContacts;
-  v7 = v5;
+  v7 = contactsCopy;
   v8 = automaticSharingContacts;
   if (v7 | v8)
   {
@@ -809,7 +809,7 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Set automaticSharingContacts: %@", buf, 0xCu);
       }
 
-      objc_storeStrong(&self->_automaticSharingContacts, a3);
+      objc_storeStrong(&self->_automaticSharingContacts, contacts);
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
@@ -844,16 +844,16 @@ LABEL_15:
   }
 }
 
-- (void)setAllowPersistentHighlight:(BOOL)a3
+- (void)setAllowPersistentHighlight:(BOOL)highlight
 {
-  if (self->_allowPersistentHighlight != a3)
+  if (self->_allowPersistentHighlight != highlight)
   {
-    v3 = a3;
+    highlightCopy = highlight;
     v5 = sub_1007995B8();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v6 = @"NO";
-      if (v3)
+      if (highlightCopy)
       {
         v6 = @"YES";
       }
@@ -864,9 +864,9 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Set allowPersistentHighlight: %@", buf, 0xCu);
     }
 
-    self->_allowPersistentHighlight = v3;
-    v8 = [(RoutePlanningOutlineRootController *)self _showPersistentHighlight];
-    v9 = [(RoutePlanningOutlineRootController *)self _showDetailButton];
+    self->_allowPersistentHighlight = highlightCopy;
+    _showPersistentHighlight = [(RoutePlanningOutlineRootController *)self _showPersistentHighlight];
+    _showDetailButton = [(RoutePlanningOutlineRootController *)self _showDetailButton];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -887,8 +887,8 @@ LABEL_15:
           }
 
           v15 = *(*(&v16 + 1) + 8 * i);
-          [v15 setAllowPersistentHighlight:{v8, v16}];
-          [v15 setShowDetailButton:v9];
+          [v15 setAllowPersistentHighlight:{_showPersistentHighlight, v16}];
+          [v15 setShowDetailButton:_showDetailButton];
         }
 
         v12 = [(NSArray *)v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -905,10 +905,10 @@ LABEL_15:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -920,7 +920,7 @@ LABEL_15:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [*(*(&v10 + 1) + 8 * v8) section]);
@@ -934,16 +934,16 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)reloadExistingCellForRoute:(id)a3
+- (void)reloadExistingCellForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -964,9 +964,9 @@ LABEL_15:
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v10 route];
+        route = [v10 route];
 
-        if (v11 == v4)
+        if (route == routeCopy)
         {
           [v10 reloadExistingCell];
           goto LABEL_11;
@@ -986,9 +986,9 @@ LABEL_15:
 LABEL_11:
 }
 
-- (int64_t)indexOfRouteForRowAtIndexPath:(id)a3
+- (int64_t)indexOfRouteForRowAtIndexPath:(id)path
 {
-  v4 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [a3 section]);
+  v4 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [path section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1003,9 +1003,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)indexPathForRoute:(id)a3
+- (id)indexPathForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1026,9 +1026,9 @@ LABEL_11:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 route];
+        route = [v10 route];
 
-        if (v11 == v4)
+        if (route == routeCopy)
         {
           v12 = [NSIndexPath indexPathForItem:0 inSection:[(RoutePlanningOutlineController *)self sectionIndexForOutlineSection:v10]];
           goto LABEL_11;
@@ -1051,21 +1051,21 @@ LABEL_11:
   return v12;
 }
 
-- (id)routeForRowAtIndexPath:(id)a3
+- (id)routeForRowAtIndexPath:(id)path
 {
-  v3 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [a3 section]);
+  v3 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [path section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 route];
+    route = [v3 route];
   }
 
   else
   {
-    v4 = 0;
+    route = 0;
   }
 
-  return v4;
+  return route;
 }
 
 - (double)estimatedRoutePlanningAdvisoryFooterViewHeight
@@ -1075,18 +1075,18 @@ LABEL_11:
     return 0.0;
   }
 
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
-  v4 = sub_10000FA08(v3);
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  v4 = sub_10000FA08(collectionView);
 
   if (v4 == 5)
   {
     return 0.0;
   }
 
-  v6 = [(GEOAdvisoriesInfo *)self->_advisoryInfo genericAdvisorys];
-  v7 = [(RoutePlanningOutlineController *)self collectionView];
-  [v7 frame];
-  [_TtC4Maps29RoutingAdvisoryInfoFooterView getEstimatedFooterHeight:v6 maxWidth:v8];
+  genericAdvisorys = [(GEOAdvisoriesInfo *)self->_advisoryInfo genericAdvisorys];
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+  [collectionView2 frame];
+  [_TtC4Maps29RoutingAdvisoryInfoFooterView getEstimatedFooterHeight:genericAdvisorys maxWidth:v8];
   v10 = v9;
 
   return v10;
@@ -1094,11 +1094,11 @@ LABEL_11:
 
 - (double)estimatedFeatureDiscoveryHeight
 {
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
-  if (sub_10000FA08(v3))
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  if (sub_10000FA08(collectionView))
   {
-    v4 = [(RoutePlanningOutlineController *)self collectionView];
-    v5 = sub_10000FA08(v4);
+    collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+    v5 = sub_10000FA08(collectionView2);
 
     if (v5 != 1)
     {
@@ -1119,40 +1119,40 @@ LABEL_11:
   return result;
 }
 
-- (void)_toggleStepsExpansionForRoute:(id)a3
+- (void)_toggleStepsExpansionForRoute:(id)route
 {
   stepsSectionsByRoute = self->_stepsSectionsByRoute;
-  v5 = a3;
-  v6 = [(NSMapTable *)stepsSectionsByRoute objectForKey:v5];
+  routeCopy = route;
+  v6 = [(NSMapTable *)stepsSectionsByRoute objectForKey:routeCopy];
   if (v6)
   {
     v7 = v6;
     v8 = [(RoutePlanningOutlineController *)self sectionIndexForOutlineSection:v6];
-    [(NSMapTable *)self->_stepsSectionsByRoute removeObjectForKey:v5];
+    [(NSMapTable *)self->_stepsSectionsByRoute removeObjectForKey:routeCopy];
   }
 
   else
   {
     v9 = [RoutePlanningRouteStepsOutlineSection alloc];
-    v10 = [(RoutePlanningOutlineController *)self collectionView];
-    v11 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Route%lu.Steps", [v11 indexOfRoute:v5]);
-    v7 = [(RoutePlanningOutlineSection *)v9 initWithCollectionView:v10 sectionIdentifier:v12];
+    collectionView = [(RoutePlanningOutlineController *)self collectionView];
+    routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Route%lu.Steps", [routeCollection indexOfRoute:routeCopy]);
+    v7 = [(RoutePlanningOutlineSection *)v9 initWithCollectionView:collectionView sectionIdentifier:v12];
 
-    [(RoutePlanningRouteStepsOutlineSection *)v7 setRoute:v5];
+    [(RoutePlanningRouteStepsOutlineSection *)v7 setRoute:routeCopy];
     [(RoutePlanningOutlineSection *)v7 setHost:self];
-    v13 = [(RoutePlanningOutlineRootController *)self stepsListDelegate];
-    [(RoutePlanningRouteStepsOutlineSection *)v7 setStepsListDelegate:v13];
+    stepsListDelegate = [(RoutePlanningOutlineRootController *)self stepsListDelegate];
+    [(RoutePlanningRouteStepsOutlineSection *)v7 setStepsListDelegate:stepsListDelegate];
 
-    [(NSMapTable *)self->_stepsSectionsByRoute setObject:v7 forKey:v5];
+    [(NSMapTable *)self->_stepsSectionsByRoute setObject:v7 forKey:routeCopy];
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v14 = [(NSMapTable *)self->_routeOverviewSectionsByRoute objectForKey:v5];
+  v14 = [(NSMapTable *)self->_routeOverviewSectionsByRoute objectForKey:routeCopy];
 
   [v14 setExpanded:v8 == 0x7FFFFFFFFFFFFFFFLL];
   -[RoutePlanningRouteStepsOutlineSection setCurrentRoute:](v7, "setCurrentRoute:", [v14 isCurrentRoute]);
-  v15 = [(RoutePlanningOutlineController *)self collectionView];
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1009CBCC4;
@@ -1166,14 +1166,14 @@ LABEL_11:
   v17[3] = &unk_101661738;
   v17[4] = self;
   v16 = v7;
-  [v15 performBatchUpdates:v18 completion:v17];
+  [collectionView2 performBatchUpdates:v18 completion:v17];
 }
 
-- (void)toggleStepsExpansionForRouteAtIndexPath:(id)a3
+- (void)toggleStepsExpansionForRouteAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(RoutePlanningOutlineController *)self collectionView];
-  v6 = sub_10000FA08(v5);
+  pathCopy = path;
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  v6 = sub_10000FA08(collectionView);
 
   if (v6 != 5)
   {
@@ -1204,23 +1204,23 @@ LABEL_11:
     }
   }
 
-  v7 = [(RoutePlanningOutlineController *)self collectionView];
-  v8 = sub_10000FA08(v7);
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+  v8 = sub_10000FA08(collectionView2);
 
   if (v8 == 5)
   {
-    v9 = [(RoutePlanningOutlineRootController *)self routeForRowAtIndexPath:v4];
+    v9 = [(RoutePlanningOutlineRootController *)self routeForRowAtIndexPath:pathCopy];
     if (v9)
     {
       v10 = sub_1007995B8();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v9 uniqueRouteID];
-        v12 = [v4 section];
+        uniqueRouteID = [v9 uniqueRouteID];
+        section = [pathCopy section];
         v16 = 138412546;
-        v17 = v11;
+        v17 = uniqueRouteID;
         v18 = 2048;
-        v19 = v12;
+        v19 = section;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Will toggle expanded steps for route %@ at index %ld", &v16, 0x16u);
       }
 
@@ -1229,27 +1229,27 @@ LABEL_11:
   }
 }
 
-- (id)_routeForExpandingOrCollapsingFromIndexPath:(id)a3
+- (id)_routeForExpandingOrCollapsingFromIndexPath:(id)path
 {
-  v3 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [a3 section]);
+  v3 = -[RoutePlanningOutlineController outlineSectionAtIndex:](self, "outlineSectionAtIndex:", [path section]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 route];
+    route = [v3 route];
   }
 
   else
   {
-    v4 = 0;
+    route = 0;
   }
 
-  return v4;
+  return route;
 }
 
 - (void)collapseCurrentlyFocusedRoute
 {
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
-  v4 = sub_10000FA08(v3);
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  v4 = sub_10000FA08(collectionView);
 
   if (v4 != 5)
   {
@@ -1280,8 +1280,8 @@ LABEL_11:
     }
   }
 
-  v5 = [(RoutePlanningOutlineController *)self collectionView];
-  v6 = sub_10000FA08(v5);
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+  v6 = sub_10000FA08(collectionView2);
 
   if (v6 == 5)
   {
@@ -1289,10 +1289,10 @@ LABEL_11:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [(RoutePlanningOutlineController *)self collectionView];
-    v8 = [v7 visibleCells];
+    collectionView3 = [(RoutePlanningOutlineController *)self collectionView];
+    visibleCells = [collectionView3 visibleCells];
 
-    v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v9 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1303,14 +1303,14 @@ LABEL_11:
         {
           if (*v23 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(visibleCells);
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
           if ([v13 isFocused])
           {
-            v15 = [(RoutePlanningOutlineController *)self collectionView];
-            v16 = [v15 indexPathForCell:v13];
+            collectionView4 = [(RoutePlanningOutlineController *)self collectionView];
+            v16 = [collectionView4 indexPathForCell:v13];
 
             v14 = [(RoutePlanningOutlineRootController *)self _routeForExpandingOrCollapsingFromIndexPath:v16];
 
@@ -1319,9 +1319,9 @@ LABEL_11:
               v17 = sub_1007995B8();
               if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
               {
-                v18 = [v14 uniqueRouteID];
+                uniqueRouteID = [v14 uniqueRouteID];
                 *buf = 138412546;
-                v28 = v18;
+                v28 = uniqueRouteID;
                 v29 = 2048;
                 v30 = &index;
                 _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Will collapse steps for route %@ at index %lu", buf, 0x16u);
@@ -1334,7 +1334,7 @@ LABEL_11:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v10 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v10)
         {
           continue;
@@ -1351,8 +1351,8 @@ LABEL_17:
 
 - (void)expandCurrentlyFocusedRoute
 {
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
-  v4 = sub_10000FA08(v3);
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
+  v4 = sub_10000FA08(collectionView);
 
   if (v4 != 5)
   {
@@ -1383,8 +1383,8 @@ LABEL_17:
     }
   }
 
-  v5 = [(RoutePlanningOutlineController *)self collectionView];
-  v6 = sub_10000FA08(v5);
+  collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+  v6 = sub_10000FA08(collectionView2);
 
   if (v6 == 5)
   {
@@ -1392,10 +1392,10 @@ LABEL_17:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [(RoutePlanningOutlineController *)self collectionView];
-    v8 = [v7 visibleCells];
+    collectionView3 = [(RoutePlanningOutlineController *)self collectionView];
+    visibleCells = [collectionView3 visibleCells];
 
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v9 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1406,16 +1406,16 @@ LABEL_17:
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(visibleCells);
           }
 
           v13 = *(*(&v23 + 1) + 8 * i);
           if ([v13 isFocused])
           {
-            v15 = [(RoutePlanningOutlineController *)self collectionView];
-            v16 = [v15 indexPathForCell:v13];
+            collectionView4 = [(RoutePlanningOutlineController *)self collectionView];
+            v16 = [collectionView4 indexPathForCell:v13];
 
-            v17 = [v16 section];
+            section = [v16 section];
             v14 = [(RoutePlanningOutlineRootController *)self _routeForExpandingOrCollapsingFromIndexPath:v16];
 
             if (v14 && ![(RoutePlanningOutlineRootController *)self _hasExpandedStepsForRoute:v14])
@@ -1423,11 +1423,11 @@ LABEL_17:
               v18 = sub_1007995B8();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
               {
-                v19 = [v14 uniqueRouteID];
+                uniqueRouteID = [v14 uniqueRouteID];
                 *buf = 138412546;
-                v29 = v19;
+                v29 = uniqueRouteID;
                 v30 = 2048;
-                v31 = v17;
+                v31 = section;
                 _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Will expand steps for route %@ at index %lu", buf, 0x16u);
               }
 
@@ -1438,7 +1438,7 @@ LABEL_17:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [visibleCells countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v10)
         {
           continue;
@@ -1453,9 +1453,9 @@ LABEL_17:
   }
 }
 
-- (BOOL)_hasExpandedStepsForRoute:(id)a3
+- (BOOL)_hasExpandedStepsForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1465,7 +1465,7 @@ LABEL_17:
   v8[1] = 3221225472;
   v8[2] = sub_1009CC830;
   v8[3] = &unk_10164D178;
-  v6 = v4;
+  v6 = routeCopy;
   v9 = v6;
   v10 = &v11;
   [(NSArray *)outlineSections enumerateObjectsUsingBlock:v8];
@@ -1493,9 +1493,9 @@ LABEL_17:
   return v3;
 }
 
-- (CGRect)mostImportantRectToFrameWithSelectedRoute:(id)a3
+- (CGRect)mostImportantRectToFrameWithSelectedRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -1511,26 +1511,26 @@ LABEL_17:
   else
   {
     v9 = [NSIndexPath indexPathForItem:0 inSection:[(RoutePlanningOutlineController *)self sectionIndexForOutlineSection:self->_featureDiscoverySection]];
-    v10 = [(RoutePlanningOutlineController *)self collectionViewLayout];
-    v11 = [v10 layoutAttributesForItemAtIndexPath:v9];
+    collectionViewLayout = [(RoutePlanningOutlineController *)self collectionViewLayout];
+    v11 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v9];
 
     [v11 frame];
     v60 = v12;
     v61 = v13;
     v15 = v14;
     v17 = v16;
-    v18 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    v19 = [v18 routes];
-    v20 = [v19 firstObject];
+    routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+    routes = [routeCollection routes];
+    firstObject = [routes firstObject];
 
-    v4 = v20;
+    routeCopy = firstObject;
   }
 
-  if (v4)
+  if (routeCopy)
   {
-    v21 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:v4];
-    v22 = [(RoutePlanningOutlineController *)self collectionViewLayout];
-    v23 = [v22 layoutAttributesForItemAtIndexPath:v21];
+    v21 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:routeCopy];
+    collectionViewLayout2 = [(RoutePlanningOutlineController *)self collectionViewLayout];
+    v23 = [collectionViewLayout2 layoutAttributesForItemAtIndexPath:v21];
 
     [v23 frame];
     x = v24;
@@ -1546,7 +1546,7 @@ LABEL_17:
   v28 = CGRectNull.origin.y;
   v31 = CGRectNull.size.width;
   v30 = CGRectNull.size.height;
-  if ([v4 isFamiliarRoute])
+  if ([routeCopy isFamiliarRoute])
   {
     preferredRouteSection = self->_preferredRouteSection;
     if (preferredRouteSection)
@@ -1557,8 +1557,8 @@ LABEL_17:
         if (v33 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v34 = [NSIndexPath indexPathForItem:0 inSection:v33];
-          v35 = [(RoutePlanningOutlineController *)self collectionViewLayout];
-          v36 = [v35 layoutAttributesForItemAtIndexPath:v34];
+          collectionViewLayout3 = [(RoutePlanningOutlineController *)self collectionViewLayout];
+          v36 = [collectionViewLayout3 layoutAttributesForItemAtIndexPath:v34];
 
           [v36 frame];
           v72.origin.x = v37;
@@ -1590,8 +1590,8 @@ LABEL_17:
     [(RoutePlanningOutlineRootController *)self bottomSafeOffset];
     if (fabs(v44) <= 2.22044605e-16)
     {
-      v45 = [(RoutePlanningOutlineRootController *)self routeCollection];
-      v46 = [v45 count];
+      routeCollection2 = [(RoutePlanningOutlineRootController *)self routeCollection];
+      v46 = [routeCollection2 count];
 
       v42 = v64;
       if (v46 > 1)
@@ -1651,9 +1651,9 @@ LABEL_17:
   return result;
 }
 
-- (id)mostImportantIndexPathWithSelectedRoute:(id)a3
+- (id)mostImportantIndexPathWithSelectedRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   if ([(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection numberOfSections]>= 1 && [(RoutePlanningFeatureDiscoverOutlineSection *)self->_featureDiscoverySection numberOfItemsInSection:0])
   {
     v5 = [NSIndexPath indexPathForItem:0 inSection:[(RoutePlanningOutlineController *)self sectionIndexForOutlineSection:self->_featureDiscoverySection]];
@@ -1662,9 +1662,9 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (routeCopy)
   {
-    v5 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:v4];
+    v5 = [(RoutePlanningOutlineRootController *)self indexPathForRoute:routeCopy];
     goto LABEL_6;
   }
 
@@ -1715,9 +1715,9 @@ LABEL_8:
 
 - (void)prepareOutlineSections
 {
-  v3 = [(RoutePlanningOutlineController *)self collectionView];
+  collectionView = [(RoutePlanningOutlineController *)self collectionView];
 
-  if (!v3)
+  if (!collectionView)
   {
     outlineSections = self->super._outlineSections;
     self->super._outlineSections = &__NSArray0__struct;
@@ -1741,15 +1741,15 @@ LABEL_8:
   if (!featureDiscoverySection)
   {
     v6 = [RoutePlanningFeatureDiscoverOutlineSection alloc];
-    v7 = [(RoutePlanningOutlineController *)self collectionView];
-    v8 = [(RoutePlanningFeatureDiscoverOutlineSection *)v6 initWithCollectionView:v7 sectionIdentifier:@"FeatureDiscovery"];
+    collectionView2 = [(RoutePlanningOutlineController *)self collectionView];
+    v8 = [(RoutePlanningFeatureDiscoverOutlineSection *)v6 initWithCollectionView:collectionView2 sectionIdentifier:@"FeatureDiscovery"];
     v9 = self->_featureDiscoverySection;
     self->_featureDiscoverySection = v8;
 
     v10 = self->_featureDiscoverySection;
     transportType = self->_transportType;
-    v12 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    [(RoutePlanningFeatureDiscoverOutlineSection *)v10 updateWithTransportType:transportType routeCollection:v12];
+    routeCollection = [(RoutePlanningOutlineRootController *)self routeCollection];
+    [(RoutePlanningFeatureDiscoverOutlineSection *)v10 updateWithTransportType:transportType routeCollection:routeCollection];
 
     featureDiscoverySection = self->_featureDiscoverySection;
   }
@@ -1758,20 +1758,20 @@ LABEL_8:
   if (!self->_preferredRouteSection)
   {
     v13 = [RoutePlanningPreferredRoutesSection alloc];
-    v14 = [(RoutePlanningOutlineController *)self collectionView];
-    v15 = [(RoutePlanningPreferredRoutesSection *)v13 initWithCollectionView:v14 sectionIdentifier:@"PreferredRouteTipKitSection"];
+    collectionView3 = [(RoutePlanningOutlineController *)self collectionView];
+    v15 = [(RoutePlanningPreferredRoutesSection *)v13 initWithCollectionView:collectionView3 sectionIdentifier:@"PreferredRouteTipKitSection"];
     preferredRouteSection = self->_preferredRouteSection;
     self->_preferredRouteSection = v15;
   }
 
-  v17 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
-  v18 = [v17 waypointRequests];
+  dataCoordinator = [(RoutePlanningOutlineRootController *)self dataCoordinator];
+  waypointRequests = [dataCoordinator waypointRequests];
 
   v66 = 0u;
   v67 = 0u;
   v65 = 0u;
   v64 = 0u;
-  v19 = v18;
+  v19 = waypointRequests;
   v20 = [v19 countByEnumeratingWithState:&v64 objects:v69 count:16];
   if (v20)
   {
@@ -1785,13 +1785,13 @@ LABEL_8:
           objc_enumerationMutation(v19);
         }
 
-        v23 = [*(*(&v64 + 1) + 8 * i) waypointRequest];
+        waypointRequest = [*(*(&v64 + 1) + 8 * i) waypointRequest];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v25 = v19;
+          dataCoordinator2 = v19;
           goto LABEL_22;
         }
       }
@@ -1806,32 +1806,32 @@ LABEL_8:
     }
   }
 
-  v25 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
-  if ([v25 inACustomRouteRegion] && self->_transportType == 2)
+  dataCoordinator2 = [(RoutePlanningOutlineRootController *)self dataCoordinator];
+  if ([dataCoordinator2 inACustomRouteRegion] && self->_transportType == 2)
   {
     IsEnabled_HikingiOS = MapsFeature_IsEnabled_HikingiOS();
 
     if (IsEnabled_HikingiOS)
     {
       v27 = +[MapsOfflineUIHelper sharedHelper];
-      v28 = [v27 isUsingOfflineMaps];
+      isUsingOfflineMaps = [v27 isUsingOfflineMaps];
 
-      if ((v28 & 1) == 0)
+      if ((isUsingOfflineMaps & 1) == 0)
       {
         p_routeCreationSection = &self->_routeCreationSection;
         if (!self->_routeCreationSection)
         {
           v29 = [RoutePlanningRouteCreationOutlineSection alloc];
-          v30 = [(RoutePlanningOutlineController *)self collectionView];
-          v31 = [(RoutePlanningRouteCreationOutlineSection *)v29 initWithCollectionView:v30 sectionIdentifier:@"RouteCreation"];
+          collectionView4 = [(RoutePlanningOutlineController *)self collectionView];
+          v31 = [(RoutePlanningRouteCreationOutlineSection *)v29 initWithCollectionView:collectionView4 sectionIdentifier:@"RouteCreation"];
           v32 = *p_routeCreationSection;
           *p_routeCreationSection = v31;
 
-          v33 = [(RoutePlanningOutlineRootController *)self routeCreationDelegate];
-          [*p_routeCreationSection setRouteCreationDelegate:v33];
+          routeCreationDelegate = [(RoutePlanningOutlineRootController *)self routeCreationDelegate];
+          [*p_routeCreationSection setRouteCreationDelegate:routeCreationDelegate];
 
-          v34 = [(RoutePlanningOutlineRootController *)self customRouteDelegate];
-          [*p_routeCreationSection setCustomRouteDelegate:v34];
+          customRouteDelegate = [(RoutePlanningOutlineRootController *)self customRouteDelegate];
+          [*p_routeCreationSection setCustomRouteDelegate:customRouteDelegate];
         }
 
         v35 = 1;
@@ -1853,11 +1853,11 @@ LABEL_24:
   v62 = 0x2020000000;
   v63 = 0x7FFFFFFFFFFFFFFFLL;
   v36 = [(NSArray *)self->_routeOverviewSections count];
-  v37 = [(RoutePlanningOutlineController *)self collectionView];
-  if (sub_10000FA08(v37))
+  collectionView5 = [(RoutePlanningOutlineController *)self collectionView];
+  if (sub_10000FA08(collectionView5))
   {
-    v38 = [(RoutePlanningOutlineController *)self collectionView];
-    v39 = sub_10000FA08(v38) != 1;
+    collectionView6 = [(RoutePlanningOutlineController *)self collectionView];
+    v39 = sub_10000FA08(collectionView6) != 1;
   }
 
   else
@@ -1873,7 +1873,7 @@ LABEL_24:
   v59 = v35;
   v44 = v4;
   v55 = v44;
-  v56 = self;
+  selfCopy = self;
   v57 = &v60;
   v58 = v36;
   [(NSArray *)v43 enumerateObjectsUsingBlock:v54];
@@ -1884,8 +1884,8 @@ LABEL_24:
     [(RoutePlanningPreferredRoutesSection *)self->_preferredRouteSection setFamiliarRoute:1];
     v46 = self->_preferredRouteSection;
     v47 = self->_transportType;
-    v48 = [(RoutePlanningOutlineRootController *)self routeCollection];
-    [(RoutePlanningPreferredRoutesSection *)v46 updateWithTransportType:v47 routeCollection:v48];
+    routeCollection2 = [(RoutePlanningOutlineRootController *)self routeCollection];
+    [(RoutePlanningPreferredRoutesSection *)v46 updateWithTransportType:v47 routeCollection:routeCollection2];
   }
 
   if (v35)
@@ -1907,15 +1907,15 @@ LABEL_24:
   _Block_object_dispose(&v60, 8);
 }
 
-- (RoutePlanningOutlineRootController)initWithCollectionView:(id)a3
+- (RoutePlanningOutlineRootController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = RoutePlanningOutlineRootController;
-  v5 = [(RoutePlanningOutlineController *)&v11 initWithCollectionView:v4];
+  v5 = [(RoutePlanningOutlineController *)&v11 initWithCollectionView:viewCopy];
   if (v5)
   {
-    [v4 setRemembersLastFocusedIndexPath:1];
+    [viewCopy setRemembersLastFocusedIndexPath:1];
     v6 = +[NSMapTable weakToStrongObjectsMapTable];
     routeOverviewSectionsByRoute = v5->_routeOverviewSectionsByRoute;
     v5->_routeOverviewSectionsByRoute = v6;

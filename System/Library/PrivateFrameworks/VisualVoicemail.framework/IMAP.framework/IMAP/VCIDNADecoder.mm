@@ -1,26 +1,26 @@
 @interface VCIDNADecoder
-+ (id)stringByDecodingDomainName:(id)a3;
++ (id)stringByDecodingDomainName:(id)name;
 @end
 
 @implementation VCIDNADecoder
 
-+ (id)stringByDecodingDomainName:(id)a3
++ (id)stringByDecodingDomainName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (stringByDecodingDomainName__onceToken != -1)
   {
     +[VCIDNADecoder stringByDecodingDomainName:];
   }
 
-  v4 = [v3 length];
-  if (v4 && [v3 rangeOfString:@"xn--" options:1 range:0 locale:{v4, stringByDecodingDomainName__posixLocale}] != 0x7FFFFFFFFFFFFFFFLL)
+  v4 = [nameCopy length];
+  if (v4 && [nameCopy rangeOfString:@"xn--" options:1 range:0 locale:{v4, stringByDecodingDomainName__posixLocale}] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = _stringByApplyingIDNATranslationWithRange(v3, MEMORY[0x277D82998]);
+    v5 = _stringByApplyingIDNATranslationWithRange(nameCopy, MEMORY[0x277D82998]);
   }
 
   else
   {
-    v5 = [v3 copy];
+    v5 = [nameCopy copy];
   }
 
   v6 = v5;

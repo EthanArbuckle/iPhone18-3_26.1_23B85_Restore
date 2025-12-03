@@ -1,54 +1,54 @@
 @interface _DPDatabaseRecorder
-- (BOOL)isMetadataValid:(id)a3;
-- (_DPDatabaseRecorder)initWithKey:(id)a3 storage:(id)a4;
-- (_DPDatabaseRecorder)initWithKey:(id)a3 storage:(id)a4 systemBlacklistPath:(id)a5 runtimeBlacklistPath:(id)a6;
+- (BOOL)isMetadataValid:(id)valid;
+- (_DPDatabaseRecorder)initWithKey:(id)key storage:(id)storage;
+- (_DPDatabaseRecorder)initWithKey:(id)key storage:(id)storage systemBlacklistPath:(id)path runtimeBlacklistPath:(id)blacklistPath;
 - (id)description;
-- (void)directUploadRecords:(id)a3 forKey:(id)a4;
-- (void)recordBitValues:(id)a3 metadata:(id)a4;
-- (void)recordBitVectors:(id)a3 metadata:(id)a4;
-- (void)recordFloatVectors:(id)a3 metadata:(id)a4;
-- (void)recordNumbers:(id)a3 metadata:(id)a4;
-- (void)recordNumbersVectors:(id)a3 metadata:(id)a4;
-- (void)recordStrings:(id)a3 metadata:(id)a4;
-- (void)recordWords:(id)a3;
+- (void)directUploadRecords:(id)records forKey:(id)key;
+- (void)recordBitValues:(id)values metadata:(id)metadata;
+- (void)recordBitVectors:(id)vectors metadata:(id)metadata;
+- (void)recordFloatVectors:(id)vectors metadata:(id)metadata;
+- (void)recordNumbers:(id)numbers metadata:(id)metadata;
+- (void)recordNumbersVectors:(id)vectors metadata:(id)metadata;
+- (void)recordStrings:(id)strings metadata:(id)metadata;
+- (void)recordWords:(id)words;
 @end
 
 @implementation _DPDatabaseRecorder
 
-- (_DPDatabaseRecorder)initWithKey:(id)a3 storage:(id)a4
+- (_DPDatabaseRecorder)initWithKey:(id)key storage:(id)storage
 {
-  v6 = a4;
-  v7 = a3;
+  storageCopy = storage;
+  keyCopy = key;
   v8 = +[_DPStrings systemBlacklistDirectoryPath];
   v9 = +[_DPStrings runtimeBlacklistDirectoryPath];
-  v10 = [(_DPDatabaseRecorder *)self initWithKey:v7 storage:v6 systemBlacklistPath:v8 runtimeBlacklistPath:v9];
+  v10 = [(_DPDatabaseRecorder *)self initWithKey:keyCopy storage:storageCopy systemBlacklistPath:v8 runtimeBlacklistPath:v9];
 
   return v10;
 }
 
-- (_DPDatabaseRecorder)initWithKey:(id)a3 storage:(id)a4 systemBlacklistPath:(id)a5 runtimeBlacklistPath:(id)a6
+- (_DPDatabaseRecorder)initWithKey:(id)key storage:(id)storage systemBlacklistPath:(id)path runtimeBlacklistPath:(id)blacklistPath
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  storageCopy = storage;
+  pathCopy = path;
+  blacklistPathCopy = blacklistPath;
   v21.receiver = self;
   v21.super_class = _DPDatabaseRecorder;
-  v14 = [(_DPDataRecorder *)&v21 initWithKey:v10];
+  v14 = [(_DPDataRecorder *)&v21 initWithKey:keyCopy];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_db, a4);
+    objc_storeStrong(&v14->_db, storage);
     if (!v15->_db)
     {
       v19 = 0;
       goto LABEL_6;
     }
 
-    v16 = [_DPBlacklist blacklistForKey:v10 systemBlacklistDirectory:v12 runtimeBlacklistDirectory:v13];
-    v17 = [v16 blacklist];
+    v16 = [_DPBlacklist blacklistForKey:keyCopy systemBlacklistDirectory:pathCopy runtimeBlacklistDirectory:blacklistPathCopy];
+    blacklist = [v16 blacklist];
     blacklistSet = v15->_blacklistSet;
-    v15->_blacklistSet = v17;
+    v15->_blacklistSet = blacklist;
   }
 
   v19 = v15;
@@ -57,50 +57,50 @@ LABEL_6:
   return v19;
 }
 
-- (void)recordNumbers:(id)a3 metadata:(id)a4
+- (void)recordNumbers:(id)numbers metadata:(id)metadata
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  numbersCopy = numbers;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v35.receiver = self;
   v35.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v35 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v35 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v28 = v9;
     v34.receiver = self;
     v34.super_class = _DPDatabaseRecorder;
-    v12 = [(_DPDataRecorder *)&v34 keyName];
+    keyName = [(_DPDataRecorder *)&v34 keyName];
     v13 = +[_DPSubmissionRateLimiter sharedInstance];
-    v14 = [v13 debit:objc_msgSend(v7 forKey:{"count"), v12}];
-    v15 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v15, 0, 202, [v7 count] - v14);
+    v14 = [v13 debit:objc_msgSend(numbersCopy forKey:{"count"), keyName}];
+    keyName2 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName2, 0, 202, [numbersCopy count] - v14);
 
     if (!v14)
     {
-      v18 = +[_DPLog framework];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      keyName5 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName5, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v16 = v7;
+      v16 = numbersCopy;
       goto LABEL_25;
     }
 
-    v16 = [v7 subarrayWithRange:{0, v14}];
+    v16 = [numbersCopy subarrayWithRange:{0, v14}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if ([(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if ([(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
         if (objc_opt_respondsToSelector())
         {
           aSelector = a2;
-          v17 = [v11 randomizeNumbers:v16 metadata:v8 forKey:v12];
+          v17 = [v10Randomizer randomizeNumbers:v16 metadata:metadataCopy forKey:keyName];
           goto LABEL_13;
         }
 
@@ -126,14 +126,14 @@ LABEL_6:
       if (objc_opt_respondsToSelector())
       {
         aSelector = a2;
-        v17 = [v11 randomizeNumbers:v16 forKey:v12];
+        v17 = [v10Randomizer randomizeNumbers:v16 forKey:keyName];
 LABEL_13:
-        v18 = v17;
-        v19 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v19, 0, 208, [v16 count] - -[NSObject count](v18, "count"));
+        keyName5 = v17;
+        keyName3 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName3, 0, 208, [v16 count] - -[NSObject count](keyName5, "count"));
 
-        v20 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v20 succeeded:1 errorCode:200 count:[v18 count]];
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName4 succeeded:1 errorCode:200 count:[keyName5 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -141,7 +141,7 @@ LABEL_13:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = NSStringFromSelector(aSelector);
-            v23 = [v18 count];
+            v23 = [keyName5 count];
             *buf = 138412546;
             v37 = v22;
             v38 = 2048;
@@ -149,7 +149,7 @@ LABEL_13:
             _os_log_impl(&dword_22622D000, v21, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v18 forKey:v12];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName5 forKey:keyName];
         }
 
         else
@@ -161,9 +161,9 @@ LABEL_13:
           v29[3] = &unk_27858B1C0;
           v32 = aSelector;
           v30 = v13;
-          v31 = v12;
+          v31 = keyName;
           v33 = v14;
-          [(_DPStorage *)db saveRecords:v18 withCompletion:v29];
+          [(_DPStorage *)db saveRecords:keyName5 withCompletion:v29];
         }
 
         goto LABEL_25;
@@ -176,67 +176,67 @@ LABEL_13:
       }
     }
 
-    v18 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v18, 0, 203, [v16 count]);
+    keyName5 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName5, 0, 203, [v16 count]);
 LABEL_25:
 
-    v7 = v16;
+    numbersCopy = v16;
     v9 = v28;
     goto LABEL_26;
   }
 
-  v12 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v12, 0, 201, [v7 count]);
+  keyName = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName, 0, 201, [numbersCopy count]);
 LABEL_26:
 
   objc_autoreleasePoolPop(v9);
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordNumbersVectors:(id)a3 metadata:(id)a4
+- (void)recordNumbersVectors:(id)vectors metadata:(id)metadata
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v35.receiver = self;
   v35.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v35 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v35 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v28 = v9;
     v34.receiver = self;
     v34.super_class = _DPDatabaseRecorder;
-    v12 = [(_DPDataRecorder *)&v34 keyName];
+    keyName = [(_DPDataRecorder *)&v34 keyName];
     v13 = +[_DPSubmissionRateLimiter sharedInstance];
-    v14 = [v13 debit:objc_msgSend(v7 forKey:{"count"), v12}];
-    v15 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v15, 0, 202, [v7 count] - v14);
+    v14 = [v13 debit:objc_msgSend(vectorsCopy forKey:{"count"), keyName}];
+    keyName2 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName2, 0, 202, [vectorsCopy count] - v14);
 
     if (!v14)
     {
-      v18 = +[_DPLog framework];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      keyName5 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName5, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v16 = v7;
+      v16 = vectorsCopy;
       goto LABEL_25;
     }
 
-    v16 = [v7 subarrayWithRange:{0, v14}];
+    v16 = [vectorsCopy subarrayWithRange:{0, v14}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if ([(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if ([(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
         if (objc_opt_respondsToSelector())
         {
           aSelector = a2;
-          v17 = [v11 randomizeNumbersVectors:v16 metadata:v8 forKey:v12];
+          v17 = [v10Randomizer randomizeNumbersVectors:v16 metadata:metadataCopy forKey:keyName];
           goto LABEL_13;
         }
 
@@ -262,14 +262,14 @@ LABEL_26:
       if (objc_opt_respondsToSelector())
       {
         aSelector = a2;
-        v17 = [v11 randomizeNumbersVectors:v16 forKey:v12];
+        v17 = [v10Randomizer randomizeNumbersVectors:v16 forKey:keyName];
 LABEL_13:
-        v18 = v17;
-        v19 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v19, 0, 208, [v16 count] - -[NSObject count](v18, "count"));
+        keyName5 = v17;
+        keyName3 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName3, 0, 208, [v16 count] - -[NSObject count](keyName5, "count"));
 
-        v20 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v20 succeeded:1 errorCode:200 count:[v18 count]];
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName4 succeeded:1 errorCode:200 count:[keyName5 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -277,7 +277,7 @@ LABEL_13:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = NSStringFromSelector(aSelector);
-            v23 = [v18 count];
+            v23 = [keyName5 count];
             *buf = 138412546;
             v37 = v22;
             v38 = 2048;
@@ -285,7 +285,7 @@ LABEL_13:
             _os_log_impl(&dword_22622D000, v21, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v18 forKey:v12];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName5 forKey:keyName];
         }
 
         else
@@ -297,9 +297,9 @@ LABEL_13:
           v29[3] = &unk_27858B1C0;
           v32 = aSelector;
           v30 = v13;
-          v31 = v12;
+          v31 = keyName;
           v33 = v14;
-          [(_DPStorage *)db saveRecords:v18 withCompletion:v29];
+          [(_DPStorage *)db saveRecords:keyName5 withCompletion:v29];
         }
 
         goto LABEL_25;
@@ -312,68 +312,68 @@ LABEL_13:
       }
     }
 
-    v18 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v18, 0, 203, [v16 count]);
+    keyName5 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName5, 0, 203, [v16 count]);
 LABEL_25:
 
-    v7 = v16;
+    vectorsCopy = v16;
     v9 = v28;
     goto LABEL_26;
   }
 
-  v12 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v12, 0, 201, [v7 count]);
+  keyName = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName, 0, 201, [vectorsCopy count]);
 LABEL_26:
 
   objc_autoreleasePoolPop(v9);
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordBitValues:(id)a3 metadata:(id)a4
+- (void)recordBitValues:(id)values metadata:(id)metadata
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  valuesCopy = values;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v37.receiver = self;
   v37.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v37 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v37 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v30 = v9;
     v36.receiver = self;
     v36.super_class = _DPDatabaseRecorder;
-    v12 = [(_DPDataRecorder *)&v36 keyName];
+    keyName = [(_DPDataRecorder *)&v36 keyName];
     v13 = +[_DPSubmissionRateLimiter sharedInstance];
-    v14 = [v13 debit:objc_msgSend(v7 forKey:{"count"), v12}];
-    v15 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v15, 0, 202, [v7 count] - v14);
+    v14 = [v13 debit:objc_msgSend(valuesCopy forKey:{"count"), keyName}];
+    keyName2 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName2, 0, 202, [valuesCopy count] - v14);
 
     if (!v14)
     {
-      v19 = +[_DPLog framework];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+      keyName6 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName6, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v16 = v7;
+      v16 = valuesCopy;
       goto LABEL_26;
     }
 
-    v16 = [v7 subarrayWithRange:{0, v14}];
+    v16 = [valuesCopy subarrayWithRange:{0, v14}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if (![(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if (![(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
-        v25 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v25, 0, 203, [v16 count]);
+        keyName3 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName3, 0, 203, [v16 count]);
 
-        v19 = +[_DPLog framework];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        keyName6 = +[_DPLog framework];
+        if (os_log_type_enabled(keyName6, OS_LOG_TYPE_ERROR))
         {
           [_DPDatabaseRecorder recordBitValues:metadata:];
         }
@@ -384,7 +384,7 @@ LABEL_26:
       if (objc_opt_respondsToSelector())
       {
         aSelector = a2;
-        v17 = [v11 randomizeBitValues:v16 metadata:v8 forKey:v12];
+        v17 = [v10Randomizer randomizeBitValues:v16 metadata:metadataCopy forKey:keyName];
         goto LABEL_14;
       }
 
@@ -400,14 +400,14 @@ LABEL_26:
       if (objc_opt_respondsToSelector())
       {
         aSelector = a2;
-        v17 = [v11 randomizeBitValues:v16 forKey:v12];
+        v17 = [v10Randomizer randomizeBitValues:v16 forKey:keyName];
 LABEL_14:
-        v19 = v17;
-        v20 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v20, 0, 208, [v16 count] - -[NSObject count](v19, "count"));
+        keyName6 = v17;
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName4, 0, 208, [v16 count] - -[NSObject count](keyName6, "count"));
 
-        v21 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v21 succeeded:1 errorCode:200 count:[v19 count]];
+        keyName5 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName5 succeeded:1 errorCode:200 count:[keyName6 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -415,7 +415,7 @@ LABEL_14:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
             v23 = NSStringFromSelector(aSelector);
-            v24 = [v19 count];
+            v24 = [keyName6 count];
             *buf = 138412546;
             v39 = v23;
             v40 = 2048;
@@ -423,7 +423,7 @@ LABEL_14:
             _os_log_impl(&dword_22622D000, v22, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v19 forKey:v12];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName6 forKey:keyName];
         }
 
         else
@@ -435,9 +435,9 @@ LABEL_14:
           v31[3] = &unk_27858B1C0;
           v34 = aSelector;
           v32 = v13;
-          v33 = v12;
+          v33 = keyName;
           v35 = v14;
-          [(_DPStorage *)db saveRecords:v19 withCompletion:v31];
+          [(_DPStorage *)db saveRecords:keyName6 withCompletion:v31];
         }
 
         goto LABEL_26;
@@ -450,22 +450,22 @@ LABEL_14:
       }
     }
 
-    v19 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v19, 0, 207, [v16 count]);
+    keyName6 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName6, 0, 207, [v16 count]);
 LABEL_26:
 
-    v7 = v16;
+    valuesCopy = v16;
     v9 = v30;
     goto LABEL_27;
   }
 
-  v18 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v18, 0, 201, [v7 count]);
+  keyName7 = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName7, 0, 201, [valuesCopy count]);
 
-  v12 = +[_DPLog daemon];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+  keyName = +[_DPLog daemon];
+  if (os_log_type_enabled(keyName, OS_LOG_TYPE_ERROR))
   {
-    [_DPDatabaseRecorder recordBitValues:v12 metadata:?];
+    [_DPDatabaseRecorder recordBitValues:keyName metadata:?];
   }
 
 LABEL_27:
@@ -474,45 +474,45 @@ LABEL_27:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordBitVectors:(id)a3 metadata:(id)a4
+- (void)recordBitVectors:(id)vectors metadata:(id)metadata
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v42.receiver = self;
   v42.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v42 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v42 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v35 = v9;
     v41.receiver = self;
     v41.super_class = _DPDatabaseRecorder;
-    v12 = [(_DPDataRecorder *)&v41 keyName];
+    keyName = [(_DPDataRecorder *)&v41 keyName];
     v13 = +[_DPSubmissionRateLimiter sharedInstance];
-    v14 = [v13 debit:objc_msgSend(v7 forKey:{"count"), v12}];
-    v15 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v15, 0, 202, [v7 count] - v14);
+    v14 = [v13 debit:objc_msgSend(vectorsCopy forKey:{"count"), keyName}];
+    keyName2 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName2, 0, 202, [vectorsCopy count] - v14);
 
     if (!v14)
     {
-      v18 = +[_DPLog framework];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      keyName3 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName3, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v16 = v7;
+      v16 = vectorsCopy;
       goto LABEL_29;
     }
 
-    v16 = [v7 subarrayWithRange:{0, v14}];
+    v16 = [vectorsCopy subarrayWithRange:{0, v14}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if (![(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if (![(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
         v24 = +[_DPLog framework];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -520,10 +520,10 @@ LABEL_27:
           [_DPDatabaseRecorder recordBitValues:metadata:];
         }
 
-        v18 = [(_DPDataRecorder *)self keyName];
+        keyName3 = [(_DPDataRecorder *)self keyName];
         v25 = [v16 count];
-        v26 = self;
-        v27 = v18;
+        selfCopy2 = self;
+        v27 = keyName3;
         v28 = 203;
         goto LABEL_28;
       }
@@ -531,7 +531,7 @@ LABEL_27:
       if (objc_opt_respondsToSelector())
       {
         aSelector = a2;
-        v17 = [v11 randomizeBitVectors:v16 metadata:v8 forKey:v12];
+        v17 = [v10Randomizer randomizeBitVectors:v16 metadata:metadataCopy forKey:keyName];
         goto LABEL_13;
       }
 
@@ -547,14 +547,14 @@ LABEL_27:
       aSelector = a2;
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v11 randomizeBitVectors:v16 forKey:v12];
+        v17 = [v10Randomizer randomizeBitVectors:v16 forKey:keyName];
 LABEL_13:
-        v18 = v17;
-        v19 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v19, 0, 208, [v16 count] - -[NSObject count](v18, "count"));
+        keyName3 = v17;
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName4, 0, 208, [v16 count] - -[NSObject count](keyName3, "count"));
 
-        v20 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v20 succeeded:1 errorCode:200 count:[v18 count]];
+        keyName5 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName5 succeeded:1 errorCode:200 count:[keyName3 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -562,7 +562,7 @@ LABEL_13:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = NSStringFromSelector(aSelectora);
-            v23 = [v18 count];
+            v23 = [keyName3 count];
             *buf = 138412546;
             v44 = v22;
             v45 = 2048;
@@ -570,7 +570,7 @@ LABEL_13:
             _os_log_impl(&dword_22622D000, v21, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v18 forKey:v12];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName3 forKey:keyName];
         }
 
         else
@@ -582,9 +582,9 @@ LABEL_13:
           v36[3] = &unk_27858B1C0;
           v39 = aSelectora;
           v37 = v13;
-          v38 = v12;
+          v38 = keyName;
           v40 = v14;
-          [(_DPStorage *)db saveRecords:v18 withCompletion:v36];
+          [(_DPStorage *)db saveRecords:keyName3 withCompletion:v36];
         }
 
         goto LABEL_29;
@@ -597,67 +597,67 @@ LABEL_13:
       }
     }
 
-    v18 = [(_DPDataRecorder *)self keyName];
+    keyName3 = [(_DPDataRecorder *)self keyName];
     v25 = [v16 count];
-    v26 = self;
-    v27 = v18;
+    selfCopy2 = self;
+    v27 = keyName3;
     v28 = 207;
 LABEL_28:
-    [(_DPDatabaseRecorder *)v26 donateRandomizationEventToBitacoraForKey:v27 succeeded:0 errorCode:v28 count:v25];
+    [(_DPDatabaseRecorder *)selfCopy2 donateRandomizationEventToBitacoraForKey:v27 succeeded:0 errorCode:v28 count:v25];
 LABEL_29:
 
-    v7 = v16;
+    vectorsCopy = v16;
     v9 = v35;
     goto LABEL_30;
   }
 
-  v12 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v12, 0, 201, [v7 count]);
+  keyName = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName, 0, 201, [vectorsCopy count]);
 LABEL_30:
 
   objc_autoreleasePoolPop(v9);
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordFloatVectors:(id)a3 metadata:(id)a4
+- (void)recordFloatVectors:(id)vectors metadata:(id)metadata
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  vectorsCopy = vectors;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v41.receiver = self;
   v41.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v41 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v41 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v34 = v9;
     v40.receiver = self;
     v40.super_class = _DPDatabaseRecorder;
-    v12 = [(_DPDataRecorder *)&v40 keyName];
+    keyName = [(_DPDataRecorder *)&v40 keyName];
     v13 = +[_DPSubmissionRateLimiter sharedInstance];
-    v14 = [v13 debit:objc_msgSend(v7 forKey:{"count"), v12}];
-    v15 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v15, 0, 202, [v7 count] - v14);
+    v14 = [v13 debit:objc_msgSend(vectorsCopy forKey:{"count"), keyName}];
+    keyName2 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName2, 0, 202, [vectorsCopy count] - v14);
 
     if (!v14)
     {
-      v18 = +[_DPLog framework];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+      keyName3 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName3, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v16 = v7;
+      v16 = vectorsCopy;
       goto LABEL_27;
     }
 
-    v16 = [v7 subarrayWithRange:{0, v14}];
+    v16 = [vectorsCopy subarrayWithRange:{0, v14}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if (![(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if (![(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
         v24 = +[_DPLog framework];
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -665,10 +665,10 @@ LABEL_30:
           [_DPDatabaseRecorder recordFloatVectors:metadata:];
         }
 
-        v18 = [(_DPDataRecorder *)self keyName];
+        keyName3 = [(_DPDataRecorder *)self keyName];
         v25 = [v16 count];
-        v26 = self;
-        v27 = v18;
+        selfCopy2 = self;
+        v27 = keyName3;
         v28 = 203;
         goto LABEL_26;
       }
@@ -676,7 +676,7 @@ LABEL_30:
       aSelector = a2;
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v11 randomizeFloatVectors:v16 metadata:v8 forKey:v12];
+        v17 = [v10Randomizer randomizeFloatVectors:v16 metadata:metadataCopy forKey:keyName];
         goto LABEL_13;
       }
 
@@ -692,14 +692,14 @@ LABEL_30:
       aSelector = a2;
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v11 randomizeFloatVectors:v16 forKey:v12];
+        v17 = [v10Randomizer randomizeFloatVectors:v16 forKey:keyName];
 LABEL_13:
-        v18 = v17;
-        v19 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v19, 0, 208, [v16 count] - -[NSObject count](v18, "count"));
+        keyName3 = v17;
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName4, 0, 208, [v16 count] - -[NSObject count](keyName3, "count"));
 
-        v20 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v20 succeeded:1 errorCode:200 count:[v18 count]];
+        keyName5 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName5 succeeded:1 errorCode:200 count:[keyName3 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -707,7 +707,7 @@ LABEL_13:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             v22 = NSStringFromSelector(aSelectora);
-            v23 = [v18 count];
+            v23 = [keyName3 count];
             *buf = 138412546;
             v43 = v22;
             v44 = 2048;
@@ -715,7 +715,7 @@ LABEL_13:
             _os_log_impl(&dword_22622D000, v21, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v18 forKey:v12];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName3 forKey:keyName];
         }
 
         else
@@ -727,9 +727,9 @@ LABEL_13:
           v35[3] = &unk_27858B1C0;
           v38 = aSelectora;
           v36 = v13;
-          v37 = v12;
+          v37 = keyName;
           v39 = v14;
-          [(_DPStorage *)db saveRecords:v18 withCompletion:v35];
+          [(_DPStorage *)db saveRecords:keyName3 withCompletion:v35];
         }
 
         goto LABEL_27;
@@ -742,47 +742,47 @@ LABEL_13:
       }
     }
 
-    v18 = [(_DPDataRecorder *)self keyName];
+    keyName3 = [(_DPDataRecorder *)self keyName];
     v25 = [v16 count];
-    v26 = self;
-    v27 = v18;
+    selfCopy2 = self;
+    v27 = keyName3;
     v28 = 207;
 LABEL_26:
-    [(_DPDatabaseRecorder *)v26 donateRandomizationEventToBitacoraForKey:v27 succeeded:0 errorCode:v28 count:v25, aSelector];
+    [(_DPDatabaseRecorder *)selfCopy2 donateRandomizationEventToBitacoraForKey:v27 succeeded:0 errorCode:v28 count:v25, aSelector];
 LABEL_27:
 
-    v7 = v16;
+    vectorsCopy = v16;
     v9 = v34;
     goto LABEL_28;
   }
 
-  v12 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v12, 0, 201, [v7 count]);
+  keyName = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName, 0, 201, [vectorsCopy count]);
 LABEL_28:
 
   objc_autoreleasePoolPop(v9);
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordStrings:(id)a3 metadata:(id)a4
+- (void)recordStrings:(id)strings metadata:(id)metadata
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  stringsCopy = strings;
+  metadataCopy = metadata;
   v9 = objc_autoreleasePoolPush();
   v48.receiver = self;
   v48.super_class = _DPDatabaseRecorder;
-  v10 = [(_DPDataRecorder *)&v48 randomizer];
-  v11 = [v10 randomizer];
+  randomizer = [(_DPDataRecorder *)&v48 randomizer];
+  v10Randomizer = [randomizer randomizer];
 
-  if (v11)
+  if (v10Randomizer)
   {
     v40 = v9;
-    v12 = v7;
-    v13 = [(_DPDatabaseRecorder *)self blacklistSet];
+    v12 = stringsCopy;
+    blacklistSet = [(_DPDatabaseRecorder *)self blacklistSet];
 
     v14 = v12;
-    if (v13)
+    if (blacklistSet)
     {
       v47[0] = MEMORY[0x277D85DD0];
       v47[1] = 3221225472;
@@ -794,40 +794,40 @@ LABEL_28:
       [v14 removeObjectsAtIndexes:v15];
     }
 
-    v16 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v16, 0, 202, [v12 count] - objc_msgSend(v14, "count"));
+    keyName = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName, 0, 202, [v12 count] - objc_msgSend(v14, "count"));
 
     v46.receiver = self;
     v46.super_class = _DPDatabaseRecorder;
-    v17 = [(_DPDataRecorder *)&v46 keyName];
+    keyName2 = [(_DPDataRecorder *)&v46 keyName];
     v18 = +[_DPSubmissionRateLimiter sharedInstance];
-    v19 = [v18 debit:objc_msgSend(v14 forKey:{"count"), v17}];
-    v20 = [(_DPDataRecorder *)self keyName];
-    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v20, 0, 202, [v14 count] - v19);
+    v19 = [v18 debit:objc_msgSend(v14 forKey:{"count"), keyName2}];
+    keyName3 = [(_DPDataRecorder *)self keyName];
+    -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName3, 0, 202, [v14 count] - v19);
 
     if (!v19)
     {
-      v23 = +[_DPLog framework];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+      keyName4 = +[_DPLog framework];
+      if (os_log_type_enabled(keyName4, OS_LOG_TYPE_DEBUG))
       {
         [_DPDatabaseRecorder recordNumbers:metadata:];
       }
 
-      v21 = v14;
+      keyName7 = v14;
       goto LABEL_30;
     }
 
-    v21 = [v14 subarrayWithRange:{0, v19}];
+    keyName7 = [v14 subarrayWithRange:{0, v19}];
 
-    if (v8)
+    if (metadataCopy)
     {
-      if ([(_DPDatabaseRecorder *)self isMetadataValid:v8])
+      if ([(_DPDatabaseRecorder *)self isMetadataValid:metadataCopy])
       {
         if (objc_opt_respondsToSelector())
         {
           aSelector = a2;
           v39 = v18;
-          v22 = [v11 randomizeStrings:v21 metadata:v8 forKey:v17];
+          v22 = [v10Randomizer randomizeStrings:keyName7 metadata:metadataCopy forKey:keyName2];
           goto LABEL_15;
         }
 
@@ -837,10 +837,10 @@ LABEL_28:
           [_DPDatabaseRecorder recordFloatVectors:metadata:];
         }
 
-        v23 = [(_DPDataRecorder *)self keyName];
-        v30 = [v21 count];
-        v31 = self;
-        v32 = v23;
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        v30 = [keyName7 count];
+        selfCopy3 = self;
+        v32 = keyName4;
         v33 = 203;
       }
 
@@ -852,10 +852,10 @@ LABEL_28:
           [_DPDatabaseRecorder recordStrings:metadata:];
         }
 
-        v23 = [(_DPDataRecorder *)self keyName];
-        v30 = [v21 count];
-        v31 = self;
-        v32 = v23;
+        keyName4 = [(_DPDataRecorder *)self keyName];
+        v30 = [keyName7 count];
+        selfCopy3 = self;
+        v32 = keyName4;
         v33 = 201;
       }
     }
@@ -866,14 +866,14 @@ LABEL_28:
       {
         aSelector = a2;
         v39 = v18;
-        v22 = [v11 randomizeStrings:v21 forKey:v17];
+        v22 = [v10Randomizer randomizeStrings:keyName7 forKey:keyName2];
 LABEL_15:
-        v23 = v22;
-        v24 = [(_DPDataRecorder *)self keyName];
-        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v24, 0, 208, [v21 count] - -[NSObject count](v23, "count"));
+        keyName4 = v22;
+        keyName5 = [(_DPDataRecorder *)self keyName];
+        -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName5, 0, 208, [keyName7 count] - -[NSObject count](keyName4, "count"));
 
-        v25 = [(_DPDataRecorder *)self keyName];
-        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:v25 succeeded:1 errorCode:200 count:[v23 count]];
+        keyName6 = [(_DPDataRecorder *)self keyName];
+        [(_DPDatabaseRecorder *)self donateRandomizationEventToBitacoraForKey:keyName6 succeeded:1 errorCode:200 count:[keyName4 count]];
 
         if ([(_DPDataRecorder *)self directUpload])
         {
@@ -881,7 +881,7 @@ LABEL_15:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             v27 = NSStringFromSelector(aSelector);
-            v28 = [v23 count];
+            v28 = [keyName4 count];
             *buf = 138412546;
             v50 = v27;
             v51 = 2048;
@@ -889,7 +889,7 @@ LABEL_15:
             _os_log_impl(&dword_22622D000, v26, OS_LOG_TYPE_INFO, "%@: performing direct upload, count: %ld", buf, 0x16u);
           }
 
-          [(_DPDatabaseRecorder *)self directUploadRecords:v23 forKey:v17];
+          [(_DPDatabaseRecorder *)self directUploadRecords:keyName4 forKey:keyName2];
           v18 = v39;
         }
 
@@ -903,9 +903,9 @@ LABEL_15:
           v18 = v39;
           v44 = aSelector;
           v42 = v39;
-          v43 = v17;
+          v43 = keyName2;
           v45 = v19;
-          [(_DPStorage *)db saveRecords:v23 withCompletion:v41];
+          [(_DPStorage *)db saveRecords:keyName4 withCompletion:v41];
         }
 
         goto LABEL_30;
@@ -917,29 +917,29 @@ LABEL_15:
         [_DPDatabaseRecorder recordStrings:metadata:];
       }
 
-      v23 = [(_DPDataRecorder *)self keyName];
-      v30 = [v21 count];
-      v31 = self;
-      v32 = v23;
+      keyName4 = [(_DPDataRecorder *)self keyName];
+      v30 = [keyName7 count];
+      selfCopy3 = self;
+      v32 = keyName4;
       v33 = 207;
     }
 
-    [(_DPDatabaseRecorder *)v31 donateRandomizationEventToBitacoraForKey:v32 succeeded:0 errorCode:v33 count:v30];
+    [(_DPDatabaseRecorder *)selfCopy3 donateRandomizationEventToBitacoraForKey:v32 succeeded:0 errorCode:v33 count:v30];
 LABEL_30:
 
     v9 = v40;
     goto LABEL_31;
   }
 
-  v21 = [(_DPDataRecorder *)self keyName];
-  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", v21, 0, 201, [v7 count]);
+  keyName7 = [(_DPDataRecorder *)self keyName];
+  -[_DPDatabaseRecorder donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:](self, "donateRandomizationEventToBitacoraForKey:succeeded:errorCode:count:", keyName7, 0, 201, [stringsCopy count]);
 LABEL_31:
 
   objc_autoreleasePoolPop(v9);
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordWords:(id)a3
+- (void)recordWords:(id)words
 {
   v3 = +[_DPLog framework];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -948,18 +948,18 @@ LABEL_31:
   }
 }
 
-- (void)directUploadRecords:(id)a3 forKey:(id)a4
+- (void)directUploadRecords:(id)records forKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [_DPKeyNames keyPropertiesForKey:v8];
+  recordsCopy = records;
+  keyCopy = key;
+  v9 = [_DPKeyNames keyPropertiesForKey:keyCopy];
   if ([v9 transport] == 4)
   {
-    v10 = [_DPDediscoReporter filterNonConformingDediscoRecordsFrom:v7];
+    v10 = [_DPDediscoReporter filterNonConformingDediscoRecordsFrom:recordsCopy];
     v11 = objc_opt_new();
     v12 = [(_DPDatabaseRecorder *)self db];
-    v13 = [v11 directlyUploadDediscoRecords:v10 forKey:v8 keyProperties:v9 storage:v12];
+    v13 = [v11 directlyUploadDediscoRecords:v10 forKey:keyCopy keyProperties:v9 storage:v12];
 
     v14 = +[_DPLog framework];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -997,11 +997,11 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)isMetadataValid:(id)a3
+- (BOOL)isMetadataValid:(id)valid
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (_DPMetadataIsV2(v3))
+  validCopy = valid;
+  if (_DPMetadataIsV2(validCopy))
   {
     v4 = _DPMetadataV2RequiredKeys();
     _DPMetadataV2OptionalKeys();
@@ -1036,8 +1036,8 @@ LABEL_31:
         if (v10)
         {
           v12 = *(*(&v27 + 1) + 8 * i);
-          v13 = [v3 allKeys];
-          v10 = [v13 containsObject:v12];
+          allKeys = [validCopy allKeys];
+          v10 = [allKeys containsObject:v12];
         }
 
         else
@@ -1061,8 +1061,8 @@ LABEL_31:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v3 allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  allKeys2 = [validCopy allKeys];
+  v15 = [allKeys2 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1074,7 +1074,7 @@ LABEL_31:
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys2);
         }
 
         if (v18)
@@ -1097,7 +1097,7 @@ LABEL_31:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v16 = [allKeys2 countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v16);

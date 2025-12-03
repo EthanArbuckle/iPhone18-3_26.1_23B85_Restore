@@ -1,17 +1,17 @@
 @interface DOCFittingImageView
 - (CGSize)fittingSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (DOCFittingImageView)initWithCoder:(id)a3;
-- (DOCFittingImageView)initWithFrame:(CGRect)a3;
-- (DOCFittingImageView)initWithImage:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (DOCFittingImageView)initWithCoder:(id)coder;
+- (DOCFittingImageView)initWithFrame:(CGRect)frame;
+- (DOCFittingImageView)initWithImage:(id)image;
 - (DOCFittingImageViewDelegate)delegate;
 - (void)initCommon;
 - (void)layoutSubviews;
-- (void)setFittingSize:(CGSize)a3;
-- (void)setImage:(id)a3;
-- (void)setThumbnail:(id)a3;
-- (void)thumbnailLoaded:(id)a3;
+- (void)setFittingSize:(CGSize)size;
+- (void)setImage:(id)image;
+- (void)setThumbnail:(id)thumbnail;
+- (void)thumbnailLoaded:(id)loaded;
 @end
 
 @implementation DOCFittingImageView
@@ -19,8 +19,8 @@
 - (void)initCommon
 {
   v3 = *MEMORY[0x277CDA138];
-  v4 = [(DOCFittingImageView *)self layer];
-  [v4 setCornerCurve:v3];
+  layer = [(DOCFittingImageView *)self layer];
+  [layer setCornerCurve:v3];
 
   [(DOCFittingImageView *)self setClipsToBounds:1];
 }
@@ -33,8 +33,8 @@
   v12.receiver = self;
   v12.super_class = DOCFittingImageView;
   [(DOCFittingImageView *)&v12 intrinsicContentSize];
-  v5 = [(DOCFittingImageView *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(DOCFittingImageView *)self traitCollection];
+  [traitCollection displayScale];
   DOCAdaptSizeToRect();
   v7 = v6;
   v9 = v8;
@@ -60,13 +60,13 @@
   v7.receiver = self;
   v7.super_class = DOCFittingImageView;
   [(DOCFittingImageView *)&v7 layoutSubviews];
-  v3 = [MEMORY[0x277D75348] separatorColor];
-  v4 = [v3 CGColor];
-  v5 = [(DOCFittingImageView *)self layer];
-  [v5 setBorderColor:v4];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  cGColor = [separatorColor CGColor];
+  layer = [(DOCFittingImageView *)self layer];
+  [layer setBorderColor:cGColor];
 
-  v6 = [(DOCFittingImageView *)self delegate];
-  [v6 fittingImageViewDidLayout:self];
+  delegate = [(DOCFittingImageView *)self delegate];
+  [delegate fittingImageViewDidLayout:self];
 }
 
 - (DOCFittingImageViewDelegate)delegate
@@ -76,11 +76,11 @@
   return WeakRetained;
 }
 
-- (DOCFittingImageView)initWithImage:(id)a3
+- (DOCFittingImageView)initWithImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = DOCFittingImageView;
-  v3 = [(DOCFittingImageView *)&v6 initWithImage:a3];
+  v3 = [(DOCFittingImageView *)&v6 initWithImage:image];
   v4 = v3;
   if (v3)
   {
@@ -90,11 +90,11 @@
   return v4;
 }
 
-- (DOCFittingImageView)initWithFrame:(CGRect)a3
+- (DOCFittingImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DOCFittingImageView;
-  v3 = [(DOCFittingImageView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCFittingImageView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -104,11 +104,11 @@
   return v4;
 }
 
-- (DOCFittingImageView)initWithCoder:(id)a3
+- (DOCFittingImageView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DOCFittingImageView;
-  v3 = [(DOCFittingImageView *)&v6 initWithCoder:a3];
+  v3 = [(DOCFittingImageView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -118,17 +118,17 @@
   return v4;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v26.receiver = self;
   v26.super_class = DOCFittingImageView;
-  [(DOCFittingImageView *)&v26 setImage:v4];
-  v5 = [(DOCFittingImageView *)self translatesAutoresizingMaskIntoConstraints];
-  if (v4 && (v5 & 1) == 0)
+  [(DOCFittingImageView *)&v26 setImage:imageCopy];
+  translatesAutoresizingMaskIntoConstraints = [(DOCFittingImageView *)self translatesAutoresizingMaskIntoConstraints];
+  if (imageCopy && (translatesAutoresizingMaskIntoConstraints & 1) == 0)
   {
-    [v4 size];
-    if (v6 <= 0.0 || ([v4 size], v7 <= 0.0))
+    [imageCopy size];
+    if (v6 <= 0.0 || ([imageCopy size], v7 <= 0.0))
     {
       v24 = MEMORY[0x277D062B8];
       v25 = *MEMORY[0x277D062B8];
@@ -140,75 +140,75 @@
 
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        [(DOCFittingImageView *)v4 setImage:v25];
+        [(DOCFittingImageView *)imageCopy setImage:v25];
       }
     }
 
     else
     {
-      v8 = [(DOCFittingImageView *)self aspectRatioConstraint];
-      [v8 multiplier];
+      aspectRatioConstraint = [(DOCFittingImageView *)self aspectRatioConstraint];
+      [aspectRatioConstraint multiplier];
       v10 = v9;
 
-      v11 = [(DOCFittingImageView *)self aspectRatioConstraint];
+      aspectRatioConstraint2 = [(DOCFittingImageView *)self aspectRatioConstraint];
 
-      [v4 size];
+      [imageCopy size];
       v13 = v12;
-      [v4 size];
-      if (vabdd_f64(v10, v13 / v14) > 0.01 || v11 == 0)
+      [imageCopy size];
+      if (vabdd_f64(v10, v13 / v14) > 0.01 || aspectRatioConstraint2 == 0)
       {
-        v16 = [(DOCFittingImageView *)self aspectRatioConstraint];
-        [v16 setActive:0];
+        aspectRatioConstraint3 = [(DOCFittingImageView *)self aspectRatioConstraint];
+        [aspectRatioConstraint3 setActive:0];
 
-        v17 = [(DOCFittingImageView *)self widthAnchor];
-        v18 = [(DOCFittingImageView *)self heightAnchor];
-        [v4 size];
+        widthAnchor = [(DOCFittingImageView *)self widthAnchor];
+        heightAnchor = [(DOCFittingImageView *)self heightAnchor];
+        [imageCopy size];
         v20 = v19;
-        [v4 size];
-        v22 = [v17 constraintEqualToAnchor:v18 multiplier:v20 / v21];
+        [imageCopy size];
+        v22 = [widthAnchor constraintEqualToAnchor:heightAnchor multiplier:v20 / v21];
         [(DOCFittingImageView *)self setAspectRatioConstraint:v22];
 
-        v23 = [(DOCFittingImageView *)self aspectRatioConstraint];
-        [v23 setActive:1];
+        aspectRatioConstraint4 = [(DOCFittingImageView *)self aspectRatioConstraint];
+        [aspectRatioConstraint4 setActive:1];
       }
     }
   }
 }
 
-- (void)setFittingSize:(CGSize)a3
+- (void)setFittingSize:(CGSize)size
 {
-  if (self->_fittingSize.width != a3.width || self->_fittingSize.height != a3.height)
+  if (self->_fittingSize.width != size.width || self->_fittingSize.height != size.height)
   {
-    self->_fittingSize = a3;
+    self->_fittingSize = size;
     [(DOCFittingImageView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v5 = a3;
+  thumbnailCopy = thumbnail;
   thumbnail = self->_thumbnail;
-  v9 = v5;
-  if (thumbnail != v5)
+  v9 = thumbnailCopy;
+  if (thumbnail != thumbnailCopy)
   {
     [(DOCThumbnail *)thumbnail removeListener:self];
-    objc_storeStrong(&self->_thumbnail, a3);
+    objc_storeStrong(&self->_thumbnail, thumbnail);
     [(DOCThumbnail *)self->_thumbnail addListener:self];
   }
 
-  v7 = [(DOCThumbnail *)v9 thumbnail];
-  v8 = [(DOCFittingImageView *)self image];
+  thumbnail = [(DOCThumbnail *)v9 thumbnail];
+  image = [(DOCFittingImageView *)self image];
 
-  if (v8 != v7)
+  if (image != thumbnail)
   {
-    [(DOCFittingImageView *)self setImage:v7];
+    [(DOCFittingImageView *)self setImage:thumbnail];
   }
 }
 
-- (void)thumbnailLoaded:(id)a3
+- (void)thumbnailLoaded:(id)loaded
 {
-  v4 = a3;
-  v3 = v4;
+  loadedCopy = loaded;
+  v3 = loadedCopy;
   DOCRunInMainThread();
 }
 
@@ -238,15 +238,15 @@ void __39__DOCFittingImageView_thumbnailLoaded___block_invoke(uint64_t a1)
 LABEL_6:
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v13.receiver = self;
   v13.super_class = DOCFittingImageView;
   [(DOCFittingImageView *)&v13 intrinsicContentSize];
-  v6 = [(DOCFittingImageView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(DOCFittingImageView *)self traitCollection];
+  [traitCollection displayScale];
   DOCAdaptSizeToRect();
   v8 = v7;
   v10 = v9;

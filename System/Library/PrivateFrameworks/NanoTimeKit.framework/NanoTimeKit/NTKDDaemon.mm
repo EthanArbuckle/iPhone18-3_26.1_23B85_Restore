@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002FD44;
   block[3] = &unk_10005CB30;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v7, block);
 
   objc_autoreleasePoolPop(v3);

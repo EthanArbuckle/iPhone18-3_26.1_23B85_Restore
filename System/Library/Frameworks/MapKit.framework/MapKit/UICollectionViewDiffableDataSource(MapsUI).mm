@@ -16,20 +16,20 @@
     goto LABEL_25;
   }
 
-  v8 = [a1 snapshotForSection:v7];
-  v9 = [v8 items];
-  v10 = [v9 count];
+  v8 = [self snapshotForSection:v7];
+  items = [v8 items];
+  v10 = [items count];
 
   if (v10)
   {
     [v6 layoutIfNeeded];
-    v11 = [v6 visibleCells];
-    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    visibleCells = [v6 visibleCells];
+    v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(visibleCells, "count")}];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = v11;
+    v13 = visibleCells;
     v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v14)
     {

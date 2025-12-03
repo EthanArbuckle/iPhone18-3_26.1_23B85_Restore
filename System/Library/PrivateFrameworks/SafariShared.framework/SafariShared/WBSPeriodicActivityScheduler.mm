@@ -1,16 +1,16 @@
 @interface WBSPeriodicActivityScheduler
-- (WBSPeriodicActivityScheduler)initWithInterval:(double)a3 minimumDelay:(double)a4 lastFireDate:(id)a5 block:(id)a6;
+- (WBSPeriodicActivityScheduler)initWithInterval:(double)interval minimumDelay:(double)delay lastFireDate:(id)date block:(id)block;
 - (void)_performActivity;
-- (void)_scheduleActivityWithInterval:(double)a3;
+- (void)_scheduleActivityWithInterval:(double)interval;
 - (void)invalidate;
 @end
 
 @implementation WBSPeriodicActivityScheduler
 
-- (WBSPeriodicActivityScheduler)initWithInterval:(double)a3 minimumDelay:(double)a4 lastFireDate:(id)a5 block:(id)a6
+- (WBSPeriodicActivityScheduler)initWithInterval:(double)interval minimumDelay:(double)delay lastFireDate:(id)date block:(id)block
 {
-  v10 = a5;
-  v11 = a6;
+  dateCopy = date;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = WBSPeriodicActivityScheduler;
   v12 = [(WBSPeriodicActivityScheduler *)&v23 init];
@@ -20,31 +20,31 @@
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v12->_interval = a3;
-    v15 = MEMORY[0x1BFB13CE0](v11);
+    v12->_interval = interval;
+    v15 = MEMORY[0x1BFB13CE0](blockCopy);
     block = v12->_block;
     v12->_block = v15;
 
-    if (!v10)
+    if (!dateCopy)
     {
-      v10 = [MEMORY[0x1E695DF00] distantPast];
+      dateCopy = [MEMORY[0x1E695DF00] distantPast];
     }
 
-    [v10 timeIntervalSinceNow];
-    v18 = v17 + a3;
-    v19 = 0.0;
+    [dateCopy timeIntervalSinceNow];
+    v18 = v17 + interval;
+    delayCopy = 0.0;
     if (v18 > 0.0)
     {
-      [v10 timeIntervalSinceNow];
-      v19 = v20 + a3;
+      [dateCopy timeIntervalSinceNow];
+      delayCopy = v20 + interval;
     }
 
-    if (v19 < a4)
+    if (delayCopy < delay)
     {
-      v19 = a4;
+      delayCopy = delay;
     }
 
-    [(WBSPeriodicActivityScheduler *)v12 _scheduleActivityWithInterval:v19];
+    [(WBSPeriodicActivityScheduler *)v12 _scheduleActivityWithInterval:delayCopy];
     v21 = v12;
   }
 
@@ -72,7 +72,7 @@ void __42__WBSPeriodicActivityScheduler_invalidate__block_invoke(uint64_t a1)
   *(*(a1 + 32) + 16) = 1;
 }
 
-- (void)_scheduleActivityWithInterval:(double)a3
+- (void)_scheduleActivityWithInterval:(double)interval
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -80,7 +80,7 @@ void __42__WBSPeriodicActivityScheduler_invalidate__block_invoke(uint64_t a1)
   v4[2] = __62__WBSPeriodicActivityScheduler__scheduleActivityWithInterval___block_invoke;
   v4[3] = &unk_1E7FB74E0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = interval;
   dispatch_async(queue, v4);
 }
 

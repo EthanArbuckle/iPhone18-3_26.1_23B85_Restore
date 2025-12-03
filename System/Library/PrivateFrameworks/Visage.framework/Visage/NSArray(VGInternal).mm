@@ -25,7 +25,7 @@
     while (v9);
   }
 
-  v11 = [a1 arrayWithArray:v5];
+  v11 = [self arrayWithArray:v5];
 
   return v11;
 }

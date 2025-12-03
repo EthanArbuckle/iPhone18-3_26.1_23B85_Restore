@@ -1,31 +1,31 @@
 @interface ATXExecutableReferenceManager
 - (ATXExecutableReferenceManager)init;
-- (ATXExecutableReferenceManager)initWithCacheDirectory:(id)a3 minDurationForTrackedReferencesToStayAround:(double)a4;
-- (BOOL)_writeData:(id)a3;
-- (BOOL)canExecutableClearOnEngagement:(id)a3;
-- (BOOL)isExecutableHidden:(id)a3;
-- (id)_executablePairsForSuggestions:(id)a3 clientModelId:(id)a4;
+- (ATXExecutableReferenceManager)initWithCacheDirectory:(id)directory minDurationForTrackedReferencesToStayAround:(double)around;
+- (BOOL)_writeData:(id)data;
+- (BOOL)canExecutableClearOnEngagement:(id)engagement;
+- (BOOL)isExecutableHidden:(id)hidden;
+- (id)_executablePairsForSuggestions:(id)suggestions clientModelId:(id)id;
 - (id)_loadReferences;
-- (id)_pairsForClientModelId:(id)a3 map:(id)a4;
+- (id)_pairsForClientModelId:(id)id map:(id)map;
 - (id)_readData;
-- (id)clientModelIdsForExecutable:(id)a3;
+- (id)clientModelIdsForExecutable:(id)executable;
 - (id)description;
 - (id)jsonDict;
-- (id)referencesForClientModelId:(id)a3;
-- (unint64_t)referenceCountForExecutable:(id)a3;
-- (void)_addExecutablePairs:(id)a3 toMap:(id)a4;
-- (void)_purgeReferencesIfPossibleInMap:(id)a3 forceWrite:(BOOL)a4;
+- (id)referencesForClientModelId:(id)id;
+- (unint64_t)referenceCountForExecutable:(id)executable;
+- (void)_addExecutablePairs:(id)pairs toMap:(id)map;
+- (void)_purgeReferencesIfPossibleInMap:(id)map forceWrite:(BOOL)write;
 - (void)_readData;
-- (void)_writeReferences:(id)a3;
-- (void)addReferencesForSuggestions:(id)a3 clientModelId:(id)a4;
-- (void)markReferenceAsHiddenForExecutable:(id)a3 clientModelId:(id)a4 untilDate:(id)a5;
-- (void)markReferencesAsPurgableFromClientModelIdIfPossible:(id)a3;
-- (void)performBatchUpdateOfReferencesWithBlock:(id)a3;
-- (void)purgeReferencesForSuggestions:(id)a3 clientModelId:(id)a4;
+- (void)_writeReferences:(id)references;
+- (void)addReferencesForSuggestions:(id)suggestions clientModelId:(id)id;
+- (void)markReferenceAsHiddenForExecutable:(id)executable clientModelId:(id)id untilDate:(id)date;
+- (void)markReferencesAsPurgableFromClientModelIdIfPossible:(id)possible;
+- (void)performBatchUpdateOfReferencesWithBlock:(id)block;
+- (void)purgeReferencesForSuggestions:(id)suggestions clientModelId:(id)id;
 - (void)purgeReferencesIfPossible;
-- (void)recordExecutable:(id)a3 clientModelId:(id)a4 shouldClearEngagement:(BOOL)a5;
-- (void)updateDateOfReferenceForExecutable:(id)a3 clientModelId:(id)a4;
-- (void)updateReferencesForProactiveSuggestions:(id)a3 clientModelId:(id)a4;
+- (void)recordExecutable:(id)executable clientModelId:(id)id shouldClearEngagement:(BOOL)engagement;
+- (void)updateDateOfReferenceForExecutable:(id)executable clientModelId:(id)id;
+- (void)updateReferencesForProactiveSuggestions:(id)suggestions clientModelId:(id)id;
 @end
 
 @implementation ATXExecutableReferenceManager
@@ -38,7 +38,7 @@
   cachedExecutableToReferenceMapForBatchUpdates = self->__cachedExecutableToReferenceMapForBatchUpdates;
   if (cachedExecutableToReferenceMapForBatchUpdates)
   {
-    v44 = cachedExecutableToReferenceMapForBatchUpdates;
+    strongToStrongObjectsMapTable = cachedExecutableToReferenceMapForBatchUpdates;
     goto LABEL_45;
   }
 
@@ -64,7 +64,7 @@
   [ATXRunningBoardAssertion performWorkWithFinishTaskAssertionName:@"ATXExecutableReferenceManager" block:v61];
   if ([v63[5] length])
   {
-    v44 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v7 = objc_autoreleasePoolPush();
     v8 = [ATXPBExecutableReferenceCache alloc];
     v9 = [(ATXPBExecutableReferenceCache *)v8 initWithData:v63[5]];
@@ -73,15 +73,15 @@
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v10 = [(ATXPBExecutableReferenceCache *)v9 keys];
-    v11 = [v10 countByEnumeratingWithState:&v57 objects:v69 count:16];
+    keys = [(ATXPBExecutableReferenceCache *)v9 keys];
+    v11 = [keys countByEnumeratingWithState:&v57 objects:v69 count:16];
     v42 = v9;
     if (!v11)
     {
       goto LABEL_42;
     }
 
-    v45 = v10;
+    v45 = keys;
     v46 = *v58;
     while (1)
     {
@@ -91,35 +91,35 @@
       {
         if (*v58 != v46)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(keys);
         }
 
         v49 = v12;
         v13 = *(*(&v57 + 1) + 8 * v12);
         context = objc_autoreleasePoolPush();
-        v14 = [(ATXPBExecutableReferenceKey *)v13 executableType];
-        if (v14 <= 2)
+        executableType = [(ATXPBExecutableReferenceKey *)v13 executableType];
+        if (executableType <= 2)
         {
-          if (v14 == 1)
+          if (executableType == 1)
           {
             v25 = objc_autoreleasePoolPush();
             v26 = [ATXExecutableIdentifier alloc];
-            v27 = [(ATXPBExecutableReferenceKey *)v13 executableString];
-            v50 = [(ATXExecutableIdentifier *)v26 initWithString:v27];
+            executableString = [(ATXPBExecutableReferenceKey *)v13 executableString];
+            v50 = [(ATXExecutableIdentifier *)v26 initWithString:executableString];
 
             objc_autoreleasePoolPop(v25);
             goto LABEL_31;
           }
 
-          if (v14 != 2)
+          if (executableType != 2)
           {
             goto LABEL_40;
           }
 
           v15 = objc_autoreleasePoolPush();
           v19 = [ATXAction alloc];
-          v20 = [(ATXPBExecutableReferenceKey *)v13 executableAction];
-          v18 = [(ATXAction *)v19 initWithProto:v20];
+          executableAction = [(ATXPBExecutableReferenceKey *)v13 executableAction];
+          v18 = [(ATXAction *)v19 initWithProto:executableAction];
 
           if (v18)
           {
@@ -134,13 +134,13 @@
 
         else
         {
-          switch(v14)
+          switch(executableType)
           {
             case 3:
               v15 = objc_autoreleasePoolPush();
               v21 = objc_alloc(MEMORY[0x1E69A45D0]);
-              v22 = [(ATXPBExecutableReferenceKey *)v13 executableHeroApp];
-              v18 = [v21 initWithProto:v22];
+              executableHeroApp = [(ATXPBExecutableReferenceKey *)v13 executableHeroApp];
+              v18 = [v21 initWithProto:executableHeroApp];
 
               if (v18)
               {
@@ -156,8 +156,8 @@
             case 4:
               v15 = objc_autoreleasePoolPush();
               v23 = objc_alloc(MEMORY[0x1E69C5B88]);
-              v24 = [(ATXPBExecutableReferenceKey *)v13 executableInfoSuggestion];
-              v18 = [v23 initWithProto:v24];
+              executableInfoSuggestion = [(ATXPBExecutableReferenceKey *)v13 executableInfoSuggestion];
+              v18 = [v23 initWithProto:executableInfoSuggestion];
 
               if (v18)
               {
@@ -173,8 +173,8 @@
             case 5:
               v15 = objc_autoreleasePoolPush();
               v16 = [ATXLinkActionContainer alloc];
-              v17 = [(ATXPBExecutableReferenceKey *)v13 executableLinkAction];
-              v18 = [(ATXLinkActionContainer *)v16 initWithProto:v17];
+              executableLinkAction = [(ATXPBExecutableReferenceKey *)v13 executableLinkAction];
+              v18 = [(ATXLinkActionContainer *)v16 initWithProto:executableLinkAction];
 
               if (v18)
               {
@@ -201,13 +201,13 @@ LABEL_31:
           v56 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v29 = [(ATXPBExecutableReferenceKey *)v13 references];
-          v30 = [v29 countByEnumeratingWithState:&v53 objects:v68 count:16];
+          references = [(ATXPBExecutableReferenceKey *)v13 references];
+          v30 = [references countByEnumeratingWithState:&v53 objects:v68 count:16];
           v52 = v28;
           if (v30)
           {
             v31 = *v54;
-            obj = v29;
+            obj = references;
             do
             {
               for (i = 0; i != v30; ++i)
@@ -220,29 +220,29 @@ LABEL_31:
                 v33 = *(*(&v53 + 1) + 8 * i);
                 v34 = objc_autoreleasePoolPush();
                 v35 = [ATXExecutableReference alloc];
-                v36 = [(ATXPBExecutableReferenceEntry *)v33 clientModelId];
+                clientModelId = [(ATXPBExecutableReferenceEntry *)v33 clientModelId];
                 v37 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:-[ATXPBExecutableReferenceEntry date](v33)];
-                v38 = [(ATXPBExecutableReferenceEntry *)v33 shouldClearOnEngagement];
-                v39 = [(ATXPBExecutableReferenceEntry *)v33 shouldPurge];
-                v40 = [(ATXExecutableReference *)v35 initWithClientModelId:v36 date:v37 shouldClearOnEngagement:v38 shouldPurge:v39 suggestionIsHidden:[(ATXPBExecutableReferenceEntry *)v33 suggestionIsHidden]];
+                shouldClearOnEngagement = [(ATXPBExecutableReferenceEntry *)v33 shouldClearOnEngagement];
+                shouldPurge = [(ATXPBExecutableReferenceEntry *)v33 shouldPurge];
+                v40 = [(ATXExecutableReference *)v35 initWithClientModelId:clientModelId date:v37 shouldClearOnEngagement:shouldClearOnEngagement shouldPurge:shouldPurge suggestionIsHidden:[(ATXPBExecutableReferenceEntry *)v33 suggestionIsHidden]];
 
                 [v52 addObject:v40];
                 objc_autoreleasePoolPop(v34);
               }
 
-              v29 = obj;
+              references = obj;
               v30 = [obj countByEnumeratingWithState:&v53 objects:v68 count:16];
             }
 
             while (v30);
           }
 
-          [(NSMapTable *)v44 setObject:v52 forKey:v50];
+          [(NSMapTable *)strongToStrongObjectsMapTable setObject:v52 forKey:v50];
         }
 
 LABEL_40:
         objc_autoreleasePoolPop(context);
-        v10 = v45;
+        keys = v45;
         v12 = v49 + 1;
       }
 
@@ -257,7 +257,7 @@ LABEL_42:
     }
   }
 
-  v44 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
 LABEL_44:
   _Block_object_dispose(&v62, 8);
 
@@ -265,7 +265,7 @@ LABEL_44:
 LABEL_45:
   objc_autoreleasePoolPop(v4);
 
-  return v44;
+  return strongToStrongObjectsMapTable;
 }
 
 uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint64_t a1)
@@ -326,31 +326,31 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
 
 - (void)purgeReferencesIfPossible
 {
-  v3 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  [(ATXExecutableReferenceManager *)self _purgeReferencesIfPossibleInMap:v3 forceWrite:0];
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  [(ATXExecutableReferenceManager *)self _purgeReferencesIfPossibleInMap:_loadReferences forceWrite:0];
 }
 
 - (ATXExecutableReferenceManager)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [(ATXExecutableReferenceManager *)self initWithCacheDirectory:v3 minDurationForTrackedReferencesToStayAround:900.0];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [(ATXExecutableReferenceManager *)self initWithCacheDirectory:appPredictionCacheDirectory minDurationForTrackedReferencesToStayAround:900.0];
 
   return v4;
 }
 
-- (ATXExecutableReferenceManager)initWithCacheDirectory:(id)a3 minDurationForTrackedReferencesToStayAround:(double)a4
+- (ATXExecutableReferenceManager)initWithCacheDirectory:(id)directory minDurationForTrackedReferencesToStayAround:(double)around
 {
-  v6 = a3;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = ATXExecutableReferenceManager;
   v7 = [(ATXExecutableReferenceManager *)&v11 init];
   if (v7)
   {
-    v8 = [v6 stringByAppendingPathComponent:@"ATXExecutableReferenceCache.pb"];
+    v8 = [directoryCopy stringByAppendingPathComponent:@"ATXExecutableReferenceCache.pb"];
     path = v7->_path;
     v7->_path = v8;
 
-    v7->_minDurationForTrackedReferencesToStayAround = a4;
+    v7->_minDurationForTrackedReferencesToStayAround = around;
   }
 
   return v7;
@@ -360,12 +360,12 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
 {
   v34 = *MEMORY[0x1E69E9840];
   v21 = objc_opt_new();
-  v3 = [(ATXExecutableReferenceManager *)self _loadReferences];
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v33 count:16];
+  v4 = [_loadReferences countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -376,17 +376,17 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
       {
         if (*v27 != v20)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_loadReferences);
         }
 
         v7 = *(*(&v26 + 1) + 8 * i);
-        v8 = [v7 debugTitle];
+        debugTitle = [v7 debugTitle];
         v9 = objc_opt_new();
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v3 objectForKey:v7];
+        v10 = [_loadReferences objectForKey:v7];
         v11 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v11)
         {
@@ -401,8 +401,8 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v22 + 1) + 8 * j) jsonDict];
-              [v9 addObject:v15];
+              jsonDict = [*(*(&v22 + 1) + 8 * j) jsonDict];
+              [v9 addObject:jsonDict];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v22 objects:v32 count:16];
@@ -411,10 +411,10 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
           while (v12);
         }
 
-        [v21 setObject:v9 forKeyedSubscript:v8];
+        [v21 setObject:v9 forKeyedSubscript:debugTitle];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v26 objects:v33 count:16];
+      v5 = [_loadReferences countByEnumeratingWithState:&v26 objects:v33 count:16];
     }
 
     while (v5);
@@ -477,9 +477,9 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
               }
 
               v11 = *(*(&v19 + 1) + 8 * i);
-              v12 = [v11 clientModelId];
-              v13 = [v11 date];
-              [v3 appendFormat:@"  - %@ on %@; shouldPurge: %d clearOnEngagement: %d\n", v12, v13, objc_msgSend(v11, "shouldPurge"), objc_msgSend(v11, "shouldClearOnEngagement")];
+              clientModelId = [v11 clientModelId];
+              date = [v11 date];
+              [v3 appendFormat:@"  - %@ on %@; shouldPurge: %d clearOnEngagement: %d\n", clientModelId, date, objc_msgSend(v11, "shouldPurge"), objc_msgSend(v11, "shouldClearOnEngagement")];
             }
 
             v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
@@ -503,10 +503,10 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
   return v3;
 }
 
-- (BOOL)_writeData:(id)a3
+- (BOOL)_writeData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = open([(NSString *)self->_path fileSystemRepresentation], 514, 384);
   if (v5 == -1)
   {
@@ -540,30 +540,30 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
   return v7;
 }
 
-- (void)performBatchUpdateOfReferencesWithBlock:(id)a3
+- (void)performBatchUpdateOfReferencesWithBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   cachedExecutableToReferenceMapForBatchUpdates = self->__cachedExecutableToReferenceMapForBatchUpdates;
   v5 = objc_autoreleasePoolPush();
   if (cachedExecutableToReferenceMapForBatchUpdates)
   {
-    v9[2]();
+    blockCopy[2]();
   }
 
   else
   {
-    v6 = [(ATXExecutableReferenceManager *)self _loadReferences];
+    _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
     self->__cachedExecutableToReferenceMapNeedsWrite = 0;
-    objc_storeStrong(&self->__cachedExecutableToReferenceMapForBatchUpdates, v6);
+    objc_storeStrong(&self->__cachedExecutableToReferenceMapForBatchUpdates, _loadReferences);
     v7 = objc_autoreleasePoolPush();
-    v9[2]();
+    blockCopy[2]();
     objc_autoreleasePoolPop(v7);
     v8 = self->__cachedExecutableToReferenceMapForBatchUpdates;
     self->__cachedExecutableToReferenceMapForBatchUpdates = 0;
 
     if (self->__cachedExecutableToReferenceMapNeedsWrite)
     {
-      [(ATXExecutableReferenceManager *)self _writeReferences:v6];
+      [(ATXExecutableReferenceManager *)self _writeReferences:_loadReferences];
     }
 
     self->__cachedExecutableToReferenceMapNeedsWrite = 0;
@@ -572,21 +572,21 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_writeReferences:(id)a3
+- (void)_writeReferences:(id)references
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  referencesCopy = references;
+  v5 = referencesCopy;
+  if (referencesCopy)
   {
-    if (self->__cachedExecutableToReferenceMapForBatchUpdates == v4)
+    if (self->__cachedExecutableToReferenceMapForBatchUpdates == referencesCopy)
     {
       self->__cachedExecutableToReferenceMapNeedsWrite = 1;
     }
 
     else
     {
-      v28 = self;
+      selfCopy = self;
       v6 = __atxlog_handle_default();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
@@ -618,50 +618,50 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
             v8 = *(*(&v42 + 1) + 8 * v7);
             v9 = objc_autoreleasePoolPush();
             v10 = objc_alloc_init(ATXPBExecutableReferenceKey);
-            v11 = [v8 type];
+            type = [v8 type];
             context = v9;
-            if (v11 <= 1)
+            if (type <= 1)
             {
-              if (!v11)
+              if (!type)
               {
                 [(ATXPBExecutableReferenceKey *)v10 setExecutableType:?];
-                v12 = [v8 object];
-                [(ATXPBExecutableReferenceKey *)v10 setExecutableString:v12];
+                object = [v8 object];
+                [(ATXPBExecutableReferenceKey *)v10 setExecutableString:object];
                 goto LABEL_21;
               }
 
-              if (v11 != 1)
+              if (type != 1)
               {
                 goto LABEL_22;
               }
 
               [(ATXPBExecutableReferenceKey *)v10 setExecutableType:?];
-              v12 = [v8 object];
-              v13 = [v12 proto];
-              [(ATXPBExecutableReferenceKey *)v10 setExecutableAction:v13];
+              object = [v8 object];
+              proto = [object proto];
+              [(ATXPBExecutableReferenceKey *)v10 setExecutableAction:proto];
             }
 
             else
             {
-              switch(v11)
+              switch(type)
               {
                 case 2:
                   [(ATXPBExecutableReferenceKey *)v10 setExecutableType:?];
-                  v12 = [v8 object];
-                  v13 = [v12 proto];
-                  [(ATXPBExecutableReferenceKey *)v10 setExecutableHeroApp:v13];
+                  object = [v8 object];
+                  proto = [object proto];
+                  [(ATXPBExecutableReferenceKey *)v10 setExecutableHeroApp:proto];
                   break;
                 case 3:
                   [(ATXPBExecutableReferenceKey *)v10 setExecutableType:?];
-                  v12 = [v8 object];
-                  v13 = [v12 proto];
-                  [(ATXPBExecutableReferenceKey *)v10 setExecutableInfoSuggestion:v13];
+                  object = [v8 object];
+                  proto = [object proto];
+                  [(ATXPBExecutableReferenceKey *)v10 setExecutableInfoSuggestion:proto];
                   break;
                 case 4:
                   [(ATXPBExecutableReferenceKey *)v10 setExecutableType:?];
-                  v12 = [v8 object];
-                  v13 = [v12 proto];
-                  [(ATXPBExecutableReferenceKey *)v10 setExecutableLinkAction:v13];
+                  object = [v8 object];
+                  proto = [object proto];
+                  [(ATXPBExecutableReferenceKey *)v10 setExecutableLinkAction:proto];
                   break;
                 default:
                   goto LABEL_22;
@@ -670,12 +670,12 @@ uint64_t __48__ATXExecutableReferenceManager__loadReferences__block_invoke(uint6
 
 LABEL_21:
 LABEL_22:
-            v14 = [(NSMapTable *)obj objectForKey:v8, v28];
+            selfCopy = [(NSMapTable *)obj objectForKey:v8, selfCopy];
             v38 = 0u;
             v39 = 0u;
             v40 = 0u;
             v41 = 0u;
-            v15 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v15 = [selfCopy countByEnumeratingWithState:&v38 objects:v46 count:16];
             if (v15)
             {
               v16 = v15;
@@ -686,16 +686,16 @@ LABEL_22:
                 {
                   if (*v39 != v17)
                   {
-                    objc_enumerationMutation(v14);
+                    objc_enumerationMutation(selfCopy);
                   }
 
                   v19 = *(*(&v38 + 1) + 8 * i);
                   v20 = objc_alloc_init(ATXPBExecutableReferenceEntry);
-                  v21 = [v19 clientModelId];
-                  [(ATXPBExecutableReferenceEntry *)v20 setClientModelId:v21];
+                  clientModelId = [v19 clientModelId];
+                  [(ATXPBExecutableReferenceEntry *)v20 setClientModelId:clientModelId];
 
-                  v22 = [v19 date];
-                  [v22 timeIntervalSinceReferenceDate];
+                  date = [v19 date];
+                  [date timeIntervalSinceReferenceDate];
                   [(ATXPBExecutableReferenceEntry *)v20 setDate:v23];
 
                   -[ATXPBExecutableReferenceEntry setShouldClearOnEngagement:](v20, [v19 shouldClearOnEngagement]);
@@ -704,7 +704,7 @@ LABEL_22:
                   [(ATXPBExecutableReferenceKey *)v10 addReferences:v20];
                 }
 
-                v16 = [v14 countByEnumeratingWithState:&v38 objects:v46 count:16];
+                v16 = [selfCopy countByEnumeratingWithState:&v38 objects:v46 count:16];
               }
 
               while (v16);
@@ -724,16 +724,16 @@ LABEL_22:
         while (v24);
       }
 
-      v25 = [(ATXPBExecutableReferenceCache *)v32 data];
-      v26 = v25;
-      if (v25)
+      data = [(ATXPBExecutableReferenceCache *)v32 data];
+      v26 = data;
+      if (data)
       {
         v36[0] = MEMORY[0x1E69E9820];
         v36[1] = 3221225472;
         v36[2] = __50__ATXExecutableReferenceManager__writeReferences___block_invoke;
         v36[3] = &unk_1E80C0958;
-        v36[4] = v28;
-        v37 = v25;
+        v36[4] = selfCopy;
+        v37 = data;
         [ATXRunningBoardAssertion performWorkWithFinishTaskAssertionName:@"ATXExecutableReferenceManager" block:v36];
       }
 
@@ -753,17 +753,17 @@ LABEL_22:
   }
 }
 
-- (void)recordExecutable:(id)a3 clientModelId:(id)a4 shouldClearEngagement:(BOOL)a5
+- (void)recordExecutable:(id)executable clientModelId:(id)id shouldClearEngagement:(BOOL)engagement
 {
-  v5 = a5;
-  v16 = a3;
-  v8 = a4;
-  v9 = [(ATXExecutableReferenceManager *)self _loadReferences];
+  engagementCopy = engagement;
+  executableCopy = executable;
+  idCopy = id;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
   v10 = [ATXExecutableReference alloc];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [(ATXExecutableReference *)v10 initWithClientModelId:v8 date:v11 shouldClearOnEngagement:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = [(ATXExecutableReference *)v10 initWithClientModelId:idCopy date:date shouldClearOnEngagement:engagementCopy];
 
-  v13 = [v9 objectForKey:v16];
+  v13 = [_loadReferences objectForKey:executableCopy];
   v14 = v13;
   if (v13)
   {
@@ -773,23 +773,23 @@ LABEL_22:
   else
   {
     v15 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v12, 0}];
-    [v9 setObject:v15 forKey:v16];
+    [_loadReferences setObject:v15 forKey:executableCopy];
   }
 
-  [(ATXExecutableReferenceManager *)self _writeReferences:v9];
+  [(ATXExecutableReferenceManager *)self _writeReferences:_loadReferences];
 }
 
-- (id)_pairsForClientModelId:(id)a3 map:(id)a4
+- (id)_pairsForClientModelId:(id)id map:(id)map
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  mapCopy = map;
   v7 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v6;
+  obj = mapCopy;
   v21 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
   {
@@ -826,8 +826,8 @@ LABEL_22:
               }
 
               v15 = *(*(&v24 + 1) + 8 * i);
-              v16 = [v15 clientModelId];
-              v17 = [v16 isEqualToString:v5];
+              clientModelId = [v15 clientModelId];
+              v17 = [clientModelId isEqualToString:idCopy];
 
               if (v17)
               {
@@ -855,18 +855,18 @@ LABEL_22:
   return v7;
 }
 
-- (id)_executablePairsForSuggestions:(id)a3 clientModelId:(id)a4
+- (id)_executablePairsForSuggestions:(id)suggestions clientModelId:(id)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v23 = a4;
+  suggestionsCopy = suggestions;
+  idCopy = id;
   v24 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = suggestionsCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -883,15 +883,15 @@ LABEL_22:
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = ATXAllowedEngagementRecordManagerClasses();
-        v14 = [v12 executableSpecification];
-        v15 = [v14 executableClassString];
-        v16 = [v13 containsObject:v15];
+        executableSpecification = [v12 executableSpecification];
+        executableClassString = [executableSpecification executableClassString];
+        v16 = [v13 containsObject:executableClassString];
 
         if (v16)
         {
           v17 = [ATXExecutableReference alloc];
-          v18 = [v12 uiSpecification];
-          v19 = -[ATXExecutableReference initWithClientModelId:date:shouldClearOnEngagement:](v17, "initWithClientModelId:date:shouldClearOnEngagement:", v23, v6, [v18 shouldClearOnEngagement]);
+          uiSpecification = [v12 uiSpecification];
+          v19 = -[ATXExecutableReference initWithClientModelId:date:shouldClearOnEngagement:](v17, "initWithClientModelId:date:shouldClearOnEngagement:", idCopy, date, [uiSpecification shouldClearOnEngagement]);
 
           v20 = ATXExecutableIdentifierForSuggestion(v12);
           v21 = [[ATXExecutableReferencePair alloc] initWithReference:v19 executable:v20];
@@ -908,17 +908,17 @@ LABEL_22:
   return v24;
 }
 
-- (void)updateReferencesForProactiveSuggestions:(id)a3 clientModelId:(id)a4
+- (void)updateReferencesForProactiveSuggestions:(id)suggestions clientModelId:(id)id
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v9 = [(ATXExecutableReferenceManager *)self _pairsForClientModelId:v7 map:v8];
-  v56 = v7;
-  v57 = v6;
-  v10 = [(ATXExecutableReferenceManager *)self _executablePairsForSuggestions:v6 clientModelId:v7];
-  v58 = [MEMORY[0x1E695DF00] date];
+  suggestionsCopy = suggestions;
+  idCopy = id;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v9 = [(ATXExecutableReferenceManager *)self _pairsForClientModelId:idCopy map:_loadReferences];
+  v56 = idCopy;
+  v57 = suggestionsCopy;
+  v10 = [(ATXExecutableReferenceManager *)self _executablePairsForSuggestions:suggestionsCopy clientModelId:idCopy];
+  date = [MEMORY[0x1E695DF00] date];
   v11 = [v9 mutableCopy];
   [v11 intersectSet:v10];
   v53 = v10;
@@ -932,11 +932,11 @@ LABEL_22:
   v15 = v14 != 0;
   if (v14)
   {
-    [(ATXExecutableReferenceManager *)self _addExecutablePairs:v12 toMap:v8];
+    [(ATXExecutableReferenceManager *)self _addExecutablePairs:v12 toMap:_loadReferences];
   }
 
   v52 = v12;
-  v55 = v8;
+  v55 = _loadReferences;
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
@@ -957,30 +957,30 @@ LABEL_22:
         }
 
         v20 = *(*(&v64 + 1) + 8 * i);
-        v21 = [v20 reference];
-        v22 = [v21 shouldPurge];
+        reference = [v20 reference];
+        shouldPurge = [reference shouldPurge];
 
-        if ((v22 & 1) == 0)
+        if ((shouldPurge & 1) == 0)
         {
-          v23 = [v20 reference];
+          reference2 = [v20 reference];
           v15 = 1;
-          [v23 setShouldPurge:1];
+          [reference2 setShouldPurge:1];
 
-          v24 = [v20 reference];
-          v25 = [v24 suggestionIsHidden];
+          reference3 = [v20 reference];
+          suggestionIsHidden = [reference3 suggestionIsHidden];
 
-          if (v25)
+          if (suggestionIsHidden)
           {
             v26 = __atxlog_handle_default();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               v27 = objc_opt_class();
               v28 = NSStringFromClass(v27);
-              v29 = [v20 reference];
+              reference4 = [v20 reference];
               *buf = 138412546;
               v70 = v28;
               v71 = 2112;
-              v72 = v29;
+              v72 = reference4;
               _os_log_impl(&dword_1BF549000, v26, OS_LOG_TYPE_DEFAULT, "%@ - updateReferencesForProactiveSuggestions marked hidden reference as purgable: %@", buf, 0x16u);
             }
           }
@@ -1014,44 +1014,44 @@ LABEL_22:
         }
 
         v35 = *(*(&v60 + 1) + 8 * v34);
-        v36 = [v35 reference];
-        if (![v36 shouldPurge])
+        reference5 = [v35 reference];
+        if (![reference5 shouldPurge])
         {
           goto LABEL_27;
         }
 
-        v37 = [v35 reference];
-        v38 = [v37 date];
-        [v58 timeIntervalSinceDate:v38];
+        reference6 = [v35 reference];
+        date2 = [reference6 date];
+        [date timeIntervalSinceDate:date2];
         v40 = v39;
         minDurationForTrackedReferencesToStayAround = self->_minDurationForTrackedReferencesToStayAround;
 
         if (v40 < minDurationForTrackedReferencesToStayAround)
         {
-          v42 = [v35 reference];
-          v43 = [v42 shouldPurge];
+          reference7 = [v35 reference];
+          shouldPurge2 = [reference7 shouldPurge];
 
-          if (v43)
+          if (shouldPurge2)
           {
-            v44 = [v35 reference];
-            [v44 setShouldPurge:0];
+            reference8 = [v35 reference];
+            [reference8 setShouldPurge:0];
 
-            v45 = [v35 reference];
-            v46 = [v45 suggestionIsHidden];
+            reference9 = [v35 reference];
+            suggestionIsHidden2 = [reference9 suggestionIsHidden];
 
-            if (v46)
+            if (suggestionIsHidden2)
             {
-              v36 = __atxlog_handle_default();
-              if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+              reference5 = __atxlog_handle_default();
+              if (os_log_type_enabled(reference5, OS_LOG_TYPE_DEFAULT))
               {
                 v47 = objc_opt_class();
                 v48 = NSStringFromClass(v47);
-                v49 = [v35 reference];
+                reference10 = [v35 reference];
                 *buf = 138412546;
                 v70 = v48;
                 v71 = 2112;
-                v72 = v49;
-                _os_log_impl(&dword_1BF549000, v36, OS_LOG_TYPE_DEFAULT, "%@ - updateReferencesForProactiveSuggestions unmarked hidden reference as purgable: %@", buf, 0x16u);
+                v72 = reference10;
+                _os_log_impl(&dword_1BF549000, reference5, OS_LOG_TYPE_DEFAULT, "%@ - updateReferencesForProactiveSuggestions unmarked hidden reference as purgable: %@", buf, 0x16u);
               }
 
               v15 = 1;
@@ -1079,22 +1079,22 @@ LABEL_28:
   [(ATXExecutableReferenceManager *)self _purgeReferencesIfPossibleInMap:v55 forceWrite:v15];
 }
 
-- (unint64_t)referenceCountForExecutable:(id)a3
+- (unint64_t)referenceCountForExecutable:(id)executable
 {
-  v4 = a3;
-  v5 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v6 = [v5 objectForKey:v4];
+  executableCopy = executable;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v6 = [_loadReferences objectForKey:executableCopy];
 
   v7 = [v6 count];
   return v7;
 }
 
-- (id)clientModelIdsForExecutable:(id)a3
+- (id)clientModelIdsForExecutable:(id)executable
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v6 = [v5 objectForKey:v4];
+  executableCopy = executable;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v6 = [_loadReferences objectForKey:executableCopy];
   v7 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
@@ -1116,12 +1116,12 @@ LABEL_28:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 clientModelId];
+        clientModelId = [v13 clientModelId];
 
-        if (v14)
+        if (clientModelId)
         {
-          v15 = [v13 clientModelId];
-          [v7 addObject:v15];
+          clientModelId2 = [v13 clientModelId];
+          [v7 addObject:clientModelId2];
         }
       }
 
@@ -1134,12 +1134,12 @@ LABEL_28:
   return v7;
 }
 
-- (BOOL)canExecutableClearOnEngagement:(id)a3
+- (BOOL)canExecutableClearOnEngagement:(id)engagement
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  [v5 objectForKey:v4];
+  engagementCopy = engagement;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  [_loadReferences objectForKey:engagementCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1179,12 +1179,12 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)isExecutableHidden:(id)a3
+- (BOOL)isExecutableHidden:(id)hidden
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  [v5 objectForKey:v4];
+  hiddenCopy = hidden;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  [_loadReferences objectForKey:hiddenCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -1224,10 +1224,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)referencesForClientModelId:(id)a3
+- (id)referencesForClientModelId:(id)id
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = [MEMORY[0x1E695DFA8] set];
   [(ATXExecutableReferenceManager *)self _loadReferences];
   v23 = 0u;
@@ -1267,8 +1267,8 @@ LABEL_11:
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [*(*(&v19 + 1) + 8 * j) clientModelId];
-              v14 = [v13 isEqualToString:v4];
+              clientModelId = [*(*(&v19 + 1) + 8 * j) clientModelId];
+              v14 = [clientModelId isEqualToString:idCopy];
 
               if (v14)
               {
@@ -1292,25 +1292,25 @@ LABEL_11:
   return v5;
 }
 
-- (void)markReferencesAsPurgableFromClientModelIdIfPossible:(id)a3
+- (void)markReferencesAsPurgableFromClientModelIdIfPossible:(id)possible
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v31 = self;
-  v5 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  if ([v5 count])
+  possibleCopy = possible;
+  selfCopy = self;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  if ([_loadReferences count])
   {
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v7 = v5;
+    v7 = _loadReferences;
     v28 = [v7 countByEnumeratingWithState:&v36 objects:v45 count:16];
     if (v28)
     {
       v8 = 0;
-      v25 = v5;
+      v25 = _loadReferences;
       v26 = *v37;
       v27 = v7;
       do
@@ -1346,8 +1346,8 @@ LABEL_11:
                 }
 
                 v16 = *(*(&v32 + 1) + 8 * i);
-                v17 = [v16 clientModelId];
-                v18 = [v17 isEqualToString:v4];
+                clientModelId = [v16 clientModelId];
+                v18 = [clientModelId isEqualToString:possibleCopy];
 
                 if (v18)
                 {
@@ -1355,8 +1355,8 @@ LABEL_11:
                   {
                     if ([v16 suggestionIsHidden])
                     {
-                      v19 = [v16 date];
-                      [v6 timeIntervalSinceDate:v19];
+                      date2 = [v16 date];
+                      [date timeIntervalSinceDate:date2];
                       v21 = v20;
 
                       if (v21 > 0.0)
@@ -1404,10 +1404,10 @@ LABEL_11:
 
       while (v28);
 
-      v5 = v25;
+      _loadReferences = v25;
       if (v8)
       {
-        [(ATXExecutableReferenceManager *)v31 _writeReferences:v27];
+        [(ATXExecutableReferenceManager *)selfCopy _writeReferences:v27];
       }
     }
 
@@ -1417,13 +1417,13 @@ LABEL_11:
   }
 }
 
-- (void)updateDateOfReferenceForExecutable:(id)a3 clientModelId:(id)a4
+- (void)updateDateOfReferenceForExecutable:(id)executable clientModelId:(id)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v9 = [v8 objectForKey:v6];
+  executableCopy = executable;
+  idCopy = id;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v9 = [_loadReferences objectForKey:executableCopy];
   if ([v9 count])
   {
     v27 = 0u;
@@ -1436,9 +1436,9 @@ LABEL_11:
     {
       v12 = v11;
       v21 = v9;
-      v22 = v8;
-      v23 = self;
-      v24 = v6;
+      v22 = _loadReferences;
+      selfCopy = self;
+      v24 = executableCopy;
       v13 = 0;
       v14 = *v26;
       do
@@ -1452,13 +1452,13 @@ LABEL_11:
 
           v16 = *(*(&v25 + 1) + 8 * i);
           v17 = objc_autoreleasePoolPush();
-          v18 = [v16 clientModelId];
-          v19 = [v18 isEqualToString:v7];
+          clientModelId = [v16 clientModelId];
+          v19 = [clientModelId isEqualToString:idCopy];
 
           if (v19)
           {
-            v20 = [MEMORY[0x1E695DF00] date];
-            [v16 updateDateTo:v20];
+            date = [MEMORY[0x1E695DF00] date];
+            [v16 updateDateTo:date];
 
             v13 = 1;
           }
@@ -1471,12 +1471,12 @@ LABEL_11:
 
       while (v12);
 
-      v6 = v24;
+      executableCopy = v24;
       v9 = v21;
-      v8 = v22;
+      _loadReferences = v22;
       if (v13)
       {
-        [(ATXExecutableReferenceManager *)v23 _writeReferences:v22];
+        [(ATXExecutableReferenceManager *)selfCopy _writeReferences:v22];
       }
     }
 
@@ -1486,14 +1486,14 @@ LABEL_11:
   }
 }
 
-- (void)markReferenceAsHiddenForExecutable:(id)a3 clientModelId:(id)a4 untilDate:(id)a5
+- (void)markReferenceAsHiddenForExecutable:(id)executable clientModelId:(id)id untilDate:(id)date
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v26 = a5;
-  v10 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v11 = [v10 objectForKey:v8];
+  executableCopy = executable;
+  idCopy = id;
+  dateCopy = date;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v11 = [_loadReferences objectForKey:executableCopy];
   if ([v11 count])
   {
     v29 = 0u;
@@ -1506,9 +1506,9 @@ LABEL_11:
     {
       v14 = v13;
       v22 = v11;
-      v23 = v10;
-      v24 = self;
-      v25 = v8;
+      v23 = _loadReferences;
+      selfCopy = self;
+      v25 = executableCopy;
       v15 = 0;
       v16 = *v28;
       do
@@ -1522,12 +1522,12 @@ LABEL_11:
 
           v18 = *(*(&v27 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
-          v20 = [v18 clientModelId];
-          v21 = [v20 isEqualToString:v9];
+          clientModelId = [v18 clientModelId];
+          v21 = [clientModelId isEqualToString:idCopy];
 
           if (v21)
           {
-            [v18 updateDateTo:v26];
+            [v18 updateDateTo:dateCopy];
             v15 = 1;
             [v18 setSuggestionIsHidden:1];
           }
@@ -1540,12 +1540,12 @@ LABEL_11:
 
       while (v14);
 
-      v8 = v25;
+      executableCopy = v25;
       v11 = v22;
-      v10 = v23;
+      _loadReferences = v23;
       if (v15)
       {
-        [(ATXExecutableReferenceManager *)v24 _writeReferences:v23];
+        [(ATXExecutableReferenceManager *)selfCopy _writeReferences:v23];
       }
     }
 
@@ -1555,23 +1555,23 @@ LABEL_11:
   }
 }
 
-- (void)_purgeReferencesIfPossibleInMap:(id)a3 forceWrite:(BOOL)a4
+- (void)_purgeReferencesIfPossibleInMap:(id)map forceWrite:(BOOL)write
 {
-  v4 = a4;
+  writeCopy = write;
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF00] date];
+  mapCopy = map;
+  date = [MEMORY[0x1E695DF00] date];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = v6;
-  v8 = [v6 copy];
+  v31 = mapCopy;
+  v8 = [mapCopy copy];
   v29 = [v8 countByEnumeratingWithState:&v38 objects:v47 count:16];
   if (!v29)
   {
 
-    if (!v4)
+    if (!writeCopy)
     {
       goto LABEL_26;
     }
@@ -1579,7 +1579,7 @@ LABEL_11:
     goto LABEL_25;
   }
 
-  v26 = v4;
+  v26 = writeCopy;
   v9 = 0;
   v27 = *v39;
   v28 = v8;
@@ -1620,8 +1620,8 @@ LABEL_11:
             v18 = *(*(&v34 + 1) + 8 * i);
             if ([v18 shouldPurge])
             {
-              v19 = [v18 date];
-              [v7 timeIntervalSinceDate:v19];
+              date2 = [v18 date];
+              [date timeIntervalSinceDate:date2];
               v21 = v20;
               minDurationForTrackedReferencesToStayAround = self->_minDurationForTrackedReferencesToStayAround;
 
@@ -1680,22 +1680,22 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)purgeReferencesForSuggestions:(id)a3 clientModelId:(id)a4
+- (void)purgeReferencesForSuggestions:(id)suggestions clientModelId:(id)id
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v35 = [(ATXExecutableReferenceManager *)self _loadReferences];
+  suggestionsCopy = suggestions;
+  idCopy = id;
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = v6;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v9)
   {
     v10 = v9;
-    v31 = self;
+    selfCopy = self;
     v11 = 0;
     v12 = *v44;
     v32 = *v44;
@@ -1715,16 +1715,16 @@ LABEL_26:
         v14 = *(*(&v43 + 1) + 8 * v13);
         v37 = objc_autoreleasePoolPush();
         v15 = ATXAllowedEngagementRecordManagerClasses();
-        v16 = [v14 executableSpecification];
-        v17 = [v16 executableClassString];
-        v18 = [v15 containsObject:v17];
+        executableSpecification = [v14 executableSpecification];
+        executableClassString = [executableSpecification executableClassString];
+        v18 = [v15 containsObject:executableClassString];
 
         if (v18)
         {
           v19 = ATXExecutableIdentifierForSuggestion(v14);
           if (v19)
           {
-            v20 = [v35 objectForKey:v19];
+            v20 = [_loadReferences objectForKey:v19];
             if ([v20 count])
             {
               v36 = v19;
@@ -1750,8 +1750,8 @@ LABEL_26:
                     v26 = *(*(&v39 + 1) + 8 * i);
                     if ([v26 shouldPurge])
                     {
-                      v27 = [v26 clientModelId];
-                      v28 = [v27 isEqualToString:v7];
+                      clientModelId = [v26 clientModelId];
+                      v28 = [clientModelId isEqualToString:idCopy];
 
                       if (v28)
                       {
@@ -1773,7 +1773,7 @@ LABEL_26:
               v19 = v36;
               if (![v20 count])
               {
-                [v35 removeObjectForKey:v36];
+                [_loadReferences removeObjectForKey:v36];
                 v11 = 1;
               }
             }
@@ -1801,7 +1801,7 @@ LABEL_26:
 
     if (v11)
     {
-      [(ATXExecutableReferenceManager *)v31 _writeReferences:v35];
+      [(ATXExecutableReferenceManager *)selfCopy _writeReferences:_loadReferences];
     }
   }
 
@@ -1810,32 +1810,32 @@ LABEL_26:
   }
 }
 
-- (void)addReferencesForSuggestions:(id)a3 clientModelId:(id)a4
+- (void)addReferencesForSuggestions:(id)suggestions clientModelId:(id)id
 {
-  v10 = a3;
-  v6 = a4;
+  suggestionsCopy = suggestions;
+  idCopy = id;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(ATXExecutableReferenceManager *)self _loadReferences];
-  v9 = [(ATXExecutableReferenceManager *)self _executablePairsForSuggestions:v10 clientModelId:v6];
+  _loadReferences = [(ATXExecutableReferenceManager *)self _loadReferences];
+  v9 = [(ATXExecutableReferenceManager *)self _executablePairsForSuggestions:suggestionsCopy clientModelId:idCopy];
   if ([v9 count])
   {
-    [(ATXExecutableReferenceManager *)self _addExecutablePairs:v9 toMap:v8];
-    [(ATXExecutableReferenceManager *)self _writeReferences:v8];
+    [(ATXExecutableReferenceManager *)self _addExecutablePairs:v9 toMap:_loadReferences];
+    [(ATXExecutableReferenceManager *)self _writeReferences:_loadReferences];
   }
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_addExecutablePairs:(id)a3 toMap:(id)a4
+- (void)_addExecutablePairs:(id)pairs toMap:(id)map
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  pairsCopy = pairs;
+  mapCopy = map;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [pairsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1846,30 +1846,30 @@ LABEL_26:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pairsCopy);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 executable];
-        v13 = [v6 objectForKey:v12];
+        executable = [v11 executable];
+        v13 = [mapCopy objectForKey:executable];
 
         if (v13)
         {
-          v14 = [v11 reference];
-          [v13 addObject:v14];
+          reference = [v11 reference];
+          [v13 addObject:reference];
         }
 
         else
         {
           v15 = objc_alloc(MEMORY[0x1E695DFA8]);
-          v14 = [v11 reference];
-          v16 = [v15 initWithObjects:{v14, 0}];
-          v17 = [v11 executable];
-          [v6 setObject:v16 forKey:v17];
+          reference = [v11 reference];
+          v16 = [v15 initWithObjects:{reference, 0}];
+          executable2 = [v11 executable];
+          [mapCopy setObject:v16 forKey:executable2];
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [pairsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);

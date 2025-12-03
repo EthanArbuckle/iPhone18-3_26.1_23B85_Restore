@@ -1,16 +1,16 @@
 @interface ATLockdownSocket
-- (ATLockdownSocket)initWithLockdownInfo:(void *)a3;
+- (ATLockdownSocket)initWithLockdownInfo:(void *)info;
 - (BOOL)open;
-- (int)recv:(char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
-- (int)send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6;
-- (void)_readLength:(unint64_t)a3;
+- (int)recv:(char *)recv offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
+- (int)send:(const char *)send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error;
+- (void)_readLength:(unint64_t)length;
 - (void)close;
-- (void)writeData:(id)a3 withCompletion:(id)a4;
+- (void)writeData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation ATLockdownSocket
 
-- (void)_readLength:(unint64_t)a3
+- (void)_readLength:(unint64_t)length
 {
   if (self->_connection)
   {
@@ -23,14 +23,14 @@
   }
 }
 
-- (int)recv:(char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (int)recv:(char *)recv offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
   v11 = 0;
   do
   {
     if (self->_connection)
     {
-      v12 = v11 >= a5;
+      v12 = v11 >= len;
     }
 
     else
@@ -54,16 +54,16 @@
     block[3] = &unk_2784E54F8;
     block[4] = self;
     block[5] = &v19;
-    block[6] = a3;
-    v17 = a4;
-    v18 = a5;
+    block[6] = recv;
+    offsetCopy = offset;
+    lenCopy = len;
     dispatch_sync(socketRWQueue, block);
     v14 = *(v20 + 6);
     if (v14 <= 0)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CE5418] errorWithPosixError:*__error() format:{@"%@: lockdown_recv returned an error: %d", self, *(v20 + 6)}];
+        *error = [MEMORY[0x277CE5418] errorWithPosixError:*__error() format:{@"%@: lockdown_recv returned an error: %d", self, *(v20 + 6)}];
       }
     }
 
@@ -91,14 +91,14 @@ uint64_t __42__ATLockdownSocket_recv_offset_len_error___block_invoke(uint64_t a1
   return result;
 }
 
-- (int)send:(const char *)a3 offset:(unsigned int)a4 len:(unsigned int)a5 error:(id *)a6
+- (int)send:(const char *)send offset:(unsigned int)offset len:(unsigned int)len error:(id *)error
 {
   v11 = 0;
   do
   {
     if (self->_connection)
     {
-      v12 = v11 >= a5;
+      v12 = v11 >= len;
     }
 
     else
@@ -122,16 +122,16 @@ uint64_t __42__ATLockdownSocket_recv_offset_len_error___block_invoke(uint64_t a1
     block[3] = &unk_2784E54F8;
     block[4] = self;
     block[5] = &v19;
-    block[6] = a3;
-    v17 = a4;
-    v18 = a5;
+    block[6] = send;
+    offsetCopy = offset;
+    lenCopy = len;
     dispatch_sync(socketRWQueue, block);
     v14 = *(v20 + 6);
     if (v14 <= 0)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CE5418] errorWithPosixError:*__error() format:{@"%@: lockdown_send returned an error: %d", self, *(v20 + 6)}];
+        *error = [MEMORY[0x277CE5418] errorWithPosixError:*__error() format:{@"%@: lockdown_send returned an error: %d", self, *(v20 + 6)}];
       }
     }
 
@@ -159,20 +159,20 @@ uint64_t __42__ATLockdownSocket_send_offset_len_error___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)writeData:(id)a3 withCompletion:(id)a4
+- (void)writeData:(id)data withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ATLockdownSocket_writeData_withCompletion___block_invoke;
   block[3] = &unk_2784E58C0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
   dispatch_async(v8, block);
 }
 
@@ -205,7 +205,7 @@ void __45__ATLockdownSocket_writeData_withCompletion___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "Closing lockdown socket %{public}@", buf, 0xCu);
   }
 
@@ -282,9 +282,9 @@ uint64_t __25__ATLockdownSocket_close__block_invoke(uint64_t a1)
     }
 
     v10 = [v24 objectForKey:*MEMORY[0x277D82A00]];
-    v11 = [v10 longLongValue];
+    longLongValue = [v10 longLongValue];
 
-    self->_isWifiConnection = v11 == 3;
+    self->_isWifiConnection = longLongValue == 3;
     if ([(ATSocket *)self socketMode]== 1)
     {
       v12 = lockdown_get_socket();
@@ -350,7 +350,7 @@ void __24__ATLockdownSocket_open__block_invoke_2(uint64_t a1)
   [WeakRetained notifySocketDidClose];
 }
 
-- (ATLockdownSocket)initWithLockdownInfo:(void *)a3
+- (ATLockdownSocket)initWithLockdownInfo:(void *)info
 {
   v11.receiver = self;
   v11.super_class = ATLockdownSocket;
@@ -358,7 +358,7 @@ void __24__ATLockdownSocket_open__block_invoke_2(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    v4->_lockdownInfo = a3;
+    v4->_lockdownInfo = info;
     v6 = dispatch_queue_create("com.apple.atc-ATMessageLink-worker", 0);
     socketRWQueue = v5->_socketRWQueue;
     v5->_socketRWQueue = v6;

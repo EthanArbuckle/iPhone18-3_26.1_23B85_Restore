@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (AVTUIImageRenderService)init;
 - (id)cleanupBlock;
-- (void)_generateAndCacheImageForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5;
+- (void)_generateAndCacheImageForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply;
 - (void)_lock_beginCleanupTimer;
 - (void)_lock_invalidateCleanupTimer;
-- (void)_requestImageForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6;
-- (void)_requestImageForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5;
-- (void)_requestStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7;
+- (void)_requestImageForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply;
+- (void)_requestImageForAvatar:(id)avatar scope:(id)scope withReply:(id)reply;
+- (void)_requestStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply;
 - (void)dealloc;
-- (void)generateAndCacheImageForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5;
-- (void)requestAnimojiStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7;
-- (void)requestImageForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6;
-- (void)requestImageForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5;
-- (void)requestStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7;
+- (void)generateAndCacheImageForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply;
+- (void)requestAnimojiStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply;
+- (void)requestImageForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply;
+- (void)requestImageForAvatar:(id)avatar scope:(id)scope withReply:(id)reply;
+- (void)requestStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply;
 - (void)transactionAdded;
 - (void)transactionCompleted;
 @end
@@ -31,23 +31,23 @@
     environment = v2->_environment;
     v2->_environment = v3;
 
-    v5 = [MEMORY[0x1E698E330] defaultEnvironment];
+    defaultEnvironment = [MEMORY[0x1E698E330] defaultEnvironment];
     v6 = [AVTImageStore alloc];
-    v7 = [v5 imageStoreLocation];
-    v8 = [(AVTImageStore *)v6 initWithEnvironment:v5 validateImages:1 location:v7];
+    imageStoreLocation = [defaultEnvironment imageStoreLocation];
+    v8 = [(AVTImageStore *)v6 initWithEnvironment:defaultEnvironment validateImages:1 location:imageStoreLocation];
     imageStore = v2->_imageStore;
     v2->_imageStore = v8;
 
     v10 = [AVTClippableImageStore alloc];
-    v11 = [v5 stickerImageStoreLocation];
+    stickerImageStoreLocation = [defaultEnvironment stickerImageStoreLocation];
     v12 = objc_alloc_init(AVTStickerImageEncoder);
-    v13 = [(AVTImageStore *)v10 initWithEnvironment:v5 validateImages:1 location:v11 encoder:v12];
+    v13 = [(AVTImageStore *)v10 initWithEnvironment:defaultEnvironment validateImages:1 location:stickerImageStoreLocation encoder:v12];
     clippableImageStore = v2->_clippableImageStore;
     v2->_clippableImageStore = v13;
 
-    v15 = [(AVTUIEnvironment *)v2->_environment logger];
+    logger = [(AVTUIEnvironment *)v2->_environment logger];
     logger = v2->_logger;
-    v2->_logger = v15;
+    v2->_logger = logger;
 
     v17 = [[AVTUIStickerGeneratorPool alloc] initWithMaxStickerGeneratorCount:1];
     generatorPool = v2->_generatorPool;
@@ -104,36 +104,36 @@ uint64_t __41__AVTUIImageRenderService_sharedInstance__block_invoke()
 
 - (void)transactionAdded
 {
-  v3 = [(AVTUIImageRenderService *)self transactionCountLock];
-  [v3 lock];
+  transactionCountLock = [(AVTUIImageRenderService *)self transactionCountLock];
+  [transactionCountLock lock];
 
   [(AVTUIImageRenderService *)self setActiveTransactionCount:[(AVTUIImageRenderService *)self activeTransactionCount]+ 1];
-  v4 = [(AVTUIImageRenderService *)self activeTransactionCount];
+  activeTransactionCount = [(AVTUIImageRenderService *)self activeTransactionCount];
   [(AVTUIImageRenderService *)self _lock_invalidateCleanupTimer];
-  v5 = [(AVTUIImageRenderService *)self transactionCountLock];
-  [v5 unlock];
+  transactionCountLock2 = [(AVTUIImageRenderService *)self transactionCountLock];
+  [transactionCountLock2 unlock];
 
-  v6 = [(AVTUIImageRenderService *)self logger];
-  [v6 logIncrementingRemoteRendererTransactionCount:v4];
+  logger = [(AVTUIImageRenderService *)self logger];
+  [logger logIncrementingRemoteRendererTransactionCount:activeTransactionCount];
 }
 
 - (void)transactionCompleted
 {
-  v3 = [(AVTUIImageRenderService *)self transactionCountLock];
-  [v3 lock];
+  transactionCountLock = [(AVTUIImageRenderService *)self transactionCountLock];
+  [transactionCountLock lock];
 
   [(AVTUIImageRenderService *)self setActiveTransactionCount:[(AVTUIImageRenderService *)self activeTransactionCount]- 1];
-  v4 = [(AVTUIImageRenderService *)self activeTransactionCount];
-  v5 = [(AVTUIImageRenderService *)self logger];
-  [v5 logDecrementingRemoteRendererTransactionCount:v4];
+  activeTransactionCount = [(AVTUIImageRenderService *)self activeTransactionCount];
+  logger = [(AVTUIImageRenderService *)self logger];
+  [logger logDecrementingRemoteRendererTransactionCount:activeTransactionCount];
 
-  if (!v4)
+  if (!activeTransactionCount)
   {
     [(AVTUIImageRenderService *)self _lock_beginCleanupTimer];
   }
 
-  v6 = [(AVTUIImageRenderService *)self transactionCountLock];
-  [v6 unlock];
+  transactionCountLock2 = [(AVTUIImageRenderService *)self transactionCountLock];
+  [transactionCountLock2 unlock];
 }
 
 - (void)_lock_beginCleanupTimer
@@ -188,38 +188,38 @@ void __50__AVTUIImageRenderService__lock_beginCleanupTimer__block_invoke(uint64_
   WeakRetained = objc_loadWeakRetained(&self->_cleanupBlock);
   if (WeakRetained)
   {
-    v5 = [(AVTUIImageRenderService *)self logger];
-    [v5 logCancellingCleanupBlock];
+    logger = [(AVTUIImageRenderService *)self logger];
+    [logger logCancellingCleanupBlock];
 
     v6 = objc_loadWeakRetained(&self->_cleanupBlock);
     dispatch_block_cancel(v6);
   }
 }
 
-- (void)_requestImageForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)_requestImageForAvatar:(id)avatar scope:(id)scope withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  scopeCopy = scope;
+  avatarCopy = avatar;
   [(AVTUIImageRenderService *)self transactionAdded];
   v12 = [[AVTAvatarImageRenderer alloc] initWithEnvironment:self->_environment];
-  v11 = [(AVTAvatarImageRenderer *)v12 _imageForAvatar:v10 scope:v9];
+  v11 = [(AVTAvatarImageRenderer *)v12 _imageForAvatar:avatarCopy scope:scopeCopy];
 
-  v8[2](v8, v11);
+  replyCopy[2](replyCopy, v11);
   [(AVTUIImageRenderService *)self transactionCompleted];
 }
 
-- (void)_requestImageForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6
+- (void)_requestImageForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply
 {
-  v17 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  modificationsCopy = modifications;
+  replyCopy = reply;
+  scopeCopy = scope;
+  avatarCopy = avatar;
   [(AVTUIImageRenderService *)self transactionAdded];
   v13 = [AVTAvatarImageRenderer alloc];
-  if (v17)
+  if (modificationsCopy)
   {
-    v14 = [(AVTAvatarImageRenderer *)v13 initWithSceneNodeModifications:v17];
+    v14 = [(AVTAvatarImageRenderer *)v13 initWithSceneNodeModifications:modificationsCopy];
   }
 
   else
@@ -228,48 +228,48 @@ void __50__AVTUIImageRenderService__lock_beginCleanupTimer__block_invoke(uint64_
   }
 
   v15 = v14;
-  v16 = [(AVTAvatarImageRenderer *)v14 _imageForAvatar:v12 scope:v11];
+  v16 = [(AVTAvatarImageRenderer *)v14 _imageForAvatar:avatarCopy scope:scopeCopy];
 
-  v10[2](v10, v16);
+  replyCopy[2](replyCopy, v16);
   [(AVTUIImageRenderService *)self transactionCompleted];
 }
 
-- (void)_generateAndCacheImageForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)_generateAndCacheImageForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
+  recordCopy = record;
+  scopeCopy = scope;
+  replyCopy = reply;
   [(AVTUIImageRenderService *)self transactionAdded];
   context = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x1E698E328] avatarForRecord:v22];
+  v10 = [MEMORY[0x1E698E328] avatarForRecord:recordCopy];
   v11 = [[AVTAvatarImageRenderer alloc] initWithEnvironment:self->_environment];
-  v12 = [(AVTAvatarImageRenderer *)v11 _imageForAvatar:v10 scope:v8];
+  v12 = [(AVTAvatarImageRenderer *)v11 _imageForAvatar:v10 scope:scopeCopy];
   if (!v12)
   {
-    v13 = [(AVTUIImageRenderService *)self logger];
-    [v13 logNilImageReturnedFromAVTAvatarRecordImageProvider];
+    logger = [(AVTUIImageRenderService *)self logger];
+    [logger logNilImageReturnedFromAVTAvatarRecordImageProvider];
   }
 
   v14 = [AVTAvatarRecordCacheableResource alloc];
-  v15 = [(AVTUIImageRenderService *)self environment];
-  v16 = [(AVTAvatarRecordCacheableResource *)v14 initWithAvatarRecord:v22 includeAvatarData:0 environment:v15];
+  environment = [(AVTUIImageRenderService *)self environment];
+  v16 = [(AVTAvatarRecordCacheableResource *)v14 initWithAvatarRecord:recordCopy includeAvatarData:0 environment:environment];
 
-  v17 = [(AVTImageStore *)self->_imageStore saveImage:v12 forItem:v16 scope:v8 error:0];
-  v18 = [(AVTUIImageRenderService *)self logger];
-  v19 = [0 path];
+  v17 = [(AVTImageStore *)self->_imageStore saveImage:v12 forItem:v16 scope:scopeCopy error:0];
+  logger2 = [(AVTUIImageRenderService *)self logger];
+  path = [0 path];
   if (v17)
   {
-    [v18 logImageStoreDoneInServiceForPath:v19];
+    [logger2 logImageStoreDoneInServiceForPath:path];
 
-    v20 = [(AVTImageStore *)self->_imageStore resourceURLForItem:v16 scope:v8];
-    v9[2](v9, v20);
+    v20 = [(AVTImageStore *)self->_imageStore resourceURLForItem:v16 scope:scopeCopy];
+    replyCopy[2](replyCopy, v20);
   }
 
   else
   {
-    [v18 logImageStoreFailedInServiceForPath:v19 error:0];
+    [logger2 logImageStoreFailedInServiceForPath:path error:0];
 
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   [(AVTUIImageRenderService *)self transactionCompleted];
@@ -277,21 +277,21 @@ void __50__AVTUIImageRenderService__lock_beginCleanupTimer__block_invoke(uint64_
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_requestStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7
+- (void)_requestStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  recordCopy = record;
+  nameCopy = name;
+  configurationNameCopy = configurationName;
+  resourceCopy = resource;
+  replyCopy = reply;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v19 = MEMORY[0x1E698E2C0];
   if (isKindOfClass)
   {
-    v20 = v13;
-    v21 = [v20 puppetName];
-    v22 = [v19 stickerConfigurationForAnimojiNamed:v21 inStickerPack:v14 stickerName:v15];
+    v20 = recordCopy;
+    puppetName = [v20 puppetName];
+    v22 = [v19 stickerConfigurationForAnimojiNamed:puppetName inStickerPack:nameCopy stickerName:configurationNameCopy];
 
     if (v22)
     {
@@ -299,28 +299,28 @@ void __50__AVTUIImageRenderService__lock_beginCleanupTimer__block_invoke(uint64_
     }
 
 LABEL_8:
-    v27 = [v13 identifier];
-    NSLog(&cfstr_NoStickerConfi.isa, v27, v14, v15);
+    identifier = [recordCopy identifier];
+    NSLog(&cfstr_NoStickerConfi.isa, identifier, nameCopy, configurationNameCopy);
 
-    v17[2](v17, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x1E698E2C0] stickerConfigurationForMemojiInStickerPack:v14 stickerName:v15];
+  v22 = [MEMORY[0x1E698E2C0] stickerConfigurationForMemojiInStickerPack:nameCopy stickerName:configurationNameCopy];
   if (!v22)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v28 = v16;
+  v28 = resourceCopy;
   [(AVTUIImageRenderService *)self transactionAdded];
   v23 = self->_currentStickerRenderer;
-  if (!v23 || ([v13 isEqual:self->_currentAvatarRecord] & 1) == 0)
+  if (!v23 || ([recordCopy isEqual:self->_currentAvatarRecord] & 1) == 0)
   {
-    v24 = [[AVTUIStickerRenderer alloc] initWithAvatarRecord:v13 stickerGeneratorPool:self->_generatorPool scheduler:self->_taskScheduler];
+    v24 = [[AVTUIStickerRenderer alloc] initWithAvatarRecord:recordCopy stickerGeneratorPool:self->_generatorPool scheduler:self->_taskScheduler];
 
-    objc_storeStrong(&self->_currentAvatarRecord, a3);
+    objc_storeStrong(&self->_currentAvatarRecord, record);
     objc_storeStrong(&self->_currentStickerRenderer, v24);
     v23 = v24;
   }
@@ -336,12 +336,12 @@ LABEL_3:
   v29[3] = &unk_1E7F3CD40;
   v33 = v34;
   v30 = v22;
-  v31 = self;
-  v32 = v17;
+  selfCopy = self;
+  v32 = replyCopy;
   v26 = (v25)[2](v25, v29, 1);
 
   _Block_object_dispose(v34, 8);
-  v16 = v28;
+  resourceCopy = v28;
 LABEL_9:
 }
 
@@ -375,118 +375,118 @@ void __127__AVTUIImageRenderService__requestStickerImageForAvatarRecord_withStic
   }
 }
 
-- (void)requestImageForAvatar:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)requestImageForAvatar:(id)avatar scope:(id)scope withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  avatarCopy = avatar;
+  scopeCopy = scope;
+  replyCopy = reply;
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__AVTUIImageRenderService_requestImageForAvatar_scope_withReply___block_invoke;
   v15[3] = &unk_1E7F3CD68;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = avatarCopy;
+  v17 = scopeCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = scopeCopy;
+  v14 = avatarCopy;
   dispatch_sync(workQueue, v15);
 }
 
-- (void)requestImageForAvatar:(id)a3 scope:(id)a4 withModifications:(id)a5 withReply:(id)a6
+- (void)requestImageForAvatar:(id)avatar scope:(id)scope withModifications:(id)modifications withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  avatarCopy = avatar;
+  scopeCopy = scope;
+  modificationsCopy = modifications;
+  replyCopy = reply;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__AVTUIImageRenderService_requestImageForAvatar_scope_withModifications_withReply___block_invoke;
   block[3] = &unk_1E7F3CD90;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = avatarCopy;
+  v21 = scopeCopy;
+  v22 = modificationsCopy;
+  v23 = replyCopy;
+  v15 = replyCopy;
+  v16 = modificationsCopy;
+  v17 = scopeCopy;
+  v18 = avatarCopy;
   dispatch_sync(workQueue, block);
 }
 
-- (void)generateAndCacheImageForAvatarRecord:(id)a3 scope:(id)a4 withReply:(id)a5
+- (void)generateAndCacheImageForAvatarRecord:(id)record scope:(id)scope withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  scopeCopy = scope;
+  replyCopy = reply;
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__AVTUIImageRenderService_generateAndCacheImageForAvatarRecord_scope_withReply___block_invoke;
   v15[3] = &unk_1E7F3CD68;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recordCopy;
+  v17 = scopeCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = scopeCopy;
+  v14 = recordCopy;
   dispatch_sync(workQueue, v15);
 }
 
-- (void)requestStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7
+- (void)requestStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  nameCopy = name;
+  configurationNameCopy = configurationName;
+  resourceCopy = resource;
+  replyCopy = reply;
   workQueue = self->_workQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __126__AVTUIImageRenderService_requestStickerImageForAvatarRecord_withStickerPackName_stickerConfigurationName_resource_withReply___block_invoke;
   v23[3] = &unk_1E7F3CDB8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = recordCopy;
+  v25 = nameCopy;
+  v26 = configurationNameCopy;
+  v27 = resourceCopy;
+  v28 = replyCopy;
+  v18 = replyCopy;
+  v19 = resourceCopy;
+  v20 = configurationNameCopy;
+  v21 = nameCopy;
+  v22 = recordCopy;
   dispatch_async(workQueue, v23);
 }
 
-- (void)requestAnimojiStickerImageForAvatarRecord:(id)a3 withStickerPackName:(id)a4 stickerConfigurationName:(id)a5 resource:(id)a6 withReply:(id)a7
+- (void)requestAnimojiStickerImageForAvatarRecord:(id)record withStickerPackName:(id)name stickerConfigurationName:(id)configurationName resource:(id)resource withReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  recordCopy = record;
+  nameCopy = name;
+  configurationNameCopy = configurationName;
+  resourceCopy = resource;
+  replyCopy = reply;
   workQueue = self->_workQueue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __133__AVTUIImageRenderService_requestAnimojiStickerImageForAvatarRecord_withStickerPackName_stickerConfigurationName_resource_withReply___block_invoke;
   v23[3] = &unk_1E7F3CDB8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = recordCopy;
+  v25 = nameCopy;
+  v26 = configurationNameCopy;
+  v27 = resourceCopy;
+  v28 = replyCopy;
+  v18 = replyCopy;
+  v19 = resourceCopy;
+  v20 = configurationNameCopy;
+  v21 = nameCopy;
+  v22 = recordCopy;
   dispatch_async(workQueue, v23);
 }
 

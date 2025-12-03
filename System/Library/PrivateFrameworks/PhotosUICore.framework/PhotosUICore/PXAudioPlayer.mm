@@ -2,21 +2,21 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
 - (NSString)description;
 - (PXAudioPlayer)init;
-- (PXAudioPlayer)initWithName:(id)a3;
+- (PXAudioPlayer)initWithName:(id)name;
 - (PXAudioPlayerDelegate)audioSessionDelegate;
 - (PXAudioSession)currentAudioSession;
-- (id)AVAudioSessionForAudioSession:(id)a3;
-- (id)_createAudioSessionForAsset:(id)a3 startTime:(id *)a4;
+- (id)AVAudioSessionForAudioSession:(id)session;
+- (id)_createAudioSessionForAsset:(id)asset startTime:(id *)time;
 - (id)_sessionsQueue_generateCurrentTimeRecord;
-- (id)lcdStringForSize:(CGSize)a3;
+- (id)lcdStringForSize:(CGSize)size;
 - (id)windowSceneID;
 - (void)_handleCurrentTimeRecordUpdateTimer;
 - (void)_invalidateCurrentSessionState;
 - (void)_invalidateCurrentTimeRecord;
 - (void)_invalidateCurrentTimeRecordUpdateTimer;
 - (void)_invalidateState;
-- (void)_sessionsQueue_handleOutgoingSession:(id)a3;
-- (void)_sessionsQueue_updateCurrentSessionStateWithDesiredPlayState:(int64_t)a3;
+- (void)_sessionsQueue_handleOutgoingSession:(id)session;
+- (void)_sessionsQueue_updateCurrentSessionStateWithDesiredPlayState:(int64_t)state;
 - (void)_sessionsQueue_updateCurrentTimeRecord;
 - (void)_sessionsQueue_updateState;
 - (void)_update;
@@ -25,42 +25,42 @@
 - (void)_updateCurrentTimeRecordUpdateTimer;
 - (void)_updateState;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)pause;
-- (void)performChanges:(id)a3;
-- (void)playFromStartTime:(id *)a3;
-- (void)replayFromTime:(id *)a3;
-- (void)sessionsQueue_setCurrentSession:(id)a3;
-- (void)setCurrentAsset:(id)a3;
-- (void)setCurrentAsset:(id)a3 startTime:(id *)a4;
-- (void)setCurrentAsset:(id)a3 startTime:(id *)a4 hostTime:(id *)a5;
-- (void)setCurrentAssetDuration:(id *)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setError:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setTargetLoudnessInLKFS:(float)a3;
-- (void)setVolume:(float)a3;
+- (void)performChanges:(id)changes;
+- (void)playFromStartTime:(id *)time;
+- (void)replayFromTime:(id *)time;
+- (void)sessionsQueue_setCurrentSession:(id)session;
+- (void)setCurrentAsset:(id)asset;
+- (void)setCurrentAsset:(id)asset startTime:(id *)time;
+- (void)setCurrentAsset:(id)asset startTime:(id *)time hostTime:(id *)hostTime;
+- (void)setCurrentAssetDuration:(id *)duration;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setError:(id)error;
+- (void)setState:(int64_t)state;
+- (void)setTargetLoudnessInLKFS:(float)s;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation PXAudioPlayer
 
-- (id)lcdStringForSize:(CGSize)a3
+- (id)lcdStringForSize:(CGSize)size
 {
-  v4 = [(PXAudioPlayer *)self currentAsset:a3.width];
-  v5 = [(PXAudioPlayer *)self state];
-  if (v5 == 1)
+  v4 = [(PXAudioPlayer *)self currentAsset:size.width];
+  state = [(PXAudioPlayer *)self state];
+  if (state == 1)
   {
     v9 = @"Idle…";
   }
 
   else
   {
-    v6 = v5;
-    if (v5 == 5)
+    v6 = state;
+    if (state == 5)
     {
       v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v8 = [(PXAudioPlayer *)self error];
-      v9 = [v7 initWithFormat:@"Error: %@", v8];
+      error = [(PXAudioPlayer *)self error];
+      v9 = [v7 initWithFormat:@"Error: %@", error];
     }
 
     else
@@ -89,35 +89,35 @@
       v17 = v15[2](v15, v16);
       [(__CFString *)v9 appendFormat:@"Status: %@\n", v17];
 
-      v18 = [v4 title];
-      v19 = v15[2](v15, v18);
+      title = [v4 title];
+      v19 = v15[2](v15, title);
       [(__CFString *)v9 appendFormat:@" Track: %@\n", v19];
 
-      v20 = [v4 artistName];
-      v21 = v15[2](v15, v20);
+      artistName = [v4 artistName];
+      v21 = v15[2](v15, artistName);
       [(__CFString *)v9 appendFormat:@"Artist: %@\n", v21];
 
-      v22 = [v4 albumTitle];
-      v23 = v15[2](v15, v22);
+      albumTitle = [v4 albumTitle];
+      v23 = v15[2](v15, albumTitle);
       [(__CFString *)v9 appendFormat:@" Album: %@\n", v23];
 
-      v24 = [v4 catalog];
-      if (v24 > 4)
+      catalog = [v4 catalog];
+      if (catalog > 4)
       {
         v25 = @"Mock";
       }
 
       else
       {
-        v25 = off_1E773ED58[v24];
+        v25 = off_1E773ED58[catalog];
       }
 
       v26 = v25;
       v27 = v15[2](v15, v26);
       [(__CFString *)v9 appendFormat:@"  Type: %@\n", v27];
 
-      v28 = [v4 assetTagsDescription];
-      v29 = v15[2](v15, v28);
+      assetTagsDescription = [v4 assetTagsDescription];
+      v29 = v15[2](v15, assetTagsDescription);
       [(__CFString *)v9 appendFormat:@"  Tags: %@\n", v29];
 
       [v4 pace];
@@ -179,25 +179,25 @@ __CFString *__43__PXAudioPlayer_PXAscii__lcdStringForSize___block_invoke(uint64_
 
 - (id)windowSceneID
 {
-  v2 = [(PXAudioPlayer *)self audioSessionDelegate];
-  v3 = [v2 windowSceneID];
+  audioSessionDelegate = [(PXAudioPlayer *)self audioSessionDelegate];
+  windowSceneID = [audioSessionDelegate windowSceneID];
 
-  return v3;
+  return windowSceneID;
 }
 
-- (id)AVAudioSessionForAudioSession:(id)a3
+- (id)AVAudioSessionForAudioSession:(id)session
 {
-  v4 = [(PXAudioPlayer *)self audioSessionDelegate];
-  v5 = [v4 AVAudioSessionForPlayer:self];
+  audioSessionDelegate = [(PXAudioPlayer *)self audioSessionDelegate];
+  v5 = [audioSessionDelegate AVAudioSessionForPlayer:self];
 
   return v5;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXAudioPlayer;
-  [(PXAudioPlayer *)&v3 performChanges:a3];
+  [(PXAudioPlayer *)&v3 performChanges:changes];
 }
 
 - (void)didPerformChanges
@@ -208,16 +208,16 @@ __CFString *__43__PXAudioPlayer_PXAscii__lcdStringForSize___block_invoke(uint64_
   [(PXAudioPlayer *)self _update];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (CurrentSessionContext == a5)
+  observableCopy = observable;
+  if (CurrentSessionContext == context)
   {
     px_dispatch_on_main_queue();
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXAudioPlayer.m" lineNumber:469 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioPlayer.m" lineNumber:469 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }
@@ -253,28 +253,28 @@ void __46__PXAudioPlayer_observable_didChange_context___block_invoke_2(uint64_t 
 - (void)_sessionsQueue_updateState
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(PXAudioPlayer *)self sessionsQueue_currentSession];
-  v4 = [v3 asset];
-  v5 = [(PXAudioPlayer *)self currentAsset];
+  sessionsQueue_currentSession = [(PXAudioPlayer *)self sessionsQueue_currentSession];
+  asset = [sessionsQueue_currentSession asset];
+  currentAsset = [(PXAudioPlayer *)self currentAsset];
 
-  if (v4 == v5)
+  if (asset == currentAsset)
   {
-    v9 = [v3 error];
+    error = [sessionsQueue_currentSession error];
     memset(buf, 0, sizeof(buf));
-    if (v3)
+    if (sessionsQueue_currentSession)
     {
-      [v3 duration];
+      [sessionsQueue_currentSession duration];
       if (buf[12])
       {
         goto LABEL_10;
       }
     }
 
-    v10 = [(PXAudioPlayer *)self currentAsset];
-    v11 = v10;
-    if (v10)
+    currentAsset2 = [(PXAudioPlayer *)self currentAsset];
+    v11 = currentAsset2;
+    if (currentAsset2)
     {
-      [v10 duration];
+      [currentAsset2 duration];
     }
 
     else
@@ -286,28 +286,28 @@ void __46__PXAudioPlayer_observable_didChange_context___block_invoke_2(uint64_t 
     *buf = v14;
     *&buf[16] = v15;
 
-    if (v3)
+    if (sessionsQueue_currentSession)
     {
 LABEL_10:
-      [v3 status];
+      [sessionsQueue_currentSession status];
     }
 
-    v12 = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
-    v13 = v9;
+    _sessionsQueue_generateCurrentTimeRecord = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
+    v13 = error;
     px_dispatch_on_main_queue();
   }
 
   v6 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v3 asset];
-    v8 = [(PXAudioPlayer *)self currentAsset];
+    asset2 = [sessionsQueue_currentSession asset];
+    currentAsset3 = [(PXAudioPlayer *)self currentAsset];
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = asset2;
     *&buf[22] = 2112;
-    v17 = v8;
+    v17 = currentAsset3;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEBUG, "%@ skipping state update because we are awaiting a new audio session for the current asset.\n\tCurrent asset: %@\n\tExisting asset: %@", buf, 0x20u);
   }
 }
@@ -339,15 +339,15 @@ uint64_t __43__PXAudioPlayer__sessionsQueue_updateState__block_invoke_2(uint64_t
   return [*(a1 + 32) setMainQueue_currentTimeRecord:*(a1 + 48)];
 }
 
-- (void)_sessionsQueue_updateCurrentSessionStateWithDesiredPlayState:(int64_t)a3
+- (void)_sessionsQueue_updateCurrentSessionStateWithDesiredPlayState:(int64_t)state
 {
-  v4 = [(PXAudioPlayer *)self sessionsQueue_currentSession];
+  sessionsQueue_currentSession = [(PXAudioPlayer *)self sessionsQueue_currentSession];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78__PXAudioPlayer__sessionsQueue_updateCurrentSessionStateWithDesiredPlayState___block_invoke;
   v5[3] = &__block_descriptor_40_e33_v16__0___PXMutableAudioSession__8l;
-  v5[4] = a3;
-  [v4 performChanges:v5];
+  v5[4] = state;
+  [sessionsQueue_currentSession performChanges:v5];
 }
 
 void __78__PXAudioPlayer__sessionsQueue_updateCurrentSessionStateWithDesiredPlayState___block_invoke(uint64_t a1, void *a2)
@@ -377,16 +377,16 @@ LABEL_6:
 
 - (void)_updateCurrentSessionState
 {
-  v3 = [(PXAudioPlayer *)self desiredPlayState];
+  desiredPlayState = [(PXAudioPlayer *)self desiredPlayState];
   objc_initWeak(&location, self);
-  v4 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PXAudioPlayer__updateCurrentSessionState__block_invoke;
   block[3] = &unk_1E7749808;
   objc_copyWeak(v6, &location);
-  v6[1] = v3;
-  dispatch_async(v4, block);
+  v6[1] = desiredPlayState;
+  dispatch_async(sessionsQueue, block);
 
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
@@ -402,9 +402,9 @@ void __43__PXAudioPlayer__updateCurrentSessionState__block_invoke(uint64_t a1)
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 8) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _invalidateCurrentSessionState]"];
-    [v2 handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:385 description:{@"invalidating %lu after it already has been updated", 8}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:385 description:{@"invalidating %lu after it already has been updated", 8}];
 
     abort();
   }
@@ -414,22 +414,22 @@ void __43__PXAudioPlayer__updateCurrentSessionState__block_invoke(uint64_t a1)
 
 - (void)_updateState
 {
-  v3 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __29__PXAudioPlayer__updateState__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionsQueue, block);
 }
 
 - (void)_invalidateState
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _invalidateState]"];
-    [v2 handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:373 description:{@"invalidating %lu after it already has been updated", 1}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:373 description:{@"invalidating %lu after it already has been updated", 1}];
 
     abort();
   }
@@ -439,15 +439,15 @@ void __43__PXAudioPlayer__updateCurrentSessionState__block_invoke(uint64_t a1)
 
 - (void)_sessionsQueue_updateCurrentTimeRecord
 {
-  v3 = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
+  _sessionsQueue_generateCurrentTimeRecord = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__PXAudioPlayer__sessionsQueue_updateCurrentTimeRecord__block_invoke;
   block[3] = &unk_1E774B248;
   objc_copyWeak(&v7, &location);
-  v6 = v3;
-  v4 = v3;
+  v6 = _sessionsQueue_generateCurrentTimeRecord;
+  v4 = _sessionsQueue_generateCurrentTimeRecord;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v7);
@@ -463,22 +463,22 @@ void __55__PXAudioPlayer__sessionsQueue_updateCurrentTimeRecord__block_invoke(ui
 
 - (void)_updateCurrentTimeRecord
 {
-  v3 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__PXAudioPlayer__updateCurrentTimeRecord__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionsQueue, block);
 }
 
 - (void)_invalidateCurrentTimeRecord
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 4) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _invalidateCurrentTimeRecord]"];
-    [v2 handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:354 description:{@"invalidating %lu after it already has been updated", 4}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:354 description:{@"invalidating %lu after it already has been updated", 4}];
 
     abort();
   }
@@ -488,12 +488,12 @@ void __55__PXAudioPlayer__sessionsQueue_updateCurrentTimeRecord__block_invoke(ui
 
 - (void)_updateCurrentTimeRecordUpdateTimer
 {
-  v3 = [(PXAudioPlayer *)self state];
-  v4 = [(PXAudioPlayer *)self currentTimeRecordUpdateTimer];
+  state = [(PXAudioPlayer *)self state];
+  currentTimeRecordUpdateTimer = [(PXAudioPlayer *)self currentTimeRecordUpdateTimer];
 
-  if (v3 == 3)
+  if (state == 3)
   {
-    if (!v4)
+    if (!currentTimeRecordUpdateTimer)
     {
       objc_initWeak(&location, self);
       v5 = MEMORY[0x1E695DFF0];
@@ -510,10 +510,10 @@ void __55__PXAudioPlayer__sessionsQueue_updateCurrentTimeRecord__block_invoke(ui
     }
   }
 
-  else if (v4)
+  else if (currentTimeRecordUpdateTimer)
   {
-    v7 = [(PXAudioPlayer *)self currentTimeRecordUpdateTimer];
-    [v7 invalidate];
+    currentTimeRecordUpdateTimer2 = [(PXAudioPlayer *)self currentTimeRecordUpdateTimer];
+    [currentTimeRecordUpdateTimer2 invalidate];
 
     [(PXAudioPlayer *)self setCurrentTimeRecordUpdateTimer:0];
   }
@@ -529,9 +529,9 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 2) != 0)
   {
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _invalidateCurrentTimeRecordUpdateTimer]"];
-    [v2 handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:334 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXAudioPlayer.m" lineNumber:334 description:{@"invalidating %lu after it already has been updated", 2}];
 
     abort();
   }
@@ -548,9 +548,9 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _update]"];
-      [v8 handleFailureInFunction:v9 file:@"PXAudioPlayer.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXAudioPlayer.m" lineNumber:316 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -563,9 +563,9 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
       [(PXAudioPlayer *)self _updateCurrentSessionState];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _update]"];
-        [v10 handleFailureInFunction:v11 file:@"PXAudioPlayer.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXAudioPlayer.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -579,9 +579,9 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _update]"];
-      [v12 handleFailureInFunction:v13 file:@"PXAudioPlayer.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXAudioPlayer.m" lineNumber:323 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -594,9 +594,9 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXAudioPlayer.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXAudioPlayer.m" lineNumber:326 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -611,53 +611,53 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXAudioPlayer _update]"];
-      [v17 handleFailureInFunction:v16 file:@"PXAudioPlayer.m" lineNumber:329 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v16 file:@"PXAudioPlayer.m" lineNumber:329 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_error != v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_error != errorCopy)
   {
-    v8 = v5;
-    v7 = [(NSError *)v5 isEqual:?];
+    v8 = errorCopy;
+    v7 = [(NSError *)errorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_error, a3);
+      objc_storeStrong(&self->_error, error);
       [(PXAudioPlayer *)self signalChange:32];
       v6 = v8;
     }
   }
 }
 
-- (void)setCurrentAssetDuration:(id *)a3
+- (void)setCurrentAssetDuration:(id *)duration
 {
   p_currentAssetDuration = &self->_currentAssetDuration;
-  time1 = *a3;
+  time1 = *duration;
   currentAssetDuration = self->_currentAssetDuration;
   if (CMTimeCompare(&time1, &currentAssetDuration))
   {
-    v6 = *&a3->var0;
-    p_currentAssetDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_currentAssetDuration->epoch = duration->var3;
     *&p_currentAssetDuration->value = v6;
     [(PXAudioPlayer *)self signalChange:2];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:@"PXAudioPlayerStateDidChangeNotification" object:self];
+    self->_state = state;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PXAudioPlayerStateDidChangeNotification" object:self];
 
     [(PXAudioPlayer *)self _invalidateCurrentTimeRecordUpdateTimer];
     [(PXAudioPlayer *)self signalChange:4];
@@ -669,7 +669,7 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
       if (os_signpost_enabled(v6))
       {
         v17 = 134217984;
-        v18 = [(PXAudioPlayer *)self logContext];
+        logContext = [(PXAudioPlayer *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXAudioPlayerChangedState", "Context=%{signpost.telemetry:string2}lu ", &v17, 0xCu);
       }
     }
@@ -681,11 +681,11 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
       v11 = v10;
       if (os_signpost_enabled(v9))
       {
-        v12 = [(PXAudioPlayer *)self logContext];
+        logContext2 = [(PXAudioPlayer *)self logContext];
         v17 = 134218240;
-        v18 = v12;
+        logContext = logContext2;
         v19 = 2048;
-        v20 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_EVENT, v11, "PXAudioPlayerChangedState", "Context=%{signpost.telemetry:string2}lu %ld", &v17, 0x16u);
       }
     }
@@ -697,11 +697,11 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
       v15 = v14;
       if (os_signpost_enabled(v13))
       {
-        v16 = [(PXAudioPlayer *)self logContext];
+        logContext3 = [(PXAudioPlayer *)self logContext];
         v17 = 134218240;
-        v18 = v16;
+        logContext = logContext3;
         v19 = 2048;
-        v20 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PXAudioPlayerChangedState", "Context=%{signpost.telemetry:string2}lu %ld", &v17, 0x16u);
       }
     }
@@ -718,29 +718,29 @@ void __52__PXAudioPlayer__updateCurrentTimeRecordUpdateTimer__block_invoke(uint6
   [(PXAudioPlayer *)self performChanges:v2];
 }
 
-- (void)_sessionsQueue_handleOutgoingSession:(id)a3
+- (void)_sessionsQueue_handleOutgoingSession:(id)session
 {
-  v4 = a3;
-  [v4 performChanges:&__block_literal_global_48_238213];
-  [v4 unregisterChangeObserver:self context:CurrentSessionContext];
+  sessionCopy = session;
+  [sessionCopy performChanges:&__block_literal_global_48_238213];
+  [sessionCopy unregisterChangeObserver:self context:CurrentSessionContext];
 }
 
-- (void)sessionsQueue_setCurrentSession:(id)a3
+- (void)sessionsQueue_setCurrentSession:(id)session
 {
-  v5 = a3;
-  if (self->_sessionsQueue_currentSession != v5)
+  sessionCopy = session;
+  if (self->_sessionsQueue_currentSession != sessionCopy)
   {
     [(PXAudioPlayer *)self _sessionsQueue_handleOutgoingSession:?];
-    objc_storeStrong(&self->_sessionsQueue_currentSession, a3);
-    [(PXAudioSession *)v5 registerChangeObserver:self context:CurrentSessionContext];
-    v6 = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
+    objc_storeStrong(&self->_sessionsQueue_currentSession, session);
+    [(PXAudioSession *)sessionCopy registerChangeObserver:self context:CurrentSessionContext];
+    _sessionsQueue_generateCurrentTimeRecord = [(PXAudioPlayer *)self _sessionsQueue_generateCurrentTimeRecord];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __49__PXAudioPlayer_sessionsQueue_setCurrentSession___block_invoke;
     v8[3] = &unk_1E774C620;
     v8[4] = self;
-    v9 = v6;
-    v7 = v6;
+    v9 = _sessionsQueue_generateCurrentTimeRecord;
+    v7 = _sessionsQueue_generateCurrentTimeRecord;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 }
@@ -769,18 +769,18 @@ uint64_t __49__PXAudioPlayer_sessionsQueue_setCurrentSession___block_invoke_2(ui
 
 - (id)_sessionsQueue_generateCurrentTimeRecord
 {
-  v2 = [(PXAudioPlayer *)self sessionsQueue_currentSession];
-  v3 = [v2 status];
+  sessionsQueue_currentSession = [(PXAudioPlayer *)self sessionsQueue_currentSession];
+  status = [sessionsQueue_currentSession status];
   v10 = 0uLL;
   v11 = 0;
-  if (v2)
+  if (sessionsQueue_currentSession)
   {
-    [v2 currentTime];
+    [sessionsQueue_currentSession currentTime];
   }
 
   v4 = [PXCurrentTimeRecord alloc];
   v5 = 0.0;
-  if (v3 == 3)
+  if (status == 3)
   {
     *&v5 = 1.0;
   }
@@ -792,14 +792,14 @@ uint64_t __49__PXAudioPlayer_sessionsQueue_setCurrentSession___block_invoke_2(ui
   return v6;
 }
 
-- (id)_createAudioSessionForAsset:(id)a3 startTime:(id *)a4
+- (id)_createAudioSessionForAsset:(id)asset startTime:(id *)time
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 audioSessionClass];
-  if (v6)
+  assetCopy = asset;
+  audioSessionClass = [assetCopy audioSessionClass];
+  if (assetCopy)
   {
-    [v6 duration];
+    [assetCopy duration];
   }
 
   else
@@ -807,32 +807,32 @@ uint64_t __49__PXAudioPlayer_sessionsQueue_setCurrentSession___block_invoke_2(ui
     memset(&time2, 0, sizeof(time2));
   }
 
-  time1 = *a4;
+  time1 = *time;
   if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
   {
     v8 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      time2 = *a4;
+      time2 = *time;
       v9 = CMTimeCopyDescription(0, &time2);
       LODWORD(time2.value) = 138412546;
       *(&time2.value + 4) = v9;
       LOWORD(time2.flags) = 2112;
-      *(&time2.flags + 2) = v6;
+      *(&time2.flags + 2) = assetCopy;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "Requested start time %@ is less than the asset duration of %@. Restarting at zero.", &time2, 0x16u);
     }
 
     v10 = *MEMORY[0x1E6960CC0];
-    a4->var3 = *(MEMORY[0x1E6960CC0] + 16);
-    *&a4->var0 = v10;
+    time->var3 = *(MEMORY[0x1E6960CC0] + 16);
+    *&time->var0 = v10;
   }
 
-  v11 = [v7 alloc];
+  v11 = [audioSessionClass alloc];
   [(PXAudioPlayer *)self volume];
   v13 = v12;
-  v14 = [(PXAudioPlayer *)self sessionsQueue];
-  time2 = *a4;
-  v15 = [v11 initWithAsset:v6 volume:&time2 startTime:v14 queue:self audioSessionDelegate:{COERCE_DOUBLE(__PAIR64__(HIDWORD(time2.value), v13))}];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
+  time2 = *time;
+  v15 = [v11 initWithAsset:assetCopy volume:&time2 startTime:sessionsQueue queue:self audioSessionDelegate:{COERCE_DOUBLE(__PAIR64__(HIDWORD(time2.value), v13))}];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -861,14 +861,14 @@ void __55__PXAudioPlayer__createAudioSessionForAsset_startTime___block_invoke(ui
   v10 = __Block_byref_object_copy__238217;
   v11 = __Block_byref_object_dispose__238218;
   v12 = 0;
-  v3 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__PXAudioPlayer_currentAudioSession__block_invoke;
   v6[3] = &unk_1E7749A28;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(sessionsQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -908,13 +908,13 @@ void __28__PXAudioPlayer_currentTime__block_invoke(uint64_t a1)
 
 - (void)pause
 {
-  v3 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __22__PXAudioPlayer_pause__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionsQueue, block);
 }
 
 void __22__PXAudioPlayer_pause__block_invoke(uint64_t a1)
@@ -923,23 +923,23 @@ void __22__PXAudioPlayer_pause__block_invoke(uint64_t a1)
   [v1 performChanges:&__block_literal_global_238220];
 }
 
-- (void)replayFromTime:(id *)a3
+- (void)replayFromTime:(id *)time
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v5 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__PXAudioPlayer_replayFromTime___block_invoke;
   v6[3] = &unk_1E7749770;
   v6[4] = self;
-  v7 = *&a3->var0;
-  var3 = a3->var3;
-  dispatch_async(v5, v6);
+  v7 = *&time->var0;
+  var3 = time->var3;
+  dispatch_async(sessionsQueue, v6);
 }
 
 void __32__PXAudioPlayer_replayFromTime___block_invoke(uint64_t a1)
@@ -961,39 +961,39 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
   return [a2 playFromTime:&v3];
 }
 
-- (void)setCurrentAsset:(id)a3 startTime:(id *)a4 hostTime:(id *)a5
+- (void)setCurrentAsset:(id)asset startTime:(id *)time hostTime:(id *)hostTime
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ((a4->var2 & 1) == 0)
+  assetCopy = asset;
+  if ((time->var2 & 1) == 0)
   {
     v9 = *MEMORY[0x1E6960CC0];
-    a4->var3 = *(MEMORY[0x1E6960CC0] + 16);
-    *&a4->var0 = v9;
+    time->var3 = *(MEMORY[0x1E6960CC0] + 16);
+    *&time->var0 = v9;
   }
 
   v10 = PLAudioPlaybackGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    time = *a4;
+    time = *time;
     Seconds = CMTimeGetSeconds(&time);
     LODWORD(time.value) = 138412802;
     *(&time.value + 4) = self;
     LOWORD(time.flags) = 2112;
-    *(&time.flags + 2) = v8;
+    *(&time.flags + 2) = assetCopy;
     HIWORD(time.epoch) = 2048;
     v42 = Seconds;
     _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "%@ asked to play asset %@ from start time %f", &time, 0x20u);
   }
 
   memset(&time, 0, sizeof(time));
-  if (v8)
+  if (assetCopy)
   {
-    [v8 duration];
+    [assetCopy duration];
   }
 
   currentAsset = self->_currentAsset;
-  v13 = v8;
+  v13 = assetCopy;
   v14 = v13;
   v15 = v13;
   if (currentAsset == v13)
@@ -1005,7 +1005,7 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
 
   if ((v16 & 1) == 0)
   {
-    if (v8)
+    if (assetCopy)
     {
       v39 = @"PXAudioPlayerCurrentAssetDidChangeNotificationCurrentAssetKey";
       v40 = v14;
@@ -1017,8 +1017,8 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
       v15 = 0;
     }
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 postNotificationName:@"PXAudioPlayerCurrentAssetDidChangeNotification" object:self userInfo:v15];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PXAudioPlayerCurrentAssetDidChangeNotification" object:self userInfo:v15];
 
     [(PXAudioPlayer *)self signalChange:1];
     v18 = [(PXAudioPlayer *)self log];
@@ -1041,9 +1041,9 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
       v23 = v22;
       if (os_signpost_enabled(v21))
       {
-        v24 = [(PXAudioPlayer *)self logContext];
+        logContext = [(PXAudioPlayer *)self logContext];
         LODWORD(buf.value) = 134218242;
-        *(&buf.value + 4) = v24;
+        *(&buf.value + 4) = logContext;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v14;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v21, OS_SIGNPOST_EVENT, v23, "PXAudioPlayerChangedCurrentAsset", "Context=%{signpost.telemetry:string2}lu %{public}@", &buf, 0x16u);
@@ -1057,9 +1057,9 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
       v27 = v26;
       if (os_signpost_enabled(v25))
       {
-        v28 = [(PXAudioPlayer *)self logContext];
+        logContext2 = [(PXAudioPlayer *)self logContext];
         LODWORD(buf.value) = 134218242;
-        *(&buf.value + 4) = v28;
+        *(&buf.value + 4) = logContext2;
         LOWORD(buf.flags) = 2114;
         *(&buf.flags + 2) = v14;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v25, OS_SIGNPOST_INTERVAL_BEGIN, v27, "PXAudioPlayerChangedCurrentAsset", "Context=%{signpost.telemetry:string2}lu %{public}@", &buf, 0x16u);
@@ -1069,25 +1069,25 @@ uint64_t __32__PXAudioPlayer_replayFromTime___block_invoke_2(uint64_t a1, void *
     buf = time;
     [(PXAudioPlayer *)self setCurrentAssetDuration:&buf];
     v29 = [PXCurrentTimeRecord alloc];
-    buf = *a4;
+    buf = *time;
     v30 = [(PXCurrentTimeRecord *)v29 initWithSampleTime:&buf rate:0.0];
     [(PXAudioPlayer *)self setMainQueue_currentTimeRecord:v30];
 
 LABEL_22:
   }
 
-  objc_storeStrong(&self->_currentAsset, a3);
-  v31 = [(PXAudioPlayer *)self sessionsQueue];
+  objc_storeStrong(&self->_currentAsset, asset);
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__PXAudioPlayer_setCurrentAsset_startTime_hostTime___block_invoke;
   block[3] = &unk_1E7749798;
   v34 = v14;
-  v35 = self;
-  v36 = *&a4->var0;
-  var3 = a4->var3;
+  selfCopy = self;
+  v36 = *&time->var0;
+  var3 = time->var3;
   v32 = v14;
-  dispatch_async(v31, block);
+  dispatch_async(sessionsQueue, block);
 }
 
 void __52__PXAudioPlayer_setCurrentAsset_startTime_hostTime___block_invoke(uint64_t a1)
@@ -1119,38 +1119,38 @@ void __52__PXAudioPlayer_setCurrentAsset_startTime_hostTime___block_invoke(uint6
   [*(a1 + 40) sessionsQueue_setCurrentSession:v6];
 }
 
-- (void)setCurrentAsset:(id)a3 startTime:(id *)a4
+- (void)setCurrentAsset:(id)asset startTime:(id *)time
 {
-  v6 = *a4;
+  v6 = *time;
   v4 = *MEMORY[0x1E6960C70];
   v5 = *(MEMORY[0x1E6960C70] + 16);
-  [(PXAudioPlayer *)self setCurrentAsset:a3 startTime:&v6 hostTime:&v4];
+  [(PXAudioPlayer *)self setCurrentAsset:asset startTime:&v6 hostTime:&v4];
 }
 
-- (void)setCurrentAsset:(id)a3
+- (void)setCurrentAsset:(id)asset
 {
   v3 = *MEMORY[0x1E6960C70];
   v4 = *(MEMORY[0x1E6960C70] + 16);
-  [(PXAudioPlayer *)self setCurrentAsset:a3 startTime:&v3];
+  [(PXAudioPlayer *)self setCurrentAsset:asset startTime:&v3];
 }
 
-- (void)playFromStartTime:(id *)a3
+- (void)playFromStartTime:(id *)time
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ((a3->var2 & 1) == 0)
+  if ((time->var2 & 1) == 0)
   {
     PXAssertGetLog();
   }
 
-  v5 = [(PXAudioPlayer *)self sessionsQueue];
+  sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__PXAudioPlayer_playFromStartTime___block_invoke;
   v6[3] = &unk_1E7749770;
   v6[4] = self;
-  v7 = *&a3->var0;
-  var3 = a3->var3;
-  dispatch_async(v5, v6);
+  v7 = *&time->var0;
+  var3 = time->var3;
+  dispatch_async(sessionsQueue, v6);
 
   [(PXAudioPlayer *)self setDesiredPlayState:1];
 }
@@ -1174,12 +1174,12 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
   return [a2 playFromTime:&v3];
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (self->_desiredPlayState != a3)
+  if (self->_desiredPlayState != state)
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     v5 = PLAudioPlaybackGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1194,9 +1194,9 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
       }
 
       v20 = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
-      v23 = v6;
+      stateCopy2 = v6;
       v7 = v6;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "%@ desired play state is now %@", &v20, 0x16u);
     }
@@ -1209,9 +1209,9 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXAudioPlayer *)self logContext];
+        logContext = [(PXAudioPlayer *)self logContext];
         v20 = 134217984;
-        v21 = v11;
+        selfCopy = logContext;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_END, v10, "PXAudioPlayerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu ", &v20, 0xCu);
       }
     }
@@ -1223,11 +1223,11 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXAudioPlayer *)self logContext];
+        logContext2 = [(PXAudioPlayer *)self logContext];
         v20 = 134218240;
-        v21 = v15;
+        selfCopy = logContext2;
         v22 = 2048;
-        v23 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_EVENT, v14, "PXAudioPlayerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v20, 0x16u);
       }
     }
@@ -1239,11 +1239,11 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
       v18 = v17;
       if (os_signpost_enabled(v16))
       {
-        v19 = [(PXAudioPlayer *)self logContext];
+        logContext3 = [(PXAudioPlayer *)self logContext];
         v20 = 134218240;
-        v21 = v19;
+        selfCopy = logContext3;
         v22 = 2048;
-        v23 = a3;
+        stateCopy2 = state;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v18, "PXAudioPlayerChangedDesiredPlayState", "Context=%{signpost.telemetry:string2}lu %ld", &v20, 0x16u);
       }
     }
@@ -1252,19 +1252,19 @@ uint64_t __35__PXAudioPlayer_playFromStartTime___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)setTargetLoudnessInLKFS:(float)a3
+- (void)setTargetLoudnessInLKFS:(float)s
 {
-  if (self->_targetLoudnessInLKFS != a3)
+  if (self->_targetLoudnessInLKFS != s)
   {
-    self->_targetLoudnessInLKFS = a3;
-    v5 = [(PXAudioPlayer *)self sessionsQueue];
+    self->_targetLoudnessInLKFS = s;
+    sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__PXAudioPlayer_setTargetLoudnessInLKFS___block_invoke;
     v6[3] = &unk_1E7749728;
     v6[4] = self;
-    v7 = a3;
-    dispatch_async(v5, v6);
+    sCopy = s;
+    dispatch_async(sessionsQueue, v6);
   }
 }
 
@@ -1279,12 +1279,12 @@ void __41__PXAudioPlayer_setTargetLoudnessInLKFS___block_invoke(uint64_t a1)
   [v2 performChanges:v3];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
+    self->_volume = volume;
     [(PXAudioPlayer *)self signalChange:8];
     v5 = [(PXAudioPlayer *)self log];
     v6 = os_signpost_id_make_with_pointer(v5, self);
@@ -1294,7 +1294,7 @@ void __41__PXAudioPlayer_setTargetLoudnessInLKFS___block_invoke(uint64_t a1)
       if (os_signpost_enabled(v5))
       {
         *buf = 134217984;
-        v20 = [(PXAudioPlayer *)self logContext];
+        logContext = [(PXAudioPlayer *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXAudioPlayerChangedVolume", "Context=%{signpost.telemetry:string2}lu ", buf, 0xCu);
       }
     }
@@ -1306,11 +1306,11 @@ void __41__PXAudioPlayer_setTargetLoudnessInLKFS___block_invoke(uint64_t a1)
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXAudioPlayer *)self logContext];
+        logContext2 = [(PXAudioPlayer *)self logContext];
         *buf = 134218240;
-        v20 = v11;
+        logContext = logContext2;
         v21 = 2048;
-        v22 = a3;
+        volumeCopy2 = volume;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXAudioPlayerChangedVolume", "Context=%{signpost.telemetry:string2}lu %.2f", buf, 0x16u);
       }
     }
@@ -1322,23 +1322,23 @@ void __41__PXAudioPlayer_setTargetLoudnessInLKFS___block_invoke(uint64_t a1)
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXAudioPlayer *)self logContext];
+        logContext3 = [(PXAudioPlayer *)self logContext];
         *buf = 134218240;
-        v20 = v15;
+        logContext = logContext3;
         v21 = 2048;
-        v22 = a3;
+        volumeCopy2 = volume;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXAudioPlayerChangedVolume", "Context=%{signpost.telemetry:string2}lu %.2f", buf, 0x16u);
       }
     }
 
-    v16 = [(PXAudioPlayer *)self sessionsQueue];
+    sessionsQueue = [(PXAudioPlayer *)self sessionsQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __27__PXAudioPlayer_setVolume___block_invoke;
     v17[3] = &unk_1E7749728;
     v17[4] = self;
-    v18 = a3;
-    dispatch_async(v16, v17);
+    volumeCopy3 = volume;
+    dispatch_async(sessionsQueue, v17);
   }
 }
 
@@ -1355,8 +1355,8 @@ void __27__PXAudioPlayer_setVolume___block_invoke(uint64_t a1)
 
 - (PXAudioPlayer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAudioPlayer.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PXAudioPlayer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAudioPlayer.m" lineNumber:101 description:{@"%s is not available as initializer", "-[PXAudioPlayer init]"}];
 
   abort();
 }
@@ -1366,21 +1366,21 @@ void __27__PXAudioPlayer_setVolume___block_invoke(uint64_t a1)
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXAudioPlayer *)self name];
+  name = [(PXAudioPlayer *)self name];
   v7 = PXAudioPlayerStateDescription([(PXAudioPlayer *)self state]);
   [(PXAudioPlayer *)self currentTime];
   Seconds = CMTimeGetSeconds(&time);
   [(PXAudioPlayer *)self currentAssetDuration];
   v9 = CMTimeGetSeconds(&time);
-  v10 = [(PXAudioPlayer *)self currentAsset];
-  v11 = [v3 initWithFormat:@"<%@: %p; name: %@; state: %@; currentTime: %.1f/%.1fs; currentAsset: %@>", v5, self, v6, v7, *&Seconds, *&v9, v10];
+  currentAsset = [(PXAudioPlayer *)self currentAsset];
+  v11 = [v3 initWithFormat:@"<%@: %p; name: %@; state: %@; currentTime: %.1f/%.1fs; currentAsset: %@>", v5, self, name, v7, *&Seconds, *&v9, currentAsset];
 
   return v11;
 }
 
-- (PXAudioPlayer)initWithName:(id)a3
+- (PXAudioPlayer)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = PXAudioPlayer;
   v5 = [(PXAudioPlayer *)&v14 init];
@@ -1390,7 +1390,7 @@ void __27__PXAudioPlayer_setVolume___block_invoke(uint64_t a1)
     v7 = MEMORY[0x1E6960C70];
     *&v5->_currentAssetDuration.value = *MEMORY[0x1E6960C70];
     v5->_currentAssetDuration.epoch = *(v7 + 16);
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     name = v6->_name;
     v6->_name = v8;
 

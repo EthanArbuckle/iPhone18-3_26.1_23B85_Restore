@@ -27,7 +27,7 @@
 {
   v5 = [a3 mutableCopy];
   [v5 replaceOccurrencesOfString:@"%{public}" withString:@"%" options:0 range:{0, objc_msgSend(v5, "length")}];
-  v6 = [a1 initWithFormat:v5 arguments:a4];
+  v6 = [self initWithFormat:v5 arguments:a4];
 
   return v6;
 }

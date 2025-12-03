@@ -1,15 +1,15 @@
 @interface AWDLibnetcoreStatsReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTcpECNInterfaceReport:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addTcpECNInterfaceReport:(id)report;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReportReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasReportReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreStatsReport
@@ -29,9 +29,9 @@
   [(AWDLibnetcoreStatsReport *)&v3 dealloc];
 }
 
-- (void)setHasReportReason:(BOOL)a3
+- (void)setHasReportReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -44,7 +44,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTcpECNInterfaceReport:(id)a3
+- (void)addTcpECNInterfaceReport:(id)report
 {
   tcpECNInterfaceReports = self->_tcpECNInterfaceReports;
   if (!tcpECNInterfaceReports)
@@ -53,7 +53,7 @@
     self->_tcpECNInterfaceReports = tcpECNInterfaceReports;
   }
 
-  [(NSMutableArray *)tcpECNInterfaceReports addObject:a3];
+  [(NSMutableArray *)tcpECNInterfaceReports addObject:report];
 }
 
 - (id)description
@@ -66,47 +66,47 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reportReason), @"reportReason"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_reportReason), @"reportReason"}];
   }
 
   mbufStatisticsReport = self->_mbufStatisticsReport;
   if (mbufStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreMbufStatsReport dictionaryRepresentation](mbufStatisticsReport forKey:{"dictionaryRepresentation"), @"mbufStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreMbufStatsReport dictionaryRepresentation](mbufStatisticsReport forKey:{"dictionaryRepresentation"), @"mbufStatisticsReport"}];
   }
 
   tcpStatisticsReport = self->_tcpStatisticsReport;
   if (tcpStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreTCPStatsReport dictionaryRepresentation](tcpStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreTCPStatsReport dictionaryRepresentation](tcpStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpStatisticsReport"}];
   }
 
   tcpECNStatisticsReport = self->_tcpECNStatisticsReport;
   if (tcpECNStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreTCPECNStatsReport dictionaryRepresentation](tcpECNStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpECNStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreTCPECNStatsReport dictionaryRepresentation](tcpECNStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpECNStatisticsReport"}];
   }
 
   tcpTFOStatisticsReport = self->_tcpTFOStatisticsReport;
   if (tcpTFOStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreTCPTFOStatsReport dictionaryRepresentation](tcpTFOStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpTFOStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreTCPTFOStatsReport dictionaryRepresentation](tcpTFOStatisticsReport forKey:{"dictionaryRepresentation"), @"tcpTFOStatisticsReport"}];
   }
 
   networkdStatisticsReport = self->_networkdStatisticsReport;
   if (networkdStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreNetworkdStatsReport dictionaryRepresentation](networkdStatisticsReport forKey:{"dictionaryRepresentation"), @"networkdStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreNetworkdStatsReport dictionaryRepresentation](networkdStatisticsReport forKey:{"dictionaryRepresentation"), @"networkdStatisticsReport"}];
   }
 
   if ([(NSMutableArray *)self->_tcpECNInterfaceReports count])
@@ -140,26 +140,26 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"tcpECNInterfaceReport"];
+    [dictionary setObject:v10 forKey:@"tcpECNInterfaceReport"];
   }
 
   nwAPIUsageReport = self->_nwAPIUsageReport;
   if (nwAPIUsageReport)
   {
-    [v3 setObject:-[AWDNWAPIUsage dictionaryRepresentation](nwAPIUsageReport forKey:{"dictionaryRepresentation"), @"nwAPIUsageReport"}];
+    [dictionary setObject:-[AWDNWAPIUsage dictionaryRepresentation](nwAPIUsageReport forKey:{"dictionaryRepresentation"), @"nwAPIUsageReport"}];
   }
 
   mptcpStatisticsReport = self->_mptcpStatisticsReport;
   if (mptcpStatisticsReport)
   {
-    [v3 setObject:-[AWDLibnetcoreMPTCPStatsReport dictionaryRepresentation](mptcpStatisticsReport forKey:{"dictionaryRepresentation"), @"mptcpStatisticsReport"}];
+    [dictionary setObject:-[AWDLibnetcoreMPTCPStatsReport dictionaryRepresentation](mptcpStatisticsReport forKey:{"dictionaryRepresentation"), @"mptcpStatisticsReport"}];
   }
 
   v18 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -243,77 +243,77 @@
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 88) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 88) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 12) = self->_reportReason;
-    *(a3 + 88) |= 2u;
+    *(to + 12) = self->_reportReason;
+    *(to + 88) |= 2u;
   }
 
   if (self->_mbufStatisticsReport)
   {
-    [a3 setMbufStatisticsReport:?];
+    [to setMbufStatisticsReport:?];
   }
 
   if (self->_tcpStatisticsReport)
   {
-    [a3 setTcpStatisticsReport:?];
+    [to setTcpStatisticsReport:?];
   }
 
   if (self->_tcpECNStatisticsReport)
   {
-    [a3 setTcpECNStatisticsReport:?];
+    [to setTcpECNStatisticsReport:?];
   }
 
   if (self->_tcpTFOStatisticsReport)
   {
-    [a3 setTcpTFOStatisticsReport:?];
+    [to setTcpTFOStatisticsReport:?];
   }
 
   if (self->_networkdStatisticsReport)
   {
-    [a3 setNetworkdStatisticsReport:?];
+    [to setNetworkdStatisticsReport:?];
   }
 
   if ([(AWDLibnetcoreStatsReport *)self tcpECNInterfaceReportsCount])
   {
-    [a3 clearTcpECNInterfaceReports];
-    v6 = [(AWDLibnetcoreStatsReport *)self tcpECNInterfaceReportsCount];
-    if (v6)
+    [to clearTcpECNInterfaceReports];
+    tcpECNInterfaceReportsCount = [(AWDLibnetcoreStatsReport *)self tcpECNInterfaceReportsCount];
+    if (tcpECNInterfaceReportsCount)
     {
-      v7 = v6;
+      v7 = tcpECNInterfaceReportsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addTcpECNInterfaceReport:{-[AWDLibnetcoreStatsReport tcpECNInterfaceReportAtIndex:](self, "tcpECNInterfaceReportAtIndex:", i)}];
+        [to addTcpECNInterfaceReport:{-[AWDLibnetcoreStatsReport tcpECNInterfaceReportAtIndex:](self, "tcpECNInterfaceReportAtIndex:", i)}];
       }
     }
   }
 
   if (self->_nwAPIUsageReport)
   {
-    [a3 setNwAPIUsageReport:?];
+    [to setNwAPIUsageReport:?];
   }
 
   if (self->_mptcpStatisticsReport)
   {
 
-    [a3 setMptcpStatisticsReport:?];
+    [to setMptcpStatisticsReport:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -329,13 +329,13 @@
     *(v5 + 88) |= 2u;
   }
 
-  *(v6 + 16) = [(AWDLibnetcoreMbufStatsReport *)self->_mbufStatisticsReport copyWithZone:a3];
-  *(v6 + 72) = [(AWDLibnetcoreTCPStatsReport *)self->_tcpStatisticsReport copyWithZone:a3];
+  *(v6 + 16) = [(AWDLibnetcoreMbufStatsReport *)self->_mbufStatisticsReport copyWithZone:zone];
+  *(v6 + 72) = [(AWDLibnetcoreTCPStatsReport *)self->_tcpStatisticsReport copyWithZone:zone];
 
-  *(v6 + 64) = [(AWDLibnetcoreTCPECNStatsReport *)self->_tcpECNStatisticsReport copyWithZone:a3];
-  *(v6 + 80) = [(AWDLibnetcoreTCPTFOStatsReport *)self->_tcpTFOStatisticsReport copyWithZone:a3];
+  *(v6 + 64) = [(AWDLibnetcoreTCPECNStatsReport *)self->_tcpECNStatisticsReport copyWithZone:zone];
+  *(v6 + 80) = [(AWDLibnetcoreTCPTFOStatsReport *)self->_tcpTFOStatisticsReport copyWithZone:zone];
 
-  *(v6 + 32) = [(AWDLibnetcoreNetworkdStatsReport *)self->_networkdStatisticsReport copyWithZone:a3];
+  *(v6 + 32) = [(AWDLibnetcoreNetworkdStatsReport *)self->_networkdStatisticsReport copyWithZone:zone];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -355,7 +355,7 @@
           objc_enumerationMutation(tcpECNInterfaceReports);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addTcpECNInterfaceReport:v13];
       }
 
@@ -365,27 +365,27 @@
     while (v10);
   }
 
-  *(v6 + 40) = [(AWDNWAPIUsage *)self->_nwAPIUsageReport copyWithZone:a3];
-  *(v6 + 24) = [(AWDLibnetcoreMPTCPStatsReport *)self->_mptcpStatisticsReport copyWithZone:a3];
+  *(v6 + 40) = [(AWDNWAPIUsage *)self->_nwAPIUsageReport copyWithZone:zone];
+  *(v6 + 24) = [(AWDLibnetcoreMPTCPStatsReport *)self->_mptcpStatisticsReport copyWithZone:zone];
   v14 = *MEMORY[0x29EDCA608];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 88);
+    v6 = *(equal + 88);
     if (*&self->_has)
     {
-      if ((*(a3 + 88) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 88) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(a3 + 88))
+    else if (*(equal + 88))
     {
 LABEL_28:
       LOBYTE(v5) = 0;
@@ -394,40 +394,40 @@ LABEL_28:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 88) & 2) == 0 || self->_reportReason != *(a3 + 12))
+      if ((*(equal + 88) & 2) == 0 || self->_reportReason != *(equal + 12))
       {
         goto LABEL_28;
       }
     }
 
-    else if ((*(a3 + 88) & 2) != 0)
+    else if ((*(equal + 88) & 2) != 0)
     {
       goto LABEL_28;
     }
 
     mbufStatisticsReport = self->_mbufStatisticsReport;
-    if (!(mbufStatisticsReport | *(a3 + 2)) || (v5 = [(AWDLibnetcoreMbufStatsReport *)mbufStatisticsReport isEqual:?]) != 0)
+    if (!(mbufStatisticsReport | *(equal + 2)) || (v5 = [(AWDLibnetcoreMbufStatsReport *)mbufStatisticsReport isEqual:?]) != 0)
     {
       tcpStatisticsReport = self->_tcpStatisticsReport;
-      if (!(tcpStatisticsReport | *(a3 + 9)) || (v5 = [(AWDLibnetcoreTCPStatsReport *)tcpStatisticsReport isEqual:?]) != 0)
+      if (!(tcpStatisticsReport | *(equal + 9)) || (v5 = [(AWDLibnetcoreTCPStatsReport *)tcpStatisticsReport isEqual:?]) != 0)
       {
         tcpECNStatisticsReport = self->_tcpECNStatisticsReport;
-        if (!(tcpECNStatisticsReport | *(a3 + 8)) || (v5 = [(AWDLibnetcoreTCPECNStatsReport *)tcpECNStatisticsReport isEqual:?]) != 0)
+        if (!(tcpECNStatisticsReport | *(equal + 8)) || (v5 = [(AWDLibnetcoreTCPECNStatsReport *)tcpECNStatisticsReport isEqual:?]) != 0)
         {
           tcpTFOStatisticsReport = self->_tcpTFOStatisticsReport;
-          if (!(tcpTFOStatisticsReport | *(a3 + 10)) || (v5 = [(AWDLibnetcoreTCPTFOStatsReport *)tcpTFOStatisticsReport isEqual:?]) != 0)
+          if (!(tcpTFOStatisticsReport | *(equal + 10)) || (v5 = [(AWDLibnetcoreTCPTFOStatsReport *)tcpTFOStatisticsReport isEqual:?]) != 0)
           {
             networkdStatisticsReport = self->_networkdStatisticsReport;
-            if (!(networkdStatisticsReport | *(a3 + 4)) || (v5 = [(AWDLibnetcoreNetworkdStatsReport *)networkdStatisticsReport isEqual:?]) != 0)
+            if (!(networkdStatisticsReport | *(equal + 4)) || (v5 = [(AWDLibnetcoreNetworkdStatsReport *)networkdStatisticsReport isEqual:?]) != 0)
             {
               tcpECNInterfaceReports = self->_tcpECNInterfaceReports;
-              if (!(tcpECNInterfaceReports | *(a3 + 7)) || (v5 = [(NSMutableArray *)tcpECNInterfaceReports isEqual:?]) != 0)
+              if (!(tcpECNInterfaceReports | *(equal + 7)) || (v5 = [(NSMutableArray *)tcpECNInterfaceReports isEqual:?]) != 0)
               {
                 nwAPIUsageReport = self->_nwAPIUsageReport;
-                if (!(nwAPIUsageReport | *(a3 + 5)) || (v5 = [(AWDNWAPIUsage *)nwAPIUsageReport isEqual:?]) != 0)
+                if (!(nwAPIUsageReport | *(equal + 5)) || (v5 = [(AWDNWAPIUsage *)nwAPIUsageReport isEqual:?]) != 0)
                 {
                   mptcpStatisticsReport = self->_mptcpStatisticsReport;
-                  if (mptcpStatisticsReport | *(a3 + 3))
+                  if (mptcpStatisticsReport | *(equal + 3))
                   {
 
                     LOBYTE(v5) = [(AWDLibnetcoreMPTCPStatsReport *)mptcpStatisticsReport isEqual:?];
@@ -483,25 +483,25 @@ LABEL_6:
   return v10 ^ v11 ^ [(AWDLibnetcoreMPTCPStatsReport *)self->_mptcpStatisticsReport hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v31 = *MEMORY[0x29EDCA608];
-  v5 = *(a3 + 88);
+  v5 = *(from + 88);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 88);
+    v5 = *(from + 88);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_reportReason = *(a3 + 12);
+    self->_reportReason = *(from + 12);
     *&self->_has |= 2u;
   }
 
   mbufStatisticsReport = self->_mbufStatisticsReport;
-  v7 = *(a3 + 2);
+  v7 = *(from + 2);
   if (mbufStatisticsReport)
   {
     if (v7)
@@ -516,7 +516,7 @@ LABEL_6:
   }
 
   tcpStatisticsReport = self->_tcpStatisticsReport;
-  v9 = *(a3 + 9);
+  v9 = *(from + 9);
   if (tcpStatisticsReport)
   {
     if (v9)
@@ -531,7 +531,7 @@ LABEL_6:
   }
 
   tcpECNStatisticsReport = self->_tcpECNStatisticsReport;
-  v11 = *(a3 + 8);
+  v11 = *(from + 8);
   if (tcpECNStatisticsReport)
   {
     if (v11)
@@ -546,7 +546,7 @@ LABEL_6:
   }
 
   tcpTFOStatisticsReport = self->_tcpTFOStatisticsReport;
-  v13 = *(a3 + 10);
+  v13 = *(from + 10);
   if (tcpTFOStatisticsReport)
   {
     if (v13)
@@ -561,7 +561,7 @@ LABEL_6:
   }
 
   networkdStatisticsReport = self->_networkdStatisticsReport;
-  v15 = *(a3 + 4);
+  v15 = *(from + 4);
   if (networkdStatisticsReport)
   {
     if (v15)
@@ -579,7 +579,7 @@ LABEL_6:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = *(a3 + 7);
+  v16 = *(from + 7);
   v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
@@ -604,7 +604,7 @@ LABEL_6:
   }
 
   nwAPIUsageReport = self->_nwAPIUsageReport;
-  v22 = *(a3 + 5);
+  v22 = *(from + 5);
   if (nwAPIUsageReport)
   {
     if (v22)
@@ -619,7 +619,7 @@ LABEL_6:
   }
 
   mptcpStatisticsReport = self->_mptcpStatisticsReport;
-  v24 = *(a3 + 3);
+  v24 = *(from + 3);
   if (mptcpStatisticsReport)
   {
     if (v24)

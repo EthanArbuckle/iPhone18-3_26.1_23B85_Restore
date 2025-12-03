@@ -1,14 +1,14 @@
 @interface RTNSUUIDTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTNSUUIDTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -28,7 +28,7 @@
   {
     *v7 = 0;
     *&v7[8] = 0;
-    [v3 getUUIDBytes:v7];
+    [valueCopy getUUIDBytes:v7];
     v5 = [MEMORY[0x277CBEA90] dataWithBytes:v7 length:16];
   }
 
@@ -40,10 +40,10 @@
   return v5;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -61,7 +61,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v3;
+    v5 = valueCopy;
     if ([v5 bytes])
     {
       v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:{objc_msgSend(v5, "bytes")}];

@@ -1,22 +1,22 @@
 @interface SBFullScreenToHomeSlideOverSwitcherModifier
-- (BOOL)_isIndexSlideOverAppLayout:(unint64_t)a3;
-- (BOOL)_shouldApplySlideOverLayoutToIndex:(unint64_t)a3;
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBFullScreenToHomeSlideOverSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 direction:(unint64_t)a5;
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)_isIndexSlideOverAppLayout:(unint64_t)layout;
+- (BOOL)_shouldApplySlideOverLayoutToIndex:(unint64_t)index;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBFullScreenToHomeSlideOverSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout direction:(unint64_t)direction;
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenAlpha;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleSceneReadyEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 - (int64_t)homeScreenBackdropBlurType;
@@ -24,17 +24,17 @@
 
 @implementation SBFullScreenToHomeSlideOverSwitcherModifier
 
-- (SBFullScreenToHomeSlideOverSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 direction:(unint64_t)a5
+- (SBFullScreenToHomeSlideOverSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout direction:(unint64_t)direction
 {
-  v9 = a4;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v10 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:a3];
+  v10 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_appLayout, a4);
-    v11->_direction = a5;
+    objc_storeStrong(&v10->_appLayout, layout);
+    v11->_direction = direction;
     v12 = [[SBFullScreenAppLayoutSwitcherModifier alloc] initWithActiveAppLayout:v11->_appLayout];
     fullScreenModifier = v11->_fullScreenModifier;
     v11->_fullScreenModifier = v12;
@@ -47,11 +47,11 @@
 {
   v11.receiver = self;
   v11.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
-  v4 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self homeScreenBackdropBlurType];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  homeScreenBackdropBlurType = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self homeScreenBackdropBlurType];
   if (self->_direction)
   {
-    v5 = v4;
+    v5 = homeScreenBackdropBlurType;
     v6 = [SBUpdateLayoutSwitcherEventResponse alloc];
     if (v5 != 3)
     {
@@ -68,16 +68,16 @@
   v7 = 2;
 LABEL_6:
   v8 = [(SBUpdateLayoutSwitcherEventResponse *)v6 initWithOptions:v7 updateMode:2];
-  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v3];
+  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:transitionWillBegin];
 
   return v9;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v8 handleSceneReadyEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v8 handleSceneReadyEvent:event];
   if (self->_shouldBlurUnreadyScenes)
   {
     v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:2];
@@ -89,7 +89,7 @@ LABEL_6:
   return v4;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v31.receiver = self;
   v31.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
@@ -98,7 +98,7 @@ LABEL_6:
   y = v7;
   width = v9;
   height = v11;
-  if ([(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a3])
+  if ([(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:index])
   {
     v25 = 0;
     v26 = &v25;
@@ -114,7 +114,7 @@ LABEL_6:
     v24[3] = &unk_2783AA618;
     v24[4] = self;
     v24[5] = &v25;
-    v24[6] = a3;
+    v24[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:fullScreenModifier usingBlock:v24];
     x = v26[4];
     y = v26[5];
@@ -123,13 +123,13 @@ LABEL_6:
     _Block_object_dispose(&v25, 8);
   }
 
-  if ([(SBFullScreenToHomeSlideOverSwitcherModifier *)self _shouldApplySlideOverLayoutToIndex:a3])
+  if ([(SBFullScreenToHomeSlideOverSwitcherModifier *)self _shouldApplySlideOverLayoutToIndex:index])
   {
     [(SBFullScreenToHomeSlideOverSwitcherModifier *)self containerViewBounds];
     v16 = v15;
-    v17 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self isRTLEnabled];
     v18 = -v16;
-    if (!v17)
+    if (!isRTLEnabled)
     {
       v18 = v16;
     }
@@ -177,7 +177,7 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v5 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:?];
   result = 1.0;
@@ -185,19 +185,19 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   {
     v7.receiver = self;
     v7.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v7 scaleForIndex:a3, 1.0];
+    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v7 scaleForIndex:index, 1.0];
   }
 
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a3], v3 = 0.5, v4 = 0.5, !v7))
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:index], v3 = 0.5, v4 = 0.5, !v7))
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v8 anchorPointForIndex:a3, v3, v4];
+    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v8 anchorPointForIndex:index, v3, v4];
   }
 
   result.y = v4;
@@ -205,34 +205,34 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_shouldForceDefaultAnchorPointForTransition && [v6 isEqual:self->_appLayout])
   {
@@ -244,7 +244,7 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -256,18 +256,18 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (self->_shouldForceDefaultAnchorPointForTransition && [v9 isEqual:self->_appLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
+  if (self->_shouldForceDefaultAnchorPointForTransition && [layoutCopy isEqual:self->_appLayout])
   {
-    v11 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
-    -[SBFullScreenToHomeSlideOverSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:self->_appLayout]);
+    appLayouts = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
+    -[SBFullScreenToHomeSlideOverSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_appLayout]);
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -296,13 +296,13 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([v7 isEqual:self->_appLayout] & 1) == 0))
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([layoutCopy isEqual:self->_appLayout] & 1) == 0))
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
@@ -322,36 +322,36 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v3 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v10.receiver = self;
   v10.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v10 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 slideOverSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  slideOverSettings = [animationSettings slideOverSettings];
+  [v5 setLayoutSettings:slideOverSettings];
 
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v9 = 1.0;
-  if (![(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a5])
+  if (![(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:index])
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
@@ -371,9 +371,9 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   }
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  if (self->_appLayout == a4)
+  if (self->_appLayout == layout)
   {
     return 1;
   }
@@ -382,43 +382,43 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   v9 = v5;
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:a3 inAppLayout:?];
+  return [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:scene inAppLayout:?];
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (self->_appLayout == v6 && self->_shouldBlurUnreadyScenes)
+  layoutCopy = layout;
+  if (self->_appLayout == layoutCopy && self->_shouldBlurUnreadyScenes)
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    LODWORD(a3) = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v9 isLayoutRoleContentReady:a3 inAppLayout:v6]^ 1;
+    LODWORD(blurred) = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v9 isLayoutRoleContentReady:blurred inAppLayout:layoutCopy]^ 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-    LOBYTE(a3) = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v8 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    LOBYTE(blurred) = [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v8 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
   }
 
-  return a3;
+  return blurred;
 }
 
-- (double)blurDelayForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)blurDelayForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v14.receiver = self;
   v14.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
-  v6 = a4;
-  [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v14 blurDelayForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  [(SBFullScreenToHomeSlideOverSwitcherModifier *)&v14 blurDelayForLayoutRole:role inAppLayout:layoutCopy];
   v8 = v7;
   appLayout = self->_appLayout;
 
-  if (appLayout == v6)
+  if (appLayout == layoutCopy)
   {
     v10 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self switcherSettings:v14.receiver];
-    v11 = [v10 animationSettings];
-    [v11 resizeBlurDelay];
+    animationSettings = [v10 animationSettings];
+    [animationSettings resizeBlurDelay];
     v8 = v12;
   }
 
@@ -427,9 +427,9 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
 
 - (double)homeScreenAlpha
 {
-  v3 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self homeScreenBackdropBlurType];
+  homeScreenBackdropBlurType = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self homeScreenBackdropBlurType];
   result = 1.0;
-  if (v3 == 3)
+  if (homeScreenBackdropBlurType == 3)
   {
     v5.receiver = self;
     v5.super_class = SBFullScreenToHomeSlideOverSwitcherModifier;
@@ -439,37 +439,37 @@ uint64_t __61__SBFullScreenToHomeSlideOverSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (BOOL)_shouldApplySlideOverLayoutToIndex:(unint64_t)a3
+- (BOOL)_shouldApplySlideOverLayoutToIndex:(unint64_t)index
 {
-  v4 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:a3];
-  if (v4)
+  isUpdatingLayout = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self _isIndexSlideOverAppLayout:index];
+  if (isUpdatingLayout)
   {
     if ([(SBTransitionSwitcherModifier *)self isPreparingLayout]&& !self->_direction)
     {
-      LOBYTE(v4) = 1;
+      LOBYTE(isUpdatingLayout) = 1;
     }
 
     else
     {
-      v4 = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
-      if (v4)
+      isUpdatingLayout = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
+      if (isUpdatingLayout)
       {
-        LOBYTE(v4) = self->_direction == 1;
+        LOBYTE(isUpdatingLayout) = self->_direction == 1;
       }
     }
   }
 
-  return v4;
+  return isUpdatingLayout;
 }
 
-- (BOOL)_isIndexSlideOverAppLayout:(unint64_t)a3
+- (BOOL)_isIndexSlideOverAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenToHomeSlideOverSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
 @end

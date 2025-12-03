@@ -1,19 +1,19 @@
 @interface AAQuotaInfoResponse
-- (AAQuotaInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (AAQuotaInfoResponse)initWithHTTPResponse:(id)response data:(id)data;
 - (BOOL)hasMaxTier;
 - (NSString)displayLabel;
 - (NSURL)manageStorageURL;
 - (void)_initFromResponseDict;
-- (void)updateAccount:(id)a3 completion:(id)a4;
+- (void)updateAccount:(id)account completion:(id)completion;
 @end
 
 @implementation AAQuotaInfoResponse
 
-- (AAQuotaInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (AAQuotaInfoResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v8.receiver = self;
   v8.super_class = AAQuotaInfoResponse;
-  v4 = [(AAResponse *)&v8 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v8 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {
@@ -84,8 +84,8 @@
 - (NSURL)manageStorageURL
 {
   v2 = [(NSDictionary *)self->_endPoints objectForKeyedSubscript:@"quota.manage_storage_url"];
-  v3 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v4 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v4 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
 
@@ -96,9 +96,9 @@
 {
   v2 = [(NSDictionary *)self->super._responseDictionary objectForKeyedSubscript:@"quota_status"];
   v3 = [v2 objectForKeyedSubscript:@"have_max_quota_tier"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)displayLabel
@@ -119,35 +119,35 @@
   return v3;
 }
 
-- (void)updateAccount:(id)a3 completion:(id)a4
+- (void)updateAccount:(id)account completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 aa_lastKnownQuota];
-  v9 = [(AAQuotaInfoResponse *)self totalStorageInBytes];
-  if (v9 && ([v8 isEqualToNumber:v9] & 1) == 0)
+  accountCopy = account;
+  completionCopy = completion;
+  aa_lastKnownQuota = [accountCopy aa_lastKnownQuota];
+  totalStorageInBytes = [(AAQuotaInfoResponse *)self totalStorageInBytes];
+  if (totalStorageInBytes && ([aa_lastKnownQuota isEqualToNumber:totalStorageInBytes] & 1) == 0)
   {
-    [v6 aa_setLastKnownQuota:v9];
+    [accountCopy aa_setLastKnownQuota:totalStorageInBytes];
     v10 = _AALogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v16 = v6;
+      v16 = accountCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = aa_lastKnownQuota;
       v19 = 2112;
-      v20 = v9;
+      v20 = totalStorageInBytes;
       _os_log_impl(&dword_1B6F6A000, v10, OS_LOG_TYPE_DEFAULT, "Quota for %@ changed from %@ to %@; updating last known quota", buf, 0x20u);
     }
 
-    v11 = [v6 accountStore];
+    accountStore = [accountCopy accountStore];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__AAQuotaInfoResponse_updateAccount_completion___block_invoke;
     v13[3] = &unk_1E7C9ABB8;
-    v14 = v7;
-    [v11 saveVerifiedAccount:v6 withCompletionHandler:v13];
+    v14 = completionCopy;
+    [accountStore saveVerifiedAccount:accountCopy withCompletionHandler:v13];
   }
 
   v12 = *MEMORY[0x1E69E9840];

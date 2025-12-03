@@ -3,7 +3,7 @@
 - (AVMobileHapticsMenuDelegate)delegate;
 - (BOOL)_hapticsIsOn;
 - (void)_reloadHapticsOptionsMenu;
-- (void)setHapticTrackIDs:(id)a3;
+- (void)setHapticTrackIDs:(id)ds;
 @end
 
 @implementation AVMobileHapticsMenuController
@@ -22,10 +22,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(AVMobileHapticsMenuController *)self hapticTrackIDs];
-  v4 = [v3 allKeys];
+  hapticTrackIDs = [(AVMobileHapticsMenuController *)self hapticTrackIDs];
+  allKeys = [hapticTrackIDs allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -36,22 +36,22 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(AVMobileHapticsMenuController *)self hapticTrackIDs];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 isOn];
+        hapticTrackIDs2 = [(AVMobileHapticsMenuController *)self hapticTrackIDs];
+        v11 = [hapticTrackIDs2 objectForKeyedSubscript:v9];
+        isOn = [v11 isOn];
 
-        if (v12)
+        if (isOn)
         {
           v13 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -67,49 +67,49 @@ LABEL_11:
   return v13;
 }
 
-- (void)setHapticTrackIDs:(id)a3
+- (void)setHapticTrackIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   p_hapticTrackIDs = &self->_hapticTrackIDs;
-  if (self->_hapticTrackIDs != v5)
+  if (self->_hapticTrackIDs != dsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_hapticTrackIDs, a3);
+    v7 = dsCopy;
+    objc_storeStrong(p_hapticTrackIDs, ds);
     [(AVMobileHapticsMenuController *)self _reloadHapticsOptionsMenu];
-    v5 = v7;
+    dsCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_hapticTrackIDs, v5);
+  MEMORY[0x1EEE66BB8](p_hapticTrackIDs, dsCopy);
 }
 
 - (void)_reloadHapticsOptionsMenu
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v35 = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
-    v34 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"apple.haptics" withConfiguration:v35];
-    v2 = a1[1];
-    a1[1] = 0;
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
+    v34 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"apple.haptics" withConfiguration:configurationPreferringMonochrome];
+    v2 = self[1];
+    self[1] = 0;
 
-    v3 = [a1 hapticTrackIDs];
-    v4 = [v3 count];
+    hapticTrackIDs = [self hapticTrackIDs];
+    v4 = [hapticTrackIDs count];
 
     if (v4)
     {
       v32 = MEMORY[0x1E69DCC60];
-      objc_initWeak(&location, a1);
-      v38 = [MEMORY[0x1E695DF70] array];
+      objc_initWeak(&location, self);
+      array = [MEMORY[0x1E695DF70] array];
       v33 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:0 ascending:1];
       v45 = 0u;
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v5 = [a1 hapticTrackIDs];
-      v6 = [v5 allKeys];
+      hapticTrackIDs2 = [self hapticTrackIDs];
+      allKeys = [hapticTrackIDs2 allKeys];
       v49 = v33;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-      obj = [v6 sortedArrayUsingDescriptors:v7];
+      obj = [allKeys sortedArrayUsingDescriptors:v7];
 
       v8 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
       if (v8)
@@ -125,23 +125,23 @@ LABEL_11:
             }
 
             v10 = *(*(&v43 + 1) + 8 * i);
-            v11 = [v10 unsignedIntValue];
-            v12 = [a1 hapticTrackIDs];
-            v13 = [v12 objectForKeyedSubscript:v10];
-            v14 = [v13 trackName];
-            v15 = v14 == 0;
+            unsignedIntValue = [v10 unsignedIntValue];
+            hapticTrackIDs3 = [self hapticTrackIDs];
+            v13 = [hapticTrackIDs3 objectForKeyedSubscript:v10];
+            trackName = [v13 trackName];
+            v15 = trackName == 0;
 
             if (v15)
             {
-              v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Track %d", v11];
+              capitalizedString = [MEMORY[0x1E696AEC0] stringWithFormat:@"Track %d", unsignedIntValue];
             }
 
             else
             {
-              v16 = [a1 hapticTrackIDs];
-              v17 = [v16 objectForKeyedSubscript:v10];
-              v18 = [v17 trackName];
-              v19 = [v18 capitalizedString];
+              hapticTrackIDs4 = [self hapticTrackIDs];
+              v17 = [hapticTrackIDs4 objectForKeyedSubscript:v10];
+              trackName2 = [v17 trackName];
+              capitalizedString = [trackName2 capitalizedString];
             }
 
             v20 = MEMORY[0x1E69DC628];
@@ -151,14 +151,14 @@ LABEL_11:
             v41[3] = &unk_1E7207630;
             objc_copyWeak(&v42, &location);
             v41[4] = v10;
-            v41[5] = a1;
-            v21 = [v20 actionWithTitle:v19 image:0 identifier:0 handler:v41];
-            v22 = [a1 hapticTrackIDs];
-            v23 = [v22 objectForKeyedSubscript:v10];
+            v41[5] = self;
+            v21 = [v20 actionWithTitle:capitalizedString image:0 identifier:0 handler:v41];
+            hapticTrackIDs5 = [self hapticTrackIDs];
+            v23 = [hapticTrackIDs5 objectForKeyedSubscript:v10];
             [v21 setState:{objc_msgSend(v23, "isOn")}];
 
             [v21 setAttributes:{objc_msgSend(v21, "attributes") | 8}];
-            [v38 addObject:v21];
+            [array addObject:v21];
 
             objc_destroyWeak(&v42);
           }
@@ -172,7 +172,7 @@ LABEL_11:
       v24 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"title" ascending:1];
       v48 = v24;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-      v26 = [v38 sortedArrayUsingDescriptors:v25];
+      v26 = [array sortedArrayUsingDescriptors:v25];
       v27 = [v26 mutableCopy];
 
       v28 = MEMORY[0x1E69DC628];
@@ -181,16 +181,16 @@ LABEL_11:
       v39[2] = __57__AVMobileHapticsMenuController__elementsForHapticsTrack__block_invoke_2;
       v39[3] = &unk_1E7208C60;
       objc_copyWeak(&v40, &location);
-      v39[4] = a1;
+      v39[4] = self;
       v29 = [v28 actionWithTitle:@"Off" image:0 identifier:0 handler:v39];
-      [v29 setState:{objc_msgSend(a1, "_hapticsIsOn") ^ 1}];
+      [v29 setState:{objc_msgSend(self, "_hapticsIsOn") ^ 1}];
       [v27 addObject:v29];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
       v30 = [v32 menuWithTitle:@"Haptics (Internal)" image:v34 identifier:@"AVHapticsInternalMenu" options:0 children:v27];
-      v31 = a1[1];
-      a1[1] = v30;
+      v31 = self[1];
+      self[1] = v30;
     }
   }
 }

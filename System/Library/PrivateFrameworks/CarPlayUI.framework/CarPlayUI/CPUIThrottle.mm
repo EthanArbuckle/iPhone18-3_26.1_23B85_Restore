@@ -1,22 +1,22 @@
 @interface CPUIThrottle
 - (BOOL)incrementAttempts;
 - (BOOL)isThrottled;
-- (CPUIThrottle)initWithBase:(double)a3 factor:(double)a4 max:(double)a5;
+- (CPUIThrottle)initWithBase:(double)base factor:(double)factor max:(double)max;
 - (void)unthrottle;
 @end
 
 @implementation CPUIThrottle
 
-- (CPUIThrottle)initWithBase:(double)a3 factor:(double)a4 max:(double)a5
+- (CPUIThrottle)initWithBase:(double)base factor:(double)factor max:(double)max
 {
   v9.receiver = self;
   v9.super_class = CPUIThrottle;
   result = [(CPUIThrottle *)&v9 init];
   if (result)
   {
-    result->_base = a3;
-    result->_factor = a4;
-    result->_max = a5;
+    result->_base = base;
+    result->_factor = factor;
+    result->_max = max;
     result->_attempts = 0;
   }
 
@@ -25,16 +25,16 @@
 
 - (BOOL)isThrottled
 {
-  v3 = [(CPUIThrottle *)self unthrottleDate];
+  unthrottleDate = [(CPUIThrottle *)self unthrottleDate];
 
-  if (!v3)
+  if (!unthrottleDate)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(CPUIThrottle *)self unthrottleDate];
-  v6 = [v4 compare:v5] == -1;
+  date = [MEMORY[0x277CBEAA8] date];
+  unthrottleDate2 = [(CPUIThrottle *)self unthrottleDate];
+  v6 = [date compare:unthrottleDate2] == -1;
 
   return v6;
 }
@@ -64,20 +64,20 @@
     }
   }
 
-  v6 = [(CPUIThrottle *)self isThrottled];
-  if (!v6)
+  isThrottled = [(CPUIThrottle *)self isThrottled];
+  if (!isThrottled)
   {
     self->_attempts = 1;
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     throttleDate = self->_throttleDate;
-    self->_throttleDate = v7;
+    self->_throttleDate = date;
   }
 
   v9 = [(NSDate *)self->_throttleDate dateByAddingTimeInterval:base];
   unthrottleDate = self->_unthrottleDate;
   self->_unthrottleDate = v9;
 
-  return !v6;
+  return !isThrottled;
 }
 
 @end

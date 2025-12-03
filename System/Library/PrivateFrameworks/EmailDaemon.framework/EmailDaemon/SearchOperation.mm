@@ -1,52 +1,52 @@
 @interface SearchOperation
-- (SearchOperation)initWithDelegate:(id)a3 mailboxes:(id)a4 searchContext:(id)a5;
+- (SearchOperation)initWithDelegate:(id)delegate mailboxes:(id)mailboxes searchContext:(id)context;
 - (SearchOperationDelegate)delegate;
-- (id)_orderedEnumeratorForMailboxes:(id)a3 withAccount:(id)a4;
-- (id)_orderedMailboxesForAccount:(id)a3;
-- (id)_performRemoteSearchesForAccount:(id)a3;
-- (id)_performRemoteSearchesWithMailboxes:(id)a3 accountID:(id)a4;
+- (id)_orderedEnumeratorForMailboxes:(id)mailboxes withAccount:(id)account;
+- (id)_orderedMailboxesForAccount:(id)account;
+- (id)_performRemoteSearchesForAccount:(id)account;
+- (id)_performRemoteSearchesWithMailboxes:(id)mailboxes accountID:(id)d;
 - (id)_searchableMailboxesByAccount;
 - (id)accounts;
-- (void)_performRemoteSearchForAccount:(id)a3 coordinator:(id)a4;
-- (void)accountsChanged:(id)a3;
+- (void)_performRemoteSearchForAccount:(id)account coordinator:(id)coordinator;
+- (void)accountsChanged:(id)changed;
 - (void)cancel;
 - (void)main;
 - (void)performRemoteSearches;
-- (void)updateWithAccounts:(id)a3;
+- (void)updateWithAccounts:(id)accounts;
 @end
 
 @implementation SearchOperation
 
-- (SearchOperation)initWithDelegate:(id)a3 mailboxes:(id)a4 searchContext:(id)a5
+- (SearchOperation)initWithDelegate:(id)delegate mailboxes:(id)mailboxes searchContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  mailboxesCopy = mailboxes;
+  contextCopy = context;
   v41.receiver = self;
   v41.super_class = SearchOperation;
   v11 = [(SearchOperation *)&v41 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    v13 = [mailboxesCopy copy];
     mailboxes = v12->_mailboxes;
     v12->_mailboxes = v13;
 
-    v15 = [v10 copy];
+    v15 = [contextCopy copy];
     searchContext = v12->_searchContext;
     v12->_searchContext = v15;
 
-    v17 = [v10 criterion];
-    v18 = [v17 mailServerSideCriterion];
+    criterion = [contextCopy criterion];
+    mailServerSideCriterion = [criterion mailServerSideCriterion];
 
-    if (v18)
+    if (mailServerSideCriterion)
     {
       v19 = [SourceSearchContext alloc];
-      v20 = [v10 query];
-      v21 = [v10 delegate];
-      v22 = [v10 offset];
-      v23 = -[SourceSearchContext initWithQuery:criterion:delegate:offset:sessionID:](v19, "initWithQuery:criterion:delegate:offset:sessionID:", v20, v18, v21, v22, [v10 sessionID]);
+      query = [contextCopy query];
+      delegate = [contextCopy delegate];
+      offset = [contextCopy offset];
+      v23 = -[SourceSearchContext initWithQuery:criterion:delegate:offset:sessionID:](v19, "initWithQuery:criterion:delegate:offset:sessionID:", query, mailServerSideCriterion, delegate, offset, [contextCopy sessionID]);
 
       serverSearchContext = v12->_serverSearchContext;
       v12->_serverSearchContext = v23;
@@ -107,35 +107,35 @@
 
 - (void)main
 {
-  v3 = [(SearchOperation *)self identifier];
-  v4 = [(SearchOperation *)self isCancelled];
+  identifier = [(SearchOperation *)self identifier];
+  isCancelled = [(SearchOperation *)self isCancelled];
   v5 = MFLogGeneral();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SearchOperation *)self serverSearchContext];
+    serverSearchContext = [(SearchOperation *)self serverSearchContext];
     v11 = 138543874;
-    v12 = v3;
+    v12 = identifier;
     v13 = 1024;
-    v14 = v4;
+    v14 = isCancelled;
     v15 = 1024;
-    v16 = v6 != 0;
+    v16 = serverSearchContext != 0;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#search-manager SearchOperation [%{public}@] cancelled:%{BOOL}d hasServerSearchContext:%{BOOL}d", &v11, 0x18u);
   }
 
-  if ((v4 & 1) == 0)
+  if ((isCancelled & 1) == 0)
   {
     [(SearchOperation *)self performRemoteSearches];
   }
 
-  v7 = [(SearchOperation *)self delegate];
-  [v7 searchOperationDidFinish:self];
+  delegate = [(SearchOperation *)self delegate];
+  [delegate searchOperationDidFinish:self];
 
   if (([(SearchOperation *)self isCancelled]& 1) == 0)
   {
-    v8 = [(SearchOperation *)self progress];
-    v9 = [v8 totalUnitCount];
-    v10 = [(SearchOperation *)self progress];
-    [v10 setCompletedUnitCount:v9];
+    progress = [(SearchOperation *)self progress];
+    totalUnitCount = [progress totalUnitCount];
+    progress2 = [(SearchOperation *)self progress];
+    [progress2 setCompletedUnitCount:totalUnitCount];
   }
 }
 
@@ -148,16 +148,16 @@
   return v3;
 }
 
-- (void)updateWithAccounts:(id)a3
+- (void)updateWithAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   +[LocalAccount localAccount];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000B63AC;
   v16 = v24[3] = &unk_100157A08;
   v24[4] = v16;
-  v18 = [v4 ef_filter:v24];
+  v18 = [accountsCopy ef_filter:v24];
 
   os_unfair_lock_lock(&self->_accountsLock);
   v19 = self->_accounts;
@@ -191,8 +191,8 @@
         }
 
         remoteSearchCoordinatorsByAccountIdentifier = self->_remoteSearchCoordinatorsByAccountIdentifier;
-        v14 = [*(*(&v20 + 1) + 8 * v12) uniqueID];
-        v15 = [(NSMutableDictionary *)remoteSearchCoordinatorsByAccountIdentifier objectForKeyedSubscript:v14];
+        uniqueID = [*(*(&v20 + 1) + 8 * v12) uniqueID];
+        v15 = [(NSMutableDictionary *)remoteSearchCoordinatorsByAccountIdentifier objectForKeyedSubscript:uniqueID];
 
         [v15 cancel];
         v12 = v12 + 1;
@@ -208,7 +208,7 @@
   os_unfair_lock_unlock(&self->_remoteSearchCoordinatorsByAccountIdentifierLock);
 }
 
-- (void)accountsChanged:(id)a3
+- (void)accountsChanged:(id)changed
 {
   v4 = +[MailAccount activeAccounts];
   [(SearchOperation *)self updateWithAccounts:?];
@@ -221,8 +221,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(SearchOperation *)self mailboxes];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  mailboxes = [(SearchOperation *)self mailboxes];
+  v5 = [mailboxes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = *v18;
@@ -232,36 +232,36 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxes);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 store];
-        v10 = [v9 canFetchSearchResults];
+        store = [v8 store];
+        canFetchSearchResults = [store canFetchSearchResults];
 
-        if (v10)
+        if (canFetchSearchResults)
         {
-          v11 = [v8 account];
-          v12 = [v11 uniqueID];
+          account = [v8 account];
+          uniqueID = [account uniqueID];
 
-          if (!v12)
+          if (!uniqueID)
           {
             v14 = +[NSAssertionHandler currentHandler];
             [v14 handleFailureInMethod:a2 object:self file:@"SearchOperation.m" lineNumber:149 description:@"Need accountID for source"];
           }
 
-          v13 = [v3 objectForKeyedSubscript:v12];
+          v13 = [v3 objectForKeyedSubscript:uniqueID];
           if (!v13)
           {
             v13 = +[NSMutableArray array];
-            [v3 setObject:v13 forKeyedSubscript:v12];
+            [v3 setObject:v13 forKeyedSubscript:uniqueID];
           }
 
           [v13 addObject:v8];
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [mailboxes countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -272,18 +272,18 @@
 
 - (void)performRemoteSearches
 {
-  v3 = [(SearchOperation *)self progress];
-  [v3 becomeCurrentWithPendingUnitCount:1];
-  v4 = [(SearchOperation *)self _searchableMailboxesByAccount];
-  v5 = [v4 count];
+  progress = [(SearchOperation *)self progress];
+  [progress becomeCurrentWithPendingUnitCount:1];
+  _searchableMailboxesByAccount = [(SearchOperation *)self _searchableMailboxesByAccount];
+  v5 = [_searchableMailboxesByAccount count];
   if (v5)
   {
     v6 = MFLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SearchOperation *)self identifier];
+      identifier = [(SearchOperation *)self identifier];
       *buf = 138543618;
-      v27 = v7;
+      v27 = identifier;
       v28 = 1024;
       v29 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] Begin remote searches for %u accounts (A)", buf, 0x12u);
@@ -296,39 +296,39 @@
     v23[3] = &unk_10015A790;
     v24 = v23[4] = self;
     v8 = v24;
-    [v4 enumerateKeysAndObjectsUsingBlock:v23];
+    [_searchableMailboxesByAccount enumerateKeysAndObjectsUsingBlock:v23];
   }
 
   else
   {
-    v9 = [(SearchOperation *)self mailboxes];
-    v10 = [v9 count];
+    mailboxes = [(SearchOperation *)self mailboxes];
+    v10 = [mailboxes count];
 
     if (v10)
     {
       goto LABEL_7;
     }
 
-    v11 = [(SearchOperation *)self accounts];
-    if ([v11 count])
+    accounts = [(SearchOperation *)self accounts];
+    if ([accounts count])
     {
       v12 = MFLogGeneral();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(SearchOperation *)self identifier];
+        identifier2 = [(SearchOperation *)self identifier];
         *buf = 138543618;
-        v27 = v13;
+        v27 = identifier2;
         v28 = 1024;
-        v29 = [v11 count];
+        v29 = [accounts count];
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] Begin remote searches for %u accounts (B)", buf, 0x12u);
       }
 
-      v14 = +[NSProgress progressWithTotalUnitCount:](NSProgress, "progressWithTotalUnitCount:", [v11 count]);
+      v14 = +[NSProgress progressWithTotalUnitCount:](NSProgress, "progressWithTotalUnitCount:", [accounts count]);
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = v11;
+      v8 = accounts;
       v15 = [v8 countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v15)
       {
@@ -359,41 +359,41 @@
 
     else
     {
-      v8 = v11;
+      v8 = accounts;
     }
   }
 
 LABEL_7:
-  [v3 resignCurrent];
+  [progress resignCurrent];
 }
 
-- (id)_performRemoteSearchesWithMailboxes:(id)a3 accountID:(id)a4
+- (id)_performRemoteSearchesWithMailboxes:(id)mailboxes accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSProgress discreteProgressWithTotalUnitCount:](NSProgress, "discreteProgressWithTotalUnitCount:", [v6 count]);
-  v9 = [MailAccount accountWithUniqueId:v7];
-  v10 = [(SearchOperation *)self accounts];
-  v11 = [v10 containsObject:v9];
+  mailboxesCopy = mailboxes;
+  dCopy = d;
+  v8 = +[NSProgress discreteProgressWithTotalUnitCount:](NSProgress, "discreteProgressWithTotalUnitCount:", [mailboxesCopy count]);
+  v9 = [MailAccount accountWithUniqueId:dCopy];
+  accounts = [(SearchOperation *)self accounts];
+  v11 = [accounts containsObject:v9];
 
   if (v11)
   {
     v12 = [RemoteSearchCoordinator alloc];
-    v13 = [(SearchOperation *)self serverSearchContext];
-    v14 = [(SearchOperation *)self identifier];
-    v15 = [(RemoteSearchCoordinator *)v12 initWithAccount:v9 searchContext:v13 logIdentifier:v14 progress:v8];
+    serverSearchContext = [(SearchOperation *)self serverSearchContext];
+    identifier = [(SearchOperation *)self identifier];
+    v15 = [(RemoteSearchCoordinator *)v12 initWithAccount:v9 searchContext:serverSearchContext logIdentifier:identifier progress:v8];
 
-    v16 = [(SearchOperation *)self searchContext];
-    v17 = [v16 delegate];
+    searchContext = [(SearchOperation *)self searchContext];
+    delegate = [searchContext delegate];
 
-    objc_initWeak(&location, v17);
+    objc_initWeak(&location, delegate);
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000B6DFC;
     v22[3] = &unk_10015A7B8;
     objc_copyWeak(&v23, &location);
     [(RemoteSearchCoordinator *)v15 setFoundMessagesCompletion:v22];
-    [(SearchOperation *)self _orderedEnumeratorForMailboxes:v6 withAccount:v9];
+    [(SearchOperation *)self _orderedEnumeratorForMailboxes:mailboxesCopy withAccount:v9];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000B6E80;
@@ -414,12 +414,12 @@ LABEL_7:
   return v8;
 }
 
-- (id)_performRemoteSearchesForAccount:(id)a3
+- (id)_performRemoteSearchesForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [NSProgress discreteProgressWithTotalUnitCount:-1];
-  v6 = [(SearchOperation *)self accounts];
-  v7 = [v6 containsObject:v4];
+  accounts = [(SearchOperation *)self accounts];
+  v7 = [accounts containsObject:accountCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -428,61 +428,61 @@ LABEL_7:
   }
 
   v8 = [RemoteSearchCoordinator alloc];
-  v9 = [(SearchOperation *)self serverSearchContext];
-  v10 = [(SearchOperation *)self identifier];
-  v11 = [(RemoteSearchCoordinator *)v8 initWithAccount:v4 searchContext:v9 logIdentifier:v10 progress:v5];
+  serverSearchContext = [(SearchOperation *)self serverSearchContext];
+  identifier = [(SearchOperation *)self identifier];
+  v11 = [(RemoteSearchCoordinator *)v8 initWithAccount:accountCopy searchContext:serverSearchContext logIdentifier:identifier progress:v5];
 
-  v12 = [(SearchOperation *)self searchContext];
-  v13 = [v12 delegate];
+  searchContext = [(SearchOperation *)self searchContext];
+  delegate = [searchContext delegate];
 
-  objc_initWeak(location, v13);
+  objc_initWeak(location, delegate);
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
   v41[2] = sub_1000B7370;
   v41[3] = &unk_10015A7B8;
   objc_copyWeak(&v42, location);
   [(RemoteSearchCoordinator *)v11 setFoundMessagesCompletion:v41];
-  v14 = [v4 allMailMailboxUid];
-  v15 = v14;
-  if (!v14)
+  allMailMailboxUid = [accountCopy allMailMailboxUid];
+  v15 = allMailMailboxUid;
+  if (!allMailMailboxUid)
   {
     goto LABEL_7;
   }
 
-  v16 = [v14 store];
-  v17 = [v16 canFetchSearchResults];
+  store = [allMailMailboxUid store];
+  canFetchSearchResults = [store canFetchSearchResults];
 
-  if (!v17)
+  if (!canFetchSearchResults)
   {
 
 LABEL_7:
-    v27 = v13;
-    v19 = [(SearchOperation *)self _orderedMailboxesForAccount:v4];
-    v20 = [v19 objectEnumerator];
+    v27 = delegate;
+    v19 = [(SearchOperation *)self _orderedMailboxesForAccount:accountCopy];
+    objectEnumerator = [v19 objectEnumerator];
     v37 = 0;
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = [v19 count];
     [v5 setTotalUnitCount:v38[3]];
-    v21 = [(SearchOperation *)self identifier];
-    v22 = [v4 uniqueID];
+    identifier2 = [(SearchOperation *)self identifier];
+    uniqueID = [accountCopy uniqueID];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1000B7460;
     v28[3] = &unk_10015A830;
-    v23 = v20;
+    v23 = objectEnumerator;
     v29 = v23;
     v30 = v5;
     v33 = &v37;
-    v24 = v21;
+    v24 = identifier2;
     v31 = v24;
-    v32 = v22;
-    v25 = v22;
+    v32 = uniqueID;
+    v25 = uniqueID;
     [(RemoteSearchCoordinator *)v11 setNextSearchableMailbox:v28];
 
     _Block_object_dispose(&v37, 8);
     v18 = 0;
-    v13 = v27;
+    delegate = v27;
     goto LABEL_8;
   }
 
@@ -502,7 +502,7 @@ LABEL_7:
 
   _Block_object_dispose(&v37, 8);
 LABEL_8:
-  [(SearchOperation *)self _performRemoteSearchForAccount:v4 coordinator:v11];
+  [(SearchOperation *)self _performRemoteSearchForAccount:accountCopy coordinator:v11];
 
   objc_destroyWeak(&v42);
   objc_destroyWeak(location);
@@ -512,18 +512,18 @@ LABEL_9:
   return v5;
 }
 
-- (void)_performRemoteSearchForAccount:(id)a3 coordinator:(id)a4
+- (void)_performRemoteSearchForAccount:(id)account coordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uniqueID];
+  accountCopy = account;
+  coordinatorCopy = coordinator;
+  uniqueID = [accountCopy uniqueID];
   os_unfair_lock_lock(&self->_remoteSearchCoordinatorsByAccountIdentifierLock);
-  [(NSMutableDictionary *)self->_remoteSearchCoordinatorsByAccountIdentifier setObject:v7 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_remoteSearchCoordinatorsByAccountIdentifier setObject:coordinatorCopy forKeyedSubscript:uniqueID];
   os_unfair_lock_unlock(&self->_remoteSearchCoordinatorsByAccountIdentifierLock);
   if (([(SearchOperation *)self isCancelled]& 1) == 0)
   {
-    v9 = [(SearchOperation *)self accounts];
-    v10 = [v9 containsObject:v6];
+    accounts = [(SearchOperation *)self accounts];
+    v10 = [accounts containsObject:accountCopy];
 
     if (v10)
     {
@@ -532,24 +532,24 @@ LABEL_9:
       v11[2] = sub_1000B77B0;
       v11[3] = &unk_100156400;
       v11[4] = self;
-      [v7 setStopEarly:v11];
-      [v7 performSearch];
+      [coordinatorCopy setStopEarly:v11];
+      [coordinatorCopy performSearch];
     }
   }
 
   os_unfair_lock_lock(&self->_remoteSearchCoordinatorsByAccountIdentifierLock);
-  [(NSMutableDictionary *)self->_remoteSearchCoordinatorsByAccountIdentifier setObject:0 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_remoteSearchCoordinatorsByAccountIdentifier setObject:0 forKeyedSubscript:uniqueID];
   os_unfair_lock_unlock(&self->_remoteSearchCoordinatorsByAccountIdentifierLock);
 }
 
-- (id)_orderedEnumeratorForMailboxes:(id)a3 withAccount:(id)a4
+- (id)_orderedEnumeratorForMailboxes:(id)mailboxes withAccount:(id)account
 {
-  v5 = a3;
-  v19 = a4;
-  v21 = v5;
-  if ([v5 count] == 1)
+  mailboxesCopy = mailboxes;
+  accountCopy = account;
+  v21 = mailboxesCopy;
+  if ([mailboxesCopy count] == 1)
   {
-    v6 = [v5 objectEnumerator];
+    objectEnumerator = [mailboxesCopy objectEnumerator];
     goto LABEL_31;
   }
 
@@ -559,7 +559,7 @@ LABEL_9:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = mailboxesCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v7)
   {
@@ -621,9 +621,9 @@ LABEL_24:
   if ([v23 count])
   {
     v15 = +[MFMailMessageLibrary defaultInstance];
-    v16 = [v15 mailboxFrecencyController];
+    mailboxFrecencyController = [v15 mailboxFrecencyController];
 
-    v17 = [v16 sortedArrayOfMailboxes:v23];
+    v17 = [mailboxFrecencyController sortedArrayOfMailboxes:v23];
     [v20 addObjectsFromArray:v17];
   }
 
@@ -637,25 +637,25 @@ LABEL_24:
     [v20 addObject:v10];
   }
 
-  v6 = [v20 objectEnumerator];
+  objectEnumerator = [v20 objectEnumerator];
 
 LABEL_31:
 
-  return v6;
+  return objectEnumerator;
 }
 
-- (id)_orderedMailboxesForAccount:(id)a3
+- (id)_orderedMailboxesForAccount:(id)account
 {
-  v22 = a3;
+  accountCopy = account;
   v23 = +[NSMutableArray array];
-  v26 = [v22 primaryMailboxUid];
+  primaryMailboxUid = [accountCopy primaryMailboxUid];
   v24 = objc_opt_new();
-  v3 = [v22 isSyncingNotes];
+  isSyncingNotes = [accountCopy isSyncingNotes];
   v4 = +[MFMailMessageLibrary defaultInstance];
-  v5 = [v4 mailboxFrecencyController];
+  mailboxFrecencyController = [v4 mailboxFrecencyController];
 
-  v20 = v5;
-  v21 = [v5 sortedArrayOfMailboxesForAccount:v22];
+  v20 = mailboxFrecencyController;
+  v21 = [mailboxFrecencyController sortedArrayOfMailboxesForAccount:accountCopy];
   v6 = [NSMutableOrderedSet alloc];
   v7 = [NSOrderedSet orderedSetWithArray:v21];
   v8 = [v6 initWithOrderedSet:v7];
@@ -681,17 +681,17 @@ LABEL_31:
         }
 
         v14 = *(*(&v27 + 1) + 8 * i);
-        if (v3)
+        if (isSyncingNotes)
         {
-          v15 = [*(*(&v27 + 1) + 8 * i) isNotesMailboxUid];
-          if (v14 == v26)
+          isNotesMailboxUid = [*(*(&v27 + 1) + 8 * i) isNotesMailboxUid];
+          if (v14 == primaryMailboxUid)
           {
             v16 = 1;
           }
 
           else
           {
-            v16 = v15;
+            v16 = isNotesMailboxUid;
           }
 
           if (v16)
@@ -700,7 +700,7 @@ LABEL_31:
           }
         }
 
-        else if (v14 == v26)
+        else if (v14 == primaryMailboxUid)
         {
           continue;
         }
@@ -728,9 +728,9 @@ LABEL_19:
     while (v11);
   }
 
-  if (v26)
+  if (primaryMailboxUid)
   {
-    [v23 addObject:v26];
+    [v23 addObject:primaryMailboxUid];
   }
 
   if ([v24 count])

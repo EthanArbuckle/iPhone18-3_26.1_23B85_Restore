@@ -1,7 +1,7 @@
 @interface SessionInclineView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9SeymourUI18SessionInclineView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9SeymourUI18SessionInclineView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -9,7 +9,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20BB6B210();
   v5 = v4;
 
@@ -22,19 +22,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB6B964();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SessionInclineView *)self intrinsicContentSize:a3.width];
+  [(SessionInclineView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (_TtC9SeymourUI18SessionInclineView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI18SessionInclineView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

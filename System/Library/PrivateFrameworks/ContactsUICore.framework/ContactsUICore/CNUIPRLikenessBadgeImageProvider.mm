@@ -1,33 +1,33 @@
 @interface CNUIPRLikenessBadgeImageProvider
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4;
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale;
 - (CGImage)badgeCGImage;
-- (CGImage)renderCircularImageForSize:(CGSize)a3 scale:(double)a4;
-- (CGImage)renderRoundedRectImageForSize:(CGSize)a3 scale:(double)a4;
-- (CNUIPRLikenessBadgeImageProvider)initWithBadge:(id)a3;
+- (CGImage)renderCircularImageForSize:(CGSize)size scale:(double)scale;
+- (CGImage)renderRoundedRectImageForSize:(CGSize)size scale:(double)scale;
+- (CNUIPRLikenessBadgeImageProvider)initWithBadge:(id)badge;
 @end
 
 @implementation CNUIPRLikenessBadgeImageProvider
 
-- (CNUIPRLikenessBadgeImageProvider)initWithBadge:(id)a3
+- (CNUIPRLikenessBadgeImageProvider)initWithBadge:(id)badge
 {
-  v4 = a3;
+  badgeCopy = badge;
   v14.receiver = self;
   v14.super_class = CNUIPRLikenessBadgeImageProvider;
   v5 = [(CNUIPRLikenessBadgeImageProvider *)&v14 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E6996660] atomicCache];
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     cache = v5->_cache;
-    v5->_cache = v6;
+    v5->_cache = atomicCache;
 
-    v8 = [v4 imageData];
+    imageData = [badgeCopy imageData];
     badgeImageData = v5->_badgeImageData;
-    v5->_badgeImageData = v8;
+    v5->_badgeImageData = imageData;
 
-    v5->_badgeType = [v4 badgeType];
-    v10 = [v4 image];
+    v5->_badgeType = [badgeCopy badgeType];
+    image = [badgeCopy image];
     badgeImage = v5->_badgeImage;
-    v5->_badgeImage = v10;
+    v5->_badgeImage = image;
 
     v12 = v5;
   }
@@ -37,18 +37,18 @@
 
 - (CGImage)badgeCGImage
 {
-  v3 = [(CNUIPRLikenessBadgeImageProvider *)self badgeImage];
+  badgeImage = [(CNUIPRLikenessBadgeImageProvider *)self badgeImage];
 
-  if (v3)
+  if (badgeImage)
   {
-    v4 = [(CNUIPRLikenessBadgeImageProvider *)self badgeImage];
-    v5 = imageRefFromImage(v4);
+    badgeImage2 = [(CNUIPRLikenessBadgeImageProvider *)self badgeImage];
+    v5 = imageRefFromImage(badgeImage2);
   }
 
   else
   {
-    v4 = [(CNUIPRLikenessBadgeImageProvider *)self badgeImageData];
-    v5 = [CNUIPRLikenessPhotoProvider cgImageFromData:v4];
+    badgeImage2 = [(CNUIPRLikenessBadgeImageProvider *)self badgeImageData];
+    v5 = [CNUIPRLikenessPhotoProvider cgImageFromData:badgeImage2];
   }
 
   v6 = v5;
@@ -56,15 +56,15 @@
   return v6;
 }
 
-- (CGImage)_cnui_imageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = NSStringFromSize(a3);
+  v9 = NSStringFromSize(size);
   v10 = [v8 stringWithFormat:@"%@-Thumbnail", v9];
 
-  v11 = [(CNUIPRLikenessBadgeImageProvider *)self cache];
+  cache = [(CNUIPRLikenessBadgeImageProvider *)self cache];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__CNUIPRLikenessBadgeImageProvider__cnui_imageForSize_scale___block_invoke;
@@ -72,8 +72,8 @@
   v14[4] = self;
   *&v14[5] = width;
   *&v14[6] = height;
-  *&v14[7] = a4;
-  v12 = [v11 objectForKey:v10 onCacheMiss:v14];
+  *&v14[7] = scale;
+  v12 = [cache objectForKey:v10 onCacheMiss:v14];
 
   if (v12)
   {
@@ -107,14 +107,14 @@ id __61__CNUIPRLikenessBadgeImageProvider__cnui_imageForSize_scale___block_invok
   return v3;
 }
 
-- (CGImage)renderRoundedRectImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)renderRoundedRectImageForSize:(CGSize)size scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __72__CNUIPRLikenessBadgeImageProvider_renderRoundedRectImageForSize_scale___block_invoke;
   v5[3] = &unk_1E76E85D0;
   v5[4] = self;
-  result = CNUIRoundedRectImageCreate(v5, a3.width, a3.height, a4);
+  result = CNUIRoundedRectImageCreate(v5, size.width, size.height, scale);
   if (result)
   {
     return CFAutorelease(result);
@@ -152,15 +152,15 @@ void __72__CNUIPRLikenessBadgeImageProvider_renderRoundedRectImageForSize_scale_
   }
 }
 
-- (CGImage)renderCircularImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)renderCircularImageForSize:(CGSize)size scale:(double)scale
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __69__CNUIPRLikenessBadgeImageProvider_renderCircularImageForSize_scale___block_invoke;
   v5[3] = &unk_1E76E85F8;
   v5[4] = self;
-  *&v5[5] = a4;
-  result = CNUICircularImageCreate(v5, a3.width, a3.height, a4);
+  *&v5[5] = scale;
+  result = CNUICircularImageCreate(v5, size.width, size.height, scale);
   if (result)
   {
     return CFAutorelease(result);

@@ -5,12 +5,12 @@
 - (id)fetchResults;
 - (id)getSyntheticTestRankingItem;
 - (id)getSyntheticTestRankingItemsForStressTest;
-- (void)_indexItemWithIdentifier:(id)a3 bundleID:(id)a4 startDate:(id)a5 pc:(id)a6;
-- (void)_updateSpotlightRecentEngagementWithIdentifier:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 queryString:(id)a6 renderPosition:(id)a7;
-- (void)didEngageResultWithRankingItem:(id)a3 startDate:(id)a4 protectionClass:(id)a5 query:(id)a6;
-- (void)fetchBundleRenderAndEngagementInfo:(id)a3;
-- (void)resetResultWithRankingItems:(id)a3;
-- (void)resultsWithRankingItemsDidBecomeVisible:(id)a3 date:(id)a4 protectionClassMapping:(id)a5;
+- (void)_indexItemWithIdentifier:(id)identifier bundleID:(id)d startDate:(id)date pc:(id)pc;
+- (void)_updateSpotlightRecentEngagementWithIdentifier:(id)identifier bundleID:(id)d protectionClass:(id)class queryString:(id)string renderPosition:(id)position;
+- (void)didEngageResultWithRankingItem:(id)item startDate:(id)date protectionClass:(id)class query:(id)query;
+- (void)fetchBundleRenderAndEngagementInfo:(id)info;
+- (void)resetResultWithRankingItems:(id)items;
+- (void)resultsWithRankingItemsDidBecomeVisible:(id)visible date:(id)date protectionClassMapping:(id)mapping;
 - (void)stressTestCounts;
 - (void)testCountsAfterCoupleYears;
 - (void)testCountsAfterYear;
@@ -24,7 +24,7 @@
 - (void)testCountsUptoWeek;
 - (void)testCountsUptoYear;
 - (void)testForDummyEntry;
-- (void)testForDurationWithIntervals:(int *)a3 maxIndex:(int)a4 duration:(int64_t)a5 counts:(id)a6;
+- (void)testForDurationWithIntervals:(int *)intervals maxIndex:(int)index duration:(int64_t)duration counts:(id)counts;
 - (void)writeRenderAndEngagementInfo;
 @end
 
@@ -103,33 +103,33 @@ uint64_t __42__SSRankingFeedbackHandler_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)_indexItemWithIdentifier:(id)a3 bundleID:(id)a4 startDate:(id)a5 pc:(id)a6
+- (void)_indexItemWithIdentifier:(id)identifier bundleID:(id)d startDate:(id)date pc:(id)pc
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  dateCopy = date;
+  pcCopy = pc;
   v12 = MEMORY[0x1E6964E80];
-  v13 = a3;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(v12);
-  [v14 setUniqueIdentifier:v13];
+  [v14 setUniqueIdentifier:identifierCopy];
 
   [v14 setIsUpdate:1];
   v15 = objc_opt_new();
   v16 = v15;
-  if (v10)
+  if (dateCopy)
   {
-    [v15 setAttribute:v10 forKey:@"_kMDItemEngagementDate"];
+    [v15 setAttribute:dateCopy forKey:@"_kMDItemEngagementDate"];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF00] date];
-    [v16 setAttribute:v17 forKey:@"_kMDItemEngagementDate"];
+    date = [MEMORY[0x1E695DF00] date];
+    [v16 setAttribute:date forKey:@"_kMDItemEngagementDate"];
   }
 
   [v14 setAttributeSet:v16];
-  [v14 setBundleID:v9];
+  [v14 setBundleID:dCopy];
   if (sClientRankAndBlend == 1)
   {
     v18 = sCSIndex;
@@ -146,43 +146,43 @@ uint64_t __42__SSRankingFeedbackHandler_sharedInstance__block_invoke()
     v20 = &__block_literal_global_33;
   }
 
-  [v18 indexSearchableItems:v19 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v11 forBundleID:v9 options:0 completionHandler:v20];
+  [v18 indexSearchableItems:v19 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:pcCopy forBundleID:dCopy options:0 completionHandler:v20];
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSpotlightRecentEngagementWithIdentifier:(id)a3 bundleID:(id)a4 protectionClass:(id)a5 queryString:(id)a6 renderPosition:(id)a7
+- (void)_updateSpotlightRecentEngagementWithIdentifier:(id)identifier bundleID:(id)d protectionClass:(id)class queryString:(id)string renderPosition:(id)position
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  if (v12 && a3 && a6 && a7)
+  dCopy = d;
+  classCopy = class;
+  if (dCopy && identifier && string && position)
   {
     v14 = MEMORY[0x1E6964E90];
-    v15 = a7;
-    v16 = a6;
-    v17 = a3;
+    positionCopy = position;
+    stringCopy = string;
+    identifierCopy = identifier;
     v18 = [v14 alloc];
     v29[0] = @"_kMDItemLastSpotlightEngagementQuery";
     v29[1] = @"_kMDItemLastSpotlightEngagementRenderPosition";
-    v30[0] = v16;
-    v30[1] = v15;
+    v30[0] = stringCopy;
+    v30[1] = positionCopy;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v20 = [v18 initWithAttributes:v19];
 
-    v21 = [objc_alloc(MEMORY[0x1E6964E80]) initWithUniqueIdentifier:v17 domainIdentifier:0 attributeSet:v20];
+    v21 = [objc_alloc(MEMORY[0x1E6964E80]) initWithUniqueIdentifier:identifierCopy domainIdentifier:0 attributeSet:v20];
     [v21 setIsUpdate:1];
-    [v21 setBundleID:v12];
-    v22 = [(SSRankingFeedbackHandler *)self countQueue];
+    [v21 setBundleID:dCopy];
+    countQueue = [(SSRankingFeedbackHandler *)self countQueue];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __127__SSRankingFeedbackHandler__updateSpotlightRecentEngagementWithIdentifier_bundleID_protectionClass_queryString_renderPosition___block_invoke;
     v25[3] = &unk_1E85957A0;
     v26 = v21;
-    v27 = v13;
-    v28 = v12;
+    v27 = classCopy;
+    v28 = dCopy;
     v23 = v21;
-    dispatch_async(v22, v25);
+    dispatch_async(countQueue, v25);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -217,27 +217,27 @@ void __127__SSRankingFeedbackHandler__updateSpotlightRecentEngagementWithIdentif
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didEngageResultWithRankingItem:(id)a3 startDate:(id)a4 protectionClass:(id)a5 query:(id)a6
+- (void)didEngageResultWithRankingItem:(id)item startDate:(id)date protectionClass:(id)class query:(id)query
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SSRankingFeedbackHandler *)self countQueue];
+  itemCopy = item;
+  dateCopy = date;
+  classCopy = class;
+  queryCopy = query;
+  countQueue = [(SSRankingFeedbackHandler *)self countQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__SSRankingFeedbackHandler_didEngageResultWithRankingItem_startDate_protectionClass_query___block_invoke;
   block[3] = &unk_1E85957F0;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_sync(v14, block);
+  v20 = itemCopy;
+  selfCopy = self;
+  v22 = dateCopy;
+  v23 = classCopy;
+  v24 = queryCopy;
+  v15 = queryCopy;
+  v16 = classCopy;
+  v17 = dateCopy;
+  v18 = itemCopy;
+  dispatch_sync(countQueue, block);
 }
 
 void __91__SSRankingFeedbackHandler_didEngageResultWithRankingItem_startDate_protectionClass_query___block_invoke(uint64_t a1)
@@ -275,24 +275,24 @@ void __91__SSRankingFeedbackHandler_didEngageResultWithRankingItem_startDate_pro
   [v8 _updateSpotlightRecentEngagementWithIdentifier:v9 bundleID:v10 protectionClass:*(a1 + 56) queryString:*(a1 + 64) renderPosition:&unk_1F55B3A50];
 }
 
-- (void)resultsWithRankingItemsDidBecomeVisible:(id)a3 date:(id)a4 protectionClassMapping:(id)a5
+- (void)resultsWithRankingItemsDidBecomeVisible:(id)visible date:(id)date protectionClassMapping:(id)mapping
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SSRankingFeedbackHandler *)self countQueue];
+  visibleCopy = visible;
+  dateCopy = date;
+  mappingCopy = mapping;
+  countQueue = [(SSRankingFeedbackHandler *)self countQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __96__SSRankingFeedbackHandler_resultsWithRankingItemsDidBecomeVisible_date_protectionClassMapping___block_invoke;
   v15[3] = &unk_1E85957C8;
-  v16 = v8;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = visibleCopy;
+  v17 = mappingCopy;
+  selfCopy = self;
+  v19 = dateCopy;
+  v12 = dateCopy;
+  v13 = mappingCopy;
+  v14 = visibleCopy;
+  dispatch_sync(countQueue, v15);
 }
 
 void __96__SSRankingFeedbackHandler_resultsWithRankingItemsDidBecomeVisible_date_protectionClassMapping___block_invoke(uint64_t a1)
@@ -831,17 +831,17 @@ void __96__SSRankingFeedbackHandler_resultsWithRankingItemsDidBecomeVisible_date
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchBundleRenderAndEngagementInfo:(id)a3
+- (void)fetchBundleRenderAndEngagementInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(SSRankingFeedbackHandler *)self fetchQueue];
+  infoCopy = info;
+  fetchQueue = [(SSRankingFeedbackHandler *)self fetchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__SSRankingFeedbackHandler_fetchBundleRenderAndEngagementInfo___block_invoke;
   block[3] = &unk_1E8595778;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_sync(fetchQueue, block);
 }
 
 void __63__SSRankingFeedbackHandler_fetchBundleRenderAndEngagementInfo___block_invoke(uint64_t a1)
@@ -1229,13 +1229,13 @@ void __63__SSRankingFeedbackHandler_fetchBundleRenderAndEngagementInfo___block_i
 
 - (void)writeRenderAndEngagementInfo
 {
-  v3 = [(SSRankingFeedbackHandler *)self countQueue];
+  countQueue = [(SSRankingFeedbackHandler *)self countQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SSRankingFeedbackHandler_writeRenderAndEngagementInfo__block_invoke;
   block[3] = &unk_1E8595778;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(countQueue, block);
 }
 
 void __56__SSRankingFeedbackHandler_writeRenderAndEngagementInfo__block_invoke(uint64_t a1)
@@ -1395,12 +1395,12 @@ void __56__SSRankingFeedbackHandler_writeRenderAndEngagementInfo__block_invoke(u
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   [v3 setProtectionClasses:v6];
 
-  v7 = [v3 fetchAttributes];
-  v8 = [v7 count];
+  fetchAttributes = [v3 fetchAttributes];
+  v8 = [fetchAttributes count];
 
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
-  v10 = [MEMORY[0x1E69D3DC0] sharedInstance];
+  mEMORY[0x1E69D3DC0] = [MEMORY[0x1E69D3DC0] sharedInstance];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke;
@@ -1409,7 +1409,7 @@ void __56__SSRankingFeedbackHandler_writeRenderAndEngagementInfo__block_invoke(u
   v19 = v8;
   v11 = v9;
   v17 = v11;
-  v12 = [v10 startQuery:v2 withContext:v3 handler:v16];
+  v12 = [mEMORY[0x1E69D3DC0] startQuery:v2 withContext:v3 handler:v16];
 
   if (!v12)
   {
@@ -1558,16 +1558,16 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
   }
 }
 
-- (void)resetResultWithRankingItems:(id)a3
+- (void)resetResultWithRankingItems:(id)items
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v3;
+  obj = itemsCopy;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
   v6 = *MEMORY[0x1E695E738];
   if (v5)
@@ -1584,9 +1584,9 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v32 + 1) + 8 * v9) identifier];
+        identifier = [*(*(&v32 + 1) + 8 * v9) identifier];
         v11 = objc_alloc_init(MEMORY[0x1E6964E80]);
-        [v11 setUniqueIdentifier:v10];
+        [v11 setUniqueIdentifier:identifier];
         [v11 setIsUpdate:1];
         [v11 setBundleID:@"com.apple.application"];
         v12 = objc_opt_new();
@@ -1608,7 +1608,7 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
 
   v14 = dispatch_group_create();
   dispatch_group_enter(v14);
-  v15 = [MEMORY[0x1E69D3DC0] sharedInstance];
+  mEMORY[0x1E69D3DC0] = [MEMORY[0x1E69D3DC0] sharedInstance];
   v16 = v4;
   v17 = [v4 copy];
   v18 = *MEMORY[0x1E696A388];
@@ -1618,7 +1618,7 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
   v30[3] = &unk_1E8595FC0;
   v19 = v14;
   v31 = v19;
-  [v15 indexSearchableItems:v17 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v18 forBundleID:@"com.apple.application" options:0 completionHandler:v30];
+  [mEMORY[0x1E69D3DC0] indexSearchableItems:v17 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v18 forBundleID:@"com.apple.application" options:0 completionHandler:v30];
 
   dispatch_group_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
   v20 = objc_alloc_init(MEMORY[0x1E6964E80]);
@@ -1630,17 +1630,17 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
   [v20 setAttributeSet:v21];
   [v20 setBundleID:@"com.apple.searchd"];
   dispatch_group_enter(v19);
-  v22 = [MEMORY[0x1E69D3DC0] sharedInstance];
+  mEMORY[0x1E69D3DC0]2 = [MEMORY[0x1E69D3DC0] sharedInstance];
   v36 = v20;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-  v24 = [v20 bundleID];
+  bundleID = [v20 bundleID];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __63__SSRankingFeedbackHandler_Tests__resetResultWithRankingItems___block_invoke_2;
   v28[3] = &unk_1E8595FC0;
   v29 = v19;
   v25 = v19;
-  [v22 indexSearchableItems:v23 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v18 forBundleID:v24 options:0 completionHandler:v28];
+  [mEMORY[0x1E69D3DC0]2 indexSearchableItems:v23 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v18 forBundleID:bundleID options:0 completionHandler:v28];
 
   dispatch_group_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
   v26 = *MEMORY[0x1E69E9840];
@@ -1676,10 +1676,10 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
   return v7;
 }
 
-- (void)testForDurationWithIntervals:(int *)a3 maxIndex:(int)a4 duration:(int64_t)a5 counts:(id)a6
+- (void)testForDurationWithIntervals:(int *)intervals maxIndex:(int)index duration:(int64_t)duration counts:(id)counts
 {
   v106 = *MEMORY[0x1E69E9840];
-  v74 = a6;
+  countsCopy = counts;
   if (testForDurationWithIntervals_maxIndex_duration_counts__onceToken != -1)
   {
     [SSRankingFeedbackHandler(Tests) testForDurationWithIntervals:maxIndex:duration:counts:];
@@ -1687,16 +1687,16 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
 
   v9 = objc_opt_new();
   v10 = MEMORY[0x1E696A388];
-  v76 = a3;
+  intervalsCopy = intervals;
   if (sStressMode == 1)
   {
-    v11 = [(SSRankingFeedbackHandler *)self getSyntheticTestRankingItemsForStressTest];
-    v12 = objc_opt_new();
+    getSyntheticTestRankingItemsForStressTest = [(SSRankingFeedbackHandler *)self getSyntheticTestRankingItemsForStressTest];
+    getSyntheticTestRankingItem = objc_opt_new();
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
-    obj = v11;
+    obj = getSyntheticTestRankingItemsForStressTest;
     v13 = [obj countByEnumeratingWithState:&v95 objects:v105 count:16];
     if (v13)
     {
@@ -1712,8 +1712,8 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
             objc_enumerationMutation(obj);
           }
 
-          v18 = [*(*(&v95 + 1) + 8 * i) identifier];
-          [v12 setObject:v16 forKey:v18];
+          identifier = [*(*(&v95 + 1) + 8 * i) identifier];
+          [getSyntheticTestRankingItem setObject:v16 forKey:identifier];
         }
 
         v14 = [obj countByEnumeratingWithState:&v95 objects:v105 count:16];
@@ -1723,40 +1723,40 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
     }
 
     [(SSRankingFeedbackHandler *)self resetResultWithRankingItems:obj];
-    v79 = [v12 copy];
-    a3 = v76;
+    v79 = [getSyntheticTestRankingItem copy];
+    intervals = intervalsCopy;
     v10 = MEMORY[0x1E696A388];
   }
 
   else
   {
-    v12 = [(SSRankingFeedbackHandler *)self getSyntheticTestRankingItem];
-    v104 = v12;
+    getSyntheticTestRankingItem = [(SSRankingFeedbackHandler *)self getSyntheticTestRankingItem];
+    v104 = getSyntheticTestRankingItem;
     obj = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
     [(SSRankingFeedbackHandler *)self resetResultWithRankingItems:?];
-    v19 = [v12 identifier];
-    v102 = v19;
+    identifier2 = [getSyntheticTestRankingItem identifier];
+    v102 = identifier2;
     v103 = *v10;
     v79 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
   }
 
-  v20 = [MEMORY[0x1E695DF00] date];
-  if ((a4 & 0x80000000) == 0)
+  date = [MEMORY[0x1E695DF00] date];
+  if ((index & 0x80000000) == 0)
   {
-    v21 = a4;
+    indexCopy = index;
     do
     {
-      [v20 timeIntervalSinceReferenceDate];
-      v23 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v22 + a3[v21] * -86400.0];
+      [date timeIntervalSinceReferenceDate];
+      v23 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v22 + intervals[indexCopy] * -86400.0];
       [v9 addObject:v23];
 
-      --v21;
+      --indexCopy;
     }
 
-    while (v21 != -1);
+    while (indexCopy != -1);
   }
 
-  v75 = v20;
+  v75 = date;
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
@@ -1791,9 +1791,9 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
     while (v26);
   }
 
-  v32 = [(SSRankingFeedbackHandler *)self fetchResults];
+  fetchResults = [(SSRankingFeedbackHandler *)self fetchResults];
   [v75 timeIntervalSinceReferenceDate];
-  v34 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v33 + (*v76 + 364) * -86400.0];
+  v34 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v33 + (*intervalsCopy + 364) * -86400.0];
   v35 = objc_opt_new();
   v77 = objc_opt_new();
   v87 = 0u;
@@ -1896,7 +1896,7 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
         v55 = v54;
         [v53 timeIntervalSinceReferenceDate];
         v57 = ((86400 * ((v55 - v56) / 0x15180)) / 86400.0);
-        if ((a5 & 0x8000000000000000) == 0 || !v57)
+        if ((duration & 0x8000000000000000) == 0 || !v57)
         {
           v81 = 0;
           if (v57 >= 256)
@@ -1973,18 +1973,18 @@ void __47__SSRankingFeedbackHandler_Tests__fetchResults__block_invoke_3(uint64_t
   }
 
   v67 = [sRenderCounts count];
-  if (v67 != [v74 count])
+  if (v67 != [countsCopy count])
   {
     [SSRankingFeedbackHandler(Tests) testForDurationWithIntervals:maxIndex:duration:counts:];
   }
 
   v68 = [sEngagementCounts count];
-  if (v68 != [v74 count])
+  if (v68 != [countsCopy count])
   {
     [SSRankingFeedbackHandler(Tests) testForDurationWithIntervals:maxIndex:duration:counts:];
   }
 
-  v69 = [MEMORY[0x1E695DFD8] setWithArray:v74];
+  v69 = [MEMORY[0x1E695DFD8] setWithArray:countsCopy];
   v70 = [MEMORY[0x1E695DFD8] setWithArray:sRenderCounts];
   if (([v69 isEqualToSet:v70] & 1) == 0)
   {

@@ -1,11 +1,11 @@
 @interface FSKitUtils
-+ (id)stringWithFormatString:(id)a3 locale:(id)a4 arguments:(id)a5;
++ (id)stringWithFormatString:(id)string locale:(id)locale arguments:(id)arguments;
 - (FSKitUtils)init;
 @end
 
 @implementation FSKitUtils
 
-+ (id)stringWithFormatString:(id)a3 locale:(id)a4 arguments:(id)a5
++ (id)stringWithFormatString:(id)string locale:(id)locale arguments:(id)arguments
 {
   v5 = sub_24A96B7BC();
   v6 = *(v5 - 8);

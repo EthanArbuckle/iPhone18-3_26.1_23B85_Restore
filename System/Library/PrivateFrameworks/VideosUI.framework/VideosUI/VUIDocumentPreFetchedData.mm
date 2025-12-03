@@ -1,19 +1,19 @@
 @interface VUIDocumentPreFetchedData
-- (BOOL)isEqual:(id)a3;
-- (VUIDocumentPreFetchedData)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VUIDocumentPreFetchedData)initWithDictionary:(id)dictionary;
 @end
 
 @implementation VUIDocumentPreFetchedData
 
-- (VUIDocumentPreFetchedData)initWithDictionary:(id)a3
+- (VUIDocumentPreFetchedData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = VUIDocumentPreFetchedData;
   v5 = [(VUIDocumentPreFetchedData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     prefetchedDataDict = v5->_prefetchedDataDict;
     v5->_prefetchedDataDict = v6;
   }
@@ -21,10 +21,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -34,11 +34,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VUIDocumentPreFetchedData *)self jsonData];
-      v7 = [(VUIDocumentPreFetchedData *)v5 jsonData];
+      v5 = equalCopy;
+      jsonData = [(VUIDocumentPreFetchedData *)self jsonData];
+      jsonData2 = [(VUIDocumentPreFetchedData *)v5 jsonData];
 
-      v8 = [v6 isEqualToDictionary:v7];
+      v8 = [jsonData isEqualToDictionary:jsonData2];
     }
 
     else

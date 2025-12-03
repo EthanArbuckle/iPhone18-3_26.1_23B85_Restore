@@ -1,27 +1,27 @@
 @interface _CPResultFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPResultFeedback)init;
-- (_CPResultFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (_CPResultFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPResultFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     timestamp = self->_timestamp;
-    if (timestamp == [v4 timestamp])
+    if (timestamp == [equalCopy timestamp])
     {
-      v6 = [(_CPResultFeedback *)self result];
-      v7 = [v4 result];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      result = [(_CPResultFeedback *)self result];
+      result2 = [equalCopy result];
+      v8 = result2;
+      if ((result != 0) != (result2 == 0))
       {
-        v9 = [(_CPResultFeedback *)self result];
-        if (!v9)
+        result3 = [(_CPResultFeedback *)self result];
+        if (!result3)
         {
 
 LABEL_11:
@@ -29,10 +29,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_CPResultFeedback *)self result];
-        v12 = [v4 result];
-        v13 = [v11 isEqual:v12];
+        v10 = result3;
+        result4 = [(_CPResultFeedback *)self result];
+        result5 = [equalCopy result];
+        v13 = [result4 isEqual:result5];
 
         if (v13)
         {
@@ -52,20 +52,20 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_CPResultFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPResultFeedback *)self result];
+  result = [(_CPResultFeedback *)self result];
 
-  if (v5)
+  if (result)
   {
-    v6 = [(_CPResultFeedback *)self result];
+    result2 = [(_CPResultFeedback *)self result];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -84,22 +84,22 @@ LABEL_9:
   return v2;
 }
 
-- (_CPResultFeedback)initWithFacade:(id)a3
+- (_CPResultFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v12.receiver = self;
   v12.super_class = _CPResultFeedback;
   v5 = [(_CPResultFeedback *)&v12 init];
   if (v5)
   {
-    -[_CPResultFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 result];
+    -[_CPResultFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    result = [facadeCopy result];
 
-    if (v6)
+    if (result)
     {
       v7 = [_CPSearchResultForFeedback alloc];
-      v8 = [v4 result];
-      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:v8];
+      result2 = [facadeCopy result];
+      v9 = [(_CPSearchResultForFeedback *)v7 initWithFacade:result2];
       [(_CPResultFeedback *)v5 setResult:v9];
     }
 

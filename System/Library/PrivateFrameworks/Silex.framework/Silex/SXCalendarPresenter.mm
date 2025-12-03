@@ -1,36 +1,36 @@
 @interface SXCalendarPresenter
-- (SXCalendarPresenter)initWithViewControllerPresenting:(id)a3 eventStoreProvider:(id)a4;
-- (void)presentCalendarEvent:(id)a3;
+- (SXCalendarPresenter)initWithViewControllerPresenting:(id)presenting eventStoreProvider:(id)provider;
+- (void)presentCalendarEvent:(id)event;
 @end
 
 @implementation SXCalendarPresenter
 
-- (SXCalendarPresenter)initWithViewControllerPresenting:(id)a3 eventStoreProvider:(id)a4
+- (SXCalendarPresenter)initWithViewControllerPresenting:(id)presenting eventStoreProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  presentingCopy = presenting;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = SXCalendarPresenter;
   v9 = [(SXCalendarPresenter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewControllerPresenting, a3);
-    objc_storeStrong(&v10->_eventStoreProvider, a4);
+    objc_storeStrong(&v9->_viewControllerPresenting, presenting);
+    objc_storeStrong(&v10->_eventStoreProvider, provider);
   }
 
   return v10;
 }
 
-- (void)presentCalendarEvent:(id)a3
+- (void)presentCalendarEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 startDate];
+    startDate = [eventCopy startDate];
 
-    if (v6)
+    if (startDate)
     {
       objc_initWeak(&location, self);
       v7 = dispatch_get_global_queue(25, 0);

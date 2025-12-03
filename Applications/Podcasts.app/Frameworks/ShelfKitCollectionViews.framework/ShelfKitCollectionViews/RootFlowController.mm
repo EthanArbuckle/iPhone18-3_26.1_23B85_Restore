@@ -1,10 +1,10 @@
 @interface RootFlowController
-- (void)dismissWrappedControllerFrom:(id)a3;
+- (void)dismissWrappedControllerFrom:(id)from;
 @end
 
 @implementation RootFlowController
 
-- (void)dismissWrappedControllerFrom:(id)a3
+- (void)dismissWrappedControllerFrom:(id)from
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

@@ -1,21 +1,21 @@
 @interface CNMutableSocialProfile
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)freeze;
 @end
 
 @implementation CNMutableSocialProfile
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNSocialProfile alloc];
-  v5 = [(CNSocialProfile *)self urlString];
-  v6 = [(CNSocialProfile *)self username];
-  v7 = [(CNSocialProfile *)self userIdentifier];
-  v8 = [(CNSocialProfile *)self service];
-  v9 = [(CNSocialProfile *)self displayname];
-  v10 = [(CNSocialProfile *)self teamIdentifier];
-  v11 = [(CNSocialProfile *)self bundleIdentifiers];
-  v12 = [(CNSocialProfile *)v4 initWithUrlString:v5 username:v6 userIdentifier:v7 service:v8 displayname:v9 teamIdentifier:v10 bundleIdentifiers:v11];
+  urlString = [(CNSocialProfile *)self urlString];
+  username = [(CNSocialProfile *)self username];
+  userIdentifier = [(CNSocialProfile *)self userIdentifier];
+  service = [(CNSocialProfile *)self service];
+  displayname = [(CNSocialProfile *)self displayname];
+  teamIdentifier = [(CNSocialProfile *)self teamIdentifier];
+  bundleIdentifiers = [(CNSocialProfile *)self bundleIdentifiers];
+  v12 = [(CNSocialProfile *)v4 initWithUrlString:urlString username:username userIdentifier:userIdentifier service:service displayname:displayname teamIdentifier:teamIdentifier bundleIdentifiers:bundleIdentifiers];
 
   return v12;
 }

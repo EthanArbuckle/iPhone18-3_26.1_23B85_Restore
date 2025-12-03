@@ -1,21 +1,21 @@
 @interface HKCodableWheelchairSetting
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsUsingWheelchair:(BOOL)a3;
-- (void)setHasMinimumSupportedVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsUsingWheelchair:(BOOL)wheelchair;
+- (void)setHasMinimumSupportedVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableWheelchairSetting
 
-- (void)setHasIsUsingWheelchair:(BOOL)a3
+- (void)setHasIsUsingWheelchair:(BOOL)wheelchair
 {
-  if (a3)
+  if (wheelchair)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinimumSupportedVersion:(BOOL)a3
+- (void)setHasMinimumSupportedVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -49,20 +49,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableWheelchairSetting;
   v4 = [(HKCodableWheelchairSetting *)&v8 description];
-  v5 = [(HKCodableWheelchairSetting *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableWheelchairSetting *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_isUsingWheelchair];
-    [v3 setObject:v7 forKey:@"isUsingWheelchair"];
+    [dictionary setObject:v7 forKey:@"isUsingWheelchair"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -83,29 +83,29 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_latestSupportedVersion];
-  [v3 setObject:v8 forKey:@"latestSupportedVersion"];
+  [dictionary setObject:v8 forKey:@"latestSupportedVersion"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_minimumSupportedVersion];
-    [v3 setObject:v5 forKey:@"minimumSupportedVersion"];
+    [dictionary setObject:v5 forKey:@"minimumSupportedVersion"];
   }
 
 LABEL_5:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 4) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -125,25 +125,25 @@ LABEL_3:
   }
 
   PBDataWriterWriteInt64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[24] = self->_isUsingWheelchair;
-    v4[28] |= 4u;
+    toCopy[24] = self->_isUsingWheelchair;
+    toCopy[28] |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -162,21 +162,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 1) = self->_latestSupportedVersion;
-  v4[28] |= 1u;
+  *(toCopy + 1) = self->_latestSupportedVersion;
+  toCopy[28] |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(v4 + 2) = self->_minimumSupportedVersion;
-    v4[28] |= 2u;
+    *(toCopy + 2) = self->_minimumSupportedVersion;
+    toCopy[28] |= 2u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -213,17 +213,17 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_4;
     }
@@ -233,20 +233,20 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 28) & 4) == 0)
+  if ((*(equalCopy + 28) & 4) == 0)
   {
     goto LABEL_18;
   }
 
   if (self->_isUsingWheelchair)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_18;
   }
@@ -254,21 +254,21 @@ LABEL_18:
 LABEL_4:
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_latestSupportedVersion != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_latestSupportedVersion != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_18;
   }
 
-  v5 = (*(v4 + 28) & 2) == 0;
+  v5 = (*(equalCopy + 28) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_minimumSupportedVersion != *(v4 + 2))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_minimumSupportedVersion != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -321,15 +321,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_isUsingWheelchair = *(v4 + 24);
+    self->_isUsingWheelchair = *(fromCopy + 24);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -342,17 +342,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 1) == 0)
+  else if ((*(fromCopy + 28) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_latestSupportedVersion = *(v4 + 1);
+  self->_latestSupportedVersion = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
 LABEL_4:
-    self->_minimumSupportedVersion = *(v4 + 2);
+    self->_minimumSupportedVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

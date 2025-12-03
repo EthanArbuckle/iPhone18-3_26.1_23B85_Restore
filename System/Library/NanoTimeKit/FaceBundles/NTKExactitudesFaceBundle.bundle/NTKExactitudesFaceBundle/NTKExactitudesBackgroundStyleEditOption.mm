@@ -1,20 +1,20 @@
 @interface NTKExactitudesBackgroundStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKExactitudesBackgroundStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"backgroundOff";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

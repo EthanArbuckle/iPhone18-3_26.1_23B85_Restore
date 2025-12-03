@@ -1,39 +1,39 @@
 @interface PUIPosterSnapshotFilesystemCache
-+ (id)_determineProviderFromSnapshotURL:(id)a3;
-+ (id)_snapshotContainerURLForPosterUUID:(id)a3 provider:(id)a4 relativeTo:(id)a5;
-+ (id)_snapshotURLForPosterPath:(id)a3 relativeTo:(id)a4;
-+ (id)_snapshotURLForPosterPath:(id)a3 snapshotCacheIdentifier:(id)a4 interfaceOrientation:(int64_t)a5 hardwareIdentifier:(id)a6 userInterfaceStyle:(int64_t)a7 relativeTo:(id)a8;
-+ (id)snapshotURLForSnapshotCacheEpoch:(int)a3 snapshotVersion:(int)a4 snapshotBundleVersion:(int)a5 posterUUID:(id)a6 posterVersion:(id)a7 provider:(id)a8 snapshotCacheIdentifier:(id)a9 interfaceOrientation:(int64_t)a10 hardwareIdentifier:(id)a11 userInterfaceStyle:(int64_t)a12 relativeTo:(id)a13;
-- (BOOL)checkCacheIsReachableWithError:(id *)a3;
-- (PUIPosterSnapshotFilesystemCache)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 error:(id *)a6;
++ (id)_determineProviderFromSnapshotURL:(id)l;
++ (id)_snapshotContainerURLForPosterUUID:(id)d provider:(id)provider relativeTo:(id)to;
++ (id)_snapshotURLForPosterPath:(id)path relativeTo:(id)to;
++ (id)_snapshotURLForPosterPath:(id)path snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation hardwareIdentifier:(id)hardwareIdentifier userInterfaceStyle:(int64_t)style relativeTo:(id)to;
++ (id)snapshotURLForSnapshotCacheEpoch:(int)epoch snapshotVersion:(int)version snapshotBundleVersion:(int)bundleVersion posterUUID:(id)d posterVersion:(id)posterVersion provider:(id)provider snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)self0 hardwareIdentifier:(id)self1 userInterfaceStyle:(int64_t)self2 relativeTo:(id)self3;
+- (BOOL)checkCacheIsReachableWithError:(id *)error;
+- (PUIPosterSnapshotFilesystemCache)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options error:(id *)error;
 - (id)_snapshotBundleURLs;
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4;
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options;
 - (id)checkCacheIsReachable;
 - (id)cleanup;
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3;
-- (id)latestSnapshotBundleForPoster:(id)a3 snapshotCacheIdentifier:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6 hardwareIdentifier:(id)a7 error:(id *)a8;
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4;
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3;
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate;
+- (id)latestSnapshotBundleForPoster:(id)poster snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style hardwareIdentifier:(id)hardwareIdentifier error:(id *)error;
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error;
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate;
 - (id)reachableCacheFuture;
-- (id)snapshotBundlesMatchingPredicate:(id)a3;
-- (id)snapshotDestinationFutureForPath:(id)a3 clientAuditToken:(id)a4;
-- (void)_cacheLock_cleanupPostersWithOptions:(id)a3;
+- (id)snapshotBundlesMatchingPredicate:(id)predicate;
+- (id)snapshotDestinationFutureForPath:(id)path clientAuditToken:(id)token;
+- (void)_cacheLock_cleanupPostersWithOptions:(id)options;
 - (void)_prepareSnapshotCache;
-- (void)cacheSnapshotBundle:(id)a3 forRequest:(id)a4 completion:(id)a5;
-- (void)cacheSnapshotBundle:(id)a3 forRequest:(id)a4 options:(id)a5 completion:(id)a6;
+- (void)cacheSnapshotBundle:(id)bundle forRequest:(id)request completion:(id)completion;
+- (void)cacheSnapshotBundle:(id)bundle forRequest:(id)request options:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)discardSnapshotsForPosters:(id)a3;
-- (void)discardSnapshotsForPostersMatchingPredicate:(id)a3;
+- (void)discardSnapshotsForPosters:(id)posters;
+- (void)discardSnapshotsForPostersMatchingPredicate:(id)predicate;
 - (void)invalidate;
 @end
 
 @implementation PUIPosterSnapshotFilesystemCache
 
-- (PUIPosterSnapshotFilesystemCache)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 error:(id *)a6
+- (PUIPosterSnapshotFilesystemCache)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  if (([v11 checkResourceIsReachableAndReturnError:a6] & 1) == 0)
+  lCopy = l;
+  managerCopy = manager;
+  if (([lCopy checkResourceIsReachableAndReturnError:error] & 1) == 0)
   {
     [PUIPosterSnapshotFilesystemCache initWithURL:a2 fileManager:? options:? error:?];
   }
@@ -47,7 +47,7 @@
     goto LABEL_9;
   }
 
-  v13->_options = a5;
+  v13->_options = options;
   v15 = [objc_alloc(MEMORY[0x1E698E610]) initWithFlag:0];
   invalidationFlag = v14->_invalidationFlag;
   v14->_invalidationFlag = v15;
@@ -57,11 +57,11 @@
   cacheLock_URLResourceIdentifierToSnapshotBundleCache = v14->_cacheLock_URLResourceIdentifierToSnapshotBundleCache;
   v14->_cacheLock_URLResourceIdentifierToSnapshotBundleCache = v17;
 
-  v19 = [v11 URLByStandardizingPath];
+  uRLByStandardizingPath = [lCopy URLByStandardizingPath];
   cacheURL = v14->_cacheURL;
-  v14->_cacheURL = v19;
+  v14->_cacheURL = uRLByStandardizingPath;
 
-  if ([(NSURL *)v14->_cacheURL checkResourceIsReachableAndReturnError:a6])
+  if ([(NSURL *)v14->_cacheURL checkResourceIsReachableAndReturnError:error])
   {
     v21 = [(NSURL *)v14->_cacheURL URLByAppendingPathComponent:@"PosterSnapshotCache.bundle" conformingToType:*MEMORY[0x1E6982D00]];
     rootCacheURL = v14->_rootCacheURL;
@@ -71,9 +71,9 @@
     snapshotBundleContainerURL = v14->_snapshotBundleContainerURL;
     v14->_snapshotBundleContainerURL = v23;
 
-    if (v12)
+    if (managerCopy)
     {
-      v25 = v12;
+      v25 = managerCopy;
     }
 
     else
@@ -84,18 +84,18 @@
     fileManager = v14->_fileManager;
     v14->_fileManager = v25;
 
-    v28 = [v11 path];
-    v29 = [v28 stringByAppendingFormat:@"-%@", @"PostersFileSystemCacheCompletionQueue"];
-    v30 = [MEMORY[0x1E698E698] serial];
-    v31 = [v30 serviceClass:25];
+    path = [lCopy path];
+    v29 = [path stringByAppendingFormat:@"-%@", @"PostersFileSystemCacheCompletionQueue"];
+    serial = [MEMORY[0x1E698E698] serial];
+    v31 = [serial serviceClass:25];
     v32 = BSDispatchQueueCreate();
     completionQueue = v14->_completionQueue;
     v14->_completionQueue = v32;
 
     v34 = MEMORY[0x1E69C51F0];
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [(NSURL *)v14->_cacheURL path];
-    v37 = [v35 stringWithFormat:@"PostersFileSystemCache-Workloop-%@", v36];
+    path2 = [(NSURL *)v14->_cacheURL path];
+    v37 = [v35 stringWithFormat:@"PostersFileSystemCache-Workloop-%@", path2];
     v38 = [v34 serialQueueTargetingSharedWorkloop:v37];
     fileSystemQueue = v14->_fileSystemQueue;
     v14->_fileSystemQueue = v38;
@@ -120,11 +120,11 @@ LABEL_10:
   [(PUIPosterSnapshotFilesystemCache *)&v3 dealloc];
 }
 
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options
 {
   v6 = MEMORY[0x1E69C5260];
-  v7 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  bundleCopy = bundle;
   v9 = objc_alloc_init(v6);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -132,11 +132,11 @@ LABEL_10:
   v13[3] = &unk_1E7856438;
   v14 = v9;
   v10 = v9;
-  [(PUIPosterSnapshotFilesystemCache *)self cacheSnapshotBundle:v8 forRequest:0 options:v7 completion:v13];
+  [(PUIPosterSnapshotFilesystemCache *)self cacheSnapshotBundle:bundleCopy forRequest:0 options:optionsCopy completion:v13];
 
-  v11 = [v10 future];
+  future = [v10 future];
 
-  return v11;
+  return future;
 }
 
 uint64_t __64__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_options___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -176,24 +176,24 @@ uint64_t __57__PUIPosterSnapshotFilesystemCache_checkCacheIsReachable__block_inv
   return [v2 numberWithBool:v3];
 }
 
-- (id)discardSnapshotBundlesMatchingPredicate:(id)a3
+- (id)discardSnapshotBundlesMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = self->_snapshotBundleContainerURL;
   v6 = self->_fileManager;
-  v7 = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
+  _snapshotBundleURLs = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__PUIPosterSnapshotFilesystemCache_discardSnapshotBundlesMatchingPredicate___block_invoke;
   v13[3] = &unk_1E7856460;
   v13[4] = self;
   v14 = v5;
-  v15 = v4;
+  v15 = predicateCopy;
   v16 = v6;
   v8 = v6;
-  v9 = v4;
+  v9 = predicateCopy;
   v10 = v5;
-  v11 = [v7 flatMap:v13];
+  v11 = [_snapshotBundleURLs flatMap:v13];
 
   return v11;
 }
@@ -252,9 +252,9 @@ id __76__PUIPosterSnapshotFilesystemCache_discardSnapshotBundlesMatchingPredicat
   return v16;
 }
 
-- (id)latestSnapshotBundleMatchingPredicate:(id)a3
+- (id)latestSnapshotBundleMatchingPredicate:(id)predicate
 {
-  v3 = [(PUIPosterSnapshotFilesystemCache *)self snapshotBundlesMatchingPredicate:a3];
+  v3 = [(PUIPosterSnapshotFilesystemCache *)self snapshotBundlesMatchingPredicate:predicate];
   v4 = [v3 flatMap:&__block_literal_global_54];
 
   return v4;
@@ -290,20 +290,20 @@ uint64_t __74__PUIPosterSnapshotFilesystemCache_latestSnapshotBundleMatchingPred
   return v7;
 }
 
-- (id)snapshotBundlesMatchingPredicate:(id)a3
+- (id)snapshotBundlesMatchingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = self->_snapshotBundleContainerURL;
-  v6 = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
+  _snapshotBundleURLs = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __69__PUIPosterSnapshotFilesystemCache_snapshotBundlesMatchingPredicate___block_invoke;
   v11[3] = &unk_1E78564A8;
   v12 = v5;
-  v13 = v4;
-  v7 = v4;
+  v13 = predicateCopy;
+  v7 = predicateCopy;
   v8 = v5;
-  v9 = [v6 flatMap:v11];
+  v9 = [_snapshotBundleURLs flatMap:v11];
 
   return v9;
 }
@@ -434,9 +434,9 @@ id __55__PUIPosterSnapshotFilesystemCache__snapshotBundleURLs__block_invoke(uint
   }
 }
 
-- (id)snapshotDestinationFutureForPath:(id)a3 clientAuditToken:(id)a4
+- (id)snapshotDestinationFutureForPath:(id)path clientAuditToken:(id)token
 {
-  v5 = a4;
+  tokenCopy = token;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v6 = MEMORY[0x1E69C5258];
@@ -448,7 +448,7 @@ id __55__PUIPosterSnapshotFilesystemCache__snapshotBundleURLs__block_invoke(uint
   else
   {
     v17 = 0;
-    v10 = [PUIPosterSnapshotDestination destinationForCache:self clientAuditToken:v5 error:&v17];
+    v10 = [PUIPosterSnapshotDestination destinationForCache:self clientAuditToken:tokenCopy error:&v17];
     v11 = v17;
     if (v11)
     {
@@ -482,33 +482,33 @@ id __55__PUIPosterSnapshotFilesystemCache__snapshotBundleURLs__block_invoke(uint
   return v9;
 }
 
-+ (id)_snapshotURLForPosterPath:(id)a3 relativeTo:(id)a4
++ (id)_snapshotURLForPosterPath:(id)path relativeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 serverIdentity];
-  v8 = [v7 provider];
+  pathCopy = path;
+  toCopy = to;
+  serverIdentity = [pathCopy serverIdentity];
+  provider = [serverIdentity provider];
 
-  v9 = [v5 serverIdentity];
-  v10 = [v9 posterUUID];
-  v11 = [v10 UUIDString];
+  serverIdentity2 = [pathCopy serverIdentity];
+  posterUUID = [serverIdentity2 posterUUID];
+  uUIDString = [posterUUID UUIDString];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v5 serverIdentity];
-  v14 = [v12 stringWithFormat:@"%llu", objc_msgSend(v13, "version")];
+  serverIdentity3 = [pathCopy serverIdentity];
+  v14 = [v12 stringWithFormat:@"%llu", objc_msgSend(serverIdentity3, "version")];
 
   v15 = PUIPosterCurrentSnapshotBundleEpochAndVersionIdentifier();
-  v25 = v6;
-  v16 = [v6 copy];
+  v25 = toCopy;
+  v16 = [toCopy copy];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30[0] = v15;
-  v30[1] = v8;
-  v24 = v8;
-  v30[2] = v11;
+  v30[1] = provider;
+  v24 = provider;
+  v30[2] = uUIDString;
   v30[3] = v14;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   v18 = [v17 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -543,68 +543,68 @@ id __55__PUIPosterSnapshotFilesystemCache__snapshotBundleURLs__block_invoke(uint
   return v16;
 }
 
-+ (id)_snapshotURLForPosterPath:(id)a3 snapshotCacheIdentifier:(id)a4 interfaceOrientation:(int64_t)a5 hardwareIdentifier:(id)a6 userInterfaceStyle:(int64_t)a7 relativeTo:(id)a8
++ (id)_snapshotURLForPosterPath:(id)path snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation hardwareIdentifier:(id)hardwareIdentifier userInterfaceStyle:(int64_t)style relativeTo:(id)to
 {
-  v12 = a8;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v15 serverIdentity];
-  v17 = [v16 posterUUID];
+  toCopy = to;
+  hardwareIdentifierCopy = hardwareIdentifier;
+  identifierCopy = identifier;
+  pathCopy = path;
+  serverIdentity = [pathCopy serverIdentity];
+  posterUUID = [serverIdentity posterUUID];
   v18 = MEMORY[0x1E696AD98];
-  v19 = [v15 serverIdentity];
-  v20 = [v18 numberWithUnsignedLongLong:{objc_msgSend(v19, "version")}];
-  v21 = [v15 serverIdentity];
+  serverIdentity2 = [pathCopy serverIdentity];
+  v20 = [v18 numberWithUnsignedLongLong:{objc_msgSend(serverIdentity2, "version")}];
+  serverIdentity3 = [pathCopy serverIdentity];
 
-  v22 = [v21 provider];
-  v23 = [a1 _snapshotURLForPosterUUID:v17 posterVersion:v20 provider:v22 snapshotCacheIdentifier:v14 interfaceOrientation:a5 hardwareIdentifier:v13 userInterfaceStyle:a7 relativeTo:v12];
+  provider = [serverIdentity3 provider];
+  v23 = [self _snapshotURLForPosterUUID:posterUUID posterVersion:v20 provider:provider snapshotCacheIdentifier:identifierCopy interfaceOrientation:orientation hardwareIdentifier:hardwareIdentifierCopy userInterfaceStyle:style relativeTo:toCopy];
 
   return v23;
 }
 
-+ (id)snapshotURLForSnapshotCacheEpoch:(int)a3 snapshotVersion:(int)a4 snapshotBundleVersion:(int)a5 posterUUID:(id)a6 posterVersion:(id)a7 provider:(id)a8 snapshotCacheIdentifier:(id)a9 interfaceOrientation:(int64_t)a10 hardwareIdentifier:(id)a11 userInterfaceStyle:(int64_t)a12 relativeTo:(id)a13
++ (id)snapshotURLForSnapshotCacheEpoch:(int)epoch snapshotVersion:(int)version snapshotBundleVersion:(int)bundleVersion posterUUID:(id)d posterVersion:(id)posterVersion provider:(id)provider snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)self0 hardwareIdentifier:(id)self1 userInterfaceStyle:(int64_t)self2 relativeTo:(id)self3
 {
-  v15 = *&a3;
+  v15 = *&epoch;
   v49 = *MEMORY[0x1E69E9840];
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v35 = a11;
-  v19 = a13;
-  v20 = [a6 UUIDString];
-  v42 = v16;
-  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(v16, "unsignedIntegerValue")];
-  v22 = PUIPosterSnapshotBundleEpochAndVersionIdentifier(v15, a4, a5);
+  posterVersionCopy = posterVersion;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  hardwareIdentifierCopy = hardwareIdentifier;
+  toCopy = to;
+  uUIDString = [d UUIDString];
+  v42 = posterVersionCopy;
+  v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(posterVersionCopy, "unsignedIntegerValue")];
+  v22 = PUIPosterSnapshotBundleEpochAndVersionIdentifier(v15, version, bundleVersion);
   v23 = BSInterfaceOrientationDescription();
   v24 = @"Unknown";
-  if (a12 == 1)
+  if (style == 1)
   {
     v24 = @"LightMode";
   }
 
-  if (a12 == 2)
+  if (style == 2)
   {
     v24 = @"DarkMode";
   }
 
   v25 = v24;
-  v38 = v19;
-  v26 = [v19 copy];
+  v38 = toCopy;
+  v26 = [toCopy copy];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47[0] = v22;
-  v47[1] = v17;
-  v41 = v17;
+  v47[1] = providerCopy;
+  v41 = providerCopy;
   v36 = v21;
-  v37 = v20;
-  v47[2] = v20;
+  v37 = uUIDString;
+  v47[2] = uUIDString;
   v47[3] = v21;
   v47[4] = v23;
-  v47[5] = v18;
+  v47[5] = identifierCopy;
   v47[6] = v25;
-  v47[7] = v35;
+  v47[7] = hardwareIdentifierCopy;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:8];
   v28 = [v27 countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v28)
@@ -640,28 +640,28 @@ id __55__PUIPosterSnapshotFilesystemCache__snapshotBundleURLs__block_invoke(uint
   return v33;
 }
 
-+ (id)_snapshotContainerURLForPosterUUID:(id)a3 provider:(id)a4 relativeTo:(id)a5
++ (id)_snapshotContainerURLForPosterUUID:(id)d provider:(id)provider relativeTo:(id)to
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  toCopy = to;
+  providerCopy = provider;
+  dCopy = d;
   v10 = PUIPosterCurrentSnapshotBundleEpochAndVersionIdentifier();
-  v11 = [v7 URLByAppendingPathComponent:v10 isDirectory:1];
+  v11 = [toCopy URLByAppendingPathComponent:v10 isDirectory:1];
 
-  v12 = [v11 URLByAppendingPathComponent:v8 isDirectory:1];
+  v12 = [v11 URLByAppendingPathComponent:providerCopy isDirectory:1];
 
-  v13 = [v9 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v14 = [v12 URLByAppendingPathComponent:v13 isDirectory:1];
+  v14 = [v12 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
   return v14;
 }
 
-+ (id)_determineProviderFromSnapshotURL:(id)a3
++ (id)_determineProviderFromSnapshotURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [a3 path];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  path = [l path];
+  v4 = [path componentsSeparatedByString:@"/"];
   v5 = PUIPosterCurrentSnapshotBundleEpochAndVersionIdentifier();
   v14 = 0u;
   v15 = 0u;
@@ -708,12 +708,12 @@ LABEL_12:
   return v7;
 }
 
-- (id)latestSnapshotBundleForPoster:(id)a3 snapshotCacheIdentifier:(id)a4 interfaceOrientation:(int64_t)a5 userInterfaceStyle:(int64_t)a6 hardwareIdentifier:(id)a7 error:(id *)a8
+- (id)latestSnapshotBundleForPoster:(id)poster snapshotCacheIdentifier:(id)identifier interfaceOrientation:(int64_t)orientation userInterfaceStyle:(int64_t)style hardwareIdentifier:(id)hardwareIdentifier error:(id *)error
 {
   *&v56[5] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
+  posterCopy = poster;
+  identifierCopy = identifier;
+  hardwareIdentifierCopy = hardwareIdentifier;
   if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
     v19 = PUILogSnapshotCache();
@@ -729,18 +729,18 @@ LABEL_12:
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v22, OS_SIGNPOST_INTERVAL_BEGIN, spid, "SnapshotCacheRetrieval", &unk_1A8D256D3, buf, 2u);
     }
 
-    if (([v15 isServerPosterPath] & 1) == 0)
+    if (([posterCopy isServerPosterPath] & 1) == 0)
     {
       [PUIPosterSnapshotFilesystemCache latestSnapshotBundleForPoster:a2 snapshotCacheIdentifier:? interfaceOrientation:? userInterfaceStyle:? hardwareIdentifier:? error:?];
     }
 
-    if (![v16 length])
+    if (![identifierCopy length])
     {
       [PUIPosterSnapshotFilesystemCache latestSnapshotBundleForPoster:a2 snapshotCacheIdentifier:? interfaceOrientation:? userInterfaceStyle:? hardwareIdentifier:? error:?];
     }
 
     v24 = self->_cacheLock_URLResourceIdentifierToSnapshotBundleCache;
-    v25 = [objc_opt_class() _snapshotURLForPosterPath:v15 snapshotCacheIdentifier:v16 interfaceOrientation:a5 hardwareIdentifier:v17 userInterfaceStyle:a6 relativeTo:self->_snapshotBundleContainerURL];
+    v25 = [objc_opt_class() _snapshotURLForPosterPath:posterCopy snapshotCacheIdentifier:identifierCopy interfaceOrientation:orientation hardwareIdentifier:hardwareIdentifierCopy userInterfaceStyle:style relativeTo:self->_snapshotBundleContainerURL];
     v26 = PUILogSnapshotCache();
     v27 = v26;
     if (v23 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v26))
@@ -832,10 +832,10 @@ LABEL_12:
           }
 
           v46 = v52;
-          if (a8)
+          if (error)
           {
             v47 = v52;
-            *a8 = v52;
+            *error = v52;
           }
         }
 
@@ -899,10 +899,10 @@ LABEL_33:
     goto LABEL_32;
   }
 
-  if (a8)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
-    *a8 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -915,17 +915,17 @@ LABEL_34:
   return v18;
 }
 
-- (void)discardSnapshotsForPosters:(id)a3
+- (void)discardSnapshotsForPosters:(id)posters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  postersCopy = posters;
   v5 = self->_fileManager;
   os_unfair_lock_lock(&self->_cacheLock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = postersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -960,13 +960,13 @@ LABEL_34:
   os_unfair_lock_unlock(&self->_cacheLock);
 }
 
-- (BOOL)checkCacheIsReachableWithError:(id *)a3
+- (BOOL)checkCacheIsReachableWithError:(id *)error
 {
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
+      *error = [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
     }
 
     return 0;
@@ -977,7 +977,7 @@ LABEL_34:
     fileManager = self->_fileManager;
     snapshotBundleContainerURL = self->_snapshotBundleContainerURL;
     v8 = PFPosterPathFileAttributes();
-    v9 = [(NSFileManager *)fileManager createDirectoryAtURL:snapshotBundleContainerURL withIntermediateDirectories:1 attributes:v8 error:a3];
+    v9 = [(NSFileManager *)fileManager createDirectoryAtURL:snapshotBundleContainerURL withIntermediateDirectories:1 attributes:v8 error:error];
 
     return v9;
   }
@@ -1025,15 +1025,15 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
   return v5;
 }
 
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   if ([(BSAtomicFlag *)self->_invalidationFlag getFlag])
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] pui_errorWithCode:5];
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -1044,28 +1044,28 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
 
   else
   {
-    v8 = [v6 snapshotDescriptor];
-    v18 = [v8 output];
+    snapshotDescriptor = [requestCopy snapshotDescriptor];
+    output = [snapshotDescriptor output];
 
-    v9 = [v6 snapshotDescriptor];
-    v10 = [v9 sceneDescriptor];
+    snapshotDescriptor2 = [requestCopy snapshotDescriptor];
+    sceneDescriptor = [snapshotDescriptor2 sceneDescriptor];
 
-    v11 = [v6 path];
-    v12 = [v18 snapshotDefinitionIdentifier];
-    v13 = [v10 deviceOrientation];
-    v14 = [v10 userInterfaceStyle];
-    v15 = [v10 displayConfiguration];
-    v16 = [v15 pui_displayConfigurationIdentifier];
-    v7 = [(PUIPosterSnapshotFilesystemCache *)self latestSnapshotBundleForPoster:v11 snapshotCacheIdentifier:v12 interfaceOrientation:v13 userInterfaceStyle:v14 hardwareIdentifier:v16 error:a4];
+    path = [requestCopy path];
+    snapshotDefinitionIdentifier = [output snapshotDefinitionIdentifier];
+    deviceOrientation = [sceneDescriptor deviceOrientation];
+    userInterfaceStyle = [sceneDescriptor userInterfaceStyle];
+    displayConfiguration = [sceneDescriptor displayConfiguration];
+    pui_displayConfigurationIdentifier = [displayConfiguration pui_displayConfigurationIdentifier];
+    v7 = [(PUIPosterSnapshotFilesystemCache *)self latestSnapshotBundleForPoster:path snapshotCacheIdentifier:snapshotDefinitionIdentifier interfaceOrientation:deviceOrientation userInterfaceStyle:userInterfaceStyle hardwareIdentifier:pui_displayConfigurationIdentifier error:error];
   }
 
   return v7;
 }
 
-- (void)discardSnapshotsForPostersMatchingPredicate:(id)a3
+- (void)discardSnapshotsForPostersMatchingPredicate:(id)predicate
 {
   v43 = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  predicateCopy = predicate;
   if (([(BSAtomicFlag *)self->_invalidationFlag getFlag]& 1) == 0)
   {
     v4 = PUILogSnapshotCache();
@@ -1077,7 +1077,7 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
     if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
     {
       *buf = 138543362;
-      v38 = v28;
+      v38 = predicateCopy;
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "SnapshotCacheCleanupMatchingPredicate", "Predicate %{public}@", buf, 0xCu);
     }
 
@@ -1105,10 +1105,10 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
           }
 
           v14 = *(*(&v33 + 1) + 8 * i);
-          v15 = [v14 pathExtension];
-          v16 = [v15 localizedCompare:@"pks"];
+          pathExtension = [v14 pathExtension];
+          v16 = [pathExtension localizedCompare:@"pks"];
 
-          if (!v16 && [v28 evaluateWithObject:v14])
+          if (!v16 && [predicateCopy evaluateWithObject:v14])
           {
             [v8 addObject:v14];
             cacheLock_URLResourceIdentifierToSnapshotBundleCache = self->_cacheLock_URLResourceIdentifierToSnapshotBundleCache;
@@ -1157,7 +1157,7 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
     if (v27 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
     {
       *buf = 138543618;
-      v38 = v28;
+      v38 = predicateCopy;
       v39 = 2114;
       v40 = v19;
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v25, OS_SIGNPOST_INTERVAL_END, spid, "SnapshotCacheCleanupMatchingPredicate", "Predicate %{public}@; cleanedup urls: %{public}@", buf, 0x16u);
@@ -1165,23 +1165,23 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
   }
 }
 
-- (void)cacheSnapshotBundle:(id)a3 forRequest:(id)a4 completion:(id)a5
+- (void)cacheSnapshotBundle:(id)bundle forRequest:(id)request completion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 path];
-  v12 = [v11 isServerPosterPath];
+  bundleCopy = bundle;
+  requestCopy = request;
+  completionCopy = completion;
+  path = [requestCopy path];
+  isServerPosterPath = [path isServerPosterPath];
 
-  if (v12)
+  if (isServerPosterPath)
   {
-    v13 = [v9 path];
-    v14 = [v13 serverIdentity];
+    path2 = [requestCopy path];
+    serverIdentity = [path2 serverIdentity];
 
-    v15 = [v14 version];
-    v16 = [v14 posterUUID];
-    v17 = [PUIPosterSnapshotBundlePredicate predicateMatchingBundleWithPosterVersionLessThan:v15 posterUUID:v16];
+    version = [serverIdentity version];
+    posterUUID = [serverIdentity posterUUID];
+    v17 = [PUIPosterSnapshotBundlePredicate predicateMatchingBundleWithPosterVersionLessThan:version posterUUID:posterUUID];
 
     v20[0] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
@@ -1193,48 +1193,48 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
     v19 = 0;
   }
 
-  [(PUIPosterSnapshotFilesystemCache *)self cacheSnapshotBundle:v8 forRequest:v9 options:v19 completion:v10];
+  [(PUIPosterSnapshotFilesystemCache *)self cacheSnapshotBundle:bundleCopy forRequest:requestCopy options:v19 completion:completionCopy];
 }
 
-- (void)cacheSnapshotBundle:(id)a3 forRequest:(id)a4 options:(id)a5 completion:(id)a6
+- (void)cacheSnapshotBundle:(id)bundle forRequest:(id)request options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  bundleCopy = bundle;
+  requestCopy = request;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = self->_completionQueue;
-  if (v10)
+  if (bundleCopy)
   {
     if (![(BSAtomicFlag *)self->_invalidationFlag getFlag])
     {
-      v36 = [v10 posterUUID];
-      v16 = [v10 snapshotDefinitionIdentifier];
-      v17 = v16;
+      posterUUID = [bundleCopy posterUUID];
+      snapshotDefinitionIdentifier = [bundleCopy snapshotDefinitionIdentifier];
+      v17 = snapshotDefinitionIdentifier;
       v18 = @"UNKNOWN_SNAPSHOT_DEFINITION";
-      if (v16)
+      if (snapshotDefinitionIdentifier)
       {
-        v18 = v16;
+        v18 = snapshotDefinitionIdentifier;
       }
 
       v32 = v18;
 
-      v31 = [v10 deviceOrientation];
-      v35 = [v10 hardwareIdentifier];
-      v30 = [v10 userInterfaceStyle];
+      deviceOrientation = [bundleCopy deviceOrientation];
+      hardwareIdentifier = [bundleCopy hardwareIdentifier];
+      userInterfaceStyle = [bundleCopy userInterfaceStyle];
       v34 = self->_fileManager;
       v19 = PUILogSnapshotCache();
       v33 = os_signpost_id_generate(v19);
 
       v20 = objc_opt_class();
-      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v10, "posterVersion")}];
-      [v10 posterProvider];
+      v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(bundleCopy, "posterVersion")}];
+      [bundleCopy posterProvider];
       v22 = v14;
-      v23 = v12;
-      v25 = v24 = v11;
-      v26 = [v20 _snapshotURLForPosterUUID:v36 posterVersion:v21 provider:v25 snapshotCacheIdentifier:v32 interfaceOrientation:v31 hardwareIdentifier:v35 userInterfaceStyle:v30 relativeTo:self->_snapshotBundleContainerURL];
+      v23 = optionsCopy;
+      v25 = v24 = requestCopy;
+      v26 = [v20 _snapshotURLForPosterUUID:posterUUID posterVersion:v21 provider:v25 snapshotCacheIdentifier:v32 interfaceOrientation:deviceOrientation hardwareIdentifier:hardwareIdentifier userInterfaceStyle:userInterfaceStyle relativeTo:self->_snapshotBundleContainerURL];
 
-      v11 = v24;
-      v12 = v23;
+      requestCopy = v24;
+      optionsCopy = v23;
       v14 = v22;
 
       fileSystemQueue = self->_fileSystemQueue;
@@ -1242,42 +1242,42 @@ id __56__PUIPosterSnapshotFilesystemCache_reachableCacheFuture__block_invoke(uin
       v37[1] = 3221225472;
       v37[2] = __86__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_forRequest_options_completion___block_invoke_3;
       v37[3] = &unk_1E7856570;
-      v44 = v13;
+      v44 = completionCopy;
       v45 = v33;
-      v38 = v10;
+      v38 = bundleCopy;
       v39 = v26;
-      v40 = self;
+      selfCopy = self;
       v41 = v34;
       v42 = v14;
-      v43 = v12;
+      v43 = optionsCopy;
       v28 = v34;
       v29 = v26;
       dispatch_async(fileSystemQueue, v37);
 
-      v15 = v36;
+      v15 = posterUUID;
       goto LABEL_10;
     }
 
-    if (v13)
+    if (completionCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __86__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_forRequest_options_completion___block_invoke_2;
       block[3] = &unk_1E7854B48;
-      v47 = v13;
+      v47 = completionCopy;
       dispatch_async(v14, block);
       v15 = v47;
 LABEL_10:
     }
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __86__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_forRequest_options_completion___block_invoke;
     v48[3] = &unk_1E7854B48;
-    v49 = v13;
+    v49 = completionCopy;
     dispatch_async(v14, v48);
     v15 = v49;
     goto LABEL_10;
@@ -1533,7 +1533,7 @@ void __86__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_forRequest_optio
 {
   v3 = self->_fileManager;
   objc_initWeak(&location, self);
-  v4 = [MEMORY[0x1E69C51F0] sharedWorkloop];
+  mEMORY[0x1E69C51F0] = [MEMORY[0x1E69C51F0] sharedWorkloop];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke;
@@ -1541,7 +1541,7 @@ void __86__PUIPosterSnapshotFilesystemCache_cacheSnapshotBundle_forRequest_optio
   objc_copyWeak(&v8, &location);
   v7 = v3;
   v5 = v3;
-  dispatch_async(v4, block);
+  dispatch_async(mEMORY[0x1E69C51F0], block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -1788,12 +1788,12 @@ void __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke(
   }
 }
 
-- (void)_cacheLock_cleanupPostersWithOptions:(id)a3
+- (void)_cacheLock_cleanupPostersWithOptions:(id)options
 {
   v56 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v4 = [v38 cleanupPredicates];
-  v5 = [v4 count];
+  optionsCopy = options;
+  cleanupPredicates = [optionsCopy cleanupPredicates];
+  v5 = [cleanupPredicates count];
 
   if (v5)
   {
@@ -1807,15 +1807,15 @@ void __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke(
     if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
     {
       *buf = 138543362;
-      v55 = v38;
+      v55 = optionsCopy;
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "SnapshotCache-cleanupPostersWithOptions", "options: %{public}@", buf, 0xCu);
     }
 
     spid = v7;
 
     v11 = objc_opt_new();
-    v12 = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
-    v13 = [v12 result:0];
+    _snapshotBundleURLs = [(PUIPosterSnapshotFilesystemCache *)self _snapshotBundleURLs];
+    v13 = [_snapshotBundleURLs result:0];
 
     if ([v13 count])
     {
@@ -1845,8 +1845,8 @@ void __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke(
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
-            v19 = [v38 cleanupPredicates];
-            v20 = [v19 countByEnumeratingWithState:&v43 objects:v52 count:16];
+            cleanupPredicates2 = [optionsCopy cleanupPredicates];
+            v20 = [cleanupPredicates2 countByEnumeratingWithState:&v43 objects:v52 count:16];
             if (v20)
             {
               v21 = v20;
@@ -1857,7 +1857,7 @@ void __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke(
                 {
                   if (*v44 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(cleanupPredicates2);
                   }
 
                   if (__doesURLMatchPredicate(v18, self->_snapshotBundleContainerURL, *(*(&v43 + 1) + 8 * j)))
@@ -1866,7 +1866,7 @@ void __57__PUIPosterSnapshotFilesystemCache__prepareSnapshotCache__block_invoke(
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v43 objects:v52 count:16];
+                v21 = [cleanupPredicates2 countByEnumeratingWithState:&v43 objects:v52 count:16];
               }
 
               while (v21);

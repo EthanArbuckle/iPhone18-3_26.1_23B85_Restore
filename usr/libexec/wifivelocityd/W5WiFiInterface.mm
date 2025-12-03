@@ -2,9 +2,9 @@
 - (BOOL)isSnifferSupported;
 - (BOOL)isUsingCustomDNSSettings;
 - (BOOL)isUsingCustomProxySetting;
-- (BOOL)setChannel:(id)a3;
-- (BOOL)setSTBCEnabled:(BOOL)a3;
-- (W5WiFiInterface)initWithCoreWiFiInterface:(id)a3;
+- (BOOL)setChannel:(id)channel;
+- (BOOL)setSTBCEnabled:(BOOL)enabled;
+- (W5WiFiInterface)initWithCoreWiFiInterface:(id)interface;
 - (id)__dnsSetupConfig;
 - (id)__dnsStateConfig;
 - (id)__ipv4SetupConfig;
@@ -12,43 +12,43 @@
 - (id)__ipv6SetupConfig;
 - (id)__ipv6StateConfig;
 - (id)__proxiesSetupConfig;
-- (id)cachedPreferredNetworksListWithUUID:(id)a3;
+- (id)cachedPreferredNetworksListWithUUID:(id)d;
 - (id)channel;
 - (id)currentNetwork;
 - (id)currentPreferredNetwork;
 - (id)lastAssociatedSSID;
 - (id)lastAssociatedSSIDString;
 - (id)linkQualityUpdates;
-- (id)performScanOnChannels:(id)a3 translate:(BOOL)a4;
-- (id)performScanWithParams:(id)a3 error:(id)a4;
+- (id)performScanOnChannels:(id)channels translate:(BOOL)translate;
+- (id)performScanWithParams:(id)params error:(id)error;
 - (id)preferredNetworksList;
-- (id)scanCache:(BOOL)a3;
+- (id)scanCache:(BOOL)cache;
 - (id)supportedChannels;
 - (int64_t)ipv4ConfigMethod;
 - (int64_t)ipv6ConfigMethod;
 - (int64_t)security;
-- (void)__addlinkQualityUpdate:(id)a3;
+- (void)__addlinkQualityUpdate:(id)update;
 - (void)__clearLinkQualityUpdates;
 - (void)__startEventMonitoring;
 - (void)__stopEventMonitoring;
-- (void)__updateAWDLRealTimeMode:(BOOL)a3;
+- (void)__updateAWDLRealTimeMode:(BOOL)mode;
 - (void)__updateLastAssociatedSSID;
-- (void)clearCachedPreferredNetworksListWithUUID:(id)a3;
+- (void)clearCachedPreferredNetworksListWithUUID:(id)d;
 - (void)dealloc;
-- (void)setUpdatedWiFiInterfaceCallback:(id)a3;
+- (void)setUpdatedWiFiInterfaceCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
 
 @implementation W5WiFiInterface
 
-- (W5WiFiInterface)initWithCoreWiFiInterface:(id)a3
+- (W5WiFiInterface)initWithCoreWiFiInterface:(id)interface
 {
   v15.receiver = self;
   v15.super_class = W5WiFiInterface;
   v4 = [(W5WiFiInterface *)&v15 init];
   v5 = v4;
-  if (!a3)
+  if (!interface)
   {
     goto LABEL_15;
   }
@@ -58,9 +58,9 @@
     goto LABEL_15;
   }
 
-  v6 = a3;
-  v5->_corewifi = v6;
-  v7 = [-[CWFInterface interfaceName](v6 "interfaceName")];
+  interfaceCopy = interface;
+  v5->_corewifi = interfaceCopy;
+  v7 = [-[CWFInterface interfaceName](interfaceCopy "interfaceName")];
   v5->_interfaceName = v7;
   if (!v7)
   {
@@ -95,9 +95,9 @@
 LABEL_15:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(NSString *)v5->_interfaceName UTF8String];
+      uTF8String = [(NSString *)v5->_interfaceName UTF8String];
       *buf = 136446210;
-      v17 = v14;
+      v17 = uTF8String;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "[wifivelocity] FAILED to initialize Wi-Fi interface (%{public}s)", buf, 0xCu);
     }
 
@@ -107,12 +107,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)setUpdatedWiFiInterfaceCallback:(id)a3
+- (void)setUpdatedWiFiInterfaceCallback:(id)callback
 {
   if (dispatch_get_specific(&self->_queue))
   {
 
-    self->_updatedWiFiCallback = [a3 copy];
+    self->_updatedWiFiCallback = [callback copy];
   }
 
   else
@@ -123,7 +123,7 @@ LABEL_15:
     v6[2] = sub_10005379C;
     v6[3] = &unk_1000E1C70;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = callback;
     dispatch_sync(queue, v6);
   }
 }
@@ -279,7 +279,7 @@ LABEL_15:
   dispatch_async(eventQueue, block);
 }
 
-- (void)__updateAWDLRealTimeMode:(BOOL)a3
+- (void)__updateAWDLRealTimeMode:(BOOL)mode
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -287,7 +287,7 @@ LABEL_15:
   v4[2] = sub_1000547FC;
   v4[3] = &unk_1000E2B80;
   v4[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(queue, v4);
 }
 
@@ -313,7 +313,7 @@ LABEL_15:
   dispatch_async(queue, block);
 }
 
-- (void)__addlinkQualityUpdate:(id)a3
+- (void)__addlinkQualityUpdate:(id)update
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -321,7 +321,7 @@ LABEL_15:
   v4[2] = sub_100054A64;
   v4[3] = &unk_1000E1C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = update;
   dispatch_async(queue, v4);
 }
 
@@ -435,19 +435,19 @@ LABEL_15:
 
 - (id)channel
 {
-  v2 = [(CWFInterface *)self->_corewifi channel];
+  channel = [(CWFInterface *)self->_corewifi channel];
 
-  return sub_100054D60(v2);
+  return sub_100054D60(channel);
 }
 
-- (id)performScanOnChannels:(id)a3 translate:(BOOL)a4
+- (id)performScanOnChannels:(id)channels translate:(BOOL)translate
 {
-  v4 = a4;
+  translateCopy = translate;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v6 = [channels countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -459,7 +459,7 @@ LABEL_15:
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(channels);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
@@ -474,7 +474,7 @@ LABEL_15:
         [v8 addObject:v12];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v7 = [channels countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v7);
@@ -518,7 +518,7 @@ LABEL_15:
       v20 = *(*(&v24 + 1) + 8 * v19);
       if (v17)
       {
-        if (!v4)
+        if (!translateCopy)
         {
           goto LABEL_20;
         }
@@ -529,7 +529,7 @@ LABEL_19:
       }
 
       v17 = +[NSMutableArray array];
-      if (v4)
+      if (translateCopy)
       {
         goto LABEL_19;
       }
@@ -548,11 +548,11 @@ LABEL_20:
   return [v17 copy];
 }
 
-- (id)performScanWithParams:(id)a3 error:(id)a4
+- (id)performScanWithParams:(id)params error:(id)error
 {
-  v17 = a4;
-  v4 = [(CWFInterface *)self->_corewifi performScanWithParameters:a3 error:&v17];
-  if (v17)
+  errorCopy = error;
+  v4 = [(CWFInterface *)self->_corewifi performScanWithParameters:params error:&errorCopy];
+  if (errorCopy)
   {
     v12 = sub_100098A04();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -564,7 +564,7 @@ LABEL_20:
       v23 = 1024;
       v24 = 1067;
       v25 = 2112;
-      v26 = v17;
+      v26 = errorCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -606,19 +606,19 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)setChannel:(id)a3
+- (BOOL)setChannel:(id)channel
 {
   v5 = objc_alloc_init(CWFChannel);
-  [v5 setChannel:{objc_msgSend(a3, "channel")}];
-  [v5 setFlags:{objc_msgSend(a3, "flags")}];
+  [v5 setChannel:{objc_msgSend(channel, "channel")}];
+  [v5 setFlags:{objc_msgSend(channel, "flags")}];
   v7 = 0;
   [(CWFInterface *)self->_corewifi setChannel:v5 error:&v7];
   return v7 == 0;
 }
 
-- (id)scanCache:(BOOL)a3
+- (id)scanCache:(BOOL)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v5 = objc_alloc_init(CWFScanParameters);
   [v5 setCacheOnly:1];
   [v5 setIncludeHiddenNetworks:1];
@@ -652,7 +652,7 @@ LABEL_20:
       v12 = *(*(&v15 + 1) + 8 * v11);
       if (v9)
       {
-        if (!v3)
+        if (!cacheCopy)
         {
           goto LABEL_9;
         }
@@ -663,7 +663,7 @@ LABEL_8:
       }
 
       v9 = +[NSMutableArray array];
-      if (v3)
+      if (cacheCopy)
       {
         goto LABEL_8;
       }
@@ -685,28 +685,28 @@ LABEL_9:
 - (int64_t)security
 {
   corewifi = self->_corewifi;
-  v3 = [(CWFInterface *)corewifi securityType];
-  v4 = [(CWFInterface *)corewifi WEPSubtype];
-  v5 = [(CWFInterface *)corewifi WAPISubtype];
+  securityType = [(CWFInterface *)corewifi securityType];
+  wEPSubtype = [(CWFInterface *)corewifi WEPSubtype];
+  wAPISubtype = [(CWFInterface *)corewifi WAPISubtype];
 
-  return sub_100055C38(v3, v4, v5);
+  return sub_100055C38(securityType, wEPSubtype, wAPISubtype);
 }
 
 - (id)currentNetwork
 {
-  v2 = [(CWFInterface *)self->_corewifi currentScanResult];
+  currentScanResult = [(CWFInterface *)self->_corewifi currentScanResult];
 
-  return sub_10005531C(v2);
+  return sub_10005531C(currentScanResult);
 }
 
 - (id)currentPreferredNetwork
 {
-  v2 = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
+  currentKnownNetworkProfile = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
 
-  return sub_1000539E8(v2);
+  return sub_1000539E8(currentKnownNetworkProfile);
 }
 
-- (id)cachedPreferredNetworksListWithUUID:(id)a3
+- (id)cachedPreferredNetworksListWithUUID:(id)d
 {
   v7 = 0;
   v8 = &v7;
@@ -719,7 +719,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100055E14;
   block[3] = &unk_1000E2B08;
-  block[4] = a3;
+  block[4] = d;
   block[5] = self;
   block[6] = &v7;
   dispatch_sync(queue, block);
@@ -728,27 +728,27 @@ LABEL_9:
   return v4;
 }
 
-- (void)clearCachedPreferredNetworksListWithUUID:(id)a3
+- (void)clearCachedPreferredNetworksListWithUUID:(id)d
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100055F1C;
   v4[3] = &unk_1000E1C98;
-  v4[4] = a3;
+  v4[4] = d;
   v4[5] = self;
   dispatch_async(queue, v4);
 }
 
 - (id)__ipv4StateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetIPv4);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetIPv4);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -774,13 +774,13 @@ LABEL_9:
 
 - (id)__ipv6StateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetIPv6);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetIPv6);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -806,13 +806,13 @@ LABEL_9:
 
 - (id)__ipv4SetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetIPv4);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetIPv4);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -838,13 +838,13 @@ LABEL_9:
 
 - (id)__ipv6SetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetIPv6);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetIPv6);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -870,13 +870,13 @@ LABEL_9:
 
 - (id)__dnsStateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetDNS);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetDNS);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -902,13 +902,13 @@ LABEL_9:
 
 - (id)__dnsSetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetDNS);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetDNS);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -934,13 +934,13 @@ LABEL_9:
 
 - (id)__proxiesSetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (!v3)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (!networkServiceID)
   {
     return 0;
   }
 
-  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetProxies);
+  NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetProxies);
   if (!NetworkServiceEntity)
   {
     return 0;
@@ -1046,8 +1046,8 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CWFInterface *)self->_corewifi capabilities];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  capabilities = [(CWFInterface *)self->_corewifi capabilities];
+  v3 = [capabilities countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1059,7 +1059,7 @@ LABEL_9:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(capabilities);
         }
 
         if ([*(*(&v8 + 1) + 8 * v6) unsignedIntValue] == 11)
@@ -1072,7 +1072,7 @@ LABEL_9:
       }
 
       while (v4 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [capabilities countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -1086,14 +1086,14 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)setSTBCEnabled:(BOOL)a3
+- (BOOL)setSTBCEnabled:(BOOL)enabled
 {
   v19 = 0;
   v35 = 0;
   v33 = 0u;
   v34 = 0u;
-  v4 = !a3;
-  v5 = [NSString stringWithFormat:@"stbc_disable=%d", !a3];
+  v4 = !enabled;
+  v5 = [NSString stringWithFormat:@"stbc_disable=%d", !enabled];
   [-[CWFInterface interfaceName](self->_corewifi "interfaceName")];
   __strlcpy_chk();
   LODWORD(v34) = 157;
@@ -1109,7 +1109,7 @@ LABEL_9:
   v6 = sub_100098A04();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CWFInterface *)self->_corewifi userAutoJoinDisabled];
+    userAutoJoinDisabled = [(CWFInterface *)self->_corewifi userAutoJoinDisabled];
     v20 = 136316162;
     v21 = "[W5WiFiInterface setSTBCEnabled:]";
     v22 = 2080;
@@ -1117,7 +1117,7 @@ LABEL_9:
     v24 = 1024;
     v25 = 1645;
     v26 = 1024;
-    v27 = v7;
+    v27 = userAutoJoinDisabled;
     v28 = 2114;
     v29 = v19;
     LODWORD(v18) = 44;
@@ -1196,7 +1196,7 @@ LABEL_12:
   v13 = sub_100098A04();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CWFInterface *)self->_corewifi userAutoJoinDisabled];
+    userAutoJoinDisabled2 = [(CWFInterface *)self->_corewifi userAutoJoinDisabled];
     v20 = 136316162;
     v21 = "[W5WiFiInterface setSTBCEnabled:]";
     v22 = 2080;
@@ -1204,7 +1204,7 @@ LABEL_12:
     v24 = 1024;
     v25 = 1660;
     v26 = 1024;
-    v27 = v14;
+    v27 = userAutoJoinDisabled2;
     v28 = 2114;
     v29 = v19;
     _os_log_send_and_compose_impl();

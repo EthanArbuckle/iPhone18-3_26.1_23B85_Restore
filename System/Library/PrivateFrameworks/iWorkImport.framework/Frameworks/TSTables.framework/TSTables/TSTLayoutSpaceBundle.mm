@@ -1,28 +1,28 @@
 @interface TSTLayoutSpaceBundle
-- (BOOL)enumerateFrozenLayoutSpacesUsingBlock:(id)a3;
-- (BOOL)enumerateRepeatLayoutSpacesUsingBlock:(id)a3;
+- (BOOL)enumerateFrozenLayoutSpacesUsingBlock:(id)block;
+- (BOOL)enumerateRepeatLayoutSpacesUsingBlock:(id)block;
 - (TSTLayout)layout;
-- (TSTLayoutSpaceBundle)initWithLayout:(id)a3;
-- (id)getSpaceContainingCellID:(TSUCellCoord)a3;
+- (TSTLayoutSpaceBundle)initWithLayout:(id)layout;
+- (id)getSpaceContainingCellID:(TSUCellCoord)d;
 - (int)validateLayoutSpaces;
-- (void)enumerateLayoutSpacesUsingBlock:(id)a3;
-- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)a3;
-- (void)invalidateCoordinatesAfterRow:(unsigned int)a3;
-- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)a3;
+- (void)enumerateLayoutSpacesUsingBlock:(id)block;
+- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)column;
+- (void)invalidateCoordinatesAfterRow:(unsigned int)row;
+- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)d;
 @end
 
 @implementation TSTLayoutSpaceBundle
 
-- (TSTLayoutSpaceBundle)initWithLayout:(id)a3
+- (TSTLayoutSpaceBundle)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = TSTLayoutSpaceBundle;
   v5 = [(TSTLayoutSpaceBundle *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layout, v4);
+    objc_storeWeak(&v5->_layout, layoutCopy);
     v7 = [TSTLayoutSpace alloc];
     v10 = objc_msgSend_initWithLayoutSpaceBundle_type_(v7, v8, v6, 0, v9);
     space = v6->_space;
@@ -32,40 +32,40 @@
   return v6;
 }
 
-- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)a3
+- (void)invalidateCoordinatesAfterColumn:(unsigned __int16)column
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2213BA334;
   v5[3] = &unk_278464190;
-  v6 = a3;
+  columnCopy = column;
   objc_msgSend_enumerateLayoutSpacesUsingBlock_(self, a2, v5, v3, v4);
 }
 
-- (void)invalidateCoordinatesAfterRow:(unsigned int)a3
+- (void)invalidateCoordinatesAfterRow:(unsigned int)row
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2213BA3AC;
   v5[3] = &unk_2784641B0;
-  v6 = a3;
+  rowCopy = row;
   objc_msgSend_enumerateLayoutSpacesUsingBlock_(self, a2, v5, v3, v4);
 }
 
-- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)a3
+- (void)invalidateCoordinatesForEditingCellID:(TSUCellCoord)d
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_2213BA438;
   v5[3] = &unk_278460A98;
-  v5[4] = a3;
+  v5[4] = d;
   objc_msgSend_enumerateLayoutSpacesUsingBlock_(self, a2, v5, v3, v4);
 }
 
-- (id)getSpaceContainingCellID:(TSUCellCoord)a3
+- (id)getSpaceContainingCellID:(TSUCellCoord)d
 {
   p_space = &self->_space;
-  v8 = objc_msgSend_cellRange(self->_space, a2, *&a3, v3, v4);
+  v8 = objc_msgSend_cellRange(self->_space, a2, *&d, v3, v4);
   if (v9 >> 32)
   {
     v13 = v9 == 0;
@@ -85,7 +85,7 @@
   if (v8 != 0x7FFFFFFFLL || v14 == 0x7FFF00000000)
   {
     v17 = v8 == 0x7FFFFFFF && v14 != 0x7FFF00000000;
-    if (v8 > a3.row && !v17)
+    if (v8 > d.row && !v17)
     {
       goto LABEL_31;
     }
@@ -96,7 +96,7 @@
       v18 = 0x7FFFFFFF;
     }
 
-    if (v18 < a3.row)
+    if (v18 < d.row)
     {
       goto LABEL_31;
     }
@@ -107,11 +107,11 @@
     }
   }
 
-  if (WORD2(v8) <= a3.column)
+  if (WORD2(v8) <= d.column)
   {
     v19 = WORD2(v8) == 0x7FFF || v9 == 0;
     v20 = v19 ? 0x7FFF : v9 + WORD2(v8) - 1;
-    if (v20 >= a3.column)
+    if (v20 >= d.column)
     {
       goto LABEL_118;
     }
@@ -139,7 +139,7 @@ LABEL_31:
   if (v21 != 0x7FFFFFFFLL || v27 == 0x7FFF00000000)
   {
     v30 = v21 == 0x7FFFFFFF && v27 != 0x7FFF00000000;
-    if (v21 > a3.row && !v30)
+    if (v21 > d.row && !v30)
     {
       goto LABEL_61;
     }
@@ -150,7 +150,7 @@ LABEL_31:
       v31 = 0x7FFFFFFF;
     }
 
-    if (v31 < a3.row)
+    if (v31 < d.row)
     {
       goto LABEL_61;
     }
@@ -161,11 +161,11 @@ LABEL_31:
     }
   }
 
-  if (WORD2(v21) <= a3.column)
+  if (WORD2(v21) <= d.column)
   {
     v32 = WORD2(v21) == 0x7FFF || v22 == 0;
     v33 = v32 ? 0x7FFF : v22 + WORD2(v21) - 1;
-    if (v33 >= a3.column)
+    if (v33 >= d.column)
     {
       goto LABEL_118;
     }
@@ -193,7 +193,7 @@ LABEL_61:
   if (v34 != 0x7FFFFFFFLL || v40 == 0x7FFF00000000)
   {
     v44 = v34 == 0x7FFFFFFF && v40 != 0x7FFF00000000;
-    if (v34 > a3.row && !v44)
+    if (v34 > d.row && !v44)
     {
       goto LABEL_87;
     }
@@ -204,7 +204,7 @@ LABEL_61:
       v45 = 0x7FFFFFFF;
     }
 
-    if (v45 < a3.row)
+    if (v45 < d.row)
     {
       goto LABEL_87;
     }
@@ -215,11 +215,11 @@ LABEL_61:
     }
   }
 
-  if (WORD2(v34) <= a3.column)
+  if (WORD2(v34) <= d.column)
   {
     v41 = WORD2(v34) == 0x7FFF || v35 == 0;
     v42 = v41 ? 0x7FFF : v35 + WORD2(v34) - 1;
-    if (v42 >= a3.column)
+    if (v42 >= d.column)
     {
       goto LABEL_118;
     }
@@ -239,7 +239,7 @@ LABEL_87:
     }
 
     v55 = v48 == 0x7FFFFFFF && v51 != 0x7FFF00000000;
-    if (v48 > a3.row && !v55)
+    if (v48 > d.row && !v55)
     {
       goto LABEL_111;
     }
@@ -250,7 +250,7 @@ LABEL_87:
       v56 = 0x7FFFFFFF;
     }
 
-    if (v56 < a3.row)
+    if (v56 < d.row)
     {
       goto LABEL_111;
     }
@@ -258,12 +258,12 @@ LABEL_87:
     if (v48 == 0x7FFFFFFFLL || v51 != 0x7FFF00000000)
     {
 LABEL_124:
-      if (WORD2(v48) <= a3.column)
+      if (WORD2(v48) <= d.column)
       {
         v52 = WORD2(v48) == 0x7FFF || v49 == 0;
         v53 = v52 ? 0x7FFF : v49 + WORD2(v48) - 1;
         p_space = p_repeatHeaderRowsSpace;
-        if (v53 >= a3.column)
+        if (v53 >= d.column)
         {
           goto LABEL_118;
         }
@@ -307,30 +307,30 @@ LABEL_119:
   return v33;
 }
 
-- (void)enumerateLayoutSpacesUsingBlock:(id)a3
+- (void)enumerateLayoutSpacesUsingBlock:(id)block
 {
-  v4 = a3;
-  if ((objc_msgSend_enumerateFrozenLayoutSpacesUsingBlock_(self, v5, v4, v6, v7) & 1) == 0)
+  blockCopy = block;
+  if ((objc_msgSend_enumerateFrozenLayoutSpacesUsingBlock_(self, v5, blockCopy, v6, v7) & 1) == 0)
   {
-    v12 = objc_msgSend_enumerateRepeatLayoutSpacesUsingBlock_(self, v8, v4, v9, v10);
+    v12 = objc_msgSend_enumerateRepeatLayoutSpacesUsingBlock_(self, v8, blockCopy, v9, v10);
     if ((v12 & 1) == 0)
     {
       space = self->_space;
       if (space)
       {
-        v4[2](v4, space, &v12);
+        blockCopy[2](blockCopy, space, &v12);
       }
     }
   }
 }
 
-- (BOOL)enumerateFrozenLayoutSpacesUsingBlock:(id)a3
+- (BOOL)enumerateFrozenLayoutSpacesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   v11 = 0;
   frozenHeaderCornerSpace = self->_frozenHeaderCornerSpace;
-  if (frozenHeaderCornerSpace && ((*(v4 + 2))(v4, frozenHeaderCornerSpace, &v11), (v11 & 1) != 0) || (frozenHeaderRowsSpace = self->_frozenHeaderRowsSpace) != 0 && ((v5)[2](v5, frozenHeaderRowsSpace, &v11), (v11 & 1) != 0))
+  if (frozenHeaderCornerSpace && ((*(blockCopy + 2))(blockCopy, frozenHeaderCornerSpace, &v11), (v11 & 1) != 0) || (frozenHeaderRowsSpace = self->_frozenHeaderRowsSpace) != 0 && ((v5)[2](v5, frozenHeaderRowsSpace, &v11), (v11 & 1) != 0))
   {
     v8 = 1;
   }
@@ -353,13 +353,13 @@ LABEL_119:
   return v8 & 1;
 }
 
-- (BOOL)enumerateRepeatLayoutSpacesUsingBlock:(id)a3
+- (BOOL)enumerateRepeatLayoutSpacesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   v11 = 0;
   repeatHeaderCornerSpace = self->_repeatHeaderCornerSpace;
-  if (repeatHeaderCornerSpace && ((*(v4 + 2))(v4, repeatHeaderCornerSpace, &v11), (v11 & 1) != 0) || (repeatHeaderRowsSpace = self->_repeatHeaderRowsSpace) != 0 && ((v5)[2](v5, repeatHeaderRowsSpace, &v11), (v11 & 1) != 0))
+  if (repeatHeaderCornerSpace && ((*(blockCopy + 2))(blockCopy, repeatHeaderCornerSpace, &v11), (v11 & 1) != 0) || (repeatHeaderRowsSpace = self->_repeatHeaderRowsSpace) != 0 && ((v5)[2](v5, repeatHeaderRowsSpace, &v11), (v11 & 1) != 0))
   {
     v8 = 1;
   }

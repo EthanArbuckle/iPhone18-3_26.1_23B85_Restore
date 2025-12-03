@@ -1,38 +1,38 @@
 @interface REScriptASTFeatureNode
-+ (id)parseBuffer:(id)a3 error:(id *)a4;
-- (REScriptASTFeatureNode)initWithName:(id)a3 options:(id)a4 expression:(id)a5;
++ (id)parseBuffer:(id)buffer error:(id *)error;
+- (REScriptASTFeatureNode)initWithName:(id)name options:(id)options expression:(id)expression;
 - (id)dependencies;
 @end
 
 @implementation REScriptASTFeatureNode
 
-+ (id)parseBuffer:(id)a3 error:(id *)a4
++ (id)parseBuffer:(id)buffer error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!REExpectTokenTypeInBuffer(v5, 0xCuLL, a4))
+  bufferCopy = buffer;
+  if (!REExpectTokenTypeInBuffer(bufferCopy, 0xCuLL, error))
   {
     v11 = 0;
     goto LABEL_21;
   }
 
-  [v5 push];
-  [v5 next];
-  v6 = REScriptParseOptionsValues(v5, a4);
-  if (v6 && REExpectTokenTypeInBuffer(v5, 6uLL, a4))
+  [bufferCopy push];
+  [bufferCopy next];
+  v6 = REScriptParseOptionsValues(bufferCopy, error);
+  if (v6 && REExpectTokenTypeInBuffer(bufferCopy, 6uLL, error))
   {
-    v7 = [v5 currentToken];
-    [v5 next];
-    [v5 consume];
-    [v5 push];
-    v8 = [REScriptASTBinaryExpressionListNode parseBuffer:v5 error:a4];
+    currentToken = [bufferCopy currentToken];
+    [bufferCopy next];
+    [bufferCopy consume];
+    [bufferCopy push];
+    v8 = [REScriptASTBinaryExpressionListNode parseBuffer:bufferCopy error:error];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 expressions];
-      v10 = [v9 firstObject];
+      expressions = [v8 expressions];
+      firstObject = [expressions firstObject];
 
-      if (!v10)
+      if (!firstObject)
       {
         goto LABEL_17;
       }
@@ -40,8 +40,8 @@
 
     else
     {
-      v10 = v8;
-      if (!v10)
+      firstObject = v8;
+      if (!firstObject)
       {
         goto LABEL_17;
       }
@@ -50,14 +50,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v10 binaryOperator];
-      v13 = [v12 type];
+      binaryOperator = [firstObject binaryOperator];
+      type = [binaryOperator type];
 
-      if (v13 == 30)
+      if (type == 30)
       {
-        [v5 consume];
+        [bufferCopy consume];
 LABEL_18:
-        v11 = [[REScriptASTFeatureNode alloc] initWithName:v7 options:v6 expression:v8];
+        v11 = [[REScriptASTFeatureNode alloc] initWithName:currentToken options:v6 expression:v8];
 LABEL_19:
 
         goto LABEL_20;
@@ -67,22 +67,22 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4)
+      if (error)
       {
         v14 = MEMORY[0x277CCACA8];
         v15 = REDescriptionForTokenType(0x1EuLL);
-        v16 = [v10 binaryOperator];
-        v17 = REDescriptionForTokenType([v16 type]);
+        binaryOperator2 = [firstObject binaryOperator];
+        v17 = REDescriptionForTokenType([binaryOperator2 type]);
         v18 = [v14 stringWithFormat:@"Expecting '%@' token but found '%@'", v15, v17];
 
         v23 = @"REErrorTokenKey";
-        v19 = [v10 binaryOperator];
-        v24[0] = v19;
+        binaryOperator3 = [firstObject binaryOperator];
+        v24[0] = binaryOperator3;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-        *a4 = RECreateErrorWithCodeMessageAndUseInfo(204, v18, v20);
+        *error = RECreateErrorWithCodeMessageAndUseInfo(204, v18, v20);
       }
 
-      [v5 pop];
+      [bufferCopy pop];
 
       v8 = 0;
       v11 = 0;
@@ -90,13 +90,13 @@ LABEL_19:
     }
 
 LABEL_17:
-    [v5 pop];
+    [bufferCopy pop];
 
     v8 = 0;
     goto LABEL_18;
   }
 
-  [v5 pop];
+  [bufferCopy pop];
   v11 = 0;
 LABEL_20:
 
@@ -106,20 +106,20 @@ LABEL_21:
   return v11;
 }
 
-- (REScriptASTFeatureNode)initWithName:(id)a3 options:(id)a4 expression:(id)a5
+- (REScriptASTFeatureNode)initWithName:(id)name options:(id)options expression:(id)expression
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  optionsCopy = options;
+  expressionCopy = expression;
   v15.receiver = self;
   v15.super_class = REScriptASTFeatureNode;
-  v12 = [(REScriptASTNode *)&v15 initWithToken:v9];
+  v12 = [(REScriptASTNode *)&v15 initWithToken:nameCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_options, a4);
-    objc_storeStrong(&v13->_value, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_options, options);
+    objc_storeStrong(&v13->_value, expression);
   }
 
   return v13;
@@ -127,11 +127,11 @@ LABEL_21:
 
 - (id)dependencies
 {
-  v2 = [(REScriptASTNode *)self->_value dependencies];
-  v3 = v2;
-  if (v2)
+  dependencies = [(REScriptASTNode *)self->_value dependencies];
+  v3 = dependencies;
+  if (dependencies)
   {
-    v4 = v2;
+    v4 = dependencies;
   }
 
   else

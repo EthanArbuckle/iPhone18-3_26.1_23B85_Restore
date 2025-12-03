@@ -1,35 +1,35 @@
 @interface AFManagedStorageConnection
 - (id)_connection;
 - (id)_managedStoreService;
-- (id)_managedStoreServiceWithErrorHandler:(id)a3;
-- (id)_synchronousManagedStoreServiceWithErrorHandler:(id)a3;
-- (id)dataForKey:(id)a3 inKnowledgeStoreWithName:(id)a4;
-- (id)domainObjectForKey:(id)a3;
+- (id)_managedStoreServiceWithErrorHandler:(id)handler;
+- (id)_synchronousManagedStoreServiceWithErrorHandler:(id)handler;
+- (id)dataForKey:(id)key inKnowledgeStoreWithName:(id)name;
+- (id)domainObjectForKey:(id)key;
 - (void)_clearConnection;
 - (void)dealloc;
-- (void)resetKnowledgeStoreWithName:(id)a3;
-- (void)setData:(id)a3 forKey:(id)a4 inKnowledgeStoreWithName:(id)a5;
-- (void)setDomainObject:(id)a3 forKey:(id)a4;
+- (void)resetKnowledgeStoreWithName:(id)name;
+- (void)setData:(id)data forKey:(id)key inKnowledgeStoreWithName:(id)name;
+- (void)setDomainObject:(id)object forKey:(id)key;
 @end
 
 @implementation AFManagedStorageConnection
 
-- (void)resetKnowledgeStoreWithName:(id)a3
+- (void)resetKnowledgeStoreWithName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[AFManagedStorageConnection resetKnowledgeStoreWithName:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = nameCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
   v6 = [(AFManagedStorageConnection *)self _synchronousManagedStoreServiceWithErrorHandler:&__block_literal_global_68_19768];
-  [v6 resetKnowledgeStoreWithName:v4 completion:&__block_literal_global_71];
+  [v6 resetKnowledgeStoreWithName:nameCopy completion:&__block_literal_global_71];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -51,24 +51,24 @@ void __58__AFManagedStorageConnection_resetKnowledgeStoreWithName___block_invoke
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setData:(id)a3 forKey:(id)a4 inKnowledgeStoreWithName:(id)a5
+- (void)setData:(id)data forKey:(id)key inKnowledgeStoreWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  keyCopy = key;
+  nameCopy = name;
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     v14 = 136315394;
     v15 = "[AFManagedStorageConnection setData:forKey:inKnowledgeStoreWithName:]";
     v16 = 2112;
-    v17 = v10;
+    v17 = nameCopy;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s %@", &v14, 0x16u);
   }
 
   v12 = [(AFManagedStorageConnection *)self _synchronousManagedStoreServiceWithErrorHandler:&__block_literal_global_63];
-  [v12 setKnowledgeStoreData:v8 forKey:v9 inStoreWithName:v10 completion:&__block_literal_global_66_19772];
+  [v12 setKnowledgeStoreData:dataCopy forKey:keyCopy inStoreWithName:nameCopy completion:&__block_literal_global_66_19772];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -90,18 +90,18 @@ void __70__AFManagedStorageConnection_setData_forKey_inKnowledgeStoreWithName___
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)dataForKey:(id)a3 inKnowledgeStoreWithName:(id)a4
+- (id)dataForKey:(id)key inKnowledgeStoreWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[AFManagedStorageConnection dataForKey:inKnowledgeStoreWithName:]";
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = nameCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -117,7 +117,7 @@ void __70__AFManagedStorageConnection_setData_forKey_inKnowledgeStoreWithName___
   v13[2] = __66__AFManagedStorageConnection_dataForKey_inKnowledgeStoreWithName___block_invoke_60;
   v13[3] = &unk_1E7344EE0;
   v13[4] = buf;
-  [v9 getKnowledgeStoreDataForKey:v6 inStoreWithName:v7 completion:v13];
+  [v9 getKnowledgeStoreDataForKey:keyCopy inStoreWithName:nameCopy completion:v13];
 
   v10 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -144,17 +144,17 @@ void __66__AFManagedStorageConnection_dataForKey_inKnowledgeStoreWithName___bloc
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDomainObject:(id)a3 forKey:(id)a4
+- (void)setDomainObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AFManagedStorageConnection *)self _managedStoreService];
-  [v8 setManagedStoreObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  _managedStoreService = [(AFManagedStorageConnection *)self _managedStoreService];
+  [_managedStoreService setManagedStoreObject:objectCopy forKey:keyCopy];
 }
 
-- (id)domainObjectForKey:(id)a3
+- (id)domainObjectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -165,7 +165,7 @@ void __66__AFManagedStorageConnection_dataForKey_inKnowledgeStoreWithName___bloc
   v10[1] = 3221225472;
   v10[2] = __49__AFManagedStorageConnection_domainObjectForKey___block_invoke;
   v10[3] = &unk_1E73493C0;
-  v5 = v4;
+  v5 = keyCopy;
   v11 = v5;
   v6 = [(AFManagedStorageConnection *)self _synchronousManagedStoreServiceWithErrorHandler:v10];
   v9[0] = MEMORY[0x1E69E9820];
@@ -201,30 +201,30 @@ void __49__AFManagedStorageConnection_domainObjectForKey___block_invoke(uint64_t
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_synchronousManagedStoreServiceWithErrorHandler:(id)a3
+- (id)_synchronousManagedStoreServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFManagedStorageConnection *)self _connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(AFManagedStorageConnection *)self _connection];
+  v6 = [_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_managedStoreServiceWithErrorHandler:(id)a3
+- (id)_managedStoreServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFManagedStorageConnection *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _connection = [(AFManagedStorageConnection *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)_managedStoreService
 {
-  v2 = [(AFManagedStorageConnection *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(AFManagedStorageConnection *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
